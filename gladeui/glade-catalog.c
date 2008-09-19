@@ -33,8 +33,6 @@
 #include <glib.h>
 #include <glib/gi18n-lib.h>
 
-typedef void   (*GladeCatalogInitFunc) (const gchar *name);
-
 struct _GladeCatalog
 {
 	gint   major_version;    /* The catalog version               */
@@ -69,6 +67,8 @@ struct _GladeCatalog
 	
 	gchar *init_function_name;/* Catalog's init function name */
 	GladeCatalogInitFunc init_function;
+
+	GladeProjectConvertFunc project_convert_function; /* pointer to module's project converter */
 };
 
 struct _GladeWidgetGroup
@@ -151,6 +151,7 @@ catalog_open (const gchar *filename)
 	GladeXmlContext *context;
 	GladeXmlDoc     *doc;
 	GladeXmlNode    *root;
+	gchar           *str;
 
 	/* get the context & root node of the catalog file */
 	context = glade_xml_context_new_from_path (filename,
@@ -214,6 +215,11 @@ catalog_open (const gchar *filename)
 	if (catalog->init_function_name)
 		catalog_get_function (catalog, catalog->init_function_name,
 				      (gpointer) &catalog->init_function);
+	
+	if ((str = glade_xml_get_value_string (root, GLADE_TAG_PROJECT_CONVERT_FUNCTION)) != NULL)
+	{
+		catalog_get_function (catalog, str, (gpointer) &catalog->project_convert_function);
+	}
 
 	return catalog;
 }
@@ -719,3 +725,28 @@ widget_group_destroy (GladeWidgetGroup *group)
 }
 	
 
+
+/**
+ * glade_catalog_convert_project:
+ * @catalog: A #GladeCatalog
+ * @project: The #GladeProject to convert
+ * @new_format: The format to convert @project to
+ *
+ * Do any data changes needed to the project for the new
+ * format in an undoable way.
+ *
+ * Returns: FALSE if any errors occurred during the conversion.
+ */
+gboolean
+glade_catalog_convert_project (GladeCatalog     *catalog,
+			       GladeProject     *project,
+			       GladeProjectFormat  new_format)
+{
+	g_return_val_if_fail (GLADE_IS_CATALOG (catalog), FALSE);
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+
+	if (catalog->project_convert_function)
+		return catalog->project_convert_function (project, new_format);
+
+	return TRUE;
+}

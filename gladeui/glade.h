@@ -22,12 +22,7 @@
 #ifndef __GLADE_H__
 #define __GLADE_H__
 
-/* FIXME: forward declarations to get around circular header dependencies.
- */
-typedef struct _GladeWidget    GladeWidget;
-typedef struct _GladeProperty  GladeProperty;
-typedef struct _GladeProject   GladeProject;
-
+#include <gladeui/glade-xml-utils.h>
 #include <gladeui/glade-widget-adaptor.h>
 #include <gladeui/glade-widget.h>
 #include <gladeui/glade-property-class.h>

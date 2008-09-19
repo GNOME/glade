@@ -2910,7 +2910,8 @@ glade_widget_property_string (GladeWidget      *widget,
 	if ((property = glade_widget_get_property (widget, id_property)) != NULL)
 		ret_string = glade_widget_adaptor_string_from_value
 			(GLADE_WIDGET_ADAPTOR (property->klass->handle),
-			 property->klass, value ? value : property->value);
+			 property->klass, value ? value : property->value,
+			 glade_project_get_format (widget->project));
 
 	return ret_string;
 }
@@ -2940,7 +2941,8 @@ glade_widget_pack_property_string (GladeWidget      *widget,
 	if ((property = glade_widget_get_pack_property (widget, id_property)) != NULL)
 		ret_string = glade_widget_adaptor_string_from_value
 			(GLADE_WIDGET_ADAPTOR (property->klass->handle),
-			 property->klass, value ? value : property->value);
+			 property->klass, value ? value : property->value,
+			 glade_project_get_format (widget->project));
 
 	return ret_string;
 }

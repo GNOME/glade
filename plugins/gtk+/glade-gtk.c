@@ -300,7 +300,6 @@ static const gchar *atk_relations_list[] = {
 	NULL
 };
 
-
 static GdkModifierType
 glade_gtk_parse_modifiers (const gchar *string)
 {
@@ -760,7 +759,7 @@ glade_gtk_widget_write_atk_relation (GladeProperty      *property,
 
 	if ((value = glade_widget_adaptor_string_from_value
 	     (GLADE_WIDGET_ADAPTOR (property->klass->handle),
-	      property->klass, property->value)) != NULL)
+	      property->klass, property->value, fmt)) != NULL)
 	{
 		if ((split = g_strsplit (value, GPC_OBJECT_DELIMITER, 0)) != NULL)
 		{
@@ -1053,7 +1052,8 @@ glade_gtk_widget_create_eprop (GladeWidgetAdaptor *adaptor,
 gchar *
 glade_gtk_widget_string_from_value (GladeWidgetAdaptor *adaptor,
 				    GladePropertyClass *klass,
-				    const GValue       *value)
+				    const GValue       *value,
+				    GladeProjectFormat  fmt)
 {
 	if (GLADE_IS_PARAM_SPEC_ACCEL (klass->pspec))
 		return glade_accels_make_string (g_value_get_boxed (value));
@@ -1061,7 +1061,8 @@ glade_gtk_widget_string_from_value (GladeWidgetAdaptor *adaptor,
 		return GWA_GET_CLASS 
 			(G_TYPE_OBJECT)->string_from_value (adaptor, 
 							    klass, 
-							    value);
+							    value,
+							    fmt);
 }
 
 static void
@@ -7355,7 +7356,8 @@ glade_gtk_label_write_widget (GladeWidgetAdaptor *adaptor,
 gchar *
 glade_gtk_label_string_from_value (GladeWidgetAdaptor *adaptor,
 				   GladePropertyClass *klass,
-				   const GValue       *value)
+				   const GValue       *value,
+				   GladeProjectFormat  fmt)
 {
 	if (GLADE_IS_PARAM_SPEC_ATTRIBUTES (klass->pspec))
 	{
@@ -7380,7 +7382,8 @@ glade_gtk_label_string_from_value (GladeWidgetAdaptor *adaptor,
 		return GWA_GET_CLASS 
 			(GTK_TYPE_WIDGET)->string_from_value (adaptor, 
 							      klass, 
-							      value);
+							      value,
+							      fmt);
 }
 
 

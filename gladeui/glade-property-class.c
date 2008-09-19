@@ -306,19 +306,22 @@ glade_property_class_make_string_from_flags (GladePropertyClass *klass, guint fv
 
 static gchar *
 glade_property_class_make_string_from_object (GladePropertyClass *property_class,
-					      GObject            *object)
+					      GObject            *object,
+					      GladeProjectFormat  fmt)
 {
 	GladeWidget *gwidget;
 	gchar       *string = NULL, *filename;
 
 	if (!object) return NULL;
 
+	/* XXX Are pixbufs handled the same in both formats ?? */
 	if (property_class->pspec->value_type == GDK_TYPE_PIXBUF)
 	{
 		if ((filename = g_object_get_data (object, "GladeFileName")) != NULL)
 			string = g_path_get_basename (filename);
 	}
-	else if (property_class->pspec->value_type == GTK_TYPE_ADJUSTMENT)
+	else if (fmt == GLADE_PROJECT_FORMAT_LIBGLADE &&
+		 property_class->pspec->value_type == GTK_TYPE_ADJUSTMENT)
 	{
 		GtkAdjustment *adj = GTK_ADJUSTMENT (object);
 		GString       *str = g_string_sized_new (G_ASCII_DTOSTR_BUF_SIZE * 6 + 6);
@@ -360,7 +363,8 @@ glade_property_class_make_string_from_object (GladePropertyClass *property_class
 
 static gchar *
 glade_property_class_make_string_from_objects (GladePropertyClass *property_class,
-					       GList              *objects)
+					       GList              *objects,
+					       GladeProjectFormat  fmt)
 {
 	GObject *object;
 	GList   *list;
@@ -371,7 +375,7 @@ glade_property_class_make_string_from_objects (GladePropertyClass *property_clas
 		object = list->data;
 
 		obj_str = glade_property_class_make_string_from_object 
-			(property_class, object);
+			(property_class, object, fmt);
 
 		if (string == NULL)
 			string = obj_str;
@@ -389,12 +393,14 @@ glade_property_class_make_string_from_objects (GladePropertyClass *property_clas
  * glade_property_class_make_string_from_gvalue:
  * @property_class: A #GladePropertyClass
  * @value: A #GValue
+ * @fmt: The #GladeProjectFormat the string should conform to
  *
  * Returns: A newly allocated string representation of @value
  */
 gchar *
 glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class,
-					      const GValue *value)
+					      const GValue       *value,
+					      GladeProjectFormat  fmt)
 {
 	gchar    *string = NULL, **strv, str[G_ASCII_DTOSTR_BUF_SIZE];
 	GObject  *object;
@@ -497,13 +503,13 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class
 	{
 		object = g_value_get_object (value);
 		string = glade_property_class_make_string_from_object
-			(property_class, object);
+			(property_class, object, fmt);
 	}
 	else if (GLADE_IS_PARAM_SPEC_OBJECTS (property_class->pspec))
 	{
 		objects = g_value_get_boxed (value);
 		string = glade_property_class_make_string_from_objects
-			(property_class, objects);
+			(property_class, objects, fmt);
 	}
 	else
 		g_critical ("Unsupported pspec type %s (value -> string)",
@@ -659,7 +665,8 @@ glade_property_class_make_object_from_string (GladePropertyClass *property_class
  
 		g_free (fullpath);
 	}
-	if (property_class->pspec->value_type == GTK_TYPE_ADJUSTMENT)
+	if (glade_project_get_format (project) == GLADE_PROJECT_FORMAT_LIBGLADE &&
+	    property_class->pspec->value_type == GTK_TYPE_ADJUSTMENT)
 	{
 		gdouble value, lower, upper, step_increment, page_increment, page_size;
                 gchar *pstring = (gchar*) string;
@@ -1108,20 +1115,23 @@ glade_property_class_is_visible (GladePropertyClass *klass)
 /**
  * glade_property_class_is_object:
  * @property_class: A #GladePropertyClass
+ * @fmt: the #GladeProjectFormat
  *
  *
  * Returns: whether or not this is an object property 
  * that refers to another object in this project.
  */
 gboolean
-glade_property_class_is_object (GladePropertyClass  *klass)
+glade_property_class_is_object (GladePropertyClass  *klass,
+				GladeProjectFormat   fmt)
 {
 	g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (klass), FALSE);
 
  	return (GLADE_IS_PARAM_SPEC_OBJECTS (klass->pspec) ||
 		(G_IS_PARAM_SPEC_OBJECT(klass->pspec) &&
 		 klass->pspec->value_type != GDK_TYPE_PIXBUF &&
-		 klass->pspec->value_type != GTK_TYPE_ADJUSTMENT));
+		 !(fmt == GLADE_PROJECT_FORMAT_LIBGLADE &&
+		   klass->pspec->value_type == GTK_TYPE_ADJUSTMENT)));
 }
 
 
@@ -1593,6 +1603,7 @@ glade_property_class_void_value (GladePropertyClass *klass,
  * @klass: a #GladePropertyClass
  * @value1: a GValue of correct type for @klass
  * @value2: a GValue of correct type for @klass
+ * @fmt: the #GladeProjectFormat to use
  *
  * Compares value1 with value2 according to @klass.
  *
@@ -1602,7 +1613,8 @@ glade_property_class_void_value (GladePropertyClass *klass,
 gint
 glade_property_class_compare (GladePropertyClass *klass,
 			      const GValue       *value1,
-			      const GValue       *value2)
+			      const GValue       *value2,
+			      GladeProjectFormat  fmt)
 {
 	gint retval;
 	
@@ -1613,8 +1625,8 @@ glade_property_class_compare (GladePropertyClass *klass,
 	{
 		gchar *val1, *val2;
 		
-		val1 = glade_widget_adaptor_string_from_value (klass->handle, klass, value1);
-		val2 = glade_widget_adaptor_string_from_value (klass->handle, klass, value2);
+		val1 = glade_widget_adaptor_string_from_value (klass->handle, klass, value1, fmt);
+		val2 = glade_widget_adaptor_string_from_value (klass->handle, klass, value2, fmt);
 
 		if (val1 && val2)
 			retval = strcmp (val1, val2);

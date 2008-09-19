@@ -1352,8 +1352,11 @@ glade_gnome_pixmap_set_filename_common (GObject *object)
 	if (width && height)
 	{
 		GladeProperty *property = glade_widget_get_property (gp, "filename");
-		gchar *file = glade_property_class_make_string_from_gvalue
-					     (property->klass, property->value);
+		gchar *file = 
+			glade_property_class_make_string_from_gvalue
+			(property->klass, property->value,
+			 glade_project_get_format (gp->project));
+
 		if (file)
 		{
 			gnome_pixmap_load_file_at_size (GNOME_PIXMAP (object),

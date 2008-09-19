@@ -10,3 +10,12 @@ Nice editor resizing by Pavel, needs fix for warning icons: http://bugzilla.gnom
 Create Gtk+ Specialized widget group: http://bugzilla.gnome.org/show_bug.cgi?id=544845
 No way to add menus to toolbar: http://bugzilla.gnome.org/show_bug.cgi?id=429438
 GdkColor null values critical errors: http://bugzilla.gnome.org/show_bug.cgi?id=426345
+
+Need proper conversion routine:
+   currently adjustments are saved as data in libglade and as objects in builder,
+we need a conversion "routine" to be run, to create/remove the nescisary objects
+and modify the project as needed when converts take place - this should also help
+clean things up wrt the internal icon factory cache for pixbufs. 
+
+Its possible that as a result of project conversions, we will dump/lose our
+command history.

@@ -1016,6 +1016,8 @@ glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 		g_signal_connect (G_OBJECT (widget), "notify::name",
 				  G_CALLBACK (glade_editor_update_widget_name_cb),
 				  editor);
+
+	gtk_container_check_resize (GTK_CONTAINER (editor));
 }
 
 /**

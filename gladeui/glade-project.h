@@ -5,6 +5,8 @@
 #include <gladeui/glade-widget.h>
 #include <gladeui/glade-command.h>
 #include <gladeui/glade-utils.h>
+#include <gladeui/glade-xml-utils.h>
+
 
 G_BEGIN_DECLS
 
@@ -17,13 +19,6 @@ G_BEGIN_DECLS
 
 typedef struct _GladeProjectPrivate  GladeProjectPrivate;
 typedef struct _GladeProjectClass    GladeProjectClass;
-
-
-typedef enum
-{
-	GLADE_PROJECT_FORMAT_LIBGLADE,
-	GLADE_PROJECT_FORMAT_GTKBUILDER
-} GladeProjectFormat;
 
 typedef enum
 {
@@ -186,8 +181,13 @@ gchar         *glade_project_verify_widget_adaptor (GladeProject       *project,
 						    GladeWidgetAdaptor *adaptor,
 						    GladeSupportMask   *mask);
 
+void          glade_project_verify_project_for_ui (GladeProject  *project);
+
 gboolean      glade_project_is_loaded_factory_file (GladeProject       *project, 
 						    const gchar        *stock_id);
+
+GList        *glade_project_required_libs          (GladeProject  *project);
+
 
 G_END_DECLS
 

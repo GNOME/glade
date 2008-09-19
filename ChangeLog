@@ -1,3 +1,21 @@
+2008-09-19  Tristan Van Berkom <tvb@gnome.org>
+
+	Now we have a conversion routine that is run in the plugin to
+	convert some data for one format to another (builder on the way...)
+	In this patch we use it to handle GtkAdjustment property conversions.
+	(NOTE: Completely undoable)
+	
+	* gladeui/glade-editor-property.c: Made adjustment eprop fallback on
+	  object dialog in builder cases.
+
+	* gladeui/glade-command.[ch]: Added glade_command_set_project_format()
+
+	* gladeui/gldae-catalog.c, gladeui/glade-xml-utils.h: Added GladeProjectConvertFunc
+
+	* plugins/gtk+/Makefile.am, plugins/gtk+/glade-convert.c,
+	plugins/gtk+/gtk+.xml.in: New file to handle conversion routines, 
+	added some objects.
+
 2008-09-18  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* plugins/gtk+/gtk+.xml.in:

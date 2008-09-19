@@ -19,6 +19,22 @@ typedef struct _GladeXmlContext GladeXmlContext;
 typedef struct _GladeXmlNode    GladeXmlNode;
 typedef struct _GladeXmlDoc     GladeXmlDoc;
 
+/* FIXME: forward declarations to get around circular header dependencies.
+ */
+typedef struct _GladeWidget    GladeWidget;
+typedef struct _GladeProperty  GladeProperty;
+typedef struct _GladeProject   GladeProject;
+
+
+/* We define this here only because our headers need
+ * a good sorting
+ */
+typedef enum
+{
+	GLADE_PROJECT_FORMAT_LIBGLADE,
+	GLADE_PROJECT_FORMAT_GTKBUILDER
+} GladeProjectFormat;
+
 
 #define GLADE_XML_TAG_PROJECT(type) \
 	((type == GLADE_PROJECT_FORMAT_LIBGLADE) ? \
@@ -87,6 +103,7 @@ typedef struct _GladeXmlDoc     GladeXmlDoc;
 #define GLADE_TAG_PARENTLESS_WIDGET               "parentless-widget"
 #define GLADE_TAG_DISABLED                        "disabled"
 #define GLADE_TAG_DEFAULT_PALETTE_STATE           "default-palette-state"
+#define GLADE_TAG_PROJECT_CONVERT_FUNCTION        "project-convert-function"
 #define GLADE_TAG_REPLACE_CHILD_FUNCTION          "replace-child-function"
 #define GLADE_TAG_DEEP_POST_CREATE_FUNCTION       "deep-post-create-function"
 #define GLADE_TAG_POST_CREATE_FUNCTION            "post-create-function"

@@ -1131,9 +1131,10 @@ glade_widget_adaptor_object_create_eprop (GladeWidgetAdaptor *adaptor,
 static gchar *
 glade_widget_adaptor_object_string_from_value (GladeWidgetAdaptor *adaptor,
 					       GladePropertyClass *klass,
-					       const GValue       *value)
+					       const GValue       *value,
+					       GladeProjectFormat  fmt)
 {
-	return glade_property_class_make_string_from_gvalue (klass, value);
+	return glade_property_class_make_string_from_gvalue (klass, value, fmt);
 }
 
 /*******************************************************************************
@@ -3379,6 +3380,7 @@ glade_widget_adaptor_create_eprop (GladeWidgetAdaptor *adaptor,
  * @adaptor: A #GladeWidgetAdaptor
  * @klass: The #GladePropertyClass 
  * @value: The #GValue to convert to a string
+ * @fmt: The #GladeProjectFormat the string should conform to
  * 
  * For normal properties this is used to serialize
  * property values, for custom properties its still
@@ -3389,14 +3391,15 @@ glade_widget_adaptor_create_eprop (GladeWidgetAdaptor *adaptor,
 gchar *
 glade_widget_adaptor_string_from_value (GladeWidgetAdaptor *adaptor,
 					GladePropertyClass *klass,
-					const GValue       *value)
+					const GValue       *value,
+					GladeProjectFormat  fmt)
 {
 	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
 	g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (klass), NULL);
 	g_return_val_if_fail (value != NULL, NULL);
 
 	return GLADE_WIDGET_ADAPTOR_GET_CLASS
-		(adaptor)->string_from_value (adaptor, klass, value);
+		(adaptor)->string_from_value (adaptor, klass, value, fmt);
 }
 
 

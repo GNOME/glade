@@ -719,24 +719,37 @@ glade_app_set_window (GtkWidget *window)
 	app->priv->window = window;
 }
 
-void
-glade_app_get_catalog_version (const gchar *name, gint *major, gint *minor)
+GladeCatalog *
+glade_app_get_catalog (const gchar *name)
 {
-	GladeApp *app = glade_app_get ();
-	GList    *list;
+	GladeApp     *app = glade_app_get ();
+	GList        *list;
+	GladeCatalog *catalog;
+
+	g_return_val_if_fail (name && name[0], NULL);
 
 	for (list = app->priv->catalogs; list; list = list->next)
 	{
-		GladeCatalog *catalog = list->data;
-		if (strcmp (glade_catalog_get_name (catalog), name))
-		{
-			if (major)
-				*major = glade_catalog_get_major_version (catalog);
-			if (minor)
-				*minor = glade_catalog_get_minor_version (catalog);
-			return;
-		}
+		catalog = list->data;
+		if (!strcmp (glade_catalog_get_name (catalog), name))
+			return catalog;
 	}
+	return NULL;
+}
+
+gboolean
+glade_app_get_catalog_version (const gchar *name, gint *major, gint *minor)
+{
+	GladeCatalog *catalog = glade_app_get_catalog (name);
+
+	g_return_val_if_fail (catalog != NULL, FALSE);
+
+	if (major)
+		*major = glade_catalog_get_major_version (catalog);
+	if (minor)
+		*minor = glade_catalog_get_minor_version (catalog);
+	
+	return TRUE;
 }
 
 GList *

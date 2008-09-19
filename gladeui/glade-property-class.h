@@ -6,6 +6,8 @@
 #include <glib-object.h>
 #include <gtk/gtkadjustment.h>
 
+#include <gladeui/glade-xml-utils.h>
+
 G_BEGIN_DECLS
 
 /* The GladePropertyClass structure parameters of a GladeProperty.
@@ -177,14 +179,16 @@ void                glade_property_class_free                    (GladePropertyC
 
 gboolean            glade_property_class_is_visible              (GladePropertyClass  *property_class);
 
-gboolean            glade_property_class_is_object               (GladePropertyClass  *property_class);
+gboolean            glade_property_class_is_object               (GladePropertyClass  *property_class,
+								  GladeProjectFormat   fmt);
 
 GValue             *glade_property_class_make_gvalue_from_string (GladePropertyClass  *property_class,
 								  const gchar         *string,
 								  GladeProject        *project);
 
 gchar              *glade_property_class_make_string_from_gvalue (GladePropertyClass  *property_class,
-								  const GValue        *value);
+								  const GValue        *value,
+								  GladeProjectFormat   fmt);
 
 GValue             *glade_property_class_make_gvalue_from_vl     (GladePropertyClass  *property_class,
 								  va_list              vl);
@@ -219,7 +223,8 @@ gboolean            glade_property_class_void_value              (GladePropertyC
 
 gint                glade_property_class_compare                 (GladePropertyClass *klass,
 								  const GValue       *value1,
-								  const GValue       *value2);
+								  const GValue       *value2,
+								  GladeProjectFormat  fmt);
 
 G_END_DECLS
 

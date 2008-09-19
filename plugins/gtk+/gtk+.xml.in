@@ -5,6 +5,7 @@
                library="gladegtk"
                domain="glade3"
                book="gtk">
+  <project-convert-function>glade_gtk_project_convert</project-convert-function>
   <glade-widget-classes>
 
     <glade-widget-class name="GtkWidget" _title="Widget" default-width="100" default-height="60">
@@ -1745,6 +1746,16 @@ embedded in another object</_tooltip>
 	</property>
       </properties>
     </glade-widget-class>
+
+
+    <glade-widget-class name="GtkSizeGroup" generic-name="sizegroup" _title="Size Group"/>
+    <glade-widget-class name="GtkTextBuffer" generic-name="textbuffer" _title="Text Buffer"/>
+    <glade-widget-class name="GtkTextTag" generic-name="texttag" _title="Text Tag"/>
+    <glade-widget-class name="GtkTextTagTable" generic-name="texttagtable" _title="Text Tag Table"/>
+
+    <glade-widget-class name="GtkFileFilter" generic-name="filefilter" _title="File Filter"/>
+    <glade-widget-class name="GtkAdjustment" generic-name="adjustment" _title="Adjustment"/>
+
   </glade-widget-classes>
   
   <glade-widget-group name="gtk-toplevels" _title="Toplevels">
@@ -1782,7 +1793,7 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkAlignment"/>
   </glade-widget-group>
 
-  <glade-widget-group name="gtk-control-display" _title="Control and Display">
+  <glade-widget-group name="gtk-control-display" title="Control and Display">
 
     <glade-widget-class-ref name="GtkButton"/>
     <glade-widget-class-ref name="GtkToggleButton"/>
@@ -1824,24 +1835,41 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkArrow"/>
     <glade-widget-class-ref name="GtkDrawingArea"/>
     
+    <glade-widget-class-ref name="GtkColorSelection"/>
+    <glade-widget-class-ref name="GtkFontSelection"/>
     <glade-widget-class-ref name="GtkRecentChooserWidget"/>
     <glade-widget-class-ref name="GtkFileChooserWidget"/>
   </glade-widget-group>
 
-  <glade-widget-group name="gtk-obsolete" _title="Gtk+ Obsolete">
+  <glade-widget-group name="gtk-objects" title="Objects">
+    <glade-widget-class-ref name="GtkSizeGroup"/>
+    <glade-widget-class-ref name="GtkTextBuffer"/>
+    <glade-widget-class-ref name="GtkTextTag"/>
+    <glade-widget-class-ref name="GtkTextTagTable"/>
 
-    <default-palette-state expanded="False" />
+    <glade-widget-class-ref name="GtkFileFilter"/>
+    <glade-widget-class-ref name="GtkAdjustment"/>
+  </glade-widget-group>
+
+  <glade-widget-group name="gtk-specialized" title="Specialized Widgets">
+
+    <default-palette-state expanded="False"/>
+
+    <glade-widget-class-ref name="GtkHRuler"/>
+    <glade-widget-class-ref name="GtkVRuler"/>
+
+    <glade-widget-class-ref name="GtkCurve"/>
+    <glade-widget-class-ref name="GtkGammaCurve"/>
+  </glade-widget-group>
+
+  <glade-widget-group name="gtk-obsolete" title="Gtk+ Obsolete">
+
+    <default-palette-state expanded="False"/>
 
     <glade-widget-class-ref name="GtkCombo"/>
     <glade-widget-class-ref name="GtkOptionMenu"/>
-    <glade-widget-class-ref name="GtkHRuler"/>
-    <glade-widget-class-ref name="GtkVRuler"/>
     <glade-widget-class-ref name="GtkList"/>
     <glade-widget-class-ref name="GtkCList"/>
-    <glade-widget-class-ref name="GtkColorSelection"/>
-    <glade-widget-class-ref name="GtkFontSelection"/>
-    <glade-widget-class-ref name="GtkCurve"/>
-    <glade-widget-class-ref name="GtkGammaCurve"/>
     <glade-widget-class-ref name="GtkFileSelection"/>
     <glade-widget-class-ref name="Custom"/>
   </glade-widget-group>

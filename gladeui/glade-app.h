@@ -26,6 +26,7 @@
 #include <gladeui/glade-editor.h>
 #include <gladeui/glade-palette.h>
 #include <gladeui/glade-clipboard.h>
+#include <gladeui/glade-catalog.h>
 
 G_BEGIN_DECLS
 
@@ -98,9 +99,11 @@ void               glade_app_set_window (GtkWidget *window);
  
 GtkWidget*         glade_app_get_window (void);
 
-void               glade_app_get_catalog_version (const gchar *name, gint *major, gint *minor);
+gboolean           glade_app_get_catalog_version (const gchar *name, gint *major, gint *minor);
 
 GList             *glade_app_get_catalogs (void);
+
+GladeCatalog      *glade_app_get_catalog (const gchar *name);
  
 GladeEditor*       glade_app_get_editor (void);
  

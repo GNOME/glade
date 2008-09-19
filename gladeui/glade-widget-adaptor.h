@@ -418,6 +418,7 @@ typedef GladeEditorProperty *(* GladeCreateEPropFunc) (GladeWidgetAdaptor *adapt
  * @adaptor: A #GladeWidgetAdaptor
  * @klass: The #GladePropertyClass 
  * @value: The #GValue to convert to a string
+ * @fmt: The #GladeProjectFormat the string should conform to
  * 
  * For normal properties this is used to serialize
  * property values, for custom properties its still
@@ -427,7 +428,8 @@ typedef GladeEditorProperty *(* GladeCreateEPropFunc) (GladeWidgetAdaptor *adapt
  */
 typedef gchar   *(* GladeStringFromValueFunc) (GladeWidgetAdaptor *adaptor,
 					       GladePropertyClass *klass,
-					       const GValue       *value);
+					       const GValue       *value,
+					       GladeProjectFormat  fmt);
 
 
 /* GladeSignalClass contains all the info we need for a given signal, such as
@@ -782,7 +784,8 @@ GladeEditorProperty *glade_widget_adaptor_create_eprop       (GladeWidgetAdaptor
 
 gchar               *glade_widget_adaptor_string_from_value  (GladeWidgetAdaptor *adaptor,
 							      GladePropertyClass *klass,
-							      const GValue       *value);
+							      const GValue       *value,
+							      GladeProjectFormat  fmt);
 
 GladeSignalClass    *glade_widget_adaptor_get_signal_class   (GladeWidgetAdaptor *adaptor,
 							      const gchar        *name);

@@ -85,6 +85,11 @@ gboolean       glade_command_unifies       (GladeCommand      *command,
 void           glade_command_collapse      (GladeCommand      *command,
 					    GladeCommand      *other);
 
+/************************** project *********************************/
+
+void           glade_command_set_project_format  (GladeProject       *project,
+						  GladeProjectFormat  fmt);
+
 /************************** properties *********************************/
 
 void           glade_command_set_property        (GladeProperty *property,     

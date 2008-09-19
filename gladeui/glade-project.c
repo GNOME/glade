@@ -45,6 +45,7 @@
 #include "glade-catalog.h"
 
 #include "glade-project.h"
+#include "glade-command.h"
 
 #define GLADE_PROJECT_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), GLADE_TYPE_PROJECT, GladeProjectPrivate))
 
@@ -59,6 +60,7 @@ enum
 	RESOURCE_REMOVED,
 	CHANGED,
 	PARSE_FINISHED,
+	CONVERT_FINISHED,
 	LAST_SIGNAL
 };
 
@@ -341,6 +343,8 @@ glade_project_undo_impl (GladeProject *project)
 		    (next_cmd->group_id == 0 || next_cmd->group_id != cmd->group_id))
 			break;
 	}
+
+	glade_editor_refresh (glade_app_get_editor ());
 }
 
 static void
@@ -362,6 +366,8 @@ glade_project_redo_impl (GladeProject *project)
 		    (next_cmd->group_id == 0 || next_cmd->group_id != cmd->group_id))
 			break;
 	}
+
+	glade_editor_refresh (glade_app_get_editor ());
 }
 
 static GladeCommand *
@@ -659,7 +665,14 @@ glade_project_verify_widget_adaptor (GladeProject       *project,
 	return ret;
 }
 
-static void
+
+/**
+ * glade_project_verify_project_for_ui:
+ * @project: A #GladeProject
+ * 
+ * Checks the project and updates warning strings in the UI
+ */
+void
 glade_project_verify_project_for_ui (GladeProject *project)
 {
 	GList *list;
@@ -951,6 +964,27 @@ glade_project_class_init (GladeProjectClass *klass)
 			      G_TYPE_NONE,
 			      0);
 
+	/**
+	 * GladeProject::convert-finished:
+	 * @gladeproject: the #GladeProject which received the signal.
+	 *
+	 * Emitted when @gladeproject format conversion has finished.
+	 *
+	 * NOTE: Some properties are internally handled differently
+	 * when the project is in a said format, this signal is fired after
+	 * the new format is in effect to allow the backend access to both
+	 * before and after.
+	 */
+	glade_project_signals[CONVERT_FINISHED] =
+		g_signal_new ("convert-finished",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_FIRST,
+			      G_STRUCT_OFFSET (GladeProjectClass, parse_finished),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__VOID,
+			      G_TYPE_NONE,
+			      0);
+
 	g_object_class_install_property (object_class,
 					 PROP_MODIFIED,
 					 g_param_spec_boolean ("modified",
@@ -1049,7 +1083,8 @@ glade_project_fix_object_props (GladeProject *project)
 		{
 			property = GLADE_PROPERTY (ll->data);
 
-			if (glade_property_class_is_object (property->klass) &&
+			if (glade_property_class_is_object (property->klass, 
+							    project->priv->format) &&
 			    (txt = g_object_get_data (G_OBJECT (property), 
 						      "glade-loaded-object")) != NULL)
 			{
@@ -1245,7 +1280,7 @@ glade_project_generate_nodes (GladeProject    *project,
 
 			if ((filename = glade_widget_adaptor_string_from_value
 			     (GLADE_WIDGET_ADAPTOR (property->klass->handle),
-			      property->klass, property->value)) != NULL)
+			      property->klass, property->value, project->priv->format)) != NULL)
 			{
 				icon_name = glade_util_filename_to_icon_name (filename);
 
@@ -1784,7 +1819,7 @@ gp_sync_resources (GladeProject *project,
 			
 			if ((resource = glade_widget_adaptor_string_from_value
 			     (GLADE_WIDGET_ADAPTOR (property->klass->handle),
-			      property->klass, &value)) != NULL)
+			      property->klass, &value, project->priv->format)) != NULL)
 			{
 				full_resource = glade_project_resource_fullpath
 					(prev_project ? prev_project : project, resource);
@@ -2349,7 +2384,14 @@ glade_project_selection_get (GladeProject *project)
 	return project->priv->selection;
 }
 
-static GList *
+/**
+ * glade_project_required_libs:
+ * @project: a #GladeProject
+ *
+ * Returns: a #GList of allocated strings which are the names
+ * of the required catalogs for this project
+ */
+GList *
 glade_project_required_libs (GladeProject *project)
 {
 	GList       *required = NULL, *l, *ll;
@@ -3177,9 +3219,8 @@ glade_project_set_format (GladeProject *project, GladeProjectFormat format)
 {
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 
-	project->priv->format = format; 
-
-	glade_project_verify_project_for_ui (project);
+	if (project->priv->format != format)
+		project->priv->format = format; 
 }
 
 GladeProjectFormat
@@ -3191,19 +3232,18 @@ glade_project_get_format (GladeProject *project)
 }
 
 
-
 static void
 format_libglade_button_clicked (GtkWidget *widget,
 				GladeProject *project)
 {
-	glade_project_set_format (project, GLADE_PROJECT_FORMAT_LIBGLADE);
+	glade_command_set_project_format (project, GLADE_PROJECT_FORMAT_LIBGLADE);
 }
 
 static void
 format_builder_button_clicked (GtkWidget *widget,
 			       GladeProject *project)
 {
-	glade_project_set_format (project, GLADE_PROJECT_FORMAT_GTKBUILDER);
+	glade_command_set_project_format (project, GLADE_PROJECT_FORMAT_GTKBUILDER);
 }
 
 static void
@@ -3414,7 +3454,7 @@ glade_project_build_prefs_box (GladeProject *project)
 void
 glade_project_preferences (GladeProject *project)
 {
-	static GtkWidget *dialog = NULL;
+	GtkWidget *dialog = NULL;
 	GtkWidget *widget;
 	gchar     *title, *name;
 
@@ -3423,12 +3463,6 @@ glade_project_preferences (GladeProject *project)
 
 	name = glade_project_get_name (project);
 	title = g_strdup_printf ("%s preferences", name);
-
-	/* Could be the user switched projects, just
-	 * destroy and reopen.
-	 */
-	if (dialog)
-		gtk_widget_destroy (dialog);
 
 	dialog = gtk_dialog_new_with_buttons (title,
 					      GTK_WINDOW (glade_app_get_window ()),
@@ -3452,4 +3486,7 @@ glade_project_preferences (GladeProject *project)
 			  G_CALLBACK (gtk_widget_hide_on_delete), NULL);
 
 	gtk_window_present (GTK_WINDOW (dialog));
+
+	gtk_dialog_run (GTK_DIALOG (dialog));
+	gtk_widget_destroy (dialog);
 }

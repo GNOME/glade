@@ -120,8 +120,16 @@ static gboolean
 glade_property_equals_value_impl (GladeProperty *property,
 				  const GValue  *value)
 {
-	return !glade_property_class_compare (property->klass,
-					      property->value, value);
+	GladeProject *project;
+	GladeProjectFormat fmt = GLADE_PROJECT_FORMAT_GTKBUILDER;
+	
+	if (property->widget)
+	{
+		project = glade_widget_get_project (property->widget);
+		fmt     = glade_project_get_format (project);
+	}
+
+	return !glade_property_class_compare (property->klass, property->value, value, fmt);
 }
 
 
@@ -252,7 +260,7 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 	{
 		gchar *str = glade_widget_adaptor_string_from_value
 			     (GLADE_WIDGET_ADAPTOR (property->klass->handle),
-			      property->klass, value);
+			      property->klass, value, fmt);
 		g_print ("Setting property %s on %s to %s\n",
 			 property->klass->id,
 			 property->widget ? property->widget->name : "unknown", str);
@@ -285,7 +293,8 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 	/* Add/Remove references from widget ref stacks here
 	 * (before assigning the value)
 	 */
-	if (property->widget && changed && glade_property_class_is_object (property->klass))
+	if (property->widget && changed && glade_property_class_is_object 
+	    (property->klass, glade_project_get_format (project)))
 		glade_property_update_prop_refs (property, property->value, value);
 
 
@@ -1045,7 +1054,7 @@ glade_property_read (GladeProperty      *property,
 
 		if (!strcmp (id, search_name))
 		{
-			if (property && glade_property_class_is_object (property->klass))
+			if (property && glade_property_class_is_object (property->klass, fmt))
 			{
 				/* we must synchronize this directly after loading this project
 				 * (i.e. lookup the actual objects after they've been parsed and
@@ -1165,7 +1174,7 @@ glade_property_write (GladeProperty   *property,
 	/* convert the value of this property to a string */
 	if (!(value = glade_widget_adaptor_string_from_value
 	     (GLADE_WIDGET_ADAPTOR (property->klass->handle),
-	      property->klass, property->value)))
+	      property->klass, property->value, fmt)))
 		/* make sure we keep the empty string, also... upcomming
 		 * funcs that may not like NULL.
 		 */
