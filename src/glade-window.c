@@ -2505,7 +2505,9 @@ add_project (GladeWindow *window, GladeProject *project)
 
 	gtk_notebook_append_page (GTK_NOTEBOOK (window->priv->notebook), GTK_WIDGET (view), NULL);
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (window->priv->notebook), -1);	
-		
+
+	/* Kick the inspector in the balls here... */
+	glade_project_selection_changed (project);
 }
 
 void

@@ -24,6 +24,12 @@
 
 	* gladeui/glade-project.c: Added readonly "format" property
 
+	* src/glade-window.c, gladeui/glade-inspector.c, gladeui/glade-utils.c,
+	gladeui/glade-app.c:
+	  - Made sure that the first toplevel in the project is selected and visible 
+	    at load time in both the workspace and inspector
+	  - Sorted objects from widgets in the inspector view.
+
 2008-09-19  Tristan Van Berkom <tvb@gnome.org>
 
 	Now we have a conversion routine that is run in the plugin to

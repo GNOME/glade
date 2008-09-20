@@ -67,6 +67,7 @@ enum
 					  
 enum
 {
+	TITLE_COLUMN,
 	WIDGET_COLUMN,
 	N_COLUMNS
 };
@@ -75,6 +76,8 @@ struct _GladeInspectorPrivate
 {
 	GtkWidget    *view;
 	GtkTreeStore *model;
+	GtkTreeIter   widgets_iter;
+	GtkTreeIter   objects_iter;
 
 	GladeProject *project;
 };
@@ -140,13 +143,6 @@ glade_inspector_get_property (GObject        *object,
 			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
 			break;			
 	}
-}
-
-static void
-inspector_notify_cb (GObject	*object,
-		     GParamSpec	*pspec)
-{
-	update_model (GLADE_INSPECTOR (object));
 }
 
 static void
@@ -218,7 +214,7 @@ glade_inspector_init (GladeInspector *inspector)
 	priv->project = NULL;
 	priv->view = gtk_tree_view_new ();
 
-	priv->model = gtk_tree_store_new (N_COLUMNS, G_TYPE_POINTER);
+	priv->model = gtk_tree_store_new (N_COLUMNS, G_TYPE_STRING, G_TYPE_POINTER);
 	gtk_tree_view_set_model (GTK_TREE_VIEW (priv->view), GTK_TREE_MODEL (priv->model));
 	g_object_unref (G_OBJECT (priv->model));
  
@@ -236,9 +232,6 @@ glade_inspector_init (GladeInspector *inspector)
 	g_signal_connect (G_OBJECT (priv->view), "button-press-event",
 			  G_CALLBACK (button_press_cb), inspector);
 
-	g_signal_connect (G_OBJECT (inspector), "notify::project",
-			  G_CALLBACK (inspector_notify_cb),
-			  NULL);
 	
 	sw = gtk_scrolled_window_new (NULL, NULL);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
@@ -323,20 +316,41 @@ update_model (GladeInspector *inspector)
 	if (!priv->project)
 		return;
 
-	/* make a list of only the toplevel widgets */
+	/* make a list of only the toplevel window widgets */
 	for (l = (GList *) glade_project_get_objects (priv->project); l; l = l->next)
 	{
 		GObject     *object  = G_OBJECT (l->data);
 		GladeWidget *gwidget = glade_widget_get_from_gobject (object);
 		g_assert (gwidget);
 
-		if (gwidget->parent == NULL)
+		if (gwidget->parent == NULL && GTK_IS_WINDOW (object))
 			toplevels = g_list_prepend (toplevels, object);
 	}
 	toplevels = g_list_reverse (toplevels);
 
 	/* recursively fill model */
-	fill_model (priv->model, toplevels, NULL);
+	gtk_tree_store_append (priv->model, &priv->widgets_iter, NULL);
+	gtk_tree_store_set    (priv->model, &priv->widgets_iter, TITLE_COLUMN, _("Widgets"), -1);
+	fill_model (priv->model, toplevels, &priv->widgets_iter);
+	g_list_free (toplevels);
+
+	/* make a list of only the toplevel non-window widgets */
+	toplevels = NULL;
+	for (l = (GList *) glade_project_get_objects (priv->project); l; l = l->next)
+	{
+		GObject     *object  = G_OBJECT (l->data);
+		GladeWidget *gwidget = glade_widget_get_from_gobject (object);
+		g_assert (gwidget);
+
+		if (gwidget->parent == NULL && !GTK_IS_WINDOW (object))
+			toplevels = g_list_prepend (toplevels, object);
+	}
+	toplevels = g_list_reverse (toplevels);
+
+	/* recursively fill model */
+	gtk_tree_store_append (priv->model, &priv->objects_iter, NULL);
+	gtk_tree_store_set    (priv->model, &priv->objects_iter, TITLE_COLUMN, _("Objects"), -1);
+	fill_model (priv->model, toplevels, &priv->objects_iter);
 	g_list_free (toplevels);
 }
 
@@ -358,6 +372,14 @@ project_add_widget_cb (GladeProject   *project,
 	if (!parent_iter && parent_widget)
 		return;
 	
+	if (!parent_iter)
+	{
+		if (GTK_IS_WINDOW (widget->object))
+			parent_iter = &inspector->priv->widgets_iter;
+		else
+			parent_iter = &inspector->priv->objects_iter;
+	}
+
 	gtk_tree_store_append (inspector->priv->model, &widget_iter, parent_iter);	
 	gtk_tree_store_set    (inspector->priv->model, &widget_iter, WIDGET_COLUMN, widget, -1);
 	
@@ -567,40 +589,63 @@ glade_inspector_cell_function (GtkTreeViewColumn *tree_column,
 {
 	CellType     type = GPOINTER_TO_INT (data);
 	GladeWidget *widget;
-	gchar       *icon_name, *text = NULL, *child_type;
+	gchar       *icon_name, *text = NULL, *child_type, *title;
 
-	gtk_tree_model_get (tree_model, iter, WIDGET_COLUMN, &widget, -1);
+	gtk_tree_model_get (tree_model, iter, 
+			    TITLE_COLUMN, &title,
+			    WIDGET_COLUMN, &widget, 
+			    -1);
 
-	/* The cell exists, but no widget has been associated with it */
-	if (!GLADE_IS_WIDGET (widget))
+	/* The cell exists, but no widget or title has been associated with it */
+	if (!GLADE_IS_WIDGET (widget) && !title)
 		return;
-
-	g_return_if_fail (widget->name != NULL);
-	g_return_if_fail (widget->adaptor != NULL);
-	g_return_if_fail (widget->adaptor->name != NULL);
 
 	switch (type) 
 	{
 	case CELL_ICON:
-		g_object_get (widget->adaptor, "icon-name", &icon_name, NULL);
-		g_object_set (G_OBJECT (cell), "icon-name", icon_name, NULL);
-		g_free (icon_name);
+		if (widget)
+		{
+			g_object_get (widget->adaptor, "icon-name", &icon_name, NULL);
+			g_object_set (G_OBJECT (cell), "icon-name", icon_name, NULL);
+			g_free (icon_name);
+		}
+		else
+			g_object_set (G_OBJECT (cell), "icon-name", NULL, NULL);
 		break;
 		
 	case CELL_NAME:
-		g_object_set (G_OBJECT (cell), "text", widget->name, NULL);
+		if (widget)
+			g_object_set (G_OBJECT (cell), 
+				      "text", widget->name, 
+				      "weight", PANGO_WEIGHT_NORMAL,
+				      NULL);
+		else if (title)
+			g_object_set (G_OBJECT (cell), 
+				      "text", title, 
+				      "weight", PANGO_WEIGHT_BOLD,
+				      NULL);
+		else
+			g_object_set (G_OBJECT (cell), 
+				      "text", "dummy", 
+				      "weight", PANGO_WEIGHT_NORMAL,
+				      NULL);
 		break;
 	case CELL_MISC:
-		/* special child type / internal child */
-		if (glade_widget_get_internal (widget) != NULL)
-			text = g_strdup_printf (_("(internal %s)"),  
-						glade_widget_get_internal (widget));
-		else if ((child_type = g_object_get_data (glade_widget_get_object (widget),
-							  "special-child-type")) != NULL)
-			text = g_strdup_printf (_("(%s child)"), child_type);
-
-		g_object_set (G_OBJECT (cell), "text", text ? text : " ", NULL);
-		if (text) g_free (text);
+		if (widget)
+		{
+			/* special child type / internal child */
+			if (glade_widget_get_internal (widget) != NULL)
+				text = g_strdup_printf (_("(internal %s)"),  
+							glade_widget_get_internal (widget));
+			else if ((child_type = g_object_get_data (glade_widget_get_object (widget),
+								  "special-child-type")) != NULL)
+				text = g_strdup_printf (_("(%s child)"), child_type);
+			
+			g_object_set (G_OBJECT (cell), "text", text ? text : " ", NULL);
+			if (text) g_free (text);
+		}
+		else
+			g_object_set (G_OBJECT (cell), "text", " ", NULL);
 		break;		
 	default:
 		break;
@@ -735,6 +780,8 @@ glade_inspector_set_project (GladeInspector *inspector,
 		connect_project_signals (inspector, inspector->priv->project);		
 	}
 
+	update_model (inspector);
+
 	g_object_notify (G_OBJECT (inspector), "project");
 }
 
@@ -815,11 +862,17 @@ glade_inspector_new (void)
 GtkWidget *
 glade_inspector_new_with_project (GladeProject *project)
 {
+	GladeInspector *inspector;
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
 
-	return g_object_new (GLADE_TYPE_INSPECTOR,
-			     "project", project,
-			     NULL);
+	inspector = g_object_new (GLADE_TYPE_INSPECTOR,
+				  "project", project,
+				  NULL);
+
+	/* Make sure we expended to the right path */
+	project_selection_changed_cb (project, inspector);
+
+	return inspector;
 }
 
 

@@ -998,9 +998,13 @@ glade_app_add_project (GladeProject *project)
 		     node = g_list_next (node))
 		{
 			GObject *obj = G_OBJECT (node->data);
+
 			if (GTK_IS_WINDOW (obj))
+			{
+				glade_project_selection_set (project, obj, TRUE);
 				glade_widget_show (glade_widget_get_from_gobject (obj));
-			break;
+				break;
+			}
 		}
 	}
 

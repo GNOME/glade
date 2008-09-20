@@ -1074,11 +1074,7 @@ glade_util_find_iter (GtkTreeModel *model,
 	while (retval == NULL)
 	{
 		gtk_tree_model_get (model, next, column, &widget, -1);
-		if (widget == NULL) {
-			g_warning ("Could not get the glade widget from the model");
-			break;
-		}
-		else if (widget == findme)
+		if (widget == findme)
 		{
 			retval = gtk_tree_iter_copy (next);
 			break;
