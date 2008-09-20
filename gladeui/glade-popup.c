@@ -293,6 +293,7 @@ glade_popup_menuitem_ph_packing_activated (GtkMenuItem *item, const gchar *actio
 
 static gint
 glade_popup_action_populate_menu_real (GtkWidget *menu,
+				       GladeWidget *gwidget,
 				       GList *actions,
 				       GCallback callback,
 				       gpointer data)
@@ -310,10 +311,16 @@ glade_popup_action_populate_menu_real (GtkWidget *menu,
 		{
 			submenu = gtk_menu_new ();
 			n += glade_popup_action_populate_menu_real (submenu,
+								    gwidget,
 								    a->actions,
 								    callback,
 								    data);
 		}
+		else
+			submenu = glade_widget_adaptor_action_submenu (gwidget->adaptor,
+								       gwidget->object,
+								       a->klass->path);
+				
 				
 		item = glade_popup_append_item (menu, 
 						a->klass->stock,
@@ -361,12 +368,14 @@ glade_popup_action_populate_menu (GtkWidget *menu,
 		g_return_val_if_fail (GLADE_IS_WIDGET_ACTION (action), 0);
 		if (glade_widget_get_action (widget, action->klass->path))
 			return glade_popup_action_populate_menu_real (menu,
+								      widget,
 								      action->actions,
 								      G_CALLBACK (glade_popup_menuitem_activated),
 								      widget);
 		
 		if (glade_widget_get_pack_action (widget, action->klass->path))
 			return glade_popup_action_populate_menu_real (menu,
+								      glade_widget_get_parent (widget),
 								      action->actions,
 								      G_CALLBACK (glade_popup_menuitem_packing_activated),
 								      widget);
@@ -375,6 +384,7 @@ glade_popup_action_populate_menu (GtkWidget *menu,
 	}
 	
 	n = glade_popup_action_populate_menu_real (menu,
+						   widget,
 						   widget->actions,
 						   G_CALLBACK (glade_popup_menuitem_activated),
 						   widget);
@@ -388,6 +398,7 @@ glade_popup_action_populate_menu (GtkWidget *menu,
 			gtk_widget_show (separator);
 		}
 		n += glade_popup_action_populate_menu_real (menu,
+							    glade_widget_get_parent (widget),
 							    widget->packing_actions,
 							    G_CALLBACK (glade_popup_menuitem_packing_activated),
 							    widget);
@@ -465,6 +476,7 @@ glade_popup_create_menu (GladeWidget      *widget,
 
 			glade_popup_action_populate_menu_real
 				(popup_menu,
+				 widget,
 				 widget->actions,
 				 G_CALLBACK (glade_popup_menuitem_activated),
 				 widget);
@@ -478,6 +490,7 @@ glade_popup_create_menu (GladeWidget      *widget,
 			
 			glade_popup_action_populate_menu_real
 				(popup_menu,
+				 widget,
 				 placeholder->packing_actions,
 				 G_CALLBACK (glade_popup_menuitem_ph_packing_activated),
 				 placeholder);

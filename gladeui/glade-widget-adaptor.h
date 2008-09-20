@@ -370,6 +370,24 @@ typedef void     (* GladeChildActionActivateFunc) (GladeWidgetAdaptor *adaptor,
 						   GObject            *object,
 						   const gchar        *action_path);
 
+
+/**
+ * GladeActionSubmenuFunc:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @object: The #GObject
+ * @action_path: The action path
+ *
+ * This delagate function is used to create dynamically customized
+ * submenus. Called only for actions that dont have children.
+ *
+ */
+typedef GtkWidget  *(* GladeActionSubmenuFunc)  (GladeWidgetAdaptor *adaptor,
+						 GObject            *object,
+						 const gchar        *action_path);
+
+
+
+
 /**
  * GladeReadWidgetFunc:
  * @adaptor: A #GladeWidgetAdaptor
@@ -595,6 +613,8 @@ struct _GladeWidgetAdaptorClass
 	GladeActionActivateFunc      action_activate;       /* This method is used to catch actions */
 	GladeChildActionActivateFunc child_action_activate; /* This method is used to catch packing actions */
 
+	GladeActionSubmenuFunc       action_submenu;       /* Delagate function to create dynamic submenus */
+	                                                   /* in action menus. */
 
 	GladeReadWidgetFunc          read_widget; /* Reads widget attributes from xml */
 	
@@ -603,8 +623,6 @@ struct _GladeWidgetAdaptorClass
 	GladeReadWidgetFunc          read_child; /* Reads widget attributes from xml */
 	
 	GladeWriteWidgetFunc         write_child; /* Writes widget attributes to the xml */
-
-
 
 	GladeCreateEPropFunc         create_eprop; /* Creates a GladeEditorProperty */
 
@@ -759,6 +777,11 @@ void                 glade_widget_adaptor_child_action_activate (GladeWidgetAdap
 								 GObject            *container,
 								 GObject            *object,
 								 const gchar        *action_path);
+
+GtkWidget           *glade_widget_adaptor_action_submenu        (GladeWidgetAdaptor *adaptor,
+								 GObject            *object,
+								 const gchar        *action_path);
+
 
 void                 glade_widget_adaptor_read_widget        (GladeWidgetAdaptor *adaptor,
 							      GladeWidget        *widget,

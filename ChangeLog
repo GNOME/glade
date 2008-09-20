@@ -1,9 +1,29 @@
 2008-09-20  Tristan Van Berkom <tvb@gnome.org>
 
+	* TODO: Updated.
+
 	* gladeui/glade-utils.c: Improved error messages in load_module() routine.
 
-	* plugins/gtk+/gtk+.xml.in: Enabled object properties all over.
-	
+	* plugins/gtk+/gtk+.xml.in: 
+	  - Enabled object properties all over.
+	  - Added sizegroup support stuff
+
+	* plugins/gtk+/glade-gtk.c: 
+	  - Added GtkWidgetClass support for add to size group
+	    action with dynamic submenu
+	  - added sizegroup virtual "widgets" property
+	  - added custom load/save support for "widgets" property
+
+	* gladeui/glade-popup.c: Added support for dynamic action submenus
+
+	* gladeui/glade-widget-adaptor.[ch], gladeui/glade-xml-utils.h: Added
+	  GladeActionSubmenuFunc backend support for creation of dynamic
+	  action submenus.
+
+	* gladeui/glade-widget.[ch] removed deadcode glade_widget_create_action_menu()
+
+	* gladeui/glade-project.c: Added readonly "format" property
+
 2008-09-19  Tristan Van Berkom <tvb@gnome.org>
 
 	Now we have a conversion routine that is run in the plugin to

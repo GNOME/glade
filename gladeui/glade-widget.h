@@ -216,9 +216,6 @@ void                    glade_widget_remove_action          (GladeWidget *widget
 void                    glade_widget_remove_pack_action     (GladeWidget *widget,
 							     const gchar *action_path);
 
-GtkWidget *             glade_widget_create_action_menu     (GladeWidget *widget,
-							     const gchar *action_path);
-
 void                    glade_widget_write                  (GladeWidget     *widget,
 							     GladeXmlContext *context,
 							     GladeXmlNode    *node);

@@ -3974,38 +3974,6 @@ glade_widget_remove_pack_action (GladeWidget *widget, const gchar *action_path)
 	glade_widget_action_lookup (&widget->packing_actions, action_path, TRUE);
 }
 
-/**
- * glade_widget_create_action_menu:
- * @widget: a #GladeWidget
- * @action_path: an action path or NULL to include every @widget action.
- *
- * Create a new GtkMenu with every action in it. 
- *
- */
-GtkWidget *
-glade_widget_create_action_menu (GladeWidget *widget, const gchar *action_path)
-{
-	GladeWidgetAction *action = NULL;
-	GtkWidget *menu;
-
-	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
-
-	if (action_path)
-	{
-		action = glade_widget_action_lookup (&widget->actions, action_path, FALSE);
-		if (action == NULL)
-			action = glade_widget_action_lookup (&widget->packing_actions, action_path, FALSE);
-	}
-	
-	menu = gtk_menu_new ();
-	if (glade_popup_action_populate_menu (menu, widget, action, TRUE))
-		return menu;
-	
-	g_object_unref (G_OBJECT (menu));
-	
-	return NULL;
-}
-
 /*******************************************************************************
  *                           Toplevel GladeWidget Embedding                    *
  ******************************************************************************

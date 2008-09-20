@@ -70,7 +70,8 @@ enum
 	PROP_MODIFIED,
 	PROP_HAS_SELECTION,
 	PROP_PATH,
-	PROP_READ_ONLY
+	PROP_READ_ONLY,
+	PROP_FORMAT
 };
 
 struct _GladeProjectPrivate
@@ -256,13 +257,16 @@ glade_project_get_property (GObject    *object,
 			break;
 		case PROP_HAS_SELECTION:
 			g_value_set_boolean (value, project->priv->has_selection);
-			break;			
-		case PROP_READ_ONLY:
-			g_value_set_boolean (value, project->priv->readonly);
 			break;
 		case PROP_PATH:
 			g_value_set_string (value, project->priv->path);
 			break;				
+		case PROP_READ_ONLY:
+			g_value_set_boolean (value, project->priv->readonly);
+			break;
+		case PROP_FORMAT:
+			g_value_set_int (value, project->priv->format);
+			break;
 		default:
 			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 			break;			
@@ -1002,21 +1006,31 @@ glade_project_class_init (GladeProjectClass *klass)
 							       G_PARAM_READABLE));
 
 	g_object_class_install_property (object_class,
-					 PROP_READ_ONLY,
-					 g_param_spec_boolean ("read-only",
-							       _("Read Only"),
-							       _("Whether project is read only or not"),
-							       FALSE,
-							       G_PARAM_READABLE));
-							       
-	g_object_class_install_property (object_class,
 					 PROP_PATH,
 					 g_param_spec_string ("path",
 							      _("Path"),
 							      _("The filesystem path of the project"),
 							      NULL,
 							      G_PARAM_READABLE));
-							       
+
+	g_object_class_install_property (object_class,
+					 PROP_READ_ONLY,
+					 g_param_spec_boolean ("read-only",
+							       _("Read Only"),
+							       _("Whether project is read only or not"),
+							       FALSE,
+							       G_PARAM_READABLE));
+
+	g_object_class_install_property (object_class,
+					 PROP_FORMAT,
+					 g_param_spec_int ("format",
+							   _("Format"),
+							   _("The project file format"),
+							   GLADE_PROJECT_FORMAT_LIBGLADE,
+							   GLADE_PROJECT_FORMAT_GTKBUILDER,
+							   GLADE_PROJECT_FORMAT_GTKBUILDER,
+							   G_PARAM_READABLE));
+
 	g_type_class_add_private (klass, sizeof (GladeProjectPrivate));
 }
 
@@ -3214,13 +3228,25 @@ glade_project_get_modified (GladeProject *project)
 	return project->priv->modified;
 }
 
+
+/** 
+ * glade_project_set_format:
+ * @project: a #GladeProject
+ * @format: the #GladeProjectFormat
+ *
+ * Sets @project format to @format, used internally to set the actual format
+ * state; note that conversions should be done through the glade-command api.
+ */ 
 void
 glade_project_set_format (GladeProject *project, GladeProjectFormat format)
 {
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 
 	if (project->priv->format != format)
+	{
 		project->priv->format = format; 
+		g_object_notify (G_OBJECT (project), "format");
+	}
 }
 
 GladeProjectFormat

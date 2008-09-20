@@ -1285,11 +1285,114 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor *adaptor,
 			glade_command_pop_group ();
 		}
 	}
+	else if (strcmp (action_path, "sizegroup_add") == 0)
+	{
+		/* Ignore dummy */
+	}
 	else
 		GWA_GET_CLASS (G_TYPE_OBJECT)->action_activate (adaptor,
 								object,
 								action_path);
 }
+
+static GList *list_sizegroups (GladeWidget *gwidget)
+{
+	GladeProject *project = glade_widget_get_project (gwidget);
+	GList *groups = NULL;
+	const GList *list;
+
+	for (list = glade_project_get_objects (project); list; list = list->next)
+	{
+		GladeWidget *iter = glade_widget_get_from_gobject (list->data);
+		if (GTK_IS_SIZE_GROUP (iter->object))
+			groups = g_list_prepend (groups, iter);
+	}
+	return g_list_reverse (groups);
+}
+
+static void
+glade_gtk_widget_add2group_cb (GtkMenuItem *item, GladeWidget *gwidget)
+{
+	GladeWidget *group = g_object_get_data (G_OBJECT (item), "glade-group-widget");
+	gchar *desc = group ? g_strdup_printf (_("Adding %s to Size Group %s"), gwidget->name, group->name) : 
+		g_strdup_printf (_("Adding %s to a new Size Group"), gwidget->name);
+	GladeWidgetAdaptor *adaptor = glade_widget_adaptor_get_by_type (GTK_TYPE_SIZE_GROUP);
+	GList *widget_list = NULL, *new_list;
+	GladeProperty *property;
+
+	glade_command_push_group (desc);
+	g_free (desc);
+
+	if (!group)
+		/* Cant cancel a size group */
+		group = glade_command_create (adaptor, NULL, NULL, glade_widget_get_project (gwidget));
+ 
+	property = glade_widget_get_property (group, "widgets");
+	glade_property_get (property, &widget_list);
+	new_list = g_list_copy (widget_list);
+	if (!g_list_find (widget_list, gwidget->object))
+		new_list = g_list_append (new_list, gwidget->object);
+	glade_command_set_property (property, new_list);
+
+	g_list_free (new_list);
+	
+	glade_command_pop_group ();
+}
+
+
+GtkWidget *
+glade_gtk_widget_action_submenu (GladeWidgetAdaptor *adaptor,
+				 GObject *object,
+				 const gchar *action_path)
+{
+	GladeWidget *gwidget = glade_widget_get_from_gobject (object);
+	GList *groups, *list;
+
+	if (strcmp (action_path, "sizegroup_add") == 0)
+	{
+		GtkWidget *menu = gtk_menu_new ();
+		GtkWidget *separator, *item;
+		GladeWidget *group;
+
+		if ((groups = list_sizegroups (gwidget)) != NULL)
+		{
+			for (list = groups; list; list = list->next)
+			{
+				group = list->data;
+				item = gtk_menu_item_new_with_label (group->name);
+
+				g_object_set_data (G_OBJECT (item), "glade-group-widget", group);
+				g_signal_connect (G_OBJECT (item), "activate",
+						  G_CALLBACK (glade_gtk_widget_add2group_cb), gwidget);
+
+				gtk_widget_show (item);
+				gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+			}
+			g_list_free (groups);
+
+			separator = gtk_menu_item_new ();		
+			gtk_menu_shell_append (GTK_MENU_SHELL (menu), separator);
+			gtk_widget_show (separator);
+		}
+		
+		/* Add trailing new... item */
+		item = gtk_menu_item_new_with_label (_("New Size Group"));
+		g_signal_connect (G_OBJECT (item), "activate",
+				  G_CALLBACK (glade_gtk_widget_add2group_cb), gwidget);
+		
+		gtk_widget_show (item);
+		gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+
+		return menu;
+	}
+	else if (GWA_GET_CLASS (G_TYPE_OBJECT)->action_submenu)
+		return GWA_GET_CLASS (G_TYPE_OBJECT)->action_submenu (adaptor,
+								      object,
+								      action_path);
+
+	return NULL;
+}
+
 
 
 /* ----------------------------- GtkContainer ------------------------------ */
@@ -8301,4 +8404,156 @@ glade_gtk_message_dialog_get_property (GladeWidgetAdaptor *adaptor,
 	else
 		GWA_GET_CLASS (GTK_TYPE_DIALOG)->get_property (adaptor, object,
 								  property_name, value);
+}
+
+/*--------------------------- GtkSizeGroup ---------------------------------*/
+#define GLADE_TAG_SIZEGROUP_WIDGETS "widgets"
+#define GLADE_TAG_SIZEGROUP_WIDGET  "widget"
+
+static void
+glade_gtk_size_group_read_widgets (GladeWidget  *widget,
+				   GladeXmlNode *node)
+{
+	GladeXmlNode  *widgets_node;
+	GladeProperty *property;
+	gchar         *string = NULL;
+
+	if ((widgets_node = 
+	     glade_xml_search_child (node, GLADE_TAG_SIZEGROUP_WIDGETS)) != NULL)
+	{
+		GladeXmlNode  *node;
+
+		for (node = glade_xml_node_get_children (widgets_node); 
+		     node; node = glade_xml_node_next (node))
+		{
+			gchar *widget_name, *tmp;
+			
+			if (!glade_xml_node_verify_silent (node, GLADE_TAG_SIZEGROUP_WIDGET))
+				continue;
+
+			widget_name = glade_xml_get_property_string_required
+				(node, GLADE_TAG_NAME, NULL);
+				
+			if (string == NULL)
+				string = widget_name;
+			else if (widget_name != NULL)
+			{
+				tmp = g_strdup_printf ("%s%s%s", string, GPC_OBJECT_DELIMITER, widget_name);
+				string = (g_free (string), tmp);
+				g_free (widget_name);
+			}
+		}
+	}
+
+
+	if (string)
+	{
+		property = glade_widget_get_property (widget, "widgets");
+		g_assert (property);
+
+		/* we must synchronize this directly after loading this project
+		 * (i.e. lookup the actual objects after they've been parsed and
+		 * are present).
+		 */
+		g_object_set_data_full (G_OBJECT (property), 
+					"glade-loaded-object", 
+					string, g_free);
+	}
+}
+
+void
+glade_gtk_size_group_read_widget (GladeWidgetAdaptor *adaptor,
+				  GladeWidget        *widget,
+				  GladeXmlNode       *node)
+{
+	if (!glade_xml_node_verify 
+	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+		return;
+
+	/* First chain up and read in all the normal properties.. */
+        GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
+
+	glade_gtk_size_group_read_widgets (widget, node);
+}
+
+
+static void
+glade_gtk_size_group_write_widgets (GladeWidget        *widget,
+				    GladeXmlContext    *context,
+				    GladeXmlNode       *node)
+{
+	GladeXmlNode  *widgets_node, *widget_node;
+	GList         *widgets = NULL, *list;
+	GladeWidget   *awidget;
+
+	widgets_node = glade_xml_node_new (context, GLADE_TAG_SIZEGROUP_WIDGETS);
+	glade_xml_node_append_child (node, widgets_node);
+
+	if (glade_widget_property_get (widget, "widgets", &widgets))
+	{
+		for (list = widgets; list; list = list->next)
+		{
+			awidget     = glade_widget_get_from_gobject (list->data);
+			widget_node = glade_xml_node_new (context, GLADE_TAG_SIZEGROUP_WIDGET);
+			glade_xml_node_append_child (widgets_node, widget_node);
+			glade_xml_node_set_property_string (widget_node, GLADE_TAG_NAME, awidget->name);
+		}
+	}
+
+	if (!glade_xml_node_get_children (widgets_node))
+	{
+		glade_xml_node_remove (widgets_node);
+		glade_xml_node_delete (widgets_node);
+	}
+}
+
+
+void
+glade_gtk_size_group_write_widget (GladeWidgetAdaptor *adaptor,
+				   GladeWidget        *widget,
+				   GladeXmlContext    *context,
+				   GladeXmlNode       *node)
+{
+	if (!glade_xml_node_verify
+	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+		return;
+
+	/* First chain up and read in all the normal properties.. */
+        GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
+
+	glade_gtk_size_group_write_widgets (widget, context, node);
+}
+
+
+void
+glade_gtk_size_group_set_property (GladeWidgetAdaptor *adaptor,
+				   GObject *object,
+				   const gchar *property_name,
+				   const GValue *value)
+{
+	if (!strcmp (property_name, "widgets"))
+	{
+		GSList *sg_widgets, *slist;
+		GList *widgets, *list;
+
+		/* remove old widgets */
+		if ((sg_widgets = gtk_size_group_get_widgets (GTK_SIZE_GROUP (object))) != NULL)
+		{
+			/* copy since we are modifying an internal list */
+			sg_widgets = g_slist_copy (sg_widgets);
+			for (slist = sg_widgets; slist; slist = slist->next)
+				gtk_size_group_remove_widget (GTK_SIZE_GROUP (object), GTK_WIDGET (slist->data));
+			g_slist_free (sg_widgets);
+		}
+
+		/* add new widgets */
+		if ((widgets = g_value_get_boxed (value)) != NULL)
+		{
+			for (list = widgets; list; list = list->next)
+				gtk_size_group_add_widget (GTK_SIZE_GROUP (object), GTK_WIDGET (list->data));
+		}
+	}
+	else
+		GWA_GET_CLASS (G_TYPE_OBJECT)->set_property (adaptor, object,
+							     property_name, value);
 }

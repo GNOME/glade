@@ -1176,6 +1176,7 @@ glade_widget_adaptor_class_init (GladeWidgetAdaptorClass *adaptor_class)
 	adaptor_class->child_get_property   = NULL;
 	adaptor_class->action_activate      = glade_widget_adaptor_object_action_activate;
 	adaptor_class->child_action_activate= glade_widget_adaptor_object_child_action_activate;
+	adaptor_class->action_submenu       = NULL;
 	adaptor_class->read_widget          = glade_widget_adaptor_object_read_widget;
 	adaptor_class->write_widget         = glade_widget_adaptor_object_write_widget;
 	adaptor_class->read_child           = glade_widget_adaptor_object_read_child;
@@ -1425,6 +1426,11 @@ gwa_extend_with_node_load_sym (GladeWidgetAdaptorClass *klass,
 					  &symbol))
 		klass->child_action_activate = symbol;
 
+	if (glade_xml_load_sym_from_node (node, module,
+					  GLADE_TAG_ACTION_SUBMENU_FUNCTION,
+					  &symbol))
+		klass->action_submenu = symbol;
+	
 	if (glade_xml_load_sym_from_node (node, module,
 					  GLADE_TAG_READ_WIDGET_FUNCTION,
 					  &symbol))
@@ -3246,7 +3252,31 @@ glade_widget_adaptor_child_action_activate (GladeWidgetAdaptor *adaptor,
 	GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->child_action_activate (adaptor, container, object, action_path);
 }
 
+/**
+ * glade_widget_adaptor_action_submenu:
+ * @adaptor:   A #GladeWidgetAdaptor
+ * @object:    The #GObject
+ * @action_path: The action identifier in the action tree
+ *
+ * This delagate function is used to create dynamically customized
+ * submenus. Called only for actions that dont have children.
+ *
+ * Returns: A newly created #GtkMenu or %NULL
+ */
+GtkWidget *
+glade_widget_adaptor_action_submenu (GladeWidgetAdaptor *adaptor,
+				     GObject            *object,
+				     const gchar        *action_path)
+{
+	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
+	g_return_val_if_fail (G_IS_OBJECT (object), NULL);
+	g_return_val_if_fail (g_type_is_a (G_OBJECT_TYPE (object), adaptor->type), NULL);
 
+	if (GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->action_submenu)
+		return GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->action_submenu (adaptor, object, action_path);
+
+	return NULL;
+}
 
 /**
  * glade_widget_adaptor_read_widget:

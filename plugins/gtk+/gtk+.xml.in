@@ -14,6 +14,7 @@
       <set-property-function>glade_gtk_widget_set_property</set-property-function>
       <get-property-function>glade_gtk_widget_get_property</get-property-function>
       <action-activate-function>glade_gtk_widget_action_activate</action-activate-function>
+      <action-submenu-function>glade_gtk_widget_action_submenu</action-submenu-function>
       <read-widget-function>glade_gtk_widget_read_widget</read-widget-function>
       <write-widget-function>glade_gtk_widget_write_widget</write-widget-function>
       <create-editor-property-function>glade_gtk_widget_create_eprop</create-editor-property-function>
@@ -41,6 +42,7 @@
 	  <action id="hpaned" _name="Horizontal Panes"/>
 	  <action id="vpaned" _name="Vertical Panes"/>
         </action>
+	<action id="sizegroup_add" _name="Add to Size Group"/>
       </actions>
 
 
@@ -1736,8 +1738,18 @@ x	<property id="buffer"/>
       </properties>
     </glade-widget-class>
 
+    <glade-widget-class name="GtkSizeGroup" generic-name="sizegroup" _title="Size Group">
+      <read-widget-function>glade_gtk_size_group_read_widget</read-widget-function>
+      <write-widget-function>glade_gtk_size_group_write_widget</write-widget-function>
+      <set-property-function>glade_gtk_size_group_set_property</set-property-function>
+      <properties>
+	<property id="widgets" _name="Widgets" save="False">
+	  <_tooltip>List of widgets in this group</_tooltip>
+	  <spec>glade_standard_objects_spec</spec>
+	</property>
+      </properties>
+    </glade-widget-class>
 
-    <glade-widget-class name="GtkSizeGroup" generic-name="sizegroup" _title="Size Group"/>
     <glade-widget-class name="GtkTextBuffer" generic-name="textbuffer" _title="Text Buffer"/>
     <glade-widget-class name="GtkTextTag" generic-name="texttag" _title="Text Tag"/>
     <glade-widget-class name="GtkTextTagTable" generic-name="texttagtable" _title="Text Tag Table"/>

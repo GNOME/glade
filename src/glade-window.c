@@ -647,7 +647,7 @@ project_selection_changed_cb (GladeProject *project, GladeWindow *window)
 	/* Only update the toolbar & workspace if the selection has changed on
 	 * the currently active project.
 	 */
-	if (project == glade_app_get_project ())
+	if (project && (project == glade_app_get_project ()))
 	{
 		list = glade_project_selection_get (project);
 		num = g_list_length (list);
