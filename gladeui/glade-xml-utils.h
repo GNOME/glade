@@ -79,13 +79,18 @@ typedef enum
 #define GLADE_XML_TAG_SOURCE                      "source"
 #define GLADE_XML_TAG_FILENAME                    "filename"
 #define GLADE_XML_TAG_STOCK_ID                    "stock-id"
+#define GLADE_TAG_FACTORY_STOCK_ID                "factory-stock-id"
 
 #define GLADE_TAG_VERSION                         "version"
 #define GLADE_TAG_TARGETABLE                      "targetable"
 #define GLADE_TAG_VERSION_SINCE                   "since"
 #define GLADE_TAG_DEPRECATED                      "deprecated"
-#define GLADE_TAG_BUILDER_UNSUPPORTED             "builder-unsupported"
-#define GLADE_TAG_FACTORY_STOCK_ID                "factory-stock-id"
+
+#define GLADE_TAG_LIBGLADE_ONLY                   "libglade-only"
+#define GLADE_TAG_LIBGLADE_UNSUPPORTED            "libglade-unsupported"
+#define GLADE_TAG_SUPPORTS                        "supports"
+#define GLADE_TAG_GTKBUILDER                      "gtkbuilder"
+#define GLADE_TAG_LIBGLADE                        "libglade"
 
 #define GLADE_TAG_GLADE_CATALOG                   "glade-catalog"
 #define GLADE_TAG_GLADE_WIDGET_CLASSES            "glade-widget-classes"

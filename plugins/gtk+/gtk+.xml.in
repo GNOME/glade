@@ -1,6 +1,7 @@
 <glade-catalog name="gtk+"
 	       version="2.14"
-	       targetable="2.10,2.8,2.12"
+	       targetable="2.12,2.10,2.8"
+	       supports="libglade,gtkbuilder"
                icon-prefix="gtk"
                library="gladegtk"
                domain="glade3"
@@ -658,7 +659,7 @@ embedded in another object</_tooltip>
 
       <properties>
 	<!-- Text of the textview -->
-	<property id="text" _name="Text" translatable="True">
+	<property id="text" _name="Text" translatable="True" libglade-only="True">
 	  <_tooltip>Set the text in the view's text buffer</_tooltip>
 	  <spec>glade_standard_string_spec</spec>
 	  <visible-lines>2</visible-lines>
@@ -1542,7 +1543,7 @@ x	<property id="buffer"/>
     
     <glade-widget-class name="GtkVRuler" generic-name="vruler" _title="Vertical Ruler"/>
 
-    <glade-widget-class name="GtkCombo" generic-name="combo" _title="Combo" deprecated="True" builder-unsupported="True">
+    <glade-widget-class name="GtkCombo" generic-name="combo" _title="Combo" deprecated="True" libglade-only="True">
       <post-create-function>glade_gtk_combo_post_create</post-create-function>
       <get-internal-child-function>glade_gtk_combo_get_internal_child</get-internal-child-function>
       <get-children-function>glade_gtk_combo_get_children</get-children-function>
@@ -1560,7 +1561,7 @@ x	<property id="buffer"/>
 
     </glade-widget-class>
     
-    <glade-widget-class name="GtkOptionMenu" generic-name="optionmenu" _title="Option Menu" deprecated="True" builder-unsupported="True">
+    <glade-widget-class name="GtkOptionMenu" generic-name="optionmenu" _title="Option Menu" deprecated="True" libglade-only="True">
       <properties>
 	<!-- Atk press property -->
 	<property id="atk-press" _name="Press" ignore="True" atk-property="True" save="False">
@@ -1571,7 +1572,7 @@ x	<property id="buffer"/>
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkList" generic-name="list" _title="List" deprecated="True" builder-unsupported="True">
+    <glade-widget-class name="GtkList" generic-name="list" _title="List" deprecated="True" libglade-only="True">
       <add-child-function>glade_gtk_listitem_add_child</add-child-function>
       <remove-child-function>glade_gtk_listitem_remove_child</remove-child-function>
       <properties>
@@ -1587,7 +1588,7 @@ x	<property id="buffer"/>
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkListItem" generic-name="listitem" _title="List Item" deprecated="True" builder-unsupported="True">
+    <glade-widget-class name="GtkListItem" generic-name="listitem" _title="List Item" deprecated="True" libglade-only="True">
       <post-create-function>glade_gtk_list_item_post_create</post-create-function>
       <set-property-function>glade_gtk_list_item_set_property</set-property-function>
       <get-property-function>glade_gtk_list_item_get_property</get-property-function>
@@ -1599,7 +1600,7 @@ x	<property id="buffer"/>
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkCList" generic-name="clist" _title="Columned List" deprecated="True" builder-unsupported="True">
+    <glade-widget-class name="GtkCList" generic-name="clist" _title="Columned List" deprecated="True" libglade-only="True">
       <properties>
         <property id="selection-mode">
   	  <displayable-values>
@@ -1646,7 +1647,7 @@ x	<property id="buffer"/>
     
     <glade-widget-class name="GtkGammaCurve" generic-name="gammacurve" _title="Gamma Curve"/>
 
-    <glade-widget-class name="GtkFileSelection" generic-name="fileselection" _title="File Selection" deprecated="True" builder-unsupported="True"/>
+    <glade-widget-class name="GtkFileSelection" generic-name="fileselection" _title="File Selection" deprecated="True" libglade-only="True"/>
     <glade-widget-class name="Custom" generic-name="custom" _title="Custom widget">
       <properties>
 	<property id="creation-function"/>
@@ -1738,7 +1739,7 @@ x	<property id="buffer"/>
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkSizeGroup" generic-name="sizegroup" _title="Size Group">
+    <glade-widget-class name="GtkSizeGroup" generic-name="sizegroup" _title="Size Group" libglade-unsupported="True">
       <read-widget-function>glade_gtk_size_group_read_widget</read-widget-function>
       <write-widget-function>glade_gtk_size_group_write_widget</write-widget-function>
       <set-property-function>glade_gtk_size_group_set_property</set-property-function>
@@ -1749,14 +1750,13 @@ x	<property id="buffer"/>
 	</property>
       </properties>
     </glade-widget-class>
+    <glade-widget-class name="GtkAdjustment" generic-name="adjustment" _title="Adjustment" libglade-unsupported="True"/>
 
-    <glade-widget-class name="GtkTextBuffer" generic-name="textbuffer" _title="Text Buffer"/>
-    <glade-widget-class name="GtkTextTag" generic-name="texttag" _title="Text Tag"/>
-    <glade-widget-class name="GtkTextTagTable" generic-name="texttagtable" _title="Text Tag Table"/>
+    <glade-widget-class name="GtkTextBuffer" generic-name="textbuffer" _title="Text Buffer" libglade-unsupported="True"/>
+    <glade-widget-class name="GtkTextTag" generic-name="texttag" _title="Text Tag" libglade-unsupported="True"/>
+    <glade-widget-class name="GtkTextTagTable" generic-name="texttagtable" _title="Text Tag Table" libglade-unsupported="True"/>
 
-    <glade-widget-class name="GtkFileFilter" generic-name="filefilter" _title="File Filter"/>
-    <glade-widget-class name="GtkAdjustment" generic-name="adjustment" _title="Adjustment"/>
-
+    <glade-widget-class name="GtkFileFilter" generic-name="filefilter" _title="File Filter" libglade-unsupported="True"/>
   </glade-widget-classes>
   
   <glade-widget-group name="gtk-toplevels" _title="Toplevels">
@@ -1844,12 +1844,13 @@ x	<property id="buffer"/>
 
   <glade-widget-group name="gtk-objects" title="Objects">
     <glade-widget-class-ref name="GtkSizeGroup"/>
+    <glade-widget-class-ref name="GtkAdjustment"/>
+
     <glade-widget-class-ref name="GtkTextBuffer"/>
     <glade-widget-class-ref name="GtkTextTag"/>
     <glade-widget-class-ref name="GtkTextTagTable"/>
 
     <glade-widget-class-ref name="GtkFileFilter"/>
-    <glade-widget-class-ref name="GtkAdjustment"/>
   </glade-widget-group>
 
   <glade-widget-group name="gtk-specialized" title="Specialized Widgets">

@@ -1482,9 +1482,13 @@ gwa_derived_class_init (GladeWidgetAdaptorClass *adaptor_class,
 		glade_xml_get_property_boolean
 		(node, GLADE_TAG_DEPRECATED, adaptor_class->deprecated);
 
-	adaptor_class->builder_unsupported = 
+	adaptor_class->libglade_unsupported = 
 		glade_xml_get_property_boolean
-		(node, GLADE_TAG_BUILDER_UNSUPPORTED, adaptor_class->builder_unsupported);
+		(node, GLADE_TAG_LIBGLADE_UNSUPPORTED, adaptor_class->libglade_unsupported);
+
+	adaptor_class->libglade_only = 
+		glade_xml_get_property_boolean
+		(node, GLADE_TAG_LIBGLADE_ONLY, adaptor_class->libglade_only);
 
 	adaptor_class->fixed = 
 		glade_xml_get_property_boolean
@@ -1999,25 +2003,19 @@ generate_type (const char *name,
 
 /**
  * glade_widget_adaptor_from_catalog:
- * @class_node: A #GladeXmlNode
- * @catname: the name of the owning catalog
- * @icon_prefix:
+ * @catalog: A #GladeCatalog
+ * @class_node: the #GladeXmlNode to load
  * @module: the plugin GModule.
- * @domain: the domain to translate strings from this plugin from
- * @book: the devhelp search domain for the owning catalog.
  *
  * Dynamicly creates a subclass of #GladeWidgetAdaptor and subclasses
  * the closest parent adaptor (parent class adapters must be creates/registerd
  * prior to child classes, otherwise inheritance wont work) and parses in
  * the relevent catalog info.
  */
-GladeWidgetAdaptor *
-glade_widget_adaptor_from_catalog (GladeXmlNode     *class_node,
-				   const gchar      *catname,
-				   const gchar      *icon_prefix,
-				   GModule          *module,
-				   const gchar      *domain,
-				   const gchar      *book)
+GladeWidgetAdaptor  *
+glade_widget_adaptor_from_catalog (GladeCatalog         *catalog,
+				   GladeXmlNode         *class_node,
+				   GModule              *module)
 {
 	GladeWidgetAdaptor *adaptor = NULL;
 	gchar              *name, *generic_name, *icon_name, *adaptor_icon_name, *adaptor_name, *func_name;
@@ -2105,13 +2103,13 @@ glade_widget_adaptor_from_catalog (GladeXmlNode     *class_node,
 	adaptor_icon_name = create_icon_name_for_object_class (name,
 							       object_type,
 							       icon_name,
-							       icon_prefix,
+							       glade_catalog_get_icon_prefix (catalog),
 							       generic_name);
 
 	adaptor = g_object_new (adaptor_type, 
 				"type", object_type,
 				"name", name,
-				"catalog", catname,
+				"catalog", glade_catalog_get_name (catalog),
 				"generic-name", generic_name,
 				"icon-name", adaptor_icon_name,
 				NULL);
@@ -2134,7 +2132,7 @@ glade_widget_adaptor_from_catalog (GladeXmlNode     *class_node,
 	else
 	{
 		/* translate */
-		translated_title = dgettext (domain, title);
+		translated_title = dgettext (glade_catalog_get_domain (catalog), title);
 		if (translated_title != title)
 		{
 			/* gettext owns translated_title */
@@ -2159,12 +2157,17 @@ glade_widget_adaptor_from_catalog (GladeXmlNode     *class_node,
 	if (adaptor->generic_name == NULL)
 		adaptor->generic_name = g_strdup ("widget");
 	
-	adaptor->priv->catalog = g_strdup (catname);
+	adaptor->priv->catalog = g_strdup (glade_catalog_get_name (catalog));
 
-	if (book)
-		adaptor->priv->book = g_strdup (book);
+	if (glade_catalog_get_book (catalog))
+		adaptor->priv->book = g_strdup (glade_catalog_get_book (catalog));
 
-	gwa_extend_with_node (adaptor, class_node, module, domain);
+	gwa_extend_with_node (adaptor, class_node, module, glade_catalog_get_domain (catalog));
+
+	if (!glade_catalog_supports_libglade (catalog))
+		GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->libglade_unsupported = TRUE;
+	if (!glade_catalog_supports_gtkbuilder (catalog))
+		GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->libglade_only = TRUE;
 
 	/* Set default weight on properties */
 	for (parent_type = adaptor->type;

@@ -30,6 +30,18 @@
 	    at load time in both the workspace and inspector
 	  - Sorted objects from widgets in the inspector view.
 
+	* gladeui/glade-xml-utils.h, gladeui/glade-catalog.[ch], 
+	gladeui/glade-widget-adaptor.[ch], gladeui/glade-property-class.[ch],
+	gladeui/glade-project.c, glade-palette-item.c: Added "supports" catalog element
+	to supply supported formats, added libglade-only and libglade-unsupported properties
+	for widget classes and property classes, those metadata will show up in the editor
+	like versioning info, in the verify logs as well, and the palette will adjust
+	sensitivity according to the new properties.
+
+	* plugins/gtk+/gtk+.xml.in, plugins/gnome/gnome.xml.in: Added supports
+	elements and marked widgets/properties as libglade-only/libglade-unsupported in
+	the gtk+ catalog.
+
 2008-09-19  Tristan Van Berkom <tvb@gnome.org>
 
 	Now we have a conversion routine that is run in the plugin to

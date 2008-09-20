@@ -25,7 +25,8 @@ typedef enum
 	GLADE_SUPPORT_OK                   = 0x00,
 	GLADE_SUPPORT_DEPRECATED           = 0x01,
 	GLADE_SUPPORT_MISMATCH             = 0x02,
-	GLADE_SUPPORT_BUILDER_UNSUPPORTED  = 0x04
+	GLADE_SUPPORT_LIBGLADE_UNSUPPORTED = 0x04,
+	GLADE_SUPPORT_LIBGLADE_ONLY        = 0x08
 } GladeSupportMask;
 
 struct _GladeProject

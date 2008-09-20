@@ -872,7 +872,7 @@ glade_inspector_new_with_project (GladeProject *project)
 	/* Make sure we expended to the right path */
 	project_selection_changed_cb (project, inspector);
 
-	return inspector;
+	return GTK_WIDGET (inspector);
 }
 
 

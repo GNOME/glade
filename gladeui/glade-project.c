@@ -584,7 +584,7 @@ glade_project_verify_adaptor (GladeProject       *project,
 		}
 
 		if (project->priv->format == GLADE_PROJECT_FORMAT_GTKBUILDER &&
-		    GWA_BUILDER_UNSUPPORTED (adaptor_iter))
+		    GWA_LIBGLADE_ONLY (adaptor_iter))
 		{
 			if (forwidget)
 			{
@@ -592,7 +592,7 @@ glade_project_verify_adaptor (GladeProject       *project,
 					g_string_append (string, "\n");
 				g_string_append_printf
 					(string,
-					 _("This widget is not supported by GtkBuilder"));
+					 _("This widget is only supported in libglade format"));
 			}
 			else
 				/* translators: reffers to a widget '[%s]'  
@@ -600,11 +600,34 @@ glade_project_verify_adaptor (GladeProject       *project,
 				g_string_append_printf
 					(string,
 					 _("[%s] Object class '%s' from %s %d.%d "
-					   "is not supported by GtkBuilder\n"),
+					   "is only supported in libglade format\n"),
 					 path_name, adaptor_iter->title, catalog,
 					 target_major, target_minor);
 
-			support_mask |= GLADE_SUPPORT_BUILDER_UNSUPPORTED;
+			support_mask |= GLADE_SUPPORT_LIBGLADE_ONLY;
+		}
+		else if (project->priv->format == GLADE_PROJECT_FORMAT_LIBGLADE &&
+			 GWA_LIBGLADE_UNSUPPORTED (adaptor_iter))
+		{
+			if (forwidget)
+			{
+				if (string->len)
+					g_string_append (string, "\n");
+				g_string_append_printf
+					(string,
+					 _("This widget is not supported in libglade format"));
+			}
+			else
+				/* translators: reffers to a widget '[%s]'  
+				 * loaded from toolkit version '%s %d.%d' */
+				g_string_append_printf
+					(string,
+					 _("[%s] Object class '%s' from %s %d.%d "
+					   "is not supported in libglade format\n"),
+					 path_name, adaptor_iter->title, catalog,
+					 target_major, target_minor);
+
+			support_mask |= GLADE_SUPPORT_LIBGLADE_UNSUPPORTED;
 		}
 
 		if (!saving && GWA_DEPRECATED (adaptor_iter))
@@ -1519,7 +1542,8 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 
 
 static void
-glade_project_verify_property (GladeProperty  *property, 
+glade_project_verify_property (GladeProject   *project,
+			       GladeProperty  *property, 
 			       const gchar    *path_name,
 			       GString        *string,
 			       gboolean        forwidget)
@@ -1538,9 +1562,49 @@ glade_project_verify_property (GladeProperty  *property,
 						  &target_major,
 						  &target_minor);
 	
-	if (target_major < property->klass->version_since_major ||
-	    (target_major == property->klass->version_since_major &&
-	     target_minor < property->klass->version_since_minor))
+	if (project->priv->format == GLADE_PROJECT_FORMAT_LIBGLADE &&
+	    property->klass->libglade_unsupported)
+	{
+		if (forwidget)
+			glade_property_set_support_warning
+				(property, _("This property is not supported in libglade format"));
+		else
+			/* translators: reffers to a property '%s' of widget '[%s]' 
+			 * introduced in toolkit version '%s %d.%d' */
+			g_string_append_printf
+				(string,
+				 property->klass->packing ?
+				 _("[%s] Packing property '%s' of object class '%s' is not "
+				   "supported in libglade format\n") :
+				 _("[%s] Property '%s' of object class '%s' is not "
+				   "supported in libglade format\n"),
+				 path_name,
+				 property->klass->name, 
+				 adaptor->title);
+	}
+	else if (project->priv->format == GLADE_PROJECT_FORMAT_GTKBUILDER &&
+		 property->klass->libglade_only)
+	{
+		if (forwidget)
+			glade_property_set_support_warning
+				(property, _("This property is only supported in libglade format"));
+		else
+			/* translators: reffers to a property '%s' of widget '[%s]' 
+			 * introduced in toolkit version '%s %d.%d' */
+			g_string_append_printf
+				(string,
+				 property->klass->packing ?
+				 _("[%s] Packing property '%s' of object class '%s' is only "
+				   "supported in libglade format\n") :
+				 _("[%s] Property '%s' of object class '%s' is only "
+				   "supported in libglade format\n"),
+				 path_name,
+				 property->klass->name, 
+				 adaptor->title);
+	} 
+	else if (target_major < property->klass->version_since_major ||
+		 (target_major == property->klass->version_since_major &&
+		  target_minor < property->klass->version_since_minor))
 	{
 		if (forwidget)
 		{
@@ -1579,7 +1643,6 @@ glade_project_verify_property (GladeProperty  *property,
 		glade_property_set_support_warning (property, NULL);
 
 	g_free (catalog);
-		
 }
 
 
@@ -1595,7 +1658,7 @@ glade_project_verify_properties_internal (GladeWidget  *widget,
 	for (list = widget->properties; list; list = list->next)
 	{
 		property = list->data;
-		glade_project_verify_property (property, path_name, string, forwidget);
+		glade_project_verify_property (widget->project, property, path_name, string, forwidget);
 	}
 
 	for (list = widget->packing_properties; list; list = list->next)
@@ -1604,7 +1667,7 @@ glade_project_verify_properties_internal (GladeWidget  *widget,
 
 		g_assert (widget->parent);
 		property = list->data;
-		glade_project_verify_property (property, path_name, string, forwidget);
+		glade_project_verify_property (widget->project, property, path_name, string, forwidget);
 	}
 }
 
@@ -3246,6 +3309,7 @@ glade_project_set_format (GladeProject *project, GladeProjectFormat format)
 	{
 		project->priv->format = format; 
 		g_object_notify (G_OBJECT (project), "format");
+		glade_project_verify_project_for_ui (project);
 	}
 }
 

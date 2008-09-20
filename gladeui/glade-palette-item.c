@@ -182,10 +182,10 @@ glade_palette_item_refresh (GladePaletteItem *item)
 	    (warning = 
 	     glade_project_verify_widget_adaptor (project, priv->adaptor, &support)) != NULL)
 	{
-
 		/* set sensitivity */
 		gtk_widget_set_sensitive (GTK_WIDGET (item), 
-					  !(support & (GLADE_SUPPORT_BUILDER_UNSUPPORTED | 
+					  !(support & (GLADE_SUPPORT_LIBGLADE_UNSUPPORTED | 
+						       GLADE_SUPPORT_LIBGLADE_ONLY |
 						       GLADE_SUPPORT_MISMATCH)));
 
 		if (support & GLADE_SUPPORT_DEPRECATED)

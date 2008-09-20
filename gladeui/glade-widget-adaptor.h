@@ -5,6 +5,7 @@
 #include <gladeui/glade-xml-utils.h>
 #include <gladeui/glade-property-class.h>
 #include <gladeui/glade-editor-property.h>
+#include <gladeui/glade-catalog.h>
 #include <glib-object.h>
 #include <gmodule.h>
 #include <gtk/gtk.h>
@@ -42,13 +43,22 @@ typedef struct _GladeWidgetAdaptorClass   GladeWidgetAdaptorClass;
         ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->deprecated : FALSE)
 
 /**
- * GWA_BUILDER_UNSUPPORTED:
+ * GWA_LIBGLADE_UNSUPPORTED:
  * @obj: A #GladeWidgetAdaptor
  *
- * Checks whether this widget class unsupported by GtkBuilder
+ * Checks whether this widget class is unsupported by Libglade
  */
-#define GWA_BUILDER_UNSUPPORTED(obj) \
-        ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->builder_unsupported : FALSE)
+#define GWA_LIBGLADE_UNSUPPORTED(obj) \
+        ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->libglade_unsupported : FALSE)
+
+/**
+ * GWA_LIBGLADE_ONLY:
+ * @obj: A #GladeWidgetAdaptor
+ *
+ * Checks whether this widget class is only supported by libglade
+ */
+#define GWA_LIBGLADE_ONLY(obj) \
+        ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->libglade_only : FALSE)
 
 /**
  * GWA_VERSION_SINCE_MAJOR:
@@ -534,9 +544,12 @@ struct _GladeWidgetAdaptorClass
 	gboolean                   deprecated;     /* If this widget is currently
 						    * deprecated
 						    */
-	gboolean                   builder_unsupported; /* If this widget is not supported
-							 * by gtkbuilder
-							 */
+	gboolean                   libglade_unsupported; /* If this widget is not supported
+							  * by libglade
+							  */
+	gboolean                   libglade_only; /* If this widget is only supported
+						   * by libglade
+						   */
 
 	gboolean                   fixed;      /* If this is a GtkContainer, use free-form
 						* placement with drag/resize/paste at mouse...
@@ -644,12 +657,9 @@ GType                glade_widget_adaptor_get_type         (void) G_GNUC_CONST;
 GType                glade_create_reason_get_type          (void) G_GNUC_CONST;
 
 
-GladeWidgetAdaptor  *glade_widget_adaptor_from_catalog     (GladeXmlNode         *class_node,
-							    const gchar          *catname,
-							    const gchar          *icon_prefix,
-							    GModule              *module,
-							    const gchar          *domain,
-							    const gchar          *book);
+GladeWidgetAdaptor  *glade_widget_adaptor_from_catalog     (GladeCatalog         *catalog,
+							    GladeXmlNode         *class_node,
+							    GModule              *module);
 
 void                 glade_widget_adaptor_register         (GladeWidgetAdaptor   *adaptor);
  

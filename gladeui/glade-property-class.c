@@ -92,6 +92,9 @@ glade_property_class_new (gpointer handle)
 	property_class->virt = TRUE;
 	property_class->transfer_on_paste = FALSE;
 	property_class->weight = -1.0;
+	property_class->libglade_only = FALSE;
+	property_class->libglade_unsupported = FALSE;
+	property_class->parentless_widget = FALSE;
 
 	/* Initialize them to the base version */
 	property_class->version_since_major = GWA_VERSION_SINCE_MAJOR (handle);
@@ -1508,7 +1511,10 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	klass->transfer_on_paste = glade_xml_get_property_boolean (node, GLADE_TAG_TRANSFER_ON_PASTE, klass->transfer_on_paste);
 	klass->save_always = glade_xml_get_property_boolean (node, GLADE_TAG_SAVE_ALWAYS, klass->save_always);
 	klass->parentless_widget = glade_xml_get_property_boolean (node, GLADE_TAG_PARENTLESS_WIDGET, klass->parentless_widget);
-	
+	klass->libglade_only = glade_xml_get_property_boolean (node, GLADE_TAG_LIBGLADE_ONLY, klass->libglade_only);
+	klass->libglade_unsupported = 
+		glade_xml_get_property_boolean (node, GLADE_TAG_LIBGLADE_UNSUPPORTED, 
+						klass->libglade_unsupported);
 
 	/* Special case pixbuf here.
 	 */

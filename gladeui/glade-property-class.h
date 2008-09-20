@@ -37,6 +37,10 @@ struct _GladePropertyClass
 					  */
 	gint        version_since_minor; 
 
+	/* For catalogs that support libglade: */
+	gboolean    libglade_only;       /* Mark special libglade virtual properties */
+	gboolean    libglade_unsupported;/* Mark properties that are not available in libglade */
+
 	GParamSpec *pspec; /* The Parameter Specification for this property.
 			    */
 

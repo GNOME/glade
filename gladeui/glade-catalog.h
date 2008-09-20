@@ -72,7 +72,10 @@ typedef struct {
 
 const GList  *glade_catalog_load_all                (void);
 
-const gchar  *glade_catalog_get_name                (GladeCatalog     *catalog);
+G_CONST_RETURN gchar  *glade_catalog_get_name       (GladeCatalog     *catalog);
+G_CONST_RETURN gchar  *glade_catalog_get_icon_prefix(GladeCatalog     *catalog);
+G_CONST_RETURN gchar  *glade_catalog_get_domain     (GladeCatalog     *catalog);
+G_CONST_RETURN gchar  *glade_catalog_get_book       (GladeCatalog     *catalog);
 
 GList        *glade_catalog_get_targets             (GladeCatalog     *catalog);
 
@@ -99,6 +102,10 @@ const GList  *glade_widget_group_get_adaptors       (GladeWidgetGroup *group);
 gboolean      glade_catalog_convert_project         (GladeCatalog     *catalog,
 						     GladeProject     *project,
 						     GladeProjectFormat  new_format);
+
+
+gboolean      glade_catalog_supports_libglade       (GladeCatalog     *catalog);
+gboolean      glade_catalog_supports_gtkbuilder     (GladeCatalog     *catalog);
 
 G_END_DECLS
 
