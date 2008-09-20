@@ -523,8 +523,8 @@ embedded in another object</_tooltip>
 
       <set-property-function>glade_gtk_tool_button_set_property</set-property-function>
       <properties>
-        <property id="icon-widget" disabled="True"/>
-	<property id="label-widget" disabled="True"/>
+        <property id="icon-widget" parentless-widget="True"/>
+	<property id="label-widget" parentless-widget="True"/>
         <property id="glade-type" _name="Image Type" save="False">
 	  <spec>glade_gtk_image_type_spec</spec>
            <displayable-values>
@@ -677,7 +677,7 @@ embedded in another object</_tooltip>
 	    <value id="GTK_WRAP_WORD_CHAR" _name="Word Character"/>
 	  </displayable-values>
 	</property>
-	<property id="buffer" disabled="True"/>
+x	<property id="buffer"/>
       </properties>
     </glade-widget-class>
 
@@ -689,7 +689,7 @@ embedded in another object</_tooltip>
       <set-property-function>glade_gtk_button_set_property</set-property-function>
 
       <properties>
-	<property id="image" disabled="True"/>
+	<property id="image" parentless-widget="True"/>
 	<property id="use-stock" visible="False"/>
 
       	<property id="label" default="button" translatable="True">
@@ -810,7 +810,7 @@ embedded in another object</_tooltip>
       <properties>
 	<property id="title" translatable="True"/>
 	<property id="size" disabled="True"/>
-	<property id="dialog" disabled="True"/>
+	<property id="dialog" parentless-widget="True"/>
 	<property id="focus-on-click" since="2.10"/>
         <property id="action">
   	  <displayable-values>
@@ -820,9 +820,9 @@ embedded in another object</_tooltip>
 	    <value id="GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER" _name="Create Folder"/>
 	  </displayable-values>
         </property>
-	<property id="extra-widget" disabled="True" />
-	<property id="preview-widget" disabled="True" />
-	<property id="filter" disabled="True" />
+	<property id="extra-widget" parentless-widget="True"/>
+	<property id="preview-widget" parentless-widget="True"/>
+	<property id="filter"/>
       </properties>
     </glade-widget-class>
 
@@ -856,9 +856,9 @@ embedded in another object</_tooltip>
 	    <value id="GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER" _name="Create Folder"/>
 	  </displayable-values>
         </property>
-	<property id="extra-widget" disabled="True" />
-	<property id="preview-widget" disabled="True" />
-	<property id="filter" disabled="True" />
+	<property id="extra-widget" parentless-widget="True"/>
+	<property id="preview-widget" parentless-widget="True"/>
+	<property id="filter"/>
       </properties>
     </glade-widget-class>
 
@@ -898,8 +898,6 @@ embedded in another object</_tooltip>
       <properties>
         <property id="popup-shown" since="2.10"/>
         <property id="tearoff-title" since="2.10"/>
-        <property id="model" disabled="True"/>
-        <property id="model" disabled="True"/>
         <property id="active" ignore="True"/>
         <property id="column-span-column" ignore="True"/>
         <property id="row-span-column" ignore="True"/>
@@ -935,8 +933,8 @@ embedded in another object</_tooltip>
 	    <value id="GTK_TREE_VIEW_GRID_LINES_BOTH" _name="Horizontal and Vertical"/>
 	  </displayable-values>
 	</property>
-        <property id="hadjustment" disabled="True"/>
-	<property id="vadjustment" disabled="True"/>
+        <property id="hadjustment"/>
+	<property id="vadjustment"/>
       </properties>
     </glade-widget-class>
 
@@ -965,7 +963,6 @@ embedded in another object</_tooltip>
         <property id="text" translatable="True"/>
         <property id="activity-blocks" disabled="True"/>
 	<property id="activity-step" disabled="True"/>
-	<property id="adjustment" disabled="True"/>
 	<property id="bar-style" disabled="True"/>
        	<property id="orientation">
   	  <displayable-values>
@@ -1334,10 +1331,6 @@ embedded in another object</_tooltip>
       <post-create-function>glade_gtk_fixed_layout_post_create</post-create-function>
       <add-child-function>glade_gtk_fixed_layout_add_child</add-child-function>
       <remove-child-function>glade_gtk_fixed_layout_remove_child</remove-child-function> 
-      <properties>
-        <property id="hadjustment" disabled="True"/>
-	<property id="vadjustment" disabled="True"/>
-      </properties>
     </glade-widget-class>
     
     <glade-widget-class name="GtkFixed" generic-name="fixed" _title="Fixed" fixed="True" use-placeholders="False">
@@ -1373,8 +1366,6 @@ embedded in another object</_tooltip>
     
     <glade-widget-class name="GtkViewport" generic-name="viewport" _title="Viewport">
       <properties>
-        <property id="hadjustment" disabled="True"/>
-	<property id="vadjustment" disabled="True"/>
       	<property id="shadow-type">
   	  <displayable-values>
 	    <value id="GTK_SHADOW_NONE" _name="None"/>
@@ -1390,8 +1381,6 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkScrolledWindow" generic-name="scrolledwindow" _title="Scrolled Window">
       <properties>
         <property id="can-focus" save-always="True"/>
-        <property id="hadjustment" disabled="True"/>
-        <property id="vadjustment" disabled="True"/>
         <property id="window-placement-set" since="2.10" ignore="True"/>
       	<property id="shadow-type">
   	  <displayable-values>
@@ -1472,9 +1461,9 @@ embedded in another object</_tooltip>
 	    <value id="GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER" _name="Create Folder"/>
 	  </displayable-values>
 	</property>
-	<property id="extra-widget" disabled="True" />
-	<property id="preview-widget" disabled="True" />
-	<property id="filter" disabled="True" />
+	<property id="extra-widget" parentless-widget="True" />
+	<property id="preview-widget" parentless-widget="True" />
+	<property id="filter"/>
       </properties>
     </glade-widget-class>
     

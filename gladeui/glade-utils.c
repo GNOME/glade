@@ -1439,16 +1439,19 @@ glade_util_class_implements_interface (GType class_type,
 	return implemented;
 }
 
-
 static GModule *
 try_load_library (const gchar *library_path,
 		  const gchar *library_name)
 {
-	GModule *module;
+	GModule *module = NULL;
 	gchar   *path;
 
 	path = g_module_build_path (library_path, library_name);
-	module = g_module_open (path, G_MODULE_BIND_LAZY);
+	if (g_file_test (path, G_FILE_TEST_EXISTS))
+	{
+		if (!(module = g_module_open (path, G_MODULE_BIND_LAZY)))
+			g_warning ("Failed to load %s: %s", path, g_module_error ());
+	}
 	g_free (path);
 
 	return module;
