@@ -1,3 +1,18 @@
+2008-09-21  Tristan Van Berkom <tvb@gnome.org>
+
+	* plugins/gtk+/glade-gtk.c: Set sizegroup_add action sensitive/insensitive
+	  depending on project format
+
+	* plugins/gtk+/gtk+.xml.in: Set libglade-unsupported && create-type on alot of properties
+
+	* gladeui/glade-editor-property.c: Set eprop insensitive also if its in an unsupported
+	  format
+
+	* gladeui/glade-xml-utils.h, gladeui/glade-property-class.c: Added "create-type"
+
+	* gladeui/glade-property.[ch]: Now property states can be flagged and
+	  also include format_disabled state.
+
 2008-09-20  Tristan Van Berkom <tvb@gnome.org>
 
 	* TODO: Updated.

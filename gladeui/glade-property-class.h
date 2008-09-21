@@ -169,6 +169,11 @@ struct _GladePropertyClass
 	gboolean parentless_widget;  /* True if this property should point to a parentless widget
 				      * in the project
 				      */
+
+	gchar *create_type; /* If this is an object property and you want the option to create
+			     * one from the object selection dialog, then set the name of the
+			     * concrete type here.
+			     */
 };
 
 

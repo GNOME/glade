@@ -323,7 +323,7 @@ update_model (GladeInspector *inspector)
 		GladeWidget *gwidget = glade_widget_get_from_gobject (object);
 		g_assert (gwidget);
 
-		if (gwidget->parent == NULL && GTK_IS_WINDOW (object))
+		if (gwidget->parent == NULL && GTK_IS_WIDGET (object))
 			toplevels = g_list_prepend (toplevels, object);
 	}
 	toplevels = g_list_reverse (toplevels);
@@ -342,7 +342,7 @@ update_model (GladeInspector *inspector)
 		GladeWidget *gwidget = glade_widget_get_from_gobject (object);
 		g_assert (gwidget);
 
-		if (gwidget->parent == NULL && !GTK_IS_WINDOW (object))
+		if (gwidget->parent == NULL && !GTK_IS_WIDGET (object))
 			toplevels = g_list_prepend (toplevels, object);
 	}
 	toplevels = g_list_reverse (toplevels);
@@ -374,7 +374,7 @@ project_add_widget_cb (GladeProject   *project,
 	
 	if (!parent_iter)
 	{
-		if (GTK_IS_WINDOW (widget->object))
+		if (GTK_IS_WIDGET (widget->object))
 			parent_iter = &inspector->priv->widgets_iter;
 		else
 			parent_iter = &inspector->priv->objects_iter;

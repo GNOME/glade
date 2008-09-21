@@ -46,7 +46,6 @@
 	<action id="sizegroup_add" _name="Add to Size Group"/>
       </actions>
 
-
       <properties>
 	<property id="tooltip-text" since="2.12"/>
 	<property id="tooltip-markup" since="2.12"/>
@@ -526,8 +525,8 @@ embedded in another object</_tooltip>
 
       <set-property-function>glade_gtk_tool_button_set_property</set-property-function>
       <properties>
-        <property id="icon-widget" parentless-widget="True"/>
-	<property id="label-widget" parentless-widget="True"/>
+        <property id="icon-widget" parentless-widget="True" libglade-unsupported="True"/>
+	<property id="label-widget" parentless-widget="True" libglade-unsupported="True"/>
         <property id="glade-type" _name="Image Type" save="False">
 	  <spec>glade_gtk_image_type_spec</spec>
            <displayable-values>
@@ -680,7 +679,7 @@ embedded in another object</_tooltip>
 	    <value id="GTK_WRAP_WORD_CHAR" _name="Word Character"/>
 	  </displayable-values>
 	</property>
-x	<property id="buffer"/>
+	<property id="buffer" libglade-unsupported="True"/>
       </properties>
     </glade-widget-class>
 
@@ -692,7 +691,7 @@ x	<property id="buffer"/>
       <set-property-function>glade_gtk_button_set_property</set-property-function>
 
       <properties>
-	<property id="image" parentless-widget="True"/>
+	<property id="image" parentless-widget="True" create-type="GtkImage" libglade-unsupported="True"/>
 	<property id="use-stock" visible="False"/>
 
       	<property id="label" default="button" translatable="True">
@@ -813,7 +812,7 @@ x	<property id="buffer"/>
       <properties>
 	<property id="title" translatable="True"/>
 	<property id="size" disabled="True"/>
-	<property id="dialog" parentless-widget="True"/>
+	<property id="dialog" parentless-widget="True" create-type="GtkFileChooserDialog" libglade-unsupported="True"/>
 	<property id="focus-on-click" since="2.10"/>
         <property id="action">
   	  <displayable-values>
@@ -823,9 +822,9 @@ x	<property id="buffer"/>
 	    <value id="GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER" _name="Create Folder"/>
 	  </displayable-values>
         </property>
-	<property id="extra-widget" parentless-widget="True"/>
-	<property id="preview-widget" parentless-widget="True"/>
-	<property id="filter"/>
+	<property id="extra-widget" parentless-widget="True" libglade-unsupported="True"/>
+	<property id="preview-widget" parentless-widget="True" libglade-unsupported="True"/>
+	<property id="filter" libglade-unsupported="True"/>
       </properties>
     </glade-widget-class>
 
@@ -859,9 +858,9 @@ x	<property id="buffer"/>
 	    <value id="GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER" _name="Create Folder"/>
 	  </displayable-values>
         </property>
-	<property id="extra-widget" parentless-widget="True"/>
-	<property id="preview-widget" parentless-widget="True"/>
-	<property id="filter"/>
+	<property id="extra-widget" parentless-widget="True" libglade-unsupported="True"/>
+	<property id="preview-widget" parentless-widget="True" libglade-unsupported="True"/>
+	<property id="filter" libglade-unsupported="True"/>
       </properties>
     </glade-widget-class>
 
@@ -936,8 +935,8 @@ x	<property id="buffer"/>
 	    <value id="GTK_TREE_VIEW_GRID_LINES_BOTH" _name="Horizontal and Vertical"/>
 	  </displayable-values>
 	</property>
-        <property id="hadjustment"/>
-	<property id="vadjustment"/>
+        <property id="hadjustment" libglade-unsupported="True"/>
+	<property id="vadjustment" libglade-unsupported="True"/>
       </properties>
     </glade-widget-class>
 

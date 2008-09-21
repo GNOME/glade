@@ -2143,7 +2143,7 @@ glade_command_set_format_undo(GladeCommand *cmd)
 static void
 glade_command_set_format_finalize(GObject *obj)
 {
-	GladeCommandSetFormat	*me;
+/* 	GladeCommandSetFormat	*me; */
 	
 	g_return_if_fail(GLADE_IS_COMMAND_SET_FORMAT(obj));
 	
@@ -2153,8 +2153,8 @@ glade_command_set_format_finalize(GObject *obj)
 static gboolean
 glade_command_set_format_unifies (GladeCommand *this_cmd, GladeCommand *other_cmd)
 {
-	GladeCommandSetFormat *cmd1;
-	GladeCommandSetFormat *cmd2;
+/* 	GladeCommandSetFormat *cmd1; */
+/* 	GladeCommandSetFormat *cmd2; */
 
 	return FALSE;
 }
@@ -2163,10 +2163,10 @@ static void
 glade_command_set_format_collapse (GladeCommand *this_cmd, GladeCommand *other_cmd)
 {
 	/* this command is the one that will be used for an undo of the sequence of like commands */
-	GladeCommandSetFormat *this = GLADE_COMMAND_SET_FORMAT (this_cmd);
+	//GladeCommandSetFormat *this = GLADE_COMMAND_SET_FORMAT (this_cmd);
 	
 	/* the other command contains the values that will be used for a redo */
-	GladeCommandSetFormat *other = GLADE_COMMAND_SET_FORMAT (other_cmd);
+	//GladeCommandSetFormat *other = GLADE_COMMAND_SET_FORMAT (other_cmd);
 
 	g_return_if_fail (GLADE_IS_COMMAND_SET_FORMAT (this_cmd) && GLADE_IS_COMMAND_SET_FORMAT (other_cmd));
 

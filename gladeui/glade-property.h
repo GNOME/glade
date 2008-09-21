@@ -16,11 +16,10 @@ G_BEGIN_DECLS
 typedef struct _GladePropertyKlass GladePropertyKlass;
 
 typedef enum {
-	GLADE_STATE_NORMAL = 0,
-	GLADE_STATE_CHANGED,
-	GLADE_STATE_UNSUPPORTED,	
-	GLADE_STATE_UNSUPPORTED_CHANGED,
-	GLADE_N_STATES
+	GLADE_STATE_NORMAL              = 0,
+	GLADE_STATE_CHANGED             = (1 << 0),
+	GLADE_STATE_UNSUPPORTED         = (1 << 1),
+	GLADE_STATE_SUPPORT_DISABLED    = (1 << 2)
 } GladePropertyState;
 
 /* A GladeProperty is an instance of a GladePropertyClass.
@@ -57,6 +56,9 @@ struct _GladeProperty
 					      * (used to explain why the property is 
 					      *  insensitive)
 					      */
+	gboolean            support_disabled; /* Whether this property is disabled due
+					       * to format conflicts
+					       */
 
 	gboolean            enabled;   /* Enabled is a flag that is used for GladeProperties
 					* that have the optional flag set to let us know
@@ -171,6 +173,7 @@ void                    glade_property_set_sensitive         (GladeProperty     
 							      const gchar        *reason);
 
 void                    glade_property_set_support_warning   (GladeProperty      *property,
+							      gboolean            disable,
 							      const gchar        *reason);
 
 gboolean                glade_property_get_sensitive         (GladeProperty      *property);

@@ -1567,7 +1567,7 @@ glade_project_verify_property (GladeProject   *project,
 	{
 		if (forwidget)
 			glade_property_set_support_warning
-				(property, _("This property is not supported in libglade format"));
+				(property, TRUE, _("This property is not supported in libglade format"));
 		else
 			/* translators: reffers to a property '%s' of widget '[%s]' 
 			 * introduced in toolkit version '%s %d.%d' */
@@ -1587,7 +1587,7 @@ glade_project_verify_property (GladeProject   *project,
 	{
 		if (forwidget)
 			glade_property_set_support_warning
-				(property, _("This property is only supported in libglade format"));
+				(property, TRUE, _("This property is only supported in libglade format"));
 		else
 			/* translators: reffers to a property '%s' of widget '[%s]' 
 			 * introduced in toolkit version '%s %d.%d' */
@@ -1620,7 +1620,7 @@ glade_project_verify_property (GladeProject   *project,
 				 catalog,
 				 target_major, target_minor);
 
-			glade_property_set_support_warning (property, tooltip);
+			glade_property_set_support_warning (property, FALSE, tooltip);
 			g_free (tooltip);
 		}
 		else
@@ -1640,7 +1640,7 @@ glade_project_verify_property (GladeProject   *project,
 				 property->klass->version_since_minor);
 	} 
 	else if (forwidget)
-		glade_property_set_support_warning (property, NULL);
+		glade_property_set_support_warning (property, FALSE, NULL);
 
 	g_free (catalog);
 }

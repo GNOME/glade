@@ -221,29 +221,15 @@ glade_property_fix_state (GladeProperty *property)
 {
 	property->state = GLADE_STATE_NORMAL;
 
-	if (!property->sensitive)
-		property->state = GLADE_STATE_NORMAL;
-	else if (property->support_warning)
-	{
-		if (property->enabled)
-		{
-			if (glade_property_original_default (property))
-				property->state = GLADE_STATE_UNSUPPORTED;
-			else 
-				property->state = GLADE_STATE_UNSUPPORTED_CHANGED;
-		}
-	}
-	else
-	{
-		if (property->enabled)
-		{
-			if (glade_property_original_default (property))
-				property->state = GLADE_STATE_NORMAL;
-			else 
-				property->state = GLADE_STATE_CHANGED;
-		}
-	}
+	if (!glade_property_original_default (property))
+		property->state = GLADE_STATE_CHANGED;
 
+	if (property->support_warning)
+		property->state |= GLADE_STATE_UNSUPPORTED;
+
+	if (property->support_disabled)
+		property->state |= GLADE_STATE_SUPPORT_DISABLED;
+		
 	g_object_notify (G_OBJECT (property), "state");
 }
 
@@ -576,7 +562,7 @@ glade_property_klass_init (GladePropertyKlass *prop_class)
 		 ("state", _("Visual State"), 
 		  _("Priority information for the property editor to act on"),
 		  GLADE_STATE_NORMAL,
-		  GLADE_N_STATES - 1,
+		  G_MAXINT,
 		  GLADE_STATE_NORMAL, 
 		  G_PARAM_READABLE));
 
@@ -1418,6 +1404,7 @@ glade_property_get_sensitive (GladeProperty *property)
 
 void
 glade_property_set_support_warning (GladeProperty      *property,
+				    gboolean            disable,
 				    const gchar        *reason)
 {
 	g_return_if_fail (GLADE_IS_PROPERTY (property));
@@ -1425,6 +1412,8 @@ glade_property_set_support_warning (GladeProperty      *property,
 	if (property->support_warning)
 		g_free (property->support_warning);
 	property->support_warning = g_strdup (reason);
+
+	property->support_disabled = disable;
 
 	g_signal_emit (G_OBJECT (property),
 		       glade_property_signals[TOOLTIP_CHANGED],

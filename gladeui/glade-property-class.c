@@ -1534,6 +1534,13 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 		klass->factory_stock_id = buf;
 	}
 
+	if ((buf = glade_xml_get_property_string
+	     (node, GLADE_TAG_CREATE_TYPE)) != NULL)
+	{
+		if (klass->create_type)
+			g_free (klass->create_type);
+		klass->create_type = buf;
+	}
 
 	/* If this property's value is an enumeration or flag then we try to get the displayable values */
 	if ((G_IS_PARAM_SPEC_ENUM(klass->pspec) || G_IS_PARAM_SPEC_FLAGS(klass->pspec)) &&

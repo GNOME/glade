@@ -149,12 +149,13 @@ glade_editor_property_sensitivity_cb (GladeProperty       *property,
 				      GladeEditorProperty *eprop)
 {
 	gboolean sensitive = glade_property_get_sensitive (eprop->property);
+	gboolean support_sensitive = (eprop->property->state & GLADE_STATE_SUPPORT_DISABLED) == 0;
 
-        gtk_widget_set_sensitive (eprop->item_label, sensitive);
-        gtk_widget_set_sensitive (eprop->input, sensitive &&
-                                                glade_property_get_enabled (property));
+        gtk_widget_set_sensitive (eprop->item_label, sensitive && support_sensitive);
+        gtk_widget_set_sensitive (eprop->input, sensitive && support_sensitive && 
+				  glade_property_get_enabled (property));
 	if (eprop->check)
-		gtk_widget_set_sensitive (eprop->check, sensitive);
+		gtk_widget_set_sensitive (eprop->check, sensitive && support_sensitive);
 }
 
 static void
@@ -176,37 +177,21 @@ glade_editor_property_fix_label (GladeEditorProperty *eprop)
 		return;
 
 	/* refresh label */
-	switch (eprop->property->state) 
-	{
-	case GLADE_STATE_NORMAL:
-	case GLADE_STATE_UNSUPPORTED:
-		text = g_strdup_printf ("%s:", eprop->klass->name);
-		break;
-	case GLADE_STATE_CHANGED:
-	case GLADE_STATE_UNSUPPORTED_CHANGED:
+	if ((eprop->property->state & GLADE_STATE_CHANGED) != 0)
 		text = g_strdup_printf ("<b>%s:</b>", eprop->klass->name);
-		break;
-	default:
-		g_assert_not_reached ();
-	}
-
-	/* refresh icon */
-	switch (eprop->property->state) 
-	{
-	case GLADE_STATE_NORMAL:
-	case GLADE_STATE_CHANGED:
-		gtk_widget_hide (eprop->warning);
-		break;
-	case GLADE_STATE_UNSUPPORTED:
-	case GLADE_STATE_UNSUPPORTED_CHANGED:
-		gtk_widget_show (eprop->warning);
-		break;
-	default:
-		g_assert_not_reached ();
-	}
-
+	else
+		text = g_strdup_printf ("%s:", eprop->klass->name);
 	gtk_label_set_markup (GTK_LABEL (eprop->label), text);
 	g_free (text);
+
+	/* refresh icon */
+	if ((eprop->property->state & GLADE_STATE_UNSUPPORTED) != 0)
+		gtk_widget_show (eprop->warning);
+	else
+		gtk_widget_hide (eprop->warning);
+
+	/* check sensitivity */
+	glade_editor_property_sensitivity_cb (eprop->property, NULL, eprop);
 }
 
 static void
@@ -229,10 +214,11 @@ glade_editor_property_enabled_cb (GladeProperty       *property,
 	{
 		enabled = glade_property_get_enabled (property);
 
-		/* sensitive = enabled && sensitive */
+		/* sensitive = enabled && support enabled && sensitive */
 		if (enabled == FALSE)
 			gtk_widget_set_sensitive (eprop->input, FALSE);
-		else if (glade_property_get_sensitive (property))
+		else if (glade_property_get_sensitive (property) ||
+			 (property->state & GLADE_STATE_SUPPORT_DISABLED) != 0)
 			gtk_widget_set_sensitive (eprop->input, TRUE);
 
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (eprop->check), enabled);
@@ -2294,6 +2280,7 @@ enum {
 };
 
 #define GLADE_RESPONSE_CLEAR  42
+#define GLADE_RESPONSE_CREATE 43
 
 typedef struct {
 	GladeEditorProperty parent_instance;
@@ -2610,7 +2597,7 @@ glade_eprop_object_dialog_title (GladeEditorProperty *eprop)
 	GladeWidgetAdaptor *adaptor;
 	const gchar        *format = 
 		GLADE_IS_PARAM_SPEC_OBJECTS (eprop->klass->pspec) ?
-		_("Choose %s implementors") : _("Choose a %s in this project");
+		_("Choose %s(s) in this project") : _("Choose a %s in this project");
 
 	if (GLADE_IS_PARAM_SPEC_OBJECTS (eprop->klass->pspec))
 		return g_strdup_printf (format, g_type_name 
@@ -2638,25 +2625,53 @@ glade_eprop_object_show_dialog (GtkWidget           *dialog_button,
 	GladeProject  *project;
 	gchar         *title = glade_eprop_object_dialog_title (eprop);
 	gint           res;
-
+	GladeWidgetAdaptor *create_adaptor = NULL;
 	
 	project = glade_widget_get_project (eprop->property->widget);
 	parent = gtk_widget_get_toplevel (GTK_WIDGET (eprop));
 
-	dialog = gtk_dialog_new_with_buttons (title,
-					      GTK_WINDOW (parent),
-					      GTK_DIALOG_MODAL,
-					      GTK_STOCK_CLEAR, GLADE_RESPONSE_CLEAR,
-					      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-					      GTK_STOCK_OK, GTK_RESPONSE_OK,
-					      NULL);
-	g_free (title);
-	
-	gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-						 GTK_RESPONSE_OK,
-						 GTK_RESPONSE_CANCEL,
-						 GLADE_RESPONSE_CLEAR,
-						 -1);
+	if (eprop->property->klass->create_type)
+		create_adaptor = glade_widget_adaptor_get_by_name (eprop->property->klass->create_type);
+	if (!create_adaptor)
+		create_adaptor = glade_widget_adaptor_get_by_type (eprop->klass->pspec->value_type);
+
+	if (create_adaptor)
+	{
+		dialog = gtk_dialog_new_with_buttons (title,
+						      GTK_WINDOW (parent),
+						      GTK_DIALOG_MODAL,
+						      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+						      GTK_STOCK_CLEAR, GLADE_RESPONSE_CLEAR,
+						      _("_New"), GLADE_RESPONSE_CREATE,
+						      GTK_STOCK_OK, GTK_RESPONSE_OK,
+						      NULL);
+		g_free (title);
+		
+		gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+							 GTK_RESPONSE_OK,
+							 GLADE_RESPONSE_CREATE,
+							 GTK_RESPONSE_CANCEL,
+							 GLADE_RESPONSE_CLEAR,
+							 -1);
+	}
+	else
+	{
+		dialog = gtk_dialog_new_with_buttons (title,
+						      GTK_WINDOW (parent),
+						      GTK_DIALOG_MODAL,
+						      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+						      GTK_STOCK_CLEAR, GLADE_RESPONSE_CLEAR,
+						      GTK_STOCK_OK, GTK_RESPONSE_OK,
+						      NULL);
+		g_free (title);
+		
+		gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+							 GTK_RESPONSE_OK,
+							 GTK_RESPONSE_CANCEL,
+							 GLADE_RESPONSE_CLEAR,
+							 -1);
+	}
+		
 	
 	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
@@ -2758,6 +2773,29 @@ glade_eprop_object_show_dialog (GtkWidget           *dialog_button,
 			g_free (value);
 		}
 	} 
+	else if (res == GLADE_RESPONSE_CREATE)
+	{
+		GValue *value;
+		GladeWidget *new_widget;
+		/* translators: Creating 'a widget' for 'a property' of 'a widget' */
+		gchar *desc = g_strdup_printf (_("Creating %s for %s of %s"),
+					       create_adaptor->name,
+					       eprop->property->klass->name, 
+					       eprop->property->widget->name);
+		glade_command_push_group (desc);
+		g_free (desc);
+
+		/* Dont bother if the user canceled the widget */
+		if ((new_widget = glade_command_create (create_adaptor, NULL, NULL, project)) != NULL)
+		{
+			value = glade_property_class_make_gvalue_from_string
+				(eprop->klass, new_widget->name, project);
+
+			glade_editor_property_commit (eprop, value);
+		}
+
+		glade_command_pop_group ();
+	}
 	else if (res == GLADE_RESPONSE_CLEAR)
 	{
 		GValue *value = glade_property_class_make_gvalue_from_string

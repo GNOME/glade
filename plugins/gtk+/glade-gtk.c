@@ -1086,6 +1086,39 @@ widget_parent_changed (GtkWidget          *widget,
 		glade_widget_set_action_sensitive (gwidget, "add_parent", FALSE);	
 }
 
+
+static void
+widget_format_changed (GladeProject *project, 
+		       GParamSpec   *pspec,
+		       GladeWidget  *gwidget)
+{
+	if (glade_project_get_format (project) == GLADE_PROJECT_FORMAT_LIBGLADE)
+		glade_widget_set_action_sensitive (gwidget, "sizegroup_add", FALSE);
+	else
+		glade_widget_set_action_sensitive (gwidget, "sizegroup_add", TRUE);
+}
+
+static void
+widget_project_changed (GladeWidget *gwidget, 
+			GParamSpec  *pspec,
+			gpointer     userdata)
+{
+	GladeProject
+		*project = glade_widget_get_project (gwidget),
+		*old_project = g_object_get_data (G_OBJECT (gwidget), "notebook-project-ptr");
+	
+	if (old_project)
+		g_signal_handlers_disconnect_by_func (G_OBJECT (old_project), 
+						      G_CALLBACK (widget_format_changed),
+						      gwidget);
+
+	if (project)
+		g_signal_connect (G_OBJECT (project), "notify::format", 
+				  G_CALLBACK (widget_format_changed), gwidget);
+
+	g_object_set_data (G_OBJECT (gwidget), "notebook-project-ptr", project);
+}
+
 void
 glade_gtk_widget_deep_post_create (GladeWidgetAdaptor *adaptor,
 				   GObject            *widget, 
@@ -1103,9 +1136,14 @@ glade_gtk_widget_deep_post_create (GladeWidgetAdaptor *adaptor,
 	if (GTK_IS_WINDOW (widget) || gwidget->internal)
 		glade_widget_set_action_sensitive (gwidget, "add_parent", FALSE);
 
-	/* Watch parents and set actions sensitive/insensitive */
+	/* Watch parents/projects and set actions sensitive/insensitive */
 	g_signal_connect (G_OBJECT (widget), "notify::parent",
 			  G_CALLBACK (widget_parent_changed), adaptor);
+
+	g_signal_connect (G_OBJECT (gwidget), "notify::project",
+			  G_CALLBACK (widget_project_changed), NULL);
+
+	widget_project_changed (gwidget, NULL, NULL);
 }
 
 
@@ -3772,6 +3810,7 @@ glade_gtk_notebook_selection_changed (GladeProject *project,
 
 static void
 glade_gtk_notebook_project_changed (GladeWidget *gwidget, 
+				    GParamSpec  *pspec,
 				    gpointer     userdata)
 {
 	GladeProject
@@ -3802,7 +3841,7 @@ glade_gtk_notebook_post_create (GladeWidgetAdaptor *adaptor,
 	g_signal_connect (G_OBJECT (gwidget), "notify::project",
 			  G_CALLBACK (glade_gtk_notebook_project_changed), NULL);
 
-	glade_gtk_notebook_project_changed (gwidget, NULL);
+	glade_gtk_notebook_project_changed (gwidget, NULL, NULL);
 
 	g_signal_connect (G_OBJECT (notebook), "switch-page",
 			  G_CALLBACK (glade_gtk_notebook_switch_page), NULL);
