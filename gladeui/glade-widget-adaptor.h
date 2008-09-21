@@ -327,6 +327,26 @@ typedef void     (* GladeReplaceChildFunc)        (GladeWidgetAdaptor *adaptor,
 						   GObject            *old_obj,
 						   GObject            *new_obj);
 
+
+/**
+ * GladeConstructObjectFunc:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @n_parameters: amount of construct parameters
+ * @parameters: array of construct #GParameter args to create 
+ *              the new object with.
+ *
+ * This function is called to construct a GObject instance.
+ * (for language bindings that may need to construct a wrapper
+ * object).
+ *
+ * Returns: A newly created #GObject
+ */
+typedef GObject *(* GladeConstructObjectFunc)     (GladeWidgetAdaptor *adaptor,
+						   guint               n_parameters,
+						   GParameter         *parameters);
+
+
+
 /**
  * GladePostCreateFunc:
  * @object: a #GObject
@@ -563,6 +583,9 @@ struct _GladeWidgetAdaptorClass
 	gint                       default_width;  /* Default width in GladeDesignLayout */
 	gint                       default_height; /* Default height in GladeDesignLayout */
 
+	GladeConstructObjectFunc   construct_object;  /* Object constructor
+						       */
+
 	GladePostCreateFunc        deep_post_create;   /* Executed after widget creation: 
 							* plugins use this to setup various
 							* support codes (adaptors must always
@@ -688,6 +711,10 @@ GladePropertyClass  *glade_widget_adaptor_get_pack_property_class (GladeWidgetAd
 GParameter          *glade_widget_adaptor_default_params     (GladeWidgetAdaptor *adaptor,
 							      gboolean            construct,
 							      guint              *n_params);
+
+GObject             *glade_widget_adaptor_construct_object   (GladeWidgetAdaptor *adaptor,
+							      guint               n_parameters,
+							      GParameter         *parameters);
 
 void                 glade_widget_adaptor_post_create        (GladeWidgetAdaptor *adaptor,
 							      GObject            *object,

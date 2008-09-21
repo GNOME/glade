@@ -797,6 +797,15 @@ glade_widget_adaptor_real_get_property (GObject         *object,
 /*******************************************************************************
                   GladeWidgetAdaptor base class implementations
  *******************************************************************************/
+static GObject *
+glade_widget_adaptor_object_construct_object (GladeWidgetAdaptor *adaptor,
+					      guint               n_parameters,
+					      GParameter         *parameters)
+{
+	return g_object_newv (adaptor->type, n_parameters, parameters);
+}
+
+
 static void
 glade_widget_adaptor_object_set_property (GladeWidgetAdaptor *adaptor,
 					  GObject            *object,
@@ -1162,6 +1171,7 @@ glade_widget_adaptor_class_init (GladeWidgetAdaptorClass *adaptor_class)
 	object_class->get_property          = glade_widget_adaptor_real_get_property;
 
 	/* Class methods */
+	adaptor_class->construct_object     = glade_widget_adaptor_object_construct_object;
 	adaptor_class->deep_post_create     = NULL;
 	adaptor_class->post_create          = NULL;
 	adaptor_class->get_internal_child   = NULL;
@@ -1350,6 +1360,11 @@ gwa_extend_with_node_load_sym (GladeWidgetAdaptorClass *klass,
 					  GLADE_TAG_CONSTRUCTOR_FUNCTION,
 					  &symbol))
 		object_class->constructor = symbol;
+
+	if (glade_xml_load_sym_from_node (node, module,
+					  GLADE_TAG_CONSTRUCT_OBJECT_FUNCTION,
+					  &symbol))
+		klass->construct_object = symbol;
 
 	if (glade_xml_load_sym_from_node (node, module,
 					  GLADE_TAG_DEEP_POST_CREATE_FUNCTION,
@@ -2495,6 +2510,28 @@ glade_widget_adaptor_default_params (GladeWidgetAdaptor *adaptor,
 	return (GParameter *)g_array_free (params, FALSE);
 }
 
+/**
+ * glade_widget_adaptor_construct_object:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @n_parameters: amount of construct parameters
+ * @parameters: array of construct #GParameter args to create 
+ *              the new object with.
+ *
+ * This function is called to construct a GObject instance for
+ * a #GladeWidget of the said @adaptor. (provided for language 
+ * bindings that may need to construct a wrapper object).
+ *
+ * Returns: A newly created #GObject
+ */
+GObject *
+glade_widget_adaptor_construct_object (GladeWidgetAdaptor *adaptor,
+				       guint               n_parameters,
+				       GParameter         *parameters)
+{
+	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
+
+	return GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->construct_object (adaptor, n_parameters, parameters);
+}
 
 /**
  * glade_widget_adaptor_post_create:
