@@ -1738,7 +1738,8 @@ x	<property id="buffer"/>
 	</property>
       </properties>
     </glade-widget-class>
-
+    
+    <!-- Objects -->
     <glade-widget-class name="GtkSizeGroup" generic-name="sizegroup" _title="Size Group" libglade-unsupported="True">
       <read-widget-function>glade_gtk_size_group_read_widget</read-widget-function>
       <write-widget-function>glade_gtk_size_group_write_widget</write-widget-function>
@@ -1750,13 +1751,35 @@ x	<property id="buffer"/>
 	</property>
       </properties>
     </glade-widget-class>
+
+    <glade-widget-class name="GtkWindowGroup" generic-name="windowgroup" _title="Window Group" libglade-unsupported="True"/>
     <glade-widget-class name="GtkAdjustment" generic-name="adjustment" _title="Adjustment" libglade-unsupported="True"/>
+
+
+    <glade-widget-class name="GtkAction" generic-name="action" _title="Action" libglade-unsupported="True"/>
+    <glade-widget-class name="GtkToggleAction" generic-name="toggleaction" _title="Toggle Action" libglade-unsupported="True"/>
+    <glade-widget-class name="GtkRadioAction" generic-name="radioaction" _title="Radio Action" libglade-unsupported="True"/>
+    <glade-widget-class name="GtkRecentAction" generic-name="recentaction" _title="Recent Action" libglade-unsupported="True" since="2.12"/>
+    <glade-widget-class name="GtkActionGroup" generic-name="actiongroup" _title="Action Group" libglade-unsupported="True"/>
+    <glade-widget-class name="GtkEntryCompletion" generic-name="entrycompletion" _title="Entry Completion" libglade-unsupported="True"/>
+    <glade-widget-class name="GtkIconFactory" generic-name="iconfactory" _title="Icon Factory" libglade-unsupported="True"/>
+
+    <glade-widget-class name="GtkListStore" generic-name="liststore" _title="List Store" libglade-unsupported="True"/>
+    <glade-widget-class name="GtkTreeStore" generic-name="treestore" _title="Tree Store" libglade-unsupported="True"/>
+    <glade-widget-class name="GtkTreeModelFilter" generic-name="treemodelfilter" _title="Tree Model Filter" libglade-unsupported="True"/>
+    <glade-widget-class name="GtkTreeModelSort" generic-name="treemodelsort" _title="Tree Model Sort" libglade-unsupported="True"/>
+    <glade-widget-class name="GtkTreeSelection" generic-name="treeselection" _title="Tree Selection" libglade-unsupported="True"/>
+
+
+    <glade-widget-class name="GtkStatusIcon" generic-name="statusicon" _title="Status Icon" libglade-unsupported="True"/>
+
 
     <glade-widget-class name="GtkTextBuffer" generic-name="textbuffer" _title="Text Buffer" libglade-unsupported="True"/>
     <glade-widget-class name="GtkTextTag" generic-name="texttag" _title="Text Tag" libglade-unsupported="True"/>
     <glade-widget-class name="GtkTextTagTable" generic-name="texttagtable" _title="Text Tag Table" libglade-unsupported="True"/>
 
     <glade-widget-class name="GtkFileFilter" generic-name="filefilter" _title="File Filter" libglade-unsupported="True"/>
+
   </glade-widget-classes>
   
   <glade-widget-group name="gtk-toplevels" _title="Toplevels">
@@ -1844,7 +1867,24 @@ x	<property id="buffer"/>
 
   <glade-widget-group name="gtk-objects" title="Objects">
     <glade-widget-class-ref name="GtkSizeGroup"/>
+    <glade-widget-class-ref name="GtkWindowGroup"/>
+
     <glade-widget-class-ref name="GtkAdjustment"/>
+
+    <glade-widget-class-ref name="GtkAction"/>
+    <glade-widget-class-ref name="GtkToggleAction"/>
+    <glade-widget-class-ref name="GtkRadioAction"/>
+    <glade-widget-class-ref name="GtkRecentAction"/>
+    <glade-widget-class-ref name="GtkActionGroup"/>
+    <glade-widget-class-ref name="GtkEntryCompletion"/>
+    <glade-widget-class-ref name="GtkIconFactory"/>
+
+    <glade-widget-class-ref name="GtkListStore"/>
+    <glade-widget-class-ref name="GtkTreeStore"/>
+    <glade-widget-class-ref name="GtkTreeModelFilter"/>
+    <glade-widget-class-ref name="GtkTreeModelSort"/>
+    <glade-widget-class-ref name="GtkTreeSelection"/>
+    <glade-widget-class-ref name="GtkStatusIcon"/>
 
     <glade-widget-class-ref name="GtkTextBuffer"/>
     <glade-widget-class-ref name="GtkTextTag"/>
