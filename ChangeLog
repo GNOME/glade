@@ -1,3 +1,11 @@
+2008-09-22  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* plugins/gtk+/glade-gtk.c: fixed bug #543314 
+	  "Crash when adding an Input DIalog"
+	  added glade_gtk_dialog_stop_offending_signals()
+	  to stop "hierarchy-changed" and "screen-changed"
+	  default handlers in GtkInputDialog and GtkFileChooserWidget
+
 2008-09-22  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-editor-property.c: Fixed adjustments when values are null in
@@ -25,7 +33,7 @@
 
 	* gladeui/glade-palette.c, gladeui/glade-app.c: Moved toplevel widget creation
 	code from gladeapp to gladepalette.
-	
+
 2008-09-21  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/glade-gtk.c: Set sizegroup_add action sensitive/insensitive

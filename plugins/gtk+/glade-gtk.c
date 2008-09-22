@@ -4791,34 +4791,40 @@ glade_gtk_window_post_create (GladeWidgetAdaptor *adaptor,
 
 /* ----------------------------- GtkDialog(s) ------------------------------ */
 static void
-glade_gtk_file_chooser_default_forall (GtkWidget *widget, gpointer data)
+glade_gtk_dialog_stop_offending_signals (GtkWidget *widget)
 {
 	static gpointer hierarchy = NULL, screen;
 	
+	if (hierarchy == NULL)
+	{
+		hierarchy = GUINT_TO_POINTER (g_signal_lookup ("hierarchy-changed",
+							       GTK_TYPE_WIDGET));
+		screen = GUINT_TO_POINTER (g_signal_lookup ("screen-changed",
+							    GTK_TYPE_WIDGET));
+	}
+	
+	g_signal_connect (widget, "hierarchy-changed",
+			  G_CALLBACK (glade_gtk_stop_emission_POINTER),
+			  hierarchy);
+	g_signal_connect (widget, "screen-changed",
+			  G_CALLBACK (glade_gtk_stop_emission_POINTER),
+			  screen);
+}
+
+static void
+glade_gtk_file_chooser_default_forall (GtkWidget *widget, gpointer data)
+{	
 	/* Since GtkFileChooserDefault is not exposed we check if its a
 	 * GtkFileChooser
 	 */
 	if (GTK_IS_FILE_CHOOSER (widget))
 	{
-		if (hierarchy == NULL)
-		{
-			hierarchy = GUINT_TO_POINTER (g_signal_lookup (
-							"hierarchy-changed",
-							GTK_TYPE_WIDGET));
-			screen = GUINT_TO_POINTER (g_signal_lookup (
-							"screen-changed",
-							GTK_TYPE_WIDGET));
-		}
+		
 		/* Finally we can connect to the signals we want to stop its
 		 * default handler. Since both signals has the same signature
 		 * we use one callback for both :)
 		 */
-		g_signal_connect (widget, "hierarchy-changed",
-				  G_CALLBACK (glade_gtk_stop_emission_POINTER),
-				  hierarchy);
-		g_signal_connect (widget, "screen-changed",
-				  G_CALLBACK (glade_gtk_stop_emission_POINTER),
-				  screen);
+		glade_gtk_dialog_stop_offending_signals (widget);
 	}
 }
 
@@ -4887,6 +4893,8 @@ glade_gtk_dialog_post_create (GladeWidgetAdaptor *adaptor,
 		gtk_container_forall (GTK_CONTAINER (dialog),
 				      glade_gtk_input_dialog_forall,
 				      NULL);
+		
+		glade_gtk_dialog_stop_offending_signals (GTK_WIDGET (dialog));
 	}
 	else if (GTK_IS_FILE_SELECTION (object))
 	{
