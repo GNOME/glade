@@ -323,6 +323,33 @@ glade_palette_finalize (GObject *object)
 }
 
 static void
+glade_palette_toggled (GladePalette *palette)
+{
+	GladeProject       *project;
+	GladeWidgetAdaptor *adaptor;
+	GladeWidget        *widget;
+
+	g_return_if_fail (GLADE_IS_PALETTE (palette));
+	adaptor = glade_palette_get_current_item (palette);
+
+	/* class may be NULL if the selector was pressed */
+	if (adaptor && GWA_IS_TOPLEVEL (adaptor))
+	{
+		/* Inappropriate toplevel classes for libglade are
+		 * disabled so no chance of creating a non-window toplevel here
+		 */
+		widget = glade_palette_create_root_widget (palette, adaptor);
+		
+		/* if this is a top level widget set the accel group */
+		if (widget && glade_app_get_accel_group () && GTK_IS_WINDOW (widget->object))
+		{
+			gtk_window_add_accel_group (GTK_WINDOW (widget->object),
+						    glade_app_get_accel_group ());
+		}
+	}
+}
+
+static void
 glade_palette_class_init (GladePaletteClass *klass)
 {
 	GObjectClass   *object_class;
@@ -331,7 +358,7 @@ glade_palette_class_init (GladePaletteClass *klass)
 	object_class = G_OBJECT_CLASS (klass);
 	widget_class = GTK_WIDGET_CLASS (klass);
 
-	klass->toggled = NULL;
+	klass->toggled = glade_palette_toggled;
 	
 	object_class->get_property = glade_palette_get_property;
 	object_class->set_property = glade_palette_set_property;
@@ -474,6 +501,7 @@ glade_palette_on_button_toggled (GtkWidget *button, GladePalette *palette)
 
 	g_signal_emit (G_OBJECT (palette), glade_palette_signals[TOGGLED], 0);
 }
+
 
 static GtkWidget*
 glade_palette_new_item (GladePalette *palette, GladeWidgetAdaptor *adaptor)

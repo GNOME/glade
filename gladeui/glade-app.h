@@ -45,8 +45,6 @@ G_BEGIN_DECLS
 typedef struct _GladeApp         GladeApp;
 typedef struct _GladeAppPrivate  GladeAppPrivate;
 typedef struct _GladeAppClass    GladeAppClass;
-typedef enum   _GladePointerMode GladePointerMode;
-
 
 /**
  * GladePointerMode:
@@ -63,6 +61,8 @@ enum _GladePointerMode
 	GLADE_POINTER_ADD_WIDGET,
 	GLADE_POINTER_DRAG_RESIZE
 };
+typedef enum _GladePointerMode GladePointerMode;
+
 
 struct _GladeApp
 {
@@ -162,6 +162,8 @@ void               glade_app_set_transient_parent (GtkWindow *parent);
 GtkWindow         *glade_app_get_transient_parent (void);
  
 void               glade_app_set_accel_group (GtkAccelGroup *accel_group);
+
+GtkAccelGroup     *glade_app_get_accel_group (void);
  
 void               glade_app_update_instance_count  (GladeProject *project);
 

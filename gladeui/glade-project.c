@@ -1,6 +1,7 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * Copyright (C) 2001 Ximian, Inc.
+ * Copyright (C) 2008 Tristan Van Berkom
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -18,6 +19,7 @@
  *
  * Authors:
  *   Chema Celorio <chema@celorio.com>
+ *   Tristan Van Berkom <tvb@gnome.org>
  */
 
 #include <config.h>
@@ -1661,13 +1663,14 @@ glade_project_verify_properties_internal (GladeWidget  *widget,
 		glade_project_verify_property (widget->project, property, path_name, string, forwidget);
 	}
 
-	for (list = widget->packing_properties; list; list = list->next)
+	/* Sometimes widgets on the clipboard have packing props with no parent */
+	if (widget->parent)
 	{
-		property = list->data;
-
-		g_assert (widget->parent);
-		property = list->data;
-		glade_project_verify_property (widget->project, property, path_name, string, forwidget);
+		for (list = widget->packing_properties; list; list = list->next)
+		{
+			property = list->data;
+			glade_project_verify_property (widget->project, property, path_name, string, forwidget);
+		}
 	}
 }
 
@@ -2013,9 +2016,6 @@ glade_project_add_object (GladeProject *project,
 	/* Update user visible compatability info */
 	glade_project_verify_properties (gwidget);
 
-	/* Notify widget it was added to the project */
-	glade_widget_project_notify (gwidget, project);
-
 	/* Run this once at the end for every recursive call */
 	if (--reentrancy_count == 0)
 	{
@@ -2121,9 +2121,6 @@ glade_project_remove_object (GladeProject *project, GObject *object)
 
 	/* Code body starts here */
 	reentrancy_count++;
-
-	/* Notify widget is being removed from the project */
-	glade_widget_project_notify (gwidget, NULL);
 	
 	if ((children = 
 	     glade_widget_adaptor_get_children (gwidget->adaptor,

@@ -321,14 +321,6 @@ glade_property_get_value_impl (GladeProperty *property, GValue *value)
 }
 
 static void
-glade_property_get_default_impl (GladeProperty *property, GValue *value)
-{
-
-	g_value_init (value, property->klass->pspec->value_type);
-	g_value_copy (property->klass->def, value);
-}
-
-static void
 glade_property_sync_impl (GladeProperty *property)
 {
 
@@ -378,12 +370,13 @@ glade_property_load_impl (GladeProperty *property)
 	    property->klass->virt    ||
 	    property->klass->packing ||
 	    property->klass->ignore  ||
-	    !(property->klass->pspec->flags & G_PARAM_READABLE))
+	    !(property->klass->pspec->flags & G_PARAM_READABLE) ||
+	    G_IS_PARAM_SPEC_OBJECT(property->klass->pspec))
 		return;
 
 	object = glade_widget_get_object (property->widget);
 	oclass = G_OBJECT_GET_CLASS (object);
-	
+
 	if (g_object_class_find_property (oclass, property->klass->id))
 		glade_widget_object_get_property (property->widget, property->klass->id, property->value);
 }
@@ -507,7 +500,6 @@ glade_property_klass_init (GladePropertyKlass *prop_class)
 	prop_class->equals_value          = glade_property_equals_value_impl;
 	prop_class->set_value             = glade_property_set_value_impl;
 	prop_class->get_value             = glade_property_get_value_impl;
-	prop_class->get_default           = glade_property_get_default_impl;
 	prop_class->sync                  = glade_property_sync_impl;
 	prop_class->load                  = glade_property_load_impl;
 	prop_class->value_changed         = NULL;
@@ -891,7 +883,9 @@ glade_property_get_default (GladeProperty *property, GValue *value)
 {
 	g_return_if_fail (GLADE_IS_PROPERTY (property));
 	g_return_if_fail (value != NULL);
-	GLADE_PROPERTY_GET_KLASS (property)->get_default (property, value);
+
+	g_value_init (value, property->klass->pspec->value_type);
+	g_value_copy (property->klass->def, value);
 }
 
 /**
@@ -1141,6 +1135,13 @@ glade_property_write (GladeProperty   *property,
 		return;
 
 	if (!property->klass->save || !property->enabled)
+		return;
+
+	/* Dont write unsupported properties */
+	if ((fmt == GLADE_PROJECT_FORMAT_GTKBUILDER &&
+	     property->klass->libglade_only) ||
+	    (fmt == GLADE_PROJECT_FORMAT_LIBGLADE &&
+	     property->klass->libglade_unsupported))
 		return;
 
 	g_assert (property->klass->orig_def);

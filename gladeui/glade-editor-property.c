@@ -2630,10 +2630,13 @@ glade_eprop_object_show_dialog (GtkWidget           *dialog_button,
 	project = glade_widget_get_project (eprop->property->widget);
 	parent = gtk_widget_get_toplevel (GTK_WIDGET (eprop));
 
-	if (eprop->property->klass->create_type)
-		create_adaptor = glade_widget_adaptor_get_by_name (eprop->property->klass->create_type);
-	if (!create_adaptor)
-		create_adaptor = glade_widget_adaptor_get_by_type (eprop->klass->pspec->value_type);
+	if (glade_project_get_format (project) != GLADE_PROJECT_FORMAT_LIBGLADE)
+	{
+		if (eprop->property->klass->create_type)
+			create_adaptor = glade_widget_adaptor_get_by_name (eprop->property->klass->create_type);
+		if (!create_adaptor)
+			create_adaptor = glade_widget_adaptor_get_by_type (eprop->klass->pspec->value_type);
+	}
 
 	if (create_adaptor)
 	{
@@ -3128,8 +3131,8 @@ glade_eprop_adjustment_load (GladeEditorProperty *eprop, GladeProperty *property
 	GladeEPropAdjustment *eprop_adj = GLADE_EPROP_ADJUSTMENT (eprop);
 	GladeProjectFormat fmt;
 	GObject *object;
-	GtkAdjustment *adj;
-	
+	GtkAdjustment *adj = NULL;
+
 	/* Chain up first */
 	editor_property_class->load (eprop, property);
 
@@ -3140,9 +3143,9 @@ glade_eprop_adjustment_load (GladeEditorProperty *eprop, GladeProperty *property
 	if (fmt == GLADE_PROJECT_FORMAT_LIBGLADE)
 	{
 		object = g_value_get_object (property->value);
-		if (object == NULL) return;
-		
-		adj = GTK_ADJUSTMENT (object);
+
+		if (object)
+			adj = GTK_ADJUSTMENT (object);
 		
 		/* Keep track of external adjustment changes */
 		g_signal_connect (object, "value-changed",
@@ -3150,11 +3153,12 @@ glade_eprop_adjustment_load (GladeEditorProperty *eprop, GladeProperty *property
 				  eprop);
 	
 		/* Update adjustment's values */
-		eprop_adj->value_adj->lower = adj->lower;
-		eprop_adj->value_adj->upper = adj->upper;
-		eprop_adj->value_adj->step_increment = adj->step_increment;
-		eprop_adj->value_adj->page_increment = adj->page_increment;
-		eprop_adj->value_adj->page_size = adj->page_size;
+		eprop_adj->value_adj->value = adj ? adj->value : 0.0;
+		eprop_adj->value_adj->lower = adj ? adj->lower : 0.0;
+		eprop_adj->value_adj->upper = adj ? adj->upper : 100.0;
+		eprop_adj->value_adj->step_increment = adj ? adj->step_increment : 1;
+		eprop_adj->value_adj->page_increment = adj ? adj->page_increment : 10;
+		eprop_adj->value_adj->page_size = adj ? adj->page_size : 10;
 		
 		/* Block Handlers */
 		g_signal_handler_block (eprop_adj->value, eprop_adj->ids.value);
@@ -3165,12 +3169,14 @@ glade_eprop_adjustment_load (GladeEditorProperty *eprop, GladeProperty *property
 		g_signal_handler_block (eprop_adj->page_size, eprop_adj->ids.page_size);
 		
 		/* Update spinbuttons values */
-		gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_adj->value), adj->value);
-		gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_adj->lower), adj->lower);
-		gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_adj->upper), adj->upper);
-		gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_adj->step_increment), adj->step_increment);
-		gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_adj->page_increment), adj->page_increment);
-		gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_adj->page_size), adj->page_size);
+		gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_adj->value), eprop_adj->value_adj->value);
+		gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_adj->lower), eprop_adj->value_adj->lower);
+		gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_adj->upper), eprop_adj->value_adj->upper);
+		gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_adj->step_increment), 
+					   eprop_adj->value_adj->step_increment);
+		gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_adj->page_increment), 
+					   eprop_adj->value_adj->page_increment);
+		gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_adj->page_size), eprop_adj->value_adj->page_size);
 		
 		/* Unblock Handlers */
 		g_signal_handler_unblock (eprop_adj->value, eprop_adj->ids.value);
@@ -3180,9 +3186,8 @@ glade_eprop_adjustment_load (GladeEditorProperty *eprop, GladeProperty *property
 		g_signal_handler_unblock (eprop_adj->page_increment, eprop_adj->ids.page_increment);
 		g_signal_handler_unblock (eprop_adj->page_size, eprop_adj->ids.page_size);
 
-		gtk_notebook_set_page (GTK_NOTEBOOK (eprop_adj->notebook), 0);
-
 		gtk_widget_show (eprop_adj->libglade);
+		gtk_notebook_set_page (GTK_NOTEBOOK (eprop_adj->notebook), 0);
 	}
 	else
 	{
@@ -3214,7 +3219,9 @@ glade_eprop_adjustment_dup_adj (GladeEditorProperty *eprop)
 	GObject *object;
 	
 	object = g_value_get_object (eprop->property->value);
-	if (object == NULL) return NULL;
+	if (object == NULL) 
+		return GTK_ADJUSTMENT (gtk_adjustment_new (0.0, 0.0, 100.0,
+							   1.0, 10.0, 10.0));
 	
 	adj = GTK_ADJUSTMENT (object);
 
@@ -3233,8 +3240,20 @@ glade_eprop_adjustment_prop_changed_common (GladeEditorProperty *eprop,
 	GValue value = {0, };
 	
 	g_value_init (&value, GTK_TYPE_ADJUSTMENT);
-	g_value_set_object (&value, G_OBJECT (adjustment));
 
+	if (adjustment->value == 0.00 &&
+	    adjustment->lower == 0.00 &&
+	    adjustment->upper == 100.00 &&
+	    adjustment->step_increment == 1.00 &&
+	    adjustment->page_increment == 10.00 &&
+	    adjustment->page_size == 10.00)
+	{
+		gtk_object_destroy (GTK_OBJECT (adjustment));
+		g_value_set_object (&value, NULL);
+	}
+	else
+		g_value_set_object (&value, G_OBJECT (adjustment));
+	
 	glade_editor_property_commit_no_callback (eprop, &value);
 
 	g_value_unset (&value);

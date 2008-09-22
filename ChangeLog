@@ -1,3 +1,31 @@
+2008-09-22  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-editor-property.c: Fixed adjustments when values are null in
+	libglade mode
+
+	* plugins/gtk+/gtk+.xml.in: Reorganized groups, added some more metadatas
+
+	* plugins/gtk+/glade-convert.c: 
+	  - Convert "text" property of TextView to a textbuffer and text property 
+	    in builder format.
+	  - Convert "tooltip" <--> "tooltip-text"
+	
+	* gladeui/glade-popup.c, gladeui/glade-inspector.c: enhanced menu for 
+	inspector empty spots (paste toplevels)
+
+	* gladeui/glade-editor-property.c: Adjustments in libglade had bugs, hardcoded
+	default values here and made sure object is NULL on default.
+
+	* gladeui/glade-widget.[ch]: Removed glade_widget_project_notify()
+
+	* gladeui/glade-command.c: 
+	  - glade_command_remove() implicitly makes commands to unset any properties 
+	    reffering to the object being removed from the project.
+	  - project conversions now cleanup unsupported widgets/properties
+
+	* gladeui/glade-palette.c, gladeui/glade-app.c: Moved toplevel widget creation
+	code from gladeapp to gladepalette.
+	
 2008-09-21  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/glade-gtk.c: Set sizegroup_add action sensitive/insensitive

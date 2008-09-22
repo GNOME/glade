@@ -144,7 +144,10 @@ glade_popup_paste_cb (GtkMenuItem *item, GladeWidget *widget)
 	glade_util_clear_selection ();
 
 	/* The selected widget is the paste destination */
-	glade_app_selection_set	(glade_widget_get_object (widget), FALSE);
+	if (widget)
+		glade_app_selection_set	(glade_widget_get_object (widget), FALSE);
+	else
+		glade_app_selection_clear (FALSE);
 
 	glade_app_command_paste (NULL);
 }
@@ -412,15 +415,22 @@ glade_popup_create_menu (GladeWidget      *widget,
 			 GladePlaceholder *placeholder,
 			 gboolean          packing)
 {
+	GladeProjectFormat fmt;
+	GladeProject *project;
 	GtkWidget *popup_menu;
-	gboolean   sensitive;
+	GtkWidget *separator;
+	GList *list;
+	gboolean   sensitive, non_window;
 	GladePlaceholder *tmp_placeholder;
 	gchar     *book;
 
 	sensitive = glade_palette_get_current_item (glade_app_get_palette ()) != NULL;
 
-	if (!sensitive && !widget)
-		return NULL;
+	/* Resolve project format first... */
+	project = widget ? glade_widget_get_project (widget) :
+		placeholder ? glade_placeholder_get_project (placeholder) : glade_app_get_project ();
+	fmt = glade_project_get_format (project);
+
 
 	popup_menu = gtk_menu_new ();
 	
@@ -431,44 +441,53 @@ glade_popup_create_menu (GladeWidget      *widget,
 			tmp_placeholder = find_placeholder (glade_widget_get_object (widget));
 		glade_popup_append_item (popup_menu, NULL, _("_Add widget here"), NULL, tmp_placeholder != NULL,
 					 glade_popup_placeholder_add_cb, tmp_placeholder);
-		glade_popup_append_item (popup_menu, NULL, _("Add widget as _toplevel"), NULL, TRUE,
+		glade_popup_append_item (popup_menu, NULL, _("Add widget as _toplevel"), NULL, 
+					 fmt != GLADE_PROJECT_FORMAT_LIBGLADE,
 					 glade_popup_root_add_cb, NULL);
-	}
 
-	if (!widget)
-		return popup_menu;
-		
-	if (sensitive)
-	{
-		GtkWidget *separator = gtk_menu_item_new ();		
+		separator = gtk_menu_item_new ();		
 		gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), separator);
 		gtk_widget_show (separator);
 	}
 
-	glade_popup_append_item (popup_menu, NULL, _("_Select"), NULL, TRUE,
+	sensitive = (widget != NULL);
+
+	glade_popup_append_item (popup_menu, NULL, _("_Select"), NULL, sensitive,
 				 glade_popup_select_cb, widget);
-	glade_popup_append_item (popup_menu, GTK_STOCK_CUT, NULL, NULL, TRUE,
+	glade_popup_append_item (popup_menu, GTK_STOCK_CUT, NULL, NULL, sensitive,
 				 glade_popup_cut_cb, widget);
-	glade_popup_append_item (popup_menu, GTK_STOCK_COPY, NULL, NULL, TRUE,
+	glade_popup_append_item (popup_menu, GTK_STOCK_COPY, NULL, NULL, sensitive,
 				 glade_popup_copy_cb, widget);
 
 	/* paste is placholder specific when the popup is on a placeholder */
 	sensitive = glade_clipboard_get_has_selection (glade_app_get_clipboard ());
+	non_window = FALSE;
+	for (list = glade_app_get_clipboard ()->selection; list; list = list->next)
+		if (!GTK_IS_WINDOW (GLADE_WIDGET (list->data)->object))
+			non_window = TRUE;
+
 	if (placeholder)
 		glade_popup_append_item (popup_menu, GTK_STOCK_PASTE, NULL, NULL, sensitive,
 					 glade_popup_placeholder_paste_cb, placeholder);
-	else
+	else if (widget)
 		glade_popup_append_item (popup_menu, GTK_STOCK_PASTE, NULL, NULL, sensitive,
 					 glade_popup_paste_cb, widget);
+	else
+		/* No toplevel non-GtkWindow pastes in libglade */
+		glade_popup_append_item (popup_menu, GTK_STOCK_PASTE, NULL, NULL, 
+					 sensitive && !(non_window &&  (fmt == GLADE_PROJECT_FORMAT_LIBGLADE)),
+					 glade_popup_paste_cb, NULL);
 
-	glade_popup_append_item (popup_menu, GTK_STOCK_DELETE, NULL, NULL, TRUE,
+
+
+	glade_popup_append_item (popup_menu, GTK_STOCK_DELETE, NULL, NULL, (widget != NULL),
 				 glade_popup_delete_cb, widget);
 
 
 	/* packing actions are a little different on placholders */
 	if (placeholder)
 	{
-		if (widget->actions)
+		if (widget && widget->actions)
 		{
 			GtkWidget *separator = gtk_menu_item_new ();
 			gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), separator);
@@ -496,7 +515,7 @@ glade_popup_create_menu (GladeWidget      *widget,
 				 placeholder);
 		}
 	}
-	else if (widget->actions || (packing && widget->packing_actions))
+	else if (widget && (widget->actions || (packing && widget->packing_actions)))
 	{
 		GtkWidget *separator = gtk_menu_item_new ();
 		gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), separator);
@@ -505,20 +524,21 @@ glade_popup_create_menu (GladeWidget      *widget,
 		glade_popup_action_populate_menu (popup_menu, widget, NULL, packing);
 	}
 
-
-	g_object_get (widget->adaptor, "book", &book, NULL);
-	if (book)
+	if (widget)
 	{
-		GtkWidget *icon = glade_util_get_devhelp_icon (GTK_ICON_SIZE_MENU);
-		GtkWidget *separator = gtk_menu_item_new ();
-		gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), separator);
-		gtk_widget_show (separator);
-
-		glade_popup_append_item (popup_menu, NULL, _("Read _documentation"), icon, TRUE,
-					 glade_popup_docs_cb, widget->adaptor);
+		g_object_get (widget->adaptor, "book", &book, NULL);
+		if (book)
+		{
+			GtkWidget *icon = glade_util_get_devhelp_icon (GTK_ICON_SIZE_MENU);
+			GtkWidget *separator = gtk_menu_item_new ();
+			gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), separator);
+			gtk_widget_show (separator);
+			
+			glade_popup_append_item (popup_menu, NULL, _("Read _documentation"), icon, TRUE,
+						 glade_popup_docs_cb, widget->adaptor);
+		}
+		g_free (book);
 	}
-	g_free (book);
-
 
 	return popup_menu;
 }
@@ -631,6 +651,8 @@ void
 glade_popup_palette_pop (GladeWidgetAdaptor *adaptor,
 			 GdkEventButton     *event)
 {
+	GladeProjectFormat fmt;
+	GladeProject *project;
 	GtkWidget *popup_menu;
 	gchar *book = NULL;
 	gint button;
@@ -639,10 +661,13 @@ glade_popup_palette_pop (GladeWidgetAdaptor *adaptor,
 	g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
 
 	popup_menu = gtk_menu_new ();
+	
+	project = glade_app_get_project ();
+	fmt = glade_project_get_format (project);
 
-	glade_popup_append_item (popup_menu, NULL, _("Add widget as _toplevel"), NULL, TRUE,
+	glade_popup_append_item (popup_menu, NULL, _("Add widget as _toplevel"), NULL, 
+				 (fmt != GLADE_PROJECT_FORMAT_LIBGLADE),
 				 glade_popup_root_add_cb, adaptor);
-
 
 	g_object_get (adaptor, "book", &book, NULL);
 	if (book)

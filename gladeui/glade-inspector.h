@@ -30,9 +30,7 @@
 
 #include <gtk/gtkvbox.h>
 
-/* forward declaration */
-/* btw, this makes gtkdoc list GladeProject twice in gladeui-sections.txt wich gives a warning. */
-struct GladeProject;
+#include <gladeui/glade-xml-utils.h>
 
 G_BEGIN_DECLS
 

@@ -1043,6 +1043,21 @@ glade_command_add (GList            *widgets,
 		
 } /* end of glade_command_add() */
 
+
+
+static void
+glade_command_delete_prop_refs (GladeWidget *widget)
+{
+	GladeProperty *property;
+
+	while (widget->prop_refs)
+	{
+		property = GLADE_PROPERTY (widget->prop_refs->data);
+		glade_command_set_property (property, NULL);
+	}
+}
+
+
 /**
  * glade_command_remove:
  * @widgets: a #GList of #GladeWidgets
@@ -1058,6 +1073,7 @@ glade_command_remove (GList *widgets)
 	CommandData				*cdata;
 	GtkWidget                               *placeholder;
 	GList					*list, *l;
+	gchar                                   *desc;
 
 	g_return_if_fail (widgets != NULL);
 
@@ -1079,6 +1095,16 @@ glade_command_remove (GList *widgets)
 	}
 
 	me->project = glade_widget_get_project (widget);
+	GLADE_COMMAND (me)->description = g_strdup ("dummy");
+
+	if (g_list_length (widgets) == 1)
+		desc = g_strdup_printf (_("Remove %s"), 
+					GLADE_WIDGET (widgets->data)->name);
+	else
+		desc = g_strdup_printf (_("Remove multiple"));
+
+	glade_command_push_group (desc);
+	g_free (desc);
 
 	for (list = widgets; list && list->data; list = list->next)
 	{
@@ -1088,6 +1114,9 @@ glade_command_remove (GList *widgets)
 		cdata->widget  = g_object_ref (G_OBJECT (widget));
 		cdata->parent  = glade_widget_get_parent (widget);
 		cdata->project = glade_widget_get_project (widget);
+		
+		/* Undoably unset any object properties that may point to the removed object */
+		glade_command_delete_prop_refs (widget);
 
 		if (widget->internal)
 			g_critical ("Internal widget in Remove");
@@ -1118,14 +1147,6 @@ glade_command_remove (GList *widgets)
 		}
 	}
 
-	if (g_list_length (widgets) == 1)
-		GLADE_COMMAND (me)->description =
-			g_strdup_printf (_("Remove %s"), 
-					 GLADE_WIDGET (widgets->data)->name);
-	else
-		GLADE_COMMAND (me)->description =
-			g_strdup_printf (_("Remove multiple"));
-
 	g_assert (widget);
 
 	glade_command_check_group (GLADE_COMMAND (me));
@@ -1135,6 +1156,7 @@ glade_command_remove (GList *widgets)
 	else
 		g_object_unref (G_OBJECT (me));
 
+	glade_command_pop_group ();
 } /* end of glade_command_remove() */
 
 static void
@@ -1192,13 +1214,10 @@ glade_command_add_execute (GladeCommandAddRemove *me)
 									g_strdup (cdata->special_type), 
 									g_free);
 					}
-				}
 				
-				/* Only transfer properties when they are from the clipboard,
-				 * otherwise prioritize packing defaults. 
-				 */
-				if (me->from_clipboard)
-				{
+					/* Only transfer properties when they are from the clipboard,
+					 * otherwise prioritize packing defaults. 
+					 */
 					saved_props =
 						glade_widget_dup_properties (cdata->widget->packing_properties, FALSE);
 					
@@ -2173,6 +2192,73 @@ glade_command_set_format_collapse (GladeCommand *this_cmd, GladeCommand *other_c
 	/* no unify/collapse */
 }
 
+
+static void
+glade_command_convert_cleanup_props (GList              *properties,
+				     GladeProjectFormat  fmt)
+{
+	GladeProperty *property;
+	GList *list;
+
+	for (list = properties; list; list = list->next)
+	{
+		property = list->data;
+
+		if (glade_property_original_default (property))
+			continue;
+
+		/* Reset any unsupported properties to thier defaults */
+		if ((fmt == GLADE_PROJECT_FORMAT_GTKBUILDER &&
+		     property->klass->libglade_only) ||
+		    (fmt == GLADE_PROJECT_FORMAT_LIBGLADE &&
+		     property->klass->libglade_unsupported))
+		{
+			GValue value = { 0, };
+
+			glade_property_get_default (property, &value);
+			glade_command_set_property (property, &value);
+			g_value_unset (&value);
+		}
+	}
+}
+
+
+static void
+glade_command_convert_cleanup (GladeProject       *project, 
+			       GladeProjectFormat  fmt)
+{
+	GladeWidget   *widget;
+	const GList   *objects;
+
+	for (objects = glade_project_get_objects (project); objects; objects = objects->next)
+	{
+		widget = glade_widget_get_from_gobject (objects->data);
+
+		/* If libglade-only widget going in builder format ... */
+		if ((fmt == GLADE_PROJECT_FORMAT_GTKBUILDER &&
+		     GWA_LIBGLADE_ONLY (widget->adaptor)) ||
+		    /* If going in libglade format... */
+		    (fmt == GLADE_PROJECT_FORMAT_LIBGLADE &&
+		     /* ... and widget is unsupported by libglade */
+		     (GWA_LIBGLADE_UNSUPPORTED (widget->adaptor) ||
+		      /* ... and widget is a non GtkWidget object */
+		      !GTK_IS_WIDGET (widget->object) ||
+		      /* ... and its a non-window toplevel */
+		      (!widget->parent && !GTK_IS_WINDOW (widget->object)))))
+		{
+			GList delete = { 0, };
+			delete.data = widget;
+			glade_command_delete (&delete);
+		}
+		else
+		{
+			glade_command_convert_cleanup_props (widget->properties, fmt);
+			glade_command_convert_cleanup_props (widget->packing_properties, fmt);
+		}
+	}
+}
+
+
 /**
  * glade_command_set_project_format:
  * @project: a #GladeProject
@@ -2219,6 +2305,8 @@ glade_command_set_project_format (GladeProject        *project,
 				catalog  = glade_app_get_catalog (cat_name);
 				
 				glade_catalog_convert_project (catalog, project, fmt);
+
+				glade_command_convert_cleanup (project, fmt);
 				
 				g_free (cat_name);
 			}

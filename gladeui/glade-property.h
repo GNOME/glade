@@ -95,7 +95,6 @@ struct _GladePropertyKlass
 	gboolean                (* equals_value)          (GladeProperty *, const GValue *);
 	gboolean                (* set_value)             (GladeProperty *, const GValue *);
 	void                    (* get_value)             (GladeProperty *, GValue *);
-	void                    (* get_default)           (GladeProperty *, GValue *);
 	void                    (* sync)                  (GladeProperty *);
 	void                    (* load)                  (GladeProperty *);
 

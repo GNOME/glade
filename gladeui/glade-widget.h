@@ -82,8 +82,6 @@ struct _GladeWidget
 			     * since the objects copy may be invalid due to a rebuild.
 			     */
 
-
-	gboolean   prop_refs_readonly; /* Whether this list is currently readonly */
 	GList     *prop_refs; /* List of properties in the project who's value are `this object'
 			       * (this is used to set/unset those properties when the object is
 			       * added/removed from the project).
@@ -256,9 +254,6 @@ gchar                  *glade_widget_generate_path_name     (GladeWidget      *w
 /*******************************************************************************
                       Project, object property references
  *******************************************************************************/
- 
-void                    glade_widget_project_notify         (GladeWidget      *widget,
-							     GladeProject     *project);
  
 void                    glade_widget_add_prop_ref           (GladeWidget      *widget,
 							     GladeProperty    *property);

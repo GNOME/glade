@@ -1,5 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
+ * Copyright (C) 2008 Tristan Van Berkom
  * Copyright (C) 2004 Joaquin Cuenca Abela
  * Copyright (C) 2001, 2002, 2003 Ximian, Inc.
  *
@@ -941,7 +942,6 @@ glade_widget_init (GladeWidget *widget)
 	widget->properties = NULL;
 	widget->packing_properties = NULL;
 	widget->prop_refs = NULL;
-	widget->prop_refs_readonly = FALSE;
 	widget->signals = g_hash_table_new_full
 		(g_str_hash, g_str_equal,
 		 (GDestroyNotify) g_free,
@@ -1929,8 +1929,8 @@ glade_widget_hide (GladeWidget *widget)
  *
  * Adds @property to @widget 's list of referenced properties.
  *
- * Note: this is used to track object reference properties that
- *       go in and out of the project.
+ * Note: this is used to track properties on other objects that
+ *       reffer to this object.
  */
 void
 glade_widget_add_prop_ref (GladeWidget *widget, GladeProperty *property)
@@ -1938,8 +1938,7 @@ glade_widget_add_prop_ref (GladeWidget *widget, GladeProperty *property)
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	g_return_if_fail (GLADE_IS_PROPERTY (property));
 
-	if (property && !widget->prop_refs_readonly &&
-	    !g_list_find (widget->prop_refs, property))
+	if (!g_list_find (widget->prop_refs, property))
 		widget->prop_refs = g_list_prepend (widget->prop_refs, property);
 }
 
@@ -1950,8 +1949,8 @@ glade_widget_add_prop_ref (GladeWidget *widget, GladeProperty *property)
  *
  * Removes @property from @widget 's list of referenced properties.
  *
- * Note: this is used to track object reference properties that
- *       go in and out of the project.
+ * Note: this is used to track properties on other objects that
+ *       reffer to this object.
  */
 void
 glade_widget_remove_prop_ref (GladeWidget *widget, GladeProperty *property)
@@ -1959,8 +1958,7 @@ glade_widget_remove_prop_ref (GladeWidget *widget, GladeProperty *property)
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	g_return_if_fail (GLADE_IS_PROPERTY (property));
 
-	if (!widget->prop_refs_readonly)
-		widget->prop_refs = g_list_remove (widget->prop_refs, property);
+	widget->prop_refs = g_list_remove (widget->prop_refs, property);
 }
 
 GladeProperty *
@@ -1980,42 +1978,6 @@ glade_widget_get_parentless_widget_ref (GladeWidget *widget)
 			return property;
 	}
 	return NULL;
-}
-
-/**
- * glade_widget_project_notify:
- * @widget: A #GladeWidget
- * @project: The #GladeProject (or %NULL)
- *
- * Notifies @widget that it is now in @project.
- *
- * Note that this doesnt really set the project; the project is saved
- * for internal reasons even when the widget is on the clipboard.
- * (also used for property references).
- */
-void
-glade_widget_project_notify (GladeWidget *widget, GladeProject *project)
-{
-	GList         *l;
-	GladeProperty *property;
-
-	g_return_if_fail (GLADE_IS_WIDGET (widget));
-
-	/* Since glade_property_set() will try to modify list,
-	 * we protect it with the 'prop_refs_readonly' flag.
-	 */
-	widget->prop_refs_readonly = TRUE;
-	for (l = widget->prop_refs; l && l->data; l = l->next)
-	{
-		property = GLADE_PROPERTY (l->data);
-
-		if (project != NULL && 
-		    project == property->widget->project)
-			glade_property_add_object (property, widget->object);
-		else
-			glade_property_remove_object (property, widget->object);
-	}
-	widget->prop_refs_readonly = FALSE;
 }
 
 static void

@@ -544,7 +544,8 @@ button_press_cb (GtkWidget      *widget,
 	GtkTreePath      *path      = NULL;
 	gboolean          handled   = FALSE;
 
-	if (event->window == gtk_tree_view_get_bin_window (view))
+	if (event->button == 3 &&
+	    event->window == gtk_tree_view_get_bin_window (view))
 	{
 		if (gtk_tree_view_get_path_at_pos (view, (gint) event->x, (gint) event->y,
 					   &path, NULL, 
@@ -559,16 +560,21 @@ button_press_cb (GtkWidget      *widget,
 				 */
 				gtk_tree_model_get (GTK_TREE_MODEL (inspector->priv->model), &iter,
 							WIDGET_COLUMN, &widget, -1);
-				if (widget != NULL && event->button == 3)
-				{
-					glade_popup_widget_pop (widget, event, FALSE);
+					if (widget != NULL)
+						glade_popup_widget_pop (widget, event, FALSE);
+					else
+						glade_popup_simple_pop (event);
+
 					handled = TRUE;
-				}
+
 				gtk_tree_path_free (path);
 			}
 		}
 		else
+		{
 			glade_popup_simple_pop (event);
+			handled = TRUE;
+		}
 	}
 	return handled;
 }

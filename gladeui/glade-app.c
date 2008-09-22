@@ -288,29 +288,6 @@ glade_app_update_ui_default (GladeApp *app)
 			glade_app_refresh_undo_redo_button (app, list->data, FALSE);
 }
 
-static void
-on_palette_button_clicked (GladePalette *palette, GladeApp *app)
-{
-	GladeWidgetAdaptor *adaptor;
-	GladeWidget        *widget;
-
-	g_return_if_fail (GLADE_IS_PALETTE (palette));
-	adaptor = glade_palette_get_current_item (palette);
-
-	/* class may be NULL if the selector was pressed */
-	if (adaptor && GWA_IS_TOPLEVEL (adaptor))
-	{
-		widget = glade_palette_create_root_widget (palette, adaptor);
-		
-		/* if this is a top level widget set the accel group */
-		if (widget && app->priv->accel_group && GTK_IS_WINDOW (widget->object))
-		{
-			gtk_window_add_accel_group (GTK_WINDOW (widget->object),
-						    app->priv->accel_group);
-		}
-	}
-}
-
 static gboolean
 clipboard_view_on_delete_cb (GtkWidget *clipboard_view, GdkEvent *e, GladeApp *app)
 {
@@ -441,9 +418,6 @@ glade_app_init (GladeApp *app)
 	app->priv->palette = (GladePalette *) glade_palette_new (app->priv->catalogs);
 	g_object_ref_sink (app->priv->palette);
 	
-	g_signal_connect (G_OBJECT (app->priv->palette), "toggled",
-			  G_CALLBACK (on_palette_button_clicked), app);
-
 	/* Create Editor */
 	app->priv->editor = GLADE_EDITOR (glade_editor_new ());
 	g_object_ref_sink (GTK_OBJECT (app->priv->editor));
@@ -1259,11 +1233,19 @@ glade_app_command_paste (GladePlaceholder *placeholder)
 	clipboard = glade_app_get_clipboard ();
 
 	/* If there is a selection, paste in to the selected widget, otherwise
-	 * paste into the placeholder's parent.
+	 * paste into the placeholder's parent, or at the toplevel
 	 */
 	parent = list ? glade_widget_get_from_gobject (list->data) : 
 		 (placeholder) ? glade_placeholder_get_parent (placeholder) : NULL;
-	
+
+	widget = clipboard->selection ? clipboard->selection->data : NULL;
+
+	/* Ignore parent argument if we are pasting a toplevel
+	 */
+	if (g_list_length (clipboard->selection) == 1 &&
+	    widget && GWA_IS_TOPLEVEL (widget->adaptor))
+		parent = NULL;
+
 	if (parent && GLADE_IS_FIXED (parent)) fixed = GLADE_FIXED (parent);
 
 	/* Check if parent is actually a container of any sort */
@@ -1481,6 +1463,12 @@ glade_app_set_accel_group (GtkAccelGroup *accel_group)
 	}
 	
 	app->priv->accel_group = accel_group;
+}
+
+GtkAccelGroup *
+glade_app_get_accel_group (void)
+{
+	return glade_app_get()->priv->accel_group;
 }
 
 static gboolean

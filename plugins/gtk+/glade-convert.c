@@ -38,9 +38,15 @@ typedef struct {
 } AdjustmentData;
 
 typedef struct {
+	GladeWidget *widget;
+	gchar *text;
+} TextData;
+
+typedef struct {
 	/* List of newly created objects to set */
 	GList *adjustments;
-
+	GList *textviews;
+	GList *tooltips;
 } ConvertData;
 
 /*****************************************
@@ -74,7 +80,7 @@ convert_adjustments_finished (GladeProject  *project,
 				      NULL);
 
 			/* Cant cancel an adjustment.... */
-			widget = glade_command_create (adaptor, NULL, NULL, glade_app_get_project ());
+			widget = glade_command_create (adaptor, NULL, NULL, project);
 
 			/* Initial properties on the new adjustment dont need command history */
 			glade_widget_property_set (widget, "value", value);
@@ -98,6 +104,8 @@ convert_adjustments_finished (GladeProject  *project,
 
 		g_free (adata);
 	}
+
+	g_list_free (data->adjustments);
 }
 
 static void
@@ -176,6 +184,176 @@ convert_adjustments (GladeProject       *project,
 	}
 }
 
+/*****************************************
+ *           TextViews                   *
+ *****************************************/
+static void
+convert_textviews_finished (GladeProject  *project,
+			    ConvertData   *data)
+{
+	GladeProjectFormat  new_format = glade_project_get_format (project);
+	GladeWidgetAdaptor *adaptor = glade_widget_adaptor_get_by_type (GTK_TYPE_TEXT_BUFFER);
+	GladeProperty *property;
+	GladeWidget *widget;
+	TextData  *tdata;
+	GList *list;
+
+	for (list = data->textviews; list; list = list->next)
+	{
+		tdata = list->data;
+
+		if (new_format == GLADE_PROJECT_FORMAT_GTKBUILDER)
+		{
+			property = glade_widget_get_property (tdata->widget, "buffer");
+
+			/* Cant cancel a textbuffer.... */
+			widget = glade_command_create (adaptor, NULL, NULL, project);
+
+			glade_command_set_property (property, widget->object);
+
+			property = glade_widget_get_property (widget, "text");
+			glade_property_set (property, tdata->text);
+		}
+		else
+		{
+			property = glade_widget_get_property (tdata->widget, "text");
+			glade_command_set_property (property, tdata->text);
+		}
+		g_free (tdata->text);
+		g_free (tdata);
+	}
+
+	g_list_free (data->textviews);
+}
+
+static void
+convert_textviews (GladeProject       *project,
+		   GladeProjectFormat  new_format,
+		   ConvertData        *data)
+{
+	GladeWidget   *widget, *gbuffer;
+	GladeProperty *property;
+	TextData  *tdata;
+	GtkTextBuffer *buffer;
+	const GList   *objects;
+	gchar         *text;
+
+	for (objects = glade_project_get_objects (project); objects; objects = objects->next)
+	{
+		widget = glade_widget_get_from_gobject (objects->data);
+		if (!GTK_IS_TEXT_VIEW (widget->object))
+			continue;
+
+		if (new_format == GLADE_PROJECT_FORMAT_GTKBUILDER)
+		{
+			text = NULL;
+			property = glade_widget_get_property (widget, "text");
+			glade_property_get (property, &text);
+		
+			if (text)
+			{
+				tdata = g_new0 (TextData, 1);
+				tdata->widget = widget;
+				tdata->text = g_strdup (text);
+				data->textviews = g_list_prepend (data->textviews, tdata);
+
+				glade_command_set_property (property, NULL);
+			}
+		}
+		else
+		{
+			text = NULL;
+			gbuffer = NULL;
+			buffer = NULL;
+			property = glade_widget_get_property (widget, "buffer");
+			glade_property_get (property, &buffer);
+
+			if (buffer && (gbuffer = glade_widget_get_from_gobject (buffer)))
+				glade_widget_property_get (gbuffer, "text", &text);
+
+			if (text)
+			{
+				GList delete = { 0, };
+				delete.data = gbuffer;
+				
+				tdata = g_new0 (TextData, 1);
+				tdata->widget = widget;
+				tdata->text = g_strdup (text);
+				data->textviews = g_list_prepend (data->textviews, tdata);
+
+				/* This will take care of unsetting the buffer property as well */
+				glade_command_delete (&delete);
+			}
+		}
+	}
+}
+
+/*****************************************
+ *           Tooltips                    *
+ *****************************************/
+static void
+convert_tooltips_finished (GladeProject  *project,
+			   ConvertData   *data)
+{
+	GladeProjectFormat  new_format = glade_project_get_format (project);
+	GladeProperty *property;
+	GList *list;
+	TextData *tdata;
+
+	for (list = data->tooltips; list; list = list->next)
+	{
+		tdata = list->data;
+		
+		if (new_format == GLADE_PROJECT_FORMAT_GTKBUILDER)
+			property = glade_widget_get_property (tdata->widget, "tooltip-text");
+		else	
+			property = glade_widget_get_property (tdata->widget, "tooltip");
+
+		glade_command_set_property (property, tdata->text);
+
+		g_free (tdata->text);
+		g_free (tdata);
+	}
+	
+	g_list_free (data->tooltips);
+}
+
+static void
+convert_tooltips (GladeProject       *project,
+		  GladeProjectFormat  new_format,
+		  ConvertData        *data)
+{
+	GladeWidget   *widget;
+	GladeProperty *property;
+	TextData      *tdata;
+	const GList   *objects;
+	gchar         *text;
+
+	for (objects = glade_project_get_objects (project); objects; objects = objects->next)
+	{
+		widget = glade_widget_get_from_gobject (objects->data);
+		if (!GTK_IS_WIDGET (widget->object))
+			continue;
+
+		if (new_format == GLADE_PROJECT_FORMAT_GTKBUILDER)
+			property = glade_widget_get_property (widget, "tooltip");
+		else	
+			property = glade_widget_get_property (widget, "tooltip-text");
+
+
+		text = NULL;
+		glade_property_get (property, &text);
+		if (text)
+		{
+			tdata = g_new0 (TextData, 1);
+			tdata->widget = widget;
+			tdata->text = g_strdup (text);
+			data->tooltips = g_list_prepend (data->tooltips, tdata);
+
+			glade_command_set_property (property, NULL);
+		}
+	}
+}
 
 /*****************************************
  *           Main entry point            *
@@ -185,6 +363,8 @@ glade_gtk_project_convert_finished (GladeProject *project,
 				    ConvertData  *data)
 {
 	convert_adjustments_finished (project, data);
+	convert_textviews_finished (project, data);
+	convert_tooltips_finished (project, data);
 
 	/* Once per conversion */
 	g_signal_handlers_disconnect_by_func (G_OBJECT (project),
@@ -199,8 +379,9 @@ glade_gtk_project_convert (GladeProject *project,
 {
 	ConvertData  *data = g_new0 (ConvertData, 1);
 
-	/* Convert GtkAdjustments ... */
 	convert_adjustments (project, new_format, data);
+	convert_textviews (project, new_format, data);
+	convert_tooltips (project, new_format, data);
 
 	/* Clean up after the new_format is in effect */
 	g_signal_connect (G_OBJECT (project), "convert-finished",

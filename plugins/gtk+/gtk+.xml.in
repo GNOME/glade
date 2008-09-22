@@ -47,14 +47,17 @@
       </actions>
 
       <properties>
-	<property id="tooltip-text" since="2.12"/>
-	<property id="tooltip-markup" since="2.12"/>
+	<!-- Disable tooltip-text & tooltip-markup in libglade since we do
+	     conversions of the "tooltip" fake property -->
+	<property id="tooltip-text" since="2.12" weight="4.2" libglade-unsupported="True"/>
+	<property id="tooltip-markup" since="2.12" weight="4.1" libglade-unsupported="True"/>
 	<property id="visible" default="True" common="True" ignore="True"/>
 	<property id="width-request"  common="True" optional="True" optional-default="False" default="0"/>
 	<property id="height-request" common="True" optional="True" optional-default="False" default="0"/>
 	<property id="no-show-all" weight="4.6" ignore="True"/>
 
-	<property common="True" id="tooltip" _name="Tooltip" default="" translatable="True" weight="4.5">
+	<property common="True" id="tooltip" _name="Tooltip" default="" translatable="True" weight="4.5" 
+		  libglade-only="True">
 	  <spec>glade_standard_string_spec</spec>
 	  <_tooltip>A tooltip text for this widget</_tooltip>
 	</property>
@@ -1647,7 +1650,7 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkGammaCurve" generic-name="gammacurve" _title="Gamma Curve"/>
 
     <glade-widget-class name="GtkFileSelection" generic-name="fileselection" _title="File Selection" deprecated="True" libglade-only="True"/>
-    <glade-widget-class name="Custom" generic-name="custom" _title="Custom widget">
+    <glade-widget-class name="Custom" generic-name="custom" _title="Custom widget" deprecated="True" libglade-only="True">
       <properties>
 	<property id="creation-function"/>
 	<property id="string1"/>
@@ -1739,7 +1742,7 @@ embedded in another object</_tooltip>
     </glade-widget-class>
     
     <!-- Objects -->
-    <glade-widget-class name="GtkSizeGroup" generic-name="sizegroup" _title="Size Group" libglade-unsupported="True">
+    <glade-widget-class name="GtkSizeGroup" generic-name="sizegroup" _title="Size Group" libglade-unsupported="True" toplevel="True">
       <read-widget-function>glade_gtk_size_group_read_widget</read-widget-function>
       <write-widget-function>glade_gtk_size_group_write_widget</write-widget-function>
       <set-property-function>glade_gtk_size_group_set_property</set-property-function>
@@ -1751,34 +1754,68 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkWindowGroup" generic-name="windowgroup" _title="Window Group" libglade-unsupported="True"/>
-    <glade-widget-class name="GtkAdjustment" generic-name="adjustment" _title="Adjustment" libglade-unsupported="True"/>
+    <glade-widget-class name="GtkWindowGroup" generic-name="windowgroup" 
+			_title="Window Group" libglade-unsupported="True" toplevel="True"/>
+    <glade-widget-class name="GtkAdjustment" generic-name="adjustment" 
+			_title="Adjustment" libglade-unsupported="True" toplevel="True">
+      <properties>
+	<property id="value" default="0.0"/>
+	<property id="lower" default="0.0"/>
+	<property id="upper" default="100.0"/>
+	<property id="page-increment" default="10.0"/>
+	<property id="step-increment" default="1.0"/>
+	<property id="page-size" default="10.0"/>
+      </properties>
+    </glade-widget-class>
+
+    <glade-widget-class name="GtkAction" generic-name="action" _title="Action" 
+			libglade-unsupported="True" toplevel="True"/>
+    <glade-widget-class name="GtkToggleAction" generic-name="toggleaction" _title="Toggle Action" 
+			libglade-unsupported="True"/>
+    <glade-widget-class name="GtkRadioAction" generic-name="radioaction" _title="Radio Action" 
+			libglade-unsupported="True"/>
+    <glade-widget-class name="GtkRecentAction" generic-name="recentaction" _title="Recent Action" 
+			libglade-unsupported="True" since="2.12"/>
+    <glade-widget-class name="GtkActionGroup" generic-name="actiongroup" _title="Action Group" 
+			libglade-unsupported="True" toplevel="True"/>
+    <glade-widget-class name="GtkEntryCompletion" generic-name="entrycompletion" _title="Entry Completion" 
+			libglade-unsupported="True" toplevel="True"/>
+    <glade-widget-class name="GtkIconFactory" generic-name="iconfactory" _title="Icon Factory" 
+			libglade-unsupported="True" toplevel="True"/>
+    <glade-widget-class name="GtkUIManager" generic-name="uimanager" _title="UI Manager" 
+			libglade-unsupported="True" toplevel="True"/>
+
+    <glade-widget-class name="GtkListStore" generic-name="liststore" _title="List Store" 
+			libglade-unsupported="True" toplevel="True"/>
+    <glade-widget-class name="GtkTreeStore" generic-name="treestore" _title="Tree Store" 
+			libglade-unsupported="True" toplevel="True"/>
+    <glade-widget-class name="GtkTreeModelFilter" generic-name="treemodelfilter" _title="Tree Model Filter" 
+			libglade-unsupported="True" toplevel="True"/>
+    <glade-widget-class name="GtkTreeModelSort" generic-name="treemodelsort" _title="Tree Model Sort" 
+			libglade-unsupported="True" toplevel="True"/>
+    <glade-widget-class name="GtkTreeSelection" generic-name="treeselection" _title="Tree Selection" 
+			libglade-unsupported="True" toplevel="True"/>
+
+    <glade-widget-class name="GtkStatusIcon" generic-name="statusicon" _title="Status Icon" 
+			libglade-unsupported="True" toplevel="True"/>
+
+    <glade-widget-class name="GtkTextBuffer" generic-name="textbuffer" _title="Text Buffer" 
+			libglade-unsupported="True" toplevel="True">
+      <properties>
+	<property id="text" translatable="True">
+	  <visible-lines>2</visible-lines>
+	</property>
+      </properties>
+    </glade-widget-class>
 
 
-    <glade-widget-class name="GtkAction" generic-name="action" _title="Action" libglade-unsupported="True"/>
-    <glade-widget-class name="GtkToggleAction" generic-name="toggleaction" _title="Toggle Action" libglade-unsupported="True"/>
-    <glade-widget-class name="GtkRadioAction" generic-name="radioaction" _title="Radio Action" libglade-unsupported="True"/>
-    <glade-widget-class name="GtkRecentAction" generic-name="recentaction" _title="Recent Action" libglade-unsupported="True" since="2.12"/>
-    <glade-widget-class name="GtkActionGroup" generic-name="actiongroup" _title="Action Group" libglade-unsupported="True"/>
-    <glade-widget-class name="GtkEntryCompletion" generic-name="entrycompletion" _title="Entry Completion" libglade-unsupported="True"/>
-    <glade-widget-class name="GtkIconFactory" generic-name="iconfactory" _title="Icon Factory" libglade-unsupported="True"/>
+    <glade-widget-class name="GtkTextTag" generic-name="texttag" _title="Text Tag" 
+			libglade-unsupported="True" toplevel="True"/>
+    <glade-widget-class name="GtkTextTagTable" generic-name="texttagtable" _title="Text Tag Table" 
+			libglade-unsupported="True" toplevel="True"/>
 
-    <glade-widget-class name="GtkListStore" generic-name="liststore" _title="List Store" libglade-unsupported="True"/>
-    <glade-widget-class name="GtkTreeStore" generic-name="treestore" _title="Tree Store" libglade-unsupported="True"/>
-    <glade-widget-class name="GtkTreeModelFilter" generic-name="treemodelfilter" _title="Tree Model Filter" libglade-unsupported="True"/>
-    <glade-widget-class name="GtkTreeModelSort" generic-name="treemodelsort" _title="Tree Model Sort" libglade-unsupported="True"/>
-    <glade-widget-class name="GtkTreeSelection" generic-name="treeselection" _title="Tree Selection" libglade-unsupported="True"/>
-
-
-    <glade-widget-class name="GtkStatusIcon" generic-name="statusicon" _title="Status Icon" libglade-unsupported="True"/>
-
-
-    <glade-widget-class name="GtkTextBuffer" generic-name="textbuffer" _title="Text Buffer" libglade-unsupported="True"/>
-    <glade-widget-class name="GtkTextTag" generic-name="texttag" _title="Text Tag" libglade-unsupported="True"/>
-    <glade-widget-class name="GtkTextTagTable" generic-name="texttagtable" _title="Text Tag Table" libglade-unsupported="True"/>
-
-    <glade-widget-class name="GtkFileFilter" generic-name="filefilter" _title="File Filter" libglade-unsupported="True"/>
-
+    <glade-widget-class name="GtkFileFilter" generic-name="filefilter" _title="File Filter" 
+			libglade-unsupported="True" toplevel="True"/>
   </glade-widget-classes>
   
   <glade-widget-group name="gtk-toplevels" _title="Toplevels">
@@ -1816,7 +1853,7 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkAlignment"/>
   </glade-widget-group>
 
-  <glade-widget-group name="gtk-control-display" title="Control and Display">
+  <glade-widget-group name="gtk-control-display" _title="Control and Display">
 
     <glade-widget-class-ref name="GtkButton"/>
     <glade-widget-class-ref name="GtkToggleButton"/>
@@ -1857,38 +1894,59 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkVSeparator"/>
     <glade-widget-class-ref name="GtkArrow"/>
     <glade-widget-class-ref name="GtkDrawingArea"/>
-    
+  </glade-widget-group>
+
+  <glade-widget-group name="gtk-composite" _title="Composite Widgets">
+
+    <default-palette-state expanded="False"/>
+
     <glade-widget-class-ref name="GtkColorSelection"/>
     <glade-widget-class-ref name="GtkFontSelection"/>
     <glade-widget-class-ref name="GtkRecentChooserWidget"/>
     <glade-widget-class-ref name="GtkFileChooserWidget"/>
   </glade-widget-group>
 
-  <glade-widget-group name="gtk-objects" title="Objects">
-    <glade-widget-class-ref name="GtkSizeGroup"/>
-    <glade-widget-class-ref name="GtkWindowGroup"/>
+  <glade-widget-group name="gtk-actions" _title="Actions">
 
-    <glade-widget-class-ref name="GtkAdjustment"/>
-
+    <glade-widget-class-ref name="GtkActionGroup"/>
     <glade-widget-class-ref name="GtkAction"/>
     <glade-widget-class-ref name="GtkToggleAction"/>
     <glade-widget-class-ref name="GtkRadioAction"/>
     <glade-widget-class-ref name="GtkRecentAction"/>
-    <glade-widget-class-ref name="GtkActionGroup"/>
-    <glade-widget-class-ref name="GtkEntryCompletion"/>
-    <glade-widget-class-ref name="GtkIconFactory"/>
+  </glade-widget-group>
+
+  <glade-widget-group name="gtk-mvc" title="Tree Model">
+
+    <default-palette-state expanded="False"/>
 
     <glade-widget-class-ref name="GtkListStore"/>
     <glade-widget-class-ref name="GtkTreeStore"/>
     <glade-widget-class-ref name="GtkTreeModelFilter"/>
     <glade-widget-class-ref name="GtkTreeModelSort"/>
     <glade-widget-class-ref name="GtkTreeSelection"/>
-    <glade-widget-class-ref name="GtkStatusIcon"/>
+  </glade-widget-group>
+
+  <glade-widget-group name="gtk-text" _title="Text Manipulation">
+
+    <default-palette-state expanded="False"/>
 
     <glade-widget-class-ref name="GtkTextBuffer"/>
     <glade-widget-class-ref name="GtkTextTag"/>
     <glade-widget-class-ref name="GtkTextTagTable"/>
+  </glade-widget-group>
 
+
+  <glade-widget-group name="gtk-objects" title="Miscellaneous">
+
+    <default-palette-state expanded="False"/>
+
+    <glade-widget-class-ref name="GtkSizeGroup"/>
+    <glade-widget-class-ref name="GtkWindowGroup"/>
+    <glade-widget-class-ref name="GtkAdjustment"/>
+    <glade-widget-class-ref name="GtkEntryCompletion"/>
+    <glade-widget-class-ref name="GtkUIManager"/>
+    <glade-widget-class-ref name="GtkIconFactory"/>
+    <glade-widget-class-ref name="GtkStatusIcon"/>
     <glade-widget-class-ref name="GtkFileFilter"/>
   </glade-widget-group>
 

@@ -7592,10 +7592,15 @@ glade_gtk_text_view_set_text (GObject *object, const GValue *value)
 	GtkTextBuffer *buffy;
 	GladeWidget *gtext;
 	const gchar *text;
+	GladeProject *project;
 
 	g_return_if_fail (GTK_IS_TEXT_VIEW (object));
 	gtext = glade_widget_get_from_gobject (object);
 	g_return_if_fail (GLADE_IS_WIDGET (gtext));
+
+	project = glade_widget_get_project (gtext);
+	if (glade_project_get_format (project) != GLADE_PROJECT_FORMAT_LIBGLADE)
+		return;
 	
 	buffy = gtk_text_view_get_buffer (GTK_TEXT_VIEW (object));
 	
