@@ -182,6 +182,10 @@ GladePropertyClass *glade_property_class_new                     (gpointer      
 GladePropertyClass *glade_property_class_new_from_spec           (gpointer             handle,
 								  GParamSpec          *spec);
 
+GladePropertyClass *glade_property_class_new_from_spec_full      (gpointer             handle,
+								  GParamSpec          *spec,
+								  gboolean             need_handle);
+
 GladePropertyClass *glade_property_class_clone                   (GladePropertyClass  *property_class);
 
 void                glade_property_class_free                    (GladePropertyClass  *property_class);

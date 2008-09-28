@@ -1,3 +1,13 @@
+2008-09-28  Tristan Van Berkom <tvb@gnome.org>
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/glade-column-types.[ch],	
+	  plugins/gtk+/Makefile.am, plugins/gtk+/gtk+.xml.in: Added load/save/edit
+	  support for GtkTreeStore/GtkListStore basic columns and data definitions
+	  (store data still not translatable...) - Juan Pablo Ugarte
+
+	* gladeui/glade-utils.c: Added convenience funcs glade_utils_string_from_value()
+	  and glade_utils_value_from_string(), these actually use glade-property-class api.
+	
 2008-09-22  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* plugins/gtk+/glade-gtk.c: fixed bug #543314 

@@ -850,9 +850,6 @@ sync_object (GladeEPropAttrs *eprop_attrs,
 					    COLUMN_EDIT_TYPE, &edit_type,
 					    COLUMN_TEXT, &strval,
 					    -1);
-			
-			g_print ("Feeding attributes with a type %d value '%s'\n", type, strval);
-
 
 			gattr = glade_gtk_attribute_from_string (type, (edit_type == EDIT_TOGGLE) ? "" : strval);
 			strval = (g_free (strval), NULL);
@@ -916,8 +913,6 @@ value_text_editing_started (GtkCellRenderer *renderer,
 			(GTK_COLOR_SELECTION (GTK_COLOR_SELECTION_DIALOG (dialog)->colorsel), &color);
 
 		new_text = gdk_color_to_string (&color);
-
-		g_print ("Setting color in store to '%s'\n", new_text);
 
 		gtk_tree_store_set (GTK_TREE_STORE (eprop_attrs->model), &iter,
 				    COLUMN_TEXT, new_text,

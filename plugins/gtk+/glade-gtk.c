@@ -28,6 +28,7 @@
 #include "fixed-bg.xpm"
 #include "glade-accels.h"
 #include "glade-attributes.h"
+#include "glade-column-types.h"
 
 #include <gladeui/glade-editor-property.h>
 #include <gladeui/glade-base-editor.h>
@@ -856,7 +857,6 @@ glade_gtk_widget_write_atk_props (GladeWidget        *widget,
 	fmt = glade_project_get_format (widget->project);
 
 	atk_node = glade_xml_node_new (context, GLADE_TAG_A11Y_A11Y);
-	glade_xml_node_append_child (node, atk_node);
 
 	if (fmt == GLADE_PROJECT_FORMAT_LIBGLADE)
 		glade_gtk_widget_write_atk_properties_libglade (widget, context, atk_node);
@@ -865,10 +865,9 @@ glade_gtk_widget_write_atk_props (GladeWidget        *widget,
 	glade_gtk_widget_write_atk_actions (widget, context, atk_node);
 
 	if (!glade_xml_node_get_children (atk_node))
-	{
-		glade_xml_node_remove (atk_node);
 		glade_xml_node_delete (atk_node);
-	}
+	else
+		glade_xml_node_append_child (node, atk_node);
 
 	if (fmt == GLADE_PROJECT_FORMAT_GTKBUILDER)
 		glade_gtk_widget_write_atk_properties_gtkbuilder (widget, context, node);
@@ -7247,8 +7246,6 @@ glade_gtk_label_set_attributes (GObject *object, const GValue *value)
 	GdkColor             *color;
 	GList                *list;
 
-	g_print ("Setting attributes !!!\n");
-
 	for (list = g_value_get_boxed (value); list; list = list->next)
 	{
 		gattr = list->data;
@@ -7492,15 +7489,14 @@ glade_gtk_label_write_widget (GladeWidgetAdaptor *adaptor,
         GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
 
 	attrs_node = glade_xml_node_new (context, GLADE_TAG_ATTRIBUTES);
-	glade_xml_node_append_child (node, attrs_node);
 
 	glade_gtk_write_attributes (widget, context, attrs_node);
 
 	if (!glade_xml_node_get_children (attrs_node))
-	{
-		glade_xml_node_remove (attrs_node);
 		glade_xml_node_delete (attrs_node);
-	}
+	else
+		glade_xml_node_append_child (node, attrs_node);
+
 }
 
 gchar *
@@ -7756,34 +7752,6 @@ glade_gtk_spin_button_set_property (GladeWidgetAdaptor *adaptor,
 							      object,
 							      id, value);
 }
-
-/* ----------------------------- GtkTreeView ------------------------------ */
-void
-glade_gtk_tree_view_post_create (GladeWidgetAdaptor *adaptor,
-				 GObject            *object, 
-				 GladeCreateReason   reason)
-{
-	GtkWidget *tree_view = GTK_WIDGET (object);
-	GtkTreeStore *store;
-	GtkCellRenderer *renderer;
-	GtkTreeViewColumn *column;
-
-	store = gtk_tree_store_new (2, G_TYPE_STRING, G_TYPE_STRING);
-
-	gtk_tree_view_set_model (GTK_TREE_VIEW (tree_view), GTK_TREE_MODEL (store));
-	g_object_unref (G_OBJECT (store));
-
-	renderer = gtk_cell_renderer_text_new ();
-	column = gtk_tree_view_column_new_with_attributes
-		("Column 1", renderer, "text", 0, NULL);
-	gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
-
-	renderer = gtk_cell_renderer_text_new ();
-	column = gtk_tree_view_column_new_with_attributes
-		("Column 2", renderer, "text", 1, NULL);
-	gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
-}
-
 
 /* ----------------------------- GtkCombo ------------------------------ */
 void
@@ -8539,7 +8507,6 @@ glade_gtk_size_group_write_widgets (GladeWidget        *widget,
 	GladeWidget   *awidget;
 
 	widgets_node = glade_xml_node_new (context, GLADE_TAG_SIZEGROUP_WIDGETS);
-	glade_xml_node_append_child (node, widgets_node);
 
 	if (glade_widget_property_get (widget, "widgets", &widgets))
 	{
@@ -8553,10 +8520,10 @@ glade_gtk_size_group_write_widgets (GladeWidget        *widget,
 	}
 
 	if (!glade_xml_node_get_children (widgets_node))
-	{
-		glade_xml_node_remove (widgets_node);
 		glade_xml_node_delete (widgets_node);
-	}
+	else
+		glade_xml_node_append_child (node, widgets_node);
+	
 }
 
 
@@ -8608,4 +8575,374 @@ glade_gtk_size_group_set_property (GladeWidgetAdaptor *adaptor,
 	else
 		GWA_GET_CLASS (G_TYPE_OBJECT)->set_property (adaptor, object,
 							     property_name, value);
+}
+
+/*--------------------------- GtkListStore ---------------------------------*/
+
+#define GLADE_TAG_COLUMNS	"columns"
+#define GLADE_TAG_COLUMN	"column"
+#define GLADE_TAG_TYPE		"type"
+
+#define GLADE_TAG_ROW           "row"
+#define GLADE_TAG_DATA          "data"
+#define GLADE_TAG_COL           "col"
+
+static void
+glade_gtk_store_set_columns (GObject *object,
+			     const GValue *value)
+{
+	GList *l = g_value_get_boxed (value);
+	gint i, n = g_list_length (l);
+	GType *types = g_new (GType, n);
+
+	for (i = 0; l; l = g_list_next (l), i++)
+	{
+		GladeColumnType *data = l->data;
+		types[i] = data->type;
+	}
+
+	if (GTK_IS_LIST_STORE (object))
+		gtk_list_store_set_column_types (GTK_LIST_STORE (object), n, types);
+	else
+		gtk_tree_store_set_column_types (GTK_TREE_STORE (object), n, types);
+}
+
+static void
+glade_gtk_store_set_data (GObject *object,
+			  const GValue *value)
+{
+	GladeWidget *gwidget = glade_widget_get_from_gobject (object);
+	GList  *columns = NULL, *list;
+	GladeColumnType *column;
+	gchar **split, **subsplit;
+	gint    i, j;
+	GtkTreeIter row_iter;
+	
+	if (GTK_IS_LIST_STORE (object))
+		gtk_list_store_clear (GTK_LIST_STORE (object));
+	else
+		gtk_tree_store_clear (GTK_TREE_STORE (object));
+	
+	glade_widget_property_get (gwidget, "columns", &columns);
+	
+	/* Nothing to enter without columns defined */
+	if (!columns) return;
+	
+	split = g_value_get_boxed (value);
+	
+	for (i = 0; split && split[i]; i++)
+	{
+		if ((subsplit = g_strsplit (split[i], " ", 0)) != NULL)
+		{
+			if (GTK_IS_LIST_STORE (object))
+				gtk_list_store_append (GTK_LIST_STORE (object), &row_iter);
+			else
+				/* (for now no child data... ) */
+				gtk_tree_store_append (GTK_TREE_STORE (object), &row_iter, NULL);
+			
+			for (j = 0; subsplit[j]; j++)
+			{
+				if ((list = g_list_nth (columns, j)) != NULL)
+				{
+					GValue *row_value;
+					
+					column = list->data;
+					
+					if ((row_value =
+					     glade_utils_value_from_string (column->type, subsplit[j], NULL)) != NULL)
+					{
+						
+						if (GTK_IS_LIST_STORE (object))
+							gtk_list_store_set_value (GTK_LIST_STORE (object), 
+										  &row_iter,
+										  j, row_value);
+						else
+							gtk_tree_store_set_value (GTK_TREE_STORE (object), 
+										  &row_iter, 
+										  j, row_value);
+					}
+					g_value_unset (row_value);
+					g_free (row_value);
+				}
+			}
+			g_strfreev (subsplit);
+		}
+	}
+}
+
+void
+glade_gtk_store_set_property (GladeWidgetAdaptor *adaptor,
+			      GObject *object,
+			      const gchar *property_name,
+			      const GValue *value)
+{
+	if (strcmp (property_name, "columns") == 0)
+	{
+		glade_gtk_store_set_columns (object, value);
+	} 
+	else if (strcmp (property_name, "data") == 0)
+	{
+		glade_gtk_store_set_data (object, value);
+	}
+	else
+		/* Chain Up */
+		GWA_GET_CLASS (G_TYPE_OBJECT)->set_property (adaptor,
+							     object,
+							     property_name, 
+							     value);
+}
+
+GladeEditorProperty *
+glade_gtk_store_create_eprop (GladeWidgetAdaptor *adaptor,
+			      GladePropertyClass *klass,
+			      gboolean            use_command)
+{
+	GladeEditorProperty *eprop;
+
+	/* chain up.. */
+	if (GLADE_IS_PARAM_SPEC_COLUMN_TYPES (klass->pspec))
+		eprop = g_object_new (GLADE_TYPE_EPROP_COLUMN_TYPES,
+				      "property-class", klass, 
+				      "use-command", use_command,
+				      NULL);
+	else
+		eprop = GWA_GET_CLASS 
+			(G_TYPE_OBJECT)->create_eprop (adaptor, 
+						       klass, 
+						       use_command);
+	return eprop;
+}
+
+gchar *
+glade_gtk_store_from_value (GladeWidgetAdaptor *adaptor,
+			    GladePropertyClass *klass,
+			    const GValue       *value,
+			    GladeProjectFormat  fmt)
+{
+	if (GLADE_IS_PARAM_SPEC_COLUMN_TYPES (klass->pspec))
+	{
+		GString *val = g_string_new ("");
+		gchar *retval;
+		GList *l;
+		
+		for (l = g_value_get_boxed (value); l; l = g_list_next (l))
+		{
+			GladeColumnType *data = l->data;
+			g_string_append_printf (val, (g_list_next (l)) ? "%s|" : "%s",
+						g_type_name (data->type));
+		}
+		
+		retval = val->str;
+		g_string_free (val, FALSE);
+		return retval;
+	}
+	else
+		return GWA_GET_CLASS 
+			(G_TYPE_OBJECT)->string_from_value (adaptor, 
+							    klass, 
+							    value,
+							    fmt);
+}
+
+static void
+glade_gtk_store_write_columns (GladeWidget        *widget,
+			       GladeXmlContext    *context,
+			       GladeXmlNode       *node)
+{
+	GladeXmlNode  *columns_node;
+	GladeProperty *prop;
+	GList *l;
+
+	prop = glade_widget_get_property (widget, "columns");
+
+	columns_node = glade_xml_node_new (context, GLADE_TAG_COLUMNS);
+	
+	for (l = g_value_get_boxed (prop->value); l; l = g_list_next (l))
+	{
+		GladeColumnType *data = l->data;
+		GladeXmlNode  *column_node;
+			
+		column_node = glade_xml_node_new (context, GLADE_TAG_COLUMN);
+		glade_xml_node_append_child (columns_node, column_node);
+		glade_xml_node_set_property_string (column_node, GLADE_TAG_TYPE,
+						    g_type_name (data->type));
+	}
+
+	if (!glade_xml_node_get_children (columns_node))
+		glade_xml_node_delete (columns_node);
+	else
+		glade_xml_node_append_child (node, columns_node);
+
+}
+
+static void
+glade_gtk_store_write_data (GladeWidget        *widget,
+			    GladeXmlContext    *context,
+			    GladeXmlNode       *node)
+{
+	GladeXmlNode   *data_node, *col_node, *row_node;
+	GList          *columns = NULL;
+	gchar         **split = NULL, **subsplit, *column_number;
+	gint            i, j;
+	
+	glade_widget_property_get (widget, "data", &split);
+	glade_widget_property_get (widget, "columns", &columns);
+
+	/* XXX log errors about data not fitting columns here when
+	 * loggin is available
+	 */
+	if (!split || !columns)
+		return;
+
+	data_node = glade_xml_node_new (context, GLADE_TAG_DATA);
+
+	for (i = 0; split[i]; i++)
+	{
+		row_node = glade_xml_node_new (context, GLADE_TAG_ROW);
+		glade_xml_node_append_child (data_node, row_node);
+
+		if ((subsplit = g_strsplit (split[i], " ", 0)) != NULL)
+		{
+			for (j = 0; subsplit[j]; j++)
+			{
+				/* XXX Log error: data col j exceeds columns on row i */
+				if (!g_list_nth (columns, j))
+					break;
+
+				column_number = g_strdup_printf ("%d", j);
+
+				col_node = glade_xml_node_new (context, GLADE_TAG_COL);
+				glade_xml_node_append_child (row_node, col_node);
+				glade_xml_node_set_property_string (col_node, GLADE_TAG_ID,
+								    column_number);
+				glade_xml_set_content (col_node, subsplit[j]);
+
+				g_free (column_number);
+			}
+			g_strfreev (subsplit);
+		}
+	}
+
+	if (!glade_xml_node_get_children (data_node))
+		glade_xml_node_delete (data_node);
+	else
+		glade_xml_node_append_child (node, data_node);
+}
+
+
+void
+glade_gtk_store_write_widget (GladeWidgetAdaptor *adaptor,
+			      GladeWidget        *widget,
+			      GladeXmlContext    *context,
+			      GladeXmlNode       *node)
+{
+	if (!glade_xml_node_verify
+	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+		return;
+
+	/* First chain up and write all the normal properties.. */
+        GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
+
+	glade_gtk_store_write_columns (widget, context, node);
+	glade_gtk_store_write_data (widget, context, node);
+}
+
+static void
+glade_gtk_store_read_columns (GladeWidget *widget, GladeXmlNode *node)
+{
+	GladeXmlNode *columns_node;
+	GladeProperty *property;
+	GladeXmlNode *prop;
+	GList *types = NULL;
+	GValue value = {0,};
+	
+	if ((columns_node = glade_xml_search_child (node, GLADE_TAG_COLUMNS)) == NULL)
+		return;
+
+	for (prop = glade_xml_node_get_children (columns_node); prop;
+	     prop = glade_xml_node_next (prop))
+	{
+		GladeColumnType *data = g_new0 (GladeColumnType, 1);
+		gchar *type;
+		
+		if (!glade_xml_node_verify (prop, GLADE_TAG_COLUMN)) continue;
+
+		type = glade_xml_get_property_string_required (prop, GLADE_TAG_TYPE, NULL);
+		data->type = g_type_from_name (type);
+		
+		types = g_list_prepend (types, data);
+		g_free (type);
+	}
+	
+	property = glade_widget_get_property (widget, "columns");
+	g_value_init (&value, GLADE_TYPE_COLUMN_TYPE_LIST);
+	g_value_take_boxed (&value, g_list_reverse (types));
+	glade_property_set_value (property, &value);
+}
+
+static void
+glade_gtk_store_read_data (GladeWidget *widget, GladeXmlNode *node)
+{
+	GladeXmlNode *data_node, *row_node, *col_node;
+	GPtrArray *data_array;
+
+	data_array = g_ptr_array_new ();
+
+	if ((data_node = glade_xml_search_child (node, GLADE_TAG_DATA)) == NULL)
+		return;
+	
+	for (row_node = glade_xml_node_get_children (data_node); row_node;
+	     row_node = glade_xml_node_next (row_node))
+	{
+		GString *string = NULL;
+		gchar *value_str;
+
+		if (!glade_xml_node_verify (row_node, GLADE_TAG_ROW)) 
+			continue;
+
+		/* XXX FIXME: we are assuming that the columns are listed in order */
+		for (col_node = glade_xml_node_get_children (row_node); col_node;
+		     col_node = glade_xml_node_next (col_node))
+		{
+
+			if (!glade_xml_node_verify (col_node, GLADE_TAG_COL)) 
+				continue;
+
+			value_str = glade_xml_get_content (col_node);
+
+			if (string)
+				g_string_append_printf (string, " %s", value_str);
+			else
+				string = g_string_new (value_str);
+
+			g_free (value_str);
+		}
+
+		/* harvest string onto the array ... */
+		if (string)
+			g_ptr_array_add (data_array,
+					 g_string_free (string, FALSE));
+	}
+
+	g_ptr_array_add (data_array, NULL);
+
+	glade_widget_property_set (widget, "data", data_array->pdata);
+
+	g_ptr_array_free (data_array, TRUE);
+}
+
+void
+glade_gtk_store_read_widget (GladeWidgetAdaptor *adaptor,
+			     GladeWidget        *widget,
+			     GladeXmlNode       *node)
+{
+	if (!glade_xml_node_verify 
+	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+		return;
+
+	/* First chain up and read in all the normal properties.. */
+        GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
+
+	glade_gtk_store_read_columns (widget, node);
+	glade_gtk_store_read_data (widget, node);
 }

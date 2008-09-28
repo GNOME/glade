@@ -325,7 +325,6 @@ glade_palette_finalize (GObject *object)
 static void
 glade_palette_toggled (GladePalette *palette)
 {
-	GladeProject       *project;
 	GladeWidgetAdaptor *adaptor;
 	GladeWidget        *widget;
 

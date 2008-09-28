@@ -1940,37 +1940,188 @@ glade_util_icon_name_to_filename (const gchar *value)
 gint
 glade_utils_enum_value_from_string (GType enum_type, const gchar *strval)
 {
-	GEnumClass *enum_class;
-	GEnumValue *enum_value;
-	gint        value = 0;
+	gint    value = 0;
+	GValue *gvalue;
 
-	enum_class = g_type_class_ref (enum_type);
-	if ((enum_value = g_enum_get_value_by_nick (enum_class, strval)) != NULL)
-		value = enum_value->value;
-	else
-		g_critical ("Couldnt find enum value for %s, type %s", 
-			    strval, g_type_name (enum_type));
-	
-	g_type_class_unref (enum_class);
-	
+	if ((gvalue = glade_utils_value_from_string (enum_type, strval, NULL)) != NULL)
+	{
+		value = g_value_get_enum (gvalue);
+		g_value_unset (gvalue);
+		g_free (gvalue);
+	}
 	return value;
 }
 
 gchar *
 glade_utils_enum_string_from_value (GType enum_type, gint value)
 {
-	GEnumClass *enum_class;
-	GEnumValue *enum_value;
-	gchar      *ret = NULL;
+	GValue gvalue = { 0, };
+	gchar *string;
 
-	enum_class = g_type_class_ref (enum_type);
-	if ((enum_value = g_enum_get_value (enum_class, value)) != NULL)
-		ret = g_strdup (enum_value->value_nick);
-	else
-		g_critical ("Couldnt find enum value for %d, type %s", 
-			    value, g_type_name (enum_type));
+	g_value_init (&gvalue, enum_type);
+	g_value_set_enum (&gvalue, value);
+
+	string = glade_utils_string_from_value (enum_type, &gvalue, NULL);
+	g_value_unset (&gvalue);
+
+	return string;
+}
+
+
+/* A hash table of generically created property classes for
+ * fundamental types, so we can easily use glade's conversion
+ * system without using properties (only GTypes)
+ */
+static GHashTable *generic_property_classes = NULL;
+
+
+static gboolean
+utils_gtype_equal (gconstpointer v1,
+		 gconstpointer v2)
+{
+  return *((const GType*) v1) == *((const GType*) v2);
+}
+
+static guint
+utils_gtype_hash (gconstpointer v)
+{
+  return *(const GType*) v;
+}
+
+
+static GladePropertyClass *
+pclass_from_gtype (GType type)
+{
+	GladePropertyClass *property_class = NULL;
+	GParamSpec         *pspec = NULL;
+
+	if (!generic_property_classes)
+		generic_property_classes = g_hash_table_new_full (utils_gtype_hash, utils_gtype_equal,
+								  g_free, (GDestroyNotify)glade_property_class_free);
 	
-	g_type_class_unref (enum_class);
-	
-	return ret;
+	property_class = g_hash_table_lookup (generic_property_classes, &type);
+
+	if (!property_class)
+	{
+		/* Support enum and flag types, and a hardcoded list of fundamental types */
+		if (type == G_TYPE_CHAR)
+			pspec = g_param_spec_char ("dummy", "dummy", "dummy",
+						   G_MININT8, G_MAXINT8, 0, G_PARAM_READABLE|G_PARAM_WRITABLE);
+		else if (type == G_TYPE_UCHAR)
+			pspec = g_param_spec_char ("dummy", "dummy", "dummy",
+						   0, G_MAXUINT8, 0, G_PARAM_READABLE|G_PARAM_WRITABLE);
+		else if (type == G_TYPE_BOOLEAN)
+			pspec = g_param_spec_boolean ("dummy", "dummy", "dummy",
+						      FALSE, G_PARAM_READABLE|G_PARAM_WRITABLE);
+		else if (type == G_TYPE_INT)
+			pspec = g_param_spec_int ("dummy", "dummy", "dummy",
+						  G_MININT, G_MAXINT, 0, G_PARAM_READABLE|G_PARAM_WRITABLE);
+		else if (type == G_TYPE_UINT)
+			pspec = g_param_spec_uint ("dummy", "dummy", "dummy",
+						   0, G_MAXUINT, 0, G_PARAM_READABLE|G_PARAM_WRITABLE);
+		else if (type == G_TYPE_LONG)
+			pspec = g_param_spec_long ("dummy", "dummy", "dummy",
+						    G_MINLONG, G_MAXLONG, 0, G_PARAM_READABLE|G_PARAM_WRITABLE);
+		else if (type == G_TYPE_ULONG)
+			pspec = g_param_spec_ulong ("dummy", "dummy", "dummy",
+						    0, G_MAXULONG, 0, G_PARAM_READABLE|G_PARAM_WRITABLE);
+		else if (type == G_TYPE_INT64)
+			pspec = g_param_spec_int64 ("dummy", "dummy", "dummy",
+						    G_MININT64, G_MAXINT64, 0, G_PARAM_READABLE|G_PARAM_WRITABLE);
+		else if (type == G_TYPE_UINT64)
+			pspec = g_param_spec_uint64 ("dummy", "dummy", "dummy",
+						     0, G_MAXUINT64, 0, G_PARAM_READABLE|G_PARAM_WRITABLE);
+		else if (type == G_TYPE_FLOAT)
+			pspec = g_param_spec_float ("dummy", "dummy", "dummy",
+						    G_MINFLOAT, G_MAXFLOAT, 0.0, G_PARAM_READABLE|G_PARAM_WRITABLE);
+		else if (type == G_TYPE_DOUBLE)
+			pspec = g_param_spec_double ("dummy", "dummy", "dummy",
+						     G_MINDOUBLE, G_MAXDOUBLE, 0.0, G_PARAM_READABLE|G_PARAM_WRITABLE);
+		else if (type == G_TYPE_STRING)
+			pspec = g_param_spec_string ("dummy", "dummy", "dummy",
+						     NULL, G_PARAM_READABLE|G_PARAM_WRITABLE);
+		else if (type == G_TYPE_OBJECT || g_type_is_a (type, G_TYPE_OBJECT))
+			pspec = g_param_spec_object ("dummy", "dummy", "dummy",
+						     type, G_PARAM_READABLE|G_PARAM_WRITABLE);
+		else if (G_TYPE_IS_ENUM (type))
+			pspec = g_param_spec_enum ("dummy", "dummy", "dummy",
+						   type, 0, G_PARAM_READABLE|G_PARAM_WRITABLE);
+		else if (G_TYPE_IS_FLAGS (type))
+			pspec = g_param_spec_flags ("dummy", "dummy", "dummy",
+						    type, 0, G_PARAM_READABLE|G_PARAM_WRITABLE);
+
+		if (pspec)
+		{
+			if ((property_class = 
+			     glade_property_class_new_from_spec_full (NULL, pspec, FALSE)) != NULL)
+			{
+				/* XXX If we ever free the hash table, property classes wont touch
+				 * the allocated pspecs, so they would theoretically be leaked.
+				 */
+				g_hash_table_insert (generic_property_classes, 
+						     g_memdup (&type, sizeof (GType)), property_class);
+			}
+			else
+				g_warning ("Unable to create property class for type %s", g_type_name (type));
+		}
+		else
+			g_warning ("No generic conversion support for type %s", g_type_name (type));
+	}
+	return property_class;
+}
+
+/**
+ * glade_utils_value_from_string:
+ * @type: a #GType to convert with
+ * @string: the string to convert
+ * @project: the #GladeProject to look for formats of object names when needed
+ *
+ * Allocates and sets a #GValue of type @type
+ * set to @string (using glade conversion routines) 
+ *
+ * Returns: A newly allocated and set #GValue
+ */
+GValue *
+glade_utils_value_from_string (GType               type,
+			       const gchar        *string,
+			       GladeProject       *project)
+{
+	GladePropertyClass *pclass;
+
+	g_return_val_if_fail (type != G_TYPE_INVALID, NULL);
+	g_return_val_if_fail (string != NULL, NULL);
+
+	if ((pclass = pclass_from_gtype (type)) != NULL)
+		return glade_property_class_make_gvalue_from_string (pclass, string, project);
+
+	return NULL;
+}
+
+
+/**
+ * glade_utils_string_from_value:
+ * @type: a #GType to convert with
+ * @value: the value to convert
+ * @project: the #GladeProject to look for formats of object names when needed
+ *
+ * Serializes #GValue into a string 
+ * (using glade conversion routines) 
+ *
+ * Returns: A newly allocated string
+ */
+gchar *
+glade_utils_string_from_value (GType               type,
+			       const GValue       *value,
+			       GladeProject       *project)
+{
+	GladePropertyClass *pclass;
+
+	g_return_val_if_fail (type != G_TYPE_INVALID, NULL);
+	g_return_val_if_fail (value != NULL, NULL);
+
+	if ((pclass = pclass_from_gtype (type)) != NULL)
+		return glade_property_class_make_string_from_gvalue (pclass, value, 
+								     glade_project_get_format (project));
+
+	return NULL;
 }

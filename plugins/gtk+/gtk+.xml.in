@@ -926,7 +926,6 @@ embedded in another object</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkTreeView" generic-name="treeview" _title="Tree View">
-      <post-create-function>glade_gtk_tree_view_post_create</post-create-function>
       <properties>
         <property id="level-indentation" since="2.12"/>
         <property id="show-expanders" since="2.12"/>
@@ -941,6 +940,9 @@ embedded in another object</_tooltip>
         <property id="hadjustment" libglade-unsupported="True"/>
 	<property id="vadjustment" libglade-unsupported="True"/>
       </properties>
+    </glade-widget-class>
+
+    <glade-widget-class name="GtkTreeViewColumn" generic-name="treeviewcolumn" _title="Tree View Column">
     </glade-widget-class>
 
     <glade-widget-class name="GtkIconView" generic-name="iconview" _title="Icon View">
@@ -1786,9 +1788,43 @@ embedded in another object</_tooltip>
 			libglade-unsupported="True" toplevel="True"/>
 
     <glade-widget-class name="GtkListStore" generic-name="liststore" _title="List Store" 
-			libglade-unsupported="True" toplevel="True"/>
+			libglade-unsupported="True" toplevel="True">
+      <set-property-function>glade_gtk_store_set_property</set-property-function>
+      <create-editor-property-function>glade_gtk_store_create_eprop</create-editor-property-function>
+      <string-from-value-function>glade_gtk_store_from_value</string-from-value-function>
+      <write-widget-function>glade_gtk_store_write_widget</write-widget-function>
+      <read-widget-function>glade_gtk_store_read_widget</read-widget-function>
+      <properties>
+        <property id="columns" since="2.12" _name="Columns" save="False">
+          <spec>glade_standard_column_types_spec</spec>
+          <_tooltip>Set column types for this model</_tooltip>
+        </property>
+        <property id="data" since="2.12" _name="Data" save="False">
+          <spec>glade_standard_strv_spec</spec>
+          <_tooltip>Enter a list of values to be applied on each row</_tooltip>
+        </property>
+      </properties>
+    </glade-widget-class>
+
     <glade-widget-class name="GtkTreeStore" generic-name="treestore" _title="Tree Store" 
-			libglade-unsupported="True" toplevel="True"/>
+			libglade-unsupported="True" toplevel="True">
+      <set-property-function>glade_gtk_store_set_property</set-property-function>
+      <create-editor-property-function>glade_gtk_store_create_eprop</create-editor-property-function>
+      <string-from-value-function>glade_gtk_store_from_value</string-from-value-function>
+      <write-widget-function>glade_gtk_store_write_widget</write-widget-function>
+      <read-widget-function>glade_gtk_store_read_widget</read-widget-function>
+      <properties>
+        <property id="columns" since="2.12" _name="Columns" save="False">
+          <spec>glade_standard_column_types_spec</spec>
+          <_tooltip>Set column types for this model</_tooltip>
+        </property>
+        <property id="data" since="2.12" _name="Data" save="False">
+          <spec>glade_standard_strv_spec</spec>
+          <_tooltip>Enter a list of values to be applied on each row</_tooltip>
+        </property>
+      </properties>
+    </glade-widget-class>
+
     <glade-widget-class name="GtkTreeModelFilter" generic-name="treemodelfilter" _title="Tree Model Filter" 
 			libglade-unsupported="True" toplevel="True"/>
     <glade-widget-class name="GtkTreeModelSort" generic-name="treemodelsort" _title="Tree Model Sort" 

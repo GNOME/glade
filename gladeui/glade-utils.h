@@ -137,6 +137,12 @@ gint              glade_utils_enum_value_from_string (GType enum_type, const gch
 
 gchar            *glade_utils_enum_string_from_value (GType enum_type, gint value);
 
+GValue           *glade_utils_value_from_string   (GType               type,
+						   const gchar        *string,
+						   GladeProject       *project);
+gchar            *glade_utils_string_from_value   (GType               type,
+						   const GValue       *value,
+						   GladeProject       *project);
 
 G_END_DECLS
 

@@ -1028,17 +1028,14 @@ glade_property_class_get_from_gvalue (GladePropertyClass  *klass,
 	va_end (vl);
 }
 
-/**
- * glade_property_class_new_from_spec:
- * @handle: A generic pointer (i.e. a #GladeWidgetClass)
- * @spec: A #GParamSpec
- *
- * Returns: a newly created #GladePropertyClass based on @spec
- *          or %NULL if its unsupported.
+
+/* "need_handle": An evil trick to let us create pclasses without
+ * adaptors and editors.
  */
 GladePropertyClass *
-glade_property_class_new_from_spec (gpointer     handle,
-				    GParamSpec  *spec)
+glade_property_class_new_from_spec_full (gpointer     handle,
+					 GParamSpec  *spec,
+					 gboolean     need_handle)
 {
 	GObjectClass        *gtk_widget_class;
 	GladePropertyClass  *property_class;
@@ -1063,7 +1060,7 @@ glade_property_class_new_from_spec (gpointer     handle,
 
 	/* Register only editable properties.
 	 */
-	if (!(eprop = glade_widget_adaptor_create_eprop
+	if (need_handle && !(eprop = glade_widget_adaptor_create_eprop
 	      (GLADE_WIDGET_ADAPTOR (handle), property_class, FALSE)))
 		goto failed;
 
@@ -1099,6 +1096,21 @@ glade_property_class_new_from_spec (gpointer     handle,
 	glade_property_class_free (property_class);
 	g_type_class_unref (gtk_widget_class);
 	return NULL;
+}
+
+/**
+ * glade_property_class_new_from_spec:
+ * @handle: A generic pointer (i.e. a #GladeWidgetClass)
+ * @spec: A #GParamSpec
+ *
+ * Returns: a newly created #GladePropertyClass based on @spec
+ *          or %NULL if its unsupported.
+ */
+GladePropertyClass *
+glade_property_class_new_from_spec (gpointer     handle,
+				    GParamSpec  *spec)
+{
+	glade_property_class_new_from_spec_full (handle, spec, TRUE);
 }
 
 /**

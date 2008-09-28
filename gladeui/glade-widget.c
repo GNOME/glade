@@ -2544,6 +2544,7 @@ glade_widget_get_pack_property (GladeWidget *widget, const gchar *id_property)
  * Gets the value of @id_property in @widget
  *
  * Returns: whether @id_property was found or not.
+ *
  */
 gboolean
 glade_widget_property_get (GladeWidget      *widget,
