@@ -14,3 +14,8 @@ Sort objects from widgets in the inspector widget.
 Make popup work in workspace with no-window widgets
 Take care of external object property references (sync them) at rebuild time
 Liststore/Treestore data is not translatable
+store data needs improvement and cant be released as is (cant even have spaces in data, needs real new structure).
+
+IMPORTANT!!! Go over all object type properties and mark them libglade unsupported,
+newly added objects need "since" versioning info updated, all around thoroughly 
+check catalog data before release candidate.

@@ -1,3 +1,18 @@
+2008-09-29  Tristan Van Berkom <tvb@gnome.org>
+
+	* plugins/gtk+/glade-column-types.[ch]: Exported glade_column_list_copy/free()
+
+	* plugins/gtk+/glade-model-data.[ch], plugins/gtk+/Makefile.am: Added model data
+	  pspec, editor not compĺete yet...
+	
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Implemented new pspec as
+	  list/treestore's "data" property with load/save support.
+
+	* plugins/gtk+/glade-convert.c: Made combos convert correctly with new modeldata
+	  pspec.
+
+	* gladeui/glade-utils.[ch]: Added glade_utils_liststore_from_enum_type()
+
 2008-09-29  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* plugins/gtk+/glade-column-types.[ch]: added missing files.

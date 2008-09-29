@@ -32,6 +32,7 @@ typedef struct
 	gchar *column_name;
 } GladeColumnType;
 
+
 #define	GLADE_TYPE_COLUMN_TYPE_LIST   (glade_column_type_list_get_type())
 #define	GLADE_TYPE_PARAM_COLUMN_TYPES (glade_param_column_types_get_type())
 #define GLADE_TYPE_EPROP_COLUMN_TYPES (glade_eprop_column_types_get_type())
@@ -46,6 +47,10 @@ GType        glade_param_column_types_get_type    (void) G_GNUC_CONST;
 GType        glade_eprop_column_types_get_type    (void) G_GNUC_CONST;
 
 GParamSpec  *glade_standard_column_types_spec     (void);
+
+
+void         glade_column_list_free               (GList *list);
+GList       *glade_column_list_copy               (GList *list);
 
 G_END_DECLS
 

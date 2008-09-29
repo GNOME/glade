@@ -241,36 +241,6 @@ typedef enum {
 	 (type) == EDIT_COMBO ? COLUMN_COMBO_ACTIVE: COLUMN_TEXT_ACTIVE)
 
 static GtkListStore *
-make_model_from_enum_type (GType enum_type)
-{
-	GtkListStore        *store;
-	GtkTreeIter          iter;
-	GEnumClass          *eclass;
-	guint                i;
-
-	eclass = g_type_class_ref (enum_type);
-
-	store = gtk_list_store_new (1, G_TYPE_STRING);
-
-	gtk_list_store_append (store, &iter);
-	gtk_list_store_set (store, &iter,
-			    0, _("Unset"), 
-			    -1);
-	
-	for (i = 0; i < eclass->n_values; i++)
-	{
-		gtk_list_store_append (store, &iter);
-		gtk_list_store_set (store, &iter,
-				    0, eclass->values[i].value_nick, 
-				    -1);
-	}
-
-	g_type_class_unref (eclass);
-
-	return store;
-}
-
-static GtkListStore *
 get_enum_model_for_combo (PangoAttrType type)
 {
 	static GtkListStore *style_store = NULL, 
@@ -282,32 +252,32 @@ get_enum_model_for_combo (PangoAttrType type)
 	{
 	case PANGO_ATTR_STYLE:
 		if (!style_store)
-			style_store = make_model_from_enum_type (PANGO_TYPE_STYLE);
+			style_store = glade_utils_liststore_from_enum_type (PANGO_TYPE_STYLE, TRUE);
 		return style_store;
 
 	case PANGO_ATTR_WEIGHT:
 		if (!weight_store)
-			weight_store = make_model_from_enum_type (PANGO_TYPE_WEIGHT);
+			weight_store = glade_utils_liststore_from_enum_type (PANGO_TYPE_WEIGHT, TRUE);
 		return weight_store;
 
 	case PANGO_ATTR_VARIANT:
 		if (!variant_store)
-			variant_store = make_model_from_enum_type (PANGO_TYPE_VARIANT);
+			variant_store = glade_utils_liststore_from_enum_type (PANGO_TYPE_VARIANT, TRUE);
 		return variant_store;
 
 	case PANGO_ATTR_STRETCH:
 		if (!stretch_store)
-			stretch_store = make_model_from_enum_type (PANGO_TYPE_STRETCH);
+			stretch_store = glade_utils_liststore_from_enum_type (PANGO_TYPE_STRETCH, TRUE);
 		return stretch_store;
 
 	case PANGO_ATTR_GRAVITY:	
 		if (!gravity_store)
-			gravity_store = make_model_from_enum_type (PANGO_TYPE_GRAVITY);
+			gravity_store = glade_utils_liststore_from_enum_type (PANGO_TYPE_GRAVITY, TRUE);
 		return gravity_store;
 
 	case PANGO_ATTR_GRAVITY_HINT:
 		if (!gravity_hint_store)
-			gravity_hint_store = make_model_from_enum_type (PANGO_TYPE_GRAVITY_HINT);
+			gravity_hint_store = glade_utils_liststore_from_enum_type (PANGO_TYPE_GRAVITY_HINT, TRUE);
 		return gravity_hint_store;
 
 	default:

@@ -140,9 +140,10 @@ gchar            *glade_utils_enum_string_from_value (GType enum_type, gint valu
 GValue           *glade_utils_value_from_string   (GType               type,
 						   const gchar        *string,
 						   GladeProject       *project);
-gchar            *glade_utils_string_from_value   (GType               type,
-						   const GValue       *value,
+gchar            *glade_utils_string_from_value   (const GValue       *value,
 						   GladeProject       *project);
+
+GtkListStore     *glade_utils_liststore_from_enum_type  (GType enum_type, gboolean include_empty);
 
 G_END_DECLS
 

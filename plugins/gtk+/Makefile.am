@@ -24,7 +24,7 @@ libgladegtk_la_CFLAGS =  \
 	$(AM_CFLAGS)
 
 libgladegtk_la_SOURCES     = glade-gtk.c glade-accels.c glade-attributes.c glade-convert.c fixed-bg.xpm \
-	glade-column-types.c  glade-column-types.h
+	glade-column-types.c  glade-column-types.h glade-model-data.c glade-model-data.h
 libgladegtk_la_LDFLAGS     = -module -avoid-version $(AM_LDFLAGS)
 libgladegtk_la_LIBADD      = $(libgladeui) $(GTK_LIBS)
 

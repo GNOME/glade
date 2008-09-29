@@ -82,8 +82,8 @@ column_types_store_populate (GtkListStore *store)
 	}
 }
 
-static GList *
-data_list_copy (GList *list)
+GList *
+glade_column_list_copy (GList *list)
 {
 	GList *l, *retval = NULL;
 	
@@ -101,8 +101,8 @@ data_list_copy (GList *list)
 	return g_list_reverse (retval);
 }
 
-static void
-data_list_free (GList *list)
+void
+glade_column_list_free (GList *list)
 {
 	GList *l;
 	
@@ -125,8 +125,8 @@ glade_column_type_list_get_type (void)
 	if (!type_id)
 		type_id = g_boxed_type_register_static
 			("GladeColumnTypeList", 
-			 (GBoxedCopyFunc) data_list_copy,
-			 (GBoxedFreeFunc) data_list_free);
+			 (GBoxedCopyFunc) glade_column_list_copy,
+			 (GBoxedFreeFunc) glade_column_list_free);
 	return type_id;
 }
 
@@ -189,8 +189,8 @@ glade_standard_column_types_spec (void)
 	GladeParamSpecColumnTypes *pspec;
 
 	pspec = g_param_spec_internal (GLADE_TYPE_PARAM_COLUMN_TYPES,
-				       "fundamental-types", _("Fundamental Types"), 
-				       _("A list of fundamental GTypes"),
+				       "column-types", _("Column Types"), 
+				       _("A list of GTypes and thier names"),
 				       G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
 	return G_PARAM_SPEC (pspec);
 }
@@ -250,10 +250,10 @@ eprop_reload_value (GladeEPropColumnTypes *eprop)
 }
 
 static void
-eprop_fundamental_append (GladeEPropColumnTypes *eprop_types,
-			  GType type,
-			  const gchar *name,
-			  const gchar *column_name)
+eprop_column_append (GladeEPropColumnTypes *eprop_types,
+		     GType type,
+		     const gchar *name,
+		     const gchar *column_name)
 {
 	gtk_list_store_insert_with_values (eprop_types->store, NULL, -1,
 					   COLUMN_NAME, name ? name : g_type_name (type),
@@ -283,13 +283,13 @@ glade_eprop_column_types_load (GladeEditorProperty *eprop, GladeProperty *proper
 	{
 		GladeColumnType *data = l->data;
 		
-		eprop_fundamental_append (eprop_types, data->type, NULL, data->column_name);
+		eprop_column_append (eprop_types, data->type, NULL, data->column_name);
 	}
 }
 
 static void
 glade_eprop_column_types_add_clicked (GtkWidget *button, 
-					   GladeEPropColumnTypes *eprop_types)
+				      GladeEPropColumnTypes *eprop_types)
 {
 	GtkTreeIter iter;
 	GType type2add;
@@ -303,13 +303,13 @@ glade_eprop_column_types_add_clicked (GtkWidget *button,
 			    COLUMN_GTYPE, &type2add,
 			    -1);
 	
-	eprop_fundamental_append (eprop_types, type2add, name, NULL);
+	eprop_column_append (eprop_types, type2add, name, NULL);
 	eprop_reload_value (eprop_types);
 }
 
 static void
 glade_eprop_column_types_delete_clicked (GtkWidget *button, 
-					      GladeEPropColumnTypes *eprop_types)
+					 GladeEPropColumnTypes *eprop_types)
 {
 	GtkTreeIter iter;
 	if (gtk_tree_selection_get_selected (eprop_types->selection, NULL, &iter))

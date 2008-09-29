@@ -1961,7 +1961,7 @@ glade_utils_enum_string_from_value (GType enum_type, gint value)
 	g_value_init (&gvalue, enum_type);
 	g_value_set_enum (&gvalue, value);
 
-	string = glade_utils_string_from_value (enum_type, &gvalue, NULL);
+	string = glade_utils_string_from_value (&gvalue, NULL);
 	g_value_unset (&gvalue);
 
 	return string;
@@ -2100,7 +2100,6 @@ glade_utils_value_from_string (GType               type,
 
 /**
  * glade_utils_string_from_value:
- * @type: a #GType to convert with
  * @value: the value to convert
  * @project: the #GladeProject to look for formats of object names when needed
  *
@@ -2110,18 +2109,60 @@ glade_utils_value_from_string (GType               type,
  * Returns: A newly allocated string
  */
 gchar *
-glade_utils_string_from_value (GType               type,
-			       const GValue       *value,
+glade_utils_string_from_value (const GValue       *value,
 			       GladeProject       *project)
 {
+	GladeProjectFormat  fmt;
 	GladePropertyClass *pclass;
 
-	g_return_val_if_fail (type != G_TYPE_INVALID, NULL);
 	g_return_val_if_fail (value != NULL, NULL);
 
-	if ((pclass = pclass_from_gtype (type)) != NULL)
-		return glade_property_class_make_string_from_gvalue (pclass, value, 
-								     glade_project_get_format (project));
+	fmt = project ? glade_project_get_format (project) : GLADE_PROJECT_FORMAT_GTKBUILDER;
+
+	if ((pclass = pclass_from_gtype (G_VALUE_TYPE (value))) != NULL)
+		return glade_property_class_make_string_from_gvalue (pclass, value, fmt);
 
 	return NULL;
+}
+
+
+/**
+ * glade_utils_liststore_from_enum_type:
+ * @enum_type: A #GType
+ * @include_empty: wheather to prepend an "Unset" slot
+ *
+ * Creates a liststore suitable for comboboxes and such to 
+ * chose from a variety of types.
+ *
+ * Returns: A new #GtkListStore
+ */
+GtkListStore *
+glade_utils_liststore_from_enum_type (GType    enum_type,
+				      gboolean include_empty)
+{
+	GtkListStore        *store;
+	GtkTreeIter          iter;
+	GEnumClass          *eclass;
+	guint                i;
+
+	eclass = g_type_class_ref (enum_type);
+
+	store = gtk_list_store_new (1, G_TYPE_STRING);
+
+	gtk_list_store_append (store, &iter);
+	gtk_list_store_set (store, &iter,
+			    0, _("Unset"), 
+			    -1);
+	
+	for (i = 0; i < eclass->n_values; i++)
+	{
+		gtk_list_store_append (store, &iter);
+		gtk_list_store_set (store, &iter,
+				    0, eclass->values[i].value_nick, 
+				    -1);
+	}
+
+	g_type_class_unref (eclass);
+
+	return store;
 }

@@ -1039,7 +1039,7 @@ glade_property_class_new_from_spec_full (gpointer     handle,
 {
 	GObjectClass        *gtk_widget_class;
 	GladePropertyClass  *property_class;
-	GladeEditorProperty *eprop;
+	GladeEditorProperty *eprop = NULL;
 
 	g_return_val_if_fail (spec != NULL, NULL);
 	gtk_widget_class = g_type_class_ref (GTK_TYPE_WIDGET);
@@ -1065,7 +1065,8 @@ glade_property_class_new_from_spec_full (gpointer     handle,
 		goto failed;
 
 	/* Just created it to see if it was supported.... destroy now... */
-	gtk_widget_destroy (GTK_WIDGET (eprop));
+	if (eprop)
+		gtk_widget_destroy (GTK_WIDGET (eprop));
 
 	/* If its on the GtkWidgetClass, it goes in "common" 
 	 * (unless stipulated otherwise in the xml file)
@@ -1110,7 +1111,7 @@ GladePropertyClass *
 glade_property_class_new_from_spec (gpointer     handle,
 				    GParamSpec  *spec)
 {
-	glade_property_class_new_from_spec_full (handle, spec, TRUE);
+	return glade_property_class_new_from_spec_full (handle, spec, TRUE);
 }
 
 /**

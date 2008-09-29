@@ -29,6 +29,8 @@
 #include <glib/gi18n-lib.h>
 
 #include "glade-gtk.h"
+#include "glade-column-types.h"
+#include "glade-model-data.h"
 #include <gladeui/glade.h>
 
 
@@ -43,14 +45,20 @@ typedef struct {
 } TextData;
 
 typedef struct {
+	GladeWidget *widget;
+	gchar **items;
+} ComboData;
+
+typedef struct {
 	/* List of newly created objects to set */
 	GList *adjustments;
 	GList *textviews;
 	GList *tooltips;
+	GList *combos;
 } ConvertData;
 
 /*****************************************
- *           Adjustments                 *
+ *           GtkAdjustments              *
  *****************************************/
 static void
 convert_adjustments_finished (GladeProject  *project,
@@ -185,7 +193,7 @@ convert_adjustments (GladeProject       *project,
 }
 
 /*****************************************
- *           TextViews                   *
+ *           TextView:text               *
  *****************************************/
 static void
 convert_textviews_finished (GladeProject  *project,
@@ -289,7 +297,7 @@ convert_textviews (GladeProject       *project,
 }
 
 /*****************************************
- *           Tooltips                    *
+ *           GtkWidget:tooltips          *
  *****************************************/
 static void
 convert_tooltips_finished (GladeProject  *project,
@@ -356,6 +364,181 @@ convert_tooltips (GladeProject       *project,
 }
 
 /*****************************************
+ *           Combo:items                 *
+ *****************************************/
+static GNode *
+combos_data_tree_from_items (gchar **items)
+{
+	GNode *row, *data_tree;
+	gint i;
+
+	if (!items)
+		return NULL;
+
+	data_tree = g_node_new (NULL);
+
+	for (i = 0; items[i]; i++)
+	{
+		GladeModelData *data = g_new0 (GladeModelData, 1);
+
+		g_value_init (&data->value, G_TYPE_STRING);
+		g_value_set_string (&data->value, items[i]);
+
+		row = g_node_new (NULL);
+		g_node_append (data_tree, row);
+		g_node_append_data (row, data);
+	}
+	return data_tree;
+}
+
+static gchar **
+combos_items_from_data_tree (GNode *data_tree)
+{
+	GNode          *row, *item;
+	GPtrArray      *array = g_ptr_array_new ();
+	GladeModelData *data;
+	gchar          *string;
+	
+	for (row = data_tree->children; row; row = row->next)
+	{
+		for (item = row->children; item; item = item->next)
+		{
+			data = item->data;
+			if (G_VALUE_TYPE (&data->value) == G_TYPE_STRING)
+			{
+				string = g_value_dup_string (&data->value);
+				g_ptr_array_add (array, string);
+				break;
+			}
+		}
+	}
+
+	if (array->len == 0)
+		return NULL;
+
+	g_ptr_array_add (array, NULL);
+
+	return (gchar **)g_ptr_array_free (array, FALSE);
+}
+
+static void
+convert_combos (GladeProject       *project,
+		GladeProjectFormat  new_format,
+		ConvertData        *data)
+{
+	GladeWidget   *widget, *gmodel;
+	GladeProperty *property;
+	ComboData     *cdata;
+	GObject       *model;
+	const GList   *objects;
+	GNode         *data_tree;
+	gchar        **items;
+
+	for (objects = glade_project_get_objects (project); objects; objects = objects->next)
+	{
+		widget = glade_widget_get_from_gobject (objects->data);
+		if (!GTK_IS_COMBO_BOX (widget->object))
+			continue;
+
+		if (new_format == GLADE_PROJECT_FORMAT_GTKBUILDER)
+		{
+			items = NULL;
+			property = glade_widget_get_property (widget, "items");
+			glade_property_get (property, &items);
+		
+			if (items)
+			{
+				cdata = g_new0 (ComboData, 1);
+				cdata->widget = widget;
+				cdata->items = g_strdupv (items);
+				data->combos = g_list_prepend (data->combos, cdata);
+
+				glade_command_set_property (property, NULL);
+			}
+		}
+		else
+		{
+			items = NULL;
+			data_tree = NULL;
+			gmodel = NULL;
+			model = NULL;
+			property = glade_widget_get_property (widget, "model");
+			glade_property_get (property, &model);
+
+			if (model && (gmodel = glade_widget_get_from_gobject (model)))
+				glade_widget_property_get (gmodel, "data", &data_tree);
+
+			if (data_tree)
+				items = combos_items_from_data_tree (data_tree);
+
+			if (items)
+			{
+				GList delete = { 0, };
+				delete.data = gmodel;
+				
+				cdata = g_new0 (ComboData, 1);
+				cdata->widget = widget;
+				cdata->items = items;
+				data->combos = g_list_prepend (data->combos, cdata);
+
+				/* This will take care of unsetting the buffer property as well */
+				glade_command_delete (&delete);
+			}
+		}
+	}
+}
+
+static void
+convert_combos_finished (GladeProject  *project,
+			 ConvertData   *data)
+{
+	GladeProjectFormat  new_format = glade_project_get_format (project);
+	GladeWidgetAdaptor *adaptor = glade_widget_adaptor_get_by_type (GTK_TYPE_LIST_STORE);
+	GladeProperty *property;
+	GladeWidget *widget;
+	ComboData  *cdata;
+	GNode *data_tree;
+	GList *list;
+
+	for (list = data->combos; list; list = list->next)
+	{
+		cdata = list->data;
+
+		if (new_format == GLADE_PROJECT_FORMAT_GTKBUILDER)
+		{
+			GList *columns = NULL;
+			GladeColumnType *column = g_new0 (GladeColumnType, 1);
+			column->type = G_TYPE_STRING;
+			columns = g_list_append (columns, column);
+
+			property = glade_widget_get_property (cdata->widget, "model");
+
+			/* Cant cancel a liststore.... */
+			widget = glade_command_create (adaptor, NULL, NULL, project);
+
+			glade_command_set_property (property, widget->object);
+
+			data_tree = combos_data_tree_from_items (cdata->items);
+
+			glade_widget_property_set (widget, "columns", columns);
+			glade_widget_property_set (widget, "data", data_tree);
+			
+			glade_column_list_free (columns);
+		}
+		else
+		{
+			property = glade_widget_get_property (cdata->widget, "items");
+			glade_command_set_property (property, cdata->items);
+		}
+		g_strfreev (cdata->items);
+		g_free (cdata);
+	}
+
+	g_list_free (data->combos);
+}
+
+
+/*****************************************
  *           Main entry point            *
  *****************************************/
 static void
@@ -365,6 +548,7 @@ glade_gtk_project_convert_finished (GladeProject *project,
 	convert_adjustments_finished (project, data);
 	convert_textviews_finished (project, data);
 	convert_tooltips_finished (project, data);
+	convert_combos_finished (project, data);
 
 	/* Once per conversion */
 	g_signal_handlers_disconnect_by_func (G_OBJECT (project),
@@ -382,6 +566,7 @@ glade_gtk_project_convert (GladeProject *project,
 	convert_adjustments (project, new_format, data);
 	convert_textviews (project, new_format, data);
 	convert_tooltips (project, new_format, data);
+	convert_combos (project, new_format, data);
 
 	/* Clean up after the new_format is in effect */
 	g_signal_connect (G_OBJECT (project), "convert-finished",
