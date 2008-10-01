@@ -28,6 +28,7 @@
 #include <string.h>
 
 #include "glade-column-types.h"
+#include "glade-model-data.h"
 
 enum
 {
@@ -222,12 +223,14 @@ glade_eprop_column_types_finalize (GObject *object)
 }
 
 static void
-eprop_reload_value (GladeEPropColumnTypes *eprop)
+eprop_reload_value (GladeEPropColumnTypes *eprop_types)
 {
-	GtkTreeModel *model = GTK_TREE_MODEL (eprop->store);
+	GladeEditorProperty *eprop = GLADE_EDITOR_PROPERTY (eprop_types);
+	GtkTreeModel *model = GTK_TREE_MODEL (eprop_types->store);
 	GValue value = {0, };
 	GtkTreeIter iter;
-	GList *list = NULL;
+	GList *list = NULL, *l;
+	GNode *data_tree = NULL;
 	
 	if (gtk_tree_model_get_iter_first (model, &iter))
 	{
@@ -244,9 +247,43 @@ eprop_reload_value (GladeEPropColumnTypes *eprop)
 		} while (gtk_tree_model_iter_next (model, &iter));
 	}
 
+	glade_widget_property_get (eprop->property->widget, "data", &data_tree);
+	if (data_tree)
+	{
+		GNode *row, *iter;
+		gint colnum;
+		data_tree = glade_model_data_tree_copy (data_tree);
+
+		glade_command_push_group (_("Setting columns of %s"), eprop->property->widget->name);
+
+		/* Remove extra columns */
+		for (row = data_tree->children; row; row = row->next)
+		{
+
+			for (colnum = 0, iter = row->children; iter; 
+			     colnum++, iter = iter->next)
+			{
+
+			}
+		}
+
+		g_value_init (&value, GLADE_TYPE_MODEL_DATA_TREE);
+		g_value_take_boxed (&value, data_tree);
+		glade_editor_property_commit (eprop, &value);
+		g_value_unset (&value);
+
+	}
+
 	g_value_init (&value, GLADE_TYPE_COLUMN_TYPE_LIST);
 	g_value_take_boxed (&value, list);
-	glade_editor_property_commit (GLADE_EDITOR_PROPERTY (eprop), &value);
+	glade_editor_property_commit (eprop, &value);
+	g_value_unset (&value);
+
+	if (data_tree)
+	{
+		glade_model_data_tree_free (data_tree);
+		glade_command_pop_group ();
+	}
 }
 
 static void

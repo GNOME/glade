@@ -1073,7 +1073,6 @@ glade_command_remove (GList *widgets)
 	CommandData				*cdata;
 	GtkWidget                               *placeholder;
 	GList					*list, *l;
-	gchar                                   *desc;
 
 	g_return_if_fail (widgets != NULL);
 
@@ -1098,13 +1097,10 @@ glade_command_remove (GList *widgets)
 	GLADE_COMMAND (me)->description = g_strdup ("dummy");
 
 	if (g_list_length (widgets) == 1)
-		desc = g_strdup_printf (_("Remove %s"), 
-					GLADE_WIDGET (widgets->data)->name);
+		glade_command_push_group (_("Remove %s"), 
+					  GLADE_WIDGET (widgets->data)->name);
 	else
-		desc = g_strdup_printf (_("Remove multiple"));
-
-	glade_command_push_group (desc);
-	g_free (desc);
+		glade_command_push_group (_("Remove multiple"));
 
 	for (list = widgets; list && list->data; list = list->next)
 	{
@@ -1956,9 +1952,11 @@ typedef struct {
 	GladeProperty *property;
 	gboolean       translatable;
 	gboolean       has_context;
+	gchar         *context;
 	gchar         *comment;
 	gboolean       old_translatable;
 	gboolean       old_has_context;
+	gchar         *old_context;
 	gchar         *old_comment;
 } GladeCommandSetI18n;
 
@@ -1976,6 +1974,7 @@ glade_command_set_i18n_execute(GladeCommand *cmd)
 	GladeCommandSetI18n *me = (GladeCommandSetI18n *)cmd;
 	gboolean  temp_translatable;
 	gboolean  temp_has_context;
+	gchar    *temp_context;
 	gchar    *temp_comment;
 	
 	/* sanity check */
@@ -1985,17 +1984,21 @@ glade_command_set_i18n_execute(GladeCommand *cmd)
 	/* set the new values in the property */
 	glade_property_i18n_set_translatable(me->property, me->translatable);	
 	glade_property_i18n_set_has_context(me->property, me->has_context);
+	glade_property_i18n_set_context(me->property, me->context);
 	glade_property_i18n_set_comment(me->property, me->comment);
 
 	/* swap the current values with the old values to prepare for undo */
 	temp_translatable = me->translatable;
 	temp_has_context = me->has_context;
+	temp_context = me->context;
 	temp_comment = me->comment;
 	me->translatable = me->old_translatable;
 	me->has_context = me->old_has_context;
+	me->context = me->old_context;
 	me->comment = me->old_comment;
 	me->old_translatable = temp_translatable;
 	me->old_has_context = temp_has_context;
+	me->old_context = temp_context;
 	me->old_comment = temp_comment;
 	
 	return TRUE;
@@ -2015,7 +2018,9 @@ glade_command_set_i18n_finalize(GObject *obj)
 	g_return_if_fail(GLADE_IS_COMMAND_SET_I18N(obj));
 
 	me = GLADE_COMMAND_SET_I18N(obj);
+	g_free (me->context);
 	g_free (me->comment);
+	g_free (me->old_context);
 	g_free (me->old_comment);
 	
 	glade_command_finalize(obj);
@@ -2052,8 +2057,11 @@ glade_command_set_i18n_collapse (GladeCommand *this_cmd, GladeCommand *other_cmd
 	/* adjust this command to contain, as its old values, the other command's current values */
 	this->old_translatable = other->old_translatable;
 	this->old_has_context = other->old_has_context;
+	g_free (this->old_context);
 	g_free (this->old_comment);
+	this->old_context = other->old_context;
 	this->old_comment = other->old_comment;
+	other->old_context = NULL;
 	other->old_comment = NULL;
 
 	glade_app_update_ui ();
@@ -2064,12 +2072,17 @@ glade_command_set_i18n_collapse (GladeCommand *this_cmd, GladeCommand *other_cmd
  * @property: a #GladeProperty
  * @translatable: a #gboolean
  * @has_context: a #gboolean
+ * @context: a #const gchar *
  * @comment: a #const gchar *
  *
  * Sets the i18n data on the property.
  */
 void
-glade_command_set_i18n (GladeProperty *property, gboolean translatable, gboolean has_context, const gchar *comment)
+glade_command_set_i18n (GladeProperty *property, 
+			gboolean translatable, 
+			gboolean has_context, 
+			const gchar *context,
+			const gchar *comment)
 {
 	GladeCommandSetI18n *me;
 	
@@ -2077,9 +2090,11 @@ glade_command_set_i18n (GladeProperty *property, gboolean translatable, gboolean
 	
 	/* check that something changed before continuing with the command */
 	if (translatable == property->i18n_translatable &&
-		has_context == property->i18n_has_context   &&
-		((comment == NULL && property->i18n_comment == NULL) ||
-		 (comment && property->i18n_comment && !strcmp(property->i18n_comment, comment))))
+	    has_context == property->i18n_has_context   &&
+	    /* XXX add context string shit herex */
+
+	    ((comment == NULL && property->i18n_comment == NULL) ||
+	     (comment && property->i18n_comment && !strcmp(property->i18n_comment, comment))))
 		return;
 
 	/* load up the command */
@@ -2087,9 +2102,11 @@ glade_command_set_i18n (GladeProperty *property, gboolean translatable, gboolean
 	me->property = property;
 	me->translatable = translatable;
 	me->has_context = has_context;
+	me->context = g_strdup(context);
 	me->comment = g_strdup(comment);
 	me->old_translatable = property->i18n_translatable;
 	me->old_has_context = property->i18n_has_context;
+	me->old_context = g_strdup(property->i18n_context);
 	me->old_comment = g_strdup(property->i18n_comment);
 	GLADE_COMMAND(me)->description = g_strdup_printf(_("Setting i18n metadata"));;
 	
@@ -2228,11 +2245,13 @@ glade_command_convert_cleanup (GladeProject       *project,
 			       GladeProjectFormat  fmt)
 {
 	GladeWidget   *widget;
-	const GList   *objects;
+	const GList   *objects, *list;
 
-	for (objects = glade_project_get_objects (project); objects; objects = objects->next)
+	objects = glade_project_get_objects (project);
+
+	for (list = objects; list; list = list->next)
 	{
-		widget = glade_widget_get_from_gobject (objects->data);
+		widget = glade_widget_get_from_gobject (list->data);
 
 		/* If libglade-only widget going in builder format ... */
 		if ((fmt == GLADE_PROJECT_FORMAT_GTKBUILDER &&
@@ -2280,11 +2299,9 @@ glade_command_set_project_format (GladeProject        *project,
 	if (glade_project_get_format (project) != fmt)
 	{
 		gchar *prj_name = glade_project_get_name (project);
-		gchar *desc = g_strdup_printf (_("Converting %s to %s format"),
-					       prj_name, 
-					       fmt == GLADE_PROJECT_FORMAT_LIBGLADE ? "libglade" : "Gtk+ Builder");
-		glade_command_push_group (desc);
-		g_free (desc);
+		glade_command_push_group (_("Converting %s to %s format"),
+					  prj_name, 
+					  fmt == GLADE_PROJECT_FORMAT_LIBGLADE ? "libglade" : "Gtk+ Builder");
 		g_free (prj_name);
 
 		/* load up the command */
@@ -2305,14 +2322,13 @@ glade_command_set_project_format (GladeProject        *project,
 				catalog  = glade_app_get_catalog (cat_name);
 				
 				glade_catalog_convert_project (catalog, project, fmt);
-
-				glade_command_convert_cleanup (project, fmt);
 				
 				g_free (cat_name);
 			}
 			g_list_free (req_libs);
 		}
-		
+
+		glade_command_convert_cleanup (project, fmt);
 
 		/* execute the command and push it on the stack if successful 
 		 * this sets the actual format

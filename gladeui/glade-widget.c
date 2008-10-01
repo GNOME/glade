@@ -619,15 +619,7 @@ glade_widget_sync_custom_props (GladeWidget *widget)
 	{
 		GladeProperty *prop  = GLADE_PROPERTY(l->data);
 
-		/* XXX We need a better option to this hack.
-		 *
-		 * This used to be based on whether a function was
-		 * provided by the backend to treat the said property, now
-		 * that function is classwide so we dont know, so currently
-		 * we are just syncing all properties for the sake of those
-		 * properties.
-		 */
-		if (!prop->klass->construct_only)
+		if (prop->klass->virt)
 			glade_property_sync (prop);
 
 	}
@@ -1914,9 +1906,8 @@ void
 glade_widget_hide (GladeWidget *widget)
 {
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
-	if (GTK_IS_WINDOW (widget->object))
+	if (GTK_IS_WIDGET (widget->object))
 	{
-		/* Save coordinates */
 		gtk_widget_hide (GTK_WIDGET (widget->object));
 	}
 	widget->visible = FALSE;
@@ -2154,7 +2145,7 @@ glade_widget_dup (GladeWidget *template_widget,
 
 typedef struct
 {
-	gchar *name;
+	GladeProperty *property;
 	GValue value;
 } PropertyData;
 
@@ -2174,8 +2165,8 @@ glade_widget_rebuild (GladeWidget *gwidget)
 	GladeWidgetAdaptor *adaptor;
 	GList              *children;
 	gboolean            reselect = FALSE, inproject;
-	GList              *npw_properties = NULL;
-	GList              *l;
+	GList              *restore_properties = NULL;
+	GList              *save_properties, *l;
 	
 	g_return_if_fail (GLADE_IS_WIDGET (gwidget));
 
@@ -2204,11 +2195,15 @@ glade_widget_rebuild (GladeWidget *gwidget)
 	/* Extract and keep the child hierarchies aside... */
 	children = glade_widget_extract_children (gwidget);
 
-	/* parentless_widget properties should be unset before transfering */
-	for (l = gwidget->properties; l; l = l->next)
+	/* parentless_widget and object properties that reffer to this widget should be unset before transfering */
+	l = g_list_copy (gwidget->properties);
+	save_properties = g_list_copy (gwidget->prop_refs);
+	save_properties = g_list_concat (l, save_properties);
+
+	for (l = save_properties; l; l = l->next)
 	{
 		GladeProperty *property = GLADE_PROPERTY (l->data);
-		if (property->klass->parentless_widget)
+		if (property->widget != gwidget || property->klass->parentless_widget)
 		{
 			PropertyData *prop_data;
 
@@ -2216,15 +2211,19 @@ glade_widget_rebuild (GladeWidget *gwidget)
 				g_warning ("Parentless widget property should be of object type");
 
 			prop_data = g_new0 (PropertyData, 1);
-			prop_data->name = g_strdup (property->klass->id);
-			g_value_init (&prop_data->value, property->value->g_type);
-			g_value_copy (property->value, &prop_data->value);
+			prop_data->property = property;
 
-			npw_properties = g_list_prepend (npw_properties,
-							 prop_data);
+			if (property->widget == gwidget)
+			{
+				g_value_init (&prop_data->value, property->value->g_type);
+				g_value_copy (property->value, &prop_data->value);
+			}
+			restore_properties = g_list_prepend (restore_properties,
+							     prop_data);
 			glade_property_set (property, NULL);
 		}
 	}
+	g_list_free (save_properties);
 
 	/* Hold a reference to the old widget while we transport properties
 	 * and children from it
@@ -2261,19 +2260,25 @@ glade_widget_rebuild (GladeWidget *gwidget)
 	 */
 	glade_widget_sync_custom_props (gwidget);
 
-	/* Setting parentless_widget properties back */
-	for (l = npw_properties; l; l = l->next)
+	/* Setting parentless_widget and prop_ref properties back */
+	for (l = restore_properties; l; l = l->next)
 	{
 		PropertyData *prop_data = l->data;
-		GladeProperty *property = glade_widget_get_property (gwidget, prop_data->name);
-
-		glade_property_set_value (property, &prop_data->value);
-
-		g_value_unset (&prop_data->value);
-		g_free (prop_data->name);
+		GladeProperty *property = prop_data->property;
+		
+		if (property->widget == gwidget)
+		{
+			glade_property_set_value (property, &prop_data->value);
+			g_value_unset (&prop_data->value);
+		}
+		else
+		{
+			/* restore property references on rebuilt objects */
+			glade_property_set (property, gwidget->object);
+		}
 		g_free (prop_data);
 	}
-	npw_properties = NULL;
+	g_list_free (restore_properties);
 
 	/* Sync packing.
 	 */

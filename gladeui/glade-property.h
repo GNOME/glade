@@ -79,10 +79,12 @@ struct _GladeProperty
 	/* Used only for translatable strings. */
 	gboolean  i18n_translatable;
 	gboolean  i18n_has_context;
+	gchar    *i18n_context;
 	gchar    *i18n_comment;
 		
-	gboolean     syncing;    /* Avoid recursion while synchronizing object with value.
-				  */
+	gint      syncing;    /* Avoid recursion while synchronizing object with value.
+			       */
+	gint      sync_tolerance;
 };
 
 
@@ -194,6 +196,11 @@ void                    glade_property_i18n_set_comment      (GladeProperty     
 							      const gchar        *str);
 
 G_CONST_RETURN gchar   *glade_property_i18n_get_comment      (GladeProperty      *property);
+
+void                    glade_property_i18n_set_context      (GladeProperty      *property, 
+							      const gchar        *str);
+
+G_CONST_RETURN gchar   *glade_property_i18n_get_context      (GladeProperty      *property);
 
 void                    glade_property_i18n_set_translatable (GladeProperty      *property,
 							      gboolean            translatable);

@@ -1352,14 +1352,14 @@ static void
 glade_gtk_widget_add2group_cb (GtkMenuItem *item, GladeWidget *gwidget)
 {
 	GladeWidget *group = g_object_get_data (G_OBJECT (item), "glade-group-widget");
-	gchar *desc = group ? g_strdup_printf (_("Adding %s to Size Group %s"), gwidget->name, group->name) : 
-		g_strdup_printf (_("Adding %s to a new Size Group"), gwidget->name);
 	GladeWidgetAdaptor *adaptor = glade_widget_adaptor_get_by_type (GTK_TYPE_SIZE_GROUP);
 	GList *widget_list = NULL, *new_list;
 	GladeProperty *property;
 
-	glade_command_push_group (desc);
-	g_free (desc);
+	if (group) 
+		glade_command_push_group (_("Adding %s to Size Group %s"), gwidget->name, group->name);
+	else
+		glade_command_push_group (_("Adding %s to a new Size Group"), gwidget->name);
 
 	if (!group)
 		/* Cant cancel a size group */
@@ -8615,15 +8615,9 @@ glade_gtk_store_set_columns (GObject *object,
 	}
 
 	if (GTK_IS_LIST_STORE (object))
-	{
-		gtk_list_store_clear (GTK_LIST_STORE (object));
 		gtk_list_store_set_column_types (GTK_LIST_STORE (object), n, types);
-	}
 	else
-	{
-		gtk_tree_store_clear (GTK_TREE_STORE (object));
 		gtk_tree_store_set_column_types (GTK_TREE_STORE (object), n, types);
-	}
 }
 
 static void
@@ -8631,8 +8625,7 @@ glade_gtk_store_set_data (GObject *object,
 			  const GValue *value)
 {
 	GladeWidget     *gwidget = glade_widget_get_from_gobject (object);
-	GList           *columns = NULL, *list;
-	GladeColumnType *column;
+	GList           *columns = NULL;
 	GNode           *data_tree, *row, *iter;
 	gint             colnum;
 	GtkTreeIter      row_iter;
@@ -8785,6 +8778,8 @@ glade_gtk_store_write_columns (GladeWidget        *widget,
 	{
 		GladeColumnType *data = l->data;
 		GladeXmlNode  *column_node;
+
+		/* Write column names in comments... */
 			
 		column_node = glade_xml_node_new (context, GLADE_TAG_COLUMN);
 		glade_xml_node_append_child (columns_node, column_node);
@@ -8847,6 +8842,20 @@ glade_gtk_store_write_data (GladeWidget        *widget,
 			glade_xml_node_set_property_string (col_node, GLADE_TAG_ID,
 							    column_number);
 			glade_xml_set_content (col_node, string);
+
+			if (data->i18n_translatable)
+				glade_xml_node_set_property_string (col_node, 
+								    GLADE_TAG_TRANSLATABLE, 
+								    GLADE_XML_TAG_I18N_TRUE);
+			if (data->i18n_context)
+				glade_xml_node_set_property_string (col_node, 
+								    GLADE_TAG_CONTEXT, 
+								    data->i18n_context);
+			if (data->i18n_comment)
+				glade_xml_node_set_property_string (col_node, 
+								    GLADE_TAG_COMMENT, 
+								    data->i18n_comment);
+
 			
 			g_free (column_number);
 			g_free (string);
@@ -8885,23 +8894,43 @@ glade_gtk_store_read_columns (GladeWidget *widget, GladeXmlNode *node)
 	GladeXmlNode *prop;
 	GList *types = NULL;
 	GValue value = {0,};
-	
+	gchar column_name[256];
+
+	column_name[0] = '\0';
+	column_name[255] = '\0';
+
 	if ((columns_node = glade_xml_search_child (node, GLADE_TAG_COLUMNS)) == NULL)
 		return;
 
-	for (prop = glade_xml_node_get_children (columns_node); prop;
-	     prop = glade_xml_node_next (prop))
+	for (prop = glade_xml_node_get_children_with_comments (columns_node); prop;
+	     prop = glade_xml_node_next_with_comments (prop))
 	{
 		GladeColumnType *data = g_new0 (GladeColumnType, 1);
-		gchar *type;
-		
-		if (!glade_xml_node_verify (prop, GLADE_TAG_COLUMN)) continue;
+		gchar *type, *comment_str, buffer[256];
+
+		if (!glade_xml_node_verify (prop, GLADE_TAG_COLUMN) &&
+		    !glade_xml_node_is_comment (prop)) continue;
+
+		if (glade_xml_node_is_comment (prop))
+		{
+			comment_str = glade_xml_get_content (prop);
+			if (sscanf (comment_str, "column-name %s", buffer) == 1)
+			{
+				strncpy (column_name, buffer, 255);
+				g_free (comment_str);
+				continue;
+			}
+			g_free (comment_str);
+		}
 
 		type = glade_xml_get_property_string_required (prop, GLADE_TAG_TYPE, NULL);
-		data->type = g_type_from_name (type);
+		data->type        = g_type_from_name (type);
+		data->column_name = g_strdup (column_name);
 		
 		types = g_list_prepend (types, data);
 		g_free (type);
+
+		column_name[0] = '\0';
 	}
 	
 	property = glade_widget_get_property (widget, "columns");
@@ -8963,11 +8992,14 @@ glade_gtk_store_read_data (GladeWidget *widget, GladeXmlNode *node)
 			value     = glade_utils_value_from_string (column_type->type, value_str, widget->project);
 			g_free (value_str);
 
-			data = 	g_new0 (GladeModelData, 1);
-			g_value_init (&data->value, column_type->type);
+			data = glade_model_data_new (column_type->type);
 			g_value_copy (value, &data->value);
 			g_value_unset (value);
 			g_free (value);
+
+			data->i18n_translatable = glade_xml_get_property_boolean (col_node, GLADE_TAG_TRANSLATABLE, FALSE);
+			data->i18n_context = glade_xml_get_property_string (col_node, GLADE_TAG_CONTEXT);
+			data->i18n_comment = glade_xml_get_property_string (col_node, GLADE_TAG_COMMENT);
 
 			item = g_node_new (data);
 			g_node_append (row, item);

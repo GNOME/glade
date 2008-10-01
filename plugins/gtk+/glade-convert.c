@@ -379,9 +379,8 @@ combos_data_tree_from_items (gchar **items)
 
 	for (i = 0; items[i]; i++)
 	{
-		GladeModelData *data = g_new0 (GladeModelData, 1);
+		GladeModelData *data = glade_model_data_new (G_TYPE_STRING);
 
-		g_value_init (&data->value, G_TYPE_STRING);
 		g_value_set_string (&data->value, items[i]);
 
 		row = g_node_new (NULL);
@@ -516,12 +515,12 @@ convert_combos_finished (GladeProject  *project,
 			/* Cant cancel a liststore.... */
 			widget = glade_command_create (adaptor, NULL, NULL, project);
 
-			glade_command_set_property (property, widget->object);
-
 			data_tree = combos_data_tree_from_items (cdata->items);
 
 			glade_widget_property_set (widget, "columns", columns);
 			glade_widget_property_set (widget, "data", data_tree);
+
+			glade_command_set_property (property, widget->object);
 			
 			glade_column_list_free (columns);
 		}

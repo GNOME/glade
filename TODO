@@ -12,7 +12,8 @@ Add versioning metadata for libglade unsupported properties and widgets.
 Sort objects from widgets in the inspector widget.
 
 Make popup work in workspace with no-window widgets
-Take care of external object property references (sync them) at rebuild time
+Remove deleted widgets from the workspace
+Take care of external object property references (sync them) at glade_widget_rebuild time
 Liststore/Treestore data is not translatable
 store data needs improvement and cant be released as is (cant even have spaces in data, needs real new structure).
 

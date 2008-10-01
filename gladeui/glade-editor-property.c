@@ -1662,25 +1662,43 @@ glade_eprop_text_buffer_changed (GtkTextBuffer       *buffer,
 	g_free (text);
 }
 
-static void
-glade_eprop_text_show_i18n_dialog (GtkWidget           *entry,
-				   GladeEditorProperty *eprop)
+/**
+ * glade_editor_property_show_i18n_dialog:
+ * @parent: The parent widget for the dialog.
+ * @fmt: the #GladeProjectFormat
+ * @text: A read/write pointer to the text property
+ * @context: A read/write pointer to the translation context
+ * @comment: A read/write pointer to the translator comment
+ * @has_context: A read/write pointer to the context setting (libglade only)
+ * @translatable: A read/write pointer to the translatable setting]
+ *
+ * Runs a dialog and updates the provided values.
+ *
+ * Returns: %TRUE if OK was selected.
+ */
+gboolean
+glade_editor_property_show_i18n_dialog (GtkWidget            *parent,
+					GladeProjectFormat    fmt,
+					gchar               **text,
+					gchar               **context,
+					gchar               **comment,
+					gboolean             *has_context,
+					gboolean             *translatable)
 {
 	GtkWidget     *dialog;
 	GtkWidget     *vbox, *hbox;
 	GtkWidget     *label;
 	GtkWidget     *sw;
 	GtkWidget     *alignment;
-	GtkWidget     *text_view, *comment_view;
-	GtkTextBuffer *text_buffer, *comment_buffer;
+	GtkWidget     *text_view, *comment_view, *context_view;
+	GtkTextBuffer *text_buffer, *comment_buffer, *context_buffer = NULL;
 	GtkWidget     *translatable_button, *context_button;
-	const gchar   *text;
 	gint           res;
-	gchar         *str;
-	GParamSpec    *pspec;
+
+	g_return_val_if_fail (text && context && comment && translatable && has_context, FALSE);
 
 	dialog = gtk_dialog_new_with_buttons (_("Edit Text"),
-					      GTK_WINDOW (gtk_widget_get_toplevel (entry)),
+					      parent ? GTK_WINDOW (gtk_widget_get_toplevel (parent)) : NULL,
 					      GTK_DIALOG_MODAL,
 					      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 					      GTK_STOCK_OK, GTK_RESPONSE_OK,
@@ -1730,11 +1748,10 @@ glade_eprop_text_show_i18n_dialog (GtkWidget           *entry,
 
 	text_buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (text_view));
 
-	text = g_value_get_string (eprop->property->value);
-	if (text)
+	if (*text)
 	{
 		gtk_text_buffer_set_text (text_buffer,
-					  text,
+					  *text,
 					  -1);
 	}
 
@@ -1744,37 +1761,68 @@ glade_eprop_text_show_i18n_dialog (GtkWidget           *entry,
 
 	gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
 
+	/* Translatable */
 	translatable_button = gtk_check_button_new_with_mnemonic (_("T_ranslatable"));
 	gtk_widget_show (translatable_button);
 	gtk_box_pack_start (GTK_BOX (hbox), translatable_button, FALSE, FALSE, 0);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (translatable_button),
-				      glade_property_i18n_get_translatable (eprop->property));
-
-	/* Add a cute tooltip */
-	if ((pspec =
-	     g_object_class_find_property (G_OBJECT_GET_CLASS (eprop->property),
-					   "i18n-translatable")) != NULL)
-		gtk_widget_set_tooltip_text (translatable_button,
-					       g_param_spec_get_blurb (pspec));
-
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (translatable_button), *translatable);
+	gtk_widget_set_tooltip_text (translatable_button,
+				     _("Whether this property is translatable or not"));
+	
+	/* Has Context */
 	context_button = gtk_check_button_new_with_mnemonic (_("_Has context prefix"));
-	gtk_widget_show (context_button);
 	gtk_box_pack_start (GTK_BOX (hbox), context_button, FALSE, FALSE, 0);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (context_button),
-				      glade_property_i18n_get_has_context (eprop->property));
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (context_button), *has_context);
+	gtk_widget_set_tooltip_text (context_button,
+				     _("Whether or not the translatable string has a context prefix"));
+	if (fmt == GLADE_PROJECT_FORMAT_LIBGLADE)
+		gtk_widget_show (context_button);
 
-	/* Add a cute tooltip */
-	if ((pspec =
-	     g_object_class_find_property (G_OBJECT_GET_CLASS (eprop->property),
-					   "i18n-has-context")) != NULL)
-		gtk_widget_set_tooltip_text (context_button,
-					       g_param_spec_get_blurb (pspec));
+	/* Context. */
+	if (fmt != GLADE_PROJECT_FORMAT_LIBGLADE)
+	{
+		alignment = gtk_alignment_new (0.5, 0.5, 1, 1);
+		gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 12, 0, 0, 0);
+		gtk_widget_show (alignment);
+		
+		label = gtk_label_new_with_mnemonic (_("Conte_xt for translation:"));
+		gtk_widget_show (label);
+		gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+		gtk_container_add (GTK_CONTAINER (alignment), label);
+		gtk_box_pack_start (GTK_BOX (vbox), alignment, FALSE, FALSE, 0);
+		gtk_widget_set_tooltip_text (alignment,
+					     "XXX Some explanation about translation context please ???");
+		
+		sw = gtk_scrolled_window_new (NULL, NULL);
+		gtk_widget_show (sw);
+		gtk_box_pack_start (GTK_BOX (vbox), sw, TRUE, TRUE, 0);
+		gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
+						GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+		gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), GTK_SHADOW_IN);
+		
+		context_view = gtk_text_view_new ();
+		gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (context_view), GTK_WRAP_WORD);
+		gtk_widget_show (context_view);
+		
+		gtk_label_set_mnemonic_widget (GTK_LABEL (label), context_view);
+		
+		gtk_container_add (GTK_CONTAINER (sw), context_view);
+		
+		context_buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (context_view));
+		
+		if (*context)
+		{
+			gtk_text_buffer_set_text (context_buffer,
+						  *context,
+						  -1);
+		}
+	}
 
+	/* Comments. */
 	alignment = gtk_alignment_new (0.5, 0.5, 1, 1);
 	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 12, 0, 0, 0);
 	gtk_widget_show (alignment);
 
-	/* Comments. */
 	label = gtk_label_new_with_mnemonic (_("Co_mments for translators:"));
 	gtk_widget_show (label);
 	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
@@ -1798,47 +1846,90 @@ glade_eprop_text_show_i18n_dialog (GtkWidget           *entry,
 
 	comment_buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (comment_view));
 
-	text = glade_property_i18n_get_comment (eprop->property);
-	if (text)
+	if (*comment)
 	{
 		gtk_text_buffer_set_text (comment_buffer,
-					  text,
+					  *comment,
 					  -1);
 	}
 	
 	res = gtk_dialog_run (GTK_DIALOG (dialog));
 	if (res == GTK_RESPONSE_OK) {
 		GtkTextIter start, end;
-		gboolean translatable, has_context;
 
+		g_free ((gpointer)*text);
+		g_free ((gpointer)*context);
+		g_free ((gpointer)*comment);
 
 		/* get the new values for translatable, has_context, and comment */
-		translatable = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (translatable_button));
-		has_context = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (context_button));
+		*translatable = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (translatable_button));
+		*has_context = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (context_button));
 
+		/* Comment */
 		gtk_text_buffer_get_bounds (comment_buffer, &start, &end);
-		str = gtk_text_buffer_get_text (comment_buffer, &start, &end, TRUE);
-		if (str[0] == '\0')
+		*comment = gtk_text_buffer_get_text (comment_buffer, &start, &end, TRUE);
+		if (*comment[0] == '\0')
 		{
-			g_free (str);
-			str = NULL;
+			g_free (*comment);
+			*comment = NULL;
 		}
-		
-		/* set the new i18n data via a glade command so it can be undone */
-		glade_command_set_i18n (eprop->property, translatable, has_context, str);
-		g_free (str);
-		
+
 		/* Text */
 		gtk_text_buffer_get_bounds (text_buffer, &start, &end);
-		str = gtk_text_buffer_get_text (text_buffer, &start, &end, TRUE);
-		
-		/* set the new text */
-		glade_eprop_text_changed_common (eprop, str, eprop->use_command);
-		g_free (str);
-		
+		*text = gtk_text_buffer_get_text (text_buffer, &start, &end, TRUE);
+		if (*text[0] == '\0')
+		{
+			g_free (*text);
+			*text = NULL;
+		}
+
+		/* Context */
+		if (fmt != GLADE_PROJECT_FORMAT_LIBGLADE)
+		{
+			gtk_text_buffer_get_bounds (context_buffer, &start, &end);
+			*context = gtk_text_buffer_get_text (context_buffer, &start, &end, TRUE);
+			if (*context[0] == '\0')
+			{
+				g_free (*context);
+				*context = NULL;
+			}
+		}
+
+		gtk_widget_destroy (dialog);
+		return TRUE;
 	}
 
 	gtk_widget_destroy (dialog);
+	return FALSE;
+}
+
+static void
+glade_eprop_text_show_i18n_dialog (GtkWidget           *entry,
+				   GladeEditorProperty *eprop)
+{
+	GladeProject *project;
+	GladeProjectFormat fmt;
+	gchar *text = g_value_dup_string (eprop->property->value);
+	gchar *context = g_strdup (glade_property_i18n_get_context (eprop->property));
+	gchar *comment = g_strdup (glade_property_i18n_get_comment (eprop->property));
+	gboolean translatable = glade_property_i18n_get_translatable (eprop->property);
+	gboolean has_context = glade_property_i18n_get_has_context (eprop->property);
+
+	project = eprop->property->widget->project;
+	fmt = glade_project_get_format (project);
+
+	if (glade_editor_property_show_i18n_dialog (entry, fmt, &text, &context, &comment, 
+						    &has_context, &translatable))
+	{
+		glade_command_set_i18n (eprop->property, translatable, has_context, context, comment);
+		glade_eprop_text_changed_common (eprop, text, eprop->use_command);
+
+		glade_editor_property_load (eprop, eprop->property);
+
+		g_free (text);
+		g_free (context);
+		g_free (comment);
+	}
 }
 
 static GtkWidget *
@@ -2754,15 +2845,13 @@ glade_eprop_object_show_dialog (GtkWidget           *dialog_button,
 					{
 						if ((old_ref = glade_widget_get_parentless_widget_ref (new_widget)))
 						{
-							gchar *desc = g_strdup_printf (_("Setting %s of %s to %s"),
-										       eprop->property->klass->name,
-										       eprop->property->widget->name, 
-										       new_widget->name);
-							glade_command_push_group (desc);
+							glade_command_push_group (_("Setting %s of %s to %s"),
+										  eprop->property->klass->name,
+										  eprop->property->widget->name, 
+										  new_widget->name);
 							glade_command_set_property (old_ref, NULL);
 							glade_editor_property_commit (eprop, value);
 							glade_command_pop_group ();
-							g_free (desc);
 						}
 						else
 							glade_editor_property_commit (eprop, value);
@@ -2780,14 +2869,13 @@ glade_eprop_object_show_dialog (GtkWidget           *dialog_button,
 	{
 		GValue *value;
 		GladeWidget *new_widget;
-		/* translators: Creating 'a widget' for 'a property' of 'a widget' */
-		gchar *desc = g_strdup_printf (_("Creating %s for %s of %s"),
-					       create_adaptor->name,
-					       eprop->property->klass->name, 
-					       eprop->property->widget->name);
-		glade_command_push_group (desc);
-		g_free (desc);
 
+		/* translators: Creating 'a widget' for 'a property' of 'a widget' */
+		glade_command_push_group (_("Creating %s for %s of %s"),
+					  create_adaptor->name,
+					  eprop->property->klass->name, 
+					  eprop->property->widget->name);
+		
 		/* Dont bother if the user canceled the widget */
 		if ((new_widget = glade_command_create (create_adaptor, NULL, NULL, project)) != NULL)
 		{

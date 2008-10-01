@@ -1,9 +1,16 @@
+2008-09-30  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-property.[ch], gladeui/glade-command.[ch], 
+	gladeui/glade-editor-property.c: Implemented new "context" i18n
+	metadata.
+
+	* gladeui/glade-widget.c: Fixed to hide non-window widgets in glade_widget_hide()
 2008-09-29  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/glade-column-types.[ch]: Exported glade_column_list_copy/free()
 
 	* plugins/gtk+/glade-model-data.[ch], plugins/gtk+/Makefile.am: Added model data
-	  pspec, editor not compĺete yet...
+	  pspec, editor not complete yet...
 	
 	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Implemented new pspec as
 	  list/treestore's "data" property with load/save support.
@@ -12,6 +19,12 @@
 	  pspec.
 
 	* gladeui/glade-utils.[ch]: Added glade_utils_liststore_from_enum_type()
+
+	* gladeui/glade-widget.c: glade_widget_rebuild() updates prop_refs now
+
+	* gladeui/glade-property-class.c, gladeui/glade-xml-utils.h, gladeui/glade-property.c: 
+	  now you can set construct-only on virtual properties, they will rebuild the object
+	  and give you a chance to sync (you MUST handle set_property in a construct-only case)
 
 2008-09-29  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 

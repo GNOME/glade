@@ -72,6 +72,7 @@ enum
 	PROP_SENSITIVE,
 	PROP_I18N_TRANSLATABLE,
 	PROP_I18N_HAS_CONTEXT,
+	PROP_I18N_CONTEXT,
 	PROP_I18N_COMMENT,
 	PROP_STATE
 };
@@ -91,6 +92,7 @@ glade_property_dup_impl (GladeProperty *template_prop, GladeWidget *widget)
 					  "class", template_prop->klass,
 					  "i18n-translatable", template_prop->i18n_translatable,
 					  "i18n-has-context", template_prop->i18n_has_context,
+					  "i18n-context", template_prop->i18n_context,
 					  "i18n-comment", template_prop->i18n_comment,
 					  NULL);
 	property->widget  = widget;
@@ -334,19 +336,32 @@ glade_property_sync_impl (GladeProperty *property)
 	    property->enabled == FALSE    || 
 	    /* explicit "never sync" flag */
 	    property->klass->ignore       || 
-	    /* avoid recursion */
-	    property->syncing             ||
+	    /* recursion guards */
+	    property->syncing >= property->sync_tolerance ||
 	    /* No widget owns this property yet */
 	    property->widget == NULL)
 		return;
 
-	property->syncing = TRUE;
+	property->syncing++;
 
 	/* In the case of construct_only, the widget instance must be rebuilt
 	 * to apply the property
 	 */
-	if (property->klass->construct_only)
+	if (property->klass->construct_only && property->syncing == 1)
+	{
+		/* Virtual properties can be construct only, in which
+		 * case they are allowed to trigger a rebuild, and in
+		 * the process are allowed to get "synced" after the
+		 * instance is rebuilt.
+		 */
+		if (property->klass->virt)
+			property->sync_tolerance++;
+
 		glade_widget_rebuild (property->widget);
+
+		if (property->klass->virt)
+			property->sync_tolerance--;
+	}
 	else if (property->klass->packing)
 		glade_widget_child_set_property (glade_widget_get_parent (property->widget),
 						 property->widget, 
@@ -357,7 +372,7 @@ glade_property_sync_impl (GladeProperty *property)
 						  property->klass->id, 
 						  property->value);
 
-	property->syncing = FALSE;
+	property->syncing--;
 }
 
 static void
@@ -409,6 +424,9 @@ glade_property_set_real_property (GObject      *object,
 	case PROP_I18N_HAS_CONTEXT:
 		glade_property_i18n_set_has_context (property, g_value_get_boolean (value));
 		break;
+	case PROP_I18N_CONTEXT:
+		glade_property_i18n_set_context (property, g_value_get_string (value));
+		break;
 	case PROP_I18N_COMMENT:
 		glade_property_i18n_set_comment (property, g_value_get_string (value));
 		break;
@@ -442,6 +460,9 @@ glade_property_get_real_property (GObject    *object,
 		break;
 	case PROP_I18N_HAS_CONTEXT:
 		g_value_set_boolean (value, glade_property_i18n_get_has_context (property));
+		break;
+	case PROP_I18N_CONTEXT:
+		g_value_set_string (value, glade_property_i18n_get_context (property));
 		break;
 	case PROP_I18N_COMMENT:
 		g_value_set_string (value, glade_property_i18n_get_comment (property));
@@ -479,6 +500,7 @@ glade_property_init (GladeProperty *property)
 	property->i18n_translatable = TRUE;
 	property->i18n_has_context = FALSE;
 	property->i18n_comment = NULL;
+	property->sync_tolerance = 1;
 }
 
 static void
@@ -526,6 +548,13 @@ glade_property_klass_init (GladePropertyKlass *prop_class)
 		 ("sensitive", _("Sensitive"), 
 		  _("This gives backends control to set property sensitivity"),
 		  TRUE, G_PARAM_READWRITE));
+
+	g_object_class_install_property 
+		(object_class, PROP_I18N_CONTEXT,
+		 g_param_spec_string 
+		 ("i18n-context", _("Context"), 
+		  _("Context for translation"),
+		  NULL, G_PARAM_READWRITE));
 
 	g_object_class_install_property 
 		(object_class, PROP_I18N_COMMENT,
@@ -1076,23 +1105,32 @@ glade_property_read (GladeProperty      *property,
 			if (property)
 			{
 				gint translatable, has_context;
-				gchar *comment;
+				gchar *comment = NULL, *context = NULL;
 
 				translatable = glade_xml_get_property_boolean
 					(prop, GLADE_TAG_TRANSLATABLE, FALSE);
-				has_context = glade_xml_get_property_boolean
-					(prop, GLADE_TAG_HAS_CONTEXT, FALSE);
 				comment = glade_xml_get_property_string
 					(prop, GLADE_TAG_COMMENT);
 
-				glade_property_i18n_set_translatable
-					(property, translatable);
-				glade_property_i18n_set_has_context
-					(property, has_context);
-				glade_property_i18n_set_comment
-					(property, comment);
+				if (fmt == GLADE_PROJECT_FORMAT_LIBGLADE)
+					has_context = glade_xml_get_property_boolean
+						(prop, GLADE_TAG_HAS_CONTEXT, FALSE);
+				else
+					context = glade_xml_get_property_string
+						(prop, GLADE_TAG_CONTEXT);
+
+				glade_property_i18n_set_translatable (property, translatable);
+				glade_property_i18n_set_comment (property, comment);
+
+				if (fmt == GLADE_PROJECT_FORMAT_LIBGLADE)
+					glade_property_i18n_set_has_context
+						(property, has_context);
+				else
+					glade_property_i18n_set_context
+						(property, context);
 
 				g_free (comment);
+				g_free (context);
 			}
 
 			g_free (value);
@@ -1209,18 +1247,21 @@ glade_property_write (GladeProperty   *property,
 							    GLADE_TAG_TRANSLATABLE, 
 							    GLADE_XML_TAG_I18N_TRUE);
 
-		if (property->i18n_has_context)
+		if (fmt == GLADE_PROJECT_FORMAT_LIBGLADE && property->i18n_has_context)
 			glade_xml_node_set_property_string (prop_node, 
 							    GLADE_TAG_HAS_CONTEXT, 
 							    GLADE_XML_TAG_I18N_TRUE);
 
+		if (fmt == GLADE_PROJECT_FORMAT_GTKBUILDER && property->i18n_context)
+			glade_xml_node_set_property_string (prop_node, 
+							    GLADE_TAG_CONTEXT, 
+							    property->i18n_context);
 
 		if (property->i18n_comment)
 			glade_xml_node_set_property_string (prop_node, 
 							    GLADE_TAG_COMMENT, 
 							    property->i18n_comment);
 	}
-
 	g_free (name);
 	g_free (value);
 }
@@ -1321,11 +1362,30 @@ glade_property_i18n_set_comment (GladeProperty *property,
 	g_object_notify (G_OBJECT (property), "i18n-comment");
 }
 
-const gchar *
+G_CONST_RETURN gchar *
 glade_property_i18n_get_comment (GladeProperty *property)
 {
 	g_return_val_if_fail (GLADE_IS_PROPERTY (property), NULL);
 	return property->i18n_comment;
+}
+
+void
+glade_property_i18n_set_context (GladeProperty      *property, 
+				 const gchar        *str)
+{
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+	if (property->i18n_context)
+		g_free (property->i18n_context);
+
+	property->i18n_context = g_strdup (str);
+	g_object_notify (G_OBJECT (property), "i18n-context");
+}
+
+G_CONST_RETURN gchar *
+glade_property_i18n_get_context (GladeProperty *property)
+{
+	g_return_val_if_fail (GLADE_IS_PROPERTY (property), NULL);
+	return property->i18n_context;
 }
 
 void

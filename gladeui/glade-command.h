@@ -149,9 +149,10 @@ void           glade_command_change_signal (GladeWidget       *glade_widget,
 /************************ set i18n ******************************/
 
 void           glade_command_set_i18n      (GladeProperty     *property,
-                        gboolean translatable,
-                        gboolean has_context,
-                        const gchar *comment);
+					    gboolean translatable,
+					    gboolean has_context,
+					    const gchar *context,
+					    const gchar *comment);
 
 
 G_END_DECLS

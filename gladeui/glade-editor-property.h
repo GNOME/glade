@@ -157,6 +157,13 @@ void                 glade_editor_property_commit         (GladeEditorProperty *
 void                 glade_editor_property_commit_no_callback (GladeEditorProperty *eprop,
 							       GValue              *value);
 
+gboolean             glade_editor_property_show_i18n_dialog (GtkWidget            *parent,
+							     GladeProjectFormat    fmt,
+							     gchar               **text,
+							     gchar               **context,
+							     gchar               **comment,
+							     gboolean             *has_context,
+							     gboolean             *translatable);
 
 /* Generic eprops */
 #define GLADE_TYPE_EPROP_NUMERIC         (glade_eprop_numeric_get_type())

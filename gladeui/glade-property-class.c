@@ -1511,6 +1511,7 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	if ((child = glade_xml_search_child (node, GLADE_TAG_PARAMETERS)) != NULL)
 		klass->parameters = glade_parameter_list_new_from_node (klass->parameters, child);
 		
+	klass->construct_only = glade_xml_get_property_boolean (node, GLADE_TAG_CONSTRUCT_ONLY, klass->construct_only);
 	klass->translatable = glade_xml_get_property_boolean (node, GLADE_TAG_TRANSLATABLE, klass->translatable);
 	klass->common      = glade_xml_get_property_boolean (node, GLADE_TAG_COMMON,      klass->common);
 	klass->optional    = glade_xml_get_property_boolean (node, GLADE_TAG_OPTIONAL,    klass->optional);

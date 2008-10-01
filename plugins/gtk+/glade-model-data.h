@@ -32,7 +32,7 @@ struct _GladeModelData
 	gchar    *name;
 	
 	gboolean  i18n_translatable;
-	gboolean  i18n_has_context;
+	gchar    *i18n_context;
 	gchar    *i18n_comment;
 };
 
@@ -55,6 +55,8 @@ GType           glade_eprop_model_data_get_type    (void) G_GNUC_CONST;
 
 GParamSpec     *glade_standard_model_data_spec     (void);
 
+
+GladeModelData *glade_model_data_new               (GType           type);
 GladeModelData *glade_model_data_copy              (GladeModelData *data);
 void            glade_model_data_free              (GladeModelData *data);
 
@@ -70,6 +72,7 @@ void            glade_model_data_remove_column     (GNode          *node,
 void            glade_model_data_reorder_column    (GNode          *node,
 						    gint            column,
 						    gint            nth);
+
 
 G_END_DECLS
 
