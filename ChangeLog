@@ -19,7 +19,9 @@
 	* src/glade-window.c: remember to pass ownership of the project to the app.
 
 	* plugins/gtk+/glade-gtk.c, plugins/gtk+/glade-column-types.c, plugins/gtk+/glade-model-data.c:
-	BEWARE: Dangerous and still a work in progress.
+	Cleaned up code, now data will dynamically reorder itself upon column changes, data is mostly
+	all editable save for some glitches, and all columns have unique names to which the data is
+	directly related.
 	
 2008-10-10  Tristan Van Berkom <tvb@gnome.org>
 

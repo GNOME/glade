@@ -8630,6 +8630,7 @@ glade_gtk_store_set_data (GObject *object,
 	gint             colnum;
 	GtkTreeIter      row_iter;
 	GladeModelData  *data;
+	GType            column_type;
 	
 	if (GTK_IS_LIST_STORE (object))
 		gtk_list_store_clear (GTK_LIST_STORE (object));
@@ -8657,6 +8658,13 @@ glade_gtk_store_set_data (GObject *object,
 			data = iter->data;
 
 			if (!g_list_nth (columns, colnum))
+				break;
+
+			/* Abort if theres a type mismatch, the widget's being rebuilt
+			 * and a sync will come soon with the right values
+			 */
+			column_type = gtk_tree_model_get_column_type (GTK_TREE_MODEL (object), colnum);
+			if (!g_type_is_a (G_VALUE_TYPE (&data->value), column_type))
 				break;
 
 			if (GTK_IS_LIST_STORE (object))
@@ -8780,7 +8788,7 @@ glade_gtk_store_write_columns (GladeWidget        *widget,
 		GladeXmlNode  *column_node, *comment_node;
 		
 		/* Write column names in comments... */
-		gchar *comment = g_strdup_printf ("column-name %s", data->column_name);
+		gchar *comment = g_strdup_printf (" column-name %s ", data->column_name);
 		comment_node = glade_xml_node_new_comment (context, comment);
 		glade_xml_node_append_child (columns_node, comment_node);
 		g_free (comment);
@@ -8893,6 +8901,7 @@ glade_gtk_store_write_widget (GladeWidgetAdaptor *adaptor,
 static void
 glade_gtk_store_read_columns (GladeWidget *widget, GladeXmlNode *node)
 {
+	GladeNameContext *context;
 	GladeXmlNode *columns_node;
 	GladeProperty *property;
 	GladeXmlNode *prop;
@@ -8906,30 +8915,38 @@ glade_gtk_store_read_columns (GladeWidget *widget, GladeXmlNode *node)
 	if ((columns_node = glade_xml_search_child (node, GLADE_TAG_COLUMNS)) == NULL)
 		return;
 
+	context = glade_name_context_new ();
+
 	for (prop = glade_xml_node_get_children_with_comments (columns_node); prop;
 	     prop = glade_xml_node_next_with_comments (prop))
 	{
 		GladeColumnType *data = g_new0 (GladeColumnType, 1);
 		gchar *type, *comment_str, buffer[256];
 
-		if (!glade_xml_node_verify (prop, GLADE_TAG_COLUMN) &&
+		if (!glade_xml_node_verify_silent (prop, GLADE_TAG_COLUMN) &&
 		    !glade_xml_node_is_comment (prop)) continue;
 
 		if (glade_xml_node_is_comment (prop))
 		{
 			comment_str = glade_xml_get_content (prop);
-			if (sscanf (comment_str, "column-name %s", buffer) == 1)
-			{
+			if (sscanf (comment_str, " column-name %s", buffer) == 1)
 				strncpy (column_name, buffer, 255);
-				g_free (comment_str);
-				continue;
-			}
+
 			g_free (comment_str);
+			continue;
 		}
 
 		type = glade_xml_get_property_string_required (prop, GLADE_TAG_TYPE, NULL);
 		data->type        = g_type_from_name (type);
-		data->column_name = g_strdup (column_name);
+		data->column_name = column_name[0] ? g_strdup (column_name) : g_ascii_strdown (type, -1);
+
+		if (glade_name_context_has_name (context, data->column_name))
+		{
+			gchar *name = glade_name_context_new_name (context, data->column_name);
+			g_free (data->column_name);
+			data->column_name = name;
+		}
+		glade_name_context_add_name (context, data->column_name);
 		
 		types = g_list_prepend (types, data);
 		g_free (type);
@@ -8996,11 +9013,13 @@ glade_gtk_store_read_data (GladeWidget *widget, GladeXmlNode *node)
 			value     = glade_utils_value_from_string (column_type->type, value_str, widget->project, widget);
 			g_free (value_str);
 
-			data = glade_model_data_new (column_type->type);
+			data = glade_model_data_new (column_type->type, column_type->column_name);
+
 			g_value_copy (value, &data->value);
 			g_value_unset (value);
 			g_free (value);
 
+			data->name = g_strdup (column_type->column_name);
 			data->i18n_translatable = glade_xml_get_property_boolean (col_node, GLADE_TAG_TRANSLATABLE, FALSE);
 			data->i18n_context = glade_xml_get_property_string (col_node, GLADE_TAG_CONTEXT);
 			data->i18n_comment = glade_xml_get_property_string (col_node, GLADE_TAG_COMMENT);

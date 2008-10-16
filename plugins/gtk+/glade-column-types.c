@@ -18,6 +18,7 @@
  *
  * Authors:
  *   Juan Pablo Ugarte <juanpablougarte@gmail.com>
+ *   Tristan Van Berkom <tvb@gnome.org>
  */
 
 #include <config.h>
@@ -68,7 +69,6 @@ column_types_store_populate (GtkListStore *store)
 		G_TYPE_DOUBLE,
 		G_TYPE_STRING,
 		G_TYPE_POINTER,
-		G_TYPE_BOXED,
 		G_TYPE_PARAM,
 		G_TYPE_OBJECT,
 		GDK_TYPE_PIXBUF};
@@ -103,20 +103,38 @@ glade_column_list_copy (GList *list)
 }
 
 void
+glade_column_type_free (GladeColumnType *column)
+{
+	g_free (column->column_name);
+	g_free (column);
+}
+
+void
 glade_column_list_free (GList *list)
 {
-	GList *l;
-	
-	for (l = list; l; l = g_list_next (l))
-	{
-		GladeColumnType *data = l->data;
-		
-		g_free (data->column_name);
-		g_free (data);
-	}
-	
+	g_list_foreach (list, (GFunc)glade_column_type_free, NULL);
 	g_list_free (list);
 }
+
+GladeColumnType *
+glade_column_list_find_column (GList *list, const gchar *column_name)
+{
+	GladeColumnType *column = NULL, *iter;
+	GList *l;
+
+	for (l = g_list_first (list); l; l = l->next)
+	{
+		iter = l->data;
+		if (strcmp (column_name, iter->column_name) == 0)
+		{
+			column = iter;
+			break;
+		}
+	}
+
+	return column;
+}
+
 
 GType
 glade_column_type_list_get_type (void)
@@ -204,6 +222,8 @@ typedef struct
 	GtkComboBox *combo;
 	GtkListStore *store;
 	GtkTreeSelection *selection;
+
+	GladeNameContext *context;
 } GladeEPropColumnTypes;
 
 GLADE_MAKE_EPROP (GladeEPropColumnTypes, glade_eprop_column_types)
@@ -221,6 +241,71 @@ glade_eprop_column_types_finalize (GObject *object)
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
+
+static gint
+get_extra_column (GNode *data_tree, GList *columns)
+{
+	GladeModelData *data;
+	GNode *iter;
+	gint idx = -1;
+
+	/* extra columns trail at the end so walk backwards... */
+	for (iter = g_node_last_child (data_tree->children); iter; iter = iter->prev)
+	{
+		data = iter->data;
+
+		if (!glade_column_list_find_column (columns, data->name))
+		{
+			idx = g_node_child_position (data_tree->children, iter);
+			break;
+		}
+
+	}
+	return idx;
+}
+
+static void
+eprop_column_adjust_rows (GladeEditorProperty *eprop, GList *columns)
+{
+	GladeColumnType *column;
+	GNode *data_tree = NULL;
+	GladeWidget *widget = eprop->property->widget;
+	GList *list;
+	GladeProperty *property;
+	gint idx;
+
+	property = glade_widget_get_property (widget, "data");
+	glade_property_get (property, &data_tree);
+	if (!data_tree)
+		return;
+	data_tree = glade_model_data_tree_copy (data_tree);
+
+	/* Add mising columns and reorder... */
+	for (list = g_list_last (columns); list; list = list->prev)
+	{
+		column = list->data;
+
+		if ((idx = glade_model_data_column_index (data_tree, column->column_name)) < 0)
+		{
+			glade_model_data_insert_column (data_tree,
+							column->type,
+							column->column_name,
+							0);
+
+		}
+		else
+			glade_model_data_reorder_column (data_tree, idx, 0);
+
+	}
+
+	/* Remove trailing obsolete */
+	while ((idx = get_extra_column (data_tree, columns)) >= 0)
+		glade_model_data_remove_column (data_tree, idx);
+
+	glade_command_set_property (property, data_tree);
+	glade_model_data_tree_free (data_tree);
+}
+
 
 static void
 eprop_column_append (GladeEditorProperty *eprop,
@@ -242,12 +327,19 @@ eprop_column_append (GladeEditorProperty *eprop,
 
 	columns = g_list_append (columns, data);
 
+
+	glade_command_push_group (_("Setting columns on %s"), 
+				  glade_widget_get_name (eprop->property->widget));
+
 	g_value_init (&value, GLADE_TYPE_COLUMN_TYPE_LIST);
 	g_value_take_boxed (&value, columns);
 	glade_editor_property_commit (eprop, &value);
-	g_value_unset (&value);
-}
 
+	eprop_column_adjust_rows (eprop, columns);
+	g_value_unset (&value);
+
+	glade_command_pop_group ();
+}
 
 static void
 glade_eprop_column_types_add_clicked (GtkWidget *button, 
@@ -255,28 +347,118 @@ glade_eprop_column_types_add_clicked (GtkWidget *button,
 {
 	GtkTreeIter iter;
 	GType type2add;
-	gchar *name;
+	gchar *type_name, *column_name;
 	
 	if (gtk_combo_box_get_active_iter (eprop_types->combo, &iter) == FALSE)
 		return;
 	
 	gtk_tree_model_get (types_model, &iter,
-			    COLUMN_NAME, &name,
 			    COLUMN_GTYPE, &type2add,
 			    -1);
 	
-	eprop_column_append (GLADE_EDITOR_PROPERTY (eprop_types), type2add, NULL);
+	type_name = g_ascii_strdown (g_type_name (type2add), -1);
+	column_name = glade_name_context_new_name (eprop_types->context, type_name);
+	eprop_column_append (GLADE_EDITOR_PROPERTY (eprop_types), type2add, column_name);
+	g_free (column_name);
+	g_free (type_name);
 }
 
 static void
 glade_eprop_column_types_delete_clicked (GtkWidget *button, 
-					 GladeEPropColumnTypes *eprop_types)
+					 GladeEditorProperty *eprop)
 {
 	/* Remove from list and commit value, dont touch the liststore except in load() */
+	GladeEPropColumnTypes *eprop_types = GLADE_EPROP_COLUMN_TYPES (eprop);
+	GtkTreeIter            iter;
+	GList                 *columns = NULL;
+	GladeColumnType       *column;
+	GValue                 value = { 0, };
+	gchar                 *column_name;
 
-	GtkTreeIter iter;
 	if (gtk_tree_selection_get_selected (eprop_types->selection, NULL, &iter))
-		gtk_list_store_remove (GTK_LIST_STORE (eprop_types->store), &iter);
+	{
+		gtk_tree_model_get (GTK_TREE_MODEL (eprop_types->store), &iter,
+				    COLUMN_COLUMN_NAME, &column_name, -1);
+		g_assert (column_name);
+
+		glade_property_get (eprop->property, &columns);
+		if (columns)
+			columns = glade_column_list_copy (columns);
+		g_assert (columns);
+
+		/* Find and remove the offending column... */
+		column = glade_column_list_find_column (columns, column_name);
+		g_assert (column);
+		columns = g_list_remove (columns, column);
+		glade_column_type_free (column);
+
+		glade_command_push_group (_("Setting columns on %s"), 
+					  glade_widget_get_name (eprop->property->widget));
+
+		g_value_init (&value, GLADE_TYPE_COLUMN_TYPE_LIST);
+		g_value_take_boxed (&value, columns);
+		glade_editor_property_commit (eprop, &value);
+
+		eprop_column_adjust_rows (eprop, columns);
+		g_value_unset (&value);
+		glade_command_pop_group ();
+
+		g_free (column_name);
+	}
+}
+
+static gboolean
+columns_changed_idle (GladeEditorProperty *eprop)
+{
+	GladeEPropColumnTypes *eprop_types = GLADE_EPROP_COLUMN_TYPES (eprop);
+	GladeColumnType       *column;
+	GValue                 value = { 0, };
+	GList                 *new_list = NULL, *columns = NULL, *list;
+	GtkTreeIter            iter;
+	gchar                 *column_name;
+
+	glade_property_get (eprop->property, &columns);
+	g_assert (columns);
+	columns = glade_column_list_copy (columns);
+
+	if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (eprop_types->store), &iter))
+	{
+		do 
+		{
+			column_name = NULL;
+			gtk_tree_model_get (GTK_TREE_MODEL (eprop_types->store), &iter,
+					    COLUMN_COLUMN_NAME, &column_name, -1);
+			g_assert (column_name);
+
+			column = glade_column_list_find_column (columns, column_name);
+			g_assert (column);
+
+			new_list = g_list_prepend (new_list, column);
+			g_free (column_name);
+		} 
+		while (gtk_tree_model_iter_next (GTK_TREE_MODEL (eprop_types->store), &iter));
+	}
+
+	/* any missing columns to free ? */
+	for (list = columns; list; list = list->next)
+	{
+		if (!g_list_find (new_list, list->data))
+			glade_column_type_free ((GladeColumnType *)list->data);
+	}
+	g_list_free (columns);
+
+	glade_command_push_group (_("Setting columns on %s"), 
+				  glade_widget_get_name (eprop->property->widget));
+
+	g_value_init (&value, GLADE_TYPE_COLUMN_TYPE_LIST);
+	g_value_take_boxed (&value, g_list_reverse (new_list));
+	glade_editor_property_commit (eprop, &value);
+
+	eprop_column_adjust_rows (eprop, new_list);
+	g_value_unset (&value);
+	glade_command_pop_group ();
+
+	return FALSE;
 }
 
 static void
@@ -284,27 +466,18 @@ eprop_treeview_row_deleted (GtkTreeModel *tree_model,
 			    GtkTreePath  *path,
 			    GladeEditorProperty *eprop)
 {
-	GtkTreeIter iter;
-
 	if (eprop->loading) return;
 
-	/* Find the deleted row and remove that column... */
-	if (!gtk_tree_model_get_iter (tree_model, &iter, path))
-		return;
-
-	/* Get it by name... */
-
+	g_idle_add ((GSourceFunc)columns_changed_idle, eprop);
 }
-
 
 static void
 eprop_column_load (GladeEPropColumnTypes *eprop_types,
 		   GType type,
-		   const gchar *name,
 		   const gchar *column_name)
 {
 	gtk_list_store_insert_with_values (eprop_types->store, NULL, -1,
-					   COLUMN_NAME, name ? name : g_type_name (type),
+					   COLUMN_NAME, g_type_name (type),
 					   COLUMN_GTYPE, type,
 					   COLUMN_COLUMN_NAME, column_name,
 					   -1);
@@ -316,25 +489,108 @@ glade_eprop_column_types_load (GladeEditorProperty *eprop, GladeProperty *proper
 	GladeEditorPropertyClass *parent_class = 
 		g_type_class_peek_parent (GLADE_EDITOR_PROPERTY_GET_CLASS (eprop));
 	GladeEPropColumnTypes *eprop_types = GLADE_EPROP_COLUMN_TYPES (eprop);
-	GList *l, *list;
+	GList *l, *list = NULL;
 	
 	/* Chain up first */
 	parent_class->load (eprop, property);
 	
+	if (eprop_types->context)
+		glade_name_context_destroy (eprop_types->context);
+	eprop_types->context = NULL;
+
+	if (!property) return;
+
+	eprop_types->context = glade_name_context_new ();
+
+	g_signal_handlers_block_by_func (G_OBJECT (eprop_types->store), 
+					 eprop_treeview_row_deleted, eprop);
+
 	/* Clear Store */
 	gtk_list_store_clear (eprop_types->store);
-	/* We could set the combo to the first item */
-	
-	list = g_value_get_boxed (property->value);
+
+	glade_property_get (property, &list);
 	
 	for (l = list; l; l = g_list_next (l))
 	{
 		GladeColumnType *data = l->data;
 		
-		eprop_column_load (eprop_types, data->type, NULL, data->column_name);
+		eprop_column_load (eprop_types, data->type, data->column_name);
+		glade_name_context_add_name (eprop_types->context, data->column_name);
 	}
+
+	g_signal_handlers_unblock_by_func (G_OBJECT (eprop_types->store), 
+					   eprop_treeview_row_deleted, eprop);
 }
 
+static void
+column_name_edited (GtkCellRendererText *cell,
+		    const gchar         *path,
+		    const gchar         *new_column_name,
+		    GladeEditorProperty *eprop)
+{
+	GladeEPropColumnTypes *eprop_types = GLADE_EPROP_COLUMN_TYPES (eprop);
+	GtkTreeIter            iter;
+	gchar                 *old_column_name = NULL, *column_name;
+	GList                 *columns = NULL;
+	GladeColumnType       *column;
+	GValue                 value = { 0, };
+	GNode                 *data_tree = NULL;
+	GladeProperty         *property;
+
+	if (!gtk_tree_model_get_iter_from_string (GTK_TREE_MODEL (eprop_types->store), &iter, path))
+		return;
+
+	gtk_tree_model_get (GTK_TREE_MODEL (eprop_types->store), &iter, COLUMN_COLUMN_NAME, &old_column_name, -1);
+
+	/* Attempt to rename the column, and commit if successfull... */
+	glade_property_get (eprop->property, &columns);
+	if (columns)
+		columns = glade_column_list_copy (columns);
+	g_assert (columns);
+
+	column = glade_column_list_find_column (columns, old_column_name);
+
+	/* Bookkeep the exclusive names... */
+	if (glade_name_context_has_name (eprop_types->context, new_column_name))
+		column_name = glade_name_context_new_name (eprop_types->context, new_column_name);
+	else
+		column_name = g_strdup (new_column_name);
+	
+	glade_name_context_add_name (eprop_types->context, column_name);
+	glade_name_context_release_name (eprop_types->context, old_column_name);
+	
+	/* Set real column name */
+	g_free (column->column_name);
+	column->column_name = column_name;
+	
+	/* The "columns" copy of this string doesnt last long... */
+	column_name = g_strdup (column_name);
+
+	glade_command_push_group (_("Setting columns on %s"), 
+				  glade_widget_get_name (eprop->property->widget));
+
+
+	g_value_init (&value, GLADE_TYPE_COLUMN_TYPE_LIST);
+	g_value_take_boxed (&value, columns);
+	glade_editor_property_commit (eprop, &value);
+	g_value_unset (&value);
+
+	property = glade_widget_get_property (eprop->property->widget, "data");
+	glade_property_get (property, &data_tree);
+	if (data_tree)
+	{
+		data_tree = glade_model_data_tree_copy (data_tree);
+
+		glade_model_data_column_rename (data_tree, old_column_name, column_name);
+
+		glade_command_set_property (property, data_tree);
+		glade_model_data_tree_free (data_tree);
+	}
+	glade_command_pop_group ();
+
+	g_free (old_column_name);
+	g_free (column_name);
+}
 
 static GtkWidget *
 glade_eprop_column_types_create_input (GladeEditorProperty *eprop)
@@ -388,16 +644,35 @@ glade_eprop_column_types_create_input (GladeEditorProperty *eprop)
 	
 	treeview = gtk_tree_view_new_with_model (GTK_TREE_MODEL (eprop_types->store));
 	eprop_types->selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (treeview));
+
 	
 	gtk_tree_view_set_reorderable (GTK_TREE_VIEW (treeview), TRUE);
-	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (treeview), FALSE);
-	col = gtk_tree_view_column_new_with_attributes ("Type Name", 
+	//gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (treeview), FALSE);
+
+	/* type column */
+	col = gtk_tree_view_column_new_with_attributes ("Column type", 
 							gtk_cell_renderer_text_new (),
 							"text", COLUMN_NAME,
 							NULL);
 	gtk_tree_view_append_column (GTK_TREE_VIEW (treeview), col);	
+
+
+	/* name column */
+	cell = gtk_cell_renderer_text_new ();
+	g_object_set (G_OBJECT (cell), "editable", TRUE, NULL);
+
+	g_signal_connect (G_OBJECT (cell), "edited",
+			  G_CALLBACK (column_name_edited), eprop);
+	
+	col = gtk_tree_view_column_new_with_attributes ("Column name", 
+							cell,
+							"text", COLUMN_COLUMN_NAME,
+							NULL);
+	gtk_tree_view_append_column (GTK_TREE_VIEW (treeview), col);	
 	gtk_container_add (GTK_CONTAINER (swin), treeview);
 	
+	g_object_set (G_OBJECT (vbox), "height-request", 200, NULL);
+
 	gtk_widget_show_all (vbox);
 	return vbox;
 }

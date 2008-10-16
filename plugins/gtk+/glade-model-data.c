@@ -31,13 +31,15 @@
 #include "glade-column-types.h"
 
 GladeModelData *
-glade_model_data_new (GType type)
+glade_model_data_new (GType type, const gchar *column_name)
 {
 	GladeModelData *data = g_new0 (GladeModelData, 1);
 	g_value_init (&data->value, type);
 
 	if (type == G_TYPE_STRING)
 		data->i18n_translatable = TRUE;
+
+	data->name = g_strdup (column_name);
 
 	return data;
 }
@@ -100,9 +102,24 @@ glade_model_data_tree_free (GNode *node)
 	}
 }
 
+GladeModelData *
+glade_model_data_tree_get_data (GNode *data_tree, gint row, gint colnum)
+{
+	GNode *node;
+
+	g_return_val_if_fail (data_tree != NULL, NULL);
+
+	if ((node = g_node_nth_child (data_tree, row)) != NULL)
+		if ((node = g_node_nth_child (node, colnum)) != NULL)
+			return (GladeModelData *)node->data;
+
+	return NULL;
+}
+
 void
 glade_model_data_insert_column (GNode          *node,
 				GType           type,
+				const gchar    *column_name,
 				gint            nth)
 {
 	GNode *row, *item;
@@ -114,7 +131,7 @@ glade_model_data_insert_column (GNode          *node,
 	{
 		g_return_if_fail (nth >= 0 && nth <= g_node_n_children (row));
 
-		data = glade_model_data_new (type);
+		data = glade_model_data_new (type, column_name);
 		item = g_node_new (data);
 		g_node_insert (row, nth, item);
 	}
@@ -122,7 +139,6 @@ glade_model_data_insert_column (GNode          *node,
 
 void
 glade_model_data_remove_column (GNode          *node,
-				GType           type,
 				gint            nth)
 {
 	GNode *row, *item;
@@ -159,6 +175,50 @@ glade_model_data_reorder_column (GNode          *node,
 
 		g_node_unlink (item);
 		g_node_insert (row, nth, item);
+	}
+}
+
+gint
+glade_model_data_column_index (GNode          *node,
+			       const gchar    *column_name)
+{
+	gint i;
+	GNode *item;
+	GladeModelData *data;
+
+	g_return_val_if_fail (node != NULL, -1);
+
+	for (i = 0, item = node->children->children; item; i++, item = item->next)
+	{
+		data = item->data;
+		if (strcmp (data->name, column_name) == 0)
+			return i;
+	}
+	return -1;
+}
+
+void
+glade_model_data_column_rename (GNode          *node,
+				const gchar    *column_name,
+				const gchar    *new_name)
+{
+	gint idx;
+	GNode *row, *iter;
+	GladeModelData *data;
+
+	g_return_if_fail (node != NULL);
+
+	if ((idx = glade_model_data_column_index (node, column_name)) < 0)
+		return;
+
+	for (row = node->children; row; row = row->next)
+	{
+		g_print ("Setting new name %s for old name %s at index %d\n",
+			 new_name, column_name, idx);
+		iter = g_node_nth_child (row, idx);
+		data = iter->data;
+		g_free (data->name);
+		data->name = g_strdup (new_name);
 	}
 }
 
@@ -255,6 +315,7 @@ typedef struct
 	GtkTreeView  *view;
 	GtkListStore *store;
 	GtkTreeSelection *selection;
+	GNode *pending_data_tree;
 } GladeEPropModelData;
 
 GLADE_MAKE_EPROP (GladeEPropModelData, glade_eprop_model_data)
@@ -281,7 +342,7 @@ append_row (GNode *node, GList *columns)
 	for (list = columns; list; list = list->next)
        	{
 		column = list->data;
-		data = glade_model_data_new (column->type);
+		data = glade_model_data_new (column->type, column->column_name);
 		g_node_append_data (row, data);
 	}
 }
@@ -432,29 +493,61 @@ eprop_model_data_generate_store (GladeEditorProperty *eprop)
 	}
 	return store;
 }
+ 
+static gboolean
+update_data_tree_idle (GladeEditorProperty *eprop)
+{
+	GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
+	GValue               value = { 0, };
+	
+	g_value_init (&value, GLADE_TYPE_MODEL_DATA_TREE);
+	g_value_take_boxed (&value, eprop_data->pending_data_tree);
+	glade_editor_property_commit (eprop, &value);
+	g_value_unset (&value);
 
+	eprop_data->pending_data_tree = NULL;
+	return FALSE;
+}
 
 static void
 value_toggled (GtkCellRendererToggle *cell,
 	       gchar                 *path,
-	       GladeEditorProperty *eprop)
+	       GladeEditorProperty   *eprop)
 {
 	GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
-	gboolean             active;
 	GtkTreeIter          iter;
 	gint                 colnum = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (cell), "column-number"));
+	gint                 row;
+	GNode               *data_tree = NULL;
+	GladeModelData      *data;
+	gboolean             active;
 
 	if (!gtk_tree_model_get_iter_from_string (GTK_TREE_MODEL (eprop_data->store), &iter, path))
 		return;
 
 	gtk_tree_model_get (GTK_TREE_MODEL (eprop_data->store), &iter,
+			    COLUMN_ROW, &row,
 			    NUM_COLUMNS + colnum, &active,
 			    -1);
 
-	gtk_list_store_set (eprop_data->store, &iter,
-			    NUM_COLUMNS + colnum, !active,
-			    -1);
+	glade_property_get (eprop->property, &data_tree);
+
+	/* if we are editing, then there is data in the datatree */
+	g_assert (data_tree);
+
+	data_tree = glade_model_data_tree_copy (data_tree);
+
+	data = glade_model_data_tree_get_data (data_tree, row, colnum);
+
+	g_value_set_boolean (&data->value, !active);
+
+	if (eprop_data->pending_data_tree)
+		glade_model_data_tree_free (eprop_data->pending_data_tree);
+
+	eprop_data->pending_data_tree = data_tree;
+	g_idle_add ((GSourceFunc)update_data_tree_idle, eprop);
 }
+
 
 static void
 value_text_edited (GtkCellRendererText *cell,
@@ -466,15 +559,14 @@ value_text_edited (GtkCellRendererText *cell,
 	GtkTreeIter          iter;
 	gint                 colnum = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (cell), "column-number"));
 	gint                 row;
-	GNode               *data_tree = NULL, *node;
-	GValue               value = { 0, };
+	GNode               *data_tree = NULL;
 	GladeModelData      *data;
 
 	if (!gtk_tree_model_get_iter_from_string (GTK_TREE_MODEL (eprop_data->store), &iter, path))
 		return;
 
 
-	gtk_tree_model_get (eprop_data->store, &iter,
+	gtk_tree_model_get (GTK_TREE_MODEL (eprop_data->store), &iter,
 			    COLUMN_ROW, &row,
 			    -1);
 
@@ -485,28 +577,38 @@ value_text_edited (GtkCellRendererText *cell,
 
 	data_tree = glade_model_data_tree_copy (data_tree);
 
-	if ((node = g_node_nth_child (data_tree, row)) != NULL)
-	{
-		if ((node = g_node_nth_child (node, colnum)) != NULL)
-		{
-			data = node->data;
+	data = glade_model_data_tree_get_data (data_tree, row, colnum);
 
-			g_value_set_string (&(data->value), new_text);
-		}
-	}
+	/* cellrenderertext */
+	if (G_VALUE_TYPE (&data->value) == G_TYPE_STRING)
+		g_value_set_string (&data->value, new_text);
+	else if (G_VALUE_TYPE (&data->value) == G_TYPE_CHAR)
+		g_value_set_char (&data->value, new_text ? new_text[0] : '\0');
+	else if (G_VALUE_TYPE (&data->value) == G_TYPE_UCHAR)
+		g_value_set_uchar (&data->value, new_text ? new_text[0] : '\0');
+	/* cellrendererspin */
+	else if (G_VALUE_TYPE (&data->value) == G_TYPE_INT)
+		g_value_set_int (&data->value, g_ascii_strtoll (new_text, NULL, 10));
+	else if (G_VALUE_TYPE (&data->value) == G_TYPE_UINT)
+		g_value_set_uint (&data->value, g_ascii_strtoull (new_text, NULL, 10));
+	else if (G_VALUE_TYPE (&data->value) == G_TYPE_LONG)
+		g_value_set_long (&data->value, g_ascii_strtoll (new_text, NULL, 10));
+	else if (G_VALUE_TYPE (&data->value) == G_TYPE_ULONG)
+		g_value_set_ulong (&data->value, g_ascii_strtoull (new_text, NULL, 10));
+	else if (G_VALUE_TYPE (&data->value) == G_TYPE_INT64)
+		g_value_set_int64 (&data->value, g_ascii_strtoll (new_text, NULL, 10));
+	else if (G_VALUE_TYPE (&data->value) == G_TYPE_UINT64)
+		g_value_set_uint64 (&data->value, g_ascii_strtoull (new_text, NULL, 10));
+	else if (G_VALUE_TYPE (&data->value) == G_TYPE_FLOAT)
+		g_value_set_float (&data->value, (float) g_ascii_strtod (new_text, NULL));
+	else /* if (G_VALUE_TYPE (&data->value) == G_TYPE_DOUBLE) */
+		g_value_set_double (&data->value, g_ascii_strtod (new_text, NULL));
 
-	g_value_init (&value, GLADE_TYPE_MODEL_DATA_TREE);
-	g_value_take_boxed (&value, data_tree);
-	glade_editor_property_commit (eprop, &value);
-	g_value_unset (&value);
+	if (eprop_data->pending_data_tree)
+		glade_model_data_tree_free (eprop_data->pending_data_tree);
 
-	/* No need to update store, it will be reloaded in load() */
-/* 	gtk_list_store_set (eprop_data->store, &iter, */
-/* 			    NUM_COLUMNS + colnum, new_text, */
-/* 			    -1); */
-
-	/* XXX Set string in data here and commit ! */
-
+	eprop_data->pending_data_tree = data_tree;
+	g_idle_add ((GSourceFunc)update_data_tree_idle, eprop);
 }
 
 static GtkTreeViewColumn *
@@ -520,7 +622,7 @@ eprop_model_generate_column (GladeEditorProperty *eprop,
 	GtkListStore      *store;
 	GType              type = G_VALUE_TYPE (&data->value);
 
-	gtk_tree_view_column_set_title (column, g_type_name (type));
+	gtk_tree_view_column_set_title (column, data->name);
 
 	/* Support enum and flag types, and a hardcoded list of fundamental types */
 	if (type == G_TYPE_CHAR ||
@@ -665,6 +767,10 @@ glade_eprop_model_data_load (GladeEditorProperty *eprop,
 
 	/* Chain up in a clean state... */
 	parent_class->load (eprop, property);
+
+	gtk_tree_view_set_model (eprop_data->view, NULL);
+	if (!property)
+		return;
 
 	if ((eprop_data->store = eprop_model_data_generate_store (eprop)) != NULL)
 	{

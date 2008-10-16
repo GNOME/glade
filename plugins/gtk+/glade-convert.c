@@ -379,7 +379,7 @@ combos_data_tree_from_items (gchar **items)
 
 	for (i = 0; items[i]; i++)
 	{
-		GladeModelData *data = glade_model_data_new (G_TYPE_STRING);
+		GladeModelData *data = glade_model_data_new (G_TYPE_STRING, "item");
 
 		g_value_set_string (&data->value, items[i]);
 

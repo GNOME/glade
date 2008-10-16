@@ -56,22 +56,31 @@ GType           glade_eprop_model_data_get_type    (void) G_GNUC_CONST;
 GParamSpec     *glade_standard_model_data_spec     (void);
 
 
-GladeModelData *glade_model_data_new               (GType           type);
+GladeModelData *glade_model_data_new               (GType           type,
+						    const gchar    *column_name);
 GladeModelData *glade_model_data_copy              (GladeModelData *data);
 void            glade_model_data_free              (GladeModelData *data);
 
 GNode          *glade_model_data_tree_copy         (GNode          *node);
 void            glade_model_data_tree_free         (GNode          *node);
 
+GladeModelData *glade_model_data_tree_get_data     (GNode          *data_tree, 
+						    gint            row, 
+						    gint            colnum);
 void            glade_model_data_insert_column     (GNode          *node,
 						    GType           type,
+						    const gchar    *column_name,
 						    gint            nth);
 void            glade_model_data_remove_column     (GNode          *node,
-						    GType           type,
 						    gint            nth);
 void            glade_model_data_reorder_column    (GNode          *node,
 						    gint            column,
 						    gint            nth);
+gint            glade_model_data_column_index      (GNode          *node,
+						    const gchar    *column_name);
+void            glade_model_data_column_rename     (GNode          *node,
+						    const gchar    *column_name,
+						    const gchar    *new_name);
 
 
 G_END_DECLS

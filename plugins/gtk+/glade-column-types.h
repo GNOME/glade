@@ -52,6 +52,9 @@ GParamSpec  *glade_standard_column_types_spec     (void);
 void         glade_column_list_free               (GList *list);
 GList       *glade_column_list_copy               (GList *list);
 
+void             glade_column_type_free           (GladeColumnType *column);
+GladeColumnType *glade_column_list_find_column    (GList *list, const gchar *column_name);
+
 G_END_DECLS
 
 #endif /* _GLADE_COLUMN_TYPES_H_ */
