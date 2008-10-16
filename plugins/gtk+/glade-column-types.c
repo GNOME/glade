@@ -596,13 +596,24 @@ static GtkWidget *
 glade_eprop_column_types_create_input (GladeEditorProperty *eprop)
 {
 	GladeEPropColumnTypes *eprop_types = GLADE_EPROP_COLUMN_TYPES (eprop);
-	GtkWidget *vbox, *hbox, *button, *swin, *treeview;
+	GtkWidget *vbox, *hbox, *button, *swin, *treeview, *label;
 	GtkCellRenderer *cell;
 	GtkTreeViewColumn *col;
+	gchar *string;
 
 	vbox = gtk_vbox_new (FALSE, 2);
 	
 	hbox = gtk_hbox_new (FALSE, 4);
+
+
+	string = g_strdup_printf ("<b>%s</b>", _("Add and remove columns:"));
+	label = gtk_label_new (string);
+	g_free (string);
+	gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
+	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+	gtk_misc_set_padding (GTK_MISC (label), 2, 4);
+	gtk_box_pack_start (GTK_BOX (vbox), label,  FALSE, TRUE, 0);
+
 	gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
 	
 	eprop_types->combo = GTK_COMBO_BOX (gtk_combo_box_new_with_model (types_model));

@@ -793,20 +793,23 @@ static GtkWidget *
 glade_eprop_model_data_create_input (GladeEditorProperty *eprop)
 {
 	GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
-	GtkWidget *vbox, *hbox, *button, *swin;
+	GtkWidget *vbox, *hbox, *button, *swin, *label;
+	gchar *string;
 
 	vbox = gtk_vbox_new (FALSE, 2);
 	
 	hbox = gtk_hbox_new (FALSE, 4);
 
-	/* Pack treeview/swindow on the left... */
-	swin = gtk_scrolled_window_new (NULL, NULL);
-	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (swin), GTK_SHADOW_IN);
-	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (swin), GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
-	gtk_box_pack_start (GTK_BOX (vbox), swin, TRUE, TRUE, 0);
-
 	/* hbox with add/remove row buttons on the right... */
 	gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+
+	string = g_strdup_printf ("<b>%s</b>", _("Add and remove rows:"));
+	label = gtk_label_new (string);
+	g_free (string);
+	gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
+	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+	gtk_misc_set_padding (GTK_MISC (label), 2, 0);
+	gtk_box_pack_start (GTK_BOX (hbox), label,  TRUE, TRUE, 0);
 	
 	button = gtk_button_new ();
 	gtk_button_set_image (GTK_BUTTON (button),
@@ -826,11 +829,19 @@ glade_eprop_model_data_create_input (GladeEditorProperty *eprop)
 			  G_CALLBACK (glade_eprop_model_data_delete_clicked), 
 			  eprop_data);
 
+	/* Pack treeview/swindow on the left... */
+	swin = gtk_scrolled_window_new (NULL, NULL);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (swin), GTK_SHADOW_IN);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (swin), GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
+	gtk_box_pack_start (GTK_BOX (vbox), swin, TRUE, TRUE, 0);
+
 	eprop_data->view = (GtkTreeView *)gtk_tree_view_new ();
 	
 	gtk_tree_view_set_reorderable (GTK_TREE_VIEW (eprop_data->view), TRUE);
 	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (eprop_data->view), TRUE);
 	gtk_container_add (GTK_CONTAINER (swin), GTK_WIDGET (eprop_data->view));
+
+	g_object_set (G_OBJECT (vbox), "height-request", 200, NULL);
 	
 	gtk_widget_show_all (vbox);
 	return vbox;
