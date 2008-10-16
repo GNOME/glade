@@ -321,7 +321,7 @@ append_empty_row (GtkTreeStore   *store,
 		  GtkTreeIter    *place,
 		  GtkTreeIter   **new_row)
 {
-	gchar        *name = NULL;
+	const gchar *name = NULL;
 	GtkListStore *model = get_enum_model_for_combo (type);
 	GtkTreeIter   iter, *last;
 	AttrEditType  edit_type = EDIT_INVALID;
@@ -335,35 +335,35 @@ append_empty_row (GtkTreeStore   *store,
 		/* PangoAttrInt */
 	case PANGO_ATTR_STYLE:	
 		edit_type = EDIT_COMBO;
-		name = _("Style");
+		name = C_("textattr", "Style");
 		break;
 	case PANGO_ATTR_WEIGHT:
 		edit_type = EDIT_COMBO;
-		name = _("Weight");
+		name = C_("textattr", "Weight");
 		break;
 	case PANGO_ATTR_VARIANT:
 		edit_type = EDIT_COMBO;
-		name = _("Variant");
+		name = C_("textattr", "Variant");
 		break;
 	case PANGO_ATTR_STRETCH:
 		edit_type = EDIT_COMBO;
-		name = _("Stretch");
+		name = C_("textattr", "Stretch");
 		break;
 	case PANGO_ATTR_UNDERLINE:
 		edit_type = EDIT_TOGGLE;
-		name = _("Underline");
+		name = C_("textattr", "Underline");
 		break;
 	case PANGO_ATTR_STRIKETHROUGH:	
 		edit_type = EDIT_TOGGLE;
-		name = _("Strikethrough");
+		name = C_("textattr", "Strikethrough");
 		break;
 	case PANGO_ATTR_GRAVITY:
 		edit_type = EDIT_COMBO;
-		name = _("Gravity");
+		name = C_("textattr", "Gravity");
 		break;
 	case PANGO_ATTR_GRAVITY_HINT:
 		edit_type = EDIT_COMBO;
-		name = _("Gravity Hint");
+		name = C_("textattr", "Gravity Hint");
 		break;
 		
 		/* PangoAttrString */	  
@@ -374,30 +374,30 @@ append_empty_row (GtkTreeStore   *store,
 		/* PangoAttrSize */	  
 	case PANGO_ATTR_SIZE:
 		edit_type = EDIT_SPIN;
-		name = _("Size");
+		name = C_("textattr", "Size");
 		break;
 	case PANGO_ATTR_ABSOLUTE_SIZE:
 		edit_type = EDIT_SPIN;
-		name = _("Absolute Size");
+		name = C_("textattr", "Absolute Size");
 		break;
 					
 		/* PangoAttrColor */
 		/* Colours need editors... */
 	case PANGO_ATTR_FOREGROUND:
 		edit_type = EDIT_COLOR;
-		name = _("Foreground Color");
+		name = C_("textattr", "Foreground Color");
 		break;
 	case PANGO_ATTR_BACKGROUND: 
 		edit_type = EDIT_COLOR;
-		name = _("Background Color");
+		name = C_("textattr", "Background Color");
 		break;
 	case PANGO_ATTR_UNDERLINE_COLOR:
 		edit_type = EDIT_COLOR;
-		name = _("Underline Color");
+		name = C_("textattr", "Underline Color");
 		break;
 	case PANGO_ATTR_STRIKETHROUGH_COLOR:
 		edit_type = EDIT_COLOR;
-		name = _("Strikethrough Color");
+		name = C_("textattr", "Strikethrough Color");
 		break;
 		
 		/* PangoAttrShape */
@@ -407,7 +407,7 @@ append_empty_row (GtkTreeStore   *store,
 		/* PangoAttrFloat */
 	case PANGO_ATTR_SCALE:
 		edit_type = EDIT_SPIN;
-		name = _("Scale");	
+		name = C_("textattr", "Scale");	
 		break;
 		
 	case PANGO_ATTR_INVALID:
