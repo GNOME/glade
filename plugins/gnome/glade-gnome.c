@@ -597,7 +597,7 @@ glade_gnome_dps_set_color_common (GObject      *object,
 					  property_name);
 	
 	color = glade_property_class_make_gvalue_from_string (prop->klass,
-							      color_str, NULL);
+							      color_str, NULL, NULL);
 	if (color) glade_property_set_value (prop, color);
 }
 

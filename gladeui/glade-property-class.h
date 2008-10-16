@@ -133,6 +133,12 @@ struct _GladePropertyClass
 			     * changes, or load values from the object.
 			     */
 
+	gboolean needs_sync; /* Virtual properties need to be synchronized after object
+			      * creation, some properties that are not virtual also need
+			      * handling from the backend, if "needs-sync" is true then
+			      * this property will by synced with virtual properties.
+			      */
+
 	gboolean is_modified; /* If true, this property_class has been "modified" from the
 			       * the standard property by a xml file. */
 
@@ -197,7 +203,8 @@ gboolean            glade_property_class_is_object               (GladePropertyC
 
 GValue             *glade_property_class_make_gvalue_from_string (GladePropertyClass  *property_class,
 								  const gchar         *string,
-								  GladeProject        *project);
+								  GladeProject        *project,
+								  GladeWidget         *widget);
 
 gchar              *glade_property_class_make_string_from_gvalue (GladePropertyClass  *property_class,
 								  const GValue        *value,

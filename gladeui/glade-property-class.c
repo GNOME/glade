@@ -85,6 +85,7 @@ glade_property_class_new (gpointer handle)
 	property_class->save = TRUE;
 	property_class->save_always = FALSE;
 	property_class->ignore = FALSE;
+	property_class->needs_sync = FALSE;
 	property_class->resource = FALSE;
 	property_class->themed_icon = FALSE;
 	property_class->translatable = FALSE;
@@ -628,7 +629,8 @@ glade_property_class_make_enum_from_string (GType type, const char *string)
 static GObject *
 glade_property_class_make_object_from_string (GladePropertyClass *property_class,
 					      const gchar        *string,
-					      GladeProject       *project)
+					      GladeProject       *project,
+					      GladeWidget        *widget)
 {
 	GObject *object = NULL;
 	gchar   *fullpath;
@@ -668,7 +670,7 @@ glade_property_class_make_object_from_string (GladePropertyClass *property_class
  
 		g_free (fullpath);
 	}
-	if (glade_project_get_format (project) == GLADE_PROJECT_FORMAT_LIBGLADE &&
+	if (project && glade_project_get_format (project) == GLADE_PROJECT_FORMAT_LIBGLADE &&
 	    property_class->pspec->value_type == GTK_TYPE_ADJUSTMENT)
 	{
 		gdouble value, lower, upper, step_increment, page_increment, page_size;
@@ -687,7 +689,7 @@ glade_property_class_make_object_from_string (GladePropertyClass *property_class
 	{
 		GladeWidget *gwidget;
 		if ((gwidget = glade_project_get_widget_by_name 
-			       (project, string)) != NULL)
+		     (project, widget, string)) != NULL)
 			object = gwidget->object;
 	}
 	
@@ -697,7 +699,8 @@ glade_property_class_make_object_from_string (GladePropertyClass *property_class
 static GList *
 glade_property_class_make_objects_from_string (GladePropertyClass *property_class,
 					       const gchar        *string,
-					       GladeProject       *project)
+					       GladeProject       *project,
+					       GladeWidget        *widget)
 {
 	GList    *objects = NULL;
 	GObject  *object;
@@ -709,7 +712,7 @@ glade_property_class_make_objects_from_string (GladePropertyClass *property_clas
 		for (i = 0; split[i]; i++)
 		{
 			if ((object = glade_property_class_make_object_from_string
-			     (property_class, split[i], project)) != NULL)
+			     (property_class, split[i], project, widget)) != NULL)
 				objects = g_list_prepend (objects, object);
 		}
 		g_strfreev (split);
@@ -721,8 +724,7 @@ glade_property_class_make_objects_from_string (GladePropertyClass *property_clas
  * glade_property_class_make_gvalue_from_string:
  * @property_class: A #GladePropertyClass
  * @string: a string representation of this property
- * @project: the glade project that the associated property
- *           belongs to.
+ * @widget: the #GladeWidget that the associated property belongs to.
  *
  * Returns: A #GValue created based on the @property_class
  *          and @string criteria.
@@ -730,7 +732,8 @@ glade_property_class_make_objects_from_string (GladePropertyClass *property_clas
 GValue *
 glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class,
 					      const gchar        *string,
-					      GladeProject       *project)
+					      GladeProject       *project,
+					      GladeWidget        *widget)
 {
 	GValue    *value = g_new0 (GValue, 1);
 	gchar    **strv, *fullpath;
@@ -831,13 +834,13 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 	else if (G_IS_PARAM_SPEC_OBJECT(property_class->pspec))
 	{
 		GObject *object = glade_property_class_make_object_from_string
-			(property_class, string, project);
+			(property_class, string, project, widget);
 		g_value_set_object (value, object);
 	}
 	else if (GLADE_IS_PARAM_SPEC_OBJECTS (property_class->pspec))
 	{
 		GList *objects = glade_property_class_make_objects_from_string
-			(property_class, string, project);
+			(property_class, string, project, widget);
 		g_value_set_boxed (value, objects);
 	}
 	else
@@ -1459,7 +1462,7 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 			g_value_unset (klass->def);
 			g_free (klass->def);
 		}
-		klass->def = glade_property_class_make_gvalue_from_string (klass, buf, NULL);
+		klass->def = glade_property_class_make_gvalue_from_string (klass, buf, NULL, NULL);
 		g_free (buf);
 	}
 
@@ -1519,6 +1522,7 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	klass->save        = glade_xml_get_property_boolean (node, GLADE_TAG_SAVE,        klass->save);
 	klass->visible     = glade_xml_get_property_boolean (node, GLADE_TAG_VISIBLE,     klass->visible);
 	klass->ignore      = glade_xml_get_property_boolean (node, GLADE_TAG_IGNORE,      klass->ignore);
+	klass->needs_sync  = glade_xml_get_property_boolean (node, GLADE_TAG_NEEDS_SYNC,  klass->needs_sync);
 	klass->resource    = glade_xml_get_property_boolean (node, GLADE_TAG_RESOURCE,    klass->resource);
 	klass->themed_icon = glade_xml_get_property_boolean (node, GLADE_TAG_THEMED_ICON, klass->themed_icon);
 	klass->weight      = glade_xml_get_property_double  (node, GLADE_TAG_WEIGHT,      klass->weight);
@@ -1651,6 +1655,8 @@ glade_property_class_compare (GladePropertyClass *klass,
 	if (G_VALUE_HOLDS_BOXED (value1))
 	{
 		gchar *val1, *val2;
+
+		/* This has got to change... */
 		
 		val1 = glade_widget_adaptor_string_from_value (klass->handle, klass, value1, fmt);
 		val2 = glade_widget_adaptor_string_from_value (klass->handle, klass, value2, fmt);
@@ -1662,6 +1668,9 @@ glade_property_class_compare (GladePropertyClass *klass,
 		
 		g_free (val1);
 		g_free (val2);
+
+		/* boxed always changed... XXX */
+		return -1;
 	}
 	else
 	{

@@ -18,6 +18,7 @@
  *
  * Authors:
  *   Chema Celorio <chema@celorio.com>
+ *   Tristan Van Berkom <tvb@gnome.org>
  */
 
 
@@ -503,7 +504,8 @@ glade_editor_widget_name_changed (GtkWidget *editable, GladeEditor *editor)
 
 	widget = editor->loaded_widget;
 	new_name = gtk_editable_get_chars (GTK_EDITABLE (editable), 0, -1);
-	if (!glade_project_get_widget_by_name (widget->project, new_name))
+
+	if (glade_project_available_widget_name (widget->project, widget, new_name))
 		glade_command_set_name (widget, new_name);
 	g_free (new_name);
 }

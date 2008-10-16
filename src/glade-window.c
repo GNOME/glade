@@ -1705,7 +1705,6 @@ notebook_tab_removed_cb (GtkNotebook *notebook,
 			     GladeWindow *window)
 {
 	GladeProject   *project;
-	GladeInspector *inspector;
 
 	--window->priv->num_tabs;
 
@@ -1721,12 +1720,11 @@ notebook_tab_removed_cb (GtkNotebook *notebook,
 					      G_CALLBACK (project_selection_changed_cb),
 					      window);
 
-	/* FIXME: this function needs to be preferably called somewhere else */
-	glade_app_remove_project (project);
-
-	inspector = (GladeInspector *) gtk_notebook_get_nth_page (GTK_NOTEBOOK (window->priv->inspectors_notebook), page_num);
 
 	gtk_notebook_remove_page (GTK_NOTEBOOK (window->priv->inspectors_notebook), page_num);
+
+	/* FIXME: this function needs to be preferably called somewhere else */
+	glade_app_remove_project (project);
 
 	refresh_projects_list_menu (window);
 
@@ -2501,7 +2499,9 @@ add_project (GladeWindow *window, GladeProject *project)
  	view = glade_design_view_new (project);	
 	gtk_widget_show (view);
 
+	/* Pass ownership of the project to the app */
 	glade_app_add_project (project);
+	g_object_unref (project);
 
 	gtk_notebook_append_page (GTK_NOTEBOOK (window->priv->notebook), GTK_WIDGET (view), NULL);
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (window->priv->notebook), -1);	

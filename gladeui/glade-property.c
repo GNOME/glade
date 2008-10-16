@@ -1038,8 +1038,7 @@ glade_property_read (GladeProperty      *property,
 		if (fmt == GLADE_PROJECT_FORMAT_GTKBUILDER)
 		{
 			gboolean is_loaded_value = 
-				glade_project_is_loaded_factory_file
-				(property->widget->project, value);
+				glade_project_is_loaded_factory_file (project, value);
 
 			if (property->klass->factory_stock_id && is_loaded_value)
 				search_name = property->klass->factory_stock_id;
@@ -1085,7 +1084,7 @@ glade_property_read (GladeProperty      *property,
 				}
 
 				gvalue = glade_property_class_make_gvalue_from_string
-					(property->klass, value, project);
+					(property->klass, value, project, property->widget);
 
 				if (property) 
 				{

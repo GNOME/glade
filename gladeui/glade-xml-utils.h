@@ -36,6 +36,12 @@ typedef enum
 } GladeProjectFormat;
 
 
+typedef enum {
+	GLADE_POLICY_PROJECT_WIDE = 0,    /* widget names are unique throughout the project */
+	GLADE_POLICY_TOPLEVEL_CONTEXTUAL  /* toplevel names are unique, and widgets inside a toplevel */
+} GladeNamingPolicy;
+
+
 #define GLADE_XML_TAG_PROJECT(type) \
 	((type == GLADE_PROJECT_FORMAT_LIBGLADE) ? \
 	 GLADE_XML_TAG_LIBGLADE_PROJECT : GLADE_XML_TAG_BUILDER_PROJECT)
@@ -108,6 +114,7 @@ typedef enum
 #define GLADE_TAG_PARENTLESS_WIDGET               "parentless-widget"
 #define GLADE_TAG_DISABLED                        "disabled"
 #define GLADE_TAG_CONSTRUCT_ONLY                  "construct-only"
+#define GLADE_TAG_NEEDS_SYNC                      "needs-sync"
 #define GLADE_TAG_DEFAULT_PALETTE_STATE           "default-palette-state"
 #define GLADE_TAG_PROJECT_CONVERT_FUNCTION        "project-convert-function"
 #define GLADE_TAG_REPLACE_CHILD_FUNCTION          "replace-child-function"

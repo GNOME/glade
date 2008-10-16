@@ -48,6 +48,7 @@
 
 #include "glade-project.h"
 #include "glade-command.h"
+#include "glade-name-context.h"
 
 #define GLADE_PROJECT_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), GLADE_TYPE_PROJECT, GladeProjectPrivate))
 
@@ -105,12 +106,14 @@ struct _GladeProjectPrivate
 			   * of #GtkWidget items.
 			   */
 
+	GladeNameContext *toplevel_names; /* Context for uniqueness of names at the toplevel */
+	GList            *toplevels;      /* List of toplevels with thier own naming contexts */
+
+
 	gboolean     has_selection;           /* Whether the project has a selection */
 
 	GList       *undo_stack;              /* A stack with the last executed commands */
 	GList       *prev_redo_item;          /* Points to the item previous to the redo items */
-	GHashTable  *widget_names_allocator;  /* hash table with the used widget names */
-	GHashTable  *widget_old_names;        /* widget -> old name of the widget */
 	
 	gboolean first_modification_is_na; /* the flag indicates that  the first_modification item has been lost */
 	
@@ -135,13 +138,82 @@ struct _GladeProjectPrivate
 	GHashTable *target_versions_minor; /* target versions by catalog */
 
 	GList *loaded_factory_files;
+
+	GladeNamingPolicy naming_policy;	/* What rules apply to widget names */
+/* Control on the preferences dialog to update buttons etc when properties change */
+	GtkWidget *prefs_dialog;
+	GtkWidget *glade_radio;
+	GtkWidget *builder_radio;
+	GtkWidget *project_wide_radio;
+	GtkWidget *toplevel_contextual_radio;
+	GHashTable *target_radios;
+
 };
+
+typedef struct {
+	GladeWidget      *toplevel;
+	GladeNameContext *names;
+} TopLevelInfo;
 
 typedef struct {
 	gchar *stock;
 	gchar *filename;
 } StockFilePair;
 
+
+static void         glade_project_set_target_version       (GladeProject *project,
+							    const gchar  *catalog,
+							    gint          major,
+							    gint          minor);
+static void         glade_project_get_target_version       (GladeProject *project,
+							    const gchar  *catalog,
+							    gint         *major,
+							    gint         *minor);
+
+static void         glade_project_target_version_for_adaptor (GladeProject        *project, 
+							      GladeWidgetAdaptor  *adaptor,
+							      gint                *major,
+							      gint                *minor);
+
+static void         glade_project_set_readonly             (GladeProject       *project, 
+							    gboolean            readonly);
+
+
+static gboolean     glade_project_verify                   (GladeProject       *project, 
+							    gboolean            saving);
+
+static void         glade_project_verify_adaptor           (GladeProject       *project,
+							    GladeWidgetAdaptor *adaptor,
+							    const gchar        *path_name,
+							    GString            *string,
+							    gboolean            saving,
+							    gboolean            forwidget,
+							    GladeSupportMask   *mask);
+
+static void         glade_project_move_resources           (GladeProject       *project,
+							    const gchar        *old_dir,
+							    const gchar        *new_dir);
+
+static void         glade_project_sync_resources_for_widget (GladeProject      *project, 
+							     GladeProject      *prev_project,
+							     GladeWidget       *gwidget,
+							     gboolean           remove);
+
+GladeWidget        *search_ancestry_by_name                 (GladeWidget       *toplevel, 
+							     const gchar       *name);
+
+static GtkWidget   *glade_project_build_prefs_dialog        (GladeProject      *project);
+
+static void         format_libglade_button_clicked          (GtkWidget         *widget,
+							     GladeProject      *project);
+static void         format_builder_button_clicked           (GtkWidget         *widget,
+							     GladeProject      *project);
+static void         policy_project_wide_button_clicked      (GtkWidget         *widget,
+							     GladeProject      *project);
+static void         policy_toplevel_contextual_button_clicked (GtkWidget       *widget,
+							       GladeProject    *project);
+static void         target_button_clicked                   (GtkWidget         *widget,
+							     GladeProject      *project);
 
 static guint              glade_project_signals[LAST_SIGNAL] = {0};
 
@@ -228,6 +300,10 @@ static void
 glade_project_finalize (GObject *object)
 {
 	GladeProject *project = GLADE_PROJECT (object);
+	GList        *list;
+	TopLevelInfo *tinfo;
+	
+	gtk_widget_destroy (project->priv->prefs_dialog);
 
 	g_free (project->priv->path);
 	g_free (project->priv->comment);
@@ -235,11 +311,20 @@ glade_project_finalize (GObject *object)
 	if (project->priv->unsaved_number > 0)
 		glade_id_allocator_release (get_unsaved_number_allocator (), project->priv->unsaved_number);
 
-	g_hash_table_destroy (project->priv->widget_names_allocator);
-	g_hash_table_destroy (project->priv->widget_old_names);
 	g_hash_table_destroy (project->priv->resources);
 	g_hash_table_destroy (project->priv->target_versions_major);
 	g_hash_table_destroy (project->priv->target_versions_minor);
+	g_hash_table_destroy (project->priv->target_radios);
+
+	glade_name_context_destroy (project->priv->toplevel_names);
+
+	for (list = project->priv->toplevels; list; list = list->next)
+	{
+		tinfo = list->data;
+		glade_name_context_destroy (tinfo->names);
+		g_free (tinfo);
+	}
+	g_list_free (project->priv->toplevels);
 
 	G_OBJECT_CLASS (glade_project_parent_class)->finalize (object);
 }
@@ -500,251 +585,10 @@ glade_project_changed_impl (GladeProject *project,
 	glade_app_update_ui ();
 }
 
+
 /*******************************************************************
-                            Initializers
+                          Class Initializers
  *******************************************************************/
-
-static void
-glade_project_get_target_version (GladeProject *project,
-				  const gchar  *catalog,
-				  gint         *major,
-				  gint         *minor)
-{
-	*major = GPOINTER_TO_INT 
-		(g_hash_table_lookup (project->priv->target_versions_major,
-				      catalog));
-	*minor = GPOINTER_TO_INT 
-		(g_hash_table_lookup (project->priv->target_versions_minor,
-				      catalog));
-}
-
-static void
-glade_project_target_version_for_adaptor (GladeProject        *project, 
-					  GladeWidgetAdaptor  *adaptor,
-					  gint                *major,
-					  gint                *minor)
-{
-	gchar   *catalog = NULL;
-
-	g_object_get (adaptor, "catalog", &catalog, NULL);
-	glade_project_get_target_version (project, catalog, major, minor);
-	g_free (catalog);
-}
-
-static void
-glade_project_verify_adaptor (GladeProject       *project,
-			      GladeWidgetAdaptor *adaptor,
-			      const gchar        *path_name,
-			      GString            *string,
-			      gboolean            saving,
-			      gboolean            forwidget,
-			      GladeSupportMask   *mask)
-{
-	GladeSupportMask    support_mask = GLADE_SUPPORT_OK;
-	GladeWidgetAdaptor *adaptor_iter;
-	gint                target_major, target_minor;
-	gchar              *catalog = NULL;
-
-	for (adaptor_iter = adaptor; adaptor_iter;
-	     adaptor_iter = glade_widget_adaptor_get_parent_adaptor (adaptor_iter))
-	{
-
-		g_object_get (adaptor_iter, "catalog", &catalog, NULL);
-		glade_project_target_version_for_adaptor (project, adaptor_iter, 
-							  &target_major,
-							  &target_minor);
-
-		if (target_major < GWA_VERSION_SINCE_MAJOR (adaptor_iter) ||
-		    (target_major == GWA_VERSION_SINCE_MAJOR (adaptor_iter) &&
-		     target_minor < GWA_VERSION_SINCE_MINOR (adaptor_iter)))
-		{
-			if (forwidget)
-			{
-				/* translators: reffers to a widget
-				 * introduced in toolkit version '%s %d.%d',
-				 * and a project targeting toolkit verion '%s %d.%d' */
-				g_string_append_printf
-					(string, 
-					 _("This widget was introduced in %s %d.%d "
-					   "project targets %s %d.%d"),
-					 catalog,
-					 GWA_VERSION_SINCE_MAJOR (adaptor_iter),
-					 GWA_VERSION_SINCE_MINOR (adaptor_iter),
-					 catalog, target_major, target_minor);
-			}
-			else
-				/* translators: reffers to a widget '[%s]'  
-				 * introduced in toolkit version '%s %d.%d' */
-				g_string_append_printf
-					(string, 
-					 _("[%s] Object class '%s' was introduced in %s %d.%d\n"),
-					 path_name, adaptor_iter->title, catalog,
-					 GWA_VERSION_SINCE_MAJOR (adaptor_iter),
-					 GWA_VERSION_SINCE_MINOR (adaptor_iter));
-
-			support_mask |= GLADE_SUPPORT_MISMATCH;
-		}
-
-		if (project->priv->format == GLADE_PROJECT_FORMAT_GTKBUILDER &&
-		    GWA_LIBGLADE_ONLY (adaptor_iter))
-		{
-			if (forwidget)
-			{
-				if (string->len)
-					g_string_append (string, "\n");
-				g_string_append_printf
-					(string,
-					 _("This widget is only supported in libglade format"));
-			}
-			else
-				/* translators: reffers to a widget '[%s]'  
-				 * loaded from toolkit version '%s %d.%d' */
-				g_string_append_printf
-					(string,
-					 _("[%s] Object class '%s' from %s %d.%d "
-					   "is only supported in libglade format\n"),
-					 path_name, adaptor_iter->title, catalog,
-					 target_major, target_minor);
-
-			support_mask |= GLADE_SUPPORT_LIBGLADE_ONLY;
-		}
-		else if (project->priv->format == GLADE_PROJECT_FORMAT_LIBGLADE &&
-			 GWA_LIBGLADE_UNSUPPORTED (adaptor_iter))
-		{
-			if (forwidget)
-			{
-				if (string->len)
-					g_string_append (string, "\n");
-				g_string_append_printf
-					(string,
-					 _("This widget is not supported in libglade format"));
-			}
-			else
-				/* translators: reffers to a widget '[%s]'  
-				 * loaded from toolkit version '%s %d.%d' */
-				g_string_append_printf
-					(string,
-					 _("[%s] Object class '%s' from %s %d.%d "
-					   "is not supported in libglade format\n"),
-					 path_name, adaptor_iter->title, catalog,
-					 target_major, target_minor);
-
-			support_mask |= GLADE_SUPPORT_LIBGLADE_UNSUPPORTED;
-		}
-
-		if (!saving && GWA_DEPRECATED (adaptor_iter))
-		{
-			if (forwidget)
-			{
-				if (string->len)
-					g_string_append (string, "\n");
-				g_string_append_printf
-					(string, _("This widget is deprecated"));
-			}
-			else
-				/* translators: reffers to a widget '[%s]'  
-				 * loaded from toolkit version '%s %d.%d' */
-				g_string_append_printf
-					(string, 
-					 _("[%s] Object class '%s' from %s %d.%d "
-					   "is deprecated\n"),
-					 path_name, adaptor_iter->title, catalog,
-					 target_major, target_minor);
-
-			support_mask |= GLADE_SUPPORT_DEPRECATED;
-		}
-		g_free (catalog);
-	}
-	if (mask)
-		*mask = support_mask;
-}
-
-/**
- * glade_project_verify_widget_adaptor:
- * @project: A #GladeProject
- * @adaptor: the #GladeWidgetAdaptor to verify
- * @mask: a return location for a #GladeSupportMask
- * 
- * Checks the supported state of this widget adaptor
- * and generates a string to show in the UI describing why.
- *
- * Returns: A newly allocated string 
- */
-gchar *
-glade_project_verify_widget_adaptor (GladeProject       *project,
-				     GladeWidgetAdaptor *adaptor,
-				     GladeSupportMask   *mask)
-{
-	GString *string = g_string_new (NULL);
-	gchar   *ret = NULL;
-
-	glade_project_verify_adaptor (project, adaptor, NULL,
-				      string, FALSE, TRUE, mask);
-
-	/* there was a '\0' byte... */
-	if (string->len > 0)
-	{
-		ret = string->str;
-		g_string_free (string, FALSE);
-	}
-	else
-		g_string_free (string, TRUE);
-
-
-	return ret;
-}
-
-
-/**
- * glade_project_verify_project_for_ui:
- * @project: A #GladeProject
- * 
- * Checks the project and updates warning strings in the UI
- */
-void
-glade_project_verify_project_for_ui (GladeProject *project)
-{
-	GList *list;
-	GladeWidget *widget;
-	gchar *warning;
-
-	/* Sync displayable info here */
-	for (list = project->priv->objects; list; list = list->next)
-	{
-		widget = glade_widget_get_from_gobject (list->data);
-
-		warning = glade_project_verify_widget_adaptor (project, widget->adaptor, NULL);
-		glade_widget_set_support_warning (widget, warning);
-
-		if (warning)
-			g_free (warning);
-
-		glade_project_verify_properties (widget);
-	}
-
-	/* refresh palette if this is the active project */
-	if (project == glade_app_get_project ())
-		glade_palette_refresh (glade_app_get_palette ());
-}
-
-static void
-glade_project_set_target_version (GladeProject *project,
-				  const gchar  *catalog,
-				  gint          major,
-				  gint          minor)
-{
-
-	g_hash_table_insert (project->priv->target_versions_major,
-			     g_strdup (catalog),
-			     GINT_TO_POINTER (major));
-	g_hash_table_insert (project->priv->target_versions_minor,
-			     g_strdup (catalog),
-			     GINT_TO_POINTER (minor));
-
-	glade_project_verify_project_for_ui (project);
-
-}
-
 static void
 glade_project_init (GladeProject *project)
 {
@@ -764,12 +608,8 @@ glade_project_init (GladeProject *project)
 	priv->first_modification = NULL;
 	priv->first_modification_is_na = FALSE;
 
-	priv->widget_names_allocator = g_hash_table_new_full (g_str_hash,
-							      g_str_equal,
-							      g_free, 
-				       			      (GDestroyNotify) glade_id_allocator_destroy);
-				       
-	priv->widget_old_names = g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify) g_free);
+	priv->toplevel_names = glade_name_context_new ();
+	priv->naming_policy = GLADE_POLICY_PROJECT_WIDE;
 
 	priv->accel_group = NULL;
 
@@ -801,6 +641,11 @@ glade_project_init (GladeProject *project)
 						  glade_catalog_get_major_version (catalog),
 						  glade_catalog_get_minor_version (catalog));
 	}
+
+	priv->target_radios = g_hash_table_new_full (g_str_hash, g_str_equal,
+						     g_free, NULL);
+	priv->prefs_dialog = glade_project_build_prefs_dialog (project);
+
 }
 
 static void
@@ -1060,36 +905,8 @@ glade_project_class_init (GladeProjectClass *klass)
 }
 
 /*******************************************************************
-                                  API
+                    Loading project code here
  *******************************************************************/
-
-static void
-glade_project_set_readonly (GladeProject *project, gboolean readonly)
-{
-	g_assert (GLADE_IS_PROJECT (project));
-	
-	if (project->priv->readonly != readonly)
-	{
-		project->priv->readonly = readonly;
-		g_object_notify (G_OBJECT (project), "read-only");
-	}
-}                                                                                               
-
-/**
- * glade_project_get_readonly:
- * @project: a #GladeProject
- *
- * Gets whether the project is read only or not
- *
- * Returns: TRUE if project is read only
- */
-gboolean
-glade_project_get_readonly (GladeProject *project)
-{
-	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
-
-	return project->priv->readonly;
-}
 
 /**
  * glade_project_new:
@@ -1101,145 +918,9 @@ glade_project_get_readonly (GladeProject *project)
 GladeProject *
 glade_project_new (void)
 {
-	return g_object_new (GLADE_TYPE_PROJECT, NULL);
-}
-
-
-static void 
-glade_project_fix_object_props (GladeProject *project)
-{
-	GList         *l, *ll;
-	GValue        *value;
-	GladeWidget   *gwidget;
-	GladeProperty *property;
-	gchar         *txt;
-
-	for (l = project->priv->objects; l; l = l->next)
-	{
-		gwidget = glade_widget_get_from_gobject (l->data);
-
-		for (ll = gwidget->properties; ll; ll = ll->next)
-		{
-			property = GLADE_PROPERTY (ll->data);
-
-			if (glade_property_class_is_object (property->klass, 
-							    project->priv->format) &&
-			    (txt = g_object_get_data (G_OBJECT (property), 
-						      "glade-loaded-object")) != NULL)
-			{
-				/* Parse the object list and set the property to it
-				 * (this magicly works for both objects & object lists)
-				 */
-				value = glade_property_class_make_gvalue_from_string
-					(property->klass, txt, project);
-				
-				glade_property_set_value (property, value);
-				
-				g_value_unset (value);
-				g_free (value);
-				
-				g_object_set_data (G_OBJECT (property), 
-						   "glade-loaded-object", NULL);
-			}
-		}
-	}
-}
-
-
-static gchar *
-glade_project_read_requires_from_comment (GladeXmlNode  *comment,
-					  gint          *major,
-					  gint          *minor)
-{
-	gint maj, min;
-	gchar *value, buffer[256];
-	gchar *required_lib = NULL;
-
-	if (!glade_xml_node_is_comment (comment)) 
-		return FALSE;
-
-	value = glade_xml_get_content (comment);
-	if (value && !strncmp ("interface-requires", value, strlen ("interface-requires")))
-	{
-		if (sscanf (value, "interface-requires %s %d.%d", buffer, &maj, &min) == 3)
-		{
-			if (major) *major = maj;
-			if (minor) *minor = min;
-			required_lib = g_strdup (buffer);
-		}
-	}
-	g_free (value);
-
-	return required_lib;
-}
-					  
-
-static gboolean
-glade_project_read_requires (GladeProject *project,
-			     GladeXmlNode *root_node, 
-			     const gchar  *path)
-{
-
-	GString      *string = g_string_new (NULL);
-	GladeXmlNode *node;
-	gchar        *required_lib = NULL;
-	gboolean      loadable = TRUE;
-	gint          major, minor;
-
-	for (node = glade_xml_node_get_children_with_comments (root_node); 
-	     node; node = glade_xml_node_next_with_comments (node))
-	{
-		/* Skip non "requires" tags */
-		if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_REQUIRES) ||	
-		      (required_lib = 
-		       glade_project_read_requires_from_comment (node, &major, &minor))))
-			continue;
-
-		if (!required_lib)
-		{
-			required_lib =  
-				glade_xml_get_property_string_required (node, GLADE_XML_TAG_LIB, 
-									NULL);
-			glade_xml_get_property_version (node, GLADE_XML_TAG_VERSION, 
-							&major, &minor);
-		}
-
-		if (!required_lib) continue;
-
-		/* Dont mention gtk+ as a required lib in 
-		 * the generated glade file
-		 */
-		if (!glade_catalog_is_loaded (required_lib))
-		{
-			if (!loadable)
-				g_string_append (string, ", ");
-
-			g_string_append (string, required_lib);
-			loadable = FALSE;
-		}
-		else
-			glade_project_set_target_version
-				(project, required_lib, major, minor);
-		
-		g_free (required_lib);
-	}
-
-	if (!loadable)
-		glade_util_ui_message (glade_app_get_window(),
-				       GLADE_UI_ERROR, NULL,
-				       _("Failed to load %s.\n"
-					 "The following required catalogs are unavailable: %s"),
-				       path, string->str);
-	g_string_free (string, TRUE);
-	return loadable;
-}
-
-static void
-glade_project_read_comment (GladeProject *project, GladeXmlDoc *doc)
-{
-	/* TODO Write me !! Find out how to extract root level comments 
-	 * with libxml2 !!! 
-	 */
+	GladeProject *project = g_object_new (GLADE_TYPE_PROJECT, NULL);
+	glade_project_preferences (project);
+	return project;
 }
 
 static GList *
@@ -1444,6 +1125,198 @@ glade_project_is_generated_node (GladeProject *project,
 	return generated;
 }
 
+
+/* Called when finishing loading a glade file to resolve object type properties
+ */
+static void 
+glade_project_fix_object_props (GladeProject *project)
+{
+	GList         *l, *ll;
+	GValue        *value;
+	GladeWidget   *gwidget;
+	GladeProperty *property;
+	gchar         *txt;
+
+	for (l = project->priv->objects; l; l = l->next)
+	{
+		gwidget = glade_widget_get_from_gobject (l->data);
+
+		for (ll = gwidget->properties; ll; ll = ll->next)
+		{
+			property = GLADE_PROPERTY (ll->data);
+
+			if (glade_property_class_is_object (property->klass, 
+							    project->priv->format) &&
+			    (txt = g_object_get_data (G_OBJECT (property), 
+						      "glade-loaded-object")) != NULL)
+			{
+				/* Parse the object list and set the property to it
+				 * (this magicly works for both objects & object lists)
+				 */
+				value = glade_property_class_make_gvalue_from_string
+					(property->klass, txt, gwidget->project, gwidget);
+				
+				glade_property_set_value (property, value);
+				
+				g_value_unset (value);
+				g_free (value);
+				
+				g_object_set_data (G_OBJECT (property), 
+						   "glade-loaded-object", NULL);
+			}
+		}
+	}
+}
+
+static gchar *
+glade_project_read_requires_from_comment (GladeXmlNode  *comment,
+					  gint          *major,
+					  gint          *minor)
+{
+	gint maj, min;
+	gchar *value, buffer[256];
+	gchar *required_lib = NULL;
+
+	if (!glade_xml_node_is_comment (comment)) 
+		return NULL;
+
+	value = glade_xml_get_content (comment);
+
+	if (value && !strncmp (" interface-requires", value, strlen (" interface-requires")))
+	{
+		if (sscanf (value, " interface-requires %s %d.%d", buffer, &maj, &min) == 3)
+		{
+			if (major) *major = maj;
+			if (minor) *minor = min;
+			required_lib = g_strdup (buffer);
+		}
+	}
+	g_free (value);
+
+	return required_lib;
+}
+					  
+
+static gboolean
+glade_project_read_requires (GladeProject *project,
+			     GladeXmlNode *root_node, 
+			     const gchar  *path)
+{
+
+	GString      *string = g_string_new (NULL);
+	GladeXmlNode *node;
+	gchar        *required_lib = NULL;
+	gboolean      loadable = TRUE;
+	gint          major, minor;
+
+	for (node = glade_xml_node_get_children_with_comments (root_node); 
+	     node; node = glade_xml_node_next_with_comments (node))
+	{
+		/* Skip non "requires" tags */
+		if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_REQUIRES) ||	
+		      (required_lib = 
+		       glade_project_read_requires_from_comment (node, &major, &minor))))
+			continue;
+
+		if (!required_lib)
+		{
+			required_lib =  
+				glade_xml_get_property_string_required (node, GLADE_XML_TAG_LIB, 
+									NULL);
+			glade_xml_get_property_version (node, GLADE_XML_TAG_VERSION, 
+							&major, &minor);
+		}
+
+		if (!required_lib) continue;
+
+		/* Dont mention gtk+ as a required lib in 
+		 * the generated glade file
+		 */
+		if (!glade_catalog_is_loaded (required_lib))
+		{
+			if (!loadable)
+				g_string_append (string, ", ");
+
+			g_string_append (string, required_lib);
+			loadable = FALSE;
+		}
+		else
+			glade_project_set_target_version
+				(project, required_lib, major, minor);
+		
+		g_free (required_lib);
+	}
+
+	if (!loadable)
+		glade_util_ui_message (glade_app_get_window(),
+				       GLADE_UI_ERROR, NULL,
+				       _("Failed to load %s.\n"
+					 "The following required catalogs are unavailable: %s"),
+				       path, string->str);
+	g_string_free (string, TRUE);
+	return loadable;
+}
+
+
+static gboolean
+glade_project_read_policy_from_comment (GladeXmlNode      *comment,
+					GladeNamingPolicy *policy)
+{
+	gchar *value, buffer[256];
+	gboolean loaded = FALSE;
+
+	if (!glade_xml_node_is_comment (comment)) 
+		return FALSE;
+
+	value = glade_xml_get_content (comment);
+	if (value && !strncmp (" interface-naming-policy", value, strlen (" interface-naming-policy")))
+	{
+		if (sscanf (value, " interface-naming-policy %s", buffer) == 1)
+		{
+			if (strcmp (buffer, "project-wide") == 0)
+				*policy = GLADE_POLICY_PROJECT_WIDE;
+			else
+				*policy = GLADE_POLICY_TOPLEVEL_CONTEXTUAL;
+			
+			loaded = TRUE;
+		}
+	}
+	g_free (value);
+
+	return loaded;
+}
+
+
+static void
+glade_project_read_naming_policy (GladeProject *project,
+				  GladeXmlNode *root_node)
+{
+	/* A project file with no mention of a policy needs more lax rules 
+	 * (a new project has a project wide policy by default)
+	 */
+	GladeNamingPolicy policy = GLADE_POLICY_TOPLEVEL_CONTEXTUAL;
+	GladeXmlNode *node;
+	
+	for (node = glade_xml_node_get_children_with_comments (root_node); 
+	     node; node = glade_xml_node_next_with_comments (node))
+	{
+		/* Skip non "requires" tags */
+		if (!glade_project_read_policy_from_comment (node, &policy))
+			continue;
+	}
+
+	glade_project_set_naming_policy (project, policy, FALSE);
+}
+
+
+static void
+glade_project_read_comment (GladeProject *project, GladeXmlDoc *doc)
+{
+	/* TODO Write me !! Find out how to extract root level comments 
+	 * with libxml2 !!! 
+	 */
+}
+
 gboolean
 glade_project_load_from_file (GladeProject *project, const gchar *path)
 {
@@ -1486,11 +1359,14 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 	/* XXX Need to load project->priv->comment ! */
 	glade_project_read_comment (project, doc);
 
+
 	if (glade_project_read_requires (project, root, path) == FALSE)
 	{
 		glade_xml_context_free (context);
 		return FALSE;
 	}
+
+	glade_project_read_naming_policy (project, root);
 
 	for (node = glade_xml_node_get_children (root); 
 	     node; node = glade_xml_node_next (node))
@@ -1541,8 +1417,304 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 
 }
 
+/**
+ * glade_project_load:
+ * @path:
+ * 
+ * Opens a project at the given path.
+ *
+ * Returns: a new #GladeProject for the opened project on success, %NULL on 
+ *          failure
+ */
+GladeProject *
+glade_project_load (const gchar *path)
+{
+	GladeProject *project;
+	gboolean      retval;
+	
+	g_return_val_if_fail (path != NULL, NULL);
+	
+	project = g_object_new (GLADE_TYPE_PROJECT, NULL);
+	
+	retval = glade_project_load_from_file (project, path);
+	
+	if (retval)
+	{
+		gchar *name, *title;
 
+		/* Update prefs dialogs here... */
+		name = glade_project_get_name (project);
+		title = g_strdup_printf (_("%s preferences"), name);
+		gtk_window_set_title (GTK_WINDOW (project->priv->prefs_dialog), title);
+		g_free (title);
+		g_free (name);
 
+		return project;
+	}
+	else
+	{
+		g_object_unref (project);
+		return NULL;
+	}
+}
+
+/*******************************************************************
+                    Writing project code here
+ *******************************************************************/
+
+#define GLADE_XML_COMMENT "Generated with "PACKAGE_NAME
+
+static gchar *
+glade_project_make_comment ()
+{
+	time_t now = time (NULL);
+	gchar *comment;
+	comment = g_strdup_printf (GLADE_XML_COMMENT" "PACKAGE_VERSION" on %s",
+				   ctime (&now));
+	glade_util_replace (comment, '\n', ' ');
+	
+	return comment;
+}
+
+static void
+glade_project_update_comment (GladeProject *project)
+{
+	gchar **lines, **l, *comment = NULL;
+	
+	/* If project has no comment -> add the new one */
+	if (project->priv->comment == NULL)
+	{
+		project->priv->comment = glade_project_make_comment ();
+		return;
+	}
+	
+	for (lines = l = g_strsplit (project->priv->comment, "\n", 0); *l; l++)
+	{
+		gchar *start;
+		
+		/* Ignore leading spaces */
+		for (start = *l; *start && g_ascii_isspace (*start); start++);
+		
+		if (g_str_has_prefix (start, GLADE_XML_COMMENT))
+		{
+			/* This line was generated by glade -> updating... */
+			g_free (*l);
+			*l = comment = glade_project_make_comment ();
+		}
+	}
+	
+	if (comment)
+	{
+		g_free (project->priv->comment);
+		project->priv->comment = g_strjoinv ("\n", lines);
+	}
+	
+	g_strfreev (lines);
+}
+
+static void
+glade_project_write_required_libs (GladeProject    *project,
+				   GladeXmlContext *context,
+				   GladeXmlNode    *root)
+{
+	GladeProjectFormat fmt;
+	GladeXmlNode    *req_node;
+	GList           *required, *list;
+	gint             major, minor;
+	gchar           *version;
+
+	fmt = glade_project_get_format (project);
+
+	if ((required = glade_project_required_libs (project)) != NULL)
+	{
+		for (list = required; list; list = list->next)
+		{
+			glade_project_get_target_version (project, (gchar *)list->data, 
+							  &major, &minor);
+			
+			version = g_strdup_printf ("%d.%d", major, minor);
+
+			/* Write the standard requires tag */
+			if (fmt == GLADE_PROJECT_FORMAT_GTKBUILDER ||
+			    (fmt == GLADE_PROJECT_FORMAT_LIBGLADE &&
+			     strcmp ("gtk+", (gchar *)list->data)))
+			{
+				if (GLADE_GTKBUILDER_HAS_VERSIONING (major, minor))
+				{
+					req_node = glade_xml_node_new (context, GLADE_XML_TAG_REQUIRES);
+					glade_xml_node_append_child (root, req_node);
+					glade_xml_node_set_property_string (req_node, 
+									    GLADE_XML_TAG_LIB, 
+									    (gchar *)list->data);
+				}
+				else
+				{
+					gchar *comment = 
+						g_strdup_printf (" interface-requires %s %s ", 
+								 (gchar *)list->data, version);
+					req_node = glade_xml_node_new_comment (context, comment);
+					glade_xml_node_append_child (root, req_node);
+					g_free (comment);
+				}
+
+				if (fmt != GLADE_PROJECT_FORMAT_LIBGLADE)
+					glade_xml_node_set_property_string 
+						(req_node, GLADE_XML_TAG_VERSION, version);
+			}
+
+			/* Add extra metadata for libglade */
+			if (fmt == GLADE_PROJECT_FORMAT_LIBGLADE)
+			{
+				gchar *comment = g_strdup_printf (" interface-requires %s %s ", 
+								  (gchar *)list->data, version);
+				req_node = glade_xml_node_new_comment (context, comment);
+				glade_xml_node_append_child (root, req_node);
+				g_free (comment);
+			}
+			g_free (version);
+
+		}
+		g_list_foreach (required, (GFunc)g_free, NULL);
+		g_list_free (required);
+	}
+
+}
+
+static void
+glade_project_write_naming_policy (GladeProject    *project,
+				   GladeXmlContext *context,
+				   GladeXmlNode    *root)
+{
+	GladeXmlNode *policy_node;
+	gchar *comment = g_strdup_printf (" interface-naming-policy %s ", 
+					  project->priv->naming_policy == GLADE_POLICY_PROJECT_WIDE ? 
+					  "project-wide" : "toplevel-contextual");
+
+	policy_node = glade_xml_node_new_comment (context, comment);
+	glade_xml_node_append_child (root, policy_node);
+	g_free (comment);
+}
+
+static GladeXmlContext *
+glade_project_write (GladeProject *project)
+{
+	GladeXmlContext *context;
+	GladeXmlDoc     *doc;
+	GladeXmlNode    *root, *comment_node;
+	GList           *list;
+
+	doc     = glade_xml_doc_new ();
+	context = glade_xml_context_new (doc, NULL);
+	root    = glade_xml_node_new (context, GLADE_XML_TAG_PROJECT (project->priv->format));
+	glade_xml_doc_set_root (doc, root);
+
+	glade_project_update_comment (project);
+/* 	comment_node = glade_xml_node_new_comment (context, project->priv->comment); */
+
+	/* XXX Need to append this to the doc ! not the ROOT !
+	   glade_xml_node_append_child (root, comment_node); */
+
+	glade_project_write_required_libs (project, context, root);
+
+	glade_project_write_naming_policy (project, context, root);
+
+	/* Any automatically generated stuff goes here */
+	glade_project_generate_nodes (project, context, root);
+
+	for (list = project->priv->objects; list; list = list->next)
+	{
+		GladeWidget *widget;
+
+		widget = glade_widget_get_from_gobject (list->data);
+
+		/* 
+		 * Append toplevel widgets. Each widget then takes
+		 * care of appending its children.
+		 */
+		if (widget->parent == NULL)
+			glade_widget_write (widget, context, root);
+	}
+	
+	return context;
+}
+
+/**
+ * glade_project_save:
+ * @project: a #GladeProject
+ * @path: location to save glade file
+ * @error: an error from the G_FILE_ERROR domain.
+ * 
+ * Saves @project to the given path. 
+ *
+ * Returns: %TRUE on success, %FALSE on failure
+ */
+gboolean
+glade_project_save (GladeProject *project, const gchar *path, GError **error)
+{
+	GladeXmlContext *context;
+	GladeXmlDoc     *doc;
+	gchar           *canonical_path;
+	gint             ret;
+
+	if (!glade_project_verify (project, TRUE))
+		return FALSE;
+
+	context = glade_project_write (project);
+	doc     = glade_xml_context_get_doc (context);
+	ret     = glade_xml_doc_save (doc, path);
+	glade_xml_context_destroy (context);
+
+	canonical_path = glade_util_canonical_path (path);
+	g_assert (canonical_path);
+
+	if (project->priv->path == NULL ||
+	    strcmp (canonical_path, project->priv->path))
+        {
+		gchar *old_dir, *new_dir, *name, *title;
+
+		if (project->priv->path)
+		{
+			old_dir = g_path_get_dirname (project->priv->path);
+			new_dir = g_path_get_dirname (canonical_path);
+
+			glade_project_move_resources (project, 
+						      old_dir, 
+						      new_dir);
+			g_free (old_dir);
+			g_free (new_dir);
+		}
+		project->priv->path = (g_free (project->priv->path),
+				 g_strdup (canonical_path));
+
+		/* Update prefs dialogs here... */
+		name = glade_project_get_name (project);
+		title = g_strdup_printf (_("%s preferences"), name);
+		gtk_window_set_title (GTK_WINDOW (project->priv->prefs_dialog), title);
+		g_free (title);
+		g_free (name);
+	}
+
+	glade_project_set_readonly (project, 
+				    !glade_util_file_is_writeable (project->priv->path));
+
+	project->priv->mtime = glade_util_get_file_mtime (project->priv->path, NULL);
+	
+	glade_project_set_modified (project, FALSE);
+
+	if (project->priv->unsaved_number > 0)
+	{
+		glade_id_allocator_release (get_unsaved_number_allocator (), project->priv->unsaved_number);
+		project->priv->unsaved_number = 0;
+        }
+
+	g_free (canonical_path);
+
+	return ret > 0;
+}
+
+/*******************************************************************
+     Verify code here (versioning, incompatability checks)
+ *******************************************************************/
 static void
 glade_project_verify_property (GladeProject   *project,
 			       GladeProperty  *property, 
@@ -1829,119 +2001,470 @@ glade_project_verify (GladeProject *project,
 	return ret;
 }
 
+static void
+glade_project_target_version_for_adaptor (GladeProject        *project, 
+					  GladeWidgetAdaptor  *adaptor,
+					  gint                *major,
+					  gint                *minor)
+{
+	gchar   *catalog = NULL;
+
+	g_object_get (adaptor, "catalog", &catalog, NULL);
+	glade_project_get_target_version (project, catalog, major, minor);
+	g_free (catalog);
+}
+
+static void
+glade_project_verify_adaptor (GladeProject       *project,
+			      GladeWidgetAdaptor *adaptor,
+			      const gchar        *path_name,
+			      GString            *string,
+			      gboolean            saving,
+			      gboolean            forwidget,
+			      GladeSupportMask   *mask)
+{
+	GladeSupportMask    support_mask = GLADE_SUPPORT_OK;
+	GladeWidgetAdaptor *adaptor_iter;
+	gint                target_major, target_minor;
+	gchar              *catalog = NULL;
+
+	for (adaptor_iter = adaptor; adaptor_iter;
+	     adaptor_iter = glade_widget_adaptor_get_parent_adaptor (adaptor_iter))
+	{
+
+		g_object_get (adaptor_iter, "catalog", &catalog, NULL);
+		glade_project_target_version_for_adaptor (project, adaptor_iter, 
+							  &target_major,
+							  &target_minor);
+
+		if (target_major < GWA_VERSION_SINCE_MAJOR (adaptor_iter) ||
+		    (target_major == GWA_VERSION_SINCE_MAJOR (adaptor_iter) &&
+		     target_minor < GWA_VERSION_SINCE_MINOR (adaptor_iter)))
+		{
+			if (forwidget)
+			{
+				/* translators: reffers to a widget
+				 * introduced in toolkit version '%s %d.%d',
+				 * and a project targeting toolkit verion '%s %d.%d' */
+				g_string_append_printf
+					(string, 
+					 _("This widget was introduced in %s %d.%d "
+					   "project targets %s %d.%d"),
+					 catalog,
+					 GWA_VERSION_SINCE_MAJOR (adaptor_iter),
+					 GWA_VERSION_SINCE_MINOR (adaptor_iter),
+					 catalog, target_major, target_minor);
+			}
+			else
+				/* translators: reffers to a widget '[%s]'  
+				 * introduced in toolkit version '%s %d.%d' */
+				g_string_append_printf
+					(string, 
+					 _("[%s] Object class '%s' was introduced in %s %d.%d\n"),
+					 path_name, adaptor_iter->title, catalog,
+					 GWA_VERSION_SINCE_MAJOR (adaptor_iter),
+					 GWA_VERSION_SINCE_MINOR (adaptor_iter));
+
+			support_mask |= GLADE_SUPPORT_MISMATCH;
+		}
+
+		if (project->priv->format == GLADE_PROJECT_FORMAT_GTKBUILDER &&
+		    GWA_LIBGLADE_ONLY (adaptor_iter))
+		{
+			if (forwidget)
+			{
+				if (string->len)
+					g_string_append (string, "\n");
+				g_string_append_printf
+					(string,
+					 _("This widget is only supported in libglade format"));
+			}
+			else
+				/* translators: reffers to a widget '[%s]'  
+				 * loaded from toolkit version '%s %d.%d' */
+				g_string_append_printf
+					(string,
+					 _("[%s] Object class '%s' from %s %d.%d "
+					   "is only supported in libglade format\n"),
+					 path_name, adaptor_iter->title, catalog,
+					 target_major, target_minor);
+
+			support_mask |= GLADE_SUPPORT_LIBGLADE_ONLY;
+		}
+		else if (project->priv->format == GLADE_PROJECT_FORMAT_LIBGLADE &&
+			 GWA_LIBGLADE_UNSUPPORTED (adaptor_iter))
+		{
+			if (forwidget)
+			{
+				if (string->len)
+					g_string_append (string, "\n");
+				g_string_append_printf
+					(string,
+					 _("This widget is not supported in libglade format"));
+			}
+			else
+				/* translators: reffers to a widget '[%s]'  
+				 * loaded from toolkit version '%s %d.%d' */
+				g_string_append_printf
+					(string,
+					 _("[%s] Object class '%s' from %s %d.%d "
+					   "is not supported in libglade format\n"),
+					 path_name, adaptor_iter->title, catalog,
+					 target_major, target_minor);
+
+			support_mask |= GLADE_SUPPORT_LIBGLADE_UNSUPPORTED;
+		}
+
+		if (!saving && GWA_DEPRECATED (adaptor_iter))
+		{
+			if (forwidget)
+			{
+				if (string->len)
+					g_string_append (string, "\n");
+				g_string_append_printf
+					(string, _("This widget is deprecated"));
+			}
+			else
+				/* translators: reffers to a widget '[%s]'  
+				 * loaded from toolkit version '%s %d.%d' */
+				g_string_append_printf
+					(string, 
+					 _("[%s] Object class '%s' from %s %d.%d "
+					   "is deprecated\n"),
+					 path_name, adaptor_iter->title, catalog,
+					 target_major, target_minor);
+
+			support_mask |= GLADE_SUPPORT_DEPRECATED;
+		}
+		g_free (catalog);
+	}
+	if (mask)
+		*mask = support_mask;
+}
 
 /**
- * glade_project_selection_changed:
- * @project: a #GladeProject
+ * glade_project_verify_widget_adaptor:
+ * @project: A #GladeProject
+ * @adaptor: the #GladeWidgetAdaptor to verify
+ * @mask: a return location for a #GladeSupportMask
+ * 
+ * Checks the supported state of this widget adaptor
+ * and generates a string to show in the UI describing why.
  *
- * Causes @project to emit a "selection_changed" signal.
+ * Returns: A newly allocated string 
+ */
+gchar *
+glade_project_verify_widget_adaptor (GladeProject       *project,
+				     GladeWidgetAdaptor *adaptor,
+				     GladeSupportMask   *mask)
+{
+	GString *string = g_string_new (NULL);
+	gchar   *ret = NULL;
+
+	glade_project_verify_adaptor (project, adaptor, NULL,
+				      string, FALSE, TRUE, mask);
+
+	/* there was a '\0' byte... */
+	if (string->len > 0)
+	{
+		ret = string->str;
+		g_string_free (string, FALSE);
+	}
+	else
+		g_string_free (string, TRUE);
+
+
+	return ret;
+}
+
+
+/**
+ * glade_project_verify_project_for_ui:
+ * @project: A #GladeProject
+ * 
+ * Checks the project and updates warning strings in the UI
  */
 void
-glade_project_selection_changed (GladeProject *project)
+glade_project_verify_project_for_ui (GladeProject *project)
 {
-	g_return_if_fail (GLADE_IS_PROJECT (project));
-	g_signal_emit (G_OBJECT (project),
-		       glade_project_signals [SELECTION_CHANGED],
-		       0);
-}
+	GList *list;
+	GladeWidget *widget;
+	gchar *warning;
 
-static void
-glade_project_on_widget_notify (GladeWidget *widget, GParamSpec *arg, GladeProject *project)
-{
-	g_return_if_fail (GLADE_IS_WIDGET (widget));
-	g_return_if_fail (GLADE_IS_PROJECT (project));
-
-	switch (arg->name[0])
+	/* Sync displayable info here */
+	for (list = project->priv->objects; list; list = list->next)
 	{
-	case 'n':
-		if (strcmp (arg->name, "name") == 0)
-		{
-			const char *old_name = g_hash_table_lookup (project->priv->widget_old_names, widget);
-			glade_project_widget_name_changed (project, widget, old_name);
-			g_hash_table_insert (project->priv->widget_old_names, widget, g_strdup (glade_widget_get_name (widget)));
-		}
+		widget = glade_widget_get_from_gobject (list->data);
 
-	case 'p':
-		if (strcmp (arg->name, "project") == 0)
-			glade_project_remove_object (project, glade_widget_get_object (widget));
+		warning = glade_project_verify_widget_adaptor (project, widget->adaptor, NULL);
+		glade_widget_set_support_warning (widget, warning);
+
+		if (warning)
+			g_free (warning);
+
+		glade_project_verify_properties (widget);
 	}
+
+	/* refresh palette if this is the active project */
+	if (project == glade_app_get_project ())
+		glade_palette_refresh (glade_app_get_palette ());
 }
 
-
-static void
-gp_sync_resources (GladeProject *project, 
-		   GladeProject *prev_project,
-		   GladeWidget  *gwidget,
-		   gboolean      remove)
+/*******************************************************************
+   Project object tracking code, name exclusivity, resources etc...
+ *******************************************************************/
+static GladeNameContext *
+name_context_by_widget (GladeProject *project, 
+			GladeWidget  *gwidget)
 {
-	GList          *prop_list, *l;
-	GladeProperty  *property;
-	gchar          *resource, *full_resource;
+	TopLevelInfo  *tinfo;
+	GladeWidget   *iter;
+	GList         *list;
 
-	prop_list = g_list_copy (gwidget->properties);
-	prop_list = g_list_concat
-		(prop_list, g_list_copy (gwidget->packing_properties));
+	iter = gwidget;
+	while (iter->parent) iter = iter->parent;
 
-	for (l = prop_list; l; l = l->next)
+	for (list = project->priv->toplevels; list; list = list->next)
 	{
-		property = l->data;
-		if (property->klass->resource)
-		{
-			GValue value = { 0, };
+		tinfo = list->data;
+		if (tinfo->toplevel == iter)
+			return tinfo->names;
+	}
+	return NULL;
+}
 
-			if (remove)
+GladeWidget *
+search_ancestry_by_name (GladeWidget *toplevel, const gchar *name)
+{
+	GladeWidget *widget = NULL, *iter;
+	GList *list, *children;
+
+	if ((children = glade_widget_adaptor_get_children (toplevel->adaptor,
+							   toplevel->object)) != NULL)
+	{
+		for (list = children; list; list = list->next) 
+			if ((iter = glade_widget_get_from_gobject (list->data)) != NULL)
 			{
-				glade_project_set_resource (project, property, NULL);
-				continue;
+				if (iter->name && strcmp (iter->name, name) == 0)
+				{
+					widget = iter;
+					break;
+				}
+				else if ((widget = search_ancestry_by_name (iter, name)) != NULL)
+					break;
 			}
 
-			glade_property_get_value (property, &value);
-			
-			if ((resource = glade_widget_adaptor_string_from_value
-			     (GLADE_WIDGET_ADAPTOR (property->klass->handle),
-			      property->klass, &value, project->priv->format)) != NULL)
-			{
-				full_resource = glade_project_resource_fullpath
-					(prev_project ? prev_project : project, resource);
-			
-				/* Use a full path here so that the current
-				 * working directory isnt used.
-				 */
-				glade_project_set_resource (project, 
-							    property,
-							    full_resource);
-				
-				g_free (full_resource);
-				g_free (resource);
-			}
-			g_value_unset (&value);
-		}
-	}
-	g_list_free (prop_list);
-}
-
-static void
-glade_project_sync_resources_for_widget (GladeProject *project, 
-					 GladeProject *prev_project,
-					 GladeWidget  *gwidget,
-					 gboolean      remove)
-{
-	GList *children, *l;
-	GladeWidget *gchild;
-
-	children = glade_widget_adaptor_get_children
-		(gwidget->adaptor, gwidget->object);
-
-	for (l = children; l; l = l->next)
-		if ((gchild = 
-		     glade_widget_get_from_gobject (l->data)) != NULL)
-			glade_project_sync_resources_for_widget 
-				(project, prev_project, gchild, remove);
-	if (children)
 		g_list_free (children);
-
-	gp_sync_resources (project, prev_project, gwidget, remove);
+	}
+	return widget;
 }
+
+/**
+ * glade_project_get_widget_by_name:
+ * @project: a #GladeProject
+ * @ancestor: The toplevel project object to search under
+ * @name: The user visible name of the widget we are looking for
+ * 
+ * Searches under @ancestor in @project looking for a #GladeWidget named @name.
+ * 
+ * Returns: a pointer to the widget, %NULL if the widget does not exist
+ */
+GladeWidget *
+glade_project_get_widget_by_name (GladeProject *project, GladeWidget *ancestor, const gchar *name)
+{
+	GladeWidget *toplevel, *widget = NULL;
+	GList *list;
+
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
+	g_return_val_if_fail (name != NULL, NULL);
+	
+	if (ancestor)
+	{
+		toplevel = glade_widget_get_toplevel (ancestor);
+		if ((widget = search_ancestry_by_name (toplevel, name)) != NULL)
+			return widget;
+	}
+
+	/* Now try searching in only toplevel objects... */
+	for (list = project->priv->objects; list; list = list->next) {
+		GladeWidget *widget;
+
+		widget = glade_widget_get_from_gobject (list->data);
+		g_assert (widget->name);
+		if (widget->parent == NULL && strcmp (widget->name, name) == 0)
+			return widget;
+	}
+
+	/* Finally resort to a project wide search. */
+	for (list = project->priv->objects; list; list = list->next) {
+		GladeWidget *widget;
+
+		widget = glade_widget_get_from_gobject (list->data);
+		g_return_val_if_fail (widget->name != NULL, NULL);
+		if (strcmp (widget->name, name) == 0)
+			return widget;
+	}
+
+	return NULL;
+}
+
+static void
+glade_project_release_widget_name (GladeProject *project, GladeWidget *gwidget, const char *widget_name)
+{
+	GladeNameContext *context = NULL;
+	TopLevelInfo     *tinfo = NULL;
+	GladeWidget      *iter;
+	GList            *list;
+
+	/* Search by hand here since we need the tinfo to free... */
+	iter = gwidget;
+	while (iter->parent) iter = iter->parent;
+
+	for (list = project->priv->toplevels; list; list = list->next)
+	{
+		tinfo = list->data;
+		if (tinfo->toplevel == iter)
+		{
+			context = tinfo->names;
+			break;
+		}
+	}
+
+	if (context)
+		glade_name_context_release_name (context, widget_name);
+
+	if (!gwidget->parent)
+	{
+		glade_name_context_release_name (project->priv->toplevel_names, widget_name);
+
+		if (context && glade_name_context_n_names (context) == 0)
+		{
+			glade_name_context_destroy (context);
+			g_free (tinfo);
+			project->priv->toplevels = g_list_remove (project->priv->toplevels, tinfo);
+		}
+	}
+}
+
+/**
+ * glade_project_available_widget_name:
+ * @project: a #GladeProject
+ * @widget: the #GladeWidget intended to recieve a new name
+ * @name: base name of the widget to create
+ *
+ * Checks whether @name is an appropriate name for @widget.
+ *
+ * Returns: whether the name is available or not.
+ */
+gboolean
+glade_project_available_widget_name (GladeProject *project, 
+				     GladeWidget  *widget,
+				     const gchar  *name)
+{
+	GladeNameContext *context;
+
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+	g_return_val_if_fail (widget->project == project, FALSE);
+
+	if (!name || !name[0])
+		return FALSE;
+
+	context = name_context_by_widget (project, widget);
+	g_assert (context);
+
+	if (!widget->parent)
+		return (!glade_name_context_has_name (context, name) &&
+			!glade_name_context_has_name (project->priv->toplevel_names, name));
+
+	return !glade_name_context_has_name (context, name);
+}
+
+/**
+ * glade_project_new_widget_name:
+ * @project: a #GladeProject
+ * @widget: the #GladeWidget intended to recieve a new name
+ * @base_name: base name of the widget to create
+ *
+ * Creates a new name for a widget that doesn't collide with any of the names 
+ * already in @project. This name will start with @base_name.
+ *
+ * Returns: a string containing the new name, %NULL if there is not enough 
+ *          memory for this string
+ */
+gchar *
+glade_project_new_widget_name (GladeProject *project, 
+			       GladeWidget  *widget,
+			       const gchar  *base_name)
+{
+	GladeNameContext *context;
+	gchar            *name;
+
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
+	g_return_val_if_fail (widget->project == project, NULL);
+	g_return_val_if_fail (base_name && base_name[0], NULL);
+
+	context = name_context_by_widget (project, widget);
+
+	/* should use dual here to encourage unique names across the file... */
+	if (context && widget->parent)
+		name = glade_name_context_new_name (context, base_name);
+	else if (context)
+		name = glade_name_context_dual_new_name (context, project->priv->toplevel_names, base_name);
+	else
+		name = glade_name_context_new_name (project->priv->toplevel_names, base_name);
+
+	return name;
+}
+
+/**
+ * glade_project_set_widget_name:
+ * @project: a #GladeProject
+ * @widget: the #GladeWidget to set a name on
+ * @name: the name to set.
+ *
+ * Sets @name on @widget in @project, if @name is not
+ * available then a new name will be used.
+ */
+void
+glade_project_set_widget_name (GladeProject *project, 
+			       GladeWidget  *widget, 
+			       const gchar  *name)
+{
+	GladeNameContext *context = NULL;
+	gchar            *new_name;
+
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	g_return_if_fail (widget->project == project);
+	g_return_if_fail (name && name[0]);
+
+	if (strcmp (name, widget->name) == 0)
+		return;
+
+	/* Police the widget name */
+	if (!glade_project_available_widget_name (project, widget, name))
+		new_name = glade_project_new_widget_name (project, widget, name);
+	else
+		new_name = g_strdup (name);
+
+
+	/* Add to name context(s) */
+	context = name_context_by_widget (project, widget);
+	g_assert (context);
+	glade_name_context_add_name (context, new_name);
+	if (!widget->parent)
+		glade_name_context_add_name (project->priv->toplevel_names, new_name);
+
+	/* Release old name and set new widget name */
+	glade_project_release_widget_name (project, widget, widget->name);
+	glade_widget_set_name (widget, new_name);
+	
+	g_free (new_name);
+}
+
+
 
 /**
  * glade_project_add_object:
@@ -1957,9 +2480,11 @@ glade_project_add_object (GladeProject *project,
 			  GladeProject *old_project, 
 			  GObject      *object)
 {
-	GladeWidget   *gwidget;
-	GList         *list, *children;
-	static gint    reentrancy_count = 0;
+	GladeNameContext *context;
+	GladeWidget      *gwidget;
+	GList            *list, *children;
+	static gint       reentrancy_count = 0;
+	gchar            *name;
 
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (G_IS_OBJECT      (object));
@@ -1979,14 +2504,29 @@ glade_project_add_object (GladeProject *project,
 	if (glade_project_has_object (project, object))
 		return;
 
-	/* Police widget names here (just rename them on the way in the project)
-	 */
-	if (glade_project_get_widget_by_name (project, gwidget->name) != NULL)
-	{ 
-		gchar *name = glade_project_new_widget_name (project, gwidget->name);
+	/* Create a name context for newly added toplevels... */
+	if (!gwidget->parent)
+	{
+		TopLevelInfo *tinfo = g_new0 (TopLevelInfo, 1);
+		tinfo->toplevel     = gwidget;
+		tinfo->names        = glade_name_context_new ();
+		project->priv->toplevels = g_list_prepend (project->priv->toplevels, tinfo);
+	}
+
+	/* Make sure we have an exclusive name first... */
+	if (!glade_project_available_widget_name (project, gwidget, gwidget->name))
+	{
+		name = glade_project_new_widget_name (project, gwidget, gwidget->name);
 		glade_widget_set_name (gwidget, name);
 		g_free (name);
 	}
+
+	/* Now lock down the widget name. */
+	context = name_context_by_widget (project, gwidget);
+	g_assert (context);
+	glade_name_context_add_name (context, gwidget->name);
+	if (!gwidget->parent)
+		glade_name_context_add_name (project->priv->toplevel_names, gwidget->name);
 		
 	/* Code body starts here */
 	reentrancy_count++;
@@ -2001,11 +2541,6 @@ glade_project_add_object (GladeProject *project,
 	}
 
 	glade_widget_set_project (gwidget, (gpointer)project);
-	g_hash_table_insert (project->priv->widget_old_names,
-			     gwidget, g_strdup (glade_widget_get_name (gwidget)));
-
-	g_signal_connect (G_OBJECT (gwidget), "notify",
-			  (GCallback) glade_project_on_widget_notify, project);
 
 	project->priv->objects = g_list_append (project->priv->objects, g_object_ref (object));
 	
@@ -2039,58 +2574,6 @@ glade_project_has_object (GladeProject *project, GObject *object)
 	return (g_list_find (project->priv->objects, object)) != NULL;
 }
 
-/**
- * glade_project_release_widget_name:
- * @project: a #GladeProject
- * @glade_widget:
- * @widget_name:
- *
- * TODO: Write me
- */
-static void
-glade_project_release_widget_name (GladeProject *project, GladeWidget *glade_widget, const char *widget_name)
-{
-	const char *first_number = widget_name;
-	char *end_number;
-	char *base_widget_name;
-	GladeIDAllocator *id_allocator;
-	gunichar ch;
-	int id;
-
-	g_return_if_fail (GLADE_IS_PROJECT (project));
-	g_return_if_fail (GLADE_IS_WIDGET (glade_widget));
-
-	do
-	{
-		ch = g_utf8_get_char (first_number);
-
-		if (ch == 0 || g_unichar_isdigit (ch))
-			break;
-
-		first_number = g_utf8_next_char (first_number);
-	}
-	while (TRUE);
-
-	if (ch == 0)
-		return;
-
-	base_widget_name = g_strdup (widget_name);
-	*(base_widget_name + (first_number - widget_name)) = 0;
-	
-	id_allocator = g_hash_table_lookup (project->priv->widget_names_allocator, base_widget_name);
-	if (id_allocator == NULL)
-		goto lblend;
-
-	id = (int) strtol (first_number, &end_number, 10);
-	if (*end_number != 0)
-		goto lblend;
-
-	glade_id_allocator_release (id_allocator, id);
-
- lblend:
-	g_hash_table_remove (project->priv->widget_old_names, glade_widget);
-	g_free (base_widget_name);
-}
 
 /**
  * glade_project_remove_object:
@@ -2151,133 +2634,192 @@ glade_project_remove_object (GladeProject *project, GObject *object)
 		glade_project_sync_resources_for_widget (project, NULL, gwidget, TRUE);
 }
 
-/**
- * glade_project_widget_name_changed:
- * @project: a #GladeProject
- * @widget: a #GladeWidget
- * @old_name:
- *
- * TODO: write me
- */
-void
-glade_project_widget_name_changed (GladeProject *project, GladeWidget *widget, const char *old_name)
-{
-	GladeWidget *iter;
-	GList       *l;
-	g_return_if_fail (GLADE_IS_PROJECT (project));
-	g_return_if_fail (GLADE_IS_WIDGET (widget));
-
-	glade_project_release_widget_name (project, widget, old_name);
-
-	/* Police widget names here (just rename them on the way in the project)
-	 */
-	for (l = project->priv->objects; l; l = l->next)
-	{
-		iter = glade_widget_get_from_gobject (l->data);
-		
-		if (widget != iter &&
-		    !strcmp (widget->name, iter->name))
-		{ 
-			gchar *name = glade_project_new_widget_name (project, widget->name);
-			glade_widget_set_name (widget, name);
-			g_free (name);
-		}
-		
-	}
-	
-	g_signal_emit (G_OBJECT (project),
-		       glade_project_signals [WIDGET_NAME_CHANGED],
-		       0,
-		       widget);
-}
-
-/**
- * glade_project_get_widget_by_name:
- * @project: a #GladeProject
- * @name: The user visible name of the widget we are looking for
- * 
- * Searches through @project looking for a #GladeWidget named @name.
- * 
- * Returns: a pointer to the widget, %NULL if the widget does not exist
- */
-GladeWidget *
-glade_project_get_widget_by_name (GladeProject *project, const gchar *name)
+static void
+adjust_naming_policy (GladeProject *project, gboolean use_command)
 {
 	GList *list;
+	GladeWidget *widget;
+	TopLevelInfo *tinfo;
+	GladeNameContext *context;
 
-	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
-	g_return_val_if_fail (name != NULL, NULL);
+	if (project->priv->naming_policy == GLADE_POLICY_PROJECT_WIDE)
+	{
+		for (list = project->priv->objects; list; list = list->next)
+		{
+			widget = glade_widget_get_from_gobject (list->data);
+			
+			if (!widget->parent)
+				continue;
 
-	for (list = project->priv->objects; list; list = list->next) {
-		GladeWidget *widget;
+			if (!glade_name_context_has_name (project->priv->toplevel_names, widget->name))
+				glade_name_context_add_name (project->priv->toplevel_names, widget->name);
+			else
+			{
+				gchar *new_name = glade_name_context_new_name (project->priv->toplevel_names, 
+									       widget->name);
 
-		widget = glade_widget_get_from_gobject (list->data);
-		g_return_val_if_fail (widget->name != NULL, NULL);
-		if (strcmp (widget->name, name) == 0)
-			return widget;
+				if (use_command)
+					glade_command_set_name (widget, new_name);
+				else
+					glade_widget_set_name (widget, new_name);
+
+				glade_name_context_add_name (project->priv->toplevel_names, new_name);
+				g_free (new_name);
+			}
+		}
+
+		for (list = project->priv->toplevels; list; list = list->next)
+		{
+			tinfo = list->data;
+			glade_name_context_destroy (tinfo->names);
+			g_free (tinfo);
+		}
+		project->priv->toplevels = 
+			(g_list_free (project->priv->toplevels), NULL);
+	}
+	else
+	{
+		/* First add toplevel names */
+		for (list = project->priv->objects; list; list = list->next)
+		{
+			widget = glade_widget_get_from_gobject (list->data);
+
+			if (!widget->parent)
+			{
+				TopLevelInfo *tinfo = g_new0 (TopLevelInfo, 1);
+				tinfo->toplevel     = widget;
+				tinfo->names        = glade_name_context_new ();
+				project->priv->toplevels = g_list_prepend (project->priv->toplevels, tinfo);
+
+				glade_name_context_add_name (tinfo->names, widget->name);
+			}
+		}
+
+		/* Now add child names */
+		for (list = project->priv->objects; list; list = list->next)
+		{
+			widget = glade_widget_get_from_gobject (list->data);
+
+			if (widget->parent)
+			{
+				context = name_context_by_widget (project, widget);
+				glade_name_context_add_name (context, widget->name);
+				glade_name_context_release_name (project->priv->toplevel_names, widget->name);
+			}
+		}
 	}
 
-	return NULL;
 }
 
-/**
- * glade_project_new_widget_name:
- * @project: a #GladeProject
- * @base_name: base name of the widget to create
- *
- * Creates a new name for a widget that doesn't collide with any of the names 
- * already in @project. This name will start with @base_name.
- *
- * Returns: a string containing the new name, %NULL if there is not enough 
- *          memory for this string
- */
-char *
-glade_project_new_widget_name (GladeProject *project, const char *base_name)
+
+/*******************************************************************
+                        Remaining stubs and api
+ *******************************************************************/
+static void
+glade_project_get_target_version (GladeProject *project,
+				  const gchar  *catalog,
+				  gint         *major,
+				  gint         *minor)
 {
-	GladeIDAllocator *id_allocator;
-	const gchar      *number;
-	gchar            *name = NULL, *freeme = NULL;
-	guint             i = 1;
-	
-	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
+	*major = GPOINTER_TO_INT 
+		(g_hash_table_lookup (project->priv->target_versions_major,
+				      catalog));
+	*minor = GPOINTER_TO_INT 
+		(g_hash_table_lookup (project->priv->target_versions_minor,
+				      catalog));
+}
 
-	number = base_name + strlen (base_name);
+static void
+glade_project_set_target_version (GladeProject *project,
+				  const gchar  *catalog,
+				  gint          major,
+				  gint          minor)
+{
+	GladeTargetableVersion *version;
+	GSList *radios, *list;
+	GtkWidget *radio;
 
-	while (number > base_name && g_ascii_isdigit (number[-1]))
-		--number;
+	g_hash_table_insert (project->priv->target_versions_major,
+			     g_strdup (catalog),
+			     GINT_TO_POINTER (major));
+	g_hash_table_insert (project->priv->target_versions_minor,
+			     g_strdup (catalog),
+			     GINT_TO_POINTER (minor));
 
-	if (*number)
-        {
-		freeme = g_strndup (base_name, number - base_name);
-		base_name = freeme;
-	}
-	
-	id_allocator = g_hash_table_lookup (project->priv->widget_names_allocator, base_name);
 
-	if (id_allocator == NULL)
+	/* Update prefs dialog from here... */
+	if (project->priv->target_radios && 
+	    (radios = g_hash_table_lookup (project->priv->target_radios, catalog)) != NULL)
 	{
-		id_allocator = glade_id_allocator_new ();
-		g_hash_table_insert (project->priv->widget_names_allocator,
-				     g_strdup (base_name), id_allocator);
+		for (list = radios; list; list = list->next)
+			g_signal_handlers_block_by_func (G_OBJECT (list->data), 
+							 G_CALLBACK (target_button_clicked),
+							 project);
+
+		for (list = radios; list; list = list->next)
+		{
+			radio = list->data;
+
+			version = g_object_get_data (G_OBJECT (radio), "version");
+			if (version->major == major &&
+			    version->minor == minor)
+			{
+				gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (radio), TRUE);
+				break;
+			}
+		}
+
+		for (list = radios; list; list = list->next)
+			g_signal_handlers_unblock_by_func (G_OBJECT (list->data), 
+							   G_CALLBACK (target_button_clicked),
+							   project);
 	}
 
-	while (TRUE)
+	glade_project_verify_project_for_ui (project);
+}
+
+static void
+glade_project_set_readonly (GladeProject *project, gboolean readonly)
+{
+	g_assert (GLADE_IS_PROJECT (project));
+	
+	if (project->priv->readonly != readonly)
 	{
-		i = glade_id_allocator_allocate (id_allocator);
-		name = g_strdup_printf ("%s%u", base_name, i);
-
-		/* ok, there is no widget with this name, so return the name */
-		if (glade_project_get_widget_by_name (project, name) == NULL)
-			return name;
-
-		/* we already have a widget with this name, so free the name and
-		 * try again with another number */
-		g_free (name);
-		i++;
+		project->priv->readonly = readonly;
+		g_object_notify (G_OBJECT (project), "read-only");
 	}
+}                                                                                               
 
-	g_free (freeme);
-	return name;
+/**
+ * glade_project_get_readonly:
+ * @project: a #GladeProject
+ *
+ * Gets whether the project is read only or not
+ *
+ * Returns: TRUE if project is read only
+ */
+gboolean
+glade_project_get_readonly (GladeProject *project)
+{
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+
+	return project->priv->readonly;
+}
+
+
+/**
+ * glade_project_selection_changed:
+ * @project: a #GladeProject
+ *
+ * Causes @project to emit a "selection_changed" signal.
+ */
+void
+glade_project_selection_changed (GladeProject *project)
+{
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+	g_signal_emit (G_OBJECT (project),
+		       glade_project_signals [SELECTION_CHANGED],
+		       0);
 }
 
 static void
@@ -2497,294 +3039,6 @@ glade_project_required_libs (GladeProject *project)
 	}
 	return g_list_reverse (required);
 }
-
-#define GLADE_XML_COMMENT "Generated with "PACKAGE_NAME
-
-static gchar *
-glade_project_make_comment ()
-{
-	time_t now = time (NULL);
-	gchar *comment;
-	comment = g_strdup_printf (GLADE_XML_COMMENT" "PACKAGE_VERSION" on %s",
-				   ctime (&now));
-	glade_util_replace (comment, '\n', ' ');
-	
-	return comment;
-}
-
-static void
-glade_project_update_comment (GladeProject *project)
-{
-	gchar **lines, **l, *comment = NULL;
-	
-	/* If project has no comment -> add the new one */
-	if (project->priv->comment == NULL)
-	{
-		project->priv->comment = glade_project_make_comment ();
-		return;
-	}
-	
-	for (lines = l = g_strsplit (project->priv->comment, "\n", 0); *l; l++)
-	{
-		gchar *start;
-		
-		/* Ignore leading spaces */
-		for (start = *l; *start && g_ascii_isspace (*start); start++);
-		
-		if (g_str_has_prefix (start, GLADE_XML_COMMENT))
-		{
-			/* This line was generated by glade -> updating... */
-			g_free (*l);
-			*l = comment = glade_project_make_comment ();
-		}
-	}
-	
-	if (comment)
-	{
-		g_free (project->priv->comment);
-		project->priv->comment = g_strjoinv ("\n", lines);
-	}
-	
-	g_strfreev (lines);
-}
-
-static void
-glade_project_write_required_libs (GladeProject    *project,
-				   GladeXmlContext *context,
-				   GladeXmlNode    *root)
-{
-	GladeProjectFormat fmt;
-	GladeXmlNode    *req_node;
-	GList           *required, *list;
-	gint             major, minor;
-	gchar           *version;
-
-	fmt = glade_project_get_format (project);
-
-	if ((required = glade_project_required_libs (project)) != NULL)
-	{
-		for (list = required; list; list = list->next)
-		{
-			glade_project_get_target_version (project, (gchar *)list->data, 
-							  &major, &minor);
-			
-			version = g_strdup_printf ("%d.%d", major, minor);
-
-			/* Write the standard requires tag */
-			if (fmt == GLADE_PROJECT_FORMAT_GTKBUILDER ||
-			    (fmt == GLADE_PROJECT_FORMAT_LIBGLADE &&
-			     strcmp ("gtk+", (gchar *)list->data)))
-			{
-				if (GLADE_GTKBUILDER_HAS_VERSIONING (major, minor))
-				{
-					req_node = glade_xml_node_new (context, GLADE_XML_TAG_REQUIRES);
-					glade_xml_node_append_child (root, req_node);
-					glade_xml_node_set_property_string (req_node, 
-									    GLADE_XML_TAG_LIB, 
-									    (gchar *)list->data);
-				}
-				else
-				{
-					gchar *comment = 
-						g_strdup_printf ("interface-requires %s %s", 
-								 (gchar *)list->data, version);
-					req_node = glade_xml_node_new_comment (context, comment);
-					glade_xml_node_append_child (root, req_node);
-					g_free (comment);
-				}
-
-				if (fmt != GLADE_PROJECT_FORMAT_LIBGLADE)
-					glade_xml_node_set_property_string 
-						(req_node, GLADE_XML_TAG_VERSION, version);
-			}
-
-			/* Add extra metadata for libglade */
-			if (fmt == GLADE_PROJECT_FORMAT_LIBGLADE)
-			{
-				gchar *comment = g_strdup_printf ("interface-requires %s %s", 
-								  (gchar *)list->data, version);
-				req_node = glade_xml_node_new_comment (context, comment);
-				glade_xml_node_append_child (root, req_node);
-				g_free (comment);
-			}
-			g_free (version);
-
-		}
-		g_list_foreach (required, (GFunc)g_free, NULL);
-		g_list_free (required);
-	}
-
-}
-
-static GladeXmlContext *
-glade_project_write (GladeProject *project)
-{
-	GladeXmlContext *context;
-	GladeXmlDoc     *doc;
-	GladeXmlNode    *root, *comment_node;
-	GList           *list;
-
-	doc     = glade_xml_doc_new ();
-	context = glade_xml_context_new (doc, NULL);
-	root    = glade_xml_node_new (context, GLADE_XML_TAG_PROJECT (project->priv->format));
-	glade_xml_doc_set_root (doc, root);
-
-	glade_project_update_comment (project);
-/* 	comment_node = glade_xml_node_new_comment (context, project->priv->comment); */
-
-	/* XXX Need to append this to the doc ! not the ROOT !
-	   glade_xml_node_append_child (root, comment_node); */
-
-	glade_project_write_required_libs (project, context, root);
-
-	/* Any automatically generated stuff goes here */
-	glade_project_generate_nodes (project, context, root);
-
-	for (list = project->priv->objects; list; list = list->next)
-	{
-		GladeWidget *widget;
-
-		widget = glade_widget_get_from_gobject (list->data);
-
-		/* 
-		 * Append toplevel widgets. Each widget then takes
-		 * care of appending its children.
-		 */
-		if (widget->parent == NULL)
-			glade_widget_write (widget, context, root);
-	}
-	
-	return context;
-}
-
-/**
- * glade_project_load:
- * @path:
- * 
- * Opens a project at the given path.
- *
- * Returns: a new #GladeProject for the opened project on success, %NULL on 
- *          failure
- */
-GladeProject *
-glade_project_load (const gchar *path)
-{
-	GladeProject *project;
-	gboolean      retval;
-	
-	g_return_val_if_fail (path != NULL, NULL);
-	
-	project = glade_project_new ();
-	
-	retval = glade_project_load_from_file (project, path);
-	
-	if (retval)
-	{
-		return project;
-	}
-	else
-	{
-		g_object_unref (project);
-		return NULL;
-	}
-}
-
-static void
-glade_project_move_resources (GladeProject *project,
-			      const gchar  *old_dir,
-			      const gchar  *new_dir)
-{
-	GList *list, *resources;
-	gchar *old_name, *new_name;
-
-	if (old_dir == NULL || /* <-- Cant help you :( */
-	    new_dir == NULL)   /* <-- Unlikely         */
-		return;
-
-	if ((resources = /* Nothing to do here */
-	     glade_project_list_resources (project)) == NULL)
-		return;
-	
-	for (list = resources; list; list = list->next)
-	{
-		old_name = g_build_filename 
-			(old_dir, (gchar *)list->data, NULL);
-		new_name = g_build_filename 
-			(new_dir, (gchar *)list->data, NULL);
-		glade_util_copy_file (old_name, new_name);
-		g_free (old_name);
-		g_free (new_name);
-	}
-	g_list_free (resources);
-}
-
-/**
- * glade_project_save:
- * @project: a #GladeProject
- * @path: location to save glade file
- * @error: an error from the G_FILE_ERROR domain.
- * 
- * Saves @project to the given path. 
- *
- * Returns: %TRUE on success, %FALSE on failure
- */
-gboolean
-glade_project_save (GladeProject *project, const gchar *path, GError **error)
-{
-	GladeXmlContext *context;
-	GladeXmlDoc     *doc;
-	gchar           *canonical_path;
-	gint             ret;
-
-	if (!glade_project_verify (project, TRUE))
-		return FALSE;
-
-	context = glade_project_write (project);
-	doc     = glade_xml_context_get_doc (context);
-	ret     = glade_xml_doc_save (doc, path);
-	glade_xml_context_destroy (context);
-
-	canonical_path = glade_util_canonical_path (path);
-	g_assert (canonical_path);
-
-	if (project->priv->path == NULL ||
-	    strcmp (canonical_path, project->priv->path))
-        {
-		gchar *old_dir, *new_dir;
-
-		if (project->priv->path)
-		{
-			old_dir = g_path_get_dirname (project->priv->path);
-			new_dir = g_path_get_dirname (canonical_path);
-
-			glade_project_move_resources (project, 
-						      old_dir, 
-						      new_dir);
-			g_free (old_dir);
-			g_free (new_dir);
-		}
-		project->priv->path = (g_free (project->priv->path),
-				 g_strdup (canonical_path));
-	}
-
-	glade_project_set_readonly (project, 
-				    !glade_util_file_is_writeable (project->priv->path));
-
-	project->priv->mtime = glade_util_get_file_mtime (project->priv->path, NULL);
-	
-	glade_project_set_modified (project, FALSE);
-
-	if (project->priv->unsaved_number > 0)
-	{
-		glade_id_allocator_release (get_unsaved_number_allocator (), project->priv->unsaved_number);
-		project->priv->unsaved_number = 0;
-        }
-
-	g_free (canonical_path);
-
-	return ret > 0;
-}
-
 
 /**
  * glade_project_undo:
@@ -3048,6 +3302,113 @@ glade_project_set_accel_group (GladeProject *project, GtkAccelGroup *accel_group
 	project->priv->accel_group = accel_group;
 }
 
+
+
+
+static void
+gp_sync_resources (GladeProject *project, 
+		   GladeProject *prev_project,
+		   GladeWidget  *gwidget,
+		   gboolean      remove)
+{
+	GList          *prop_list, *l;
+	GladeProperty  *property;
+	gchar          *resource, *full_resource;
+
+	prop_list = g_list_copy (gwidget->properties);
+	prop_list = g_list_concat
+		(prop_list, g_list_copy (gwidget->packing_properties));
+
+	for (l = prop_list; l; l = l->next)
+	{
+		property = l->data;
+		if (property->klass->resource)
+		{
+			GValue value = { 0, };
+
+			if (remove)
+			{
+				glade_project_set_resource (project, property, NULL);
+				continue;
+			}
+
+			glade_property_get_value (property, &value);
+			
+			if ((resource = glade_widget_adaptor_string_from_value
+			     (GLADE_WIDGET_ADAPTOR (property->klass->handle),
+			      property->klass, &value, project->priv->format)) != NULL)
+			{
+				full_resource = glade_project_resource_fullpath
+					(prev_project ? prev_project : project, resource);
+			
+				/* Use a full path here so that the current
+				 * working directory isnt used.
+				 */
+				glade_project_set_resource (project, 
+							    property,
+							    full_resource);
+				
+				g_free (full_resource);
+				g_free (resource);
+			}
+			g_value_unset (&value);
+		}
+	}
+	g_list_free (prop_list);
+}
+
+static void
+glade_project_sync_resources_for_widget (GladeProject *project, 
+					 GladeProject *prev_project,
+					 GladeWidget  *gwidget,
+					 gboolean      remove)
+{
+	GList *children, *l;
+	GladeWidget *gchild;
+
+	children = glade_widget_adaptor_get_children
+		(gwidget->adaptor, gwidget->object);
+
+	for (l = children; l; l = l->next)
+		if ((gchild = 
+		     glade_widget_get_from_gobject (l->data)) != NULL)
+			glade_project_sync_resources_for_widget 
+				(project, prev_project, gchild, remove);
+	if (children)
+		g_list_free (children);
+
+	gp_sync_resources (project, prev_project, gwidget, remove);
+}
+
+static void
+glade_project_move_resources (GladeProject *project,
+			      const gchar  *old_dir,
+			      const gchar  *new_dir)
+{
+	GList *list, *resources;
+	gchar *old_name, *new_name;
+
+	if (old_dir == NULL || /* <-- Cant help you :( */
+	    new_dir == NULL)   /* <-- Unlikely         */
+		return;
+
+	if ((resources = /* Nothing to do here */
+	     glade_project_list_resources (project)) == NULL)
+		return;
+	
+	for (list = resources; list; list = list->next)
+	{
+		old_name = g_build_filename 
+			(old_dir, (gchar *)list->data, NULL);
+		new_name = g_build_filename 
+			(new_dir, (gchar *)list->data, NULL);
+		glade_util_copy_file (old_name, new_name);
+		g_free (old_name);
+		g_free (new_name);
+	}
+	g_list_free (resources);
+}
+
 /**
  * glade_project_resource_fullpath:
  * @project: The #GladeProject.
@@ -3288,6 +3649,48 @@ glade_project_get_modified (GladeProject *project)
 	return project->priv->modified;
 }
 
+void
+glade_project_set_naming_policy (GladeProject       *project,
+				 GladeNamingPolicy   policy,
+				 gboolean            use_command)
+{
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+
+	if (project->priv->naming_policy != policy)
+	{
+		project->priv->naming_policy = policy;
+
+		adjust_naming_policy (project, use_command);
+
+		/* Update the toggle button in the prefs dialog here: */
+		g_signal_handlers_block_by_func (project->priv->project_wide_radio,
+						 G_CALLBACK (policy_project_wide_button_clicked), project);
+		g_signal_handlers_block_by_func (project->priv->toplevel_contextual_radio,
+						 G_CALLBACK (policy_toplevel_contextual_button_clicked), project);
+
+		if (policy == GLADE_POLICY_PROJECT_WIDE)
+			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (project->priv->project_wide_radio), TRUE);
+		else
+			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (project->priv->toplevel_contextual_radio), TRUE);
+
+		g_signal_handlers_unblock_by_func (project->priv->project_wide_radio,
+						   G_CALLBACK (policy_project_wide_button_clicked), project);
+		g_signal_handlers_unblock_by_func (project->priv->toplevel_contextual_radio,
+						   G_CALLBACK (policy_toplevel_contextual_button_clicked), project);
+
+	}
+
+
+}
+
+GladeNamingPolicy
+glade_project_get_naming_policy (GladeProject *project)
+{
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), -1);
+
+	return project->priv->naming_policy;
+}
+
 
 /** 
  * glade_project_set_format:
@@ -3307,6 +3710,23 @@ glade_project_set_format (GladeProject *project, GladeProjectFormat format)
 		project->priv->format = format; 
 		g_object_notify (G_OBJECT (project), "format");
 		glade_project_verify_project_for_ui (project);
+
+		/* Update the toggle button in the prefs dialog here: */
+		g_signal_handlers_block_by_func (project->priv->glade_radio,
+						 G_CALLBACK (format_libglade_button_clicked), project);
+		g_signal_handlers_block_by_func (project->priv->builder_radio,
+						 G_CALLBACK (format_builder_button_clicked), project);
+
+		if (format == GLADE_PROJECT_FORMAT_GTKBUILDER)
+			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (project->priv->builder_radio), TRUE);
+		else
+			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (project->priv->glade_radio), TRUE);
+
+		g_signal_handlers_unblock_by_func (project->priv->glade_radio,
+						   G_CALLBACK (format_libglade_button_clicked), project);
+		g_signal_handlers_unblock_by_func (project->priv->builder_radio,
+						   G_CALLBACK (format_builder_button_clicked), project);
+
 	}
 }
 
@@ -3331,6 +3751,20 @@ format_builder_button_clicked (GtkWidget *widget,
 			       GladeProject *project)
 {
 	glade_command_set_project_format (project, GLADE_PROJECT_FORMAT_GTKBUILDER);
+}
+
+static void
+policy_project_wide_button_clicked (GtkWidget *widget,
+				    GladeProject *project)
+{
+	glade_command_set_project_naming_policy (project, GLADE_POLICY_PROJECT_WIDE);
+}
+
+static void
+policy_toplevel_contextual_button_clicked (GtkWidget *widget,
+					   GladeProject *project)
+{
+	glade_command_set_project_naming_policy (project, GLADE_POLICY_TOPLEVEL_CONTEXTUAL);
 }
 
 static void
@@ -3369,20 +3803,123 @@ glade_project_build_prefs_box (GladeProject *project)
 {
 	GtkWidget *main_box, *button;
 	GtkWidget *vbox, *hbox, *frame;
-	GtkWidget *glade_radio, *builder_radio, *target_radio, *active_radio;
+	GtkWidget *target_radio, *active_radio;
 	GtkWidget *label, *alignment;
 	GList     *list, *targets;
-	gchar     *string = g_strdup_printf ("<b>%s</b>", _("File format"));
+	gchar     *string;
+	GtkWidget *main_frame, *main_alignment;
+	GtkSizeGroup *sizegroup1 = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL),
+		*sizegroup2 = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
+
+	string = g_strdup_printf ("<big><b>%s</b></big>", _("Set options in your project"));
+	main_frame = gtk_frame_new (NULL);
+	main_alignment = gtk_alignment_new (0.5F, 0.5F, 0.8F, 0.8F);
 	main_box = gtk_vbox_new (FALSE, 0);
 
+	gtk_alignment_set_padding (GTK_ALIGNMENT (main_alignment), 12, 0, 4, 0);
+
+	label = gtk_label_new (string);
+	g_free (string);
+	gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
+
+	gtk_frame_set_label_widget (GTK_FRAME (main_frame), label);
+	gtk_container_add (GTK_CONTAINER (main_alignment), main_box);
+	gtk_container_add (GTK_CONTAINER (main_frame), main_alignment);
+
+
+	/* Project format */
+	string = g_strdup_printf ("<b>%s</b>", _("File format"));
+	frame = gtk_frame_new (NULL);
+	hbox = gtk_hbox_new (FALSE, 0);
+	alignment = gtk_alignment_new (0.5F, 0.5F, 0.8F, 0.8F);
+
+	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 8, 0, 12, 0);
+
+	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
+
+	label = gtk_label_new (string);
+	g_free (string);
+	gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
+
+	project->priv->glade_radio = gtk_radio_button_new_with_label (NULL, "Libglade");
+	project->priv->builder_radio = gtk_radio_button_new_with_label_from_widget
+		(GTK_RADIO_BUTTON (project->priv->glade_radio), "GtkBuilder");
+
+	gtk_size_group_add_widget (sizegroup1, project->priv->builder_radio);
+	gtk_size_group_add_widget (sizegroup2, project->priv->glade_radio);
+
+	gtk_frame_set_label_widget (GTK_FRAME (frame), label);
+	gtk_container_add (GTK_CONTAINER (alignment), hbox);
+	gtk_container_add (GTK_CONTAINER (frame), alignment);
+
+	gtk_box_pack_start (GTK_BOX (hbox), project->priv->builder_radio, TRUE, TRUE, 2);
+	gtk_box_pack_start (GTK_BOX (hbox), project->priv->glade_radio, TRUE, TRUE, 2);
+
+	gtk_box_pack_start (GTK_BOX (main_box), frame, TRUE, TRUE, 2);
+
+
+	if (glade_project_get_format (project) == GLADE_PROJECT_FORMAT_GTKBUILDER)
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (project->priv->builder_radio), TRUE);
+	else
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (project->priv->glade_radio), TRUE);
+
+	g_signal_connect (G_OBJECT (project->priv->glade_radio), "clicked",
+			  G_CALLBACK (format_libglade_button_clicked), project);
+
+	g_signal_connect (G_OBJECT (project->priv->builder_radio), "clicked",
+			  G_CALLBACK (format_builder_button_clicked), project);
+
+
+	/* Naming policy format */
+	string = g_strdup_printf ("<b>%s</b>", _("Object names are unique:"));
+	frame = gtk_frame_new (NULL);
+	hbox = gtk_hbox_new (FALSE, 0);
+	alignment = gtk_alignment_new (0.5F, 0.5F, 0.8F, 0.8F);
+
+	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 8, 0, 12, 0);
+
+	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
+
+	label = gtk_label_new (string);
+	g_free (string);
+	gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
+
+	project->priv->project_wide_radio = gtk_radio_button_new_with_label (NULL, _("within the project"));
+	project->priv->toplevel_contextual_radio = gtk_radio_button_new_with_label_from_widget
+		(GTK_RADIO_BUTTON (project->priv->project_wide_radio), _("inside toplevels"));
+
+	gtk_size_group_add_widget (sizegroup1, project->priv->project_wide_radio);
+	gtk_size_group_add_widget (sizegroup2, project->priv->toplevel_contextual_radio);
+
+	gtk_box_pack_start (GTK_BOX (hbox), project->priv->project_wide_radio, TRUE, TRUE, 2);
+	gtk_box_pack_start (GTK_BOX (hbox), project->priv->toplevel_contextual_radio, TRUE, TRUE, 2);
+
+	gtk_frame_set_label_widget (GTK_FRAME (frame), label);
+	gtk_container_add (GTK_CONTAINER (alignment), hbox);
+	gtk_container_add (GTK_CONTAINER (frame), alignment);
+
+	gtk_box_pack_start (GTK_BOX (main_box), frame, TRUE, TRUE, 6);
+
+	if (project->priv->naming_policy == GLADE_POLICY_PROJECT_WIDE)
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (project->priv->project_wide_radio), TRUE);
+	else
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (project->priv->toplevel_contextual_radio), TRUE);
+
+	g_signal_connect (G_OBJECT (project->priv->project_wide_radio), "clicked",
+			  G_CALLBACK (policy_project_wide_button_clicked), project);
+
+	g_signal_connect (G_OBJECT (project->priv->toplevel_contextual_radio), "clicked",
+			  G_CALLBACK (policy_toplevel_contextual_button_clicked), project);
+
+
 	/* Target versions */
-	string = g_strdup_printf ("<b>%s</b>", _("Target Versions:"));
+	string = g_strdup_printf ("<b>%s</b>", _("Target versions:"));
 	frame = gtk_frame_new (NULL);
 	vbox = gtk_vbox_new (FALSE, 0);
 	alignment = gtk_alignment_new (0.5F, 0.5F, 1.0F, 1.0F);
 	
-	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 2, 0, 12, 0);
+	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 8, 0, 12, 0);
 	
 	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
 
@@ -3394,7 +3931,7 @@ glade_project_build_prefs_box (GladeProject *project)
 	gtk_container_add (GTK_CONTAINER (alignment), vbox);
 	gtk_container_add (GTK_CONTAINER (frame), alignment);
 	
-	gtk_box_pack_start (GTK_BOX (main_box), frame, TRUE, TRUE, 2);
+	gtk_box_pack_start (GTK_BOX (main_box), frame, TRUE, TRUE, 6);
 
 	/* Add stuff to vbox */
 	for (list = glade_app_get_catalogs (); list; list = list->next)
@@ -3455,105 +3992,50 @@ glade_project_build_prefs_box (GladeProject *project)
 		}
 
 		if (active_radio)
+		{
 			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (active_radio), TRUE);
+			g_hash_table_insert (project->priv->target_radios, 
+					     g_strdup (glade_catalog_get_name (catalog)),
+					     gtk_radio_button_get_group (GTK_RADIO_BUTTON (active_radio)));
+		}
 		else 
 			g_warning ("Corrupt catalog versions");
 
-		gtk_box_pack_end (GTK_BOX (vbox), hbox, TRUE, TRUE, 2);
-
+		gtk_box_pack_start (GTK_BOX (vbox), hbox, TRUE, TRUE, 2);
 	}
 
-	/* Project format */
-	string = g_strdup_printf ("<b>%s</b>", _("File format"));
-	frame = gtk_frame_new (NULL);
-	hbox = gtk_hbox_new (FALSE, 0);
-	alignment = gtk_alignment_new (0.5F, 0.5F, 0.8F, 0.8F);
-
-	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 2, 0, 12, 0);
-
-	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
-
-	label = gtk_label_new (string);
-	g_free (string);
-	gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
-
-	glade_radio = gtk_radio_button_new_with_label (NULL, "Libglade");
-	builder_radio = gtk_radio_button_new_with_label_from_widget
-		(GTK_RADIO_BUTTON (glade_radio), "GtkBuilder");
-
-	if (glade_project_get_format (project) == GLADE_PROJECT_FORMAT_GTKBUILDER)
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (builder_radio), TRUE);
-	else
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (glade_radio), TRUE);
-
-	g_signal_connect (G_OBJECT (glade_radio), "clicked",
-			  G_CALLBACK (format_libglade_button_clicked), project);
-
-	g_signal_connect (G_OBJECT (builder_radio), "clicked",
-			  G_CALLBACK (format_builder_button_clicked), project);
-
-	gtk_box_pack_start (GTK_BOX (hbox), builder_radio, TRUE, TRUE, 2);
-	gtk_box_pack_start (GTK_BOX (hbox), glade_radio, TRUE, TRUE, 2);
-
-	gtk_frame_set_label_widget (GTK_FRAME (frame), label);
-	gtk_container_add (GTK_CONTAINER (alignment), hbox);
-	gtk_container_add (GTK_CONTAINER (frame), alignment);
-
-	gtk_box_pack_start (GTK_BOX (main_box), frame, TRUE, TRUE, 2);
-
-
 	/* Run verify */
-	string = g_strdup_printf ("<b>%s</b>", _("Verify versions and deprecations:"));
-	frame = gtk_frame_new (NULL);
-	alignment = gtk_alignment_new (0.0F, 0.5F, 0.0F, 0.0F);
-	gtk_container_set_border_width (GTK_CONTAINER (alignment), 4);	
-
+	hbox = gtk_hbox_new (FALSE, 2);
 	button = gtk_button_new_from_stock (GTK_STOCK_EXECUTE);
 	g_signal_connect (G_OBJECT (button), "clicked", 
 			  G_CALLBACK (verify_clicked), project);
 	
-	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 2, 4, 12, 0);
+	label = gtk_label_new (_("Verify versions and deprecations:"));
+
+	gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 4);
+	gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, TRUE, 4);
 	
-	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
+	gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 4);
 
-	label = gtk_label_new (string);
-	g_free (string);
-	gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
-	
-	gtk_frame_set_label_widget (GTK_FRAME (frame), label);
-	gtk_container_add (GTK_CONTAINER (alignment), button);
-	gtk_container_add (GTK_CONTAINER (frame), alignment);
-	
-	gtk_box_pack_start (GTK_BOX (main_box), frame, FALSE, FALSE, 4);
+	gtk_widget_show_all (main_frame);
 
-
-	gtk_widget_show_all (main_box);
-
-	return main_box;
+	return main_frame;
 }
 
-/**
- * glade_project_preferences:
- * @project: A #GladeProject
- *
- * Runs a preferences dialog for @project.
- */
-void
-glade_project_preferences (GladeProject *project)
+static GtkWidget *
+glade_project_build_prefs_dialog (GladeProject *project)
 {
-	GtkWidget *dialog = NULL;
-	GtkWidget *widget;
+	GtkWidget *widget, *dialog;
 	gchar     *title, *name;
 
-
-	g_return_if_fail (GLADE_IS_PROJECT (project));
-
 	name = glade_project_get_name (project);
-	title = g_strdup_printf ("%s preferences", name);
+	title = g_strdup_printf (_("%s preferences"), name);
 
 	dialog = gtk_dialog_new_with_buttons (title,
 					      GTK_WINDOW (glade_app_get_window ()),
 					      GTK_DIALOG_DESTROY_WITH_PARENT,
+					      GTK_STOCK_CLOSE,
+					      GTK_RESPONSE_ACCEPT,
 					      NULL);
 	g_free (title);
 	g_free (name);
@@ -3567,13 +4049,34 @@ glade_project_preferences (GladeProject *project)
 
 	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 
+	/* HIG spacings */
+	gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);
+	gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->vbox), 2); /* 2 * 5 + 2 = 12 */
+	gtk_container_set_border_width (GTK_CONTAINER (GTK_DIALOG (dialog)->action_area), 5);
+	gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->action_area), 6);
+
 
 	/* Were explicitly destroying it anyway */
 	g_signal_connect (G_OBJECT (dialog), "delete-event",
 			  G_CALLBACK (gtk_widget_hide_on_delete), NULL);
 
-	gtk_window_present (GTK_WINDOW (dialog));
+	/* Only one action, used to "close" the dialog */
+	g_signal_connect (G_OBJECT (dialog), "response",
+			  G_CALLBACK (gtk_widget_hide), NULL);
 
-	gtk_dialog_run (GTK_DIALOG (dialog));
-	gtk_widget_destroy (dialog);
+	return dialog;
+}
+
+/**
+ * glade_project_preferences:
+ * @project: A #GladeProject
+ *
+ * Runs a preferences dialog for @project.
+ */
+void
+glade_project_preferences (GladeProject *project)
+{
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+
+	gtk_window_present (GTK_WINDOW (project->priv->prefs_dialog));
 }

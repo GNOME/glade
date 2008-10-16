@@ -286,6 +286,20 @@ append_row (GNode *node, GList *columns)
 	}
 }
 
+static void
+clear_view (GladeEditorProperty *eprop)
+{
+	GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
+	GtkTreeViewColumn   *column;
+	
+	/* Clear columns ... */
+	while ((column = gtk_tree_view_get_column (eprop_data->view, 0)) != NULL)
+		gtk_tree_view_remove_column (eprop_data->view, column);
+
+	/* Clear store ... (this will unref the old store) */
+	gtk_tree_view_set_model (eprop_data->view, NULL);
+	
+}
 
 /* User pressed add: append row and commit values  */
 static void
@@ -302,6 +316,8 @@ glade_eprop_model_data_add_clicked (GtkWidget *button,
 	if (!columns)
 		return;
 
+	clear_view (eprop);
+
 	if (!node)
 		node = g_node_new (NULL);
 	else
@@ -313,6 +329,7 @@ glade_eprop_model_data_add_clicked (GtkWidget *button,
 	g_value_take_boxed (&value, node);
 	glade_editor_property_commit (eprop, &value);
 	g_value_unset (&value);
+
 }
 
 /* User pressed delete: remove selected row and commit values  */
@@ -394,7 +411,7 @@ eprop_model_data_generate_store (GladeEditorProperty *eprop)
 		iter_data = iter_node->data;
 		g_array_append_val (gtypes, G_VALUE_TYPE (&iter_data->value));
 	}
-	store = gtk_list_store_newv (NUM_COLUMNS + gtypes->len, (GType *)gtypes->data);
+	store = gtk_list_store_newv (gtypes->len, (GType *)gtypes->data);
 	g_array_free (gtypes, TRUE);
 
 	/* Now populate the store with data */
@@ -406,11 +423,11 @@ eprop_model_data_generate_store (GladeEditorProperty *eprop)
 		gtk_list_store_append (store, &iter);
 		gtk_list_store_set (store, &iter, COLUMN_ROW, row_num, -1);
 
-		for (column_num = 0, iter_node = row_node->children; iter_node; 
+		for (column_num = NUM_COLUMNS, iter_node = row_node->children; iter_node; 
 		     column_num++, iter_node = iter_node->next)
 		{
 			iter_data = iter_node->data;
-			gtk_list_store_set_value (store, &iter, NUM_COLUMNS + column_num, &iter_data->value);
+			gtk_list_store_set_value (store, &iter, column_num, &iter_data->value);
 		}
 	}
 	return store;
@@ -448,13 +465,48 @@ value_text_edited (GtkCellRendererText *cell,
 	GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
 	GtkTreeIter          iter;
 	gint                 colnum = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (cell), "column-number"));
+	gint                 row;
+	GNode               *data_tree = NULL, *node;
+	GValue               value = { 0, };
+	GladeModelData      *data;
 
 	if (!gtk_tree_model_get_iter_from_string (GTK_TREE_MODEL (eprop_data->store), &iter, path))
 		return;
 
-	gtk_list_store_set (eprop_data->store, &iter,
-			    NUM_COLUMNS + colnum, new_text,
+
+	gtk_tree_model_get (eprop_data->store, &iter,
+			    COLUMN_ROW, &row,
 			    -1);
+
+	glade_property_get (eprop->property, &data_tree);
+
+	/* if we are editing, then there is data in the datatree */
+	g_assert (data_tree);
+
+	data_tree = glade_model_data_tree_copy (data_tree);
+
+	if ((node = g_node_nth_child (data_tree, row)) != NULL)
+	{
+		if ((node = g_node_nth_child (node, colnum)) != NULL)
+		{
+			data = node->data;
+
+			g_value_set_string (&(data->value), new_text);
+		}
+	}
+
+	g_value_init (&value, GLADE_TYPE_MODEL_DATA_TREE);
+	g_value_take_boxed (&value, data_tree);
+	glade_editor_property_commit (eprop, &value);
+	g_value_unset (&value);
+
+	/* No need to update store, it will be reloaded in load() */
+/* 	gtk_list_store_set (eprop_data->store, &iter, */
+/* 			    NUM_COLUMNS + colnum, new_text, */
+/* 			    -1); */
+
+	/* XXX Set string in data here and commit ! */
+
 }
 
 static GtkTreeViewColumn *
@@ -479,7 +531,6 @@ eprop_model_generate_column (GladeEditorProperty *eprop,
 		renderer = gtk_cell_renderer_text_new ();
 		g_object_set (G_OBJECT (renderer), 
 			      "editable", TRUE, 
-			      "ellipsize", PANGO_ELLIPSIZE_END,
 			      NULL);
 		gtk_tree_view_column_pack_start (column, renderer, FALSE);
 		gtk_tree_view_column_set_attributes (column, renderer, 
@@ -529,7 +580,6 @@ eprop_model_generate_column (GladeEditorProperty *eprop,
 		g_object_set (G_OBJECT (renderer), 
 			      "editable", TRUE, 
 			      "adjustment", adjustment, 
-			      "ellipsize", PANGO_ELLIPSIZE_END,
 			      NULL);
 
 		gtk_tree_view_column_pack_start (column, renderer, TRUE);
@@ -589,10 +639,6 @@ eprop_model_data_generate_columns (GladeEditorProperty *eprop)
 
 	glade_property_get (eprop->property, &data_tree);
 	
-	/* Clear columns ... */
-	while ((column = gtk_tree_view_get_column (eprop_data->view, 0)) != NULL)
-		gtk_tree_view_remove_column (eprop_data->view, column);
-
 	if (!data_tree || !data_tree->children || !data_tree->children->children)
 		return;
 
@@ -614,19 +660,17 @@ glade_eprop_model_data_load (GladeEditorProperty *eprop,
 	GladeEditorPropertyClass *parent_class = 
 		g_type_class_peek_parent (GLADE_EDITOR_PROPERTY_GET_CLASS (eprop));
 	GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
-	
-	/* Chain up first */
+
+	clear_view (eprop);
+
+	/* Chain up in a clean state... */
 	parent_class->load (eprop, property);
-	
-	/* Recreate and populate store */
-	if (eprop_data->store)
-		g_object_unref (G_OBJECT (eprop_data->store));
-		
+
 	if ((eprop_data->store = eprop_model_data_generate_store (eprop)) != NULL)
 	{
 		eprop_data->selection = gtk_tree_view_get_selection (eprop_data->view);
 
-		/* Pass ownership of the store to the model */
+		/* Pass ownership of the store to the view... */
 		gtk_tree_view_set_model (eprop_data->view, GTK_TREE_MODEL (eprop_data->store));
 		g_object_unref (G_OBJECT (eprop_data->store));
 		
@@ -635,7 +679,7 @@ glade_eprop_model_data_load (GladeEditorProperty *eprop,
 				  eprop);
 	}
 
-	/* Clear and create new columns with renderers */
+	/* Create new columns with renderers */
 	eprop_model_data_generate_columns (eprop);
 }
 

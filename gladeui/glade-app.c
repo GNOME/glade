@@ -936,19 +936,19 @@ glade_app_add_project (GladeProject *project)
 
  	g_return_if_fail (GLADE_IS_PROJECT (project));
 
+	app = glade_app_get ();
+
 	/* If the project was previously loaded, don't re-load */
-	if (glade_app_is_project_loaded (glade_project_get_path (project)))
+	if (g_list_find (app->priv->projects, project) != NULL)
 	{
 		glade_app_set_project (project);
 		return;
 	}
 	glade_app_update_instance_count (project);
-
-	app = glade_app_get ();
 	
-	g_object_ref (project);
-	
-	app->priv->projects = g_list_append (app->priv->projects, project);
+	/* Take a reference for GladeApp here... */
+	app->priv->projects = g_list_append (app->priv->projects, 
+					     g_object_ref (project));
 	
 	/* connect to the project signals so that the editor can be updated */
 	g_signal_connect (G_OBJECT (project), "selection_changed",
@@ -1022,7 +1022,6 @@ glade_app_remove_project (GladeProject *project)
 	 * that point.
 	 */
 	g_object_unref (project);
-
 }
 
 

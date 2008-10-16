@@ -90,6 +90,9 @@ void           glade_command_collapse      (GladeCommand      *command,
 void           glade_command_set_project_format  (GladeProject       *project,
 						  GladeProjectFormat  fmt);
 
+void           glade_command_set_project_naming_policy  (GladeProject       *project,
+							 GladeNamingPolicy   policy);
+
 /************************** properties *********************************/
 
 void           glade_command_set_property        (GladeProperty *property,     

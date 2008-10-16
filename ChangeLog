@@ -1,3 +1,31 @@
+2008-10-16  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/Makefile.am, gladeui/glade-name-context.[ch]: Encapsulated name tracking mechanism
+
+	* gladeui/glade-project.c, gladeui/glade-command.c: Now added a naming policy to the project
+	with prefs and load/save support + a glade command to set it - also revamped the prefs dialog,
+	it also pops up automatically for new projects.
+
+	* gladeui/glade-editor.c, gladeui/glade-editor-property.c, gladeui/glade-property-class.c,
+	gladeui/glade-property.c, gladeui/glade-widget.c: All effected since now 
+	glade_property_class_make_gvalue_from_string () needs a GladeWidget argument to do
+	hierachic context sensitive searches... that and naming is much cleaner now.
+	
+	* src/glade-window.c: remember to pass ownership of the project to the app.
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/glade-column-types.c, plugins/gtk+/glade-model-data.c:
+	BEWARE: Dangerous and still a work in progress.
+	
+2008-10-10  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-xml-utils.c, gladeui/glade-property-class.[ch]: Added
+	new "needs-sync" property
+
+	* gladeui/glade-widget.c: glade_widget_sync_custom_props(): also sync
+	props marked as needs-sync.
+
+	* plugins/gtk+/gtk+.xml.in: GtkTable:n-rows/n-columns marked as "needs-sync"
+
 2008-09-30  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-property.[ch], gladeui/glade-command.[ch], 

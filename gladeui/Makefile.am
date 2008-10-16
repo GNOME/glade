@@ -62,7 +62,8 @@ libgladeui_1_la_SOURCES = \
 	glade-catalog.h \
 	glade-marshallers.h \
 	glade-accumulators.h \
-	glade-widget-action.c
+	glade-widget-action.c \
+	glade-name-context.c
 
 libgladeui_1_la_CPPFLAGS =  \
 	$(common_defines)   \
@@ -110,8 +111,9 @@ libgladeuiinclude_HEADERS = \
 	glade-xml-utils.h \
 	glade-signal.h \
 	glade-cursor.h \
-    glade-catalog.h \
-	glade-widget-action.h
+	glade-catalog.h \
+	glade-widget-action.h \
+	glade-name-context.h
 
 
 if PLATFORM_WIN32

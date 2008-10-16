@@ -1943,7 +1943,7 @@ glade_utils_enum_value_from_string (GType enum_type, const gchar *strval)
 	gint    value = 0;
 	GValue *gvalue;
 
-	if ((gvalue = glade_utils_value_from_string (enum_type, strval, NULL)) != NULL)
+	if ((gvalue = glade_utils_value_from_string (enum_type, strval, NULL, NULL)) != NULL)
 	{
 		value = g_value_get_enum (gvalue);
 		g_value_unset (gvalue);
@@ -2075,6 +2075,8 @@ pclass_from_gtype (GType type)
  * @type: a #GType to convert with
  * @string: the string to convert
  * @project: the #GladeProject to look for formats of object names when needed
+ * @widget: if the value is a gobject, this #GladeWidget will be used to look
+ *          for an object in the same widget tree.
  *
  * Allocates and sets a #GValue of type @type
  * set to @string (using glade conversion routines) 
@@ -2084,7 +2086,8 @@ pclass_from_gtype (GType type)
 GValue *
 glade_utils_value_from_string (GType               type,
 			       const gchar        *string,
-			       GladeProject       *project)
+			       GladeProject       *project,
+			       GladeWidget        *widget)
 {
 	GladePropertyClass *pclass;
 
@@ -2092,7 +2095,7 @@ glade_utils_value_from_string (GType               type,
 	g_return_val_if_fail (string != NULL, NULL);
 
 	if ((pclass = pclass_from_gtype (type)) != NULL)
-		return glade_property_class_make_gvalue_from_string (pclass, string, project);
+		return glade_property_class_make_gvalue_from_string (pclass, string, project, widget);
 
 	return NULL;
 }

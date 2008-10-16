@@ -479,7 +479,7 @@ glade_gtk_parse_atk_props (GladeWidget  *widget,
 
 			/* Set the parsed value on the property ... */
 			gvalue = glade_property_class_make_gvalue_from_string
-				(property->klass, value, widget->project);
+				(property->klass, value, widget->project, widget);
 			glade_property_set_value (property, gvalue);
 			g_value_unset (gvalue);
 			g_free (gvalue);
@@ -8777,10 +8777,14 @@ glade_gtk_store_write_columns (GladeWidget        *widget,
 	for (l = g_value_get_boxed (prop->value); l; l = g_list_next (l))
 	{
 		GladeColumnType *data = l->data;
-		GladeXmlNode  *column_node;
-
+		GladeXmlNode  *column_node, *comment_node;
+		
 		/* Write column names in comments... */
-			
+		gchar *comment = g_strdup_printf ("column-name %s", data->column_name);
+		comment_node = glade_xml_node_new_comment (context, comment);
+		glade_xml_node_append_child (columns_node, comment_node);
+		g_free (comment);
+		
 		column_node = glade_xml_node_new (context, GLADE_TAG_COLUMN);
 		glade_xml_node_append_child (columns_node, column_node);
 		glade_xml_node_set_property_string (column_node, GLADE_TAG_TYPE,
@@ -8989,7 +8993,7 @@ glade_gtk_store_read_data (GladeWidget *widget, GladeXmlNode *node)
 			 * should we be doing this part in "finished" ? ... todo thinkso...
 			 */
 			value_str = glade_xml_get_content (col_node);
-			value     = glade_utils_value_from_string (column_type->type, value_str, widget->project);
+			value     = glade_utils_value_from_string (column_type->type, value_str, widget->project, widget);
 			g_free (value_str);
 
 			data = glade_model_data_new (column_type->type);

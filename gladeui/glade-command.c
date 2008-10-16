@@ -49,6 +49,7 @@
 #include "glade-signal.h"
 #include "glade-app.h"
 #include "glade-fixed.h"
+#include "glade-name-context.h"
 
 /* Concerning placeholders: we do not hold any reference to placeholders,
  * placeholders that are supplied by the backend are not reffed, placeholders
@@ -771,7 +772,8 @@ glade_command_set_name_execute (GladeCommand *cmd)
 	g_return_val_if_fail (me->widget != NULL, TRUE);
 	g_return_val_if_fail (me->name != NULL, TRUE);
 
-	glade_widget_set_name (me->widget, me->name);
+	glade_project_set_widget_name (me->widget->project, 
+				       me->widget, me->name);
 	
 	tmp = me->old_name;
 	me->old_name = me->name;
@@ -1621,7 +1623,10 @@ glade_command_create(GladeWidgetAdaptor *adaptor, GladeWidget *parent, GladePlac
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
 		
 	/* attempt to create the widget -- widget may be null, e.g. the user clicked cancel on a query */
-	widget = glade_widget_adaptor_create_widget(adaptor, TRUE, "parent", parent, "project", project, NULL);
+	widget = glade_widget_adaptor_create_widget(adaptor, TRUE, 
+						    "parent", parent, 
+						    "project", project, 
+						    NULL);
 	if (widget == NULL)
 	{
 		return NULL;
@@ -2352,5 +2357,149 @@ glade_command_set_project_format (GladeProject        *project,
 		glade_project_verify_project_for_ui (project);
 	}
 }
+
+
+
+/******************************************************************************
+ * 
+ * set project naming policy 
+ * 
+ * This command sets the naming policy on the project.
+ * 
+ *****************************************************************************/
+
+typedef struct {
+	GladeCommand   parent;
+	GladeProject  *project;
+	GladeNamingPolicy policy;
+	GladeNamingPolicy old_policy;
+	gboolean run_once;
+} GladeCommandSetPolicy;
+
+
+GLADE_MAKE_COMMAND (GladeCommandSetPolicy, glade_command_set_policy);
+#define GLADE_COMMAND_SET_POLICY_TYPE			(glade_command_set_policy_get_type ())
+#define GLADE_COMMAND_SET_POLICY(o)	  		(G_TYPE_CHECK_INSTANCE_CAST ((o), GLADE_COMMAND_SET_POLICY_TYPE, GladeCommandSetPolicy))
+#define GLADE_COMMAND_SET_POLICY_CLASS(k)		(G_TYPE_CHECK_CLASS_CAST ((k), GLADE_COMMAND_SET_POLICY_TYPE, GladeCommandSetPolicyClass))
+#define GLADE_IS_COMMAND_SET_POLICY(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), GLADE_COMMAND_SET_POLICY_TYPE))
+#define GLADE_IS_COMMAND_SET_POLICY_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), GLADE_COMMAND_SET_POLICY_TYPE))
+
+static gboolean
+glade_command_set_policy_execute(GladeCommand *cmd)
+{
+	GladeCommandSetPolicy *me = (GladeCommandSetPolicy *)cmd;
+	GladeNamingPolicy policy;
+
+	/* sanity check */
+	g_return_val_if_fail (me != NULL, TRUE);
+	g_return_val_if_fail (me->project != NULL, TRUE);
+
+	/* set the new policy */
+	glade_project_set_naming_policy (me->project, me->policy, me->run_once == FALSE);
+
+	/* swap the current values with the old values to prepare for undo */
+	policy         = me->policy;
+	me->policy     = me->old_policy;
+	me->old_policy = policy;
+
+	me->run_once = TRUE;
+	
+	return TRUE;
+}
+
+static gboolean
+glade_command_set_policy_undo(GladeCommand *cmd)
+{
+	return glade_command_set_policy_execute(cmd);
+}
+
+static void
+glade_command_set_policy_finalize(GObject *obj)
+{
+/* 	GladeCommandSetPolicy	*me; */
+	
+	g_return_if_fail(GLADE_IS_COMMAND_SET_POLICY(obj));
+	
+	glade_command_finalize(obj);
+}
+
+static gboolean
+glade_command_set_policy_unifies (GladeCommand *this_cmd, GladeCommand *other_cmd)
+{
+/* 	GladeCommandSetPolicy *cmd1; */
+/* 	GladeCommandSetPolicy *cmd2; */
+
+	return FALSE;
+}
+
+static void
+glade_command_set_policy_collapse (GladeCommand *this_cmd, GladeCommand *other_cmd)
+{
+	/* this command is the one that will be used for an undo of the sequence of like commands */
+	//GladeCommandSetPolicy *this = GLADE_COMMAND_SET_POLICY (this_cmd);
+	
+	/* the other command contains the values that will be used for a redo */
+	//GladeCommandSetPolicy *other = GLADE_COMMAND_SET_POLICY (other_cmd);
+
+	g_return_if_fail (GLADE_IS_COMMAND_SET_POLICY (this_cmd) && GLADE_IS_COMMAND_SET_POLICY (other_cmd));
+
+	/* no unify/collapse */
+}
+
+/**
+ * glade_command_set_project_naming_policy:
+ * @project: a #GladeProject
+ * @policy: the #GladeNamingPolicy
+ *
+ * Sets the naming policy of a project
+ */
+void
+glade_command_set_project_naming_policy  (GladeProject       *project,
+					  GladeNamingPolicy   policy)
+
+{
+	GladeCommandSetPolicy *me;
+	
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+
+	if (glade_project_get_naming_policy (project) != policy)
+	{
+		gchar *prj_name = glade_project_get_name (project);
+		glade_command_push_group (_("Setting %s to use a %s naming policy"),
+					  prj_name, 
+					  policy == GLADE_POLICY_PROJECT_WIDE ? 
+					  "project wide" : "toplevel contextual");
+		g_free (prj_name);
+
+		/* load up the command */
+		me = g_object_new(GLADE_COMMAND_SET_POLICY_TYPE, NULL);
+		me->project = project;
+		me->policy = policy;
+		me->old_policy = glade_project_get_naming_policy (project);
+
+		me->run_once = FALSE;
+
+		GLADE_COMMAND(me)->description = g_strdup_printf("dummy string");
+	
+		glade_command_check_group(GLADE_COMMAND(me));
+		
+		/* execute the command and push it on the stack if successful 
+		 * this sets the actual policy
+		 */
+		if (glade_command_set_policy_execute(GLADE_COMMAND(me)))
+		{
+			glade_project_push_undo(glade_app_get_project(), GLADE_COMMAND(me));
+		}
+		else
+		{
+			g_object_unref(G_OBJECT(me));
+		}
+
+		glade_command_pop_group ();
+
+		glade_editor_refresh (glade_app_get_editor ());
+	}
+}
+
 
 

@@ -113,8 +113,9 @@ glade_editor_property_commit (GladeEditorProperty *eprop,
 
 }
 
-void glade_editor_property_commit_no_callback (GladeEditorProperty *eprop,
-					       GValue              *value)
+void
+glade_editor_property_commit_no_callback (GladeEditorProperty *eprop,
+					  GValue              *value)
 {
 	g_return_if_fail (GLADE_IS_EDITOR_PROPERTY (eprop));
 
@@ -1601,7 +1602,7 @@ glade_eprop_text_changed_common (GladeEditorProperty *eprop,
 	    eprop->property->klass->pspec->value_type == G_TYPE_VALUE_ARRAY)
 	{
 		val = glade_property_class_make_gvalue_from_string 
-			(eprop->property->klass, text, NULL);
+			(eprop->property->klass, text, NULL, NULL);
 	} 
 	else
 	{
@@ -2228,7 +2229,7 @@ glade_eprop_resource_entry_activate (GtkEntry *entry, GladeEditorProperty *eprop
 {
 	GladeProject *project = glade_widget_get_project (eprop->property->widget);
 	GValue *value = glade_property_class_make_gvalue_from_string 
-		(eprop->klass, gtk_entry_get_text(entry), project);
+		(eprop->klass, gtk_entry_get_text(entry), project, eprop->property->widget);
 
 	/* Set project resource here where we still have the fullpath.
 	 */
@@ -2287,7 +2288,7 @@ glade_eprop_resource_select_file (GtkButton *button, GladeEditorProperty *eprop)
 		basename = g_path_get_basename (file);
 
 		value = glade_property_class_make_gvalue_from_string 
-			(eprop->klass, basename, project);
+			(eprop->klass, basename, project, eprop->property->widget);
 		
 		glade_editor_property_commit (eprop, value);
 		
@@ -2824,7 +2825,7 @@ glade_eprop_object_show_dialog (GtkWidget           *dialog_button,
 		if (selected)
 		{
 			GValue *value = glade_property_class_make_gvalue_from_string
-				(eprop->klass, selected->name, project);
+				(eprop->klass, selected->name, project, eprop->property->widget);
 
 			/* Unparent the widget so we can reuse it for this property */
 			if (eprop->klass->parentless_widget)
@@ -2880,9 +2881,12 @@ glade_eprop_object_show_dialog (GtkWidget           *dialog_button,
 		if ((new_widget = glade_command_create (create_adaptor, NULL, NULL, project)) != NULL)
 		{
 			value = glade_property_class_make_gvalue_from_string
-				(eprop->klass, new_widget->name, project);
+				(eprop->klass, new_widget->name, project, NULL);
 
 			glade_editor_property_commit (eprop, value);
+
+			g_value_unset (value);
+			g_free (value);
 		}
 
 		glade_command_pop_group ();
@@ -2890,7 +2894,7 @@ glade_eprop_object_show_dialog (GtkWidget           *dialog_button,
 	else if (res == GLADE_RESPONSE_CLEAR)
 	{
 		GValue *value = glade_property_class_make_gvalue_from_string
-			(eprop->klass, NULL, project);
+			(eprop->klass, NULL, project, eprop->property->widget);
 		
 		glade_editor_property_commit (eprop, value);
 

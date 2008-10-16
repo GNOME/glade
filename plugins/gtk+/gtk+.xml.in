@@ -901,7 +901,7 @@ embedded in another object</_tooltip>
 	<signal id="popup" since="2.12"/>
       </signals>
       <properties>
-        <property id="model" libglade-unsupported="True"/>
+        <property id="model" libglade-unsupported="True" create-type="GtkListStore"/>
         <property id="popup-shown" since="2.10"/>
         <property id="tearoff-title" since="2.10"/>
         <property id="active" ignore="True"/>
@@ -1068,8 +1068,8 @@ embedded in another object</_tooltip>
       </packing-actions>
 
       <properties>
-	<property id="n-rows" default="3" query="True"/>
-	<property id="n-columns" default="3" query="True"/>
+	<property id="n-rows" default="3" query="True" needs-sync="True"/>
+	<property id="n-columns" default="3" query="True" needs-sync="True"/>
       </properties>
       
       <packing-properties>

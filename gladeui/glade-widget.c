@@ -619,7 +619,7 @@ glade_widget_sync_custom_props (GladeWidget *widget)
 	{
 		GladeProperty *prop  = GLADE_PROPERTY(l->data);
 
-		if (prop->klass->virt)
+		if (prop->klass->virt || prop->klass->needs_sync)
 			glade_property_sync (prop);
 
 	}
@@ -662,6 +662,7 @@ glade_widget_constructor (GType                  type,
 			{
 				gwidget->name = 
 					glade_project_new_widget_name (gwidget->project, 
+								       gwidget,
 								       name_base);
 				g_free (name_base);
 			}
@@ -671,7 +672,7 @@ glade_widget_constructor (GType                  type,
 		}
 		else if (gwidget->project)
 			gwidget->name = glade_project_new_widget_name
-				(GLADE_PROJECT (gwidget->project), 
+				(gwidget->project, gwidget,
 				 gwidget->adaptor->generic_name);
 		else
 			gwidget->name = 
@@ -1228,7 +1229,8 @@ glade_widget_set_default_packing_properties (GladeWidget *container,
 		
 		value = glade_property_class_make_gvalue_from_string (property_class,
 								      def,
-								      child->project);
+								      child->project,
+								      child);
 		
 		glade_widget_child_set_property (container, child,
 						 property_class->id, value);
@@ -2377,15 +2379,8 @@ void
 glade_widget_set_name (GladeWidget *widget, const gchar *name)
 {
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
-	if (widget->name != name) {
-
-		if (widget->project && 
-		    glade_project_get_widget_by_name (widget->project, name))
-		{
-			/* print a warning ? */
-			return;
-		}
-
+	if (widget->name != name) 
+	{
 		if (widget->name)
 			g_free (widget->name);
 		
