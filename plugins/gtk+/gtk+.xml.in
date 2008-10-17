@@ -927,6 +927,11 @@ embedded in another object</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkTreeView" generic-name="treeview" _title="Tree View">
+      <post-create-function>empty</post-create-function>
+      <get-children-function>glade_gtk_treeview_get_children</get-children-function>
+      <add-child-function>glade_gtk_treeview_add_child</add-child-function>
+      <remove-child-function>glade_gtk_treeview_remove_child</remove-child-function>
+
       <properties>
         <property id="level-indentation" since="2.12"/>
         <property id="show-expanders" since="2.12"/>
@@ -942,9 +947,6 @@ embedded in another object</_tooltip>
 	<property id="vadjustment" libglade-unsupported="True"/>
         <property id="model" libglade-unsupported="True"/>
       </properties>
-    </glade-widget-class>
-
-    <glade-widget-class name="GtkTreeViewColumn" generic-name="treeviewcolumn" _title="Tree View Column">
     </glade-widget-class>
 
     <glade-widget-class name="GtkIconView" generic-name="iconview" _title="Icon View">
@@ -1046,7 +1048,7 @@ embedded in another object</_tooltip>
       <post-create-function>glade_gtk_table_post_create</post-create-function>
       <child-set-property-function>glade_gtk_table_set_child_property</child-set-property-function>
       <child-verify-function>glade_gtk_table_child_verify_property</child-verify-function>
-			<get-children-function>glade_gtk_table_get_children</get-children-function>
+      <get-children-function>glade_gtk_table_get_children</get-children-function>
       <add-child-function>glade_gtk_table_add_child</add-child-function>
       <remove-child-function>glade_gtk_table_remove_child</remove-child-function>
       <replace-child-function>glade_gtk_table_replace_child</replace-child-function>
@@ -1799,7 +1801,7 @@ embedded in another object</_tooltip>
       <properties>
         <property id="columns" since="2.12" _name="Columns" save="False" construct-only="True">
           <spec>glade_standard_column_types_spec</spec>
-          <_tooltip>Set column types for this model</_tooltip>
+          <_tooltip>Enter a list of column types for this data store</_tooltip>
         </property>
         <property id="data" since="2.12" _name="Data" save="False">
           <spec>glade_standard_model_data_spec</spec>
@@ -1812,16 +1814,16 @@ embedded in another object</_tooltip>
 			libglade-unsupported="True" toplevel="True">
       <set-property-function>glade_gtk_store_set_property</set-property-function>
       <create-editor-property-function>glade_gtk_store_create_eprop</create-editor-property-function>
-      <string-from-value-function>glade_gtk_store_from_value</string-from-value-function>
+      <string-from-value-function>glade_gtk_store_string_from_value</string-from-value-function>
       <write-widget-function>glade_gtk_store_write_widget</write-widget-function>
       <read-widget-function>glade_gtk_store_read_widget</read-widget-function>
       <properties>
-        <property id="columns" since="2.12" _name="Columns" save="False">
-          <spec>glade_standard_model_data_spec</spec>
-          <_tooltip>Set column types for this model</_tooltip>
+        <property id="columns" since="2.12" _name="Columns" save="False" construct-only="True">
+          <spec>glade_standard_column_types_spec</spec>
+          <_tooltip>Enter a list of column types for this data store</_tooltip>
         </property>
         <property id="data" since="2.12" _name="Data" save="False">
-          <spec>glade_standard_strv_spec</spec>
+          <spec>glade_standard_model_data_spec</spec>
           <_tooltip>Enter a list of values to be applied on each row</_tooltip>
         </property>
       </properties>
@@ -1833,6 +1835,26 @@ embedded in another object</_tooltip>
 			libglade-unsupported="True" toplevel="True"/>
     <glade-widget-class name="GtkTreeSelection" generic-name="treeselection" _title="Tree Selection" 
 			libglade-unsupported="True" toplevel="True"/>
+
+
+    <glade-widget-class name="GtkTreeViewColumn" generic-name="treeviewcolumn" _title="Tree View Column" 
+			libglade-unsupported="True"/>
+
+    <glade-widget-class name="GtkCellRendererText" generic-name="cellrenderertext" _title="Text Renderer" 
+			libglade-unsupported="True"/>
+    <glade-widget-class name="GtkCellRendererAccel" generic-name="cellrendereraccel" _title="Accelerator Renderer" 
+			libglade-unsupported="True"/>
+    <glade-widget-class name="GtkCellRendererCombo" generic-name="cellrenderercombo" _title="Combo Renderer" 
+			libglade-unsupported="True"/>
+    <glade-widget-class name="GtkCellRendererSpin" generic-name="cellrendererspin" _title="Spin Renderer" 
+			libglade-unsupported="True"/>
+    <glade-widget-class name="GtkCellRendererPixbuf" generic-name="cellrendererpixbuf" _title="Pixbuf Renderer" 
+			libglade-unsupported="True"/>
+    <glade-widget-class name="GtkCellRendererProgress" generic-name="cellrendererprogress" _title="Progress Renderer" 
+			libglade-unsupported="True"/>
+    <glade-widget-class name="GtkCellRendererToggle" generic-name="cellrenderertoggle" _title="Toggle Renderer" 
+			libglade-unsupported="True"/>
+
 
     <glade-widget-class name="GtkStatusIcon" generic-name="statusicon" _title="Status Icon" 
 			libglade-unsupported="True" toplevel="True"/>
@@ -1909,7 +1931,6 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkLabel"/>
     <glade-widget-class-ref name="GtkAccelLabel"/>
     <glade-widget-class-ref name="GtkEntry"/>
-    <glade-widget-class-ref name="GtkTextView"/>
 
     <glade-widget-class-ref name="GtkHScale"/>
     <glade-widget-class-ref name="GtkVScale"/>
@@ -1919,9 +1940,6 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkComboBox"/>
     <glade-widget-class-ref name="GtkComboBoxEntry"/>
     <glade-widget-class-ref name="GtkProgressBar"/>
-
-    <glade-widget-class-ref name="GtkTreeView"/>
-    <glade-widget-class-ref name="GtkIconView"/>
 
     <glade-widget-class-ref name="GtkHandleBox"/>
     <glade-widget-class-ref name="GtkStatusbar"/>
@@ -1953,7 +1971,7 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkRecentAction"/>
   </glade-widget-group>
 
-  <glade-widget-group name="gtk-mvc" title="Tree Model">
+  <glade-widget-group name="gtk-model" title="Tree Model">
 
     <default-palette-state expanded="False"/>
 
@@ -1964,10 +1982,28 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkTreeSelection"/>
   </glade-widget-group>
 
+  <glade-widget-group name="gtk-view" title="Tree View">
+
+    <default-palette-state expanded="False"/>
+
+    <glade-widget-class-ref name="GtkTreeView"/>
+    <glade-widget-class-ref name="GtkIconView"/>
+    <glade-widget-class-ref name="GtkTreeViewColumn"/>
+    <glade-widget-class-ref name="GtkCellRendererText"/>
+    <glade-widget-class-ref name="GtkCellRendererAccel"/>
+    <glade-widget-class-ref name="GtkCellRendererCombo"/>
+    <glade-widget-class-ref name="GtkCellRendererSpin"/>
+    <glade-widget-class-ref name="GtkCellRendererPixbuf"/>
+    <glade-widget-class-ref name="GtkCellRendererProgress"/>
+    <glade-widget-class-ref name="GtkCellRendererToggle"/>
+  </glade-widget-group>
+
+
   <glade-widget-group name="gtk-text" _title="Text Manipulation">
 
     <default-palette-state expanded="False"/>
 
+    <glade-widget-class-ref name="GtkTextView"/>
     <glade-widget-class-ref name="GtkTextBuffer"/>
     <glade-widget-class-ref name="GtkTextTag"/>
     <glade-widget-class-ref name="GtkTextTagTable"/>

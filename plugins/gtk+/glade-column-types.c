@@ -580,9 +580,7 @@ column_name_edited (GtkCellRendererText *cell,
 	if (data_tree)
 	{
 		data_tree = glade_model_data_tree_copy (data_tree);
-
 		glade_model_data_column_rename (data_tree, old_column_name, column_name);
-
 		glade_command_set_property (property, data_tree);
 		glade_model_data_tree_free (data_tree);
 	}

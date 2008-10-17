@@ -1,3 +1,13 @@
+2008-10-17  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-command.c: Fixed property commands to not unify across separate groups,
+	and also to unify when they are not lists.
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-model-data.c:
+	  - Data properties now have DnD working
+	  - Adding TreeViewColumn support
+	  - Fixing liststore support to work for treestore
+	
 2008-10-16  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* plugins/gtk+/glade-attributes.c: applied proposed patch for bug #547431

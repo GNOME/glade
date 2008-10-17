@@ -213,8 +213,6 @@ glade_model_data_column_rename (GNode          *node,
 
 	for (row = node->children; row; row = row->next)
 	{
-		g_print ("Setting new name %s for old name %s at index %d\n",
-			 new_name, column_name, idx);
 		iter = g_node_nth_child (row, idx);
 		data = iter->data;
 		g_free (data->name);
@@ -362,6 +360,22 @@ clear_view (GladeEditorProperty *eprop)
 	
 }
 
+static gboolean
+update_data_tree_idle (GladeEditorProperty *eprop)
+{
+	GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
+	GValue               value = { 0, };
+	
+	g_value_init (&value, GLADE_TYPE_MODEL_DATA_TREE);
+	g_value_take_boxed (&value, eprop_data->pending_data_tree);
+	glade_editor_property_commit (eprop, &value);
+	g_value_unset (&value);
+
+	eprop_data->pending_data_tree = NULL;
+	return FALSE;
+}
+
+
 /* User pressed add: append row and commit values  */
 static void
 glade_eprop_model_data_add_clicked (GtkWidget *button, 
@@ -396,42 +410,89 @@ glade_eprop_model_data_add_clicked (GtkWidget *button,
 /* User pressed delete: remove selected row and commit values  */
 static void
 glade_eprop_model_data_delete_clicked (GtkWidget *button, 
-				    GladeEditorProperty *eprop)
+				       GladeEditorProperty *eprop)
 {
 	GtkTreeIter iter;
 	GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
+	GNode *data_tree = NULL, *row;
+	gint rownum = -1;
+
 	/* NOTE: This will trigger row-deleted below... */
-	if (gtk_tree_selection_get_selected (eprop_data->selection, NULL, &iter))
-		gtk_list_store_remove (GTK_LIST_STORE (eprop_data->store), &iter);
+	if (!gtk_tree_selection_get_selected (eprop_data->selection, NULL, &iter))
+		return;
+
+	gtk_tree_model_get (GTK_TREE_MODEL (eprop_data->store), &iter,
+			    COLUMN_ROW, &rownum,
+			    -1);
+	g_assert (rownum >= 0);
+	
+	/* if theres a sected row, theres data... */
+	glade_property_get (eprop->property, &data_tree);
+	g_assert (data_tree);
+
+	data_tree = glade_model_data_tree_copy (data_tree);
+	row = g_node_nth_child (data_tree, rownum);
+
+	g_node_unlink (row);
+	glade_model_data_tree_free (row);
+
+	if (eprop_data->pending_data_tree)
+		glade_model_data_tree_free (eprop_data->pending_data_tree);
+
+	eprop_data->pending_data_tree = data_tree;
+	g_idle_add ((GSourceFunc)update_data_tree_idle, eprop);
 }
  
+
+static gboolean
+data_changed_idle (GladeEditorProperty *eprop)
+{
+
+	GladeEPropModelData   *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
+	GNode                 *data_tree = NULL, *new_tree, *row;
+	GtkTreeIter            iter;
+	gint                   rownum;
+
+	glade_property_get (eprop->property, &data_tree);
+	g_assert (data_tree);
+
+	new_tree = g_node_new (NULL);
+
+	if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (eprop_data->store), &iter))
+	{
+		do 
+		{
+			gtk_tree_model_get (GTK_TREE_MODEL (eprop_data->store), &iter,
+					    COLUMN_ROW, &rownum, -1);
+
+
+			if ((row = g_node_nth_child (data_tree, rownum)) != NULL)
+			{
+				/* Make a new tree by copying row by row... */
+				row = glade_model_data_tree_copy (row);
+				g_node_append (new_tree, row);
+			}
+		} 
+		while (gtk_tree_model_iter_next (GTK_TREE_MODEL (eprop_data->store), &iter));
+	}
+
+	/* Were already in an idle, no need to idle from here...  */
+	if (eprop_data->pending_data_tree)
+		glade_model_data_tree_free (eprop_data->pending_data_tree);
+	eprop_data->pending_data_tree = new_tree;
+	update_data_tree_idle (eprop);
+
+	return FALSE;
+}
+
 static void
 eprop_treeview_row_deleted (GtkTreeModel *tree_model,
 			    GtkTreePath  *path,
 			    GladeEditorProperty *eprop)
 {
-	/* User deleted a row: commit values from treeview to property */
-#if 0
-	GtkTreeIter iter;
-	GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
-	GNode *data_tree = NULL, *row;
+	if (eprop->loading) return;
 
-	glade_property_get (eprop->property, &data_tree);
-
-	if (gtk_tree_selection_get_selected (eprop_types->selection, NULL, &iter))
-	{
-		
-	}
-
-	for (row = data_tree->children; row; row = row->next
-
-
-	g_value_init (&value, GLADE_TYPE_MODEL_DATA_TREE);
-	g_value_take_boxed (&value, node);
-	glade_editor_property_commit (eprop, &value);
-	g_value_unset (&value);
-
-#endif
+	g_idle_add ((GSourceFunc)data_changed_idle, eprop);
 }
 
 
@@ -440,7 +501,6 @@ glade_eprop_model_data_finalize (GObject *object)
 {
 	/* Chain up */
 	GObjectClass *parent_class = g_type_class_peek_parent (G_OBJECT_GET_CLASS (object));
-
 	GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (object);
 
 	if (eprop_data->store)
@@ -492,21 +552,6 @@ eprop_model_data_generate_store (GladeEditorProperty *eprop)
 		}
 	}
 	return store;
-}
- 
-static gboolean
-update_data_tree_idle (GladeEditorProperty *eprop)
-{
-	GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
-	GValue               value = { 0, };
-	
-	g_value_init (&value, GLADE_TYPE_MODEL_DATA_TREE);
-	g_value_take_boxed (&value, eprop_data->pending_data_tree);
-	glade_editor_property_commit (eprop, &value);
-	g_value_unset (&value);
-
-	eprop_data->pending_data_tree = NULL;
-	return FALSE;
 }
 
 static void
@@ -780,7 +825,7 @@ glade_eprop_model_data_load (GladeEditorProperty *eprop,
 		gtk_tree_view_set_model (eprop_data->view, GTK_TREE_MODEL (eprop_data->store));
 		g_object_unref (G_OBJECT (eprop_data->store));
 		
-		g_signal_connect (eprop_data->store, "row-deleted",
+		g_signal_connect (G_OBJECT (eprop_data->store), "row-deleted",
 				  G_CALLBACK (eprop_treeview_row_deleted),
 				  eprop);
 	}

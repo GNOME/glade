@@ -1961,7 +1961,7 @@ glade_utils_enum_string_from_value (GType enum_type, gint value)
 	g_value_init (&gvalue, enum_type);
 	g_value_set_enum (&gvalue, value);
 
-	string = glade_utils_string_from_value (&gvalue, NULL);
+	string = glade_utils_string_from_value (&gvalue, GLADE_PROJECT_FORMAT_GTKBUILDER);
 	g_value_unset (&gvalue);
 
 	return string;
@@ -2103,8 +2103,8 @@ glade_utils_value_from_string (GType               type,
 
 /**
  * glade_utils_string_from_value:
- * @value: the value to convert
- * @project: the #GladeProject to look for formats of object names when needed
+ * @value: a #GValue to convert
+ * @fmt: the #GladeProjectFormat to honor
  *
  * Serializes #GValue into a string 
  * (using glade conversion routines) 
@@ -2113,14 +2113,11 @@ glade_utils_value_from_string (GType               type,
  */
 gchar *
 glade_utils_string_from_value (const GValue       *value,
-			       GladeProject       *project)
+			       GladeProjectFormat  fmt)
 {
-	GladeProjectFormat  fmt;
 	GladePropertyClass *pclass;
 
 	g_return_val_if_fail (value != NULL, NULL);
-
-	fmt = project ? glade_project_get_format (project) : GLADE_PROJECT_FORMAT_GTKBUILDER;
 
 	if ((pclass = pclass_from_gtype (G_VALUE_TYPE (value))) != NULL)
 		return glade_property_class_make_string_from_gvalue (pclass, value, fmt);

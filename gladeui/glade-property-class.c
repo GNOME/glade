@@ -1656,8 +1656,11 @@ glade_property_class_compare (GladePropertyClass *klass,
 	{
 		gchar *val1, *val2;
 
-		/* This has got to change... */
-		
+		/* So boxed types are compared by string and the backend is required to generate
+		 * unique strings for values for this purpose.
+		 *
+		 * NOTE: We could add a pclass option to use the string compare vs. boxed compare...
+		 */
 		val1 = glade_widget_adaptor_string_from_value (klass->handle, klass, value1, fmt);
 		val2 = glade_widget_adaptor_string_from_value (klass->handle, klass, value2, fmt);
 
@@ -1668,9 +1671,6 @@ glade_property_class_compare (GladePropertyClass *klass,
 		
 		g_free (val1);
 		g_free (val2);
-
-		/* boxed always changed... XXX */
-		return -1;
 	}
 	else
 	{

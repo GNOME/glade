@@ -6098,7 +6098,7 @@ glade_gtk_menu_item_constructor (GType                  type,
 
 GList *
 glade_gtk_menu_item_get_children (GladeWidgetAdaptor *adaptor,
-				 GObject *object)
+				  GObject *object)
 {
 	GList *list = NULL;
 	GtkWidget *child;
@@ -7253,9 +7253,6 @@ glade_gtk_label_set_attributes (GObject *object, const GValue *value)
 
 		attribute = NULL;
 
-		g_print ("Setting an attribute...\n");
-
-
 		switch (gattr->type)
 		{
 			/* PangoAttrLanguage */
@@ -7268,7 +7265,6 @@ glade_gtk_label_set_attributes (GObject *object, const GValue *value)
 			attribute = pango_attr_style_new (g_value_get_enum (&(gattr->value)));
 			break;
 		case PANGO_ATTR_WEIGHT:
-			g_print ("XX Setting weight\n");
 			attribute = pango_attr_weight_new (g_value_get_enum (&(gattr->value)));
 			break;
 		case PANGO_ATTR_VARIANT:
@@ -7420,10 +7416,6 @@ glade_gtk_label_read_attributes (GladeWidget  *widget,
 	if ((attrs_node = 
 	     glade_xml_search_child (node, GLADE_TAG_ATTRIBUTES)) != NULL)
 	{
-		
-		g_print ("got attributes node...\n");
-
-
 		/* Generic attributes parsing */
 		glade_gtk_parse_attributes (widget, attrs_node);
 	}
@@ -7808,7 +7800,7 @@ glade_gtk_combo_get_internal_child (GladeWidgetAdaptor *adaptor,
 }
 
 GList *
-glade_gtk_combo_get_children (GtkCombo *combo)
+glade_gtk_combo_get_children (GladeWidgetAdaptor *adaptor, GtkCombo *combo)
 {
 	GList *list = NULL;
 
@@ -8590,7 +8582,7 @@ glade_gtk_size_group_set_property (GladeWidgetAdaptor *adaptor,
 							     property_name, value);
 }
 
-/*--------------------------- GtkListStore ---------------------------------*/
+/*--------------------------- GtkListStore/GtkTreeStore ---------------------------------*/
 
 #define GLADE_TAG_COLUMNS	"columns"
 #define GLADE_TAG_COLUMN	"column"
@@ -8733,33 +8725,51 @@ glade_gtk_store_string_from_value (GladeWidgetAdaptor *adaptor,
 				   const GValue       *value,
 				   GladeProjectFormat  fmt)
 {
+	GString *string;
+
 	if (GLADE_IS_PARAM_SPEC_COLUMN_TYPES (klass->pspec))
 	{
-		GString *val = g_string_new ("");
-		gchar *retval;
 		GList *l;
-		
+		string = g_string_new ("");		
 		for (l = g_value_get_boxed (value); l; l = g_list_next (l))
 		{
 			GladeColumnType *data = l->data;
-			g_string_append_printf (val, (g_list_next (l)) ? "%s|" : "%s",
-						g_type_name (data->type));
+			g_string_append_printf (string, (g_list_next (l)) ? "%s:%s|" : "%s:%s",
+						g_type_name (data->type), data->column_name);
 		}
-		
-		retval = val->str;
-		g_string_free (val, FALSE);
-		return retval;
+		return g_string_free (string, FALSE);
 	}
 	else if (GLADE_IS_PARAM_SPEC_MODEL_DATA (klass->pspec))
 	{
-		GNode *node;
+		GladeModelData *data;
+		GNode *data_tree, *row, *iter;
+		gint rownum;
+		gchar *str;
+		gboolean is_last;
 
-		node = g_value_get_boxed (value);
-		if (node && node->children && node->children->children)
-			return g_strdup_printf (_("Data available"));
-		else
-			return g_strdup_printf (_("No data"));
+		/* Return a unique string for the backend to compare */
+		data_tree = g_value_get_boxed (value);
 
+		if (!data_tree || !data_tree->children)
+			return g_strdup ("");
+
+		string = g_string_new ("");
+		for (rownum = 0, row = data_tree->children; row; 
+		     rownum++, row = row->next)
+		{
+			for (iter = row->children; iter; iter = iter->next)
+			{
+				data = iter->data;
+
+				str = glade_utils_string_from_value (&data->value, fmt);
+
+				is_last = !row->next && !iter->next;
+				g_string_append_printf (string, !is_last ? "%s[%d]:%s|" : "%s[%d]:%s",
+							data->name, rownum, str);
+				g_free (str);
+			}
+		}
+		return g_string_free (string, FALSE);
 	}
 	else
 		return GWA_GET_CLASS 
@@ -8841,7 +8851,7 @@ glade_gtk_store_write_data (GladeWidget        *widget,
 			data = iter->data;
 
 			string = glade_utils_string_from_value (&data->value, 
-								widget->project);
+								glade_project_get_format (widget->project));
 
 			/* XXX Log error: data col j exceeds columns on row i */
 			if (!g_list_nth (columns, colnum))
@@ -9052,4 +9062,45 @@ glade_gtk_store_read_widget (GladeWidgetAdaptor *adaptor,
 
 	glade_gtk_store_read_columns (widget, node);
 	glade_gtk_store_read_data (widget, node);
+}
+
+
+
+/*--------------------------- GtkTreeView ---------------------------------*/
+
+GList *
+glade_gtk_treeview_get_children (GladeWidgetAdaptor *adaptor,
+				 GtkTreeView        *view)
+{
+	return gtk_tree_view_get_columns (view);
+}
+
+void
+glade_gtk_treeview_add_child (GladeWidgetAdaptor *adaptor,
+			      GObject *container,
+			      GObject *child)
+{
+	GtkTreeView *view = GTK_TREE_VIEW (container);
+	GtkTreeViewColumn *column;
+
+	if (!GTK_IS_TREE_VIEW_COLUMN (child))
+		return;
+
+	column = GTK_TREE_VIEW_COLUMN (child);
+	gtk_tree_view_append_column (view, column);
+}
+
+void
+glade_gtk_treeview_remove_child (GladeWidgetAdaptor *adaptor,
+				 GObject *container,
+				 GObject *child)
+{
+	GtkTreeView *view = GTK_TREE_VIEW (container);
+	GtkTreeViewColumn *column;
+
+	if (!GTK_IS_TREE_VIEW_COLUMN (child))
+		return;
+
+	column = GTK_TREE_VIEW_COLUMN (child);
+	gtk_tree_view_remove_column (view, column);
 }

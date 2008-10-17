@@ -230,6 +230,13 @@ glade_command_unifies (GladeCommand *command,
 		       GladeCommand *other)
 {
 	g_return_val_if_fail (command, FALSE);
+
+	/* Cannot unify with a part of a command group.
+	 * Unify atomic commands only
+	 */
+	if (command->group_id != 0 || (other && other->group_id != 0))
+		return FALSE;
+
 	return GLADE_COMMAND_GET_CLASS (command)->unifies (command, other);
 }
 
@@ -620,6 +627,7 @@ glade_command_set_properties_list (GladeProject *project, GList *props)
 	GCSetPropData *sdata;
 	GList         *list;
 	gboolean       success;
+	gboolean       multiple;
 
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (props);
@@ -635,16 +643,20 @@ glade_command_set_properties_list (GladeProject *project, GList *props)
 	}
 
 	me->sdata        = props;
-	cmd->description = NULL;
+	cmd->description = 
+		glade_command_set_property_description 
+		(me, glade_project_get_format (project));
 
-	glade_command_push_group (glade_command_set_property_description 
-				  (me, glade_project_get_format (project)));
+
+	multiple = g_list_length (me->sdata) > 1;
+	if (multiple)
+		glade_command_push_group (cmd->description);
+
+
 	glade_command_check_group (GLADE_COMMAND (me));
 
 	/* Push onto undo stack only if it executes successfully. */
 	success = glade_command_set_property_execute (GLADE_COMMAND (me));
-
-	glade_command_pop_group ();
 	
 	if (success)
 		glade_project_push_undo (GLADE_PROJECT (project),
@@ -652,6 +664,9 @@ glade_command_set_properties_list (GladeProject *project, GList *props)
 	else
 		/* No leaks on my shift! */
 		g_object_unref (G_OBJECT (me));
+	
+	if (multiple)
+		glade_command_pop_group ();
 }
 
 

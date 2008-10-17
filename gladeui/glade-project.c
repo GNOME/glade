@@ -524,16 +524,8 @@ glade_project_push_undo_impl (GladeProject *project, GladeCommand *cmd)
 	    priv->prev_redo_item != NULL)
 	{
 		GladeCommand *cmd1 = priv->prev_redo_item->data;
-		gboolean is_atomic = FALSE;
 
-		/* Cannot unify with a part of a command group.
-		 * Unify atomic commands only
-		 */
-		if (cmd1->group_id == 0 || cmd->group_id == 0 ||
-		    cmd->group_id != cmd1->group_id)
-			is_atomic = TRUE;
-
-		if (is_atomic && glade_command_unifies (cmd1, cmd))
+		if (glade_command_unifies (cmd1, cmd))
 		{
 			glade_command_collapse (cmd1, cmd);
 			g_object_unref (cmd);
