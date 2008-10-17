@@ -559,14 +559,15 @@ button_press_cb (GtkWidget      *widget,
 				/* now we can obtain the widget from the iter.
 				 */
 				gtk_tree_model_get (GTK_TREE_MODEL (inspector->priv->model), &iter,
-							WIDGET_COLUMN, &widget, -1);
-					if (widget != NULL)
-						glade_popup_widget_pop (widget, event, FALSE);
-					else
-						glade_popup_simple_pop (event);
+						    WIDGET_COLUMN, &widget, -1);
 
-					handled = TRUE;
-
+				if (widget != NULL)
+					glade_popup_widget_pop (widget, event, TRUE);
+				else
+					glade_popup_simple_pop (event);
+				
+				handled = TRUE;
+				
 				gtk_tree_path_free (path);
 			}
 		}

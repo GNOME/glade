@@ -645,7 +645,7 @@ glade_editor_table_append_items (GladeEditorTable     *table,
 	{
 		property_class = (GladePropertyClass *) list->data;
 
-		if (!glade_property_class_is_visible (property_class))
+		if (!glade_property_class_is_visible (property_class) && type != TABLE_TYPE_QUERY)
 			continue;
 		if (type == TABLE_TYPE_QUERY && !property_class->query)
 			continue;

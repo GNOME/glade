@@ -926,49 +926,6 @@ embedded in another object</_tooltip>
       <get-internal-child-function>glade_gtk_combo_box_entry_get_internal_child</get-internal-child-function>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkTreeView" generic-name="treeview" _title="Tree View">
-      <post-create-function>empty</post-create-function>
-      <get-children-function>glade_gtk_treeview_get_children</get-children-function>
-      <add-child-function>glade_gtk_treeview_add_child</add-child-function>
-      <remove-child-function>glade_gtk_treeview_remove_child</remove-child-function>
-
-      <properties>
-        <property id="level-indentation" since="2.12"/>
-        <property id="show-expanders" since="2.12"/>
-        <property id="enable-grid-lines" ignore="True">
-  	  <displayable-values>
-	    <value id="GTK_TREE_VIEW_GRID_LINES_NONE" _name="None"/>
-	    <value id="GTK_TREE_VIEW_GRID_LINES_HORIZONTAL" _name="Horizontal"/>
-	    <value id="GTK_TREE_VIEW_GRID_LINES_VERTICAL" _name="Vertical"/>
-	    <value id="GTK_TREE_VIEW_GRID_LINES_BOTH" _name="Horizontal and Vertical"/>
-	  </displayable-values>
-	</property>
-        <property id="hadjustment" libglade-unsupported="True"/>
-	<property id="vadjustment" libglade-unsupported="True"/>
-        <property id="model" libglade-unsupported="True"/>
-      </properties>
-    </glade-widget-class>
-
-    <glade-widget-class name="GtkIconView" generic-name="iconview" _title="Icon View">
-      <properties>
-        <property id="selection-mode">
-  	  <displayable-values>
-	    <value id="GTK_SELECTION_NONE" _name="None"/>
-	    <value id="GTK_SELECTION_SINGLE" _name="Single"/>
-	    <value id="GTK_SELECTION_BROWSE" _name="Browse"/>
-	    <value id="GTK_SELECTION_MULTIPLE" _name="Multiple"/>
-	    <value id="GTK_SELECTION_EXTENDED" _name="Extended"/>
-	  </displayable-values>
-	</property>
-	<property id="orientation">
-  	  <displayable-values>
-	    <value id="GTK_ORIENTATION_HORIZONTAL" _name="Horizontal"/>
-	    <value id="GTK_ORIENTATION_VERTICAL" _name="Vertical"/>
-	  </displayable-values>
-	</property>
-      </properties>
-    </glade-widget-class>
-
     <glade-widget-class name="GtkProgressBar" generic-name="progressbar" _title="Progress Bar">
       <properties>
         <property id="text" translatable="True"/>
@@ -1149,7 +1106,7 @@ embedded in another object</_tooltip>
 	  <_tooltip>Set the current page (strictly for editing purposes)</_tooltip>
 	</property>
 
-	<property id="pages" _name="Number of pages" save="False" default="3" query="True">
+	<property id="pages" _name="Number of pages" visible="False" save="False" default="3" query="True">
 	  <spec>glade_standard_int_spec</spec>
 	  <_tooltip>The number of pages in the notebook</_tooltip>
 	</property>
@@ -1790,6 +1747,77 @@ embedded in another object</_tooltip>
 			libglade-unsupported="True" toplevel="True"/>
     <glade-widget-class name="GtkUIManager" generic-name="uimanager" _title="UI Manager" 
 			libglade-unsupported="True" toplevel="True"/>
+
+    <glade-widget-class name="GtkTreeView" generic-name="treeview" _title="Tree View">
+      <post-create-function>empty</post-create-function>
+      <child-set-property-function>glade_gtk_treeview_set_child_property</child-set-property-function>
+      <child-get-property-function>glade_gtk_treeview_get_child_property</child-get-property-function>
+      <get-children-function>glade_gtk_treeview_get_children</get-children-function>
+      <add-child-function>glade_gtk_treeview_add_child</add-child-function>
+      <remove-child-function>glade_gtk_treeview_remove_child</remove-child-function>
+      <action-activate-function>glade_gtk_treeview_action_activate</action-activate-function>
+      <child-action-activate-function>glade_gtk_treeview_child_action_activate</child-action-activate-function>
+
+      <actions>
+        <action id="append_column" _name="Append Column" stock="gtk-add" important="True"/>
+        <action id="prepend_column" _name="Prepend Column" stock="gtk-add" important="True"/>
+      </actions>
+
+      <packing-actions>
+        <action id="move_column" _name="Move Column">
+          <action id="left" _name="Left"/>
+          <action id="right" _name="Right"/>
+        </action>
+        <action id="insert_column" _name="Insert Column">
+          <action id="before" _name="Before"/>
+          <action id="after" _name="After"/>
+        </action>
+      </packing-actions>
+
+      <properties>
+        <property id="level-indentation" since="2.12"/>
+        <property id="show-expanders" since="2.12"/>
+        <property id="enable-grid-lines" ignore="True">
+  	  <displayable-values>
+	    <value id="GTK_TREE_VIEW_GRID_LINES_NONE" _name="None"/>
+	    <value id="GTK_TREE_VIEW_GRID_LINES_HORIZONTAL" _name="Horizontal"/>
+	    <value id="GTK_TREE_VIEW_GRID_LINES_VERTICAL" _name="Vertical"/>
+	    <value id="GTK_TREE_VIEW_GRID_LINES_BOTH" _name="Horizontal and Vertical"/>
+	  </displayable-values>
+	</property>
+        <property id="hadjustment" libglade-unsupported="True"/>
+	<property id="vadjustment" libglade-unsupported="True"/>
+        <property id="model" libglade-unsupported="True"/>
+      </properties>
+      
+      <packing-properties>
+        <property save="False" id="position" name="Position" visible="False">
+	  <spec>glade_standard_int_spec</spec>
+	  <_tooltip>The column position in the Tree View</_tooltip>
+	</property>
+      </packing-properties>
+    </glade-widget-class>
+
+    <glade-widget-class name="GtkIconView" generic-name="iconview" _title="Icon View">
+      <properties>
+        <property id="selection-mode">
+  	  <displayable-values>
+	    <value id="GTK_SELECTION_NONE" _name="None"/>
+	    <value id="GTK_SELECTION_SINGLE" _name="Single"/>
+	    <value id="GTK_SELECTION_BROWSE" _name="Browse"/>
+	    <value id="GTK_SELECTION_MULTIPLE" _name="Multiple"/>
+	    <value id="GTK_SELECTION_EXTENDED" _name="Extended"/>
+	  </displayable-values>
+	</property>
+	<property id="orientation">
+  	  <displayable-values>
+	    <value id="GTK_ORIENTATION_HORIZONTAL" _name="Horizontal"/>
+	    <value id="GTK_ORIENTATION_VERTICAL" _name="Vertical"/>
+	  </displayable-values>
+	</property>
+      </properties>
+    </glade-widget-class>
+
 
     <glade-widget-class name="GtkListStore" generic-name="liststore" _title="List Store" 
 			libglade-unsupported="True" toplevel="True">

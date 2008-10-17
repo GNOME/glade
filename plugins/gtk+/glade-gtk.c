@@ -9068,6 +9068,213 @@ glade_gtk_store_read_widget (GladeWidgetAdaptor *adaptor,
 
 /*--------------------------- GtkTreeView ---------------------------------*/
 
+static void
+glade_gtk_treeview_move_column (GtkTreeView       *view,
+				GtkTreeViewColumn *child,
+				gboolean           right)
+{	
+	GladeWidget       *gview = glade_widget_get_from_gobject (view);
+	GladeWidget       *gcolumn = glade_widget_get_from_gobject (child), *giter;
+	GList             *children, *l;
+	gint               child_pos, pos, columns, new_pos;
+	
+	glade_widget_pack_property_get (gcolumn, "position", &child_pos);
+
+	/* resolve where were gonna put the new child */
+	columns = 0;
+	while (gtk_tree_view_get_column (view, columns)) columns++;
+
+	if (right)
+		new_pos = CLAMP (child_pos + 1, 0, columns -1);
+	else
+		new_pos = CLAMP (child_pos - 1, 0, columns -1);
+
+	if (new_pos == child_pos)
+		return;
+
+	glade_command_push_group (right ? _("Moving %s right inside %s") : _("Moving %s left inside %s"),
+				  gcolumn->name, gview->name);
+
+	/* Set new position on this child */
+	glade_command_set_property (glade_widget_get_pack_property (gcolumn, "position"), new_pos);
+
+	/* Swap position of other child to this childs original position */
+	children = gtk_tree_view_get_columns (view);
+	for (l = children; l; l = l->next)
+	{
+		giter = glade_widget_get_from_gobject (l->data);
+
+		glade_widget_pack_property_get (giter, "position", &pos);
+
+		if (pos == new_pos && giter != gcolumn)
+		{
+			glade_command_set_property (glade_widget_get_pack_property (giter, "position"), child_pos);
+			break;
+		}
+	}
+	g_list_free (children);
+
+	glade_command_pop_group ();
+}
+
+
+static void
+glade_gtk_treeview_add_column (GtkTreeView       *view,
+			       GtkTreeViewColumn *child,
+			       gboolean           after)
+{
+	GladeWidget       *gview = glade_widget_get_from_gobject (view);
+	GladeWidget       *gcolumn, *gchild;
+	gint               child_pos, pos, columns;
+	GList             *children, *l;
+
+	gchild = child ? glade_widget_get_from_gobject (child) : NULL;
+
+	/* Resolve command name */
+	if (child)
+		glade_command_push_group (after ? _("Inserting column after %s in %s") :
+					  _("Inserting column before %s in %s"),
+					  gchild->name, gview->name);
+	else
+		glade_command_push_group (after ? _("Appending column to %s") :
+					  _("Prepending column to %s"),
+					  gview->name);
+
+	if ((gcolumn = glade_command_create (glade_widget_adaptor_get_by_type (GTK_TYPE_TREE_VIEW_COLUMN),
+					     gview, NULL, glade_widget_get_project (gview))) == NULL)
+	{
+		glade_command_pop_group ();
+		return;
+	}
+
+	/* resolve where were gonna put the new child */
+	columns = 0;
+	while (gtk_tree_view_get_column (view, columns)) columns++;
+
+	if (gchild)
+		glade_widget_pack_property_get (gchild, "position", &child_pos);
+	else
+		child_pos = after ? columns - 1 : 0;
+
+	if (after)
+		child_pos = CLAMP (child_pos + 1, 0, columns - 1);
+
+	/* Reoder children */
+	children = gtk_tree_view_get_columns (view);
+	for (l = children; l; l = l->next)
+	{
+		gchild = glade_widget_get_from_gobject (l->data);
+
+		glade_widget_pack_property_get (gchild, "position", &pos);
+
+		if (gchild == gcolumn)
+			glade_command_set_property (glade_widget_get_pack_property (gchild, "position"), child_pos);
+		else if ((after  && pos > child_pos) ||
+			 (!after && pos >= child_pos))
+			glade_command_set_property (glade_widget_get_pack_property (gchild, "position"), pos + 1);
+	}
+	g_list_free (children);
+
+	glade_command_pop_group ();
+}
+
+void
+glade_gtk_treeview_action_activate (GladeWidgetAdaptor *adaptor,
+				    GObject *object,
+				    const gchar *action_path)
+{
+	if (strcmp (action_path, "append_column") == 0)
+		glade_gtk_treeview_add_column (GTK_TREE_VIEW (object), NULL, TRUE);
+	else if (strcmp (action_path, "prepend_column") == 0)
+		glade_gtk_treeview_add_column (GTK_TREE_VIEW (object), NULL, FALSE);
+	else
+		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor,
+								     object,
+								     action_path);
+}
+
+void
+glade_gtk_treeview_child_action_activate (GladeWidgetAdaptor *adaptor,
+					  GObject            *container,
+					  GObject            *object,
+					  const gchar        *action_path)
+{
+	if (strcmp (action_path, "insert_column/after") == 0)
+		glade_gtk_treeview_add_column (GTK_TREE_VIEW (container), 
+					       GTK_TREE_VIEW_COLUMN (object), TRUE);
+	else if (strcmp (action_path, "insert_column/before") == 0)
+		glade_gtk_treeview_add_column (GTK_TREE_VIEW (container), 
+					       GTK_TREE_VIEW_COLUMN (object), FALSE);
+	else if (strcmp (action_path, "move_column/left") == 0)
+		glade_gtk_treeview_move_column (GTK_TREE_VIEW (container), 
+						GTK_TREE_VIEW_COLUMN (object), FALSE);
+	else if (strcmp (action_path, "move_column/right") == 0)
+		glade_gtk_treeview_move_column (GTK_TREE_VIEW (container), 
+						GTK_TREE_VIEW_COLUMN (object), TRUE);
+	else
+		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->child_action_activate (adaptor,
+									   container,
+									   object,
+									   action_path);
+}
+
+static gint
+glade_gtk_treeview_get_column_index (GtkTreeView       *view,
+				     GtkTreeViewColumn *column)
+{
+	GtkTreeViewColumn *iter;
+	gint i;
+
+	for (i = 0; (iter = gtk_tree_view_get_column (view, i)) != NULL; i++)
+		if (iter == column)
+			return i;
+
+	return -1;
+}
+
+void
+glade_gtk_treeview_get_child_property (GladeWidgetAdaptor *adaptor,
+				       GObject            *container,
+				       GObject            *child,
+				       const gchar        *property_name,
+				       GValue             *value)
+{	
+	if (strcmp (property_name, "position") == 0)
+		g_value_set_int (value,
+				 glade_gtk_treeview_get_column_index (GTK_TREE_VIEW (container), 
+								      GTK_TREE_VIEW_COLUMN (child)));
+	else
+		/* Chain Up */
+		GWA_GET_CLASS
+			(GTK_TYPE_CONTAINER)->child_get_property (adaptor, 
+								  container, child,
+								  property_name, value);
+}
+
+void
+glade_gtk_treeview_set_child_property (GladeWidgetAdaptor *adaptor,
+				       GObject            *container,
+				       GObject            *child,
+				       const gchar        *property_name,
+				       const GValue       *value)
+{
+	if (strcmp (property_name, "position") == 0)
+	{
+
+		gtk_tree_view_remove_column (GTK_TREE_VIEW (container),
+					     GTK_TREE_VIEW_COLUMN (child));
+		gtk_tree_view_insert_column (GTK_TREE_VIEW (container),
+					     GTK_TREE_VIEW_COLUMN (child),
+					     g_value_get_int (value));
+	}
+	else
+		/* Chain Up */
+		GWA_GET_CLASS
+			(GTK_TYPE_CONTAINER)->child_set_property (adaptor, 
+								  container, child,
+								  property_name, value);
+}
+
 GList *
 glade_gtk_treeview_get_children (GladeWidgetAdaptor *adaptor,
 				 GtkTreeView        *view)
