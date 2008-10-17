@@ -2033,10 +2033,10 @@ pclass_from_gtype (GType type)
 						     0, G_MAXUINT64, 0, G_PARAM_READABLE|G_PARAM_WRITABLE);
 		else if (type == G_TYPE_FLOAT)
 			pspec = g_param_spec_float ("dummy", "dummy", "dummy",
-						    G_MINFLOAT, G_MAXFLOAT, 0.0, G_PARAM_READABLE|G_PARAM_WRITABLE);
+						    G_MINFLOAT, G_MAXFLOAT, 1.0F, G_PARAM_READABLE|G_PARAM_WRITABLE);
 		else if (type == G_TYPE_DOUBLE)
 			pspec = g_param_spec_double ("dummy", "dummy", "dummy",
-						     G_MINDOUBLE, G_MAXDOUBLE, 0.0, G_PARAM_READABLE|G_PARAM_WRITABLE);
+						     G_MINDOUBLE, G_MAXDOUBLE, 1.0F, G_PARAM_READABLE|G_PARAM_WRITABLE);
 		else if (type == G_TYPE_STRING)
 			pspec = g_param_spec_string ("dummy", "dummy", "dummy",
 						     NULL, G_PARAM_READABLE|G_PARAM_WRITABLE);
