@@ -39,19 +39,70 @@ enum
 	N_COLUMNS
 };
 
-static GtkTreeModel *types_model;
+static GtkTreeModel *types_model = NULL;
 
-static GtkListStore *
-column_types_store_new ()
+static gint 
+find_by_type (GType *a, GType *b)
 {
-	return gtk_list_store_new (N_COLUMNS,
-				   G_TYPE_STRING,
-				   G_TYPE_GTYPE,
-				   G_TYPE_STRING);
+	return *a - *b;
 }
 
 static void
-column_types_store_populate (GtkListStore *store)
+column_types_store_populate_enums_flags (GtkTreeStore *store,
+					 gboolean      enums)
+{
+	GtkTreeIter iter, parent_iter;
+	GList *types = NULL, *list, *l;
+	GList *adaptors = glade_widget_adaptor_list_adaptors ();
+
+	gtk_tree_store_append (store, &parent_iter, NULL);
+	gtk_tree_store_set (store, &parent_iter,
+			    COLUMN_NAME, enums ? _("Enumerations") : _("Flags"),
+			    -1);
+
+	for (list = adaptors; list; list = list->next)
+	{
+		GladeWidgetAdaptor *adaptor = list->data;
+		GladePropertyClass *pclass;
+
+		for (l = adaptor->properties; l; l = l->next)
+		{
+			pclass = l->data;
+
+			/* special case out a few of these... */
+			if (strcmp (g_type_name (pclass->pspec->value_type), "GladeGtkGnomeUIInfo") == 0 ||
+			    strcmp (g_type_name (pclass->pspec->value_type), "GladeStock") == 0 ||
+			    strcmp (g_type_name (pclass->pspec->value_type), "GladeStockImage") == 0 ||
+			    strcmp (g_type_name (pclass->pspec->value_type), "GladeGtkImageType") == 0 ||
+			    strcmp (g_type_name (pclass->pspec->value_type), "GladeGtkButtonType") == 0)
+				continue;
+
+			if ((enums ? G_TYPE_IS_ENUM (pclass->pspec->value_type) : 
+			     G_TYPE_IS_FLAGS (pclass->pspec->value_type)) &&
+			    !g_list_find_custom (types, &(pclass->pspec->value_type), 
+						 (GCompareFunc)find_by_type))
+			{
+				types = g_list_prepend (types, 
+							g_memdup (&(pclass->pspec->value_type), 
+								  sizeof (GType)));
+
+				gtk_tree_store_append (store, &iter, &parent_iter);
+				gtk_tree_store_set (store, &iter,
+						    COLUMN_NAME, g_type_name (pclass->pspec->value_type),
+						    COLUMN_GTYPE, pclass->pspec->value_type,
+						    -1);
+			}
+		}
+	}
+	g_list_free (adaptors);
+	g_list_foreach (types, (GFunc)g_free, NULL);
+	g_list_free (types);
+}
+
+/* TODO: Add submenus with a generated list of all known flag and enum types
+ */
+static void
+column_types_store_populate (GtkTreeStore *store)
 {
 	GtkTreeIter iter;
 	gint i;
@@ -69,14 +120,16 @@ column_types_store_populate (GtkListStore *store)
 		G_TYPE_DOUBLE,
 		G_TYPE_STRING,
 		G_TYPE_POINTER,
-		G_TYPE_PARAM,
 		G_TYPE_OBJECT,
 		GDK_TYPE_PIXBUF};
+
+	column_types_store_populate_enums_flags (store, TRUE);
+	column_types_store_populate_enums_flags (store, FALSE);
 	
 	for (i = 0; i < sizeof (types) / sizeof (GType); i++)
 	{
-		gtk_list_store_append (store, &iter);
-		gtk_list_store_set (store, &iter,
+		gtk_tree_store_append (store, &iter, NULL);
+		gtk_tree_store_set (store, &iter,
 				    COLUMN_NAME, g_type_name (types[i]),
 				    COLUMN_GTYPE, types[i],
 				    -1);
@@ -196,8 +249,12 @@ glade_param_column_types_get_type (void)
 
 		accel_type = g_param_type_register_static
 			("GladeParamSpecColumnTypes", &pspec_info);
-		types_model = GTK_TREE_MODEL (column_types_store_new ());
-		column_types_store_populate (GTK_LIST_STORE (types_model));
+		types_model = (GtkTreeModel *)gtk_tree_store_new (N_COLUMNS,
+								  G_TYPE_STRING,
+								  G_TYPE_GTYPE,
+								  G_TYPE_STRING);
+
+		column_types_store_populate (GTK_TREE_STORE (types_model));
 	}
 	return accel_type;
 }
@@ -646,7 +703,11 @@ glade_eprop_column_types_create_input (GladeEditorProperty *eprop)
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (swin), GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
 	gtk_box_pack_start (GTK_BOX (vbox), swin, TRUE, TRUE, 0);
 	
-	eprop_types->store = column_types_store_new ();
+	eprop_types->store = gtk_list_store_new (N_COLUMNS,
+						 G_TYPE_STRING,
+						 G_TYPE_GTYPE,
+						 G_TYPE_STRING);
+
 	g_signal_connect (eprop_types->store, "row-deleted",
 			  G_CALLBACK (eprop_treeview_row_deleted),
 			  eprop);

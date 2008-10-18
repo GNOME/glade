@@ -1967,6 +1967,36 @@ glade_utils_enum_string_from_value (GType enum_type, gint value)
 	return string;
 }
 
+gint
+glade_utils_flags_value_from_string (GType flags_type, const gchar *strval)
+{
+	gint    value = 0;
+	GValue *gvalue;
+
+	if ((gvalue = glade_utils_value_from_string (flags_type, strval, NULL, NULL)) != NULL)
+	{
+		value = g_value_get_flags (gvalue);
+		g_value_unset (gvalue);
+		g_free (gvalue);
+	}
+	return value;
+}
+
+gchar *
+glade_utils_flags_string_from_value (GType flags_type, gint value)
+{
+	GValue gvalue = { 0, };
+	gchar *string;
+
+	g_value_init (&gvalue, flags_type);
+	g_value_set_flags (&gvalue, value);
+
+	string = glade_utils_string_from_value (&gvalue, GLADE_PROJECT_FORMAT_GTKBUILDER);
+	g_value_unset (&gvalue);
+
+	return string;
+}
+
 
 /* A hash table of generically created property classes for
  * fundamental types, so we can easily use glade's conversion
@@ -2148,11 +2178,6 @@ glade_utils_liststore_from_enum_type (GType    enum_type,
 	eclass = g_type_class_ref (enum_type);
 
 	store = gtk_list_store_new (1, G_TYPE_STRING);
-
-	gtk_list_store_append (store, &iter);
-	gtk_list_store_set (store, &iter,
-			    0, _("Unset"), 
-			    -1);
 	
 	for (i = 0; i < eclass->n_values; i++)
 	{

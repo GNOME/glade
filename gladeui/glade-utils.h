@@ -133,9 +133,10 @@ gchar            *glade_util_filename_to_icon_name (const gchar *value);
 
 gchar            *glade_util_icon_name_to_filename (const gchar *value);
 
-gint              glade_utils_enum_value_from_string (GType enum_type, const gchar *strval);
-
-gchar            *glade_utils_enum_string_from_value (GType enum_type, gint value);
+gint              glade_utils_enum_value_from_string  (GType enum_type, const gchar *strval);
+gchar            *glade_utils_enum_string_from_value  (GType enum_type, gint value);
+gint              glade_utils_flags_value_from_string (GType enum_type, const gchar *strval);
+gchar            *glade_utils_flags_string_from_value (GType enum_type, gint value);
 
 GValue           *glade_utils_value_from_string   (GType               type,
 						   const gchar        *string,

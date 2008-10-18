@@ -646,9 +646,15 @@ value_text_edited (GtkCellRendererText *cell,
 		g_value_set_uint64 (&data->value, g_ascii_strtoull (new_text, NULL, 10));
 	else if (G_VALUE_TYPE (&data->value) == G_TYPE_FLOAT)
 		g_value_set_float (&data->value, (float) g_ascii_strtod (new_text, NULL));
-	else /* if (G_VALUE_TYPE (&data->value) == G_TYPE_DOUBLE) */
+	else if (G_VALUE_TYPE (&data->value) == G_TYPE_DOUBLE)
 		g_value_set_double (&data->value, g_ascii_strtod (new_text, NULL));
-
+	else if (G_TYPE_IS_ENUM (G_VALUE_TYPE (&data->value)))
+		g_value_set_enum (&data->value, 
+				  glade_utils_enum_value_from_string (G_VALUE_TYPE (&data->value), new_text));
+	else if (G_TYPE_IS_FLAGS (G_VALUE_TYPE (&data->value)))
+		g_value_set_enum (&data->value, 
+				  glade_utils_flags_value_from_string (G_VALUE_TYPE (&data->value), new_text));
+	
 	if (eprop_data->pending_data_tree)
 		glade_model_data_tree_free (eprop_data->pending_data_tree);
 

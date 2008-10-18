@@ -1572,6 +1572,30 @@ gwa_derive_adaptor_for_type (GType object_type, GWADerivedClassData *data)
 /*******************************************************************************
                                      API
  *******************************************************************************/
+static void
+accum_adaptor (GType              *type,
+	       GladeWidgetAdaptor *adaptor,
+	       GList             **list)
+{
+	*list = g_list_prepend (*list, adaptor);
+}
+
+/**
+ * glade_widget_adaptor_list_adaptors:
+ *
+ * Compiles a list of all registered adaptors.
+ *
+ * Returns: A newly allocated #GList which must be freed with g_list_free()
+ */
+GList *
+glade_widget_adaptor_list_adaptors (void)
+{
+	GList *adaptors = NULL;
+
+	g_hash_table_foreach (adaptor_hash, (GHFunc)accum_adaptor, &adaptors);
+	
+	return adaptors;
+}
 
 /**
  * glade_widget_adaptor_register:

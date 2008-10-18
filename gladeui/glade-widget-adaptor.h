@@ -679,6 +679,7 @@ GType                glade_widget_adaptor_get_type         (void) G_GNUC_CONST;
 
 GType                glade_create_reason_get_type          (void) G_GNUC_CONST;
 
+GList               *glade_widget_adaptor_list_adaptors    (void);
 
 GladeWidgetAdaptor  *glade_widget_adaptor_from_catalog     (GladeCatalog         *catalog,
 							    GladeXmlNode         *class_node,
