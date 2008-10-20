@@ -29,6 +29,7 @@
 
 #include "glade-model-data.h"
 #include "glade-column-types.h"
+#include "glade-cell-renderer-button.h"
 
 GladeModelData *
 glade_model_data_new (GType type, const gchar *column_name)
@@ -593,6 +594,58 @@ value_toggled (GtkCellRendererToggle *cell,
 	g_idle_add ((GSourceFunc)update_data_tree_idle, eprop);
 }
 
+static void
+value_i18n_clicked (GladeCellRendererButton *cell,
+		   const gchar              *path,
+		   GladeEditorProperty      *eprop)
+{
+	GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
+	GtkTreeIter          iter;
+	gint                 colnum = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (cell), "column-number"));
+	gint                 row;
+	GNode               *data_tree = NULL;
+	GladeModelData      *data;
+	gchar               *new_text;
+	gboolean             has_context_dummy;
+
+	if (!gtk_tree_model_get_iter_from_string (GTK_TREE_MODEL (eprop_data->store), &iter, path))
+		return;
+
+
+	gtk_tree_model_get (GTK_TREE_MODEL (eprop_data->store), &iter,
+			    COLUMN_ROW, &row,
+			    -1);
+
+	glade_property_get (eprop->property, &data_tree);
+
+	/* if we are editing, then there is data in the datatree */
+	g_assert (data_tree);
+
+	data_tree = glade_model_data_tree_copy (data_tree);
+
+	data = glade_model_data_tree_get_data (data_tree, row, colnum);
+	g_assert (G_VALUE_TYPE (&data->value) == G_TYPE_STRING);
+
+	new_text = g_value_dup_string (&data->value);
+	
+	if (glade_editor_property_show_i18n_dialog (NULL,
+						    GLADE_PROJECT_FORMAT_GTKBUILDER,
+						    &new_text,
+						    &data->i18n_context,
+						    &data->i18n_comment,
+						    &has_context_dummy,
+						    &data->i18n_translatable))
+	{
+		g_value_set_string (&data->value, new_text);
+		
+		if (eprop_data->pending_data_tree)
+			glade_model_data_tree_free (eprop_data->pending_data_tree);
+		
+		eprop_data->pending_data_tree = data_tree;
+		g_idle_add ((GSourceFunc)update_data_tree_idle, eprop);
+	}
+	g_free (new_text);
+}
 
 static void
 value_text_edited (GtkCellRendererText *cell,
@@ -674,6 +727,7 @@ eprop_model_generate_column (GladeEditorProperty *eprop,
 	GType              type = G_VALUE_TYPE (&data->value);
 
 	gtk_tree_view_column_set_title (column, data->name);
+	gtk_tree_view_column_set_resizable (column, TRUE);
 
 	/* Support enum and flag types, and a hardcoded list of fundamental types */
 	if (type == G_TYPE_CHAR ||
@@ -681,7 +735,14 @@ eprop_model_generate_column (GladeEditorProperty *eprop,
 	    type == G_TYPE_STRING)
 	{
 		/* Text renderer */
-		renderer = gtk_cell_renderer_text_new ();
+		if (type == G_TYPE_STRING)
+		{
+			renderer = glade_cell_renderer_button_new ();
+			g_object_set (renderer, "button-text", "\342\200\246", NULL);
+		}
+		else
+			renderer = gtk_cell_renderer_text_new ();
+
 		g_object_set (G_OBJECT (renderer), 
 			      "editable", TRUE, 
 			      NULL);
@@ -699,9 +760,13 @@ eprop_model_generate_column (GladeEditorProperty *eprop,
 		g_signal_connect (G_OBJECT (renderer), "edited",
 				  G_CALLBACK (value_text_edited), eprop);
 
-		/* Trigger i18n dialog from here somehow ! */
-/* 		g_signal_connect (G_OBJECT (renderer), "editing-started", */
-/* 				  G_CALLBACK (value_text_editing_started), eprop); */
+		/* Trigger i18n dialog from here */
+		if (type == G_TYPE_STRING)
+		{
+			g_signal_connect (G_OBJECT (renderer), "clicked",
+					  G_CALLBACK (value_i18n_clicked), eprop);
+		}
+
 	}
 
 		/* Text renderer single char */
