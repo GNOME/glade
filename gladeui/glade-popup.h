@@ -24,6 +24,9 @@ gint glade_popup_action_populate_menu (GtkWidget *menu,
 
 void glade_popup_simple_pop           (GdkEventButton *event);
 
+void glade_popup_property_pop         (GladeProperty  *property,
+				       GdkEventButton *event);
+
 G_END_DECLS
 
 #endif /* __GLADE_POPUP_H__ */

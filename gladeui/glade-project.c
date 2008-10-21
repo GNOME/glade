@@ -1644,14 +1644,15 @@ glade_project_verify_property (GladeProject   *project,
 			       GString        *string,
 			       gboolean        forwidget)
 {
-	GladeWidgetAdaptor *adaptor;
+	GladeWidgetAdaptor *adaptor, *prop_adaptor;
 	gint target_major, target_minor;
 	gchar *catalog, *tooltip;
 
 	if (glade_property_original_default (property) && !forwidget)
 		return;
 
-	adaptor = GLADE_WIDGET_ADAPTOR (property->klass->origin_handle);
+	prop_adaptor = glade_widget_adaptor_from_pclass (property->klass);
+	adaptor = glade_widget_adaptor_from_pspec (prop_adaptor, property->klass->pspec);
 	
 	g_object_get (adaptor, "catalog", &catalog, NULL);
 	glade_project_target_version_for_adaptor (property->widget->project, adaptor, 

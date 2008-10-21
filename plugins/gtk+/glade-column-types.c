@@ -99,8 +99,6 @@ column_types_store_populate_enums_flags (GtkTreeStore *store,
 	g_list_free (types);
 }
 
-/* TODO: Add submenus with a generated list of all known flag and enum types
- */
 static void
 column_types_store_populate (GtkTreeStore *store)
 {
@@ -122,9 +120,6 @@ column_types_store_populate (GtkTreeStore *store)
 		G_TYPE_POINTER,
 		G_TYPE_OBJECT,
 		GDK_TYPE_PIXBUF};
-
-	column_types_store_populate_enums_flags (store, TRUE);
-	column_types_store_populate_enums_flags (store, FALSE);
 	
 	for (i = 0; i < sizeof (types) / sizeof (GType); i++)
 	{
@@ -134,6 +129,9 @@ column_types_store_populate (GtkTreeStore *store)
 				    COLUMN_GTYPE, types[i],
 				    -1);
 	}
+
+	column_types_store_populate_enums_flags (store, TRUE);
+	column_types_store_populate_enums_flags (store, FALSE);
 }
 
 GList *

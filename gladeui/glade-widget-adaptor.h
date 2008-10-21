@@ -671,8 +671,6 @@ struct _GladeWidgetAdaptorClass
 #define glade_widget_adaptor_from_pclass(pclass) \
     ((pclass) ? (GladeWidgetAdaptor *)((GladePropertyClass *)(pclass))->handle : NULL)
 
-#define glade_widget_adaptor_from_pspec(pspec) \
-    ((pspec) ? glade_widget_adaptor_get_by_type (((GParamSpec *)(pspec))->owner_type) : NULL)
 
 GType                glade_widget_adaptor_get_type         (void) G_GNUC_CONST;
  
@@ -702,6 +700,9 @@ GladeWidget         *glade_widget_adaptor_create_widget_real (gboolean          
 GladeWidgetAdaptor  *glade_widget_adaptor_get_by_name        (const gchar        *name);
 
 GladeWidgetAdaptor  *glade_widget_adaptor_get_by_type        (GType               type);
+
+GladeWidgetAdaptor  *glade_widget_adaptor_from_pspec         (GladeWidgetAdaptor *adaptor,
+							      GParamSpec         *spec);
 
 GladePropertyClass  *glade_widget_adaptor_get_property_class (GladeWidgetAdaptor *adaptor,
 							      const gchar        *name);

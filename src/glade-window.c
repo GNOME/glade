@@ -1577,13 +1577,6 @@ redo_cb (GtkAction *action, GladeWindow *window)
 	glade_app_command_redo ();
 }
 
-static gboolean
-hide_window_on_delete (GtkWidget *window, gpointer not_used, GtkUIManager *ui)
-{
-	glade_util_hide_window (GTK_WINDOW (window));
-	return TRUE;
-}
-
 static void
 doc_search_cb (GladeEditor        *editor,
 	       const gchar        *book,
@@ -1780,39 +1773,6 @@ palette_toggle_small_icons_cb (GtkAction *action, GladeWindow *window)
 	glade_palette_set_use_small_item_icons (glade_app_get_palette(),
 						gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action)));
 }
-
-static void
-show_clipboard_cb (GtkAction *action, GladeWindow *window)
-{
-	static GtkWidget *view = NULL;
-	
-	g_return_if_fail (window != NULL);
-
-	if (view == NULL)
-	{
-		view = glade_app_get_clipboard_view ();
-
-		g_signal_connect (view, "delete_event",
-				  G_CALLBACK (hide_window_on_delete),
-				  window->priv->ui);
-		gtk_widget_show_all (view);
-	}
-	
-        gtk_window_present (GTK_WINDOW (view));
-}
-
-static void
-toggle_editor_help_cb (GtkAction *action, GladeWindow *window)
-{
-	if (glade_util_have_devhelp() == FALSE)
-		return;
-
-	if (gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action)))
-		glade_editor_show_context_info (glade_app_get_editor ());
-	else
-		glade_editor_hide_context_info (glade_app_get_editor ());
-}
-
 
 /* This function is meant to be attached to key-press-event of a toplevel,
  * it simply allows the window contents to treat key events /before/ 
@@ -2100,8 +2060,6 @@ static const gchar ui_info[] =
 "      <menuitem action='Preferences'/>"
 "    </menu>"
 "    <menu action='ViewMenu'>"
-"      <menuitem action='Clipboard'/>"
-"      <separator/>"
 "      <menu action='PaletteAppearance'>"
 "        <menuitem action='IconsAndLabels'/>"
 "        <menuitem action='IconsOnly'/>"
@@ -2109,7 +2067,6 @@ static const gchar ui_info[] =
 "        <separator/>"
 "        <menuitem action='UseSmallIcons'/>"
 "      </menu>"
-"      <menuitem action='PropertyEditorHelp'/>"
 "      <separator/>"
 "      <menuitem action='DockPalette'/>"
 "      <menuitem action='DockInspector'/>"
@@ -2209,12 +2166,6 @@ static GtkActionEntry project_entries[] = {
 
 	{ "Preferences", GTK_STOCK_PREFERENCES, NULL, "<control>P",
 	  N_("Modify project preferences"), G_CALLBACK (preferences_cb) },
-
-	/* ViewMenu */
-	
-	{ "Clipboard", NULL, N_("_Clipboard"), NULL,
-	  N_("Show the clipboard"),
-	  G_CALLBACK (show_clipboard_cb) },
 	  
 	/* ProjectsMenu */
 	{ "PreviousProject", NULL, N_("_Previous Project"), "<control>Page_Up",
@@ -2232,10 +2183,6 @@ static GtkToggleActionEntry view_entries[] = {
 	{ "UseSmallIcons", NULL, N_("_Use Small Icons"), NULL,
 	  N_("Show items using small icons"),
 	  G_CALLBACK (palette_toggle_small_icons_cb), FALSE },
-
-	{ "PropertyEditorHelp", NULL, N_("Context _Help"), NULL,
-	  N_("Show or hide contextual help buttons in the editor"),
-	  G_CALLBACK (toggle_editor_help_cb), FALSE },
 
 	{ "DockPalette", NULL, N_("Dock _Palette"), NULL,
 	  N_("Dock the palette into the main window"),
@@ -3263,29 +3210,18 @@ glade_window_new (void)
 void
 glade_window_check_devhelp (GladeWindow *window)
 {
-	GtkWidget *editor_item;
-	
 	g_return_if_fail (GLADE_IS_WINDOW (window));
 	
-	editor_item = gtk_ui_manager_get_widget (window->priv->ui,
-						 "/MenuBar/ViewMenu/PropertyEditorHelp");	
-
 	if (glade_util_have_devhelp ())
 	{
 		GladeEditor *editor = glade_app_get_editor ();
 		glade_editor_show_info (editor);
-		glade_editor_hide_context_info (editor);
 		
 		g_signal_handlers_disconnect_by_func (editor, doc_search_cb, window);
 		
 		g_signal_connect (editor, "gtk-doc-search",
 				  G_CALLBACK (doc_search_cb), window);
 		
-		gtk_widget_set_sensitive (editor_item, TRUE);
-	}
-	else
-	{
-		gtk_widget_set_sensitive (editor_item, FALSE);
 	}
 }
 

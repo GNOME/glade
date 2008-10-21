@@ -2402,6 +2402,39 @@ glade_widget_adaptor_get_by_type (GType  type)
 }
 
 /**
+ * glade_widget_adaptor_from_pspec:
+ * @adaptor: a #GladeWidgetAdaptor
+ * @pspec: a #GParamSpec
+ *
+ * Assumes @pspec is a property in an object class wrapped by @adaptor,
+ * this function will search for the specific parent adaptor class which
+ * originally introduced @pspec.
+ *
+ * Returns: the closest #GladeWidgetAdaptor in the ancestry to @adaptor
+ *          which is responsable for introducing @pspec.
+ **/
+GladeWidgetAdaptor  *
+glade_widget_adaptor_from_pspec (GladeWidgetAdaptor *adaptor,
+				 GParamSpec         *spec)
+{
+	GladeWidgetAdaptor *spec_adaptor = glade_widget_adaptor_get_by_type (spec->owner_type);
+	GType spec_type = spec->owner_type;
+
+	g_return_val_if_fail (g_type_is_a (adaptor->type, spec->owner_type), NULL);
+
+	while (!spec_adaptor && spec_type != adaptor->type)
+	{
+		spec_type = g_type_parent (spec_type);
+		spec_adaptor = glade_widget_adaptor_get_by_type (spec_type);
+	}
+	
+	if (spec_adaptor)
+		return spec_adaptor;
+
+	return adaptor;
+}
+
+/**
  * glade_widget_adaptor_get_property_class:
  * @adaptor: a #GladeWidgetAdaptor
  * @name: a string

@@ -57,8 +57,7 @@
 enum
 {
 	PROP_0,
-	PROP_SHOW_INFO,
-	PROP_SHOW_CONTEXT_INFO
+	PROP_SHOW_INFO
 };
 
 enum {
@@ -114,12 +113,6 @@ glade_editor_set_property (GObject      *object,
 		else
 			glade_editor_hide_info (editor);
 		break;
-	case PROP_SHOW_CONTEXT_INFO:
-		if (g_value_get_boolean (value))
-			glade_editor_show_context_info (editor);
-		else
-			glade_editor_hide_context_info (editor);
-		break;
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 		break;
@@ -138,9 +131,6 @@ glade_editor_get_property (GObject    *object,
 	{
 	case PROP_SHOW_INFO:
 		g_value_set_boolean (value, editor->show_info);
-		break;
-	case PROP_SHOW_CONTEXT_INFO:
-		g_value_set_boolean (value, editor->show_context_info);
 		break;
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -169,14 +159,6 @@ glade_editor_class_init (GladeEditorClass *klass)
 				       _("Show info"),
 				       _("Whether to show an informational "
 					 "button for the loaded widget"),
-				       FALSE, G_PARAM_READABLE));
-
-	g_object_class_install_property
-		(object_class, PROP_SHOW_CONTEXT_INFO,
-		 g_param_spec_boolean ("show-context-info",
-				       _("Show context info"),
-				       _("Whether to show an informational button for "
-					 "each property and signal in the editor"),
 				       FALSE, G_PARAM_READABLE));
 
 	
@@ -538,11 +520,6 @@ glade_editor_table_append_item (GladeEditorTable *table,
 
 	gtk_widget_show (GTK_WIDGET (property));
 	gtk_widget_show_all (property->item_label);
-
-	if (table->editor->show_context_info && from_query_dialog == FALSE)
-		glade_editor_property_show_info (property);
-	else
-		glade_editor_property_hide_info (property);
 
 	g_signal_connect (G_OBJECT (property), "gtk-doc-search",
 			  G_CALLBACK (glade_editor_gtk_doc_search_cb), 
@@ -1585,69 +1562,5 @@ glade_editor_hide_info (GladeEditor *editor)
 		gtk_widget_hide (editor->info_button);
 
 		g_object_notify (G_OBJECT (editor), "show-info");
-	}
-}
-
-void
-glade_editor_show_context_info (GladeEditor *editor)
-{
-	GList               *list, *props;
-	GladeEditorTable    *etable;
-
-	g_return_if_fail (GLADE_IS_EDITOR (editor));
-
-	if (editor->show_context_info != TRUE)
-	{
-		editor->show_context_info = TRUE;
-		
-		for (list = editor->widget_tables; list; list = list->next)
-		{
-			etable = list->data;
-			for (props = etable->properties; props; props = props->next)
-				glade_editor_property_show_info
-					(GLADE_EDITOR_PROPERTY (props->data));
-		}	
-
-		if (editor->packing_etable)
-		{
-			etable = editor->packing_etable;
-			for (props = etable->properties; props; props = props->next)
-				glade_editor_property_show_info
-					(GLADE_EDITOR_PROPERTY (props->data));
-		
-		}
-		g_object_notify (G_OBJECT (editor), "show-context-info");
-	}
-}
-
-void
-glade_editor_hide_context_info (GladeEditor *editor)
-{
-	GList               *list, *props;
-	GladeEditorTable    *etable;
-
-	g_return_if_fail (GLADE_IS_EDITOR (editor));
-
-	if (editor->show_context_info != FALSE)
-	{
-		editor->show_context_info = FALSE;
-		
-		for (list = editor->widget_tables; list; list = list->next)
-		{
-			etable = list->data;
-			for (props = etable->properties; props; props = props->next)
-				glade_editor_property_hide_info
-					(GLADE_EDITOR_PROPERTY (props->data));
-		}	
-
-		if (editor->packing_etable)
-		{
-			etable = editor->packing_etable;
-			for (props = etable->properties; props; props = props->next)
-				glade_editor_property_hide_info
-					(GLADE_EDITOR_PROPERTY (props->data));
-		
-		}
-		g_object_notify (G_OBJECT (editor), "show-context-info");
 	}
 }

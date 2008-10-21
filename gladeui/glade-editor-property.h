@@ -100,9 +100,6 @@ struct _GladeEditorProperty
 	GtkWidget          *check;          /* Check button for optional properties.
 					     */
 
-	GtkWidget          *info;           /* Informational button
-					     */
-
 	gulong              tooltip_id;     /* signal connection id for tooltip changes        */
 	gulong              sensitive_id;   /* signal connection id for sensitivity changes    */
 	gulong              changed_id;     /* signal connection id for value changes          */
@@ -116,10 +113,6 @@ struct _GladeEditorProperty
 	gboolean            use_command;    /* Whether we should use the glade command interface
 					     * or skip directly to GladeProperty interface.
 					     * (used for query dialogs).
-					     */
-
-	gboolean            show_info;      /* Whether we should show an informational button
-					     * for this property
 					     */
 };
 
@@ -146,10 +139,6 @@ void                 glade_editor_property_load           (GladeEditorProperty *
 
 void                 glade_editor_property_load_by_widget (GladeEditorProperty *eprop,
 							   GladeWidget         *widget);
-
-void                 glade_editor_property_show_info      (GladeEditorProperty *eprop);
-
-void                 glade_editor_property_hide_info      (GladeEditorProperty *eprop);
 
 void                 glade_editor_property_commit         (GladeEditorProperty *eprop,
 							   GValue              *value);

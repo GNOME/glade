@@ -65,7 +65,6 @@ glade_property_class_new (gpointer handle)
 	GladePropertyClass *property_class;
 
 	property_class = g_new0 (GladePropertyClass, 1);
-	property_class->origin_handle = handle;
 	property_class->handle = handle;
 	property_class->pspec = NULL;
 	property_class->id = NULL;

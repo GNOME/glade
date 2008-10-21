@@ -45,6 +45,7 @@
 #include "glade-property.h"
 #include "glade-command.h"
 #include "glade-project.h"
+#include "glade-popup.h"
 #include "glade-builtins.h"
 #include "glade-marshallers.h"
 #include "glade-named-icon-chooser-dialog.h"
@@ -52,8 +53,7 @@
 enum {
 	PROP_0,
 	PROP_PROPERTY_CLASS,
-	PROP_USE_COMMAND,
-	PROP_SHOW_INFO
+	PROP_USE_COMMAND
 };
 
 enum {
@@ -234,44 +234,19 @@ glade_editor_property_enabled_toggled_cb (GtkWidget           *check,
 				    gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (check)));
 }
 
-static void
-glade_editor_property_info_clicked_cb (GtkWidget           *info,
-				       GladeEditorProperty *eprop)
+static gboolean
+glade_editor_property_button_pressed (GtkWidget           *widget,
+				      GdkEventButton      *event,
+				      GladeEditorProperty *eprop)
 {
-	GladeWidgetAdaptor *adaptor;
-	gchar              *search, *book;
-
-	adaptor = glade_widget_adaptor_from_pspec (eprop->klass->pspec);
-	search  = g_strdup_printf ("The %s property", eprop->klass->id);
-
-	g_object_get (adaptor, "book", &book, NULL);
-
-	g_signal_emit (G_OBJECT (eprop),
-		       glade_editor_property_signals[GTK_DOC_SEARCH],
-		       0, book,
-		       g_type_name (eprop->klass->pspec->owner_type), search);
-
-	g_free (book);
-	g_free (search);
+	if (event->button == 3 && event->type == GDK_BUTTON_PRESS)
+	{
+		glade_popup_property_pop (eprop->property, event);
+		return TRUE;
+	}
+	return FALSE;
 }
 
-static GtkWidget *
-glade_editor_property_create_info_button (GladeEditorProperty *eprop)
-{
-	GtkWidget *image;
-	GtkWidget *button;
-
-	button = gtk_button_new ();
-
-	image = glade_util_get_devhelp_icon (GTK_ICON_SIZE_MENU);
-	gtk_widget_show (image);
-
-	gtk_container_add (GTK_CONTAINER (button), image);
-
-	gtk_widget_set_tooltip_text (button, _("View documentation for this property"));
-
-	return button;
-}
 
 static GObject *
 glade_editor_property_constructor (GType                  type,
@@ -281,7 +256,7 @@ glade_editor_property_constructor (GType                  type,
 	GtkRequisition       req = { -1, -1 };
 	GObject             *obj;
 	GladeEditorProperty *eprop;
-	GtkWidget           *hbox;
+	GtkWidget           *hbox, *alignment;
 
 	/* Invoke parent constructor (eprop->klass should be resolved by this point) . */
 	obj = G_OBJECT_CLASS (table_class)->constructor
@@ -304,24 +279,19 @@ glade_editor_property_constructor (GType                  type,
 	eprop->input = GLADE_EDITOR_PROPERTY_GET_CLASS (eprop)->create_input (eprop);
 	gtk_widget_show (eprop->input);
 
-	/* Create the informational button and add it */
-	eprop->info = glade_editor_property_create_info_button (eprop);
-	g_signal_connect (G_OBJECT (eprop->info), "clicked", 
-			  G_CALLBACK (glade_editor_property_info_clicked_cb), eprop);
-
 	/* Create the warning icon */
 	eprop->warning = gtk_image_new_from_stock (GTK_STOCK_DIALOG_WARNING, 
 						   GTK_ICON_SIZE_MENU);
 	gtk_widget_set_no_show_all (eprop->warning, TRUE);
 
 	/* Create & setup label */
-	eprop->item_label = gtk_alignment_new (1.0, 0.5, 0.0, 0.0);
+	eprop->item_label = gtk_event_box_new ();
+	alignment = gtk_alignment_new (1.0, 0.5, 0.0, 0.0);
 	hbox = gtk_hbox_new (FALSE, 4);
 	eprop->label      = gtk_label_new (NULL);
 
 	gtk_label_set_line_wrap (GTK_LABEL(eprop->label), TRUE);
 	gtk_label_set_line_wrap_mode (GTK_LABEL(eprop->label), PANGO_WRAP_WORD_CHAR);
-
 
 	/* gtk_label_set_width_chars() was not working well :( */ 
 	gtk_label_set_text (GTK_LABEL (eprop->label), "xxxxxxxxxxxxxxx");
@@ -333,13 +303,18 @@ glade_editor_property_constructor (GType                  type,
 
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->warning, FALSE, TRUE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->label, TRUE, TRUE, 0);
-	gtk_container_add (GTK_CONTAINER (eprop->item_label), hbox);
+	gtk_container_add (GTK_CONTAINER (alignment), hbox);
+	gtk_container_add (GTK_CONTAINER (eprop->item_label), alignment);
 	gtk_widget_show_all (eprop->item_label);
 
 	glade_editor_property_fix_label (eprop);
 
 	gtk_box_pack_start (GTK_BOX (eprop), eprop->input, TRUE, TRUE, 0);
-	gtk_box_pack_start (GTK_BOX (eprop), eprop->info, FALSE, FALSE, 2);
+
+	g_signal_connect (G_OBJECT (eprop->item_label), "button-press-event",
+			  G_CALLBACK (glade_editor_property_button_pressed), eprop);
+	g_signal_connect (G_OBJECT (eprop->input), "button-press-event",
+			  G_CALLBACK (glade_editor_property_button_pressed), eprop);
 
 	return obj;
 }
@@ -371,12 +346,6 @@ glade_editor_property_set_property (GObject      *object,
 	case PROP_USE_COMMAND:
 		eprop->use_command = g_value_get_boolean (value);
 		break;
-	case PROP_SHOW_INFO:
-		if (g_value_get_boolean (value))
-			glade_editor_property_show_info (eprop);
-		else
-			glade_editor_property_hide_info (eprop);
-		break;
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 		break;
@@ -399,8 +368,6 @@ glade_editor_property_get_property (GObject    *object,
 	case PROP_USE_COMMAND:
 		g_value_set_boolean (value, eprop->use_command);
 		break;
-	case PROP_SHOW_INFO:
-		g_value_set_boolean (value, eprop->show_info);
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 		break;
@@ -542,7 +509,6 @@ glade_editor_property_load_common (GladeEditorProperty *eprop,
 static void
 glade_editor_property_init (GladeEditorProperty *eprop)
 {
-
 }
 
 static void
@@ -600,13 +566,6 @@ glade_editor_property_class_init (GladeEditorPropertyClass *eprop_class)
 		 g_param_spec_boolean 
 		 ("use-command", _("Use Command"), 
 		  _("Whether we should use the command API for the undo/redo stack"),
-		  FALSE, G_PARAM_READWRITE));
-
-	g_object_class_install_property 
-		(object_class, PROP_SHOW_INFO,
-		 g_param_spec_boolean 
-		 ("show-info", _("Show Info"), 
-		  _("Whether we should show an informational button"),
 		  FALSE, G_PARAM_READWRITE));
 }
 
@@ -3402,56 +3361,3 @@ glade_editor_property_load_by_widget (GladeEditorProperty *eprop,
 	}
 }
 
-/**
- * glade_editor_property_show_info:
- * @eprop: A #GladeEditorProperty
- *
- * Show the control widget to access help for @eprop
- */
-void
-glade_editor_property_show_info (GladeEditorProperty *eprop)
-{
-	GladeWidgetAdaptor *adaptor;
-	gchar              *book;
-
-	g_return_if_fail (GLADE_IS_EDITOR_PROPERTY (eprop));
-
-	adaptor = glade_widget_adaptor_from_pspec (eprop->klass->pspec);
-
-	g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
-
-	g_object_get (adaptor, "book", &book, NULL);
-
-	if (eprop->klass->virt == FALSE &&
-	    book                  != NULL)
-		gtk_widget_show (eprop->info);
-	else
-	{
-		/* Put insensitive controls to balance the UI with
-		 * other eprops.
-		 */
-		gtk_widget_show (eprop->info);
-		gtk_widget_set_sensitive (eprop->info, FALSE);
-	}
-
-	g_free (book);
-	eprop->show_info = TRUE;
-	g_object_notify (G_OBJECT (eprop), "show-info");
-}
-
-/**
- * glade_editor_property_hide_info:
- * @eprop: A #GladeEditorProperty
- *
- * Hide the control widget to access help for @eprop
- */
-void
-glade_editor_property_hide_info (GladeEditorProperty *eprop)
-{
-	g_return_if_fail (GLADE_IS_EDITOR_PROPERTY (eprop));
-
-	gtk_widget_hide (eprop->info);
-	
-	eprop->show_info = FALSE;
-	g_object_notify (G_OBJECT (eprop), "show-info");
-}
