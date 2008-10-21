@@ -142,13 +142,6 @@ struct _GladePropertyClass
 	gboolean is_modified; /* If true, this property_class has been "modified" from the
 			       * the standard property by a xml file. */
 
-	gboolean resource;  /* Some property types; such as some file specifying
-			     * string properties or GDK_TYPE_PIXBUF properties; are
-			     * resource files and are treated specialy (a filechooser
-			     * popup is used and the resource is copied to the project
-			     * directory).
-			     */
-
 	gboolean themed_icon; /* Some GParamSpecString properties reffer to icon names
 			       * in the icon theme... these need to be specified in the
 			       * property class definition if proper editing tools are to

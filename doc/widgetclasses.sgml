@@ -445,7 +445,8 @@ A #GladeCreateEPropFunc to create widgets to be used in Glade's property editor.
         <term>string-from-value-function</term>
         <listitem>
           <para>
-A #GladeStringFromValueFunc to create a string from a #GValue.
+A #GladeStringFromValueFunc to create a string from a #GValue, these strings must
+be unique and comparable for undo/redo to work properly.
           </para>
         </listitem>
       </varlistentry>

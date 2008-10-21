@@ -61,10 +61,6 @@ struct _GladeProjectClass
 	void          (*selection_changed)   (GladeProject *project); 
 	void          (*close)               (GladeProject *project);
 
-	void          (*resource_added)      (GladeProject *project,
-					      const gchar  *resource);
-	void          (*resource_removed)    (GladeProject *project,
-					      const gchar  *resource);
 	void          (*parse_finished)      (GladeProject *project);
 };
 
@@ -160,12 +156,6 @@ gboolean       glade_project_get_has_selection   (GladeProject *project);
 
 void           glade_project_set_accel_group     (GladeProject  *project, 
 						  GtkAccelGroup *accel_group);
-
-void           glade_project_set_resource         (GladeProject  *project, 
-						   GladeProperty *property,
-						   const gchar   *resource);
-
-GList         *glade_project_list_resources       (GladeProject  *project);
 
 gchar         *glade_project_resource_fullpath    (GladeProject  *project,
 						   const gchar   *resource);

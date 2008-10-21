@@ -28,16 +28,19 @@
 #include "glade-text-button.h"
 
 
-#define GLADE_CELL_RENDERER_BUTTON_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GLADE_TYPE_CELL_RENDERER_BUTTON, GladeCellRendererButtonPrivate))
+#define GLADE_CELL_RENDERER_BUTTON_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GLADE_TYPE_CELL_RENDERER_BUTTON, GladeTextButtonPrivate))
 
 typedef struct
 {
 	gchar *button_text;
-} GladeCellRendererButtonPrivate;
+} GladeTextButtonPrivate;
 
-static void glade_text_button_finalize   (GObject                  *object);
+static void glade_text_button_finalize           (GObject              *object);
 
 static void glade_text_button_cell_editable_init (GtkCellEditableIface *iface);
+
+static void glade_text_button_grab_focus         (GtkWidget            *widget);
+
 
 G_DEFINE_TYPE_WITH_CODE (GladeTextButton, glade_text_button, GTK_TYPE_ALIGNMENT,
                          G_IMPLEMENT_INTERFACE (GTK_TYPE_CELL_EDITABLE,
@@ -48,8 +51,12 @@ static void
 glade_text_button_class_init (GladeTextButtonClass *klass)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
-	
+	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+
 	object_class->finalize     = glade_text_button_finalize;
+	widget_class->grab_focus   = glade_text_button_grab_focus;
+
+	g_type_class_add_private (object_class, sizeof (GladeTextButtonPrivate));
 }
 
 static void
@@ -66,7 +73,6 @@ glade_text_button_init (GladeTextButton *self)
 
 	  self->button = gtk_button_new ();
 	  gtk_box_pack_start (GTK_BOX (self->hbox), self->button, FALSE, FALSE, 0);
-
 }
 
 static void
@@ -76,7 +82,6 @@ glade_text_button_clicked (GtkWidget *widget,
       gtk_cell_editable_editing_done (GTK_CELL_EDITABLE (button));
       gtk_cell_editable_remove_widget (GTK_CELL_EDITABLE (button));
 }
-
 
 /* GtkCellEditable method implementations
  */
@@ -134,6 +139,14 @@ static void
 glade_text_button_finalize (GObject *object)
 {
 	G_OBJECT_CLASS (glade_text_button_parent_class)->finalize (object);
+}
+
+static void
+glade_text_button_grab_focus (GtkWidget *widget)
+{
+	GladeTextButton *text_button = GLADE_TEXT_BUTTON (widget);
+
+	gtk_widget_grab_focus (text_button->entry);
 }
 
 /**

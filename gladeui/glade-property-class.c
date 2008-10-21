@@ -86,7 +86,6 @@ glade_property_class_new (gpointer handle)
 	property_class->save_always = FALSE;
 	property_class->ignore = FALSE;
 	property_class->needs_sync = FALSE;
-	property_class->resource = FALSE;
 	property_class->themed_icon = FALSE;
 	property_class->translatable = FALSE;
 	property_class->atk = FALSE;
@@ -318,11 +317,10 @@ glade_property_class_make_string_from_object (GladePropertyClass *property_class
 
 	if (!object) return NULL;
 
-	/* XXX Are pixbufs handled the same in both formats ?? */
 	if (property_class->pspec->value_type == GDK_TYPE_PIXBUF)
 	{
 		if ((filename = g_object_get_data (object, "GladeFileName")) != NULL)
-			string = g_path_get_basename (filename);
+			string = g_strdup (filename);
 	}
 	else if (fmt == GLADE_PROJECT_FORMAT_LIBGLADE &&
 		 property_class->pspec->value_type == GTK_TYPE_ADJUSTMENT)
@@ -483,11 +481,7 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *property_class
 	}
 	else if (G_IS_PARAM_SPEC_STRING(property_class->pspec))
 	{
-		if (property_class->resource && g_value_get_string (value) != NULL)
-			string = g_path_get_basename 
-				(g_value_get_string (value));
-		else
-			string = g_value_dup_string (value);
+		string = g_value_dup_string (value);
 	}
 	else if (G_IS_PARAM_SPEC_CHAR(property_class->pspec))
 		string = g_strdup_printf ("%c", g_value_get_char (value));
@@ -644,7 +638,7 @@ glade_property_class_make_object_from_string (GladePropertyClass *property_class
 		if (*string == '\0') return NULL;
 		
 		fullpath = glade_project_resource_fullpath (project, string);
- 
+
 		if ((pixbuf = gdk_pixbuf_new_from_file (fullpath, NULL)) == NULL)
 		{
 			static GdkPixbuf *icon = NULL;
@@ -736,7 +730,7 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 					      GladeWidget        *widget)
 {
 	GValue    *value = g_new0 (GValue, 1);
-	gchar    **strv, *fullpath;
+	gchar    **strv;
 	GdkColor   color = { 0, };
 
 	g_value_init (value, property_class->pspec->value_type);
@@ -804,20 +798,7 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 	else if (G_IS_PARAM_SPEC_DOUBLE(property_class->pspec))
 		g_value_set_double (value, g_ascii_strtod (string, NULL));
 	else if (G_IS_PARAM_SPEC_STRING(property_class->pspec))
-	{
-		/* This can be called when loading defaults from
-		 * catalog files... it wont happen and we cant do
-		 * anything for it.
-		 */
-		if (property_class->resource && project)
-		{
-			fullpath = g_build_filename
-				(glade_project_get_path (project), string, NULL);
-			g_value_set_string (value, fullpath);
-			g_free (fullpath);
-		}
-		else g_value_set_string (value, string);
-	}
+		g_value_set_string (value, string);
 	else if (G_IS_PARAM_SPEC_CHAR(property_class->pspec))
 		g_value_set_char (value, string[0]);
 	else if (G_IS_PARAM_SPEC_UCHAR(property_class->pspec))
@@ -1523,7 +1504,6 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	klass->visible     = glade_xml_get_property_boolean (node, GLADE_TAG_VISIBLE,     klass->visible);
 	klass->ignore      = glade_xml_get_property_boolean (node, GLADE_TAG_IGNORE,      klass->ignore);
 	klass->needs_sync  = glade_xml_get_property_boolean (node, GLADE_TAG_NEEDS_SYNC,  klass->needs_sync);
-	klass->resource    = glade_xml_get_property_boolean (node, GLADE_TAG_RESOURCE,    klass->resource);
 	klass->themed_icon = glade_xml_get_property_boolean (node, GLADE_TAG_THEMED_ICON, klass->themed_icon);
 	klass->weight      = glade_xml_get_property_double  (node, GLADE_TAG_WEIGHT,      klass->weight);
 	klass->transfer_on_paste = glade_xml_get_property_boolean (node, GLADE_TAG_TRANSFER_ON_PASTE, klass->transfer_on_paste);
@@ -1534,19 +1514,9 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 		glade_xml_get_property_boolean (node, GLADE_TAG_LIBGLADE_UNSUPPORTED, 
 						klass->libglade_unsupported);
 
-	/* Special case pixbuf here.
-	 */
-	if (klass->pspec->value_type == GDK_TYPE_PIXBUF)
-		klass->resource = TRUE;
-
 	if ((buf = glade_xml_get_property_string
 	     (node, GLADE_TAG_FACTORY_STOCK_ID)) != NULL)
 	{
-		if (!klass->resource) /* Assert the early in the game */
-			g_error ("%s only supported on properties that are marked as %s",
-				 GLADE_TAG_FACTORY_STOCK_ID,
-				 GLADE_TAG_RESOURCE);
-
 		if (klass->factory_stock_id)
 			g_free (klass->factory_stock_id);
 		klass->factory_stock_id = buf;

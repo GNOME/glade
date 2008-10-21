@@ -1,4 +1,22 @@
-2008-10-18  Tristan Van Berkom <tvb@gnome.org>
+2008-10-20  Tristan Van Berkom <tvb@gnome.org>
+
+	* plugins/gtk+/glade-cell-renderer-button.[ch], plugins/gtk+/glade-text-button.[ch]:
+	Now can optionally make the entry non editable.
+
+	* plugins/gtk+/glade-model-data.c: Added pixbuf editing support.
+
+	* doc/widgetclasses.sgml, doc/properties.sgml: Clarified docs.
+
+	* gladeui/glade-editor-property.[ch]: Removed resource editor, edit pixbuf with
+	string editor.
+
+	* gladeui/glade-widget-adaptor.c, gladeui/glade-property-class.c,
+	gladeui/glade-project.[ch]: Completely removed concept of resources, glade
+	no longer copies along pixbufs, pixbuf properties can include full paths
+	or relative paths, in the glade runtime; any pixbufs are only ever loaded
+	from the glade project directory (only the basename is used).
+	
+2008-10-19  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/glade-cell-renderer-button.[ch], plugins/gtk+/glade-text-button.[ch],
 	plugins/gtk+/glade-model-data.c: Added i18n support to string values in datastores.

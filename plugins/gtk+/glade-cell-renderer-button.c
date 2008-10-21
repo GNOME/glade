@@ -32,6 +32,7 @@
 
 typedef struct
 {
+	gboolean entry_editable;
 	gchar *button_text;
 } GladeCellRendererButtonPrivate;
 
@@ -55,6 +56,7 @@ static GtkCellEditable * glade_cell_renderer_button_start_editing (GtkCellRender
 								   GtkCellRendererState flags);
 enum {
   PROP_0,
+  PROP_ENTRY_EDITABLE,
   PROP_BUTTON_TEXT
 };
 
@@ -84,6 +86,14 @@ glade_cell_renderer_button_class_init (GladeCellRendererButtonClass *klass)
 	
 	g_object_class_install_property (object_class,
 					 PROP_BUTTON_TEXT,
+					 g_param_spec_boolean ("entry-editable",
+							      _("Entry Editable"),
+							      _("Whether the entry is editable"),
+							      TRUE,
+							      G_PARAM_READWRITE));  
+
+	g_object_class_install_property (object_class,
+					 PROP_BUTTON_TEXT,
 					 g_param_spec_string ("button-text",
 							      _("Button Text"),
 							      _("The text to display in the button"),
@@ -109,6 +119,7 @@ glade_cell_renderer_button_init (GladeCellRendererButton *self)
 	
 	priv = GLADE_CELL_RENDERER_BUTTON_GET_PRIVATE (self);
 	
+	priv->entry_editable = TRUE;
 	priv->button_text = NULL;
 }
 
@@ -140,6 +151,9 @@ glade_cell_renderer_button_get_property (GObject      *object,
 
 	switch (prop_id)
 	{
+	case PROP_ENTRY_EDITABLE:
+		g_value_set_boolean (value, priv->entry_editable);
+		break;
 	case PROP_BUTTON_TEXT:
 		g_value_set_string (value, priv->button_text);
 		break;
@@ -151,9 +165,9 @@ glade_cell_renderer_button_get_property (GObject      *object,
 
 static void
 glade_cell_renderer_button_set_property (GObject      *object,
-				     guint         prop_id,
-				     const GValue *value,
-				     GParamSpec   *pspec)
+					 guint         prop_id,
+					 const GValue *value,
+					 GParamSpec   *pspec)
 {
 	GladeCellRendererButton *renderer;
 	GladeCellRendererButtonPrivate *priv;
@@ -163,6 +177,9 @@ glade_cell_renderer_button_set_property (GObject      *object,
 	
 	switch (prop_id)
 	{
+	case PROP_ENTRY_EDITABLE:
+		priv->entry_editable = g_value_get_boolean (value);
+		break;
 	case PROP_BUTTON_TEXT:
 		if (priv->button_text)
 			g_free (priv->button_text);
@@ -246,6 +263,7 @@ glade_cell_renderer_button_start_editing (GtkCellRenderer     *cell,
 
 	text_button = (GladeTextButton *)glade_text_button_new ();
 	gtk_entry_set_text (GTK_ENTRY (text_button->entry), cell_text->text);
+	gtk_entry_set_editable (GTK_ENTRY (text_button->entry), priv->entry_editable);
 	gtk_button_set_label (GTK_BUTTON (text_button->button), priv->button_text);
 
 	g_object_set (text_button->entry,

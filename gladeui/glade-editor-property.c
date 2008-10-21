@@ -1558,10 +1558,17 @@ glade_eprop_text_load (GladeEditorProperty *eprop, GladeProperty *property)
 	if (GTK_IS_ENTRY (eprop_text->text_entry))
 	{
 		GtkEntry *entry = GTK_ENTRY (eprop_text->text_entry);
-		const gchar *text = g_value_get_string (property->value);
+		const gchar *text = NULL;
 
+		if (G_VALUE_TYPE (property->value) == G_TYPE_STRING)
+			text = g_value_get_string (property->value);
+		else if (G_VALUE_TYPE (property->value) == GDK_TYPE_PIXBUF)
+		{
+			GObject *object = g_value_get_object (property->value);
+			if (object)
+				text = g_object_get_data (object, "GladeFileName");
+		}
 		gtk_entry_set_text (entry, text ? text : "");
-		
 	}
 	else if (GTK_IS_TEXT_VIEW (eprop_text->text_entry))
 	{
@@ -1599,10 +1606,12 @@ glade_eprop_text_changed_common (GladeEditorProperty *eprop,
 	gchar  *prop_text;
 
 	if (eprop->property->klass->pspec->value_type == G_TYPE_STRV ||
-	    eprop->property->klass->pspec->value_type == G_TYPE_VALUE_ARRAY)
+	    eprop->property->klass->pspec->value_type == G_TYPE_VALUE_ARRAY ||
+	    eprop->property->klass->pspec->value_type == GDK_TYPE_PIXBUF)
 	{
 		val = glade_property_class_make_gvalue_from_string 
-			(eprop->property->klass, text, NULL, NULL);
+			(eprop->property->klass, text, 
+			 eprop->property->widget->project, eprop->property->widget);
 	} 
 	else
 	{
@@ -2200,164 +2209,6 @@ glade_eprop_unichar_create_input (GladeEditorProperty *eprop)
 			  G_CALLBACK (glade_eprop_unichar_delete), eprop);
 	return eprop_unichar->entry;
 }
-
-/*******************************************************************************
-                        GladeEditorPropertyResourceClass
- *******************************************************************************/
-typedef struct {
-	GladeEditorProperty parent_instance;
-	
-	GtkWidget *entry, *button;
-} GladeEPropResource;
-
-GLADE_MAKE_EPROP (GladeEPropResource, glade_eprop_resource)
-#define GLADE_EPROP_RESOURCE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EPROP_RESOURCE, GladeEPropResource))
-#define GLADE_EPROP_RESOURCE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EPROP_RESOURCE, GladeEPropResourceClass))
-#define GLADE_IS_EPROP_RESOURCE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_RESOURCE))
-#define GLADE_IS_EPROP_RESOURCE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_RESOURCE))
-#define GLADE_EPROP_RESOURCE_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_RESOURCE, GladeEPropResourceClass))
-
-static void
-glade_eprop_resource_finalize (GObject *object)
-{
-	/* Chain up */
-	G_OBJECT_CLASS (editor_property_class)->finalize (object);
-}
-
-static void
-glade_eprop_resource_entry_activate (GtkEntry *entry, GladeEditorProperty *eprop)
-{
-	GladeProject *project = glade_widget_get_project (eprop->property->widget);
-	GValue *value = glade_property_class_make_gvalue_from_string 
-		(eprop->klass, gtk_entry_get_text(entry), project, eprop->property->widget);
-
-	/* Set project resource here where we still have the fullpath.
-	 */
-	glade_project_set_resource (project, eprop->property, 
-				    gtk_entry_get_text(entry));
-	
-	glade_editor_property_commit (eprop, value);
-
-	g_value_unset (value);
-	g_free (value);
-}
-
-static gboolean
-glade_eprop_resource_entry_focus_out (GtkWidget           *entry,
-				      GdkEventFocus       *event,
-				      GladeEditorProperty *eprop)
-{
-	glade_eprop_resource_entry_activate (GTK_ENTRY (entry), eprop);
-	return FALSE;
-}
-
-static void
-glade_eprop_resource_select_file (GtkButton *button, GladeEditorProperty *eprop)
-{
-	GladeProject       *project = glade_widget_get_project (eprop->property->widget);
-	GtkWidget          *dialog;
-	GtkFileFilter      *filter;
-	GValue             *value;
-	gchar              *file, *basename;
-	
-	if (eprop->loading) return;
-
-	dialog = gtk_file_chooser_dialog_new ("Select a File",
-					NULL,
-					GTK_FILE_CHOOSER_ACTION_OPEN,
-					GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-					GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
-					NULL);
-	
-	gtk_file_chooser_set_local_only (GTK_FILE_CHOOSER (dialog), TRUE);
-
-	if (eprop->klass->pspec->value_type == GDK_TYPE_PIXBUF)
-	{
-		filter = gtk_file_filter_new ();
-		gtk_file_filter_add_pixbuf_formats (filter);
-		gtk_file_chooser_set_filter (GTK_FILE_CHOOSER (dialog), filter);
-	}
-
-	if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
-	{
-		file = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
-
-		/* Set project resource here where we still have the fullpath.
-		 */
-		glade_project_set_resource (project, eprop->property, file);
-		basename = g_path_get_basename (file);
-
-		value = glade_property_class_make_gvalue_from_string 
-			(eprop->klass, basename, project, eprop->property->widget);
-		
-		glade_editor_property_commit (eprop, value);
-		
-		g_value_unset (value);
-		g_free (value);
-		g_free (file);
-		g_free (basename);
-	}
-	gtk_widget_destroy (dialog);
-}
-
-static void
-glade_eprop_resource_load (GladeEditorProperty *eprop, GladeProperty *property)
-{
-	GladeProjectFormat fmt;
-	GladeEPropResource *eprop_resource = GLADE_EPROP_RESOURCE (eprop);
-	gchar *file;
-
-	/* Chain up first */
-	editor_property_class->load (eprop, property);
-
-	if (property == NULL) return;
-
-	fmt = glade_project_get_format (property->widget->project);
-
-	file = glade_widget_adaptor_string_from_value
-		(GLADE_WIDGET_ADAPTOR (eprop->klass->handle),
-		 eprop->klass, property->value, fmt);
-	if (file)
-	{
-		gtk_entry_set_text (GTK_ENTRY (eprop_resource->entry), file);
-		g_free (file);
-	}
-	else
-	{
-		gtk_entry_set_text (GTK_ENTRY (eprop_resource->entry), "");
-	}
-}
-
-static GtkWidget *
-glade_eprop_resource_create_input (GladeEditorProperty *eprop)
-{
-	GladeEPropResource *eprop_resource = GLADE_EPROP_RESOURCE (eprop);
-	GtkWidget *hbox;
-
-	hbox = gtk_hbox_new (FALSE, 0);
-
-	eprop_resource->entry = gtk_entry_new ();
-	gtk_widget_show (eprop_resource->entry);
-	
-	eprop_resource->button = gtk_button_new_with_label ("...");
-	gtk_widget_show (eprop_resource->button);
-	
-	gtk_box_pack_start (GTK_BOX (hbox), eprop_resource->entry, TRUE, TRUE, 0);
-	gtk_box_pack_start (GTK_BOX (hbox), eprop_resource->button, FALSE, FALSE, 0);
-
-	g_signal_connect (G_OBJECT (eprop_resource->entry), "activate",
-			  G_CALLBACK (glade_eprop_resource_entry_activate), 
-			  eprop);
-	g_signal_connect (G_OBJECT (eprop_resource->entry), "focus-out-event",
-			  G_CALLBACK (glade_eprop_resource_entry_focus_out),
-			  eprop);
-	g_signal_connect (G_OBJECT (eprop_resource->button), "clicked",
-			  G_CALLBACK (glade_eprop_resource_select_file), 
-			  eprop);
-
-	return hbox;
-}
-
 
 /*******************************************************************************
                         GladeEditorPropertyObjectClass

@@ -1094,7 +1094,7 @@ glade_widget_adaptor_get_eprop_type (GParamSpec *pspec)
 	else if (G_IS_PARAM_SPEC_OBJECT(pspec))
 	{
 		if (pspec->value_type == GDK_TYPE_PIXBUF)
-			type = GLADE_TYPE_EPROP_RESOURCE;
+			type = GLADE_TYPE_EPROP_TEXT;
 		else if (pspec->value_type == GTK_TYPE_ADJUSTMENT)
 			type = GLADE_TYPE_EPROP_ADJUSTMENT;
 		else
@@ -1119,10 +1119,6 @@ glade_widget_adaptor_object_create_eprop (GladeWidgetAdaptor *adaptor,
 	 */
 	if ((type = glade_widget_adaptor_get_eprop_type (klass->pspec)) == 0)
 		return NULL;
-
-	/* special case for resource specs which are hand specified in the catalog. */
-	if (klass->resource)
-		type = GLADE_TYPE_EPROP_RESOURCE;
 	
 	/* special case for string specs that denote themed application icons. */
 	if (klass->themed_icon)

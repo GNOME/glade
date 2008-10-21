@@ -519,7 +519,7 @@ eprop_model_data_generate_store (GladeEditorProperty *eprop)
 	GArray         *gtypes = g_array_new (FALSE, TRUE, sizeof (GType));
 	GtkTreeIter     iter;
 	gint            column_num, row_num;
-	GType           index_type = G_TYPE_INT;
+	GType           index_type = G_TYPE_INT, string_type = G_TYPE_STRING;
 
 	glade_property_get (eprop->property, &data_tree);
 
@@ -531,7 +531,10 @@ eprop_model_data_generate_store (GladeEditorProperty *eprop)
 	for (iter_node = data_tree->children->children; iter_node; iter_node = iter_node->next)
 	{
 		iter_data = iter_node->data;
-		g_array_append_val (gtypes, G_VALUE_TYPE (&iter_data->value));
+		if (G_VALUE_TYPE (&iter_data->value) == GDK_TYPE_PIXBUF)
+			g_array_append_val (gtypes, string_type);
+		else
+			g_array_append_val (gtypes, G_VALUE_TYPE (&iter_data->value));
 	}
 	store = gtk_list_store_newv (gtypes->len, (GType *)gtypes->data);
 	g_array_free (gtypes, TRUE);
@@ -549,7 +552,21 @@ eprop_model_data_generate_store (GladeEditorProperty *eprop)
 		     column_num++, iter_node = iter_node->next)
 		{
 			iter_data = iter_node->data;
-			gtk_list_store_set_value (store, &iter, column_num, &iter_data->value);
+
+			/* Special case, show the filename in the cellrenderertext */
+			if (G_VALUE_TYPE (&iter_data->value) == GDK_TYPE_PIXBUF)
+			{
+				GObject *object = g_value_get_object (&iter_data->value);
+				gchar *filename = NULL;
+				if (object)
+					filename = g_object_get_data (object, "GladeFileName");
+
+				gtk_list_store_set (store, &iter, 
+						    column_num, filename,
+						    -1);
+			}
+			else
+				gtk_list_store_set_value (store, &iter, column_num, &iter_data->value);
 		}
 	}
 	return store;
@@ -644,6 +661,9 @@ value_i18n_clicked (GladeCellRendererButton *cell,
 		eprop_data->pending_data_tree = data_tree;
 		g_idle_add ((GSourceFunc)update_data_tree_idle, eprop);
 	}
+	else
+		glade_model_data_tree_free (data_tree);
+
 	g_free (new_text);
 }
 
@@ -659,6 +679,7 @@ value_text_edited (GtkCellRendererText *cell,
 	gint                 row;
 	GNode               *data_tree = NULL;
 	GladeModelData      *data;
+	GValue              *value;
 
 	if (!gtk_tree_model_get_iter_from_string (GTK_TREE_MODEL (eprop_data->store), &iter, path))
 		return;
@@ -677,36 +698,13 @@ value_text_edited (GtkCellRendererText *cell,
 
 	data = glade_model_data_tree_get_data (data_tree, row, colnum);
 
-	/* cellrenderertext */
-	if (G_VALUE_TYPE (&data->value) == G_TYPE_STRING)
-		g_value_set_string (&data->value, new_text);
-	else if (G_VALUE_TYPE (&data->value) == G_TYPE_CHAR)
-		g_value_set_char (&data->value, new_text ? new_text[0] : '\0');
-	else if (G_VALUE_TYPE (&data->value) == G_TYPE_UCHAR)
-		g_value_set_uchar (&data->value, new_text ? new_text[0] : '\0');
-	/* cellrendererspin */
-	else if (G_VALUE_TYPE (&data->value) == G_TYPE_INT)
-		g_value_set_int (&data->value, g_ascii_strtoll (new_text, NULL, 10));
-	else if (G_VALUE_TYPE (&data->value) == G_TYPE_UINT)
-		g_value_set_uint (&data->value, g_ascii_strtoull (new_text, NULL, 10));
-	else if (G_VALUE_TYPE (&data->value) == G_TYPE_LONG)
-		g_value_set_long (&data->value, g_ascii_strtoll (new_text, NULL, 10));
-	else if (G_VALUE_TYPE (&data->value) == G_TYPE_ULONG)
-		g_value_set_ulong (&data->value, g_ascii_strtoull (new_text, NULL, 10));
-	else if (G_VALUE_TYPE (&data->value) == G_TYPE_INT64)
-		g_value_set_int64 (&data->value, g_ascii_strtoll (new_text, NULL, 10));
-	else if (G_VALUE_TYPE (&data->value) == G_TYPE_UINT64)
-		g_value_set_uint64 (&data->value, g_ascii_strtoull (new_text, NULL, 10));
-	else if (G_VALUE_TYPE (&data->value) == G_TYPE_FLOAT)
-		g_value_set_float (&data->value, (float) g_ascii_strtod (new_text, NULL));
-	else if (G_VALUE_TYPE (&data->value) == G_TYPE_DOUBLE)
-		g_value_set_double (&data->value, g_ascii_strtod (new_text, NULL));
-	else if (G_TYPE_IS_ENUM (G_VALUE_TYPE (&data->value)))
-		g_value_set_enum (&data->value, 
-				  glade_utils_enum_value_from_string (G_VALUE_TYPE (&data->value), new_text));
-	else if (G_TYPE_IS_FLAGS (G_VALUE_TYPE (&data->value)))
-		g_value_set_enum (&data->value, 
-				  glade_utils_flags_value_from_string (G_VALUE_TYPE (&data->value), new_text));
+	/* Translate string and update value in tree. */
+	value = glade_utils_value_from_string (G_VALUE_TYPE (&data->value), new_text,
+					       eprop->property->widget->project,
+					       eprop->property->widget);
+	g_value_copy (value, &data->value);
+	g_value_unset (value);
+	g_free (value);
 	
 	if (eprop_data->pending_data_tree)
 		glade_model_data_tree_free (eprop_data->pending_data_tree);
@@ -732,7 +730,8 @@ eprop_model_generate_column (GladeEditorProperty *eprop,
 	/* Support enum and flag types, and a hardcoded list of fundamental types */
 	if (type == G_TYPE_CHAR ||
 	    type == G_TYPE_UCHAR ||
-	    type == G_TYPE_STRING)
+	    type == G_TYPE_STRING ||
+	    type == GDK_TYPE_PIXBUF)
 	{
 		/* Text renderer */
 		if (type == G_TYPE_STRING)
@@ -743,9 +742,7 @@ eprop_model_generate_column (GladeEditorProperty *eprop,
 		else
 			renderer = gtk_cell_renderer_text_new ();
 
-		g_object_set (G_OBJECT (renderer), 
-			      "editable", TRUE, 
-			      NULL);
+		g_object_set (G_OBJECT (renderer), "editable", TRUE, NULL);
 		gtk_tree_view_column_pack_start (column, renderer, FALSE);
 		gtk_tree_view_column_set_attributes (column, renderer, 
 						     "text", NUM_COLUMNS + colnum,
@@ -768,8 +765,6 @@ eprop_model_generate_column (GladeEditorProperty *eprop,
 		}
 
 	}
-
-		/* Text renderer single char */
 	else if (type == G_TYPE_BOOLEAN)
 	{
 		/* Toggle renderer */

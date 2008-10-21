@@ -8764,8 +8764,19 @@ glade_gtk_store_string_from_value (GladeWidgetAdaptor *adaptor,
 				str = glade_utils_string_from_value (&data->value, fmt);
 
 				is_last = !row->next && !iter->next;
-				g_string_append_printf (string, !is_last ? "%s[%d]:%s|" : "%s[%d]:%s",
+				g_string_append_printf (string, "%s[%d]:%s",
 							data->name, rownum, str);
+
+				if (data->i18n_translatable)
+					g_string_append_printf (string, " translatable");
+				if (data->i18n_context)
+					g_string_append_printf (string, " i18n-context:%s", data->i18n_context);
+				if (data->i18n_comment)
+					g_string_append_printf (string, " i18n-comment:%s", data->i18n_comment);
+
+				if (!is_last)
+					g_string_append_printf (string, "|");
+
 				g_free (str);
 			}
 		}

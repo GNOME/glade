@@ -174,7 +174,6 @@ gboolean             glade_editor_property_show_i18n_dialog (GtkWidget          
 #define GLADE_TYPE_EPROP_TEXT            (glade_eprop_text_get_type())
 #define GLADE_TYPE_EPROP_BOOL            (glade_eprop_bool_get_type())
 #define GLADE_TYPE_EPROP_UNICHAR         (glade_eprop_unichar_get_type())
-#define GLADE_TYPE_EPROP_RESOURCE        (glade_eprop_resource_get_type())
 #define GLADE_TYPE_EPROP_OBJECT          (glade_eprop_object_get_type())
 #define GLADE_TYPE_EPROP_OBJECTS         (glade_eprop_objects_get_type())
 #define GLADE_TYPE_EPROP_ADJUSTMENT      (glade_eprop_adjustment_get_type())
@@ -186,7 +185,6 @@ GType     glade_eprop_named_icon_get_type  (void) G_GNUC_CONST;
 GType     glade_eprop_text_get_type        (void) G_GNUC_CONST;
 GType     glade_eprop_bool_get_type        (void) G_GNUC_CONST;
 GType     glade_eprop_unichar_get_type     (void) G_GNUC_CONST;
-GType     glade_eprop_resource_get_type    (void) G_GNUC_CONST;
 GType     glade_eprop_object_get_type      (void) G_GNUC_CONST;
 GType     glade_eprop_objects_get_type     (void) G_GNUC_CONST;
 GType     glade_eprop_adjustment_get_type  (void) G_GNUC_CONST;

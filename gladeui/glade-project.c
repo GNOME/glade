@@ -59,8 +59,6 @@ enum
 	WIDGET_NAME_CHANGED,
 	SELECTION_CHANGED,
 	CLOSE,
-	RESOURCE_ADDED,
-	RESOURCE_REMOVED,
 	CHANGED,
 	PARSE_FINISHED,
 	CONVERT_FINISHED,
@@ -123,8 +121,6 @@ struct _GladeProjectPrivate
 	                                   */
 	
 	GtkAccelGroup *accel_group;
-
-	GHashTable *resources; /* resource filenames & thier associated properties */
 	
 	gchar *comment;        /* XML comment, Glade will preserve whatever comment was
 			        * in file, so users can delete or change it.
@@ -190,16 +186,7 @@ static void         glade_project_verify_adaptor           (GladeProject       *
 							    gboolean            forwidget,
 							    GladeSupportMask   *mask);
 
-static void         glade_project_move_resources           (GladeProject       *project,
-							    const gchar        *old_dir,
-							    const gchar        *new_dir);
-
-static void         glade_project_sync_resources_for_widget (GladeProject      *project, 
-							     GladeProject      *prev_project,
-							     GladeWidget       *gwidget,
-							     gboolean           remove);
-
-GladeWidget        *search_ancestry_by_name                 (GladeWidget       *toplevel, 
+static GladeWidget *search_ancestry_by_name                 (GladeWidget       *toplevel, 
 							     const gchar       *name);
 
 static GtkWidget   *glade_project_build_prefs_dialog        (GladeProject      *project);
@@ -311,7 +298,6 @@ glade_project_finalize (GObject *object)
 	if (project->priv->unsaved_number > 0)
 		glade_id_allocator_release (get_unsaved_number_allocator (), project->priv->unsaved_number);
 
-	g_hash_table_destroy (project->priv->resources);
 	g_hash_table_destroy (project->priv->target_versions_major);
 	g_hash_table_destroy (project->priv->target_versions_minor);
 	g_hash_table_destroy (project->priv->target_radios);
@@ -605,10 +591,6 @@ glade_project_init (GladeProject *project)
 
 	priv->accel_group = NULL;
 
-	priv->resources = g_hash_table_new_full (g_direct_hash, 
-						 g_direct_equal, 
-						 NULL, g_free);
-
 	priv->unsaved_number = glade_id_allocator_allocate (get_unsaved_number_allocator ());
 
 	priv->format = GLADE_PROJECT_FORMAT_GTKBUILDER;
@@ -662,8 +644,6 @@ glade_project_class_init (GladeProjectClass *klass)
 	klass->widget_name_changed = NULL;
 	klass->selection_changed   = NULL;
 	klass->close               = NULL;
-	klass->resource_added      = NULL;
-	klass->resource_removed    = NULL;
 	klass->changed             = glade_project_changed_impl;
 	
 	/**
@@ -755,45 +735,6 @@ glade_project_class_init (GladeProjectClass *klass)
 			      g_cclosure_marshal_VOID__VOID,
 			      G_TYPE_NONE,
 			      0);
-
-
-	/** 
-	 * GladeProject::resource-added:
-	 * @gladeproject: the #GladeProject which received the signal.
-	 * @arg1: the file's basename (in the project path).
-	 *
-	 * Emitted when a resource file required by a #GladeProperty is
-	 * added to @gladeproject
-	 */
-	glade_project_signals[RESOURCE_ADDED] =
-		g_signal_new ("resource-added",
-			      G_TYPE_FROM_CLASS (object_class),
-			      G_SIGNAL_RUN_LAST,
-			      G_STRUCT_OFFSET (GladeProjectClass, resource_added),
-			      NULL, NULL,
-			      g_cclosure_marshal_VOID__STRING,
-			      G_TYPE_NONE,
-			      1,
-			      G_TYPE_STRING);
-
-	/**
-	 * GladeProject::resource-removed:
-	 * @gladeproject: the #GladeProject which received the signal.
-	 * @arg1: the file's basename
-	 *
-	 * Emitted when a resource file is removed from @gladeproject
-	 */
-	glade_project_signals[RESOURCE_REMOVED] =
-		g_signal_new ("resource-removed",
-			      G_TYPE_FROM_CLASS (object_class),
-			      G_SIGNAL_RUN_LAST,
-			      G_STRUCT_OFFSET (GladeProjectClass, resource_removed),
-			      NULL, NULL,
-			      g_cclosure_marshal_VOID__STRING,
-			      G_TYPE_NONE,
-			      1,
-			      G_TYPE_STRING);
-
 
 	/**
 	 * GladeProject::changed:
@@ -1662,19 +1603,8 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
 	if (project->priv->path == NULL ||
 	    strcmp (canonical_path, project->priv->path))
         {
-		gchar *old_dir, *new_dir, *name, *title;
+		gchar *name, *title;
 
-		if (project->priv->path)
-		{
-			old_dir = g_path_get_dirname (project->priv->path);
-			new_dir = g_path_get_dirname (canonical_path);
-
-			glade_project_move_resources (project, 
-						      old_dir, 
-						      new_dir);
-			g_free (old_dir);
-			g_free (new_dir);
-		}
 		project->priv->path = (g_free (project->priv->path),
 				 g_strdup (canonical_path));
 
@@ -2203,7 +2133,7 @@ glade_project_verify_project_for_ui (GladeProject *project)
 }
 
 /*******************************************************************
-   Project object tracking code, name exclusivity, resources etc...
+   Project object tracking code, name exclusivity etc...
  *******************************************************************/
 static GladeNameContext *
 name_context_by_widget (GladeProject *project, 
@@ -2225,7 +2155,7 @@ name_context_by_widget (GladeProject *project,
 	return NULL;
 }
 
-GladeWidget *
+static GladeWidget *
 search_ancestry_by_name (GladeWidget *toplevel, const gchar *name)
 {
 	GladeWidget *widget = NULL, *iter;
@@ -2475,7 +2405,6 @@ glade_project_add_object (GladeProject *project,
 	GladeNameContext *context;
 	GladeWidget      *gwidget;
 	GList            *list, *children;
-	static gint       reentrancy_count = 0;
 	gchar            *name;
 
 	g_return_if_fail (GLADE_IS_PROJECT (project));
@@ -2519,9 +2448,6 @@ glade_project_add_object (GladeProject *project,
 	glade_name_context_add_name (context, gwidget->name);
 	if (!gwidget->parent)
 		glade_name_context_add_name (project->priv->toplevel_names, gwidget->name);
-		
-	/* Code body starts here */
-	reentrancy_count++;
 
 	if ((children = glade_widget_adaptor_get_children
 	     (gwidget->adaptor, gwidget->object)) != NULL)
@@ -2542,13 +2468,6 @@ glade_project_add_object (GladeProject *project,
 
 	/* Update user visible compatability info */
 	glade_project_verify_properties (gwidget);
-
-	/* Run this once at the end for every recursive call */
-	if (--reentrancy_count == 0)
-	{
-		glade_project_sync_resources_for_widget
-			(project, old_project, gwidget, FALSE);
-	}
 }
 
 /**
@@ -2583,7 +2502,6 @@ glade_project_remove_object (GladeProject *project, GObject *object)
 {
 	GladeWidget   *gwidget;
 	GList         *link, *list, *children;
-	static gint    reentrancy_count = 0;
 	
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (G_IS_OBJECT      (object));
@@ -2593,9 +2511,6 @@ glade_project_remove_object (GladeProject *project, GObject *object)
 
 	if ((gwidget = glade_widget_get_from_gobject (object)) == NULL)
 		return;
-
-	/* Code body starts here */
-	reentrancy_count++;
 	
 	if ((children = 
 	     glade_widget_adaptor_get_children (gwidget->adaptor,
@@ -2620,10 +2535,6 @@ glade_project_remove_object (GladeProject *project, GObject *object)
 		       glade_project_signals [REMOVE_WIDGET],
 		       0,
 		       gwidget);
-
-	/* Call this once at the end for every recursive call */
-	if (--reentrancy_count == 0)
-		glade_project_sync_resources_for_widget (project, NULL, gwidget, TRUE);
 }
 
 static void
@@ -3294,269 +3205,41 @@ glade_project_set_accel_group (GladeProject *project, GtkAccelGroup *accel_group
 	project->priv->accel_group = accel_group;
 }
 
-
-
-
-static void
-gp_sync_resources (GladeProject *project, 
-		   GladeProject *prev_project,
-		   GladeWidget  *gwidget,
-		   gboolean      remove)
-{
-	GList          *prop_list, *l;
-	GladeProperty  *property;
-	gchar          *resource, *full_resource;
-
-	prop_list = g_list_copy (gwidget->properties);
-	prop_list = g_list_concat
-		(prop_list, g_list_copy (gwidget->packing_properties));
-
-	for (l = prop_list; l; l = l->next)
-	{
-		property = l->data;
-		if (property->klass->resource)
-		{
-			GValue value = { 0, };
-
-			if (remove)
-			{
-				glade_project_set_resource (project, property, NULL);
-				continue;
-			}
-
-			glade_property_get_value (property, &value);
-			
-			if ((resource = glade_widget_adaptor_string_from_value
-			     (GLADE_WIDGET_ADAPTOR (property->klass->handle),
-			      property->klass, &value, project->priv->format)) != NULL)
-			{
-				full_resource = glade_project_resource_fullpath
-					(prev_project ? prev_project : project, resource);
-			
-				/* Use a full path here so that the current
-				 * working directory isnt used.
-				 */
-				glade_project_set_resource (project, 
-							    property,
-							    full_resource);
-				
-				g_free (full_resource);
-				g_free (resource);
-			}
-			g_value_unset (&value);
-		}
-	}
-	g_list_free (prop_list);
-}
-
-static void
-glade_project_sync_resources_for_widget (GladeProject *project, 
-					 GladeProject *prev_project,
-					 GladeWidget  *gwidget,
-					 gboolean      remove)
-{
-	GList *children, *l;
-	GladeWidget *gchild;
-
-	children = glade_widget_adaptor_get_children
-		(gwidget->adaptor, gwidget->object);
-
-	for (l = children; l; l = l->next)
-		if ((gchild = 
-		     glade_widget_get_from_gobject (l->data)) != NULL)
-			glade_project_sync_resources_for_widget 
-				(project, prev_project, gchild, remove);
-	if (children)
-		g_list_free (children);
-
-	gp_sync_resources (project, prev_project, gwidget, remove);
-}
-
-static void
-glade_project_move_resources (GladeProject *project,
-			      const gchar  *old_dir,
-			      const gchar  *new_dir)
-{
-	GList *list, *resources;
-	gchar *old_name, *new_name;
-
-	if (old_dir == NULL || /* <-- Cant help you :( */
-	    new_dir == NULL)   /* <-- Unlikely         */
-		return;
-
-	if ((resources = /* Nothing to do here */
-	     glade_project_list_resources (project)) == NULL)
-		return;
-	
-	for (list = resources; list; list = list->next)
-	{
-		old_name = g_build_filename 
-			(old_dir, (gchar *)list->data, NULL);
-		new_name = g_build_filename 
-			(new_dir, (gchar *)list->data, NULL);
-		glade_util_copy_file (old_name, new_name);
-		g_free (old_name);
-		g_free (new_name);
-	}
-	g_list_free (resources);
-}
-
 /**
  * glade_project_resource_fullpath:
  * @project: The #GladeProject.
  * @resource: The resource basename
  *
+ * Project resource strings may be relative or fullpaths, but glade
+ * always expects a copy in the glade file directory, this function
+ * is used to make a local path to the file.
+ *
  * Returns: A newly allocated string holding the 
- *          full path the the project resource.
+ *          local path the the project resource.
  */
 gchar *
 glade_project_resource_fullpath (GladeProject *project,
 				 const gchar  *resource)
 {
-	gchar *fullpath, *project_dir;
+	gchar *fullpath, *project_dir = NULL, *basename;
 
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
+
+	basename = g_path_get_basename (resource);
 
 	if (project->priv->path == NULL)
-		return g_strdup (resource);
-	
-	project_dir = g_path_get_dirname (project->priv->path);
-	fullpath    = g_build_filename (project_dir, resource, NULL);
-	g_free (project_dir);
+	{
+		project_dir = g_path_get_dirname (project->priv->path);
+		fullpath    = g_build_filename (project_dir, basename, NULL);
+	}
+	else
+		fullpath = g_strdup (basename);
+
+	if (project_dir)
+		g_free (project_dir);
+	g_free (basename);
 
 	return fullpath;
-}
-
-
-static gboolean
-find_resource_by_resource (GladeProperty *key,
-			   const gchar   *resource,
-			   const gchar   *resource_cmp)
-{
-	g_assert (resource);
-	g_assert (resource_cmp);
-	return (!strcmp (resource, resource_cmp));
-}
-
-
-
-/**
- * glade_project_set_resource:
- * @project: A #GladeProject
- * @property: The #GladeProperty this resource is required by
- * @resource: The resource file basename to be found in the same
- *            directory as the glade file.
- *
- * Adds/Modifies/Removes a resource from a project; any project resources
- * will be copied when using "Save As...", when moving widgets across projects
- * and will be copied into the project's directory when selected.
- */
-void
-glade_project_set_resource (GladeProject  *project, 
-			    GladeProperty *property,
-			    const gchar   *resource)
-{
-	gchar *last_resource, *last_resource_dup = NULL, *base_resource = NULL;
-	gchar *fullpath, *dirname;
-
-	g_return_if_fail (GLADE_IS_PROJECT (project));
-	g_return_if_fail (GLADE_IS_PROPERTY (property));
-
-	if ((last_resource = 
-	     g_hash_table_lookup (project->priv->resources, property)) != NULL)
-		last_resource_dup = g_strdup (last_resource);
-
-	/* Get dependable input */
-	if (resource && resource[0] != '\0' && strcmp (resource, "."))
-		base_resource = g_path_get_basename (resource);
-	
-	/* If the resource has been removed or the base name has changed
-	 * then remove from hash and emit removed.
-	 */
-	if (last_resource_dup && 
-	    (base_resource == NULL || strcmp (last_resource_dup, base_resource)))
-	{
-		g_hash_table_remove (project->priv->resources, property);
-
-		if (g_hash_table_find (project->priv->resources,
-				       (GHRFunc)find_resource_by_resource,
-				       last_resource_dup) == NULL)
-			g_signal_emit (G_OBJECT (project),
-				       glade_project_signals [RESOURCE_REMOVED],
-				       0, last_resource_dup);
-	}
-	
-	/* Copy files when importing widgets with resources.
-	 */
-	if (project->priv->path)
-	{
-		dirname = g_path_get_dirname (project->priv->path);
-		fullpath = g_build_filename (dirname, base_resource, NULL);
-	
-		if (resource && project->priv->path && 
-		    g_file_test (resource, G_FILE_TEST_IS_REGULAR) &&
-		    strcmp (fullpath, resource))
-		{
-			/* FIXME: In the case of copy/pasting widgets
-			 * across projects we should ask the user about
-			 * copying any resources.
-			 */
-			glade_util_copy_file (resource, fullpath);
-		}
-		g_free (fullpath);
-		g_free (dirname);
-	}
-
-	if (base_resource)
-	{
-
-		/* If the resource has been added or the base name has 
-		 * changed then emit added.
-		 */
-		if ((last_resource_dup == NULL || 
-		     strcmp (last_resource_dup, base_resource)) &&
-		    g_hash_table_find (project->priv->resources,
-				       (GHRFunc)find_resource_by_resource,
-				       base_resource) == NULL)
-			g_signal_emit (G_OBJECT (project),
-				       glade_project_signals [RESOURCE_ADDED],
-				       0, base_resource);
-
-		g_hash_table_insert (project->priv->resources, property, base_resource);
-
-	}
-	g_free (last_resource_dup);
-}
-
-static void
-list_resources_accum (GladeProperty  *key,
-		      gchar          *value,
-		      GList         **list)
-{
-	*list = g_list_prepend (*list, value);
-}
-
-
-
-/**
- * glade_project_list_resources:
- * @project: A #GladeProject
- *
- * Returns: A newly allocated #GList of file basenames
- *          of resources in this project, note that the
- *          strings are not allocated and are unsafe to
- *          use once the projects state changes.
- *          The returned list should be freed with g_list_free.
- */
-GList *
-glade_project_list_resources (GladeProject  *project)
-{
-	GList *list = NULL;
-	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
-
-	g_hash_table_foreach (project->priv->resources, 
-			      (GHFunc)list_resources_accum, &list);
-	return list;
 }
 
 const gchar *
