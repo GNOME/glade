@@ -242,9 +242,10 @@ glade_project_list_unref (GList *original_list)
 static void
 glade_project_dispose (GObject *object)
 {
-	GladeProject *project = GLADE_PROJECT (object);
-	GList        *list;
-	GladeWidget  *gwidget;
+	GladeProject  *project = GLADE_PROJECT (object);
+	GList         *list;
+	GladeWidget   *gwidget;
+	GladeProperty *property;
 	
 	/* Emit close signal */
 	g_signal_emit (object, glade_project_signals [CLOSE], 0);
@@ -268,13 +269,19 @@ glade_project_dispose (GObject *object)
 						    gwidget->parent->object,
 						    gwidget->object))
 			glade_widget_remove_child (gwidget->parent, gwidget);
+
+		/* Release references by way of object properties... */
+		while (gwidget->prop_refs)
+		{
+			property = GLADE_PROPERTY (gwidget->prop_refs->data);
+			glade_property_set (property, NULL);
+		}
 	}
 
 	/* Remove objects from the project */
 	for (list = project->priv->objects; list; list = list->next)
 	{
 		gwidget = glade_widget_get_from_gobject (list->data);
-
 		g_object_unref (G_OBJECT (list->data)); /* Remove the GladeProject reference */
 		g_object_unref (G_OBJECT (gwidget));  /* Remove the overall "Glade" reference */
 	}

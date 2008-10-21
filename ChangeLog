@@ -9,6 +9,16 @@
 
 	* gladeui/glade-project.c: Fixed regression, now the inspector updates on widget
 	name changes.
+
+	* gladeui/glade-widget.c: Implement property lookups with a hash table, fixed mem leaks
+
+	* gladeui/glade-property.c: Read properties from the passed node directly, fixed mem leaks
+
+	* gladeui/glade-widget-adaptor.c: Read properties in the order they are listed in the file, 
+	not by the order of the properties in the object (helps load performance).
+
+	* gladeui/glade-project.c: Fixed mem leaks, release widget property references before
+	destroying all the glade widgets.
 	
 2008-10-20  Tristan Van Berkom <tvb@gnome.org>
 

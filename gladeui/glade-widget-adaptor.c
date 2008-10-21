@@ -848,38 +848,54 @@ glade_widget_adaptor_object_read_widget (GladeWidgetAdaptor *adaptor,
 					 GladeWidget        *widget,
 					 GladeXmlNode       *node)
 {
-	GladeXmlNode *sig_node, *child_node;
+	GladeXmlNode *iter_node;
 	GList *props;
 	GladeSignal *signal;
+	GladeProperty *property;
+	gchar *name, *prop_name;
 
 	/* Read in the properties */
-	for (props = widget->properties; 
-	     props; props = props->next)
-       	{
-		GladeProperty *property = props->data;
-		glade_property_read
-			(property, widget->project, node);
+	for (iter_node = glade_xml_node_get_children (node); 
+	     iter_node; iter_node = glade_xml_node_next (iter_node))
+	{
+		if (!glade_xml_node_verify_silent (iter_node, GLADE_XML_TAG_PROPERTY))
+			continue;
+
+		/* Get prop name from node and lookup property ...*/
+		if (!(name = glade_xml_get_property_string_required
+		      (iter_node, GLADE_XML_TAG_NAME, NULL)))
+			continue;
+
+		prop_name = glade_util_read_prop_name (name);
+
+		/* Some properties may be special child type of custom, just leave them for the adaptor */
+		if ((property = glade_widget_get_property (widget, prop_name)) != NULL)
+			glade_property_read (property, widget->project, iter_node);
+
+		g_free (prop_name);
+		g_free (name);
 	}
+
 	
 	/* Read in the signals */
-	for (sig_node = glade_xml_node_get_children (node); 
-	     sig_node; sig_node = glade_xml_node_next (sig_node))
+	for (iter_node = glade_xml_node_get_children (node); 
+	     iter_node; iter_node = glade_xml_node_next (iter_node))
 	{
-		if (!glade_xml_node_verify_silent (sig_node, GLADE_XML_TAG_SIGNAL))
+		if (!glade_xml_node_verify_silent (iter_node, GLADE_XML_TAG_SIGNAL))
 			continue;
 		
-		if (!(signal = glade_signal_read (sig_node)))
+		if (!(signal = glade_signal_read (iter_node)))
 			continue;
 
 		glade_widget_add_signal_handler (widget, signal);
 	}
 
 	/* Read in children */
-	for (child_node = glade_xml_node_get_children (node); 
-	     child_node; child_node = glade_xml_node_next (child_node))
+	for (iter_node = glade_xml_node_get_children (node); 
+	     iter_node; iter_node = glade_xml_node_next (iter_node))
 	{
-		if (glade_xml_node_verify_silent (child_node, GLADE_XML_TAG_CHILD))
-			glade_widget_read_child (widget, child_node);
+		if (glade_xml_node_verify_silent (iter_node, GLADE_XML_TAG_CHILD))
+			glade_widget_read_child (widget, iter_node);
 	}
 }
 
@@ -952,10 +968,12 @@ glade_widget_adaptor_object_read_child (GladeWidgetAdaptor *adaptor,
 					GladeWidget        *widget,
 					GladeXmlNode       *node)
 {
-	GladeXmlNode *widget_node, *packing_node;
+	GladeXmlNode *widget_node, *packing_node, *iter_node;
 	GladeWidget  *child_widget;
 	GList        *packing;
 	gchar        *internal_name;
+	gchar        *name, *prop_name;
+	GladeProperty *property;
 
 	if (!glade_xml_node_verify (node, GLADE_XML_TAG_CHILD))
 		return;
@@ -986,15 +1004,28 @@ glade_widget_adaptor_object_read_child (GladeWidgetAdaptor *adaptor,
 			     glade_xml_search_child
 			     (node, GLADE_XML_TAG_PACKING)) != NULL)
 			{
-				
-				/* Get the packing properties */
-				for (packing = child_widget->packing_properties; 
-				     packing; packing = packing->next)
+
+				/* Read in the properties */
+				for (iter_node = glade_xml_node_get_children (packing_node); 
+				     iter_node; iter_node = glade_xml_node_next (iter_node))
 				{
-					GladeProperty *property = packing->data;
-					glade_property_read (property, 
-							     child_widget->project, 
-							     packing_node);
+					if (!glade_xml_node_verify_silent (iter_node, GLADE_XML_TAG_PROPERTY))
+						continue;
+
+					/* Get prop name from node and lookup property ...*/
+					if (!(name = glade_xml_get_property_string_required
+					      (iter_node, GLADE_XML_TAG_NAME, NULL)))
+						continue;
+
+					prop_name = glade_util_read_prop_name (name);
+
+					/* Some properties may be special child type of custom, 
+					 * just leave them for the adaptor */
+					if ((property = glade_widget_get_pack_property (child_widget, prop_name)) != NULL)
+						glade_property_read (property, child_widget->project, iter_node);
+					
+					g_free (prop_name);
+					g_free (name);
 				}
 			}
 		}

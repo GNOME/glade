@@ -488,6 +488,12 @@ glade_property_finalize (GObject *object)
 	}
 	if (property->i18n_comment)
 		g_free (property->i18n_comment);
+	if (property->i18n_context)
+		g_free (property->i18n_context);
+	if (property->support_warning)
+		g_free (property->support_warning);
+	if (property->insensitive_tooltip)
+		g_free (property->insensitive_tooltip);
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -992,152 +998,79 @@ glade_property_load (GladeProperty *property)
 void
 glade_property_read (GladeProperty      *property, 
 		     GladeProject       *project,
-		     GladeXmlNode       *node)
+		     GladeXmlNode       *prop)
 {
 	GladeProjectFormat fmt;
-	GladeXmlNode *prop;
 	GValue       *gvalue = NULL;
-	gchar        *id, *name, *value;
+	gchar        /* *id, *name, */ *value;
 	const gchar  *search_name;
+	gint translatable, has_context;
+	gchar *comment = NULL, *context = NULL;
 
 	g_return_if_fail (GLADE_IS_PROPERTY (property));
 	g_return_if_fail (GLADE_IS_PROJECT (project));
-	g_return_if_fail (node != NULL);
+	g_return_if_fail (prop != NULL);
 
 	fmt = glade_project_get_format (project);
 
-	/* This code should work the same for <packing> and <widget> */
-	if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_PACKING) ||
-	      glade_xml_node_verify_silent
-	      (node, GLADE_XML_TAG_WIDGET (fmt))))
+	if (!glade_xml_node_verify (prop, GLADE_XML_TAG_PROPERTY))
 		return;
 
-	for (prop = glade_xml_node_get_children (node); 
-	     prop; prop = glade_xml_node_next (prop))
+	if (!(value = glade_xml_get_content (prop)))
+		return;
+
+	if (glade_property_class_is_object (property->klass, fmt))
 	{
-		search_name = property->klass->id;
-
-		if (!glade_xml_node_verify_silent (prop, GLADE_XML_TAG_PROPERTY))
-			continue;
-
-		if (!(name = glade_xml_get_property_string_required
-		      (prop, GLADE_XML_TAG_NAME, NULL)))
-			continue;
-
-		if (!(value = glade_xml_get_content (prop)))
-		{
-			/* XXX should be glade_xml_get_content_required()... */
-			g_free (name);
-			g_free (value);
-			continue;
-		}
-
-		/* Switch up the values if we are using GtkIconFactory in builder
-		 * to load some hacked out legacy pixbufs
+		/* we must synchronize this directly after loading this project
+		 * (i.e. lookup the actual objects after they've been parsed and
+		 * are present).
 		 */
-		if (fmt == GLADE_PROJECT_FORMAT_GTKBUILDER)
-		{
-			gboolean is_loaded_value = 
-				glade_project_is_loaded_factory_file (project, value);
-
-			if (property->klass->factory_stock_id && is_loaded_value)
-				search_name = property->klass->factory_stock_id;
-			/* If this property was loaded via another property, skip it... */
-			else if (glade_widget_has_factory_stock_id
-				 (property->widget, property->klass->id) && is_loaded_value)
-			{
-				/* really ?... */
-				g_free (value);
-				g_free (name);
-				break;
-			}
-	
-		}
-
-		/* Make sure we are working with dashes and
-		 * not underscores ... 
-		 */
-		id = glade_util_read_prop_name (name);
-		g_free (name);
-
-		if (!strcmp (id, search_name))
-		{
-			if (property && glade_property_class_is_object (property->klass, fmt))
-			{
-				/* we must synchronize this directly after loading this project
-				 * (i.e. lookup the actual objects after they've been parsed and
-				 * are present).
-				 */
-				g_object_set_data_full (G_OBJECT (property), 
-							"glade-loaded-object", 
-							g_strdup (value), g_free);
-			}
-			else
-			{
-				if (fmt == GLADE_PROJECT_FORMAT_GTKBUILDER &&
-				    search_name == property->klass->factory_stock_id)
-				{
-					gchar *filename =
-						glade_util_icon_name_to_filename (value);
-					g_free (value);
-					value = filename;
-				}
-
-				gvalue = glade_property_class_make_gvalue_from_string
-					(property->klass, value, project, property->widget);
-
-				if (property) 
-				{
-					GLADE_PROPERTY_GET_KLASS
-						(property)->set_value (property, gvalue);
-				}
-
-				g_value_unset (gvalue);
-				g_free (gvalue);
-
-				/* If an optional property is specified in the
-				 * glade file, its enabled
-				 */
-				property->enabled = TRUE;
-			}
-
-			if (property)
-			{
-				gint translatable, has_context;
-				gchar *comment = NULL, *context = NULL;
-
-				translatable = glade_xml_get_property_boolean
-					(prop, GLADE_TAG_TRANSLATABLE, FALSE);
-				comment = glade_xml_get_property_string
-					(prop, GLADE_TAG_COMMENT);
-
-				if (fmt == GLADE_PROJECT_FORMAT_LIBGLADE)
-					has_context = glade_xml_get_property_boolean
-						(prop, GLADE_TAG_HAS_CONTEXT, FALSE);
-				else
-					context = glade_xml_get_property_string
-						(prop, GLADE_TAG_CONTEXT);
-
-				glade_property_i18n_set_translatable (property, translatable);
-				glade_property_i18n_set_comment (property, comment);
-
-				if (fmt == GLADE_PROJECT_FORMAT_LIBGLADE)
-					glade_property_i18n_set_has_context
-						(property, has_context);
-				else
-					glade_property_i18n_set_context
-						(property, context);
-
-				g_free (comment);
-				g_free (context);
-			}
-
-			g_free (value);
-			g_free (id);
-			break;
-		}
-		g_free (id);
+		g_object_set_data_full (G_OBJECT (property), 
+					"glade-loaded-object", 
+					g_strdup (value), g_free);
 	}
+	else
+	{
+		gvalue = glade_property_class_make_gvalue_from_string
+			(property->klass, value, project, property->widget);
+
+		GLADE_PROPERTY_GET_KLASS
+			(property)->set_value (property, gvalue);
+
+		g_value_unset (gvalue);
+		g_free (gvalue);
+
+		/* If an optional property is specified in the
+		 * glade file, its enabled
+		 */
+		property->enabled = TRUE;
+	}
+
+	translatable = glade_xml_get_property_boolean
+		(prop, GLADE_TAG_TRANSLATABLE, FALSE);
+	comment = glade_xml_get_property_string
+		(prop, GLADE_TAG_COMMENT);
+	
+	if (fmt == GLADE_PROJECT_FORMAT_LIBGLADE)
+		has_context = glade_xml_get_property_boolean
+			(prop, GLADE_TAG_HAS_CONTEXT, FALSE);
+	else
+		context = glade_xml_get_property_string
+			(prop, GLADE_TAG_CONTEXT);
+	
+	glade_property_i18n_set_translatable (property, translatable);
+	glade_property_i18n_set_comment (property, comment);
+	
+	if (fmt == GLADE_PROJECT_FORMAT_LIBGLADE)
+		glade_property_i18n_set_has_context
+			(property, has_context);
+	else
+		glade_property_i18n_set_context
+			(property, context);
+	
+	g_free (comment);
+	g_free (context);
+ 	g_free (value);
 }
 
 

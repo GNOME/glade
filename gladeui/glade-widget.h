@@ -74,7 +74,12 @@ struct _GladeWidget
 				    * See also child_properties of 
 				    * GladeWidgetClass.
 				    */
-	
+
+	GHashTable *props_hash; /* A Quick reference table to speed up calls to glade_widget_get_property()
+				 */	
+	GHashTable *pack_props_hash; /* A Quick reference table to speed up calls to glade_widget_get_pack_property()
+				      */
+
 	GHashTable *signals; /* A table with a GPtrArray of GladeSignals (signal handlers),
 			      * indexed by its name */
 
