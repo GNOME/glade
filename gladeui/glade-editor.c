@@ -497,7 +497,7 @@ glade_editor_table_attach (GtkWidget *table, GtkWidget *child, gint pos, gint ro
 {
 	gtk_table_attach (GTK_TABLE (table), child,
 			  pos, pos+1, row, row +1,
-			  pos ? GTK_EXPAND | GTK_FILL : GTK_FILL,
+			  GTK_EXPAND | GTK_FILL,
 			  GTK_EXPAND | GTK_FILL,
 			  3, 1);
 }
@@ -541,7 +541,7 @@ glade_editor_table_append_name_field (GladeEditorTable *table)
 	
 	/* Name */
 	label = gtk_label_new (_("Name:"));
-	gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
 	gtk_widget_show (label);
 
 	table->name_entry = gtk_entry_new ();

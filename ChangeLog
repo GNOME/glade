@@ -4,6 +4,12 @@
 	gladeui/glade-popup.[ch]: Abolished "View->Context Help" and added a context menu
 	to editor properties.
 
+	* gladeui/glade-editor.c, gladeui/glade-editor-property.c: Implemented something
+	based on Pavel's patch, wordwrapping in the editor works better now.
+
+	* gladeui/glade-project.c: Fixed regression, now the inspector updates on widget
+	name changes.
+	
 2008-10-20  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/glade-cell-renderer-button.[ch], plugins/gtk+/glade-text-button.[ch]:

@@ -248,6 +248,43 @@ glade_editor_property_button_pressed (GtkWidget           *widget,
 }
 
 
+#define EDITOR_COLUMN_SIZE 90
+
+static void
+eprop_item_label_size_request (GtkWidget *widget, GtkRequisition *requisition, 
+			       GladeEditorProperty *eprop)
+{
+	requisition->width = EDITOR_COLUMN_SIZE;
+}
+
+static void
+eprop_item_label_size_allocate_after (GtkWidget *widget, GtkAllocation *allocation,
+				      GladeEditorProperty *eprop)
+{
+	gint width = EDITOR_COLUMN_SIZE;
+	gint icon_width = 0;
+
+	if (GTK_WIDGET_VISIBLE (eprop->warning))
+	{
+		GtkRequisition req = { -1, -1 };
+		gtk_widget_size_request (eprop->warning, &req);
+		/* Here we have to subtract the icon and remaining
+		 * padding inside eprop->item_label so that we are
+		 * only dealing with the size of the label.
+		 * (note the '4' here comes from the hbox spacing).
+		 */
+		icon_width = req.width + 4;
+	}
+
+	if (allocation->width > width)
+		width = allocation->width;
+
+	gtk_widget_set_size_request (eprop->label, width - icon_width, -1);
+	/* Sometimes labels aren't drawn correctly after resize without this */
+	gtk_widget_queue_draw (eprop->label);
+}
+
+
 static GObject *
 glade_editor_property_constructor (GType                  type,
 				   guint                  n_construct_properties,
@@ -256,7 +293,7 @@ glade_editor_property_constructor (GType                  type,
 	GtkRequisition       req = { -1, -1 };
 	GObject             *obj;
 	GladeEditorProperty *eprop;
-	GtkWidget           *hbox, *alignment;
+	GtkWidget           *hbox;
 
 	/* Invoke parent constructor (eprop->klass should be resolved by this point) . */
 	obj = G_OBJECT_CLASS (table_class)->constructor
@@ -286,9 +323,9 @@ glade_editor_property_constructor (GType                  type,
 
 	/* Create & setup label */
 	eprop->item_label = gtk_event_box_new ();
-	alignment = gtk_alignment_new (1.0, 0.5, 0.0, 0.0);
-	hbox = gtk_hbox_new (FALSE, 4);
 	eprop->label      = gtk_label_new (NULL);
+
+	hbox = gtk_hbox_new (FALSE, 4);
 
 	gtk_label_set_line_wrap (GTK_LABEL(eprop->label), TRUE);
 	gtk_label_set_line_wrap_mode (GTK_LABEL(eprop->label), PANGO_WRAP_WORD_CHAR);
@@ -298,13 +335,17 @@ glade_editor_property_constructor (GType                  type,
 	gtk_widget_size_request (eprop->label, &req);
 	gtk_widget_set_size_request(GTK_WIDGET(eprop->label), req.width, -1);
 
-	gtk_label_set_justify (GTK_LABEL(eprop->label), GTK_JUSTIFY_RIGHT);
+	/* A Hack to that PANGO_WRAP_WORD_CHAR works nicely */
+	g_signal_connect (G_OBJECT (eprop->item_label), "size-request",
+			  G_CALLBACK (eprop_item_label_size_request), eprop);
+	g_signal_connect_after (G_OBJECT (eprop->item_label), "size-allocate",
+				G_CALLBACK (eprop_item_label_size_allocate_after), eprop);
+
 	gtk_misc_set_alignment (GTK_MISC(eprop->label), 1.0, 0.5);
 
-	gtk_box_pack_start (GTK_BOX (hbox), eprop->warning, FALSE, TRUE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->label, TRUE, TRUE, 0);
-	gtk_container_add (GTK_CONTAINER (alignment), hbox);
-	gtk_container_add (GTK_CONTAINER (eprop->item_label), alignment);
+	gtk_box_pack_start (GTK_BOX (hbox), eprop->warning, FALSE, FALSE, 0);
+	gtk_container_add (GTK_CONTAINER (eprop->item_label), hbox);
 	gtk_widget_show_all (eprop->item_label);
 
 	glade_editor_property_fix_label (eprop);

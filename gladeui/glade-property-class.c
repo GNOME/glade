@@ -678,7 +678,7 @@ glade_property_class_make_object_from_string (GladePropertyClass *property_class
 
 		object = G_OBJECT (gtk_adjustment_new (value, lower, upper, step_increment, page_increment, page_size));
 	}
-	else
+	else if (project)
 	{
 		GladeWidget *gwidget;
 		if ((gwidget = glade_project_get_widget_by_name 

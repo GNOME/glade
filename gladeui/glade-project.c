@@ -2384,6 +2384,10 @@ glade_project_set_widget_name (GladeProject *project,
 	glade_project_release_widget_name (project, widget, widget->name);
 	glade_widget_set_name (widget, new_name);
 	
+	g_signal_emit (G_OBJECT (project),
+		       glade_project_signals [WIDGET_NAME_CHANGED],
+		       0, widget);
+
 	g_free (new_name);
 }
 
