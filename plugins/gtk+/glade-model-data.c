@@ -735,10 +735,7 @@ eprop_model_generate_column (GladeEditorProperty *eprop,
 	{
 		/* Text renderer */
 		if (type == G_TYPE_STRING)
-		{
 			renderer = glade_cell_renderer_button_new ();
-			g_object_set (renderer, "button-text", "\342\200\246", NULL);
-		}
 		else
 			renderer = gtk_cell_renderer_text_new ();
 

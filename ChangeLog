@@ -19,7 +19,13 @@
 
 	* gladeui/glade-project.c: Fixed mem leaks, release widget property references before
 	destroying all the glade widgets.
-	
+
+	* plugins/gtk+/glade-attributes.c: Use glade-cell-renderer-button for color attributes.
+
+	* plugins/gtk+/glade-cell-renderer-button.c: no more button-text property
+
+	* plugins/gtk+/glade-text-button.c: Now use a GTK_STOCK_EDIT icon in the cell renderer button
+
 2008-10-20  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/glade-cell-renderer-button.[ch], plugins/gtk+/glade-text-button.[ch]:

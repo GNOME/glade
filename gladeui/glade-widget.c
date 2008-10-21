@@ -767,9 +767,6 @@ glade_widget_dispose (GObject *object)
 	/* We do not keep a reference to internal widgets */
 	if (widget->internal == NULL)
 	{
-		g_print ("Destroying internal object (gtkobject %d), ref count %d\n", 
-			 GTK_IS_OBJECT (widget->object), widget->object->ref_count);
-		
 		if (GTK_IS_OBJECT (widget->object))
 			gtk_object_destroy (GTK_OBJECT (widget->object));
 		else 
@@ -2499,7 +2496,6 @@ glade_widget_get_project (GladeWidget *widget)
 GladeProperty *
 glade_widget_get_property (GladeWidget *widget, const gchar *id_property)
 {
-	GList         *list;
 	GladeProperty *property;
 
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
@@ -2522,7 +2518,6 @@ glade_widget_get_property (GladeWidget *widget, const gchar *id_property)
 GladeProperty *
 glade_widget_get_pack_property (GladeWidget *widget, const gchar *id_property)
 {
-	GList         *list;
 	GladeProperty *property;
 
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);

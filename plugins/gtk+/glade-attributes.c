@@ -32,7 +32,7 @@
 #include <glib/gi18n-lib.h>
 
 #include "glade-attributes.h"
-
+#include "glade-cell-renderer-button.h"
 
 #define GLADE_RESPONSE_CLEAR 42
 
@@ -212,7 +212,7 @@ enum {
 	COLUMN_TOGGLE_ACTIVE, /* whether the toggle renderer is being used */
 	COLUMN_TOGGLE_DOWN,   /* whether the toggle should be displayed in "downstate" */
 
-	COLUMN_TEXT_ACTIVE,   /* whether the bare naked text renderer is being used (to launch dialogs) */
+	COLUMN_BUTTON_ACTIVE, /* whether the GladeCellRendererButton is to be used (to launch dialogs) */
 	COLUMN_TEXT,          /* text attribute value for all text derived renderers */
 	COLUMN_TEXT_STYLE,    /* whether to make italic */
 	COLUMN_TEXT_FG,       /* forground colour of the text */
@@ -238,7 +238,7 @@ typedef enum {
 #define ACTIVATE_COLUMN_FROM_TYPE(type)                 \
 	((type) == EDIT_TOGGLE ? COLUMN_TOGGLE_ACTIVE : \
 	 (type) == EDIT_SPIN ? COLUMN_SPIN_ACTIVE :     \
-	 (type) == EDIT_COMBO ? COLUMN_COMBO_ACTIVE: COLUMN_TEXT_ACTIVE)
+	 (type) == EDIT_COMBO ? COLUMN_COMBO_ACTIVE: COLUMN_BUTTON_ACTIVE)
 
 static GtkListStore *
 get_enum_model_for_combo (PangoAttrType type)
@@ -841,10 +841,9 @@ sync_object (GladeEPropAttrs *eprop_attrs,
 }
 
 static void
-value_text_editing_started (GtkCellRenderer *renderer,
-			    GtkCellEditable *editable,
-			    gchar           *path,
-			    GladeEPropAttrs *eprop_attrs)
+value_button_clicked  (GtkCellRendererToggle *cell_renderer,
+		       gchar                 *path,
+		       GladeEPropAttrs       *eprop_attrs)
 {
 	GtkWidget       *dialog;
 	GtkTreeIter      iter;
@@ -852,9 +851,6 @@ value_text_editing_started (GtkCellRenderer *renderer,
 	AttrEditType     edit_type;
 	GdkColor         color;
 	gchar           *text = NULL, *new_text;
-
-	/* stop emission */
-	g_signal_stop_emission_by_name (G_OBJECT (renderer), "editing-started");
 
 	/* Find type etc */
 	if (!gtk_tree_model_get_iter_from_string (eprop_attrs->model, &iter, path))
@@ -987,7 +983,7 @@ glade_eprop_attrs_view (GladeEditorProperty *eprop)
 		 /* Editor renderer related */
 		 G_TYPE_BOOLEAN, // COLUMN_TOGGLE_ACTIVE
 		 G_TYPE_BOOLEAN, // COLUMN_TOGGLE_DOWN
-		 G_TYPE_BOOLEAN, // COLUMN_TEXT_ACTIVE
+		 G_TYPE_BOOLEAN, // COLUMN_BUTTON_ACTIVE
 		 G_TYPE_STRING,  // COLUMN_TEXT
 		 G_TYPE_INT,     // COLUMN_TEXT_STYLE
 		 G_TYPE_STRING,  // COLUMN_TEXT_FG
@@ -1017,7 +1013,6 @@ glade_eprop_attrs_view (GladeEditorProperty *eprop)
 	gtk_tree_view_column_set_title (column, _("Value"));
 
 
-
 	/* Toggle renderer */
  	renderer = gtk_cell_renderer_toggle_new ();
 	g_object_set (G_OBJECT (renderer), "activatable", TRUE, NULL);
@@ -1030,17 +1025,21 @@ glade_eprop_attrs_view (GladeEditorProperty *eprop)
 			  G_CALLBACK (value_toggled), eprop);
 
 	/* Text renderer */
- 	renderer = gtk_cell_renderer_text_new ();
-	g_object_set (G_OBJECT (renderer), "editable", TRUE, NULL);
+ 	renderer = glade_cell_renderer_button_new ();
+	g_object_set (G_OBJECT (renderer), 
+		      "editable", TRUE, 
+		      "entry-editable", FALSE,
+		      NULL);
 	gtk_tree_view_column_pack_start (column, renderer, FALSE);
 	gtk_tree_view_column_set_attributes (column, renderer, 
-					     "visible", COLUMN_TEXT_ACTIVE,
+					     "visible", COLUMN_BUTTON_ACTIVE,
 					     "text", COLUMN_TEXT,
 					     "style", COLUMN_TEXT_STYLE,
 					     "foreground", COLUMN_TEXT_FG,
 					     NULL);
-	g_signal_connect (G_OBJECT (renderer), "editing-started",
-			  G_CALLBACK (value_text_editing_started), eprop);
+
+	g_signal_connect (G_OBJECT (renderer), "clicked",
+			  G_CALLBACK (value_button_clicked), eprop);
 
 	/* Combo renderer */
  	renderer = gtk_cell_renderer_combo_new ();

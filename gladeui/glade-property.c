@@ -1003,7 +1003,6 @@ glade_property_read (GladeProperty      *property,
 	GladeProjectFormat fmt;
 	GValue       *gvalue = NULL;
 	gchar        /* *id, *name, */ *value;
-	const gchar  *search_name;
 	gint translatable, has_context;
 	gchar *comment = NULL, *context = NULL;
 

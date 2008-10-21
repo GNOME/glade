@@ -62,25 +62,32 @@ glade_text_button_class_init (GladeTextButtonClass *klass)
 static void
 glade_text_button_init (GladeTextButton *self)
 {
-	  gtk_alignment_set_padding (GTK_ALIGNMENT (self), 1, 1, 2, 2);
+	GtkWidget *image;
 
-	  self->hbox = gtk_hbox_new (FALSE, 2);
+	gtk_alignment_set_padding (GTK_ALIGNMENT (self), 1, 1, 2, 2);
+
+	self->hbox = gtk_hbox_new (FALSE, 2);
   
-	  gtk_container_add (GTK_CONTAINER (self), self->hbox); 
+	gtk_container_add (GTK_CONTAINER (self), self->hbox); 
+	
+	self->entry = gtk_entry_new ();
+	gtk_box_pack_start (GTK_BOX (self->hbox), self->entry, TRUE, TRUE, 0);
+	
+	self->button = gtk_button_new ();
+	gtk_box_pack_start (GTK_BOX (self->hbox), self->button, FALSE, FALSE, 0);
 
-	  self->entry = gtk_entry_new ();
-	  gtk_box_pack_start (GTK_BOX (self->hbox), self->entry, TRUE, TRUE, 0);
-
-	  self->button = gtk_button_new ();
-	  gtk_box_pack_start (GTK_BOX (self->hbox), self->button, FALSE, FALSE, 0);
+	image = gtk_image_new_from_stock (GTK_STOCK_EDIT,
+					  GTK_ICON_SIZE_MENU);
+	gtk_widget_show (image);
+	gtk_container_add (GTK_CONTAINER (self->button), image);
 }
 
 static void
 glade_text_button_clicked (GtkWidget *widget,
 			   GladeTextButton *button)
 {
-      gtk_cell_editable_editing_done (GTK_CELL_EDITABLE (button));
-      gtk_cell_editable_remove_widget (GTK_CELL_EDITABLE (button));
+	gtk_cell_editable_editing_done (GTK_CELL_EDITABLE (button));
+	gtk_cell_editable_remove_widget (GTK_CELL_EDITABLE (button));
 }
 
 /* GtkCellEditable method implementations
