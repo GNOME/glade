@@ -502,10 +502,7 @@ glade_eprop_model_data_finalize (GObject *object)
 {
 	/* Chain up */
 	GObjectClass *parent_class = g_type_class_peek_parent (G_OBJECT_GET_CLASS (object));
-	GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (object);
-
-	if (eprop_data->store)
-		g_object_unref (G_OBJECT (eprop_data->store));
+	//GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (object);
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }

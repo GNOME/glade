@@ -1012,7 +1012,6 @@ glade_eprop_attrs_view (GladeEditorProperty *eprop)
 	column = gtk_tree_view_column_new ();
 	gtk_tree_view_column_set_title (column, _("Value"));
 
-
 	/* Toggle renderer */
  	renderer = gtk_cell_renderer_toggle_new ();
 	g_object_set (G_OBJECT (renderer), "activatable", TRUE, NULL);
@@ -1024,7 +1023,8 @@ glade_eprop_attrs_view (GladeEditorProperty *eprop)
 	g_signal_connect (G_OBJECT (renderer), "toggled",
 			  G_CALLBACK (value_toggled), eprop);
 
-	/* Text renderer */
+
+	/* Button renderer */
  	renderer = glade_cell_renderer_button_new ();
 	g_object_set (G_OBJECT (renderer), 
 		      "editable", TRUE, 

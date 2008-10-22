@@ -1743,10 +1743,24 @@ embedded in another object</_tooltip>
 			libglade-unsupported="True" toplevel="True"/>
     <glade-widget-class name="GtkEntryCompletion" generic-name="entrycompletion" _title="Entry Completion" 
 			libglade-unsupported="True" toplevel="True"/>
-    <glade-widget-class name="GtkIconFactory" generic-name="iconfactory" _title="Icon Factory" 
-			libglade-unsupported="True" toplevel="True"/>
     <glade-widget-class name="GtkUIManager" generic-name="uimanager" _title="UI Manager" 
 			libglade-unsupported="True" toplevel="True"/>
+
+    <glade-widget-class name="GtkIconFactory" generic-name="iconfactory" _title="Icon Factory" 
+			libglade-unsupported="True" toplevel="True">
+      <post-create-function>glade_gtk_icon_factory_post_create</post-create-function>
+      <read-widget-function>glade_gtk_icon_factory_read_widget</read-widget-function>
+      <write-widget-function>glade_gtk_icon_factory_write_widget</write-widget-function>
+      <set-property-function>glade_gtk_icon_factory_set_property</set-property-function>
+      <string-from-value-function>glade_gtk_icon_factory_string_from_value</string-from-value-function>
+      <create-editor-property-function>glade_gtk_icon_factory_create_eprop</create-editor-property-function>
+      <properties>
+	<property id="sources" _name="Icon Sources" save="False">
+	  <_tooltip>A list of sources for this icon factory</_tooltip>
+	  <spec>glade_standard_icon_sources_spec</spec>
+	</property>
+      </properties>
+    </glade-widget-class>
 
     <glade-widget-class name="GtkTreeView" generic-name="treeview" _title="Tree View">
       <post-create-function>empty</post-create-function>

@@ -290,7 +290,6 @@ glade_editor_property_constructor (GType                  type,
 				   guint                  n_construct_properties,
 				   GObjectConstructParam *construct_properties)
 {
-	GtkRequisition       req = { -1, -1 };
 	GObject             *obj;
 	GladeEditorProperty *eprop;
 	GtkWidget           *hbox;
@@ -324,16 +323,12 @@ glade_editor_property_constructor (GType                  type,
 	/* Create & setup label */
 	eprop->item_label = gtk_event_box_new ();
 	eprop->label      = gtk_label_new (NULL);
+	gtk_event_box_set_visible_window (GTK_EVENT_BOX (eprop->item_label), FALSE);
 
 	hbox = gtk_hbox_new (FALSE, 4);
 
 	gtk_label_set_line_wrap (GTK_LABEL(eprop->label), TRUE);
 	gtk_label_set_line_wrap_mode (GTK_LABEL(eprop->label), PANGO_WRAP_WORD_CHAR);
-
-	/* gtk_label_set_width_chars() was not working well :( */ 
-	gtk_label_set_text (GTK_LABEL (eprop->label), "xxxxxxxxxxxxxxx");
-	gtk_widget_size_request (eprop->label, &req);
-	gtk_widget_set_size_request(GTK_WIDGET(eprop->label), req.width, -1);
 
 	/* A Hack to that PANGO_WRAP_WORD_CHAR works nicely */
 	g_signal_connect (G_OBJECT (eprop->item_label), "size-request",
