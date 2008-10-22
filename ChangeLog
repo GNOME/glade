@@ -1,3 +1,10 @@
+2008-10-22  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* plugins/gtk+/glade-gtk.c: fixed bug in glade_gtk_assistant_verify_property()
+	  new value should be >= that current
+
+	* plugins/gtk+/gtk+.xml.in: renamed virtual property GtkAssistant::size to n-pages
+
 2008-10-22  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/Makefile.am, plugins/gtk+/glade-icon-sources.[ch]:
@@ -5,7 +12,7 @@
 
 	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Added load/save/set_property/string_from_value
 	support for icon sources in icon factories.
-	
+
 2008-10-21  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-window.c, gladeui/glade-editor.c, gladeui/glade-editor-property.[ch],

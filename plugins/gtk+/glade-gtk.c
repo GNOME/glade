@@ -8016,7 +8016,7 @@ glade_gtk_assistant_parse_finished (GladeProject *project,
 		
 		gtk_assistant_set_current_page (assistant, 0);
 		glade_widget_property_set (glade_widget_get_from_gobject (object),
-					   "size", pages);
+					   "n-pages", pages);
 	}
 }
 
@@ -8052,7 +8052,7 @@ glade_gtk_assistant_post_create (GladeWidgetAdaptor *adaptor,
 		
 		gtk_assistant_set_current_page (GTK_ASSISTANT (object), 0);
 		
-		glade_widget_property_set (parent, "size", 3);
+		glade_widget_property_set (parent, "n-pages", 3);
 	}
 }
 
@@ -8076,7 +8076,7 @@ glade_gtk_assistant_remove_child (GladeWidgetAdaptor *adaptor,
 	GladeWidget *gassistant = glade_widget_get_from_gobject (container);
 	
 	gtk_container_remove (GTK_CONTAINER (container), GTK_WIDGET (child));
-	glade_widget_property_set (gassistant, "size",
+	glade_widget_property_set (gassistant, "n-pages",
 			   	   gtk_assistant_get_n_pages (assistant));
 }
 
@@ -8105,8 +8105,8 @@ glade_gtk_assistant_verify_property (GladeWidgetAdaptor *adaptor,
 				     const gchar *property_name,
 				     const GValue *value)
 {
-	if (strcmp (property_name, "size") == 0)
-		return  g_value_get_int (value) >
+	if (strcmp (property_name, "n-pages") == 0)
+		return  g_value_get_int (value) >=
 			gtk_assistant_get_n_pages (GTK_ASSISTANT (object));
 	
 	/* Chain Up */
@@ -8124,7 +8124,7 @@ glade_gtk_assistant_set_property (GladeWidgetAdaptor *adaptor,
 				  const gchar *property_name,
 				  const GValue *value)
 {
-	if (strcmp (property_name, "size") == 0)
+	if (strcmp (property_name, "n-pages") == 0)
 	{
 		GtkAssistant *assistant = GTK_ASSISTANT (object);
 		gint size, i;
@@ -8151,7 +8151,7 @@ glade_gtk_assistant_get_property (GladeWidgetAdaptor *adaptor,
 				  const gchar *property_name,
 				  GValue *value)
 {
-	if (strcmp (property_name, "size") == 0)
+	if (strcmp (property_name, "n-pages") == 0)
 	{
 		g_value_set_int (value, 
 			gtk_assistant_get_n_pages (GTK_ASSISTANT (object)));
