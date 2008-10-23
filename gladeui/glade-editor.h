@@ -3,6 +3,7 @@
 #define __GLADE_EDITOR_H__
 
 #include <gladeui/glade-signal-editor.h>
+#include <gladeui/glade-editable.h>
 
 G_BEGIN_DECLS
 
@@ -14,21 +15,8 @@ G_BEGIN_DECLS
 #define GLADE_IS_EDITOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EDITOR))
 #define GLADE_EDITOR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_EDITOR, GladeEditorClass))
 
-#define GLADE_EDITOR_TABLE(t)       ((GladeEditorTable *)t)
-#define GLADE_IS_EDITOR_TABLE(t)    (t != NULL)
-
 typedef struct _GladeEditor          GladeEditor;
 typedef struct _GladeEditorClass     GladeEditorClass;
-typedef struct _GladeEditorTable     GladeEditorTable;
-
-typedef enum _GladeEditorTableType
-{
-	TABLE_TYPE_GENERAL,
-	TABLE_TYPE_COMMON,
-	TABLE_TYPE_PACKING,
-	TABLE_TYPE_ATK,
-	TABLE_TYPE_QUERY
-} GladeEditorTableType;
 
 /* The GladeEditor is a window that is used to display and modify widget
  * properties. The glade editor contains the details of the selected
@@ -78,20 +66,15 @@ struct _GladeEditor
 	GladeSignalEditor *signal_editor; /* The signal editor packed into vbox_signals
 					   */
 
-	GList *widget_tables; /* A list of GladeEditorTable. We have a table
-				* (gtktable) for each GladeWidgetClass, if
-				* we don't have one yet, we create it when
-				* we are asked to load a widget of a particular
-				* GladeWidgetClass
-				*/
-				
-	GladeEditorTable *packing_etable; /* Packing pages are dynamicly created each
-					   * selection, this pointer is only to free
-					   * the last packing page.
-					   */
-	 
-	GList            *packing_eprops; /* Current list of packing GladeEditorProperties
-					   */
+	GList *editables;     /* A list of GladeEditables. We have a widget
+			       * for each GladeWidgetAdaptor and we only load
+			       * them on demand
+			       */
+	
+	GtkWidget *packing_page; /* Packing pages are dynamicly created each
+				  * selection, this pointer is only to free
+				  * the last packing page.
+				  */
 
 	gboolean loading; /* Use when loading a GladeWidget into the editor
 			   * we set this flag so that we can ignore the
@@ -100,15 +83,12 @@ struct _GladeEditor
 			   * was loaded.
 			   */
 
-
 	gulong project_closed_signal_id; /* Unload widget when widget's project closes.
 					  */
 	gulong widget_warning_id; /* Update when widget changes warning messages.
 				   */
-	
-	gulong widget_name_id; /* Watch the actual widget name
-				*/
-
+	gulong widget_name_id;    /* Update class field when widget name changes
+				   */
 	GtkWidget *reset_button; /* The reset button
 				  */
 	
@@ -152,52 +132,6 @@ struct _GladeEditorClass
 				  const gchar *,
 				  const gchar *);
 
-};
-
-/* For each glade widget class that we have modified, we create a
- * GladeEditorTable. A GladeEditorTable is mainly a gtk_table with all the
- * widgets to edit a particular GladeWidgetClass (well the first tab of the
- * gtk notebook). When a widget of is selected
- * and going to be edited, we create a GladeEditorTable, when another widget
- * of the same class is loaded so that it can be edited, we just update the
- * contents of the editor table to relfect the values of that GladeWidget
- */
-struct _GladeEditorTable
-{
-	GladeEditor *editor; /* Handy pointer that avoids havving to pass the
-			      * editor arround.
-			      */
-	
-	GladeWidgetAdaptor *adaptor; /* The GladeWidgetAdaptor this
-				      * table belongs to.
-				      */
-
-	GtkWidget *table_widget; /* This widget is a gtk_vbox that is displayed
-				  * in the glade-editor when a widget of this
-				  * class is selected. It is hiden when another
-				  * type is selected. When we select a widget
-				  * we load into the inputs inside this table
-				  * the information about the selected widget.
-				  */
-	
-	GtkWidget *name_entry; /* A pointer to the gtk_entry that holds
-				* the name of the widget. This is the
-				* first item _pack'ed to the table_widget.
-				* We have a pointer here because it is an
-				* entry which will not be created from a
-				* GladeProperty but rather from code.
-				*/
-
-	GList *properties; /* A list of GladeEditorPropery items.
-			    * For each row in the gtk_table, there is a
-			    * corrsponding GladeEditorProperty struct.
-			    */
-
-	GladeEditorTableType type; /* Is this table to be used in the common tab, ?
-				    * the general tab, a packing tab or the query popup ?
-				    */
-
-	gint  rows;
 };
 
 

@@ -17,6 +17,23 @@ G_BEGIN_DECLS
 #define GLADE_PROPERTY_CLASS(gpc)     ((GladePropertyClass *) gpc)
 #define GLADE_IS_PROPERTY_CLASS(gpc)  (gpc != NULL)
 
+
+/**
+ * GLADE_PROPERTY_CLASS_IS_TYPE:
+ * gpc: A #GladePropertyClass
+ * type: The #GladeEditorPageType to query
+ *
+ * Checks if @gpc is good to be loaded as @type
+ */
+#define GLADE_PROPERTY_CLASS_IS_TYPE(gpc, type)	                \
+	(((type) == GLADE_PAGE_GENERAL &&                       \
+	  !(gpc)->common && !(gpc)->packing && !(gpc)->atk) ||	\
+	 ((type) == GLADE_PAGE_COMMON  && (gpc)->common)    ||  \
+	 ((type) == GLADE_PAGE_PACKING && (gpc)->packing)   ||  \
+	 ((type) == GLADE_PAGE_ATK     && (gpc)->atk)       ||  \
+	 ((type) == GLADE_PAGE_QUERY   && (gpc)->query))
+
+
 #define GPC_OBJECT_DELIMITER ", "
 #define GPC_PROPERTY_NAMELEN 512  /* Enough space for a property name I think */
 
@@ -75,10 +92,6 @@ struct _GladePropertyClass
 			    * to be of possible use in plugin code.
 			    */
 
-	gboolean query; /* Whether we should explicitly ask the user about this property
-			 * when instantiating a widget with this property (through a popup
-			 * dialog).
-			 */
 
 	gboolean optional; /* Some properties are optional by nature like
 			    * default width. It can be set or not set. A
@@ -93,6 +106,10 @@ struct _GladePropertyClass
 	gboolean common;  /* Common properties go in the common tab */
 	gboolean atk;     /* Atk properties go in the atk tab */
 	gboolean packing; /* Packing properties go in the packing tab */
+	gboolean query;   /* Whether we should explicitly ask the user about this property
+			   * when instantiating a widget with this property (through a popup
+			   * dialog).
+			   */
 
 	
 	gboolean translatable; /* The property should be translatable, which

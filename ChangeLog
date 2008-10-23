@@ -1,3 +1,18 @@
+2008-10-23  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/Makefile.am, gladeui/glade-editable.[ch], gladeui/glade-editor-table.[ch]:
+	- Added GladeEditable interface used as pages by GladeEditor
+	- Added GladeEditorTable widget to implmenemt the editable as the traditional table
+	  with sorted properties
+
+	* gladeui/glade-editor.[ch]: Removed lots of code, now uses GladeEditables returned
+	  by thier adaptors.
+
+	* gladeui/glade-editor-property.c: Removed obsolete doc-search signal.
+
+	* gladeui/glade-widget-adaptor.[ch]: Added GladeCreateEditableFunc to allow backends
+	  to define layouts of pages in the editor.
+	
 2008-10-22  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* plugins/gtk+/glade-gtk.c: fixed bug in glade_gtk_assistant_verify_property()

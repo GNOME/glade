@@ -6,6 +6,7 @@
 #include <gladeui/glade-property-class.h>
 #include <gladeui/glade-editor-property.h>
 #include <gladeui/glade-catalog.h>
+#include <gladeui/glade-editable.h>
 #include <glib-object.h>
 #include <gmodule.h>
 #include <gtk/gtk.h>
@@ -469,8 +470,9 @@ typedef GladeEditorProperty *(* GladeCreateEPropFunc) (GladeWidgetAdaptor *adapt
  * @fmt: The #GladeProjectFormat the string should conform to
  * 
  * For normal properties this is used to serialize
- * property values, for custom properties its still
- * needed to update the UI for undo/redo items etc.
+ * property values, for custom properties (only when new pspecs are 
+ * introduced) its needed for value comparisons in boxed pspecs 
+ * and also to update the UI for undo/redo items etc.
  *
  * Returns: A newly allocated string representation of @value
  */
@@ -478,6 +480,22 @@ typedef gchar   *(* GladeStringFromValueFunc) (GladeWidgetAdaptor *adaptor,
 					       GladePropertyClass *klass,
 					       const GValue       *value,
 					       GladeProjectFormat  fmt);
+
+
+
+/**
+ * GladeCreateEditableFunc:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @type: The #GladeEditorPageType
+ * 
+ * This is used to allow the backend to override the way an
+ * editor page is layed out (note that editor widgets are created
+ * on demand and not at startup).
+ *
+ * Returns: A new #GladeEditable widget
+ */
+typedef GladeEditable *(* GladeCreateEditableFunc) (GladeWidgetAdaptor   *adaptor,
+						    GladeEditorPageType   type);
 
 
 /* GladeSignalClass contains all the info we need for a given signal, such as
@@ -663,6 +681,8 @@ struct _GladeWidgetAdaptorClass
 	GladeCreateEPropFunc         create_eprop; /* Creates a GladeEditorProperty */
 
 	GladeStringFromValueFunc     string_from_value; /* Creates a string for a value */
+
+	GladeCreateEditableFunc      create_editable; /* Creates a page for the editor */
 };
 
 #define glade_widget_adaptor_create_widget(adaptor, query, ...) \
@@ -848,6 +868,9 @@ gchar               *glade_widget_adaptor_string_from_value  (GladeWidgetAdaptor
 							      GladePropertyClass *klass,
 							      const GValue       *value,
 							      GladeProjectFormat  fmt);
+
+GladeEditable       *glade_widget_adaptor_create_editable    (GladeWidgetAdaptor *adaptor,
+							      GladeEditorPageType type);
 
 GladeSignalClass    *glade_widget_adaptor_get_signal_class   (GladeWidgetAdaptor *adaptor,
 							      const gchar        *name);

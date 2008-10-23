@@ -57,15 +57,8 @@ enum {
 	PROP_USE_COMMAND
 };
 
-enum {
-	GTK_DOC_SEARCH,
-	LAST_SIGNAL
-};
-
 static GtkTableClass             *table_class;
 static GladeEditorPropertyClass  *editor_property_class;
-
-static guint                      glade_editor_property_signals[LAST_SIGNAL] = { 0 };
 
 #define GLADE_PROPERTY_TABLE_ROW_SPACING 2
 #define FLAGS_COLUMN_SETTING             0
@@ -569,26 +562,6 @@ glade_editor_property_class_init (GladeEditorPropertyClass *eprop_class)
 	/* Class methods */
 	eprop_class->load          = glade_editor_property_load_common;
 	eprop_class->create_input  = NULL;
-
-	/**
-	 * GladeEditorProperty::gtk-doc-search:
-	 * @gladeeditor: the #GladeEditorProperty which received the signal.
-	 * @arg1: the (#gchar *) book to search or %NULL
-	 * @arg2: the (#gchar *) page to search or %NULL
-	 * @arg3: the (#gchar *) search string or %NULL
-	 *
-	 * Emitted when the editor property requests that a doc-search be performed.
-	 */
-	glade_editor_property_signals[GTK_DOC_SEARCH] =
-		g_signal_new ("gtk-doc-search",
-			      G_TYPE_FROM_CLASS (object_class),
-			      G_SIGNAL_RUN_LAST,
-			      G_STRUCT_OFFSET (GladeEditorPropertyClass,
-					       gtk_doc_search),
-			      NULL, NULL,
-			      glade_marshal_VOID__STRING_STRING_STRING,
-			      G_TYPE_NONE, 3, 
-			      G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
 
 	/* Properties */
 	g_object_class_install_property 

@@ -123,11 +123,6 @@ struct _GladeEditorPropertyClass {
 
 	GtkWidget  *(* create_input)  (GladeEditorProperty *);
 
-	void        (* gtk_doc_search)(GladeEditorProperty *, 
-				       const gchar *,
-				       const gchar *,
-				       const gchar *);
-
 };
 
 

@@ -41,6 +41,7 @@
 #include "glade-marshallers.h"
 #include "glade-accumulators.h"
 #include "glade-displayable-values.h"
+#include "glade-editor-table.h"
 
 /* For g_file_exists */
 #include <sys/types.h>
@@ -1172,6 +1173,14 @@ glade_widget_adaptor_object_string_from_value (GladeWidgetAdaptor *adaptor,
 	return glade_property_class_make_string_from_gvalue (klass, value, fmt);
 }
 
+static GladeEditable *
+glade_widget_adaptor_object_create_editable (GladeWidgetAdaptor   *adaptor,
+					     GladeEditorPageType   type)
+{
+	return (GladeEditable *)glade_editor_table_new (adaptor, type);
+}
+
+
 /*******************************************************************************
             GladeWidgetAdaptor type registration and class initializer
  *******************************************************************************/
@@ -1219,8 +1228,7 @@ glade_widget_adaptor_class_init (GladeWidgetAdaptorClass *adaptor_class)
 	adaptor_class->write_child          = glade_widget_adaptor_object_write_child;
 	adaptor_class->create_eprop         = glade_widget_adaptor_object_create_eprop;
 	adaptor_class->string_from_value    = glade_widget_adaptor_object_string_from_value;
-
-
+	adaptor_class->create_editable      = glade_widget_adaptor_object_create_editable;
 
 	/* Base defaults here */
 	adaptor_class->fixed                = FALSE;
@@ -1501,6 +1509,11 @@ gwa_extend_with_node_load_sym (GladeWidgetAdaptorClass *klass,
 					  GLADE_TAG_STRING_FROM_VALUE_FUNCTION,
 					  &symbol))
 		klass->string_from_value = symbol;
+
+	if (glade_xml_load_sym_from_node (node, module,
+					  GLADE_TAG_CREATE_EDITABLE_FUNCTION,
+					  &symbol))
+		klass->create_editable = symbol;
 
 }
 
@@ -3557,7 +3570,7 @@ glade_widget_adaptor_string_from_value (GladeWidgetAdaptor *adaptor,
 
 
 /**
- * glade_widget_adaptor_string_from_value:
+ * glade_widget_adaptor_get_signal_class:
  * @adaptor: A #GladeWidgetAdaptor
  * @name: the name of the signal class.
  * 
@@ -3585,3 +3598,24 @@ glade_widget_adaptor_get_signal_class (GladeWidgetAdaptor *adaptor,
 	return NULL;
 }
 
+
+/**
+ * glade_widget_adaptor_create_editable:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @type: The #GladeEditorPageType
+ * 
+ * This is used to allow the backend to override the way an
+ * editor page is layed out (note that editor widgets are created
+ * on demand and not at startup).
+ *
+ * Returns: A new #GladeEditable widget
+ */
+GladeEditable *
+glade_widget_adaptor_create_editable (GladeWidgetAdaptor   *adaptor,
+				      GladeEditorPageType   type)
+{
+	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
+
+	return GLADE_WIDGET_ADAPTOR_GET_CLASS
+		(adaptor)->create_editable (adaptor, type);
+}
