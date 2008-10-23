@@ -40,6 +40,7 @@
 #include "glade-signal.h"
 #include "glade-marshallers.h"
 #include "glade-accumulators.h"
+#include "glade-displayable-values.h"
 
 /* For g_file_exists */
 #include <sys/types.h>
@@ -849,7 +850,6 @@ glade_widget_adaptor_object_read_widget (GladeWidgetAdaptor *adaptor,
 					 GladeXmlNode       *node)
 {
 	GladeXmlNode *iter_node;
-	GList *props;
 	GladeSignal *signal;
 	GladeProperty *property;
 	gchar *name, *prop_name;
@@ -970,7 +970,6 @@ glade_widget_adaptor_object_read_child (GladeWidgetAdaptor *adaptor,
 {
 	GladeXmlNode *widget_node, *packing_node, *iter_node;
 	GladeWidget  *child_widget;
-	GList        *packing;
 	gchar        *internal_name;
 	gchar        *name, *prop_name;
 	GladeProperty *property;
@@ -2028,9 +2027,9 @@ gwa_displayable_values_check (GladeWidgetAdaptor *adaptor, gboolean packing)
 	{
 		GladePropertyClass *klass = l->data;
 		
-		if (adaptor->type == klass->pspec->owner_type &&
+		if (adaptor->type == klass->pspec->owner_type && klass->visible &&
 		    (G_IS_PARAM_SPEC_ENUM (klass->pspec) || G_IS_PARAM_SPEC_FLAGS (klass->pspec)) &&
-		    !klass->displayable_values && klass->visible &&
+		    !glade_type_has_displayable_values (klass->pspec->value_type) &&
 		    klass->pspec->value_type != GLADE_TYPE_STOCK &&
 		    klass->pspec->value_type != GLADE_TYPE_STOCK_IMAGE)
 		{

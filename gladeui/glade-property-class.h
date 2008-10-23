@@ -75,12 +75,6 @@ struct _GladePropertyClass
 			    * to be of possible use in plugin code.
 			    */
 
-	GArray *displayable_values; /* If this property's value is an enumeration/flags and 
-				     * there is some value name overridden in a catalog
-				     * then it will point to a GEnumValue array with the
-				     * modified names, otherwise NULL.
-				     */
-
 	gboolean query; /* Whether we should explicitly ask the user about this property
 			 * when instantiating a widget with this property (through a popup
 			 * dialog).
@@ -219,9 +213,6 @@ gboolean            glade_property_class_update_from_node        (GladeXmlNode  
 								  GType                object_type,
 								  GladePropertyClass **property_class,
 								  const gchar         *domain);
-
-G_CONST_RETURN gchar *glade_property_class_get_displayable_value   (GladePropertyClass *klass, 
-								    gint                value);
 
 GtkAdjustment      *glade_property_class_make_adjustment         (GladePropertyClass *property_class);
 

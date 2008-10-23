@@ -46,6 +46,7 @@
 #include "glade-property.h"
 #include "glade-property-class.h"
 #include "glade-editor-property.h"
+#include "glade-displayable-values.h"
 #include "glade-debug.h"
 
 #define NUMERICAL_STEP_INCREMENT   1
@@ -73,7 +74,6 @@ glade_property_class_new (gpointer handle)
 	property_class->def = NULL;
 	property_class->orig_def = NULL;
 	property_class->parameters = NULL;
-	property_class->displayable_values = NULL;
 	property_class->query = FALSE;
 	property_class->optional = FALSE;
 	property_class->optional_default = FALSE;
@@ -152,28 +152,6 @@ glade_property_class_clone (GladePropertyClass *property_class)
 			parameter->data =
 				glade_parameter_clone ((GladeParameter*) parameter->data);
 	}
-	
-	if (property_class->displayable_values)
-	{
-		gint i, len;
-		GEnumValue val;
-		GArray *disp_val;
-		
-		disp_val = property_class->displayable_values;
-		len = disp_val->len;
-		
-		clone->displayable_values = g_array_new(FALSE, TRUE, sizeof(GEnumValue));
-		
-		for (i = 0; i < len; i++)
-		{
-			val.value = g_array_index(disp_val, GEnumValue, i).value;
-			val.value_name = g_strdup (g_array_index(disp_val, GEnumValue, i).value_name);
-			val.value_nick = g_strdup (g_array_index(disp_val, GEnumValue, i).value_nick);
-			
-			g_array_append_val(clone->displayable_values, val);
-		}
-	}
-	
 	return clone;
 }
 
@@ -208,31 +186,6 @@ glade_property_class_free (GladePropertyClass *property_class)
 	}
 	g_list_foreach (property_class->parameters, (GFunc) glade_parameter_free, NULL);
 	g_list_free (property_class->parameters);
-	
-	if (property_class->displayable_values)
-	{
-		gint i, len;
-		GArray *disp_val;
-		
-		disp_val = property_class->displayable_values;
-		len = disp_val->len;
-		
-		for (i = 0; i < len; i++)
-		{
-			gchar *name, *nick;
-			
-			name = (gchar *) g_array_index (disp_val, GEnumValue, i).value_name;
-			if (name)
-				g_free (name);
-			
-			nick = (gchar *) g_array_index (disp_val, GEnumValue, i).value_nick;
-			if (nick)
-				g_free (nick);
-		}
-		
-		g_array_free (disp_val, TRUE);
-	}	
-	
 	g_free (property_class);
 }
 
@@ -287,7 +240,8 @@ glade_property_class_make_string_from_flags (GladePropertyClass *klass, guint fv
 		fvals &= ~fvalue->value;
 		
 		if (displayables)
-			val_str = glade_property_class_get_displayable_value(klass, fvalue->value);
+			val_str = glade_get_displayable_value (klass->pspec->value_type, 
+							       fvalue->value_name);
 		
 		if (string->str[0])
 			g_string_append(string, " | ");
@@ -1133,120 +1087,83 @@ glade_property_class_is_object (GladePropertyClass  *klass,
 		   klass->pspec->value_type == GTK_TYPE_ADJUSTMENT)));
 }
 
-
 /**
- * glade_property_class_get_displayable_value:
- * @klass: the property class to search in
- * @value: the value to search
- *
- * Search a displayable values for @value in this property class.
- *
- * Returns: a (gchar *) if a diplayable value was found, otherwise NULL.
- */
-const gchar *
-glade_property_class_get_displayable_value(GladePropertyClass *klass, gint value)
-{
-	gint i, len;
-	GArray *disp_val = klass->displayable_values;
-
-	if (disp_val == NULL) return NULL;
-	
-	len = disp_val->len;
-	
-	for (i = 0; i < len; i++)
-		if (g_array_index (disp_val, GEnumValue, i).value == value)
-			return g_array_index (disp_val, GEnumValue, i).value_name;
-
-	return NULL;
-}
-
-/**
- * gpc_get_displayable_values_from_node:
+ * gpc_read_displayable_values_from_node:
  * @node: a GLADE_TAG_DISPLAYABLE_VALUES node
  * @values: an array of the values wich node overrides.
  * @n_values: the size of @values
  *
- * Returns: a (GArray *) of GEnumValue of the overridden fields.
+ * Reads and caches displayable values from the catalog
  */
-static GArray *
-gpc_get_displayable_values_from_node (GladeXmlNode *node, 
-				      GladePropertyClass *klass,				   
-				      const gchar  *domain)
+static void
+gpc_read_displayable_values_from_node (GladeXmlNode *node, 
+				       GladePropertyClass *klass,				   
+				       const gchar  *domain)
 {
-	gpointer the_class = g_type_class_ref (klass->pspec->value_type);
-	GArray *array;
-	GladeXmlNode *child;
-	GEnumValue *values;
-	gint n_values;
+	gpointer       the_class = g_type_class_ref (klass->pspec->value_type);
+	GladeXmlNode  *child;
+	GEnumValue    *enum_values = NULL;
+	GFlagsValue   *flags_values = NULL;
+	gint           n_values, registered_values = 0;
 	
 	if (G_IS_PARAM_SPEC_ENUM (klass->pspec))
 	{
 		GEnumClass *eclass = the_class;
-		values = eclass->values;
+		enum_values = eclass->values;
 		n_values = eclass->n_values;
 	}
 	else
 	{
 		GFlagsClass *fclass = the_class;
-		values = (GEnumValue*)fclass->values;
+		flags_values = fclass->values;
 		n_values = fclass->n_values;
 	}
 	
 	if ((child = glade_xml_search_child (node, GLADE_TAG_VALUE)) == NULL)
-		return NULL;
+		return;
 	
-	array = g_array_new (FALSE, TRUE, sizeof(GEnumValue));
-
 	child = glade_xml_node_get_children (node);
 	while (child != NULL)
 	{
-		gint i;
-		gchar *id, *name, *nick;
-		GEnumValue val;
+		gint         i;
+		gchar       *id, *name;
+		GEnumValue  *enum_val;
+		GFlagsValue *flags_val;
+
 		
 		id = glade_xml_get_property_string_required (child, GLADE_TAG_ID, NULL);
-		name = glade_xml_get_property_string (child, GLADE_TAG_NAME);
-		nick = glade_xml_get_property_string (child, GLADE_TAG_NICK);
+		name = glade_xml_get_property_string_required (child, GLADE_TAG_NAME, NULL);
 
-		for(i=0; i < n_values; i++)
+		if (!id || !name)
+			continue;
+
+		for (i = 0; i < n_values; i++)
 		{
-			if(strcmp (id, values[i].value_name) == 0)
+			/* is it a match ?? */
+			if ((G_IS_PARAM_SPEC_ENUM (klass->pspec) &&
+			     (strcmp (id, enum_values[i].value_name) == 0 ||
+			      strcmp (id, enum_values[i].value_nick) == 0)) ||
+			    (G_IS_PARAM_SPEC_FLAGS (klass->pspec) &&
+			     (strcmp (id, flags_values[i].value_name) == 0 ||
+			      strcmp (id, flags_values[i].value_nick) == 0)))
 			{
-				gchar *translated;
-			
-				val=values[i];
-				
-				/* Tedious memory handling; if dgettext doesn't return
-				 * a translation, dont free the untranslated string.
-				 */
-				if (name) 
-				{
-					translated = dgettext (domain, name);
-					if (name != translated)
-					{
-						val.value_name = g_strdup (translated);
-						g_free (name);
-					}
-					else
-					{
-						val.value_name = name;
-					}
-				}
-				if (nick)
-				{
-					translated = dgettext (domain, nick);
-					if (nick != translated)
-					{
-						val.value_nick = g_strdup (translated);
-						g_free (nick);
-					}
-					else
-					{
-						val.value_nick = nick;
-					}	
-				}
+				registered_values++;
 
-				g_array_append_val (array, val);
+				if (G_IS_PARAM_SPEC_ENUM (klass->pspec))
+				{
+					enum_val = &enum_values[i];
+					glade_register_displayable_value (klass->pspec->value_type,
+									  enum_val->value_name, 
+									  domain, name);
+				}
+				else
+				{
+					flags_val = &flags_values[i];
+					glade_register_displayable_value (klass->pspec->value_type,
+									  flags_val->value_name, 
+									  domain, name);
+
+				}
 				break;
 			}
 		}
@@ -1256,13 +1173,12 @@ gpc_get_displayable_values_from_node (GladeXmlNode *node,
 		child = glade_xml_node_next (child);
 	}
 	
-	if (n_values != array->len)
-		g_message ("%d missing displayable value for %s::%s", n_values - array->len,
+	if (n_values != registered_values)
+		g_message ("%d missing displayable value for %s::%s", n_values - registered_values,
 			   ((GladeWidgetAdaptor*)klass->handle)->name, klass->id);
 	
 	g_type_class_unref (the_class);
 	
-	return array;
 }
 
 /**
@@ -1532,8 +1448,7 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	/* If this property's value is an enumeration or flag then we try to get the displayable values */
 	if ((G_IS_PARAM_SPEC_ENUM(klass->pspec) || G_IS_PARAM_SPEC_FLAGS(klass->pspec)) &&
 	    (child = glade_xml_search_child (node, GLADE_TAG_DISPLAYABLE_VALUES)))
-		klass->displayable_values = gpc_get_displayable_values_from_node
-							(child, klass, domain);
+		gpc_read_displayable_values_from_node (child, klass, domain);
 	
 	/* Right now allowing the backend to specify that some properties
 	 * go in the atk tab, ideally this shouldnt be needed.

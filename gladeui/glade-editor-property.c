@@ -48,6 +48,7 @@
 #include "glade-popup.h"
 #include "glade-builtins.h"
 #include "glade-marshallers.h"
+#include "glade-displayable-values.h"
 #include "glade-named-icon-chooser-dialog.h"
 
 enum {
@@ -878,8 +879,8 @@ glade_eprop_enum_create_input (GladeEditorProperty *eprop)
 	for (i = 0; i < eclass->n_values; i++)
 	{
 		const gchar *value_name = 
-			glade_property_class_get_displayable_value
-				(klass, eclass->values[i].value);
+			glade_get_displayable_value (klass->pspec->value_type,
+						     eclass->values[i].value_name);
 		if (value_name == NULL) value_name = eclass->values[i].value_name;
 		
 		if (stock && strcmp (eclass->values[i].value_nick, "glade-none"))
@@ -962,8 +963,8 @@ glade_eprop_flags_load (GladeEditorProperty *eprop, GladeProperty *property)
 			mask = klass->values[flag_num].value;
 			setting = ((value & mask) == mask) ? TRUE : FALSE;
 			
-			value_name = glade_property_class_get_displayable_value
-				(eprop->klass, klass->values[flag_num].value);
+			value_name = glade_get_displayable_value
+				(eprop->klass->pspec->value_type, klass->values[flag_num].value_name);
 
 			if (value_name == NULL) value_name = klass->values[flag_num].value_name;
 			

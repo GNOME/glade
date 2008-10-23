@@ -7,6 +7,13 @@
 
 2008-10-22  Tristan Van Berkom <tvb@gnome.org>
 
+	* gladeui/Makefile.am, gladeui/glade-displayable-values.[ch]: Rewrote displayable
+	values so no need for redundancies anymore (bug 556452). Also now displayable values
+	are more accessible for the plugin.
+
+	* plugins/gtk+/gtk+.xml.in, plugins/gnome/*.xml.in: Removed redundant displayable value
+	declarations (alot of them !).
+	
 	* plugins/gtk+/Makefile.am, plugins/gtk+/glade-icon-sources.[ch]:
 	new pspec and eprop for GtkIconSources in GtkIconFactories.
 

@@ -28,7 +28,7 @@
 #ifndef __GLADE_INSPECTOR_H__
 #define __GLADE_INSPECTOR_H__
 
-#include <gtk/gtkvbox.h>
+#include <gtk/gtk.h>
 
 #include <gladeui/glade-xml-utils.h>
 

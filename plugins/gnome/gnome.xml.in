@@ -39,10 +39,6 @@
 	</property>
         <property id="pack-type">
 	  <spec>glade_gnome_gtk_pack_type_spec</spec>
-          <displayable-values>
-            <value id="GTK_PACK_START" _name="Start"/>
-            <value id="GTK_PACK_END" _name="End"/>
-          </displayable-values>
 	</property>
       </packing-properties>
     </glade-widget-class>
@@ -260,14 +256,6 @@
 	  <_tooltip>The maximum number of history entries saved</_tooltip>
 	</property>
         <property id="size" visible="False" query="False" ignore="True"/>
-	<property id="filechooser-action">
-	  <displayable-values>
-	    <value id="GTK_FILE_CHOOSER_ACTION_OPEN" _name="Open"/>
-	    <value id="GTK_FILE_CHOOSER_ACTION_SAVE" _name="Save"/>
-	    <value id="GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER" _name="Select Folder"/>
-	    <value id="GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER" _name="Create Folder"/>
-	  </displayable-values>
-	</property>
       </properties>
       <packing-properties>
         <property id="expand" disabled="True"/>

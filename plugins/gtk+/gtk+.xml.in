@@ -444,14 +444,6 @@ embedded in another object</_tooltip>
 	    <value id="GTK_PACK_DIRECTION_BTT" _name="Bottom to Top"/>
 	  </displayable-values>
 	</property>
-        <property id="pack-direction">
-          <displayable-values>
-	    <value id="GTK_PACK_DIRECTION_LTR" _name="Left to Right"/>
-	    <value id="GTK_PACK_DIRECTION_RTL" _name="Right to Left"/>
-	    <value id="GTK_PACK_DIRECTION_TTB" _name="Top to Bottom"/>
-	    <value id="GTK_PACK_DIRECTION_BTT" _name="Bottom to Top"/>
-	  </displayable-values>
-	</property>
       </properties>
       <packing-defaults>
 	<parent-class name="GtkVBox">
@@ -574,14 +566,6 @@ embedded in another object</_tooltip>
 	    <value id="GTK_SHADOW_ETCHED_OUT" _name="Etched Out"/>
 	  </displayable-values>
 	</property>
-      	<property id="snap-edge">
-  	  <displayable-values>
-	    <value id="GTK_POS_LEFT" _name="Left"/>
-	    <value id="GTK_POS_RIGHT" _name="Right"/>
-	    <value id="GTK_POS_TOP" _name="Top"/>
-	    <value id="GTK_POS_BOTTOM" _name="Bottom"/>
-	  </displayable-values>
-	</property>
       </properties>
     </glade-widget-class>
 
@@ -637,15 +621,7 @@ embedded in another object</_tooltip>
 	<property id="text" translatable="True"/>
         <property id="inner-border" since="2.10"/>
         <property id="truncate-multiline" since="2.10"/>
-	<property id="shadow-type" since="2.12">
-  	  <displayable-values>
-	    <value id="GTK_SHADOW_NONE" _name="None"/>
-	    <value id="GTK_SHADOW_IN" _name="In"/>
-	    <value id="GTK_SHADOW_OUT" _name="Out"/>
-	    <value id="GTK_SHADOW_ETCHED_IN" _name="Etched In"/>
-	    <value id="GTK_SHADOW_ETCHED_OUT" _name="Etched Out"/>
-	  </displayable-values>
-	</property>
+	<property id="shadow-type" since="2.12"/>
 	<!-- Atk activate property -->
 	<property id="atk-activate" _name="Activate" ignore="True" atk-property="True" save="False">
 	  <_tooltip>Set the description of the Activate atk action</_tooltip>
@@ -665,14 +641,6 @@ embedded in another object</_tooltip>
 	  <_tooltip>Set the text in the view's text buffer</_tooltip>
 	  <spec>glade_standard_string_spec</spec>
 	  <visible-lines>2</visible-lines>
-	</property>
-	<property id="justification">
-  	  <displayable-values>
-	    <value id="GTK_JUSTIFY_LEFT" _name="Left"/>
-	    <value id="GTK_JUSTIFY_RIGHT" _name="Right"/>
-	    <value id="GTK_JUSTIFY_CENTER" _name="Center"/>
-	    <value id="GTK_JUSTIFY_FILL" _name="Fill"/>
-	  </displayable-values>
 	</property>
       	<property id="wrap-mode">
   	  <displayable-values>
@@ -708,15 +676,7 @@ embedded in another object</_tooltip>
 	  <_tooltip>The stock item for this button</_tooltip>
 	</property>
 
-	<property id="image-position" weight="1.7">
-  	  <displayable-values>
-	    <value id="GTK_POS_LEFT" _name="Left"/>
-	    <value id="GTK_POS_RIGHT" _name="Right"/>
-	    <value id="GTK_POS_TOP" _name="Top"/>
-	    <value id="GTK_POS_BOTTOM" _name="Bottom"/>
-	  </displayable-values>
-	</property>
-
+	<property id="image-position" weight="1.7"/>
 
 	<property id="glade-type" _name="Edit Type" save="False" weight="0">
 	  <spec>glade_gtk_button_type_spec</spec>
@@ -831,21 +791,7 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkScaleButton" generic-name="scalebutton" _title="Scale Button" since="2.12">
-      <properties>
-        <property id="size">
-  	  <displayable-values>
-	    <value id="GTK_ICON_SIZE_INVALID" _name="Invalid"/>
-	    <value id="GTK_ICON_SIZE_MENU" _name="Menu"/>
-	    <value id="GTK_ICON_SIZE_SMALL_TOOLBAR" _name="Small Toolbar"/>
-	    <value id="GTK_ICON_SIZE_LARGE_TOOLBAR" _name="Large Toolbar"/>
-	    <value id="GTK_ICON_SIZE_BUTTON" _name="Button"/>
-	    <value id="GTK_ICON_SIZE_DND" _name="Drag &amp; Drop"/>
-	    <value id="GTK_ICON_SIZE_DIALOG" _name="Dialog"/>
-	  </displayable-values>
-        </property>
-      </properties>
-    </glade-widget-class>
+    <glade-widget-class name="GtkScaleButton" generic-name="scalebutton" _title="Scale Button" since="2.12"/>
 
     <glade-widget-class name="GtkVolumeButton" generic-name="volumebutton" _title="Volume Button"/>
 
@@ -853,14 +799,6 @@ embedded in another object</_tooltip>
       <post-create-function>glade_gtk_file_chooser_widget_post_create</post-create-function>
       <properties>
         <property id="size" default="1"  query="False" />
-        <property id="action">
-  	  <displayable-values>
-	    <value id="GTK_FILE_CHOOSER_ACTION_SAVE" _name="Save"/>
-	    <value id="GTK_FILE_CHOOSER_ACTION_OPEN" _name="Open"/>
-	    <value id="GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER" _name="Select Folder"/>
-	    <value id="GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER" _name="Create Folder"/>
-	  </displayable-values>
-        </property>
 	<property id="extra-widget" parentless-widget="True" libglade-unsupported="True"/>
 	<property id="preview-widget" parentless-widget="True" libglade-unsupported="True"/>
 	<property id="filter" libglade-unsupported="True"/>
@@ -911,6 +849,13 @@ embedded in another object</_tooltip>
 	  <spec>glade_standard_strv_spec</spec>
 	  <_tooltip>The items in this combo box</_tooltip>
 	</property>
+	<property id="button-sensitivity">
+  	  <displayable-values>
+	    <value id="GTK_SENSITIVITY_AUTO" _name="Automatic"/>
+	    <value id="GTK_SENSITIVITY_ON" _name="On"/>
+	    <value id="GTK_SENSITIVITY_OFF" _name="Off"/>
+	  </displayable-values>
+         </property>
 
 	<!-- Atk press property -->
 	<property id="atk-press" _name="Press" ignore="True" atk-property="True" save="False">
@@ -940,14 +885,6 @@ embedded in another object</_tooltip>
 	    <value id="GTK_PROGRESS_TOP_TO_BOTTOM" _name="Top to Bottom"/>
 	  </displayable-values>
 	</property>
-      	<property id="ellipsize">
-  	  <displayable-values>
-	    <value id="PANGO_ELLIPSIZE_NONE" _name="None"/>
-	    <value id="PANGO_ELLIPSIZE_START" _name="Start"/>
-	    <value id="PANGO_ELLIPSIZE_MIDDLE" _name="Middle"/>
-	    <value id="PANGO_ELLIPSIZE_END" _name="End"/>
-	  </displayable-values>
-	</property>
        	<property id="bar-style">
   	  <displayable-values>
 	    <value id="GTK_PROGRESS_CONTINUOUS" _name="Continuous"/>
@@ -964,11 +901,6 @@ embedded in another object</_tooltip>
 	<property id="stock" visible="False" default="gtk-missing-image"/>
 	<property id="glade-type" _name="Edit Type" save="False" weight="0">
 	  <spec>glade_gtk_image_type_spec</spec>
-           <displayable-values>
-             <value id="GLADEGTK_IMAGE_FILENAME" _name="Filename"/>
-             <value id="GLADEGTK_IMAGE_STOCK" _name="Stock"/>
-             <value id="GLADEGTK_IMAGE_ICONTHEME" _name="Icon Theme"/>
-           </displayable-values>
 	</property>
 	<property id="pixbuf-animation" disabled="True"/>
 	<property id="file" disabled="True"/>
@@ -1040,11 +972,6 @@ embedded in another object</_tooltip>
           </displayable-values>
         </property>
         <property id="y-options" transfer-on-paste="True">
-          <displayable-values>
-            <value id="GTK_EXPAND" _name="Expand"/>
-            <value id="GTK_SHRINK" _name="Shrink"/>
-            <value id="GTK_FILL" _name="Fill"/>
-          </displayable-values>
         </property>
         <property id="x-padding" transfer-on-paste="True"/>
         <property id="y-padding" transfer-on-paste="True"/>
@@ -1110,24 +1037,10 @@ embedded in another object</_tooltip>
 	  <spec>glade_standard_int_spec</spec>
 	  <_tooltip>The number of pages in the notebook</_tooltip>
 	</property>
-      	<property id="tab-pos">
-  	  <displayable-values>
-	    <value id="GTK_POS_LEFT" _name="Left"/>
-	    <value id="GTK_POS_RIGHT" _name="Right"/>
-	    <value id="GTK_POS_TOP" _name="Top"/>
-	    <value id="GTK_POS_BOTTOM" _name="Bottom"/>
-	  </displayable-values>
-	</property>
       </properties>
 
       <packing-properties>
         <property id="tab-label" disabled="True"/>
-        <property id="tab-pack">
-          <displayable-values>
-            <value id="GTK_PACK_START" _name="Start"/>
-            <value id="GTK_PACK_END" _name="End"/>
-          </displayable-values>
-        </property>	    
       </packing-properties>
     </glade-widget-class>
 
@@ -1147,15 +1060,7 @@ embedded in another object</_tooltip>
 	<property id="shadow" disabled="True"/>
 	<property id="label-widget" disabled="True"/>
 	<property id="label-xalign" default="0.0" save-always="True"/>
-      	<property id="shadow-type" default="GTK_SHADOW_NONE">
-  	  <displayable-values>
-	    <value id="GTK_SHADOW_NONE" _name="None"/>
-	    <value id="GTK_SHADOW_IN" _name="In"/>
-	    <value id="GTK_SHADOW_OUT" _name="Out"/>
-	    <value id="GTK_SHADOW_ETCHED_IN" _name="Etched In"/>
-	    <value id="GTK_SHADOW_ETCHED_OUT" _name="Etched Out"/>
-	  </displayable-values>
-	</property>
+      	<property id="shadow-type" default="GTK_SHADOW_NONE"/>
       </properties>
     </glade-widget-class>
 
@@ -1172,33 +1077,6 @@ embedded in another object</_tooltip>
 	    <value id="GTK_UPDATE_CONTINUOUS" _name="Continuous"/>
 	    <value id="GTK_UPDATE_DISCONTINUOUS" _name="Discontinuous"/>
 	    <value id="GTK_UPDATE_DELAYED" _name="Delayed"/>
-	  </displayable-values>
-	</property>
-      	<property id="upper-stepper-sensitivity">
-  	  <displayable-values>
-	    <value id="GTK_SENSITIVITY_AUTO" _name="Automatic"/>
-	    <value id="GTK_SENSITIVITY_ON" _name="On"/>
-	    <value id="GTK_SENSITIVITY_OFF" _name="Off"/>
-	  </displayable-values>
-         </property>
-      	<property id="lower-stepper-sensitivity">
-  	  <displayable-values>
-	    <value id="GTK_SENSITIVITY_AUTO" _name="Automatic"/>
-	    <value id="GTK_SENSITIVITY_ON" _name="On"/>
-	    <value id="GTK_SENSITIVITY_OFF" _name="Off"/>
-	  </displayable-values>
-         </property>
-      </properties>
-    </glade-widget-class>
-    
-    <glade-widget-class name="GtkScale" _title="Scale">
-      <properties>
-      	<property id="value-pos">
-  	  <displayable-values>
-            <value id="GTK_POS_LEFT" _name="Left"/>
-            <value id="GTK_POS_RIGHT" _name="Right"/>
-            <value id="GTK_POS_TOP" _name="Top"/>
-            <value id="GTK_POS_BOTTOM" _name="Bottom"/>
 	  </displayable-values>
 	</property>
       </properties>
@@ -1283,15 +1161,6 @@ embedded in another object</_tooltip>
 	    <value id="GTK_ARROW_NONE" _name="None"/>
 	  </displayable-values>
 	</property>
-      	<property id="shadow-type">
-  	  <displayable-values>
-	    <value id="GTK_SHADOW_NONE" _name="None"/>
-	    <value id="GTK_SHADOW_IN" _name="In"/>
-	    <value id="GTK_SHADOW_OUT" _name="Out"/>
-	    <value id="GTK_SHADOW_ETCHED_IN" _name="Etched In"/>
-	    <value id="GTK_SHADOW_ETCHED_OUT" _name="Etched Out"/>
-	  </displayable-values>
-	</property>
       </properties>
     </glade-widget-class>
     
@@ -1332,33 +1201,12 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
     
-    <glade-widget-class name="GtkViewport" generic-name="viewport" _title="Viewport">
-      <properties>
-      	<property id="shadow-type">
-  	  <displayable-values>
-	    <value id="GTK_SHADOW_NONE" _name="None"/>
-	    <value id="GTK_SHADOW_IN" _name="In"/>
-	    <value id="GTK_SHADOW_OUT" _name="Out"/>
-	    <value id="GTK_SHADOW_ETCHED_IN" _name="Etched In"/>
-	    <value id="GTK_SHADOW_ETCHED_OUT" _name="Etched Out"/>
-	  </displayable-values>
-	</property>
-      </properties>
-    </glade-widget-class>
+    <glade-widget-class name="GtkViewport" generic-name="viewport" _title="Viewport"/>
     
     <glade-widget-class name="GtkScrolledWindow" generic-name="scrolledwindow" _title="Scrolled Window">
       <properties>
         <property id="can-focus" save-always="True"/>
         <property id="window-placement-set" since="2.10" ignore="True"/>
-      	<property id="shadow-type">
-  	  <displayable-values>
-	    <value id="GTK_SHADOW_NONE" _name="None"/>
-	    <value id="GTK_SHADOW_IN" _name="In"/>
-	    <value id="GTK_SHADOW_OUT" _name="Out"/>
-	    <value id="GTK_SHADOW_ETCHED_IN" _name="Etched In"/>
-	    <value id="GTK_SHADOW_ETCHED_OUT" _name="Etched Out"/>
-	  </displayable-values>
-	</property>
       	<property id="hscrollbar-policy" default="GTK_POLICY_AUTOMATIC">
   	  <displayable-values>
 	    <value id="GTK_POLICY_ALWAYS" _name="Always"/>
@@ -1366,13 +1214,7 @@ embedded in another object</_tooltip>
 	    <value id="GTK_POLICY_NEVER" _name="Never"/>
 	  </displayable-values>
 	</property>
-      	<property id="vscrollbar-policy" default="GTK_POLICY_AUTOMATIC">
-  	  <displayable-values>
-	    <value id="GTK_POLICY_ALWAYS" _name="Always"/>
-	    <value id="GTK_POLICY_AUTOMATIC" _name="Automatic"/>
-	    <value id="GTK_POLICY_NEVER" _name="Never"/>
-	  </displayable-values>
-	</property>
+      	<property id="vscrollbar-policy" default="GTK_POLICY_AUTOMATIC"/>
       	<property id="window-placement">
   	  <displayable-values>
 	    <value id="GTK_CORNER_TOP_LEFT" _name="Top Left"/>
@@ -1421,14 +1263,6 @@ embedded in another object</_tooltip>
 
     <glade-widget-class name="GtkFileChooserDialog" generic-name="filechooserdialog" _title="File Chooser Dialog">
       <properties>
-	<property id="action">
-  	  <displayable-values>
-	    <value id="GTK_FILE_CHOOSER_ACTION_OPEN" _name="Open"/>
-	    <value id="GTK_FILE_CHOOSER_ACTION_SAVE" _name="Save"/>
-	    <value id="GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER" _name="Select Folder"/>
-	    <value id="GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER" _name="Create Folder"/>
-	  </displayable-values>
-	</property>
 	<property id="extra-widget" parentless-widget="True" />
 	<property id="preview-widget" parentless-widget="True" />
 	<property id="filter"/>
@@ -1567,24 +1401,6 @@ embedded in another object</_tooltip>
 
     <glade-widget-class name="GtkCList" generic-name="clist" _title="Columned List" deprecated="True" libglade-only="True">
       <properties>
-        <property id="selection-mode">
-  	  <displayable-values>
-	    <value id="GTK_SELECTION_NONE" _name="None"/>
-	    <value id="GTK_SELECTION_SINGLE" _name="Single"/>
-	    <value id="GTK_SELECTION_BROWSE" _name="Browse"/>
-	    <value id="GTK_SELECTION_MULTIPLE" _name="Multiple"/>
-	    <value id="GTK_SELECTION_EXTENDED" _name="Extended"/>
-	  </displayable-values>
-	</property>
-      	<property id="shadow-type">
-  	  <displayable-values>
-	    <value id="GTK_SHADOW_NONE" _name="None"/>
-	    <value id="GTK_SHADOW_IN" _name="In"/>
-	    <value id="GTK_SHADOW_OUT" _name="Out"/>
-	    <value id="GTK_SHADOW_ETCHED_IN" _name="Etched In"/>
-	    <value id="GTK_SHADOW_ETCHED_OUT" _name="Etched Out"/>
-	  </displayable-values>
-	</property>
         <property id="sort-type">
   	  <displayable-values>
 	    <value id="GTK_SORT_ASCENDING" _name="Ascending"/>
@@ -1632,8 +1448,8 @@ embedded in another object</_tooltip>
       <child-set-property-function>glade_gtk_assistant_set_child_property</child-set-property-function>
       <child-get-property-function>glade_gtk_assistant_get_child_property</child-get-property-function>
       <properties>
-        <property save="False" id="n-pages" _name="N° pages">
-	  <_tooltip>Number of pages</_tooltip>
+        <property save="False" id="n-pages" _name="Number of Pages">
+	  <_tooltip>Number of pages in this assistant</_tooltip>
 	  <spec>glade_standard_int_spec</spec>
 	</property>
       </properties>
@@ -1691,18 +1507,7 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
     
-    <glade-widget-class name="GtkRecentChooserDialog" generic-name="recentchooserdialog" _title="Recent Chooser Dialog">
-      <properties>
-        <property id="sort-type">
-  	  <displayable-values>
-	    <value id="GTK_RECENT_SORT_NONE" _name="None"/>
-	    <value id="GTK_RECENT_SORT_MRU" _name="Most Recently Used first"/>
-	    <value id="GTK_RECENT_SORT_LRU" _name="Least Recently Used first"/>
-	    <value id="GTK_RECENT_SORT_CUSTOM" _name="Custom"/>
-	  </displayable-values>
-	</property>
-      </properties>
-    </glade-widget-class>
+    <glade-widget-class name="GtkRecentChooserDialog" generic-name="recentchooserdialog" _title="Recent Chooser Dialog"/>
     
     <!-- Objects -->
     <glade-widget-class name="GtkSizeGroup" generic-name="sizegroup" _title="Size Group" libglade-unsupported="True" toplevel="True">
@@ -1713,6 +1518,14 @@ embedded in another object</_tooltip>
 	<property id="widgets" _name="Widgets" save="False">
 	  <_tooltip>List of widgets in this group</_tooltip>
 	  <spec>glade_standard_objects_spec</spec>
+	</property>
+	<property id="mode">
+  	  <displayable-values>
+	    <value id="GTK_SIZE_GROUP_NONE" _name="None"/>
+	    <value id="GTK_SIZE_GROUP_HORIZONTAL" _name="Horizontal"/>
+	    <value id="GTK_SIZE_GROUP_VERTICAL" _name="Vertical"/>
+	    <value id="GTK_SIZE_GROUP_BOTH" _name="Both"/>
+	  </displayable-values>
 	</property>
       </properties>
     </glade-widget-class>
@@ -1812,26 +1625,7 @@ embedded in another object</_tooltip>
       </packing-properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkIconView" generic-name="iconview" _title="Icon View">
-      <properties>
-        <property id="selection-mode">
-  	  <displayable-values>
-	    <value id="GTK_SELECTION_NONE" _name="None"/>
-	    <value id="GTK_SELECTION_SINGLE" _name="Single"/>
-	    <value id="GTK_SELECTION_BROWSE" _name="Browse"/>
-	    <value id="GTK_SELECTION_MULTIPLE" _name="Multiple"/>
-	    <value id="GTK_SELECTION_EXTENDED" _name="Extended"/>
-	  </displayable-values>
-	</property>
-	<property id="orientation">
-  	  <displayable-values>
-	    <value id="GTK_ORIENTATION_HORIZONTAL" _name="Horizontal"/>
-	    <value id="GTK_ORIENTATION_VERTICAL" _name="Vertical"/>
-	  </displayable-values>
-	</property>
-      </properties>
-    </glade-widget-class>
-
+    <glade-widget-class name="GtkIconView" generic-name="iconview" _title="Icon View"/>
 
     <glade-widget-class name="GtkListStore" generic-name="liststore" _title="List Store" 
 			libglade-unsupported="True" toplevel="True">
