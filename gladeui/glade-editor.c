@@ -387,7 +387,6 @@ glade_editor_init (GladeEditor *editor)
 	editor->page_signals = glade_editor_notebook_page (editor, _("_Signals"));
 	editor->page_atk     = glade_editor_notebook_page (editor, _("Accessibility"));
 	editor->editables    = NULL;
-	editor->packing_page = NULL;
 	editor->loading      = FALSE;
 
 	editor->class_field = glade_editor_setup_class_field (editor);
@@ -474,7 +473,6 @@ glade_editor_get_editable_by_adaptor (GladeEditor *editor,
 	GList *list;
 
 	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
-	g_return_val_if_fail (type != GLADE_PAGE_PACKING, NULL);
 
 	for (list = editor->editables; list; list = list->next)
 	{
@@ -488,16 +486,19 @@ glade_editor_get_editable_by_adaptor (GladeEditor *editor,
 	editable = (GtkWidget *)glade_widget_adaptor_create_editable (adaptor, type);
 	g_return_val_if_fail (editable != NULL, NULL);
 
-	g_object_ref_sink (editable);
 	g_object_set_data (G_OBJECT (editable), "glade-editor-page-type", GINT_TO_POINTER (type));
 	g_object_set_data (G_OBJECT (editable), "glade-widget-adaptor", adaptor);
 
-	editor->editables = g_list_prepend (editor->editables, editable);
+	if (type != GLADE_PAGE_PACKING)
+	{
+		editor->editables = g_list_prepend (editor->editables, editable);
+		g_object_ref_sink (editable);
+	}
 
 	return editable;
 }
 
-static void
+static GtkWidget *
 glade_editor_load_editable_in_page (GladeEditor          *editor, 
 				    GladeWidgetAdaptor   *adaptor,
 				    GladeEditorPageType   type)
@@ -529,24 +530,20 @@ glade_editor_load_editable_in_page (GladeEditor          *editor,
 	
 	/* Remove the editable (this will destroy on packing pages) */
 	if (GTK_BIN (container)->child)
-		gtk_container_remove (container, GTK_BIN (container)->child);
-
-	if (!adaptor)
-		return;
-	
-	if (type != GLADE_PAGE_PACKING)
-		editable = glade_editor_get_editable_by_adaptor (editor, adaptor, type);
-	else
 	{
-		/* Dont take a ref for packing pages, they are owned by thier container
-		 * until we update it. 
-		 */
-		editable = (GtkWidget *)glade_widget_adaptor_create_editable (adaptor, type);
-		editor->packing_page = editable;
+		gtk_widget_hide (GTK_BIN (container)->child);
+		gtk_container_remove (container, GTK_BIN (container)->child);
 	}
 
+	if (!adaptor)
+		return NULL;
+
+	if ((editable = glade_editor_get_editable_by_adaptor (editor, adaptor, type)) == NULL)
+		return NULL;
+	
 	/* Attach the new page */
 	gtk_container_add (GTK_CONTAINER (container), editable);
+	gtk_widget_show (editable);
 
 	/* Enable tabbed keynav in the editor */
 	scrolled_window = gtk_widget_get_parent (GTK_WIDGET (container));
@@ -563,8 +560,10 @@ glade_editor_load_editable_in_page (GladeEditor          *editor,
 	
 	adj = gtk_scrolled_window_get_hadjustment
 		(GTK_SCROLLED_WINDOW (scrolled_window));
-		gtk_container_set_focus_hadjustment
-			(GTK_CONTAINER (editable), adj);
+	gtk_container_set_focus_hadjustment
+		(GTK_CONTAINER (editable), adj);
+
+	return editable;
 }
 
 static void
@@ -583,7 +582,6 @@ glade_editor_load_widget_class (GladeEditor *editor, GladeWidgetAdaptor *adaptor
 
 	glade_editor_load_editable_in_page (editor, adaptor, GLADE_PAGE_GENERAL);
 	glade_editor_load_editable_in_page (editor, adaptor, GLADE_PAGE_COMMON);
-	glade_editor_load_editable_in_page (editor, adaptor, GLADE_PAGE_PACKING);
 	glade_editor_load_editable_in_page (editor, adaptor, GLADE_PAGE_ATK);
 
 	glade_editor_load_signal_page  (editor);
@@ -608,8 +606,14 @@ glade_editor_load_editable (GladeEditor         *editor,
 {
 	GtkWidget *editable;
 
-	if (type == GLADE_PAGE_PACKING)
-		editable = editor->packing_page;
+	/* Use the parenting adaptor for packing pages... so deffer creating the widgets
+	 * until load time.
+	 */
+	if (type == GLADE_PAGE_PACKING && widget->parent)
+	{
+		GladeWidgetAdaptor *adaptor = widget->parent->adaptor;
+		editable = glade_editor_load_editable_in_page (editor, adaptor, GLADE_PAGE_PACKING);
+	}
 	else
 		editable = glade_editor_get_editable_by_adaptor
 			(editor, widget->adaptor, type);

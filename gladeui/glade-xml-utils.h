@@ -158,6 +158,7 @@ typedef enum {
 #define GLADE_TAG_OPTIONAL                        "optional"
 #define GLADE_TAG_OPTIONAL_DEFAULT                "optional-default"
 #define GLADE_TAG_VISIBLE                         "visible"
+#define GLADE_TAG_CUSTOM_LAYOUT                   "custom-layout"
 #define GLADE_TAG_EXPANDED                        "expanded"
 #define GLADE_TAG_GENERIC_NAME                    "generic-name"
 #define GLADE_TAG_NAME                            "name"

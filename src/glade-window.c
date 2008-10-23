@@ -544,8 +544,8 @@ activate_action (GtkToolButton *toolbutton,
 
 static void
 action_notify_sensitive (GObject *gobject,
-					      GParamSpec *arg1,
-					      GtkWidget *item)
+			 GParamSpec *arg1,
+			 GtkWidget *item)
 {
 	GladeWidgetAction *action = GLADE_WIDGET_ACTION (gobject);
 	gtk_widget_set_sensitive (item, action->sensitive);
@@ -2957,7 +2957,6 @@ glade_window_init (GladeWindow *window)
 	GtkWidget *hpaned2;
 	GtkWidget *vpaned;
 	GtkWidget *menubar;
-	GtkWidget *editor_item;
 	GtkWidget *palette;
 	GtkWidget *dockitem;
 	GtkWidget *widget;
@@ -3074,12 +3073,6 @@ glade_window_init (GladeWindow *window)
 
 
 	gtk_widget_show (vbox);
-
-
-	/* devhelp */
-	editor_item = gtk_ui_manager_get_widget (priv->ui,
-						 "/MenuBar/ViewMenu/PropertyEditorHelp");
-	gtk_widget_set_sensitive (editor_item, FALSE);
 	
 	/* recent files */	
 	priv->recent_manager = gtk_recent_manager_get_for_screen (gtk_widget_get_screen (GTK_WIDGET (window)));

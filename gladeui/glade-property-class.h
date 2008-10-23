@@ -135,8 +135,16 @@ struct _GladePropertyClass
 			       * that are assigned initial values in composite widgets
 			       * or derived widget code).
 			       */
-	gboolean visible;   /* Whether or not to show this property in the editor
+	gboolean visible;   /* Whether or not to show this property in the editor &
+			     * reset dialog.
 			     */
+
+	gboolean custom_layout; /* Properties marked as custom_layout will not be included
+				 * in a base #GladeEditorTable implementation (use this
+				 * for properties you want to layout in custom ways in
+				 * a #GladeEditable widget
+				 */
+
 	gboolean ignore;    /* When true, we will not sync the object when the property
 			     * changes, or load values from the object.
 			     */

@@ -31,8 +31,6 @@ static void      glade_editor_table_class_init         (GladeEditorTableClass *k
 static void      glade_editor_table_finalize           (GObject               *object);
 static void      glade_editor_table_editable_init      (GladeEditableIface    *iface);
 static void      glade_editor_table_grab_focus         (GtkWidget             *widget);
-static void      append_packing_items                  (GladeEditorTable      *table,
-							GladeWidget           *widget);
 
 G_DEFINE_TYPE_WITH_CODE (GladeEditorTable, glade_editor_table, GTK_TYPE_TABLE,
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
@@ -147,10 +145,6 @@ glade_editor_table_load (GladeEditable *editable,
 	else if (table->name_entry)
 		gtk_entry_set_text (GTK_ENTRY (table->name_entry), "");
 
-	/* If this is a packing page, we need to generate the properties here... */
-	if (table->loaded_widget && table->type == GLADE_PAGE_PACKING)
-		append_packing_items (table, table->loaded_widget);
-
 	/* Sync up properties, even if widget is NULL */
 	for (list = table->properties; list; list = list->next)
 	{
@@ -205,14 +199,19 @@ static GList *
 get_sorted_properties (GladeWidgetAdaptor   *adaptor,
 		       GladeEditorPageType   type)
 {
-	GList *l, *list = NULL;
-	
-	for (l = adaptor->properties; l && l->data; l = g_list_next (l))
+	GList *l, *list = NULL, *properties;
+
+	properties = (type == GLADE_PAGE_PACKING) ? adaptor->packing_props : adaptor->properties;
+
+	for (l = properties; l && l->data; l = g_list_next (l))
 	{
 		GladePropertyClass *klass = l->data;
 
-		/* Collect properties in our domain, query dialogs are allowed editor invisible properties */
-		if (GLADE_PROPERTY_CLASS_IS_TYPE (klass, type) && 
+		/* Collect properties in our domain, query dialogs are allowed editor 
+		 * invisible properties, allow adaptors to filter out properties from
+		 * the GladeEditorTable using the "custom-layout" attribute.
+		 */
+		if (!klass->custom_layout && GLADE_PROPERTY_CLASS_IS_TYPE (klass, type) &&
 		    (glade_property_class_is_visible (klass) || type != GLADE_PAGE_QUERY))
 			list = g_list_prepend (list, klass);
 			
@@ -269,26 +268,6 @@ append_items (GladeEditorTable     *table,
 
 	table->properties = g_list_reverse (table->properties);
 }
-
-static void
-append_packing_items (GladeEditorTable     *table,
-		      GladeWidget          *widget)
-{
-	GladeEditorProperty *eprop;
-	GladeProperty       *property;
-	GList *list;
-
-	for (list = widget->packing_properties; list != NULL; list = list->next)
-	{
-		property       = list->data;
-
-		eprop = append_item (table, property->klass, FALSE);
-		table->properties = g_list_prepend (table->properties, eprop);
-	}
-
-	table->properties = g_list_reverse (table->properties);
-}
-
 
 static void
 widget_name_edited (GtkWidget *editable, GladeEditorTable *table)
