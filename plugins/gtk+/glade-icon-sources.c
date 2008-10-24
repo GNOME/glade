@@ -29,12 +29,28 @@
 
 #include "glade-icon-sources.h"
 
+static GList *
+icon_set_copy (GList *set)
+{
+	GList *dup_set = NULL, *l;
+	GtkIconSource *source;
+	
+	for (l = set; l; l = l->next)
+	{
+		source = gtk_icon_source_copy ((GtkIconSource *)l->data);
+		dup_set = g_list_prepend (dup_set, source);
+	}
+	return g_list_reverse (dup_set);
+}
+
+
 static void
 icon_set_free (GList *list)
 {
 	g_list_foreach (list, (GFunc)gtk_icon_source_free, NULL);
 	g_list_free (list);
 }
+
 
 GladeIconSources *
 glade_icon_sources_new (void)
@@ -53,15 +69,8 @@ icon_sources_dup (gchar               *icon_name,
 		  GList               *set,
 		  GladeIconSources    *dup)
 {
-	GList *dup_set = NULL, *l;
-	GtkIconSource *source;
-	
-	for (l = set; l; l = l->next)
-	{
-		source = gtk_icon_source_copy ((GtkIconSource *)l->data);
-		dup_set = g_list_prepend (dup_set, source);
-	}
-	g_hash_table_insert (dup->sources, g_strdup (icon_name), g_list_reverse (dup_set));
+	GList *dup_set = icon_set_copy (set);
+	g_hash_table_insert (dup->sources, g_strdup (icon_name), dup_set);
 }
 
 GladeIconSources *
@@ -192,8 +201,6 @@ typedef struct
 	GtkListStore      *icon_names_store;
 	GtkTreeViewColumn *filename_column;
 	GtkWidget         *combo;
-
-	GladeIconSources  *pending_sources;
 } GladeEPropIconSources;
 
 GLADE_MAKE_EPROP (GladeEPropIconSources, glade_eprop_icon_sources)
@@ -208,7 +215,7 @@ glade_eprop_icon_sources_finalize (GObject *object)
 {
 	/* Chain up */
 	GObjectClass *parent_class = g_type_class_peek_parent (G_OBJECT_GET_CLASS (object));
-	GladeEPropIconSources *eprop_sources = GLADE_EPROP_ICON_SOURCES (object);
+	//GladeEPropIconSources *eprop_sources = GLADE_EPROP_ICON_SOURCES (object);
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -277,7 +284,7 @@ populate_store_foreach (const gchar           *icon_name,
 
 		if (!gtk_icon_source_get_state_wildcarded (source))
 		{
-			GtkStateType state = gtk_icon_source_get_size (source);
+			GtkStateType state = gtk_icon_source_get_state (source);
 			str = glade_utils_enum_string_from_value_displayable (GTK_TYPE_STATE_TYPE, state);
 			gtk_tree_store_set (eprop_sources->store, &iter, 
 					    COLUMN_STATE_ACTIVE, TRUE,
@@ -286,12 +293,13 @@ populate_store_foreach (const gchar           *icon_name,
 			g_free (str);
 		}
 
-		/* Make sure its all expanded */
 		if (!l->next)
 		{
-			GtkTreePath *tree_path =
-				gtk_tree_model_get_path (GTK_TREE_MODEL (eprop_sources->store), &iter);
-			gtk_tree_view_expand_to_path (eprop_sources->view, tree_path);
+			GtkTreePath *path = gtk_tree_model_get_path (GTK_TREE_MODEL (eprop_sources->store),
+								     &iter);
+			gtk_tree_view_expand_to_path (GTK_TREE_VIEW (eprop_sources->view),
+						      path);
+			gtk_tree_path_free (path);
 		}
 	}
 }
@@ -308,6 +316,7 @@ populate_store (GladeEPropIconSources *eprop_sources)
 
 	if (sources)
 		g_hash_table_foreach (sources->sources, (GHFunc)populate_store_foreach, eprop_sources);
+
 }
 
 static void
@@ -326,6 +335,12 @@ glade_eprop_icon_sources_load (GladeEditorProperty *eprop,
 	gtk_widget_queue_draw (GTK_WIDGET (eprop_sources->view));
 }
 
+static gboolean
+reload_icon_sources_idle (GladeEditorProperty *eprop)
+{
+	glade_editor_property_load (eprop, eprop->property);
+	return FALSE;
+}
 
 static void
 add_clicked (GtkWidget *button, 
@@ -379,6 +394,7 @@ add_clicked (GtkWidget *button,
 			    COLUMN_ICON_NAME, selected_icon_name,
 			    COLUMN_TEXT_EDITABLE, TRUE,
 			    COLUMN_TEXT_WEIGHT, PANGO_WEIGHT_NORMAL,
+			    COLUMN_LIST_INDEX, -1,
 			    -1);
 
 	new_item_path = gtk_tree_model_get_path (GTK_TREE_MODEL (eprop_sources->store), &iter);
@@ -403,7 +419,7 @@ get_icon_source (GladeIconSources *sources,
 	if (source_list)
 	{
 		if (index < 0)
-			return (GtkIconSource *)source_list->data;
+			return NULL;
 		else 
 			return (GtkIconSource *)g_list_nth_data (source_list, index);
 	}
@@ -411,32 +427,61 @@ get_icon_source (GladeIconSources *sources,
 }
 
 static void
-delete_clicked (GtkWidget *button, 
-		GladeEPropIconSources *eprop_sources)
+update_icon_sources (GladeEditorProperty   *eprop,
+		     GladeIconSources      *icon_sources)
 {
-
-}
-
-static gboolean
-update_icon_sources_idle (GladeEditorProperty *eprop)
-{
-	GladeEPropIconSources *eprop_sources = GLADE_EPROP_ICON_SOURCES (eprop);
-	GValue                 value = { 0, };
+	GValue value = { 0, };
 	
 	g_value_init (&value, GLADE_TYPE_ICON_SOURCES);
-	g_value_take_boxed (&value, eprop_sources->pending_sources);
+	g_value_take_boxed (&value, icon_sources);
 	glade_editor_property_commit (eprop, &value);
 	g_value_unset (&value);
-
-	eprop_sources->pending_sources = NULL;
-	return FALSE;
 }
 
-static gboolean
-reload_icon_sources_idle (GladeEditorProperty *eprop)
+static void
+delete_clicked (GtkWidget *button, 
+		GladeEditorProperty *eprop)
 {
-	glade_editor_property_load (eprop, eprop->property);
-	return FALSE;
+	GladeEPropIconSources *eprop_sources = GLADE_EPROP_ICON_SOURCES (eprop);
+	GtkTreeIter            iter;
+	GladeIconSources      *icon_sources = NULL;
+	GList                 *list, *sources, *new_list_head;
+	gchar                 *icon_name;
+	gint                   index = 0;
+
+	/* NOTE: This will trigger row-deleted below... */
+	if (!gtk_tree_selection_get_selected
+	    (gtk_tree_view_get_selection (eprop_sources->view), NULL, &iter))
+		return;
+
+	gtk_tree_model_get (GTK_TREE_MODEL (eprop_sources->store), &iter,
+			    COLUMN_ICON_NAME, &icon_name,
+			    COLUMN_LIST_INDEX, &index,
+			    -1);
+
+	glade_property_get (eprop->property, &icon_sources);
+	if (icon_sources)
+	{
+		icon_sources = glade_icon_sources_copy (icon_sources);
+
+		if ((sources = g_hash_table_lookup (icon_sources->sources, icon_name)) != NULL)
+		{
+			new_list_head = icon_set_copy (sources);
+
+			list = g_list_nth (new_list_head, index);
+			new_list_head = g_list_remove_link (new_list_head, list);
+
+			gtk_icon_source_free ((GtkIconSource *)list->data);
+			g_list_free (list);
+
+			/* We copied all that above cause this will free the old list */
+			g_hash_table_insert (icon_sources->sources, g_strdup (icon_name),
+					     new_list_head);
+			
+		}
+		update_icon_sources (eprop, icon_sources);
+	}
+	g_free (icon_name);
 }
 
 static void
@@ -450,7 +495,7 @@ value_filename_edited (GtkCellRendererText *cell,
 	GladeIconSources      *icon_sources = NULL;
 	GtkIconSource         *source;
 	gchar                 *icon_name;
-	gint                   index;
+	gint                   index = -1;
 	GValue                *value;
 	GdkPixbuf             *pixbuf;
 	GList                 *source_list;
@@ -480,16 +525,20 @@ value_filename_edited (GtkCellRendererText *cell,
 	if (icon_sources)
 	{
 		icon_sources = glade_icon_sources_copy (icon_sources);
-		if ((source = get_icon_source (icon_sources, icon_name, index)) != NULL)
+
+		if (index >= 0 && (source = get_icon_source (icon_sources, icon_name, index)) != NULL)
 			gtk_icon_source_set_pixbuf (source, pixbuf);
 		else
 		{
+
 			source = gtk_icon_source_new ();
 			gtk_icon_source_set_pixbuf (source, pixbuf);
 
 			if ((source_list = g_hash_table_lookup (icon_sources->sources,
 								icon_name)) != NULL)
-				source_list = g_list_prepend (source_list, source);
+			{
+				source_list = g_list_append (source_list, source);
+			}
 			else
 			{
 				source_list = g_list_prepend (NULL, source);
@@ -510,11 +559,7 @@ value_filename_edited (GtkCellRendererText *cell,
 	g_value_unset (value);
 	g_free (value);
 
-	if (eprop_sources->pending_sources)
-		glade_icon_sources_free (eprop_sources->pending_sources);
-
-	eprop_sources->pending_sources = icon_sources;
-	g_idle_add ((GSourceFunc)update_icon_sources_idle, eprop);
+	update_icon_sources (eprop, icon_sources);
 }
 
 static void
@@ -563,12 +608,7 @@ value_attribute_toggled (GtkCellRendererToggle *cell_renderer,
 			break;
 		}
 
-		if (eprop_sources->pending_sources)
-			glade_icon_sources_free (eprop_sources->pending_sources);
-
-		eprop_sources->pending_sources = icon_sources;
-		g_idle_add ((GSourceFunc)update_icon_sources_idle, eprop);
-
+		update_icon_sources (eprop, icon_sources);
 		g_free (icon_name);
 		return;
 	}
@@ -591,7 +631,6 @@ value_attribute_edited (GtkCellRendererText *cell,
 	GtkIconSource         *source;
 	gchar                 *icon_name;
 	gint                   index, edit_column;
-	gboolean               edit_column_active = FALSE;
 
 	if (!new_text || !new_text[0])
 		return;
@@ -634,12 +673,7 @@ value_attribute_edited (GtkCellRendererText *cell,
 			break;
 		}
 
-		if (eprop_sources->pending_sources)
-			glade_icon_sources_free (eprop_sources->pending_sources);
-
-		eprop_sources->pending_sources = icon_sources;
-		g_idle_add ((GSourceFunc)update_icon_sources_idle, eprop);
-
+		update_icon_sources (eprop, icon_sources);
 		g_free (icon_name);
 		return;
 	}
@@ -746,6 +780,7 @@ icon_sources_query_tooltip (GtkWidget  *widget,
 	return show_now;
 }
 
+
 static GtkTreeView *
 build_view (GladeEditorProperty *eprop)
 {
@@ -779,45 +814,6 @@ build_view (GladeEditorProperty *eprop)
 
 	g_object_set_data (G_OBJECT (eprop_sources->filename_column), "column-id",
 			   GINT_TO_POINTER (COLUMN_TEXT));
-
-	/********************* Direction *********************/
-	/* Attribute active portion */
- 	renderer = gtk_cell_renderer_toggle_new ();
-	g_object_set (G_OBJECT (renderer), "activatable", TRUE, NULL);
-	g_object_set_data (G_OBJECT (renderer), "attribute-column", 
-			   GINT_TO_POINTER (COLUMN_DIRECTION_ACTIVE));
-	g_signal_connect (G_OBJECT (renderer), "toggled",
-			  G_CALLBACK (value_attribute_toggled), eprop);
-	
-	column = gtk_tree_view_column_new_with_attributes
-		("dummy",  renderer, 
-		 "visible", COLUMN_TEXT_EDITABLE,
-		 "active", COLUMN_DIRECTION_ACTIVE,
-		 NULL);
- 	gtk_tree_view_append_column (GTK_TREE_VIEW (view), column);
-	g_object_set_data (G_OBJECT (column), "column-id", 
-			   GINT_TO_POINTER (COLUMN_DIRECTION_ACTIVE));
-
-
-	/* Attribute portion */
- 	renderer = gtk_cell_renderer_combo_new ();
-	g_object_set (G_OBJECT (renderer), "editable", TRUE, "has-entry", FALSE, 
-		      "text-column", 0, "model", direction_store, NULL);
-	g_object_set_data (G_OBJECT (renderer), "attribute-column", 
-			   GINT_TO_POINTER (COLUMN_DIRECTION));
-	g_signal_connect (G_OBJECT (renderer), "edited",
-			  G_CALLBACK (value_attribute_edited), eprop);
-
-	column = gtk_tree_view_column_new_with_attributes
-		("dummy",  renderer, 
-		 "visible", COLUMN_TEXT_EDITABLE,
-		 "editable", COLUMN_DIRECTION_ACTIVE,
-		 "text", COLUMN_DIRECTION,
-		 NULL);
- 	gtk_tree_view_append_column (GTK_TREE_VIEW (view), column);
-	g_object_set_data (G_OBJECT (column), "column-id", 
-			   GINT_TO_POINTER (COLUMN_DIRECTION));
-
 
 	/********************* Size *********************/
 	/* Attribute active portion */
@@ -893,6 +889,45 @@ build_view (GladeEditorProperty *eprop)
  	gtk_tree_view_append_column (GTK_TREE_VIEW (view), column);
 	g_object_set_data (G_OBJECT (column), "column-id", 
 			   GINT_TO_POINTER (COLUMN_STATE));
+
+
+	/********************* Direction *********************/
+	/* Attribute active portion */
+ 	renderer = gtk_cell_renderer_toggle_new ();
+	g_object_set (G_OBJECT (renderer), "activatable", TRUE, NULL);
+	g_object_set_data (G_OBJECT (renderer), "attribute-column", 
+			   GINT_TO_POINTER (COLUMN_DIRECTION_ACTIVE));
+	g_signal_connect (G_OBJECT (renderer), "toggled",
+			  G_CALLBACK (value_attribute_toggled), eprop);
+	
+	column = gtk_tree_view_column_new_with_attributes
+		("dummy",  renderer, 
+		 "visible", COLUMN_TEXT_EDITABLE,
+		 "active", COLUMN_DIRECTION_ACTIVE,
+		 NULL);
+ 	gtk_tree_view_append_column (GTK_TREE_VIEW (view), column);
+	g_object_set_data (G_OBJECT (column), "column-id", 
+			   GINT_TO_POINTER (COLUMN_DIRECTION_ACTIVE));
+
+	/* Attribute portion */
+ 	renderer = gtk_cell_renderer_combo_new ();
+	g_object_set (G_OBJECT (renderer), "editable", TRUE, "has-entry", FALSE, 
+		      "text-column", 0, "model", direction_store, NULL);
+	g_object_set_data (G_OBJECT (renderer), "attribute-column", 
+			   GINT_TO_POINTER (COLUMN_DIRECTION));
+	g_signal_connect (G_OBJECT (renderer), "edited",
+			  G_CALLBACK (value_attribute_edited), eprop);
+
+	column = gtk_tree_view_column_new_with_attributes
+		("dummy",  renderer, 
+		 "visible", COLUMN_TEXT_EDITABLE,
+		 "editable", COLUMN_DIRECTION_ACTIVE,
+		 "text", COLUMN_DIRECTION,
+		 NULL);
+ 	gtk_tree_view_append_column (GTK_TREE_VIEW (view), column);
+	g_object_set_data (G_OBJECT (column), "column-id", 
+			   GINT_TO_POINTER (COLUMN_DIRECTION));
+
 
 	/* Connect ::query-tooltip here for fancy tooltips... */
 	g_object_set (G_OBJECT (view), "has-tooltip", TRUE, NULL);

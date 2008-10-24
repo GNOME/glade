@@ -246,13 +246,22 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 
 #if 0
 	{
-		gchar *str = glade_widget_adaptor_string_from_value
-			     (GLADE_WIDGET_ADAPTOR (property->klass->handle),
-			      property->klass, value, fmt);
-		g_print ("Setting property %s on %s to %s\n",
+		g_print ("***************************************************\n"); 
+		g_print ("Setting property %s on %s ..\n", 
 			 property->klass->id,
-			 property->widget ? property->widget->name : "unknown", str);
-		g_free (str);
+			 property->widget ? property->widget->name : "unknown");
+
+		gchar *str1 = glade_widget_adaptor_string_from_value
+			(GLADE_WIDGET_ADAPTOR (property->klass->handle),
+			 property->klass, property->value, 
+			 GLADE_PROJECT_FORMAT_GTKBUILDER);
+		gchar *str2 = glade_widget_adaptor_string_from_value
+			     (GLADE_WIDGET_ADAPTOR (property->klass->handle),
+			      property->klass, value,
+			      GLADE_PROJECT_FORMAT_GTKBUILDER);
+		g_print ("from %s to %s\n", str1, str2);
+		g_free (str1);
+		g_free (str2);
 	}
 #endif
 
@@ -310,7 +319,6 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 	}
 	
 	g_value_unset (&old_value);
-
 	return TRUE;
 }
 
