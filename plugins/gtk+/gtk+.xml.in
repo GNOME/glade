@@ -656,36 +656,29 @@ embedded in another object</_tooltip>
 
     <glade-widget-class name="GtkButton" generic-name="button" _title="Button">
       <post-create-function>glade_gtk_button_post_create</post-create-function>
-      <add-child-function>glade_gtk_button_add_child</add-child-function>
-      <remove-child-function>glade_gtk_button_remove_child</remove-child-function>
-      <replace-child-function>glade_gtk_button_replace_child</replace-child-function>
+      <create-editable-function>glade_gtk_button_create_editable</create-editable-function>
       <set-property-function>glade_gtk_button_set_property</set-property-function>
+      <read-widget-function>glade_gtk_button_read_widget</read-widget-function>
+      <write-widget-function>glade_gtk_button_write_widget</write-widget-function>
 
       <properties>
-	<property id="image" parentless-widget="True" create-type="GtkImage" libglade-unsupported="True"/>
-	<property id="use-stock" visible="False"/>
-
-      	<property id="label" default="button" translatable="True">
+	<property id="image" parentless-widget="True" create-type="GtkImage" 
+		  libglade-unsupported="True" custom-layout="True"/>
+	<property id="use-stock" visible="False" custom-layout="True"/>
+      	<property id="label" default="button" translatable="True" custom-layout="True" save="False">
             <visible-lines>2</visible-lines>
 	</property>
-
-	<property id="use-underline" weight="1.5"/>
-
-	<property id="stock" _name="Stock Button" save="False" weight="1.6">
+	<property id="use-underline" weight="1.5" custom-layout="True"/>
+	<property id="stock" _name="Stock Button" save="False" weight="1.6" custom-layout="True">
 	  <spec>glade_standard_stock_spec</spec>
 	  <_tooltip>The stock item for this button</_tooltip>
 	</property>
 
-	<property id="image-position" weight="1.7"/>
+        <property id="custom-child" save="False" visible="False" default="False">
+          <spec>glade_standard_boolean_spec</spec>
+        </property>
 
-	<property id="glade-type" _name="Edit Type" save="False" weight="0">
-	  <spec>glade_gtk_button_type_spec</spec>
-  	  <displayable-values>
-	    <value id="GLADEGTK_BUTTON_LABEL" _name="Label"/>
-	    <value id="GLADEGTK_BUTTON_STOCK" _name="Stock"/>
-	    <value id="GLADEGTK_BUTTON_CONTAINER" _name="Container"/>
-	  </displayable-values>
-	</property>
+	<property id="image-position" weight="1.7" custom-layout="True"/>
 
 	<property id="response-id" _name="Response ID" default="0" common="False" ignore="True" save-always="True">
 	  <spec>glade_standard_int_spec</spec>

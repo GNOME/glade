@@ -864,6 +864,11 @@ GladeEditorProperty *glade_widget_adaptor_create_eprop       (GladeWidgetAdaptor
 							      GladePropertyClass *klass,
 							      gboolean            use_command);
 
+GladeEditorProperty *glade_widget_adaptor_create_eprop_by_name (GladeWidgetAdaptor *adaptor,
+								const gchar        *property_id,
+								gboolean            packing,
+								gboolean            use_command);
+
 gchar               *glade_widget_adaptor_string_from_value  (GladeWidgetAdaptor *adaptor,
 							      GladePropertyClass *klass,
 							      const GValue       *value,

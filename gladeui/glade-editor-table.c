@@ -83,6 +83,9 @@ widget_name_changed (GladeWidget      *widget,
 		     GParamSpec       *pspec,
 		     GladeEditorTable *table)
 {
+	if (!GTK_WIDGET_MAPPED (table))
+		return;
+
 	table->loading = TRUE;
 	if (table->name_entry)
 		gtk_entry_set_text (GTK_ENTRY (table->name_entry), table->loaded_widget->name);

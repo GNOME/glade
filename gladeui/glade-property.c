@@ -1120,7 +1120,7 @@ glade_property_write (GladeProperty   *property,
 	 * (excepting those that specified otherwise).
 	 */
 	if (!(property->klass->save_always || property->save_always) &&
-	    glade_property_equals_value (property, property->klass->orig_def))
+	    glade_property_original_default (property))
 		return;
 
 	/* Escape our string and save with underscores */

@@ -191,9 +191,9 @@ static GladeWidget *search_ancestry_by_name                 (GladeWidget       *
 
 static GtkWidget   *glade_project_build_prefs_dialog        (GladeProject      *project);
 
-static void         format_libglade_button_clicked          (GtkWidget         *widget,
+static void         format_libglade_button_toggled          (GtkWidget         *widget,
 							     GladeProject      *project);
-static void         format_builder_button_clicked           (GtkWidget         *widget,
+static void         format_builder_button_toggled           (GtkWidget         *widget,
 							     GladeProject      *project);
 static void         policy_project_wide_button_clicked      (GtkWidget         *widget,
 							     GladeProject      *project);
@@ -3400,9 +3400,9 @@ glade_project_set_format (GladeProject *project, GladeProjectFormat format)
 
 		/* Update the toggle button in the prefs dialog here: */
 		g_signal_handlers_block_by_func (project->priv->glade_radio,
-						 G_CALLBACK (format_libglade_button_clicked), project);
+						 G_CALLBACK (format_libglade_button_toggled), project);
 		g_signal_handlers_block_by_func (project->priv->builder_radio,
-						 G_CALLBACK (format_builder_button_clicked), project);
+						 G_CALLBACK (format_builder_button_toggled), project);
 
 		if (format == GLADE_PROJECT_FORMAT_GTKBUILDER)
 			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (project->priv->builder_radio), TRUE);
@@ -3410,9 +3410,9 @@ glade_project_set_format (GladeProject *project, GladeProjectFormat format)
 			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (project->priv->glade_radio), TRUE);
 
 		g_signal_handlers_unblock_by_func (project->priv->glade_radio,
-						   G_CALLBACK (format_libglade_button_clicked), project);
+						   G_CALLBACK (format_libglade_button_toggled), project);
 		g_signal_handlers_unblock_by_func (project->priv->builder_radio,
-						   G_CALLBACK (format_builder_button_clicked), project);
+						   G_CALLBACK (format_builder_button_toggled), project);
 
 	}
 }
@@ -3427,14 +3427,14 @@ glade_project_get_format (GladeProject *project)
 
 
 static void
-format_libglade_button_clicked (GtkWidget *widget,
+format_libglade_button_toggled (GtkWidget *widget,
 				GladeProject *project)
 {
 	glade_command_set_project_format (project, GLADE_PROJECT_FORMAT_LIBGLADE);
 }
 
 static void
-format_builder_button_clicked (GtkWidget *widget,
+format_builder_button_toggled (GtkWidget *widget,
 			       GladeProject *project)
 {
 	glade_command_set_project_format (project, GLADE_PROJECT_FORMAT_GTKBUILDER);
@@ -3551,11 +3551,11 @@ glade_project_build_prefs_box (GladeProject *project)
 	else
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (project->priv->glade_radio), TRUE);
 
-	g_signal_connect (G_OBJECT (project->priv->glade_radio), "clicked",
-			  G_CALLBACK (format_libglade_button_clicked), project);
+	g_signal_connect (G_OBJECT (project->priv->glade_radio), "toggled",
+			  G_CALLBACK (format_libglade_button_toggled), project);
 
-	g_signal_connect (G_OBJECT (project->priv->builder_radio), "clicked",
-			  G_CALLBACK (format_builder_button_clicked), project);
+	g_signal_connect (G_OBJECT (project->priv->builder_radio), "toggled",
+			  G_CALLBACK (format_builder_button_toggled), project);
 
 
 	/* Naming policy format */

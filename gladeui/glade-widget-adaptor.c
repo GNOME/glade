@@ -3541,6 +3541,41 @@ glade_widget_adaptor_create_eprop (GladeWidgetAdaptor *adaptor,
 }
 
 
+
+/**
+ * glade_widget_adaptor_create_eprop_by_name:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @property_id: the string if of the coresponding #GladePropertyClass to be edited
+ * @packing: whether this reffers to a packing property
+ * @use_command: whether to use the GladeCommand interface
+ * to commit property changes
+ * 
+ * Creates a #GladeEditorProperty to edit #GladePropertyClass @name in @adaptor
+ *
+ * Returns: A newly created #GladeEditorProperty
+ */
+GladeEditorProperty *
+glade_widget_adaptor_create_eprop_by_name (GladeWidgetAdaptor *adaptor,
+					   const gchar        *property_id,
+					   gboolean            packing,
+					   gboolean            use_command)
+{
+	GladePropertyClass *klass;
+	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
+	g_return_val_if_fail (property_id && property_id[0], NULL);
+
+	if (packing)
+		klass = glade_widget_adaptor_get_pack_property_class (adaptor, property_id);
+	else
+		klass = glade_widget_adaptor_get_property_class (adaptor, property_id);
+
+	g_return_val_if_fail (klass != NULL, NULL);
+
+	return GLADE_WIDGET_ADAPTOR_GET_CLASS
+		(adaptor)->create_eprop (adaptor, klass, use_command);
+}
+
+
 /**
  * glade_widget_adaptor_string_from_value:
  * @adaptor: A #GladeWidgetAdaptor

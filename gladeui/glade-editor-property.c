@@ -57,8 +57,15 @@ enum {
 	PROP_USE_COMMAND
 };
 
+enum {
+	CHANGED,
+	LAST_SIGNAL
+};
+
 static GtkTableClass             *table_class;
 static GladeEditorPropertyClass  *editor_property_class;
+
+static guint  glade_eprop_signals[LAST_SIGNAL] = { 0, };
 
 #define GLADE_PROPERTY_TABLE_ROW_SPACING 2
 #define FLAGS_COLUMN_SETTING             0
@@ -104,7 +111,9 @@ glade_editor_property_commit (GladeEditorProperty *eprop,
 	if (glade_property_class_compare (eprop->property->klass,
 					  eprop->property->value, value, fmt) != 0)
 		GLADE_EDITOR_PROPERTY_GET_CLASS (eprop)->load (eprop, eprop->property);
-
+	else
+		/* publish a value change to those interested */
+		g_signal_emit (G_OBJECT (eprop), glade_eprop_signals [CHANGED], 0, eprop->property);
 }
 
 void
@@ -562,6 +571,24 @@ glade_editor_property_class_init (GladeEditorPropertyClass *eprop_class)
 	/* Class methods */
 	eprop_class->load          = glade_editor_property_load_common;
 	eprop_class->create_input  = NULL;
+
+	
+	/**
+	 * GladeEditorProperty::value-changed:
+	 * @gladeeditorproperty: the #GladeEditorProperty which changed value
+	 * @arg1: the #GladeProperty that's value changed.
+	 *
+	 * Emitted when a contained property changes value
+	 */
+	glade_eprop_signals[CHANGED] =
+		g_signal_new ("value-changed",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (GladeEditorPropertyClass, changed),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__OBJECT,
+			      G_TYPE_NONE, 1, GLADE_TYPE_PROPERTY);
+
 
 	/* Properties */
 	g_object_class_install_property 
