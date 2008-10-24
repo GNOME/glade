@@ -41,10 +41,18 @@ typedef struct {
 
 static GHashTable *values_hash = NULL;
 
+
 static gint
-find_value (ValueTab *a, const gchar *b)
+find_by_value (ValueTab *a, const gchar *b)
 {
 	return strcmp (a->value, b);
+}
+
+
+static gint
+find_by_displayable (ValueTab *a, const gchar *b)
+{
+	return strcmp (a->string, b);
 }
 
 void
@@ -70,12 +78,12 @@ glade_register_displayable_value (GType          type,
 	if ((values = 
 	     g_hash_table_lookup (values_hash, klass)) != NULL)
 	{
-		if (!g_list_find_custom (values, tab->value, (GCompareFunc)find_value))
+		if (!g_list_find_custom (values, tab->value, (GCompareFunc)find_by_value))
 			values = g_list_append (values, tab);
 		else
 		{
-			g_warning ("Already registered a displayable value for %s (type %s)", 
-				   tab->value, g_type_name (type));
+			g_warning ("Already registered displayable value %s for %s (type %s)", 
+				   tab->string, tab->value, g_type_name (type));
 			g_free (tab->string);
 			g_free (tab->value);
 			g_free (tab);
@@ -119,7 +127,7 @@ glade_get_displayable_value (GType          type,
 	g_return_val_if_fail  (klass != NULL, NULL);
 
 	if ((values   = g_hash_table_lookup (values_hash, klass)) != NULL &&
-	    (tab_iter = g_list_find_custom  (values, value, (GCompareFunc)find_value)) != NULL)
+	    (tab_iter = g_list_find_custom  (values, value, (GCompareFunc)find_by_value)) != NULL)
 	{
 		tab = tab_iter->data;
 		displayable = tab->string;
@@ -127,4 +135,32 @@ glade_get_displayable_value (GType          type,
 	g_type_class_unref (klass);
 
 	return displayable;
+}
+
+
+G_CONST_RETURN gchar *
+glade_get_value_from_displayable (GType          type, 
+				  const gchar   *displayable)
+{
+	ValueTab  *tab;
+	gpointer   klass;
+	GList     *values, *tab_iter;
+	gchar     *value = NULL;
+
+	if (!values_hash)
+		return NULL;
+
+	klass = g_type_class_ref (type);
+
+	g_return_val_if_fail  (klass != NULL, NULL);
+
+	if ((values   = g_hash_table_lookup (values_hash, klass)) != NULL &&
+	    (tab_iter = g_list_find_custom  (values, displayable, (GCompareFunc)find_by_displayable)) != NULL)
+	{
+		tab = tab_iter->data;
+		value = tab->value;
+	}
+	g_type_class_unref (klass);
+
+	return value;
 }

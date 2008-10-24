@@ -256,7 +256,7 @@ populate_store_foreach (const gchar           *icon_name,
 		if (!gtk_icon_source_get_direction_wildcarded (source))
 		{
 			GtkTextDirection direction = gtk_icon_source_get_direction (source);
-			str = glade_utils_enum_string_from_value (GTK_TYPE_TEXT_DIRECTION, direction);
+			str = glade_utils_enum_string_from_value_displayable (GTK_TYPE_TEXT_DIRECTION, direction);
 			gtk_tree_store_set (eprop_sources->store, &iter, 
 					    COLUMN_DIRECTION_ACTIVE, TRUE,
 					    COLUMN_DIRECTION, str,
@@ -267,7 +267,7 @@ populate_store_foreach (const gchar           *icon_name,
 		if (!gtk_icon_source_get_size_wildcarded (source))
 		{
 			GtkIconSize size = gtk_icon_source_get_size (source);
-			str = glade_utils_enum_string_from_value (GTK_TYPE_ICON_SIZE, size);
+			str = glade_utils_enum_string_from_value_displayable (GTK_TYPE_ICON_SIZE, size);
 			gtk_tree_store_set (eprop_sources->store, &iter, 
 					    COLUMN_SIZE_ACTIVE, TRUE,
 					    COLUMN_SIZE, str,
@@ -278,7 +278,7 @@ populate_store_foreach (const gchar           *icon_name,
 		if (!gtk_icon_source_get_state_wildcarded (source))
 		{
 			GtkStateType state = gtk_icon_source_get_size (source);
-			str = glade_utils_enum_string_from_value (GTK_TYPE_STATE_TYPE, state);
+			str = glade_utils_enum_string_from_value_displayable (GTK_TYPE_STATE_TYPE, state);
 			gtk_tree_store_set (eprop_sources->store, &iter, 
 					    COLUMN_STATE_ACTIVE, TRUE,
 					    COLUMN_STATE, str,

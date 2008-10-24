@@ -137,6 +137,9 @@ gint              glade_utils_enum_value_from_string  (GType enum_type, const gc
 gchar            *glade_utils_enum_string_from_value  (GType enum_type, gint value);
 gint              glade_utils_flags_value_from_string (GType enum_type, const gchar *strval);
 gchar            *glade_utils_flags_string_from_value (GType enum_type, gint value);
+gchar            *glade_utils_flags_string_from_value_displayable (GType flags_type, gint value);
+gchar            *glade_utils_enum_string_from_value_displayable (GType flags_type, gint value);
+
 
 GValue           *glade_utils_value_from_string   (GType               type,
 						   const gchar        *string,

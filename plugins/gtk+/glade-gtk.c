@@ -9436,7 +9436,7 @@ serialize_icon_sources (gchar          *icon_name,
 		{
 			GtkTextDirection direction = gtk_icon_source_get_direction (source);
 			str = glade_utils_enum_string_from_value (GTK_TYPE_TEXT_DIRECTION, direction);
-			g_string_append_printf (string, "%s ", str);
+			g_string_append_printf (string, "dir-%s ", str);
 			g_free (str);
 		}
 
@@ -9444,7 +9444,7 @@ serialize_icon_sources (gchar          *icon_name,
 		{
 			GtkIconSize size = gtk_icon_source_get_size (source);
 			str = glade_utils_enum_string_from_value (GTK_TYPE_ICON_SIZE, size);
-			g_string_append_printf (string, "%s ", str);
+			g_string_append_printf (string, "size-%s ", str);
 			g_free (str);
 		}
 
@@ -9452,7 +9452,7 @@ serialize_icon_sources (gchar          *icon_name,
 		{
 			GtkStateType state = gtk_icon_source_get_size (source);
 			str = glade_utils_enum_string_from_value (GTK_TYPE_STATE_TYPE, state);
-			g_string_append_printf (string, "%s ", str);
+			g_string_append_printf (string, "state-%s ", str);
 			g_free (str);
 		}
 		

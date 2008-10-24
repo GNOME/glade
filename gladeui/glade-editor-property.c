@@ -880,8 +880,8 @@ glade_eprop_enum_create_input (GladeEditorProperty *eprop)
 	{
 		const gchar *value_name = 
 			glade_get_displayable_value (klass->pspec->value_type,
-						     eclass->values[i].value_name);
-		if (value_name == NULL) value_name = eclass->values[i].value_name;
+						     eclass->values[i].value_nick);
+		if (value_name == NULL) value_name = eclass->values[i].value_nick;
 		
 		if (stock && strcmp (eclass->values[i].value_nick, "glade-none"))
 			menu_item = glade_editor_create_input_stock_item
@@ -964,7 +964,7 @@ glade_eprop_flags_load (GladeEditorProperty *eprop, GladeProperty *property)
 			setting = ((value & mask) == mask) ? TRUE : FALSE;
 			
 			value_name = glade_get_displayable_value
-				(eprop->klass->pspec->value_type, klass->values[flag_num].value_name);
+				(eprop->klass->pspec->value_type, klass->values[flag_num].value_nick);
 
 			if (value_name == NULL) value_name = klass->values[flag_num].value_name;
 			

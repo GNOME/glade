@@ -1940,10 +1940,13 @@ glade_util_icon_name_to_filename (const gchar *value)
 gint
 glade_utils_enum_value_from_string (GType enum_type, const gchar *strval)
 {
-	gint    value = 0;
-	GValue *gvalue;
+	gint          value = 0;
+	const gchar  *displayable;
+	GValue       *gvalue;
 
-	if ((gvalue = glade_utils_value_from_string (enum_type, strval, NULL, NULL)) != NULL)
+	if (((displayable = glade_get_value_from_displayable (enum_type, strval)) != NULL &&
+	     (gvalue = glade_utils_value_from_string (enum_type, displayable, NULL, NULL)) != NULL) ||
+	    (gvalue = glade_utils_value_from_string (enum_type, strval, NULL, NULL)) != NULL)
 	{
 		value = g_value_get_enum (gvalue);
 		g_value_unset (gvalue);
@@ -1952,8 +1955,8 @@ glade_utils_enum_value_from_string (GType enum_type, const gchar *strval)
 	return value;
 }
 
-gchar *
-glade_utils_enum_string_from_value (GType enum_type, gint value)
+static gchar *
+glade_utils_enum_string_from_value_real (GType enum_type, gint value, gboolean displayable)
 {
 	GValue gvalue = { 0, };
 	gchar *string;
@@ -1964,16 +1967,42 @@ glade_utils_enum_string_from_value (GType enum_type, gint value)
 	string = glade_utils_string_from_value (&gvalue, GLADE_PROJECT_FORMAT_GTKBUILDER);
 	g_value_unset (&gvalue);
 
+	if (displayable && string)
+	{
+		const gchar *dstring = glade_get_displayable_value (enum_type, string);
+		if (dstring)
+		{
+			g_free (string);
+			return g_strdup (dstring);
+		}
+	}
+
 	return string;
 }
+
+gchar *
+glade_utils_enum_string_from_value (GType enum_type, gint value)
+{
+	return glade_utils_enum_string_from_value_real (enum_type, value, FALSE);
+}
+
+gchar *
+glade_utils_enum_string_from_value_displayable (GType enum_type, gint value)
+{
+	return glade_utils_enum_string_from_value_real (enum_type, value, TRUE);
+}
+
 
 gint
 glade_utils_flags_value_from_string (GType flags_type, const gchar *strval)
 {
-	gint    value = 0;
-	GValue *gvalue;
+	gint          value = 0;
+	const gchar  *displayable;
+	GValue       *gvalue;
 
-	if ((gvalue = glade_utils_value_from_string (flags_type, strval, NULL, NULL)) != NULL)
+	if (((displayable = glade_get_value_from_displayable (flags_type, strval)) != NULL &&
+	     (gvalue = glade_utils_value_from_string (flags_type, displayable, NULL, NULL)) != NULL) ||
+	    (gvalue = glade_utils_value_from_string (flags_type, strval, NULL, NULL)) != NULL)
 	{
 		value = g_value_get_flags (gvalue);
 		g_value_unset (gvalue);
@@ -1982,8 +2011,8 @@ glade_utils_flags_value_from_string (GType flags_type, const gchar *strval)
 	return value;
 }
 
-gchar *
-glade_utils_flags_string_from_value (GType flags_type, gint value)
+static gchar *
+glade_utils_flags_string_from_value_real (GType flags_type, gint value, gboolean displayable)
 {
 	GValue gvalue = { 0, };
 	gchar *string;
@@ -1994,7 +2023,31 @@ glade_utils_flags_string_from_value (GType flags_type, gint value)
 	string = glade_utils_string_from_value (&gvalue, GLADE_PROJECT_FORMAT_GTKBUILDER);
 	g_value_unset (&gvalue);
 
+	if (displayable && string)
+	{
+		const gchar *dstring = glade_get_displayable_value (flags_type, string);
+		if (dstring)
+		{
+			g_free (string);
+			return g_strdup (dstring);
+		}
+	}
+
 	return string;
+}
+
+gchar *
+glade_utils_flags_string_from_value (GType flags_type, gint value)
+{
+	return glade_utils_flags_string_from_value_real (flags_type, value, FALSE);
+
+}
+
+
+gchar *
+glade_utils_flags_string_from_value_displayable (GType flags_type, gint value)
+{
+	return glade_utils_flags_string_from_value_real (flags_type, value, TRUE);
 }
 
 
@@ -2181,9 +2234,11 @@ glade_utils_liststore_from_enum_type (GType    enum_type,
 	
 	for (i = 0; i < eclass->n_values; i++)
 	{
+		const gchar *displayable = glade_get_displayable_value (enum_type, eclass->values[i].value_nick);
+
 		gtk_list_store_append (store, &iter);
-		gtk_list_store_set (store, &iter,
-				    0, eclass->values[i].value_nick, 
+		gtk_list_store_set (store, &iter, 
+				    0, displayable ? displayable : eclass->values[i].value_nick,
 				    -1);
 	}
 

@@ -946,7 +946,7 @@ glade_eprop_model_data_create_input (GladeEditorProperty *eprop)
 	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (eprop_data->view), TRUE);
 	gtk_container_add (GTK_CONTAINER (swin), GTK_WIDGET (eprop_data->view));
 
-	g_object_set (G_OBJECT (vbox), "height-request", 200, NULL);
+	g_object_set (G_OBJECT (vbox), "height-request", 190, NULL);
 	
 	gtk_widget_show_all (vbox);
 	return vbox;

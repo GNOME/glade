@@ -214,7 +214,7 @@ glade_property_class_make_string_from_enum (GType etype, gint eval)
 	{
 		if (eval == eclass->values[i].value)
 		{
-			string = g_strdup (eclass->values[i].value_name);
+			string = g_strdup (eclass->values[i].value_nick);
 			break;
 		}
 	}
@@ -1154,14 +1154,14 @@ gpc_read_displayable_values_from_node (GladeXmlNode *node,
 				{
 					enum_val = &enum_values[i];
 					glade_register_displayable_value (klass->pspec->value_type,
-									  enum_val->value_name, 
+									  enum_val->value_nick, 
 									  domain, name);
 				}
 				else
 				{
 					flags_val = &flags_values[i];
 					glade_register_displayable_value (klass->pspec->value_type,
-									  flags_val->value_name, 
+									  flags_val->value_nick, 
 									  domain, name);
 
 				}

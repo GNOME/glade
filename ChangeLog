@@ -6,6 +6,18 @@
 	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Completely reworked GtkButton, 
 	much cleaner and less code now.
 
+	* gladeui/glade-property-class.c: string_from_enum, now returns the nick and not the
+	name (generally all around nicer menus when no displayable values and also smaller
+	nicer glade files). Displayable values are now consequently indexed by nick and not name.
+
+	* gladeui/glade-displayable-values.[ch]: Added reverse lookup glade_get_value_from_displayable()
+
+	* gladeui/glade-utils.[ch]: When doing glade_utils_enum/flag_value_from_string(), allow
+	displayable values (also added glade_utils_enum/flag_string_from_value_displayable()).
+
+	* plugins/gtk+/glade-icon-sources.c: Use all around displayable values for items
+	in the treeview.
+
 2008-10-23  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/Makefile.am, gladeui/glade-editable.[ch], gladeui/glade-editor-table.[ch]:
