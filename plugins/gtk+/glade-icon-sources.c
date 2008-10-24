@@ -603,7 +603,6 @@ value_attribute_edited (GtkCellRendererText *cell,
 	gtk_tree_model_get (GTK_TREE_MODEL (eprop_sources->store), &iter,
 			    COLUMN_ICON_NAME, &icon_name,
 			    COLUMN_LIST_INDEX, &index,
-			    edit_column, &edit_column_active,
 			    -1);
 
 	glade_property_get (eprop->property, &icon_sources);
@@ -651,6 +650,102 @@ value_attribute_edited (GtkCellRendererText *cell,
 	return;
 }
 
+static gboolean
+icon_sources_query_tooltip (GtkWidget  *widget,
+			    gint        x,
+			    gint        y,
+			    gboolean    keyboard_mode,
+			    GtkTooltip *tooltip,
+			    GladeEPropIconSources *eprop_sources)
+{
+	GtkTreePath   *path = NULL;
+	GtkTreeIter    iter;
+	GtkTreeViewColumn *column = NULL;
+	gint               bin_x = x, bin_y = y, col;
+	gchar             *icon_name = NULL;
+	gboolean           show_now = FALSE;
+
+	if (keyboard_mode)
+		return FALSE;
+
+	gtk_tree_view_convert_widget_to_bin_window_coords (eprop_sources->view,
+							   x, y, &bin_x, &bin_y);
+
+	if (gtk_tree_view_get_path_at_pos (eprop_sources->view,
+					   bin_x, bin_y,
+					   &path, &column, NULL, NULL))
+	{
+		if (gtk_tree_model_get_iter (GTK_TREE_MODEL (eprop_sources->store), &iter, path))
+		{
+			col = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (column), "column-id"));
+			
+			gtk_tree_model_get (GTK_TREE_MODEL (eprop_sources->store), &iter,
+					    COLUMN_ICON_NAME, &icon_name, -1);
+
+			/* no tooltips on the parent rows */
+			if (icon_name)
+			{
+				gchar *tooltip_text = NULL;
+				show_now = TRUE;
+
+				switch (col)
+				{
+				case COLUMN_TEXT:
+					tooltip_text = 
+						g_strdup_printf (_("Enter a filename or a relative or full path for this "
+								   "source of '%s' (Glade will only ever load them in"
+								   "the runtime from your project directory)."), 
+								 icon_name);
+					break;
+				case COLUMN_DIRECTION_ACTIVE:
+					tooltip_text = 
+						g_strdup_printf (_("Set whether you want to specify a text direction "
+								   "for this source of '%s'"), icon_name);
+					break;
+				case COLUMN_DIRECTION:
+					tooltip_text = 
+						g_strdup_printf (_("Set the text direction for this source of '%s'"), 
+								 icon_name);
+					break;
+				case COLUMN_SIZE_ACTIVE:
+					tooltip_text = 
+						g_strdup_printf (_("Set whether you want to specify an icon size "
+								   "for this source of '%s'"), icon_name);
+					break;
+				case COLUMN_SIZE:
+					tooltip_text = 
+						g_strdup_printf (_("Set the icon size for this source of '%s'"), 
+								 icon_name);
+					break;
+				case COLUMN_STATE_ACTIVE:
+					tooltip_text = 
+						g_strdup_printf (_("Set whether you want to specify a state "
+								   "for this source of '%s'"), icon_name);
+					break;
+				case COLUMN_STATE:
+					tooltip_text = 
+						g_strdup_printf (_("Set the state for this source of '%s'"), 
+								 icon_name);
+				default:
+					break;
+					
+				}
+
+				gtk_tooltip_set_text (tooltip, tooltip_text);
+				g_free (tooltip_text);
+				g_free (icon_name);
+
+
+				gtk_tree_view_set_tooltip_cell (eprop_sources->view,
+								tooltip, path, column, NULL);
+				
+			}
+		}
+		gtk_tree_path_free (path);
+	}
+	return show_now;
+}
+
 static GtkTreeView *
 build_view (GladeEditorProperty *eprop)
 {
@@ -682,6 +777,9 @@ build_view (GladeEditorProperty *eprop)
 	gtk_tree_view_column_set_expand (eprop_sources->filename_column, TRUE);
  	gtk_tree_view_append_column (GTK_TREE_VIEW (view), eprop_sources->filename_column);
 
+	g_object_set_data (G_OBJECT (eprop_sources->filename_column), "column-id",
+			   GINT_TO_POINTER (COLUMN_TEXT));
+
 	/********************* Direction *********************/
 	/* Attribute active portion */
  	renderer = gtk_cell_renderer_toggle_new ();
@@ -697,6 +795,9 @@ build_view (GladeEditorProperty *eprop)
 		 "active", COLUMN_DIRECTION_ACTIVE,
 		 NULL);
  	gtk_tree_view_append_column (GTK_TREE_VIEW (view), column);
+	g_object_set_data (G_OBJECT (column), "column-id", 
+			   GINT_TO_POINTER (COLUMN_DIRECTION_ACTIVE));
+
 
 	/* Attribute portion */
  	renderer = gtk_cell_renderer_combo_new ();
@@ -714,6 +815,9 @@ build_view (GladeEditorProperty *eprop)
 		 "text", COLUMN_DIRECTION,
 		 NULL);
  	gtk_tree_view_append_column (GTK_TREE_VIEW (view), column);
+	g_object_set_data (G_OBJECT (column), "column-id", 
+			   GINT_TO_POINTER (COLUMN_DIRECTION));
+
 
 	/********************* Size *********************/
 	/* Attribute active portion */
@@ -730,6 +834,8 @@ build_view (GladeEditorProperty *eprop)
 		 "active", COLUMN_SIZE_ACTIVE,
 		 NULL);
  	gtk_tree_view_append_column (GTK_TREE_VIEW (view), column);
+	g_object_set_data (G_OBJECT (column), "column-id", 
+			   GINT_TO_POINTER (COLUMN_SIZE_ACTIVE));
 
 	/* Attribute portion */
  	renderer = gtk_cell_renderer_combo_new ();
@@ -747,6 +853,8 @@ build_view (GladeEditorProperty *eprop)
 		 "text", COLUMN_SIZE,
 		 NULL);
  	gtk_tree_view_append_column (GTK_TREE_VIEW (view), column);
+	g_object_set_data (G_OBJECT (column), "column-id", 
+			   GINT_TO_POINTER (COLUMN_SIZE));
 	
 
 	/********************* State *********************/
@@ -764,6 +872,8 @@ build_view (GladeEditorProperty *eprop)
 		 "active", COLUMN_STATE_ACTIVE,
 		 NULL);
  	gtk_tree_view_append_column (GTK_TREE_VIEW (view), column);
+	g_object_set_data (G_OBJECT (column), "column-id", 
+			   GINT_TO_POINTER (COLUMN_STATE_ACTIVE));
 
 	/* Attribute portion */
  	renderer = gtk_cell_renderer_combo_new ();
@@ -781,8 +891,14 @@ build_view (GladeEditorProperty *eprop)
 		 "text", COLUMN_STATE,
 		 NULL);
  	gtk_tree_view_append_column (GTK_TREE_VIEW (view), column);
+	g_object_set_data (G_OBJECT (column), "column-id", 
+			   GINT_TO_POINTER (COLUMN_STATE));
 
 	/* Connect ::query-tooltip here for fancy tooltips... */
+	g_object_set (G_OBJECT (view), "has-tooltip", TRUE, NULL);
+	g_signal_connect (G_OBJECT (view), "query-tooltip",
+			  G_CALLBACK (icon_sources_query_tooltip), eprop);
+
 	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (view), FALSE);
 	gtk_tree_view_set_show_expanders (GTK_TREE_VIEW (view), FALSE);
 

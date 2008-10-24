@@ -9450,7 +9450,7 @@ serialize_icon_sources (gchar          *icon_name,
 
 		if (!gtk_icon_source_get_state_wildcarded (source))
 		{
-			GtkStateType state = gtk_icon_source_get_size (source);
+			GtkStateType state = gtk_icon_source_get_state (source);
 			str = glade_utils_enum_string_from_value (GTK_TYPE_STATE_TYPE, state);
 			g_string_append_printf (string, "state-%s ", str);
 			g_free (str);
@@ -9476,6 +9476,7 @@ glade_gtk_icon_factory_string_from_value (GladeWidgetAdaptor *adaptor,
 
 		string = g_string_new ("");		
 		g_hash_table_foreach (sources->sources, (GHFunc)serialize_icon_sources, string);
+
 		return g_string_free (string, FALSE);
 	}
 	else
