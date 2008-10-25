@@ -1,5 +1,16 @@
 2008-10-24  Tristan Van Berkom <tvb@gnome.org>
 
+	* gladeui/glade-property-class.c: Fixed glade_property_class_make_adjustment()
+	for floating and double values (page inc and size were not properly set).
+
+	* gladeui/glade-app.c: Fixed a warning
+
+	* gladeui/glade-editor-table.c: Was loading invisible properties, oops.
+	
+	* doc/properties.sgml: Documented custom-layout property.
+
+2008-10-24  Tristan Van Berkom <tvb@gnome.org>
+
 	* plugins/gtk+/Makefile.am, plugins/gtk+/glade-button-editor.[ch]:
 	Added new #GladeEditable implementation for GtkButton general page.
 

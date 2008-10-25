@@ -50,9 +50,12 @@
 #include "glade-debug.h"
 
 #define NUMERICAL_STEP_INCREMENT   1
-#define FLOATING_STEP_INCREMENT    0.01F
 #define NUMERICAL_PAGE_INCREMENT   10
 #define NUMERICAL_PAGE_SIZE        1
+
+#define FLOATING_STEP_INCREMENT    0.01F
+#define FLOATING_PAGE_INCREMENT    0.1F
+#define FLOATING_PAGE_SIZE         0.01F
 
 /**
  * glade_property_class_new:
@@ -1181,6 +1184,7 @@ gpc_read_displayable_values_from_node (GladeXmlNode *node,
 GtkAdjustment *
 glade_property_class_make_adjustment (GladePropertyClass *property_class)
 {
+	GtkAdjustment *adjustment;
 	gdouble        min = 0, max = 0, def = 0;
 	gboolean       float_range = FALSE;
 
@@ -1220,9 +1224,9 @@ glade_property_class_make_adjustment (GladePropertyClass *property_class)
 	} else if (G_IS_PARAM_SPEC_FLOAT(property_class->pspec))
 	{
 		float_range = TRUE;
-		min = (gdouble)((GParamSpecFloat *) property_class->pspec)->minimum;
-		max = (gdouble)((GParamSpecFloat *) property_class->pspec)->maximum;
-		def = (gdouble)((GParamSpecFloat *) property_class->pspec)->default_value;
+		min = ((GParamSpecFloat *) property_class->pspec)->minimum;
+		max = ((GParamSpecFloat *) property_class->pspec)->maximum;
+		def = ((GParamSpecFloat *) property_class->pspec)->default_value;
 	} else if (G_IS_PARAM_SPEC_DOUBLE(property_class->pspec))
 	{
 		float_range = TRUE;
@@ -1235,12 +1239,15 @@ glade_property_class_make_adjustment (GladePropertyClass *property_class)
 			    g_type_name(G_PARAM_SPEC_TYPE (property_class->pspec)));
 	}
 
-	return (GtkAdjustment *)gtk_adjustment_new (def, min, max,
-						    float_range ?
-						    FLOATING_STEP_INCREMENT :
-						    NUMERICAL_STEP_INCREMENT,
-						    NUMERICAL_PAGE_INCREMENT,
-						    NUMERICAL_PAGE_SIZE);
+	adjustment = (GtkAdjustment *)gtk_adjustment_new (def, min, max,
+							  float_range ?
+							  FLOATING_STEP_INCREMENT :
+							  NUMERICAL_STEP_INCREMENT,
+							  float_range ? FLOATING_PAGE_INCREMENT :
+							  NUMERICAL_PAGE_INCREMENT,
+							  float_range ? FLOATING_PAGE_SIZE :
+							  NUMERICAL_PAGE_SIZE);
+	return adjustment;
 }
 
 /**
@@ -1418,6 +1425,7 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	klass->libglade_unsupported = 
 		glade_xml_get_property_boolean (node, GLADE_TAG_LIBGLADE_UNSUPPORTED, 
 						klass->libglade_unsupported);
+
 
 	if ((buf = glade_xml_get_property_string
 	     (node, GLADE_TAG_FACTORY_STOCK_ID)) != NULL)

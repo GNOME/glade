@@ -151,7 +151,18 @@ Whether to save this property to the glade file (default "True")
           <term>visible</term>
           <listitem>
             <para>
-Whether to show the property in the editor (default "True")
+Whether to show the property in the editor and reset dialog (default "True")
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>custom-layout</term>
+          <listitem>
+            <para>
+This is used to avoid loading this property in the editor when implementing
+a custom #GladeEditable that embeds the base #GladeEditorTable implementation,
+custom-layout properties will still show up in the reset dialog (default "False)
             </para>
           </listitem>
         </varlistentry>

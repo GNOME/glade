@@ -1347,7 +1347,7 @@ glade_app_command_delete (void)
 	for (list = glade_app_get_selection ();
 	     list && list->data; list = list->next)
 	{
-		widget  = glade_widget_get_from_gobject (GTK_WIDGET (list->data));
+		widget  = glade_widget_get_from_gobject (list->data);
 		widgets = g_list_prepend (widgets, widget);
 		
 		g_assert (widget);

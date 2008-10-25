@@ -206,7 +206,7 @@ get_sorted_properties (GladeWidgetAdaptor   *adaptor,
 
 	properties = (type == GLADE_PAGE_PACKING) ? adaptor->packing_props : adaptor->properties;
 
-	for (l = properties; l && l->data; l = g_list_next (l))
+	for (l = properties; l; l = g_list_next (l))
 	{
 		GladePropertyClass *klass = l->data;
 
@@ -214,9 +214,11 @@ get_sorted_properties (GladeWidgetAdaptor   *adaptor,
 		 * invisible properties, allow adaptors to filter out properties from
 		 * the GladeEditorTable using the "custom-layout" attribute.
 		 */
-		if (!klass->custom_layout && GLADE_PROPERTY_CLASS_IS_TYPE (klass, type) &&
-		    (glade_property_class_is_visible (klass) || type != GLADE_PAGE_QUERY))
+		if ((!klass->custom_layout) && GLADE_PROPERTY_CLASS_IS_TYPE (klass, type) &&
+		    (glade_property_class_is_visible (klass) || type == GLADE_PAGE_QUERY))
+		{
 			list = g_list_prepend (list, klass);
+		}
 			
 	}
 	return g_list_sort (list, property_class_comp);
