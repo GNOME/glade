@@ -403,9 +403,6 @@ void                    glade_widget_pop_superuser          (void);
 void                    glade_widget_set_support_warning    (GladeWidget      *widget,
 							     const gchar      *warning);
 
-gboolean                glade_widget_has_factory_stock_id   (GladeWidget      *widget,
-							     const gchar      *property_name);
-
 G_END_DECLS
 
 #endif /* __GLADE_WIDGET_H__ */

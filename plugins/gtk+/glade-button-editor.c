@@ -200,6 +200,7 @@ standard_toggled (GtkWidget         *widget,
 	GladeProperty     *property;
 	GladeWidget       *gchild = NULL;
 	GtkWidget         *child, *button;
+	GValue             value;
 
 	if (button_editor->loading || !button_editor->loaded_widget)
 		return;
@@ -227,6 +228,18 @@ standard_toggled (GtkWidget         *widget,
 
 	property = glade_widget_get_property (button_editor->loaded_widget, "custom-child");
 	glade_command_set_property (property, FALSE);
+
+	/* Setup reasonable defaults for button label. */
+	property = glade_widget_get_property (button_editor->loaded_widget, "stock");
+	glade_command_set_property (property, 0);
+
+	property = glade_widget_get_property (button_editor->loaded_widget, "use-stock");
+	glade_command_set_property (property, FALSE);
+
+	property = glade_widget_get_property (button_editor->loaded_widget, "label");
+	glade_property_get_default (property, &value);
+	glade_command_set_property_value (property, &value);
+	g_value_unset (&value);
 
 	glade_command_pop_group ();
 

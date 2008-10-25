@@ -113,7 +113,7 @@ glade_editor_table_load (GladeEditable *editable,
 
 	/* abort mission */
 	if ((!table->loaded_widget && !widget) ||
-	    (table->loaded_widget && widget && table->loaded_widget == widget))
+	    (table->loaded_widget && table->loaded_widget == widget))
 		return;
 
 	table->loading = TRUE;

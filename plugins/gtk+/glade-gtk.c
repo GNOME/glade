@@ -1056,9 +1056,6 @@ widget_parent_changed (GtkWidget          *widget,
 		glade_widget_set_action_sensitive (gwidget, "remove_parent", TRUE);
 	else
 		glade_widget_set_action_sensitive (gwidget, "remove_parent", FALSE);
-
-	if (gwidget->internal)
-		glade_widget_set_action_sensitive (gwidget, "add_parent", FALSE);	
 }
 
 
@@ -1111,10 +1108,12 @@ glade_gtk_widget_deep_post_create (GladeWidgetAdaptor *adaptor,
 	if (GTK_IS_WINDOW (widget) || gwidget->internal)
 		glade_widget_set_action_sensitive (gwidget, "add_parent", FALSE);
 
-	/* Watch parents/projects and set actions sensitive/insensitive */
-	g_signal_connect (G_OBJECT (widget), "notify::parent",
-			  G_CALLBACK (widget_parent_changed), adaptor);
 
+	/* Watch parents/projects and set actions sensitive/insensitive */
+	if (gwidget->internal == NULL)
+		g_signal_connect (G_OBJECT (widget), "notify::parent",
+				  G_CALLBACK (widget_parent_changed), adaptor);
+	
 	g_signal_connect (G_OBJECT (gwidget), "notify::project",
 			  G_CALLBACK (widget_project_changed), NULL);
 
@@ -5182,6 +5181,10 @@ glade_gtk_button_set_property (GladeWidgetAdaptor *adaptor,
 
 			gtk_container_add (GTK_CONTAINER (object), glade_placeholder_new ());
 		}
+		else if (GTK_BIN (object)->child &&
+			 GLADE_IS_PLACEHOLDER (GTK_BIN (object)->child))
+			gtk_container_remove (GTK_CONTAINER (object),
+					      GTK_BIN (object)->child);
 	}
 	else if (strcmp (id, "stock") == 0)
 	{

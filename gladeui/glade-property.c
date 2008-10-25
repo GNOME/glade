@@ -1151,25 +1151,6 @@ glade_property_write (GladeProperty   *property,
 		g_free (tmp);
 	}
 
-	/* Switch up the values if we are using GtkIconFactory in builder
-	 * to save some hacked out pixbufs
-	 */
-	if (fmt == GLADE_PROJECT_FORMAT_GTKBUILDER &&
-	    property->klass->factory_stock_id)
-	{
-		gchar *icon_name;
-
-		/* Create a string representation for the icon factory */
-		icon_name = glade_util_filename_to_icon_name (value);
-		g_free (value);
-		value = icon_name;
-
-		/* Use the alternate property name */
-		g_free (name);
-		name = g_strdup (property->klass->factory_stock_id);
-		glade_util_replace (name, '-', '_');
-	}
-
 	/* Now dump the node values... */
 	prop_node = glade_xml_node_new (context, GLADE_XML_TAG_PROPERTY);
 	glade_xml_node_append_child (node, prop_node);

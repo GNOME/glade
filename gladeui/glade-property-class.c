@@ -128,7 +128,6 @@ glade_property_class_clone (GladePropertyClass *property_class)
 	clone->id = g_strdup (clone->id);
 	clone->name = g_strdup (clone->name);
 	clone->tooltip = g_strdup (clone->tooltip);
-	clone->factory_stock_id = g_strdup (clone->factory_stock_id);
 
 	if (G_IS_VALUE (property_class->def))
 	{
@@ -1426,14 +1425,6 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 		glade_xml_get_property_boolean (node, GLADE_TAG_LIBGLADE_UNSUPPORTED, 
 						klass->libglade_unsupported);
 
-
-	if ((buf = glade_xml_get_property_string
-	     (node, GLADE_TAG_FACTORY_STOCK_ID)) != NULL)
-	{
-		if (klass->factory_stock_id)
-			g_free (klass->factory_stock_id);
-		klass->factory_stock_id = buf;
-	}
 
 	if ((buf = glade_xml_get_property_string
 	     (node, GLADE_TAG_CREATE_TYPE)) != NULL)

@@ -628,6 +628,19 @@ glade_editor_load_editable (GladeEditor         *editor,
 }
 
 static void
+clear_editables (GladeEditor *editor)
+{
+	GladeEditable *editable;
+	GList *l;
+
+	for (l = editor->editables; l; l = l->next)
+	{
+		editable = l->data;
+		glade_editable_load (editable, NULL);
+	}
+}
+
+static void
 glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 {
 	GladeWidgetAdaptor *adaptor;
@@ -637,6 +650,11 @@ glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 	/* Disconnect from last widget */
 	if (editor->loaded_widget != NULL)
 	{
+		/* better pay a small price now and avoid unseen editables
+		 * waking up on project metadata changes.
+		 */
+		clear_editables (editor);
+
 		project = glade_widget_get_project (editor->loaded_widget);
 		g_signal_handler_disconnect (G_OBJECT (project),
 					     editor->project_closed_signal_id);

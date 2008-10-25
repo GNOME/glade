@@ -22,6 +22,17 @@
 	* gladeui/glade-utils.c: Fixed generic enum types to use enum_class->minimum
 	as the default value.
 
+	* plugins/gtk+/glade-gtk.c: Ignore parent-changes on internal widgets (that
+	causes problems when internal widgets get destroyed at project close time).
+
+	* plugins/gtk+/glade-button-editor.c: Fixed custom/standard commands,
+	now standard mode sets up a default label etc also.
+
+	* gladeui/glade-project.c, gladeui/glade-property.c, gladeui/glade-widget.c,
+	gladeui/glade-property-class.[ch], gladeui/glade-xml-utils.h:
+	Removed hack for GtkToolButton:icon --> iconfactory (will do in glade-convert.c
+	properly).
+
 2008-10-24  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/Makefile.am, plugins/gtk+/glade-button-editor.[ch]:

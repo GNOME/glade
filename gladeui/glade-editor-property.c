@@ -459,6 +459,9 @@ glade_editor_property_load_common (GladeEditorProperty *eprop,
 		if (eprop->state_id > 0)
 			g_signal_handler_disconnect (eprop->property, 
 						     eprop->state_id);
+		if (eprop->enabled_id > 0)
+			g_signal_handler_disconnect (eprop->property, 
+						     eprop->enabled_id);
 
 		eprop->tooltip_id   = 0;
 		eprop->sensitive_id = 0;

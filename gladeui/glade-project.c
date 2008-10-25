@@ -133,8 +133,6 @@ struct _GladeProjectPrivate
 	GHashTable *target_versions_major; /* target versions by catalog */
 	GHashTable *target_versions_minor; /* target versions by catalog */
 
-	GList *loaded_factory_files;
-
 	GladeNamingPolicy naming_policy;	/* What rules apply to widget names */
 /* Control on the preferences dialog to update buttons etc when properties change */
 	GtkWidget *prefs_dialog;
@@ -208,12 +206,6 @@ static GladeIDAllocator  *unsaved_number_allocator = NULL;
 
 
 G_DEFINE_TYPE (GladeProject, glade_project, G_TYPE_OBJECT)
-
-
-
-#define GLADE_GENERATED_ICON_FACTORY_NAME   "glade-generated-icon-factory"
-#define GLADE_ICON_FACTORY_CLASS_NAME       "GtkIconFactory"
-
 
 /*******************************************************************
                             GObjectClass
@@ -863,209 +855,6 @@ glade_project_new (void)
 	return project;
 }
 
-static GList *
-glade_project_get_factory_stock_id_props (GladeProject *project)
-{
-	GladeWidget *widget;
-	GladeProperty *property;
-	GList *list, *l;
-	GList *properties = NULL;
-
-	for (list = project->priv->objects; list; list = list->next)
-	{
-		widget = glade_widget_get_from_gobject (list->data);
-
-		for (l = widget->properties; l; l = l->next)
-		{
-			property = l->data;
-			if (property->klass->factory_stock_id &&
-			    property->enabled &&
-			    !glade_property_default (property))
-				properties = g_list_prepend (properties, property);
-		}
-
-		for (l = widget->packing_properties; l; l = l->next)
-		{
-			property = l->data;
-			if (property->klass->factory_stock_id &&
-			    property->enabled &&
-			    !glade_property_default (property))
-				properties = g_list_prepend (properties, property);
-		}
-
-	}
-
-	return properties;
-}
-
-static void
-glade_project_generate_nodes (GladeProject    *project, 
-			      GladeXmlContext *context,
-			      GladeXmlNode    *node)
-
-{
-	GladeProperty *property;
-	GladeXmlNode  *widget_node;
-	GladeXmlNode  *source_node;
-	GladeXmlNode  *sources_node;
-	GList         *properties, *list;
-	gchar         *icon_name, *filename;
-
-	if (project->priv->format == GLADE_PROJECT_FORMAT_GTKBUILDER &&
-	    (properties = glade_project_get_factory_stock_id_props (project)))
-	{
-
-		widget_node = glade_xml_node_new
-			(context, GLADE_XML_TAG_WIDGET (project->priv->format));
-		glade_xml_node_append_child (node, widget_node);
-
-		/* Set class and id */
-		glade_xml_node_set_property_string (widget_node, 
-						    GLADE_XML_TAG_CLASS, 
-						    GLADE_ICON_FACTORY_CLASS_NAME);
-		glade_xml_node_set_property_string (widget_node, 
-						    GLADE_XML_TAG_ID, 
-						    GLADE_GENERATED_ICON_FACTORY_NAME);
-		
-
-		sources_node = glade_xml_node_new (context, GLADE_XML_TAG_SOURCES);
-		glade_xml_node_append_child (widget_node, sources_node);
-
-		for (list = properties; list; list = list->next)
-		{
-			property = list->data;
-
-			source_node = glade_xml_node_new (context, GLADE_XML_TAG_SOURCE);
-			glade_xml_node_append_child (sources_node, source_node);
-
-			if ((filename = glade_widget_adaptor_string_from_value
-			     (GLADE_WIDGET_ADAPTOR (property->klass->handle),
-			      property->klass, property->value, project->priv->format)) != NULL)
-			{
-				icon_name = glade_util_filename_to_icon_name (filename);
-
-				/* Set stock-id and filename */
-				glade_xml_node_set_property_string
-					(source_node, 
-					 GLADE_XML_TAG_STOCK_ID, 
-					 icon_name);
-				glade_xml_node_set_property_string (source_node, 
-								    GLADE_XML_TAG_FILENAME, 
-								    filename);
-				g_free (icon_name);
-				g_free (filename);
-			}
-		}
-		g_list_free (properties);
-	}
-}
-
-gboolean
-glade_project_is_loaded_factory_file (GladeProject *project, 
-				      const gchar  *stock_id)
-{
-	GList *list;
-	StockFilePair *pair;
-
-	for (list = project->priv->loaded_factory_files;
-	     list; list = list->next)
-	{
-		pair = list->data;
-		if (!strcmp (stock_id, pair->stock))
-			return TRUE;
-	}
-	return FALSE;
-}
-
-static void
-glade_project_free_loaded_factory_files (GladeProject *project)
-{
-	GList *list;
-	StockFilePair *pair;
-
-	for (list = project->priv->loaded_factory_files;
-	     list; list = list->next)
-	{
-		pair = list->data;
-		g_free (pair->stock);
-		g_free (pair->filename);
-		g_free (pair);
-	}
-	g_list_free (project->priv->loaded_factory_files);
-	project->priv->loaded_factory_files = NULL;
-}
-
-static void
-glade_project_read_factory_files (GladeProject *project, 
-				  GladeXmlNode *node)
-{
-	GladeXmlNode  *source;
-	StockFilePair *pair;
-
-	if ((source = 
-	     glade_xml_search_child_required (node, GLADE_XML_TAG_SOURCES)))
-	{
-		for (source = glade_xml_node_get_children (source);
-		     source; source = glade_xml_node_next (source))
-		{
-			if (!glade_xml_node_verify (source, GLADE_XML_TAG_SOURCE))
-				continue;
-
-			pair = g_new (StockFilePair, 1);
-			
-			pair->stock = glade_xml_get_property_string_required 
-				(source, GLADE_XML_TAG_STOCK_ID, NULL);
-			pair->filename = glade_xml_get_property_string_required 
-				(source, GLADE_XML_TAG_FILENAME, NULL);
-
-			if (!pair->stock || !pair->filename)
-			{
-				g_free (pair->stock);
-				g_free (pair->filename);
-				g_free (pair);
-				continue;
-			}
-			
-			project->priv->loaded_factory_files =
-				g_list_prepend (project->priv->loaded_factory_files, pair);
-		}
-	}
-}
-
-static gboolean
-glade_project_is_generated_node (GladeProject *project, 
-				 GladeXmlNode *node)
-{
-	gboolean  generated = FALSE;
-	gchar    *klass, *id;
-
-	if (!glade_xml_node_verify
-	    (node, GLADE_XML_TAG_WIDGET (project->priv->format)))
-		return FALSE;
-
-	if ((klass = 
-	     glade_xml_get_property_string_required
-	     (node, GLADE_XML_TAG_CLASS, NULL)) != NULL)
-	{
-		if ((id = 
-		     glade_xml_get_property_string_required
-		     (node, GLADE_XML_TAG_ID, NULL)) != NULL)
-		{
-			if (!strcmp (klass, GLADE_ICON_FACTORY_CLASS_NAME) &&
-			    !strcmp (id, GLADE_GENERATED_ICON_FACTORY_NAME))
-			{
-				/* Read in the generated stock names and files */
-				glade_project_read_factory_files (project, node);
-				generated = TRUE;
-			}
-			g_free (id);
-		}
-		g_free (klass);
-	}
-	return generated;
-}
-
-
 /* Called when finishing loading a glade file to resolve object type properties
  */
 static void 
@@ -1316,10 +1105,6 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 		    (node, GLADE_XML_TAG_WIDGET (project->priv->format)))
 			continue;
 
-		/* Skip toplevel glade generated nodes */
-		if (glade_project_is_generated_node (project, node))
-			continue;
-
 		if ((widget = glade_widget_read (project, NULL, node, NULL)) != NULL)
 			glade_project_add_object (project, NULL, widget->object);
 	}
@@ -1340,9 +1125,6 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 
 	/* Emit "parse-finished" signal */
 	g_signal_emit (project, glade_project_signals [PARSE_FINISHED], 0);
-
-	/* Free up some load time metadata */
-	glade_project_free_loaded_factory_files (project);
 	
 	/* Now we have to loop over all the object properties
 	 * and fix'em all ('cause they probably weren't found)
@@ -1557,9 +1339,6 @@ glade_project_write (GladeProject *project)
 	glade_project_write_required_libs (project, context, root);
 
 	glade_project_write_naming_policy (project, context, root);
-
-	/* Any automatically generated stuff goes here */
-	glade_project_generate_nodes (project, context, root);
 
 	for (list = project->priv->objects; list; list = list->next)
 	{

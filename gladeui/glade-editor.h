@@ -48,15 +48,6 @@ struct _GladeEditor
 					     * same class
 					     */
 
-
-	/* The editor has (at this moment) four tabs; these are pointers to the 
-	 * widget inside each tab. The widgets are wrapped into a scrolled window.
-	 * The page_* widgets are deparented and parented with
-	 * ((GladeEditorTable *)etable)->table_widget when a widget is selected and
-	 * the correct editor table is found. The exception is `page_signals' which
-	 * always contains the same signal editor widget which simply reloads when
-	 * loading a widget.
-	 */
 	GtkWidget *page_widget;
 	GtkWidget *page_packing;
 	GtkWidget *page_common;

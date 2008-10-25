@@ -172,15 +172,6 @@ struct _GladePropertyClass
 			 * the editor.
 			 */
 	
-	gchar *factory_stock_id; /* Used for legacy fake libglade properties
-				  * that reffer to pixbufs, glade creates
-				  * an internal icon factory so that builder
-				  * can load them as stock icons. The string
-				  * if set reffers to the property name that
-				  * will be used to lookup the theme by the
-				  * implementing widget
-				  */
-
 	gboolean parentless_widget;  /* True if this property should point to a parentless widget
 				      * in the project
 				      */

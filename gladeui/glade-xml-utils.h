@@ -85,7 +85,6 @@ typedef enum {
 #define GLADE_XML_TAG_SOURCE                      "source"
 #define GLADE_XML_TAG_FILENAME                    "filename"
 #define GLADE_XML_TAG_STOCK_ID                    "stock-id"
-#define GLADE_TAG_FACTORY_STOCK_ID                "factory-stock-id"
 
 #define GLADE_TAG_VERSION                         "version"
 #define GLADE_TAG_TARGETABLE                      "targetable"
