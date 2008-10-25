@@ -1,4 +1,4 @@
-2008-10-24  Tristan Van Berkom <tvb@gnome.org>
+2008-10-25  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-property-class.c: Fixed glade_property_class_make_adjustment()
 	for floating and double values (page inc and size were not properly set) (bug 553200)
@@ -11,6 +11,16 @@
 
 	* plugins/gtk+/gtk+.xml.in: mark some props save-always for overridden
 	defaults in children (this one is bug 555726)
+
+	* plugins/gtk+/glade-cell-renderer-button.c: Fixed a warning.
+
+	* plugins/gtk+/glade-column-types.c, plugins/gtk+/glade-model-data.c,
+	plugins/gtk+/glade-icon-sources.c: Made sure add/remove works when
+	deleting unedited icon sources, all add buttons result in focus and
+	start-editing of an important cell in the underlying treeview.
+
+	* gladeui/glade-utils.c: Fixed generic enum types to use enum_class->minimum
+	as the default value.
 
 2008-10-24  Tristan Van Berkom <tvb@gnome.org>
 

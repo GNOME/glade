@@ -274,11 +274,15 @@ typedef struct
 {
 	GladeEditorProperty parent_instance;
 
-	GtkComboBox *combo;
-	GtkListStore *store;
+	GtkComboBox      *combo;
+	GtkListStore     *store;
+	GtkTreeView      *view;
 	GtkTreeSelection *selection;
 
 	GladeNameContext *context;
+
+	gboolean          adding_column;
+	GtkTreeViewColumn *name_column;
 } GladeEPropColumnTypes;
 
 GLADE_MAKE_EPROP (GladeEPropColumnTypes, glade_eprop_column_types)
@@ -382,7 +386,7 @@ eprop_column_append (GladeEditorProperty *eprop,
 
 	columns = g_list_append (columns, data);
 
-
+	eprop_types->adding_column = TRUE;
 	glade_command_push_group (_("Setting columns on %s"), 
 				  glade_widget_get_name (eprop->property->widget));
 
@@ -394,6 +398,8 @@ eprop_column_append (GladeEditorProperty *eprop,
 	g_value_unset (&value);
 
 	glade_command_pop_group ();
+
+	eprop_types->adding_column = FALSE;
 }
 
 static void
@@ -538,6 +544,37 @@ eprop_column_load (GladeEPropColumnTypes *eprop_types,
 					   -1);
 }
 
+static gboolean
+eprop_types_focus_idle (GladeEPropColumnTypes *eprop_types)
+{
+	/* Focus and edit the first column of a newly added row */
+	if (eprop_types->store)
+	{
+		GtkTreePath *new_item_path;
+		GtkTreeIter  iter, *last_iter = NULL;
+
+		if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (eprop_types->store), &iter))
+		{
+			do {
+				if (last_iter)
+					gtk_tree_iter_free (last_iter);
+				last_iter = gtk_tree_iter_copy (&iter);
+			} while (gtk_tree_model_iter_next (GTK_TREE_MODEL (eprop_types->store), &iter));
+
+			new_item_path = gtk_tree_model_get_path (GTK_TREE_MODEL (eprop_types->store), last_iter);
+
+			gtk_widget_grab_focus (GTK_WIDGET (eprop_types->view));
+			gtk_tree_view_expand_to_path (eprop_types->view, new_item_path);
+			gtk_tree_view_set_cursor (eprop_types->view, new_item_path,
+						  eprop_types->name_column, TRUE);
+			
+			gtk_tree_path_free (new_item_path);
+			gtk_tree_iter_free (last_iter);
+		}
+	}
+	return FALSE;
+}
+
 static void
 glade_eprop_column_types_load (GladeEditorProperty *eprop, GladeProperty *property)
 {
@@ -572,6 +609,9 @@ glade_eprop_column_types_load (GladeEditorProperty *eprop, GladeProperty *proper
 		eprop_column_load (eprop_types, data->type, data->column_name);
 		glade_name_context_add_name (eprop_types->context, data->column_name);
 	}
+
+	if (eprop_types->adding_column && list)
+		g_idle_add ((GSourceFunc)eprop_types_focus_idle, eprop);
 
 	g_signal_handlers_unblock_by_func (G_OBJECT (eprop_types->store), 
 					   eprop_treeview_row_deleted, eprop);
@@ -649,7 +689,7 @@ static GtkWidget *
 glade_eprop_column_types_create_input (GladeEditorProperty *eprop)
 {
 	GladeEPropColumnTypes *eprop_types = GLADE_EPROP_COLUMN_TYPES (eprop);
-	GtkWidget *vbox, *hbox, *button, *swin, *treeview, *label;
+	GtkWidget *vbox, *hbox, *button, *swin, *label;
 	GtkCellRenderer *cell;
 	GtkTreeViewColumn *col;
 	gchar *string;
@@ -710,11 +750,11 @@ glade_eprop_column_types_create_input (GladeEditorProperty *eprop)
 			  G_CALLBACK (eprop_treeview_row_deleted),
 			  eprop);
 	
-	treeview = gtk_tree_view_new_with_model (GTK_TREE_MODEL (eprop_types->store));
-	eprop_types->selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (treeview));
+	eprop_types->view = (GtkTreeView *)gtk_tree_view_new_with_model (GTK_TREE_MODEL (eprop_types->store));
+	eprop_types->selection = gtk_tree_view_get_selection (eprop_types->view);
 
 	
-	gtk_tree_view_set_reorderable (GTK_TREE_VIEW (treeview), TRUE);
+	gtk_tree_view_set_reorderable (eprop_types->view, TRUE);
 	//gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (treeview), FALSE);
 
 	/* type column */
@@ -722,7 +762,7 @@ glade_eprop_column_types_create_input (GladeEditorProperty *eprop)
 							gtk_cell_renderer_text_new (),
 							"text", COLUMN_NAME,
 							NULL);
-	gtk_tree_view_append_column (GTK_TREE_VIEW (treeview), col);	
+	gtk_tree_view_append_column (eprop_types->view, col);	
 
 
 	/* name column */
@@ -732,12 +772,13 @@ glade_eprop_column_types_create_input (GladeEditorProperty *eprop)
 	g_signal_connect (G_OBJECT (cell), "edited",
 			  G_CALLBACK (column_name_edited), eprop);
 	
-	col = gtk_tree_view_column_new_with_attributes ("Column name", 
-							cell,
-							"text", COLUMN_COLUMN_NAME,
-							NULL);
-	gtk_tree_view_append_column (GTK_TREE_VIEW (treeview), col);	
-	gtk_container_add (GTK_CONTAINER (swin), treeview);
+	eprop_types->name_column = 
+		gtk_tree_view_column_new_with_attributes ("Column name", 
+							  cell,
+							  "text", COLUMN_COLUMN_NAME,
+							  NULL);
+	gtk_tree_view_append_column (eprop_types->view, eprop_types->name_column);	
+	gtk_container_add (GTK_CONTAINER (swin), GTK_WIDGET (eprop_types->view));
 	
 	g_object_set (G_OBJECT (vbox), "height-request", 200, NULL);
 

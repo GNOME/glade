@@ -2127,8 +2127,12 @@ pclass_from_gtype (GType type)
 			pspec = g_param_spec_object ("dummy", "dummy", "dummy",
 						     type, G_PARAM_READABLE|G_PARAM_WRITABLE);
 		else if (G_TYPE_IS_ENUM (type))
+		{
+			GEnumClass *eclass = g_type_class_ref (type);
 			pspec = g_param_spec_enum ("dummy", "dummy", "dummy",
-						   type, 0, G_PARAM_READABLE|G_PARAM_WRITABLE);
+						   type, eclass->minimum, G_PARAM_READABLE|G_PARAM_WRITABLE);
+			g_type_class_unref (eclass);
+		}
 		else if (G_TYPE_IS_FLAGS (type))
 			pspec = g_param_spec_flags ("dummy", "dummy", "dummy",
 						    type, 0, G_PARAM_READABLE|G_PARAM_WRITABLE);

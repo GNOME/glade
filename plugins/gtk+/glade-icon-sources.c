@@ -351,6 +351,7 @@ add_clicked (GtkWidget *button,
 	GtkTreePath *new_item_path;
 	gchar       *icon_name;
 	gchar       *selected_icon_name;
+	gint         index;
 
 	if (gtk_combo_box_get_active_iter (GTK_COMBO_BOX (eprop_sources->combo), &iter))
 		gtk_tree_model_get (GTK_TREE_MODEL (eprop_sources->icon_names_store), &iter,
@@ -377,6 +378,23 @@ add_clicked (GtkWidget *button,
 			 gtk_tree_model_iter_next (GTK_TREE_MODEL (eprop_sources->store), &iter));
 	}
 
+	/* check if we're already adding one here... */
+	if (parent_iter &&
+	    gtk_tree_model_iter_children (GTK_TREE_MODEL (eprop_sources->store), &iter, parent_iter))
+	{
+		do {
+			gtk_tree_model_get (GTK_TREE_MODEL (eprop_sources->store), &iter,
+					    COLUMN_LIST_INDEX, &index,
+					    -1);
+			
+			/* Iter is set, expand and return. */
+			if (index < 0)
+				goto expand_to_path_and_focus;
+
+		} while (gtk_tree_model_iter_next (GTK_TREE_MODEL (eprop_sources->store), &iter));
+	}
+
+
 	if (!parent_iter)
 	{
 		/* Dont set COLUMN_ICON_NAME here */
@@ -397,6 +415,8 @@ add_clicked (GtkWidget *button,
 			    COLUMN_LIST_INDEX, -1,
 			    -1);
 
+	/* By now iter is valid. */
+ expand_to_path_and_focus:
 	new_item_path = gtk_tree_model_get_path (GTK_TREE_MODEL (eprop_sources->store), &iter);
 
 	gtk_widget_grab_focus (GTK_WIDGET (eprop_sources->view));
@@ -458,6 +478,15 @@ delete_clicked (GtkWidget *button,
 			    COLUMN_ICON_NAME, &icon_name,
 			    COLUMN_LIST_INDEX, &index,
 			    -1);
+
+	/* Could be the user pressed add and then delete without touching the
+	 * new item.
+	 */
+	if (index < 0)
+	{
+		g_idle_add ((GSourceFunc)reload_icon_sources_idle, eprop);
+		return;
+	}
 
 	glade_property_get (eprop->property, &icon_sources);
 	if (icon_sources)

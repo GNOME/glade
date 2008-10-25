@@ -315,6 +315,10 @@ typedef struct
 	GtkListStore *store;
 	GtkTreeSelection *selection;
 	GNode *pending_data_tree;
+
+	/* Used for setting focus on newly added rows */
+	gboolean             adding_row;
+	GtkTreeViewColumn   *first_column;
 } GladeEPropModelData;
 
 GLADE_MAKE_EPROP (GladeEPropModelData, glade_eprop_model_data)
@@ -382,6 +386,7 @@ static void
 glade_eprop_model_data_add_clicked (GtkWidget *button, 
 				    GladeEditorProperty *eprop)
 {
+	GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
 	GValue value = { 0, };
 	GNode *node = NULL;
 	GList *columns = NULL;
@@ -401,11 +406,14 @@ glade_eprop_model_data_add_clicked (GtkWidget *button,
 
 	append_row (node, columns);
 
+	eprop_data->adding_row = TRUE;
+
 	g_value_init (&value, GLADE_TYPE_MODEL_DATA_TREE);
 	g_value_take_boxed (&value, node);
 	glade_editor_property_commit (eprop, &value);
 	g_value_unset (&value);
 
+	eprop_data->adding_row = FALSE;
 }
 
 /* User pressed delete: remove selected row and commit values  */
@@ -849,6 +857,8 @@ eprop_model_data_generate_columns (GladeEditorProperty *eprop)
 	if (!data_tree || !data_tree->children || !data_tree->children->children)
 		return;
 
+	eprop_data->first_column = NULL;
+
 	/* Append new columns */
 	for (colnum = 0, iter_node = data_tree->children->children; iter_node; 
 	     colnum++, iter_node = iter_node->next)
@@ -857,7 +867,41 @@ eprop_model_data_generate_columns (GladeEditorProperty *eprop)
 
 		column = eprop_model_generate_column (eprop, colnum, iter_data);
 		gtk_tree_view_append_column (eprop_data->view, column);
+
+		if (!eprop_data->first_column)
+			eprop_data->first_column = column;
 	}
+}
+
+static gboolean
+eprop_data_focus_idle (GladeEPropModelData *eprop_data)
+{
+	/* Focus and edit the first column of a newly added row */
+	if (eprop_data->store && eprop_data->first_column)
+	{
+		GtkTreePath *new_item_path;
+		GtkTreeIter  iter, *last_iter = NULL;
+
+		if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (eprop_data->store), &iter))
+		{
+			do {
+				if (last_iter)
+					gtk_tree_iter_free (last_iter);
+				last_iter = gtk_tree_iter_copy (&iter);
+			} while (gtk_tree_model_iter_next (GTK_TREE_MODEL (eprop_data->store), &iter));
+
+			new_item_path = gtk_tree_model_get_path (GTK_TREE_MODEL (eprop_data->store), last_iter);
+
+			gtk_widget_grab_focus (GTK_WIDGET (eprop_data->view));
+			gtk_tree_view_expand_to_path (eprop_data->view, new_item_path);
+			gtk_tree_view_set_cursor (eprop_data->view, new_item_path,
+						  eprop_data->first_column, TRUE);
+			
+			gtk_tree_path_free (new_item_path);
+			gtk_tree_iter_free (last_iter);
+		}
+	}
+	return FALSE;
 }
 
 static void
@@ -892,6 +936,9 @@ glade_eprop_model_data_load (GladeEditorProperty *eprop,
 
 	/* Create new columns with renderers */
 	eprop_model_data_generate_columns (eprop);
+
+	if (eprop_data->adding_row && eprop_data->store && eprop_data->first_column)
+		g_idle_add ((GSourceFunc)eprop_data_focus_idle, eprop_data);
 }
 
 static GtkWidget *
