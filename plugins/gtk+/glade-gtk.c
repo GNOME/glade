@@ -6857,31 +6857,11 @@ glade_gtk_tool_button_set_label (GObject *object, const GValue *value)
 static void
 glade_gtk_tool_button_set_stock_id (GObject *object, const GValue *value)
 {
-	GladeWidget *gbutton;
-	GEnumClass *eclass;
-	GEnumValue *eval;
 	const gchar *stock_id;
 	
 	g_return_if_fail (GTK_IS_TOOL_BUTTON (object));
-	gbutton = glade_widget_get_from_gobject (object);
 		
-	if ((stock_id = g_value_get_string (value)))
-	{
-		eclass = g_type_class_ref (GLADE_TYPE_STOCK_IMAGE);
-
-		if ((eval = g_enum_get_value_by_nick (eclass, stock_id)) != NULL)
-			glade_widget_property_set (gbutton, "glade-stock", eval->value);
-		else
-		{
-			glade_widget_property_set (gbutton, "glade-stock", 
-						   "gtk-missing-image");
-			g_warning ("Invalid stock-id '%s' found in toolbutton", stock_id);
-		}
-
-		glade_widget_property_set (gbutton, "glade-type", GLADEGTK_IMAGE_STOCK);
-		
-		g_type_class_unref (eclass);
-	}
+	stock_id = g_value_get_string (value);
 	
 	if (stock_id && strlen (stock_id) == 0) stock_id = NULL;
 	
@@ -6907,11 +6887,6 @@ glade_gtk_tool_button_set_glade_stock (GObject *object, const GValue *value)
 
 		if ((eval = g_enum_get_value (eclass, val)) != NULL)
 			glade_widget_property_set (gbutton, "stock-id", eval->value_nick);
-		else
-		{
-			glade_widget_property_set (gbutton, "stock-id", "gtk-missing-image");
-			g_warning ("Invalid glade stock id '%d' found in toolbutton", val);
-		}		
 		g_type_class_unref (eclass);
 	}
 	else

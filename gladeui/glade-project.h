@@ -69,8 +69,6 @@ GType          glade_project_get_type            (void) G_GNUC_CONST;
 
 GladeProject  *glade_project_new                 (void);
 
-gboolean       glade_project_load_from_file      (GladeProject *project, const gchar *path);
-
 GladeProject  *glade_project_load                (const gchar  *path);
 
 gboolean       glade_project_save                (GladeProject *project, 

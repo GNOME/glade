@@ -33,6 +33,12 @@
 	Removed hack for GtkToolButton:icon --> iconfactory (will do in glade-convert.c
 	properly).
 
+	* gladeui/glade-convert.c: Properly convert toolbutton:icon both ways.
+
+	* plugins/gtk+/glade-gtk.c: Undid a little toolbutton support so that
+	stock-id remains untouched and is accessible in builder format, TODO
+	rework toolbars and menus (will be simpler) with GladeEditable.
+
 2008-10-24  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/Makefile.am, plugins/gtk+/glade-button-editor.[ch]:

@@ -1046,7 +1046,7 @@ glade_project_read_comment (GladeProject *project, GladeXmlDoc *doc)
 	 */
 }
 
-gboolean
+static gboolean
 glade_project_load_from_file (GladeProject *project, const gchar *path)
 {
 	GladeXmlContext *context;
@@ -1075,9 +1075,9 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 	root = glade_xml_doc_get_root (doc);
 
 	if (glade_xml_node_verify_silent (root, GLADE_XML_TAG_LIBGLADE_PROJECT))
-		project->priv->format = GLADE_PROJECT_FORMAT_LIBGLADE;
+		glade_project_set_format (project, GLADE_PROJECT_FORMAT_LIBGLADE);
 	else if (glade_xml_node_verify_silent (root, GLADE_XML_TAG_BUILDER_PROJECT))
-		project->priv->format = GLADE_PROJECT_FORMAT_GTKBUILDER;
+		glade_project_set_format (project, GLADE_PROJECT_FORMAT_GTKBUILDER);
 	else
 	{
 		g_warning ("Couldnt determine project format, skipping %s", path);
@@ -1087,7 +1087,6 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 
 	/* XXX Need to load project->priv->comment ! */
 	glade_project_read_comment (project, doc);
-
 
 	if (glade_project_read_requires (project, root, path) == FALSE)
 	{

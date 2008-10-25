@@ -31,6 +31,7 @@
 #include "glade-gtk.h"
 #include "glade-column-types.h"
 #include "glade-model-data.h"
+#include "glade-icon-sources.h"
 #include <gladeui/glade.h>
 
 
@@ -55,6 +56,7 @@ typedef struct {
 	GList *textviews;
 	GList *tooltips;
 	GList *combos;
+	GList *toolbuttons;
 } ConvertData;
 
 /*****************************************
@@ -297,7 +299,7 @@ convert_textviews (GladeProject       *project,
 }
 
 /*****************************************
- *           GtkWidget:tooltips          *
+ *           GtkWidget:tooltip           *
  *****************************************/
 static void
 convert_tooltips_finished (GladeProject  *project,
@@ -536,6 +538,187 @@ convert_combos_finished (GladeProject  *project,
 	g_list_free (data->combos);
 }
 
+/******************************
+ *     ToolButton:icon        *
+ ******************************/
+static void
+convert_toolbuttons_finished (GladeProject  *project,
+			      ConvertData   *data)
+{
+	GladeProjectFormat  new_format = glade_project_get_format (project);
+	GladeWidgetAdaptor *adaptor = glade_widget_adaptor_get_by_type (GTK_TYPE_ICON_FACTORY);
+	GladeWidget        *icon_factory = NULL;
+	GladeIconSources   *icon_sources = NULL;
+	GladeProperty      *property;
+	TextData           *tdata;
+	GtkIconSource      *source;
+	GList              *list, *source_list;
+	gchar              *filename;
+	GValue             *value;
+	GdkPixbuf          *pixbuf;
+
+	if (new_format == GLADE_PROJECT_FORMAT_GTKBUILDER)
+	{
+		/* Generate icon_sources first... */
+		for (list = data->toolbuttons; list; list = list->next)
+		{
+			tdata = list->data;
+
+			filename = g_strdup_printf ("generated-icon-%s", tdata->text);
+			glade_util_replace (filename, '.', '-');
+
+			/* get icon source with pixbuf from tdata->text */
+			value = glade_utils_value_from_string (GDK_TYPE_PIXBUF, tdata->text,
+							       project, tdata->widget);
+			pixbuf = g_value_get_object (value);
+			source = gtk_icon_source_new ();
+			gtk_icon_source_set_pixbuf (source, pixbuf);
+			g_value_unset (value);
+			g_free (value);
+			
+			/* Add to the icon source (only one icon set list per icon) */
+			if (!icon_sources)
+				icon_sources = glade_icon_sources_new ();
+			source_list = g_list_append (NULL, source);
+			g_hash_table_insert (icon_sources->sources, g_strdup (filename), source_list);
+			
+			g_free (filename);
+		}
+
+		if (icon_sources)
+		{
+			icon_factory = glade_command_create (adaptor, NULL, NULL, project);
+
+			property = glade_widget_get_property (icon_factory, "sources");
+			glade_command_set_property (property, icon_sources);
+			glade_icon_sources_free (icon_sources);
+		}
+
+		for (list = data->toolbuttons; list; list = list->next)
+		{
+			tdata = list->data;
+
+			filename = g_strdup_printf ("generated-icon-%s", tdata->text);
+			glade_util_replace (filename, '.', '-');
+
+			/* Set stock-id for newly generated icon */
+			property = glade_widget_get_property (tdata->widget, "stock-id");
+			glade_command_set_property (property, filename);
+
+			g_free (filename);
+			g_free (tdata->text);
+			g_free (tdata);
+		}
+	}
+	else
+	{
+		/* Set "icon" property */
+		for (list = data->toolbuttons; list; list = list->next)
+		{
+			tdata = list->data;
+
+			value = glade_utils_value_from_string (GDK_TYPE_PIXBUF, 
+							       tdata->text, 
+							       project, tdata->widget);
+			pixbuf = g_value_get_object (value);
+			property = glade_widget_get_property (tdata->widget, "icon");
+			glade_command_set_property (property, pixbuf);
+			g_value_unset (value);
+			g_free (value);
+
+			g_free (tdata->text);
+			g_free (tdata);
+		}
+	}
+
+	g_list_free (data->toolbuttons);
+}
+
+
+static gint
+find_icon_factory (GObject *object, gpointer blah)
+{
+	if (GTK_IS_ICON_FACTORY (object))
+		return 0;
+	return -1;
+}
+
+static void
+convert_toolbuttons (GladeProject       *project,
+		     GladeProjectFormat  new_format,
+		     ConvertData        *data)
+{
+	GladeIconSources *icon_sources = NULL;
+	GladeWidget      *widget, *gfactory;
+	GladeProperty    *property;
+	GtkIconSource    *source;
+	const GList      *objects, *element;
+	TextData         *tdata;
+	GdkPixbuf        *pixbuf;
+	gchar            *filename = NULL, *stock_id = NULL;
+
+	for (objects = glade_project_get_objects (project); objects; objects = objects->next)
+	{
+		widget = glade_widget_get_from_gobject (objects->data);
+		if (!GTK_IS_TOOL_BUTTON (widget->object))
+			continue;
+
+		if (new_format == GLADE_PROJECT_FORMAT_GTKBUILDER)
+		{
+			pixbuf = NULL;
+			property = glade_widget_get_property (widget, "icon");
+			glade_property_get (property, &pixbuf);
+		
+			if (pixbuf)
+			{
+				filename = g_object_get_data (G_OBJECT (pixbuf), "GladeFileName");
+
+				tdata = g_new0 (TextData, 1);
+				tdata->widget = widget;
+				tdata->text = g_strdup (filename);
+				data->toolbuttons = g_list_prepend (data->toolbuttons, tdata);
+
+				glade_command_set_property (property, NULL);
+			}
+		}
+		else
+		{
+			/* If any stock's are provided in the icon factory, convert
+			 * them to the "icon" property
+			 */
+			property = glade_widget_get_property (widget, "stock-id");
+			glade_property_get (property, &stock_id);
+			if (!stock_id)
+				continue;
+			
+			if ((element = 
+			     g_list_find_custom ((GList *)objects, NULL,
+						 (GCompareFunc)find_icon_factory)) != NULL)
+			{
+				gfactory = glade_widget_get_from_gobject (element->data);
+				property = glade_widget_get_property (gfactory, "sources");
+				glade_property_get (property, &icon_sources);
+
+				if (icon_sources &&
+				    (element = g_hash_table_lookup (icon_sources->sources, stock_id)))
+				{
+					source = element->data;
+					pixbuf = gtk_icon_source_get_pixbuf (source);
+					filename = g_object_get_data (G_OBJECT (pixbuf), 
+								      "GladeFileName");
+					if (filename)
+					{
+						tdata = g_new0 (TextData, 1);
+						tdata->widget     = widget;
+						tdata->text       = g_strdup (filename);
+						data->toolbuttons = g_list_prepend (data->toolbuttons, tdata);
+					}
+				}
+			}
+		}
+	}
+}
+
 
 /*****************************************
  *           Main entry point            *
@@ -548,6 +731,7 @@ glade_gtk_project_convert_finished (GladeProject *project,
 	convert_textviews_finished (project, data);
 	convert_tooltips_finished (project, data);
 	convert_combos_finished (project, data);
+	convert_toolbuttons_finished (project, data);
 
 	/* Once per conversion */
 	g_signal_handlers_disconnect_by_func (G_OBJECT (project),
@@ -566,6 +750,7 @@ glade_gtk_project_convert (GladeProject *project,
 	convert_textviews (project, new_format, data);
 	convert_tooltips (project, new_format, data);
 	convert_combos (project, new_format, data);
+	convert_toolbuttons (project, new_format, data);
 
 	/* Clean up after the new_format is in effect */
 	g_signal_connect (G_OBJECT (project), "convert-finished",

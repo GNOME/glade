@@ -2260,41 +2260,55 @@ glade_command_convert_cleanup_props (GList              *properties,
 }
 
 
+static gint
+find_format_only_object (GObject *object, gpointer fmtptr)
+{
+	GladeWidget *widget = glade_widget_get_from_gobject (object);
+	GladeProjectFormat fmt = GPOINTER_TO_INT (fmtptr);
+
+	if ((fmt == GLADE_PROJECT_FORMAT_GTKBUILDER &&
+	     GWA_LIBGLADE_ONLY (widget->adaptor)) ||
+	    /* If going in libglade format... */
+	    (fmt == GLADE_PROJECT_FORMAT_LIBGLADE &&
+	     /* ... and widget is unsupported by libglade */
+	     (GWA_LIBGLADE_UNSUPPORTED (widget->adaptor) ||
+	      /* ... and widget is a non GtkWidget object */
+	      !GTK_IS_WIDGET (widget->object) ||
+	      /* ... and its a non-window toplevel */
+	      (!widget->parent && !GTK_IS_WINDOW (widget->object)))))
+		return 0;
+
+	return -1;
+}
+
+
 static void
 glade_command_convert_cleanup (GladeProject       *project, 
 			       GladeProjectFormat  fmt)
 {
 	GladeWidget   *widget;
 	const GList   *objects, *list;
+	GList         *l;
 
+	/* List safely delete widgets */
+	while ((l = 
+		g_list_find_custom ((GList *)glade_project_get_objects (project), GINT_TO_POINTER (fmt),
+				    (GCompareFunc)find_project_only_object)) != NULL)
+	{
+		GList delete = { 0, };
+		delete.data = l->data;
+		glade_command_delete (&delete);
+	}
+
+	/* Deal with properties of remaining widgets */
 	objects = glade_project_get_objects (project);
-
 	for (list = objects; list; list = list->next)
 	{
 		widget = glade_widget_get_from_gobject (list->data);
-
-		/* If libglade-only widget going in builder format ... */
-		if ((fmt == GLADE_PROJECT_FORMAT_GTKBUILDER &&
-		     GWA_LIBGLADE_ONLY (widget->adaptor)) ||
-		    /* If going in libglade format... */
-		    (fmt == GLADE_PROJECT_FORMAT_LIBGLADE &&
-		     /* ... and widget is unsupported by libglade */
-		     (GWA_LIBGLADE_UNSUPPORTED (widget->adaptor) ||
-		      /* ... and widget is a non GtkWidget object */
-		      !GTK_IS_WIDGET (widget->object) ||
-		      /* ... and its a non-window toplevel */
-		      (!widget->parent && !GTK_IS_WINDOW (widget->object)))))
-		{
-			GList delete = { 0, };
-			delete.data = widget;
-			glade_command_delete (&delete);
-		}
-		else
-		{
-			glade_command_convert_cleanup_props (widget->properties, fmt);
-			glade_command_convert_cleanup_props (widget->packing_properties, fmt);
-		}
+		glade_command_convert_cleanup_props (widget->properties, fmt);
+		glade_command_convert_cleanup_props (widget->packing_properties, fmt);
 	}
+	g_list_free (objects);
 }
 
 
