@@ -662,6 +662,8 @@ embedded in another object</_tooltip>
       <write-widget-function>glade_gtk_button_write_widget</write-widget-function>
 
       <properties>
+	<property id="can-focus" save-always="True"/>
+	<property id="receives-default" save-always="True"/>
 	<property id="image" parentless-widget="True" create-type="GtkImage" 
 		  libglade-unsupported="True" custom-layout="True"/>
 	<property id="use-stock" visible="False" custom-layout="True"/>
@@ -673,18 +675,14 @@ embedded in another object</_tooltip>
 	  <spec>glade_standard_stock_spec</spec>
 	  <_tooltip>The stock item for this button</_tooltip>
 	</property>
-
         <property id="custom-child" save="False" custom-layout="True" default="False">
           <spec>glade_standard_boolean_spec</spec>
         </property>
-
 	<property id="image-position" weight="1.7" custom-layout="True"/>
-
 	<property id="response-id" _name="Response ID" default="0" common="False" ignore="True" save-always="True">
 	  <spec>glade_standard_int_spec</spec>
 	  <_tooltip>The response ID of this button in a dialog</_tooltip>
 	</property>
-
       	<property id="relief">
   	  <displayable-values>
 	    <value id="GTK_RELIEF_NORMAL" _name="Normal"/>
