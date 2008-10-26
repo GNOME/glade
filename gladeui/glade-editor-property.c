@@ -2537,9 +2537,14 @@ static gchar *
 glade_eprop_object_dialog_title (GladeEditorProperty *eprop)
 {
 	GladeWidgetAdaptor *adaptor;
-	const gchar        *format = 
-		GLADE_IS_PARAM_SPEC_OBJECTS (eprop->klass->pspec) ?
-		_("Choose %s(s) in this project") : _("Choose a %s in this project");
+	const gchar        *format;
+
+	if (eprop->klass->parentless_widget)
+		format = GLADE_IS_PARAM_SPEC_OBJECTS (eprop->klass->pspec) ?
+			_("Choose parentless %s(s) in this project") : _("Choose a parentless %s in this project");
+	else
+		format = GLADE_IS_PARAM_SPEC_OBJECTS (eprop->klass->pspec) ?
+			_("Choose %s(s) in this project") : _("Choose a %s in this project");
 
 	if (GLADE_IS_PARAM_SPEC_OBJECTS (eprop->klass->pspec))
 		return g_strdup_printf (format, g_type_name 
@@ -2576,7 +2581,9 @@ glade_eprop_object_show_dialog (GtkWidget           *dialog_button,
 	{
 		if (eprop->property->klass->create_type)
 			create_adaptor = glade_widget_adaptor_get_by_name (eprop->property->klass->create_type);
-		if (!create_adaptor)
+		if (!create_adaptor && 
+		    G_TYPE_IS_INSTANTIATABLE (eprop->klass->pspec->value_type) &&
+		    !G_TYPE_IS_ABSTRACT (eprop->klass->pspec->value_type))
 			create_adaptor = glade_widget_adaptor_get_by_type (eprop->klass->pspec->value_type);
 	}
 

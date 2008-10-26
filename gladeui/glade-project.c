@@ -1122,13 +1122,15 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 	project->priv->modified = FALSE;
 	project->priv->loading = FALSE;
 
-	/* Emit "parse-finished" signal */
-	g_signal_emit (project, glade_project_signals [PARSE_FINISHED], 0);
-	
 	/* Now we have to loop over all the object properties
 	 * and fix'em all ('cause they probably weren't found)
 	 */
 	glade_project_fix_object_props (project);
+
+
+	/* Emit "parse-finished" signal */
+	g_signal_emit (project, glade_project_signals [PARSE_FINISHED], 0);
+	
 
 	/* Update ui with versioning info
 	 */

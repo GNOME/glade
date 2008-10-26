@@ -19,8 +19,8 @@
  * Authors:
  *   Tristan Van Berkom <tvb@gnome.org>
  */
-#ifndef _GLADE_TEXT_EDITOR_H_
-#define _GLADE_TEXT_EDITOR_H_
+#ifndef _GLADE_BUTTON_EDITOR_H_
+#define _GLADE_BUTTON_EDITOR_H_
 
 #include <gtk/gtk.h>
 
@@ -31,7 +31,7 @@ G_BEGIN_DECLS
 #define GLADE_BUTTON_EDITOR_CLASS(klass)	    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_BUTTON_EDITOR, GladeButtonEditorClass))
 #define GLADE_IS_BUTTON_EDITOR(obj)	    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_BUTTON_EDITOR))
 #define GLADE_IS_BUTTON_EDITOR_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_BUTTON_EDITOR))
-#define GLADE_BUTTON_EDITOR_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_BUTTON_EDITOR, GladeButtonButtonClass))
+#define GLADE_BUTTON_EDITOR_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_BUTTON_EDITOR, GladeButtonEditorClass))
 
 typedef struct _GladeButtonEditor        GladeButtonEditor;
 typedef struct _GladeButtonEditorClass   GladeButtonEditorClass;

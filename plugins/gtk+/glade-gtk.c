@@ -32,6 +32,7 @@
 #include "glade-model-data.h"
 #include "glade-icon-sources.h"
 #include "glade-button-editor.h"
+#include "glade-tool-button-editor.h"
 
 #include <gladeui/glade-editor-property.h>
 #include <gladeui/glade-base-editor.h>
@@ -179,6 +180,7 @@ glade_gtk_gnome_ui_info_spec (void)
 				  glade_gtk_gnome_ui_info_get_type (),
 				  0, G_PARAM_READWRITE);
 }
+
 
 GType
 glade_gtk_image_type_get_type (void)
@@ -6699,7 +6701,6 @@ glade_gtk_toolbar_child_selected (GladeBaseEditor *editor,
 	if (GTK_IS_TOOL_BUTTON (child))
 		glade_base_editor_add_properties (editor, gchild, FALSE,
 						  "label", 
-						  "glade-type",
 						  "icon",
 						  "glade-stock",
 						  "icon-name",
@@ -6800,44 +6801,72 @@ glade_gtk_tool_item_post_create (GladeWidgetAdaptor *adaptor,
 }
 
 /* ----------------------------- GtkToolButton ------------------------------ */
+GladeEditable *
+glade_gtk_tool_button_create_editable  (GladeWidgetAdaptor  *adaptor,
+					GladeEditorPageType  type)
+{
+	GladeEditable *editable;
+
+	/* Get base editable */
+	editable = GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+
+	if (type == GLADE_PAGE_GENERAL)
+		return (GladeEditable *)glade_tool_button_editor_new (adaptor, editable);
+
+	return editable;
+}
+
+
 static void
-glade_gtk_tool_button_set_type (GObject *object, const GValue *value)
+glade_gtk_tool_button_set_image_mode (GObject *object, const GValue *value)
 {
 	GladeWidget *gbutton;
+	const gchar *insensitive_msg = _("Property disabled");
 	
 	g_return_if_fail (GTK_IS_TOOL_BUTTON (object));
 	gbutton = glade_widget_get_from_gobject (object);
+
+	glade_widget_property_set_sensitive (gbutton, "glade-stock", FALSE, insensitive_msg);
+	glade_widget_property_set_sensitive (gbutton, "icon-name", FALSE, insensitive_msg);
+	glade_widget_property_set_sensitive (gbutton, "icon", FALSE, insensitive_msg);
+	glade_widget_property_set_sensitive (gbutton, "icon-widget", FALSE, insensitive_msg);
 	
-	if (glade_util_object_is_loading (object)) return;
-	
-	glade_widget_property_set_sensitive (gbutton, "icon", FALSE,
-				_("This only applies with file type images"));
-	glade_widget_property_set_sensitive (gbutton, "glade-stock", FALSE,
-				_("This only applies with stock type images"));
-	glade_widget_property_set_sensitive (gbutton, "icon-name", FALSE,
-				_("This only applies to Icon Theme type images"));
-	
-	switch (g_value_get_enum (value))
+	switch (g_value_get_int (value))
 	{
-		case GLADEGTK_IMAGE_FILENAME:
-			glade_widget_property_set_sensitive (gbutton, "icon",
-							     TRUE, NULL);
-			glade_widget_property_set (gbutton, "glade-stock", NULL);
-			glade_widget_property_set (gbutton, "icon-name", NULL);
+	case GLADE_TB_MODE_STOCK:
+		glade_widget_property_set_sensitive (gbutton, "glade-stock", TRUE, NULL);
 		break;
-		case GLADEGTK_IMAGE_STOCK:
-			glade_widget_property_set_sensitive (gbutton, "glade-stock",
-							     TRUE, NULL);
-			glade_widget_property_set (gbutton, "icon", NULL);
-			glade_widget_property_set (gbutton, "icon-name", NULL);
+	case GLADE_TB_MODE_ICON:
+		glade_widget_property_set_sensitive (gbutton, "icon-name", TRUE, NULL);
 		break;
-		case GLADEGTK_IMAGE_ICONTHEME:
-			glade_widget_property_set_sensitive (gbutton, "icon-name",
-							     TRUE, NULL);
-			glade_widget_property_set (gbutton, "icon", NULL);
-			glade_widget_property_set (gbutton, "glade-stock", NULL);
+	case GLADE_TB_MODE_FILENAME:
+		glade_widget_property_set_sensitive (gbutton, "icon", TRUE, NULL);
+		break;
+	case GLADE_TB_MODE_CUSTOM:
+		glade_widget_property_set_sensitive (gbutton, "icon-widget", TRUE, NULL);
+		break;
+	default:
 		break;
 	}
+}
+
+
+static void
+glade_gtk_tool_button_set_custom_label (GObject *object, const GValue *value)
+{
+	GladeWidget *gbutton;
+	const gchar *insensitive_msg = _("Property disabled");
+	
+	g_return_if_fail (GTK_IS_TOOL_BUTTON (object));
+	gbutton = glade_widget_get_from_gobject (object);
+
+	glade_widget_property_set_sensitive (gbutton, "label", FALSE, insensitive_msg);
+	glade_widget_property_set_sensitive (gbutton, "label-widget", FALSE, insensitive_msg);
+
+	if (g_value_get_boolean (value))
+		glade_widget_property_set_sensitive (gbutton, "label-widget", TRUE, NULL);
+	else
+		glade_widget_property_set_sensitive (gbutton, "label", TRUE, NULL);
 }
 
 static void
@@ -6893,6 +6922,7 @@ glade_gtk_tool_button_set_glade_stock (GObject *object, const GValue *value)
 		glade_widget_property_set (gbutton, "stock-id", NULL);
 }
 
+/* legacy libglade property */
 static void
 glade_gtk_tool_button_set_icon (GObject *object, const GValue *value)
 {
@@ -6907,26 +6937,19 @@ glade_gtk_tool_button_set_icon (GObject *object, const GValue *value)
 	{
 		image = gtk_image_new_from_pixbuf (GDK_PIXBUF (pixbuf));
 		gtk_widget_show (image);
-		glade_widget_property_set (gbutton, "glade-type", GLADEGTK_IMAGE_FILENAME);
 	}
-	
 	gtk_tool_button_set_icon_widget (GTK_TOOL_BUTTON (object), image);
 }
 
 static void
 glade_gtk_tool_button_set_icon_name (GObject *object, const GValue *value)
 {
-	GladeWidget *gbutton;
 	const gchar *name;
 	
 	g_return_if_fail (GTK_IS_TOOL_BUTTON (object));
 
-	if ((name = g_value_get_string (value)))
-	{
-		gbutton = glade_widget_get_from_gobject (object);
-		glade_widget_property_set (gbutton, "glade-type", GLADEGTK_IMAGE_ICONTHEME);
-	}
-	
+	name = g_value_get_string (value);
+
 	if (name && strlen (name) == 0) name = NULL;
 		
 	gtk_tool_button_set_icon_name (GTK_TOOL_BUTTON (object), name);
@@ -6938,8 +6961,8 @@ glade_gtk_tool_button_set_property (GladeWidgetAdaptor *adaptor,
 				    const gchar        *id,
 				    const GValue       *value)
 {
-	if (!strcmp (id, "glade-type"))
-		glade_gtk_tool_button_set_type (object, value);
+	if (!strcmp (id, "image-mode"))
+		glade_gtk_tool_button_set_image_mode (object, value);
 	else if (!strcmp (id, "glade-stock"))
 		glade_gtk_tool_button_set_glade_stock (object, value);
 	else if (!strcmp (id, "icon-name"))
@@ -6950,10 +6973,69 @@ glade_gtk_tool_button_set_property (GladeWidgetAdaptor *adaptor,
 		glade_gtk_tool_button_set_stock_id (object, value);
 	else if (!strcmp (id, "label"))
 		glade_gtk_tool_button_set_label (object, value);
+	else if (!strcmp (id, "custom-label"))
+		glade_gtk_tool_button_set_custom_label (object, value);
 	else
 		GWA_GET_CLASS (GTK_TYPE_TOOL_ITEM)->set_property (adaptor,
 								  object,
 								  id, value);
+}
+
+static void
+glade_gtk_tool_button_parse_finished (GladeProject *project, 
+				      GladeWidget  *widget)
+{
+	gchar     *stock_str = NULL, *icon_name = NULL;
+	gint       stock_id = 0;
+	GdkPixbuf *pixbuf = NULL;
+	GtkWidget *label_widget = NULL, *image_widget = NULL;
+
+	glade_widget_property_get (widget, "stock-id", &stock_str);
+	glade_widget_property_get (widget, "icon-name", &icon_name);
+	glade_widget_property_get (widget, "icon", &pixbuf);
+	glade_widget_property_get (widget, "icon-widget", &image_widget);
+	glade_widget_property_get (widget, "label-widget", &label_widget);
+
+	if (label_widget)
+		glade_widget_property_set (widget, "custom-label", TRUE);
+	else
+		glade_widget_property_set (widget, "custom-label", FALSE);
+	
+	if (image_widget)
+		glade_widget_property_set (widget, "image-mode", GLADE_TB_MODE_CUSTOM);
+	else if (pixbuf)
+		glade_widget_property_set (widget, "image-mode", GLADE_TB_MODE_FILENAME);
+	else if (icon_name)
+		glade_widget_property_set (widget, "image-mode", GLADE_TB_MODE_ICON);
+	else if (stock_str)
+	{
+		/* Update the stock property */
+		stock_id = glade_utils_enum_value_from_string (GLADE_TYPE_STOCK_IMAGE, stock_str);
+		if (stock_id < 0)
+			stock_id = 0;
+		glade_widget_property_set (widget, "glade-stock", stock_id);
+
+		glade_widget_property_set (widget, "image-mode", GLADE_TB_MODE_STOCK);
+	}
+}
+
+void
+glade_gtk_tool_button_read_widget (GladeWidgetAdaptor *adaptor,
+				   GladeWidget        *widget,
+				   GladeXmlNode       *node)
+{
+	if (!glade_xml_node_verify 
+	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+		return;
+
+	/* First chain up and read in all the normal properties.. */
+        GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
+
+	/* Run this after the load so that icon-widget is resolved. */
+	g_signal_connect (glade_widget_get_project (widget),
+			  "parse-finished",
+			  G_CALLBACK (glade_gtk_tool_button_parse_finished),
+			  widget);
 }
 
 /* ----------------------------- GtkLabel ------------------------------ */

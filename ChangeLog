@@ -1,3 +1,17 @@
+2008-10-26  Tristan Van Berkom <tvb@gnome.org>
+
+	* plugins/gtk+/Makefile.am, plugins/gtk+/glade-tool-button-editor.[ch]:
+	Added GtkToolButtonEditor editable implementation.
+
+	* plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-gtk.c: Reimplemented toolbuttons
+	from ground up.
+
+	* gladeui/glade-editor-property.c: object dialog now doesnt do "new" for unmentioned
+	abstract or uninstantiatable types, also enhanced dialog title.
+
+	* gladeui/glade-project.c: Moved "parse-finished" emission to /after/ resolving
+	object properties (doh !).
+
 2008-10-25  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-property-class.c: Fixed glade_property_class_make_adjustment()

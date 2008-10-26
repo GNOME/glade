@@ -517,26 +517,33 @@ embedded in another object</_tooltip>
 	
 
     <glade-widget-class name="GtkToolButton" generic-name="toolbutton" _title="Tool Button">
-
+      <create-editable-function>glade_gtk_tool_button_create_editable</create-editable-function>
       <set-property-function>glade_gtk_tool_button_set_property</set-property-function>
+      <read-widget-function>glade_gtk_tool_button_read_widget</read-widget-function>
       <properties>
-        <property id="icon-widget" parentless-widget="True" libglade-unsupported="True"/>
-	<property id="label-widget" parentless-widget="True" libglade-unsupported="True"/>
-        <property id="glade-type" _name="Image Type" save="False">
-	  <spec>glade_gtk_image_type_spec</spec>
-           <displayable-values>
-             <value id="GLADEGTK_IMAGE_FILENAME" _name="Filename"/>
-             <value id="GLADEGTK_IMAGE_STOCK" _name="Stock"/>
-             <value id="GLADEGTK_IMAGE_ICONTHEME" _name="Icon Theme"/>
-           </displayable-values>
-	</property>
-	<property id="glade-stock" _name="Stock Image" save="False">
+	<!-- Virtual label type property -->
+        <property id="custom-label" visible="False" save="False">
+	  <spec>glade_standard_boolean_spec</spec>
+        </property>
+	<!-- Virtual image edit mode property -->
+        <property id="image-mode" visible="False" save="False">
+	  <spec>glade_standard_int_spec</spec>
+        </property>
+
+	<!-- Virtual stock comboentry property -->
+	<property id="stock-id" visible="False"/>
+	<property id="glade-stock" _name="Stock Image" save="False" custom-layout="True">
 	  <spec>glade_standard_stock_image_spec</spec>
 	</property>
-        <property id="label" translatable="True"/>
-	<property id="icon" _name="File Name">
+        <property id="label" translatable="True" default="toolbutton" custom-layout="True"/>
+	<property id="label-widget" parentless-widget="True" libglade-unsupported="True" 
+		  create-type="GtkLabel" custom-layout="True"/>
+        <property id="icon-name" themed-icon="True" custom-layout="True"/>
+	<property id="icon" libglade-only="True" custom-layout="True">
 	  <spec>glade_standard_pixbuf_spec</spec>
 	</property>
+        <property id="icon-widget" parentless-widget="True" libglade-unsupported="True" 
+		  create-type="GtkImage" custom-layout="True"/>
       </properties>
     </glade-widget-class>
     
