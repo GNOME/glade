@@ -994,8 +994,6 @@ glade_command_add (GList            *widgets,
 			cdata->parent = glade_placeholder_get_parent (placeholder);
 		else if (GTK_IS_WINDOW (widget->object) == FALSE)
 			cdata->parent = parent;
-		if (cdata->parent == NULL && GTK_IS_WINDOW (widget->object) == FALSE)
-			g_message ("Parentless non GtkWindow widget in Add");
 
 		/* Placeholder */
 		if (placeholder != NULL && g_list_length (widgets) == 1)
@@ -2261,7 +2259,7 @@ glade_command_convert_cleanup_props (GList              *properties,
 
 
 static gint
-find_format_only_object (GObject *object, gpointer fmtptr)
+find_format_rejected_object (GObject *object, gpointer fmtptr)
 {
 	GladeWidget *widget = glade_widget_get_from_gobject (object);
 	GladeProjectFormat fmt = GPOINTER_TO_INT (fmtptr);
@@ -2275,7 +2273,7 @@ find_format_only_object (GObject *object, gpointer fmtptr)
 	      /* ... and widget is a non GtkWidget object */
 	      !GTK_IS_WIDGET (widget->object) ||
 	      /* ... and its a non-window toplevel */
-	      (!widget->parent && !GTK_IS_WINDOW (widget->object)))))
+	      (!widget->parent && !GTK_IS_WINDOW (widget->object) && !widget->internal))))
 		return 0;
 
 	return -1;
@@ -2291,12 +2289,12 @@ glade_command_convert_cleanup (GladeProject       *project,
 	GList         *l;
 
 	/* List safely delete widgets */
-	while ((l = 
-		g_list_find_custom ((GList *)glade_project_get_objects (project), GINT_TO_POINTER (fmt),
-				    (GCompareFunc)find_project_only_object)) != NULL)
+	while ((l = g_list_find_custom ((GList *)glade_project_get_objects (project), GINT_TO_POINTER (fmt),
+					(GCompareFunc)find_format_rejected_object)) != NULL)
 	{
 		GList delete = { 0, };
-		delete.data = l->data;
+		widget = glade_widget_get_from_gobject (l->data);
+		delete.data = widget;
 		glade_command_delete (&delete);
 	}
 
@@ -2308,7 +2306,6 @@ glade_command_convert_cleanup (GladeProject       *project,
 		glade_command_convert_cleanup_props (widget->properties, fmt);
 		glade_command_convert_cleanup_props (widget->packing_properties, fmt);
 	}
-	g_list_free (objects);
 }
 
 
