@@ -194,23 +194,11 @@ table_attach (GtkWidget *table,
 			  3, 1);
 }
 
-
 static void
-stock_toggled (GtkWidget        *widget,
-	       GladeImageEditor *image_editor)
+set_stock_mode (GladeImageEditor *image_editor)
 {
 	GladeProperty     *property;
 	GValue             value = { 0, };
-
-	if (image_editor->loading || !image_editor->loaded_widget)
-		return;
-
-	if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (image_editor->stock_radio)))
-		return;
-
-	image_editor->modifying = TRUE;
-
-	glade_command_push_group (_("Setting %s to use an image from stock"), image_editor->loaded_widget->name);
 
 	property = glade_widget_get_property (image_editor->loaded_widget, "icon-name");
 	glade_command_set_property (property, NULL);
@@ -224,7 +212,51 @@ stock_toggled (GtkWidget        *widget,
 
 	property = glade_widget_get_property (image_editor->loaded_widget, "image-mode");
 	glade_command_set_property (property, GLADE_IMAGE_MODE_STOCK);
+}
 
+static void
+set_icon_mode (GladeImageEditor *image_editor)
+{
+	GladeProperty     *property;
+
+	property = glade_widget_get_property (image_editor->loaded_widget, "stock");
+	glade_command_set_property (property, NULL);
+	property = glade_widget_get_property (image_editor->loaded_widget, "pixbuf");
+	glade_command_set_property (property, NULL);
+	property = glade_widget_get_property (image_editor->loaded_widget, "image-mode");
+	glade_command_set_property (property, GLADE_IMAGE_MODE_ICON);
+}
+
+
+
+static void
+set_file_mode (GladeImageEditor *image_editor)
+{
+	GladeProperty     *property;
+
+	property = glade_widget_get_property (image_editor->loaded_widget, "stock");
+	glade_command_set_property (property, NULL);
+	property = glade_widget_get_property (image_editor->loaded_widget, "icon-name");
+	glade_command_set_property (property, NULL);
+	property = glade_widget_get_property (image_editor->loaded_widget, "image-mode");
+	glade_command_set_property (property, GLADE_IMAGE_MODE_FILENAME);
+}
+
+static void
+stock_toggled (GtkWidget        *widget,
+	       GladeImageEditor *image_editor)
+{
+
+	if (image_editor->loading || !image_editor->loaded_widget)
+		return;
+
+	if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (image_editor->stock_radio)))
+		return;
+
+	image_editor->modifying = TRUE;
+
+	glade_command_push_group (_("Setting %s to use an image from stock"), image_editor->loaded_widget->name);
+	set_stock_mode (image_editor);
 	glade_command_pop_group ();
 
 	image_editor->modifying = FALSE;
@@ -239,8 +271,6 @@ static void
 icon_toggled (GtkWidget        *widget,
 	      GladeImageEditor *image_editor)
 {
-	GladeProperty     *property;
-
 	if (image_editor->loading || !image_editor->loaded_widget)
 		return;
 
@@ -250,14 +280,7 @@ icon_toggled (GtkWidget        *widget,
 	image_editor->modifying = TRUE;
 
 	glade_command_push_group (_("Setting %s to use an image from the icon theme"), image_editor->loaded_widget->name);
-
-	property = glade_widget_get_property (image_editor->loaded_widget, "stock");
-	glade_command_set_property (property, NULL);
-	property = glade_widget_get_property (image_editor->loaded_widget, "pixbuf");
-	glade_command_set_property (property, NULL);
-	property = glade_widget_get_property (image_editor->loaded_widget, "image-mode");
-	glade_command_set_property (property, GLADE_IMAGE_MODE_ICON);
-
+	set_icon_mode (image_editor);
 	glade_command_pop_group ();
 
 	image_editor->modifying = FALSE;
@@ -271,8 +294,6 @@ static void
 file_toggled (GtkWidget        *widget,
 	      GladeImageEditor *image_editor)
 {
-	GladeProperty     *property;
-
 	if (image_editor->loading || !image_editor->loaded_widget)
 		return;
 
@@ -281,15 +302,8 @@ file_toggled (GtkWidget        *widget,
 
 	image_editor->modifying = TRUE;
 
-	glade_command_push_group (_("Setting %s to use an image from the icon theme"), image_editor->loaded_widget->name);
-
-	property = glade_widget_get_property (image_editor->loaded_widget, "stock");
-	glade_command_set_property (property, NULL);
-	property = glade_widget_get_property (image_editor->loaded_widget, "icon-name");
-	glade_command_set_property (property, NULL);
-	property = glade_widget_get_property (image_editor->loaded_widget, "image-mode");
-	glade_command_set_property (property, GLADE_IMAGE_MODE_FILENAME);
-
+	glade_command_push_group (_("Setting %s to use an image from filename"), image_editor->loaded_widget->name);
+	set_file_mode (image_editor);
 	glade_command_pop_group ();
 
 	image_editor->modifying = FALSE;
@@ -318,7 +332,7 @@ glade_image_editor_new (GladeWidgetAdaptor *adaptor,
 	/* Pack the parent on top... */
 	gtk_box_pack_start (GTK_BOX (image_editor), GTK_WIDGET (embed), FALSE, FALSE, 0);
 
-	/* Image area frame... */
+	/* Image content frame... */
 	str = g_strdup_printf ("<b>%s</b>", _("Edit Image"));
 	label = gtk_label_new (str);
 	gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
@@ -359,6 +373,35 @@ glade_image_editor_new (GladeWidgetAdaptor *adaptor,
 	gtk_container_add (GTK_CONTAINER (image_editor->file_radio), eprop->item_label);
 	table_attach (table, image_editor->file_radio, 0, 2);
 	table_attach (table, GTK_WIDGET (eprop), 1, 2);
+	image_editor->properties = g_list_prepend (image_editor->properties, eprop);
+
+	/* Image size frame... */
+	str = g_strdup_printf ("<b>%s</b>", _("Set Image Size"));
+	label = gtk_label_new (str);
+	gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
+	g_free (str);
+	frame = gtk_frame_new (NULL);
+	gtk_frame_set_label_widget (GTK_FRAME (frame), label);
+	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
+	gtk_box_pack_start (GTK_BOX (image_editor), frame, FALSE, FALSE, 8);
+
+	alignment = gtk_alignment_new (0.5F, 0.5F, 1.0F, 1.0F);
+	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 6, 0, 12, 0);
+	gtk_container_add (GTK_CONTAINER (frame), alignment);
+
+	table = gtk_table_new (0, 0, FALSE);
+	gtk_container_add (GTK_CONTAINER (alignment), table);
+
+	/* Icon Size... */
+	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "icon-size", FALSE, TRUE);
+	table_attach (table, eprop->item_label, 0, 0);
+	table_attach (table, GTK_WIDGET (eprop), 1, 0);
+	image_editor->properties = g_list_prepend (image_editor->properties, eprop);
+
+	/* Pixel Size... */
+	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "pixel-size", FALSE, TRUE);
+	table_attach (table, eprop->item_label, 0, 1);
+	table_attach (table, GTK_WIDGET (eprop), 1, 1);
 	image_editor->properties = g_list_prepend (image_editor->properties, eprop);
 
 	/* Connect radio button signals... */

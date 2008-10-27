@@ -892,10 +892,11 @@ embedded in another object</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkImage" generic-name="image" _title="Image">
-      <post-create-function>glade_gtk_image_post_create</post-create-function>
       <set-property-function>glade_gtk_image_set_property</set-property-function>
+      <get-property-function>glade_gtk_image_get_property</get-property-function>
       <create-editable-function>glade_gtk_image_create_editable</create-editable-function>
       <read-widget-function>glade_gtk_image_read_widget</read-widget-function>
+      <write-widget-function>glade_gtk_image_write_widget</write-widget-function>
       <properties>
 	<property id="image-mode" save="False" visible="False">
 	  <spec>glade_standard_int_spec</spec>
@@ -903,8 +904,14 @@ embedded in another object</_tooltip>
 	<property id="stock" stock-icon="True" custom-layout="True" default="gtk-missing-image"/>
 	<property id="icon-name" _name="Icon Name" themed-icon="True" custom-layout="True" />
 	<property id="pixbuf" _name="File Name" custom-layout="True"/>
+	<property id="pixel-size" custom-layout="True"/>
+	<!-- We have to save/load icon-size as int, and fake the enum -->
+	<property id="icon-size" custom-layout="True" save="False">
+	  <spec>gladegtk_icon_size_spec</spec>
+	</property>
 	<property id="pixbuf-animation" disabled="True"/>
 	<property id="file" disabled="True"/>
+	<property id="gicon" disabled="True"/>
 	<property id="pixmap" disabled="True"/>
 	<property id="image" disabled="True"/>
 	<property id="mask" disabled="True"/>

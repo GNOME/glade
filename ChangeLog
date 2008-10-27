@@ -21,7 +21,12 @@
 	* gladeui/glade-widget-adaptor.c: No more stock enum eprops
 
 	* gladeui/glade-editor-property.c: Handle string types with "stock" or "stock-icon"
-	
+
+	* plugins/gtk+/glade-image-editor.[ch], plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-gtk.c,
+	gladeui/glade-property-class.c: Override type of GtkImage::icon-size to use real
+	GTK_TYPE_ICON_SIZE for editing purposes (needed to fix the core a bit for this), also
+	improved image editor to keep sizes contextual to image edit mode.
+
 2008-10-26  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/Makefile.am, plugins/gtk+/glade-tool-button-editor.[ch]:

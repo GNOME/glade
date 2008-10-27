@@ -1301,7 +1301,7 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 		return TRUE;
 	}
 
-	/* ...the spec... */
+	/* ...the spec... we could be introducing a new one or even overriding an existing spec... */
 	buf = glade_xml_get_value_string (node, GLADE_TAG_SPEC);
 	if (buf)
 	{
@@ -1313,6 +1313,9 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 			 */
 			klass->pspec->owner_type = object_type;
 
+			/* We overrode the pspec, now it *is* a virtual property. */
+			klass->virt              = TRUE;
+
 			if (klass->tooltip) g_free (klass->tooltip);
 			if (klass->name)    g_free (klass->name);
 			
@@ -1322,15 +1325,17 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 			if (klass->pspec->flags & G_PARAM_CONSTRUCT_ONLY)
 				klass->construct_only = TRUE;
 
+			if (klass->orig_def) {
+				g_value_unset (klass->orig_def);
+				g_free (klass->orig_def);
+			}
+			klass->orig_def = glade_property_class_get_default_from_spec (klass->pspec);
+
 			if (klass->def) {
 				g_value_unset (klass->def);
 				g_free (klass->def);
 			}
-			klass->def = glade_property_class_get_default_from_spec (klass->pspec);
-			
-			if (klass->orig_def == NULL)
-				klass->orig_def =
-					glade_property_class_get_default_from_spec (klass->pspec);
+			klass->def = glade_property_class_get_default_from_spec (klass->pspec);			
 
 		}
 

@@ -54,6 +54,9 @@ struct _GladeImageEditor
 	GtkWidget *icon_radio;     /* Create the image with the icon theme */
 	GtkWidget *file_radio;     /* Create the image from filename (libglade only) */
 
+	GtkWidget *size_radio;     /* Set size with GtkIconSize */
+	GtkWidget *pixels_radio;   /* Set size in Pixel value */
+
 	GList *properties;         /* A list of eprops to update at load() time */
 
 	gboolean loading;          /* Loading flag for loading widgets in the editor */

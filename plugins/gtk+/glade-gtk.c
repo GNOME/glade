@@ -182,31 +182,15 @@ glade_gtk_gnome_ui_info_spec (void)
 				  0, G_PARAM_READWRITE);
 }
 
-
-GType
-glade_gtk_image_type_get_type (void)
-{
-	static GType etype = 0;
-	if (etype == 0) {
-		static GEnumValue values[] = {
-			{ GLADEGTK_IMAGE_FILENAME,  "GLADEGTK_IMAGE_FILENAME",   "glade-gtk-image-filename" },
-			{ GLADEGTK_IMAGE_STOCK,     "GLADEGTK_IMAGE_STOCK",      "glade-gtk-image-stock" },
-			{ GLADEGTK_IMAGE_ICONTHEME, "GLADEGTK_IMAGE_ICONTHEME", "glade-gtk-image-icontheme" },
-			{ 0, NULL, NULL }
-		};
-
-		etype = g_enum_register_static ("GladeGtkImageType", values);
-	}
-	return etype;
-}
-
+/* Fake GtkImage::icon-size since its an int pspec in the image */
 GParamSpec *
-glade_gtk_image_type_spec (void)
+gladegtk_icon_size_spec (void)
 {
-	return g_param_spec_enum ("type", _("Method"), 
-				  _("The method to use to edit this image"),
-				  glade_gtk_image_type_get_type (),
-				  1, G_PARAM_READWRITE);
+	return g_param_spec_enum ("icon-size", _("Icon Size"), 
+				  _("Symbolic size to use for stock icon, icon set or named icon"),
+				  GTK_TYPE_ICON_SIZE,
+				  GTK_ICON_SIZE_BUTTON, 
+				  G_PARAM_READWRITE);
 }
 
 /* This function does absolutely nothing
@@ -5228,116 +5212,94 @@ glade_gtk_button_write_widget (GladeWidgetAdaptor *adaptor,
 			       GladeXmlContext    *context,
 			       GladeXmlNode       *node)
 {
-	GladeXmlNode  *prop_node;
 	GladeProperty *label_prop;
-	gboolean  use_stock;
-	gchar    *label = NULL;
-	gint      stock_id = 0;
+	gboolean       use_stock;
+	gchar         *stock = NULL;
 
 	if (!glade_xml_node_verify
 	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
 		return;
 
-	/* Start out by writing the use-stock prop so it stays at the top... */
+	/* First chain up and write all the normal properties (including "use-stock")... */
+        GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
+
+	label_prop = glade_widget_get_property (widget, "label");
+
+	/* Make a copy of the GladeProperty, override its value if use-stock is TRUE */
+	label_prop = glade_property_dup (label_prop, widget);
 	glade_widget_property_get (widget, "use-stock", &use_stock);
 	if (use_stock)
 	{
-		GEnumClass    *eclass;
-		GEnumValue    *eval;
-
-		glade_widget_property_get (widget, "stock", &stock_id);
-
-		eclass = g_type_class_ref (GLADE_TYPE_STOCK);
-		if (stock_id > 0 && 
-		    (eval = g_enum_get_value (eclass, stock_id)) != NULL)
-			label = g_strdup (eval->value_nick);
-		g_type_class_unref (eclass);
-
-		if (label)
-		{
-			/* Good thing stock items dont have translatable stock ids ! :D */
-			prop_node = glade_xml_node_new (context, GLADE_XML_TAG_PROPERTY);
-			glade_xml_node_append_child (node, prop_node);
-			
-			/* Name and value */
-			glade_xml_node_set_property_string (prop_node, GLADE_XML_TAG_NAME, "label");
-			glade_xml_set_content (prop_node, label);
-			
-			g_free (label);
-		}
+		glade_widget_property_get (widget, "stock", &stock);
+		glade_property_set (label_prop, stock);
 	}
-	else
-	{
-		label_prop = glade_widget_get_property (widget, "label");
-		glade_property_write (label_prop, context, node);
-	}
+	glade_property_write (label_prop, context, node);
 
-	/* First chain up and read in all the normal properties.. */
-        GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
-
+	g_print ("Finalizing property, ref_count %d\n", G_OBJECT (label_prop)->ref_count);
+	g_object_unref (G_OBJECT (label_prop));
 }
 
 
 /* ----------------------------- GtkImage ------------------------------ */
-static void 
-glade_gtk_image_pixel_size_changed (GladeProperty *property,
-				    GValue        *old_value,
-				    GValue        *value,
-				    GladeWidget   *gimage)
+void
+glade_gtk_image_read_widget (GladeWidgetAdaptor *adaptor,
+			     GladeWidget        *widget,
+			     GladeXmlNode       *node)
 {
-	gint size = g_value_get_int (value);
-	glade_widget_property_set_sensitive 
-		(gimage, "icon-size", size < 0 ? TRUE : FALSE,
-		 _("Pixel Size takes precedence over Icon Size; "
-		   "if you want to use Icon Size, set Pixel size to -1"));
-}
-
-static void
-glade_gtk_image_parse_finished (GladeProject *project, GladeWidget *gimage)
-{
-	GladeProperty *property;
-	gint size;
-	
-	if (glade_widget_property_original_default (gimage, "icon-name") == FALSE)
-		glade_widget_property_set (gimage, "glade-type", GLADEGTK_IMAGE_ICONTHEME);
-	else if (glade_widget_property_original_default (gimage, "stock") == FALSE)
-		glade_widget_property_set (gimage, "glade-type", GLADEGTK_IMAGE_STOCK);
-	else if (glade_widget_property_original_default (gimage, "pixbuf") == FALSE)
-		glade_widget_property_set (gimage, "glade-type", GLADEGTK_IMAGE_FILENAME);
-	else 
-		glade_widget_property_reset (gimage, "glade-type");
-
-	if ((property = glade_widget_get_property (gimage, "pixel-size")) == NULL)
+	if (!glade_xml_node_verify 
+	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
 		return;
 
-	glade_widget_property_get (gimage, "pixel-size", &size);
+	/* First chain up and read in all the normal properties.. */
+        GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
 	
-	if (size >= 0)
-		glade_widget_property_set_sensitive (gimage, "icon-size", FALSE,
-				 _("Pixel Size takes precedence over Icon size"));
-	
-	g_signal_connect (G_OBJECT (property), "value-changed", 
-			  G_CALLBACK (glade_gtk_image_pixel_size_changed),
-			  gimage);
+	if (glade_widget_property_original_default (widget, "icon-name") == FALSE)
+		glade_widget_property_set (widget, "image-mode", GLADE_IMAGE_MODE_ICON);
+	else if (glade_widget_property_original_default (widget, "stock") == FALSE)
+		glade_widget_property_set (widget, "image-mode", GLADE_IMAGE_MODE_STOCK);
+	else if (glade_widget_property_original_default (widget, "pixbuf") == FALSE)
+		glade_widget_property_set (widget, "image-mode", GLADE_IMAGE_MODE_FILENAME);
+	else 
+		glade_widget_property_reset (widget, "image-mode");
 }
+
 
 void
-glade_gtk_image_post_create (GladeWidgetAdaptor  *adaptor,
-			     GObject             *object, 
-			     GladeCreateReason    reason)
+glade_gtk_image_write_widget (GladeWidgetAdaptor *adaptor,
+			      GladeWidget        *widget,
+			      GladeXmlContext    *context,
+			      GladeXmlNode       *node)
 {
-	GladeWidget *gimage;
-	
-	if (reason == GLADE_CREATE_LOAD)
-	{
-		gimage = glade_widget_get_from_gobject (object);
+	GladeXmlNode  *prop_node;
+	GladeProperty *size_prop;
+	GtkIconSize    icon_size;
+	gchar         *value;
 
-		g_signal_connect (glade_widget_get_project (gimage),
-				  "parse-finished",
-				  G_CALLBACK (glade_gtk_image_parse_finished),
-				  gimage);
+	if (!glade_xml_node_verify
+	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+		return;
+
+	/* First chain up and write all the normal properties (including "use-stock")... */
+        GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
+
+	/* We have to save icon-size as an integer, the core will take care of 
+	 * loading the int value though.
+	 */
+	size_prop = glade_widget_get_property (widget, "icon-size");
+	if (!glade_property_original_default (size_prop))
+	{
+		prop_node = glade_xml_node_new (context, GLADE_TAG_PROPERTY);
+		glade_xml_node_append_child (node, prop_node);
+
+		glade_xml_node_set_property_string (prop_node, GLADE_TAG_NAME, size_prop->klass->id);
+
+		glade_property_get (size_prop, &icon_size);
+		value = g_strdup_printf ("%d", icon_size);
+		glade_xml_set_content (prop_node, value);
+		g_free (value);
 	}
 }
+
 
 static void
 glade_gtk_image_set_image_mode (GObject *object, const GValue *value)
@@ -5353,15 +5315,21 @@ glade_gtk_image_set_image_mode (GObject *object, const GValue *value)
 	glade_widget_property_set_sensitive (gwidget, "stock", FALSE, insensitive_msg);
 	glade_widget_property_set_sensitive (gwidget, "icon-name", FALSE, insensitive_msg);
 	glade_widget_property_set_sensitive (gwidget, "pixbuf", FALSE, insensitive_msg);
+	glade_widget_property_set_sensitive (gwidget, "icon-size", FALSE, 
+					     _("This property only applies to stock images"));
+	glade_widget_property_set_sensitive (gwidget, "pixel-size", FALSE, 
+					     _("This property only applies to named icons"));
 
 	switch ((type = g_value_get_int (value)))
 	{
 	case GLADE_IMAGE_MODE_STOCK:
 		glade_widget_property_set_sensitive (gwidget, "stock", TRUE, NULL);
+		glade_widget_property_set_sensitive (gwidget, "icon-size", TRUE, NULL);
 		break;
 		
 	case GLADE_IMAGE_MODE_ICON:
 		glade_widget_property_set_sensitive (gwidget, "icon-name", TRUE, NULL);
+		glade_widget_property_set_sensitive (gwidget, "pixel-size", TRUE, NULL);
 		break;
 		
 	case GLADE_IMAGE_MODE_FILENAME:
@@ -5372,6 +5340,26 @@ glade_gtk_image_set_image_mode (GObject *object, const GValue *value)
 }
 
 void
+glade_gtk_image_get_property (GladeWidgetAdaptor *adaptor,
+			      GObject            *object, 
+			      const gchar        *id,
+			      GValue             *value)
+{
+	if (!strcmp (id, "icon-size"))
+	{
+		/* Make the int an enum... */
+		GValue int_value = { 0, };
+		g_value_init (&int_value, G_TYPE_INT);
+		GWA_GET_CLASS (GTK_TYPE_WIDGET)->get_property (adaptor, object, id, &int_value);
+		g_value_set_enum (value, g_value_get_int (&int_value));
+		g_value_unset (&int_value);
+	}
+	else
+		GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object,
+							       id, value);
+}
+
+void
 glade_gtk_image_set_property (GladeWidgetAdaptor *adaptor,
 			      GObject            *object, 
 			      const gchar        *id,
@@ -5379,10 +5367,20 @@ glade_gtk_image_set_property (GladeWidgetAdaptor *adaptor,
 {
 	if (!strcmp (id, "image-mode"))
 		glade_gtk_image_set_image_mode (object, value);
+	else if (!strcmp (id, "icon-size"))
+	{
+		/* Make the enum an int... */
+		GValue int_value = { 0, };
+		g_value_init (&int_value, G_TYPE_INT);
+		g_value_set_int (&int_value, g_value_get_enum (value));
+		GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, &int_value);
+		g_value_unset (&int_value);
+	}
 	else
 		GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object,
 							       id, value);
 }
+
 
 GladeEditable *
 glade_gtk_image_create_editable (GladeWidgetAdaptor  *adaptor,
