@@ -65,6 +65,24 @@ glade_register_displayable_value (GType          type,
 	gpointer  klass;
 	GList    *values;
 
+	g_return_if_fail (value && value[0]);
+	g_return_if_fail (domain && domain[0]);
+	g_return_if_fail (string && string[0]);
+
+	glade_register_translated_value (type, value, dgettext (domain, string));
+}
+
+void
+glade_register_translated_value (GType          type, 
+				 const gchar   *value, 
+				 const gchar   *string)
+{
+	ValueTab *tab;
+	gpointer  klass;
+	GList    *values;
+
+	g_return_if_fail (value && value[0]);
+	g_return_if_fail (string && string[0]);
 	klass = g_type_class_ref (type);
 	g_return_if_fail (klass != NULL);
 
@@ -73,7 +91,7 @@ glade_register_displayable_value (GType          type,
 
 	tab = g_new0 (ValueTab, 1);
 	tab->value  = g_strdup (value);
-	tab->string = g_strdup (dgettext (domain, string));
+	tab->string = g_strdup (string);
 
 	if ((values = 
 	     g_hash_table_lookup (values_hash, klass)) != NULL)
@@ -119,6 +137,8 @@ glade_get_displayable_value (GType          type,
 	GList     *values, *tab_iter;
 	gchar     *displayable = NULL;
 
+	g_return_val_if_fail (value && value[0], NULL);
+
 	if (!values_hash)
 		return NULL;
 
@@ -147,9 +167,11 @@ glade_get_value_from_displayable (GType          type,
 	GList     *values, *tab_iter;
 	gchar     *value = NULL;
 
+	g_return_val_if_fail (displayable && displayable[0], NULL);
+
 	if (!values_hash)
 		return NULL;
-
+	
 	klass = g_type_class_ref (type);
 
 	g_return_val_if_fail  (klass != NULL, NULL);

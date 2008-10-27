@@ -847,35 +847,16 @@ glade_editor_create_input_enum_item (GladeEditorProperty *eprop,
 }
 
 static GtkWidget *
-glade_editor_create_input_stock_item (GladeEditorProperty *eprop,
-				      const gchar         *id,
-				      gint                 value)
-{
-	GtkWidget *menu_item = gtk_image_menu_item_new_from_stock (id, NULL);
-
-	g_signal_connect (G_OBJECT (menu_item), "activate",
-			  G_CALLBACK (glade_eprop_enum_changed),
-			  eprop);
-
-	g_object_set_data (G_OBJECT (menu_item), GLADE_ENUM_DATA_TAG, GINT_TO_POINTER(value));
-
-	return menu_item;
-}
-
-static GtkWidget *
 glade_eprop_enum_create_input (GladeEditorProperty *eprop)
 {
 	GladeEPropEnum      *eprop_enum = GLADE_EPROP_ENUM (eprop);
 	GtkWidget           *menu_item, *menu;
 	GladePropertyClass  *klass;
 	GEnumClass          *eclass;
-	gboolean             stock;
 	guint                i;
 	
 	klass  = eprop->klass;
 	eclass = g_type_class_ref (klass->pspec->value_type);
-	stock  = (klass->pspec->value_type == GLADE_TYPE_STOCK) ||
-		(klass->pspec->value_type == GLADE_TYPE_STOCK_IMAGE);
 
 	menu = gtk_menu_new ();
 
@@ -886,14 +867,8 @@ glade_eprop_enum_create_input (GladeEditorProperty *eprop)
 						     eclass->values[i].value_nick);
 		if (value_name == NULL) value_name = eclass->values[i].value_nick;
 		
-		if (stock && strcmp (eclass->values[i].value_nick, "glade-none"))
-			menu_item = glade_editor_create_input_stock_item
-				(eprop, 
-				 eclass->values[i].value_nick, 
-				 eclass->values[i].value);
-		else
-			menu_item = glade_editor_create_input_enum_item
-				(eprop, value_name, eclass->values[i].value);
+		menu_item = glade_editor_create_input_enum_item
+			(eprop, value_name, eclass->values[i].value);
 
 		gtk_widget_show (menu_item);
 		gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
@@ -1525,6 +1500,7 @@ typedef struct {
 	GladeEditorProperty  parent_instance;
 
 	GtkWidget           *text_entry;
+	GtkTreeModel        *store;
 } GladeEPropText;
 
 GLADE_MAKE_EPROP (GladeEPropText, glade_eprop_text)
@@ -1554,7 +1530,25 @@ glade_eprop_text_load (GladeEditorProperty *eprop, GladeProperty *property)
 
 	fmt = glade_project_get_format (property->widget->project);
 
-	if (GTK_IS_ENTRY (eprop_text->text_entry))
+	if (GTK_IS_COMBO_BOX (eprop_text->text_entry))
+	{
+		if (GTK_IS_COMBO_BOX_ENTRY (eprop_text->text_entry))
+		{
+			const gchar *text = g_value_get_string (property->value);
+			if (!text) text = "";
+			gtk_entry_set_text (GTK_ENTRY (GTK_BIN (eprop_text->text_entry)->child), text);
+		}
+		else
+		{
+			const gchar *text = g_value_get_string (property->value);
+			gint value = text ? 
+				glade_utils_enum_value_from_string (GLADE_TYPE_STOCK, text) : 0;
+
+			/* Set active iter... */
+			gtk_combo_box_set_active (GTK_COMBO_BOX (eprop_text->text_entry), value);
+		}
+	}
+	else if (GTK_IS_ENTRY (eprop_text->text_entry))
 	{
 		GtkEntry *entry = GTK_ENTRY (eprop_text->text_entry);
 		const gchar *text = NULL;
@@ -1941,6 +1935,70 @@ glade_eprop_text_show_i18n_dialog (GtkWidget           *entry,
 	}
 }
 
+enum {
+	COMBO_COLUMN_TEXT = 0,
+	COMBO_COLUMN_PIXBUF,
+	COMBO_LAST_COLUMN
+};
+
+static GtkListStore *
+glade_eprop_text_create_store (GType enum_type)
+{
+	GtkListStore        *store;
+	GtkTreeIter          iter;
+	GEnumClass          *eclass;
+	guint                i;
+
+	eclass = g_type_class_ref (enum_type);
+
+	store = gtk_list_store_new (COMBO_LAST_COLUMN, 
+				    G_TYPE_STRING, 
+				    G_TYPE_STRING);
+	
+	for (i = 0; i < eclass->n_values; i++)
+	{
+		const gchar *displayable = glade_get_displayable_value (enum_type, eclass->values[i].value_nick);
+		if (!displayable)
+			displayable = eclass->values[i].value_nick;
+
+		gtk_list_store_append (store, &iter);
+		gtk_list_store_set (store, &iter, 
+				    COMBO_COLUMN_TEXT, displayable,
+				    COMBO_COLUMN_PIXBUF, eclass->values[i].value_nick,
+				    -1);
+	}
+
+	g_type_class_unref (eclass);
+
+	return store;
+}
+
+static void
+eprop_text_stock_changed (GtkComboBox *combo,
+			  GladeEditorProperty *eprop)
+{
+	GladeEPropText  *eprop_text = GLADE_EPROP_TEXT (eprop);
+	GtkTreeIter      iter;
+	gchar           *text = NULL;
+	const gchar     *str;
+
+	if (eprop->loading) return;
+
+	if (gtk_combo_box_get_active_iter (combo, &iter))
+	{
+		gtk_tree_model_get (GTK_TREE_MODEL (eprop_text->store), &iter,
+				    COMBO_COLUMN_PIXBUF, &text,
+				    -1);
+		glade_eprop_text_changed_common (eprop, text, eprop->use_command);
+		g_free (text);
+	}
+	else if (GTK_IS_COMBO_BOX_ENTRY (combo))
+	{
+		str = gtk_entry_get_text (GTK_ENTRY (GTK_BIN (combo)->child));
+		glade_eprop_text_changed_common (eprop, str, eprop->use_command);
+	}
+}
+
 static GtkWidget *
 glade_eprop_text_create_input (GladeEditorProperty *eprop)
 {
@@ -1952,7 +2010,40 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
 
 	hbox = gtk_hbox_new (FALSE, 0);
 
-	if (klass->visible_lines > 1 ||
+	if (klass->stock || klass->stock_icon)
+	{
+		GtkCellRenderer *renderer;
+		GtkWidget       *combo = gtk_combo_box_entry_new ();
+
+		eprop_text->store = (GtkTreeModel *)
+			glade_eprop_text_create_store (klass->stock ? GLADE_TYPE_STOCK :
+						       GLADE_TYPE_STOCK_IMAGE);
+
+		gtk_combo_box_set_model (GTK_COMBO_BOX (combo), GTK_TREE_MODEL (eprop_text->store));
+
+		/* let the comboboxentry prepend its intrusive cell first... */
+		gtk_combo_box_entry_set_text_column (GTK_COMBO_BOX_ENTRY (combo),
+						     COMBO_COLUMN_TEXT);
+
+		renderer = gtk_cell_renderer_pixbuf_new ();
+		gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (combo), renderer, FALSE);
+		gtk_cell_layout_reorder (GTK_CELL_LAYOUT (combo), renderer, 0);
+		gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (combo), renderer,
+						"stock-id", COMBO_COLUMN_PIXBUF,
+						NULL);
+
+		if (klass->stock)
+			gtk_entry_set_editable (GTK_ENTRY (GTK_BIN (combo)->child), FALSE);
+		
+		gtk_widget_show (combo);
+		gtk_box_pack_start (GTK_BOX (hbox), combo, FALSE, FALSE, 0); 
+		g_signal_connect (G_OBJECT (combo), "changed",
+				  G_CALLBACK (eprop_text_stock_changed), eprop);
+
+
+		eprop_text->text_entry = combo;
+	} 
+	else if (klass->visible_lines > 1 ||
 	    klass->pspec->value_type == G_TYPE_STRV ||
 	    klass->pspec->value_type == G_TYPE_VALUE_ARRAY) 
 	{
@@ -3368,6 +3459,8 @@ glade_eprop_adjustment_create_input (GladeEditorProperty *eprop)
  * @property: A #GladeProperty
  *
  * Loads @property values into @eprop and connects.
+ * (the editor property will watch the property's value
+ * until its loaded with another property or %NULL)
  */
 void
 glade_editor_property_load (GladeEditorProperty *eprop,

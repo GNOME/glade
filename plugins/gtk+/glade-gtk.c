@@ -33,6 +33,7 @@
 #include "glade-icon-sources.h"
 #include "glade-button-editor.h"
 #include "glade-tool-button-editor.h"
+#include "glade-image-editor.h"
 
 #include <gladeui/glade-editor-property.h>
 #include <gladeui/glade-base-editor.h>
@@ -5190,19 +5191,7 @@ glade_gtk_button_set_property (GladeWidgetAdaptor *adaptor,
 	}
 	else if (strcmp (id, "stock") == 0)
 	{
-		GEnumClass    *eclass;
-		GEnumValue    *eval;
-
-		/* Do it by hand cause we need the nick not the name */
-		eclass   = g_type_class_ref (G_VALUE_TYPE (value));
-		if ((eval = g_enum_get_value (eclass, g_value_get_enum (value))) != NULL)
-		{
-			if (g_value_get_enum (value) == 0)
-				gtk_button_set_label (GTK_BUTTON (object), NULL);
-			else
-				gtk_button_set_label (GTK_BUTTON (object), eval->value_nick);
-		}
-		g_type_class_unref (eclass);
+		gtk_button_set_label (GTK_BUTTON (object), g_value_get_string (value));
 	}
 	else
 		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object,
@@ -5216,7 +5205,6 @@ glade_gtk_button_read_widget (GladeWidgetAdaptor *adaptor,
 {
 	gboolean  use_stock;
 	gchar    *label = NULL;
-	gint      stock_id = 0;
 
 	if (!glade_xml_node_verify 
 	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
@@ -5230,11 +5218,7 @@ glade_gtk_button_read_widget (GladeWidgetAdaptor *adaptor,
 	if (use_stock)
 	{
 		glade_widget_property_get (widget, "label", &label);
-		if (label)
-			stock_id = glade_utils_enum_value_from_string (GLADE_TYPE_STOCK, label);
-		if (stock_id < 0)
-			stock_id = 0;
-		glade_widget_property_set (widget, "stock", stock_id);
+		glade_widget_property_set (widget, "stock", label);
 	}
 }
 
@@ -5295,32 +5279,6 @@ glade_gtk_button_write_widget (GladeWidgetAdaptor *adaptor,
 
 
 /* ----------------------------- GtkImage ------------------------------ */
-static void
-glade_gtk_image_disable_filename (GladeWidget *gwidget)
-{
-	glade_widget_property_set (gwidget, "pixbuf", NULL);
-	glade_widget_property_set_sensitive (gwidget, "pixbuf", FALSE,
-		 	_("This only applies with file type images"));
-}
-
-static void
-glade_gtk_image_disable_icon_name (GladeWidget *gwidget)
-{
-	glade_widget_property_reset (gwidget, "icon-name");
-	glade_widget_property_set_sensitive (gwidget, "icon-name", FALSE,
-		 	_("This only applies to Icon Theme type images"));
-}
-
-static void
-glade_gtk_image_disable_stock (GladeWidget *gwidget)
-{
-	glade_widget_property_set (gwidget, "glade-stock", NULL);
-	glade_widget_property_set (gwidget, "stock", NULL);
-	glade_widget_property_set_enabled (gwidget, "stock", FALSE);
-	glade_widget_property_set_sensitive (gwidget, "glade-stock", FALSE,
-		 	_("This only applies with stock type images"));
-}
-
 static void 
 glade_gtk_image_pixel_size_changed (GladeProperty *property,
 				    GValue        *old_value,
@@ -5382,133 +5340,35 @@ glade_gtk_image_post_create (GladeWidgetAdaptor  *adaptor,
 }
 
 static void
-glade_gtk_image_set_icon_name (GObject *object, const GValue *value)
+glade_gtk_image_set_image_mode (GObject *object, const GValue *value)
 {
-	GladeWidget *gimage;
-	gint icon_size;
-	
-	g_return_if_fail (GTK_IS_IMAGE (object));
-	gimage = glade_widget_get_from_gobject (object);
-	g_return_if_fail (GLADE_IS_WIDGET (gimage));
-	
-	glade_widget_property_get (gimage, "icon-size", &icon_size);
-	
-	gtk_image_set_from_icon_name (GTK_IMAGE (object),
-				      g_value_get_string (value), 
-				      icon_size);
-}
-
-static void
-glade_gtk_image_refresh (GladeWidget *gwidget, const gchar *property)
-{
-	gpointer p;
-	glade_widget_property_set_sensitive (gwidget, property, TRUE, NULL);
-	glade_widget_property_get (gwidget, property, &p);
-	glade_widget_property_set (gwidget, property, p);
-}
-
-static void
-glade_gtk_image_set_type (GObject *object, const GValue *value)
-{
+	const gchar       *insensitive_msg = _("Property not selected");
 	GladeWidget       *gwidget;
 	GladeGtkImageType  type;
 	
 	gwidget = glade_widget_get_from_gobject (object);
 	g_return_if_fail (GTK_IS_IMAGE (object));
 	g_return_if_fail (GLADE_IS_WIDGET (gwidget));
-
-	/* Exit if we're still loading project objects */
-	if (glade_util_object_is_loading (object)) return;
 	
-	switch ((type = g_value_get_enum (value)))
+	glade_widget_property_set_sensitive (gwidget, "stock", FALSE, insensitive_msg);
+	glade_widget_property_set_sensitive (gwidget, "icon-name", FALSE, insensitive_msg);
+	glade_widget_property_set_sensitive (gwidget, "pixbuf", FALSE, insensitive_msg);
+
+	switch ((type = g_value_get_int (value)))
 	{
-		case GLADEGTK_IMAGE_STOCK:
-			glade_gtk_image_disable_filename (gwidget);
-			glade_gtk_image_disable_icon_name (gwidget);
-			glade_widget_property_set_enabled (gwidget, "stock", TRUE);
-			glade_gtk_image_refresh (gwidget, "glade-stock");
+	case GLADE_IMAGE_MODE_STOCK:
+		glade_widget_property_set_sensitive (gwidget, "stock", TRUE, NULL);
 		break;
-
-		case GLADEGTK_IMAGE_ICONTHEME:
-			glade_gtk_image_disable_filename (gwidget);
-			glade_gtk_image_disable_stock (gwidget);
-			glade_gtk_image_refresh (gwidget, "icon-name");
-		break;
-
-		case GLADEGTK_IMAGE_FILENAME:
-		default:
-			glade_gtk_image_disable_stock (gwidget);
-			glade_gtk_image_disable_icon_name (gwidget);
-			glade_gtk_image_refresh (gwidget, "pixbuf");
-		break;
-	}
-}
-
-/* This basicly just sets the virtual "glade-stock" property
- * based on the image's "stock" property (for glade file loading purposes)
- */
-static void
-glade_gtk_image_set_stock (GObject *object, const GValue *value)
-{
-	GladeWidget *gwidget;
-	gchar       *str;
-	gint         icon_size;
-
-	g_return_if_fail (GTK_IS_IMAGE (object));
-	gwidget = glade_widget_get_from_gobject (object);
-	g_return_if_fail (GLADE_IS_WIDGET (gwidget));
-
-	if ((str = g_value_dup_string (value)) &&
-	    glade_util_object_is_loading (object))
-	{
-		GEnumClass *eclass = g_type_class_ref (GLADE_TYPE_STOCK_IMAGE);
-		GEnumValue *eval;
 		
-		if ((eval = g_enum_get_value_by_nick (eclass, str)) != NULL)
-			glade_widget_property_set (gwidget, "glade-stock",
-						   eval->value);
-		g_type_class_unref (eclass);
+	case GLADE_IMAGE_MODE_ICON:
+		glade_widget_property_set_sensitive (gwidget, "icon-name", TRUE, NULL);
+		break;
+		
+	case GLADE_IMAGE_MODE_FILENAME:
+		glade_widget_property_set_sensitive (gwidget, "pixbuf", TRUE, NULL);
+	default:
+		break;
 	}
-
-	if (str == NULL && glade_widget_superuser ()) return;
-	
-	/* Set the real property */
-	glade_widget_property_get (gwidget, "icon-size", &icon_size);
-	gtk_image_set_from_stock (GTK_IMAGE (object), str, icon_size);
-
-	/* Sometimes it gets recursive around here, valgrind says
-	 * we should dup a string for this purpose ;-)
-	 */
-	g_free (str);
-}
-
-static void
-glade_gtk_image_set_glade_stock (GObject *object, const GValue *value)
-{
-	GladeWidget   *gwidget;
-	GEnumClass    *eclass;
-	GEnumValue    *eval;
-	gint           val;
-
-	g_return_if_fail (GTK_IS_IMAGE (object));
-	gwidget = glade_widget_get_from_gobject (object);
-	g_return_if_fail (GLADE_IS_WIDGET (gwidget));
-	
-	/* This is triggered by glade_widget_sync_custom_props () from glade_widget_new_from_widget_info()  
-	    which makes "stock" property to reset */
-	if (glade_util_object_is_loading (object)) return;
-	
-	val    = g_value_get_enum (value);	
-	eclass = g_type_class_ref (G_VALUE_TYPE (value));
-	if ((eval = g_enum_get_value (eclass, val)) != NULL)
-	{
-		if (val == 0)
-			glade_widget_property_reset (gwidget, "stock");
-		else
-			glade_widget_property_set (gwidget, "stock", eval->value_nick);
-			
-	}
-	g_type_class_unref (eclass);
 }
 
 void
@@ -5517,17 +5377,26 @@ glade_gtk_image_set_property (GladeWidgetAdaptor *adaptor,
 			      const gchar        *id,
 			      const GValue       *value)
 {
-	if (!strcmp (id, "glade-type"))
-		glade_gtk_image_set_type (object, value);
-	else if (!strcmp (id, "stock"))
-		glade_gtk_image_set_stock (object, value);
-	else if (!strcmp (id, "glade-stock"))
-		glade_gtk_image_set_glade_stock (object, value);
-	else if (!strcmp (id, "icon-name"))
-		glade_gtk_image_set_icon_name (object, value);
+	if (!strcmp (id, "image-mode"))
+		glade_gtk_image_set_image_mode (object, value);
 	else
 		GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object,
 							       id, value);
+}
+
+GladeEditable *
+glade_gtk_image_create_editable (GladeWidgetAdaptor  *adaptor,
+				 GladeEditorPageType  type)
+{
+	GladeEditable *editable;
+
+	/* Get base editable */
+	editable = GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+
+	if (type == GLADE_PAGE_GENERAL)
+		return (GladeEditable *)glade_image_editor_new (adaptor, editable);
+
+	return editable;
 }
 
 /* ----------------------------- GtkMenu ------------------------------ */
@@ -6691,24 +6560,26 @@ glade_gtk_toolbar_child_selected (GladeBaseEditor *editor,
 	
 	glade_base_editor_add_label (editor, "Properties");
 	
-	glade_base_editor_add_properties (editor, gchild, FALSE,
-					  "visible-horizontal",
-					  "visible-vertical",
-					  NULL);
+
+	glade_base_editor_add_editable (editor, gchild);
+/* 	glade_base_editor_add_properties (editor, gchild, FALSE, */
+/* 					  "visible-horizontal", */
+/* 					  "visible-vertical", */
+/* 					  NULL); */
 	
 	if (type == GTK_TYPE_SEPARATOR_TOOL_ITEM) return;
 
-	if (GTK_IS_TOOL_BUTTON (child))
-		glade_base_editor_add_properties (editor, gchild, FALSE,
-						  "label", 
-						  "icon",
-						  "glade-stock",
-						  "icon-name",
-						  NULL);
+/* 	if (GTK_IS_TOOL_BUTTON (child)) */
+/* 		glade_base_editor_add_properties (editor, gchild, FALSE, */
+/* 						  "label",  */
+/* 						  "icon", */
+/* 						  "stock-id", */
+/* 						  "icon-name", */
+/* 						  NULL); */
 	
-	if (type == GTK_TYPE_RADIO_TOOL_BUTTON)
-		glade_base_editor_add_properties (editor, gchild, FALSE,
-						  "group", "active", NULL);	
+/* 	if (type == GTK_TYPE_RADIO_TOOL_BUTTON) */
+/* 		glade_base_editor_add_properties (editor, gchild, FALSE, */
+/* 						  "group", "active", NULL);	 */
 
 	glade_base_editor_add_label (editor, "Packing");
 	glade_base_editor_add_properties (editor, gchild, TRUE,
@@ -6821,12 +6692,12 @@ static void
 glade_gtk_tool_button_set_image_mode (GObject *object, const GValue *value)
 {
 	GladeWidget *gbutton;
-	const gchar *insensitive_msg = _("Property disabled");
+	const gchar *insensitive_msg = _("Property not selected");
 	
 	g_return_if_fail (GTK_IS_TOOL_BUTTON (object));
 	gbutton = glade_widget_get_from_gobject (object);
 
-	glade_widget_property_set_sensitive (gbutton, "glade-stock", FALSE, insensitive_msg);
+	glade_widget_property_set_sensitive (gbutton, "stock-id", FALSE, insensitive_msg);
 	glade_widget_property_set_sensitive (gbutton, "icon-name", FALSE, insensitive_msg);
 	glade_widget_property_set_sensitive (gbutton, "icon", FALSE, insensitive_msg);
 	glade_widget_property_set_sensitive (gbutton, "icon-widget", FALSE, insensitive_msg);
@@ -6834,7 +6705,7 @@ glade_gtk_tool_button_set_image_mode (GObject *object, const GValue *value)
 	switch (g_value_get_int (value))
 	{
 	case GLADE_TB_MODE_STOCK:
-		glade_widget_property_set_sensitive (gbutton, "glade-stock", TRUE, NULL);
+		glade_widget_property_set_sensitive (gbutton, "stock-id", TRUE, NULL);
 		break;
 	case GLADE_TB_MODE_ICON:
 		glade_widget_property_set_sensitive (gbutton, "icon-name", TRUE, NULL);
@@ -6855,7 +6726,7 @@ static void
 glade_gtk_tool_button_set_custom_label (GObject *object, const GValue *value)
 {
 	GladeWidget *gbutton;
-	const gchar *insensitive_msg = _("Property disabled");
+	const gchar *insensitive_msg = _("Property not selected");
 	
 	g_return_if_fail (GTK_IS_TOOL_BUTTON (object));
 	gbutton = glade_widget_get_from_gobject (object);
@@ -6895,31 +6766,6 @@ glade_gtk_tool_button_set_stock_id (GObject *object, const GValue *value)
 	if (stock_id && strlen (stock_id) == 0) stock_id = NULL;
 	
 	gtk_tool_button_set_stock_id (GTK_TOOL_BUTTON (object), stock_id);
-}
-
-static void
-glade_gtk_tool_button_set_glade_stock (GObject *object, const GValue *value)
-{
-	GladeWidget *gbutton;
-	GEnumClass *eclass;
-	GEnumValue *eval;
-	gint val;
-	
-	g_return_if_fail (GTK_IS_TOOL_BUTTON (object));	
-	gbutton = glade_widget_get_from_gobject (object);
-	
-	val = g_value_get_enum (value);
-
-	if (val)
-	{
-		eclass = g_type_class_ref (GLADE_TYPE_STOCK_IMAGE);
-
-		if ((eval = g_enum_get_value (eclass, val)) != NULL)
-			glade_widget_property_set (gbutton, "stock-id", eval->value_nick);
-		g_type_class_unref (eclass);
-	}
-	else
-		glade_widget_property_set (gbutton, "stock-id", NULL);
 }
 
 /* legacy libglade property */
@@ -6963,8 +6809,6 @@ glade_gtk_tool_button_set_property (GladeWidgetAdaptor *adaptor,
 {
 	if (!strcmp (id, "image-mode"))
 		glade_gtk_tool_button_set_image_mode (object, value);
-	else if (!strcmp (id, "glade-stock"))
-		glade_gtk_tool_button_set_glade_stock (object, value);
 	else if (!strcmp (id, "icon-name"))
 		glade_gtk_tool_button_set_icon_name (object, value);
 	else if (!strcmp (id, "icon"))
@@ -7017,6 +6861,8 @@ glade_gtk_tool_button_parse_finished (GladeProject *project,
 
 		glade_widget_property_set (widget, "image-mode", GLADE_TB_MODE_STOCK);
 	}
+	else
+		glade_widget_property_set (widget, "image-mode", GLADE_TB_MODE_STOCK);
 }
 
 void

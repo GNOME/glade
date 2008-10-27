@@ -1,3 +1,27 @@
+2008-10-27  Tristan Van Berkom <tvb@gnome.org>
+
+	* plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-gtk.c: 
+	- Reimplemented GtkImage from ground up.
+	- Reimplemented stock on GtkButton.
+	- Made toolbutton editables show up in the toolbar editor
+
+	* gladeui/glade-base-editor.[ch]: Added glade_base_editor_add_editable()
+
+	* plugins/gtk+/glade-button-editor.c, plugins/gtk+/glade-tool-bar-editor.c:
+	Implement new Editable vfunc set_show_name()
+
+	* gladeui/glade-editor-table.c, gladeui/glade-editable.c, gladeui/glade-editor.c:
+	Added new vfunc set_show_name()
+
+	* plugins/gtk+/Makefile.am, plugins/gtk+/glade-image-editor.[ch]: New editor
+	widget for GtkImage
+
+	* gladeui/glade-property-class.[ch]: string props can now be "stock" or "stock-icon"
+
+	* gladeui/glade-widget-adaptor.c: No more stock enum eprops
+
+	* gladeui/glade-editor-property.c: Handle string types with "stock" or "stock-icon"
+	
 2008-10-26  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/Makefile.am, plugins/gtk+/glade-tool-button-editor.[ch]:

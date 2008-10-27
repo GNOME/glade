@@ -32,14 +32,18 @@ struct _GladeEditableIface
 	GTypeInterface g_iface;
 
 	/* virtual table */
-	void          (* load)       (GladeEditable  *editable,
-				      GladeWidget    *widget);
+	void          (* load)          (GladeEditable  *editable,
+				         GladeWidget    *widget);
+	void          (* set_show_name) (GladeEditable  *editable,
+					 gboolean        show_name);
 
 };
 
-GType     glade_editable_get_type    (void) G_GNUC_CONST;
-void      glade_editable_load        (GladeEditable *editable,
-				      GladeWidget   *widget);
+GType     glade_editable_get_type       (void) G_GNUC_CONST;
+void      glade_editable_load           (GladeEditable *editable,
+					 GladeWidget   *widget);
+void      glade_editable_set_show_name  (GladeEditable  *editable,
+					 gboolean        show_name);
 
 
 G_END_DECLS

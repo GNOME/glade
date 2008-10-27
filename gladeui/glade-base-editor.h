@@ -65,6 +65,9 @@ GladeBaseEditor     *glade_base_editor_new                    (GObject *containe
 								 gboolean tree_like,
 								 ...);
 
+void                 glade_base_editor_add_editable           (GladeBaseEditor *editor,
+							       GladeWidget     *gchild);
+
 void                 glade_base_editor_add_default_properties (GladeBaseEditor *editor,
 							       GladeWidget *gchild);
 

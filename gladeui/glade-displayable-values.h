@@ -12,6 +12,10 @@ void        glade_register_displayable_value      (GType          type,
 						   const gchar   *domain,
 						   const gchar   *string);
 
+void        glade_register_translated_value       (GType          type, 
+						   const gchar   *value, 
+						   const gchar   *string);
+
 gboolean    glade_type_has_displayable_values     (GType          type);
 
 G_CONST_RETURN 

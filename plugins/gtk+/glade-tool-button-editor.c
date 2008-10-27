@@ -83,18 +83,16 @@ static void
 glade_tool_button_editor_load (GladeEditable *editable,
 			       GladeWidget   *widget)
 {
-	GladeToolButtonEditor *button_editor = GLADE_TOOL_BUTTON_EDITOR (editable);
-	gboolean               custom_label  = FALSE;
-	gint                   image_mode    = 0;
-	GList                 *l;
+	GladeToolButtonEditor     *button_editor = GLADE_TOOL_BUTTON_EDITOR (editable);
+	gboolean                   custom_label  = FALSE;
+	GladeToolButtonImageMode   image_mode    = 0;
+	GList                     *l;
 
 	button_editor->loading = TRUE;
 
 	/* Since we watch the project*/
 	if (button_editor->loaded_widget)
 	{
-		/* watch custom-child and use-stock properties here for reloads !!! */
-
 		g_signal_handlers_disconnect_by_func (G_OBJECT (button_editor->loaded_widget->project),
 						      G_CALLBACK (project_changed), button_editor);
 
@@ -276,8 +274,8 @@ icon_toggled (GtkWidget             *widget,
 
 	glade_command_push_group (_("Setting %s to use an image from the icon theme"), button_editor->loaded_widget->name);
 
-	property = glade_widget_get_property (button_editor->loaded_widget, "glade-stock");
-	glade_command_set_property (property, 0);
+	property = glade_widget_get_property (button_editor->loaded_widget, "stock-id");
+	glade_command_set_property (property, NULL);
 	property = glade_widget_get_property (button_editor->loaded_widget, "icon");
 	glade_command_set_property (property, NULL);
 	property = glade_widget_get_property (button_editor->loaded_widget, "icon-widget");
@@ -310,8 +308,8 @@ file_toggled (GtkWidget             *widget,
 
 	glade_command_push_group (_("Setting %s to use an image from the icon theme"), button_editor->loaded_widget->name);
 
-	property = glade_widget_get_property (button_editor->loaded_widget, "glade-stock");
-	glade_command_set_property (property, 0);
+	property = glade_widget_get_property (button_editor->loaded_widget, "stock-id");
+	glade_command_set_property (property, NULL);
 	property = glade_widget_get_property (button_editor->loaded_widget, "icon-name");
 	glade_command_set_property (property, NULL);
 	property = glade_widget_get_property (button_editor->loaded_widget, "icon-widget");
@@ -344,8 +342,8 @@ custom_toggled (GtkWidget             *widget,
 
 	glade_command_push_group (_("Setting %s to use an image from the icon theme"), button_editor->loaded_widget->name);
 
-	property = glade_widget_get_property (button_editor->loaded_widget, "glade-stock");
-	glade_command_set_property (property, 0);
+	property = glade_widget_get_property (button_editor->loaded_widget, "stock-id");
+	glade_command_set_property (property, NULL);
 	property = glade_widget_get_property (button_editor->loaded_widget, "icon-name");
 	glade_command_set_property (property, NULL);
 	property = glade_widget_get_property (button_editor->loaded_widget, "icon");
@@ -362,11 +360,20 @@ custom_toggled (GtkWidget             *widget,
 			     button_editor->loaded_widget);
 }
 
+static void
+glade_tool_button_editor_set_show_name (GladeEditable *editable,
+					gboolean       show_name)
+{
+	GladeToolButtonEditor *button_editor = GLADE_TOOL_BUTTON_EDITOR (editable);
+
+	glade_editable_set_show_name (GLADE_EDITABLE (button_editor->embed), show_name);
+}
 
 static void
 glade_tool_button_editor_editable_init (GladeEditableIface *iface)
 {
 	iface->load = glade_tool_button_editor_load;
+	iface->set_show_name = glade_tool_button_editor_set_show_name;
 }
 
 static void
@@ -427,7 +434,7 @@ glade_tool_button_editor_new (GladeWidgetAdaptor *adaptor,
 	frame = gtk_frame_new (NULL);
 	gtk_frame_set_label_widget (GTK_FRAME (frame), label);
 	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
-	gtk_box_pack_start (GTK_BOX (button_editor), frame, FALSE, FALSE, 8);
+	gtk_box_pack_start (GTK_BOX (button_editor), frame, FALSE, FALSE, 12);
 
 	alignment = gtk_alignment_new (0.5F, 0.5F, 1.0F, 1.0F);
 	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 6, 0, 12, 0);
@@ -473,7 +480,7 @@ glade_tool_button_editor_new (GladeWidgetAdaptor *adaptor,
 	gtk_container_add (GTK_CONTAINER (alignment), table);
 
 	/* Stock image... */
-	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "glade-stock", FALSE, TRUE);
+	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "stock-id", FALSE, TRUE);
 	button_editor->stock_radio = gtk_radio_button_new (NULL);
 	gtk_container_add (GTK_CONTAINER (button_editor->stock_radio), eprop->item_label);
 	table_attach (table, button_editor->stock_radio, 0, 0);
@@ -501,7 +508,7 @@ glade_tool_button_editor_new (GladeWidgetAdaptor *adaptor,
 	/* Custom embedded image widget... */
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "icon-widget", FALSE, TRUE);
 	button_editor->custom_radio = gtk_radio_button_new_from_widget
-	  (GTK_RADIO_BUTTON (button_editor->stock_radio));
+		(GTK_RADIO_BUTTON (button_editor->stock_radio));
 	gtk_container_add (GTK_CONTAINER (button_editor->custom_radio), eprop->item_label);
 	table_attach (table, button_editor->custom_radio, 0, 3);
 	table_attach (table, GTK_WIDGET (eprop), 1, 3);

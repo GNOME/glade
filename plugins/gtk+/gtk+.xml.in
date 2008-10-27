@@ -531,9 +531,8 @@ embedded in another object</_tooltip>
         </property>
 
 	<!-- Virtual stock comboentry property -->
-	<property id="stock-id" visible="False"/>
-	<property id="glade-stock" _name="Stock Image" save="False" custom-layout="True">
-	  <spec>glade_standard_stock_image_spec</spec>
+	<property id="stock-id" visible="False" stock-icon="True" custom-layout="True">
+          <_tooltip>The stock icon displayed on the item (chose an item from gtk+ stock or from an icon factory)</_tooltip>
 	</property>
         <property id="label" translatable="True" default="toolbutton" custom-layout="True"/>
 	<property id="label-widget" parentless-widget="True" libglade-unsupported="True" 
@@ -677,15 +676,15 @@ embedded in another object</_tooltip>
       	<property id="label" default="button" translatable="True" custom-layout="True" save="False">
             <visible-lines>2</visible-lines>
 	</property>
-	<property id="use-underline" weight="1.5" custom-layout="True"/>
-	<property id="stock" _name="Stock Button" save="False" weight="1.6" custom-layout="True">
-	  <spec>glade_standard_stock_spec</spec>
+	<property id="use-underline" custom-layout="True"/>
+	<property id="stock" _name="Stock Button" stock="True" save="False" custom-layout="True">
+	  <spec>glade_standard_string_spec</spec>
 	  <_tooltip>The stock item for this button</_tooltip>
 	</property>
         <property id="custom-child" save="False" custom-layout="True" default="False">
           <spec>glade_standard_boolean_spec</spec>
         </property>
-	<property id="image-position" weight="1.7" custom-layout="True"/>
+	<property id="image-position" custom-layout="True"/>
 	<property id="response-id" _name="Response ID" default="0" common="False" ignore="True" save-always="True">
 	  <spec>glade_standard_int_spec</spec>
 	  <_tooltip>The response ID of this button in a dialog</_tooltip>
@@ -895,23 +894,20 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkImage" generic-name="image" _title="Image">
       <post-create-function>glade_gtk_image_post_create</post-create-function>
       <set-property-function>glade_gtk_image_set_property</set-property-function>
+      <create-editable-function>glade_gtk_image_create_editable</create-editable-function>
+      <read-widget-function>glade_gtk_image_read_widget</read-widget-function>
       <properties>
-	<property id="stock" visible="False" default="gtk-missing-image"/>
-	<property id="glade-type" _name="Edit Type" save="False" weight="0">
-	  <spec>glade_gtk_image_type_spec</spec>
+	<property id="image-mode" save="False" visible="False">
+	  <spec>glade_standard_int_spec</spec>
 	</property>
+	<property id="stock" stock-icon="True" custom-layout="True" default="gtk-missing-image"/>
+	<property id="icon-name" _name="Icon Name" themed-icon="True" custom-layout="True" />
+	<property id="pixbuf" _name="File Name" custom-layout="True"/>
 	<property id="pixbuf-animation" disabled="True"/>
 	<property id="file" disabled="True"/>
 	<property id="pixmap" disabled="True"/>
 	<property id="image" disabled="True"/>
 	<property id="mask" disabled="True"/>
-	<property id="pixbuf" _name="File Name"/>
-	<property id="glade-stock" _name="Stock Image" save="False" weight="1.5" default="gtk-missing-image">
-	  <_tooltip>A builtin stock image</_tooltip>
-	  <spec>glade_standard_stock_image_spec</spec>
-	  <_tooltip>The stock item for this image</_tooltip>
-	</property>
-	<property id="icon-name" _name="Icon Name" themed-icon="True" weight="1.6"/>
       </properties>
     </glade-widget-class>
 

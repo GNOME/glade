@@ -31,6 +31,7 @@
 #include <glib/gi18n-lib.h>
 #include <string.h>
 #include "glade-builtins.h"
+#include "glade-displayable-values.h"
 
 
 struct _GladeParamSpecObjects {
@@ -53,7 +54,7 @@ typedef struct _GladeStockItem {
  *      Auto-generate the enum type for stock properties    *
  ************************************************************/
  
-/* Hard-coded list of stock images from gtk+ that are not stock "items" */
+/* Hard-coded list of stock images (and displayable translations) from gtk+ that are not stock "items" */
 static const gchar *builtin_stock_images[] = 
 {
 	"gtk-dialog-authentication", /* GTK_STOCK_DIALOG_AUTHENTICATION */
@@ -63,6 +64,17 @@ static const gchar *builtin_stock_images[] =
 	"gtk-directory",             /* GTK_STOCK_DIRECTORY */
 	"gtk-file",                  /* GTK_STOCK_FILE */
 	"gtk-missing-image"          /* GTK_STOCK_MISSING_IMAGE */
+};
+
+static const gchar *builtin_stock_displayables[] = 
+{
+	N_("Authentication"), /* GTK_STOCK_DIALOG_AUTHENTICATION */
+	N_("DnD"),            /* GTK_STOCK_DND */
+	N_("DnD Multiple"),   /* GTK_STOCK_DND_MULTIPLE */
+	N_("Color Picker"),   /* GTK_STOCK_COLOR_PICKER */
+	N_("Directory"),      /* GTK_STOCK_DIRECTORY */
+	N_("File"),           /* GTK_STOCK_FILE */
+	N_("Missing Image")   /* GTK_STOCK_MISSING_IMAGE */
 };
 
 static GSList *stock_prefixs = NULL;
@@ -82,7 +94,6 @@ glade_standard_stock_append_prefix (const gchar *prefix)
 	stock_prefixs = g_slist_append (stock_prefixs, g_strdup (prefix));
 }
 
-
 static GladeStockItem *
 new_from_values (const gchar *name, const gchar *nick, gint value)
 {
@@ -98,6 +109,7 @@ new_from_values (const gchar *name, const gchar *nick, gint value)
 	new_gsi->value_nick = g_strdup (nick);
 	new_gsi->value = value;
 
+
 	clean_name = g_strdup (name);
 	len = strlen (clean_name);
 
@@ -110,7 +122,7 @@ new_from_values (const gchar *name, const gchar *nick, gint value)
 			i++;				
 		}
 
-	new_gsi->clean_name = g_utf8_collate_key (clean_name, i - 1);
+	new_gsi->clean_name = g_utf8_collate_key (clean_name, i - j);
 	
 	g_free (clean_name);
 
@@ -134,7 +146,7 @@ list_stock_items (gboolean include_images)
 	GtkStockItem  item;
 	GSList       *l = NULL, *stock_list = NULL, *p = NULL;
 	gchar        *stock_id = NULL, *prefix = NULL;
-	gint          stock_enum = 1, i = 0;
+	gint          stock_enum = 0, i = 0;
 	GEnumValue    value;
 	GArray       *values = NULL;
 	GladeStockItem *gsi;
@@ -144,13 +156,7 @@ list_stock_items (gboolean include_images)
 	stock_list = g_slist_reverse (gtk_stock_list_ids ());
 
 	values = g_array_sized_new (TRUE, TRUE, sizeof (GEnumValue),
-				    g_slist_length (stock_list) + 1);
-	
-	/* Add first "no stock" element which is sorted alone ! */
-	gsi = new_from_values ("None", "glade-none", 0);
-	gsi_list = g_slist_insert_sorted (gsi_list, gsi, (GCompareFunc) compare_two_gsi);
-	gsi_list_list = g_slist_append (gsi_list_list, gsi_list);
-	gsi_list = NULL; 
+				    g_slist_length (stock_list));
 
 	/* We want gtk+ stock items to appear first */
 	if ((stock_prefixs && strcmp (stock_prefixs->data, "gtk-")) || 
@@ -209,16 +215,37 @@ list_stock_items (gboolean include_images)
 
 	g_slist_free (gsi_list_list);
 
-	/* Add the trailing end marker */
-	value.value      = 0;
-	value.value_name = NULL;
-	value.value_nick = NULL;
-	values = g_array_append_val (values, value);
-
 	stock_prefixs_done = TRUE;
 	g_slist_free (stock_list);
 
 	return values;
+}
+
+static gchar *
+clean_stock_name (const gchar *name)
+{
+	gchar *clean_name, *str;
+	size_t len = 0;
+	guint i = 0;
+	guint j = 0;
+	
+	g_assert (name && name[0]);
+
+	str = g_strdup (name);
+	len = strlen (str);
+
+	while (i+j <= len)
+		{
+			if (str[i+j] == '_')
+				j++;
+			
+			str[i] = str[i+j];
+			i++;				
+		}
+	clean_name = g_strndup (str, i - j);
+	g_free (str);
+
+	return clean_name;
 }
 
 GType
@@ -228,9 +255,23 @@ glade_standard_stock_get_type (void)
 
 	if (etype == 0) {
 		GArray *values = list_stock_items (FALSE);
+		gint i, n_values = values->len;
+		GEnumValue *enum_values = (GEnumValue *)values->data;
+		GtkStockItem item;
 
 		etype = g_enum_register_static ("GladeStock", 
 						(GEnumValue *)g_array_free (values, FALSE));
+
+		/* Register displayable by GType, i.e. after the types been created. */
+		for (i = 0; i < n_values; i++)
+		{
+			if (gtk_stock_lookup (enum_values[i].value_nick, &item))
+			{
+				gchar *clean_name = clean_stock_name (item.label);
+				glade_register_translated_value (etype, enum_values[i].value_nick, clean_name);
+				g_free (clean_name);
+			}
+		}		
 	}
 	return etype;
 }
@@ -243,9 +284,33 @@ glade_standard_stock_image_get_type (void)
 
 	if (etype == 0) {
 		GArray *values = list_stock_items (TRUE);
+		gint i, n_values = values->len;
+		GEnumValue *enum_values = (GEnumValue *)values->data;
+		GtkStockItem item;
 
 		etype = g_enum_register_static ("GladeStockImage", 
 						(GEnumValue *)g_array_free (values, FALSE));
+
+		/* Register displayable by GType, i.e. after the types been created. */
+		for (i = 0; i < n_values; i++)
+		{
+			if (gtk_stock_lookup (enum_values[i].value_nick, &item))
+			{
+				gchar *clean_name = clean_stock_name (item.label);
+
+				/* These are translated, we just cut out the mnemonic underscores */
+				glade_register_translated_value (etype, enum_values[i].value_nick, clean_name);
+				g_free (clean_name);
+			}
+		}		
+
+		for (i = 0; i < G_N_ELEMENTS (builtin_stock_images); i++)
+		{
+			/* these ones are translated from glade3 */
+			glade_register_displayable_value (etype,
+							  builtin_stock_images[i], GETTEXT_PACKAGE, 
+							  builtin_stock_displayables[i]);
+		}
 	}
 	return etype;
 }

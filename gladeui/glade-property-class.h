@@ -163,6 +163,11 @@ struct _GladePropertyClass
 			       * property class definition if proper editing tools are to
 			       * be used.
 			       */
+	gboolean stock_icon; /* String properties can also denote stock icons, including
+			      * icons from icon factories...
+			      */
+	gboolean stock;      /* ... or a narrower list of "items" from gtk builtin stock items.
+			      */
 	
 	gboolean transfer_on_paste; /* If this is a packing prop, 
 				     * wether we should transfer it on paste.

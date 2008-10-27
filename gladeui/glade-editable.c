@@ -62,6 +62,9 @@ glade_editable_get_type (void)
  * @editable: A #GladeEditable
  * @widget: the #GladeWidget to load
  *
+ * Loads @widget property values into @editable
+ * (the editable will watch the widgets properties
+ * until its loaded with another widget or %NULL)
  */
 void
 glade_editable_load (GladeEditable *editable,
@@ -79,3 +82,28 @@ glade_editable_load (GladeEditable *editable,
 		g_critical ("No GladeEditable::load() support on type %s", 
 			    G_OBJECT_TYPE_NAME (editable));
 }
+
+
+/**
+ * glade_editable_set_show_name:
+ * @editable: A #GladeEditable
+ * @show_name: Whether or not to show the name entry
+ *
+ * This only applies for the general page in the property
+ * editor, editables that embed the #GladeEditorTable implementation
+ * for the general page should use this to forward the message
+ * to its embedded editable.
+ */
+void
+glade_editable_set_show_name  (GladeEditable  *editable,
+			       gboolean        show_name)
+{
+	GladeEditableIface *iface;
+	g_return_if_fail (GLADE_IS_EDITABLE (editable));
+
+	iface = GLADE_EDITABLE_GET_IFACE (editable);
+
+	if (iface->set_show_name)
+		iface->set_show_name (editable, show_name);
+}
+

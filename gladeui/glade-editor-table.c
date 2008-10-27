@@ -159,9 +159,28 @@ glade_editor_table_load (GladeEditable *editable,
 }
 
 static void
+glade_editor_table_set_show_name (GladeEditable *editable,
+				  gboolean       show_name)
+{
+	GladeEditorTable *table = GLADE_EDITOR_TABLE (editable);
+
+	if (show_name)
+	{
+		gtk_widget_show (table->name_label);
+		gtk_widget_show (table->name_entry);
+	}
+	else
+	{
+		gtk_widget_hide (table->name_label);
+		gtk_widget_hide (table->name_entry);
+	}
+}
+
+static void
 glade_editor_table_editable_init (GladeEditableIface *iface)
 {
 	iface->load = glade_editor_table_load;
+	iface->set_show_name = glade_editor_table_set_show_name;
 }
 
 static void
@@ -297,18 +316,17 @@ widget_name_edited (GtkWidget *editable, GladeEditorTable *table)
 static void
 append_name_field (GladeEditorTable *table)
 {
-	GtkWidget *label;
 	gchar     *text = _("The Object's name");
 	
 	/* Name */
-	label = gtk_label_new (_("Name:"));
-	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-	gtk_widget_show (label);
+	table->name_label = gtk_label_new (_("Name:"));
+	gtk_misc_set_alignment (GTK_MISC (table->name_label), 0.0, 0.5);
+	gtk_widget_show (table->name_label);
 
 	table->name_entry = gtk_entry_new ();
 	gtk_widget_show (table->name_entry);
 
-	gtk_widget_set_tooltip_text (label, text);
+	gtk_widget_set_tooltip_text (table->name_label, text);
 	gtk_widget_set_tooltip_text (table->name_entry, text);
 
 	g_signal_connect (G_OBJECT (table->name_entry), "activate",
@@ -316,7 +334,7 @@ append_name_field (GladeEditorTable *table)
 	g_signal_connect (G_OBJECT (table->name_entry), "changed",
 			  G_CALLBACK (widget_name_edited), table);
 
-	glade_editor_table_attach (table, label, 0, table->rows);
+	glade_editor_table_attach (table, table->name_label, 0, table->rows);
 	glade_editor_table_attach (table, table->name_entry, 1, table->rows);
 
 	table->rows++;

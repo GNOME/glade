@@ -91,6 +91,8 @@ glade_property_class_new (gpointer handle)
 	property_class->ignore = FALSE;
 	property_class->needs_sync = FALSE;
 	property_class->themed_icon = FALSE;
+	property_class->stock = FALSE;
+	property_class->stock_icon = FALSE;
 	property_class->translatable = FALSE;
 	property_class->virt = TRUE;
 	property_class->transfer_on_paste = FALSE;
@@ -1416,6 +1418,8 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	klass->ignore         = glade_xml_get_property_boolean (node, GLADE_TAG_IGNORE,         klass->ignore);
 	klass->needs_sync     = glade_xml_get_property_boolean (node, GLADE_TAG_NEEDS_SYNC,     klass->needs_sync);
 	klass->themed_icon    = glade_xml_get_property_boolean (node, GLADE_TAG_THEMED_ICON,    klass->themed_icon);
+	klass->stock          = glade_xml_get_property_boolean (node, GLADE_TAG_STOCK,          klass->stock);
+	klass->stock_icon     = glade_xml_get_property_boolean (node, GLADE_TAG_STOCK_ICON,     klass->stock_icon);
 	klass->weight         = glade_xml_get_property_double  (node, GLADE_TAG_WEIGHT,         klass->weight);
 	klass->transfer_on_paste = glade_xml_get_property_boolean (node, GLADE_TAG_TRANSFER_ON_PASTE, klass->transfer_on_paste);
 	klass->save_always = glade_xml_get_property_boolean (node, GLADE_TAG_SAVE_ALWAYS, klass->save_always);

@@ -1944,6 +1944,8 @@ glade_utils_enum_value_from_string (GType enum_type, const gchar *strval)
 	const gchar  *displayable;
 	GValue       *gvalue;
 
+	g_return_val_if_fail (strval && strval[0], 0);
+
 	if (((displayable = glade_get_value_from_displayable (enum_type, strval)) != NULL &&
 	     (gvalue = glade_utils_value_from_string (enum_type, displayable, NULL, NULL)) != NULL) ||
 	    (gvalue = glade_utils_value_from_string (enum_type, strval, NULL, NULL)) != NULL)
@@ -1999,6 +2001,8 @@ glade_utils_flags_value_from_string (GType flags_type, const gchar *strval)
 	gint          value = 0;
 	const gchar  *displayable;
 	GValue       *gvalue;
+
+	g_return_val_if_fail (strval && strval[0], 0);
 
 	if (((displayable = glade_get_value_from_displayable (flags_type, strval)) != NULL &&
 	     (gvalue = glade_utils_value_from_string (flags_type, displayable, NULL, NULL)) != NULL) ||

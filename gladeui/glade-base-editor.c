@@ -1477,11 +1477,18 @@ glade_base_editor_init (GladeBaseEditor *editor)
 	gtk_widget_show (vbox);
 	gtk_box_pack_start (GTK_BOX (hbox), vbox, TRUE, TRUE, 0);
 	
+	/* ScrolledWindow */
+	scroll = gtk_scrolled_window_new (NULL, NULL);
+	gtk_widget_show (scroll);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scroll), GTK_SHADOW_IN);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+	gtk_box_pack_start (GTK_BOX (vbox), scroll, TRUE, TRUE, 0);
+
 	/* Tables */
 	e->table = gtk_table_new (1, 2, FALSE);
 	gtk_widget_show (e->table);
 	gtk_table_set_row_spacings (GTK_TABLE (e->table), 4);
-	gtk_box_pack_start (GTK_BOX (vbox), e->table, FALSE, TRUE, 0);
+	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scroll), e->table);
 
 	/* Signal Editor */
 	e->signal_editor = glade_signal_editor_new (NULL);
@@ -1687,6 +1694,44 @@ glade_base_editor_add_properties (GladeBaseEditor *editor,
 	}
 	va_end (args);
 }
+
+
+/**
+ * glade_base_editor_add_editable:
+ * @editor: a #GladeBaseEditor
+ * @gchild: the #GladeWidget
+ * 
+ * Add @gchild general page editor
+ *
+ * NOTE: This function is intended to be used in "child-selected" callbacks
+ */
+void
+glade_base_editor_add_editable (GladeBaseEditor *editor,
+				GladeWidget     *gchild)
+{
+	GladeEditorProperty *eprop;
+	GladeEditable       *editable;
+	va_list args;
+	gchar *property;
+	gint row;
+	
+	g_return_if_fail (GLADE_IS_BASE_EDITOR (editor));
+	g_return_if_fail (GLADE_IS_WIDGET (gchild));
+
+	editable = (GtkWidget *)glade_widget_adaptor_create_editable (gchild->adaptor, GLADE_PAGE_GENERAL);
+	glade_editable_set_show_name (editable, FALSE);
+	glade_editable_load (editable, gchild);
+	gtk_widget_show (GTK_WIDGET (editable));
+
+	row = editor->priv->row;
+	gtk_table_attach (GTK_TABLE (editor->priv->table), GTK_WIDGET (editable), 0, 2, row, row + 1,
+			  GTK_FILL, GTK_EXPAND | GTK_FILL, 2, 0);
+
+	editor->priv->row++;
+
+}
+
+
 
 /**
  * glade_base_editor_add_label:

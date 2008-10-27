@@ -168,9 +168,19 @@ glade_button_editor_load (GladeEditable *editable,
 }
 
 static void
+glade_button_editor_set_show_name (GladeEditable *editable,
+				   gboolean       show_name)
+{
+	GladeButtonEditor *button_editor = GLADE_BUTTON_EDITOR (editable);
+
+	glade_editable_set_show_name (GLADE_EDITABLE (button_editor->embed), show_name);
+}
+
+static void
 glade_button_editor_editable_init (GladeEditableIface *iface)
 {
 	iface->load = glade_button_editor_load;
+	iface->set_show_name = glade_button_editor_set_show_name;
 }
 
 static void
@@ -231,7 +241,7 @@ standard_toggled (GtkWidget         *widget,
 
 	/* Setup reasonable defaults for button label. */
 	property = glade_widget_get_property (button_editor->loaded_widget, "stock");
-	glade_command_set_property (property, 0);
+	glade_command_set_property (property, NULL);
 
 	property = glade_widget_get_property (button_editor->loaded_widget, "use-stock");
 	glade_command_set_property (property, FALSE);
@@ -275,7 +285,7 @@ custom_toggled (GtkWidget         *widget,
 	glade_command_set_property (property, FALSE);
 
 	property = glade_widget_get_property (button_editor->loaded_widget, "stock");
-	glade_command_set_property (property, 0);
+	glade_command_set_property (property, NULL);
 
 	property = glade_widget_get_property (button_editor->loaded_widget, "label");
 	glade_command_set_property (property, NULL);
@@ -320,7 +330,7 @@ stock_toggled (GtkWidget         *widget,
 	glade_command_set_property (property, TRUE);
 
 	property = glade_widget_get_property (button_editor->loaded_widget, "stock");
-	glade_command_set_property (property, 0);
+	glade_command_set_property (property, NULL);
 
 	glade_command_pop_group ();
 
@@ -349,7 +359,7 @@ label_toggled (GtkWidget         *widget,
 	glade_command_push_group (_("Setting %s to use a label and image"), button_editor->loaded_widget->name);
 
 	property = glade_widget_get_property (button_editor->loaded_widget, "stock");
-	glade_command_set_property (property, 0);
+	glade_command_set_property (property, NULL);
 
 	property = glade_widget_get_property (button_editor->loaded_widget, "use-stock");
 	glade_command_set_property (property, FALSE);

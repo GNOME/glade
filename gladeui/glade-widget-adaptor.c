@@ -1090,8 +1090,7 @@ glade_widget_adaptor_get_eprop_type (GParamSpec *pspec)
 {
 	GType type = 0;
 
-	if (pspec->value_type == GLADE_TYPE_STOCK ||
-	    G_IS_PARAM_SPEC_ENUM(pspec))
+	if (G_IS_PARAM_SPEC_ENUM(pspec))
 		type = GLADE_TYPE_EPROP_ENUM;
 	else if (G_IS_PARAM_SPEC_FLAGS(pspec))
 		type = GLADE_TYPE_EPROP_FLAGS;

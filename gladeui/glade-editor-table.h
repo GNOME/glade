@@ -49,6 +49,7 @@ struct _GladeEditorTable
 	GladeWidget *loaded_widget; /* A pointer to the currently loaded GladeWidget
 				     */
 	
+	GtkWidget *name_label; /* A pointer to the "Name:" label (for show/hide) */
 	GtkWidget *name_entry; /* A pointer to the gtk_entry that holds
 				* the name of the widget. This is the
 				* first item _pack'ed to the table_widget.
