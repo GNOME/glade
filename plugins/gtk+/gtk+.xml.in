@@ -1579,8 +1579,9 @@ embedded in another object</_tooltip>
       <set-property-function>glade_gtk_icon_factory_set_property</set-property-function>
       <string-from-value-function>glade_gtk_icon_factory_string_from_value</string-from-value-function>
       <create-editor-property-function>glade_gtk_icon_factory_create_eprop</create-editor-property-function>
+      <create-editable-function>glade_gtk_icon_factory_create_editable</create-editable-function>
       <properties>
-	<property id="sources" _name="Icon Sources" save="False">
+	<property id="sources" _name="Icon Sources" save="False" custom-layout="True">
 	  <_tooltip>A list of sources for this icon factory</_tooltip>
 	  <spec>glade_standard_icon_sources_spec</spec>
 	</property>

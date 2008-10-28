@@ -35,6 +35,7 @@
 #include "glade-tool-button-editor.h"
 #include "glade-image-editor.h"
 #include "glade-image-item-editor.h"
+#include "glade-icon-factory-editor.h"
 
 #include <gladeui/glade-editor-property.h>
 #include <gladeui/glade-base-editor.h>
@@ -6232,7 +6233,7 @@ glade_gtk_image_menu_item_write_widget (GladeWidgetAdaptor *adaptor,
 	{
 		glade_widget_property_get (widget, "stock", &stock);
 		glade_property_set (label_prop, stock);
-		glade_property_set_i18n_translatable (label_prop, FALSE);
+		glade_property_i18n_set_translatable (label_prop, FALSE);
 	}
 	glade_property_write (label_prop, context, node);
 	g_object_unref (G_OBJECT (label_prop));
@@ -9470,4 +9471,19 @@ glade_gtk_icon_factory_create_eprop (GladeWidgetAdaptor *adaptor,
 						       klass, 
 						       use_command);
 	return eprop;
+}
+
+GladeEditable *
+glade_gtk_icon_factory_create_editable (GladeWidgetAdaptor  *adaptor,
+					GladeEditorPageType  type)
+{
+	GladeEditable *editable;
+
+	/* Get base editable */
+	editable = GWA_GET_CLASS (G_TYPE_OBJECT)->create_editable (adaptor, type);
+
+	if (type == GLADE_PAGE_GENERAL)
+		return (GladeEditable *)glade_icon_factory_editor_new (adaptor, editable);
+
+	return editable;
 }

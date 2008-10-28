@@ -333,7 +333,7 @@ glade_editor_property_constructor (GType                  type,
 	gtk_label_set_line_wrap (GTK_LABEL(eprop->label), TRUE);
 	gtk_label_set_line_wrap_mode (GTK_LABEL(eprop->label), PANGO_WRAP_WORD_CHAR);
 
-	/* A Hack to that PANGO_WRAP_WORD_CHAR works nicely */
+	/* A Hack so that PANGO_WRAP_WORD_CHAR works nicely */
 	g_signal_connect (G_OBJECT (eprop->item_label), "size-request",
 			  G_CALLBACK (eprop_item_label_size_request), eprop);
 	g_signal_connect_after (G_OBJECT (eprop->item_label), "size-allocate",

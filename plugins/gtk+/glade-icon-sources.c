@@ -353,7 +353,7 @@ add_clicked (GtkWidget *button,
 	GtkTreeIter *parent_iter = NULL, iter, new_parent_iter;
 	GtkTreePath *new_item_path;
 	gchar       *icon_name;
-	gchar       *selected_icon_name;
+	gchar       *selected_icon_name = NULL;
 	gint         index;
 
 	if (gtk_combo_box_get_active_iter (GTK_COMBO_BOX (eprop_sources->combo), &iter))
@@ -992,20 +992,9 @@ static GtkWidget *
 glade_eprop_icon_sources_create_input (GladeEditorProperty *eprop)
 {
 	GladeEPropIconSources *eprop_sources = GLADE_EPROP_ICON_SOURCES (eprop);
-	GtkWidget *vbox, *hbox, *button, *swin, *label;
-	gchar *string;
+	GtkWidget *vbox, *hbox, *button, *swin;
 
 	vbox = gtk_vbox_new (FALSE, 2);
-
-	/* The label... */
-	string = g_strdup_printf ("<b>%s</b>", _("Add and remove icon sources:"));
-	label = gtk_label_new (string);
-	g_free (string);
-	gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
-	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
-	gtk_misc_set_padding (GTK_MISC (label), 2, 0);
-	gtk_box_pack_start (GTK_BOX (vbox), label,  FALSE, TRUE, 0);
-
 	hbox = gtk_hbox_new (FALSE, 4);
 
 	/* hbox with comboboxentry add/remove source buttons on the right... */
