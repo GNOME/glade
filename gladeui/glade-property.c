@@ -1111,9 +1111,6 @@ glade_property_write (GladeProperty   *property,
 	      glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET (fmt))))
 		return;
 
-	if (!property->klass->save || !property->enabled)
-		return;
-
 	/* Dont write unsupported properties */
 	if ((fmt == GLADE_PROJECT_FORMAT_GTKBUILDER &&
 	     property->klass->libglade_only) ||

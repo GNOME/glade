@@ -938,7 +938,11 @@ glade_widget_adaptor_object_write_widget (GladeWidgetAdaptor *adaptor,
 	/* Write the properties */
 	for (props = widget->properties; 
 	     props; props = props->next)
-		glade_property_write (GLADE_PROPERTY (props->data), context, node);
+	{
+		if (GLADE_PROPERTY (props->data)->klass->save && 
+		    GLADE_PROPERTY (props->data)->enabled)
+			glade_property_write (GLADE_PROPERTY (props->data), context, node);
+	}
 
 	/* Write the signals */
 	g_hash_table_foreach (widget->signals,
@@ -1067,8 +1071,12 @@ glade_widget_adaptor_object_write_child (GladeWidgetAdaptor *adaptor,
 
 	for (props = widget->packing_properties; 
 	     props; props = props->next)
-		glade_property_write (GLADE_PROPERTY (props->data), 
-				      context, packing_node);
+	{
+		if (GLADE_PROPERTY (props->data)->klass->save && 
+		    GLADE_PROPERTY (props->data)->enabled)
+			glade_property_write (GLADE_PROPERTY (props->data), 
+					      context, packing_node);
+	}
 
 	glade_widget_write_special_child_prop (widget->parent,
 					       widget->object,

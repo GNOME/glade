@@ -21,6 +21,20 @@
 	* gladeui/glade-base-editor.c: Fixed to allow properties expand/fill
 	in both label and entry.
 
+	* src/glade-window.c: Clear toolbar actions when closing projects.
+
+	* gladeui/glade-gtk.c: Fixed bugs around load/save of button/imagemenuitem
+	label (stock driven) properties.
+
+	* plugins/gtk+/glade-image-item-editor.c: Fixed a null dereference, glade_command_create()
+	sometimes ends up changeing the selection, so the editable may be reloaded in the
+	midst of its flow.
+
+	* gladeui/glade-property.c, gladeui/glade-widget-adaptor.c: Now check for pclass->save
+	and pclass->enabled *before* calling glade_property_write(), this allows plugins to
+	mark props as save="False" and save those properties with custom values, still allowing
+	them to use the GladeProperty api.
+
 2008-10-27  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-gtk.c: 

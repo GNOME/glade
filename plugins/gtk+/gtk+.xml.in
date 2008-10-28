@@ -392,6 +392,7 @@ embedded in another object</_tooltip>
 
     <glade-widget-class name="GtkImageMenuItem" generic-name="imagemenuitem" _title="Image Menu Item">
       <read-widget-function>glade_gtk_image_menu_item_read_widget</read-widget-function>
+      <write-widget-function>glade_gtk_image_menu_item_write_widget</write-widget-function>
       <read-child-function>glade_gtk_image_menu_item_read_child</read-child-function>
       <write-child-function>glade_gtk_image_menu_item_write_child</write-child-function>
       <set-property-function>glade_gtk_image_menu_item_set_property</set-property-function>
@@ -407,7 +408,8 @@ embedded in another object</_tooltip>
 	  <_tooltip>The stock item for this menu item</_tooltip>
 	  <spec>glade_standard_string_spec</spec>
 	</property>
-        <property id="label" custom-layout="True"/>
+	<!-- We save the label manually with the stock value if use_stock is set. -->
+        <property id="label" save="False" custom-layout="True"/>
         <property id="use-underline" custom-layout="True"/>
 	<property id="image" disabled="True" />
 	<!--

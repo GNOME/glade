@@ -273,14 +273,15 @@ custom_toggled (GtkWidget            *widget,
 	/* There shouldnt be an image widget here... */
 	if (!get_image_widget (item_editor->loaded_widget))
 	{
+		/* item_editor->loaded_widget may be set to NULL after the create_command. */
+		GladeWidget *loaded = item_editor->loaded_widget;
 		GladeWidget *image =
 			glade_command_create (glade_widget_adaptor_get_by_type (GTK_TYPE_IMAGE),
 					      item_editor->loaded_widget, NULL, 
 					      glade_widget_get_project (item_editor->loaded_widget));
 		gchar *protection = g_strdup_printf (_("Cannot delete %s because it is used by %s, "
 						       "try editing %s instead."),
-						       image->name, item_editor->loaded_widget->name,
-						       item_editor->loaded_widget->name);
+						       image->name, loaded->name, loaded->name);
 		glade_command_protect_widget (image, protection);
 		g_free (protection);
 	}

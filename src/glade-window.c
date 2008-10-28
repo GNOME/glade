@@ -608,6 +608,7 @@ add_actions (GladeWindow *window,
 						   a->klass->label);
 		
 		g_object_set_data (G_OBJECT (item), "glade-widget", widget);
+
 		/* We use destroy_data to keep track of notify::sensitive callbacks
 		 * on the action object and disconnect them when the toolbar item
 		 * gets destroyed.
@@ -1715,6 +1716,8 @@ notebook_tab_removed_cb (GtkNotebook *notebook,
 
 
 	gtk_notebook_remove_page (GTK_NOTEBOOK (window->priv->inspectors_notebook), page_num);
+
+	clean_actions (window);
 
 	/* FIXME: this function needs to be preferably called somewhere else */
 	glade_app_remove_project (project);

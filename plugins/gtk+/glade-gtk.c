@@ -5176,7 +5176,11 @@ glade_gtk_button_set_property (GladeWidgetAdaptor *adaptor,
 	}
 	else if (strcmp (id, "stock") == 0)
 	{
-		gtk_button_set_label (GTK_BUTTON (object), g_value_get_string (value));
+		GladeWidget *widget = glade_widget_get_from_gobject (object);
+		gboolean use_stock  = FALSE;
+		glade_widget_property_get (widget, "use-stock", &use_stock);
+		if (use_stock)
+			gtk_button_set_label (GTK_BUTTON (object), g_value_get_string (value));
 	}
 	else
 		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object,
@@ -5235,8 +5239,6 @@ glade_gtk_button_write_widget (GladeWidgetAdaptor *adaptor,
 		glade_property_set (label_prop, stock);
 	}
 	glade_property_write (label_prop, context, node);
-
-	g_print ("Finalizing property, ref_count %d\n", G_OBJECT (label_prop)->ref_count);
 	g_object_unref (G_OBJECT (label_prop));
 }
 
@@ -5980,7 +5982,7 @@ glade_gtk_image_menu_item_set_label (GObject *object, const GValue *value)
 	GladeWidget *gitem;
 	GtkWidget *label;
 	gboolean use_underline = FALSE, use_stock = FALSE;
-	gchar *text;
+	const gchar *text;
 
 	gitem = glade_widget_get_from_gobject (object);
 	label = gtk_bin_get_child (GTK_BIN (object));
@@ -6192,23 +6194,57 @@ glade_gtk_image_menu_item_read_widget (GladeWidgetAdaptor *adaptor,
 	/* First chain up and read in all the normal properties.. */
         GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
 
-	/* Read in the internal images as normal ones !
-	 */
-
-
 	/* This will read legacy "stock-item" properties and make them usable */
 	glade_gtk_image_menu_item_fix_stock_item (widget);
 
 	glade_widget_property_get (widget, "use-stock", &use_stock);
 	if (use_stock)
 	{
+		GladeProperty *property = glade_widget_get_property (widget, "label");
 		gchar *label = NULL;
-		glade_widget_property_get (widget, "label", &label);
+
+		glade_property_get (property, &label);
 		glade_widget_property_set (widget, "stock", label);
+		glade_property_sync (property);
 	}
+}
+
+
+void
+glade_gtk_image_menu_item_write_widget (GladeWidgetAdaptor *adaptor,
+					GladeWidget        *widget,
+					GladeXmlContext    *context,
+					GladeXmlNode       *node)
+{
+	GladeProperty *label_prop;
+	gboolean       use_stock;
+	gchar         *stock;
+
+	if (!glade_xml_node_verify
+	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+		return;
+
+	/* Make a copy of the GladeProperty, override its value if use-stock is TRUE */
+	label_prop = glade_widget_get_property (widget, "label");
+	label_prop = glade_property_dup (label_prop, widget);
+	glade_widget_property_get (widget, "use-stock", &use_stock);
+	if (use_stock)
+	{
+		glade_widget_property_get (widget, "stock", &stock);
+		glade_property_set (label_prop, stock);
+		glade_property_set_i18n_translatable (label_prop, FALSE);
+	}
+	glade_property_write (label_prop, context, node);
+	g_object_unref (G_OBJECT (label_prop));
+
+	/* Chain up and write all the normal properties ... */
+        GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
 
 }
 
+
+/* Read in the internal "image" widgets as normal "protected" widgets...
+ */
 void
 glade_gtk_image_menu_item_read_child (GladeWidgetAdaptor *adaptor,
 				      GladeWidget        *widget,
