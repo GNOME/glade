@@ -119,11 +119,11 @@ glade_image_editor_load (GladeEditable *editable,
 	}
 
 	/* load the embedded editable... */
-	glade_editable_load (GLADE_EDITABLE (image_editor->embed), widget);
+	if (image_editor->embed)
+		glade_editable_load (GLADE_EDITABLE (image_editor->embed), widget);
 
 	for (l = image_editor->properties; l; l = l->next)
 		glade_editor_property_load_by_widget (GLADE_EDITOR_PROPERTY (l->data), widget);
-
 
 	if (widget)
 	{
@@ -170,6 +170,10 @@ glade_image_editor_finalize (GObject *object)
 
 	if (image_editor->properties)
 		g_list_free (image_editor->properties);
+	image_editor->properties = NULL;
+	image_editor->embed      = NULL;
+
+	glade_editable_load (GLADE_EDITABLE (object), NULL);
 
 	G_OBJECT_CLASS (glade_image_editor_parent_class)->finalize (object);
 }

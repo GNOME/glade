@@ -78,4 +78,4 @@ GtkWidget       *glade_tool_button_editor_new      (GladeWidgetAdaptor *adaptor,
 
 G_END_DECLS
 
-#endif  /* _GLADE_BUTTON_EDITOR_H_ */
+#endif  /* _GLADE_TOOL_BUTTON_EDITOR_H_ */

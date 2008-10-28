@@ -3633,7 +3633,8 @@ glade_widget_read (GladeProject *project,
 
 /**
  * glade_widget_write_child:
- * @widget: The #GladeWidget
+ * @widget: A #GladeWidget
+ * @child: The child #GladeWidget to write
  * @context: A #GladeXmlContext
  * @node: A #GladeXmlNode
  *
@@ -3642,13 +3643,16 @@ glade_widget_read (GladeProject *project,
  */
 void
 glade_widget_write_child (GladeWidget     *widget,
+			  GladeWidget     *child,
 			  GladeXmlContext *context,
 			  GladeXmlNode    *node)
 {
-	g_return_if_fail (widget->parent);
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	g_return_if_fail (GLADE_IS_WIDGET (child));
+	g_return_if_fail (child->parent == widget);
 
-	glade_widget_adaptor_write_child (widget->parent->adaptor,
-					  widget, context, node);
+	glade_widget_adaptor_write_child (widget->adaptor,
+					  child, context, node);
 }
 
 
@@ -4160,4 +4164,26 @@ glade_widget_set_support_warning (GladeWidget *widget,
 	widget->support_warning = g_strdup (warning);
 
 	g_object_notify (G_OBJECT (widget), "support-warning");
+}
+
+void
+glade_widget_protect (GladeWidget      *widget,
+		      const gchar      *warning)
+{
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	g_return_if_fail (warning && warning[0]);
+	
+	if (widget->protection)
+		g_free (widget->protection);
+	widget->protection = g_strdup (warning);
+}
+
+void
+glade_widget_unprotect (GladeWidget    *widget)
+{
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	
+	if (widget->protection)
+		g_free (widget->protection);
+	widget->protection = NULL;
 }

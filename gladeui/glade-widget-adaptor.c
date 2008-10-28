@@ -954,7 +954,7 @@ glade_widget_adaptor_object_write_widget (GladeWidgetAdaptor *adaptor,
 			GladeWidget *child = glade_widget_get_from_gobject (l->data);
 
 			if (child) 
-				glade_widget_write_child (child, context, node);
+				glade_widget_write_child (widget, child, context, node);
 			else if (GLADE_IS_PLACEHOLDER (l->data))
 				glade_widget_write_placeholder (widget, 
 								G_OBJECT (l->data),
@@ -2269,6 +2269,7 @@ glade_widget_adaptor_from_catalog (GladeCatalog         *catalog,
  *                     outside of the hierarchy.
  * @internal_object:   the #GObject
  * @internal_name:     a string identifier for this internal widget.
+ * @parent_name:       the generic name of the parent used for fancy child names.
  * @anarchist:         Whether or not this widget is a widget outside
  *                     of the parent's hierarchy (like a popup window)
  * @reason:            The #GladeCreateReason for which this internal widget
@@ -2296,7 +2297,7 @@ glade_widget_adaptor_create_internal  (GladeWidget      *parent,
 	g_return_val_if_fail (GLADE_IS_WIDGET (parent), NULL);
 	project = glade_widget_get_project (parent);
 
-        if ((adaptor = glade_widget_adaptor_get_by_name 
+        if ((adaptor = glade_widget_adaptor_get_by_name
 	     (G_OBJECT_TYPE_NAME (internal_object))) == NULL)
 	{
 		g_critical ("Unable to find widget class for type %s", 

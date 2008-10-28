@@ -372,12 +372,12 @@ embedded in another object</_tooltip>
         <action id="launch_editor" _name="Edit&#8230;" stock="gtk-edit" important="True"/>
       </actions>
       <properties>
-        <property id="submenu" since="2.12" disabled="True"/>
         <property id="label" _name="Label" translatable="True">
 	  <_tooltip>The text of the menu item</_tooltip>
           <spec>glade_standard_string_spec</spec>
         </property>
         <property id="use-underline" _name="Use Underline">
+	  <_tooltip>If set, an underline in the text indicates the next character should be used for the mnemonic accelerator key</_tooltip>
           <spec>glade_standard_boolean_spec</spec>
         </property>
 	<!-- Atk click property -->
@@ -386,12 +386,36 @@ embedded in another object</_tooltip>
 	  <spec>glade_standard_string_spec</spec>
 	  <visible-lines>2</visible-lines>
 	</property>
+        <property id="submenu" since="2.12" disabled="True"/>
+      </properties>
+    </glade-widget-class>
+
+    <glade-widget-class name="GtkImageMenuItem" generic-name="imagemenuitem" _title="Image Menu Item">
+      <read-widget-function>glade_gtk_image_menu_item_read_widget</read-widget-function>
+      <read-child-function>glade_gtk_image_menu_item_read_child</read-child-function>
+      <write-child-function>glade_gtk_image_menu_item_write_child</write-child-function>
+      <set-property-function>glade_gtk_image_menu_item_set_property</set-property-function>
+      <get-children-function>glade_gtk_image_menu_item_get_children</get-children-function>
+      <add-child-function>glade_gtk_image_menu_item_add_child</add-child-function>
+      <remove-child-function>glade_gtk_image_menu_item_remove_child</remove-child-function>
+      <create-editable-function>glade_gtk_image_menu_item_create_editable</create-editable-function>
+      <properties>
+        <property id="use-stock" visible="False">
+	  <spec>glade_standard_boolean_spec</spec>
+        </property>
+	<property id="stock" stock="True" _name="Stock Item" save="False" custom-layout="True">
+	  <_tooltip>The stock item for this menu item</_tooltip>
+	  <spec>glade_standard_string_spec</spec>
+	</property>
+        <property id="label" custom-layout="True"/>
+        <property id="use-underline" custom-layout="True"/>
+	<property id="image" disabled="True" />
 	<!--
 	This property is added by glade2 gnome support and makes reference to
-	GNOMEUIINFO_MENU_* macros. The set-property-function maps these properties to 
-	existing non deprecated gtk ones
+	GNOMEUIINFO_MENU_* macros. The read-widget-funcion maps these properties to 
+	existing non deprecated gtk ones at load time.
 	-->
-        <property id="stock-item" visible="False" save="False">
+        <property id="stock-item" ignore="True" visible="False" save="False">
           <spec>glade_gtk_gnome_ui_info_spec</spec>
         </property>
       </properties>
@@ -407,25 +431,10 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkImageMenuItem" generic-name="imagemenuitem" _title="Image Menu Item">
-      <get-internal-child-function>glade_gtk_image_menu_item_get_internal_child</get-internal-child-function>
-      <set-property-function>glade_gtk_image_menu_item_set_property</set-property-function>
-      <properties>
-        <property id="use-stock" visible="False">
-	  <spec>glade_standard_boolean_spec</spec>
-        </property>
-	<property id="stock" _name="Stock Item" save="False">
-	  <_tooltip>A stock item, select None to choose a custom image and label</_tooltip>
-	  <spec>glade_standard_stock_spec</spec>
-	</property>
-	<property id="image" disabled="True" />
-      </properties>
-    </glade-widget-class>
-
     <glade-widget-class name="GtkSeparatorMenuItem" generic-name="separatormenuitem" _title="Separator Menu Item">
       <properties>
-        <property id="label" visible="False"/>
-        <property id="use-underline" visible="False"/>
+        <property id="label" disabled="True"/>
+        <property id="use-underline" disabled="True"/>
       </properties>
     </glade-widget-class>
 

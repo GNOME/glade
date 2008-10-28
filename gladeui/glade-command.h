@@ -114,6 +114,13 @@ void           glade_command_set_properties_list (GladeProject  *project,
 void           glade_command_set_name      (GladeWidget       *glade_widget, const gchar  *name);
 
 
+/************************ protection ******************************/
+
+void           glade_command_protect_widget   (GladeWidget   *widget, 
+					       const gchar   *warning);
+
+void           glade_command_unprotect_widget (GladeWidget   *widget);
+
 /************************ create/delete ******************************/
 
 void           glade_command_delete        (GList              *widgets);

@@ -431,18 +431,7 @@ static void
 glade_editor_property_load_common (GladeEditorProperty *eprop, 
 				   GladeProperty       *property)
 {
-	/* Hide properties that are removed for some particular widgets. 
-	 */
-	if (property)
-	{
-		gtk_widget_show (GTK_WIDGET (eprop));
-		gtk_widget_show (eprop->item_label);
-	}
-	else
-	{
-		gtk_widget_hide (GTK_WIDGET (eprop));
-		gtk_widget_hide (eprop->item_label);
-	}
+	/* NOTE THIS CODE IS FINALIZE SAFE */
 
 	/* disconnect anything from previously loaded property */
 	if (eprop->property != property && eprop->property != NULL) 

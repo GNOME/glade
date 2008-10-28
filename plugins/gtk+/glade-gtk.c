@@ -34,6 +34,7 @@
 #include "glade-button-editor.h"
 #include "glade-tool-button-editor.h"
 #include "glade-image-editor.h"
+#include "glade-image-item-editor.h"
 
 #include <gladeui/glade-editor-property.h>
 #include <gladeui/glade-base-editor.h>
@@ -5389,7 +5390,7 @@ glade_gtk_image_create_editable (GladeWidgetAdaptor  *adaptor,
 	GladeEditable *editable;
 
 	/* Get base editable */
-	editable = GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+	editable = GWA_GET_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
 
 	if (type == GLADE_PAGE_GENERAL)
 		return (GladeEditable *)glade_image_editor_new (adaptor, editable);
@@ -5648,6 +5649,21 @@ glade_gtk_menu_shell_change_type (GladeBaseEditor *editor,
 {
 	GObject *child = glade_widget_get_object (gchild);
 	
+	/* Delete the internal image of an image menu item before going ahead and changing types. */
+	if (GTK_IS_IMAGE_MENU_ITEM (child))
+	{
+		GList list = { 0, };
+		GtkWidget   *image = gtk_image_menu_item_get_image (GTK_IMAGE_MENU_ITEM (child));
+		GladeWidget *widget;
+
+		if (image && (widget = glade_widget_get_from_gobject (image)))
+		{
+			list.data = widget;
+			glade_command_unprotect_widget (widget);
+			glade_command_delete (&list);
+		}
+	}
+
 	if (type == GTK_TYPE_SEPARATOR_MENU_ITEM &&
 	    gtk_menu_item_get_submenu (GTK_MENU_ITEM (child)))
 		return TRUE;
@@ -5668,31 +5684,20 @@ glade_gtk_menu_shell_child_selected (GladeBaseEditor *editor,
 	glade_base_editor_add_default_properties (editor, gchild);
 	
 	if (GTK_IS_SEPARATOR_MENU_ITEM (child)) return;
-	
+
 	glade_base_editor_add_label (editor, "Properties");
-	
-	glade_base_editor_add_properties (editor, gchild, FALSE, "label", "tooltip", NULL);
+
+	if (glade_project_get_format (gchild->project) == GLADE_PROJECT_FORMAT_LIBGLADE)
+		glade_base_editor_add_properties (editor, gchild, FALSE, "tooltip", NULL);
+	else
+		glade_base_editor_add_properties (editor, gchild, FALSE, "tooltip-text", NULL);
+
+
+	if (type != GTK_TYPE_IMAGE_MENU_ITEM)
+		glade_base_editor_add_properties (editor, gchild, FALSE, "label", "tooltip", NULL);
 
 	if (type == GTK_TYPE_IMAGE_MENU_ITEM)
-	{
-		GtkWidget *image;
-		GladeWidget *internal;
-
-		glade_base_editor_add_properties (editor, gchild, FALSE, "stock", NULL);
-		
-		if ((image = gtk_image_menu_item_get_image (GTK_IMAGE_MENU_ITEM (child))))
-		{
-			if ((internal = glade_widget_get_from_gobject (image)) &&
-				internal->internal)
-			{
-				glade_base_editor_add_label
-					(editor, "Internal Image Properties");
-				glade_base_editor_add_properties
-					(editor, internal, FALSE, "glade-type", "pixbuf", 
-					 "glade-stock", "icon-name", NULL);
-			}
-		}
-	}
+		glade_base_editor_add_editable (editor, gchild);
 	else if (type == GTK_TYPE_CHECK_MENU_ITEM)
 		glade_base_editor_add_properties (editor, gchild, FALSE,
 						  "active", "draw-as-radio",
@@ -5759,7 +5764,34 @@ glade_gtk_menu_shell_action_activate (GladeWidgetAdaptor *adaptor,
 								     action_path);
 }
 
-/* ----------------------------- GtkMenuItem(s) ------------------------------ */
+/* ----------------------------- GtkMenuItem ------------------------------ */
+void
+glade_gtk_menu_item_action_activate (GladeWidgetAdaptor *adaptor,
+				     GObject *object,
+				     const gchar *action_path)
+{
+	if (strcmp (action_path, "launch_editor") == 0)
+	{
+		GladeWidget *w = glade_widget_get_from_gobject (object);
+		
+		while ((w = glade_widget_get_parent (w)))
+		{
+			GObject *obj = glade_widget_get_object (w);
+			if (GTK_IS_MENU_SHELL (obj)) object = obj;
+		}
+		
+		if (GTK_IS_MENU_BAR (object))
+			glade_gtk_menu_shell_launch_editor (object, _("Edit Menu Bar"));
+		else if (GTK_IS_MENU (object))
+			glade_gtk_menu_shell_launch_editor (object, _("Edit Menu"));
+	}
+	else
+		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor,
+								     object,
+								     action_path);
+}
+
+
 GObject *
 glade_gtk_menu_item_constructor (GType                  type,
 				 guint                  n_construct_properties,
@@ -5778,6 +5810,27 @@ glade_gtk_menu_item_constructor (GType                  type,
 
 	return ret_obj;
 }
+	
+void
+glade_gtk_menu_item_post_create (GladeWidgetAdaptor *adaptor, 
+				 GObject            *object, 
+				 GladeCreateReason   reason)
+{
+	GladeWidget  *gitem;
+
+	g_return_if_fail (GTK_IS_MENU_ITEM (object));
+	gitem = glade_widget_get_from_gobject (object);
+	g_return_if_fail (GLADE_IS_WIDGET (gitem));
+	
+	if (GTK_IS_SEPARATOR_MENU_ITEM (object)) return;
+	
+	if (gtk_bin_get_child (GTK_BIN (object)) == NULL)
+	{
+		GtkWidget *label = gtk_label_new ("");
+		gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+		gtk_container_add (GTK_CONTAINER (object), label);
+	}
+}
 
 GList *
 glade_gtk_menu_item_get_children (GladeWidgetAdaptor *adaptor,
@@ -5789,10 +5842,6 @@ glade_gtk_menu_item_get_children (GladeWidgetAdaptor *adaptor,
 	g_return_val_if_fail (GTK_IS_MENU_ITEM (object), NULL);
 	
 	if ((child = gtk_menu_item_get_submenu (GTK_MENU_ITEM (object))))
-		list = g_list_append (list, child);
-	
-	if (GTK_IS_IMAGE_MENU_ITEM (object) &&
-	    (child = gtk_image_menu_item_get_image (GTK_IMAGE_MENU_ITEM (object))))
 		list = g_list_append (list, child);
 
 	return list;
@@ -5824,114 +5873,19 @@ glade_gtk_menu_item_remove_child (GladeWidgetAdaptor *adaptor,
 	gtk_menu_item_remove_submenu (GTK_MENU_ITEM (object));
 }
 
-#define glade_return_if_re_entrancy(o,p,v) \
-	if ((v) == GPOINTER_TO_INT (g_object_get_data (G_OBJECT (o), p))) return; g_object_set_data (G_OBJECT (o), p, GINT_TO_POINTER ((v)))
-	
-void
-glade_gtk_menu_item_post_create (GladeWidgetAdaptor *adaptor, 
-				 GObject            *object, 
-				 GladeCreateReason   reason)
-{
-	GladeWidget  *gitem, *gimage;
-
-	g_return_if_fail (GTK_IS_MENU_ITEM (object));
-	gitem = glade_widget_get_from_gobject (object);
-	g_return_if_fail (GLADE_IS_WIDGET (gitem));
-	
-	if (GTK_IS_SEPARATOR_MENU_ITEM (object)) return;
-	
-	if (gtk_bin_get_child (GTK_BIN (object)) == NULL)
-	{
-		GtkWidget *label = gtk_label_new ("");
-		gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-		gtk_container_add (GTK_CONTAINER (object), label);
-	}
-
-	if (GTK_IS_IMAGE_MENU_ITEM (object))
-	{
-		gboolean use_stock;
-	
-		glade_widget_property_get (gitem, "use-stock", &use_stock);
-		if (use_stock)
-		{
-			GEnumClass *eclass;
-			GEnumValue *eval;
-			gchar *label;
-			
-			glade_widget_property_get (gitem, "label", &label);
-			
-			eclass = g_type_class_ref (GLADE_TYPE_STOCK);
-			eval = g_enum_get_value_by_nick (eclass, label);
-			if (eval)
-				glade_widget_property_set(gitem, "stock", eval->value);
-			
-			glade_widget_property_set (gitem, "use-underline", TRUE);
-		}
-		else
-		{
-			if (reason == GLADE_CREATE_USER)
-			{
-				GtkWidget *image = gtk_image_new ();
-
-				gimage = glade_widget_adaptor_create_internal
-					(gitem, G_OBJECT (image),
-					 "image", "menu-item", FALSE, reason);
-				gtk_image_menu_item_set_image
-					(GTK_IMAGE_MENU_ITEM (object), image);
-			}
-		}
-	}
-}
-
 static void
 glade_gtk_menu_item_set_label (GObject *object, const GValue *value)
 {
 	GladeWidget *gitem;
-	GtkWidget *label;
-	gboolean use_underline, use_stock;
-	const gchar *label_str, *last_label_str;
+	GtkWidget   *label;
+	gboolean     use_underline;
 
-	g_return_if_fail (GTK_IS_MENU_ITEM (object));
 	gitem = glade_widget_get_from_gobject (object);
-	g_return_if_fail (GLADE_IS_WIDGET (gitem));
-	
-	if (GTK_IS_SEPARATOR_MENU_ITEM (object)) return;
 
-	label_str = g_value_get_string (value);
-	
-	last_label_str = g_object_get_data (G_OBJECT (gitem), "label");
-	if (last_label_str)
-		if (strcmp(label_str, last_label_str) == 0) return;
-	g_object_set_data_full (G_OBJECT (gitem), "label", g_strdup(label_str), g_free);
-
-	if (GTK_IS_IMAGE_MENU_ITEM (object))
-	{
-		glade_widget_property_get (gitem, "use-stock", &use_stock);
-		
-		if (use_stock)
-		{
-			GtkWidget *image;
-			GEnumClass *eclass;
-			GEnumValue *eval;
-			
-			eclass = g_type_class_ref (GLADE_TYPE_STOCK);
-			eval = g_enum_get_value_by_nick (eclass, label_str);
-			
-			if (eval)
-			{
-				label_str = eval->value_name;
-			
-				image = gtk_image_new_from_stock (eval->value_nick, GTK_ICON_SIZE_MENU);
-				gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (object), image);
-			}
-			
-			g_type_class_unref (eclass);
-		}
-	}
-	
 	label = gtk_bin_get_child (GTK_BIN (object));
-	gtk_label_set_text (GTK_LABEL (label), label_str);
-	
+	gtk_label_set_text (GTK_LABEL (label), g_value_get_string (value));
+
+	/* Update underline incase... */
 	glade_widget_property_get (gitem, "use-underline", &use_underline);
 	gtk_label_set_use_underline (GTK_LABEL (label), use_underline);
 }
@@ -5939,65 +5893,207 @@ glade_gtk_menu_item_set_label (GObject *object, const GValue *value)
 static void
 glade_gtk_menu_item_set_use_underline (GObject *object, const GValue *value)
 {
-	GtkMenuItem *item;
-	GtkWidget *label;
+	GtkWidget   *label;
 
-	g_return_if_fail (GTK_IS_MENU_ITEM (object));
-
-	item = GTK_MENU_ITEM (object);
-
-	if (GTK_IS_SEPARATOR_MENU_ITEM (item)) return;
-	
-	label = gtk_bin_get_child (GTK_BIN (item));
-
+	label = gtk_bin_get_child (GTK_BIN (object));
 	gtk_label_set_use_underline (GTK_LABEL (label), g_value_get_boolean (value));
 }
 
-GObject *
-glade_gtk_image_menu_item_get_internal_child (GladeWidgetAdaptor *adaptor,
-					      GObject            *parent,
-					      const gchar        *name);
-
-static void
-glade_gtk_menu_item_set_stock_item (GObject *object, const GValue *value)
+void
+glade_gtk_menu_item_set_property (GladeWidgetAdaptor *adaptor,
+				  GObject            *object, 
+				  const gchar        *id,
+				  const GValue       *value)
 {
-	GladeWidget *gitem, *gimage;
-	GEnumClass *eclass;
-	GEnumValue *eval;
-	gint val;
-	gchar *label, *icon;
-	GObject *image;
-	gboolean is_image_item;
+	if (!strcmp (id, "use-underline"))
+		glade_gtk_menu_item_set_use_underline (object, value);
+	else if (!strcmp (id, "label"))
+		glade_gtk_menu_item_set_label (object, value);
+	else
+		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object,
+								  id, value);
+}
+
+/* ----------------------------- GtkImageMenuItem ------------------------------ */
+GList *
+glade_gtk_image_menu_item_get_children (GladeWidgetAdaptor *adaptor,
+					GObject *object)
+{
+	GList *list = NULL;
+	GtkWidget *child;
 	
+	g_return_val_if_fail (GTK_IS_MENU_ITEM (object), NULL);
+	
+	if ((child = gtk_menu_item_get_submenu (GTK_MENU_ITEM (object))))
+		list = g_list_append (list, child);
+	
+	if (GTK_IS_IMAGE_MENU_ITEM (object) &&
+	    (child = gtk_image_menu_item_get_image (GTK_IMAGE_MENU_ITEM (object))))
+		list = g_list_append (list, child);
+
+	return list;
+}
+
+void
+glade_gtk_image_menu_item_add_child (GladeWidgetAdaptor *adaptor,
+				     GObject *object, GObject *child)
+{
 	g_return_if_fail (GTK_IS_MENU_ITEM (object));
 
-	if ((val = g_value_get_enum (value)) == GNOMEUIINFO_MENU_NONE)
-		return;
+	if (GTK_IS_IMAGE (child))
+		gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (object), GTK_WIDGET (child));
+	else
+ 		GWA_GET_CLASS (GTK_TYPE_MENU_ITEM)->add (adaptor, object, child);
+}
+
+void
+glade_gtk_image_menu_item_remove_child (GladeWidgetAdaptor *adaptor,
+					GObject *object, GObject *child)
+{
+	g_return_if_fail (GTK_IS_MENU_ITEM (object));
 	
-	eclass = g_type_class_ref (G_VALUE_TYPE (value));
+	if (GTK_IS_IMAGE (child))
+		gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (object), NULL);
+	else
+ 		GWA_GET_CLASS (GTK_TYPE_MENU_ITEM)->remove (adaptor, object, child);
+}
+
+static void
+glade_gtk_image_menu_item_set_use_stock (GObject *object, const GValue *value)
+{
+	GladeWidget  *widget = glade_widget_get_from_gobject (object);
+	gboolean      use_stock;
+	
+	use_stock = g_value_get_boolean (value);
+
+	/* Set some things */
+	if (use_stock)
+		glade_widget_property_set_sensitive (widget, "stock", TRUE, NULL);
+	else
+		glade_widget_property_set_sensitive (widget, "stock", FALSE, _("Property not selected"));
+
+}
+
+static void
+glade_gtk_image_menu_item_set_label (GObject *object, const GValue *value)
+{
+	GladeWidget *gitem;
+	GtkWidget *label;
+	gboolean use_underline = FALSE, use_stock = FALSE;
+	gchar *text;
+
+	gitem = glade_widget_get_from_gobject (object);
+	label = gtk_bin_get_child (GTK_BIN (object));
+
+	glade_widget_property_get (gitem, "use-stock", &use_stock);
+	glade_widget_property_get (gitem, "use-underline", &use_underline);
+	text = g_value_get_string (value);
+
+	/* In "use-stock" mode we dont have a GladeWidget child image */
+	if (use_stock)
+	{
+		GtkWidget *image;
+		GtkStockItem item;
+
+		image = gtk_image_new_from_stock (g_value_get_string (value), GTK_ICON_SIZE_MENU);
+		gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (object), image);
+
+		/* Get the label string... */
+		if (text && gtk_stock_lookup (text, &item))
+			gtk_label_set_text (GTK_LABEL (label), item.label);
+		else
+			gtk_label_set_text (GTK_LABEL (label), text);
+
+		/* Just for display purposes, real stock menuitems dont need the underline property,
+		 * but do have mnemonic label. */
+		gtk_label_set_use_underline (GTK_LABEL (label), TRUE);
+	} 
+	else 
+		gtk_label_set_text (GTK_LABEL (label), g_value_get_string (value));
+
+	/* Update underline incase... */
+	gtk_label_set_use_underline (GTK_LABEL (label), use_underline);
+}
+
+static void
+glade_gtk_image_menu_item_set_stock (GObject *object, const GValue *value)
+{
+	/* Forward the work along to the label handler...  */
+	glade_gtk_image_menu_item_set_label (object, value);
+}
+
+void
+glade_gtk_image_menu_item_set_property (GladeWidgetAdaptor *adaptor,
+					GObject            *object, 
+					const gchar        *id,
+					const GValue       *value)
+{
+	if (!strcmp (id, "stock"))
+		glade_gtk_image_menu_item_set_stock (object, value);
+	else if (!strcmp (id, "use-stock"))
+		glade_gtk_image_menu_item_set_use_stock (object, value);
+	else if (!strcmp (id, "label"))
+		glade_gtk_image_menu_item_set_label (object, value);
+	else
+		GWA_GET_CLASS (GTK_TYPE_MENU_ITEM)->set_property (adaptor, object,
+								  id, value);
+}
+
+static GladeWidget *
+glade_gtk_image_menu_item_create_image (GladeWidget *gitem)
+{
+	GladeWidget *gimage;
+	gchar *protection;
+
+	gimage = glade_widget_adaptor_create_widget 
+		(glade_widget_adaptor_get_by_type (GTK_TYPE_IMAGE), FALSE,
+		 "parent", gitem, 
+		 "project", glade_widget_get_project (gitem), 
+		 NULL);
+	
+	gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (gitem->object), 
+				       GTK_WIDGET (gimage->object));
+
+	protection = g_strdup_printf (_("Cannot delete %s because it is used by %s, "
+					"try editing %s instead."),
+				      gimage->name, gitem->name, gitem->name);
+	glade_widget_protect (gimage, protection);
+	g_free (protection);
+
+	return gimage;
+}
+
+static void
+glade_gtk_image_menu_item_fix_stock_item (GladeWidget *widget)
+{
+	GladeWidget *gimage;
+	GEnumClass  *eclass;
+	GEnumValue  *eval;
+	gint         val = GNOMEUIINFO_MENU_NONE;
+	gchar       *label = NULL, *icon = NULL;
+	
+	glade_widget_property_get (widget, "stock-item", &val);
+	if (val == GNOMEUIINFO_MENU_NONE) return;
+	
+	/* Get the GEnumValue ... */
+	eclass = g_type_class_ref (glade_gtk_gnome_ui_info_get_type ());
 	if ((eval = g_enum_get_value (eclass, val)) == NULL)
 	{
 		g_type_class_unref (eclass);
 		return;
 	}
-
 	g_type_class_unref (eclass);
 	
 	/* set use-underline */
-	gitem = glade_widget_get_from_gobject (object);
-	glade_widget_property_set (gitem, "use-underline", TRUE);
+	glade_widget_property_set (widget, "use-underline", TRUE);
 	
-	is_image_item = GTK_IS_IMAGE_MENU_ITEM (object);
-	
-	/* If its a GtkImageMenuItem */
-	if (is_image_item && eval->value_nick)
+	if (eval->value_nick)
 	{
-		glade_widget_property_set (gitem, "use-stock", TRUE);
-		glade_widget_property_set (gitem, "label", eval->value_nick);		
+		glade_widget_property_set (widget, "use-stock", TRUE);
+		glade_widget_property_set (widget, "label", eval->value_nick);		
 		return;
 	}
 	
-	icon = NULL;
 	switch (val)
 	{
 		case GNOMEUIINFO_MENU_PRINT_SETUP_ITEM:
@@ -6072,152 +6168,134 @@ glade_gtk_menu_item_set_stock_item (GObject *object, const GValue *value)
 		break;
 	}
 
-	if (is_image_item && icon)
+	if (icon)
 	{
-		eclass = g_type_class_ref (GLADE_TYPE_STOCK);
-		eval = g_enum_get_value_by_nick (eclass, icon);
-		g_type_class_unref (eclass);
-	
-		image = glade_gtk_image_menu_item_get_internal_child
-			(gitem->adaptor, object, "image");
-
-		gimage = glade_widget_get_from_gobject (image);
+		gimage = glade_gtk_image_menu_item_create_image	(widget);
+		glade_widget_property_set (gimage, "stock", icon);
 		glade_widget_property_set (gimage, "icon-size", GTK_ICON_SIZE_MENU);
-		glade_widget_property_set (gimage, "glade-stock", eval->value);
 	}
 	
-	glade_widget_property_set (gitem, "label", label);
+	glade_widget_property_set (widget, "label", label);
 }
 
 void
-glade_gtk_menu_item_set_property (GladeWidgetAdaptor *adaptor,
-				  GObject            *object, 
-				  const gchar        *id,
-				  const GValue       *value)
+glade_gtk_image_menu_item_read_widget (GladeWidgetAdaptor *adaptor,
+				       GladeWidget        *widget,
+				       GladeXmlNode       *node)
 {
-	if (!strcmp (id, "use-underline"))
-		glade_gtk_menu_item_set_use_underline (object, value);
-	else if (!strcmp (id, "label"))
-		glade_gtk_menu_item_set_label (object, value);
-	else if (!strcmp (id, "stock-item"))
-		glade_gtk_menu_item_set_stock_item (object, value);
-	else
-		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object,
-								  id, value);
-}
+	gboolean use_stock;
 
-GObject *
-glade_gtk_image_menu_item_get_internal_child (GladeWidgetAdaptor *adaptor,
-					      GObject            *parent,
-					      const gchar        *name)
-{
-	GtkWidget *image;
-	GObject   *child = NULL;
+	if (!glade_xml_node_verify 
+	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+		return;
 
-	if (GTK_IS_IMAGE_MENU_ITEM (parent) && strcmp (name, "image") == 0)
-	{
-		image = gtk_image_menu_item_get_image (GTK_IMAGE_MENU_ITEM (parent));
-		if (image == NULL)
-		{
-			GladeWidget  *gitem, *gimage;
-			
-			gitem = glade_widget_get_from_gobject (parent);
-			image = gtk_image_new ();
+	/* First chain up and read in all the normal properties.. */
+        GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
 
-			gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (parent), image);
-			
-			gimage = glade_widget_adaptor_create_internal
-				(gitem, G_OBJECT (image), "image", "menu-item",
-				 FALSE, GLADE_CREATE_LOAD);
-		}
-		child = G_OBJECT (image);
-	}
+	/* Read in the internal images as normal ones !
+	 */
 
-	return child;
-}
 
-static void
-glade_gtk_image_menu_item_set_use_stock (GObject *object, const GValue *value)
-{
-	GladeWidget  *gitem, *gimage;
-	gboolean      use_stock;
-	GtkWidget    *image;
-	
-	g_return_if_fail (GTK_IS_IMAGE_MENU_ITEM (object));
-	gitem = glade_widget_get_from_gobject (object);
-	g_return_if_fail (GLADE_IS_WIDGET (gitem));
+	/* This will read legacy "stock-item" properties and make them usable */
+	glade_gtk_image_menu_item_fix_stock_item (widget);
 
-	use_stock = g_value_get_boolean (value);
-	
-	glade_return_if_re_entrancy (gitem, "use-stock", use_stock);
-
-	if ((image = gtk_image_menu_item_get_image (GTK_IMAGE_MENU_ITEM (object))))
-		if(glade_widget_get_from_gobject (G_OBJECT(image)))
-		{
-			glade_project_remove_object (glade_widget_get_project (gitem), G_OBJECT(image));
-			gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (object), NULL);
-		}
-	
+	glade_widget_property_get (widget, "use-stock", &use_stock);
 	if (use_stock)
 	{
-		glade_widget_property_set_sensitive (gitem, "label", FALSE,
-					_("This does not apply with stock items"));
+		gchar *label = NULL;
+		glade_widget_property_get (widget, "label", &label);
+		glade_widget_property_set (widget, "stock", label);
 	}
-	else
-	{
-		image = gtk_image_new ();
-		gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (object), image);
-		gimage = glade_widget_adaptor_create_internal
-			(gitem, G_OBJECT (image), "image", "menu-item", FALSE,
-			 GLADE_CREATE_LOAD);
-		glade_project_add_object (glade_widget_get_project (gitem), 
-					  NULL, G_OBJECT (image));
 
-		glade_widget_property_set_sensitive (gitem, "label", TRUE, NULL);
-	}
-}
-
-static void
-glade_gtk_image_menu_item_set_stock (GObject *object, const GValue *value)
-{
-	GladeWidget *gitem;
-	GEnumClass *eclass;
-	GEnumValue *eval;
-	gint val;
-	
-	g_return_if_fail (GTK_IS_IMAGE_MENU_ITEM (object));
-	gitem = glade_widget_get_from_gobject (object);
-	g_return_if_fail (GLADE_IS_WIDGET (gitem));
-	
-	val = g_value_get_enum (value);
-	
-	glade_return_if_re_entrancy (gitem, "stock", val);
-	
-	glade_widget_property_set (gitem, "use-stock", val);
-		
-	eclass = g_type_class_ref (GLADE_TYPE_STOCK);
-	eval = g_enum_get_value (eclass, val);
-	if (eval && val)
-		glade_widget_property_set (gitem, "label", eval->value_nick);
-	
-	g_type_class_unref (eclass);
 }
 
 void
-glade_gtk_image_menu_item_set_property (GladeWidgetAdaptor *adaptor,
-					GObject            *object, 
-					const gchar        *id,
-					const GValue       *value)
+glade_gtk_image_menu_item_read_child (GladeWidgetAdaptor *adaptor,
+				      GladeWidget        *widget,
+				      GladeXmlNode       *node)
 {
-	if (!strcmp (id, "stock"))
-		glade_gtk_image_menu_item_set_stock (object, value);
-	else if (!strcmp (id, "use-stock"))
-		glade_gtk_image_menu_item_set_use_stock (object, value);
-	else
-		GWA_GET_CLASS (GTK_TYPE_MENU_ITEM)->set_property (adaptor, object,
-								  id, value);
+	GladeXmlNode *widget_node;
+	GladeWidget  *child_widget;
+	gchar        *internal_name;
+
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_CHILD))
+		return;
+
+	internal_name = 
+		glade_xml_get_property_string 
+		(node, GLADE_XML_TAG_INTERNAL_CHILD);
+	
+	if ((widget_node = 
+	     glade_xml_search_child
+	     (node, GLADE_XML_TAG_WIDGET(glade_project_get_format(widget->project)))) != NULL)
+	{
+		/* Menu item children have no packing to take care of, just
+		 * need to treat images a little different. */		
+		if ((child_widget = glade_widget_read (widget->project, 
+						       widget, widget_node, 
+						       NULL)) != NULL)
+		{
+			if (GTK_IS_IMAGE (child_widget->object) &&
+			    internal_name && strcmp (internal_name, "image") == 0)
+			{
+				gchar *protection = 
+					g_strdup_printf (_("Cannot delete %s because it is used by %s, "
+							   "try editing %s instead."),
+							 child_widget->name, widget->name, widget->name);
+				glade_widget_protect (child_widget, protection);
+				g_free (protection);
+			}
+			glade_widget_add_child (widget, child_widget, FALSE);
+		}
+	}
+	g_free (internal_name);
 }
 
+void
+glade_gtk_image_menu_item_write_child (GladeWidgetAdaptor *adaptor,
+				       GladeWidget        *widget,
+				       GladeXmlContext    *context,
+				       GladeXmlNode       *node)
+{
+	GladeXmlNode *child_node;
+
+	if (!GTK_IS_IMAGE (widget->object))
+	{
+		GWA_GET_CLASS (G_TYPE_OBJECT)->write_child (adaptor, widget, context, node);
+		return;
+	}
+
+	child_node = glade_xml_node_new (context, GLADE_XML_TAG_CHILD);
+	glade_xml_node_append_child (node, child_node);
+
+	/* Set fake internal child here */
+	glade_xml_node_set_property_string (child_node, GLADE_XML_TAG_INTERNAL_CHILD, "image");
+
+	/* Write out the widget (no packing properties) */
+	glade_widget_write (widget, context, child_node);
+}
+
+
+/* We need write_widget to write child images as internal, in builder, they are
+ * attached as a property
+ */
+
+GladeEditable *
+glade_gtk_image_menu_item_create_editable  (GladeWidgetAdaptor  *adaptor,
+					    GladeEditorPageType  type)
+{
+	GladeEditable *editable;
+
+	/* Get base editable */
+	editable = GWA_GET_CLASS (GTK_TYPE_MENU_ITEM)->create_editable (adaptor, type);
+
+	if (type == GLADE_PAGE_GENERAL)
+		return (GladeEditable *)glade_image_item_editor_new (adaptor, editable);
+
+	return editable;
+}
+
+/* ----------------------------- GtkRadioMenuItem ------------------------------ */
 static void
 glade_gtk_radio_menu_item_set_group (GObject *object, const GValue *value)
 {
@@ -6248,32 +6326,6 @@ glade_gtk_radio_menu_item_set_property (GladeWidgetAdaptor *adaptor,
 								  id, value);
 }
 
-void
-glade_gtk_menu_item_action_activate (GladeWidgetAdaptor *adaptor,
-				     GObject *object,
-				     const gchar *action_path)
-{
-	if (strcmp (action_path, "launch_editor") == 0)
-	{
-		GladeWidget *w = glade_widget_get_from_gobject (object);
-		
-		while ((w = glade_widget_get_parent (w)))
-		{
-			GObject *obj = glade_widget_get_object (w);
-			if (GTK_IS_MENU_SHELL (obj)) object = obj;
-		}
-		
-		if (GTK_IS_MENU_BAR (object))
-			glade_gtk_menu_shell_launch_editor (object, _("Edit Menu Bar"));
-		else if (GTK_IS_MENU (object))
-			glade_gtk_menu_shell_launch_editor (object, _("Edit Menu"));
-	}
-	else
-		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor,
-								     object,
-								     action_path);
-}
-
 /* ----------------------------- GtkMenuBar ------------------------------ */
 static GladeWidget * 
 glade_gtk_menu_bar_append_new_submenu (GladeWidget *parent, GladeProject *project)
@@ -6285,10 +6337,10 @@ glade_gtk_menu_bar_append_new_submenu (GladeWidget *parent, GladeProject *projec
 		submenu_adaptor = glade_widget_adaptor_get_by_type (GTK_TYPE_MENU);
 
 	gsubmenu = glade_widget_adaptor_create_widget (submenu_adaptor, FALSE,
-						     "parent", parent, 
-						     "project", project, 
-						     NULL);
-
+						       "parent", parent, 
+						       "project", project, 
+						       NULL);
+	
 	glade_widget_add_child (parent, gsubmenu, FALSE);
 
 	return gsubmenu;
@@ -6313,36 +6365,26 @@ glade_gtk_menu_bar_append_new_item (GladeWidget *parent,
 	if (label)
 	{
 		gitem = glade_widget_adaptor_create_widget ((use_stock) ? image_item_adaptor : item_adaptor,
-							  FALSE, "parent", parent,
-							  "project", project, 
-							  NULL);
+							    FALSE, "parent", parent,
+							    "project", project, 
+							    NULL);
 
 		glade_widget_property_set (gitem, "use-underline", TRUE);
 	
 		if (use_stock)
 		{
-			GEnumClass *eclass;
-			GEnumValue *eval;
-		
-			eclass = g_type_class_ref (GLADE_TYPE_STOCK);
-			eval = g_enum_get_value_by_nick (eclass, label);
-		
-			if (eval)
-				glade_widget_property_set (gitem, "stock", eval->value);
-		
-			g_type_class_unref (eclass);
+			glade_widget_property_set (gitem, "use-stock", TRUE);
+			glade_widget_property_set (gitem, "stock", label);
 		}
 		else
-		{
 			glade_widget_property_set (gitem, "label", label);
-		}
 	}
 	else
 	{
 		gitem = glade_widget_adaptor_create_widget (separator_adaptor,
-							  FALSE, "parent", parent,
-							  "project", project, 
-							  NULL);
+							    FALSE, "parent", parent,
+							    "project", project, 
+							    NULL);
 	}
 	
 	glade_widget_add_child (parent, gitem, FALSE);
@@ -6557,27 +6599,9 @@ glade_gtk_toolbar_child_selected (GladeBaseEditor *editor,
 	glade_base_editor_add_default_properties (editor, gchild);
 	
 	glade_base_editor_add_label (editor, "Properties");
-	
-
 	glade_base_editor_add_editable (editor, gchild);
-/* 	glade_base_editor_add_properties (editor, gchild, FALSE, */
-/* 					  "visible-horizontal", */
-/* 					  "visible-vertical", */
-/* 					  NULL); */
 	
 	if (type == GTK_TYPE_SEPARATOR_TOOL_ITEM) return;
-
-/* 	if (GTK_IS_TOOL_BUTTON (child)) */
-/* 		glade_base_editor_add_properties (editor, gchild, FALSE, */
-/* 						  "label",  */
-/* 						  "icon", */
-/* 						  "stock-id", */
-/* 						  "icon-name", */
-/* 						  NULL); */
-	
-/* 	if (type == GTK_TYPE_RADIO_TOOL_BUTTON) */
-/* 		glade_base_editor_add_properties (editor, gchild, FALSE, */
-/* 						  "group", "active", NULL);	 */
 
 	glade_base_editor_add_label (editor, "Packing");
 	glade_base_editor_add_properties (editor, gchild, TRUE,
@@ -6684,7 +6708,6 @@ glade_gtk_tool_button_create_editable  (GladeWidgetAdaptor  *adaptor,
 
 	return editable;
 }
-
 
 static void
 glade_gtk_tool_button_set_image_mode (GObject *object, const GValue *value)

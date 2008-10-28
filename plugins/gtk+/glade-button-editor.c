@@ -121,7 +121,8 @@ glade_button_editor_load (GladeEditable *editable,
 	}
 
 	/* load the embedded editable... */
-	glade_editable_load (GLADE_EDITABLE (button_editor->embed), widget);
+	if (button_editor->embed)
+		glade_editable_load (GLADE_EDITABLE (button_editor->embed), widget);
 
 	for (l = button_editor->properties; l; l = l->next)
 		glade_editor_property_load_by_widget (GLADE_EDITOR_PROPERTY (l->data), widget);
@@ -190,6 +191,10 @@ glade_button_editor_finalize (GObject *object)
 
 	if (button_editor->properties)
 		g_list_free (button_editor->properties);
+	button_editor->properties = NULL;
+	button_editor->embed      = NULL;
+
+	glade_editable_load (GLADE_EDITABLE (object), NULL);
 
 	G_OBJECT_CLASS (glade_button_editor_parent_class)->finalize (object);
 }

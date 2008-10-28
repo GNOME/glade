@@ -41,6 +41,12 @@ struct _GladeWidget
 				 * in this widget
 				 */
 	
+	gchar *protection; /* custom editors are allowed to add protected widgets that
+			    * cannot be deleted by the user in normal ways.
+			    * (this is a message to be displayed in the dialog
+			    * when the user tries to delete it).
+			    */
+
 	gchar *internal; /* If the widget is an internal child of 
 			  * another widget this is the name of the 
 			  * internal child, otherwise is NULL.
@@ -224,6 +230,7 @@ void                    glade_widget_write                  (GladeWidget     *wi
 							     GladeXmlNode    *node);
 
 void                    glade_widget_write_child            (GladeWidget     *widget,
+							     GladeWidget     *child,
 							     GladeXmlContext *context,
 							     GladeXmlNode    *node);
 
@@ -402,6 +409,10 @@ void                    glade_widget_pop_superuser          (void);
 
 void                    glade_widget_set_support_warning    (GladeWidget      *widget,
 							     const gchar      *warning);
+
+void                    glade_widget_protect                (GladeWidget      *widget,
+							     const gchar      *warning);
+void                    glade_widget_unprotect              (GladeWidget      *widget);
 
 G_END_DECLS
 

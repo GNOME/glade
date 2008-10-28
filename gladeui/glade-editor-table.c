@@ -59,6 +59,12 @@ glade_editor_table_finalize (GObject *object)
 
 	table->properties =
 		(g_list_free (table->properties), NULL);
+
+	/* the entry is finalized anyway, just avoid setting
+	 * text in it from _load();
+	 */
+	table->name_entry = NULL;
+
 	glade_editable_load (GLADE_EDITABLE (table), NULL);
 
 	G_OBJECT_CLASS (glade_editor_table_parent_class)->finalize (object);
@@ -69,7 +75,7 @@ glade_editor_table_grab_focus (GtkWidget *widget)
 {
 	GladeEditorTable *editor_table = GLADE_EDITOR_TABLE (widget);
 	
-	if (editor_table->name_entry)
+	if (editor_table->name_entry && GTK_WIDGET_MAPPED (editor_table->name_entry))
 		gtk_widget_grab_focus (editor_table->name_entry);
 	else if (editor_table->properties)
 		gtk_widget_grab_focus (GTK_WIDGET (editor_table->properties->data));
@@ -322,9 +328,11 @@ append_name_field (GladeEditorTable *table)
 	table->name_label = gtk_label_new (_("Name:"));
 	gtk_misc_set_alignment (GTK_MISC (table->name_label), 0.0, 0.5);
 	gtk_widget_show (table->name_label);
+	gtk_widget_set_no_show_all (table->name_label, TRUE);
 
 	table->name_entry = gtk_entry_new ();
 	gtk_widget_show (table->name_entry);
+	gtk_widget_set_no_show_all (table->name_entry, TRUE);
 
 	gtk_widget_set_tooltip_text (table->name_label, text);
 	gtk_widget_set_tooltip_text (table->name_entry, text);

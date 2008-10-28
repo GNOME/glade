@@ -319,14 +319,14 @@ glade_base_editor_table_attach (GladeBaseEditor *e,
 	if (child1)
 	{
 		gtk_table_attach (table, child1, 0, 1, row, row + 1,
-				  GTK_FILL, GTK_EXPAND | GTK_FILL, 2, 0);
+				  GTK_EXPAND | GTK_FILL, GTK_FILL, 2, 0);
 		gtk_widget_show (child1);
 	}
 	
 	if (child2)
 	{
 		gtk_table_attach (table, child2, 1, 2, row, row + 1,
-				  GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 2, 0);
+				  GTK_EXPAND | GTK_FILL, GTK_FILL, 2, 0);
 		gtk_widget_show (child2);
 	}
 	
@@ -378,7 +378,8 @@ static gboolean
 glade_base_editor_update_properties_idle (gpointer data)
 {
 	GladeBaseEditor *editor = (GladeBaseEditor *)data;
-	glade_base_editor_treeview_cursor_changed (NULL, editor);
+	glade_base_editor_treeview_cursor_changed
+		(GTK_TREE_VIEW (editor->priv->treeview), editor);
 	editor->priv->properties_idle = 0;
 	return FALSE;
 }
@@ -1709,16 +1710,13 @@ void
 glade_base_editor_add_editable (GladeBaseEditor *editor,
 				GladeWidget     *gchild)
 {
-	GladeEditorProperty *eprop;
-	GladeEditable       *editable;
-	va_list args;
-	gchar *property;
+	GladeEditable  *editable;
 	gint row;
 	
 	g_return_if_fail (GLADE_IS_BASE_EDITOR (editor));
 	g_return_if_fail (GLADE_IS_WIDGET (gchild));
 
-	editable = (GtkWidget *)glade_widget_adaptor_create_editable (gchild->adaptor, GLADE_PAGE_GENERAL);
+	editable = glade_widget_adaptor_create_editable (gchild->adaptor, GLADE_PAGE_GENERAL);
 	glade_editable_set_show_name (editable, FALSE);
 	glade_editable_load (editable, gchild);
 	gtk_widget_show (GTK_WIDGET (editable));
@@ -1758,8 +1756,9 @@ glade_base_editor_add_label (GladeBaseEditor *editor, gchar *str)
 	
 	gtk_label_set_markup (GTK_LABEL (label), markup);
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+	gtk_misc_set_padding (GTK_MISC (label), 0, 6);
 	gtk_table_attach (GTK_TABLE (editor->priv->table), label, 0, 2, row, row + 1,
-			  GTK_FILL, GTK_EXPAND | GTK_FILL, 2, 0);
+			  GTK_FILL, GTK_FILL, 2, 0);
 	gtk_widget_show (label);
 	editor->priv->row++;
 	

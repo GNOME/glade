@@ -1,3 +1,26 @@
+2008-10-28  Tristan Van Berkom <tvb@gnome.org>
+
+	* plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-gtk.c: 
+	Reimplemented GtkMenuItem and subclasses from top to bottom
+
+	* plugins/gtk+/glade-image-item-editor.[ch], plugins/gtk+/Makefile.am:
+	New GtkImageMenuItem editor (that embeds the child image editor when needed)
+
+	* gladeui/glade-command.[ch]: Added glade_command_[un]protect_widget()
+
+	* gladeui/glade-widget.[ch]: Added glade_widget_[un]protect()
+	protected widgets come with a message and cannot be manually deleted
+	from the project.
+
+	* plugins/gtk+/glade-image-editor.c, plugins/gtk+/glade-button-editor.c,
+	plugins/gtk+/glade-tool-button-editor.c, gladeui/glade-editor-table.c:
+	Fixed to:
+	- not reffer to child editables in finalize
+	- always removed external signals and weak references from finalize
+
+	* gladeui/glade-base-editor.c: Fixed to allow properties expand/fill
+	in both label and entry.
+
 2008-10-27  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-gtk.c: 
