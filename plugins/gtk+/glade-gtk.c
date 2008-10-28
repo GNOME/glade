@@ -36,6 +36,7 @@
 #include "glade-image-editor.h"
 #include "glade-image-item-editor.h"
 #include "glade-icon-factory-editor.h"
+#include "glade-store-editor.h"
 
 #include <gladeui/glade-editor-property.h>
 #include <gladeui/glade-base-editor.h>
@@ -8492,6 +8493,21 @@ glade_gtk_store_create_eprop (GladeWidgetAdaptor *adaptor,
 						       klass, 
 						       use_command);
 	return eprop;
+}
+
+GladeEditable *
+glade_gtk_store_create_editable (GladeWidgetAdaptor  *adaptor,
+				 GladeEditorPageType  type)
+{
+	GladeEditable *editable;
+
+	/* Get base editable */
+	editable = GWA_GET_CLASS (G_TYPE_OBJECT)->create_editable (adaptor, type);
+
+	if (type == GLADE_PAGE_GENERAL)
+		return (GladeEditable *)glade_store_editor_new (adaptor, editable);
+
+	return editable;
 }
 
 gchar *

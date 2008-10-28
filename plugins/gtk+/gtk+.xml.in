@@ -1644,15 +1644,16 @@ embedded in another object</_tooltip>
 			libglade-unsupported="True" toplevel="True">
       <set-property-function>glade_gtk_store_set_property</set-property-function>
       <create-editor-property-function>glade_gtk_store_create_eprop</create-editor-property-function>
+      <create-editable-function>glade_gtk_store_create_editable</create-editable-function>
       <string-from-value-function>glade_gtk_store_string_from_value</string-from-value-function>
       <write-widget-function>glade_gtk_store_write_widget</write-widget-function>
       <read-widget-function>glade_gtk_store_read_widget</read-widget-function>
       <properties>
-        <property id="columns" since="2.12" _name="Columns" save="False" construct-only="True">
+        <property id="columns" since="2.12" _name="Columns" save="False" construct-only="True" custom-layout="True">
           <spec>glade_standard_column_types_spec</spec>
           <_tooltip>Enter a list of column types for this data store</_tooltip>
         </property>
-        <property id="data" since="2.12" _name="Data" save="False">
+        <property id="data" since="2.12" _name="Data" save="False" custom-layout="True">
           <spec>glade_standard_model_data_spec</spec>
           <_tooltip>Enter a list of values to be applied on each row</_tooltip>
         </property>
@@ -1663,15 +1664,16 @@ embedded in another object</_tooltip>
 			libglade-unsupported="True" toplevel="True">
       <set-property-function>glade_gtk_store_set_property</set-property-function>
       <create-editor-property-function>glade_gtk_store_create_eprop</create-editor-property-function>
+      <create-editable-function>glade_gtk_store_create_editable</create-editable-function>
       <string-from-value-function>glade_gtk_store_string_from_value</string-from-value-function>
       <write-widget-function>glade_gtk_store_write_widget</write-widget-function>
       <read-widget-function>glade_gtk_store_read_widget</read-widget-function>
       <properties>
-        <property id="columns" since="2.12" _name="Columns" save="False" construct-only="True">
+        <property id="columns" since="2.12" _name="Columns" save="False" construct-only="True" custom-layout="True">
           <spec>glade_standard_column_types_spec</spec>
           <_tooltip>Enter a list of column types for this data store</_tooltip>
         </property>
-        <property id="data" since="2.12" _name="Data" save="False">
+        <property id="data" since="2.12" _name="Data" save="False" custom-layout="True">
           <spec>glade_standard_model_data_spec</spec>
           <_tooltip>Enter a list of values to be applied on each row</_tooltip>
         </property>
