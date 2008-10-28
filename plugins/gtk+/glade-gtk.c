@@ -37,6 +37,7 @@
 #include "glade-image-item-editor.h"
 #include "glade-icon-factory-editor.h"
 #include "glade-store-editor.h"
+#include "glade-label-editor.h"
 
 #include <gladeui/glade-editor-property.h>
 #include <gladeui/glade-base-editor.h>
@@ -6944,16 +6945,30 @@ glade_gtk_tool_button_read_widget (GladeWidgetAdaptor *adaptor,
 }
 
 /* ----------------------------- GtkLabel ------------------------------ */
+void
+glade_gtk_label_post_create (GladeWidgetAdaptor *adaptor,
+			     GObject            *object, 
+			     GladeCreateReason   reason)
+{
+	GladeWidget *glabel = glade_widget_get_from_gobject (object);
+
+	if (reason == GLADE_CREATE_USER)
+	{
+		/* Set default sensitive states... */
+		const gchar *insensitive_msg = _("This property does not apply unless Use Underline is set.");
+	
+		glade_widget_property_set_sensitive (glabel, "mnemonic-widget", FALSE, insensitive_msg);
+	}
+}
+
+
 static void
 glade_gtk_label_set_label (GObject *object, const GValue *value)
 {
 	GladeWidget *glabel;
 	gboolean use_markup = FALSE, use_underline = FALSE;
 
-	g_return_if_fail (GTK_IS_LABEL (object));
 	glabel = glade_widget_get_from_gobject (object);
-	g_return_if_fail (GLADE_IS_WIDGET (glabel));
-	
 	glade_widget_property_get (glabel, "use-markup", &use_markup);
 	
 	if (use_markup)
@@ -6964,53 +6979,6 @@ glade_gtk_label_set_label (GObject *object, const GValue *value)
 	glade_widget_property_get (glabel, "use-underline", &use_underline);
 	if (use_underline)
 		gtk_label_set_use_underline (GTK_LABEL (object), use_underline);
-}
-
-static void
-ensure_label_props (GObject            *label,
-		    GladeWidgetAdaptor *adaptor)
-{
-	GladeWidget   *gwidget = glade_widget_get_from_gobject (label);
-	GladeProperty *prop    = glade_widget_get_property (gwidget, "label");
-
-	glade_gtk_label_set_label (label, prop->value);
-}
-
-void
-glade_gtk_label_post_create (GladeWidgetAdaptor *adaptor, 
-			     GObject            *object, 
-			     GladeCreateReason   reason)
-{
-	/* For some reason labels dont show up with markup
-	 * and mnemonic underlines in the runtime at load time,
-	 * resetting them at realize time fixes this glitch.
-	 */
-	g_signal_connect_after (G_OBJECT (object), "realize",
-				G_CALLBACK (ensure_label_props), adaptor);
-}
-
-
-GladeEditorProperty *
-glade_gtk_label_create_eprop (GladeWidgetAdaptor *adaptor,
-			      GladePropertyClass *klass,
-			      gboolean            use_command)
-{
-	GladeEditorProperty *eprop;
-
-	/* chain up.. */
-	if (GLADE_IS_PARAM_SPEC_ATTRIBUTES (klass->pspec))
-	{
-		eprop = g_object_new (GLADE_TYPE_EPROP_ATTRS,
-				      "property-class", klass, 
-				      "use-command", use_command,
-				      NULL);
-	}
-	else
-		eprop = GWA_GET_CLASS 
-			(GTK_TYPE_WIDGET)->create_eprop (adaptor, 
-						       klass, 
-						       use_command);
-	return eprop;
 }
 
 static void
@@ -7123,6 +7091,121 @@ glade_gtk_label_set_attributes (GObject *object, const GValue *value)
 	gtk_label_set_attributes (GTK_LABEL (object), attrs);
 }
 
+
+static void
+glade_gtk_label_set_content_mode (GObject *object, const GValue *value)
+{
+	GladeLabelContentMode mode = g_value_get_int (value);
+	GladeWidget *glabel;
+	const gchar *insensitive_msg = _("Property not selected");
+	
+	glabel = glade_widget_get_from_gobject (object);
+
+	glade_widget_property_set_sensitive (glabel, "glade-attributes", FALSE, insensitive_msg);
+	glade_widget_property_set_sensitive (glabel, "use-markup", FALSE, insensitive_msg);
+	glade_widget_property_set_sensitive (glabel, "pattern", FALSE, insensitive_msg);
+
+	switch (mode)
+	{
+	case GLADE_LABEL_MODE_ATTRIBUTES:
+		glade_widget_property_set_sensitive (glabel, "glade-attributes", TRUE, NULL);
+		break;
+	case GLADE_LABEL_MODE_MARKUP:
+		glade_widget_property_set_sensitive (glabel, "use-markup", TRUE, NULL);
+		break;
+	case GLADE_LABEL_MODE_PATTERN:
+		glade_widget_property_set_sensitive (glabel, "pattern", TRUE, NULL);
+		break;
+	default:
+		break;
+	}
+}
+
+static void
+glade_gtk_label_set_use_max_width (GObject *object, const GValue *value)
+{
+	GladeWidget *glabel;
+	const gchar *insensitive_msg = _("Property not selected");
+	
+	glabel = glade_widget_get_from_gobject (object);
+
+	glade_widget_property_set_sensitive (glabel, "width-chars", FALSE, insensitive_msg);
+	glade_widget_property_set_sensitive (glabel, "max-width-chars", FALSE, insensitive_msg);
+
+	if (g_value_get_boolean (value))
+		glade_widget_property_set_sensitive (glabel, "max-width-chars", TRUE, NULL);
+	else
+		glade_widget_property_set_sensitive (glabel, "width-chars", TRUE, NULL);
+}
+
+
+static void
+glade_gtk_label_set_wrap_mode (GObject *object, const GValue *value)
+{
+	GladeLabelWrapMode mode = g_value_get_int (value);
+	GladeWidget *glabel;
+	const gchar *insensitive_msg = _("Property not selected");
+	
+	glabel = glade_widget_get_from_gobject (object);
+
+	glade_widget_property_set_sensitive (glabel, "single-line-mode", FALSE, insensitive_msg);
+	glade_widget_property_set_sensitive (glabel, "wrap-mode", FALSE, insensitive_msg);
+	
+	if (mode == GLADE_LABEL_SINGLE_LINE)
+		glade_widget_property_set_sensitive (glabel, "single-line-mode", TRUE, NULL);
+	else if (mode == GLADE_LABEL_WRAP_MODE)
+		glade_widget_property_set_sensitive (glabel, "wrap-mode", TRUE, NULL);
+}
+
+static void
+glade_gtk_label_set_use_underline (GObject *object, const GValue *value)
+{
+	GladeWidget *glabel;
+	const gchar *insensitive_msg = _("This property does not apply unless Use Underline is set.");
+	
+	glabel = glade_widget_get_from_gobject (object);
+
+	if (g_value_get_boolean (value))
+		glade_widget_property_set_sensitive (glabel, "mnemonic-widget", TRUE, NULL);
+	else
+		glade_widget_property_set_sensitive (glabel, "mnemonic-widget", FALSE, insensitive_msg);
+
+	gtk_label_set_use_underline (GTK_LABEL (object), g_value_get_boolean (value));
+}
+
+static void
+glade_gtk_label_set_ellipsize (GObject *object, const GValue *value)
+{
+	GladeWidget *glabel;
+	const gchar *insensitive_msg = _("This property does not apply when Ellipsize is set.");
+	
+	glabel = glade_widget_get_from_gobject (object);
+
+	if (!glade_widget_property_original_default (glabel, "ellipsize"))
+		glade_widget_property_set_sensitive (glabel, "angle", FALSE, insensitive_msg);
+	else
+		glade_widget_property_set_sensitive (glabel, "angle", TRUE, NULL);
+
+	gtk_label_set_ellipsize (GTK_LABEL (object), g_value_get_enum (value));
+}
+
+
+static void
+glade_gtk_label_set_angle (GObject *object, const GValue *value)
+{
+	GladeWidget *glabel;
+	const gchar *insensitive_msg = _("This property does not apply when Angle is set.");
+	
+	glabel = glade_widget_get_from_gobject (object);
+
+	if (!glade_widget_property_original_default (glabel, "angle"))
+		glade_widget_property_set_sensitive (glabel, "ellipsize", FALSE, insensitive_msg);
+	else
+		glade_widget_property_set_sensitive (glabel, "ellipsize", TRUE, NULL);
+
+	gtk_label_set_angle (GTK_LABEL (object), g_value_get_double (value));
+}
+
 void
 glade_gtk_label_set_property (GladeWidgetAdaptor *adaptor,
 			      GObject            *object, 
@@ -7133,10 +7216,20 @@ glade_gtk_label_set_property (GladeWidgetAdaptor *adaptor,
 		glade_gtk_label_set_label (object, value);
 	else if (!strcmp (id, "glade-attributes"))
 		glade_gtk_label_set_attributes (object, value);
+	else if (!strcmp (id, "label-content-mode"))
+		glade_gtk_label_set_content_mode (object, value);
+	else if (!strcmp (id, "use-max-width"))
+		glade_gtk_label_set_use_max_width (object, value);
+	else if (!strcmp (id, "label-wrap-mode"))
+		glade_gtk_label_set_wrap_mode (object, value);
+	else if (!strcmp (id, "use-underline"))
+		glade_gtk_label_set_use_underline (object, value);
+	else if (!strcmp (id, "ellipsize"))
+		glade_gtk_label_set_ellipsize (object, value);
+	else if (!strcmp (id, "angle"))
+		glade_gtk_label_set_angle (object, value);
 	else
-		GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor,
-							       object,
-							       id, value);
+		GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
 }
 
 static void
@@ -7202,6 +7295,7 @@ glade_gtk_label_read_widget (GladeWidgetAdaptor *adaptor,
 			     GladeWidget        *widget,
 			     GladeXmlNode       *node)
 {
+	GladeProperty *prop;
 	if (!glade_xml_node_verify 
 	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
 		return;
@@ -7211,12 +7305,37 @@ glade_gtk_label_read_widget (GladeWidgetAdaptor *adaptor,
 
 	glade_gtk_label_read_attributes (widget, node);
 
+	/* sync label property after a load... */
+	prop = glade_widget_get_property (widget, "label");
+	glade_gtk_label_set_label (widget->object, prop->value);
+
+	/* Resolve "label-content-mode" virtual control property  */
+	if (!glade_widget_property_original_default (widget, "use-markup"))
+		glade_widget_property_set (widget, "label-content-mode", GLADE_LABEL_MODE_MARKUP);
+	else if (!glade_widget_property_original_default (widget, "pattern"))
+		glade_widget_property_set (widget, "label-content-mode", GLADE_LABEL_MODE_PATTERN);
+	else 
+		glade_widget_property_set (widget, "label-content-mode", GLADE_LABEL_MODE_ATTRIBUTES);
+
+	/* Resolve "label-wrap-mode" virtual control property  */
+	if (!glade_widget_property_original_default (widget, "single-line-mode"))
+		glade_widget_property_set (widget, "label-wrap-mode", GLADE_LABEL_SINGLE_LINE);
+	else if (!glade_widget_property_original_default (widget, "wrap"))
+		glade_widget_property_set (widget, "label-wrap-mode", GLADE_LABEL_WRAP_MODE);
+	else 
+		glade_widget_property_set (widget, "label-wrap-mode", GLADE_LABEL_WRAP_FREE);
+
+	/* Resolve "use-max-width" virtual control property  */
+	if (!glade_widget_property_original_default (widget, "max-width-chars"))
+		glade_widget_property_set (widget, "use-max-width", TRUE);
+	else
+		glade_widget_property_set (widget, "use-max-width", TRUE);
 }
 
 static void
-glade_gtk_write_attributes (GladeWidget        *widget,
-			    GladeXmlContext    *context,
-			    GladeXmlNode       *node)
+glade_gtk_label_write_attributes (GladeWidget        *widget,
+				  GladeXmlContext    *context,
+				  GladeXmlNode       *node)
 {
 	GladeXmlNode       *attr_node;
 	GList              *attrs = NULL, *l;
@@ -7259,7 +7378,7 @@ glade_gtk_label_write_widget (GladeWidgetAdaptor *adaptor,
 
 	attrs_node = glade_xml_node_new (context, GLADE_TAG_ATTRIBUTES);
 
-	glade_gtk_write_attributes (widget, context, attrs_node);
+	glade_gtk_label_write_attributes (widget, context, attrs_node);
 
 	if (!glade_xml_node_get_children (attrs_node))
 		glade_xml_node_delete (attrs_node);
@@ -7302,6 +7421,44 @@ glade_gtk_label_string_from_value (GladeWidgetAdaptor *adaptor,
 }
 
 
+GladeEditorProperty *
+glade_gtk_label_create_eprop (GladeWidgetAdaptor *adaptor,
+			      GladePropertyClass *klass,
+			      gboolean            use_command)
+{
+	GladeEditorProperty *eprop;
+
+	/* chain up.. */
+	if (GLADE_IS_PARAM_SPEC_ATTRIBUTES (klass->pspec))
+	{
+		eprop = g_object_new (GLADE_TYPE_EPROP_ATTRS,
+				      "property-class", klass, 
+				      "use-command", use_command,
+				      NULL);
+	}
+	else
+		eprop = GWA_GET_CLASS 
+			(GTK_TYPE_WIDGET)->create_eprop (adaptor, 
+						       klass, 
+						       use_command);
+	return eprop;
+}
+
+GladeEditable *
+glade_gtk_label_create_editable (GladeWidgetAdaptor  *adaptor,
+				 GladeEditorPageType  type)
+{
+	GladeEditable *editable;
+
+	/* Get base editable */
+	editable = GWA_GET_CLASS (G_TYPE_OBJECT)->create_editable (adaptor, type);
+
+	if (type == GLADE_PAGE_GENERAL)
+		return (GladeEditable *)glade_label_editor_new (adaptor, editable);
+
+	return editable;
+}
+
 /* ----------------------------- GtkTextView ------------------------------ */
 static void
 glade_gtk_text_view_changed (GtkTextBuffer *buffer, GladeWidget *gtext)
@@ -7339,9 +7496,7 @@ glade_gtk_text_view_post_create (GladeWidgetAdaptor *adaptor,
 	GtkTextBuffer *buffy = gtk_text_buffer_new (NULL);
 	GladeWidget *gtext;
 	
-	g_return_if_fail (GTK_IS_TEXT_VIEW (object));
 	gtext = glade_widget_get_from_gobject (object);
-	g_return_if_fail (GLADE_IS_WIDGET (gtext));
 	
 	/* This makes gtk_text_view_set_buffer() stop complaing */
 	gtk_drag_dest_set (GTK_WIDGET (object), 0, NULL, 0, 0);

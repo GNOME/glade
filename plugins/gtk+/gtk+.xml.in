@@ -589,23 +589,44 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkLabel" generic-name="label" _title="Label">
       <post-create-function>glade_gtk_label_post_create</post-create-function>
       <create-editor-property-function>glade_gtk_label_create_eprop</create-editor-property-function>
+      <create-editable-function>glade_gtk_label_create_editable</create-editable-function>
       <set-property-function>glade_gtk_label_set_property</set-property-function>
       <read-widget-function>glade_gtk_label_read_widget</read-widget-function>
       <write-widget-function>glade_gtk_label_write_widget</write-widget-function>
       <string-from-value-function>glade_gtk_label_string_from_value</string-from-value-function>
 
       <properties>
-	<property id="glade-attributes" _name="Attributes" save="False">
+	<!-- Virtual label content mode property -->
+        <property id="label-content-mode" visible="False" save="False">
+	  <spec>glade_standard_int_spec</spec>
+        </property>
+	<!-- Virtual label to control width-chars vs. max-width-chars -->
+        <property id="use-max-width" visible="False" save="False">
+	  <spec>glade_standard_boolean_spec</spec>
+        </property>
+	<!-- Virtual label content mode property -->
+        <property id="label-wrap-mode" visible="False" save="False">
+	  <spec>glade_standard_int_spec</spec>
+        </property>
+      	<property id="label" default="label" translatable="True" custom-layout="True">
+            <visible-lines>2</visible-lines>
+        </property>
+	<property id="glade-attributes" _name="Attributes" save="False" custom-layout="True">
 	  <spec>glade_gtk_attributes_spec</spec>
 	  <_tooltip>The pango attributes for this label</_tooltip>
 	</property>
+	<property id="pattern" custom-layout="True"/>
+	<property id="use-markup" custom-layout="True"/>
 
-        <property id="selectable" ignore="True"/>
-	<property id="pattern" default=""/>
-	<property id="max-width-chars" _name="Maximum Width"/>
-      	<property id="label" default="label" translatable="True">
-            <visible-lines>2</visible-lines>
-        </property>
+	<property id="ellipsize" custom-layout="True"/>
+	<property id="justify" custom-layout="True"/>
+	<property id="angle" custom-layout="True"/>
+	<property id="single-line-mode" custom-layout="True"/>
+	<property id="max-width-chars" custom-layout="True"/>
+	<property id="width-chars" custom-layout="True"/>
+	<property id="wrap" custom-layout="True"/>	
+	<property id="wrap-mode" custom-layout="True"/>
+        <property id="selectable" ignore="True" weight="0.5"/>
       	<property id="justify">
   	  <displayable-values>
 	    <value id="GTK_JUSTIFY_LEFT" _name="Left"/>

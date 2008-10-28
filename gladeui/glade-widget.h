@@ -327,7 +327,7 @@ gboolean                glade_widget_property_default       (GladeWidget      *w
 							     const gchar      *id_property);
  
 gboolean                glade_widget_property_original_default (GladeWidget      *widget,
-							     const gchar      *id_property);
+								const gchar      *id_property);
  
 gboolean                glade_widget_pack_property_default  (GladeWidget      *widget,
 							     const gchar      *id_property);

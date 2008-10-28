@@ -45,6 +45,10 @@
 	Added liststore/treestore editor widget (only to better format the "columns"
 	and "data" properties so that it takes the whole width with the treeview.
 
+	* plugins/gtk+/glade-label-editor.[ch], plugins/gtk+/Makefile.am,
+	plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-gtk.c: Rewrote GtkLabel implementation from 
+	top to bottom with custom editor (now all those conflicting properties are dummy proofed) 
+	
 2008-10-27  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-gtk.c: 

@@ -1195,6 +1195,9 @@ glade_eprop_attrs_show_dialog (GtkWidget           *dialog_button,
 	res = gtk_dialog_run (GTK_DIALOG (dialog));
 	if (res == GTK_RESPONSE_OK) 
 	{
+		/* XXX TODO FIXME !!! */
+
+
 /* 		gtk_tree_model_foreach */
 /* 			(gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view)), */
 /* 			 (GtkTreeModelForeachFunc) */
