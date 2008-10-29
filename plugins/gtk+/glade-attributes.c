@@ -287,43 +287,13 @@ get_enum_model_for_combo (PangoAttrType type)
 	}
 }
 
-static GtkTreeIter *
-get_last_iter (GtkTreeModel  *model, 
-	       PangoAttrType  type)
-{
-	GtkTreeIter *last = NULL, iter;
-	PangoAttrType  iter_type;
-
-	if (!gtk_tree_model_iter_children (model, &iter, NULL))
-		return NULL;
-
-	do 
-	{
-		gtk_tree_model_get (model, &iter,
-				    COLUMN_TYPE, &iter_type,
-				    -1);
-		if (iter_type == type)
-		{
-			if (last)
-				gtk_tree_iter_free (last);
-
-			last = gtk_tree_iter_copy (&iter);
-		}
-	} 
-	while (gtk_tree_model_iter_next (model, &iter));
-
-	return last;
-}
-
 static gboolean
-append_empty_row (GtkTreeStore   *store,
-		  PangoAttrType   type,
-		  GtkTreeIter    *place,
-		  GtkTreeIter   **new_row)
+append_empty_row (GtkListStore   *store,
+		  PangoAttrType   type)
 {
 	const gchar *name = NULL;
 	GtkListStore *model = get_enum_model_for_combo (type);
-	GtkTreeIter   iter, *last;
+	GtkTreeIter   iter;
 	AttrEditType  edit_type = EDIT_INVALID;
 
 	switch (type) 
@@ -421,19 +391,16 @@ append_empty_row (GtkTreeStore   *store,
 
 	if (name)
 	{
-		if (place)
-		{
-			gtk_tree_store_insert_before (store, &iter, NULL, place);
-		}
-		else if ((last = get_last_iter (GTK_TREE_MODEL (store), type)) != NULL)
-		{
-			gtk_tree_store_insert_after (store, &iter, NULL, last);
-			gtk_tree_iter_free (last);
-		}
-		else
-			gtk_tree_store_append (store, &iter, NULL);
+		gtk_list_store_append (store, &iter);
 
-		gtk_tree_store_set (store, &iter,
+		gtk_list_store_set (store, &iter,
+				    COLUMN_TOGGLE_ACTIVE, FALSE,
+				    COLUMN_SPIN_ACTIVE, FALSE,
+				    COLUMN_COMBO_ACTIVE, FALSE,
+				    COLUMN_BUTTON_ACTIVE, FALSE,
+				    -1);
+
+		gtk_list_store_set (store, &iter,
 				    COLUMN_NAME, name,
 				    COLUMN_TYPE, type,
 				    COLUMN_EDIT_TYPE, edit_type,
@@ -441,16 +408,11 @@ append_empty_row (GtkTreeStore   *store,
 				    COLUMN_TEXT, _("<Enter Value>"),
 				    COLUMN_TEXT_STYLE, PANGO_STYLE_ITALIC,
 				    COLUMN_TEXT_FG, "Grey",
-				    ACTIVATE_COLUMN_FROM_TYPE (edit_type), TRUE,
 				    COLUMN_COMBO_MODEL, model,
+				    ACTIVATE_COLUMN_FROM_TYPE (edit_type), TRUE,
 				    -1);
-
-		if (new_row)
-			*new_row = gtk_tree_iter_copy (&iter);
-
 		return TRUE;
 	}
-
 	return FALSE;
 }
 
@@ -502,57 +464,6 @@ is_empty_row (GtkTreeModel  *model,
 	g_free (strval);
 
 	return empty_row;
-}
-
-static GtkTreeIter *
-remove_empty_rows (GtkTreeModel *model,
-		   AttrEditType  edit_type,
-		   PangoAttrType type)
-{
- 	GtkTreeIter  iter, *ret = NULL, *this_iter = NULL;
-	AttrEditType iter_type;
-	gboolean     valid;
-
-	valid = gtk_tree_model_iter_children (model, &iter, NULL);
-
-	while (valid)
-	{
-		if (this_iter) this_iter = (gtk_tree_iter_free (this_iter), NULL);
-		this_iter = gtk_tree_iter_copy (&iter);
-
-		gtk_tree_model_get (model, this_iter,
-				    COLUMN_TYPE, &iter_type,
-				    -1);
-
-		valid = gtk_tree_model_iter_next (model, &iter);
-
-		if (iter_type == type && is_empty_row (model, this_iter))
-		{
-			if (valid)
-			{
-				if (ret) ret = (gtk_tree_iter_free (ret), NULL);
-				ret = gtk_tree_iter_copy (&iter);
-			}
-			gtk_tree_store_remove (GTK_TREE_STORE (model), this_iter);
-		}
-	} 
-
-	if (this_iter) gtk_tree_iter_free (this_iter);
-
-	return ret;
-}
-
-static void
-ensure_empty_row (GtkTreeStore   *store,
-		  AttrEditType    edit_type,
-		  PangoAttrType   type)
-{
-	GtkTreeIter *place;
-
-	place = remove_empty_rows (GTK_TREE_MODEL (store), edit_type, type);
-	append_empty_row (store, type, place, NULL);
-	if (place)
-		gtk_tree_iter_free (place);
 }
 
 static GType
@@ -830,15 +741,50 @@ sync_object (GladeEPropAttrs *eprop_attrs,
 		valid = gtk_tree_model_iter_next (eprop_attrs->model, &iter);
 	} 
 
-	/* XXX Probably leaks attributes list ?? XXX */
 	if (use_command)
-		glade_command_set_property (GLADE_EDITOR_PROPERTY (eprop_attrs)->property,
-					    g_list_reverse (attributes));
+	{
+		GValue value = { 0, };
+
+		g_value_init (&value, GLADE_TYPE_ATTR_GLIST);
+		g_value_take_boxed (&value, g_list_reverse (attributes));
+ 		glade_editor_property_commit (GLADE_EDITOR_PROPERTY (eprop_attrs), &value);
+		g_value_unset (&value);
+	}
 	else
+	{
 		glade_property_set (GLADE_EDITOR_PROPERTY (eprop_attrs)->property, 
 				    g_list_reverse (attributes));
-	
+		glade_attr_list_free (attributes);
+	}
 }
+
+
+static GtkTreeIter *
+get_row_by_type (GtkTreeModel   *model, 
+		 PangoAttrType   type)
+{
+ 	GtkTreeIter     iter, *ret_iter = NULL;
+	gboolean        valid;
+	PangoAttrType   iter_type;
+
+	valid = gtk_tree_model_iter_children (model, &iter, NULL);
+
+	while (valid)
+	{
+		gtk_tree_model_get (model, &iter,
+				    COLUMN_TYPE, &iter_type,
+				    -1);
+
+		if (iter_type == type)
+		{
+			ret_iter = gtk_tree_iter_copy (&iter);
+			break;
+		}
+		valid = gtk_tree_model_iter_next (model, &iter);
+	} 
+	return ret_iter;
+}
+
 
 static void
 value_button_clicked  (GtkCellRendererToggle *cell_renderer,
@@ -880,7 +826,7 @@ value_button_clicked  (GtkCellRendererToggle *cell_renderer,
 
 		new_text = gdk_color_to_string (&color);
 
-		gtk_tree_store_set (GTK_TREE_STORE (eprop_attrs->model), &iter,
+		gtk_list_store_set (GTK_LIST_STORE (eprop_attrs->model), &iter,
 				    COLUMN_TEXT, new_text,
 				    COLUMN_NAME_WEIGHT, PANGO_WEIGHT_BOLD,
 				    COLUMN_TEXT_STYLE, PANGO_STYLE_NORMAL,
@@ -893,8 +839,6 @@ value_button_clicked  (GtkCellRendererToggle *cell_renderer,
 	default:
 		break;
 	}
-
-	ensure_empty_row (GTK_TREE_STORE (eprop_attrs->model), edit_type, type);
 
 	sync_object (eprop_attrs, FALSE);
 
@@ -919,12 +863,10 @@ value_toggled (GtkCellRendererToggle *cell_renderer,
 			    COLUMN_TYPE, &type,
 			    -1);
 
-	gtk_tree_store_set (GTK_TREE_STORE (eprop_attrs->model), &iter,
+	gtk_list_store_set (GTK_LIST_STORE (eprop_attrs->model), &iter,
 			    COLUMN_NAME_WEIGHT, PANGO_WEIGHT_BOLD,
 			    COLUMN_TOGGLE_DOWN, !active,
 			    -1);
-
-	ensure_empty_row (GTK_TREE_STORE (eprop_attrs->model), EDIT_TOGGLE, type);
 
 	sync_object (eprop_attrs, FALSE);
 }
@@ -945,17 +887,23 @@ value_combo_spin_edited (GtkCellRendererText *cell,
 			    COLUMN_TYPE, &type,
 			    -1);
 
-	gtk_tree_store_set (GTK_TREE_STORE (eprop_attrs->model), &iter,
-			    COLUMN_TEXT, new_text,
-			    COLUMN_NAME_WEIGHT, PANGO_WEIGHT_BOLD,
-			    COLUMN_TEXT_STYLE, PANGO_STYLE_NORMAL,
-			    COLUMN_TEXT_FG, "Black",
-			    -1);
-
-	ensure_empty_row (GTK_TREE_STORE (eprop_attrs->model), 
-			  (type == PANGO_ATTR_SIZE ||
-			   type == PANGO_ATTR_ABSOLUTE_SIZE ||
-			   type == PANGO_ATTR_SCALE) ? EDIT_SPIN : EDIT_COMBO, type);
+	/* Reset the column */
+	if (new_text && strcmp (new_text, _("None")) == 0)
+	{
+		gtk_list_store_set (GTK_LIST_STORE (eprop_attrs->model), &iter,
+				    COLUMN_TEXT, _("<Enter Value>"),
+				    COLUMN_NAME_WEIGHT, PANGO_WEIGHT_NORMAL,
+				    COLUMN_TEXT_STYLE, PANGO_STYLE_ITALIC,
+				    COLUMN_TEXT_FG, "Grey",
+				    -1);
+	}
+	else
+		gtk_list_store_set (GTK_LIST_STORE (eprop_attrs->model), &iter,
+				    COLUMN_TEXT, new_text,
+				    COLUMN_NAME_WEIGHT, PANGO_WEIGHT_BOLD,
+				    COLUMN_TEXT_STYLE, PANGO_STYLE_NORMAL,
+				    COLUMN_TEXT_FG, "Black",
+				    -1);
 
 	sync_object (eprop_attrs, FALSE);
 
@@ -970,7 +918,7 @@ glade_eprop_attrs_view (GladeEditorProperty *eprop)
 	GtkTreeViewColumn *column;
 	GtkAdjustment     *adjustment;
 
-	eprop_attrs->model = (GtkTreeModel *)gtk_tree_store_new
+	eprop_attrs->model = (GtkTreeModel *)gtk_list_store_new
 		(NUM_COLUMNS,
 		 /* Main Data */
 		 G_TYPE_STRING,  // COLUMN_NAME
@@ -988,7 +936,7 @@ glade_eprop_attrs_view (GladeEditorProperty *eprop)
 		 G_TYPE_INT,     // COLUMN_TEXT_STYLE
 		 G_TYPE_STRING,  // COLUMN_TEXT_FG
 		 G_TYPE_BOOLEAN, // COLUMN_COMBO_ACTIVE
-		 GTK_TYPE_TREE_MODEL, // COLUMN_COMBO_MODEL
+		 GTK_TYPE_LIST_STORE, // COLUMN_COMBO_MODEL
 		 G_TYPE_BOOLEAN, // COLUMN_SPIN_ACTIVE
 		 G_TYPE_UINT);   // COLUMN_SPIN_DIGITS
 
@@ -1014,9 +962,9 @@ glade_eprop_attrs_view (GladeEditorProperty *eprop)
 
 	/* Toggle renderer */
  	renderer = gtk_cell_renderer_toggle_new ();
-	g_object_set (G_OBJECT (renderer), "activatable", TRUE, NULL);
 	gtk_tree_view_column_pack_start (column, renderer, FALSE);
 	gtk_tree_view_column_set_attributes (column, renderer, 
+					     "activatable", COLUMN_TOGGLE_ACTIVE,
 					     "visible", COLUMN_TOGGLE_ACTIVE,
 					     "active", COLUMN_TOGGLE_DOWN,
 					     NULL);
@@ -1026,35 +974,29 @@ glade_eprop_attrs_view (GladeEditorProperty *eprop)
 
 	/* Button renderer */
  	renderer = glade_cell_renderer_button_new ();
-	g_object_set (G_OBJECT (renderer), 
-		      "editable", TRUE, 
-		      "entry-editable", FALSE,
-		      NULL);
+	g_object_set (G_OBJECT (renderer), "entry-editable", FALSE, NULL);
 	gtk_tree_view_column_pack_start (column, renderer, FALSE);
 	gtk_tree_view_column_set_attributes (column, renderer, 
+					     "editable", COLUMN_BUTTON_ACTIVE,
 					     "visible", COLUMN_BUTTON_ACTIVE,
 					     "text", COLUMN_TEXT,
 					     "style", COLUMN_TEXT_STYLE,
 					     "foreground", COLUMN_TEXT_FG,
 					     NULL);
-
 	g_signal_connect (G_OBJECT (renderer), "clicked",
 			  G_CALLBACK (value_button_clicked), eprop);
 
 	/* Combo renderer */
  	renderer = gtk_cell_renderer_combo_new ();
-	g_object_set (G_OBJECT (renderer), 
-		      "editable", TRUE, 
-		      "text-column", 0,
-		      "has-entry", FALSE,
-		      NULL);
+	g_object_set (G_OBJECT (renderer), "text-column", 0, "has-entry", FALSE, NULL);
 	gtk_tree_view_column_pack_start (column, renderer, TRUE);
 	gtk_tree_view_column_set_attributes (column, renderer, 
+					     "editable", COLUMN_COMBO_ACTIVE,
 					     "visible", COLUMN_COMBO_ACTIVE,
+					     "model", COLUMN_COMBO_MODEL,
 					     "text", COLUMN_TEXT,
 					     "style", COLUMN_TEXT_STYLE,
 					     "foreground", COLUMN_TEXT_FG,
-					     "model", COLUMN_COMBO_MODEL,
 					     NULL);
 	g_signal_connect (G_OBJECT (renderer), "edited",
 			  G_CALLBACK (value_combo_spin_edited), eprop);
@@ -1063,10 +1005,11 @@ glade_eprop_attrs_view (GladeEditorProperty *eprop)
 	/* Spin renderer */
  	renderer = gtk_cell_renderer_spin_new ();
 	adjustment = (GtkAdjustment *)gtk_adjustment_new (0, -G_MAXDOUBLE, G_MAXDOUBLE, 100, 100, 100);
-	g_object_set (G_OBJECT (renderer), "editable", TRUE, "adjustment", adjustment, NULL);
+	g_object_set (G_OBJECT (renderer), "adjustment", adjustment, NULL);
 	gtk_tree_view_column_pack_start (column, renderer, TRUE);
 	gtk_tree_view_column_set_attributes (column, renderer, 
 					     "visible", COLUMN_SPIN_ACTIVE,
+					     "editable", COLUMN_SPIN_ACTIVE,
 					     "text", COLUMN_TEXT,
 					     "style", COLUMN_TEXT_STYLE,
 					     "foreground", COLUMN_TEXT_FG,
@@ -1086,32 +1029,31 @@ glade_eprop_attrs_populate_view (GladeEditorProperty *eprop,
 				 GtkTreeView         *view)
 {
 	GList              *attributes, *list;
-	GtkTreeStore       *model = (GtkTreeStore *)gtk_tree_view_get_model (view);
-	GtkTreeIter        *iter = NULL;
+	GtkListStore       *model = (GtkListStore *)gtk_tree_view_get_model (view);
+	GtkTreeIter        *iter;
 	GladeAttribute     *gattr;
 	gchar              *text;
 
 	attributes = g_value_get_boxed (eprop->property->value);
 
-	append_empty_row (model, PANGO_ATTR_LANGUAGE, NULL, NULL);
-	append_empty_row (model, PANGO_ATTR_STYLE, NULL, NULL);
-	append_empty_row (model, PANGO_ATTR_WEIGHT, NULL, NULL);
-	append_empty_row (model, PANGO_ATTR_VARIANT, NULL, NULL);
-	append_empty_row (model, PANGO_ATTR_STRETCH, NULL, NULL);
-	append_empty_row (model, PANGO_ATTR_UNDERLINE, NULL, NULL);
-	append_empty_row (model, PANGO_ATTR_STRIKETHROUGH, NULL, NULL);
-	append_empty_row (model, PANGO_ATTR_GRAVITY, NULL, NULL);
-	append_empty_row (model, PANGO_ATTR_GRAVITY_HINT, NULL, NULL);
-	append_empty_row (model, PANGO_ATTR_FAMILY, NULL, NULL);
-	append_empty_row (model, PANGO_ATTR_SIZE, NULL, NULL);
-	append_empty_row (model, PANGO_ATTR_ABSOLUTE_SIZE, NULL, NULL);
-	append_empty_row (model, PANGO_ATTR_FOREGROUND, NULL, NULL);
-	append_empty_row (model, PANGO_ATTR_BACKGROUND, NULL, NULL);
-	append_empty_row (model, PANGO_ATTR_UNDERLINE_COLOR, NULL, NULL);
-	append_empty_row (model, PANGO_ATTR_STRIKETHROUGH_COLOR, NULL, NULL);
-	append_empty_row (model, PANGO_ATTR_SHAPE, NULL, NULL);
-	append_empty_row (model, PANGO_ATTR_SCALE, NULL, NULL);
-
+	append_empty_row (model, PANGO_ATTR_LANGUAGE);
+	append_empty_row (model, PANGO_ATTR_STYLE);
+	append_empty_row (model, PANGO_ATTR_WEIGHT);
+	append_empty_row (model, PANGO_ATTR_VARIANT);
+	append_empty_row (model, PANGO_ATTR_STRETCH);
+	append_empty_row (model, PANGO_ATTR_UNDERLINE);
+	append_empty_row (model, PANGO_ATTR_STRIKETHROUGH);
+	append_empty_row (model, PANGO_ATTR_GRAVITY);
+	append_empty_row (model, PANGO_ATTR_GRAVITY_HINT);
+	append_empty_row (model, PANGO_ATTR_FAMILY);
+	append_empty_row (model, PANGO_ATTR_SIZE);
+	append_empty_row (model, PANGO_ATTR_ABSOLUTE_SIZE);
+	append_empty_row (model, PANGO_ATTR_FOREGROUND);
+	append_empty_row (model, PANGO_ATTR_BACKGROUND);
+	append_empty_row (model, PANGO_ATTR_UNDERLINE_COLOR);
+	append_empty_row (model, PANGO_ATTR_STRIKETHROUGH_COLOR);
+	append_empty_row (model, PANGO_ATTR_SHAPE);
+	append_empty_row (model, PANGO_ATTR_SCALE);
 
 	/* XXX Populate here ...
 	 */
@@ -1119,11 +1061,11 @@ glade_eprop_attrs_populate_view (GladeEditorProperty *eprop,
 	{
 		gattr = list->data;
 
-		if (append_empty_row (model, gattr->type, NULL, &iter))
+		if ((iter = get_row_by_type (GTK_TREE_MODEL (model), gattr->type)))
 		{
 			text = glade_gtk_string_from_attr (gattr);
 
-			gtk_tree_store_set (GTK_TREE_STORE (model), iter,
+			gtk_list_store_set (GTK_LIST_STORE (model), iter,
 					    COLUMN_NAME_WEIGHT, PANGO_WEIGHT_BOLD,
 					    COLUMN_TEXT, text,
 					    COLUMN_TEXT_STYLE, PANGO_STYLE_NORMAL,
@@ -1132,10 +1074,9 @@ glade_eprop_attrs_populate_view (GladeEditorProperty *eprop,
 			
 			if (gattr->type == PANGO_ATTR_UNDERLINE ||
 			    gattr->type == PANGO_ATTR_STRIKETHROUGH)
-				gtk_tree_store_set (GTK_TREE_STORE (model), iter,
+				gtk_list_store_set (GTK_LIST_STORE (model), iter,
 						    COLUMN_TOGGLE_DOWN, g_value_get_boolean (&(gattr->value)),
 						    -1);
-
 
 			g_free (text);
 			gtk_tree_iter_free (iter);
@@ -1145,7 +1086,6 @@ glade_eprop_attrs_populate_view (GladeEditorProperty *eprop,
 
 }
 
-
 static void
 glade_eprop_attrs_show_dialog (GtkWidget           *dialog_button,
 			       GladeEditorProperty *eprop)
@@ -1153,10 +1093,15 @@ glade_eprop_attrs_show_dialog (GtkWidget           *dialog_button,
 	GladeEPropAttrs  *eprop_attrs = GLADE_EPROP_ATTRS (eprop);
 	GtkWidget        *dialog, *parent, *vbox, *sw, *tree_view;
 	GladeProject     *project;
+	GList            *old_attributes;
 	gint              res;
 	
 	project = glade_widget_get_project (eprop->property->widget);
 	parent = gtk_widget_get_toplevel (GTK_WIDGET (eprop));
+
+
+	/* Keep a copy for commit time... */
+	old_attributes = g_value_dup_boxed (eprop->property->value);
 
 	dialog = gtk_dialog_new_with_buttons (_("Setup Text Attributes"),
 					      GTK_WINDOW (parent),
@@ -1195,33 +1140,19 @@ glade_eprop_attrs_show_dialog (GtkWidget           *dialog_button,
 	res = gtk_dialog_run (GTK_DIALOG (dialog));
 	if (res == GTK_RESPONSE_OK) 
 	{
-		/* XXX TODO FIXME !!! */
-
-
-/* 		gtk_tree_model_foreach */
-/* 			(gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view)), */
-/* 			 (GtkTreeModelForeachFunc) */
-/* 			 glade_eprop_accel_accum_accelerators, &accelerators); */
-		
-/* 		value = g_new0 (GValue, 1); */
-/* 		g_value_init (value, GLADE_TYPE_ACCEL_GLIST); */
-/* 		g_value_take_boxed (value, accelerators); */
-
-/* 		glade_editor_property_commit (eprop, value); */
-
-/* 		g_value_unset (value); */
-/* 		g_free (value); */
+		/* Update from old attributes so that there a property change 
+		 * sitting on the undo stack.
+		 */
+		glade_property_set (eprop->property, old_attributes);
+		sync_object (eprop_attrs, TRUE);
 	} 
 	else if (res == GLADE_RESPONSE_CLEAR)
 	{
-/* 		value = g_new0 (GValue, 1); */
-/* 		g_value_init (value, GLADE_TYPE_ACCEL_GLIST); */
-/* 		g_value_set_boxed (value, NULL); */
-
-/* 		glade_editor_property_commit (eprop, value); */
-
-/* 		g_value_unset (value); */
-/* 		g_free (value); */
+		GValue value = { 0, };
+		g_value_init (&value, GLADE_TYPE_ATTR_GLIST);
+		g_value_set_boxed (&value, NULL);
+		glade_editor_property_commit (eprop, &value);
+		g_value_unset (&value);
 	}
 
 	/* Clean up ...
@@ -1231,6 +1162,7 @@ glade_eprop_attrs_show_dialog (GtkWidget           *dialog_button,
 	g_object_unref (G_OBJECT (eprop_attrs->model));
 	eprop_attrs->model = NULL;
 
+	glade_attr_list_free (old_attributes);
 }
 
 
@@ -1266,12 +1198,8 @@ glade_eprop_attrs_create_input (GladeEditorProperty *eprop)
 	GtkWidget        *button;
 
 	hbox               = gtk_hbox_new (FALSE, 0);
-/* 	eprop_attrs->entry = gtk_entry_new (); */
-/* 	gtk_entry_set_editable (GTK_ENTRY (eprop_attrs->entry), FALSE); */
-/* 	gtk_widget_show (eprop_attrs->entry); */
-/* 	gtk_box_pack_start (GTK_BOX (hbox), eprop_attrs->entry, TRUE, TRUE, 0); */
 
-	button = gtk_button_new_with_label (_("Edit Attributes"));
+	button = gtk_button_new_from_stock (GTK_STOCK_EDIT);
 	gtk_widget_show (button);
 	gtk_box_pack_start (GTK_BOX (hbox), button,  TRUE, TRUE, 0);
 

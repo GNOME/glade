@@ -2239,6 +2239,14 @@ glade_utils_liststore_from_enum_type (GType    enum_type,
 	eclass = g_type_class_ref (enum_type);
 
 	store = gtk_list_store_new (1, G_TYPE_STRING);
+
+	if (include_empty)
+	{
+		gtk_list_store_append (store, &iter);
+		gtk_list_store_set (store, &iter, 
+				    0, _("None"),
+				    -1);
+	}
 	
 	for (i = 0; i < eclass->n_values; i++)
 	{

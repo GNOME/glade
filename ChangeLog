@@ -48,7 +48,10 @@
 	* plugins/gtk+/glade-label-editor.[ch], plugins/gtk+/Makefile.am,
 	plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-gtk.c: Rewrote GtkLabel implementation from 
 	top to bottom with custom editor (now all those conflicting properties are dummy proofed) 
-	
+
+	* plugins/gtk+/glade-attributes.c: Fixed some glitches, now its usable, closing case
+	for now, we have attributes, they are global for the label but better that way for i18n'ing.
+
 2008-10-27  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-gtk.c: 
