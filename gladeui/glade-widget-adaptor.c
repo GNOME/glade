@@ -2468,12 +2468,17 @@ GladeWidgetAdaptor  *
 glade_widget_adaptor_from_pspec (GladeWidgetAdaptor *adaptor,
 				 GParamSpec         *spec)
 {
-	GladeWidgetAdaptor *spec_adaptor = glade_widget_adaptor_get_by_type (spec->owner_type);
+	GladeWidgetAdaptor *spec_adaptor;
 	GType spec_type = spec->owner_type;
+
+	if (!spec_type)
+		return adaptor;
+
+	spec_adaptor = glade_widget_adaptor_get_by_type (spec->owner_type);
 
 	g_return_val_if_fail (g_type_is_a (adaptor->type, spec->owner_type), NULL);
 
-	while (!spec_adaptor && spec_type != adaptor->type)
+	while (spec_type && !spec_adaptor && spec_type != adaptor->type)
 	{
 		spec_type = g_type_parent (spec_type);
 		spec_adaptor = glade_widget_adaptor_get_by_type (spec_type);

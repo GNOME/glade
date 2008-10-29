@@ -53,7 +53,9 @@
 #define FIXED_DEFAULT_CHILD_WIDTH  100
 #define FIXED_DEFAULT_CHILD_HEIGHT 60
 
-
+#define MNEMONIC_INSENSITIVE_MSG   _("This property does not apply unless Use Underline is set.")
+#define NOT_SELECTED_MSG           _("Property not selected")
+#define RESPID_INSENSITIVE_MSG     _("this property is only for use in dialog action buttons")
 /* -------------------------------- ParamSpecs ------------------------------ */
 /*
 GtkImageMenuItem GnomeUI "stock_item" property special case:
@@ -2052,7 +2054,6 @@ glade_gtk_box_verify_property (GladeWidgetAdaptor *adaptor,
 	return TRUE;
 }
 
-#define RESPID_INSENSITIVE_MSG _("this property is only for use in dialog action buttons")
 
 static void
 fix_response_id_on_child (GladeWidget *gbox,
@@ -5310,7 +5311,6 @@ glade_gtk_image_write_widget (GladeWidgetAdaptor *adaptor,
 static void
 glade_gtk_image_set_image_mode (GObject *object, const GValue *value)
 {
-	const gchar       *insensitive_msg = _("Property not selected");
 	GladeWidget       *gwidget;
 	GladeGtkImageType  type;
 	
@@ -5318,9 +5318,9 @@ glade_gtk_image_set_image_mode (GObject *object, const GValue *value)
 	g_return_if_fail (GTK_IS_IMAGE (object));
 	g_return_if_fail (GLADE_IS_WIDGET (gwidget));
 	
-	glade_widget_property_set_sensitive (gwidget, "stock", FALSE, insensitive_msg);
-	glade_widget_property_set_sensitive (gwidget, "icon-name", FALSE, insensitive_msg);
-	glade_widget_property_set_sensitive (gwidget, "pixbuf", FALSE, insensitive_msg);
+	glade_widget_property_set_sensitive (gwidget, "stock", FALSE, NOT_SELECTED_MSG);
+	glade_widget_property_set_sensitive (gwidget, "icon-name", FALSE, NOT_SELECTED_MSG);
+	glade_widget_property_set_sensitive (gwidget, "pixbuf", FALSE, NOT_SELECTED_MSG);
 	glade_widget_property_set_sensitive (gwidget, "icon-size", FALSE, 
 					     _("This property only applies to stock images"));
 	glade_widget_property_set_sensitive (gwidget, "pixel-size", FALSE, 
@@ -6752,15 +6752,14 @@ static void
 glade_gtk_tool_button_set_image_mode (GObject *object, const GValue *value)
 {
 	GladeWidget *gbutton;
-	const gchar *insensitive_msg = _("Property not selected");
 	
 	g_return_if_fail (GTK_IS_TOOL_BUTTON (object));
 	gbutton = glade_widget_get_from_gobject (object);
 
-	glade_widget_property_set_sensitive (gbutton, "stock-id", FALSE, insensitive_msg);
-	glade_widget_property_set_sensitive (gbutton, "icon-name", FALSE, insensitive_msg);
-	glade_widget_property_set_sensitive (gbutton, "icon", FALSE, insensitive_msg);
-	glade_widget_property_set_sensitive (gbutton, "icon-widget", FALSE, insensitive_msg);
+	glade_widget_property_set_sensitive (gbutton, "stock-id", FALSE, NOT_SELECTED_MSG);
+	glade_widget_property_set_sensitive (gbutton, "icon-name", FALSE, NOT_SELECTED_MSG);
+	glade_widget_property_set_sensitive (gbutton, "icon", FALSE, NOT_SELECTED_MSG);
+	glade_widget_property_set_sensitive (gbutton, "icon-widget", FALSE, NOT_SELECTED_MSG);
 	
 	switch (g_value_get_int (value))
 	{
@@ -6786,13 +6785,12 @@ static void
 glade_gtk_tool_button_set_custom_label (GObject *object, const GValue *value)
 {
 	GladeWidget *gbutton;
-	const gchar *insensitive_msg = _("Property not selected");
 	
 	g_return_if_fail (GTK_IS_TOOL_BUTTON (object));
 	gbutton = glade_widget_get_from_gobject (object);
 
-	glade_widget_property_set_sensitive (gbutton, "label", FALSE, insensitive_msg);
-	glade_widget_property_set_sensitive (gbutton, "label-widget", FALSE, insensitive_msg);
+	glade_widget_property_set_sensitive (gbutton, "label", FALSE, NOT_SELECTED_MSG);
+	glade_widget_property_set_sensitive (gbutton, "label-widget", FALSE, NOT_SELECTED_MSG);
 
 	if (g_value_get_boolean (value))
 		glade_widget_property_set_sensitive (gbutton, "label-widget", TRUE, NULL);
@@ -6953,12 +6951,7 @@ glade_gtk_label_post_create (GladeWidgetAdaptor *adaptor,
 	GladeWidget *glabel = glade_widget_get_from_gobject (object);
 
 	if (reason == GLADE_CREATE_USER)
-	{
-		/* Set default sensitive states... */
-		const gchar *insensitive_msg = _("This property does not apply unless Use Underline is set.");
-	
-		glade_widget_property_set_sensitive (glabel, "mnemonic-widget", FALSE, insensitive_msg);
-	}
+		glade_widget_property_set_sensitive (glabel, "mnemonic-widget", FALSE, MNEMONIC_INSENSITIVE_MSG);
 }
 
 
@@ -7097,13 +7090,12 @@ glade_gtk_label_set_content_mode (GObject *object, const GValue *value)
 {
 	GladeLabelContentMode mode = g_value_get_int (value);
 	GladeWidget *glabel;
-	const gchar *insensitive_msg = _("Property not selected");
 	
 	glabel = glade_widget_get_from_gobject (object);
 
-	glade_widget_property_set_sensitive (glabel, "glade-attributes", FALSE, insensitive_msg);
-	glade_widget_property_set_sensitive (glabel, "use-markup", FALSE, insensitive_msg);
-	glade_widget_property_set_sensitive (glabel, "pattern", FALSE, insensitive_msg);
+	glade_widget_property_set_sensitive (glabel, "glade-attributes", FALSE, NOT_SELECTED_MSG);
+	glade_widget_property_set_sensitive (glabel, "use-markup", FALSE, NOT_SELECTED_MSG);
+	glade_widget_property_set_sensitive (glabel, "pattern", FALSE, NOT_SELECTED_MSG);
 
 	switch (mode)
 	{
@@ -7125,12 +7117,11 @@ static void
 glade_gtk_label_set_use_max_width (GObject *object, const GValue *value)
 {
 	GladeWidget *glabel;
-	const gchar *insensitive_msg = _("Property not selected");
 	
 	glabel = glade_widget_get_from_gobject (object);
 
-	glade_widget_property_set_sensitive (glabel, "width-chars", FALSE, insensitive_msg);
-	glade_widget_property_set_sensitive (glabel, "max-width-chars", FALSE, insensitive_msg);
+	glade_widget_property_set_sensitive (glabel, "width-chars", FALSE, NOT_SELECTED_MSG);
+	glade_widget_property_set_sensitive (glabel, "max-width-chars", FALSE, NOT_SELECTED_MSG);
 
 	if (g_value_get_boolean (value))
 		glade_widget_property_set_sensitive (glabel, "max-width-chars", TRUE, NULL);
@@ -7144,12 +7135,11 @@ glade_gtk_label_set_wrap_mode (GObject *object, const GValue *value)
 {
 	GladeLabelWrapMode mode = g_value_get_int (value);
 	GladeWidget *glabel;
-	const gchar *insensitive_msg = _("Property not selected");
 	
 	glabel = glade_widget_get_from_gobject (object);
 
-	glade_widget_property_set_sensitive (glabel, "single-line-mode", FALSE, insensitive_msg);
-	glade_widget_property_set_sensitive (glabel, "wrap-mode", FALSE, insensitive_msg);
+	glade_widget_property_set_sensitive (glabel, "single-line-mode", FALSE, NOT_SELECTED_MSG);
+	glade_widget_property_set_sensitive (glabel, "wrap-mode", FALSE, NOT_SELECTED_MSG);
 	
 	if (mode == GLADE_LABEL_SINGLE_LINE)
 		glade_widget_property_set_sensitive (glabel, "single-line-mode", TRUE, NULL);
@@ -7161,14 +7151,13 @@ static void
 glade_gtk_label_set_use_underline (GObject *object, const GValue *value)
 {
 	GladeWidget *glabel;
-	const gchar *insensitive_msg = _("This property does not apply unless Use Underline is set.");
 	
 	glabel = glade_widget_get_from_gobject (object);
 
 	if (g_value_get_boolean (value))
 		glade_widget_property_set_sensitive (glabel, "mnemonic-widget", TRUE, NULL);
 	else
-		glade_widget_property_set_sensitive (glabel, "mnemonic-widget", FALSE, insensitive_msg);
+		glade_widget_property_set_sensitive (glabel, "mnemonic-widget", FALSE, MNEMONIC_INSENSITIVE_MSG);
 
 	gtk_label_set_use_underline (GTK_LABEL (object), g_value_get_boolean (value));
 }
@@ -7330,6 +7319,11 @@ glade_gtk_label_read_widget (GladeWidgetAdaptor *adaptor,
 		glade_widget_property_set (widget, "use-max-width", TRUE);
 	else
 		glade_widget_property_set (widget, "use-max-width", TRUE);
+	
+	if (glade_widget_property_original_default (widget, "use-markup"))
+		glade_widget_property_set_sensitive (widget, "mnemonic-widget", 
+						     FALSE, MNEMONIC_INSENSITIVE_MSG);
+
 }
 
 static void
