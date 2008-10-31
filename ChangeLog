@@ -1,3 +1,13 @@
+2008-10-30  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-widget.[ch], gladeui/glade-command.[ch]: Added
+	glade_widget_[un]lock() and glade_command_[un]lock_widget().
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-convert.c,
+	plugins/gtk+/glade-image-item-editor.c: Dual format menu editing support
+	depending on my gtk+ patch on bug 527672, TODO: still need to add accel-groups
+	to GtkWindow on the glade side of things.
+
 2008-10-28  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-gtk.c: 

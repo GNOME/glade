@@ -1126,18 +1126,6 @@ glade_app_command_copy (void)
 	{
 		widget  = glade_widget_get_from_gobject (GTK_WIDGET (list->data));
 		widgets = g_list_prepend (widgets, widget);
-		
-		g_assert (widget);
-		if (widget->internal)
-		{
-			glade_util_ui_message
-				(glade_app_get_window(),
-				 GLADE_UI_WARN, NULL,
-				 _("You cannot copy a widget "
-				   "internal to a composite widget."));
-			failed = TRUE;
-			break;
-		}
 	}
 
 	if (failed == FALSE && widgets != NULL)
@@ -1179,18 +1167,6 @@ glade_app_command_cut (void)
 	{
 		widget  = glade_widget_get_from_gobject (GTK_WIDGET (list->data));
 		widgets = g_list_prepend (widgets, widget);
-		
-		g_assert (widget);
-		if (widget->internal)
-		{
-			glade_util_ui_message
-				(glade_app_get_window(),
-				 GLADE_UI_WARN, NULL,
-				 _("You cannot cut a widget "
-				   "internal to a composite widget."));
-			failed = TRUE;
-			break;
-		}
 	}
 
 	if (failed == FALSE && widgets != NULL)
@@ -1349,20 +1325,8 @@ glade_app_command_delete (void)
 	{
 		widget  = glade_widget_get_from_gobject (list->data);
 		widgets = g_list_prepend (widgets, widget);
-		
-		g_assert (widget);
-		if (widget->internal)
-		{
-			glade_util_ui_message
-				(glade_app_get_window(),
-				 GLADE_UI_WARN, NULL,
-				 _("You cannot delete a widget "
-				   "internal to a composite widget."));
-			failed = TRUE;
-			break;
-		}
 	}
-
+ 
 	if (failed == FALSE && widgets != NULL)
 	{
 		glade_command_delete (widgets);
@@ -1391,21 +1355,10 @@ glade_app_command_delete_clipboard (void)
 	clipboard = glade_app_get_clipboard ();
 
 	if (clipboard->selection == NULL)
+	{
 		glade_util_ui_message (glade_app_get_window (), GLADE_UI_INFO, NULL,
 				    _("No widget selected on the clipboard"));
-
-	for (list = clipboard->selection; list; list = list->next)
-	{
-		gwidget = list->data;
-		if (gwidget->internal)
-		{
-			glade_util_ui_message
-				(glade_app_get_window(),
-				 GLADE_UI_WARN, NULL,
-				 _("You cannot delete a widget "
-				   "internal to a composite widget."));
-			return;
-		}
+		return;
 	}
 
 	glade_command_delete (clipboard->selection);

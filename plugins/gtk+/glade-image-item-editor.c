@@ -204,7 +204,7 @@ stock_toggled (GtkWidget            *widget,
 	       GladeImageItemEditor *item_editor)
 {
 	GladeProperty     *property;
-	GladeWidget       *image;
+	GladeWidget       *image, *loaded;
 
 	if (item_editor->loading || !item_editor->loaded_widget)
 		return;
@@ -213,24 +213,26 @@ stock_toggled (GtkWidget            *widget,
 		return;
 
 	item_editor->modifying = TRUE;
+	loaded = item_editor->loaded_widget;
 
-	glade_command_push_group (_("Setting %s to use a stock item"), item_editor->loaded_widget->name);
+	glade_command_push_group (_("Setting %s to use a stock item"), loaded->name);
 
-	property = glade_widget_get_property (item_editor->loaded_widget, "label");
+	property = glade_widget_get_property (loaded, "label");
 	glade_command_set_property (property, NULL);
-	property = glade_widget_get_property (item_editor->loaded_widget, "use-underline");
+	property = glade_widget_get_property (loaded, "use-underline");
 	glade_command_set_property (property, FALSE);
 
 	/* Delete image... */
-	if ((image = get_image_widget (item_editor->loaded_widget)) != NULL)
+	if ((image = get_image_widget (loaded)) != NULL)
 	{
 		GList list = { 0, };
 		list.data = image;
-		glade_command_unprotect_widget (image);
+		glade_command_unlock_widget (image);
 		glade_command_delete (&list);
+		glade_project_selection_set (loaded->project, loaded->object, TRUE);
 	}
 
-	property = glade_widget_get_property (item_editor->loaded_widget, "use-stock");
+	property = glade_widget_get_property (loaded, "use-stock");
 	glade_command_set_property (property, TRUE);
 
 	glade_command_pop_group ();
@@ -238,8 +240,7 @@ stock_toggled (GtkWidget            *widget,
 	item_editor->modifying = FALSE;
 
 	/* reload buttons and sensitivity and stuff... */
-	glade_editable_load (GLADE_EDITABLE (item_editor), 
-			     item_editor->loaded_widget);
+	glade_editable_load (GLADE_EDITABLE (item_editor), item_editor->loaded_widget);
 }
 
 static void
@@ -275,15 +276,25 @@ custom_toggled (GtkWidget            *widget,
 	{
 		/* item_editor->loaded_widget may be set to NULL after the create_command. */
 		GladeWidget *loaded = item_editor->loaded_widget;
-		GladeWidget *image =
-			glade_command_create (glade_widget_adaptor_get_by_type (GTK_TYPE_IMAGE),
-					      item_editor->loaded_widget, NULL, 
-					      glade_widget_get_project (item_editor->loaded_widget));
-		gchar *protection = g_strdup_printf (_("Cannot delete %s because it is used by %s, "
-						       "try editing %s instead."),
-						       image->name, loaded->name, loaded->name);
-		glade_command_protect_widget (image, protection);
-		g_free (protection);
+		GladeWidget *image;
+
+		if (glade_project_get_format (loaded->project) == GLADE_PROJECT_FORMAT_LIBGLADE)
+			image =	glade_command_create (glade_widget_adaptor_get_by_type (GTK_TYPE_IMAGE),
+						      item_editor->loaded_widget, NULL, 
+						      glade_widget_get_project (loaded));
+		else
+		{
+			image =	glade_command_create (glade_widget_adaptor_get_by_type (GTK_TYPE_IMAGE),
+						      NULL, NULL, glade_widget_get_project (loaded));
+
+			glade_command_set_property (loaded, "image", image);
+		}
+
+		/* Make sure nobody deletes this... */
+		glade_command_lock_widget (loaded, image);
+
+		/* reload widget by selection ;-) */
+		glade_project_selection_set (loaded->project, loaded->object, TRUE);
 	}
 	glade_command_pop_group ();
 

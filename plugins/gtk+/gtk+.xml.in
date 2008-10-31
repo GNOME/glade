@@ -368,6 +368,9 @@ embedded in another object</_tooltip>
       <add-child-function>glade_gtk_menu_item_add_child</add-child-function>
       <remove-child-function>glade_gtk_menu_item_remove_child</remove-child-function>
       <action-activate-function>glade_gtk_menu_item_action_activate</action-activate-function>
+      <write-child-function>glade_gtk_menu_item_write_child</write-child-function>
+      <special-child-type>submenu</special-child-type>
+
       <actions>
         <action id="launch_editor" _name="Edit&#8230;" stock="gtk-edit" important="True"/>
       </actions>
@@ -391,6 +394,7 @@ embedded in another object</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkImageMenuItem" generic-name="imagemenuitem" _title="Image Menu Item">
+      <post-create-function>glade_gtk_image_menu_item_post_create</post-create-function>
       <read-widget-function>glade_gtk_image_menu_item_read_widget</read-widget-function>
       <write-widget-function>glade_gtk_image_menu_item_write_widget</write-widget-function>
       <read-child-function>glade_gtk_image_menu_item_read_child</read-child-function>
@@ -411,7 +415,10 @@ embedded in another object</_tooltip>
 	<!-- We save the label manually with the stock value if use_stock is set. -->
         <property id="label" save="False" custom-layout="True"/>
         <property id="use-underline" custom-layout="True"/>
-	<property id="image" disabled="True" />
+	<property id="image" libglade-unsupported="True" visible="False"/>
+
+	<!-- need to fake this property since its not available yet ! -->
+	<property id="accel-group" libglade-unsupported="True"/>
 	<!--
 	This property is added by glade2 gnome support and makes reference to
 	GNOMEUIINFO_MENU_* macros. The read-widget-funcion maps these properties to 
@@ -1122,8 +1129,10 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkCalendar" generic-name="calendar" _title="Calendar"/>
     
     <glade-widget-class name="GtkMenu" generic-name="menu" _title="Popup Menu" toplevel="True">
-      <!-- We do not want glade_gtk_container_post_create be executed -->
       <constructor-function>glade_gtk_menu_constructor</constructor-function>
+      <!-- Set special-child-type at load time for libglade projects -->
+      <read-widget-function>glade_gtk_menu_read_widget</read-widget-function>
+      <!-- We do not want glade_gtk_container_post_create be executed -->
       <post-create-function>empty</post-create-function>
       <actions>
         <action id="launch_editor" _name="Edit&#8230;" stock="gtk-edit" important="True"/>
@@ -1565,6 +1574,8 @@ embedded in another object</_tooltip>
 
     <glade-widget-class name="GtkWindowGroup" generic-name="windowgroup" 
 			_title="Window Group" libglade-unsupported="True" toplevel="True"/>
+    <glade-widget-class name="GtkAccelGroup" generic-name="accelgroup" 
+			_title="Accel Group" libglade-unsupported="True" toplevel="True"/>
     <glade-widget-class name="GtkAdjustment" generic-name="adjustment" 
 			_title="Adjustment" libglade-unsupported="True" toplevel="True">
       <properties>

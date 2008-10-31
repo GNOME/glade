@@ -4758,6 +4758,8 @@ glade_gtk_window_post_create (GladeWidgetAdaptor *adaptor,
 
 	/* Chain her up first */
 	GWA_GET_CLASS (GTK_TYPE_CONTAINER)->post_create (adaptor, object, reason);
+
+
 }
 
 /* ----------------------------- GtkDialog(s) ------------------------------ */
@@ -5423,6 +5425,23 @@ glade_gtk_menu_constructor (GType                  type,
 	return ret_obj;
 }
 
+void
+glade_gtk_menu_read_widget (GladeWidgetAdaptor *adaptor,
+			    GladeWidget        *widget,
+			    GladeXmlNode       *node)
+{
+	if (!glade_xml_node_verify 
+	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+		return;
+
+	/* First chain up and read in all the normal properties.. */
+        GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
+
+	if (glade_project_get_format (widget->project) == GLADE_PROJECT_FORMAT_LIBGLADE &&
+	    widget->parent && GTK_IS_MENU_ITEM (widget->parent->object))
+		g_object_set_data (widget->object, "special-child-type", "submenu");
+}
+
 
 /* ----------------------------- GtkMenuShell ------------------------------ */
 void
@@ -5664,7 +5683,7 @@ glade_gtk_menu_shell_change_type (GladeBaseEditor *editor,
 		if (image && (widget = glade_widget_get_from_gobject (image)))
 		{
 			list.data = widget;
-			glade_command_unprotect_widget (widget);
+			glade_command_unlock_widget (widget);
 			glade_command_delete (&list);
 		}
 	}
@@ -5815,7 +5834,7 @@ glade_gtk_menu_item_constructor (GType                  type,
 
 	return ret_obj;
 }
-	
+
 void
 glade_gtk_menu_item_post_create (GladeWidgetAdaptor *adaptor, 
 				 GObject            *object, 
@@ -5823,9 +5842,7 @@ glade_gtk_menu_item_post_create (GladeWidgetAdaptor *adaptor,
 {
 	GladeWidget  *gitem;
 
-	g_return_if_fail (GTK_IS_MENU_ITEM (object));
 	gitem = glade_widget_get_from_gobject (object);
-	g_return_if_fail (GLADE_IS_WIDGET (gitem));
 	
 	if (GTK_IS_SEPARATOR_MENU_ITEM (object)) return;
 	
@@ -5919,7 +5936,53 @@ glade_gtk_menu_item_set_property (GladeWidgetAdaptor *adaptor,
 								  id, value);
 }
 
+static gboolean
+write_special_child_submenu_item (GladeWidgetAdaptor *adaptor,
+				  GladeWidget        *widget,
+				  GladeXmlContext    *context,
+				  GladeXmlNode       *node,
+				  GladeWriteWidgetFunc write_func)
+{
+	gchar *special_child_type = NULL;
+	GObject *child;
+
+	if (glade_project_get_format (widget->project) == GLADE_PROJECT_FORMAT_LIBGLADE)
+	{
+		child = widget->object;
+		if (child)
+			special_child_type = g_object_get_data (child, "special-child-type");
+	}
+
+	if (special_child_type && !strcmp (special_child_type, "submenu"))
+	{
+		g_object_set_data (child, "special-child-type", NULL);
+		write_func (adaptor, widget, context, node);
+		g_object_set_data (child, "special-child-type", "submenu");
+		return TRUE;
+	}
+	else
+		return FALSE;
+}
+
+void
+glade_gtk_menu_item_write_child (GladeWidgetAdaptor *adaptor,
+			        GladeWidget        *widget,
+			        GladeXmlContext    *context,
+			        GladeXmlNode       *node)
+{
+
+	if (!write_special_child_submenu_item (adaptor, widget, context, node,
+					       GWA_GET_CLASS(GTK_TYPE_CONTAINER)->write_child))
+		/* Chain Up */
+		GWA_GET_CLASS
+			(GTK_TYPE_CONTAINER)->write_child (adaptor,
+							   widget,
+							   context,
+							   node);
+}
+
 /* ----------------------------- GtkImageMenuItem ------------------------------ */
+
 GList *
 glade_gtk_image_menu_item_get_children (GladeWidgetAdaptor *adaptor,
 					GObject *object)
@@ -5932,8 +5995,7 @@ glade_gtk_image_menu_item_get_children (GladeWidgetAdaptor *adaptor,
 	if ((child = gtk_menu_item_get_submenu (GTK_MENU_ITEM (object))))
 		list = g_list_append (list, child);
 	
-	if (GTK_IS_IMAGE_MENU_ITEM (object) &&
-	    (child = gtk_image_menu_item_get_image (GTK_IMAGE_MENU_ITEM (object))))
+	if ((child = gtk_image_menu_item_get_image (GTK_IMAGE_MENU_ITEM (object))))
 		list = g_list_append (list, child);
 
 	return list;
@@ -6003,18 +6065,19 @@ glade_gtk_image_menu_item_set_label (GObject *object, const GValue *value)
 		image = gtk_image_new_from_stock (g_value_get_string (value), GTK_ICON_SIZE_MENU);
 		gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (object), image);
 
+		/* Just for display purposes, real stock menuitems automatically have underline
+		 * property set. */
+		gtk_label_set_use_underline (GTK_LABEL (label), TRUE);
+
 		/* Get the label string... */
 		if (text && gtk_stock_lookup (text, &item))
-			gtk_label_set_text (GTK_LABEL (label), item.label);
+			gtk_label_set_label (GTK_LABEL (label), item.label);
 		else
-			gtk_label_set_text (GTK_LABEL (label), text);
+			gtk_label_set_label (GTK_LABEL (label), text ? text : "");
 
-		/* Just for display purposes, real stock menuitems dont need the underline property,
-		 * but do have mnemonic label. */
-		gtk_label_set_use_underline (GTK_LABEL (label), TRUE);
 	} 
 	else 
-		gtk_label_set_text (GTK_LABEL (label), g_value_get_string (value));
+		gtk_label_set_label (GTK_LABEL (label), text ? text : "");
 
 	/* Update underline incase... */
 	gtk_label_set_use_underline (GTK_LABEL (label), use_underline);
@@ -6048,7 +6111,6 @@ static GladeWidget *
 glade_gtk_image_menu_item_create_image (GladeWidget *gitem)
 {
 	GladeWidget *gimage;
-	gchar *protection;
 
 	gimage = glade_widget_adaptor_create_widget 
 		(glade_widget_adaptor_get_by_type (GTK_TYPE_IMAGE), FALSE,
@@ -6059,11 +6121,7 @@ glade_gtk_image_menu_item_create_image (GladeWidget *gitem)
 	gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (gitem->object), 
 				       GTK_WIDGET (gimage->object));
 
-	protection = g_strdup_printf (_("Cannot delete %s because it is used by %s, "
-					"try editing %s instead."),
-				      gimage->name, gitem->name, gitem->name);
-	glade_widget_protect (gimage, protection);
-	g_free (protection);
+	glade_widget_lock (gitem, gimage);
 
 	return gimage;
 }
@@ -6183,6 +6241,18 @@ glade_gtk_image_menu_item_fix_stock_item (GladeWidget *widget)
 	glade_widget_property_set (widget, "label", label);
 }
 
+static void
+glade_gtk_image_menu_item_parse_finished (GladeProject *project, 
+					  GladeWidget  *widget)
+{
+	GladeWidget *gimage;
+	GtkWidget   *image = NULL;
+	glade_widget_property_get (widget, "image", &image);
+	
+	if (image && (gimage = glade_widget_get_from_gobject (image)))
+		glade_widget_lock (widget, gimage);
+}
+
 void
 glade_gtk_image_menu_item_read_widget (GladeWidgetAdaptor *adaptor,
 				       GladeWidget        *widget,
@@ -6207,9 +6277,16 @@ glade_gtk_image_menu_item_read_widget (GladeWidgetAdaptor *adaptor,
 		gchar *label = NULL;
 
 		glade_property_get (property, &label);
+		glade_widget_property_set (widget, "use-underline", TRUE);
 		glade_widget_property_set (widget, "stock", label);
 		glade_property_sync (property);
 	}
+
+	/* Run this after the load so that image is resolved. */
+	if (glade_project_get_format (widget->project) == GLADE_PROJECT_FORMAT_GTKBUILDER)
+		g_signal_connect (G_OBJECT (widget->project), "parse-finished",
+				  G_CALLBACK (glade_gtk_image_menu_item_parse_finished),
+				  widget);
 }
 
 
@@ -6241,12 +6318,12 @@ glade_gtk_image_menu_item_write_widget (GladeWidgetAdaptor *adaptor,
 	g_object_unref (G_OBJECT (label_prop));
 
 	/* Chain up and write all the normal properties ... */
-        GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
+        GWA_GET_CLASS (GTK_TYPE_MENU_ITEM)->write_widget (adaptor, widget, context, node);
 
 }
 
 
-/* Read in the internal "image" widgets as normal "protected" widgets...
+/* Read in the internal "image" widgets as normal "locked" widgets...
  */
 void
 glade_gtk_image_menu_item_read_child (GladeWidgetAdaptor *adaptor,
@@ -6276,14 +6353,8 @@ glade_gtk_image_menu_item_read_child (GladeWidgetAdaptor *adaptor,
 		{
 			if (GTK_IS_IMAGE (child_widget->object) &&
 			    internal_name && strcmp (internal_name, "image") == 0)
-			{
-				gchar *protection = 
-					g_strdup_printf (_("Cannot delete %s because it is used by %s, "
-							   "try editing %s instead."),
-							 child_widget->name, widget->name, widget->name);
-				glade_widget_protect (child_widget, protection);
-				g_free (protection);
-			}
+				glade_widget_lock (widget, child_widget);
+
 			glade_widget_add_child (widget, child_widget, FALSE);
 		}
 	}
@@ -6300,7 +6371,7 @@ glade_gtk_image_menu_item_write_child (GladeWidgetAdaptor *adaptor,
 
 	if (!GTK_IS_IMAGE (widget->object))
 	{
-		GWA_GET_CLASS (G_TYPE_OBJECT)->write_child (adaptor, widget, context, node);
+		GWA_GET_CLASS (GTK_TYPE_MENU_ITEM)->write_child (adaptor, widget, context, node);
 		return;
 	}
 

@@ -41,11 +41,6 @@ struct _GladeWidget
 				 * in this widget
 				 */
 	
-	gchar *protection; /* custom editors are allowed to add protected widgets that
-			    * cannot be deleted by the user in normal ways.
-			    * (this is a message to be displayed in the dialog
-			    * when the user tries to delete it).
-			    */
 
 	gchar *internal; /* If the widget is an internal child of 
 			  * another widget this is the name of the 
@@ -107,6 +102,11 @@ struct _GladeWidget
 	GList *packing_actions;	/* A GladeWidgetAction list, this actions are
 				 * related to the container and they are not always present.
 				 */
+
+	GladeWidget    *lock; /* The glade widget that has locked this widget down.
+			       */
+	GList          *locked_widgets; /* A list of widgets this widget has locked down.
+					 */
 	
 	/* Construct parameters: */
 	GladeWidget       *construct_template;
@@ -410,9 +410,9 @@ void                    glade_widget_pop_superuser          (void);
 void                    glade_widget_set_support_warning    (GladeWidget      *widget,
 							     const gchar      *warning);
 
-void                    glade_widget_protect                (GladeWidget      *widget,
-							     const gchar      *warning);
-void                    glade_widget_unprotect              (GladeWidget      *widget);
+void                    glade_widget_lock                   (GladeWidget      *widget,
+							     GladeWidget      *locked);
+void                    glade_widget_unlock                 (GladeWidget      *widget);
 
 G_END_DECLS
 

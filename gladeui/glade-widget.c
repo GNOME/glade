@@ -4166,24 +4166,44 @@ glade_widget_set_support_warning (GladeWidget *widget,
 	g_object_notify (G_OBJECT (widget), "support-warning");
 }
 
+/**
+ * glade_widget_lock:
+ * @widget: A #GladeWidget
+ * @locked: The #GladeWidget to lock
+ *
+ * Sets @locked to be in a locked up state
+ * spoken for by @widget, locked widgets cannot
+ * be removed from the project until unlocked.
+ *
+ */
 void
-glade_widget_protect (GladeWidget      *widget,
-		      const gchar      *warning)
+glade_widget_lock (GladeWidget      *widget,
+		   GladeWidget      *locked)
 {
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
-	g_return_if_fail (warning && warning[0]);
-	
-	if (widget->protection)
-		g_free (widget->protection);
-	widget->protection = g_strdup (warning);
+	g_return_if_fail (GLADE_IS_WIDGET (locked));
+	g_return_if_fail (locked->lock == NULL);
+
+	locked->lock = widget;
+	widget->locked_widgets = 
+		g_list_prepend (widget->locked_widgets, locked);
 }
 
+/**
+ * glade_widget_unlock:
+ * @widget: A #GladeWidget
+ *
+ * Unlocks @widget so that it can be removed
+ * from the project again
+ *
+ */
 void
-glade_widget_unprotect (GladeWidget    *widget)
+glade_widget_unlock (GladeWidget    *widget)
 {
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	g_return_if_fail (GLADE_IS_WIDGET (widget->lock));
 	
-	if (widget->protection)
-		g_free (widget->protection);
-	widget->protection = NULL;
+	widget->lock->locked_widgets = 
+		g_list_remove (widget->lock->locked_widgets, widget);
+	widget->lock = NULL;
 }

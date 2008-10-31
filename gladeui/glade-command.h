@@ -116,10 +116,10 @@ void           glade_command_set_name      (GladeWidget       *glade_widget, con
 
 /************************ protection ******************************/
 
-void           glade_command_protect_widget   (GladeWidget   *widget, 
-					       const gchar   *warning);
+void           glade_command_lock_widget   (GladeWidget   *widget, 
+					    GladeWidget   *lock);
 
-void           glade_command_unprotect_widget (GladeWidget   *widget);
+void           glade_command_unlock_widget (GladeWidget   *widget);
 
 /************************ create/delete ******************************/
 

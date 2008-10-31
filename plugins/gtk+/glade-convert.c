@@ -57,6 +57,7 @@ typedef struct {
 	GList *tooltips;
 	GList *combos;
 	GList *toolbuttons;
+	GList *menus;
 } ConvertData;
 
 /*****************************************
@@ -719,6 +720,86 @@ convert_toolbuttons (GladeProject       *project,
 	}
 }
 
+/******************************************
+ *   GtkImageMenuItem:image,accel-group   *
+ ******************************************/
+static void
+convert_menus_finished (GladeProject  *project,
+			ConvertData   *data)
+{
+	GList *l;
+	GladeWidget *widget, *accel_group = NULL;
+	GladeProperty *property;
+
+	for (l = data->menus; l; l = l->next)
+	{
+		widget = l->data;
+		property = glade_widget_get_property (widget, "accel-group");
+
+		if (accel_group == NULL)
+			accel_group = glade_command_create (glade_widget_adaptor_get_by_type (GTK_TYPE_ACCEL_GROUP),
+							    NULL, NULL, project);
+
+		glade_command_set_property (property, accel_group->object);
+
+	}
+	g_list_free (data->menus);
+}
+
+static GladeWidget *
+get_image_widget (GladeWidget *widget)
+{
+	GtkWidget *image;
+	image = gtk_image_menu_item_get_image (GTK_IMAGE_MENU_ITEM (widget->object));
+	return image ? glade_widget_get_from_gobject (image) : NULL;
+}
+
+static void
+convert_menus (GladeProject       *project,
+	       GladeProjectFormat  new_format,
+	       ConvertData        *data)
+{
+	GladeWidget   *widget;
+	GladeProperty *property;
+	const GList   *objects;
+	GladeWidget   *gimage;
+	gboolean       use_stock;
+
+	for (objects = glade_project_get_objects (project); objects; objects = objects->next)
+	{
+		widget = glade_widget_get_from_gobject (objects->data);
+		if (!GTK_IS_IMAGE_MENU_ITEM (widget->object))
+			continue;
+		
+		glade_widget_property_get (widget, "use-stock", &use_stock);
+
+		/* convert images */
+		if ((gimage = get_image_widget (widget)) != NULL)
+		{
+			GList list = { 0, };
+
+			list.data = gimage;
+
+			glade_command_unlock_widget (gimage);
+			glade_command_cut (&list);
+
+			if (new_format == GLADE_PROJECT_FORMAT_GTKBUILDER)
+			{
+				property = glade_widget_get_property (widget, "image");
+				glade_command_paste (&list, NULL, NULL);
+				glade_command_set_property (property, gimage->object);
+			}
+			else
+				glade_command_paste (&list, widget, NULL);
+
+			glade_command_lock_widget (widget, gimage);
+		}
+
+		if (new_format == GLADE_PROJECT_FORMAT_GTKBUILDER && use_stock)
+			data->menus = g_list_prepend (data->menus, widget);
+	}
+
+}
 
 /*****************************************
  *           Main entry point            *
@@ -732,6 +813,7 @@ glade_gtk_project_convert_finished (GladeProject *project,
 	convert_tooltips_finished (project, data);
 	convert_combos_finished (project, data);
 	convert_toolbuttons_finished (project, data);
+	convert_menus_finished (project, data);
 
 	/* Once per conversion */
 	g_signal_handlers_disconnect_by_func (G_OBJECT (project),
@@ -751,6 +833,7 @@ glade_gtk_project_convert (GladeProject *project,
 	convert_tooltips (project, new_format, data);
 	convert_combos (project, new_format, data);
 	convert_toolbuttons (project, new_format, data);
+	convert_menus (project, new_format, data);
 
 	/* Clean up after the new_format is in effect */
 	g_signal_connect (G_OBJECT (project), "convert-finished",

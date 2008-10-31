@@ -1072,6 +1072,23 @@ glade_command_delete_prop_refs (GladeWidget *widget)
 	}
 }
 
+static void glade_command_remove (GList *widgets);
+
+static void
+glade_command_remove_locked (GladeWidget *widget)
+{
+	GList list = { 0, };
+	GladeWidget *locked;
+
+	while (widget->locked_widgets)
+	{
+		locked = widget->locked_widgets->data;
+		list.data = locked;
+
+		glade_command_unlock_widget (locked);
+		glade_command_remove (&list);
+	}
+}
 
 /**
  * glade_command_remove:
@@ -1106,10 +1123,12 @@ glade_command_remove (GList *widgets)
 					       _("You cannot remove a widget internal to a composite widget."));
 			return;
 		}
-		if (widget->protection)
+		if (widget->lock)
 		{
 			glade_util_ui_message (glade_app_get_window(),	
-					       GLADE_UI_WARN, NULL, widget->protection);
+					       GLADE_UI_WARN, NULL, 
+					       _("%s is locked by %s, edit %s first."), 
+					       widget->name, widget->lock->name, widget->lock->name);
 			return;
 		}
 	}
@@ -1135,8 +1154,14 @@ glade_command_remove (GList *widgets)
 		/* Undoably unset any object properties that may point to the removed object */
 		glade_command_delete_prop_refs (widget);
 
+		/* Undoably unlock and remove any widgets locked by this widget */
+		glade_command_remove_locked (widget);
+
 		if (widget->internal)
 			g_critical ("Internal widget in Remove");
+
+		if (widget->lock)
+			g_critical ("Locked widget in Remove");
 
 		if (cdata->parent != NULL &&
 		    glade_widget_placeholder_relation 
@@ -2545,106 +2570,110 @@ glade_command_set_project_naming_policy  (GladeProject       *project,
 typedef struct {
 	GladeCommand   parent;
 	GladeWidget   *widget;
-	gchar         *warning;
-	gboolean       protecting;
-} GladeCommandProtect;
+	GladeWidget   *locked;
+	gboolean       locking;
+} GladeCommandLock;
 
 
-GLADE_MAKE_COMMAND (GladeCommandProtect, glade_command_protect);
-#define GLADE_COMMAND_PROTECT_TYPE			(glade_command_protect_get_type ())
-#define GLADE_COMMAND_PROTECT(o)	  		(G_TYPE_CHECK_INSTANCE_CAST ((o), GLADE_COMMAND_PROTECT_TYPE, GladeCommandProtect))
-#define GLADE_COMMAND_PROTECT_CLASS(k)		(G_TYPE_CHECK_CLASS_CAST ((k), GLADE_COMMAND_PROTECT_TYPE, GladeCommandProtectClass))
-#define GLADE_IS_COMMAND_PROTECT(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), GLADE_COMMAND_PROTECT_TYPE))
-#define GLADE_IS_COMMAND_PROTECT_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), GLADE_COMMAND_PROTECT_TYPE))
+GLADE_MAKE_COMMAND (GladeCommandLock, glade_command_lock);
+#define GLADE_COMMAND_LOCK_TYPE			(glade_command_lock_get_type ())
+#define GLADE_COMMAND_LOCK(o)	  		(G_TYPE_CHECK_INSTANCE_CAST ((o), GLADE_COMMAND_LOCK_TYPE, GladeCommandLock))
+#define GLADE_COMMAND_LOCK_CLASS(k)		(G_TYPE_CHECK_CLASS_CAST ((k), GLADE_COMMAND_LOCK_TYPE, GladeCommandLockClass))
+#define GLADE_IS_COMMAND_LOCK(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), GLADE_COMMAND_LOCK_TYPE))
+#define GLADE_IS_COMMAND_LOCK_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), GLADE_COMMAND_LOCK_TYPE))
 
 static gboolean
-glade_command_protect_execute(GladeCommand *cmd)
+glade_command_lock_execute(GladeCommand *cmd)
 {
-	GladeCommandProtect *me = (GladeCommandProtect *)cmd;
+	GladeCommandLock *me = (GladeCommandLock *)cmd;
 
 	/* set the new policy */
-	if (me->protecting)
-		glade_widget_protect (me->widget, me->warning);
+	if (me->locking)
+		glade_widget_lock (me->widget, me->locked);
 	else
-		glade_widget_unprotect (me->widget);
+		glade_widget_unlock (me->locked);
 
 	/* swap the current values with the old values to prepare for undo */
-	me->protecting = !me->protecting;
+	me->locking = !me->locking;
 	
 	return TRUE;
 }
 
 static gboolean
-glade_command_protect_undo(GladeCommand *cmd)
+glade_command_lock_undo(GladeCommand *cmd)
 {
-	return glade_command_protect_execute(cmd);
+	return glade_command_lock_execute(cmd);
 }
 
 static void
-glade_command_protect_finalize(GObject *obj)
+glade_command_lock_finalize(GObject *obj)
 {
- 	GladeCommandProtect *me = (GladeCommandProtect *)obj;
+ 	GladeCommandLock *me = (GladeCommandLock *)obj;
 	
 	g_object_unref (me->widget);
+	g_object_unref (me->locked);
 	
 	glade_command_finalize(obj);
 }
 
 static gboolean
-glade_command_protect_unifies (GladeCommand *this_cmd, GladeCommand *other_cmd)
+glade_command_lock_unifies (GladeCommand *this_cmd, GladeCommand *other_cmd)
 {
-/* 	GladeCommandProtect *cmd1; */
-/* 	GladeCommandProtect *cmd2; */
+/* 	GladeCommandLock *cmd1; */
+/* 	GladeCommandLock *cmd2; */
 	/* No point here, this command undoubtedly always runs in groups */
 	return FALSE;
 }
 
 static void
-glade_command_protect_collapse (GladeCommand *this_cmd, GladeCommand *other_cmd)
+glade_command_lock_collapse (GladeCommand *this_cmd, GladeCommand *other_cmd)
 {
 	/* this command is the one that will be used for an undo of the sequence of like commands */
-	//GladeCommandProtect *this = GLADE_COMMAND_PROTECT (this_cmd);
+	//GladeCommandLock *this = GLADE_COMMAND_LOCK (this_cmd);
 	
 	/* the other command contains the values that will be used for a redo */
-	//GladeCommandProtect *other = GLADE_COMMAND_PROTECT (other_cmd);
+	//GladeCommandLock *other = GLADE_COMMAND_LOCK (other_cmd);
 
-	g_return_if_fail (GLADE_IS_COMMAND_PROTECT (this_cmd) && GLADE_IS_COMMAND_PROTECT (other_cmd));
+	g_return_if_fail (GLADE_IS_COMMAND_LOCK (this_cmd) && GLADE_IS_COMMAND_LOCK (other_cmd));
 
 	/* no unify/collapse */
 }
 
 /**
- * glade_command_protect_widget:
+ * glade_command_lock_widget:
  * @widget: A #GladeWidget
- * @warning: the warning to print when a user tries to delete this widget
+ * @locked: The #GladeWidget to lock
  *
- * Sets the protection status and @warning on @widget
+ * Sets @locked to be in a locked up state
+ * spoken for by @widget, locked widgets cannot
+ * be removed from the project until unlocked.
  */
 void
-glade_command_protect_widget (GladeWidget  *widget,
-			      const gchar  *warning)
+glade_command_lock_widget (GladeWidget  *widget,
+			   GladeWidget  *locked)
 
 {
-	GladeCommandProtect *me;
+	GladeCommandLock *me;
 	
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
-	g_return_if_fail (widget->protection == NULL);
-	g_return_if_fail (warning && warning[0]);
+	g_return_if_fail (GLADE_IS_WIDGET (locked));
+	g_return_if_fail (locked->lock == NULL);
 
 	/* load up the command */
-	me             = g_object_new(GLADE_COMMAND_PROTECT_TYPE, NULL);
+	me             = g_object_new(GLADE_COMMAND_LOCK_TYPE, NULL);
 	me->widget     = g_object_ref (widget);
-	me->protecting = TRUE;
-	me->warning    = g_strdup (warning);
+	me->locked     = g_object_ref (locked);
+	me->locking    = TRUE;
 
-	GLADE_COMMAND(me)->description = g_strdup_printf(_("Protecting %s"), widget->name);
+	GLADE_COMMAND(me)->description = g_strdup_printf(_("Locking %s by widget %s"), 
+							 locked->name, widget->name);
 	
 	glade_command_check_group(GLADE_COMMAND(me));
 		
 	/* execute the command and push it on the stack if successful 
 	 * this sets the actual policy
 	 */
-	if (glade_command_protect_execute(GLADE_COMMAND(me)))
+	if (glade_command_lock_execute(GLADE_COMMAND(me)))
 		glade_project_push_undo(glade_app_get_project(), GLADE_COMMAND(me));
 	else
 		g_object_unref(G_OBJECT(me));
@@ -2653,34 +2682,36 @@ glade_command_protect_widget (GladeWidget  *widget,
 
 
 /**
- * glade_command_unprotect_widget:
+ * glade_command_unlock_widget:
  * @widget: A #GladeWidget
  *
- * Unsets the protection status of @widget
+ * Unlocks @widget so that it can be removed
+ * from the project again
+ *
  */
 void
-glade_command_unprotect_widget (GladeWidget  *widget)
+glade_command_unlock_widget (GladeWidget  *widget)
 
 {
-	GladeCommandProtect *me;
+	GladeCommandLock *me;
 	
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
-	g_return_if_fail (widget->protection && widget->protection[0]);
+	g_return_if_fail (GLADE_IS_WIDGET (widget->lock));
 
 	/* load up the command */
-	me             = g_object_new(GLADE_COMMAND_PROTECT_TYPE, NULL);
-	me->widget     = g_object_ref (widget);
-	me->protecting = FALSE;
-	me->warning    = g_strdup (widget->protection);
+	me             = g_object_new(GLADE_COMMAND_LOCK_TYPE, NULL);
+	me->widget     = g_object_ref (widget->lock);
+	me->locked     = g_object_ref (widget);
+	me->locking    = FALSE;
 
-	GLADE_COMMAND(me)->description = g_strdup_printf(_("Unprotecting %s"), widget->name);
+	GLADE_COMMAND(me)->description = g_strdup_printf(_("Unlocking %s"), widget->name);
 	
 	glade_command_check_group(GLADE_COMMAND(me));
 		
 	/* execute the command and push it on the stack if successful 
 	 * this sets the actual policy
 	 */
-	if (glade_command_protect_execute(GLADE_COMMAND(me)))
+	if (glade_command_lock_execute(GLADE_COMMAND(me)))
 		glade_project_push_undo(glade_app_get_project(), GLADE_COMMAND(me));
 	else
 		g_object_unref(G_OBJECT(me));
