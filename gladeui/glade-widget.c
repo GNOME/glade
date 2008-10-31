@@ -1925,6 +1925,17 @@ glade_widget_hide (GladeWidget *widget)
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	if (GTK_IS_WIDGET (widget->object))
 	{
+		GladeDesignView *view;
+		GtkWidget *layout;
+		
+		if ((view = glade_design_view_get_from_project (glade_widget_get_project (widget))) != NULL)
+		{
+			layout = GTK_WIDGET (glade_design_view_get_layout (view));
+
+			if (GTK_BIN (layout)->child == GTK_WIDGET (widget->object))
+				gtk_container_remove (GTK_CONTAINER (layout), GTK_BIN (layout)->child);
+		}
+
 		gtk_widget_hide (GTK_WIDGET (widget->object));
 	}
 	widget->visible = FALSE;
@@ -1948,6 +1959,12 @@ glade_widget_add_prop_ref (GladeWidget *widget, GladeProperty *property)
 
 	if (!g_list_find (widget->prop_refs, property))
 		widget->prop_refs = g_list_prepend (widget->prop_refs, property);
+
+	/* parentless widget reffed widgets are added to thier reffering widgets. 
+	 * they cant be in the design view.
+	 */
+	if (property->klass->parentless_widget)
+		glade_widget_hide (widget);
 }
 
 /**

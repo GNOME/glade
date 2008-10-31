@@ -5882,6 +5882,10 @@ glade_gtk_menu_item_add_child (GladeWidgetAdaptor *adaptor,
 		return;
 	}
 	
+	g_object_set_data (child,
+			   "special-child-type",
+			   "submenu");
+
 	gtk_menu_item_set_submenu (GTK_MENU_ITEM (object), GTK_WIDGET (child));
 }
 
@@ -5989,13 +5993,15 @@ glade_gtk_image_menu_item_get_children (GladeWidgetAdaptor *adaptor,
 {
 	GList *list = NULL;
 	GtkWidget *child;
+	GladeWidget *gitem;
 	
-	g_return_val_if_fail (GTK_IS_MENU_ITEM (object), NULL);
+	gitem = glade_widget_get_from_gobject (object);
 	
 	if ((child = gtk_menu_item_get_submenu (GTK_MENU_ITEM (object))))
 		list = g_list_append (list, child);
 	
-	if ((child = gtk_image_menu_item_get_image (GTK_IMAGE_MENU_ITEM (object))))
+	if (glade_project_get_format (gitem->project) == GLADE_PROJECT_FORMAT_LIBGLADE &&
+	    (child = gtk_image_menu_item_get_image (GTK_IMAGE_MENU_ITEM (object))))
 		list = g_list_append (list, child);
 
 	return list;
@@ -6369,7 +6375,8 @@ glade_gtk_image_menu_item_write_child (GladeWidgetAdaptor *adaptor,
 {
 	GladeXmlNode *child_node;
 
-	if (!GTK_IS_IMAGE (widget->object))
+	if (glade_project_get_format (widget->project) == GLADE_PROJECT_FORMAT_GTKBUILDER ||
+	    !GTK_IS_IMAGE (widget->object))
 	{
 		GWA_GET_CLASS (GTK_TYPE_MENU_ITEM)->write_child (adaptor, widget, context, node);
 		return;

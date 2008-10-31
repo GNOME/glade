@@ -275,8 +275,10 @@ custom_toggled (GtkWidget            *widget,
 	if (!get_image_widget (item_editor->loaded_widget))
 	{
 		/* item_editor->loaded_widget may be set to NULL after the create_command. */
-		GladeWidget *loaded = item_editor->loaded_widget;
+		GladeWidget *loaded = item_editor->loaded_widget;		 
 		GladeWidget *image;
+
+		property = glade_widget_get_property (loaded, "image");
 
 		if (glade_project_get_format (loaded->project) == GLADE_PROJECT_FORMAT_LIBGLADE)
 			image =	glade_command_create (glade_widget_adaptor_get_by_type (GTK_TYPE_IMAGE),
@@ -287,7 +289,7 @@ custom_toggled (GtkWidget            *widget,
 			image =	glade_command_create (glade_widget_adaptor_get_by_type (GTK_TYPE_IMAGE),
 						      NULL, NULL, glade_widget_get_project (loaded));
 
-			glade_command_set_property (loaded, "image", image);
+			glade_command_set_property (property, image->object);
 		}
 
 		/* Make sure nobody deletes this... */

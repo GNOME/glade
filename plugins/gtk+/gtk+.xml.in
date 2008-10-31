@@ -415,7 +415,7 @@ embedded in another object</_tooltip>
 	<!-- We save the label manually with the stock value if use_stock is set. -->
         <property id="label" save="False" custom-layout="True"/>
         <property id="use-underline" custom-layout="True"/>
-	<property id="image" libglade-unsupported="True" visible="False"/>
+	<property id="image" libglade-unsupported="True" parentless-widget="True" visible="False"/>
 
 	<!-- need to fake this property since its not available yet ! -->
 	<property id="accel-group" libglade-unsupported="True"/>
