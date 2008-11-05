@@ -36,12 +36,6 @@
 
 #define GLADE_RESPONSE_CLEAR 42
 
-
-struct _GladeParamSpecAttributes {
-	GParamSpec    parent_instance;
-};
-
-
 static GList *
 glade_attr_list_copy (GList *attrs)
 {
@@ -93,92 +87,6 @@ glade_attr_glist_get_type (void)
 			 (GBoxedFreeFunc) glade_attr_list_free);
 	return type_id;
 }
-
-static void
-param_attributes_init (GParamSpec *pspec)
-{
-}
-
-static void
-param_attributes_set_default (GParamSpec *pspec,
-			      GValue     *value)
-{
-	if (value->data[0].v_pointer != NULL)
-	{
-		glade_attr_list_free (value->data[0].v_pointer);
-	}
-	value->data[0].v_pointer = NULL;
-}
-
-static gboolean
-param_attributes_validate (GParamSpec *pspec,
-			   GValue     *value)
-{
-	return TRUE;
-}
-
-static gint
-param_attributes_values_cmp (GParamSpec   *pspec,
-			  const GValue *value1,
-			  const GValue *value2)
-{
-  guint8 *p1 = value1->data[0].v_pointer;
-  guint8 *p2 = value2->data[0].v_pointer;
-
-  /* not much to compare here, try to at least provide stable lesser/greater result */
-
-  return p1 < p2 ? -1 : p1 > p2;
-}
-
-GType
-glade_param_attributes_get_type (void)
-{
-	static GType attributes_type = 0;
-
-	if (attributes_type == 0)
-	{
-		static /* const */ GParamSpecTypeInfo pspec_info = {
-			sizeof (GladeParamSpecAttributes),  /* instance_size */
-			16,                         /* n_preallocs */
-			param_attributes_init,         /* instance_init */
-			0xdeadbeef,                 /* value_type, assigned further down */
-			NULL,                       /* finalize */
-			param_attributes_set_default,  /* value_set_default */
-			param_attributes_validate,     /* value_validate */
-			param_attributes_values_cmp,   /* values_cmp */
-		};
-		pspec_info.value_type = GLADE_TYPE_ATTR_GLIST;
-
-		attributes_type = g_param_type_register_static
-			("GladeParamAttributes", &pspec_info);
-	}
-	return attributes_type;
-}
-
-GParamSpec *
-glade_param_spec_attributes (const gchar   *name,
-			     const gchar   *nick,
-			     const gchar   *blurb,
-			     GParamFlags    flags)
-{
-	GladeParamSpecAttributes *pspec;
-
-	pspec = g_param_spec_internal (GLADE_TYPE_PARAM_ATTRIBUTES,
-				       name, nick, blurb, flags);
-  
-	return G_PARAM_SPEC (pspec);
-}
-
-GParamSpec *
-glade_gtk_attributes_spec (void)
-{
-	return glade_param_spec_attributes ("attributes", _("Attributes"), 
-					    _("A list of attributes"),
-					    G_PARAM_READWRITE);
-}
-
-
-
 
 /**************************************************************
  *              GladeEditorProperty stuff here
@@ -1180,20 +1088,16 @@ glade_eprop_attrs_load (GladeEditorProperty *eprop,
 			GladeProperty       *property)
 {
 	GladeEditorPropertyClass *parent_class = 
-		g_type_class_peek_parent (GLADE_EDITOR_PROPERTY_GET_CLASS (eprop));
-	GladeEPropAttrs *eprop_attrs = GLADE_EPROP_ATTRS (eprop);
+		g_type_class_peek_parent (G_OBJECT_GET_CLASS (eprop));
 
-	/* Chain up first */
+	/* No displayable attributes in eprop, just a button. */
 	parent_class->load (eprop, property);
-
-	if (property == NULL) return;
 
 }
 
 static GtkWidget *
 glade_eprop_attrs_create_input (GladeEditorProperty *eprop)
 {
-	GladeEPropAttrs *eprop_attrs = GLADE_EPROP_ATTRS (eprop);
 	GtkWidget        *hbox;
 	GtkWidget        *button;
 

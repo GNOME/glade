@@ -1251,6 +1251,168 @@ glade_property_class_make_adjustment (GladePropertyClass *property_class)
 	return adjustment;
 }
 
+
+static GParamSpec *
+glade_property_class_parse_specifications (GladePropertyClass *klass, 
+					   GladeXmlNode       *spec_node)
+{
+	gchar *string;
+	GType  spec_type = 0, value_type = 0;
+	GParamSpec *pspec = NULL;
+
+	if ((string = glade_xml_get_value_string_required
+	     (spec_node, GLADE_TAG_TYPE, "Need a type of GParamSpec to define")) != NULL)
+	     	spec_type = glade_util_get_type_from_name (string, FALSE);
+
+	g_free (string);
+	
+	g_return_val_if_fail (spec_type != 0, NULL);
+
+	if (spec_type == G_TYPE_PARAM_ENUM   ||
+	    spec_type == G_TYPE_PARAM_FLAGS  ||
+	    spec_type == G_TYPE_PARAM_BOXED  ||
+	    spec_type == G_TYPE_PARAM_OBJECT ||
+	    spec_type == GLADE_TYPE_PARAM_OBJECTS)
+	{
+		if ((string = glade_xml_get_value_string_required
+		     (spec_node, GLADE_TAG_VALUE_TYPE, 
+		      "Need a value type to define enums flags boxed and object specs")) != NULL)
+			value_type = glade_util_get_type_from_name (string, FALSE);
+		
+		g_free (string);
+	
+		g_return_val_if_fail (value_type != 0, NULL);
+
+		if (spec_type == G_TYPE_PARAM_ENUM)
+		{
+			GEnumClass *eclass = g_type_class_ref (value_type);
+			pspec = g_param_spec_enum ("dummy", "dummy", "dummy",
+						   value_type, eclass->minimum, G_PARAM_READABLE|G_PARAM_WRITABLE);
+			g_type_class_unref (eclass);
+		}
+		else if (spec_type == G_TYPE_PARAM_FLAGS)
+			pspec = g_param_spec_flags ("dummy", "dummy", "dummy",
+						    value_type, 0, G_PARAM_READABLE|G_PARAM_WRITABLE);
+		else if (spec_type == G_TYPE_PARAM_OBJECT)
+			pspec = g_param_spec_object ("dummy", "dummy", "dummy",
+						   value_type, G_PARAM_READABLE|G_PARAM_WRITABLE);
+		else if (spec_type == GLADE_TYPE_PARAM_OBJECTS)
+			pspec = glade_param_spec_objects ("dummy", "dummy", "dummy",
+							  value_type, G_PARAM_READABLE|G_PARAM_WRITABLE);
+		else/*  if (spec_type == G_TYPE_PARAM_BOXED) */
+			pspec = g_param_spec_boxed ("dummy", "dummy", "dummy",
+						    value_type, G_PARAM_READABLE|G_PARAM_WRITABLE);
+	}
+	else if (spec_type == G_TYPE_PARAM_STRING)
+		pspec = g_param_spec_string ("dummy", "dummy", "dummy",
+					     NULL, G_PARAM_READABLE|G_PARAM_WRITABLE);
+	else if (spec_type == G_TYPE_PARAM_BOOLEAN)
+		pspec = g_param_spec_boolean ("dummy", "dummy", "dummy",
+					      FALSE, G_PARAM_READABLE|G_PARAM_WRITABLE);
+	else
+	{
+		gchar *minstr, *maxstr;
+
+		minstr = glade_xml_get_value_string (spec_node, GLADE_TAG_MIN_VALUE);
+		maxstr = glade_xml_get_value_string (spec_node, GLADE_TAG_MAX_VALUE);
+		
+		if (spec_type == G_TYPE_PARAM_CHAR)
+		{
+			gint8 min = minstr ? minstr[0]: G_MININT8;
+			gint8 max = maxstr ? maxstr[0]: G_MAXINT8;
+
+			pspec = g_param_spec_char ("dummy", "dummy", "dummy",
+						   min, max, CLAMP (0, min, max), 
+						   G_PARAM_READABLE|G_PARAM_WRITABLE);
+		}
+		else if (spec_type == G_TYPE_PARAM_UCHAR)
+		{
+			guint8 min = minstr ? minstr[0]: 0;
+			guint8 max = maxstr ? maxstr[0]: G_MAXUINT8;
+
+			pspec = g_param_spec_uchar ("dummy", "dummy", "dummy",
+						   min, max, 0, 
+						   G_PARAM_READABLE|G_PARAM_WRITABLE);
+		}
+		else if (spec_type == G_TYPE_PARAM_INT)
+		{
+			gint min = minstr ? g_ascii_strtoll (minstr, NULL, 10): G_MININT;
+			gint max = maxstr ? g_ascii_strtoll (maxstr, NULL, 10): G_MAXINT;
+
+			pspec = g_param_spec_int ("dummy", "dummy", "dummy",
+						  min, max, CLAMP (0, min, max), 
+						  G_PARAM_READABLE|G_PARAM_WRITABLE);
+		}
+		else if (spec_type == G_TYPE_PARAM_UINT)
+		{
+			guint min = minstr ? g_ascii_strtoll (minstr, NULL, 10): 0;
+			guint max = maxstr ? g_ascii_strtoll (maxstr, NULL, 10): G_MAXUINT;
+
+			pspec = g_param_spec_uint ("dummy", "dummy", "dummy",
+						   min, max, CLAMP (0, min, max), 
+						   G_PARAM_READABLE|G_PARAM_WRITABLE);
+		}
+		else if (spec_type == G_TYPE_PARAM_LONG)
+		{
+			glong min = minstr ? g_ascii_strtoll (minstr, NULL, 10): G_MINLONG;
+			glong max = maxstr ? g_ascii_strtoll (maxstr, NULL, 10): G_MAXLONG;
+
+			pspec = g_param_spec_long ("dummy", "dummy", "dummy",
+						   min, max, CLAMP (0, min, max), 
+						   G_PARAM_READABLE|G_PARAM_WRITABLE);
+		}
+		else if (spec_type == G_TYPE_PARAM_ULONG)
+		{
+			gulong min = minstr ? g_ascii_strtoll (minstr, NULL, 10): 0;
+			gulong max = maxstr ? g_ascii_strtoll (maxstr, NULL, 10): G_MAXULONG;
+
+			pspec = g_param_spec_ulong ("dummy", "dummy", "dummy",
+						    min, max, CLAMP (0, min, max), 
+						    G_PARAM_READABLE|G_PARAM_WRITABLE);
+		}
+		else if (spec_type == G_TYPE_PARAM_INT64)
+		{
+			gint64 min = minstr ? g_ascii_strtoll (minstr, NULL, 10): G_MININT64;
+			gint64 max = maxstr ? g_ascii_strtoll (maxstr, NULL, 10): G_MAXINT64;
+
+			pspec = g_param_spec_int64 ("dummy", "dummy", "dummy",
+						    min, max, CLAMP (0, min, max), 
+						    G_PARAM_READABLE|G_PARAM_WRITABLE);
+		}
+		else if (spec_type == G_TYPE_PARAM_UINT64)
+		{
+			guint64 min = minstr ? g_ascii_strtoll (minstr, NULL, 10): 0;
+			guint64 max = maxstr ? g_ascii_strtoll (maxstr, NULL, 10): G_MAXUINT64;
+
+			pspec = g_param_spec_uint64 ("dummy", "dummy", "dummy",
+						     min, max, CLAMP (0, min, max), 
+						     G_PARAM_READABLE|G_PARAM_WRITABLE);
+		}
+		else if (spec_type == G_TYPE_PARAM_FLOAT)
+		{
+			gfloat min = minstr ? (float) g_ascii_strtod (minstr, NULL) : G_MINFLOAT;
+			gfloat max = maxstr ? (float) g_ascii_strtod (maxstr, NULL) : G_MAXFLOAT;
+
+			pspec = g_param_spec_float ("dummy", "dummy", "dummy",
+						    min, max, CLAMP (0, min, max), 
+						    G_PARAM_READABLE|G_PARAM_WRITABLE);
+		}
+		else if (spec_type == G_TYPE_PARAM_DOUBLE)
+		{
+			gdouble min = minstr ? g_ascii_strtod (minstr, NULL) : G_MINFLOAT;
+			gdouble max = maxstr ? g_ascii_strtod (maxstr, NULL) : G_MAXFLOAT;
+
+			pspec = g_param_spec_float ("dummy", "dummy", "dummy",
+						    min, max, CLAMP (0, min, max), 
+						    G_PARAM_READABLE|G_PARAM_WRITABLE);
+		}
+		else
+			g_critical ("Unsupported pspec type %s (value -> string)", g_type_name (spec_type));
+	}
+	return pspec;
+}
+
+
 /**
  * glade_property_class_update_from_node:
  * @node: the property node
@@ -1273,8 +1435,9 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 				       const gchar         *domain)
 {
 	GladePropertyClass *klass;
+	GParamSpec *pspec = NULL;
 	gchar *buf, *translated;
-	GladeXmlNode *child;
+	GladeXmlNode *child, *spec_node;
 
 	g_return_val_if_fail (property_class != NULL, FALSE);
 
@@ -1301,45 +1464,48 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 		return TRUE;
 	}
 
-	/* ...the spec... we could be introducing a new one or even overriding an existing spec... */
-	buf = glade_xml_get_value_string (node, GLADE_TAG_SPEC);
-	if (buf)
+	if ((spec_node = glade_xml_search_child (node, GLADE_TAG_SPECIFICATIONS)) != NULL)
+		pspec = glade_property_class_parse_specifications (klass, spec_node);
+	else if ((buf = glade_xml_get_value_string (node, GLADE_TAG_SPEC)) != NULL)
 	{
-		/* ... get the tooltip from the pspec ... */
-		if ((klass->pspec = glade_utils_get_pspec_from_funcname (buf)) != NULL)
-		{
-			/* Make sure we can tell properties apart by there 
-			 * owning class.
-			 */
-			klass->pspec->owner_type = object_type;
+		pspec = glade_utils_get_pspec_from_funcname (buf);
+		g_free (buf);
+	}
 
-			/* We overrode the pspec, now it *is* a virtual property. */
-			klass->virt              = TRUE;
+	/* ... get the tooltip from the pspec ... */
+	if (pspec != NULL)
+	{
+		klass->pspec = pspec;
 
-			if (klass->tooltip) g_free (klass->tooltip);
-			if (klass->name)    g_free (klass->name);
-			
-			klass->tooltip = g_strdup (g_param_spec_get_blurb (klass->pspec));
-			klass->name    = g_strdup (g_param_spec_get_nick (klass->pspec));
-			
-			if (klass->pspec->flags & G_PARAM_CONSTRUCT_ONLY)
-				klass->construct_only = TRUE;
-
-			if (klass->orig_def) {
-				g_value_unset (klass->orig_def);
-				g_free (klass->orig_def);
-			}
-			klass->orig_def = glade_property_class_get_default_from_spec (klass->pspec);
-
-			if (klass->def) {
-				g_value_unset (klass->def);
-				g_free (klass->def);
-			}
-			klass->def = glade_property_class_get_default_from_spec (klass->pspec);			
-
+		/* Make sure we can tell properties apart by there 
+		 * owning class.
+		 */
+		klass->pspec->owner_type = object_type;
+		
+		/* We overrode the pspec, now it *is* a virtual property. */
+		klass->virt              = TRUE;
+		
+		if (klass->tooltip) g_free (klass->tooltip);
+		if (klass->name)    g_free (klass->name);
+		
+		klass->tooltip = g_strdup (g_param_spec_get_blurb (klass->pspec));
+		klass->name    = g_strdup (g_param_spec_get_nick (klass->pspec));
+		
+		if (klass->pspec->flags & G_PARAM_CONSTRUCT_ONLY)
+			klass->construct_only = TRUE;
+		
+		if (klass->orig_def) {
+			g_value_unset (klass->orig_def);
+			g_free (klass->orig_def);
 		}
-
- 		g_free (buf);
+		klass->orig_def = glade_property_class_get_default_from_spec (klass->pspec);
+		
+		if (klass->def) {
+			g_value_unset (klass->def);
+			g_free (klass->def);
+		}
+		klass->def = glade_property_class_get_default_from_spec (klass->pspec);			
+		
 	}
 	else if (!klass->pspec) 
 	{
@@ -1534,7 +1700,7 @@ glade_property_class_compare (GladePropertyClass *klass,
 	g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (klass), -1);
 	
 	/* GLib does not know how to compare a boxed real value */
-	if (G_VALUE_HOLDS_BOXED (value1))
+	if (G_VALUE_HOLDS_BOXED (value1) || G_VALUE_HOLDS_BOXED (value2))
 	{
 		gchar *val1, *val2;
 

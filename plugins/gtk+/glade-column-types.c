@@ -193,80 +193,21 @@ glade_column_type_list_get_type (void)
 	static GType type_id = 0;
 
 	if (!type_id)
+	{
 		type_id = g_boxed_type_register_static
 			("GladeColumnTypeList", 
 			 (GBoxedCopyFunc) glade_column_list_copy,
 			 (GBoxedFreeFunc) glade_column_list_free);
-	return type_id;
-}
 
-/********************** GladeParamSpecColumnTypes  ***********************/
-
-struct _GladeParamSpecColumnTypes
-{
-	GParamSpec parent_instance;
-};
-
-static gint
-param_values_cmp (GParamSpec *pspec, const GValue *value1, const GValue *value2)
-{
-	GList *l1, *l2;
-	gint retval;
-	
-	l1 = g_value_get_boxed (value1);
-	l2 = g_value_get_boxed (value2);
-	
-	if (l1 == NULL && l2 == NULL) return 0;
-	
-	if (l1 == NULL || l2 == NULL) return l1 - l2;
-	
-	if ((retval = g_list_length (l1) - g_list_length (l2)))
-		return retval;
-	else
-		return GPOINTER_TO_INT (l1->data) - GPOINTER_TO_INT (l2->data);
-}
-
-GType
-glade_param_column_types_get_type (void)
-{
-	static GType accel_type = 0;
-
-	if (accel_type == 0)
-	{
-		 GParamSpecTypeInfo pspec_info = {
-			sizeof (GladeParamSpecColumnTypes),  /* instance_size */
-			16,   /* n_preallocs */
-			NULL, /* instance_init */
-			0,    /* value_type, assigned further down */
-			NULL, /* finalize */
-			NULL, /* value_set_default */
-			NULL, /* value_validate */
-			param_values_cmp, /* values_cmp */
-		};
-		pspec_info.value_type = GLADE_TYPE_COLUMN_TYPE_LIST;
-
-		accel_type = g_param_type_register_static
-			("GladeParamSpecColumnTypes", &pspec_info);
 		types_model = (GtkTreeModel *)gtk_tree_store_new (N_COLUMNS,
 								  G_TYPE_STRING,
 								  G_TYPE_GTYPE,
 								  G_TYPE_STRING);
 
 		column_types_store_populate (GTK_TREE_STORE (types_model));
+
 	}
-	return accel_type;
-}
-
-GParamSpec *
-glade_standard_column_types_spec (void)
-{
-	GladeParamSpecColumnTypes *pspec;
-
-	pspec = g_param_spec_internal (GLADE_TYPE_PARAM_COLUMN_TYPES,
-				       "column-types", _("Column Types"), 
-				       _("A list of GTypes and thier names"),
-				       G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
-	return G_PARAM_SPEC (pspec);
+	return type_id;
 }
 
 /**************************** GladeEditorProperty *****************************/

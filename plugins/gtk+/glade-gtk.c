@@ -214,6 +214,15 @@ glade_gtk_stop_emission_POINTER (gpointer instance, gpointer dummy, gpointer dat
 	g_signal_stop_emission (instance, GPOINTER_TO_UINT (data) , 0);
 }
 
+
+
+/* Initialize needed pspec types from here */
+void
+glade_gtk_init (const gchar *name)
+{
+
+}
+
 /* ----------------------------- GtkWidget ------------------------------ */
 #define GLADE_TAG_ACCEL             "accelerator"
 #define GLADE_TAG_ACCEL_KEY         "key"
@@ -1004,7 +1013,7 @@ glade_gtk_widget_create_eprop (GladeWidgetAdaptor *adaptor,
 	GladeEditorProperty *eprop;
 
 	/* chain up.. */
-	if (GLADE_IS_PARAM_SPEC_ACCEL (klass->pspec))
+	if (klass->pspec->value_type == GLADE_TYPE_ACCEL_GLIST)
 		eprop = g_object_new (GLADE_TYPE_EPROP_ACCEL,
 				      "property-class", klass, 
 				      "use-command", use_command,
@@ -1023,7 +1032,7 @@ glade_gtk_widget_string_from_value (GladeWidgetAdaptor *adaptor,
 				    const GValue       *value,
 				    GladeProjectFormat  fmt)
 {
-	if (GLADE_IS_PARAM_SPEC_ACCEL (klass->pspec))
+	if (klass->pspec->value_type == GLADE_TYPE_ACCEL_GLIST)
 		return glade_accels_make_string (g_value_get_boxed (value));
 	else
 		return GWA_GET_CLASS 
@@ -5206,7 +5215,7 @@ glade_gtk_button_read_widget (GladeWidgetAdaptor *adaptor,
 		return;
 
 	/* First chain up and read in all the normal properties.. */
-        GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
+        GWA_GET_CLASS (GTK_TYPE_CONTAINER)->read_widget (adaptor, widget, node);
 
 	/* Update the stock property */
 	glade_widget_property_get (widget, "use-stock", &use_stock);
@@ -5231,9 +5240,6 @@ glade_gtk_button_write_widget (GladeWidgetAdaptor *adaptor,
 	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
 		return;
 
-	/* First chain up and write all the normal properties (including "use-stock")... */
-        GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
-
 	label_prop = glade_widget_get_property (widget, "label");
 
 	/* Make a copy of the GladeProperty, override its value if use-stock is TRUE */
@@ -5246,6 +5252,9 @@ glade_gtk_button_write_widget (GladeWidgetAdaptor *adaptor,
 	}
 	glade_property_write (label_prop, context, node);
 	g_object_unref (G_OBJECT (label_prop));
+
+	/* Write out other normal properties and any other class derived custom properties after ... */
+        GWA_GET_CLASS (GTK_TYPE_CONTAINER)->write_widget (adaptor, widget, context, node);
 }
 
 
@@ -5260,7 +5269,7 @@ glade_gtk_image_read_widget (GladeWidgetAdaptor *adaptor,
 		return;
 
 	/* First chain up and read in all the normal properties.. */
-        GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
+        GWA_GET_CLASS (GTK_TYPE_WIDGET)->read_widget (adaptor, widget, node);
 	
 	if (glade_widget_property_original_default (widget, "icon-name") == FALSE)
 		glade_widget_property_set (widget, "image-mode", GLADE_IMAGE_MODE_ICON);
@@ -5289,7 +5298,7 @@ glade_gtk_image_write_widget (GladeWidgetAdaptor *adaptor,
 		return;
 
 	/* First chain up and write all the normal properties (including "use-stock")... */
-        GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
+        GWA_GET_CLASS (GTK_TYPE_WIDGET)->write_widget (adaptor, widget, context, node);
 
 	/* We have to save icon-size as an integer, the core will take care of 
 	 * loading the int value though.
@@ -5435,7 +5444,7 @@ glade_gtk_menu_read_widget (GladeWidgetAdaptor *adaptor,
 		return;
 
 	/* First chain up and read in all the normal properties.. */
-        GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
+        GWA_GET_CLASS (GTK_TYPE_WIDGET)->read_widget (adaptor, widget, node);
 
 	if (glade_project_get_format (widget->project) == GLADE_PROJECT_FORMAT_LIBGLADE &&
 	    widget->parent && GTK_IS_MENU_ITEM (widget->parent->object))
@@ -6271,7 +6280,7 @@ glade_gtk_image_menu_item_read_widget (GladeWidgetAdaptor *adaptor,
 		return;
 
 	/* First chain up and read in all the normal properties.. */
-        GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
+        GWA_GET_CLASS (GTK_TYPE_MENU_ITEM)->read_widget (adaptor, widget, node);
 
 	/* This will read legacy "stock-item" properties and make them usable */
 	glade_gtk_image_menu_item_fix_stock_item (widget);
@@ -7011,7 +7020,7 @@ glade_gtk_tool_button_read_widget (GladeWidgetAdaptor *adaptor,
 		return;
 
 	/* First chain up and read in all the normal properties.. */
-        GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
+        GWA_GET_CLASS (GTK_TYPE_TOOL_ITEM)->read_widget (adaptor, widget, node);
 
 	/* Run this after the load so that icon-widget is resolved. */
 	g_signal_connect (glade_widget_get_project (widget),
@@ -7446,7 +7455,7 @@ glade_gtk_label_write_widget (GladeWidgetAdaptor *adaptor,
 		return;
 
 	/* First chain up and read in all the normal properties.. */
-        GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
+        GWA_GET_CLASS (GTK_TYPE_WIDGET)->write_widget (adaptor, widget, context, node);
 
 	attrs_node = glade_xml_node_new (context, GLADE_TAG_ATTRIBUTES);
 
@@ -7465,7 +7474,7 @@ glade_gtk_label_string_from_value (GladeWidgetAdaptor *adaptor,
 				   const GValue       *value,
 				   GladeProjectFormat  fmt)
 {
-	if (GLADE_IS_PARAM_SPEC_ATTRIBUTES (klass->pspec))
+	if (klass->pspec->value_type == GLADE_TYPE_ATTR_GLIST)
 	{
 		GList *l, *list = g_value_get_boxed (value);
 		GString *string = g_string_new ("");
@@ -7501,7 +7510,7 @@ glade_gtk_label_create_eprop (GladeWidgetAdaptor *adaptor,
 	GladeEditorProperty *eprop;
 
 	/* chain up.. */
-	if (GLADE_IS_PARAM_SPEC_ATTRIBUTES (klass->pspec))
+	if (klass->pspec->value_type == GLADE_TYPE_ATTR_GLIST)
 	{
 		eprop = g_object_new (GLADE_TYPE_EPROP_ATTRS,
 				      "property-class", klass, 
@@ -7523,7 +7532,7 @@ glade_gtk_label_create_editable (GladeWidgetAdaptor  *adaptor,
 	GladeEditable *editable;
 
 	/* Get base editable */
-	editable = GWA_GET_CLASS (G_TYPE_OBJECT)->create_editable (adaptor, type);
+	editable = GWA_GET_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
 
 	if (type == GLADE_PAGE_GENERAL)
 		return (GladeEditable *)glade_label_editor_new (adaptor, editable);
@@ -8704,12 +8713,12 @@ glade_gtk_store_create_eprop (GladeWidgetAdaptor *adaptor,
 	GladeEditorProperty *eprop;
 
 	/* chain up.. */
-	if (GLADE_IS_PARAM_SPEC_COLUMN_TYPES (klass->pspec))
+	if (klass->pspec->value_type == GLADE_TYPE_COLUMN_TYPE_LIST)
 		eprop = g_object_new (GLADE_TYPE_EPROP_COLUMN_TYPES,
 				      "property-class", klass, 
 				      "use-command", use_command,
 				      NULL);
-	else if (GLADE_IS_PARAM_SPEC_MODEL_DATA (klass->pspec))
+	else if (klass->pspec->value_type == GLADE_TYPE_MODEL_DATA_TREE)
 		eprop = g_object_new (GLADE_TYPE_EPROP_MODEL_DATA,
 				      "property-class", klass, 
 				      "use-command", use_command,
@@ -8745,7 +8754,7 @@ glade_gtk_store_string_from_value (GladeWidgetAdaptor *adaptor,
 {
 	GString *string;
 
-	if (GLADE_IS_PARAM_SPEC_COLUMN_TYPES (klass->pspec))
+	if (klass->pspec->value_type == GLADE_TYPE_COLUMN_TYPE_LIST)
 	{
 		GList *l;
 		string = g_string_new ("");		
@@ -8757,7 +8766,7 @@ glade_gtk_store_string_from_value (GladeWidgetAdaptor *adaptor,
 		}
 		return g_string_free (string, FALSE);
 	}
-	else if (GLADE_IS_PARAM_SPEC_MODEL_DATA (klass->pspec))
+	else if (klass->pspec->value_type == GLADE_TYPE_MODEL_DATA_TREE)
 	{
 		GladeModelData *data;
 		GNode *data_tree, *row, *iter;
@@ -9675,7 +9684,7 @@ glade_gtk_icon_factory_string_from_value (GladeWidgetAdaptor *adaptor,
 {
 	GString *string;
 
-	if (GLADE_IS_PARAM_SPEC_ICON_SOURCES (klass->pspec))
+	if (klass->pspec->value_type == GLADE_TYPE_ICON_SOURCES)
 	{
 		GladeIconSources *sources = g_value_get_boxed (value);
 		if (!sources)
@@ -9702,8 +9711,7 @@ glade_gtk_icon_factory_create_eprop (GladeWidgetAdaptor *adaptor,
 {
 	GladeEditorProperty *eprop;
 
-	/* chain up.. */
-	if (GLADE_IS_PARAM_SPEC_ICON_SOURCES (klass->pspec))
+	if (klass->pspec->value_type == GLADE_TYPE_ICON_SOURCES)
 		eprop = g_object_new (GLADE_TYPE_EPROP_ICON_SOURCES,
 				      "property-class", klass, 
 				      "use-command", use_command,

@@ -31,18 +31,6 @@
 
 #define GLADE_RESPONSE_CLEAR 42
 
-/**************************************************************
- *              GParamSpec stuff here
- **************************************************************/
-struct _GladeParamSpecAccel {
-	GParamSpec    parent_instance;
-	
-	GType         type; /* The type this accel key is for; this allows
-			     * us to verify the validity of any signals for
-			     * this type.
-			     */
-};
-
 GList *
 glade_accel_list_copy (GList *accels)
 {
@@ -91,121 +79,6 @@ glade_accel_glist_get_type (void)
 			 (GBoxedCopyFunc) glade_accel_list_copy,
 			 (GBoxedFreeFunc) glade_accel_list_free);
 	return type_id;
-}
-
-static void
-param_accel_init (GParamSpec *pspec)
-{
-	GladeParamSpecAccel *ospec = GLADE_PARAM_SPEC_ACCEL (pspec);
-	ospec->type = G_TYPE_OBJECT;
-}
-
-static void
-param_accel_set_default (GParamSpec *pspec,
-			 GValue     *value)
-{
-	if (value->data[0].v_pointer != NULL)
-	{
-		/* XXX FIXME ?? */
-		g_free (value->data[0].v_pointer);
-	}
-	value->data[0].v_pointer = NULL;
-}
-
-static gboolean
-param_accel_validate (GParamSpec *pspec,
-		      GValue     *value)
-{
-	/* GladeParamSpecAccel *aspec = GLADE_PARAM_SPEC_ACCEL (pspec); */
-	GList               *accels, *list, *toremove = NULL;
-	GladeAccelInfo      *info;
-
-	accels = value->data[0].v_pointer;
-
-	for (list = accels; list; list = list->next)
-	{
-		info = list->data;
-		
-		if (/* Does the modifier contain any unwanted bits ? */
-		    info->modifiers & GDK_MODIFIER_MASK ||
-		    /* Do we have a signal ? */
-		    /* FIXME: Check if the signal is valid for 'type' */
-		    info->signal == NULL)
-			toremove = g_list_prepend (toremove, info);
-	}
-
-	for (list = toremove; list; list = list->next)
-		accels = g_list_remove (accels, list->data);
-
-	if (toremove) g_list_free (toremove);
- 
-	value->data[0].v_pointer = accels;
-
-	return toremove != NULL;
-}
-
-static gint
-param_accel_values_cmp (GParamSpec   *pspec,
-			  const GValue *value1,
-			  const GValue *value2)
-{
-  guint8 *p1 = value1->data[0].v_pointer;
-  guint8 *p2 = value2->data[0].v_pointer;
-
-  /* not much to compare here, try to at least provide stable lesser/greater result */
-
-  return p1 < p2 ? -1 : p1 > p2;
-}
-
-GType
-glade_param_accel_get_type (void)
-{
-	static GType accel_type = 0;
-
-	if (accel_type == 0)
-	{
-		static /* const */ GParamSpecTypeInfo pspec_info = {
-			sizeof (GladeParamSpecAccel),  /* instance_size */
-			16,                         /* n_preallocs */
-			param_accel_init,         /* instance_init */
-			0xdeadbeef,                 /* value_type, assigned further down */
-			NULL,                       /* finalize */
-			param_accel_set_default,  /* value_set_default */
-			param_accel_validate,     /* value_validate */
-			param_accel_values_cmp,   /* values_cmp */
-		};
-		pspec_info.value_type = GLADE_TYPE_ACCEL_GLIST;
-
-		accel_type = g_param_type_register_static
-			("GladeParamAccel", &pspec_info);
-	}
-	return accel_type;
-}
-
-GParamSpec *
-glade_param_spec_accel (const gchar   *name,
-			const gchar   *nick,
-			const gchar   *blurb,
-			GType          widget_type,
-			GParamFlags    flags)
-{
-  GladeParamSpecAccel *pspec;
-
-  pspec = g_param_spec_internal (GLADE_TYPE_PARAM_ACCEL,
-				 name, nick, blurb, flags);
-  
-  pspec->type = widget_type;
-  return G_PARAM_SPEC (pspec);
-}
-
-/* Accelerator spec */
-GParamSpec *
-glade_standard_accel_spec (void)
-{
-	return glade_param_spec_accel ("accelerators", _("Accelerators"),
-				       _("A list of accelerator keys"), 
-				       GTK_TYPE_WIDGET,
-				       G_PARAM_READWRITE);
 }
 
 /* This is not used to save in the glade file... and its a one-way conversion.
@@ -623,7 +496,7 @@ glade_eprop_accel_show_dialog (GtkWidget           *dialog_button,
 	GladeEPropAccel  *eprop_accel = GLADE_EPROP_ACCEL (eprop);
 	GtkWidget        *dialog, *parent, *vbox, *sw, *tree_view;
 	GladeProject     *project;
-	GValue           *value;
+	GValue            value = { 0, };
 	GList            *accelerators = NULL;
 	gint              res;
 	
@@ -672,25 +545,20 @@ glade_eprop_accel_show_dialog (GtkWidget           *dialog_button,
 			 (GtkTreeModelForeachFunc)
 			 glade_eprop_accel_accum_accelerators, &accelerators);
 		
-		value = g_new0 (GValue, 1);
-		g_value_init (value, GLADE_TYPE_ACCEL_GLIST);
-		g_value_take_boxed (value, accelerators);
+		g_value_init (&value, GLADE_TYPE_ACCEL_GLIST);
+		g_value_take_boxed (&value, accelerators);
 
-		glade_editor_property_commit (eprop, value);
-
-		g_value_unset (value);
-		g_free (value);
+		glade_editor_property_commit (eprop, &value);
+		g_value_unset (&value);
 	} 
 	else if (res == GLADE_RESPONSE_CLEAR)
 	{
-		value = g_new0 (GValue, 1);
-		g_value_init (value, GLADE_TYPE_ACCEL_GLIST);
-		g_value_set_boxed (value, NULL);
+		g_value_init (&value, GLADE_TYPE_ACCEL_GLIST);
+		g_value_set_boxed (&value, NULL);
 
-		glade_editor_property_commit (eprop, value);
+		glade_editor_property_commit (eprop, &value);
 
-		g_value_unset (value);
-		g_free (value);
+		g_value_unset (&value);
 	}
 
 	/* Clean up ...

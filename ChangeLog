@@ -1,3 +1,15 @@
+2008-11-05  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-xml-utils.c, gladeui/glade-property-class.c: Added 
+	parameter-spec parsing, need to updated docs still.
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-attributes.c,
+	plugins/gtk+/glade-icon-sources.c, plugins/gtk+/glade-accels.c, plugins/gtk+/glade-model-data.c,
+	plugins/gtk+/glade-column-types.c:
+	- Removed all custom parameter spec implementations in the plugin and replaced them
+	  with automatically generated ones parsed by the xml.
+	- Fixed hierarchy bugs, some classes were not saving.
+
 2008-10-31  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/glade-image-item-editor.[ch], plugins/gtk+/glade-gtk.c:

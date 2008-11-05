@@ -49,7 +49,9 @@
       <properties>
 	<!-- Disable tooltip-text & tooltip-markup in libglade since we do
 	     conversions of the "tooltip" fake property -->
-	<property id="tooltip-text" since="2.12" weight="4.2" libglade-unsupported="True"/>
+	<property id="tooltip-text" since="2.12" weight="4.2" translatable="True" libglade-unsupported="True">
+	  <visible-lines>2</visible-lines>
+	</property>
 	<property id="tooltip-markup" since="2.12" weight="4.1" libglade-unsupported="True"/>
 	<property id="visible" default="True" common="True" ignore="True"/>
 	<property id="width-request"  common="True" optional="True" optional-default="False" default="0"/>
@@ -58,8 +60,11 @@
 
 	<property common="True" id="tooltip" _name="Tooltip" default="" translatable="True" weight="4.5" 
 		  libglade-only="True">
-	  <spec>glade_standard_string_spec</spec>
+	  <parameter-spec>
+	    <type>GParamString</type>
+	  </parameter-spec>
 	  <_tooltip>A tooltip text for this widget</_tooltip>
+	  <visible-lines>2</visible-lines>
 	</property>
 
 	<property common="True" id="extension-events">
@@ -105,102 +110,155 @@
 
 	<!-- Accelerators -->
 	<property id="accelerator" _name="Accelerators" ignore="True" common="True" save="False">
-	  <spec>glade_standard_accel_spec</spec>
+	  <parameter-spec>
+	    <type>GParamBoxed</type>
+	    <value-type>GladeAccelGList</value-type>
+	  </parameter-spec>
+	  <_tooltip>A list of accelerator keys</_tooltip>
 	</property>
 
 	<!-- Atk name and description properties -->
 	<property id="AtkObject::accessible-name" _name="Accessible Name" ignore="True" atk-property="True" translatable="True" save="False">
+	  <parameter-spec>
+	    <type>GParamString</type>
+	  </parameter-spec>
 	  <_tooltip>Object instance's name formatted for assistive technology access</_tooltip>
-	  <spec>glade_standard_string_spec</spec>
 	  <visible-lines>2</visible-lines>
 	</property>
 
 	<property id="AtkObject::accessible-description" _name="Accessible Description" ignore="True" atk-property="True" translatable="True" save="False">
+	  <parameter-spec>
+	    <type>GParamString</type>
+	  </parameter-spec>
 	  <_tooltip>Description of an object, formatted for assistive technology access</_tooltip>
-	  <spec>glade_standard_string_spec</spec>
 	  <visible-lines>2</visible-lines>
 	</property>
 
 	<!-- Atk relationset properties -->
 	<property id="controlled-by" _name="Controlled By" ignore="True" atk-property="True" save="False">
+	  <parameter-spec>
+	    <type>GladeParamObjects</type>
+	    <value-type>GtkWidget</value-type>
+	  </parameter-spec>
 	  <_tooltip>Indicates an object controlled by one or more target objects</_tooltip>
-	  <spec>glade_standard_objects_spec</spec>
 	</property>
 
 	<property id="controller-for" _name="Controller For" ignore="True" atk-property="True" save="False">
+	  <parameter-spec>
+	    <type>GladeParamObjects</type>
+	    <value-type>GtkWidget</value-type>
+	  </parameter-spec>
 	  <_tooltip>Indicates an object is a controller for one or more target objects</_tooltip>
-	  <spec>glade_standard_objects_spec</spec>
 	</property>
 
 	<property id="labelled-by" _name="Labelled By" ignore="True" atk-property="True" save="False">
+	  <parameter-spec>
+	    <type>GladeParamObjects</type>
+	    <value-type>GtkWidget</value-type>
+	  </parameter-spec>
 	  <_tooltip>Indicates an object is labelled by one or more target objects</_tooltip>
-	  <spec>glade_standard_objects_spec</spec>
 	</property>
 
 	<property id="label-for" _name="Label For" ignore="True" atk-property="True" save="False">
+	  <parameter-spec>
+	    <type>GladeParamObjects</type>
+	    <value-type>GtkWidget</value-type>
+	  </parameter-spec>
 	  <_tooltip>Indicates an object is a label for one or more target objects</_tooltip>
-	  <spec>glade_standard_objects_spec</spec>
 	</property>
 
 	<property id="member-of" _name="Member Of" ignore="True" atk-property="True" save="False">
+	  <parameter-spec>
+	    <type>GladeParamObjects</type>
+	    <value-type>GtkWidget</value-type>
+	  </parameter-spec>
 	  <_tooltip>Indicates an object is a member of a group of one or more target objects</_tooltip>
-	  <spec>glade_standard_objects_spec</spec>
 	</property>
 
 	<property id="node-child-of" _name="Node Child Of" ignore="True" atk-property="True" save="False">
+	  <parameter-spec>
+	    <type>GladeParamObjects</type>
+	    <value-type>GtkWidget</value-type>
+	  </parameter-spec>
 	  <_tooltip>Indicates an object is a cell in a treetable which is displayed because a 
 cell in the same column is expanded and identifies that cell</_tooltip>
-	  <spec>glade_standard_objects_spec</spec>
 	</property>
 
 	<property id="flows-to" _name="Flows To" ignore="True" atk-property="True" save="False">
+	  <parameter-spec>
+	    <type>GladeParamObjects</type>
+	    <value-type>GtkWidget</value-type>
+	  </parameter-spec>
 	  <_tooltip>Indicates that the object has content that flows logically to another 
 AtkObject in a sequential way, (for instance text-flow)</_tooltip>
-	  <spec>glade_standard_objects_spec</spec>
 	</property>
 
 	<property id="flows-from" _name="Flows From" ignore="True" atk-property="True" save="False">
+	  <parameter-spec>
+	    <type>GladeParamObjects</type>
+	    <value-type>GtkWidget</value-type>
+	  </parameter-spec>
 	  <_tooltip>Indicates that the object has content that flows logically from another 
 AtkObject in a sequential way, (for instance text-flow)</_tooltip>
-	  <spec>glade_standard_objects_spec</spec>
 	</property>
 
 	<property id="subwindow-of" _name="Subwindow Of" ignore="True" atk-property="True" save="False">
+	  <parameter-spec>
+	    <type>GladeParamObjects</type>
+	    <value-type>GtkWidget</value-type>
+	  </parameter-spec>
 	  <_tooltip>Indicates a subwindow attached to a component but otherwise has no 
 connection in the UI hierarchy to that component</_tooltip>
-	  <spec>glade_standard_objects_spec</spec>
 	</property>
 
 	<property id="embeds" _name="Embeds" ignore="True" atk-property="True" save="False">
+	  <parameter-spec>
+	    <type>GladeParamObjects</type>
+	    <value-type>GtkWidget</value-type>
+	  </parameter-spec>
 	  <_tooltip>Indicates that the object visually embeds another object's content, i.e. 
 this object's content flows around another's content</_tooltip>
-	  <spec>glade_standard_objects_spec</spec>
 	</property>
 
 	<property id="embedded-by" _name="Embedded By" ignore="True" atk-property="True" save="False">
+	  <parameter-spec>
+	    <type>GladeParamObjects</type>
+	    <value-type>GtkWidget</value-type>
+	  </parameter-spec>
 	  <_tooltip>Inverse of 'Embeds', indicates that this object's content is visually 
 embedded in another object</_tooltip>
-	  <spec>glade_standard_objects_spec</spec>
 	</property>
 
 	<property id="popup-for" _name="Popup For" ignore="True" atk-property="True" save="False">
+	  <parameter-spec>
+	    <type>GladeParamObjects</type>
+	    <value-type>GtkWidget</value-type>
+	  </parameter-spec>
 	  <_tooltip>Indicates that an object is a popup for another object</_tooltip>
-	  <spec>glade_standard_objects_spec</spec>
 	</property>
 
 	<property id="parent-window-of" _name="Parent Window Of" ignore="True" atk-property="True" save="False">
+	  <parameter-spec>
+	    <type>GladeParamObjects</type>
+	    <value-type>GtkWidget</value-type>
+	  </parameter-spec>
 	  <_tooltip>Indicates that an object is a parent window of another object</_tooltip>
-	  <spec>glade_standard_objects_spec</spec>
 	</property>
 
 	<property id="described-by" _name="Described By" ignore="True" atk-property="True" save="False">
+	  <parameter-spec>
+	    <type>GladeParamObjects</type>
+	    <value-type>GtkWidget</value-type>
+	  </parameter-spec>
 	  <_tooltip>Indicates that another object provides descriptive information about this object; more verbose than 'Labelled By'</_tooltip>
-	  <spec>glade_standard_objects_spec</spec>
 	</property>
 
 	<property id="description-for" _name="Description For" ignore="True" atk-property="True" save="False">
+	  <parameter-spec>
+	    <type>GladeParamObjects</type>
+	    <value-type>GtkWidget</value-type>
+	  </parameter-spec>
 	  <_tooltip>Indicates that an object provides descriptive information about another object; more verbose than 'Label For'</_tooltip>
-	  <spec>glade_standard_objects_spec</spec>
 	</property>
       </properties>
 
@@ -249,7 +307,10 @@ embedded in another object</_tooltip>
 
       <properties>
 	<property id="size" _name="Number of items" query="True" default="3" save="False">
-	  <spec>glade_standard_int_spec</spec>
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>1</min>
+	  </parameter-spec>
 	  <_tooltip>The number of items in the box</_tooltip>
 	</property>
       </properties>
@@ -354,7 +415,10 @@ embedded in another object</_tooltip>
 
       <packing-properties>
         <property id="position" _name="Position" default="-1" save="False">
-          <spec>glade_standard_int_spec</spec>
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
           <_tooltip>The position of the menu item in the menu shell</_tooltip>
         </property>
       </packing-properties>
@@ -376,17 +440,23 @@ embedded in another object</_tooltip>
       </actions>
       <properties>
         <property id="label" _name="Label" translatable="True">
+	  <parameter-spec>
+	    <type>GParamString</type>
+	  </parameter-spec>
 	  <_tooltip>The text of the menu item</_tooltip>
-          <spec>glade_standard_string_spec</spec>
         </property>
         <property id="use-underline" _name="Use Underline">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
 	  <_tooltip>If set, an underline in the text indicates the next character should be used for the mnemonic accelerator key</_tooltip>
-          <spec>glade_standard_boolean_spec</spec>
         </property>
 	<!-- Atk click property -->
 	<property id="atk-click" _name="Click" ignore="True" atk-property="True" save="False">
+	  <parameter-spec>
+	    <type>GParamString</type>
+	  </parameter-spec>
 	  <_tooltip>Set the description of the Click atk action</_tooltip>
-	  <spec>glade_standard_string_spec</spec>
 	  <visible-lines>2</visible-lines>
 	</property>
         <property id="submenu" since="2.12" disabled="True"/>
@@ -394,7 +464,6 @@ embedded in another object</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkImageMenuItem" generic-name="imagemenuitem" _title="Image Menu Item">
-      <post-create-function>glade_gtk_image_menu_item_post_create</post-create-function>
       <read-widget-function>glade_gtk_image_menu_item_read_widget</read-widget-function>
       <write-widget-function>glade_gtk_image_menu_item_write_widget</write-widget-function>
       <read-child-function>glade_gtk_image_menu_item_read_child</read-child-function>
@@ -406,11 +475,15 @@ embedded in another object</_tooltip>
       <create-editable-function>glade_gtk_image_menu_item_create_editable</create-editable-function>
       <properties>
         <property id="use-stock" visible="False">
-	  <spec>glade_standard_boolean_spec</spec>
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
         </property>
 	<property id="stock" stock="True" _name="Stock Item" save="False" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamString</type>
+	  </parameter-spec>
 	  <_tooltip>The stock item for this menu item</_tooltip>
-	  <spec>glade_standard_string_spec</spec>
 	</property>
 	<!-- We save the label manually with the stock value if use_stock is set. -->
         <property id="label" save="False" custom-layout="True"/>
@@ -512,7 +585,10 @@ embedded in another object</_tooltip>
 
       <packing-properties>
         <property id="position" _name="Position" default="-1" save="False">
-          <spec>glade_standard_int_spec</spec>
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
           <_tooltip>The position of the tool item in the toolbar</_tooltip>
         </property>
 	<property id="expand" transfer-on-paste="True" save-always="True"/>
@@ -541,11 +617,15 @@ embedded in another object</_tooltip>
       <properties>
 	<!-- Virtual label type property -->
         <property id="custom-label" visible="False" save="False">
-	  <spec>glade_standard_boolean_spec</spec>
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
         </property>
 	<!-- Virtual image edit mode property -->
         <property id="image-mode" visible="False" save="False">
-	  <spec>glade_standard_int_spec</spec>
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	  </parameter-spec>
         </property>
 
 	<!-- Virtual stock comboentry property -->
@@ -556,8 +636,12 @@ embedded in another object</_tooltip>
 	<property id="label-widget" parentless-widget="True" libglade-unsupported="True" 
 		  create-type="GtkLabel" custom-layout="True"/>
         <property id="icon-name" themed-icon="True" custom-layout="True"/>
-	<property id="icon" libglade-only="True" custom-layout="True">
-	  <spec>glade_standard_pixbuf_spec</spec>
+	<property id="icon" libglade-only="True" _name="Icon" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamObject</type>
+	    <value-type>GdkPixbuf</value-type>
+	  </parameter-spec>
+          <_tooltip>A filname, full or relative path to load an icon for this toolbutton</_tooltip>
 	</property>
         <property id="icon-widget" parentless-widget="True" libglade-unsupported="True" 
 		  create-type="GtkImage" custom-layout="True"/>
@@ -605,21 +689,30 @@ embedded in another object</_tooltip>
       <properties>
 	<!-- Virtual label content mode property -->
         <property id="label-content-mode" visible="False" save="False">
-	  <spec>glade_standard_int_spec</spec>
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	  </parameter-spec>
         </property>
 	<!-- Virtual label to control width-chars vs. max-width-chars -->
         <property id="use-max-width" visible="False" save="False">
-	  <spec>glade_standard_boolean_spec</spec>
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
         </property>
 	<!-- Virtual label content mode property -->
         <property id="label-wrap-mode" visible="False" save="False">
-	  <spec>glade_standard_int_spec</spec>
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	  </parameter-spec>
         </property>
       	<property id="label" default="label" translatable="True" custom-layout="True">
             <visible-lines>2</visible-lines>
         </property>
 	<property id="glade-attributes" _name="Attributes" save="False" custom-layout="True">
-	  <spec>glade_gtk_attributes_spec</spec>
+	  <parameter-spec>
+	    <type>GParamBoxed</type>
+	    <value-type>GladeAttrGList</value-type>
+	  </parameter-spec>
 	  <_tooltip>The pango attributes for this label</_tooltip>
 	</property>
 	<property id="pattern" custom-layout="True"/>
@@ -669,8 +762,10 @@ embedded in another object</_tooltip>
 	<property id="shadow-type" since="2.12"/>
 	<!-- Atk activate property -->
 	<property id="atk-activate" _name="Activate" ignore="True" atk-property="True" save="False">
+	  <parameter-spec>
+	    <type>GParamString</type>
+	  </parameter-spec>
 	  <_tooltip>Set the description of the Activate atk action</_tooltip>
-	  <spec>glade_standard_string_spec</spec>
 	  <visible-lines>2</visible-lines>
 	</property>
       </properties>
@@ -683,8 +778,10 @@ embedded in another object</_tooltip>
       <properties>
 	<!-- Text of the textview -->
 	<property id="text" _name="Text" translatable="True" libglade-only="True">
+	  <parameter-spec>
+	    <type>GParamString</type>
+	  </parameter-spec>
 	  <_tooltip>Set the text in the view's text buffer</_tooltip>
-	  <spec>glade_standard_string_spec</spec>
 	  <visible-lines>2</visible-lines>
 	</property>
       	<property id="wrap-mode">
@@ -717,15 +814,21 @@ embedded in another object</_tooltip>
 	</property>
 	<property id="use-underline" custom-layout="True"/>
 	<property id="stock" _name="Stock Button" stock="True" save="False" custom-layout="True">
-	  <spec>glade_standard_string_spec</spec>
+	  <parameter-spec>
+	    <type>GParamString</type>
+	  </parameter-spec>
 	  <_tooltip>The stock item for this button</_tooltip>
 	</property>
         <property id="custom-child" save="False" custom-layout="True" default="False">
-          <spec>glade_standard_boolean_spec</spec>
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
         </property>
 	<property id="image-position" custom-layout="True"/>
 	<property id="response-id" _name="Response ID" default="0" common="False" ignore="True" save-always="True">
-	  <spec>glade_standard_int_spec</spec>
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	  </parameter-spec>
 	  <_tooltip>The response ID of this button in a dialog</_tooltip>
 	</property>
       	<property id="relief">
@@ -738,22 +841,28 @@ embedded in another object</_tooltip>
 
 	<!-- Atk click property -->
 	<property id="atk-click" _name="Click" ignore="True" atk-property="True" save="False">
+	  <parameter-spec>
+	    <type>GParamString</type>
+	  </parameter-spec>
 	  <_tooltip>Set the description of the Click atk action</_tooltip>
-	  <spec>glade_standard_string_spec</spec>
 	  <visible-lines>2</visible-lines>
 	</property>
 
 	<!-- Atk press property -->
 	<property id="atk-press" _name="Press" ignore="True" atk-property="True" save="False">
+	  <parameter-spec>
+	    <type>GParamString</type>
+	  </parameter-spec>
 	  <_tooltip>Set the description of the Press atk action</_tooltip>
-	  <spec>glade_standard_string_spec</spec>
 	  <visible-lines>2</visible-lines>
 	</property>
 
 	<!-- Atk release property -->
 	<property id="atk-release" _name="Release" ignore="True" atk-property="True" save="False">
+	  <parameter-spec>
+	    <type>GParamString</type>
+	  </parameter-spec>
 	  <_tooltip>Set the description of the Release atk action</_tooltip>
-	  <spec>glade_standard_string_spec</spec>
 	  <visible-lines>2</visible-lines>
 	</property>
       </properties>
@@ -882,7 +991,10 @@ embedded in another object</_tooltip>
         <property id="column-span-column" ignore="True"/>
         <property id="row-span-column" ignore="True"/>
 	<property id="items" _name="Items" translatable="True" libglade-only="True">
-	  <spec>glade_standard_strv_spec</spec>
+	  <parameter-spec>
+	    <type>GParamBoxed</type>
+	    <value-type>GStrv</value-type>
+	  </parameter-spec>
 	  <_tooltip>The items in this combo box</_tooltip>
 	</property>
 	<property id="button-sensitivity">
@@ -895,8 +1007,10 @@ embedded in another object</_tooltip>
 
 	<!-- Atk press property -->
 	<property id="atk-press" _name="Press" ignore="True" atk-property="True" save="False">
+	  <parameter-spec>
+	    <type>GParamString</type>
+	  </parameter-spec>
 	  <_tooltip>Set the description of the Press atk action</_tooltip>
-	  <spec>glade_standard_string_spec</spec>
 	  <visible-lines>2</visible-lines>
 	</property>
       </properties>
@@ -938,15 +1052,21 @@ embedded in another object</_tooltip>
       <write-widget-function>glade_gtk_image_write_widget</write-widget-function>
       <properties>
 	<property id="image-mode" save="False" visible="False">
-	  <spec>glade_standard_int_spec</spec>
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	  </parameter-spec>
 	</property>
 	<property id="stock" stock-icon="True" custom-layout="True" default="gtk-missing-image"/>
 	<property id="icon-name" _name="Icon Name" themed-icon="True" custom-layout="True" />
 	<property id="pixbuf" _name="File Name" custom-layout="True"/>
 	<property id="pixel-size" custom-layout="True"/>
 	<!-- We have to save/load icon-size as int, and fake the enum -->
-	<property id="icon-size" custom-layout="True" save="False">
-	  <spec>gladegtk_icon_size_spec</spec>
+	<property id="icon-size" _name="Icon Size" custom-layout="True" save="False">
+	  <parameter-spec>
+	    <type>GParamEnum</type>
+	    <value-type>GtkIconSize</value-type>
+	  </parameter-spec>
+	  <_tooltip>A symbolic icon size for the stock icon</_tooltip>
 	</property>
 	<property id="pixbuf-animation" disabled="True"/>
 	<property id="file" disabled="True"/>
@@ -1032,7 +1152,9 @@ embedded in another object</_tooltip>
 	This virtual property is used to remember child position in undo/redo.
         -->
         <property id="first" save="False" visible="False">
-          <spec>glade_standard_boolean_spec</spec>
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
         </property>
       </packing-properties>
     </glade-widget-class>
@@ -1074,7 +1196,10 @@ embedded in another object</_tooltip>
 	</property>
 
 	<property id="pages" _name="Number of pages" visible="False" save="False" default="3" query="True">
-	  <spec>glade_standard_int_spec</spec>
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>1</min>
+	  </parameter-spec>
 	  <_tooltip>The number of pages in the notebook</_tooltip>
 	</property>
       </properties>
@@ -1236,8 +1361,10 @@ embedded in another object</_tooltip>
 
 	<!-- Atk activate property -->
 	<property id="atk-activate" _name="Activate" ignore="True" atk-property="True" save="False">
+	  <parameter-spec>
+	    <type>GParamString</type>
+	  </parameter-spec>
 	  <_tooltip>Set the description of the Activate atk action</_tooltip>
-	  <spec>glade_standard_string_spec</spec>
 	  <visible-lines>2</visible-lines>
 	</property>
       </properties>
@@ -1394,8 +1521,10 @@ embedded in another object</_tooltip>
 
 	<!-- Atk press property -->
 	<property id="atk-press" _name="Press" ignore="True" atk-property="True" save="False">
+	  <parameter-spec>
+	    <type>GParamString</type>
+	  </parameter-spec>
 	  <_tooltip>Set the description of the Press atk action</_tooltip>
-	  <spec>glade_standard_string_spec</spec>
 	  <visible-lines>2</visible-lines>
 	</property>
       </properties>
@@ -1406,8 +1535,10 @@ embedded in another object</_tooltip>
       <properties>
 	<!-- Atk press property -->
 	<property id="atk-press" _name="Press" ignore="True" atk-property="True" save="False">
+	  <parameter-spec>
+	    <type>GParamString</type>
+	  </parameter-spec>
 	  <_tooltip>Set the description of the Press atk action</_tooltip>
-	  <spec>glade_standard_string_spec</spec>
 	  <visible-lines>2</visible-lines>
 	</property>
       </properties>
@@ -1435,7 +1566,9 @@ embedded in another object</_tooltip>
       <get-property-function>glade_gtk_list_item_get_property</get-property-function>
       <properties>
 	<property id="label" _name="Label" translatable="True">
-	  <spec>glade_standard_string_spec</spec>
+	  <parameter-spec>
+	    <type>GParamString</type>
+	  </parameter-spec>
 	  <_tooltip>The text to display</_tooltip>
 	</property>
       </properties>
@@ -1491,8 +1624,11 @@ embedded in another object</_tooltip>
       <child-get-property-function>glade_gtk_assistant_get_child_property</child-get-property-function>
       <properties>
         <property save="False" id="n-pages" _name="Number of Pages">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>1</min>
+	  </parameter-spec>
 	  <_tooltip>Number of pages in this assistant</_tooltip>
-	  <spec>glade_standard_int_spec</spec>
 	</property>
       </properties>
       <packing-properties>
@@ -1507,7 +1643,9 @@ embedded in another object</_tooltip>
 	  </displayable-values>
 	</property>
         <property save="False" id="position" name="Position">
-	  <spec>glade_standard_int_spec</spec>
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	  </parameter-spec>
 	  <_tooltip>The page position in the Assistant</_tooltip>
 	</property>
       </packing-properties>
@@ -1558,8 +1696,11 @@ embedded in another object</_tooltip>
       <set-property-function>glade_gtk_size_group_set_property</set-property-function>
       <properties>
 	<property id="widgets" _name="Widgets" save="False">
+	  <parameter-spec>
+	    <type>GladeParamObjects</type>
+	    <value-type>GtkWidget</value-type>
+	  </parameter-spec>
 	  <_tooltip>List of widgets in this group</_tooltip>
-	  <spec>glade_standard_objects_spec</spec>
 	</property>
 	<property id="mode">
   	  <displayable-values>
@@ -1614,8 +1755,11 @@ embedded in another object</_tooltip>
       <create-editable-function>glade_gtk_icon_factory_create_editable</create-editable-function>
       <properties>
 	<property id="sources" _name="Icon Sources" save="False" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamBoxed</type>
+	    <value-type>GladeIconSources</value-type>
+	  </parameter-spec>
 	  <_tooltip>A list of sources for this icon factory</_tooltip>
-	  <spec>glade_standard_icon_sources_spec</spec>
 	</property>
       </properties>
     </glade-widget-class>
@@ -1664,7 +1808,9 @@ embedded in another object</_tooltip>
       
       <packing-properties>
         <property save="False" id="position" name="Position" visible="False">
-	  <spec>glade_standard_int_spec</spec>
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	  </parameter-spec>
 	  <_tooltip>The column position in the Tree View</_tooltip>
 	</property>
       </packing-properties>
@@ -1682,11 +1828,17 @@ embedded in another object</_tooltip>
       <read-widget-function>glade_gtk_store_read_widget</read-widget-function>
       <properties>
         <property id="columns" since="2.12" _name="Columns" save="False" construct-only="True" custom-layout="True">
-          <spec>glade_standard_column_types_spec</spec>
+	  <parameter-spec>
+	    <type>GParamBoxed</type>
+	    <value-type>GladeColumnTypeList</value-type>
+	  </parameter-spec>
           <_tooltip>Enter a list of column types for this data store</_tooltip>
         </property>
         <property id="data" since="2.12" _name="Data" save="False" custom-layout="True">
-          <spec>glade_standard_model_data_spec</spec>
+	  <parameter-spec>
+	    <type>GParamBoxed</type>
+	    <value-type>GladeModelDataTree</value-type>
+	  </parameter-spec>
           <_tooltip>Enter a list of values to be applied on each row</_tooltip>
         </property>
       </properties>
@@ -1702,11 +1854,17 @@ embedded in another object</_tooltip>
       <read-widget-function>glade_gtk_store_read_widget</read-widget-function>
       <properties>
         <property id="columns" since="2.12" _name="Columns" save="False" construct-only="True" custom-layout="True">
-          <spec>glade_standard_column_types_spec</spec>
+	  <parameter-spec>
+	    <type>GParamBoxed</type>
+	    <value-type>GladeColumnTypeList</value-type>
+	  </parameter-spec>
           <_tooltip>Enter a list of column types for this data store</_tooltip>
         </property>
         <property id="data" since="2.12" _name="Data" save="False" custom-layout="True">
-          <spec>glade_standard_model_data_spec</spec>
+	  <parameter-spec>
+	    <type>GParamBoxed</type>
+	    <value-type>GladeModelDataTree</value-type>
+	  </parameter-spec>
           <_tooltip>Enter a list of values to be applied on each row</_tooltip>
         </property>
       </properties>
