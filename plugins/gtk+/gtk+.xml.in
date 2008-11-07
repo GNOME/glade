@@ -336,6 +336,13 @@ embedded in another object</_tooltip>
       <write-widget-function>glade_gtk_window_write_widget</write-widget-function>
 
       <properties> 
+	<!-- Virtual accel-groups property to record accel groups -->
+	<property id="accel-groups" name="Accel Groups" ignore="True" save="False">
+	  <parameter-spec>
+	    <type>GladeParamObjects</type>
+	    <value-type>GtkAccelGroup</value-type>
+	  </parameter-spec>
+	</property>
 	<property id="opacity" since="2.12" ignore="True"/>
 	<property id="startup-id" since="2.12"/>
 	<property id="deletable" since="2.10"/>
@@ -400,13 +407,6 @@ embedded in another object</_tooltip>
           </displayable-values>
 	</property>
 	<property id="accept-focus" ignore="True"/>
-	<!-- Virtual accel-groups property to record accel groups -->
-	<property id="accel-groups" name="Accel Groups" ignore="True" save="False">
-	  <parameter-spec>
-	    <type>GladeParamObjects</type>
-	    <value-type>GtkAccelGroup</value-type>
-	  </parameter-spec>
-	</property>
       </properties>
     </glade-widget-class>
 

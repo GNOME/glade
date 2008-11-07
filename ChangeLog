@@ -1,3 +1,9 @@
+2008-11-07  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+	
+	* gladeui/glade-widget.c, gladeui/glade-widget-adaptor.c: moved signal and
+	children serialization from glade_widget_adaptor_object_write_widget() to
+	glade_widget_write() (bug #559531)
+
 2008-11-07  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/gtk+.xml.in: Faked the accel-group property and added

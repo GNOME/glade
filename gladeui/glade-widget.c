@@ -3710,6 +3710,31 @@ glade_widget_write_placeholder (GladeWidget     *parent,
 	}
 }
 
+typedef struct {
+	GladeXmlContext *context;
+	GladeXmlNode    *node;
+} WriteSignalsInfo;
+
+static void
+glade_widget_adaptor_write_signals (gpointer key, 
+				    gpointer value, 
+				    gpointer user_data)
+{
+	WriteSignalsInfo *info;
+        GPtrArray *signals;
+	guint i;
+
+	info = (WriteSignalsInfo *) user_data;
+	signals = (GPtrArray *) value;
+	for (i = 0; i < signals->len; i++)
+	{
+		GladeSignal *signal = g_ptr_array_index (signals, i);
+		glade_signal_write (signal,
+				    info->context,
+				    info->node);
+	}
+}
+
 /**
  * glade_widget_write:
  * @widget: The #GladeWidget
@@ -3725,6 +3750,8 @@ glade_widget_write (GladeWidget     *widget,
 		    GladeXmlNode    *node)
 {
 	GladeXmlNode *widget_node;
+	WriteSignalsInfo info;
+	GList *l, *list;
 
 	widget_node = 
 		glade_xml_node_new
@@ -3741,6 +3768,31 @@ glade_widget_write (GladeWidget     *widget,
 
 	/* Write out widget content (properties and signals) */
 	glade_widget_adaptor_write_widget (widget->adaptor, widget, context, widget_node);
+		
+	/* Write the signals */
+	info.context = context;
+	info.node = widget_node;
+	g_hash_table_foreach (widget->signals,
+			      glade_widget_adaptor_write_signals,
+			      &info);
+
+	/* Write the children */
+	if ((list =
+	     glade_widget_adaptor_get_children (widget->adaptor, widget->object)) != NULL)
+	{
+		for (l = list; l; l = l->next)
+		{
+			GladeWidget *child = glade_widget_get_from_gobject (l->data);
+
+			if (child) 
+				glade_widget_write_child (widget, child, context, widget_node);
+			else if (GLADE_IS_PLACEHOLDER (l->data))
+				glade_widget_write_placeholder (widget, 
+								G_OBJECT (l->data),
+								context, widget_node);
+		}
+		g_list_free (list);
+	}
 }
 
 
