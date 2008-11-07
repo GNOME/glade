@@ -14,6 +14,9 @@
 
 	* plugins/gtk+/glade-gtk.c: Fixed sensitivity for accel-group/stock at load time.
 
+	* plugins/gtk+/glade-convert.c: Set the toplevel window accel-groups property when
+	converting.
+
 	* gladeui/glade-editor-property.c: Labels dont go insensitive anymore, I think that
 	was a general usability problem, the inputs still go insensitive and there are always 
 	useful tooltips, the insensitivity message still gets across.
