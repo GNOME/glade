@@ -28,7 +28,7 @@
 
 static void      glade_editor_table_init               (GladeEditorTable      *self);
 static void      glade_editor_table_class_init         (GladeEditorTableClass *klass);
-static void      glade_editor_table_finalize           (GObject               *object);
+static void      glade_editor_table_dispose            (GObject               *object);
 static void      glade_editor_table_editable_init      (GladeEditableIface    *iface);
 static void      glade_editor_table_grab_focus         (GtkWidget             *widget);
 
@@ -42,7 +42,7 @@ glade_editor_table_class_init (GladeEditorTableClass *klass)
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-	object_class->finalize     = glade_editor_table_finalize;
+	object_class->dispose      = glade_editor_table_dispose;
 	widget_class->grab_focus   = glade_editor_table_grab_focus;
 }
 
@@ -53,7 +53,7 @@ glade_editor_table_init (GladeEditorTable *self)
 }
 
 static void
-glade_editor_table_finalize (GObject *object)
+glade_editor_table_dispose (GObject *object)
 {
 	GladeEditorTable *table = GLADE_EDITOR_TABLE (object);
 
@@ -67,8 +67,9 @@ glade_editor_table_finalize (GObject *object)
 
 	glade_editable_load (GLADE_EDITABLE (table), NULL);
 
-	G_OBJECT_CLASS (glade_editor_table_parent_class)->finalize (object);
+	G_OBJECT_CLASS (glade_editor_table_parent_class)->dispose (object);
 }
+
 
 static void
 glade_editor_table_grab_focus (GtkWidget *widget)
@@ -124,7 +125,7 @@ glade_editor_table_load (GladeEditable *editable,
 
 	table->loading = TRUE;
 
-	if (table->loaded_widget && table->name_entry)
+	if (table->loaded_widget)
 	{
 		g_signal_handlers_disconnect_by_func (G_OBJECT (table->loaded_widget),
 						      G_CALLBACK (widget_name_changed), table);
@@ -137,7 +138,7 @@ glade_editor_table_load (GladeEditable *editable,
 
 	table->loaded_widget = widget;
 
-	if (table->loaded_widget && table->name_entry)
+	if (table->loaded_widget)
 	{
 		g_signal_connect (G_OBJECT (table->loaded_widget), "notify::name",
 				  G_CALLBACK (widget_name_changed), table);
@@ -146,9 +147,9 @@ glade_editor_table_load (GladeEditable *editable,
 		g_object_weak_ref (G_OBJECT (table->loaded_widget),
 				     (GWeakNotify)widget_finalized,
 				     table);
-
-		gtk_entry_set_text (GTK_ENTRY (table->name_entry), widget->name);
-
+		
+		if (table->name_entry)
+			gtk_entry_set_text (GTK_ENTRY (table->name_entry), widget->name);
 
 	}
 	else if (table->name_entry)

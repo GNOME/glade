@@ -4771,6 +4771,122 @@ glade_gtk_window_post_create (GladeWidgetAdaptor *adaptor,
 
 }
 
+#define GLADE_TAG_ACCEL_GROUPS "accel-groups"
+#define GLADE_TAG_ACCEL_GROUP  "group"
+
+static void
+glade_gtk_window_read_accel_groups (GladeWidget  *widget,
+				    GladeXmlNode *node)
+{
+	GladeXmlNode  *groups_node;
+	GladeProperty *property;
+	gchar         *string = NULL;
+
+	if ((groups_node = 
+	     glade_xml_search_child (node, GLADE_TAG_ACCEL_GROUPS)) != NULL)
+	{
+		GladeXmlNode  *node;
+
+		for (node = glade_xml_node_get_children (groups_node); 
+		     node; node = glade_xml_node_next (node))
+		{
+			gchar *group_name, *tmp;
+			
+			if (!glade_xml_node_verify (node, GLADE_TAG_ACCEL_GROUP))
+				continue;
+
+			group_name = glade_xml_get_property_string_required
+				(node, GLADE_TAG_NAME, NULL);
+				
+			if (string == NULL)
+				string = group_name;
+			else if (group_name != NULL)
+			{
+				tmp = g_strdup_printf ("%s%s%s", string, GPC_OBJECT_DELIMITER, group_name);
+				string = (g_free (string), tmp);
+				g_free (group_name);
+			}
+		}
+	}
+
+	if (string)
+	{
+		property = glade_widget_get_property (widget, "accel-groups");
+		g_assert (property);
+
+		/* we must synchronize this directly after loading this project
+		 * (i.e. lookup the actual objects after they've been parsed and
+		 * are present).
+		 */
+		g_object_set_data_full (G_OBJECT (property), 
+					"glade-loaded-object", 
+					string, g_free);
+	}
+}
+
+void
+glade_gtk_window_read_widget (GladeWidgetAdaptor *adaptor,
+			      GladeWidget        *widget,
+			      GladeXmlNode       *node)
+{
+	if (!glade_xml_node_verify 
+	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+		return;
+
+	/* First chain up and read in all the normal properties.. */
+        GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
+
+	glade_gtk_window_read_accel_groups (widget, node);
+}
+
+
+static void
+glade_gtk_window_write_accel_groups (GladeWidget        *widget,
+				     GladeXmlContext    *context,
+				     GladeXmlNode       *node)
+{
+	GladeXmlNode  *groups_node, *group_node;
+	GList         *groups = NULL, *list;
+	GladeWidget   *agroup;
+
+	groups_node = glade_xml_node_new (context, GLADE_TAG_ACCEL_GROUPS);
+
+	if (glade_widget_property_get (widget, "accel-groups", &groups))
+	{
+		for (list = groups; list; list = list->next)
+		{
+			agroup     = glade_widget_get_from_gobject (list->data);
+			group_node = glade_xml_node_new (context, GLADE_TAG_ACCEL_GROUP);
+			glade_xml_node_append_child (groups_node, group_node);
+			glade_xml_node_set_property_string (group_node, GLADE_TAG_NAME, agroup->name);
+		}
+	}
+
+	if (!glade_xml_node_get_children (groups_node))
+		glade_xml_node_delete (groups_node);
+	else
+		glade_xml_node_append_child (node, groups_node);
+	
+}
+
+
+void
+glade_gtk_window_write_widget (GladeWidgetAdaptor *adaptor,
+			       GladeWidget        *widget,
+			       GladeXmlContext    *context,
+			       GladeXmlNode       *node)
+{
+	if (!glade_xml_node_verify
+	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+		return;
+
+	/* First chain up and read in all the normal properties.. */
+        GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
+
+	glade_gtk_window_write_accel_groups (widget, context, node);
+}
+
+
 /* ----------------------------- GtkDialog(s) ------------------------------ */
 static void
 glade_gtk_dialog_stop_offending_signals (GtkWidget *widget)
@@ -6050,10 +6166,15 @@ glade_gtk_image_menu_item_set_use_stock (GObject *object, const GValue *value)
 
 	/* Set some things */
 	if (use_stock)
+	{
 		glade_widget_property_set_sensitive (widget, "stock", TRUE, NULL);
+		glade_widget_property_set_sensitive (widget, "accel-group", TRUE, NULL);
+	}
 	else
-		glade_widget_property_set_sensitive (widget, "stock", FALSE, _("Property not selected"));
-
+	{
+		glade_widget_property_set_sensitive (widget, "stock", FALSE, NOT_SELECTED_MSG);
+		glade_widget_property_set_sensitive (widget, "accel-group", FALSE, NOT_SELECTED_MSG);
+	}
 }
 
 static void
@@ -6273,7 +6394,9 @@ glade_gtk_image_menu_item_read_widget (GladeWidgetAdaptor *adaptor,
 				       GladeWidget        *widget,
 				       GladeXmlNode       *node)
 {
+	GladeProperty *property;
 	gboolean use_stock;
+	gchar *label = NULL;
 
 	if (!glade_xml_node_verify 
 	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
@@ -6288,14 +6411,18 @@ glade_gtk_image_menu_item_read_widget (GladeWidgetAdaptor *adaptor,
 	glade_widget_property_get (widget, "use-stock", &use_stock);
 	if (use_stock)
 	{
-		GladeProperty *property = glade_widget_get_property (widget, "label");
-		gchar *label = NULL;
+		property = glade_widget_get_property (widget, "label");
 
 		glade_property_get (property, &label);
 		glade_widget_property_set (widget, "use-underline", TRUE);
 		glade_widget_property_set (widget, "stock", label);
 		glade_property_sync (property);
 	}
+
+	/* Update sensitivity of related properties...  */
+	property = glade_widget_get_property (widget, "use-stock");
+	glade_property_sync (property);
+
 
 	/* Run this after the load so that image is resolved. */
 	if (glade_project_get_format (widget->project) == GLADE_PROJECT_FORMAT_GTKBUILDER)
@@ -8465,7 +8592,7 @@ glade_gtk_size_group_read_widgets (GladeWidget  *widget,
 		{
 			gchar *widget_name, *tmp;
 			
-			if (!glade_xml_node_verify_silent (node, GLADE_TAG_SIZEGROUP_WIDGET))
+			if (!glade_xml_node_verify (node, GLADE_TAG_SIZEGROUP_WIDGET))
 				continue;
 
 			widget_name = glade_xml_get_property_string_required

@@ -332,6 +332,8 @@ embedded in another object</_tooltip>
     
     <glade-widget-class name="GtkWindow" generic-name="window" _title="Window" toplevel="True" default-width="440" default-height="250">
       <post-create-function>glade_gtk_window_post_create</post-create-function>
+      <read-widget-function>glade_gtk_window_read_widget</read-widget-function>
+      <write-widget-function>glade_gtk_window_write_widget</write-widget-function>
 
       <properties> 
 	<property id="opacity" since="2.12" ignore="True"/>
@@ -398,6 +400,13 @@ embedded in another object</_tooltip>
           </displayable-values>
 	</property>
 	<property id="accept-focus" ignore="True"/>
+	<!-- Virtual accel-groups property to record accel groups -->
+	<property id="accel-groups" name="Accel Groups" ignore="True" save="False">
+	  <parameter-spec>
+	    <type>GladeParamObjects</type>
+	    <value-type>GtkAccelGroup</value-type>
+	  </parameter-spec>
+	</property>
       </properties>
     </glade-widget-class>
 
@@ -490,8 +499,14 @@ embedded in another object</_tooltip>
         <property id="use-underline" custom-layout="True"/>
 	<property id="image" libglade-unsupported="True" parentless-widget="True" visible="False"/>
 
-	<!-- need to fake this property since its not available yet ! -->
-	<property id="accel-group" libglade-unsupported="True"/>
+	<!-- need to fake this pspec since its not available in gtk+ yet -->
+	<property id="accel-group" _name="Accel Group" custom-layout="True" libglade-unsupported="True">
+	  <parameter-spec>
+	    <type>GParamObject</type>
+	    <value-type>GtkAccelGroup</value-type>
+	  </parameter-spec>
+	  <_tooltip>An accel group for accelerators from stock items</_tooltip>
+	</property>
 	<!--
 	This property is added by glade2 gnome support and makes reference to
 	GNOMEUIINFO_MENU_* macros. The read-widget-funcion maps these properties to 

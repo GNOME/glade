@@ -326,7 +326,7 @@ glade_image_item_editor_new (GladeWidgetAdaptor *adaptor,
 {
 	GladeImageItemEditor    *item_editor;
 	GladeEditorProperty     *eprop;
-	GtkWidget               *label, *alignment, *frame, *table, *vbox;
+	GtkWidget               *label, *alignment, *frame, *main_table, *table, *vbox;
 	gchar                   *str;
 
 	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
@@ -338,26 +338,46 @@ glade_image_item_editor_new (GladeWidgetAdaptor *adaptor,
 	/* Pack the parent on top... */
 	gtk_box_pack_start (GTK_BOX (item_editor), GTK_WIDGET (embed), FALSE, FALSE, 0);
 
-	/* Put a stock property in a radio button (in a table) here on top... */
-	table = gtk_table_new (0, 0, FALSE);
-	gtk_box_pack_start (GTK_BOX (item_editor), table, FALSE, FALSE, 8);
+	/* Put a radio button to control use-stock here on top... */
+	main_table = gtk_table_new (0, 0, FALSE);
+	gtk_box_pack_start (GTK_BOX (item_editor), main_table, FALSE, FALSE, 8);
 
+	item_editor->stock_radio = gtk_radio_button_new_with_label (NULL, _("Stock Item:"));
+	table_attach (main_table, item_editor->stock_radio, 0, 0);
+
+	alignment = gtk_alignment_new (0.5F, 0.5F, 1.0F, 1.0F);
+	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 6, 0, 12, 0);
+	gtk_table_attach (GTK_TABLE (main_table), alignment,
+			  0, 2, /* left and right */ 
+			  1, 2, /* top and bottom */
+			  GTK_EXPAND | GTK_FILL,
+			  GTK_EXPAND | GTK_FILL,
+			  3, 6);
+
+	table = gtk_table_new (0, 0, FALSE);
+	gtk_container_add (GTK_CONTAINER (alignment), table);
+
+	/* The stock item */
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "stock", FALSE, TRUE);
-	item_editor->stock_radio = gtk_radio_button_new (NULL);
-	gtk_container_add (GTK_CONTAINER (item_editor->stock_radio), eprop->item_label);
-	table_attach (table, item_editor->stock_radio, 0, 0);
+	table_attach (table, eprop->item_label, 0, 0);
 	table_attach (table, GTK_WIDGET (eprop), 1, 0);
+	item_editor->properties = g_list_prepend (item_editor->properties, eprop);
+
+	/* An accel group for the item's accelerator */
+	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "accel-group", FALSE, TRUE);
+	table_attach (table, eprop->item_label, 0, 1);
+	table_attach (table, GTK_WIDGET (eprop), 1, 1);
 	item_editor->properties = g_list_prepend (item_editor->properties, eprop);
 
 	/* Now put a radio button in the same table for the custom image editing */
 	item_editor->custom_radio = gtk_radio_button_new_with_label_from_widget
 		(GTK_RADIO_BUTTON (item_editor->stock_radio),
 		 _("Custom label and image:"));
-	table_attach (table, item_editor->custom_radio, 0, 1);
+	table_attach (main_table, item_editor->custom_radio, 0, 2);
 	vbox = gtk_vbox_new (FALSE, 0);
-	gtk_table_attach (GTK_TABLE (table), vbox,
+	gtk_table_attach (GTK_TABLE (main_table), vbox,
 			  0, 2, /* left and right */ 
-			  2, 3, /* top and bottom */
+			  3, 4, /* top and bottom */
 			  GTK_EXPAND | GTK_FILL,
 			  GTK_EXPAND | GTK_FILL,
 			  3, 6);

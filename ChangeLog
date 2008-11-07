@@ -1,3 +1,19 @@
+2008-11-07  Tristan Van Berkom <tvb@gnome.org>
+
+	* plugins/gtk+/gtk+.xml.in: Faked the accel-group property and added
+	accel-groups object list to GtkWindow... work in progress.
+
+	* plugins/gtk+/glade-image-item-editor.c: Adjusted for accel-group property
+	which is only avaiable for stock items.
+
+	* plugins/gtk+/glade-gtk.c: Fixed sensitivity for accel-group/stock at load time.
+
+	* gladeui/glade-editor-property.c: Labels dont go insensitive anymore, I think that
+	was a general usability problem, the inputs still go insensitive and there are always 
+	useful tooltips, the insensitivity message still gets across.
+
+	* gladeui/glade-editor-table.c: Fixed breaking weak refs from dispose.
+
 2008-11-05  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-xml-utils.c, gladeui/glade-property-class.c: Added 

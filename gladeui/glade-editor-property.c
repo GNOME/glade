@@ -155,7 +155,6 @@ glade_editor_property_sensitivity_cb (GladeProperty       *property,
 	gboolean sensitive = glade_property_get_sensitive (eprop->property);
 	gboolean support_sensitive = (eprop->property->state & GLADE_STATE_SUPPORT_DISABLED) == 0;
 
-        gtk_widget_set_sensitive (eprop->item_label, sensitive && support_sensitive);
         gtk_widget_set_sensitive (eprop->input, sensitive && support_sensitive && 
 				  glade_property_get_enabled (property));
 	if (eprop->check)
