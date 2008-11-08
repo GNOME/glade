@@ -30,6 +30,10 @@
 
 	* gladeui/glade-editor-table.c: Fixed breaking weak refs from dispose.
 
+	* gladeui/glade-project.c: Now save project resource directory in glade file
+	comments if user specified a relative or absolute path in the prefs dialog,
+	otherwise resources are loaded from the project's directory.
+
 2008-11-05  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-xml-utils.c, gladeui/glade-property-class.c: Added 
