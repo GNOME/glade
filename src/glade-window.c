@@ -1356,6 +1356,7 @@ confirm_close_project (GladeWindow *window, GladeProject *project)
 					             GTK_DIALOG_MODAL,
 					             GTK_MESSAGE_WARNING,
 					             GTK_BUTTONS_NONE,
+						     "%s",
 					             msg);
 	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER);
 

@@ -174,7 +174,7 @@ glade_utils_get_pspec_from_funcname (const gchar *funcname)
 			      (gpointer) &get_pspec)) {
 		g_warning (_("We could not find the symbol \"%s\""),
 			   funcname);
-		return FALSE;
+		return NULL;
 	}
 
 	g_assert (get_pspec);
@@ -254,6 +254,7 @@ glade_util_ui_message (GtkWidget           *parent,
 					 GTK_DIALOG_DESTROY_WITH_PARENT,
 					 message_type,
 					 buttons_type,
+					 "%s",
 					 string);
 
 	gtk_window_set_resizable (GTK_WINDOW (dialog), TRUE);
@@ -447,12 +448,14 @@ glade_util_gtk_combo_find (GtkCombo * combo)
 	gchar *text;
 	gchar *ltext;
 	GList *clist;
-	int (*string_compare) (const char *, const char *);
+	gsize n;
+
+	int (*string_compare) (const char *, const char *, gsize);
 
 	if (combo->case_sensitive)
-		string_compare = strcmp;
+		string_compare = strncmp;
 	else
-		string_compare = g_strcasecmp;
+		string_compare = g_ascii_strncasecmp;
 
 	text = (gchar*) gtk_entry_get_text (GTK_ENTRY (combo->entry));
 	clist = GTK_LIST (combo->list)->children;
@@ -461,7 +464,7 @@ glade_util_gtk_combo_find (GtkCombo * combo)
 		ltext = glade_util_gtk_combo_func (GTK_LIST_ITEM (clist->data));
 		if (!ltext)
 			continue;
-		if (!(*string_compare) (ltext, text))
+		if (!(*string_compare) (ltext, text, n))
 			return (GtkListItem *) clist->data;
 		clist = clist->next;
 	}
