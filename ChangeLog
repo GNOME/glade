@@ -1,3 +1,16 @@
+2008-11-12  Tristan Van Berkom <tvb@gnome.org>
+
+	* plugins/gtk+/glade-gtk.c: Fixed loading of images and only set image
+	data when in the correct edit mode.
+
+	* plugins/gtk+/glade-convert.c: Fixed toolbutton conversions to search
+	icon factories from the beginning of the object list and not the current
+	list position.
+
+	* gladeui/glade-project.c: When changing resource paths, reload all pixbuf
+	properties automagically (this wont work for custom pixbufs like icon factory
+	has).
+
 2008-11-08  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* gladeui/glade-utils.c: (glade_utils_get_pspec_from_funcname),

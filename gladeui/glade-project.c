@@ -1068,6 +1068,48 @@ glade_project_read_resource_path_from_comment (GladeXmlNode  *comment)
 	return path;
 }
 
+static void
+update_project_for_resource_path (GladeProject *project)
+{
+	GladeWidget   *widget;
+	GladeProperty *property;
+	GList         *l, *list;
+
+	for (l = project->priv->objects; l; l = l->next)
+	{
+		
+		widget = glade_widget_get_from_gobject (l->data);
+
+		for (list = widget->properties; list; list = list->next)
+		{
+			property = list->data;
+
+			/* XXX We should have a "resource" flag on properties that need
+			 *   to be loaded from the resource path, but that would require
+			 * that they can serialize both ways (custom properties are only
+			 * required to generate unique strings for value comparisons).
+			 */
+			if (property->klass->pspec->value_type == GDK_TYPE_PIXBUF)
+			{
+				GValue *value;
+				gchar *string;
+
+				string = glade_property_class_make_string_from_gvalue
+					(property->klass, property->value, project->priv->format);
+
+				value = glade_property_class_make_gvalue_from_string 
+					(property->klass, string, project, widget);
+
+				glade_property_set_value (property, value);
+
+				g_value_unset (value);
+				g_free (value);
+				g_free (string);
+			}
+		}
+	}
+}
+
 
 /* This function assumes ownership of 'path'. */
 static void
@@ -1077,6 +1119,7 @@ glade_project_set_resource_path (GladeProject *project,
 	g_free (project->priv->resource_path);
 	project->priv->resource_path = path;
 
+	update_project_for_resource_path (project);
 	update_prefs_for_resource_path (project);
 }
 

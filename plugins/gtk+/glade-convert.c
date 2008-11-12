@@ -32,6 +32,7 @@
 #include "glade-column-types.h"
 #include "glade-model-data.h"
 #include "glade-icon-sources.h"
+#include "glade-tool-button-editor.h"
 #include <gladeui/glade.h>
 
 
@@ -602,6 +603,10 @@ convert_toolbuttons_finished (GladeProject  *project,
 			filename = g_strdup_printf ("generated-icon-%s", tdata->text);
 			glade_util_replace (filename, '.', '-');
 
+			/* Set edit mode to stock for newly generated icon */
+			property = glade_widget_get_property (tdata->widget, "image-mode");
+			glade_command_set_property (property, GLADE_TB_MODE_STOCK);
+
 			/* Set stock-id for newly generated icon */
 			property = glade_widget_get_property (tdata->widget, "stock-id");
 			glade_command_set_property (property, filename);
@@ -617,6 +622,10 @@ convert_toolbuttons_finished (GladeProject  *project,
 		for (list = data->toolbuttons; list; list = list->next)
 		{
 			tdata = list->data;
+
+			/* Set edit mode to icon for converted icon */
+			property = glade_widget_get_property (tdata->widget, "image-mode");
+			glade_command_set_property (property, GLADE_TB_MODE_FILENAME);
 
 			value = glade_utils_value_from_string (GDK_TYPE_PIXBUF, 
 							       tdata->text, 
@@ -689,11 +698,12 @@ convert_toolbuttons (GladeProject       *project,
 			 */
 			property = glade_widget_get_property (widget, "stock-id");
 			glade_property_get (property, &stock_id);
+
 			if (!stock_id)
 				continue;
 			
 			if ((element = 
-			     g_list_find_custom ((GList *)objects, NULL,
+			     g_list_find_custom ((GList *)glade_project_get_objects (project), NULL,
 						 (GCompareFunc)find_icon_factory)) != NULL)
 			{
 				gfactory = glade_widget_get_from_gobject (element->data);
@@ -709,6 +719,7 @@ convert_toolbuttons (GladeProject       *project,
 								      "GladeFileName");
 					if (filename)
 					{
+
 						tdata = g_new0 (TextData, 1);
 						tdata->widget     = widget;
 						tdata->text       = g_strdup (filename);

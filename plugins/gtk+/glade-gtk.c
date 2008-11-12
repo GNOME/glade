@@ -5380,6 +5380,8 @@ glade_gtk_image_read_widget (GladeWidgetAdaptor *adaptor,
 			     GladeWidget        *widget,
 			     GladeXmlNode       *node)
 {
+	GladeProperty *property;
+
 	if (!glade_xml_node_verify 
 	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
 		return;
@@ -5388,13 +5390,24 @@ glade_gtk_image_read_widget (GladeWidgetAdaptor *adaptor,
         GWA_GET_CLASS (GTK_TYPE_WIDGET)->read_widget (adaptor, widget, node);
 	
 	if (glade_widget_property_original_default (widget, "icon-name") == FALSE)
+	{
+		property = glade_widget_get_property (widget, "icon-name");
 		glade_widget_property_set (widget, "image-mode", GLADE_IMAGE_MODE_ICON);
-	else if (glade_widget_property_original_default (widget, "stock") == FALSE)
-		glade_widget_property_set (widget, "image-mode", GLADE_IMAGE_MODE_STOCK);
+	}
 	else if (glade_widget_property_original_default (widget, "pixbuf") == FALSE)
+	{
+		property = glade_widget_get_property (widget, "pixbuf");
 		glade_widget_property_set (widget, "image-mode", GLADE_IMAGE_MODE_FILENAME);
-	else 
-		glade_widget_property_reset (widget, "image-mode");
+	}
+	else/*  if (glade_widget_property_original_default (widget, "stock") == FALSE) */
+	{
+		property = glade_widget_get_property (widget, "stock");
+		glade_widget_property_set (widget, "image-mode", GLADE_IMAGE_MODE_STOCK);
+	}
+
+	glade_property_sync (property);
+
+
 }
 
 
@@ -5438,8 +5451,8 @@ glade_gtk_image_write_widget (GladeWidgetAdaptor *adaptor,
 static void
 glade_gtk_image_set_image_mode (GObject *object, const GValue *value)
 {
-	GladeWidget       *gwidget;
-	GladeGtkImageType  type;
+	GladeWidget        *gwidget;
+	GladeImageEditMode  type;
 	
 	gwidget = glade_widget_get_from_gobject (object);
 	g_return_if_fail (GTK_IS_IMAGE (object));
@@ -5510,8 +5523,36 @@ glade_gtk_image_set_property (GladeWidgetAdaptor *adaptor,
 		g_value_unset (&int_value);
 	}
 	else
+	{
+		GladeWidget *widget = glade_widget_get_from_gobject (object);
+		GladeImageEditMode mode = 0;
+
+		glade_widget_property_get (widget, "image-mode", &mode);
+
+		/* avoid setting properties in the wrong mode... */
+		switch (mode)
+		{
+		case GLADE_IMAGE_MODE_STOCK:
+			if (!strcmp (id, "icon-name") ||
+			    !strcmp (id, "pixbuf"))
+				return;
+			break;
+		case GLADE_IMAGE_MODE_ICON:
+			if (!strcmp (id, "stock") ||
+			    !strcmp (id, "pixbuf"))
+				return;
+			break;
+		case GLADE_IMAGE_MODE_FILENAME:
+			if (!strcmp (id, "stock") ||
+			    !strcmp (id, "icon-name"))
+				return;
+		default:
+			break;
+		}
+
 		GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object,
 							       id, value);
+	}
 }
 
 
