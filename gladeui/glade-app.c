@@ -358,7 +358,7 @@ build_package_paths (void)
 #ifdef G_OS_WIN32
 	gchar *prefix;
 	
-	prefix = g_win32_get_package_installation_directory (NULL, NULL);
+	prefix = g_win32_get_package_installation_directory_of_module (NULL);
 	pixmaps_dir  = g_build_filename (prefix, "share", PACKAGE, "pixmaps", NULL);
 	catalogs_dir = g_build_filename (prefix, "share", PACKAGE, "catalogs", NULL);
 	modules_dir  = g_build_filename (prefix, "lib", PACKAGE, "modules", NULL);
