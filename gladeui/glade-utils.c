@@ -448,7 +448,7 @@ glade_util_gtk_combo_find (GtkCombo * combo)
 	gchar *text;
 	gchar *ltext;
 	GList *clist;
-	gsize n;
+	gsize len;
 
 	int (*string_compare) (const char *, const char *, gsize);
 
@@ -457,14 +457,15 @@ glade_util_gtk_combo_find (GtkCombo * combo)
 	else
 		string_compare = g_ascii_strncasecmp;
 
-	text = (gchar*) gtk_entry_get_text (GTK_ENTRY (combo->entry));
+	text  = (gchar*) gtk_entry_get_text (GTK_ENTRY (combo->entry));
+	len   = text ? strlen (text) : 0;
 	clist = GTK_LIST (combo->list)->children;
 
 	while (clist && clist->data) {
 		ltext = glade_util_gtk_combo_func (GTK_LIST_ITEM (clist->data));
 		if (!ltext)
 			continue;
-		if (!(*string_compare) (ltext, text, n))
+		if (!(*string_compare) (ltext, text, len))
 			return (GtkListItem *) clist->data;
 		clist = clist->next;
 	}

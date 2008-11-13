@@ -824,7 +824,7 @@ glade_gnome_dialog_add_button (GladeWidget *gaction_area,
 	eclass = g_type_class_ref (glade_standard_stock_get_type ());
 	if ((eval = g_enum_get_value_by_nick (eclass, stock)) != NULL)
 	{
-		glade_widget_property_set (gbutton, "glade-type", GLADEGTK_BUTTON_STOCK);
+		glade_widget_property_set (gbutton, "use-stock", TRUE);
 		glade_widget_property_set (gbutton, "stock", eval->value);
 	}
 	g_type_class_unref (eclass);

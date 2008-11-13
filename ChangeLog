@@ -1,5 +1,11 @@
 2008-11-12  Tristan Van Berkom <tvb@gnome.org>
 
+	* gladeui/glade-utils.c: Refixed use of uninitialized variable (bug 559678).
+
+	* plugins/gnome/glade-gnome.c: Fixed build breakage (bug 560668).
+
+2008-11-12  Tristan Van Berkom <tvb@gnome.org>
+
 	* plugins/gtk+/glade-gtk.c: Fixed loading of images and only set image
 	data when in the correct edit mode.
 
