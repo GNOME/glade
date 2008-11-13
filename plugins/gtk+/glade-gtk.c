@@ -5815,12 +5815,22 @@ glade_gtk_menu_shell_move_child (GladeBaseEditor *editor,
 				 gpointer data)
 {
 	GObject *parent = glade_widget_get_object (gparent);
+	GladeWidget *old_parent = gchild->parent;
 	GList list = {0, };
 	
 	if (GTK_IS_SEPARATOR_MENU_ITEM (parent)) return FALSE;
 	
 	if (GTK_IS_MENU_ITEM (parent))
 		gparent = glade_gtk_menu_shell_item_get_parent (gparent, parent);
+
+	/* Delete dangling menus */
+	if (GTK_IS_MENU (old_parent->object) && 
+	    old_parent->parent && GTK_IS_MENU_ITEM (old_parent->parent->object))
+	{
+		GList del = { 0, };
+		del.data = old_parent;
+		glade_command_delete (&del);
+	}
 	
 	if (gparent != glade_widget_get_parent (gchild))
 	{

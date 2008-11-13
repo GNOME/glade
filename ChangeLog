@@ -4,6 +4,9 @@
 
 	* plugins/gnome/glade-gnome.c: Fixed build breakage (bug 560668).
 
+	* plugins/gtk+/glade-gtk.c: Delete dangling submenus when moving children
+	  around in the menu editor (bug 560145).
+
 2008-11-12  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/glade-gtk.c: Fixed loading of images and only set image
