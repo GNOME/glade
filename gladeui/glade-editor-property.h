@@ -109,6 +109,9 @@ struct _GladeEditorProperty
 	gboolean            loading;        /* True during glade_editor_property_load calls, this
 					     * is used to avoid feedback from input widgets.
 					     */
+	gboolean            committing;     /* True while the editor property itself is applying
+					     * the property with glade_editor_property_commit_no_callback ().
+					     */
 
 	gboolean            use_command;    /* Whether we should use the glade command interface
 					     * or skip directly to GladeProperty interface.

@@ -123,7 +123,9 @@ glade_editor_property_commit_no_callback (GladeEditorProperty *eprop,
 	g_return_if_fail (GLADE_IS_EDITOR_PROPERTY (eprop));
 
 	g_signal_handler_block (G_OBJECT (eprop->property), eprop->changed_id);
+	eprop->committing = TRUE;
 	glade_editor_property_commit (eprop, value);
+	eprop->committing = FALSE;
 	g_signal_handler_unblock (G_OBJECT (eprop->property), eprop->changed_id);
 }
 
@@ -1647,9 +1649,7 @@ glade_eprop_text_buffer_changed (GtkTextBuffer       *buffer,
 	gtk_text_buffer_get_end_iter (buffer, &end);
 
 	text = gtk_text_buffer_get_text (buffer, &start, &end, FALSE);
-
 	glade_eprop_text_changed_common (eprop, text, eprop->use_command);
-
 	g_free (text);
 }
 
@@ -3456,6 +3456,9 @@ glade_editor_property_load (GladeEditorProperty *eprop,
 {
 	g_return_if_fail (GLADE_IS_EDITOR_PROPERTY (eprop));
 	g_return_if_fail (property == NULL || GLADE_IS_PROPERTY (property));
+
+	if (eprop->committing)
+		return;
 
 	eprop->loading = TRUE;
 	GLADE_EDITOR_PROPERTY_GET_CLASS (eprop)->load (eprop, property);
