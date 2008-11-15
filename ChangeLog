@@ -4,6 +4,16 @@
 	updating values (due to exterior callers calling ->load() when the project
 	changes for thier custom editors), this fixes glitches when editing multiline
 	text entries.
+
+	* src/glade-window.c: Update glade-app accel group.
+
+	* gladeui/glade-project.[ch], gladeui/glade-app.c: Remove accel group notion from projects
+
+	* gladeui/glade-base-editor.c:
+	  - Use global accel group (with keypress editor hijack in place)
+	  - No longer modal
+	  - added "container" property on the editor
+	  - dedicated dialogs self destruct if their container changes
 	
 2008-11-12  Tristan Van Berkom <tvb@gnome.org>
 

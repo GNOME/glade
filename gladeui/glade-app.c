@@ -954,9 +954,6 @@ glade_app_add_project (GladeProject *project)
 	g_signal_connect (G_OBJECT (project), "selection_changed",
 			  G_CALLBACK (on_project_selection_changed_cb), app);
 
-	/* add acceleration groups to every top level widget */
-	if (app->priv->accel_group)
-		glade_project_set_accel_group (project, app->priv->accel_group);
 	
 	glade_app_set_project (project);
 
@@ -1349,8 +1346,6 @@ void
 glade_app_command_delete_clipboard (void)
 {
 	GladeClipboard  *clipboard;
-	GladeWidget     *gwidget;
-	GList           *list;
 
 	clipboard = glade_app_get_clipboard ();
 
@@ -1396,23 +1391,16 @@ glade_app_command_redo (void)
  * glade_app_set_accel_group:
  *
  * Sets @accel_group to app.
- * The acceleration group will be attached to every toplevel widget in this application.
+ * The acceleration group will made available for editor dialog windows
+ * from the plugin backend.
  */
 void
 glade_app_set_accel_group (GtkAccelGroup *accel_group)
 {
 	GladeApp *app;
-	GList *l;
-	GladeProject *project;
 	g_return_if_fail(GTK_IS_ACCEL_GROUP (accel_group));
 
 	app = glade_app_get ();
-
-	for (l = app->priv->projects; l; l = l->next)
-	{
-		project = l->data;
-		glade_project_set_accel_group (project, accel_group);
-	}
 	
 	app->priv->accel_group = accel_group;
 }

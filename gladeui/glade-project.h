@@ -152,9 +152,6 @@ GList         *glade_project_selection_get       (GladeProject *project);
 
 gboolean       glade_project_get_has_selection   (GladeProject *project);
 
-void           glade_project_set_accel_group     (GladeProject  *project, 
-						  GtkAccelGroup *accel_group);
-
 gchar         *glade_project_resource_fullpath    (GladeProject  *project,
 						   const gchar   *resource);
  

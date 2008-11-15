@@ -3091,37 +3091,6 @@ glade_project_reset_path (GladeProject *project)
 }
 
 /**
- * glade_project_set_accel_group:
- * @project: A #GladeProject
- * @accel_group: The @GtkAccelGroup
- *
- * Set @accel_group to every top level widget in @project.
- */
-void
-glade_project_set_accel_group (GladeProject *project, GtkAccelGroup *accel_group)
-{
-	GList *objects;
-
-	g_return_if_fail (GLADE_IS_PROJECT (project) && GTK_IS_ACCEL_GROUP (accel_group));
-                
-	objects = project->priv->objects;
-	while (objects)
-	{
-		if(GTK_IS_WINDOW (objects->data))
-		{
-			if (project->priv->accel_group)
-				gtk_window_remove_accel_group (GTK_WINDOW (objects->data), project->priv->accel_group);
-			
-			gtk_window_add_accel_group (GTK_WINDOW (objects->data), accel_group);
-		}
-
-		objects = objects->next;
-	}
-	
-	project->priv->accel_group = accel_group;
-}
-
-/**
  * glade_project_resource_fullpath:
  * @project: The #GladeProject.
  * @resource: The resource basename

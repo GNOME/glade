@@ -33,6 +33,7 @@
 #include "glade-marshallers.h"
 #include "glade-editor-property.h"
 #include "glade-base-editor.h"
+#include "glade-app.h"
 #include "glade-accumulators.h"
 
 #include <string.h>
@@ -83,10 +84,7 @@ struct _GladeBaseEditorPrivate
 	guint properties_idle;
 };
 
-typedef struct _GladeBaseEditorSignal     GladeBaseEditorSignal;
-
-typedef enum _GladeBaseEditorSignalType
-{
+enum {
 	SIGNAL_CHILD_SELECTED,
 	SIGNAL_CHANGE_TYPE,
 	SIGNAL_GET_DISPLAY_NAME,
@@ -94,12 +92,13 @@ typedef enum _GladeBaseEditorSignalType
 	SIGNAL_DELETE_CHILD,
 	SIGNAL_MOVE_CHILD,
 	LAST_SIGNAL
-} GladeBaseEditorSignalType;
-
-struct _GladeBaseEditorSignal
-{
-	GladeBaseEditor *object;
 };
+
+enum {
+	PROP_0,
+	PROP_CONTAINER,
+};
+
 
 static guint glade_base_editor_signals [LAST_SIGNAL] = { 0 };
 static GtkVBoxClass *parent_class = NULL;
@@ -1032,6 +1031,7 @@ glade_base_editor_set_container (GladeBaseEditor *editor,
 		gtk_list_store_clear (e->children);
 		gtk_widget_set_sensitive (e->paned, FALSE);
 		glade_base_editor_block_callbacks (editor, FALSE);
+		g_object_notify (G_OBJECT (editor), "container");
 		return;
 	}
 	
@@ -1060,6 +1060,8 @@ glade_base_editor_set_container (GladeBaseEditor *editor,
 	g_signal_connect (e->project, "changed",
 			  G_CALLBACK (glade_base_editor_project_changed),
 			  editor);
+
+	g_object_notify (G_OBJECT (editor), "container");
 }
 
 /*************************** GladeBaseEditor Class ****************************/
@@ -1075,6 +1077,45 @@ glade_base_editor_finalize (GObject *object)
 	g_free (cobj->priv);
 	G_OBJECT_CLASS(parent_class)->finalize(object);
 }
+
+static void
+glade_base_editor_set_property (GObject      *object,
+				guint         prop_id,
+				const GValue *value,
+				GParamSpec   *pspec)
+{
+	GladeBaseEditor *editor = GLADE_BASE_EDITOR (object);
+
+	switch (prop_id)
+	{
+	case PROP_CONTAINER:
+		glade_base_editor_set_container (editor, g_value_get_object (value));
+		break;
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+		break;
+	}
+}
+
+static void
+glade_base_editor_get_property (GObject      *object,
+				guint         prop_id,
+				GValue       *value,
+				GParamSpec   *pspec)
+{
+	GladeBaseEditor *editor = GLADE_BASE_EDITOR (object);
+
+	switch (prop_id)
+	{
+	case PROP_CONTAINER:
+		g_value_set_object (value, editor->priv->gcontainer->object);
+		break;
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+		break;
+	}
+}
+
 
 /* Default handlers */
 static gboolean
@@ -1216,13 +1257,22 @@ glade_base_editor_class_init (GladeBaseEditorClass *klass)
 	GObjectClass *object_class = G_OBJECT_CLASS(klass);
 	
 	parent_class = g_type_class_peek_parent(klass);
-	object_class->finalize = glade_base_editor_finalize;
 
-	klass->change_type = glade_base_editor_change_type;
+	object_class->finalize     = glade_base_editor_finalize;
+	object_class->set_property = glade_base_editor_set_property;
+	object_class->get_property = glade_base_editor_get_property;
+
+	klass->change_type      = glade_base_editor_change_type;
 	klass->get_display_name = glade_base_editor_get_display_name_impl;
-	klass->build_child = glade_base_editor_build_child;
-	klass->delete_child = glade_base_editor_delete_child_impl;
-	klass->move_child = glade_base_editor_move_child;
+	klass->build_child      = glade_base_editor_build_child;
+	klass->delete_child     = glade_base_editor_delete_child_impl;
+	klass->move_child       = glade_base_editor_move_child;
+
+	g_object_class_install_property (object_class, PROP_CONTAINER,
+					 g_param_spec_object 
+					 ("container", _("Container"), 
+					  _("The container object this editor is currently editing"),
+					  G_TYPE_OBJECT, G_PARAM_READWRITE));
 
 	/**
 	 * GladeBaseEditor::child-selected:
@@ -1481,7 +1531,7 @@ glade_base_editor_init (GladeBaseEditor *editor)
 	/* ScrolledWindow */
 	scroll = gtk_scrolled_window_new (NULL, NULL);
 	gtk_widget_show (scroll);
-	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scroll), GTK_SHADOW_IN);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scroll), GTK_SHADOW_NONE);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
 	gtk_box_pack_start (GTK_BOX (vbox), scroll, TRUE, TRUE, 0);
 
@@ -1867,13 +1917,36 @@ glade_base_editor_help (GtkButton *button, gchar *markup)
 	gtk_widget_destroy (dialog);
 }
 
+/* This function is meant to be attached to key-press-event of a toplevel,
+ * it simply allows the window contents to treat key events /before/ 
+ * accelerator keys come into play (this way widgets dont get deleted
+ * when cutting text in an entry etc.).
+ */
+static gint
+hijack_key_press (GtkWindow          *window, 
+		  GdkEventKey        *event, 
+		  gpointer            user_data)
+{
+	if (window->focus_widget &&
+	    (event->keyval == GDK_Delete || /* Filter Delete from accelerator keys */
+	     ((event->state & GDK_CONTROL_MASK) && /* CNTL keys... */
+	      ((event->keyval == GDK_c || event->keyval == GDK_C) || /* CNTL-C (copy)  */
+	       (event->keyval == GDK_x || event->keyval == GDK_X) || /* CNTL-X (cut)   */
+	       (event->keyval == GDK_v || event->keyval == GDK_V))))) /* CNTL-V (paste) */
+	{
+		return gtk_widget_event (window->focus_widget, 
+					 (GdkEvent *)event);
+	}
+	return FALSE;
+}
+
 /**
  * glade_base_editor_pack_new_window:
  * @editor: a #GladeBaseEditor
  * @title: the window title
  * @help_markup: the help text
  *
- * This convenience function create a new modal window and packs @editor in it.
+ * This convenience function create a new dialog window and packs @editor in it.
  *
  * Returns: the newly created window
  */ 
@@ -1889,7 +1962,6 @@ glade_base_editor_pack_new_window (GladeBaseEditor *editor,
 	
 	/* Window */
 	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_modal (GTK_WINDOW (window), TRUE);
 	gtk_window_set_type_hint (GTK_WINDOW (window), GDK_WINDOW_TYPE_HINT_DIALOG);
 	
 	if (title)
@@ -1899,6 +1971,9 @@ glade_base_editor_pack_new_window (GladeBaseEditor *editor,
 		gtk_window_set_title (GTK_WINDOW (window), real_title);
 		g_free (real_title);
 	}
+
+	g_signal_connect_swapped (G_OBJECT (editor), "notify::container",
+				  G_CALLBACK (gtk_widget_destroy), window);
 	
 	/* Button Box */
 	buttonbox = gtk_hbutton_box_new ();
@@ -1906,14 +1981,6 @@ glade_base_editor_pack_new_window (GladeBaseEditor *editor,
 	gtk_button_box_set_layout (GTK_BUTTON_BOX (buttonbox), GTK_BUTTONBOX_END);
 	gtk_box_set_spacing (GTK_BOX (buttonbox), 8);
 	gtk_box_pack_start (GTK_BOX (editor), buttonbox, FALSE, TRUE, 0);
-
-	button = glade_app_undo_button_new ();
-	gtk_widget_show (button);
-	gtk_container_add (GTK_CONTAINER (buttonbox), button);
-
-	button = glade_app_redo_button_new ();
-	gtk_widget_show (button);
-	gtk_container_add (GTK_CONTAINER (buttonbox), button);
 
 	button = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
 	gtk_widget_show (button);
@@ -1930,7 +1997,16 @@ glade_base_editor_pack_new_window (GladeBaseEditor *editor,
 		gtk_container_add (GTK_CONTAINER (buttonbox), button);
 		gtk_button_box_set_child_secondary (GTK_BUTTON_BOX (buttonbox), button, TRUE);
 	}
-	
+
+	if (glade_app_get_accel_group ())
+	{
+		gtk_window_add_accel_group (GTK_WINDOW (window), 
+					    glade_app_get_accel_group ());
+		g_signal_connect (G_OBJECT (window), "key-press-event",
+				  G_CALLBACK (hijack_key_press), NULL);
+	}
+
+
 	gtk_container_set_border_width (GTK_CONTAINER (editor), 6);
 	gtk_container_add (GTK_CONTAINER (window), GTK_WIDGET (editor));
 	

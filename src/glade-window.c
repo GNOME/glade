@@ -2314,7 +2314,9 @@ construct_menu (GladeWindow *window)
 	gtk_ui_manager_insert_action_group (window->priv->ui, window->priv->projects_list_menu_actions, 3);
 	
 	gtk_window_add_accel_group (GTK_WINDOW (window), 
-				  gtk_ui_manager_get_accel_group (window->priv->ui));
+				    gtk_ui_manager_get_accel_group (window->priv->ui));
+
+	glade_app_set_accel_group (gtk_ui_manager_get_accel_group (window->priv->ui));
 
 	if (!gtk_ui_manager_add_ui_from_string (window->priv->ui, ui_info, -1, &error))
 	{
