@@ -500,8 +500,9 @@ selection_foreach_func (GtkTreeModel *model,
 	GladeWidget *widget;
 	
 	gtk_tree_model_get (model, iter, WIDGET_COLUMN, &widget, -1);
-	
-	glade_app_selection_add (glade_widget_get_object (widget), FALSE);
+
+	if (widget)
+		glade_app_selection_add (glade_widget_get_object (widget), FALSE);
 }
 
 static void

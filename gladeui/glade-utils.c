@@ -2266,3 +2266,38 @@ glade_utils_liststore_from_enum_type (GType    enum_type,
 
 	return store;
 }
+
+
+
+/**
+ * glade_utils_hijack_key_press:
+ * @win: a #GtkWindow
+ * event: the GdkEventKey 
+ * user_data: unused
+ *
+ * This function is meant to be attached to key-press-event of a toplevel,
+ * it simply allows the window contents to treat key events /before/ 
+ * accelerator keys come into play (this way widgets dont get deleted
+ * when cutting text in an entry etc.).
+ * Creates a liststore suitable for comboboxes and such to 
+ * chose from a variety of types.
+ *
+ * Returns: whether the event was handled
+ */
+gint
+glade_utils_hijack_key_press (GtkWindow          *win, 
+			      GdkEventKey        *event, 
+			      gpointer            user_data)
+{
+	if (win->focus_widget &&
+	    (event->keyval == GDK_Delete || /* Filter Delete from accelerator keys */
+	     ((event->state & GDK_CONTROL_MASK) && /* CNTL keys... */
+	      ((event->keyval == GDK_c || event->keyval == GDK_C) || /* CNTL-C (copy)  */
+	       (event->keyval == GDK_x || event->keyval == GDK_X) || /* CNTL-X (cut)   */
+	       (event->keyval == GDK_v || event->keyval == GDK_V))))) /* CNTL-V (paste) */
+	{
+		return gtk_widget_event (win->focus_widget, 
+					 (GdkEvent *)event);
+	}
+	return FALSE;
+}

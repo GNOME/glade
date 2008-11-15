@@ -76,6 +76,8 @@ struct _GladeEditor
 
 	gulong project_closed_signal_id; /* Unload widget when widget's project closes.
 					  */
+	gulong project_removed_signal_id; /* Unload widget when its removed from the project.
+					   */
 	gulong widget_warning_id; /* Update when widget changes warning messages.
 				   */
 	gulong widget_name_id;    /* Update class field when widget name changes
@@ -129,6 +131,8 @@ struct _GladeEditorClass
 GType        glade_editor_get_type           (void);
 
 GladeEditor *glade_editor_new                (void);
+
+GtkWidget   *glade_editor_dialog_for_widget  (GladeWidget *widget);
 
 void         glade_editor_load_widget        (GladeEditor *editor,
 					      GladeWidget *widget);

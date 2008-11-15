@@ -1190,7 +1190,13 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor *adaptor,
 	else
 		gparent = NULL;
 
-	if (strcmp (action_path, "remove_parent") == 0)
+	if (strcmp (action_path, "edit_separate") == 0)
+	{
+		GtkWidget *dialog = 
+			glade_editor_dialog_for_widget (gwidget);
+		gtk_widget_show_all (dialog);
+	}
+	else if (strcmp (action_path, "remove_parent") == 0)
 	{
 		GladeWidget *new_gparent;
 

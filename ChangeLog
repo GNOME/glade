@@ -14,7 +14,17 @@
 	  - No longer modal
 	  - added "container" property on the editor
 	  - dedicated dialogs self destruct if their container changes
-	
+
+	* gladeui/glade-utils.c: added glade_utils_hijack_key_press ()
+
+	* src/glade-window.c: Moved hijack_key_press to glade_utils
+
+	* gladeui/glade-editor.[ch]:
+	  - Added "widget" property
+	  - added glade_editor_dialog_for_widget()
+
+	* plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-gtk.c: Added "Edit Separately" action
+
 2008-11-12  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-utils.c: Refixed use of uninitialized variable (bug 559678).

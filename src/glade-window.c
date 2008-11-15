@@ -1778,29 +1778,6 @@ palette_toggle_small_icons_cb (GtkAction *action, GladeWindow *window)
 						gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action)));
 }
 
-/* This function is meant to be attached to key-press-event of a toplevel,
- * it simply allows the window contents to treat key events /before/ 
- * accelerator keys come into play (this way widgets dont get deleted
- * when cutting text in an entry etc.).
- */
-static gint
-hijack_key_press (GtkWidget          *win, 
-		  GdkEventKey        *event, 
-		  GladeWindow *window)
-{
-	if (GTK_WINDOW (win)->focus_widget &&
-	    (event->keyval == GDK_Delete || /* Filter Delete from accelerator keys */
-	     ((event->state & GDK_CONTROL_MASK) && /* CNTL keys... */
-	      ((event->keyval == GDK_c || event->keyval == GDK_C) || /* CNTL-C (copy)  */
-	       (event->keyval == GDK_x || event->keyval == GDK_X) || /* CNTL-X (cut)   */
-	       (event->keyval == GDK_v || event->keyval == GDK_V))))) /* CNTL-V (paste) */
-	{
-		return gtk_widget_event (GTK_WINDOW (win)->focus_widget, 
-					 (GdkEvent *)event);
-	}
-	return FALSE;
-}
-
 static gboolean
 on_dock_deleted (GtkWidget *widget,
 		 GdkEvent  *event,
@@ -1894,7 +1871,7 @@ toggle_dock_cb (GtkAction *action, GladeWindow *window)
 					    gtk_ui_manager_get_accel_group (window->priv->ui));
 
 		g_signal_connect (G_OBJECT (toplevel), "key-press-event",
-				  G_CALLBACK (hijack_key_press), window);
+				  G_CALLBACK (glade_utils_hijack_key_press), window);
 
 		dock->detached = TRUE;
 
@@ -3157,7 +3134,7 @@ glade_window_init (GladeWindow *window)
 			  window);
 
 	g_signal_connect (G_OBJECT (window), "key-press-event",
-			  G_CALLBACK (hijack_key_press), window);
+			  G_CALLBACK (glade_utils_hijack_key_press), window);
 
        /* GladeApp signals */
 	g_signal_connect (G_OBJECT (priv->app), "update-ui",

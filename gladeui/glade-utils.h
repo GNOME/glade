@@ -151,7 +151,10 @@ gchar            *glade_utils_string_from_value   (const GValue       *value,
 
 GtkListStore     *glade_utils_liststore_from_enum_type  (GType enum_type, gboolean include_empty);
 
-
+gint              glade_utils_hijack_key_press (GtkWindow          *win, 
+						GdkEventKey        *event, 
+						gpointer            user_data);
+	
 
 G_END_DECLS
 

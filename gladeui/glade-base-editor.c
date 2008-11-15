@@ -1917,29 +1917,6 @@ glade_base_editor_help (GtkButton *button, gchar *markup)
 	gtk_widget_destroy (dialog);
 }
 
-/* This function is meant to be attached to key-press-event of a toplevel,
- * it simply allows the window contents to treat key events /before/ 
- * accelerator keys come into play (this way widgets dont get deleted
- * when cutting text in an entry etc.).
- */
-static gint
-hijack_key_press (GtkWindow          *window, 
-		  GdkEventKey        *event, 
-		  gpointer            user_data)
-{
-	if (window->focus_widget &&
-	    (event->keyval == GDK_Delete || /* Filter Delete from accelerator keys */
-	     ((event->state & GDK_CONTROL_MASK) && /* CNTL keys... */
-	      ((event->keyval == GDK_c || event->keyval == GDK_C) || /* CNTL-C (copy)  */
-	       (event->keyval == GDK_x || event->keyval == GDK_X) || /* CNTL-X (cut)   */
-	       (event->keyval == GDK_v || event->keyval == GDK_V))))) /* CNTL-V (paste) */
-	{
-		return gtk_widget_event (window->focus_widget, 
-					 (GdkEvent *)event);
-	}
-	return FALSE;
-}
-
 /**
  * glade_base_editor_pack_new_window:
  * @editor: a #GladeBaseEditor
@@ -2003,7 +1980,7 @@ glade_base_editor_pack_new_window (GladeBaseEditor *editor,
 		gtk_window_add_accel_group (GTK_WINDOW (window), 
 					    glade_app_get_accel_group ());
 		g_signal_connect (G_OBJECT (window), "key-press-event",
-				  G_CALLBACK (hijack_key_press), NULL);
+				  G_CALLBACK (glade_utils_hijack_key_press), NULL);
 	}
 
 

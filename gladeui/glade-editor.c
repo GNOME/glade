@@ -57,7 +57,8 @@
 enum
 {
 	PROP_0,
-	PROP_SHOW_INFO
+	PROP_SHOW_INFO,
+	PROP_WIDGET
 };
 
 enum {
@@ -101,6 +102,9 @@ glade_editor_set_property (GObject      *object,
 		else
 			glade_editor_hide_info (editor);
 		break;
+	case PROP_WIDGET:
+		glade_editor_load_widget (editor, (GladeWidget *)g_value_get_object (value));
+		break;
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 		break;
@@ -119,6 +123,9 @@ glade_editor_get_property (GObject    *object,
 	{
 	case PROP_SHOW_INFO:
 		g_value_set_boolean (value, editor->show_info);
+		break;
+	case PROP_WIDGET:
+		g_value_set_object (value, editor->loaded_widget);
 		break;
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -148,6 +155,13 @@ glade_editor_class_init (GladeEditorClass *klass)
 				       _("Whether to show an informational "
 					 "button for the loaded widget"),
 				       FALSE, G_PARAM_READABLE));
+
+	g_object_class_install_property
+		(object_class, PROP_WIDGET,
+		 g_param_spec_object ("widget",
+				      _("Widget"),
+				      _("The currently loaded widget in this editor"),
+				      GLADE_TYPE_WIDGET, G_PARAM_READWRITE));
 
 	
 	/**
@@ -593,11 +607,25 @@ static void
 glade_editor_close_cb (GladeProject *project,
 		       GladeEditor  *editor)
 {
-	/* Detected project we are viewing was closed,
+	/* project we are viewing was closed,
 	 * detatch from editor.
 	 */
 	glade_editor_load_widget (editor, NULL);
 }
+
+static void
+glade_editor_removed_cb (GladeProject *project,
+			 GladeWidget  *widget,
+			 GladeEditor  *editor)
+{
+	/* Widget we were viewing was removed from project,
+	 * detatch from editor.
+	 */
+	if (widget == editor->loaded_widget)
+		glade_editor_load_widget (editor, NULL);
+
+}
+
 
 static void
 glade_editor_load_editable (GladeEditor         *editor, 
@@ -658,6 +686,8 @@ glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 		project = glade_widget_get_project (editor->loaded_widget);
 		g_signal_handler_disconnect (G_OBJECT (project),
 					     editor->project_closed_signal_id);
+		g_signal_handler_disconnect (G_OBJECT (project),
+					     editor->project_removed_signal_id);
 		g_signal_handler_disconnect (G_OBJECT (editor->loaded_widget),
 					     editor->widget_warning_id);
 		g_signal_handler_disconnect (G_OBJECT (editor->loaded_widget),
@@ -678,6 +708,8 @@ glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 		gtk_widget_set_sensitive (editor->info_button, FALSE);
 
 		editor->loaded_widget = NULL;
+
+		g_object_notify (G_OBJECT (editor), "widget");
 		return;
 	}
 	gtk_widget_set_sensitive (editor->reset_button, TRUE);
@@ -705,6 +737,9 @@ glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 	editor->project_closed_signal_id =
 		g_signal_connect (G_OBJECT (project), "close",
 				  G_CALLBACK (glade_editor_close_cb), editor);
+	editor->project_removed_signal_id =
+		g_signal_connect (G_OBJECT (project), "remove-widget",
+				  G_CALLBACK (glade_editor_removed_cb), editor);
 	editor->widget_warning_id =
 		g_signal_connect (G_OBJECT (widget), "notify::support-warning",
 				  G_CALLBACK (glade_editor_update_class_warning_cb),
@@ -715,6 +750,8 @@ glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 				  editor);
 
 	gtk_container_check_resize (GTK_CONTAINER (editor));
+
+	g_object_notify (G_OBJECT (editor), "widget");
 }
 
 /**
@@ -1272,4 +1309,61 @@ glade_editor_hide_info (GladeEditor *editor)
 
 		g_object_notify (G_OBJECT (editor), "show-info");
 	}
+}
+
+/**
+ * glade_editor_dialog_for_widget:
+ * @widget: a #GladeWidget
+ *
+ * This convenience function creates a new dialog window to edit @widget
+ * specifically.
+ *
+ * Returns: the newly created dialog window
+ */ 
+GtkWidget *
+glade_editor_dialog_for_widget (GladeWidget *widget)
+{
+	GtkWidget *window, *editor;
+	gchar *title, *prj_name;
+
+	
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
+	
+	/* Window */
+	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_type_hint (GTK_WINDOW (window), GDK_WINDOW_TYPE_HINT_DIALOG);
+
+	prj_name = glade_project_get_name (widget->project);
+	title = g_strdup_printf ("%s - %s Properties", prj_name, 
+				 glade_widget_get_name (widget));
+	gtk_window_set_title (GTK_WINDOW (window), title);
+	g_free (title);
+	g_free (prj_name);
+	
+
+	if (glade_app_get_accel_group ())
+	{
+		gtk_window_add_accel_group (GTK_WINDOW (window), 
+					    glade_app_get_accel_group ());
+		g_signal_connect (G_OBJECT (window), "key-press-event",
+				  G_CALLBACK (glade_utils_hijack_key_press), NULL);
+	}
+
+	editor = g_object_new (GLADE_TYPE_EDITOR, 
+			       "spacing", 6,
+			       NULL);
+	glade_editor_load_widget (GLADE_EDITOR (editor), widget);
+
+
+	g_signal_connect_swapped (G_OBJECT (editor), "notify::widget",
+				  G_CALLBACK (gtk_widget_destroy), window);
+
+
+	gtk_container_set_border_width (GTK_CONTAINER (editor), 6);
+	gtk_container_add (GTK_CONTAINER (window), GTK_WIDGET (editor));
+	
+	gtk_window_set_default_size (GTK_WINDOW (window), 640, 480);
+
+	gtk_widget_show_all (editor);
+	return window;
 }
