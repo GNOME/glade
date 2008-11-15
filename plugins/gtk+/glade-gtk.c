@@ -224,6 +224,17 @@ glade_gtk_init (const gchar *name)
 }
 
 /* ----------------------------- GtkWidget ------------------------------ */
+gboolean
+glade_gtk_widget_depends (GladeWidgetAdaptor *adaptor,
+			  GladeWidget        *widget,
+			  GladeWidget        *another)
+{
+	if (GTK_IS_ICON_FACTORY (another->object))
+		return TRUE; 
+
+	return GWA_GET_CLASS (G_TYPE_OBJECT)->depends (adaptor, widget, another);
+}
+
 #define GLADE_TAG_ACCEL             "accelerator"
 #define GLADE_TAG_ACCEL_KEY         "key"
 #define GLADE_TAG_ACCEL_MODIFIERS   "modifiers"
@@ -8628,6 +8639,17 @@ glade_gtk_message_dialog_get_property (GladeWidgetAdaptor *adaptor,
 }
 
 /*--------------------------- GtkSizeGroup ---------------------------------*/
+gboolean
+glade_gtk_size_group_depends (GladeWidgetAdaptor *adaptor,
+			      GladeWidget        *widget,
+			      GladeWidget        *another)
+{
+	if (GTK_IS_WIDGET (another->object))
+		return TRUE; 
+
+	return GWA_GET_CLASS (G_TYPE_OBJECT)->depends (adaptor, widget, another);
+}
+
 #define GLADE_TAG_SIZEGROUP_WIDGETS "widgets"
 #define GLADE_TAG_SIZEGROUP_WIDGET  "widget"
 

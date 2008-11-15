@@ -845,6 +845,14 @@ glade_widget_adaptor_object_child_action_activate (GladeWidgetAdaptor *adaptor,
 		   adaptor->name, action_id);
 }
 
+static gboolean
+glade_widget_adaptor_object_depends (GladeWidgetAdaptor *adaptor,
+				     GladeWidget        *widget,
+				     GladeWidget        *another)
+{
+	return FALSE;
+}
+
 static void
 glade_widget_adaptor_object_read_widget (GladeWidgetAdaptor *adaptor,
 					 GladeWidget        *widget,
@@ -1179,6 +1187,7 @@ glade_widget_adaptor_class_init (GladeWidgetAdaptorClass *adaptor_class)
 	adaptor_class->action_activate      = glade_widget_adaptor_object_action_activate;
 	adaptor_class->child_action_activate= glade_widget_adaptor_object_child_action_activate;
 	adaptor_class->action_submenu       = NULL;
+	adaptor_class->depends              = glade_widget_adaptor_object_depends;
 	adaptor_class->read_widget          = glade_widget_adaptor_object_read_widget;
 	adaptor_class->write_widget         = glade_widget_adaptor_object_write_widget;
 	adaptor_class->read_child           = glade_widget_adaptor_object_read_child;
@@ -1436,6 +1445,11 @@ gwa_extend_with_node_load_sym (GladeWidgetAdaptorClass *klass,
 					  GLADE_TAG_ACTION_SUBMENU_FUNCTION,
 					  &symbol))
 		klass->action_submenu = symbol;
+
+	if (glade_xml_load_sym_from_node (node, module,
+					  GLADE_TAG_DEPENDS_FUNCTION,
+					  &symbol))
+		klass->depends = symbol;
 	
 	if (glade_xml_load_sym_from_node (node, module,
 					  GLADE_TAG_READ_WIDGET_FUNCTION,
@@ -3375,6 +3389,30 @@ glade_widget_adaptor_action_submenu (GladeWidgetAdaptor *adaptor,
 		return GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->action_submenu (adaptor, object, action_path);
 
 	return NULL;
+}
+
+/**
+ * glade_widget_adaptor_depends:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @widget: A #GladeWidget of the adaptor
+ * @another: another #GladeWidget
+ *
+ * Checks whether @widget depends on @another to be placed earlier in
+ * the glade file.
+ *
+ * Returns: whether @widget depends on @another being parsed first in
+ * the resulting glade file.
+ */
+gboolean
+glade_widget_adaptor_depends (GladeWidgetAdaptor *adaptor,
+			      GladeWidget        *widget,
+			      GladeWidget        *another)
+{
+	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), FALSE);
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+	g_return_val_if_fail (GLADE_IS_WIDGET (another), FALSE);
+
+	return GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->depends (adaptor, widget, another);
 }
 
 /**

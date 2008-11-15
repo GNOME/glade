@@ -417,6 +417,22 @@ typedef GtkWidget  *(* GladeActionSubmenuFunc)  (GladeWidgetAdaptor *adaptor,
 						 const gchar        *action_path);
 
 
+/**
+ * GladeDependsFunc:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @widget: A #GladeWidget of the adaptor
+ * @another: another #GladeWidget
+ *
+ * Checks whether @widget depends on @another to be placed earlier in
+ * the glade file.
+ *
+ * Returns: whether @widget depends on @another being parsed first in
+ * the resulting glade file.
+ */
+typedef gboolean (* GladeDependsFunc) (GladeWidgetAdaptor *adaptor,
+				       GladeWidget        *widget,
+				       GladeWidget        *another);
+
 
 
 /**
@@ -669,6 +685,8 @@ struct _GladeWidgetAdaptorClass
 
 	GladeActionSubmenuFunc       action_submenu;       /* Delagate function to create dynamic submenus */
 	                                                   /* in action menus. */
+	
+	GladeDependsFunc             depends; /* Periodically sort widgets in the project */
 
 	GladeReadWidgetFunc          read_widget; /* Reads widget attributes from xml */
 	
@@ -840,6 +858,10 @@ void                 glade_widget_adaptor_child_action_activate (GladeWidgetAdap
 GtkWidget           *glade_widget_adaptor_action_submenu        (GladeWidgetAdaptor *adaptor,
 								 GObject            *object,
 								 const gchar        *action_path);
+
+gboolean             glade_widget_adaptor_depends            (GladeWidgetAdaptor *adaptor,
+							      GladeWidget        *widget,
+							      GladeWidget        *another);
 
 
 void                 glade_widget_adaptor_read_widget        (GladeWidgetAdaptor *adaptor,

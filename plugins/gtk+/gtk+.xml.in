@@ -16,6 +16,7 @@
       <get-property-function>glade_gtk_widget_get_property</get-property-function>
       <action-activate-function>glade_gtk_widget_action_activate</action-activate-function>
       <action-submenu-function>glade_gtk_widget_action_submenu</action-submenu-function>
+      <depends-function>glade_gtk_widget_depends</depends-function>
       <read-widget-function>glade_gtk_widget_read_widget</read-widget-function>
       <write-widget-function>glade_gtk_widget_write_widget</write-widget-function>
       <create-editor-property-function>glade_gtk_widget_create_eprop</create-editor-property-function>
@@ -1707,6 +1708,7 @@ embedded in another object</_tooltip>
     
     <!-- Objects -->
     <glade-widget-class name="GtkSizeGroup" generic-name="sizegroup" _title="Size Group" libglade-unsupported="True" toplevel="True">
+      <depends-function>glade_gtk_size_group_depends</depends-function>
       <read-widget-function>glade_gtk_size_group_read_widget</read-widget-function>
       <write-widget-function>glade_gtk_size_group_write_widget</write-widget-function>
       <set-property-function>glade_gtk_size_group_set_property</set-property-function>

@@ -2302,7 +2302,21 @@ glade_project_set_widget_name (GladeProject *project,
 	g_free (new_name);
 }
 
+static gint
+sort_project_dependancies (GObject *a, GObject *b)
+{
+	GladeWidget *ga, *gb;
 
+	ga = glade_widget_get_from_gobject (a);
+	gb = glade_widget_get_from_gobject (b);
+
+	if (glade_widget_adaptor_depends (ga->adaptor, ga, gb))
+		return 1;
+	else if (glade_widget_adaptor_depends (gb->adaptor, gb, ga))
+		return -1;
+	else 
+		return 1;
+}
 
 /**
  * glade_project_add_object:
@@ -2376,7 +2390,11 @@ glade_project_add_object (GladeProject *project,
 
 	glade_widget_set_project (gwidget, (gpointer)project);
 
-	project->priv->objects = g_list_append (project->priv->objects, g_object_ref (object));
+	if (!gwidget->parent)
+		project->priv->objects = g_list_insert_sorted (project->priv->objects, g_object_ref (object), 
+							       (GCompareFunc)sort_project_dependancies);
+	else
+		project->priv->objects = g_list_append (project->priv->objects, g_object_ref (object));
 	
 	g_signal_emit (G_OBJECT (project),
 		       glade_project_signals [ADD_WIDGET],

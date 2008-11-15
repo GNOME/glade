@@ -131,6 +131,7 @@ typedef enum {
 #define GLADE_TAG_ACTION_ACTIVATE_FUNCTION        "action-activate-function"
 #define GLADE_TAG_CHILD_ACTION_ACTIVATE_FUNCTION  "child-action-activate-function"
 #define GLADE_TAG_ACTION_SUBMENU_FUNCTION         "action-submenu-function"
+#define GLADE_TAG_DEPENDS_FUNCTION                "depends-function"
 #define GLADE_TAG_READ_WIDGET_FUNCTION            "read-widget-function"
 #define GLADE_TAG_WRITE_WIDGET_FUNCTION           "write-widget-function"
 #define GLADE_TAG_READ_CHILD_FUNCTION             "read-child-function"
