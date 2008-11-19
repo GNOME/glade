@@ -42,6 +42,11 @@ typedef struct {
 	GladePropertyClass       *pclass;
 	GladePropertyClass       *attr_pclass;
 	GladePropertyClass       *use_attr_pclass;
+
+	GtkWidget                *use_prop_label;
+	GtkWidget                *use_attr_label;
+	GtkWidget                *use_prop_eprop;
+	GtkWidget                *use_attr_eprop;
 } CheckTab;
 
 G_DEFINE_TYPE_WITH_CODE (GladeCellRendererEditor, glade_cell_renderer_editor, GTK_TYPE_VBOX,
@@ -140,6 +145,22 @@ glade_cell_renderer_editor_load (GladeEditable *editable,
 
 			glade_widget_property_get (widget, tab->use_attr_pclass->id, &use_attr);
 			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (tab->attributes_check), use_attr);
+			
+
+			if (use_attr)
+			{
+				gtk_widget_show (tab->use_attr_label);
+				gtk_widget_show (tab->use_attr_eprop);
+				gtk_widget_hide (tab->use_prop_label);
+				gtk_widget_hide (tab->use_prop_eprop);
+			}
+			else
+			{
+				gtk_widget_show (tab->use_prop_label);
+				gtk_widget_show (tab->use_prop_eprop);
+				gtk_widget_hide (tab->use_attr_label);
+				gtk_widget_hide (tab->use_attr_eprop);
+			}
 		}
 	}
 	renderer_editor->loading = FALSE;
@@ -441,12 +462,18 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor  *adaptor,
 			renderer_editor->properties = g_list_prepend (renderer_editor->properties, eprop);
 			gtk_size_group_add_widget (input_group, GTK_WIDGET (eprop));
 
+			tab->use_prop_label = eprop->item_label;
+			tab->use_prop_eprop = GTK_WIDGET (eprop);
+
 			/* Edit attribute */
 			eprop = glade_widget_adaptor_create_eprop (adaptor, attr_pclass, TRUE);
 			table_attach (table, eprop->item_label, 0, rows);
 			table_attach (table, GTK_WIDGET (eprop), 1, rows++);
 			renderer_editor->properties = g_list_prepend (renderer_editor->properties, eprop);
 			gtk_size_group_add_widget (input_group, GTK_WIDGET (eprop));
+
+			tab->use_attr_label = eprop->item_label;
+			tab->use_attr_eprop = GTK_WIDGET (eprop);
 
 			g_signal_connect (G_OBJECT (tab->attributes_check), "toggled",
 					  G_CALLBACK (attributes_toggled), tab);

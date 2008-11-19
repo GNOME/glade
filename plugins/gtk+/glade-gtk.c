@@ -10374,7 +10374,7 @@ glade_gtk_cell_renderer_write_properties (GladeWidget        *widget,
 			glade_widget_property_get (widget, use_attr_str, &use_attr);
 
 			attr_name  = &property->klass->id[attr_len];
-			prop       = glade_widget_get_property (widget, "attr_name");
+			prop       = glade_widget_get_property (widget, attr_name);
 
 			if (!use_attr && prop)
 				glade_property_write (prop, context, node);
