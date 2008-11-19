@@ -1527,6 +1527,13 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 			g_free (klass->def);
 		}
 		klass->def = glade_property_class_make_gvalue_from_string (klass, buf, NULL, NULL);
+
+		if (klass->virt) {
+			g_value_unset (klass->orig_def);
+			g_free (klass->orig_def);
+			klass->orig_def = glade_property_class_make_gvalue_from_string (klass, buf, NULL, NULL);
+		}
+
 		g_free (buf);
 	}
 

@@ -1791,6 +1791,7 @@ embedded in another object</_tooltip>
       <remove-child-function>glade_gtk_treeview_remove_child</remove-child-function>
       <action-activate-function>glade_gtk_treeview_action_activate</action-activate-function>
       <child-action-activate-function>glade_gtk_treeview_child_action_activate</child-action-activate-function>
+      <depends-function>glade_gtk_treeview_depends</depends-function>
 
       <actions>
         <action id="append_column" _name="Append Column" stock="gtk-add" important="True"/>
@@ -1897,10 +1898,603 @@ embedded in another object</_tooltip>
 
 
     <glade-widget-class name="GtkTreeViewColumn" generic-name="treeviewcolumn" _title="Tree View Column" 
-			libglade-unsupported="True"/>
+			libglade-unsupported="True">
+      <add-child-function>glade_gtk_cell_layout_add_child</add-child-function>
+      <remove-child-function>glade_gtk_cell_layout_remove_child</remove-child-function> 
+      <get-children-function>glade_gtk_cell_layout_get_children</get-children-function>
+      <read-child-function>glade_gtk_cell_layout_read_child</read-child-function>
+      <write-child-function>glade_gtk_cell_layout_write_child</write-child-function>
+
+      <action-activate-function>glade_gtk_treeview_column_action_activate</action-activate-function>
+      
+      <actions>
+        <action id="append_renderer" _name="Append Cell Renderer" stock="gtk-add">
+          <action id="accel" _name="Accel"/>
+          <action id="combo" _name="Combo"/>
+          <action id="pixbuf" _name="Pixbuf"/>
+          <action id="progress" _name="Progress"/>
+          <action id="spin" _name="Spin"/>
+          <action id="text" _name="Text"/>
+          <action id="toggle" _name="Toggle"/>
+        </action>
+      </actions>
+    </glade-widget-class>
+    
+
+    <glade-widget-class name="GtkCellRenderer">
+      <post-create-function>glade_gtk_cell_renderer_post_create</post-create-function>
+      <create-editable-function>glade_gtk_cell_renderer_create_editable</create-editable-function>
+      <set-property-function>glade_gtk_cell_renderer_set_property</set-property-function>
+      <write-widget-function>glade_gtk_cell_renderer_write_widget</write-widget-function>
+
+      <properties>
+        <property id="cell-background-set" disabled="True"/>
+        <property id="is-expanded" disabled="True"/>
+        <property id="is-expander" disabled="True"/>
+        <property id="mode" disabled="True"/>
+
+	<!-- Cell renderer properties with thier virtual attribute and control properties -->
+        <property id="cell-background" common="True" save="False" custom-layout="True"/>
+        <property id="attr-cell-background" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-cell-background" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="cell-background-gdk" common="True" save="False" custom-layout="True"/>
+        <property id="attr-cell-background-gdk" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-cell-background-gdk" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="width" common="True" save="False" custom-layout="True"/>
+        <property id="attr-width" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-width" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="height" common="True" save="False" custom-layout="True"/>
+        <property id="attr-height" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-height" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="xpad" _name="Horizontal padding" common="True" save="False" custom-layout="True"/>
+        <property id="attr-xpad" _name="Data column" save="False" default="-1" custom-layout="True">	
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-xpad" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="ypad" _name="Vertical padding" common="True" save="False" custom-layout="True"/>
+        <property id="attr-ypad" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-ypad" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="xalign" _name="Horizontal alignment" common="True" save="False" custom-layout="True"/>
+        <property id="attr-xalign" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-xalign" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="yalign" _name="Vertical alignment" common="True" save="False" custom-layout="True"/>
+        <property id="attr-yalign" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-yalign" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="sensitive" common="True" save="False" custom-layout="True"/>
+        <property id="attr-sensitive" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-sensitive" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="visible" _name="Visible" common="True" save="False" custom-layout="True"/>
+        <property id="attr-visible" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-visible" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+      </properties>
+    </glade-widget-class>
 
     <glade-widget-class name="GtkCellRendererText" generic-name="cellrenderertext" _title="Text Renderer" 
-			libglade-unsupported="True"/>
+			libglade-unsupported="True">
+      <properties>
+        <property id="editable-set" disabled="True"/>
+	<property id="ellipsize-set" disabled="True"/>
+	<property id="family-set" disabled="True"/>
+	<property id="align-set" disabled="True"/>
+	<property id="background-set" disabled="True"/>
+	<property id="foreground-set" disabled="True"/>
+	<property id="language-set" disabled="True"/>
+	<property id="rise-set" disabled="True"/>
+	<property id="scale-set" disabled="True"/>
+	<property id="size-set" disabled="True"/>
+	<property id="weight-set" disabled="True"/>
+	<property id="variant-set" disabled="True"/>
+	<property id="underline-set" disabled="True"/>
+	<property id="style-set" disabled="True"/>
+	<property id="strikethrough-set" disabled="True"/>
+	<property id="stretch-set" disabled="True"/>
+
+        <property id="alignment" save="False" custom-layout="True"/>
+        <property id="attr-alignment" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-alignment" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="attributes" save="False" custom-layout="True"/>
+        <property id="attr-attributes" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-attributes" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+
+        <property id="background" save="False" custom-layout="True"/>
+        <property id="attr-background" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-background" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="background-gdk" save="False" custom-layout="True"/>
+        <property id="attr-background-gdk" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-background-gdk" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="editable" save="False" custom-layout="True"/>
+        <property id="attr-editable" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-editable" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="ellipsize" save="False" custom-layout="True"/>
+        <property id="attr-ellipsize" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-ellipsize" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="family" save="False" custom-layout="True"/>
+        <property id="attr-family" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-family" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="font" save="False" custom-layout="True"/>
+        <property id="attr-font" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-font" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="font-desc" save="False" custom-layout="True"/>
+        <property id="attr-font-desc" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-font-desc" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="foreground" save="False" custom-layout="True"/>
+        <property id="attr-foreground" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-foreground" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="foreground-gdk" save="False" custom-layout="True"/>
+        <property id="attr-foreground-gdk" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-foreground-gdk" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="language" save="False" custom-layout="True"/>
+        <property id="attr-language" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-language" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="markup" save="False" custom-layout="True"/>
+        <property id="attr-markup" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-markup" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="rise" save="False" custom-layout="True"/>
+        <property id="attr-rise" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-rise" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="scale" save="False" custom-layout="True"/>
+        <property id="attr-scale" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-scale" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="single-paragraph-mode" save="False" custom-layout="True"/>
+        <property id="attr-single-paragraph-mode" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-single-paragraph-mode" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="size" save="False" custom-layout="True"/>
+        <property id="attr-size" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-size" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="size-points" save="False" custom-layout="True"/>
+        <property id="attr-size-points" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-size-points" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="stretch" save="False" custom-layout="True"/>
+        <property id="attr-stretch" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-stretch" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="strikethrough" save="False" custom-layout="True"/>
+        <property id="attr-strikethrough" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-strikethrough" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="style" save="False" custom-layout="True"/>
+        <property id="attr-style" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-style" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="text" save="False" custom-layout="True"/>
+        <property id="attr-text" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-text" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="underline" save="False" custom-layout="True"/>
+        <property id="attr-underline" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-underline" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="variant" save="False" custom-layout="True"/>
+        <property id="attr-variant" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-variant" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="weight" save="False" custom-layout="True"/>
+        <property id="attr-weight" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-weight" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="width-chars" save="False" custom-layout="True"/>
+        <property id="attr-width-chars" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-width-chars" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="wrap-mode" save="False" custom-layout="True"/>
+        <property id="attr-wrap-mode" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-wrap-mode" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="wrap-width" save="False" custom-layout="True"/>
+        <property id="attr-wrap-width" _name="Data column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-wrap-width" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+      </properties>
+
+
+
+    </glade-widget-class>
+      
+
     <glade-widget-class name="GtkCellRendererAccel" generic-name="cellrendereraccel" _title="Accelerator Renderer" 
 			libglade-unsupported="True"/>
     <glade-widget-class name="GtkCellRendererCombo" generic-name="cellrenderercombo" _title="Combo Renderer" 

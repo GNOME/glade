@@ -128,7 +128,7 @@ glade_label_editor_load (GladeEditable *editable,
 	{
 		GladeLabelContentMode content_mode;
 		GladeLabelWrapMode    wrap_mode;
-		static PangoAttrList *bold_attr_list;
+		static PangoAttrList *bold_attr_list = NULL;
 		gboolean              use_max_width;
 
 		if (!bold_attr_list)

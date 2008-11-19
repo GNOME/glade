@@ -1362,7 +1362,7 @@ glade_editor_dialog_for_widget (GladeWidget *widget)
 	gtk_container_set_border_width (GTK_CONTAINER (editor), 6);
 	gtk_container_add (GTK_CONTAINER (window), GTK_WIDGET (editor));
 	
-	gtk_window_set_default_size (GTK_WINDOW (window), 640, 480);
+	gtk_window_set_default_size (GTK_WINDOW (window), 400, 480);
 
 	gtk_widget_show_all (editor);
 	return window;

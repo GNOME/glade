@@ -19,8 +19,8 @@
  * Authors:
  *   Tristan Van Berkom <tvb@gnome.org>
  */
-#ifndef _GLADE_IMAGE_BUTTON_EDITOR_H_
-#define _GLADE_IMAGE_BUTTON_EDITOR_H_
+#ifndef _GLADE_IMAGE_ITEM_EDITOR_H_
+#define _GLADE_IMAGE_ITEM_EDITOR_H_
 
 #include <gtk/gtk.h>
 

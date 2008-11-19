@@ -268,7 +268,7 @@ eprop_item_label_size_allocate_after (GtkWidget *widget, GtkAllocation *allocati
 	gint width = EDITOR_COLUMN_SIZE;
 	gint icon_width = 0;
 
-	if (GTK_WIDGET_VISIBLE (eprop->warning))
+	if (GTK_WIDGET_VISIBLE (eprop->warning) && GTK_WIDGET_MAPPED (eprop->warning))
 	{
 		GtkRequisition req = { -1, -1 };
 		gtk_widget_size_request (eprop->warning, &req);
@@ -283,7 +283,7 @@ eprop_item_label_size_allocate_after (GtkWidget *widget, GtkAllocation *allocati
 	if (allocation->width > width)
 		width = allocation->width;
 
-	gtk_widget_set_size_request (eprop->label, width - icon_width, -1);
+	gtk_widget_set_size_request (eprop->label, CLAMP (width - icon_width, 0, width), -1);
 	/* Sometimes labels aren't drawn correctly after resize without this */
 	gtk_widget_queue_draw (eprop->label);
 }

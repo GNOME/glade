@@ -38,6 +38,7 @@
 #include "glade-icon-factory-editor.h"
 #include "glade-store-editor.h"
 #include "glade-label-editor.h"
+#include "glade-cell-renderer-editor.h"
 
 #include <gladeui/glade-editor-property.h>
 #include <gladeui/glade-base-editor.h>
@@ -9556,6 +9557,17 @@ glade_gtk_treeview_remove_child (GladeWidgetAdaptor *adaptor,
 	gtk_tree_view_remove_column (view, column);
 }
 
+gboolean
+glade_gtk_treeview_depends (GladeWidgetAdaptor *adaptor,
+			    GladeWidget        *widget,
+			    GladeWidget        *another)
+{
+	if (GTK_IS_TREE_MODEL (another->object))
+		return TRUE; 
+
+	return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->depends (adaptor, widget, another);
+}
+
 
 /*--------------------------- GtkIconFactory ---------------------------------*/
 #define GLADE_TAG_SOURCES   "sources"
@@ -9943,4 +9955,449 @@ glade_gtk_icon_factory_create_editable (GladeWidgetAdaptor  *adaptor,
 		return (GladeEditable *)glade_icon_factory_editor_new (adaptor, editable);
 
 	return editable;
+}
+
+/*--------------------------- GtkCellLayout ---------------------------------*/
+void
+glade_gtk_cell_layout_add_child (GladeWidgetAdaptor *adaptor,
+				 GObject            *container,
+				 GObject            *child)
+{
+	gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (container), GTK_CELL_RENDERER (child), TRUE);
+}
+
+void
+glade_gtk_cell_layout_remove_child (GladeWidgetAdaptor *adaptor,
+				    GObject            *container,
+				    GObject            *child)
+{
+	GtkCellLayout *layout = GTK_CELL_LAYOUT (container);
+	GList *l, *children = gtk_cell_layout_get_cells (layout);
+	
+	/* Add a reference to every cell except the one we want to remove */
+	for (l = children; l; l = g_list_next (l))
+		if (l->data != child)
+			g_object_ref (l->data);
+		else
+			l->data = NULL;
+
+	/* remove every cell */
+	gtk_cell_layout_clear (layout);
+
+	/* pack others cell renderers */
+	for (l = children; l; l = g_list_next (l))
+	{
+		if (l->data == NULL) continue;
+		
+		gtk_cell_layout_pack_start (layout, 
+					    GTK_CELL_RENDERER (l->data), TRUE);
+
+		/* Remove our transient reference */
+		g_object_unref (l->data);
+	}
+
+	g_list_free (children);
+}
+
+GList *
+glade_gtk_cell_layout_get_children (GladeWidgetAdaptor  *adaptor,
+				    GObject        *container)
+{
+	return gtk_cell_layout_get_cells (GTK_CELL_LAYOUT (container));
+}
+
+static void
+glade_gtk_cell_layout_add_renderer (GObject *cell, GType type)
+{
+	GladeWidget *gcell = glade_widget_get_from_gobject (cell);
+
+	glade_command_push_group (_("Appending %s to %s"),
+				  g_type_name (type),
+				  gcell->name);
+
+	glade_command_create (glade_widget_adaptor_get_by_type (type),
+			      gcell, NULL, glade_widget_get_project (gcell));
+	
+	glade_command_pop_group ();
+}
+
+
+static void
+glade_gtk_cell_renderer_read_attributes (GladeWidget *widget, GladeXmlNode *node)
+{
+	GladeXmlNode *attrs_node;
+	GladeProperty *attr_prop, *use_attr_prop;
+	GladeXmlNode  *prop;
+	gchar         *name, *column_str, *attr_prop_name, *use_attr_name;
+
+	if ((attrs_node = glade_xml_search_child (node, GLADE_TAG_ATTRIBUTES)) == NULL)
+		return;
+
+	for (prop = glade_xml_node_get_children (attrs_node); prop;
+	     prop = glade_xml_node_next (prop))
+	{
+		
+		if (!glade_xml_node_verify_silent (prop, GLADE_TAG_ATTRIBUTE)) continue;
+		
+		name            = glade_xml_get_property_string_required (prop, GLADE_TAG_NAME, NULL);
+		column_str      = glade_xml_get_content (prop);
+		attr_prop_name  = g_strdup_printf ("attr-%s", name);
+		use_attr_name   = g_strdup_printf ("use-attr-%s", name);
+
+		attr_prop       = glade_widget_get_property (widget, attr_prop_name);
+		use_attr_prop   = glade_widget_get_property (widget, use_attr_name);
+
+		if (attr_prop && use_attr_prop)
+		{	
+			glade_property_set (use_attr_prop, TRUE);	
+			glade_property_set (attr_prop, g_ascii_strtoll (column_str, NULL, 10));
+		}
+
+		g_free (name);
+		g_free (column_str);
+		g_free (attr_prop_name);
+		g_free (use_attr_name);
+		      
+	}
+}
+
+void
+glade_gtk_cell_layout_read_child (GladeWidgetAdaptor *adaptor,
+				  GladeWidget        *widget,
+				  GladeXmlNode       *node)
+{
+	GladeXmlNode *widget_node;
+	GladeWidget  *child_widget;
+
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_CHILD))
+		return;
+	
+	if ((widget_node = 
+	     glade_xml_search_child
+	     (node, GLADE_XML_TAG_WIDGET(glade_project_get_format(widget->project)))) != NULL)
+	{
+		if ((child_widget = glade_widget_read (widget->project, 
+						       widget, widget_node, 
+						       NULL)) != NULL)
+		{
+			glade_widget_add_child (widget, child_widget, FALSE);
+
+			glade_gtk_cell_renderer_read_attributes (child_widget, node);
+		}
+	}
+}
+
+static void
+glade_gtk_cell_renderer_write_attributes (GladeWidget        *widget,
+					  GladeXmlContext    *context,
+					  GladeXmlNode       *node)
+{
+	GladeProperty *property;
+	GladeXmlNode  *attrs_node;
+	gchar *attr_name;
+	GList *l;
+	static gint attr_len = 0;
+
+	if (!attr_len)
+		attr_len = strlen ("attr-");
+
+	attrs_node = glade_xml_node_new (context, GLADE_TAG_ATTRIBUTES);
+
+	for (l = widget->properties; l; l = l->next)
+	{
+		property = l->data;
+
+		if (strncmp (property->klass->id, "attr-", attr_len) == 0)
+		{
+			GladeXmlNode  *attr_node;
+			gchar *column_str, *use_attr_str;
+			gboolean use_attr = FALSE;
+
+			use_attr_str = g_strdup_printf ("use-%s", property->klass->id);
+			glade_widget_property_get (widget, use_attr_str, &use_attr);
+
+			if (use_attr && g_value_get_int (property->value) >= 0)
+			{
+				column_str   = g_strdup_printf ("%d", g_value_get_int (property->value));
+				attr_name    = &property->klass->id[attr_len];
+				
+				attr_node = glade_xml_node_new (context, GLADE_TAG_ATTRIBUTE);
+				glade_xml_node_append_child (attrs_node, attr_node);
+				glade_xml_node_set_property_string (attr_node, GLADE_TAG_NAME,
+								    attr_name);
+				glade_xml_set_content (attr_node, column_str);
+				g_free (column_str);
+			}
+			g_free (use_attr_str);
+		}
+	}
+
+	if (!glade_xml_node_get_children (attrs_node))
+		glade_xml_node_delete (attrs_node);
+	else
+		glade_xml_node_append_child (node, attrs_node);
+}
+
+void
+glade_gtk_cell_layout_write_child (GladeWidgetAdaptor *adaptor,
+				   GladeWidget        *widget,
+				   GladeXmlContext    *context,
+				   GladeXmlNode       *node)
+{
+	GladeXmlNode *child_node;
+
+	child_node = glade_xml_node_new (context, GLADE_XML_TAG_CHILD);
+	glade_xml_node_append_child (node, child_node);
+
+	/* Write out the widget */
+	glade_widget_write (widget, context, child_node);
+
+	glade_gtk_cell_renderer_write_attributes (widget, context, child_node);
+}
+
+
+/*--------------------------- GtkTreeViewColumn ---------------------------------*/
+void
+glade_gtk_treeview_column_action_activate (GladeWidgetAdaptor *adaptor,
+					   GObject *object,
+					   const gchar *action_path)
+{
+	if (strcmp (action_path, "append_renderer/accel") == 0)
+		glade_gtk_cell_layout_add_renderer (object, GTK_TYPE_CELL_RENDERER_ACCEL);
+	else if (strcmp (action_path, "append_renderer/combo") == 0)
+		glade_gtk_cell_layout_add_renderer (object, GTK_TYPE_CELL_RENDERER_COMBO);
+	else if (strcmp (action_path, "append_renderer/pixbuf") == 0)
+		glade_gtk_cell_layout_add_renderer (object, GTK_TYPE_CELL_RENDERER_PIXBUF);
+	else if (strcmp (action_path, "append_renderer/progress") == 0)
+		glade_gtk_cell_layout_add_renderer (object, GTK_TYPE_CELL_RENDERER_PROGRESS);
+	else if (strcmp (action_path, "append_renderer/spin") == 0)
+		glade_gtk_cell_layout_add_renderer (object, GTK_TYPE_CELL_RENDERER_SPIN);
+	else if (strcmp (action_path, "append_renderer/text") == 0)
+		glade_gtk_cell_layout_add_renderer (object, GTK_TYPE_CELL_RENDERER_TEXT);
+	else if (strcmp (action_path, "append_renderer/toggle") == 0)
+		glade_gtk_cell_layout_add_renderer (object, GTK_TYPE_CELL_RENDERER_TOGGLE);
+	else
+		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor,
+								     object,
+								     action_path);
+}
+
+/*--------------------------- GtkCellRenderer ---------------------------------*/
+void
+glade_gtk_cell_renderer_post_create (GladeWidgetAdaptor *adaptor, 
+				     GObject            *object, 
+				     GladeCreateReason   reason)
+{
+	GladePropertyClass  *pclass;
+	GladeProperty       *property;
+	GladeWidget         *widget;
+	GList               *l;
+	
+	widget = glade_widget_get_from_gobject (object);
+
+	for (l = adaptor->properties; l; l = l->next)
+	{
+		pclass = l->data;
+
+		if (strncmp (pclass->id, "use-attr-", strlen ("use-attr-")) == 0)
+		{
+			property = glade_widget_get_property (widget, pclass->id);
+			glade_property_sync (property);
+		}
+	}
+}
+
+
+GladeEditable *
+glade_gtk_cell_renderer_create_editable (GladeWidgetAdaptor  *adaptor,
+					 GladeEditorPageType  type)
+{
+	GladeEditable *editable;
+
+	/* Get base editable */
+	editable = GWA_GET_CLASS (G_TYPE_OBJECT)->create_editable (adaptor, type);
+
+	if (type == GLADE_PAGE_GENERAL || type == GLADE_PAGE_COMMON)
+		return (GladeEditable *)glade_cell_renderer_editor_new (adaptor, type, editable);
+
+	return editable;
+}
+
+static void
+glade_gtk_cell_renderer_set_use_attribute (GObject      *object, 
+					   const gchar  *property_name,
+					   const GValue *value)
+{
+	GladeWidget *widget = glade_widget_get_from_gobject (object);
+	gchar *attr_prop_name, *prop_msg, *attr_msg;
+
+	attr_prop_name = g_strdup_printf ("attr-%s", property_name);
+
+	prop_msg = g_strdup_printf (_("%s is set to load %s from the model"), 
+				    widget->name, property_name);
+	attr_msg = g_strdup_printf (_("%s is set to manipulate %s directly"), 
+				    widget->name, attr_prop_name);
+
+	glade_widget_property_set_sensitive (widget, property_name, FALSE, prop_msg);
+	glade_widget_property_set_sensitive (widget, attr_prop_name, FALSE, attr_msg);
+
+	if (g_value_get_boolean (value))
+		glade_widget_property_set_sensitive (widget, attr_prop_name, TRUE, NULL);
+	else
+		glade_widget_property_set_sensitive (widget, property_name, TRUE, NULL);
+
+	g_free (prop_msg);
+	g_free (attr_msg);
+	g_free (attr_prop_name);
+}
+
+
+static void
+glade_gtk_cell_renderer_set_attribute (GObject      *object, 
+				       const gchar  *property_name,
+				       const GValue *value)
+{
+	GtkCellLayout *layout;
+	GtkCellRenderer *cell;
+	GladeWidget *widget = glade_widget_get_from_gobject (object);
+	GladeProperty *property;
+	gchar *attr_prop_name;
+	GList *l;
+	static gint attr_len = 0;
+
+	if (!attr_len)
+		attr_len = strlen ("attr-");
+
+	/* Apply attributes to renderer when bound to a model in runtime */
+	widget = glade_widget_get_from_gobject (object);
+		
+	if (widget->parent == NULL) return;
+
+	layout = GTK_CELL_LAYOUT (widget->parent->object);
+	cell = GTK_CELL_RENDERER (object);
+
+	gtk_cell_layout_clear_attributes (layout, cell);
+
+	for (l = widget->properties; l; l = l->next)
+	{
+		property = l->data;
+
+		if (strncmp (property->klass->id, "attr-", attr_len) == 0)
+		{
+			attr_prop_name = &property->klass->id[attr_len];
+
+			/* XXX TODO: Check that column doesnt exceed model bounds, and that
+			 * cell supports the data type in the indexed column.
+			 */
+			if (g_value_get_int (property->value) >= 0)
+				gtk_cell_layout_add_attribute (layout, cell,
+							       attr_prop_name,
+							       g_value_get_int (property->value));
+		}
+	}
+}
+
+
+void
+glade_gtk_cell_renderer_set_property (GladeWidgetAdaptor *adaptor,
+				      GObject *object,
+				      const gchar *property_name,
+				      const GValue *value)
+{
+	static gint use_attr_len = 0;
+	static gint attr_len     = 0;
+
+	if (!attr_len)
+	{
+		use_attr_len = strlen ("use-attr-");
+		attr_len = strlen ("attr-");
+	}
+
+	if (strncmp (property_name, "use-attr-", use_attr_len) == 0)
+		glade_gtk_cell_renderer_set_use_attribute (object, &property_name[use_attr_len], value);
+	else if (strncmp (property_name, "attr-", attr_len) == 0)
+		glade_gtk_cell_renderer_set_attribute (object, &property_name[attr_len], value);
+	else
+		/* Chain Up */
+		GWA_GET_CLASS (G_TYPE_OBJECT)->set_property (adaptor,
+							     object,
+							     property_name, 
+							     value);
+}
+
+
+GladeEditorProperty *
+glade_gtk_cell_renderer_create_eprop (GladeWidgetAdaptor *adaptor,
+				      GladePropertyClass *klass,
+				      gboolean            use_command)
+{
+	GladeEditorProperty *eprop;
+
+	/* chain up.. */
+/* 	if (klass->pspec->value_type == GLADE_TYPE_CELL_ATTRIBUTE_LIST) */
+/* 		eprop = g_object_new (GLADE_TYPE_EPROP_CELL_ATTRIBUTE_LIST, */
+/* 				      "property-class", klass,  */
+/* 				      "use-command", use_command, */
+/* 				      NULL); */
+/* 	else */
+		eprop = GWA_GET_CLASS 
+			(G_TYPE_OBJECT)->create_eprop (adaptor, 
+						       klass, 
+						       use_command);
+	return eprop;
+}
+
+
+static void
+glade_gtk_cell_renderer_write_properties (GladeWidget        *widget,
+					  GladeXmlContext    *context,
+					  GladeXmlNode       *node)
+{
+	GladeProperty *property, *prop;
+	gchar *attr_name;
+	GList *l;
+	static gint attr_len = 0;
+
+	if (!attr_len)
+		attr_len = strlen ("attr-");
+
+	for (l = widget->properties; l; l = l->next)
+	{
+		property = l->data;
+
+		if (strncmp (property->klass->id, "attr-", attr_len) == 0)
+		{
+			gchar *use_attr_str;
+			gboolean use_attr = FALSE;
+
+			use_attr_str = g_strdup_printf ("use-%s", property->klass->id);
+			glade_widget_property_get (widget, use_attr_str, &use_attr);
+
+			attr_name  = &property->klass->id[attr_len];
+			prop       = glade_widget_get_property (widget, "attr_name");
+
+			if (!use_attr && prop)
+				glade_property_write (prop, context, node);
+
+			g_free (use_attr_str);
+		}
+	}
+}
+
+void
+glade_gtk_cell_renderer_write_widget (GladeWidgetAdaptor *adaptor,
+				      GladeWidget        *widget,
+				      GladeXmlContext    *context,
+				      GladeXmlNode       *node)
+{
+	if (!glade_xml_node_verify
+	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+		return;
+
+	/* Write our normal properties, then chain up to write any other normal properties,
+	 * then attributes 
+	 */
+	glade_gtk_cell_renderer_write_properties (widget, context, node);
+
+        GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
 }
