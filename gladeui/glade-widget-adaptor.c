@@ -2121,7 +2121,7 @@ glade_widget_adaptor_from_catalog (GladeCatalog         *catalog,
 		g_free (name);
 		return NULL;
 	}
-	
+
 	if ((adaptor_name = glade_xml_get_property_string (class_node, GLADE_TAG_ADAPTOR)))
 		adaptor_type = g_type_from_name (adaptor_name);
 	else

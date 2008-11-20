@@ -47,6 +47,12 @@ find_by_type (GType *a, GType *b)
 	return *a - *b;
 }
 
+static gint
+type_alpha_sort (GType *a, GType *b)
+{
+	return strcmp (g_type_name (*a), g_type_name (*b));
+}
+
 static void
 column_types_store_populate_enums_flags (GtkTreeStore *store,
 					 gboolean      enums)
@@ -85,17 +91,24 @@ column_types_store_populate_enums_flags (GtkTreeStore *store,
 				types = g_list_prepend (types, 
 							g_memdup (&(pclass->pspec->value_type), 
 								  sizeof (GType)));
-
-				gtk_tree_store_append (store, &iter, &parent_iter);
-				gtk_tree_store_set (store, &iter,
-						    COLUMN_NAME, g_type_name (pclass->pspec->value_type),
-						    COLUMN_GTYPE, pclass->pspec->value_type,
-						    -1);
 			}
 		}
 	}
 	g_list_free (adaptors);
-	g_list_foreach (types, (GFunc)g_free, NULL);
+
+	types = g_list_sort (types, (GCompareFunc)type_alpha_sort);
+
+	for (l = types; l; l = l->next)
+	{
+		GType *type = l->data;
+
+		gtk_tree_store_append (store, &iter, &parent_iter);
+		gtk_tree_store_set (store, &iter,
+				    COLUMN_NAME, g_type_name (*type),
+				    COLUMN_GTYPE, *type,
+				    -1);
+		g_free (type);
+	}
 	g_list_free (types);
 }
 
@@ -198,14 +211,6 @@ glade_column_type_list_get_type (void)
 			("GladeColumnTypeList", 
 			 (GBoxedCopyFunc) glade_column_list_copy,
 			 (GBoxedFreeFunc) glade_column_list_free);
-
-		types_model = (GtkTreeModel *)gtk_tree_store_new (N_COLUMNS,
-								  G_TYPE_STRING,
-								  G_TYPE_GTYPE,
-								  G_TYPE_STRING);
-
-		column_types_store_populate (GTK_TREE_STORE (types_model));
-
 	}
 	return type_id;
 }
@@ -638,6 +643,19 @@ glade_eprop_column_types_create_input (GladeEditorProperty *eprop)
 	vbox = gtk_vbox_new (FALSE, 2);
 	
 	hbox = gtk_hbox_new (FALSE, 4);
+
+	if (!types_model)
+	{
+		/* We make sure to do this after all the adaptors are parsed 
+		 * because we load the enums/flags from the adaptors
+		 */
+		types_model = (GtkTreeModel *)gtk_tree_store_new (N_COLUMNS,
+								  G_TYPE_STRING,
+								  G_TYPE_GTYPE,
+								  G_TYPE_STRING);
+
+		column_types_store_populate (GTK_TREE_STORE (types_model));
+	}
 
 
 	string = g_strdup_printf ("<b>%s</b>", _("Add and remove columns:"));
