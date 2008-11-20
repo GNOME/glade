@@ -52,7 +52,7 @@ struct _GladeIconFactoryEditorClass
 	GtkVBoxClass parent;
 };
 
-GType            glade_icon_factory_editor_get_type (void);
+GType            glade_icon_factory_editor_get_type (void) G_GNUC_CONST;
 GtkWidget       *glade_icon_factory_editor_new      (GladeWidgetAdaptor *adaptor,
 						     GladeEditable      *editable);
 

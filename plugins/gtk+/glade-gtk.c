@@ -10208,6 +10208,29 @@ glade_gtk_cell_renderer_post_create (GladeWidgetAdaptor *adaptor,
 }
 
 
+
+
+GladeEditorProperty *
+glade_gtk_cell_renderer_create_eprop (GladeWidgetAdaptor *adaptor,
+				      GladePropertyClass *klass,
+				      gboolean            use_command)
+{
+	GladeEditorProperty *eprop;
+
+	if (strncmp (klass->id, "attr-", strlen ("attr-")) == 0)
+		eprop = g_object_new (GLADE_TYPE_EPROP_CELL_ATTRIBUTE,
+				      "property-class", klass, 
+				      "use-command", use_command,
+				      NULL);
+	else
+		eprop = GWA_GET_CLASS 
+			(G_TYPE_OBJECT)->create_eprop (adaptor, 
+						       klass, 
+						       use_command);
+	return eprop;
+}
+
+
 GladeEditable *
 glade_gtk_cell_renderer_create_editable (GladeWidgetAdaptor  *adaptor,
 					 GladeEditorPageType  type)
@@ -10259,10 +10282,12 @@ glade_gtk_cell_renderer_set_attribute (GObject      *object,
 {
 	GtkCellLayout *layout;
 	GtkCellRenderer *cell;
-	GladeWidget *widget = glade_widget_get_from_gobject (object);
+	GladeWidget *widget = glade_widget_get_from_gobject (object), *glayout;
+	GladeWidget *gmodel = NULL;
 	GladeProperty *property;
 	gchar *attr_prop_name;
 	GList *l;
+	gint columns = 0;
 	static gint attr_len = 0;
 
 	if (!attr_len)
@@ -10275,6 +10300,24 @@ glade_gtk_cell_renderer_set_attribute (GObject      *object,
 
 	layout = GTK_CELL_LAYOUT (widget->parent->object);
 	cell = GTK_CELL_RENDERER (object);
+	glayout = glade_widget_get_from_gobject (layout);
+
+	if (glayout->parent && GTK_IS_TREE_VIEW (glayout->parent->object))
+	{
+		GtkTreeModel *model = NULL;
+
+		glade_widget_property_get (glayout->parent, "model", &model);
+		if (model)
+			gmodel = glade_widget_get_from_gobject (model);
+	}
+
+	if (gmodel)
+	{
+		GList *column_list = NULL;
+		glade_widget_property_get (gmodel, "columns", &column_list);
+		columns = g_list_length (column_list);
+
+	}
 
 	gtk_cell_layout_clear_attributes (layout, cell);
 
@@ -10286,10 +10329,11 @@ glade_gtk_cell_renderer_set_attribute (GObject      *object,
 		{
 			attr_prop_name = &property->klass->id[attr_len];
 
-			/* XXX TODO: Check that column doesnt exceed model bounds, and that
-			 * cell supports the data type in the indexed column.
+			/* XXX TODO: Check that the cell supports the data type in the indexed column.
 			 */
-			if (g_value_get_int (property->value) >= 0)
+			if (g_value_get_int (property->value) >= 0 &&
+			    /* We have to set attributes before parenting when loading */
+			    (glade_util_object_is_loading (object) || g_value_get_int (property->value) < columns))
 				gtk_cell_layout_add_attribute (layout, cell,
 							       attr_prop_name,
 							       g_value_get_int (property->value));
@@ -10324,29 +10368,6 @@ glade_gtk_cell_renderer_set_property (GladeWidgetAdaptor *adaptor,
 							     property_name, 
 							     value);
 }
-
-
-GladeEditorProperty *
-glade_gtk_cell_renderer_create_eprop (GladeWidgetAdaptor *adaptor,
-				      GladePropertyClass *klass,
-				      gboolean            use_command)
-{
-	GladeEditorProperty *eprop;
-
-	/* chain up.. */
-/* 	if (klass->pspec->value_type == GLADE_TYPE_CELL_ATTRIBUTE_LIST) */
-/* 		eprop = g_object_new (GLADE_TYPE_EPROP_CELL_ATTRIBUTE_LIST, */
-/* 				      "property-class", klass,  */
-/* 				      "use-command", use_command, */
-/* 				      NULL); */
-/* 	else */
-		eprop = GWA_GET_CLASS 
-			(G_TYPE_OBJECT)->create_eprop (adaptor, 
-						       klass, 
-						       use_command);
-	return eprop;
-}
-
 
 static void
 glade_gtk_cell_renderer_write_properties (GladeWidget        *widget,

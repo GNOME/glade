@@ -70,7 +70,7 @@ struct _GladeButtonEditorClass
 	GtkVBoxClass parent;
 };
 
-GType            glade_button_editor_get_type (void);
+GType            glade_button_editor_get_type (void) G_GNUC_CONST;
 GtkWidget       *glade_button_editor_new      (GladeWidgetAdaptor *adaptor,
 					       GladeEditable      *editable);
 

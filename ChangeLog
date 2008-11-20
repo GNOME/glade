@@ -6,6 +6,12 @@
 	* plugins/gtk+/glade-column-types.c: Fixed to populate enums/flags only
 	after all catalogs parsed, now they are listed in alphabetical order too.
 
+	* plugins/gtk+/glade-cell-renderer-editor.c: Added GladeEPropCellAttribute
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Integrated new eprop
+	  for cell renderer attributes, avoid setting attributes for columns that
+	  exceed model bounds (except on load).
+
 2008-11-19  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/Makefile.am, plugins/gtk+/glade-cell-renderer-editor.c:

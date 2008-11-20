@@ -61,7 +61,7 @@ struct _GladeImageItemEditorClass
 	GtkVBoxClass parent;
 };
 
-GType            glade_image_item_editor_get_type (void);
+GType            glade_image_item_editor_get_type (void) G_GNUC_CONST;
 GtkWidget       *glade_image_item_editor_new      (GladeWidgetAdaptor *adaptor,
 						   GladeEditable      *editable);
 

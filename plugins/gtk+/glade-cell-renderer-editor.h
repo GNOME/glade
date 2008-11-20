@@ -34,6 +34,9 @@ G_BEGIN_DECLS
 #define GLADE_IS_CELL_RENDERER_EDITOR_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_CELL_RENDERER_EDITOR))
 #define GLADE_CELL_RENDERER_EDITOR_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_CELL_RENDERER_EDITOR, GladeCellRendererEditorClass))
 
+#define GLADE_TYPE_EPROP_CELL_ATTRIBUTE (glade_eprop_cell_attribute_get_type())
+
+
 typedef struct _GladeCellRendererEditor        GladeCellRendererEditor;
 typedef struct _GladeCellRendererEditorClass   GladeCellRendererEditorClass;
 
@@ -58,7 +61,8 @@ struct _GladeCellRendererEditorClass
 	GtkVBoxClass parent;
 };
 
-GType            glade_cell_renderer_editor_get_type (void);
+GType            glade_eprop_cell_attribute_get_type (void) G_GNUC_CONST;
+GType            glade_cell_renderer_editor_get_type (void) G_GNUC_CONST;
 GtkWidget       *glade_cell_renderer_editor_new      (GladeWidgetAdaptor  *adaptor,
 						      GladeEditorPageType  type,
 						      GladeEditable       *editable);

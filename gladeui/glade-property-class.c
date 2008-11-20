@@ -49,9 +49,9 @@
 #include "glade-displayable-values.h"
 #include "glade-debug.h"
 
-#define NUMERICAL_STEP_INCREMENT   1
-#define NUMERICAL_PAGE_INCREMENT   10
-#define NUMERICAL_PAGE_SIZE        1
+#define NUMERICAL_STEP_INCREMENT   1.0F
+#define NUMERICAL_PAGE_INCREMENT   10.0F
+#define NUMERICAL_PAGE_SIZE        1.0F
 
 #define FLOATING_STEP_INCREMENT    0.01F
 #define FLOATING_PAGE_INCREMENT    0.1F

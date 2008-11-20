@@ -26,6 +26,7 @@
 #include <gdk/gdkkeysyms.h>
 
 #include "glade-cell-renderer-editor.h"
+#include "glade-column-types.h"
 
 
 static void glade_cell_renderer_editor_finalize        (GObject              *object);
@@ -488,4 +489,181 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor  *adaptor,
 	gtk_widget_show_all (GTK_WIDGET (renderer_editor));
 
 	return GTK_WIDGET (renderer_editor);
+}
+
+/***************************************************************************
+ *                             Editor Property                             *
+ ***************************************************************************/
+typedef struct
+{
+	GladeEditorProperty parent_instance;
+
+	GtkTreeModel *columns;
+
+	GtkWidget    *spin;
+	GtkWidget    *combo;
+} GladeEPropCellAttribute;
+
+GLADE_MAKE_EPROP (GladeEPropCellAttribute, glade_eprop_cell_attribute)
+#define GLADE_EPROP_CELL_ATTRIBUTE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EPROP_CELL_ATTRIBUTE, GladeEPropCellAttribute))
+#define GLADE_EPROP_CELL_ATTRIBUTE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EPROP_CELL_ATTRIBUTE, GladeEPropCellAttributeClass))
+#define GLADE_IS_EPROP_CELL_ATTRIBUTE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_CELL_ATTRIBUTE))
+#define GLADE_IS_EPROP_CELL_ATTRIBUTE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_CELL_ATTRIBUTE))
+#define GLADE_EPROP_CELL_ATTRIBUTE_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_CELL_ATTRIBUTE, GladeEPropCellAttributeClass))
+
+static void
+glade_eprop_cell_attribute_finalize (GObject *object)
+{
+	/* Chain up */
+	GObjectClass *parent_class = g_type_class_peek_parent (G_OBJECT_GET_CLASS (object));
+	//GladeEPropCellAttribute *eprop_attribute = GLADE_EPROP_CELL_ATTRIBUTE (object);
+
+	G_OBJECT_CLASS (parent_class)->finalize (object);
+}
+
+
+static GladeWidget *
+get_model (GladeProperty *property)
+{
+	GladeWidget *renderer = property->widget;
+	GladeWidget *model = NULL;
+
+	/* Keep inline with all new cell layouts !!! */
+	if (renderer->parent && GTK_IS_TREE_VIEW_COLUMN (renderer->parent->object))
+	{
+		GladeWidget *column = renderer->parent;
+
+		if (column->parent && GTK_IS_TREE_VIEW (column->parent->object))
+		{
+			GladeWidget *view = column->parent;
+			GtkTreeModel *real_model = NULL;
+			glade_widget_property_get (view, "model", &real_model);
+			if (real_model)
+				model = glade_widget_get_from_gobject (real_model);
+		}
+	}
+	return model;
+}
+
+static void
+glade_eprop_cell_attribute_load (GladeEditorProperty *eprop, 
+				 GladeProperty       *property)
+{
+	GladeEditorPropertyClass *parent_class = 
+		g_type_class_peek_parent (GLADE_EDITOR_PROPERTY_GET_CLASS (eprop));
+	GladeEPropCellAttribute *eprop_attribute = GLADE_EPROP_CELL_ATTRIBUTE (eprop);
+
+	/* Chain up in a clean state... */
+	parent_class->load (eprop, property);
+	
+	if (property)
+	{
+		GladeWidget  *gmodel;
+		GtkListStore *store = GTK_LIST_STORE (eprop_attribute->columns);
+		GtkTreeIter   iter;
+
+		gtk_list_store_clear (store);
+
+		/* Generate model and set active iter */
+		if ((gmodel = get_model (property)) != NULL)
+		{
+			GList *columns = NULL, *l;
+
+			glade_widget_property_get (gmodel, "columns", &columns);
+
+			gtk_list_store_append (store, &iter);
+			/* translators: the adjective not the verb */
+			gtk_list_store_set (store, &iter, 0, _("unset"), -1);
+
+			for (l = columns; l; l = l->next)
+			{
+				GladeColumnType *column = l->data;
+				gchar *str = g_strdup_printf ("%s (%s)", column->column_name, 
+							      g_type_name (column->type));
+
+				gtk_list_store_append (store, &iter);
+				gtk_list_store_set (store, &iter, 0, str, -1);
+
+				g_free (str);
+			}
+
+			gtk_combo_box_set_active (GTK_COMBO_BOX (eprop_attribute->combo), 
+						  CLAMP (g_value_get_int (property->value) + 1, 
+							 0, g_list_length (columns) + 1));
+
+			gtk_widget_set_sensitive (eprop_attribute->combo, TRUE);
+		}
+		else
+		{
+			gtk_list_store_append (store, &iter);
+			gtk_list_store_set (store, &iter, 0, _("no model"), -1);
+			gtk_combo_box_set_active (GTK_COMBO_BOX (eprop_attribute->combo), 0);
+			gtk_widget_set_sensitive (eprop_attribute->combo, FALSE);
+		}
+
+		gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_attribute->spin), 
+					   (gdouble)g_value_get_int (property->value));
+	}
+}
+
+static void
+combo_changed (GtkWidget           *combo,
+	       GladeEditorProperty *eprop)
+{
+	GValue val = { 0, };
+
+	if (eprop->loading) return;
+
+	g_value_init (&val, G_TYPE_INT);
+	g_value_set_int (&val, (gint)gtk_combo_box_get_active (GTK_COMBO_BOX (combo)) - 1);
+	glade_editor_property_commit (eprop, &val);
+	g_value_unset (&val);
+}
+
+
+static void
+spin_changed (GtkWidget           *spin,
+	      GladeEditorProperty *eprop)
+{
+	GValue val = { 0, };
+
+	if (eprop->loading) return;
+
+	g_value_init (&val, G_TYPE_INT);
+	g_value_set_int (&val, gtk_spin_button_get_value (GTK_SPIN_BUTTON (spin)));
+	glade_editor_property_commit (eprop, &val);
+	g_value_unset (&val);
+}
+
+static GtkWidget *
+glade_eprop_cell_attribute_create_input (GladeEditorProperty *eprop)
+{
+	GladeEPropCellAttribute *eprop_attribute = GLADE_EPROP_CELL_ATTRIBUTE (eprop);
+	GtkWidget *hbox;
+	GtkAdjustment *adjustment;
+	GtkCellRenderer *cell;
+
+	hbox = gtk_hbox_new (FALSE, 2);
+
+	adjustment = glade_property_class_make_adjustment (eprop->klass);
+	eprop_attribute->spin = gtk_spin_button_new (adjustment, 1.0, 0);
+
+	eprop_attribute->columns = (GtkTreeModel *)gtk_list_store_new (1, G_TYPE_STRING);
+	eprop_attribute->combo   = gtk_combo_box_new_with_model (eprop_attribute->columns);
+
+	/* Add cell renderer */
+	cell = gtk_cell_renderer_text_new ();
+	gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (eprop_attribute->combo), cell, TRUE);
+	gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (eprop_attribute->combo), cell,
+					"text", 0, NULL);
+
+ 	gtk_box_pack_start (GTK_BOX (hbox), eprop_attribute->spin, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox), eprop_attribute->combo, TRUE, TRUE, 0);
+
+	g_signal_connect (G_OBJECT (eprop_attribute->combo), "changed",
+			  G_CALLBACK (combo_changed), eprop);
+	g_signal_connect (G_OBJECT (eprop_attribute->spin), "value-changed",
+			  G_CALLBACK (spin_changed), eprop);
+
+	return hbox;
 }
