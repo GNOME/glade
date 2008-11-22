@@ -6,9 +6,15 @@
 	    only adds types supported by the container object, use _append_types() to
 	    define hierarcic type relations for children.
 
-	* plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-gtk.c: Now the toolbar editor
-	  can add menus and edit menus inside the gtkmenutoolbutton (fixed bug 429438).
-	
+	* gladeui/glade-editor-table.c: Fixed a warning hiding a never built label
+
+	* plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-gtk.c: 
+	  - Now the toolbar editor can add menus and edit menus inside the gtkmenutoolbutton
+	    (fixed bug 429438).
+	  - First itteration on the treeview editor, removed annoying actions for column/cell
+	    hierarchy and do it all in the editor, added position packing property to treeview
+	    column for this (treeview column still implemented generically as a cell layout).
+
 2008-11-20  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/gtk+.xml.in: Added all remaining metadatas for cell renderers

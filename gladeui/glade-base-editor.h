@@ -68,8 +68,9 @@ void                 glade_base_editor_append_types           (GladeBaseEditor *
 							       GType parent_type,
 							       ...);
 
-void                 glade_base_editor_add_editable           (GladeBaseEditor *editor,
-							       GladeWidget     *gchild);
+void                 glade_base_editor_add_editable           (GladeBaseEditor     *editor,
+							       GladeWidget         *gchild,
+							       GladeEditorPageType  page);
 
 void                 glade_base_editor_add_default_properties (GladeBaseEditor *editor,
 							       GladeWidget *gchild);

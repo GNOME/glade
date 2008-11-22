@@ -171,15 +171,18 @@ glade_editor_table_set_show_name (GladeEditable *editable,
 {
 	GladeEditorTable *table = GLADE_EDITOR_TABLE (editable);
 
-	if (show_name)
+	if (table->name_label)
 	{
-		gtk_widget_show (table->name_label);
-		gtk_widget_show (table->name_entry);
-	}
-	else
-	{
-		gtk_widget_hide (table->name_label);
-		gtk_widget_hide (table->name_entry);
+		if (show_name)
+		{
+			gtk_widget_show (table->name_label);
+			gtk_widget_show (table->name_entry);
+		}
+		else
+		{
+			gtk_widget_hide (table->name_label);
+			gtk_widget_hide (table->name_entry);
+		}
 	}
 }
 

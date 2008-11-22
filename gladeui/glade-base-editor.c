@@ -220,7 +220,7 @@ glade_base_editor_fill_store_real (GladeBaseEditor *e,
 				   GladeWidget *gwidget,
 				   GtkTreeIter *parent)
 {
-	GtkWidget *widget = GTK_WIDGET (glade_widget_get_object (gwidget));
+	GObject *object = glade_widget_get_object (gwidget);
 	GList *children, *l;
 	GladeWidget *gparent = NULL;
 	GtkTreeIter iter;
@@ -231,8 +231,7 @@ glade_base_editor_fill_store_real (GladeBaseEditor *e,
 				    -1);
 
 	
-	children = glade_widget_adaptor_get_children (gwidget->adaptor,
-						      G_OBJECT (widget));
+	children = glade_widget_adaptor_get_children (gwidget->adaptor, object);
 	
 	for (l = children; l; l = l->next)
 	{
@@ -1941,14 +1940,16 @@ glade_base_editor_add_properties (GladeBaseEditor *editor,
  * glade_base_editor_add_editable:
  * @editor: a #GladeBaseEditor
  * @gchild: the #GladeWidget
+ * @page: the #GladeEditorPageType of the desired page for @gchild
  * 
- * Add @gchild general page editor
+ * Add @gchild editor of type @page to the base editor
  *
  * NOTE: This function is intended to be used in "child-selected" callbacks
  */
 void
-glade_base_editor_add_editable (GladeBaseEditor *editor,
-				GladeWidget     *gchild)
+glade_base_editor_add_editable (GladeBaseEditor     *editor,
+				GladeWidget         *gchild,
+				GladeEditorPageType  page)
 {
 	GladeEditable  *editable;
 	gint row;
@@ -1956,7 +1957,7 @@ glade_base_editor_add_editable (GladeBaseEditor *editor,
 	g_return_if_fail (GLADE_IS_BASE_EDITOR (editor));
 	g_return_if_fail (GLADE_IS_WIDGET (gchild));
 
-	editable = glade_widget_adaptor_create_editable (gchild->adaptor, GLADE_PAGE_GENERAL);
+	editable = glade_widget_adaptor_create_editable (gchild->adaptor, page);
 	glade_editable_set_show_name (editable, FALSE);
 	glade_editable_load (editable, gchild);
 	gtk_widget_show (GTK_WIDGET (editable));
@@ -2083,21 +2084,18 @@ glade_base_editor_pack_new_window (GladeBaseEditor *editor,
 	gtk_box_set_spacing (GTK_BOX (buttonbox), 8);
 	gtk_box_pack_start (GTK_BOX (editor), buttonbox, FALSE, TRUE, 0);
 
-	button = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
+	button = gtk_button_new_from_stock (GTK_STOCK_HELP);
 	gtk_widget_show (button);
-	g_signal_connect_swapped (button, "clicked", G_CALLBACK (gtk_widget_destroy), window);
+	g_signal_connect (button, "clicked",
+			  G_CALLBACK (glade_base_editor_help),
+			  help_markup ? help_markup : 
+			  _("<big><b>Tips:</b></big>\n"
+			    "  * Right click over the treeview to add items.\n"
+			    "  * Press Delete to remove the selected item.\n"
+			    "  * Drag &amp; Drop to reorder.\n"
+			    "  * Type column is editable."));
 	gtk_container_add (GTK_CONTAINER (buttonbox), button);
-
-	if (help_markup)
-	{
-		button = gtk_button_new_from_stock (GTK_STOCK_HELP);
-		gtk_widget_show (button);
-		g_signal_connect (button, "clicked",
-				  G_CALLBACK (glade_base_editor_help),
-				  help_markup);
-		gtk_container_add (GTK_CONTAINER (buttonbox), button);
-		gtk_button_box_set_child_secondary (GTK_BUTTON_BOX (buttonbox), button, TRUE);
-	}
+	gtk_button_box_set_child_secondary (GTK_BUTTON_BOX (buttonbox), button, TRUE);
 
 	if (glade_app_get_accel_group ())
 	{

@@ -5909,8 +5909,6 @@ glade_gtk_menu_shell_change_type (GladeBaseEditor *editor,
 	     gtk_menu_tool_button_get_menu (GTK_MENU_TOOL_BUTTON (child))))
 	    return TRUE;
 
-	g_print ("Changing type of %s to %s\n", gchild->name, g_type_name (type));
-
 	/* Delete the internal image of an image menu item before going ahead and changing types. */
 	if (GTK_IS_IMAGE_MENU_ITEM (child))
 	{
@@ -5937,16 +5935,16 @@ glade_gtk_toolbar_child_selected (GladeBaseEditor *editor,
 	GObject *child = glade_widget_get_object (gchild);
 	GType type = G_OBJECT_TYPE (child);
 	
-	glade_base_editor_add_label (editor, "Tool Item");
+	glade_base_editor_add_label (editor, _("Tool Item"));
 	
 	glade_base_editor_add_default_properties (editor, gchild);
 	
-	glade_base_editor_add_label (editor, "Properties");
-	glade_base_editor_add_editable (editor, gchild);
+	glade_base_editor_add_label (editor, _("Properties"));
+	glade_base_editor_add_editable (editor, gchild, GLADE_PAGE_GENERAL);
 	
 	if (type == GTK_TYPE_SEPARATOR_TOOL_ITEM) return;
 
-	glade_base_editor_add_label (editor, "Packing");
+	glade_base_editor_add_label (editor, _("Packing"));
 	glade_base_editor_add_properties (editor, gchild, TRUE,
 					  "expand", "homogeneous", NULL);
 
@@ -5965,13 +5963,13 @@ glade_gtk_menu_shell_tool_item_child_selected (GladeBaseEditor *editor,
 		glade_gtk_toolbar_child_selected (editor, gchild, data);
 		return;
 	}	
-	glade_base_editor_add_label (editor, "Menu Item");
+	glade_base_editor_add_label (editor, _("Menu Item"));
 	
 	glade_base_editor_add_default_properties (editor, gchild);
 	
 	if (GTK_IS_SEPARATOR_MENU_ITEM (child)) return;
 
-	glade_base_editor_add_label (editor, "Properties");
+	glade_base_editor_add_label (editor, _("Properties"));
 
 	if (glade_project_get_format (gchild->project) == GLADE_PROJECT_FORMAT_LIBGLADE)
 		glade_base_editor_add_properties (editor, gchild, FALSE, "tooltip", NULL);
@@ -5983,7 +5981,7 @@ glade_gtk_menu_shell_tool_item_child_selected (GladeBaseEditor *editor,
 		glade_base_editor_add_properties (editor, gchild, FALSE, "label", "tooltip", NULL);
 
 	if (type == GTK_TYPE_IMAGE_MENU_ITEM)
-		glade_base_editor_add_editable (editor, gchild);
+		glade_base_editor_add_editable (editor, gchild, GLADE_PAGE_GENERAL);
 	else if (type == GTK_TYPE_CHECK_MENU_ITEM)
 		glade_base_editor_add_properties (editor, gchild, FALSE,
 						  "active", "draw-as-radio",
@@ -6001,19 +5999,19 @@ glade_gtk_menu_shell_launch_editor (GObject *object, gchar *title)
 
 	/* Editor */
 	editor = glade_base_editor_new (object, 
-					_("Normal"), GTK_TYPE_MENU_ITEM,
-					_("Image"), GTK_TYPE_IMAGE_MENU_ITEM,
-					_("Check"), GTK_TYPE_CHECK_MENU_ITEM,
-					_("Radio"), GTK_TYPE_RADIO_MENU_ITEM,
-					_("Separator"), GTK_TYPE_SEPARATOR_MENU_ITEM,
+					_("Normal item"), GTK_TYPE_MENU_ITEM,
+					_("Image item"), GTK_TYPE_IMAGE_MENU_ITEM,
+					_("Check item"), GTK_TYPE_CHECK_MENU_ITEM,
+					_("Radio item"), GTK_TYPE_RADIO_MENU_ITEM,
+					_("Separator item"), GTK_TYPE_SEPARATOR_MENU_ITEM,
 					NULL);
 
 	glade_base_editor_append_types (editor, GTK_TYPE_MENU_ITEM,
-					_("Normal"), GTK_TYPE_MENU_ITEM,
-					_("Image"), GTK_TYPE_IMAGE_MENU_ITEM,
-					_("Check"), GTK_TYPE_CHECK_MENU_ITEM,
-					_("Radio"), GTK_TYPE_RADIO_MENU_ITEM,
-					_("Separator"), GTK_TYPE_SEPARATOR_MENU_ITEM,
+					_("Normal item"), GTK_TYPE_MENU_ITEM,
+					_("Image item"), GTK_TYPE_IMAGE_MENU_ITEM,
+					_("Check item"), GTK_TYPE_CHECK_MENU_ITEM,
+					_("Radio item"), GTK_TYPE_RADIO_MENU_ITEM,
+					_("Separator item"), GTK_TYPE_SEPARATOR_MENU_ITEM,
 					NULL);
 	
 	g_signal_connect (editor, "get-display-name", G_CALLBACK (glade_gtk_menu_shell_tool_item_get_display_name), NULL);
@@ -6025,12 +6023,7 @@ glade_gtk_menu_shell_launch_editor (GObject *object, gchar *title)
 
 	gtk_widget_show (GTK_WIDGET (editor));
 	
-	window = glade_base_editor_pack_new_window (editor, title,
-			    _("<big><b>Tips:</b></big>\n"
-			      "  * Right click over the treeview to add items.\n"
-			      "  * Press Delete to remove the selected item.\n"
-			      "  * Drag &amp; Drop to reorder.\n"
-			      "  * Type column is editable."));
+	window = glade_base_editor_pack_new_window (editor, title, NULL);
 	gtk_widget_show (window);
 }
 
@@ -6981,7 +6974,6 @@ glade_gtk_toolbar_launch_editor (GladeWidgetAdaptor *adaptor,
 					_("Separator"), GTK_TYPE_SEPARATOR_MENU_ITEM,
 					NULL);
 	
-
 	glade_base_editor_append_types (editor, GTK_TYPE_MENU_ITEM,
 					_("Normal"), GTK_TYPE_MENU_ITEM,
 					_("Image"), GTK_TYPE_IMAGE_MENU_ITEM,
@@ -6989,7 +6981,6 @@ glade_gtk_toolbar_launch_editor (GladeWidgetAdaptor *adaptor,
 					_("Radio"), GTK_TYPE_RADIO_MENU_ITEM,
 					_("Separator"), GTK_TYPE_SEPARATOR_MENU_ITEM,
 					NULL);
-
 
 	g_signal_connect (editor, "get-display-name", G_CALLBACK (glade_gtk_menu_shell_tool_item_get_display_name), NULL);
 	g_signal_connect (editor, "child-selected", G_CALLBACK (glade_gtk_menu_shell_tool_item_child_selected), NULL);
@@ -9393,115 +9384,100 @@ glade_gtk_store_read_widget (GladeWidgetAdaptor *adaptor,
 
 
 /*--------------------------- GtkTreeView ---------------------------------*/
-
-static void
-glade_gtk_treeview_move_column (GtkTreeView       *view,
-				GtkTreeViewColumn *child,
-				gboolean           right)
-{	
-	GladeWidget       *gview = glade_widget_get_from_gobject (view);
-	GladeWidget       *gcolumn = glade_widget_get_from_gobject (child), *giter;
-	GList             *children, *l;
-	gint               child_pos, pos, columns, new_pos;
+static gchar *
+glade_gtk_treeview_get_display_name (GladeBaseEditor *editor,
+				     GladeWidget *gchild,
+				     gpointer user_data)
+{
+	GObject *child = glade_widget_get_object (gchild);
+	gchar *name;
 	
-	glade_widget_pack_property_get (gcolumn, "position", &child_pos);
-
-	/* resolve where were gonna put the new child */
-	columns = 0;
-	while (gtk_tree_view_get_column (view, columns)) columns++;
-
-	if (right)
-		new_pos = CLAMP (child_pos + 1, 0, columns -1);
+	if (GTK_IS_TREE_VIEW_COLUMN (child))
+		glade_widget_property_get (gchild, "title", &name);
 	else
-		new_pos = CLAMP (child_pos - 1, 0, columns -1);
-
-	if (new_pos == child_pos)
-		return;
-
-	glade_command_push_group (right ? _("Moving %s right inside %s") : _("Moving %s left inside %s"),
-				  gcolumn->name, gview->name);
-
-	/* Set new position on this child */
-	glade_command_set_property (glade_widget_get_pack_property (gcolumn, "position"), new_pos);
-
-	/* Swap position of other child to this childs original position */
-	children = gtk_tree_view_get_columns (view);
-	for (l = children; l; l = l->next)
-	{
-		giter = glade_widget_get_from_gobject (l->data);
-
-		glade_widget_pack_property_get (giter, "position", &pos);
-
-		if (pos == new_pos && giter != gcolumn)
-		{
-			glade_command_set_property (glade_widget_get_pack_property (giter, "position"), child_pos);
-			break;
-		}
-	}
-	g_list_free (children);
-
-	glade_command_pop_group ();
+		name = gchild->name;
+	
+	return g_strdup (name);
 }
 
+static void
+glade_gtk_treeview_child_selected (GladeBaseEditor *editor,
+				  GladeWidget *gchild,
+				  gpointer data)
+{
+	GObject *child = glade_widget_get_object (gchild);
+	
+	glade_base_editor_add_label (editor, GTK_IS_TREE_VIEW_COLUMN (child) ? 
+				     _("Tree View Column") : _("Cell Renderer"));
+	
+	glade_base_editor_add_default_properties (editor, gchild);
+	
+	glade_base_editor_add_label (editor, GTK_IS_TREE_VIEW_COLUMN (child) ? 
+				     _("Properties") : _("Properties and Attributes"));
+	glade_base_editor_add_editable (editor, gchild, GLADE_PAGE_GENERAL);
+
+	if (GTK_IS_CELL_RENDERER (child))
+	{
+		glade_base_editor_add_label (editor, _("Common Properties and Attributes"));
+		glade_base_editor_add_editable (editor, gchild, GLADE_PAGE_COMMON);
+	}
+}
+
+static gboolean
+glade_gtk_treeview_move_child (GladeBaseEditor *editor,
+			       GladeWidget *gparent,
+			       GladeWidget *gchild,
+			       gpointer data)
+{	
+	GObject *parent = glade_widget_get_object (gparent);
+	GObject *child  = glade_widget_get_object (gchild);
+	GList    list   = { 0, };
+
+	if (GTK_IS_TREE_VIEW (parent) && !GTK_IS_TREE_VIEW_COLUMN (child))
+		return FALSE;
+	if (GTK_IS_TREE_VIEW_COLUMN (parent) && !GTK_IS_CELL_RENDERER (child))
+		return FALSE;
+	if (GTK_IS_CELL_RENDERER (parent))
+		return FALSE;
+	
+	if (gparent != glade_widget_get_parent (gchild))
+	{
+		list.data = gchild;
+		glade_command_dnd (&list, gparent, NULL);
+	}
+
+	return TRUE;
+}
 
 static void
-glade_gtk_treeview_add_column (GtkTreeView       *view,
-			       GtkTreeViewColumn *child,
-			       gboolean           after)
+glade_gtk_treeview_launch_editor (GObject  *treeview)
 {
-	GladeWidget       *gview = glade_widget_get_from_gobject (view);
-	GladeWidget       *gcolumn, *gchild;
-	gint               child_pos, pos, columns;
-	GList             *children, *l;
+	GladeBaseEditor *editor;
+	GtkWidget *window;
 
-	gchild = child ? glade_widget_get_from_gobject (child) : NULL;
+	/* Editor */
+	editor = glade_base_editor_new (treeview, 
+					_("Column"), GTK_TYPE_TREE_VIEW_COLUMN,
+					NULL);
 
-	/* Resolve command name */
-	if (child)
-		glade_command_push_group (after ? _("Inserting column after %s in %s") :
-					  _("Inserting column before %s in %s"),
-					  gchild->name, gview->name);
-	else
-		glade_command_push_group (after ? _("Appending column to %s") :
-					  _("Prepending column to %s"),
-					  gview->name);
+	glade_base_editor_append_types (editor, GTK_TYPE_TREE_VIEW_COLUMN,
+					_("Text"), GTK_TYPE_CELL_RENDERER_TEXT,
+					_("Accelerator"), GTK_TYPE_CELL_RENDERER_ACCEL,
+					_("Combo"), GTK_TYPE_CELL_RENDERER_COMBO,
+					_("Spin"),  GTK_TYPE_CELL_RENDERER_SPIN,
+					_("Pixbuf"), GTK_TYPE_CELL_RENDERER_PIXBUF,
+					_("Progress"), GTK_TYPE_CELL_RENDERER_PROGRESS,
+					_("Toggle"), GTK_TYPE_CELL_RENDERER_TOGGLE,
+					NULL);
 
-	if ((gcolumn = glade_command_create (glade_widget_adaptor_get_by_type (GTK_TYPE_TREE_VIEW_COLUMN),
-					     gview, NULL, glade_widget_get_project (gview))) == NULL)
-	{
-		glade_command_pop_group ();
-		return;
-	}
+	g_signal_connect (editor, "get-display-name", G_CALLBACK (glade_gtk_treeview_get_display_name), NULL);
+	g_signal_connect (editor, "child-selected", G_CALLBACK (glade_gtk_treeview_child_selected), NULL);
+	g_signal_connect (editor, "move-child", G_CALLBACK (glade_gtk_treeview_move_child), NULL);
 
-	/* resolve where were gonna put the new child */
-	columns = 0;
-	while (gtk_tree_view_get_column (view, columns)) columns++;
-
-	if (gchild)
-		glade_widget_pack_property_get (gchild, "position", &child_pos);
-	else
-		child_pos = after ? columns - 1 : 0;
-
-	if (after)
-		child_pos = CLAMP (child_pos + 1, 0, columns - 1);
-
-	/* Reoder children */
-	children = gtk_tree_view_get_columns (view);
-	for (l = children; l; l = l->next)
-	{
-		gchild = glade_widget_get_from_gobject (l->data);
-
-		glade_widget_pack_property_get (gchild, "position", &pos);
-
-		if (gchild == gcolumn)
-			glade_command_set_property (glade_widget_get_pack_property (gchild, "position"), child_pos);
-		else if ((after  && pos > child_pos) ||
-			 (!after && pos >= child_pos))
-			glade_command_set_property (glade_widget_get_pack_property (gchild, "position"), pos + 1);
-	}
-	g_list_free (children);
-
-	glade_command_pop_group ();
+	gtk_widget_show (GTK_WIDGET (editor));
+	
+	window = glade_base_editor_pack_new_window (editor, _("Tree View Editor"), NULL);
+	gtk_widget_show (window);
 }
 
 void
@@ -9509,39 +9485,14 @@ glade_gtk_treeview_action_activate (GladeWidgetAdaptor *adaptor,
 				    GObject *object,
 				    const gchar *action_path)
 {
-	if (strcmp (action_path, "append_column") == 0)
-		glade_gtk_treeview_add_column (GTK_TREE_VIEW (object), NULL, TRUE);
-	else if (strcmp (action_path, "prepend_column") == 0)
-		glade_gtk_treeview_add_column (GTK_TREE_VIEW (object), NULL, FALSE);
+	if (strcmp (action_path, "launch_editor") == 0)
+	{
+		glade_gtk_treeview_launch_editor (object);
+	}
 	else
 		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor,
 								     object,
 								     action_path);
-}
-
-void
-glade_gtk_treeview_child_action_activate (GladeWidgetAdaptor *adaptor,
-					  GObject            *container,
-					  GObject            *object,
-					  const gchar        *action_path)
-{
-	if (strcmp (action_path, "insert_column/after") == 0)
-		glade_gtk_treeview_add_column (GTK_TREE_VIEW (container), 
-					       GTK_TREE_VIEW_COLUMN (object), TRUE);
-	else if (strcmp (action_path, "insert_column/before") == 0)
-		glade_gtk_treeview_add_column (GTK_TREE_VIEW (container), 
-					       GTK_TREE_VIEW_COLUMN (object), FALSE);
-	else if (strcmp (action_path, "move_column/left") == 0)
-		glade_gtk_treeview_move_column (GTK_TREE_VIEW (container), 
-						GTK_TREE_VIEW_COLUMN (object), FALSE);
-	else if (strcmp (action_path, "move_column/right") == 0)
-		glade_gtk_treeview_move_column (GTK_TREE_VIEW (container), 
-						GTK_TREE_VIEW_COLUMN (object), TRUE);
-	else
-		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->child_action_activate (adaptor,
-									   container,
-									   object,
-									   action_path);
 }
 
 static gint
@@ -10087,21 +10038,51 @@ glade_gtk_cell_layout_get_children (GladeWidgetAdaptor  *adaptor,
 	return gtk_cell_layout_get_cells (GTK_CELL_LAYOUT (container));
 }
 
-static void
-glade_gtk_cell_layout_add_renderer (GObject *cell, GType type)
-{
-	GladeWidget *gcell = glade_widget_get_from_gobject (cell);
 
-	glade_command_push_group (_("Appending %s to %s"),
-				  g_type_name (type),
-				  gcell->name);
+void
+glade_gtk_cell_layout_get_child_property (GladeWidgetAdaptor *adaptor,
+					  GObject            *container,
+					  GObject            *child,
+					  const gchar        *property_name,
+					  GValue             *value)
+{	
+	if (strcmp (property_name, "position") == 0)
+	{
+		GList *cells = gtk_cell_layout_get_cells (GTK_CELL_LAYOUT (container));
 
-	glade_command_create (glade_widget_adaptor_get_by_type (type),
-			      gcell, NULL, glade_widget_get_project (gcell));
-	
-	glade_command_pop_group ();
+		/* We have to fake it, assume we are loading and always return the last item */
+		g_value_set_int (value, g_list_length (cells) - 1);
+
+		g_list_free (cells);
+	}
+	else
+		/* Chain Up */
+		GWA_GET_CLASS
+			(GTK_TYPE_CONTAINER)->child_get_property (adaptor, 
+								  container, child,
+								  property_name, value);
 }
 
+void
+glade_gtk_cell_layout_set_child_property (GladeWidgetAdaptor *adaptor,
+					  GObject            *container,
+					  GObject            *child,
+					  const gchar        *property_name,
+					  const GValue       *value)
+{
+	if (strcmp (property_name, "position") == 0)
+	{
+		/* Need verify on position property !!! XXX */
+		gtk_cell_layout_reorder (GTK_CELL_LAYOUT (container), child, 
+					 g_value_get_int (value));
+	}
+	else
+		/* Chain Up */
+		GWA_GET_CLASS
+			(GTK_TYPE_CONTAINER)->child_set_property (adaptor, 
+								  container, child,
+								  property_name, value);
+}
 
 static void
 glade_gtk_cell_renderer_read_attributes (GladeWidget *widget, GladeXmlNode *node)
@@ -10243,27 +10224,50 @@ glade_gtk_treeview_column_action_activate (GladeWidgetAdaptor *adaptor,
 					   GObject *object,
 					   const gchar *action_path)
 {
-	if (strcmp (action_path, "append_renderer/accel") == 0)
-		glade_gtk_cell_layout_add_renderer (object, GTK_TYPE_CELL_RENDERER_ACCEL);
-	else if (strcmp (action_path, "append_renderer/combo") == 0)
-		glade_gtk_cell_layout_add_renderer (object, GTK_TYPE_CELL_RENDERER_COMBO);
-	else if (strcmp (action_path, "append_renderer/pixbuf") == 0)
-		glade_gtk_cell_layout_add_renderer (object, GTK_TYPE_CELL_RENDERER_PIXBUF);
-	else if (strcmp (action_path, "append_renderer/progress") == 0)
-		glade_gtk_cell_layout_add_renderer (object, GTK_TYPE_CELL_RENDERER_PROGRESS);
-	else if (strcmp (action_path, "append_renderer/spin") == 0)
-		glade_gtk_cell_layout_add_renderer (object, GTK_TYPE_CELL_RENDERER_SPIN);
-	else if (strcmp (action_path, "append_renderer/text") == 0)
-		glade_gtk_cell_layout_add_renderer (object, GTK_TYPE_CELL_RENDERER_TEXT);
-	else if (strcmp (action_path, "append_renderer/toggle") == 0)
-		glade_gtk_cell_layout_add_renderer (object, GTK_TYPE_CELL_RENDERER_TOGGLE);
+	if (strcmp (action_path, "launch_editor") == 0)
+	{
+		GladeWidget *w = glade_widget_get_from_gobject (object);
+		
+		while ((w = glade_widget_get_parent (w)))
+		{
+			if (GTK_IS_TREE_VIEW (w->object))
+			{
+				glade_gtk_treeview_launch_editor (w->object);
+				break;
+			}
+		}
+	}
 	else
-		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor,
-								     object,
-								     action_path);
+		GWA_GET_CLASS (G_TYPE_OBJECT)->action_activate (adaptor,
+								object,
+								action_path);
 }
 
 /*--------------------------- GtkCellRenderer ---------------------------------*/
+void
+glade_gtk_cell_renderer_action_activate (GladeWidgetAdaptor *adaptor,
+					 GObject *object,
+					 const gchar *action_path)
+{
+	if (strcmp (action_path, "launch_editor") == 0)
+	{
+		GladeWidget *w = glade_widget_get_from_gobject (object);
+		
+		while ((w = glade_widget_get_parent (w)))
+		{
+			if (GTK_IS_TREE_VIEW (w->object))
+			{
+				glade_gtk_treeview_launch_editor (w->object);
+				break;
+			}
+		}
+	}
+	else
+		GWA_GET_CLASS (G_TYPE_OBJECT)->action_activate (adaptor,
+								object,
+								action_path);
+}
+
 void
 glade_gtk_cell_renderer_post_create (GladeWidgetAdaptor *adaptor, 
 				     GObject            *object, 

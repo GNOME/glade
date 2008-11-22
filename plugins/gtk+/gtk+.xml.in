@@ -1795,24 +1795,11 @@ embedded in another object</_tooltip>
       <add-child-function>glade_gtk_treeview_add_child</add-child-function>
       <remove-child-function>glade_gtk_treeview_remove_child</remove-child-function>
       <action-activate-function>glade_gtk_treeview_action_activate</action-activate-function>
-      <child-action-activate-function>glade_gtk_treeview_child_action_activate</child-action-activate-function>
       <depends-function>glade_gtk_treeview_depends</depends-function>
 
       <actions>
-        <action id="append_column" _name="Append Column" stock="gtk-add" important="True"/>
-        <action id="prepend_column" _name="Prepend Column" stock="gtk-add" important="True"/>
+        <action id="launch_editor" _name="Edit&#8230;" stock="gtk-edit" important="True"/>
       </actions>
-
-      <packing-actions>
-        <action id="move_column" _name="Move Column">
-          <action id="left" _name="Left"/>
-          <action id="right" _name="Right"/>
-        </action>
-        <action id="insert_column" _name="Insert Column">
-          <action id="before" _name="Before"/>
-          <action id="after" _name="After"/>
-        </action>
-      </packing-actions>
 
       <properties>
         <property id="level-indentation" since="2.12"/>
@@ -1909,20 +1896,26 @@ embedded in another object</_tooltip>
       <get-children-function>glade_gtk_cell_layout_get_children</get-children-function>
       <read-child-function>glade_gtk_cell_layout_read_child</read-child-function>
       <write-child-function>glade_gtk_cell_layout_write_child</write-child-function>
-
-      <action-activate-function>glade_gtk_treeview_column_action_activate</action-activate-function>
+      <action-activate-function>glade_gtk_cell_layout_action_activate</action-activate-function>
+      <child-set-property-function>glade_gtk_cell_layout_set_child_property</child-set-property-function>
+      <child-get-property-function>glade_gtk_cell_layout_get_child_property</child-get-property-function>
       
       <actions>
-        <action id="append_renderer" _name="Append Cell Renderer" stock="gtk-add">
-          <action id="accel" _name="Accel"/>
-          <action id="combo" _name="Combo"/>
-          <action id="pixbuf" _name="Pixbuf"/>
-          <action id="progress" _name="Progress"/>
-          <action id="spin" _name="Spin"/>
-          <action id="text" _name="Text"/>
-          <action id="toggle" _name="Toggle"/>
-        </action>
+        <action id="launch_editor" _name="Edit&#8230;" stock="gtk-edit" important="True"/>
       </actions>
+
+      <properties>
+        <property id="title" default="column"/>
+      </properties>
+
+      <packing-properties>
+        <property save="False" id="position" name="Position" visible="False">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	  </parameter-spec>
+	  <_tooltip>The Cell Renderer position in the Tree View Column</_tooltip>
+	</property>
+      </packing-properties>
     </glade-widget-class>
 
     <glade-widget-class name="GtkCellRenderer" _title="Cell Renderer">
@@ -1931,6 +1924,11 @@ embedded in another object</_tooltip>
       <create-editable-function>glade_gtk_cell_renderer_create_editable</create-editable-function>
       <set-property-function>glade_gtk_cell_renderer_set_property</set-property-function>
       <write-widget-function>glade_gtk_cell_renderer_write_widget</write-widget-function>
+      <action-activate-function>glade_gtk_cell_renderer_action_activate</action-activate-function>
+
+      <actions>
+        <action id="launch_editor" _name="Edit&#8230;" stock="gtk-edit" important="True"/>
+      </actions>
 
       <properties>
         <property id="cell-background-set" disabled="True"/>
