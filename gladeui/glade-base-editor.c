@@ -67,7 +67,7 @@ struct _GladeBaseEditorPrivate
 	GladeWidget *gcontainer; /* The container we are editing */
 	
 	/* Editor UI */
-	GtkWidget *paned, *table, *treeview;
+	GtkWidget *paned, *table, *treeview, *main_scroll, *notebook;
 	GtkWidget *remove_button, *signal_editor_w;
 	GladeSignalEditor *signal_editor;
 
@@ -1571,16 +1571,39 @@ glade_base_editor_init (GladeBaseEditor *editor)
 	GladeBaseEditorPrivate *e;
 	GtkCellRenderer *renderer;
 	GtkTreeViewColumn *column;
-	GtkWidget *paned, *hbox, *vbox, *tree_vbox, *scroll, *button_table, *button;
+	GtkWidget *paned, *hbox, *vbox, *tree_vbox, *scroll, *button_table, *button, *label;
 	
 	gtk_box_set_spacing (GTK_BOX (editor), 8);
 	
 	e = editor->priv = g_new0(GladeBaseEditorPrivate, 1);
 	
+	/* Notebook */
+	e->notebook = gtk_notebook_new ();
+	gtk_widget_show (e->notebook);
+	gtk_box_pack_start (GTK_BOX (editor), e->notebook, TRUE, TRUE, 0);
+
+	/* Properties Vbox */
+	vbox = gtk_vbox_new (FALSE, 8);
+	gtk_widget_show (vbox);
+	
+	/* ScrolledWindow */
+	e->main_scroll = gtk_scrolled_window_new (NULL, NULL);
+	gtk_widget_show (e->main_scroll);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (e->main_scroll), GTK_SHADOW_NONE);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (e->main_scroll), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+	gtk_box_pack_start (GTK_BOX (vbox), e->main_scroll, TRUE, TRUE, 0);
+
+	label = gtk_label_new (_("General"));	
+	gtk_widget_show (label);
+	gtk_notebook_append_page (GTK_NOTEBOOK (e->notebook), vbox, label);
+
 	/* Paned */
 	e->paned = paned = gtk_vpaned_new ();
 	gtk_widget_show (paned);
-	gtk_box_pack_start (GTK_BOX (editor), paned, TRUE, TRUE, 0);
+
+	label = gtk_label_new (_("Hierarchy"));
+	gtk_widget_show (label);
+	gtk_notebook_append_page (GTK_NOTEBOOK (e->notebook), e->paned, label);
 	
 	/* Hbox */
 	hbox = gtk_hbox_new (FALSE, 8);
@@ -1595,7 +1618,7 @@ glade_base_editor_init (GladeBaseEditor *editor)
 	/* ScrolledWindow */
 	scroll = gtk_scrolled_window_new (NULL, NULL);
 	gtk_widget_show (scroll);
-	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scroll), GTK_SHADOW_IN);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scroll), GTK_SHADOW_NONE);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
 	gtk_box_pack_start (GTK_BOX (tree_vbox), scroll, TRUE, TRUE, 0);
 
@@ -1717,7 +1740,8 @@ glade_base_editor_get_type ()
 
 /**
  * glade_base_editor_new:
- * @container: the container this new editor will edit.
+ * @container: a container this new editor will edit.
+ * @main_editable: the custom #GladeEditable for @container, or %NULL
  * @... A NULL terminated list of gchar *, GType
  * 
  * Creates a new GladeBaseEditor with @container toplevel 
@@ -1729,9 +1753,12 @@ glade_base_editor_get_type ()
  * Returns: a new GladeBaseEditor.
  */
 GladeBaseEditor *
-glade_base_editor_new (GObject *container, ...)
+glade_base_editor_new (GObject       *container, 
+		       GladeEditable *main_editable, 
+		       ...)
 {
 	ChildTypeTab *child_type;
+	GladeWidget  *gcontainer;
 	GladeBaseEditor *editor;
 	GladeBaseEditorPrivate *e;
 	GtkTreeIter iter;	
@@ -1740,6 +1767,10 @@ glade_base_editor_new (GObject *container, ...)
 	va_list args;
 
 	g_return_val_if_fail (GTK_IS_CONTAINER (container), NULL);
+
+	gcontainer = glade_widget_get_from_gobject (container);
+	g_return_val_if_fail (GLADE_IS_WIDGET (gcontainer), NULL);
+
 	
 	editor = GLADE_BASE_EDITOR (g_object_new (GLADE_TYPE_BASE_EDITOR, NULL));
 	e = editor->priv;
@@ -1759,12 +1790,20 @@ glade_base_editor_new (GObject *container, ...)
 			  G_CALLBACK (glade_base_editor_row_inserted), 
 			  editor);
 	
+	/* Invent one if not provided */
+	if (!main_editable)
+		main_editable = glade_widget_adaptor_create_editable (gcontainer->adaptor, GLADE_PAGE_GENERAL);
+	
+	glade_editable_load (main_editable, gcontainer);
+	gtk_widget_show (GTK_WIDGET (main_editable));
+	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (e->main_scroll), GTK_WIDGET (main_editable));
+
 	child_type              = g_new0 (ChildTypeTab, 1);
 	child_type->parent_type = G_OBJECT_TYPE (container);
 	child_type->children    = (GtkTreeModel *)gtk_list_store_new (GLADE_BASE_EDITOR_TYPES_N_COLUMNS,
 								      G_TYPE_GTYPE, G_TYPE_STRING);
 
-	va_start (args, container);
+	va_start (args, main_editable);
 	while ((name = va_arg (args, gchar *)))
 	{
 		iter_type = va_arg (args, GType);
@@ -2105,6 +2144,7 @@ glade_base_editor_pack_new_window (GladeBaseEditor *editor,
 				  G_CALLBACK (glade_utils_hijack_key_press), NULL);
 	}
 
+	gtk_widget_show_all (GTK_WIDGET (editor));
 
 	gtk_container_set_border_width (GTK_CONTAINER (editor), 6);
 	gtk_container_add (GTK_CONTAINER (window), GTK_WIDGET (editor));

@@ -30,6 +30,7 @@ static void      glade_editor_table_init               (GladeEditorTable      *s
 static void      glade_editor_table_class_init         (GladeEditorTableClass *klass);
 static void      glade_editor_table_dispose            (GObject               *object);
 static void      glade_editor_table_editable_init      (GladeEditableIface    *iface);
+static void      glade_editor_table_realize            (GtkWidget             *widget);
 static void      glade_editor_table_grab_focus         (GtkWidget             *widget);
 
 G_DEFINE_TYPE_WITH_CODE (GladeEditorTable, glade_editor_table, GTK_TYPE_TABLE,
@@ -43,6 +44,7 @@ glade_editor_table_class_init (GladeEditorTableClass *klass)
 	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
 	object_class->dispose      = glade_editor_table_dispose;
+	widget_class->realize      = glade_editor_table_realize;
 	widget_class->grab_focus   = glade_editor_table_grab_focus;
 }
 
@@ -70,6 +72,23 @@ glade_editor_table_dispose (GObject *object)
 	G_OBJECT_CLASS (glade_editor_table_parent_class)->dispose (object);
 }
 
+
+static void
+glade_editor_table_realize (GtkWidget *widget)
+{
+	GladeEditorTable    *table = GLADE_EDITOR_TABLE (widget);
+	GList               *list;
+	GladeEditorProperty *property;
+
+	GTK_WIDGET_CLASS (glade_editor_table_parent_class)->realize (widget);
+
+	/* Sync up properties, even if widget is NULL */
+	for (list = table->properties; list; list = list->next)
+	{
+		property = list->data;
+		glade_editor_property_load_by_widget (property, table->loaded_widget);
+	}
+}
 
 static void
 glade_editor_table_grab_focus (GtkWidget *widget)
@@ -201,7 +220,7 @@ glade_editor_table_attach (GladeEditorTable *table,
 	gtk_table_attach (GTK_TABLE (table), child,
 			  pos, pos+1, row, row +1,
 			  GTK_EXPAND | GTK_FILL,
-			  GTK_EXPAND | GTK_FILL,
+			  0,
 			  3, 1);
 }
 

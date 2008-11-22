@@ -62,6 +62,7 @@ struct _GladeBaseEditorClass
 GType                glade_base_editor_get_type               (void);
 
 GladeBaseEditor     *glade_base_editor_new                    (GObject *container,
+							       GladeEditable *main_editable,
 							       ...);
 
 void                 glade_base_editor_append_types           (GladeBaseEditor *editor, 

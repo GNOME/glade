@@ -39,6 +39,7 @@
 #include "glade-store-editor.h"
 #include "glade-label-editor.h"
 #include "glade-cell-renderer-editor.h"
+#include "glade-treeview-editor.h"
 
 #include <gladeui/glade-editor-property.h>
 #include <gladeui/glade-base-editor.h>
@@ -5998,7 +5999,7 @@ glade_gtk_menu_shell_launch_editor (GObject *object, gchar *title)
 	GtkWidget *window;
 
 	/* Editor */
-	editor = glade_base_editor_new (object, 
+	editor = glade_base_editor_new (object, NULL,
 					_("Normal item"), GTK_TYPE_MENU_ITEM,
 					_("Image item"), GTK_TYPE_IMAGE_MENU_ITEM,
 					_("Check item"), GTK_TYPE_CHECK_MENU_ITEM,
@@ -6956,7 +6957,7 @@ glade_gtk_toolbar_launch_editor (GladeWidgetAdaptor *adaptor,
 	GtkWidget *window;
 
 	/* Editor */
-	editor = glade_base_editor_new (toolbar, 
+	editor = glade_base_editor_new (toolbar, NULL,
 					_("Button"), GTK_TYPE_TOOL_BUTTON,
 					_("Toggle"), GTK_TYPE_TOGGLE_TOOL_BUTTON,
 					_("Radio"), GTK_TYPE_RADIO_TOOL_BUTTON,
@@ -9452,11 +9453,17 @@ glade_gtk_treeview_move_child (GladeBaseEditor *editor,
 static void
 glade_gtk_treeview_launch_editor (GObject  *treeview)
 {
+	GladeWidget *widget = glade_widget_get_from_gobject (treeview);
 	GladeBaseEditor *editor;
+	GladeEditable *treeview_editor;
 	GtkWidget *window;
 
+
+	treeview_editor = glade_widget_adaptor_create_editable (widget->adaptor, GLADE_PAGE_GENERAL);
+	treeview_editor = (GladeEditable *)glade_tree_view_editor_new (widget->adaptor, treeview_editor);
+
 	/* Editor */
-	editor = glade_base_editor_new (treeview, 
+	editor = glade_base_editor_new (treeview, treeview_editor,
 					_("Column"), GTK_TYPE_TREE_VIEW_COLUMN,
 					NULL);
 
@@ -10073,7 +10080,7 @@ glade_gtk_cell_layout_set_child_property (GladeWidgetAdaptor *adaptor,
 	if (strcmp (property_name, "position") == 0)
 	{
 		/* Need verify on position property !!! XXX */
-		gtk_cell_layout_reorder (GTK_CELL_LAYOUT (container), child, 
+		gtk_cell_layout_reorder (GTK_CELL_LAYOUT (container), GTK_CELL_RENDERER (child), 
 					 g_value_get_int (value));
 	}
 	else

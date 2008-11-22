@@ -3168,6 +3168,8 @@ glade_eprop_adjustment_load (GladeEditorProperty *eprop, GladeProperty *property
 	
 	fmt = glade_project_get_format (property->widget->project);
 
+	gtk_widget_hide (eprop_adj->libglade);
+
 	if (fmt == GLADE_PROJECT_FORMAT_LIBGLADE)
 	{
 		object = g_value_get_object (property->value);
@@ -3234,7 +3236,6 @@ glade_eprop_adjustment_load (GladeEditorProperty *eprop, GladeProperty *property
 			gtk_entry_set_text (GTK_ENTRY (eprop_adj->entry), "");
 
 		gtk_notebook_set_page (GTK_NOTEBOOK (eprop_adj->notebook), 1);
-		gtk_widget_hide (eprop_adj->libglade);
 	}
 
 	gtk_widget_queue_resize (eprop_adj->notebook);
