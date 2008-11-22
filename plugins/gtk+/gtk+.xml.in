@@ -485,7 +485,7 @@ embedded in another object</_tooltip>
       <remove-child-function>glade_gtk_image_menu_item_remove_child</remove-child-function>
       <create-editable-function>glade_gtk_image_menu_item_create_editable</create-editable-function>
       <properties>
-        <property id="use-stock" visible="False">
+        <property id="use-stock" default="True" visible="False">
 	  <parameter-spec>
 	    <type>GParamBoolean</type>
 	  </parameter-spec>
@@ -669,7 +669,12 @@ embedded in another object</_tooltip>
     
     <glade-widget-class name="GtkRadioToolButton" generic-name="radiotoolbutton" _title="Radio Tool Button"/>
     
-    <glade-widget-class name="GtkMenuToolButton" generic-name="menutoolbutton" _title="Menu Tool Button"/>
+    <glade-widget-class name="GtkMenuToolButton" generic-name="menutoolbutton" _title="Menu Tool Button">
+      <add-child-function>glade_gtk_menu_tool_button_add_child</add-child-function>
+      <remove-child-function>glade_gtk_menu_tool_button_remove_child</remove-child-function>
+      <get-children-function>glade_gtk_menu_tool_button_get_children</get-children-function>
+    </glade-widget-class>
+
 
     <glade-widget-class name="GtkHandleBox" generic-name="handlebox" _title="Handle Box">
       <properties>
@@ -1935,7 +1940,7 @@ embedded in another object</_tooltip>
 
 	<!-- Cell renderer properties with thier virtual attribute and control properties -->
         <property id="cell-background" common="True" save="False" custom-layout="True"/>
-        <property id="attr-cell-background" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-cell-background" _name="Cell Background Color name column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -1949,7 +1954,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="cell-background-gdk" common="True" save="False" custom-layout="True"/>
-        <property id="attr-cell-background-gdk" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-cell-background-gdk" _name="Cell Background Color column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -1963,7 +1968,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="width" common="True" save="False" custom-layout="True"/>
-        <property id="attr-width" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-width" _name="Width column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -1977,7 +1982,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="height" common="True" save="False" custom-layout="True"/>
-        <property id="attr-height" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-height" _name="Height column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -1990,8 +1995,8 @@ embedded in another object</_tooltip>
 	  </parameter-spec>
 	</property>
 
-        <property id="xpad" _name="Horizontal padding" common="True" save="False" custom-layout="True"/>
-        <property id="attr-xpad" _name="Data column" save="False" default="-1" custom-layout="True">	
+        <property id="xpad" _name="Horizontal Padding" common="True" save="False" custom-layout="True"/>
+        <property id="attr-xpad" _name="Horizontal Padding column" save="False" default="-1" custom-layout="True">	
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2004,8 +2009,8 @@ embedded in another object</_tooltip>
 	  </parameter-spec>
 	</property>
 
-        <property id="ypad" _name="Vertical padding" common="True" save="False" custom-layout="True"/>
-        <property id="attr-ypad" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="ypad" _name="Vertical Padding" common="True" save="False" custom-layout="True"/>
+        <property id="attr-ypad" _name="Vertical Padding column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2018,8 +2023,8 @@ embedded in another object</_tooltip>
 	  </parameter-spec>
 	</property>
 
-        <property id="xalign" _name="Horizontal alignment" common="True" save="False" custom-layout="True"/>
-        <property id="attr-xalign" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="xalign" _name="Horizontal Alignment" common="True" save="False" custom-layout="True"/>
+        <property id="attr-xalign" _name="Horizontal Alignment column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2032,8 +2037,8 @@ embedded in another object</_tooltip>
 	  </parameter-spec>
 	</property>
 
-        <property id="yalign" _name="Vertical alignment" common="True" save="False" custom-layout="True"/>
-        <property id="attr-yalign" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="yalign" _name="Vertical Alignment" common="True" save="False" custom-layout="True"/>
+        <property id="attr-yalign" _name="Vertical Alignment column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2047,7 +2052,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="sensitive" common="True" save="False" custom-layout="True"/>
-        <property id="attr-sensitive" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-sensitive" _name="Sensitive column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2061,7 +2066,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="visible" _name="Visible" common="True" save="False" custom-layout="True"/>
-        <property id="attr-visible" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-visible" _name="Visible column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2097,7 +2102,7 @@ embedded in another object</_tooltip>
 	<property id="stretch-set" disabled="True"/>
 
         <property id="alignment" save="False" custom-layout="True"/>
-        <property id="attr-alignment" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-alignment" _name="Alignment column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2111,7 +2116,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="attributes" save="False" custom-layout="True"/>
-        <property id="attr-attributes" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-attributes" _name="Attributes column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2126,7 +2131,7 @@ embedded in another object</_tooltip>
 
 
         <property id="background" save="False" custom-layout="True"/>
-        <property id="attr-background" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-background" _name="Background Color Name column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2140,7 +2145,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="background-gdk" save="False" custom-layout="True"/>
-        <property id="attr-background-gdk" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-background-gdk" _name="Background Color column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2154,7 +2159,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="editable" save="False" custom-layout="True"/>
-        <property id="attr-editable" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-editable" _name="Editable column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2168,7 +2173,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="ellipsize" save="False" custom-layout="True"/>
-        <property id="attr-ellipsize" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-ellipsize" _name="Ellipsize column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2182,7 +2187,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="family" save="False" custom-layout="True"/>
-        <property id="attr-family" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-family" _name="Family column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2196,7 +2201,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="font" save="False" custom-layout="True"/>
-        <property id="attr-font" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-font" _name="Font column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2210,7 +2215,8 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="font-desc" save="False" custom-layout="True"/>
-        <property id="attr-font-desc" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-font-desc" _name="Font Description column" save="False" 
+		  default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2224,7 +2230,8 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="foreground" save="False" custom-layout="True"/>
-        <property id="attr-foreground" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-foreground" _name="Foreground Color Name column" save="False" 
+		  default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2238,7 +2245,8 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="foreground-gdk" save="False" custom-layout="True"/>
-        <property id="attr-foreground-gdk" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-foreground-gdk" _name="Foreground Color column" save="False" default="-1" 
+		  custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2252,7 +2260,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="language" save="False" custom-layout="True"/>
-        <property id="attr-language" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-language" _name="Language column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2266,7 +2274,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="markup" save="False" custom-layout="True"/>
-        <property id="attr-markup" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-markup" _name="Markup column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2280,7 +2288,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="rise" save="False" custom-layout="True"/>
-        <property id="attr-rise" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-rise" _name="Rise column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2294,7 +2302,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="scale" save="False" custom-layout="True"/>
-        <property id="attr-scale" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-scale" _name="Scale column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2308,7 +2316,8 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="single-paragraph-mode" save="False" custom-layout="True"/>
-        <property id="attr-single-paragraph-mode" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-single-paragraph-mode" _name="Single Paragraph Mode column" save="False" 
+		  default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2322,7 +2331,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="size" save="False" custom-layout="True"/>
-        <property id="attr-size" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-size" _name="Size column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2350,7 +2359,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="stretch" save="False" custom-layout="True"/>
-        <property id="attr-stretch" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-stretch" _name="Stretch column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2364,7 +2373,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="strikethrough" save="False" custom-layout="True"/>
-        <property id="attr-strikethrough" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-strikethrough" _name="Strikethrough column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2378,7 +2387,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="style" save="False" custom-layout="True"/>
-        <property id="attr-style" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-style" _name="Style column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2392,7 +2401,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="text" save="False" custom-layout="True"/>
-        <property id="attr-text" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-text" _name="Text column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2406,7 +2415,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="underline" save="False" custom-layout="True"/>
-        <property id="attr-underline" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-underline" _name="Underline column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2420,7 +2429,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="variant" save="False" custom-layout="True"/>
-        <property id="attr-variant" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-variant" _name="Variant column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2434,7 +2443,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="weight" save="False" custom-layout="True"/>
-        <property id="attr-weight" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-weight" _name="Weight column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2448,7 +2457,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="width-chars" save="False" custom-layout="True"/>
-        <property id="attr-width-chars" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-width-chars" _name="Width in Characters column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2462,7 +2471,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="wrap-mode" save="False" custom-layout="True"/>
-        <property id="attr-wrap-mode" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-wrap-mode" _name="Wrap Mode column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2476,7 +2485,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="wrap-width" save="False" custom-layout="True"/>
-        <property id="attr-wrap-width" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-wrap-width" _name="Wrap Width column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2509,7 +2518,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="accel-mode" save="False" custom-layout="True"/>
-        <property id="attr-accel-mode" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-accel-mode" _name="Accelerator Mode column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2523,7 +2532,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="accel-mods" save="False" custom-layout="True"/>
-        <property id="attr-accel-mods" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-accel-mods" _name="Accelerator Modifiers column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2537,7 +2546,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="keycode" save="False" custom-layout="True"/>
-        <property id="attr-keycode" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-keycode" _name="Keycode column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2556,7 +2565,7 @@ embedded in another object</_tooltip>
 			libglade-unsupported="True">
       <properties>
         <property id="has-entry" save="False" custom-layout="True"/>
-        <property id="attr-has-entry" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-has-entry" _name="Has Entry column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2570,7 +2579,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="model" save="False" custom-layout="True"/>
-        <property id="attr-model" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-model" _name="Model column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2584,7 +2593,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="text-column" save="False" custom-layout="True"/>
-        <property id="attr-text-column" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-text-column" _name="Text Column column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2604,7 +2613,7 @@ embedded in another object</_tooltip>
 			libglade-unsupported="True">
       <properties>
         <property id="adjustment" save="False" custom-layout="True"/>
-        <property id="attr-adjustment" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-adjustment" _name="Adjustment column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2618,7 +2627,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="climb-rate" save="False" custom-layout="True"/>
-        <property id="attr-climb-rate" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-climb-rate" _name="Climb Rate column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2632,7 +2641,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="digits" save="False" custom-layout="True"/>
-        <property id="attr-digits" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-digits" _name="Digits column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2654,7 +2663,7 @@ embedded in another object</_tooltip>
         <property id="gicon" disabled="True"/>
 
         <property id="follow-state" save="False" custom-layout="True"/>
-        <property id="attr-follow-state" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-follow-state" _name="Follow State column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2667,8 +2676,8 @@ embedded in another object</_tooltip>
 	  </parameter-spec>
 	</property>
 
-        <property id="icon-name" save="False" custom-layout="True"/>
-        <property id="attr-icon-name" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="icon-name" save="False" themed-icon="True" custom-layout="True"/>
+        <property id="attr-icon-name" _name="Icon Name column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2682,7 +2691,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="pixbuf" save="False" custom-layout="True"/>
-        <property id="attr-pixbuf" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-pixbuf" _name="Pixbuf column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2696,7 +2705,8 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="pixbuf-expander-closed" save="False" custom-layout="True"/>
-        <property id="attr-pixbuf-expander-closed" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-pixbuf-expander-closed" _name="Pixbuf Expander Closed column" save="False" 
+		  default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2710,7 +2720,8 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="pixbuf-expander-open" save="False" custom-layout="True"/>
-        <property id="attr-pixbuf-expander-open" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-pixbuf-expander-open" _name="Pixbuf Expander Open column" save="False" 
+		  default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2724,7 +2735,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="stock-detail" save="False" custom-layout="True"/>
-        <property id="attr-stock-detail" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-stock-detail" _name="Stock Detail column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2737,8 +2748,8 @@ embedded in another object</_tooltip>
 	  </parameter-spec>
 	</property>
 
-        <property id="stock-id" save="False" custom-layout="True"/>
-        <property id="attr-stock-id" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="stock-id" save="False" stock-icon="True" custom-layout="True"/>
+        <property id="attr-stock-id" _name="Stock column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2752,7 +2763,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="stock-size" save="False" custom-layout="True"/>
-        <property id="attr-stock-size" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-stock-size" _name="Stock Size column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2771,7 +2782,7 @@ embedded in another object</_tooltip>
 			libglade-unsupported="True">
       <properties>
         <property id="orientation" save="False" custom-layout="True"/>
-        <property id="attr-orientation" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-orientation" _name="Orientation column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2785,7 +2796,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="pulse" save="False" custom-layout="True"/>
-        <property id="attr-pulse" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-pulse" _name="Pulse column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2799,7 +2810,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="text" save="False" custom-layout="True"/>
-        <property id="attr-text" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-text" _name="Text column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2813,7 +2824,8 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="text-xalign" save="False" custom-layout="True"/>
-        <property id="attr-text-xalign" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-text-xalign" _name="Text Horizontal Alignment column" save="False" 
+		  default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2827,7 +2839,8 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="text-yalign" save="False" custom-layout="True"/>
-        <property id="attr-text-yalign" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-text-yalign" _name="Text Vertical Alignment column" save="False" 
+		  default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2841,7 +2854,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="value" save="False" custom-layout="True"/>
-        <property id="attr-value" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-value" _name="Value column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2860,7 +2873,7 @@ embedded in another object</_tooltip>
 			libglade-unsupported="True">
       <properties>
         <property id="activatable" save="False" custom-layout="True"/>
-        <property id="attr-activatable" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-activatable" _name="Activatable column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2874,7 +2887,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="active" save="False" custom-layout="True"/>
-        <property id="attr-active" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-active" _name="Active column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2888,7 +2901,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="inconsistent" save="False" custom-layout="True"/>
-        <property id="attr-inconsistent" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-inconsistent" _name="Inconsistent column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2902,7 +2915,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="indicator-size" save="False" custom-layout="True"/>
-        <property id="attr-indicator-size" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-indicator-size" _name="Indicator Size column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2916,7 +2929,7 @@ embedded in another object</_tooltip>
 	</property>
 
         <property id="radio" save="False" custom-layout="True"/>
-        <property id="attr-radio" _name="Data column" save="False" default="-1" custom-layout="True">
+        <property id="attr-radio" _name="Radio column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>

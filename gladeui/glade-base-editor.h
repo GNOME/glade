@@ -62,8 +62,11 @@ struct _GladeBaseEditorClass
 GType                glade_base_editor_get_type               (void);
 
 GladeBaseEditor     *glade_base_editor_new                    (GObject *container,
-								 gboolean tree_like,
-								 ...);
+							       ...);
+
+void                 glade_base_editor_append_types           (GladeBaseEditor *editor, 
+							       GType parent_type,
+							       ...);
 
 void                 glade_base_editor_add_editable           (GladeBaseEditor *editor,
 							       GladeWidget     *gchild);
@@ -78,9 +81,6 @@ void                 glade_base_editor_add_properties         (GladeBaseEditor *
 
 void                 glade_base_editor_add_label              (GladeBaseEditor *editor,
 							       gchar *str);
-
-void                 glade_base_editor_add_popup_items        (GladeBaseEditor *editor,
-							       ...);
 
 void                 glade_base_editor_set_show_signal_editor (GladeBaseEditor *editor,
 							       gboolean val);
