@@ -1,8 +1,16 @@
 2008-11-23  Tristan Van Berkom <tvb@gnome.org>
 
-	* gladeui/glade-widget.c: glade_widget_build_object() now calls glade_widget_set_object() 
-	internally and then uses glade_widget_adaptor_set_property() for non construct properties.
+	* gladeui/glade-widget.c: 
+	  - glade_widget_build_object() now calls glade_widget_set_object() internally and then 
+	    uses glade_widget_adaptor_set_property() for non construct properties.
+	  - glade_widget_dup_properties/glade_widget_copy_properties take 2 new args, whether copy
+	    parentless widget properties or not, and whether to copy them exactly or not.
+	  - added glade_widget_get_parentless_reffed_widgets() to return a list of reffed parentless
+	    widgets.
 
+	* gladeui/glade-command.c: Now add/remove parentless widget props from the project in 
+	  command_add/remove.
+	
 	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: 
 	  - Made GtkTreeView:model property query user at create time.
 	  - Fixed to never sync properties when in attribute mode, to sync attributes

@@ -112,6 +112,7 @@ struct _GladeWidget
 	GladeWidget       *construct_template;
 	GladeCreateReason  construct_reason;
 	gchar             *construct_internal;
+	gboolean           construct_exact;
 };
 
 struct _GladeWidgetClass
@@ -162,7 +163,9 @@ GList                  *glade_widget_get_signal_list        (GladeWidget      *w
 void                    glade_widget_copy_signals           (GladeWidget      *widget,
 							     GladeWidget      *template_widget);
 void                    glade_widget_copy_properties        (GladeWidget      *widget,
-							     GladeWidget      *template_widget);
+							     GladeWidget      *template_widget,
+							     gboolean          copy_parentless,
+							     gboolean          exact);
 
 void                    glade_widget_set_packing_properties (GladeWidget      *widget,
 							     GladeWidget      *container);
@@ -174,7 +177,9 @@ GladeProperty          *glade_widget_get_pack_property      (GladeWidget      *w
 							     const gchar      *id_property);
 
 GList                  *glade_widget_dup_properties         (GList            *template_props,
-                                                             gboolean          as_load);
+                                                             gboolean          as_load,
+							     gboolean          copy_parentless,
+							     gboolean          exact);
 
 void                    glade_widget_remove_property        (GladeWidget      *widget,
 							     const gchar      *id_property);
@@ -274,6 +279,9 @@ void                    glade_widget_remove_prop_ref        (GladeWidget      *w
 							     GladeProperty    *property);
 
 GladeProperty          *glade_widget_get_parentless_widget_ref (GladeWidget  *widget);
+
+
+GList                  *glade_widget_get_parentless_reffed_widgets (GladeWidget *widget);
 
 /*******************************************************************************
             Functions that deal with properties on the runtime object

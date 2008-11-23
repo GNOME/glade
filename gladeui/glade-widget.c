@@ -90,6 +90,7 @@ enum
 	PROP_PARENT,
 	PROP_INTERNAL_NAME,
 	PROP_TEMPLATE,
+	PROP_TEMPLATE_EXACT,
 	PROP_REASON,
 	PROP_TOPLEVEL_WIDTH,
 	PROP_TOPLEVEL_HEIGHT,
@@ -519,7 +520,7 @@ glade_widget_build_object (GladeWidget *widget,
 	}
 
 	if (template)
-		params = glade_widget_template_params (template, TRUE, &n_params);
+		params = glade_widget_template_params (widget, TRUE, &n_params);
 	else
 		params = glade_widget_adaptor_default_params (widget->adaptor, TRUE, &n_params);
 
@@ -532,7 +533,7 @@ glade_widget_build_object (GladeWidget *widget,
 	glade_widget_set_object (widget, object);
 
 	if (template)
-		params = glade_widget_template_params (template, FALSE, &n_params);
+		params = glade_widget_template_params (widget, FALSE, &n_params);
 	else
 		params = glade_widget_adaptor_default_params (widget->adaptor, FALSE, &n_params);
 
@@ -548,6 +549,8 @@ glade_widget_build_object (GladeWidget *widget,
  * glade_widget_dup_properties:
  * @template_props: the #GladeProperty list to copy
  * @as_load: whether to behave as if loading the project
+ * @copy_parentless: whether to copy reffed widgets at all
+ * @exact: whether to copy reffed widgets exactly
  *
  * Copies a list of properties, if @as_load is specified, then
  * properties that are not saved to the glade file are ignored.
@@ -555,7 +558,8 @@ glade_widget_build_object (GladeWidget *widget,
  * Returns: A newly allocated #GList of new #GladeProperty objects.
  */
 GList *
-glade_widget_dup_properties (GList *template_props, gboolean as_load)
+glade_widget_dup_properties (GList *template_props, gboolean as_load, 
+			     gboolean copy_parentless, gboolean exact)
 {
 	GList *list, *properties = NULL;
 
@@ -566,7 +570,30 @@ glade_widget_dup_properties (GList *template_props, gboolean as_load)
 		if (prop->klass->save == FALSE && as_load)
 			continue;
 
-		properties = g_list_prepend (properties, glade_property_dup (prop, NULL));
+
+		if (prop->klass->parentless_widget && copy_parentless)
+		{
+			GObject *object = NULL;
+			GladeWidget *parentless;
+
+			glade_property_get (prop, &object);
+			if (object)
+			{
+				parentless = glade_widget_get_from_gobject (object);
+
+				parentless = glade_widget_dup (parentless, exact);
+
+				prop = glade_property_dup (prop, NULL);
+				glade_property_set (prop, parentless->object);
+			}
+			else
+				prop = glade_property_dup (prop, NULL);
+		} 
+		else 
+			prop = glade_property_dup (prop, NULL);
+
+
+		properties = g_list_prepend (properties, prop);
 	}
 	return g_list_reverse (properties);
 }
@@ -688,7 +715,7 @@ glade_widget_constructor (GType                  type,
 	if (gwidget->construct_template)
 	{
 		properties = glade_widget_dup_properties
-			(gwidget->construct_template->properties, FALSE);
+			(gwidget->construct_template->properties, FALSE, TRUE, gwidget->construct_exact);
 		
 		glade_widget_set_properties (gwidget, properties);
 	}
@@ -698,6 +725,18 @@ glade_widget_constructor (GType                  type,
 		object = glade_widget_build_object(gwidget, 
 						   gwidget->construct_template, 
 						   gwidget->construct_reason);
+	}
+
+	/* Copy sync parentless widget props here after a dup
+	 */
+	if (gwidget->construct_reason == GLADE_CREATE_COPY)
+	{
+		for (list = gwidget->properties; list; list = list->next)
+		{
+			GladeProperty *property = list->data;
+			if (property->klass->parentless_widget)
+				glade_property_sync (property);
+		}
 	}
 
 	/* Setup width/height */
@@ -854,6 +893,9 @@ glade_widget_set_real_property (GObject         *object,
 		break;
 	case PROP_TEMPLATE:
 		widget->construct_template = g_value_get_object (value);
+		break;
+	case PROP_TEMPLATE_EXACT:
+		widget->construct_exact = g_value_get_boolean (value);
 		break;
 	case PROP_REASON:
 		widget->construct_reason = g_value_get_int (value);
@@ -1066,6 +1108,12 @@ glade_widget_class_init (GladeWidgetClass *klass)
 				       _("A GladeWidget template to base a new widget on"),
 				      GLADE_TYPE_WIDGET,
 				      G_PARAM_CONSTRUCT_ONLY|G_PARAM_WRITABLE));
+
+	g_object_class_install_property
+		(object_class, PROP_TEMPLATE_EXACT,
+		 g_param_spec_boolean ("template-exact", _("Exact Template"),
+				       _("Whether we are creating an exact duplicate when using a template"),
+				       FALSE, G_PARAM_WRITABLE|G_PARAM_CONSTRUCT_ONLY));
 
 	g_object_class_install_property
 		(object_class, 	PROP_REASON,
@@ -1348,6 +1396,7 @@ glade_widget_dup_internal (GladeWidget *parent,
 			 "parent", parent, 
 			 "project", template_widget->project,
 			 "template", template_widget, 
+			 "template-exact", exact,
 			 "reason", GLADE_CREATE_COPY, NULL);
 		g_free (name);
 	}
@@ -1419,10 +1468,11 @@ glade_widget_dup_internal (GladeWidget *parent,
 	}
 
 	if (gwidget->internal)
-		glade_widget_copy_properties (gwidget, template_widget);
+		glade_widget_copy_properties (gwidget, template_widget, TRUE, exact);
 	
 	if (gwidget->packing_properties == NULL)
-		gwidget->packing_properties = glade_widget_dup_properties (template_widget->packing_properties , FALSE);
+		gwidget->packing_properties = 
+			glade_widget_dup_properties (template_widget->packing_properties, FALSE, FALSE, FALSE);
 	
 	/* If custom properties are still at thier
 	 * default value, they need to be synced.
@@ -1489,7 +1539,7 @@ glade_widget_extract_children (GladeWidget *gwidget)
 			extract->internal_name = g_strdup (gchild->internal);
 			extract->internal_list = glade_widget_extract_children (gchild);
 			extract->properties    = 
-				glade_widget_dup_properties (gchild->properties, TRUE);
+				glade_widget_dup_properties (gchild->properties, TRUE, FALSE, FALSE);
 			
 			extract_list = g_list_prepend (extract_list, extract);
 		
@@ -1506,7 +1556,7 @@ glade_widget_extract_children (GladeWidget *gwidget)
 				 */
 				extract->properties = 
 					glade_widget_dup_properties 
-					(gchild->packing_properties, TRUE);
+					(gchild->packing_properties, TRUE, FALSE, FALSE);
 
 				glade_widget_remove_child (gwidget, gchild);
 			}
@@ -2011,6 +2061,31 @@ glade_widget_get_parentless_widget_ref (GladeWidget *widget)
 	return NULL;
 }
 
+
+GList *
+glade_widget_get_parentless_reffed_widgets (GladeWidget *widget)
+{
+	GladeWidget   *reffed = NULL;
+	GladeProperty *property = NULL;
+	GList         *l, *widgets = NULL;
+
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
+
+	for (l = widget->properties; l && l->data; l = l->next)
+	{
+		property = GLADE_PROPERTY (l->data);
+		reffed   = NULL;
+
+		if (property->klass->parentless_widget)
+		{
+			glade_property_get (property, &reffed);
+			if (reffed)
+				widgets = g_list_prepend (widgets, reffed);
+		}
+	}
+	return g_list_reverse (widgets);
+}
+
 static void
 glade_widget_accum_signal_foreach (const gchar *key,
 				   GPtrArray   *signals,
@@ -2088,13 +2163,17 @@ glade_widget_copy_signals (GladeWidget *widget,
  * glade_widget_copy_properties:
  * @widget:   a 'dest' #GladeWidget
  * @template_widget: a 'src' #GladeWidget
+ * @copy_parentless: whether to copy reffed widgets at all
+ * @exact: whether to copy reffed widgets exactly
  *
  * Sets properties in @widget based on the values of
  * matching properties in @template_widget
  */
 void
 glade_widget_copy_properties (GladeWidget *widget,
-			      GladeWidget *template_widget)
+			      GladeWidget *template_widget,
+			      gboolean     copy_parentless,
+			      gboolean     exact)
 {
 	GList *l;
 
@@ -2115,7 +2194,23 @@ glade_widget_copy_properties (GladeWidget *widget,
 		     glade_widget_get_property (template_widget, 
 						widget_prop->klass->id)) != NULL &&
 		    glade_property_class_match (template_prop->klass, widget_prop->klass))
-			glade_property_set_value (widget_prop, template_prop->value);
+		{
+			if (template_prop->klass->parentless_widget && copy_parentless)
+			{
+				GObject *object = NULL;
+				GladeWidget *parentless;
+
+				glade_property_get (template_prop, &object);
+				g_assert (object);
+
+				parentless = glade_widget_get_from_gobject (object);
+				parentless = glade_widget_dup (parentless, exact);
+
+				glade_property_set (widget_prop, parentless->object);
+			}
+			else
+				glade_property_set_value (widget_prop, template_prop->value);
+		}
 	}
 }
 
@@ -2209,7 +2304,6 @@ glade_widget_rebuild (GladeWidget *gwidget)
 	GList              *save_properties, *l;
 	
 	g_return_if_fail (GLADE_IS_WIDGET (gwidget));
-
 
 	adaptor = gwidget->adaptor;
 

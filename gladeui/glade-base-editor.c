@@ -1302,7 +1302,7 @@ glade_base_editor_change_type (GladeBaseEditor *editor,
 	}
 	
 	/* Copy properties */
-	glade_widget_copy_properties (gchild_new, gchild);
+	glade_widget_copy_properties (gchild_new, gchild, TRUE, TRUE);
 	
 	/* Delete old widget */
 	list.data = gchild;

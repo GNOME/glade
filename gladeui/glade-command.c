@@ -61,6 +61,7 @@ typedef struct {
 	GladeWidget      *widget;
 	GladeWidget      *parent;
 	GladeProject     *project;
+	GList            *reffed;
 	GladePlaceholder *placeholder;
 	gboolean          props_recorded;
 	GList            *pack_props;
@@ -986,7 +987,11 @@ glade_command_add (GList            *widgets,
 
 		/* Widget */
 		cdata->widget = g_object_ref (G_OBJECT (widget));
-		
+
+		/* Parentless ref */
+		if ((cdata->reffed = glade_widget_get_parentless_reffed_widgets (widget)) != NULL)
+			g_list_foreach (cdata->reffed, (GFunc)g_object_ref, NULL);
+
 		/* Parent */
 		if (parent == NULL)
 			cdata->parent = glade_widget_get_parent (widget);
@@ -1150,7 +1155,9 @@ glade_command_remove (GList *widgets)
 		cdata->widget  = g_object_ref (G_OBJECT (widget));
 		cdata->parent  = glade_widget_get_parent (widget);
 		cdata->project = glade_widget_get_project (widget);
-		
+		if ((cdata->reffed = glade_widget_get_parentless_reffed_widgets (widget)) != NULL)
+			g_list_foreach (cdata->reffed, (GFunc)g_object_ref, NULL);
+
 		/* Undoably unset any object properties that may point to the removed object */
 		glade_command_delete_prop_refs (widget);
 
@@ -1221,7 +1228,7 @@ glade_command_transfer_props (GladeWidget *gnew, GList *saved_props)
 static gboolean
 glade_command_add_execute (GladeCommandAddRemove *me)
 {
-	GladeProject       *active_project = glade_app_get_project ();
+	GladeProject       *active_project = glade_app_get_project (), *add_project;
 	CommandData        *cdata;
 	GList              *list, *l, *saved_props;
 	gchar              *special_child_type;
@@ -1261,7 +1268,8 @@ glade_command_add_execute (GladeCommandAddRemove *me)
 					 * otherwise prioritize packing defaults. 
 					 */
 					saved_props =
-						glade_widget_dup_properties (cdata->widget->packing_properties, FALSE);
+						glade_widget_dup_properties (cdata->widget->packing_properties, 
+									     FALSE, FALSE, FALSE);
 					
 					glade_widget_set_packing_properties (cdata->widget, cdata->parent);
 				}
@@ -1341,13 +1349,15 @@ glade_command_add_execute (GladeCommandAddRemove *me)
 			}
 
 			/* Toplevels get pasted to the active project */
-			if (me->from_clipboard && 
-			    cdata->widget->parent == NULL)
-				glade_project_add_object 
-					(active_project, cdata->project,
-					 cdata->widget->object);
-			else
-				glade_project_add_object(me->project, cdata->project, cdata->widget->object);
+			add_project = (me->from_clipboard && cdata->widget->parent == NULL) ?
+				active_project : me->project;
+			glade_project_add_object (add_project, cdata->project, cdata->widget->object);
+
+			for (l = cdata->reffed; l; l = l->next)
+			{
+				GladeWidget *reffed = l->data;
+				glade_project_add_object (add_project, cdata->project, reffed->object);
+			}
 			
 			glade_app_selection_add(cdata->widget->object, FALSE);
 
@@ -1362,8 +1372,9 @@ glade_command_add_execute (GladeCommandAddRemove *me)
 static gboolean
 glade_command_remove_execute (GladeCommandAddRemove *me)
 {
-	CommandData      *cdata;
-	GList            *list;
+	CommandData  *cdata;
+	GladeWidget  *reffed;
+	GList        *list, *l;
 
 	for (list = me->widgets; list && list->data; list = list->next)
 	{
@@ -1378,6 +1389,12 @@ glade_command_remove_execute (GladeCommandAddRemove *me)
 		}
 
 		glade_project_remove_object(GLADE_PROJECT (cdata->widget->project), cdata->widget->object);
+		
+		for (l = cdata->reffed; l; l = l->next)
+		{
+			reffed = l->data;
+			glade_project_remove_object(GLADE_PROJECT (cdata->widget->project), reffed->object);
+		}
 
 		glade_widget_hide (cdata->widget);
 	}
@@ -1416,7 +1433,7 @@ glade_command_add_remove_finalize (GObject *obj)
 {
 	GladeCommandAddRemove    *cmd;
 	CommandData              *cdata;
-	GList                    *list;
+	GList                    *list, *l;
 
 	g_return_if_fail (GLADE_IS_COMMAND_ADD_REMOVE (obj));
 
@@ -1437,6 +1454,9 @@ glade_command_add_remove_finalize (GObject *obj)
 
 		if (cdata->widget)
 			g_object_unref (G_OBJECT (cdata->widget));
+
+		g_list_foreach (cdata->reffed, (GFunc)g_object_unref, NULL);
+		g_list_free (cdata->reffed);
 	}
 	g_list_free (cmd->widgets);
 	

@@ -99,6 +99,7 @@ glade_property_dup_impl (GladeProperty *template_prop, GladeWidget *widget)
 	property->value   = g_new0 (GValue, 1);
 
 	g_value_init (property->value, template_prop->value->g_type);
+
 	/* Cannot duplicate parentless_widget property */
 	if (template_prop->klass->parentless_widget)
 	{

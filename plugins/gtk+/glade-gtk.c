@@ -1272,7 +1272,7 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor *adaptor,
 						  adaptor->title, gwidget->name);
 
 			/* Record packing properties */
-			saved_props = glade_widget_dup_properties (gwidget->packing_properties, FALSE);
+			saved_props = glade_widget_dup_properties (gwidget->packing_properties, FALSE, FALSE, FALSE);
 			
 			/* Remove "this" widget */
 			this_widget.data = gwidget;
