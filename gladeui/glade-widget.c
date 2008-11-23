@@ -503,8 +503,8 @@ free_params (GParameter *params, guint n_params)
 }
 
 static GObject *
-glade_widget_build_object (GladeWidgetAdaptor *adaptor,
-			   GladeWidget *widget,
+glade_widget_build_object (GladeWidget *widget,
+			   GladeWidget *template,
 			   GladeCreateReason reason)
 {
 	GParameter          *params;
@@ -512,26 +512,32 @@ glade_widget_build_object (GladeWidgetAdaptor *adaptor,
 	guint                n_params, i;
 	
 	if (reason == GLADE_CREATE_LOAD)
-		return glade_widget_adaptor_construct_object (adaptor, 0, NULL);
+	{
+		object = glade_widget_adaptor_construct_object (widget->adaptor, 0, NULL);
+		glade_widget_set_object (widget, object);
+		return object;
+	}
 
-	if (widget)
-		params = glade_widget_template_params (widget, TRUE, &n_params);
+	if (template)
+		params = glade_widget_template_params (template, TRUE, &n_params);
 	else
-		params = glade_widget_adaptor_default_params (adaptor, TRUE, &n_params);
+		params = glade_widget_adaptor_default_params (widget->adaptor, TRUE, &n_params);
 
 	/* Create the new object with the correct parameters.
 	 */
-	object = glade_widget_adaptor_construct_object (adaptor, n_params, params);
+	object = glade_widget_adaptor_construct_object (widget->adaptor, n_params, params);
 
 	free_params (params, n_params);
 
-	if (widget)
-		params = glade_widget_template_params (widget, FALSE, &n_params);
+	glade_widget_set_object (widget, object);
+
+	if (template)
+		params = glade_widget_template_params (template, FALSE, &n_params);
 	else
-		params = glade_widget_adaptor_default_params (adaptor, FALSE, &n_params);
+		params = glade_widget_adaptor_default_params (widget->adaptor, FALSE, &n_params);
 
 	for (i = 0; i < n_params; i++)
-		g_object_set_property (object, params[i].name, &(params[i].value));
+		glade_widget_adaptor_set_property (widget->adaptor, object, params[i].name, &(params[i].value));
 
 	free_params (params, n_params);
 
@@ -689,10 +695,9 @@ glade_widget_constructor (GType                  type,
 
 	if (gwidget->object == NULL)
 	{
-		object = glade_widget_build_object(gwidget->adaptor, 
+		object = glade_widget_build_object(gwidget, 
 						   gwidget->construct_template, 
 						   gwidget->construct_reason);
-		glade_widget_set_object (gwidget, object);
 	}
 
 	/* Setup width/height */
@@ -1407,6 +1412,7 @@ glade_widget_dup_internal (GladeWidget *parent,
 					glade_widget_copy_packing_props (gwidget,
 									 child_dup,
 									 child_gwidget);
+
 			}
 		}
 		g_list_free (children);
@@ -1422,7 +1428,7 @@ glade_widget_dup_internal (GladeWidget *parent,
 	 * default value, they need to be synced.
 	 */
 	glade_widget_sync_custom_props (gwidget);
-
+	
 	/* Some properties may not be synced so we reload them */
 	for (l = gwidget->properties; l; l = l->next)
 		glade_property_load (GLADE_PROPERTY (l->data));
@@ -2262,10 +2268,8 @@ glade_widget_rebuild (GladeWidget *gwidget)
 	/* Hold a reference to the old widget while we transport properties
 	 * and children from it
 	 */
-	new_object = glade_widget_build_object(adaptor, gwidget, GLADE_CREATE_REBUILD);
 	old_object = g_object_ref(glade_widget_get_object (gwidget));
-
-	glade_widget_set_object (gwidget, new_object);
+	new_object = glade_widget_build_object(gwidget, gwidget, GLADE_CREATE_REBUILD);
 
 	/* Only call this once the object has a proper GladeWidget */
 	glade_widget_adaptor_post_create (adaptor, new_object, GLADE_CREATE_REBUILD);

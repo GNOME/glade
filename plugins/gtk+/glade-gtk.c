@@ -8874,6 +8874,395 @@ glade_gtk_size_group_set_property (GladeWidgetAdaptor *adaptor,
 							     property_name, value);
 }
 
+/*--------------------------- GtkIconFactory ---------------------------------*/
+#define GLADE_TAG_SOURCES   "sources"
+#define GLADE_TAG_SOURCE    "source"
+
+#define GLADE_TAG_STOCK_ID  "stock-id"
+#define GLADE_TAG_FILENAME  "filename"
+#define GLADE_TAG_DIRECTION "direction"
+#define GLADE_TAG_STATE     "state"
+#define GLADE_TAG_SIZE      "size"
+
+void
+glade_gtk_icon_factory_post_create (GladeWidgetAdaptor *adaptor,
+				    GObject *object, 
+				    GladeCreateReason reason)
+{
+	gtk_icon_factory_add_default (GTK_ICON_FACTORY (object));
+}
+
+static void
+glade_gtk_icon_factory_read_sources (GladeWidget  *widget, 
+				     GladeXmlNode *node)
+{
+	GladeIconSources *sources;
+	GtkIconSource    *source;
+	GladeXmlNode     *sources_node, *source_node;
+	GValue           *value;
+	GList            *list;
+	gchar            *current_icon_name = NULL;
+	GdkPixbuf        *pixbuf;
+
+	if ((sources_node = glade_xml_search_child (node, GLADE_TAG_SOURCES)) == NULL)
+		return;
+
+	sources = glade_icon_sources_new ();
+
+	/* Here we expect all icon sets to remain together in the list. */
+	for (source_node = glade_xml_node_get_children (sources_node); source_node;
+	     source_node = glade_xml_node_next (source_node))
+	{
+		gchar *icon_name;
+		gchar *str;
+
+		if (!glade_xml_node_verify (source_node, GLADE_TAG_SOURCE)) 
+			continue;
+
+		if (!(icon_name = 
+		      glade_xml_get_property_string_required (source_node, GLADE_TAG_STOCK_ID, NULL)))
+			continue;
+
+		if (!(str = glade_xml_get_property_string_required (source_node, GLADE_TAG_FILENAME, NULL)))
+		{
+			g_free (icon_name);
+			continue;
+		}
+
+		if (!current_icon_name || strcmp (current_icon_name, icon_name) != 0)
+			current_icon_name = (g_free (current_icon_name), g_strdup (icon_name));
+
+		source = gtk_icon_source_new ();
+		
+		/* Deal with the filename... */
+		value = glade_utils_value_from_string (GDK_TYPE_PIXBUF, str,
+						       widget->project, widget);
+		pixbuf = g_value_dup_object (value);
+		g_value_unset (value);
+		g_free (value);
+
+		gtk_icon_source_set_pixbuf (source, pixbuf);
+		g_object_unref (G_OBJECT (pixbuf));
+		g_free (str);
+
+		/* Now the attributes... */
+		if ((str = glade_xml_get_property_string (source_node, GLADE_TAG_DIRECTION)) != NULL)
+		{
+			GtkTextDirection direction =
+				glade_utils_enum_value_from_string (GTK_TYPE_TEXT_DIRECTION, str);
+			gtk_icon_source_set_direction_wildcarded (source, FALSE);
+			gtk_icon_source_set_direction (source, direction);
+			g_free (str);
+		}
+
+		if ((str = glade_xml_get_property_string (source_node, GLADE_TAG_SIZE)) != NULL)
+		{
+			GtkIconSize size = 
+				glade_utils_enum_value_from_string (GTK_TYPE_ICON_SIZE, str);
+			gtk_icon_source_set_size_wildcarded (source, FALSE);
+			gtk_icon_source_set_size (source, size);
+			g_free (str);
+		}
+
+		if ((str = glade_xml_get_property_string (source_node, GLADE_TAG_STATE)) != NULL)
+		{
+			GtkStateType state =
+				glade_utils_enum_value_from_string (GTK_TYPE_STATE_TYPE, str);
+			gtk_icon_source_set_state_wildcarded (source, FALSE);
+			gtk_icon_source_set_state (source, state);
+			g_free (str);
+		}
+
+		if ((list = g_hash_table_lookup (sources->sources, g_strdup (current_icon_name))) != NULL)
+			list = g_list_prepend (list, source);
+		else
+		{
+			list = g_list_append (NULL, source);
+			g_hash_table_insert (sources->sources, g_strdup (current_icon_name), list);
+		}
+	}
+
+	if (g_hash_table_size (sources->sources) > 0)
+		glade_widget_property_set (widget, "sources", sources);
+
+	glade_icon_sources_free (sources);
+}
+
+void
+glade_gtk_icon_factory_read_widget (GladeWidgetAdaptor *adaptor,
+				    GladeWidget        *widget,
+				    GladeXmlNode       *node)
+{
+	if (!glade_xml_node_verify 
+	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+		return;
+
+	/* First chain up and read in any normal properties.. */
+        GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
+
+	glade_gtk_icon_factory_read_sources (widget, node);
+}
+
+typedef struct {
+	GladeXmlContext *context;
+	GladeXmlNode    *node;
+} SourceWriteTab;
+
+static void
+write_icon_sources (gchar          *icon_name,
+		    GList          *sources,
+		    SourceWriteTab *tab)
+{
+	GladeXmlNode  *source_node;
+	GtkIconSource *source;
+	GList         *l;
+	gchar         *string;
+
+	GdkPixbuf     *pixbuf;
+
+	for (l = sources; l; l = l->next)
+	{
+		source = l->data;
+
+		source_node = glade_xml_node_new (tab->context, GLADE_TAG_SOURCE);
+		glade_xml_node_append_child (tab->node, source_node);
+
+		glade_xml_node_set_property_string (source_node, GLADE_TAG_STOCK_ID, icon_name);
+
+		if (!gtk_icon_source_get_direction_wildcarded (source))
+		{
+			GtkTextDirection direction = gtk_icon_source_get_direction (source);
+			string = glade_utils_enum_string_from_value (GTK_TYPE_TEXT_DIRECTION, direction);
+			glade_xml_node_set_property_string (source_node, GLADE_TAG_DIRECTION, string);
+			g_free (string);
+		}
+
+		if (!gtk_icon_source_get_size_wildcarded (source))
+		{
+			GtkIconSize size = gtk_icon_source_get_size (source);
+			string = glade_utils_enum_string_from_value (GTK_TYPE_ICON_SIZE, size);
+			glade_xml_node_set_property_string (source_node, GLADE_TAG_SIZE, string);
+			g_free (string);
+		}
+
+		if (!gtk_icon_source_get_state_wildcarded (source))
+		{
+			GtkStateType state = gtk_icon_source_get_size (source);
+			string = glade_utils_enum_string_from_value (GTK_TYPE_STATE_TYPE, state);
+			glade_xml_node_set_property_string (source_node, GLADE_TAG_STATE, string);
+			g_free (string);
+		}
+
+		pixbuf = gtk_icon_source_get_pixbuf (source);
+		string = g_object_get_data (G_OBJECT (pixbuf), "GladeFileName");
+
+		glade_xml_node_set_property_string (source_node, 
+						    GLADE_TAG_FILENAME, 
+						    string);
+	}
+}
+
+
+static void
+glade_gtk_icon_factory_write_sources (GladeWidget      *widget, 
+				      GladeXmlContext  *context,
+				      GladeXmlNode     *node)
+{
+	GladeXmlNode     *sources_node;
+	GladeIconSources *sources = NULL;
+	SourceWriteTab    tab;
+
+	glade_widget_property_get (widget, "sources", &sources);
+	if (!sources)
+		return;
+
+	sources_node = glade_xml_node_new (context, GLADE_TAG_SOURCES);
+
+	tab.context = context;
+	tab.node    = sources_node;
+	g_hash_table_foreach (sources->sources, (GHFunc)write_icon_sources, &tab);
+
+	if (!glade_xml_node_get_children (sources_node))
+		glade_xml_node_delete (sources_node);
+	else
+		glade_xml_node_append_child (node, sources_node);
+
+}
+
+
+void
+glade_gtk_icon_factory_write_widget (GladeWidgetAdaptor *adaptor,
+				     GladeWidget        *widget,
+				     GladeXmlContext    *context,
+				     GladeXmlNode       *node)
+{
+	if (!glade_xml_node_verify
+	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+		return;
+
+	/* First chain up and write all the normal properties.. */
+        GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
+
+	glade_gtk_icon_factory_write_sources (widget, context, node);
+}
+
+static void
+apply_icon_sources (gchar          *icon_name,
+		    GList          *sources,
+		    GtkIconFactory *factory)
+{
+	GtkIconSource *source;
+	GtkIconSet    *set;
+	GList         *l;
+
+	set = gtk_icon_set_new ();
+
+	for (l = sources; l; l = l->next)
+	{
+		source = gtk_icon_source_copy ((GtkIconSource *)l->data);
+		gtk_icon_set_add_source (set, source);
+	}
+
+	gtk_icon_factory_add (factory, icon_name, set);
+}
+
+static void
+glade_gtk_icon_factory_set_sources (GObject *object, const GValue *value)
+{
+	GladeIconSources *sources = g_value_get_boxed (value);
+	if (sources)
+		g_hash_table_foreach (sources->sources, (GHFunc)apply_icon_sources, object);
+}
+
+
+void
+glade_gtk_icon_factory_set_property (GladeWidgetAdaptor *adaptor,
+				     GObject *object,
+				     const gchar *property_name,
+				     const GValue *value)
+{
+	if (strcmp (property_name, "sources") == 0)
+	{
+		glade_gtk_icon_factory_set_sources (object, value);
+	} 
+	else
+		/* Chain Up */
+		GWA_GET_CLASS (G_TYPE_OBJECT)->set_property (adaptor,
+							     object,
+							     property_name, 
+							     value);
+}
+
+static void
+serialize_icon_sources (gchar          *icon_name,
+			GList          *sources,
+			GString        *string)
+{	
+	GList *l;
+	
+	for (l = sources; l; l = g_list_next (l))
+	{
+		GtkIconSource *source = l->data;
+		GdkPixbuf     *pixbuf;
+		gchar         *str;
+
+		pixbuf = gtk_icon_source_get_pixbuf (source);
+		str    = g_object_get_data (G_OBJECT (pixbuf), "GladeFileName");
+
+		g_string_append_printf (string, "%s[%s] ", icon_name, str);
+
+		if (!gtk_icon_source_get_direction_wildcarded (source))
+		{
+			GtkTextDirection direction = gtk_icon_source_get_direction (source);
+			str = glade_utils_enum_string_from_value (GTK_TYPE_TEXT_DIRECTION, direction);
+			g_string_append_printf (string, "dir-%s ", str);
+			g_free (str);
+		}
+
+		if (!gtk_icon_source_get_size_wildcarded (source))
+		{
+			GtkIconSize size = gtk_icon_source_get_size (source);
+			str = glade_utils_enum_string_from_value (GTK_TYPE_ICON_SIZE, size);
+			g_string_append_printf (string, "size-%s ", str);
+			g_free (str);
+		}
+
+		if (!gtk_icon_source_get_state_wildcarded (source))
+		{
+			GtkStateType state = gtk_icon_source_get_state (source);
+			str = glade_utils_enum_string_from_value (GTK_TYPE_STATE_TYPE, state);
+			g_string_append_printf (string, "state-%s ", str);
+			g_free (str);
+		}
+		
+		g_string_append_printf (string, "| ");
+	}
+}
+
+gchar *
+glade_gtk_icon_factory_string_from_value (GladeWidgetAdaptor *adaptor,
+					  GladePropertyClass *klass,
+					  const GValue       *value,
+					  GladeProjectFormat  fmt)
+{
+	GString *string;
+
+	if (klass->pspec->value_type == GLADE_TYPE_ICON_SOURCES)
+	{
+		GladeIconSources *sources = g_value_get_boxed (value);
+		if (!sources)
+			return g_strdup ("");
+
+		string = g_string_new ("");		
+		g_hash_table_foreach (sources->sources, (GHFunc)serialize_icon_sources, string);
+
+		return g_string_free (string, FALSE);
+	}
+	else
+		return GWA_GET_CLASS 
+			(G_TYPE_OBJECT)->string_from_value (adaptor, 
+							    klass, 
+							    value,
+							    fmt);
+}
+
+
+GladeEditorProperty *
+glade_gtk_icon_factory_create_eprop (GladeWidgetAdaptor *adaptor,
+				     GladePropertyClass *klass,
+				     gboolean            use_command)
+{
+	GladeEditorProperty *eprop;
+
+	if (klass->pspec->value_type == GLADE_TYPE_ICON_SOURCES)
+		eprop = g_object_new (GLADE_TYPE_EPROP_ICON_SOURCES,
+				      "property-class", klass, 
+				      "use-command", use_command,
+				      NULL);				
+	else
+		eprop = GWA_GET_CLASS 
+			(G_TYPE_OBJECT)->create_eprop (adaptor, 
+						       klass, 
+						       use_command);
+	return eprop;
+}
+
+GladeEditable *
+glade_gtk_icon_factory_create_editable (GladeWidgetAdaptor  *adaptor,
+					GladeEditorPageType  type)
+{
+	GladeEditable *editable;
+
+	/* Get base editable */
+	editable = GWA_GET_CLASS (G_TYPE_OBJECT)->create_editable (adaptor, type);
+
+	if (type == GLADE_PAGE_GENERAL)
+		return (GladeEditable *)glade_icon_factory_editor_new (adaptor, editable);
+
+	return editable;
+}
+
+
 /*--------------------------- GtkListStore/GtkTreeStore ---------------------------------*/
 
 #define GLADE_TAG_COLUMNS	"columns"
@@ -9383,596 +9772,69 @@ glade_gtk_store_read_widget (GladeWidgetAdaptor *adaptor,
 	glade_gtk_store_read_data (widget, node);
 }
 
-
-/*--------------------------- GtkTreeView ---------------------------------*/
-static gchar *
-glade_gtk_treeview_get_display_name (GladeBaseEditor *editor,
-				     GladeWidget *gchild,
-				     gpointer user_data)
-{
-	GObject *child = glade_widget_get_object (gchild);
-	gchar *name;
-	
-	if (GTK_IS_TREE_VIEW_COLUMN (child))
-		glade_widget_property_get (gchild, "title", &name);
-	else
-		name = gchild->name;
-	
-	return g_strdup (name);
-}
-
-static void
-glade_gtk_treeview_child_selected (GladeBaseEditor *editor,
-				  GladeWidget *gchild,
-				  gpointer data)
-{
-	GObject *child = glade_widget_get_object (gchild);
-	
-	glade_base_editor_add_label (editor, GTK_IS_TREE_VIEW_COLUMN (child) ? 
-				     _("Tree View Column") : _("Cell Renderer"));
-	
-	glade_base_editor_add_default_properties (editor, gchild);
-	
-	glade_base_editor_add_label (editor, GTK_IS_TREE_VIEW_COLUMN (child) ? 
-				     _("Properties") : _("Properties and Attributes"));
-	glade_base_editor_add_editable (editor, gchild, GLADE_PAGE_GENERAL);
-
-	if (GTK_IS_CELL_RENDERER (child))
-	{
-		glade_base_editor_add_label (editor, _("Common Properties and Attributes"));
-		glade_base_editor_add_editable (editor, gchild, GLADE_PAGE_COMMON);
-	}
-}
-
-static gboolean
-glade_gtk_treeview_move_child (GladeBaseEditor *editor,
-			       GladeWidget *gparent,
-			       GladeWidget *gchild,
-			       gpointer data)
-{	
-	GObject *parent = glade_widget_get_object (gparent);
-	GObject *child  = glade_widget_get_object (gchild);
-	GList    list   = { 0, };
-
-	if (GTK_IS_TREE_VIEW (parent) && !GTK_IS_TREE_VIEW_COLUMN (child))
-		return FALSE;
-	if (GTK_IS_TREE_VIEW_COLUMN (parent) && !GTK_IS_CELL_RENDERER (child))
-		return FALSE;
-	if (GTK_IS_CELL_RENDERER (parent))
-		return FALSE;
-	
-	if (gparent != glade_widget_get_parent (gchild))
-	{
-		list.data = gchild;
-		glade_command_dnd (&list, gparent, NULL);
-	}
-
-	return TRUE;
-}
-
-static void
-glade_gtk_treeview_launch_editor (GObject  *treeview)
-{
-	GladeWidget *widget = glade_widget_get_from_gobject (treeview);
-	GladeBaseEditor *editor;
-	GladeEditable *treeview_editor;
-	GtkWidget *window;
-
-
-	treeview_editor = glade_widget_adaptor_create_editable (widget->adaptor, GLADE_PAGE_GENERAL);
-	treeview_editor = (GladeEditable *)glade_tree_view_editor_new (widget->adaptor, treeview_editor);
-
-	/* Editor */
-	editor = glade_base_editor_new (treeview, treeview_editor,
-					_("Column"), GTK_TYPE_TREE_VIEW_COLUMN,
-					NULL);
-
-	glade_base_editor_append_types (editor, GTK_TYPE_TREE_VIEW_COLUMN,
-					_("Text"), GTK_TYPE_CELL_RENDERER_TEXT,
-					_("Accelerator"), GTK_TYPE_CELL_RENDERER_ACCEL,
-					_("Combo"), GTK_TYPE_CELL_RENDERER_COMBO,
-					_("Spin"),  GTK_TYPE_CELL_RENDERER_SPIN,
-					_("Pixbuf"), GTK_TYPE_CELL_RENDERER_PIXBUF,
-					_("Progress"), GTK_TYPE_CELL_RENDERER_PROGRESS,
-					_("Toggle"), GTK_TYPE_CELL_RENDERER_TOGGLE,
-					NULL);
-
-	g_signal_connect (editor, "get-display-name", G_CALLBACK (glade_gtk_treeview_get_display_name), NULL);
-	g_signal_connect (editor, "child-selected", G_CALLBACK (glade_gtk_treeview_child_selected), NULL);
-	g_signal_connect (editor, "move-child", G_CALLBACK (glade_gtk_treeview_move_child), NULL);
-
-	gtk_widget_show (GTK_WIDGET (editor));
-	
-	window = glade_base_editor_pack_new_window (editor, _("Tree View Editor"), NULL);
-	gtk_widget_show (window);
-}
+/*--------------------------- GtkCellRenderer ---------------------------------*/
+static void glade_gtk_treeview_launch_editor (GObject *treeview);
 
 void
-glade_gtk_treeview_action_activate (GladeWidgetAdaptor *adaptor,
-				    GObject *object,
-				    const gchar *action_path)
+glade_gtk_cell_renderer_action_activate (GladeWidgetAdaptor *adaptor,
+					 GObject *object,
+					 const gchar *action_path)
 {
 	if (strcmp (action_path, "launch_editor") == 0)
 	{
-		glade_gtk_treeview_launch_editor (object);
-	}
-	else
-		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor,
-								     object,
-								     action_path);
-}
-
-static gint
-glade_gtk_treeview_get_column_index (GtkTreeView       *view,
-				     GtkTreeViewColumn *column)
-{
-	GtkTreeViewColumn *iter;
-	gint i;
-
-	for (i = 0; (iter = gtk_tree_view_get_column (view, i)) != NULL; i++)
-		if (iter == column)
-			return i;
-
-	return -1;
-}
-
-void
-glade_gtk_treeview_get_child_property (GladeWidgetAdaptor *adaptor,
-				       GObject            *container,
-				       GObject            *child,
-				       const gchar        *property_name,
-				       GValue             *value)
-{	
-	if (strcmp (property_name, "position") == 0)
-		g_value_set_int (value,
-				 glade_gtk_treeview_get_column_index (GTK_TREE_VIEW (container), 
-								      GTK_TREE_VIEW_COLUMN (child)));
-	else
-		/* Chain Up */
-		GWA_GET_CLASS
-			(GTK_TYPE_CONTAINER)->child_get_property (adaptor, 
-								  container, child,
-								  property_name, value);
-}
-
-void
-glade_gtk_treeview_set_child_property (GladeWidgetAdaptor *adaptor,
-				       GObject            *container,
-				       GObject            *child,
-				       const gchar        *property_name,
-				       const GValue       *value)
-{
-	if (strcmp (property_name, "position") == 0)
-	{
-
-		gtk_tree_view_remove_column (GTK_TREE_VIEW (container),
-					     GTK_TREE_VIEW_COLUMN (child));
-		gtk_tree_view_insert_column (GTK_TREE_VIEW (container),
-					     GTK_TREE_VIEW_COLUMN (child),
-					     g_value_get_int (value));
-	}
-	else
-		/* Chain Up */
-		GWA_GET_CLASS
-			(GTK_TYPE_CONTAINER)->child_set_property (adaptor, 
-								  container, child,
-								  property_name, value);
-}
-
-GList *
-glade_gtk_treeview_get_children (GladeWidgetAdaptor *adaptor,
-				 GtkTreeView        *view)
-{
-	return gtk_tree_view_get_columns (view);
-}
-
-void
-glade_gtk_treeview_add_child (GladeWidgetAdaptor *adaptor,
-			      GObject *container,
-			      GObject *child)
-{
-	GtkTreeView *view = GTK_TREE_VIEW (container);
-	GtkTreeViewColumn *column;
-
-	if (!GTK_IS_TREE_VIEW_COLUMN (child))
-		return;
-
-	column = GTK_TREE_VIEW_COLUMN (child);
-	gtk_tree_view_append_column (view, column);
-}
-
-void
-glade_gtk_treeview_remove_child (GladeWidgetAdaptor *adaptor,
-				 GObject *container,
-				 GObject *child)
-{
-	GtkTreeView *view = GTK_TREE_VIEW (container);
-	GtkTreeViewColumn *column;
-
-	if (!GTK_IS_TREE_VIEW_COLUMN (child))
-		return;
-
-	column = GTK_TREE_VIEW_COLUMN (child);
-	gtk_tree_view_remove_column (view, column);
-}
-
-gboolean
-glade_gtk_treeview_depends (GladeWidgetAdaptor *adaptor,
-			    GladeWidget        *widget,
-			    GladeWidget        *another)
-{
-	if (GTK_IS_TREE_MODEL (another->object))
-		return TRUE; 
-
-	return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->depends (adaptor, widget, another);
-}
-
-
-/*--------------------------- GtkIconFactory ---------------------------------*/
-#define GLADE_TAG_SOURCES   "sources"
-#define GLADE_TAG_SOURCE    "source"
-
-#define GLADE_TAG_STOCK_ID  "stock-id"
-#define GLADE_TAG_FILENAME  "filename"
-#define GLADE_TAG_DIRECTION "direction"
-#define GLADE_TAG_STATE     "state"
-#define GLADE_TAG_SIZE      "size"
-
-void
-glade_gtk_icon_factory_post_create (GladeWidgetAdaptor *adaptor,
-				    GObject *object, 
-				    GladeCreateReason reason)
-{
-	gtk_icon_factory_add_default (GTK_ICON_FACTORY (object));
-}
-
-static void
-glade_gtk_icon_factory_read_sources (GladeWidget  *widget, 
-				     GladeXmlNode *node)
-{
-	GladeIconSources *sources;
-	GtkIconSource    *source;
-	GladeXmlNode     *sources_node, *source_node;
-	GValue           *value;
-	GList            *list;
-	gchar            *current_icon_name = NULL;
-	GdkPixbuf        *pixbuf;
-
-	if ((sources_node = glade_xml_search_child (node, GLADE_TAG_SOURCES)) == NULL)
-		return;
-
-	sources = glade_icon_sources_new ();
-
-	/* Here we expect all icon sets to remain together in the list. */
-	for (source_node = glade_xml_node_get_children (sources_node); source_node;
-	     source_node = glade_xml_node_next (source_node))
-	{
-		gchar *icon_name;
-		gchar *str;
-
-		if (!glade_xml_node_verify (source_node, GLADE_TAG_SOURCE)) 
-			continue;
-
-		if (!(icon_name = 
-		      glade_xml_get_property_string_required (source_node, GLADE_TAG_STOCK_ID, NULL)))
-			continue;
-
-		if (!(str = glade_xml_get_property_string_required (source_node, GLADE_TAG_FILENAME, NULL)))
-		{
-			g_free (icon_name);
-			continue;
-		}
-
-		if (!current_icon_name || strcmp (current_icon_name, icon_name) != 0)
-			current_icon_name = (g_free (current_icon_name), g_strdup (icon_name));
-
-		source = gtk_icon_source_new ();
+		GladeWidget *w = glade_widget_get_from_gobject (object);
 		
-		/* Deal with the filename... */
-		value = glade_utils_value_from_string (GDK_TYPE_PIXBUF, str,
-						       widget->project, widget);
-		pixbuf = g_value_dup_object (value);
-		g_value_unset (value);
-		g_free (value);
-
-		gtk_icon_source_set_pixbuf (source, pixbuf);
-		g_object_unref (G_OBJECT (pixbuf));
-		g_free (str);
-
-		/* Now the attributes... */
-		if ((str = glade_xml_get_property_string (source_node, GLADE_TAG_DIRECTION)) != NULL)
+		while ((w = glade_widget_get_parent (w)))
 		{
-			GtkTextDirection direction =
-				glade_utils_enum_value_from_string (GTK_TYPE_TEXT_DIRECTION, str);
-			gtk_icon_source_set_direction_wildcarded (source, FALSE);
-			gtk_icon_source_set_direction (source, direction);
-			g_free (str);
-		}
-
-		if ((str = glade_xml_get_property_string (source_node, GLADE_TAG_SIZE)) != NULL)
-		{
-			GtkIconSize size = 
-				glade_utils_enum_value_from_string (GTK_TYPE_ICON_SIZE, str);
-			gtk_icon_source_set_size_wildcarded (source, FALSE);
-			gtk_icon_source_set_size (source, size);
-			g_free (str);
-		}
-
-		if ((str = glade_xml_get_property_string (source_node, GLADE_TAG_STATE)) != NULL)
-		{
-			GtkStateType state =
-				glade_utils_enum_value_from_string (GTK_TYPE_STATE_TYPE, str);
-			gtk_icon_source_set_state_wildcarded (source, FALSE);
-			gtk_icon_source_set_state (source, state);
-			g_free (str);
-		}
-
-		if ((list = g_hash_table_lookup (sources->sources, g_strdup (current_icon_name))) != NULL)
-			list = g_list_prepend (list, source);
-		else
-		{
-			list = g_list_append (NULL, source);
-			g_hash_table_insert (sources->sources, g_strdup (current_icon_name), list);
+			if (GTK_IS_TREE_VIEW (w->object))
+			{
+				glade_gtk_treeview_launch_editor (w->object);
+				break;
+			}
 		}
 	}
-
-	if (g_hash_table_size (sources->sources) > 0)
-		glade_widget_property_set (widget, "sources", sources);
-
-	glade_icon_sources_free (sources);
-}
-
-void
-glade_gtk_icon_factory_read_widget (GladeWidgetAdaptor *adaptor,
-				    GladeWidget        *widget,
-				    GladeXmlNode       *node)
-{
-	if (!glade_xml_node_verify 
-	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
-		return;
-
-	/* First chain up and read in any normal properties.. */
-        GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
-
-	glade_gtk_icon_factory_read_sources (widget, node);
-}
-
-typedef struct {
-	GladeXmlContext *context;
-	GladeXmlNode    *node;
-} SourceWriteTab;
-
-static void
-write_icon_sources (gchar          *icon_name,
-		    GList          *sources,
-		    SourceWriteTab *tab)
-{
-	GladeXmlNode  *source_node;
-	GtkIconSource *source;
-	GList         *l;
-	gchar         *string;
-
-	GdkPixbuf     *pixbuf;
-
-	for (l = sources; l; l = l->next)
-	{
-		source = l->data;
-
-		source_node = glade_xml_node_new (tab->context, GLADE_TAG_SOURCE);
-		glade_xml_node_append_child (tab->node, source_node);
-
-		glade_xml_node_set_property_string (source_node, GLADE_TAG_STOCK_ID, icon_name);
-
-		if (!gtk_icon_source_get_direction_wildcarded (source))
-		{
-			GtkTextDirection direction = gtk_icon_source_get_direction (source);
-			string = glade_utils_enum_string_from_value (GTK_TYPE_TEXT_DIRECTION, direction);
-			glade_xml_node_set_property_string (source_node, GLADE_TAG_DIRECTION, string);
-			g_free (string);
-		}
-
-		if (!gtk_icon_source_get_size_wildcarded (source))
-		{
-			GtkIconSize size = gtk_icon_source_get_size (source);
-			string = glade_utils_enum_string_from_value (GTK_TYPE_ICON_SIZE, size);
-			glade_xml_node_set_property_string (source_node, GLADE_TAG_SIZE, string);
-			g_free (string);
-		}
-
-		if (!gtk_icon_source_get_state_wildcarded (source))
-		{
-			GtkStateType state = gtk_icon_source_get_size (source);
-			string = glade_utils_enum_string_from_value (GTK_TYPE_STATE_TYPE, state);
-			glade_xml_node_set_property_string (source_node, GLADE_TAG_STATE, string);
-			g_free (string);
-		}
-
-		pixbuf = gtk_icon_source_get_pixbuf (source);
-		string = g_object_get_data (G_OBJECT (pixbuf), "GladeFileName");
-
-		glade_xml_node_set_property_string (source_node, 
-						    GLADE_TAG_FILENAME, 
-						    string);
-	}
-}
-
-
-static void
-glade_gtk_icon_factory_write_sources (GladeWidget      *widget, 
-				      GladeXmlContext  *context,
-				      GladeXmlNode     *node)
-{
-	GladeXmlNode     *sources_node;
-	GladeIconSources *sources = NULL;
-	SourceWriteTab    tab;
-
-	glade_widget_property_get (widget, "sources", &sources);
-	if (!sources)
-		return;
-
-	sources_node = glade_xml_node_new (context, GLADE_TAG_SOURCES);
-
-	tab.context = context;
-	tab.node    = sources_node;
-	g_hash_table_foreach (sources->sources, (GHFunc)write_icon_sources, &tab);
-
-	if (!glade_xml_node_get_children (sources_node))
-		glade_xml_node_delete (sources_node);
 	else
-		glade_xml_node_append_child (node, sources_node);
-
+		GWA_GET_CLASS (G_TYPE_OBJECT)->action_activate (adaptor,
+								object,
+								action_path);
 }
-
 
 void
-glade_gtk_icon_factory_write_widget (GladeWidgetAdaptor *adaptor,
-				     GladeWidget        *widget,
-				     GladeXmlContext    *context,
-				     GladeXmlNode       *node)
+glade_gtk_cell_renderer_post_create (GladeWidgetAdaptor *adaptor, 
+				     GObject            *object, 
+				     GladeCreateReason   reason)
 {
-	if (!glade_xml_node_verify
-	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
-		return;
-
-	/* First chain up and write all the normal properties.. */
-        GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
-
-	glade_gtk_icon_factory_write_sources (widget, context, node);
-}
-
-static void
-apply_icon_sources (gchar          *icon_name,
-		    GList          *sources,
-		    GtkIconFactory *factory)
-{
-	GtkIconSource *source;
-	GtkIconSet    *set;
-	GList         *l;
-
-	set = gtk_icon_set_new ();
-
-	for (l = sources; l; l = l->next)
-	{
-		source = gtk_icon_source_copy ((GtkIconSource *)l->data);
-		gtk_icon_set_add_source (set, source);
-	}
-
-	gtk_icon_factory_add (factory, icon_name, set);
-}
-
-static void
-glade_gtk_icon_factory_set_sources (GObject *object, const GValue *value)
-{
-	GladeIconSources *sources = g_value_get_boxed (value);
-	if (sources)
-		g_hash_table_foreach (sources->sources, (GHFunc)apply_icon_sources, object);
-}
-
-
-void
-glade_gtk_icon_factory_set_property (GladeWidgetAdaptor *adaptor,
-				     GObject *object,
-				     const gchar *property_name,
-				     const GValue *value)
-{
-	if (strcmp (property_name, "sources") == 0)
-	{
-		glade_gtk_icon_factory_set_sources (object, value);
-	} 
-	else
-		/* Chain Up */
-		GWA_GET_CLASS (G_TYPE_OBJECT)->set_property (adaptor,
-							     object,
-							     property_name, 
-							     value);
-}
-
-static void
-serialize_icon_sources (gchar          *icon_name,
-			GList          *sources,
-			GString        *string)
-{	
-	GList *l;
+	GladePropertyClass  *pclass;
+	GladeProperty       *property;
+	GladeWidget         *widget;
+	GList               *l;
 	
-	for (l = sources; l; l = g_list_next (l))
+	widget = glade_widget_get_from_gobject (object);
+
+	for (l = adaptor->properties; l; l = l->next)
 	{
-		GtkIconSource *source = l->data;
-		GdkPixbuf     *pixbuf;
-		gchar         *str;
+		pclass = l->data;
 
-		pixbuf = gtk_icon_source_get_pixbuf (source);
-		str    = g_object_get_data (G_OBJECT (pixbuf), "GladeFileName");
-
-		g_string_append_printf (string, "%s[%s] ", icon_name, str);
-
-		if (!gtk_icon_source_get_direction_wildcarded (source))
+		if (strncmp (pclass->id, "use-attr-", strlen ("use-attr-")) == 0)
 		{
-			GtkTextDirection direction = gtk_icon_source_get_direction (source);
-			str = glade_utils_enum_string_from_value (GTK_TYPE_TEXT_DIRECTION, direction);
-			g_string_append_printf (string, "dir-%s ", str);
-			g_free (str);
+			property = glade_widget_get_property (widget, pclass->id);
+			glade_property_sync (property);
 		}
-
-		if (!gtk_icon_source_get_size_wildcarded (source))
-		{
-			GtkIconSize size = gtk_icon_source_get_size (source);
-			str = glade_utils_enum_string_from_value (GTK_TYPE_ICON_SIZE, size);
-			g_string_append_printf (string, "size-%s ", str);
-			g_free (str);
-		}
-
-		if (!gtk_icon_source_get_state_wildcarded (source))
-		{
-			GtkStateType state = gtk_icon_source_get_state (source);
-			str = glade_utils_enum_string_from_value (GTK_TYPE_STATE_TYPE, state);
-			g_string_append_printf (string, "state-%s ", str);
-			g_free (str);
-		}
-		
-		g_string_append_printf (string, "| ");
 	}
 }
-
-gchar *
-glade_gtk_icon_factory_string_from_value (GladeWidgetAdaptor *adaptor,
-					  GladePropertyClass *klass,
-					  const GValue       *value,
-					  GladeProjectFormat  fmt)
-{
-	GString *string;
-
-	if (klass->pspec->value_type == GLADE_TYPE_ICON_SOURCES)
-	{
-		GladeIconSources *sources = g_value_get_boxed (value);
-		if (!sources)
-			return g_strdup ("");
-
-		string = g_string_new ("");		
-		g_hash_table_foreach (sources->sources, (GHFunc)serialize_icon_sources, string);
-
-		return g_string_free (string, FALSE);
-	}
-	else
-		return GWA_GET_CLASS 
-			(G_TYPE_OBJECT)->string_from_value (adaptor, 
-							    klass, 
-							    value,
-							    fmt);
-}
-
 
 GladeEditorProperty *
-glade_gtk_icon_factory_create_eprop (GladeWidgetAdaptor *adaptor,
-				     GladePropertyClass *klass,
-				     gboolean            use_command)
+glade_gtk_cell_renderer_create_eprop (GladeWidgetAdaptor *adaptor,
+				      GladePropertyClass *klass,
+				      gboolean            use_command)
 {
 	GladeEditorProperty *eprop;
 
-	if (klass->pspec->value_type == GLADE_TYPE_ICON_SOURCES)
-		eprop = g_object_new (GLADE_TYPE_EPROP_ICON_SOURCES,
+	if (strncmp (klass->id, "attr-", strlen ("attr-")) == 0)
+		eprop = g_object_new (GLADE_TYPE_EPROP_CELL_ATTRIBUTE,
 				      "property-class", klass, 
 				      "use-command", use_command,
-				      NULL);				
+				      NULL);
 	else
 		eprop = GWA_GET_CLASS 
 			(G_TYPE_OBJECT)->create_eprop (adaptor, 
@@ -9981,19 +9843,231 @@ glade_gtk_icon_factory_create_eprop (GladeWidgetAdaptor *adaptor,
 	return eprop;
 }
 
+
 GladeEditable *
-glade_gtk_icon_factory_create_editable (GladeWidgetAdaptor  *adaptor,
-					GladeEditorPageType  type)
+glade_gtk_cell_renderer_create_editable (GladeWidgetAdaptor  *adaptor,
+					 GladeEditorPageType  type)
 {
 	GladeEditable *editable;
 
 	/* Get base editable */
 	editable = GWA_GET_CLASS (G_TYPE_OBJECT)->create_editable (adaptor, type);
 
-	if (type == GLADE_PAGE_GENERAL)
-		return (GladeEditable *)glade_icon_factory_editor_new (adaptor, editable);
+	if (type == GLADE_PAGE_GENERAL || type == GLADE_PAGE_COMMON)
+		return (GladeEditable *)glade_cell_renderer_editor_new (adaptor, type, editable);
 
 	return editable;
+}
+
+static void
+glade_gtk_cell_renderer_set_use_attribute (GObject      *object, 
+					   const gchar  *property_name,
+					   const GValue *value)
+{
+	GladeWidget *widget = glade_widget_get_from_gobject (object);
+	gchar *attr_prop_name, *prop_msg, *attr_msg;
+
+	attr_prop_name = g_strdup_printf ("attr-%s", property_name);
+
+	prop_msg = g_strdup_printf (_("%s is set to load %s from the model"), 
+				    widget->name, property_name);
+	attr_msg = g_strdup_printf (_("%s is set to manipulate %s directly"), 
+				    widget->name, attr_prop_name);
+
+	glade_widget_property_set_sensitive (widget, property_name, FALSE, prop_msg);
+	glade_widget_property_set_sensitive (widget, attr_prop_name, FALSE, attr_msg);
+
+	if (g_value_get_boolean (value))
+		glade_widget_property_set_sensitive (widget, attr_prop_name, TRUE, NULL);
+	else
+		glade_widget_property_set_sensitive (widget, property_name, TRUE, NULL);
+
+	g_free (prop_msg);
+	g_free (attr_msg);
+	g_free (attr_prop_name);
+}
+
+static gboolean 
+glade_gtk_cell_layout_has_renderer (GtkCellLayout *layout,
+				    GtkCellRenderer *renderer)
+{
+	GList *cells = gtk_cell_layout_get_cells (layout);
+	gboolean has_renderer;
+
+	has_renderer = (g_list_find (cells, renderer) != NULL);
+
+	g_list_free (cells);
+
+	return has_renderer;
+}
+
+static void
+glade_gtk_cell_renderer_sync_attributes (GObject *object)
+{
+
+	GtkCellLayout *layout;
+	GtkCellRenderer *cell;
+	GladeWidget *widget = glade_widget_get_from_gobject (object), *glayout;
+	GladeWidget *gmodel = NULL;
+	GladeProperty *property;
+	gchar *attr_prop_name;
+	GList *l;
+	gint columns = 0;
+	static gint attr_len = 0;
+
+	if (!attr_len)
+		attr_len = strlen ("attr-");
+
+	/* Apply attributes to renderer when bound to a model in runtime */
+	widget = glade_widget_get_from_gobject (object);
+		
+	if (widget->parent == NULL) return;
+
+	/* When creating widgets, sometimes the parent is set before parenting happens,
+	 * here we have to be careful for that..
+	 */
+	layout = GTK_CELL_LAYOUT (widget->parent->object);
+	cell = GTK_CELL_RENDERER (object);
+	glayout = glade_widget_get_from_gobject (layout);
+
+	if (!glade_gtk_cell_layout_has_renderer (layout, cell))
+		return;
+
+	if (glayout->parent && GTK_IS_TREE_VIEW (glayout->parent->object))
+	{
+		GtkTreeModel *model = NULL;
+
+		glade_widget_property_get (glayout->parent, "model", &model);
+		if (model)
+			gmodel = glade_widget_get_from_gobject (model);
+	}
+
+	if (gmodel)
+	{
+		GList *column_list = NULL;
+		glade_widget_property_get (gmodel, "columns", &column_list);
+		columns = g_list_length (column_list);
+
+	}
+
+	gtk_cell_layout_clear_attributes (layout, cell);
+
+	for (l = widget->properties; l; l = l->next)
+	{
+		property = l->data;
+
+		if (strncmp (property->klass->id, "attr-", attr_len) == 0)
+		{
+			attr_prop_name = &property->klass->id[attr_len];
+
+			/* XXX TODO: Check that the cell supports the data type in the indexed column.
+			 */
+			if (g_value_get_int (property->value) >= 0 &&
+			    /* We have to set attributes before parenting when loading */
+			    (glade_widget_superuser () || g_value_get_int (property->value) < columns))
+				gtk_cell_layout_add_attribute (layout, cell,
+							       attr_prop_name,
+							       g_value_get_int (property->value));
+		}
+	}
+}
+
+static gboolean
+glade_gtk_cell_renderer_property_enabled (GObject     *object,
+					  const gchar *property_name)
+{
+	GladeWidget   *gwidget = glade_widget_get_from_gobject (object);
+	gchar         *use_attr_name = g_strdup_printf ("use-attr-%s", property_name);
+	GladeProperty *property;
+	gboolean       use_attr = TRUE;
+
+	if ((property = glade_widget_get_property (gwidget, use_attr_name)) != NULL)
+		glade_property_get (property, &use_attr);
+
+	g_free (use_attr_name);
+
+	return !use_attr;
+}
+
+void
+glade_gtk_cell_renderer_set_property (GladeWidgetAdaptor *adaptor,
+				      GObject *object,
+				      const gchar *property_name,
+				      const GValue *value)
+{
+	static gint use_attr_len = 0;
+	static gint attr_len     = 0;
+
+	if (!attr_len)
+	{
+		use_attr_len = strlen ("use-attr-");
+		attr_len = strlen ("attr-");
+	}
+
+	if (strncmp (property_name, "use-attr-", use_attr_len) == 0)
+		glade_gtk_cell_renderer_set_use_attribute (object, &property_name[use_attr_len], value);
+	else if (strncmp (property_name, "attr-", attr_len) == 0)
+		glade_gtk_cell_renderer_sync_attributes (object);
+	else if (glade_gtk_cell_renderer_property_enabled (object, property_name))
+		/* Chain Up */
+		GWA_GET_CLASS (G_TYPE_OBJECT)->set_property (adaptor,
+							     object,
+							     property_name, 
+							     value);
+}
+
+static void
+glade_gtk_cell_renderer_write_properties (GladeWidget        *widget,
+					  GladeXmlContext    *context,
+					  GladeXmlNode       *node)
+{
+	GladeProperty *property, *prop;
+	gchar *attr_name;
+	GList *l;
+	static gint attr_len = 0;
+
+	if (!attr_len)
+		attr_len = strlen ("attr-");
+
+	for (l = widget->properties; l; l = l->next)
+	{
+		property = l->data;
+
+		if (strncmp (property->klass->id, "attr-", attr_len) == 0)
+		{
+			gchar *use_attr_str;
+			gboolean use_attr = FALSE;
+
+			use_attr_str = g_strdup_printf ("use-%s", property->klass->id);
+			glade_widget_property_get (widget, use_attr_str, &use_attr);
+
+			attr_name  = &property->klass->id[attr_len];
+			prop       = glade_widget_get_property (widget, attr_name);
+
+			if (!use_attr && prop)
+				glade_property_write (prop, context, node);
+
+			g_free (use_attr_str);
+		}
+	}
+}
+
+void
+glade_gtk_cell_renderer_write_widget (GladeWidgetAdaptor *adaptor,
+				      GladeWidget        *widget,
+				      GladeXmlContext    *context,
+				      GladeXmlNode       *node)
+{
+	if (!glade_xml_node_verify
+	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+		return;
+
+	/* Write our normal properties, then chain up to write any other normal properties,
+	 * then attributes 
+	 */
+	glade_gtk_cell_renderer_write_properties (widget, context, node);
+
+        GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
 }
 
 /*--------------------------- GtkCellLayout ---------------------------------*/
@@ -10003,6 +10077,8 @@ glade_gtk_cell_layout_add_child (GladeWidgetAdaptor *adaptor,
 				 GObject            *child)
 {
 	gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (container), GTK_CELL_RENDERER (child), TRUE);
+
+	glade_gtk_cell_renderer_sync_attributes (child);
 }
 
 void
@@ -10224,6 +10300,24 @@ glade_gtk_cell_layout_write_child (GladeWidgetAdaptor *adaptor,
 	glade_gtk_cell_renderer_write_attributes (widget, context, child_node);
 }
 
+static void
+glade_gtk_cell_layout_sync_attributes (GObject *layout)
+{
+	GladeWidget *gwidget = glade_widget_get_from_gobject (layout);
+	GObject     *cell;
+	GList       *children, *l;
+
+	children = glade_widget_adaptor_get_children (gwidget->adaptor, layout);
+	for (l = children; l; l = l->next)
+	{
+		cell = l->data;
+		if (!GTK_IS_CELL_RENDERER (cell))
+			continue;
+
+		glade_gtk_cell_renderer_sync_attributes (cell);
+	}
+	g_list_free (children);
+}
 
 /*--------------------------- GtkTreeViewColumn ---------------------------------*/
 void
@@ -10250,264 +10344,230 @@ glade_gtk_treeview_column_action_activate (GladeWidgetAdaptor *adaptor,
 								action_path);
 }
 
-/*--------------------------- GtkCellRenderer ---------------------------------*/
+
+
+/*--------------------------- GtkTreeView ---------------------------------*/
+static gchar *
+glade_gtk_treeview_get_display_name (GladeBaseEditor *editor,
+				     GladeWidget *gchild,
+				     gpointer user_data)
+{
+	GObject *child = glade_widget_get_object (gchild);
+	gchar *name;
+	
+	if (GTK_IS_TREE_VIEW_COLUMN (child))
+		glade_widget_property_get (gchild, "title", &name);
+	else
+		name = gchild->name;
+	
+	return g_strdup (name);
+}
+
+static void
+glade_gtk_treeview_child_selected (GladeBaseEditor *editor,
+				  GladeWidget *gchild,
+				  gpointer data)
+{
+	GObject *child = glade_widget_get_object (gchild);
+	
+	glade_base_editor_add_label (editor, GTK_IS_TREE_VIEW_COLUMN (child) ? 
+				     _("Tree View Column") : _("Cell Renderer"));
+	
+	glade_base_editor_add_default_properties (editor, gchild);
+	
+	glade_base_editor_add_label (editor, GTK_IS_TREE_VIEW_COLUMN (child) ? 
+				     _("Properties") : _("Properties and Attributes"));
+	glade_base_editor_add_editable (editor, gchild, GLADE_PAGE_GENERAL);
+
+	if (GTK_IS_CELL_RENDERER (child))
+	{
+		glade_base_editor_add_label (editor, _("Common Properties and Attributes"));
+		glade_base_editor_add_editable (editor, gchild, GLADE_PAGE_COMMON);
+	}
+}
+
+static gboolean
+glade_gtk_treeview_move_child (GladeBaseEditor *editor,
+			       GladeWidget *gparent,
+			       GladeWidget *gchild,
+			       gpointer data)
+{	
+	GObject *parent = glade_widget_get_object (gparent);
+	GObject *child  = glade_widget_get_object (gchild);
+	GList    list   = { 0, };
+
+	if (GTK_IS_TREE_VIEW (parent) && !GTK_IS_TREE_VIEW_COLUMN (child))
+		return FALSE;
+	if (GTK_IS_TREE_VIEW_COLUMN (parent) && !GTK_IS_CELL_RENDERER (child))
+		return FALSE;
+	if (GTK_IS_CELL_RENDERER (parent))
+		return FALSE;
+	
+	if (gparent != glade_widget_get_parent (gchild))
+	{
+		list.data = gchild;
+		glade_command_dnd (&list, gparent, NULL);
+	}
+
+	return TRUE;
+}
+
+static void
+glade_gtk_treeview_launch_editor (GObject  *treeview)
+{
+	GladeWidget *widget = glade_widget_get_from_gobject (treeview);
+	GladeBaseEditor *editor;
+	GladeEditable *treeview_editor;
+	GtkWidget *window;
+
+
+	treeview_editor = glade_widget_adaptor_create_editable (widget->adaptor, GLADE_PAGE_GENERAL);
+	treeview_editor = (GladeEditable *)glade_tree_view_editor_new (widget->adaptor, treeview_editor);
+
+	/* Editor */
+	editor = glade_base_editor_new (treeview, treeview_editor,
+					_("Column"), GTK_TYPE_TREE_VIEW_COLUMN,
+					NULL);
+
+	glade_base_editor_append_types (editor, GTK_TYPE_TREE_VIEW_COLUMN,
+					_("Text"), GTK_TYPE_CELL_RENDERER_TEXT,
+					_("Accelerator"), GTK_TYPE_CELL_RENDERER_ACCEL,
+					_("Combo"), GTK_TYPE_CELL_RENDERER_COMBO,
+					_("Spin"),  GTK_TYPE_CELL_RENDERER_SPIN,
+					_("Pixbuf"), GTK_TYPE_CELL_RENDERER_PIXBUF,
+					_("Progress"), GTK_TYPE_CELL_RENDERER_PROGRESS,
+					_("Toggle"), GTK_TYPE_CELL_RENDERER_TOGGLE,
+					NULL);
+
+	g_signal_connect (editor, "get-display-name", G_CALLBACK (glade_gtk_treeview_get_display_name), NULL);
+	g_signal_connect (editor, "child-selected", G_CALLBACK (glade_gtk_treeview_child_selected), NULL);
+	g_signal_connect (editor, "move-child", G_CALLBACK (glade_gtk_treeview_move_child), NULL);
+
+	gtk_widget_show (GTK_WIDGET (editor));
+	
+	window = glade_base_editor_pack_new_window (editor, _("Tree View Editor"), NULL);
+	gtk_widget_show (window);
+}
+
 void
-glade_gtk_cell_renderer_action_activate (GladeWidgetAdaptor *adaptor,
-					 GObject *object,
-					 const gchar *action_path)
+glade_gtk_treeview_action_activate (GladeWidgetAdaptor *adaptor,
+				    GObject *object,
+				    const gchar *action_path)
 {
 	if (strcmp (action_path, "launch_editor") == 0)
 	{
-		GladeWidget *w = glade_widget_get_from_gobject (object);
-		
-		while ((w = glade_widget_get_parent (w)))
-		{
-			if (GTK_IS_TREE_VIEW (w->object))
-			{
-				glade_gtk_treeview_launch_editor (w->object);
-				break;
-			}
-		}
+		glade_gtk_treeview_launch_editor (object);
 	}
 	else
-		GWA_GET_CLASS (G_TYPE_OBJECT)->action_activate (adaptor,
-								object,
-								action_path);
+		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor,
+								     object,
+								     action_path);
+}
+
+static gint
+glade_gtk_treeview_get_column_index (GtkTreeView       *view,
+				     GtkTreeViewColumn *column)
+{
+	GtkTreeViewColumn *iter;
+	gint i;
+
+	for (i = 0; (iter = gtk_tree_view_get_column (view, i)) != NULL; i++)
+		if (iter == column)
+			return i;
+
+	return -1;
 }
 
 void
-glade_gtk_cell_renderer_post_create (GladeWidgetAdaptor *adaptor, 
-				     GObject            *object, 
-				     GladeCreateReason   reason)
-{
-	GladePropertyClass  *pclass;
-	GladeProperty       *property;
-	GladeWidget         *widget;
-	GList               *l;
-	
-	widget = glade_widget_get_from_gobject (object);
-
-	for (l = adaptor->properties; l; l = l->next)
-	{
-		pclass = l->data;
-
-		if (strncmp (pclass->id, "use-attr-", strlen ("use-attr-")) == 0)
-		{
-			property = glade_widget_get_property (widget, pclass->id);
-			glade_property_sync (property);
-		}
-	}
-}
-
-GladeEditorProperty *
-glade_gtk_cell_renderer_create_eprop (GladeWidgetAdaptor *adaptor,
-				      GladePropertyClass *klass,
-				      gboolean            use_command)
-{
-	GladeEditorProperty *eprop;
-
-	if (strncmp (klass->id, "attr-", strlen ("attr-")) == 0)
-		eprop = g_object_new (GLADE_TYPE_EPROP_CELL_ATTRIBUTE,
-				      "property-class", klass, 
-				      "use-command", use_command,
-				      NULL);
-	else
-		eprop = GWA_GET_CLASS 
-			(G_TYPE_OBJECT)->create_eprop (adaptor, 
-						       klass, 
-						       use_command);
-	return eprop;
-}
-
-
-GladeEditable *
-glade_gtk_cell_renderer_create_editable (GladeWidgetAdaptor  *adaptor,
-					 GladeEditorPageType  type)
-{
-	GladeEditable *editable;
-
-	/* Get base editable */
-	editable = GWA_GET_CLASS (G_TYPE_OBJECT)->create_editable (adaptor, type);
-
-	if (type == GLADE_PAGE_GENERAL || type == GLADE_PAGE_COMMON)
-		return (GladeEditable *)glade_cell_renderer_editor_new (adaptor, type, editable);
-
-	return editable;
-}
-
-static void
-glade_gtk_cell_renderer_set_use_attribute (GObject      *object, 
-					   const gchar  *property_name,
-					   const GValue *value)
-{
-	GladeWidget *widget = glade_widget_get_from_gobject (object);
-	gchar *attr_prop_name, *prop_msg, *attr_msg;
-
-	attr_prop_name = g_strdup_printf ("attr-%s", property_name);
-
-	prop_msg = g_strdup_printf (_("%s is set to load %s from the model"), 
-				    widget->name, property_name);
-	attr_msg = g_strdup_printf (_("%s is set to manipulate %s directly"), 
-				    widget->name, attr_prop_name);
-
-	glade_widget_property_set_sensitive (widget, property_name, FALSE, prop_msg);
-	glade_widget_property_set_sensitive (widget, attr_prop_name, FALSE, attr_msg);
-
-	if (g_value_get_boolean (value))
-		glade_widget_property_set_sensitive (widget, attr_prop_name, TRUE, NULL);
-	else
-		glade_widget_property_set_sensitive (widget, property_name, TRUE, NULL);
-
-	g_free (prop_msg);
-	g_free (attr_msg);
-	g_free (attr_prop_name);
-}
-
-
-static void
-glade_gtk_cell_renderer_set_attribute (GObject      *object, 
-				       const gchar  *property_name,
-				       const GValue *value)
-{
-	GtkCellLayout *layout;
-	GtkCellRenderer *cell;
-	GladeWidget *widget = glade_widget_get_from_gobject (object), *glayout;
-	GladeWidget *gmodel = NULL;
-	GladeProperty *property;
-	gchar *attr_prop_name;
-	GList *l;
-	gint columns = 0;
-	static gint attr_len = 0;
-
-	if (!attr_len)
-		attr_len = strlen ("attr-");
-
-	/* Apply attributes to renderer when bound to a model in runtime */
-	widget = glade_widget_get_from_gobject (object);
-		
-	if (widget->parent == NULL) return;
-
-	layout = GTK_CELL_LAYOUT (widget->parent->object);
-	cell = GTK_CELL_RENDERER (object);
-	glayout = glade_widget_get_from_gobject (layout);
-
-	if (glayout->parent && GTK_IS_TREE_VIEW (glayout->parent->object))
-	{
-		GtkTreeModel *model = NULL;
-
-		glade_widget_property_get (glayout->parent, "model", &model);
-		if (model)
-			gmodel = glade_widget_get_from_gobject (model);
-	}
-
-	if (gmodel)
-	{
-		GList *column_list = NULL;
-		glade_widget_property_get (gmodel, "columns", &column_list);
-		columns = g_list_length (column_list);
-
-	}
-
-	gtk_cell_layout_clear_attributes (layout, cell);
-
-	for (l = widget->properties; l; l = l->next)
-	{
-		property = l->data;
-
-		if (strncmp (property->klass->id, "attr-", attr_len) == 0)
-		{
-			attr_prop_name = &property->klass->id[attr_len];
-
-			/* XXX TODO: Check that the cell supports the data type in the indexed column.
-			 */
-			if (g_value_get_int (property->value) >= 0 &&
-			    /* We have to set attributes before parenting when loading */
-			    (glade_util_object_is_loading (object) || g_value_get_int (property->value) < columns))
-				gtk_cell_layout_add_attribute (layout, cell,
-							       attr_prop_name,
-							       g_value_get_int (property->value));
-		}
-	}
-}
-
-
-void
-glade_gtk_cell_renderer_set_property (GladeWidgetAdaptor *adaptor,
-				      GObject *object,
-				      const gchar *property_name,
-				      const GValue *value)
-{
-	static gint use_attr_len = 0;
-	static gint attr_len     = 0;
-
-	if (!attr_len)
-	{
-		use_attr_len = strlen ("use-attr-");
-		attr_len = strlen ("attr-");
-	}
-
-	if (strncmp (property_name, "use-attr-", use_attr_len) == 0)
-		glade_gtk_cell_renderer_set_use_attribute (object, &property_name[use_attr_len], value);
-	else if (strncmp (property_name, "attr-", attr_len) == 0)
-		glade_gtk_cell_renderer_set_attribute (object, &property_name[attr_len], value);
+glade_gtk_treeview_get_child_property (GladeWidgetAdaptor *adaptor,
+				       GObject            *container,
+				       GObject            *child,
+				       const gchar        *property_name,
+				       GValue             *value)
+{	
+	if (strcmp (property_name, "position") == 0)
+		g_value_set_int (value,
+				 glade_gtk_treeview_get_column_index (GTK_TREE_VIEW (container), 
+								      GTK_TREE_VIEW_COLUMN (child)));
 	else
 		/* Chain Up */
-		GWA_GET_CLASS (G_TYPE_OBJECT)->set_property (adaptor,
-							     object,
-							     property_name, 
-							     value);
-}
-
-static void
-glade_gtk_cell_renderer_write_properties (GladeWidget        *widget,
-					  GladeXmlContext    *context,
-					  GladeXmlNode       *node)
-{
-	GladeProperty *property, *prop;
-	gchar *attr_name;
-	GList *l;
-	static gint attr_len = 0;
-
-	if (!attr_len)
-		attr_len = strlen ("attr-");
-
-	for (l = widget->properties; l; l = l->next)
-	{
-		property = l->data;
-
-		if (strncmp (property->klass->id, "attr-", attr_len) == 0)
-		{
-			gchar *use_attr_str;
-			gboolean use_attr = FALSE;
-
-			use_attr_str = g_strdup_printf ("use-%s", property->klass->id);
-			glade_widget_property_get (widget, use_attr_str, &use_attr);
-
-			attr_name  = &property->klass->id[attr_len];
-			prop       = glade_widget_get_property (widget, attr_name);
-
-			if (!use_attr && prop)
-				glade_property_write (prop, context, node);
-
-			g_free (use_attr_str);
-		}
-	}
+		GWA_GET_CLASS
+			(GTK_TYPE_CONTAINER)->child_get_property (adaptor, 
+								  container, child,
+								  property_name, value);
 }
 
 void
-glade_gtk_cell_renderer_write_widget (GladeWidgetAdaptor *adaptor,
-				      GladeWidget        *widget,
-				      GladeXmlContext    *context,
-				      GladeXmlNode       *node)
+glade_gtk_treeview_set_child_property (GladeWidgetAdaptor *adaptor,
+				       GObject            *container,
+				       GObject            *child,
+				       const gchar        *property_name,
+				       const GValue       *value)
 {
-	if (!glade_xml_node_verify
-	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+	if (strcmp (property_name, "position") == 0)
+	{
+
+		gtk_tree_view_remove_column (GTK_TREE_VIEW (container),
+					     GTK_TREE_VIEW_COLUMN (child));
+		gtk_tree_view_insert_column (GTK_TREE_VIEW (container),
+					     GTK_TREE_VIEW_COLUMN (child),
+					     g_value_get_int (value));
+	}
+	else
+		/* Chain Up */
+		GWA_GET_CLASS
+			(GTK_TYPE_CONTAINER)->child_set_property (adaptor, 
+								  container, child,
+								  property_name, value);
+}
+
+GList *
+glade_gtk_treeview_get_children (GladeWidgetAdaptor *adaptor,
+				 GtkTreeView        *view)
+{
+	return gtk_tree_view_get_columns (view);
+}
+
+void
+glade_gtk_treeview_add_child (GladeWidgetAdaptor *adaptor,
+			      GObject *container,
+			      GObject *child)
+{
+	GtkTreeView *view = GTK_TREE_VIEW (container);
+	GtkTreeViewColumn *column;
+
+	if (!GTK_IS_TREE_VIEW_COLUMN (child))
 		return;
 
-	/* Write our normal properties, then chain up to write any other normal properties,
-	 * then attributes 
-	 */
-	glade_gtk_cell_renderer_write_properties (widget, context, node);
+	column = GTK_TREE_VIEW_COLUMN (child);
+	gtk_tree_view_append_column (view, column);
 
-        GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
+	glade_gtk_cell_layout_sync_attributes (G_OBJECT (column));
 }
+
+void
+glade_gtk_treeview_remove_child (GladeWidgetAdaptor *adaptor,
+				 GObject *container,
+				 GObject *child)
+{
+	GtkTreeView *view = GTK_TREE_VIEW (container);
+	GtkTreeViewColumn *column;
+
+	if (!GTK_IS_TREE_VIEW_COLUMN (child))
+		return;
+
+	column = GTK_TREE_VIEW_COLUMN (child);
+	gtk_tree_view_remove_column (view, column);
+}
+
+gboolean
+glade_gtk_treeview_depends (GladeWidgetAdaptor *adaptor,
+			    GladeWidget        *widget,
+			    GladeWidget        *another)
+{
+	if (GTK_IS_TREE_MODEL (another->object))
+		return TRUE; 
+
+	return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->depends (adaptor, widget, another);
+}
+
