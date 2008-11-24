@@ -6616,7 +6616,7 @@ glade_gtk_image_menu_item_set_use_stock (GObject *object, const GValue *value)
 	}
 }
 
-static void
+static gboolean
 glade_gtk_image_menu_item_set_label (GObject *object, const GValue *value)
 {
 	GladeWidget *gitem;
@@ -6640,29 +6640,31 @@ glade_gtk_image_menu_item_set_label (GObject *object, const GValue *value)
 		image = gtk_image_new_from_stock (g_value_get_string (value), GTK_ICON_SIZE_MENU);
 		gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (object), image);
 
-		/* Just for display purposes, real stock menuitems automatically have underline
-		 * property set. */
-		gtk_label_set_use_underline (GTK_LABEL (label), TRUE);
-
 		/* Get the label string... */
 		if (text && gtk_stock_lookup (text, &item))
 			gtk_label_set_label (GTK_LABEL (label), item.label);
 		else
 			gtk_label_set_label (GTK_LABEL (label), text ? text : "");
 
+		return TRUE;
 	} 
-	else 
-		gtk_label_set_label (GTK_LABEL (label), text ? text : "");
-
-	/* Update underline incase... */
-	gtk_label_set_use_underline (GTK_LABEL (label), use_underline);
+	
+	return FALSE;
 }
 
 static void
 glade_gtk_image_menu_item_set_stock (GObject *object, const GValue *value)
 {
+	GladeWidget *gitem;
+	gboolean use_stock = FALSE;
+
+	gitem = glade_widget_get_from_gobject (object);
+
+	glade_widget_property_get (gitem, "use-stock", &use_stock);
+
 	/* Forward the work along to the label handler...  */
-	glade_gtk_image_menu_item_set_label (object, value);
+	if (use_stock)
+		glade_gtk_image_menu_item_set_label (object, value);
 }
 
 void
@@ -6676,7 +6678,11 @@ glade_gtk_image_menu_item_set_property (GladeWidgetAdaptor *adaptor,
 	else if (!strcmp (id, "use-stock"))
 		glade_gtk_image_menu_item_set_use_stock (object, value);
 	else if (!strcmp (id, "label"))
-		glade_gtk_image_menu_item_set_label (object, value);
+	{
+		if (!glade_gtk_image_menu_item_set_label (object, value))
+			GWA_GET_CLASS (GTK_TYPE_MENU_ITEM)->set_property (adaptor, object,
+									  id, value);
+	}
 	else
 		GWA_GET_CLASS (GTK_TYPE_MENU_ITEM)->set_property (adaptor, object,
 								  id, value);

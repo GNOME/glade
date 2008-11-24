@@ -929,6 +929,28 @@ glade_command_placeholder_connect (CommandData *cdata,
 		 G_CALLBACK (glade_command_placeholder_destroyed), cdata);
 }
 
+
+static GList *
+get_all_parentless_reffed_widgets (GList *reffed, GladeWidget *widget)
+{
+	GList *children, *l, *list;
+	GladeWidget *child;
+
+	children = glade_widget_adaptor_get_children (widget->adaptor,
+						      widget->object);
+
+	for (l = children; l; l = l->next)
+	{
+		child = glade_widget_get_from_gobject (l->data);
+		if ((list = glade_widget_get_parentless_reffed_widgets (child)) != NULL)
+			reffed = g_list_concat (reffed, list);
+
+		reffed = get_all_parentless_reffed_widgets (reffed, child);
+	}
+
+	return reffed;
+}
+
 /**
  * glade_command_add:
  * @widgets: a #Glist
@@ -989,7 +1011,7 @@ glade_command_add (GList            *widgets,
 		cdata->widget = g_object_ref (G_OBJECT (widget));
 
 		/* Parentless ref */
-		if ((cdata->reffed = glade_widget_get_parentless_reffed_widgets (widget)) != NULL)
+		if ((cdata->reffed = get_all_parentless_reffed_widgets (cdata->reffed, widget)) != NULL)
 			g_list_foreach (cdata->reffed, (GFunc)g_object_ref, NULL);
 
 		/* Parent */
@@ -1080,19 +1102,26 @@ glade_command_delete_prop_refs (GladeWidget *widget)
 static void glade_command_remove (GList *widgets);
 
 static void
-glade_command_remove_locked (GladeWidget *widget)
+glade_command_remove_locked (GladeWidget *widget, GList *reffed)
 {
-	GList list = { 0, };
+	GList list = { 0, }, *widgets, *l;
 	GladeWidget *locked;
 
-	while (widget->locked_widgets)
+	widgets = g_list_copy (widget->locked_widgets);
+
+	for (l = widget->locked_widgets; l; l = l->next)
 	{
-		locked = widget->locked_widgets->data;
+		locked = l->data;
 		list.data = locked;
+
+		if (g_list_find (reffed, locked))
+			continue;
 
 		glade_command_unlock_widget (locked);
 		glade_command_remove (&list);
 	}
+
+	g_list_free (widgets);
 }
 
 /**
@@ -1155,14 +1184,15 @@ glade_command_remove (GList *widgets)
 		cdata->widget  = g_object_ref (G_OBJECT (widget));
 		cdata->parent  = glade_widget_get_parent (widget);
 		cdata->project = glade_widget_get_project (widget);
-		if ((cdata->reffed = glade_widget_get_parentless_reffed_widgets (widget)) != NULL)
+
+		if ((cdata->reffed = get_all_parentless_reffed_widgets (cdata->reffed, widget)) != NULL)
 			g_list_foreach (cdata->reffed, (GFunc)g_object_ref, NULL);
 
 		/* Undoably unset any object properties that may point to the removed object */
 		glade_command_delete_prop_refs (widget);
 
 		/* Undoably unlock and remove any widgets locked by this widget */
-		glade_command_remove_locked (widget);
+		glade_command_remove_locked (widget, cdata->reffed);
 
 		if (widget->internal)
 			g_critical ("Internal widget in Remove");
@@ -1433,7 +1463,7 @@ glade_command_add_remove_finalize (GObject *obj)
 {
 	GladeCommandAddRemove    *cmd;
 	CommandData              *cdata;
-	GList                    *list, *l;
+	GList                    *list;
 
 	g_return_if_fail (GLADE_IS_COMMAND_ADD_REMOVE (obj));
 

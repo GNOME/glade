@@ -2080,7 +2080,7 @@ glade_widget_get_parentless_reffed_widgets (GladeWidget *widget)
 		{
 			glade_property_get (property, &reffed);
 			if (reffed)
-				widgets = g_list_prepend (widgets, reffed);
+				widgets = g_list_prepend (widgets, glade_widget_get_from_gobject (reffed));
 		}
 	}
 	return g_list_reverse (widgets);

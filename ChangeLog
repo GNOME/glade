@@ -18,6 +18,8 @@
 	    (net result: copy/paste of treeviews now result in a nice runtime replica).
 	  - Did some reordering in glade-gtk.c
 	  - Added load/save support for <action-widgets> of GtkDialog (response ids).
+	  - Fixed gtk_image_menu_item_set_stock() to not override the label value if not
+	    in use_stock mode (fixes missing labels in pasted imagemenuitems).
 	
 2008-11-22  Tristan Van Berkom <tvb@gnome.org>
 
