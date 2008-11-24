@@ -847,7 +847,7 @@ embedded in another object</_tooltip>
 	  </parameter-spec>
         </property>
 	<property id="image-position" custom-layout="True"/>
-	<property id="response-id" _name="Response ID" default="0" common="False" ignore="True" save-always="True">
+	<property id="response-id" _name="Response ID" default="0" common="False" ignore="True" save="False">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	  </parameter-spec>
@@ -1099,10 +1099,14 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkDialog" generic-name="dialog" _title="Dialog Box" default-width="320" default-height="260">
+    <glade-widget-class name="GtkDialog" generic-name="dialog" _title="Dialog Box" 
+			default-width="320" default-height="260">
       <post-create-function>glade_gtk_dialog_post_create</post-create-function>
       <get-internal-child-function>glade_gtk_dialog_get_internal_child</get-internal-child-function>
       <get-children-function>glade_gtk_dialog_get_children</get-children-function>
+      <read-child-function>glade_gtk_dialog_read_child</read-child-function>
+      <write-child-function>glade_gtk_dialog_write_child</write-child-function>
+
       <properties>
 	<property id="default-width"  default="320" optional="True" optional-default="False"/>
 	<property id="default-height" default="260" optional="True" optional-default="False"/>

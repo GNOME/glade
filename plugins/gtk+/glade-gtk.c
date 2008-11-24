@@ -1,6 +1,7 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * Copyright (C) 2001 Ximian, Inc.
+ * Copyright (C) 2004 - 2008 Tristan Van Berkom, Juan Pablo Ugarte et al.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -5221,6 +5222,305 @@ glade_gtk_dialog_get_children (GladeWidgetAdaptor  *adaptor,
 	return list;
 }
 
+
+
+#define GLADE_TAG_ACTION_WIDGETS "action-widgets"
+#define GLADE_TAG_ACTION_WIDGET  "action-widget"
+#define GLADE_TAG_RESPONSE       "response"
+
+
+static void
+glade_gtk_dialog_read_responses (GladeWidget  *widget, 
+				 GladeXmlNode *widgets_node)
+{
+	GladeXmlNode *node;
+	GladeWidget  *action_widget;
+
+	for (node = glade_xml_node_get_children (widgets_node); 
+	     node; node = glade_xml_node_next (node))
+	{
+		gchar *widget_name, *response;
+			
+		if (!glade_xml_node_verify (node, GLADE_TAG_ACTION_WIDGET))
+			continue;
+
+		response    = glade_xml_get_property_string_required (node, GLADE_TAG_RESPONSE, NULL);
+		widget_name = glade_xml_get_content (node);
+				
+		if ((action_widget = 
+		     glade_project_get_widget_by_name (widget->project, widget, widget_name)) != NULL)
+		{
+			glade_widget_property_set (action_widget, "response-id", 
+						   g_ascii_strtoll (response, NULL, 10));
+		}
+
+		g_free (response);
+		g_free (widget_name);
+	}
+}
+
+void
+glade_gtk_dialog_read_child (GladeWidgetAdaptor *adaptor,
+			     GladeWidget        *widget,
+			     GladeXmlNode       *node)
+{
+	GladeXmlNode *widgets_node;
+	GladeProject *project;
+
+	GWA_GET_CLASS (GTK_TYPE_CONTAINER)->read_child (adaptor, widget, node);
+
+	project = widget->project;
+
+	if (glade_project_get_format (project) != GLADE_PROJECT_FORMAT_GTKBUILDER)
+		return;
+
+	node = glade_xml_node_get_parent (node);
+
+	if ((widgets_node = glade_xml_search_child (node, GLADE_TAG_ACTION_WIDGETS)) != NULL)
+		glade_gtk_dialog_read_responses (widget, widgets_node);
+}
+
+
+static void
+glade_gtk_dialog_write_responses (GladeWidget     *widget,
+				  GladeXmlContext *context,
+				  GladeXmlNode    *node)
+{
+	GladeXmlNode *widget_node;
+	GtkDialog    *dialog  = GTK_DIALOG (widget->object);
+	GList        *l, *action_widgets = gtk_container_get_children (GTK_CONTAINER (dialog->action_area));
+
+	for (l = action_widgets; l; l = l->next)
+	{
+		GladeWidget   *action_widget;
+		GladeProperty *property;
+		gchar         *str;
+
+		if ((action_widget = glade_widget_get_from_gobject (l->data)) == NULL)
+			continue;
+
+		if ((property = glade_widget_get_property (action_widget, "response-id")) == NULL)
+			continue;
+	       
+		widget_node = glade_xml_node_new (context, GLADE_TAG_ACTION_WIDGET);
+		glade_xml_node_append_child (node, widget_node);
+
+		str = glade_property_class_make_string_from_gvalue (property->klass, property->value, 
+								    GLADE_PROJECT_FORMAT_GTKBUILDER);
+
+		glade_xml_node_set_property_string (widget_node, GLADE_TAG_RESPONSE, str);
+		glade_xml_set_content (widget_node, action_widget->name);
+
+		g_free (str);
+	}
+
+
+	g_list_free (action_widgets);
+}
+
+void
+glade_gtk_dialog_write_child (GladeWidgetAdaptor *adaptor,
+			      GladeWidget        *widget,
+			      GladeXmlContext    *context,
+			      GladeXmlNode       *node)
+{
+	GladeXmlNode *widgets_node;
+	GladeWidget  *parent;
+	GladeProject *project;
+
+	GWA_GET_CLASS (GTK_TYPE_CONTAINER)->write_child (adaptor, widget, context, node);
+
+	parent = widget->parent;
+	project = widget->project;
+
+	if (parent && GTK_IS_DIALOG (parent->object) &&
+	    glade_project_get_format (project) == GLADE_PROJECT_FORMAT_GTKBUILDER)
+	{
+		widgets_node = glade_xml_node_new (context, GLADE_TAG_ACTION_WIDGETS);
+
+		glade_gtk_dialog_write_responses (parent, context, widgets_node);
+
+		if (!glade_xml_node_get_children (widgets_node))
+			glade_xml_node_delete (widgets_node);
+		else
+			glade_xml_node_append_child (node, widgets_node);
+	}
+}
+
+/*--------------------------- GtkMessageDialog ---------------------------------*/
+static gboolean
+glade_gtk_message_dialog_reset_image (GtkMessageDialog *dialog)
+{
+	gint message_type;
+
+	g_object_get (dialog, "message-type", &message_type, NULL);
+	if (message_type != GTK_MESSAGE_OTHER)
+		return FALSE;
+
+	if (glade_widget_get_from_gobject (dialog->image))
+	{
+		gtk_message_dialog_set_image (dialog,
+					      gtk_image_new_from_stock (NULL, GTK_ICON_SIZE_DIALOG));
+		gtk_widget_show (dialog->image);
+
+		return TRUE;
+	}
+	else
+		return FALSE;
+}
+
+enum {
+	MD_IMAGE_ACTION_INVALID,
+	MD_IMAGE_ACTION_RESET,
+	MD_IMAGE_ACTION_SET
+};
+
+static gint
+glade_gtk_message_dialog_image_determine_action (GtkMessageDialog *dialog,
+					   const GValue *value,
+					   GtkWidget **image,
+					   GladeWidget **gimage)
+{
+	*image = g_value_get_object (value);
+	
+	if (*image == NULL)
+		if (glade_widget_get_from_gobject (dialog->image))
+			return MD_IMAGE_ACTION_RESET;
+		else
+			return MD_IMAGE_ACTION_INVALID;
+	else
+	{
+		*image = GTK_WIDGET (*image);
+		if (dialog->image == *image)
+			return MD_IMAGE_ACTION_INVALID;
+		if (gtk_widget_get_parent (*image))
+			return MD_IMAGE_ACTION_INVALID;
+			
+		*gimage = glade_widget_get_from_gobject (*image);
+
+		if (!*gimage)
+		{
+			g_warning ("Setting property to an object outside the project");
+			return MD_IMAGE_ACTION_INVALID;
+		}
+		
+		if (glade_widget_get_parent (*gimage) || GTK_IS_WINDOW (*image))
+			return MD_IMAGE_ACTION_INVALID;
+
+		return MD_IMAGE_ACTION_SET;
+	}
+}
+
+void
+glade_gtk_message_dialog_set_property (GladeWidgetAdaptor *adaptor,
+			       GObject            *object,
+			       const gchar        *id,
+			       const GValue       *value)
+{
+	GtkMessageDialog *dialog = GTK_MESSAGE_DIALOG (object);
+	GladeWidget *gwidget = glade_widget_get_from_gobject (object);
+
+	g_return_if_fail (gwidget);
+
+	if (strcmp (id, "image") == 0)
+	{
+		GtkWidget *image = NULL;
+		GladeWidget *gimage = NULL;
+		gint rslt;
+
+		rslt = glade_gtk_message_dialog_image_determine_action (dialog, value,
+								       &image, &gimage);
+		switch (rslt)
+		{
+		case MD_IMAGE_ACTION_INVALID:
+			return;
+		case MD_IMAGE_ACTION_RESET:
+			glade_gtk_message_dialog_reset_image (dialog);
+			return;
+		case MD_IMAGE_ACTION_SET:
+			break; /* continue setting the property */
+		}
+
+		if (gtk_widget_get_parent (image))
+			g_critical ("Image should have no parent now");
+
+		gtk_message_dialog_set_image (dialog, image);
+
+		{
+			/* syncing "message-type" property */	
+			GladeProperty *property;
+
+			property = glade_widget_get_property (gwidget, "message-type");
+			if (!glade_property_equals (property, GTK_MESSAGE_OTHER))
+				glade_command_set_property (property, GTK_MESSAGE_OTHER);
+		}
+	}
+	else
+	{
+		/* We must reset the image to internal,
+		 * external image would otherwise become internal
+		 */
+		if (!strcmp (id, "message-type") &&
+		    g_value_get_enum (value) != GTK_MESSAGE_OTHER)
+		{
+			GladeProperty *property;
+
+			property = glade_widget_get_property (gwidget, "image");
+			if (!glade_property_equals (property, NULL))
+				glade_command_set_property (property, NULL);
+		}
+		/* Chain up, even if property us message-type because
+		 * it's not fully handled here
+		 */
+		GWA_GET_CLASS (GTK_TYPE_DIALOG)->set_property (adaptor, object,
+								  id, value);
+	}
+}
+
+gboolean
+glade_gtk_message_dialog_verify_property (GladeWidgetAdaptor *adaptor,
+				 GObject            *object,
+				 const gchar        *id,
+				 const GValue       *value)
+{
+	if (!strcmp (id, "image"))
+	{
+		GtkWidget *image; GladeWidget *gimage;
+
+		gboolean retval = MD_IMAGE_ACTION_INVALID != 
+		       glade_gtk_message_dialog_image_determine_action (GTK_MESSAGE_DIALOG (object),
+									value, &image, &gimage);
+
+		return retval;
+	}
+	else
+		if (GWA_GET_CLASS (GTK_TYPE_CONTAINER)->verify_property)
+			return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->verify_property (adaptor, object,
+										    id, value);
+		else
+			return TRUE;
+}
+
+void
+glade_gtk_message_dialog_get_property (GladeWidgetAdaptor *adaptor,
+				  GObject *object,
+				  const gchar *property_name,
+				  GValue *value)
+{
+	if (!strcmp (property_name, "image"))
+	{
+		GtkMessageDialog *dialog = GTK_MESSAGE_DIALOG (object);
+
+		if (!glade_widget_get_from_gobject (dialog->image))
+			g_value_set_object (value, NULL);
+		else
+			g_value_set_object (value, dialog->image);
+	}
+	else
+		GWA_GET_CLASS (GTK_TYPE_DIALOG)->get_property (adaptor, object,
+								  property_name, value);
+}
+
 /* ----------------------------- GtkFileChooserWidget ------------------------------ */
 void
 glade_gtk_file_chooser_widget_post_create (GladeWidgetAdaptor *adaptor,
@@ -5367,7 +5667,8 @@ glade_gtk_button_write_widget (GladeWidgetAdaptor *adaptor,
 			       GladeXmlContext    *context,
 			       GladeXmlNode       *node)
 {
-	GladeProperty *label_prop;
+	GladeProject  *project = widget->project;
+	GladeProperty *prop;
 	gboolean       use_stock;
 	gchar         *stock = NULL;
 
@@ -5375,18 +5676,23 @@ glade_gtk_button_write_widget (GladeWidgetAdaptor *adaptor,
 	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
 		return;
 
-	label_prop = glade_widget_get_property (widget, "label");
+	prop = glade_widget_get_property (widget, "label");
 
 	/* Make a copy of the GladeProperty, override its value if use-stock is TRUE */
-	label_prop = glade_property_dup (label_prop, widget);
+	prop = glade_property_dup (prop, widget);
 	glade_widget_property_get (widget, "use-stock", &use_stock);
 	if (use_stock)
 	{
 		glade_widget_property_get (widget, "stock", &stock);
-		glade_property_set (label_prop, stock);
+		glade_property_set (prop, stock);
 	}
-	glade_property_write (label_prop, context, node);
-	g_object_unref (G_OBJECT (label_prop));
+	glade_property_write (prop, context, node);
+	g_object_unref (G_OBJECT (prop));
+
+	prop = glade_widget_get_property (widget, "response-id");
+	if (glade_property_get_enabled (prop) && 
+	    glade_project_get_format (project) == GLADE_PROJECT_FORMAT_LIBGLADE)
+		glade_property_write (prop, context, node);
 
 	/* Write out other normal properties and any other class derived custom properties after ... */
         GWA_GET_CLASS (GTK_TYPE_CONTAINER)->write_widget (adaptor, widget, context, node);
@@ -8536,180 +8842,6 @@ glade_gtk_radio_button_set_property (GladeWidgetAdaptor *adaptor,
 							     object,
 							     property_name, 
 							     value);
-}
-
-/*--------------------------- GtkMessageDialog ---------------------------------*/
-static gboolean
-glade_gtk_message_dialog_reset_image (GtkMessageDialog *dialog)
-{
-	gint message_type;
-
-	g_object_get (dialog, "message-type", &message_type, NULL);
-	if (message_type != GTK_MESSAGE_OTHER)
-		return FALSE;
-
-	if (glade_widget_get_from_gobject (dialog->image))
-	{
-		gtk_message_dialog_set_image (dialog,
-					      gtk_image_new_from_stock (NULL, GTK_ICON_SIZE_DIALOG));
-		gtk_widget_show (dialog->image);
-
-		return TRUE;
-	}
-	else
-		return FALSE;
-}
-
-enum {
-	MD_IMAGE_ACTION_INVALID,
-	MD_IMAGE_ACTION_RESET,
-	MD_IMAGE_ACTION_SET
-};
-
-static gint
-glade_gtk_message_dialog_image_determine_action (GtkMessageDialog *dialog,
-					   const GValue *value,
-					   GtkWidget **image,
-					   GladeWidget **gimage)
-{
-	*image = g_value_get_object (value);
-	
-	if (*image == NULL)
-		if (glade_widget_get_from_gobject (dialog->image))
-			return MD_IMAGE_ACTION_RESET;
-		else
-			return MD_IMAGE_ACTION_INVALID;
-	else
-	{
-		*image = GTK_WIDGET (*image);
-		if (dialog->image == *image)
-			return MD_IMAGE_ACTION_INVALID;
-		if (gtk_widget_get_parent (*image))
-			return MD_IMAGE_ACTION_INVALID;
-			
-		*gimage = glade_widget_get_from_gobject (*image);
-
-		if (!*gimage)
-		{
-			g_warning ("Setting property to an object outside the project");
-			return MD_IMAGE_ACTION_INVALID;
-		}
-		
-		if (glade_widget_get_parent (*gimage) || GTK_IS_WINDOW (*image))
-			return MD_IMAGE_ACTION_INVALID;
-
-		return MD_IMAGE_ACTION_SET;
-	}
-}
-
-void
-glade_gtk_message_dialog_set_property (GladeWidgetAdaptor *adaptor,
-			       GObject            *object,
-			       const gchar        *id,
-			       const GValue       *value)
-{
-	GtkMessageDialog *dialog = GTK_MESSAGE_DIALOG (object);
-	GladeWidget *gwidget = glade_widget_get_from_gobject (object);
-
-	g_return_if_fail (gwidget);
-
-	if (strcmp (id, "image") == 0)
-	{
-		GtkWidget *image = NULL;
-		GladeWidget *gimage = NULL;
-		gint rslt;
-
-		rslt = glade_gtk_message_dialog_image_determine_action (dialog, value,
-								       &image, &gimage);
-		switch (rslt)
-		{
-		case MD_IMAGE_ACTION_INVALID:
-			return;
-		case MD_IMAGE_ACTION_RESET:
-			glade_gtk_message_dialog_reset_image (dialog);
-			return;
-		case MD_IMAGE_ACTION_SET:
-			break; /* continue setting the property */
-		}
-
-		if (gtk_widget_get_parent (image))
-			g_critical ("Image should have no parent now");
-
-		gtk_message_dialog_set_image (dialog, image);
-
-		{
-			/* syncing "message-type" property */	
-			GladeProperty *property;
-
-			property = glade_widget_get_property (gwidget, "message-type");
-			if (!glade_property_equals (property, GTK_MESSAGE_OTHER))
-				glade_command_set_property (property, GTK_MESSAGE_OTHER);
-		}
-	}
-	else
-	{
-		/* We must reset the image to internal,
-		 * external image would otherwise become internal
-		 */
-		if (!strcmp (id, "message-type") &&
-		    g_value_get_enum (value) != GTK_MESSAGE_OTHER)
-		{
-			GladeProperty *property;
-
-			property = glade_widget_get_property (gwidget, "image");
-			if (!glade_property_equals (property, NULL))
-				glade_command_set_property (property, NULL);
-		}
-		/* Chain up, even if property us message-type because
-		 * it's not fully handled here
-		 */
-		GWA_GET_CLASS (GTK_TYPE_DIALOG)->set_property (adaptor, object,
-								  id, value);
-	}
-}
-
-gboolean
-glade_gtk_message_dialog_verify_property (GladeWidgetAdaptor *adaptor,
-				 GObject            *object,
-				 const gchar        *id,
-				 const GValue       *value)
-{
-	if (!strcmp (id, "image"))
-	{
-		GtkWidget *image; GladeWidget *gimage;
-
-		gboolean retval = MD_IMAGE_ACTION_INVALID != 
-		       glade_gtk_message_dialog_image_determine_action (GTK_MESSAGE_DIALOG (object),
-									value, &image, &gimage);
-
-		return retval;
-	}
-	else
-		if (GWA_GET_CLASS (GTK_TYPE_CONTAINER)->verify_property)
-			return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->verify_property (adaptor, object,
-										    id, value);
-		else
-			return TRUE;
-}
-
-void
-glade_gtk_message_dialog_get_property (GladeWidgetAdaptor *adaptor,
-				  GObject *object,
-				  const gchar *property_name,
-				  GValue *value)
-{
-	if (!strcmp (property_name, "image"))
-	{
-		GtkMessageDialog *dialog = GTK_MESSAGE_DIALOG (object);
-
-		if (!glade_widget_get_from_gobject (dialog->image))
-			g_value_set_object (value, NULL);
-		else
-			g_value_set_object (value, dialog->image);
-	}
-	else
-		GWA_GET_CLASS (GTK_TYPE_DIALOG)->get_property (adaptor, object,
-								  property_name, value);
 }
 
 /*--------------------------- GtkSizeGroup ---------------------------------*/

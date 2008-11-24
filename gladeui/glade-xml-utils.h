@@ -251,6 +251,7 @@ GladeXmlNode * glade_xml_node_new (GladeXmlContext *context, const gchar *name);
 GladeXmlNode * glade_xml_node_new_comment (GladeXmlContext *context, const gchar *comment);
 void           glade_xml_node_delete (GladeXmlNode *node);
 GladeXmlNode * glade_xml_node_get_children (GladeXmlNode *node);
+GladeXmlNode * glade_xml_node_get_parent (GladeXmlNode *node_in);
 GladeXmlNode * glade_xml_node_next (GladeXmlNode *node_in);
 gboolean       glade_xml_node_verify (GladeXmlNode * node_in, const gchar *name);
 gboolean       glade_xml_node_verify_silent (GladeXmlNode *node_in, const gchar *name);

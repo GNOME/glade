@@ -784,6 +784,15 @@ glade_xml_node_get_children (GladeXmlNode *node_in)
 }
 
 GladeXmlNode *
+glade_xml_node_get_parent (GladeXmlNode *node_in)
+{
+	xmlNodePtr node = (xmlNodePtr) node_in;
+
+	return (GladeXmlNode *)node->parent;
+}
+
+
+GladeXmlNode *
 glade_xml_node_get_children_with_comments (GladeXmlNode *node_in)
 {
 	xmlNodePtr node = (xmlNodePtr) node_in;
