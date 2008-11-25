@@ -1093,7 +1093,7 @@ widget_project_changed (GladeWidget *gwidget,
 {
 	GladeProject
 		*project = glade_widget_get_project (gwidget),
-		*old_project = g_object_get_data (G_OBJECT (gwidget), "notebook-project-ptr");
+		*old_project = g_object_get_data (G_OBJECT (gwidget), "widget-project-ptr");
 	
 	if (old_project)
 		g_signal_handlers_disconnect_by_func (G_OBJECT (old_project), 
@@ -1104,7 +1104,7 @@ widget_project_changed (GladeWidget *gwidget,
 		g_signal_connect (G_OBJECT (project), "notify::format", 
 				  G_CALLBACK (widget_format_changed), gwidget);
 
-	g_object_set_data (G_OBJECT (gwidget), "notebook-project-ptr", project);
+	g_object_set_data (G_OBJECT (gwidget), "widget-project-ptr", project);
 }
 
 void
@@ -9940,93 +9940,6 @@ glade_gtk_cell_renderer_action_activate (GladeWidgetAdaptor *adaptor,
 								action_path);
 }
 
-void
-glade_gtk_cell_renderer_post_create (GladeWidgetAdaptor *adaptor, 
-				     GObject            *object, 
-				     GladeCreateReason   reason)
-{
-	GladePropertyClass  *pclass;
-	GladeProperty       *property;
-	GladeWidget         *widget;
-	GList               *l;
-	
-	widget = glade_widget_get_from_gobject (object);
-
-	for (l = adaptor->properties; l; l = l->next)
-	{
-		pclass = l->data;
-
-		if (strncmp (pclass->id, "use-attr-", strlen ("use-attr-")) == 0)
-		{
-			property = glade_widget_get_property (widget, pclass->id);
-			glade_property_sync (property);
-		}
-	}
-}
-
-GladeEditorProperty *
-glade_gtk_cell_renderer_create_eprop (GladeWidgetAdaptor *adaptor,
-				      GladePropertyClass *klass,
-				      gboolean            use_command)
-{
-	GladeEditorProperty *eprop;
-
-	if (strncmp (klass->id, "attr-", strlen ("attr-")) == 0)
-		eprop = g_object_new (GLADE_TYPE_EPROP_CELL_ATTRIBUTE,
-				      "property-class", klass, 
-				      "use-command", use_command,
-				      NULL);
-	else
-		eprop = GWA_GET_CLASS 
-			(G_TYPE_OBJECT)->create_eprop (adaptor, 
-						       klass, 
-						       use_command);
-	return eprop;
-}
-
-
-GladeEditable *
-glade_gtk_cell_renderer_create_editable (GladeWidgetAdaptor  *adaptor,
-					 GladeEditorPageType  type)
-{
-	GladeEditable *editable;
-
-	/* Get base editable */
-	editable = GWA_GET_CLASS (G_TYPE_OBJECT)->create_editable (adaptor, type);
-
-	if (type == GLADE_PAGE_GENERAL || type == GLADE_PAGE_COMMON)
-		return (GladeEditable *)glade_cell_renderer_editor_new (adaptor, type, editable);
-
-	return editable;
-}
-
-static void
-glade_gtk_cell_renderer_set_use_attribute (GObject      *object, 
-					   const gchar  *property_name,
-					   const GValue *value)
-{
-	GladeWidget *widget = glade_widget_get_from_gobject (object);
-	gchar *attr_prop_name, *prop_msg, *attr_msg;
-
-	attr_prop_name = g_strdup_printf ("attr-%s", property_name);
-
-	prop_msg = g_strdup_printf (_("%s is set to load %s from the model"), 
-				    widget->name, property_name);
-	attr_msg = g_strdup_printf (_("%s is set to manipulate %s directly"), 
-				    widget->name, attr_prop_name);
-
-	glade_widget_property_set_sensitive (widget, property_name, FALSE, prop_msg);
-	glade_widget_property_set_sensitive (widget, attr_prop_name, FALSE, attr_msg);
-
-	if (g_value_get_boolean (value))
-		glade_widget_property_set_sensitive (widget, attr_prop_name, TRUE, NULL);
-	else
-		glade_widget_property_set_sensitive (widget, property_name, TRUE, NULL);
-
-	g_free (prop_msg);
-	g_free (attr_msg);
-	g_free (attr_prop_name);
-}
 
 static gboolean 
 glade_gtk_cell_layout_has_renderer (GtkCellLayout *layout,
@@ -10102,6 +10015,138 @@ glade_gtk_cell_renderer_sync_attributes (GObject *object)
 							       g_value_get_int (property->value));
 		}
 	}
+}
+
+
+static gboolean
+sync_attributes_idle (GladeWidget *gwidget)
+{
+	glade_gtk_cell_renderer_sync_attributes (gwidget->object);
+	return FALSE;
+}
+
+static void
+renderer_format_changed (GladeProject *project, 
+			 GParamSpec   *pspec,
+			 GladeWidget  *gwidget)
+{
+	if (glade_project_get_format (project) == GLADE_PROJECT_FORMAT_GTKBUILDER)
+		g_idle_add ((GSourceFunc)sync_attributes_idle, gwidget);
+}
+
+static void
+renderer_project_changed (GladeWidget *gwidget, 
+			  GParamSpec  *pspec,
+			  gpointer     userdata)
+{
+	GladeProject
+		*project = glade_widget_get_project (gwidget),
+		*old_project = g_object_get_data (G_OBJECT (gwidget), "renderer-project-ptr");
+	
+	if (old_project)
+		g_signal_handlers_disconnect_by_func (G_OBJECT (old_project), 
+						      G_CALLBACK (renderer_format_changed),
+						      gwidget);
+
+	if (project)
+		g_signal_connect (G_OBJECT (project), "notify::format", 
+				  G_CALLBACK (renderer_format_changed), gwidget);
+
+	g_object_set_data (G_OBJECT (gwidget), "renderer-project-ptr", project);
+}
+
+void
+glade_gtk_cell_renderer_deep_post_create (GladeWidgetAdaptor *adaptor, 
+					  GObject            *object, 
+					  GladeCreateReason   reason)
+{
+	GladePropertyClass  *pclass;
+	GladeProperty       *property;
+	GladeWidget         *widget;
+	GList               *l;
+	
+	widget = glade_widget_get_from_gobject (object);
+
+	for (l = adaptor->properties; l; l = l->next)
+	{
+		pclass = l->data;
+
+		if (strncmp (pclass->id, "use-attr-", strlen ("use-attr-")) == 0)
+		{
+			property = glade_widget_get_property (widget, pclass->id);
+			glade_property_sync (property);
+		}
+	}
+
+	g_signal_connect (G_OBJECT (widget), "notify::project",
+			  G_CALLBACK (renderer_project_changed), NULL);
+
+	renderer_project_changed (widget, NULL, NULL);
+
+}
+
+GladeEditorProperty *
+glade_gtk_cell_renderer_create_eprop (GladeWidgetAdaptor *adaptor,
+				      GladePropertyClass *klass,
+				      gboolean            use_command)
+{
+	GladeEditorProperty *eprop;
+
+	if (strncmp (klass->id, "attr-", strlen ("attr-")) == 0)
+		eprop = g_object_new (GLADE_TYPE_EPROP_CELL_ATTRIBUTE,
+				      "property-class", klass, 
+				      "use-command", use_command,
+				      NULL);
+	else
+		eprop = GWA_GET_CLASS 
+			(G_TYPE_OBJECT)->create_eprop (adaptor, 
+						       klass, 
+						       use_command);
+	return eprop;
+}
+
+
+GladeEditable *
+glade_gtk_cell_renderer_create_editable (GladeWidgetAdaptor  *adaptor,
+					 GladeEditorPageType  type)
+{
+	GladeEditable *editable;
+
+	/* Get base editable */
+	editable = GWA_GET_CLASS (G_TYPE_OBJECT)->create_editable (adaptor, type);
+
+	if (type == GLADE_PAGE_GENERAL || type == GLADE_PAGE_COMMON)
+		return (GladeEditable *)glade_cell_renderer_editor_new (adaptor, type, editable);
+
+	return editable;
+}
+
+static void
+glade_gtk_cell_renderer_set_use_attribute (GObject      *object, 
+					   const gchar  *property_name,
+					   const GValue *value)
+{
+	GladeWidget *widget = glade_widget_get_from_gobject (object);
+	gchar *attr_prop_name, *prop_msg, *attr_msg;
+
+	attr_prop_name = g_strdup_printf ("attr-%s", property_name);
+
+	prop_msg = g_strdup_printf (_("%s is set to load %s from the model"), 
+				    widget->name, property_name);
+	attr_msg = g_strdup_printf (_("%s is set to manipulate %s directly"), 
+				    widget->name, attr_prop_name);
+
+	glade_widget_property_set_sensitive (widget, property_name, FALSE, prop_msg);
+	glade_widget_property_set_sensitive (widget, attr_prop_name, FALSE, attr_msg);
+
+	if (g_value_get_boolean (value))
+		glade_widget_property_set_sensitive (widget, attr_prop_name, TRUE, NULL);
+	else
+		glade_widget_property_set_sensitive (widget, property_name, TRUE, NULL);
+
+	g_free (prop_msg);
+	g_free (attr_msg);
+	g_free (attr_prop_name);
 }
 
 static gboolean

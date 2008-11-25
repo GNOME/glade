@@ -11,6 +11,9 @@
 	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: 
 	  - Added editor support for Icon View.
 	  - Added editor support for Combo Box
+	  - Renderers watch project format changes and now sync attributes in an idle
+	    when moving into builder format (fixes renderer appearance after undo of project
+	    conversions).
 
 	* plugins/gtk+/glade-cell-renderer-editor.c: Export a new function to get the model from
 	the renderer regardless of the layout type.
