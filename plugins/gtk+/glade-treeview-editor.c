@@ -237,7 +237,7 @@ glade_tree_view_editor_new (GladeWidgetAdaptor *adaptor,
 
 	/* ...and the vbox with datastore/label on the right */
 	vbox = gtk_vbox_new (FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (view_editor), vbox, FALSE, FALSE, 8);
+	gtk_box_pack_start (GTK_BOX (view_editor), vbox, TRUE, TRUE, 8);
 
 	str = g_strdup_printf ("<b>%s</b>", _("Choose a Data Model and define some\n"
 					      "columns in the data store first"));
