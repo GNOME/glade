@@ -382,7 +382,7 @@ glade_base_editor_treeview_cursor_changed (GtkTreeView *treeview,
 	g_signal_emit (editor, glade_base_editor_signals[SIGNAL_CHILD_SELECTED],
 		       0, gchild);
 
-	/* Update Signal Editor*/
+	/* Update Signal Editor */
 	glade_signal_editor_load_widget (e->signal_editor, gchild);
 }
 
@@ -956,6 +956,8 @@ glade_base_editor_project_widget_name_changed (GladeProject *project,
 				    -1);
 		if (widget == selected_child)
 			glade_base_editor_update_properties (editor);
+
+		g_object_unref (G_OBJECT (selected_child));
 	}
 }
 
@@ -978,11 +980,15 @@ glade_base_editor_reorder (GladeBaseEditor *editor, GtkTreeIter *iter)
 	
 	gtk_tree_model_get (e->model, iter,
 			    GLADE_BASE_EDITOR_GWIDGET, &gchild, -1);
-	
+	g_object_unref (G_OBJECT (gchild));
+
 	if (gtk_tree_model_iter_parent (e->model, &parent_iter, iter))
+	{
 		gtk_tree_model_get (e->model, &parent_iter,
 				    GLADE_BASE_EDITOR_GWIDGET, &gparent,
 				    -1);
+		g_object_unref (G_OBJECT (gparent));
+	}
 	else
 		gparent = e->gcontainer;
 
@@ -1089,6 +1095,7 @@ glade_base_editor_update_display_name (GtkTreeModel *model,
 			    GLADE_BASE_EDITOR_NAME, name,
 			    -1);
 	g_free (name);
+	g_object_unref (G_OBJECT (gchild));
 	
 	return FALSE;
 }
@@ -1159,6 +1166,9 @@ glade_base_editor_set_container (GladeBaseEditor *editor,
 
 		gtk_widget_set_sensitive (e->paned, FALSE);
 		glade_base_editor_block_callbacks (editor, FALSE);
+
+		glade_signal_editor_load_widget (e->signal_editor, NULL);
+
 		g_object_notify (G_OBJECT (editor), "container");
 		return;
 	}
@@ -1565,6 +1575,38 @@ glade_base_editor_realize_callback (GtkWidget *widget, gpointer user_data)
 	glade_base_editor_block_callbacks (editor, FALSE);
 }
 
+
+static void 
+glade_base_editor_switch_page (GtkNotebook     *notebook,
+			       GtkNotebookPage *page,
+			       guint            page_num,
+			       GladeBaseEditor *editor)
+{
+	GladeBaseEditorPrivate *e = editor->priv;
+
+	if (page_num == 0)
+		glade_signal_editor_load_widget (e->signal_editor, e->gcontainer);
+	else
+	{
+		GtkTreeIter  iter;
+		GladeWidget *gchild = NULL;
+
+		if (glade_base_editor_get_child_selected (editor, &iter))
+		{
+			gtk_tree_model_get (e->model, &iter,
+					    GLADE_BASE_EDITOR_GWIDGET, &gchild,
+					    -1);
+			g_object_unref (G_OBJECT (gchild));
+		}
+
+		if (gchild)
+			glade_signal_editor_load_widget (e->signal_editor, gchild);
+		else
+			glade_signal_editor_load_widget (e->signal_editor, NULL);
+	}
+}
+
+
 static void
 glade_base_editor_init (GladeBaseEditor *editor)
 {
@@ -1577,38 +1619,33 @@ glade_base_editor_init (GladeBaseEditor *editor)
 	
 	e = editor->priv = g_new0(GladeBaseEditorPrivate, 1);
 	
+	/* Paned */
+	e->paned = paned = gtk_vpaned_new ();
+	gtk_widget_show (paned);
+	gtk_box_pack_start (GTK_BOX (editor), e->paned, TRUE, TRUE, 0);
+
 	/* Notebook */
 	e->notebook = gtk_notebook_new ();
 	gtk_widget_show (e->notebook);
-	gtk_box_pack_start (GTK_BOX (editor), e->notebook, TRUE, TRUE, 0);
+	gtk_paned_pack1 (GTK_PANED (paned), e->notebook, TRUE, FALSE);
 
-	/* Properties Vbox */
-	vbox = gtk_vbox_new (FALSE, 8);
-	gtk_widget_show (vbox);
-	
 	/* ScrolledWindow */
 	e->main_scroll = gtk_scrolled_window_new (NULL, NULL);
 	gtk_widget_show (e->main_scroll);
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (e->main_scroll), GTK_SHADOW_NONE);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (e->main_scroll), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-	gtk_box_pack_start (GTK_BOX (vbox), e->main_scroll, TRUE, TRUE, 0);
 
 	label = gtk_label_new (_("General"));	
 	gtk_widget_show (label);
-	gtk_notebook_append_page (GTK_NOTEBOOK (e->notebook), vbox, label);
+	gtk_notebook_append_page (GTK_NOTEBOOK (e->notebook), e->main_scroll, label);
 
-	/* Paned */
-	e->paned = paned = gtk_vpaned_new ();
-	gtk_widget_show (paned);
-
-	label = gtk_label_new (_("Hierarchy"));
-	gtk_widget_show (label);
-	gtk_notebook_append_page (GTK_NOTEBOOK (e->notebook), e->paned, label);
-	
 	/* Hbox */
 	hbox = gtk_hbox_new (FALSE, 8);
 	gtk_widget_show (hbox);
-	gtk_paned_pack1 (GTK_PANED (paned), hbox, TRUE, FALSE);
+
+	label = gtk_label_new (_("Hierarchy"));
+	gtk_widget_show (label);
+	gtk_notebook_append_page (GTK_NOTEBOOK (e->notebook), hbox, label);
 		
 	/* TreeView Vbox */
 	tree_vbox = gtk_vbox_new (FALSE, 8);
@@ -1710,6 +1747,10 @@ glade_base_editor_init (GladeBaseEditor *editor)
 	g_signal_connect (editor, "realize",
 			  G_CALLBACK (glade_base_editor_realize_callback),
 			  NULL);
+
+	g_signal_connect (G_OBJECT (e->notebook), "switch-page",
+			  G_CALLBACK (glade_base_editor_switch_page), editor);
+
 }
 
 /********************************* Public API *********************************/
@@ -1826,6 +1867,8 @@ glade_base_editor_new (GObject       *container,
 
 	glade_base_editor_set_container (editor, container);
 	
+	glade_signal_editor_load_widget (e->signal_editor, e->gcontainer);
+
 	return editor;
 }
 
