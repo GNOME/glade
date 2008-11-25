@@ -67,6 +67,8 @@ GtkWidget       *glade_cell_renderer_editor_new      (GladeWidgetAdaptor  *adapt
 						      GladeEditorPageType  type,
 						      GladeEditable       *editable);
 
+GladeWidget     *glade_cell_renderer_get_model       (GladeWidget         *renderer);
+
 G_END_DECLS
 
 #endif  /* _GLADE_CELL_RENDERER_EDITOR_H_ */

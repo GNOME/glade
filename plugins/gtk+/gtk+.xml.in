@@ -1668,7 +1668,7 @@ embedded in another object</_tooltip>
 	    <value id="GTK_ASSISTANT_PAGE_PROGRESS" _name="Progress"/>
 	  </displayable-values>
 	</property>
-        <property save="False" id="position" name="Position">
+        <property save="False" id="position" _name="Position">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	  </parameter-spec>
@@ -1791,48 +1791,6 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkTreeView" generic-name="treeview" _title="Tree View">
-      <post-create-function>empty</post-create-function>
-      <child-set-property-function>glade_gtk_treeview_set_child_property</child-set-property-function>
-      <child-get-property-function>glade_gtk_treeview_get_child_property</child-get-property-function>
-      <get-children-function>glade_gtk_treeview_get_children</get-children-function>
-      <add-child-function>glade_gtk_treeview_add_child</add-child-function>
-      <remove-child-function>glade_gtk_treeview_remove_child</remove-child-function>
-      <action-activate-function>glade_gtk_treeview_action_activate</action-activate-function>
-      <depends-function>glade_gtk_treeview_depends</depends-function>
-
-      <actions>
-        <action id="launch_editor" _name="Edit&#8230;" stock="gtk-edit" important="True"/>
-      </actions>
-
-      <properties>
-        <property id="level-indentation" since="2.12"/>
-        <property id="show-expanders" since="2.12"/>
-        <property id="enable-grid-lines" ignore="True">
-  	  <displayable-values>
-	    <value id="GTK_TREE_VIEW_GRID_LINES_NONE" _name="None"/>
-	    <value id="GTK_TREE_VIEW_GRID_LINES_HORIZONTAL" _name="Horizontal"/>
-	    <value id="GTK_TREE_VIEW_GRID_LINES_VERTICAL" _name="Vertical"/>
-	    <value id="GTK_TREE_VIEW_GRID_LINES_BOTH" _name="Horizontal and Vertical"/>
-	  </displayable-values>
-	</property>
-        <property id="hadjustment" libglade-unsupported="True"/>
-	<property id="vadjustment" libglade-unsupported="True"/>
-        <property id="model" create-type="GtkListStore" query="True" libglade-unsupported="True"/>
-      </properties>
-      
-      <packing-properties>
-        <property save="False" id="position" name="Position" visible="False">
-	  <parameter-spec>
-	    <type>GParamInt</type>
-	  </parameter-spec>
-	  <_tooltip>The column position in the Tree View</_tooltip>
-	</property>
-      </packing-properties>
-    </glade-widget-class>
-
-    <glade-widget-class name="GtkIconView" generic-name="iconview" _title="Icon View"/>
-
     <glade-widget-class name="GtkListStore" generic-name="liststore" _title="List Store" 
 			libglade-unsupported="True" toplevel="True">
       <set-property-function>glade_gtk_store_set_property</set-property-function>
@@ -1893,6 +1851,45 @@ embedded in another object</_tooltip>
 			libglade-unsupported="True" toplevel="True"/>
 
 
+    <glade-widget-class name="GtkTreeView" generic-name="treeview" _title="Tree View">
+      <post-create-function>empty</post-create-function>
+      <child-set-property-function>glade_gtk_treeview_set_child_property</child-set-property-function>
+      <child-get-property-function>glade_gtk_treeview_get_child_property</child-get-property-function>
+      <get-children-function>glade_gtk_treeview_get_children</get-children-function>
+      <add-child-function>glade_gtk_treeview_add_child</add-child-function>
+      <remove-child-function>glade_gtk_treeview_remove_child</remove-child-function>
+      <action-activate-function>glade_gtk_treeview_action_activate</action-activate-function>
+      <depends-function>glade_gtk_treeview_depends</depends-function>
+
+      <actions>
+        <action id="launch_editor" _name="Edit&#8230;" stock="gtk-edit" important="True"/>
+      </actions>
+
+      <properties>
+        <property id="level-indentation" since="2.12"/>
+        <property id="show-expanders" since="2.12"/>
+        <property id="enable-grid-lines" ignore="True">
+  	  <displayable-values>
+	    <value id="GTK_TREE_VIEW_GRID_LINES_NONE" _name="None"/>
+	    <value id="GTK_TREE_VIEW_GRID_LINES_HORIZONTAL" _name="Horizontal"/>
+	    <value id="GTK_TREE_VIEW_GRID_LINES_VERTICAL" _name="Vertical"/>
+	    <value id="GTK_TREE_VIEW_GRID_LINES_BOTH" _name="Horizontal and Vertical"/>
+	  </displayable-values>
+	</property>
+        <property id="hadjustment" libglade-unsupported="True"/>
+	<property id="vadjustment" libglade-unsupported="True"/>
+        <property id="model" create-type="GtkListStore" query="True" libglade-unsupported="True"/>
+      </properties>
+      
+      <packing-properties>
+        <property save="False" id="position" visible="False">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	  </parameter-spec>
+	</property>
+      </packing-properties>
+    </glade-widget-class>
+
     <glade-widget-class name="GtkTreeViewColumn" generic-name="treeviewcolumn" _title="Tree View Column" 
 			libglade-unsupported="True">
       <add-child-function>glade_gtk_cell_layout_add_child</add-child-function>
@@ -1913,14 +1910,45 @@ embedded in another object</_tooltip>
       </properties>
 
       <packing-properties>
-        <property save="False" id="position" name="Position" visible="False">
+        <property save="False" id="position" visible="False">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	  </parameter-spec>
-	  <_tooltip>The Cell Renderer position in the Tree View Column</_tooltip>
 	</property>
       </packing-properties>
     </glade-widget-class>
+
+    <glade-widget-class name="GtkIconView" generic-name="iconview" _title="Icon View">
+      <post-create-function>empty</post-create-function>
+      <add-child-function>glade_gtk_cell_layout_add_child</add-child-function>
+      <remove-child-function>glade_gtk_cell_layout_remove_child</remove-child-function> 
+      <get-children-function>glade_gtk_cell_layout_get_children</get-children-function>
+      <read-child-function>glade_gtk_cell_layout_read_child</read-child-function>
+      <write-child-function>glade_gtk_cell_layout_write_child</write-child-function>
+      <action-activate-function>glade_gtk_cell_layout_action_activate</action-activate-function>
+      <child-set-property-function>glade_gtk_cell_layout_set_child_property</child-set-property-function>
+      <child-get-property-function>glade_gtk_cell_layout_get_child_property</child-get-property-function>
+      
+      <actions>
+        <action id="launch_editor" _name="Edit&#8230;" stock="gtk-edit" important="True"/>
+      </actions>
+
+      <properties>
+        <property id="text-column" disabled="True"/>
+        <property id="markup-column" disabled="True"/>
+        <property id="pixbuf-column" disabled="True"/>
+        <property id="reorderable" ignore="True"/>
+      </properties>
+
+      <packing-properties>
+        <property save="False" id="position" visible="False">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	  </parameter-spec>
+	</property>
+      </packing-properties>
+    </glade-widget-class>
+
 
     <glade-widget-class name="GtkCellRenderer" _title="Cell Renderer">
       <post-create-function>glade_gtk_cell_renderer_post_create</post-create-function>

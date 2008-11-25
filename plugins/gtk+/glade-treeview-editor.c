@@ -83,8 +83,15 @@ project_finalized (GladeTreeViewEditor *view_editor,
 static GladeWidget *
 get_model_widget (GladeWidget *view)
 {
-	GtkTreeView *treeview = GTK_TREE_VIEW (view->object);
-	GtkTreeModel *model = gtk_tree_view_get_model (treeview);
+
+	GtkTreeModel *model = NULL;
+
+	if (GTK_IS_TREE_VIEW (view->object))
+		model = gtk_tree_view_get_model (GTK_TREE_VIEW (view->object));
+	else if (GTK_IS_ICON_VIEW (view->object))	
+		model = gtk_icon_view_get_model (GTK_ICON_VIEW (view->object));
+	else if (GTK_IS_COMBO_BOX (view->object))
+		model = gtk_combo_box_get_model (GTK_COMBO_BOX (view->object));
 
 	if (model)
 		return glade_widget_get_from_gobject (model);
@@ -232,7 +239,7 @@ glade_tree_view_editor_new (GladeWidgetAdaptor *adaptor,
 	vbox = gtk_vbox_new (FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (view_editor), vbox, FALSE, FALSE, 8);
 
-	str = g_strdup_printf ("<b>%s</b>", _("Choose a Tree Model and define some\n"
+	str = g_strdup_printf ("<b>%s</b>", _("Choose a Data Model and define some\n"
 					      "columns in the data store first"));
 	view_editor->no_model_message = gtk_label_new (str);
 	gtk_label_set_use_markup (GTK_LABEL (view_editor->no_model_message), TRUE);

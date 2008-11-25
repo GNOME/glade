@@ -521,11 +521,9 @@ glade_eprop_cell_attribute_finalize (GObject *object)
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
-
-static GladeWidget *
-get_model (GladeProperty *property)
+GladeWidget *
+glade_cell_renderer_get_model (GladeWidget *renderer)
 {
-	GladeWidget *renderer = property->widget;
 	GladeWidget *model = NULL;
 
 	/* Keep inline with all new cell layouts !!! */
@@ -542,6 +540,15 @@ get_model (GladeProperty *property)
 				model = glade_widget_get_from_gobject (real_model);
 		}
 	}
+	else if (renderer->parent && GTK_IS_ICON_VIEW (renderer->parent->object))
+	{
+		GladeWidget *view = renderer->parent;
+		GtkTreeModel *real_model = NULL;
+		glade_widget_property_get (view, "model", &real_model);
+		if (real_model)
+			model = glade_widget_get_from_gobject (real_model);		
+	}
+
 	return model;
 }
 
@@ -565,7 +572,7 @@ glade_eprop_cell_attribute_load (GladeEditorProperty *eprop,
 		gtk_list_store_clear (store);
 
 		/* Generate model and set active iter */
-		if ((gmodel = get_model (property)) != NULL)
+		if ((gmodel = glade_cell_renderer_get_model (property->widget)) != NULL)
 		{
 			GList *columns = NULL, *l;
 
