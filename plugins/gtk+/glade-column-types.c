@@ -464,7 +464,8 @@ columns_changed_idle (GladeEditorProperty *eprop)
 			column_name = NULL;
 			gtk_tree_model_get (GTK_TREE_MODEL (eprop_types->store), &iter,
 					    COLUMN_COLUMN_NAME, &column_name, -1);
-			g_assert (column_name);
+			if (!column_name)
+				continue;
 
 			column = glade_column_list_find_column (columns, column_name);
 			g_assert (column);
