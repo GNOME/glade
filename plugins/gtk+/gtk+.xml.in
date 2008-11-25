@@ -3032,6 +3032,11 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkComboBoxEntry"/>
     <glade-widget-class-ref name="GtkProgressBar"/>
 
+    <glade-widget-class-ref name="GtkTextView"/>
+
+    <glade-widget-class-ref name="GtkTreeView"/>
+    <glade-widget-class-ref name="GtkIconView"/>
+
     <glade-widget-class-ref name="GtkHandleBox"/>
     <glade-widget-class-ref name="GtkStatusbar"/>
 
@@ -3073,28 +3078,10 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkTreeSelection"/>
   </glade-widget-group>
 
-  <glade-widget-group name="gtk-view" title="Tree View">
+  <glade-widget-group name="gtk-text" _title="Text Buffers">
 
     <default-palette-state expanded="False"/>
 
-    <glade-widget-class-ref name="GtkTreeView"/>
-    <glade-widget-class-ref name="GtkIconView"/>
-    <glade-widget-class-ref name="GtkTreeViewColumn"/>
-    <glade-widget-class-ref name="GtkCellRendererText"/>
-    <glade-widget-class-ref name="GtkCellRendererAccel"/>
-    <glade-widget-class-ref name="GtkCellRendererCombo"/>
-    <glade-widget-class-ref name="GtkCellRendererSpin"/>
-    <glade-widget-class-ref name="GtkCellRendererPixbuf"/>
-    <glade-widget-class-ref name="GtkCellRendererProgress"/>
-    <glade-widget-class-ref name="GtkCellRendererToggle"/>
-  </glade-widget-group>
-
-
-  <glade-widget-group name="gtk-text" _title="Text Manipulation">
-
-    <default-palette-state expanded="False"/>
-
-    <glade-widget-class-ref name="GtkTextView"/>
     <glade-widget-class-ref name="GtkTextBuffer"/>
     <glade-widget-class-ref name="GtkTextTag"/>
     <glade-widget-class-ref name="GtkTextTagTable"/>

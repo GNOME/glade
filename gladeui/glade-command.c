@@ -941,9 +941,9 @@ get_all_parentless_reffed_widgets (GList *reffed, GladeWidget *widget)
 
 	for (l = children; l; l = l->next)
 	{
-		child = glade_widget_get_from_gobject (l->data);
-		if ((list = glade_widget_get_parentless_reffed_widgets (child)) != NULL)
-			reffed = g_list_concat (reffed, list);
+		if ((child = glade_widget_get_from_gobject (l->data)) != NULL)
+			if ((list = glade_widget_get_parentless_reffed_widgets (child)) != NULL)
+				reffed = g_list_concat (reffed, list);
 
 		reffed = get_all_parentless_reffed_widgets (reffed, child);
 	}
