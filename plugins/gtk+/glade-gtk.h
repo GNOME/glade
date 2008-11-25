@@ -5,6 +5,7 @@
 #include <gladeui/glade.h>
 #include <gtk/gtk.h>
 
+
 /* Types */
 
 GParamSpec *glade_gtk_gnome_ui_info_spec   (void);

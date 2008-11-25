@@ -1000,6 +1000,19 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkComboBox" generic-name="combobox" _title="Combo Box">
       <post-create-function>glade_gtk_combo_box_post_create</post-create-function>
       <set-property-function>glade_gtk_combo_box_set_property</set-property-function>
+      <add-child-function>glade_gtk_cell_layout_add_child</add-child-function>
+      <remove-child-function>glade_gtk_cell_layout_remove_child</remove-child-function> 
+      <get-children-function>glade_gtk_cell_layout_get_children</get-children-function>
+      <read-child-function>glade_gtk_cell_layout_read_child</read-child-function>
+      <write-child-function>glade_gtk_cell_layout_write_child</write-child-function>
+      <action-activate-function>glade_gtk_cell_layout_action_activate</action-activate-function>
+      <child-set-property-function>glade_gtk_cell_layout_set_child_property</child-set-property-function>
+      <child-get-property-function>glade_gtk_cell_layout_get_child_property</child-get-property-function>
+      
+      <actions>
+        <action id="launch_editor" _name="Edit&#8230;" stock="gtk-edit" important="True"/>
+      </actions>
+
       <signals>
 	<signal id="move-action" since="2.12"/>
 	<signal id="popdown" since="2.12"/>
@@ -1938,6 +1951,7 @@ embedded in another object</_tooltip>
         <property id="markup-column" disabled="True"/>
         <property id="pixbuf-column" disabled="True"/>
         <property id="reorderable" ignore="True"/>
+        <property id="model" create-type="GtkListStore" query="True" libglade-unsupported="True"/>
       </properties>
 
       <packing-properties>
@@ -1948,7 +1962,6 @@ embedded in another object</_tooltip>
 	</property>
       </packing-properties>
     </glade-widget-class>
-
 
     <glade-widget-class name="GtkCellRenderer" _title="Cell Renderer">
       <post-create-function>glade_gtk_cell_renderer_post_create</post-create-function>

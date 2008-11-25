@@ -548,6 +548,14 @@ glade_cell_renderer_get_model (GladeWidget *renderer)
 		if (real_model)
 			model = glade_widget_get_from_gobject (real_model);		
 	}
+	else if (renderer->parent && GTK_IS_COMBO_BOX (renderer->parent->object))
+	{
+		GladeWidget *combo = renderer->parent;
+		GtkTreeModel *real_model = NULL;
+		glade_widget_property_get (combo, "model", &real_model);
+		if (real_model)
+			model = glade_widget_get_from_gobject (real_model);		
+	}
 
 	return model;
 }

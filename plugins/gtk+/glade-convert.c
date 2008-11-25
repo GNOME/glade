@@ -383,7 +383,7 @@ combos_data_tree_from_items (gchar **items)
 
 	for (i = 0; items[i]; i++)
 	{
-		GladeModelData *data = glade_model_data_new (G_TYPE_STRING, "item");
+		GladeModelData *data = glade_model_data_new (G_TYPE_STRING, "item text");
 
 		g_value_set_string (&data->value, items[i]);
 
@@ -425,6 +425,39 @@ combos_items_from_data_tree (GNode *data_tree)
 }
 
 static void
+combo_box_convert_setup (GladeWidget *widget, GladeProjectFormat fmt)
+{
+	GtkListStore    *store;
+	GtkComboBox     *combo = GTK_COMBO_BOX (widget->object);
+	GtkCellRenderer *cell;
+
+	if (fmt == GLADE_PROJECT_FORMAT_GTKBUILDER)
+	{
+		/* Get rid of any custom */
+		gtk_combo_box_set_model (combo, NULL);
+
+		/* remove every cell (its only the libglade special case cell that is here) */
+		gtk_cell_layout_clear (GTK_CELL_LAYOUT (combo));
+	}
+	else if (fmt == GLADE_PROJECT_FORMAT_LIBGLADE)
+	{
+		if (!gtk_combo_box_get_model (GTK_COMBO_BOX (combo)))
+		{
+			/* Add store for text items */
+			store = gtk_list_store_new (1, G_TYPE_STRING);
+			gtk_combo_box_set_model (GTK_COMBO_BOX (combo), GTK_TREE_MODEL (store));
+			g_object_unref (store);
+		}
+
+		/* Add cell renderer for text items */
+		cell = gtk_cell_renderer_text_new ();
+		gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (combo), cell, TRUE);
+		gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (combo), cell,
+						"text", 0, NULL);
+	}
+}
+
+static void
 convert_combos (GladeProject       *project,
 		GladeProjectFormat  new_format,
 		ConvertData        *data)
@@ -448,7 +481,9 @@ convert_combos (GladeProject       *project,
 			items = NULL;
 			property = glade_widget_get_property (widget, "items");
 			glade_property_get (property, &items);
-		
+
+			combo_box_convert_setup (widget, new_format);
+
 			if (items)
 			{
 				cdata = g_new0 (ComboData, 1);
@@ -497,6 +532,7 @@ convert_combos_finished (GladeProject  *project,
 {
 	GladeProjectFormat  new_format = glade_project_get_format (project);
 	GladeWidgetAdaptor *adaptor = glade_widget_adaptor_get_by_type (GTK_TYPE_LIST_STORE);
+	GladeWidgetAdaptor *cell_adaptor = glade_widget_adaptor_get_by_type (GTK_TYPE_CELL_RENDERER_TEXT);
 	GladeProperty *property;
 	GladeWidget *widget;
 	ComboData  *cdata;
@@ -511,7 +547,9 @@ convert_combos_finished (GladeProject  *project,
 		{
 			GList *columns = NULL;
 			GladeColumnType *column = g_new0 (GladeColumnType, 1);
+
 			column->type = G_TYPE_STRING;
+			column->column_name = g_strdup_printf ("item text");
 			columns = g_list_append (columns, column);
 
 			property = glade_widget_get_property (cdata->widget, "model");
@@ -527,9 +565,17 @@ convert_combos_finished (GladeProject  *project,
 			glade_command_set_property (property, widget->object);
 			
 			glade_column_list_free (columns);
+			glade_model_data_tree_free (data_tree);
+
+			/* Add a cell renderer after creating and setting the mode.... */
+			widget = glade_command_create (cell_adaptor, cdata->widget, NULL, project);
+			glade_widget_property_set (widget, "attr-text", 0);
+
 		}
 		else
 		{
+			combo_box_convert_setup (cdata->widget, new_format);
+
 			property = glade_widget_get_property (cdata->widget, "items");
 			glade_command_set_property (property, cdata->items);
 		}

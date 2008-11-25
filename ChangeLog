@@ -8,13 +8,17 @@
 
 	* gladeui/glade-command.c: Fixed check for wrapperless objects returned by adaptor_get_children().
 
-	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Added editor support for Icon View.
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: 
+	  - Added editor support for Icon View.
+	  - Added editor support for Combo Box
 
 	* plugins/gtk+/glade-cell-renderer-editor.c: Export a new function to get the model from
 	the renderer regardless of the layout type.
 
 	* plugins/gtk+/glade-treeview-editor.c: Now supports editing any view that can have a model,
 	and pops up the store editor automatically on the right of the normal widget editor.
+
+	* plugins/gtk+/glade-convert.c: Fixed conversions for combo boxes.
 
 2008-11-23  Tristan Van Berkom <tvb@gnome.org>
 

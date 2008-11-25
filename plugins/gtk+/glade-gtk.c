@@ -8237,28 +8237,31 @@ glade_gtk_combo_box_post_create (GladeWidgetAdaptor *adaptor,
 				 GladeCreateReason   reason)
 {
 	GtkCellRenderer *cell;
+	GladeWidget     *widget = glade_widget_get_from_gobject (object);
 
-	g_return_if_fail (GTK_IS_COMBO_BOX (object));
+	if (glade_project_get_format (widget->project) == GLADE_PROJECT_FORMAT_LIBGLADE)
+	{
 
-	combo_ensure_model (object);
+		combo_ensure_model (object);
 
-	/* Add cell renderer */
-	cell = gtk_cell_renderer_text_new ();
-	gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (object), cell, TRUE);
-	gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (object), cell,
-					"text", 0, NULL);
+		/* Add cell renderer */
+		cell = gtk_cell_renderer_text_new ();
+		gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (object), cell, TRUE);
+		gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (object), cell,
+						"text", 0, NULL);
+	}
 }
 
 static void
 glade_gtk_combo_box_set_items (GObject *object, const GValue *value)
 {
-	GtkComboBox *combo;
+	GtkComboBox *combo  = GTK_COMBO_BOX (object);
+	GladeWidget *widget = glade_widget_get_from_gobject (object);
 	gchar **split;
 	gint    i;
 
-	g_return_if_fail (GTK_IS_COMBO_BOX (object));
-
-	combo = GTK_COMBO_BOX (object);
+	if (glade_project_get_format (widget->project) != GLADE_PROJECT_FORMAT_LIBGLADE)
+		return;
 
 	combo_ensure_model (object);
 
