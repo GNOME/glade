@@ -24,6 +24,7 @@
 
 #include <gladeui/glade.h>
 #include <gtk/gtk.h>
+#include <gdk/gdkkeysyms.h>
 #include <glib/gi18n-lib.h>
 #include <string.h>
 
@@ -251,7 +252,9 @@ typedef struct
 
 	/* Used for setting focus on newly added rows */
 	gboolean             adding_row;
-	GtkTreeViewColumn   *first_column;
+	gboolean             want_focus;
+	gint                 editing_row;
+	gint                 editing_column;
 } GladeEPropModelData;
 
 GLADE_MAKE_EPROP (GladeEPropModelData, glade_eprop_model_data)
@@ -313,11 +316,28 @@ update_data_tree_idle (GladeEditorProperty *eprop)
 	return FALSE;
 }
 
+static gboolean
+update_and_focus_data_tree_idle (GladeEditorProperty *eprop)
+{
+	GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
+	GValue               value = { 0, };
 
-/* User pressed add: append row and commit values  */
+	eprop_data->want_focus = TRUE;
+	
+	g_value_init (&value, GLADE_TYPE_MODEL_DATA_TREE);
+	g_value_take_boxed (&value, eprop_data->pending_data_tree);
+	glade_editor_property_commit (eprop, &value);
+	g_value_unset (&value);
+
+	eprop_data->pending_data_tree = NULL;
+
+	eprop_data->want_focus = FALSE;
+
+	return FALSE;
+}
+
 static void
-glade_eprop_model_data_add_clicked (GtkWidget *button, 
-				    GladeEditorProperty *eprop)
+glade_eprop_model_data_add_row (GladeEditorProperty *eprop)
 {
 	GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
 	GValue value = { 0, };
@@ -349,10 +369,8 @@ glade_eprop_model_data_add_clicked (GtkWidget *button,
 	eprop_data->adding_row = FALSE;
 }
 
-/* User pressed delete: remove selected row and commit values  */
 static void
-glade_eprop_model_data_delete_clicked (GtkWidget *button, 
-				       GladeEditorProperty *eprop)
+glade_eprop_model_data_delete_selected (GladeEditorProperty *eprop)
 {
 	GtkTreeIter iter;
 	GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
@@ -384,7 +402,40 @@ glade_eprop_model_data_delete_clicked (GtkWidget *button,
 	eprop_data->pending_data_tree = data_tree;
 	g_idle_add ((GSourceFunc)update_data_tree_idle, eprop);
 }
- 
+
+static void
+glade_eprop_model_data_add_clicked (GtkWidget *button, 
+				    GladeEditorProperty *eprop)
+{
+	glade_eprop_model_data_add_row (eprop);
+}
+
+static void
+glade_eprop_model_data_delete_clicked (GtkWidget *button, 
+				       GladeEditorProperty *eprop)
+{
+	glade_eprop_model_data_delete_selected (eprop);
+}
+
+static gboolean
+eprop_treeview_key_press (GtkWidget           *treeview,
+			  GdkEventKey         *event,
+			  GladeEditorProperty *eprop)
+{
+	if (event->keyval == GDK_Delete)
+	{
+		glade_eprop_model_data_delete_selected (eprop);
+		return TRUE;
+	}
+	else if ((event->state & GDK_CONTROL_MASK) != 0 &&
+		 (event->keyval == GDK_n || event->keyval == GDK_N))
+	{
+		glade_eprop_model_data_add_row (eprop);
+		return TRUE;
+	}
+
+	return FALSE;
+} 
 
 static gboolean
 data_changed_idle (GladeEditorProperty *eprop)
@@ -542,11 +593,13 @@ value_toggled (GtkCellRendererToggle *cell,
 
 	g_value_set_boolean (&data->value, !active);
 
+	eprop_data->editing_row    = row;
+	eprop_data->editing_column = colnum;
 	if (eprop_data->pending_data_tree)
 		glade_model_data_tree_free (eprop_data->pending_data_tree);
 
 	eprop_data->pending_data_tree = data_tree;
-	g_idle_add ((GSourceFunc)update_data_tree_idle, eprop);
+	g_idle_add ((GSourceFunc)update_and_focus_data_tree_idle, eprop);
 }
 
 static void
@@ -593,11 +646,13 @@ value_i18n_clicked (GladeCellRendererButton *cell,
 	{
 		g_value_set_string (&data->value, new_text);
 		
+		eprop_data->editing_row    = row;
+		eprop_data->editing_column = colnum;
 		if (eprop_data->pending_data_tree)
 			glade_model_data_tree_free (eprop_data->pending_data_tree);
 		
 		eprop_data->pending_data_tree = data_tree;
-		g_idle_add ((GSourceFunc)update_data_tree_idle, eprop);
+		g_idle_add ((GSourceFunc)update_and_focus_data_tree_idle, eprop);
 	}
 	else
 		glade_model_data_tree_free (data_tree);
@@ -622,7 +677,6 @@ value_text_edited (GtkCellRendererText *cell,
 	if (!gtk_tree_model_get_iter_from_string (GTK_TREE_MODEL (eprop_data->store), &iter, path))
 		return;
 
-
 	gtk_tree_model_get (GTK_TREE_MODEL (eprop_data->store), &iter,
 			    COLUMN_ROW, &row,
 			    -1);
@@ -644,11 +698,13 @@ value_text_edited (GtkCellRendererText *cell,
 	g_value_unset (value);
 	g_free (value);
 	
+	eprop_data->editing_row    = row;
+	eprop_data->editing_column = colnum;
 	if (eprop_data->pending_data_tree)
 		glade_model_data_tree_free (eprop_data->pending_data_tree);
 
 	eprop_data->pending_data_tree = data_tree;
-	g_idle_add ((GSourceFunc)update_data_tree_idle, eprop);
+	g_idle_add ((GSourceFunc)update_and_focus_data_tree_idle, eprop);
 }
 
 static GtkTreeViewColumn *
@@ -664,6 +720,7 @@ eprop_model_generate_column (GladeEditorProperty *eprop,
 
 	gtk_tree_view_column_set_title (column, data->name);
 	gtk_tree_view_column_set_resizable (column, TRUE);
+	gtk_tree_view_column_set_expand (column, TRUE);
 
 	/* Support enum and flag types, and a hardcoded list of fundamental types */
 	if (type == G_TYPE_CHAR ||
@@ -790,8 +847,6 @@ eprop_model_data_generate_columns (GladeEditorProperty *eprop)
 	if (!data_tree || !data_tree->children || !data_tree->children->children)
 		return;
 
-	eprop_data->first_column = NULL;
-
 	/* Append new columns */
 	for (colnum = 0, iter_node = data_tree->children->children; iter_node; 
 	     colnum++, iter_node = iter_node->next)
@@ -800,42 +855,70 @@ eprop_model_data_generate_columns (GladeEditorProperty *eprop)
 
 		column = eprop_model_generate_column (eprop, colnum, iter_data);
 		gtk_tree_view_append_column (eprop_data->view, column);
-
-		if (!eprop_data->first_column)
-			eprop_data->first_column = column;
 	}
 }
 
-static gboolean
-eprop_data_focus_idle (GladeEPropModelData *eprop_data)
+static void
+eprop_data_focus_new (GladeEPropModelData *eprop_data)
 {
 	/* Focus and edit the first column of a newly added row */
-	if (eprop_data->store && eprop_data->first_column)
+	if (eprop_data->store)
 	{
 		GtkTreePath *new_item_path;
-		GtkTreeIter  iter, *last_iter = NULL;
+		GtkTreeIter  iter;
+		GtkTreeViewColumn *column;
+		gint n_children;
 
-		if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (eprop_data->store), &iter))
+		n_children = gtk_tree_model_iter_n_children (GTK_TREE_MODEL (eprop_data->store), NULL);
+
+		if ((column = gtk_tree_view_get_column (eprop_data->view, eprop_data->editing_column)) != NULL &&
+		    n_children > 0 && 
+		    gtk_tree_model_iter_nth_child (GTK_TREE_MODEL (eprop_data->store),
+						   &iter,
+						   NULL,
+						   n_children - 1))
+
 		{
-			do {
-				if (last_iter)
-					gtk_tree_iter_free (last_iter);
-				last_iter = gtk_tree_iter_copy (&iter);
-			} while (gtk_tree_model_iter_next (GTK_TREE_MODEL (eprop_data->store), &iter));
-
-			new_item_path = gtk_tree_model_get_path (GTK_TREE_MODEL (eprop_data->store), last_iter);
+			new_item_path = gtk_tree_model_get_path (GTK_TREE_MODEL (eprop_data->store), &iter);
 
 			gtk_widget_grab_focus (GTK_WIDGET (eprop_data->view));
 			gtk_tree_view_expand_to_path (eprop_data->view, new_item_path);
 			gtk_tree_view_set_cursor (eprop_data->view, new_item_path,
-						  eprop_data->first_column, TRUE);
+						  column, TRUE);
 			
 			gtk_tree_path_free (new_item_path);
-			gtk_tree_iter_free (last_iter);
 		}
 	}
-	return FALSE;
 }
+
+static void
+eprop_data_focus_editing_cell (GladeEPropModelData *eprop_data)
+{
+	/* Focus and edit the first column of a newly added row */
+	if (eprop_data->store && eprop_data->want_focus && 
+	    eprop_data->editing_column >= 0 && eprop_data->editing_row >= 0)
+	{
+		GtkTreePath *item_path;
+		GtkTreeIter  iter;
+		GtkTreeViewColumn *column;
+
+		if ((column = gtk_tree_view_get_column (eprop_data->view, eprop_data->editing_column)) != NULL &&
+		    gtk_tree_model_iter_nth_child (GTK_TREE_MODEL (eprop_data->store),
+						   &iter,
+						   NULL,
+						   eprop_data->editing_row))
+		{
+			item_path = gtk_tree_model_get_path (GTK_TREE_MODEL (eprop_data->store), &iter);
+
+			gtk_widget_grab_focus (GTK_WIDGET (eprop_data->view));
+			gtk_tree_view_expand_to_path (eprop_data->view, item_path);
+			gtk_tree_view_set_cursor (eprop_data->view, item_path,
+						  column, FALSE);
+			gtk_tree_path_free (item_path);
+		}
+	}
+}
+
 
 static void
 glade_eprop_model_data_load (GladeEditorProperty *eprop, 
@@ -870,8 +953,14 @@ glade_eprop_model_data_load (GladeEditorProperty *eprop,
 	/* Create new columns with renderers */
 	eprop_model_data_generate_columns (eprop);
 
-	if (eprop_data->adding_row && eprop_data->store && eprop_data->first_column)
-		g_idle_add ((GSourceFunc)eprop_data_focus_idle, eprop_data);
+	if (eprop_data->store)
+	{
+		if (eprop_data->adding_row)
+			eprop_data_focus_new (eprop_data);
+		else if (eprop_data->want_focus && 
+			 eprop_data->editing_row >= 0 && eprop_data->editing_column >= 0)
+			eprop_data_focus_editing_cell (eprop_data);
+	}
 }
 
 static GtkWidget *
@@ -921,12 +1010,17 @@ glade_eprop_model_data_create_input (GladeEditorProperty *eprop)
 	gtk_box_pack_start (GTK_BOX (vbox), swin, TRUE, TRUE, 0);
 
 	eprop_data->view = (GtkTreeView *)gtk_tree_view_new ();
+
+	g_signal_connect (eprop_data->view, "key-press-event",
+			  G_CALLBACK (eprop_treeview_key_press),
+			  eprop);
+
 	
 	gtk_tree_view_set_reorderable (GTK_TREE_VIEW (eprop_data->view), TRUE);
 	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (eprop_data->view), TRUE);
 	gtk_container_add (GTK_CONTAINER (swin), GTK_WIDGET (eprop_data->view));
 
-	g_object_set (G_OBJECT (vbox), "height-request", 190, NULL);
+	g_object_set (G_OBJECT (vbox), "height-request", 300, NULL);
 	
 	gtk_widget_show_all (vbox);
 	return vbox;

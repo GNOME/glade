@@ -196,7 +196,8 @@ glade_store_editor_new (GladeWidgetAdaptor *adaptor,
 	/* Add descriptive label */
 	label = gtk_label_new (_("Define columns for your liststore, "
 				 "giving them meaningful names will help you to retrieve "
-				 "them when setting cell renderer attributes."));
+				 "them when setting cell renderer attributes (press the "
+				 "Delete key to remove the selected column)"));
 	gtk_label_set_line_wrap (GTK_LABEL(label), TRUE);
 	gtk_label_set_line_wrap_mode (GTK_LABEL(label), PANGO_WRAP_WORD);
 	gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 6);
@@ -220,7 +221,8 @@ glade_store_editor_new (GladeWidgetAdaptor *adaptor,
 	gtk_container_add (GTK_CONTAINER (alignment), vbox);
 
 	/* Add descriptive label */
-	label = gtk_label_new (_("Add remove and edit rows of data (define some columns first)."));
+	label = gtk_label_new (_("Add remove and edit rows of data (you can optionally use CNTL-N to add "
+				 "new rows and the Delete key to remove the selected row)"));
 	gtk_label_set_line_wrap (GTK_LABEL(label), TRUE);
 	gtk_label_set_line_wrap_mode (GTK_LABEL(label), PANGO_WRAP_WORD);
 	gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 6);

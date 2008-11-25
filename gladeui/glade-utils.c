@@ -2294,7 +2294,8 @@ glade_utils_hijack_key_press (GtkWindow          *win,
 	     ((event->state & GDK_CONTROL_MASK) && /* CNTL keys... */
 	      ((event->keyval == GDK_c || event->keyval == GDK_C) || /* CNTL-C (copy)  */
 	       (event->keyval == GDK_x || event->keyval == GDK_X) || /* CNTL-X (cut)   */
-	       (event->keyval == GDK_v || event->keyval == GDK_V))))) /* CNTL-V (paste) */
+	       (event->keyval == GDK_v || event->keyval == GDK_V) || /* CNTL-V (paste) */
+	       (event->keyval == GDK_n || event->keyval == GDK_N))))) /* CNTL-N (new project) */
 	{
 		return gtk_widget_event (win->focus_widget, 
 					 (GdkEvent *)event);

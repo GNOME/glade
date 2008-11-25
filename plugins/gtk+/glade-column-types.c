@@ -23,11 +23,12 @@
 
 #include <config.h>
 
-#include <gladeui/glade.h>
 #include <gtk/gtk.h>
+#include <gdk/gdkkeysyms.h>
 #include <glib/gi18n-lib.h>
 #include <string.h>
 
+#include <gladeui/glade.h>
 #include "glade-column-types.h"
 #include "glade-model-data.h"
 
@@ -36,6 +37,10 @@ enum
 	COLUMN_NAME,
 	COLUMN_GTYPE,
 	COLUMN_COLUMN_NAME,
+	COLUMN_TYPE_EDITABLE,
+	COLUMN_NAME_EDITABLE,
+	COLUMN_TYPE_FOREGROUND,
+	COLUMN_TYPE_STYLE,
 	N_COLUMNS
 };
 
@@ -51,6 +56,37 @@ static gint
 type_alpha_sort (GType *a, GType *b)
 {
 	return strcmp (g_type_name (*a), g_type_name (*b));
+}
+
+static GType 
+lookup_type (const gchar *type_name)
+{
+	GtkTreeIter  iter;
+	gchar       *iter_type_name;
+	GType        type = 0;
+
+	if (gtk_tree_model_get_iter_first (types_model, &iter))
+	{
+		do 
+		{
+			iter_type_name = NULL;
+			gtk_tree_model_get (types_model, &iter,
+					    COLUMN_NAME, &iter_type_name,
+					    COLUMN_GTYPE, &type, 
+					    -1);
+			g_assert (iter_type_name);
+
+			if (strcmp (iter_type_name, type_name) == 0)
+			{
+				g_free (iter_type_name);
+				break;
+			}
+			
+			g_free (iter_type_name);
+		}
+		while (gtk_tree_model_iter_next (types_model, &iter));
+	}
+	return type;
 }
 
 static void
@@ -80,7 +116,10 @@ column_types_store_populate_enums_flags (GtkTreeStore *store,
 			    strcmp (g_type_name (pclass->pspec->value_type), "GladeStock") == 0 ||
 			    strcmp (g_type_name (pclass->pspec->value_type), "GladeStockImage") == 0 ||
 			    strcmp (g_type_name (pclass->pspec->value_type), "GladeGtkImageType") == 0 ||
-			    strcmp (g_type_name (pclass->pspec->value_type), "GladeGtkButtonType") == 0)
+			    strcmp (g_type_name (pclass->pspec->value_type), "GladeGtkButtonType") == 0 ||
+			    strcmp (g_type_name (pclass->pspec->value_type), "GladeGnomeDruidPagePosition") == 0 ||
+			    strcmp (g_type_name (pclass->pspec->value_type), "GladeGnomeIconListSelectionMode") == 0 ||
+			    strcmp (g_type_name (pclass->pspec->value_type), "GladeGnomeMessageBoxType") == 0)
 				continue;
 
 			if ((enums ? G_TYPE_IS_ENUM (pclass->pspec->value_type) : 
@@ -220,15 +259,16 @@ typedef struct
 {
 	GladeEditorProperty parent_instance;
 
-	GtkComboBox      *combo;
 	GtkListStore     *store;
 	GtkTreeView      *view;
 	GtkTreeSelection *selection;
 
 	GladeNameContext *context;
 
-	gboolean          adding_column;
+	gboolean           adding_column;
+	gboolean           want_focus;
 	GtkTreeViewColumn *name_column;
+	GtkTreeViewColumn *type_column;
 } GladeEPropColumnTypes;
 
 GLADE_MAKE_EPROP (GladeEPropColumnTypes, glade_eprop_column_types)
@@ -311,7 +351,6 @@ eprop_column_adjust_rows (GladeEditorProperty *eprop, GList *columns)
 	glade_model_data_tree_free (data_tree);
 }
 
-
 static void
 eprop_column_append (GladeEditorProperty *eprop,
 		     GType type,
@@ -348,31 +387,10 @@ eprop_column_append (GladeEditorProperty *eprop,
 	eprop_types->adding_column = FALSE;
 }
 
-static void
-glade_eprop_column_types_add_clicked (GtkWidget *button, 
-				      GladeEPropColumnTypes *eprop_types)
-{
-	GtkTreeIter iter;
-	GType type2add;
-	gchar *type_name, *column_name;
-	
-	if (gtk_combo_box_get_active_iter (eprop_types->combo, &iter) == FALSE)
-		return;
-	
-	gtk_tree_model_get (types_model, &iter,
-			    COLUMN_GTYPE, &type2add,
-			    -1);
-	
-	type_name = g_ascii_strdown (g_type_name (type2add), -1);
-	column_name = glade_name_context_new_name (eprop_types->context, type_name);
-	eprop_column_append (GLADE_EDITOR_PROPERTY (eprop_types), type2add, column_name);
-	g_free (column_name);
-	g_free (type_name);
-}
-
-static void
-glade_eprop_column_types_delete_clicked (GtkWidget *button, 
-					 GladeEditorProperty *eprop)
+static gboolean
+eprop_treeview_key_press (GtkWidget           *treeview,
+			  GdkEventKey         *event,
+			  GladeEditorProperty *eprop)
 {
 	/* Remove from list and commit value, dont touch the liststore except in load() */
 	GladeEPropColumnTypes *eprop_types = GLADE_EPROP_COLUMN_TYPES (eprop);
@@ -382,11 +400,15 @@ glade_eprop_column_types_delete_clicked (GtkWidget *button,
 	GValue                 value = { 0, };
 	gchar                 *column_name;
 
-	if (gtk_tree_selection_get_selected (eprop_types->selection, NULL, &iter))
+	if (event->keyval == GDK_Delete &&
+	    gtk_tree_selection_get_selected (eprop_types->selection, NULL, &iter))
 	{
 		gtk_tree_model_get (GTK_TREE_MODEL (eprop_types->store), &iter,
 				    COLUMN_COLUMN_NAME, &column_name, -1);
-		g_assert (column_name);
+
+		/* Cant delete the symbolic "add new" row */
+		if (!column_name)
+			return TRUE;
 
 		glade_property_get (eprop->property, &columns);
 		if (columns)
@@ -402,6 +424,8 @@ glade_eprop_column_types_delete_clicked (GtkWidget *button,
 		glade_command_push_group (_("Setting columns on %s"), 
 					  glade_widget_get_name (eprop->property->widget));
 
+		eprop_types->want_focus = TRUE;
+
 		g_value_init (&value, GLADE_TYPE_COLUMN_TYPE_LIST);
 		g_value_take_boxed (&value, columns);
 		glade_editor_property_commit (eprop, &value);
@@ -411,7 +435,12 @@ glade_eprop_column_types_delete_clicked (GtkWidget *button,
 		glade_command_pop_group ();
 
 		g_free (column_name);
+
+		eprop_types->want_focus = FALSE;
+
 	}
+
+	return (event->keyval == GDK_Delete);
 }
 
 static gboolean
@@ -479,6 +508,18 @@ eprop_treeview_row_deleted (GtkTreeModel *tree_model,
 }
 
 static void
+eprop_column_add_new (GladeEPropColumnTypes *eprop_types)
+{
+	gtk_list_store_insert_with_values (eprop_types->store, NULL, -1,
+					   COLUMN_NAME, _("<type here to define a new column>"),
+					   COLUMN_TYPE_EDITABLE, TRUE,
+					   COLUMN_NAME_EDITABLE, FALSE,
+					   COLUMN_TYPE_FOREGROUND, "Gray",
+					   COLUMN_TYPE_STYLE, PANGO_STYLE_ITALIC,
+					   -1);
+}
+
+static void
 eprop_column_load (GladeEPropColumnTypes *eprop_types,
 		   GType type,
 		   const gchar *column_name)
@@ -487,37 +528,56 @@ eprop_column_load (GladeEPropColumnTypes *eprop_types,
 					   COLUMN_NAME, g_type_name (type),
 					   COLUMN_GTYPE, type,
 					   COLUMN_COLUMN_NAME, column_name,
+					   COLUMN_TYPE_EDITABLE, FALSE,
+					   COLUMN_NAME_EDITABLE, TRUE,
+					   COLUMN_TYPE_FOREGROUND, "Black",
+					   COLUMN_TYPE_STYLE, PANGO_STYLE_NORMAL,
 					   -1);
 }
 
-static gboolean
-eprop_types_focus_idle (GladeEPropColumnTypes *eprop_types)
+
+static void
+eprop_types_focus_cell (GladeEPropColumnTypes *eprop_types, gboolean add_cell)
 {
 	/* Focus and edit the first column of a newly added row */
 	if (eprop_types->store)
 	{
 		GtkTreePath *new_item_path;
-		GtkTreeIter  iter, *last_iter = NULL;
+		GtkTreeIter  iter;
+		gint n_children;
 
-		if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (eprop_types->store), &iter))
+		n_children = gtk_tree_model_iter_n_children (GTK_TREE_MODEL (eprop_types->store), NULL);
+		if (n_children > (add_cell ? 0 : 1) &&
+		    gtk_tree_model_iter_nth_child (GTK_TREE_MODEL (eprop_types->store),
+						   &iter,
+						   NULL,
+						   n_children - (add_cell ? 1 : 2)))
 		{
-			do {
-				if (last_iter)
-					gtk_tree_iter_free (last_iter);
-				last_iter = gtk_tree_iter_copy (&iter);
-			} while (gtk_tree_model_iter_next (GTK_TREE_MODEL (eprop_types->store), &iter));
-
-			new_item_path = gtk_tree_model_get_path (GTK_TREE_MODEL (eprop_types->store), last_iter);
+			new_item_path = gtk_tree_model_get_path (GTK_TREE_MODEL (eprop_types->store), &iter);
 
 			gtk_widget_grab_focus (GTK_WIDGET (eprop_types->view));
 			gtk_tree_view_expand_to_path (eprop_types->view, new_item_path);
+
 			gtk_tree_view_set_cursor (eprop_types->view, new_item_path,
-						  eprop_types->name_column, TRUE);
+						  add_cell ? eprop_types->type_column : eprop_types->name_column, 
+						  add_cell ? FALSE : TRUE);
 			
 			gtk_tree_path_free (new_item_path);
-			gtk_tree_iter_free (last_iter);
 		}
 	}
+}
+
+static gboolean
+eprop_types_focus_new (GladeEPropColumnTypes *eprop_types)
+{
+	eprop_types_focus_cell (eprop_types, TRUE);
+	return FALSE;
+}
+
+static gboolean
+eprop_types_focus_name (GladeEPropColumnTypes *eprop_types)
+{
+	eprop_types_focus_cell (eprop_types, FALSE);
 	return FALSE;
 }
 
@@ -556,8 +616,12 @@ glade_eprop_column_types_load (GladeEditorProperty *eprop, GladeProperty *proper
 		glade_name_context_add_name (eprop_types->context, data->column_name);
 	}
 
+	eprop_column_add_new (eprop_types);
+
 	if (eprop_types->adding_column && list)
-		g_idle_add ((GSourceFunc)eprop_types_focus_idle, eprop);
+		eprop_types_focus_name (eprop_types);
+	else if (eprop_types->want_focus)
+		eprop_types_focus_new (eprop_types);
 
 	g_signal_handlers_unblock_by_func (G_OBJECT (eprop_types->store), 
 					   eprop_treeview_row_deleted, eprop);
@@ -610,6 +674,7 @@ column_name_edited (GtkCellRendererText *cell,
 	glade_command_push_group (_("Setting columns on %s"), 
 				  glade_widget_get_name (eprop->property->widget));
 
+	eprop_types->want_focus = TRUE;
 
 	g_value_init (&value, GLADE_TYPE_COLUMN_TYPE_LIST);
 	g_value_take_boxed (&value, columns);
@@ -627,32 +692,78 @@ column_name_edited (GtkCellRendererText *cell,
 	}
 	glade_command_pop_group ();
 
+	eprop_types->want_focus = FALSE;
+
 	g_free (old_column_name);
 	g_free (column_name);
 }
+
+
+static void
+column_type_edited (GtkCellRendererText *cell,
+		    const gchar         *path,
+		    const gchar         *type_name,
+		    GladeEditorProperty *eprop)
+{
+	GladeEPropColumnTypes *eprop_types = GLADE_EPROP_COLUMN_TYPES (eprop);
+	GtkTreeIter            iter;
+	GType                  type;
+	gchar                 *column_name;
+
+	if (!gtk_tree_model_get_iter_from_string (GTK_TREE_MODEL (eprop_types->store), &iter, path))
+		return;
+
+	if ((type = lookup_type (type_name)) != 0)
+	{
+		column_name = glade_name_context_new_name (eprop_types->context, type_name);
+		eprop_column_append (eprop, type, column_name);
+		g_free (column_name);
+	}
+	else
+	{
+		eprop_types->want_focus = TRUE;
+		glade_editor_property_load (eprop, eprop->property);
+		eprop_types->want_focus = FALSE;
+	}
+}
+
+
+static void
+types_combo_editing_started (GtkCellRenderer       *renderer,
+			     GtkCellEditable       *editable,
+			     gchar                 *path,
+			     GladeEditorProperty   *eprop)
+{
+	GtkEntryCompletion *completion = gtk_entry_completion_new ();
+
+	gtk_entry_completion_set_model (completion, types_model);
+	gtk_entry_completion_set_text_column (completion, 0);
+	gtk_entry_completion_set_inline_completion (completion, TRUE);
+	gtk_entry_set_completion (GTK_ENTRY (GTK_BIN (editable)->child), completion);
+	g_object_unref (G_OBJECT (completion));
+}
+
 
 static GtkWidget *
 glade_eprop_column_types_create_input (GladeEditorProperty *eprop)
 {
 	GladeEPropColumnTypes *eprop_types = GLADE_EPROP_COLUMN_TYPES (eprop);
-	GtkWidget *vbox, *hbox, *button, *swin, *label;
+	GtkWidget *vbox, *swin, *label;
 	GtkCellRenderer *cell;
-	GtkTreeViewColumn *col;
 	gchar *string;
 
 	vbox = gtk_vbox_new (FALSE, 2);
 	
-	hbox = gtk_hbox_new (FALSE, 4);
+/* 	hbox = gtk_hbox_new (FALSE, 4); */
 
 	if (!types_model)
 	{
 		/* We make sure to do this after all the adaptors are parsed 
 		 * because we load the enums/flags from the adaptors
 		 */
-		types_model = (GtkTreeModel *)gtk_tree_store_new (N_COLUMNS,
+		types_model = (GtkTreeModel *)gtk_tree_store_new (2,
 								  G_TYPE_STRING,
-								  G_TYPE_GTYPE,
-								  G_TYPE_STRING);
+								  G_TYPE_GTYPE);
 
 		column_types_store_populate (GTK_TREE_STORE (types_model));
 	}
@@ -666,34 +777,34 @@ glade_eprop_column_types_create_input (GladeEditorProperty *eprop)
 	gtk_misc_set_padding (GTK_MISC (label), 2, 4);
 	gtk_box_pack_start (GTK_BOX (vbox), label,  FALSE, TRUE, 0);
 
-	gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+/* 	gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0); */
 	
-	eprop_types->combo = GTK_COMBO_BOX (gtk_combo_box_new_with_model (types_model));
-	cell = gtk_cell_renderer_text_new ();
-	gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (eprop_types->combo),
-				    cell, TRUE);
-	gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (eprop_types->combo),
-					cell, "text", COLUMN_NAME, NULL);
-	gtk_combo_box_set_active (eprop_types->combo, 0);
-	gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (eprop_types->combo), TRUE, TRUE, 0);
+/* 	eprop_types->combo = GTK_COMBO_BOX (gtk_combo_box_new_with_model (types_model)); */
+/* 	cell = gtk_cell_renderer_text_new (); */
+/* 	gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (eprop_types->combo), */
+/* 				    cell, TRUE); */
+/* 	gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (eprop_types->combo), */
+/* 					cell, "text", COLUMN_NAME, NULL); */
+/* 	gtk_combo_box_set_active (eprop_types->combo, 0); */
+/* 	gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (eprop_types->combo), TRUE, TRUE, 0); */
 
-	button = gtk_button_new ();
-	gtk_button_set_image (GTK_BUTTON (button),
-			      gtk_image_new_from_stock (GTK_STOCK_ADD, GTK_ICON_SIZE_BUTTON));
-	gtk_box_pack_start (GTK_BOX (hbox), button,  FALSE, FALSE, 0);
+/* 	button = gtk_button_new (); */
+/* 	gtk_button_set_image (GTK_BUTTON (button), */
+/* 			      gtk_image_new_from_stock (GTK_STOCK_ADD, GTK_ICON_SIZE_BUTTON)); */
+/* 	gtk_box_pack_start (GTK_BOX (hbox), button,  FALSE, FALSE, 0); */
 
-	g_signal_connect (G_OBJECT (button), "clicked",
-			  G_CALLBACK (glade_eprop_column_types_add_clicked), 
-			  eprop_types);
+/* 	g_signal_connect (G_OBJECT (button), "clicked", */
+/* 			  G_CALLBACK (glade_eprop_column_types_add_clicked),  */
+/* 			  eprop_types); */
 	
-	button = gtk_button_new ();
-	gtk_button_set_image (GTK_BUTTON (button),
-			      gtk_image_new_from_stock (GTK_STOCK_REMOVE, GTK_ICON_SIZE_BUTTON));
-	gtk_box_pack_start (GTK_BOX (hbox), button,  FALSE, FALSE, 0);
+/* 	button = gtk_button_new (); */
+/* 	gtk_button_set_image (GTK_BUTTON (button), */
+/* 			      gtk_image_new_from_stock (GTK_STOCK_REMOVE, GTK_ICON_SIZE_BUTTON)); */
+/* 	gtk_box_pack_start (GTK_BOX (hbox), button,  FALSE, FALSE, 0); */
 
-	g_signal_connect (G_OBJECT (button), "clicked",
-			  G_CALLBACK (glade_eprop_column_types_delete_clicked), 
-			  eprop_types);
+/* 	g_signal_connect (G_OBJECT (button), "clicked", */
+/* 			  G_CALLBACK (glade_eprop_column_types_delete_clicked),  */
+/* 			  eprop_types); */
 	
 	swin = gtk_scrolled_window_new (NULL, NULL);
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (swin), GTK_SHADOW_IN);
@@ -703,7 +814,11 @@ glade_eprop_column_types_create_input (GladeEditorProperty *eprop)
 	eprop_types->store = gtk_list_store_new (N_COLUMNS,
 						 G_TYPE_STRING,
 						 G_TYPE_GTYPE,
-						 G_TYPE_STRING);
+						 G_TYPE_STRING,
+						 G_TYPE_BOOLEAN,
+						 G_TYPE_BOOLEAN,
+						 G_TYPE_STRING,
+						 PANGO_TYPE_STYLE);
 
 	g_signal_connect (eprop_types->store, "row-deleted",
 			  G_CALLBACK (eprop_treeview_row_deleted),
@@ -711,31 +826,52 @@ glade_eprop_column_types_create_input (GladeEditorProperty *eprop)
 	
 	eprop_types->view = (GtkTreeView *)gtk_tree_view_new_with_model (GTK_TREE_MODEL (eprop_types->store));
 	eprop_types->selection = gtk_tree_view_get_selection (eprop_types->view);
-
 	
 	gtk_tree_view_set_reorderable (eprop_types->view, TRUE);
 	//gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (treeview), FALSE);
 
-	/* type column */
-	col = gtk_tree_view_column_new_with_attributes ("Column type", 
-							gtk_cell_renderer_text_new (),
-							"text", COLUMN_NAME,
-							NULL);
-	gtk_tree_view_append_column (eprop_types->view, col);	
+	g_signal_connect (eprop_types->view, "key-press-event",
+			  G_CALLBACK (eprop_treeview_key_press),
+			  eprop);
 
+
+	/* type column */
+	cell = gtk_cell_renderer_combo_new ();
+	g_object_set (G_OBJECT (cell), 
+		      "text-column", COLUMN_NAME,
+		      "model", types_model, 
+		      NULL);
+
+	g_signal_connect (G_OBJECT (cell), "editing-started",
+			  G_CALLBACK (types_combo_editing_started), eprop);
+
+	g_signal_connect (G_OBJECT (cell), "edited",
+			  G_CALLBACK (column_type_edited), eprop);
+
+	eprop_types->type_column = 
+		gtk_tree_view_column_new_with_attributes ("Column type", cell,
+							  "foreground", COLUMN_TYPE_FOREGROUND,
+							  "style", COLUMN_TYPE_STYLE,
+							  "editable", COLUMN_TYPE_EDITABLE,
+							  "text", COLUMN_NAME,
+							  NULL);
+
+	gtk_tree_view_column_set_expand (eprop_types->type_column, TRUE);
+	gtk_tree_view_append_column (eprop_types->view, eprop_types->type_column);	
 
 	/* name column */
 	cell = gtk_cell_renderer_text_new ();
-	g_object_set (G_OBJECT (cell), "editable", TRUE, NULL);
-
 	g_signal_connect (G_OBJECT (cell), "edited",
 			  G_CALLBACK (column_name_edited), eprop);
 	
 	eprop_types->name_column = 
-		gtk_tree_view_column_new_with_attributes ("Column name", 
-							  cell,
+		gtk_tree_view_column_new_with_attributes ("Column name",  cell,
+							  "editable", COLUMN_NAME_EDITABLE,
 							  "text", COLUMN_COLUMN_NAME,
 							  NULL);
+
+	gtk_tree_view_column_set_expand (eprop_types->name_column, TRUE);
+
 	gtk_tree_view_append_column (eprop_types->view, eprop_types->name_column);	
 	gtk_container_add (GTK_CONTAINER (swin), GTK_WIDGET (eprop_types->view));
 	
