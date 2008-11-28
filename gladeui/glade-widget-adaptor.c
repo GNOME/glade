@@ -405,31 +405,21 @@ gwa_setup_introspected_props_from_pspecs (GladeWidgetAdaptor   *adaptor,
 {
 	GladeWidgetAdaptor *parent_adaptor = gwa_get_parent_adaptor (adaptor);
 	GladePropertyClass *property_class;
-	GType               class_type;
 	gint                i;
 	GList              *list = NULL;
 
 	for (i = 0; i < n_specs; i++)
 	{
-		gboolean found;
-
-		/* Only create properties that dont exist on the adaptor yet */
-		for (found = FALSE, class_type = adaptor->type;
-		     ((!parent_adaptor && class_type != 0) ||
-		      ( parent_adaptor && class_type != parent_adaptor->type));
-		     class_type = g_type_parent (class_type))
-			if (specs[i]->owner_type == class_type ||
-			    (G_TYPE_IS_INTERFACE (specs[i]->owner_type) &&
-			    glade_util_class_implements_interface (class_type, specs[i]->owner_type)))
-			{
-				found = TRUE;
-				break;
-			}
-
-		if (found && 
-		    (property_class = 
-		     glade_property_class_new_from_spec (adaptor, specs[i])) != NULL)
-			list = g_list_prepend (list, property_class);
+		if (parent_adaptor == NULL ||
+		    (!is_packing && !glade_widget_adaptor_get_property_class (parent_adaptor,
+									      specs[i]->name)) ||
+		    (is_packing &&  !glade_widget_adaptor_get_pack_property_class (parent_adaptor,
+										   specs[i]->name)))
+		{
+			if ((property_class = 
+			     glade_property_class_new_from_spec (adaptor, specs[i])) != NULL)
+				list = g_list_prepend (list, property_class);
+		}		    
 	}
 
 	if (is_packing)

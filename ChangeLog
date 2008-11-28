@@ -3,6 +3,9 @@
 	* gladeui/glade-inspector.c: Added GCompletion/GtkTreeModelFilter to the inspector with
 	a new search entry.
 
+	* gladeui/glade-widget-adaptor.c: Fixed bug with iface props, they were getting listed
+	once per implementing subclass (subclasses of implementors had it listed > 2 times).
+
 2008-11-25  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-utils.c: Hijack the cntl-n accelerator too now.
