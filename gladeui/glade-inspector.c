@@ -88,6 +88,7 @@ struct _GladeInspectorPrivate
         GCompletion  *completion;
 	guint         idle_complete;
 	guint         idle_filter;
+	gboolean      search_disabled;
 };
 
 
@@ -264,7 +265,7 @@ search_entry_changed_cb (GtkEntry *entry,
 {
 	GladeInspectorPrivate *priv = inspector->priv;
 
-        if (!priv->idle_filter) {
+        if (!priv->search_disabled && !priv->idle_filter) {
                 priv->idle_filter =
                         g_idle_add ((GSourceFunc) search_filter_idle, inspector);
         }
@@ -293,7 +294,7 @@ search_complete_idle (GladeInspector *inspector)
         }
 
 	refilter_inspector (inspector);
-
+	
         priv->idle_complete = 0;
 
         return FALSE;
@@ -308,7 +309,7 @@ search_entry_text_inserted_cb (GtkEntry       *entry,
 {
 	GladeInspectorPrivate *priv = inspector->priv;
 
-        if (!priv->idle_complete) {
+        if (!priv->search_disabled && !priv->idle_complete) {
                 priv->idle_complete =
                         g_idle_add ((GSourceFunc) search_complete_idle,
                                     inspector);
@@ -355,6 +356,7 @@ search_entry_key_press_event_cb (GtkEntry    *entry,
 		}
 		return TRUE;
         }
+	
         return FALSE;
 }
 
@@ -418,12 +420,12 @@ filter_visible_func (GtkTreeModel *model,
 	gtk_tree_model_get (model, iter, 
 			    WIDGET_COLUMN, &widget, 
 			    -1);
-	if (!widget)
+	if (!widget || priv->search_disabled)
 		return TRUE;
 
         if ((str = gtk_entry_get_text (GTK_ENTRY (priv->entry))) == NULL)
 		return TRUE;
-
+	
 	/* return true for any child widget with the same text (child nodes are
 	 * not visible without thier parents
 	 */
@@ -441,6 +443,60 @@ search_complete_func (GObject *object)
 }
 
 static void
+widget_font_desc_set_style (GtkWidget *widget, PangoStyle style)
+{
+	PangoFontDescription *font_desc = pango_font_description_copy (widget->style->font_desc);
+	
+	pango_font_description_set_style (font_desc, style);
+	gtk_widget_modify_font (widget, font_desc);
+	pango_font_description_free (font_desc);
+}
+
+static void
+search_entry_update (GladeInspector *inspector)
+{
+	GladeInspectorPrivate *priv = inspector->priv;
+	const gchar *str = gtk_entry_get_text (GTK_ENTRY (priv->entry));
+
+	if (str[0] == '\0')
+	{
+		priv->search_disabled = TRUE;
+		widget_font_desc_set_style (priv->entry, PANGO_STYLE_ITALIC);		
+		gtk_entry_set_text (GTK_ENTRY (priv->entry), _("< search widgets >"));
+		gtk_widget_modify_text (priv->entry, GTK_STATE_NORMAL, 
+					&priv->entry->style->text[GTK_STATE_INSENSITIVE]);
+	}
+}
+
+static gboolean
+search_entry_focus_in_cb (GtkWidget *entry, 
+			  GdkEventFocus *event,
+			  GladeInspector *inspector)
+{
+	GladeInspectorPrivate *priv = inspector->priv;
+
+	if (priv->search_disabled)
+	{
+		gtk_entry_set_text (GTK_ENTRY (priv->entry), "");
+		gtk_widget_modify_text (priv->entry, GTK_STATE_NORMAL, NULL);
+		gtk_widget_modify_font (priv->entry, NULL);
+		priv->search_disabled = FALSE;
+	}
+	
+	return FALSE;
+}
+
+static gboolean
+search_entry_focus_out_cb (GtkWidget *entry, 
+			   GdkEventFocus *event,
+			   GladeInspector *inspector)
+{
+	search_entry_update (inspector);
+	
+	return FALSE;
+}
+
+static void
 glade_inspector_init (GladeInspector *inspector)
 {
 	GladeInspectorPrivate *priv;
@@ -454,6 +510,7 @@ glade_inspector_init (GladeInspector *inspector)
 	priv->project = NULL;
 
 	priv->entry = gtk_entry_new ();
+	search_entry_update (inspector);
 	gtk_widget_show (priv->entry);
 	gtk_box_pack_start (GTK_BOX (inspector), priv->entry, FALSE, FALSE, 2);
 
@@ -469,7 +526,14 @@ glade_inspector_init (GladeInspector *inspector)
                           G_CALLBACK (search_entry_text_inserted_cb),
                           inspector);
 
-
+        g_signal_connect (priv->entry, "focus-in-event",
+                          G_CALLBACK (search_entry_focus_in_cb),
+                          inspector);
+        
+	g_signal_connect (priv->entry, "focus-out-event",
+                          G_CALLBACK (search_entry_focus_out_cb),
+                          inspector);
+	
         priv->completion = g_completion_new ((GCompletionFunc) search_complete_func);
 
 	priv->view = gtk_tree_view_new ();
