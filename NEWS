@@ -1,4 +1,96 @@
 ===========
+Glade 3.5.3
+===========
+	- Support for GtkIconFactory
+	- Support for GtkAccelGroup
+	- Support for GtkSizeGroup
+	- Support for GtkListStore/GtkTreeStore (some code by Juan Pablo Ugarte)
+	- Support for GtkTreeViewColumn, GtkTreeView, GtkIconView and GtkComboBox as GtkCellLayout.
+	- Support for GtkCellRenderer derivatives
+	- GtkBuilder support for GtkMenu hierarchies
+	- New all in one treeview editor, for treeviews combo boxes and icon views
+	- Properties and widgets now show warnings in the editor when they have mismatched versions
+	- Palette items are insensitive when widgets are unavailable and show warnings when they are deprecated.
+	- Text wrapping in property labels (Pavel Kostyuchenko)
+	- Editor widget beefed up with icon and class header.
+	- Simplified accelerator editor
+	- Save window pane positions in session (Juan Pablo Ugarte)
+	- New pango attributes editor for GtkLabel:attributes
+	- All widgets/properties in glade files are now saved in the same order
+	  (GtkTable part: bug 422823 - Pavel Kostyuchenko, and bug 422823)
+	- Fixed core to permit working with non GtkWindow toplevel objects/widgets (bug 532636 - Pavel Kostyuchenko)
+	- Palette now allows doc searches
+	- Notebooks switch pages to display the selected widget
+	- Added undoable project conversion routines implemented by catalog plugins
+	- Object selection dialogs can now create widgets when a type is specified by the catalog
+	- Support GtkBuilder "context" attribute for i18n data (translatable properties)
+	- Support for naming your widgets unique across the project or unique across toplevels.
+	- Now you can add menus inline inside the toolbar editor.
+	- No more copying resource files around, now you can set your local resource path in
+	  project preferences and use relative/fullpaths in resource properties (i.e. GdkPixbuf properties
+	  and the like). 
+	- No more context help mode with buttons, you can get property level help (and clear value) with a context menu  
+	- Optimized load routine significantly.
+	- Added GladeEditable interface to layout custom pages for property editors, implemented many
+	  custom editor layouts.
+	- Now you can edit widgets separately from the rest of the project
+	- menu/toolbar/treeview editor no longer a modal dialog.
+	- Added <search widgets> entry with completion/filter to the inspector widget.
+	- Added most of the new needed icons (Mike Gratton - bug 561979, Juan Pablo Ugarte).
+	- Simplified and improved stock-id properties to allow use of custom icons from factories.	
+	- Fixed input dialog crasher (Juan Pablo Ugarte - bug 543314)
+	- Commands now collapse to nothing - Pavel Kostyuchenko
+	- Fixed boxed value comparisons by way of comparing unique strings
+	  from the plugin (Juan Pablo Ugarte - bug 528511)
+	- Fixed project modified state flag glitches (Pavel Kostyuchenko - bug 532017).
+	- Prevent hangs in anjuta (Pavel Kostyuchenko - bug 531585).
+	- Fixed boldness/italicness in varios treeviews
+	- Objects and resource property fields are updated correctly (bug 542335 - fix by Pavel Kostyuchenko)
+	- Update loaded assistant pages properly (bug 540531 - fix by Antti Kaijanmäki)
+	- Silently ignore unrecognized signals in glade file instead of aborting 
+	  (bug 533728 - fix by Pavel Kostyuchenko)
+	- Worked around special child type naming discrepencies between formats from the plugin side 
+	  (bug 533217 - fix by Pavel Kostyuchenko)
+	- response-id now only available for buttons that are in the action area of dialogs (bug 464502)
+	- Fixed displayable values (bug 556452), now they are available in the plugin too.
+	- Misc bugfixed by Richard Hult, Andreas Henriksson, Vincent Geddes, Claude Paroz, Pavel Kostyuchenko, 
+	  Eli Collins, Christian Persch, Theppitak Karoonboonyanan, Kjartan Maraas, Michael Gratton and me.
+
+New and updated translations
+============================
+	- ar: Anas Afif Emad, Djihed Afifi
+	- bg: Yavor Doganov, Alexander Shopov
+	- da: Ask Hjorth Larsen
+	- de: Christian Kirbach
+	- en_GB: David Lodge, Philip Withnall
+	- es: Jorge González, Jorge Gonzalez
+	- et: Ivar Smolin
+	- fi: Ilkka Tuohela
+	- fr: Robert-André Mauchin
+	- gl: Ignacio Casal Quinteiro
+	- gu: Sweta Kothari
+	- he: yairhr@gmail.com, Yair Hershkovitz
+	- hi: Rajesh Ranjan
+	- hu: Gabor Kelemen
+	- it: Andrea Zagli
+	- ko: Changwoo Ryu
+	- ml: Hari Vishnu
+	- mr: Sandeep Shedmake
+	- nl: Vincent van Adrighem
+	- oc: Yannig Marchegay, Yannig Marchegay (Kokoyaya)
+	- pl: Tomasz Dominikowski
+	- pt: Duarte Loreto
+	- pt_BR: Igor Pires Soares, Fabrício Godoy
+	- ru: Yuriy Penkin
+	- sr.po, sr@latin: Goran Rakić
+	- sv: Daniel Nylander
+	- th: Theppitak Karoonboonyanan
+	- tr: Baris Cicek
+	- vi: Clytie Siddall
+	- zh_HK: Chao-Hsiung Liao
+	- zh_TW: Chao-Hsiung Liao, Abel Cheung
+
+===========
 Glade 3.5.2
 ===========
 	- oops, was parsing booleans as doubles, fixed bugs with 

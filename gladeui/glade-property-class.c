@@ -51,11 +51,11 @@
 
 #define NUMERICAL_STEP_INCREMENT   1.0F
 #define NUMERICAL_PAGE_INCREMENT   10.0F
-#define NUMERICAL_PAGE_SIZE        1.0F
+#define NUMERICAL_PAGE_SIZE        0.0F
 
 #define FLOATING_STEP_INCREMENT    0.01F
 #define FLOATING_PAGE_INCREMENT    0.1F
-#define FLOATING_PAGE_SIZE         0.01F
+#define FLOATING_PAGE_SIZE         0.00F
 
 /**
  * glade_property_class_new:

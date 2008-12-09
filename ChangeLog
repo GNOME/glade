@@ -1,3 +1,13 @@
+2008-12-09  Tristan Van Berkom <tvb@gnome.org>
+
+	* NEWS, configure.ac: Rolling 3.5.3
+
+2008-12-09  Michael Gratton  <mike@vee.net>
+
+	* gladeui/glade-property-class.c: Change spin button page size to
+	0 for numeric property values editorsm, stops a lot of GTK
+	warnings.
+
 2008-12-09  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 	
 	* plugins/gtk+/icons/22x22/widget-gtk-uimanager.png,
@@ -992,7 +1002,7 @@
 
 	* gladeui/glade-base-editor.h: Don't include the
 	  private header file `glade-marshallers.h'. Rather
-          include it `glade-base-editor.c'.
+          include it in `glade-base-editor.c'.
 
 2008-08-09  Tristan Van Berkom <tvb@gnome.org>
 
@@ -1093,7 +1103,6 @@
 	  catalog defaults if the object we are creating is for loading purposes.
 
 2008-04-12  Tristan Van Berkom <tvb@gnome.org>
-
 
 	* gladeui/glade-editor-property.c: Fixed invisible labels in
 	the menu editor.
