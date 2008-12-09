@@ -1,5 +1,22 @@
 2008-12-09  Tristan Van Berkom <tvb@gnome.org>
 
+	* COPYING: Updated to reflect current temporary dual licensing scheme, package is to be LGPL, with
+	code portions that are still marked as GPL until they can be relicensed, both licenses are included
+	in the package already.
+
+	* plugins/gtk+/glade-store-editor.h plugins/gtk+/glade-icon-factory-editor.h
+	plugins/gtk+/glade-image-item-editor.c plugins/gtk+/glade-image-editor.c plugins/gtk+/glade-image-item-editor.h
+	plugins/gtk+/glade-model-data.c plugins/gtk+/glade-icon-sources.c plugins/gtk+/glade-tool-button-editor.c
+	plugins/gtk+/glade-image-editor.h plugins/gtk+/glade-model-data.h plugins/gtk+/glade-icon-sources.h
+	plugins/gtk+/glade-tool-button-editor.h plugins/gtk+/glade-text-button.c plugins/gtk+/glade-button-editor.c
+	plugins/gtk+/glade-column-types.c plugins/gtk+/glade-text-button.h plugins/gtk+/glade-label-editor.c
+	plugins/gtk+/glade-column-types.h plugins/gtk+/glade-button-editor.h plugins/gtk+/glade-cell-renderer-editor.c
+	plugins/gtk+/glade-label-editor.h plugins/gtk+/glade-cell-renderer-editor.h plugins/gtk+/glade-treeview-editor.c
+	plugins/gtk+/glade-convert.c plugins/gtk+/glade-store-editor.c plugins/gtk+/glade-icon-factory-editor.c
+	plugins/gtk+/glade-treeview-editor.h: First files to safely be completely relicensed under LGPL.
+
+2008-12-09  Tristan Van Berkom <tvb@gnome.org>
+
 	* configure.ac: Bumping gtk+ required version to 2.14
 
 	* gladeui/glade-xml-utils.c, gladeui/glade-widget-adaptor.[ch],
