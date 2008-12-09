@@ -67,8 +67,8 @@ typedef struct _GladeWidgetAdaptorClass   GladeWidgetAdaptorClass;
  *
  * Checks major version in which this widget was introduced
  */
-#define GWA_VERSION_SINCE_MAJOR(obj)						\
-        ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->version_since_major : FALSE)
+#define GWA_VERSION_SINCE_MAJOR(obj) \
+        ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->version_since_major : 0)
 
 /**
  * GWA_VERSION_SINCE_MINOR:
@@ -76,8 +76,27 @@ typedef struct _GladeWidgetAdaptorClass   GladeWidgetAdaptorClass;
  *
  * Checks minor version in which this widget was introduced
  */
-#define GWA_VERSION_SINCE_MINOR(obj)						\
-        ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->version_since_minor : FALSE)
+#define GWA_VERSION_SINCE_MINOR(obj) \
+        ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->version_since_minor : 0)
+
+/**
+ * GWA_BUILDER_SINCE_MAJOR:
+ * @obj: A #GladeWidgetAdaptor
+ *
+ * Checks major version in which this widget introduced gtkbuilder support
+ */
+#define GWA_BUILDER_SINCE_MAJOR(obj) \
+        ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->builder_since_major : 0)
+
+/**
+ * GWA_BUILDER_SINCE_MINOR:
+ * @obj: A #GladeWidgetAdaptor
+ *
+ * Checks minor version in which this widget introduced gtkbuilder support
+ */
+#define GWA_BUILDER_SINCE_MINOR(obj) \
+        ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->builder_since_minor : 0)
+
 
 /**
  * GWA_IS_TOPLEVEL:
@@ -590,29 +609,31 @@ struct _GladeWidgetAdaptorClass
 {
 	GObjectClass               parent_class;
 
-	gint                       version_since_major; /* Version in which this widget was
-							 * introduced
-							 */
-	gint                       version_since_minor;
+	guint16                    version_since_major; /* Version in which this widget was */
+	guint16                    version_since_minor; /* introduced.                      */
 
-	gboolean                   deprecated;     /* If this widget is currently
-						    * deprecated
-						    */
-	gboolean                   libglade_unsupported; /* If this widget is not supported
-							  * by libglade
-							  */
-	gboolean                   libglade_only; /* If this widget is only supported
-						   * by libglade
-						   */
+	guint16                    builder_since_major; /* Version in which this widget became */
+	guint16                    builder_since_minor; /* available in GtkBuilder format      */
 
-	gboolean                   fixed;      /* If this is a GtkContainer, use free-form
-						* placement with drag/resize/paste at mouse...
-						*/
-	gboolean                   toplevel;   /* If this class is toplevel */
 
-	gboolean                   use_placeholders; /* Whether or not to use placeholders
-						      * to interface with child widgets.
-						      */
+	guint                      deprecated : 1;          /* If this widget is currently
+							     * deprecated
+							     */
+	guint                      libglade_unsupported : 1; /* If this widget is not supported
+							      * by libglade
+							      */
+	guint                      libglade_only : 1;        /* If this widget is only supported
+							      * by libglade
+							      */
+
+	guint                      fixed : 1;                /* If this is a Container, use free-form
+							      * placement with drag/resize/paste at mouse...
+							      */
+	guint                      toplevel : 1;             /* If this class is toplevel */
+
+	guint                      use_placeholders : 1;     /* Whether or not to use placeholders
+							      * to interface with child widgets.
+							      */
 
 	gint                       default_width;  /* Default width in GladeDesignLayout */
 	gint                       default_height; /* Default height in GladeDesignLayout */
@@ -673,12 +694,12 @@ struct _GladeWidgetAdaptorClass
 	GladeChildSetPropertyFunc    child_set_property; /* Sets/Gets a packing property */
 	GladeChildGetPropertyFunc    child_get_property; /* for this child */
 	
-	GladeReplaceChildFunc      replace_child;  /* This method replaces a 
-						    * child widget with
-						    * another one: it's used to
-						    * replace a placeholder with
-						    * a widget and viceversa.
-						    */
+	GladeReplaceChildFunc        replace_child;  /* This method replaces a 
+						      * child widget with
+						      * another one: it's used to
+						      * replace a placeholder with
+						      * a widget and viceversa.
+						      */
 	
 	GladeActionActivateFunc      action_activate;       /* This method is used to catch actions */
 	GladeChildActionActivateFunc child_action_activate; /* This method is used to catch packing actions */

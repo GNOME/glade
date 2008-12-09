@@ -1,3 +1,16 @@
+2008-12-09  Tristan Van Berkom <tvb@gnome.org>
+
+	* configure.ac: Bumping gtk+ required version to 2.14
+
+	* gladeui/glade-xml-utils.c, gladeui/glade-widget-adaptor.[ch],
+	gladeui/glade-property-class.[ch], gladeui/glade-project.c: Added support
+	for "builder-since" versioning (since builder supported this property/widget).
+
+	* plugins/gtk+/gtk+.xml.in: Marked appropriate properties and objects "builder-since"
+	and brought up to date new properties and signals introduced in 2.14.
+
+	* gladeui/glade-base-editor.c: Plugged resource leak in finalize().
+
 2008-11-28  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* gladeui/glade-inspector.c: added explanation string in the search entry.

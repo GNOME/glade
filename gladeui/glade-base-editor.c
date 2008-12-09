@@ -113,6 +113,24 @@ static void glade_base_editor_set_container   (GladeBaseEditor *editor,
 static void glade_base_editor_block_callbacks (GladeBaseEditor *editor,
 					       gboolean block);
 
+
+static void
+reset_child_types (GladeBaseEditor *editor)
+{
+	GList *l;
+	ChildTypeTab *tab;
+
+	for (l = editor->priv->child_types; l; l = l->next)
+	{
+		tab = l->data;
+		g_object_unref (tab->children);
+		g_free (tab);
+	}
+	g_list_free (editor->priv->child_types);
+	editor->priv->child_types = NULL;
+}
+
+
 static gint
 sort_type_by_hierarchy (ChildTypeTab *a, ChildTypeTab *b)
 {
@@ -1153,7 +1171,7 @@ glade_base_editor_set_container (GladeBaseEditor *editor,
 	
 	if (container == NULL)
 	{
-		/* XXX Destroy childtypetabs ...*/
+		reset_child_types (editor);
 
 		e->gcontainer = NULL;
 		e->project = NULL;
@@ -1203,14 +1221,13 @@ glade_base_editor_set_container (GladeBaseEditor *editor,
 }
 
 /*************************** GladeBaseEditor Class ****************************/
-
 static void
 glade_base_editor_finalize (GObject *object)
 {
 	GladeBaseEditor *cobj = GLADE_BASE_EDITOR (object);
 
-	/* XXX Free up ChildTypeTabs here... */
-	
+	reset_child_types (cobj);
+
 	/* Free private members, etc. */
 	glade_base_editor_project_disconnect (cobj);
 	

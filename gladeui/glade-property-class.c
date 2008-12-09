@@ -104,6 +104,10 @@ glade_property_class_new (gpointer handle)
 	/* Initialize them to the base version */
 	property_class->version_since_major = GWA_VERSION_SINCE_MAJOR (handle);
 	property_class->version_since_minor = GWA_VERSION_SINCE_MINOR (handle);
+
+	property_class->builder_since_major = GWA_BUILDER_SINCE_MAJOR (handle);
+	property_class->builder_since_minor = GWA_BUILDER_SINCE_MINOR (handle);
+
 	return property_class;
 }
 
@@ -1580,6 +1584,11 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 		(node, GLADE_TAG_VERSION_SINCE, 
 		 &klass->version_since_major,
 		 &klass->version_since_minor);
+
+	glade_xml_get_property_version
+		(node, GLADE_TAG_BUILDER_SINCE, 
+		 &klass->builder_since_major,
+		 &klass->builder_since_minor);
 
 	/* Get the Parameters */
 	if ((child = glade_xml_search_child (node, GLADE_TAG_PARAMETERS)) != NULL)

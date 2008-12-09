@@ -387,9 +387,14 @@ gwa_clone_parent_properties (GladeWidgetAdaptor *adaptor, gboolean is_packing)
 			/* Reset versioning in derived catalogs just once */
 			if (strcmp (adaptor->priv->catalog, 
 				    parent_adaptor->priv->catalog))
+			{
 				pclass->version_since_major =
 					pclass->version_since_major = 0;
 
+				pclass->builder_since_major =
+					pclass->builder_since_major = 0;
+
+			}
 			properties = g_list_prepend (properties, pclass);
 		}
 	}
@@ -602,8 +607,13 @@ glade_widget_adaptor_constructor (GType                  type,
 	/* Reset version numbering if we're in a new catalog just once */
 	if (parent_adaptor &&
 	    strcmp (adaptor->priv->catalog, parent_adaptor->priv->catalog))
+	{
 		GLADE_WIDGET_ADAPTOR_GET_CLASS(adaptor)->version_since_major = 
 			GLADE_WIDGET_ADAPTOR_GET_CLASS(adaptor)->version_since_minor = 0;
+
+		GLADE_WIDGET_ADAPTOR_GET_CLASS(adaptor)->builder_since_major = 
+			GLADE_WIDGET_ADAPTOR_GET_CLASS(adaptor)->builder_since_minor = 0;
+	}
 
 	/* Copy parent actions */
 	if (parent_adaptor)
@@ -1487,6 +1497,11 @@ gwa_derived_class_init (GladeWidgetAdaptorClass *adaptor_class,
 	
 	/* Load catalog symbols from module */
 	if (module) gwa_extend_with_node_load_sym (adaptor_class, node, module);
+
+	glade_xml_get_property_version
+		(node, GLADE_TAG_BUILDER_SINCE, 
+		 &adaptor_class->builder_since_major,
+		 &adaptor_class->builder_since_minor);
 
 	glade_xml_get_property_version
 		(node, GLADE_TAG_VERSION_SINCE, 

@@ -1,6 +1,6 @@
 <glade-catalog name="gtk+"
-	       version="2.14"
-	       targetable="2.12,2.10,2.8"
+	       version="2.16"
+	       targetable="2.14,2.12,2.10,2.8"
 	       supports="libglade,gtkbuilder"
                icon-prefix="gtk"
                library="gladegtk"
@@ -26,6 +26,7 @@
 	<signal id="drag-failed" since="2.12"/>
 	<signal id="keynav-failed" since="2.12"/>
 	<signal id="query-tooltip" since="2.12"/>
+	<signal id="damage-event" since="2.14"/>
       </signals>
 
       <actions>
@@ -104,6 +105,7 @@
 	  </displayable-values>
 	</property>
 
+	<property id="window" disabled="True" since="2.14"/>
 	<property id="name" disabled="True"/>
 	<property id="parent" disabled="True"/>
 	<property id="style" disabled="True"/>
@@ -412,7 +414,7 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkMenuShell" _title="Menu Shell" use-placeholders="False">
+    <glade-widget-class name="GtkMenuShell" _title="Menu Shell" use-placeholders="False" gtkbuilder-since="2.16">
       <post-create-function>empty</post-create-function>
       <add-child-function>glade_gtk_menu_shell_add_child</add-child-function>
       <remove-child-function>glade_gtk_menu_shell_remove_child</remove-child-function>
@@ -435,7 +437,8 @@ embedded in another object</_tooltip>
       </packing-properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkMenuItem" generic-name="menuitem" _title="Menu Item" use-placeholders="False">
+    <glade-widget-class name="GtkMenuItem" generic-name="menuitem" _title="Menu Item" use-placeholders="False"
+			 gtkbuilder-since="2.16">
       <constructor-function>glade_gtk_menu_item_constructor</constructor-function>
       <post-create-function>glade_gtk_menu_item_post_create</post-create-function>
       <get-children-function>glade_gtk_menu_item_get_children</get-children-function>
@@ -450,6 +453,9 @@ embedded in another object</_tooltip>
         <action id="launch_editor" _name="Edit&#8230;" stock="gtk-edit" important="True"/>
       </actions>
       <properties>
+        <property id="accel-path" since="2.14"/>
+        <property id="right-justified" since="2.14"/>
+        <property id="width-chars" since="2.14"/>
         <property id="label" _name="Label" translatable="True">
 	  <parameter-spec>
 	    <type>GParamString</type>
@@ -730,7 +736,8 @@ embedded in another object</_tooltip>
       	<property id="label" default="label" translatable="True" custom-layout="True">
             <visible-lines>2</visible-lines>
         </property>
-	<property id="glade-attributes" _name="Attributes" save="False" custom-layout="True">
+	<property id="glade-attributes" _name="Attributes" save="False" custom-layout="True" 
+		  libglade-unsupported="True" gtkbuilder-since="2.16">
 	  <parameter-spec>
 	    <type>GParamBoxed</type>
 	    <value-type>GladeAttrGList</value-type>
@@ -958,14 +965,18 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkScaleButton" generic-name="scalebutton" _title="Scale Button" since="2.12"/>
+    <glade-widget-class name="GtkScaleButton" generic-name="scalebutton" _title="Scale Button" since="2.12">
+      <properties>
+        <property id="orientation" since="2.14"/>
+      </properties>
+    </glade-widget-class>
 
     <glade-widget-class name="GtkVolumeButton" generic-name="volumebutton" _title="Volume Button"/>
 
     <glade-widget-class name="GtkFileChooserWidget" generic-name="filechooserwidget" _title="File Chooser Widget">
       <post-create-function>glade_gtk_file_chooser_widget_post_create</post-create-function>
       <properties>
-        <property id="size" default="1"  query="False" />
+        <property id="size" default="1" query="False" />
 	<property id="extra-widget" parentless-widget="True" libglade-unsupported="True"/>
 	<property id="preview-widget" parentless-widget="True" libglade-unsupported="True"/>
 	<property id="filter" libglade-unsupported="True"/>
@@ -1076,6 +1087,10 @@ embedded in another object</_tooltip>
 	    <value id="GTK_PROGRESS_DISCRETE" _name="Discrete"/>
 	  </displayable-values>
 	</property>
+        <property id="min-horizontal-bar-height" since="2.14"/>
+        <property id="min-horizontal-bar-width" since="2.14"/>
+        <property id="min-vertical-bar-height" since="2.14"/>
+        <property id="min-vertical-bar-width" since="2.14"/>
       </properties>
     </glade-widget-class>
 
@@ -1290,7 +1305,13 @@ embedded in another object</_tooltip>
     
     <glade-widget-class name="GtkVScale" generic-name="vscale" _title="Vertical Scale"/>
 
-    <glade-widget-class name="GtkCalendar" generic-name="calendar" _title="Calendar"/>
+    <glade-widget-class name="GtkCalendar" generic-name="calendar" _title="Calendar">
+      <properties>
+        <property id="detail-height-rows" since="2.14"/>
+        <property id="detail-width-chars" since="2.14"/>
+        <property id="show-details" since="2.14"/>
+      </properties>
+    </glade-widget-class>
     
     <glade-widget-class name="GtkMenu" generic-name="menu" _title="Popup Menu" toplevel="True">
       <constructor-function>glade_gtk_menu_constructor</constructor-function>
@@ -1301,7 +1322,16 @@ embedded in another object</_tooltip>
       <actions>
         <action id="launch_editor" _name="Edit&#8230;" stock="gtk-edit" important="True"/>
       </actions>
-   </glade-widget-class>
+
+      <properties>
+        <property id="accel-group" since="2.14"/>
+        <property id="accel-path" since="2.14"/>
+        <property id="active" disabled="True" since="2.14"/>
+        <property id="attach-widget" disabled="True" since="2.14"/>
+        <property id="monitor" disabled="True" since="2.14"/>
+      </properties>
+
+    </glade-widget-class>
     
     <glade-widget-class name="GtkHScrollbar" generic-name="hscrollbar" _title="Horizontal Scrollbar"/>
 
@@ -1692,9 +1722,10 @@ embedded in another object</_tooltip>
     
     <glade-widget-class name="GtkLinkButton" generic-name="linkbutton" _title="Link Button">
       <properties>
-        <!-- The pspec of this prop says that the default is http://www.gtk.org but gtk_link_button_init() does not set it up
-               do we need to override it to avoid seting a NULL value. -->
+        <!-- The pspec of this prop says that the default is http://www.gtk.org but gtk_link_button_init() does
+	     not set it up... do we need to override it to avoid seting a NULL value ? -->
         <property id="uri" default="http://glade.gnome.org" since="2.10"/>
+        <property id="visited" since="2.14"/>
       </properties>
    </glade-widget-class>
 
@@ -2606,6 +2637,11 @@ embedded in another object</_tooltip>
 
     <glade-widget-class name="GtkCellRendererCombo" generic-name="cellrenderercombo" _title="Combo Renderer" 
 			libglade-unsupported="True">
+
+      <signals>
+	<signal id="changed" since="2.14"/>
+      </signals>
+
       <properties>
         <property id="has-entry" save="False" custom-layout="True"/>
         <property id="attr-has-entry" _name="Has Entry column" save="False" default="-1" custom-layout="True">
@@ -2989,7 +3025,11 @@ embedded in another object</_tooltip>
 
 
     <glade-widget-class name="GtkStatusIcon" generic-name="statusicon" _title="Status Icon" 
-			libglade-unsupported="True" toplevel="True"/>
+			libglade-unsupported="True" toplevel="True">
+      <properties>
+	<property id="gicon" disabled="True" since="2.14"/>
+      </properties>
+    </glade-widget-class>
 
     <glade-widget-class name="GtkTextBuffer" generic-name="textbuffer" _title="Text Buffer" 
 			libglade-unsupported="True" toplevel="True">

@@ -43,9 +43,6 @@ struct _GladeProperty
 	GValue             *value;     /* The value of the property
 					*/
 
-	gboolean            sensitive; /* Whether this property is sensitive (if the
-					* property is "optional" this takes precedence).
-					*/
 	gchar              *insensitive_tooltip; /* Tooltip to display when in insensitive state
 						  * (used to explain why the property is 
 						  *  insensitive)
@@ -56,34 +53,37 @@ struct _GladeProperty
 					      * (used to explain why the property is 
 					      *  insensitive)
 					      */
-	gboolean            support_disabled; /* Whether this property is disabled due
-					       * to format conflicts
-					       */
+	guint               support_disabled : 1; /* Whether this property is disabled due
+						   * to format conflicts
+						   */
 
-	gboolean            enabled;   /* Enabled is a flag that is used for GladeProperties
-					* that have the optional flag set to let us know
-					* if this widget has this setting enabled or
-					* not. (Like default size, it can be specified or
-					* unspecified). This flag also sets the state
-					* of the property->input state for the loaded
-					* widget.
-					*/
+	guint               sensitive : 1; /* Whether this property is sensitive (if the
+					    * property is "optional" this takes precedence).
+					    */
 
-	gboolean            save_always; /* Used to make a special case exception and always
-					  * save this property regardless of what the default
-					  * value is (used for some special cases like properties
-					  * that are assigned initial values in composite widgets
-					  * or derived widget code).
-					  */
+	guint               enabled : 1;   /* Enabled is a flag that is used for GladeProperties
+					    * that have the optional flag set to let us know
+					    * if this widget has this setting enabled or
+					    * not. (Like default size, it can be specified or
+					    * unspecified). This flag also sets the state
+					    * of the property->input state for the loaded
+					    * widget.
+					    */
+
+	guint               save_always : 1; /* Used to make a special case exception and always
+					      * save this property regardless of what the default
+					      * value is (used for some special cases like properties
+					      * that are assigned initial values in composite widgets
+					      * or derived widget code).
+					      */
 
 	/* Used only for translatable strings. */
-	gboolean  i18n_translatable;
-	gboolean  i18n_has_context;
+	guint     i18n_translatable : 1;
+	guint     i18n_has_context : 1;
 	gchar    *i18n_context;
 	gchar    *i18n_comment;
 		
-	gint      syncing;    /* Avoid recursion while synchronizing object with value.
-			       */
+	gint      syncing;  /* Avoid recursion while synchronizing object with value */
 	gint      sync_tolerance;
 };
 

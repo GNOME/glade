@@ -46,10 +46,12 @@ struct _GladePropertyClass
 			     * was created for.
 			     */
 
-	gint        version_since_major; /* Version in which this property was
-					  * introduced
-					  */
-	gint        version_since_minor; 
+
+	guint16     version_since_major; /* Version in which this property was */
+	guint16     version_since_minor; /* introduced.                       */
+
+	guint16     builder_since_major; /* Version in which this property became */
+	guint16     builder_since_minor; /* available in GtkBuilder format        */
 
 	/* For catalogs that support libglade: */
 	gboolean    libglade_only;       /* Mark special libglade virtual properties */

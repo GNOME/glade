@@ -89,6 +89,7 @@ typedef enum {
 #define GLADE_TAG_VERSION                         "version"
 #define GLADE_TAG_TARGETABLE                      "targetable"
 #define GLADE_TAG_VERSION_SINCE                   "since"
+#define GLADE_TAG_BUILDER_SINCE                   "gtkbuilder-since"
 #define GLADE_TAG_DEPRECATED                      "deprecated"
 
 #define GLADE_TAG_LIBGLADE_ONLY                   "libglade-only"

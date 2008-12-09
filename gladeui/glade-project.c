@@ -1548,6 +1548,88 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
 /*******************************************************************
      Verify code here (versioning, incompatability checks)
  *******************************************************************/
+
+/* translators: reffers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d' */
+#define WIDGET_VERSION_CONFLICT_MSGFMT         _("This widget was introduced in %s %d.%d while project targets %s %d.%d")
+
+/* translators: reffers to a widget '[%s]' introduced in toolkit version '%s %d.%d' */
+#define WIDGET_VERSION_CONFLICT_FMT            _("[%s] Object class '%s' was introduced in %s %d.%d\n")
+
+/* translators: reffers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d' */
+#define WIDGET_BUILDER_VERSION_CONFLICT_MSGFMT _("This widget was made available in GtkBuilder format in %s %d.%d " \
+						 "while project targets %s %d.%d")
+
+/* translators: reffers to a widget '[%s]' introduced in toolkit version '%s %d.%d' */
+#define WIDGET_BUILDER_VERSION_CONFLICT_FMT    _("[%s] Object class '%s' was made available in GtkBuilder format " \
+						 "in %s %d.%d\n")
+
+#define WIDGET_LIBGLADE_ONLY_MSG               _("This widget is only supported in libglade format")
+
+/* translators: reffers to a widget '[%s]' loaded from toolkit version '%s %d.%d' */
+#define WIDGET_LIBGLADE_ONLY_FMT               _("[%s] Object class '%s' from %s %d.%d " \
+						 "is only supported in libglade format\n")
+
+#define WIDGET_LIBGLADE_UNSUPPORTED_MSG        _("This widget is not supported in libglade format")
+
+/* translators: reffers to a widget '[%s]' loaded from toolkit version '%s %d.%d' */
+#define WIDGET_LIBGLADE_UNSUPPORTED_FMT        _("[%s] Object class '%s' from %s %d.%d " \
+						 "is not supported in libglade format\n")
+
+#define WIDGET_DEPRECATED_MSG                  _("This widget is deprecated")
+
+/* translators: reffers to a widget '[%s]' loaded from toolkit version '%s %d.%d' */
+#define WIDGET_DEPRECATED_FMT                  _("[%s] Object class '%s' from %s %d.%d is deprecated\n")
+
+
+/* Defined here for pretty translator comments (bug in intl tools, for some reason
+ * you can only comment about the line directly following, forcing you to write
+ * ugly messy code with comments in line breaks inside function calls).
+ */
+#define PROP_LIBGLADE_UNSUPPORTED_MSG          _("This property is not supported in libglade format")
+
+/* translators: reffers to a property '%s' of widget '[%s]' */
+#define PROP_LIBGLADE_UNSUPPORTED_FMT          _("[%s] Property '%s' of object class '%s' is not " \
+						 "supported in libglade format\n")
+/* translators: reffers to a property '%s' of widget '[%s]' */
+#define PACK_PROP_LIBGLADE_UNSUPPORTED_FMT     _("[%s] Packing property '%s' of object class '%s' is not " \
+						 "supported in libglade format\n")
+
+#define PROP_LIBGLADE_ONLY_MSG                 _("This property is only supported in libglade format")
+
+/* translators: reffers to a property '%s' of widget '[%s]' */
+#define PROP_LIBGLADE_ONLY_FMT                 _("[%s] Property '%s' of object class '%s' is only " \
+						 "supported in libglade format\n")
+
+/* translators: reffers to a property '%s' of widget '[%s]' */
+#define PACK_PROP_LIBGLADE_ONLY_FMT            _("[%s] Packing property '%s' of object class '%s' is only " \
+						 "supported in libglade format\n")
+
+/* translators: reffers to a property in toolkit version '%s %d.%d' 
+ * and a project targeting toolkit version '%s %d.%d' */
+#define PROP_VERSION_CONFLICT_MSGFMT           _("This property was introduced in %s %d.%d while project targets %s %d.%d")
+
+/* translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d' */
+#define PROP_VERSION_CONFLICT_FMT              _("[%s] Property '%s' of object class '%s' was introduced in %s %d.%d\n")
+
+/* translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d' */
+#define PACK_PROP_VERSION_CONFLICT_FMT         _("[%s] Packing property '%s' of object class '%s' " \
+						 "was introduced in %s %d.%d\n")
+
+/* translators: reffers to a property in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d' */
+#define PROP_BUILDER_VERSION_CONFLICT_MSGFMT   _("This property was made available in GtkBuilder format in %s %d.%d " \
+						 "while project targets %s %d.%d")
+
+/* translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d' */
+#define PROP_BUILDER_VERSION_CONFLICT_FMT      _("[%s] Property '%s' of object class '%s' was " \
+						 "made available in GtkBuilder format in %s %d.%d\n")
+
+/* translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d' */
+#define PACK_PROP_BUILDER_VERSION_CONFLICT_FMT _("[%s] Packing property '%s' of object class '%s' " \
+						 "was made available in GtkBuilder format in %s %d.%d\n")
+
+/* translators: reffers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d' */
+#define SIGNAL_VERSION_CONFLICT_FMT            _("[%s] Signal '%s' of object class '%s' was introduced in %s %d.%d\n")
+
 static void
 glade_project_verify_property (GladeProject   *project,
 			       GladeProperty  *property, 
@@ -1575,40 +1657,30 @@ glade_project_verify_property (GladeProject   *project,
 	{
 		if (forwidget)
 			glade_property_set_support_warning
-				(property, TRUE, _("This property is not supported in libglade format"));
+				(property, TRUE, PROP_LIBGLADE_UNSUPPORTED_MSG);
 		else
-			/* translators: reffers to a property '%s' of widget '[%s]' 
-			 * introduced in toolkit version '%s %d.%d' */
-			g_string_append_printf
-				(string,
-				 property->klass->packing ?
-				 _("[%s] Packing property '%s' of object class '%s' is not "
-				   "supported in libglade format\n") :
-				 _("[%s] Property '%s' of object class '%s' is not "
-				   "supported in libglade format\n"),
-				 path_name,
-				 property->klass->name, 
-				 adaptor->title);
+			g_string_append_printf (string,
+						property->klass->packing ?
+						PACK_PROP_LIBGLADE_UNSUPPORTED_FMT :
+						PROP_LIBGLADE_UNSUPPORTED_FMT,
+						path_name,
+						property->klass->name, 
+						adaptor->title);
 	}
 	else if (project->priv->format == GLADE_PROJECT_FORMAT_GTKBUILDER &&
 		 property->klass->libglade_only)
 	{
 		if (forwidget)
 			glade_property_set_support_warning
-				(property, TRUE, _("This property is only supported in libglade format"));
+				(property, TRUE, PROP_LIBGLADE_ONLY_MSG);
 		else
-			/* translators: reffers to a property '%s' of widget '[%s]' 
-			 * introduced in toolkit version '%s %d.%d' */
-			g_string_append_printf
-				(string,
-				 property->klass->packing ?
-				 _("[%s] Packing property '%s' of object class '%s' is only "
-				   "supported in libglade format\n") :
-				 _("[%s] Property '%s' of object class '%s' is only "
-				   "supported in libglade format\n"),
-				 path_name,
-				 property->klass->name, 
-				 adaptor->title);
+			g_string_append_printf (string,
+						property->klass->packing ?
+						PACK_PROP_LIBGLADE_ONLY_FMT :
+						PROP_LIBGLADE_ONLY_FMT,
+						path_name,
+						property->klass->name, 
+						adaptor->title);
 	} 
 	else if (target_major < property->klass->version_since_major ||
 		 (target_major == property->klass->version_since_major &&
@@ -1616,36 +1688,54 @@ glade_project_verify_property (GladeProject   *project,
 	{
 		if (forwidget)
 		{
-			/* translators: reffers to a property introduced in toolkit
-			 * version '%s %d.%d' and a project targeting toolkit
-			 * version '%s %d.%d' */
-			tooltip = g_strdup_printf
-				(_("This property was introduced in %s %d.%d, "
-				   "project targets %s %d.%d"),
-				 catalog,
-				 property->klass->version_since_major,
-				 property->klass->version_since_minor,
-				 catalog,
-				 target_major, target_minor);
-
+			tooltip = g_strdup_printf (PROP_VERSION_CONFLICT_MSGFMT,
+						   catalog,
+						   property->klass->version_since_major,
+						   property->klass->version_since_minor,
+						   catalog,
+						   target_major, target_minor);
+			
 			glade_property_set_support_warning (property, FALSE, tooltip);
 			g_free (tooltip);
 		}
 		else
-			/* translators: reffers to a property '%s' of widget '[%s]' 
-			 * introduced in toolkit version '%s %d.%d' */
-			g_string_append_printf
-				(string,
-				 property->klass->packing ?
-				 _("[%s] Packing property '%s' of object class '%s' was "
-				   "introduced in %s %d.%d\n") :
-				 _("[%s] Property '%s' of object class '%s' was "
-				   "introduced in %s %d.%d\n"),
-				 path_name,
-				 property->klass->name, 
-				 adaptor->title, catalog,
-				 property->klass->version_since_major,
-				 property->klass->version_since_minor);
+			g_string_append_printf (string,
+						property->klass->packing ?
+						PACK_PROP_VERSION_CONFLICT_FMT :
+						PROP_VERSION_CONFLICT_FMT,
+						path_name,
+						property->klass->name, 
+						adaptor->title, catalog,
+						property->klass->version_since_major,
+						property->klass->version_since_minor);
+	} 
+	else if (project->priv->format == GLADE_PROJECT_FORMAT_GTKBUILDER &&
+		 (target_major < property->klass->builder_since_major ||
+		  (target_major == property->klass->builder_since_major &&
+		   target_minor < property->klass->builder_since_minor)))
+	{
+		if (forwidget)
+		{
+			tooltip = g_strdup_printf (PROP_BUILDER_VERSION_CONFLICT_MSGFMT,
+						   catalog,
+						   property->klass->builder_since_major,
+						   property->klass->builder_since_minor,
+						   catalog,
+						   target_major, target_minor);
+			
+			glade_property_set_support_warning (property, FALSE, tooltip);
+			g_free (tooltip);
+		}
+		else
+			g_string_append_printf (string,
+						property->klass->packing ?
+						PACK_PROP_BUILDER_VERSION_CONFLICT_FMT :
+						PROP_BUILDER_VERSION_CONFLICT_FMT,
+						path_name,
+						property->klass->name, 
+						adaptor->title, catalog,
+						property->klass->builder_since_major,
+						property->klass->builder_since_minor);
 	} 
 	else if (forwidget)
 		glade_property_set_support_warning (property, FALSE, NULL);
@@ -1722,18 +1812,14 @@ glade_project_verify_signal (GladeWidget  *widget,
 	if (target_major < signal_class->version_since_major ||
 	    (target_major == signal_class->version_since_major &&
 	     target_minor < signal_class->version_since_minor))
-		/* translators: reffers to a signal '%s' of widget '[%s]' 
-		 * introduced in toolkit version '%s %d.%d' */
-		g_string_append_printf
-			(string, 
-			 _("[%s] Signal '%s' of object class '%s' was "
-			   "introduced in %s %d.%d\n"),
-			 path_name,
-			 signal->name,
-			 signal_class->adaptor->title, 
-			 catalog,
-			 signal_class->version_since_major,
-			 signal_class->version_since_minor);
+		g_string_append_printf (string, 
+					SIGNAL_VERSION_CONFLICT_FMT,
+					path_name,
+					signal->name,
+					signal_class->adaptor->title, 
+					catalog,
+					signal_class->version_since_major,
+					signal_class->version_since_minor);
 
 	g_free (catalog);
 }
@@ -1862,7 +1948,7 @@ glade_project_verify_adaptor (GladeProject       *project,
 	gint                target_major, target_minor;
 	gchar              *catalog = NULL;
 
-	for (adaptor_iter = adaptor; adaptor_iter;
+	for (adaptor_iter = adaptor; adaptor_iter && support_mask == GLADE_SUPPORT_OK;
 	     adaptor_iter = glade_widget_adaptor_get_parent_adaptor (adaptor_iter))
 	{
 
@@ -1871,37 +1957,52 @@ glade_project_verify_adaptor (GladeProject       *project,
 							  &target_major,
 							  &target_minor);
 
+		/* Only one versioning message (builder or otherwise)...
+		 */
 		if (target_major < GWA_VERSION_SINCE_MAJOR (adaptor_iter) ||
 		    (target_major == GWA_VERSION_SINCE_MAJOR (adaptor_iter) &&
 		     target_minor < GWA_VERSION_SINCE_MINOR (adaptor_iter)))
 		{
 			if (forwidget)
-			{
-				/* translators: reffers to a widget
-				 * introduced in toolkit version '%s %d.%d',
-				 * and a project targeting toolkit verion '%s %d.%d' */
-				g_string_append_printf
-					(string, 
-					 _("This widget was introduced in %s %d.%d "
-					   "project targets %s %d.%d"),
-					 catalog,
-					 GWA_VERSION_SINCE_MAJOR (adaptor_iter),
-					 GWA_VERSION_SINCE_MINOR (adaptor_iter),
-					 catalog, target_major, target_minor);
-			}
+				g_string_append_printf (string, 
+							WIDGET_VERSION_CONFLICT_MSGFMT,
+							catalog,
+							GWA_VERSION_SINCE_MAJOR (adaptor_iter),
+							GWA_VERSION_SINCE_MINOR (adaptor_iter),
+							catalog, target_major, target_minor);
 			else
-				/* translators: reffers to a widget '[%s]'  
-				 * introduced in toolkit version '%s %d.%d' */
-				g_string_append_printf
-					(string, 
-					 _("[%s] Object class '%s' was introduced in %s %d.%d\n"),
-					 path_name, adaptor_iter->title, catalog,
-					 GWA_VERSION_SINCE_MAJOR (adaptor_iter),
-					 GWA_VERSION_SINCE_MINOR (adaptor_iter));
+				g_string_append_printf (string, 
+							WIDGET_VERSION_CONFLICT_FMT,
+							path_name, adaptor_iter->title, catalog,
+							GWA_VERSION_SINCE_MAJOR (adaptor_iter),
+							GWA_VERSION_SINCE_MINOR (adaptor_iter));
+			
+			support_mask |= GLADE_SUPPORT_MISMATCH;
+		}
+		else if (project->priv->format == GLADE_PROJECT_FORMAT_GTKBUILDER &&
+			 (target_major < GWA_BUILDER_SINCE_MAJOR (adaptor_iter) ||
+			  (target_major == GWA_BUILDER_SINCE_MAJOR (adaptor_iter) &&
+			   target_minor < GWA_BUILDER_SINCE_MINOR (adaptor_iter))))
+		{
+			if (forwidget)
+				g_string_append_printf (string, 
+							WIDGET_BUILDER_VERSION_CONFLICT_MSGFMT,
+							catalog,
+							GWA_BUILDER_SINCE_MAJOR (adaptor_iter),
+							GWA_BUILDER_SINCE_MINOR (adaptor_iter),
+							catalog, target_major, target_minor);
+			else
+				g_string_append_printf (string, 
+							WIDGET_BUILDER_VERSION_CONFLICT_FMT,
+							path_name, adaptor_iter->title, catalog,
+							GWA_BUILDER_SINCE_MAJOR (adaptor_iter),
+							GWA_BUILDER_SINCE_MINOR (adaptor_iter));
 
 			support_mask |= GLADE_SUPPORT_MISMATCH;
 		}
 
+		/* Now accumulate some more messages...
+		 */
 		if (project->priv->format == GLADE_PROJECT_FORMAT_GTKBUILDER &&
 		    GWA_LIBGLADE_ONLY (adaptor_iter))
 		{
@@ -1909,19 +2010,13 @@ glade_project_verify_adaptor (GladeProject       *project,
 			{
 				if (string->len)
 					g_string_append (string, "\n");
-				g_string_append_printf
-					(string,
-					 _("This widget is only supported in libglade format"));
+				g_string_append_printf (string, WIDGET_LIBGLADE_ONLY_MSG);
 			}
 			else
-				/* translators: reffers to a widget '[%s]'  
-				 * loaded from toolkit version '%s %d.%d' */
-				g_string_append_printf
-					(string,
-					 _("[%s] Object class '%s' from %s %d.%d "
-					   "is only supported in libglade format\n"),
-					 path_name, adaptor_iter->title, catalog,
-					 target_major, target_minor);
+				g_string_append_printf (string,
+							WIDGET_LIBGLADE_ONLY_FMT,
+							path_name, adaptor_iter->title, catalog,
+							target_major, target_minor);
 
 			support_mask |= GLADE_SUPPORT_LIBGLADE_ONLY;
 		}
@@ -1932,19 +2027,13 @@ glade_project_verify_adaptor (GladeProject       *project,
 			{
 				if (string->len)
 					g_string_append (string, "\n");
-				g_string_append_printf
-					(string,
-					 _("This widget is not supported in libglade format"));
+
+				g_string_append_printf (string, WIDGET_LIBGLADE_UNSUPPORTED_MSG);
 			}
 			else
-				/* translators: reffers to a widget '[%s]'  
-				 * loaded from toolkit version '%s %d.%d' */
-				g_string_append_printf
-					(string,
-					 _("[%s] Object class '%s' from %s %d.%d "
-					   "is not supported in libglade format\n"),
-					 path_name, adaptor_iter->title, catalog,
-					 target_major, target_minor);
+				g_string_append_printf (string, WIDGET_LIBGLADE_UNSUPPORTED_FMT,
+							path_name, adaptor_iter->title, catalog,
+							target_major, target_minor);
 
 			support_mask |= GLADE_SUPPORT_LIBGLADE_UNSUPPORTED;
 		}
@@ -1955,18 +2044,13 @@ glade_project_verify_adaptor (GladeProject       *project,
 			{
 				if (string->len)
 					g_string_append (string, "\n");
-				g_string_append_printf
-					(string, _("This widget is deprecated"));
+
+				g_string_append_printf (string, WIDGET_DEPRECATED_MSG);
 			}
 			else
-				/* translators: reffers to a widget '[%s]'  
-				 * loaded from toolkit version '%s %d.%d' */
-				g_string_append_printf
-					(string, 
-					 _("[%s] Object class '%s' from %s %d.%d "
-					   "is deprecated\n"),
-					 path_name, adaptor_iter->title, catalog,
-					 target_major, target_minor);
+				g_string_append_printf (string, WIDGET_DEPRECATED_FMT,
+							path_name, adaptor_iter->title, catalog,
+							target_major, target_minor);
 
 			support_mask |= GLADE_SUPPORT_DEPRECATED;
 		}
@@ -1974,6 +2058,7 @@ glade_project_verify_adaptor (GladeProject       *project,
 	}
 	if (mask)
 		*mask = support_mask;
+
 }
 
 /**
