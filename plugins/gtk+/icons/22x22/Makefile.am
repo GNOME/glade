@@ -92,6 +92,26 @@ icons_DATA = \
         widget-gtk-vscale.png \
         widget-gtk-vscrollbar.png \
         widget-gtk-vseparator.png \
-        widget-gtk-window.png
+        widget-gtk-window.png \
+	widget-gtk-entrycompletion.png \
+	widget-gtk-action.png \
+	widget-gtk-actiongroup.png \
+	widget-gtk-radioaction.png \
+	widget-gtk-toggleaction.png \
+	widget-gtk-recentaction.png \
+	widget-gtk-volumebutton.png \
+	widget-gtk-windowgroup.png \
+	widget-gtk-treestore.png \
+	widget-gtk-liststore.png \
+	widget-gtk-scalebutton.png \
+	widget-gtk-iconfactory.png \
+	widget-gtk-cellrenderertext.png \
+	widget-gtk-cellrendereraccel.png \
+	widget-gtk-cellrenderercombo.png \
+	widget-gtk-cellrendererspin.png \
+	widget-gtk-cellrendererpixbuf.png \
+	widget-gtk-cellrendererprogress.png \
+	widget-gtk-cellrenderertoggle.png
+
 
 EXTRA_DIST = $(icons_DATA)
