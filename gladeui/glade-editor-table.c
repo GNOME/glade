@@ -51,7 +51,7 @@ glade_editor_table_class_init (GladeEditorTableClass *klass)
 static void
 glade_editor_table_init (GladeEditorTable *self)
 {
-
+	self->group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 }
 
 static void
@@ -68,6 +68,10 @@ glade_editor_table_dispose (GObject *object)
 	table->name_entry = NULL;
 
 	glade_editable_load (GLADE_EDITABLE (table), NULL);
+
+	if (table->group) 
+		g_object_unref (table->group);
+	table->group = NULL;
 
 	G_OBJECT_CLASS (glade_editor_table_parent_class)->dispose (object);
 }
@@ -219,9 +223,13 @@ glade_editor_table_attach (GladeEditorTable *table,
 {
 	gtk_table_attach (GTK_TABLE (table), child,
 			  pos, pos+1, row, row +1,
-			  GTK_EXPAND | GTK_FILL,
+			  pos ? 0 : GTK_EXPAND | GTK_FILL,
 			  0,
 			  3, 1);
+	
+	if (pos)
+		gtk_size_group_add_widget (table->group, child);
+
 }
 
 static gint

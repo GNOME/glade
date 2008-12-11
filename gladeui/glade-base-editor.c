@@ -67,6 +67,7 @@ struct _GladeBaseEditorPrivate
 	GladeWidget *gcontainer; /* The container we are editing */
 	
 	/* Editor UI */
+	GtkSizeGroup *group;
 	GtkWidget *paned, *table, *treeview, *main_scroll, *notebook;
 	GtkWidget *remove_button, *signal_editor_w;
 	GladeSignalEditor *signal_editor;
@@ -356,8 +357,11 @@ glade_base_editor_table_attach (GladeBaseEditor *e,
 	if (child2)
 	{
 		gtk_table_attach (table, child2, 1, 2, row, row + 1,
-				  GTK_EXPAND | GTK_FILL, GTK_FILL, 2, 0);
+				  0, GTK_FILL, 2, 0);
 		gtk_widget_show (child2);
+
+
+		gtk_size_group_add_widget (e->priv->group, child2);
 	}
 	
 	e->priv->row++;
@@ -1230,6 +1234,8 @@ glade_base_editor_finalize (GObject *object)
 
 	/* Free private members, etc. */
 	glade_base_editor_project_disconnect (cobj);
+
+	g_object_unref (cobj->priv->group);
 	
 	g_free (cobj->priv);
 	G_OBJECT_CLASS(parent_class)->finalize(object);
@@ -1635,6 +1641,8 @@ glade_base_editor_init (GladeBaseEditor *editor)
 	gtk_box_set_spacing (GTK_BOX (editor), 8);
 	
 	e = editor->priv = g_new0(GladeBaseEditorPrivate, 1);
+
+	e->group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 	
 	/* Paned */
 	e->paned = paned = gtk_vpaned_new ();

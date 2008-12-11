@@ -73,6 +73,10 @@ struct _GladeLabelEditor
 
 	GList *properties;         /* A list of eprops to update at load() time */
 
+	GtkSizeGroup *appearance_group;
+	GtkSizeGroup *formatting_group;
+	GtkSizeGroup *wrap_group;
+
 	gboolean loading;          /* Loading flag for loading widgets in the editor */
 	gboolean modifying;        /* Flag for monitoring project changes */
 };

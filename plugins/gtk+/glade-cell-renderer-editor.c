@@ -217,7 +217,7 @@ table_attach (GtkWidget *table,
 {
 	gtk_table_attach (GTK_TABLE (table), child,
 			  pos, pos+1, row, row +1,
-			  pos ? GTK_FILL : GTK_EXPAND | GTK_FILL,
+			  pos ? 0 : GTK_EXPAND | GTK_FILL,
 			  GTK_EXPAND | GTK_FILL,
 			  3, 1);
 }
@@ -373,7 +373,6 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor  *adaptor,
 	GladePropertyClass       *pclass, *attr_pclass, *use_attr_pclass;
 	GList                    *list, *sorted;
 	GtkWidget                *label, *alignment, *table, *hbox, *separator;
-	GtkSizeGroup             *input_group;
 	gchar                    *str;
 
 	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
@@ -384,8 +383,6 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor  *adaptor,
 
 	/* Pack the parent on top... */
 	gtk_box_pack_start (GTK_BOX (renderer_editor), GTK_WIDGET (embed), FALSE, FALSE, 0);
-
-	input_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
 	sorted = get_sorted_properties (adaptor, type);
 
@@ -461,7 +458,6 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor  *adaptor,
 			table_attach (table, eprop->item_label, 0, rows);
 			table_attach (table, GTK_WIDGET (eprop), 1, rows++);
 			renderer_editor->properties = g_list_prepend (renderer_editor->properties, eprop);
-			gtk_size_group_add_widget (input_group, GTK_WIDGET (eprop));
 
 			tab->use_prop_label = eprop->item_label;
 			tab->use_prop_eprop = GTK_WIDGET (eprop);
@@ -471,7 +467,6 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor  *adaptor,
 			table_attach (table, eprop->item_label, 0, rows);
 			table_attach (table, GTK_WIDGET (eprop), 1, rows++);
 			renderer_editor->properties = g_list_prepend (renderer_editor->properties, eprop);
-			gtk_size_group_add_widget (input_group, GTK_WIDGET (eprop));
 
 			tab->use_attr_label = eprop->item_label;
 			tab->use_attr_eprop = GTK_WIDGET (eprop);
@@ -593,7 +588,7 @@ glade_eprop_cell_attribute_load (GladeEditorProperty *eprop,
 			for (l = columns; l; l = l->next)
 			{
 				GladeColumnType *column = l->data;
-				gchar *str = g_strdup_printf ("%s (%s)", column->column_name, 
+				gchar *str = g_strdup_printf ("%s - %s", column->column_name, 
 							      g_type_name (column->type));
 
 				gtk_list_store_append (store, &iter);
@@ -650,6 +645,37 @@ spin_changed (GtkWidget           *spin,
 	g_value_unset (&val);
 }
 
+static void
+combo_popup_down (GtkWidget *combo,
+		  GParamSpec *spec,
+		  GtkCellRenderer *cell)
+{
+	gboolean popup_shown = FALSE;
+
+	g_object_get (G_OBJECT (combo), "popup-shown", &popup_shown, NULL);
+
+	g_object_ref (cell);
+
+	gtk_cell_layout_clear (GTK_CELL_LAYOUT (combo));
+
+	gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (combo), cell, TRUE);
+	gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (combo), cell,
+					"text", 0, NULL);
+
+	g_object_unref (cell);
+
+	if (popup_shown)
+		g_object_set (cell, 
+			      "ellipsize", PANGO_ELLIPSIZE_NONE,
+			      "width", -1, 
+			      NULL);
+	else
+		g_object_set (cell, 
+			      "ellipsize", PANGO_ELLIPSIZE_END,
+			      "width", 60, 
+			      NULL);
+}
+
 static GtkWidget *
 glade_eprop_cell_attribute_create_input (GladeEditorProperty *eprop)
 {
@@ -668,12 +694,24 @@ glade_eprop_cell_attribute_create_input (GladeEditorProperty *eprop)
 
 	/* Add cell renderer */
 	cell = gtk_cell_renderer_text_new ();
+	g_object_set (cell,
+		      "xpad", 0,
+		      "xalign", 0.0F,
+ 		      "ellipsize", PANGO_ELLIPSIZE_END,
+		      "width", 60,
+		      NULL);
+
+	gtk_cell_layout_clear (GTK_CELL_LAYOUT (eprop_attribute->combo));
+
 	gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (eprop_attribute->combo), cell, TRUE);
 	gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (eprop_attribute->combo), cell,
 					"text", 0, NULL);
 
+	g_signal_connect (G_OBJECT (eprop_attribute->combo), "notify::popup-shown",
+			  G_CALLBACK (combo_popup_down), cell);
+
  	gtk_box_pack_start (GTK_BOX (hbox), eprop_attribute->spin, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (hbox), eprop_attribute->combo, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox), eprop_attribute->combo, FALSE, FALSE, 0);
 
 	g_signal_connect (G_OBJECT (eprop_attribute->combo), "changed",
 			  G_CALLBACK (combo_changed), eprop);

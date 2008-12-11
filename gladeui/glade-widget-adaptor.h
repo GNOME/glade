@@ -544,10 +544,10 @@ struct _GladeSignalClass
 
 	GSignalQuery query;
 
-	gint         version_since_major; /* Version in which this signal was
+	guint16      version_since_major; /* Version in which this signal was
 					   * introduced
 					   */
-	gint         version_since_minor;
+	guint16      version_since_minor;
 
 	const gchar *name;         /* Name of the signal, eg clicked */
 	gchar       *type;         /* Name of the object class that this signal belongs to

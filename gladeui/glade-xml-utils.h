@@ -240,7 +240,7 @@ gchar *  glade_xml_get_property_string (GladeXmlNode *node_in, const gchar *name
 gboolean glade_xml_get_property_boolean (GladeXmlNode *node_in, const gchar *name, gboolean _default);
 gdouble  glade_xml_get_property_double (GladeXmlNode *node_in, const gchar *name, gdouble _default);
 gint     glade_xml_get_property_int (GladeXmlNode *node_in, const gchar *name, gint _default);
-gboolean glade_xml_get_property_version (GladeXmlNode *node_in, const gchar *name, gint *major, gint *minor);
+gboolean glade_xml_get_property_version (GladeXmlNode *node_in, const gchar *name, guint16 *major, guint16 *minor);
 GList   *glade_xml_get_property_targetable_versions (GladeXmlNode *node_in, const gchar *name);
 
 

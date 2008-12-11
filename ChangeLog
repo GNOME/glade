@@ -1,3 +1,17 @@
+2008-12-10  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-name-context.[ch], gladeui/glade-editable.[ch]: Relicensed LGPL.
+
+	* plugins/gtk+/glade-image-editor.c, plugins/gtk+/glade-image-item-editor.c,
+	plugins/gtk+/glade-button-editor.c, plugins/gtk+/glade-label-editor.c,
+	plugins/gtk+/glade-cell-renderer-editor.c, plugins/gtk+/glade-tool-button-editor.c,
+	gladeui/glade-editor-table.c, gladeui/glade-base-editor.c: 
+	Now editable portions of properties dont expand in tables, leaving more freedom 
+	for labels to expand in tight spots, no more item_labels in radio buttons (they dont expand).
+
+	* gladeui/glade-widget-adaptor.c: Fixed regression, now disabled classes are not
+	reinstalled in subclasses.
+	
 2008-12-09  Tristan Van Berkom <tvb@gnome.org>
 
 	* NEWS, configure.ac: Rolling 3.5.3

@@ -167,8 +167,8 @@ typedef struct {
 
 static void         glade_project_set_target_version       (GladeProject *project,
 							    const gchar  *catalog,
-							    gint          major,
-							    gint          minor);
+							    guint16       major,
+							    guint16       minor);
 static void         glade_project_get_target_version       (GladeProject *project,
 							    const gchar  *catalog,
 							    gint         *major,
@@ -912,10 +912,10 @@ glade_project_fix_object_props (GladeProject *project)
 
 static gchar *
 glade_project_read_requires_from_comment (GladeXmlNode  *comment,
-					  gint          *major,
-					  gint          *minor)
+					  guint16       *major,
+					  guint16       *minor)
 {
-	gint maj, min;
+	gint   maj, min;
 	gchar *value, buffer[256];
 	gchar *required_lib = NULL;
 
@@ -949,7 +949,7 @@ glade_project_read_requires (GladeProject *project,
 	GladeXmlNode *node;
 	gchar        *required_lib = NULL;
 	gboolean      loadable = TRUE;
-	gint          major, minor;
+	guint16       major, minor;
 
 	for (node = glade_xml_node_get_children_with_comments (root_node); 
 	     node; node = glade_xml_node_next_with_comments (node))
@@ -2654,8 +2654,8 @@ glade_project_get_target_version (GladeProject *project,
 static void
 glade_project_set_target_version (GladeProject *project,
 				  const gchar  *catalog,
-				  gint          major,
-				  gint          minor)
+				  guint16       major,
+				  guint16       minor)
 {
 	GladeTargetableVersion *version;
 	GSList *radios, *list;

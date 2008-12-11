@@ -488,8 +488,8 @@ glade_xml_get_property_string_required (GladeXmlNode *node_in,
 gboolean
 glade_xml_get_property_version (GladeXmlNode *node_in, 
 				const gchar  *name, 
-				gint         *major, 
-				gint         *minor)
+				guint16      *major, 
+				guint16      *minor)
 {
 	xmlNodePtr node = (xmlNodePtr) node_in;
 	gchar *value = glade_xml_get_property_string (node_in, name);

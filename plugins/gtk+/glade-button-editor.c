@@ -383,16 +383,21 @@ label_toggled (GtkWidget         *widget,
 			     button_editor->loaded_widget);
 }
 
+
 static void
 table_attach (GtkWidget *table, 
 	      GtkWidget *child, 
-	      gint pos, gint row)
+	      gint pos, gint row,
+	      GtkSizeGroup *group)
 {
 	gtk_table_attach (GTK_TABLE (table), child,
 			  pos, pos+1, row, row +1,
-			  GTK_EXPAND | GTK_FILL,
+			  pos ? 0 : GTK_EXPAND | GTK_FILL,
 			  GTK_EXPAND | GTK_FILL,
 			  3, 1);
+
+	if (pos)
+		gtk_size_group_add_widget (group, child);
 }
 
 
@@ -403,6 +408,7 @@ glade_button_editor_new (GladeWidgetAdaptor *adaptor,
 	GladeButtonEditor   *button_editor;
 	GladeEditorProperty *eprop;
 	GtkWidget           *vbox, *table, *frame;
+	GtkSizeGroup        *group;
 
 	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
 	g_return_val_if_fail (GLADE_IS_EDITABLE (embed), NULL);
@@ -454,17 +460,20 @@ glade_button_editor_new (GladeWidgetAdaptor *adaptor,
 	gtk_container_add (GTK_CONTAINER (frame), button_editor->stock_frame);
 
 	table = gtk_table_new (0, 0, FALSE);
+	group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 	gtk_container_add (GTK_CONTAINER (button_editor->stock_frame), table);
 
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "stock", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, 0);
-	table_attach (table, GTK_WIDGET (eprop), 1, 0);
+	table_attach (table, eprop->item_label, 0, 0, group);
+	table_attach (table, GTK_WIDGET (eprop), 1, 0, group);
 	button_editor->properties = g_list_prepend (button_editor->properties, eprop);
 
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "image-position", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, 1);
-	table_attach (table, GTK_WIDGET (eprop), 1, 1);
+	table_attach (table, eprop->item_label, 0, 1, group);
+	table_attach (table, GTK_WIDGET (eprop), 1, 1, group);
 	button_editor->properties = g_list_prepend (button_editor->properties, eprop);
+
+	g_object_unref (group);
 
 	/* Populate label frame here... */
 	frame = gtk_frame_new (NULL);
@@ -477,28 +486,31 @@ glade_button_editor_new (GladeWidgetAdaptor *adaptor,
 	gtk_container_add (GTK_CONTAINER (frame), button_editor->label_frame);
 
 	table = gtk_table_new (0, 0, FALSE);
+	group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 	gtk_container_add (GTK_CONTAINER (button_editor->label_frame), table);
 
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "label", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, 0);
-	table_attach (table, GTK_WIDGET (eprop), 1, 0);
+	table_attach (table, eprop->item_label, 0, 0, group);
+	table_attach (table, GTK_WIDGET (eprop), 1, 0, group);
 	button_editor->properties = g_list_prepend (button_editor->properties, eprop);
 
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "use-underline", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, 1);
-	table_attach (table, GTK_WIDGET (eprop), 1, 1);
+	table_attach (table, eprop->item_label, 0, 1, group);
+	table_attach (table, GTK_WIDGET (eprop), 1, 1, group);
 	button_editor->properties = g_list_prepend (button_editor->properties, eprop);
 
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "image", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, 2);
-	table_attach (table, GTK_WIDGET (eprop), 1, 2);
+	table_attach (table, eprop->item_label, 0, 2, group);
+	table_attach (table, GTK_WIDGET (eprop), 1, 2, group);
 	button_editor->properties = g_list_prepend (button_editor->properties, eprop);
 
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "image-position", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, 3);
-	table_attach (table, GTK_WIDGET (eprop), 1, 3);
+	table_attach (table, eprop->item_label, 0, 3, group);
+	table_attach (table, GTK_WIDGET (eprop), 1, 3, group);
 	button_editor->properties = g_list_prepend (button_editor->properties, eprop);
 
+	g_object_unref (group);
+	
 	/* Custom radio button on the bottom */
 	gtk_box_pack_start (GTK_BOX (button_editor), button_editor->custom_radio, FALSE, FALSE, 0);
 
