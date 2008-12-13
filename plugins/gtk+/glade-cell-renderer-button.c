@@ -219,6 +219,31 @@ glade_cell_renderer_button_activate (GtkCellEditable *entry,
 	g_signal_emit_by_name (cell_text, "edited", path, new_text);
 }
 
+static void
+glade_cell_renderer_button_editing_done (GtkCellEditable     *entry,
+					 GtkCellRendererText *cell_text)
+{
+	const gchar *path;
+	const gchar *new_text;
+	GladeCellRendererButtonPrivate *priv;
+
+	priv = GLADE_CELL_RENDERER_BUTTON_GET_PRIVATE (cell_text);
+
+	g_signal_handlers_disconnect_by_func (entry, glade_cell_renderer_button_focus_out_event, cell_text);
+
+	gtk_cell_renderer_stop_editing (GTK_CELL_RENDERER (cell_text), 
+					GTK_ENTRY (entry)->editing_canceled);
+
+	if (GTK_ENTRY (entry)->editing_canceled)
+		return;
+
+	path = g_object_get_data (G_OBJECT (entry), GLADE_CELL_RENDERER_BUTTON_PATH);
+	new_text = gtk_entry_get_text (GTK_ENTRY (entry));
+
+	g_signal_emit_by_name (cell_text, "edited", path, new_text);
+}
+
+
 static GtkCellEditable *
 glade_cell_renderer_button_start_editing (GtkCellRenderer     *cell,
 					  GdkEvent            *event,
@@ -258,6 +283,11 @@ glade_cell_renderer_button_start_editing (GtkCellRenderer     *cell,
 
 	g_signal_connect (G_OBJECT (text_button->entry), "activate",
 			  G_CALLBACK (glade_cell_renderer_button_activate),
+			  cell);
+
+	g_signal_connect (text_button->entry,
+			  "editing-done",
+			  G_CALLBACK (glade_cell_renderer_button_editing_done),
 			  cell);
 
 	g_signal_connect_after (text_button->entry, "focus-out-event",

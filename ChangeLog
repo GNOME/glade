@@ -1,6 +1,18 @@
+2008-12-13  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-inspector.c: Removed old search code.
+	
+	* plugins/gtk+/gtk+.xml.in: Added missing displayable values.
+	
+	* plugins/gtk+/glade-column-types.c: Fixed crashers on empty input, keep focus on
+	current cell when editing is canceled.
+
+	* plugins/gtk+/glade-model-data.c: keep focus on current cell when editing is canceled.
+
 2008-12-10  Tristan Van Berkom <tvb@gnome.org>
 
-	* gladeui/glade-name-context.[ch], gladeui/glade-editable.[ch]: Relicensed LGPL.
+	* gladeui/glade-name-context.[ch], gladeui/glade-editable.[ch], 
+	gladeui/glade-displayable-values.c: Relicensed LGPL.
 
 	* plugins/gtk+/glade-image-editor.c, plugins/gtk+/glade-image-item-editor.c,
 	plugins/gtk+/glade-button-editor.c, plugins/gtk+/glade-label-editor.c,
@@ -11,7 +23,7 @@
 
 	* gladeui/glade-widget-adaptor.c: Fixed regression, now disabled classes are not
 	reinstalled in subclasses.
-	
+
 2008-12-09  Tristan Van Berkom <tvb@gnome.org>
 
 	* NEWS, configure.ac: Rolling 3.5.3

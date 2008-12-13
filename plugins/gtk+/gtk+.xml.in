@@ -1951,6 +1951,13 @@ embedded in another object</_tooltip>
 
       <properties>
         <property id="title" default="column"/>
+        <property id="sizing">
+  	  <displayable-values>
+	    <value id="GTK_TREE_VIEW_COLUMN_GROW_ONLY" _name="Grow Only"/>
+	    <value id="GTK_TREE_VIEW_COLUMN_AUTOSIZE" _name="Automatic"/>
+	    <value id="GTK_TREE_VIEW_COLUMN_FIXED" _name="Fixed"/>
+	  </displayable-values>
+	</property>
       </properties>
 
       <packing-properties>
@@ -2175,7 +2182,13 @@ embedded in another object</_tooltip>
 	<property id="strikethrough-set" disabled="True"/>
 	<property id="stretch-set" disabled="True"/>
 
-        <property id="alignment" save="False" custom-layout="True"/>
+        <property id="alignment" save="False" custom-layout="True">
+  	  <displayable-values>
+	    <value id="PANGO_ALIGN_LEFT" _name="Left"/>
+	    <value id="PANGO_ALIGN_CENTER" _name="Center"/>
+	    <value id="PANGO_ALIGN_RIGHT" _name="Right"/>
+	  </displayable-values>
+	</property>
         <property id="attr-alignment" _name="Alignment column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
@@ -2432,7 +2445,20 @@ embedded in another object</_tooltip>
 	  </parameter-spec>
 	</property>
 
-        <property id="stretch" save="False" custom-layout="True"/>
+        <property id="stretch" save="False" custom-layout="True">
+  	  <displayable-values>
+	    <value id="PANGO_STRETCH_ULTRA_CONDENSED" _name="Ultra Condensed"/>
+	    <value id="PANGO_STRETCH_EXTRA_CONDENSED" _name="Extra Condensed"/>
+	    <value id="PANGO_STRETCH_CONDENSED" _name="Condensed"/>
+	    <value id="PANGO_STRETCH_SEMI_CONDENSED" _name="Semi Condensed"/>
+	    <value id="PANGO_STRETCH_NORMAL" _name="Normal"/>
+	    <value id="PANGO_STRETCH_SEMI_EXPANDED" _name="Semi Expanded"/>
+	    <value id="PANGO_STRETCH_EXPANDED" _name="Expanded"/>
+	    <value id="PANGO_STRETCH_EXTRA_EXPANDED" _name="Extra Expanded"/>
+	    <value id="PANGO_STRETCH_ULTRA_EXPANDED" _name="Ultra Expanded"/>
+	  </displayable-values>
+	</property>
+
         <property id="attr-stretch" _name="Stretch column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
@@ -2460,7 +2486,13 @@ embedded in another object</_tooltip>
 	  </parameter-spec>
 	</property>
 
-        <property id="style" save="False" custom-layout="True"/>
+        <property id="style" save="False" custom-layout="True">
+  	  <displayable-values>
+	    <value id="PANGO_STYLE_NORMAL" _name="Normal"/>
+	    <value id="PANGO_STYLE_OBLIQUE" _name="Oblique"/>
+	    <value id="PANGO_STYLE_ITALIC" _name="Italic"/>
+	  </displayable-values>
+	</property>
         <property id="attr-style" _name="Style column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
@@ -2488,7 +2520,15 @@ embedded in another object</_tooltip>
 	  </parameter-spec>
 	</property>
 
-        <property id="underline" save="False" custom-layout="True"/>
+        <property id="underline" save="False" custom-layout="True">
+  	  <displayable-values>
+	    <value id="PANGO_UNDERLINE_NONE" _name="None"/>
+	    <value id="PANGO_UNDERLINE_SINGLE" _name="Single"/>
+	    <value id="PANGO_UNDERLINE_DOUBLE" _name="Double"/>
+	    <value id="PANGO_UNDERLINE_LOW" _name="Low"/>
+	    <value id="PANGO_UNDERLINE_ERROR" _name="Error"/>
+	  </displayable-values>
+	</property>
         <property id="attr-underline" _name="Underline column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
@@ -2502,7 +2542,12 @@ embedded in another object</_tooltip>
 	  </parameter-spec>
 	</property>
 
-        <property id="variant" save="False" custom-layout="True"/>
+        <property id="variant" save="False" custom-layout="True">
+  	  <displayable-values>
+	    <value id="PANGO_VARIANT_NORMAL" _name="Normal"/>
+	    <value id="PANGO_VARIANT_SMALL_CAPS" _name="Small Capitals"/>
+	  </displayable-values>
+	</property>
         <property id="attr-variant" _name="Variant column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
@@ -2591,7 +2636,12 @@ embedded in another object</_tooltip>
 	  </parameter-spec>
 	</property>
 
-        <property id="accel-mode" save="False" custom-layout="True"/>
+        <property id="accel-mode" save="False" custom-layout="True">
+  	  <displayable-values>
+	    <value id="GTK_CELL_RENDERER_ACCEL_MODE_GTK" _name="Gtk"/>
+	    <value id="GTK_CELL_RENDERER_ACCEL_MODE_OTHER" _name="Other"/>
+	  </displayable-values>
+	</property>
         <property id="attr-accel-mode" _name="Accelerator Mode column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
@@ -2605,7 +2655,28 @@ embedded in another object</_tooltip>
 	  </parameter-spec>
 	</property>
 
-        <property id="accel-mods" save="False" custom-layout="True"/>
+        <property id="accel-mods" save="False" custom-layout="True">
+  	  <displayable-values>
+	    <value id="GDK_SHIFT_MASK" _name="Shift Key"/>
+	    <value id="GDK_LOCK_MASK" _name="Lock Key"/>
+	    <value id="GDK_CONTROL_MASK" _name="Control Key"/>
+	    <value id="GDK_MOD1_MASK" _name="Alt Key"/>
+	    <value id="GDK_MOD2_MASK" _name="Fifth Key"/>
+	    <value id="GDK_MOD3_MASK" _name="Sixth Key"/>
+	    <value id="GDK_MOD4_MASK" _name="Seventh Key"/>
+	    <value id="GDK_MOD5_MASK" _name="Eighth Key"/>
+	    <value id="GDK_BUTTON1_MASK" _name="First Mouse Button"/>
+	    <value id="GDK_BUTTON2_MASK" _name="Second Mouse Button"/>
+	    <value id="GDK_BUTTON3_MASK" _name="Third Mouse Button"/>
+	    <value id="GDK_BUTTON4_MASK" _name="Forth Mouse Button"/>
+	    <value id="GDK_BUTTON5_MASK" _name="Fifth Mouse Button"/>
+	    <value id="GDK_SUPER_MASK" _name="Super Modifier"/>
+	    <value id="GDK_HYPER_MASK" _name="Hyper Modifier"/>
+	    <value id="GDK_META_MASK" _name="Meta Modifier"/>
+	    <value id="GDK_RELEASE_MASK" _name="Release Modifier"/>
+	    <value id="GDK_MODIFIER_MASK" _name="All Modifiers"/>
+	  </displayable-values>
+	</property>
         <property id="attr-accel-mods" _name="Accelerator Modifiers column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
