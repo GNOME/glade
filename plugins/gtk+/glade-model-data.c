@@ -332,6 +332,9 @@ update_and_focus_data_tree_idle (GladeEditorProperty *eprop)
 	glade_editor_property_commit (eprop, &value);
 	g_value_unset (&value);
 
+	/* XXX Have to load it regardless if it changed, this is a slow and redundant way... */
+	glade_editor_property_load (eprop, eprop->property);
+
 	eprop_data->pending_data_tree = NULL;
 
 	eprop_data->want_focus = FALSE;
