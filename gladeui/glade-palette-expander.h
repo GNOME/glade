@@ -24,7 +24,7 @@
 #ifndef __GLADE_PALETTE_EXPANDER_H__
 #define __GLADE_PALETTE_EXPANDER_H__
 
-#include <gtk/gtkbin.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 

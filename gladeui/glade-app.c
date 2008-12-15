@@ -47,7 +47,7 @@
 #include <glib/gstdio.h>
 #include <glib/gi18n-lib.h>
 #include <gdk/gdkkeysyms.h>
-#include <gtk/gtkstock.h>
+#include <gtk/gtk.h>
 
 #define GLADE_CONFIG_FILENAME "glade-3.conf"
 

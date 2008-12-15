@@ -23,7 +23,7 @@
 #ifndef __GLADE_NAMED_ICON_CHOOSER_DIALOG_H__
 #define __GLADE_NAMED_ICON_CHOOSER_DIALOG_H__
 
-#include <gtk/gtkdialog.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 

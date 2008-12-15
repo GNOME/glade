@@ -1,3 +1,21 @@
+2008-12-15  Przemysław Grzegorczyk  <pgrzegorczyk@gmail.com>
+
+	* src/glade-window.c:
+	* src/glade-window.h:
+	* gladeui/glade-palette-box.h:
+	* gladeui/glade-design-view.h:
+	* gladeui/glade-design-layout.h:
+	* gladeui/glade-palette-expander.c:
+	* gladeui/glade-palette-expander.h:
+	* gladeui/glade-widget-adaptor.c:
+	* gladeui/glade-palette-item.c:
+	* gladeui/glade-palette-item.h:
+	* gladeui/glade-palette.h:
+	* gladeui/glade-named-icon-chooser-dialog.h:
+	* gladeui/glade-app.c:
+	* gladeui/glade-property-class.h: Cleaned up gtk and glib includes
+	to use only toplevel headers. Patch from Maxim Ermilov. Bug #561260.
+
 2008-12-13  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-inspector.c: Removed old search code.

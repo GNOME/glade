@@ -47,7 +47,7 @@
 #include <sys/types.h>
 #include <string.h>
 
-#include <glib/gdir.h>
+#include <glib.h>
 #include <glib/gi18n-lib.h>
 #include <gmodule.h>
 #include <ctype.h>

@@ -29,7 +29,7 @@
 #include <gladeui/glade-project.h>
 #include <gladeui/glade-design-layout.h>
 
-#include <gtk/gtkvbox.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 

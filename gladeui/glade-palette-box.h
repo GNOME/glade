@@ -26,7 +26,7 @@
 #ifndef __GLADE_PALETTE_BOX_H__
 #define __GLADE_PALETTE_BOX_H__
 
-#include <gtk/gtkcontainer.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 

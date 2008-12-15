@@ -4,7 +4,7 @@
 
 #include <glib.h>
 #include <glib-object.h>
-#include <gtk/gtkadjustment.h>
+#include <gtk/gtk.h>
 
 #include <gladeui/glade-xml-utils.h>
 

@@ -25,13 +25,7 @@
 
 #include "glade-palette-expander.h"
 
-#include <gtk/gtkcontainer.h>
-#include <gtk/gtkbutton.h>
-#include <gtk/gtkalignment.h>
-#include <gtk/gtklabel.h>
-#include <gtk/gtkhbox.h>
-#include <gtk/gtkarrow.h>
-#include <gtk/gtkdnd.h>
+#include <gtk/gtk.h>
 
 #define GLADE_PALETTE_EXPANDER_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), \
 					       GLADE_TYPE_PALETTE_EXPANDER,      \

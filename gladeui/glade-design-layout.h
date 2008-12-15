@@ -25,7 +25,7 @@
 #ifndef __GLADE_DESIGN_LAYOUT_H__
 #define __GLADE_DESIGN_LAYOUT_H__
 
-#include <gtk/gtkbin.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 

@@ -31,7 +31,7 @@
 #include <gladeui/glade-palette.h>
 #include <gladeui/glade-widget-adaptor.h>
 
-#include <gtk/gtktogglebutton.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 

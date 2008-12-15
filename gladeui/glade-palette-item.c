@@ -25,10 +25,7 @@
 
 #include "config.h"
 
-#include <gtk/gtkalignment.h>
-#include <gtk/gtkhbox.h>
-#include <gtk/gtklabel.h>
-#include <gtk/gtkimage.h>
+#include <gtk/gtk.h>
 
 #include "glade.h"
 #include "glade-palette-item.h"

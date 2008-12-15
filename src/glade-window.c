@@ -36,7 +36,7 @@
 #include <glib/gstdio.h>
 #include <glib/gi18n.h>
 #include <gdk/gdkkeysyms.h>
-#include <gtk/gtkstock.h>
+#include <gtk/gtk.h>
 
 #define ACTION_GROUP_STATIC             "GladeStatic"
 #define ACTION_GROUP_PROJECT            "GladeProject"
