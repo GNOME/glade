@@ -6,6 +6,12 @@
 	* plugins/gtk+/glade-model-data.c: Added sequential editing mode option
 	(TODO: maybe add this to session data ?)
 
+	* gladeui/glade-widget-adator.c, gladeui/glade-property-class.[ch]:
+	Converted pclass booleans to bitfields, now disabled property classes
+	are kept around so that we dont screw up inheritance.
+
+	* gladeui/glade-catalog.[ch]: Fixed version types to guint16.
+
 2008-12-15  Tristan Van Berkom <tvb@gnome.org>
 
 	* NEWS, configure.ac: Rolling 3.5.4

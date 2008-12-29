@@ -79,8 +79,8 @@ G_CONST_RETURN gchar  *glade_catalog_get_book       (GladeCatalog     *catalog);
 
 GList        *glade_catalog_get_targets             (GladeCatalog     *catalog);
 
-gint          glade_catalog_get_major_version       (GladeCatalog     *catalog);
-gint          glade_catalog_get_minor_version       (GladeCatalog     *catalog);
+guint16       glade_catalog_get_major_version       (GladeCatalog     *catalog);
+guint16       glade_catalog_get_minor_version       (GladeCatalog     *catalog);
 
 GList        *glade_catalog_get_widget_groups       (GladeCatalog     *catalog);
 

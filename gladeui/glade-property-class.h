@@ -46,16 +46,11 @@ struct _GladePropertyClass
 			     * was created for.
 			     */
 
-
 	guint16     version_since_major; /* Version in which this property was */
 	guint16     version_since_minor; /* introduced.                       */
 
 	guint16     builder_since_major; /* Version in which this property became */
 	guint16     builder_since_minor; /* available in GtkBuilder format        */
-
-	/* For catalogs that support libglade: */
-	gboolean    libglade_only;       /* Mark special libglade virtual properties */
-	gboolean    libglade_unsupported;/* Mark properties that are not available in libglade */
 
 	GParamSpec *pspec; /* The Parameter Specification for this property.
 			    */
@@ -70,11 +65,6 @@ struct _GladePropertyClass
 
 	gchar *tooltip; /* The default tooltip for the property editor rows.
 			 */
-
-	gboolean virt; /* Whether this is a virtual property with its pspec supplied
-			* via the catalog (or hard code-paths); or FALSE if its a real
-			* GObject introspected property
-			*/
 
 	GValue *def;      /* The default value for this property (this will exist
 			   * as a copy of orig_def if not specified by the catalog)
@@ -94,95 +84,103 @@ struct _GladePropertyClass
 			    * to be of possible use in plugin code.
 			    */
 
-
-	gboolean optional; /* Some properties are optional by nature like
-			    * default width. It can be set or not set. A
-			    * default property has a check box in the
-			    * left that enables/disables the input
-			    */
-
-	gboolean optional_default; /* For optional values, what the default is */
-
-	gboolean construct_only; /* Whether this property is G_PARAM_CONSTRUCT_ONLY or not */
-	
-	gboolean common;  /* Common properties go in the common tab */
-	gboolean atk;     /* Atk properties go in the atk tab */
-	gboolean packing; /* Packing properties go in the packing tab */
-	gboolean query;   /* Whether we should explicitly ask the user about this property
-			   * when instantiating a widget with this property (through a popup
-			   * dialog).
-			   */
-
-	
-	gboolean translatable; /* The property should be translatable, which
-				* means that it needs extra parameters in the
-				* UI.
-				*/
-
 	gint  visible_lines; /* When this pspec calls for a text editor, how many
 			      * lines should be visible in the editor.
 			      */
 
+	/* For catalogs that support libglade: */
+	guint    libglade_only : 1;       /* Mark special libglade virtual properties */
+	guint    libglade_unsupported : 1;/* Mark properties that are not available in libglade */
+
+	guint virt : 1; /* Whether this is a virtual property with its pspec supplied
+			 * via the catalog (or hard code-paths); or FALSE if its a real
+			 * GObject introspected property
+			 */
+
+	guint optional : 1; /* Some properties are optional by nature like
+			     * default width. It can be set or not set. A
+			     * default property has a check box in the
+			     * left that enables/disables the input
+			     */
+
+	guint optional_default : 1; /* For optional values, what the default is */
+
+	guint construct_only : 1; /* Whether this property is G_PARAM_CONSTRUCT_ONLY or not */
+	
+	guint common : 1;  /* Common properties go in the common tab */
+	guint atk : 1;     /* Atk properties go in the atk tab */
+	guint packing : 1; /* Packing properties go in the packing tab */
+	guint query : 1;   /* Whether we should explicitly ask the user about this property
+			    * when instantiating a widget with this property (through a popup
+			    * dialog).
+			    */
+
+	
+	guint translatable : 1; /* The property should be translatable, which
+				 * means that it needs extra parameters in the
+				 * UI.
+				 */
+	
 	/* These three are the master switches for the glade-file output,
 	 * property editor availability & live object updates in the glade environment.
 	 */
-	gboolean save;      /* Whether we should save to the glade file or not
-			     * (mostly just for virtual internal glade properties,
-			     * also used for properties with generic pspecs that
-			     * are saved in custom ways by the plugin)
-			     */
-	gboolean save_always; /* Used to make a special case exception and always
-			       * save this property regardless of what the default
-			       * value is (used for some special cases like properties
-			       * that are assigned initial values in composite widgets
-			       * or derived widget code).
-			       */
-	gboolean visible;   /* Whether or not to show this property in the editor &
-			     * reset dialog.
-			     */
-
-	gboolean custom_layout; /* Properties marked as custom_layout will not be included
-				 * in a base #GladeEditorTable implementation (use this
-				 * for properties you want to layout in custom ways in
-				 * a #GladeEditable widget
-				 */
-
-	gboolean ignore;    /* When true, we will not sync the object when the property
-			     * changes, or load values from the object.
-			     */
-
-	gboolean needs_sync; /* Virtual properties need to be synchronized after object
-			      * creation, some properties that are not virtual also need
-			      * handling from the backend, if "needs-sync" is true then
-			      * this property will by synced with virtual properties.
+	guint save : 1;      /* Whether we should save to the glade file or not
+			      * (mostly just for virtual internal glade properties,
+			      * also used for properties with generic pspecs that
+			      * are saved in custom ways by the plugin)
+			      */
+	guint save_always : 1; /* Used to make a special case exception and always
+				* save this property regardless of what the default
+				* value is (used for some special cases like properties
+				* that are assigned initial values in composite widgets
+				* or derived widget code).
+				*/
+	guint visible : 1;   /* Whether or not to show this property in the editor &
+			      * reset dialog.
 			      */
 
-	gboolean is_modified; /* If true, this property_class has been "modified" from the
-			       * the standard property by a xml file. */
-
-	gboolean themed_icon; /* Some GParamSpecString properties reffer to icon names
-			       * in the icon theme... these need to be specified in the
-			       * property class definition if proper editing tools are to
-			       * be used.
-			       */
-	gboolean stock_icon; /* String properties can also denote stock icons, including
-			      * icons from icon factories...
-			      */
-	gboolean stock;      /* ... or a narrower list of "items" from gtk builtin stock items.
-			      */
+	guint custom_layout : 1; /* Properties marked as custom_layout will not be included
+				  * in a base #GladeEditorTable implementation (use this
+				  * for properties you want to layout in custom ways in
+				  * a #GladeEditable widget
+				  */
 	
-	gboolean transfer_on_paste; /* If this is a packing prop, 
-				     * wether we should transfer it on paste.
-				     */
+	guint ignore : 1;    /* When true, we will not sync the object when the property
+			      * changes, or load values from the object.
+			      */
+
+	guint needs_sync : 1; /* Virtual properties need to be synchronized after object
+			       * creation, some properties that are not virtual also need
+			       * handling from the backend, if "needs-sync" is true then
+			       * this property will by synced with virtual properties.
+			       */
+
+	guint is_modified : 1; /* If true, this property_class has been "modified" from the
+				* the standard property by a xml file. */
+
+	guint themed_icon : 1; /* Some GParamSpecString properties reffer to icon names
+				* in the icon theme... these need to be specified in the
+				* property class definition if proper editing tools are to
+				* be used.
+				*/
+	guint stock_icon : 1; /* String properties can also denote stock icons, including
+			       * icons from icon factories...
+			      */
+	guint stock : 1;      /* ... or a narrower list of "items" from gtk builtin stock items.
+			       */
 	
+	guint transfer_on_paste : 1; /* If this is a packing prop, 
+				      * wether we should transfer it on paste.
+				      */
+	
+	guint parentless_widget : 1;  /* True if this property should point to a parentless widget
+				       * in the project
+				       */
+
 	gdouble weight;	/* This will determine the position of this property in 
 			 * the editor.
 			 */
 	
-	gboolean parentless_widget;  /* True if this property should point to a parentless widget
-				      * in the project
-				      */
-
 	gchar *create_type; /* If this is an object property and you want the option to create
 			     * one from the object selection dialog, then set the name of the
 			     * concrete type here.

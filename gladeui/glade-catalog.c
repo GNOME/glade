@@ -35,8 +35,8 @@
 
 struct _GladeCatalog
 {
-	gint   major_version;    /* The catalog version               */
-	gint   minor_version;
+	guint16   major_version;    /* The catalog version               */
+	guint16   minor_version;
 
 	GList *targetable_versions; /* list of suitable version targets */
 
@@ -622,7 +622,7 @@ glade_catalog_supports_gtkbuilder (GladeCatalog *catalog)
 }
 
 
-gint
+guint16
 glade_catalog_get_major_version (GladeCatalog *catalog)
 {
 	g_return_val_if_fail (GLADE_IS_CATALOG (catalog), 0);
@@ -630,7 +630,7 @@ glade_catalog_get_major_version (GladeCatalog *catalog)
 	return catalog->major_version;
 }
 
-gint
+guint16
 glade_catalog_get_minor_version (GladeCatalog *catalog)
 {
 	g_return_val_if_fail (GLADE_IS_CATALOG (catalog), 0);

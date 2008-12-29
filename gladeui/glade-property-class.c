@@ -1456,16 +1456,14 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	if (!buf)
 		return FALSE;
 	g_free (buf);
-
 	
-	/* If Disabled="TRUE" we set *property_class to NULL, but we return TRUE.
-	 * The caller may want to remove this property from its list.
-	 */
 	if (glade_xml_get_property_boolean (node, GLADE_TAG_DISABLED, FALSE))
 	{
-		glade_property_class_free (klass);
-		*property_class = NULL;
-		return TRUE;
+		/* Its easier for us to keep disabled properties around and
+		 * only virtually disable them */
+		klass->ignore  = TRUE;
+		klass->save    = FALSE;
+		klass->visible = FALSE;
 	}
 
 	if ((spec_node = glade_xml_search_child (node, GLADE_TAG_SPECIFICATIONS)) != NULL)
@@ -1515,8 +1513,7 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 	{
 		/* If catalog file didn't specify a pspec function
 		 * and this property isn't found by introspection
-		 * we simply handle it as a property that has been
-		 * disabled.
+		 * we simply delete it from the list always.
 		 */
 		glade_property_class_free (klass);
 		*property_class = NULL;
