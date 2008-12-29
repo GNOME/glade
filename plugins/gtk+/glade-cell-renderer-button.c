@@ -23,6 +23,7 @@
 #include <config.h>
 #include <gladeui/glade.h>
 #include <glib/gi18n-lib.h>
+#include <gdk/gdkkeysyms.h>
 
 #include "glade-cell-renderer-button.h"
 #include "glade-text-button.h"
@@ -32,7 +33,8 @@
 
 typedef struct
 {
-	gboolean entry_editable;
+	GladeTextButton *button;
+	gboolean         entry_editable;
 } GladeCellRendererButtonPrivate;
 
 static void glade_cell_renderer_button_finalize   (GObject                  *object);
@@ -194,6 +196,25 @@ glade_cell_renderer_button_focus_out_event (GtkWidget *entry,
 	return FALSE;
 }
 
+static gboolean
+glade_cell_renderer_button_key_press_event (GtkWidget    *entry,
+					    GdkEventKey  *event,
+					    GtkCellRendererText *cell_text)
+{
+	GladeCellRendererButtonPrivate *priv;
+
+	priv = GLADE_CELL_RENDERER_BUTTON_GET_PRIVATE (cell_text);
+
+	if (event->keyval == GDK_Tab)
+	{
+		g_signal_handlers_block_by_func (entry, glade_cell_renderer_button_focus_out_event, cell_text);
+		gtk_widget_grab_focus (priv->button->button);
+		g_signal_handlers_unblock_by_func (entry, glade_cell_renderer_button_focus_out_event, cell_text);
+		return TRUE;
+	}
+
+	return FALSE;
+}
 
 static void
 glade_cell_renderer_button_activate (GtkCellEditable *entry,
@@ -263,7 +284,7 @@ glade_cell_renderer_button_start_editing (GtkCellRenderer     *cell,
 	if (cell_text->editable == FALSE)
 		return NULL;
 
-	text_button = (GladeTextButton *)glade_text_button_new ();
+	priv->button = text_button = (GladeTextButton *)glade_text_button_new ();
 	gtk_entry_set_text (GTK_ENTRY (text_button->entry), cell_text->text ? cell_text->text : "");
 	gtk_entry_set_editable (GTK_ENTRY (text_button->entry), priv->entry_editable);
 
@@ -288,6 +309,10 @@ glade_cell_renderer_button_start_editing (GtkCellRenderer     *cell,
 	g_signal_connect (text_button->entry,
 			  "editing-done",
 			  G_CALLBACK (glade_cell_renderer_button_editing_done),
+			  cell);
+
+	g_signal_connect (text_button->entry, "key-press-event",
+			  G_CALLBACK (glade_cell_renderer_button_key_press_event),
 			  cell);
 
 	g_signal_connect_after (text_button->entry, "focus-out-event",
