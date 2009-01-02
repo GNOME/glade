@@ -5,14 +5,14 @@
 # Raúl Alexis Betancort Santana <a2363@correo.dis.ulpgc.es>, 1999.
 # Carlos Perelló Marín <carlos@gnome-db.org>, 2000-2001.
 # Francisco Javier F. Serrador <serrador@cvs.gnome.org>, 2005, 2006.
-# Jorge González <jorgegonz@svn.gnome.org>, 2007, 2008.
+# Jorge González <jorgegonz@svn.gnome.org>, 2007, 200, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: glade3.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade3&amp;component=general\n"
-"POT-Creation-Date: 2008-12-13 06:13+0000\n"
-"PO-Revision-Date: 2008-12-27 12:39+0100\n"
+"POT-Creation-Date: 2008-12-29 17:23+0000\n"
+"PO-Revision-Date: 2009-01-02 21:51+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -3331,7 +3331,7 @@ msgid "Height column"
 msgstr "Insertar columna"
 
 #. Objects
-#: ../plugins/gtk+/gtk+.xml.in.h:190
+#: ../plugins/gtk+/gtk+.xml.in.h:190 ../plugins/gtk+/glade-model-data.c:1235
 msgid "Horizontal"
 msgstr "Horizontal"
 
@@ -3786,7 +3786,7 @@ msgstr ""
 msgid "Oblique"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:300
+#: ../plugins/gtk+/gtk+.xml.in.h:300 ../plugins/gtk+/glade-model-data.c:1234
 msgid "Off"
 msgstr "Desactivado"
 
@@ -4466,7 +4466,7 @@ msgid "Variant column"
 msgstr "Columna de variante"
 
 #. Objects
-#: ../plugins/gtk+/gtk+.xml.in.h:472
+#: ../plugins/gtk+/gtk+.xml.in.h:472 ../plugins/gtk+/glade-model-data.c:1236
 msgid "Vertical"
 msgstr "Vertical"
 
@@ -4624,15 +4624,19 @@ msgstr "<escriba aquí para definir una columna nueva>"
 msgid "Add and remove columns:"
 msgstr "Añadir y quitar columnas:"
 
-#: ../plugins/gtk+/glade-model-data.c:1098
+#: ../plugins/gtk+/glade-model-data.c:1195
 msgid "Add and remove rows:"
 msgstr "Añadir y quitar filas:"
 
-#: ../plugins/gtk+/glade-cell-renderer-button.c:88
+#: ../plugins/gtk+/glade-model-data.c:1225
+msgid "Sequential editing:"
+msgstr ""
+
+#: ../plugins/gtk+/glade-cell-renderer-button.c:90
 msgid "Entry Editable"
 msgstr "Entrada editable"
 
-#: ../plugins/gtk+/glade-cell-renderer-button.c:89
+#: ../plugins/gtk+/glade-cell-renderer-button.c:91
 #, fuzzy
 msgid "Whether the entry is editable"
 msgstr "Indica si esta propiedad es traducible o no"
@@ -4750,9 +4754,8 @@ msgstr "Etiqueta"
 #: ../plugins/gtk+/glade-tool-button-editor.c:482
 #: ../plugins/gtk+/glade-image-editor.c:345
 #: ../plugins/gtk+/glade-image-item-editor.c:429
-#, fuzzy
 msgid "Edit Image"
-msgstr "Imagen de stock"
+msgstr "Editar imagen"
 
 #: ../plugins/gtk+/glade-image-editor.c:313
 #, fuzzy, c-format
@@ -4761,19 +4764,17 @@ msgstr "Ajustando %s para que use una política de nombres %s"
 
 #. Image size frame...
 #: ../plugins/gtk+/glade-image-editor.c:398
-#, fuzzy
 msgid "Set Image Size"
-msgstr "Imagen de stock"
+msgstr "Establecer el tamaño de la imagen"
 
 #: ../plugins/gtk+/glade-image-item-editor.c:218
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use a stock item"
-msgstr "Ajustando %s para que use una política de nombres %s"
+msgstr "Ajustando %s para que use un elemento de stock"
 
 #: ../plugins/gtk+/glade-image-item-editor.c:350
-#, fuzzy
 msgid "Stock Item:"
-msgstr "Elemento de stock"
+msgstr "Elemento de stock:"
 
 #: ../plugins/gtk+/glade-image-item-editor.c:384
 msgid "Custom label and image:"
@@ -4800,21 +4801,23 @@ msgid ""
 "Add remove and edit rows of data (you can optionally use CNTL-N to add new "
 "rows and the Delete key to remove the selected row)"
 msgstr ""
+"Añadir, quitar y editar datos de filas (opcionalmente puede usar Ctrl-N para "
+"añadir filas nuevas y la tecla Supr para quitar la tecla seleccionada)"
 
 #: ../plugins/gtk+/glade-label-editor.c:254
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use an attribute list"
-msgstr "Ajustando %s para que use una política de nombres %s"
+msgstr "Ajustando %s para que use un atributo de la lista"
 
 #: ../plugins/gtk+/glade-label-editor.c:286
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use a pango markup string"
-msgstr "Ajustando %s para que use una política de nombres %s"
+msgstr "Ajustando %s para que use marcado de cadenas Pango"
 
 #: ../plugins/gtk+/glade-label-editor.c:321
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use a pattern string"
-msgstr "Ajustando %s para que use una política de nombres %s"
+msgstr "Ajustando %s para que use una cadena patrón"
 
 #: ../plugins/gtk+/glade-label-editor.c:357
 #, c-format
@@ -4827,19 +4830,19 @@ msgid "Setting %s to set maximum width in charachters"
 msgstr "Ajustando %s para establecer una anchura máxima en caracteres"
 
 #: ../plugins/gtk+/glade-label-editor.c:422
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use normal line wrapping"
-msgstr "Ajustando %s para que use una política de nombres %s"
+msgstr "Ajustando %s para que use ajuste de línea normal"
 
 #: ../plugins/gtk+/glade-label-editor.c:457
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use a single line"
-msgstr "Ajustando %s para que use una política de nombres %s"
+msgstr "Ajustando %s para que use una sola línea"
 
 #: ../plugins/gtk+/glade-label-editor.c:492
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use specific pango word wrapping"
-msgstr "Ajustando %s para que use una política de nombres %s"
+msgstr "Ajustando %s para que use ajuste de palabra específico de Pango"
 
 #. Label appearance...
 #: ../plugins/gtk+/glade-label-editor.c:538
