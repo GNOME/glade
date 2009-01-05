@@ -1353,7 +1353,7 @@ glade_base_editor_change_type (GladeBaseEditor *editor,
 	}
 
 	/* Set the name */
-	glade_widget_set_name (gchild_new, name);
+	glade_command_set_name (gchild_new, name);
 	
 	if (GTK_IS_WIDGET (child_new))
 		gtk_widget_show_all (GTK_WIDGET (child_new));

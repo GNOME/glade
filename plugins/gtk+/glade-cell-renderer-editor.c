@@ -150,9 +150,9 @@ glade_cell_renderer_editor_load (GladeEditable *editable,
 
 			if (use_attr)
 			{
-				gtk_widget_show (tab->use_attr_label);
+				//				gtk_widget_show (tab->use_attr_label);
 				gtk_widget_show (tab->use_attr_eprop);
-				gtk_widget_hide (tab->use_prop_label);
+				//gtk_widget_hide (tab->use_prop_label);
 				gtk_widget_hide (tab->use_prop_eprop);
 			}
 			else
@@ -422,41 +422,47 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor  *adaptor,
 
 			/* Label appearance... */
 			hbox   = gtk_hbox_new (FALSE, 0);
-			str    = g_strdup_printf (_("Retrieve <b>%s</b> from model (type %s)"), 
-						  pclass->name, g_type_name (pclass->pspec->value_type));
-			label  = gtk_label_new (str);
-			g_free (str);
+/* 			str    = g_strdup_printf (_("Retrieve <b>%s</b> from model (type %s)"),  */
+/* 						  pclass->name, g_type_name (pclass->pspec->value_type)); */
+/* 			label  = gtk_label_new (str); */
+/* 			g_free (str); */
 
-			gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
-			gtk_label_set_line_wrap (GTK_LABEL(label), TRUE);
-			gtk_label_set_line_wrap_mode (GTK_LABEL(label), PANGO_WRAP_WORD_CHAR);
-			gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+/* 			gtk_label_set_use_markup (GTK_LABEL (label), TRUE); */
+/* 			gtk_label_set_line_wrap (GTK_LABEL(label), TRUE); */
+/* 			gtk_label_set_line_wrap_mode (GTK_LABEL(label), PANGO_WRAP_WORD_CHAR); */
+/* 			gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5); */
 
 			tab->attributes_check = gtk_check_button_new ();
+			str    = g_strdup_printf (_("Retrieve %s from model (type %s)"),
+						  pclass->name, g_type_name (pclass->pspec->value_type));
+			gtk_widget_set_tooltip_text (tab->attributes_check, str);
+			g_free (str);
 
 			gtk_box_pack_start (GTK_BOX (hbox), tab->attributes_check, FALSE, FALSE, 4);
-			gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 4);
+			//gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 4);
 			gtk_box_pack_start (GTK_BOX (renderer_editor), hbox, FALSE, FALSE, 0);
 
 			/* A Hack so that PANGO_WRAP_WORD_CHAR works nicely */
 			g_object_set_data (G_OBJECT (hbox), "attributes-check", tab->attributes_check);
-			g_signal_connect (G_OBJECT (hbox), "size-request",
-					  G_CALLBACK (label_size_request), NULL);
-			g_signal_connect_after (G_OBJECT (hbox), "size-allocate",
-						G_CALLBACK (label_size_allocate_after), label);
+/* 			g_signal_connect (G_OBJECT (hbox), "size-request", */
+/* 					  G_CALLBACK (label_size_request), NULL); */
+/* 			g_signal_connect_after (G_OBJECT (hbox), "size-allocate", */
+/* 						G_CALLBACK (label_size_allocate_after), label); */
 
 
-			alignment = gtk_alignment_new (1.0F, 1.0F, 1.0F, 1.0F);
-			gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 6, 0, 12, 0);
- 			gtk_box_pack_start (GTK_BOX (renderer_editor), alignment, FALSE, FALSE, 0);
+/* 			alignment = gtk_alignment_new (1.0F, 1.0F, 1.0F, 1.0F); */
+/* 			gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 6, 0, 12, 0); */
+/*  			gtk_box_pack_start (GTK_BOX (renderer_editor), alignment, FALSE, FALSE, 0); */
 
-			table = gtk_table_new (0, 0, FALSE);
-			gtk_container_add (GTK_CONTAINER (alignment), table);
+/* 			table = gtk_table_new (0, 0, FALSE); */
+/* 			gtk_container_add (GTK_CONTAINER (alignment), table); */
 
 			/* Edit property */
 			eprop           = glade_widget_adaptor_create_eprop (adaptor, pclass, TRUE);
-			table_attach (table, eprop->item_label, 0, rows);
-			table_attach (table, GTK_WIDGET (eprop), 1, rows++);
+			gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 4);
+			gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (eprop), FALSE, FALSE, 4);
+/* 			table_attach (table, eprop->item_label, 0, rows); */
+/* 			table_attach (table, GTK_WIDGET (eprop), 1, rows++); */
 			renderer_editor->properties = g_list_prepend (renderer_editor->properties, eprop);
 
 			tab->use_prop_label = eprop->item_label;
@@ -464,8 +470,9 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor  *adaptor,
 
 			/* Edit attribute */
 			eprop = glade_widget_adaptor_create_eprop (adaptor, attr_pclass, TRUE);
-			table_attach (table, eprop->item_label, 0, rows);
-			table_attach (table, GTK_WIDGET (eprop), 1, rows++);
+			gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (eprop), FALSE, FALSE, 4);
+/* 			table_attach (table, eprop->item_label, 0, rows); */
+/* 			table_attach (table, GTK_WIDGET (eprop), 1, rows++); */
 			renderer_editor->properties = g_list_prepend (renderer_editor->properties, eprop);
 
 			tab->use_attr_label = eprop->item_label;

@@ -176,7 +176,8 @@ GladeProperty          *glade_widget_get_property           (GladeWidget      *w
 GladeProperty          *glade_widget_get_pack_property      (GladeWidget      *widget,
 							     const gchar      *id_property);
 
-GList                  *glade_widget_dup_properties         (GList            *template_props,
+GList                  *glade_widget_dup_properties         (GladeWidget      *dest_widget,
+							     GList            *template_props,
                                                              gboolean          as_load,
 							     gboolean          copy_parentless,
 							     gboolean          exact);

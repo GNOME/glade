@@ -791,7 +791,8 @@ enum_flags_format_cell_data (GtkCellLayout *cell_layout,
 
 	string = glade_utils_string_from_value (&value, GLADE_PROJECT_FORMAT_GTKBUILDER);
 
-	g_object_set (cell, "text", glade_get_displayable_value (G_VALUE_TYPE (&value), string), NULL);
+	g_object_set (cell, "text", string && string[0] ? 
+		      glade_get_displayable_value (G_VALUE_TYPE (&value), string) : "", NULL);
 	
 	g_free (string);
 

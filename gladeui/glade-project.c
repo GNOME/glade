@@ -2440,6 +2440,18 @@ glade_project_add_object (GladeProject *project,
 	if (glade_project_has_object (project, object))
 		return;
 
+	if (old_project && 
+	    glade_project_has_object (old_project, object))
+	{
+		g_critical ("Trying to add object %s to a project but its already in another project", 
+			    gwidget->name);
+		return;
+	}
+
+	/* set the project */
+	if (gwidget->project != project)
+		glade_widget_set_project (gwidget, project);
+
 	/* Create a name context for newly added toplevels... */
 	if (!gwidget->parent)
 	{

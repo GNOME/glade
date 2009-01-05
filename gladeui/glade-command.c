@@ -1300,7 +1300,8 @@ glade_command_add_execute (GladeCommandAddRemove *me)
 					 * otherwise prioritize packing defaults. 
 					 */
 					saved_props =
-						glade_widget_dup_properties (cdata->widget->packing_properties, 
+						glade_widget_dup_properties (cdata->widget, 
+									     cdata->widget->packing_properties, 
 									     FALSE, FALSE, FALSE);
 					
 					glade_widget_set_packing_properties (cdata->widget, cdata->parent);

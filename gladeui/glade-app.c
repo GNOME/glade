@@ -513,8 +513,7 @@ on_project_selection_changed_cb (GladeProject *project, GladeApp *app)
 		num = g_list_length (list);
 		if (num == 1 && !GLADE_IS_PLACEHOLDER (list->data))
 			glade_editor_load_widget (app->priv->editor,
-						  glade_widget_get_from_gobject
-						  (G_OBJECT (list->data)));
+						  glade_widget_get_from_gobject (list->data));
 		else
 			glade_editor_load_widget (app->priv->editor, NULL);
 	}
@@ -1121,7 +1120,7 @@ glade_app_command_copy (void)
 	for (list = glade_app_get_selection ();
 	     list && list->data; list = list->next)
 	{
-		widget  = glade_widget_get_from_gobject (GTK_WIDGET (list->data));
+		widget  = glade_widget_get_from_gobject (list->data);
 		widgets = g_list_prepend (widgets, widget);
 	}
 
@@ -1162,7 +1161,7 @@ glade_app_command_cut (void)
 	for (list = glade_app_get_selection ();
 	     list && list->data; list = list->next)
 	{
-		widget  = glade_widget_get_from_gobject (GTK_WIDGET (list->data));
+		widget  = glade_widget_get_from_gobject (list->data);
 		widgets = g_list_prepend (widgets, widget);
 	}
 
@@ -1272,7 +1271,8 @@ glade_app_command_paste (GladePlaceholder *placeholder)
 	/* A GladeFixed that doesnt use placeholders can only paste one
 	 * at a time
  	 */
-	if (GTK_WIDGET_TOPLEVEL (widget->object) == FALSE &&
+	if (GTK_IS_WIDGET (widget->object) && 
+	    GTK_WIDGET_TOPLEVEL (widget->object) == FALSE &&
 	    parent && fixed && !GWA_USE_PLACEHOLDERS (parent->adaptor) &&
 	    g_list_length (clipboard->selection) != 1) 
 	{
