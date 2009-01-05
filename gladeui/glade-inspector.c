@@ -1114,6 +1114,8 @@ glade_inspector_set_project (GladeInspector *inspector,
 
 	update_model (inspector);
 
+	gtk_tree_view_expand_all (GTK_TREE_VIEW (inspector->priv->view));
+	
 	g_object_notify (G_OBJECT (inspector), "project");
 }
 
