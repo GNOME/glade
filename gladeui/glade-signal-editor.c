@@ -505,7 +505,10 @@ glade_signal_editor_handler_editing_started (GtkCellRenderer *cell,
 					     const gchar *path,
 					     GladeSignalEditor *editor)
 {
-	GtkEntry *entry = GTK_ENTRY (gtk_bin_get_child (GTK_BIN (editable)));
+	GtkEntry *entry;
+	
+	g_return_if_fail (GTK_IS_COMBO_BOX_ENTRY (editable));
+	entry = GTK_ENTRY (gtk_bin_get_child (GTK_BIN (editable)));
 	
 	glade_signal_editor_editing_started (entry, TRUE);
 	
@@ -520,11 +523,14 @@ glade_signal_editor_user_data_editing_started (GtkCellRenderer *cell,
 					       const gchar *path,
 					       GladeSignalEditor *editor)
 {
-	GtkEntry *entry = GTK_ENTRY (editable);
+	GtkEntry *entry;
 	GtkEntryCompletion *completion;
 	GtkListStore *store;
 	GtkTreeIter iter;
 	GList *list;
+
+	g_return_if_fail (GTK_IS_ENTRY (editable));
+	entry = GTK_ENTRY (editable);
 	
 	g_return_if_fail (editor->widget != NULL);
 	
@@ -636,13 +642,6 @@ glade_signal_editor_userdata_cell_edited (GtkCellRendererText *cell,
 	g_free (old_userdata);
 }
 
-static void
-row_activated (GtkTreeView *view, GtkTreePath *path, GtkTreeViewColumn *tree_view_column, gpointer user_data)
-{
-	gtk_tree_view_set_cursor (view, path, tree_view_column, TRUE);
-	gtk_widget_grab_focus (GTK_WIDGET (view));
-}
-
 static GtkWidget *
 glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 {
@@ -677,8 +676,6 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 
 	/* the view now holds a reference, we can get rid of our own */
 	g_object_unref (G_OBJECT (editor->model));
-
-	g_signal_connect(view, "row-activated", (GCallback) row_activated, NULL);
 
 	/* Contruct handler model */
 	glade_signal_editor_construct_handler_store (editor);

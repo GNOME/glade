@@ -2204,14 +2204,17 @@ glade_widget_copy_properties (GladeWidget *widget,
 				GladeWidget *parentless;
 
 				glade_property_get (template_prop, &object);
-				g_assert (object);
+				if (object)
+				{
+					parentless = glade_widget_get_from_gobject (object);
+					parentless = glade_widget_dup (parentless, exact);
 
-				parentless = glade_widget_get_from_gobject (object);
-				parentless = glade_widget_dup (parentless, exact);
+					glade_widget_set_project (parentless, widget->project);
 
-				glade_widget_set_project (parentless, widget->project);
-				
-				glade_property_set (widget_prop, parentless->object);
+					glade_property_set (widget_prop, parentless->object);
+				}
+				else
+					glade_property_set (widget_prop, NULL);
 			}
 			else
 				glade_property_set_value (widget_prop, template_prop->value);

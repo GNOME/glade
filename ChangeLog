@@ -1,3 +1,12 @@
+2009-01-05  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-widget.c: fixed Bug #525839 "Glade hangs in toolbar editor"
+	  replaced assert with if statement in glade_widget_copy_properties()
+
+	* gladeui/glade-signal-editor.c: fixed Bug #522542 "glade-3 crashes when
+	  pressing Enter in signal handler entry field"
+	  removed unnecessary treeview row-activated handler.
+
 2009-01-05  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-base-editor.c: s/glade_widget_set_name()/glade_command_set_name()
