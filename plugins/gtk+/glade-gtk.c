@@ -41,6 +41,7 @@
 #include "glade-label-editor.h"
 #include "glade-cell-renderer-editor.h"
 #include "glade-treeview-editor.h"
+#include "glade-entry-editor.h"
 
 #include <gladeui/glade-editor-property.h>
 #include <gladeui/glade-base-editor.h>
@@ -2205,6 +2206,8 @@ glade_gtk_box_replace_child (GladeWidgetAdaptor *adaptor,
 	GladeWidget  *gchild;
 	GladeWidget  *gbox;
 
+	g_object_ref (G_OBJECT (current));
+
 	GWA_GET_CLASS (GTK_TYPE_CONTAINER)->replace_child (adaptor,
 							   container,
 							   current,
@@ -2219,6 +2222,8 @@ glade_gtk_box_replace_child (GladeWidgetAdaptor *adaptor,
 	gbox = glade_widget_get_from_gobject (container);
 	fix_response_id_on_child (gbox, current, FALSE);
 	fix_response_id_on_child (gbox, new_widget, TRUE);
+
+	g_object_unref (G_OBJECT (current));
 }
 
 
@@ -4714,6 +4719,127 @@ glade_gtk_entry_post_create (GladeWidgetAdaptor *adaptor,
 			  G_CALLBACK (glade_gtk_entry_changed), gentry);
 }
 
+GladeEditable *
+glade_gtk_entry_create_editable (GladeWidgetAdaptor  *adaptor,
+				 GladeEditorPageType  type)
+{
+	GladeEditable *editable;
+
+	/* Get base editable */
+	editable = GWA_GET_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
+
+	if (type == GLADE_PAGE_GENERAL)
+		return (GladeEditable *)glade_entry_editor_new (adaptor, editable);
+
+	return editable;
+}
+
+
+void
+glade_gtk_entry_set_property (GladeWidgetAdaptor *adaptor,
+			      GObject            *object, 
+			      const gchar        *id,
+			      const GValue       *value)
+{
+	GladeImageEditMode mode;
+	GladeWidget *gwidget = glade_widget_get_from_gobject (object);
+
+	if (!strcmp (id, "primary-icon-mode"))
+	{
+		mode = g_value_get_int (value);
+
+		glade_widget_property_set_sensitive (gwidget, "stock-primary", FALSE, NOT_SELECTED_MSG);
+		glade_widget_property_set_sensitive (gwidget, "icon-name-primary", FALSE, NOT_SELECTED_MSG);
+		glade_widget_property_set_sensitive (gwidget, "pixbuf-primary", FALSE, NOT_SELECTED_MSG);
+
+		switch (mode) {
+		case GLADE_IMAGE_MODE_STOCK:
+			glade_widget_property_set_sensitive (gwidget, "stock-primary", TRUE, NULL);
+			break;
+		case GLADE_IMAGE_MODE_ICON:	
+			glade_widget_property_set_sensitive (gwidget, "icon-name-primary", TRUE, NULL);
+			break;
+		case GLADE_IMAGE_MODE_FILENAME: 
+			glade_widget_property_set_sensitive (gwidget, "pixbuf-primary", TRUE, NULL);
+			break;
+		}
+	}
+	else if (!strcmp (id, "secondary-icon-mode"))
+	{
+		mode = g_value_get_int (value);
+
+		glade_widget_property_set_sensitive (gwidget, "stock-secondary", FALSE, NOT_SELECTED_MSG);
+		glade_widget_property_set_sensitive (gwidget, "icon-name-secondary", FALSE, NOT_SELECTED_MSG);
+		glade_widget_property_set_sensitive (gwidget, "pixbuf-secondary", FALSE, NOT_SELECTED_MSG);
+
+		switch (mode) {
+		case GLADE_IMAGE_MODE_STOCK:
+			glade_widget_property_set_sensitive (gwidget, "stock-secondary", TRUE, NULL);
+			break;
+		case GLADE_IMAGE_MODE_ICON:	
+			glade_widget_property_set_sensitive (gwidget, "icon-name-secondary", TRUE, NULL);
+			break;
+		case GLADE_IMAGE_MODE_FILENAME: 
+			glade_widget_property_set_sensitive (gwidget, "pixbuf-secondary", TRUE, NULL);
+			break;
+		}
+	}
+	else
+		GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
+}
+
+void
+glade_gtk_entry_read_widget (GladeWidgetAdaptor *adaptor,
+			     GladeWidget        *widget,
+			     GladeXmlNode       *node)
+{
+	GladeProperty *property;
+
+	if (!glade_xml_node_verify 
+	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+		return;
+
+	/* First chain up and read in all the normal properties.. */
+        GWA_GET_CLASS (GTK_TYPE_WIDGET)->read_widget (adaptor, widget, node);
+	
+	if (glade_widget_property_original_default (widget, "icon-name-primary") == FALSE)
+	{
+		property = glade_widget_get_property (widget, "icon-name-primary");
+		glade_widget_property_set (widget, "primary-icon-mode", GLADE_IMAGE_MODE_ICON);
+	}
+	else if (glade_widget_property_original_default (widget, "pixbuf-primary") == FALSE)
+	{
+		property = glade_widget_get_property (widget, "pixbuf-primary");
+		glade_widget_property_set (widget, "primary-icon-mode", GLADE_IMAGE_MODE_FILENAME);
+	}
+	else/*  if (glade_widget_property_original_default (widget, "stock") == FALSE) */
+	{
+		property = glade_widget_get_property (widget, "stock-primary");
+		glade_widget_property_set (widget, "primary-icon-mode", GLADE_IMAGE_MODE_STOCK);
+	}
+
+	glade_property_sync (property);
+
+	if (glade_widget_property_original_default (widget, "icon-name-secondary") == FALSE)
+	{
+		property = glade_widget_get_property (widget, "icon-name-secondary");
+		glade_widget_property_set (widget, "secondary-icon-mode", GLADE_IMAGE_MODE_ICON);
+	}
+	else if (glade_widget_property_original_default (widget, "pixbuf-secondary") == FALSE)
+	{
+		property = glade_widget_get_property (widget, "pixbuf-secondary");
+		glade_widget_property_set (widget, "secondary-icon-mode", GLADE_IMAGE_MODE_FILENAME);
+	}
+	else/*  if (glade_widget_property_original_default (widget, "stock") == FALSE) */
+	{
+		property = glade_widget_get_property (widget, "stock-secondary");
+		glade_widget_property_set (widget, "secondary-icon-mode", GLADE_IMAGE_MODE_STOCK);
+	}
+
+	glade_property_sync (property);
+}
+
+
 /* ----------------------------- GtkFixed/GtkLayout ------------------------------ */
 static void
 glade_gtk_fixed_layout_finalize(GdkPixmap *backing)
@@ -5731,8 +5857,6 @@ glade_gtk_image_read_widget (GladeWidgetAdaptor *adaptor,
 	}
 
 	glade_property_sync (property);
-
-
 }
 
 

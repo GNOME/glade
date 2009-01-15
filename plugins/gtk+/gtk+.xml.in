@@ -784,11 +784,41 @@ embedded in another object</_tooltip>
 
     <glade-widget-class name="GtkEntry" generic-name="entry" _title="Text Entry">
       <post-create-function>glade_gtk_entry_post_create</post-create-function>
+      <create-editable-function>glade_gtk_entry_create_editable</create-editable-function>
+      <set-property-function>glade_gtk_entry_set_property</set-property-function>
+      <read-widget-function>glade_gtk_entry_read_widget</read-widget-function>
       <properties>
 	<property id="text" translatable="True"/>
         <property id="inner-border" since="2.10"/>
         <property id="truncate-multiline" since="2.10"/>
 	<property id="shadow-type" since="2.12"/>
+	<property id="gicon-primary" disabled="True"/>
+	<property id="gicon-secondary" disabled="True"/>
+	<property id="stock-primary" since="2.16" custom-layout="True" stock-icon="True"/>
+	<property id="stock-secondary" since="2.16" custom-layout="True" stock-icon="True"/>
+	<property id="pixbuf-primary" since="2.16" custom-layout="True"/>
+	<property id="pixbuf-secondary" since="2.16" custom-layout="True"/>
+	<property id="icon-name-primary" since="2.16" custom-layout="True" themed-icon="True"/>
+	<property id="icon-name-secondary" since="2.16" custom-layout="True" themed-icon="True"/>
+	<property id="activatable-primary" since="2.16" custom-layout="True"/>
+	<property id="activatable-secondary" since="2.16" custom-layout="True"/>
+	<property id="sensitive-primary" since="2.16" custom-layout="True"/>
+	<property id="sensitive-secondary" since="2.16" custom-layout="True"/>
+	<property id="progress-fraction" since="2.16" custom-layout="True"/>
+	<property id="progress-pulse-step" since="2.16" custom-layout="True"/>
+
+	<!-- Virtual icon edit mode properties -->
+        <property id="primary-icon-mode" visible="False" save="False">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	  </parameter-spec>
+        </property>
+        <property id="secondary-icon-mode" visible="False" save="False">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	  </parameter-spec>
+        </property>
+
 	<!-- Atk activate property -->
 	<property id="atk-activate" _name="Activate" ignore="True" atk-property="True" save="False">
 	  <parameter-spec>
