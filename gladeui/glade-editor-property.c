@@ -1923,6 +1923,79 @@ glade_eprop_text_show_i18n_dialog (GtkWidget           *entry,
 	}
 }
 
+gboolean
+glade_editor_property_show_resource_dialog (GladeProject *project, GtkWidget *parent, gchar **filename)
+{
+
+	GtkWidget     *dialog;
+	gchar         *folder;
+
+	g_return_val_if_fail (filename != NULL, FALSE);
+
+	dialog = gtk_file_chooser_dialog_new (_("Select a file from the project resource directory"),
+					      parent ? GTK_WINDOW (gtk_widget_get_toplevel (parent)) : NULL,
+					      GTK_FILE_CHOOSER_ACTION_OPEN,
+					      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+					      GTK_STOCK_OPEN, GTK_RESPONSE_OK,
+					      NULL);
+
+	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
+	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
+
+	gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+						 GTK_RESPONSE_OK,
+						 GTK_RESPONSE_CANCEL,
+						 -1);
+
+	/* HIG spacings */
+	gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);
+	gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->vbox), 2); /* 2 * 5 + 2 = 12 */
+	gtk_container_set_border_width (GTK_CONTAINER (GTK_DIALOG (dialog)->action_area), 5);
+	gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->action_area), 6);
+
+	folder = glade_project_resource_fullpath (project, ".");
+	gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), folder);
+	g_free (folder);
+					     
+	if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_OK)
+	{
+		gchar *name;
+
+		name = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+
+		*filename = name ? g_path_get_basename (name) : NULL;
+
+		g_free (name);
+		gtk_widget_destroy (dialog);
+		return TRUE;
+	}
+
+	gtk_widget_destroy (dialog);
+
+	return FALSE;
+}
+
+static void
+glade_eprop_text_show_resource_dialog (GtkWidget           *entry,
+				       GladeEditorProperty *eprop)
+{
+	GladeProject *project;
+	GladeProjectFormat fmt;
+	gchar *text = NULL;
+
+	project = eprop->property->widget->project;
+	fmt = glade_project_get_format (project);
+
+	if (glade_editor_property_show_resource_dialog (project, entry, &text))
+	{
+		glade_eprop_text_changed_common (eprop, text, eprop->use_command);
+
+		glade_editor_property_load (eprop, eprop->property);
+
+		g_free (text);
+	}
+}
+
 enum {
 	COMBO_COLUMN_TEXT = 0,
 	COMBO_COLUMN_PIXBUF,
@@ -2065,10 +2138,23 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
 		g_signal_connect (G_OBJECT (eprop_text->text_entry), "changed",
 				  G_CALLBACK (glade_eprop_text_changed),
 				  eprop);
+
+		if (klass->pspec->value_type == GDK_TYPE_PIXBUF)
+		{
+			GtkWidget *image = gtk_image_new_from_stock (GTK_STOCK_OPEN, GTK_ICON_SIZE_MENU);
+			GtkWidget *button = gtk_button_new ();
+			gtk_container_add (GTK_CONTAINER (button), image);
+
+			g_signal_connect (button, "clicked",
+					  G_CALLBACK (glade_eprop_text_show_resource_dialog),
+					  eprop);
+
+			gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0); 
+		}
 	}
 	
 	if (klass->translatable) {
-		GtkWidget *button = gtk_button_new_with_label ("...");
+		GtkWidget *button = gtk_button_new_with_label ("\342\200\246");
 		gtk_widget_show (button);
 		gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0); 
 		g_signal_connect (button, "clicked",

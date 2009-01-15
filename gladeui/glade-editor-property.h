@@ -152,6 +152,9 @@ gboolean             glade_editor_property_show_i18n_dialog (GtkWidget          
 							     gchar               **comment,
 							     gboolean             *has_context,
 							     gboolean             *translatable);
+gboolean             glade_editor_property_show_resource_dialog (GladeProject     *project, 
+								 GtkWidget        *parent, 
+								 gchar           **filename);
 
 /* Generic eprops */
 #define GLADE_TYPE_EPROP_NUMERIC         (glade_eprop_numeric_get_type())
