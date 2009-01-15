@@ -61,10 +61,6 @@ glade_register_displayable_value (GType          type,
 				  const gchar   *domain,
 				  const gchar   *string)
 {
-	ValueTab *tab;
-	gpointer  klass;
-	GList    *values;
-
 	g_return_if_fail (value && value[0]);
 	g_return_if_fail (domain && domain[0]);
 	g_return_if_fail (string && string[0]);

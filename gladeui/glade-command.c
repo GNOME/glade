@@ -936,6 +936,9 @@ get_all_parentless_reffed_widgets (GList *reffed, GladeWidget *widget)
 	GList *children, *l, *list;
 	GladeWidget *child;
 
+	if ((list = glade_widget_get_parentless_reffed_widgets (widget)) != NULL)
+		reffed = g_list_concat (reffed, list);
+
 	children = glade_widget_adaptor_get_children (widget->adaptor,
 						      widget->object);
 
@@ -943,12 +946,11 @@ get_all_parentless_reffed_widgets (GList *reffed, GladeWidget *widget)
 	{
 		if ((child = glade_widget_get_from_gobject (l->data)) != NULL)
 		{
-			if ((list = glade_widget_get_parentless_reffed_widgets (child)) != NULL)
-				reffed = g_list_concat (reffed, list);
-
 			reffed = get_all_parentless_reffed_widgets (reffed, child);
 		}
 	}
+
+	g_list_free (children);
 
 	return reffed;
 }
@@ -992,11 +994,9 @@ glade_command_add (GList            *widgets,
 	 */
 	widget = GLADE_WIDGET (widgets->data);
 	if (placeholder && GTK_IS_WINDOW (widget->object) == FALSE)
-	{
-		GladeWidget *some_widget = glade_placeholder_get_parent (placeholder);
-		me->project = glade_widget_get_project (some_widget);
-	}
-	else me->project = glade_app_get_project();
+		me->project = glade_placeholder_get_project (placeholder);
+	else 
+		me->project = glade_app_get_project();
 
 	GLADE_COMMAND (me)->description = 
 		g_strdup_printf (_("Add %s"), g_list_length (widgets) == 1 ? 
@@ -1810,6 +1810,67 @@ glade_command_copy(GList *widgets)
 		g_list_free(copied_widgets);
 }
 
+#if 0
+static void
+glade_command_break_references_for_widget (GladeWidget *widget, GList *widgets)
+{
+	GList *l, *children;
+		
+	for (l = widget->properties; l; l = l->next)
+	{
+		property = l->data;
+		
+		if (glade_property_class_is_object (property->klass) &&
+		    property->klass->parentless_widget == FALSE)
+		{
+			GList   *obj_list;
+			GObject *reffed_obj = NULL;
+			GladeWidget *reffed_widget;
+			
+			if (GLADE_IS_PARAM_SPEC_OBJECTS (klass->pspec))
+			{
+				glade_property_get (property, &obj_list);
+				
+			}
+			else
+			{
+				glade_property_get (property, &reffed_obj);
+			}				
+		}
+	}
+
+	children = glade_widget_adaptor_get_children (widget->adaptor,
+						      widget->object);
+
+	for (l = children; l; l = l->next)
+	{
+		if ((child = glade_widget_get_from_gobject (l->data)) != NULL)
+			glade_command_break_references_for_widget (child, widgets);
+	}
+
+	g_list_free (children);
+}
+
+static void
+glade_command_break_references (GladeProject *project, GList *widgets)
+{
+	GList *list;
+	GladeWidget *widget;
+
+	for (list = widgets; list && list->data; list = list->next)
+	{
+		widget = l->data;
+
+		if (project == widget->project)
+			continue;
+
+		glade_command_break_references_for_widget (widget, widgets);
+	}
+
+
+}
+#endif
+
 /**
  * glade_command_paste:
  * @widgets: a #GList of #GladeWidget
@@ -1823,12 +1884,21 @@ glade_command_copy(GList *widgets)
 void
 glade_command_paste(GList *widgets, GladeWidget *parent, GladePlaceholder *placeholder)
 {
-	GList *list, *copied_widgets = NULL;
+	GList *l, *list, *copied_widgets = NULL;
 	GladeWidget *copied_widget = NULL;
+	GladeProperty *property;
+/* 	GladeProject  *target_project; */
 	gboolean exact;
 	
 	g_return_if_fail (widgets != NULL);
 	
+/* 	if (placeholder && GTK_IS_WINDOW (widget->object) == FALSE) */
+/* 		target_project = glade_placeholder_get_project (placeholder); */
+/* 	else if (parent && GTK_IS_WINDOW (widget->object) == FALSE) */
+/* 		target_project = glade_widget_get_project (parent); */
+/* 	else  */
+/* 		target_project = glade_app_get_project(); */
+
 	for (list = widgets; list && list->data; list = list->next)
 	{
 		exact = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (list->data), "glade-command-was-cut"));
@@ -1836,7 +1906,14 @@ glade_command_paste(GList *widgets, GladeWidget *parent, GladePlaceholder *place
 		copied_widget = glade_widget_dup(list->data, exact);
 		copied_widgets = g_list_prepend(copied_widgets, copied_widget);
 	}
+
 	glade_command_push_group(_("Paste %s"), g_list_length (widgets) == 1 ? copied_widget->name : _("multiple"));
+
+	/* When pasting widgets across projects, we nullify the property references that
+	 * are not satisfied by the paste list.
+	 */
+
+
 	glade_command_add(copied_widgets, parent, placeholder, TRUE);
 	glade_command_pop_group();
 	

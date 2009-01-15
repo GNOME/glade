@@ -2058,7 +2058,7 @@ glade_widget_get_parentless_widget_ref (GladeWidget *widget)
 		property = GLADE_PROPERTY (l->data);
 
 		if (property->klass->parentless_widget)
-			/* For now only one property can point to the widget */
+			/* only one external property can point to this widget */
 			return property;
 	}
 	return NULL;
@@ -2068,7 +2068,7 @@ glade_widget_get_parentless_widget_ref (GladeWidget *widget)
 GList *
 glade_widget_get_parentless_reffed_widgets (GladeWidget *widget)
 {
-	GladeWidget   *reffed = NULL;
+	GObject       *reffed = NULL;
 	GladeProperty *property = NULL;
 	GList         *l, *widgets = NULL;
 
