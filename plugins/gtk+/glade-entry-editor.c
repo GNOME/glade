@@ -85,9 +85,6 @@ glade_entry_editor_load (GladeEditable *editable,
 			  GladeWidget   *widget)
 {
 	GladeEntryEditor *entry_editor = GLADE_ENTRY_EDITOR (editable);
-	GladeWidget       *gchild = NULL;
-	GtkWidget         *child, *entry;
-	gboolean           use_stock = FALSE;
 	GladeImageEditMode icon_mode;
 	GList *l;
 

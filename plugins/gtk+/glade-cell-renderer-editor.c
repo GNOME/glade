@@ -209,19 +209,6 @@ glade_cell_renderer_editor_grab_focus (GtkWidget *widget)
 	gtk_widget_grab_focus (renderer_editor->embed);
 }
 
-
-static void
-table_attach (GtkWidget *table, 
-	      GtkWidget *child, 
-	      gint pos, gint row)
-{
-	gtk_table_attach (GTK_TABLE (table), child,
-			  pos, pos+1, row, row +1,
-			  pos ? 0 : GTK_EXPAND | GTK_FILL,
-			  GTK_EXPAND | GTK_FILL,
-			  3, 1);
-}
-
 static void
 attributes_toggled (GtkWidget  *widget,
 		    CheckTab   *tab)
@@ -277,50 +264,6 @@ attributes_toggled (GtkWidget  *widget,
 			     renderer_editor->loaded_widget);
 }
 
-
-#define EDITOR_COLUMN_SIZE 150
-
-static void
-label_size_request (GtkWidget *widget, GtkRequisition *requisition, 
-		    gpointer user_data)
-{
-	requisition->width = EDITOR_COLUMN_SIZE;
-}
-
-static void
-label_size_allocate_after (GtkWidget *container, GtkAllocation *allocation,
-			   GtkWidget *widget)
-{
-	GtkWidget *check;
-	GtkRequisition req = { -1, -1 };
-	gint width = EDITOR_COLUMN_SIZE;
-	gint check_width;
-
-	/* Here we have to subtract the check button and the 
-	 * remaining padding inside the hbox so that we are
-	 * only dealing with the size of the label.
-	 * (note the '4' here comes from the hbox spacing).
-	 */
-	check = g_object_get_data (G_OBJECT (container), "attributes-check");
-	g_assert (check);
-
-	gtk_widget_size_request (check, &req);
-	check_width = req.width + 4 + 4;
-
-	if (allocation->width > width)
-		width = allocation->width;
-
-	gtk_widget_set_size_request (widget, width - check_width, -1);
-
-	gtk_container_check_resize (GTK_CONTAINER (container));
-
-	/* Sometimes labels aren't drawn correctly after resize without this */
-	gtk_widget_queue_draw (container);
-
-
-}
-
-
 static gint
 property_class_comp (gconstpointer a, gconstpointer b)
 {
@@ -372,7 +315,7 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor  *adaptor,
 	GladeEditorProperty      *eprop;
 	GladePropertyClass       *pclass, *attr_pclass, *use_attr_pclass;
 	GList                    *list, *sorted;
-	GtkWidget                *label, *alignment, *table, *hbox, *separator;
+	GtkWidget                *hbox, *separator;
 	gchar                    *str;
 
 	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
@@ -393,7 +336,6 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor  *adaptor,
 	{
 		gchar *attr_name;
 		gchar *use_attr_name;
-		gint   rows = 0;
 
 		pclass = list->data;
 
@@ -422,15 +364,6 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor  *adaptor,
 
 			/* Label appearance... */
 			hbox   = gtk_hbox_new (FALSE, 0);
-/* 			str    = g_strdup_printf (_("Retrieve <b>%s</b> from model (type %s)"),  */
-/* 						  pclass->name, g_type_name (pclass->pspec->value_type)); */
-/* 			label  = gtk_label_new (str); */
-/* 			g_free (str); */
-
-/* 			gtk_label_set_use_markup (GTK_LABEL (label), TRUE); */
-/* 			gtk_label_set_line_wrap (GTK_LABEL(label), TRUE); */
-/* 			gtk_label_set_line_wrap_mode (GTK_LABEL(label), PANGO_WRAP_WORD_CHAR); */
-/* 			gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5); */
 
 			tab->attributes_check = gtk_check_button_new ();
 			str    = g_strdup_printf (_("Retrieve %s from model (type %s)"),
@@ -439,30 +372,15 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor  *adaptor,
 			g_free (str);
 
 			gtk_box_pack_start (GTK_BOX (hbox), tab->attributes_check, FALSE, FALSE, 4);
-			//gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 4);
 			gtk_box_pack_start (GTK_BOX (renderer_editor), hbox, FALSE, FALSE, 0);
 
 			/* A Hack so that PANGO_WRAP_WORD_CHAR works nicely */
 			g_object_set_data (G_OBJECT (hbox), "attributes-check", tab->attributes_check);
-/* 			g_signal_connect (G_OBJECT (hbox), "size-request", */
-/* 					  G_CALLBACK (label_size_request), NULL); */
-/* 			g_signal_connect_after (G_OBJECT (hbox), "size-allocate", */
-/* 						G_CALLBACK (label_size_allocate_after), label); */
-
-
-/* 			alignment = gtk_alignment_new (1.0F, 1.0F, 1.0F, 1.0F); */
-/* 			gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 6, 0, 12, 0); */
-/*  			gtk_box_pack_start (GTK_BOX (renderer_editor), alignment, FALSE, FALSE, 0); */
-
-/* 			table = gtk_table_new (0, 0, FALSE); */
-/* 			gtk_container_add (GTK_CONTAINER (alignment), table); */
 
 			/* Edit property */
 			eprop           = glade_widget_adaptor_create_eprop (adaptor, pclass, TRUE);
 			gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 4);
 			gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (eprop), FALSE, FALSE, 4);
-/* 			table_attach (table, eprop->item_label, 0, rows); */
-/* 			table_attach (table, GTK_WIDGET (eprop), 1, rows++); */
 			renderer_editor->properties = g_list_prepend (renderer_editor->properties, eprop);
 
 			tab->use_prop_label = eprop->item_label;
@@ -471,8 +389,6 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor  *adaptor,
 			/* Edit attribute */
 			eprop = glade_widget_adaptor_create_eprop (adaptor, attr_pclass, TRUE);
 			gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (eprop), FALSE, FALSE, 4);
-/* 			table_attach (table, eprop->item_label, 0, rows); */
-/* 			table_attach (table, GTK_WIDGET (eprop), 1, rows++); */
 			renderer_editor->properties = g_list_prepend (renderer_editor->properties, eprop);
 
 			tab->use_attr_label = eprop->item_label;
