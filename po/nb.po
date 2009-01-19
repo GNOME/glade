@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade 3.5.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-12 13:40+0100\n"
-"PO-Revision-Date: 2009-01-07 12:11+0100\n"
+"POT-Creation-Date: 2009-01-19 10:56+0100\n"
+"PO-Revision-Date: 2009-01-19 11:56+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -224,20 +224,20 @@ msgid "A user interface designer for GTK+ and GNOME."
 msgstr "Utforming av brukergrensesnitt for GTK+ og GNOME."
 
 #. File
-#: ../src/glade-window.c:2081 ../plugins/gtk+/glade-gtk.c:6787
-#: ../plugins/gtk+/glade-gtk.c:7110
+#: ../src/glade-window.c:2081 ../plugins/gtk+/glade-gtk.c:6911
+#: ../plugins/gtk+/glade-gtk.c:7234
 msgid "_File"
 msgstr "_Fil"
 
 #. Edit
-#: ../src/glade-window.c:2082 ../plugins/gtk+/glade-gtk.c:6790
-#: ../plugins/gtk+/glade-gtk.c:7120
+#: ../src/glade-window.c:2082 ../plugins/gtk+/glade-gtk.c:6914
+#: ../plugins/gtk+/glade-gtk.c:7244
 msgid "_Edit"
 msgstr "R_ediger"
 
 #. View
-#: ../src/glade-window.c:2083 ../plugins/gtk+/glade-gtk.c:6793
-#: ../plugins/gtk+/glade-gtk.c:7128
+#: ../src/glade-window.c:2083 ../plugins/gtk+/glade-gtk.c:6917
+#: ../plugins/gtk+/glade-gtk.c:7252
 msgid "_View"
 msgstr "_Vis"
 
@@ -246,8 +246,8 @@ msgid "_Projects"
 msgstr "_Prosjekter"
 
 #. Help
-#: ../src/glade-window.c:2085 ../plugins/gtk+/glade-gtk.c:6805
-#: ../plugins/gtk+/glade-gtk.c:7131
+#: ../src/glade-window.c:2085 ../plugins/gtk+/glade-gtk.c:6929
+#: ../plugins/gtk+/glade-gtk.c:7255
 msgid "_Help"
 msgstr "_Hjelp"
 
@@ -338,7 +338,7 @@ msgstr "Slett utvalget"
 
 #: ../src/glade-window.c:2149
 msgid "Modify project preferences"
-msgstr ""
+msgstr "Endre brukervalg for prosjekt"
 
 #. ProjectsMenu
 #: ../src/glade-window.c:2152
@@ -496,8 +496,8 @@ msgid "Inspector"
 msgstr "Inspektør"
 
 #: ../src/glade-window.c:3042 ../gladeui/glade-editor.c:350
-#: ../gladeui/glade-widget.c:1089 ../plugins/gtk+/glade-gtk.c:6249
-#: ../plugins/gtk+/glade-gtk.c:6279 ../plugins/gtk+/glade-gtk.c:10538
+#: ../gladeui/glade-widget.c:1089 ../plugins/gtk+/glade-gtk.c:6373
+#: ../plugins/gtk+/glade-gtk.c:6403 ../plugins/gtk+/glade-gtk.c:10662
 msgid "Properties"
 msgstr "Egenskaper"
 
@@ -791,7 +791,7 @@ msgstr "Setter flere egenskaper"
 msgid "Setting %s of %s"
 msgstr "Setter %s for %s"
 
-#: ../gladeui/glade-command.c:612 ../gladeui/glade-editor-property.c:2785
+#: ../gladeui/glade-command.c:612 ../gladeui/glade-editor-property.c:2871
 #, c-format
 msgid "Setting %s of %s to %s"
 msgstr "Setter %s for %s for %s"
@@ -808,8 +808,8 @@ msgstr "Legg til %s"
 
 #: ../gladeui/glade-command.c:1003 ../gladeui/glade-command.c:1733
 #: ../gladeui/glade-command.c:1757 ../gladeui/glade-command.c:1780
-#: ../gladeui/glade-command.c:1805 ../gladeui/glade-command.c:1839
-#: ../gladeui/glade-command.c:1866
+#: ../gladeui/glade-command.c:1805 ../gladeui/glade-command.c:1910
+#: ../gladeui/glade-command.c:1943
 msgid "multiple"
 msgstr "flere"
 
@@ -869,52 +869,52 @@ msgstr "Klipp ut %s"
 msgid "Copy %s"
 msgstr "Kopier %s"
 
-#: ../gladeui/glade-command.c:1839
+#: ../gladeui/glade-command.c:1910
 #, c-format
 msgid "Paste %s"
 msgstr "Lim inn %s"
 
-#: ../gladeui/glade-command.c:1865
+#: ../gladeui/glade-command.c:1942
 #, c-format
 msgid "Drag-n-Drop from %s to %s"
 msgstr ""
 
-#: ../gladeui/glade-command.c:1987
+#: ../gladeui/glade-command.c:2064
 #, c-format
 msgid "Add signal handler %s"
 msgstr "Legg til signalhåndterer for %s"
 
-#: ../gladeui/glade-command.c:1988
+#: ../gladeui/glade-command.c:2065
 #, c-format
 msgid "Remove signal handler %s"
 msgstr "Fjern signalhåndterer for %s"
 
-#: ../gladeui/glade-command.c:1989
+#: ../gladeui/glade-command.c:2066
 #, c-format
 msgid "Change signal handler %s"
 msgstr "Endre signalhåndterer %s"
 
-#: ../gladeui/glade-command.c:2214
+#: ../gladeui/glade-command.c:2291
 #, c-format
 msgid "Setting i18n metadata"
 msgstr ""
 
-#: ../gladeui/glade-command.c:2418
+#: ../gladeui/glade-command.c:2495
 #, c-format
 msgid "Converting %s to %s format"
 msgstr "Konverterer %s til %s-format"
 
-#: ../gladeui/glade-command.c:2579
+#: ../gladeui/glade-command.c:2656
 #, fuzzy, c-format
 msgid "Setting %s to use a %s naming policy"
 msgstr "Setter %s for %s for %s"
 
-#: ../gladeui/glade-command.c:2721
+#: ../gladeui/glade-command.c:2798
 #, fuzzy, c-format
 msgid "Locking %s by widget %s"
 msgstr "Plasserer %s inni %s"
 
-#: ../gladeui/glade-command.c:2760
+#: ../gladeui/glade-command.c:2837
 #, c-format
 msgid "Unlocking %s"
 msgstr "Låser opp %s"
@@ -983,111 +983,116 @@ msgstr "Konte_kst for oversettere:"
 msgid "Co_mments for translators:"
 msgstr "Ko_mmentarer for oversettere:"
 
-#: ../gladeui/glade-editor-property.c:2121
-#: ../gladeui/glade-editor-property.c:2137
+#: ../gladeui/glade-editor-property.c:1935
+#, fuzzy
+msgid "Select a file from the project resource directory"
+msgstr "Kunne ikke opprette katalog: %s"
+
+#: ../gladeui/glade-editor-property.c:2207
+#: ../gladeui/glade-editor-property.c:2223
 msgid "Yes"
 msgstr "Ja"
 
-#: ../gladeui/glade-editor-property.c:2121
-#: ../gladeui/glade-editor-property.c:2137
-#: ../gladeui/glade-editor-property.c:2152
+#: ../gladeui/glade-editor-property.c:2207
+#: ../gladeui/glade-editor-property.c:2223
+#: ../gladeui/glade-editor-property.c:2238
 msgid "No"
 msgstr "Nei"
 
-#: ../gladeui/glade-editor-property.c:2595 ../gladeui/glade-widget.c:1041
+#: ../gladeui/glade-editor-property.c:2681 ../gladeui/glade-widget.c:1041
 #: ../gladeui/glade-widget-adaptor.c:1211
 msgid "Name"
 msgstr "Navn"
 
-#: ../gladeui/glade-editor-property.c:2607 ../gladeui/glade-property.c:549
+#: ../gladeui/glade-editor-property.c:2693 ../gladeui/glade-property.c:549
 msgid "Class"
 msgstr "Klasse"
 
-#: ../gladeui/glade-editor-property.c:2623
+#: ../gladeui/glade-editor-property.c:2709
 #, fuzzy, c-format
 msgid "Choose parentless %s(s) in this project"
 msgstr "Velg en %s i dette prosjektet"
 
-#: ../gladeui/glade-editor-property.c:2623
+#: ../gladeui/glade-editor-property.c:2709
 #, fuzzy, c-format
 msgid "Choose a parentless %s in this project"
 msgstr "Velg en %s i dette prosjektet"
 
-#: ../gladeui/glade-editor-property.c:2626
+#: ../gladeui/glade-editor-property.c:2712
 #, c-format
 msgid "Choose %s(s) in this project"
 msgstr "Velg %s(er) i dette prosjektet"
 
-#: ../gladeui/glade-editor-property.c:2626
+#: ../gladeui/glade-editor-property.c:2712
 #, c-format
 msgid "Choose a %s in this project"
 msgstr "Velg en %s i dette prosjektet"
 
-#: ../gladeui/glade-editor-property.c:2676
+#: ../gladeui/glade-editor-property.c:2762
 msgid "_New"
 msgstr "_Ny"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:2724
+#: ../gladeui/glade-editor-property.c:2810
 msgid "O_bjects:"
 msgstr "O_bjekter:"
 
 #. translators: Creating 'a widget' for 'a property' of 'a widget'
-#: ../gladeui/glade-editor-property.c:2811
+#: ../gladeui/glade-editor-property.c:2897
 #, c-format
 msgid "Creating %s for %s of %s"
 msgstr "Lager %s for %s av %s"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:3001
+#: ../gladeui/glade-editor-property.c:3087
 msgid "Objects:"
 msgstr "Objekter:"
 
-#: ../gladeui/glade-editor-property.c:3366
+#: ../gladeui/glade-editor-property.c:3452
 msgid "Value:"
 msgstr "Verdi:"
 
-#: ../gladeui/glade-editor-property.c:3367
+#: ../gladeui/glade-editor-property.c:3453
 msgid "The current value"
 msgstr "Aktiv verdi"
 
-#: ../gladeui/glade-editor-property.c:3369
+#: ../gladeui/glade-editor-property.c:3455
 msgid "Lower:"
 msgstr "Nedre:"
 
-#: ../gladeui/glade-editor-property.c:3370
+#: ../gladeui/glade-editor-property.c:3456
 msgid "The minimum value"
 msgstr "Minimumsverdi"
 
-#: ../gladeui/glade-editor-property.c:3372
+#: ../gladeui/glade-editor-property.c:3458
 msgid "Upper:"
 msgstr "Øvre:"
 
-#: ../gladeui/glade-editor-property.c:3373
+#: ../gladeui/glade-editor-property.c:3459
 msgid "The maximum value"
 msgstr "Maksimumsverdi"
 
-#: ../gladeui/glade-editor-property.c:3375
+#: ../gladeui/glade-editor-property.c:3461
 msgid "Step inc:"
 msgstr ""
 
-#: ../gladeui/glade-editor-property.c:3376
+#: ../gladeui/glade-editor-property.c:3462
 msgid "The increment to use to make minor changes to the value"
 msgstr ""
 
-#: ../gladeui/glade-editor-property.c:3378
+#: ../gladeui/glade-editor-property.c:3464
 msgid "Page inc:"
 msgstr ""
 
-#: ../gladeui/glade-editor-property.c:3379
+#: ../gladeui/glade-editor-property.c:3465
 msgid "The increment to use to make major changes to the value"
 msgstr ""
 
-#: ../gladeui/glade-editor-property.c:3381
+#: ../gladeui/glade-editor-property.c:3467
 msgid "Page size:"
 msgstr "Sidestørrelse:"
 
-#: ../gladeui/glade-editor-property.c:3382
+#: ../gladeui/glade-editor-property.c:3468
 msgid ""
 "The page size (in a GtkScrollbar this is the size of the area which is "
 "currently visible)"
@@ -1198,7 +1203,7 @@ msgstr "Velg _bort alle"
 msgid "Property _Description:"
 msgstr "Beskrivelse av e_genskap"
 
-#: ../gladeui/glade-fixed.c:482 ../plugins/gtk+/glade-gtk.c:2687
+#: ../gladeui/glade-fixed.c:482 ../plugins/gtk+/glade-gtk.c:2692
 #, c-format
 msgid "Placing %s inside %s"
 msgstr "Plasserer %s inni %s"
@@ -1374,9 +1379,8 @@ msgid ""
 msgstr ""
 
 #: ../gladeui/glade-project.c:1578
-#, fuzzy
 msgid "This widget is deprecated"
-msgstr "Ingen komponent valgt."
+msgstr "Denne komponenten er utrangert"
 
 #. translators: reffers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:1581
@@ -1530,9 +1534,8 @@ msgstr ""
 
 #. Project directory...
 #: ../gladeui/glade-project.c:3712
-#, fuzzy
 msgid "From the project directory"
-msgstr "Kunne ikke opprette katalog: %s"
+msgstr "Fra prosjektkatalogen"
 
 #: ../gladeui/glade-project.c:3719
 #, fuzzy
@@ -2116,9 +2119,8 @@ msgid "<Enter Value>"
 msgstr "<Oppgi verdi>"
 
 #: ../plugins/gtk+/glade-attributes.c:354
-#, fuzzy
 msgid "Unset"
-msgstr "Bruker"
+msgstr "Nullstill"
 
 #: ../plugins/gtk+/glade-attributes.c:723
 msgid "Select a color"
@@ -2136,367 +2138,365 @@ msgstr "Verdi"
 msgid "Setup Text Attributes"
 msgstr "Sett tekstattributter"
 
-#: ../plugins/gtk+/glade-gtk.c:59
+#: ../plugins/gtk+/glade-gtk.c:60
 msgid "This property does not apply unless Use Underline is set."
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:60
+#: ../plugins/gtk+/glade-gtk.c:61
 msgid "Property not selected"
 msgstr "Egenskap ikke valgt"
 
-#: ../plugins/gtk+/glade-gtk.c:61
+#: ../plugins/gtk+/glade-gtk.c:62
 msgid "this property is only for use in dialog action buttons"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:188
+#: ../plugins/gtk+/glade-gtk.c:189
 msgid "GnomeUIInfo"
 msgstr "GnomeUIInfo"
 
-#: ../plugins/gtk+/glade-gtk.c:189
+#: ../plugins/gtk+/glade-gtk.c:190
 msgid "Choose the GnomeUIInfo stock item"
 msgstr ""
 
 #. We have to save/load icon-size as int, and fake the enum
-#: ../plugins/gtk+/glade-gtk.c:198 ../plugins/gtk+/gtk+.xml.in.h:209
+#: ../plugins/gtk+/glade-gtk.c:199 ../plugins/gtk+/gtk+.xml.in.h:209
 msgid "Icon Size"
 msgstr "Ikonstørrelse"
 
-#: ../plugins/gtk+/glade-gtk.c:199
+#: ../plugins/gtk+/glade-gtk.c:200
 msgid "Symbolic size to use for stock icon, icon set or named icon"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:1220
+#: ../plugins/gtk+/glade-gtk.c:1221
 #, c-format
 msgid "Removing parent of %s"
 msgstr "Fjerner opphav til %s"
 
-#: ../plugins/gtk+/glade-gtk.c:1272
+#: ../plugins/gtk+/glade-gtk.c:1273
 #, fuzzy, c-format
 msgid "Adding parent %s for %s"
 msgstr "Legger til opphav %s til %s"
 
-#: ../plugins/gtk+/glade-gtk.c:1356
+#: ../plugins/gtk+/glade-gtk.c:1357
 #, fuzzy, c-format
 msgid "Adding %s to Size Group %s"
 msgstr "Legger til opphav %s til %s"
 
-#: ../plugins/gtk+/glade-gtk.c:1358
+#: ../plugins/gtk+/glade-gtk.c:1359
 #, c-format
 msgid "Adding %s to a new Size Group"
 msgstr ""
 
 #. Add trailing new... item
-#: ../plugins/gtk+/glade-gtk.c:1413
+#: ../plugins/gtk+/glade-gtk.c:1414
 msgid "New Size Group"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:1754
+#: ../plugins/gtk+/glade-gtk.c:1755
 #, c-format
 msgid "Ordering children of %s"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:2273 ../plugins/gtk+/glade-gtk.c:2280
+#: ../plugins/gtk+/glade-gtk.c:2278 ../plugins/gtk+/glade-gtk.c:2285
 #, c-format
 msgid "Insert placeholder to %s"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:2287
+#: ../plugins/gtk+/glade-gtk.c:2292
 #, c-format
 msgid "Remove placeholder from %s"
 msgstr "Fjern plassholder fra %s"
 
-#: ../plugins/gtk+/glade-gtk.c:3257 ../plugins/gtk+/glade-gtk.c:3265
+#: ../plugins/gtk+/glade-gtk.c:3262 ../plugins/gtk+/glade-gtk.c:3270
 #, c-format
 msgid "Insert Row on %s"
 msgstr "Sett inn rad på %s"
 
-#: ../plugins/gtk+/glade-gtk.c:3273 ../plugins/gtk+/glade-gtk.c:3281
+#: ../plugins/gtk+/glade-gtk.c:3278 ../plugins/gtk+/glade-gtk.c:3286
 #, c-format
 msgid "Insert Column on %s"
 msgstr "Sett inn kolonne på %s"
 
-#: ../plugins/gtk+/glade-gtk.c:3289
+#: ../plugins/gtk+/glade-gtk.c:3294
 #, c-format
 msgid "Remove Column on %s"
 msgstr "Fjern kolonne på %s"
 
-#: ../plugins/gtk+/glade-gtk.c:3297
+#: ../plugins/gtk+/glade-gtk.c:3302
 #, c-format
 msgid "Remove Row on %s"
 msgstr "Fjern rad på %s"
 
-#: ../plugins/gtk+/glade-gtk.c:4382 ../plugins/gtk+/glade-gtk.c:4389
+#: ../plugins/gtk+/glade-gtk.c:4387 ../plugins/gtk+/glade-gtk.c:4394
 #, c-format
 msgid "Insert page on %s"
 msgstr "Sett inn side på %s"
 
-#: ../plugins/gtk+/glade-gtk.c:4396
+#: ../plugins/gtk+/glade-gtk.c:4401
 #, c-format
 msgid "Remove page from %s"
 msgstr "Fjern side på %s"
 
-#: ../plugins/gtk+/glade-gtk.c:5790
+#: ../plugins/gtk+/glade-gtk.c:5914
 msgid "This property only applies to stock images"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:5792
+#: ../plugins/gtk+/glade-gtk.c:5916
 msgid "This property only applies to named icons"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:6056
+#: ../plugins/gtk+/glade-gtk.c:6180
 msgid "<separator>"
 msgstr "<separator>"
 
-#: ../plugins/gtk+/glade-gtk.c:6066
+#: ../plugins/gtk+/glade-gtk.c:6190
 msgid "<custom>"
 msgstr "<egendefinert>"
 
-#: ../plugins/gtk+/glade-gtk.c:6245
+#: ../plugins/gtk+/glade-gtk.c:6369
 msgid "Tool Item"
 msgstr "Verktøyoppføring"
 
-#: ../plugins/gtk+/glade-gtk.c:6254
+#: ../plugins/gtk+/glade-gtk.c:6378
 msgid "Packing"
 msgstr "Pakking"
 
-#: ../plugins/gtk+/glade-gtk.c:6273 ../plugins/gtk+/gtk+.xml.in.h:274
+#: ../plugins/gtk+/glade-gtk.c:6397 ../plugins/gtk+/gtk+.xml.in.h:274
 msgid "Menu Item"
 msgstr "Menyoppføring"
 
-#: ../plugins/gtk+/glade-gtk.c:6309 ../plugins/gtk+/glade-gtk.c:6317
+#: ../plugins/gtk+/glade-gtk.c:6433 ../plugins/gtk+/glade-gtk.c:6441
 msgid "Normal item"
 msgstr "Normal oppføring"
 
-#: ../plugins/gtk+/glade-gtk.c:6310 ../plugins/gtk+/glade-gtk.c:6318
+#: ../plugins/gtk+/glade-gtk.c:6434 ../plugins/gtk+/glade-gtk.c:6442
 msgid "Image item"
 msgstr "Bildeoppføring"
 
-#: ../plugins/gtk+/glade-gtk.c:6311 ../plugins/gtk+/glade-gtk.c:6319
+#: ../plugins/gtk+/glade-gtk.c:6435 ../plugins/gtk+/glade-gtk.c:6443
 msgid "Check item"
 msgstr "Avkryssningsoppføring"
 
-#: ../plugins/gtk+/glade-gtk.c:6312 ../plugins/gtk+/glade-gtk.c:6320
+#: ../plugins/gtk+/glade-gtk.c:6436 ../plugins/gtk+/glade-gtk.c:6444
 msgid "Radio item"
 msgstr "Radiooppføring"
 
-#: ../plugins/gtk+/glade-gtk.c:6313 ../plugins/gtk+/glade-gtk.c:6321
+#: ../plugins/gtk+/glade-gtk.c:6437 ../plugins/gtk+/glade-gtk.c:6445
 msgid "Separator item"
 msgstr "Separatoroppføring"
 
-#: ../plugins/gtk+/glade-gtk.c:6345 ../plugins/gtk+/glade-gtk.c:6372
+#: ../plugins/gtk+/glade-gtk.c:6469 ../plugins/gtk+/glade-gtk.c:6496
 msgid "Edit Menu Bar"
 msgstr "Rediger menylinje"
 
-#: ../plugins/gtk+/glade-gtk.c:6347 ../plugins/gtk+/glade-gtk.c:6374
+#: ../plugins/gtk+/glade-gtk.c:6471 ../plugins/gtk+/glade-gtk.c:6498
 msgid "Edit Menu"
 msgstr "Rediger meny"
 
-#: ../plugins/gtk+/glade-gtk.c:6745
+#: ../plugins/gtk+/glade-gtk.c:6869
 msgid "Print S_etup"
 msgstr "Skriveroppsett"
 
-#: ../plugins/gtk+/glade-gtk.c:6749
+#: ../plugins/gtk+/glade-gtk.c:6873
 msgid "Find Ne_xt"
 msgstr "Finn ne_ste"
 
-#: ../plugins/gtk+/glade-gtk.c:6753
+#: ../plugins/gtk+/glade-gtk.c:6877
 msgid "_Undo Move"
 msgstr "A_ngre flytt"
 
-#: ../plugins/gtk+/glade-gtk.c:6757
+#: ../plugins/gtk+/glade-gtk.c:6881
 msgid "_Redo Move"
 msgstr "_Gjenopprett flytt"
 
-#: ../plugins/gtk+/glade-gtk.c:6760
+#: ../plugins/gtk+/glade-gtk.c:6884
 msgid "Select _All"
 msgstr "Velg _alle"
 
-#: ../plugins/gtk+/glade-gtk.c:6763
+#: ../plugins/gtk+/glade-gtk.c:6887
 msgid "_New Game"
 msgstr "_Nytt spill"
 
-#: ../plugins/gtk+/glade-gtk.c:6766
+#: ../plugins/gtk+/glade-gtk.c:6890
 msgid "_Pause game"
 msgstr "_Pause spill"
 
-#: ../plugins/gtk+/glade-gtk.c:6769
+#: ../plugins/gtk+/glade-gtk.c:6893
 msgid "_Restart Game"
 msgstr "Sta_rt spill på nytt"
 
-#: ../plugins/gtk+/glade-gtk.c:6772
+#: ../plugins/gtk+/glade-gtk.c:6896
 msgid "_Hint"
 msgstr "_Hint"
 
-#: ../plugins/gtk+/glade-gtk.c:6775
+#: ../plugins/gtk+/glade-gtk.c:6899
 msgid "_Scores..."
 msgstr "_Poeng..."
 
-#: ../plugins/gtk+/glade-gtk.c:6778
+#: ../plugins/gtk+/glade-gtk.c:6902
 msgid "_End Game"
 msgstr "A_vslutt sipll"
 
-#: ../plugins/gtk+/glade-gtk.c:6781
+#: ../plugins/gtk+/glade-gtk.c:6905
 msgid "Create New _Window"
 msgstr "Opprett nytt _vindu"
 
-#: ../plugins/gtk+/glade-gtk.c:6784
+#: ../plugins/gtk+/glade-gtk.c:6908
 msgid "_Close This Window"
 msgstr "L_ukk dette vinduet"
 
-#: ../plugins/gtk+/glade-gtk.c:6796
+#: ../plugins/gtk+/glade-gtk.c:6920
 msgid "_Settings"
 msgstr "Inn_stillinger"
 
-#: ../plugins/gtk+/glade-gtk.c:6799
+#: ../plugins/gtk+/glade-gtk.c:6923
 msgid "Fi_les"
 msgstr "Fi_ler"
 
-#: ../plugins/gtk+/glade-gtk.c:6802
+#: ../plugins/gtk+/glade-gtk.c:6926
 msgid "_Windows"
 msgstr "_Vinduer"
 
-#: ../plugins/gtk+/glade-gtk.c:6808
+#: ../plugins/gtk+/glade-gtk.c:6932
 msgid "_Game"
 msgstr "_Spill"
 
-#: ../plugins/gtk+/glade-gtk.c:7273 ../plugins/gtk+/gtk+.xml.in.h:61
+#: ../plugins/gtk+/glade-gtk.c:7397 ../plugins/gtk+/gtk+.xml.in.h:61
 msgid "Button"
 msgstr "Knapp"
 
-#: ../plugins/gtk+/glade-gtk.c:7274 ../plugins/gtk+/glade-gtk.c:10593
-#: ../plugins/gtk+/glade-gtk.c:10673
+#: ../plugins/gtk+/glade-gtk.c:7398 ../plugins/gtk+/glade-gtk.c:10717
+#: ../plugins/gtk+/glade-gtk.c:10797
 msgid "Toggle"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:7275 ../plugins/gtk+/glade-gtk.c:7286
-#: ../plugins/gtk+/glade-gtk.c:7294
+#: ../plugins/gtk+/glade-gtk.c:7399 ../plugins/gtk+/glade-gtk.c:7410
+#: ../plugins/gtk+/glade-gtk.c:7418
 msgid "Radio"
 msgstr "Radio"
 
-#: ../plugins/gtk+/glade-gtk.c:7276 ../plugins/gtk+/gtk+.xml.in.h:272
+#: ../plugins/gtk+/glade-gtk.c:7400 ../plugins/gtk+/gtk+.xml.in.h:272
 msgid "Menu"
 msgstr "Meny"
 
-#: ../plugins/gtk+/glade-gtk.c:7277 ../plugins/gtk+/gtk+.xml.in.h:108
+#: ../plugins/gtk+/glade-gtk.c:7401 ../plugins/gtk+/gtk+.xml.in.h:108
 msgid "Custom"
 msgstr "Egendefinert"
 
-#: ../plugins/gtk+/glade-gtk.c:7278 ../plugins/gtk+/glade-gtk.c:7287
-#: ../plugins/gtk+/glade-gtk.c:7295
+#: ../plugins/gtk+/glade-gtk.c:7402 ../plugins/gtk+/glade-gtk.c:7411
+#: ../plugins/gtk+/glade-gtk.c:7419
 msgid "Separator"
 msgstr "Separator"
 
-#: ../plugins/gtk+/glade-gtk.c:7283 ../plugins/gtk+/glade-gtk.c:7291
+#: ../plugins/gtk+/glade-gtk.c:7407 ../plugins/gtk+/glade-gtk.c:7415
 #: ../plugins/gtk+/gtk+.xml.in.h:288
 msgid "Normal"
 msgstr "Normal"
 
-#: ../plugins/gtk+/glade-gtk.c:7284 ../plugins/gtk+/glade-gtk.c:7292
+#: ../plugins/gtk+/glade-gtk.c:7408 ../plugins/gtk+/glade-gtk.c:7416
 #: ../plugins/gtk+/gtk+.xml.in.h:215
 msgid "Image"
 msgstr "Bilde"
 
-#: ../plugins/gtk+/glade-gtk.c:7285 ../plugins/gtk+/glade-gtk.c:7293
+#: ../plugins/gtk+/glade-gtk.c:7409 ../plugins/gtk+/glade-gtk.c:7417
 msgid "Check"
 msgstr "Avkryssning"
 
-#: ../plugins/gtk+/glade-gtk.c:7307
+#: ../plugins/gtk+/glade-gtk.c:7431
 msgid "Tool Bar Editor"
 msgstr "Redigering av verktøylinje"
 
-#: ../plugins/gtk+/glade-gtk.c:7837
+#: ../plugins/gtk+/glade-gtk.c:7961
 msgid "This property does not apply when Ellipsize is set."
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:7854
+#: ../plugins/gtk+/glade-gtk.c:7978
 msgid "This property does not apply when Angle is set."
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:8637
+#: ../plugins/gtk+/glade-gtk.c:8761
 msgid "Introduction page"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:8641
+#: ../plugins/gtk+/glade-gtk.c:8765
 msgid "Content page"
 msgstr "Innholdsside"
 
-#: ../plugins/gtk+/glade-gtk.c:8645
+#: ../plugins/gtk+/glade-gtk.c:8769
 msgid "Confirmation page"
 msgstr "Bekreftelsesside"
 
-#: ../plugins/gtk+/glade-gtk.c:10134
+#: ../plugins/gtk+/glade-gtk.c:10258
 #, c-format
 msgid "%s is set to load %s from the model"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:10136
+#: ../plugins/gtk+/glade-gtk.c:10260
 #, c-format
 msgid "%s is set to manipulate %s directly"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:10533 ../plugins/gtk+/gtk+.xml.in.h:461
+#: ../plugins/gtk+/glade-gtk.c:10657 ../plugins/gtk+/gtk+.xml.in.h:461
 msgid "Tree View Column"
 msgstr "Trevisningskolonne"
 
-#: ../plugins/gtk+/glade-gtk.c:10533 ../plugins/gtk+/gtk+.xml.in.h:73
+#: ../plugins/gtk+/glade-gtk.c:10657 ../plugins/gtk+/gtk+.xml.in.h:73
 msgid "Cell Renderer"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:10538
+#: ../plugins/gtk+/glade-gtk.c:10662
 msgid "Properties and Attributes"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:10543
+#: ../plugins/gtk+/glade-gtk.c:10667
 msgid "Common Properties and Attributes"
 msgstr ""
 
 #. Text of the textview
-#: ../plugins/gtk+/glade-gtk.c:10587 ../plugins/gtk+/glade-gtk.c:10667
+#: ../plugins/gtk+/glade-gtk.c:10711 ../plugins/gtk+/glade-gtk.c:10791
 #: ../plugins/gtk+/gtk+.xml.in.h:412 ../plugins/gnome/gnome.xml.in.h:54
 msgid "Text"
 msgstr "Tekst"
 
-#: ../plugins/gtk+/glade-gtk.c:10588 ../plugins/gtk+/glade-gtk.c:10668
+#: ../plugins/gtk+/glade-gtk.c:10712 ../plugins/gtk+/glade-gtk.c:10792
 msgid "Accelerator"
 msgstr "Aksellerator"
 
-#: ../plugins/gtk+/glade-gtk.c:10589 ../plugins/gtk+/glade-gtk.c:10669
+#: ../plugins/gtk+/glade-gtk.c:10713 ../plugins/gtk+/glade-gtk.c:10793
 #: ../plugins/gtk+/gtk+.xml.in.h:89
 msgid "Combo"
 msgstr "Kombo"
 
-#: ../plugins/gtk+/glade-gtk.c:10590 ../plugins/gtk+/glade-gtk.c:10670
+#: ../plugins/gtk+/glade-gtk.c:10714 ../plugins/gtk+/glade-gtk.c:10794
 #, fuzzy
 msgid "Spin"
 msgstr "Streng:"
 
-#: ../plugins/gtk+/glade-gtk.c:10591 ../plugins/gtk+/glade-gtk.c:10671
+#: ../plugins/gtk+/glade-gtk.c:10715 ../plugins/gtk+/glade-gtk.c:10795
 msgid "Pixbuf"
 msgstr "Pixbuf"
 
-#: ../plugins/gtk+/glade-gtk.c:10592 ../plugins/gtk+/glade-gtk.c:10672
+#: ../plugins/gtk+/glade-gtk.c:10716 ../plugins/gtk+/glade-gtk.c:10796
 #: ../plugins/gtk+/gtk+.xml.in.h:325
 msgid "Progress"
 msgstr "Fremgang"
 
-#: ../plugins/gtk+/glade-gtk.c:10604
-#, fuzzy
+#: ../plugins/gtk+/glade-gtk.c:10728
 msgid "Icon View Editor"
-msgstr "Ikonvisning"
+msgstr "Redigering av ikonvisning"
 
-#: ../plugins/gtk+/glade-gtk.c:10604
+#: ../plugins/gtk+/glade-gtk.c:10728
 #, fuzzy
 msgid "Combo Editor"
 msgstr "Fest r_edigering"
 
-#: ../plugins/gtk+/glade-gtk.c:10663
+#: ../plugins/gtk+/glade-gtk.c:10787
 msgid "Column"
 msgstr "Kolonne"
 
-#: ../plugins/gtk+/glade-gtk.c:10682
-#, fuzzy
+#: ../plugins/gtk+/glade-gtk.c:10806
 msgid "Tree View Editor"
-msgstr "Trevisning"
+msgstr "Redigering av trevisning"
 
 #: ../plugins/gtk+/glade-accels.c:298 ../plugins/gtk+/glade-accels.c:366
 msgid "<choose a key>"
@@ -2631,9 +2631,8 @@ msgid "All Events"
 msgstr "Alle hendelser"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:38
-#, fuzzy
 msgid "All Modifiers"
-msgstr "Alle filer"
+msgstr "Alle endringstaster"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:39
 #, fuzzy
@@ -2646,7 +2645,7 @@ msgstr "Alltid"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:41
 msgid "Always Center"
-msgstr ""
+msgstr "Alltid sentrer"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:42
 msgid "An accel group for accelerators from stock items"
@@ -2670,25 +2669,23 @@ msgstr "Assistent"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:47
 msgid "Attributes"
-msgstr ""
+msgstr "Attributter"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:48
 msgid "Attributes column"
-msgstr ""
+msgstr "Kolonne for attributter"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:49
 msgid "Automatic"
 msgstr "Automatisk"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:50
-#, fuzzy
 msgid "Background Color Name column"
-msgstr "Bakgrunnsfarge"
+msgstr "Kolonne for navn på bakgrunnsfarge"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:51
-#, fuzzy
 msgid "Background Color column"
-msgstr "Bakgrunnsfarge"
+msgstr "Kolonne for bakgrunnsfarge"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:52
 msgid "Before"
@@ -2705,11 +2702,11 @@ msgstr "Bunn"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:56
 msgid "Bottom Left"
-msgstr ""
+msgstr "Nederst til venstre"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:57
 msgid "Bottom Right"
-msgstr ""
+msgstr "Nederst til høyre"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:58
 msgid "Bottom to Top"
@@ -2787,7 +2784,7 @@ msgstr "Tegn"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:78
 msgid "Check Button"
-msgstr ""
+msgstr "Avkryssingsboks"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:79
 msgid "Check Menu Item"
@@ -2808,7 +2805,7 @@ msgstr "Lukk"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:84
 msgid "Color Button"
-msgstr ""
+msgstr "Fargeknapp"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:85
 msgid "Color Selection"
@@ -2865,9 +2862,8 @@ msgid "Continuous"
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:100
-#, fuzzy
 msgid "Control Key"
-msgstr "Control"
+msgstr "Controltast"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:101
 msgid "Control and Display"
@@ -2896,11 +2892,11 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:110
 msgid "Data"
-msgstr ""
+msgstr "Data"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:111
 msgid "Data column"
-msgstr ""
+msgstr "Datakolonne"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:112
 msgid "Default"
@@ -2948,7 +2944,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:123
 msgid "Discrete"
-msgstr ""
+msgstr "Diskret"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:124
 msgid "Dock"
@@ -2956,7 +2952,7 @@ msgstr "Dokk"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:125
 msgid "Double"
-msgstr ""
+msgstr "Dobbel"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:126
 msgid "Down"
@@ -3152,9 +3148,8 @@ msgid "Font Button"
 msgstr "Skriftknapp"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:173
-#, fuzzy
 msgid "Font Description column"
-msgstr "Beskrivelse for"
+msgstr "Kolonne for beskrivelse av skrift"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:174
 msgid "Font Selection"
@@ -3165,9 +3160,8 @@ msgid "Font Selection Dialog"
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:176
-#, fuzzy
 msgid "Font column"
-msgstr "Sett inn kolonne"
+msgstr "Kolonne for skrift"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:177
 #, fuzzy
@@ -3217,9 +3211,8 @@ msgid "Has Entry column"
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:188
-#, fuzzy
 msgid "Height column"
-msgstr "Sett inn kolonne"
+msgstr "Kolonne for høyde"
 
 #. Objects
 #: ../plugins/gtk+/gtk+.xml.in.h:190 ../plugins/gtk+/glade-model-data.c:1236
@@ -3227,9 +3220,8 @@ msgid "Horizontal"
 msgstr "Horisontal"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:191
-#, fuzzy
 msgid "Horizontal Alignment"
-msgstr "Horisontal"
+msgstr "Horisontal justering"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:192
 msgid "Horizontal Alignment column"
@@ -3289,9 +3281,8 @@ msgid "Icon Factory"
 msgstr "Ikonfabrikk"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:207
-#, fuzzy
 msgid "Icon Name column"
-msgstr "Navn på ikon"
+msgstr "Kolonne for navn på ikon"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:210
 msgid "Icon Sources"
@@ -3674,9 +3665,8 @@ msgid "Option Menu"
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:306
-#, fuzzy
 msgid "Orientation column"
-msgstr "Opprett funksjon"
+msgstr "Kolonne for orientering"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:307 ../plugins/gnome/gnome.xml.in.h:41
 msgid "Other"
@@ -3947,9 +3937,8 @@ msgid "Seventh Key"
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:375
-#, fuzzy
 msgid "Shift Key"
-msgstr "Shift"
+msgstr "Shift-tast"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:376
 msgid "Shrink"
@@ -4138,9 +4127,8 @@ msgid "Text below icons"
 msgstr "Tekst under ikoner"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:425
-#, fuzzy
 msgid "Text column"
-msgstr "Kun tekst"
+msgstr "Tekstkolonne"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:426
 msgid "Text only"
@@ -4167,9 +4155,8 @@ msgid "The page position in the Assistant"
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:432
-#, fuzzy
 msgid "The pango attributes for this label"
-msgstr "Standardoppføring for dette bildet"
+msgstr "Pango-attributter for denne etiketten"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:433
 msgid "The position of the menu item in the menu shell"
@@ -4207,9 +4194,8 @@ msgid "The text to display"
 msgstr "Teksten som skal vises"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:441
-#, fuzzy
 msgid "Third Mouse Button"
-msgstr "Legg til menyknapp"
+msgstr "Tredje musknapp"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:442
 #, fuzzy
@@ -4277,9 +4263,8 @@ msgid "Tree Model Sort"
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:458
-#, fuzzy
 msgid "Tree Selection"
-msgstr "Filvalg"
+msgstr "Treutvalg"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:459
 #, fuzzy
@@ -4334,9 +4319,8 @@ msgid "Vertical"
 msgstr "Vertikal"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:473
-#, fuzzy
 msgid "Vertical Alignment"
-msgstr "Vertikal linjal"
+msgstr "Vertikal justering"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:474
 msgid "Vertical Alignment column"
@@ -4403,9 +4387,8 @@ msgid "Warning"
 msgstr "Advarsel"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:490
-#, fuzzy
 msgid "Weight column"
-msgstr "Sett inn kolonne"
+msgstr "Kolonne for vekt"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:491
 msgid "West"
@@ -4574,7 +4557,7 @@ msgstr "Standard knapp"
 
 #: ../plugins/gtk+/glade-button-editor.c:425
 msgid "Label with optional image"
-msgstr ""
+msgstr "Etikett med valgfritt bilde"
 
 #: ../plugins/gtk+/glade-tool-button-editor.c:176
 #, c-format
@@ -4703,9 +4686,8 @@ msgstr ""
 
 #. Label appearance...
 #: ../plugins/gtk+/glade-label-editor.c:538
-#, fuzzy
 msgid "Edit label appearance"
-msgstr "Utseende for p_alett"
+msgstr "Rediger utseende for etikett"
 
 #. Label formatting...
 #: ../plugins/gtk+/glade-label-editor.c:609
@@ -4743,7 +4725,7 @@ msgstr "nullstill"
 
 #: ../plugins/gtk+/glade-cell-renderer-editor.c:616
 msgid "no model"
-msgstr ""
+msgstr "ingen modell"
 
 #: ../plugins/gtk+/glade-treeview-editor.c:241
 msgid ""
@@ -4951,11 +4933,11 @@ msgstr "Programversjon"
 
 #: ../plugins/gnome/gnome.xml.in.h:48
 msgid "Scaled Height"
-msgstr ""
+msgstr "Skalert høyde"
 
 #: ../plugins/gnome/gnome.xml.in.h:49
 msgid "Scaled Width"
-msgstr ""
+msgstr "Skalert bredde"
 
 #: ../plugins/gnome/gnome.xml.in.h:50
 msgid "Show Time"
@@ -4971,7 +4953,7 @@ msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:55
 msgid "Text Foreground Color"
-msgstr ""
+msgstr "Forgrunnsfarge for tekst"
 
 #: ../plugins/gnome/gnome.xml.in.h:56
 msgid "The height to scale the pixmap to"
