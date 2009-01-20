@@ -42,6 +42,22 @@ glade_single_object_accumulator (GSignalInvocationHint *ihint,
 	return (object == NULL);
 }
 
+gboolean
+glade_integer_handled_accumulator (GSignalInvocationHint *ihint,
+				   GValue                *return_accu,
+				   const GValue          *handler_return,
+				   gpointer               dummy)
+{
+	gboolean continue_emission;
+	gint retval;
+	
+	retval = g_value_get_int (handler_return);
+	g_value_set_int (return_accu, retval >> 1);
+	continue_emission = !(retval & 1);
+	
+	return continue_emission;
+}
+
 /* From gtkmain.c */
 gboolean
 glade_boolean_handled_accumulator (GSignalInvocationHint *ihint,

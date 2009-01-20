@@ -82,6 +82,7 @@ struct _GladeAppClass
 
 	/* signals */
 	void   (* update_ui_signal) (GladeApp    *app);
+	void   (* signal_editor_created) (GladeApp *app, GladeSignalEditor *signal_editor);
 };
 
  

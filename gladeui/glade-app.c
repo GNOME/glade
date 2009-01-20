@@ -56,6 +56,7 @@
 enum
 {
 	UPDATE_UI,
+	SIGNAL_EDITOR_CREATED,
 	LAST_SIGNAL
 };
 
@@ -288,6 +289,12 @@ glade_app_update_ui_default (GladeApp *app)
 			glade_app_refresh_undo_redo_button (app, list->data, FALSE);
 }
 
+static void
+glade_app_signal_editor_created_default (GladeApp *app, GladeSignalEditor *signal_editor)
+{
+	glade_signal_editor_construct_signals_list (signal_editor);
+}
+
 static gboolean
 clipboard_view_on_delete_cb (GtkWidget *clipboard_view, GdkEvent *e, GladeApp *app)
 {
@@ -396,6 +403,8 @@ glade_app_init (GladeApp *app)
 	static gboolean initialized = FALSE;
 	
 	app->priv = GLADE_APP_GET_PRIVATE (app);	
+
+	singleton_app = app;
 	
 	glade_init_check ();	
 	
@@ -453,6 +462,7 @@ glade_app_class_init (GladeAppClass * klass)
 	object_class->set_property = glade_app_set_property;
 
 	klass->update_ui_signal = glade_app_update_ui_default;
+	klass->signal_editor_created = glade_app_signal_editor_created_default;
 	klass->show_properties  = NULL;
 	klass->hide_properties  = NULL;
 
@@ -471,6 +481,26 @@ glade_app_class_init (GladeAppClass * klass)
 			      NULL, NULL,
 			      g_cclosure_marshal_VOID__VOID,
 			      G_TYPE_NONE, 0);
+
+	/**
+	 * GladeApp::signal-editor-created:
+	 * @gladeapp: the #GladeApp which received the signal.
+	 * @signal_editor: the new #GladeSignalEditor.
+	 *
+	 * Emitted when a new signal editor created.
+	 * A tree view is created in the default handler.
+	 * Connect your handler before the default handler for setting a custom column or renderer
+	 * and after it for connecting to the tree view signals
+	 */
+	glade_app_signals[SIGNAL_EDITOR_CREATED] =
+		g_signal_new ("signal-editor-created",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (GladeAppClass,
+					       signal_editor_created),
+			      NULL, NULL,
+			      glade_marshal_VOID__OBJECT,
+			      G_TYPE_NONE, 1, G_TYPE_OBJECT);
 
 	g_object_class_install_property 
 		(object_class, PROP_ACTIVE_PROJECT,

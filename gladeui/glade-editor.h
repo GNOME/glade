@@ -154,7 +154,7 @@ void         glade_editor_search_doc_search  (GladeEditor *editor,
 					      const gchar *book,
 					      const gchar *page,
 					      const gchar *search);
-
+void glade_editor_set_signal_editor (GladeEditor *editor, GladeSignalEditor *signal_editor);
 
 G_END_DECLS
 
