@@ -10,14 +10,15 @@
 # Hendrik Richter <hendrikr@gnome.org>, 2005, 2007.
 # Hendrik Brandt <heb@gnome-de.org>, 2007.
 # Christian Kirbach <Christian.Kirbach@googlemail.com>, 2008.
+# Andre Klapper <ak-47@gmx.net>, 2009.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glade3 HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-20 21:41+0100\n"
-"PO-Revision-Date: 2009-01-20 21:45+0100\n"
-"Last-Translator: Hendrik Richter <hendrikr@gnome.org>\n"
+"POT-Creation-Date: 2009-01-25 20:07+0100\n"
+"PO-Revision-Date: 2009-01-25 20:07+0100\n"
+"Last-Translator: Andre Klapper <ak-47@gmx.net>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type:  text/plain; charset=UTF-8\n"
@@ -506,13 +507,13 @@ msgid "_Undo"
 msgstr "_Rückgängig"
 
 #. Change tooltips
-#: ../src/glade-window.c:2656 ../gladeui/glade-app.c:268
+#: ../src/glade-window.c:2656 ../gladeui/glade-app.c:269
 #, c-format
 msgid "Undo: %s"
 msgstr "Rückgängig: %s"
 
 #: ../src/glade-window.c:2656 ../src/glade-window.c:2667
-#: ../gladeui/glade-app.c:269
+#: ../gladeui/glade-app.c:270
 msgid "the last action"
 msgstr "die letzte Aktion"
 
@@ -520,7 +521,7 @@ msgstr "die letzte Aktion"
 msgid "_Redo"
 msgstr "_Rückgängig"
 
-#: ../src/glade-window.c:2667 ../gladeui/glade-app.c:268
+#: ../src/glade-window.c:2667 ../gladeui/glade-app.c:269
 #, c-format
 msgid "Redo: %s"
 msgstr "Wiederholen: %s"
@@ -547,27 +548,27 @@ msgstr "Inspekteur"
 msgid "Properties"
 msgstr "Eigenschaften"
 
-#: ../gladeui/glade-app.c:430
+#: ../gladeui/glade-app.c:439
 msgid "Clipboard"
 msgstr "Zwischenablage"
 
-#: ../gladeui/glade-app.c:478
+#: ../gladeui/glade-app.c:508
 msgid "Active Project"
 msgstr "Aktive Projekt"
 
-#: ../gladeui/glade-app.c:479
+#: ../gladeui/glade-app.c:509
 msgid "The active project"
 msgstr "Das aktive Projekt"
 
-#: ../gladeui/glade-app.c:485
+#: ../gladeui/glade-app.c:515
 msgid "Pointer Mode"
 msgstr "Zeigermodus"
 
-#: ../gladeui/glade-app.c:486
+#: ../gladeui/glade-app.c:516
 msgid "Current mode for the pointer in the workspace"
 msgstr "Der momentane Modus für den Zeiger im Arbeitsbereich"
 
-#: ../gladeui/glade-app.c:556
+#: ../gladeui/glade-app.c:586
 #, c-format
 msgid ""
 "Trying to save private data to %s directory but it is a regular file.\n"
@@ -577,7 +578,7 @@ msgstr ""
 "speichern, es handelt sich hierbei aber um eine gewöhnliche Datei.\n"
 "In dieser Sitzung werden deshalb keine persönlichen Daten gespeichert."
 
-#: ../gladeui/glade-app.c:569
+#: ../gladeui/glade-app.c:599
 #, c-format
 msgid ""
 "Failed to create directory %s to save private data.\n"
@@ -587,7 +588,7 @@ msgstr ""
 "werden.\n"
 "In·dieser·Sitzung·werden·deshalb·keine·persönlichen·Daten·gespeichert."
 
-#: ../gladeui/glade-app.c:597
+#: ../gladeui/glade-app.c:627
 #, c-format
 msgid ""
 "Error writing private data to %s (%s).\n"
@@ -597,7 +598,7 @@ msgstr ""
 "s).\n"
 "In·dieser·Sitzung·werden·deshalb·keine·persönlichen·Daten·gespeichert."
 
-#: ../gladeui/glade-app.c:609
+#: ../gladeui/glade-app.c:639
 #, c-format
 msgid ""
 "Error serializing configuration data to save (%s).\n"
@@ -607,7 +608,7 @@ msgstr ""
 "s).\n"
 "In·dieser·Sitzung·werden·deshalb·keine·persönlichen·Daten·gespeichert."
 
-#: ../gladeui/glade-app.c:622
+#: ../gladeui/glade-app.c:652
 #, c-format
 msgid ""
 "Error opening %s to write private data (%s).\n"
@@ -616,37 +617,36 @@ msgstr ""
 "»%s« konnte zum Schreiben persönlicher Daten nicht geöffnet werden (%s).\n"
 "In·dieser·Sitzung·werden·deshalb·keine·persönlichen·Daten·gespeichert."
 
-#: ../gladeui/glade-app.c:1135 ../gladeui/glade-app.c:1176
-#: ../gladeui/glade-app.c:1335
+#: ../gladeui/glade-app.c:1165 ../gladeui/glade-app.c:1206
+#: ../gladeui/glade-app.c:1365
 msgid "No widget selected."
 msgstr "Kein Widget ausgewählt."
 
-#: ../gladeui/glade-app.c:1228
+#: ../gladeui/glade-app.c:1258
 msgid "Unable to paste to the selected parent"
 msgstr "Das Einfügen in das ausgewählte Elternelement war nicht möglich"
 
-#: ../gladeui/glade-app.c:1239
+#: ../gladeui/glade-app.c:1269
 msgid "Unable to paste to multiple widgets"
 msgstr "Einfügen in verschiedene Widgets war nicht möglich"
 
-#: ../gladeui/glade-app.c:1249 ../gladeui/glade-app.c:1355
+#: ../gladeui/glade-app.c:1279 ../gladeui/glade-app.c:1385
 msgid "No widget selected on the clipboard"
 msgstr "Es ist kein Widget in die Zwischenablage ausgewählt"
 
-#: ../gladeui/glade-app.c:1281
+#: ../gladeui/glade-app.c:1311
 msgid "Only one widget can be pasted at a time to this container"
 msgstr ""
 "Es kann gleichzeitig immer nur ein Widget in diesen Container eingefügt "
 "werden"
 
-#: ../gladeui/glade-app.c:1293
+#: ../gladeui/glade-app.c:1323
 msgid "Insufficient amount of placeholders in target container"
 msgstr "Ungenügend viele Platzhalter im Zielcontainer"
 
 #: ../gladeui/glade-builtins.c:71
-#, fuzzy
 msgid "Authentication"
-msgstr "die letzte Aktion"
+msgstr "Legitimation"
 
 #. GTK_STOCK_DIALOG_AUTHENTICATION
 #: ../gladeui/glade-builtins.c:72
@@ -661,15 +661,13 @@ msgstr "Mehrfach"
 
 #. GTK_STOCK_DND_MULTIPLE
 #: ../gladeui/glade-builtins.c:74
-#, fuzzy
 msgid "Color Picker"
-msgstr "GNOME-Farbwähler"
+msgstr "Farbwähler"
 
 #. GTK_STOCK_COLOR_PICKER
 #: ../gladeui/glade-builtins.c:75
-#, fuzzy
 msgid "Directory"
-msgstr "Verzeichnis:"
+msgstr "Verzeichnis"
 
 # Menues =================================================================
 #. GTK_STOCK_DIRECTORY
@@ -679,9 +677,8 @@ msgstr "Datei"
 
 #. GTK_STOCK_FILE
 #: ../gladeui/glade-builtins.c:77
-#, fuzzy
 msgid "Missing Image"
-msgstr "Meldung"
+msgstr "Fehlendes Bild"
 
 #: ../gladeui/glade-builtins.c:321
 msgid "Stock"
@@ -708,9 +705,8 @@ msgid "A list of objects"
 msgstr "Eine Objektliste"
 
 #: ../gladeui/glade-builtins.c:498
-#, fuzzy
 msgid "Image File Name"
-msgstr "Dateiname"
+msgstr "Bilddateiname"
 
 #: ../gladeui/glade-builtins.c:499
 msgid "Enter a filename, relative or fullpath to load the image"
@@ -810,7 +806,7 @@ msgstr "Container"
 msgid "The container object this editor is currently editing"
 msgstr ""
 
-#: ../gladeui/glade-base-editor.c:1663 ../gladeui/glade-editor.c:979
+#: ../gladeui/glade-base-editor.c:1663 ../gladeui/glade-editor.c:991
 msgid "General"
 msgstr "Allgemein"
 
@@ -1056,13 +1052,12 @@ msgid "Whether or not the translatable string has a context prefix"
 msgstr "Legt fest, ob der übersetzbare Text einen Kontextprefix besitzt"
 
 #: ../gladeui/glade-editor-property.c:1779
-#, fuzzy
 msgid "Conte_xt for translation:"
-msgstr "Kommentare für Übersetzer"
+msgstr "Konte_xt für Übersetzer:"
 
 #: ../gladeui/glade-editor-property.c:1817
 msgid "Co_mments for translators:"
-msgstr "Ko_mmentare für Übersetzer"
+msgstr "Ko_mmentare für Übersetzer:"
 
 #: ../gladeui/glade-editor-property.c:1935
 #, fuzzy
@@ -1209,7 +1204,7 @@ msgstr "Die X-Koordinate des Widgets im GtkFixed"
 
 #. construct tab label widget
 #: ../gladeui/glade-editor.c:203 ../gladeui/glade-editor.c:402
-#: ../gladeui/glade-editor.c:999
+#: ../gladeui/glade-editor.c:1011
 msgid "Accessibility"
 msgstr "Barrierefreiheit"
 
@@ -1244,52 +1239,52 @@ msgstr "_Packen"
 msgid "_Common"
 msgstr "_Gemeinsam"
 
-#: ../gladeui/glade-editor.c:809
+#: ../gladeui/glade-editor.c:821
 #, c-format
 msgid "Create a %s"
 msgstr "Ein %s anlegen"
 
-#: ../gladeui/glade-editor.c:928
+#: ../gladeui/glade-editor.c:940
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: ../gladeui/glade-editor.c:943
+#: ../gladeui/glade-editor.c:955
 msgid "Property"
 msgstr "Eigenschaft"
 
-#: ../gladeui/glade-editor.c:989
+#: ../gladeui/glade-editor.c:1001
 msgid "Common"
 msgstr "Gemeinsam"
 
-#: ../gladeui/glade-editor.c:1033
+#: ../gladeui/glade-editor.c:1045
 msgid "(default)"
 msgstr "(Standard)"
 
-#: ../gladeui/glade-editor.c:1048
+#: ../gladeui/glade-editor.c:1060
 msgid "Select the properties that you want to reset to their default values"
 msgstr ""
 "Wählen Sie die Eigenschaften aus, welche auf die Standardwerte zurückgesetzt "
 "werden sollen"
 
-#: ../gladeui/glade-editor.c:1180
+#: ../gladeui/glade-editor.c:1192
 msgid "Reset Widget Properties"
 msgstr "Widget-Eigenschaften zurücksetzen"
 
 #. Checklist
-#: ../gladeui/glade-editor.c:1197
+#: ../gladeui/glade-editor.c:1209
 msgid "_Properties:"
 msgstr "_Eigenschaften:"
 
-#: ../gladeui/glade-editor.c:1226
+#: ../gladeui/glade-editor.c:1238
 msgid "_Select All"
 msgstr "_Alle auswählen"
 
-#: ../gladeui/glade-editor.c:1233
+#: ../gladeui/glade-editor.c:1245
 msgid "_Unselect All"
 msgstr "Alle _abwählen"
 
 #. Description
-#: ../gladeui/glade-editor.c:1242
+#: ../gladeui/glade-editor.c:1254
 msgid "Property _Description:"
 msgstr "Ei_genschaftsbeschreibung:"
 
@@ -1404,9 +1399,8 @@ msgid "Whether project is read only or not"
 msgstr "Legt fest, ob das Projekt nur lesbar ist"
 
 #: ../gladeui/glade-project.c:842
-#, fuzzy
 msgid "Format"
-msgstr "Formular"
+msgstr "Format"
 
 #: ../gladeui/glade-project.c:843
 #, fuzzy
@@ -1424,9 +1418,9 @@ msgstr ""
 
 #: ../gladeui/glade-project.c:1276 ../gladeui/glade-project.c:1524
 #: ../gladeui/glade-project.c:3870
-#, fuzzy, c-format
+#, c-format
 msgid "%s preferences"
-msgstr "Projekteinstellungen ändern"
+msgstr "%s-Einstellungen"
 
 #. ******************************************************************
 #. Verify code here (versioning, incompatability checks)
@@ -1499,49 +1493,51 @@ msgstr "[%s] Objektklasse »%s« von %s %d.%d ist veraltet\n"
 #. * ugly messy code with comments in line breaks inside function calls).
 #.
 #: ../gladeui/glade-project.c:1588
-#, fuzzy
 msgid "This property is not supported in libglade format"
-msgstr "Dieses Widget wird nicht durch GtkBuilder unterstützt"
+msgstr "Diese Eigenschaft wird nicht durch das libglade-Format unterstützt"
 
 #. translators: reffers to a property '%s' of widget '[%s]'
 #: ../gladeui/glade-project.c:1591
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[%s] Property '%s' of object class '%s' is not supported in libglade format\n"
 msgstr ""
-"[%s] Eigenschaft »%s« der Objektklasse »%s« wurde eingeführt in %s %d.%d\n"
+"[%s] Eigenschaft »%s« der Objektklasse »%s« wird nicht durch das libglade-"
+"Format unterstützt\n"
 
 #. translators: reffers to a property '%s' of widget '[%s]'
 #: ../gladeui/glade-project.c:1594
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[%s] Packing property '%s' of object class '%s' is not supported in libglade "
 "format\n"
 msgstr ""
-"[%s] Packeigenschaft »%s« der Objektklasse »%s« wurde eingeführt in %s %d.%d\n"
+"[%s] Packeigenschaft »%s« der Objektklasse »%s« wird nicht durch das libglade-"
+"Format unterstützt\n"
 
 #: ../gladeui/glade-project.c:1597
-#, fuzzy
 msgid "This property is only supported in libglade format"
-msgstr "Diese Eigenschaft ist nur im Schriftinformationsmodus gültig"
+msgstr "Diese Eigenschaft wird nur im libglade-Format unterstützt"
 
 #. translators: reffers to a property '%s' of widget '[%s]'
 #: ../gladeui/glade-project.c:1600
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[%s] Property '%s' of object class '%s' is only supported in libglade "
 "format\n"
 msgstr ""
-"[%s] Eigenschaft »%s« der Objektklasse »%s« wurde eingeführt in %s %d.%d\n"
+"[%s] Eigenschaft »%s« der Objektklasse »%s« wird nur im libglade-Format "
+"unterstützt\n"
 
 #. translators: reffers to a property '%s' of widget '[%s]'
 #: ../gladeui/glade-project.c:1604
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[%s] Packing property '%s' of object class '%s' is only supported in "
 "libglade format\n"
 msgstr ""
-"[%s] Packeigenschaft »%s« der Objektklasse »%s« wurde eingeführt in %s %d.%d\n"
+"[%s] Packeigenschaft »%s« der Objektklasse »%s« wird nur im libglade-Format "
+"unterstützt\n"
 
 #. translators: reffers to a property in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
@@ -1631,9 +1627,8 @@ msgstr ""
 
 #. Project format
 #: ../gladeui/glade-project.c:3611
-#, fuzzy
 msgid "Project file format:"
-msgstr "Projektdatei:"
+msgstr "Projektdateiformat:"
 
 #. Naming policy format
 #: ../gladeui/glade-project.c:3654
@@ -1712,14 +1707,12 @@ msgstr ""
 "zu setzen"
 
 #: ../gladeui/glade-property.c:570
-#, fuzzy
 msgid "Context"
-msgstr "Inhalt"
+msgstr "Kontext"
 
 #: ../gladeui/glade-property.c:571
-#, fuzzy
 msgid "Context for translation"
-msgstr "Kommentare für Übersetzer"
+msgstr "Kontext für Übersetzer"
 
 #: ../gladeui/glade-property.c:577
 msgid "Comment"
@@ -1746,27 +1739,27 @@ msgstr "Visueller Zustand"
 msgid "Priority information for the property editor to act on"
 msgstr "Wichtigste Information für den Eigenschaftseditor"
 
-#: ../gladeui/glade-signal-editor.c:67
+#: ../gladeui/glade-signal-editor.c:76
 msgid "<Type here>"
 msgstr "<Hier schreiben>"
 
-#: ../gladeui/glade-signal-editor.c:687 ../plugins/gtk+/glade-accels.c:426
+#: ../gladeui/glade-signal-editor.c:714 ../plugins/gtk+/glade-accels.c:426
 msgid "Signal"
 msgstr "Signal"
 
-#: ../gladeui/glade-signal-editor.c:707
+#: ../gladeui/glade-signal-editor.c:743
 msgid "Handler"
 msgstr "Steuerung"
 
-#: ../gladeui/glade-signal-editor.c:729
+#: ../gladeui/glade-signal-editor.c:774
 msgid "User data"
 msgstr "Benutzerdaten"
 
-#: ../gladeui/glade-signal-editor.c:743
+#: ../gladeui/glade-signal-editor.c:791
 msgid "Lookup"
 msgstr "Nachschlagen"
 
-#: ../gladeui/glade-signal-editor.c:754 ../plugins/gtk+/gtk+.xml.in.h:33
+#: ../gladeui/glade-signal-editor.c:802 ../plugins/gtk+/gtk+.xml.in.h:33
 msgid "After"
 msgstr "Danach"
 
@@ -2041,9 +2034,8 @@ msgstr "Benutzer-Widget"
 
 #. Objects
 #: ../gladeui/glade-inspector.c:673 ../plugins/gtk+/gtk+.xml.in.h:494
-#, fuzzy
 msgid "Widgets"
-msgstr "Widget"
+msgstr "Widgets"
 
 #: ../gladeui/glade-inspector.c:994
 #, c-format
@@ -2169,37 +2161,31 @@ msgid "Status"
 msgstr "Status"
 
 #: ../plugins/gtk+/glade-attributes.c:216
-#, fuzzy
 msgctxt "textattr"
 msgid "Style"
 msgstr "Stil"
 
 #: ../plugins/gtk+/glade-attributes.c:220
-#, fuzzy
 msgctxt "textattr"
 msgid "Weight"
 msgstr "Gewicht"
 
 #: ../plugins/gtk+/glade-attributes.c:224
-#, fuzzy
 msgctxt "textattr"
 msgid "Variant"
 msgstr "Variante"
 
 #: ../plugins/gtk+/glade-attributes.c:228
-#, fuzzy
 msgctxt "textattr"
 msgid "Stretch"
 msgstr "Dehnung"
 
 #: ../plugins/gtk+/glade-attributes.c:232
-#, fuzzy
 msgctxt "textattr"
 msgid "Underline"
-msgstr "Unterstrich"
+msgstr "Unterstrichen"
 
 #: ../plugins/gtk+/glade-attributes.c:236
-#, fuzzy
 msgctxt "textattr"
 msgid "Strikethrough"
 msgstr "Durchgestrichen"
@@ -2217,46 +2203,39 @@ msgid "Gravity Hint"
 msgstr "Hinweis zur Gravitation"
 
 #: ../plugins/gtk+/glade-attributes.c:255
-#, fuzzy
 msgctxt "textattr"
 msgid "Size"
 msgstr "Größe"
 
 #: ../plugins/gtk+/glade-attributes.c:259
-#, fuzzy
 msgctxt "textattr"
 msgid "Absolute Size"
 msgstr "Absolute Größe"
 
 #: ../plugins/gtk+/glade-attributes.c:266
-#, fuzzy
 msgctxt "textattr"
 msgid "Foreground Color"
 msgstr "Vordergrundfarbe"
 
 #: ../plugins/gtk+/glade-attributes.c:270
-#, fuzzy
 msgctxt "textattr"
 msgid "Background Color"
 msgstr "Hintergrundfarbe"
 
 #: ../plugins/gtk+/glade-attributes.c:274
-#, fuzzy
 msgctxt "textattr"
 msgid "Underline Color"
 msgstr "Unterstrichfarbe"
 
 #: ../plugins/gtk+/glade-attributes.c:278
-#, fuzzy
 msgctxt "textattr"
 msgid "Strikethrough Color"
 msgstr "Durchstrichfarbe"
 
 #: ../plugins/gtk+/glade-attributes.c:288
-#, fuzzy
 msgctxt "textattr"
 msgid "Scale"
-msgstr "Skalieren"
+msgstr "Skalierung"
 
 #. XXX Interesting... can we get the defaults ? what can we do to let the user
 #. * unset the value ??
@@ -2294,12 +2273,10 @@ msgid "This property does not apply unless Use Underline is set."
 msgstr ""
 
 #: ../plugins/gtk+/glade-gtk.c:61
-#, fuzzy
 msgid "Property not selected"
-msgstr "Die Auswahl kopieren"
+msgstr "Eigenschaft nicht ausgewählt"
 
 #: ../plugins/gtk+/glade-gtk.c:62
-#, fuzzy
 msgid "this property is only for use in dialog action buttons"
 msgstr "Diese Eigenschaft ist nur in Dialogknöpfen gültig"
 
@@ -2313,9 +2290,8 @@ msgstr "Das GnomeUIInfo-Inventarelement auswählen"
 
 #. We have to save/load icon-size as int, and fake the enum
 #: ../plugins/gtk+/glade-gtk.c:199 ../plugins/gtk+/gtk+.xml.in.h:209
-#, fuzzy
 msgid "Icon Size"
-msgstr "Symbolgröße:"
+msgstr "Symbolgröße"
 
 #: ../plugins/gtk+/glade-gtk.c:200
 msgid "Symbolic size to use for stock icon, icon set or named icon"
@@ -2411,9 +2387,8 @@ msgid "<custom>"
 msgstr "<selbstdefiniert>"
 
 #: ../plugins/gtk+/glade-gtk.c:6369
-#, fuzzy
 msgid "Tool Item"
-msgstr "Werkzeugelement hinzufügen"
+msgstr "Werkzeugelement"
 
 #: ../plugins/gtk+/glade-gtk.c:6378
 #, fuzzy
@@ -2426,14 +2401,12 @@ msgstr "Menüeintrag"
 
 # Diverses ===============================================================
 #: ../plugins/gtk+/glade-gtk.c:6433 ../plugins/gtk+/glade-gtk.c:6441
-#, fuzzy
 msgid "Normal item"
-msgstr "Normal"
+msgstr "Normales Element"
 
 #: ../plugins/gtk+/glade-gtk.c:6434 ../plugins/gtk+/glade-gtk.c:6442
-#, fuzzy
 msgid "Image item"
-msgstr "Bildmenüeintrag"
+msgstr "Bildelement"
 
 #: ../plugins/gtk+/glade-gtk.c:6435 ../plugins/gtk+/glade-gtk.c:6443
 #, fuzzy
@@ -2664,9 +2637,8 @@ msgid "Combo Editor"
 msgstr "GnomeDbEditor"
 
 #: ../plugins/gtk+/glade-gtk.c:10787
-#, fuzzy
 msgid "Column"
-msgstr "Spalten:"
+msgstr "Spalte"
 
 #: ../plugins/gtk+/glade-gtk.c:10806
 #, fuzzy
@@ -2753,9 +2725,8 @@ msgid "Accessible Name"
 msgstr "Barrierefreier Name"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:22
-#, fuzzy
 msgid "Action"
-msgstr "Aktionen"
+msgstr "Aktion"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:23
 #, fuzzy
@@ -2812,9 +2783,8 @@ msgid "All Events"
 msgstr "Alle Ereignisse"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:38
-#, fuzzy
 msgid "All Modifiers"
-msgstr "Modifikatoren:"
+msgstr "Alle Modifikatoren"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:39
 #, fuzzy
@@ -3417,9 +3387,8 @@ msgid "Horizontal"
 msgstr "Horizontal"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:191
-#, fuzzy
 msgid "Horizontal Alignment"
-msgstr "Die horizontale Ausrichtung"
+msgstr "Horizontale Ausrichtung"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:192
 #, fuzzy
@@ -3474,9 +3443,8 @@ msgid "Hyper Modifier"
 msgstr "Modifikatoren:"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:204
-#, fuzzy
 msgid "Icon"
-msgstr "Symbole"
+msgstr "Symbol"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:205
 #, fuzzy
@@ -3679,9 +3647,8 @@ msgstr ""
 "visuell in den Inhalt eines anderen Objektes eingebettet ist."
 
 #: ../plugins/gtk+/gtk+.xml.in.h:247
-#, fuzzy
 msgid "Italic"
-msgstr "Statisch"
+msgstr "Kursiv"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:248
 msgid "Items"
@@ -3852,9 +3819,8 @@ msgid "Notification"
 msgstr "Benachrichtigung"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:294
-#, fuzzy
 msgid "Number of Pages"
-msgstr "Seitenanzahl:"
+msgstr "Seitenanzahl"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:295
 msgid "Number of items"
@@ -4583,9 +4549,8 @@ msgid "Vertical"
 msgstr "Vertikal"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:473
-#, fuzzy
 msgid "Vertical Alignment"
-msgstr "Die vertikale Ausrichtung"
+msgstr "Vertikale Ausrichtung"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:474
 #, fuzzy
@@ -4640,9 +4605,8 @@ msgid "Visibility Notify"
 msgstr "Visuelle Benachrichtigung"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:486
-#, fuzzy
 msgid "Visible"
-msgstr "Sichtbar:"
+msgstr "Sichtbar"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:487
 #, fuzzy
@@ -4877,9 +4841,8 @@ msgstr "Editierbar:"
 #: ../plugins/gtk+/glade-tool-button-editor.c:482
 #: ../plugins/gtk+/glade-image-editor.c:345
 #: ../plugins/gtk+/glade-image-item-editor.c:429
-#, fuzzy
 msgid "Edit Image"
-msgstr "Inventarbild"
+msgstr "Bild bearbeiten"
 
 #: ../plugins/gtk+/glade-image-editor.c:313
 #, c-format
