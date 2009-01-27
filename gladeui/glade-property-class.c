@@ -1487,12 +1487,18 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 		/* We overrode the pspec, now it *is* a virtual property. */
 		klass->virt              = TRUE;
 		
-		if (klass->tooltip) g_free (klass->tooltip);
-		if (klass->name)    g_free (klass->name);
-		
-		klass->tooltip = g_strdup (g_param_spec_get_blurb (klass->pspec));
-		klass->name    = g_strdup (g_param_spec_get_nick (klass->pspec));
-		
+		if (strcmp (g_param_spec_get_blurb (klass->pspec), "dummy") != 0)
+		{
+			g_free (klass->tooltip);
+			klass->tooltip = g_strdup (g_param_spec_get_blurb (klass->pspec));
+		}
+
+		if (strcmp (g_param_spec_get_nick (klass->pspec), "dummy") != 0)
+		{
+			g_free (klass->name);
+			klass->name = g_strdup (g_param_spec_get_nick (klass->pspec));
+		}
+
 		if (klass->pspec->flags & G_PARAM_CONSTRUCT_ONLY)
 			klass->construct_only = TRUE;
 		

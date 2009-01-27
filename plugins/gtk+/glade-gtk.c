@@ -4743,6 +4743,7 @@ glade_gtk_entry_set_property (GladeWidgetAdaptor *adaptor,
 {
 	GladeImageEditMode mode;
 	GladeWidget *gwidget = glade_widget_get_from_gobject (object);
+	GladeProperty *property = glade_widget_get_property (gwidget, id);
 
 	if (!strcmp (id, "primary-icon-mode"))
 	{
@@ -4784,7 +4785,8 @@ glade_gtk_entry_set_property (GladeWidgetAdaptor *adaptor,
 			break;
 		}
 	}
-	else
+	else if (property->klass->version_since_major <= gtk_major_version &&
+		 property->klass->version_since_minor <= gtk_minor_version)
 		GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
 }
 
@@ -5735,6 +5737,9 @@ glade_gtk_button_set_property (GladeWidgetAdaptor *adaptor,
 			       const gchar        *id,
 			       const GValue       *value)
 {
+	GladeWidget *widget = glade_widget_get_from_gobject (object);
+	GladeProperty *property = glade_widget_get_property (widget, id);
+
 	if (strcmp (id, "custom-child") == 0)
 	{
 		if (g_value_get_boolean (value))
@@ -5752,13 +5757,13 @@ glade_gtk_button_set_property (GladeWidgetAdaptor *adaptor,
 	}
 	else if (strcmp (id, "stock") == 0)
 	{
-		GladeWidget *widget = glade_widget_get_from_gobject (object);
 		gboolean use_stock  = FALSE;
 		glade_widget_property_get (widget, "use-stock", &use_stock);
 		if (use_stock)
 			gtk_button_set_label (GTK_BUTTON (object), g_value_get_string (value));
 	}
-	else
+	else if (property->klass->version_since_major <= gtk_major_version &&
+		 property->klass->version_since_minor <= gtk_minor_version)
 		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object,
 								  id, value);
 }
@@ -6619,11 +6624,15 @@ glade_gtk_menu_item_set_property (GladeWidgetAdaptor *adaptor,
 				  const gchar        *id,
 				  const GValue       *value)
 {
+	GladeWidget *gwidget = glade_widget_get_from_gobject (object);
+	GladeProperty *property = glade_widget_get_property (gwidget, id);
+
 	if (!strcmp (id, "use-underline"))
 		glade_gtk_menu_item_set_use_underline (object, value);
 	else if (!strcmp (id, "label"))
 		glade_gtk_menu_item_set_label (object, value);
-	else
+	else if (property->klass->version_since_major <= gtk_major_version &&
+		 property->klass->version_since_minor <= gtk_minor_version)
 		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object,
 								  id, value);
 }
@@ -7480,6 +7489,22 @@ glade_gtk_tool_item_post_create (GladeWidgetAdaptor *adaptor,
 	    gtk_bin_get_child (GTK_BIN (object)) == NULL)
 		gtk_container_add (GTK_CONTAINER (object),
 				   glade_placeholder_new ());
+}
+
+void
+glade_gtk_tool_item_set_property (GladeWidgetAdaptor *adaptor,
+				  GObject            *object, 
+				  const gchar        *id,
+				  const GValue       *value)
+{
+	GladeWidget *gwidget = glade_widget_get_from_gobject (object);
+	GladeProperty *property = glade_widget_get_property (gwidget, id);
+
+	if (property->klass->version_since_major <= gtk_major_version &&
+	    property->klass->version_since_minor <= gtk_minor_version)
+		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor,
+								  object,
+								  id, value);
 }
 
 /* ----------------------------- GtkToolButton ------------------------------ */
