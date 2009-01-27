@@ -4748,19 +4748,19 @@ glade_gtk_entry_set_property (GladeWidgetAdaptor *adaptor,
 	{
 		mode = g_value_get_int (value);
 
-		glade_widget_property_set_sensitive (gwidget, "stock-primary", FALSE, NOT_SELECTED_MSG);
-		glade_widget_property_set_sensitive (gwidget, "icon-name-primary", FALSE, NOT_SELECTED_MSG);
-		glade_widget_property_set_sensitive (gwidget, "pixbuf-primary", FALSE, NOT_SELECTED_MSG);
+		glade_widget_property_set_sensitive (gwidget, "primary-icon-stock", FALSE, NOT_SELECTED_MSG);
+		glade_widget_property_set_sensitive (gwidget, "primary-icon-name", FALSE, NOT_SELECTED_MSG);
+		glade_widget_property_set_sensitive (gwidget, "primary-icon-pixbuf", FALSE, NOT_SELECTED_MSG);
 
 		switch (mode) {
 		case GLADE_IMAGE_MODE_STOCK:
-			glade_widget_property_set_sensitive (gwidget, "stock-primary", TRUE, NULL);
+			glade_widget_property_set_sensitive (gwidget, "primary-icon-stock", TRUE, NULL);
 			break;
 		case GLADE_IMAGE_MODE_ICON:	
-			glade_widget_property_set_sensitive (gwidget, "icon-name-primary", TRUE, NULL);
+			glade_widget_property_set_sensitive (gwidget, "primary-icon-name", TRUE, NULL);
 			break;
 		case GLADE_IMAGE_MODE_FILENAME: 
-			glade_widget_property_set_sensitive (gwidget, "pixbuf-primary", TRUE, NULL);
+			glade_widget_property_set_sensitive (gwidget, "primary-icon-pixbuf", TRUE, NULL);
 			break;
 		}
 	}
@@ -4768,19 +4768,19 @@ glade_gtk_entry_set_property (GladeWidgetAdaptor *adaptor,
 	{
 		mode = g_value_get_int (value);
 
-		glade_widget_property_set_sensitive (gwidget, "stock-secondary", FALSE, NOT_SELECTED_MSG);
-		glade_widget_property_set_sensitive (gwidget, "icon-name-secondary", FALSE, NOT_SELECTED_MSG);
-		glade_widget_property_set_sensitive (gwidget, "pixbuf-secondary", FALSE, NOT_SELECTED_MSG);
+		glade_widget_property_set_sensitive (gwidget, "secondary-icon-stock", FALSE, NOT_SELECTED_MSG);
+		glade_widget_property_set_sensitive (gwidget, "secondary-icon-name", FALSE, NOT_SELECTED_MSG);
+		glade_widget_property_set_sensitive (gwidget, "secondary-icon-pixbuf", FALSE, NOT_SELECTED_MSG);
 
 		switch (mode) {
 		case GLADE_IMAGE_MODE_STOCK:
-			glade_widget_property_set_sensitive (gwidget, "stock-secondary", TRUE, NULL);
+			glade_widget_property_set_sensitive (gwidget, "secondary-icon-stock", TRUE, NULL);
 			break;
 		case GLADE_IMAGE_MODE_ICON:	
-			glade_widget_property_set_sensitive (gwidget, "icon-name-secondary", TRUE, NULL);
+			glade_widget_property_set_sensitive (gwidget, "secondary-icon-name", TRUE, NULL);
 			break;
 		case GLADE_IMAGE_MODE_FILENAME: 
-			glade_widget_property_set_sensitive (gwidget, "pixbuf-secondary", TRUE, NULL);
+			glade_widget_property_set_sensitive (gwidget, "secondary-icon-pixbuf", TRUE, NULL);
 			break;
 		}
 	}
@@ -4802,37 +4802,37 @@ glade_gtk_entry_read_widget (GladeWidgetAdaptor *adaptor,
 	/* First chain up and read in all the normal properties.. */
         GWA_GET_CLASS (GTK_TYPE_WIDGET)->read_widget (adaptor, widget, node);
 	
-	if (glade_widget_property_original_default (widget, "icon-name-primary") == FALSE)
+	if (glade_widget_property_original_default (widget, "primary-icon-name") == FALSE)
 	{
-		property = glade_widget_get_property (widget, "icon-name-primary");
+		property = glade_widget_get_property (widget, "primary-icon-name");
 		glade_widget_property_set (widget, "primary-icon-mode", GLADE_IMAGE_MODE_ICON);
 	}
-	else if (glade_widget_property_original_default (widget, "pixbuf-primary") == FALSE)
+	else if (glade_widget_property_original_default (widget, "primary-icon-pixbuf") == FALSE)
 	{
-		property = glade_widget_get_property (widget, "pixbuf-primary");
+		property = glade_widget_get_property (widget, "primary-icon-pixbuf");
 		glade_widget_property_set (widget, "primary-icon-mode", GLADE_IMAGE_MODE_FILENAME);
 	}
 	else/*  if (glade_widget_property_original_default (widget, "stock") == FALSE) */
 	{
-		property = glade_widget_get_property (widget, "stock-primary");
+		property = glade_widget_get_property (widget, "primary-icon-stock");
 		glade_widget_property_set (widget, "primary-icon-mode", GLADE_IMAGE_MODE_STOCK);
 	}
 
 	glade_property_sync (property);
 
-	if (glade_widget_property_original_default (widget, "icon-name-secondary") == FALSE)
+	if (glade_widget_property_original_default (widget, "secondary-icon-name") == FALSE)
 	{
-		property = glade_widget_get_property (widget, "icon-name-secondary");
+		property = glade_widget_get_property (widget, "secondary-icon-name");
 		glade_widget_property_set (widget, "secondary-icon-mode", GLADE_IMAGE_MODE_ICON);
 	}
-	else if (glade_widget_property_original_default (widget, "pixbuf-secondary") == FALSE)
+	else if (glade_widget_property_original_default (widget, "secondary-icon-pixbuf") == FALSE)
 	{
-		property = glade_widget_get_property (widget, "pixbuf-secondary");
+		property = glade_widget_get_property (widget, "secondary-icon-pixbuf");
 		glade_widget_property_set (widget, "secondary-icon-mode", GLADE_IMAGE_MODE_FILENAME);
 	}
 	else/*  if (glade_widget_property_original_default (widget, "stock") == FALSE) */
 	{
-		property = glade_widget_get_property (widget, "stock-secondary");
+		property = glade_widget_get_property (widget, "secondary-icon-stock");
 		glade_widget_property_set (widget, "secondary-icon-mode", GLADE_IMAGE_MODE_STOCK);
 	}
 

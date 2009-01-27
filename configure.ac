@@ -4,7 +4,7 @@ AC_PREREQ(2.52)
 
 m4_define(glade_major_version, 3)
 m4_define(glade_minor_version, 5)
-m4_define(glade_micro_version, 6)
+m4_define(glade_micro_version, 7)
 m4_define(glade_version, glade_major_version.glade_minor_version.glade_micro_version)
 
 AC_INIT([glade3], [glade_version],

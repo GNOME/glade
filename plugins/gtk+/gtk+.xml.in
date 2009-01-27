@@ -792,18 +792,18 @@ embedded in another object</_tooltip>
         <property id="inner-border" since="2.10"/>
         <property id="truncate-multiline" since="2.10"/>
 	<property id="shadow-type" since="2.12"/>
-	<property id="gicon-primary" disabled="True"/>
-	<property id="gicon-secondary" disabled="True"/>
-	<property id="stock-primary" since="2.16" custom-layout="True" stock-icon="True"/>
-	<property id="stock-secondary" since="2.16" custom-layout="True" stock-icon="True"/>
-	<property id="pixbuf-primary" since="2.16" custom-layout="True"/>
-	<property id="pixbuf-secondary" since="2.16" custom-layout="True"/>
-	<property id="icon-name-primary" since="2.16" custom-layout="True" themed-icon="True"/>
-	<property id="icon-name-secondary" since="2.16" custom-layout="True" themed-icon="True"/>
-	<property id="activatable-primary" since="2.16" custom-layout="True"/>
-	<property id="activatable-secondary" since="2.16" custom-layout="True"/>
-	<property id="sensitive-primary" since="2.16" custom-layout="True"/>
-	<property id="sensitive-secondary" since="2.16" custom-layout="True"/>
+	<property id="primary-icon-gicon" disabled="True"/>
+	<property id="secondary-icon-gicon" disabled="True"/>
+	<property id="primary-icon-stock" since="2.16" custom-layout="True" stock-icon="True"/>
+	<property id="secondary-icon-stock" since="2.16" custom-layout="True" stock-icon="True"/>
+	<property id="primary-icon-pixbuf" since="2.16" custom-layout="True"/>
+	<property id="secondary-icon-pixbuf" since="2.16" custom-layout="True"/>
+	<property id="primary-icon-name" since="2.16" custom-layout="True" themed-icon="True"/>
+	<property id="secondary-icon-name" since="2.16" custom-layout="True" themed-icon="True"/>
+	<property id="primary-icon-activatable" since="2.16" custom-layout="True"/>
+	<property id="secondary-icon-activatable" since="2.16" custom-layout="True"/>
+	<property id="primary-icon-sensitive" since="2.16" custom-layout="True"/>
+	<property id="secondary-icon-sensitive" since="2.16" custom-layout="True"/>
 	<property id="progress-fraction" since="2.16" custom-layout="True"/>
 	<property id="progress-pulse-step" since="2.16" custom-layout="True"/>
 
@@ -1831,7 +1831,15 @@ embedded in another object</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkAction" generic-name="action" _title="Action" 
-			libglade-unsupported="True" toplevel="True"/>
+			libglade-unsupported="True" toplevel="True">
+      <properties>
+	<property id="stock-id" stock-icon="True"/>
+	<property id="icon-name" themed-icon="True"/>
+	<property id="gicon" disabled="True"/>
+	<property id="action-group" disabled="True"/>
+      </properties>
+    </glade-widget-class>
+
     <glade-widget-class name="GtkToggleAction" generic-name="toggleaction" _title="Toggle Action" 
 			libglade-unsupported="True"/>
     <glade-widget-class name="GtkRadioAction" generic-name="radioaction" _title="Radio Action" 

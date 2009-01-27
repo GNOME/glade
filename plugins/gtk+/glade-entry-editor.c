@@ -206,10 +206,10 @@ glade_entry_editor_grab_focus (GtkWidget *widget)
 }
 
 
-#define ICON_MODE_NAME(primary)   ((primary) ? "primary-icon-mode" : "secondary-icon-mode")
-#define PIXBUF_NAME(primary)      ((primary) ? "pixbuf-primary"    : "pixbuf-secondary")
-#define ICON_NAME_NAME(primary)   ((primary) ? "icon-name-primary" : "icon-name-secondary")
-#define STOCK_NAME(primary)       ((primary) ? "stock-primary"     : "stock-secondary")
+#define ICON_MODE_NAME(primary)   ((primary) ? "primary-icon-mode"    : "secondary-icon-mode")
+#define PIXBUF_NAME(primary)      ((primary) ? "primary-icon-pixbuf"  : "secondary-icon-pixbuf")
+#define ICON_NAME_NAME(primary)   ((primary) ? "primary-icon-name"    : "secondary-icon-name")
+#define STOCK_NAME(primary)       ((primary) ? "primary-icon-stock"   : "secondary-icon-stock")
 
 static void
 set_stock_mode (GladeEntryEditor *entry_editor, gboolean primary)
@@ -491,7 +491,7 @@ glade_entry_editor_new (GladeWidgetAdaptor *adaptor,
 	group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
 	/* Pixbuf */
-	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "pixbuf-primary", FALSE, TRUE);
+	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, PIXBUF_NAME(TRUE), FALSE, TRUE);
 	hbox  = gtk_hbox_new (FALSE, 0);
 	entry_editor->primary_pixbuf_radio = gtk_radio_button_new (NULL);
 	gtk_box_pack_start (GTK_BOX (hbox), entry_editor->primary_pixbuf_radio, FALSE, FALSE, 2);
@@ -501,7 +501,7 @@ glade_entry_editor_new (GladeWidgetAdaptor *adaptor,
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
 
 	/* Stock */
-	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "stock-primary", FALSE, TRUE);
+	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, STOCK_NAME(TRUE), FALSE, TRUE);
 	hbox  = gtk_hbox_new (FALSE, 0);
 	entry_editor->primary_stock_radio = gtk_radio_button_new_from_widget
 	  (GTK_RADIO_BUTTON (entry_editor->primary_pixbuf_radio));
@@ -512,7 +512,7 @@ glade_entry_editor_new (GladeWidgetAdaptor *adaptor,
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
 
 	/* Icon name */
-	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "icon-name-primary", FALSE, TRUE);
+	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, ICON_NAME_NAME(TRUE), FALSE, TRUE);
 	hbox  = gtk_hbox_new (FALSE, 0);
 	entry_editor->primary_icon_name_radio = gtk_radio_button_new_from_widget
 	  (GTK_RADIO_BUTTON (entry_editor->primary_pixbuf_radio));
@@ -522,12 +522,12 @@ glade_entry_editor_new (GladeWidgetAdaptor *adaptor,
 	table_attach (table, GTK_WIDGET (eprop), 1, 2, group);
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
 
-	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "activatable-primary", FALSE, TRUE);
+	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "primary-icon-activatable", FALSE, TRUE);
 	table_attach (table, eprop->item_label, 0, 3, group);
 	table_attach (table, GTK_WIDGET (eprop), 1, 3, group);
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
 
-	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "sensitive-primary", FALSE, TRUE);
+	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "primary-icon-sensitive", FALSE, TRUE);
 	table_attach (table, eprop->item_label, 0, 4, group);
 	table_attach (table, GTK_WIDGET (eprop), 1, 4, group);
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
@@ -554,7 +554,7 @@ glade_entry_editor_new (GladeWidgetAdaptor *adaptor,
 	group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
 	/* Pixbuf */
-	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "pixbuf-secondary", FALSE, TRUE);
+	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, PIXBUF_NAME(FALSE), FALSE, TRUE);
 	hbox  = gtk_hbox_new (FALSE, 0);
 	entry_editor->secondary_pixbuf_radio = gtk_radio_button_new (NULL);
 	gtk_box_pack_start (GTK_BOX (hbox), entry_editor->secondary_pixbuf_radio, FALSE, FALSE, 2);
@@ -564,7 +564,7 @@ glade_entry_editor_new (GladeWidgetAdaptor *adaptor,
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
 
 	/* Stock */
-	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "stock-secondary", FALSE, TRUE);
+	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, STOCK_NAME(FALSE), FALSE, TRUE);
 	hbox  = gtk_hbox_new (FALSE, 0);
 	entry_editor->secondary_stock_radio = gtk_radio_button_new_from_widget
 	  (GTK_RADIO_BUTTON (entry_editor->secondary_pixbuf_radio));
@@ -575,7 +575,7 @@ glade_entry_editor_new (GladeWidgetAdaptor *adaptor,
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
 
 	/* Icon name */
-	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "icon-name-secondary", FALSE, TRUE);
+	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, ICON_NAME_NAME(FALSE), FALSE, TRUE);
 	hbox  = gtk_hbox_new (FALSE, 0);
 	entry_editor->secondary_icon_name_radio = gtk_radio_button_new_from_widget
 	  (GTK_RADIO_BUTTON (entry_editor->secondary_pixbuf_radio));
@@ -585,12 +585,12 @@ glade_entry_editor_new (GladeWidgetAdaptor *adaptor,
 	table_attach (table, GTK_WIDGET (eprop), 1, 2, group);
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
 
-	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "activatable-secondary", FALSE, TRUE);
+	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "secondary-icon-activatable", FALSE, TRUE);
 	table_attach (table, eprop->item_label, 0, 3, group);
 	table_attach (table, GTK_WIDGET (eprop), 1, 3, group);
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
 
-	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "sensitive-secondary", FALSE, TRUE);
+	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "secondary-icon-sensitive", FALSE, TRUE);
 	table_attach (table, eprop->item_label, 0, 4, group);
 	table_attach (table, GTK_WIDGET (eprop), 1, 4, group);
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
