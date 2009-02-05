@@ -84,7 +84,7 @@ glade_tool_button_editor_load (GladeEditable *editable,
 			       GladeWidget   *widget)
 {
 	GladeToolButtonEditor     *button_editor = GLADE_TOOL_BUTTON_EDITOR (editable);
-	gboolean                   custom_label  = FALSE;
+	gboolean                   custom_label  = FALSE, use_appearance = FALSE;
 	GladeToolButtonImageMode   image_mode    = 0;
 	GList                     *l;
 
@@ -128,6 +128,7 @@ glade_tool_button_editor_load (GladeEditable *editable,
 	{
 		glade_widget_property_get (widget, "image-mode", &image_mode);
 		glade_widget_property_get (widget, "custom-label", &custom_label);
+		glade_widget_property_get (widget, "use-action-appearance", &use_appearance);
 
 		if (custom_label)
 			gtk_toggle_button_set_active
@@ -152,6 +153,17 @@ glade_tool_button_editor_load (GladeEditable *editable,
 			break;
 		default:
 			break;
+		}
+
+		if (use_appearance)
+		{
+			gtk_widget_set_sensitive (button_editor->label_table, FALSE);
+			gtk_widget_set_sensitive (button_editor->image_table, FALSE);
+		}
+		else
+		{
+			gtk_widget_set_sensitive (button_editor->label_table, TRUE);
+			gtk_widget_set_sensitive (button_editor->image_table, TRUE);
 		}
 	}
 	button_editor->loading = FALSE;
@@ -450,7 +462,7 @@ glade_tool_button_editor_new (GladeWidgetAdaptor *adaptor,
 	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 6, 0, 12, 0);
 	gtk_container_add (GTK_CONTAINER (frame), alignment);
 
-	table = gtk_table_new (0, 0, FALSE);
+	button_editor->label_table = table = gtk_table_new (0, 0, FALSE);
 	gtk_container_add (GTK_CONTAINER (alignment), table);
 
 	group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
@@ -492,7 +504,7 @@ glade_tool_button_editor_new (GladeWidgetAdaptor *adaptor,
 	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 6, 0, 12, 0);
 	gtk_container_add (GTK_CONTAINER (frame), alignment);
 
-	table = gtk_table_new (0, 0, FALSE);
+	button_editor->image_table = table = gtk_table_new (0, 0, FALSE);
 	gtk_container_add (GTK_CONTAINER (alignment), table);
 
 	gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);

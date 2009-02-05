@@ -59,6 +59,7 @@ enum {
 
 enum {
 	CHANGED,
+	COMMIT,
 	LAST_SIGNAL
 };
 
@@ -80,22 +81,12 @@ static guint  glade_eprop_signals[LAST_SIGNAL] = { 0, };
 static void glade_editor_property_load_common (GladeEditorProperty *eprop, 
 					       GladeProperty       *property);
 
-/** 
- * glade_editor_property_commit:
- * @eprop: A #GladeEditorProperty
- * @value: The #GValue
- *
- * Commits the value onto the widget and glade-command interface
- * (for use in GladeEditorProperty implementations)
- */
-void
-glade_editor_property_commit (GladeEditorProperty *eprop,
-			      GValue              *value)
+static void
+glade_editor_property_commit_common (GladeEditorProperty *eprop,
+				     GValue              *value)
 {
 	GladeProject *project;
 	GladeProjectFormat fmt;
-	
-	g_return_if_fail (GLADE_IS_EDITOR_PROPERTY (eprop));
 
 	if (eprop->use_command == FALSE)
 		glade_property_set_value (eprop->property, value);
@@ -113,7 +104,7 @@ glade_editor_property_commit (GladeEditorProperty *eprop,
 		GLADE_EDITOR_PROPERTY_GET_CLASS (eprop)->load (eprop, eprop->property);
 	else
 		/* publish a value change to those interested */
-		g_signal_emit (G_OBJECT (eprop), glade_eprop_signals [CHANGED], 0, eprop->property);
+		g_signal_emit (G_OBJECT (eprop), glade_eprop_signals[CHANGED], 0, eprop->property);
 }
 
 void
@@ -563,6 +554,7 @@ glade_editor_property_class_init (GladeEditorPropertyClass *eprop_class)
 
 	/* Class methods */
 	eprop_class->load          = glade_editor_property_load_common;
+	eprop_class->commit        = glade_editor_property_commit_common;
 	eprop_class->create_input  = NULL;
 
 	
@@ -582,6 +574,22 @@ glade_editor_property_class_init (GladeEditorPropertyClass *eprop_class)
 			      g_cclosure_marshal_VOID__OBJECT,
 			      G_TYPE_NONE, 1, GLADE_TYPE_PROPERTY);
 
+	/**
+	 * GladeEditorProperty::commit:
+	 * @gladeeditorproperty: the #GladeEditorProperty which changed value
+	 * @arg1: the new #GValue to commit.
+	 *
+	 * Emitted when a property's value is committed, can be useful to serialize
+	 * commands before and after the property's commit command from custom editors.
+	 */
+	glade_eprop_signals[COMMIT] =
+		g_signal_new ("commit",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (GladeEditorPropertyClass, commit),
+			      NULL, NULL,
+			      glade_marshal_VOID__POINTER,
+			      G_TYPE_NONE, 1, G_TYPE_POINTER);
 
 	/* Properties */
 	g_object_class_install_property 
@@ -3527,6 +3535,23 @@ glade_eprop_adjustment_create_input (GladeEditorProperty *eprop)
 /*******************************************************************************
                                      API
  *******************************************************************************/
+/**
+ * glade_editor_property_commit:
+ * @eprop: A #GladeEditorProperty
+ * @value: The #GValue to commit
+ *
+ * Commits @value to the property currently being edited by @eprop.
+ *
+ */
+void
+glade_editor_property_commit (GladeEditorProperty *eprop,
+			      GValue              *value)
+{
+	g_return_if_fail (GLADE_IS_EDITOR_PROPERTY (eprop));
+	g_return_if_fail (G_IS_VALUE (value));
+
+	g_signal_emit (G_OBJECT (eprop), glade_eprop_signals[COMMIT], 0, value);
+}
 
 /**
  * glade_editor_property_load:

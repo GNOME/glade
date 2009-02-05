@@ -86,7 +86,7 @@ glade_button_editor_load (GladeEditable *editable,
 	GladeButtonEditor *button_editor = GLADE_BUTTON_EDITOR (editable);
 	GladeWidget       *gchild = NULL;
 	GtkWidget         *child, *button;
-	gboolean           use_stock = FALSE;
+	gboolean           use_stock = FALSE, use_appearance = FALSE;
 	GList *l;
 
 	button_editor->loading = TRUE;
@@ -130,6 +130,8 @@ glade_button_editor_load (GladeEditable *editable,
 
 	if (widget)
 	{
+		glade_widget_property_get (widget, "use-action-appearance", &use_appearance);
+
 		button = GTK_WIDGET (widget->object);
 		child  = GTK_BIN (button)->child;
 		if (child)
@@ -164,6 +166,12 @@ glade_button_editor_load (GladeEditable *editable,
 				gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button_editor->label_radio), TRUE);
 			}
 		}
+
+		if (use_appearance)
+			gtk_widget_set_sensitive (button_editor->custom_radio, FALSE);
+		else
+			gtk_widget_set_sensitive (button_editor->custom_radio, TRUE);
+
 	}
 	button_editor->loading = FALSE;
 }
@@ -216,6 +224,7 @@ standard_toggled (GtkWidget         *widget,
 	GladeWidget       *gchild = NULL;
 	GtkWidget         *child, *button;
 	GValue             value;
+	gboolean           use_appearance = FALSE;
 
 	if (button_editor->loading || !button_editor->loaded_widget)
 		return;
@@ -251,10 +260,14 @@ standard_toggled (GtkWidget         *widget,
 	property = glade_widget_get_property (button_editor->loaded_widget, "use-stock");
 	glade_command_set_property (property, FALSE);
 
-	property = glade_widget_get_property (button_editor->loaded_widget, "label");
-	glade_property_get_default (property, &value);
-	glade_command_set_property_value (property, &value);
-	g_value_unset (&value);
+	glade_widget_property_get (button_editor->loaded_widget, "use-action-appearance", &use_appearance);
+	if (!use_appearance)
+	{
+		property = glade_widget_get_property (button_editor->loaded_widget, "label");
+		glade_property_get_default (property, &value);
+		glade_command_set_property_value (property, &value);
+		g_value_unset (&value);
+	}
 
 	glade_command_pop_group ();
 
@@ -313,6 +326,7 @@ stock_toggled (GtkWidget         *widget,
 	       GladeButtonEditor *button_editor)
 {
 	GladeProperty     *property;
+	gboolean           use_appearance = FALSE;
 
 	if (button_editor->loading || !button_editor->loaded_widget)
 		return;
@@ -328,8 +342,12 @@ stock_toggled (GtkWidget         *widget,
 	property = glade_widget_get_property (button_editor->loaded_widget, "image");
 	glade_command_set_property (property, NULL);
 
-	property = glade_widget_get_property (button_editor->loaded_widget, "label");
-	glade_command_set_property (property, NULL);
+	glade_widget_property_get (button_editor->loaded_widget, "use-action-appearance", &use_appearance);
+	if (!use_appearance)
+	{
+		property = glade_widget_get_property (button_editor->loaded_widget, "label");
+		glade_command_set_property (property, "");
+	}
 
 	property = glade_widget_get_property (button_editor->loaded_widget, "use-stock");
 	glade_command_set_property (property, TRUE);
@@ -352,6 +370,7 @@ label_toggled (GtkWidget         *widget,
 {
 	GladeProperty     *property;
 	GValue             value = { 0, };
+	gboolean           use_appearance = FALSE;
 
 	if (button_editor->loading || !button_editor->loaded_widget)
 		return;
@@ -369,10 +388,14 @@ label_toggled (GtkWidget         *widget,
 	property = glade_widget_get_property (button_editor->loaded_widget, "use-stock");
 	glade_command_set_property (property, FALSE);
 
-	property = glade_widget_get_property (button_editor->loaded_widget, "label");
-	glade_property_get_default (property, &value);
-	glade_command_set_property_value (property, &value);
-	g_value_unset (&value);
+	glade_widget_property_get (button_editor->loaded_widget, "use-action-appearance", &use_appearance);
+	if (!use_appearance)
+	{
+		property = glade_widget_get_property (button_editor->loaded_widget, "label");
+		glade_property_get_default (property, &value);
+		glade_command_set_property_value (property, &value);
+		g_value_unset (&value);
+	}
 
 	glade_command_pop_group ();
 

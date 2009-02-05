@@ -126,6 +126,8 @@ struct _GladeEditorPropertyClass {
 
 	GtkWidget  *(* create_input)  (GladeEditorProperty *);
 
+	void        (* commit)        (GladeEditorProperty *, GValue *);
+
 	void       *(* changed)       (GladeEditorProperty *, GladeProperty *);
 };
 

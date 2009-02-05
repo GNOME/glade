@@ -1,3 +1,20 @@
+2009-02-05  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-editor-property.c: Added "commit" signal to allow custom editors to do
+	command group/macros serialized around property changes.
+
+	* plugins/gtk+/glade-activatable-editor.[ch], plugins/gtk+/Makefile.am, po/POTFILES.in:
+	New activatable editor to handle activatable properties in smart ways.
+
+	* plugins/gtk+/glade-gtk.c: Made various properties insensitive when activatable
+	properties are in effect.
+
+	* plugins/gtk+/glade-tool-button-editor.c: Made tables insensitive when activatable
+	properties are in effect.
+
+	* plugins/gtk+/glade-button-editor.c: Allow use of use-stock choice while activatable
+	properties are in effect.
+
 2009-01-27  Tristan Van Berkom <tvb@gnome.org>
 
 	* configure.ac: Bumping version for Anjuta dependancy

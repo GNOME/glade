@@ -52,14 +52,17 @@ struct _GladeToolButtonEditor
 
 	GtkWidget *embed;           /* Embedded parent class editor */
 
+	GtkWidget *label_table;
 	GtkWidget *standard_label_radio; /* Set label with label property */
 	GtkWidget *custom_label_radio;   /* Set a widget to be placed as the tool button's label */
 
 
+	GtkWidget *image_table;
 	GtkWidget *stock_radio;    /* Create the image from stock-id */
 	GtkWidget *icon_radio;     /* Create the image with the icon theme */
 	GtkWidget *file_radio;     /* Create the image from filename (libglade only) */
 	GtkWidget *custom_radio;   /* Set a widget to be used in the image position */
+
 
 	GList *properties;         /* A list of eprops to update at load() time */
 

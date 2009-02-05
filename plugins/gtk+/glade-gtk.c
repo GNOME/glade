@@ -42,6 +42,7 @@
 #include "glade-cell-renderer-editor.h"
 #include "glade-treeview-editor.h"
 #include "glade-entry-editor.h"
+#include "glade-activatable-editor.h"
 
 #include <gladeui/glade-editor-property.h>
 #include <gladeui/glade-base-editor.h>
@@ -59,7 +60,8 @@
 
 #define MNEMONIC_INSENSITIVE_MSG   _("This property does not apply unless Use Underline is set.")
 #define NOT_SELECTED_MSG           _("Property not selected")
-#define RESPID_INSENSITIVE_MSG     _("this property is only for use in dialog action buttons")
+#define RESPID_INSENSITIVE_MSG     _("This property is only for use in dialog action buttons")
+#define ACTION_APPEARANCE_MSG      _("This property is set to be controled by an Action")
 /* -------------------------------- ParamSpecs ------------------------------ */
 /*
 GtkImageMenuItem GnomeUI "stock_item" property special case:
@@ -4786,7 +4788,7 @@ glade_gtk_entry_set_property (GladeWidgetAdaptor *adaptor,
 		}
 	}
 	else if (property->klass->version_since_major <= gtk_major_version &&
-		 property->klass->version_since_minor <= gtk_minor_version)
+		 property->klass->version_since_minor <= (gtk_minor_version + 1))
 		GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
 }
 
@@ -5691,6 +5693,66 @@ glade_gtk_color_button_refresh_color (GtkColorButton  *button,
 
 /* ----------------------------- GtkButton ------------------------------ */
 
+/* shared between menuitems and toolitems too */
+static void
+evaluate_activatable_property_sensitivity (GObject            *object, 
+					   const gchar        *id,
+					   const GValue       *value)
+{
+	GladeWidget *gwidget = glade_widget_get_from_gobject (object);
+
+	if (!strcmp (id, "related-action"))
+	{
+		GtkAction *action = g_value_get_object (value);
+
+		if (action)
+		{
+			glade_widget_property_set_sensitive (gwidget, "visible", FALSE, ACTION_APPEARANCE_MSG);
+			glade_widget_property_set_sensitive (gwidget, "sensitive", FALSE, ACTION_APPEARANCE_MSG);
+
+			glade_widget_property_set_sensitive (gwidget, "accel-group", FALSE, ACTION_APPEARANCE_MSG);
+		} else {
+			glade_widget_property_set_sensitive (gwidget, "visible", TRUE, NULL);
+			glade_widget_property_set_sensitive (gwidget, "sensitive", TRUE, NULL);
+			
+			glade_widget_property_set_sensitive (gwidget, "accel-group", TRUE, NULL);
+		}
+
+	} 
+	else if (!strcmp (id, "use-action-appearance"))
+	{
+		gboolean use_appearance = g_value_get_boolean (value);
+		
+
+		if (use_appearance)
+		{
+			glade_widget_property_set_sensitive (gwidget, "label", FALSE, ACTION_APPEARANCE_MSG);
+			glade_widget_property_set_sensitive (gwidget, "use-underline", FALSE, ACTION_APPEARANCE_MSG);
+			glade_widget_property_set_sensitive (gwidget, "stock", FALSE, ACTION_APPEARANCE_MSG);
+			//glade_widget_property_set_sensitive (gwidget, "use-stock", FALSE, ACTION_APPEARANCE_MSG);
+			glade_widget_property_set_sensitive (gwidget, "image", FALSE, ACTION_APPEARANCE_MSG);
+			glade_widget_property_set_sensitive (gwidget, "custom-child", FALSE, ACTION_APPEARANCE_MSG);	
+			glade_widget_property_set_sensitive (gwidget, "stock-id", FALSE, ACTION_APPEARANCE_MSG);
+			glade_widget_property_set_sensitive (gwidget, "label-widget", FALSE, ACTION_APPEARANCE_MSG);
+			glade_widget_property_set_sensitive (gwidget, "icon-name", FALSE, ACTION_APPEARANCE_MSG);
+			glade_widget_property_set_sensitive (gwidget, "icon-widget", FALSE, ACTION_APPEARANCE_MSG);
+			glade_widget_property_set_sensitive (gwidget, "icon", FALSE, ACTION_APPEARANCE_MSG);
+	} else {
+			glade_widget_property_set_sensitive (gwidget, "label", TRUE, NULL);
+			glade_widget_property_set_sensitive (gwidget, "use-underline", TRUE, NULL);
+			glade_widget_property_set_sensitive (gwidget, "stock", TRUE, NULL);
+			//glade_widget_property_set_sensitive (gwidget, "use-stock", TRUE, NULL);
+			glade_widget_property_set_sensitive (gwidget, "image", TRUE, NULL);
+			glade_widget_property_set_sensitive (gwidget, "custom-child", TRUE, NULL);	
+			glade_widget_property_set_sensitive (gwidget, "stock-id", TRUE, NULL);
+			glade_widget_property_set_sensitive (gwidget, "label-widget", TRUE, NULL);
+			glade_widget_property_set_sensitive (gwidget, "icon-name", TRUE, NULL);
+			glade_widget_property_set_sensitive (gwidget, "icon-widget", TRUE, NULL);
+			glade_widget_property_set_sensitive (gwidget, "icon", TRUE, NULL);
+		}
+	}
+}
+
 GladeEditable *
 glade_gtk_button_create_editable (GladeWidgetAdaptor  *adaptor,
 				  GladeEditorPageType  type)
@@ -5701,8 +5763,10 @@ glade_gtk_button_create_editable (GladeWidgetAdaptor  *adaptor,
 	editable = GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 
 	if (type == GLADE_PAGE_GENERAL)
+	{
+		editable = (GladeEditable *)glade_activatable_editor_new (adaptor, editable);
 		return (GladeEditable *)glade_button_editor_new (adaptor, editable);
-
+	}
 	return editable;
 }
 
@@ -5740,6 +5804,8 @@ glade_gtk_button_set_property (GladeWidgetAdaptor *adaptor,
 	GladeWidget *widget = glade_widget_get_from_gobject (object);
 	GladeProperty *property = glade_widget_get_property (widget, id);
 
+	evaluate_activatable_property_sensitivity (object, id, value);
+
 	if (strcmp (id, "custom-child") == 0)
 	{
 		if (g_value_get_boolean (value))
@@ -5763,7 +5829,7 @@ glade_gtk_button_set_property (GladeWidgetAdaptor *adaptor,
 			gtk_button_set_label (GTK_BUTTON (object), g_value_get_string (value));
 	}
 	else if (property->klass->version_since_major <= gtk_major_version &&
-		 property->klass->version_since_minor <= gtk_minor_version)
+		 property->klass->version_since_minor <= (gtk_minor_version + 1))
 		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object,
 								  id, value);
 }
@@ -6482,6 +6548,23 @@ glade_gtk_menu_shell_action_activate (GladeWidgetAdaptor *adaptor,
 }
 
 /* ----------------------------- GtkMenuItem ------------------------------ */
+
+/* ... shared with toolitems ...  */
+GladeEditable *
+glade_gtk_activatable_create_editable  (GladeWidgetAdaptor  *adaptor,
+				      GladeEditorPageType  type)
+{
+	GladeEditable *editable;
+
+	/* Get base editable */
+	editable = GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+
+	if (type == GLADE_PAGE_GENERAL)
+		return (GladeEditable *)glade_activatable_editor_new (adaptor, editable);
+
+	return editable;
+}
+
 void
 glade_gtk_menu_item_action_activate (GladeWidgetAdaptor *adaptor,
 				     GObject *object,
@@ -6618,6 +6701,7 @@ glade_gtk_menu_item_set_use_underline (GObject *object, const GValue *value)
 	gtk_label_set_use_underline (GTK_LABEL (label), g_value_get_boolean (value));
 }
 
+
 void
 glade_gtk_menu_item_set_property (GladeWidgetAdaptor *adaptor,
 				  GObject            *object, 
@@ -6626,13 +6710,15 @@ glade_gtk_menu_item_set_property (GladeWidgetAdaptor *adaptor,
 {
 	GladeWidget *gwidget = glade_widget_get_from_gobject (object);
 	GladeProperty *property = glade_widget_get_property (gwidget, id);
+	
+	evaluate_activatable_property_sensitivity (object, id, value);
 
 	if (!strcmp (id, "use-underline"))
 		glade_gtk_menu_item_set_use_underline (object, value);
 	else if (!strcmp (id, "label"))
 		glade_gtk_menu_item_set_label (object, value);
 	else if (property->klass->version_since_major <= gtk_major_version &&
-		 property->klass->version_since_minor <= gtk_minor_version)
+		 property->klass->version_since_minor <= (gtk_minor_version + 1))
 		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object,
 								  id, value);
 }
@@ -7500,8 +7586,10 @@ glade_gtk_tool_item_set_property (GladeWidgetAdaptor *adaptor,
 	GladeWidget *gwidget = glade_widget_get_from_gobject (object);
 	GladeProperty *property = glade_widget_get_property (gwidget, id);
 
+	//evaluate_activatable_property_sensitivity (object, id, value);
+
 	if (property->klass->version_since_major <= gtk_major_version &&
-	    property->klass->version_since_minor <= gtk_minor_version)
+	    property->klass->version_since_minor <= (gtk_minor_version + 1))
 		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor,
 								  object,
 								  id, value);
@@ -7515,7 +7603,7 @@ glade_gtk_tool_button_create_editable  (GladeWidgetAdaptor  *adaptor,
 	GladeEditable *editable;
 
 	/* Get base editable */
-	editable = GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+	editable = GWA_GET_CLASS (GTK_TYPE_TOOL_ITEM)->create_editable (adaptor, type);
 
 	if (type == GLADE_PAGE_GENERAL)
 		return (GladeEditable *)glade_tool_button_editor_new (adaptor, editable);

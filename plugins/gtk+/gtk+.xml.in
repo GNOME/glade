@@ -447,6 +447,7 @@ embedded in another object</_tooltip>
       <remove-child-function>glade_gtk_menu_item_remove_child</remove-child-function>
       <action-activate-function>glade_gtk_menu_item_action_activate</action-activate-function>
       <write-child-function>glade_gtk_menu_item_write_child</write-child-function>
+      <create-editable-function>glade_gtk_activatable_create_editable</create-editable-function>
       <special-child-type>submenu</special-child-type>
 
       <actions>
@@ -470,13 +471,13 @@ embedded in another object</_tooltip>
         </property>
 
 	<!-- GtkActivatable -->
-      	<property id="related-action" _name="Related Action" since="2.16">
+      	<property id="related-action" _name="Related Action" custom-layout="True" since="2.16">
 	  <parameter-spec>
 	    <type>GParamObject</type>
 	    <value-type>GtkAction</value-type>
 	  </parameter-spec>
 	</property>
-      	<property id="use-action-appearance" _name="Use Action Appearance" default="False" since="2.16">
+      	<property id="use-action-appearance" _name="Use Action Appearance" custom-layout="True" default="False" since="2.16">
 	  <parameter-spec>
 	    <type>GParamBoolean</type>
 	  </parameter-spec>
@@ -641,16 +642,17 @@ embedded in another object</_tooltip>
       <post-create-function>glade_gtk_tool_item_post_create</post-create-function>
       <constructor-function>glade_gtk_tool_item_constructor</constructor-function>
       <set-property-function>glade_gtk_tool_item_set_property</set-property-function>
+      <create-editable-function>glade_gtk_activatable_create_editable</create-editable-function>
 
       <properties>
 	<!-- GtkActivatable -->
-      	<property id="related-action" _name="Related Action" since="2.16">
+      	<property id="related-action" _name="Related Action" custom-layout="True" since="2.16">
 	  <parameter-spec>
 	    <type>GParamObject</type>
 	    <value-type>GtkAction</value-type>
 	  </parameter-spec>
 	</property>
-      	<property id="use-action-appearance" _name="Use Action Appearance" default="False" since="2.16">
+      	<property id="use-action-appearance" _name="Use Action Appearance" custom-layout="True" default="False" since="2.16">
 	  <parameter-spec>
 	    <type>GParamBoolean</type>
 	  </parameter-spec>
@@ -987,7 +989,7 @@ embedded in another object</_tooltip>
             <visible-lines>2</visible-lines>
 	</property>
 	<property id="use-underline" custom-layout="True"/>
-	<property id="stock" _name="Stock Button" stock="True" save="False" custom-layout="True">
+	<property id="stock" _name="Stock Button" stock-icon="True" save="False" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamString</type>
 	  </parameter-spec>
@@ -1014,13 +1016,13 @@ embedded in another object</_tooltip>
 	</property>
 
 	<!-- GtkActivatable -->
-      	<property id="related-action" _name="Related Action" since="2.16">
+      	<property id="related-action" _name="Related Action" custom-layout="True" since="2.16">
 	  <parameter-spec>
 	    <type>GParamObject</type>
 	    <value-type>GtkAction</value-type>
 	  </parameter-spec>
 	</property>
-      	<property id="use-action-appearance" _name="Use Action Appearance" default="False" since="2.16">
+      	<property id="use-action-appearance" _name="Use Action Appearance" custom-layout="True" default="False" since="2.16">
 	  <parameter-spec>
 	    <type>GParamBoolean</type>
 	  </parameter-spec>
@@ -3291,6 +3293,16 @@ embedded in another object</_tooltip>
 			libglade-unsupported="True" toplevel="True"/>
   </glade-widget-classes>
   
+
+  <glade-widget-group name="gtk-actions" _title="Actions">
+
+    <glade-widget-class-ref name="GtkActionGroup"/>
+    <glade-widget-class-ref name="GtkAction"/>
+    <glade-widget-class-ref name="GtkToggleAction"/>
+    <glade-widget-class-ref name="GtkRadioAction"/>
+    <glade-widget-class-ref name="GtkRecentAction"/>
+  </glade-widget-group>
+
   <glade-widget-group name="gtk-toplevels" _title="Toplevels">
     <glade-widget-class-ref name="GtkWindow"/>
     <glade-widget-class-ref name="GtkDialog"/>
@@ -3378,15 +3390,6 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkFontSelection"/>
     <glade-widget-class-ref name="GtkRecentChooserWidget"/>
     <glade-widget-class-ref name="GtkFileChooserWidget"/>
-  </glade-widget-group>
-
-  <glade-widget-group name="gtk-actions" _title="Actions">
-
-    <glade-widget-class-ref name="GtkActionGroup"/>
-    <glade-widget-class-ref name="GtkAction"/>
-    <glade-widget-class-ref name="GtkToggleAction"/>
-    <glade-widget-class-ref name="GtkRadioAction"/>
-    <glade-widget-class-ref name="GtkRecentAction"/>
   </glade-widget-group>
 
   <glade-widget-group name="gtk-model" title="Tree Model">

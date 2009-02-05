@@ -165,7 +165,7 @@ struct _GladePropertyClass
 				*/
 	guint stock_icon : 1; /* String properties can also denote stock icons, including
 			       * icons from icon factories...
-			      */
+			       */
 	guint stock : 1;      /* ... or a narrower list of "items" from gtk builtin stock items.
 			       */
 	
