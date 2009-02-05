@@ -1,0 +1,218 @@
+<refentry id="catalogintro" revision="8 Feb 2006">
+  <refmeta>
+    <refentrytitle>Introducing the Glade Catalog</refentrytitle>
+    <refmiscinfo>Glade UI</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>Writing catalogs</refname>
+    <refpurpose>
+How to write and install a catalog
+    </refpurpose>
+  </refnamediv>
+
+  <refsect1>
+    <title>Introduction</title>
+
+    <para>
+You can provide support for your custom widgets in a few ways, you can
+make a package and install it to the system directories, load additional
+catalogs in user directories, project directories for example, and
+you can optionally provide code support and/or icons, normally you need
+to at least have the object type in a library somewhere, but you can work
+around this using the 'parent' property described in the next section. 
+If you dont provide icons for the inspector and palette Glade will simply 
+print a warning and use a default icon. The catalog file is written in an
+XML format and a DTD for the format can be found in the plugins/ directory 
+of the Glade tarball.
+    </para>
+
+    <para>
+In most cases gtk+ derived widgets can be added with little effort and it
+is enough to simply specify the widget's type; glade will introspect 
+its properties and signals - but due to the organic nature of a widget
+toolkit there are always exceptions. In this document we'll try to provide
+some basic examples and describe a wealth of options that can be used to
+enhance UI editing and workaround exceptions.
+    </para>
+
+    <para>
+The catalog file starts by specifying the name of the catalog and the plugin
+library to use, the following examples assume you have a namespace "Foo" and
+are integrating an object "Frobnicator":
+      <programlisting>
+<![CDATA[<glade-catalog name="foo" library="foo" depends="gtk+">
+
+  <init-function>my_catalog_init</init-function>
+
+  <glade-widget-classes>
+
+    <glade-widget-class name="FooFrobnicator" generic-name="frobnicator" title="Frobnicator"/>
+
+    ... widget classes go here
+
+  </glade-widget-classes>
+
+  <glade-widget-group name="foo" title="Foo">
+
+    <glade-widget-class-ref name="FooFrobnicator"/>
+
+    ... widget class references go here
+
+  </glade-widget-group>
+
+  ... widget groups go here
+
+</glade-catalog>]]></programlisting>
+    </para>
+
+  </refsect1>
+  <refsect1>
+    <title>Toplevel catalog properties and tags</title>
+    <para>
+When defining the catalog, the 'name' and 'library' 
+are both manditory attributes of the 'glade-catalog' tag; optionally
+you can also use 'icon-prefix', 'depends' and 'domain'.
+    </para>
+
+    <variablelist>
+      <varlistentry>
+        <term>name</term>
+        <listitem>
+          <para>
+A string identifier for the catalog in question, it will be used to identify your 
+catalog so that the glade file can explicitly require it and to manage inter 
+catalog dependencies.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term>version</term>
+        <listitem>
+          <para>
+A 'major.minor' formed version describing the current version of underlying widget kit;
+example: <literal>version="1.0"</literal>. This is needed for version checking to work. 
+Please note that all versioning related support is completely optional.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>targetable</term>
+        <listitem>
+          <para>
+A comma separated list of 'major.minor' formed versions describing sensable previous
+targetable versions of the underlying toolkit not including the current version; 
+example: <literal>targetable="0.6,0.8"</literal>.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>icon-prefix</term>
+        <listitem>
+          <para>
+Used to form icon names for widgets. This property defaults to the value of the 'name' attribute.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>library</term>
+        <listitem>
+          <para>
+Used to load the types and introspect properties, unless you are faking your widget 
+classes (which will be described later on), glade will need to load this library, 
+it can either be the name of the library containing the widgets or the plugin library
+which is assumed to implicitly link to your widget library. The library will be loaded
+either by a user specified path, the system plugin directory: 
+<literal>$prefix/lib/glade-3/modules/</literal>, or from the default system library 
+paths in the afore mentioned order of precedence.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>depends</term>
+        <listitem>
+          <para>
+Used for inheritance of support code to work properly  (i.e. if your object derives 
+from an object in gtk+, you'll want the default support code in the gladegtk plugin 
+to be enabled for your widget too). This property's value is the `name' property of 
+another installed glade plugin; usually you'll want to declare: 'depends="gtk+"'
+for your plugin.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>domain</term>
+        <listitem>
+          <para>
+The domain in which to search for translatable strings from the 
+catalog file; please note that all strings from the catalog that will apear in the UI are
+translated using this domain. If the 'domain' is not specified, the library property will
+be used in it's stead.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>book</term>
+        <listitem>
+          <para>
+Used to specify a namespace to search devhelp docs library with
+(specificly, it is the $(DOC_MODULE) that you specified in your gtk-doc Makefile.am).
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>init-function</term>
+        <listitem>
+          <para>
+Used to retrieve an optional global entry point to your plugin; 
+if you need to initialize any backends or whatnot this is a good place. 
+Your catalog's init-function will be called before any widget classes are instantiated.
+          </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsect1>
+  <refsect1>
+    <title>Validating and installing</title>
+    <para>
+The DTD that is shipped with Glade can be used to validate your catalog
+file. Note that properties must be entered in the same order as they are
+specified in the DTD for the validation to pass.
+    </para>
+    <para>
+To validate a file, do this:
+      <programlisting>xmllint --dtdvalid glade-catalog.dtd --noout my-catalog.xml</programlisting>
+    </para>
+    <para>
+To install a widget plugin, the catalog XML file should be copied into
+the catalog directory, which can be retrieved as:
+      <programlisting>pkg-config --variable=catalogdir gladeui-1.0</programlisting>
+The plugin library should be installed into the modules directory:
+      <programlisting>pkg-config --variable=moduledir gladeui-1.0</programlisting>
+Widget icons if provided (recommended) need to be installed into the icon theme,
+this is described in the next chapter.
+    </para>
+    <para>
+You can also load your catalog from a user directory by specifying
+additional load path(s) in the environment, for instance:
+      <programlisting>GLADE_CATALOG_PATH=~/mycatalogs:~/work/foo/glade</programlisting>
+    </para>
+
+    <para>
+Same goes for optional plugin libraries, for instance:
+      <programlisting>GLADE_MODULE_PATH=~/work/foo/src</programlisting>
+    </para>
+
+    <para>
+Currently loading icons without installing them is unsupported.
+    </para>
+
+  </refsect1>
+</refentry>

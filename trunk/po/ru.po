@@ -1,0 +1,3985 @@
+# translation of glade3 to Russian
+# Copyright (C) 2001 Free Software Foundation
+#
+# Valek Filippov <frob@df.ru>, 2001.
+# Yuri Kozlov <kozlov.y@gmail.com>, 2008.
+msgid ""
+msgstr ""
+"Project-Id-Version: glade3 trunk\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-09-07 21:17+0400\n"
+"PO-Revision-Date: 2008-09-07 20:41+0300\n"
+"Last-Translator: Yuriy Penkin <yuriy.penkin@gmail.com>\n"
+"Language-Team: Russian <gnome-cyr@gnome.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: ../data/glade-3.desktop.in.in.h:1
+msgid "Create or open user interface designs for GTK+ applications"
+msgstr "Создание и правка моделей пользовательского интерфейса библиотеки GTK+"
+
+#: ../data/glade-3.desktop.in.in.h:2
+msgid "Glade Interface Designer"
+msgstr "Редактор интерфейсов Glade"
+
+#: ../data/glade-3.desktop.in.in.h:3 ../src/glade-window.c:439
+msgid "User Interface Designer"
+msgstr "Редактор пользовательских интерфейсов"
+
+#: ../src/main.c:42
+msgid "Glade"
+msgstr "Glade"
+
+#: ../src/main.c:52
+msgid "Output version information and exit"
+msgstr "Вывести информацию о версии программы и выйти"
+
+#: ../src/main.c:55
+msgid "Disable Devhelp integration"
+msgstr "Выключить взаимодействие с программой Devhelp"
+
+#: ../src/main.c:58
+msgid "[FILE...]"
+msgstr "[ФАЙЛ...]"
+
+#: ../src/main.c:68
+msgid "be verbose"
+msgstr "подробно"
+
+#: ../src/main.c:93
+msgid "Create or edit user interface designs for GTK+ or GNOME applications."
+msgstr ""
+"Создание и правка моделей пользовательских интерфейсов для библиотеки GTK+ и "
+"приложений GNOME."
+
+#: ../src/main.c:97 ../src/main.c:98
+msgid "Glade options"
+msgstr "Параметры командной строки Glade"
+
+#: ../src/main.c:105
+msgid "Glade debug options"
+msgstr "Параметры отладки Glade"
+
+#: ../src/main.c:106
+msgid "Show Glade debug options"
+msgstr "Показать параметры отладки Glade"
+
+#: ../src/main.c:149
+msgid ""
+"gmodule support not found. gmodule support is required for glade to work"
+msgstr "Нет поддержки gmodule, она необходима для работы Glade"
+
+#: ../src/main.c:176
+#, c-format
+msgid "Unable to open '%s', the file does not exist.\n"
+msgstr "Не удалось открыть '%s', файл не существует.\n"
+
+#: ../src/glade-window.c:45
+msgid "[Read Only]"
+msgstr "[Только для чтения]"
+
+#: ../src/glade-window.c:154
+#, c-format
+msgid "Could not display the URL '%s'"
+msgstr "Не удалось отобразить URL '%s'"
+
+#: ../src/glade-window.c:158
+msgid "No suitable web browser could be found."
+msgstr "Не найдено подходящего веб-браузера."
+
+#. translators: referring to the action of activating a file named '%s'.
+#. *              we also indicate to users that the file may be read-only with
+#. *              the second '%s'
+#: ../src/glade-window.c:689
+#, c-format
+msgid "Activate '%s' %s"
+msgstr "Активировать файл '%s' %s"
+
+#. translators: referring to the action of activating a file named '%s'
+#. FIXME add hint for translators
+#: ../src/glade-window.c:696 ../src/glade-window.c:704
+#, c-format
+msgid "Activate '%s'"
+msgstr "Активировать файл '%s'"
+
+#: ../src/glade-window.c:1102
+msgid "Open…"
+msgstr "Открыть…"
+
+#: ../src/glade-window.c:1145
+#, c-format
+msgid "The file %s has been modified since reading it"
+msgstr "С момента последнего обращения файл %s был изменён"
+
+#: ../src/glade-window.c:1149
+msgid "If you save it, all the external changes could be lost. Save it anyway?"
+msgstr ""
+"Если вы сохраните его, все изменения, сделанные извне, будут потеряны. Всё "
+"равно сохранить?"
+
+#: ../src/glade-window.c:1153
+msgid "_Save Anyway"
+msgstr "_Сохранить"
+
+#: ../src/glade-window.c:1160
+msgid "_Don't Save"
+msgstr "_Не сохранять"
+
+#: ../src/glade-window.c:1183
+#, c-format
+msgid "Failed to save %s: %s"
+msgstr "Не удалось сохранить %s: %s"
+
+#: ../src/glade-window.c:1204
+#, c-format
+msgid "Project '%s' saved"
+msgstr "Проект '%s' сохранён"
+
+#: ../src/glade-window.c:1224
+msgid "Save As…"
+msgstr "Сохранить как…"
+
+#: ../src/glade-window.c:1269
+#, c-format
+msgid "Could not save the file %s"
+msgstr "Не удалось сохранить файл %s"
+
+#: ../src/glade-window.c:1273
+msgid "You do not have the permissions necessary to save the file."
+msgstr "Недостаточно прав для сохранения файла."
+
+#: ../src/glade-window.c:1294
+#, c-format
+msgid "Could not save file %s. Another project with that path is open."
+msgstr ""
+"Не удалось сохранить файл %s. Другой проект в этом каталоге уже открыт."
+
+#: ../src/glade-window.c:1319
+msgid "No open projects to save"
+msgstr "Нет открытых проектов для сохранения"
+
+#: ../src/glade-window.c:1349
+#, c-format
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before "
+"closing?</span>\n"
+"\n"
+"Your changes will be lost if you don't save them."
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Сохранить изменения в проект \"%s\" "
+"перед закрытием?</span>\n"
+"\n"
+"Изменения будут потеряны, если не сохранить их."
+
+#: ../src/glade-window.c:1361
+msgid "_Close without Saving"
+msgstr "Закрыть без сохранения"
+
+#: ../src/glade-window.c:1388
+#, c-format
+msgid "Failed to save %s to %s: %s"
+msgstr "Не удалось сохранить %s в %s: %s"
+
+#: ../src/glade-window.c:1400
+msgid "Save…"
+msgstr "Сохранить…"
+
+#: ../src/glade-window.c:1980
+msgid "Could not display the online user manual"
+msgstr "Не удалось отобразить руководство пользователя"
+
+#: ../src/glade-window.c:1983 ../src/glade-window.c:2021
+#, c-format
+msgid ""
+"No suitable web browser executable could be found to be executed and to "
+"display the URL: %s"
+msgstr ""
+"Не найдено подходящего веб-браузера, способного отобразить этот URL: %s"
+
+#: ../src/glade-window.c:2018
+msgid "Could not display the online developer reference manual"
+msgstr "Не удалось отобразить руководство разработчика с сетевого ресурса"
+
+#: ../src/glade-window.c:2061
+msgid ""
+"Glade is free software; you can redistribute it and/or modify it under the "
+"terms of the GNU General Public License as published by the Free Software "
+"Foundation; either version 2 of the License, or (at your option) any later "
+"version.\n"
+"\n"
+"Glade is distributed in the hope that it will be useful, but WITHOUT ANY "
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"Glade; if not, write to the Free Software Foundation, Inc., 51 Franklin "
+"Street, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr ""
+"Glade ― свободное программное обеспечение. Вы можете распространять или "
+"изменять его при условиях соответствия GNU General Public License "
+"опубликованной Free Software Foundation; либо версии 2 лицензии, либо (на "
+"ваше усмотрение) любой более поздней версии.\n"
+"\n"
+"Gladeа распространяется в надежде на то, что приложение будет полезно, но "
+"БЕЗ ВСЯКИХ ГАРАНТИЙ; не гарантируется даже ПРИГОДНОСТЬ или СООТВЕТСТВИЕ "
+"КАКИМ-ЛИБО ТРЕБОВАНИЯМ. Для получения дополнительной информации ознакомьтесь "
+"с GNU General Public License.\n"
+"\n"
+"Вы должны получить копию GNU General Public License вместе с этой "
+"программой. Если этого не произошло, напишите to the Free Software "
+"Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA."
+
+#: ../src/glade-window.c:2087
+msgid "translator-credits"
+msgstr "Валек Филипов <frob@df.ru>"
+
+#: ../src/glade-window.c:2088
+msgid "A user interface designer for GTK+ and GNOME."
+msgstr "Редактор пользовательского интерфейса для GTK+ и GNOME."
+
+#. File
+#: ../src/glade-window.c:2163 ../plugins/gtk+/glade-gtk.c:6110
+#: ../plugins/gtk+/glade-gtk.c:6433
+msgid "_File"
+msgstr "_Файл"
+
+#. Edit
+#: ../src/glade-window.c:2164 ../plugins/gtk+/glade-gtk.c:6113
+#: ../plugins/gtk+/glade-gtk.c:6443
+msgid "_Edit"
+msgstr "_Правка"
+
+#. View
+#: ../src/glade-window.c:2165 ../plugins/gtk+/glade-gtk.c:6116
+#: ../plugins/gtk+/glade-gtk.c:6451
+msgid "_View"
+msgstr "_Вид"
+
+#: ../src/glade-window.c:2166
+msgid "_Projects"
+msgstr "_Проекты"
+
+#. Help
+#: ../src/glade-window.c:2167 ../plugins/gtk+/glade-gtk.c:6128
+#: ../plugins/gtk+/glade-gtk.c:6454
+msgid "_Help"
+msgstr "_Справка"
+
+#: ../src/glade-window.c:2173
+msgid "Create a new project"
+msgstr "Создать новый проект."
+
+#: ../src/glade-window.c:2175
+msgid "_Open…"
+msgstr "_Открыть…"
+
+#: ../src/glade-window.c:2176
+msgid "Open a project"
+msgstr "Открыть проект"
+
+#: ../src/glade-window.c:2178
+msgid "Open _Recent"
+msgstr "_Недавние проекты"
+
+#: ../src/glade-window.c:2181
+msgid "Quit the program"
+msgstr "Выйти из программы"
+
+#. ViewMenu
+#: ../src/glade-window.c:2184
+msgid "Palette _Appearance"
+msgstr "_Раскладка палитры"
+
+#: ../src/glade-window.c:2188
+msgid "About this application"
+msgstr "Об этом приложении"
+
+#: ../src/glade-window.c:2190
+msgid "_Contents"
+msgstr "_Содержание"
+
+#: ../src/glade-window.c:2191
+msgid "Display the user manual"
+msgstr "Показать руководство пользователя"
+
+#: ../src/glade-window.c:2193
+msgid "_Developer Reference"
+msgstr "Справка _разработчика"
+
+#: ../src/glade-window.c:2194
+msgid "Display the developer reference manual"
+msgstr "Показать руководство разработчика"
+
+#: ../src/glade-window.c:2203
+msgid "Save the current project"
+msgstr "Сохранить текущий проект"
+
+#: ../src/glade-window.c:2205
+msgid "Save _As…"
+msgstr "Сохранить _как…"
+
+#: ../src/glade-window.c:2206
+msgid "Save the current project with a different name"
+msgstr "Сохранить текущий проект под другим именем"
+
+#: ../src/glade-window.c:2209
+msgid "Close the current project"
+msgstr "Закрыть текущий проект"
+
+#: ../src/glade-window.c:2213
+msgid "Undo the last action"
+msgstr "Отменить последнее действие"
+
+#: ../src/glade-window.c:2216
+msgid "Redo the last action"
+msgstr "Возвратить последнее отменённое действие"
+
+#: ../src/glade-window.c:2219
+msgid "Cut the selection"
+msgstr "Вырезать выделенное"
+
+#: ../src/glade-window.c:2222
+msgid "Copy the selection"
+msgstr "Скопировать выделенное"
+
+#: ../src/glade-window.c:2225
+msgid "Paste the clipboard"
+msgstr "Вставить содержимое буфера обмена"
+
+#: ../src/glade-window.c:2228
+msgid "Delete the selection"
+msgstr "Удалить выделение"
+
+#: ../src/glade-window.c:2231
+msgid "Modify project preferences"
+msgstr "Изменить параметры проекта"
+
+#. ViewMenu
+#: ../src/glade-window.c:2235
+msgid "_Clipboard"
+msgstr "_Буфер обмена"
+
+#: ../src/glade-window.c:2236
+msgid "Show the clipboard"
+msgstr "Показать буфер обмена"
+
+#. ProjectsMenu
+#: ../src/glade-window.c:2240
+msgid "_Previous Project"
+msgstr "_Предыдущий проект"
+
+#: ../src/glade-window.c:2241
+msgid "Activate previous project"
+msgstr "Активировать предыдущий проект"
+
+#: ../src/glade-window.c:2243
+msgid "_Next Project"
+msgstr "_Следующий проект"
+
+#: ../src/glade-window.c:2244
+msgid "Activate next project"
+msgstr "Активировать следующий проект"
+
+#: ../src/glade-window.c:2252
+msgid "_Use Small Icons"
+msgstr "_Маленькие значки"
+
+#: ../src/glade-window.c:2253
+msgid "Show items using small icons"
+msgstr "Уменьшить размер значков элементов"
+
+#: ../src/glade-window.c:2256
+msgid "Context _Help"
+msgstr "Контекстная спр_авка"
+
+#: ../src/glade-window.c:2257
+msgid "Show or hide contextual help buttons in the editor"
+msgstr "Показать или спрятать кнопки контекстной справки в редакторе"
+
+#: ../src/glade-window.c:2260
+msgid "Dock _Palette"
+msgstr "Прикрепить _палитру"
+
+#: ../src/glade-window.c:2261
+msgid "Dock the palette into the main window"
+msgstr "Прикрепить палитру к главному окну"
+
+#: ../src/glade-window.c:2264
+msgid "Dock _Inspector"
+msgstr "Прикрепить _структуру проекта"
+
+#: ../src/glade-window.c:2265
+msgid "Dock the inspector into the main window"
+msgstr "Прикрепить структуру проекта к главному окну"
+
+#: ../src/glade-window.c:2268
+msgid "Dock _Editor"
+msgstr "Прикрепить р_едактор"
+
+#: ../src/glade-window.c:2269
+msgid "Dock the editor into the main window"
+msgstr "Прикрепить редактор к главному окну"
+
+#: ../src/glade-window.c:2277 ../plugins/gtk+/gtk+.xml.in.h:308
+msgid "Text beside icons"
+msgstr "Текст рядом со значками"
+
+#: ../src/glade-window.c:2278
+msgid "Display items as text beside icons"
+msgstr "Показывать текст элементов рядом с важными значками"
+
+#: ../src/glade-window.c:2280
+msgid "_Icons only"
+msgstr "Только _значки"
+
+#: ../src/glade-window.c:2281
+msgid "Display items as icons only"
+msgstr "Показывать только значки элементов"
+
+#: ../src/glade-window.c:2283
+msgid "_Text only"
+msgstr "Только _текст"
+
+#: ../src/glade-window.c:2284
+msgid "Display items as text only"
+msgstr "Показывать только текстовое описание элементов"
+
+#: ../src/glade-window.c:2471
+msgid "Select"
+msgstr "Выделить"
+
+#: ../src/glade-window.c:2475
+msgid "Select widgets in the workspace"
+msgstr "Выделить виджеты в рабочей области"
+
+#: ../src/glade-window.c:2499
+msgid "Drag Resize"
+msgstr "Изменить размера при переносе"
+
+#: ../src/glade-window.c:2503
+msgid "Drag and resize widgets in the workspace"
+msgstr "Изменить размер виджетов в рабочей области при переносе"
+
+#: ../src/glade-window.c:2541
+msgid "Could not create a new project."
+msgstr "Не удалось создать новый проект."
+
+#: ../src/glade-window.c:2595
+#, c-format
+msgid "The project %s has unsaved changes"
+msgstr "Проект %s имеет несохранённые изменения"
+
+#: ../src/glade-window.c:2599
+msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
+msgstr ""
+"Если вы перезагрузите его, все несохранённые изменения, будут потеряны. Всё "
+"равно сохранить?"
+
+#: ../src/glade-window.c:2608
+#, c-format
+msgid "The project file %s has been externally modified"
+msgstr "Файл проекта %s был изменён на диске с последнего чтения"
+
+#: ../src/glade-window.c:2612
+msgid "Do you want to reload the project?"
+msgstr "Перезагрузить проект?"
+
+#: ../src/glade-window.c:2618
+msgid "_Reload"
+msgstr "Пере_загрузить"
+
+#: ../src/glade-window.c:2735
+msgid "_Undo"
+msgstr "_Отменить"
+
+#. Change tooltips
+#: ../src/glade-window.c:2737 ../gladeui/glade-app.c:268
+#, c-format
+msgid "Undo: %s"
+msgstr "Отменить: %s"
+
+#: ../src/glade-window.c:2737 ../src/glade-window.c:2748
+#: ../gladeui/glade-app.c:269
+msgid "the last action"
+msgstr "последнее действие"
+
+#: ../src/glade-window.c:2746
+msgid "_Redo"
+msgstr "_Возвратить"
+
+#: ../src/glade-window.c:2748 ../gladeui/glade-app.c:268
+#, c-format
+msgid "Redo: %s"
+msgstr "Возвратить: %s"
+
+#: ../src/glade-window.c:3057
+msgid "Go back in undo history"
+msgstr "Вернуться назад по истории изменений"
+
+#: ../src/glade-window.c:3059
+msgid "Go forward in undo history"
+msgstr "Перейти вперёд по истории изменений"
+
+#: ../src/glade-window.c:3106
+msgid "Palette"
+msgstr "Элементы"
+
+#: ../src/glade-window.c:3117
+msgid "Inspector"
+msgstr "Структура проекта"
+
+#: ../src/glade-window.c:3124 ../gladeui/glade-editor.c:351
+#: ../gladeui/glade-widget.c:1037
+msgid "Properties"
+msgstr "Свойства"
+
+#: ../gladeui/glade-app.c:458
+msgid "Clipboard"
+msgstr "Буфер обмена"
+
+#: ../gladeui/glade-app.c:506
+msgid "Active Project"
+msgstr "Активный проект"
+
+#: ../gladeui/glade-app.c:507
+msgid "The active project"
+msgstr "Текущий проект"
+
+#: ../gladeui/glade-app.c:513
+msgid "Pointer Mode"
+msgstr "Режим указателя"
+
+#: ../gladeui/glade-app.c:514
+msgid "Current mode for the pointer in the workspace"
+msgstr "Режим указателя в рабочей области"
+
+#: ../gladeui/glade-app.c:585
+#, c-format
+msgid ""
+"Trying to save private data to %s directory but it is a regular file.\n"
+"No private data will be saved in this session"
+msgstr ""
+"Не удалось сохранить данные в каталог %s, потому что на его месте оказался\n"
+"обычный файл. Данные не будут сохранены в этот сеанс."
+
+#: ../gladeui/glade-app.c:598
+#, c-format
+msgid ""
+"Failed to create directory %s to save private data.\n"
+"No private data will be saved in this session"
+msgstr ""
+"Не удалось создать каталог %s для сохранения данных.\n"
+"Данные не будут сохранены в этот сеанс."
+
+#: ../gladeui/glade-app.c:626
+#, c-format
+msgid ""
+"Error writing private data to %s (%s).\n"
+"No private data will be saved in this session"
+msgstr ""
+"При записи данных в %s возникла ошибка (%s).\n"
+"Данные не будут сохранены в этот сеанс."
+
+#: ../gladeui/glade-app.c:638
+#, c-format
+msgid ""
+"Error serializing configuration data to save (%s).\n"
+"No private data will be saved in this session"
+msgstr ""
+"При упаковке конфигурации для сохранени данных возникла ошибка (%s).\n"
+"Данные не будут сохранены в этот сеанс."
+
+#: ../gladeui/glade-app.c:651
+#, c-format
+msgid ""
+"Error opening %s to write private data (%s).\n"
+"No private data will be saved in this session"
+msgstr ""
+"Не удалось открыть %s для записи данных программы (%s).\n"
+"Данные не будут сохранены в этот сеанс."
+
+#: ../gladeui/glade-app.c:1148
+msgid "You cannot copy a widget internal to a composite widget."
+msgstr "Некорректно копировать виджет, являющийся частью составного виджета."
+
+#: ../gladeui/glade-app.c:1163 ../gladeui/glade-app.c:1216
+#: ../gladeui/glade-app.c:1390
+msgid "No widget selected."
+msgstr "Виджет не выделен."
+
+#: ../gladeui/glade-app.c:1201
+msgid "You cannot cut a widget internal to a composite widget."
+msgstr "Некорректно вырезать виджет, являющийся частью составного виджета."
+
+#: ../gladeui/glade-app.c:1260
+msgid "Unable to paste to the selected parent"
+msgstr "Невозможно вставить в выделенное место"
+
+#: ../gladeui/glade-app.c:1271
+msgid "Unable to paste to multiple widgets"
+msgstr "Невозможно вставить в несколько элементов"
+
+#: ../gladeui/glade-app.c:1281 ../gladeui/glade-app.c:1411
+msgid "No widget selected on the clipboard"
+msgstr "Буфер обмена пуст"
+
+#: ../gladeui/glade-app.c:1307
+#, c-format
+msgid "Unable to paste widget %s without a parent"
+msgstr "Нельзя вставить виджет %s без родителя"
+
+#: ../gladeui/glade-app.c:1324
+msgid "Only one widget can be pasted at a time to this container"
+msgstr "Только один виджет может быть вставлен за раз в этот контейнер"
+
+#: ../gladeui/glade-app.c:1336
+msgid "Insufficient amount of placeholders in target container"
+msgstr "Недостаточно ячеек в контейнере"
+
+#: ../gladeui/glade-app.c:1375 ../gladeui/glade-app.c:1421
+msgid "You cannot delete a widget internal to a composite widget."
+msgstr "Невозможно удалить встроенный виджет составного виджета."
+
+#: ../gladeui/glade-builtins.c:256 ../plugins/gtk+/gtk+.xml.in.h:294
+msgid "Stock"
+msgstr "Склад"
+
+#: ../gladeui/glade-builtins.c:257
+msgid "A builtin stock item"
+msgstr "Встроенный элемент"
+
+#: ../gladeui/glade-builtins.c:265 ../plugins/gtk+/gtk+.xml.in.h:296
+msgid "Stock Image"
+msgstr "Готовое изображение"
+
+#: ../gladeui/glade-builtins.c:266 ../plugins/gtk+/gtk+.xml.in.h:1
+msgid "A builtin stock image"
+msgstr "Встроенное готовое изображение"
+
+#: ../gladeui/glade-builtins.c:423
+msgid "Objects"
+msgstr "Объекты"
+
+#: ../gladeui/glade-builtins.c:424
+msgid "A list of objects"
+msgstr "Список объектов"
+
+#: ../gladeui/glade-builtins.c:433
+msgid "Pixbuf"
+msgstr "Изображение"
+
+#: ../gladeui/glade-builtins.c:434
+msgid "A pixbuf value"
+msgstr "Значок"
+
+#: ../gladeui/glade-builtins.c:442
+msgid "GdkColor"
+msgstr "GdkColor"
+
+#: ../gladeui/glade-builtins.c:443
+msgid "A gdk color value"
+msgstr "Значение цвета"
+
+#: ../gladeui/glade-builtins.c:453
+msgid "Integer"
+msgstr "Целое"
+
+#: ../gladeui/glade-builtins.c:454
+msgid "An integer value"
+msgstr "Целочисленное значение"
+
+#: ../gladeui/glade-builtins.c:462
+msgid "Unsigned Integer"
+msgstr "Целое без знака"
+
+#: ../gladeui/glade-builtins.c:463
+msgid "An unsigned integer value"
+msgstr "Целочисленное значение без знака"
+
+#: ../gladeui/glade-builtins.c:470
+msgid "String"
+msgstr "Строка"
+
+#: ../gladeui/glade-builtins.c:471
+msgid "An entry"
+msgstr "Пункт"
+
+#: ../gladeui/glade-builtins.c:478
+msgid "Strv"
+msgstr "Массив строк"
+
+#: ../gladeui/glade-builtins.c:479
+msgid "String array"
+msgstr "Массив строк"
+
+#: ../gladeui/glade-builtins.c:487
+msgid "Float"
+msgstr "Плавающее"
+
+#: ../gladeui/glade-builtins.c:488
+msgid "A floating point entry"
+msgstr "Значение с плавающей запятой"
+
+#: ../gladeui/glade-builtins.c:496
+msgid "Boolean"
+msgstr "Логическое"
+
+#: ../gladeui/glade-builtins.c:497
+msgid "A boolean value"
+msgstr "Логическое значение"
+
+#: ../gladeui/glade-base-editor.c:488
+#, c-format
+msgid "Setting object type on %s to %s"
+msgstr "Устанавливается тип объекта %s в %s"
+
+#: ../gladeui/glade-base-editor.c:653
+#, c-format
+msgid "Add a %s to %s"
+msgstr "Добавить %s в %s"
+
+#: ../gladeui/glade-base-editor.c:730
+#, c-format
+msgid "Delete %s child from %s"
+msgstr "Удалить дочерний элемент %s из %s"
+
+#: ../gladeui/glade-base-editor.c:853
+#, c-format
+msgid "Reorder %s's children"
+msgstr "Переупорядочить дочерние виджеты %s"
+
+#: ../gladeui/glade-base-editor.c:1438 ../plugins/gtk+/gtk+.xml.in.h:179
+msgid "Label"
+msgstr "Метка"
+
+#: ../gladeui/glade-base-editor.c:1451 ../gladeui/glade-widget-adaptor.c:1206
+msgid "Type"
+msgstr "Тип"
+
+#. Name
+#: ../gladeui/glade-base-editor.c:1624
+msgid "Name :"
+msgstr "Название:"
+
+#. Type
+#: ../gladeui/glade-base-editor.c:1634
+msgid "Type :"
+msgstr "Тип :"
+
+#: ../gladeui/glade-clipboard-view.c:209 ../plugins/gtk+/gtk+.xml.in.h:351
+msgid "Widget"
+msgstr "Эл.управления"
+
+#: ../gladeui/glade-command.c:550
+#, c-format
+msgid "Setting multiple properties"
+msgstr "Установка нескольких свойств"
+
+#: ../gladeui/glade-command.c:560
+#, c-format
+msgid "Setting %s of %s"
+msgstr "Устанавливается %s из %s"
+
+#: ../gladeui/glade-command.c:564
+#, c-format
+msgid "Setting %s of %s to %s"
+msgstr "Устанавливается %s из %s в %s"
+
+#: ../gladeui/glade-command.c:782 ../gladeui/glade-command.c:809
+#, c-format
+msgid "Renaming %s to %s"
+msgstr "Переименование %s в %s"
+
+#: ../gladeui/glade-command.c:914
+#, c-format
+msgid "Add %s"
+msgstr "Добавить %s"
+
+#: ../gladeui/glade-command.c:915 ../gladeui/glade-command.c:1573
+#: ../gladeui/glade-command.c:1597 ../gladeui/glade-command.c:1620
+#: ../gladeui/glade-command.c:1645 ../gladeui/glade-command.c:1679
+#: ../gladeui/glade-command.c:1706
+msgid "multiple"
+msgstr "несколько"
+
+#: ../gladeui/glade-command.c:1030
+msgid "You cannot remove a widget internal to a composite widget."
+msgstr "Невозможно удалить внутренний виджет составного виджета"
+
+#: ../gladeui/glade-command.c:1077
+#, c-format
+msgid "Remove %s"
+msgstr "Удалить %s"
+
+#: ../gladeui/glade-command.c:1081
+#, c-format
+msgid "Remove multiple"
+msgstr "Удалить несколько"
+
+#: ../gladeui/glade-command.c:1394
+#, c-format
+msgid "Clipboard add %s"
+msgstr "Добавить %s в буфер обмена"
+
+#: ../gladeui/glade-command.c:1397
+msgid "Clipboard add multiple"
+msgstr "Добавить несколько объектов в буфер обмена"
+
+#: ../gladeui/glade-command.c:1402
+#, c-format
+msgid "Clipboard remove %s"
+msgstr "Удалить %s из буфера обмена"
+
+#: ../gladeui/glade-command.c:1405
+msgid "Clipboard remove multiple"
+msgstr "Удалить несколько объектов из буфера обмена"
+
+#: ../gladeui/glade-command.c:1573
+#, c-format
+msgid "Create %s"
+msgstr "Создать %s"
+
+#: ../gladeui/glade-command.c:1597
+#, c-format
+msgid "Delete %s"
+msgstr "Удалить %s"
+
+#: ../gladeui/glade-command.c:1620
+#, c-format
+msgid "Cut %s"
+msgstr "Вырезать %s"
+
+#: ../gladeui/glade-command.c:1645
+#, c-format
+msgid "Copy %s"
+msgstr "Скопировать %s"
+
+#: ../gladeui/glade-command.c:1679
+#, c-format
+msgid "Paste %s"
+msgstr "Вставить %s"
+
+#: ../gladeui/glade-command.c:1705
+#, c-format
+msgid "Drag-n-Drop from %s to %s"
+msgstr "Перенести %s в %s"
+
+#: ../gladeui/glade-command.c:1827
+#, c-format
+msgid "Add signal handler %s"
+msgstr "Добавить обработчик сигнала %s"
+
+#: ../gladeui/glade-command.c:1828
+#, c-format
+msgid "Remove signal handler %s"
+msgstr "Удалить обработчик сигнала %s"
+
+#: ../gladeui/glade-command.c:1829
+#, c-format
+msgid "Change signal handler %s"
+msgstr "Изменить обработчик сигнала %s"
+
+#: ../gladeui/glade-command.c:2033
+#, c-format
+msgid "Setting i18n metadata"
+msgstr "Установка метаданных локализации"
+
+#: ../gladeui/glade-cursor.c:186
+#, c-format
+msgid "Unable to load image (%s)"
+msgstr "Не удалось загрузить изображение (%s)"
+
+#: ../gladeui/glade-editor-property.c:278
+msgid "View GTK+ documentation for this property"
+msgstr "Показать документацию GTK+ по этому свойству"
+
+#: ../gladeui/glade-editor-property.c:601
+msgid "Property Class"
+msgstr "Класс свойства"
+
+#: ../gladeui/glade-editor-property.c:602
+msgid "The GladePropertyClass this GladeEditorProperty was created for"
+msgstr "GladePropertyClass, созданный для работы с этим свойством"
+
+#: ../gladeui/glade-editor-property.c:608
+msgid "Use Command"
+msgstr "Использовать команду"
+
+#: ../gladeui/glade-editor-property.c:609
+msgid "Whether we should use the command API for the undo/redo stack"
+msgstr "Нужно ли использовать командный интерфейс для стека возврата/отмены"
+
+#: ../gladeui/glade-editor-property.c:615
+msgid "Show Info"
+msgstr "Показать информацию"
+
+#: ../gladeui/glade-editor-property.c:616
+msgid "Whether we should show an informational button"
+msgstr "Показывать ли кнопку информации"
+
+#: ../gladeui/glade-editor-property.c:1139
+msgid "Select Fields"
+msgstr "Выделить поля"
+
+#: ../gladeui/glade-editor-property.c:1161
+msgid "_Select individual fields:"
+msgstr "_Выделить некоторые поля:"
+
+#: ../gladeui/glade-editor-property.c:1684
+msgid "Edit Text"
+msgstr "Правка текста"
+
+#. Text
+#: ../gladeui/glade-editor-property.c:1713
+msgid "_Text:"
+msgstr "_Текст:"
+
+#: ../gladeui/glade-editor-property.c:1749
+msgid "T_ranslatable"
+msgstr "П_ереводимый"
+
+#: ../gladeui/glade-editor-property.c:1762
+msgid "_Has context prefix"
+msgstr "_Имеет контекстный префикс"
+
+#. Comments.
+#: ../gladeui/glade-editor-property.c:1780
+msgid "Co_mments for translators:"
+msgstr "К_омментарий для переводчиков:"
+
+#: ../gladeui/glade-editor-property.c:1944
+#: ../gladeui/glade-editor-property.c:1960
+msgid "Yes"
+msgstr "Да"
+
+#: ../gladeui/glade-editor-property.c:1944
+#: ../gladeui/glade-editor-property.c:1960
+#: ../gladeui/glade-editor-property.c:1975
+msgid "No"
+msgstr "Нет"
+
+#: ../gladeui/glade-editor-property.c:2568 ../gladeui/glade-widget.c:989
+#: ../gladeui/glade-widget-adaptor.c:1198
+msgid "Name"
+msgstr "Название"
+
+#: ../gladeui/glade-editor-property.c:2580 ../gladeui/glade-property.c:509
+msgid "Class"
+msgstr "Класс"
+
+#: ../gladeui/glade-editor-property.c:2594
+#, c-format
+msgid "Choose %s implementors"
+msgstr "Выбрать реализацию %s"
+
+#: ../gladeui/glade-editor-property.c:2594
+#, c-format
+msgid "Choose a %s in this project"
+msgstr "Выбрать %s в этом проекте"
+
+#. Checklist
+#: ../gladeui/glade-editor-property.c:2659
+msgid "O_bjects:"
+msgstr "О_бъекты:"
+
+#. Checklist
+#: ../gladeui/glade-editor-property.c:2872
+msgid "Objects:"
+msgstr "Объекты:"
+
+#: ../gladeui/glade-editor-property.c:3184
+msgid "Value:"
+msgstr "Значение:"
+
+#: ../gladeui/glade-editor-property.c:3185
+msgid "The current value"
+msgstr "Текущее значение"
+
+#: ../gladeui/glade-editor-property.c:3187
+msgid "Lower:"
+msgstr "Нижняя граница:"
+
+#: ../gladeui/glade-editor-property.c:3188
+msgid "The minimum value"
+msgstr "Минимальное значение"
+
+#: ../gladeui/glade-editor-property.c:3190
+msgid "Upper:"
+msgstr "Верхняя граница"
+
+#: ../gladeui/glade-editor-property.c:3191
+msgid "The maximum value"
+msgstr "Максимальное значение"
+
+#: ../gladeui/glade-editor-property.c:3193
+msgid "Step inc:"
+msgstr "Шаг изменения:"
+
+#: ../gladeui/glade-editor-property.c:3194
+msgid "The increment to use to make minor changes to the value"
+msgstr "Шаг изменения при небольшом увеличении или уменьшении значения"
+
+#: ../gladeui/glade-editor-property.c:3196
+msgid "Page inc:"
+msgstr "Шаг изменения по страницам:"
+
+#: ../gladeui/glade-editor-property.c:3197
+msgid "The increment to use to make major changes to the value"
+msgstr "Шаг изменения при больших увеличениях или уменьшениях"
+
+#: ../gladeui/glade-editor-property.c:3199
+msgid "Page size:"
+msgstr "Размер страницы:"
+
+#: ../gladeui/glade-editor-property.c:3200
+msgid ""
+"The page size (in a GtkScrollbar this is the size of the area which is "
+"currently visible)"
+msgstr "Размер страницы, например, для GtkScrollbar это размер видимой области"
+
+#: ../gladeui/glade-editor.c:154
+msgid "Show info"
+msgstr "Показать справку"
+
+#: ../gladeui/glade-editor.c:155
+msgid "Whether to show an informational button for the loaded widget"
+msgstr "Показывать ли кнопку получения информации для загруженного виджета"
+
+#: ../gladeui/glade-editor.c:162
+msgid "Show context info"
+msgstr "Показывать контекстную справку"
+
+#: ../gladeui/glade-editor.c:163
+msgid ""
+"Whether to show an informational button for each property and signal in the "
+"editor"
+msgstr ""
+"Показывать ли кнопку контекстной справки для каждого свойства и сигнала в "
+"редакторе"
+
+#. construct tab label widget
+#: ../gladeui/glade-editor.c:204 ../gladeui/glade-editor.c:395
+#: ../gladeui/glade-editor.c:1258
+msgid "Accessibility"
+msgstr "Вспомогательные технологии"
+
+#. configure page container
+#: ../gladeui/glade-editor.c:221 ../gladeui/glade-editor.c:394
+msgid "_Signals"
+msgstr "_Сигналы"
+
+#: ../gladeui/glade-editor.c:285
+msgid "View documentation for the selected widget"
+msgstr "Показать документацию по выделенному виджету"
+
+#: ../gladeui/glade-editor.c:305
+msgid "Reset widget properties to their defaults"
+msgstr "Сбросить свойства виджета на значение по умолчанию"
+
+#. translators: referring to the properties of a widget named '%s [%s]'
+#: ../gladeui/glade-editor.c:339
+#, c-format
+msgid "%s Properties - %s [%s]"
+msgstr "%s : свойства - %s [%s]"
+
+#: ../gladeui/glade-editor.c:391
+msgid "_General"
+msgstr "_Основные"
+
+#: ../gladeui/glade-editor.c:392
+msgid "_Packing"
+msgstr "_Упаковка"
+
+#: ../gladeui/glade-editor.c:393
+msgid "_Common"
+msgstr "О_бщие"
+
+#: ../gladeui/glade-editor.c:547
+msgid "The Object's name"
+msgstr "Название объекта"
+
+#. Name
+#: ../gladeui/glade-editor.c:550
+msgid "Name:"
+msgstr "Название:"
+
+#: ../gladeui/glade-editor.c:1062
+#, c-format
+msgid "Create a %s"
+msgstr "Создать %s"
+
+#: ../gladeui/glade-editor.c:1187
+msgid "Reset"
+msgstr "Сбросить"
+
+#: ../gladeui/glade-editor.c:1202
+msgid "Property"
+msgstr "Свойство"
+
+#: ../gladeui/glade-editor.c:1238
+msgid "General"
+msgstr "Основные"
+
+#: ../gladeui/glade-editor.c:1248
+msgid "Common"
+msgstr "Общие"
+
+#: ../gladeui/glade-editor.c:1292
+msgid "(default)"
+msgstr "(по умолчанию)"
+
+#: ../gladeui/glade-editor.c:1307
+msgid "Select the properties that you want to reset to their default values"
+msgstr "Выберите свойства, которые вы хотите сбросить в их исходные значения"
+
+#: ../gladeui/glade-editor.c:1439
+msgid "Reset Widget Properties"
+msgstr "Сбросить свойства виджета"
+
+#. Checklist
+#: ../gladeui/glade-editor.c:1456
+msgid "_Properties:"
+msgstr "Свойства:"
+
+#: ../gladeui/glade-editor.c:1485
+msgid "_Select All"
+msgstr "Выделить вс_ё"
+
+#: ../gladeui/glade-editor.c:1492
+msgid "_Unselect All"
+msgstr "С_нять выделение"
+
+#. Description
+#: ../gladeui/glade-editor.c:1501
+msgid "Property _Description:"
+msgstr "Описание _свойства:"
+
+#: ../gladeui/glade-fixed.c:482 ../plugins/gtk+/glade-gtk.c:2540
+#, c-format
+msgid "Placing %s inside %s"
+msgstr "Поместить %s внутрь %s"
+
+#: ../gladeui/glade-fixed.c:971
+msgid "X position property"
+msgstr "Координата X"
+
+#: ../gladeui/glade-fixed.c:972
+msgid "The property used to set the X position of a child object"
+msgstr "Это свойство используется для установки координаты Х дочернего объекта"
+
+#: ../gladeui/glade-fixed.c:978
+msgid "Y position property"
+msgstr "Координата Y"
+
+#: ../gladeui/glade-fixed.c:979
+msgid "The property used to set the Y position of a child object"
+msgstr "Это свойство используется для установки координаты Y дочернего объекта"
+
+#: ../gladeui/glade-fixed.c:985
+msgid "Width property"
+msgstr "Ширина"
+
+#: ../gladeui/glade-fixed.c:986
+msgid "The property used to set the width of a child object"
+msgstr "Это свойство используется для установки ширины дочернего объекта"
+
+#: ../gladeui/glade-fixed.c:992
+msgid "Height property"
+msgstr "Высота"
+
+#: ../gladeui/glade-fixed.c:993
+msgid "The property used to set the height of a child object"
+msgstr "Это свойство используется для установки высоты дочернего объекта"
+
+#: ../gladeui/glade-fixed.c:999
+msgid "Can resize"
+msgstr "Может изменять размер"
+
+#: ../gladeui/glade-fixed.c:1000
+msgid "Whether this container supports resizes of child widgets"
+msgstr "Позволяет ли контейнер изменять размер дочерних виджетов"
+
+#: ../gladeui/glade-palette.c:612
+msgid "Widget selector"
+msgstr "Выделение виджетов"
+
+#: ../gladeui/glade-popup.c:331
+msgid "_Select"
+msgstr "В_ыделить"
+
+#: ../gladeui/glade-project.c:536
+#, c-format
+msgid "This widget was introduced in %s %d.%d project targets %s %d.%d"
+msgstr "Этот виджет был введён в %s %d.%d, проект использует %s %d.%d"
+
+#: ../gladeui/glade-project.c:548
+#, c-format
+msgid "[%s] Object class '%s' was introduced in %s %d.%d\n"
+msgstr "[%s] Объекты класса '%s' были введёны в %s %d.%d\n"
+
+#: ../gladeui/glade-project.c:565
+#, c-format
+msgid "This widget is not supported by GtkBuilder"
+msgstr "GtkBuilder не поддерживает этот виджет"
+
+#: ../gladeui/glade-project.c:572
+#, c-format
+msgid "[%s] Object class '%s' from %s %d.%d is not supported by GtkBuilder\n"
+msgstr "[%s] GtkBuilder не поддерживает объекты класса '%s' из %s %d.%d\n"
+
+#: ../gladeui/glade-project.c:587
+#, c-format
+msgid "This widget is deprecated"
+msgstr "Этот виджет устарел"
+
+#: ../gladeui/glade-project.c:594
+#, c-format
+msgid "[%s] Object class '%s' from %s %d.%d is deprecated\n"
+msgstr "[%s] Объекты класса '%s' из %s %d.%d устарели\n"
+
+#: ../gladeui/glade-project.c:938
+msgid "Whether project has been modified since it was last saved"
+msgstr "Был ли проект изменён со времени последнего сохранения"
+
+#: ../gladeui/glade-project.c:945
+msgid "Has Selection"
+msgstr "Активно выделение"
+
+#: ../gladeui/glade-project.c:946
+msgid "Whether project has a selection"
+msgstr "Проект имеет активное выделение"
+
+#: ../gladeui/glade-project.c:953
+msgid "Read Only"
+msgstr "Только для просмотра"
+
+#: ../gladeui/glade-project.c:954
+msgid "Whether project is read only or not"
+msgstr "Проект доступен только для просмотра"
+
+#: ../gladeui/glade-project.c:961
+msgid "Path"
+msgstr "Путь"
+
+#: ../gladeui/glade-project.c:962
+msgid "The filesystem path of the project"
+msgstr "Путь к проекту в файловой системе"
+
+#: ../gladeui/glade-project.c:1126
+#, c-format
+msgid ""
+"Failed to load %s.\n"
+"The following required catalogs are unavailable: %s"
+msgstr ""
+"Не удалось загрузить %s.\n"
+"Необходимые каталоги %s недоступны"
+
+#: ../gladeui/glade-project.c:1472
+#, c-format
+msgid "This property was introduced in %s %d.%d, project targets %s %d.%d"
+msgstr "Это свойство было введено в %s %d.%d, проект использует %s %d.%d"
+
+#: ../gladeui/glade-project.c:1489
+#, c-format
+msgid ""
+"[%s] Packing property '%s' of object class '%s' was introduced in %s %d.%d\n"
+msgstr ""
+"[%s] Свойство упаковки '%s' объектов класса '%s' было введено в %s %d.%d\n"
+
+#: ../gladeui/glade-project.c:1491
+#, c-format
+msgid "[%s] Property '%s' of object class '%s' was introduced in %s %d.%d\n"
+msgstr "[%s] Свойство '%s' объектов класса '%s' было введено в %s %d.%d\n"
+
+#: ../gladeui/glade-project.c:1578
+#, c-format
+msgid "[%s] Signal '%s' of object class '%s' was introduced in %s %d.%d\n"
+msgstr "[%s] Сигнал '%s' объектов класса '%s' был введён в %s %d.%d\n"
+
+#: ../gladeui/glade-project.c:1625
+msgid "Details"
+msgstr "Подробности"
+
+#: ../gladeui/glade-project.c:1641
+#, c-format
+msgid "Project %s has errors, save anyway ?"
+msgstr "Проект %s содержит ошибки, всё равно сохранить?"
+
+#: ../gladeui/glade-project.c:1642
+#, c-format
+msgid "Project %s has deprecated widgets and/or version mismatches."
+msgstr "Проект %s содержит устаревшие виджеты или имеет несоответствие версий"
+
+#: ../gladeui/glade-project.c:3062
+#, c-format
+msgid "Unsaved %i"
+msgstr "Несохранённый %i"
+
+#: ../gladeui/glade-project.c:3186
+#, c-format
+msgid "Project %s has no deprecated widgets or version mismatches."
+msgstr "Проект %s не содержит устаревших виджетов или несоответствия версий"
+
+#. Project format
+#: ../gladeui/glade-project.c:3201 ../gladeui/glade-project.c:3293
+#: ../gladeui/glade-utils.c:517
+msgid "File format"
+msgstr "Формат файла"
+
+#. Target versions
+#: ../gladeui/glade-project.c:3206
+msgid "Target Versions:"
+msgstr "Целевые версии:"
+
+#: ../gladeui/glade-project.c:3240
+#, c-format
+msgid "%s catalog"
+msgstr "каталог %s"
+
+#. Run verify
+#: ../gladeui/glade-project.c:3332
+msgid "Verify versions and deprecations:"
+msgstr "Проверить версии и найти устаревшие виджеты:"
+
+#: ../gladeui/glade-property.c:510
+msgid "The GladePropertyClass for this property"
+msgstr "GladePropertyClass, созданный для работы с этим свойством"
+
+#: ../gladeui/glade-property.c:516
+msgid "Enabled"
+msgstr "Разрешён"
+
+#: ../gladeui/glade-property.c:517
+msgid "If the property is optional, this is its enabled state"
+msgstr "Если свойство может отсутствовать, это признак отсутствия"
+
+#: ../gladeui/glade-property.c:523 ../gladeui/glade-widget-action.c:168
+msgid "Sensitive"
+msgstr "Чувствительный"
+
+#: ../gladeui/glade-property.c:524
+msgid "This gives backends control to set property sensitivity"
+msgstr "Управляющий вход для установки свойства чувствительности"
+
+#: ../gladeui/glade-property.c:530
+msgid "Comment"
+msgstr "Комментарий"
+
+#: ../gladeui/glade-property.c:531
+msgid "Comment for translators"
+msgstr "Комментарий для переводчиков"
+
+#: ../gladeui/glade-property.c:537
+msgid "Translatable"
+msgstr "Переводимый"
+
+#: ../gladeui/glade-property.c:538
+msgid "Whether this property is translatable or not"
+msgstr "Переводится данное свойство или нет"
+
+#: ../gladeui/glade-property.c:544
+msgid "Has Context"
+msgstr "Имеет контекст"
+
+#: ../gladeui/glade-property.c:545
+msgid "Whether or not the translatable string has a context prefix"
+msgstr ""
+"Имеет ли данная переводимая строка заголовок, указывающий на контекст "
+"перевода"
+
+#: ../gladeui/glade-property.c:551
+msgid "Visual State"
+msgstr "Состояние отображения"
+
+#: ../gladeui/glade-property.c:552
+msgid "Priority information for the property editor to act on"
+msgstr "Информация о состоянии объекта для редактора свойств"
+
+#: ../gladeui/glade-signal-editor.c:67
+msgid "<Type here>"
+msgstr "<Заполните>"
+
+#: ../gladeui/glade-signal-editor.c:690 ../plugins/gtk+/glade-accels.c:553
+msgid "Signal"
+msgstr "Сигнал"
+
+#: ../gladeui/glade-signal-editor.c:710
+msgid "Handler"
+msgstr "Обработчик"
+
+#: ../gladeui/glade-signal-editor.c:732
+msgid "User data"
+msgstr "Данные пользователя"
+
+#: ../gladeui/glade-signal-editor.c:746
+msgid "Lookup"
+msgstr "Найти"
+
+#: ../gladeui/glade-signal-editor.c:757 ../plugins/gtk+/gtk+.xml.in.h:18
+msgid "After"
+msgstr "После"
+
+#: ../gladeui/glade-utils.c:144 ../gladeui/glade-utils.c:175
+#, c-format
+msgid "We could not find the symbol \"%s\""
+msgstr "Не удалось найти символ \"%s\""
+
+#: ../gladeui/glade-utils.c:151
+#, c-format
+msgid "Could not get the type from \"%s\""
+msgstr "Не удалось получить тип из \"%s"
+
+#: ../gladeui/glade-utils.c:598
+msgid "All Files"
+msgstr "Все файлы"
+
+#: ../gladeui/glade-utils.c:603
+msgid "Libglade Files"
+msgstr "Файлы Libglade"
+
+#: ../gladeui/glade-utils.c:608
+msgid "GtkBuilder Files"
+msgstr "Файлы GtkBuilder"
+
+#: ../gladeui/glade-utils.c:614
+msgid "All Glade Files"
+msgstr "Все файлы Glade"
+
+#: ../gladeui/glade-utils.c:1320
+#, c-format
+msgid ""
+"%s exists.\n"
+"Do you want to replace it?"
+msgstr ""
+"%s уже существует.\n"
+"Хотите его перезаписать?"
+
+#: ../gladeui/glade-utils.c:1348
+#, c-format
+msgid "Error writing to %s: %s"
+msgstr "Ошибка при записи %s: %s"
+
+#: ../gladeui/glade-utils.c:1362
+#, c-format
+msgid "Error reading %s: %s"
+msgstr "Ошибка при чтении %s: %s"
+
+#: ../gladeui/glade-utils.c:1377 ../gladeui/glade-utils.c:1398
+#, c-format
+msgid "Error shutting down I/O channel %s: %s"
+msgstr "При завершении работы канала ввода-вывода %s возникла ошибка: %s"
+
+#: ../gladeui/glade-utils.c:1387
+#, c-format
+msgid "Failed to open %s for writing: %s"
+msgstr "Не удалось открыть файл %s на чтение: %s"
+
+#: ../gladeui/glade-utils.c:1407
+#, c-format
+msgid "Failed to open %s for reading: %s"
+msgstr "Не удалось открыть %s для чтения: %s"
+
+#: ../gladeui/glade-widget.c:990
+msgid "The name of the widget"
+msgstr "Название виджета"
+
+#: ../gladeui/glade-widget.c:997
+msgid "Internal name"
+msgstr "Внутреннее название"
+
+#: ../gladeui/glade-widget.c:998
+msgid "The internal name of the widget"
+msgstr "Внутреннее название элемента"
+
+#: ../gladeui/glade-widget.c:1004
+msgid "Anarchist"
+msgstr "Самостоятельный"
+
+#: ../gladeui/glade-widget.c:1005
+msgid ""
+"Whether this composite child is an ancestral child or an anarchist child"
+msgstr ""
+"Является ли этот встроенный дочерний виджет наследственным элементом или "
+"самостоятельным элементом"
+
+#: ../gladeui/glade-widget.c:1012
+msgid "Object"
+msgstr "Объект"
+
+#: ../gladeui/glade-widget.c:1013
+msgid "The object associated"
+msgstr "Этот объект связан"
+
+#: ../gladeui/glade-widget.c:1020
+msgid "Adaptor"
+msgstr "Подстройщик"
+
+#: ../gladeui/glade-widget.c:1021
+msgid "The class adaptor for the associated widget"
+msgstr "Класс подстройщика для связанного виджета"
+
+#: ../gladeui/glade-widget.c:1028 ../gladeui/glade-inspector.c:199
+msgid "Project"
+msgstr "Проект"
+
+#: ../gladeui/glade-widget.c:1029
+msgid "The glade project that this widget belongs to"
+msgstr "Проект glade, которому принадлежит этот виджет"
+
+#: ../gladeui/glade-widget.c:1038
+msgid "A list of GladeProperties"
+msgstr "Список свойств GladeProperties"
+
+#: ../gladeui/glade-widget.c:1044 ../plugins/gtk+/gtk+.xml.in.h:226
+msgid "Parent"
+msgstr "Родитель"
+
+#: ../gladeui/glade-widget.c:1045
+msgid "A pointer to the parenting GladeWidget"
+msgstr "Указатель на родительский GladeWidget"
+
+#: ../gladeui/glade-widget.c:1052
+msgid "Internal Name"
+msgstr "Внутреннее название"
+
+#: ../gladeui/glade-widget.c:1053
+msgid "A generic name prefix for internal widgets"
+msgstr "Общая приставка для внутренних виджетов"
+
+#: ../gladeui/glade-widget.c:1058
+msgid "Template"
+msgstr "Шаблон"
+
+#: ../gladeui/glade-widget.c:1059
+msgid "A GladeWidget template to base a new widget on"
+msgstr "Шаблон виджета Glade для создания новых виджетов"
+
+#: ../gladeui/glade-widget.c:1065
+msgid "Reason"
+msgstr "Причина"
+
+#: ../gladeui/glade-widget.c:1066
+msgid "A GladeCreateReason for this creation"
+msgstr "Объект GladeCreateReason для создания"
+
+#: ../gladeui/glade-widget.c:1074
+msgid "Toplevel Width"
+msgstr "Ширина главного окна"
+
+#: ../gladeui/glade-widget.c:1075
+msgid "The width of the widget when toplevel in the GladeDesignLayout"
+msgstr "Ширина виджета когда главное окно принадлежит GladeDesignLayout"
+
+#: ../gladeui/glade-widget.c:1084
+msgid "Toplevel Height"
+msgstr "Высота главного окна"
+
+#: ../gladeui/glade-widget.c:1085
+msgid "The height of the widget when toplevel in the GladeDesignLayout"
+msgstr "Высота виджета когда главное окно принадлежит GladeDesignLayout"
+
+#: ../gladeui/glade-widget.c:1094
+msgid "Support Warning"
+msgstr "Поддержка предупреждений"
+
+#: ../gladeui/glade-widget.c:1095
+msgid "A warning string about version mismatches"
+msgstr "Строка с предупреждением о несоответствии версий"
+
+#: ../gladeui/glade-widget-adaptor.c:248
+#, c-format
+msgid "A derived adaptor (%s) of %s already exist!"
+msgstr "Выведенный приёмщик (%s) элемента %s уже существует!"
+
+#: ../gladeui/glade-widget-adaptor.c:1199
+msgid "Name of the class"
+msgstr "Название класса"
+
+#: ../gladeui/glade-widget-adaptor.c:1207
+msgid "GType of the class"
+msgstr "GType класса"
+
+#: ../gladeui/glade-widget-adaptor.c:1214 ../plugins/gnome/gnome.xml.in.h:64
+msgid "Title"
+msgstr "Заголовок"
+
+#: ../gladeui/glade-widget-adaptor.c:1215
+msgid "Translated title for the class used in the glade UI"
+msgstr "Переводимое название класса, используемое в интерфейсе glade"
+
+#: ../gladeui/glade-widget-adaptor.c:1222
+msgid "Generic Name"
+msgstr "Общее имя"
+
+#: ../gladeui/glade-widget-adaptor.c:1223
+msgid "Used to generate names of new widgets"
+msgstr "Используется для создания названий новых виджетов"
+
+#: ../gladeui/glade-widget-adaptor.c:1230 ../plugins/gtk+/gtk+.xml.in.h:139
+msgid "Icon Name"
+msgstr "Название значка"
+
+#: ../gladeui/glade-widget-adaptor.c:1231
+msgid "The icon name"
+msgstr "Название значка"
+
+#: ../gladeui/glade-widget-adaptor.c:1238
+msgid "Catalog"
+msgstr "Каталог"
+
+#: ../gladeui/glade-widget-adaptor.c:1239
+msgid "The name of the widget catalog this class was declared by"
+msgstr "Имя каталога виджетов, который определяет данный класс"
+
+#: ../gladeui/glade-widget-adaptor.c:1246
+msgid "Book"
+msgstr "Книга"
+
+#: ../gladeui/glade-widget-adaptor.c:1247
+msgid "DevHelp search namespace for this widget class"
+msgstr "Пространство имён DevHelp для этого класса виджетов"
+
+#: ../gladeui/glade-widget-adaptor.c:1254
+msgid "Special Child Type"
+msgstr "Специальный тип дочернего элемента"
+
+#: ../gladeui/glade-widget-adaptor.c:1255
+msgid ""
+"Holds the name of the packing property to depict special children for this "
+"container class"
+msgstr ""
+"Содержит тип упаковки для того, чтобы отобразить специальные дочерние "
+"элементы контейнера"
+
+#: ../gladeui/glade-widget-adaptor.c:1263 ../plugins/gtk+/gtk+.xml.in.h:73
+msgid "Cursor"
+msgstr "Курсор"
+
+#: ../gladeui/glade-widget-adaptor.c:1264
+msgid "A cursor for inserting widgets in the UI"
+msgstr "Курсор для вставки виджетов в интерфейсе"
+
+#: ../gladeui/glade-inspector.c:200
+msgid "The project being inspected"
+msgstr "Изучаемый проект"
+
+#: ../gladeui/glade-inspector.c:591
+#, c-format
+msgid "(internal %s)"
+msgstr "(внутренний %s)"
+
+#: ../gladeui/glade-inspector.c:595
+#, c-format
+msgid "(%s child)"
+msgstr "(%s дочерний)"
+
+#: ../gladeui/glade-custom.c:216
+msgid "Creation Function"
+msgstr "Функция создания"
+
+#: ../gladeui/glade-custom.c:217
+msgid "The function which creates this widget"
+msgstr "Функция для создания этого виджета"
+
+#: ../gladeui/glade-custom.c:223
+msgid "String 1"
+msgstr "Строка 1"
+
+#: ../gladeui/glade-custom.c:224
+msgid "The first string argument to pass to the function"
+msgstr "Первый строковый аргумент для передачи функции"
+
+#: ../gladeui/glade-custom.c:230
+msgid "String 2"
+msgstr "Строка 2"
+
+#: ../gladeui/glade-custom.c:231
+msgid "The second string argument to pass to the function"
+msgstr "Второй строковый аргумент для передачи функции"
+
+#: ../gladeui/glade-custom.c:237
+msgid "Integer 1"
+msgstr "Целое 1"
+
+#: ../gladeui/glade-custom.c:238
+msgid "The first integer argument to pass to the function"
+msgstr "Первый целый аргумент для передачи функции"
+
+#: ../gladeui/glade-custom.c:244
+msgid "Integer 2"
+msgstr "Целое 2"
+
+#: ../gladeui/glade-custom.c:245
+msgid "The second integer argument to pass to the function"
+msgstr "Второй целый аргумент для передачи функции"
+
+#: ../gladeui/glade-widget-action.c:161
+msgid "class"
+msgstr "класс"
+
+#: ../gladeui/glade-widget-action.c:162
+msgid "GladeWidgetActionClass structure pointer"
+msgstr "Указатель на структуру GladeWidgetActionClass"
+
+#: ../gladeui/glade-widget-action.c:169
+msgid "Whether or not this action is sensitive"
+msgstr "Активно или нет выбранное действие"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:479
+msgid "All Contexts"
+msgstr "Все контексты"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1363
+msgid "Named Icon Chooser"
+msgstr "Именованный выбор значков"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1401
+msgid "Icon _Name:"
+msgstr "Название _значка:"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1484
+msgid "_List standard icons only"
+msgstr "Показывать только _стандартные значки"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1700
+#, c-format
+msgid "Could not create directory: %s"
+msgstr "Не удалось создать каталог: %s"
+
+#: ../gladeui/icon-naming-spec.c:35
+msgid "Actions"
+msgstr "Действия"
+
+#: ../gladeui/icon-naming-spec.c:36
+msgid "Applications"
+msgstr "Приложения"
+
+#: ../gladeui/icon-naming-spec.c:37
+msgid "Categories"
+msgstr "Категории"
+
+#: ../gladeui/icon-naming-spec.c:38
+msgid "Devices"
+msgstr "Устройства"
+
+#: ../gladeui/icon-naming-spec.c:39
+msgid "Emblems"
+msgstr "Эмблемы"
+
+#: ../gladeui/icon-naming-spec.c:40
+msgid "Emotes"
+msgstr "Эмоции"
+
+#: ../gladeui/icon-naming-spec.c:41
+msgid "International"
+msgstr "Международные"
+
+#: ../gladeui/icon-naming-spec.c:42
+msgid "MIME Types"
+msgstr "Типы MIME"
+
+#: ../gladeui/icon-naming-spec.c:43
+msgid "Places"
+msgstr "Места"
+
+#: ../gladeui/icon-naming-spec.c:44
+msgid "Status"
+msgstr "Статус"
+
+#: ../plugins/gtk+/glade-attributes.c:175 ../plugins/gtk+/gtk+.xml.in.h:28
+msgid "Attributes"
+msgstr "Атрибуты"
+
+#: ../plugins/gtk+/glade-attributes.c:176
+msgid "A list of attributes"
+msgstr "Список атрибутов"
+
+#: ../plugins/gtk+/glade-attributes.c:257
+#: ../plugins/gtk+/glade-attributes.c:514
+msgid "Unset"
+msgstr "Не установлен"
+
+#: ../plugins/gtk+/glade-attributes.c:368
+msgid "Style"
+msgstr "Стиль"
+
+#: ../plugins/gtk+/glade-attributes.c:372
+msgid "Weight"
+msgstr "Толщина"
+
+#: ../plugins/gtk+/glade-attributes.c:376
+msgid "Variant"
+msgstr "Вариант"
+
+#: ../plugins/gtk+/glade-attributes.c:380
+msgid "Stretch"
+msgstr "Растяжка"
+
+#: ../plugins/gtk+/glade-attributes.c:384
+msgid "Underline"
+msgstr "Использовать подчёркивание"
+
+#: ../plugins/gtk+/glade-attributes.c:388
+msgid "Strikethrough"
+msgstr "Использовать перечёркивание"
+
+#: ../plugins/gtk+/glade-attributes.c:392
+msgid "Gravity"
+msgstr "Притяжение"
+
+#: ../plugins/gtk+/glade-attributes.c:396
+msgid "Gravity Hint"
+msgstr "Подсказка о притяжении"
+
+#: ../plugins/gtk+/glade-attributes.c:407 ../plugins/gtk+/gtk+.xml.in.h:282
+msgid "Size"
+msgstr "Размер"
+
+#: ../plugins/gtk+/glade-attributes.c:411
+msgid "Absolute Size"
+msgstr "Абсолютный размер"
+
+#: ../plugins/gtk+/glade-attributes.c:418
+msgid "Foreground Color"
+msgstr "Цвет текста"
+
+#: ../plugins/gtk+/glade-attributes.c:422 ../plugins/gnome/gnome.xml.in.h:3
+msgid "Background Color"
+msgstr "Цвет фона"
+
+#: ../plugins/gtk+/glade-attributes.c:426
+msgid "Underline Color"
+msgstr "Цвет подчёркивания"
+
+#: ../plugins/gtk+/glade-attributes.c:430
+msgid "Strikethrough Color"
+msgstr "Цвет перечёркивающей линии"
+
+#: ../plugins/gtk+/glade-attributes.c:440 ../plugins/gtk+/gtk+.xml.in.h:262
+msgid "Scale"
+msgstr "Шкала"
+
+#. XXX Interesting... can we get the defaults ? what can we do to let the user
+#. * unset the value ??
+#.
+#: ../plugins/gtk+/glade-attributes.c:471
+#: ../plugins/gtk+/glade-attributes.c:514
+#: ../plugins/gtk+/glade-attributes.c:521
+#: ../plugins/gtk+/glade-attributes.c:525
+msgid "<Enter Value>"
+msgstr "<Введите значение>"
+
+#: ../plugins/gtk+/glade-attributes.c:906
+msgid "Select a color"
+msgstr "Выбрать цвет"
+
+#: ../plugins/gtk+/glade-attributes.c:1042
+msgid "Attribute"
+msgstr "Атрибут"
+
+#: ../plugins/gtk+/glade-attributes.c:1052
+msgid "Value"
+msgstr "Значение"
+
+#: ../plugins/gtk+/glade-attributes.c:1197
+msgid "Setup Text Attributes"
+msgstr "Установить атрибуты текста"
+
+#. eprop_attrs->entry = gtk_entry_new ();
+#. gtk_entry_set_editable (GTK_ENTRY (eprop_attrs->entry), FALSE);
+#. gtk_widget_show (eprop_attrs->entry);
+#. gtk_box_pack_start (GTK_BOX (hbox), eprop_attrs->entry, TRUE, TRUE, 0);
+#: ../plugins/gtk+/glade-attributes.c:1307
+msgid "Edit Attributes"
+msgstr "Редактировать атрибуты"
+
+#: ../plugins/gtk+/glade-gtk.c:173
+msgid "GnomeUIInfo"
+msgstr "GnomeUIInfo"
+
+#: ../plugins/gtk+/glade-gtk.c:174
+msgid "Choose the GnomeUIInfo stock item"
+msgstr "Выберите значок для структуры GnomeUIInfo"
+
+#: ../plugins/gtk+/glade-gtk.c:216 ../plugins/gtk+/glade-gtk.c:225
+msgid "Method"
+msgstr "Метод"
+
+#: ../plugins/gtk+/glade-gtk.c:217
+msgid "The method to use to edit this image"
+msgstr "Метод, используемый для правки этого изображения"
+
+#: ../plugins/gtk+/glade-gtk.c:226
+msgid "The method to use to edit this button"
+msgstr "Метод используемый для правки этой кнопки"
+
+#: ../plugins/gtk+/glade-gtk.c:1187
+#, c-format
+msgid "Removing parent of %s"
+msgstr "Удаление родительского элемента %s"
+
+#: ../plugins/gtk+/glade-gtk.c:1238
+#, c-format
+msgid "Adding parent %s to %s"
+msgstr "Добавить родительский элемент %s к %s"
+
+#: ../plugins/gtk+/glade-gtk.c:1606
+#, c-format
+msgid "Ordering children of %s"
+msgstr "Упорядочивание дочерних элементов %s"
+
+#: ../plugins/gtk+/glade-gtk.c:1938
+msgid "this property is only for use in dialog action buttons"
+msgstr "Это свойство используется только в кнопках действий в диалогах"
+
+#: ../plugins/gtk+/glade-gtk.c:2126 ../plugins/gtk+/glade-gtk.c:2133
+#, c-format
+msgid "Insert placeholder to %s"
+msgstr "Вставить пустое место в %s"
+
+#: ../plugins/gtk+/glade-gtk.c:2140
+#, c-format
+msgid "Remove placeholder from %s"
+msgstr "Удалить пустое место из %s"
+
+#: ../plugins/gtk+/glade-gtk.c:3055 ../plugins/gtk+/glade-gtk.c:3063
+#, c-format
+msgid "Insert Row on %s"
+msgstr "Вставить строку в %s"
+
+#: ../plugins/gtk+/glade-gtk.c:3071 ../plugins/gtk+/glade-gtk.c:3079
+#, c-format
+msgid "Insert Column on %s"
+msgstr "Вставить столбец в %s"
+
+#: ../plugins/gtk+/glade-gtk.c:3087
+#, c-format
+msgid "Remove Column on %s"
+msgstr "Удалить столбец из %s"
+
+#: ../plugins/gtk+/glade-gtk.c:3095
+#, c-format
+msgid "Remove Row on %s"
+msgstr "Удалить строку из %s"
+
+#: ../plugins/gtk+/glade-gtk.c:4115 ../plugins/gtk+/glade-gtk.c:4122
+#, c-format
+msgid "Insert page on %s"
+msgstr "Вставить страницу в %s"
+
+#: ../plugins/gtk+/glade-gtk.c:4129
+#, c-format
+msgid "Remove page from %s"
+msgstr "Удалить страницу из %s"
+
+#: ../plugins/gtk+/glade-gtk.c:4901 ../plugins/gtk+/glade-gtk.c:4905
+#: ../plugins/gtk+/glade-gtk.c:5087 ../plugins/gtk+/glade-gtk.c:5091
+msgid "This only applies with label type buttons"
+msgstr "Это применимо только к кнопкам с меткой"
+
+#: ../plugins/gtk+/glade-gtk.c:4916 ../plugins/gtk+/glade-gtk.c:4920
+#: ../plugins/gtk+/glade-gtk.c:5079 ../plugins/gtk+/glade-gtk.c:5083
+msgid "This only applies with stock type buttons"
+msgstr "Это применимо только к кнопкам с готовыми изображениями"
+
+#: ../plugins/gtk+/glade-gtk.c:5187 ../plugins/gtk+/glade-gtk.c:5209
+msgid "You must remove any children before you can set the type"
+msgstr "Необходимо удалить потомки кнопки перед установкой её типа"
+
+#: ../plugins/gtk+/glade-gtk.c:5233 ../plugins/gtk+/glade-gtk.c:6746
+msgid "This only applies with file type images"
+msgstr "Это применимо только к изображениям из файла"
+
+#: ../plugins/gtk+/glade-gtk.c:5241 ../plugins/gtk+/glade-gtk.c:6750
+msgid "This only applies to Icon Theme type images"
+msgstr "Это применимо только к изображениям из темы"
+
+#: ../plugins/gtk+/glade-gtk.c:5251 ../plugins/gtk+/glade-gtk.c:6748
+msgid "This only applies with stock type images"
+msgstr "Это применимо только к встроенным элементам"
+
+#: ../plugins/gtk+/glade-gtk.c:5263
+msgid ""
+"Pixel Size takes precedence over Icon Size; if you want to use Icon Size, "
+"set Pixel size to -1"
+msgstr ""
+"Размер в пикселях более приоритетный, чем размер значка. Если необходимо "
+"использовать размер заданный для значка, установите размер в пикселях равным "
+"-1"
+
+#: ../plugins/gtk+/glade-gtk.c:5289
+msgid "Pixel Size takes precedence over Icon size"
+msgstr "Размер в пикселях для переопределения размера значка"
+
+#: ../plugins/gtk+/glade-gtk.c:5602 ../plugins/gtk+/glade-gtk.c:6596
+msgid "<separator>"
+msgstr "<разделитель>"
+
+#: ../plugins/gtk+/glade-gtk.c:5776 ../plugins/gtk+/gtk+.xml.in.h:207
+msgid "Normal"
+msgstr "Нормальный"
+
+#: ../plugins/gtk+/glade-gtk.c:5777 ../plugins/gtk+/gtk+.xml.in.h:144
+msgid "Image"
+msgstr "Изображение"
+
+#: ../plugins/gtk+/glade-gtk.c:5778
+msgid "Check"
+msgstr "Отметка"
+
+#: ../plugins/gtk+/glade-gtk.c:5779 ../plugins/gtk+/glade-gtk.c:6660
+msgid "Radio"
+msgstr "Радио"
+
+#: ../plugins/gtk+/glade-gtk.c:5780 ../plugins/gtk+/glade-gtk.c:6663
+msgid "Separator"
+msgstr "Разделитель"
+
+#: ../plugins/gtk+/glade-gtk.c:5784
+msgid "Add Item"
+msgstr "Добавить элемент"
+
+#: ../plugins/gtk+/glade-gtk.c:5785
+msgid "Add Child Item"
+msgstr "Добавить дочерний элемент"
+
+#: ../plugins/gtk+/glade-gtk.c:5786 ../plugins/gtk+/glade-gtk.c:6672
+msgid "Add Separator"
+msgstr "Добавить разделитель"
+
+#: ../plugins/gtk+/glade-gtk.c:5799
+msgid ""
+"<big><b>Tips:</b></big>\n"
+"  * Right click over the treeview to add items.\n"
+"  * Press Delete to remove the selected item.\n"
+"  * Drag &amp; Drop to reorder.\n"
+"  * Type column is editable."
+msgstr ""
+"<big><b>Подсказки:</b></big>\n"
+"  * Щёлкните правой кнопкой мыши над деревом для того, чтобы добавить "
+"элементы.\n"
+"  * Нажмите Delete, чтобы удалить выделенные элементы.\n"
+"  * Переносите элементы мышью, чтобы переупорядочить их.\n"
+"  * Колонку типа можно редактировать."
+
+#: ../plugins/gtk+/glade-gtk.c:5815 ../plugins/gtk+/glade-gtk.c:6330
+msgid "Edit Menu Bar"
+msgstr "Правка строки меню"
+
+#: ../plugins/gtk+/glade-gtk.c:5817 ../plugins/gtk+/glade-gtk.c:6332
+msgid "Edit Menu"
+msgstr "Правка меню"
+
+#: ../plugins/gtk+/glade-gtk.c:6068
+msgid "Print S_etup"
+msgstr "Пара_метры страницы"
+
+#: ../plugins/gtk+/glade-gtk.c:6072
+msgid "Find Ne_xt"
+msgstr "Найти след_ующее"
+
+#: ../plugins/gtk+/glade-gtk.c:6076
+msgid "_Undo Move"
+msgstr "_Отменить передвижение"
+
+#: ../plugins/gtk+/glade-gtk.c:6080
+msgid "_Redo Move"
+msgstr "_Вернуть передвижение"
+
+#: ../plugins/gtk+/glade-gtk.c:6083
+msgid "Select _All"
+msgstr "Выделить вс_ё"
+
+#: ../plugins/gtk+/glade-gtk.c:6086
+msgid "_New Game"
+msgstr "_Новая игра"
+
+#: ../plugins/gtk+/glade-gtk.c:6089
+msgid "_Pause game"
+msgstr "_Пауза"
+
+#: ../plugins/gtk+/glade-gtk.c:6092
+msgid "_Restart Game"
+msgstr "_Перезапустить"
+
+#: ../plugins/gtk+/glade-gtk.c:6095
+msgid "_Hint"
+msgstr "П_одсказка"
+
+#: ../plugins/gtk+/glade-gtk.c:6098
+msgid "_Scores..."
+msgstr "_Результаты..."
+
+#: ../plugins/gtk+/glade-gtk.c:6101
+msgid "_End Game"
+msgstr "_Закончить игру"
+
+#: ../plugins/gtk+/glade-gtk.c:6104
+msgid "Create New _Window"
+msgstr "Создать _новое окно"
+
+#: ../plugins/gtk+/glade-gtk.c:6107
+msgid "_Close This Window"
+msgstr "_Закрыть это окно"
+
+#: ../plugins/gtk+/glade-gtk.c:6119
+msgid "_Settings"
+msgstr "_Настройки"
+
+#: ../plugins/gtk+/glade-gtk.c:6122
+msgid "Fi_les"
+msgstr "Файл_ы"
+
+#: ../plugins/gtk+/glade-gtk.c:6125
+msgid "_Windows"
+msgstr "Ок_на"
+
+#: ../plugins/gtk+/glade-gtk.c:6131
+msgid "_Game"
+msgstr "_Игра"
+
+#: ../plugins/gtk+/glade-gtk.c:6227
+msgid "This does not apply with stock items"
+msgstr "Это не совместимо с встроенными элементами"
+
+#: ../plugins/gtk+/glade-gtk.c:6605
+msgid "<custom>"
+msgstr "<другой>"
+
+#: ../plugins/gtk+/glade-gtk.c:6658 ../plugins/gtk+/gtk+.xml.in.h:37
+msgid "Button"
+msgstr "Кнопка"
+
+#: ../plugins/gtk+/glade-gtk.c:6659
+msgid "Toggle"
+msgstr "Кнопка-переключатель"
+
+#: ../plugins/gtk+/glade-gtk.c:6661 ../plugins/gtk+/gtk+.xml.in.h:194
+msgid "Menu"
+msgstr "Меню"
+
+#: ../plugins/gtk+/glade-gtk.c:6662
+msgid "Item"
+msgstr "Элемент"
+
+#: ../plugins/gtk+/glade-gtk.c:6667
+msgid "Add Tool Button"
+msgstr "Добавить кнопку-инструмент"
+
+#: ../plugins/gtk+/glade-gtk.c:6668
+msgid "Add Toggle Button"
+msgstr "Добавить кнопку-переключатель"
+
+#: ../plugins/gtk+/glade-gtk.c:6669
+msgid "Add Radio Button"
+msgstr "Добавить радио-кнопку"
+
+#: ../plugins/gtk+/glade-gtk.c:6670
+msgid "Add Menu Button"
+msgstr "Добавить кнопку меню"
+
+#: ../plugins/gtk+/glade-gtk.c:6671
+msgid "Add Tool Item"
+msgstr "Добавить инструмент"
+
+#: ../plugins/gtk+/glade-gtk.c:6680
+msgid "Tool Bar Editor"
+msgstr "Правка панели инструментов"
+
+#: ../plugins/gtk+/glade-gtk.c:7776
+msgid "Introduction page"
+msgstr "Вводная страница"
+
+#: ../plugins/gtk+/glade-gtk.c:7780
+msgid "Content page"
+msgstr "Страница с содержимым"
+
+#: ../plugins/gtk+/glade-gtk.c:7784
+msgid "Confirmation page"
+msgstr "Страница подтверждения"
+
+#. Accelerators
+#: ../plugins/gtk+/glade-accels.c:205 ../plugins/gtk+/gtk+.xml.in.h:11
+msgid "Accelerators"
+msgstr "Ускорители"
+
+#: ../plugins/gtk+/glade-accels.c:206
+msgid "A list of accelerator keys"
+msgstr "Список быстрых клавиш"
+
+#: ../plugins/gtk+/glade-accels.c:425 ../plugins/gtk+/glade-accels.c:493
+msgid "<choose a key>"
+msgstr "<выберите клавишу>"
+
+#: ../plugins/gtk+/glade-accels.c:574
+msgid "Accelerator Key"
+msgstr "Клавиша ускорителя"
+
+#: ../plugins/gtk+/glade-accels.c:633
+msgid "Choose accelerator keys..."
+msgstr "Выберите быструю клавишу..."
+
+#: ../plugins/gtk+/gtk+.xml.in.h:2
+msgid "A stock item, select None to choose a custom image and label"
+msgstr "Встроенный элемент. Выберите 'Нет' для задания изображения и метки"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:3
+msgid "A tooltip text for this widget"
+msgstr "Текст подсказки для этого элемента"
+
+#. NOT AVAILABLES ON WIN32
+#. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
+#. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
+#.
+#: ../plugins/gtk+/gtk+.xml.in.h:8
+msgid "About Dialog"
+msgstr "Диалог \"О программе\""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:9
+msgid "Accel Label"
+msgstr "Метка ускорителя"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:12
+msgid "Accessible Description"
+msgstr "Описание для вспомогательных технологий"
+
+#. Atk name and description properties
+#: ../plugins/gtk+/gtk+.xml.in.h:14
+msgid "Accessible Name"
+msgstr "Имя для вспомогательных технологий"
+
+#. Atk activate property
+#: ../plugins/gtk+/gtk+.xml.in.h:16
+msgid "Activate"
+msgstr "Активировать"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:17
+msgid "Add Parent"
+msgstr "Добавить родителя"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:19
+msgid "Alignment"
+msgstr "Выравнивание"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:20
+msgid "All"
+msgstr "Все"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:21
+msgid "All Events"
+msgstr "Все события"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:22 ../plugins/gnome/gnome.xml.in.h:2
+msgid "Always"
+msgstr "Всегда"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:23
+msgid "Always Center"
+msgstr "Всегда по центру"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:24
+msgid "Arrow"
+msgstr "Стрелка"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:25
+msgid "Ascending"
+msgstr "Возрастающий"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:26
+msgid "Aspect Frame"
+msgstr "Рамка отношения"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:27
+msgid "Assistant"
+msgstr "Помощник"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:29
+msgid "Automatic"
+msgstr "Автоматически"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:30
+msgid "Before"
+msgstr "Перед"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:31 ../plugins/gnome/bonobo.xml.in.h:1
+msgid "Bottom"
+msgstr "Внизу"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:32
+msgid "Bottom Left"
+msgstr "Внизу слева"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:33
+msgid "Bottom Right"
+msgstr "Внизу справа"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:34
+msgid "Bottom to Top"
+msgstr "Снизу вверх"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:35
+msgid "Box"
+msgstr "Группа"
+
+#. This is deprecated
+#: ../plugins/gtk+/gtk+.xml.in.h:36 ../plugins/gnome/canvas.xml.in.h:2
+msgid "Browse"
+msgstr "Обзор"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:38
+msgid "Button 1 Motion"
+msgstr "Движение нажатой 1-ой кнопки мыши"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:39
+msgid "Button 2 Motion"
+msgstr "Движение нажатой 2-ой кнопки мыши"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:40
+msgid "Button 3 Motion"
+msgstr "Движение нажатой 3-ей кнопки мыши"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:41
+msgid "Button Box"
+msgstr "Группа кнопок"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:42
+msgid "Button Motion"
+msgstr "Движение указателя с нажатой кнопкой"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:43
+msgid "Button Press"
+msgstr "Нажатие кнопки мыши"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:44
+msgid "Button Release"
+msgstr "Отпускание кнопки мыши"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:45
+msgid "Calendar"
+msgstr "Календарь"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:46
+msgid "Cancel"
+msgstr "Отмена"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:47
+msgid "Center"
+msgstr "По центру"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:48
+msgid "Center on Parent"
+msgstr "По центру родителя"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:49
+msgid "Centimeters"
+msgstr "Сантиметров"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:50
+msgid "Character"
+msgstr "Символ"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:51
+msgid "Check Button"
+msgstr "Поле для отметки"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:52
+msgid "Check Menu Item"
+msgstr "Элемент меню с отметкой"
+
+#. Atk click property
+#: ../plugins/gtk+/gtk+.xml.in.h:54
+msgid "Click"
+msgstr "Щелчок"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:55
+msgid "Close"
+msgstr "Закрыть"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:56
+msgid "Color Button"
+msgstr "Кнопка выбора цвета"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:57
+msgid "Color Selection"
+msgstr "Выбор цвета"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:58
+msgid "Color Selection Dialog"
+msgstr "Окно выбора цвета"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:59
+msgid "Columned List"
+msgstr "Колоночный список"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:60
+msgid "Combo"
+msgstr "Выпадающий список"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:61
+msgid "Combo Box"
+msgstr "Выпадающий список"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:62
+msgid "Combo Box Entry"
+msgstr "Элемент выпадающего списка"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:63
+msgid "Confirm"
+msgstr "Подтверждение"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:64
+msgid "Container"
+msgstr "Контейнер"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:65
+msgid "Containers"
+msgstr "Контейнеры"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:66
+msgid "Content"
+msgstr "Содержимое"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:67
+msgid "Continuous"
+msgstr "Непрерывно"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:68
+msgid "Control and Display"
+msgstr "Управление и отображение"
+
+#. Atk relationset properties
+#: ../plugins/gtk+/gtk+.xml.in.h:70
+msgid "Controlled By"
+msgstr "Управляется"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:71
+msgid "Controller For"
+msgstr "Управляющий для"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:72 ../plugins/gnome/gnome.xml.in.h:5
+msgid "Create Folder"
+msgstr "Создать каталог"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:74
+msgid "Curve"
+msgstr "Кривая"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:75
+msgid "Custom"
+msgstr "Дополнительно"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:76
+msgid "Custom widget"
+msgstr "Дополнительные виджеты"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:77
+msgid "Default"
+msgstr "Исходный"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:78
+msgid "Delayed"
+msgstr "Отложенный"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:79
+msgid "Descending"
+msgstr "Убывающий"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:80
+msgid "Described By"
+msgstr "Описано"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:81
+msgid "Description For"
+msgstr "Описание для"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:82
+msgid "Description of an object, formatted for assistive technology access"
+msgstr ""
+"Описание объекта, отформатированное для доступа вспомогательных технологий"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:83
+msgid "Desktop"
+msgstr "Рабочий стол"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:84
+msgid "Dialog"
+msgstr "Диалог"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:85
+msgid "Dialog Box"
+msgstr "Окно диалога"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:86
+msgid "Discontinuous"
+msgstr "Дискретное"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:87
+msgid "Discrete"
+msgstr "Дискретное"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:88
+msgid "Dock"
+msgstr "Причал"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:89
+msgid "Down"
+msgstr "Вниз"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:90
+msgid "Drag & Drop"
+msgstr "Перенос мышью"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:91
+msgid "Drag and Drop"
+msgstr "Перенос мышью"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:92
+msgid "Drawing Area"
+msgstr "Область для рисования"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:93
+msgid "Drop Down Menu"
+msgstr "Выпадающее меню"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:94
+msgid "East"
+msgstr "Восточный"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:95
+msgid "Edge"
+msgstr "Край"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:96
+msgid "Edit Type"
+msgstr "Правка типа"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:97
+msgid "Edit&#8230;"
+msgstr "Правка&#8230;"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:98
+msgid "Embedded By"
+msgstr "Встроен в"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:99
+msgid "Embeds"
+msgstr "Содержит объекты"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:100 ../plugins/gnome/gnome.xml.in.h:7
+msgid "End"
+msgstr "Конец"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:101
+msgid "Enter Notify"
+msgstr "Ввести уведомление"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:102 ../plugins/gnome/gnome.xml.in.h:8
+msgid "Error"
+msgstr "Ошибка"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:103 ../plugins/gnome/bonobo.xml.in.h:2
+msgid "Etched In"
+msgstr "Вогнута внутрь"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:104 ../plugins/gnome/bonobo.xml.in.h:3
+msgid "Etched Out"
+msgstr "Вогнута наружу"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:105
+msgid "Event Box"
+msgstr "Область событий"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:106 ../plugins/gnome/gnome.xml.in.h:9
+msgid "Expand"
+msgstr "Раскрыть"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:107
+msgid "Expander"
+msgstr "Раскрыватель"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:108
+msgid "Exposure"
+msgstr "Выдержка"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:109
+msgid "Extended"
+msgstr "Расширенное"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:110
+msgid "File Chooser Button"
+msgstr "Кнопка выбора файлов"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:111
+msgid "File Chooser Dialog"
+msgstr "Диалог выбора файлов"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:112
+msgid "File Chooser Widget"
+msgstr "Виджет выбора файлов"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:113
+msgid "File Name"
+msgstr "Имя файла"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:114
+msgid "File Selection"
+msgstr "Выбор файлов"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:115
+msgid "Filename"
+msgstr "Имя файла"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:116 ../plugins/gnome/gnome.xml.in.h:11
+msgid "Fill"
+msgstr "Заполнение"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:117
+msgid "Fixed"
+msgstr "Фиксированный"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:118
+msgid "Flows From"
+msgstr "Следует перед"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:119
+msgid "Flows To"
+msgstr "Следует за"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:120
+msgid "Focus Change"
+msgstr "Изменение фокуса"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:121
+msgid "Font Button"
+msgstr "Кнопка шрифта"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:122
+msgid "Font Selection"
+msgstr "Выбор шрифта"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:123
+msgid "Font Selection Dialog"
+msgstr "Диалог выбора шрифта"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:124
+msgid "Frame"
+msgstr "Рамка"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:125
+msgid "Free"
+msgstr "Свободно"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:126
+msgid "Gamma Curve"
+msgstr "Гамма-кривая"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:127
+msgid "Gtk+ Obsolete"
+msgstr "Упразднённые Gtk+"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:128
+msgid "Half"
+msgstr "Половина"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:129
+msgid "Handle Box"
+msgstr "Ползунок"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:130 ../plugins/gnome/bonobo.xml.in.h:6
+msgid "Horizontal"
+msgstr "Горизонтально"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:131
+msgid "Horizontal Box"
+msgstr "Горизонтальный ящик"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:132
+msgid "Horizontal Button Box"
+msgstr "Горизонтальная группа кнопок"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:133
+msgid "Horizontal Panes"
+msgstr "Горизонтальная панель"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:134
+msgid "Horizontal Ruler"
+msgstr "Горизонтальная линейка"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:135
+msgid "Horizontal Scale"
+msgstr "Горизонтальная шкала"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:136
+msgid "Horizontal Scrollbar"
+msgstr "Горизонтальная полоса прокрутки"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:137
+msgid "Horizontal Separator"
+msgstr "Горизонтальный разделитель"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:138
+msgid "Horizontal and Vertical"
+msgstr "Горизонтальный и вертикальный"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:140
+msgid "Icon Theme"
+msgstr "Тема значков"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:141
+msgid "Icon View"
+msgstr "Просмотр значков"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:142
+msgid "Icons only"
+msgstr "Только значки"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:143
+msgid "If Valid"
+msgstr "Если корректно"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:145
+msgid "Image Menu Item"
+msgstr "Элемент меню значок"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:146
+msgid "Image Type"
+msgstr "Тип изображения"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:147
+msgid "Immediate"
+msgstr "Немедленно"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:148 ../plugins/gnome/bonobo.xml.in.h:7
+msgid "In"
+msgstr "В"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:149
+msgid "Inches"
+msgstr "Дюймы"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:150
+msgid ""
+"Indicates a subwindow attached to a component but otherwise has no "
+"connection in the UI hierarchy to that component"
+msgstr ""
+"Показывает что подокно присоединено к компоненту, но не связано с ним "
+"никаким другим образом в иерархии пользовательского интерфейса"
+
+#. Atk relationset properties
+#: ../plugins/gtk+/gtk+.xml.in.h:152
+msgid "Indicates an object controlled by one or more target objects"
+msgstr "Показывает, что объект управляется одним или более объектами"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:153
+msgid ""
+"Indicates an object is a cell in a treetable which is displayed because a "
+"cell in the same column is expanded and identifies that cell"
+msgstr ""
+"Показывает, что объект это ячейка в таблицы, отображаемая потому, что другой "
+"элемент в этой же колонке раскрыт и указывает на ячейку"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:154
+msgid "Indicates an object is a controller for one or more target objects"
+msgstr "Показывает, что объект управляет одним или более объектами"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:155
+msgid "Indicates an object is a label for one or more target objects"
+msgstr "Показывает, что объект является меткой для одного или более объекта"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:156
+msgid ""
+"Indicates an object is a member of a group of one or more target objects"
+msgstr "Показывает, что объект входит в группу объектов"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:157
+msgid "Indicates an object is labelled by one or more target objects"
+msgstr "Показывает, что объект отмечен одним или более объектами"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:158
+msgid "Indicates that an object is a parent window of another object"
+msgstr "Показывает, что объект является родительским для другого объекта"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:159
+msgid "Indicates that an object is a popup for another object"
+msgstr "Показывает, что объект всплывает для другого объекта"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:160
+msgid ""
+"Indicates that an object provides descriptive information about another "
+"object; more verbose than 'Label For'"
+msgstr ""
+"Показывает, что объект описывает другой объект; это описание должно быть "
+"более точным, чем у объекта, который является меткой"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:161
+msgid ""
+"Indicates that another object provides descriptive information about this "
+"object; more verbose than 'Labelled By'"
+msgstr ""
+"Показывает, что объект описывается другим объектом; это описание должно быть "
+"более точным, чем у объекта, который помечен меткой"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:162
+msgid ""
+"Indicates that the object has content that flows logically from another "
+"AtkObject in a sequential way, (for instance text-flow)"
+msgstr ""
+"Показывает, что содержимое объекта логически следует перед содержимым "
+"другого объекта, например, по порядку чтения текста"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:163
+msgid ""
+"Indicates that the object has content that flows logically to another "
+"AtkObject in a sequential way, (for instance text-flow)"
+msgstr ""
+"Показывает, что содержимое объекта логически следует за содержимым другого "
+"объекта, например по порядку чтения текста."
+
+#: ../plugins/gtk+/gtk+.xml.in.h:164
+msgid ""
+"Indicates that the object visually embeds another object's content, i.e. "
+"this object's content flows around another's content"
+msgstr ""
+"Показывает, что объект визуально содержит другие объекты, например, "
+"содержимое объекта обволакивает содержимое другого объекта"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:165
+msgid "Info"
+msgstr "Справка"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:166
+msgid "Input Dialog"
+msgstr "Диалог ввода"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:167
+msgid "Insert After"
+msgstr "Вставить после"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:168
+msgid "Insert Before"
+msgstr "Вставить перед"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:169
+msgid "Insert Column"
+msgstr "Вставить столбец"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:170
+msgid "Insert Page After"
+msgstr "Вставить страницу после"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:171
+msgid "Insert Page Before"
+msgstr "Вставить страницу перед"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:172
+msgid "Insert Row"
+msgstr "Вставить строку"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:173
+msgid "Intro"
+msgstr "Введение"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:174
+msgid "Invalid"
+msgstr "Некорректно"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:175
+msgid ""
+"Inverse of 'Embeds', indicates that this object's content is visually "
+"embedded in another object"
+msgstr ""
+"Обратное понятие к понятию 'Содержит', показывает, что содержимое объекта "
+"визуально встроено в другой объект"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:176
+msgid "Items"
+msgstr "Элементы"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:177
+msgid "Key Press"
+msgstr "Нажатие клавиши"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:178
+msgid "Key Release"
+msgstr "Отпускание клавиши"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:180
+msgid "Label For"
+msgstr "Метка для"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:181
+msgid "Labelled By"
+msgstr "Отмечен"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:182
+msgid "Large Toolbar"
+msgstr "Большая панель инструментов"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:183
+msgid "Layout"
+msgstr "Расположение"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:184
+msgid "Least Recently Used first"
+msgstr "Сначала самый давно использовавшийся"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:185
+msgid "Leave Notify"
+msgstr "Оставить уведомление"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:186 ../plugins/gnome/bonobo.xml.in.h:8
+msgid "Left"
+msgstr "Слева"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:187
+msgid "Left to Right"
+msgstr "Слева направо"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:188
+msgid "Linear"
+msgstr "Линейное"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:189
+msgid "Link Button"
+msgstr "Кнопка со ссылкой"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:190
+msgid "List"
+msgstr "Список"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:191
+msgid "List Item"
+msgstr "Элемент списка"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:192
+msgid "Maximum Width"
+msgstr "Максимальная ширина"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:193
+msgid "Member Of"
+msgstr "Член группы"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:195
+msgid "Menu Bar"
+msgstr "Строка меню"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:196
+msgid "Menu Item"
+msgstr "Элемент меню"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:197
+msgid "Menu Shell"
+msgstr "Меню"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:198
+msgid "Menu Tool Button"
+msgstr "Кнопка-инструмент"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:199
+msgid "Message Dialog"
+msgstr "Диалог сообщения"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:200
+msgid "Middle"
+msgstr "Середина"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:201
+msgid "Most Recently Used first"
+msgstr "Сначала самый недавно использовавшийся"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:202
+msgid "Mouse"
+msgstr "Мышь"
+
+#. This is deprecated
+#: ../plugins/gtk+/gtk+.xml.in.h:203 ../plugins/gnome/canvas.xml.in.h:17
+msgid "Multiple"
+msgstr "Несколько"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:204 ../plugins/gnome/gnome.xml.in.h:41
+msgid "Never"
+msgstr "Никогда"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:205
+msgid "Node Child Of"
+msgstr "Дочерний элемент"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:206 ../plugins/gnome/bonobo.xml.in.h:13
+msgid "None"
+msgstr "Нет"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:208
+msgid "North"
+msgstr "Север"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:209
+msgid "North East"
+msgstr "Северо-Восток"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:210
+msgid "North West"
+msgstr "Северо-Запад"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:211
+msgid "Notebook"
+msgstr "Записная книжка"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:212
+msgid "Notification"
+msgstr "Уведомление"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:213
+msgid "Number of items"
+msgstr "Число элементов"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:214
+msgid "Number of pages"
+msgstr "Число страниц"
+
+#. Atk name and description properties
+#: ../plugins/gtk+/gtk+.xml.in.h:216
+msgid "Object instance's name formatted for assistive technology access"
+msgstr "Имя объекта, отформатированное для доступа вспомогательных технологий"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:217
+msgid "Off"
+msgstr "Выключено"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:218
+msgid "Ok"
+msgstr "Ок"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:219
+msgid "Ok, Cancel"
+msgstr "Ok, Отмена"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:220
+msgid "On"
+msgstr "Включено"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:221 ../plugins/gnome/gnome.xml.in.h:42
+msgid "Open"
+msgstr "Открыть"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:222
+msgid "Option Menu"
+msgstr "Меню параметров"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:223 ../plugins/gnome/gnome.xml.in.h:43
+msgid "Other"
+msgstr "Другое"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:224 ../plugins/gnome/bonobo.xml.in.h:14
+msgid "Out"
+msgstr "Выход"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:225
+msgid "Paned"
+msgstr "Разделяемое окно"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:227
+msgid "Parent Window Of"
+msgstr "Родительское окно"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:228
+msgid "Pixels"
+msgstr "Пикселей"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:229
+msgid "Pointer Motion"
+msgstr "Движение указателя"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:230
+msgid "Pointer Motion Hint"
+msgstr "Подсказка на движение указателя"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:231
+msgid "Popup"
+msgstr "Всплывающее"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:232
+msgid "Popup For"
+msgstr "Всплывающее для"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:233
+msgid "Popup Menu"
+msgstr "Всплывающее меню"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:234 ../plugins/gnome/glade-gnome.c:658
+#: ../plugins/gnome/gnome.xml.in.h:46
+msgid "Position"
+msgstr "Позиция"
+
+#. Atk press property
+#: ../plugins/gtk+/gtk+.xml.in.h:236
+msgid "Press"
+msgstr "Нажатие"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:237
+msgid "Progress"
+msgstr "Индикатор выполнения"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:238
+msgid "Progress Bar"
+msgstr "Индикатор выполнения"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:239
+msgid "Property Change"
+msgstr "Изменение свойства"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:240
+msgid "Proximity  Out"
+msgstr "Близко"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:241
+msgid "Proximity In"
+msgstr "В непосредственной близости"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:242 ../plugins/gnome/gnome.xml.in.h:49
+msgid "Question"
+msgstr "Вопрос"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:243
+msgid "Queue"
+msgstr "Очередь"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:244
+msgid "Radio Button"
+msgstr "Радио-кнопка"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:245
+msgid "Radio Menu Item"
+msgstr "Радио элемент меню"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:246
+msgid "Radio Tool Button"
+msgstr "Радио-кнопка панели инструментов"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:247
+msgid "Range"
+msgstr "Промежуток"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:248
+msgid "Recent Chooser"
+msgstr "Недавние файлы"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:249
+msgid "Recent Chooser Dialog"
+msgstr "Диалог выбора недавних файлов"
+
+#. Atk release property
+#: ../plugins/gtk+/gtk+.xml.in.h:251
+msgid "Release"
+msgstr "Отпускание"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:252
+msgid "Remove Column"
+msgstr "Удалить столбец"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:253
+msgid "Remove Page"
+msgstr "Удалить страницу"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:254
+msgid "Remove Parent"
+msgstr "Удалить родителя"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:255
+msgid "Remove Row"
+msgstr "Удалить строку"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:256
+msgid "Remove Slot"
+msgstr "Удалить слот"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:257
+msgid "Response ID"
+msgstr "Идентификатор ответа"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:258 ../plugins/gnome/bonobo.xml.in.h:15
+msgid "Right"
+msgstr "Вправо"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:259
+msgid "Right to Left"
+msgstr "Справа налево"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:260
+msgid "Ruler"
+msgstr "Линейка"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:261 ../plugins/gnome/gnome.xml.in.h:50
+msgid "Save"
+msgstr "Сохранить"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:263
+msgid "Scale Button"
+msgstr "Вертикальная шкала"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:264
+msgid "Scroll"
+msgstr "Прокрутка"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:265
+msgid "Scrolled Window"
+msgstr "Прокручиваемое окно"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:266 ../plugins/gnome/gnome.xml.in.h:53
+msgid "Select Folder"
+msgstr "Выбор каталога"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:267
+msgid "Separator Menu Item"
+msgstr "Разделитель в меню"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:268
+msgid "Separator Tool Item"
+msgstr "Разделитель на панели инструментов"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:269
+msgid "Set the current page (strictly for editing purposes)"
+msgstr "Установить текущую страницу (только для редактирования)"
+
+#. Atk activate property
+#: ../plugins/gtk+/gtk+.xml.in.h:271
+msgid "Set the description of the Activate atk action"
+msgstr "Установить описание действия atk, соответствующего активации элемента"
+
+#. Atk click property
+#: ../plugins/gtk+/gtk+.xml.in.h:273
+msgid "Set the description of the Click atk action"
+msgstr "Установить описание действия atk, соответствующего щелчку"
+
+#. Atk press property
+#: ../plugins/gtk+/gtk+.xml.in.h:275
+msgid "Set the description of the Press atk action"
+msgstr "Установить описание действия atk, соответствующего нажатию клавиши"
+
+#. Atk release property
+#: ../plugins/gtk+/gtk+.xml.in.h:277
+msgid "Set the description of the Release atk action"
+msgstr "Установить описание действия atk, соответствующего отпусканию клавиши"
+
+#. Text of the textview
+#: ../plugins/gtk+/gtk+.xml.in.h:279
+msgid "Set the text in the view's text buffer"
+msgstr "Установить текст в буфере текстового виджета"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:280
+msgid "Shrink"
+msgstr "Сжимаемый"
+
+#. This is deprecated
+#: ../plugins/gtk+/gtk+.xml.in.h:281 ../plugins/gnome/canvas.xml.in.h:24
+msgid "Single"
+msgstr "Единственный"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:283
+msgid "Small Toolbar"
+msgstr "Маленькая панель инструментов"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:284
+msgid "South"
+msgstr "Юг"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:285
+msgid "South East"
+msgstr "Юго-Восток"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:286
+msgid "South West"
+msgstr "Юго-Запад"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:287
+msgid "Spin Button"
+msgstr "Крутящаяся кнопка"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:288
+msgid "Splash Screen"
+msgstr "Заставка"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:289
+msgid "Spline"
+msgstr "Сплайн"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:290
+msgid "Spread"
+msgstr "Рассеивание"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:291 ../plugins/gnome/gnome.xml.in.h:55
+msgid "Start"
+msgstr "Начало"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:292
+msgid "Static"
+msgstr "Статическое"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:293
+msgid "Status Bar"
+msgstr "Строка состояния"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:295
+msgid "Stock Button"
+msgstr "Готовая кнопка"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:297
+msgid "Stock Item"
+msgstr "Встроенный элемент"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:298
+msgid "Structure"
+msgstr "Структура"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:299
+msgid "Substructure"
+msgstr "Подструктура"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:300
+msgid "Subwindow Of"
+msgstr "Подокно"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:301
+msgid "Summary"
+msgstr "Описание"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:302
+msgid "Table"
+msgstr "Таблица"
+
+#. Text of the textview
+#: ../plugins/gtk+/gtk+.xml.in.h:304 ../plugins/gnome/gnome.xml.in.h:58
+msgid "Text"
+msgstr "Текст"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:305
+msgid "Text Entry"
+msgstr "Поле ввода текста"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:306
+msgid "Text View"
+msgstr "Просмотр текста"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:307
+msgid "Text below icons"
+msgstr "Текст под значками"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:309
+msgid "Text only"
+msgstr "Только текст"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:310
+msgid "The items in this combo box"
+msgstr "Пункты этого выпадающего меню"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:311
+msgid "The number of items in the box"
+msgstr "Число элементов в контейнере"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:312
+msgid "The number of pages in the notebook"
+msgstr "Число страниц в записной книжке"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:313
+msgid "The page position in the Assistant"
+msgstr "Позиция страницы в помощнике"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:314
+msgid "The pango attributes for this label"
+msgstr "Атрибуты pango для этой метки"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:315
+msgid "The position of the menu item in the menu shell"
+msgstr "Позиция элемента меню в меню"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:316
+msgid "The position of the tool item in the toolbar"
+msgstr "Позиция элемента на панели инструментов"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:317
+msgid "The response ID of this button in a dialog"
+msgstr "Идентификатор ответа этой кнопки в диалоге"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:318
+msgid "The stock item for this button"
+msgstr "Готовый элемент для этой кнопки"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:319
+msgid "The stock item for this image"
+msgstr "Готовый элемент для этого изображения"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:320
+msgid "The text of the menu item"
+msgstr "Текст элемента меню"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:321
+msgid "The text to display"
+msgstr "Отображаемый тест"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:322
+msgid "Toggle Button"
+msgstr "Кнопка-переключатель"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:323
+msgid "Toggle Tool Button"
+msgstr "Кнопка-переключатель на панели инструментов"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:324
+msgid "Tool Bar"
+msgstr "Панель инструментов"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:325
+msgid "Tool Button"
+msgstr "Кнопка на панели инструментов"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:326
+msgid "Toolbar"
+msgstr "Панель инструментов"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:327
+msgid "Tooltip"
+msgstr "Подсказка"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:328 ../plugins/gnome/bonobo.xml.in.h:16
+msgid "Top"
+msgstr "Сверху"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:329
+msgid "Top Left"
+msgstr "Сверху слева"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:330
+msgid "Top Level"
+msgstr "Верхний уровень"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:331
+msgid "Top Right"
+msgstr "Сверху справа"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:332
+msgid "Top to Bottom"
+msgstr "Сверху вниз"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:333
+msgid "Toplevels"
+msgstr "Окна"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:334
+msgid "Tree View"
+msgstr "Просмотр дерева"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:335
+msgid "Up"
+msgstr "Вверх"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:336
+msgid "Use Underline"
+msgstr "Использовать подчёркивание"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:337
+msgid "Utility"
+msgstr "Вспомогательное"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:338 ../plugins/gnome/bonobo.xml.in.h:17
+msgid "Vertical"
+msgstr "Вертикальное"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:339
+msgid "Vertical Box"
+msgstr "Вертикальный контейнер"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:340
+msgid "Vertical Button Box"
+msgstr "Вертикальная группа кнопок"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:341
+msgid "Vertical Panes"
+msgstr "Вертикальная панель"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:342
+msgid "Vertical Ruler"
+msgstr "Вертикальная линейка"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:343
+msgid "Vertical Scale"
+msgstr "Вертикальная шкала"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:344
+msgid "Vertical Scrollbar"
+msgstr "Вертикальная полоса прокрутки"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:345
+msgid "Vertical Separator"
+msgstr "Вертикальный разделитель"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:346
+msgid "Viewport"
+msgstr "Окно просмотра"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:347
+msgid "Visibility Notify"
+msgstr "Уведомление о показе"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:348
+msgid "Volume Button"
+msgstr "Регулятор громкости"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:349 ../plugins/gnome/gnome.xml.in.h:72
+msgid "Warning"
+msgstr "Предупреждение"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:350
+msgid "West"
+msgstr "Запад"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:352
+msgid "Window"
+msgstr "Окно"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:353
+msgid "Word"
+msgstr "Слово"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:354
+msgid "Word Character"
+msgstr "Символ слова"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:355
+msgid "Yes, No"
+msgstr "Да, Нет"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:356
+msgid ""
+"You can mark this as translatable and set one name/address if you want to "
+"show a translation specific translator, otherwise you should list all "
+"translators and unmark this string for translation"
+msgstr ""
+"Вы можете пометить его для перевода и добавить имя или адрес переводчика, "
+"если необходимо показывать имена переводчиков для каждого перевода в "
+"отдельности. В противном случае нужно перечислить всех переводчиков и "
+"отменить пометку о переводе."
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:1
+msgid "GTK+ Unix Print Toplevels"
+msgstr "Окна GTK+ верхнего уровня системы печати Unix"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:2
+msgid "Page Setup Dialog"
+msgstr "Диалог параметров страницы"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:3
+msgid "Print Dialog"
+msgstr "Диалог печати"
+
+#: ../plugins/gnome/glade-gnome.c:292
+msgid "Status Message."
+msgstr "Сообщение о состоянии."
+
+#: ../plugins/gnome/glade-gnome.c:659
+msgid "The position in the druid"
+msgstr "Позиция помощника"
+
+#: ../plugins/gnome/glade-gnome.c:1011
+msgid "Message box type"
+msgstr "Тип диалога сообщения"
+
+#: ../plugins/gnome/glade-gnome.c:1012
+msgid "The type of the message box"
+msgstr "Тип всплывающего диалога сообщения"
+
+#: ../plugins/gnome/glade-gnome.c:1220
+msgid "This property is valid only in font information mode"
+msgstr "Это свойство действует только в режиме отображения шрифта"
+
+#. This is deprecated
+#: ../plugins/gnome/glade-gnome.c:1308 ../plugins/gnome/canvas.xml.in.h:22
+msgid "Selection Mode"
+msgstr "Режим выделения"
+
+#: ../plugins/gnome/glade-gnome.c:1309
+msgid "Choose the Selection Mode"
+msgstr "Выберите режим выделения"
+
+#: ../plugins/gnome/glade-gnome.c:1446
+msgid "Placement"
+msgstr "Размещение"
+
+#: ../plugins/gnome/glade-gnome.c:1447
+msgid "Choose the BonoboDockPlacement type"
+msgstr "Выберите тип размещения присоединяемого элемента BonoboDockItem"
+
+#: ../plugins/gnome/glade-gnome.c:1475
+msgid "Behavior"
+msgstr "Поведение"
+
+#: ../plugins/gnome/glade-gnome.c:1476
+msgid "Choose the BonoboDockItemBehavior type"
+msgstr "Выберите модель поведения присоединяемого элемента BonoboDockItem"
+
+#: ../plugins/gnome/glade-gnome.c:1485
+msgid "Pack Type"
+msgstr "Тип упаковки"
+
+#: ../plugins/gnome/glade-gnome.c:1486
+msgid "Choose the Pack Type"
+msgstr "Выберите тип упаковки"
+
+#: ../plugins/gnome/gnome.xml.in.h:1
+msgid "24-Hour Format"
+msgstr "24-часовой формат"
+
+#: ../plugins/gnome/gnome.xml.in.h:4
+msgid "Contents Background Color"
+msgstr "Цвет фона содержимого"
+
+#: ../plugins/gnome/gnome.xml.in.h:6
+msgid "Dither"
+msgstr "Размыть"
+
+#: ../plugins/gnome/gnome.xml.in.h:10
+msgid "File"
+msgstr "Файл"
+
+#: ../plugins/gnome/gnome.xml.in.h:12
+msgid "Font Information"
+msgstr "Информация о шрифте"
+
+#: ../plugins/gnome/gnome.xml.in.h:13
+msgid "GNOME About"
+msgstr "Диалог о программе"
+
+#: ../plugins/gnome/gnome.xml.in.h:14
+msgid "GNOME App"
+msgstr "Приложение"
+
+#: ../plugins/gnome/gnome.xml.in.h:15
+msgid "GNOME App Bar"
+msgstr "Панель инструментов"
+
+#: ../plugins/gnome/gnome.xml.in.h:16
+msgid "GNOME Color Picker"
+msgstr "Выбор цвета"
+
+#: ../plugins/gnome/gnome.xml.in.h:17
+msgid "GNOME Date Edit"
+msgstr "Редактор даты"
+
+#. Deprecated Widget Classes :)
+#: ../plugins/gnome/gnome.xml.in.h:19
+msgid "GNOME Dialog"
+msgstr "Диалог"
+
+#: ../plugins/gnome/gnome.xml.in.h:20
+msgid "GNOME Druid"
+msgstr "Помощник"
+
+#: ../plugins/gnome/gnome.xml.in.h:21
+msgid "GNOME Druid Page Edge"
+msgstr "Краевая страница помощника"
+
+#: ../plugins/gnome/gnome.xml.in.h:22
+msgid "GNOME Druid Page Standard"
+msgstr "Стандартная страница помощника"
+
+#: ../plugins/gnome/gnome.xml.in.h:23
+msgid "GNOME File Entry"
+msgstr "Ввод имени файла"
+
+#: ../plugins/gnome/gnome.xml.in.h:24
+msgid "GNOME Font Picker"
+msgstr "Выбор шрифта"
+
+#: ../plugins/gnome/gnome.xml.in.h:25
+msgid "GNOME HRef"
+msgstr "Гиперссылка"
+
+#: ../plugins/gnome/gnome.xml.in.h:26
+msgid "GNOME Icon Entry"
+msgstr "Ввод значка"
+
+#: ../plugins/gnome/gnome.xml.in.h:27
+msgid "GNOME Icon Selection"
+msgstr "Выбор значка"
+
+#: ../plugins/gnome/gnome.xml.in.h:28
+msgid "GNOME Message Box"
+msgstr "Диалог сообщения"
+
+#: ../plugins/gnome/gnome.xml.in.h:29
+msgid "GNOME Pixmap"
+msgstr "Изображение"
+
+#: ../plugins/gnome/gnome.xml.in.h:30
+msgid "GNOME Pixmap Entry"
+msgstr "Ввод изображения"
+
+#: ../plugins/gnome/gnome.xml.in.h:31
+msgid "GNOME Property Box"
+msgstr "Свойство"
+
+#: ../plugins/gnome/gnome.xml.in.h:32
+msgid "GNOME UI Obsolete"
+msgstr "Упразднённые GNOME"
+
+#: ../plugins/gnome/gnome.xml.in.h:33
+msgid "GNOME User Interface"
+msgstr "Интерфейс GNOME"
+
+#: ../plugins/gnome/gnome.xml.in.h:34
+msgid "Generic"
+msgstr "Основные"
+
+#: ../plugins/gnome/gnome.xml.in.h:35
+msgid "Information"
+msgstr "Информация"
+
+#: ../plugins/gnome/gnome.xml.in.h:36
+msgid "Logo"
+msgstr "Логотип"
+
+#: ../plugins/gnome/gnome.xml.in.h:37
+msgid "Logo Background Color"
+msgstr "Цвет фона логотипа"
+
+#: ../plugins/gnome/gnome.xml.in.h:38
+msgid "Max Saved"
+msgstr "Максимальное число для сохранения"
+
+#: ../plugins/gnome/gnome.xml.in.h:39
+msgid "Message"
+msgstr "Сообщение"
+
+#: ../plugins/gnome/gnome.xml.in.h:40
+msgid "Monday First"
+msgstr "Начиная с понедельника"
+
+#: ../plugins/gnome/gnome.xml.in.h:44
+msgid "Padding"
+msgstr "Промежутки"
+
+#: ../plugins/gnome/gnome.xml.in.h:45
+msgid "Pixmap"
+msgstr "Изображение на сервере"
+
+#: ../plugins/gnome/gnome.xml.in.h:47
+msgid "Program Name"
+msgstr "Имя программы"
+
+#: ../plugins/gnome/gnome.xml.in.h:48
+msgid "Program Version"
+msgstr "Версия программы"
+
+#: ../plugins/gnome/gnome.xml.in.h:51
+msgid "Scaled Height"
+msgstr "Высота масштабирования"
+
+#: ../plugins/gnome/gnome.xml.in.h:52
+msgid "Scaled Width"
+msgstr "Ширина масштабирования"
+
+#: ../plugins/gnome/gnome.xml.in.h:54
+msgid "Show Time"
+msgstr "Показать время"
+
+#: ../plugins/gnome/gnome.xml.in.h:56
+msgid "StatusBar"
+msgstr "Строка состояния"
+
+#: ../plugins/gnome/gnome.xml.in.h:57
+msgid "Store Config"
+msgstr "Сохранить конфигурацию"
+
+#: ../plugins/gnome/gnome.xml.in.h:59
+msgid "Text Foreground Color"
+msgstr "Цвет текста"
+
+#: ../plugins/gnome/gnome.xml.in.h:60
+msgid "The height to scale the pixmap to"
+msgstr "Высота для масштабирования изображения"
+
+#: ../plugins/gnome/gnome.xml.in.h:61
+msgid "The maximum number of history entries saved"
+msgstr "Максимальное число элементов в истории"
+
+#: ../plugins/gnome/gnome.xml.in.h:62
+msgid "The pixmap file"
+msgstr "Файл с изображением"
+
+#: ../plugins/gnome/gnome.xml.in.h:63
+msgid "The width to scale the pixmap to"
+msgstr "Ширина для масштабирования изображения"
+
+#: ../plugins/gnome/gnome.xml.in.h:65
+msgid "Title Foreground Color"
+msgstr "Цвет заголовка"
+
+#: ../plugins/gnome/gnome.xml.in.h:66
+msgid "Top Watermark"
+msgstr "Верхняя отметка"
+
+#: ../plugins/gnome/gnome.xml.in.h:67
+msgid "Unknown"
+msgstr "Неизвестно"
+
+#: ../plugins/gnome/gnome.xml.in.h:68
+msgid "Use Alpha"
+msgstr "Использовать альфа-канал"
+
+#: ../plugins/gnome/gnome.xml.in.h:69
+msgid ""
+"Used to pass around information about the position of a GnomeDruidPage "
+"within the overall GnomeDruid. This enables the correct \"surrounding\" "
+"content for the page to be drawn"
+msgstr ""
+"Используется для передачи информации о позиции страницы помощника GnomeDruid "
+"Таким образом создаётся правильное 'окружение' для содержимого страницы"
+
+#: ../plugins/gnome/gnome.xml.in.h:70
+msgid "User"
+msgstr "Пользователь"
+
+#: ../plugins/gnome/gnome.xml.in.h:71
+msgid "User Widget"
+msgstr "Виджет для отображения пользователей"
+
+#: ../plugins/gnome/gnome.xml.in.h:73
+msgid "Watermark"
+msgstr "Отметка"
+
+#: ../plugins/gnome/bonobo.xml.in.h:4
+msgid "Exclusive"
+msgstr "Исключительное"
+
+#: ../plugins/gnome/bonobo.xml.in.h:5
+msgid "Floating"
+msgstr "Плавающее"
+
+#: ../plugins/gnome/bonobo.xml.in.h:9
+msgid "Locked"
+msgstr "Закреплённое"
+
+#: ../plugins/gnome/bonobo.xml.in.h:10
+msgid "Never Floating"
+msgstr "Никогда не плавающее"
+
+#: ../plugins/gnome/bonobo.xml.in.h:11
+msgid "Never Horizontal"
+msgstr "Никогда не горизонтальное"
+
+#: ../plugins/gnome/bonobo.xml.in.h:12
+msgid "Never Vertical"
+msgstr "Никогда не вертикальное"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:4
+msgid "Column Spacing"
+msgstr "Промежутки между столбцами"
+
+#: ../plugins/gnome/canvas.xml.in.h:5
+msgid "GNOME Canvas"
+msgstr "Канва GNOME"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:7
+msgid "GNOME Icon List"
+msgstr "Список значков"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:9
+msgid "Icon Width"
+msgstr "Ширина значка"
+
+#: ../plugins/gnome/canvas.xml.in.h:10
+msgid "If the icon text can be edited by the user"
+msgstr "Текст значка может редактироваться пользователем"
+
+#: ../plugins/gnome/canvas.xml.in.h:11
+msgid ""
+"If the icon text is static, in which case it will not be copied by the "
+"GnomeIconList"
+msgstr ""
+"Если текст значка постоянен, в каком случае он не будет скопирован в "
+"GnomeIconList"
+
+#: ../plugins/gnome/canvas.xml.in.h:12
+msgid "Max X"
+msgstr "Макс X"
+
+#: ../plugins/gnome/canvas.xml.in.h:13
+msgid "Max Y"
+msgstr "Макс Y"
+
+#: ../plugins/gnome/canvas.xml.in.h:14
+msgid "Min X"
+msgstr "Мин X"
+
+#: ../plugins/gnome/canvas.xml.in.h:15
+msgid "Min Y"
+msgstr "Мин Y"
+
+#: ../plugins/gnome/canvas.xml.in.h:18
+msgid "Pixels per unit"
+msgstr "Пикселей в элементе"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:20
+msgid "Row Spacing"
+msgstr "Промежутки между строками"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:26
+msgid "Text Editable"
+msgstr "Редактируемый текст"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:28
+msgid "Text Spacing"
+msgstr "Промежутки между текстом"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:30
+msgid "Text Static"
+msgstr "Статический текст"
+
+#: ../plugins/gnome/canvas.xml.in.h:31
+msgid "The maximum x coordinate"
+msgstr "Максимальная координата x"
+
+#: ../plugins/gnome/canvas.xml.in.h:32
+msgid "The maximum y coordinate"
+msgstr "Максимальная координата y"
+
+#: ../plugins/gnome/canvas.xml.in.h:33
+msgid "The minimum x coordinate"
+msgstr "Минимальная координата x"
+
+#: ../plugins/gnome/canvas.xml.in.h:34
+msgid "The minimum y coordinate"
+msgstr "Минимальная координата y"
+
+#: ../plugins/gnome/canvas.xml.in.h:35
+msgid "The number of pixels between columns of icons"
+msgstr "Число пикселей между колонками значков"
+
+#: ../plugins/gnome/canvas.xml.in.h:36
+msgid "The number of pixels between rows of icons"
+msgstr "Число пикселей между строками значков"
+
+#: ../plugins/gnome/canvas.xml.in.h:37
+msgid "The number of pixels between the text and the icon"
+msgstr "Число пикселей между текстом и значком"
+
+#: ../plugins/gnome/canvas.xml.in.h:38
+msgid "The number of pixels corresponding to one unit"
+msgstr "Число пикселей на одну единицу длины"
+
+#: ../plugins/gnome/canvas.xml.in.h:39
+msgid "The selection mode"
+msgstr "Режим выделения"
+
+#: ../plugins/gnome/canvas.xml.in.h:40
+msgid "The width of each icon"
+msgstr "Ширина каждого значка"

@@ -1,0 +1,914 @@
+===========
+Glade 3.5.7
+===========
+	- Added GladeDesignLayout::widget-event signal. Patch by Pavel Kostyuchenko (bug 542337).
+	- GObjectify signal editor and allow custom signal editors. by Pavel Kostyuchenko (bug 540691).
+	- Make virtual properties in GTK+ 2.16 in order to support running from GTK+ 2.14 and targetting 2.16
+	- New activatable editor to handle activatable properties in smart ways.
+	- Fix markup in confirm close dialog, patch by Felix Riemann (bug 567450).
+	- Marked use-stock property from imagemenuitem to be save-always (bug 568064).
+
+New and updated translations
+============================
+	- Updated de: Andre Klapper, Hendrik Richter
+	- Updated es: Jorge Gonzalez, Jorge González
+	- Updated fi: Ilkka Tuohela
+	- Updated he: Yair Hershkovitz, yairhr@gmail.com
+	- Updated ko: Changwoo Ryu
+	- Updated pt_BR: Jonh Wendell
+
+===========
+Glade 3.5.6
+===========
+	- Handling of new entry properties (bug 567454)
+	- Added filechooser dialog to pixbuf properties
+
+New and updated translations
+============================
+	- Updated es: Jorge Gonzalez, Jorge González
+	- Updated nb: Kjartan Maraas
+	- Updated pt_BR: Og Maciel, Igor Pires Soares
+
+===========
+Glade 3.5.5
+===========
+
+	- Model data editor improvments (sequential editing mode, better key navigation)
+	- Treeview editor revamp, few crashers fixed
+	- Few crashers fixed #525839, #522542
+	- Expand inspector treeview by default
+	- Many more bug fixes including #533471
+
+New and updated translations
+============================
+	- Updated es: Jorge González, Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+
+===========
+Glade 3.5.4
+===========
+	- Added short readable versions of new enum/flag values
+	- Fixed a crasher in the store editor
+	- Focus always stays in the store editor when editing cells get cancelled
+	- Better resizing in editors (property names/warnings expand, inputs dont)
+	- Cleaned up gtk+ includes (Maxim Ermilov - bug 561260)
+	- Some code now available under LGPL
+
+===========
+Glade 3.5.3
+===========
+	- Support for GtkIconFactory
+	- Support for GtkAccelGroup
+	- Support for GtkSizeGroup
+	- Support for GtkListStore/GtkTreeStore (some code by Juan Pablo Ugarte)
+	- Support for GtkTreeViewColumn, GtkTreeView, GtkIconView and GtkComboBox as GtkCellLayout.
+	- Support for GtkCellRenderer derivatives
+	- GtkBuilder support for GtkMenu hierarchies
+	- New all in one treeview editor, for treeviews combo boxes and icon views
+	- Properties and widgets now show warnings in the editor when they have mismatched versions
+	- Palette items are insensitive when widgets are unavailable and show warnings when they are deprecated.
+	- Text wrapping in property labels (Pavel Kostyuchenko)
+	- Editor widget beefed up with icon and class header.
+	- Simplified accelerator editor
+	- Save window pane positions in session (Juan Pablo Ugarte)
+	- New pango attributes editor for GtkLabel:attributes
+	- All widgets/properties in glade files are now saved in the same order
+	  (GtkTable part: bug 422823 - Pavel Kostyuchenko, and bug 422823)
+	- Fixed core to permit working with non GtkWindow toplevel objects/widgets (bug 532636 - Pavel Kostyuchenko)
+	- Palette now allows doc searches
+	- Notebooks switch pages to display the selected widget
+	- Added undoable project conversion routines implemented by catalog plugins
+	- Object selection dialogs can now create widgets when a type is specified by the catalog
+	- Support GtkBuilder "context" attribute for i18n data (translatable properties)
+	- Support for naming your widgets unique across the project or unique across toplevels.
+	- Now you can add menus inline inside the toolbar editor.
+	- No more copying resource files around, now you can set your local resource path in
+	  project preferences and use relative/fullpaths in resource properties (i.e. GdkPixbuf properties
+	  and the like). 
+	- No more context help mode with buttons, you can get property level help (and clear value) with a context menu  
+	- Optimized load routine significantly.
+	- Added GladeEditable interface to layout custom pages for property editors, implemented many
+	  custom editor layouts.
+	- Now you can edit widgets separately from the rest of the project
+	- menu/toolbar/treeview editor no longer a modal dialog.
+	- Added <search widgets> entry with completion/filter to the inspector widget.
+	- Added most of the new needed icons (Mike Gratton - bug 561979, Juan Pablo Ugarte).
+	- Simplified and improved stock-id properties to allow use of custom icons from factories.	
+	- Fixed input dialog crasher (Juan Pablo Ugarte - bug 543314)
+	- Commands now collapse to nothing - Pavel Kostyuchenko
+	- Fixed boxed value comparisons by way of comparing unique strings
+	  from the plugin (Juan Pablo Ugarte - bug 528511)
+	- Fixed project modified state flag glitches (Pavel Kostyuchenko - bug 532017).
+	- Prevent hangs in anjuta (Pavel Kostyuchenko - bug 531585).
+	- Fixed boldness/italicness in varios treeviews
+	- Objects and resource property fields are updated correctly (bug 542335 - fix by Pavel Kostyuchenko)
+	- Update loaded assistant pages properly (bug 540531 - fix by Antti Kaijanmäki)
+	- Silently ignore unrecognized signals in glade file instead of aborting 
+	  (bug 533728 - fix by Pavel Kostyuchenko)
+	- Worked around special child type naming discrepencies between formats from the plugin side 
+	  (bug 533217 - fix by Pavel Kostyuchenko)
+	- response-id now only available for buttons that are in the action area of dialogs (bug 464502)
+	- Fixed displayable values (bug 556452), now they are available in the plugin too.
+	- Misc bugfixed by Richard Hult, Andreas Henriksson, Vincent Geddes, Claude Paroz, Pavel Kostyuchenko, 
+	  Eli Collins, Christian Persch, Theppitak Karoonboonyanan, Kjartan Maraas, Michael Gratton and me.
+
+New and updated translations
+============================
+	- ar: Anas Afif Emad, Djihed Afifi
+	- bg: Yavor Doganov, Alexander Shopov
+	- da: Ask Hjorth Larsen
+	- de: Christian Kirbach
+	- en_GB: David Lodge, Philip Withnall
+	- es: Jorge González, Jorge Gonzalez
+	- et: Ivar Smolin
+	- fi: Ilkka Tuohela
+	- fr: Robert-André Mauchin
+	- gl: Ignacio Casal Quinteiro
+	- gu: Sweta Kothari
+	- he: yairhr@gmail.com, Yair Hershkovitz
+	- hi: Rajesh Ranjan
+	- hu: Gabor Kelemen
+	- it: Andrea Zagli
+	- ko: Changwoo Ryu
+	- ml: Hari Vishnu
+	- mr: Sandeep Shedmake
+	- nl: Vincent van Adrighem
+	- oc: Yannig Marchegay, Yannig Marchegay (Kokoyaya)
+	- pl: Tomasz Dominikowski
+	- pt: Duarte Loreto
+	- pt_BR: Igor Pires Soares, Fabrício Godoy
+	- ru: Yuriy Penkin
+	- sr.po, sr@latin: Goran Rakić
+	- sv: Daniel Nylander
+	- th: Theppitak Karoonboonyanan
+	- tr: Baris Cicek
+	- vi: Clytie Siddall
+	- zh_HK: Chao-Hsiung Liao
+	- zh_TW: Chao-Hsiung Liao, Abel Cheung
+
+===========
+Glade 3.5.2
+===========
+	- oops, was parsing booleans as doubles, fixed bugs with 
+	  builder-unsupported and deprecated.
+
+===========
+Glade 3.5.1
+===========
+	- Added versioning support, you can always chose the target version of
+	  your project starting with gtk+ 2.8 - a project preferences dialog has
+	  been added where you can switch your format, switch your target version
+	  and test for incompatabilities. incompatability error dialogs are also
+	  launched on save as. Target versions are saved to the glade file; 
+	  TODO: patch GtkBuilder to test the required gtk+ version from
+	  <requires lib="gtk+" version="2.8"> and at least warn, also let
+	  third party widget developers test thier own versions using builder
+	  (all new catalog tags and properties are also documented).
+
+===========
+Glade 3.5.0
+===========
+	- Resurrected GtkScaleButton and GtkVolumeButton
+	- We finally have Vincent Geddes's icon choser dialog 
+	  (was skipped before because of string changes)
+	- Not allowed to have duplicate widget names anymore (bug 442860)
+	- Now the first widget in a project shows up automatically
+	  when opening the project.
+	- Old parser was trashed and rewritten from the ground up.
+	- New plugin support for read_widget() and write_widget(), also
+	  create_eprop() which allows the plugin to create widgets to
+	  edit properties in the editor (accelerators are edited from
+	  the plugin now for instance).
+	- Dual file format support available, its a beginning, you dont
+	  get any of the GObjects that GtkBuilder supports but all widgets
+	  you were formerly using with glade can now be loaded/saved in 
+	  builder format.
+	- Api reference docs for embedders and widget authors ressurected
+	  after 2 years, concerning integrating widgets, the docs are
+	  practically rewritten.
+
+New and updated translations
+============================
+	- Priit Laes (et)
+	- Laurent Dhima (sq)
+	- Baris Cicek (tr)
+	- Alexander Shopov (bg)
+
+===========
+Glade 3.4.3
+===========
+	- Backed out GtkScaleButton and GtkVolumeButton since
+	  they introduced strings.
+
+
+===========
+Glade 3.4.2
+===========
+	- Port to gtk 2.12 tooltips API. Bug #500947. - Christian Persch
+	- Atk Relations bug fix
+	- Added GtkVolumeButton and GtkScaleButton widgets (Ross Burton)
+	- Misc fixes 477025, 509128, 388869, 504603, 495853, 506713, 511651,
+	  472555, 493418 by Cosimo Cecchi, Yang Hong, Ivan Baldo, Vincent Geddes, 
+          Juan Pablo Ugarte, Tristan Van Berkom
+
+New and updated translations
+============================
+	- Kjartan Maraas (nb)
+	- Yuri Kozlov (ru)
+	- Stéphane Raimbault (fr)
+	- Gintautas Miliauskas (lt)
+	- Jovan Naumovski (mk)
+	- Luca Ferretti (it)
+	- Gabor Kelemen (hu)
+	- Claude Paroz (fr)
+	- Jonh Wendell (pt_BR)
+	- David Lodge (en_GB)
+	- Ignacio Casal Quinteiro (gl)
+	- Gil Forcada (ca)
+	- Ilkka Tuohela (fi)
+	- Hendrik Brandt (de)
+	- Duarte Loreto (pt)
+	- Theppitak Karoonboonyanan (th)
+	- Maxim Dziumanenko (uk)
+	- Yair Hershkovitz (he)
+	- Baris Cicek (tr)
+	- Clytie Siddall (vi)
+	- Yannig Marchegay (oc)
+	- Daniel Nylander (sv)
+	- Djihed Afifi (ar)
+	- Jorge Gonzalez (es)
+	- Takeshi AIHANA (ja)
+
+
+===========
+Glade 3.4.1
+===========
+
+	- Crash in Glade Interface Designer: Clicked the GtkInputDial... (bug 480495) - Juan Pablo Ugarte
+	- Glade3 hangs when loading certain projects containing GtkAssistants (bug 495057) - J. Ali Harlow
+	- Fix options context summary (bug 500940) - Christian Persch
+	- Use gtk_widget_get_action (bug 500943) - Christian Persch
+	- Icon Theme search path is incorrect for win32 (bug 469854) - Martin Schlemmer
+	- Doesn't build on ia64 (bug 499623) - Josselin Mouette
+	- Activating "Add Parent" on an internal widget component causes crah (bug 503955) - Juan Pablo Ugarte
+	- GtkImage/GdkPixbuf porps misc fixes - Juan Pablo Ugarte
+
+New and updated translations
+============================
+	- Kjartan Maraas (nb)
+	- Matej Urbančič (sl)
+	- Ivar Smolin (et)
+	- Djihed Afifi (ar)
+	- Baris Cicek (tr)
+	- Ignacio Casal Quinteiro (gl)
+	- Urbančič Matej (sl)
+	- Ivar Smolin (et)
+	- Changwoo Ryu  (ko)
+	- Takeshi AIHANA (ja)
+	- Leonardo Ferreira Fontenelle (pt_BR)
+
+===========
+Glade 3.4.0
+===========
+
+New and updated translations
+============================
+    - Priit Laes (et)
+    - Jorge Gonzalez (es)
+    - Ilkka Tuohela (fi)
+    - Ignacio Casal Quinteiro (gl)
+    - Daniel Nylander (sv)
+    - Adam Weinberger (en_CA)
+    - Takeshi AIHANA (ja)
+    - Raphael Higino (pt_BR)
+    - Theppitak Karoonboonyanan (th)
+    - Gabor Kelemen (hu)
+    - Duarte Loreto (pt)
+    - Kenneth Nielsen (da)
+    - Clytie Siddall (vi)
+    - Alexander Shopov (bg)
+    - Gintautas Miliauskas (lt)
+    - Jovan Naumovski (mk)
+    - Kjartan Maraas (nb)
+    - Maxim Dziumanenko (uk)
+    - Alessio Frusciante (it)
+    - Hendrik Richter (de)
+    - Danishka Navin (si)
+    - Jamil Ahmed (bn)
+    - Claude Paroz (fr)
+    - Djihed Afifi (ar)
+    - David Lodge (en_GB)
+    - Nickolay V. Shmyrev (ru)
+    - Artur Flinta (pl)
+    - Gil Forcada (ca)
+
+===========
+Glade 3.3.4
+===========
+    - Moved all gtk-doc stuff outside of the template files (now documentations is
+      entirely in the source) - Juan Pablo Ugarte
+    - Fixed compilation with gcc 2.95 (bug 461923) - Jens Granseuer
+    - Sort the stock icon list alphabetically by locale (bug 454003) - Olivier Delhomme
+    - Made glade window not maximized by default (bug 462111) reported by Frédéric Bellaiche
+    - Added "expand" and "homogeneous" packing properties to toolbar 
+      children in the toolbar editor (bug 429409) - Tristan Van Berkom
+    - Clipped the signal editor texts to simply say "<type here>" (bug 464505) - Tristan Van Berkom
+    - Now saves/restores session data about docking attached state & 
+      undocked window sizes/positions - Yevgen Muntyan
+    - Added themed icon chooser (currently disabled awaiting freeze break approval)
+      (bug 359640) - Vincent Geddes
+    - Made toolbar-style an "optional" property and fixed glitches around this property
+      (bug 382785) - Vincent Geddes
+
+New and updated translations
+============================
+    - Daniel Nylander (sv)
+    - Theppitak Karoonboonyanan (th)
+    - Jorge Gonzalez (es)
+    - Leonardo Ferreira Fontenelle (pt_BR)
+    - Ilkka Tuohela (fi)
+    - Sunil Mohan Adapa (te)
+    - Takeshi AIHANA (ja)
+    - Adam Weinberger (en_CA)
+    - Jovan Naumovski (mk)
+    - Duarte Loreto (pt)
+    - Priit Laes (et)
+
+
+===========
+Glade 3.3.3
+===========
+    - Add tab labels by default to notebook pages (bug 345438) - Tristan Van Berkom
+    - Now child menu items are selectable (fixed event handling for widgets that are
+      not in the logical hierarchy, in 3.3.2 this was a crash actually) - Tristan Van Berkom
+    - Now we draw selection in g_signal_connect_after (..."expose-event"...) instead
+      of queuing an idle timeout.  - Tristan Van Berkom
+    - Fixed the UI to be insensitive when no projects are loaded (some widgets were
+      sensitive and causing errors) - Tristan Van Berkom
+    - Made it possible to declare a widget class in the catalog without giving a real type, 
+      only automatically derive from a type specified in the catalog (bug 352714) - Yevgen Muntyan
+    - Defined environment variables GLADE_MODULE_PATH & GLADE_CATALOG_PATH, catalogs will be
+      searched in GLADE_CATALOG_PATH and widget libraries/support modules in GLADE_MODULE_PATH. - Tristan Van Berkom
+    - Disable Add/Remove parent actions on GtkToolItem, GtkMenu and GtkMenuItem - Tristan Van Berkom
+    - misc bugfixes 459953 460272
+
+New and updated translations
+============================
+    - Jorge Gonzalez (es)
+    - Takeshi AIHANA (ja)
+    - Daniel Nylander (sv)
+    - Clytie Siddall, Nguyễn Thái Ngọc Duy (vi)
+    - Ilkka Tuohela (fi)
+    - Artur Flinta (pl)
+    - Runa Bhattacharjee (bn_IN)
+    - Gabor Kelemen (hu)
+    - Matic Žgur (sl)
+
+===========
+Glade 3.3.2
+===========
+    - Bindings work has been moved out into a branch
+    - Added toolbar item for "Drag/Resize" mode - Tristan Van Berkom
+    - Added history lists to undo/redo buttons - Tristan Van Berkom
+    - Current notebook page is more consistant (bug 394382) - Tristan Van Berkom
+    - Use gnome-common macros in configure.ac/Makefiles (bug 399134) - Christian Persch
+    - Fixed lots of compiler warnings from new macros - Vincent Geddes
+    - Added a bunch of translatable/displayable values for new enumerations/values - Juan Pablo Ugarte
+    - Display some specially marked backend actions in the toolbar - Juan Pablo Ugarte
+    - Attempt to reload an open project if the user tries to open it again (bug 450483) - Vincent Geddes
+    - Monitor and update project saved state wrt undo (bug 392324) - Vincent Geddes
+    - Properly handle dgettext() operations (bug 453105) - Christian Persch)
+    - Fixed some hangups (bug 453253) - Juan Pablo Ugarte
+    - Remove user name and host from comment in glade file (bug 453174) - Vincent Geddes
+    - Now the palette/inspector and property editor are "dockable" (just 
+      dock/undock via view menu, nothing fancy) - Tristan Van Berkom
+    - Warn about missing displayable values for enums/flags - Juan Pablo Ugarte
+    - Fixed glitch with changing notebook pages (bug 456013) - Tristan Van Berkom
+    - Implemented "Add/Remove Parent" context menu items for all widgets (bug 343786) - Tristan Van Berkom
+    - Added "Remove Slot" action for placeholders inside GtkBoxes (closes bug 387963) - Tristan Van Berkom
+    - Markup & mnemonics in labels load properly now (bug 396446) - Tristan Van Berkom
+    - Context menu for placeholders now have actions that apply to the widget they are in,
+      while "paste" remains contextual to the placeholder in question - Tristan Van Berkom
+    - Misc bug fixes 453105 453107 453111 453110 406039 457224 457222... 
+
+
+===========
+Glade 3.3.1
+===========
+    - Insert before/after & Remove page context menu actions for GtkNotebook (bug 438881) - Juan Pablo Ugarte
+    - Remove row/column context menu actions for GtkTable - Juan Pablo Ugarte
+    - Fix C89 compilation (bug 444045) - Jens Granseuer
+    - Fixed win32 build (bug 444605) - Juan Pablo Ugarte
+    - Allow child contextual actions to work on placeholders - Juan Pablo Ugarte
+    - Remove 'm4' from EXTRA_DIST (bug 445028) - Vincent Geddes
+    - Some misc. win32 build fixes - Vincent Geddes
+    - Fixed cut/paste glitches inside notebooks - Tristan Van Berkom
+    - Fixed incorrectly loaded stock icons (bug 444959) - Juan Pablo Ugarte
+    - Spelling/Translation fixes (bug 419979, 429736) - Vincent Geddes
+    - Fixed console warnings (bug 424509) - Vincent Geddes
+
+===========
+Glade 3.3.0
+===========
+    - Allow plugin authors to add context menu items for thier widgets
+      (one entry point to act upon a widget, and another to operate on
+      a widget's child). - Juan Pablo Ugarte
+    - Insert before/after context menu actions for GtkBox & GtkTable (bug 438881) - Juan Pablo Ugarte
+
+===========
+Glade 3.2.2
+===========
+    - Allow properties to be marked "save-always" in the catalog - Juan Pablo Ugarte
+    - Set "save-always" on these properties:
+      o GtkDialog's "type-hint" - Juan Pablo Ugarte
+      o GtkScrolledWindow's "can-focus" - Juan Pablo Ugarte
+      o GtkPaned's "resize" and "shrink" (bug 364215) - Tristan Van Berkom
+      o GtkButton's "response-id" (bug 410272) -Tristan Van Berkom
+    - Now list all activatable signals in the Accelerator key dialog.
+
+New and updated translations
+============================
+    - Theppitak Karoonboonyanan (th)
+
+
+===========
+Glade 3.2.1
+===========
+    - Some win32 build issues fixed - Olivier Delhomme
+    - Add "GNOME" to Categories (love bug 417618) - Bruno Boaventura
+    - Property ordering fixed (bug 396436) - Juan Pablo Ugarte/Christian Persch
+    - "label" property of GtkToolButton now translatable - Tristan Van Berkom
+    - dont use sscanf in (de)serialization (bug 424547) - Christian Persch/Ivan Baldo
+    - workaround "hierarchy-changed" signal crashes in filechooserdialog (bug 415021) - Juan Pablo Ugarte
+    - unichar property charachers now properly displayed - Juan Pablo Ugarte
+    - Cut/Pasted widgets now behave as expected (bug 432519) - Tristan Van Berkom
+    - Inspector expands/scrolls to position upon selections (bug 392225) - Vincent Geddes
+    - Negative integer properties work properly now (bug 434207) - Jeff Westerinen
+    - Workaround for inputdialog crashes (bug 433975) - Juan Pablo Ugarte
+    - Fixed some irrelevent runtime warnings - Juan Pablo Ugarte
+
+New and updated translations
+============================
+    - Leonardo Ferreira Fontenelle (pt_BR)
+    - Ilkka Tuohela (fi)
+    - Simos Xenitellis, Nikos Charonitakis (el)
+    - Abel Cheung (zh_HK, zh_TW)
+    - Daniel Nylander (sv)
+    - Maxim Dziumanenko (uk)
+    - Luca Ferretti (it)
+    - Djihed Afifi (ar)
+    - Ani Peter (ml)
+    - Takeshi AIHANA (ja)
+    - Nickolay V. Shmyrev (ru)
+    - Jovan Naumovski (mk)
+    - Alexander Shopov (bg)
+    - David Lodge (en_GB)
+    - Gabor Kelemen (hu)
+    - Duarte Loreto (pt)
+    - Gintautas Miliauskas (lt)
+    - Stéphane Raimbault (fr)
+    - Laurent Dhima (sq)
+    - Pema Geyleg (dz)
+    - Jorge Gonzalez, Claudio Saavedra (es)
+    - Kjartan Maraas (nb)
+    - Peter Bach (da)
+
+
+===========
+Glade 3.2.0
+===========
+    - Fixed sources to build with gcc 2.95 (bug 406504) - Jens Granseuer
+    - Fixed the imfamous: "Not able to set label and stock separately 
+      in GtkImageMenuItems" (bug 397043) - Juan Pablo Ugarte
+    - Added remaining missing icons - Vincent Geddes
+    - Use locale independent integer and float parsing routines (bug 396433) - Christian Persch
+    - Save some properties unconditionally, fixes (bug 412848) - Tristan Van Berkom
+    - Revived accelerator & atk relationset properties (bug 383121) - Tristan Van Berkom
+    - other bug fixes by Nickolay V. Shmyrev, Christian Persch, Vincent Geddes, Halton Huo
+
+New and updated translations
+============================
+    - Duarte Loreto (pt)
+    - Djihed Afifi (ar)
+    - David Lodge (en_GB)
+    - Daniel Nylander (sv)
+    - Nguyễn Thái Ngọc Duy (vi)
+    - Artur Flinta (pl)
+    - Stéphane Raimbault (fr)
+    - Takeshi AIHANA (ja)
+    - Ilkka Tuohela (fi)
+    - Nickolay V. Shmyrev (ru)
+    - Changwoo Ryu (ko)
+    - Ignacio Casal Quinteiro (gl)
+    - Kjartan Maraas (nb)
+    - Duarte Loreto (pt)
+    - Ole Laursen (da)
+    - Hendrik Brandt (de)
+    - Jovan Naumovski (mk)
+    - Raphael Higino, Leonardo Ferreira Fontenelle (pt_BR)
+    - Theppitak Karoonboonyanan (th)
+    - Gabor Kelemen (hu)
+    - Gintautas Miliauskas, Žygimantas Beručka (lt)
+    - Josep Puigdemont i Casamajó (ca)
+    - Alexander Shopov (bg)
+    - Ani Peter (ml)
+    - Luca Ferretti (it)
+    - Maxim Dziumanenko (uk)
+    - Abel Cheung (zh_HK, zh_TW)
+    - Nikos Charonitakis, Simos Xenitellis (el)
+    - Ilkka Tuohela (fi)
+
+===========
+Glade 3.1.5
+===========
+
+New features and fixes
+======================
+    - Fixed build problem with autoconf 2.60 wrt. datarootdir (bug 392379) - Christian Persch
+    - Added version to bugzilla info in the .desktop file  (bug 392395) - Christian Persch
+    - Bind the gettext domain (bug 397429) - Christian Persch
+    - Setup online manual - Vincent Geddes
+    - use xmlSubstituteEntitiesDefault() when loading/saving glade files (bug 396311) - anonymous
+      patch submitter
+    - Use standard "translator-credits" property the standard way in the about dialog - Vincent Geddes
+    - GladeCommand refactoring work, allows for multiple paste commands now (bug 345603) - Jeff Westerinen
+    - Reorganized package directory structure and adapted makefiles - Vincent Geddes
+    - Renamed some things to fit more with the HIG - Vincent Geddes
+    - Fixed obnoxious startup errors (bug 399178) - Tristan Van Berkom
+    - Implement concept of "use-placeholders" for container adaptors to distinguish
+      whether they use placehodlers for thier children (the core handles them
+      differently), note that menuitems,fixed,toolbar etc dont use placeholders 
+      for thier children - Tristan Van Berkom
+    - Fixed packing defaults (a menubar in a HBox is initially expand = False) - Tristan Van Berkom
+    - Fixed the layout to not touch default-width/default-height implicitly when resizing the toplevel inside
+      the workspace, this required some refactoring too - Tristan Van Berkom
+    - Completely reworked event handling, considerably reduced lines of code involved and
+      improved stability, also now drag/resize is only available with the SHIFT modifier active, 
+      as a side effect, you can now also interact with project widgets in the workspace much
+      better. - Tristan Van Berkom
+    - Implemented undo/redo for i18n property metadata (bug 352454) - Jeff Westerinen
+    - Fixed translations of strings from the catalog and some strings in the about 
+      dialog (bug 404917) - Tristan Van Berkom
+    - Added the new glade icon - Andreas Nilsson
+    - Fixed compilation of python code - Paul
+    - Call GNOME_DOC_INIT unconditionally (Bug 392411) - Christian Persch
+    - Improved configure check for python - Vincent Geddes
+
+New and updated translations
+============================
+    - Daniel Nylander (sv)
+    - David Lodge (en_GB)
+    - Clytie Siddall (vi)
+    - Ignacio Casal Quinteiro (gl)
+    - Gabor Kelemen (hu)
+    - Djihed Afifi (ar)
+    - Hendrik Richter (de)
+    - A S Alam (pa)
+    - Takeshi AIHANA (ja)
+    - Duarte Loreto (pt)
+    - Jonathan Ernst, Claude Paroz and Stéphane Raimbault (fr)
+    - Supranee Thirawatthanasuk, Theppitak Karoonboonyanan (th)
+    - Jordi Mas (ca)
+
+===========
+Glade 3.1.4
+===========
+
+New features and fixes
+======================
+    - Fixed notebook tabs, frame/expander labels, was all screwed up (bug 373251)
+    - Fixed expander interaction (bug 386352)
+
+===========
+Glade 3.1.3
+===========
+
+New features and fixes
+======================
+    - Added gtk+ 2.10 widget classes: GtkAssistant, GtkLinkButton, GtkPageSetupUnixDialog,
+      GtkPrintUnixDialog, GtkRecentChooserWidget and GtkRecentChooserDialog (Juan Pablo Ugarte)
+    - Added user documentation using gnome-doc-utils (Vincent Geddes)
+    - Fixed assumption "GtkButton" --> "gtk_button_get_type ()" when loading types from
+      the catalog (bug 377435) (Jeff Westerinen)
+    - Now there's only one pkg-config file (the original libgladeui-1.0.pc) (Vincent Geddes)
+    - Escape strings properly when saving to the xml file (bug 360586 Juan Pablo Ugarte)
+      (Merged from stable branch)
+    - Fixed saved "gtk-broken-image" stock being saved in all GtkImages (bug 353126) 
+      (with help from Jeff Westerinen) (Merged from stable branch)
+    - Changed alot of keywords and forward declarations for C++ compilation against glade headers
+      (Oliver Nittka)
+    - Detect file changes on disk before saving (Vincent Geddes)
+    - Fixed a couple of crashers (bug 386563 & 385920).
+
+New and updated translations
+============================
+    - Djihed Afifi (ar)  (Ported in from stable branch)
+    - Ignacio Casal Quinteiro (gl)  (Ported in from stable branch)
+
+===========
+Glade 3.1.2
+===========
+
+New features and fixes
+======================
+    - Make the tarball ship translations again by building with intltool 0.35
+
+===========
+Glade 3.1.1
+===========
+
+New features and fixes
+======================
+    - Use GtkRecent and removed manual recent project handling (Vincent Geddes)
+    - Refactoring of UI frontend & palette code (Vincent Geddes)
+    - Selector button from the palette is now hidden and one is placed on the 
+      toolbar instead (Vincent Geddes)
+    - Refactoring of core/plugin interface, now the plugin derives an adaptor
+      type to interface with the core.
+    - New bindings framework, this includes a bindings core module and an initial
+      implementation of the python binding (Juan Pablo Ugarte)
+    - Added core support for plugins to implement actions on the context menu,
+      AND support for scripted context menu actions (Juan Pablo Ugarte)
+    - Cleanup of gnome catalog code (Juan Pable Ugarte)
+    - Misc bugfixes by Vincent, Juan Pablo, Andreas Köhler and myself.
+
+New and updated translations
+============================
+    - Josep Puigdemont i Casamajó (ca)
+
+
+===========
+Glade 3.1.0
+===========
+
+New features and fixes
+======================
+
+    - Embedded toplevel widgets - phase one (Vincent Geddes)
+    - Integrated one window application layout - phase one (Vincent Geddes)
+    - Architechtural change, GladeWidgetClass structures now swapped for
+      a GladeWidgetAdaptor object, classes are then generated while reading the
+      catalog (thus deffering all the OO mechanics to the GType system).
+    - Fixed "-"/"_" mangling in translatable string comments (bug 363598) (Jonas Berlin)
+
+New and updated translations
+============================
+    - Abel Cheung (zh_HK, zh_TW)
+    - Francisco Javier F. Serrador (es)
+
+===========
+Glade 3.0.3
+===========
+
+New features and fixes
+======================
+    - Fixed "-" / "_" mangling in translatable string comments (bug 363598) (Jonas Berlin)
+    - Fixed "&amp in a label with markup enable saves as an &" (bug 360586) (Juan Pablo Ugarte)
+    - Fixed saved "gtk-broken-image" stock being saved in all GtkImages (bug 353126) (Jeff Westerinen & myself)
+
+New and updated translations
+============================
+    - Abel Cheung (zh_HK, zh_TW)
+    - Francisco Javier F. Serrador (es)
+    - Ignacio Casal Quinteiro (gl)
+    - Josep Puigdemont i Casamajó (ca)
+    - Djihed Afifi (ar)
+
+===========
+Glade 3.0.2
+===========
+
+New features and fixes
+======================
+    - Fixed some properties to be translatable (reported by Olivier Rolland)
+    - Now use non-locale specific functions to write out double values to 
+      glade files, revert to use floating precision in adjustments.
+    - Signal editor UI improved (bug 127149) (Juan Pablo Ugarte)
+    - Reimplemented file drag and drop (bug 352458) (Vincent Geddes)
+    - Fixed accelerator dialog segfaults (bug 352825) (Juan Pablo Ugarte)
+    - Improved GtkPaned support (bug 345075) (Juan Pablo Ugarte)
+    - Backing out multiple consecutive pastes (reopening bug 345603)
+      (this fixes menu editor segfaults among other things)
+    - Fixed ComboBoxEntry crash (bug 354716) (Juan Pablo Ugarte)
+    - Ordering of properties in the editor window 
+      (bug 345893) (Juan Pablo Ugarte)
+    - Allow a dynamic user-editable comment prepended to the 
+      glade file (Bug 342889) (Juan Pablo Ugarte)
+    - Added new stock listing that includes the stock "images" (which
+      are not gtk+ stock "items"), and enabled them for GtkImage and
+      GtkToolItem. (bug 353522)
+    - GtkImage now defaults to an initial "gtk-broken-image" stock type.
+    - Ignore "enable-grid-lines" 2.10 property on treeview since it causes 
+      crashes on load (fixes bug 353611)
+    - Added displayable values for "enable-grid-lines" 2.10 property
+    - Set some HIG-ish defaults on dialogs
+    - Fixed lost icons on images (bug 353126) (Juan Pablo Ugarte)
+    - Namespace issues with libglade initial fix (Juan Pablo Ugarte)
+    - Few more misc fixes by Juan Pablo and myself.
+
+New and updated translations
+============================
+    - Changwoo Ryu (ko)
+    - David Lodge (en_GB)
+    - Francisco Javier F. Serrador (es)
+
+===========
+Glade 3.0.1
+===========
+
+New features and fixes
+======================
+    - Pasting a widget does not paste the packing options (bug 345604) (Juan Pablo Ugarte)
+    - Now you can paste widgets to your hearts content (bug 345603)
+    - Fixed expander widgets (they were missing placeholders).
+    - Adjustments are saved witout floating point precision in the glade file (reports of
+      glade-- code generator disliking the decimal points).
+    - Fixed an embaressing segfault when removing items using the menu/toolbar editor (Juan Pablo)
+    - Interface signals are now properly introspected + alphabetically sorted (Juan Pablo)
+    - Removed some properties on children internal to composite widgets, properties that
+      we're controlled by style properties on the GtkDialog widget (bug 352018).
+    - Enhancements to the "Projects" menu + minor UI enhancements (Vincent Geddes)
+    - Palette items can be locked down with CNTL-click matching glade-2 behaviour (bug 303679)
+
+
+===========
+Glade 3.0.0
+===========
+
+New features and fixes
+======================
+    - DevHelp integration for a contextual help system
+    - GnomeUI and GnomeCanvas plugin (Juan Pablo Ugarte)
+    - New "Editor skeleton" provided by the core to ease the plugin's creation
+      of custom editors for toolbars and menus and such. (Juan Pablo Ugarte)
+    - Toolbar and popup menu support (Juan Pablo Ugarte)
+    - Added accelerators property dialog
+    - Drag/Resize support extended to GtkTable and GtkBox subclasses 
+      (and GnomeCanvas) from only GtkFixed and GtkLayout.
+    - Reverted "View" menu to match the Glade 2 style (Yevgen Muntyan)
+    - Now glade has 2 icon sets (16x16 & 22x22), all icons available (Vincent Geddes)
+    - New awesome palette (Vincent Geddes)
+    - Cute cursor when adding widgets (Vincent Geddes)
+    - General UI enhancements and desktop integration work (Vincent Geddes)
+    - Duplicated widgets id's are unique (Yevgen Muntyan)
+    - Spelling mistake fixes from Thierry Moisan and Clytie Siddall
+    - Many Many Many misc fixes by Juan Pablo Ugarte, Vincent Geddes, 
+      Yevgen Muntyan and myself.
+    - Much core/gtk+ backend refactoring done by Juan Pablo and myself.
+
+New and updated translations
+============================
+    - Funda Wang (zh_CN)
+    - Francisco Javier F. Serrador (es)
+    - Adam Weinberger (en_CA)
+    - Kjartan Maraas (nb, no)
+    - Raphael Higino (pt_BR)
+    - Clytie Siddall (vi)
+    - Jordi Mas (ca)
+    - Vincent van Adrighem (nl)
+    - Daniel Nylander (sv)
+    - Valek Filippov (ru)
+
+==============
+glade-3 2.91.1
+==============
+
+New features and fixes
+======================
+    - Full atk property support.
+    - Added full documentation with gtk-doc, imported adding-widgets.txt to sgml files.
+    - GtkTable packing properties now work seemlessly (Juan Pablo Ugarte)
+    - Misc fixes on menu editor (Juan Pablo Ugarte)
+    - Filtered out cut/copy/paste accelerators from the editor window (fixing bug 324389)
+    - Implemented "Custom widgets" (glade-2 file support)
+    - GladeEPropFlags now shows treeview directly in editor (Mikael Hermansson)
+    - Added generic object list type to the glade builtin types (currenty used for
+      atk relation properties)
+    - Added packing property recording mechianism to Create/Delete commands
+      (was only there for Cut/Paste)
+    - Added file filters "All Files" and "Glade Files" to FileChooser Dialog (Vincent Geddes)
+    - Initialize FileChooser to use project->name as loaded filename (Vincent Geddes)
+    - Lots of irrelevent properties disabled (Juan Pablo Ugarte)
+    - Rewrite of project list menu in glade-project-window (Vincent Geddes)
+    - Indicate whether projects have unsaved changes  (Vincent Geddes)
+    - Open leafs & scrolled-window position restored on the project view
+      when switching projects
+    - Added glade-3.pc for module packages to find out where to install
+      their modules/catalogs/pixmaps (Yevgen Muntyan)
+    - Implemented Adjustments glade-2 style for now (Juan Pablo Ugarte)
+    - Manage the sensitivities of all the ui actions in the project window (Vincent Geddes)
+    - Removed popt dependancy in favor of glib mechanism (Vincent Geddes)
+    - Detect read-only state of projects (Vincent Geddes)
+    - Implemented GtkDialog button children layout to match what glade-2 / libglade supports
+    - Changed GtkButton editing to support button "label" and "use-underline" properties.
+    - Many many misc bug fixes by Juan Pablo Ugarte, Yevgen Muntyan, Vincent Geddes,
+      Johannes Schmid and myself.
+
+New and updated translations
+============================
+    - Adam Weinberger (en_CA)
+    - Francisco Javier F. Serrador (es)
+    - Clytie Siddall (vi)
+    - Jordi Mas (ca)
+    - Raphael Higino (pt_BR)
+    - Vincent van Adrighem (nl)
+    - Daniel Nylander (sv)
+
+
+==============
+glade-3 2.91.0
+==============
+
+New features and fixes
+======================
+   - The amazing new menu editor is here ! (Juan Pablo Ugarte)
+   - Added GladeEditorProperty objects, a GtkWidget descendant
+     capable of editing properties (one subclass available for
+     every method of editing properties).
+   - GladeProjectView displays internal widget descriptors and
+     special-child-type descriptors
+   - Project menu item glitch fixed.
+   - Fixed "paste" using keyboard shortcuts
+   - Show "save as" dialog on save when previous save failed
+   - Added widgets GtkCombo, GtkList, GtkCList, ComboBox & ComboBoxEntry
+   - Delete in property editor not to delete project widgets (only text
+     in entries).
+   - Text properties now scroll (bugzilla 316232)
+   - Translate strings from catalog files (this includes translating
+     the gtk+.xml.in using intltool & using dgettext on strings parsed
+     from the catalog).
+   - Implemented command groups (for undo/redo actions on a complex
+     series of glade commands), used by the new editor.
+   - Undo/Redo buttons now display action content in tooltips.
+   - Added GladeEPropObject, generic support for object type properties.
+   - Updated plugin writer documentation (widgets/adding-widgets.txt)
+   - All project paths are now absolute canonical paths
+   - Added GladeEPropResource for resource file type properties,
+     glade will try to always keep a copy of all project resources
+     in the same directory as the glade file.
+   - Fixed signal loading (bug 326715)
+   - Fixed persisting i18n metadata (bug 325628)
+   - Implemented <requires> functionality in glade files
+     (save required plugins and gracefully display errors if
+     the requested catalog isnt available).
+   - Multiple projects with the same name now supported.
+   - Misc bugfixes and code improvements from myself Juan Pablo Ugarte and
+     Lluis Sanchez Gual
+
+
+New and updated translations
+============================
+
+   - Funda Wang (zh_CN)
+   - Francisco Javier F. Serrador (es)
+   - Adam Weinberger (en_CA)
+   - Kjartan Maraas (nb, no)
+   - Raphael Higino (pt_BR)
+
+
+
+What is new in glade-3 2.90.0
+=============================
+
+    Everything about glade-3 is definitly new in this first ever
+development snapshot, so I give you here a list of all the 
+all star players that helped up to this point to make it happen
+(anyone I have any kind of record of should be here).
+
+So welcome all to the new, unfinished glade-3, I hope you all enjoy.
+
+Contributors:
+=============
+ o Chema Celorio
+ o Jonathan Blandford
+ o Carlos Perello Marin
+ o Archit Baweja
+ o Ravi Pratap
+ o Shane Butler
+ o Joe Shaw
+ o Kjartan Maraas
+ o Michael Meeks
+ o James Willcox
+ o Joaquín Cuenca Abela
+ o Paolo Borelli
+ o Tommi Komulainen
+ o Damon Chaplin
+ o David Hoover
+ o Morten Welinder
+ o Tristan Van Berkom
+ o Ivan, Wong Yat Cheung
+ o Gustavo Noronha Silva
+ o Richard Hult
+ o Mikael Hallendal
+ o Naba Kumar
+ o Philip Van Hoof
+ o Juan Pablo Ugarte
+
+Translators:
+============
+ o Fatih Demir
+ o Christian Rose
+ o Pablo Saratxaga
+ o Duarte Loreto
+ o Zbigniew Chyla
+ o Hasbullah Bin Pit
+ o Takeshi AIHANA

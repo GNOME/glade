@@ -1,0 +1,22 @@
+
+
+3.6 blocker/high priority list
+=============================
+Glade renames widgets when ids are dupped: http://bugzilla.gnome.org/show_bug.cgi?id=549176 
+Improve attributes editor
+Add actions, treestore, treemodel, adjustment, pixbuf (Gtk+ objects new group)
+Nice editor resizing by Pavel, needs fix for warning icons: http://bugzilla.gnome.org/show_bug.cgi?id=546107
+No way to add menus to toolbar: http://bugzilla.gnome.org/show_bug.cgi?id=429438
+GdkColor null values critical errors: http://bugzilla.gnome.org/show_bug.cgi?id=426345
+Add versioning metadata for libglade unsupported properties and widgets.
+Sort objects from widgets in the inspector widget.
+
+Make popup work in workspace with no-window widgets
+Remove deleted widgets from the workspace
+Take care of external object property references (sync them) at glade_widget_rebuild time
+Liststore/Treestore data is not translatable
+store data needs improvement and cant be released as is (cant even have spaces in data, needs real new structure).
+
+IMPORTANT!!! Go over all object type properties and mark them libglade unsupported,
+newly added objects need "since" versioning info updated, all around thoroughly 
+check catalog data before release candidate.

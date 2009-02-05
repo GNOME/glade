@@ -1,0 +1,18 @@
+<glade-catalog name="unixprint"
+	       library="gladegtk"
+	       icon-prefix="gtk"
+	       depends="gtk+"
+	       domain="glade3"
+	       book="gtk">
+
+  <glade-widget-classes>
+    <glade-widget-class name="GtkPageSetupUnixDialog" generic-name="pagesetupdialog" _title="Page Setup Dialog"/>
+    <glade-widget-class name="GtkPrintUnixDialog" generic-name="printdialog" _title="Print Dialog"/>
+  </glade-widget-classes>
+  
+  <glade-widget-group name="unixprint-toplevels" _title="GTK+ Unix Print Toplevels">
+    <glade-widget-class-ref name="GtkPageSetupUnixDialog"/>
+    <glade-widget-class-ref name="GtkPrintUnixDialog"/>
+  </glade-widget-group>
+
+</glade-catalog>

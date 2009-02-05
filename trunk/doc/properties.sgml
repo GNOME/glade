@@ -1,0 +1,273 @@
+<refentry id="properties" revision="8 Feb 2006">
+  <refmeta>
+    <refentrytitle>Property Class Definitions</refentrytitle>
+    <refmiscinfo>Glade UI</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>Property Classes</refname>
+    <refpurpose>
+How to augment or define a #GladePropertyClass
+    </refpurpose>
+  </refnamediv>
+
+  <refsect1>
+    <title>Property Class Configuration</title>
+    <para>
+Properties are introspected at load time and loaded into #GladePropertyClass structures.
+The behaviour of properties can be modified by the catalog and fake properties can be added
+for editing purposes. Here is an example of the xml form:
+      <programlisting><![CDATA[...
+
+<property id="frobnicate-mode" default="FOO_FROBNICATE_RED">
+
+  ... spec, tooltip etc
+
+  <displayable-values>
+
+    <value id="FOO_FROBNICATE_RED" name="Red"/>
+    <value id="FOO_FROBNICATE_BLUE" name="Blue"/>
+
+    ... values here
+
+  </displayable-values>
+
+</property>
+
+...]]></programlisting>
+
+
+    </para>
+    <para>
+Properties of the 'property' tag:
+      <variablelist>
+        <varlistentry>
+          <term>id</term>
+          <listitem>
+            <para>
+This is manditory and specifies the property that we are modifying (or adding)
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>name</term>
+          <listitem>
+            <para>
+The name to be used in the interface.
+(if name is not specified; it defaults to the nickname of the #GParamSpec)
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>since</term>
+          <listitem>
+            <para>
+A 'major.minor' formed version describing the version of the owning catalog in which this 
+property was introduced; example: <literal>since="1.0"</literal>. Properties are initialized
+to be supported since the introducing #GladeWidgetAdaptor was supported.
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>disabled</term>
+          <listitem>
+            <para>
+Remove this property from this widget class and derived classes
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>default</term>
+          <listitem>
+            <para>
+A default value to be used for this property
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>translatable</term>
+          <listitem>
+            <para>
+For text properties, whether the property value is translatable in glade
+interfaces (this will enable the i18n dialog on text properties). Defaults to False.
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>common</term>
+          <listitem>
+            <para>
+If set to "True", the property will end up on the common tab even if
+its not a property of GtkWidgetClass.
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>optional</term>
+          <listitem>
+            <para>
+Whether this property is an optional property, this will make the property
+insensitive and add a check box to enable it (like width/height-request for
+example).
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>optional-default</term>
+          <listitem>
+            <para>
+If this is in fact an optional property; whether it is enabled by default.
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>query</term>
+          <listitem>
+            <para>
+If query is set; the property will be queried from the user in a dialog
+when adding the owning widget class instance to the project.
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>save</term>
+          <listitem>
+            <para>
+Whether to save this property to the glade file (default "True")
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>visible</term>
+          <listitem>
+            <para>
+Whether to show the property in the editor and reset dialog (default "True")
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>custom-layout</term>
+          <listitem>
+            <para>
+This is used to avoid loading this property in the editor when implementing
+a custom #GladeEditable that embeds the base #GladeEditorTable implementation,
+custom-layout properties will still show up in the reset dialog (default "False)
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>ignore</term>
+          <listitem>
+            <para>
+Whether to set the property on the object instance (via g_object_set_property or
+plugin override functions) when it changes in the editor (the value in the editor
+is the value saved).
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>themed-icon</term>
+          <listitem>
+            <para>
+Depicts a string property that is used for an icon from the theme. These will
+the appropriate editor.
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>weight</term>
+          <listitem>
+            <para>
+A numerical value to specify this properties position in the property editor.
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>transfer-on-paste</term>
+          <listitem>
+            <para>
+Used for packing properties; depicts packing properties that should follow
+the widget when pasted to a new container that supports the same properties.
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>save-always</term>
+          <listitem>
+            <para>
+Specifies that the property should be saved regardless of its value (properties at thier
+default values are normally not saved).
+            </para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+    </para>
+
+    <para>
+Child tags of the 'property' tag:
+      <variablelist>
+
+        <varlistentry>
+          <term>spec</term>
+          <listitem>
+            <para>
+Specifies a function to be used to return a #GParamSpec for this property;
+this is used to add virtual properties to an object (like the "size" property
+on #GtkBox).
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>tooltip</term>
+          <listitem>
+            <para>
+The tooltip to be displayed in the property editor for this property. 
+The tooltip defaults to the blurb of the associated #GParamSpec.
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>visible-lines</term>
+          <listitem>
+            <para>
+An integer value to specify how many lines will be shown for text properties
+in the editor (this doesnt really work because of the complexity of calculating
+size of rendered text; instead, just set this to 2 if you want the text property
+to be edited in a textview with a scrolled window as opposed to a simple text entry).
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>displayable-values</term>
+          <listitem>
+            <para>
+Allows you to specify user friendly strings for enum and flag values as shown in the
+example above, use the `id' property in the value tag to depict the real value name
+and the `name' property for the human readable one.
+            </para>
+          </listitem>
+        </varlistentry>
+
+      </variablelist>
+    </para>
+  </refsect1>
+</refentry>

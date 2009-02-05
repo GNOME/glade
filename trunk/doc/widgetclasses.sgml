@@ -1,0 +1,569 @@
+<refentry id="widgetclasses" revision="8 Feb 2006">
+  <refmeta>
+    <refentrytitle>Widget Adaptor Definitions</refentrytitle>
+    <refmiscinfo>Glade UI</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>Widget Classes</refname>
+    <refpurpose>
+Adding support for custom widgets 
+    </refpurpose>
+  </refnamediv>
+
+  <refsect1>
+    <title>Forward</title>
+
+    <para>
+Widget support in Glade is provided by the #GladeWidgetAdaptor object, each
+`glade-widget-class' definition in the catalog will result in the creation
+of an adaptor, which inherits the funcionality of the adaptor created for its
+parent, or the closest adaptor available in the ancestry. Adaptor methods can
+be overridden by functions in the plugin by specifying them in the catalog.
+There is also a wealth of options you can use in the `glade-widget-class' without
+writing code.
+    </para>
+    <para>
+A typical basic example of a widget class definition is as follows:
+      <programlisting>
+<![CDATA[<glade-widget-class name="FooFrobnicator" generic-name="frobnicator" title="Frobnicator"/>]]></programlisting>
+    </para>
+    <para>
+Here is the complete example of the form of the `glade-widget-class' definition:
+      <programlisting>
+<![CDATA[<glade-widget-class name="FooFrobnicator" generic-name="frobnicator" title="Frobnicator"/>
+
+  <post-create-function>foo_frobnicator_plugin_post_create</post-create-function>
+
+  ... widget class support functions go here
+
+  <properties>
+
+    <property id="frobnicated" default="False"/>
+
+    ... property definitions go here
+
+  </properties>
+
+  <signals>
+
+    <signal id="frobnicate" since="1.0"/>
+
+    ... signal definitions go here
+
+  </signals>
+
+  <packing-properties>
+
+    ... child packing property definitions go here
+
+  </packing-properties>
+
+  <actions>
+
+    <action id="launch_editor" name="Edit Frob" stock="gtk-edit"/>
+
+    ... context menu action definitions go here
+
+  </actions>
+
+  <packing-actions>
+
+    ... context menu action definitions for child objects go here
+
+  </packing-actions>
+
+  <packing-defaults>
+
+    <parent-class name="GtkVBox">
+      <child-property id="expand" default="false"/>
+    </parent-class>
+
+    ... packing default definitions go here
+
+  </packing-defaults>
+
+</glade-widget-class>]]></programlisting>
+    </para>
+
+  </refsect1>
+  
+  <refsect1>
+    <title>Widget Class Properties</title>
+    <para>
+The following are all properies of the `glade-widget-class' tag
+    </para>
+    <variablelist>
+      <varlistentry>
+        <term>name</term>
+        <listitem>
+          <para>
+The class name of the widget; unless the 'get-type-function' property is present, 
+this will essentially be used to instantiate the actual class by deriving 
+'gtk_label_get_type' from 'GtkLabel' and searching for 'gtk_label_get_type' in the 
+support library.
+          </para>
+        </listitem>
+      </varlistentry>
+
+     <varlistentry>
+        <term>since</term>
+        <listitem>
+          <para>
+A 'major.minor' formed version describing the version of the owning catalog in which this 
+object class was introduced; example: <literal>since="1.0"</literal>.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>deprecated</term>
+        <listitem>
+          <para>
+A boolean property depicting that this widget is currently deprecated.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>builder-unsupported</term>
+        <listitem>
+          <para>
+A boolean property depicting that this widget is not supported by #GtkBuilder.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>get-type-function</term>
+        <listitem>
+          <para>
+Used to explicitly specify the name of the function used to get the type of the widget.  
+It is optional, but if it is not present, the 'name' property will be used to guess the
+name of the function, a process that could lead to unexpected results.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>generic-name</term>
+        <listitem>
+          <para>
+Used to generate a default name for instances of the
+widget in the UI editor. It is also used in conjunction with the 'icon-prefix'
+to form an icon name for the widget.
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry>
+        <term>icon-name</term>
+        <listitem>
+          <para>
+Used to explicitly set an icon name for this widget.
+These icon names are looked up in the current icon theme to retrieve an icon for
+the widget.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>title</term>
+        <listitem>
+          <para>
+Used to display the name of the class in the palette and widget 
+tree and will be translated before use in the interface.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>parent</term>
+        <listitem>
+          <para>
+Use this to specify the name of the parent your widget derives from, you
+can use this option instead of loading a real widget type (this allows you
+to fake derive and still add properties and run your catalog independantly
+of any plugins or libraries).
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>toplevel</term>
+        <listitem>
+          <para>
+Used to know whether this widget class is toplevel or not
+in Glade context. This property will be inherited from the adaptors parent.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>fixed</term>
+        <listitem>
+          <para>
+Used to mark a #GladeWidgetClass for free form placement capacities
+to be handled with a #GladeFixed. This property will be inherited from the adaptors parent.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>use-placeholders</term>
+        <listitem>
+          <para>
+Used to inform the core about adaptors that implement
+#GtkContainer editing, and whether or not they use #GladePlaceholder. This property will 
+be inherited from the adaptors parent.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>default-width</term>
+        <listitem>
+          <para>
+The default width to load a #GtkWindow derived widget in the #GladeDesignView.
+This property will be inherited from the adaptors parent.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>default-height</term>
+        <listitem>
+          <para>
+The default height to load a #GtkWindow derived widget in the #GladeDesignView.
+This property will be inherited from the adaptors parent.
+          </para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+  </refsect1>
+
+  <refsect1>
+    <title>Adapter Methods</title>
+    <para>
+The following are all child tags of the `glade-widget-class' tag
+    </para>
+    <variablelist>
+      <varlistentry>
+        <term>constructor-function</term>
+        <listitem>
+          <para>
+Used to override the actual #GObject constructor of the said #GladeWidgetAdaptor
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>post-create-function</term>
+        <listitem>
+          <para>
+A #GladePostCreateFunc support function that gets called whenever a widget of the said class is instantiated.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>deep-post-create-function</term>
+        <listitem>
+          <para>
+Same as `post-create-function' except in that you must always chain up
+to the super class definition as a rule.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>get-property-function</term>
+        <listitem>
+          <para>
+A #GladeGetPropertyFunc to get values of properties on an instance in the
+runtime.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>set-property-function</term>
+        <listitem>
+          <para>
+A #GladeSetPropertyFunc to set values of properties on an instance in the
+runtime.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>verify-function</term>
+        <listitem>
+          <para>
+A #GladeVerifyPropertyFunc to set values of properties on an instance in the
+runtime.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>add-child-function</term>
+        <listitem>
+          <para>
+A #GladeAddChildFunc to add children to instances in the runtime.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>remove-child-function</term>
+        <listitem>
+          <para>
+A #GladeRemoveChildFunc to remove children from instances in the runtime.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>replace-child-function</term>
+        <listitem>
+          <para>
+A #GladeReplaceChildFunc to replace children inside instances in the runtime.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>get-children-function</term>
+        <listitem>
+          <para>
+A #GladeGetChildrenFunc to get a list of children inside instances in the runtime.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>child-get-property-function</term>
+        <listitem>
+          <para>
+A #GladeChildGetPropertyFunc to get packing properties from instances in the runtime.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>child-set-property-function</term>
+        <listitem>
+          <para>
+A #GladeChildSetPropertyFunc to set packing properties on instances in the runtime.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>child-verify-function</term>
+        <listitem>
+          <para>
+A #GladeChildVerifyPropertyFunc to verify packing properties on instances in the runtime.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>get-internal-child-function</term>
+        <listitem>
+          <para>
+A #GladeGetInternalFunc to retrieve an internal child of a composite object in the runtime.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>action-activate-function</term>
+        <listitem>
+          <para>
+A #GladeActionActivateFunc to run a routine for a plugin defined #GladeWidgetAction.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>child-action-activate-function</term>
+        <listitem>
+          <para>
+A #GladeChildActionActivateFunc to run a routine for a plugin defined packing #GladeWidgetAction.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>read-widget-function</term>
+        <listitem>
+          <para>
+A #GladeReadWidgetFunc to load a widget from the xml.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>write-widget-function</term>
+        <listitem>
+          <para>
+A #GladeWriteWidgetFunc to write a widget from the xml.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>read-child-function</term>
+        <listitem>
+          <para>
+A #GladeReadWidgetFunc to read a child to the xml.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>write-child-function</term>
+        <listitem>
+          <para>
+A #GladeWriteWidgetFunc to write a child to the xml.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>create-editor-property-function</term>
+        <listitem>
+          <para>
+A #GladeCreateEPropFunc to create widgets to be used in Glade's property editor.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>string-from-value-function</term>
+        <listitem>
+          <para>
+A #GladeStringFromValueFunc to create a string from a #GValue, these strings must
+be unique and comparable for undo/redo to work properly.
+          </para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+  </refsect1>
+
+  <refsect1>
+    <title>Action Definitions</title>
+    <para>
+Actions are added under the `actions' and `packing-actions' tags, actions can also
+be nested so as to allow grouping in context menus, example:
+      <programlisting>
+<![CDATA[...
+
+<action id="manage_frobs" name="Manage Frobs">
+  <action id="add_frob" name="Add" stock="gtk-add"/>
+  <action id="remove_frob" name="Remove" stock="gtk-remove"/>
+</action>
+
+...]]></programlisting>
+    </para>
+    <para>
+Here are the meanings of the `action' tag's properties:
+    </para>
+    <variablelist>
+      <varlistentry>
+        <term>id</term>
+        <listitem>
+          <para>
+The string identifier for this action, the action_path argument to your #GladeActionActivateFunc
+will be a combination if this id and any parents, for the above example: 
+<literal>"manage_frobs/add_frob"</literal>.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>name</term>
+        <listitem>
+          <para>
+A string to be displayed in the UI for this action.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>stock</term>
+        <listitem>
+          <para>
+An optional Gtk stock icon to represent this action.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>important</term>
+        <listitem>
+          <para>
+A boolean option to add emphasis to this action; currently actions marked as `important' 
+are added to the toolbar.
+          </para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+  </refsect1>
+
+  <refsect1>
+    <title>Packing Defaults</title>
+    <para>
+Default values can be specified for packing properties on your widget when added
+to a said type of parent, as the example shows above; use the `parent-class' to 
+specify what parent (or derivative of that parent) you are targetting and fill
+in any `child-property' tags you need for that parent using `id' property to 
+specify the property name and the `default' property for the value.
+    </para>
+  </refsect1>
+
+  <refsect1>
+    <title>Signals</title>
+    <para>
+The signal elements are currently only needed for versioning support, use
+the `signal' child tag as described above and set signal `id' to be supported
+since version `since'. Signals are initialized to be supported since the
+introducing #GladeWidgetAdaptor was supported.
+    </para>
+  </refsect1>
+
+  <refsect1>
+    <title>Icons</title>
+    <para>
+The Glade palette and other components use icons to represent the various widget classes. 
+It is a good idea to provide icons for your widget classes, as this
+enhances the user interface.
+    </para>    
+      
+    <para>
+Glade uses the GTK+ GtkIconTheme facility to provide icons for widget classes. Any icon
+available in the current icon theme can be used as an icon for a widget class.
+    </para>
+  
+    <para>
+By default, an icon name of the format "widget-CATALOG_NAME-GENERIC_NAME"
+is assigned to every widget class. CATALOG_NAME is the value of catalog name attribute, 
+and GENERIC_NAME is the value of an widget class's generic name attribute.
+    </para>
+  
+    <para>
+To explicity set an icon name for a widget class, the "icon-name" attribute of the
+"glade-widget-class" element can be specified. This will override the default icon 
+name assigned to the widget class.
+    </para>
+  
+    <para>
+Icon files can be installed under any system icon theme folder.
+    </para>
+  </refsect1>
+
+</refentry>
