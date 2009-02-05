@@ -1,5 +1,7 @@
 2009-02-05  Tristan Van Berkom <tvb@gnome.org>
 
+	* NEWS: Rolling Glade 3.5.7
+	
 	* gladeui/glade-editor-property.c: Added "commit" signal to allow custom editors to do
 	command group/macros serialized around property changes.
 
@@ -15,6 +17,10 @@
 	* plugins/gtk+/glade-button-editor.c: Allow use of use-stock choice while activatable
 	properties are in effect.
 
+	* src/glade-window.c: Fix markup in confirm close dialog, patch by Felix Riemann (bug 567450).
+
+	* plugins/gtk+/gtk+.xml.in: Marked use-stock property from imagemenuitem to be save-always (bug 568064).
+	
 2009-01-27  Tristan Van Berkom <tvb@gnome.org>
 
 	* configure.ac: Bumping version for Anjuta dependancy

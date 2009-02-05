@@ -79,6 +79,7 @@ struct _GladeInspectorPrivate
 	GtkWidget    *view;
 	GtkTreeStore *model;
 	GtkTreeModel *filter;
+	GtkTreeIter   actions_iter;
 	GtkTreeIter   widgets_iter;
 	GtkTreeIter   objects_iter;
 
@@ -656,6 +657,26 @@ update_model (GladeInspector *inspector)
 
 	g_completion_add_items (priv->completion, (GList *)glade_project_get_objects (priv->project));
 
+
+	/* make a list of only the actions and groups */
+	for (l = (GList *) glade_project_get_objects (priv->project); l; l = l->next)
+	{
+		GObject     *object  = G_OBJECT (l->data);
+		GladeWidget *gwidget = glade_widget_get_from_gobject (object);
+		g_assert (gwidget);
+
+		if (gwidget->parent == NULL && 
+		    (GTK_IS_ACTION (object) || GTK_IS_ACTION_GROUP (object)))
+			toplevels = g_list_prepend (toplevels, object);
+	}
+	toplevels = g_list_reverse (toplevels);
+
+	/* recursively fill model */
+	gtk_tree_store_append (priv->model, &priv->actions_iter, NULL);
+	gtk_tree_store_set    (priv->model, &priv->actions_iter, TITLE_COLUMN, _("Actions"), -1);
+	fill_model (priv->model, toplevels, &priv->actions_iter);
+	toplevels = (g_list_free (toplevels), NULL);
+
 	/* make a list of only the toplevel window widgets */
 	for (l = (GList *) glade_project_get_objects (priv->project); l; l = l->next)
 	{
@@ -672,17 +693,17 @@ update_model (GladeInspector *inspector)
 	gtk_tree_store_append (priv->model, &priv->widgets_iter, NULL);
 	gtk_tree_store_set    (priv->model, &priv->widgets_iter, TITLE_COLUMN, _("Widgets"), -1);
 	fill_model (priv->model, toplevels, &priv->widgets_iter);
-	g_list_free (toplevels);
+	toplevels = (g_list_free (toplevels), NULL);
 
 	/* make a list of only the toplevel non-window widgets */
-	toplevels = NULL;
 	for (l = (GList *) glade_project_get_objects (priv->project); l; l = l->next)
 	{
 		GObject     *object  = G_OBJECT (l->data);
 		GladeWidget *gwidget = glade_widget_get_from_gobject (object);
 		g_assert (gwidget);
 
-		if (gwidget->parent == NULL && !GTK_IS_WIDGET (object))
+		if (gwidget->parent == NULL && !GTK_IS_WIDGET (object) && 
+		    !GTK_IS_ACTION (object) && !GTK_IS_ACTION_GROUP (object))
 			toplevels = g_list_prepend (toplevels, object);
 	}
 	toplevels = g_list_reverse (toplevels);
@@ -691,7 +712,7 @@ update_model (GladeInspector *inspector)
 	gtk_tree_store_append (priv->model, &priv->objects_iter, NULL);
 	gtk_tree_store_set    (priv->model, &priv->objects_iter, TITLE_COLUMN, _("Objects"), -1);
 	fill_model (priv->model, toplevels, &priv->objects_iter);
-	g_list_free (toplevels);
+	toplevels = (g_list_free (toplevels), NULL);
 }
 
 static void
@@ -718,7 +739,9 @@ project_add_widget_cb (GladeProject   *project,
 	
 	if (!parent_iter)
 	{
-		if (GTK_IS_WIDGET (widget->object))
+		if (GTK_IS_ACTION (widget->object) || GTK_IS_ACTION_GROUP (widget->object))
+			parent_iter = &inspector->priv->actions_iter;
+		else if (GTK_IS_WIDGET (widget->object))
 			parent_iter = &inspector->priv->widgets_iter;
 		else
 			parent_iter = &inspector->priv->objects_iter;
