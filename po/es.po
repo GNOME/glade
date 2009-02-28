@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade3&component=general\n"
 "POT-Creation-Date: 2009-02-16 09:25+0000\n"
-"PO-Revision-Date: 2009-02-28 12:20+0100\n"
+"PO-Revision-Date: 2009-02-28 12:59+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -169,11 +169,11 @@ msgstr "Ningún proyecto abierto para guardar"
 #: ../src/glade-window.c:1352
 #, c-format
 msgid "Save changes to project \"%s\" before closing?"
-msgstr ""
+msgstr "¿Guardar los cambios del proyecto «%s» antes de cerrar?"
 
 #: ../src/glade-window.c:1363
 msgid "Your changes will be lost if you don't save them."
-msgstr ""
+msgstr "Sus cambios se perderán si no los guarda."
 
 #: ../src/glade-window.c:1367
 msgid "_Close without Saving"
@@ -1315,9 +1315,8 @@ msgid "_Add widget here"
 msgstr "_Añadir widget aquí"
 
 #: ../gladeui/glade-popup.c:444 ../gladeui/glade-popup.c:668
-#, fuzzy
 msgid "Add widget as _toplevel"
-msgstr "Añadir widget como _raíz"
+msgstr "Añadir widget como nivel _superior"
 
 #: ../gladeui/glade-popup.c:455
 msgid "_Select"
@@ -1389,9 +1388,11 @@ msgstr "Preferencias de %s"
 #. ******************************************************************
 #. translators: reffers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:1553
-#, fuzzy, c-format
+#, c-format
 msgid "This widget was introduced in %s %d.%d while project targets %s %d.%d"
-msgstr "Este widget se introdujo en %s %d.%d, el proyecto apunta a %s %d.%d"
+msgstr ""
+"Este widget se introdujo en %s %d.%d, mientras que el proyecto apunta a %s %"
+"d.%d"
 
 #. translators: reffers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:1556
@@ -2536,7 +2537,7 @@ msgstr "Columna de vista de árbol"
 
 #: ../plugins/gtk+/glade-gtk.c:10770 ../plugins/gtk+/gtk+.xml.in.h:72
 msgid "Cell Renderer"
-msgstr ""
+msgstr "Renderizador de la celda"
 
 #: ../plugins/gtk+/glade-gtk.c:10775
 msgid "Properties and Attributes"
@@ -2896,7 +2897,7 @@ msgstr "Click"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:81
 msgid "Climb Rate column"
-msgstr ""
+msgstr "Columna de tasa de elevación"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:82
 msgid "Close"
@@ -2932,7 +2933,7 @@ msgstr "Entrada de caja combo"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:91
 msgid "Combo Renderer"
-msgstr ""
+msgstr "Renderizador de combinación"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:92
 msgid "Composite Widgets"
@@ -3099,7 +3100,7 @@ msgstr "Octava clave"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:136
 msgid "Ellipsize column"
-msgstr ""
+msgstr "Columna de elipsis"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:137
 msgid "Embedded By"
@@ -3236,7 +3237,7 @@ msgstr "Cambio de foco"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:170
 msgid "Follow State column"
-msgstr ""
+msgstr "Columna de acompañamiento de estado"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:171
 msgid "Font Button"
@@ -3907,9 +3908,8 @@ msgid "Progress Pulse Step"
 msgstr "Barra de progreso"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:336
-#, fuzzy
 msgid "Progress Renderer"
-msgstr "Barra de progreso"
+msgstr "Renderizador de la barra de progreso"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:337
 msgid "Property Change"
@@ -3924,9 +3924,8 @@ msgid "Proximity In"
 msgstr "Proximidad dentro"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:340
-#, fuzzy
 msgid "Pulse column"
-msgstr "Insertar columna"
+msgstr "Columna de «pulse»"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:341 ../plugins/gnome/gnome.xml.in.h:47
 msgid "Question"
@@ -3937,9 +3936,8 @@ msgid "Queue"
 msgstr "Cola"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:343
-#, fuzzy
 msgid "Radio Action"
-msgstr "Botón de radio"
+msgstr "Acción del botón de radio"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:344
 msgid "Radio Button"
@@ -3954,9 +3952,8 @@ msgid "Radio Tool Button"
 msgstr "Botón de herramienta de radio"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:347
-#, fuzzy
 msgid "Radio column"
-msgstr "Botón de radio"
+msgstr "Columna de radio"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:348
 msgid "Range"
@@ -3976,9 +3973,8 @@ msgstr "Diálogo de selección de archivos recientes"
 
 #. GtkActivatable
 #: ../plugins/gtk+/gtk+.xml.in.h:353
-#, fuzzy
 msgid "Related Action"
-msgstr "Botón de radio"
+msgstr "Acción relacionada"
 
 #. Atk release property
 #: ../plugins/gtk+/gtk+.xml.in.h:355
@@ -4022,9 +4018,8 @@ msgid "Right to Left"
 msgstr "Derecha a izquierda"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:365
-#, fuzzy
 msgid "Rise column"
-msgstr "Insertar columna"
+msgstr "Columna de elevación"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:366
 msgid "Ruler"
@@ -4162,20 +4157,20 @@ msgstr "Único"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:396
 msgid "Single Paragraph Mode column"
-msgstr ""
+msgstr "Columna de modo de párrafo único"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:397
 msgid "Sixth Key"
-msgstr ""
+msgstr "Sexta clave"
 
 #. Objects
 #: ../plugins/gtk+/gtk+.xml.in.h:399
 msgid "Size Group"
-msgstr ""
+msgstr "Grupo de tamaño"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:400
 msgid "Size column"
-msgstr ""
+msgstr "Columna de tamaño"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:401
 msgid "Small Capitals"
@@ -4203,7 +4198,7 @@ msgstr "Botón incrementable"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:407
 msgid "Spin Renderer"
-msgstr ""
+msgstr "Renderizador incrementable"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:408
 msgid "Splash Screen"
@@ -4239,7 +4234,7 @@ msgstr "Botón de stock"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:416
 msgid "Stock Detail column"
-msgstr ""
+msgstr "Columna de detalles del stock"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:417
 msgid "Stock Item"
@@ -4247,22 +4242,19 @@ msgstr "Elemento de stock"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:418
 msgid "Stock Size column"
-msgstr ""
+msgstr "Columna de tamaño del stock"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:419
-#, fuzzy
 msgid "Stock column"
-msgstr "Botón de stock"
+msgstr "Columna de catálogo (stock)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:420
-#, fuzzy
 msgid "Stretch column"
-msgstr "Estiramiento"
+msgstr "Columna de estiramiento"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:421
-#, fuzzy
 msgid "Strikethrough column"
-msgstr "Color del tachado"
+msgstr "Columna de tachado"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:422
 msgid "Structure"
@@ -4302,7 +4294,7 @@ msgstr "Búfers de texto"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:433
 msgid "Text Column column"
-msgstr ""
+msgstr "Columna de columna de texto"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:434
 msgid "Text Entry"
@@ -4310,7 +4302,7 @@ msgstr "Entrada de texto"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:435
 msgid "Text Horizontal Alignment column"
-msgstr ""
+msgstr "Columna de alineamiento horizontal del texto"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:436
 msgid "Text Renderer"
@@ -4326,7 +4318,7 @@ msgstr "Tabla de etiquetas de texto"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:439
 msgid "Text Vertical Alignment column"
-msgstr ""
+msgstr "Columna de alineamiento vertical del texto"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:440
 msgid "Text View"
@@ -4346,7 +4338,7 @@ msgstr "Sólo texto"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:445
 msgid "The column in the model to load the value from"
-msgstr ""
+msgstr "La columna en el modelo de la que cargar el valor"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:446
 msgid "The items in this combo box"
@@ -4385,6 +4377,8 @@ msgid ""
 "The stock icon displayed on the item (chose an item from gtk+ stock or from "
 "an icon factory)"
 msgstr ""
+"El icono de stock mostrado en el elemento (elija un elemento del stock gtk+ "
+"o desde una fábrica de iconos)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:455
 msgid "The stock item for this button"
@@ -4412,11 +4406,11 @@ msgstr "Acción conmutada"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:461
 msgid "Toggle Button"
-msgstr ""
+msgstr "Botón conmutable"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:462
 msgid "Toggle Renderer"
-msgstr ""
+msgstr "Conmutar renderizador"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:463
 msgid "Toggle Tool Button"
@@ -4475,9 +4469,8 @@ msgid "Tree Selection"
 msgstr "Selección en árbol"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:477
-#, fuzzy
 msgid "Tree Store"
-msgstr "Vista de árbol"
+msgstr "Almacenamiento en árbol"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:478
 msgid "Tree View"
@@ -4497,7 +4490,7 @@ msgstr "Ultra expandida"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:483
 msgid "Underline column"
-msgstr ""
+msgstr "Columna de subrayado"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:484
 msgid "Up"
@@ -4610,7 +4603,7 @@ msgstr "Anchura de la columna"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:515
 msgid "Width in Characters column"
-msgstr ""
+msgstr "Columna de anchura de caracteres"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:516
 msgid "Window"
