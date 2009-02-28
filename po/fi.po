@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-27 06:23+0300\n"
+"POT-Creation-Date: 2009-02-28 19:00+0300\n"
 "PO-Revision-Date: 2009-01-27 06:45+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
@@ -160,46 +160,42 @@ msgstr "Ei avoimia projekteja tallennettavaksi"
 
 #: ../src/glade-window.c:1351
 #, c-format
-msgid ""
-"<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before "
-"closing?</span>\n"
-"\n"
-"Your changes will be lost if you don't save them."
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Tallennetaanko muutokset projektiin \"%"
-"s\" ennen sulkemista?</span>\n"
-"\n"
-"Muutoksesi projektiin hukataan, jos et tallenna niitä."
+msgid "Save changes to project \"%s\" before closing?"
+msgstr "Tallennetaanko muutokset projektiin \"%s\" ennen sulkemista?"
 
-#: ../src/glade-window.c:1364
+#: ../src/glade-window.c:1362
+msgid "Your changes will be lost if you don't save them."
+msgstr "Muutokset hukataan, jos et tallenna niitä."
+
+#: ../src/glade-window.c:1366
 msgid "_Close without Saving"
 msgstr "S_ulje tallentamatta"
 
-#: ../src/glade-window.c:1391
+#: ../src/glade-window.c:1393
 #, c-format
 msgid "Failed to save %s to %s: %s"
 msgstr "Tiedostoa %s ei voitu tallentaa kohteeseen %s: %s"
 
-#: ../src/glade-window.c:1403
+#: ../src/glade-window.c:1405
 msgid "Save…"
 msgstr "Tallenna..."
 
-#: ../src/glade-window.c:1901
+#: ../src/glade-window.c:1903
 msgid "Could not display the online user manual"
 msgstr "Verkko-ohjetta ei voitu näyttää"
 
-#: ../src/glade-window.c:1904 ../src/glade-window.c:1942
+#: ../src/glade-window.c:1906 ../src/glade-window.c:1944
 #, c-format
 msgid ""
 "No suitable web browser executable could be found to be executed and to "
 "display the URL: %s"
 msgstr "Sivun %s näyttämiseen sopivaa selainta ei löytynyt"
 
-#: ../src/glade-window.c:1939
+#: ../src/glade-window.c:1941
 msgid "Could not display the online developer reference manual"
 msgstr "Kehittäjän referenssiä verkosta ei voitu näyttää"
 
-#: ../src/glade-window.c:1982
+#: ../src/glade-window.c:1984
 msgid ""
 "Glade is free software; you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -229,295 +225,294 @@ msgstr ""
 "sitä saanut, niin lähetä kirje Free Software Foundation, Inc.:lle, 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: ../src/glade-window.c:2008
+#: ../src/glade-window.c:2010
 msgid "translator-credits"
 msgstr ""
 "Ilkka Tuohela, 2007\n"
 "\n"
 "http://www.gnome.fi/"
 
-#: ../src/glade-window.c:2009
+#: ../src/glade-window.c:2011
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr "Käyttöliittymien suunnittelutyökalu GTK+ -ja Gnome-sovelluksille"
 
 #. File
-#: ../src/glade-window.c:2081 ../plugins/gtk+/glade-gtk.c:6911
-#: ../plugins/gtk+/glade-gtk.c:7234
+#: ../src/glade-window.c:2083 ../plugins/gtk+/glade-gtk.c:7006
+#: ../plugins/gtk+/glade-gtk.c:7329
 msgid "_File"
 msgstr "_Tiedosto"
 
 #. Edit
-#: ../src/glade-window.c:2082 ../plugins/gtk+/glade-gtk.c:6914
-#: ../plugins/gtk+/glade-gtk.c:7244
+#: ../src/glade-window.c:2084 ../plugins/gtk+/glade-gtk.c:7009
+#: ../plugins/gtk+/glade-gtk.c:7339
 msgid "_Edit"
 msgstr "_Muokkaa"
 
 #. View
-#: ../src/glade-window.c:2083 ../plugins/gtk+/glade-gtk.c:6917
-#: ../plugins/gtk+/glade-gtk.c:7252
+#: ../src/glade-window.c:2085 ../plugins/gtk+/glade-gtk.c:7012
+#: ../plugins/gtk+/glade-gtk.c:7347
 msgid "_View"
 msgstr "_Näytä"
 
-#: ../src/glade-window.c:2084
+#: ../src/glade-window.c:2086
 msgid "_Projects"
 msgstr "_Projektit"
 
 #. Help
-#: ../src/glade-window.c:2085 ../plugins/gtk+/glade-gtk.c:6929
-#: ../plugins/gtk+/glade-gtk.c:7255
+#: ../src/glade-window.c:2087 ../plugins/gtk+/glade-gtk.c:7024
+#: ../plugins/gtk+/glade-gtk.c:7350
 msgid "_Help"
 msgstr "O_hje"
 
-#: ../src/glade-window.c:2091
+#: ../src/glade-window.c:2093
 msgid "Create a new project"
 msgstr "Luo uusi projekti"
 
-#: ../src/glade-window.c:2093
+#: ../src/glade-window.c:2095
 msgid "_Open…"
 msgstr "_Avaa..."
 
-#: ../src/glade-window.c:2094
+#: ../src/glade-window.c:2096
 msgid "Open a project"
 msgstr "Avaa projekti"
 
-#: ../src/glade-window.c:2096
+#: ../src/glade-window.c:2098
 msgid "Open _Recent"
 msgstr "Avaa _viimeaikainen"
 
-#: ../src/glade-window.c:2099
+#: ../src/glade-window.c:2101
 msgid "Quit the program"
 msgstr "Lopeta sovellus"
 
 #. ViewMenu
-#: ../src/glade-window.c:2102
+#: ../src/glade-window.c:2104
 msgid "Palette _Appearance"
 msgstr "Paletin _ulkoasu"
 
-#: ../src/glade-window.c:2106
+#: ../src/glade-window.c:2108
 msgid "About this application"
 msgstr "Tietoja sovelluksesta"
 
-#: ../src/glade-window.c:2108
+#: ../src/glade-window.c:2110
 msgid "_Contents"
 msgstr "_Sisältö"
 
-#: ../src/glade-window.c:2109
+#: ../src/glade-window.c:2111
 msgid "Display the user manual"
 msgstr "Näytä käyttäjän ohje"
 
-#: ../src/glade-window.c:2111
+#: ../src/glade-window.c:2113
 msgid "_Developer Reference"
 msgstr "_Kehittäjän referenssi"
 
-#: ../src/glade-window.c:2112
+#: ../src/glade-window.c:2114
 msgid "Display the developer reference manual"
 msgstr "Näytä kehittäjän manuaali"
 
-#: ../src/glade-window.c:2121
+#: ../src/glade-window.c:2123
 msgid "Save the current project"
 msgstr "Tallenna nykyinen projekti"
 
-#: ../src/glade-window.c:2123
+#: ../src/glade-window.c:2125
 msgid "Save _As…"
 msgstr "Tallenna _nimellä..."
 
-#: ../src/glade-window.c:2124
+#: ../src/glade-window.c:2126
 msgid "Save the current project with a different name"
 msgstr "Tallenna nykyine nprojekti toisella nimellä"
 
-#: ../src/glade-window.c:2127
+#: ../src/glade-window.c:2129
 msgid "Close the current project"
 msgstr "Sulje nykyinen projekti"
 
-#: ../src/glade-window.c:2131
+#: ../src/glade-window.c:2133
 msgid "Undo the last action"
 msgstr "Peru edellinen toiminto"
 
-#: ../src/glade-window.c:2134
+#: ../src/glade-window.c:2136
 msgid "Redo the last action"
 msgstr "Tee edellinen toiminto uudestaan"
 
-#: ../src/glade-window.c:2137
+#: ../src/glade-window.c:2139
 msgid "Cut the selection"
 msgstr "Leikkaa valinta"
 
-#: ../src/glade-window.c:2140
+#: ../src/glade-window.c:2142
 msgid "Copy the selection"
 msgstr "Kopioi valinta"
 
-#: ../src/glade-window.c:2143
+#: ../src/glade-window.c:2145
 msgid "Paste the clipboard"
 msgstr "Liitä leikepöydältä"
 
-#: ../src/glade-window.c:2146
+#: ../src/glade-window.c:2148
 msgid "Delete the selection"
 msgstr "Poista valinta"
 
-#: ../src/glade-window.c:2149
+#: ../src/glade-window.c:2151
 msgid "Modify project preferences"
 msgstr "Muokkaa projektin asetuksia"
 
 #. ProjectsMenu
-#: ../src/glade-window.c:2152
+#: ../src/glade-window.c:2154
 msgid "_Previous Project"
 msgstr "_Edellinen projekti"
 
-#: ../src/glade-window.c:2153
+#: ../src/glade-window.c:2155
 msgid "Activate previous project"
 msgstr "Aktivoi edellinen projekti"
 
-#: ../src/glade-window.c:2155
+#: ../src/glade-window.c:2157
 msgid "_Next Project"
 msgstr "_Seuraava projekti"
 
-#: ../src/glade-window.c:2156
+#: ../src/glade-window.c:2158
 msgid "Activate next project"
 msgstr "Aktivoi seuraava projekti"
 
-#: ../src/glade-window.c:2164
+#: ../src/glade-window.c:2166
 msgid "_Use Small Icons"
 msgstr "_Käytä pieniä kuvakkeita"
 
-#: ../src/glade-window.c:2165
+#: ../src/glade-window.c:2167
 msgid "Show items using small icons"
 msgstr "Näytä kohdat pieninä kuvakkeina"
 
-#: ../src/glade-window.c:2168
+#: ../src/glade-window.c:2170
 msgid "Dock _Palette"
 msgstr "Kiinnitä _paletti"
 
-#: ../src/glade-window.c:2169
+#: ../src/glade-window.c:2171
 msgid "Dock the palette into the main window"
 msgstr "Kiinnitä paletti pääikkunaan"
 
-#: ../src/glade-window.c:2172
+#: ../src/glade-window.c:2174
 msgid "Dock _Inspector"
 msgstr "Kiinnitä _rakenne"
 
-#: ../src/glade-window.c:2173
+#: ../src/glade-window.c:2175
 msgid "Dock the inspector into the main window"
 msgstr "Kiinnitä rakenne pääikkunaan"
 
-#: ../src/glade-window.c:2176
-#, fuzzy
+#: ../src/glade-window.c:2178
 msgid "Dock Prop_erties"
-msgstr "Ominaisuudet"
+msgstr "Telakan _ominaisuudet"
 
-#: ../src/glade-window.c:2177
+#: ../src/glade-window.c:2179
 msgid "Dock the editor into the main window"
 msgstr "Kiinnitä muokkain pääikkunaan"
 
-#: ../src/glade-window.c:2185 ../plugins/gtk+/gtk+.xml.in.h:424
+#: ../src/glade-window.c:2187 ../plugins/gtk+/gtk+.xml.in.h:442
 msgid "Text beside icons"
 msgstr "Teksti kuvakkeiden vieressä"
 
-#: ../src/glade-window.c:2186
+#: ../src/glade-window.c:2188
 msgid "Display items as text beside icons"
 msgstr "Näytä kohdat kuvakkeina ja tekstinä"
 
-#: ../src/glade-window.c:2188
+#: ../src/glade-window.c:2190
 msgid "_Icons only"
 msgstr "Va_in kuvakkeet"
 
-#: ../src/glade-window.c:2189
+#: ../src/glade-window.c:2191
 msgid "Display items as icons only"
 msgstr "Näytä kohdat pelkkinä kuvakkeina"
 
-#: ../src/glade-window.c:2191
+#: ../src/glade-window.c:2193
 msgid "_Text only"
 msgstr "Vain _teksti"
 
-#: ../src/glade-window.c:2192
+#: ../src/glade-window.c:2194
 msgid "Display items as text only"
 msgstr "Näytä kohdat pelkkänä tekstinä"
 
-#: ../src/glade-window.c:2381
+#: ../src/glade-window.c:2383
 msgid "Select"
 msgstr "Valitse"
 
-#: ../src/glade-window.c:2385
+#: ../src/glade-window.c:2387
 msgid "Select widgets in the workspace"
 msgstr "Näytä ikkunaelementit työpöydällä"
 
-#: ../src/glade-window.c:2409
+#: ../src/glade-window.c:2411
 msgid "Drag Resize"
 msgstr "Raahaus ja koon muutos"
 
-#: ../src/glade-window.c:2413
+#: ../src/glade-window.c:2415
 msgid "Drag and resize widgets in the workspace"
 msgstr "Raahaa kohteita ja muuta niiden kokoa työtilassa"
 
-#: ../src/glade-window.c:2455
+#: ../src/glade-window.c:2457
 msgid "Could not create a new project."
 msgstr "Uutta projektia ei voitu luoda."
 
-#: ../src/glade-window.c:2509
+#: ../src/glade-window.c:2511
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr "Projektissa %s on tallentamattomia muutoksia"
 
-#: ../src/glade-window.c:2513
+#: ../src/glade-window.c:2515
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr ""
 "Jos lataat sen uudestaan, hukataan kaikki tallentamattomat muutokset. "
 "Ladataanko tiedosti silti uudestaan?"
 
-#: ../src/glade-window.c:2522
+#: ../src/glade-window.c:2524
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr "Projektitiedostoa %s on muokattu lukemisen jälkeen"
 
-#: ../src/glade-window.c:2526
+#: ../src/glade-window.c:2528
 msgid "Do you want to reload the project?"
 msgstr "Haluatko ladata projektin uudestaan?"
 
-#: ../src/glade-window.c:2532
+#: ../src/glade-window.c:2534
 msgid "_Reload"
 msgstr "_Lataa uudestaan"
 
-#: ../src/glade-window.c:2654
+#: ../src/glade-window.c:2656
 msgid "_Undo"
 msgstr "_Peru"
 
 #. Change tooltips
-#: ../src/glade-window.c:2656 ../gladeui/glade-app.c:269
+#: ../src/glade-window.c:2658 ../gladeui/glade-app.c:269
 #, c-format
 msgid "Undo: %s"
 msgstr "Peru: %s"
 
-#: ../src/glade-window.c:2656 ../src/glade-window.c:2667
+#: ../src/glade-window.c:2658 ../src/glade-window.c:2669
 #: ../gladeui/glade-app.c:270
 msgid "the last action"
 msgstr "viimeisin toiminto"
 
-#: ../src/glade-window.c:2665
+#: ../src/glade-window.c:2667
 msgid "_Redo"
 msgstr "_Tee uudestaan"
 
-#: ../src/glade-window.c:2667 ../gladeui/glade-app.c:269
+#: ../src/glade-window.c:2669 ../gladeui/glade-app.c:269
 #, c-format
 msgid "Redo: %s"
 msgstr "Tee uudestaan: %s"
 
-#: ../src/glade-window.c:2975
+#: ../src/glade-window.c:2977
 msgid "Go back in undo history"
 msgstr "Siirry takaisin perumishistoriassa"
 
-#: ../src/glade-window.c:2977
+#: ../src/glade-window.c:2979
 msgid "Go forward in undo history"
 msgstr "Siirry eteenpäin perumishistoriassa"
 
-#: ../src/glade-window.c:3024
+#: ../src/glade-window.c:3026
 msgid "Palette"
 msgstr "Paletti"
 
-#: ../src/glade-window.c:3035
+#: ../src/glade-window.c:3037
 msgid "Inspector"
 msgstr "Rakenne"
 
-#: ../src/glade-window.c:3042 ../gladeui/glade-editor.c:350
-#: ../gladeui/glade-widget.c:1089 ../plugins/gtk+/glade-gtk.c:6373
-#: ../plugins/gtk+/glade-gtk.c:6403 ../plugins/gtk+/glade-gtk.c:10662
+#: ../src/glade-window.c:3044 ../gladeui/glade-editor.c:350
+#: ../gladeui/glade-widget.c:1089 ../plugins/gtk+/glade-gtk.c:6444
+#: ../plugins/gtk+/glade-gtk.c:6474 ../plugins/gtk+/glade-gtk.c:10775
 msgid "Properties"
 msgstr "Ominaisuudet"
 
@@ -613,31 +608,28 @@ msgid "Insufficient amount of placeholders in target container"
 msgstr "Kohdesäilössä ei ole tarpeeksi vapaita paikkoja"
 
 #: ../gladeui/glade-builtins.c:71
-#, fuzzy
 msgid "Authentication"
-msgstr "viimeisin toiminto"
+msgstr "Todentaminen"
 
 #. GTK_STOCK_DIALOG_AUTHENTICATION
 #: ../gladeui/glade-builtins.c:72
 msgid "DnD"
-msgstr ""
+msgstr "DnD"
 
 #. GTK_STOCK_DND
 #: ../gladeui/glade-builtins.c:73
-#, fuzzy
 msgid "DnD Multiple"
-msgstr "Useita"
+msgstr ""
 
 #. GTK_STOCK_DND_MULTIPLE
 #: ../gladeui/glade-builtins.c:74
-#, fuzzy
 msgid "Color Picker"
-msgstr "Gnomen värivalitsin"
+msgstr "Värivalitsin"
 
 #. GTK_STOCK_COLOR_PICKER
 #: ../gladeui/glade-builtins.c:75
 msgid "Directory"
-msgstr ""
+msgstr "Kansio"
 
 #. GTK_STOCK_DIRECTORY
 #: ../gladeui/glade-builtins.c:76 ../plugins/gnome/gnome.xml.in.h:9
@@ -646,9 +638,8 @@ msgstr "Tiedosto"
 
 #. GTK_STOCK_FILE
 #: ../gladeui/glade-builtins.c:77
-#, fuzzy
 msgid "Missing Image"
-msgstr "Viesti"
+msgstr "Kuva puuttuu"
 
 #: ../gladeui/glade-builtins.c:321
 msgid "Stock"
@@ -666,7 +657,7 @@ msgstr "Vakiokuva"
 msgid "A builtin stock image"
 msgstr "Sisäänrakennettu vakiokuva"
 
-#: ../gladeui/glade-builtins.c:488 ../gladeui/glade-inspector.c:692
+#: ../gladeui/glade-builtins.c:488 ../gladeui/glade-inspector.c:713
 msgid "Objects"
 msgstr "Oliot"
 
@@ -675,13 +666,12 @@ msgid "A list of objects"
 msgstr "Kohdeluettelo"
 
 #: ../gladeui/glade-builtins.c:498
-#, fuzzy
 msgid "Image File Name"
-msgstr "Tiedostonimi"
+msgstr "Kuvan tiedostonimi"
 
 #: ../gladeui/glade-builtins.c:499
 msgid "Enter a filename, relative or fullpath to load the image"
-msgstr ""
+msgstr "Syötä tiedostonimi kuvan lataamiseksi, suhteellinen tai täysi"
 
 #: ../gladeui/glade-builtins.c:508
 msgid "GdkColor"
@@ -750,14 +740,14 @@ msgid "Add a %s to %s"
 msgstr "Lisää %s kohtaan %s"
 
 #: ../gladeui/glade-base-editor.c:755
-#, fuzzy, c-format
+#, c-format
 msgid "Add %s item"
-msgstr "Lisää kohta"
+msgstr "Lisää %s-kohta"
 
 #: ../gladeui/glade-base-editor.c:785
-#, fuzzy, c-format
+#, c-format
 msgid "Add child %s item"
-msgstr "Lisää lapsisolmu"
+msgstr "Lisää %s-lapsi"
 
 #: ../gladeui/glade-base-editor.c:872
 #, c-format
@@ -769,13 +759,13 @@ msgstr "Poista %s-lapsi lähteestä %s"
 msgid "Reorder %s's children"
 msgstr "Järjestä kohteen %s lapset uudestaan"
 
-#: ../gladeui/glade-base-editor.c:1437 ../plugins/gtk+/gtk+.xml.in.h:96
+#: ../gladeui/glade-base-editor.c:1437 ../plugins/gtk+/gtk+.xml.in.h:95
 msgid "Container"
 msgstr "Säilö"
 
 #: ../gladeui/glade-base-editor.c:1438
 msgid "The container object this editor is currently editing"
-msgstr ""
+msgstr "Säilöolio, jota tämä muokkain muokkaa tällä hetkellä"
 
 #: ../gladeui/glade-base-editor.c:1663 ../gladeui/glade-editor.c:991
 msgid "General"
@@ -783,7 +773,7 @@ msgstr "Yleinen"
 
 #: ../gladeui/glade-base-editor.c:1671
 msgid "Hierarchy"
-msgstr ""
+msgstr "Hierarkia"
 
 #: ../gladeui/glade-base-editor.c:1705 ../plugins/gtk+/gtk+.xml.in.h:252
 msgid "Label"
@@ -818,7 +808,7 @@ msgstr ""
 "  * Tyyppi-saraketta voi muokata."
 
 #: ../gladeui/glade-clipboard-view.c:209 ../gladeui/glade-editor.c:162
-#: ../plugins/gtk+/gtk+.xml.in.h:492
+#: ../plugins/gtk+/gtk+.xml.in.h:511
 msgid "Widget"
 msgstr "Ikkunaelementti"
 
@@ -832,7 +822,7 @@ msgstr "Asetetaan useita ominaisuuksia"
 msgid "Setting %s of %s"
 msgstr "Asetetaan %s / %s"
 
-#: ../gladeui/glade-command.c:612 ../gladeui/glade-editor-property.c:2871
+#: ../gladeui/glade-command.c:612 ../gladeui/glade-editor-property.c:2879
 #, c-format
 msgid "Setting %s of %s to %s"
 msgstr "Asetetaan %s / %s arvoon %s"
@@ -941,200 +931,198 @@ msgid "Setting i18n metadata"
 msgstr "Asetetaan i18n-metatietoja"
 
 #: ../gladeui/glade-command.c:2495
-#, fuzzy, c-format
+#, c-format
 msgid "Converting %s to %s format"
-msgstr "Asetetaan %s / %s arvoon %s"
+msgstr "Muunnetaan %s muotoon %s"
 
 #: ../gladeui/glade-command.c:2656
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use a %s naming policy"
-msgstr "Asetetaan %s / %s arvoon %s"
+msgstr "Asetetaan %s käyttämään %s-nimeämistä"
 
 #: ../gladeui/glade-command.c:2798
-#, fuzzy, c-format
+#, c-format
 msgid "Locking %s by widget %s"
-msgstr "Sijoitetaan %s kohdan %s sisään"
+msgstr "Lukitaan %s elementtiin %s"
 
 #: ../gladeui/glade-command.c:2837
-#, fuzzy, c-format
+#, c-format
 msgid "Unlocking %s"
-msgstr "Peru: %s"
+msgstr "Avataan %s lukitus"
 
 #: ../gladeui/glade-cursor.c:186
 #, c-format
 msgid "Unable to load image (%s)"
 msgstr "Kuvaa ei voitu ladata (%s)"
 
-#: ../gladeui/glade-editor-property.c:590
+#: ../gladeui/glade-editor-property.c:598
 msgid "Property Class"
 msgstr "Ominaisuusluokka"
 
-#: ../gladeui/glade-editor-property.c:591
+#: ../gladeui/glade-editor-property.c:599
 msgid "The GladePropertyClass this GladeEditorProperty was created for"
 msgstr "GladePropertyClass, jolle tämä GladeEditorProperty luotiin"
 
-#: ../gladeui/glade-editor-property.c:597
+#: ../gladeui/glade-editor-property.c:605
 msgid "Use Command"
 msgstr "Käytä komentoa"
 
-#: ../gladeui/glade-editor-property.c:598
+#: ../gladeui/glade-editor-property.c:606
 msgid "Whether we should use the command API for the undo/redo stack"
 msgstr "Käytetäänkö komentorajapintaa toimintojen kumoamispinolle"
 
-#: ../gladeui/glade-editor-property.c:1096
+#: ../gladeui/glade-editor-property.c:1104
 msgid "Select Fields"
 msgstr "Valitse kentät"
 
-#: ../gladeui/glade-editor-property.c:1118
+#: ../gladeui/glade-editor-property.c:1126
 msgid "_Select individual fields:"
 msgstr "_Valitse yksittäisiä kenttiä:"
 
-#: ../gladeui/glade-editor-property.c:1691
+#: ../gladeui/glade-editor-property.c:1699
 msgid "Edit Text"
 msgstr "Muokkaa tekstiä"
 
 #. Text
-#: ../gladeui/glade-editor-property.c:1720
+#: ../gladeui/glade-editor-property.c:1728
 msgid "_Text:"
 msgstr "_Teksti:"
 
 #. Translatable
-#: ../gladeui/glade-editor-property.c:1756
+#: ../gladeui/glade-editor-property.c:1764
 msgid "T_ranslatable"
 msgstr "_Käännettävissä"
 
-#: ../gladeui/glade-editor-property.c:1761 ../gladeui/glade-property.c:585
+#: ../gladeui/glade-editor-property.c:1769 ../gladeui/glade-property.c:585
 msgid "Whether this property is translatable or not"
 msgstr "Onko tämä ominaisuus käännettävissä"
 
 #. Has Context
-#: ../gladeui/glade-editor-property.c:1764
+#: ../gladeui/glade-editor-property.c:1772
 msgid "_Has context prefix"
 msgstr "_Sisältää kontekstin etuliitteen"
 
-#: ../gladeui/glade-editor-property.c:1768 ../gladeui/glade-property.c:592
+#: ../gladeui/glade-editor-property.c:1776 ../gladeui/glade-property.c:592
 msgid "Whether or not the translatable string has a context prefix"
 msgstr "Onko käännettävässä merkkijonossa kontekstin etuliite"
 
-#: ../gladeui/glade-editor-property.c:1779
-#, fuzzy
+#: ../gladeui/glade-editor-property.c:1787
 msgid "Conte_xt for translation:"
-msgstr "Kommentti kääntäjille"
+msgstr "Konteksti _kääntäjille:"
 
-#: ../gladeui/glade-editor-property.c:1817
+#: ../gladeui/glade-editor-property.c:1825
 msgid "Co_mments for translators:"
 msgstr "Ko_mmentit kääntäjille:"
 
-#: ../gladeui/glade-editor-property.c:1935
+#: ../gladeui/glade-editor-property.c:1943
 msgid "Select a file from the project resource directory"
-msgstr ""
+msgstr "Valitse tiedosto projektin resurssikansiosta"
 
-#: ../gladeui/glade-editor-property.c:2207
-#: ../gladeui/glade-editor-property.c:2223
+#: ../gladeui/glade-editor-property.c:2215
+#: ../gladeui/glade-editor-property.c:2231
 msgid "Yes"
 msgstr "Kyllä"
 
-#: ../gladeui/glade-editor-property.c:2207
-#: ../gladeui/glade-editor-property.c:2223
-#: ../gladeui/glade-editor-property.c:2238
+#: ../gladeui/glade-editor-property.c:2215
+#: ../gladeui/glade-editor-property.c:2231
+#: ../gladeui/glade-editor-property.c:2246
 msgid "No"
 msgstr "Ei"
 
-#: ../gladeui/glade-editor-property.c:2681 ../gladeui/glade-widget.c:1041
+#: ../gladeui/glade-editor-property.c:2689 ../gladeui/glade-widget.c:1041
 #: ../gladeui/glade-widget-adaptor.c:1211
 msgid "Name"
 msgstr "Nimi"
 
-#: ../gladeui/glade-editor-property.c:2693 ../gladeui/glade-property.c:549
+#: ../gladeui/glade-editor-property.c:2701 ../gladeui/glade-property.c:549
 msgid "Class"
 msgstr "Luokka"
 
-#: ../gladeui/glade-editor-property.c:2709
+#: ../gladeui/glade-editor-property.c:2717
 #, fuzzy, c-format
 msgid "Choose parentless %s(s) in this project"
 msgstr "Valitse %s tästä projektista"
 
-#: ../gladeui/glade-editor-property.c:2709
+#: ../gladeui/glade-editor-property.c:2717
 #, fuzzy, c-format
 msgid "Choose a parentless %s in this project"
 msgstr "Valitse %s tästä projektista"
 
-#: ../gladeui/glade-editor-property.c:2712
+#: ../gladeui/glade-editor-property.c:2720
 #, fuzzy, c-format
 msgid "Choose %s(s) in this project"
 msgstr "Valitse %s tästä projektista"
 
-#: ../gladeui/glade-editor-property.c:2712
+#: ../gladeui/glade-editor-property.c:2720
 #, c-format
 msgid "Choose a %s in this project"
 msgstr "Valitse %s tästä projektista"
 
-#: ../gladeui/glade-editor-property.c:2762
-#, fuzzy
+#: ../gladeui/glade-editor-property.c:2770
 msgid "_New"
-msgstr "_Näytä"
+msgstr "_Uusi"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:2810
+#: ../gladeui/glade-editor-property.c:2818
 msgid "O_bjects:"
 msgstr "O_liot:"
 
 #. translators: Creating 'a widget' for 'a property' of 'a widget'
-#: ../gladeui/glade-editor-property.c:2897
+#: ../gladeui/glade-editor-property.c:2905
 #, fuzzy, c-format
 msgid "Creating %s for %s of %s"
 msgstr "Asetetaan %s / %s arvoon %s"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:3087
+#: ../gladeui/glade-editor-property.c:3095
 msgid "Objects:"
 msgstr "Oliot:"
 
-#: ../gladeui/glade-editor-property.c:3452
+#: ../gladeui/glade-editor-property.c:3460
 msgid "Value:"
 msgstr "Arvo:"
 
-#: ../gladeui/glade-editor-property.c:3453
+#: ../gladeui/glade-editor-property.c:3461
 msgid "The current value"
 msgstr "Nykyinen arvo"
 
-#: ../gladeui/glade-editor-property.c:3455
+#: ../gladeui/glade-editor-property.c:3463
 msgid "Lower:"
 msgstr "Pienin:"
 
-#: ../gladeui/glade-editor-property.c:3456
+#: ../gladeui/glade-editor-property.c:3464
 msgid "The minimum value"
 msgstr "Pienin mahdollinen arvo"
 
-#: ../gladeui/glade-editor-property.c:3458
+#: ../gladeui/glade-editor-property.c:3466
 msgid "Upper:"
 msgstr "Suurin:"
 
-#: ../gladeui/glade-editor-property.c:3459
+#: ../gladeui/glade-editor-property.c:3467
 msgid "The maximum value"
 msgstr "Suurin mahdollinen arvo"
 
-#: ../gladeui/glade-editor-property.c:3461
+#: ../gladeui/glade-editor-property.c:3469
 msgid "Step inc:"
 msgstr "Askelväli:"
 
-#: ../gladeui/glade-editor-property.c:3462
+#: ../gladeui/glade-editor-property.c:3470
 msgid "The increment to use to make minor changes to the value"
 msgstr "Arvon pienten muutosten askelväli"
 
-#: ../gladeui/glade-editor-property.c:3464
+#: ../gladeui/glade-editor-property.c:3472
 msgid "Page inc:"
 msgstr "Sivun kasvatus:"
 
-#: ../gladeui/glade-editor-property.c:3465
+#: ../gladeui/glade-editor-property.c:3473
 msgid "The increment to use to make major changes to the value"
 msgstr "Arvon suurten muutosten askelväli"
 
-#: ../gladeui/glade-editor-property.c:3467
+#: ../gladeui/glade-editor-property.c:3475
 msgid "Page size:"
 msgstr "Sivun koko:"
 
-#: ../gladeui/glade-editor-property.c:3468
+#: ../gladeui/glade-editor-property.c:3476
 msgid ""
 "The page size (in a GtkScrollbar this is the size of the area which is "
 "currently visible)"
@@ -1246,7 +1234,7 @@ msgstr "Per_u kaikki valinnat"
 msgid "Property _Description:"
 msgstr "Ominaisuuden _kuvaus:"
 
-#: ../gladeui/glade-fixed.c:482 ../plugins/gtk+/glade-gtk.c:2692
+#: ../gladeui/glade-fixed.c:482 ../plugins/gtk+/glade-gtk.c:2694
 #, c-format
 msgid "Placing %s inside %s"
 msgstr "Sijoitetaan %s kohdan %s sisään"
@@ -1296,17 +1284,16 @@ msgid "Widget selector"
 msgstr "Ikkunaelementin valitsin"
 
 #: ../gladeui/glade-palette.c:695
-#, fuzzy
 msgid "Create root widget"
-msgstr "Ikkunaelementin nimi"
+msgstr "Luo juurielementti"
 
 #: ../gladeui/glade-popup.c:442
 msgid "_Add widget here"
-msgstr ""
+msgstr "_Lisää elementti tähän"
 
 #: ../gladeui/glade-popup.c:444 ../gladeui/glade-popup.c:668
 msgid "Add widget as _toplevel"
-msgstr ""
+msgstr "Lisää elementti _päätasoksi"
 
 #: ../gladeui/glade-popup.c:455
 msgid "_Select"
@@ -1315,11 +1302,11 @@ msgstr "_Valitse"
 #: ../gladeui/glade-popup.c:537 ../gladeui/glade-popup.c:676
 #: ../gladeui/glade-popup.c:753
 msgid "Read _documentation"
-msgstr ""
+msgstr "Lue _dokumentaatiota"
 
 #: ../gladeui/glade-popup.c:746
 msgid "Set default value"
-msgstr ""
+msgstr "Aseta oletusarvo"
 
 #: ../gladeui/glade-project.c:811
 msgid "Whether project has been modified since it was last saved"
@@ -1350,14 +1337,12 @@ msgid "Whether project is read only or not"
 msgstr "Onko projekti vain luettavissa"
 
 #: ../gladeui/glade-project.c:842
-#, fuzzy
 msgid "Format"
-msgstr "Liukuluku"
+msgstr "Muoto"
 
 #: ../gladeui/glade-project.c:843
-#, fuzzy
 msgid "The project file format"
-msgstr "Tutkittava projekti"
+msgstr "Projektitiedoston muoto"
 
 #: ../gladeui/glade-project.c:995
 #, c-format
@@ -1370,9 +1355,9 @@ msgstr ""
 
 #: ../gladeui/glade-project.c:1276 ../gladeui/glade-project.c:1524
 #: ../gladeui/glade-project.c:3870
-#, fuzzy, c-format
+#, c-format
 msgid "%s preferences"
-msgstr "Muokkaa projektin asetuksia"
+msgstr "%s-asetukset"
 
 #. ******************************************************************
 #. Verify code here (versioning, incompatability checks)
@@ -1445,9 +1430,8 @@ msgstr "[%s] Olioluokka \"%s\" lähteestä %s %d.%d on vanhentunut\n"
 #. * ugly messy code with comments in line breaks inside function calls).
 #.
 #: ../gladeui/glade-project.c:1588
-#, fuzzy
 msgid "This property is not supported in libglade format"
-msgstr "GtkBuilder ei tue tätä ikkunaelementtiä"
+msgstr "Libglade-muot ei tue tätä ominaisuutta"
 
 #. translators: reffers to a property '%s' of widget '[%s]'
 #: ../gladeui/glade-project.c:1591
@@ -1578,52 +1562,47 @@ msgstr ""
 
 #: ../gladeui/glade-project.c:3594
 msgid "Set options in your project"
-msgstr ""
+msgstr "Aseta projektin ominaisuuksia"
 
 #. Project format
 #: ../gladeui/glade-project.c:3611
-#, fuzzy
 msgid "Project file format:"
-msgstr "Tiedostomuoto"
+msgstr "Projektin tiedostomuoto:"
 
 #. Naming policy format
 #: ../gladeui/glade-project.c:3654
 msgid "Object names are unique:"
-msgstr ""
+msgstr "Olionimet ovat yksilöllisiä:"
 
 #: ../gladeui/glade-project.c:3667
-#, fuzzy
 msgid "within the project"
-msgstr "Aktiivinen projekti"
+msgstr "projektin laajuisesti"
 
 #: ../gladeui/glade-project.c:3669
-#, fuzzy
 msgid "inside toplevels"
-msgstr "Ylätasot"
+msgstr "ylätasojen sisällä"
 
 #. Resource path
 #: ../gladeui/glade-project.c:3696
 msgid "Image resources are loaded locally:"
-msgstr ""
+msgstr "Kuvaresurssit ladataan paikallisesti:"
 
 #. Project directory...
 #: ../gladeui/glade-project.c:3712
-#, fuzzy
 msgid "From the project directory"
-msgstr "Kansiota ei voitu luoda: %s"
+msgstr "Projektikansiosta"
 
 #: ../gladeui/glade-project.c:3719
-#, fuzzy
 msgid "From a project relative directory"
-msgstr "Kansiota ei voitu luoda: %s"
+msgstr "Projektin suhteellisesta kansiosta"
 
 #: ../gladeui/glade-project.c:3731
 msgid "From this directory"
-msgstr ""
+msgstr "Tästä kansiosta"
 
 #: ../gladeui/glade-project.c:3734
 msgid "Choose a path to load image resources"
-msgstr ""
+msgstr "Valitse polku, josta kuvaresurssit ladataan"
 
 #. Target versions
 #: ../gladeui/glade-project.c:3755
@@ -1660,14 +1639,12 @@ msgid "This gives backends control to set property sensitivity"
 msgstr "Tämä antaa järjestelmälle mahdollisuuden asettaa ominaisuuden herkkyys"
 
 #: ../gladeui/glade-property.c:570
-#, fuzzy
 msgid "Context"
-msgstr "Sisältö"
+msgstr "Kohteksti"
 
 #: ../gladeui/glade-property.c:571
-#, fuzzy
 msgid "Context for translation"
-msgstr "Kommentti kääntäjille"
+msgstr "Konteksti kääntäjille"
 
 #: ../gladeui/glade-property.c:577
 msgid "Comment"
@@ -1713,7 +1690,7 @@ msgstr "Käyttäjän tiedot"
 msgid "Lookup"
 msgstr "Etsintä"
 
-#: ../gladeui/glade-signal-editor.c:802 ../plugins/gtk+/gtk+.xml.in.h:33
+#: ../gladeui/glade-signal-editor.c:802 ../plugins/gtk+/gtk+.xml.in.h:32
 msgid "After"
 msgstr "Seuraava"
 
@@ -1825,7 +1802,7 @@ msgstr "Adapteri"
 msgid "The class adaptor for the associated widget"
 msgstr "Luokan adapteri siihen liittyvälle elementille"
 
-#: ../gladeui/glade-widget.c:1080 ../gladeui/glade-inspector.c:204
+#: ../gladeui/glade-widget.c:1080 ../gladeui/glade-inspector.c:205
 msgid "Project"
 msgstr "Projekti"
 
@@ -1855,20 +1832,19 @@ msgstr "Yleinen nimien etuliite sisäisille elementeille"
 
 #: ../gladeui/glade-widget.c:1110
 msgid "Template"
-msgstr "Pohja"
+msgstr "Malli"
 
 #: ../gladeui/glade-widget.c:1111
 msgid "A GladeWidget template to base a new widget on"
-msgstr "Uusien elementtien pohjana käytettävä GladeWidget-pohja"
+msgstr "Uusien elementtien mallina käytettävä GladeWidget-malli"
 
 #: ../gladeui/glade-widget.c:1117
-#, fuzzy
 msgid "Exact Template"
-msgstr "Pohja"
+msgstr "Tarkka malli"
 
 #: ../gladeui/glade-widget.c:1118
 msgid "Whether we are creating an exact duplicate when using a template"
-msgstr ""
+msgstr "Luodaanko täydellinen kopio käytettäessä mallia"
 
 #: ../gladeui/glade-widget.c:1123
 msgid "Reason"
@@ -1931,7 +1907,7 @@ msgstr "Yleinen nimi"
 msgid "Used to generate names of new widgets"
 msgstr "Käytetään uusien ikkunaelementtien luonnissa"
 
-#: ../gladeui/glade-widget-adaptor.c:1243 ../plugins/gtk+/gtk+.xml.in.h:206
+#: ../gladeui/glade-widget-adaptor.c:1243 ../plugins/gtk+/gtk+.xml.in.h:205
 msgid "Icon Name"
 msgstr "Kuvakkeen nimi"
 
@@ -1967,7 +1943,7 @@ msgstr ""
 "Sisälää pakkausominaisuuden nimen, jolla erityiset lapsityypit voidaan "
 "selvittää tälle säilöluokalle"
 
-#: ../gladeui/glade-widget-adaptor.c:1276 ../plugins/gtk+/gtk+.xml.in.h:106
+#: ../gladeui/glade-widget-adaptor.c:1276 ../plugins/gtk+/gtk+.xml.in.h:105
 msgid "Cursor"
 msgstr "Kohdistin"
 
@@ -1975,27 +1951,32 @@ msgstr "Kohdistin"
 msgid "A cursor for inserting widgets in the UI"
 msgstr "Kohdistin ikkunaelementtien lisäämiseksi käyttöliittymään"
 
-#: ../gladeui/glade-inspector.c:205
+#: ../gladeui/glade-inspector.c:206
 msgid "The project being inspected"
 msgstr "Tutkittava projekti"
 
-#: ../gladeui/glade-inspector.c:465
+#: ../gladeui/glade-inspector.c:466
 #, fuzzy
 msgid "< search widgets >"
 msgstr "Muu ikkunaelementti"
 
+#: ../gladeui/glade-inspector.c:676 ../gladeui/icon-naming-spec.c:35
+#: ../plugins/gtk+/gtk+.xml.in.h:23
+msgid "Actions"
+msgstr "Toiminnot"
+
 #. Objects
-#: ../gladeui/glade-inspector.c:673 ../plugins/gtk+/gtk+.xml.in.h:494
+#: ../gladeui/glade-inspector.c:694 ../plugins/gtk+/gtk+.xml.in.h:513
 #, fuzzy
 msgid "Widgets"
 msgstr "Ikkunaelementti"
 
-#: ../gladeui/glade-inspector.c:994
+#: ../gladeui/glade-inspector.c:1017
 #, c-format
 msgid "(internal %s)"
 msgstr "(sisäinen %s)"
 
-#: ../gladeui/glade-inspector.c:998
+#: ../gladeui/glade-inspector.c:1021
 #, c-format
 msgid "(%s child)"
 msgstr "(%s-lapsi)"
@@ -2072,10 +2053,6 @@ msgstr "_Näytä vain vakiokuvakkeet"
 #, c-format
 msgid "Could not create directory: %s"
 msgstr "Kansiota ei voitu luoda: %s"
-
-#: ../gladeui/icon-naming-spec.c:35 ../plugins/gtk+/gtk+.xml.in.h:24
-msgid "Actions"
-msgstr "Toiminnot"
 
 #: ../gladeui/icon-naming-spec.c:36
 msgid "Applications"
@@ -2234,385 +2211,381 @@ msgstr "Arvo"
 msgid "Setup Text Attributes"
 msgstr "Aseta tekstin määreet"
 
-#: ../plugins/gtk+/glade-gtk.c:60
-msgid "This property does not apply unless Use Underline is set."
-msgstr ""
-
 #: ../plugins/gtk+/glade-gtk.c:61
-#, fuzzy
-msgid "Property not selected"
-msgstr "Kopioi valinta"
+msgid "This property does not apply unless Use Underline is set."
+msgstr "Tämä ominaisuus ei ole käytössä, jos alleviivausta ei ole asetettu."
 
 #: ../plugins/gtk+/glade-gtk.c:62
-msgid "this property is only for use in dialog action buttons"
+msgid "Property not selected"
+msgstr "Ominaisuutta ei ole valittu"
+
+#: ../plugins/gtk+/glade-gtk.c:63
+#, fuzzy
+msgid "This property is only for use in dialog action buttons"
 msgstr "Tämä ominaisuus on kelvollinen vain ikkunoiden toimintonapeissa"
 
-#: ../plugins/gtk+/glade-gtk.c:189
+#: ../plugins/gtk+/glade-gtk.c:64
+#, fuzzy
+msgid "This property is set to be controled by an Action"
+msgstr "Tämä koskee vain kuvaketeemojen kuvia"
+
+#: ../plugins/gtk+/glade-gtk.c:191
 msgid "GnomeUIInfo"
 msgstr "GnomeUIInfo"
 
-#: ../plugins/gtk+/glade-gtk.c:190
+#: ../plugins/gtk+/glade-gtk.c:192
 msgid "Choose the GnomeUIInfo stock item"
 msgstr "Valitse GnomeUIInfo vakioesitys"
 
 #. We have to save/load icon-size as int, and fake the enum
-#: ../plugins/gtk+/glade-gtk.c:199 ../plugins/gtk+/gtk+.xml.in.h:209
-#, fuzzy
+#: ../plugins/gtk+/glade-gtk.c:201 ../plugins/gtk+/gtk+.xml.in.h:208
 msgid "Icon Size"
-msgstr "Kuvakenäkymä"
+msgstr "Kuvakkeen koko"
 
-#: ../plugins/gtk+/glade-gtk.c:200
+#: ../plugins/gtk+/glade-gtk.c:202
 msgid "Symbolic size to use for stock icon, icon set or named icon"
-msgstr ""
+msgstr "Vakiokuvakkeille, kuvakejoukoille tai nimetylle ikonille käytetty symbolinen koko"
 
-#: ../plugins/gtk+/glade-gtk.c:1221
+#: ../plugins/gtk+/glade-gtk.c:1223
 #, c-format
 msgid "Removing parent of %s"
 msgstr "Poistetaan kohdan %s emoelementti"
 
-#: ../plugins/gtk+/glade-gtk.c:1273
-#, fuzzy, c-format
+#: ../plugins/gtk+/glade-gtk.c:1275
+#, c-format
 msgid "Adding parent %s for %s"
-msgstr "Lisätään emoelementti %s kohtaan %s"
-
-#: ../plugins/gtk+/glade-gtk.c:1357
-#, fuzzy, c-format
-msgid "Adding %s to Size Group %s"
-msgstr "Lisätään emoelementti %s kohtaan %s"
+msgstr "Lisätään emoelementti %s kohdalle %s"
 
 #: ../plugins/gtk+/glade-gtk.c:1359
 #, c-format
+msgid "Adding %s to Size Group %s"
+msgstr "Lisätään %s kokoryhmään %s"
+
+#: ../plugins/gtk+/glade-gtk.c:1361
+#, c-format
 msgid "Adding %s to a new Size Group"
-msgstr ""
+msgstr "Lisätään %s uuteen kokoryhmään"
 
 #. Add trailing new... item
-#: ../plugins/gtk+/glade-gtk.c:1414
+#: ../plugins/gtk+/glade-gtk.c:1416
 msgid "New Size Group"
-msgstr ""
+msgstr "Uusi kokoryhmä"
 
-#: ../plugins/gtk+/glade-gtk.c:1755
+#: ../plugins/gtk+/glade-gtk.c:1757
 #, c-format
 msgid "Ordering children of %s"
 msgstr "Järjestetään kohdan %s lapset"
 
-#: ../plugins/gtk+/glade-gtk.c:2278 ../plugins/gtk+/glade-gtk.c:2285
+#: ../plugins/gtk+/glade-gtk.c:2280 ../plugins/gtk+/glade-gtk.c:2287
 #, c-format
 msgid "Insert placeholder to %s"
 msgstr "Lisää säilö kohtaan %s"
 
-#: ../plugins/gtk+/glade-gtk.c:2292
+#: ../plugins/gtk+/glade-gtk.c:2294
 #, c-format
 msgid "Remove placeholder from %s"
 msgstr "Poista säilö kohdasta %s"
 
-#: ../plugins/gtk+/glade-gtk.c:3262 ../plugins/gtk+/glade-gtk.c:3270
+#: ../plugins/gtk+/glade-gtk.c:3264 ../plugins/gtk+/glade-gtk.c:3272
 #, c-format
 msgid "Insert Row on %s"
 msgstr "Lisää rivi kohtaan %s"
 
-#: ../plugins/gtk+/glade-gtk.c:3278 ../plugins/gtk+/glade-gtk.c:3286
+#: ../plugins/gtk+/glade-gtk.c:3280 ../plugins/gtk+/glade-gtk.c:3288
 #, c-format
 msgid "Insert Column on %s"
 msgstr "Lisää sarake kohtaan %s"
 
-#: ../plugins/gtk+/glade-gtk.c:3294
+#: ../plugins/gtk+/glade-gtk.c:3296
 #, c-format
 msgid "Remove Column on %s"
 msgstr "Poista sarake kohdasta %s"
 
-#: ../plugins/gtk+/glade-gtk.c:3302
+#: ../plugins/gtk+/glade-gtk.c:3304
 #, c-format
 msgid "Remove Row on %s"
 msgstr "Poista rivi kohdasta %s"
 
-#: ../plugins/gtk+/glade-gtk.c:4387 ../plugins/gtk+/glade-gtk.c:4394
+#: ../plugins/gtk+/glade-gtk.c:4389 ../plugins/gtk+/glade-gtk.c:4396
 #, c-format
 msgid "Insert page on %s"
 msgstr "Lisää sivu kohtaan %s"
 
-#: ../plugins/gtk+/glade-gtk.c:4401
+#: ../plugins/gtk+/glade-gtk.c:4403
 #, c-format
 msgid "Remove page from %s"
 msgstr "Poista sivu kohdasta %s"
 
-#: ../plugins/gtk+/glade-gtk.c:5914
+#: ../plugins/gtk+/glade-gtk.c:5985
 #, fuzzy
 msgid "This property only applies to stock images"
 msgstr "Tämä koskee vain vakiokuvia"
 
-#: ../plugins/gtk+/glade-gtk.c:5916
+#: ../plugins/gtk+/glade-gtk.c:5987
 #, fuzzy
 msgid "This property only applies to named icons"
 msgstr "Tämä koskee vain kuvaketeemojen kuvia"
 
-#: ../plugins/gtk+/glade-gtk.c:6180
+#: ../plugins/gtk+/glade-gtk.c:6251
 msgid "<separator>"
 msgstr "<erotin>"
 
-#: ../plugins/gtk+/glade-gtk.c:6190
+#: ../plugins/gtk+/glade-gtk.c:6261
 msgid "<custom>"
 msgstr "<oma>"
 
-#: ../plugins/gtk+/glade-gtk.c:6369
+#: ../plugins/gtk+/glade-gtk.c:6440
 #, fuzzy
 msgid "Tool Item"
 msgstr "Lisää työkalun kohta"
 
-#: ../plugins/gtk+/glade-gtk.c:6378
+#: ../plugins/gtk+/glade-gtk.c:6449
 #, fuzzy
 msgid "Packing"
 msgstr "_Pakkaus"
 
-#: ../plugins/gtk+/glade-gtk.c:6397 ../plugins/gtk+/gtk+.xml.in.h:274
+#: ../plugins/gtk+/glade-gtk.c:6468 ../plugins/gtk+/gtk+.xml.in.h:274
 msgid "Menu Item"
 msgstr "Valikon kohta"
 
-#: ../plugins/gtk+/glade-gtk.c:6433 ../plugins/gtk+/glade-gtk.c:6441
+#: ../plugins/gtk+/glade-gtk.c:6504 ../plugins/gtk+/glade-gtk.c:6512
 #, fuzzy
 msgid "Normal item"
 msgstr "Tavallinen"
 
-#: ../plugins/gtk+/glade-gtk.c:6434 ../plugins/gtk+/glade-gtk.c:6442
+#: ../plugins/gtk+/glade-gtk.c:6505 ../plugins/gtk+/glade-gtk.c:6513
 #, fuzzy
 msgid "Image item"
 msgstr "Valikon kuvakohta"
 
-#: ../plugins/gtk+/glade-gtk.c:6435 ../plugins/gtk+/glade-gtk.c:6443
+#: ../plugins/gtk+/glade-gtk.c:6506 ../plugins/gtk+/glade-gtk.c:6514
 #, fuzzy
 msgid "Check item"
 msgstr "Valikon valintakohta"
 
-#: ../plugins/gtk+/glade-gtk.c:6436 ../plugins/gtk+/glade-gtk.c:6444
+#: ../plugins/gtk+/glade-gtk.c:6507 ../plugins/gtk+/glade-gtk.c:6515
 #, fuzzy
 msgid "Radio item"
 msgstr "Valikon vaihtoehtokohta"
 
-#: ../plugins/gtk+/glade-gtk.c:6437 ../plugins/gtk+/glade-gtk.c:6445
+#: ../plugins/gtk+/glade-gtk.c:6508 ../plugins/gtk+/glade-gtk.c:6516
 #, fuzzy
 msgid "Separator item"
 msgstr "Valikon kohtien erotin"
 
-#: ../plugins/gtk+/glade-gtk.c:6469 ../plugins/gtk+/glade-gtk.c:6496
+#: ../plugins/gtk+/glade-gtk.c:6540 ../plugins/gtk+/glade-gtk.c:6584
 msgid "Edit Menu Bar"
 msgstr "Muokkaa valikkopalkkia"
 
-#: ../plugins/gtk+/glade-gtk.c:6471 ../plugins/gtk+/glade-gtk.c:6498
+#: ../plugins/gtk+/glade-gtk.c:6542 ../plugins/gtk+/glade-gtk.c:6586
 msgid "Edit Menu"
 msgstr "Muokkaa valikkoa"
 
-#: ../plugins/gtk+/glade-gtk.c:6869
+#: ../plugins/gtk+/glade-gtk.c:6964
 msgid "Print S_etup"
 msgstr "Tulostusas_etukset"
 
-#: ../plugins/gtk+/glade-gtk.c:6873
+#: ../plugins/gtk+/glade-gtk.c:6968
 msgid "Find Ne_xt"
 msgstr "Etsi _seuraava"
 
-#: ../plugins/gtk+/glade-gtk.c:6877
+#: ../plugins/gtk+/glade-gtk.c:6972
 msgid "_Undo Move"
 msgstr "_Peru siirto"
 
-#: ../plugins/gtk+/glade-gtk.c:6881
+#: ../plugins/gtk+/glade-gtk.c:6976
 msgid "_Redo Move"
 msgstr "_Siirrä uudestaan"
 
-#: ../plugins/gtk+/glade-gtk.c:6884
+#: ../plugins/gtk+/glade-gtk.c:6979
 msgid "Select _All"
 msgstr "Valitse k_aikki"
 
-#: ../plugins/gtk+/glade-gtk.c:6887
+#: ../plugins/gtk+/glade-gtk.c:6982
 msgid "_New Game"
 msgstr "_Uusi peli"
 
-#: ../plugins/gtk+/glade-gtk.c:6890
+#: ../plugins/gtk+/glade-gtk.c:6985
 msgid "_Pause game"
 msgstr "_Pysäytä peli"
 
-#: ../plugins/gtk+/glade-gtk.c:6893
+#: ../plugins/gtk+/glade-gtk.c:6988
 msgid "_Restart Game"
 msgstr "A_loita peli uudestaan"
 
-#: ../plugins/gtk+/glade-gtk.c:6896
+#: ../plugins/gtk+/glade-gtk.c:6991
 msgid "_Hint"
 msgstr "_Vihje"
 
-#: ../plugins/gtk+/glade-gtk.c:6899
+#: ../plugins/gtk+/glade-gtk.c:6994
 msgid "_Scores..."
 msgstr "_Tulokset..."
 
-#: ../plugins/gtk+/glade-gtk.c:6902
+#: ../plugins/gtk+/glade-gtk.c:6997
 msgid "_End Game"
 msgstr "_Lopeta peli"
 
-#: ../plugins/gtk+/glade-gtk.c:6905
+#: ../plugins/gtk+/glade-gtk.c:7000
 msgid "Create New _Window"
 msgstr "Luo uusi _ikkuna"
 
-#: ../plugins/gtk+/glade-gtk.c:6908
+#: ../plugins/gtk+/glade-gtk.c:7003
 msgid "_Close This Window"
 msgstr "_Sulje tämä ikkuna"
 
-#: ../plugins/gtk+/glade-gtk.c:6920
+#: ../plugins/gtk+/glade-gtk.c:7015
 msgid "_Settings"
 msgstr "_Asetukset"
 
-#: ../plugins/gtk+/glade-gtk.c:6923
+#: ../plugins/gtk+/glade-gtk.c:7018
 msgid "Fi_les"
 msgstr "_Tiedostot"
 
-#: ../plugins/gtk+/glade-gtk.c:6926
+#: ../plugins/gtk+/glade-gtk.c:7021
 msgid "_Windows"
 msgstr "_Ikkunat"
 
-#: ../plugins/gtk+/glade-gtk.c:6932
+#: ../plugins/gtk+/glade-gtk.c:7027
 msgid "_Game"
 msgstr "_Peli"
 
-#: ../plugins/gtk+/glade-gtk.c:7397 ../plugins/gtk+/gtk+.xml.in.h:61
+#: ../plugins/gtk+/glade-gtk.c:7492 ../plugins/gtk+/gtk+.xml.in.h:60
 msgid "Button"
 msgstr "Painike"
 
-#: ../plugins/gtk+/glade-gtk.c:7398 ../plugins/gtk+/glade-gtk.c:10717
-#: ../plugins/gtk+/glade-gtk.c:10797
+#: ../plugins/gtk+/glade-gtk.c:7493 ../plugins/gtk+/glade-gtk.c:10830
+#: ../plugins/gtk+/glade-gtk.c:10910
 msgid "Toggle"
 msgstr "Vipu"
 
-#: ../plugins/gtk+/glade-gtk.c:7399 ../plugins/gtk+/glade-gtk.c:7410
-#: ../plugins/gtk+/glade-gtk.c:7418
+#: ../plugins/gtk+/glade-gtk.c:7494 ../plugins/gtk+/glade-gtk.c:7505
+#: ../plugins/gtk+/glade-gtk.c:7513
 msgid "Radio"
 msgstr "Vaihtoehto"
 
-#: ../plugins/gtk+/glade-gtk.c:7400 ../plugins/gtk+/gtk+.xml.in.h:272
+#: ../plugins/gtk+/glade-gtk.c:7495 ../plugins/gtk+/gtk+.xml.in.h:272
 msgid "Menu"
 msgstr "Valikko"
 
-#: ../plugins/gtk+/glade-gtk.c:7401 ../plugins/gtk+/gtk+.xml.in.h:108
+#: ../plugins/gtk+/glade-gtk.c:7496 ../plugins/gtk+/gtk+.xml.in.h:107
 msgid "Custom"
 msgstr "Muu"
 
-#: ../plugins/gtk+/glade-gtk.c:7402 ../plugins/gtk+/glade-gtk.c:7411
-#: ../plugins/gtk+/glade-gtk.c:7419
+#: ../plugins/gtk+/glade-gtk.c:7497 ../plugins/gtk+/glade-gtk.c:7506
+#: ../plugins/gtk+/glade-gtk.c:7514
 msgid "Separator"
 msgstr "Erotin"
 
-#: ../plugins/gtk+/glade-gtk.c:7407 ../plugins/gtk+/glade-gtk.c:7415
+#: ../plugins/gtk+/glade-gtk.c:7502 ../plugins/gtk+/glade-gtk.c:7510
 #: ../plugins/gtk+/gtk+.xml.in.h:288
 msgid "Normal"
 msgstr "Tavallinen"
 
-#: ../plugins/gtk+/glade-gtk.c:7408 ../plugins/gtk+/glade-gtk.c:7416
-#: ../plugins/gtk+/gtk+.xml.in.h:215
+#: ../plugins/gtk+/glade-gtk.c:7503 ../plugins/gtk+/glade-gtk.c:7511
+#: ../plugins/gtk+/gtk+.xml.in.h:214
 msgid "Image"
 msgstr "Kuva"
 
-#: ../plugins/gtk+/glade-gtk.c:7409 ../plugins/gtk+/glade-gtk.c:7417
+#: ../plugins/gtk+/glade-gtk.c:7504 ../plugins/gtk+/glade-gtk.c:7512
 msgid "Check"
 msgstr "Valinta"
 
-#: ../plugins/gtk+/glade-gtk.c:7431
+#: ../plugins/gtk+/glade-gtk.c:7526
 msgid "Tool Bar Editor"
 msgstr "Työkalupalkin muokkain"
 
-#: ../plugins/gtk+/glade-gtk.c:7961
+#: ../plugins/gtk+/glade-gtk.c:8074
 #, fuzzy
 msgid "This property does not apply when Ellipsize is set."
 msgstr "Tämä ei koske vakiokohtia"
 
-#: ../plugins/gtk+/glade-gtk.c:7978
+#: ../plugins/gtk+/glade-gtk.c:8091
 #, fuzzy
 msgid "This property does not apply when Angle is set."
 msgstr "Tämä ei koske vakiokohtia"
 
-#: ../plugins/gtk+/glade-gtk.c:8761
+#: ../plugins/gtk+/glade-gtk.c:8874
 msgid "Introduction page"
 msgstr "Esittelysivu"
 
-#: ../plugins/gtk+/glade-gtk.c:8765
+#: ../plugins/gtk+/glade-gtk.c:8878
 msgid "Content page"
 msgstr "Sisältösivu"
 
-#: ../plugins/gtk+/glade-gtk.c:8769
+#: ../plugins/gtk+/glade-gtk.c:8882
 msgid "Confirmation page"
 msgstr "Vahvistussivu"
 
-#: ../plugins/gtk+/glade-gtk.c:10258
+#: ../plugins/gtk+/glade-gtk.c:10371
 #, c-format
 msgid "%s is set to load %s from the model"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:10260
+#: ../plugins/gtk+/glade-gtk.c:10373
 #, c-format
 msgid "%s is set to manipulate %s directly"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:10657 ../plugins/gtk+/gtk+.xml.in.h:461
-#, fuzzy
+#: ../plugins/gtk+/glade-gtk.c:10770 ../plugins/gtk+/gtk+.xml.in.h:479
 msgid "Tree View Column"
-msgstr "Puunäkymä"
+msgstr "Puunäkymän sarake"
 
-#: ../plugins/gtk+/glade-gtk.c:10657 ../plugins/gtk+/gtk+.xml.in.h:73
+#: ../plugins/gtk+/glade-gtk.c:10770 ../plugins/gtk+/gtk+.xml.in.h:72
 msgid "Cell Renderer"
-msgstr ""
+msgstr "Solunpiirto"
 
-#: ../plugins/gtk+/glade-gtk.c:10662
-#, fuzzy
+#: ../plugins/gtk+/glade-gtk.c:10775
 msgid "Properties and Attributes"
-msgstr "Aseta tekstin määreet"
+msgstr "Ominaisuudet ja määreet"
 
-#: ../plugins/gtk+/glade-gtk.c:10667
+#: ../plugins/gtk+/glade-gtk.c:10780
 msgid "Common Properties and Attributes"
-msgstr ""
+msgstr "Yhteiset omanaisuudet ja määreet"
 
 #. Text of the textview
-#: ../plugins/gtk+/glade-gtk.c:10711 ../plugins/gtk+/glade-gtk.c:10791
-#: ../plugins/gtk+/gtk+.xml.in.h:412 ../plugins/gnome/gnome.xml.in.h:54
+#: ../plugins/gtk+/glade-gtk.c:10824 ../plugins/gtk+/glade-gtk.c:10904
+#: ../plugins/gtk+/gtk+.xml.in.h:430 ../plugins/gnome/gnome.xml.in.h:54
 msgid "Text"
 msgstr "Teksti"
 
-#: ../plugins/gtk+/glade-gtk.c:10712 ../plugins/gtk+/glade-gtk.c:10792
-#, fuzzy
+#: ../plugins/gtk+/glade-gtk.c:10825 ../plugins/gtk+/glade-gtk.c:10905
 msgid "Accelerator"
-msgstr "Näppäinoikotiet"
+msgstr "Näppäinoikotie"
 
-#: ../plugins/gtk+/glade-gtk.c:10713 ../plugins/gtk+/glade-gtk.c:10793
-#: ../plugins/gtk+/gtk+.xml.in.h:89
+#: ../plugins/gtk+/glade-gtk.c:10826 ../plugins/gtk+/glade-gtk.c:10906
+#: ../plugins/gtk+/gtk+.xml.in.h:88
 msgid "Combo"
 msgstr "Yhdistelmä"
 
-#: ../plugins/gtk+/glade-gtk.c:10714 ../plugins/gtk+/glade-gtk.c:10794
-#, fuzzy
+#: ../plugins/gtk+/glade-gtk.c:10827 ../plugins/gtk+/glade-gtk.c:10907
 msgid "Spin"
-msgstr "Splini"
+msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:10715 ../plugins/gtk+/glade-gtk.c:10795
+#: ../plugins/gtk+/glade-gtk.c:10828 ../plugins/gtk+/glade-gtk.c:10908
 msgid "Pixbuf"
 msgstr "Pixbuf"
 
 #. Progress...
-#: ../plugins/gtk+/glade-gtk.c:10716 ../plugins/gtk+/glade-gtk.c:10796
-#: ../plugins/gtk+/gtk+.xml.in.h:325 ../plugins/gtk+/glade-entry-editor.c:442
+#: ../plugins/gtk+/glade-gtk.c:10829 ../plugins/gtk+/glade-gtk.c:10909
+#: ../plugins/gtk+/gtk+.xml.in.h:332 ../plugins/gtk+/glade-entry-editor.c:442
 msgid "Progress"
 msgstr "Edistymispalkki"
 
-#: ../plugins/gtk+/glade-gtk.c:10728
-#, fuzzy
+#: ../plugins/gtk+/glade-gtk.c:10841
 msgid "Icon View Editor"
-msgstr "Kuvakenäkymä"
+msgstr "Kuvakenäkymämuokkain"
 
-#: ../plugins/gtk+/glade-gtk.c:10728
-#, fuzzy
+#: ../plugins/gtk+/glade-gtk.c:10841
 msgid "Combo Editor"
 msgstr "Kiinnitä _muokkain"
 
-#: ../plugins/gtk+/glade-gtk.c:10787
-#, fuzzy
+#: ../plugins/gtk+/glade-gtk.c:10900
 msgid "Column"
-msgstr "Yhteinen"
+msgstr "Sarake"
 
-#: ../plugins/gtk+/glade-gtk.c:10806
-#, fuzzy
+#: ../plugins/gtk+/glade-gtk.c:10919
 msgid "Tree View Editor"
-msgstr "Puunäkymä"
+msgstr "Puunäkymämuokkain"
 
 #: ../plugins/gtk+/glade-accels.c:298 ../plugins/gtk+/glade-accels.c:366
 msgid "<choose a key>"
@@ -2654,820 +2627,787 @@ msgstr "Tämän elementin vinkkiteksti"
 msgid "About Dialog"
 msgstr "Tietoja-ikkuna"
 
-#. need to fake this pspec since its not available in gtk+ yet
-#: ../plugins/gtk+/gtk+.xml.in.h:12
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:11
 msgid "Accel Group"
-msgstr "Näppäinoikotiet"
+msgstr "Oikotieryhmä"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:12
+msgid "Accel Label"
+msgstr "Oikotien otsake"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:13
-msgid "Accel Label"
-msgstr "Pikavalinnan otsake"
+msgid "Accelerator Mode column"
+msgstr "Oikotien tila -sarake"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:14
-#, fuzzy
-msgid "Accelerator Mode column"
-msgstr "Näppäinoikotie"
+msgid "Accelerator Modifiers column"
+msgstr "Oikotien muokkaimet -sarake"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:15
-#, fuzzy
-msgid "Accelerator Modifiers column"
-msgstr "Näppäinoikotie"
-
-#: ../plugins/gtk+/gtk+.xml.in.h:16
-#, fuzzy
 msgid "Accelerator Renderer"
-msgstr "Näppäinoikotie"
+msgstr "Oikotien piirto -sarake"
 
 #. Accelerators
-#: ../plugins/gtk+/gtk+.xml.in.h:18
+#: ../plugins/gtk+/gtk+.xml.in.h:17
 msgid "Accelerators"
 msgstr "Näppäinoikotiet"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:19
+#: ../plugins/gtk+/gtk+.xml.in.h:18
 msgid "Accessible Description"
 msgstr "Estettömyyskuvaus"
 
 #. Atk name and description properties
-#: ../plugins/gtk+/gtk+.xml.in.h:21
+#: ../plugins/gtk+/gtk+.xml.in.h:20
 msgid "Accessible Name"
 msgstr "Estettömyysnimi"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:22
+#: ../plugins/gtk+/gtk+.xml.in.h:21
+#: ../plugins/gtk+/glade-activatable-editor.c:393
 #, fuzzy
 msgid "Action"
 msgstr "Toiminnot"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:23
+#: ../plugins/gtk+/gtk+.xml.in.h:22
 #, fuzzy
 msgid "Action Group"
 msgstr "Toiminnot"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:25
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:24
 msgid "Activatable column"
-msgstr "Aktivoi"
+msgstr "Aktivoitavissa oleva sarake"
 
 #. Atk activate property
-#: ../plugins/gtk+/gtk+.xml.in.h:27
+#: ../plugins/gtk+/gtk+.xml.in.h:26
 msgid "Activate"
 msgstr "Aktivoi"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:28
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:27
 msgid "Active column"
-msgstr "Poista sarake"
+msgstr "Aktiivinen sarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:29
+#: ../plugins/gtk+/gtk+.xml.in.h:28
 msgid "Add Parent"
 msgstr "Lisää emoelementti"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:30
+#: ../plugins/gtk+/gtk+.xml.in.h:29
 msgid "Add to Size Group"
-msgstr ""
+msgstr "Lisää kokoryhmään"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:30
+msgid "Adjustment"
+msgstr "Säätö"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:31
-msgid "Adjustment"
-msgstr ""
-
-#: ../plugins/gtk+/gtk+.xml.in.h:32
-#, fuzzy
 msgid "Adjustment column"
-msgstr "Lisää sarake"
+msgstr "Säätösarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:34
+#: ../plugins/gtk+/gtk+.xml.in.h:33
 msgid "Alignment"
 msgstr "Tasaus"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:35
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:34
 msgid "Alignment column"
-msgstr "Tasaus"
+msgstr "Tasaus-sarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:36
+#: ../plugins/gtk+/gtk+.xml.in.h:35
 msgid "All"
 msgstr "Kaikki"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:37
+#: ../plugins/gtk+/gtk+.xml.in.h:36
 msgid "All Events"
 msgstr "Kaikki tapahtumat"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:38
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:37
 msgid "All Modifiers"
-msgstr "Kaikki tiedostot"
+msgstr "Kaikki muokkaimet"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:39
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:38
 msgid "Alt Key"
-msgstr "Näppäinoikotie"
+msgstr "Alt-näppäin"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:40 ../plugins/gnome/gnome.xml.in.h:2
+#: ../plugins/gtk+/gtk+.xml.in.h:39 ../plugins/gnome/gnome.xml.in.h:2
 msgid "Always"
 msgstr "Aina"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:41
+#: ../plugins/gtk+/gtk+.xml.in.h:40
 msgid "Always Center"
 msgstr "Keskitä aina"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:42
+#: ../plugins/gtk+/gtk+.xml.in.h:41
 msgid "An accel group for accelerators from stock items"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:43
+#: ../plugins/gtk+/gtk+.xml.in.h:42
 msgid "Arrow"
 msgstr "Nuoli"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:44
+#: ../plugins/gtk+/gtk+.xml.in.h:43
 msgid "Ascending"
 msgstr "Kasvava"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:45
+#: ../plugins/gtk+/gtk+.xml.in.h:44
 msgid "Aspect Frame"
 msgstr "Sivusuhdekehys"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:46
+#: ../plugins/gtk+/gtk+.xml.in.h:45
 msgid "Assistant"
 msgstr "Ohjattu toiminto"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:47
+#: ../plugins/gtk+/gtk+.xml.in.h:46
 msgid "Attributes"
 msgstr "Määreet"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:48
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:47
 msgid "Attributes column"
-msgstr "Määreet"
+msgstr "Määresarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:49
+#: ../plugins/gtk+/gtk+.xml.in.h:48
 msgid "Automatic"
 msgstr "Automaattinen"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:50
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:49
 msgid "Background Color Name column"
-msgstr "Taustaväri"
+msgstr "Taustavärin nimi-sarake"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:50
+msgid "Background Color column"
+msgstr "Taustavärisarake"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:51
-#, fuzzy
-msgid "Background Color column"
-msgstr "Taustaväri"
-
-#: ../plugins/gtk+/gtk+.xml.in.h:52
 msgid "Before"
 msgstr "Ennen"
 
 #. Objects
-#: ../plugins/gtk+/gtk+.xml.in.h:54
+#: ../plugins/gtk+/gtk+.xml.in.h:53
 msgid "Both"
 msgstr "Molemmat"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:55 ../plugins/gnome/bonobo.xml.in.h:1
+#: ../plugins/gtk+/gtk+.xml.in.h:54 ../plugins/gnome/bonobo.xml.in.h:1
 msgid "Bottom"
 msgstr "Ala"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:56
+#: ../plugins/gtk+/gtk+.xml.in.h:55
 msgid "Bottom Left"
 msgstr "Alavasen"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:57
+#: ../plugins/gtk+/gtk+.xml.in.h:56
 msgid "Bottom Right"
 msgstr "Alaoikea"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:58
+#: ../plugins/gtk+/gtk+.xml.in.h:57
 msgid "Bottom to Top"
 msgstr "Alhaalta ylös"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:59
+#: ../plugins/gtk+/gtk+.xml.in.h:58
 msgid "Box"
 msgstr "Laatikko"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:60
+#: ../plugins/gtk+/gtk+.xml.in.h:59
 msgid "Browse"
 msgstr "Selaa"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:62
+#: ../plugins/gtk+/gtk+.xml.in.h:61
 msgid "Button 1 Motion"
 msgstr "Painikkeen 1 liike"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:63
+#: ../plugins/gtk+/gtk+.xml.in.h:62
 msgid "Button 2 Motion"
 msgstr "Painikkeen 2 liike"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:64
+#: ../plugins/gtk+/gtk+.xml.in.h:63
 msgid "Button 3 Motion"
 msgstr "Painikkeen 3 liike"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:65
+#: ../plugins/gtk+/gtk+.xml.in.h:64
 msgid "Button Box"
 msgstr "Painikelaatikko"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:66
+#: ../plugins/gtk+/gtk+.xml.in.h:65
 msgid "Button Motion"
 msgstr "Painikkeen liike"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:67
+#: ../plugins/gtk+/gtk+.xml.in.h:66
 msgid "Button Press"
 msgstr "Painikkeen painallus"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:68
+#: ../plugins/gtk+/gtk+.xml.in.h:67
 msgid "Button Release"
 msgstr "Painikkeen vapautus"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:69
+#: ../plugins/gtk+/gtk+.xml.in.h:68
 msgid "Calendar"
 msgstr "Kalenteri"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:70
+#: ../plugins/gtk+/gtk+.xml.in.h:69
 msgid "Cancel"
 msgstr "Peru"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:71
+#: ../plugins/gtk+/gtk+.xml.in.h:70
 #, fuzzy
 msgid "Cell Background Color column"
 msgstr "Taustaväri"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:72
+#: ../plugins/gtk+/gtk+.xml.in.h:71
 #, fuzzy
 msgid "Cell Background Color name column"
 msgstr "Sisällön taustaväri"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:74
+#: ../plugins/gtk+/gtk+.xml.in.h:73
 msgid "Center"
 msgstr "Keskitä"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:75
+#: ../plugins/gtk+/gtk+.xml.in.h:74
 msgid "Center on Parent"
 msgstr "Keskitä emoelementtiin"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:76
+#: ../plugins/gtk+/gtk+.xml.in.h:75
 msgid "Centimeters"
 msgstr "Senttimetriä"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:77
+#: ../plugins/gtk+/gtk+.xml.in.h:76
 msgid "Character"
 msgstr "Merkki"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:78
+#: ../plugins/gtk+/gtk+.xml.in.h:77
 msgid "Check Button"
 msgstr "Valintapainike"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:79
+#: ../plugins/gtk+/gtk+.xml.in.h:78
 msgid "Check Menu Item"
 msgstr "Valikon valintakohta"
 
 #. Atk click property
-#: ../plugins/gtk+/gtk+.xml.in.h:81
+#: ../plugins/gtk+/gtk+.xml.in.h:80
 msgid "Click"
 msgstr "Napsauta"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:82
+#: ../plugins/gtk+/gtk+.xml.in.h:81
 msgid "Climb Rate column"
-msgstr ""
+msgstr "Kasvunopeus-sarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:83
+#: ../plugins/gtk+/gtk+.xml.in.h:82
 msgid "Close"
 msgstr "Sulje"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:84
+#: ../plugins/gtk+/gtk+.xml.in.h:83
 msgid "Color Button"
 msgstr "Väripainike"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:85
+#: ../plugins/gtk+/gtk+.xml.in.h:84
 msgid "Color Selection"
 msgstr "Värinvalinta"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:86
+#: ../plugins/gtk+/gtk+.xml.in.h:85
 msgid "Color Selection Dialog"
 msgstr "Värinvalintaikkuna"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:87
+#: ../plugins/gtk+/gtk+.xml.in.h:86
 msgid "Columned List"
 msgstr "Sarakelista"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:88
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:87
 msgid "Columns"
-msgstr "Sarakelista"
+msgstr "Sarakkeet"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:90
+#: ../plugins/gtk+/gtk+.xml.in.h:89
 msgid "Combo Box"
 msgstr "Yhdistelmäruutu"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:91
+#: ../plugins/gtk+/gtk+.xml.in.h:90
 msgid "Combo Box Entry"
 msgstr "Yhdistelmäruudun kohta"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:92
+#: ../plugins/gtk+/gtk+.xml.in.h:91
 msgid "Combo Renderer"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:93
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:92
 msgid "Composite Widgets"
-msgstr "Tiedostonvalintaelementti"
+msgstr "Yhdistelmäelementit"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:93
+msgid "Condensed"
+msgstr "Tiivistetty"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:94
-#, fuzzy
-msgid "Condensed"
-msgstr "_Sisältö"
-
-#: ../plugins/gtk+/gtk+.xml.in.h:95
 msgid "Confirm"
 msgstr "Vahvista"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:97
+#: ../plugins/gtk+/gtk+.xml.in.h:96
 msgid "Containers"
 msgstr "Säilöt"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:98
+#: ../plugins/gtk+/gtk+.xml.in.h:97
 msgid "Content"
 msgstr "Sisältö"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:99
+#: ../plugins/gtk+/gtk+.xml.in.h:98
 msgid "Continuous"
 msgstr "Jatkuva"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:100
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:99
 msgid "Control Key"
-msgstr "Control"
+msgstr "Control-näppäin"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:101
+#: ../plugins/gtk+/gtk+.xml.in.h:100
 msgid "Control and Display"
 msgstr "Säätimet ja näkymät"
 
 #. Atk relationset properties
-#: ../plugins/gtk+/gtk+.xml.in.h:103
+#: ../plugins/gtk+/gtk+.xml.in.h:102
 msgid "Controlled By"
 msgstr "Kohteen ohjain"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:104
+#: ../plugins/gtk+/gtk+.xml.in.h:103
 msgid "Controller For"
 msgstr "Ohjain kohteelle"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:105
+#: ../plugins/gtk+/gtk+.xml.in.h:104
 msgid "Create Folder"
 msgstr "Luo kansio"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:107
+#: ../plugins/gtk+/gtk+.xml.in.h:106
 msgid "Curve"
 msgstr "Kaari"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:109
+#: ../plugins/gtk+/gtk+.xml.in.h:108
 msgid "Custom widget"
 msgstr "Muu ikkunaelementti"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:110
+#: ../plugins/gtk+/gtk+.xml.in.h:109
 msgid "Data"
-msgstr ""
+msgstr "Tieto"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:110
+msgid "Data column"
+msgstr "Tietosarake"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:111
-msgid "Data column"
-msgstr ""
-
-#: ../plugins/gtk+/gtk+.xml.in.h:112
 msgid "Default"
 msgstr "Oletus"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:113
+#: ../plugins/gtk+/gtk+.xml.in.h:112
 msgid "Delayed"
 msgstr "Viivästetty"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:114
+#: ../plugins/gtk+/gtk+.xml.in.h:113
 msgid "Descending"
 msgstr "Laskeva"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:115
+#: ../plugins/gtk+/gtk+.xml.in.h:114
 msgid "Described By"
 msgstr "Kuvattu"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:116
+#: ../plugins/gtk+/gtk+.xml.in.h:115
 msgid "Description For"
 msgstr "Kuvaaja"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:117
+#: ../plugins/gtk+/gtk+.xml.in.h:116
 msgid "Description of an object, formatted for assistive technology access"
 msgstr "Kohteen kuvaus, muotoiltu esteettömyysohjelmistoja varten"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:118
+#: ../plugins/gtk+/gtk+.xml.in.h:117
 msgid "Desktop"
 msgstr "Työpöytä"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:119
+#: ../plugins/gtk+/gtk+.xml.in.h:118
 msgid "Dialog"
 msgstr "Valintaikkuna"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:120
+#: ../plugins/gtk+/gtk+.xml.in.h:119
 msgid "Dialog Box"
 msgstr "Valintaruutu"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:121
+#: ../plugins/gtk+/gtk+.xml.in.h:120
 msgid "Digits column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:122
+#: ../plugins/gtk+/gtk+.xml.in.h:121
 msgid "Discontinuous"
 msgstr "Epäjatkuva"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:123
+#: ../plugins/gtk+/gtk+.xml.in.h:122
 msgid "Discrete"
 msgstr "Erillinen"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:124
+#: ../plugins/gtk+/gtk+.xml.in.h:123
 msgid "Dock"
 msgstr "Telakka"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:125
+#: ../plugins/gtk+/gtk+.xml.in.h:124
 msgid "Double"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:126
+#: ../plugins/gtk+/gtk+.xml.in.h:125
 msgid "Down"
 msgstr "Alas"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:127
+#: ../plugins/gtk+/gtk+.xml.in.h:126
 msgid "Drag & Drop"
 msgstr "Raahaa & tiputa"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:128
+#: ../plugins/gtk+/gtk+.xml.in.h:127
 msgid "Drag and Drop"
 msgstr "Raahaa ja tiputa"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:129
+#: ../plugins/gtk+/gtk+.xml.in.h:128
 msgid "Drawing Area"
 msgstr "Piirtoalue"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:130
+#: ../plugins/gtk+/gtk+.xml.in.h:129
 msgid "Drop Down Menu"
 msgstr "Pudotusvalikko"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:131
+#: ../plugins/gtk+/gtk+.xml.in.h:130
 msgid "East"
 msgstr "Itä"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:132
+#: ../plugins/gtk+/gtk+.xml.in.h:131
 msgid "Edge"
 msgstr "Reuna"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:133
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:132
 msgid "Edit Separately"
-msgstr "Lisää erotin"
+msgstr "Muokkaa erikseen"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:134
+#: ../plugins/gtk+/gtk+.xml.in.h:133
 msgid "Edit&#8230;"
 msgstr "Muokkaa&#8230;"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:135
+#: ../plugins/gtk+/gtk+.xml.in.h:134
 msgid "Editable column"
-msgstr ""
+msgstr "Muokattava sarake"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:135
+msgid "Eighth Key"
+msgstr "Kahdeksas avain"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:136
-msgid "Eighth Key"
-msgstr ""
-
-#: ../plugins/gtk+/gtk+.xml.in.h:137
 msgid "Ellipsize column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:138
+#: ../plugins/gtk+/gtk+.xml.in.h:137
 msgid "Embedded By"
 msgstr "Upottanut"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:139
+#: ../plugins/gtk+/gtk+.xml.in.h:138
 msgid "Embeds"
 msgstr "Upottaa"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:140 ../plugins/gnome/gnome.xml.in.h:6
+#: ../plugins/gtk+/gtk+.xml.in.h:139 ../plugins/gnome/gnome.xml.in.h:6
 msgid "End"
 msgstr "Loppu"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:141
+#: ../plugins/gtk+/gtk+.xml.in.h:140
 msgid "Enter Notify"
 msgstr "Saapumishuomautus"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:142
+#: ../plugins/gtk+/gtk+.xml.in.h:141
 msgid "Enter a list of column types for this data store"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:143
+#: ../plugins/gtk+/gtk+.xml.in.h:142
 msgid "Enter a list of values to be applied on each row"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:144
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:143
 msgid "Entry Completion"
-msgstr "Kirjasimen valinta"
+msgstr "Syötteen täydennys"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:145 ../plugins/gnome/gnome.xml.in.h:7
+#: ../plugins/gtk+/gtk+.xml.in.h:144 ../plugins/gnome/gnome.xml.in.h:7
 msgid "Error"
 msgstr "Virhe"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:146
+#: ../plugins/gtk+/gtk+.xml.in.h:145
 msgid "Etched In"
 msgstr "Upotettu"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:147
+#: ../plugins/gtk+/gtk+.xml.in.h:146
 msgid "Etched Out"
 msgstr "Kohotettu"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:148
+#: ../plugins/gtk+/gtk+.xml.in.h:147
 msgid "Event Box"
 msgstr "Tapahtumalaatikko"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:149 ../plugins/gnome/gnome.xml.in.h:8
+#: ../plugins/gtk+/gtk+.xml.in.h:148 ../plugins/gnome/gnome.xml.in.h:8
 msgid "Expand"
 msgstr "Laajenna"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:150
+#: ../plugins/gtk+/gtk+.xml.in.h:149
 #, fuzzy
 msgid "Expanded"
 msgstr "Laajennin"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:151
+#: ../plugins/gtk+/gtk+.xml.in.h:150
 msgid "Expander"
 msgstr "Laajennin"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:152
+#: ../plugins/gtk+/gtk+.xml.in.h:151
 msgid "Exposure"
 msgstr "Paljastaminen"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:153
+#: ../plugins/gtk+/gtk+.xml.in.h:152
 msgid "Extended"
 msgstr "Laajennettu"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:154
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:153
 msgid "Extra Condensed"
-msgstr "Laajennettu"
+msgstr "Hyvin tiivistetty"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:154
+msgid "Extra Expanded"
+msgstr "Hyvin laajennettu"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:155
-#, fuzzy
-msgid "Extra Expanded"
-msgstr "Laajennin"
+msgid "Family column"
+msgstr "Perhesarake"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:156
-msgid "Family column"
-msgstr ""
+msgid "Fifth Key"
+msgstr "Viides avain"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:157
-msgid "Fifth Key"
-msgstr ""
+msgid "Fifth Mouse Button"
+msgstr "Viides hiiren nappi"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:158
-#, fuzzy
-msgid "Fifth Mouse Button"
-msgstr "Tiedostonvalintapainike"
-
-#: ../plugins/gtk+/gtk+.xml.in.h:159
 msgid "File Chooser Button"
 msgstr "Tiedostonvalintapainike"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:160
+#: ../plugins/gtk+/gtk+.xml.in.h:159
 msgid "File Chooser Dialog"
 msgstr "Tiedostonvalintaikkuna"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:161
+#: ../plugins/gtk+/gtk+.xml.in.h:160
 msgid "File Chooser Widget"
 msgstr "Tiedostonvalintaelementti"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:162
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:161
 msgid "File Filter"
-msgstr "Libglade-tiedostot"
+msgstr "Tiedostosuodin"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:163 ../plugins/gtk+/glade-icon-sources.c:772
+#: ../plugins/gtk+/gtk+.xml.in.h:162 ../plugins/gtk+/glade-icon-sources.c:772
 msgid "File Name"
 msgstr "Tiedostonimi"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:164
+#: ../plugins/gtk+/gtk+.xml.in.h:163
 msgid "File Selection"
 msgstr "Tiedoston valinta"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:165 ../plugins/gnome/gnome.xml.in.h:10
+#: ../plugins/gtk+/gtk+.xml.in.h:164 ../plugins/gnome/gnome.xml.in.h:10
 msgid "Fill"
 msgstr "Täytä"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:166
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:165
 msgid "First Mouse Button"
-msgstr "Tiedostonvalintapainike"
+msgstr "Ensimmäinen hiiren nappi"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:167
+#: ../plugins/gtk+/gtk+.xml.in.h:166
 msgid "Fixed"
 msgstr "Kiinteä"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:168
+#: ../plugins/gtk+/gtk+.xml.in.h:167
 msgid "Flows From"
 msgstr "Virtaa kohdasta"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:169
+#: ../plugins/gtk+/gtk+.xml.in.h:168
 msgid "Flows To"
 msgstr "Virtaa kohtaan"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:170
+#: ../plugins/gtk+/gtk+.xml.in.h:169
 msgid "Focus Change"
 msgstr "Kohdistusmuutos"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:171
+#: ../plugins/gtk+/gtk+.xml.in.h:170
 msgid "Follow State column"
-msgstr ""
+msgstr "Seuraa tilaa -sarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:172
+#: ../plugins/gtk+/gtk+.xml.in.h:171
 msgid "Font Button"
 msgstr "Kirjasinpainike"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:173
+#: ../plugins/gtk+/gtk+.xml.in.h:172
 #, fuzzy
 msgid "Font Description column"
 msgstr "Kuvaaja"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:174
+#: ../plugins/gtk+/gtk+.xml.in.h:173
 msgid "Font Selection"
 msgstr "Kirjasimen valinta"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:175
+#: ../plugins/gtk+/gtk+.xml.in.h:174
 msgid "Font Selection Dialog"
 msgstr "Kirjasimen valintaikkuna"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:176
+#: ../plugins/gtk+/gtk+.xml.in.h:175
 #, fuzzy
 msgid "Font column"
 msgstr "Lisää sarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:177
+#: ../plugins/gtk+/gtk+.xml.in.h:176
 #, fuzzy
 msgid "Foreground Color Name column"
 msgstr "Edustaväri"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:178
+#: ../plugins/gtk+/gtk+.xml.in.h:177
 #, fuzzy
 msgid "Foreground Color column"
 msgstr "Edustaväri"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:179
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:178
 msgid "Forth Mouse Button"
-msgstr "Kirjasinpainike"
+msgstr "Neljäs hiiren nappi"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:180
+#: ../plugins/gtk+/gtk+.xml.in.h:179
 msgid "Frame"
 msgstr "Kehys"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:181
+#: ../plugins/gtk+/gtk+.xml.in.h:180
 msgid "Free"
 msgstr "Tyhjä"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:182
+#: ../plugins/gtk+/gtk+.xml.in.h:181
 msgid "Gamma Curve"
 msgstr "Gammakäyrä"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:183
+#: ../plugins/gtk+/gtk+.xml.in.h:182
 msgid "Grow Only"
-msgstr ""
+msgstr "Vain kasvatus"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:183
+msgid "Gtk"
+msgstr "Gtk"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:184
-msgid "Gtk"
-msgstr ""
-
-#: ../plugins/gtk+/gtk+.xml.in.h:185
 msgid "Half"
 msgstr "Puolikas"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:186
+#: ../plugins/gtk+/gtk+.xml.in.h:185
 msgid "Handle Box"
 msgstr "Kahvalaatikko"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:187
+#: ../plugins/gtk+/gtk+.xml.in.h:186
 msgid "Has Entry column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:188
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:187
 msgid "Height column"
-msgstr "Lisää sarake"
+msgstr "Korkeus-sarake"
 
 #. Objects
-#: ../plugins/gtk+/gtk+.xml.in.h:190 ../plugins/gtk+/glade-model-data.c:1236
+#: ../plugins/gtk+/gtk+.xml.in.h:189 ../plugins/gtk+/glade-model-data.c:1236
 msgid "Horizontal"
 msgstr "Vaaka"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:191
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:190
 msgid "Horizontal Alignment"
-msgstr "Vaakapaneelit"
+msgstr "Vaakatasaus"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:191
+msgid "Horizontal Alignment column"
+msgstr "Vaakatasaus-sarake"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:192
-#, fuzzy
-msgid "Horizontal Alignment column"
-msgstr "Vaaka- ja pystysuuntaiset"
-
-#: ../plugins/gtk+/gtk+.xml.in.h:193
 msgid "Horizontal Box"
 msgstr "Vaakasuuntainen laatikko"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:194
+#: ../plugins/gtk+/gtk+.xml.in.h:193
 msgid "Horizontal Button Box"
 msgstr "Vaakasuuntainen painikelaatikko"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:195
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:194
 msgid "Horizontal Padding"
-msgstr "Vaakapaneelit"
+msgstr "Vaakatäyttö"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:195
+msgid "Horizontal Padding column"
+msgstr "Vaakatäyttösarake"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:196
-#, fuzzy
-msgid "Horizontal Padding column"
-msgstr "Vaakapaneelit"
-
-#: ../plugins/gtk+/gtk+.xml.in.h:197
 msgid "Horizontal Panes"
 msgstr "Vaakapaneelit"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:198
+#: ../plugins/gtk+/gtk+.xml.in.h:197
 msgid "Horizontal Ruler"
 msgstr "Vaakaviivain"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:199
+#: ../plugins/gtk+/gtk+.xml.in.h:198
 msgid "Horizontal Scale"
 msgstr "Vaaka-asteikko"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:200
+#: ../plugins/gtk+/gtk+.xml.in.h:199
 msgid "Horizontal Scrollbar"
 msgstr "Vaakasuuntainen vierityspalkki"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:201
+#: ../plugins/gtk+/gtk+.xml.in.h:200
 msgid "Horizontal Separator"
 msgstr "Vaakaerotin"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:202
+#: ../plugins/gtk+/gtk+.xml.in.h:201
 msgid "Horizontal and Vertical"
 msgstr "Vaaka- ja pystysuuntaiset"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:203
+#: ../plugins/gtk+/gtk+.xml.in.h:202
 msgid "Hyper Modifier"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:204
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:203
 msgid "Icon"
-msgstr "Kuvakkeet"
+msgstr "Kuvake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:205
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:204
 msgid "Icon Factory"
-msgstr "Vain kuvakkeet"
+msgstr "Kuvaketehdas"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:207
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:206
 msgid "Icon Name column"
-msgstr "Kuvakkeen nimi"
+msgstr "Kuvakkeen nimi -sarake"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:209
+msgid "Icon Sources"
+msgstr "Kuvakelähteet"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:210
-msgid "Icon Sources"
-msgstr ""
-
-#: ../plugins/gtk+/gtk+.xml.in.h:211
 msgid "Icon View"
 msgstr "Kuvakenäkymä"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:212
+#: ../plugins/gtk+/gtk+.xml.in.h:211
 msgid "Icons only"
 msgstr "Vain kuvakkeet"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:213
+#: ../plugins/gtk+/gtk+.xml.in.h:212
 msgid "If Valid"
 msgstr "Jos kelvollinen"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:214
+#: ../plugins/gtk+/gtk+.xml.in.h:213
 msgid ""
 "If set, an underline in the text indicates the next character should be used "
 "for the mnemonic accelerator key"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:216
+#: ../plugins/gtk+/gtk+.xml.in.h:215
 msgid "Image Menu Item"
 msgstr "Valikon kuvakohta"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:217
+#: ../plugins/gtk+/gtk+.xml.in.h:216
 msgid "Immediate"
 msgstr "Välitön"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:218
+#: ../plugins/gtk+/gtk+.xml.in.h:217
 msgid "In"
 msgstr "Kohdassa"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:219
+#: ../plugins/gtk+/gtk+.xml.in.h:218
 msgid "Inches"
 msgstr "Tuumaa"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:220
+#: ../plugins/gtk+/gtk+.xml.in.h:219
 #, fuzzy
 msgid "Inconsistent column"
 msgstr "Lisää sarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:221
+#: ../plugins/gtk+/gtk+.xml.in.h:220
 msgid ""
 "Indicates a subwindow attached to a component but otherwise has no "
 "connection in the UI hierarchy to that component"
@@ -3475,11 +3415,11 @@ msgstr ""
 "Ilmaisee, että komponenttiin oon liitetty ali-ikkuna, muttei muuten ole "
 "yhteydessä komponentin käyttöliittymärakenteeseen"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:222
+#: ../plugins/gtk+/gtk+.xml.in.h:221
 msgid "Indicates an object controlled by one or more target objects"
 msgstr "Esittää kohdetta, jota ohjaa yksi tai useampi muu kohde"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:223
+#: ../plugins/gtk+/gtk+.xml.in.h:222
 msgid ""
 "Indicates an object is a cell in a treetable which is displayed because a "
 "cell in the same column is expanded and identifies that cell"
@@ -3487,32 +3427,32 @@ msgstr ""
 "Ilmaisee, että kohde on solu puutaulussa, joka näytetään, koska solu samassa "
 "sarakkeessa laajennettiin ja määrittää solun"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:224
+#: ../plugins/gtk+/gtk+.xml.in.h:223
 msgid "Indicates an object is a controller for one or more target objects"
 msgstr "Esittää kohdetta, joka ohjaa yhtä tai useampia muuta kohdetta"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:225
+#: ../plugins/gtk+/gtk+.xml.in.h:224
 msgid "Indicates an object is a label for one or more target objects"
 msgstr "Ilmaisee, että kohde on yhden tai useamman muun kohteen nimike"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:226
+#: ../plugins/gtk+/gtk+.xml.in.h:225
 msgid ""
 "Indicates an object is a member of a group of one or more target objects"
 msgstr "Ilmaisee, että kohde on yhden tai useamman kohderyhmän jäsen"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:227
+#: ../plugins/gtk+/gtk+.xml.in.h:226
 msgid "Indicates an object is labelled by one or more target objects"
 msgstr "Ilmaisee, että yksi tai useampi kohde toimii tämän nimikkeenä"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:228
+#: ../plugins/gtk+/gtk+.xml.in.h:227
 msgid "Indicates that an object is a parent window of another object"
 msgstr "Ilmaisee, että kohde on toisen kohteen emoelementti"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:229
+#: ../plugins/gtk+/gtk+.xml.in.h:228
 msgid "Indicates that an object is a popup for another object"
 msgstr "Ilmaisee, että kohde on ponnahdusikkuna toiselle kohteelle"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:230
+#: ../plugins/gtk+/gtk+.xml.in.h:229
 msgid ""
 "Indicates that an object provides descriptive information about another "
 "object; more verbose than 'Label For'"
@@ -3520,7 +3460,7 @@ msgstr ""
 "Ilmaisee, että kohde sisältää kuvaavaa lisätietoja toisesta kohteesta. Tämä "
 "kertoo enemmän kuin \"Nimiköi\""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:231
+#: ../plugins/gtk+/gtk+.xml.in.h:230
 msgid ""
 "Indicates that another object provides descriptive information about this "
 "object; more verbose than 'Labelled By'"
@@ -3528,7 +3468,7 @@ msgstr ""
 "Ilmaisee, että muu kohde sisältää lisätietoja tietoa tästä kohteesta. Tämä "
 "kertoo enemmän kuin \"Nimikkeet\""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:232
+#: ../plugins/gtk+/gtk+.xml.in.h:231
 msgid ""
 "Indicates that the object has content that flows logically from another "
 "AtkObject in a sequential way, (for instance text-flow)"
@@ -3536,7 +3476,7 @@ msgstr ""
 "Ilmaisee, että kohde sisältää tietoa, joka virtaa loogisesti toisesta "
 "AtkObject-oliosta perättäisessä järjestyksessä, esimerkiksi tekstivirta"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:233
+#: ../plugins/gtk+/gtk+.xml.in.h:232
 msgid ""
 "Indicates that the object has content that flows logically to another "
 "AtkObject in a sequential way, (for instance text-flow)"
@@ -3544,7 +3484,7 @@ msgstr ""
 "Ilmaisee, että kohde sisältää tietoa, joka virtaa loogisesti toiseen "
 "AtkObject-olioon perättäisessä järjestyksessä, esimerkiksi tekstivirta"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:234
+#: ../plugins/gtk+/gtk+.xml.in.h:233
 msgid ""
 "Indicates that the object visually embeds another object's content, i.e. "
 "this object's content flows around another's content"
@@ -3552,51 +3492,51 @@ msgstr ""
 "Ilmaisee, että kohteeseen on upotettu toisen kohteen sisältö, eli tämän "
 "kohteen sisältö piirretään toisen kohteen ympärille"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:235
+#: ../plugins/gtk+/gtk+.xml.in.h:234
 msgid "Indicator Size column"
-msgstr ""
+msgstr "Ilmaisimen koko-sarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:236
+#: ../plugins/gtk+/gtk+.xml.in.h:235
 msgid "Info"
 msgstr "Tiedot"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:237
+#: ../plugins/gtk+/gtk+.xml.in.h:236
 msgid "Input Dialog"
 msgstr "Syöteikkuna"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:238
+#: ../plugins/gtk+/gtk+.xml.in.h:237
 msgid "Insert After"
 msgstr "Lisää jälkeen"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:239
+#: ../plugins/gtk+/gtk+.xml.in.h:238
 msgid "Insert Before"
 msgstr "Lisää ennen"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:240
+#: ../plugins/gtk+/gtk+.xml.in.h:239
 msgid "Insert Column"
 msgstr "Lisää sarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:241
+#: ../plugins/gtk+/gtk+.xml.in.h:240
 msgid "Insert Page After"
 msgstr "Lisää sivu jälkeen"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:242
+#: ../plugins/gtk+/gtk+.xml.in.h:241
 msgid "Insert Page Before"
 msgstr "Lisää sivu ennen"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:243
+#: ../plugins/gtk+/gtk+.xml.in.h:242
 msgid "Insert Row"
 msgstr "Lisää rivi"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:244
+#: ../plugins/gtk+/gtk+.xml.in.h:243
 msgid "Intro"
 msgstr "Esittely"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:245
+#: ../plugins/gtk+/gtk+.xml.in.h:244
 msgid "Invalid"
 msgstr "Epäkelpo"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:246
+#: ../plugins/gtk+/gtk+.xml.in.h:245
 msgid ""
 "Inverse of 'Embeds', indicates that this object's content is visually "
 "embedded in another object"
@@ -3604,10 +3544,13 @@ msgstr ""
 "Valinnan \"Upottaa\" vastakohta ja ilmaisee, että tämän kohteen sisältö on "
 "upotettu toisen kohteen sisään"
 
+#: ../plugins/gtk+/gtk+.xml.in.h:246
+msgid "Invisible Char Set"
+msgstr ""
+
 #: ../plugins/gtk+/gtk+.xml.in.h:247
-#, fuzzy
 msgid "Italic"
-msgstr "Kiinteä"
+msgstr "Kursiivi"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:248
 msgid "Items"
@@ -3622,9 +3565,8 @@ msgid "Key Release"
 msgstr "Näppäimen vapautus"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:251
-#, fuzzy
 msgid "Keycode column"
-msgstr "Poista sarake"
+msgstr "Näppäinkoodisarake"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:253
 msgid "Label For"
@@ -3635,9 +3577,8 @@ msgid "Labelled By"
 msgstr "Nimikkeet"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:255
-#, fuzzy
 msgid "Language column"
-msgstr "Suuri kuvake"
+msgstr "Kielikuvake"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:256
 msgid "Large Toolbar"
@@ -3680,28 +3621,24 @@ msgid "List Item"
 msgstr "Listan kohta"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:266
-#, fuzzy
 msgid "List Store"
-msgstr "Listan kohta"
+msgstr "Luettelosäilö"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:267
-#, fuzzy
 msgid "List of widgets in this group"
-msgstr "Näytä ikkunaelementit työpöydällä"
+msgstr "Luettelo elementeistä tässä ryhmässä"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:268
-#, fuzzy
 msgid "Lock Key"
-msgstr "Lukittu"
+msgstr "Lukitusavain"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:269
-#, fuzzy
 msgid "Low"
-msgstr "Pienin:"
+msgstr "Matala"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:270
 msgid "Markup column"
-msgstr ""
+msgstr "Merkintäsarake"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:271
 msgid "Member Of"
@@ -3725,7 +3662,7 @@ msgstr "Viesti-ikkuna"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:278
 msgid "Meta Modifier"
-msgstr ""
+msgstr "Meta-muokkain"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:279
 msgid "Middle"
@@ -3827,9 +3764,8 @@ msgid "Option Menu"
 msgstr "Valintavalikko"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:306
-#, fuzzy
 msgid "Orientation column"
-msgstr "Luontifunktio"
+msgstr "Suuntasarake"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:307 ../plugins/gnome/gnome.xml.in.h:41
 msgid "Other"
@@ -3857,12 +3793,11 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:314
 msgid "Pixbuf Renderer"
-msgstr ""
+msgstr "Pixbuf-piirto"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:315
-#, fuzzy
 msgid "Pixbuf column"
-msgstr "Pixbuf"
+msgstr "Pixbuf-sarake"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:316
 msgid "Pixels"
@@ -3898,718 +3833,760 @@ msgstr "Sijainti"
 msgid "Press"
 msgstr "Paina"
 
+#: ../plugins/gtk+/gtk+.xml.in.h:325
+msgid "Primary Icon Activatable"
+msgstr "Ensisijaisen kuvake aktivoitavissa"
+
 #: ../plugins/gtk+/gtk+.xml.in.h:326
+msgid "Primary Icon Name"
+msgstr "Ensisijaisen kuvakkeen nimi"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:327
+msgid "Primary Icon Pixbuf"
+msgstr "Ensisijaisen kuvakkeen pixbuf"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:328
+msgid "Primary Icon Sensitive"
+msgstr "Ensisijaisen kuvakkeen herkkyys"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:329
+msgid "Primary Icon Tooltip Markup"
+msgstr "Ensisijaisen kuvakkeen vihjemerkintä"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:330
+msgid "Primary Icon Tooltip Text"
+msgstr "Ensisijaisen kuvakkeen vihjeteksti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:331
+msgid "Primary Stock Icon"
+msgstr "Ensisijainen vakiokuvake"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:333
 msgid "Progress Bar"
 msgstr "Edistymispalkki"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:327
-#, fuzzy
-msgid "Progress Renderer"
-msgstr "Edistymispalkki"
+#: ../plugins/gtk+/gtk+.xml.in.h:334
+msgid "Progress Fraction"
+msgstr "Edistymisen osa"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:328
+#: ../plugins/gtk+/gtk+.xml.in.h:335
+msgid "Progress Pulse Step"
+msgstr "Edistymisen pulssiaskel"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:336
+msgid "Progress Renderer"
+msgstr "Edistymisen piirto"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:337
 msgid "Property Change"
 msgstr "Ominaisuuden muutos"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:329
+#: ../plugins/gtk+/gtk+.xml.in.h:338
 msgid "Proximity  Out"
 msgstr "Läheisyys loittonee"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:330
+#: ../plugins/gtk+/gtk+.xml.in.h:339
 msgid "Proximity In"
 msgstr "Läheisyys lähenee"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:331
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:340
 msgid "Pulse column"
-msgstr "Lisää sarake"
+msgstr "Pulssisarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:332 ../plugins/gnome/gnome.xml.in.h:47
+#: ../plugins/gtk+/gtk+.xml.in.h:341 ../plugins/gnome/gnome.xml.in.h:47
 msgid "Question"
 msgstr "Kysymys"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:333
+#: ../plugins/gtk+/gtk+.xml.in.h:342
 msgid "Queue"
 msgstr "Jono"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:334
+#: ../plugins/gtk+/gtk+.xml.in.h:343
 #, fuzzy
 msgid "Radio Action"
 msgstr "Vaihtoehtopainike"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:335
+#: ../plugins/gtk+/gtk+.xml.in.h:344
 msgid "Radio Button"
 msgstr "Vaihtoehtopainike"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:336
+#: ../plugins/gtk+/gtk+.xml.in.h:345
 msgid "Radio Menu Item"
 msgstr "Valikon vaihtoehtokohta"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:337
+#: ../plugins/gtk+/gtk+.xml.in.h:346
 msgid "Radio Tool Button"
 msgstr "Työkaluvaihtoehto"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:338
+#: ../plugins/gtk+/gtk+.xml.in.h:347
 #, fuzzy
 msgid "Radio column"
 msgstr "Työkaluvaihtoehto"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:339
+#: ../plugins/gtk+/gtk+.xml.in.h:348
 msgid "Range"
 msgstr "Alue"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:340
+#: ../plugins/gtk+/gtk+.xml.in.h:349
 #, fuzzy
 msgid "Recent Action"
 msgstr "Tee edellinen toiminto uudestaan"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:341
+#: ../plugins/gtk+/gtk+.xml.in.h:350
 msgid "Recent Chooser"
 msgstr "Viimeisimpien valitsin"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:342
+#: ../plugins/gtk+/gtk+.xml.in.h:351
 msgid "Recent Chooser Dialog"
 msgstr "Viimeisimpien tiedostojen valintaikkuna"
 
+#. GtkActivatable
+#: ../plugins/gtk+/gtk+.xml.in.h:353
+msgid "Related Action"
+msgstr "Liittyvä toiminto"
+
 #. Atk release property
-#: ../plugins/gtk+/gtk+.xml.in.h:344
+#: ../plugins/gtk+/gtk+.xml.in.h:355
 msgid "Release"
 msgstr "Vapauta"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:345
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:356
 msgid "Release Modifier"
-msgstr "Vapauta"
+msgstr "Vapautusmuokkain"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:346
+#: ../plugins/gtk+/gtk+.xml.in.h:357
 msgid "Remove Column"
 msgstr "Poista sarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:347
+#: ../plugins/gtk+/gtk+.xml.in.h:358
 msgid "Remove Page"
 msgstr "Poista sivu"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:348
+#: ../plugins/gtk+/gtk+.xml.in.h:359
 msgid "Remove Parent"
 msgstr "Poista emoelementti"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:349
+#: ../plugins/gtk+/gtk+.xml.in.h:360
 msgid "Remove Row"
 msgstr "Poista rivi"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:350
+#: ../plugins/gtk+/gtk+.xml.in.h:361
 msgid "Remove Slot"
 msgstr "Poista rako"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:351
+#: ../plugins/gtk+/gtk+.xml.in.h:362
 msgid "Response ID"
 msgstr "Vastetunniste"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:352 ../plugins/gnome/bonobo.xml.in.h:9
+#: ../plugins/gtk+/gtk+.xml.in.h:363 ../plugins/gnome/bonobo.xml.in.h:9
 msgid "Right"
 msgstr "Oikea"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:353
+#: ../plugins/gtk+/gtk+.xml.in.h:364
 msgid "Right to Left"
 msgstr "Oikealta vasemmalle"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:354
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:365
 msgid "Rise column"
-msgstr "Lisää sarake"
+msgstr "Nostosarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:355
+#: ../plugins/gtk+/gtk+.xml.in.h:366
 msgid "Ruler"
 msgstr "Viivain"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:356
+#: ../plugins/gtk+/gtk+.xml.in.h:367
 msgid "Save"
 msgstr "Tallenna"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:357
+#: ../plugins/gtk+/gtk+.xml.in.h:368
 msgid "Scale Button"
 msgstr "Venytyspainike"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:358
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:369
 msgid "Scale column"
-msgstr "Venytyspainike"
+msgstr "Venytys-sarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:359
+#: ../plugins/gtk+/gtk+.xml.in.h:370
 msgid "Scroll"
 msgstr "Vieritin"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:360
+#: ../plugins/gtk+/gtk+.xml.in.h:371
 msgid "Scrolled Window"
 msgstr "Vieritysikkuna"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:361
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:372
 msgid "Second Mouse Button"
-msgstr "Lisää valikkopainike"
+msgstr "Toinen hiiren nappi"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:362
+#: ../plugins/gtk+/gtk+.xml.in.h:373
+msgid "Secondary Icon Activatable"
+msgstr "Toissijainen kuvake aktivoitavissa"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:374
+msgid "Secondary Icon Name"
+msgstr "Toissijaisen kuvakkeen nimi"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:375
+msgid "Secondary Icon Pixbuf"
+msgstr "Toissijaisen kuvakkeen pixbuf"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:376
+msgid "Secondary Icon Sensitive"
+msgstr "Toissijaisen kuvakkeen herkkyys"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:377
+msgid "Secondary Icon Tooltip Markup"
+msgstr "Toissijaisen kuvakkeen vihjemerkintä"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:378
+msgid "Secondary Icon Tooltip Text"
+msgstr "Toissijaisen kuvakkeen vihjeteksti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:379
+msgid "Secondary Stock Icon"
+msgstr "Toissijainen vakiokuvake"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:380
 msgid "Select Folder"
 msgstr "Valitse kansio"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:363
+#: ../plugins/gtk+/gtk+.xml.in.h:381
 msgid "Semi Condensed"
-msgstr ""
+msgstr "Hieman tiivistetty"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:364
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:382
 msgid "Semi Expanded"
-msgstr "Laajennin"
+msgstr "Hieman laajennettu"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:365
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:383
 msgid "Sensitive column"
-msgstr "Herkkyys"
+msgstr "Herkkä sarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:366
+#: ../plugins/gtk+/gtk+.xml.in.h:384
 msgid "Separator Menu Item"
 msgstr "Valikon kohtien erotin"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:367
+#: ../plugins/gtk+/gtk+.xml.in.h:385
 msgid "Separator Tool Item"
 msgstr "Työkalujen erotin"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:368
+#: ../plugins/gtk+/gtk+.xml.in.h:386
 msgid "Set the current page (strictly for editing purposes)"
 msgstr "Aseta nykyinen sivu (vain muokkauskäyttöä varten)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:369
+#: ../plugins/gtk+/gtk+.xml.in.h:387
 msgid "Set the description of the Activate atk action"
 msgstr "Aseta atk-toiminnon \"Aktivoi\" kuvaus"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:370
+#: ../plugins/gtk+/gtk+.xml.in.h:388
 msgid "Set the description of the Click atk action"
 msgstr "Aseta atk-toiminnon \"Napsauta\" kuvaus"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:371
+#: ../plugins/gtk+/gtk+.xml.in.h:389
 msgid "Set the description of the Press atk action"
 msgstr "Aseta atk-toiminnon \"Paina\" kuvaus"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:372
+#: ../plugins/gtk+/gtk+.xml.in.h:390
 msgid "Set the description of the Release atk action"
 msgstr "Aseta atk-toiminnon \"Vapauta\" kuvaus"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:373
+#: ../plugins/gtk+/gtk+.xml.in.h:391
 msgid "Set the text in the view's text buffer"
 msgstr "Aseta näkymän tekstipuskurin teksti"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:374
+#: ../plugins/gtk+/gtk+.xml.in.h:392
 msgid "Seventh Key"
-msgstr ""
+msgstr "Seitsemäs avain"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:375
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:393
 msgid "Shift Key"
-msgstr "Vaihto"
+msgstr "Vaihtonäppäin"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:376
+#: ../plugins/gtk+/gtk+.xml.in.h:394
 msgid "Shrink"
 msgstr "Kutistus"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:377
+#: ../plugins/gtk+/gtk+.xml.in.h:395
 msgid "Single"
 msgstr "Yksi"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:378
+#: ../plugins/gtk+/gtk+.xml.in.h:396
 msgid "Single Paragraph Mode column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:379
+#: ../plugins/gtk+/gtk+.xml.in.h:397
 msgid "Sixth Key"
-msgstr ""
+msgstr "Kuudes avain"
 
 #. Objects
-#: ../plugins/gtk+/gtk+.xml.in.h:381
+#: ../plugins/gtk+/gtk+.xml.in.h:399
 msgid "Size Group"
-msgstr ""
+msgstr "Kokoryhmä"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:382
+#: ../plugins/gtk+/gtk+.xml.in.h:400
 msgid "Size column"
-msgstr ""
+msgstr "Kokosarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:383
+#: ../plugins/gtk+/gtk+.xml.in.h:401
 msgid "Small Capitals"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:384
+#: ../plugins/gtk+/gtk+.xml.in.h:402
 msgid "Small Toolbar"
 msgstr "Pieni työkalupalkki"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:385
+#: ../plugins/gtk+/gtk+.xml.in.h:403
 msgid "South"
 msgstr "Etelä"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:386
+#: ../plugins/gtk+/gtk+.xml.in.h:404
 msgid "South East"
 msgstr "Kaakko"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:387
+#: ../plugins/gtk+/gtk+.xml.in.h:405
 msgid "South West"
 msgstr "Lounas"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:388
+#: ../plugins/gtk+/gtk+.xml.in.h:406
 msgid "Spin Button"
 msgstr "Pyöröpainike"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:389
+#: ../plugins/gtk+/gtk+.xml.in.h:407
 msgid "Spin Renderer"
-msgstr ""
+msgstr "Pyörönapin piirto"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:390
+#: ../plugins/gtk+/gtk+.xml.in.h:408
 msgid "Splash Screen"
 msgstr "Käynnistyskuva"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:391
+#: ../plugins/gtk+/gtk+.xml.in.h:409
 msgid "Spline"
 msgstr "Splini"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:392
+#: ../plugins/gtk+/gtk+.xml.in.h:410
 msgid "Spread"
 msgstr "Levitä"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:393 ../plugins/gnome/gnome.xml.in.h:51
+#: ../plugins/gtk+/gtk+.xml.in.h:411 ../plugins/gnome/gnome.xml.in.h:51
 msgid "Start"
 msgstr "Alku"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:394
+#: ../plugins/gtk+/gtk+.xml.in.h:412
 msgid "Static"
 msgstr "Kiinteä"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:395
+#: ../plugins/gtk+/gtk+.xml.in.h:413
 msgid "Status Bar"
 msgstr "Tilarivi"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:396
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:414
 msgid "Status Icon"
-msgstr "Tila"
+msgstr "Tilakuvake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:397
+#: ../plugins/gtk+/gtk+.xml.in.h:415
 msgid "Stock Button"
 msgstr "Vakiopainike"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:398
+#: ../plugins/gtk+/gtk+.xml.in.h:416
 msgid "Stock Detail column"
-msgstr ""
+msgstr "Vakiokuvaus-sarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:399
+#: ../plugins/gtk+/gtk+.xml.in.h:417
 msgid "Stock Item"
 msgstr "Vakiokohta"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:400
+#: ../plugins/gtk+/gtk+.xml.in.h:418
 msgid "Stock Size column"
-msgstr ""
+msgstr "Vakiokokosarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:401
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:419
 msgid "Stock column"
-msgstr "Vakiopainike"
+msgstr "Vakiosarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:402
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:420
 msgid "Stretch column"
-msgstr "Venytys"
+msgstr "Venytys-sarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:403
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:421
 msgid "Strikethrough column"
-msgstr "Yliviivauksen väri"
+msgstr "Yliviivaus-sarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:404
+#: ../plugins/gtk+/gtk+.xml.in.h:422
 msgid "Structure"
 msgstr "Rakenne"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:405
+#: ../plugins/gtk+/gtk+.xml.in.h:423
 msgid "Style column"
-msgstr ""
+msgstr "Tyylisarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:406
+#: ../plugins/gtk+/gtk+.xml.in.h:424
 msgid "Substructure"
 msgstr "Alirakenne"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:407
+#: ../plugins/gtk+/gtk+.xml.in.h:425
 msgid "Subwindow Of"
 msgstr "Ali-ikkuna"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:408
+#: ../plugins/gtk+/gtk+.xml.in.h:426
 msgid "Summary"
 msgstr "Yhteenveto"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:409
+#: ../plugins/gtk+/gtk+.xml.in.h:427
 msgid "Super Modifier"
-msgstr ""
+msgstr "Super-näppäin"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:410
+#: ../plugins/gtk+/gtk+.xml.in.h:428
 msgid "Table"
 msgstr "Taulukko"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:413
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:431
 msgid "Text Buffer"
-msgstr "Tekstinäkymä"
+msgstr "Tekstipuskuri"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:414
+#: ../plugins/gtk+/gtk+.xml.in.h:432
 msgid "Text Buffers"
-msgstr ""
+msgstr "Tekstipuskurit"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:415
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:433
 msgid "Text Column column"
-msgstr "Lisää sarake kohtaan %s"
+msgstr "Tekstisarake-sarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:416
+#: ../plugins/gtk+/gtk+.xml.in.h:434
 msgid "Text Entry"
 msgstr "Tekstikenttä"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:417
+#: ../plugins/gtk+/gtk+.xml.in.h:435
 msgid "Text Horizontal Alignment column"
-msgstr ""
+msgstr "Tekstin vaakatasauksen sarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:418
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:436
 msgid "Text Renderer"
-msgstr "Tekstikenttä"
+msgstr "Tekstirenderöinti"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:419
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:437
 msgid "Text Tag"
-msgstr "Tekstin välistys"
+msgstr "Tekstin merkintä"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:420
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:438
 msgid "Text Tag Table"
-msgstr "Teksti muokattavissa"
+msgstr "Teksti merkintätaulu"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:421
+#: ../plugins/gtk+/gtk+.xml.in.h:439
 msgid "Text Vertical Alignment column"
-msgstr ""
+msgstr "Tekstin pystytasauksen sarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:422
+#: ../plugins/gtk+/gtk+.xml.in.h:440
 msgid "Text View"
 msgstr "Tekstinäkymä"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:423
+#: ../plugins/gtk+/gtk+.xml.in.h:441
 msgid "Text below icons"
 msgstr "Teksti kuvakkeiden alla"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:425
+#: ../plugins/gtk+/gtk+.xml.in.h:443
 msgid "Text column"
 msgstr "Tekstisarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:426
+#: ../plugins/gtk+/gtk+.xml.in.h:444
 msgid "Text only"
 msgstr "Vain teksti"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:427
+#: ../plugins/gtk+/gtk+.xml.in.h:445
 msgid "The column in the model to load the value from"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:428
+#: ../plugins/gtk+/gtk+.xml.in.h:446
 msgid "The items in this combo box"
 msgstr "Laatikossa olevat kohdat"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:429
+#: ../plugins/gtk+/gtk+.xml.in.h:447
 msgid "The number of items in the box"
 msgstr "Laatikossa olevien kohtien lukumäärä"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:430
+#: ../plugins/gtk+/gtk+.xml.in.h:448
 msgid "The number of pages in the notebook"
 msgstr "Muistion sivujen lukumäärä"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:431
+#: ../plugins/gtk+/gtk+.xml.in.h:449
 msgid "The page position in the Assistant"
 msgstr "Sivun sijainti ohjatussa toiminnossa"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:432
+#: ../plugins/gtk+/gtk+.xml.in.h:450
 msgid "The pango attributes for this label"
 msgstr "Nimiön pango-määreet"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:433
+#: ../plugins/gtk+/gtk+.xml.in.h:451
 msgid "The position of the menu item in the menu shell"
 msgstr "Valikon kohdan sijainti valikossa"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:434
+#: ../plugins/gtk+/gtk+.xml.in.h:452
 msgid "The position of the tool item in the toolbar"
 msgstr "Työkalun sijainti työkalupalkissa"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:435
+#: ../plugins/gtk+/gtk+.xml.in.h:453
 msgid "The response ID of this button in a dialog"
 msgstr "Tämän painikkeen vastetunniste valintaikkunassa"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:436
+#: ../plugins/gtk+/gtk+.xml.in.h:454
 msgid ""
 "The stock icon displayed on the item (chose an item from gtk+ stock or from "
 "an icon factory)"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:437
+#: ../plugins/gtk+/gtk+.xml.in.h:455
 msgid "The stock item for this button"
 msgstr "Painikkeen vakiokohta"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:438
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:456
 msgid "The stock item for this menu item"
-msgstr "Kuvan vakiokohta"
+msgstr "Tämän valikonkohdan vakiokohta"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:439
+#: ../plugins/gtk+/gtk+.xml.in.h:457
 msgid "The text of the menu item"
 msgstr "Valikon kohdan teksti"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:440
+#: ../plugins/gtk+/gtk+.xml.in.h:458
 msgid "The text to display"
 msgstr "Näytettävä teksti"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:441
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:459
 msgid "Third Mouse Button"
-msgstr "Lisää valikkopainike"
+msgstr "Kolmas hiiren nappi"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:442
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:460
 msgid "Toggle Action"
-msgstr "Vipupainike"
+msgstr "Viputoiminto"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:443
+#: ../plugins/gtk+/gtk+.xml.in.h:461
 msgid "Toggle Button"
 msgstr "Vipupainike"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:444
+#: ../plugins/gtk+/gtk+.xml.in.h:462
 msgid "Toggle Renderer"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:445
+#: ../plugins/gtk+/gtk+.xml.in.h:463
 msgid "Toggle Tool Button"
 msgstr "Työkaluvipupainike"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:446
+#: ../plugins/gtk+/gtk+.xml.in.h:464
 msgid "Tool Bar"
 msgstr "Työkalupalkki"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:447
+#: ../plugins/gtk+/gtk+.xml.in.h:465
 msgid "Tool Button"
 msgstr "Työkalupalkin painike"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:448
+#: ../plugins/gtk+/gtk+.xml.in.h:466
 msgid "Toolbar"
 msgstr "Työkalupalkki"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:449
+#: ../plugins/gtk+/gtk+.xml.in.h:467
 msgid "Tooltip"
 msgstr "Vinkki"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:450 ../plugins/gnome/bonobo.xml.in.h:10
+#: ../plugins/gtk+/gtk+.xml.in.h:468 ../plugins/gnome/bonobo.xml.in.h:10
 msgid "Top"
 msgstr "Ylä"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:451
+#: ../plugins/gtk+/gtk+.xml.in.h:469
 msgid "Top Left"
 msgstr "Ylävasemmalla"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:452
+#: ../plugins/gtk+/gtk+.xml.in.h:470
 msgid "Top Level"
 msgstr "Ylin taso"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:453
+#: ../plugins/gtk+/gtk+.xml.in.h:471
 msgid "Top Right"
 msgstr "Yläoikealla"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:454
+#: ../plugins/gtk+/gtk+.xml.in.h:472
 msgid "Top to Bottom"
 msgstr "Ylhäältä alas"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:455
+#: ../plugins/gtk+/gtk+.xml.in.h:473
 msgid "Toplevels"
 msgstr "Ylätasot"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:456
+#: ../plugins/gtk+/gtk+.xml.in.h:474
 msgid "Tree Model Filter"
-msgstr ""
+msgstr "Puumallin suodatin"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:457
+#: ../plugins/gtk+/gtk+.xml.in.h:475
 msgid "Tree Model Sort"
-msgstr ""
+msgstr "Puumallin järjestys"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:458
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:476
 msgid "Tree Selection"
-msgstr "Tiedoston valinta"
+msgstr "Puuvalinta"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:459
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:477
 msgid "Tree Store"
-msgstr "Puunäkymä"
+msgstr "Puusäilö"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:460
+#: ../plugins/gtk+/gtk+.xml.in.h:478
 msgid "Tree View"
 msgstr "Puunäkymä"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:462
+#: ../plugins/gtk+/gtk+.xml.in.h:480
 msgid "UI Manager"
-msgstr ""
+msgstr "UI-hallinta"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:463
+#: ../plugins/gtk+/gtk+.xml.in.h:481
 msgid "Ultra Condensed"
-msgstr ""
+msgstr "Erityisen tiivistetty"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:464
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:482
 msgid "Ultra Expanded"
-msgstr "Laajennin"
+msgstr "Erityisen laajennettu"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:465
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:483
 msgid "Underline column"
-msgstr "Alleviivauksen väri"
+msgstr "Alleviivaus-sarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:466
+#: ../plugins/gtk+/gtk+.xml.in.h:484
 msgid "Up"
 msgstr "Ylös"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:467
+#: ../plugins/gtk+/gtk+.xml.in.h:485
+msgid "Use Action Appearance"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:486
 msgid "Use Underline"
 msgstr "Käytä alleviivausta"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:468
+#: ../plugins/gtk+/gtk+.xml.in.h:487
 msgid "Utility"
 msgstr "Apuohjelma"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:469
+#: ../plugins/gtk+/gtk+.xml.in.h:488
 msgid "Value column"
+msgstr "Arvosarake"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:489
+msgid "Variant column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:470
-#, fuzzy
-msgid "Variant column"
-msgstr "Muunnos"
-
 #. Objects
-#: ../plugins/gtk+/gtk+.xml.in.h:472 ../plugins/gtk+/glade-model-data.c:1237
+#: ../plugins/gtk+/gtk+.xml.in.h:491 ../plugins/gtk+/glade-model-data.c:1237
 msgid "Vertical"
 msgstr "Pysty"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:473
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:492
 msgid "Vertical Alignment"
-msgstr "Pystypaneelit"
+msgstr "Pystyasemointi"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:474
+#: ../plugins/gtk+/gtk+.xml.in.h:493
 msgid "Vertical Alignment column"
-msgstr ""
+msgstr "Pystyasemointisarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:475
+#: ../plugins/gtk+/gtk+.xml.in.h:494
 msgid "Vertical Box"
 msgstr "Pystylaatikko"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:476
+#: ../plugins/gtk+/gtk+.xml.in.h:495
 msgid "Vertical Button Box"
 msgstr "Pystysuuntainen painikelaatikko"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:477
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:496
 msgid "Vertical Padding"
-msgstr "Pystypaneelit"
+msgstr "Pystytäyttö"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:478
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:497
 msgid "Vertical Padding column"
-msgstr "Pystypaneelit"
+msgstr "Pystytäyttösarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:479
+#: ../plugins/gtk+/gtk+.xml.in.h:498
 msgid "Vertical Panes"
 msgstr "Pystypaneelit"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:480
+#: ../plugins/gtk+/gtk+.xml.in.h:499
 msgid "Vertical Ruler"
 msgstr "Pystyviivain"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:481
+#: ../plugins/gtk+/gtk+.xml.in.h:500
 msgid "Vertical Scale"
 msgstr "Pystyasteikko"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:482
+#: ../plugins/gtk+/gtk+.xml.in.h:501
 msgid "Vertical Scrollbar"
 msgstr "Pystyvierityspalkki"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:483
+#: ../plugins/gtk+/gtk+.xml.in.h:502
 msgid "Vertical Separator"
 msgstr "Pystyerotin"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:484
+#: ../plugins/gtk+/gtk+.xml.in.h:503
 msgid "Viewport"
 msgstr "Näkymä"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:485
+#: ../plugins/gtk+/gtk+.xml.in.h:504
 msgid "Visibility Notify"
 msgstr "Näkyvyyshuomautus"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:486
+#: ../plugins/gtk+/gtk+.xml.in.h:505
 msgid "Visible"
-msgstr ""
+msgstr "Näkyvyys"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:487
+#: ../plugins/gtk+/gtk+.xml.in.h:506
 msgid "Visible column"
-msgstr ""
+msgstr "Näkyvyys-sarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:488
+#: ../plugins/gtk+/gtk+.xml.in.h:507
 msgid "Volume Button"
 msgstr "Äänenvoimakkuuspainike"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:489 ../plugins/gnome/gnome.xml.in.h:68
+#: ../plugins/gtk+/gtk+.xml.in.h:508 ../plugins/gnome/gnome.xml.in.h:68
 msgid "Warning"
 msgstr "Varoitus"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:490
-#, fuzzy
+#: ../plugins/gtk+/gtk+.xml.in.h:509
 msgid "Weight column"
-msgstr "Paino"
+msgstr "Painosarake"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:491
+#: ../plugins/gtk+/gtk+.xml.in.h:510
 msgid "West"
 msgstr "Länsi"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:495
+#: ../plugins/gtk+/gtk+.xml.in.h:514
 msgid "Width column"
+msgstr "Leveys-sarake"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:515
+msgid "Width in Characters column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:496
-#, fuzzy
-msgid "Width in Characters column"
-msgstr "Sanan merkki"
-
-#: ../plugins/gtk+/gtk+.xml.in.h:497
+#: ../plugins/gtk+/gtk+.xml.in.h:516
 msgid "Window"
 msgstr "Ikkuna"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:498
+#: ../plugins/gtk+/gtk+.xml.in.h:517
 msgid "Window Group"
 msgstr "Ikkunaryhmä"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:499
+#: ../plugins/gtk+/gtk+.xml.in.h:518
 msgid "Word"
 msgstr "Sana"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:500
+#: ../plugins/gtk+/gtk+.xml.in.h:519
 msgid "Word Character"
 msgstr "Sanan merkki"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:501
+#: ../plugins/gtk+/gtk+.xml.in.h:520
 msgid "Wrap Mode column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:502
+#: ../plugins/gtk+/gtk+.xml.in.h:521
 msgid "Wrap Width column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:503
+#: ../plugins/gtk+/gtk+.xml.in.h:522
 msgid "Yes, No"
 msgstr "Kyllä, Ei"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:504
+#: ../plugins/gtk+/gtk+.xml.in.h:523
 msgid ""
 "You can mark this as translatable and set one name/address if you want to "
 "show a translation specific translator, otherwise you should list all "
@@ -4701,69 +4678,69 @@ msgstr ""
 msgid "Set the state for this source of '%s'"
 msgstr ""
 
-#: ../plugins/gtk+/glade-button-editor.c:228
+#: ../plugins/gtk+/glade-button-editor.c:237
 #, c-format
 msgid "Setting %s to use standard configuration"
 msgstr ""
 
-#: ../plugins/gtk+/glade-button-editor.c:282
+#: ../plugins/gtk+/glade-button-editor.c:295
 #, fuzzy, c-format
 msgid "Setting %s to use a custom child"
 msgstr "Asetetaan %s / %s arvoon %s"
 
-#: ../plugins/gtk+/glade-button-editor.c:325
+#: ../plugins/gtk+/glade-button-editor.c:339
 #, fuzzy, c-format
 msgid "Setting %s to use a stock button"
 msgstr "Asetetaan %s / %s arvoon %s"
 
-#: ../plugins/gtk+/glade-button-editor.c:364
+#: ../plugins/gtk+/glade-button-editor.c:383
 #: ../plugins/gtk+/glade-image-item-editor.c:260
 #, c-format
 msgid "Setting %s to use a label and image"
 msgstr ""
 
-#: ../plugins/gtk+/glade-button-editor.c:419
+#: ../plugins/gtk+/glade-button-editor.c:442
 msgid "Configure button content"
-msgstr ""
+msgstr "Määrittele napin sisältö"
 
-#: ../plugins/gtk+/glade-button-editor.c:421
+#: ../plugins/gtk+/glade-button-editor.c:444
 msgid "Add custom button content"
-msgstr ""
+msgstr "Lisää oma napin sisältö"
 
-#: ../plugins/gtk+/glade-button-editor.c:423
+#: ../plugins/gtk+/glade-button-editor.c:446
 msgid "Stock button"
 msgstr "Vakiopainike"
 
-#: ../plugins/gtk+/glade-button-editor.c:425
+#: ../plugins/gtk+/glade-button-editor.c:448
 msgid "Label with optional image"
 msgstr ""
 
-#: ../plugins/gtk+/glade-tool-button-editor.c:176
+#: ../plugins/gtk+/glade-tool-button-editor.c:188
 #, c-format
 msgid "Setting %s to use standard label text"
 msgstr ""
 
-#: ../plugins/gtk+/glade-tool-button-editor.c:211
+#: ../plugins/gtk+/glade-tool-button-editor.c:223
 #, c-format
 msgid "Setting %s to use a custom label widget"
 msgstr ""
 
-#: ../plugins/gtk+/glade-tool-button-editor.c:241
+#: ../plugins/gtk+/glade-tool-button-editor.c:253
 #: ../plugins/gtk+/glade-image-editor.c:266
 #, fuzzy, c-format
 msgid "Setting %s to use an image from stock"
 msgstr "Asetetaan %s / %s arvoon %s"
 
-#: ../plugins/gtk+/glade-tool-button-editor.c:276
-#: ../plugins/gtk+/glade-tool-button-editor.c:310
-#: ../plugins/gtk+/glade-tool-button-editor.c:344
+#: ../plugins/gtk+/glade-tool-button-editor.c:288
+#: ../plugins/gtk+/glade-tool-button-editor.c:322
+#: ../plugins/gtk+/glade-tool-button-editor.c:356
 #: ../plugins/gtk+/glade-image-editor.c:290
 #, c-format
 msgid "Setting %s to use an image from the icon theme"
 msgstr ""
 
 #. Label area frame...
-#: ../plugins/gtk+/glade-tool-button-editor.c:440
+#: ../plugins/gtk+/glade-tool-button-editor.c:452
 #: ../plugins/gtk+/glade-image-item-editor.c:395
 msgid "Edit Label"
 msgstr "Muokkaa nimikettä"
@@ -4771,7 +4748,7 @@ msgstr "Muokkaa nimikettä"
 #. Image area frame...
 #. Image content frame...
 #. Internal Image area...
-#: ../plugins/gtk+/glade-tool-button-editor.c:482
+#: ../plugins/gtk+/glade-tool-button-editor.c:494
 #: ../plugins/gtk+/glade-image-editor.c:345
 #: ../plugins/gtk+/glade-image-item-editor.c:429
 msgid "Edit Image"
@@ -4864,9 +4841,8 @@ msgstr ""
 
 #. Label appearance...
 #: ../plugins/gtk+/glade-label-editor.c:538
-#, fuzzy
 msgid "Edit label appearance"
-msgstr "Paletin _ulkoasu"
+msgstr ""
 
 #. Label formatting...
 #: ../plugins/gtk+/glade-label-editor.c:609
@@ -4945,12 +4921,27 @@ msgstr ""
 #. Primary icon...
 #: ../plugins/gtk+/glade-entry-editor.c:475
 msgid "Primary icon"
-msgstr ""
+msgstr "Ensisijainen kuvake"
 
 #. Secondary icon...
 #: ../plugins/gtk+/glade-entry-editor.c:538
 msgid "Secondary icon"
-msgstr ""
+msgstr "Toissijainen kuvake"
+
+#: ../plugins/gtk+/glade-activatable-editor.c:329
+#, c-format
+msgid "Setting %s action"
+msgstr "Asetetaan %s-toiminto"
+
+#: ../plugins/gtk+/glade-activatable-editor.c:357
+#, fuzzy, c-format
+msgid "Setting %s to use action appearance"
+msgstr "Asetetaan %s / %s arvoon %s"
+
+#: ../plugins/gtk+/glade-activatable-editor.c:358
+#, fuzzy, c-format
+msgid "Setting %s to not use action appearance"
+msgstr "Asetetaan %s / %s arvoon %s"
 
 #: ../plugins/gnome/glade-gnome.c:292
 msgid "Status Message."
@@ -5362,6 +5353,17 @@ msgstr "Valintatila"
 #: ../plugins/gnome/canvas.xml.in.h:34
 msgid "The width of each icon"
 msgstr "Kuvakkeiden leveys"
+
+#~ msgid ""
+#~ "<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" "
+#~ "before closing?</span>\n"
+#~ "\n"
+#~ "Your changes will be lost if you don't save them."
+#~ msgstr ""
+#~ "<span weight=\"bold\" size=\"larger\">Tallennetaanko muutokset projektiin "
+#~ "\"%s\" ennen sulkemista?</span>\n"
+#~ "\n"
+#~ "Muutoksesi projektiin hukataan, jos et tallenna niitä."
 
 #~ msgid "_Clipboard"
 #~ msgstr "_Leikepöytä"
