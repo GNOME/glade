@@ -1571,6 +1571,13 @@ glade_gtk_container_get_children (GladeWidgetAdaptor  *adaptor,
 	return glade_util_container_get_all_children (container);
 }
 
+GladeEditable *
+glade_gtk_container_create_editable (GladeWidgetAdaptor  *adaptor,
+				       GladeEditorPageType  type)
+{
+	return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);;
+}
+
 /* ----------------------------- GtkBox ------------------------------ */
 typedef struct {
 	GtkWidget *widget;

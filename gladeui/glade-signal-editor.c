@@ -76,6 +76,22 @@ G_DEFINE_TYPE (GladeSignalEditor, glade_signal_editor, G_TYPE_OBJECT)
 #define HANDLER_DEFAULT  _("<Type here>")
 #define USERDATA_DEFAULT HANDLER_DEFAULT
 
+static gboolean
+is_void_handler (const gchar *signal_handler)
+{
+	return ( signal_handler == NULL ||
+		*signal_handler == 0    ||
+		 g_utf8_collate (signal_handler, _(HANDLER_DEFAULT)) == 0);
+}
+
+static gboolean
+is_void_userdata (const gchar *user_data)
+{
+	return ( user_data == NULL ||
+		*user_data == 0    ||
+		 g_utf8_collate (user_data, _(USERDATA_DEFAULT)) == 0);
+}
+
 static void
 glade_signal_editor_after_toggled (GtkCellRendererToggle *cell,
 				   gchar                 *path_str,
@@ -111,6 +127,12 @@ glade_signal_editor_after_toggled (GtkCellRendererToggle *cell,
 		g_assert (signal_name != NULL);
 	}
 
+	if (is_void_userdata (userdata))
+	{
+		g_free (userdata);
+		userdata = NULL;
+	}
+	
 	old_signal = glade_signal_new (signal_name, handler, userdata, after);
 	new_signal = glade_signal_new (signal_name, handler, userdata, !after);
 
@@ -167,6 +189,12 @@ glade_signal_editor_lookup_toggled (GtkCellRendererToggle *cell,
 		g_assert (signal_name != NULL);
 	}
 
+	if (is_void_userdata (userdata))
+	{
+		g_free (userdata);
+		userdata = NULL;
+	}
+	
 	old_signal = glade_signal_new (signal_name, handler, userdata, lookup, after);
 	new_signal = glade_signal_new (signal_name, handler, userdata, !lookup, after);
 
@@ -301,22 +329,6 @@ remove_slot (GtkTreeModel *model, GtkTreeIter *iter, GtkTreeIter *iter_signal)
 		gtk_tree_store_set (GTK_TREE_STORE (model), &iter_class,
 				    GSE_COLUMN_BOLD, FALSE, -1);
 	}
-}
-
-static gboolean
-is_void_handler (const gchar *signal_handler)
-{
-	return ( signal_handler == NULL ||
-		*signal_handler == 0    ||
-		 g_utf8_collate (signal_handler, _(HANDLER_DEFAULT)) == 0);
-}
-
-static gboolean
-is_void_userdata (const gchar *user_data)
-{
-	return ( user_data == NULL ||
-		*user_data == 0    ||
-		 g_utf8_collate (user_data, _(USERDATA_DEFAULT)) == 0);
 }
 
 static gboolean

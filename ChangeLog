@@ -1,3 +1,21 @@
+2009-03-02  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* plugins/gtk+/glade-label-editor.c, plugins/gtk+/glade-store-editor.c,
+	  plugins/gtk+/glade-icon-sources.c: fixed typos, bugs #571884 and #571867
+
+	* plugins/gtk+/gtk+.xml.in: fixed typos, and mark missing translatable strings
+	  bugs #573661, #571861
+
+	* gladeui/glade-property.c: do not write disabled props on
+	  glade_property_write() fixes bug #573513
+
+	* plugins/gtk+/glade-gtk.c: added convenience function 
+	  glade_gtk_container_create_editable() to disable custom editables
+	  part of bug #573513.
+
+	* gladeui/glade-signal-editor.c: fixed Bug #573453
+	  "Signal connect-after is not functional." using Ryu Jinno`s patch as reference.
+
 2009-02-09  Jonh Wendell <jwendell@gnome.org>
 
 	* lots of directories: Set the svn:ignore property.

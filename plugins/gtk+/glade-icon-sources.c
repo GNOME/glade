@@ -692,7 +692,7 @@ icon_sources_query_tooltip (GtkWidget  *widget,
 				case COLUMN_TEXT:
 					tooltip_text = 
 						g_strdup_printf (_("Enter a filename or a relative or full path for this "
-								   "source of '%s' (Glade will only ever load them in"
+								   "source of '%s' (Glade will only ever load them in "
 								   "the runtime from your project directory)."), 
 								 icon_name);
 					break;
