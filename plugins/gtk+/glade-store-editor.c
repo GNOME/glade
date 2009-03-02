@@ -221,7 +221,7 @@ glade_store_editor_new (GladeWidgetAdaptor *adaptor,
 	gtk_container_add (GTK_CONTAINER (alignment), vbox);
 
 	/* Add descriptive label */
-	label = gtk_label_new (_("Add remove and edit rows of data (you can optionally use Ctrl+N to add "
+	label = gtk_label_new (_("Add remove and edit rows of data (you can optionally use CNTL-N to add "
 				 "new rows and the Delete key to remove the selected row)"));
 	gtk_label_set_line_wrap (GTK_LABEL(label), TRUE);
 	gtk_label_set_line_wrap_mode (GTK_LABEL(label), PANGO_WRAP_WORD);

@@ -354,7 +354,7 @@ width_toggled (GtkWidget        *widget,
 
 	label_editor->modifying = TRUE;
 
-	glade_command_push_group (_("Setting %s to set desired width in characters"), 
+	glade_command_push_group (_("Setting %s to set desired width in charachters"), 
 				  label_editor->loaded_widget->name);
 
 	property = glade_widget_get_property (label_editor->loaded_widget, "max-width-chars");
@@ -385,7 +385,7 @@ max_width_toggled (GtkWidget        *widget,
 
 	label_editor->modifying = TRUE;
 
-	glade_command_push_group (_("Setting %s to set maximum width in characters"), 
+	glade_command_push_group (_("Setting %s to set maximum width in charachters"), 
 				  label_editor->loaded_widget->name);
 
 	property = glade_widget_get_property (label_editor->loaded_widget, "width-chars");
