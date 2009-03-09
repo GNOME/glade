@@ -5880,18 +5880,21 @@ glade_gtk_button_write_widget (GladeWidgetAdaptor *adaptor,
 	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
 		return;
 
-	prop = glade_widget_get_property (widget, "label");
-
-	/* Make a copy of the GladeProperty, override its value if use-stock is TRUE */
-	prop = glade_property_dup (prop, widget);
-	glade_widget_property_get (widget, "use-stock", &use_stock);
-	if (use_stock)
+	/* Do not save GtkColorButton and GtkFontButton label property */
+	if (!(GTK_IS_COLOR_BUTTON (widget->object) || GTK_IS_FONT_BUTTON (widget->object)))
 	{
-		glade_widget_property_get (widget, "stock", &stock);
-		glade_property_set (prop, stock);
+		prop = glade_widget_get_property (widget, "label");
+		/* Make a copy of the GladeProperty, override its value if use-stock is TRUE */
+		prop = glade_property_dup (prop, widget);
+		glade_widget_property_get (widget, "use-stock", &use_stock);
+		if (use_stock)
+		{
+			glade_widget_property_get (widget, "stock", &stock);
+			glade_property_set (prop, stock);
+		}
+		glade_property_write (prop, context, node);
+		g_object_unref (G_OBJECT (prop));
 	}
-	glade_property_write (prop, context, node);
-	g_object_unref (G_OBJECT (prop));
 
 	prop = glade_widget_get_property (widget, "response-id");
 	if (glade_property_get_enabled (prop) && 

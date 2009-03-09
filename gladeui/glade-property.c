@@ -1128,9 +1128,6 @@ glade_property_write (GladeProperty   *property,
 	if (!(property->klass->save_always || property->save_always) &&
 	    glade_property_original_default (property))
 		return;
-	
-	/* Also skip disabled properties */
-	if (property->klass->save == FALSE) return;
 
 	/* Escape our string and save with underscores */
 	name = g_strdup (property->klass->id);
