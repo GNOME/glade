@@ -1,3 +1,13 @@
+2009-03-16  Tristan Van Berkom <tvb@gnome.org>
+
+	* NEWS, configure.ac: Rolling Glade 3.6.0
+
+	* gladeui/glade-command.c: Remove widgets from their project before removing
+	  them from their parents (fixes bug 567809)
+
+	* src/glade-window.c: Dont access NULL GError when glade_project_save()
+	  returns FALSE with no error (user canceled save) (Fixed bug 574706).
+
 2009-03-09  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* gladeui/glade-property.c: reverted fix for bug #573513. (bug #574260)

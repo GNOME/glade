@@ -1181,10 +1181,14 @@ save (GladeWindow *window, GladeProject *project, const gchar *path)
 	{
 		/* Reset path so future saves will prompt the file chooser */
 		glade_project_reset_path (project);
-		glade_util_ui_message (GTK_WIDGET (window), GLADE_UI_ERROR, NULL, 
-				       _("Failed to save %s: %s"),
-				       display_path, error->message);
-		g_error_free (error);
+
+		if (error)
+		{
+			glade_util_ui_message (GTK_WIDGET (window), GLADE_UI_ERROR, NULL, 
+					       _("Failed to save %s: %s"),
+					       display_path, error->message);
+			g_error_free (error);
+		}
 		g_free (display_path);
 		return;
 	}

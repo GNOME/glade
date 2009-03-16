@@ -1384,6 +1384,7 @@ glade_command_add_execute (GladeCommandAddRemove *me)
 			/* Toplevels get pasted to the active project */
 			add_project = (me->from_clipboard && cdata->widget->parent == NULL) ?
 				active_project : me->project;
+
 			glade_project_add_object (add_project, cdata->project, cdata->widget->object);
 
 			for (l = cdata->reffed; l; l = l->next)
@@ -1413,20 +1414,20 @@ glade_command_remove_execute (GladeCommandAddRemove *me)
 	{
 		cdata = list->data;
 
-		if (cdata->parent)
-		{
-			if (cdata->placeholder)
-				glade_widget_replace(cdata->parent, cdata->widget->object, G_OBJECT (cdata->placeholder));
-			else
-				glade_widget_remove_child (cdata->parent, cdata->widget);
-		}
-
 		glade_project_remove_object(GLADE_PROJECT (cdata->widget->project), cdata->widget->object);
 		
 		for (l = cdata->reffed; l; l = l->next)
 		{
 			reffed = l->data;
 			glade_project_remove_object(GLADE_PROJECT (cdata->widget->project), reffed->object);
+		}
+
+		if (cdata->parent)
+		{
+			if (cdata->placeholder)
+				glade_widget_replace(cdata->parent, cdata->widget->object, G_OBJECT (cdata->placeholder));
+			else
+				glade_widget_remove_child (cdata->parent, cdata->widget);
 		}
 
 		glade_widget_hide (cdata->widget);
