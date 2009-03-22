@@ -607,11 +607,13 @@ glade_command_set_property_description (GladeCommandSetProperty *me,
 		    || strchr (value_name, '_')) {
 			description = g_strdup_printf (_("Setting %s of %s"),
 						       sdata->property->klass->name,
-						       sdata->property->widget->name);
+						       sdata->property->widget->name ? 
+						       sdata->property->widget->name : "-");
 		} else {
 			description = g_strdup_printf (_("Setting %s of %s to %s"),
 						       sdata->property->klass->name,
-						       sdata->property->widget->name, value_name);
+						       sdata->property->widget->name ? 
+						       sdata->property->widget->name : "-", value_name);
 		}
 		g_free (value_name);
 	}
