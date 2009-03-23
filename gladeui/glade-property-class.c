@@ -1493,7 +1493,7 @@ glade_property_class_update_from_node (GladeXmlNode        *node,
 			klass->tooltip = g_strdup (g_param_spec_get_blurb (klass->pspec));
 		}
 
-		if (strcmp (g_param_spec_get_nick (klass->pspec), "dummy") != 0)
+		if (klass->name == NULL || strcmp (g_param_spec_get_nick (klass->pspec), "dummy") != 0)
 		{
 			g_free (klass->name);
 			klass->name = g_strdup (g_param_spec_get_nick (klass->pspec));
