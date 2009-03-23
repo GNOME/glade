@@ -622,9 +622,14 @@ glade_widget_remove_property (GladeWidget  *widget,
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	g_return_if_fail (id_property);
 
+	/* XXX FIXME: currently we arent calling this on packing properties,
+	 * but doing so could cause crashes because the hash table is not
+	 * managed properly
+	 */
 	if ((prop = glade_widget_get_property (widget, id_property)) != NULL)
 	{
 		widget->properties = g_list_remove (widget->properties, prop);
+		g_hash_table_remove (widget->props_hash, prop->klass->id);
 		g_object_unref (prop);
 	}
 	else

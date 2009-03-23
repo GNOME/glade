@@ -2,7 +2,10 @@
 
 	* gladeui/glade-command.c: Fix win32 crasher (bug 575206) again (seems
 	I missed it was klass->name that was null, fixed it so it would never
-	be null, and added g_assert() where the crash was
+	be null, and added g_assert() where the crash was.
+
+	* gladeui/glade-widget.c: Fix broken hash table maintenence in 
+	glade_widget_remove_property() (bug 575885).
 
 2009-03-21  Tristan Van Berkom <tvb@gnome.org>
 
