@@ -1006,19 +1006,31 @@ glade_gtk_widget_write_widget (GladeWidgetAdaptor *adaptor,
 			       GladeXmlContext    *context,
 			       GladeXmlNode       *node)
 {
-	if (!glade_xml_node_verify
-	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+ 	GladeProjectFormat  fmt;
+
+	fmt = glade_project_get_format (widget->project);
+
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET (fmt)))
 		return;
 
 	/* First chain up and read in all the normal properties.. */
         GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
 
-	/* Write accelerators */
-	glade_gtk_widget_write_accels (widget, context, node);
 
-	/* Write atk props */
-	glade_gtk_widget_write_atk_props (widget, context, node);
-
+	/* in Libglade the order must be Properties, Atk, Signals, Accels. 
+	 * in builder it doesnt matter so long as signals are after properties
+	 * and before objects.
+	 */
+	if (fmt == GLADE_PROJECT_FORMAT_LIBGLADE)
+	{
+ 		glade_gtk_widget_write_atk_props (widget, context, node);
+		glade_widget_write_signals (widget, context, node);
+		glade_gtk_widget_write_accels (widget, context, node);
+	} else {
+		/* The core takes care of signals in GtkBuilder format */
+		glade_gtk_widget_write_accels (widget, context, node);		
+ 		glade_gtk_widget_write_atk_props (widget, context, node);
+	}
 }
 
 

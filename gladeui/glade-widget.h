@@ -240,6 +240,10 @@ void                    glade_widget_write_child            (GladeWidget     *wi
 							     GladeXmlContext *context,
 							     GladeXmlNode    *node);
 
+void                    glade_widget_write_signals          (GladeWidget     *widget,
+							     GladeXmlContext *context,
+							     GladeXmlNode    *node);
+
 void                    glade_widget_write_placeholder      (GladeWidget     *parent,
 							     GObject         *object,
 							     GladeXmlContext *context,

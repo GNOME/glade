@@ -1,3 +1,15 @@
+2009-03-25  Tristan Van Berkom <tvb@gnome.org>
+
+	Fixed Mal-ordering of atk properties, signals and accelerators in
+	Libglade format output.
+	
+	* gladeui/glade-widget.[ch]: Now export glade_widget_write_signals(),
+	only write signals from the core when in builder format.
+
+	* plugins/gtk+/glade-gtk.c: glade_gtk_widget_write_widget(), write
+	properties out as "properties -> atk -> signals -> accelerators when
+	in libglade format, leave signals to core when in builder format.
+
 2009-03-21  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-command.c: Fix win32 crasher (bug 575206) again (seems

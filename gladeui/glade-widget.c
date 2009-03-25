@@ -3846,6 +3846,21 @@ glade_widget_adaptor_write_signals (gpointer key,
 	}
 }
 
+void 
+glade_widget_write_signals (GladeWidget     *widget,
+			    GladeXmlContext *context,
+			    GladeXmlNode    *node)
+{
+ 	WriteSignalsInfo info;
+
+	info.context = context;
+	info.node = node;
+	g_hash_table_foreach (widget->signals,
+			      glade_widget_adaptor_write_signals,
+			      &info);
+
+}
+
 /**
  * glade_widget_write:
  * @widget: The #GladeWidget
@@ -3861,12 +3876,10 @@ glade_widget_write (GladeWidget     *widget,
 		    GladeXmlNode    *node)
 {
 	GladeXmlNode *widget_node;
-	WriteSignalsInfo info;
 	GList *l, *list;
+	GladeProjectFormat fmt = glade_project_get_format (widget->project);
 
-	widget_node = 
-		glade_xml_node_new
-		(context, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project)));
+	widget_node = glade_xml_node_new (context, GLADE_XML_TAG_WIDGET (fmt));
 	glade_xml_node_append_child (node, widget_node);
 
 	/* Set class and id */
@@ -3880,12 +3893,11 @@ glade_widget_write (GladeWidget     *widget,
 	/* Write out widget content (properties and signals) */
 	glade_widget_adaptor_write_widget (widget->adaptor, widget, context, widget_node);
 		
-	/* Write the signals */
-	info.context = context;
-	info.node = widget_node;
-	g_hash_table_foreach (widget->signals,
-			      glade_widget_adaptor_write_signals,
-			      &info);
+	/* Write the signals strictly after all properties and before children
+	 * when in builder format
+	 */
+	if (fmt == GLADE_PROJECT_FORMAT_GTKBUILDER)
+		glade_widget_write_signals (widget, context, widget_node);
 
 	/* Write the children */
 	if ((list =
