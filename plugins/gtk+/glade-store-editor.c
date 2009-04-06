@@ -204,29 +204,33 @@ glade_store_editor_new (GladeWidgetAdaptor *adaptor,
 	gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (eprop), FALSE, FALSE, 4);
 
 
-	/* -------------- The data area here -------------- */
-	/* Label item in frame label widget on top.. */
-	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "data", FALSE, TRUE);
-	store_editor->properties = g_list_prepend (store_editor->properties, eprop);
-	frame = gtk_frame_new (NULL);
-	gtk_frame_set_label_widget (GTK_FRAME (frame), eprop->item_label);
-	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
-	gtk_box_pack_start (GTK_BOX (store_editor), frame, FALSE, FALSE, 12);
-
-	/* Alignment/Vbox in frame... */
-	alignment = gtk_alignment_new (0.5F, 0.5F, 1.0F, 1.0F);
-	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 6, 0, 12, 0);
-	gtk_container_add (GTK_CONTAINER (frame), alignment);
-	vbox = gtk_vbox_new (FALSE, 0);
-	gtk_container_add (GTK_CONTAINER (alignment), vbox);
-
-	/* Add descriptive label */
-	label = gtk_label_new (_("Add remove and edit rows of data (you can optionally use CNTL-N to add "
-				 "new rows and the Delete key to remove the selected row)"));
-	gtk_label_set_line_wrap (GTK_LABEL(label), TRUE);
-	gtk_label_set_line_wrap_mode (GTK_LABEL(label), PANGO_WRAP_WORD);
-	gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 6);
-	gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (eprop), FALSE, FALSE, 4);
+	if (adaptor->type == GTK_TYPE_LIST_STORE ||
+	    g_type_is_a (adaptor->type, GTK_TYPE_LIST_STORE))
+	{
+		/* -------------- The data area here -------------- */
+		/* Label item in frame label widget on top.. */
+		eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "data", FALSE, TRUE);
+		store_editor->properties = g_list_prepend (store_editor->properties, eprop);
+		frame = gtk_frame_new (NULL);
+		gtk_frame_set_label_widget (GTK_FRAME (frame), eprop->item_label);
+		gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
+		gtk_box_pack_start (GTK_BOX (store_editor), frame, FALSE, FALSE, 12);
+		
+		/* Alignment/Vbox in frame... */
+		alignment = gtk_alignment_new (0.5F, 0.5F, 1.0F, 1.0F);
+		gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 6, 0, 12, 0);
+		gtk_container_add (GTK_CONTAINER (frame), alignment);
+		vbox = gtk_vbox_new (FALSE, 0);
+		gtk_container_add (GTK_CONTAINER (alignment), vbox);
+		
+		/* Add descriptive label */
+		label = gtk_label_new (_("Add remove and edit rows of data (you can optionally use CNTL-N to add "
+					 "new rows and the Delete key to remove the selected row)"));
+		gtk_label_set_line_wrap (GTK_LABEL(label), TRUE);
+		gtk_label_set_line_wrap_mode (GTK_LABEL(label), PANGO_WRAP_WORD);
+		gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 6);
+		gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (eprop), FALSE, FALSE, 4);
+	}		
 
 	gtk_widget_show_all (GTK_WIDGET (store_editor));
 

@@ -179,9 +179,6 @@ gchar         *glade_project_verify_widget_adaptor (GladeProject       *project,
 
 void          glade_project_verify_project_for_ui (GladeProject  *project);
 
-gboolean      glade_project_is_loaded_factory_file (GladeProject       *project, 
-						    const gchar        *stock_id);
-
 GList        *glade_project_required_libs          (GladeProject       *project);
 
 void          glade_project_set_naming_policy      (GladeProject       *project,

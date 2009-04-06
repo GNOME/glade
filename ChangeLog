@@ -1,3 +1,15 @@
+2009-04-06  Tristan Van Berkom <tvb@gnome.org>
+
+	* plugins/gtk+/glade-button-editor.c: Properly initialize GValue on 
+	stack (fix by Felix Riemann - bug 577822).
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/glade-store-editor.c: 
+	Disabled 'data' property for treestores (oops not supported by
+	GtkBuilder, Bug 577685).
+
+	* gladeui/[...].h: Fixed failed build on Msys/MinGW (Bug 576851 – 
+	fix by Damon Register).
+	
 2009-03-25  Tristan Van Berkom <tvb@gnome.org>
 
 	Fixed Mal-ordering of atk properties, signals and accelerators in
@@ -11,7 +23,9 @@
 	in libglade format, leave signals to core when in builder format.
 
 2009-03-21  Tristan Van Berkom <tvb@gnome.org>
-
+	
+	* NEWS, configure.ac: Rolling 3.6.1
+	
 	* gladeui/glade-command.c: Fix win32 crasher (bug 575206) again (seems
 	I missed it was klass->name that was null, fixed it so it would never
 	be null, and added g_assert() where the crash was.

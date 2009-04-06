@@ -223,7 +223,7 @@ standard_toggled (GtkWidget         *widget,
 	GladeProperty     *property;
 	GladeWidget       *gchild = NULL;
 	GtkWidget         *child, *button;
-	GValue             value;
+	GValue             value = { 0, };
 	gboolean           use_appearance = FALSE;
 
 	if (button_editor->loading || !button_editor->loaded_widget)

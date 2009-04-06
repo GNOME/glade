@@ -107,9 +107,6 @@ struct _GladeEditor
 
 	gboolean show_info; /* Whether or not to show an informational button
 			     */
-	gboolean show_context_info; /* Whether or not to show an informational
-				     * button for each property and signal.
-				     */
 };
 
 struct _GladeEditorClass
@@ -144,11 +141,7 @@ gboolean     glade_editor_query_dialog       (GladeEditor *editor,
 
 void         glade_editor_show_info          (GladeEditor *editor);
 
-void         glade_editor_show_context_info  (GladeEditor *editor);
-
 void         glade_editor_hide_info          (GladeEditor *editor);
-
-void         glade_editor_hide_context_info  (GladeEditor *editor);
 
 void         glade_editor_search_doc_search  (GladeEditor *editor,
 					      const gchar *book,

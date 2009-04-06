@@ -97,18 +97,16 @@ GtkWidget *glade_signal_editor_get_widget (GladeSignalEditor *editor);
 
 void glade_signal_editor_load_widget (GladeSignalEditor *editor, GladeWidget *widget);
 
-gboolean
-glade_signal_editor_handler_editing_started_default_impl (GladeSignalEditor *editor,
-							  gchar *signal_name,
-							  GtkTreeIter *iter,
-							  GtkCellEditable *editable,
-							  gpointer user_data);
-gboolean
-glade_signal_editor_userdata_editing_started_default_impl (GladeSignalEditor *editor,
-							   gchar *signal_name,
-							   GtkTreeIter *iter,
-							   GtkCellEditable *editable,
-							   gpointer user_data);
+gboolean glade_signal_editor_handler_editing_started_default_impl (GladeSignalEditor *editor,
+								   gchar *signal_name,
+								   GtkTreeIter *iter,
+								   GtkCellEditable *editable,
+								   gpointer user_data);
+gboolean glade_signal_editor_userdata_editing_started_default_impl (GladeSignalEditor *editor,
+								    gchar *signal_name,
+								    GtkTreeIter *iter,
+								    GtkCellEditable *editable,
+								    gpointer user_data);
 
 G_END_DECLS
 

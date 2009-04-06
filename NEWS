@@ -1,4 +1,21 @@
 ===========
+Glade 3.6.1
+===========
+	- Fixed win32 crasher (bug 575206)
+	- Fixed crasher on internal widget selection
+	- Fixed libglade regression (libglade needs specific
+	  ordering of properties, atk props, signals and accelerators)
+	- Fixed MSYS/MinGW build (Bug 576851 – Damon Register)
+	- Disable loading and displaying of 'data' property on GtkTreeStore
+	  (only GtkListStore understands the 'data' construct).
+	- Properly initialize a GValue on stack (bug 577822 - Felix Riemann)
+
+New and updated translations
+============================
+	-  Petr Kovar, Andre Klapper (cs)
+	-  Djihed Afifi (ar)
+
+===========
 Glade 3.6.0
 ===========
 	- Fixed bugs 574260, 573513, 573453, 574706, 567809 (Juan Pablo Ugarte, Ryu Jinno, myself)

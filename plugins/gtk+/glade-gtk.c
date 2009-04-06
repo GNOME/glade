@@ -10169,7 +10169,9 @@ glade_gtk_store_read_widget (GladeWidgetAdaptor *adaptor,
         GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
 
 	glade_gtk_store_read_columns (widget, node);
-	glade_gtk_store_read_data (widget, node);
+
+	if (GTK_IS_LIST_STORE (widget->object))
+		glade_gtk_store_read_data (widget, node);
 }
 
 /*--------------------------- GtkCellRenderer ---------------------------------*/
