@@ -5003,7 +5003,7 @@ glade_gtk_window_read_widget (GladeWidgetAdaptor *adaptor,
 		return;
 
 	/* First chain up and read in all the normal properties.. */
-        GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
+        GWA_GET_CLASS (GTK_TYPE_WIDGET)->read_widget (adaptor, widget, node);
 
 	glade_gtk_window_read_accel_groups (widget, node);
 }
@@ -5050,7 +5050,7 @@ glade_gtk_window_write_widget (GladeWidgetAdaptor *adaptor,
 		return;
 
 	/* First chain up and read in all the normal properties.. */
-        GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
+        GWA_GET_CLASS (GTK_TYPE_WIDGET)->write_widget (adaptor, widget, context, node);
 
 	glade_gtk_window_write_accel_groups (widget, context, node);
 }

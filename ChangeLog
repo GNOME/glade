@@ -1,3 +1,9 @@
+2009-04-07  Tristan Van Berkom <tvb@gnome.org>
+
+	* plugins/gtk+/glade-gtk.c: GtkWindow adaptor was skipping GtkWidget
+	adaptor when chaining up in ->write_widget() (causeing atk props,
+	accelerators and signals in libglade to be missed - bug 578211).
+
 2009-04-06  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/glade-button-editor.c: Properly initialize GValue on 
