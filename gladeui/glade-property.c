@@ -844,6 +844,8 @@ glade_property_equals (GladeProperty *property, ...)
  * @value: a #GValue
  *
  * Sets the property's value
+ *
+ * Returns: Whether the property was successfully set.
  */
 gboolean
 glade_property_set_value (GladeProperty *property, const GValue *value)

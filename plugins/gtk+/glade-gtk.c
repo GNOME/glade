@@ -10410,22 +10410,34 @@ glade_gtk_cell_renderer_set_use_attribute (GObject      *object,
 	g_free (attr_prop_name);
 }
 
+static GladeProperty *
+glade_gtk_cell_renderer_attribute_switch (GladeWidget *gwidget,
+					  const gchar *property_name)
+{
+	GladeProperty *property;
+	gchar         *use_attr_name = g_strdup_printf ("use-attr-%s", property_name);
+
+	property = glade_widget_get_property (gwidget, use_attr_name);
+	g_free (use_attr_name);
+
+	return property;
+}
+
 static gboolean
 glade_gtk_cell_renderer_property_enabled (GObject     *object,
 					  const gchar *property_name)
 {
-	GladeWidget   *gwidget = glade_widget_get_from_gobject (object);
-	gchar         *use_attr_name = g_strdup_printf ("use-attr-%s", property_name);
 	GladeProperty *property;
+	GladeWidget   *gwidget = glade_widget_get_from_gobject (object);
 	gboolean       use_attr = TRUE;
 
-	if ((property = glade_widget_get_property (gwidget, use_attr_name)) != NULL)
+	if ((property = 
+	     glade_gtk_cell_renderer_attribute_switch (gwidget, property_name)) != NULL)
 		glade_property_get (property, &use_attr);
-
-	g_free (use_attr_name);
 
 	return !use_attr;
 }
+
 
 void
 glade_gtk_cell_renderer_set_property (GladeWidgetAdaptor *adaptor,
@@ -10506,6 +10518,49 @@ glade_gtk_cell_renderer_write_widget (GladeWidgetAdaptor *adaptor,
 	glade_gtk_cell_renderer_write_properties (widget, context, node);
 
         GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
+}
+
+void
+glade_gtk_cell_renderer_read_widget (GladeWidgetAdaptor *adaptor,
+				     GladeWidget        *widget,
+				     GladeXmlNode       *node)
+{
+	GladeProperty *property;
+	GList *l;
+	static gint attr_len = 0, use_attr_len = 0;
+
+	if (!glade_xml_node_verify 
+	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+		return;
+
+	/* First chain up and read in all the properties... */
+        GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
+
+
+	/* Now set "use-attr-*" everywhere that the object property is non-default */
+	if (!attr_len)
+       	{
+		attr_len = strlen ("attr-");
+		use_attr_len = strlen ("use-attr-");
+       	}
+
+	for (l = widget->properties; l; l = l->next)
+	{
+		GladeProperty *switch_prop;
+		property = l->data;
+
+		if (strncmp (property->klass->id, "attr-", attr_len) != 0 &&
+		    strncmp (property->klass->id, "use-attr-", use_attr_len) != 0 &&
+		    (switch_prop = 
+		     glade_gtk_cell_renderer_attribute_switch (widget, property->klass->id)) != NULL)
+	       	{
+			if (glade_property_original_default (property))
+				glade_property_set (switch_prop, TRUE);
+			else	
+				glade_property_set (switch_prop, FALSE);
+		}
+	}
+
 }
 
 /*--------------------------- GtkCellLayout ---------------------------------*/
@@ -10642,8 +10697,11 @@ glade_gtk_cell_renderer_read_attributes (GladeWidget *widget, GladeXmlNode *node
 
 		if (attr_prop && use_attr_prop)
 		{	
-			glade_property_set (use_attr_prop, TRUE);	
-			glade_property_set (attr_prop, g_ascii_strtoll (column_str, NULL, 10));
+			gboolean use_attribute = FALSE;
+			glade_property_get (use_attr_prop, &use_attribute);
+
+			if (use_attribute)
+				glade_property_set (attr_prop, g_ascii_strtoll (column_str, NULL, 10));
 		}
 
 		g_free (name);
