@@ -2101,9 +2101,12 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
 						"stock-id", COMBO_COLUMN_PIXBUF,
 						NULL);
 
-		/* Allow any stock item, even when we should require valid builtin
-		 * item with a label */
-		gtk_entry_set_editable (GTK_ENTRY (GTK_BIN (combo)->child), TRUE);
+		/* Dont allow custom items where an actual GTK+ stock item is expected
+		 * (i.e. real items come with labels) */
+		if (klass->stock)	
+			gtk_entry_set_editable (GTK_ENTRY (GTK_BIN (combo)->child), FALSE);
+		else
+			gtk_entry_set_editable (GTK_ENTRY (GTK_BIN (combo)->child), TRUE);
 		
 		gtk_widget_show (combo);
 		gtk_box_pack_start (GTK_BOX (hbox), combo, FALSE, FALSE, 0); 

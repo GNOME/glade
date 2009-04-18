@@ -1,5 +1,8 @@
 2009-04-18  Tristan Van Berkom <tvb@gnome.org>
 
+	* plugins/gtk+/gtk+.xml.in: Fixed GtkButton to only allow real stock items,
+	gave GtkImage a default icon-size of GTK_ICON_SIZE_BUTTON (better than invalid).
+
 	* plugins/gtk+/glade-activatable-editor.c, 
 	gladeui/glade-editor-property.c: Maintain current widget selection
 	during commits of related-action (was causing crashes when the

@@ -989,7 +989,7 @@ embedded in another object</_tooltip>
             <visible-lines>2</visible-lines>
 	</property>
 	<property id="use-underline" custom-layout="True"/>
-	<property id="stock" _name="Stock Button" stock-icon="True" save="False" custom-layout="True">
+	<property id="stock" _name="Stock Button" stock="True" save="False" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamString</type>
 	  </parameter-spec>
@@ -1273,7 +1273,8 @@ embedded in another object</_tooltip>
 	<property id="pixbuf" _name="File Name" custom-layout="True"/>
 	<property id="pixel-size" custom-layout="True"/>
 	<!-- We have to save/load icon-size as int, and fake the enum -->
-	<property id="icon-size" _name="Icon Size" custom-layout="True" save="False">
+	<property id="icon-size" _name="Icon Size" custom-layout="True" 
+		  default="GTK_ICON_SIZE_BUTTON" save="False">
 	  <parameter-spec>
 	    <type>GParamEnum</type>
 	    <value-type>GtkIconSize</value-type>
