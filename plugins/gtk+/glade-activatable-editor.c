@@ -236,7 +236,6 @@ reset_properties (GladeWidget *gwidget,
 				list.data = image;
 				glade_command_unlock_widget (image);
 				glade_command_delete (&list);
-				glade_project_selection_set (gwidget->project, gwidget->object, TRUE);
 			}
 
 			property = glade_widget_get_property (gwidget, "label");
@@ -313,6 +312,10 @@ reset_properties (GladeWidget *gwidget,
 			//reset_property (gwidget, "use-stock");
 		}
 	}
+	/* Make sure none of our property resets screw with the current selection,
+	 * since we rely on the selection during commit time.
+	 */
+	glade_project_selection_set (gwidget->project, gwidget->object, TRUE);
 }
 
 static void

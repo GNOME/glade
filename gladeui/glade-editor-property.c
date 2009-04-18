@@ -2101,8 +2101,9 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
 						"stock-id", COMBO_COLUMN_PIXBUF,
 						NULL);
 
-		if (klass->stock)
-			gtk_entry_set_editable (GTK_ENTRY (GTK_BIN (combo)->child), FALSE);
+		/* Allow any stock item, even when we should require valid builtin
+		 * item with a label */
+		gtk_entry_set_editable (GTK_ENTRY (GTK_BIN (combo)->child), TRUE);
 		
 		gtk_widget_show (combo);
 		gtk_box_pack_start (GTK_BOX (hbox), combo, FALSE, FALSE, 0); 
@@ -2910,6 +2911,8 @@ glade_eprop_object_show_dialog (GtkWidget           *dialog_button,
 		/* Dont bother if the user canceled the widget */
 		if ((new_widget = glade_command_create (create_adaptor, NULL, NULL, project)) != NULL)
 		{
+			glade_project_selection_set (project, eprop->property->widget->object, TRUE);
+
 			value = glade_property_class_make_gvalue_from_string
 				(eprop->klass, new_widget->name, project, NULL);
 
