@@ -2855,7 +2855,11 @@ glade_eprop_object_show_dialog (GtkWidget           *dialog_button,
 
 		if (selected)
 		{
-			GValue *value = glade_property_class_make_gvalue_from_string
+			GValue *value;
+
+			glade_project_selection_set (project, eprop->property->widget->object, TRUE);
+
+			value = glade_property_class_make_gvalue_from_string
 				(eprop->klass, selected->name, project, eprop->property->widget);
 
 			/* Unparent the widget so we can reuse it for this property */
