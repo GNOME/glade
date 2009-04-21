@@ -1,0 +1,38 @@
+<Project xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:foaf="http://xmlns.com/foaf/0.1/"
+         xmlns:gnome="http://api.gnome.org/doap-extensions#"
+         xmlns="http://usefulinc.com/ns/doap#">
+
+  <name xml:lang="en">Glade Interface Designer</name>
+  <shortdesc xml:lang="en">User Interface Builder for GTK+ applications</shortdesc>
+  <homepage rdf:resource="http://glade.gnome.org/" />
+  <mailing-list rdf:resource="http://lists.ximian.com/mailman/listinfo/glade-devel" />
+  <download-page rdf:resource="http://download.gnome.org/sources/glade3/" />
+  <bug-database rdf:resource="http://bugzilla.gnome.org/browse.cgi?product=glade3" />
+
+  <!-- DOAP category: This is used to categorize repositories in cgit.
+       Pulse has taken its best guess at the correct category.  You may
+       want to replace the rdf:resource attribute with one of the following:
+         http://api.gnome.org/doap-extensions#admin
+         http://api.gnome.org/doap-extensions#bindings
+         http://api.gnome.org/doap-extensions#deprecated
+         http://api.gnome.org/doap-extensions#desktop
+         http://api.gnome.org/doap-extensions#development
+         http://api.gnome.org/doap-extensions#infrastructure
+         http://api.gnome.org/doap-extensions#platform
+         http://api.gnome.org/doap-extensions#productivity
+       NOTE: There is an "Other" categorization on cgit, but we do not have a
+       DOAP category for it.  If your module does not belong to one of these
+       groups, then do not include a category property in your DOAP file.
+  -->
+  <category rdf:resource="http://api.gnome.org/doap-extensions#development" />
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Tristan Van Berkom</foaf:name>
+      <foaf:mbox rdf:resource="tristan.van.berkom@gmail.com" />
+      <gnome:userid>tvb</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+</Project>
