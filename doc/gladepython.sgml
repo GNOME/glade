@@ -1,0 +1,82 @@
+<refentry id="pythonsupport" revision="7 Nov 2008">
+ <refmeta>
+   <refentrytitle>Python Gtk widgets support</refentrytitle>
+   <refmiscinfo>Glade UI</refmiscinfo>
+ </refmeta>
+ <refnamediv>
+   <refname>Add python support to your catalog</refname>
+   <refpurpose>
+How to write and install a catalog for a python widget library
+   </refpurpose>
+ </refnamediv>
+
+ <refsect1>
+   <title>Introduction</title>
+Glade supports loading widgets coded in python by linking and running the python
+interpreter from the gladepython catalog plugin.
+   <para>
+
+   </para>
+
+   <para>
+So in order for glade to include your python gtk widgets you will have to:
+
+<varlistentry><listitem>
+a) specify gladepython support code as your plugin library.
+</listitem></varlistentry>
+
+<varlistentry><listitem>
+b) set glade_python_init as you init function.
+</listitem></varlistentry>
+
+<varlistentry><listitem>
+c) make sure your catalog name is the same as your python import library since
+glade_python_init() will use this name to import your widgets into the
+interpreter.
+</listitem></varlistentry>
+
+     <programlisting>
+<![CDATA[
+<glade-catalog name="pythonplugin" library="gladepython"
+domain="glade-3" depends="gtk+">
+ <init-function>glade_python_init</init-function>
+
+ <glade-widget-classes>
+   <glade-widget-class title="MyBox" name="MyBox" generic-name="mybox"/>
+ </glade-widget-classes>
+
+ <glade-widget-group name="python" title="Python">
+   <glade-widget-class-ref name="MyBox"/>
+ </glade-widget-group>
+</glade-catalog>]]>
+     </programlisting>
+   </para>
+
+   <para>
+Glade's python interpreter will look up for your widgets in the same
+places it looks
+for regular catalogs plugins, that is $GLADE_ENV_CATALOG_PATH
+enviroment variable
+and `pkg-config --variable=catalogdir gladeui-1.0`
+
+So the easiest thing would be to make a symlink in one of those directory, just
+do not forget that the name should be the one specified in your catalog name.
+   </para>
+
+   <para>
+pythonplugin.py
+     <programlisting>
+<![CDATA[
+import gobject
+import gtk
+
+class MyBox(gtk.HBox):
+       __gtype_name__ = 'MyBox'
+
+       def __init__(self):
+               gtk.HBox.__init__(self)
+</glade-catalog>]]>
+     </programlisting>
+   </para>
+ </refsect1>
+</refentry>

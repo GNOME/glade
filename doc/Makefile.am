@@ -76,7 +76,8 @@ content_files=\
 	version.xml \
 	catalogintro.sgml \
 	widgetclasses.sgml \
-	properties.sgml
+	properties.sgml \
+	gladepython.sgml
 
 # SGML files where gtk-doc abbrevations (#GtkWidget) are expanded
 # These files must be listed here *and* in content_files
@@ -84,7 +85,8 @@ content_files=\
 expand_content_files=\
 	catalogintro.sgml \
 	widgetclasses.sgml \
-	properties.sgml
+	properties.sgml \
+	gladepython.sgml
 
 # CFLAGS and LDFLAGS for compiling gtkdoc-scangobj with your library.
 # Only needed if you are using gtkdoc-scangobj to dynamically query widget
