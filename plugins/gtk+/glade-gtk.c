@@ -705,7 +705,6 @@ glade_gtk_widget_write_atk_properties_gtkbuilder (GladeWidget        *widget,
 {
 	GladeXmlNode  *child_node, *object_node;
 	GladeProperty *name_prop, *desc_prop;
-	
 
 	name_prop = glade_widget_get_property (widget, "AtkObject::accessible-name");
 	desc_prop = glade_widget_get_property (widget, "AtkObject::accessible-description");
@@ -714,6 +713,8 @@ glade_gtk_widget_write_atk_properties_gtkbuilder (GladeWidget        *widget,
 	if (!glade_property_default (name_prop) || 
 	    !glade_property_default (desc_prop))
 	{
+		gchar *atkname = g_strdup_printf ("%s-atkobject", widget->name);
+
 		child_node = glade_xml_node_new (context, GLADE_XML_TAG_CHILD);
 		glade_xml_node_append_child (node, child_node);
 
@@ -730,13 +731,14 @@ glade_gtk_widget_write_atk_properties_gtkbuilder (GladeWidget        *widget,
 
 		glade_xml_node_set_property_string (object_node, 
 						    GLADE_XML_TAG_ID, 
-						    "dummy");
+						    atkname);
 	
 		if (!glade_property_default (name_prop))
 			glade_gtk_widget_write_atk_property (name_prop, context, object_node);
 		if (!glade_property_default (desc_prop))
 			glade_gtk_widget_write_atk_property (desc_prop, context, object_node);
 
+		g_free (atkname);
 	}
 
 }
@@ -8168,10 +8170,16 @@ glade_gtk_parse_attributes (GladeWidget  *widget,
 		      (prop, GLADE_XML_TAG_NAME, NULL)))
 			continue;
 
-		if (!(value = glade_xml_get_content (prop)))
+		if (!(value = glade_xml_get_property_string_required
+		      (prop, GLADE_TAG_VALUE, NULL)))
 		{
-			g_free (name);
-			continue;
+			/* for a while, Glade was broken and was storing
+			 * attributes in the node contents */
+			if (!(value = glade_xml_get_content (prop)))
+			{
+				g_free (name);
+				continue;
+			}
 		}
 
 		if ((attr_type = 
@@ -8277,8 +8285,8 @@ glade_gtk_label_write_attributes (GladeWidget        *widget,
 		attr_node = glade_xml_node_new (context, GLADE_TAG_ATTRIBUTE);
 		glade_xml_node_append_child (node, attr_node);
 
-		glade_xml_set_content (attr_node, attr_value);
 		glade_xml_node_set_property_string (attr_node, GLADE_TAG_NAME, attr_type);
+		glade_xml_node_set_property_string (attr_node, GLADE_TAG_VALUE, attr_value);
 	}
 }
 

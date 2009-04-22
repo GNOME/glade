@@ -1,3 +1,12 @@
+2009-04-22  Tristan Van Berkom <tvb@gnome.org>
+	
+	* plugins/gtk+/glade-gtk.c: Made Atk proxy objects always have unique names (at
+	least as unique as the widget they are created for) (bug 579565).
+
+2009-04-22  Davyd Madeley <davyd@madeley.id.au>
+
+	* plugins/gtk+/glade-gtk.c: Fixed output format for GtkLabel attributes (bug 579793).
+
 2009-04-21  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* doc/gladepython.sgml: added Glade Python plugin documentation.
