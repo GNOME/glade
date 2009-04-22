@@ -2875,10 +2875,10 @@ glade_window_set_initial_size (GladeWindow *window, GKeyFile *config)
 }
 
 static void
-load_paned_position (GKeyFile *config, GtkWidget *pane, const gchar *name)
+load_paned_position (GKeyFile *config, GtkWidget *pane, const gchar *name, gint default_position)
 {
 	gtk_paned_set_position (GTK_PANED (pane),
-				g_key_file_get_integer (config, name, "position", NULL));
+				key_file_get_int (config, name, "position", default_position));
 }
 
 static void
@@ -2888,9 +2888,9 @@ glade_window_config_load (GladeWindow *window)
 	
 	glade_window_set_initial_size (window, config);
 	
-	load_paned_position (config, window->priv->center_pane, "center_pane");
-	load_paned_position (config, window->priv->left_pane, "left_pane");
-	load_paned_position (config, window->priv->right_pane, "right_pane");
+	load_paned_position (config, window->priv->center_pane, "center_pane", 400);
+	load_paned_position (config, window->priv->left_pane, "left_pane", 200);
+	load_paned_position (config, window->priv->right_pane, "right_pane", 220);
 }
 
 static void
@@ -3028,7 +3028,6 @@ glade_window_init (GladeWindow *window)
 	gtk_paned_pack1 (GTK_PANED (hpaned2), palette, FALSE, FALSE);
 	setup_dock (&priv->docks[DOCK_PALETTE], palette, 200, 540, 
 		    _("Palette"), "palette", hpaned2, TRUE);
-	gtk_widget_set_size_request (palette, 200, 540);
 	gtk_widget_show (palette);
 
 	/* inspectors */

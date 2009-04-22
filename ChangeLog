@@ -3,6 +3,9 @@
 	* plugins/gtk+/glade-gtk.c: Made Atk proxy objects always have unique names (at
 	least as unique as the widget they are created for) (bug 579565).
 
+	* src/glade-window.c: Removed hard coded size request to palette (Bug 579624)
+	(added some default pane positions).
+
 2009-04-22  Davyd Madeley <davyd@madeley.id.au>
 
 	* plugins/gtk+/glade-gtk.c: Fixed output format for GtkLabel attributes (bug 579793).
