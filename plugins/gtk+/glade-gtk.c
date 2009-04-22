@@ -4334,8 +4334,8 @@ glade_gtk_box_notebook_child_insert_remove_action (GladeWidgetAdaptor *adaptor,
 	parent = glade_widget_get_from_gobject (container);
 	glade_command_push_group (group_format, glade_widget_get_name (parent));
 	
-	children = glade_widget_adaptor_get_children (adaptor, container);
 	/* Make sure widgets does not get destroyed */
+	children = glade_widget_adaptor_get_children (adaptor, container);
 	g_list_foreach (children, (GFunc) g_object_ref, NULL);
 	
 	glade_widget_property_get (parent, size_prop, &size);
