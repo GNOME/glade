@@ -1,3 +1,10 @@
+2009-04-24  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* plugins/gtk+/glade-gtk.c:
+	  o fixed icon source state write bug on write_icon_sources()
+	  o fixed loading bug in glade_gtk_icon_factory_read_sources()
+	    we either use g_list_append() or steal/insert to add new icon sources
+
 2009-04-22  Tristan Van Berkom <tvb@gnome.org>
 
 	* NEWS, configure.ac: Rolling 3.6.3

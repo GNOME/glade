@@ -9382,7 +9382,24 @@ glade_gtk_icon_factory_read_sources (GladeWidget  *widget,
 		}
 
 		if ((list = g_hash_table_lookup (sources->sources, g_strdup (current_icon_name))) != NULL)
-			list = g_list_prepend (list, source);
+		{
+			GList *new_list = g_list_append (list, source);
+			
+			/* Warning: if we use g_list_prepend() the returned pointer will be different
+			 * so we would have to replace the list pointer in the hash table.
+			 * But before doing that we have to steal the old list pointer otherwise
+			 * we would have to make a copy then add the new icon to finally replace the hash table
+			 * value.
+			 * Anyways if we choose to prepend we would have to reverse the list outside this loop
+			 * so its better to append.
+			 */
+			if (new_list != list)
+			{
+				/* current g_list_append() returns the same pointer so this is not needed */
+				g_hash_table_steal (sources->sources, current_icon_name);
+				g_hash_table_insert (sources->sources, g_strdup (current_icon_name), new_list);
+			}
+		}
 		else
 		{
 			list = g_list_append (NULL, source);
@@ -9455,7 +9472,7 @@ write_icon_sources (gchar          *icon_name,
 
 		if (!gtk_icon_source_get_state_wildcarded (source))
 		{
-			GtkStateType state = gtk_icon_source_get_size (source);
+			GtkStateType state = gtk_icon_source_get_state (source);
 			string = glade_utils_enum_string_from_value (GTK_TYPE_STATE_TYPE, state);
 			glade_xml_node_set_property_string (source_node, GLADE_TAG_STATE, string);
 			g_free (string);
