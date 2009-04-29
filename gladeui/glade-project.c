@@ -2139,6 +2139,9 @@ name_context_by_widget (GladeProject *project,
 	TopLevelInfo  *tinfo;
 	GladeWidget   *iter;
 	GList         *list;
+	
+	if (project->priv->naming_policy == GLADE_POLICY_PROJECT_WIDE)
+		return project->priv->toplevel_names;
 
 	iter = gwidget;
 	while (iter->parent) iter = iter->parent;
@@ -2292,7 +2295,7 @@ glade_project_available_widget_name (GladeProject *project,
 	context = name_context_by_widget (project, widget);
 	g_assert (context);
 
-	if (!widget->parent)
+	if (project->priv->naming_policy == GLADE_POLICY_PROJECT_WIDE || !widget->parent)
 		return (!glade_name_context_has_name (context, name) &&
 			!glade_name_context_has_name (project->priv->toplevel_names, name));
 
