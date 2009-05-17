@@ -1959,16 +1959,13 @@ glade_base_editor_add_default_properties (GladeBaseEditor *editor,
 	GtkWidget *label, *entry;
 	GtkTreeModel *child_class;
 	GtkCellRenderer *renderer;
-	gboolean retval;
-	GladeWidget *gparent;
 	GObject *child = glade_widget_get_object (gchild);
 	
 	g_return_if_fail (GLADE_IS_BASE_EDITOR (editor));
 	g_return_if_fail (GLADE_IS_WIDGET (gchild));
 	g_return_if_fail (GLADE_IS_WIDGET (gchild->parent));
 
-	gparent = glade_widget_get_parent (gchild);
-	child_class = get_children_model_for_type (editor, G_OBJECT_TYPE (gparent->object));
+	child_class = get_children_model_for_type (editor, G_OBJECT_TYPE (child));
 	
 	/* Name */
 	label = gtk_label_new (_("Name :"));
@@ -1994,8 +1991,8 @@ glade_base_editor_add_default_properties (GladeBaseEditor *editor,
 		gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (entry), renderer, "text",
 						GLADE_BASE_EDITOR_CLASS_NAME, NULL);
 		
-		if ((retval = glade_base_editor_get_type_info (editor, &combo_iter, 
-							       G_OBJECT_TYPE (child), -1)))
+		if (glade_base_editor_get_type_info (editor, &combo_iter, 
+						     G_OBJECT_TYPE (child), -1))
 			gtk_combo_box_set_active_iter (GTK_COMBO_BOX (entry), &combo_iter);
 	
 		g_signal_connect (entry, "changed", G_CALLBACK (glade_base_editor_type_changed), editor);

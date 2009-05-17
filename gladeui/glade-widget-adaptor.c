@@ -257,17 +257,13 @@ glade_abort_if_derived_adaptors_exist (GType type)
  *******************************************************************************/
 #define gwa_get_parent_adaptor(a) glade_widget_adaptor_get_parent_adaptor (a)
 
-/* XXX DOCME
- */
-GladeWidgetAdaptor *
-glade_widget_adaptor_get_parent_adaptor (GladeWidgetAdaptor *adaptor)
+static GladeWidgetAdaptor *
+glade_widget_adaptor_get_parent_adaptor_by_type (GType adaptor_type)
 {
 	GladeWidgetAdaptor *parent_adaptor = NULL;
 	GType               iter_type;
 
-	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
-
-	for (iter_type = g_type_parent (adaptor->type);
+	for (iter_type = g_type_parent (adaptor_type);
 	     iter_type > 0;
 	     iter_type = g_type_parent (iter_type))
 	{
@@ -279,6 +275,15 @@ glade_widget_adaptor_get_parent_adaptor (GladeWidgetAdaptor *adaptor)
 	return NULL;
 }
 
+/* XXX DOCME
+ */
+GladeWidgetAdaptor *
+glade_widget_adaptor_get_parent_adaptor (GladeWidgetAdaptor *adaptor)
+{
+	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
+
+	return glade_widget_adaptor_get_parent_adaptor_by_type (adaptor->type);
+}
 
 static gint
 gwa_signal_comp (gconstpointer a, gconstpointer b)
@@ -2000,9 +2005,12 @@ create_icon_name_for_object_class (const gchar *class_name,
 	/* check if icon is available */
 	if (!gtk_icon_theme_has_icon (gtk_icon_theme_get_default (), name))
 	{
+		GladeWidgetAdaptor *parent = glade_widget_adaptor_get_parent_adaptor_by_type (class_type);
 		g_warning ("No icon named '%s' was found for object class '%s'.", name, class_name);
 		g_free (name);
-		name = g_strdup (DEFAULT_ICON_NAME);
+		
+		name = g_strdup ((parent && parent->icon_name) ?
+				 parent->icon_name : DEFAULT_ICON_NAME);
 	}
 	
 	return name;

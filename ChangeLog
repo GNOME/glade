@@ -1,3 +1,11 @@
+2009-05-17  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-base-editor.c: fixed bug in glade_base_editor_add_default_properties()
+	  It was setting the wrong type model.
+
+	* gladeui/glade-widget-adaptor.c: use parent icon if none is found for the class
+	  This helps a lot for custom composite widget.
+
 2009-04-29  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-project.c: Check project naming policy at add_object() time (bug 580745).
