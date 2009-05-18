@@ -59,7 +59,6 @@ libgladeui_1_la_SOURCES = \
 	glade-palette-box.h \
 	glade-palette-expander.h \
 	glade-popup.h \
-	glade-catalog.h \
 	glade-marshallers.h \
 	glade-accumulators.h \
 	glade-widget-action.c \
