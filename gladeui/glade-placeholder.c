@@ -356,7 +356,14 @@ glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 			handled = TRUE;
 		}
 	}
-	else if (event->button == 3 && event->type == GDK_BUTTON_PRESS)
+
+	/* Give some kind of access in case of missing right button */
+	if (!handled && event->type == GDK_BUTTON_PRESS &&
+	    (event->button == 3 || 
+	     (event->button == 1 && 
+	      ((event->state & GDK_MOD1_MASK) != 0 ||
+	       (event->state & GDK_MOD2_MASK) != 0 ||
+	       (event->state & GDK_MOD2_MASK) != 0))))
 	{
 		glade_popup_placeholder_pop (placeholder, event);
 		handled = TRUE;

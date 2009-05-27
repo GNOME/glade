@@ -18,6 +18,7 @@
  *
  * Authors:
  *   Chema Celorio <chema@celorio.com>
+ *   Tristan Van Berkom <tristan.van.berkom@gmail.com>
  */
 
 #ifdef HAVE_CONFIG_H

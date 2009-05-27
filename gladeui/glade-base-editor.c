@@ -813,7 +813,11 @@ glade_base_editor_popup_handler (GtkWidget *treeview,
 	GtkTreePath *path;
 	GtkWidget *popup;
 
-	if (event->button == 3)
+	if (event->button == 3 || 
+	    (event->button == 1 && 
+	     ((event->state & GDK_MOD1_MASK) != 0 ||
+	      (event->state & GDK_MOD2_MASK) != 0 ||
+	      (event->state & GDK_MOD2_MASK) != 0)))
 	{
 		if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (treeview),
 			(gint) event->x, (gint) event->y, &path, NULL, NULL, NULL))

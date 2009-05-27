@@ -916,9 +916,14 @@ button_press_cb (GtkWidget      *widget,
 	GtkTreePath      *path      = NULL;
 	gboolean          handled   = FALSE;
 
-	if (event->button == 3 &&
-	    event->window == gtk_tree_view_get_bin_window (view))
-	{
+	/* Give some kind of access in case of missing right button */
+	if (event->window == gtk_tree_view_get_bin_window (view) &&
+	    (event->button == 3 || 
+	     (event->button == 1 && 
+	      ((event->state & GDK_MOD1_MASK) != 0 ||
+	       (event->state & GDK_MOD2_MASK) != 0 ||
+	       (event->state & GDK_MOD2_MASK) != 0))))
+       	{
 		if (gtk_tree_view_get_path_at_pos (view, (gint) event->x, (gint) event->y,
 					   &path, NULL, 
 					   NULL, NULL) && path != NULL)
