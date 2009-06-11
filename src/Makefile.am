@@ -10,12 +10,13 @@ glade_3_CPPFLAGS = \
 
 glade_3_CFLAGS =           \
 	$(GTK_CFLAGS)      \
+	$(IGE_MAC_CFLAGS)  \
 	$(WARN_CFLAGS)     \
 	$(AM_CFLAGS)
 
 glade_3_LDFLAGS = $(AM_LDFLAGS)
 
-glade_3_LDADD = $(top_builddir)/gladeui/libgladeui-1.la
+glade_3_LDADD = $(top_builddir)/gladeui/libgladeui-1.la $(IGE_MAC_LIBS)
 
 glade_3_SOURCES = \
 	glade-window.c \

@@ -38,6 +38,11 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
+#ifdef MAC_INTEGRATION
+#  include <ige-mac-integration.h>
+#endif
+
+
 #define ACTION_GROUP_STATIC             "GladeStatic"
 #define ACTION_GROUP_PROJECT            "GladeProject"
 #define ACTION_GROUP_PROJECTS_LIST_MENU "GladeProjectsList"
@@ -3172,6 +3177,19 @@ glade_window_init (GladeWindow *window)
 	
 	/* Load widget state */
 	glade_window_config_load (window);
+
+#ifdef MAC_INTEGRATION
+	{
+		/* Fix up the menubar for MacOSX Quartz builds */
+		gtk_widget_hide (menubar);
+		ige_mac_menu_set_menu_bar (GTK_MENU_SHELL (menubar));
+		
+		widget = gtk_ui_manager_get_widget (window->priv->ui, "/MenuBar/FileMenu/Quit");
+		ige_mac_menu_set_quit_menu_item (GTK_MENU_ITEM (widget));
+	}
+#endif
+
+
 }
 
 static void
