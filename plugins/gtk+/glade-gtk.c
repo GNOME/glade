@@ -4962,18 +4962,18 @@ glade_gtk_fixed_layout_remove_child (GladeWidgetAdaptor  *adaptor,
 
 /* ----------------------------- GtkWindow ------------------------------ */
 void
-glade_gtk_window_post_create (GladeWidgetAdaptor *adaptor,
-			      GObject            *object,
-			      GladeCreateReason   reason)
+glade_gtk_window_deep_post_create (GladeWidgetAdaptor *adaptor,
+				   GObject            *object,
+				   GladeCreateReason   reason)
 {
 	GtkWindow *window = GTK_WINDOW (object);
 
 	g_return_if_fail (GTK_IS_WINDOW (window));
 
 	/* Chain her up first */
-	GWA_GET_CLASS (GTK_TYPE_CONTAINER)->post_create (adaptor, object, reason);
+	GWA_GET_CLASS (GTK_TYPE_CONTAINER)->deep_post_create (adaptor, object, reason);
 
-
+	g_signal_connect (object, "delete", G_CALLBACK (gtk_widget_show), NULL);
 }
 
 #define GLADE_TAG_ACCEL_GROUPS "accel-groups"

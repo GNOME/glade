@@ -2566,7 +2566,6 @@ typedef struct {
 	GladeProject  *project;
 	GladeNamingPolicy policy;
 	GladeNamingPolicy old_policy;
-	gboolean run_once;
 } GladeCommandSetPolicy;
 
 
@@ -2588,14 +2587,12 @@ glade_command_set_policy_execute(GladeCommand *cmd)
 	g_return_val_if_fail (me->project != NULL, TRUE);
 
 	/* set the new policy */
-	glade_project_set_naming_policy (me->project, me->policy, me->run_once == FALSE);
+	glade_project_set_naming_policy (me->project, me->policy);
 
 	/* swap the current values with the old values to prepare for undo */
 	policy         = me->policy;
 	me->policy     = me->old_policy;
 	me->old_policy = policy;
-
-	me->run_once = TRUE;
 	
 	return TRUE;
 }
@@ -2669,8 +2666,6 @@ glade_command_set_project_naming_policy  (GladeProject       *project,
 		me->project = project;
 		me->policy = policy;
 		me->old_policy = glade_project_get_naming_policy (project);
-
-		me->run_once = FALSE;
 
 		GLADE_COMMAND(me)->description = g_strdup_printf("dummy string");
 	

@@ -755,6 +755,8 @@ project_add_widget_cb (GladeProject   *project,
 		    &widget_iter);
 
 	g_list_free (l);
+
+	gtk_tree_view_expand_all (GTK_TREE_VIEW (inspector->priv->view));
 }
 
 static void

@@ -19,7 +19,7 @@ libgladepython_la_CFLAGS = \
 	$(GTK_CFLAGS)                    \
 	$(PLUGINS_WARN_CFLAGS)           \
 	$(AM_CPPFLAGS)
-libgladepython_la_LDFLAGS = -module -avoid-version $(PYTHON_LIBS) $(AM_LDFLAGS)
+libgladepython_la_LDFLAGS = -module -avoid-version $(AM_LDFLAGS)
 libgladepython_la_LIBADD = $(libgladeui) $(PYTHON_LIBS)
 
 if PLATFORM_WIN32

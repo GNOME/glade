@@ -1045,7 +1045,7 @@ glade_project_read_naming_policy (GladeProject *project,
 			break;
 	}
 
-	glade_project_set_naming_policy (project, policy, FALSE);
+	glade_project_set_naming_policy (project, policy);
 }
 
 
@@ -2139,9 +2139,9 @@ name_context_by_widget (GladeProject *project,
 	TopLevelInfo  *tinfo;
 	GladeWidget   *iter;
 	GList         *list;
-	
-	if (project->priv->naming_policy == GLADE_POLICY_PROJECT_WIDE)
-		return project->priv->toplevel_names;
+
+	if (!gwidget->parent)
+		return NULL;
 
 	iter = gwidget;
 	while (iter->parent) iter = iter->parent;
@@ -2253,19 +2253,24 @@ glade_project_release_widget_name (GladeProject *project, GladeWidget *gwidget, 
 	}
 
 	if (context)
+	{
 		glade_name_context_release_name (context, widget_name);
+		//g_print ("Released widget name %s from sub context\n", widget_name);
+	}
 
-	if (!gwidget->parent)
+	if (project->priv->naming_policy == GLADE_POLICY_PROJECT_WIDE || !gwidget->parent)
 	{
 		glade_name_context_release_name (project->priv->toplevel_names, widget_name);
-
-		if (context && glade_name_context_n_names (context) == 0)
-		{
-			glade_name_context_destroy (context);
-			g_free (tinfo);
-			project->priv->toplevels = g_list_remove (project->priv->toplevels, tinfo);
-		}
+		//g_print ("Released widget name %s from toplevel context\n", widget_name);
 	}
+
+	if (context && glade_name_context_n_names (context) == 0)
+       	{
+		glade_name_context_destroy (context);
+		g_free (tinfo);
+		project->priv->toplevels = g_list_remove (project->priv->toplevels, tinfo);
+	}
+
 }
 
 /**
@@ -2284,7 +2289,9 @@ glade_project_available_widget_name (GladeProject *project,
 				     const gchar  *name)
 {
 	GladeNameContext *context;
-
+	gboolean          sub_has_name = FALSE;
+	gboolean          available = FALSE;
+	
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
 	g_return_val_if_fail (widget->project == project, FALSE);
@@ -2292,14 +2299,50 @@ glade_project_available_widget_name (GladeProject *project,
 	if (!name || !name[0])
 		return FALSE;
 
-	context = name_context_by_widget (project, widget);
-	g_assert (context);
+	if ((context = name_context_by_widget (project, widget)) != NULL)
+		sub_has_name = glade_name_context_has_name (context, name);
 
-	if (project->priv->naming_policy == GLADE_POLICY_PROJECT_WIDE || !widget->parent)
-		return (!glade_name_context_has_name (context, name) &&
-			!glade_name_context_has_name (project->priv->toplevel_names, name));
+	if (project->priv->naming_policy == GLADE_POLICY_PROJECT_WIDE)
+       	{
+		available = (!sub_has_name &&
+			     !glade_name_context_has_name (project->priv->toplevel_names, name));
 
-	return !glade_name_context_has_name (context, name);
+	} 
+	else if (context)
+		available = !sub_has_name;
+	else
+		available = !glade_name_context_has_name (project->priv->toplevel_names, name);
+
+	//g_print ("widget name %s is available: %d (policy %d)\n", name, available, project->priv->naming_policy);
+
+	return available;
+}
+
+static void
+glade_project_reserve_widget_name (GladeProject *project, GladeWidget *gwidget, const char *widget_name)
+{
+	GladeNameContext *context;
+
+	if (!glade_project_available_widget_name (project, gwidget, widget_name))
+	{
+		g_warning ("BUG: widget '%s' attempting to reserve an unavailable widget name '%s' !",
+			   gwidget->name, widget_name);
+		return;
+	}
+
+	/* Add to name context(s) */
+	if ((context = name_context_by_widget (project, gwidget)) != NULL)
+	{
+		//g_print ("Reserving widget name %s from sub context\n", widget_name);
+		glade_name_context_add_name (context, widget_name);
+	}
+
+	if (project->priv->naming_policy == GLADE_POLICY_PROJECT_WIDE || !gwidget->parent)
+       	{
+		glade_name_context_add_name (project->priv->toplevel_names, widget_name);
+		//g_print ("Reserving widget name %s from main context\n", widget_name);
+	}
+
 }
 
 /**
@@ -2329,13 +2372,19 @@ glade_project_new_widget_name (GladeProject *project,
 
 	context = name_context_by_widget (project, widget);
 
-	/* should use dual here to encourage unique names across the file... */
-	if (context && widget->parent)
-		name = glade_name_context_new_name (context, base_name);
+	if (project->priv->naming_policy == GLADE_POLICY_PROJECT_WIDE)
+       	{
+		if (context)
+			name = glade_name_context_dual_new_name (context, project->priv->toplevel_names, base_name);
+		else
+			name = glade_name_context_new_name (project->priv->toplevel_names, base_name);
+	} 
 	else if (context)
-		name = glade_name_context_dual_new_name (context, project->priv->toplevel_names, base_name);
+		name = glade_name_context_new_name (context, base_name);
 	else
 		name = glade_name_context_new_name (project->priv->toplevel_names, base_name);
+
+	//g_print ("Allocating widget name %s, widget parent %p\n", name, widget->parent);
 
 	return name;
 }
@@ -2354,8 +2403,7 @@ glade_project_set_widget_name (GladeProject *project,
 			       GladeWidget  *widget, 
 			       const gchar  *name)
 {
-	GladeNameContext *context = NULL;
-	gchar            *new_name;
+	gchar  *new_name;
 
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
@@ -2371,13 +2419,7 @@ glade_project_set_widget_name (GladeProject *project,
 	else
 		new_name = g_strdup (name);
 
-
-	/* Add to name context(s) */
-	context = name_context_by_widget (project, widget);
-	g_assert (context);
-	glade_name_context_add_name (context, new_name);
-	if (!widget->parent)
-		glade_name_context_add_name (project->priv->toplevel_names, new_name);
+	glade_project_reserve_widget_name (project, widget, new_name);
 
 	/* Release old name and set new widget name */
 	glade_project_release_widget_name (project, widget, widget->name);
@@ -2420,7 +2462,6 @@ glade_project_add_object (GladeProject *project,
 			  GladeProject *old_project, 
 			  GObject      *object)
 {
-	GladeNameContext *context;
 	GladeWidget      *gwidget;
 	GList            *list, *children;
 	gchar            *name;
@@ -2468,16 +2509,13 @@ glade_project_add_object (GladeProject *project,
 	if (!glade_project_available_widget_name (project, gwidget, gwidget->name))
 	{
 		name = glade_project_new_widget_name (project, gwidget, gwidget->name);
+
 		glade_widget_set_name (gwidget, name);
+
 		g_free (name);
 	}
 
-	/* Now lock down the widget name. */
-	context = name_context_by_widget (project, gwidget);
-	g_assert (context);
-	glade_name_context_add_name (context, gwidget->name);
-	if (!gwidget->parent)
-		glade_name_context_add_name (project->priv->toplevel_names, gwidget->name);
+	glade_project_reserve_widget_name (project, gwidget, gwidget->name);
 
 	if ((children = glade_widget_adaptor_get_children
 	     (gwidget->adaptor, gwidget->object)) != NULL)
@@ -2563,91 +2601,52 @@ glade_project_remove_object (GladeProject *project, GObject *object)
 		glade_project_release_widget_name (project, gwidget,
 						   glade_widget_get_name (gwidget));
 		project->priv->objects = g_list_delete_link (project->priv->objects, link);
-	}
 
-	g_signal_emit (G_OBJECT (project),
-		       glade_project_signals [REMOVE_WIDGET],
-		       0,
-		       gwidget);
+		g_signal_emit (G_OBJECT (project),
+			       glade_project_signals [REMOVE_WIDGET],
+			       0,
+			       gwidget);
+	}
 }
 
 static void
-adjust_naming_policy (GladeProject *project, gboolean use_command)
+adjust_naming_policy (GladeProject       *project, 
+		      GladeNamingPolicy   policy)
 {
-	GList *list;
+	GList *list, *objects;
 	GladeWidget *widget;
-	TopLevelInfo *tinfo;
-	GladeNameContext *context;
 
-	if (project->priv->naming_policy == GLADE_POLICY_PROJECT_WIDE)
+	objects = g_list_copy (project->priv->objects);
+
+	/* Remove all toplevels (recursive operation) */
+	for (list = objects; list; list = list->next)
 	{
-		for (list = project->priv->objects; list; list = list->next)
-		{
-			widget = glade_widget_get_from_gobject (list->data);
-			
-			if (!widget->parent)
-				continue;
-
-			if (!glade_name_context_has_name (project->priv->toplevel_names, widget->name))
-				glade_name_context_add_name (project->priv->toplevel_names, widget->name);
-			else
-			{
-				gchar *new_name = glade_name_context_new_name (project->priv->toplevel_names, 
-									       widget->name);
-
-				if (use_command)
-					glade_command_set_name (widget, new_name);
-				else
-					glade_widget_set_name (widget, new_name);
-
-				glade_name_context_add_name (project->priv->toplevel_names, new_name);
-				g_free (new_name);
-			}
+		widget = glade_widget_get_from_gobject (list->data);
+		if (!widget->parent)
+       		{
+			g_object_ref (widget->object);
+			g_object_ref (widget);
+			glade_project_remove_object (project, widget->object);
 		}
 
-		for (list = project->priv->toplevels; list; list = list->next)
-		{
-			tinfo = list->data;
-			glade_name_context_destroy (tinfo->names);
-			g_free (tinfo);
-		}
-		project->priv->toplevels = 
-			(g_list_free (project->priv->toplevels), NULL);
 	}
-	else
+
+	project->priv->naming_policy = policy;
+
+	/* Put the toplevels back with the new policy (recursive operation) */
+	for (list = objects; list; list = list->next)
 	{
-		/* First add toplevel names */
-		for (list = project->priv->objects; list; list = list->next)
+		widget = glade_widget_get_from_gobject (list->data);
+		if (!widget->parent)
 		{
-			widget = glade_widget_get_from_gobject (list->data);
-
-			if (!widget->parent)
-			{
-				TopLevelInfo *tinfo = g_new0 (TopLevelInfo, 1);
-				tinfo->toplevel     = widget;
-				tinfo->names        = glade_name_context_new ();
-				project->priv->toplevels = g_list_prepend (project->priv->toplevels, tinfo);
-
-				glade_name_context_add_name (tinfo->names, widget->name);
-			}
-		}
-
-		/* Now add child names */
-		for (list = project->priv->objects; list; list = list->next)
-		{
-			widget = glade_widget_get_from_gobject (list->data);
-
-			if (widget->parent)
-			{
-				context = name_context_by_widget (project, widget);
-				glade_name_context_add_name (context, widget->name);
-				glade_name_context_release_name (project->priv->toplevel_names, widget->name);
-			}
+			glade_project_add_object (project, project, widget->object);
+			g_object_unref (widget->object);
+			g_object_unref (widget);
 		}
 	}
 
+	g_list_free (objects);
 }
-
 
 /*******************************************************************
                         Remaining stubs and api
@@ -3335,16 +3334,13 @@ glade_project_get_modified (GladeProject *project)
 
 void
 glade_project_set_naming_policy (GladeProject       *project,
-				 GladeNamingPolicy   policy,
-				 gboolean            use_command)
+				 GladeNamingPolicy   policy)
 {
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 
 	if (project->priv->naming_policy != policy)
 	{
-		project->priv->naming_policy = policy;
-
-		adjust_naming_policy (project, use_command);
+		adjust_naming_policy (project, policy);
 
 		/* Update the toggle button in the prefs dialog here: */
 		g_signal_handlers_block_by_func (project->priv->project_wide_radio,
@@ -3437,11 +3433,62 @@ format_builder_button_toggled (GtkWidget *widget,
 	glade_command_set_project_format (project, GLADE_PROJECT_FORMAT_GTKBUILDER);
 }
 
+static gint
+count_objects_with_name (GladeProject *project,
+			 const gchar  *name)
+{
+	GList *l;
+	GladeWidget *widget;
+	gint count = 0;
+
+	for (l = project->priv->objects; l; l = l->next)
+       	{
+		widget = glade_widget_get_from_gobject (l->data);
+		if (!strcmp (widget->name, name))
+			count++;
+       	}
+	return count;
+}
+
 static void
 policy_project_wide_button_clicked (GtkWidget *widget,
 				    GladeProject *project)
 {
+	GList *l, *objects;
+	GladeWidget *gwidget;
+
+	/* The formatting here is only to avoid a string change in a stable series... */
+	gchar *prj_name = glade_project_get_name (project);
+	glade_command_push_group (_("Setting %s to use a %s naming policy"),
+				  prj_name, "project wide");
+	g_free (prj_name);
+
+	/* Uniquify names here before switching policy (so names undo) */
+	objects = g_list_copy (project->priv->objects);
+	for (l = g_list_last (objects); l; l = l->prev)
+       	{
+		gwidget = glade_widget_get_from_gobject (l->data);
+
+		if (count_objects_with_name (project, gwidget->name) > 1)
+       		{
+			GladeNameContext *context = 
+				name_context_by_widget (project, gwidget);
+			gchar *new_name;
+
+			if (context)
+				new_name = glade_name_context_dual_new_name 
+					(context, project->priv->toplevel_names, gwidget->name);
+			else
+				new_name = glade_name_context_new_name (project->priv->toplevel_names, gwidget->name);
+
+			glade_command_set_name (gwidget, new_name);	
+		}
+       	}
+	g_list_free (objects);
+
 	glade_command_set_project_naming_policy (project, GLADE_POLICY_PROJECT_WIDE);
+
+	glade_command_pop_group ();
 }
 
 static void

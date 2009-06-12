@@ -1,3 +1,17 @@
+2009-06-12  Tristan Van Berkom <tvb@gnome.org>
+
+	* configure.in, NEWS: Rolling Glade 3.6.5 (added more output in configure.ac
+	config summery).
+
+	* gladeui/glade-project.[ch], gladeui/glade-command.c, gladeui/glade-inspector.c: 
+	Really fixing widget naming policies again, this time I hope it sticks (bug 580745).
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Fixed dissapearing
+	dialogs on ESC (bug 582559)
+
+	* plugins/python/Makefile.am: Fixed relocated link problems with python 
+	plugin build (bug 582982, patch by Arun Raghavan).
+
 2009-06-11  Tristan Van Berkom <tvb@gnome.org>
 
 	* configure.ac, src/Makefile.am, src/glade-window.c: Use ige-mac-integration
