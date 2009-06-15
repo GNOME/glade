@@ -1,3 +1,11 @@
+2009-06-15  Tristan Van Berkom <tvb@gnome.org>
+
+	* plugins/gtk+/gtk+.xml.in: Make assistant page-titles translatable, marked since 2.10 on
+	some assistant properties.
+
+	* gladeui/glade-editor-property.c: show resource dialog button when creating (seems we
+	were relying on a show_all() call that isnt called for packing properties).
+	
 2009-06-12  Tristan Van Berkom <tvb@gnome.org>
 
 	* configure.in, NEWS: Rolling Glade 3.6.5 (added more output in configure.ac

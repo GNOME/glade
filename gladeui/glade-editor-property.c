@@ -2161,6 +2161,8 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
 					  G_CALLBACK (glade_eprop_text_show_resource_dialog),
 					  eprop);
 
+			gtk_widget_show_all (button);
+
 			gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0); 
 		}
 	}
