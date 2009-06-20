@@ -586,7 +586,7 @@ glade_eprop_accel_create_input (GladeEditorProperty *eprop)
 
 	hbox               = gtk_hbox_new (FALSE, 0);
 	eprop_accel->entry = gtk_entry_new ();
-	gtk_entry_set_editable (GTK_ENTRY (eprop_accel->entry), FALSE);
+	gtk_editable_set_editable (GTK_EDITABLE (eprop_accel->entry), FALSE);
 	gtk_widget_show (eprop_accel->entry);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop_accel->entry, TRUE, TRUE, 0);
 

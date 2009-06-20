@@ -6725,7 +6725,7 @@ glade_gtk_menu_item_remove_child (GladeWidgetAdaptor *adaptor,
 	g_return_if_fail (GTK_IS_MENU_ITEM (object));
 	g_return_if_fail (GTK_IS_MENU (child));
 	
-	gtk_menu_item_remove_submenu (GTK_MENU_ITEM (object));
+	gtk_menu_item_set_submenu (GTK_MENU_ITEM (object), NULL);
 }
 
 static void

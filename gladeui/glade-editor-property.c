@@ -1152,7 +1152,7 @@ glade_eprop_flags_create_input (GladeEditorProperty *eprop)
 	widget = glade_eprop_flags_create_treeview (eprop);
 
 	eprop_flags->entry = gtk_entry_new ();
-	gtk_entry_set_editable (GTK_ENTRY (eprop_flags->entry), FALSE);
+	gtk_editable_set_editable (GTK_EDITABLE (eprop_flags->entry), FALSE);
 
 	gtk_box_pack_start (GTK_BOX (vbox), eprop_flags->entry, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox), widget, TRUE, TRUE, 0);
@@ -1266,7 +1266,7 @@ glade_eprop_color_create_input (GladeEditorProperty *eprop)
 	hbox = gtk_hbox_new (FALSE, 0);
 
 	eprop_color->entry = gtk_entry_new ();
-	gtk_entry_set_editable (GTK_ENTRY (eprop_color->entry), FALSE);
+	gtk_editable_set_editable (GTK_EDITABLE (eprop_color->entry), FALSE);
 	gtk_widget_show (eprop_color->entry);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop_color->entry, TRUE, TRUE, 0);
 
@@ -2104,9 +2104,9 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
 		/* Dont allow custom items where an actual GTK+ stock item is expected
 		 * (i.e. real items come with labels) */
 		if (klass->stock)	
-			gtk_entry_set_editable (GTK_ENTRY (GTK_BIN (combo)->child), FALSE);
+			gtk_editable_set_editable (GTK_EDITABLE (GTK_BIN (combo)->child), FALSE);
 		else
-			gtk_entry_set_editable (GTK_ENTRY (GTK_BIN (combo)->child), TRUE);
+			gtk_editable_set_editable (GTK_EDITABLE (GTK_BIN (combo)->child), TRUE);
 		
 		gtk_widget_show (combo);
 		gtk_box_pack_start (GTK_BOX (hbox), combo, FALSE, FALSE, 0); 
@@ -2983,7 +2983,7 @@ glade_eprop_object_create_input (GladeEditorProperty *eprop)
 
 	hbox                = gtk_hbox_new (FALSE, 0);
 	eprop_object->entry = gtk_entry_new ();
-	gtk_entry_set_editable (GTK_ENTRY (eprop_object->entry), FALSE);
+	gtk_editable_set_editable (GTK_EDITABLE (eprop_object->entry), FALSE);
 	gtk_widget_show (eprop_object->entry);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop_object->entry, TRUE, TRUE, 0);
 
@@ -3167,7 +3167,7 @@ glade_eprop_objects_create_input (GladeEditorProperty *eprop)
 
 	hbox                = gtk_hbox_new (FALSE, 0);
 	eprop_objects->entry = gtk_entry_new ();
-	gtk_entry_set_editable (GTK_ENTRY (eprop_objects->entry), FALSE);
+	gtk_editable_set_editable (GTK_EDITABLE (eprop_objects->entry), FALSE);
 	gtk_widget_show (eprop_objects->entry);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop_objects->entry, TRUE, TRUE, 0);
 
@@ -3323,7 +3323,7 @@ glade_eprop_adjustment_load (GladeEditorProperty *eprop, GladeProperty *property
 		g_signal_handler_unblock (eprop_adj->page_size, eprop_adj->ids.page_size);
 
 		gtk_widget_show (eprop_adj->libglade);
-		gtk_notebook_set_page (GTK_NOTEBOOK (eprop_adj->notebook), 0);
+		gtk_notebook_set_current_page (GTK_NOTEBOOK (eprop_adj->notebook), 0);
 	}
 	else
 	{
@@ -3341,7 +3341,7 @@ glade_eprop_adjustment_load (GladeEditorProperty *eprop, GladeProperty *property
 		else
 			gtk_entry_set_text (GTK_ENTRY (eprop_adj->entry), "");
 
-		gtk_notebook_set_page (GTK_NOTEBOOK (eprop_adj->notebook), 1);
+		gtk_notebook_set_current_page (GTK_NOTEBOOK (eprop_adj->notebook), 1);
 	}
 
 	gtk_widget_queue_resize (eprop_adj->notebook);
@@ -3508,7 +3508,7 @@ glade_eprop_adjustment_create_input_builder (GladeEditorProperty *eprop)
 
 	hbox             = gtk_hbox_new (FALSE, 0);
 	eprop_adj->entry = gtk_entry_new ();
-	gtk_entry_set_editable (GTK_ENTRY (eprop_adj->entry), FALSE);
+	gtk_editable_set_editable (GTK_EDITABLE (eprop_adj->entry), FALSE);
 	gtk_widget_show (eprop_adj->entry);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop_adj->entry, TRUE, TRUE, 0);
 

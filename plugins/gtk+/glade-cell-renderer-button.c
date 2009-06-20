@@ -286,7 +286,7 @@ glade_cell_renderer_button_start_editing (GtkCellRenderer     *cell,
 
 	priv->button = text_button = (GladeTextButton *)glade_text_button_new ();
 	gtk_entry_set_text (GTK_ENTRY (text_button->entry), cell_text->text ? cell_text->text : "");
-	gtk_entry_set_editable (GTK_ENTRY (text_button->entry), priv->entry_editable);
+	gtk_editable_set_editable (GTK_EDITABLE (text_button->entry), priv->entry_editable);
 
 	g_object_set (text_button->entry,
 		      "has-frame", FALSE,

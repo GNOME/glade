@@ -6,6 +6,11 @@
 	gladeui/glade-utils.c, plugins/gtk+/glade-gtk.c: Replaced symbols with new glib 
 	variants (Sam Thursfield - bug 572756)
 
+	* src/glade-window.c, gladeui/glade-editor-property.c,
+	plugins/gtk+/glade-accels.c, plugins/gtk+/glade-cell-renderer-button.c, 
+	plugins/gtk+/glade-gtk.c:
+	Replace use of deprecated GTK+ functions (Sam Thursfield - bug 572756).
+
 2009-06-18  James Liggett <jrliggett@cox.net>
 	
 	* gladeui/glade-widget.c: Make sure that the project view is not 
