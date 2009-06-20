@@ -2,6 +2,10 @@
 
 	* plugins/gtk+/gtk+.xml.in: Make GtkMessageDialog texts translatable (bug 586063)
 
+	* gladeui/glade-clipboard-view.c, gladeui/glade-command.c, gladeui/glade-property-class.c,
+	gladeui/glade-utils.c, plugins/gtk+/glade-gtk.c: Replaced symbols with new glib 
+	variants (Sam Thursfield - bug 572756)
+
 2009-06-18  James Liggett <jrliggett@cox.net>
 	
 	* gladeui/glade-widget.c: Make sure that the project view is not 

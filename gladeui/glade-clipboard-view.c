@@ -289,7 +289,7 @@ glade_clipboard_view_new (GladeClipboard *clipboard)
 
 	g_return_val_if_fail (GLADE_IS_CLIPBOARD (clipboard), NULL);
 
-	view = gtk_type_new (glade_clipboard_view_get_type ());
+	view = g_object_new (GLADE_TYPE_CLIPBOARD_VIEW, NULL);
 	view->clipboard = clipboard;
 	glade_clipboard_view_construct (view);
 

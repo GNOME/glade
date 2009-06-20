@@ -1486,7 +1486,7 @@ glade_command_add_remove_finalize (GObject *obj)
 			if (cdata->handler_id)
 				g_signal_handler_disconnect (cdata->placeholder,
 							     cdata->handler_id);
-			if (GTK_OBJECT_FLOATING (cdata->placeholder))
+			if (g_object_is_floating (G_OBJECT (cdata->placeholder)))
 				gtk_widget_destroy (GTK_WIDGET (cdata->placeholder));
 		}
 

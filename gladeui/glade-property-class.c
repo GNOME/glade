@@ -612,7 +612,7 @@ glade_property_class_make_object_from_string (GladePropertyClass *property_class
 				icon = gtk_widget_render_icon (widget,
 							       GTK_STOCK_MISSING_IMAGE,
 							       GTK_ICON_SIZE_MENU, NULL);
-				gtk_object_sink (GTK_OBJECT (widget));
+				gtk_widget_destroy (widget);
 			}
 			
 			pixbuf = gdk_pixbuf_copy (icon);

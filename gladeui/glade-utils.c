@@ -320,7 +320,7 @@ glade_util_flash_message (GtkWidget *statusbar, guint context_id, gchar *format,
 	fi->context_id = context_id;	
 	fi->message_id = gtk_statusbar_push (fi->statusbar, fi->context_id, message);
 
-	gtk_timeout_add (flash_length, (GtkFunction) remove_message_timeout, fi);
+	g_timeout_add (flash_length, (GSourceFunc) remove_message_timeout, fi);
 
 	g_free (message);
 }
@@ -421,8 +421,8 @@ glade_util_gtk_combo_func (gpointer data)
 	GtkWidget *label;
 	gchar *ltext = NULL;
 
-	ltext = (gchar *) gtk_object_get_data (GTK_OBJECT (listitem),
-					       gtk_combo_string_key);
+	ltext = (gchar *) g_object_get_data (G_OBJECT (listitem),
+					     gtk_combo_string_key);
 	if (!ltext) {
 		label = GTK_BIN (listitem)->child;
 		if (!label || !GTK_IS_LABEL (label))
