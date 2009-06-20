@@ -942,7 +942,8 @@ glade_project_read_requires_from_comment (GladeXmlNode  *comment,
 static gboolean
 glade_project_read_requires (GladeProject *project,
 			     GladeXmlNode *root_node, 
-			     const gchar  *path)
+			     const gchar  *path,
+			     gboolean     *has_gtk_dep)
 {
 
 	GString      *string = g_string_new (NULL);
@@ -983,8 +984,13 @@ glade_project_read_requires (GladeProject *project,
 			loadable = FALSE;
 		}
 		else
+	       	{
+			if (has_gtk_dep && strcmp (required_lib, "gtk+") == 0)
+				*has_gtk_dep = TRUE;
+
 			glade_project_set_target_version
 				(project, required_lib, major, minor);
+		}
 		
 		g_free (required_lib);
 	}
@@ -1150,6 +1156,142 @@ glade_project_read_comment (GladeProject *project, GladeXmlDoc *doc)
 	 */
 }
 
+
+typedef struct {
+	GladeWidget *widget;
+	gint         major;
+	gint         minor;
+} VersionData;
+
+static void
+glade_project_introspect_signal_versions (const gchar *signal_name,
+					  GPtrArray   *signals,
+					  VersionData *data)
+{
+	gint i;
+
+	for (i = 0; i < signals->len; i++)
+	{
+		GladeSignalClass *signal_class;
+		GladeSignal      *signal = g_ptr_array_index (signals, i);
+		gchar            *catalog = NULL;
+		gboolean          is_gtk_adaptor = FALSE;
+
+		signal_class = glade_widget_adaptor_get_signal_class (data->widget->adaptor, signal->name);
+		/*  unknown signal... can it happen ? */
+		if (!signal_class)
+			continue;
+		g_assert (signal_class->adaptor);
+
+		/* Check if the signal comes from a GTK+ widget class */
+		g_object_get (signal_class->adaptor, "catalog", &catalog, NULL);
+		if (strcmp (catalog, "gtk+") == 0)
+			is_gtk_adaptor = TRUE;
+		g_free (catalog);
+
+		/* Check GTK+ version that signal was introduced */
+		if (is_gtk_adaptor &&
+		    (data->major < signal_class->version_since_major ||
+		     (data->major == signal_class->version_since_major &&
+		      data->minor < signal_class->version_since_minor)))
+		{
+			data->major = signal_class->version_since_major;
+			data->minor = signal_class->version_since_minor;
+		}
+	}
+}
+
+static void
+glade_project_introspect_gtk_version (GladeProject *project)
+{
+	GladeProjectFormat fmt;
+	GladeWidget *widget;
+	GList *list, *l;
+	gint  target_major = 2, target_minor = 0;
+
+	fmt = glade_project_get_format (project);
+
+	if (fmt == GLADE_PROJECT_FORMAT_GTKBUILDER)
+		target_minor = 12;
+	else
+		target_minor = 6;
+
+	for (list = project->priv->objects; list; list = list->next)
+       	{
+		gboolean  is_gtk_adaptor = FALSE;
+		gchar    *catalog = NULL;
+		VersionData data = { 0, };
+
+		widget = glade_widget_get_from_gobject (list->data);
+
+		/* Check if its a GTK+ widget class */
+		g_object_get (widget->adaptor, "catalog", &catalog, NULL);
+		if (strcmp (catalog, "gtk+") == 0)
+			is_gtk_adaptor = TRUE;
+		g_free (catalog);
+
+		/* Check widget class version */
+		if (is_gtk_adaptor &&
+		    (target_major < GWA_VERSION_SINCE_MAJOR (widget->adaptor) ||
+		     (target_major == GWA_VERSION_SINCE_MAJOR (widget->adaptor) &&
+		      target_minor < GWA_VERSION_SINCE_MINOR (widget->adaptor))))
+       		{
+			target_major = GWA_VERSION_SINCE_MAJOR (widget->adaptor);
+			target_minor = GWA_VERSION_SINCE_MINOR (widget->adaptor);
+       		}
+
+		/* Check all properties */
+		for (l = widget->properties; l; l = l->next)
+		{
+			GladeProperty *property = l->data;
+			GladeWidgetAdaptor *prop_adaptor, *adaptor;
+
+			/* Unset properties ofcourse dont count... */
+			if (glade_property_original_default (property))
+				continue;
+
+			/* Check if this property originates from a GTK+ widget class */
+			prop_adaptor = glade_widget_adaptor_from_pclass (property->klass);
+			adaptor = glade_widget_adaptor_from_pspec (prop_adaptor, property->klass->pspec);
+			
+			catalog = NULL;
+			is_gtk_adaptor = FALSE;
+			g_object_get (adaptor, "catalog", &catalog, NULL);
+			if (strcmp (catalog, "gtk+") == 0)
+				is_gtk_adaptor = TRUE;
+			g_free (catalog);
+
+			/* Check GTK+ property class versions */
+			if (is_gtk_adaptor &&
+			    (target_major < property->klass->version_since_major ||
+			     (target_major == property->klass->version_since_major &&
+			      target_minor < property->klass->version_since_minor)))
+			{
+				target_major = property->klass->version_since_major;
+				target_minor = property->klass->version_since_minor;
+			}
+		}
+
+		/* Check all signal versions here */
+		data.widget = widget;
+		data.major  = target_major;
+		data.minor  = target_minor;
+
+		g_hash_table_foreach (widget->signals,
+				      (GHFunc)glade_project_introspect_signal_versions,
+				      &data);
+
+		if (target_major < data.major)
+			target_major = data.major;
+
+		if (target_minor < data.minor)
+			target_minor = data.minor;
+       	}
+
+	glade_project_set_target_version (project, "gtk+", target_major, target_minor);
+}
+
+
 static gboolean
 glade_project_load_from_file (GladeProject *project, const gchar *path)
 {
@@ -1158,6 +1300,7 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 	GladeXmlNode    *root;
 	GladeXmlNode    *node;
 	GladeWidget     *widget;
+	gboolean         has_gtk_dep = FALSE;
 
 	project->priv->selection = NULL;
 	project->priv->objects = NULL;
@@ -1192,7 +1335,7 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 	/* XXX Need to load project->priv->comment ! */
 	glade_project_read_comment (project, doc);
 
-	if (glade_project_read_requires (project, root, path) == FALSE)
+	if (glade_project_read_requires (project, root, path, &has_gtk_dep) == FALSE)
 	{
 		glade_xml_context_free (context);
 		return FALSE;
@@ -1213,6 +1356,9 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 		if ((widget = glade_widget_read (project, NULL, node, NULL)) != NULL)
 			glade_project_add_object (project, NULL, widget->object);
 	}
+
+	if (!has_gtk_dep)
+		glade_project_introspect_gtk_version (project);
 
 	if (glade_util_file_is_writeable (project->priv->path) == FALSE)
 		glade_project_set_readonly (project, TRUE);
@@ -2677,10 +2823,10 @@ glade_project_set_target_version (GladeProject *project,
 
 	g_hash_table_insert (project->priv->target_versions_major,
 			     g_strdup (catalog),
-			     GINT_TO_POINTER (major));
+			     GINT_TO_POINTER ( ( int ) major));
 	g_hash_table_insert (project->priv->target_versions_minor,
 			     g_strdup (catalog),
-			     GINT_TO_POINTER (minor));
+			     GINT_TO_POINTER ( ( int ) minor));
 
 
 	/* Update prefs dialog from here... */
