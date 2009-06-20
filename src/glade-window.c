@@ -510,32 +510,6 @@ create_recent_chooser_menu (GladeWindow *window, GtkRecentManager *manager)
 }
 
 static void
-window_screen_changed_cb (GtkWidget *widget,
-			  GdkScreen *old_screen,
-			  GladeWindow *window)
-{
-	GtkWidget *menu_item;
-	GdkScreen *screen;
-
-	screen = gtk_widget_get_screen (widget);	
-
-	window->priv->recent_manager = gtk_recent_manager_get_for_screen (screen);
-
-	gtk_menu_detach (GTK_MENU (window->priv->recent_menu));
-	g_object_unref (G_OBJECT (window->priv->recent_menu));
-	
-	window->priv->recent_menu = create_recent_chooser_menu (window, window->priv->recent_manager);
-
-	g_signal_connect (window->priv->recent_menu,
-			  "item-activated",
-			  G_CALLBACK (recent_chooser_item_activated_cb),
-			  window);
-			  
-	menu_item = gtk_ui_manager_get_widget (window->priv->ui, "/MenuBar/FileMenu/OpenRecent");
-	gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu_item), window->priv->recent_menu);
-}
-
-static void
 activate_action (GtkToolButton *toolbutton,
 				      GladeWidgetAction *action) 
 {
@@ -2210,7 +2184,11 @@ menu_item_selected_cb (GtkWidget *item, GladeWindow *window)
 	GtkAction *action;
 	gchar *tooltip;
 
-        action = gtk_widget_get_action (item);
+#if (GTK_MAJOR_VERSION == 2) && (GTK_MINOR_VERSION < 16)
+	action = gtk_widget_get_action (item);
+#else
+	action = gtk_activatable_get_related_action (GTK_ACTIVATABLE (item));
+#endif
 	g_object_get (G_OBJECT (action), "tooltip", &tooltip, NULL);
 
 	if (tooltip != NULL)
@@ -2391,10 +2369,8 @@ create_selector_tool_button (GtkToolbar *toolbar)
 	gtk_tool_button_set_icon_widget (GTK_TOOL_BUTTON (button), image);
 	gtk_tool_button_set_label (GTK_TOOL_BUTTON (button), _("Select"));
 	
-	gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (button),
-				   toolbar->tooltips,
-				   _("Select widgets in the workspace"),
-				   NULL);
+	gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (button),
+				        _("Select widgets in the workspace"));
 	
 	gtk_widget_show (GTK_WIDGET (button));
 	gtk_widget_show (image);
@@ -2419,10 +2395,8 @@ create_drag_resize_tool_button (GtkToolbar *toolbar)
 	gtk_tool_button_set_icon_widget (GTK_TOOL_BUTTON (button), image);
 	gtk_tool_button_set_label (GTK_TOOL_BUTTON (button), _("Drag Resize"));
 	
-	gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (button),
-				   toolbar->tooltips,
-				   _("Drag and resize widgets in the workspace"),
-				   NULL);
+	gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (button),
+				        _("Drag and resize widgets in the workspace"));
 	
 	gtk_widget_show (GTK_WIDGET (button));
 	gtk_widget_show (image);
@@ -2955,7 +2929,7 @@ glade_window_init (GladeWindow *window)
 	GtkWidget *dockitem;
 	GtkWidget *widget;
 	GtkWidget *sep;
-	GtkAction *action;
+	GtkAction *undo_action, *redo_action;
 	GtkAccelGroup *accel_group;	
 
 	window->priv = priv = GLADE_WINDOW_GET_PRIVATE (window);
@@ -2993,11 +2967,16 @@ glade_window_init (GladeWindow *window)
 	gtk_toolbar_insert (GTK_TOOLBAR (priv->toolbar), GTK_TOOL_ITEM (priv->undo), 4);
 	gtk_toolbar_insert (GTK_TOOLBAR (priv->toolbar), GTK_TOOL_ITEM (priv->redo), 5);
 
-	action = gtk_ui_manager_get_action (priv->ui, "/MenuBar/EditMenu/Undo");
-	gtk_action_connect_proxy (action, GTK_WIDGET (priv->undo));
-
-	action = gtk_ui_manager_get_action (priv->ui, "/MenuBar/EditMenu/Redo");
-	gtk_action_connect_proxy (action, GTK_WIDGET (priv->redo));
+	undo_action = gtk_ui_manager_get_action (priv->ui, "/MenuBar/EditMenu/Undo");
+	redo_action = gtk_ui_manager_get_action (priv->ui, "/MenuBar/EditMenu/Redo");
+	
+#if (GTK_MAJOR_VERSION == 2) && (GTK_MINOR_VERSION < 16)
+	gtk_action_connect_proxy (undo_action, GTK_WIDGET (priv->undo));
+	gtk_action_connect_proxy (redo_action, GTK_WIDGET (priv->redo));
+#else
+	gtk_activatable_set_related_action (GTK_ACTIVATABLE (priv->undo), undo_action);
+	gtk_activatable_set_related_action (GTK_ACTIVATABLE (priv->redo), redo_action);
+#endif
 	
 	/* main contents */
 	hpaned1 = gtk_hpaned_new ();
@@ -3078,7 +3057,7 @@ glade_window_init (GladeWindow *window)
 	gtk_widget_show (vbox);
 	
 	/* recent files */	
-	priv->recent_manager = gtk_recent_manager_get_for_screen (gtk_widget_get_screen (GTK_WIDGET (window)));
+	priv->recent_manager = gtk_recent_manager_get_default ();
 
 	priv->recent_menu = create_recent_chooser_menu (window, priv->recent_manager);
 
@@ -3145,10 +3124,6 @@ glade_window_init (GladeWindow *window)
 			  window);
 			  
 	/* GtkWindow events */
-	g_signal_connect (window, "screen-changed",
-			  G_CALLBACK (window_screen_changed_cb),
-			  window);
-			  
 	g_signal_connect (window, "window-state-event",
 			  G_CALLBACK (window_state_event_cb),
 			  window);

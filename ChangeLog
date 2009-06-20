@@ -13,7 +13,9 @@
 
 	* gladeui/glade-xml-utils.h, gladeui/glade-editor-property.c: Use GtkComboBox
 	instead of deprecated GtkOptionMenu (Sam Thursfield - bug 572756).
-	
+
+	* src/glade-window.c: Case the GTK+ version and call non-deprecated symbols when in GTK+ 2.16 (bug 572756).
+
 2009-06-18  James Liggett <jrliggett@cox.net>
 	
 	* gladeui/glade-widget.c: Make sure that the project view is not 
