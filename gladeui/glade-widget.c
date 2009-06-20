@@ -1962,6 +1962,10 @@ glade_widget_show (GladeWidget *widget)
 
 
 		view = glade_design_view_get_from_project (glade_widget_get_project (widget));
+
+		if (!view)
+			return;
+
 		layout = GTK_WIDGET (glade_design_view_get_layout (view));
 
 		if (!layout)
