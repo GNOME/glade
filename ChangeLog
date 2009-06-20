@@ -11,6 +11,9 @@
 	plugins/gtk+/glade-gtk.c:
 	Replace use of deprecated GTK+ functions (Sam Thursfield - bug 572756).
 
+	* gladeui/glade-xml-utils.h, gladeui/glade-editor-property.c: Use GtkComboBox
+	instead of deprecated GtkOptionMenu (Sam Thursfield - bug 572756).
+	
 2009-06-18  James Liggett <jrliggett@cox.net>
 	
 	* gladeui/glade-widget.c: Make sure that the project view is not 

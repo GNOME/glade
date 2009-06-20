@@ -761,7 +761,7 @@ glade_eprop_numeric_create_input (GladeEditorProperty *eprop)
 typedef struct {
 	GladeEditorProperty  parent_instance;
 
-	GtkWidget           *option_menu;
+	GtkWidget           *combo_box;
 } GladeEPropEnum;
 
 GLADE_MAKE_EPROP (GladeEPropEnum, glade_eprop_enum)
@@ -799,23 +799,27 @@ glade_eprop_enum_load (GladeEditorProperty *eprop, GladeProperty *property)
 			if (eclass->values[i].value == value)
 				break;
 		
-		gtk_option_menu_set_history (GTK_OPTION_MENU (eprop_enum->option_menu),
-					     i < eclass->n_values ? i : 0);
+		gtk_combo_box_set_active (GTK_COMBO_BOX (eprop_enum->combo_box),
+					  i < eclass->n_values ? i : 0);
 		g_type_class_unref (eclass);
 	}
 }
 
 static void
-glade_eprop_enum_changed (GtkWidget           *menu_item,
+glade_eprop_enum_changed (GtkWidget           *combo_box,
 			  GladeEditorProperty *eprop)
 {
-	gint   ival;
-	GValue val = { 0, };
+	gint           ival;
+	GValue         val = { 0, };
 	GladeProperty *property;
+	GtkTreeModel  *tree_model;
+	GtkTreeIter    iter;
 
 	if (eprop->loading) return;
 
-	ival = GPOINTER_TO_INT(g_object_get_data (G_OBJECT (menu_item), GLADE_ENUM_DATA_TAG));
+	tree_model = gtk_combo_box_get_model (GTK_COMBO_BOX (combo_box));
+	gtk_combo_box_get_active_iter (GTK_COMBO_BOX (combo_box), &iter);
+	gtk_tree_model_get (tree_model, &iter, 1, &ival, -1);
 
 	property = eprop->property;
 
@@ -827,36 +831,22 @@ glade_eprop_enum_changed (GtkWidget           *menu_item,
 }
 
 static GtkWidget *
-glade_editor_create_input_enum_item (GladeEditorProperty *eprop,
-				     const gchar         *name,
-				     gint                 value)
-{
-	GtkWidget *menu_item;
-
-	menu_item = gtk_menu_item_new_with_label (name);
-
-	g_signal_connect (G_OBJECT (menu_item), "activate",
-			  G_CALLBACK (glade_eprop_enum_changed),
-			  eprop);
-
-	g_object_set_data (G_OBJECT (menu_item), GLADE_ENUM_DATA_TAG, GINT_TO_POINTER(value));
-
-	return menu_item;
-}
-
-static GtkWidget *
 glade_eprop_enum_create_input (GladeEditorProperty *eprop)
 {
 	GladeEPropEnum      *eprop_enum = GLADE_EPROP_ENUM (eprop);
-	GtkWidget           *menu_item, *menu;
 	GladePropertyClass  *klass;
 	GEnumClass          *eclass;
+	GtkListStore        *list_store;
+	GtkTreeIter          iter;
+	GtkCellRenderer     *cell_renderer;
 	guint                i;
 	
 	klass  = eprop->klass;
 	eclass = g_type_class_ref (klass->pspec->value_type);
 
-	menu = gtk_menu_new ();
+	list_store = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_INT);
+
+	gtk_tree_model_get_iter_first (GTK_TREE_MODEL(list_store), &iter);
 
 	for (i = 0; i < eclass->n_values; i++)
 	{
@@ -865,21 +855,28 @@ glade_eprop_enum_create_input (GladeEditorProperty *eprop)
 						     eclass->values[i].value_nick);
 		if (value_name == NULL) value_name = eclass->values[i].value_nick;
 		
-		menu_item = glade_editor_create_input_enum_item
-			(eprop, value_name, eclass->values[i].value);
-
-		gtk_widget_show (menu_item);
-		gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
+		gtk_list_store_append (list_store, &iter);
+		gtk_list_store_set (list_store, &iter, 0, value_name, 1,
+		                    eclass->values[i].value, -1);
 	}
 
-	eprop_enum->option_menu = gtk_option_menu_new ();
-	gtk_option_menu_set_menu (GTK_OPTION_MENU (eprop_enum->option_menu), menu);
+	eprop_enum->combo_box = gtk_combo_box_new_with_model
+		(GTK_TREE_MODEL (list_store));
 
-	gtk_widget_show_all (eprop_enum->option_menu);
+	cell_renderer = gtk_cell_renderer_text_new ();
+	gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (eprop_enum->combo_box),
+	                            cell_renderer, TRUE);
+	gtk_cell_layout_add_attribute (GTK_CELL_LAYOUT (eprop_enum->combo_box),
+	                               cell_renderer, "text", 0);
+
+	g_signal_connect (G_OBJECT (eprop_enum->combo_box), "changed",
+			  G_CALLBACK (glade_eprop_enum_changed), eprop);
+
+	gtk_widget_show_all (eprop_enum->combo_box);
 
 	g_type_class_unref (eclass);
 
-	return eprop_enum->option_menu;
+	return eprop_enum->combo_box;
 }
 
 /*******************************************************************************

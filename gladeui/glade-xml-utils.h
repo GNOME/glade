@@ -210,7 +210,6 @@ typedef enum {
 #define GLADE_TAG_ICON_NAME                       "icon-name"
 #define GLADE_TAG_IMPORTANT                       "important"
 #define GLADE_TAG_CREATE_TYPE                     "create-type"
-#define GLADE_ENUM_DATA_TAG                       "GladeEnumDataTag"
 
 
 /* search child */
