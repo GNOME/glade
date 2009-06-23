@@ -49,6 +49,10 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
+#ifdef MAC_INTEGRATION
+#  include <ige-mac-integration.h>
+#endif
+
 #define GLADE_CONFIG_FILENAME "glade-3.conf"
 
 #define GLADE_APP_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), GLADE_TYPE_APP, GladeAppPrivate))
@@ -362,14 +366,22 @@ glade_app_get_locale_dir (void)
 static void
 build_package_paths (void)
 {
-#ifdef G_OS_WIN32
+#if defined (MAC_INTEGRATION) || defined (G_OS_WIN32)
 	gchar *prefix;
-	
+
+# ifdef G_OS_WIN32
 	prefix = g_win32_get_package_installation_directory_of_module (NULL);
+# else /* MAC_INTEGRATION */	
+	IgeMacBundle *bundle = ige_mac_bundle_get_default ();
+
+	prefix = g_build_filename (ige_mac_bundle_get_path (bundle), "Contents", "Resources", NULL);
+# endif 
+
 	pixmaps_dir  = g_build_filename (prefix, "share", PACKAGE, "pixmaps", NULL);
 	catalogs_dir = g_build_filename (prefix, "share", PACKAGE, "catalogs", NULL);
 	modules_dir  = g_build_filename (prefix, "lib", PACKAGE, "modules", NULL);
 	locale_dir   = g_build_filename (prefix, "share", "locale", NULL);
+
 	g_free (prefix);
 #else
 	catalogs_dir = g_strdup (GLADE_CATALOGSDIR);
@@ -388,6 +400,9 @@ glade_init_check (void)
 	
 	if (initialised)
 		return;
+
+	/* Make sure path accessors work on osx */
+	g_type_init ();
 
 	build_package_paths ();
 

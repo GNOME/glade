@@ -1,6 +1,7 @@
 
 common_defines = \
 	-DG_LOG_DOMAIN=\"GladeUI\"                      \
+	-DGLADE_PREFIX="\"$(prefix)\""			\
 	-DGLADE_DATADIR="\"$(pkgdatadir)\""		\
 	-DGLADE_LIBDIR="\"$(pkglibdir)\""		\
 	-DGLADE_CATALOGSDIR="\"$(pkgdatadir)/catalogs\""\
@@ -75,11 +76,12 @@ libgladeui_1_la_CPPFLAGS =  \
 
 libgladeui_1_la_CFLAGS =    \
 	$(GTK_CFLAGS)       \
+	$(IGE_MAC_CFLAGS)  \
 	$(WARN_CFLAGS)      \
 	$(AM_CFLAGS)
 
 libgladeui_1_la_LDFLAGS = -version-info $(GLADE_CURRENT):$(GLADE_REVISION):$(GLADE_AGE) $(AM_LDFLAGS)
-libgladeui_1_la_LIBADD = $(GTK_LIBS)
+libgladeui_1_la_LIBADD = $(GTK_LIBS) $(IGE_MAC_LIBS)
 
 
 libgladeuiincludedir=$(includedir)/libgladeui-1.0/gladeui
