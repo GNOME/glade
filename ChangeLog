@@ -3,6 +3,13 @@
 	* gladeui/glade-app.c, gladeui/Makefile.am: Find quartz specific runtime prefix
 	using ige_mac_bundle_get_path().
 
+	* gladeui/glade-project.c: Added algorythm to introspect lowest possible
+	version of GTK+ to depend on for a project, this helps cases where the 
+	versioning data is missing, instead of defaulting to latest which may
+	cause problems for people specifically targetting GTK+ 2.12 (bug 586046).
+	
+	* plugins/gtk+/gtk+.xml.in: Mark accel-groups property as since GTK+ 2.16.
+	
 2009-06-20  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/gtk+.xml.in: Make GtkMessageDialog texts translatable (bug 586063)
