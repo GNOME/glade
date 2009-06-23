@@ -1,7 +1,9 @@
 2009-06-22  Tristan Van Berkom <tvb@gnome.org>
 
+	* configure.ac, NEWS: Rolling Glade 3.6.6
+	
 	* gladeui/glade-app.c, gladeui/Makefile.am: Find quartz specific runtime prefix
-	using ige_mac_bundle_get_path().
+	using ige_mac_bundle_get_path() (bug 586551)
 
 	* gladeui/glade-project.c: Added algorythm to introspect lowest possible
 	version of GTK+ to depend on for a project, this helps cases where the 

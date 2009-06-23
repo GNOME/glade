@@ -1,4 +1,16 @@
 ===========
+Glade 3.6.6
+===========
+	- Fixed missing image dialogs for packing properties
+	- Make assistant page-titles translatable (bug 503146)
+	- Make GtkMessageDialog texts translatable (bug 586063)
+	- Fixed obscure crash at project load time (James Liggett - bug 585860)
+	- Migrated to use non-deprecated symbols from glib/GTK+ (Sam Thursfield - bug 572756) 
+	- Introspect lowest GTK+ project dependancy when loading files with missing 
+	  versioning info (bug 586046).
+	- Fixed runtime path resolutions on osx (bug 586551).
+
+===========
 Glade 3.6.5
 ===========
 	- Quartz build support and use ige-mac-integration to setup the menubar
