@@ -5,6 +5,9 @@
 	can float outside of widget->properties in some cases, shouldnt effect the
 	widget though).
 
+	* plugins/gtk+/glade-gtk.c: glade_gtk_button_write_widget (), make stock
+	button labels save as non-translatable automatically (bug 352446).
+
 2009-06-22  Tristan Van Berkom <tvb@gnome.org>
 
 	* configure.ac, NEWS: Rolling Glade 3.6.6

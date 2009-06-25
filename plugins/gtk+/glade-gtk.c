@@ -4088,7 +4088,7 @@ glade_gtk_notebook_add_child (GladeWidgetAdaptor *adaptor,
 
 		/* Just destroy placeholders */
 		if (GLADE_IS_PLACEHOLDER (child))
-			gtk_widget_destroy (child);
+			gtk_widget_destroy (GTK_WIDGET (child));
 		else
 		{
 			gwidget = glade_widget_get_from_gobject (child);
@@ -5926,13 +5926,16 @@ glade_gtk_button_write_widget (GladeWidgetAdaptor *adaptor,
 	/* Do not save GtkColorButton and GtkFontButton label property */
 	if (!(GTK_IS_COLOR_BUTTON (widget->object) || GTK_IS_FONT_BUTTON (widget->object)))
 	{
+		/* Make a copy of the GladeProperty, 
+		 * override its value and ensure non-translatable if use-stock is TRUE
+		 */
 		prop = glade_widget_get_property (widget, "label");
-		/* Make a copy of the GladeProperty, override its value if use-stock is TRUE */
 		prop = glade_property_dup (prop, widget);
 		glade_widget_property_get (widget, "use-stock", &use_stock);
 		if (use_stock)
 		{
 			glade_widget_property_get (widget, "stock", &stock);
+			glade_property_i18n_set_translatable (prop, FALSE);
 			glade_property_set (prop, stock);
 		}
 		glade_property_write (prop, context, node);
