@@ -5,8 +5,24 @@
 	can float outside of widget->properties in some cases, shouldnt effect the
 	widget though).
 
-	* plugins/gtk+/glade-gtk.c: glade_gtk_button_write_widget (), make stock
-	button labels save as non-translatable automatically (bug 352446).
+	* plugins/gtk+/glade-gtk.c: 
+	  - glade_gtk_button_write_widget (), make stock button labels save as 
+	    non-translatable automatically (bug 352446).
+	  - Added sync_use_appearance() to reset the use-appearance property when local
+	    widget property updates demand that the appearance be resynchronized (this
+	    is actually a bug in GTK+ somewhere).
+	  - Avoid tampering with the virtual GtkBox:size property while loading a project.
+	
+	* plugins/gtk+/gtk+.xml.in: Attributed use-action-appearance property with "needs-sync"
+	for better chances at a good visual result when copy/pasting etc.
+
+	* plugins/gtk+/glade-activatable-editor.c: Reverse order in which the image is
+	removed from GtkImageMenuItems (so that mucking with stock doesnt recreate one
+	2 lines further), now image menu items with controlling actions dont get orphaned images.
+	
+	* gladeui/glade-widget-adaptor.c: Sync remaining properties at load time
+	which were not specified in the glade file (now the use-action-appearance
+	property shows up right even if default and not present in the Glade file).
 
 2009-06-22  Tristan Van Berkom <tvb@gnome.org>
 

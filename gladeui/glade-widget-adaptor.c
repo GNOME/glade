@@ -868,6 +868,7 @@ glade_widget_adaptor_object_read_widget (GladeWidgetAdaptor *adaptor,
 	GladeSignal *signal;
 	GladeProperty *property;
 	gchar *name, *prop_name;
+	GList *read_properties = NULL, *l;
 
 	/* Read in the properties */
 	for (iter_node = glade_xml_node_get_children (node); 
@@ -885,11 +886,24 @@ glade_widget_adaptor_object_read_widget (GladeWidgetAdaptor *adaptor,
 
 		/* Some properties may be special child type of custom, just leave them for the adaptor */
 		if ((property = glade_widget_get_property (widget, prop_name)) != NULL)
+		{
 			glade_property_read (property, widget->project, iter_node);
+			read_properties = g_list_prepend (read_properties, property);
+		}
 
 		g_free (prop_name);
 		g_free (name);
 	}
+
+	/* Sync the remaining values not read in from the Glade file.. */
+	for (l = widget->properties; l; l = l->next)
+	{
+		property = l->data;
+
+		if (!g_list_find (read_properties, property))
+			glade_property_sync (property);
+	}
+	g_list_free (read_properties);
 
 	
 	/* Read in the signals */

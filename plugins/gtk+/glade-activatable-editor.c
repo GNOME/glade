@@ -229,6 +229,10 @@ reset_properties (GladeWidget *gwidget,
 			GladeWidget *image;
 			GladeProperty *property;
 
+			reset_property (gwidget, "stock");
+			reset_property (gwidget, "use-underline");
+			reset_property (gwidget, "use-stock");
+
 			/* Delete image... */
 			if ((image = get_image_widget (gwidget)) != NULL)
 			{
@@ -240,11 +244,6 @@ reset_properties (GladeWidget *gwidget,
 
 			property = glade_widget_get_property (gwidget, "label");
 			glade_command_set_property (property, NULL);
-
-			reset_property (gwidget, "stock");
-			reset_property (gwidget, "use-underline");
-			reset_property (gwidget, "use-stock");
-
 		}
 		else if (use_appearance_changed)
 		{

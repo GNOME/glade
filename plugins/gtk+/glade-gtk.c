@@ -2018,6 +2018,9 @@ glade_gtk_box_set_size (GObject *object, const GValue *value)
 	box = GTK_BOX (object);
 	g_return_if_fail (GTK_IS_BOX (box));
 
+	if (glade_util_object_is_loading (object))
+		return;
+
 	old_size = g_list_length (box->children);
 	new_size = g_value_get_int (value);
 	
@@ -5743,6 +5746,24 @@ glade_gtk_color_button_refresh_color (GtkColorButton  *button,
 
 /* ----------------------------- GtkButton ------------------------------ */
 
+static void 
+sync_use_appearance (GladeWidget *gwidget)
+{
+	GladeProperty *prop = glade_widget_get_property (gwidget, "use-action-appearance");
+	gboolean       use_appearance = FALSE;
+
+	/* This is the kind of thing we avoid doing at project load time ;-) */
+	if (glade_widget_superuser ())
+		return;
+
+	glade_property_get (prop, &use_appearance);
+	if (use_appearance)
+       	{
+		glade_property_set (prop, FALSE);
+		glade_property_set (prop, TRUE);
+       	}
+}
+
 /* shared between menuitems and toolitems too */
 static void
 evaluate_activatable_property_sensitivity (GObject            *object, 
@@ -5877,6 +5898,15 @@ glade_gtk_button_set_property (GladeWidgetAdaptor *adaptor,
 		glade_widget_property_get (widget, "use-stock", &use_stock);
 		if (use_stock)
 			gtk_button_set_label (GTK_BUTTON (object), g_value_get_string (value));
+	}
+	else if (strcmp (id, "use-stock") == 0)
+	{
+		/* I guess its my bug in GTK+, we need to resync the appearance property
+		 * on GtkButton when the GtkButton:use-stock property changes.
+		 */
+		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object,
+								  id, value);
+		sync_use_appearance (widget);
 	}
 	else if (property->klass->version_since_major <= gtk_major_version &&
 		 property->klass->version_since_minor <= (gtk_minor_version + 1))
@@ -6889,6 +6919,12 @@ glade_gtk_image_menu_item_set_use_stock (GObject *object, const GValue *value)
 		glade_widget_property_set_sensitive (widget, "stock", FALSE, NOT_SELECTED_MSG);
 		glade_widget_property_set_sensitive (widget, "accel-group", FALSE, NOT_SELECTED_MSG);
 	}
+
+#if GTK_CHECK_VERSION (2, 16, 0)
+	gtk_image_menu_item_set_use_stock (GTK_IMAGE_MENU_ITEM (object), use_stock);
+
+	sync_use_appearance (widget);
+#endif
 }
 
 static gboolean
