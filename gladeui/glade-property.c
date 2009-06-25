@@ -334,7 +334,6 @@ glade_property_get_value_impl (GladeProperty *property, GValue *value)
 static void
 glade_property_sync_impl (GladeProperty *property)
 {
-
 	/* Heh, here are the many reasons not to
 	 * sync a property ;-)
 	 */
@@ -349,6 +348,14 @@ glade_property_sync_impl (GladeProperty *property)
 	    property->syncing >= property->sync_tolerance ||
 	    /* No widget owns this property yet */
 	    property->widget == NULL)
+		return;
+
+	/* Only the properties from widget->properties should affect the runtime widget.
+	 * (other properties may be used for convenience in the plugin).
+	 */
+	if ((property->klass->packing && 
+	     property != glade_widget_get_pack_property (property->widget, property->klass->id)) ||
+	    property != glade_widget_get_property (property->widget, property->klass->id))
 		return;
 
 	property->syncing++;
@@ -1014,7 +1021,7 @@ glade_property_read (GladeProperty      *property,
 	GladeProjectFormat fmt;
 	GValue       *gvalue = NULL;
 	gchar        /* *id, *name, */ *value;
-	gint translatable, has_context;
+	gint translatable = FALSE, has_context = FALSE;
 	gchar *comment = NULL, *context = NULL;
 
 	g_return_if_fail (GLADE_IS_PROPERTY (property));

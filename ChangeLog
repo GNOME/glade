@@ -1,3 +1,10 @@
+2009-06-25  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-property.c: glade_property_sync_impl(), dont sync properties
+	that are the primary property of that klass for the said widget (properties
+	can float outside of widget->properties in some cases, shouldnt effect the
+	widget though).
+
 2009-06-22  Tristan Van Berkom <tvb@gnome.org>
 
 	* configure.ac, NEWS: Rolling Glade 3.6.6
