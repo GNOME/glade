@@ -8474,8 +8474,6 @@ glade_gtk_text_buffer_changed (GtkTextBuffer *buffer, GladeWidget *gbuffy)
 	if ((prop = glade_widget_get_property (gbuffy, "text")))
 	{
 		glade_property_get (prop, &text_prop);
-	
-		g_print ("setting new text on buffer %s: %s\n", gbuffy->name, text);
 
 		if (text_prop == NULL || text == NULL || strcmp (text, text_prop))
 			glade_command_set_property (prop, text);
