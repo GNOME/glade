@@ -6951,6 +6951,9 @@ glade_gtk_image_menu_item_set_label (GObject *object, const GValue *value)
 		image = gtk_image_new_from_stock (g_value_get_string (value), GTK_ICON_SIZE_MENU);
 		gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (object), image);
 
+		if (use_underline)
+			gtk_label_set_use_underline (GTK_LABEL (label), TRUE);
+
 		/* Get the label string... */
 		if (text && gtk_stock_lookup (text, &item))
 			gtk_label_set_label (GTK_LABEL (label), item.label);
@@ -8456,22 +8459,67 @@ glade_gtk_label_create_editable (GladeWidgetAdaptor  *adaptor,
 	return editable;
 }
 
+
+
+/* ----------------------------- GtkTextBuffer ------------------------------ */
+static void
+glade_gtk_text_buffer_changed (GtkTextBuffer *buffer, GladeWidget *gbuffy)
+{
+	const gchar *text_prop = NULL;
+	GladeProperty *prop;
+	gchar *text = NULL;
+	
+	g_object_get (buffer, "text", &text, NULL);
+
+	if ((prop = glade_widget_get_property (gbuffy, "text")))
+	{
+		glade_property_get (prop, &text_prop);
+	
+		g_print ("setting new text on buffer %s: %s\n", gbuffy->name, text);
+
+		if (text_prop == NULL || text == NULL || strcmp (text, text_prop))
+			glade_command_set_property (prop, text);
+	}
+	g_free (text);
+}
+
+void
+glade_gtk_text_buffer_post_create (GladeWidgetAdaptor *adaptor,
+				   GObject            *object, 
+				   GladeCreateReason   reason)
+{
+	GladeWidget *gbuffy;
+	
+	gbuffy = glade_widget_get_from_gobject (object);
+	
+	g_signal_connect (object, "changed",
+			  G_CALLBACK (glade_gtk_text_buffer_changed),
+			  gbuffy);
+}
+
 /* ----------------------------- GtkTextView ------------------------------ */
 static void
 glade_gtk_text_view_changed (GtkTextBuffer *buffer, GladeWidget *gtext)
 {
-	const gchar *text_prop;
+	const gchar *text_prop = NULL;
+	GladeProject  *project;
 	GladeProperty *prop;
-	gchar *text;
+	gchar *text = NULL;
 	
 	g_object_get (buffer, "text", &text, NULL);
+
+	project = glade_widget_get_project (gtext);
+
+	if (glade_project_get_format (project) == GLADE_PROJECT_FORMAT_LIBGLADE)
+	{
+       		if ((prop = glade_widget_get_property (gtext, "text")))
+		{
+			glade_property_get (prop, &text_prop);
 	
-	glade_widget_property_get (gtext, "text", &text_prop);
-	
-	if (strcmp (text, text_prop))
-		if ((prop = glade_widget_get_property (gtext, "text")))
-			glade_command_set_property (prop, text);
-	
+			if (text_prop == NULL || text == NULL || strcmp (text, text_prop))
+				glade_command_set_property (prop, text);
+		}
+	}
 	g_free (text);
 }
 
@@ -8490,20 +8538,27 @@ glade_gtk_text_view_post_create (GladeWidgetAdaptor *adaptor,
 				 GObject            *object, 
 				 GladeCreateReason   reason)
 {
-	GtkTextBuffer *buffy = gtk_text_buffer_new (NULL);
-	GladeWidget *gtext;
+	GtkTextBuffer *buffy;
+	GladeWidget   *gtext;
+	GladeProject  *project;
 	
 	gtext = glade_widget_get_from_gobject (object);
 	
 	/* This makes gtk_text_view_set_buffer() stop complaing */
 	gtk_drag_dest_set (GTK_WIDGET (object), 0, NULL, 0, 0);
-		
-	gtk_text_view_set_buffer (GTK_TEXT_VIEW (object), buffy);
-	g_signal_connect (buffy, "changed",
-			  G_CALLBACK (glade_gtk_text_view_changed),
-			  gtext);
+
+	project = glade_widget_get_project (gtext);
+
+	if (glade_project_get_format (project) == GLADE_PROJECT_FORMAT_LIBGLADE)
+	{
+		buffy = gtk_text_buffer_new (NULL);		
+		gtk_text_view_set_buffer (GTK_TEXT_VIEW (object), buffy);
+		g_signal_connect (buffy, "changed",
+				  G_CALLBACK (glade_gtk_text_view_changed),
+				  gtext);
 	
-	g_object_unref (G_OBJECT (buffy));
+		g_object_unref (G_OBJECT (buffy));
+	}
 
 	/* Glade3 hangs when a TextView gets a double click. So we stop them */
 	g_signal_connect (object, "button-press-event",

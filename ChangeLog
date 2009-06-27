@@ -1,3 +1,9 @@
+2009-06-27  Tristan Van Berkom <tvb@gnome.org>
+
+	* plugins/gtk+/gtk+.xml.in, glade/gtk+/glade-gtk.c: Fixed GtkTextView crashes when
+	editing the textview in line, now we update the associated GtkTextBuffer:text property
+	if available or the GtkTextView:text virtual property when in libglade mode.
+
 2009-06-25  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-property.c: glade_property_sync_impl(), dont sync properties
