@@ -18,6 +18,7 @@
  *
  * Authors:
  *   Chema Celorio <chema@celorio.com>
+ *   Tristan Van Berkom <tvb@gnome.org>
  */
 
 #ifdef HAVE_CONFIG_H
@@ -795,5 +796,17 @@ glade_popup_simple_pop (GdkEventButton *event)
 	}
 	gtk_menu_popup (GTK_MENU (popup_menu), NULL, NULL,
 		NULL, NULL, button, event_time);
+}
+
+gboolean
+glade_popup_is_popup_event (GdkEventButton *event)
+{
+	g_return_val_if_fail (event, FALSE);
+
+#ifdef MAC_INTEGRATION
+	return (event->type == GDK_BUTTON_PRESS && event->button == 1 && ((event->state & GDK_MOD1_MASK) != 0));
+#else
+	return (event->type == GDK_BUTTON_PRESS && event->button == 3);
+#endif
 }
 

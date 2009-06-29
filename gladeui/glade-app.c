@@ -366,12 +366,13 @@ glade_app_get_locale_dir (void)
 static void
 build_package_paths (void)
 {
-#if defined (MAC_INTEGRATION) || defined (G_OS_WIN32)
+#if defined (G_OS_WIN32) || (defined (MAC_INTEGRATION) && defined (MAC_BUNDLE))
 	gchar *prefix;
 
 # ifdef G_OS_WIN32
 	prefix = g_win32_get_package_installation_directory_of_module (NULL);
-# else /* MAC_INTEGRATION */	
+
+# else // defined (MAC_INTEGRATION) && defined (MAC_BUNDLE)
 	IgeMacBundle *bundle = ige_mac_bundle_get_default ();
 
 	prefix = g_build_filename (ige_mac_bundle_get_path (bundle), "Contents", "Resources", NULL);

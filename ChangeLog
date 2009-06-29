@@ -1,3 +1,17 @@
+2009-06-29  Tristan Van Berkom <tvb@gnome.org>
+
+	* configure.ac, gladeui/glade-app.c: Added --enable-mac-bundle configure option to
+	special case runtime path lookups to bundling builds.
+
+	* gladeui/glade-popup.[ch]: Added glade_popup_is_popup_event () to check the correct
+	GdkEventButton state for a context menu (in a platform independant way).
+
+	* gladeui/glade-base-editor.c, gladeui/glade-editor-property.c, gladeui/glade-palette-item.c,
+	gladeui/glade-placeholder.c, gladeui/glade-widget.c, gladeui/glade-inspector.c: Use new
+	popup function to detect whether to show a context menu or not (bug 587128).
+
+	* gladeui/glade-base-editor.c: Fixed crashes with editable treeview column types (bug 586715).
+
 2009-06-27  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/gtk+.xml.in, glade/gtk+/glade-gtk.c: Fixed GtkTextView crashes when

@@ -905,7 +905,6 @@ glade_widget_adaptor_object_read_widget (GladeWidgetAdaptor *adaptor,
 	}
 	g_list_free (read_properties);
 
-	
 	/* Read in the signals */
 	for (iter_node = glade_xml_node_get_children (node); 
 	     iter_node; iter_node = glade_xml_node_next (iter_node))

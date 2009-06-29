@@ -34,6 +34,7 @@
 #include "glade-editor-property.h"
 #include "glade-base-editor.h"
 #include "glade-app.h"
+#include "glade-popup.h"
 #include "glade-accumulators.h"
 
 #include <string.h>
@@ -737,12 +738,12 @@ glade_base_editor_popup (GladeBaseEditor *editor,
 	gchar        *label;
 	gchar        *class_name;
 
+	if ((model = get_children_model_for_type (editor, G_OBJECT_TYPE (widget->parent->object))) == NULL)
+		model = get_children_model_for_type (editor, G_OBJECT_TYPE (editor->priv->gcontainer->object));
 
-	if ((model = get_children_model_for_child_type (editor, G_OBJECT_TYPE (widget->object))) == NULL)
-		return NULL;
-
+	g_assert (model);
+		
 	popup = gtk_menu_new ();
-
 
 	if (gtk_tree_model_get_iter_first (model, &iter))
 		do
@@ -813,11 +814,7 @@ glade_base_editor_popup_handler (GtkWidget *treeview,
 	GtkTreePath *path;
 	GtkWidget *popup;
 
-	if (event->button == 3 || 
-	    (event->button == 1 && 
-	     ((event->state & GDK_MOD1_MASK) != 0 ||
-	      (event->state & GDK_MOD2_MASK) != 0 ||
-	      (event->state & GDK_MOD2_MASK) != 0)))
+	if (glade_popup_is_popup_event (event))
 	{
 		if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (treeview),
 			(gint) event->x, (gint) event->y, &path, NULL, NULL, NULL))
@@ -1963,13 +1960,16 @@ glade_base_editor_add_default_properties (GladeBaseEditor *editor,
 	GtkWidget *label, *entry;
 	GtkTreeModel *child_class;
 	GtkCellRenderer *renderer;
-	GObject *child = glade_widget_get_object (gchild);
-	
+	GObject *parent, *child;
+
 	g_return_if_fail (GLADE_IS_BASE_EDITOR (editor));
 	g_return_if_fail (GLADE_IS_WIDGET (gchild));
 	g_return_if_fail (GLADE_IS_WIDGET (gchild->parent));
 
-	child_class = get_children_model_for_type (editor, G_OBJECT_TYPE (child));
+	child  = glade_widget_get_object (gchild);
+	parent = glade_widget_get_object (gchild->parent);
+
+	child_class = get_children_model_for_type (editor, G_OBJECT_TYPE (parent));
 	
 	/* Name */
 	label = gtk_label_new (_("Name :"));
@@ -1981,7 +1981,7 @@ glade_base_editor_add_default_properties (GladeBaseEditor *editor,
 	g_signal_connect (entry, "focus-out-event", G_CALLBACK (glade_base_editor_name_focus_out), gchild);
 	glade_base_editor_table_attach (editor, label, entry);
 
-	if (child_class)
+	if (child_class && gtk_tree_model_iter_n_children (child_class, NULL) > 1)
 	{
 		/* Type */
 		label = gtk_label_new (_("Type :"));

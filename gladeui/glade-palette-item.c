@@ -337,17 +337,12 @@ static gboolean
 glade_palette_item_button_press (GtkWidget      *widget,
 				 GdkEventButton *event)
 {
-	/* Give some kind of access in case of missing right button */
-	if (!event->type == GDK_BUTTON_PRESS &&
-	    (event->button == 3 || 
-	     (event->button == 1 && 
-	      ((event->state & GDK_MOD1_MASK) != 0 ||
-	       (event->state & GDK_MOD2_MASK) != 0 ||
-	       (event->state & GDK_MOD2_MASK) != 0))))
+	if (glade_popup_is_popup_event (event))
 	{
 		GladePaletteItemPrivate *priv = GLADE_PALETTE_ITEM_GET_PRIVATE (widget);
 
 		glade_popup_palette_pop (priv->adaptor, event);
+		return TRUE;
 	}
 
 	return GTK_WIDGET_CLASS (glade_palette_item_parent_class)->button_press_event (widget, event);

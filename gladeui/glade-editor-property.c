@@ -234,7 +234,7 @@ glade_editor_property_button_pressed (GtkWidget           *widget,
 				      GdkEventButton      *event,
 				      GladeEditorProperty *eprop)
 {
-	if (event->button == 3 && event->type == GDK_BUTTON_PRESS)
+	if (glade_popup_is_popup_event (event))
 	{
 		glade_popup_property_pop (eprop->property, event);
 		return TRUE;

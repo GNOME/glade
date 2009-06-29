@@ -335,12 +335,7 @@ glade_widget_button_press_event_impl (GladeWidget    *gwidget,
 	}
 
 	/* Give some kind of access in case of missing right button */
-	if (!handled &&
-	    (event->button == 3 || 
-	     (event->button == 1 && 
-	      ((event->state & GDK_MOD1_MASK) != 0 ||
-	       (event->state & GDK_MOD2_MASK) != 0 ||
-	       (event->state & GDK_MOD2_MASK) != 0))))
+	if (!handled && glade_popup_is_popup_event (event))
        	{
 			glade_popup_widget_pop (gwidget, event, TRUE);
 			handled = TRUE;

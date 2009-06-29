@@ -27,6 +27,9 @@ void glade_popup_simple_pop           (GdkEventButton *event);
 void glade_popup_property_pop         (GladeProperty  *property,
 				       GdkEventButton *event);
 
+
+gboolean glade_popup_is_popup_event   (GdkEventButton *event);
+
 G_END_DECLS
 
 #endif /* __GLADE_POPUP_H__ */
