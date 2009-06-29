@@ -1,3 +1,19 @@
+
+===========
+Glade 3.6.7
+===========
+	- Sync up remaining properties at load time (fixes use-action-appearance property
+	  and any other unmentioned property states at load time, also unvails broken
+	  orientation default value in GTK+, bug 587256).
+	- Fixed glitches with use-action-appearance at save time.
+	- Make stock button labels save as non-translatable automatically (bug 352446).
+	- Fixed crashes when handling GtkTextView in GtkBuilder format.
+	- Fixed crashes with editable treeview column types (bug 586715).
+	- Detect correct modifiers and buttons to spawn a context menu in a platform
+	  independant way (bug 587128).
+	- Added --enable-mac-bundle configure argument to resolve paths correctly
+	  when building bundles on osx.
+
 ===========
 Glade 3.6.6
 ===========
