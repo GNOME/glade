@@ -280,7 +280,7 @@ glade_base_editor_fill_store_real (GladeBaseEditor *e,
 						    GLADE_BASE_EDITOR_TYPE_NAME, type_name,
 						    GLADE_BASE_EDITOR_NAME, name,
 						    GLADE_BASE_EDITOR_CHILD_TYPES, 
-						    get_children_model_for_type (e, G_OBJECT_TYPE (gwidget->object)),
+						    get_children_model_for_child_type (e, G_OBJECT_TYPE (child)),
 						    -1);
 
 				glade_base_editor_fill_store_real (e, gchild, &iter);
@@ -738,7 +738,7 @@ glade_base_editor_popup (GladeBaseEditor *editor,
 	gchar        *label;
 	gchar        *class_name;
 
-	if ((model = get_children_model_for_type (editor, G_OBJECT_TYPE (widget->parent->object))) == NULL)
+	if ((model = get_children_model_for_child_type (editor, G_OBJECT_TYPE (widget->object))) == NULL)
 		model = get_children_model_for_type (editor, G_OBJECT_TYPE (editor->priv->gcontainer->object));
 
 	g_assert (model);
@@ -1960,16 +1960,15 @@ glade_base_editor_add_default_properties (GladeBaseEditor *editor,
 	GtkWidget *label, *entry;
 	GtkTreeModel *child_class;
 	GtkCellRenderer *renderer;
-	GObject *parent, *child;
+	GObject *child;
 
 	g_return_if_fail (GLADE_IS_BASE_EDITOR (editor));
 	g_return_if_fail (GLADE_IS_WIDGET (gchild));
 	g_return_if_fail (GLADE_IS_WIDGET (gchild->parent));
 
 	child  = glade_widget_get_object (gchild);
-	parent = glade_widget_get_object (gchild->parent);
 
-	child_class = get_children_model_for_type (editor, G_OBJECT_TYPE (parent));
+	child_class = get_children_model_for_child_type (editor, G_OBJECT_TYPE (child));
 	
 	/* Name */
 	label = gtk_label_new (_("Name :"));
