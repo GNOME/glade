@@ -10666,24 +10666,19 @@ glade_gtk_cell_renderer_write_widget (GladeWidgetAdaptor *adaptor,
         GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
 }
 
-void
-glade_gtk_cell_renderer_read_widget (GladeWidgetAdaptor *adaptor,
-				     GladeWidget        *widget,
-				     GladeXmlNode       *node)
+static void
+glade_gtk_cell_renderer_parse_finished (GladeProject *project,
+					GladeWidget  *widget)
 {
 	GladeProperty *property;
 	GList *l;
 	static gint attr_len = 0, use_attr_len = 0;
 
-	if (!glade_xml_node_verify 
-	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
-		return;
-
-	/* First chain up and read in all the properties... */
-        GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
-
-
-	/* Now set "use-attr-*" everywhere that the object property is non-default */
+	/* Set "use-attr-*" everywhere that the object property is non-default 
+	 *
+	 * We do this in the finished handler because some properties may be
+	 * object type properties (which may be anywhere in the glade file).
+	 */
 	if (!attr_len)
        	{
 		attr_len = strlen ("attr-");
@@ -10706,7 +10701,23 @@ glade_gtk_cell_renderer_read_widget (GladeWidgetAdaptor *adaptor,
 				glade_property_set (switch_prop, FALSE);
 		}
 	}
+}
 
+void
+glade_gtk_cell_renderer_read_widget (GladeWidgetAdaptor *adaptor,
+				     GladeWidget        *widget,
+				     GladeXmlNode       *node)
+{
+	if (!glade_xml_node_verify 
+	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+		return;
+
+	/* First chain up and read in all the properties... */
+        GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
+
+	g_signal_connect (widget->project, "parse-finished",
+			  G_CALLBACK (glade_gtk_cell_renderer_parse_finished),
+			  widget);
 }
 
 /*--------------------------- GtkCellLayout ---------------------------------*/
