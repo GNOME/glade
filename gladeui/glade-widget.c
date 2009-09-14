@@ -1335,7 +1335,9 @@ glade_widget_get_internal_child (GladeWidget *parent,
 }
 
 static GladeGetInternalFunc
-glade_widget_get_internal_func (GladeWidget *parent, GladeWidget **parent_ret)
+glade_widget_get_internal_func (GladeWidget  *main_target, 
+				GladeWidget  *parent, 
+				GladeWidget **parent_ret)
 {
 	GladeWidget *gwidget;
 	
@@ -1351,17 +1353,19 @@ glade_widget_get_internal_func (GladeWidget *parent, GladeWidget **parent_ret)
 			if (parent_ret) *parent_ret = gwidget;
 			return adaptor_class->get_internal_child;
 		}
+
+		/* Limit the itterations into where the copy routine stared */
+		if (gwidget == main_target)
+			break;
 	}
-	g_error ("No internal child search function "
-		 "provided for widget class %s (or any parents)",
-		 parent->adaptor->name);
 
 	return NULL;
 }
 
 
 static GladeWidget *
-glade_widget_dup_internal (GladeWidget *parent,
+glade_widget_dup_internal (GladeWidget *main_target,
+			   GladeWidget *parent,
 			   GladeWidget *template_widget,
 			   gboolean     exact)
 {
@@ -1380,24 +1384,29 @@ glade_widget_dup_internal (GladeWidget *parent,
 	{
 		GObject *internal_object = NULL;
 
-		if (parent && 
-		    (get_internal = 
-		     glade_widget_get_internal_func (parent, &internal_parent)) != NULL)
+		if ((get_internal = 
+		     glade_widget_get_internal_func (main_target, parent, &internal_parent)) != NULL)
 		{
 			/* We cant use "parent" here, we have to recurse up the hierarchy to find
 			 * the "parent" that has `get_internal_child' support (i.e. internal children
 			 * may have depth).
 			 */
-			internal_object = get_internal (internal_parent->adaptor,
-							internal_parent->object, 
-							template_widget->internal);
-			g_assert (internal_object);
-			
-			gwidget = glade_widget_get_from_gobject (internal_object);
-			g_assert (gwidget);
+			if ((internal_object = get_internal (internal_parent->adaptor,
+							     internal_parent->object, 
+							     template_widget->internal)) != NULL)
+       			{
+				g_print ("Found internal %s from parent %s\n", template_widget->internal, internal_parent->name);
+
+				gwidget = glade_widget_get_from_gobject (internal_object);
+				g_assert (gwidget);
+			}
 		}
 	}
-	else
+
+	/* If either it was not internal, or we failed to lookup the internal child
+	* in the copied hierarchy (this can happen when copying an internal vbox from
+	* a composite dialog for instance). */
+	if (gwidget == NULL)
 	{
 		gchar *name = g_strdup (template_widget->name);
 		gwidget = glade_widget_adaptor_create_widget
@@ -1409,6 +1418,8 @@ glade_widget_dup_internal (GladeWidget *parent,
 			 "template-exact", exact,
 			 "reason", GLADE_CREATE_COPY, NULL);
 		g_free (name);
+
+		g_print ("Created %s as a copy of %s\n", gwidget->name, template_widget->name);
 	}
 
 	/* Copy signals over here regardless of internal or not... */
@@ -1449,9 +1460,9 @@ glade_widget_dup_internal (GladeWidget *parent,
 			else
 			{
 				/* Recurse through every GladeWidget (internal or not) */
-				child_dup = glade_widget_dup_internal (gwidget, child_gwidget, exact);
+				child_dup = glade_widget_dup_internal (main_target, gwidget, child_gwidget, exact);
 
-				if (child_gwidget->internal == NULL)
+				if (child_dup->internal == NULL)
 				{
 					g_object_set_data_full (child_dup->object,
 								"special-child-type",
@@ -1610,7 +1621,7 @@ glade_widget_insert_children (GladeWidget *gwidget, GList *children)
 			 * widgets.
 			 */
 			get_internal = glade_widget_get_internal_func
-				(gwidget, &internal_parent);
+				(NULL, gwidget, &internal_parent);
 
 			internal_object = get_internal (internal_parent->adaptor,
 							internal_parent->object,
@@ -2291,7 +2302,7 @@ glade_widget_dup (GladeWidget *template_widget,
 	g_return_val_if_fail (GLADE_IS_WIDGET (template_widget), NULL);
 	
 	glade_widget_push_superuser ();
-	widget = glade_widget_dup_internal (NULL, template_widget, exact);
+	widget = glade_widget_dup_internal (template_widget, NULL, template_widget, exact);
 	glade_widget_pop_superuser ();
 
 	return widget;
