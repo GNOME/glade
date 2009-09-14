@@ -1376,7 +1376,7 @@ glade_widget_dup_internal (GladeWidget *parent,
 	g_return_val_if_fail (parent == NULL || GLADE_IS_WIDGET (parent), NULL);
 
 	/* Dont actually duplicate internal widgets, but recurse through them anyway. */
-	if (template_widget->internal)
+	if (parent && template_widget->internal)
 	{
 		GObject *internal_object = NULL;
 
