@@ -166,7 +166,7 @@ glade_widget_action_class_init (GladeWidgetActionClass *klass)
 	                                 PROP_SENSITIVE,
 	                                 g_param_spec_boolean ("sensitive",
 	                                                       _("Sensitive"),
-	                                                       _("Whether or not this action is sensitive"),
+	                                                       _("Whether this action is sensitive"),
 	                                                       TRUE,
 	                                                       G_PARAM_READWRITE));
 

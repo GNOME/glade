@@ -283,7 +283,7 @@ markup_toggled (GtkWidget        *widget,
 
 	label_editor->modifying = TRUE;
 
-	glade_command_push_group (_("Setting %s to use a pango markup string"), label_editor->loaded_widget->name);
+	glade_command_push_group (_("Setting %s to use a Pango markup string"), label_editor->loaded_widget->name);
 
 	property = glade_widget_get_property (label_editor->loaded_widget, "pattern");
 	glade_command_set_property (property, NULL);
@@ -489,7 +489,7 @@ wrap_mode_toggled (GtkWidget        *widget,
 
 	label_editor->modifying = TRUE;
 
-	glade_command_push_group (_("Setting %s to use specific pango word wrapping"), 
+	glade_command_push_group (_("Setting %s to use specific Pango word wrapping"),
 				  label_editor->loaded_widget->name);
 
 	property = glade_widget_get_property (label_editor->loaded_widget, "single-line-mode");

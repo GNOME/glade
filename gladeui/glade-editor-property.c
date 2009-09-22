@@ -1763,14 +1763,14 @@ glade_editor_property_show_i18n_dialog (GtkWidget            *parent,
 	gtk_box_pack_start (GTK_BOX (hbox), translatable_button, FALSE, FALSE, 0);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (translatable_button), *translatable);
 	gtk_widget_set_tooltip_text (translatable_button,
-				     _("Whether this property is translatable or not"));
+				     _("Whether this property is translatable"));
 	
 	/* Has Context */
 	context_button = gtk_check_button_new_with_mnemonic (_("_Has context prefix"));
 	gtk_box_pack_start (GTK_BOX (hbox), context_button, FALSE, FALSE, 0);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (context_button), *has_context);
 	gtk_widget_set_tooltip_text (context_button,
-				     _("Whether or not the translatable string has a context prefix"));
+				     _("Whether the translatable string has a context prefix"));
 	if (fmt == GLADE_PROJECT_FORMAT_LIBGLADE)
 		gtk_widget_show (context_button);
 

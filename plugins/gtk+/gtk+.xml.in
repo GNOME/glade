@@ -686,7 +686,7 @@ embedded in another object</_tooltip>
 
 	<!-- Virtual stock comboentry property -->
 	<property id="stock-id" visible="False" stock-icon="True" custom-layout="True">
-          <_tooltip>The stock icon displayed on the item (chose an item from gtk+ stock or from an icon factory)</_tooltip>
+          <_tooltip>The stock icon displayed on the item (choose an item from GTK+ stock or from an icon factory)</_tooltip>
 	</property>
         <property id="label" translatable="True" default="toolbutton" custom-layout="True"/>
 	<property id="label-widget" parentless-widget="True" libglade-unsupported="True" 
@@ -775,7 +775,7 @@ embedded in another object</_tooltip>
 	    <type>GParamBoxed</type>
 	    <value-type>GladeAttrGList</value-type>
 	  </parameter-spec>
-	  <_tooltip>The pango attributes for this label</_tooltip>
+	  <_tooltip>The Pango attributes for this label</_tooltip>
 	</property>
 	<property id="pattern" custom-layout="True"/>
 	<property id="use-markup" custom-layout="True"/>
@@ -896,7 +896,7 @@ embedded in another object</_tooltip>
 	  </parameter-spec>
         </property>
 
-	<property id="invisible-char-set" _name="Invisible Char Set" since="2.16">
+	<property id="invisible-char-set" _name="Invisible Character Set" since="2.16">
 	  <parameter-spec>
 	    <type>GParamBoolean</type>
 	  </parameter-spec>
@@ -2623,15 +2623,15 @@ embedded in another object</_tooltip>
 
         <property id="stretch" save="False" custom-layout="True">
   	  <displayable-values>
-	    <value id="PANGO_STRETCH_ULTRA_CONDENSED" _name="Ultra Condensed"/>
-	    <value id="PANGO_STRETCH_EXTRA_CONDENSED" _name="Extra Condensed"/>
+	    <value id="PANGO_STRETCH_ULTRA_CONDENSED" _name="Ultra-Condensed"/>
+	    <value id="PANGO_STRETCH_EXTRA_CONDENSED" _name="Extra-Condensed"/>
 	    <value id="PANGO_STRETCH_CONDENSED" _name="Condensed"/>
-	    <value id="PANGO_STRETCH_SEMI_CONDENSED" _name="Semi Condensed"/>
+	    <value id="PANGO_STRETCH_SEMI_CONDENSED" _name="Semi-Condensed"/>
 	    <value id="PANGO_STRETCH_NORMAL" _name="Normal"/>
-	    <value id="PANGO_STRETCH_SEMI_EXPANDED" _name="Semi Expanded"/>
+	    <value id="PANGO_STRETCH_SEMI_EXPANDED" _name="Semi-Expanded"/>
 	    <value id="PANGO_STRETCH_EXPANDED" _name="Expanded"/>
-	    <value id="PANGO_STRETCH_EXTRA_EXPANDED" _name="Extra Expanded"/>
-	    <value id="PANGO_STRETCH_ULTRA_EXPANDED" _name="Ultra Expanded"/>
+	    <value id="PANGO_STRETCH_EXTRA_EXPANDED" _name="Extra-Expanded"/>
+	    <value id="PANGO_STRETCH_ULTRA_EXPANDED" _name="Ultra-Expanded"/>
 	  </displayable-values>
 	</property>
 
@@ -2814,7 +2814,7 @@ embedded in another object</_tooltip>
 
         <property id="accel-mode" save="False" custom-layout="True">
   	  <displayable-values>
-	    <value id="GTK_CELL_RENDERER_ACCEL_MODE_GTK" _name="Gtk"/>
+	    <value id="GTK_CELL_RENDERER_ACCEL_MODE_GTK" _name="GTK+"/>
 	    <value id="GTK_CELL_RENDERER_ACCEL_MODE_OTHER" _name="Other"/>
 	  </displayable-values>
 	</property>
@@ -2844,7 +2844,7 @@ embedded in another object</_tooltip>
 	    <value id="GDK_BUTTON1_MASK" _name="First Mouse Button"/>
 	    <value id="GDK_BUTTON2_MASK" _name="Second Mouse Button"/>
 	    <value id="GDK_BUTTON3_MASK" _name="Third Mouse Button"/>
-	    <value id="GDK_BUTTON4_MASK" _name="Forth Mouse Button"/>
+	    <value id="GDK_BUTTON4_MASK" _name="Fourth Mouse Button"/>
 	    <value id="GDK_BUTTON5_MASK" _name="Fifth Mouse Button"/>
 	    <value id="GDK_SUPER_MASK" _name="Super Modifier"/>
 	    <value id="GDK_HYPER_MASK" _name="Hyper Modifier"/>
@@ -3447,7 +3447,7 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkGammaCurve"/>
   </glade-widget-group>
 
-  <glade-widget-group name="gtk-obsolete" _title="Gtk+ Obsolete">
+  <glade-widget-group name="gtk-obsolete" _title="GTK+ Obsolete">
 
     <default-palette-state expanded="False"/>
 

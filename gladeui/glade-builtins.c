@@ -496,7 +496,7 @@ GParamSpec *
 glade_standard_pixbuf_spec (void)
 {
 	return g_param_spec_object ("pixbuf", _("Image File Name"),
-				     _("Enter a filename, relative or fullpath to "
+				     _("Enter a filename, relative path or full path to "
 				       "load the image"), GDK_TYPE_PIXBUF,
 				     G_PARAM_READWRITE);
 }
@@ -506,7 +506,7 @@ GParamSpec *
 glade_standard_gdkcolor_spec (void)
 {
 	return g_param_spec_boxed ("gdkcolor", _("GdkColor"),
-				     _("A gdk color value"), GDK_TYPE_COLOR,
+				     _("A GDK color value"), GDK_TYPE_COLOR,
 				     G_PARAM_READWRITE);
 }
 

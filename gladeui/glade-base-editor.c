@@ -1971,7 +1971,7 @@ glade_base_editor_add_default_properties (GladeBaseEditor *editor,
 	child_class = get_children_model_for_child_type (editor, G_OBJECT_TYPE (child));
 	
 	/* Name */
-	label = gtk_label_new (_("Name :"));
+	label = gtk_label_new (_("Name:"));
 	gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.0);
 	
 	entry = gtk_entry_new ();
@@ -1983,7 +1983,7 @@ glade_base_editor_add_default_properties (GladeBaseEditor *editor,
 	if (child_class && gtk_tree_model_iter_n_children (child_class, NULL) > 1)
 	{
 		/* Type */
-		label = gtk_label_new (_("Type :"));
+		label = gtk_label_new (_("Type:"));
 		gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.0);
 		
 		entry = gtk_combo_box_new ();
@@ -2197,7 +2197,7 @@ glade_base_editor_pack_new_window (GladeBaseEditor *editor,
 			  G_CALLBACK (glade_base_editor_help),
 			  help_markup ? help_markup : 
 			  _("<big><b>Tips:</b></big>\n"
-			    "  * Right click over the treeview to add items.\n"
+			    "  * Right-click over the treeview to add items.\n"
 			    "  * Press Delete to remove the selected item.\n"
 			    "  * Drag &amp; Drop to reorder.\n"
 			    "  * Type column is editable."));

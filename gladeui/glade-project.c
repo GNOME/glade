@@ -832,7 +832,7 @@ glade_project_class_init (GladeProjectClass *klass)
 					 PROP_READ_ONLY,
 					 g_param_spec_boolean ("read-only",
 							       _("Read Only"),
-							       _("Whether project is read only or not"),
+							       _("Whether project is read-only"),
 							       FALSE,
 							       G_PARAM_READABLE));
 
@@ -2021,7 +2021,7 @@ glade_project_verify_dialog (GladeProject *project,
 				     saving ? GLADE_UI_YES_OR_NO : GLADE_UI_INFO,
 				     expander,
 				     saving ? 
-				     _("Project %s has errors, save anyway ?") :
+				     _("Project %s has errors. Save anyway?") :
 				     _("Project %s has deprecated widgets "
 				       "and/or version mismatches."), name);
 	g_free (name);

@@ -589,14 +589,14 @@ glade_property_klass_init (GladePropertyKlass *prop_class)
 		(object_class, PROP_I18N_TRANSLATABLE,
 		 g_param_spec_boolean 
 		 ("i18n-translatable", _("Translatable"), 
-		  _("Whether this property is translatable or not"),
+		  _("Whether this property is translatable"),
 		  TRUE, G_PARAM_READWRITE));
 
 	g_object_class_install_property 
 		(object_class, PROP_I18N_HAS_CONTEXT,
 		 g_param_spec_boolean 
 		 ("i18n-has-context", _("Has Context"), 
-		  _("Whether or not the translatable string has a context prefix"),
+		  _("Whether the translatable string has a context prefix"),
 		  FALSE, G_PARAM_READWRITE));
 
 	g_object_class_install_property 
