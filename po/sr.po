@@ -1,31 +1,36 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Serbian translation of glade3
+# Courtesy of Prevod.org team (http://prevod.org/) -- 2009.
+#
+# This file is distributed under the same license as the glade3 package.
+#
+# Maintainer: Бранко Кокановић <branko.kokanovic@gmail.com>
+# Translated on 2009-09-26 by: Бранко Кокановић <branko.kokanovic@gmail.com>
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: glade3 HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-04-10 12:25+0200\n"
-"PO-Revision-Date: 2009-01-26 23:31+0100\n"
-"Last-Translator: Milan SKOCIC <milan.skocic@gmail.com>\n"
+"PO-Revision-Date: 2009-09-29 21:26+0200\n"
+"Last-Translator: Бранко Кокановић <branko.kokanovic@gmail.com>\n"
 "Language-Team: Serbian Translation Team <gnom@prevod.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3;    plural=n%10==1 && n%100!=11 ? 0 :    n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
 #: ../data/glade-3.desktop.in.in.h:1
 msgid "Create or open user interface designs for GTK+ applications"
-msgstr ""
+msgstr "Направите или отворите дизајне корисничког сучеља ГТК+ програма"
 
 #: ../data/glade-3.desktop.in.in.h:2
 msgid "Glade Interface Designer"
-msgstr ""
+msgstr "Глејд израда сучеља"
 
 #: ../data/glade-3.desktop.in.in.h:3 ../src/glade-window.c:439
 msgid "User Interface Designer"
-msgstr ""
+msgstr "Израда корисничког сучеља"
 
 #: ../src/main.c:42
 msgid "Glade"
@@ -33,23 +38,23 @@ msgstr "Глејд"
 
 #: ../src/main.c:52
 msgid "Output version information and exit"
-msgstr ""
+msgstr "Прикажи ову помоћ и заврши"
 
 #: ../src/main.c:55
 msgid "Disable Devhelp integration"
-msgstr ""
+msgstr "Онемогући интеграцију са ДевХелпом"
 
 #: ../src/main.c:58
 msgid "[FILE...]"
-msgstr ""
+msgstr "[ДАТОТЕКА...]"
 
 #: ../src/main.c:68
 msgid "be verbose"
-msgstr ""
+msgstr "Опширнији испис"
 
 #: ../src/main.c:93
 msgid "Create or edit user interface designs for GTK+ or GNOME applications."
-msgstr ""
+msgstr "Направите или мењајте дизајне корисничког сучеља ГТК+ и Гном програма"
 
 #: ../src/main.c:97 ../src/main.c:98
 msgid "Glade options"
@@ -57,34 +62,34 @@ msgstr "Опције Глејда"
 
 #: ../src/main.c:105
 msgid "Glade debug options"
-msgstr ""
+msgstr "Глејд опције за отклањање грешака"
 
 #: ../src/main.c:106
 msgid "Show Glade debug options"
-msgstr ""
+msgstr "Прикажи Глелд опције за отклањање грешака"
 
 #: ../src/main.c:149
 msgid ""
 "gmodule support not found. gmodule support is required for glade to work"
-msgstr ""
+msgstr "Подршка за gmodule није нађена. Она је неопходна да би Глејд радио"
 
 #: ../src/main.c:176
 #, c-format
 msgid "Unable to open '%s', the file does not exist.\n"
-msgstr ""
+msgstr "Не могу да отворим „%s“, датотека не постоји.\n"
 
 #: ../src/glade-window.c:45
 msgid "[Read Only]"
-msgstr ""
+msgstr "[Само за читање]"
 
 #: ../src/glade-window.c:154
 #, c-format
 msgid "Could not display the URL '%s'"
-msgstr "Не могу приказати URL адресу '%s'"
+msgstr "Не могу приказати адресу „%s“"
 
 #: ../src/glade-window.c:158
 msgid "No suitable web browser could be found."
-msgstr ""
+msgstr "Не могу да нађем ниједан интернет прегледник."
 
 #. translators: referring to the action of activating a file named '%s'.
 #. *              we also indicate to users that the file may be read-only with
@@ -108,15 +113,16 @@ msgstr "Отвори…"
 #: ../src/glade-window.c:1147
 #, c-format
 msgid "The file %s has been modified since reading it"
-msgstr ""
+msgstr "Датотека %s је промењена од последњег читања"
 
 #: ../src/glade-window.c:1151
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr ""
+"Ако је снимите, све измене настале споља ће бити изгубљене. Ипак је снимити?"
 
 #: ../src/glade-window.c:1155
 msgid "_Save Anyway"
-msgstr ""
+msgstr "Ипак _сачувај"
 
 #: ../src/glade-window.c:1162
 msgid "_Don't Save"
@@ -125,7 +131,7 @@ msgstr "_Не Сачувај"
 #: ../src/glade-window.c:1188
 #, c-format
 msgid "Failed to save %s: %s"
-msgstr ""
+msgstr "Неуспело чување %s: %s"
 
 #: ../src/glade-window.c:1210
 #, c-format
@@ -139,29 +145,30 @@ msgstr "Сачувај Као…"
 #: ../src/glade-window.c:1275
 #, c-format
 msgid "Could not save the file %s"
-msgstr ""
+msgstr "Нисам могао да сачувам датотеку %s"
 
 #: ../src/glade-window.c:1279
 msgid "You do not have the permissions necessary to save the file."
-msgstr ""
+msgstr "Немате потребне привилегије да сачувате датотеку."
 
 #: ../src/glade-window.c:1300
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr ""
+"Нисам могао да сачувам датотеку %s. Други пројекат са том путањом је отворен."
 
 #: ../src/glade-window.c:1325
 msgid "No open projects to save"
-msgstr ""
+msgstr "Нема отворених пројеката за чување"
 
 #: ../src/glade-window.c:1355
 #, c-format
 msgid "Save changes to project \"%s\" before closing?"
-msgstr ""
+msgstr "Сачувати измене у пројекту „%s“ пре затварања?"
 
 #: ../src/glade-window.c:1366
 msgid "Your changes will be lost if you don't save them."
-msgstr ""
+msgstr "Измене ће бити изгубљене ако их не сачувате."
 
 #: ../src/glade-window.c:1370
 msgid "_Close without Saving"
@@ -170,7 +177,7 @@ msgstr "_Затвори без Сачувања"
 #: ../src/glade-window.c:1397
 #, c-format
 msgid "Failed to save %s to %s: %s"
-msgstr ""
+msgstr "Не могу да сачувам %s у %s: %s"
 
 #: ../src/glade-window.c:1409
 msgid "Save…"
@@ -178,7 +185,7 @@ msgstr "Сачувај…"
 
 #: ../src/glade-window.c:1907
 msgid "Could not display the online user manual"
-msgstr ""
+msgstr "Не могу да прикажем корисничко упутство на мрежи"
 
 #: ../src/glade-window.c:1910 ../src/glade-window.c:1948
 #, c-format
@@ -186,10 +193,12 @@ msgid ""
 "No suitable web browser executable could be found to be executed and to "
 "display the URL: %s"
 msgstr ""
+"Није нађена ниједна погодна извршна датотека интернет прегледника која би се "
+"покренула и приказала адресу: %s"
 
 #: ../src/glade-window.c:1945
 msgid "Could not display the online developer reference manual"
-msgstr ""
+msgstr "Не могу да прикажем упутство за програмере са референцама на мрежи"
 
 #: ../src/glade-window.c:1988
 msgid ""
@@ -207,14 +216,28 @@ msgid ""
 "Glade; if not, write to the Free Software Foundation, Inc., 51 Franklin "
 "Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
+"Глејд је слободан софтвер; можете га расподељивати и/или га мењати под "
+"условима ГНУ Опште Јавне Лиценце (GNU GPL) како је објављује Задужбина за "
+"Слободни Софтвер (FSF); било верзије 2 те Лиценце, било (по вашем нахођењу) "
+"било које новије верзије.\n"
+"\n"
+"Глејд се расподељује у нади да ће бити од користи, али БЕЗ ИКАКВИХ "
+"ГАРАНЦИЈА; чак и без подразумеване гаранције КОРИСНОСТИ или ПРИЛАГОЂЕНОСТИ "
+"ОДРЕЂЕНОЈ НАМЕНИ.  Видите ГНУ Општу Јавну Лиценцу за више детаља.\n"
+"Требали сте да примите примерак ГНУ Опште Јавне Лиценце уз Глејд; ако нисте, "
+"пишите Задужбини за Слободни Софтвер (Free Software Foundation, Inc.), 51 "
+"Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA."
 
 #: ../src/glade-window.c:2014
 msgid "translator-credits"
 msgstr ""
+"Бранко Кокановић <branko.kokanovic@gmail.com>\n"
+"\n"
+"Prevod.org — превод на српски језик"
 
 #: ../src/glade-window.c:2015
 msgid "A user interface designer for GTK+ and GNOME."
-msgstr ""
+msgstr "Израда корисниког сучеља за Гтк+ и Гном."
 
 #. File
 #: ../src/glade-window.c:2087 ../plugins/gtk+/glade-gtk.c:7028
@@ -267,7 +290,7 @@ msgstr "Изађи из програма"
 #. ViewMenu
 #: ../src/glade-window.c:2108
 msgid "Palette _Appearance"
-msgstr ""
+msgstr "Изглед п_алете"
 
 #: ../src/glade-window.c:2112
 msgid "About this application"
@@ -279,15 +302,15 @@ msgstr "_Садржај"
 
 #: ../src/glade-window.c:2115
 msgid "Display the user manual"
-msgstr ""
+msgstr "Прикажи корисничко упутство"
 
 #: ../src/glade-window.c:2117
 msgid "_Developer Reference"
-msgstr ""
+msgstr "Програмерске референце"
 
 #: ../src/glade-window.c:2118
 msgid "Display the developer reference manual"
-msgstr ""
+msgstr "Прикажи програмерско упутство са референцама"
 
 #: ../src/glade-window.c:2127
 msgid "Save the current project"
@@ -307,11 +330,11 @@ msgstr "Затвори текући пројекат"
 
 #: ../src/glade-window.c:2137
 msgid "Undo the last action"
-msgstr ""
+msgstr "Опозови последњу акцију"
 
 #: ../src/glade-window.c:2140
 msgid "Redo the last action"
-msgstr ""
+msgstr "Поново последњу опозвану акцију"
 
 #: ../src/glade-window.c:2143
 msgid "Cut the selection"
@@ -323,7 +346,7 @@ msgstr "Умножи избор"
 
 #: ../src/glade-window.c:2149
 msgid "Paste the clipboard"
-msgstr ""
+msgstr "Убаци из оставе"
 
 #: ../src/glade-window.c:2152
 msgid "Delete the selection"
@@ -331,7 +354,7 @@ msgstr "Обриши избор"
 
 #: ../src/glade-window.c:2155
 msgid "Modify project preferences"
-msgstr ""
+msgstr "Измени поставке пројекта"
 
 #. ProjectsMenu
 #: ../src/glade-window.c:2158
@@ -340,7 +363,7 @@ msgstr "_Преходни пројекат"
 
 #: ../src/glade-window.c:2159
 msgid "Activate previous project"
-msgstr ""
+msgstr "Активирај претходни пројекат"
 
 #: ../src/glade-window.c:2161
 msgid "_Next Project"
@@ -348,7 +371,7 @@ msgstr "_Наредни пројекат"
 
 #: ../src/glade-window.c:2162
 msgid "Activate next project"
-msgstr ""
+msgstr "Активирај следећи пројекат"
 
 #: ../src/glade-window.c:2170
 msgid "_Use Small Icons"
@@ -356,39 +379,39 @@ msgstr "_Користи мале иконице"
 
 #: ../src/glade-window.c:2171
 msgid "Show items using small icons"
-msgstr ""
+msgstr "Приказује ставке користећи мале иконице"
 
 #: ../src/glade-window.c:2174
 msgid "Dock _Palette"
-msgstr ""
+msgstr "Прикачи _палету"
 
 #: ../src/glade-window.c:2175
 msgid "Dock the palette into the main window"
-msgstr ""
+msgstr "Прикачиње палету у главни прозор"
 
 #: ../src/glade-window.c:2178
 msgid "Dock _Inspector"
-msgstr ""
+msgstr "Прикачи _инспектора"
 
 #: ../src/glade-window.c:2179
 msgid "Dock the inspector into the main window"
-msgstr ""
+msgstr "Прикачиње инспектора у главни прозор"
 
 #: ../src/glade-window.c:2182
 msgid "Dock Prop_erties"
-msgstr ""
+msgstr "Прикачи особин_е"
 
 #: ../src/glade-window.c:2183
 msgid "Dock the editor into the main window"
-msgstr ""
+msgstr "Прикачиње уређивач у главни прозор"
 
 #: ../src/glade-window.c:2191 ../plugins/gtk+/gtk+.xml.in.h:445
 msgid "Text beside icons"
-msgstr ""
+msgstr "Текст поред иконица"
 
 #: ../src/glade-window.c:2192
 msgid "Display items as text beside icons"
-msgstr ""
+msgstr "Приказује ставке као текст поред иконица"
 
 #: ../src/glade-window.c:2194
 msgid "_Icons only"
@@ -396,7 +419,7 @@ msgstr "_Само иконице"
 
 #: ../src/glade-window.c:2195
 msgid "Display items as icons only"
-msgstr ""
+msgstr "Приказује ставке само као иконице"
 
 #: ../src/glade-window.c:2197
 msgid "_Text only"
@@ -404,7 +427,7 @@ msgstr "_Само текст"
 
 #: ../src/glade-window.c:2198
 msgid "Display items as text only"
-msgstr ""
+msgstr "Приказује ставке само као текст"
 
 #: ../src/glade-window.c:2387
 msgid "Select"
@@ -412,107 +435,109 @@ msgstr "Изабери"
 
 #: ../src/glade-window.c:2391
 msgid "Select widgets in the workspace"
-msgstr ""
+msgstr "Одаберање елемената у радном простору"
 
 #: ../src/glade-window.c:2415
 msgid "Drag Resize"
-msgstr ""
+msgstr "Превуци Прошири"
 
 #: ../src/glade-window.c:2419
 msgid "Drag and resize widgets in the workspace"
-msgstr ""
+msgstr "Превлачење и промена величине елемената у радном простору"
 
 #: ../src/glade-window.c:2461
 msgid "Could not create a new project."
-msgstr ""
+msgstr "Не могу да направим нови пројекат"
 
 #: ../src/glade-window.c:2515
 #, c-format
 msgid "The project %s has unsaved changes"
-msgstr ""
+msgstr "Пројекат %s има несачуваних измена"
 
 #: ../src/glade-window.c:2519
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr ""
+"Ако га поново учитате, све несачуване измене ће бити изгубљене. Ипак поново "
+"учитати?"
 
 #: ../src/glade-window.c:2528
 #, c-format
 msgid "The project file %s has been externally modified"
-msgstr ""
+msgstr "Датотека пројекта %s је измењена споља"
 
 #: ../src/glade-window.c:2532
 msgid "Do you want to reload the project?"
-msgstr ""
+msgstr "Да ли желите да поново учитате пројекат?"
 
 #: ../src/glade-window.c:2538
 msgid "_Reload"
-msgstr ""
+msgstr "_Поново учитај"
 
 #: ../src/glade-window.c:2660
 msgid "_Undo"
-msgstr ""
+msgstr "_Опозови"
 
 #. Change tooltips
 #: ../src/glade-window.c:2662 ../gladeui/glade-app.c:269
 #, c-format
 msgid "Undo: %s"
-msgstr ""
+msgstr "Опозови: %s"
 
 #: ../src/glade-window.c:2662 ../src/glade-window.c:2673
 #: ../gladeui/glade-app.c:270
 msgid "the last action"
-msgstr ""
+msgstr "последња акција"
 
 #: ../src/glade-window.c:2671
 msgid "_Redo"
-msgstr ""
+msgstr "_Понови"
 
 #: ../src/glade-window.c:2673 ../gladeui/glade-app.c:269
 #, c-format
 msgid "Redo: %s"
-msgstr ""
+msgstr "Понови: %s"
 
 #: ../src/glade-window.c:2981
 msgid "Go back in undo history"
-msgstr ""
+msgstr "Иди назад у историјату промена"
 
 #: ../src/glade-window.c:2983
 msgid "Go forward in undo history"
-msgstr ""
+msgstr "Иди напред у историјату промена"
 
 #: ../src/glade-window.c:3030
 msgid "Palette"
-msgstr ""
+msgstr "Палета"
 
 #: ../src/glade-window.c:3041
 msgid "Inspector"
-msgstr ""
+msgstr "Инспектор"
 
 #: ../src/glade-window.c:3048 ../gladeui/glade-editor.c:350
 #: ../gladeui/glade-widget.c:1094 ../plugins/gtk+/glade-gtk.c:6466
 #: ../plugins/gtk+/glade-gtk.c:6496 ../plugins/gtk+/glade-gtk.c:10799
 msgid "Properties"
-msgstr ""
+msgstr "Особине"
 
 #: ../gladeui/glade-app.c:439
 msgid "Clipboard"
-msgstr ""
+msgstr "Остава"
 
 #: ../gladeui/glade-app.c:508
 msgid "Active Project"
-msgstr ""
+msgstr "Активни пројекат"
 
 #: ../gladeui/glade-app.c:509
 msgid "The active project"
-msgstr ""
+msgstr "Активни пројекат"
 
 #: ../gladeui/glade-app.c:515
 msgid "Pointer Mode"
-msgstr ""
+msgstr "Начин рада показивача"
 
 #: ../gladeui/glade-app.c:516
 msgid "Current mode for the pointer in the workspace"
-msgstr ""
+msgstr "Тренутни начин рада показивача у радном простору"
 
 #: ../gladeui/glade-app.c:586
 #, c-format
@@ -520,6 +545,9 @@ msgid ""
 "Trying to save private data to %s directory but it is a regular file.\n"
 "No private data will be saved in this session"
 msgstr ""
+"Покушавао сам да сачувам приватне податке у %s фасциклу, али је она већ "
+"обична датотека.\n"
+"Никакви приватни подаци неће бити сачувани у овој сесији"
 
 #: ../gladeui/glade-app.c:599
 #, c-format
@@ -527,6 +555,8 @@ msgid ""
 "Failed to create directory %s to save private data.\n"
 "No private data will be saved in this session"
 msgstr ""
+"Неуспело прављење фасикле %s за чување приватних података.\n"
+"Никакви приватни подаци неће бити сачувани у овој сесији"
 
 #: ../gladeui/glade-app.c:627
 #, c-format
@@ -534,6 +564,8 @@ msgid ""
 "Error writing private data to %s (%s).\n"
 "No private data will be saved in this session"
 msgstr ""
+"Грешка при писању приватних података у %s (%s).\n"
+"Никакви приватни подаци неће бити сачувани у овој сесији"
 
 #: ../gladeui/glade-app.c:639
 #, c-format
@@ -541,6 +573,8 @@ msgid ""
 "Error serializing configuration data to save (%s).\n"
 "No private data will be saved in this session"
 msgstr ""
+"Грешка при серијализацији конфигурационих података за чување (%s).\n"
+"Никакви приватни подаци неће бити сачувани у овој сесији"
 
 #: ../gladeui/glade-app.c:652
 #, c-format
@@ -548,217 +582,219 @@ msgid ""
 "Error opening %s to write private data (%s).\n"
 "No private data will be saved in this session"
 msgstr ""
+"Грешка при отварању %s за писање приватних података (%s).\n"
+"Никакви приватни подаци неће бити сачувани у овој сесији"
 
 #: ../gladeui/glade-app.c:1165 ../gladeui/glade-app.c:1206
 #: ../gladeui/glade-app.c:1365
 msgid "No widget selected."
-msgstr ""
+msgstr "Није одабран ниједан елемент."
 
 #: ../gladeui/glade-app.c:1258
 msgid "Unable to paste to the selected parent"
-msgstr ""
+msgstr "Не могу да убацим из оставе у изабраног родитеља"
 
 #: ../gladeui/glade-app.c:1269
 msgid "Unable to paste to multiple widgets"
-msgstr ""
+msgstr "Не могу да убацим из оставе у више елемената"
 
 #: ../gladeui/glade-app.c:1279 ../gladeui/glade-app.c:1385
 msgid "No widget selected on the clipboard"
-msgstr ""
+msgstr "Нема изабраних елемената у остави"
 
 #: ../gladeui/glade-app.c:1311
 msgid "Only one widget can be pasted at a time to this container"
-msgstr ""
+msgstr "Само један елемент у једном тренутку може бити убачен у овај контејнер"
 
 #: ../gladeui/glade-app.c:1323
 msgid "Insufficient amount of placeholders in target container"
-msgstr ""
+msgstr "Недовољан број празних чувара места у одредишном контејнеру"
 
 #: ../gladeui/glade-builtins.c:71
 msgid "Authentication"
-msgstr ""
+msgstr "Пријава"
 
 #. GTK_STOCK_DIALOG_AUTHENTICATION
 #: ../gladeui/glade-builtins.c:72
 msgid "DnD"
-msgstr ""
+msgstr "Превуци & спусти"
 
 #. GTK_STOCK_DND
 #: ../gladeui/glade-builtins.c:73
 msgid "DnD Multiple"
-msgstr ""
+msgstr "Превуци & спусти више"
 
 #. GTK_STOCK_DND_MULTIPLE
 #: ../gladeui/glade-builtins.c:74
 msgid "Color Picker"
-msgstr ""
+msgstr "Бирач боја"
 
 #. GTK_STOCK_COLOR_PICKER
 #: ../gladeui/glade-builtins.c:75
 msgid "Directory"
-msgstr ""
+msgstr "Фасцикла"
 
 #. GTK_STOCK_DIRECTORY
 #: ../gladeui/glade-builtins.c:76 ../plugins/gnome/gnome.xml.in.h:9
 msgid "File"
-msgstr ""
+msgstr "Датотека"
 
 #. GTK_STOCK_FILE
 #: ../gladeui/glade-builtins.c:77
 msgid "Missing Image"
-msgstr ""
+msgstr "Недостаје слика"
 
 #: ../gladeui/glade-builtins.c:321
 msgid "Stock"
-msgstr ""
+msgstr "Лагер"
 
 #: ../gladeui/glade-builtins.c:322
 msgid "A builtin stock item"
-msgstr ""
+msgstr "Уграђена ставка са лагера"
 
 #: ../gladeui/glade-builtins.c:330
 msgid "Stock Image"
-msgstr ""
+msgstr "Лагерска слика"
 
 #: ../gladeui/glade-builtins.c:331
 msgid "A builtin stock image"
-msgstr ""
+msgstr "Уграђена слика са лагера"
 
 #: ../gladeui/glade-builtins.c:488 ../gladeui/glade-inspector.c:713
 msgid "Objects"
-msgstr ""
+msgstr "Објекти"
 
 #: ../gladeui/glade-builtins.c:489
 msgid "A list of objects"
-msgstr ""
+msgstr "Списак објеката"
 
 #: ../gladeui/glade-builtins.c:498
 msgid "Image File Name"
-msgstr ""
+msgstr "Име датотеке слике"
 
 #: ../gladeui/glade-builtins.c:499
 msgid "Enter a filename, relative or fullpath to load the image"
-msgstr ""
+msgstr "Унесите име датотеке, релативну или пуну путању за учитавање слике"
 
 #: ../gladeui/glade-builtins.c:508
 msgid "GdkColor"
-msgstr ""
+msgstr "Gdk боја"
 
 #: ../gladeui/glade-builtins.c:509
 msgid "A gdk color value"
-msgstr ""
+msgstr "Вредност gdk боје"
 
 #: ../gladeui/glade-builtins.c:519
 msgid "Integer"
-msgstr ""
+msgstr "Цео број"
 
 #: ../gladeui/glade-builtins.c:520
 msgid "An integer value"
-msgstr ""
+msgstr "Вредност целог броја"
 
 #: ../gladeui/glade-builtins.c:528
 msgid "Unsigned Integer"
-msgstr ""
+msgstr "Неозначени цели број"
 
 #: ../gladeui/glade-builtins.c:529
 msgid "An unsigned integer value"
-msgstr ""
+msgstr "Вредност неозначеног целог броја"
 
 #: ../gladeui/glade-builtins.c:536
 msgid "String"
-msgstr ""
+msgstr "Ниска"
 
 #: ../gladeui/glade-builtins.c:537
 msgid "An entry"
-msgstr ""
+msgstr "Унос"
 
 #: ../gladeui/glade-builtins.c:544
 msgid "Strv"
-msgstr ""
+msgstr "Strv"
 
 #: ../gladeui/glade-builtins.c:545
 msgid "String array"
-msgstr ""
+msgstr "Низ ниски"
 
 #: ../gladeui/glade-builtins.c:553
 msgid "Float"
-msgstr ""
+msgstr "Број са покретним зарезом"
 
 #: ../gladeui/glade-builtins.c:554
 msgid "A floating point entry"
-msgstr ""
+msgstr "Унос броја са покретним зарезом"
 
 #: ../gladeui/glade-builtins.c:562
 msgid "Boolean"
-msgstr ""
+msgstr "Логичка вредност"
 
 #: ../gladeui/glade-builtins.c:563
 msgid "A boolean value"
-msgstr ""
+msgstr "Логичка вредност"
 
 #: ../gladeui/glade-base-editor.c:529
 #, c-format
 msgid "Setting object type on %s to %s"
-msgstr ""
+msgstr "Постављам тип објекта %s на %s"
 
 #: ../gladeui/glade-base-editor.c:670
 #, c-format
 msgid "Add a %s to %s"
-msgstr ""
+msgstr "Додај %s у %s"
 
 #: ../gladeui/glade-base-editor.c:755
 #, c-format
 msgid "Add %s item"
-msgstr ""
+msgstr "Додај %s ставку"
 
 #: ../gladeui/glade-base-editor.c:785
 #, c-format
 msgid "Add child %s item"
-msgstr ""
+msgstr "Додај дете %s ставку"
 
 #: ../gladeui/glade-base-editor.c:872
 #, c-format
 msgid "Delete %s child from %s"
-msgstr ""
+msgstr "Обриши %s дете из %s"
 
 #: ../gladeui/glade-base-editor.c:1000
 #, c-format
 msgid "Reorder %s's children"
-msgstr ""
+msgstr "Поново поређај децу %s"
 
 #: ../gladeui/glade-base-editor.c:1437 ../plugins/gtk+/gtk+.xml.in.h:95
 msgid "Container"
-msgstr ""
+msgstr "Контејнер"
 
 #: ../gladeui/glade-base-editor.c:1438
 msgid "The container object this editor is currently editing"
-msgstr ""
+msgstr "Објекат контејнера који се тренутно уређује"
 
 #: ../gladeui/glade-base-editor.c:1663 ../gladeui/glade-editor.c:991
 msgid "General"
-msgstr ""
+msgstr "Опште"
 
 #: ../gladeui/glade-base-editor.c:1671
 msgid "Hierarchy"
-msgstr ""
+msgstr "Хијерархија"
 
 #: ../gladeui/glade-base-editor.c:1705 ../plugins/gtk+/gtk+.xml.in.h:253
 msgid "Label"
-msgstr ""
+msgstr "Ознака"
 
 #: ../gladeui/glade-base-editor.c:1719 ../gladeui/glade-widget-adaptor.c:1219
 msgid "Type"
-msgstr ""
+msgstr "Тип"
 
 #. Name
 #: ../gladeui/glade-base-editor.c:1974
 msgid "Name :"
-msgstr ""
+msgstr "Име :"
 
 #. Type
 #: ../gladeui/glade-base-editor.c:1986
 msgid "Type :"
-msgstr ""
+msgstr "Тип :"
 
 #: ../gladeui/glade-base-editor.c:2199
 msgid ""
@@ -768,166 +804,171 @@ msgid ""
 "  * Drag &amp; Drop to reorder.\n"
 "  * Type column is editable."
 msgstr ""
+"<big><b>Савети:</b></big>\n"
+"  * Десни клик на приказ стабла да додате ставке.\n"
+"  * Притисните Delete да уклоните одабрану ставку.\n"
+"  * Превуците &amp; спустите да промените редослед ставки.\n"
+"  * Колоне типа су измењиве."
 
 #: ../gladeui/glade-clipboard-view.c:209 ../gladeui/glade-editor.c:162
 #: ../plugins/gtk+/gtk+.xml.in.h:515
 msgid "Widget"
-msgstr ""
+msgstr "Елемент"
 
 #: ../gladeui/glade-command.c:598
 #, c-format
 msgid "Setting multiple properties"
-msgstr ""
+msgstr "Подешавање више својстава"
 
 #: ../gladeui/glade-command.c:611
 #, c-format
 msgid "Setting %s of %s"
-msgstr ""
+msgstr "Подешавање %s елемента %s"
 
 #: ../gladeui/glade-command.c:615 ../gladeui/glade-editor-property.c:2879
 #, c-format
 msgid "Setting %s of %s to %s"
-msgstr ""
+msgstr "Подешавање %s елемента %s на %s"
 
 #: ../gladeui/glade-command.c:850 ../gladeui/glade-command.c:877
 #, c-format
 msgid "Renaming %s to %s"
-msgstr ""
+msgstr "Преименовање %s на %s"
 
 #: ../gladeui/glade-command.c:1006
 #, c-format
 msgid "Add %s"
-msgstr ""
+msgstr "Додај %s"
 
 #: ../gladeui/glade-command.c:1007 ../gladeui/glade-command.c:1738
 #: ../gladeui/glade-command.c:1762 ../gladeui/glade-command.c:1785
 #: ../gladeui/glade-command.c:1810 ../gladeui/glade-command.c:1915
 #: ../gladeui/glade-command.c:1948
 msgid "multiple"
-msgstr ""
+msgstr "више"
 
 #: ../gladeui/glade-command.c:1163
 msgid "You cannot remove a widget internal to a composite widget."
-msgstr ""
+msgstr "Не можете да уклоните елемент који је интеран композитном елементу"
 
 #: ../gladeui/glade-command.c:1170
 #, c-format
 msgid "%s is locked by %s, edit %s first."
-msgstr ""
+msgstr "%s је закључан од стране %s, прво измените %s."
 
 #: ../gladeui/glade-command.c:1180
 #, c-format
 msgid "Remove %s"
-msgstr ""
+msgstr "Уклони %s"
 
 #: ../gladeui/glade-command.c:1183
 msgid "Remove multiple"
-msgstr ""
+msgstr "Уклони више"
 
 #: ../gladeui/glade-command.c:1557
 #, c-format
 msgid "Clipboard add %s"
-msgstr ""
+msgstr "Додај %s из оставе"
 
 #: ../gladeui/glade-command.c:1560
 msgid "Clipboard add multiple"
-msgstr ""
+msgstr "Додај више из оставе"
 
 #: ../gladeui/glade-command.c:1565
 #, c-format
 msgid "Clipboard remove %s"
-msgstr ""
+msgstr "Уклони %s из оставе"
 
 #: ../gladeui/glade-command.c:1568
 msgid "Clipboard remove multiple"
-msgstr ""
+msgstr "Уклони више из оставе"
 
 #: ../gladeui/glade-command.c:1738
 #, c-format
 msgid "Create %s"
-msgstr ""
+msgstr "Направи %s"
 
 #: ../gladeui/glade-command.c:1762
 #, c-format
 msgid "Delete %s"
-msgstr ""
+msgstr "Обриши %s"
 
 #: ../gladeui/glade-command.c:1785
 #, c-format
 msgid "Cut %s"
-msgstr ""
+msgstr "Исеци %s"
 
 #: ../gladeui/glade-command.c:1810
 #, c-format
 msgid "Copy %s"
-msgstr ""
+msgstr "Умножи %s"
 
 #: ../gladeui/glade-command.c:1915
 #, c-format
 msgid "Paste %s"
-msgstr ""
+msgstr "Убаци %s"
 
 #: ../gladeui/glade-command.c:1947
 #, c-format
 msgid "Drag-n-Drop from %s to %s"
-msgstr ""
+msgstr "Превлачење & спуштање из %s у %s"
 
 #: ../gladeui/glade-command.c:2069
 #, c-format
 msgid "Add signal handler %s"
-msgstr ""
+msgstr "Додај управљач сигнала %s"
 
 #: ../gladeui/glade-command.c:2070
 #, c-format
 msgid "Remove signal handler %s"
-msgstr ""
+msgstr "Уклони управљач сигнала %s"
 
 #: ../gladeui/glade-command.c:2071
 #, c-format
 msgid "Change signal handler %s"
-msgstr ""
+msgstr "Измени управљач сигнала %s"
 
 #: ../gladeui/glade-command.c:2296
 #, c-format
 msgid "Setting i18n metadata"
-msgstr ""
+msgstr "Постављам i18n метаподатке"
 
 #: ../gladeui/glade-command.c:2500
 #, c-format
 msgid "Converting %s to %s format"
-msgstr ""
+msgstr "Претварам %s у %s формат"
 
 #: ../gladeui/glade-command.c:2661
 #, c-format
 msgid "Setting %s to use a %s naming policy"
-msgstr ""
+msgstr "Постављам %s да користи %s политику именовања"
 
 #: ../gladeui/glade-command.c:2803
 #, c-format
 msgid "Locking %s by widget %s"
-msgstr ""
+msgstr "Закључам %s од стране елемента %s"
 
 #: ../gladeui/glade-command.c:2842
 #, c-format
 msgid "Unlocking %s"
-msgstr ""
+msgstr "Откључавам %s"
 
 #: ../gladeui/glade-cursor.c:186
 #, c-format
 msgid "Unable to load image (%s)"
-msgstr ""
+msgstr "Не могу да учитам слику (%s)"
 
 #: ../gladeui/glade-editor-property.c:598
 msgid "Property Class"
-msgstr ""
+msgstr "Класа својства"
 
 #: ../gladeui/glade-editor-property.c:599
 msgid "The GladePropertyClass this GladeEditorProperty was created for"
-msgstr ""
+msgstr "GladePropertyClass због кога је направљен овај GladeEditorProperty"
 
 #: ../gladeui/glade-editor-property.c:605
 msgid "Use Command"
-msgstr ""
+msgstr "Користи команду"
 
 #: ../gladeui/glade-editor-property.c:606
 msgid "Whether we should use the command API for the undo/redo stack"
@@ -935,50 +976,50 @@ msgstr ""
 
 #: ../gladeui/glade-editor-property.c:1104
 msgid "Select Fields"
-msgstr ""
+msgstr "Одабери поља"
 
 #: ../gladeui/glade-editor-property.c:1126
 msgid "_Select individual fields:"
-msgstr ""
+msgstr "_Одабери појединачна поља"
 
 #: ../gladeui/glade-editor-property.c:1699
 msgid "Edit Text"
-msgstr ""
+msgstr "Измени текст"
 
 #. Text
 #: ../gladeui/glade-editor-property.c:1728
 msgid "_Text:"
-msgstr ""
+msgstr "_Текст:"
 
 #. Translatable
 #: ../gladeui/glade-editor-property.c:1764
 msgid "T_ranslatable"
-msgstr ""
+msgstr "П_реводиво"
 
 #: ../gladeui/glade-editor-property.c:1769 ../gladeui/glade-property.c:585
 msgid "Whether this property is translatable or not"
-msgstr ""
+msgstr "Да ли је ово својство преводиво или не"
 
 #. Has Context
 #: ../gladeui/glade-editor-property.c:1772
 msgid "_Has context prefix"
-msgstr ""
+msgstr "Има контекстни префикс"
 
 #: ../gladeui/glade-editor-property.c:1776 ../gladeui/glade-property.c:592
 msgid "Whether or not the translatable string has a context prefix"
-msgstr ""
+msgstr "Да ли ова ниска за превођење има или не контекстни префикс"
 
 #: ../gladeui/glade-editor-property.c:1787
 msgid "Conte_xt for translation:"
-msgstr ""
+msgstr "_Контекст за превођење:"
 
 #: ../gladeui/glade-editor-property.c:1825
 msgid "Co_mments for translators:"
-msgstr ""
+msgstr "К_оментар преводиоцима:"
 
 #: ../gladeui/glade-editor-property.c:1943
 msgid "Select a file from the project resource directory"
-msgstr ""
+msgstr "Одаберите датотеку из пројектне фасцикле са ресурсима"
 
 #: ../gladeui/glade-editor-property.c:2215
 #: ../gladeui/glade-editor-property.c:2231
@@ -998,7 +1039,7 @@ msgstr "Име"
 
 #: ../gladeui/glade-editor-property.c:2701 ../gladeui/glade-property.c:549
 msgid "Class"
-msgstr ""
+msgstr "Класа"
 
 #: ../gladeui/glade-editor-property.c:2717
 #, c-format
@@ -1027,95 +1068,95 @@ msgstr "_Нови"
 #. Checklist
 #: ../gladeui/glade-editor-property.c:2818
 msgid "O_bjects:"
-msgstr ""
+msgstr "О_бјекти:"
 
 #. translators: Creating 'a widget' for 'a property' of 'a widget'
 #: ../gladeui/glade-editor-property.c:2905
 #, c-format
 msgid "Creating %s for %s of %s"
-msgstr ""
+msgstr "Правим %s за %s од %s"
 
 #. Checklist
 #: ../gladeui/glade-editor-property.c:3095
 msgid "Objects:"
-msgstr ""
+msgstr "Објекти:"
 
 #: ../gladeui/glade-editor-property.c:3460
 msgid "Value:"
-msgstr ""
+msgstr "Вредност:"
 
 #: ../gladeui/glade-editor-property.c:3461
 msgid "The current value"
-msgstr ""
+msgstr "Тренутна вредност"
 
 #: ../gladeui/glade-editor-property.c:3463
 msgid "Lower:"
-msgstr ""
+msgstr "Мин:"
 
 #: ../gladeui/glade-editor-property.c:3464
 msgid "The minimum value"
-msgstr ""
+msgstr "Најмања вредност"
 
 #: ../gladeui/glade-editor-property.c:3466
 msgid "Upper:"
-msgstr ""
+msgstr "Макс:"
 
 #: ../gladeui/glade-editor-property.c:3467
 msgid "The maximum value"
-msgstr ""
+msgstr "Највећа вредност"
 
 #: ../gladeui/glade-editor-property.c:3469
 msgid "Step inc:"
-msgstr ""
+msgstr "Мали корак:"
 
 #: ../gladeui/glade-editor-property.c:3470
 msgid "The increment to use to make minor changes to the value"
-msgstr ""
+msgstr "Корак инкремента који се користи за мале промене вредности"
 
 #: ../gladeui/glade-editor-property.c:3472
 msgid "Page inc:"
-msgstr ""
+msgstr "Велики корак:"
 
 #: ../gladeui/glade-editor-property.c:3473
 msgid "The increment to use to make major changes to the value"
-msgstr ""
+msgstr "Корак инкремента који се користи за велике промене вредности"
 
 #: ../gladeui/glade-editor-property.c:3475
 msgid "Page size:"
-msgstr ""
+msgstr "Величина стране:"
 
 #: ../gladeui/glade-editor-property.c:3476
 msgid ""
 "The page size (in a GtkScrollbar this is the size of the area which is "
 "currently visible)"
-msgstr ""
+msgstr "Величина стране (у клизачу је ово величина тренутно видљиве површине)"
 
 #: ../gladeui/glade-editor-table.c:356
 msgid "The Object's name"
-msgstr ""
+msgstr "Име објекта"
 
 #. Name
 #: ../gladeui/glade-editor-table.c:359
 msgid "Name:"
-msgstr ""
+msgstr "Име:"
 
 #: ../gladeui/glade-editor.c:154
 msgid "Show info"
-msgstr ""
+msgstr "Прикажи инфо"
 
 #: ../gladeui/glade-editor.c:155
 msgid "Whether to show an informational button for the loaded widget"
-msgstr ""
+msgstr "Да ли приказивати дугме са информацијама за учитани елемент"
 
 #: ../gladeui/glade-editor.c:163
 msgid "The currently loaded widget in this editor"
-msgstr ""
+msgstr "Тренутно учитани елемент у овом уређивачу"
 
 #. construct tab label widget
 #: ../gladeui/glade-editor.c:203 ../gladeui/glade-editor.c:402
 #: ../gladeui/glade-editor.c:1011
 msgid "Accessibility"
-msgstr ""
+msgstr "Доступност"
 
 #. configure page container
 #: ../gladeui/glade-editor.c:220 ../gladeui/glade-editor.c:401
@@ -1124,58 +1165,59 @@ msgstr "_Сигнали"
 
 #: ../gladeui/glade-editor.c:283
 msgid "View documentation for the selected widget"
-msgstr ""
+msgstr "Погледај документацију за одабрани елемент"
 
 #: ../gladeui/glade-editor.c:302
 msgid "Reset widget properties to their defaults"
-msgstr ""
+msgstr "Ресетуј својства елемента на подразумеване вредности"
 
 #. translators: referring to the properties of a widget named '%s [%s]'
 #: ../gladeui/glade-editor.c:338
 #, c-format
 msgid "%s Properties - %s [%s]"
-msgstr ""
+msgstr "%s својства - %s [%s]"
 
 #: ../gladeui/glade-editor.c:398
 msgid "_General"
-msgstr ""
+msgstr "_Опште"
 
 #: ../gladeui/glade-editor.c:399
 msgid "_Packing"
-msgstr ""
+msgstr "_Паковање"
 
 #: ../gladeui/glade-editor.c:400
 msgid "_Common"
-msgstr ""
+msgstr "_Заједничко"
 
 #: ../gladeui/glade-editor.c:821
 #, c-format
 msgid "Create a %s"
-msgstr ""
+msgstr "Направи %s"
 
 #: ../gladeui/glade-editor.c:940
 msgid "Reset"
-msgstr ""
+msgstr "Ресетуј"
 
 #: ../gladeui/glade-editor.c:955
 msgid "Property"
-msgstr ""
+msgstr "Својство"
 
 #: ../gladeui/glade-editor.c:1001
 msgid "Common"
-msgstr ""
+msgstr "Заједничко"
 
 #: ../gladeui/glade-editor.c:1045
 msgid "(default)"
-msgstr ""
+msgstr "(подразумевано)"
 
 #: ../gladeui/glade-editor.c:1060
 msgid "Select the properties that you want to reset to their default values"
 msgstr ""
+"Одаберите својства која желите да ресетујете на подразумеване вредности"
 
 #: ../gladeui/glade-editor.c:1192
 msgid "Reset Widget Properties"
-msgstr ""
+msgstr "Ресетуј својства елемента"
 
 #. Checklist
 #: ../gladeui/glade-editor.c:1209
@@ -1188,73 +1230,73 @@ msgstr "_Изабери све"
 
 #: ../gladeui/glade-editor.c:1245
 msgid "_Unselect All"
-msgstr ""
+msgstr "Изабери _ништа"
 
 #. Description
 #: ../gladeui/glade-editor.c:1254
 msgid "Property _Description:"
-msgstr ""
+msgstr "_Опис својства:"
 
 #: ../gladeui/glade-fixed.c:482 ../plugins/gtk+/glade-gtk.c:2713
 #, c-format
 msgid "Placing %s inside %s"
-msgstr ""
+msgstr "Стављам %s унутар %s"
 
 #: ../gladeui/glade-fixed.c:971
 msgid "X position property"
-msgstr ""
+msgstr "X позиција"
 
 #: ../gladeui/glade-fixed.c:972
 msgid "The property used to set the X position of a child object"
-msgstr ""
+msgstr "Својство које се користи да се постави X позиција објекта детета"
 
 #: ../gladeui/glade-fixed.c:978
 msgid "Y position property"
-msgstr ""
+msgstr "Y позиција"
 
 #: ../gladeui/glade-fixed.c:979
 msgid "The property used to set the Y position of a child object"
-msgstr ""
+msgstr "Својство које се користи да се постави Y позиција објекта детета"
 
 #: ../gladeui/glade-fixed.c:985
 msgid "Width property"
-msgstr ""
+msgstr "Ширина"
 
 #: ../gladeui/glade-fixed.c:986
 msgid "The property used to set the width of a child object"
-msgstr ""
+msgstr "Свосјтво које се користи да се постави ширина објекта детета"
 
 #: ../gladeui/glade-fixed.c:992
 msgid "Height property"
-msgstr ""
+msgstr "Висина"
 
 #: ../gladeui/glade-fixed.c:993
 msgid "The property used to set the height of a child object"
-msgstr ""
+msgstr "Свосјтво које се користи да се постави висина објекта детета"
 
 #: ../gladeui/glade-fixed.c:999
 msgid "Can resize"
-msgstr ""
+msgstr "Може да мења величину"
 
 #: ../gladeui/glade-fixed.c:1000
 msgid "Whether this container supports resizes of child widgets"
-msgstr ""
+msgstr "Да ли овај контејнер подржава промену величине елемената деце"
 
 #: ../gladeui/glade-palette.c:694
 msgid "Widget selector"
-msgstr ""
+msgstr "Одабирач елемента"
 
 #: ../gladeui/glade-palette.c:695
 msgid "Create root widget"
-msgstr ""
+msgstr "Направи корени елемент"
 
 #: ../gladeui/glade-popup.c:442
 msgid "_Add widget here"
-msgstr ""
+msgstr "Дод_ај елемент овде"
 
 #: ../gladeui/glade-popup.c:444 ../gladeui/glade-popup.c:668
 msgid "Add widget as _toplevel"
-msgstr ""
+msgstr "Додај елемен_т као елемент највишег нивоа"
 
 #: ../gladeui/glade-popup.c:455
 msgid "_Select"
@@ -1263,7 +1305,7 @@ msgstr "_Изабери"
 #: ../gladeui/glade-popup.c:537 ../gladeui/glade-popup.c:676
 #: ../gladeui/glade-popup.c:753
 msgid "Read _documentation"
-msgstr ""
+msgstr "Прочитај документацију"
 
 #: ../gladeui/glade-popup.c:746
 msgid "Set default value"
@@ -1271,31 +1313,31 @@ msgstr "Постави подразумевану вредност"
 
 #: ../gladeui/glade-project.c:811
 msgid "Whether project has been modified since it was last saved"
-msgstr ""
+msgstr "Да ли је пројекат мењан од последњег чувања"
 
 #: ../gladeui/glade-project.c:818
 msgid "Has Selection"
-msgstr ""
+msgstr "Има одабир"
 
 #: ../gladeui/glade-project.c:819
 msgid "Whether project has a selection"
-msgstr ""
+msgstr "Да ли овај пројекат има одабир"
 
 #: ../gladeui/glade-project.c:826
 msgid "Path"
-msgstr ""
+msgstr "Путања"
 
 #: ../gladeui/glade-project.c:827
 msgid "The filesystem path of the project"
-msgstr ""
+msgstr "Путања на систему датотека до пројекта"
 
 #: ../gladeui/glade-project.c:834
 msgid "Read Only"
-msgstr ""
+msgstr "Само за читање"
 
 #: ../gladeui/glade-project.c:835
 msgid "Whether project is read only or not"
-msgstr ""
+msgstr "Да ли је овај пројекат само за читање или не"
 
 #: ../gladeui/glade-project.c:842
 msgid "Format"
@@ -1303,7 +1345,7 @@ msgstr "Формат"
 
 #: ../gladeui/glade-project.c:843
 msgid "The project file format"
-msgstr ""
+msgstr "Формат датотеке пројекта"
 
 #: ../gladeui/glade-project.c:995
 #, c-format
@@ -1311,12 +1353,14 @@ msgid ""
 "Failed to load %s.\n"
 "The following required catalogs are unavailable: %s"
 msgstr ""
+"Не могу да учитам %s.\n"
+"Следећи захтевани каталози су недоступни: %s"
 
 #: ../gladeui/glade-project.c:1276 ../gladeui/glade-project.c:1524
 #: ../gladeui/glade-project.c:3870
 #, c-format
 msgid "%s preferences"
-msgstr ""
+msgstr "%s поставке"
 
 #. ******************************************************************
 #. Verify code here (versioning, incompatability checks)
@@ -1325,13 +1369,13 @@ msgstr ""
 #: ../gladeui/glade-project.c:1553
 #, c-format
 msgid "This widget was introduced in %s %d.%d while project targets %s %d.%d"
-msgstr ""
+msgstr "Овај елемент је уведен у %s %d.%d док је овај пројекат за %s%d.%d"
 
 #. translators: reffers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:1556
 #, c-format
 msgid "[%s] Object class '%s' was introduced in %s %d.%d\n"
-msgstr ""
+msgstr "[%s] Класа објекта „%s“ је уведена у %s %d.%d\n"
 
 #. translators: reffers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:1559
@@ -1340,17 +1384,19 @@ msgid ""
 "This widget was made available in GtkBuilder format in %s %d.%d while "
 "project targets %s %d.%d"
 msgstr ""
+"Овај елемент је доступан у GtkBuilder формату у %s %d.%d док је овај "
+"пројекат за %s %d.%d"
 
 #. translators: reffers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:1563
 #, c-format
 msgid ""
 "[%s] Object class '%s' was made available in GtkBuilder format in %s %d.%d\n"
-msgstr ""
+msgstr "[%s] Класа објекта „%s“ је уведена у GtkBuilder формату у %s %d.%d\n"
 
 #: ../gladeui/glade-project.c:1566
 msgid "This widget is only supported in libglade format"
-msgstr ""
+msgstr "Овај елемент је доступан само у libglade формату"
 
 #. translators: reffers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:1569
@@ -1358,27 +1404,28 @@ msgstr ""
 msgid ""
 "[%s] Object class '%s' from %s %d.%d is only supported in libglade format\n"
 msgstr ""
+"[%s] Класа објекта „%s“ из %s %d.%d је подржана само у libglade формату\n"
 
 #: ../gladeui/glade-project.c:1572
 msgid "This widget is not supported in libglade format"
-msgstr ""
+msgstr "Овај елемент није доступан у libglade формату"
 
 #. translators: reffers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:1575
 #, c-format
 msgid ""
 "[%s] Object class '%s' from %s %d.%d is not supported in libglade format\n"
-msgstr ""
+msgstr "[%s] Класа објекта „%s“ из %s %d.%d није подржана у libglade формату\n"
 
 #: ../gladeui/glade-project.c:1578
 msgid "This widget is deprecated"
-msgstr ""
+msgstr "Овај елемент је застарео"
 
 #. translators: reffers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:1581
 #, c-format
 msgid "[%s] Object class '%s' from %s %d.%d is deprecated\n"
-msgstr ""
+msgstr "[%s] Класа објекта „%s“ из %s %d.%d је застарела\n"
 
 #. Defined here for pretty translator comments (bug in intl tools, for some reason
 #. * you can only comment about the line directly following, forcing you to write
@@ -1386,7 +1433,7 @@ msgstr ""
 #.
 #: ../gladeui/glade-project.c:1588
 msgid "This property is not supported in libglade format"
-msgstr ""
+msgstr "Ово својство није подржано у libglade формату"
 
 #. translators: reffers to a property '%s' of widget '[%s]'
 #: ../gladeui/glade-project.c:1591
@@ -1394,6 +1441,7 @@ msgstr ""
 msgid ""
 "[%s] Property '%s' of object class '%s' is not supported in libglade format\n"
 msgstr ""
+"[%s] Својство „%s“ класе објекта „%s“ није подржано у libglade формату\n"
 
 #. translators: reffers to a property '%s' of widget '[%s]'
 #: ../gladeui/glade-project.c:1594
@@ -1402,10 +1450,12 @@ msgid ""
 "[%s] Packing property '%s' of object class '%s' is not supported in libglade "
 "format\n"
 msgstr ""
+"[%s] Својство паковања „%s“ класе објекта „%s“ није подржано у libglade "
+"формату\n"
 
 #: ../gladeui/glade-project.c:1597
 msgid "This property is only supported in libglade format"
-msgstr ""
+msgstr "Ово својство је подржано само у libglade формату"
 
 #. translators: reffers to a property '%s' of widget '[%s]'
 #: ../gladeui/glade-project.c:1600
@@ -1414,6 +1464,7 @@ msgid ""
 "[%s] Property '%s' of object class '%s' is only supported in libglade "
 "format\n"
 msgstr ""
+"[%s] Својство „%s“ класе објекта „%s“ је подржано само у libglade формату\n"
 
 #. translators: reffers to a property '%s' of widget '[%s]'
 #: ../gladeui/glade-project.c:1604
@@ -1422,26 +1473,28 @@ msgid ""
 "[%s] Packing property '%s' of object class '%s' is only supported in "
 "libglade format\n"
 msgstr ""
+"[%s] Својство паковања „%s“ класе објекта „%s“ је подржано само у libglade "
+"формату\n"
 
 #. translators: reffers to a property in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:1609
 #, c-format
 msgid "This property was introduced in %s %d.%d while project targets %s %d.%d"
-msgstr ""
+msgstr "Ово својство је уведено у %s %d.%d док је овај пројекат за %s %d.%d"
 
 #. translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:1612
 #, c-format
 msgid "[%s] Property '%s' of object class '%s' was introduced in %s %d.%d\n"
-msgstr ""
+msgstr "[%s] Својство „%s“ класе објекта „%s“ је уведено у %s %d.%d\n"
 
 #. translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:1615
 #, c-format
 msgid ""
 "[%s] Packing property '%s' of object class '%s' was introduced in %s %d.%d\n"
-msgstr ""
+msgstr "[%s] Својство паковања „%s“ класе објекта „%s“ је уведено у %s %d.%d\n"
 
 #. translators: reffers to a property in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:1619
@@ -1450,6 +1503,8 @@ msgid ""
 "This property was made available in GtkBuilder format in %s %d.%d while "
 "project targets %s %d.%d"
 msgstr ""
+"Ово својство је постало доступно у GtkBuilder формату у %s %d.%d док је овај "
+"пројекат за %s %d.%d"
 
 #. translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:1623
@@ -1458,6 +1513,8 @@ msgid ""
 "[%s] Property '%s' of object class '%s' was made available in GtkBuilder "
 "format in %s %d.%d\n"
 msgstr ""
+"[%s] Својство „%s“ класе објекта „%s“ је уведено у GtkBuilder формату у %s %"
+"d.%d\n"
 
 #. translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:1627
@@ -1466,166 +1523,168 @@ msgid ""
 "[%s] Packing property '%s' of object class '%s' was made available in "
 "GtkBuilder format in %s %d.%d\n"
 msgstr ""
+"[%s] Својство паковања „%s“ класе објекта „%s“ је уведено у GtkBuilder "
+"формату у %s %d.%d\n"
 
 #. translators: reffers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:1631
 #, c-format
 msgid "[%s] Signal '%s' of object class '%s' was introduced in %s %d.%d\n"
-msgstr ""
+msgstr "[%s] Сигнал „%s“ класе објекта „%s“ је уведен у %s %d.%d\n"
 
 #: ../gladeui/glade-project.c:1862
 msgid "Details"
-msgstr ""
+msgstr "Детаљи"
 
 #: ../gladeui/glade-project.c:1878
 #, c-format
 msgid "Project %s has errors, save anyway ?"
-msgstr ""
+msgstr "У пројекту %s постоје грешке, ипак сачувати?"
 
 #: ../gladeui/glade-project.c:1879
 #, c-format
 msgid "Project %s has deprecated widgets and/or version mismatches."
-msgstr ""
+msgstr "Пројекат %s користи застареле елементе и/или се издања не слажу."
 
 #: ../gladeui/glade-project.c:3267
 #, c-format
 msgid "Unsaved %i"
-msgstr ""
+msgstr "Несачувани %i"
 
 #: ../gladeui/glade-project.c:3475
 #, c-format
 msgid "Project %s has no deprecated widgets or version mismatches."
-msgstr ""
+msgstr "Пројекат %s нема застарелих елемената или се издања не подударају."
 
 #: ../gladeui/glade-project.c:3594
 msgid "Set options in your project"
-msgstr ""
+msgstr "Поставите опције пројекта"
 
 #. Project format
 #: ../gladeui/glade-project.c:3611
 msgid "Project file format:"
-msgstr ""
+msgstr "Формат датотеке пројекта:"
 
 #. Naming policy format
 #: ../gladeui/glade-project.c:3654
 msgid "Object names are unique:"
-msgstr ""
+msgstr "Имена објеката су јединствена:"
 
 #: ../gladeui/glade-project.c:3667
 msgid "within the project"
-msgstr ""
+msgstr "у оквиру пројекта"
 
 #: ../gladeui/glade-project.c:3669
 msgid "inside toplevels"
-msgstr ""
+msgstr "у оквиру елемената највишег нивоа"
 
 #. Resource path
 #: ../gladeui/glade-project.c:3696
 msgid "Image resources are loaded locally:"
-msgstr ""
+msgstr "Слике се локално учитавају:"
 
 #. Project directory...
 #: ../gladeui/glade-project.c:3712
 msgid "From the project directory"
-msgstr ""
+msgstr "Из фасцикле пројекта"
 
 #: ../gladeui/glade-project.c:3719
 msgid "From a project relative directory"
-msgstr ""
+msgstr "Из фасцикле релативне на пројекат"
 
 #: ../gladeui/glade-project.c:3731
 msgid "From this directory"
-msgstr ""
+msgstr "Из ове фасцикле"
 
 #: ../gladeui/glade-project.c:3734
 msgid "Choose a path to load image resources"
-msgstr ""
+msgstr "Одаберите путању за чување ресурса слика"
 
 #. Target versions
 #: ../gladeui/glade-project.c:3755
 msgid "Toolkit version(s) required:"
-msgstr ""
+msgstr "Захтевано издање ГТК алата:"
 
 #: ../gladeui/glade-project.c:3789
 #, c-format
 msgid "%s catalog"
-msgstr ""
+msgstr "%s каталог"
 
 #: ../gladeui/glade-project.c:3851
 msgid "Verify versions and deprecations:"
-msgstr ""
+msgstr "Провери издања и застарелости:"
 
 #: ../gladeui/glade-property.c:550
 msgid "The GladePropertyClass for this property"
-msgstr ""
+msgstr "GladePropertyClass класа овог својства"
 
 #: ../gladeui/glade-property.c:556
 msgid "Enabled"
-msgstr ""
+msgstr "Омогућено"
 
 #: ../gladeui/glade-property.c:557
 msgid "If the property is optional, this is its enabled state"
-msgstr ""
+msgstr "Ако својство није обавезно, ово је његово омогућено стање"
 
 #: ../gladeui/glade-property.c:563 ../gladeui/glade-widget-action.c:168
 msgid "Sensitive"
-msgstr ""
+msgstr "Осетљиво"
 
 #: ../gladeui/glade-property.c:564
 msgid "This gives backends control to set property sensitivity"
-msgstr ""
+msgstr "Ово даје контролу мотору у позадини да постави својство осетљивости"
 
 #: ../gladeui/glade-property.c:570
 msgid "Context"
-msgstr ""
+msgstr "Контекст"
 
 #: ../gladeui/glade-property.c:571
 msgid "Context for translation"
-msgstr ""
+msgstr "Контекст за превођење"
 
 #: ../gladeui/glade-property.c:577
 msgid "Comment"
-msgstr ""
+msgstr "Коментар"
 
 #: ../gladeui/glade-property.c:578
 msgid "Comment for translators"
-msgstr ""
+msgstr "Коментар за преводиоце"
 
 #: ../gladeui/glade-property.c:584
 msgid "Translatable"
-msgstr ""
+msgstr "Преводиво"
 
 #: ../gladeui/glade-property.c:591
 msgid "Has Context"
-msgstr ""
+msgstr "Има контекст"
 
 #: ../gladeui/glade-property.c:598
 msgid "Visual State"
-msgstr ""
+msgstr "Видљиво стање"
 
 #: ../gladeui/glade-property.c:599
 msgid "Priority information for the property editor to act on"
-msgstr ""
+msgstr "Подаци о приоритету на које уређивач овог својства делује"
 
 #: ../gladeui/glade-signal-editor.c:76
 msgid "<Type here>"
-msgstr ""
+msgstr "<Унеси овде>"
 
 #: ../gladeui/glade-signal-editor.c:726 ../plugins/gtk+/glade-accels.c:426
 msgid "Signal"
-msgstr ""
+msgstr "Сигнал"
 
 #: ../gladeui/glade-signal-editor.c:755
 msgid "Handler"
-msgstr ""
+msgstr "Управљач"
 
 #: ../gladeui/glade-signal-editor.c:786
 msgid "User data"
-msgstr ""
+msgstr "Кориснички подаци"
 
 #: ../gladeui/glade-signal-editor.c:803
 msgid "Lookup"
-msgstr ""
+msgstr "Пронађи"
 
 #: ../gladeui/glade-signal-editor.c:814 ../plugins/gtk+/gtk+.xml.in.h:32
 msgid "After"
@@ -1634,12 +1693,12 @@ msgstr "После"
 #: ../gladeui/glade-utils.c:144 ../gladeui/glade-utils.c:175
 #, c-format
 msgid "We could not find the symbol \"%s\""
-msgstr ""
+msgstr "Симбол „%s“ није нађен"
 
 #: ../gladeui/glade-utils.c:151
 #, c-format
 msgid "Could not get the type from \"%s\""
-msgstr ""
+msgstr "Не могу да нађем тип из „%s“"
 
 #: ../gladeui/glade-utils.c:521
 msgid "File format"
@@ -1651,11 +1710,11 @@ msgstr "Све Датотеке"
 
 #: ../gladeui/glade-utils.c:607
 msgid "Libglade Files"
-msgstr ""
+msgstr "Libglade датотеке"
 
 #: ../gladeui/glade-utils.c:612
 msgid "GtkBuilder Files"
-msgstr ""
+msgstr "GtkBuilder датотеке"
 
 #: ../gladeui/glade-utils.c:618
 msgid "All Glade Files"
@@ -1667,50 +1726,52 @@ msgid ""
 "%s exists.\n"
 "Do you want to replace it?"
 msgstr ""
+"%s већ постоји.\n"
+"Желите ли да га замените?"
 
 #: ../gladeui/glade-utils.c:1348
 #, c-format
 msgid "Error writing to %s: %s"
-msgstr ""
+msgstr "Грешка при писању у %s: %s"
 
 #: ../gladeui/glade-utils.c:1362
 #, c-format
 msgid "Error reading %s: %s"
-msgstr ""
+msgstr "Грешка при читању %s: %s"
 
 #: ../gladeui/glade-utils.c:1377 ../gladeui/glade-utils.c:1398
 #, c-format
 msgid "Error shutting down I/O channel %s: %s"
-msgstr ""
+msgstr "Грешка при затварању У/И канала %s: %s"
 
 #: ../gladeui/glade-utils.c:1387
 #, c-format
 msgid "Failed to open %s for writing: %s"
-msgstr ""
+msgstr "Нисам успео да отворим %s за писање: %s"
 
 #: ../gladeui/glade-utils.c:1407
 #, c-format
 msgid "Failed to open %s for reading: %s"
-msgstr ""
+msgstr "Нисам успео да отворим %s за читање: %s"
 
 #. Reset the column
 #. Objects
 #: ../gladeui/glade-utils.c:2251 ../plugins/gtk+/glade-attributes.c:799
 #: ../plugins/gtk+/gtk+.xml.in.h:289
 msgid "None"
-msgstr ""
+msgstr "Ништа"
 
 #: ../gladeui/glade-widget.c:1047
 msgid "The name of the widget"
-msgstr ""
+msgstr "Име елемента"
 
 #: ../gladeui/glade-widget.c:1054
 msgid "Internal name"
-msgstr ""
+msgstr "Интерно име"
 
 #: ../gladeui/glade-widget.c:1055
 msgid "The internal name of the widget"
-msgstr ""
+msgstr "Интерно име елемента"
 
 #: ../gladeui/glade-widget.c:1061
 msgid "Anarchist"
@@ -1723,162 +1784,164 @@ msgstr ""
 
 #: ../gladeui/glade-widget.c:1069
 msgid "Object"
-msgstr ""
+msgstr "Објекат"
 
 #: ../gladeui/glade-widget.c:1070
 msgid "The object associated"
-msgstr ""
+msgstr "Повезани објекат"
 
 #: ../gladeui/glade-widget.c:1077
 msgid "Adaptor"
-msgstr ""
+msgstr "Адаптер"
 
 #: ../gladeui/glade-widget.c:1078
 msgid "The class adaptor for the associated widget"
-msgstr ""
+msgstr "Адаптер класа за повезани елемент"
 
 #: ../gladeui/glade-widget.c:1085 ../gladeui/glade-inspector.c:205
 msgid "Project"
-msgstr ""
+msgstr "Пројекат"
 
 #: ../gladeui/glade-widget.c:1086
 msgid "The glade project that this widget belongs to"
-msgstr ""
+msgstr "Глејд пројекат коме припада овај елемент"
 
 #: ../gladeui/glade-widget.c:1095
 msgid "A list of GladeProperties"
-msgstr ""
+msgstr "Списак GladeProperties-а"
 
 #: ../gladeui/glade-widget.c:1101 ../plugins/gtk+/gtk+.xml.in.h:312
 msgid "Parent"
-msgstr ""
+msgstr "Родитељ"
 
 #: ../gladeui/glade-widget.c:1102
 msgid "A pointer to the parenting GladeWidget"
-msgstr ""
+msgstr "Показивач на родитељски GladeWidget"
 
 #: ../gladeui/glade-widget.c:1109
 msgid "Internal Name"
-msgstr ""
+msgstr "Интерно име"
 
 #: ../gladeui/glade-widget.c:1110
 msgid "A generic name prefix for internal widgets"
-msgstr ""
+msgstr "Генерички префикс имена за интерне елементе"
 
 #: ../gladeui/glade-widget.c:1115
 msgid "Template"
-msgstr ""
+msgstr "Шаблон"
 
 #: ../gladeui/glade-widget.c:1116
 msgid "A GladeWidget template to base a new widget on"
-msgstr ""
+msgstr "GladeWidget шаблон на основу кога направити нови елемент"
 
 #: ../gladeui/glade-widget.c:1122
 msgid "Exact Template"
-msgstr ""
+msgstr "Копија шаблона"
 
 #: ../gladeui/glade-widget.c:1123
 msgid "Whether we are creating an exact duplicate when using a template"
-msgstr ""
+msgstr "Да ли да се прави истоветна копија када се користи шаблон"
 
 #: ../gladeui/glade-widget.c:1128
 msgid "Reason"
-msgstr ""
+msgstr "Разлог"
 
 #: ../gladeui/glade-widget.c:1129
 msgid "A GladeCreateReason for this creation"
-msgstr ""
+msgstr "GladeCreateReason за ово прављење"
 
 #: ../gladeui/glade-widget.c:1137
 msgid "Toplevel Width"
-msgstr ""
+msgstr "Ширина највишег нивоа"
 
 #: ../gladeui/glade-widget.c:1138
 msgid "The width of the widget when toplevel in the GladeDesignLayout"
-msgstr ""
+msgstr "Ширина елемента када је он највишег нивоа у GladeDesignLayout-у"
 
 #: ../gladeui/glade-widget.c:1147
 msgid "Toplevel Height"
-msgstr ""
+msgstr "Висина највишег нивоа"
 
 #: ../gladeui/glade-widget.c:1148
 msgid "The height of the widget when toplevel in the GladeDesignLayout"
-msgstr ""
+msgstr "Висина елемента када је он највишег нивоа у GladeDesignLayout-у"
 
 #: ../gladeui/glade-widget.c:1157
 msgid "Support Warning"
-msgstr ""
+msgstr "Подржава упозорења"
 
 #: ../gladeui/glade-widget.c:1158
 msgid "A warning string about version mismatches"
-msgstr ""
+msgstr "Упозорење о непоклапању издања"
 
 #: ../gladeui/glade-widget-adaptor.c:250
 #, c-format
 msgid "A derived adaptor (%s) of %s already exist!"
-msgstr ""
+msgstr "Изведени адаптер (%s) за %s већ постоји!"
 
 #: ../gladeui/glade-widget-adaptor.c:1212
 msgid "Name of the class"
-msgstr ""
+msgstr "Име класе"
 
 #: ../gladeui/glade-widget-adaptor.c:1220
 msgid "GType of the class"
-msgstr ""
+msgstr "GType тип класе"
 
 #: ../gladeui/glade-widget-adaptor.c:1227 ../plugins/gnome/gnome.xml.in.h:60
 msgid "Title"
-msgstr ""
+msgstr "Наслов"
 
 #: ../gladeui/glade-widget-adaptor.c:1228
 msgid "Translated title for the class used in the glade UI"
-msgstr ""
+msgstr "Преведни наслов класе коришћен у глејдов корисничком интерфејсу"
 
 #: ../gladeui/glade-widget-adaptor.c:1235
 msgid "Generic Name"
-msgstr ""
+msgstr "Генеричко име"
 
 #: ../gladeui/glade-widget-adaptor.c:1236
 msgid "Used to generate names of new widgets"
-msgstr ""
+msgstr "Користи се да генерише имена нових елемената"
 
 #: ../gladeui/glade-widget-adaptor.c:1243 ../plugins/gtk+/gtk+.xml.in.h:206
 msgid "Icon Name"
-msgstr ""
+msgstr "Име иконице"
 
 #: ../gladeui/glade-widget-adaptor.c:1244
 msgid "The icon name"
-msgstr ""
+msgstr "Име иконице"
 
 #: ../gladeui/glade-widget-adaptor.c:1251
 msgid "Catalog"
-msgstr ""
+msgstr "Каталог"
 
 #: ../gladeui/glade-widget-adaptor.c:1252
 msgid "The name of the widget catalog this class was declared by"
-msgstr ""
+msgstr "Име каталога елемента по коме је ова класа декларисана"
 
 #: ../gladeui/glade-widget-adaptor.c:1259
 msgid "Book"
-msgstr ""
+msgstr "Књига"
 
 #: ../gladeui/glade-widget-adaptor.c:1260
 msgid "DevHelp search namespace for this widget class"
-msgstr ""
+msgstr "ДевХелп именски простор претраге за класу овог елемента"
 
 #: ../gladeui/glade-widget-adaptor.c:1267
 msgid "Special Child Type"
-msgstr ""
+msgstr "Специјални тип детета"
 
 #: ../gladeui/glade-widget-adaptor.c:1268
 msgid ""
 "Holds the name of the packing property to depict special children for this "
 "container class"
 msgstr ""
+"Чува име својства паковања да би се одредила специјална деца класе овог "
+"контејнера"
 
 #: ../gladeui/glade-widget-adaptor.c:1276 ../plugins/gtk+/gtk+.xml.in.h:105
 msgid "Cursor"
-msgstr ""
+msgstr "Курсор"
 
 #: ../gladeui/glade-widget-adaptor.c:1277
 msgid "A cursor for inserting widgets in the UI"
@@ -1886,11 +1949,11 @@ msgstr ""
 
 #: ../gladeui/glade-inspector.c:206
 msgid "The project being inspected"
-msgstr ""
+msgstr "Пројекат који се испитује"
 
 #: ../gladeui/glade-inspector.c:466
 msgid "< search widgets >"
-msgstr ""
+msgstr "< претражи елементе >"
 
 #: ../gladeui/glade-inspector.c:676 ../gladeui/icon-naming-spec.c:35
 #: ../plugins/gtk+/gtk+.xml.in.h:23
@@ -1900,98 +1963,98 @@ msgstr "Акције"
 #. Objects
 #: ../gladeui/glade-inspector.c:694 ../plugins/gtk+/gtk+.xml.in.h:517
 msgid "Widgets"
-msgstr ""
+msgstr "Елементи"
 
 #: ../gladeui/glade-inspector.c:1017
 #, c-format
 msgid "(internal %s)"
-msgstr ""
+msgstr "(интерни %s)"
 
 #: ../gladeui/glade-inspector.c:1021
 #, c-format
 msgid "(%s child)"
-msgstr ""
+msgstr "(%s дете)"
 
 #: ../gladeui/glade-custom.c:216
 msgid "Creation Function"
-msgstr ""
+msgstr "Функција прављења"
 
 #: ../gladeui/glade-custom.c:217
 msgid "The function which creates this widget"
-msgstr ""
+msgstr "Функција која прави елемент"
 
 #: ../gladeui/glade-custom.c:223
 msgid "String 1"
-msgstr ""
+msgstr "Ниска 1"
 
 #: ../gladeui/glade-custom.c:224
 msgid "The first string argument to pass to the function"
-msgstr ""
+msgstr "Први аргумент типа ниске карактера који се прослеђује функцији"
 
 #: ../gladeui/glade-custom.c:230
 msgid "String 2"
-msgstr ""
+msgstr "Ниска 2"
 
 #: ../gladeui/glade-custom.c:231
 msgid "The second string argument to pass to the function"
-msgstr ""
+msgstr "Други аргумент типа ниске карактера који се прослеђује функцији"
 
 #: ../gladeui/glade-custom.c:237
 msgid "Integer 1"
-msgstr ""
+msgstr "Цео број 1"
 
 #: ../gladeui/glade-custom.c:238
 msgid "The first integer argument to pass to the function"
-msgstr ""
+msgstr "Први аргумент типа целог броја који се прослеђује функцији"
 
 #: ../gladeui/glade-custom.c:244
 msgid "Integer 2"
-msgstr ""
+msgstr "Цео број 2"
 
 #: ../gladeui/glade-custom.c:245
 msgid "The second integer argument to pass to the function"
-msgstr ""
+msgstr "Други аргумент типа целог броја који се прослеђује функцији"
 
 #: ../gladeui/glade-widget-action.c:161
 msgid "class"
-msgstr ""
+msgstr "класа"
 
 #: ../gladeui/glade-widget-action.c:162
 msgid "GladeWidgetActionClass structure pointer"
-msgstr ""
+msgstr "GladeWidgetActionClass показивач на структуру"
 
 #: ../gladeui/glade-widget-action.c:169
 msgid "Whether or not this action is sensitive"
-msgstr ""
+msgstr "Да ли је ова акција осетљива или не"
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:479
 msgid "All Contexts"
-msgstr ""
+msgstr "Сви контексти"
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1363
 msgid "Named Icon Chooser"
-msgstr ""
+msgstr "Одабирач иконице по имену"
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1401
 msgid "Icon _Name:"
-msgstr ""
+msgstr "Име ико_нице:"
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1484
 msgid "_List standard icons only"
-msgstr ""
+msgstr "Из_листај само стандардне иконице"
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1700
 #, c-format
 msgid "Could not create directory: %s"
-msgstr ""
+msgstr "Не могу да направим фасциклу: %s"
 
 #: ../gladeui/icon-naming-spec.c:36
 msgid "Applications"
-msgstr ""
+msgstr "Програми"
 
 #: ../gladeui/icon-naming-spec.c:37
 msgid "Categories"
-msgstr ""
+msgstr "Категорије"
 
 #: ../gladeui/icon-naming-spec.c:38
 msgid "Devices"
@@ -1999,23 +2062,23 @@ msgstr "Уређаји"
 
 #: ../gladeui/icon-naming-spec.c:39
 msgid "Emblems"
-msgstr ""
+msgstr "Обележја"
 
 #: ../gladeui/icon-naming-spec.c:40
 msgid "Emotes"
-msgstr ""
+msgstr "Емотикони"
 
 #: ../gladeui/icon-naming-spec.c:41
 msgid "International"
-msgstr ""
+msgstr "Интернационалне"
 
 #: ../gladeui/icon-naming-spec.c:42
 msgid "MIME Types"
-msgstr ""
+msgstr "MIME типови"
 
 #: ../gladeui/icon-naming-spec.c:43
 msgid "Places"
-msgstr ""
+msgstr "Места"
 
 #: ../gladeui/icon-naming-spec.c:44
 msgid "Status"
@@ -2029,72 +2092,72 @@ msgstr "Стил"
 #: ../plugins/gtk+/glade-attributes.c:220
 msgctxt "textattr"
 msgid "Weight"
-msgstr ""
+msgstr "Ширина"
 
 #: ../plugins/gtk+/glade-attributes.c:224
 msgctxt "textattr"
 msgid "Variant"
-msgstr ""
+msgstr "Варијанта"
 
 #: ../plugins/gtk+/glade-attributes.c:228
 msgctxt "textattr"
 msgid "Stretch"
-msgstr ""
+msgstr "Растегни"
 
 #: ../plugins/gtk+/glade-attributes.c:232
 msgctxt "textattr"
 msgid "Underline"
-msgstr ""
+msgstr "Подвучено"
 
 #: ../plugins/gtk+/glade-attributes.c:236
 msgctxt "textattr"
 msgid "Strikethrough"
-msgstr ""
+msgstr "Прецртано"
 
 #: ../plugins/gtk+/glade-attributes.c:240
 msgctxt "textattr"
 msgid "Gravity"
-msgstr ""
+msgstr "Гравитација"
 
 #: ../plugins/gtk+/glade-attributes.c:244
 msgctxt "textattr"
 msgid "Gravity Hint"
-msgstr ""
+msgstr "Савет за гравитацију"
 
 #: ../plugins/gtk+/glade-attributes.c:255
 msgctxt "textattr"
 msgid "Size"
-msgstr ""
+msgstr "Величина"
 
 #: ../plugins/gtk+/glade-attributes.c:259
 msgctxt "textattr"
 msgid "Absolute Size"
-msgstr ""
+msgstr "Апсолутна величина"
 
 #: ../plugins/gtk+/glade-attributes.c:266
 msgctxt "textattr"
 msgid "Foreground Color"
-msgstr ""
+msgstr "Боја првог плана"
 
 #: ../plugins/gtk+/glade-attributes.c:270
 msgctxt "textattr"
 msgid "Background Color"
-msgstr ""
+msgstr "Боја позадине"
 
 #: ../plugins/gtk+/glade-attributes.c:274
 msgctxt "textattr"
 msgid "Underline Color"
-msgstr ""
+msgstr "Боја за подвучено"
 
 #: ../plugins/gtk+/glade-attributes.c:278
 msgctxt "textattr"
 msgid "Strikethrough Color"
-msgstr ""
+msgstr "Боја за прецртано"
 
 #: ../plugins/gtk+/glade-attributes.c:288
 msgctxt "textattr"
 msgid "Scale"
-msgstr ""
+msgstr "Размера"
 
 #. XXX Interesting... can we get the defaults ? what can we do to let the user
 #. * unset the value ??
@@ -2105,70 +2168,74 @@ msgstr ""
 #: ../plugins/gtk+/glade-attributes.c:365
 #: ../plugins/gtk+/glade-attributes.c:802
 msgid "<Enter Value>"
-msgstr ""
+msgstr "<Унесите вредност>"
 
 #: ../plugins/gtk+/glade-attributes.c:354
 msgid "Unset"
-msgstr ""
+msgstr "Уклони"
 
 #: ../plugins/gtk+/glade-attributes.c:723
 msgid "Select a color"
-msgstr ""
+msgstr "Одаберите боју"
 
 #: ../plugins/gtk+/glade-attributes.c:859
 msgid "Attribute"
-msgstr ""
+msgstr "Особина"
 
 #: ../plugins/gtk+/glade-attributes.c:869
 msgid "Value"
-msgstr ""
+msgstr "Вредност"
 
 #: ../plugins/gtk+/glade-attributes.c:1014
 msgid "Setup Text Attributes"
-msgstr ""
+msgstr "Подеси особине текста"
 
 #: ../plugins/gtk+/glade-gtk.c:61
 msgid "This property does not apply unless Use Underline is set."
 msgstr ""
+"Ово својство се не примењује осим ако није постављено да се користи "
+"подвучено."
 
 #: ../plugins/gtk+/glade-gtk.c:62
 msgid "Property not selected"
-msgstr ""
+msgstr "Својство није одабрано"
 
 #: ../plugins/gtk+/glade-gtk.c:63
 msgid "This property is only for use in dialog action buttons"
-msgstr ""
+msgstr "Ово својство се користи само за акциону дугмад дијалога"
 
 #: ../plugins/gtk+/glade-gtk.c:64
 msgid "This property is set to be controled by an Action"
-msgstr ""
+msgstr "Ово својство је подешено да се контролиште кроз акцију"
 
 #: ../plugins/gtk+/glade-gtk.c:191
 msgid "GnomeUIInfo"
-msgstr ""
+msgstr "GnomeUIInfo"
 
 #: ../plugins/gtk+/glade-gtk.c:192
 msgid "Choose the GnomeUIInfo stock item"
-msgstr ""
+msgstr "Одаберите GnomeUIInfo лагерску ставку"
 
 #. We have to save/load icon-size as int, and fake the enum
 #: ../plugins/gtk+/glade-gtk.c:201 ../plugins/gtk+/gtk+.xml.in.h:209
 msgid "Icon Size"
-msgstr ""
+msgstr "Величина иконице"
 
 #: ../plugins/gtk+/glade-gtk.c:202
 msgid "Symbolic size to use for stock icon, icon set or named icon"
 msgstr ""
+"Симболична величина која се користи за иконицу са лагера, скуп иконица или "
+"именовану иконицу"
 
 #: ../plugins/gtk+/glade-gtk.c:1235
 #, c-format
 msgid "Removing parent of %s"
-msgstr ""
+msgstr "Уклањам родитеља %s"
 
 #: ../plugins/gtk+/glade-gtk.c:1287
 #, c-format
 msgid "Adding parent %s for %s"
-msgstr ""
+msgstr "Додајем родитеља %s за %s"
 
 #: ../plugins/gtk+/glade-gtk.c:1371
 #, c-format
@@ -2232,7 +2299,7 @@ msgstr ""
 
 #: ../plugins/gtk+/glade-gtk.c:6007
 msgid "This property only applies to stock images"
-msgstr ""
+msgstr "Својство се може применити само на лагерске слике"
 
 #: ../plugins/gtk+/glade-gtk.c:6009
 msgid "This property only applies to named icons"
@@ -2240,164 +2307,164 @@ msgstr ""
 
 #: ../plugins/gtk+/glade-gtk.c:6273
 msgid "<separator>"
-msgstr ""
+msgstr "<радвајач>"
 
 #: ../plugins/gtk+/glade-gtk.c:6283
 msgid "<custom>"
-msgstr ""
+msgstr "<произвољно>"
 
 #: ../plugins/gtk+/glade-gtk.c:6462
 msgid "Tool Item"
-msgstr ""
+msgstr "Ставка алата"
 
 #: ../plugins/gtk+/glade-gtk.c:6471
 msgid "Packing"
-msgstr ""
+msgstr "Паковање"
 
 #: ../plugins/gtk+/glade-gtk.c:6490 ../plugins/gtk+/gtk+.xml.in.h:275
 msgid "Menu Item"
-msgstr ""
+msgstr "Ставка менија"
 
 #: ../plugins/gtk+/glade-gtk.c:6526 ../plugins/gtk+/glade-gtk.c:6534
 msgid "Normal item"
-msgstr ""
+msgstr "Обична ставка"
 
 #: ../plugins/gtk+/glade-gtk.c:6527 ../plugins/gtk+/glade-gtk.c:6535
 msgid "Image item"
-msgstr ""
+msgstr "Ставка са сликом"
 
 #: ../plugins/gtk+/glade-gtk.c:6528 ../plugins/gtk+/glade-gtk.c:6536
 msgid "Check item"
-msgstr ""
+msgstr "Ставка са штиклирањем"
 
 #: ../plugins/gtk+/glade-gtk.c:6529 ../plugins/gtk+/glade-gtk.c:6537
 msgid "Radio item"
-msgstr ""
+msgstr "Ставка са радио дугметом"
 
 #: ../plugins/gtk+/glade-gtk.c:6530 ../plugins/gtk+/glade-gtk.c:6538
 msgid "Separator item"
-msgstr ""
+msgstr "Ставка раздвајач"
 
 #: ../plugins/gtk+/glade-gtk.c:6562 ../plugins/gtk+/glade-gtk.c:6606
 msgid "Edit Menu Bar"
-msgstr ""
+msgstr "Измени траку менија"
 
 #: ../plugins/gtk+/glade-gtk.c:6564 ../plugins/gtk+/glade-gtk.c:6608
 msgid "Edit Menu"
-msgstr ""
+msgstr "Измени мени"
 
 #: ../plugins/gtk+/glade-gtk.c:6986
 msgid "Print S_etup"
-msgstr ""
+msgstr "Под_еси штампу"
 
 #: ../plugins/gtk+/glade-gtk.c:6990
 msgid "Find Ne_xt"
-msgstr ""
+msgstr "_Нађи следеће"
 
 #: ../plugins/gtk+/glade-gtk.c:6994
 msgid "_Undo Move"
-msgstr ""
+msgstr "_Опозови померање"
 
 #: ../plugins/gtk+/glade-gtk.c:6998
 msgid "_Redo Move"
-msgstr ""
+msgstr "_Понови померање"
 
 #: ../plugins/gtk+/glade-gtk.c:7001
 msgid "Select _All"
-msgstr ""
+msgstr "Од_абери све"
 
 #: ../plugins/gtk+/glade-gtk.c:7004
 msgid "_New Game"
-msgstr ""
+msgstr "_Нова игра"
 
 #: ../plugins/gtk+/glade-gtk.c:7007
 msgid "_Pause game"
-msgstr ""
+msgstr "_Паузирај игру"
 
 #: ../plugins/gtk+/glade-gtk.c:7010
 msgid "_Restart Game"
-msgstr ""
+msgstr "Поново пок_рени игру"
 
 #: ../plugins/gtk+/glade-gtk.c:7013
 msgid "_Hint"
-msgstr ""
+msgstr "_Савет"
 
 #: ../plugins/gtk+/glade-gtk.c:7016
 msgid "_Scores..."
-msgstr ""
+msgstr "Р_езултати..."
 
 #: ../plugins/gtk+/glade-gtk.c:7019
 msgid "_End Game"
-msgstr ""
+msgstr "_Заврши игру"
 
 #: ../plugins/gtk+/glade-gtk.c:7022
 msgid "Create New _Window"
-msgstr ""
+msgstr "_Направи нови прозор"
 
 #: ../plugins/gtk+/glade-gtk.c:7025
 msgid "_Close This Window"
-msgstr ""
+msgstr "_Затвори овај прозор"
 
 #: ../plugins/gtk+/glade-gtk.c:7037
 msgid "_Settings"
-msgstr ""
+msgstr "_Подешавања"
 
 #: ../plugins/gtk+/glade-gtk.c:7040
 msgid "Fi_les"
-msgstr ""
+msgstr "_Датотеке"
 
 #: ../plugins/gtk+/glade-gtk.c:7043
 msgid "_Windows"
-msgstr ""
+msgstr "_Прозори"
 
 #: ../plugins/gtk+/glade-gtk.c:7049
 msgid "_Game"
-msgstr ""
+msgstr "И_гра"
 
 #: ../plugins/gtk+/glade-gtk.c:7514 ../plugins/gtk+/gtk+.xml.in.h:60
 msgid "Button"
-msgstr ""
+msgstr "Дугме"
 
 #: ../plugins/gtk+/glade-gtk.c:7515 ../plugins/gtk+/glade-gtk.c:10854
 #: ../plugins/gtk+/glade-gtk.c:10934
 msgid "Toggle"
-msgstr ""
+msgstr "На промену"
 
 #: ../plugins/gtk+/glade-gtk.c:7516 ../plugins/gtk+/glade-gtk.c:7527
 #: ../plugins/gtk+/glade-gtk.c:7535
 msgid "Radio"
-msgstr ""
+msgstr "Радио"
 
 #: ../plugins/gtk+/glade-gtk.c:7517 ../plugins/gtk+/gtk+.xml.in.h:273
 msgid "Menu"
-msgstr ""
+msgstr "Мени"
 
 #: ../plugins/gtk+/glade-gtk.c:7518 ../plugins/gtk+/gtk+.xml.in.h:107
 msgid "Custom"
-msgstr ""
+msgstr "Произвољно"
 
 #: ../plugins/gtk+/glade-gtk.c:7519 ../plugins/gtk+/glade-gtk.c:7528
 #: ../plugins/gtk+/glade-gtk.c:7536
 msgid "Separator"
-msgstr ""
+msgstr "Раздвајач"
 
 #: ../plugins/gtk+/glade-gtk.c:7524 ../plugins/gtk+/glade-gtk.c:7532
 #: ../plugins/gtk+/gtk+.xml.in.h:290
 msgid "Normal"
-msgstr ""
+msgstr "Обично"
 
 #: ../plugins/gtk+/glade-gtk.c:7525 ../plugins/gtk+/glade-gtk.c:7533
 #: ../plugins/gtk+/gtk+.xml.in.h:215
 msgid "Image"
-msgstr ""
+msgstr "Слика"
 
 #: ../plugins/gtk+/glade-gtk.c:7526 ../plugins/gtk+/glade-gtk.c:7534
 msgid "Check"
-msgstr ""
+msgstr "На штиклирање"
 
 #: ../plugins/gtk+/glade-gtk.c:7548
 msgid "Tool Bar Editor"
-msgstr ""
+msgstr "Уређивач траке са алатима"
 
 #: ../plugins/gtk+/glade-gtk.c:8096
 msgid "This property does not apply when Ellipsize is set."
@@ -2405,29 +2472,29 @@ msgstr ""
 
 #: ../plugins/gtk+/glade-gtk.c:8113
 msgid "This property does not apply when Angle is set."
-msgstr ""
+msgstr "Ово својство се не примењује када је постављен угао."
 
 #: ../plugins/gtk+/glade-gtk.c:8896
 msgid "Introduction page"
-msgstr ""
+msgstr "Уводна страна"
 
 #: ../plugins/gtk+/glade-gtk.c:8900
 msgid "Content page"
-msgstr ""
+msgstr "Страна садржаја"
 
 #: ../plugins/gtk+/glade-gtk.c:8904
 msgid "Confirmation page"
-msgstr ""
+msgstr "Страна потврде"
 
 #: ../plugins/gtk+/glade-gtk.c:10395
 #, c-format
 msgid "%s is set to load %s from the model"
-msgstr ""
+msgstr "%s је постављено да учитава %s из модела"
 
 #: ../plugins/gtk+/glade-gtk.c:10397
 #, c-format
 msgid "%s is set to manipulate %s directly"
-msgstr ""
+msgstr "%s је постављено да директно управља са %s"
 
 #: ../plugins/gtk+/glade-gtk.c:10794 ../plugins/gtk+/gtk+.xml.in.h:483
 msgid "Tree View Column"
@@ -2435,25 +2502,25 @@ msgstr ""
 
 #: ../plugins/gtk+/glade-gtk.c:10794 ../plugins/gtk+/gtk+.xml.in.h:72
 msgid "Cell Renderer"
-msgstr ""
+msgstr "Исцртавач ћелије"
 
 #: ../plugins/gtk+/glade-gtk.c:10799
 msgid "Properties and Attributes"
-msgstr ""
+msgstr "Својства и особине"
 
 #: ../plugins/gtk+/glade-gtk.c:10804
 msgid "Common Properties and Attributes"
-msgstr ""
+msgstr "Заједничка својства и особине"
 
 #. Text of the textview
 #: ../plugins/gtk+/glade-gtk.c:10848 ../plugins/gtk+/glade-gtk.c:10928
 #: ../plugins/gtk+/gtk+.xml.in.h:433 ../plugins/gnome/gnome.xml.in.h:54
 msgid "Text"
-msgstr ""
+msgstr "Текст"
 
 #: ../plugins/gtk+/glade-gtk.c:10849 ../plugins/gtk+/glade-gtk.c:10929
 msgid "Accelerator"
-msgstr ""
+msgstr "Пречица"
 
 #: ../plugins/gtk+/glade-gtk.c:10850 ../plugins/gtk+/glade-gtk.c:10930
 #: ../plugins/gtk+/gtk+.xml.in.h:88
@@ -2484,7 +2551,7 @@ msgstr ""
 
 #: ../plugins/gtk+/glade-gtk.c:10924
 msgid "Column"
-msgstr ""
+msgstr "Колона"
 
 #: ../plugins/gtk+/glade-gtk.c:10943
 msgid "Tree View Editor"
@@ -2492,35 +2559,36 @@ msgstr ""
 
 #: ../plugins/gtk+/glade-accels.c:298 ../plugins/gtk+/glade-accels.c:366
 msgid "<choose a key>"
-msgstr ""
+msgstr "<одаберите тастер>"
 
 #: ../plugins/gtk+/glade-accels.c:447
 msgid "Accelerator Key"
-msgstr ""
+msgstr "Тастер пречице"
 
 #: ../plugins/gtk+/glade-accels.c:506
 msgid "Choose accelerator keys..."
-msgstr ""
+msgstr "Одаберите тастер пречице..."
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1
 msgid "A filname, full or relative path to load an icon for this toolbutton"
 msgstr ""
+"Име датотеке, пуна или апсолутна путања до иконице за ово дугме у траци алата"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:2
 msgid "A list of accelerator keys"
-msgstr ""
+msgstr "Списак тастера пречице"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:3
 msgid "A list of sources for this icon factory"
-msgstr ""
+msgstr "Списак извора за ову фабрику иконица"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:4
 msgid "A symbolic icon size for the stock icon"
-msgstr ""
+msgstr "Симболична величина иконице за ову лагерску иконицу"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:5
 msgid "A tooltip text for this widget"
-msgstr ""
+msgstr "Текст савета за овај елемент"
 
 #. NOT AVAILABLES ON WIN32
 #. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
@@ -2528,32 +2596,32 @@ msgstr ""
 #.
 #: ../plugins/gtk+/gtk+.xml.in.h:10
 msgid "About Dialog"
-msgstr ""
+msgstr "Дијалог О програму"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:11
 msgid "Accel Group"
-msgstr ""
+msgstr "Група пречица"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:12
 msgid "Accel Label"
-msgstr ""
+msgstr "Ознака са пречицом"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:13
 msgid "Accelerator Mode column"
-msgstr ""
+msgstr "Колона начина рада пречице"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:14
 msgid "Accelerator Modifiers column"
-msgstr ""
+msgstr "Колона модификатора пречице"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:15
 msgid "Accelerator Renderer"
-msgstr ""
+msgstr "Исцртавач пречице"
 
 #. Accelerators
 #: ../plugins/gtk+/gtk+.xml.in.h:17
 msgid "Accelerators"
-msgstr ""
+msgstr "Пречице"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:18
 msgid "Accessible Description"
@@ -2567,28 +2635,28 @@ msgstr ""
 #: ../plugins/gtk+/gtk+.xml.in.h:21
 #: ../plugins/gtk+/glade-activatable-editor.c:393
 msgid "Action"
-msgstr ""
+msgstr "Акција"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:22
 msgid "Action Group"
-msgstr ""
+msgstr "Група акција"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:24
 msgid "Activatable column"
-msgstr ""
+msgstr "Колона која се може активирати"
 
 #. Atk activate property
 #: ../plugins/gtk+/gtk+.xml.in.h:26
 msgid "Activate"
-msgstr ""
+msgstr "Активирај"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:27
 msgid "Active column"
-msgstr ""
+msgstr "Активна колона"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:28
 msgid "Add Parent"
-msgstr ""
+msgstr "Додај родитеља"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:29
 msgid "Add to Size Group"
@@ -2596,116 +2664,116 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:30
 msgid "Adjustment"
-msgstr ""
+msgstr "Подешавање"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:31
 msgid "Adjustment column"
-msgstr ""
+msgstr "Колона подешавања"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:33
 msgid "Alignment"
-msgstr ""
+msgstr "Поравњање"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:34
 msgid "Alignment column"
-msgstr ""
+msgstr "Колона за поравњање"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:35
 msgid "All"
-msgstr ""
+msgstr "Све"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:36
 msgid "All Events"
-msgstr ""
+msgstr "Сви догађаји"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:37
 msgid "All Modifiers"
-msgstr ""
+msgstr "Сви модификатори"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:38
 msgid "Alt Key"
-msgstr ""
+msgstr "Алт тастер"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:39 ../plugins/gnome/gnome.xml.in.h:2
 msgid "Always"
-msgstr ""
+msgstr "Увек"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:40
 msgid "Always Center"
-msgstr ""
+msgstr "Увек центрирано"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:41
 msgid "An accel group for accelerators from stock items"
-msgstr ""
+msgstr "Група пречица за пречице лагерских ставки"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:42
 msgid "Arrow"
-msgstr ""
+msgstr "Стрелица"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:43
 msgid "Ascending"
-msgstr ""
+msgstr "Растуће"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:44
 msgid "Aspect Frame"
-msgstr ""
+msgstr "Оквир са размером"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:45
 msgid "Assistant"
-msgstr ""
+msgstr "Асистент"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:46
 msgid "Attributes"
-msgstr ""
+msgstr "Особине"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:47
 msgid "Attributes column"
-msgstr ""
+msgstr "Колоне особина"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:48
 msgid "Automatic"
-msgstr ""
+msgstr "Аутоматски"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:49
 msgid "Background Color Name column"
-msgstr ""
+msgstr "Колона имена боје позадине"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:50
 msgid "Background Color column"
-msgstr ""
+msgstr "Колона боје позадине"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:51
 msgid "Before"
-msgstr ""
+msgstr "Пре"
 
 #. Objects
 #: ../plugins/gtk+/gtk+.xml.in.h:53
 msgid "Both"
-msgstr ""
+msgstr "Оба"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:54 ../plugins/gnome/bonobo.xml.in.h:1
 msgid "Bottom"
-msgstr ""
+msgstr "Доле"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:55
 msgid "Bottom Left"
-msgstr ""
+msgstr "Доле лево"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:56
 msgid "Bottom Right"
-msgstr ""
+msgstr "Доле десно"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:57
 msgid "Bottom to Top"
-msgstr ""
+msgstr "Од дна ка врху"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:58
 msgid "Box"
-msgstr ""
+msgstr "Кутија"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:59
 msgid "Browse"
-msgstr ""
+msgstr "Разгледај"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:61
 msgid "Button 1 Motion"
@@ -2721,7 +2789,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:64
 msgid "Button Box"
-msgstr ""
+msgstr "Кутија са дугмадима"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:65
 msgid "Button Motion"
@@ -2729,56 +2797,56 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:66
 msgid "Button Press"
-msgstr ""
+msgstr "Притисак дугмета"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:67
 msgid "Button Release"
-msgstr ""
+msgstr "Отпуштање дугмета"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:68
 msgid "Calendar"
-msgstr ""
+msgstr "Календар"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:69
 msgid "Cancel"
-msgstr ""
+msgstr "Поништи"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:70
 msgid "Cell Background Color column"
-msgstr ""
+msgstr "Колона боје позадине ћелије"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:71
 msgid "Cell Background Color name column"
-msgstr ""
+msgstr "Колона имена боје позадине ћелије"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:73
 msgid "Center"
-msgstr ""
+msgstr "Центар"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:74
 msgid "Center on Parent"
-msgstr ""
+msgstr "Центар према родитељу"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:75
 msgid "Centimeters"
-msgstr ""
+msgstr "Центиметри"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:76
 msgid "Character"
-msgstr ""
+msgstr "Карактер"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:77
 msgid "Check Button"
-msgstr ""
+msgstr "Дугме са штиклирањем"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:78
 msgid "Check Menu Item"
-msgstr ""
+msgstr "Ставка менија са штиклирањем"
 
 #. Atk click property
 #: ../plugins/gtk+/gtk+.xml.in.h:80
 msgid "Click"
-msgstr ""
+msgstr "Клик"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:81
 msgid "Climb Rate column"
@@ -2786,71 +2854,71 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:82
 msgid "Close"
-msgstr ""
+msgstr "Затвори"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:83
 msgid "Color Button"
-msgstr ""
+msgstr "Дугме за одабир боје"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:84
 msgid "Color Selection"
-msgstr ""
+msgstr "Одабир боје"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:85
 msgid "Color Selection Dialog"
-msgstr ""
+msgstr "Дијалог одабира боје"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:86
 msgid "Columned List"
-msgstr ""
+msgstr "Листа са колонама"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:87
 msgid "Columns"
-msgstr ""
+msgstr "Колоне"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:89
 msgid "Combo Box"
-msgstr ""
+msgstr "Комбинована кућица"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:90
 msgid "Combo Box Entry"
-msgstr ""
+msgstr "Комбинована кућица са уносом"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:91
 msgid "Combo Renderer"
-msgstr ""
+msgstr "Исцртавач комбиноване кућице"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:92
 msgid "Composite Widgets"
-msgstr ""
+msgstr "Композитни елементи"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:93
 msgid "Condensed"
-msgstr ""
+msgstr "Згуснуто"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:94
 msgid "Confirm"
-msgstr ""
+msgstr "Потврди"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:96
 msgid "Containers"
-msgstr ""
+msgstr "Контејнери"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:97
 msgid "Content"
-msgstr ""
+msgstr "Садржај"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:98
 msgid "Continuous"
-msgstr ""
+msgstr "Непрекидно"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:99
 msgid "Control Key"
-msgstr ""
+msgstr "Контролни тастер"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:100
 msgid "Control and Display"
-msgstr ""
+msgstr "Контроле и приказ"
 
 #. Atk relationset properties
 #: ../plugins/gtk+/gtk+.xml.in.h:102
@@ -2863,35 +2931,35 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:104
 msgid "Create Folder"
-msgstr ""
+msgstr "Направи фасциклу"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:106
 msgid "Curve"
-msgstr ""
+msgstr "Крива"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:108
 msgid "Custom widget"
-msgstr ""
+msgstr "Произвољни елемент"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:109
 msgid "Data"
-msgstr ""
+msgstr "Подаци"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:110
 msgid "Data column"
-msgstr ""
+msgstr "Колона података"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:111
 msgid "Default"
-msgstr ""
+msgstr "Подразумевано"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:112
 msgid "Delayed"
-msgstr ""
+msgstr "Одложено"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:113
 msgid "Descending"
-msgstr ""
+msgstr "Опадајуће"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:114
 msgid "Described By"
@@ -2907,75 +2975,75 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:117
 msgid "Desktop"
-msgstr ""
+msgstr "Радна површина"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:118
 msgid "Dialog"
-msgstr ""
+msgstr "Дијалог"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:119
 msgid "Dialog Box"
-msgstr ""
+msgstr "Кутија дијалога"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:120
 msgid "Digits column"
-msgstr ""
+msgstr "Колона са цифрама"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:121
 msgid "Discontinuous"
-msgstr ""
+msgstr "Испрекидано"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:122
 msgid "Discrete"
-msgstr ""
+msgstr "Дискретно"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:123
 msgid "Dock"
-msgstr ""
+msgstr "Прикачено"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:124
 msgid "Double"
-msgstr ""
+msgstr "Дупло"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:125
 msgid "Down"
-msgstr ""
+msgstr "Доле"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:126
 msgid "Drag & Drop"
-msgstr ""
+msgstr "Превуци & спусти"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:127
 msgid "Drag and Drop"
-msgstr ""
+msgstr "Превуци и спусти"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:128
 msgid "Drawing Area"
-msgstr ""
+msgstr "Област за цртање"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:129
 msgid "Drop Down Menu"
-msgstr ""
+msgstr "Падајући мени"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:130
 msgid "East"
-msgstr ""
+msgstr "Исток"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:131
 msgid "Edge"
-msgstr ""
+msgstr "Ивица"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:132
 msgid "Edit Separately"
-msgstr ""
+msgstr "Измени засебно"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:133
 msgid "Edit&#8230;"
-msgstr ""
+msgstr "Измени&#8230;"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:134
 msgid "Editable column"
-msgstr ""
+msgstr "Колона која се може мењати"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:135
 msgid "Eighth Key"
@@ -2995,7 +3063,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:139 ../plugins/gnome/gnome.xml.in.h:6
 msgid "End"
-msgstr ""
+msgstr "Крај"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:140
 msgid "Enter Notify"
@@ -3015,7 +3083,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:144 ../plugins/gnome/gnome.xml.in.h:7
 msgid "Error"
-msgstr ""
+msgstr "Грешка"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:145
 msgid "Etched In"
@@ -3027,7 +3095,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:147
 msgid "Event Box"
-msgstr ""
+msgstr "Кутија за догађаје"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:148 ../plugins/gnome/gnome.xml.in.h:8
 msgid "Expand"
@@ -3035,31 +3103,31 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:149
 msgid "Expanded"
-msgstr ""
+msgstr "Проширено"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:150
 msgid "Expander"
-msgstr ""
+msgstr "Проширивач"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:151
 msgid "Exposure"
-msgstr ""
+msgstr "Изложеност"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:152
 msgid "Extended"
-msgstr ""
+msgstr "Разгранато"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:153
 msgid "Extra Condensed"
-msgstr ""
+msgstr "Врло згуснуто"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:154
 msgid "Extra Expanded"
-msgstr ""
+msgstr "Врло проширено"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:155
 msgid "Family column"
-msgstr ""
+msgstr "Колона фамилије"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:156
 msgid "Fifth Key"
@@ -3071,31 +3139,31 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:158
 msgid "File Chooser Button"
-msgstr ""
+msgstr "Дугме за одабир датотеке"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:159
 msgid "File Chooser Dialog"
-msgstr ""
+msgstr "Дијалог за одабир датотеке"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:160
 msgid "File Chooser Widget"
-msgstr ""
+msgstr "Одабир датотеке"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:161
 msgid "File Filter"
-msgstr ""
+msgstr "Филтер имена датотеке"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:162 ../plugins/gtk+/glade-icon-sources.c:772
 msgid "File Name"
-msgstr ""
+msgstr "Име датотеке"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:163
 msgid "File Selection"
-msgstr ""
+msgstr "Одабир датотеке"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:164 ../plugins/gnome/gnome.xml.in.h:10
 msgid "Fill"
-msgstr ""
+msgstr "Попуни"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:165
 msgid "First Mouse Button"
@@ -3103,7 +3171,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:166
 msgid "Fixed"
-msgstr ""
+msgstr "Фиксни положај"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:167
 msgid "Flows From"
@@ -3115,7 +3183,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:169
 msgid "Focus Change"
-msgstr ""
+msgstr "Промена фокуса"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:170
 msgid "Follow State column"
@@ -3123,31 +3191,31 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:171
 msgid "Font Button"
-msgstr ""
+msgstr "Дугме за одабир фонта"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:172
 msgid "Font Description column"
-msgstr ""
+msgstr "Колона описа фонта"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:173
 msgid "Font Selection"
-msgstr ""
+msgstr "Одабир фонта"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:174
 msgid "Font Selection Dialog"
-msgstr ""
+msgstr "Дијалог одабира фонта"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:175
 msgid "Font column"
-msgstr ""
+msgstr "Колона фонта"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:176
 msgid "Foreground Color Name column"
-msgstr ""
+msgstr "Колона имена боје исписа"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:177
 msgid "Foreground Color column"
-msgstr ""
+msgstr "колона боје исписа"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:178
 msgid "Forth Mouse Button"
@@ -3155,7 +3223,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:179
 msgid "Frame"
-msgstr ""
+msgstr "Оквир"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:180
 msgid "Free"
@@ -3163,7 +3231,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:181
 msgid "Gamma Curve"
-msgstr ""
+msgstr "Гама крива"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:182
 msgid "Grow Only"
@@ -3171,138 +3239,140 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:183
 msgid "Gtk"
-msgstr ""
+msgstr "Гтк"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:184
 msgid "Gtk+ Obsolete"
-msgstr ""
+msgstr "Гтк+ избачени"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:185
 msgid "Half"
-msgstr ""
+msgstr "Пола"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:186
 msgid "Handle Box"
-msgstr ""
+msgstr "Кућица са ручком"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:187
 msgid "Has Entry column"
-msgstr ""
+msgstr "Има колону за унос"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:188
 msgid "Height column"
-msgstr ""
+msgstr "Колона висине"
 
 #. Objects
 #: ../plugins/gtk+/gtk+.xml.in.h:190 ../plugins/gtk+/glade-model-data.c:1236
 msgid "Horizontal"
-msgstr ""
+msgstr "Водоравнo"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:191
 msgid "Horizontal Alignment"
-msgstr ""
+msgstr "Водоравно поравњање"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:192
 msgid "Horizontal Alignment column"
-msgstr ""
+msgstr "Колона водоравног поравњања"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:193
 msgid "Horizontal Box"
-msgstr ""
+msgstr "Водоравна кутија"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:194
 msgid "Horizontal Button Box"
-msgstr ""
+msgstr "Водоравна кутија са дугмадима"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:195
 msgid "Horizontal Padding"
-msgstr ""
+msgstr "Водоравна попуна"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:196
 msgid "Horizontal Padding column"
-msgstr ""
+msgstr "Колона водоравне попуне"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:197
 msgid "Horizontal Panes"
-msgstr ""
+msgstr "Водоравни панели"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:198
 msgid "Horizontal Ruler"
-msgstr ""
+msgstr "Водоравни лењир"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:199
 msgid "Horizontal Scale"
-msgstr ""
+msgstr "Водоравна скала"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:200
 msgid "Horizontal Scrollbar"
-msgstr ""
+msgstr "Водоравни клизач"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:201
 msgid "Horizontal Separator"
-msgstr ""
+msgstr "Водоравни раздвајач"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:202
 msgid "Horizontal and Vertical"
-msgstr ""
+msgstr "Водоравнo и усправнo"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:203
 msgid "Hyper Modifier"
-msgstr ""
+msgstr "Хипер модификатор"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:204
 msgid "Icon"
-msgstr ""
+msgstr "Иконица"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:205
 msgid "Icon Factory"
-msgstr ""
+msgstr "Фабрика иконица"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:207
 msgid "Icon Name column"
-msgstr ""
+msgstr "Колона имена иконица"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:210
 msgid "Icon Sources"
-msgstr ""
+msgstr "Извори иконица"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:211
 msgid "Icon View"
-msgstr ""
+msgstr "Приказ иконица"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:212
 msgid "Icons only"
-msgstr ""
+msgstr "Само иконице"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:213
 msgid "If Valid"
-msgstr ""
+msgstr "Ако је исправно"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:214
 msgid ""
 "If set, an underline in the text indicates the next character should be used "
 "for the mnemonic accelerator key"
 msgstr ""
+"Ако је постављено, подвучени карактер означава да треба бити употребљен као "
+"тастер за пречицу"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:216
 msgid "Image Menu Item"
-msgstr ""
+msgstr "Ставка менија са иконицом"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:217
 msgid "Immediate"
-msgstr ""
+msgstr "Одмах"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:218
 msgid "In"
-msgstr ""
+msgstr "Ин"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:219
 msgid "Inches"
-msgstr ""
+msgstr "Инчи"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:220
 msgid "Inconsistent column"
-msgstr ""
+msgstr "Неодређена колона"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:221
 msgid ""
@@ -3377,43 +3447,43 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:235
 msgid "Indicator Size column"
-msgstr ""
+msgstr "Колона показивача величине"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:236
 msgid "Info"
-msgstr ""
+msgstr "Подаци"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:237
 msgid "Input Dialog"
-msgstr ""
+msgstr "Дијалог уноса"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:238
 msgid "Insert After"
-msgstr ""
+msgstr "Унеси пре"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:239
 msgid "Insert Before"
-msgstr ""
+msgstr "Унеси после"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:240
 msgid "Insert Column"
-msgstr ""
+msgstr "Колона уноса"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:241
 msgid "Insert Page After"
-msgstr ""
+msgstr "Уметни страну после"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:242
 msgid "Insert Page Before"
-msgstr ""
+msgstr "Уметни страну пре"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:243
 msgid "Insert Row"
-msgstr ""
+msgstr "Уметни ред"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:244
 msgid "Intro"
-msgstr ""
+msgstr "Увод"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:245
 msgid "Invalid"
@@ -3427,27 +3497,27 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:247
 msgid "Invisible Char Set"
-msgstr ""
+msgstr "Невидљиви скуп карактера"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:248
 msgid "Italic"
-msgstr ""
+msgstr "Курзив"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:249
 msgid "Items"
-msgstr ""
+msgstr "Ставке"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:250
 msgid "Key Press"
-msgstr ""
+msgstr "Притисак тастера"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:251
 msgid "Key Release"
-msgstr ""
+msgstr "Отпуштање тастера"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:252
 msgid "Keycode column"
-msgstr ""
+msgstr "Колона шифре тастера"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:254
 msgid "Label For"
@@ -3459,19 +3529,19 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:256
 msgid "Language column"
-msgstr ""
+msgstr "Колона језика"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:257
 msgid "Large Toolbar"
-msgstr ""
+msgstr "Велика трака са алатима"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:258
 msgid "Layout"
-msgstr ""
+msgstr "Фиксни положај са клизачима"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:259
 msgid "Least Recently Used first"
-msgstr ""
+msgstr "Прво најређе коришћени"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:260
 msgid "Leave Notify"
@@ -3479,27 +3549,27 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:261 ../plugins/gnome/bonobo.xml.in.h:4
 msgid "Left"
-msgstr ""
+msgstr "Лево"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:262
 msgid "Left to Right"
-msgstr ""
+msgstr "Са лева на десно"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:263
 msgid "Linear"
-msgstr ""
+msgstr "Линеарно"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:264
 msgid "Link Button"
-msgstr ""
+msgstr "Дугме са везом"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:265
 msgid "List"
-msgstr ""
+msgstr "Листа"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:266
 msgid "List Item"
-msgstr ""
+msgstr "Ставка листе"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:267
 msgid "List Store"
@@ -3507,7 +3577,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:268
 msgid "List of widgets in this group"
-msgstr ""
+msgstr "Списак елемената ове групе"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:269
 msgid "Lock Key"
@@ -3527,7 +3597,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:274
 msgid "Menu Bar"
-msgstr ""
+msgstr "Трака менија"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:276
 msgid "Menu Shell"
@@ -3539,11 +3609,11 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:278
 msgid "Message Dialog"
-msgstr ""
+msgstr "Дијалог поруке"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:279
 msgid "Meta Modifier"
-msgstr ""
+msgstr "Мета модификатор"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:280
 msgid "Middle"
@@ -3551,27 +3621,27 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:281
 msgid "Miscellaneous"
-msgstr ""
+msgstr "Разно"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:282
 msgid "Model column"
-msgstr ""
+msgstr "Колона модела"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:283
 msgid "Most Recently Used first"
-msgstr ""
+msgstr "Прво најчешће коришћени"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:284
 msgid "Mouse"
-msgstr ""
+msgstr "Миш"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:285
 msgid "Multiple"
-msgstr ""
+msgstr "Више"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:286 ../plugins/gnome/gnome.xml.in.h:40
 msgid "Never"
-msgstr ""
+msgstr "Никад"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:287
 msgid "Node Child Of"
@@ -3579,39 +3649,39 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:291
 msgid "North"
-msgstr ""
+msgstr "Север"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:292
 msgid "North East"
-msgstr ""
+msgstr "Североисток"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:293
 msgid "North West"
-msgstr ""
+msgstr "Северозапад"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:294
 msgid "Notebook"
-msgstr ""
+msgstr "Бележница"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:295
 msgid "Notification"
-msgstr ""
+msgstr "Обавештење"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:296
 msgid "Number of Pages"
-msgstr ""
+msgstr "Број страна"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:297
 msgid "Number of items"
-msgstr ""
+msgstr "Број ставки"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:298
 msgid "Number of pages"
-msgstr ""
+msgstr "Број страна"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:299
 msgid "Number of pages in this assistant"
-msgstr ""
+msgstr "Број страна асистента"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:300
 msgid "Object instance's name formatted for assistive technology access"
@@ -3623,23 +3693,23 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:302 ../plugins/gtk+/glade-model-data.c:1235
 msgid "Off"
-msgstr ""
+msgstr "Искључено"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:303
 msgid "Ok"
-msgstr ""
+msgstr "У реду"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:304
 msgid "Ok, Cancel"
-msgstr ""
+msgstr "У реду, поништи"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:305
 msgid "On"
-msgstr ""
+msgstr "Укључено"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:306
 msgid "Open"
-msgstr ""
+msgstr "Отвори"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:307
 msgid "Option Menu"
@@ -3651,7 +3721,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:309 ../plugins/gnome/gnome.xml.in.h:41
 msgid "Other"
-msgstr ""
+msgstr "Остали"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:310
 msgid "Out"
@@ -3683,7 +3753,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:318
 msgid "Pixels"
-msgstr ""
+msgstr "Пиксели"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:319
 msgid "Pointer Motion"
@@ -3703,12 +3773,12 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:323
 msgid "Popup Menu"
-msgstr ""
+msgstr "Искачући мени"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:324 ../plugins/gnome/glade-gnome.c:658
 #: ../plugins/gnome/gnome.xml.in.h:44
 msgid "Position"
-msgstr ""
+msgstr "Позиција"
 
 #. Atk press property
 #: ../plugins/gtk+/gtk+.xml.in.h:326
@@ -3717,35 +3787,35 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:327
 msgid "Primary Icon Activatable"
-msgstr ""
+msgstr "Главна иконица се може активирати"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:328
 msgid "Primary Icon Name"
-msgstr ""
+msgstr "Име главне иконице"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:329
 msgid "Primary Icon Pixbuf"
-msgstr ""
+msgstr "Сличица главне иконице"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:330
 msgid "Primary Icon Sensitive"
-msgstr ""
+msgstr "Осетљивост главне иконице"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:331
 msgid "Primary Icon Tooltip Markup"
-msgstr ""
+msgstr "Обележавање савета главне иконице"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:332
 msgid "Primary Icon Tooltip Text"
-msgstr ""
+msgstr "Текст савета главне иконице"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:333
 msgid "Primary Stock Icon"
-msgstr ""
+msgstr "Главна лагерска иконица"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:335
 msgid "Progress Bar"
-msgstr ""
+msgstr "Напредак"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:336
 msgid "Progress Fraction"
@@ -3785,39 +3855,39 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:345
 msgid "Radio Action"
-msgstr ""
+msgstr "Радио акција"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:346
 msgid "Radio Button"
-msgstr ""
+msgstr "Радио дугме"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:347
 msgid "Radio Menu Item"
-msgstr ""
+msgstr "Радио ставка у менију"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:348
 msgid "Radio Tool Button"
-msgstr ""
+msgstr "Радио дугме у траци са алатима"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:349
 msgid "Radio column"
-msgstr ""
+msgstr "Радио колона"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:350
 msgid "Range"
-msgstr ""
+msgstr "Опсег"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:351
 msgid "Recent Action"
-msgstr ""
+msgstr "Скорашња акција"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:352
 msgid "Recent Chooser"
-msgstr ""
+msgstr "Одабир скорашњих датотека"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:353
 msgid "Recent Chooser Dialog"
-msgstr ""
+msgstr "Дијалог за одабир скорашњих датотека"
 
 #. GtkActivatable
 #: ../plugins/gtk+/gtk+.xml.in.h:355
@@ -3859,11 +3929,11 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:365 ../plugins/gnome/bonobo.xml.in.h:9
 msgid "Right"
-msgstr ""
+msgstr "Десно"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:366
 msgid "Right to Left"
-msgstr ""
+msgstr "Са десна на лево"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:367
 msgid "Rise column"
@@ -3875,23 +3945,23 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:369
 msgid "Save"
-msgstr ""
+msgstr "Сачувај"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:370
 msgid "Scale Button"
-msgstr ""
+msgstr "Дугме са скалом"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:371
 msgid "Scale column"
-msgstr ""
+msgstr "Колона скале"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:372
 msgid "Scroll"
-msgstr ""
+msgstr "Клизач"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:373
 msgid "Scrolled Window"
-msgstr ""
+msgstr "Прозор са клизачима"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:374
 msgid "Second Mouse Button"
@@ -3899,43 +3969,43 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:375
 msgid "Secondary Icon Activatable"
-msgstr ""
+msgstr "Помоћна иконица се може активирати"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:376
 msgid "Secondary Icon Name"
-msgstr ""
+msgstr "Име помоћне иконице"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:377
 msgid "Secondary Icon Pixbuf"
-msgstr ""
+msgstr "Сличица помоћне иконице"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:378
 msgid "Secondary Icon Sensitive"
-msgstr ""
+msgstr "Осетљивост помоћне иконице"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:379
 msgid "Secondary Icon Tooltip Markup"
-msgstr ""
+msgstr "Обележавање савета помоћне иконице"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:380
 msgid "Secondary Icon Tooltip Text"
-msgstr ""
+msgstr "Текст савета помоћне иконице"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:381
 msgid "Secondary Stock Icon"
-msgstr ""
+msgstr "Помоћна лагерска иконица"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:382
 msgid "Select Folder"
-msgstr ""
+msgstr "Одабери фасциклу"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:383
 msgid "Semi Condensed"
-msgstr ""
+msgstr "Полузгуснуто"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:384
 msgid "Semi Expanded"
-msgstr ""
+msgstr "Полупроширено"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:385
 msgid "Sensitive column"
@@ -4016,23 +4086,23 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:405
 msgid "South"
-msgstr ""
+msgstr "Југ"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:406
 msgid "South East"
-msgstr ""
+msgstr "Југоисток"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:407
 msgid "South West"
-msgstr ""
+msgstr "Југозапад"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:408
 msgid "Specialized Widgets"
-msgstr ""
+msgstr "Специјализовани елементи"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:409
 msgid "Spin Button"
-msgstr ""
+msgstr "Вртеће дугме"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:410
 msgid "Spin Renderer"
@@ -4040,7 +4110,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:411
 msgid "Splash Screen"
-msgstr ""
+msgstr "Уводни екран"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:412
 msgid "Spline"
@@ -4056,35 +4126,35 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:415
 msgid "Static"
-msgstr ""
+msgstr "Статично"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:416
 msgid "Status Bar"
-msgstr ""
+msgstr "Линија стања"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:417
 msgid "Status Icon"
-msgstr ""
+msgstr "Икона стања"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:418
 msgid "Stock Button"
-msgstr ""
+msgstr "Лагерско дугме"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:419
 msgid "Stock Detail column"
-msgstr ""
+msgstr "Колона детаља лагерског дугмета"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:420
 msgid "Stock Item"
-msgstr ""
+msgstr "Ставка са лагера"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:421
 msgid "Stock Size column"
-msgstr ""
+msgstr "Колона величине ставке са лагера"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:422
 msgid "Stock column"
-msgstr ""
+msgstr "Колона лагера"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:423
 msgid "Stretch column"
@@ -4096,15 +4166,15 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:425
 msgid "Structure"
-msgstr ""
+msgstr "Структура"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:426
 msgid "Style column"
-msgstr ""
+msgstr "Колона стила"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:427
 msgid "Substructure"
-msgstr ""
+msgstr "Подструктура"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:428
 msgid "Subwindow Of"
@@ -4120,31 +4190,31 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:431
 msgid "Table"
-msgstr ""
+msgstr "Табела"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:434
 msgid "Text Buffer"
-msgstr ""
+msgstr "Бафери текста"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:435
 msgid "Text Buffers"
-msgstr ""
+msgstr "Бафери текста"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:436
 msgid "Text Column column"
-msgstr ""
+msgstr "Колона колоне текста"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:437
 msgid "Text Entry"
-msgstr ""
+msgstr "Унос текста"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:438
 msgid "Text Horizontal Alignment column"
-msgstr ""
+msgstr "Колона водоравног поравњања текста"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:439
 msgid "Text Renderer"
-msgstr ""
+msgstr "Исцртавач текста"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:440
 msgid "Text Tag"
@@ -4160,19 +4230,19 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:443
 msgid "Text View"
-msgstr ""
+msgstr "Приказ текста"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:444
 msgid "Text below icons"
-msgstr ""
+msgstr "Текст испод иконица"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:446
 msgid "Text column"
-msgstr ""
+msgstr "Колона текста"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:447
 msgid "Text only"
-msgstr ""
+msgstr "Само текст"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:448
 msgid "The column in the model to load the value from"
@@ -4215,14 +4285,16 @@ msgid ""
 "The stock icon displayed on the item (chose an item from gtk+ stock or from "
 "an icon factory)"
 msgstr ""
+"Иконица са лагера која се приказује на ставци (одаберите ставку из гтк+ "
+"лагера или из фабрике иконица)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:458
 msgid "The stock item for this button"
-msgstr ""
+msgstr "Ставка са лагера за ово дугме"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:459
 msgid "The stock item for this menu item"
-msgstr ""
+msgstr "Ставка са лагера за ову ставку менија"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:460
 msgid "The text of the menu item"
@@ -4238,43 +4310,43 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:463
 msgid "Toggle Action"
-msgstr ""
+msgstr "Прекидачка акција"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:464
 msgid "Toggle Button"
-msgstr ""
+msgstr "Прекидачко дугме"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:465
 msgid "Toggle Renderer"
-msgstr ""
+msgstr "Исцртавач прекидачког дугмета"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:466
 msgid "Toggle Tool Button"
-msgstr ""
+msgstr "Прекидачко дугме у траци алата"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:467
 msgid "Tool Bar"
-msgstr ""
+msgstr "Трака са алатима"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:468
 msgid "Tool Button"
-msgstr ""
+msgstr "Дугме у траци алата"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:469
 msgid "Toolbar"
-msgstr ""
+msgstr "Трака са алатима"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:470
 msgid "Tooltip"
-msgstr ""
+msgstr "Савет"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:471 ../plugins/gnome/bonobo.xml.in.h:10
 msgid "Top"
-msgstr ""
+msgstr "Горе"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:472
 msgid "Top Left"
-msgstr ""
+msgstr "Горе лево"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:473
 msgid "Top Level"
@@ -4282,19 +4354,19 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:474
 msgid "Top Right"
-msgstr ""
+msgstr "Горе десно"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:475
 msgid "Top to Bottom"
-msgstr ""
+msgstr "Од врха ка дну"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:476
 msgid "Toplevels"
-msgstr ""
+msgstr "Елементи највишег нивоа"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:477
 msgid "Tree Model"
-msgstr ""
+msgstr "Модел стабла"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:478
 msgid "Tree Model Filter"
@@ -4314,7 +4386,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:482
 msgid "Tree View"
-msgstr ""
+msgstr "Приказ стабла"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:484
 msgid "UI Manager"
@@ -4322,11 +4394,11 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:485
 msgid "Ultra Condensed"
-msgstr ""
+msgstr "Веома згуснуто"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:486
 msgid "Ultra Expanded"
-msgstr ""
+msgstr "Веома проширено"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:487
 msgid "Underline column"
@@ -4334,7 +4406,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:488
 msgid "Up"
-msgstr ""
+msgstr "Горе"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:489
 msgid "Use Action Appearance"
@@ -4350,64 +4422,64 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:492
 msgid "Value column"
-msgstr ""
+msgstr "Колона вредности"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:493
 msgid "Variant column"
-msgstr ""
+msgstr "Колона варијанте"
 
 #. Objects
 #: ../plugins/gtk+/gtk+.xml.in.h:495 ../plugins/gtk+/glade-model-data.c:1237
 msgid "Vertical"
-msgstr ""
+msgstr "Усправно"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:496
 msgid "Vertical Alignment"
-msgstr ""
+msgstr "Усправно поравњање"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:497
 msgid "Vertical Alignment column"
-msgstr ""
+msgstr "Колона вертикалног поравњања"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:498
 msgid "Vertical Box"
-msgstr ""
+msgstr "Усправна кутија"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:499
 msgid "Vertical Button Box"
-msgstr ""
+msgstr "Усправна кутија са дугмадима"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:500
 msgid "Vertical Padding"
-msgstr ""
+msgstr "Усправна попуна"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:501
 msgid "Vertical Padding column"
-msgstr ""
+msgstr "Колона усправне попуне"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:502
 msgid "Vertical Panes"
-msgstr ""
+msgstr "Усправни панели"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:503
 msgid "Vertical Ruler"
-msgstr ""
+msgstr "Усправни лењир"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:504
 msgid "Vertical Scale"
-msgstr ""
+msgstr "Усправна скала"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:505
 msgid "Vertical Scrollbar"
-msgstr ""
+msgstr "Усправни клизач"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:506
 msgid "Vertical Separator"
-msgstr ""
+msgstr "Усправни раздвајач"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:507
 msgid "Viewport"
-msgstr ""
+msgstr "Поглед"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:508
 msgid "Visibility Notify"
@@ -4415,47 +4487,47 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:509
 msgid "Visible"
-msgstr ""
+msgstr "Видљиво"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:510
 msgid "Visible column"
-msgstr ""
+msgstr "Колона видљивости"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:511
 msgid "Volume Button"
-msgstr ""
+msgstr "Дугме за јачину звука"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:512 ../plugins/gnome/gnome.xml.in.h:68
 msgid "Warning"
-msgstr ""
+msgstr "Упозорење"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:513
 msgid "Weight column"
-msgstr ""
+msgstr "Колона тежине"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:514
 msgid "West"
-msgstr ""
+msgstr "Запад"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:518
 msgid "Width column"
-msgstr ""
+msgstr "Колона ширине"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:519
 msgid "Width in Characters column"
-msgstr ""
+msgstr "Колона ширине у броју карактера"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:520
 msgid "Window"
-msgstr ""
+msgstr "Прозор"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:521
 msgid "Window Group"
-msgstr ""
+msgstr "Група прозора"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:522
 msgid "Word"
-msgstr ""
+msgstr "Реч"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:523
 msgid "Word Character"
@@ -4463,15 +4535,15 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:524
 msgid "Wrap Mode column"
-msgstr ""
+msgstr "Колона начина прелома"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:525
 msgid "Wrap Width column"
-msgstr ""
+msgstr "Колона ширине прелома"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:526
 msgid "Yes, No"
-msgstr ""
+msgstr "Да, не"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:527
 msgid ""
@@ -4479,18 +4551,21 @@ msgid ""
 "show a translation specific translator, otherwise you should list all "
 "translators and unmark this string for translation"
 msgstr ""
+"Можете ово означити као преводиво и поставити нечије име/адресу ако желите "
+"да прикажете конкретног преводиоца овог превода, у супротном треба да "
+"излистате све преводиоце и да ставите да ова ниска није за превођење"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:1
 msgid "GTK+ Unix Print Toplevels"
-msgstr ""
+msgstr "ГТК+ Unix Штампа највишег нивоа"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:2
 msgid "Page Setup Dialog"
-msgstr ""
+msgstr "Дијалог за подешавање штампе"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:3
 msgid "Print Dialog"
-msgstr ""
+msgstr "Дијалог за штампу"
 
 #: ../plugins/gtk+/glade-column-types.c:374
 #: ../plugins/gtk+/glade-column-types.c:423
@@ -4498,31 +4573,31 @@ msgstr ""
 #: ../plugins/gtk+/glade-column-types.c:699
 #, c-format
 msgid "Setting columns on %s"
-msgstr ""
+msgstr "Подешавам колоне на %s"
 
 #: ../plugins/gtk+/glade-column-types.c:514
 msgid "< define a new column >"
-msgstr ""
+msgstr "< дефинишите нову колону >"
 
 #: ../plugins/gtk+/glade-column-types.c:827
 msgid "Add and remove columns:"
-msgstr ""
+msgstr "Додајте и уклоните колоне:"
 
 #: ../plugins/gtk+/glade-model-data.c:1196
 msgid "Add and remove rows:"
-msgstr ""
+msgstr "Додајте и уклоните редове:"
 
 #: ../plugins/gtk+/glade-model-data.c:1226
 msgid "Sequential editing:"
-msgstr ""
+msgstr "Секвенцијално мењање:"
 
 #: ../plugins/gtk+/glade-cell-renderer-button.c:90
 msgid "Entry Editable"
-msgstr ""
+msgstr "Унос измењив"
 
 #: ../plugins/gtk+/glade-cell-renderer-button.c:91
 msgid "Whether the entry is editable"
-msgstr ""
+msgstr "Да ли се унос може мењати"
 
 #: ../plugins/gtk+/glade-icon-sources.c:694
 #, c-format
@@ -4535,85 +4610,86 @@ msgstr ""
 #, c-format
 msgid ""
 "Set whether you want to specify a text direction for this source of '%s'"
-msgstr ""
+msgstr "Поставите уколико желите да одредите смер текста за „%s“ овог извора"
 
 #: ../plugins/gtk+/glade-icon-sources.c:706
 #, c-format
 msgid "Set the text direction for this source of '%s'"
-msgstr ""
+msgstr "Поставите смер текста за „%s“ овог извора"
 
 #: ../plugins/gtk+/glade-icon-sources.c:711
 #, c-format
 msgid "Set whether you want to specify an icon size for this source of '%s'"
 msgstr ""
+"Поставите уколико желите да одредите величину иконица за „%s“ овог извора"
 
 #: ../plugins/gtk+/glade-icon-sources.c:716
 #, c-format
 msgid "Set the icon size for this source of '%s'"
-msgstr ""
+msgstr "Поставите величину иконица за „%s“ овог извора"
 
 #: ../plugins/gtk+/glade-icon-sources.c:721
 #, c-format
 msgid "Set whether you want to specify a state for this source of '%s'"
-msgstr ""
+msgstr "Поставите ако желите да одредите стање за „%s“ овог извора"
 
 #: ../plugins/gtk+/glade-icon-sources.c:726
 #, c-format
 msgid "Set the state for this source of '%s'"
-msgstr ""
+msgstr "Поставите стање за „%s“ овог извора"
 
 #: ../plugins/gtk+/glade-button-editor.c:237
 #, c-format
 msgid "Setting %s to use standard configuration"
-msgstr ""
+msgstr "Постављам да %s користи стандардно подешавање"
 
 #: ../plugins/gtk+/glade-button-editor.c:295
 #, c-format
 msgid "Setting %s to use a custom child"
-msgstr ""
+msgstr "Постављам да %s користи произвољно дете"
 
 #: ../plugins/gtk+/glade-button-editor.c:339
 #, c-format
 msgid "Setting %s to use a stock button"
-msgstr ""
+msgstr "Постављам да %s користи лагерско дугме"
 
 #: ../plugins/gtk+/glade-button-editor.c:383
 #: ../plugins/gtk+/glade-image-item-editor.c:260
 #, c-format
 msgid "Setting %s to use a label and image"
-msgstr ""
+msgstr "Постављам да %s користи ознаку и слику"
 
 #: ../plugins/gtk+/glade-button-editor.c:442
 msgid "Configure button content"
-msgstr ""
+msgstr "Подеси садржај дугмета"
 
 #: ../plugins/gtk+/glade-button-editor.c:444
 msgid "Add custom button content"
-msgstr ""
+msgstr "Додај произвољни садржај дугмета"
 
 #: ../plugins/gtk+/glade-button-editor.c:446
 msgid "Stock button"
-msgstr ""
+msgstr "Лагерско дугме"
 
 #: ../plugins/gtk+/glade-button-editor.c:448
 msgid "Label with optional image"
-msgstr ""
+msgstr "Ознака са опционом сликом"
 
 #: ../plugins/gtk+/glade-tool-button-editor.c:188
 #, c-format
 msgid "Setting %s to use standard label text"
-msgstr ""
+msgstr "Постављам да %s користи стандардни текст ознаке"
 
 #: ../plugins/gtk+/glade-tool-button-editor.c:223
 #, c-format
 msgid "Setting %s to use a custom label widget"
-msgstr ""
+msgstr "Постављам да %s користи произвољни елемент ознаке"
 
 #: ../plugins/gtk+/glade-tool-button-editor.c:253
 #: ../plugins/gtk+/glade-image-editor.c:266
 #, c-format
 msgid "Setting %s to use an image from stock"
-msgstr ""
+msgstr "Постављам да %s користи слику са лагера"
 
 #: ../plugins/gtk+/glade-tool-button-editor.c:288
 #: ../plugins/gtk+/glade-tool-button-editor.c:322
@@ -4621,13 +4697,13 @@ msgstr ""
 #: ../plugins/gtk+/glade-image-editor.c:290
 #, c-format
 msgid "Setting %s to use an image from the icon theme"
-msgstr ""
+msgstr "Постављам да %s користи слику из теме иконица"
 
 #. Label area frame...
 #: ../plugins/gtk+/glade-tool-button-editor.c:452
 #: ../plugins/gtk+/glade-image-item-editor.c:395
 msgid "Edit Label"
-msgstr ""
+msgstr "Измени ознаку"
 
 #. Image area frame...
 #. Image content frame...
@@ -4636,30 +4712,30 @@ msgstr ""
 #: ../plugins/gtk+/glade-image-editor.c:345
 #: ../plugins/gtk+/glade-image-item-editor.c:429
 msgid "Edit Image"
-msgstr ""
+msgstr "Измени слику"
 
 #: ../plugins/gtk+/glade-image-editor.c:313
 #, c-format
 msgid "Setting %s to use an image from filename"
-msgstr ""
+msgstr "Постављам да %s користи слику из датотеке"
 
 #. Image size frame...
 #: ../plugins/gtk+/glade-image-editor.c:398
 msgid "Set Image Size"
-msgstr ""
+msgstr "Постави величину слике"
 
 #: ../plugins/gtk+/glade-image-item-editor.c:218
 #, c-format
 msgid "Setting %s to use a stock item"
-msgstr ""
+msgstr "Постављам да %s користи ставку са лагера"
 
 #: ../plugins/gtk+/glade-image-item-editor.c:350
 msgid "Stock Item:"
-msgstr ""
+msgstr "Лагерска ставка:"
 
 #: ../plugins/gtk+/glade-image-item-editor.c:384
 msgid "Custom label and image:"
-msgstr ""
+msgstr "Произвољна ознака и слика:"
 
 #. Add descriptive label
 #: ../plugins/gtk+/glade-icon-factory-editor.c:196
@@ -4667,6 +4743,8 @@ msgid ""
 "First add a stock name in the entry below, then add and define sources for "
 "that icon in the treeview."
 msgstr ""
+"Прво додајте име лагера у унос испод, а онда додајте и дефинишете изворе за "
+"ову иконицу у приказу стабла"
 
 #. Add descriptive label
 #: ../plugins/gtk+/glade-store-editor.c:197
@@ -4682,89 +4760,91 @@ msgid ""
 "Add remove and edit rows of data (you can optionally use CNTL-N to add new "
 "rows and the Delete key to remove the selected row)"
 msgstr ""
+"Додајте, уклањајте и мењајте редове података (можете опционо користити CNTL-"
+"N да додате нове редове и тастер Delete да уклоните означени ред)"
 
 #: ../plugins/gtk+/glade-label-editor.c:254
 #, c-format
 msgid "Setting %s to use an attribute list"
-msgstr ""
+msgstr "Постављам да %s користи листу особина"
 
 #: ../plugins/gtk+/glade-label-editor.c:286
 #, c-format
 msgid "Setting %s to use a pango markup string"
-msgstr ""
+msgstr "Постављам да %s користи ниску са панго ознакама"
 
 #: ../plugins/gtk+/glade-label-editor.c:321
 #, c-format
 msgid "Setting %s to use a pattern string"
-msgstr ""
+msgstr "Постављам да %s користи шаблонску нису"
 
 #: ../plugins/gtk+/glade-label-editor.c:357
 #, c-format
 msgid "Setting %s to set desired width in charachters"
-msgstr ""
+msgstr "Постављам да %s поставља жељену ширину у броју карактера"
 
 #: ../plugins/gtk+/glade-label-editor.c:388
 #, c-format
 msgid "Setting %s to set maximum width in charachters"
-msgstr ""
+msgstr "Постављам да %s поставља максималну ширину у броју карактера"
 
 #: ../plugins/gtk+/glade-label-editor.c:422
 #, c-format
 msgid "Setting %s to use normal line wrapping"
-msgstr ""
+msgstr "Постављам да %s користи обично преламање"
 
 #: ../plugins/gtk+/glade-label-editor.c:457
 #, c-format
 msgid "Setting %s to use a single line"
-msgstr ""
+msgstr "Постављам да %s користи само једну линију"
 
 #: ../plugins/gtk+/glade-label-editor.c:492
 #, c-format
 msgid "Setting %s to use specific pango word wrapping"
-msgstr ""
+msgstr "Постављам да %s користи специфично панго преламање речи"
 
 #. Label appearance...
 #: ../plugins/gtk+/glade-label-editor.c:538
 msgid "Edit label appearance"
-msgstr ""
+msgstr "Измени изглед ознаке"
 
 #. Label formatting...
 #: ../plugins/gtk+/glade-label-editor.c:609
 msgid "Format label"
-msgstr ""
+msgstr "Форматирај ознаку"
 
 #. Line Wrapping...
 #: ../plugins/gtk+/glade-label-editor.c:675
 msgid "Text line wrapping"
-msgstr ""
+msgstr "Преламање линије текста"
 
 #: ../plugins/gtk+/glade-label-editor.c:694
 msgid "Text wraps normally"
-msgstr ""
+msgstr "Текст се обично прелама"
 
 #: ../plugins/gtk+/glade-cell-renderer-editor.c:228
 #, c-format
 msgid "Setting %s to use the %s property as an attribute"
-msgstr ""
+msgstr "Постављам да %s користи %s својство као особину"
 
 #: ../plugins/gtk+/glade-cell-renderer-editor.c:246
 #, c-format
 msgid "Setting %s to use the %s property directly"
-msgstr ""
+msgstr "Постављам да %s користи %s својство директно"
 
 #: ../plugins/gtk+/glade-cell-renderer-editor.c:369
 #, c-format
 msgid "Retrieve %s from model (type %s)"
-msgstr ""
+msgstr "Извуци %s из модела (тип %s)"
 
 #. translators: the adjective not the verb
 #: ../plugins/gtk+/glade-cell-renderer-editor.c:509
 msgid "unset"
-msgstr ""
+msgstr "непостављено"
 
 #: ../plugins/gtk+/glade-cell-renderer-editor.c:532
 msgid "no model"
-msgstr ""
+msgstr "нема модела"
 
 #: ../plugins/gtk+/glade-treeview-editor.c:241
 msgid ""
@@ -4775,47 +4855,47 @@ msgstr ""
 #: ../plugins/gtk+/glade-entry-editor.c:275
 #, c-format
 msgid "Setting %s to use a primary icon from stock"
-msgstr ""
+msgstr "Постављам да %s користи главну иконицу са лагера"
 
 #: ../plugins/gtk+/glade-entry-editor.c:299
 #, c-format
 msgid "Setting %s to use a primary icon from the icon theme"
-msgstr ""
+msgstr "Постављам да %s користи главну иконицу из теме иконица"
 
 #: ../plugins/gtk+/glade-entry-editor.c:322
 #, c-format
 msgid "Setting %s to use a primary icon from filename"
-msgstr ""
+msgstr "Постављам да %s користи главну иконицу из датотеке"
 
 #: ../plugins/gtk+/glade-entry-editor.c:347
 #, c-format
 msgid "Setting %s to use a secondary icon from stock"
-msgstr ""
+msgstr "Постављам да %s користи помоћну иконицу са лагера"
 
 #: ../plugins/gtk+/glade-entry-editor.c:371
 #, c-format
 msgid "Setting %s to use a secondary icon from the icon theme"
-msgstr ""
+msgstr "Постављам да %s користи помоћну иконицу из теме иконица"
 
 #: ../plugins/gtk+/glade-entry-editor.c:394
 #, c-format
 msgid "Setting %s to use a secondary icon from filename"
-msgstr ""
+msgstr "Постављам да %s користи помоћну иконицу из датотеке"
 
 #. Primary icon...
 #: ../plugins/gtk+/glade-entry-editor.c:475
 msgid "Primary icon"
-msgstr ""
+msgstr "Главна иконица"
 
 #. Secondary icon...
 #: ../plugins/gtk+/glade-entry-editor.c:538
 msgid "Secondary icon"
-msgstr ""
+msgstr "Помоћна иконица"
 
 #: ../plugins/gtk+/glade-activatable-editor.c:329
 #, c-format
 msgid "Setting %s action"
-msgstr ""
+msgstr "Постављам %s акцију"
 
 #: ../plugins/gtk+/glade-activatable-editor.c:357
 #, c-format
@@ -4975,11 +5055,11 @@ msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:31
 msgid "GNOME UI Obsolete"
-msgstr ""
+msgstr "Гном интерфејс избачени"
 
 #: ../plugins/gnome/gnome.xml.in.h:32
 msgid "GNOME User Interface"
-msgstr ""
+msgstr "Гном корисничко сучеље"
 
 #: ../plugins/gnome/gnome.xml.in.h:33
 msgid "Generic"
@@ -5131,7 +5211,7 @@ msgstr ""
 
 #: ../plugins/gnome/canvas.xml.in.h:3
 msgid "GNOME Canvas"
-msgstr ""
+msgstr "Гном платно"
 
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:5
