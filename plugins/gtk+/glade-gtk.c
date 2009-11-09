@@ -61,7 +61,7 @@
 #define MNEMONIC_INSENSITIVE_MSG   _("This property does not apply unless Use Underline is set.")
 #define NOT_SELECTED_MSG           _("Property not selected")
 #define RESPID_INSENSITIVE_MSG     _("This property is only for use in dialog action buttons")
-#define ACTION_APPEARANCE_MSG      _("This property is set to be controlled by an Action")
+#define ACTION_APPEARANCE_MSG      _("This property is set to be controled by an Action")
 /* -------------------------------- ParamSpecs ------------------------------ */
 /*
 GtkImageMenuItem GnomeUI "stock_item" property special case:
@@ -11281,3 +11281,28 @@ glade_gtk_treeview_depends (GladeWidgetAdaptor *adaptor,
 	return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->depends (adaptor, widget, another);
 }
 
+/*--------------------------- GtkAdjustment ---------------------------------*/
+void
+glade_gtk_adjustment_write_widget (GladeWidgetAdaptor *adaptor,
+				   GladeWidget        *widget,
+				   GladeXmlContext    *context,
+				   GladeXmlNode       *node)
+{
+	GladeProperty *prop;
+
+	if (!glade_xml_node_verify
+	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+		return;
+
+	/* Ensure proper order of adjustment properties by writing them here. */
+	prop = glade_widget_get_property (widget, "lower");
+	glade_property_write (prop, context, node);
+
+	prop = glade_widget_get_property (widget, "upper");
+	glade_property_write (prop, context, node);
+
+	prop = glade_widget_get_property (widget, "value");
+	glade_property_write (prop, context, node);
+
+        GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
+}
