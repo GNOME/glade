@@ -1957,10 +1957,11 @@ embedded in another object</_tooltip>
 			_title="Accel Group" libglade-unsupported="True" toplevel="True"/>
     <glade-widget-class name="GtkAdjustment" generic-name="adjustment" 
 			_title="Adjustment" libglade-unsupported="True" toplevel="True">
+      <write-widget-function>glade_gtk_adjustment_write_widget</write-widget-function>
       <properties>
-	<property id="value" default="0.0"/>
-	<property id="lower" default="0.0"/>
-	<property id="upper" default="100.0"/>
+	<property id="value" default="0.0" save="False"/>
+	<property id="lower" default="0.0" save="False"/>
+	<property id="upper" default="100.0" save="False"/>
 	<property id="page-increment" default="10.0"/>
 	<property id="step-increment" default="1.0"/>
 	<property id="page-size" default="10.0"/>
