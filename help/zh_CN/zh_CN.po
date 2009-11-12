@@ -1,0 +1,769 @@
+# Simplified Chinese translation of glade3 user guide
+# Copyright (C) 2009 Free Software Foundation, Inc.
+# This file is distributed under the same license as glade3 package.
+# 苏运强 <wzssyqa@gmail.com>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: glade3-help 3.0\n"
+"POT-Creation-Date: 2009-10-05 22:37+0000\n"
+"PO-Revision-Date: 2009-11-13 00:18+0800\n"
+"Last-Translator: 苏运强 <wzssyqa@gmail.com>\n"
+"Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: C/legal.xml:2(para)
+msgid ""
+"Permission is granted to copy, distribute and/or modify this document under "
+"the terms of the GNU Free Documentation License (GFDL), Version 1.1 or any "
+"later version published by the Free Software Foundation with no Invariant "
+"Sections, no Front-Cover Texts, and no Back-Cover Texts. You can find a copy "
+"of the GFDL at this <ulink type=\"help\" url=\"ghelp:fdl\">link</ulink> or "
+"in the file COPYING-DOCS distributed with this manual."
+msgstr ""
+"对于本文档的复制、分发和/或修改必须遵循自由软件基金会 (Free Software "
+"Foundation) 发布的 GNU 自由文档许可证 (GFDL) 版本 1.1 或更高版本，该许可证没"
+"有固定的部分、没有封面和背页文本。您可以在 <ulink type=\"help\" url=\"ghelp:"
+"fdl\">link</ulink> 或在随本手册一起分发的 COPYING-DOCS 文件中找到 GFDL 的副"
+"本。"
+
+#: C/legal.xml:12(para)
+msgid ""
+"This manual is part of a collection of GNOME manuals distributed under the "
+"GFDL. If you want to distribute this manual separately from the collection, "
+"you can do so by adding a copy of the license to the manual, as described in "
+"section 6 of the license."
+msgstr ""
+"本手册是以 GFDL 协议下发布的 GNOME 手册集的一部分。如果您希望单独发布本手册，"
+"您可以通过添加一个这个许可证的一份副本到这个手册来做到，就像在第六节中所描述"
+"的这个许可证。"
+
+#: C/legal.xml:19(para)
+msgid ""
+"Many of the names used by companies to distinguish their products and "
+"services are claimed as trademarks. Where those names appear in any GNOME "
+"documentation, and the members of the GNOME Documentation Project are made "
+"aware of those trademarks, then the names are in capital letters or initial "
+"capital letters."
+msgstr ""
+"各个公司使用的许多用于区别它们产品和服务的名称都声明为商标。在所有的 GNOME 文"
+"档以及 GNOME 文档项目的成员中，这些名称都是以全大写字母或首字母大写显示，从而"
+"表明它们是商标。"
+
+#: C/legal.xml:35(para)
+msgid ""
+"DOCUMENT IS PROVIDED ON AN \"AS IS\" BASIS, WITHOUT WARRANTY OF ANY KIND, "
+"EITHER EXPRESSED OR IMPLIED, INCLUDING, WITHOUT LIMITATION, WARRANTIES THAT "
+"THE DOCUMENT OR MODIFIED VERSION OF THE DOCUMENT IS FREE OF DEFECTS "
+"MERCHANTABLE, FIT FOR A PARTICULAR PURPOSE OR NON-INFRINGING. THE ENTIRE "
+"RISK AS TO THE QUALITY, ACCURACY, AND PERFORMANCE OF THE DOCUMENT OR "
+"MODIFIED VERSION OF THE DOCUMENT IS WITH YOU. SHOULD ANY DOCUMENT OR "
+"MODIFIED VERSION PROVE DEFECTIVE IN ANY RESPECT, YOU (NOT THE INITIAL "
+"WRITER, AUTHOR OR ANY CONTRIBUTOR) ASSUME THE COST OF ANY NECESSARY "
+"SERVICING, REPAIR OR CORRECTION. THIS DISCLAIMER OF WARRANTY CONSTITUTES AN "
+"ESSENTIAL PART OF THIS LICENSE. NO USE OF ANY DOCUMENT OR MODIFIED VERSION "
+"OF THE DOCUMENT IS AUTHORIZED HEREUNDER EXCEPT UNDER THIS DISCLAIMER; AND "
+"UNDER NO CIRCUMSTANCES AND UNDER NO LEGAL THEORY, WHETHER IN TORT (INCLUDING "
+"NEGLIGENCE), CONTRACT, OR OTHERWISE, SHALL THE AUTHOR, INITIAL WRITER, ANY "
+"CONTRIBUTOR, OR ANY DISTRIBUTOR OF THE DOCUMENT OR MODIFIED VERSION OF THE "
+"DOCUMENT, OR ANY SUPPLIER OF ANY OF SUCH PARTIES, BE LIABLE TO ANY PERSON "
+"FOR ANY DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES OF "
+"ANY CHARACTER INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF GOODWILL, "
+"WORK STOPPAGE, COMPUTER FAILURE OR MALFUNCTION, OR ANY AND ALL OTHER DAMAGES "
+"OR LOSSES ARISING OUT OF OR RELATING TO USE OF THE DOCUMENT AND MODIFIED "
+"VERSIONS OF THE DOCUMENT, EVEN IF SUCH PARTY SHALL HAVE BEEN INFORMED OF THE "
+"POSSIBILITY OF SUCH DAMAGES."
+msgstr ""
+"文档按“原样”提供，不提供任何明示或暗示的保证，包括但不限于：文档或文档的修改"
+"版本没有适销性方面的缺陷、适合特定目的的适用性，以及没有侵权行为。您将自行承"
+"担本文档以及文档修改版本的质量、准确性以及性能方面的风险。如果任何文档或文档"
+"修改版本存在缺陷，您（而不是最初的编写者、作者或撰写人）将承担所有必需的服"
+"务、维修或更正的费用。此免责声明是本许可证的重要组成部分。如果不接受此免责声"
+"明，那么您就没有权利使用任何文档或文档的修改版本；并且"
+
+#: C/legal.xml:28(para)
+msgid ""
+"DOCUMENT AND MODIFIED VERSIONS OF THE DOCUMENT ARE PROVIDED UNDER THE TERMS "
+"OF THE GNU FREE DOCUMENTATION LICENSE WITH THE FURTHER UNDERSTANDING THAT: "
+"<placeholder-1/>"
+msgstr ""
+"本文档以及文档的修改版本都是在遵循 GNU 自由文档许可证的条款下提供，这表示具有"
+"以下含义：<placeholder-1/>"
+
+#. When image changes, this message will be marked fuzzy or untranslated for you.
+#. It doesn't matter what you translate it to: it's not used at all.
+#: C/glade.xml:206(None)
+msgid ""
+"@@image: 'figures/main-window.png'; md5=0ab7dd8af6d049544c81748e72064941"
+msgstr ""
+"@@image: 'figures/main-window.png'; md5=0ab7dd8af6d049544c81748e72064941"
+
+#: C/glade.xml:17(title)
+msgid "Glade Interface Designer Manual"
+msgstr "Glade 界面设计器手册"
+
+#: C/glade.xml:19(para)
+msgid "Glade is a user interface designer for GTK+ applications."
+msgstr "Glade 是 GTK+ 应用程序的一个图形界面设计器。"
+
+#: C/glade.xml:24(year)
+msgid "2006"
+msgstr "2006"
+
+#: C/glade.xml:25(holder) C/glade.xml:87(para)
+msgid "Vincent Geddes"
+msgstr "Vincent Geddes"
+
+#: C/glade.xml:28(year)
+msgid "2004"
+msgstr "2004"
+
+#: C/glade.xml:29(year)
+msgid "2003"
+msgstr "2003"
+
+#: C/glade.xml:30(holder) C/glade.xml:56(orgname)
+msgid "Sun Microsystems"
+msgstr "Sun Microsystems"
+
+#: C/glade.xml:33(year)
+msgid "2002"
+msgstr "2002"
+
+#: C/glade.xml:33(year)
+msgid "2000"
+msgstr "2000"
+
+#: C/glade.xml:34(holder) C/glade.xml:119(para) C/glade.xml:127(para)
+msgid "Michael Vance"
+msgstr "Michael Vance"
+
+#: C/glade.xml:38(publishername) C/glade.xml:48(orgname)
+#: C/glade.xml:63(orgname) C/glade.xml:88(para) C/glade.xml:96(para)
+#: C/glade.xml:104(para) C/glade.xml:112(para) C/glade.xml:120(para)
+#: C/glade.xml:128(para)
+msgid "GNOME Documentation Project"
+msgstr "GNOME 文档项目"
+
+#: C/glade.xml:45(firstname)
+msgid "Vincent"
+msgstr "Vincent"
+
+#: C/glade.xml:46(surname)
+msgid "Geddes"
+msgstr "Geddes"
+
+#: C/glade.xml:49(email)
+msgid "vincent.geddes@gmail.com"
+msgstr "vincent.geddes@gmail.com"
+
+#: C/glade.xml:53(firstname)
+msgid "Sun"
+msgstr "Sun"
+
+#: C/glade.xml:54(surname)
+msgid "GNOME Documentation Team"
+msgstr "GNOME 文档团队"
+
+#: C/glade.xml:60(firstname)
+msgid "Michael"
+msgstr "Michael"
+
+#: C/glade.xml:61(surname)
+msgid "Vance"
+msgstr "Vance"
+
+#: C/glade.xml:84(revnumber)
+msgid "Glade Manual 3.0"
+msgstr "Glade 手册 3.0 版"
+
+#: C/glade.xml:85(date)
+msgid "5 December 2006"
+msgstr "2006年12月5日"
+
+#: C/glade.xml:92(revnumber)
+msgid "Glade Manual 2.1;"
+msgstr "Glade 手册 2.1 版"
+
+#: C/glade.xml:93(date)
+msgid "17 June 2004"
+msgstr "2004年6月17日"
+
+#: C/glade.xml:95(para) C/glade.xml:103(para) C/glade.xml:111(para)
+msgid "Sun GNOME Documentation Team"
+msgstr "Sun GNOME 文档团队"
+
+#: C/glade.xml:100(revnumber)
+msgid "Glade User Manual 2.0"
+msgstr "Glade 用户手册 2.0 版"
+
+#: C/glade.xml:101(date)
+msgid "25 February 2004"
+msgstr "2004年2月25日"
+
+#: C/glade.xml:108(revnumber)
+msgid "Glade User Manual 1.2"
+msgstr "Glade 用户手册 1.2 版"
+
+#: C/glade.xml:109(date)
+msgid "10 Feb 2004"
+msgstr "2004年2月10日"
+
+#: C/glade.xml:116(revnumber)
+msgid "Glade User Manual 1.1"
+msgstr "Glade 用户手册 1.1 版"
+
+#: C/glade.xml:117(date)
+msgid "30 Mar 2002"
+msgstr "2002年5月30日"
+
+#: C/glade.xml:124(revnumber)
+msgid "Glade User Manual 1.0"
+msgstr "Glade 用户手册 1.0 版"
+
+#: C/glade.xml:125(date)
+msgid "11 May 2000"
+msgstr "2000年5月11日"
+
+#: C/glade.xml:133(releaseinfo)
+msgid "This manual describes version 3.1.0 of Glade."
+msgstr "本手册描述了 3.1.0 版的 Glade。"
+
+#: C/glade.xml:135(title)
+msgid "Feedback"
+msgstr "反馈"
+
+#: C/glade.xml:136(para)
+msgid ""
+"To report a bug or make a suggestion regarding the Glade application or this "
+"manual, follow the directions in the <ulink url=\"ghelp:gnome-feedback\" "
+"type=\"help\">GNOME Feedback Page</ulink>."
+msgstr ""
+"报告一个错误或者一个关于 Glade 程序以及本文档的建议，请看 <ulink url=\"ghelp:"
+"gnome-feedback\" type=\"help\">GNOME Feedback Page</ulink>。"
+
+#: C/glade.xml:144(primary)
+msgid "glade"
+msgstr "glade"
+
+#: C/glade.xml:145(primary)
+msgid "user interface designer"
+msgstr "用户界面设计器"
+
+#: C/glade.xml:153(title)
+msgid "Introduction"
+msgstr "导言"
+
+#: C/glade.xml:155(para)
+msgid ""
+"The <application>Glade</application> interface designer enables you to "
+"create and edit user interface designs for <application>GTK+</application> "
+"applications."
+msgstr ""
+"Glade 界面设计器是您可以创建和编辑 <application>GTK+</application> 应用程序的"
+"用户界面设计。"
+
+#: C/glade.xml:158(para)
+msgid ""
+"The GTK+ library provides an extensive collection of user interface building "
+"blocks such as text boxes, dialog labels, numeric entries, check boxes, and "
+"menus. These building blocks are called <emphasis>widgets</emphasis>. You "
+"can use Glade to place widgets in a GUI. Glade allows you to modify the "
+"layout and properties of these widgets. You can also use Glade to add "
+"connections between widgets and application source code."
+msgstr ""
+"GTK+ 库提供了一个用户界面的积木扩展集，比如文本框、对话框的标签、数字输入框、"
+"复选框和菜单。这些积木被叫做 <emphasis>widgets</emphasis>。您可以使用 Glade "
+"将 widget 放置在一个图形界面中。Glade 允许您修改这些 widget 的布局和属性。您"
+"也可以使用 Glade 添加 widget 和程序源代码之间的联系。"
+
+#: C/glade.xml:164(para)
+msgid ""
+"The user interfaces designed in Glade are stored in an XML format, enabling "
+"easy integration with external tools. You can use the <application>libglade</"
+"application> library to dynamically create GUIs from the XML description."
+msgstr ""
+"Glade 设计的用户界面保存在 XML 格式，使其可以容易的与外部工具集成。可以使用 "
+"<application>libglade</application> 库从 XML 描述动态的创建图形用户界面。"
+
+#: C/glade.xml:171(title)
+msgid "Getting Started"
+msgstr "开始"
+
+#: C/glade.xml:174(title)
+msgid "To Start <application>Glade</application>"
+msgstr "启动 <application>Glade</application>"
+
+#: C/glade.xml:175(para)
+msgid "You can start <application>Glade</application> in the following ways:"
+msgstr "可以按如下方法启动 <application>Glade</application>："
+
+#: C/glade.xml:179(term)
+msgid "<guimenu>Applications</guimenu> menu"
+msgstr "<guimenu>应用程序</guimenu> 菜单"
+
+#: C/glade.xml:181(para)
+msgid ""
+"Choose <menuchoice><guisubmenu>Programming</guisubmenu><guimenuitem>Glade "
+"Interface Designer</guimenuitem></menuchoice>."
+msgstr ""
+"选择 <menuchoice><guisubmenu>编程</guisubmenu><guimenuitem>Glade 界面设计大师"
+"</guimenuitem></menuchoice>。"
+
+#: C/glade.xml:189(term)
+msgid "Command line"
+msgstr "命令行"
+
+#: C/glade.xml:191(para)
+msgid ""
+"To start <application>Glade</application> from a command line, type the "
+"following command, then press <keycap>Return</keycap>: <command>glade-3</"
+"command>"
+msgstr ""
+"要从命令行启动 <application>Glade</application>，输入如下命名然后按 "
+"<keycap>Return</keycap>：<command>glade-3</command>"
+
+#: C/glade.xml:199(title)
+msgid "When You Start <application>Glade</application>"
+msgstr "启动 <application>Glade</application> 时"
+
+#: C/glade.xml:200(para)
+msgid ""
+"When you start <application>Glade</application>, the following window is "
+"displayed."
+msgstr "启动 <application>Glade</application> 时，将显示下列窗口。"
+
+#: C/glade.xml:203(title)
+msgid "<application>Glade</application> window"
+msgstr "<application>Glade</application> 窗口"
+
+#: C/glade.xml:207(application)
+msgid "Glade"
+msgstr "Glade"
+
+#: C/glade.xml:207(phrase)
+msgid "Shows the<placeholder-1/> window."
+msgstr "显示 <placeholder-1/> 窗口"
+
+#: C/glade.xml:212(para)
+msgid ""
+"The <application>Glade</application> window contains the following elements:"
+msgstr "<application>Glade</application> 包含如下元素："
+
+#: C/glade.xml:215(term)
+msgid "Menubar"
+msgstr "菜单栏"
+
+#: C/glade.xml:217(para)
+msgid ""
+"The menus on the menubar contain all of the commands you need to work with "
+"files in <application>Glade</application>."
+msgstr ""
+"菜单栏上的菜单包括所有你使用 <application>Glade</application> 要用到的命令。"
+
+#: C/glade.xml:220(term)
+msgid "Toolbar"
+msgstr "工具栏"
+
+#: C/glade.xml:222(para)
+msgid ""
+"The toolbar contains a subset of the commands that you can access from the "
+"menubar."
+msgstr "工具栏包括了你可以从菜单栏里找到的命令中的一部分。"
+
+#: C/glade.xml:225(term)
+msgid "Design Area"
+msgstr "设计区"
+
+#: C/glade.xml:227(para)
+msgid "The design area is where a user interface can be visually edited."
+msgstr "设计区是可以可视化设计用户界面的地方。"
+
+#: C/glade.xml:230(term)
+msgid "Palette"
+msgstr "构件库"
+
+#: C/glade.xml:232(para)
+msgid ""
+"The palette contains the widgets that can be used to build a user interface."
+msgstr "构件库包含了可以用来构建用户界面的 widgets。"
+
+#: C/glade.xml:235(term)
+msgid "Inspector"
+msgstr "检查器"
+
+#: C/glade.xml:237(para)
+msgid "The inspector displays information about the widgets in a project."
+msgstr "检查器显示工程中控件的信息。"
+
+#: C/glade.xml:240(term)
+msgid "Property Editor"
+msgstr "属性编辑器"
+
+#: C/glade.xml:242(para)
+msgid ""
+"The property editor is used to manipulate the properties of widgets, as well "
+"as adding connections to source code."
+msgstr "属性编辑器是用来处理控件的属性以及添加和源代码之间联系的。"
+
+#: C/glade.xml:245(term)
+msgid "Statusbar"
+msgstr "状态栏"
+
+#: C/glade.xml:247(para)
+msgid ""
+"The statusbar displays information about current <application>Glade</"
+"application> activity and contextual information about the menu items."
+msgstr ""
+"状态栏显示关于当前 <application>Glade</application> 活动的信息，以及关于菜单"
+"条目的语境信息。"
+
+#: C/glade.xml:256(title)
+msgid "Working with Projects"
+msgstr ""
+
+#: C/glade.xml:261(title)
+msgid "Creating a New Project"
+msgstr "新建一个工程"
+
+#: C/glade.xml:262(para)
+msgid ""
+"To create a new project, choose <menuchoice><guimenu>File</"
+"guimenu><guimenuitem>New</guimenuitem></menuchoice>. The application "
+"displays a new blank project in the <application>Glade</application> window."
+msgstr ""
+"创建一个新工程，选择 <menuchoice><guimenu>文件</guimenu><guimenuitem>新建</"
+"guimenuitem></menuchoice>。程序将在 <application>Glade</application> 窗口显示"
+"一个空工程。"
+
+#: C/glade.xml:266(title)
+msgid "Opening a Project"
+msgstr "打开一个工程"
+
+#: C/glade.xml:267(para)
+msgid ""
+"To open an existing project, choose <menuchoice><guimenu>File</"
+"guimenu><guimenuitem>Open</guimenuitem></menuchoice>. The application "
+"displays the project in the <application>Glade</application> window."
+msgstr ""
+"打开一个已有的工程，选择 <menuchoice><guimenu>文件</guimenu><guimenuitem>打开"
+"</guimenuitem></menuchoice>。程序将在 <application>Glade</application> 窗口显"
+"示这个工程。"
+
+#: C/glade.xml:272(title)
+msgid "Saving a Project"
+msgstr "保存当前工程"
+
+#: C/glade.xml:273(para)
+msgid "You can save projects in the following ways:"
+msgstr "您可以按以下方法保存工程："
+
+#: C/glade.xml:275(para)
+msgid ""
+"To save changes to an existing project file, choose "
+"<menuchoice><guimenu>File</guimenu><guimenuitem>Save</guimenuitem></"
+"menuchoice>."
+msgstr ""
+"将改动保存到已有的工程文件，选择 <menuchoice><guimenu>文件</"
+"guimenu><guimenuitem>保存</guimenuitem></menuchoice>"
+
+#: C/glade.xml:277(para)
+msgid ""
+"To save a new project file or to save an existing project file under a new "
+"filename, choose <menuchoice><guimenu>File</guimenu><guimenuitem>Save As</"
+"guimenuitem></menuchoice>. Enter a name for the project file in the "
+"<guilabel>Save As</guilabel> dialog, then click <guibutton>Save</guibutton>."
+msgstr ""
+"保存新工程文件或者将已有的工程文件保存为新的文件名，选择 "
+"<menuchoice><guimenu>文件</guimenu><guimenuitem>另存为</guimenuitem></"
+"menuchoice>。在 <guilabel>另存为</guilabel>对话框中输入工程文件名，然后点击 "
+"<guibutton>保存</guibutton>。"
+
+#: C/glade.xml:285(title)
+msgid "Working with Widgets"
+msgstr ""
+
+#: C/glade.xml:287(title)
+msgid "To Select Widgets From the Palette Window"
+msgstr "从构件库选择控件"
+
+#: C/glade.xml:288(para)
+msgid ""
+"You can work with the widgets in the <guilabel>Palette</guilabel> window in "
+"the following ways:"
+msgstr ""
+
+#: C/glade.xml:295(term)
+msgid "Selection mode"
+msgstr "选择模式"
+
+#: C/glade.xml:297(para)
+msgid ""
+"To use selection mode, click on the <guilabel>Selector</guilabel> arrow. The "
+"pointer changes to an arrow to indicate that selection mode is active. In "
+"this mode, you use the mouse to select widgets in your project. You can then "
+"use the <guilabel>Properties</guilabel> window to edit the properties of the "
+"widgets."
+msgstr ""
+
+#: C/glade.xml:306(para)
+msgid ""
+"You can also use the widget context menu to select a widget. Right-click on "
+"a widget to open the widget context menu."
+msgstr ""
+
+#: C/glade.xml:307(para)
+msgid ""
+"You can add multiple widgets of a specific type from the <guilabel>Palette</"
+"guilabel> to your project by holding down the <keycap>Control</keycap> key "
+"when you select a widget. You need to click on the <guilabel>Selector</"
+"guilabel> arrow or another widget in the <guilabel>Palette</guilabel> to "
+"return to normal mode."
+msgstr ""
+
+#: C/glade.xml:318(term)
+msgid "Widget placement mode"
+msgstr ""
+
+#: C/glade.xml:320(para)
+msgid ""
+"To use widget placement mode, select a widget in the <guilabel>Palette</"
+"guilabel> window. When you select most widgets, the pointer changes to a "
+"pointer-plus-cross. You can then place the widget inside containers, top-"
+"level widgets, and so on. After you place a widget, the mode returns to "
+"selection mode."
+msgstr ""
+
+#: C/glade.xml:335(term)
+msgid "Top-level placement mode"
+msgstr "顶层模式"
+
+#: C/glade.xml:337(para)
+msgid ""
+"To use top level placement mode, select a defined top-level widget in the "
+"<application>Palette</application> window. When you select a top-level "
+"widget in the <guilabel>Palette</guilabel> window, the widget appears "
+"immediately on your desktop. You can then edit the widget. After you select "
+"a top-level widget, the mode returns to selection mode."
+msgstr ""
+"要使用顶层模式，从 <application>构件库</application> 窗口中选择一个定义为顶层"
+"的控件。从 <guilabel>构件库</guilabel> 选择一个顶层模式的控件时，这个控件立即"
+"表现在您的桌面上，可以随后编辑这个控件。选择一个顶层控件之后，返回至选择模"
+"式。"
+
+#: C/glade.xml:354(title)
+msgid "To Organize Widgets In Your Project"
+msgstr "在工程中组织控件"
+
+#: C/glade.xml:355(para)
+msgid ""
+"You use widget containers, or boxes, to layout and organize widgets in your "
+"project window. You can choose the following widget containers from the "
+"<guilabel>Palette</guilabel> window:"
+msgstr ""
+"在工程中，请使用构件容器或 boxes 来布局和组织控件。在 <guilabel>构件库</"
+"guilabel>窗口中可以选择如下的控件容器："
+
+#: C/glade.xml:360(para)
+msgid "Horizontal Box"
+msgstr "Horizontal Box"
+
+#: C/glade.xml:361(para)
+msgid "Vertical Box"
+msgstr "Vertical Box"
+
+#: C/glade.xml:362(para)
+msgid "Table"
+msgstr "Table"
+
+#: C/glade.xml:363(para)
+msgid "Fixed Positions"
+msgstr "Fixed Positions"
+
+#: C/glade.xml:364(para)
+msgid "Horizontal Button Box"
+msgstr "Horizontal Button Box"
+
+#: C/glade.xml:365(para)
+msgid "Vertical Button Box"
+msgstr "Vertical Button Box"
+
+#: C/glade.xml:366(para)
+msgid "Horizontal Panes"
+msgstr "Horizontal Panes"
+
+#: C/glade.xml:367(para)
+msgid "Vertical Panes"
+msgstr "Vertical Panes"
+
+#: C/glade.xml:368(para)
+msgid "Notebook"
+msgstr "Notebook"
+
+#: C/glade.xml:369(para)
+msgid "Frame"
+msgstr "Frame"
+
+#: C/glade.xml:370(para)
+msgid "Scrolled Window"
+msgstr "Scrolled Window"
+
+#: C/glade.xml:371(para)
+msgid "Viewport"
+msgstr "Viewport"
+
+#: C/glade.xml:373(para)
+msgid ""
+"You can nest boxes to create complex layout structures. When you create "
+"horizontal and vertical boxes, <application>Glade</application> asks you how "
+"many rows or columns to create initially, though rows and columns can easily "
+"be added or deleted later."
+msgstr ""
+"可以通过巧妙使用 boxes 创建复杂的布局结构。当创建水平和竖直 boxes 时， "
+"<application>Glade</application> 询问初始创建的行数和列数，而且行和列稍候也可"
+"以容易地添加和删除。"
+
+#: C/glade.xml:379(para)
+msgid ""
+"When you have created all the boxes you require, you can add specific "
+"widgets like labels, buttons, and more complicated widgets into the boxes. "
+"Notice that <application>Glade</application> packs widgets into the layout "
+"which eliminates a lot of tedious work. The use of boxes enables windows to "
+"change size to accommodate different size labels in different languages when "
+"the application is localized."
+msgstr ""
+"创建了所有需要的 boxes 之后，可以向 boxes 中添加特定的控件如 labels, buttons "
+"以及更多的复杂的控件。注意，<application>Glade</application> 打包控件到布局"
+"中，这减少了很多乏味的工作。使用 boxes 允许在本地化时窗口调整大小以容纳不同的"
+"语言的不同大小的标签。"
+
+#: C/glade.xml:387(title)
+msgid "To Place a Widget on the Clipboard"
+msgstr "放置一个控件到剪切板"
+
+#: C/glade.xml:388(para)
+msgid ""
+"To remove a widget from a parent and place the widget on the clipboard, "
+"select the widget then choose <menuchoice><guimenu>Edit</"
+"guimenu><guisubmenu>Cut</guisubmenu></menuchoice>."
+msgstr ""
+"从父构建移动一个控件到剪切板上，选择这个控件，然后选择  <menuchoice><guimenu>"
+"编辑</guimenu><guisubmenu>剪切</guisubmenu></menuchoice>"
+
+#: C/glade.xml:399(title)
+msgid "To Copy a Widget to the Clipboard"
+msgstr "复制一个控件到剪切板"
+
+#: C/glade.xml:400(para)
+msgid ""
+"To copy a widget to the clipboard, select the widget then choose "
+"<menuchoice><guimenu>Edit</guimenu><guisubmenu>Copy</guisubmenu></"
+"menuchoice>. The original widget remains attached to the parent."
+msgstr ""
+"复制控件到剪切板，选择  <menuchoice><guimenu>编辑</guimenu><guisubmenu>复制</"
+"guisubmenu></menuchoice>。原来的控件仍然附着在父控件上。"
+
+#: C/glade.xml:411(title)
+msgid "To Paste a Widget From the Clipboard Into Your Project"
+msgstr "从剪切板粘贴控件到您的工程"
+
+#: C/glade.xml:413(para)
+msgid ""
+"To paste a widget that exists on the clipboard into your project, choose "
+"<menuchoice><guimenu>Edit</guimenu><guisubmenu>Paste</guisubmenu></"
+"menuchoice>."
+msgstr ""
+"从剪切板粘贴控件到您的工程，选择 <menuchoice><guimenu>编辑</"
+"guimenu><guisubmenu>粘贴</guisubmenu></menuchoice>"
+
+#: C/glade.xml:420(para)
+msgid ""
+"All widgets must have a unique name within <application>Glade</application>. "
+"If you cut a widget, and then paste the widget into your project, then the "
+"widget and all of the children of the widget keep their original names. If "
+"you copy a widget, or paste the widget multiple times into your project, "
+"then <application>Glade</application> generates new names for the widget "
+"copies."
+msgstr ""
+"在 <application>Glade</application> 中，每个控件都必须有一个独特的名字。如果"
+"您剪切了一个控件，然后又将其粘贴到您的工程中，这个控件和其子控件将保持它们原"
+"来的名字。如果是复制控件，或多次粘贴同一控件到您的工程中，"
+"<application>Glade</application>将为复制的控件产生新名字。"
+
+#: C/glade.xml:429(title)
+msgid "To Delete a Widget"
+msgstr "删除控件"
+
+#: C/glade.xml:430(para)
+msgid ""
+"To delete a widget from the parent without moving the widget to the "
+"clipboard, select the widget then choose <menuchoice><guimenu>Edit</"
+"guimenu><guisubmenu>Delete</guisubmenu></menuchoice>."
+msgstr ""
+"要直接从父控件中删除一个控件，而不把它移动到剪切板，选中这个控件，然后选择 "
+"<menuchoice><guimenu>E编辑</guimenu><guisubmenu>删除</guisubmenu></"
+"menuchoice>。"
+
+#: C/glade.xml:443(title)
+msgid "To Change a Property of a Widget"
+msgstr "更改控件属性"
+
+#: C/glade.xml:444(para)
+msgid ""
+"The property editor is used to edit the properties of a selected widget. To "
+"change a property of a widget, select the widget and then enter an "
+"appropriate value in one of the Property window's property fields."
+msgstr ""
+"属性编辑器是用来编辑选中控件的属性的。要更改一个控件的属性，选中一个控件然后"
+"在属性窗口的属性域中输入合适的值。"
+
+#: C/glade.xml:454(title)
+msgid "About Glade"
+msgstr "关于 Glade"
+
+#: C/glade.xml:455(para)
+msgid ""
+"Glade is maintained by the Glade developers and GNOME community volunteers. "
+"To find more information about Glade, please visit the <ulink url=\"http://"
+"glade.gnome.org\" type=\"http\">Glade Web site</ulink>."
+msgstr ""
+"Glade 由 Glade 开发者和 GNOME 社区志愿者维护。要获取更多信息，请访问 <ulink "
+"url=\"http://glade.gnome.org\" type=\"http\">Glade Web site</ulink>。"
+
+#: C/glade.xml:459(para)
+msgid ""
+"To report a bug or make a suggestion regarding this application or this "
+"manual, you can submit them using <ulink url=\"http://bugzilla.gnome.org/"
+"enter_bug.cgi?product=glade3\" type=\"http\">bugzilla</ulink>."
+msgstr ""
+"报告关于本程序和本手册的bug或建议，您可以使用 <ulink url=\"http://bugzilla."
+"gnome.org/enter_bug.cgi?product=glade3\" type=\"http\">bugzilla</ulink>。"
+
+#: C/glade.xml:466(para)
+msgid ""
+"Another excellent source of information are the Glade <ulink url=\"http://"
+"lists.ximian.com/mailman/listinfo/glade-users\" type=\"http\">user</ulink> "
+"and <ulink url=\"http://lists.ximian.com/mailman/listinfo/glade-devel\" type="
+"\"http\">developer</ulink> mailing lists. In addition to subscribing, you "
+"might also want to browse the list archives, available via these same links."
+msgstr ""
+
+#: C/glade.xml:476(para)
+msgid ""
+"This program is distributed under the terms of the GNU General Public "
+"license as published by the Free Software Foundation; either version 2 of "
+"the License, or (at your option) any later version. A copy of this license "
+"can be found at this <ulink url=\"ghelp:gpl\" type=\"help\">link</ulink>, or "
+"in the file COPYING included with the source code of this program."
+msgstr ""
+"本程序是在自由软件基金会发布的通用公共许可证下发布的，或者是第二版，或者(由您"
+"的选择)更新的版本。可以从 <ulink url=\"ghelp:gpl\" type=\"help\">link</"
+"ulink> 找到这个许可证的一个副本，也可以从本程序的源代码的 COPYING 文件中找"
+"到。"
+
+#. Put one translator per line, in the form of NAME <EMAIL>, YEAR1, YEAR2
+#: C/glade.xml:0(None)
+msgid "translator-credits"
+msgstr "苏运强 wzssyqa@gmail.com"
