@@ -1,3 +1,16 @@
+2009-12-04 Javier Jardón <jjardon@gnome.org>
+
+	Use accessor functions instead direct access. Second patch
+
+	GTK+ 2.19.0 is now the required version
+	I've used all the GTK+ 2.19.1 api available, still missing:
+	GTK_WIDGET_UNSET_FLAGS (widget, GTK_TOPLEVEL);
+	GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
+	GTK_WIDGET_REALIZED ()
+	GTK_WIDGET_MAPPED ()
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=594957
+
 2009-12-04  Javier Jardón <jjardon@gnome.org>
 
 	Use accessor functions instead direct access.

@@ -260,7 +260,7 @@ glade_util_ui_message (GtkWidget           *parent,
 	gtk_window_set_resizable (GTK_WINDOW (dialog), TRUE);
 
 	if (widget)
-		gtk_box_pack_end (GTK_BOX (GTK_DIALOG (dialog)->vbox), 
+		gtk_box_pack_end (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
 				  widget, TRUE, TRUE, 2);
 
 	response = gtk_dialog_run (GTK_DIALOG (dialog));
@@ -424,7 +424,7 @@ glade_util_gtk_combo_func (gpointer data)
 	ltext = (gchar *) g_object_get_data (G_OBJECT (listitem),
 					     gtk_combo_string_key);
 	if (!ltext) {
-		label = GTK_BIN (listitem)->child;
+		label = gtk_bin_get_child (GTK_BIN (listitem));
 		if (!label || !GTK_IS_LABEL (label))
 			return NULL;
 		ltext = (gchar*) gtk_label_get_text (GTK_LABEL (label));
@@ -556,7 +556,7 @@ add_format_options (GtkDialog    *dialog,
 
 	gtk_widget_show_all (frame);
 	
-	gtk_box_pack_end (GTK_BOX (dialog->vbox), frame, FALSE, TRUE, 2);
+	gtk_box_pack_end (GTK_BOX (gtk_dialog_get_content_area (dialog)), frame, FALSE, TRUE, 2);
 }
 
 
@@ -712,7 +712,7 @@ glade_util_get_window_positioned_in (GtkWidget *widget)
 {
 	GtkWidget *parent;
 
-	parent = widget->parent;
+	parent = gtk_widget_get_parent (widget);
 
 #ifdef USE_GNOME
 	/* BonoboDockItem widgets use a different window when floating.
@@ -730,9 +730,9 @@ glade_util_get_window_positioned_in (GtkWidget *widget)
 #endif
 
 	if (parent)
-		return parent->window;
+		return gtk_widget_get_window (parent);
 
-	return widget->window;
+	return gtk_widget_get_window (widget);
 }
 
 static void
@@ -801,10 +801,10 @@ glade_util_can_draw_nodes (GtkWidget *sel_widget, GdkWindow *sel_win,
 	GdkWindow *viewport_win = NULL;
 
 	/* Check if the selected widget is inside a viewport. */
-	for (widget = sel_widget->parent; widget; widget = widget->parent) {
+	for (widget = gtk_widget_get_parent (sel_widget); widget; widget = gtk_widget_get_parent (widget)) {
 		if (GTK_IS_VIEWPORT (widget)) {
 			viewport = widget;
-			viewport_win = GTK_VIEWPORT (widget)->bin_window;
+			viewport_win = gtk_viewport_get_bin_window (GTK_VIEWPORT (widget));
 			break;
 		}
 	}
@@ -854,7 +854,7 @@ glade_util_draw_selection_nodes (GdkWindow *expose_win)
 	/* Find the corresponding GtkWidget */
 	gdk_window_get_user_data (expose_win, (gpointer)&expose_widget);
 
-	gc = expose_widget->style->black_gc;
+	gc = gtk_widget_get_style (expose_widget)->black_gc;
 
 	/* Calculate the offset of the expose window within its toplevel. */
 	glade_util_calculate_window_offset (expose_win,
@@ -887,10 +887,13 @@ glade_util_draw_selection_nodes (GdkWindow *expose_win)
 		if (expose_toplevel == sel_toplevel
 		    && glade_util_can_draw_nodes (sel_widget, sel_win,
 						  expose_win)) {
-			x = sel_x + sel_widget->allocation.x - expose_win_x;
-			y = sel_y + sel_widget->allocation.y - expose_win_y;
-			w = sel_widget->allocation.width;
-			h = sel_widget->allocation.height;
+			GtkAllocation allocation;
+
+			gtk_widget_get_allocation (sel_widget, &allocation);
+			x = sel_x + allocation.x - expose_win_x;
+			y = sel_y + allocation.y - expose_win_y;
+			w = allocation.width;
+			h = allocation.height;
 
 			/* Draw the selection nodes if they intersect the
 			   expose window bounds. */
@@ -930,6 +933,8 @@ glade_util_add_selection (GtkWidget *widget)
 void
 glade_util_remove_selection (GtkWidget *widget)
 {
+	GtkWidget *parent;
+
 	g_return_if_fail (GTK_IS_WIDGET (widget));
 	if (!glade_util_has_selection (widget))
 		return;
@@ -939,8 +944,8 @@ glade_util_remove_selection (GtkWidget *widget)
 
 	/* We redraw the parent, since the selection rectangle may not be
 	   cleared if we just redraw the widget itself. */
-	gtk_widget_queue_draw (widget->parent ?
-			       widget->parent : widget);
+	parent = gtk_widget_get_parent (widget);
+	gtk_widget_queue_draw (parent ? parent : widget);
 }
 
 /**
@@ -952,6 +957,7 @@ void
 glade_util_clear_selection (void)
 {
 	GtkWidget *widget;
+	GtkWidget *parent;
 	GList     *list;
 
 	for (list = glade_util_selection;
@@ -959,8 +965,8 @@ glade_util_clear_selection (void)
 	     list = list->next)
 	{
 		widget = list->data;
-		gtk_widget_queue_draw (widget->parent ?
-				       widget->parent : widget);
+		parent = gtk_widget_get_parent (widget);
+		gtk_widget_queue_draw (parent ? parent : widget);
 	}
 	glade_util_selection =
 		(g_list_free (glade_util_selection), NULL);
@@ -1678,6 +1684,7 @@ glade_util_get_placeholder_from_pointer (GtkContainer *container)
 {
 	GtkWidget *toplevel;
 	GtkWidget *retval = NULL, *child;
+	GtkAllocation allocation;
 	GList *c, *l;
 	gint x, y, x2, y2;
 
@@ -1699,10 +1706,10 @@ glade_util_get_placeholder_from_pointer (GtkContainer *container)
 			gtk_widget_translate_coordinates (toplevel, child,
 							  x, y, &x2, &y2);
 
-			
+			gtk_widget_get_allocation (child, &allocation);
 			if (x2 >= 0 && y2 >= 0 &&
-			    x2 <= child->allocation.width &&
-			    y2 <= child->allocation.height)
+			    x2 <= allocation.width &&
+			    y2 <= allocation.height)
 			{
 				retval = child;
 				break;
@@ -2289,7 +2296,10 @@ glade_utils_hijack_key_press (GtkWindow          *win,
 			      GdkEventKey        *event, 
 			      gpointer            user_data)
 {
-	if (win->focus_widget &&
+	GtkWidget *focus_widget;
+
+	focus_widget = gtk_window_get_focus (win);
+	if (focus_widget &&
 	    (event->keyval == GDK_Delete || /* Filter Delete from accelerator keys */
 	     ((event->state & GDK_CONTROL_MASK) && /* CNTL keys... */
 	      ((event->keyval == GDK_c || event->keyval == GDK_C) || /* CNTL-C (copy)  */
@@ -2297,7 +2307,7 @@ glade_utils_hijack_key_press (GtkWindow          *win,
 	       (event->keyval == GDK_v || event->keyval == GDK_V) || /* CNTL-V (paste) */
 	       (event->keyval == GDK_n || event->keyval == GDK_N))))) /* CNTL-N (new project) */
 	{
-		return gtk_widget_event (win->focus_widget, 
+		return gtk_widget_event (focus_widget,
 					 (GdkEvent *)event);
 	}
 	return FALSE;

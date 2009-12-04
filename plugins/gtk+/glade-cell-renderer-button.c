@@ -188,7 +188,9 @@ glade_cell_renderer_button_focus_out_event (GtkWidget *entry,
 
 	priv = GLADE_CELL_RENDERER_BUTTON_GET_PRIVATE (cell_text);
 
-	GTK_ENTRY (entry)->editing_canceled = TRUE;
+	g_object_set (entry,
+		      "editing-canceled", TRUE,
+		      NULL);
 	gtk_cell_editable_editing_done (GTK_CELL_EDITABLE (entry));
 	gtk_cell_editable_remove_widget (GTK_CELL_EDITABLE (entry));
 	
@@ -220,6 +222,7 @@ static void
 glade_cell_renderer_button_activate (GtkCellEditable *entry,
 				     GtkCellRendererText *cell_text)
 {
+	gboolean canceled;
 	const gchar *path;
 	const gchar *new_text;
 	GladeCellRendererButtonPrivate *priv;
@@ -228,10 +231,12 @@ glade_cell_renderer_button_activate (GtkCellEditable *entry,
 
 	g_signal_handlers_disconnect_by_func (entry, glade_cell_renderer_button_focus_out_event, cell_text);
 
-	gtk_cell_renderer_stop_editing (GTK_CELL_RENDERER (cell_text), 
-					GTK_ENTRY (entry)->editing_canceled);
+	g_object_get (entry,
+		      "editing-canceled", &canceled,
+		      NULL);
+	gtk_cell_renderer_stop_editing (GTK_CELL_RENDERER (cell_text), canceled);
 
-	if (GTK_ENTRY (entry)->editing_canceled)
+	if (canceled)
 		return;
 
 	path = g_object_get_data (G_OBJECT (entry), GLADE_CELL_RENDERER_BUTTON_PATH);
@@ -244,6 +249,7 @@ static void
 glade_cell_renderer_button_editing_done (GtkCellEditable     *entry,
 					 GtkCellRendererText *cell_text)
 {
+	gboolean canceled;
 	const gchar *path;
 	const gchar *new_text;
 	GladeCellRendererButtonPrivate *priv;
@@ -252,10 +258,12 @@ glade_cell_renderer_button_editing_done (GtkCellEditable     *entry,
 
 	g_signal_handlers_disconnect_by_func (entry, glade_cell_renderer_button_focus_out_event, cell_text);
 
-	gtk_cell_renderer_stop_editing (GTK_CELL_RENDERER (cell_text), 
-					GTK_ENTRY (entry)->editing_canceled);
+	g_object_get (entry,
+                      "editing-canceled", &canceled,
+                      NULL);
+	gtk_cell_renderer_stop_editing (GTK_CELL_RENDERER (cell_text), canceled);
 
-	if (GTK_ENTRY (entry)->editing_canceled)
+	if (canceled)
 		return;
 
 	path = g_object_get_data (G_OBJECT (entry), GLADE_CELL_RENDERER_BUTTON_PATH);
@@ -277,20 +285,33 @@ glade_cell_renderer_button_start_editing (GtkCellRenderer     *cell,
 	GladeCellRendererButtonPrivate *priv;
 	GtkCellRendererText *cell_text;
 	GladeTextButton *text_button;
+	gboolean editable;
+	gchar *text;
+	gfloat xalign;
 
 	cell_text = GTK_CELL_RENDERER_TEXT (cell);
 	priv = GLADE_CELL_RENDERER_BUTTON_GET_PRIVATE (cell);
 
-	if (cell_text->editable == FALSE)
+	g_object_get (cell_text,
+		      "editable", &editable,
+		      "text", &text,
+		      NULL);
+
+	if (editable == FALSE)
 		return NULL;
 
 	priv->button = text_button = (GladeTextButton *)glade_text_button_new ();
-	gtk_entry_set_text (GTK_ENTRY (text_button->entry), cell_text->text ? cell_text->text : "");
+	gtk_entry_set_text (GTK_ENTRY (text_button->entry), text ? text : "");
+	g_free (text);
 	gtk_editable_set_editable (GTK_EDITABLE (text_button->entry), priv->entry_editable);
+
+	g_object_get (cell,
+		      "xalign", &xalign,
+		      NULL);
 
 	g_object_set (text_button->entry,
 		      "has-frame", FALSE,
-		      "xalign", cell->xalign,
+		      "xalign", xalign,
 		      NULL);
 
 	g_object_set_data_full (G_OBJECT (text_button->entry), GLADE_CELL_RENDERER_BUTTON_PATH, 
