@@ -452,7 +452,7 @@ set_busy_cursor (GladeNamedIconChooserDialog *dialog,
 	else
 		cursor = NULL;
 
-	gdk_window_set_cursor (GTK_WIDGET (dialog)->window, cursor);
+	gdk_window_set_cursor (gtk_widget_get_window (GTK_WIDGET (dialog)), cursor);
 	gdk_display_flush (display);
 
 	if (cursor)
@@ -821,7 +821,7 @@ centre_selected_row (GladeNamedIconChooserDialog *dialog)
 	
 	if (l) {
 		g_assert (GTK_WIDGET_MAPPED (dialog));
-		g_assert (GTK_WIDGET_VISIBLE (dialog));
+		g_assert (gtk_widget_get_visible (GTK_WIDGET (dialog)));
 		
 		gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (dialog->priv->icons_view),
 					      (GtkTreePath *) l->data,
@@ -1277,7 +1277,7 @@ icon_activated_cb (GladeNamedIconChooserDialog *dialog)
 {
 	GList *children, *l;
 
-	children = gtk_container_get_children (GTK_CONTAINER (GTK_DIALOG (dialog)->action_area));
+	children = gtk_container_get_children (GTK_CONTAINER (gtk_dialog_get_action_area (GTK_DIALOG (dialog))));
 
 	for (l = children; l; l = l->next)
 	{
@@ -1311,7 +1311,7 @@ selection_changed_cb (GladeNamedIconChooserDialog *dialog)
 	GList *children, *l;
 	gchar *icon_name;
 
-	children = gtk_container_get_children (GTK_CONTAINER (GTK_DIALOG (dialog)->action_area));
+	children = gtk_container_get_children (GTK_CONTAINER (gtk_dialog_get_action_area (GTK_DIALOG (dialog))));
 
 	for (l = children; l; l = l->next)
 	{
@@ -1348,6 +1348,8 @@ glade_named_icon_chooser_dialog_init (GladeNamedIconChooserDialog *dialog)
 	GtkWidget *sw;
 	GtkWidget *label;
 	GtkWidget *hpaned;
+	GtkWidget *content_area;
+	GtkWidget *action_area;
 	GtkSizeGroup *group;
 	
 	dialog->priv = GLADE_NAMED_ICON_CHOOSER_DIALOG_GET_PRIVATE (dialog);
@@ -1366,10 +1368,12 @@ glade_named_icon_chooser_dialog_init (GladeNamedIconChooserDialog *dialog)
 	
 	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);	
 
-	gtk_container_set_border_width (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), 12);
-	gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->vbox), 12);
-	gtk_container_set_border_width (GTK_CONTAINER (GTK_DIALOG (dialog)->action_area), 0);
-	gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->action_area), 6);
+	content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
+	gtk_container_set_border_width (GTK_CONTAINER (content_area), 12);
+	gtk_box_set_spacing (GTK_BOX (content_area), 12);
+	action_area = gtk_dialog_get_action_area (GTK_DIALOG (dialog));
+	gtk_container_set_border_width (GTK_CONTAINER (action_area), 0);
+	gtk_box_set_spacing (GTK_BOX (action_area), 6);
 
 	/* We do a signal connection here rather than overriding the method in
 	 * class_init because GtkDialog::response is a RUN_LAST signal.  We want *our*
@@ -1489,7 +1493,7 @@ glade_named_icon_chooser_dialog_init (GladeNamedIconChooserDialog *dialog)
 			  dialog);
 	
 	gtk_box_pack_start (GTK_BOX (contents), dialog->priv->button, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), contents, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (content_area), contents, TRUE, TRUE, 0);
 					
 	gtk_widget_pop_composite_child ();
 	

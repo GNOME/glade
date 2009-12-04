@@ -83,16 +83,18 @@ static void
 glade_custom_send_configure (GladeCustom *custom)
 {
 	GtkWidget *widget;
+	GtkAllocation allocation;
 	GdkEvent *event = gdk_event_new (GDK_CONFIGURE);
 
 	widget = GTK_WIDGET (custom);
 
-	event->configure.window = g_object_ref (widget->window);
+	event->configure.window = g_object_ref (gtk_widget_get_window (widget));
 	event->configure.send_event = TRUE;
-	event->configure.x = widget->allocation.x;
-	event->configure.y = widget->allocation.y;
-	event->configure.width = widget->allocation.width;
-	event->configure.height = widget->allocation.height;
+	gtk_widget_get_allocation (widget, &allocation);
+	event->configure.x = allocation.x;
+	event->configure.y = allocation.y;
+	event->configure.width = allocation.width;
+	event->configure.height = allocation.height;
 
 	gtk_widget_event (widget, event);
 	gdk_event_free (event);
@@ -102,6 +104,8 @@ static void
 glade_custom_realize (GtkWidget *widget)
 {
 	GladeCustom *custom;
+	GtkAllocation allocation;
+	GdkWindow *window;
 	GdkWindowAttr attributes;
 	gint attributes_mask;
 
@@ -112,10 +116,11 @@ glade_custom_realize (GtkWidget *widget)
 	GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
 
 	attributes.window_type = GDK_WINDOW_CHILD;
-	attributes.x = widget->allocation.x;
-	attributes.y = widget->allocation.y;
-	attributes.width = widget->allocation.width;
-	attributes.height = widget->allocation.height;
+	gtk_widget_get_allocation (widget, &allocation);
+	attributes.x = allocation.x;
+	attributes.y = allocation.y;
+	attributes.width = allocation.width;
+	attributes.height = allocation.height;
 	attributes.wclass = GDK_INPUT_OUTPUT;
 	attributes.visual = gtk_widget_get_visual (widget);
 	attributes.colormap = gtk_widget_get_colormap (widget);
@@ -123,11 +128,11 @@ glade_custom_realize (GtkWidget *widget)
 
 	attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
 
-	widget->window = gdk_window_new (gtk_widget_get_parent_window (widget), 
-					 &attributes, attributes_mask);
-	gdk_window_set_user_data (widget->window, custom);
+	window = gdk_window_new (gtk_widget_get_parent_window (widget), &attributes, attributes_mask);
+	gtk_widget_set_window (widget, window);
+	gdk_window_set_user_data (window, custom);
 
-	widget->style = gtk_style_attach (widget->style, widget->window);
+	gtk_widget_set_style (widget, gtk_style_attach (gtk_widget_get_style (widget), window));
 
 	glade_custom_send_configure (custom);
 
@@ -140,7 +145,7 @@ glade_custom_realize (GtkWidget *widget)
 
 		g_assert(G_IS_OBJECT(custom->custom_pixmap));
 	}
-	gdk_window_set_back_pixmap (GTK_WIDGET (custom)->window, custom->custom_pixmap, FALSE);
+	gdk_window_set_back_pixmap (gtk_widget_get_window (GTK_WIDGET (custom)), custom->custom_pixmap, FALSE);
 }
 
 static void
@@ -149,11 +154,11 @@ glade_custom_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 	g_return_if_fail (GLADE_IS_CUSTOM (widget));
 	g_return_if_fail (allocation != NULL);
 
-	widget->allocation = *allocation;
+	gtk_widget_set_allocation (widget, allocation);
 
 	if (GTK_WIDGET_REALIZED (widget))
 	{
-		gdk_window_move_resize (widget->window,
+		gdk_window_move_resize (gtk_widget_get_window (widget),
 					allocation->x, allocation->y,
 					allocation->width, allocation->height);
 
@@ -164,14 +169,16 @@ glade_custom_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 static gboolean
 glade_custom_expose (GtkWidget *widget, GdkEventExpose *event)
 {
+	GtkStyle *style;
 	GdkGC *light_gc;
 	GdkGC *dark_gc;
 	gint w, h;
 
 	g_return_val_if_fail (GLADE_IS_CUSTOM (widget), FALSE);
-	
-	light_gc = widget->style->light_gc[GTK_STATE_NORMAL];
-	dark_gc  = widget->style->dark_gc[GTK_STATE_NORMAL];
+
+	style = gtk_widget_get_style (widget);
+	light_gc = style->light_gc[GTK_STATE_NORMAL];
+	dark_gc  = style->dark_gc[GTK_STATE_NORMAL];
 	gdk_drawable_get_size (event->window, &w, &h);
 
 	gdk_draw_line (event->window, light_gc, 0, 0, w - 1, 0);

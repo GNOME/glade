@@ -187,8 +187,8 @@ glade_palette_expander_init (GladePaletteExpander *expander)
 	GtkWidget *alignment;
 
 	expander->priv = priv = GLADE_PALETTE_EXPANDER_GET_PRIVATE (expander);
-	
-	GTK_WIDGET_SET_FLAGS (expander, GTK_NO_WINDOW);
+
+	gtk_widget_set_has_window (GTK_WIDGET (expander), FALSE);
 	
 	priv->spacing = 0;
 	priv->expanded = FALSE;
@@ -298,19 +298,20 @@ glade_palette_expander_size_request (GtkWidget       *widget,
 	GladePaletteExpanderPrivate *priv;
 	GladePaletteExpander *expander;
 	GtkBin *bin;
-	gint border_width;
+	GtkWidget *child;
+	guint border_width;
 
 	bin = GTK_BIN (widget);
 	expander = GLADE_PALETTE_EXPANDER (widget);
 	priv = expander->priv;
 
-	border_width = GTK_CONTAINER (widget)->border_width;
+	border_width = gtk_container_get_border_width (GTK_CONTAINER (widget));
 
 	requisition->width = 0;
 	requisition->height =  0;
 
 
-	if (GTK_WIDGET_VISIBLE (priv->button))
+	if (gtk_widget_get_visible (priv->button))
 	{
 		GtkRequisition button_requisition;
 
@@ -320,11 +321,12 @@ glade_palette_expander_size_request (GtkWidget       *widget,
 		requisition->height += button_requisition.height;
 	}
 
-	if (bin->child && gtk_widget_get_child_visible (bin->child))
+	child = gtk_bin_get_child (bin);
+	if (child && gtk_widget_get_child_visible (child))
 	{
 		GtkRequisition child_requisition;
 
-		gtk_widget_size_request (bin->child, &child_requisition);
+		gtk_widget_size_request (child, &child_requisition);
 
 		requisition->width = MAX (requisition->width, child_requisition.width);
 		requisition->height += child_requisition.height + priv->spacing;
@@ -341,37 +343,39 @@ glade_palette_expander_size_allocate (GtkWidget     *widget,
 	GladePaletteExpanderPrivate *priv;
 	GladePaletteExpander *expander;
 	GtkBin *bin;
+	GtkWidget *child;
 	GtkRequisition child_requisition;
 	gboolean child_visible = FALSE;
-	gint border_width;
+	guint border_width;
 	gint button_height;
 
 	expander = GLADE_PALETTE_EXPANDER (widget);
 	bin = GTK_BIN (widget);
 	priv = expander->priv;
 
-	border_width = GTK_CONTAINER (widget)->border_width;
+	border_width = gtk_container_get_border_width (GTK_CONTAINER (widget));
 
 	child_requisition.width = 0;
 	child_requisition.height = 0;	
-	
-	if (bin->child && gtk_widget_get_child_visible (bin->child))
+
+	child = gtk_bin_get_child (bin);
+	if (child && gtk_widget_get_child_visible (child))
 	{
 		child_visible = TRUE;
-		gtk_widget_get_child_requisition (bin->child, &child_requisition);
+		gtk_widget_get_child_requisition (child, &child_requisition);
 	}
 
-	widget->allocation = *allocation;
+	gtk_widget_set_allocation (widget, allocation);
 
-	if (GTK_WIDGET_VISIBLE (priv->button))
+	if (gtk_widget_get_visible (priv->button))
 	{
 		GtkAllocation button_allocation;
 		GtkRequisition button_requisition;
 
 		gtk_widget_get_child_requisition (priv->button, &button_requisition);
 
-		button_allocation.x = widget->allocation.x + border_width;
-		button_allocation.y = widget->allocation.y + border_width;
+		button_allocation.x = allocation->x + border_width;
+		button_allocation.y = allocation->y + border_width;
 
 		button_allocation.width = MAX (allocation->width - 2 * border_width, 1);    
 
@@ -394,8 +398,8 @@ glade_palette_expander_size_allocate (GtkWidget     *widget,
 	{
 		GtkAllocation child_allocation;
 
-		child_allocation.x = widget->allocation.x + border_width;
-		child_allocation.y = widget->allocation.y + border_width + button_height + priv->spacing;
+		child_allocation.x = allocation->x + border_width;
+		child_allocation.y = allocation->y + border_width + button_height + priv->spacing;
 
 		child_allocation.width = MAX (allocation->width - 2 * border_width, 1);
 
@@ -403,7 +407,7 @@ glade_palette_expander_size_allocate (GtkWidget     *widget,
 					  2 * border_width - priv->spacing;
 		child_allocation.height = MAX (child_allocation.height, 1);
 
-		gtk_widget_size_allocate (bin->child, &child_allocation);
+		gtk_widget_size_allocate (child, &child_allocation);
 	}
 }
 
@@ -448,7 +452,7 @@ glade_palette_expander_remove (GtkContainer *container,
 		gtk_widget_unparent (expander->priv->button);
 		expander->priv->button = NULL;
 
-		if (GTK_WIDGET_VISIBLE (expander))
+		if (gtk_widget_get_visible (GTK_WIDGET (expander)))
 			gtk_widget_queue_resize (GTK_WIDGET (expander));
 
 		g_object_notify (G_OBJECT (expander), "label");
@@ -467,10 +471,12 @@ glade_palette_expander_forall (GtkContainer *container,
 			       gpointer      callback_data)
 {
 	GtkBin *bin = GTK_BIN (container);
+	GtkWidget *child;
 	GladePaletteExpanderPrivate *priv = GLADE_PALETTE_EXPANDER_GET_PRIVATE (container);
-	
-	if (bin->child)
-		(* callback) (bin->child, callback_data);
+
+	child = gtk_bin_get_child (bin);
+	if (child)
+		(* callback) (child, callback_data);
 	
 	if (priv->button)	
 		(* callback) (priv->button, callback_data);
@@ -550,6 +556,7 @@ void
 glade_palette_expander_set_expanded (GladePaletteExpander *expander, gboolean expanded)
 {
 	GladePaletteExpanderPrivate *priv;
+	GtkWidget *child;
 
 	g_return_if_fail (GLADE_IS_PALETTE_EXPANDER (expander));
 
@@ -561,9 +568,10 @@ glade_palette_expander_set_expanded (GladePaletteExpander *expander, gboolean ex
 	{
 		priv->expanded = expanded;
 
-		if (GTK_BIN (expander)->child)
+		child = gtk_bin_get_child (GTK_BIN (expander));
+		if (child)
 		{
-			gtk_widget_set_child_visible (GTK_BIN (expander)->child, priv->expanded);
+			gtk_widget_set_child_visible (child, priv->expanded);
 			gtk_widget_queue_resize (GTK_WIDGET (expander));
 		}
 

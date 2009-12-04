@@ -1006,7 +1006,7 @@ glade_app_add_project (GladeProject *project)
 	if (g_list_length (app->priv->projects) == 1 ||
 	    !(view = glade_design_view_get_from_project (project)) ||
 	    !(layout = glade_design_view_get_layout (view)) ||
-	    !GTK_BIN (layout)->child)
+	    !gtk_bin_get_child (GTK_BIN (layout)))
 	{
 		const GList *node;
 		for (node = glade_project_get_objects (project);
@@ -1318,7 +1318,7 @@ glade_app_command_paste (GladePlaceholder *placeholder)
 	 * at a time
  	 */
 	if (GTK_IS_WIDGET (widget->object) && 
-	    GTK_WIDGET_TOPLEVEL (widget->object) == FALSE &&
+	    gtk_widget_is_toplevel (GTK_WIDGET (widget->object)) == FALSE &&
 	    parent && fixed && !GWA_USE_PLACEHOLDERS (parent->adaptor) &&
 	    g_list_length (clipboard->selection) != 1) 
 	{

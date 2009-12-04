@@ -446,7 +446,7 @@ search_complete_func (GObject *object)
 static void
 widget_font_desc_set_style (GtkWidget *widget, PangoStyle style)
 {
-	PangoFontDescription *font_desc = pango_font_description_copy (widget->style->font_desc);
+	PangoFontDescription *font_desc = pango_font_description_copy (gtk_widget_get_style (widget)->font_desc);
 	
 	pango_font_description_set_style (font_desc, style);
 	gtk_widget_modify_font (widget, font_desc);
@@ -465,7 +465,7 @@ search_entry_update (GladeInspector *inspector)
 		widget_font_desc_set_style (priv->entry, PANGO_STYLE_ITALIC);		
 		gtk_entry_set_text (GTK_ENTRY (priv->entry), _("< search widgets >"));
 		gtk_widget_modify_text (priv->entry, GTK_STATE_NORMAL, 
-					&priv->entry->style->text[GTK_STATE_INSENSITIVE]);
+					&gtk_widget_get_style (priv->entry)->text[GTK_STATE_INSENSITIVE]);
 	}
 }
 

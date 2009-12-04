@@ -1804,8 +1804,8 @@ toggle_dock_cb (GtkAction *action, GladeWindow *window)
 		toplevel = gtk_widget_get_toplevel (dock->widget);
 
 		g_object_ref (dock->widget);
-		gtk_container_remove (GTK_CONTAINER 
-				      (GTK_BIN (toplevel)->child), dock->widget);
+		gtk_container_remove (GTK_CONTAINER (gtk_bin_get_child (GTK_BIN (toplevel))),
+				      dock->widget);
 
 		if (dock->first_child)
 			gtk_paned_pack1 (GTK_PANED (dock->paned), dock->widget, FALSE, FALSE);
@@ -1847,8 +1847,8 @@ toggle_dock_cb (GtkAction *action, GladeWindow *window)
 		g_signal_connect (G_OBJECT (toplevel), "configure-event",
 				  G_CALLBACK (on_dock_resized), dock);
 
-		if (!GTK_PANED (dock->paned)->child1 &&
-		    !GTK_PANED (dock->paned)->child2)
+		if (!gtk_paned_get_child1 (GTK_PANED (dock->paned)) &&
+		    !gtk_paned_get_child2 (GTK_PANED (dock->paned)))
 			gtk_widget_hide (dock->paned);
 
 
@@ -2311,17 +2311,14 @@ drag_data_received (GtkWidget *widget,
 			guint info, guint time, GladeWindow *window)
 {
 	gchar **uris, **str;
-	gchar *data;
+	const guchar *data;
 
 	if (info != TARGET_URI_LIST)
 		return;
 
-	/* On MS-Windows, it looks like `selection_data->data' is not NULL terminated. */
-	data = g_new (gchar, selection_data->length + 1);
-	memcpy (data, selection_data->data, selection_data->length);
-	data[selection_data->length] = 0;
+	data = gtk_selection_data_get_data (selection_data);
 
-	uris = g_uri_list_extract_uris (data);
+	uris = g_uri_list_extract_uris ((gchar *) data);
 
 	for (str = uris; *str; str++)
 	{

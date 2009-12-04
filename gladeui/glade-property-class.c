@@ -292,27 +292,27 @@ glade_property_class_make_string_from_object (GladePropertyClass *property_class
 		GString       *str = g_string_sized_new (G_ASCII_DTOSTR_BUF_SIZE * 6 + 6);
 		gchar          buff[G_ASCII_DTOSTR_BUF_SIZE];
 
-		g_ascii_dtostr (buff, sizeof (buff), adj->value);
+		g_ascii_dtostr (buff, sizeof (buff), gtk_adjustment_get_value (adj));
 		g_string_append (str, buff);
 
 		g_string_append_c (str, ' ');
-		g_ascii_dtostr (buff, sizeof (buff), adj->lower);
+		g_ascii_dtostr (buff, sizeof (buff), gtk_adjustment_get_lower (adj));
 		g_string_append (str, buff);
 
 		g_string_append_c (str, ' ');
-		g_ascii_dtostr (buff, sizeof (buff), adj->upper);
+		g_ascii_dtostr (buff, sizeof (buff), gtk_adjustment_get_upper (adj));
 		g_string_append (str, buff);
 
 		g_string_append_c (str, ' ');
-		g_ascii_dtostr (buff, sizeof (buff), adj->step_increment);
+		g_ascii_dtostr (buff, sizeof (buff), gtk_adjustment_get_step_increment (adj));
 		g_string_append (str, buff);
 
 		g_string_append_c (str, ' ');
-		g_ascii_dtostr (buff, sizeof (buff), adj->page_increment);
+		g_ascii_dtostr (buff, sizeof (buff), gtk_adjustment_get_page_increment (adj));
 		g_string_append (str, buff);
 
 		g_string_append_c (str, ' ');
-		g_ascii_dtostr (buff, sizeof (buff), adj->page_size);
+		g_ascii_dtostr (buff, sizeof (buff), gtk_adjustment_get_page_size (adj));
 		g_string_append (str, buff);
 
 		string = g_string_free (str, FALSE);

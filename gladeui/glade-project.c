@@ -1591,7 +1591,7 @@ glade_project_write (GladeProject *project)
 {
 	GladeXmlContext *context;
 	GladeXmlDoc     *doc;
-	GladeXmlNode    *root, *comment_node;
+	GladeXmlNode    *root; /* *comment_node; */
 	GList           *list;
 
 	doc     = glade_xml_doc_new ();
@@ -1600,7 +1600,7 @@ glade_project_write (GladeProject *project)
 	glade_xml_doc_set_root (doc, root);
 
 	glade_project_update_comment (project);
-/* 	comment_node = glade_xml_node_new_comment (context, project->priv->comment); */
+	/* comment_node = glade_xml_node_new_comment (context, project->priv->comment); */
 
 	/* XXX Need to append this to the doc ! not the ROOT !
 	   glade_xml_node_append_child (root, comment_node); */
@@ -4075,19 +4075,19 @@ glade_project_build_prefs_dialog (GladeProject *project)
 	g_free (name);
 
 	widget = glade_project_build_prefs_box (project);
-	gtk_box_pack_end (GTK_BOX (GTK_DIALOG (dialog)->vbox), 
+	gtk_box_pack_end (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
 			  widget, TRUE, TRUE, 2);
 
 	gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);
-	gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->vbox), 2);
+	gtk_box_set_spacing (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), 2);
 
 	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 
 	/* HIG spacings */
 	gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);
-	gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->vbox), 2); /* 2 * 5 + 2 = 12 */
-	gtk_container_set_border_width (GTK_CONTAINER (GTK_DIALOG (dialog)->action_area), 5);
-	gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->action_area), 6);
+	gtk_box_set_spacing (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), 2); /* 2 * 5 + 2 = 12 */
+	gtk_container_set_border_width (GTK_CONTAINER (gtk_dialog_get_action_area (GTK_DIALOG (dialog))), 5);
+	gtk_box_set_spacing (GTK_BOX (gtk_dialog_get_action_area (GTK_DIALOG (dialog))), 6);
 
 
 	/* Were explicitly destroying it anyway */

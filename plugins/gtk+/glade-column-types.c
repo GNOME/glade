@@ -766,7 +766,7 @@ types_combo_editing_started (GtkCellRenderer       *renderer,
 	gtk_entry_completion_set_model (completion, types_model);
 	gtk_entry_completion_set_text_column (completion, 0);
 	gtk_entry_completion_set_inline_completion (completion, TRUE);
-	gtk_entry_set_completion (GTK_ENTRY (GTK_BIN (editable)->child), completion);
+	gtk_entry_set_completion (GTK_ENTRY (gtk_bin_get_child (GTK_BIN (editable))), completion);
 	g_object_unref (G_OBJECT (completion));
 }
 

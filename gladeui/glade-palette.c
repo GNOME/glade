@@ -210,7 +210,7 @@ glade_palette_set_show_selector_button (GladePalette *palette, gboolean show_sel
 	g_return_if_fail (GLADE_IS_PALETTE (palette));
 	priv = GLADE_PALETTE_GET_PRIVATE (palette);
 
-	if (GTK_WIDGET_VISIBLE (priv->selector_hbox) != show_selector_button)
+	if (gtk_widget_get_visible (priv->selector_hbox) != show_selector_button)
 	{
 		if (show_selector_button)
 			gtk_widget_show (priv->selector_hbox);
@@ -278,7 +278,7 @@ glade_palette_get_property (GObject    *object,
 			g_value_set_boolean (value, priv->use_small_item_icons);
 			break;
 		case PROP_SHOW_SELECTOR_BUTTON:
-			g_value_set_boolean (value, GTK_WIDGET_VISIBLE (priv->selector_button));
+			g_value_set_boolean (value, gtk_widget_get_visible (priv->selector_button));
 			break;
 		case PROP_ITEM_APPEARANCE:
 			g_value_set_enum (value, priv->item_appearance);
@@ -495,7 +495,7 @@ glade_palette_on_button_toggled (GtkWidget *button, GladePalette *palette)
 	
 	/* check whether to enable sticky selection */
 	adaptor = glade_palette_item_get_adaptor (GLADE_PALETTE_ITEM (button));	
-	gdk_window_get_pointer (button->window, NULL, NULL, &mask);
+	gdk_window_get_pointer (gtk_widget_get_window (button), NULL, NULL, &mask);
   	priv->sticky_selection_mode = (!GWA_IS_TOPLEVEL (adaptor)) && (mask & GDK_CONTROL_MASK);
 
 	g_signal_emit (G_OBJECT (palette), glade_palette_signals[TOGGLED], 0);
@@ -839,7 +839,7 @@ glade_palette_get_show_selector_button (GladePalette *palette)
 {
 	g_return_val_if_fail (GLADE_IS_PALETTE (palette), FALSE);
 
-	return GTK_WIDGET_VISIBLE (palette->priv->selector_hbox);
+	return gtk_widget_get_visible (palette->priv->selector_hbox);
 }
 
 /**

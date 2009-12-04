@@ -302,7 +302,7 @@ glade_widget_button_press_event_impl (GladeWidget    *gwidget,
 
 	/* make sure to grab focus, since we may stop default handlers */
 	widget = GTK_WIDGET (glade_widget_get_object (gwidget));
-	if (GTK_WIDGET_CAN_FOCUS (widget) && !GTK_WIDGET_HAS_FOCUS (widget))
+	if (gtk_widget_get_can_focus (widget) && !gtk_widget_has_focus (widget))
 		gtk_widget_grab_focus (widget);
 
 	/* if it's already selected don't stop default handlers, e.g. toggle button */
@@ -780,7 +780,7 @@ glade_widget_constructor (GType                  type,
 	if (gwidget->parent && gwidget->packing_properties == NULL)
 		glade_widget_set_packing_properties (gwidget, gwidget->parent);
 	
-	if (GTK_IS_WIDGET (gwidget->object) && !GTK_WIDGET_TOPLEVEL (gwidget->object))
+	if (GTK_IS_WIDGET (gwidget->object) && !gtk_widget_is_toplevel (GTK_WIDGET (gwidget->object)))
 	{
 		gwidget->visible = TRUE;
 		gtk_widget_show_all (GTK_WIDGET (gwidget->object));
@@ -2011,10 +2011,13 @@ glade_widget_hide (GladeWidget *widget)
 		
 		if ((view = glade_design_view_get_from_project (glade_widget_get_project (widget))) != NULL)
 		{
-			layout = GTK_WIDGET (glade_design_view_get_layout (view));
+			GtkWidget *child;
 
-			if (GTK_BIN (layout)->child == GTK_WIDGET (widget->object))
-				gtk_container_remove (GTK_CONTAINER (layout), GTK_BIN (layout)->child);
+			layout = GTK_WIDGET (glade_design_view_get_layout (view));
+			child = gtk_bin_get_child (GTK_BIN (layout));
+
+			if (child == GTK_WIDGET (widget->object))
+				gtk_container_remove (GTK_CONTAINER (layout), child);
 		}
 
 		gtk_widget_hide (GTK_WIDGET (widget->object));
@@ -3280,7 +3283,7 @@ glade_widget_event_private (GtkWidget   *widget,
 
 	/* Find the parenting layout container */
 	while (layout && !GLADE_IS_DESIGN_LAYOUT (layout))
-		layout = layout->parent;
+		layout = gtk_widget_get_parent (layout);
 
 	/* Event outside the logical heirarchy, could be a menuitem
 	 * or other such popup window, we'll presume to send it directly
@@ -4199,11 +4202,11 @@ glade_window_is_embedded (GtkWindow *window)
 static void
 embedded_window_realize_handler (GtkWidget *widget)
 {
-	GtkWindow *window;
+	GtkAllocation allocation;
+	GtkStyle *style;
+	GdkWindow *window;
 	GdkWindowAttr attributes;
 	gint attributes_mask;
-
-	window = GTK_WINDOW (widget);
 
 	GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
 
@@ -4212,10 +4215,11 @@ embedded_window_realize_handler (GtkWidget *widget)
 	attributes.visual = gtk_widget_get_visual (widget);
 	attributes.colormap = gtk_widget_get_colormap (widget);
 
-	attributes.x = widget->allocation.x;
-	attributes.y = widget->allocation.y;
-	attributes.width = widget->allocation.width;
-	attributes.height = widget->allocation.height;
+	gtk_widget_get_allocation (widget, &allocation);
+	attributes.x = allocation.x;
+	attributes.y = allocation.y;
+	attributes.width = allocation.width;
+	attributes.height = allocation.height;
 
 	attributes.event_mask = gtk_widget_get_events (widget) |
 				GDK_EXPOSURE_MASK              |
@@ -4229,33 +4233,39 @@ embedded_window_realize_handler (GtkWidget *widget)
 	attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
 
 	/* destroy the previously created window */
-	if (GDK_IS_WINDOW (widget->window))
+	window = gtk_widget_get_window (widget);
+	if (GDK_IS_WINDOW (window))
 	{
-		gdk_window_hide (widget->window);
+		gdk_window_hide (window);
 	}
 
-	widget->window = gdk_window_new (gtk_widget_get_parent_window (widget),
-					 &attributes, attributes_mask);
+	window = gdk_window_new (gtk_widget_get_parent_window (widget),
+				 &attributes, attributes_mask);
+	gtk_widget_set_window (widget, window);
 
-	gdk_window_enable_synchronized_configure (widget->window);
+	gdk_window_enable_synchronized_configure (window);
 
-	gdk_window_set_user_data (widget->window, window);
+	gdk_window_set_user_data (window, GTK_WINDOW (widget));
 
-	widget->style = gtk_style_attach (widget->style, widget->window);
-	gtk_style_set_background (widget->style, widget->window, GTK_STATE_NORMAL);
+	style = gtk_style_attach (gtk_widget_get_style (widget), window);
+	gtk_widget_set_style (widget, style);
+	gtk_style_set_background (style, window, GTK_STATE_NORMAL);
 
 }
 
 static void
 embedded_window_size_allocate_handler (GtkWidget *widget)
 {
+	GtkAllocation allocation;
+
 	if (GTK_WIDGET_REALIZED (widget))
 	{
-		gdk_window_move_resize (widget->window,
-					widget->allocation.x,
-					widget->allocation.y,
-					widget->allocation.width,
-					widget->allocation.height);
+		gtk_widget_get_allocation (widget, &allocation);
+		gdk_window_move_resize (gtk_widget_get_window (widget),
+					allocation.x,
+					allocation.y,
+					allocation.width,
+					allocation.height);
 	}
 }
 

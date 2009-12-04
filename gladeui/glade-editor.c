@@ -518,7 +518,7 @@ glade_editor_load_editable_in_page (GladeEditor          *editor,
 				    GladeEditorPageType   type)
 {
 	GtkContainer  *container = NULL;
-	GtkWidget     *scrolled_window, *editable;
+	GtkWidget     *scrolled_window, *editable, *child;
 	GtkAdjustment *adj;
 
 	/* Remove the old table that was in this container */
@@ -543,10 +543,11 @@ glade_editor_load_editable_in_page (GladeEditor          *editor,
 	}
 	
 	/* Remove the editable (this will destroy on packing pages) */
-	if (GTK_BIN (container)->child)
+	child = gtk_bin_get_child (GTK_BIN (container));
+	if (child)
 	{
-		gtk_widget_hide (GTK_BIN (container)->child);
-		gtk_container_remove (container, GTK_BIN (container)->child);
+		gtk_widget_hide (child);
+		gtk_container_remove (container, child);
 	}
 
 	if (!adaptor)
@@ -803,17 +804,21 @@ query_dialog_style_set_cb (GtkWidget *dialog,
 			   GtkStyle  *previous_style,
 			   gpointer   user_data)
 {
-	gtk_container_set_border_width (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), 12);
-	gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->vbox), 12);
-	gtk_container_set_border_width (GTK_CONTAINER (GTK_DIALOG (dialog)->action_area), 0);
-	gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->action_area), 6);
+	GtkWidget *content_area, *action_area;
+
+	content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
+	gtk_container_set_border_width (GTK_CONTAINER (content_area), 12);
+	gtk_box_set_spacing (GTK_BOX (content_area), 12);
+	action_area = gtk_dialog_get_action_area (GTK_DIALOG (dialog));
+	gtk_container_set_border_width (GTK_CONTAINER (action_area), 0);
+	gtk_box_set_spacing (GTK_BOX (action_area), 6);
 }
 
 
 gboolean
 glade_editor_query_dialog (GladeEditor *editor, GladeWidget *widget)
 {
-	GtkWidget           *dialog, *editable;
+	GtkWidget           *dialog, *editable, *content_area;
 	gchar               *title;
 	gint		     answer;
 	gboolean	     retval = TRUE;
@@ -839,7 +844,8 @@ glade_editor_query_dialog (GladeEditor *editor, GladeWidget *widget)
 							 widget->adaptor,
 							 GLADE_PAGE_QUERY);
 
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+	content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
+	gtk_box_pack_start (GTK_BOX (content_area),
 			    editable, FALSE, FALSE, 6);
 
 	glade_editable_load (GLADE_EDITABLE (editable), widget);
@@ -858,7 +864,7 @@ glade_editor_query_dialog (GladeEditor *editor, GladeWidget *widget)
 	if (answer == GTK_RESPONSE_CANCEL)
 		retval = FALSE;
 
-	gtk_container_remove (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), editable);
+	gtk_container_remove (GTK_CONTAINER (content_area), editable);
 	
 	gtk_widget_destroy (dialog);
 	return retval;
@@ -1203,7 +1209,7 @@ glade_editor_reset_dialog (GladeEditor *editor)
 
 	gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
 
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), vbox, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), vbox, TRUE, TRUE, 0);
 
 	/* Checklist */
 	label = gtk_label_new_with_mnemonic (_("_Properties:"));

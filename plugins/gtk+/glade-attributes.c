@@ -700,6 +700,7 @@ value_button_clicked  (GtkCellRendererToggle *cell_renderer,
 		       GladeEPropAttrs       *eprop_attrs)
 {
 	GtkWidget       *dialog;
+	GtkWidget	*colorsel;
 	GtkTreeIter      iter;
 	PangoAttrType    type;
 	AttrEditType     edit_type;
@@ -722,15 +723,15 @@ value_button_clicked  (GtkCellRendererToggle *cell_renderer,
 	case EDIT_COLOR:
 		dialog = gtk_color_selection_dialog_new (_("Select a color"));
 
+		colorsel = gtk_color_selection_dialog_get_color_selection (GTK_COLOR_SELECTION_DIALOG (dialog));
+
 		/* Get response etc... */
 		if (text && gdk_color_parse (text, &color))
-			gtk_color_selection_set_current_color 
-				(GTK_COLOR_SELECTION (GTK_COLOR_SELECTION_DIALOG (dialog)->colorsel), &color);
+			gtk_color_selection_set_current_color (GTK_COLOR_SELECTION (colorsel), &color);
 
 		gtk_dialog_run (GTK_DIALOG (dialog));
 
-		gtk_color_selection_get_current_color
-			(GTK_COLOR_SELECTION (GTK_COLOR_SELECTION_DIALOG (dialog)->colorsel), &color);
+		gtk_color_selection_get_current_color (GTK_COLOR_SELECTION (colorsel), &color);
 
 		new_text = gdk_color_to_string (&color);
 
@@ -1026,7 +1027,8 @@ glade_eprop_attrs_show_dialog (GtkWidget           *dialog_button,
 
 	gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
 
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), vbox, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+			    vbox, TRUE, TRUE, 0);
 
 	sw = gtk_scrolled_window_new (NULL, NULL);
 	gtk_widget_show (sw);

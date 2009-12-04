@@ -133,7 +133,7 @@ glade_button_editor_load (GladeEditable *editable,
 		glade_widget_property_get (widget, "use-action-appearance", &use_appearance);
 
 		button = GTK_WIDGET (widget->object);
-		child  = GTK_BIN (button)->child;
+		child  = gtk_bin_get_child (GTK_BIN (button));
 		if (child)
 			gchild = glade_widget_get_from_gobject (child);
 
@@ -239,7 +239,7 @@ standard_toggled (GtkWidget         *widget,
 
 	/* If theres a widget customly inside... command remove it first... */
 	button = GTK_WIDGET (button_editor->loaded_widget->object);
-	child  = GTK_BIN (button)->child;
+	child  = gtk_bin_get_child (GTK_BIN (button));
 	if (child)
 		gchild = glade_widget_get_from_gobject (child);
 

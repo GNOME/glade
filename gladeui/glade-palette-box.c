@@ -117,7 +117,7 @@ glade_palette_box_class_init (GladePaletteBoxClass *klass)
 static void
 glade_palette_box_init (GladePaletteBox *box)
 {
-	GTK_WIDGET_SET_FLAGS (box, GTK_NO_WINDOW);
+	gtk_widget_set_has_window (GTK_WIDGET (box), FALSE);
 	gtk_widget_set_redraw_on_allocate (GTK_WIDGET (box), FALSE);
 
 	box->priv = GLADE_PALETTE_BOX_GET_PRIVATE (box);
@@ -190,7 +190,7 @@ calculate_children_width_allocation (GtkWidget      *widget,
 
 	g_assert (child_requisition->width >= 0);
 
-	w = allocation->width - GTK_CONTAINER (widget)->border_width;
+	w = allocation->width - gtk_container_get_border_width (GTK_CONTAINER (widget));
 	cw = child_requisition->width;
 
 	if ((nvis_children * cw) < w )
@@ -210,6 +210,7 @@ glade_palette_box_size_request (GtkWidget *widget, GtkRequisition *requisition)
 	GtkRequisition child_requisition;
 	GList *l;
 	gint nvis_children = 0;
+	guint border_width = 0;
 
 	box = GLADE_PALETTE_BOX (widget);
 
@@ -222,7 +223,7 @@ glade_palette_box_size_request (GtkWidget *widget, GtkRequisition *requisition)
 	{
 		child = (GladePaletteBoxChild *) (l->data);
 
-		if (GTK_WIDGET_VISIBLE (child->widget))
+		if (gtk_widget_get_visible (child->widget))
 		{
 			GtkRequisition requisition;
 			gtk_widget_size_request (child->widget, &requisition);
@@ -238,9 +239,10 @@ glade_palette_box_size_request (GtkWidget *widget, GtkRequisition *requisition)
 		requisition->width += child_requisition.width;
 		requisition->height += child_requisition.height;
 	}
- 
-	requisition->width += GTK_CONTAINER (box)->border_width * 2;
-	requisition->height += GTK_CONTAINER (box)->border_width * 2;
+
+	border_width = gtk_container_get_border_width (GTK_CONTAINER (box));
+	requisition->width += border_width * 2;
+	requisition->height += border_width * 2;
 }
 
 static void
@@ -255,9 +257,10 @@ glade_palette_box_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 	gint x, y;
 	gint rows = 1;
 	gint children_width;
+	guint border_width;
 
 	box = GLADE_PALETTE_BOX (widget);
-	widget->allocation = *allocation;
+	gtk_widget_set_allocation (widget, allocation);
 
 	child_requisition.width = 0;
 	child_requisition.height = 0;
@@ -267,7 +270,7 @@ glade_palette_box_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 	{
 		child = (GladePaletteBoxChild *) (l->data);
 
-		if (GTK_WIDGET_VISIBLE (child->widget))
+		if (gtk_widget_get_visible (child->widget))
 		{
 			GtkRequisition requisition;
 
@@ -283,8 +286,9 @@ glade_palette_box_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 	if (nvis_children <= 0)
 		return;
 
-	x = allocation->x + GTK_CONTAINER (box)->border_width;
-	y = allocation->y + GTK_CONTAINER (box)->border_width;
+	border_width = gtk_container_get_border_width (GTK_CONTAINER (box));
+	x = allocation->x + border_width;
+	y = allocation->y + border_width;
 
 	children_width = calculate_children_width_allocation (widget, allocation,
 							      &child_requisition,
@@ -297,27 +301,29 @@ glade_palette_box_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 
 		child = (GladePaletteBoxChild *) (l->data);
 
-		if (GTK_WIDGET_VISIBLE (child->widget))
+		if (gtk_widget_get_visible (child->widget))
 		{
 			child_allocation.x = x;
 			child_allocation.y = y;
 			child_allocation.width = children_width;
 			child_allocation.height = child_requisition.height;
+			guint border_width;
 
 			gtk_widget_size_allocate (child->widget, &child_allocation);
 
 			x += child_allocation.width;
 
+			border_width = gtk_container_get_border_width (GTK_CONTAINER (box));
 			/* calculate horizontal space remaining */
 			horizontal_space_remaining = x
 					             - allocation->x 
-                                                     + GTK_CONTAINER (box)->border_width
+                                                     + border_width
                                                      + children_width;
 
 			/* jump to next row */
 			if ((horizontal_space_remaining > allocation->width) && l->next )
 			{
-				x = allocation->x + GTK_CONTAINER (box)->border_width;
+				x = allocation->x + border_width;
 				y += child_allocation.height;
 				rows++;
 			}
@@ -336,7 +342,7 @@ glade_palette_box_add (GtkContainer *container, GtkWidget *widget)
 
 	g_return_if_fail (GLADE_IS_PALETTE_BOX (container));
 	g_return_if_fail (GTK_IS_WIDGET (widget));
-	g_return_if_fail (widget->parent == NULL);
+	g_return_if_fail (gtk_widget_get_parent (widget) == NULL);
 
 	box = GLADE_PALETTE_BOX (container);
 
@@ -370,7 +376,7 @@ glade_palette_box_remove (GtkContainer *container, GtkWidget *widget)
 		{
 			gboolean was_visible;
 
-			was_visible = GTK_WIDGET_VISIBLE (widget);
+			was_visible = gtk_widget_get_visible (widget);
 
 			gtk_widget_unparent (widget);
 			
@@ -451,7 +457,7 @@ glade_palette_box_reorder_child (GladePaletteBox *box,
 	box->priv->children = g_list_insert_before (box->priv->children, new_link, child_info);
 
 	gtk_widget_child_notify (child, "position");
-	if (GTK_WIDGET_VISIBLE (child) && GTK_WIDGET_VISIBLE (box))
+	if (gtk_widget_get_visible (child) && gtk_widget_get_visible (GTK_WIDGET (box)))
 		gtk_widget_queue_resize (child);
 }
 

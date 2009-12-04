@@ -103,6 +103,7 @@ glade_fixed_get_operation (GtkWidget       *widget,
 			   gint             y)
 {
 	GladeCursorType operation = GLADE_CURSOR_DRAG;
+	GtkAllocation allocation;
 
 #if 0
 	g_print ("%s called (width %d height %d x %d y %d)\n",
@@ -111,31 +112,32 @@ glade_fixed_get_operation (GtkWidget       *widget,
 		 widget->allocation.height, x, y);
 #endif
 
+	gtk_widget_get_allocation (widget, &allocation);
 	if (x < GRAB_BORDER_WIDTH) {
 		if (y < GRAB_BORDER_WIDTH)
 			operation = GLADE_CURSOR_RESIZE_TOP_LEFT;
-		else if (y > widget->allocation.height - GRAB_BORDER_WIDTH)
+		else if (y > allocation.height - GRAB_BORDER_WIDTH)
 			operation = GLADE_CURSOR_RESIZE_BOTTOM_LEFT;
 		else
 			operation = GLADE_CURSOR_RESIZE_LEFT;
-	} else if (x > widget->allocation.width - GRAB_BORDER_WIDTH) {
+	} else if (x > allocation.width - GRAB_BORDER_WIDTH) {
 		if (y < GRAB_BORDER_WIDTH)
 			operation = GLADE_CURSOR_RESIZE_TOP_RIGHT;
-		else if (y > widget->allocation.height - GRAB_BORDER_WIDTH)
+		else if (y > allocation.height - GRAB_BORDER_WIDTH)
 			operation = GLADE_CURSOR_RESIZE_BOTTOM_RIGHT;
 		else
 			operation = GLADE_CURSOR_RESIZE_RIGHT;
 	} else if (y < GRAB_BORDER_WIDTH) {
 		if (x < GRAB_BORDER_WIDTH)
 			operation = GLADE_CURSOR_RESIZE_TOP_LEFT;
-		else if (x > widget->allocation.width - GRAB_BORDER_WIDTH)
+		else if (x > allocation.width - GRAB_BORDER_WIDTH)
 			operation = GLADE_CURSOR_RESIZE_TOP_RIGHT;
 		else
 			operation = GLADE_CURSOR_RESIZE_TOP;
-	} else if (y > widget->allocation.height - GRAB_BORDER_WIDTH) {
+	} else if (y > allocation.height - GRAB_BORDER_WIDTH) {
 		if (x < GRAB_BORDER_WIDTH)
 			operation = GLADE_CURSOR_RESIZE_BOTTOM_LEFT;
-		else if (x > widget->allocation.width - GRAB_BORDER_WIDTH)
+		else if (x > allocation.width - GRAB_BORDER_WIDTH)
 			operation = GLADE_CURSOR_RESIZE_BOTTOM_RIGHT;
 		else
 			operation = GLADE_CURSOR_RESIZE_BOTTOM;
@@ -147,6 +149,8 @@ static void
 glade_fixed_save_state (GladeFixed  *fixed,
 			GladeWidget *child)
 {
+	GtkAllocation allocation;
+
 	gtk_widget_get_pointer (GTK_WIDGET (GLADE_WIDGET (fixed)->object), 
 				&(GLADE_FIXED (fixed)->pointer_x_origin), 
 				&(GLADE_FIXED (fixed)->pointer_y_origin));
@@ -157,8 +161,9 @@ glade_fixed_save_state (GladeFixed  *fixed,
 					  &(fixed->child_x_origin), 
 					  &(fixed->child_y_origin));
 
-	fixed->child_width_origin  = GTK_WIDGET (child->object)->allocation.width;
-	fixed->child_height_origin = GTK_WIDGET (child->object)->allocation.height;
+	gtk_widget_get_allocation (GTK_WIDGET (child->object), &allocation);
+	fixed->child_width_origin  = allocation.width;
+	fixed->child_height_origin = allocation.height;
 
 	fixed->pointer_x_child_origin = 
 		fixed->pointer_x_origin - fixed->child_x_origin;
@@ -176,12 +181,14 @@ glade_fixed_filter_event (GladeFixed *fixed,
 			  gint        top,
 			  gint        bottom)
 {
+	GtkAllocation allocation;
 	gint cont_width, cont_height;
 
 	g_return_if_fail (x && y);
 
-	cont_width  = GTK_WIDGET (GLADE_WIDGET (fixed)->object)->allocation.width;
-	cont_height = GTK_WIDGET (GLADE_WIDGET (fixed)->object)->allocation.height;
+	gtk_widget_get_allocation (GTK_WIDGET (GLADE_WIDGET (fixed)->object), &allocation);
+	cont_width  = allocation.width;
+	cont_height = allocation.height;
 
 	/* Clip out mouse events that are outside the window.
 	 */
@@ -238,6 +245,7 @@ glade_fixed_handle_swindow (GladeFixed   *fixed,
 	GtkWidget     *fixed_widget = GTK_WIDGET (GLADE_WIDGET (fixed)->object);
 	GtkWidget     *swindow = NULL, *swindow_child = NULL;
 	GtkAdjustment *hadj, *vadj;
+	GtkAllocation  child_allocation;
 	gint           x, y;
 
 	swindow_child = swindow = fixed_widget;
@@ -246,7 +254,7 @@ glade_fixed_handle_swindow (GladeFixed   *fixed,
 		if (!GTK_IS_VIEWPORT (swindow))
 			swindow_child = swindow;
 
-		swindow = swindow->parent;
+		swindow = gtk_widget_get_parent (swindow);
 	}
 
 	if (swindow)
@@ -256,15 +264,16 @@ glade_fixed_handle_swindow (GladeFixed   *fixed,
 		 */
 		hadj = gtk_scrolled_window_get_hadjustment (GTK_SCROLLED_WINDOW (swindow));
 		vadj = gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (swindow));
+		gtk_widget_get_allocation (swindow_child, &child_allocation);
 
 		g_object_set (G_OBJECT (hadj),
 			      "lower", 0.0F,
-			      "upper", (gdouble) swindow_child->allocation.width + 0.0,
+			      "upper", (gdouble) child_allocation.width + 0.0,
 			      NULL);
 
 		g_object_set (G_OBJECT (vadj),
 			      "lower", 0.0F,
-			      "upper", (gdouble) swindow_child->allocation.height + 0.0,
+			      "upper", (gdouble) child_allocation.height + 0.0,
 			      NULL);
 
 		gtk_widget_translate_coordinates (fixed_widget,
@@ -596,7 +605,7 @@ glade_fixed_handle_child_event (GladeFixed  *fixed,
 			handled = TRUE;
 		}
 
-		gdk_window_get_pointer (GTK_WIDGET (child->object)->window, NULL, NULL, NULL);
+		gdk_window_get_pointer (gtk_widget_get_window (GTK_WIDGET (child->object)), NULL, NULL, NULL);
 		break;
 	case GDK_BUTTON_PRESS:
 		/* We cant rely on GDK_BUTTON1_MASK since event->state isnt yet updated
@@ -686,9 +695,10 @@ glade_fixed_add_child_impl (GladeWidget *gwidget_fixed,
 			    GladeWidget *child,
 			    gboolean     at_mouse)
 {
-	GladeFixed   *fixed = GLADE_FIXED (gwidget_fixed);
-	GdkRectangle  rect;
-	gboolean      handled;
+	GladeFixed    *fixed = GLADE_FIXED (gwidget_fixed);
+	GtkAllocation  allocation;
+	GdkRectangle   rect;
+	gboolean       handled;
 
 	g_return_if_fail (GLADE_IS_FIXED (fixed));
 	g_return_if_fail (GLADE_IS_WIDGET (child));
@@ -725,10 +735,11 @@ glade_fixed_add_child_impl (GladeWidget *gwidget_fixed,
 	} 
 	else if (at_mouse)
 	{
+		gtk_widget_get_allocation (GTK_WIDGET (child->object), &allocation);
 		rect.x      = fixed->mouse_x;
 		rect.y      = fixed->mouse_y;
-		rect.width  = GTK_WIDGET (child->object)->allocation.width;
-		rect.height = GTK_WIDGET (child->object)->allocation.height;
+		rect.width  = allocation.width;
+		rect.height = allocation.height;
 
 		if (rect.width < CHILD_WIDTH_DEF)
 			rect.width = CHILD_WIDTH_DEF;

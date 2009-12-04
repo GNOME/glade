@@ -551,7 +551,7 @@ glade_popup_create_clipboard_menu (GladeWidget *widget)
 	
 	popup_menu = gtk_menu_new ();
 
-	if (GTK_WIDGET_TOPLEVEL (glade_widget_get_object (widget)))
+	if (gtk_widget_is_toplevel (GTK_WIDGET (glade_widget_get_object (widget))))
 	{
 		glade_popup_append_item (popup_menu, GTK_STOCK_PASTE, 
 					 NULL, NULL, TRUE,
