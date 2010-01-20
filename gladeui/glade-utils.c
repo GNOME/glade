@@ -1655,18 +1655,19 @@ glade_util_search_devhelp (const gchar *book,
 			   const gchar *search)
 {
 	GError *error = NULL;
-	gchar  *book_comm = NULL, *page_comm = NULL;
+	gchar  *book_comm = NULL, *page_comm = NULL, *search_comm = NULL;
 	gchar  *string;
 
 	g_return_if_fail (glade_util_have_devhelp ());
 
-	if (book) book_comm = g_strdup_printf ("book:%s ", book);
-	if (page) page_comm = g_strdup_printf ("page:%s ", page);
+	if (book) book_comm = g_strdup_printf ("book:%s", book);
+	if (page) page_comm = g_strdup_printf (" page:%s", page);
+	if (search) search_comm = g_strdup_printf (" %s", search);
 
 	string = g_strdup_printf ("devhelp -s \"%s%s%s\"", 
 				   book_comm ? book_comm : "",
 				   page_comm ? page_comm : "",
-				   search ? search : "");
+				   search_comm ? search_comm : "");
 
 	if (g_spawn_command_line_async (string, &error) == FALSE)
 	{
@@ -1677,6 +1678,7 @@ glade_util_search_devhelp (const gchar *book,
 	g_free (string);
 	if (book_comm) g_free (book_comm);
 	if (page_comm) g_free (page_comm);
+	if (search_comm) g_free (search_comm);
 }
 
 GtkWidget *
