@@ -655,8 +655,8 @@ glade_design_layout_realize (GtkWidget *widget)
 					     &attributes, attributes_mask);
 	gdk_window_set_user_data (priv->event_window, widget);
 
-	style = gtk_style_attach (gtk_widget_get_style (widget), window);
-	gtk_widget_set_style (widget, style);
+	gtk_widget_style_attach (widget);
+	style = gtk_widget_get_style (widget);
 	gtk_style_set_background (style, window, GTK_STATE_NORMAL);
 }
 

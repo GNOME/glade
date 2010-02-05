@@ -132,7 +132,7 @@ glade_custom_realize (GtkWidget *widget)
 	gtk_widget_set_window (widget, window);
 	gdk_window_set_user_data (window, custom);
 
-	gtk_widget_set_style (widget, gtk_style_attach (gtk_widget_get_style (widget), window));
+	gtk_widget_style_attach (widget);
 
 	glade_custom_send_configure (custom);
 

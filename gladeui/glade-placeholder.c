@@ -211,7 +211,7 @@ glade_placeholder_realize (GtkWidget *widget)
 	gtk_widget_set_window (widget, window);
 	gdk_window_set_user_data (window, placeholder);
 
-	gtk_widget_set_style (widget, gtk_style_attach (gtk_widget_get_style (widget), gtk_widget_get_window (widget)));
+	gtk_widget_style_attach (widget);
 
 	glade_placeholder_send_configure (GLADE_PLACEHOLDER (widget));
 
