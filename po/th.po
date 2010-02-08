@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: glade3\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade3&component=general\n"
-"POT-Creation-Date: 2009-12-14 19:26+0000\n"
-"PO-Revision-Date: 2010-01-29 16:55+0700\n"
+"POT-Creation-Date: 2010-02-07 22:54+0000\n"
+"PO-Revision-Date: 2010-02-08 11:28+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -22,17 +22,17 @@ msgstr ""
 msgid "Create or open user interface designs for GTK+ applications"
 msgstr "สร้างหรือเปิดแบบของส่วนติดต่อผู้ใช้สำหรับโปรแกรม GTK+"
 
-#: ../data/glade-3.desktop.in.in.h:2
+#: ../data/glade-3.desktop.in.in.h:2 ../src/main.c:42
+msgid "Glade"
+msgstr "Glade"
+
+#: ../data/glade-3.desktop.in.in.h:3
 msgid "Glade Interface Designer"
 msgstr "Glade: เครื่องมือออกแบบส่วนติดต่อผู้ใช้"
 
-#: ../data/glade-3.desktop.in.in.h:3 ../src/glade-window.c:444
-msgid "User Interface Designer"
+#: ../data/glade-3.desktop.in.in.h:4
+msgid "Interface Designer"
 msgstr "เครื่องมือออกแบบส่วนติดต่อผู้ใช้"
-
-#: ../src/main.c:42
-msgid "Glade"
-msgstr "Glade"
 
 #: ../src/main.c:52
 msgid "Output version information and exit"
@@ -89,6 +89,10 @@ msgstr "ไม่สามารถแสดง URL '%s'"
 #: ../src/glade-window.c:163
 msgid "No suitable web browser could be found."
 msgstr "ไม่พบโปรแกรมเว็บเบราว์เซอร์ที่เหมาะสม"
+
+#: ../src/glade-window.c:444
+msgid "User Interface Designer"
+msgstr "เครื่องมือออกแบบส่วนติดต่อผู้ใช้"
 
 #. translators: referring to the action of activating a file named '%s'.
 #. *              we also indicate to users that the file may be read-only with
@@ -1731,7 +1735,7 @@ msgstr "เปิด %s เพื่ออ่านไม่สำเร็จ: 
 
 #. Reset the column
 #. Objects
-#: ../gladeui/glade-utils.c:2258 ../plugins/gtk+/glade-attributes.c:800
+#: ../gladeui/glade-utils.c:2260 ../plugins/gtk+/glade-attributes.c:800
 #: ../plugins/gtk+/gtk+.xml.in.h:289
 msgid "None"
 msgstr "ไม่มี"
