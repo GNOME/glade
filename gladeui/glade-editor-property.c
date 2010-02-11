@@ -259,7 +259,7 @@ eprop_item_label_size_allocate_after (GtkWidget *widget, GtkAllocation *allocati
 	gint width = EDITOR_COLUMN_SIZE;
 	gint icon_width = 0;
 
-	if (gtk_widget_get_visible (eprop->warning) && GTK_WIDGET_MAPPED (eprop->warning))
+	if (gtk_widget_get_visible (eprop->warning) && gtk_widget_get_mapped (eprop->warning))
 	{
 		GtkRequisition req = { -1, -1 };
 		gtk_widget_size_request (eprop->warning, &req);

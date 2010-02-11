@@ -99,7 +99,7 @@ glade_editor_table_grab_focus (GtkWidget *widget)
 {
 	GladeEditorTable *editor_table = GLADE_EDITOR_TABLE (widget);
 	
-	if (editor_table->name_entry && GTK_WIDGET_MAPPED (editor_table->name_entry))
+	if (editor_table->name_entry && gtk_widget_get_mapped (editor_table->name_entry))
 		gtk_widget_grab_focus (editor_table->name_entry);
 	else if (editor_table->properties)
 		gtk_widget_grab_focus (GTK_WIDGET (editor_table->properties->data));
@@ -113,7 +113,7 @@ widget_name_changed (GladeWidget      *widget,
 		     GParamSpec       *pspec,
 		     GladeEditorTable *table)
 {
-	if (!GTK_WIDGET_MAPPED (table))
+	if (!gtk_widget_get_mapped (GTK_WIDGET (table)))
 		return;
 
 	table->loading = TRUE;

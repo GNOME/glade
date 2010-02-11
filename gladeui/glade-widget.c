@@ -1977,7 +1977,7 @@ glade_widget_show (GladeWidget *widget)
 		if (!layout)
 			return;
 		
-		if (GTK_WIDGET_REALIZED (layout))
+		if (gtk_widget_get_realized (layout))
 			glade_widget_add_to_layout (widget, layout);
 		else
 			g_signal_connect_data (G_OBJECT (layout), "map", 
@@ -4208,7 +4208,7 @@ embedded_window_realize_handler (GtkWidget *widget)
 	GdkWindowAttr attributes;
 	gint attributes_mask;
 
-	GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
+	gtk_widget_set_realized (widget, TRUE);
 
 	attributes.window_type = GDK_WINDOW_CHILD;
 	attributes.wclass = GDK_INPUT_OUTPUT;
@@ -4257,7 +4257,7 @@ embedded_window_size_allocate_handler (GtkWidget *widget)
 {
 	GtkAllocation allocation;
 
-	if (GTK_WIDGET_REALIZED (widget))
+	if (gtk_widget_get_realized (widget))
 	{
 		gtk_widget_get_allocation (widget, &allocation);
 		gdk_window_move_resize (gtk_widget_get_window (widget),
@@ -4288,7 +4288,7 @@ glade_widget_embed (GladeWidget *gwidget)
 	
 	if (glade_window_is_embedded (window)) return TRUE;
 	
-	if (GTK_WIDGET_REALIZED (widget)) gtk_widget_unrealize (widget);
+	if (gtk_widget_get_realized (widget)) gtk_widget_unrealize (widget);
 
 	GTK_WIDGET_UNSET_FLAGS (widget, GTK_TOPLEVEL);
 	gtk_container_set_resize_mode (GTK_CONTAINER (window), GTK_RESIZE_PARENT);

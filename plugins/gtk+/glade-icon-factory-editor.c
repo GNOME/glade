@@ -61,7 +61,7 @@ project_changed (GladeProject      *project,
 		 gboolean           execute,
 		 GladeIconFactoryEditor *factory_editor)
 {
-	if (!GTK_WIDGET_MAPPED (factory_editor))
+	if (!gtk_widget_get_mapped (GTK_WIDGET (factory_editor)))
 		return;
 
 	/* Reload on all commands */

@@ -244,7 +244,7 @@ glade_design_layout_find_inside_container (GtkWidget *widget, GladeFindInContain
 	gtk_widget_translate_coordinates (data->toplevel, widget, data->x, data->y, &x, &y);
 	gtk_widget_get_allocation (widget, &allocation);
 
-	if (GTK_WIDGET_MAPPED(widget) &&
+	if (gtk_widget_get_mapped(widget) &&
 	    x >= 0 && x < allocation.width && y >= 0 && y < allocation.height)
 	{
 		if (glade_widget_get_from_gobject (widget) || data->any)
@@ -546,7 +546,7 @@ glade_design_layout_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 	gtk_widget_set_allocation (widget, allocation);
 	border_width = gtk_container_get_border_width (GTK_CONTAINER (widget));
 
-	if (GTK_WIDGET_REALIZED (widget))
+	if (gtk_widget_get_realized (widget))
 	{
 		if (priv->event_window)
 			gdk_window_move_resize (priv->event_window,
@@ -625,7 +625,7 @@ glade_design_layout_realize (GtkWidget *widget)
 
 	priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
 
-	GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
+	gtk_widget_set_realized (widget, TRUE);
 
 	border_width = gtk_container_get_border_width (GTK_CONTAINER (widget));
 

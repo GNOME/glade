@@ -62,7 +62,7 @@ project_changed (GladeProject      *project,
 		 GladeActivatableEditor *activatable_editor)
 {
 	if (activatable_editor->modifying ||
-	    !GTK_WIDGET_MAPPED (activatable_editor))
+	    !gtk_widget_get_mapped (GTK_WIDGET (activatable_editor)))
 		return;
 
 	/* Reload on all commands */

@@ -63,7 +63,7 @@ project_changed (GladeProject      *project,
 		 gboolean           execute,
 		 GladeTreeViewEditor *view_editor)
 {
-	if (!GTK_WIDGET_MAPPED (view_editor))
+	if (!gtk_widget_get_mapped (GTK_WIDGET (view_editor)))
 		return;
 
 	/* Reload on all commands */

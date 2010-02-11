@@ -41,7 +41,7 @@ set_cursor_recurse (GtkWidget *widget,
 	GList *children, *list;
 
 	if (!gtk_widget_get_visible (widget) ||
-	    !GTK_WIDGET_REALIZED (widget))
+	    !gtk_widget_get_realized (widget))
 		return;
 
 	gdk_window_set_cursor (gtk_widget_get_window (widget), gdk_cursor);

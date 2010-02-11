@@ -62,7 +62,7 @@ project_changed (GladeProject      *project,
 		 GladeImageItemEditor *item_editor)
 {
 	if (item_editor->modifying ||
-	    !GTK_WIDGET_MAPPED (item_editor))
+	    !gtk_widget_get_mapped (GTK_WIDGET (item_editor)))
 		return;
 
 	/* Reload on all commands */

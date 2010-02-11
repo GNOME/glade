@@ -62,7 +62,7 @@ project_changed (GladeProject      *project,
 		 GladeButtonEditor *button_editor)
 {
 	if (button_editor->modifying ||
-	    !GTK_WIDGET_MAPPED (button_editor))
+	    !gtk_widget_get_mapped (GTK_WIDGET (button_editor)))
 		return;
 
 	/* Reload on all commands */

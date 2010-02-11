@@ -63,7 +63,7 @@ project_changed (GladeProject      *project,
 		 GladeEntryEditor *entry_editor)
 {
 	if (entry_editor->modifying ||
-	    !GTK_WIDGET_MAPPED (entry_editor))
+	    !gtk_widget_get_mapped (GTK_WIDGET (entry_editor)))
 		return;
 
 	/* Reload on all commands */

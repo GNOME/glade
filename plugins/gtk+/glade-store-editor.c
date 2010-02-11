@@ -61,7 +61,7 @@ project_changed (GladeProject      *project,
 		 gboolean           execute,
 		 GladeStoreEditor  *store_editor)
 {
-	if (!GTK_WIDGET_MAPPED (store_editor))
+	if (!gtk_widget_get_mapped (GTK_WIDGET (store_editor)))
 		return;
 
 	/* Reload on all commands */

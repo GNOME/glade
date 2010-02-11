@@ -1703,7 +1703,7 @@ glade_util_get_placeholder_from_pointer (GtkContainer *container)
 		child = l->data;
 		
 		if (GLADE_IS_PLACEHOLDER (child) &&
-		    GTK_WIDGET_MAPPED (child))
+		    gtk_widget_get_mapped (child))
 		{
 			gtk_widget_translate_coordinates (toplevel, child,
 							  x, y, &x2, &y2);

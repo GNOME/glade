@@ -442,7 +442,7 @@ set_busy_cursor (GladeNamedIconChooserDialog *dialog,
 	GdkDisplay *display;
 	GdkCursor  *cursor;
 
-	if (!GTK_WIDGET_REALIZED (dialog))
+	if (!gtk_widget_get_realized (GTK_WIDGET (dialog)))
 		return;
 
 	display = gtk_widget_get_display (GTK_WIDGET (dialog));
@@ -820,7 +820,7 @@ centre_selected_row (GladeNamedIconChooserDialog *dialog)
 	l = gtk_tree_selection_get_selected_rows (dialog->priv->selection, NULL);
 	
 	if (l) {
-		g_assert (GTK_WIDGET_MAPPED (dialog));
+		g_assert (gtk_widget_get_mapped (GTK_WIDGET (dialog)));
 		g_assert (gtk_widget_get_visible (GTK_WIDGET (dialog)));
 		
 		gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (dialog->priv->icons_view),
@@ -1042,7 +1042,7 @@ glade_named_icon_chooser_dialog_screen_changed (GtkWidget *widget,
 	if (GTK_WIDGET_CLASS (glade_named_icon_chooser_dialog_parent_class)->screen_changed)
 		GTK_WIDGET_CLASS (glade_named_icon_chooser_dialog_parent_class)->screen_changed (widget, previous_screen);
 
-	if (GTK_WIDGET_MAPPED (widget))
+	if (gtk_widget_get_mapped (widget))
 		change_icon_theme (dialog);
 
 }
@@ -1162,7 +1162,7 @@ static void
 glade_named_icon_chooser_dialog_style_set (GtkWidget *widget,
 			                   GtkStyle  *previous_style)
 {
-	if (gtk_widget_has_screen (widget) && GTK_WIDGET_MAPPED (widget))
+	if (gtk_widget_has_screen (widget) && gtk_widget_get_mapped (widget))
 		change_icon_theme (GLADE_NAMED_ICON_CHOOSER_DIALOG (widget));
 }
 

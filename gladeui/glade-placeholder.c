@@ -187,7 +187,7 @@ glade_placeholder_realize (GtkWidget *widget)
 
 	placeholder = GLADE_PLACEHOLDER (widget);
 
-	GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
+	gtk_widget_set_realized (widget, TRUE);
 
 	attributes.window_type = GDK_WINDOW_CHILD;
 	gtk_widget_get_allocation (widget, &allocation);
@@ -234,7 +234,7 @@ glade_placeholder_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 
 	gtk_widget_set_allocation (widget, allocation);
 
-	if (GTK_WIDGET_REALIZED (widget))
+	if (gtk_widget_get_realized (widget))
 	{
 		gdk_window_move_resize (gtk_widget_get_window (widget),
 					allocation->x, allocation->y,

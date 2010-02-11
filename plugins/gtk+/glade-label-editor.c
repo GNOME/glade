@@ -65,7 +65,7 @@ project_changed (GladeProject      *project,
 		 GladeLabelEditor *label_editor)
 {
 	if (label_editor->modifying ||
-	    !GTK_WIDGET_MAPPED (label_editor))
+	    !gtk_widget_get_mapped (GTK_WIDGET (label_editor)))
 		return;
 
 	/* Reload on all commands */

@@ -77,7 +77,7 @@ project_changed (GladeProject      *project,
 		 GladeCellRendererEditor *renderer_editor)
 {
 	if (renderer_editor->modifying ||
-	    !GTK_WIDGET_MAPPED (renderer_editor))
+	    !gtk_widget_get_mapped (GTK_WIDGET (renderer_editor)))
 		return;
 
 	/* Reload on all commands */
