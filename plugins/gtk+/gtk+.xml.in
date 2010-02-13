@@ -686,7 +686,7 @@ embedded in another object</_tooltip>
 
 	<!-- Virtual stock comboentry property -->
 	<property id="stock-id" visible="False" stock-icon="True" custom-layout="True">
-          <_tooltip>The stock icon displayed on the item (chose an item from gtk+ stock or from an icon factory)</_tooltip>
+          <_tooltip>The stock icon displayed on the item (choose an item from GTK+ stock or from an icon factory)</_tooltip>
 	</property>
         <property id="label" translatable="True" default="toolbutton" custom-layout="True"/>
 	<property id="label-widget" parentless-widget="True" libglade-unsupported="True" 
@@ -697,7 +697,7 @@ embedded in another object</_tooltip>
 	    <type>GParamObject</type>
 	    <value-type>GdkPixbuf</value-type>
 	  </parameter-spec>
-          <_tooltip>A filname, full or relative path to load an icon for this toolbutton</_tooltip>
+          <_tooltip>A file name, full or relative path to load an icon for this toolbutton</_tooltip>
 	</property>
         <property id="icon-widget" parentless-widget="True" libglade-unsupported="True" 
 		  create-type="GtkImage" custom-layout="True"/>

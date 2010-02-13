@@ -2021,8 +2021,8 @@ glade_project_verify_dialog (GladeProject *project,
 				     saving ? GLADE_UI_YES_OR_NO : GLADE_UI_INFO,
 				     expander,
 				     saving ? 
-				     _("Project %s has errors. Save anyway?") :
-				     _("Project %s has deprecated widgets "
+				     _("Project \"%s\" has errors. Save anyway?") :
+				     _("Project \"%s\" has deprecated widgets "
 				       "and/or version mismatches."), name);
 	g_free (name);
 
@@ -3948,7 +3948,7 @@ glade_project_build_prefs_box (GladeProject *project)
 			  G_CALLBACK (resource_full_path_set), project);
 
 	/* Target versions */
-	string = g_strdup_printf ("<b>%s</b>", _("Toolkit version(s) required:"));
+	string = g_strdup_printf ("<b>%s</b>", _("Toolkit versions required:"));
 	frame = gtk_frame_new (NULL);
 	vbox = gtk_vbox_new (FALSE, 0);
 	alignment = gtk_alignment_new (0.5F, 0.5F, 1.0F, 1.0F);
