@@ -2728,10 +2728,10 @@ glade_eprop_object_dialog_title (GladeEditorProperty *eprop)
 
 	if (eprop->klass->parentless_widget)
 		format = GLADE_IS_PARAM_SPEC_OBJECTS (eprop->klass->pspec) ?
-			_("Choose parentless %s(s) in this project") : _("Choose a parentless %s in this project");
+			_("Choose parentless %s type objects in this project") : _("Choose a parentless %s in this project");
 	else
 		format = GLADE_IS_PARAM_SPEC_OBJECTS (eprop->klass->pspec) ?
-			_("Choose %s(s) in this project") : _("Choose a %s in this project");
+			_("Choose %s type objects in this project") : _("Choose a %s in this project");
 
 	if (GLADE_IS_PARAM_SPEC_OBJECTS (eprop->klass->pspec))
 		return g_strdup_printf (format, g_type_name 
