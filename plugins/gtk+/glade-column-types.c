@@ -879,7 +879,7 @@ glade_eprop_column_types_create_input (GladeEditorProperty *eprop)
 			  G_CALLBACK (column_type_edited), eprop);
 
 	eprop_types->type_column = 
-		gtk_tree_view_column_new_with_attributes ("Column type", cell,
+		gtk_tree_view_column_new_with_attributes (_("Column type"), cell,
 							  "foreground", COLUMN_TYPE_FOREGROUND,
 							  "style", COLUMN_TYPE_STYLE,
 							  "editable", COLUMN_TYPE_EDITABLE,
@@ -901,7 +901,7 @@ glade_eprop_column_types_create_input (GladeEditorProperty *eprop)
 			  G_CALLBACK (types_name_editing_canceled), eprop);
 
 	eprop_types->name_column = 
-		gtk_tree_view_column_new_with_attributes ("Column name",  cell,
+		gtk_tree_view_column_new_with_attributes (_("Column name"),  cell,
 							  "editable", COLUMN_NAME_EDITABLE,
 							  "text", COLUMN_COLUMN_NAME,
 							  NULL);

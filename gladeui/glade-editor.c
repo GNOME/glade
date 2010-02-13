@@ -1352,7 +1352,8 @@ glade_editor_dialog_for_widget (GladeWidget *widget)
 	gtk_window_set_type_hint (GTK_WINDOW (window), GDK_WINDOW_TYPE_HINT_DIALOG);
 
 	prj_name = glade_project_get_name (widget->project);
-	title = g_strdup_printf ("%s - %s Properties", prj_name, 
+	/* Translators: first %s is the project name, second is a widget name */
+	title = g_strdup_printf (_("%s - %s Properties"), prj_name, 
 				 glade_widget_get_name (widget));
 	gtk_window_set_title (GTK_WINDOW (window), title);
 	g_free (title);
