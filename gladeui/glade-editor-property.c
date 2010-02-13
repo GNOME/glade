@@ -1434,7 +1434,7 @@ glade_eprop_named_icon_show_chooser_dialog (GtkWidget           *button,
 {
 	GtkWidget *dialog;
 
-	dialog = glade_named_icon_chooser_dialog_new ("Select Named Icon",
+	dialog = glade_named_icon_chooser_dialog_new (_("Select Named Icon"),
 						       GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (eprop))),
 						       GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 						       GTK_STOCK_OK, GTK_RESPONSE_OK,
