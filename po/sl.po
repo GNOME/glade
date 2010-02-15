@@ -4,13 +4,12 @@
 #
 # Matej Urbančič <mateju@svn.gnome.org>, 2007 - 2010.
 #
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: glade3\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glade3&component=general\n"
-"POT-Creation-Date: 2010-02-08 04:29+0000\n"
-"PO-Revision-Date: 2010-02-10 09:25+0100\n"
+"POT-Creation-Date: 2010-02-14 02:26+0000\n"
+"PO-Revision-Date: 2010-02-15 08:36+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -991,6 +990,10 @@ msgstr "Izbor polj"
 msgid "_Select individual fields:"
 msgstr "_Izbor posameznih polj:"
 
+#: ../gladeui/glade-editor-property.c:1437
+msgid "Select Named Icon"
+msgstr "Izbor imenovane ikone"
+
 #: ../gladeui/glade-editor-property.c:1701
 msgid "Edit Text"
 msgstr "Uredi besedilo"
@@ -1056,8 +1059,8 @@ msgstr "Razred"
 
 #: ../gladeui/glade-editor-property.c:2731
 #, c-format
-msgid "Choose parentless %s(s) in this project"
-msgstr "Izbor osnovnih %s(s) v projektu"
+msgid "Choose parentless %s type objects in this project"
+msgstr "Izbor osnovne %s vrste predmetov v projektu"
 
 #: ../gladeui/glade-editor-property.c:2731
 #, c-format
@@ -1066,8 +1069,8 @@ msgstr "Izbor osnovnih %s v projektu"
 
 #: ../gladeui/glade-editor-property.c:2734
 #, c-format
-msgid "Choose %s(s) in this project"
-msgstr "Izberite %s v tem projektu"
+msgid "Choose %s type objects in this project"
+msgstr "Izbor %s vrste predmetov v tem projektu"
 
 #: ../gladeui/glade-editor-property.c:2734
 #, c-format
@@ -1243,6 +1246,12 @@ msgstr "P_očisti vse"
 #: ../gladeui/glade-editor.c:1260
 msgid "Property _Description:"
 msgstr "Opis _lastnosti:"
+
+#. Translators: first %s is the project name, second is a widget name
+#: ../gladeui/glade-editor.c:1356
+#, c-format
+msgid "%s - %s Properties"
+msgstr "%s - %s lastnosti"
 
 #: ../gladeui/glade-fixed.c:491
 #: ../plugins/gtk+/glade-gtk.c:2736
@@ -1515,13 +1524,13 @@ msgstr "Podrobnosti"
 
 #: ../gladeui/glade-project.c:2024
 #, c-format
-msgid "Project %s has errors. Save anyway?"
-msgstr "V projektu %s so napake. Ali naj se projekt vseeno shrani?"
+msgid "Project \"%s\" has errors. Save anyway?"
+msgstr "V projektu \"%s\" so napake. Ali naj se projekt vseeno shrani?"
 
 #: ../gladeui/glade-project.c:2025
 #, c-format
-msgid "Project %s has deprecated widgets and/or version mismatches."
-msgstr "Projekt %s vsebuje zastarele gradnike in neustreznost različice."
+msgid "Project \"%s\" has deprecated widgets and/or version mismatches."
+msgstr "Projekt \"%s\" vsebuje zastarele gradnike in neustrezne različice."
 
 #: ../gladeui/glade-project.c:3415
 #, c-format
@@ -1579,7 +1588,7 @@ msgstr "Izbor poti za nalaganje virov slik"
 
 #. Target versions
 #: ../gladeui/glade-project.c:3951
-msgid "Toolkit version(s) required:"
+msgid "Toolkit versions required:"
 msgstr "Zahtevana različica zbirke orodij:"
 
 #: ../gladeui/glade-project.c:3985
@@ -2023,6 +2032,14 @@ msgstr "Izbirnik imen ikon"
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1405
 msgid "Icon _Name:"
 msgstr "Ime _ikone:"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1445
+msgid "C_ontexts:"
+msgstr "_Vsebina:"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1466
+msgid "Icon Na_mes:"
+msgstr "Imena _ikone:"
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1488
 msgid "_List standard icons only"
@@ -2584,7 +2601,7 @@ msgid "Choose accelerator keys..."
 msgstr "Izberi tipkovne bližnjice  ..."
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1
-msgid "A filname, full or relative path to load an icon for this toolbutton"
+msgid "A file name, full or relative path to load an icon for this toolbutton"
 msgstr "Ime datoteke, polna ali delna pot do ikone za gumb na orodni vrstici"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:2
@@ -4289,7 +4306,7 @@ msgid "The response ID of this button in a dialog"
 msgstr "ID odgovora tega gumba v pogovornem oknu"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:457
-msgid "The stock icon displayed on the item (chose an item from gtk+ stock or from an icon factory)"
+msgid "The stock icon displayed on the item (choose an item from GTK+ stock or from an icon factory)"
 msgstr "Prikazana ikona sklada na predmetu (izberite predmet iz gtk+ sklada ali iz tovarn ikon)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:458
@@ -4584,6 +4601,14 @@ msgstr "< določi nov stolpec >"
 msgid "Add and remove columns:"
 msgstr "Dodajte ali odstranite stolpce:"
 
+#: ../plugins/gtk+/glade-column-types.c:882
+msgid "Column type"
+msgstr "Vrsta stolpca"
+
+#: ../plugins/gtk+/glade-column-types.c:904
+msgid "Column name"
+msgstr "Ime stolpca"
+
 #: ../plugins/gtk+/glade-model-data.c:1196
 msgid "Add and remove rows:"
 msgstr "Dodaj ali odstrani vrstice:"
@@ -4766,12 +4791,12 @@ msgstr "Nastavitev %s za uporabo vzorčnega niza"
 
 #: ../plugins/gtk+/glade-label-editor.c:357
 #, c-format
-msgid "Setting %s to set desired width in charachters"
+msgid "Setting %s to set desired width in characters"
 msgstr "Nastavitev %s na želeno širino znakov"
 
 #: ../plugins/gtk+/glade-label-editor.c:388
 #, c-format
-msgid "Setting %s to set maximum width in charachters"
+msgid "Setting %s to set maximum width in characters"
 msgstr "Nastavitev %s na največjo širino znakov"
 
 #: ../plugins/gtk+/glade-label-editor.c:422
@@ -5397,8 +5422,6 @@ msgstr "Širina vsake ikone"
 #~ msgstr "Največja širina"
 #~ msgid "Text Manipulation"
 #~ msgstr "Spreminjanje besedila"
-#~ msgid "%s [%s] - Properties"
-#~ msgstr "%s [%s] - lastnosti"
 #~ msgid "Dock _Editor"
 #~ msgstr "Zasidraj _urejevalnik"
 #~ msgid "Unable to paste widget %s without a parent"
