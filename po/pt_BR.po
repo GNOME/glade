@@ -7,14 +7,15 @@
 # Leonardo Ferreira Fontenelle <leonardof@gnome.org>, 2007-2008.
 # Fabrício Godoy <skarllot@gmail.com>, 2008.
 # Igor Pires Soares <igor@projetofedora>, 2007,2008,2009.
+# Antonio Fernandes C. Neto <fernandes@pelivre.org>, 2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glade3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-04 09:59-0300\n"
-"PO-Revision-Date: 2009-03-02 23:46-0300\n"
-"Last-Translator: Ísis Binder <isis.binder@gmail.com>\n"
+"POT-Creation-Date: 2010-02-28 08:22-0300\n"
+"PO-Revision-Date: 2010-02-27 17:25-0300\n"
+"Last-Translator: Vladimir Melo <vmelo@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,17 +28,17 @@ msgstr ""
 msgid "Create or open user interface designs for GTK+ applications"
 msgstr "Crie ou abra projetos de interface com o usuário para aplicativos GTK+"
 
-#: ../data/glade-3.desktop.in.in.h:2
+#: ../data/glade-3.desktop.in.in.h:2 ../src/main.c:42
+msgid "Glade"
+msgstr "Glade"
+
+#: ../data/glade-3.desktop.in.in.h:3
 msgid "Glade Interface Designer"
 msgstr "Construtor de interfaces Glade"
 
-#: ../data/glade-3.desktop.in.in.h:3 ../src/glade-window.c:444
-msgid "User Interface Designer"
-msgstr "Construtor de interfaces de usuário"
-
-#: ../src/main.c:42
-msgid "Glade"
-msgstr "Glade"
+#: ../data/glade-3.desktop.in.in.h:4
+msgid "Interface Designer"
+msgstr "Construtor de interface"
 
 #: ../src/main.c:52
 msgid "Output version information and exit"
@@ -96,6 +97,10 @@ msgstr "Não foi possível exibir a URL \"%s\""
 #: ../src/glade-window.c:163
 msgid "No suitable web browser could be found."
 msgstr "Nenhum navegador web apropriado foi localizado."
+
+#: ../src/glade-window.c:444
+msgid "User Interface Designer"
+msgstr "Construtor de interfaces de usuário"
 
 #. translators: referring to the action of activating a file named '%s'.
 #. *              we also indicate to users that the file may be read-only with
@@ -998,6 +1003,10 @@ msgstr "Selecionar campos"
 msgid "_Select individual fields:"
 msgstr "_Selecionar campos individuais:"
 
+#: ../gladeui/glade-editor-property.c:1437
+msgid "Select Named Icon"
+msgstr "Selecione ícone com nome"
+
 #: ../gladeui/glade-editor-property.c:1701
 msgid "Edit Text"
 msgstr "Editar texto"
@@ -1059,23 +1068,23 @@ msgstr "Classe"
 
 #: ../gladeui/glade-editor-property.c:2731
 #, c-format
-msgid "Choose parentless %s(s) in this project"
-msgstr "Escolher órfão %s(s) neste projeto"
+msgid "Choose parentless %s type objects in this project"
+msgstr "Escolher tipos de objetos %s órfãos neste projeto"
 
 #: ../gladeui/glade-editor-property.c:2731
 #, c-format
 msgid "Choose a parentless %s in this project"
-msgstr "Escolha um órfão %s neste projeto"
+msgstr "Escolher um %s órfão neste projeto"
 
 #: ../gladeui/glade-editor-property.c:2734
 #, c-format
-msgid "Choose %s(s) in this project"
-msgstr "Escolher %s(s) neste projeto"
+msgid "Choose %s type objects in this project"
+msgstr "Escolher tipos de objetos %s neste projeto"
 
 #: ../gladeui/glade-editor-property.c:2734
 #, c-format
 msgid "Choose a %s in this project"
-msgstr "Escolhe um %s neste projeto"
+msgstr "Escolher um %s neste projeto"
 
 #: ../gladeui/glade-editor-property.c:2786
 msgid "_New"
@@ -1250,6 +1259,12 @@ msgstr "_Desmarcar tudo"
 #: ../gladeui/glade-editor.c:1260
 msgid "Property _Description:"
 msgstr "_Descrição da propriedade:"
+
+#. Translators: first %s is the project name, second is a widget name
+#: ../gladeui/glade-editor.c:1356
+#, c-format
+msgid "%s - %s Properties"
+msgstr "%s - %s Propriedades"
 
 #: ../gladeui/glade-fixed.c:491 ../plugins/gtk+/glade-gtk.c:2736
 #, c-format
@@ -1568,13 +1583,13 @@ msgstr "Detalhes"
 
 #: ../gladeui/glade-project.c:2024
 #, c-format
-msgid "Project %s has errors. Save anyway?"
-msgstr "O projeto %s tem erros. Salvar mesmo assim?"
+msgid "Project \"%s\" has errors. Save anyway?"
+msgstr "O projeto \"%s\" tem erros. Salvar mesmo assim?"
 
 #: ../gladeui/glade-project.c:2025
 #, c-format
-msgid "Project %s has deprecated widgets and/or version mismatches."
-msgstr "O projeto %s tem widgets obsoletos e/ou versões que não coincidem."
+msgid "Project \"%s\" has deprecated widgets and/or version mismatches."
+msgstr "O projeto \"%s\" tem widgets obsoletos e/ou versões que não coincidem."
 
 #: ../gladeui/glade-project.c:3415
 #, c-format
@@ -1633,7 +1648,7 @@ msgstr ""
 
 #. Target versions
 #: ../gladeui/glade-project.c:3951
-msgid "Toolkit version(s) required:"
+msgid "Toolkit versions required:"
 msgstr "Versão necessária para o kit de ferramentas:"
 
 #: ../gladeui/glade-project.c:3985
@@ -2070,6 +2085,14 @@ msgstr "Seletor de ícones com nome"
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1405
 msgid "Icon _Name:"
 msgstr "_Nome do ícone:"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1445
+msgid "C_ontexts:"
+msgstr "_Contextos:"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1466
+msgid "Icon Na_mes:"
+msgstr "_Nomes dos ícones:"
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1488
 msgid "_List standard icons only"
@@ -2602,10 +2625,10 @@ msgid "Choose accelerator keys..."
 msgstr "Escolha as teclas de aceleração..."
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1
-msgid "A filname, full or relative path to load an icon for this toolbutton"
+msgid "A file name, full or relative path to load an icon for this toolbutton"
 msgstr ""
 "Um nome de arquivo, caminho completo ou relativo para carregar um ícone para "
-"este botão de ferramenta"
+"esse botão de ferramenta"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:2
 msgid "A list of accelerator keys"
@@ -4335,11 +4358,11 @@ msgstr "O ID de resposta deste botão no diálogo"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:457
 msgid ""
-"The stock icon displayed on the item (chose an item from gtk+ stock or from "
+"The stock icon displayed on the item (choose an item from GTK+ stock or from "
 "an icon factory)"
 msgstr ""
 "O ícone predefinido exibido no item (escolhido um item a partir das "
-"predefinições do gtk+ ou da fábrica de ícones)"
+"predefinições do GTK+ ou da fábrica de ícones)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:458
 msgid "The stock item for this button"
@@ -4636,6 +4659,14 @@ msgstr "< defina uma nova coluna >"
 msgid "Add and remove columns:"
 msgstr "Adicionar e remover colunas:"
 
+#: ../plugins/gtk+/glade-column-types.c:882
+msgid "Column type"
+msgstr "Tipo de coluna"
+
+#: ../plugins/gtk+/glade-column-types.c:904
+msgid "Column name"
+msgstr "Nome da coluna"
+
 #: ../plugins/gtk+/glade-model-data.c:1196
 msgid "Add and remove rows:"
 msgstr "Adicionar e remover linhas:"
@@ -4842,12 +4873,12 @@ msgstr "Definindo %s para usar uma string padrão"
 
 #: ../plugins/gtk+/glade-label-editor.c:357
 #, c-format
-msgid "Setting %s to set desired width in charachters"
+msgid "Setting %s to set desired width in characters"
 msgstr "Definindo %s para definir a largura desejada dos caracteres"
 
 #: ../plugins/gtk+/glade-label-editor.c:388
 #, c-format
-msgid "Setting %s to set maximum width in charachters"
+msgid "Setting %s to set maximum width in characters"
 msgstr "Definindo %s para definir a largura máxima dos caracteres"
 
 #: ../plugins/gtk+/glade-label-editor.c:422
@@ -5404,9 +5435,6 @@ msgstr "A largura de cada ícone"
 #~ "\" antes de fechar?</span>\n"
 #~ "\n"
 #~ "Se você não salvar suas alterações serão perdidas."
-
-#~ msgid "%s [%s] - Properties"
-#~ msgstr "%s [%s] - Propriedades"
 
 #~ msgid "_Clipboard"
 #~ msgstr "Área de _transferência"
