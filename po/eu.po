@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-13 17:00+0100\n"
-"PO-Revision-Date: 2010-01-13 17:07+0100\n"
+"POT-Creation-Date: 2010-03-02 12:21+0100\n"
+"PO-Revision-Date: 2010-03-02 12:28+0100\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
 "MIME-Version: 1.0\n"
@@ -22,17 +22,17 @@ msgstr ""
 "Erabiltzaile-interfazeen diseinuak sortzen edo irekitzen ditu GTK+ "
 "aplikazioentzat"
 
-#: ../data/glade-3.desktop.in.in.h:2
+#: ../data/glade-3.desktop.in.in.h:2 ../src/main.c:42
+msgid "Glade"
+msgstr "Glade"
+
+#: ../data/glade-3.desktop.in.in.h:3
 msgid "Glade Interface Designer"
 msgstr "Glade interfaze-diseinatzailea"
 
-#: ../data/glade-3.desktop.in.in.h:3 ../src/glade-window.c:444
-msgid "User Interface Designer"
-msgstr "Erabiltzaile-interfazeen diseinatzailea"
-
-#: ../src/main.c:42
-msgid "Glade"
-msgstr "Glade"
+#: ../data/glade-3.desktop.in.in.h:4
+msgid "Interface Designer"
+msgstr "Interfazeen diseinatzailea"
 
 #: ../src/main.c:52
 msgid "Output version information and exit"
@@ -91,6 +91,10 @@ msgstr "Ezin izan da bistaratu `%s' URLa"
 #: ../src/glade-window.c:163
 msgid "No suitable web browser could be found."
 msgstr "Ezin izan da aurkitu web-arakatzaile egokirik."
+
+#: ../src/glade-window.c:444
+msgid "User Interface Designer"
+msgstr "Erabiltzaile-interfazeen diseinatzailea"
 
 #. translators: referring to the action of activating a file named '%s'.
 #. *              we also indicate to users that the file may be read-only with
@@ -806,7 +810,8 @@ msgid ""
 "  * Type column is editable."
 msgstr ""
 "<big><b>Iradokizunak:</b></big>\n"
-"  * Egin klik eskuineko botoiaz zuhaitz-ikuspegiaren gainean elementuak gehitzeko, \n"
+"  * Egin klik eskuineko botoiaz zuhaitz-ikuspegiaren gainean elementuak "
+"gehitzeko, \n"
 "  * Sakatu Ezabatu botoia hautatutako elementua kentzeko.\n"
 "  * Arrastatu eta jaregin elementuak berrantolatzeko.\n"
 "  * Mota zutabea edita daiteke."
@@ -985,6 +990,10 @@ msgstr "Hautatu eremuak"
 msgid "_Select individual fields:"
 msgstr "_Hautatu banakako eremuak"
 
+#: ../gladeui/glade-editor-property.c:1437
+msgid "Select Named Icon"
+msgstr "Hautatu izenaren ikonoa"
+
 #: ../gladeui/glade-editor-property.c:1701
 msgid "Edit Text"
 msgstr "Editatu testua"
@@ -1046,8 +1055,8 @@ msgstr "Klasea"
 
 #: ../gladeui/glade-editor-property.c:2731
 #, c-format
-msgid "Choose parentless %s(s) in this project"
-msgstr "Aukeratu gurasorik gabeko %s(a)k proiektu honentzako"
+msgid "Choose parentless %s type objects in this project"
+msgstr "Aukeratu gurasorik gabeko %s objektu motak proiektu honetan"
 
 #: ../gladeui/glade-editor-property.c:2731
 #, c-format
@@ -1056,8 +1065,8 @@ msgstr "Aukeratu gurasorik gabeko %s proiektu honentzako"
 
 #: ../gladeui/glade-editor-property.c:2734
 #, c-format
-msgid "Choose %s(s) in this project"
-msgstr "Hautatu %s proiektu honentzako"
+msgid "Choose %s type objects in this project"
+msgstr "Aukeratu %s objektu motak proiektu honetan"
 
 #: ../gladeui/glade-editor-property.c:2734
 #, c-format
@@ -1233,6 +1242,12 @@ msgstr "_Desautatu denak"
 #: ../gladeui/glade-editor.c:1260
 msgid "Property _Description:"
 msgstr "Propietatearen _deskribapena:"
+
+#. Translators: first %s is the project name, second is a widget name
+#: ../gladeui/glade-editor.c:1356
+#, c-format
+msgid "%s - %s Properties"
+msgstr "%s - %s propietateak"
 
 #: ../gladeui/glade-fixed.c:491 ../plugins/gtk+/glade-gtk.c:2736
 #, c-format
@@ -1545,15 +1560,15 @@ msgstr "Xehetasunak"
 
 #: ../gladeui/glade-project.c:2024
 #, c-format
-msgid "Project %s has errors. Save anyway?"
-msgstr "%s proiektuak erroreak ditu. Gorde dena den?"
+msgid "Project \"%s\" has errors. Save anyway?"
+msgstr "\"%s\" proiektuak erroreak ditu. Gorde dena den?"
 
 #: ../gladeui/glade-project.c:2025
 #, c-format
-msgid "Project %s has deprecated widgets and/or version mismatches."
+msgid "Project \"%s\" has deprecated widgets and/or version mismatches."
 msgstr ""
-"%s proiektuak zaharkitutako trepetak ditu eta/edo bertsioen arteko "
-"inkoherentziak daude"
+"\"%s\" proiektuak zaharkitutako trepetak ditu eta/edo bertsioen arteko "
+"inkoherentziak daude."
 
 #: ../gladeui/glade-project.c:3415
 #, c-format
@@ -1613,7 +1628,7 @@ msgstr "Aukeratu bide-izena irudien baliabideak kargatzeko"
 
 #. Target versions
 #: ../gladeui/glade-project.c:3951
-msgid "Toolkit version(s) required:"
+msgid "Toolkit versions required:"
 msgstr "Toolkitaren beharrezko bertsioa(k):"
 
 #: ../gladeui/glade-project.c:3985
@@ -1769,7 +1784,7 @@ msgstr "Huts egin du %s irakurtzeko irekitzean: %s"
 
 #. Reset the column
 #. Objects
-#: ../gladeui/glade-utils.c:2258 ../plugins/gtk+/glade-attributes.c:800
+#: ../gladeui/glade-utils.c:2260 ../plugins/gtk+/glade-attributes.c:800
 #: ../plugins/gtk+/gtk+.xml.in.h:289
 msgid "None"
 msgstr "Bat ere ez"
@@ -2050,6 +2065,14 @@ msgstr "Izendatutako ikono-hautatzailea"
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1405
 msgid "Icon _Name:"
 msgstr "Ikonoaren _izena:"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1445
+msgid "C_ontexts:"
+msgstr "_Testuingurua:"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1466
+msgid "Icon Na_mes:"
+msgstr "Ikonoen _izenak:"
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1488
 msgid "_List standard icons only"
@@ -2507,7 +2530,7 @@ msgid "Choose accelerator keys..."
 msgstr "Hautatu laster-teklak"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1
-msgid "A filname, full or relative path to load an icon for this toolbutton"
+msgid "A file name, full or relative path to load an icon for this toolbutton"
 msgstr ""
 "Fitxategi-izena, bide-izen osoa edo erlatiboa tresna-botoi honen ikonoa "
 "kargatzeko"
@@ -4245,10 +4268,10 @@ msgstr "Botoi honen erantzun IDa elkarrizketa-koadroan"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:457
 msgid ""
-"The stock icon displayed on the item (chose an item from gtk+ stock or from "
+"The stock icon displayed on the item (choose an item from GTK+ stock or from "
 "an icon factory)"
 msgstr ""
-"Elementuan bistaratutako katalogoko ikonoa (aukeratu elementu bat gtk+-eko "
+"Elementuan bistaratutako katalogoko ikonoa (aukeratu elementu bat GTK+-eko "
 "katalogotik edo ikonoen fabrika batetik)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:458
@@ -4547,6 +4570,14 @@ msgstr "< definitu zutabe berri bat >"
 msgid "Add and remove columns:"
 msgstr "Gehitu eta kendu zutabeak:"
 
+#: ../plugins/gtk+/glade-column-types.c:882
+msgid "Column type"
+msgstr "Zutabe mota"
+
+#: ../plugins/gtk+/glade-column-types.c:904
+msgid "Column name"
+msgstr "Zutabearen izena"
+
 #: ../plugins/gtk+/glade-model-data.c:1196
 msgid "Add and remove rows:"
 msgstr "Gehitu eta kendu errenkadak:"
@@ -4753,13 +4784,13 @@ msgstr "%s ezartzen ereduaren kate bat erabiltzeko"
 
 #: ../plugins/gtk+/glade-label-editor.c:357
 #, c-format
-msgid "Setting %s to set desired width in charachters"
-msgstr "%s ezartzen nahi den karakteretako zabalera ezartzeko"
+msgid "Setting %s to set desired width in characters"
+msgstr "%s ezartzen nahi den zabalera ezartzeko (karakteretan)"
 
 #: ../plugins/gtk+/glade-label-editor.c:388
 #, c-format
-msgid "Setting %s to set maximum width in charachters"
-msgstr "%s ezartzen gehienezko karakteretako zabalera ezartzeko"
+msgid "Setting %s to set maximum width in characters"
+msgstr "%s ezartzen gehienezko zabalera ezartzeko (karakteretan)"
 
 #: ../plugins/gtk+/glade-label-editor.c:422
 #, c-format
