@@ -199,24 +199,21 @@ glade_property_update_prop_refs (GladeProperty *property,
 static gboolean
 glade_property_verify (GladeProperty *property, const GValue *value)
 {
-	if (property->klass->packing)
-	{
-		if (property->widget->parent)
-			return glade_widget_adaptor_child_verify_property (property->widget->parent->adaptor,
-									   property->widget->parent->object,
-									   property->widget->object,
-									   property->klass->id,
-									   value);
-		else
-			return FALSE;
-	}
-	else
-	{
-		return glade_widget_adaptor_verify_property (property->widget->adaptor, 
-							     property->widget->object,
-							     property->klass->id,
-							     value);
-	}
+	gboolean ret = FALSE;
+
+	if (property->klass->packing && property->widget->parent)
+		ret = glade_widget_adaptor_child_verify_property (property->widget->parent->adaptor,
+								  property->widget->parent->object,
+								  property->widget->object,
+								  property->klass->id,
+								  value);
+	else if (!property->klass->packing)
+		ret = glade_widget_adaptor_verify_property (property->widget->adaptor, 
+							    property->widget->object,
+							    property->klass->id,
+							    value);
+
+	return ret;
 }
 
 static void

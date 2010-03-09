@@ -1395,8 +1395,6 @@ glade_widget_dup_internal (GladeWidget *main_target,
 							     internal_parent->object, 
 							     template_widget->internal)) != NULL)
        			{
-				g_print ("Found internal %s from parent %s\n", template_widget->internal, internal_parent->name);
-
 				gwidget = glade_widget_get_from_gobject (internal_object);
 				g_assert (gwidget);
 			}
@@ -1418,8 +1416,6 @@ glade_widget_dup_internal (GladeWidget *main_target,
 			 "template-exact", exact,
 			 "reason", GLADE_CREATE_COPY, NULL);
 		g_free (name);
-
-		g_print ("Created %s as a copy of %s\n", gwidget->name, template_widget->name);
 	}
 
 	/* Copy signals over here regardless of internal or not... */

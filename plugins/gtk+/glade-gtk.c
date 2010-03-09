@@ -1608,8 +1608,8 @@ glade_gtk_box_configure_child (GladeFixed   *fixed,
 			       GdkRectangle *rect,
 			       GtkWidget    *box)
 {
-	GList         *list;
-	GtkBoxChild   *bchild;
+	GList         *list, *children;
+	GtkWidget     *bchild;
 	GtkAllocation  allocation, bchild_allocation;
 	gint           point, trans_point, span,
 		iter_span, position, old_position,
@@ -1635,11 +1635,13 @@ glade_gtk_box_configure_child (GladeFixed   *fixed,
 	glade_widget_pack_property_get
 		(child, "position", &old_position);
 
-	for (list = gtk_container_get_children (GTK_CONTAINER (box)); list; list = list->next)
+	children = gtk_container_get_children (GTK_CONTAINER (box));
+
+	for (list = children; list; list = list->next)
 	{
 		bchild = list->data;
 
-		if (bchild->widget == GTK_WIDGET (child->object))
+		if (bchild == GTK_WIDGET (child->object))
 			continue;
 
 		/* Find the widget in the box where the center of
@@ -1647,11 +1649,11 @@ glade_gtk_box_configure_child (GladeFixed   *fixed,
 		 * position.
 		 */
 
-		gtk_widget_get_allocation (GTK_WIDGET (bchild->widget), &bchild_allocation);
+		gtk_widget_get_allocation (GTK_WIDGET (bchild), &bchild_allocation);
 		if (GTK_IS_HBOX (box) || GTK_IS_HBUTTON_BOX (box))
 		{
 			gtk_widget_translate_coordinates 
-				(GTK_WIDGET (box), bchild->widget,
+				(GTK_WIDGET (box), bchild,
 				 point, 0, &trans_point, NULL);
 
 			iter_span   = bchild_allocation.width;
@@ -1659,17 +1661,17 @@ glade_gtk_box_configure_child (GladeFixed   *fixed,
 		else
 		{
 			gtk_widget_translate_coordinates 
-				(GTK_WIDGET (box), bchild->widget,
+				(GTK_WIDGET (box), bchild,
 				 0, point, NULL, &trans_point);
 			iter_span = bchild_allocation.height;
 		}
 
 #if 0
 		gtk_container_child_get (GTK_CONTAINER (box),
-					 bchild->widget,
+					 bchild,
 					 "position", &position, NULL);
 		g_print ("widget: %p pos %d, point %d, trans_point %d, iter_span %d\n", 
-			 bchild->widget, position, point, trans_point, iter_span);
+			 bchild, position, point, trans_point, iter_span);
 #endif
 
 		if (iter_span <= span)
@@ -1689,7 +1691,7 @@ glade_gtk_box_configure_child (GladeFixed   *fixed,
 		if (found)
 		{
 			gtk_container_child_get (GTK_CONTAINER (box),
-						 bchild->widget,
+						 bchild,
 						 "position", &position, NULL);
 
 #if 0
@@ -1705,6 +1707,9 @@ glade_gtk_box_configure_child (GladeFixed   *fixed,
 		}
 
 	}
+
+	g_list_free (children);
+
 	return TRUE;
 }
 
@@ -1713,28 +1718,32 @@ glade_gtk_box_configure_begin (GladeFixed  *fixed,
 			       GladeWidget *child,
 			       GtkWidget   *box)
 {
-	GList       *list;
-	GtkBoxChild *bchild;
+	GList       *list, *children;
+	GtkWidget   *bchild;
 
 	g_assert (glade_gtk_box_original_positions == NULL);
 
-	for (list = gtk_container_get_children (GTK_CONTAINER (box)); list; list = list->next)
+	children = gtk_container_get_children (GTK_CONTAINER (box));
+
+	for (list = children; list; list = list->next)
 	{
 		GladeGtkBoxChild *gbchild;
 		GladeWidget      *gchild;
 				
 		bchild = list->data;
-		if ((gchild = glade_widget_get_from_gobject (bchild->widget)) == NULL)
+		if ((gchild = glade_widget_get_from_gobject (bchild)) == NULL)
 			continue;
 
 		gbchild         = g_new0 (GladeGtkBoxChild, 1);
-		gbchild->widget = bchild->widget;
+		gbchild->widget = bchild;
 		glade_widget_pack_property_get (gchild, "position",
 						&gbchild->position);
 
 		glade_gtk_box_original_positions = 
 			g_list_prepend (glade_gtk_box_original_positions, gbchild);
 	}
+
+	g_list_free (children);
 
 	return TRUE;
 }
@@ -1744,12 +1753,14 @@ glade_gtk_box_configure_end (GladeFixed  *fixed,
 			     GladeWidget *child,
 			     GtkWidget   *box)
 {
-	GList         *list, *l;
+	GList         *list, *l, *children;
 	GList         *prop_list = NULL;
 
-	for (list = gtk_container_get_children (GTK_CONTAINER (box)); list; list = list->next)
+	children = gtk_container_get_children (GTK_CONTAINER (box));
+
+	for (list = children; list; list = list->next)
 	{
-		GtkBoxChild *bchild = list->data;
+		GtkWidget *bchild = list->data;
 
 		for (l = glade_gtk_box_original_positions; l; l = l->next)
 		{
@@ -1758,7 +1769,7 @@ glade_gtk_box_configure_end (GladeFixed  *fixed,
 				glade_widget_get_from_gobject (gbchild->widget);
 
 
-			if (bchild->widget == gbchild->widget)
+			if (bchild == gbchild->widget)
 			{
 				GCSetPropData *prop_data = g_new0 (GCSetPropData, 1);
 				prop_data->property = 
@@ -1779,6 +1790,8 @@ glade_gtk_box_configure_end (GladeFixed  *fixed,
 			}
 		}
 	}
+
+	g_list_free (children);
 
 	glade_command_push_group (_("Ordering children of %s"), 
 				  GLADE_WIDGET (fixed)->name);
@@ -1978,10 +1991,11 @@ glade_gtk_box_get_property (GladeWidgetAdaptor *adaptor,
 	if (!strcmp (id, "size"))
 	{
 		GtkBox *box = GTK_BOX (object);
+		GList  *children = gtk_container_get_children (GTK_CONTAINER (box));
 
 		g_value_reset (value);
-		g_value_set_int (value,
-				 g_list_length (gtk_container_get_children (GTK_CONTAINER (box))));
+		g_value_set_int (value, g_list_length (children));
+		g_list_free (children);
 	}
 	else 
 		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->get_property (adaptor, object, id, value);
@@ -1990,11 +2004,13 @@ glade_gtk_box_get_property (GladeWidgetAdaptor *adaptor,
 static gint
 glade_gtk_box_get_first_blank (GtkBox *box)
 {
-	GList       *child;
+	GList       *child, *children;
 	GladeWidget *gwidget;
 	gint         position;
-	
-	for (child = gtk_container_get_children (GTK_CONTAINER (box)), position = 0;
+
+	children = gtk_container_get_children (GTK_CONTAINER (box));
+
+	for (child = children, position = 0;
 	     child && child->data;
 	     child = child->next, position++)
 	{
@@ -2008,9 +2024,12 @@ glade_gtk_box_get_first_blank (GtkBox *box)
 			gwidget_position = g_value_get_int (property->value);
 
 			if (gwidget_position > position)
-				return position;
+				break;
 		}
 	}
+
+	g_list_free (children);
+
 	return position;
 }
 
@@ -2033,7 +2052,10 @@ glade_gtk_box_set_size (GObject *object, const GValue *value)
 	new_size = g_value_get_int (value);
 	
 	if (old_size == new_size)
+	{
+		g_list_free (children);
 		return;
+	}
 
 	/* Ensure placeholders first...
 	 */
@@ -2054,7 +2076,7 @@ glade_gtk_box_set_size (GObject *object, const GValue *value)
 	     child && old_size > new_size;
 	     child = g_list_last (children), old_size--)
 	{
-		GtkWidget *child_widget = ((GtkBoxChild *) (child->data))->widget;
+		GtkWidget *child_widget = child->data;
 
 		/* Refuse to remove any widgets that are either GladeWidget objects
 		 * or internal to the hierarchic entity (may be a composite widget,
@@ -2068,6 +2090,8 @@ glade_gtk_box_set_size (GObject *object, const GValue *value)
 		gtk_container_remove (GTK_CONTAINER (box), child_widget);
 		gtk_widget_destroy (child_widget);
 	}
+	g_list_free (children);
+
 }
 
 void
@@ -2086,20 +2110,30 @@ static gboolean
 glade_gtk_box_verify_size (GObject *object, const GValue *value)
 {
 	GtkBox *box = GTK_BOX(object);
-	GList  *child;
-	gint    old_size = g_list_length (gtk_container_get_children (GTK_CONTAINER (box)));
+	GList  *child, *children;
+	gboolean will_orphan = FALSE;
+	gint    old_size;
 	gint    new_size = g_value_get_int (value);
 
-	for (child = g_list_last (gtk_container_get_children (GTK_CONTAINER (box)));
+	children = gtk_container_get_children (GTK_CONTAINER (box));
+	old_size = g_list_length (children);
+
+	for (child = g_list_last (children);
 	     child && old_size > new_size;
 	     child = g_list_previous (child), old_size--)
 	{
-		GtkWidget *widget = ((GtkBoxChild *) (child->data))->widget;
+		GtkWidget *widget = child->data;
 		if (glade_widget_get_from_gobject (widget) != NULL)
+	       	{
 			/* In this case, refuse to shrink */
-			return FALSE;
+			will_orphan = TRUE;
+			break;
+		}
 	}
-	return new_size >= 0;
+	
+	g_list_free (children);
+
+	return will_orphan ? FALSE : new_size >= 0;
 }
 
 
@@ -2156,6 +2190,7 @@ glade_gtk_box_add_child (GladeWidgetAdaptor *adaptor,
 {
 	GladeWidget  *gbox, *gchild;
 	GladeProject *project;
+	GList        *children;
 	gint          num_children;
 	
 	g_return_if_fail (GTK_IS_BOX (object));
@@ -2171,12 +2206,12 @@ glade_gtk_box_add_child (GladeWidgetAdaptor *adaptor,
 	if (glade_widget_superuser () == FALSE &&
 	    !GLADE_IS_PLACEHOLDER (child))
 	{
-		GList *l;
+		GList *l, *children;
 		GtkBox *box = GTK_BOX (object);
+
+		children = gtk_container_get_children (GTK_CONTAINER (box));
 		
-		for (l = g_list_last (gtk_container_get_children (GTK_CONTAINER (box)));
-		     l;
-		     l = g_list_previous (l))
+		for (l = g_list_last (children); l; l = g_list_previous (l))
 		{
 			GtkWidget *child_widget = ((GtkBoxChild *) (l->data))->widget;			
 			if (GLADE_IS_PLACEHOLDER (child_widget))
@@ -2185,13 +2220,17 @@ glade_gtk_box_add_child (GladeWidgetAdaptor *adaptor,
 				break;
 			}
 		}
+		g_list_free (children);
 	}
 
 	gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
 	
-	num_children = g_list_length (gtk_container_get_children (GTK_CONTAINER (object)));
+	children = gtk_container_get_children (GTK_CONTAINER (object));
+	num_children = g_list_length (children);
+	g_list_free (children);
+
 	glade_widget_property_set (gbox, "size", num_children);
-	
+
 	gchild = glade_widget_get_from_gobject (child);
 
 	/* The "Remove Slot" operation only makes sence on placeholders,
@@ -2357,6 +2396,27 @@ typedef enum {
 static GladeGtkTableChild table_edit = { 0, };
 static GladeGtkTableChild table_cur_attach = { 0, };
 
+static void
+glade_gtk_table_get_child_attachments (GtkWidget *table,
+				       GtkWidget *child,
+				       GtkTableChild *tchild)
+{
+	guint left, right, top, bottom;
+
+	gtk_container_child_get (GTK_CONTAINER (table), child,
+				 "left-attach", (guint *)&left,
+				 "right-attach", (guint *)&right,
+				 "bottom-attach", (guint *)&bottom,
+				 "top-attach", (guint *)&top,
+				 NULL);
+
+	tchild->widget        = child;
+	tchild->left_attach   = left;
+	tchild->right_attach  = right;
+	tchild->top_attach    = top;
+	tchild->bottom_attach = bottom;
+}
+
 
 /* Takes a point (x or y depending on 'row') relative to
  * table, and returns the row or column in which the point
@@ -2367,27 +2427,30 @@ glade_gtk_table_get_row_col_from_point (GtkTable *table,
 					gboolean  row,
 					gint      point)
 {
-	GtkTableChild *tchild;
+	GtkTableChild  tchild;
 	GtkAllocation  allocation;
-	GList         *list;
+	GList         *list, *children;
 	gint           span, trans_point, size, base, end;
 
-	for (list = gtk_container_get_children (GTK_CONTAINER (table));
+	children = gtk_container_get_children (GTK_CONTAINER (table));
+
+	for (list = children;
 	     list;
 	     list = list->next)
 	{
-		tchild = list->data;
+		glade_gtk_table_get_child_attachments (GTK_WIDGET (table),
+						       GTK_WIDGET (list->data), &tchild);
 
 		if (row)
 			gtk_widget_translate_coordinates 
-				(GTK_WIDGET (table), tchild->widget,
+				(GTK_WIDGET (table), tchild.widget,
 				 0, point, NULL, &trans_point);
 		else
 			gtk_widget_translate_coordinates
-				(GTK_WIDGET (table), tchild->widget,
+				(GTK_WIDGET (table), tchild.widget,
 				 point, 0, &trans_point, NULL);
 
-		gtk_widget_get_allocation (tchild->widget, &allocation);
+		gtk_widget_get_allocation (tchild.widget, &allocation);
 		/* Find any widget in our row/column
 		 */
 		end = row ? allocation.height : allocation.width;
@@ -2396,14 +2459,15 @@ glade_gtk_table_get_row_col_from_point (GtkTable *table,
 		    /* should be trans_point < end ... test FIXME ! */
 		    trans_point <  end)
 		{
-			base = row ? tchild->top_attach : tchild->left_attach;
+			base = row ? tchild.top_attach : tchild.left_attach;
 			size = row ? allocation.height : allocation.width;
-			span = row ? (tchild->bottom_attach - tchild->top_attach) :
-				(tchild->right_attach - tchild->left_attach);
+			span = row ? (tchild.bottom_attach - tchild.top_attach) :
+				(tchild.right_attach - tchild.left_attach);
 
 			return base + (trans_point * span / size);
 		}
 	}
+	g_list_free (children);
 
 	return -1;
 }
@@ -2417,36 +2481,39 @@ glade_gtk_table_point_crosses_threshold (GtkTable      *table,
 					 gint           point)
 {
 
-	GtkTableChild *tchild;
+	GtkTableChild  tchild;
 	GtkAllocation  allocation;
-	GList         *list;
+	GList         *list, *children;
 	gint           span, trans_point, size, rowcol_size, base;
 	
-	for (list = gtk_container_get_children (GTK_CONTAINER (table)); list; list = list->next)
+	children = gtk_container_get_children (GTK_CONTAINER (table));
+
+	for (list = children; list; list = list->next)
 	{
-		tchild = list->data;
+		glade_gtk_table_get_child_attachments (GTK_WIDGET (table),
+						       GTK_WIDGET (list->data), &tchild);
 	
 		/* Find any widget in our row/column
 		 */
-		if ((row && num >= tchild->top_attach && num < tchild->bottom_attach) ||
-		    (!row && num >= tchild->left_attach && num < tchild->right_attach))
+		if ((row && num >= tchild.top_attach && num < tchild.bottom_attach) ||
+		    (!row && num >= tchild.left_attach && num < tchild.right_attach))
 		{
 
 			if (row)
 				gtk_widget_translate_coordinates 
-					(GTK_WIDGET (table), tchild->widget,
+					(GTK_WIDGET (table), tchild.widget,
 					 0, point, NULL, &trans_point);
 			else
 				gtk_widget_translate_coordinates
-					(GTK_WIDGET (table), tchild->widget,
+					(GTK_WIDGET (table), tchild.widget,
 					 point, 0, &trans_point, NULL);
 
-			span = row ? (tchild->bottom_attach - tchild->top_attach) :
-				(tchild->right_attach - tchild->left_attach);
-			gtk_widget_get_allocation (tchild->widget, &allocation);
+			span = row ? (tchild.bottom_attach - tchild.top_attach) :
+				(tchild.right_attach - tchild.left_attach);
+			gtk_widget_get_allocation (tchild.widget, &allocation);
 			size = row ? allocation.height : allocation.width;
 
-			base         = row ? tchild->top_attach : tchild->left_attach;
+			base         = row ? tchild.top_attach : tchild.left_attach;
 			rowcol_size  = size / span;
 			trans_point -= (num - base) * rowcol_size;
 
@@ -2476,6 +2543,9 @@ glade_gtk_table_point_crosses_threshold (GtkTable      *table,
 		}
 		
 	}
+
+	g_list_free (children);
+
 	return FALSE;
 }
 
@@ -2778,42 +2848,65 @@ glade_gtk_table_post_create (GladeWidgetAdaptor *adaptor,
 static gboolean
 glade_gtk_table_has_child (GtkTable *table, guint left_attach, guint top_attach)
 {
-	GList *list;
+	GList *list, *children;
+	gboolean ret = FALSE;
 
-	for (list = gtk_container_get_children (GTK_CONTAINER (table));
+	children = gtk_container_get_children (GTK_CONTAINER (table));
+
+	for (list = children;
 	     list && list->data;
 	     list = list->next)
 	{
-		GtkTableChild *child = list->data;
+		GtkTableChild child;
 
-		if (left_attach >= child->left_attach && left_attach < child->right_attach &&
-		    top_attach >= child->top_attach && top_attach < child->bottom_attach)
-			return TRUE;
+		glade_gtk_table_get_child_attachments (GTK_WIDGET (table),
+						       GTK_WIDGET (list->data), &child);
+
+		if (left_attach >= child.left_attach && left_attach < child.right_attach &&
+		    top_attach >= child.top_attach && top_attach < child.bottom_attach)
+		{
+			ret = TRUE;
+			break;
+		}
 	}
-	return FALSE;
+
+	g_list_free (children);
+
+	return ret;
 }
 
 static gboolean
 glade_gtk_table_widget_exceeds_bounds (GtkTable *table, gint n_rows, gint n_cols)
 {
-	GList *list;
-	for (list = gtk_container_get_children (GTK_CONTAINER (table));
+	GList *list, *children;
+	gboolean ret = FALSE;
+
+	children = gtk_container_get_children (GTK_CONTAINER (table));
+
+	for (list = children;
 	     list && list->data;
 	     list = list->next)
 	{
-		GtkTableChild *child = list->data;
-		if (GLADE_IS_PLACEHOLDER(child->widget) == FALSE &&
-		    (child->right_attach  > n_cols ||
-		     child->bottom_attach > n_rows))
-			return TRUE;
+		GtkTableChild child;
+
+		glade_gtk_table_get_child_attachments (GTK_WIDGET (table),
+						       GTK_WIDGET (list->data), &child);
+
+		if (GLADE_IS_PLACEHOLDER(child.widget) == FALSE &&
+		    (child.right_attach  > n_cols ||
+		     child.bottom_attach > n_rows))
+	       	{
+			ret = TRUE;
+			break;
+		}
 	}
-	return FALSE;
+	return ret;
 }
 
 static void
 glade_gtk_table_refresh_placeholders (GtkTable *table)
 {
-	GList *list, *toremove = NULL;
+	GList *list, *children;
 	guint n_columns, n_rows;
 	gint i, j;
 
@@ -2822,31 +2915,24 @@ glade_gtk_table_refresh_placeholders (GtkTable *table)
 		      "n-rows", &n_rows,
 		      NULL);
 
-	for (list = gtk_container_get_children (GTK_CONTAINER (table));
-	     list && list->data;
-	     list = list->next)
-	{
-		GtkTableChild *child = list->data;
-		
-		if (GLADE_IS_PLACEHOLDER (child->widget))
-			toremove = g_list_prepend (toremove, child->widget);
-	}
+	children = gtk_container_get_children (GTK_CONTAINER (table));
 
-	if (toremove)
+	for (list = children; list && list->data; list = list->next)
 	{
-		for (list = toremove; list; list = list->next)
+		if (GLADE_IS_PLACEHOLDER (list->data))
 			gtk_container_remove (GTK_CONTAINER (table),
 					      GTK_WIDGET (list->data));
-		g_list_free (toremove);
 	}
+	g_list_free (children);
 
 	for (i = 0; i < n_columns; i++)
 		for (j = 0; j < n_rows; j++)
 			if (glade_gtk_table_has_child (table, i, j) == FALSE)
+       			{
 				gtk_table_attach_defaults (table,
 							   glade_placeholder_new (),
-					 		   i, i + 1, j, j + 1);
-	
+							   i, i + 1, j, j + 1);
+			}
 	gtk_container_check_resize (GTK_CONTAINER (table));
 }
 
@@ -2926,7 +3012,7 @@ glade_gtk_table_replace_child (GladeWidgetAdaptor *adaptor,
 	 * (since the remaining placeholder templates no longer exist, only the
 	 * first pasted widget would have proper packing properties).
 	 */
-	if (glade_widget_get_from_gobject (new_widget) == FALSE)
+	if (glade_widget_get_from_gobject (new_widget) == NULL)
 		glade_gtk_table_refresh_placeholders (GTK_TABLE (container));
 
 }
@@ -2973,21 +3059,28 @@ glade_gtk_table_set_n_common (GObject *object, const GValue *value, gboolean for
 	if (new_size < old_size)
 	{
 		/* Remove from the bottom up */
-		GList *list;
+		GList *list, *children;
 		GList *list_to_free = NULL;
 
-		for (list = gtk_container_get_children (GTK_CONTAINER (table));
+		children = gtk_container_get_children (GTK_CONTAINER (table));
+
+		for (list = children;
 		     list && list->data;
 		     list = list->next)
 		{
-			GtkTableChild *child = list->data;
-			guint start = for_rows ? child->top_attach : child->left_attach;
-			guint end = for_rows ? child->bottom_attach : child->right_attach;
+			GtkTableChild child;
+			guint start, end;
+
+			glade_gtk_table_get_child_attachments (GTK_WIDGET (table),
+							       GTK_WIDGET (list->data), &child);
+
+			start = for_rows ? child.top_attach : child.left_attach;
+			end = for_rows ? child.bottom_attach : child.right_attach;
 
 			/* We need to completely remove it */
 			if (start >= new_size)
 			{
-				list_to_free = g_list_prepend (list_to_free, child->widget);
+				list_to_free = g_list_prepend (list_to_free, child.widget);
 				continue;
 			}
 
@@ -2995,10 +3088,12 @@ glade_gtk_table_set_n_common (GObject *object, const GValue *value, gboolean for
 			 * we should resize it to fit on the new table */
 			if (end > new_size)
 				gtk_container_child_set
-					(GTK_CONTAINER (table), GTK_WIDGET (child),
+					(GTK_CONTAINER (table), GTK_WIDGET (child.widget),
 					 for_rows ? "bottom_attach" : "right_attach",
 					 new_size, NULL);
 		}
+		
+		g_list_free (children);
 
 		if (list_to_free)
 		{
@@ -5523,7 +5618,8 @@ glade_gtk_dialog_write_responses (GladeWidget     *widget,
 {
 	GladeXmlNode *widget_node;
 	GtkDialog    *dialog  = GTK_DIALOG (widget->object);
-	GList        *l, *action_widgets = gtk_container_get_children (GTK_CONTAINER (gtk_dialog_get_action_area (dialog)));
+	GList        *l, *action_widgets = 
+		gtk_container_get_children (GTK_CONTAINER (gtk_dialog_get_action_area (dialog)));
 
 	for (l = action_widgets; l; l = l->next)
 	{
@@ -6309,6 +6405,8 @@ glade_gtk_menu_shell_get_item_position (GObject *container, GObject *child)
 		list = list->next;
 		position++;
 	}
+
+	g_list_free (list);
 
 	return position;
 }
