@@ -548,7 +548,7 @@ convert_combos_finished (GladeProject  *project,
 			GList *columns = NULL;
 			GladeColumnType *column = g_new0 (GladeColumnType, 1);
 
-			column->type = G_TYPE_STRING;
+			column->type_name   = g_strdup ("gchararray");
 			column->column_name = g_strdup_printf ("item text");
 			columns = g_list_append (columns, column);
 

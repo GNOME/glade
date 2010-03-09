@@ -649,7 +649,7 @@ glade_design_layout_realize (GtkWidget *widget)
 	attributes_mask = GDK_WA_X | GDK_WA_Y;
 
 	window = gtk_widget_get_parent_window (widget);
-	gtk_widget_set_window (widget, window);
+	gtk_widget_set_window (widget, g_object_ref (window));
 
 	priv->event_window = gdk_window_new (gtk_widget_get_parent_window (widget),
 					     &attributes, attributes_mask);

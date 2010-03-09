@@ -4756,8 +4756,11 @@ static void
 glade_gtk_entry_changed (GtkEditable *editable, GladeWidget *gentry)
 {
 	const gchar *text, *text_prop;
-	GladeProperty *prop;
-	
+	GladeProperty *prop;	
+
+	if (glade_widget_superuser ())
+		return;
+
 	text = gtk_entry_get_text (GTK_ENTRY (editable));
 	
 	glade_widget_property_get (gentry, "text", &text_prop);
@@ -5002,6 +5005,14 @@ glade_gtk_fixed_layout_remove_child (GladeWidgetAdaptor  *adaptor,
 }
 
 /* ----------------------------- GtkWindow ------------------------------ */
+static gint
+glade_gtk_widget_show_on_delete (GtkWidget *widget,
+				 gpointer   user_data)
+{
+	gtk_widget_show (widget);
+	return TRUE;
+}
+
 void
 glade_gtk_window_deep_post_create (GladeWidgetAdaptor *adaptor,
 				   GObject            *object,
@@ -5014,7 +5025,7 @@ glade_gtk_window_deep_post_create (GladeWidgetAdaptor *adaptor,
 	/* Chain her up first */
 	GWA_GET_CLASS (GTK_TYPE_CONTAINER)->deep_post_create (adaptor, object, reason);
 
-	g_signal_connect (object, "delete", G_CALLBACK (gtk_widget_show), NULL);
+	g_signal_connect (object, "delete-event", G_CALLBACK (glade_gtk_widget_show_on_delete), NULL);
 }
 
 #define GLADE_TAG_ACCEL_GROUPS "accel-groups"
@@ -9876,7 +9887,11 @@ glade_gtk_store_set_columns (GObject *object,
 	for (i = 0; l; l = g_list_next (l), i++)
 	{
 		GladeColumnType *data = l->data;
-		types[i] = data->type;
+
+		if (g_type_from_name (data->type_name) != G_TYPE_INVALID)
+			types[i] = g_type_from_name (data->type_name);
+		else
+			types[i] = G_TYPE_POINTER;
 	}
 
 	if (GTK_IS_LIST_STORE (object))
@@ -10023,7 +10038,7 @@ glade_gtk_store_string_from_value (GladeWidgetAdaptor *adaptor,
 		{
 			GladeColumnType *data = l->data;
 			g_string_append_printf (string, (g_list_next (l)) ? "%s:%s|" : "%s:%s",
-						g_type_name (data->type), data->column_name);
+						data->type_name, data->column_name);
 		}
 		return g_string_free (string, FALSE);
 	}
@@ -10049,7 +10064,10 @@ glade_gtk_store_string_from_value (GladeWidgetAdaptor *adaptor,
 			{
 				data = iter->data;
 
-				str = glade_utils_string_from_value (&data->value, fmt);
+				if (G_VALUE_TYPE (&data->value) != G_TYPE_POINTER)
+					str = glade_utils_string_from_value (&data->value, fmt);
+				else
+					str = g_strdup ("(null)");
 
 				is_last = !row->next && !iter->next;
 				g_string_append_printf (string, "%s[%d]:%s",
@@ -10105,7 +10123,7 @@ glade_gtk_store_write_columns (GladeWidget        *widget,
 		column_node = glade_xml_node_new (context, GLADE_TAG_COLUMN);
 		glade_xml_node_append_child (columns_node, column_node);
 		glade_xml_node_set_property_string (column_node, GLADE_TAG_TYPE,
-						    g_type_name (data->type));
+						    data->type_name);
 	}
 
 	if (!glade_xml_node_get_children (columns_node))
@@ -10149,9 +10167,13 @@ glade_gtk_store_write_data (GladeWidget        *widget,
 
 			data = iter->data;
 
+			/* Skip inserializable data */
+			if (G_VALUE_TYPE (&data->value) == G_TYPE_POINTER)
+				continue;
+
 			string = glade_utils_string_from_value (&data->value, 
 								glade_project_get_format (widget->project));
-
+			
 			/* XXX Log error: data col j exceeds columns on row i */
 			if (!g_list_nth (columns, colnum))
 				break;
@@ -10246,7 +10268,7 @@ glade_gtk_store_read_columns (GladeWidget *widget, GladeXmlNode *node)
 		}
 
 		type = glade_xml_get_property_string_required (prop, GLADE_TAG_TYPE, NULL);
-		data->type        = g_type_from_name (type);
+		data->type_name   = g_strdup (type);
 		data->column_name = column_name[0] ? g_strdup (column_name) : g_ascii_strdown (type, -1);
 
 		if (glade_name_context_has_name (context, data->column_name))
@@ -10315,28 +10337,37 @@ glade_gtk_store_read_data (GladeWidget *widget, GladeXmlNode *node)
 				continue;
 
 			column_type = list->data;
-
-			/* XXX Do we need object properties to somehow work at load time here ??
-			 * should we be doing this part in "finished" ? ... todo thinkso...
-			 */
-			value_str = glade_xml_get_content (col_node);
-			value     = glade_utils_value_from_string (column_type->type, value_str, widget->project, widget);
-			g_free (value_str);
-
-			data = glade_model_data_new (column_type->type, column_type->column_name);
-
-			g_value_copy (value, &data->value);
-			g_value_unset (value);
-			g_free (value);
+	
+			/* Ignore unloaded column types for the workspace */
+			if (g_type_from_name (column_type->type_name) != G_TYPE_INVALID)
+       			{
+				/* XXX Do we need object properties to somehow work at load time here ??
+				 * should we be doing this part in "finished" ? ... todo thinkso...
+				 */
+				value_str = glade_xml_get_content (col_node);
+				value     = glade_utils_value_from_string 
+					(g_type_from_name (column_type->type_name), value_str, widget->project, widget);
+				g_free (value_str);
+					
+				data = glade_model_data_new (g_type_from_name (column_type->type_name), column_type->column_name);
+			
+				g_value_copy (value, &data->value);
+				g_value_unset (value);
+				g_free (value);
+			}
+			else
+       			{
+				data = glade_model_data_new (G_TYPE_POINTER, column_type->column_name);
+       			}
 
 			data->name = g_strdup (column_type->column_name);
 			data->i18n_translatable = glade_xml_get_property_boolean (col_node, GLADE_TAG_TRANSLATABLE, FALSE);
 			data->i18n_context = glade_xml_get_property_string (col_node, GLADE_TAG_CONTEXT);
 			data->i18n_comment = glade_xml_get_property_string (col_node, GLADE_TAG_COMMENT);
-
+			
 			item = g_node_new (data);
 			g_node_append (row, item);
-
+				
 			/* dont increment colnum on invalid xml tags... */
 			colnum++;
 		}

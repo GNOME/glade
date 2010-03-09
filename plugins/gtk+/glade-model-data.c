@@ -36,6 +36,7 @@ GladeModelData *
 glade_model_data_new (GType type, const gchar *column_name)
 {
 	GladeModelData *data = g_new0 (GladeModelData, 1);
+	
 	g_value_init (&data->value, type);
 
 	if (type == G_TYPE_STRING)
@@ -295,7 +296,7 @@ append_row (GNode *node, GList *columns)
 	for (list = columns; list; list = list->next)
        	{
 		column = list->data;
-		data = glade_model_data_new (column->type, column->column_name);
+		data = glade_model_data_new (g_type_from_name (column->type_name), column->column_name);
 		g_node_append_data (row, data);
 	}
 }
@@ -970,16 +971,12 @@ eprop_model_generate_column (GladeEditorProperty *eprop,
 						     NULL);
 
 	}
-	else if (type == G_TYPE_OBJECT || g_type_is_a (type, G_TYPE_OBJECT))
+	else /* All uneditable types at this point (currently we dont do object data here, TODO) */
 	{
-		/* text renderer and object dialog (or raw text for pixbuf) */;
+		/* text renderer and object dialog (or raw text for pixbuf) */
 		renderer = gtk_cell_renderer_text_new ();
 		g_object_set (G_OBJECT (renderer), "editable", FALSE, NULL);
 		gtk_tree_view_column_pack_start (column, renderer, FALSE);
-		gtk_tree_view_column_set_attributes (column, renderer, 
-						     "text", NUM_COLUMNS + colnum,
-						     NULL);
-
 	}
 
 	g_signal_connect (G_OBJECT (renderer), "editing-started",

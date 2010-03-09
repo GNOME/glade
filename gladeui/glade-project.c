@@ -517,12 +517,14 @@ glade_project_push_undo_impl (GladeProject *project, GladeCommand *cmd)
 		priv->undo_stack = NULL;
 	}
 
-	/* Try to unify only if group depth is 0 */
+	/* Try to unify only if group depth is 0 and the project has not been recently saved*/
 	if (glade_command_get_group_depth() == 0 &&
-	    priv->prev_redo_item != NULL)
+	    priv->prev_redo_item != NULL &&
+	    project->priv->prev_redo_item != project->priv->first_modification)
 	{
 		GladeCommand *cmd1 = priv->prev_redo_item->data;
 
+		
 		if (glade_command_unifies (cmd1, cmd))
 		{
 			glade_command_collapse (cmd1, cmd);

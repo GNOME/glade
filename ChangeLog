@@ -1,12 +1,30 @@
+2010-03-09  Tristan Van Berkom <tvb@gnome.org>
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/glade-column-types.[ch], 
+	  plugins/gtk+/glade-model-data.c: Allow litteral string values for 
+	  column types in the tree store editor, Glade will serialize/deserialize
+	  the string litterally and if there is a valid type returned from
+	  g_type_from_name() (i.e. a valid introduced type by that name); then 
+	  that GType will be used to setup the column types of runtime treestores
+	  in the project; otherwise it will use G_TYPE_POINTER for those columns.
+
+	  This closes bug 597095.
+
+2010-03-09  Marco Diego Aurélio Mesquita <marcodiegomesquita@gmail.com>
+
+	* gladeui/glade-project.c: Avoid collapsing commands when a project is freshly saved
+	  (this fixes a false "unmodified" state after changing the same property before and
+	  after project save).
+
 2010-01-28  Javier Jardon <jjardon@gnome.org>
 
 	* README: Glade requires GTK+ >= 2.20
 
-2009-12-18 Javier Jardón <jjardon@gnome.org>
+2009-12-18  Javier Jardón <jjardon@gnome.org>
 
 	* doc/gladeui-docs.sgml: Fix doc location link
 
-2009-12-04 Javier Jardón <jjardon@gnome.org>
+2009-12-04  Javier Jardón <jjardon@gnome.org>
 
 	Use accessor functions instead direct access. Second patch
 
