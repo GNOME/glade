@@ -1,9 +1,20 @@
 2010-03-10  Tristan Van Berkom <tvb@gnome.org>
 
+	* plugins/gtk+/gtk+.xml.in: Removed alot of virtually defined properties that were not available 
+	  in GTK+ 2.14, now they are available.
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/glade-entry-editor.c: Enhanced the GtkEntry editor
+	  to allow the user to chose between the "text" and the "buffers" exclusively.
+
+2010-03-10  Tristan Van Berkom <tvb@gnome.org>
+
 	* plugins/gtk+/glade-model-data.c: Fixed crasher when double freeing the data tree
 	  in some idle handlers (idle handlers needed for advanced focus handling/keynav), fixes crash bug 608011.
 	  Also make sure to create the adjustment with a 0 page size.
 
+	* plugins/gtk+/gtk+.xml.in: Fixed translation details pointed out by Johannes H. Jensen
+	  in bug 607348.
+	
 2010-03-10  Javier Jardón <jjardon@gnome.org>
 
 	* plugins/gtk+/gtk+.xml.in: Deprecated GtkGammaCurve and GtkCurve

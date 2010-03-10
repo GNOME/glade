@@ -4847,11 +4847,25 @@ glade_gtk_expander_write_child (GladeWidgetAdaptor *adaptor,
 
 
 /* -------------------------------- GtkEntry -------------------------------- */
+
+gboolean
+glade_gtk_entry_depends (GladeWidgetAdaptor *adaptor,
+			 GladeWidget        *widget,
+			 GladeWidget        *another)
+{
+	if (GTK_IS_ENTRY_BUFFER (another->object))
+		return TRUE; 
+
+	return GWA_GET_CLASS (GTK_TYPE_WIDGET)->depends (adaptor, widget, another);
+}
+
+
 static void
 glade_gtk_entry_changed (GtkEditable *editable, GladeWidget *gentry)
 {
 	const gchar *text, *text_prop;
-	GladeProperty *prop;	
+	GladeProperty *prop;
+	gboolean use_buffer;	
 
 	if (glade_widget_superuser ())
 		return;
@@ -4859,10 +4873,13 @@ glade_gtk_entry_changed (GtkEditable *editable, GladeWidget *gentry)
 	text = gtk_entry_get_text (GTK_ENTRY (editable));
 	
 	glade_widget_property_get (gentry, "text", &text_prop);
+	glade_widget_property_get (gentry, "use-entry-buffer", &use_buffer);
 	
-	if (strcmp (text, text_prop))
+	if (use_buffer == FALSE && g_strcmp0 (text, text_prop))
+	{
 		if ((prop = glade_widget_get_property (gentry, "text")))
 			glade_command_set_property (prop, text);
+	}
 }
 
 void
@@ -4906,7 +4923,17 @@ glade_gtk_entry_set_property (GladeWidgetAdaptor *adaptor,
 	GladeWidget *gwidget = glade_widget_get_from_gobject (object);
 	GladeProperty *property = glade_widget_get_property (gwidget, id);
 
-	if (!strcmp (id, "primary-icon-mode"))
+	if (!strcmp (id, "use-entry-buffer"))
+	{
+		glade_widget_property_set_sensitive (gwidget, "text", FALSE, NOT_SELECTED_MSG);
+		glade_widget_property_set_sensitive (gwidget, "buffer", FALSE, NOT_SELECTED_MSG);
+
+		if (g_value_get_boolean (value))
+			glade_widget_property_set_sensitive (gwidget, "buffer", TRUE, NULL);
+		else
+			glade_widget_property_set_sensitive (gwidget, "text", TRUE, NULL);
+	}
+	else if (!strcmp (id, "primary-icon-mode"))
 	{
 		mode = g_value_get_int (value);
 
@@ -4946,6 +4973,18 @@ glade_gtk_entry_set_property (GladeWidgetAdaptor *adaptor,
 			break;
 		}
 	}
+	else if (!strcmp (id, "text"))
+	{
+		g_signal_handlers_block_by_func (object, glade_gtk_entry_changed, gwidget);
+
+		if (g_value_get_string (value))
+			gtk_entry_set_text (GTK_ENTRY (object), g_value_get_string (value));
+		else
+			gtk_entry_set_text (GTK_ENTRY (object), "");
+
+		g_signal_handlers_unblock_by_func (object, glade_gtk_entry_changed, gwidget);
+
+       	}
 	else if (property->klass->version_since_major <= gtk_major_version &&
 		 property->klass->version_since_minor <= (gtk_minor_version + 1))
 		GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
@@ -4964,7 +5003,20 @@ glade_gtk_entry_read_widget (GladeWidgetAdaptor *adaptor,
 
 	/* First chain up and read in all the normal properties.. */
         GWA_GET_CLASS (GTK_TYPE_WIDGET)->read_widget (adaptor, widget, node);
-	
+
+	if (glade_widget_property_original_default (widget, "text") == FALSE)
+	{
+		property = glade_widget_get_property (widget, "text");
+		glade_widget_property_set (widget, "use-entry-buffer", FALSE);
+	}
+	else
+	{
+		property = glade_widget_get_property (widget, "buffer");
+		glade_widget_property_set (widget, "use-entry-buffer", TRUE);
+	}
+
+	glade_property_sync (property);
+
 	if (glade_widget_property_original_default (widget, "primary-icon-name") == FALSE)
 	{
 		property = glade_widget_get_property (widget, "primary-icon-name");
@@ -8625,13 +8677,16 @@ glade_gtk_entry_buffer_changed (GtkTextBuffer *buffer,
 	GladeProperty *prop;
 	gchar *text = NULL;
 	
+	if (glade_widget_superuser ())
+		return;
+
 	g_object_get (buffer, "text", &text, NULL);
 
 	if ((prop = glade_widget_get_property (gbuffy, "text")))
 	{
 		glade_property_get (prop, &text_prop);
 
-		if (text_prop == NULL || text == NULL || strcmp (text, text_prop))
+		if (text_prop == NULL || g_strcmp0 (text, text_prop))
 			glade_command_set_property (prop, text);
 	}
 	g_free (text);
@@ -8649,6 +8704,33 @@ glade_gtk_entry_buffer_post_create (GladeWidgetAdaptor *adaptor,
 	g_signal_connect (object, "notify::text",
 			  G_CALLBACK (glade_gtk_entry_buffer_changed),
 			  gbuffy);
+}
+
+
+void
+glade_gtk_entry_buffer_set_property (GladeWidgetAdaptor *adaptor,
+				     GObject            *object, 
+				     const gchar        *id,
+				     const GValue       *value)
+{
+	GladeWidget *gwidget = glade_widget_get_from_gobject (object);
+	GladeProperty *property = glade_widget_get_property (gwidget, id);
+
+	if (!strcmp (id, "text"))
+	{
+		g_signal_handlers_block_by_func (object, glade_gtk_entry_buffer_changed, gwidget);
+
+		if (g_value_get_string (value))
+			gtk_entry_buffer_set_text (GTK_ENTRY_BUFFER (object), g_value_get_string (value), -1);
+		else
+			gtk_entry_buffer_set_text (GTK_ENTRY_BUFFER (object), "", -1);
+
+		g_signal_handlers_unblock_by_func (object, glade_gtk_entry_buffer_changed, gwidget);
+
+       	}
+	else if (property->klass->version_since_major <= gtk_major_version &&
+		 property->klass->version_since_minor <= (gtk_minor_version + 1))
+		GWA_GET_CLASS (G_TYPE_OBJECT)->set_property (adaptor, object, id, value);
 }
 
 

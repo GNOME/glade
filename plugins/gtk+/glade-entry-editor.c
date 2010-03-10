@@ -86,6 +86,7 @@ glade_entry_editor_load (GladeEditable *editable,
 {
 	GladeEntryEditor *entry_editor = GLADE_ENTRY_EDITOR (editable);
 	GladeImageEditMode icon_mode;
+	gboolean           use_buffer = FALSE;
 	GList *l;
 
 	entry_editor->loading = TRUE;
@@ -129,8 +130,14 @@ glade_entry_editor_load (GladeEditable *editable,
 
 	if (widget)
 	{
-		glade_widget_property_get (widget, "primary-icon-mode", &icon_mode);
-		
+		glade_widget_property_get (widget, "use-entry-buffer", &use_buffer);
+		if (use_buffer)
+			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (entry_editor->buffer_radio), TRUE);
+		else
+			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (entry_editor->text_radio), TRUE);
+
+
+		glade_widget_property_get (widget, "primary-icon-mode", &icon_mode);		
 		switch (icon_mode)
 		{
 		case GLADE_IMAGE_MODE_STOCK:
@@ -147,7 +154,6 @@ glade_entry_editor_load (GladeEditable *editable,
 		}
 
 		glade_widget_property_get (widget, "secondary-icon-mode", &icon_mode);
-		
 		switch (icon_mode)
 		{
 		case GLADE_IMAGE_MODE_STOCK:
@@ -203,6 +209,77 @@ glade_entry_editor_grab_focus (GtkWidget *widget)
 	GladeEntryEditor *entry_editor = GLADE_ENTRY_EDITOR (widget);
 
 	gtk_widget_grab_focus (entry_editor->embed);
+}
+
+
+static void
+text_toggled (GtkWidget        *widget,
+	      GladeEntryEditor *entry_editor)
+{
+	GladeProperty     *property;
+
+	if (entry_editor->loading || !entry_editor->loaded_widget)
+		return;
+
+	if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (entry_editor->text_radio)))
+		return;
+
+	entry_editor->modifying = TRUE;
+
+	glade_command_push_group (_("Setting %s to use static text"), entry_editor->loaded_widget->name);
+
+	property = glade_widget_get_property (entry_editor->loaded_widget, "buffer");
+	glade_command_set_property (property, NULL);
+
+	property = glade_widget_get_property (entry_editor->loaded_widget, "use-entry-buffer");
+	glade_command_set_property (property, FALSE);
+
+	/* Text will only take effect after setting the property under the hood */
+	property = glade_widget_get_property (entry_editor->loaded_widget, "text");
+	glade_command_set_property (property, NULL);
+
+	/* Incase the NULL text didnt change */
+	glade_property_sync (property);
+
+	glade_command_pop_group ();
+
+	entry_editor->modifying = FALSE;
+
+	/* reload buttons and sensitivity and stuff... */
+	glade_editable_load (GLADE_EDITABLE (entry_editor), 
+			     entry_editor->loaded_widget);
+}
+
+static void
+buffer_toggled (GtkWidget        *widget,
+		GladeEntryEditor *entry_editor)
+{
+	GladeProperty     *property;
+
+	if (entry_editor->loading || !entry_editor->loaded_widget)
+		return;
+
+	if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (entry_editor->buffer_radio)))
+		return;
+
+	entry_editor->modifying = TRUE;
+
+	glade_command_push_group (_("Setting %s to use an external buffer"), entry_editor->loaded_widget->name);
+
+	/* Reset the text while still in static text mode */
+	property = glade_widget_get_property (entry_editor->loaded_widget, "text");
+	glade_command_set_property (property, NULL);
+
+	property = glade_widget_get_property (entry_editor->loaded_widget, "use-entry-buffer");
+	glade_command_set_property (property, TRUE);
+
+	glade_command_pop_group ();
+
+	entry_editor->modifying = FALSE;
+
+	/* reload buttons and sensitivity and stuff... */
+	glade_editable_load (GLADE_EDITABLE (entry_editor), 
+			     entry_editor->loaded_widget);
 }
 
 
@@ -438,6 +515,50 @@ glade_entry_editor_new (GladeWidgetAdaptor *adaptor,
 	/* Pack the parent on top... */
 	gtk_box_pack_start (GTK_BOX (entry_editor), GTK_WIDGET (embed), FALSE, FALSE, 0);
 
+
+	/* Text... */
+	str = g_strdup_printf ("<b>%s</b>", _("Text"));
+	label = gtk_label_new (str);
+	gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
+	g_free (str);
+	frame = gtk_frame_new (NULL);
+	gtk_frame_set_label_widget (GTK_FRAME (frame), label);
+	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
+	gtk_box_pack_start (GTK_BOX (entry_editor), frame, FALSE, FALSE, 8);
+
+	alignment = gtk_alignment_new (0.5F, 0.5F, 1.0F, 1.0F);
+	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 6, 0, 12, 0);
+	gtk_container_add (GTK_CONTAINER (frame), alignment);
+
+	table = gtk_table_new (0, 0, FALSE);
+	gtk_container_add (GTK_CONTAINER (alignment), table);
+
+	group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
+
+	/* Text */
+	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "text", FALSE, TRUE);
+	hbox  = gtk_hbox_new (FALSE, 0);
+	entry_editor->text_radio = gtk_radio_button_new (NULL);
+	gtk_box_pack_start (GTK_BOX (hbox), entry_editor->text_radio, FALSE, FALSE, 2);
+	gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
+	table_attach (table, hbox, 0, 0, group);
+	table_attach (table, GTK_WIDGET (eprop), 1, 0, group);
+	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
+
+	/* Buffer */
+	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "buffer", FALSE, TRUE);
+	hbox  = gtk_hbox_new (FALSE, 0);
+	entry_editor->buffer_radio = gtk_radio_button_new_from_widget
+	  (GTK_RADIO_BUTTON (entry_editor->text_radio));
+	gtk_box_pack_start (GTK_BOX (hbox), entry_editor->buffer_radio, FALSE, FALSE, 2);
+	gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
+	table_attach (table, hbox, 0, 1, group);
+	table_attach (table, GTK_WIDGET (eprop), 1, 1, group);
+	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
+
+	g_object_unref (group);
+
+
 	/* Progress... */
 	str = g_strdup_printf ("<b>%s</b>", _("Progress"));
 	label = gtk_label_new (str);
@@ -522,6 +643,7 @@ glade_entry_editor_new (GladeWidgetAdaptor *adaptor,
 	table_attach (table, GTK_WIDGET (eprop), 1, 2, group);
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
 
+	/* Other primary icon related properties */
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "primary-icon-activatable", FALSE, TRUE);
 	table_attach (table, eprop->item_label, 0, 3, group);
 	table_attach (table, GTK_WIDGET (eprop), 1, 3, group);
@@ -530,6 +652,16 @@ glade_entry_editor_new (GladeWidgetAdaptor *adaptor,
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "primary-icon-sensitive", FALSE, TRUE);
 	table_attach (table, eprop->item_label, 0, 4, group);
 	table_attach (table, GTK_WIDGET (eprop), 1, 4, group);
+	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
+
+	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "primary-icon-tooltip-text", FALSE, TRUE);
+	table_attach (table, eprop->item_label, 0, 5, group);
+	table_attach (table, GTK_WIDGET (eprop), 1, 5, group);
+	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
+
+	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "primary-icon-tooltip-markup", FALSE, TRUE);
+	table_attach (table, eprop->item_label, 0, 6, group);
+	table_attach (table, GTK_WIDGET (eprop), 1, 6, group);
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
 
 	g_object_unref (group);
@@ -585,6 +717,7 @@ glade_entry_editor_new (GladeWidgetAdaptor *adaptor,
 	table_attach (table, GTK_WIDGET (eprop), 1, 2, group);
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
 
+	/* Other secondary icon related properties */
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "secondary-icon-activatable", FALSE, TRUE);
 	table_attach (table, eprop->item_label, 0, 3, group);
 	table_attach (table, GTK_WIDGET (eprop), 1, 3, group);
@@ -595,12 +728,27 @@ glade_entry_editor_new (GladeWidgetAdaptor *adaptor,
 	table_attach (table, GTK_WIDGET (eprop), 1, 4, group);
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
 
+	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "secondary-icon-tooltip-text", FALSE, TRUE);
+	table_attach (table, eprop->item_label, 0, 5, group);
+	table_attach (table, GTK_WIDGET (eprop), 1, 5, group);
+	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
+
+	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "secondary-icon-tooltip-markup", FALSE, TRUE);
+	table_attach (table, eprop->item_label, 0, 6, group);
+	table_attach (table, GTK_WIDGET (eprop), 1, 6, group);
+	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
+
 	g_object_unref (group);
 
 	gtk_widget_show_all (GTK_WIDGET (entry_editor));
 
 
 	/* Connect radio button signals... */
+	g_signal_connect (G_OBJECT (entry_editor->text_radio), "toggled",
+			  G_CALLBACK (text_toggled), entry_editor);
+	g_signal_connect (G_OBJECT (entry_editor->buffer_radio), "toggled",
+			  G_CALLBACK (buffer_toggled), entry_editor);
+
 	g_signal_connect (G_OBJECT (entry_editor->primary_stock_radio), "toggled",
 			  G_CALLBACK (primary_stock_toggled), entry_editor);
 	g_signal_connect (G_OBJECT (entry_editor->primary_icon_name_radio), "toggled",
