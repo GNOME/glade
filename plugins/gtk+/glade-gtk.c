@@ -8617,6 +8617,44 @@ glade_gtk_label_create_editable (GladeWidgetAdaptor  *adaptor,
 
 /* ----------------------------- GtkTextBuffer ------------------------------ */
 static void
+glade_gtk_entry_buffer_changed (GtkTextBuffer *buffer, 
+				GParamSpec    *pspec,
+				GladeWidget  *gbuffy)
+{
+	const gchar *text_prop = NULL;
+	GladeProperty *prop;
+	gchar *text = NULL;
+	
+	g_object_get (buffer, "text", &text, NULL);
+
+	if ((prop = glade_widget_get_property (gbuffy, "text")))
+	{
+		glade_property_get (prop, &text_prop);
+
+		if (text_prop == NULL || text == NULL || strcmp (text, text_prop))
+			glade_command_set_property (prop, text);
+	}
+	g_free (text);
+}
+
+void
+glade_gtk_entry_buffer_post_create (GladeWidgetAdaptor *adaptor,
+				    GObject            *object, 
+				    GladeCreateReason   reason)
+{
+	GladeWidget *gbuffy;
+	
+	gbuffy = glade_widget_get_from_gobject (object);
+	
+	g_signal_connect (object, "notify::text",
+			  G_CALLBACK (glade_gtk_entry_buffer_changed),
+			  gbuffy);
+}
+
+
+
+/* ----------------------------- GtkTextBuffer ------------------------------ */
+static void
 glade_gtk_text_buffer_changed (GtkTextBuffer *buffer, GladeWidget *gbuffy)
 {
 	const gchar *text_prop = NULL;
@@ -11242,6 +11280,7 @@ glade_gtk_cell_layout_launch_editor (GObject  *layout)
 					_("Pixbuf"), GTK_TYPE_CELL_RENDERER_PIXBUF,
 					_("Progress"), GTK_TYPE_CELL_RENDERER_PROGRESS,
 					_("Toggle"), GTK_TYPE_CELL_RENDERER_TOGGLE,
+					_("Spinner"), GTK_TYPE_CELL_RENDERER_SPINNER,
 					NULL);
 
 	g_signal_connect (editor, "get-display-name", G_CALLBACK (glade_gtk_cell_layout_get_display_name), NULL);
@@ -11322,6 +11361,7 @@ glade_gtk_treeview_launch_editor (GObject  *treeview)
 					_("Pixbuf"), GTK_TYPE_CELL_RENDERER_PIXBUF,
 					_("Progress"), GTK_TYPE_CELL_RENDERER_PROGRESS,
 					_("Toggle"), GTK_TYPE_CELL_RENDERER_TOGGLE,
+					_("Spinner"), GTK_TYPE_CELL_RENDERER_SPINNER,
 					NULL);
 
 	g_signal_connect (editor, "get-display-name", G_CALLBACK (glade_gtk_cell_layout_get_display_name), NULL);
