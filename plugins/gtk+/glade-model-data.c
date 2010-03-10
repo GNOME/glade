@@ -340,15 +340,10 @@ update_and_focus_data_tree_idle (GladeEditorProperty *eprop)
 	eprop_data->want_focus = TRUE;
 	eprop_data->want_next_focus = TRUE;
 	
-	g_value_init (&value, GLADE_TYPE_MODEL_DATA_TREE);
-	g_value_take_boxed (&value, eprop_data->pending_data_tree);
-	glade_editor_property_commit (eprop, &value);
-	g_value_unset (&value);
+	update_data_tree_idle (eprop);
 
 	/* XXX Have to load it regardless if it changed, this is a slow and redundant way... */
 	glade_editor_property_load (eprop, eprop->property);
-
-	eprop_data->pending_data_tree = NULL;
 
 	eprop_data->want_next_focus = FALSE;
 	eprop_data->want_focus = FALSE;
@@ -915,7 +910,7 @@ eprop_model_generate_column (GladeEditorProperty *eprop,
 	{
 		/* Spin renderer */
 		renderer = gtk_cell_renderer_spin_new ();
-		adjustment = (GtkAdjustment *)gtk_adjustment_new (0, -G_MAXDOUBLE, G_MAXDOUBLE, 100, 100, 100);
+		adjustment = (GtkAdjustment *)gtk_adjustment_new (0, -G_MAXDOUBLE, G_MAXDOUBLE, 100, 100, 0);
 		g_object_set (G_OBJECT (renderer), 
 			      "editable", TRUE, 
 			      "adjustment", adjustment, 
