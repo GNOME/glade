@@ -1346,7 +1346,7 @@ confirm_close_project (GladeWindow *window, GladeProject *project)
 	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER);
 
 	gtk_dialog_add_buttons (GTK_DIALOG (dialog),
-				_("_Close without Saving"), GTK_RESPONSE_NO,
+				_("Close _without Saving"), GTK_RESPONSE_NO,
 				GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 				GTK_STOCK_SAVE, GTK_RESPONSE_YES, NULL);
 
