@@ -1,3 +1,9 @@
+2010-03-17  Christian Persch  <chpe@gnome.org>
+
+	* gladeui/glade-xml-utils.c: Save glade files with UTF-8 encoding
+	This avoid putting character entities for non-ASCII characters in the
+	extractable strings. Bug #596205.
+
 2010-03-11  Aaron Brown  <aaron.j.brown@hotmail.com>
 
 	* src/glade-window.c: Changed "Close without saving" acelerator key

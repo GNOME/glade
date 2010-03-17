@@ -852,7 +852,7 @@ glade_xml_doc_save (GladeXmlDoc *doc_in, const gchar *full_path)
 	xmlDocPtr doc = (xmlDocPtr) doc_in;
 
 	xmlKeepBlanksDefault (0);
-	return xmlSaveFormatFile (full_path, doc, 1);
+	return xmlSaveFormatFileEnc (full_path, doc, "UTF-8", 1);
 }
 
 void
