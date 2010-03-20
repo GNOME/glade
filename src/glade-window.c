@@ -60,6 +60,7 @@
 #define CONFIG_KEY_WIDTH            "width"
 #define CONFIG_KEY_HEIGHT           "height"
 #define CONFIG_KEY_DETACHED         "detached"
+#define CONFIG_KEY_MAXIMIZED        "maximized"
 
 #define GLADE_WINDOW_GET_PRIVATE(object) (G_TYPE_INSTANCE_GET_PRIVATE ((object),  \
 					  GLADE_TYPE_WINDOW,                      \
@@ -77,6 +78,7 @@ typedef struct {
 	GtkWidget	    *paned;		/* GtkPaned in the main window containing which part */
 	gboolean	     first_child;	/* whether this widget is packed with gtk_paned_pack1() */
 	gboolean	     detached;		/* whether this widget should be floating */
+	gboolean	     maximized;		/* whether this widget should be maximized */
 	char		    *title;		/* window title, untranslated */
 	char		    *id;		/* id to use in config file */
 	GdkRectangle         window_pos;	/* x and y == G_MININT means unset */
@@ -1777,12 +1779,17 @@ on_dock_resized (GtkWidget         *window,
 		 GdkEventConfigure *event,
 		 ToolDock          *dock)
 {
-	dock->window_pos.width = event->width;
-	dock->window_pos.height = event->height;
+	GdkWindow *gdk_window = gtk_widget_get_window (GTK_WIDGET (gtk_widget_get_toplevel (dock->widget)));
+	dock->maximized = gdk_window_get_state (gdk_window) & GDK_WINDOW_STATE_MAXIMIZED;
 
-	gtk_window_get_position (GTK_WINDOW (window),
-				 &dock->window_pos.x,
-				 &dock->window_pos.y);
+	if(!dock->maximized) {
+		dock->window_pos.width = event->width;
+		dock->window_pos.height = event->height;
+
+		gtk_window_get_position (GTK_WINDOW (window),
+					 &dock->window_pos.x,
+					 &dock->window_pos.y);
+	}
 
 	return FALSE;
 }
@@ -2704,14 +2711,24 @@ glade_window_configure_event (GtkWidget         *widget,
 	GladeWindow *window = GLADE_WINDOW (widget);
 	gboolean retval;
 
-	window->priv->position.width = event->width;
-	window->priv->position.height = event->height;
+	gboolean is_maximized;
+	GdkWindow *gdk_window = gtk_widget_get_window (GTK_WIDGET (window));
+	is_maximized = gdk_window_get_state (gdk_window) & GDK_WINDOW_STATE_MAXIMIZED;
+
+	if (!is_maximized)
+	{
+		window->priv->position.width = event->width;
+		window->priv->position.height = event->height;
+	}
 
 	retval = GTK_WIDGET_CLASS(glade_window_parent_class)->configure_event (widget, event);
 
-	gtk_window_get_position (GTK_WINDOW (widget),
-				 &window->priv->position.x,
-				 &window->priv->position.y);
+	if (!is_maximized)
+	{
+		gtk_window_get_position (GTK_WINDOW (widget),
+					 &window->priv->position.x,
+					 &window->priv->position.y);
+	}
 
 	return retval;
 }
@@ -2721,15 +2738,17 @@ key_file_set_window_position (GKeyFile     *config,
 			      GdkRectangle *position,
 			      const char   *id,
 			      gboolean      detached,
-			      gboolean      save_detached)
+			      gboolean      save_detached,
+			      gboolean      maximized)
 {
-	char *key_x, *key_y, *key_width, *key_height, *key_detached;
+	char *key_x, *key_y, *key_width, *key_height, *key_detached, *key_maximized;
 
 	key_x = g_strdup_printf ("%s-" CONFIG_KEY_X, id);
 	key_y = g_strdup_printf ("%s-" CONFIG_KEY_Y, id);
 	key_width = g_strdup_printf ("%s-" CONFIG_KEY_WIDTH, id);
 	key_height = g_strdup_printf ("%s-" CONFIG_KEY_HEIGHT, id);
 	key_detached = g_strdup_printf ("%s-" CONFIG_KEY_DETACHED, id);
+	key_maximized = g_strdup_printf ("%s-" CONFIG_KEY_MAXIMIZED, id);
 
 	/* we do not want to save position of docks which
 	 * were never detached */
@@ -2749,6 +2768,11 @@ key_file_set_window_position (GKeyFile     *config,
 		g_key_file_set_boolean (config, CONFIG_GROUP_WINDOWS,
 					key_detached, detached);
 
+	g_key_file_set_boolean (config, CONFIG_GROUP_WINDOWS,
+				key_maximized, maximized);
+
+
+	g_free (key_maximized);
 	g_free (key_detached);
 	g_free (key_height);
 	g_free (key_width);
@@ -2765,11 +2789,14 @@ save_windows_config (GladeWindow *window, GKeyFile *config)
 	{
 		ToolDock *dock = &window->priv->docks[i];
 		key_file_set_window_position (config, &dock->window_pos, dock->id, 
-					      dock->detached, TRUE);
+					      dock->detached, TRUE, dock->maximized);
 	}
 
+	GdkWindow *gdk_window = gtk_widget_get_window (GTK_WIDGET (window));
+	gboolean maximized = gdk_window_get_state (gdk_window) & GDK_WINDOW_STATE_MAXIMIZED;
+
 	key_file_set_window_position (config, &window->priv->position, 
-				      "main", FALSE, FALSE);
+				      "main", FALSE, FALSE, maximized);
 }
 
 static void 
@@ -2783,7 +2810,7 @@ static void
 glade_window_config_save (GladeWindow *window)
 {
 	GKeyFile *config = glade_app_get_config ();
-	
+
 	save_windows_config (window, config);
 	
 	/* Save main window paned positions */
@@ -2810,15 +2837,17 @@ static void
 key_file_get_window_position (GKeyFile     *config,
 			      const char   *id,
 			      GdkRectangle *pos,
-			      gboolean     *detached)
+			      gboolean     *detached,
+			      gboolean     *maximized)
 {
-	char *key_x, *key_y, *key_width, *key_height, *key_detached;
+	char *key_x, *key_y, *key_width, *key_height, *key_detached, *key_maximized;
 
 	key_x = g_strdup_printf ("%s-" CONFIG_KEY_X, id);
 	key_y = g_strdup_printf ("%s-" CONFIG_KEY_Y, id);
 	key_width = g_strdup_printf ("%s-" CONFIG_KEY_WIDTH, id);
 	key_height = g_strdup_printf ("%s-" CONFIG_KEY_HEIGHT, id);
 	key_detached = g_strdup_printf ("%s-" CONFIG_KEY_DETACHED, id);
+	key_maximized = g_strdup_printf ("%s-" CONFIG_KEY_MAXIMIZED, id);
 
 	pos->x = key_file_get_int (config, CONFIG_GROUP_WINDOWS, key_x, pos->x);
 	pos->y = key_file_get_int (config, CONFIG_GROUP_WINDOWS, key_y, pos->y);
@@ -2828,11 +2857,16 @@ key_file_get_window_position (GKeyFile     *config,
 	if (detached && g_key_file_has_key (config, CONFIG_GROUP_WINDOWS, key_detached, NULL))
 		*detached = g_key_file_get_boolean (config, CONFIG_GROUP_WINDOWS, key_detached, NULL);
 
+	if (maximized && g_key_file_has_key (config, CONFIG_GROUP_WINDOWS, key_maximized, NULL))
+		*maximized = g_key_file_get_boolean (config, CONFIG_GROUP_WINDOWS, key_maximized, NULL);
+	
+
 	g_free (key_x);
 	g_free (key_y);
 	g_free (key_width);
 	g_free (key_height);
 	g_free (key_detached);
+	g_free (key_maximized);
 }
 
 static void
@@ -2842,7 +2876,10 @@ glade_window_set_initial_size (GladeWindow *window, GKeyFile *config)
 		G_MININT, G_MININT, GLADE_WINDOW_DEFAULT_WIDTH, GLADE_WINDOW_DEFAULT_HEIGHT
 	};
 
-	key_file_get_window_position (config, "main", &position, NULL);
+	gboolean maximized;
+	key_file_get_window_position (config, "main", &position, NULL, &maximized);
+	if(maximized)
+		gtk_window_maximize (GTK_WINDOW (window));
 
 	gtk_window_set_default_size (GTK_WINDOW (window), position.width, position.height);
 
@@ -2876,6 +2913,7 @@ show_dock_first_time (GladeWindow    *window,
 {
 	GKeyFile *config;
 	int detached = -1;
+	gboolean maximized;
 	GtkAction *action;
 	ToolDock *dock;
 
@@ -2885,10 +2923,12 @@ show_dock_first_time (GladeWindow    *window,
 	dock = &window->priv->docks[dock_type];
 	config = glade_app_get_config ();
 
-	key_file_get_window_position (config, dock->id, &dock->window_pos, &detached);
+	key_file_get_window_position (config, dock->id, &dock->window_pos, &detached, &maximized);
 
 	if (detached == 1)
 		gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action), FALSE);
+
+	if (maximized) gtk_window_maximize (GTK_WINDOW (gtk_widget_get_toplevel (dock->widget)));
 }
 
 static void
@@ -2910,6 +2950,7 @@ setup_dock (ToolDock   *dock,
 	dock->paned = paned;
 	dock->first_child = first_child;
 	dock->detached = FALSE;
+	dock->maximized = FALSE;
 }
 
 static void
