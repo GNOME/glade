@@ -281,7 +281,7 @@ typedef struct {
 	guint message_id;
 } FlashInfo;
 
-static const guint32 flash_length = 3000;
+static const guint flash_length = 3;
 
 static gboolean
 remove_message_timeout (FlashInfo * fi) 
@@ -320,7 +320,7 @@ glade_util_flash_message (GtkWidget *statusbar, guint context_id, gchar *format,
 	fi->context_id = context_id;	
 	fi->message_id = gtk_statusbar_push (fi->statusbar, fi->context_id, message);
 
-	g_timeout_add (flash_length, (GSourceFunc) remove_message_timeout, fi);
+	g_timeout_add_seconds (flash_length, (GtkFunction) remove_message_timeout, fi);
 
 	g_free (message);
 }
