@@ -5,6 +5,8 @@
 
 	* gladeui/glade-widget.c: Call glade_signal_write() with the current project format, fixes bug 600031.
 
+	* plugins/gtk+/gtk+.xml.in: Flag 'save-always' for 'can-focus' property on GtkEntry.
+
 2010-03-20  Javier Jardón <jjardon@gnome.org>
 
 	* gladeui/glade-builtins.c: Use g_timeout_add_seconds() instead of g_timeout_add()
