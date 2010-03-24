@@ -3838,8 +3838,9 @@ glade_widget_write_placeholder (GladeWidget     *parent,
 }
 
 typedef struct {
-	GladeXmlContext *context;
-	GladeXmlNode    *node;
+	GladeXmlContext    *context;
+	GladeXmlNode       *node;
+	GladeProjectFormat  fmt;
 } WriteSignalsInfo;
 
 static void
@@ -3857,6 +3858,7 @@ glade_widget_adaptor_write_signals (gpointer key,
 	{
 		GladeSignal *signal = g_ptr_array_index (signals, i);
 		glade_signal_write (signal,
+				    info->fmt,
 				    info->context,
 				    info->node);
 	}
@@ -3871,6 +3873,8 @@ glade_widget_write_signals (GladeWidget     *widget,
 
 	info.context = context;
 	info.node = node;
+	info.fmt = glade_project_get_format (widget->project);
+
 	g_hash_table_foreach (widget->signals,
 			      glade_widget_adaptor_write_signals,
 			      &info);

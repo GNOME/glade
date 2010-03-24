@@ -120,15 +120,17 @@ glade_signal_clone (const GladeSignal *signal)
 /**
  * glade_signal_write:
  * @signal: The #GladeSignal
+ * @fmt: The #GladeProjectFormat to write the signal for
  * @context: A #GladeXmlContext
  * @node: A #GladeXmlNode
  *
  * Writes @signal to @node
  */
 void
-glade_signal_write (GladeSignal     *signal,
-		    GladeXmlContext *context,
-		    GladeXmlNode    *node)
+glade_signal_write (GladeSignal       *signal,
+		    GladeProjectFormat fmt,
+		    GladeXmlContext   *context,
+		    GladeXmlNode      *node)
 {
 	GladeXmlNode *signal_node;
 	gchar        *name;
@@ -138,7 +140,9 @@ glade_signal_write (GladeSignal     *signal,
 	 */
 
 	name = g_strdup (signal->name);
-	glade_util_replace (name, '-', '_');
+
+	if (fmt == GLADE_PROJECT_FORMAT_LIBGLADE)
+		glade_util_replace (name, '-', '_');
 
 	/* Now dump the node values... */
 	signal_node = glade_xml_node_new (context, GLADE_XML_TAG_SIGNAL);

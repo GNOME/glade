@@ -1,3 +1,10 @@
+2010-03-24  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-signal.[ch]: Broke api of glade_signal_write(), this api should never
+	  be called outside of the Glade core so its a soft api break.
+
+	* gladeui/glade-widget.c: Call glade_signal_write() with the current project format, fixes bug 600031.
+
 2010-03-20  Javier Jardón <jjardon@gnome.org>
 
 	* gladeui/glade-builtins.c: Use g_timeout_add_seconds() instead of g_timeout_add()
