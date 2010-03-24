@@ -1222,8 +1222,16 @@ embedded in another object</_tooltip>
 
     </glade-widget-class>
 
-    <glade-widget-class name="GtkHBox" generic-name="hbox" _title="Horizontal Box"/>
-    <glade-widget-class name="GtkVBox" generic-name="vbox" _title="Vertical Box"/>
+    <glade-widget-class name="GtkHBox" generic-name="hbox" _title="Horizontal Box">
+      <properties>
+	<property id="orientation" disabled="True"/>
+      </properties>
+    </glade-widget-class>
+    <glade-widget-class name="GtkVBox" generic-name="vbox" _title="Vertical Box">
+      <properties>
+	<property id="orientation" disabled="True"/>
+      </properties>
+    </glade-widget-class>
 
     <glade-widget-class name="GtkTable" generic-name="table" _title="Table" fixed="True">
       <post-create-function>glade_gtk_table_post_create</post-create-function>
@@ -1290,9 +1298,16 @@ embedded in another object</_tooltip>
       </packing-properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkHPaned" generic-name="hpaned" _title="Horizontal Panes"/>
-
-    <glade-widget-class name="GtkVPaned" generic-name="vpaned" _title="Vertical Panes"/>
+    <glade-widget-class name="GtkHPaned" generic-name="hpaned" _title="Horizontal Panes">
+      <properties>
+	<property id="orientation" disabled="True"/>
+      </properties>
+    </glade-widget-class>
+    <glade-widget-class name="GtkVPaned" generic-name="vpaned" _title="Vertical Panes">
+      <properties>
+	<property id="orientation" disabled="True"/>
+      </properties>
+    </glade-widget-class>
   
     <glade-widget-class name="GtkNotebook" generic-name="notebook" _title="Notebook">
       <post-create-function>glade_gtk_notebook_post_create</post-create-function>
@@ -1378,9 +1393,16 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
     
-    <glade-widget-class name="GtkHScale" generic-name="hscale" _title="Horizontal Scale"/>
-    
-    <glade-widget-class name="GtkVScale" generic-name="vscale" _title="Vertical Scale"/>
+    <glade-widget-class name="GtkHScale" generic-name="hscale" _title="Horizontal Scale">
+      <properties>
+	<property id="orientation" disabled="True"/>
+      </properties>
+    </glade-widget-class>
+    <glade-widget-class name="GtkVScale" generic-name="vscale" _title="Vertical Scale">
+      <properties>
+	<property id="orientation" disabled="True"/>
+      </properties>
+    </glade-widget-class>
 
     <glade-widget-class name="GtkCalendar" generic-name="calendar" _title="Calendar">
       <properties>
@@ -1411,9 +1433,16 @@ embedded in another object</_tooltip>
 
     </glade-widget-class>
     
-    <glade-widget-class name="GtkHScrollbar" generic-name="hscrollbar" _title="Horizontal Scrollbar"/>
-
-    <glade-widget-class name="GtkVScrollbar" generic-name="vscrollbar" _title="Vertical Scrollbar"/>
+    <glade-widget-class name="GtkHScrollbar" generic-name="hscrollbar" _title="Horizontal Scrollbar">
+      <properties>
+	<property id="orientation" disabled="True"/>
+      </properties>
+    </glade-widget-class>
+    <glade-widget-class name="GtkVScrollbar" generic-name="vscrollbar" _title="Vertical Scrollbar">
+      <properties>
+	<property id="orientation" disabled="True"/>
+      </properties>
+    </glade-widget-class>
 
     <glade-widget-class name="GtkButtonBox" _title="Button Box">
       <properties>
@@ -1430,27 +1459,38 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
     
-    <glade-widget-class name="GtkHButtonBox" generic-name="hbuttonbox" _title="Horizontal Button Box"/>
-
-    <glade-widget-class name="GtkVButtonBox" generic-name="vbuttonbox" _title="Vertical Button Box"/>
+    <glade-widget-class name="GtkHButtonBox" generic-name="hbuttonbox" _title="Horizontal Button Box">
+      <properties>
+	<property id="orientation" disabled="True"/>
+      </properties>
+    </glade-widget-class>
+    <glade-widget-class name="GtkVButtonBox" generic-name="vbuttonbox" _title="Vertical Button Box">
+      <properties>
+	<property id="orientation" disabled="True"/>
+      </properties>
+    </glade-widget-class>
 
     <glade-widget-class name="GtkHSeparator" generic-name="hseparator" _title="Horizontal Separator">
-      
+      <properties>
+	<property id="orientation" disabled="True"/>
+      </properties>
       <packing-defaults>
 	<parent-class name="GtkVBox">
 	  <child-property id="expand" default="false"/>
 	</parent-class>
       </packing-defaults>
-
     </glade-widget-class>
-
     <glade-widget-class name="GtkVSeparator" generic-name="vseparator" _title="Vertical Separator">
+      <properties>
+	<property id="orientation" disabled="True"/>
+      </properties>
       <packing-defaults>
 	<parent-class name="GtkHBox">
 	  <child-property id="expand" default="false"/>
 	</parent-class>
       </packing-defaults>
     </glade-widget-class>
+
     <glade-widget-class name="GtkStatusbar" generic-name="statusbar" _title="Status Bar">
       <properties>
 	<property id="size" disabled="True" />
@@ -1659,9 +1699,16 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkHRuler" generic-name="hruler" _title="Horizontal Ruler"/>
-    
-    <glade-widget-class name="GtkVRuler" generic-name="vruler" _title="Vertical Ruler"/>
+    <glade-widget-class name="GtkHRuler" generic-name="hruler" _title="Horizontal Ruler">
+      <properties>
+	<property id="orientation" disabled="True"/>
+      </properties>
+    </glade-widget-class>
+    <glade-widget-class name="GtkVRuler" generic-name="vruler" _title="Vertical Ruler">
+      <properties>
+	<property id="orientation" disabled="True"/>
+      </properties>
+    </glade-widget-class>
 
     <glade-widget-class name="GtkCombo" generic-name="combo" _title="Combo" deprecated="True" libglade-only="True">
       <post-create-function>glade_gtk_combo_post_create</post-create-function>

@@ -1,3 +1,14 @@
+2010-03-25  Federico Mena Quintero  <federico@novell.com>
+
+	* plugins/gtk+/gtk+.xml.in: bgo#594231 - Fix the orientation of
+	GtkVBox and other vertically-oriented widgets.  We disable the
+	"orientation" property on those widgets, so that we can use the
+	values that GTK+ actually provides.  GTK+ does not currently
+	report the right defaults for those widgets, so the final values
+	were being overwritten - so vboxes appeared horizontal.  In the
+	future we will make GtkBox et al instantiable so the user can
+	really have orientable containers.
+
 2010-03-24  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-signal.[ch]: Broke api of glade_signal_write(), this api should never
