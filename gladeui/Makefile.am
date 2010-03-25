@@ -91,7 +91,6 @@ libgladeuiinclude_HEADERS = \
 	glade-editor-property.h \
 	glade-signal-editor.h \
 	glade-palette.h \
-	glade-palette-item.h \
 	glade-design-layout.h \
 	glade-design-view.h \
 	glade-widget.h \
