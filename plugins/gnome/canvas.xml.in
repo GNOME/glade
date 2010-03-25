@@ -42,8 +42,16 @@
         <property id="scroll-y2" disabled="True"/>
         <property id="pixels-per-unit" disabled="True"/>
         <property id="selection-mode" _name="Selection Mode">
+	  <parameter-spec>
+	    <type>GParamEnum</type>
+	    <value-type>GnomeIconListMode</value-type>
+	  </parameter-spec>
 	  <_tooltip>The selection mode</_tooltip>
-	  <spec>glade_gnome_icon_list_selection_mode_spec</spec>
+          <displayable-values>
+            <value id="GNOME_ICON_LIST_ICONS" _name="List Icons"/>
+            <value id="GNOME_ICON_LIST_TEXT_BELOW" _name="Text Below"/>
+            <value id="GNOME_ICON_LIST_TEXT_RIGHT" _name="Text Right"/>
+          </displayable-values>
 	</property>
         <property id="icon-width" _name="Icon Width" default="78">
           <_tooltip>The width of each icon</_tooltip>

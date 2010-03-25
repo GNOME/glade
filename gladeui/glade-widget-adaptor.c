@@ -701,6 +701,7 @@ glade_widget_adaptor_finalize (GObject *object)
 	if (adaptor->generic_name) g_free (adaptor->generic_name);
 	if (adaptor->title)        g_free (adaptor->title);
 	if (adaptor->icon_name)    g_free (adaptor->icon_name);
+	if (adaptor->missing_icon) g_free (adaptor->missing_icon);
 
 	if (adaptor->actions)
 	{
@@ -2014,17 +2015,6 @@ create_icon_name_for_object_class (const gchar *class_name,
 		name = g_strdup_printf ("widget-%s-%s", icon_prefix, generic_name);
 	else
 		name = g_strdup (icon_name);
-		
-	/* check if icon is available */
-	if (!gtk_icon_theme_has_icon (gtk_icon_theme_get_default (), name))
-	{
-		GladeWidgetAdaptor *parent = glade_widget_adaptor_get_parent_adaptor_by_type (class_type);
-		g_warning ("No icon named '%s' was found for object class '%s'.", name, class_name);
-		g_free (name);
-		
-		name = g_strdup ((parent && parent->icon_name) ?
-				 parent->icon_name : DEFAULT_ICON_NAME);
-	}
 	
 	return name;
 }
@@ -2097,7 +2087,9 @@ glade_widget_adaptor_from_catalog (GladeCatalog         *catalog,
 	gchar              *name, *generic_name, *icon_name, *adaptor_icon_name, *adaptor_name, *func_name;
 	gchar              *title, *translated_title, *parent_name;
 	GType               object_type, adaptor_type, parent_type;
+	gchar              *missing_icon = NULL;
 	GWADerivedClassData data;
+
 	
 	if (!glade_xml_node_verify (class_node, GLADE_TAG_GLADE_WIDGET_CLASS))
 	{
@@ -2176,11 +2168,28 @@ glade_widget_adaptor_from_catalog (GladeCatalog         *catalog,
 	icon_name    = glade_xml_get_property_string (class_node, GLADE_TAG_ICON_NAME);
 	
 	/* get a suitable icon name for adaptor */
-	adaptor_icon_name = create_icon_name_for_object_class (name,
-							       object_type,
-							       icon_name,
-							       glade_catalog_get_icon_prefix (catalog),
-							       generic_name);
+	adaptor_icon_name = 
+		create_icon_name_for_object_class (name,
+						   object_type,
+						   icon_name,
+						   glade_catalog_get_icon_prefix (catalog),
+						   generic_name);
+
+		
+	/* check if icon is available (a null icon-name is an abstract class) */
+	if (adaptor_icon_name && 
+	    !gtk_icon_theme_has_icon (gtk_icon_theme_get_default (), adaptor_icon_name))
+	{
+		GladeWidgetAdaptor *parent = 
+			glade_widget_adaptor_get_parent_adaptor_by_type (object_type);
+
+		/* Save the desired name */
+		missing_icon = adaptor_icon_name;
+		
+		adaptor_icon_name = g_strdup ((parent && parent->icon_name) ?
+					      parent->icon_name : DEFAULT_ICON_NAME);
+
+	}
 
 	adaptor = g_object_new (adaptor_type, 
 				"type", object_type,
@@ -2189,6 +2198,8 @@ glade_widget_adaptor_from_catalog (GladeCatalog         *catalog,
 				"generic-name", generic_name,
 				"icon-name", adaptor_icon_name,
 				NULL);
+
+	adaptor->missing_icon = missing_icon;
 				
 	g_free (generic_name);
 	g_free (icon_name);

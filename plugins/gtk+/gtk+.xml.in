@@ -1037,6 +1037,17 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkScaleButton" generic-name="scalebutton" _title="Scale Button" since="2.12">
       <properties>
         <property id="orientation" since="2.14"/>
+      	<property id="size">
+  	  <displayable-values>
+	    <value id="GTK_ICON_SIZE_INVALID" _name="Invalid"/>
+	    <value id="GTK_ICON_SIZE_MENU" _name="Menu"/>
+	    <value id="GTK_ICON_SIZE_SMALL_TOOLBAR" _name="Small Toolbar"/>
+	    <value id="GTK_ICON_SIZE_LARGE_TOOLBAR" _name="Large Toolbar"/>
+	    <value id="GTK_ICON_SIZE_BUTTON" _name="Button"/>
+	    <value id="GTK_ICON_SIZE_DND" _name="Drag &amp; Drop"/>
+	    <value id="GTK_ICON_SIZE_DIALOG" _name="Dialog"/>
+	  </displayable-values>
+	</property>
       </properties>
     </glade-widget-class>
 
@@ -3329,7 +3340,18 @@ embedded in another object</_tooltip>
 
 
     <glade-widget-class name="GtkTextTag" generic-name="texttag" _title="Text Tag" 
-			libglade-unsupported="True" toplevel="True"/>
+			libglade-unsupported="True" toplevel="True">
+      <properties>
+        <property id="direction">
+  	  <displayable-values>
+	    <value id="GTK_TEXT_DIR_NONE" _name="None"/>
+	    <value id="GTK_TEXT_DIR_LTR" _name="Left to Right"/>
+	    <value id="GTK_TEXT_DIR_RTL" _name="Right to Left"/>
+	  </displayable-values>
+	</property>
+      </properties>
+    </glade-widget-class>
+
     <glade-widget-class name="GtkTextTagTable" generic-name="texttagtable" _title="Text Tag Table" 
 			libglade-unsupported="True" toplevel="True"/>
 

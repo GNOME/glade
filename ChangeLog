@@ -7,6 +7,16 @@
 	* plugins/gtk+/glade-gtk.c: Fix some remaining crashes from the GSEAL() stuff (GtkBoxChild
 	  invalid type dereferencing).
 
+	* plugins/gtk+/gtk+.xml.in, plugins/gnome/gnome.xml.in, plugins/gnome/canvas.xml.in,
+	plugins/gnome/gtkunixprint.xml.in: Added missing displayable values and rooted out latest
+	resulting startup warnings for GTK+ 2.20.
+
+	* gladeui/glade-widget-adaptor.[ch]: Save the original missing icon name if the icon was
+	  not found.
+
+	* gladeui/glade-catalog.c: Print a summery of all missing icon names for thier classes
+	  (cleans up start up warnings).
+
 2010-03-25  Federico Mena Quintero  <federico@novell.com>
 
 	* plugins/gtk+/gtk+.xml.in: bgo#594231 - Fix the orientation of

@@ -574,7 +574,8 @@ struct _GladeWidgetAdaptor
 				    * button2, buttonX ..
 				    */
 				    
-	gchar       *icon_name;    /* icon name for widget class */
+	gchar       *icon_name;    /* icon name to use for widget class */
+	gchar       *missing_icon; /* the name of the missing icon if it was not found */
 
 	gchar       *title;        /* Translated class name used in the UI */
 
