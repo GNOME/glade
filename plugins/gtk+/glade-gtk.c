@@ -2014,7 +2014,7 @@ glade_gtk_box_get_first_blank (GtkBox *box)
 	     child && child->data;
 	     child = child->next, position++)
 	{
-		GtkWidget *widget = ((GtkBoxChild *) (child->data))->widget;
+		GtkWidget *widget = child->data;
 
 		if ((gwidget = glade_widget_get_from_gobject (widget)) != NULL)
 		{
@@ -2213,7 +2213,7 @@ glade_gtk_box_add_child (GladeWidgetAdaptor *adaptor,
 		
 		for (l = g_list_last (children); l; l = g_list_previous (l))
 		{
-			GtkWidget *child_widget = ((GtkBoxChild *) (l->data))->widget;			
+			GtkWidget *child_widget = l->data;			
 			if (GLADE_IS_PLACEHOLDER (child_widget))
 			{
 				gtk_container_remove (GTK_CONTAINER (box), child_widget);

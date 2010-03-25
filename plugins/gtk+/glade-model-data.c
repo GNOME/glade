@@ -335,7 +335,6 @@ static gboolean
 update_and_focus_data_tree_idle (GladeEditorProperty *eprop)
 {
 	GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
-	GValue               value = { 0, };
 
 	eprop_data->want_focus = TRUE;
 	eprop_data->want_next_focus = TRUE;

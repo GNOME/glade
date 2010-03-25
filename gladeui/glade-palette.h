@@ -57,7 +57,8 @@ struct _GladePaletteClass
 {
 	GtkVBoxClass parent_class;
 
-	void (*toggled)    (GladePalette *palette);
+	void    (* toggled)    (GladePalette *palette);
+	void    (* refresh)    (GladePalette *palette);
 };
 
 typedef enum

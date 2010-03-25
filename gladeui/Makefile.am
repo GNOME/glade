@@ -26,9 +26,6 @@ libgladeui_1_la_SOURCES = \
 	glade-inspector.c \
 	glade-xml-utils.c \
 	glade-palette.c \
-	glade-palette-item.c \
-	glade-palette-box.c \
-	glade-palette-expander.c \
 	glade-design-layout.c \
 	glade-design-view.c \
 	glade-named-icon-chooser-dialog.c \
@@ -55,9 +52,6 @@ libgladeui_1_la_SOURCES = \
 	glade-app.c \
 	glade-fixed.c \
 	glade-base-editor.c \
-	glade-palette-item.h \
-	glade-palette-box.h \
-	glade-palette-expander.h \
 	glade-popup.h \
 	glade-marshallers.h \
 	glade-accumulators.h \

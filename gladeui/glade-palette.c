@@ -41,13 +41,11 @@
 #include "glade.h"
 #include "glade-app.h"
 #include "glade-palette.h"
-#include "glade-palette-item.h"
-#include "glade-palette-box.h"
-#include "glade-palette-expander.h"
 #include "glade-catalog.h"
 #include "glade-project.h"
 #include "glade-widget.h"
 #include "glade-widget-adaptor.h"
+#include "glade-popup.h"
 
 #include <glib/gi18n-lib.h>
 #include <gdk/gdk.h>
@@ -64,24 +62,18 @@ struct _GladePalettePrivate
 	GtkWidget    *selector_button;
 	GtkWidget    *create_root_button;
 
-	GtkWidget    *tray;	         /* Where all the item groups are contained */
-
-	GladePaletteItem *current_item;  /* The currently selected item */
-
-	GSList       *sections;          /* List of GladePaletteExpanders */ 
-
-	GtkSizeGroup *size_group;        /* All items have the same dimensions */
+	GtkWidget    *toolpalette;
+	GtkWidget    *current_item;
 
 	GladeItemAppearance item_appearance;
-
-	gboolean      use_small_item_icons;
-	
-	gboolean      sticky_selection_mode; /* whether sticky_selection mode has been enabled */
+	gboolean            use_small_item_icons;
+	gboolean            sticky_selection_mode; /* whether sticky_selection mode has been enabled */
 };
 
 enum
 {
 	TOGGLED,
+	REFRESH,
 	LAST_SIGNAL
 };
 
@@ -111,7 +103,7 @@ selector_button_toggled_cb (GtkToggleButton *button, GladePalette *palette)
 	{
 		glade_palette_deselect_current_item (palette, FALSE);
 	}
-	else if (glade_palette_get_current_item (palette) == FALSE)
+	else if (glade_palette_get_current_item (palette) == NULL)
 	{
 		gtk_toggle_button_set_active (button, TRUE);
 	}
@@ -124,7 +116,7 @@ glade_palette_set_catalogs (GladePalette *palette, GList *catalogs)
 	GList *l;
 
 	g_return_if_fail (GLADE_IS_PALETTE (palette));
-	priv = GLADE_PALETTE_GET_PRIVATE (palette);
+	priv = palette->priv;
 
 	priv->catalogs = catalogs;
 
@@ -141,9 +133,6 @@ glade_palette_set_catalogs (GladePalette *palette, GList *catalogs)
 		}
 	}
 	
-	gtk_widget_show_all (priv->tray);
-	
-	g_object_unref (priv->size_group);
 }
 
 /**
@@ -158,7 +147,7 @@ glade_palette_set_item_appearance (GladePalette *palette, GladeItemAppearance it
 {
 	GladePalettePrivate *priv;
 	g_return_if_fail (GLADE_IS_PALETTE (palette));
-	priv = GLADE_PALETTE_GET_PRIVATE (palette);
+	priv = palette->priv;
 
 	if (priv->item_appearance != item_appearance)
 	{
@@ -182,7 +171,7 @@ glade_palette_set_use_small_item_icons (GladePalette *palette, gboolean use_smal
 {
 	GladePalettePrivate *priv;
 	g_return_if_fail (GLADE_IS_PALETTE (palette));
-	priv = GLADE_PALETTE_GET_PRIVATE (palette);
+	priv = palette->priv;
 
 	if (priv->use_small_item_icons != use_small_item_icons)
 	{
@@ -208,7 +197,7 @@ glade_palette_set_show_selector_button (GladePalette *palette, gboolean show_sel
 {
 	GladePalettePrivate *priv;
 	g_return_if_fail (GLADE_IS_PALETTE (palette));
-	priv = GLADE_PALETTE_GET_PRIVATE (palette);
+	priv = palette->priv;
 
 	if (gtk_widget_get_visible (priv->selector_hbox) != show_selector_button)
 	{
@@ -267,12 +256,17 @@ glade_palette_get_property (GObject    *object,
 			    GParamSpec *pspec)
 {
 	GladePalette *palette = GLADE_PALETTE (object);
-	GladePalettePrivate *priv = GLADE_PALETTE_GET_PRIVATE (palette);
+	GladePalettePrivate *priv = palette->priv;
 
 	switch (prop_id)
 	{
 		case PROP_CURRENT_ITEM:
-			g_value_set_pointer (value, (gpointer) glade_palette_item_get_adaptor (priv->current_item));
+			if (priv->current_item)
+				g_value_set_pointer (value, g_object_get_data
+						     (G_OBJECT (priv->current_item), "glade-widget-adaptor"));
+			else
+				g_value_set_pointer (value, NULL);
+
 			break;
 		case PROP_USE_SMALL_ITEM_ICONS:
 			g_value_set_boolean (value, priv->use_small_item_icons);
@@ -297,15 +291,9 @@ glade_palette_dispose (GObject *object)
 {
 	GladePalettePrivate *priv;
   
-	priv = GLADE_PALETTE_GET_PRIVATE (object);
+	priv = GLADE_PALETTE (object)->priv;
 
 	priv->catalogs = NULL;
-
-	if (priv->tray)
-	{
-		g_object_unref (priv->tray);
-		priv->tray = NULL;
-	}
 	
 	G_OBJECT_CLASS (glade_palette_parent_class)->dispose (object);
 }
@@ -315,9 +303,7 @@ glade_palette_finalize (GObject *object)
 {
 	GladePalettePrivate *priv;
   
-	priv = GLADE_PALETTE_GET_PRIVATE (object);
-
-	g_slist_free (priv->sections);
+	priv = GLADE_PALETTE (object)->priv;
 
 	G_OBJECT_CLASS (glade_palette_parent_class)->finalize (object);
 }
@@ -371,6 +357,16 @@ glade_palette_class_init (GladePaletteClass *klass)
 			      G_TYPE_FROM_CLASS (object_class),
 			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET (GladePaletteClass, toggled),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__VOID,
+			      G_TYPE_NONE,
+			      0);
+
+	glade_palette_signals[REFRESH] =
+		g_signal_new ("refresh",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (GladePaletteClass, refresh),
 			      NULL, NULL,
 			      g_cclosure_marshal_VOID__VOID,
 			      G_TYPE_NONE,
@@ -439,8 +435,9 @@ glade_palette_on_button_toggled (GtkWidget *button, GladePalette *palette)
 	gboolean is_root_active;
 	
 	g_return_if_fail (GLADE_IS_PALETTE (palette));
-	g_return_if_fail (GTK_IS_TOGGLE_BUTTON (button));
-	priv = GLADE_PALETTE_GET_PRIVATE (palette);
+	g_return_if_fail (GTK_IS_TOGGLE_TOOL_BUTTON (button) ||
+			  GTK_IS_TOGGLE_BUTTON (button));
+	priv = palette->priv;
 
 	is_root_active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (priv->create_root_button));
 	
@@ -450,12 +447,14 @@ glade_palette_on_button_toggled (GtkWidget *button, GladePalette *palette)
 		glade_palette_create_root_widget (palette, adaptor);
 		return;
 	}
-	
-	if (!GLADE_IS_PALETTE_ITEM (button))
-		return;
+
+	g_return_if_fail (GTK_IS_TOGGLE_TOOL_BUTTON (button));
+
+	adaptor = g_object_get_data (G_OBJECT (button), "glade-widget-adaptor");
+	if (!adaptor) return;
 
 	/* if we are toggling currently active item into non-active state */
-	if (priv->current_item == GLADE_PALETTE_ITEM (button))
+	if (priv->current_item == button)
 	{
 		priv->current_item = NULL;
 		g_object_notify (G_OBJECT (palette), "current-item");
@@ -472,17 +471,16 @@ glade_palette_on_button_toggled (GtkWidget *button, GladePalette *palette)
 	}
 
 	/* now we are interested only in buttons which toggle from inactive to active */
-	if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button)))
+	if (!gtk_toggle_tool_button_get_active (GTK_TOGGLE_TOOL_BUTTON (button)))
 		return;
 	
-	if (priv->current_item && (GLADE_PALETTE_ITEM (button) != priv->current_item))
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->current_item), FALSE);
+	if (priv->current_item && (button != priv->current_item))
+		gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (priv->current_item), FALSE);
 		
-	priv->current_item = GLADE_PALETTE_ITEM (button);
+	priv->current_item = button;
 	
 	if (is_root_active)
 	{
-		adaptor = glade_palette_item_get_adaptor (GLADE_PALETTE_ITEM (button));
 		glade_palette_create_root_widget (palette, adaptor);
 		return;
 	}
@@ -494,7 +492,6 @@ glade_palette_on_button_toggled (GtkWidget *button, GladePalette *palette)
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->selector_button), FALSE);	
 	
 	/* check whether to enable sticky selection */
-	adaptor = glade_palette_item_get_adaptor (GLADE_PALETTE_ITEM (button));	
 	gdk_window_get_pointer (gtk_widget_get_window (button), NULL, NULL, &mask);
   	priv->sticky_selection_mode = (!GWA_IS_TOPLEVEL (adaptor)) && (mask & GDK_CONTROL_MASK);
 
@@ -502,22 +499,93 @@ glade_palette_on_button_toggled (GtkWidget *button, GladePalette *palette)
 }
 
 
+static void
+glade_palette_item_refresh (GtkWidget *item)
+{
+	GladeProject            *project;
+	GladeSupportMask         support;
+	GladeWidgetAdaptor      *adaptor;
+	gchar                   *warning, *text;
+
+	adaptor = g_object_get_data (G_OBJECT (item), "glade-widget-adaptor");
+	g_assert (adaptor);
+	
+	if ((project = glade_app_check_get_project ()) &&
+	    (warning = 
+	     glade_project_verify_widget_adaptor (project, adaptor, &support)) != NULL)
+	{
+		/* set sensitivity */
+		gtk_widget_set_sensitive (GTK_WIDGET (item), 
+					  !(support & (GLADE_SUPPORT_LIBGLADE_UNSUPPORTED | 
+						       GLADE_SUPPORT_LIBGLADE_ONLY |
+						       GLADE_SUPPORT_MISMATCH)));
+
+		if (support & GLADE_SUPPORT_DEPRECATED)
+			/* XXX Todo, draw a cross overlaying the widget icon */
+			gtk_tool_button_set_stock_id (GTK_TOOL_BUTTON (item), GTK_STOCK_DIALOG_WARNING);
+		else
+			gtk_tool_button_set_icon_name (GTK_TOOL_BUTTON (item), adaptor->icon_name);
+
+		/* prepend widget title */
+		text = g_strdup_printf ("%s: %s", adaptor->title, warning);
+		gtk_widget_set_tooltip_text (item, text);
+		g_free (text);
+		g_free (warning);
+	} 
+	else 
+	{
+		gtk_widget_set_tooltip_text (GTK_WIDGET (item), adaptor->title);
+		gtk_widget_set_sensitive (GTK_WIDGET (item), TRUE);
+		gtk_tool_button_set_icon_name (GTK_TOOL_BUTTON (item), adaptor->icon_name);
+	}
+}
+
+
+static gint
+glade_palette_item_button_press (GtkWidget      *button,
+				  GdkEventButton *event,
+				  GladePalette   *item)
+{
+	if (glade_popup_is_popup_event (event))
+	{
+		GladeWidgetAdaptor *adaptor;
+
+		adaptor = g_object_get_data (G_OBJECT (item), "glade-widget-adaptor");
+		
+		glade_popup_palette_pop (adaptor, event);
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
 static GtkWidget*
 glade_palette_new_item (GladePalette *palette, GladeWidgetAdaptor *adaptor)
 {
-	GladePalettePrivate *priv;
-	GtkWidget *item;
+	GtkWidget *item, *button;
 
-	g_return_val_if_fail (GLADE_IS_PALETTE (palette), NULL);
-	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
-	priv = GLADE_PALETTE_GET_PRIVATE (palette);
+	item = (GtkWidget *)gtk_toggle_tool_button_new ();
+	g_object_set_data (G_OBJECT (item), "glade-widget-adaptor", adaptor);
 
-	item = glade_palette_item_new (adaptor);
+	button = gtk_bin_get_child (GTK_BIN (item));
+	g_assert (GTK_IS_BUTTON (button));
 
-	glade_palette_item_set_appearance (GLADE_PALETTE_ITEM (item), priv->item_appearance);
+	gtk_tool_button_set_label (GTK_TOOL_BUTTON (item), adaptor->title);
+	glade_palette_item_refresh (item);
 
+	/* Update selection when the item is pushed */
 	g_signal_connect (G_OBJECT (item), "toggled",
 			  G_CALLBACK (glade_palette_on_button_toggled), palette);
+
+	/* Update palette item when active project state changes */
+	g_signal_connect_swapped (G_OBJECT (palette), "refresh",
+				  G_CALLBACK (glade_palette_item_refresh), item);
+
+	/* Fire Glade palette popup menus */
+	g_signal_connect (G_OBJECT (button), "button-press-event",
+			  G_CALLBACK (glade_palette_item_button_press), item);
+
+	gtk_widget_show (item);
 
 	return item;
 }
@@ -526,96 +594,68 @@ static GtkWidget*
 glade_palette_new_item_group (GladePalette *palette, GladeWidgetGroup *group)
 {
 	GladePalettePrivate *priv;
-	GtkWidget *expander;
-	GtkWidget *box; 
-	GtkWidget *item;
-	GList *l;
+	GtkWidget           *item_group;
+	GtkWidget           *item;
+	GList               *l;
 
-	g_return_val_if_fail (GLADE_IS_PALETTE (palette), NULL);
-	g_return_val_if_fail (group != NULL, NULL);
-	priv = GLADE_PALETTE_GET_PRIVATE (palette);
+	priv = palette->priv;
 
-	box = glade_palette_box_new ();
+	item_group = gtk_tool_item_group_new (glade_widget_group_get_title (group));
 
 	/* Go through all the widget classes in this catalog. */
 	for (l = (GList *) glade_widget_group_get_adaptors (group); l; l = l->next)
 	{
 		GladeWidgetAdaptor *adaptor =  GLADE_WIDGET_ADAPTOR (l->data);
 
-		/* Create new item */
+		/* Create/append new item */
 		item = glade_palette_new_item (palette, adaptor);
-		gtk_size_group_add_widget (priv->size_group, GTK_WIDGET (item));
-		gtk_container_add (GTK_CONTAINER (box), item);
-
+		gtk_tool_item_group_insert (GTK_TOOL_ITEM_GROUP (item_group), 
+					    GTK_TOOL_ITEM (item), -1);
 	}
 
-	/* Put items box in a expander */
-	expander = glade_palette_expander_new (glade_widget_group_get_title (group));
-	glade_palette_expander_set_spacing (GLADE_PALETTE_EXPANDER (expander), 2);
-	glade_palette_expander_set_use_markup (GLADE_PALETTE_EXPANDER (expander), TRUE);
-	gtk_container_set_border_width (GTK_CONTAINER (expander), 0);
-
 	/* set default expanded state */
-	glade_palette_expander_set_expanded (GLADE_PALETTE_EXPANDER (expander), 
-					     glade_widget_group_get_expanded (group));
+	gtk_tool_item_group_set_collapsed (GTK_TOOL_ITEM_GROUP (item_group),
+					   glade_widget_group_get_expanded (group) == FALSE);
 
-	gtk_container_add (GTK_CONTAINER (expander), box);
+	gtk_widget_show (item_group);
 
-	return expander;
+	return item_group;
 }
 
 static void
 glade_palette_append_item_group (GladePalette     *palette, 
 				 GladeWidgetGroup *group)
 {
-	GladePalettePrivate *priv;
-	GtkWidget *expander;
+	GladePalettePrivate *priv = palette->priv;
+ 	GtkWidget           *item_group;
 
-	g_return_if_fail (GLADE_IS_PALETTE (palette));
-	g_return_if_fail (group != NULL);
-	priv = GLADE_PALETTE_GET_PRIVATE (palette);
-
-	expander = glade_palette_new_item_group (palette, group);
-
-	priv->sections = g_slist_append (priv->sections, expander);
-
-	gtk_box_pack_start (GTK_BOX (priv->tray), expander, FALSE, FALSE, 0);
-
+	if ((item_group = glade_palette_new_item_group (palette, group)) != NULL)
+		gtk_container_add (GTK_CONTAINER (priv->toolpalette), item_group);
 }
 
 static void
 glade_palette_update_appearance (GladePalette *palette)
 {
 	GladePalettePrivate *priv;
-	GtkWidget *viewport;
-	GSList *sections;
-	GList *items, *i;
+	GtkToolbarStyle      style;
+	GtkIconSize          size;
 
-	priv = GLADE_PALETTE_GET_PRIVATE (palette);
+	priv = palette->priv;
 
-	for (sections = priv->sections; sections; sections = sections->next)
-	{
-		items = gtk_container_get_children (GTK_CONTAINER (gtk_bin_get_child (GTK_BIN (sections->data))));
+	size = priv->use_small_item_icons ? GTK_ICON_SIZE_MENU : GTK_ICON_SIZE_BUTTON;
 
-		for (i = items; i; i = i->next)
-		{
-			glade_palette_item_set_appearance (GLADE_PALETTE_ITEM (i->data), priv->item_appearance);
-			glade_palette_item_set_use_small_icon (GLADE_PALETTE_ITEM (i->data), priv->use_small_item_icons);
-		}
-		g_list_free (items);
+	switch (priv->item_appearance)
+       	{
+	case GLADE_ITEM_ICON_AND_LABEL: style = GTK_TOOLBAR_BOTH;   break;
+	case GLADE_ITEM_ICON_ONLY:      style = GTK_TOOLBAR_ICONS;  break;
+	case GLADE_ITEM_LABEL_ONLY:     style = GTK_TOOLBAR_TEXT;   break;
+	default:
+		g_assert_not_reached ();
+		break;
 	}
 
-	/* FIXME: Removing and then adding the tray again to the Viewport
-         *        is the only way I can get the Viewport to 
-         *        respect the new width of the tray.
-         *        There should be a better solution.
-	 */        
-	viewport = gtk_widget_get_parent (priv->tray);
-	if (viewport != NULL)
-	{
-		gtk_container_remove (GTK_CONTAINER (viewport), priv->tray);
-		gtk_container_add (GTK_CONTAINER (viewport), priv->tray);
-	}
+	gtk_tool_palette_set_icon_size (GTK_TOOL_PALETTE (priv->toolpalette), size);
+	gtk_tool_palette_set_style (GTK_TOOL_PALETTE (priv->toolpalette), style);
 }
 
 static GtkWidget*
@@ -675,7 +715,6 @@ glade_palette_init (GladePalette *palette)
 
 	priv->catalogs = NULL;
 	priv->current_item = NULL;
-	priv->sections = NULL;
 	priv->item_appearance = GLADE_ITEM_ICON_ONLY;
 	priv->use_small_item_icons = FALSE;
 	priv->sticky_selection_mode = FALSE;
@@ -694,27 +733,21 @@ glade_palette_init (GladePalette *palette)
 	gtk_widget_set_tooltip_text (priv->selector_button, _("Widget selector"));
 	gtk_widget_set_tooltip_text (priv->create_root_button, _("Create root widget"));
 
-	/* create size group */
-	priv->size_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
-	gtk_size_group_set_ignore_hidden (priv->size_group, FALSE);
-
-	/* add items tray (via a scrolled window) */
-	priv->tray = gtk_vbox_new (FALSE, 0);
-	g_object_ref_sink (G_OBJECT (priv->tray));
-	gtk_container_set_border_width (GTK_CONTAINER (priv->tray), 1);
+	/* The GtkToolPalette */
+	priv->toolpalette = gtk_tool_palette_new ();
 	
 	sw = gtk_scrolled_window_new (NULL, NULL);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
 					GTK_POLICY_NEVER,
 					GTK_POLICY_AUTOMATIC);
-	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (sw), priv->tray);
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw),
 					     GTK_SHADOW_NONE);
 
+	gtk_container_add (GTK_CONTAINER (sw), priv->toolpalette);
 	gtk_box_pack_start (GTK_BOX (palette), sw, TRUE, TRUE, 0);
 
 	gtk_widget_show (sw);
-	gtk_widget_show (priv->tray);
+	gtk_widget_show (priv->toolpalette);
 	
 	gtk_widget_set_no_show_all (GTK_WIDGET (palette), TRUE);
 }
@@ -734,14 +767,9 @@ glade_palette_get_current_item (GladePalette *palette)
 	g_return_val_if_fail (GLADE_IS_PALETTE (palette), NULL);
 
 	if (palette->priv->current_item)
-	{
-		return glade_palette_item_get_adaptor (palette->priv->current_item);
-	}
-	else
-	{
-		return NULL;
-	}
+		return g_object_get_data (G_OBJECT (palette->priv->current_item), "glade-widget-adaptor");
 
+	return NULL;
 }
 
 /**
@@ -785,7 +813,7 @@ glade_palette_deselect_current_item (GladePalette *palette, gboolean sticky_awar
 
 	if (palette->priv->current_item)
 	{
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (palette->priv->current_item), FALSE);
+		gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (palette->priv->current_item), FALSE);
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (palette->priv->selector_button), TRUE);
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (palette->priv->create_root_button), FALSE);
 	
@@ -851,23 +879,8 @@ glade_palette_get_show_selector_button (GladePalette *palette)
 void
 glade_palette_refresh (GladePalette *palette)
 {
-	GladePalettePrivate *priv;
-	GSList *sections;
-	GList *items, *i;
-
 	g_return_if_fail (GLADE_IS_PALETTE (palette));
 
-	priv = GLADE_PALETTE_GET_PRIVATE (palette);
-
-	for (sections = priv->sections; sections; sections = sections->next)
-	{
-		items = gtk_container_get_children 
-			(GTK_CONTAINER (gtk_bin_get_child (GTK_BIN (sections->data))));
-
-		for (i = items; i; i = i->next)
-			glade_palette_item_refresh (GLADE_PALETTE_ITEM (i->data));
-
-		g_list_free (items);
-	}
+	g_signal_emit (G_OBJECT (palette), glade_palette_signals[REFRESH], 0);
 }
 

@@ -1,3 +1,12 @@
+2010-03-25  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/Makefile.am, gladeui/glade-palette.c:
+	  - Removed glade-palette-box.[ch], glade-palette-expander.[ch] and glade-palette-item.[ch].
+	  - Integrated GtkToolPalette as the internal implementation of Glade's palette (bug 613956).
+
+	* plugins/gtk+/glade-gtk.c: Fix some remaining crashes from the GSEAL() stuff (GtkBoxChild
+	  invalid type dereferencing).
+
 2010-03-25  Federico Mena Quintero  <federico@novell.com>
 
 	* plugins/gtk+/gtk+.xml.in: bgo#594231 - Fix the orientation of
