@@ -472,25 +472,6 @@ update_default_path (GladeWindow *window, GladeProject *project)
 	g_free (path);
 }
 
-static gboolean
-window_state_event_cb (GtkWidget *widget,
-			   GdkEventWindowState *event,
-			   GladeWindow *window)
-{
-	if (event->changed_mask &
-	    (GDK_WINDOW_STATE_MAXIMIZED | GDK_WINDOW_STATE_FULLSCREEN))
-	{
-		gboolean show;
-
-		show = !(event->new_window_state &
-			(GDK_WINDOW_STATE_MAXIMIZED | GDK_WINDOW_STATE_FULLSCREEN));
-
-		gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (window->priv->statusbar), show);
-	}
-
-	return FALSE;
-}
-
 static GtkWidget *
 create_recent_chooser_menu (GladeWindow *window, GtkRecentManager *manager)
 {
@@ -2869,6 +2850,28 @@ key_file_get_window_position (GKeyFile     *config,
 	g_free (key_maximized);
 }
 
+
+static void
+load_paned_position (GKeyFile *config, GtkWidget *pane, const gchar *name, gint default_position)
+{
+	gtk_paned_set_position (GTK_PANED (pane),
+				key_file_get_int (config, name, "position", default_position));
+}
+
+static gboolean
+fix_paned_positions_idle (GladeWindow *window)
+{
+	/* When initially maximized/fullscreened we need to deffer this operation 
+	 */
+	GKeyFile *config = glade_app_get_config ();
+			
+	load_paned_position (config, window->priv->left_pane, "left_pane", 200);
+	load_paned_position (config, window->priv->center_pane, "center_pane", 400);
+	load_paned_position (config, window->priv->right_pane, "right_pane", 220);
+
+	return FALSE;
+}
+
 static void
 glade_window_set_initial_size (GladeWindow *window, GKeyFile *config)
 {
@@ -2878,8 +2881,17 @@ glade_window_set_initial_size (GladeWindow *window, GKeyFile *config)
 
 	gboolean maximized;
 	key_file_get_window_position (config, "main", &position, NULL, &maximized);
-	if(maximized)
+	if (maximized)
+	{
 		gtk_window_maximize (GTK_WINDOW (window));
+		g_idle_add ((GSourceFunc)fix_paned_positions_idle, window);
+	}
+
+	if (position.width <= 0 || position.height <= 0)
+	{
+		position.width  = GLADE_WINDOW_DEFAULT_WIDTH;
+		position.height = GLADE_WINDOW_DEFAULT_HEIGHT;
+	}
 
 	gtk_window_set_default_size (GTK_WINDOW (window), position.width, position.height);
 
@@ -2888,22 +2900,39 @@ glade_window_set_initial_size (GladeWindow *window, GKeyFile *config)
 }
 
 static void
-load_paned_position (GKeyFile *config, GtkWidget *pane, const gchar *name, gint default_position)
-{
-	gtk_paned_set_position (GTK_PANED (pane),
-				key_file_get_int (config, name, "position", default_position));
-}
-
-static void
 glade_window_config_load (GladeWindow *window)
 {
 	GKeyFile *config = glade_app_get_config ();
-	
-	glade_window_set_initial_size (window, config);
-	
-	load_paned_position (config, window->priv->center_pane, "center_pane", 400);
+
+	glade_window_set_initial_size (window, config);	
+
 	load_paned_position (config, window->priv->left_pane, "left_pane", 200);
+	load_paned_position (config, window->priv->center_pane, "center_pane", 400);
 	load_paned_position (config, window->priv->right_pane, "right_pane", 220);
+}
+
+static gboolean
+glade_window_state_event (GtkWidget           *widget,
+			  GdkEventWindowState *event)
+{
+	GladeWindow *window = GLADE_WINDOW (widget);
+
+	/* Incase GtkWindow decides to do something */
+	if (GTK_WIDGET_CLASS (glade_window_parent_class)->window_state_event)
+		GTK_WIDGET_CLASS (glade_window_parent_class)->window_state_event (widget, event);
+
+	if (event->changed_mask &
+	    (GDK_WINDOW_STATE_MAXIMIZED | GDK_WINDOW_STATE_FULLSCREEN))
+	{
+		gboolean show;
+
+		show = !(event->new_window_state &
+			(GDK_WINDOW_STATE_MAXIMIZED | GDK_WINDOW_STATE_FULLSCREEN));
+
+		gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (window->priv->statusbar), show);
+	}
+
+	return FALSE;
 }
 
 static void
@@ -3162,14 +3191,10 @@ glade_window_init (GladeWindow *window)
 			  window);
 			  
 	/* GtkWindow events */
-	g_signal_connect (window, "window-state-event",
-			  G_CALLBACK (window_state_event_cb),
-			  window);
-
 	g_signal_connect (G_OBJECT (window), "key-press-event",
 			  G_CALLBACK (glade_utils_hijack_key_press), window);
 
-       /* GladeApp signals */
+	/* GladeApp signals */
 	g_signal_connect (G_OBJECT (priv->app), "update-ui",
 			  G_CALLBACK (update_ui),
 			  window);
@@ -3187,8 +3212,7 @@ glade_window_init (GladeWindow *window)
 	accel_group = gtk_ui_manager_get_accel_group(priv->ui);
 
 	gtk_window_add_accel_group (GTK_WINDOW (glade_app_get_clipboard_view ()), accel_group);
-	
-	/* Load widget state */
+
 	glade_window_config_load (window);
 
 #ifdef MAC_INTEGRATION
@@ -3217,7 +3241,8 @@ glade_window_class_init (GladeWindowClass *klass)
 	object_class->dispose  = glade_window_dispose;
 	object_class->finalize = glade_window_finalize;
 
-	widget_class->configure_event = glade_window_configure_event;
+	widget_class->configure_event    = glade_window_configure_event;
+	widget_class->window_state_event = glade_window_state_event;
 
 	g_type_class_add_private (klass, sizeof (GladeWindowPrivate));
 }

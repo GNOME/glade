@@ -594,13 +594,25 @@ static GtkWidget*
 glade_palette_new_item_group (GladePalette *palette, GladeWidgetGroup *group)
 {
 	GladePalettePrivate *priv;
-	GtkWidget           *item_group;
-	GtkWidget           *item;
+	GtkWidget           *item_group, *item, *label;
 	GList               *l;
 
 	priv = palette->priv;
 
-	item_group = gtk_tool_item_group_new (glade_widget_group_get_title (group));
+	/* Give the item group a left aligned label */
+	label = gtk_label_new (glade_widget_group_get_title (group));
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_widget_show (label);
+
+	item_group = (GtkWidget *)g_object_new (GTK_TYPE_TOOL_ITEM_GROUP,
+						"label-widget", label,
+						NULL);
+
+	/* Tell the item group to ellipsize our custom label for us */
+	gtk_tool_item_group_set_ellipsize (GTK_TOOL_ITEM_GROUP (item_group), 
+					   PANGO_ELLIPSIZE_END);
+
+	gtk_widget_set_tooltip_text (item_group, glade_widget_group_get_title (group));
 
 	/* Go through all the widget classes in this catalog. */
 	for (l = (GList *) glade_widget_group_get_adaptors (group); l; l = l->next)
