@@ -169,10 +169,6 @@ static void         glade_project_set_target_version       (GladeProject *projec
 							    const gchar  *catalog,
 							    guint16       major,
 							    guint16       minor);
-static void         glade_project_get_target_version       (GladeProject *project,
-							    const gchar  *catalog,
-							    gint         *major,
-							    gint         *minor);
 
 static void         glade_project_target_version_for_adaptor (GladeProject        *project, 
 							      GladeWidgetAdaptor  *adaptor,
@@ -2800,20 +2796,6 @@ adjust_naming_policy (GladeProject       *project,
                         Remaining stubs and api
  *******************************************************************/
 static void
-glade_project_get_target_version (GladeProject *project,
-				  const gchar  *catalog,
-				  gint         *major,
-				  gint         *minor)
-{
-	*major = GPOINTER_TO_INT 
-		(g_hash_table_lookup (project->priv->target_versions_major,
-				      catalog));
-	*minor = GPOINTER_TO_INT 
-		(g_hash_table_lookup (project->priv->target_versions_minor,
-				      catalog));
-}
-
-static void
 glade_project_set_target_version (GladeProject *project,
 				  const gchar  *catalog,
 				  guint16       major,
@@ -2873,6 +2855,35 @@ glade_project_set_readonly (GladeProject *project, gboolean readonly)
 		g_object_notify (G_OBJECT (project), "read-only");
 	}
 }                                                                                               
+
+
+/**
+ * glade_project_get_target_version:
+ * @project: a #GladeProject
+ * @catalog: the name of the catalog @project includes
+ * @major: the return location for the target major version
+ * @minor: the return location for the target minor version
+ *
+ * Fetches the target version of the @project for @catalog.
+ *
+ */
+void
+glade_project_get_target_version (GladeProject *project,
+				  const gchar  *catalog,
+				  gint         *major,
+				  gint         *minor)
+{
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+	g_return_if_fail (catalog && catalog[0]);
+	g_return_if_fail (major && minor);
+
+	*major = GPOINTER_TO_INT 
+		(g_hash_table_lookup (project->priv->target_versions_major,
+				      catalog));
+	*minor = GPOINTER_TO_INT 
+		(g_hash_table_lookup (project->priv->target_versions_minor,
+				      catalog));
+}
 
 /**
  * glade_project_get_readonly:

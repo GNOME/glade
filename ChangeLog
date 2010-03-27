@@ -1,3 +1,27 @@
+2010-03-27  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-marshallers.list, gladeui/glade-placeholder.c: 
+	  Make GladePlaceholder a scrollable widget (hypothetically) to avoid runtime warnings.
+
+	* plugins/gtk+/gtk+.xml.in: Disabled "has-separator" of GtkMessageDialog as it ignores the separator
+	  and the setting is useless (not to mention setting it causes runtime warnings: fixes bug 587288).
+
+	* gladeui/glade-project.[ch]: Expose glade_project_get_target_version()
+
+	* plugins/gtk+/glade-gtk.c: 
+	  - check project target gtk+ version to decide initial state
+	    of GtkEntry::buffer.
+	  - Substitute the old manual evaluation with GPC_VERSION_CHECK()
+	  - Avoid critical warnings when setting GtkColorButton properties to NULL
+	  - Avoid critical warnings when setting GtkComboBoxEntry::text-column < 0
+	
+	* gladeui/glade-property-class.h: Created convenience macro GPC_VERSION_CHECK
+
+	* gladeui/glade-utils.c: Allow loading of libraries installed in optional non-system prefixes;
+	  (so that GtkSourceView catalog is buildable and usable from your jhbuild environment)
+	  assume a path that is: ${prefix}/lib/glade3/modules/../../ and search it after the initial 
+	  module search path.
+
 2010-03-26  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-palette.c: Left aligned and ellipsize end widget group titles (restored normal

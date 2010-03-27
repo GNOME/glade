@@ -4985,8 +4985,7 @@ glade_gtk_entry_set_property (GladeWidgetAdaptor *adaptor,
 		g_signal_handlers_unblock_by_func (object, glade_gtk_entry_changed, gwidget);
 
        	}
-	else if (property->klass->version_since_major <= gtk_major_version &&
-		 property->klass->version_since_minor <= (gtk_minor_version + 1))
+	else if (GPC_VERSION_CHECK (property->klass, gtk_major_version, gtk_minor_version + 1))
 		GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
 }
 
@@ -5008,14 +5007,26 @@ glade_gtk_entry_read_widget (GladeWidgetAdaptor *adaptor,
 	{
 		property = glade_widget_get_property (widget, "text");
 		glade_widget_property_set (widget, "use-entry-buffer", FALSE);
+
+		glade_property_sync (property);
 	}
 	else
 	{
-		property = glade_widget_get_property (widget, "buffer");
-		glade_widget_property_set (widget, "use-entry-buffer", TRUE);
-	}
+		gint target_minor, target_major;
 
-	glade_property_sync (property);
+		glade_project_get_target_version (widget->project, "gtk+", &target_major, &target_minor);
+
+		property = glade_widget_get_property (widget, "buffer");
+
+		/* Only default to the buffer setting if the project version supports it. */
+		if (GPC_VERSION_CHECK (property->klass, target_major, target_minor))
+		{
+			glade_widget_property_set (widget, "use-entry-buffer", TRUE);
+			glade_property_sync (property);
+		}
+		else
+			glade_widget_property_set (widget, "use-entry-buffer", FALSE);
+	}
 
 	if (glade_widget_property_original_default (widget, "primary-icon-name") == FALSE)
 	{
@@ -5949,6 +5960,26 @@ glade_gtk_color_button_refresh_color (GtkColorButton  *button,
 		glade_command_set_property (property, &color);
 }
 
+
+void
+glade_gtk_color_button_set_property (GladeWidgetAdaptor *adaptor,
+				     GObject            *object, 
+				     const gchar        *id,
+				     const GValue       *value)
+{
+	if (!strcmp (id, "color"))
+	{
+		if (g_value_get_boxed (value))
+			gtk_color_button_set_color (GTK_COLOR_BUTTON (object), 
+						    (GdkColor *)g_value_get_boxed (value));
+	}
+	else
+		GWA_GET_CLASS (GTK_TYPE_BUTTON)->set_property (adaptor,
+							       object,
+							       id, value);
+}
+
+
 /* ----------------------------- GtkButton ------------------------------ */
 
 static void 
@@ -6112,8 +6143,7 @@ glade_gtk_button_set_property (GladeWidgetAdaptor *adaptor,
 								  id, value);
 		sync_use_appearance (widget);
 	}
-	else if (property->klass->version_since_major <= gtk_major_version &&
-		 property->klass->version_since_minor <= (gtk_minor_version + 1))
+	else if (GPC_VERSION_CHECK (property->klass, gtk_major_version, gtk_minor_version + 1))
 		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object,
 								  id, value);
 }
@@ -7009,8 +7039,7 @@ glade_gtk_menu_item_set_property (GladeWidgetAdaptor *adaptor,
 		glade_gtk_menu_item_set_use_underline (object, value);
 	else if (!strcmp (id, "label"))
 		glade_gtk_menu_item_set_label (object, value);
-	else if (property->klass->version_since_major <= gtk_major_version &&
-		 property->klass->version_since_minor <= (gtk_minor_version + 1))
+	else if (GPC_VERSION_CHECK (property->klass, gtk_major_version, gtk_minor_version + 1))
 		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object,
 								  id, value);
 }
@@ -7888,9 +7917,7 @@ glade_gtk_tool_item_set_property (GladeWidgetAdaptor *adaptor,
 	GladeProperty *property = glade_widget_get_property (gwidget, id);
 
 	//evaluate_activatable_property_sensitivity (object, id, value);
-
-	if (property->klass->version_since_major <= gtk_major_version &&
-	    property->klass->version_since_minor <= (gtk_minor_version + 1))
+	if (GPC_VERSION_CHECK (property->klass, gtk_major_version, gtk_minor_version + 1))
 		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor,
 								  object,
 								  id, value);
@@ -8728,8 +8755,7 @@ glade_gtk_entry_buffer_set_property (GladeWidgetAdaptor *adaptor,
 		g_signal_handlers_unblock_by_func (object, glade_gtk_entry_buffer_changed, gwidget);
 
        	}
-	else if (property->klass->version_since_major <= gtk_major_version &&
-		 property->klass->version_since_minor <= (gtk_minor_version + 1))
+	else if (GPC_VERSION_CHECK (property->klass, gtk_major_version, gtk_minor_version + 1))
 		GWA_GET_CLASS (G_TYPE_OBJECT)->set_property (adaptor, object, id, value);
 }
 
@@ -8981,6 +9007,25 @@ glade_gtk_combo_box_entry_get_internal_child (GladeWidgetAdaptor *adaptor,
 		child = G_OBJECT (gtk_bin_get_child (GTK_BIN (object)));
 
 	return child;
+}
+
+
+void
+glade_gtk_combo_box_entry_set_property (GladeWidgetAdaptor *adaptor,
+					GObject            *object, 
+					const gchar        *id,
+					const GValue       *value)
+{
+	if (!strcmp (id, "text-column"))
+	{
+		if (g_value_get_int (value) >= 0)
+			gtk_combo_box_entry_set_text_column (GTK_COMBO_BOX_ENTRY (object), 
+							     g_value_get_int (value));
+	}
+	else
+		GWA_GET_CLASS (GTK_TYPE_COMBO_BOX)->set_property (adaptor,
+								  object,
+								  id, value);
 }
 
 /* ----------------------------- GtkSpinButton ------------------------------ */

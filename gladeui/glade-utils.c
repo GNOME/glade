@@ -1478,12 +1478,20 @@ try_load_library (const gchar *library_path,
 GModule *
 glade_util_load_library (const gchar *library_name)
 {
+	gchar        *default_paths[] = { (gchar *)glade_app_get_modules_dir (), 
+					  NULL, /* <-- dynamically allocated */ 
+					  "/lib", 
+					  "/usr/lib", 
+					  "/usr/local/lib", 
+					  NULL };
+
 	GModule      *module = NULL;
-	const gchar  *default_paths[] = { glade_app_get_modules_dir (), "/lib", "/usr/lib", "/usr/local/lib", NULL };
 	const gchar  *search_path;
 	gchar       **split;
 	gint          i;
+
 	
+
 	if ((search_path = g_getenv (GLADE_ENV_MODULE_PATH)) != NULL)
 	{
 		if ((split = g_strsplit (search_path, ":", 0)) != NULL)
@@ -1498,9 +1506,14 @@ glade_util_load_library (const gchar *library_name)
 
 	if (!module)
 	{
+		/* Search ${prefix}/lib after searching ${prefix}/lib/glade3/modules... */
+		default_paths[1] = g_build_filename (glade_app_get_modules_dir (), "..", "..", NULL);
+
 		for (i = 0; default_paths[i] != NULL; i++)
 			if ((module = try_load_library (default_paths[i], library_name)) != NULL)
 				break;
+
+		g_free (default_paths[1]);
 	}
 
 	if (!module)

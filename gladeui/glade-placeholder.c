@@ -35,6 +35,7 @@
  */
 
 #include <gtk/gtk.h>
+#include "glade-marshallers.h"
 #include "glade.h"
 #include "glade-placeholder.h"
 #include "glade-xml-utils.h"
@@ -101,6 +102,19 @@ glade_placeholder_class_init (GladePlaceholderClass *klass)
 	widget_class->motion_notify_event = glade_placeholder_motion_notify_event;
 	widget_class->button_press_event = glade_placeholder_button_press;
 	widget_class->popup_menu = glade_placeholder_popup_menu;
+
+	/* Avoid warnings when adding placeholders to scrolled windows */
+	widget_class->set_scroll_adjustments_signal =
+		g_signal_new ("set-scroll-adjustments",
+			      G_TYPE_FROM_CLASS (klass),
+			      G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+			      0, /* G_STRUCT_OFFSET (GladePlaceholderClass, set_scroll_adjustments) */
+			      NULL, NULL,
+			      glade_marshal_VOID__OBJECT_OBJECT,
+			      G_TYPE_NONE, 2,
+			      GTK_TYPE_ADJUSTMENT,
+			      GTK_TYPE_ADJUSTMENT);
+
 }
 
 static void

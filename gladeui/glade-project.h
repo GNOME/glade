@@ -185,6 +185,10 @@ void          glade_project_set_naming_policy      (GladeProject       *project,
 						    GladeNamingPolicy   policy);
 
 GladeNamingPolicy glade_project_get_naming_policy  (GladeProject       *project);
+void          glade_project_get_target_version     (GladeProject       *project,
+						    const gchar        *catalog,
+						    gint               *major,
+						    gint               *minor);
 
 G_END_DECLS
 

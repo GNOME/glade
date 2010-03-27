@@ -876,6 +876,7 @@ embedded in another object</_tooltip>
 	  <_tooltip>Set the text in the view's text buffer</_tooltip>
 	  <visible-lines>2</visible-lines>
 	</property>
+      	<property id="im-module" disabled="True"/>
       	<property id="wrap-mode">
   	  <displayable-values>
 	    <value id="GTK_WRAP_NONE" _name="None"/>
@@ -1070,6 +1071,7 @@ embedded in another object</_tooltip>
 
     <glade-widget-class name="GtkColorButton" generic-name="colorbutton" _title="Color Button">
       <create-editable-function>glade_gtk_container_create_editable</create-editable-function>
+      <set-property-function>glade_gtk_color_button_set_property</set-property-function>
       <properties>
 	<property id="title" translatable="True"/>
 	<property id="color" default="Black"/>
@@ -1153,6 +1155,7 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkComboBoxEntry" generic-name="comboboxentry" _title="Combo Box Entry">
       <post-create-function>glade_gtk_combo_box_entry_post_create</post-create-function>
       <get-internal-child-function>glade_gtk_combo_box_entry_get_internal_child</get-internal-child-function>
+      <set-property-function>glade_gtk_combo_box_entry_set_property</set-property-function>
     </glade-widget-class>
 
     <glade-widget-class name="GtkProgressBar" generic-name="progressbar" _title="Progress Bar">
@@ -1659,6 +1662,8 @@ embedded in another object</_tooltip>
       <verify-function>glade_gtk_message_dialog_verify_property</verify-function>
 
       <properties>
+        <property id="has-separator"  disabled="True"/>
+
 	<property id="default-width"  default="400" optional="True" optional-default="False"/>
 	<property id="default-height" default="115" optional="True" optional-default="False"/>
 

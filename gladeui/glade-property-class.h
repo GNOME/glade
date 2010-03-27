@@ -34,6 +34,20 @@ G_BEGIN_DECLS
 	 ((type) == GLADE_PAGE_QUERY   && (gpc)->query))
 
 
+/**
+ * GPC_CHECK_RUNTIME:
+ * @klass: A #GladePropertyClass
+ * @major_version: The major version to check
+ * @minor_version: The minor version to check
+ *
+ * Evaluates to %TRUE if @klass is available in its owning library version-@major_verion.@minor_version.
+ *
+ */
+#define GPC_VERSION_CHECK(klass, major_version, minor_version)		\
+	(GLADE_PROPERTY_CLASS (klass)->version_since_major <= major_version && \
+	 GLADE_PROPERTY_CLASS (klass)->version_since_minor <= (minor_version))
+
+
 #define GPC_OBJECT_DELIMITER ", "
 #define GPC_PROPERTY_NAMELEN 512  /* Enough space for a property name I think */
 
