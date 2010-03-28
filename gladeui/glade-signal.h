@@ -17,14 +17,17 @@ struct _GladeSignal
 	gchar    *name;         /* Signal name eg "clicked"            */
 	gchar    *handler;      /* Handler function eg "gtk_main_quit" */
 	gchar    *userdata;     /* User data signal handler argument   */
-	gboolean  after;        /* Connect after TRUE or FALSE         */
+	guint8    after : 1;    /* Connect after TRUE or FALSE         */
+	guint8    swapped : 1;  /* Connect swapped TRUE or FALSE (GtkBuilder only) */
 };
 
 
 GladeSignal *glade_signal_new   (const gchar *name,
 				 const gchar *handler,
 				 const gchar *userdata,
-				 gboolean     after);
+				 gboolean     after,
+				 gboolean     swapped);
+
 GladeSignal *glade_signal_clone (const GladeSignal *signal);
 void         glade_signal_free  (GladeSignal *signal);
 

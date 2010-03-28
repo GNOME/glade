@@ -93,9 +93,9 @@ is_void_userdata (const gchar *user_data)
 }
 
 static void
-glade_signal_editor_after_toggled (GtkCellRendererToggle *cell,
-				   gchar                 *path_str,
-				   gpointer               data)
+glade_signal_editor_after_swapped_toggled (GtkCellRendererToggle *cell,
+					   gchar                 *path_str,
+					   gpointer               data)
 {
 	GladeSignalEditor *editor = (GladeSignalEditor*) data;
 	GtkTreeModel *model = GTK_TREE_MODEL (editor->model);
@@ -107,8 +107,8 @@ glade_signal_editor_after_toggled (GtkCellRendererToggle *cell,
 	gchar     *signal_name;
 	gchar     *handler;
 	gchar     *userdata;
-	gboolean   lookup;
-	gboolean   after;
+	gboolean   swapped, new_swapped;
+	gboolean   after, new_after;
 
 	/* get toggled iter */
 	gtk_tree_model_get_iter (model, &iter, path);
@@ -116,8 +116,9 @@ glade_signal_editor_after_toggled (GtkCellRendererToggle *cell,
 			    GSE_COLUMN_SIGNAL,  &signal_name,
 			    GSE_COLUMN_HANDLER, &handler,
 			    GSE_COLUMN_USERDATA,&userdata,
-			    GSE_COLUMN_LOOKUP,  &lookup,
+			    GSE_COLUMN_SWAPPED, &swapped,
 			    GSE_COLUMN_AFTER,   &after, -1);
+
 	if (signal_name == NULL)
 	{
 		if (!gtk_tree_model_iter_parent (model, &iter_parent, &iter))
@@ -132,12 +133,23 @@ glade_signal_editor_after_toggled (GtkCellRendererToggle *cell,
 		g_free (userdata);
 		userdata = NULL;
 	}
-	
-	old_signal = glade_signal_new (signal_name, handler, userdata, after);
-	new_signal = glade_signal_new (signal_name, handler, userdata, !after);
+
+	new_after = after;
+	new_swapped = swapped;
+	if (GPOINTER_TO_INT (g_object_get_data (G_OBJECT (cell), "signal-after-cell")))
+		new_after = !after;
+	else
+		new_swapped = !swapped;
+
+	old_signal = glade_signal_new (signal_name, handler, userdata, after, swapped);
+	new_signal = glade_signal_new (signal_name, handler, userdata, new_after, new_swapped);
 
 	glade_command_change_signal (editor->widget, old_signal, new_signal);
-	gtk_tree_store_set (GTK_TREE_STORE (model), &iter, GSE_COLUMN_AFTER, !after, -1);
+
+	gtk_tree_store_set (GTK_TREE_STORE (model), &iter, 
+			    GSE_COLUMN_AFTER, new_after, 
+			    GSE_COLUMN_SWAPPED, new_swapped, 
+			    -1);
 
 	glade_signal_free (old_signal);
 	glade_signal_free (new_signal);
@@ -146,89 +158,6 @@ glade_signal_editor_after_toggled (GtkCellRendererToggle *cell,
 	g_free (handler);
 	g_free (userdata);
 }
-
-/*
-  glade files do not support symbol names as signal handler user_data arguments
-  yet, so we disabled the lookup column.
-*/
-#define LOOKUP_COLUMN 0
-
-#if LOOKUP_COLUMN
-static void
-glade_signal_editor_lookup_toggled (GtkCellRendererToggle *cell,
-				    gchar                 *path_str,
-				    gpointer               data)
-{
-	GladeSignalEditor *editor = (GladeSignalEditor*) data;
-	GtkTreeModel *model = GTK_TREE_MODEL (editor->model);
-	GtkTreeIter  iter;
-	GtkTreeIter iter_parent;
-	GladeSignal *old_signal;
-	GladeSignal *new_signal;
-	GtkTreePath *path = gtk_tree_path_new_from_string (path_str);
-	gchar     *signal_name;
-	gchar     *handler;
-	gchar     *userdata;
-	gboolean   lookup;
-	gboolean   after;
-
-	/* get toggled iter */
-	gtk_tree_model_get_iter (model, &iter, path);
-	gtk_tree_model_get (model, &iter,
-			    GSE_COLUMN_SIGNAL,  &signal_name,
-			    GSE_COLUMN_HANDLER, &handler,
-			    GSE_COLUMN_USERDATA,&userdata,
-			    GSE_COLUMN_LOOKUP,  &lookup,
-			    GSE_COLUMN_AFTER,   &after, -1);
-	if (signal_name == NULL)
-	{
-		if (!gtk_tree_model_iter_parent (model, &iter_parent, &iter))
-			g_assert (FALSE);
-
-		gtk_tree_model_get (model, &iter_parent, GSE_COLUMN_SIGNAL, &signal_name, -1);
-		g_assert (signal_name != NULL);
-	}
-
-	if (is_void_userdata (userdata))
-	{
-		g_free (userdata);
-		userdata = NULL;
-	}
-	
-	old_signal = glade_signal_new (signal_name, handler, userdata, lookup, after);
-	new_signal = glade_signal_new (signal_name, handler, userdata, !lookup, after);
-
-	glade_command_change_signal (editor->widget, old_signal, new_signal);
-	gtk_tree_store_set (GTK_TREE_STORE (model), &iter, GSE_COLUMN_LOOKUP, !lookup, -1);
-
-	glade_signal_free (old_signal);
-	glade_signal_free (new_signal);
-	gtk_tree_path_free (path);
-	g_free (signal_name);
-	g_free (handler);
-	g_free (userdata);
-}
-
-
-static gboolean
-glade_signal_editor_is_valid_identifier (const char *text)
-{
-	char ch;
-
-	if (text == NULL)
-		return FALSE;
-
-	ch = *text++;
-	if (!(ch == '_' || (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')))
-		return FALSE;
-
-	while ((ch = *text++) != 0)
-		if (!(ch == '_' || (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9')))
-			return FALSE;
-
-	return TRUE;
-}
-#endif
 
 static void
 append_slot (GtkTreeModel *model, GtkTreeIter *iter_signal)
@@ -240,8 +169,8 @@ append_slot (GtkTreeModel *model, GtkTreeIter *iter_signal)
 	gtk_tree_store_set (GTK_TREE_STORE (model), &iter_new_slot,
 			    GSE_COLUMN_HANDLER,          _(HANDLER_DEFAULT),
 			    GSE_COLUMN_USERDATA,         _(USERDATA_DEFAULT),
-			    GSE_COLUMN_LOOKUP,           FALSE,
-			    GSE_COLUMN_LOOKUP_VISIBLE,   FALSE,
+			    GSE_COLUMN_SWAPPED,          FALSE,
+			    GSE_COLUMN_SWAPPED_VISIBLE,  FALSE,
 			    GSE_COLUMN_HANDLER_EDITABLE, TRUE,
 			    GSE_COLUMN_USERDATA_EDITABLE,FALSE,
 			    GSE_COLUMN_AFTER,            FALSE,
@@ -267,8 +196,8 @@ move_row (GtkTreeModel *model, GtkTreeIter *from, GtkTreeIter *to)
 	gboolean userdata_slot;
 	gboolean handler_editable;
 	gboolean userdata_editable;
-	gboolean lookup;
-	gboolean lookup_visible;
+	gboolean swapped;
+	gboolean swapped_visible;
 	gboolean bold;
 
 	gtk_tree_model_get (model,                     from,
@@ -280,8 +209,8 @@ move_row (GtkTreeModel *model, GtkTreeIter *from, GtkTreeIter *to)
 			    GSE_COLUMN_HANDLER_EDITABLE,  &handler_editable,
 			    GSE_COLUMN_USERDATA_EDITABLE, &userdata_editable,
 			    GSE_COLUMN_USERDATA_SLOT,     &userdata_slot,
-			    GSE_COLUMN_LOOKUP,            &lookup,
-			    GSE_COLUMN_LOOKUP_VISIBLE,    &lookup_visible,
+			    GSE_COLUMN_SWAPPED,           &swapped,
+			    GSE_COLUMN_SWAPPED_VISIBLE,   &swapped_visible,
 			    GSE_COLUMN_BOLD,              &bold,
 			    -1);
 
@@ -294,8 +223,8 @@ move_row (GtkTreeModel *model, GtkTreeIter *from, GtkTreeIter *to)
 			    GSE_COLUMN_HANDLER_EDITABLE,  handler_editable,
 			    GSE_COLUMN_USERDATA_EDITABLE, userdata_editable,
 			    GSE_COLUMN_USERDATA_SLOT,     userdata_slot,
-			    GSE_COLUMN_LOOKUP,            lookup,
-			    GSE_COLUMN_LOOKUP_VISIBLE,    lookup_visible,
+			    GSE_COLUMN_SWAPPED,           swapped,
+			    GSE_COLUMN_SWAPPED_VISIBLE,   swapped_visible,
 			    GSE_COLUMN_BOLD,              &bold,
 			    -1);
 	g_free (handler);
@@ -343,13 +272,15 @@ glade_signal_editor_handler_editing_done_impl  (GladeSignalEditor *self,
 	gchar *tmp_signal_name;
 	gchar *userdata;
 	GtkTreeIter iter_signal;
-	gboolean  after;
+	gboolean  after, swapped;
 	gboolean is_top_handler;
 
-	gtk_tree_model_get (model,           iter,
+	gtk_tree_model_get (model,               iter,
 			    GSE_COLUMN_SIGNAL,   &tmp_signal_name,
 			    GSE_COLUMN_USERDATA, &userdata,
-			    GSE_COLUMN_AFTER,    &after, -1);
+			    GSE_COLUMN_AFTER,    &after,
+			    GSE_COLUMN_SWAPPED,  &swapped,
+			    -1);
 
 	if (self->is_void_userdata (userdata))
 	{
@@ -373,7 +304,7 @@ glade_signal_editor_handler_editing_done_impl  (GladeSignalEditor *self,
 	if (old_handler == NULL && new_handler)
 	{
 		GladeSignal *new_signal = glade_signal_new (signal_name, new_handler,
-							    NULL, FALSE);
+							    NULL, FALSE, FALSE);
 		glade_command_add_signal (glade_widget, new_signal);
 		glade_signal_free (new_signal);
 		gtk_tree_store_set (GTK_TREE_STORE (model), iter,
@@ -393,7 +324,8 @@ glade_signal_editor_handler_editing_done_impl  (GladeSignalEditor *self,
 			glade_signal_new (signal_name,
 					  old_handler,
 					  userdata, 
-					  after);
+					  after, 
+					  swapped);
 		glade_command_remove_signal (glade_widget, old_signal);
 		glade_signal_free (old_signal);
 
@@ -402,8 +334,8 @@ glade_signal_editor_handler_editing_done_impl  (GladeSignalEditor *self,
 				 GSE_COLUMN_HANDLER,          _(HANDLER_DEFAULT),
 				 GSE_COLUMN_AFTER,            FALSE,
 				 GSE_COLUMN_USERDATA,         _(USERDATA_DEFAULT),
-				 GSE_COLUMN_LOOKUP,           FALSE,
-				 GSE_COLUMN_LOOKUP_VISIBLE,   FALSE,
+				 GSE_COLUMN_SWAPPED,          FALSE,
+				 GSE_COLUMN_SWAPPED_VISIBLE,  FALSE,
 				 GSE_COLUMN_HANDLER_EDITABLE, TRUE,
 				 GSE_COLUMN_USERDATA_EDITABLE,FALSE,
 				 GSE_COLUMN_AFTER_VISIBLE,    FALSE,
@@ -422,13 +354,15 @@ glade_signal_editor_handler_editing_done_impl  (GladeSignalEditor *self,
 			(signal_name,
 			 old_handler,
 			 userdata,
-			 after);
+			 after,
+			 swapped);
 		GladeSignal *new_signal =
 			glade_signal_new
 			(signal_name,
 			 new_handler,
 			 userdata,
-			 after);
+			 after, 
+			 swapped);
 
 		if (glade_signal_equal (old_signal, new_signal) == FALSE)
 			glade_command_change_signal (glade_widget, old_signal, new_signal);
@@ -458,34 +392,36 @@ glade_signal_editor_userdata_editing_done_impl (GladeSignalEditor *self,
 	GtkTreeModel *model = GTK_TREE_MODEL (self->model);
 	GladeWidget  *glade_widget = self->widget;
 	gchar *handler;
-	gboolean after;
+	gboolean after, swapped;
 	GladeSignal *old_signal, *new_signal;
 
-	gtk_tree_model_get (model,           iter,
+	gtk_tree_model_get (model,               iter,
 			    GSE_COLUMN_HANDLER,  &handler,
-			    GSE_COLUMN_AFTER,    &after, -1);
+			    GSE_COLUMN_AFTER,    &after, 
+			    GSE_COLUMN_SWAPPED,  &swapped, 
+			    -1);
 
 	/* We are removing userdata */
 	if (new_userdata == NULL)
 	{
 		gtk_tree_store_set (GTK_TREE_STORE (model), iter,
-				    GSE_COLUMN_USERDATA_SLOT,  TRUE,
-				    GSE_COLUMN_USERDATA,       _(USERDATA_DEFAULT),
-				    GSE_COLUMN_LOOKUP,         FALSE,
-				    GSE_COLUMN_LOOKUP_VISIBLE, FALSE, -1);
+				    GSE_COLUMN_USERDATA_SLOT,   TRUE,
+				    GSE_COLUMN_USERDATA,        _(USERDATA_DEFAULT),
+				    GSE_COLUMN_SWAPPED,         FALSE,
+				    GSE_COLUMN_SWAPPED_VISIBLE, FALSE, -1);
 	}
 	else
 	{
 		gtk_tree_store_set (GTK_TREE_STORE (model), iter,
-			    GSE_COLUMN_USERDATA_SLOT,  FALSE,
-			    GSE_COLUMN_USERDATA,       new_userdata,
-			    GSE_COLUMN_LOOKUP_VISIBLE, TRUE,
-			    -1);
+				    GSE_COLUMN_USERDATA_SLOT,   FALSE,
+				    GSE_COLUMN_USERDATA,        new_userdata,
+				    GSE_COLUMN_SWAPPED_VISIBLE, TRUE,
+				    -1);
 	}
 
-	old_signal = glade_signal_new (signal_name, handler, old_userdata, after);
+	old_signal = glade_signal_new (signal_name, handler, old_userdata, after, swapped);
 
-	new_signal = glade_signal_new (signal_name, handler, new_userdata, after);
+	new_signal = glade_signal_new (signal_name, handler, new_userdata, after, swapped);
 
 	if (glade_signal_equal (old_signal, new_signal) == FALSE)
 		glade_command_change_signal (glade_widget, old_signal, new_signal);
@@ -700,11 +636,10 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 		 G_TYPE_STRING,   /* Handler value      */
 		 G_TYPE_BOOLEAN,  /* After   value      */
 		 G_TYPE_STRING,   /* User data value    */
-		 G_TYPE_BOOLEAN,  /* module lookup string for
-				   * user data */
+		 G_TYPE_BOOLEAN,  /* Swapped value */
 		 G_TYPE_BOOLEAN,  /* Whether userdata is a slot */
-		 G_TYPE_BOOLEAN,  /* Lookup visibility  */
-		 G_TYPE_BOOLEAN,  /* After   visibility */
+		 G_TYPE_BOOLEAN,  /* Swapped visibility  */
+		 G_TYPE_BOOLEAN,  /* After visibility */
 		 G_TYPE_BOOLEAN,  /* Handler editable   */
 		 G_TYPE_BOOLEAN,  /* Userdata editable  */
 		 G_TYPE_BOOLEAN,  /* New slot           */
@@ -761,6 +696,7 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 							 NULL, NULL);
 	}
 
+ 	gtk_tree_view_column_set_expand (editor->handler_column, TRUE);
  	gtk_tree_view_append_column (view, editor->handler_column);
 
 	/************************ userdata column ************************/
@@ -783,7 +719,7 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 	{
 		editor->userdata_column =
 			gtk_tree_view_column_new_with_attributes
-				(_("User data"), editor->userdata_renderer,
+				(_("Object"), editor->userdata_renderer,
 				 "text",           GSE_COLUMN_USERDATA,
 				 "editable",       GSE_COLUMN_USERDATA_EDITABLE, NULL);
 
@@ -792,29 +728,33 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 							 NULL, NULL);
 	}
 
+ 	gtk_tree_view_column_set_expand (editor->userdata_column, TRUE);
  	gtk_tree_view_append_column (view, editor->userdata_column);
 
-#if LOOKUP_COLUMN
-	/************************ lookup column ************************/
+	/************************ swapped column ************************/
  	renderer = gtk_cell_renderer_toggle_new ();
 	g_signal_connect (renderer, "toggled",
-			  G_CALLBACK (glade_signal_editor_lookup_toggled), editor);
+			  G_CALLBACK (glade_signal_editor_after_swapped_toggled), editor);
 	column = gtk_tree_view_column_new_with_attributes
-		(_("Lookup"), renderer,
-		 "active",  GSE_COLUMN_LOOKUP,
-		 "visible", GSE_COLUMN_LOOKUP_VISIBLE, NULL);
+		(_("Swapped"), renderer,
+		 "active",  GSE_COLUMN_SWAPPED,
+		 "visible", GSE_COLUMN_SWAPPED_VISIBLE, NULL);
 
  	gtk_tree_view_append_column (view, column);
-#endif
+
 	/************************ after column ************************/
 	renderer = gtk_cell_renderer_toggle_new ();
 	g_signal_connect (renderer, "toggled",
-			  G_CALLBACK (glade_signal_editor_after_toggled), editor);
+			  G_CALLBACK (glade_signal_editor_after_swapped_toggled), editor);
  	column = gtk_tree_view_column_new_with_attributes
 		(_("After"), renderer,
 		 "active",  GSE_COLUMN_AFTER,
 		 "visible", GSE_COLUMN_AFTER_VISIBLE, NULL);
  	gtk_tree_view_append_column (view, column);
+
+	g_object_set_data (G_OBJECT (renderer), "signal-after-cell",
+			       GINT_TO_POINTER (TRUE));
+
 
 	editor->signals_list = view_widget;
 }
@@ -950,8 +890,8 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 				 GSE_COLUMN_HANDLER,          _(HANDLER_DEFAULT),
 				 GSE_COLUMN_AFTER,            FALSE,
 				 GSE_COLUMN_USERDATA,         _(USERDATA_DEFAULT),
-				 GSE_COLUMN_LOOKUP,           FALSE,
-				 GSE_COLUMN_LOOKUP_VISIBLE,   FALSE,
+				 GSE_COLUMN_SWAPPED,          FALSE,
+				 GSE_COLUMN_SWAPPED_VISIBLE,  FALSE,
 				 GSE_COLUMN_HANDLER_EDITABLE, TRUE,
 				 GSE_COLUMN_USERDATA_EDITABLE,FALSE,
 				 GSE_COLUMN_AFTER_VISIBLE,    FALSE,
@@ -984,8 +924,8 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 				 GSE_COLUMN_USERDATA,
 				 widget_signal->userdata ?
 				 widget_signal->userdata : _(USERDATA_DEFAULT),
-				 GSE_COLUMN_LOOKUP,             FALSE/* widget_signal->lookup */,
-				 GSE_COLUMN_LOOKUP_VISIBLE,
+				 GSE_COLUMN_SWAPPED,            widget_signal->swapped,
+				 GSE_COLUMN_SWAPPED_VISIBLE,
 				 widget_signal->userdata ?  TRUE : FALSE,
 				 GSE_COLUMN_AFTER_VISIBLE,      TRUE,
 				 GSE_COLUMN_HANDLER_EDITABLE,   TRUE,
@@ -1007,8 +947,8 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 					 GSE_COLUMN_USERDATA,
 					 widget_signal->userdata  ?
 					 widget_signal->userdata : _(USERDATA_DEFAULT),
-					 GSE_COLUMN_LOOKUP,         FALSE/* widget_signal->lookup */,
-					 GSE_COLUMN_LOOKUP_VISIBLE,
+					 GSE_COLUMN_SWAPPED,            widget_signal->swapped,
+					 GSE_COLUMN_SWAPPED_VISIBLE,
 					 widget_signal->userdata  ? TRUE : FALSE,
 					 GSE_COLUMN_AFTER_VISIBLE,      TRUE,
 					 GSE_COLUMN_HANDLER_EDITABLE,   TRUE,
@@ -1026,8 +966,8 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 				 GSE_COLUMN_HANDLER,          _(HANDLER_DEFAULT),
 				 GSE_COLUMN_AFTER,            FALSE,
 				 GSE_COLUMN_USERDATA,         _(USERDATA_DEFAULT),
-				 GSE_COLUMN_LOOKUP,           FALSE,
-				 GSE_COLUMN_LOOKUP_VISIBLE,   FALSE,
+				 GSE_COLUMN_SWAPPED,          FALSE,
+				 GSE_COLUMN_SWAPPED_VISIBLE,  FALSE,
 				 GSE_COLUMN_HANDLER_EDITABLE, TRUE,
 				 GSE_COLUMN_USERDATA_EDITABLE,FALSE,
 				 GSE_COLUMN_AFTER_VISIBLE,    FALSE,

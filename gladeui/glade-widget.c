@@ -247,7 +247,7 @@ glade_widget_change_signal_handler_impl (GladeWidget *widget,
 					 GladeSignal *new_signal_handler)
 {
 	GPtrArray   *signals;
-	GladeSignal *tmp_signal_handler;
+	GladeSignal *signal_handler_iter;
 	guint        i;
 	
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
@@ -262,30 +262,31 @@ glade_widget_change_signal_handler_impl (GladeWidget *widget,
 
 	for (i = 0; i < signals->len; i++)
 	{
-		tmp_signal_handler = g_ptr_array_index (signals, i);
-		if (glade_signal_equal (tmp_signal_handler, old_signal_handler))
+		signal_handler_iter = g_ptr_array_index (signals, i);
+		if (glade_signal_equal (signal_handler_iter, old_signal_handler))
 		{
 			if (strcmp (old_signal_handler->handler,
 				    new_signal_handler->handler) != 0)
 			{
-				g_free (tmp_signal_handler->handler);
-				tmp_signal_handler->handler =
+				g_free (signal_handler_iter->handler);
+				signal_handler_iter->handler =
 					g_strdup (new_signal_handler->handler);
 			}
 
 			/* Handler */
-			if (tmp_signal_handler->handler)
-				g_free (tmp_signal_handler->handler);
-			tmp_signal_handler->handler =
+			if (signal_handler_iter->handler)
+				g_free (signal_handler_iter->handler);
+			signal_handler_iter->handler =
 				g_strdup (new_signal_handler->handler);
 			
 			/* Object */
-			if (tmp_signal_handler->userdata)
-				g_free (tmp_signal_handler->userdata);
-			tmp_signal_handler->userdata = 
+			if (signal_handler_iter->userdata)
+				g_free (signal_handler_iter->userdata);
+			signal_handler_iter->userdata = 
 				g_strdup (new_signal_handler->userdata);
 			
-			tmp_signal_handler->after  = new_signal_handler->after;
+			signal_handler_iter->after    = new_signal_handler->after;
+			signal_handler_iter->swapped  = new_signal_handler->swapped;
 			break;
 		}
 	}

@@ -17,6 +17,15 @@
 	Consult glade_util_check_and_warn_scrollable() before executing commands that introduce objects
 	to the project.
 
+	* gladeui/glade-xml-utils.h: Added "swapped" attribute definition
+	
+	* gladeui/glade-signal.c: Added "swapped" attribute and read/write from xml, swapped attribute is 
+	always saved, if its missing on load and user_data (object) is set, we assume a swapped default.
+
+	* gladeui/glade-signal-editor.c: Allow toggling "swapped" flag of a signal if user data is set.
+
+	* gladeui/glade-widget.c: Account for new signal "swapped" flag when modifying local signals.
+
 2010-03-27  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-marshallers.list, gladeui/glade-placeholder.c: 
