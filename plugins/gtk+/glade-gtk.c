@@ -10242,62 +10242,14 @@ glade_gtk_cell_layout_sync_attributes (GObject *layout)
 	return FALSE;
 }
 
-static gboolean
-glade_gtk_cell_layout_clear_attributes (GObject *layout)
-{
-	GladeWidget *gwidget = glade_widget_get_from_gobject (layout);
-	GObject     *cell;
-	GList       *children, *l;
-
-	children = glade_widget_adaptor_get_children (gwidget->adaptor, layout);
-	for (l = children; l; l = l->next)
-	{
-		cell = l->data;
-		if (!GTK_IS_CELL_RENDERER (cell))
-			continue;
-
-		gtk_cell_layout_clear_attributes (GTK_CELL_LAYOUT (layout), 
-						  GTK_CELL_RENDERER (cell));
-	}
-	g_list_free (children);
-
-	return FALSE;
-}
-
 static void
 glade_gtk_store_set_columns (GObject *object,
 			     const GValue *value)
 {
-	GladeWidget *widget = glade_widget_get_from_gobject (object);
 	GList       *l;
 	gint         i, n;
 	GType       *types;
 	
-	/* Clear the attributes for all cell renderers referring to this store */
-	for (l = widget->prop_refs; l; l = l->next)
-	{
-		GladeWidget *referring_widget = GLADE_PROPERTY (l->data)->widget;
-
-		if (GTK_IS_CELL_LAYOUT (referring_widget->object))
-			glade_gtk_cell_layout_clear_attributes (referring_widget->object);
-		else if (GTK_IS_TREE_VIEW (referring_widget->object))
-		{
-			GList *list, *children = 
-				glade_widget_adaptor_get_children (referring_widget->adaptor, 
-								   referring_widget->object);
-
-			for (list = children; list; list = list->next)
-			{
-				/* Clear the GtkTreeViewColumns... */
-				if (GTK_IS_CELL_LAYOUT (l->data))
-					glade_gtk_cell_layout_clear_attributes (G_OBJECT (l->data));
-			}
-
-			g_list_free (children);
-		}
-	}
-
-	/* Apply new column types */
 	for (i = 0, l = g_value_get_boxed (value), n = g_list_length (l), types = g_new (GType, n); 
 	     l; l = g_list_next (l), i++)
 	{
@@ -10315,31 +10267,6 @@ glade_gtk_store_set_columns (GObject *object,
 		gtk_tree_store_set_column_types (GTK_TREE_STORE (object), n, types);
 
 	g_free (types);
-
-	/* Reset the attributes for all cell renderers referring to this store */
-	for (l = widget->prop_refs; l; l = l->next)
-	{
-		GladeWidget *referring_widget = GLADE_PROPERTY (l->data)->widget;
-
-		if (GTK_IS_CELL_LAYOUT (referring_widget->object))
-			glade_gtk_cell_layout_sync_attributes (referring_widget->object);
-		else if (GTK_IS_TREE_VIEW (referring_widget->object))
-		{
-			GList *list, *children = 
-				glade_widget_adaptor_get_children (referring_widget->adaptor, 
-								   referring_widget->object);
-
-			for (list = children; list; list = list->next)
-			{
-				/* Clear the GtkTreeViewColumns... */
-				if (GTK_IS_CELL_LAYOUT (l->data))
-					glade_gtk_cell_layout_sync_attributes (G_OBJECT (l->data));
-			}
-
-			g_list_free (children);
-		}
-	}
-
 }
 
 static void
@@ -10447,6 +10374,67 @@ glade_gtk_store_create_eprop (GladeWidgetAdaptor *adaptor,
 						       klass, 
 						       use_command);
 	return eprop;
+}
+
+
+static void 
+glade_gtk_store_columns_changed (GladeProperty *property,
+				 GValue        *old_value,
+				 GValue        *new_value,
+				 GladeWidget   *store)
+{
+	GList *l, *list, *children;
+
+	/* Reset the attributes for all cell renderers referring to this store */
+	for (l = store->prop_refs; l; l = l->next)
+	{
+		GladeWidget *referring_widget = GLADE_PROPERTY (l->data)->widget;
+
+		if (GTK_IS_CELL_LAYOUT (referring_widget->object))
+			glade_gtk_cell_layout_sync_attributes (referring_widget->object);
+		else if (GTK_IS_TREE_VIEW (referring_widget->object))
+		{
+			children = glade_widget_adaptor_get_children (referring_widget->adaptor, 
+								      referring_widget->object);
+
+			for (list = children; list; list = list->next)
+			{
+				/* Clear the GtkTreeViewColumns... */
+				if (GTK_IS_CELL_LAYOUT (list->data))
+					glade_gtk_cell_layout_sync_attributes (G_OBJECT (list->data));
+			}
+
+			g_list_free (children);
+		}
+	}
+}
+
+void
+glade_gtk_store_post_create (GladeWidgetAdaptor *adaptor,
+			     GObject *object, 
+			     GladeCreateReason reason)
+{
+	GladeWidget   *gwidget;
+	GladeProperty *property;
+
+	if (reason == GLADE_CREATE_REBUILD)
+		return;
+
+	gwidget  = glade_widget_get_from_gobject (object);
+	property = glade_widget_get_property (gwidget, "columns");
+
+	/* Here we watch the value-changed signal on the "columns" property, we need
+	 * to reset all the Cell Renderer attributes when the underlying "columns" change,
+	 * the reason we do it from "value-changed" is because GladeWidget prop references
+	 * are unavailable while rebuilding an object, and the liststore needs to be rebuilt
+	 * in order to set the columns.
+	 *
+	 * This signal will be envoked after applying the new column types to the store
+	 * and before the views get any signal to update themselves from the changed model,
+	 * perfect time to reset the attributes.
+	 */
+	g_signal_connect (G_OBJECT (property), "value-changed",
+			  G_CALLBACK (glade_gtk_store_columns_changed), gwidget);
 }
 
 GladeEditable *
@@ -11007,7 +10995,12 @@ glade_gtk_cell_renderer_set_use_attribute (GObject      *object,
 	if (g_value_get_boolean (value))
 		glade_widget_property_set_sensitive (widget, attr_prop_name, TRUE, NULL);
 	else
-		glade_widget_property_set_sensitive (widget, property_name, TRUE, NULL);
+	{
+		GladeProperty *property = glade_widget_get_property (widget, property_name);
+
+		glade_property_set_sensitive (property, TRUE, NULL);
+		glade_property_sync (property);
+	}
 
 	g_free (prop_msg);
 	g_free (attr_msg);

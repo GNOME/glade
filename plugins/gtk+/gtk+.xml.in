@@ -1999,6 +1999,7 @@ embedded in another object</_tooltip>
 
     <glade-widget-class name="GtkListStore" generic-name="liststore" _title="List Store" 
 			libglade-unsupported="True" toplevel="True">
+      <post-create-function>glade_gtk_store_post_create</post-create-function>
       <set-property-function>glade_gtk_store_set_property</set-property-function>
       <create-editor-property-function>glade_gtk_store_create_eprop</create-editor-property-function>
       <create-editable-function>glade_gtk_store_create_editable</create-editable-function>

@@ -1,3 +1,12 @@
+2010-03-28  Tristan Van Berkom <tvb@gnome.org>
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in:
+	  - Sync attributes when they are set to be used directly and not by the model (fixes loaded state
+	    of explicitly set cell renderer properties). 
+	  - Fix last patch to reset cellrenderer attributes from a GladeProperty::value-changed signal
+	    instead of the property mutator implementation (as the "columns" property is construct-only
+	    and the widget is rebuilt - property reference lists are unavailable at ->set_property time).
+
 2010-03-27  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-marshallers.list, gladeui/glade-placeholder.c: 
