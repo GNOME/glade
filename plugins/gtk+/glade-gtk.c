@@ -10139,15 +10139,167 @@ glade_gtk_icon_factory_create_editable (GladeWidgetAdaptor  *adaptor,
 #define GLADE_TAG_DATA          "data"
 #define GLADE_TAG_COL           "col"
 
+
+static gboolean 
+glade_gtk_cell_layout_has_renderer (GtkCellLayout *layout,
+				    GtkCellRenderer *renderer)
+{
+	GList *cells = gtk_cell_layout_get_cells (layout);
+	gboolean has_renderer;
+
+	has_renderer = (g_list_find (cells, renderer) != NULL);
+
+	g_list_free (cells);
+
+	return has_renderer;
+}
+
+static gboolean
+glade_gtk_cell_renderer_sync_attributes (GObject *object)
+{
+
+	GtkCellLayout *layout;
+	GtkCellRenderer *cell;
+	GladeWidget *widget = glade_widget_get_from_gobject (object);
+	GladeWidget *gmodel;
+	GladeProperty *property;
+	gchar *attr_prop_name;
+	GList *l, *column_list = NULL;
+	gint columns = 0;
+	static gint attr_len = 0;
+
+	if (!attr_len)
+		attr_len = strlen ("attr-");
+
+	/* Apply attributes to renderer when bound to a model in runtime */
+	widget = glade_widget_get_from_gobject (object);
+		
+	if (widget->parent == NULL) return FALSE;
+
+	/* When creating widgets, sometimes the parent is set before parenting happens,
+	 * here we have to be careful for that..
+	 */
+	layout = GTK_CELL_LAYOUT (widget->parent->object);
+	cell = GTK_CELL_RENDERER (object);
+
+	if (!glade_gtk_cell_layout_has_renderer (layout, cell))
+		return FALSE;
+
+	if ((gmodel = glade_cell_renderer_get_model (widget)) == NULL)
+		return FALSE;
+
+	glade_widget_property_get (gmodel, "columns", &column_list);
+	columns = g_list_length (column_list);
+
+	gtk_cell_layout_clear_attributes (layout, cell);
+
+	for (l = widget->properties; l; l = l->next)
+	{
+		property = l->data;
+
+		if (strncmp (property->klass->id, "attr-", attr_len) == 0)
+		{
+			GladeProperty *attr_prop;
+			gint           column = g_value_get_int (property->value);
+
+			attr_prop_name = &property->klass->id[attr_len];
+			attr_prop      = glade_widget_get_property (widget, attr_prop_name);
+
+			if (column >= 0 && column < columns)
+			{
+				GladeColumnType *column_type = (GladeColumnType *)g_list_nth_data (column_list, column);
+				GType            column_gtype = g_type_from_name (column_type->type_name);
+
+				if (column_gtype && 
+				    g_value_type_transformable (column_gtype, attr_prop->klass->pspec->value_type))
+					gtk_cell_layout_add_attribute (layout, cell, attr_prop_name, column);
+			}
+		}
+	}
+
+	return FALSE;
+}
+
+
+static gboolean
+glade_gtk_cell_layout_sync_attributes (GObject *layout)
+{
+	GladeWidget *gwidget = glade_widget_get_from_gobject (layout);
+	GObject     *cell;
+	GList       *children, *l;
+
+	children = glade_widget_adaptor_get_children (gwidget->adaptor, layout);
+	for (l = children; l; l = l->next)
+	{
+		cell = l->data;
+		if (!GTK_IS_CELL_RENDERER (cell))
+			continue;
+
+		glade_gtk_cell_renderer_sync_attributes (cell);
+	}
+	g_list_free (children);
+
+	return FALSE;
+}
+
+static gboolean
+glade_gtk_cell_layout_clear_attributes (GObject *layout)
+{
+	GladeWidget *gwidget = glade_widget_get_from_gobject (layout);
+	GObject     *cell;
+	GList       *children, *l;
+
+	children = glade_widget_adaptor_get_children (gwidget->adaptor, layout);
+	for (l = children; l; l = l->next)
+	{
+		cell = l->data;
+		if (!GTK_IS_CELL_RENDERER (cell))
+			continue;
+
+		gtk_cell_layout_clear_attributes (GTK_CELL_LAYOUT (layout), 
+						  GTK_CELL_RENDERER (cell));
+	}
+	g_list_free (children);
+
+	return FALSE;
+}
+
 static void
 glade_gtk_store_set_columns (GObject *object,
 			     const GValue *value)
 {
-	GList *l = g_value_get_boxed (value);
-	gint i, n = g_list_length (l);
-	GType *types = g_new (GType, n);
+	GladeWidget *widget = glade_widget_get_from_gobject (object);
+	GList       *l;
+	gint         i, n;
+	GType       *types;
+	
+	/* Clear the attributes for all cell renderers referring to this store */
+	for (l = widget->prop_refs; l; l = l->next)
+	{
+		GladeWidget *referring_widget = GLADE_PROPERTY (l->data)->widget;
 
-	for (i = 0; l; l = g_list_next (l), i++)
+		if (GTK_IS_CELL_LAYOUT (referring_widget->object))
+			glade_gtk_cell_layout_clear_attributes (referring_widget->object);
+		else if (GTK_IS_TREE_VIEW (referring_widget->object))
+		{
+			GList *list, *children = 
+				glade_widget_adaptor_get_children (referring_widget->adaptor, 
+								   referring_widget->object);
+
+			for (list = children; list; list = list->next)
+			{
+				/* Clear the GtkTreeViewColumns... */
+				if (GTK_IS_CELL_LAYOUT (l->data))
+					glade_gtk_cell_layout_clear_attributes (G_OBJECT (l->data));
+			}
+
+			g_list_free (children);
+		}
+	}
+
+	/* Apply new column types */
+	for (i = 0, l = g_value_get_boxed (value), n = g_list_length (l), types = g_new (GType, n); 
+	     l; l = g_list_next (l), i++)
 	{
 		GladeColumnType *data = l->data;
 
@@ -10161,6 +10313,33 @@ glade_gtk_store_set_columns (GObject *object,
 		gtk_list_store_set_column_types (GTK_LIST_STORE (object), n, types);
 	else
 		gtk_tree_store_set_column_types (GTK_TREE_STORE (object), n, types);
+
+	g_free (types);
+
+	/* Reset the attributes for all cell renderers referring to this store */
+	for (l = widget->prop_refs; l; l = l->next)
+	{
+		GladeWidget *referring_widget = GLADE_PROPERTY (l->data)->widget;
+
+		if (GTK_IS_CELL_LAYOUT (referring_widget->object))
+			glade_gtk_cell_layout_sync_attributes (referring_widget->object);
+		else if (GTK_IS_TREE_VIEW (referring_widget->object))
+		{
+			GList *list, *children = 
+				glade_widget_adaptor_get_children (referring_widget->adaptor, 
+								   referring_widget->object);
+
+			for (list = children; list; list = list->next)
+			{
+				/* Clear the GtkTreeViewColumns... */
+				if (GTK_IS_CELL_LAYOUT (l->data))
+					glade_gtk_cell_layout_sync_attributes (G_OBJECT (l->data));
+			}
+
+			g_list_free (children);
+		}
+	}
+
 }
 
 static void
@@ -10207,8 +10386,8 @@ glade_gtk_store_set_data (GObject *object,
 			 * and a sync will come soon with the right values
 			 */
 			column_type = gtk_tree_model_get_column_type (GTK_TREE_MODEL (object), colnum);
-			if (!g_type_is_a (G_VALUE_TYPE (&data->value), column_type))
-				break;
+			if (G_VALUE_TYPE (&data->value) != column_type)
+				continue;
 
 			if (GTK_IS_LIST_STORE (object))
 				gtk_list_store_set_value (GTK_LIST_STORE (object), 
@@ -10327,7 +10506,10 @@ glade_gtk_store_string_from_value (GladeWidgetAdaptor *adaptor,
 			{
 				data = iter->data;
 
-				if (G_VALUE_TYPE (&data->value) != G_TYPE_POINTER)
+				if (!G_VALUE_TYPE (&data->value) || 
+				    G_VALUE_TYPE (&data->value) == G_TYPE_INVALID)
+					str = g_strdup ("(virtual)");
+				else if (G_VALUE_TYPE (&data->value) != G_TYPE_POINTER)
 					str = glade_utils_string_from_value (&data->value, fmt);
 				else
 					str = g_strdup ("(null)");
@@ -10430,8 +10612,9 @@ glade_gtk_store_write_data (GladeWidget        *widget,
 
 			data = iter->data;
 
-			/* Skip inserializable data */
-			if (G_VALUE_TYPE (&data->value) == G_TYPE_POINTER)
+			/* Skip non-serializable data */
+			if (G_VALUE_TYPE (&data->value) == 0 ||
+			    G_VALUE_TYPE (&data->value) == G_TYPE_POINTER)
 				continue;
 
 			string = glade_utils_string_from_value (&data->value, 
@@ -10562,7 +10745,7 @@ glade_gtk_store_read_data (GladeWidget *widget, GladeXmlNode *node)
 	GNode *data_tree, *row, *item;
 	GladeModelData *data;
 	GValue *value;
-	GList *column_types = NULL, *list;
+	GList *column_types = NULL;
 	GladeColumnType *column_type;
 	gint colnum;
 
@@ -10591,15 +10774,34 @@ glade_gtk_store_read_data (GladeWidget *widget, GladeXmlNode *node)
 		for (colnum = 0, col_node = glade_xml_node_get_children (row_node); col_node;
 		     col_node = glade_xml_node_next (col_node))
 		{
+			gint read_column;
 
 			if (!glade_xml_node_verify (col_node, GLADE_TAG_COL)) 
 				continue;
 
-			if (!(list = g_list_nth (column_types, colnum)))
+			read_column = glade_xml_get_property_int (col_node, GLADE_TAG_ID, -1);
+			if (read_column < 0)
+			{
+				g_critical ("Parsed negative column id");
+				continue;
+			}
+
+			/* Catch up for gaps in the list where unserializable types are involved */
+			while (colnum < read_column)
+			{
+				column_type = g_list_nth_data (column_types, colnum);
+
+				data = glade_model_data_new (G_TYPE_INVALID, column_type->column_name);
+
+				item = g_node_new (data);
+				g_node_append (row, item);
+				
+				colnum++;
+			}
+
+			if (!(column_type = g_list_nth_data (column_types, colnum)))
 				/* XXX Log this too... */
 				continue;
-
-			column_type = list->data;
 	
 			/* Ignore unloaded column types for the workspace */
 			if (g_type_from_name (column_type->type_name) != G_TYPE_INVALID)
@@ -10612,7 +10814,8 @@ glade_gtk_store_read_data (GladeWidget *widget, GladeXmlNode *node)
 					(g_type_from_name (column_type->type_name), value_str, widget->project, widget);
 				g_free (value_str);
 					
-				data = glade_model_data_new (g_type_from_name (column_type->type_name), column_type->column_name);
+				data = glade_model_data_new (g_type_from_name (column_type->type_name), 
+							     column_type->column_name);
 			
 				g_value_copy (value, &data->value);
 				g_value_unset (value);
@@ -10620,10 +10823,9 @@ glade_gtk_store_read_data (GladeWidget *widget, GladeXmlNode *node)
 			}
 			else
        			{
-				data = glade_model_data_new (G_TYPE_POINTER, column_type->column_name);
+				data = glade_model_data_new (G_TYPE_INVALID, column_type->column_name);
        			}
 
-			data->name = g_strdup (column_type->column_name);
 			data->i18n_translatable = glade_xml_get_property_boolean (col_node, GLADE_TAG_TRANSLATABLE, FALSE);
 			data->i18n_context = glade_xml_get_property_string (col_node, GLADE_TAG_CONTEXT);
 			data->i18n_comment = glade_xml_get_property_string (col_node, GLADE_TAG_COMMENT);
@@ -10688,97 +10890,13 @@ glade_gtk_cell_renderer_action_activate (GladeWidgetAdaptor *adaptor,
 }
 
 
-static gboolean 
-glade_gtk_cell_layout_has_renderer (GtkCellLayout *layout,
-				    GtkCellRenderer *renderer)
-{
-	GList *cells = gtk_cell_layout_get_cells (layout);
-	gboolean has_renderer;
-
-	has_renderer = (g_list_find (cells, renderer) != NULL);
-
-	g_list_free (cells);
-
-	return has_renderer;
-}
-
-static void
-glade_gtk_cell_renderer_sync_attributes (GObject *object)
-{
-
-	GtkCellLayout *layout;
-	GtkCellRenderer *cell;
-	GladeWidget *widget = glade_widget_get_from_gobject (object);
-	GladeWidget *gmodel;
-	GladeProperty *property;
-	gchar *attr_prop_name;
-	GList *l;
-	gint columns = 0;
-	static gint attr_len = 0;
-
-	if (!attr_len)
-		attr_len = strlen ("attr-");
-
-	/* Apply attributes to renderer when bound to a model in runtime */
-	widget = glade_widget_get_from_gobject (object);
-		
-	if (widget->parent == NULL) return;
-
-	/* When creating widgets, sometimes the parent is set before parenting happens,
-	 * here we have to be careful for that..
-	 */
-	layout = GTK_CELL_LAYOUT (widget->parent->object);
-	cell = GTK_CELL_RENDERER (object);
-
-	if (!glade_gtk_cell_layout_has_renderer (layout, cell))
-		return;
-
-	if ((gmodel = glade_cell_renderer_get_model (widget)) != NULL)
-	{
-		GList *column_list = NULL;
-		glade_widget_property_get (gmodel, "columns", &column_list);
-		columns = g_list_length (column_list);
-	}
-
-	gtk_cell_layout_clear_attributes (layout, cell);
-
-	for (l = widget->properties; l; l = l->next)
-	{
-		property = l->data;
-
-		if (strncmp (property->klass->id, "attr-", attr_len) == 0)
-		{
-			attr_prop_name = &property->klass->id[attr_len];
-
-			/* XXX TODO: Check that the cell supports the data type in the indexed column.
-			 *
-			 * use: gtk_tree_model_get_column_type (icon_view->priv->model, column)
-			 */
-			if (g_value_get_int (property->value) >= 0 &&
-			    /* We have to set attributes before parenting when loading */
-			    (glade_widget_superuser () || g_value_get_int (property->value) < columns))
-				gtk_cell_layout_add_attribute (layout, cell,
-							       attr_prop_name,
-							       g_value_get_int (property->value));
-		}
-	}
-}
-
-
-static gboolean
-sync_attributes_idle (GladeWidget *gwidget)
-{
-	glade_gtk_cell_renderer_sync_attributes (gwidget->object);
-	return FALSE;
-}
-
 static void
 renderer_format_changed (GladeProject *project, 
 			 GParamSpec   *pspec,
 			 GladeWidget  *gwidget)
 {
 	if (glade_project_get_format (project) == GLADE_PROJECT_FORMAT_GTKBUILDER)
-		g_idle_add ((GSourceFunc)sync_attributes_idle, gwidget);
+		g_idle_add ((GSourceFunc)glade_gtk_cell_renderer_sync_attributes, gwidget->object);
 }
 
 static void
@@ -11231,6 +11349,8 @@ glade_gtk_cell_layout_read_child (GladeWidgetAdaptor *adaptor,
 			glade_widget_add_child (widget, child_widget, FALSE);
 
 			glade_gtk_cell_renderer_read_attributes (child_widget, node);
+
+			g_idle_add ((GSourceFunc)glade_gtk_cell_renderer_sync_attributes, child_widget->object);
 		}
 	}
 }
@@ -11301,25 +11421,6 @@ glade_gtk_cell_layout_write_child (GladeWidgetAdaptor *adaptor,
 	glade_widget_write (widget, context, child_node);
 
 	glade_gtk_cell_renderer_write_attributes (widget, context, child_node);
-}
-
-static void
-glade_gtk_cell_layout_sync_attributes (GObject *layout)
-{
-	GladeWidget *gwidget = glade_widget_get_from_gobject (layout);
-	GObject     *cell;
-	GList       *children, *l;
-
-	children = glade_widget_adaptor_get_children (gwidget->adaptor, layout);
-	for (l = children; l; l = l->next)
-	{
-		cell = l->data;
-		if (!GTK_IS_CELL_RENDERER (cell))
-			continue;
-
-		glade_gtk_cell_renderer_sync_attributes (cell);
-	}
-	g_list_free (children);
 }
 
 static gchar *

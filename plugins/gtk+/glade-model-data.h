@@ -30,7 +30,7 @@ struct _GladeModelData
 {
 	GValue    value;
 	gchar    *name;
-	
+
 	gboolean  i18n_translatable;
 	gchar    *i18n_context;
 	gchar    *i18n_comment;

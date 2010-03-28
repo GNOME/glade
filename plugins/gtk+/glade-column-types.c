@@ -145,7 +145,7 @@ glade_column_list_copy (GList *list)
 	
 	for (l = list; l; l = g_list_next (l))
 	{
-		GladeColumnType *new_data = g_new0(GladeColumnType, 1);
+		GladeColumnType *new_data = g_slice_new0 (GladeColumnType);
 		GladeColumnType *data = l->data;
 		
 		new_data->type_name = g_strdup (data->type_name);
@@ -162,7 +162,7 @@ glade_column_type_free (GladeColumnType *column)
 {
 	g_free (column->type_name);
 	g_free (column->column_name);
-	g_free (column);
+	g_slice_free (GladeColumnType, column);
 }
 
 void
@@ -286,8 +286,7 @@ eprop_column_adjust_rows (GladeEditorProperty *eprop, GList *columns)
 
 		column = list->data;
 
-		if ((data_type = g_type_from_name (column->type_name)) == G_TYPE_INVALID)
-			data_type = G_TYPE_POINTER;
+		data_type = g_type_from_name (column->type_name);
 		
 		if ((idx = glade_model_data_column_index (data_tree, column->column_name)) < 0)
 		{
@@ -324,7 +323,7 @@ eprop_column_append (GladeEditorProperty *eprop,
 	if (columns)
 		columns = glade_column_list_copy (columns);
 
-	data = g_new0 (GladeColumnType, 1);
+	data = g_slice_new0 (GladeColumnType);
 	data->column_name = g_strdup (column_name);
 	data->type_name   = g_strdup (type_name);
 

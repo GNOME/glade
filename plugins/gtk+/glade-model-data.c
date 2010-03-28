@@ -37,7 +37,8 @@ glade_model_data_new (GType type, const gchar *column_name)
 {
 	GladeModelData *data = g_new0 (GladeModelData, 1);
 	
-	g_value_init (&data->value, type);
+	if (type != 0)
+		g_value_init (&data->value, type);
 
 	if (type == G_TYPE_STRING)
 		data->i18n_translatable = TRUE;
@@ -55,8 +56,11 @@ glade_model_data_copy (GladeModelData *data)
 
 	GladeModelData *dup = g_new0 (GladeModelData, 1);
 	
-	g_value_init (&dup->value, G_VALUE_TYPE (&data->value));
-	g_value_copy (&data->value, &dup->value);
+	if (G_VALUE_TYPE (&data->value) != 0)
+	{
+		g_value_init (&dup->value, G_VALUE_TYPE (&data->value));
+		g_value_copy (&data->value, &dup->value);
+	}
 
 	dup->name              = g_strdup (data->name);
 
@@ -72,7 +76,8 @@ glade_model_data_free (GladeModelData *data)
 {
 	if (data)
 	{
-		g_value_unset (&data->value);
+		if (G_VALUE_TYPE (&data->value) != 0)
+			g_value_unset (&data->value);
 	
 		g_free (data->name);
 		g_free (data->i18n_context);
@@ -561,7 +566,7 @@ eprop_model_data_generate_store (GladeEditorProperty *eprop)
 	GArray         *gtypes = g_array_new (FALSE, TRUE, sizeof (GType));
 	GtkTreeIter     iter;
 	gint            column_num, row_num;
-	GType           index_type = G_TYPE_INT, string_type = G_TYPE_STRING;
+	GType           index_type = G_TYPE_INT, string_type = G_TYPE_STRING, pointer_type = G_TYPE_POINTER;
 
 	glade_property_get (eprop->property, &data_tree);
 
@@ -573,7 +578,9 @@ eprop_model_data_generate_store (GladeEditorProperty *eprop)
 	for (iter_node = data_tree->children->children; iter_node; iter_node = iter_node->next)
 	{
 		iter_data = iter_node->data;
-		if (G_VALUE_TYPE (&iter_data->value) == GDK_TYPE_PIXBUF)
+		if (G_VALUE_TYPE (&iter_data->value) == 0)
+			g_array_append_val (gtypes, pointer_type);
+		else if (G_VALUE_TYPE (&iter_data->value) == GDK_TYPE_PIXBUF)
 			g_array_append_val (gtypes, string_type);
 		else
 			g_array_append_val (gtypes, G_VALUE_TYPE (&iter_data->value));
@@ -594,6 +601,9 @@ eprop_model_data_generate_store (GladeEditorProperty *eprop)
 		     column_num++, iter_node = iter_node->next)
 		{
 			iter_data = iter_node->data;
+
+			if (G_VALUE_TYPE (&iter_data->value) == 0)
+				continue;
 
 			/* Special case, show the filename in the cellrenderertext */
 			if (G_VALUE_TYPE (&iter_data->value) == GDK_TYPE_PIXBUF)
@@ -838,11 +848,13 @@ eprop_model_generate_column (GladeEditorProperty *eprop,
 	GtkCellRenderer   *renderer = NULL;
 	GtkAdjustment     *adjustment;
 	GtkListStore      *store;
-	GType              type = G_VALUE_TYPE (&data->value);
+	GType              type = G_TYPE_INVALID;
 
 	gtk_tree_view_column_set_title (column, data->name);
 	gtk_tree_view_column_set_resizable (column, TRUE);
 	gtk_tree_view_column_set_expand (column, TRUE);
+
+	type = G_VALUE_TYPE (&data->value);
 
 	/* Support enum and flag types, and a hardcoded list of fundamental types */
 	if (type == G_TYPE_CHAR ||

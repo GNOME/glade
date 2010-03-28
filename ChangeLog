@@ -14,6 +14,12 @@
 	  - Substitute the old manual evaluation with GPC_VERSION_CHECK()
 	  - Avoid critical warnings when setting GtkColorButton properties to NULL
 	  - Avoid critical warnings when setting GtkComboBoxEntry::text-column < 0
+	  - Check for type compatibility before setting cell renderer attributes 
+	  - Clear cell renderer attributes before setting liststore column types and resync them after
+	    (Avoids cricital warnings where the underlying data types changed and dont match the properties
+	    of the renderers)
+	  - Fill in the gaps in model data while loading some columns with non serializable types
+	    (fixes severe bug: model data was loaded with missing columns of data).
 	
 	* gladeui/glade-property-class.h: Created convenience macro GPC_VERSION_CHECK
 
@@ -21,6 +27,9 @@
 	  (so that GtkSourceView catalog is buildable and usable from your jhbuild environment)
 	  assume a path that is: ${prefix}/lib/glade3/modules/../../ and search it after the initial 
 	  module search path.
+
+	* plugins/gtk+/glade-column-types.c, plugins/gtk+/glade-model-data.c: 
+	  allow model data with explicitly G_TYPE_INVALID types.
 
 2010-03-26  Tristan Van Berkom <tvb@gnome.org>
 
