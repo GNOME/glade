@@ -1,3 +1,8 @@
+2010-03-28  Marco Diego Aurélio Mesquita <marcodiegomesquita@gmail.com>
+
+	* gladeui/glade-base-editor.c: Avoid GtkEntry feedback loop with g_signal_handlers_block_by_func(),
+	fixes bug 609612.
+
 2010-03-28  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in:

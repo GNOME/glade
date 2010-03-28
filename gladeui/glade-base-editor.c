@@ -316,22 +316,28 @@ glade_base_editor_get_child_selected (GladeBaseEditor *e, GtkTreeIter *iter)
 	return gtk_tree_selection_get_selected (sel, NULL, iter);
 }
 
+/* Forward declaration for glade_base_editor_project_widget_name_changed */
+static void
+glade_base_editor_project_widget_name_changed (GladeProject *project,
+					       GladeWidget  *widget,
+					       GladeBaseEditor *editor);
+
 static void
 glade_base_editor_name_activate (GtkEntry *entry, GladeWidget *gchild)
 {
 	const gchar *text = gtk_entry_get_text (GTK_ENTRY (entry));
-	
-	if (strcmp (glade_widget_get_name (gchild), text))
-		glade_command_set_name (gchild, text);
-}
+	GladeBaseEditor *editor = g_object_get_data (G_OBJECT (entry), "editor");
 
-static gboolean
-glade_base_editor_name_focus_out (GtkWidget *entry,
-				  GdkEventFocus *event,
-				  GladeWidget *gchild)
-{
-	glade_base_editor_name_activate (GTK_ENTRY (entry), gchild);
-	return FALSE;
+	if (strcmp (glade_widget_get_name (gchild), text))
+	{
+		g_signal_handlers_block_by_func (gchild->project,
+						 glade_base_editor_project_widget_name_changed,
+						 editor);
+		glade_command_set_name (gchild, text);
+		g_signal_handlers_unblock_by_func (gchild->project,
+						   glade_base_editor_project_widget_name_changed,
+						   editor);
+	}
 }
 
 static void
@@ -1976,8 +1982,9 @@ glade_base_editor_add_default_properties (GladeBaseEditor *editor,
 	
 	entry = gtk_entry_new ();
 	gtk_entry_set_text (GTK_ENTRY (entry), glade_widget_get_name (gchild));
+	g_object_set_data (G_OBJECT (entry), "editor", editor);
 	g_signal_connect (entry, "activate", G_CALLBACK (glade_base_editor_name_activate), gchild);
-	g_signal_connect (entry, "focus-out-event", G_CALLBACK (glade_base_editor_name_focus_out), gchild);
+	g_signal_connect (entry, "changed", G_CALLBACK (glade_base_editor_name_activate), gchild);
 	glade_base_editor_table_attach (editor, label, entry);
 
 	if (child_class && gtk_tree_model_iter_n_children (child_class, NULL) > 1)
