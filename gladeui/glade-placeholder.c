@@ -362,19 +362,20 @@ glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 	{
 		if (adaptor != NULL)
 		{
-			/* A widget type is selected in the palette.
-			 * Add a new widget of that type.
-			 */
-			glade_command_create
-				(adaptor, 
-				 glade_placeholder_get_parent (placeholder),
-				 placeholder, project);
+			GladeWidget *parent = glade_placeholder_get_parent (placeholder);
 
-			glade_palette_deselect_current_item (glade_app_get_palette(), TRUE);
-
-			/* reset the cursor */
-			glade_cursor_set (event->window, GLADE_CURSOR_SELECTOR);
-
+			if (!glade_util_check_and_warn_scrollable (parent, adaptor, glade_app_get_window()))
+			{
+				/* A widget type is selected in the palette.
+				 * Add a new widget of that type.
+				 */
+				glade_command_create (adaptor, parent, placeholder, project);
+				
+				glade_palette_deselect_current_item (glade_app_get_palette(), TRUE);
+				
+				/* reset the cursor */
+				glade_cursor_set (event->window, GLADE_CURSOR_SELECTOR);
+			}
 			handled = TRUE;
 		}
 	}

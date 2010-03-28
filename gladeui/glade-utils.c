@@ -272,8 +272,28 @@ glade_util_ui_message (GtkWidget           *parent,
 }
 
 
+gboolean
+glade_util_check_and_warn_scrollable (GladeWidget        *parent,
+				      GladeWidgetAdaptor *child_adaptor,
+				      GtkWidget          *parent_widget)
+{
+	if (GTK_IS_SCROLLED_WINDOW (parent->object) &&
+	    GWA_SCROLLABLE_WIDGET (child_adaptor) == FALSE)
+	{
+		GladeWidgetAdaptor *vadaptor = 
+			glade_widget_adaptor_get_by_type (GTK_TYPE_VIEWPORT);
 
-
+		glade_util_ui_message (parent_widget,
+				       GLADE_UI_INFO, NULL,
+				       _("Cannot add non scrollable %s widget to a %s directly.\n"
+					 "Add a %s first."),
+				       child_adaptor->title,
+				       parent->adaptor->title,
+				       vadaptor->title);
+		return TRUE;
+	}
+	return FALSE;
+}
 
 typedef struct {
 	GtkStatusbar *statusbar;
@@ -2327,3 +2347,4 @@ glade_utils_hijack_key_press (GtkWindow          *win,
 	}
 	return FALSE;
 }
+

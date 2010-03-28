@@ -83,14 +83,20 @@ static void
 glade_popup_placeholder_add_cb (GtkMenuItem *item, GladePlaceholder *placeholder)
 {
 	GladeWidgetAdaptor *adaptor;
-	
+	GladeWidget        *parent;
+
 	adaptor = glade_palette_get_current_item (glade_app_get_palette ());
 	g_return_if_fail (adaptor != NULL);
-	
-	glade_command_create (adaptor, glade_placeholder_get_parent (placeholder),
-						  placeholder, glade_placeholder_get_project (placeholder));
-						  
-	glade_palette_deselect_current_item (glade_app_get_palette(), TRUE);
+
+	parent = glade_placeholder_get_parent (placeholder);
+
+	if (!glade_util_check_and_warn_scrollable (parent, adaptor, glade_app_get_window()))
+	{
+		glade_command_create (adaptor, parent,
+				      placeholder, glade_placeholder_get_project (placeholder));
+		
+		glade_palette_deselect_current_item (glade_app_get_palette(), TRUE);
+	}
 }
 
 static void

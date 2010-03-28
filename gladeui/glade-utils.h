@@ -34,6 +34,10 @@ void		glade_util_flash_message	(GtkWidget *statusbar,
 						 guint context_id,
 						 gchar *format, ...);
 
+gboolean        glade_util_check_and_warn_scrollable (GladeWidget        *parent,
+						      GladeWidgetAdaptor *child_adaptor,
+						      GtkWidget          *parent_widget);
+
 /* This is a GCompareFunc for comparing the labels of 2 stock items, ignoring
    any '_' characters. It isn't particularly efficient. */
 

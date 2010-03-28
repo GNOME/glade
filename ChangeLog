@@ -7,6 +7,16 @@
 	    instead of the property mutator implementation (as the "columns" property is construct-only
 	    and the widget is rebuilt - property reference lists are unavailable at ->set_property time).
 
+	* gladeui/glade-widget-adaptor.[ch]: Add a "scrollable" flag on the adaptor class vtable
+	  introspected by checking if (widget_class->set_scroll_adjustments_signal) != 0.
+
+	* gladeui/glade-utils.[ch]: Added glade_util_check_and_warn_scrollable() to check and warn the
+	  user if they are trying to add a non-scrollable widget to a scrolled window.
+
+	* gladeui/glade-app.c, gladeui/glade-popup.c, gladeui/glade-placeholder.c, plugins/gtk+/glade-gtk.c: 
+	Consult glade_util_check_and_warn_scrollable() before executing commands that introduce objects
+	to the project.
+
 2010-03-27  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-marshallers.list, gladeui/glade-placeholder.c: 
