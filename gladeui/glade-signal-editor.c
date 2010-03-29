@@ -789,6 +789,8 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 	g_object_set (G_OBJECT (renderer), 
 		      "width", 20,
 		      NULL);
+	g_object_set_data (G_OBJECT (renderer), "signal-after-cell",
+			       GINT_TO_POINTER (TRUE));
 
 	g_signal_connect (renderer, "toggled",
 			  G_CALLBACK (glade_signal_editor_after_swapped_toggled), editor);
@@ -824,8 +826,6 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 	}
 
  	gtk_tree_view_append_column (view, column);
-	g_object_set_data (G_OBJECT (renderer), "signal-after-cell",
-			       GINT_TO_POINTER (TRUE));
 
 
 	editor->signals_list = view_widget;

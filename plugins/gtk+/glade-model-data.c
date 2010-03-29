@@ -30,7 +30,6 @@
 
 #include "glade-model-data.h"
 #include "glade-column-types.h"
-#include "glade-cell-renderer-button.h"
 
 GladeModelData *
 glade_model_data_new (GType type, const gchar *column_name)
@@ -666,9 +665,9 @@ value_toggled (GtkCellRendererToggle *cell,
 }
 
 static void
-value_i18n_clicked (GladeCellRendererButton *cell,
-		   const gchar              *path,
-		   GladeEditorProperty      *eprop)
+value_i18n_activate (GladeCellRendererIcon    *cell,
+		     const gchar              *path,
+		     GladeEditorProperty      *eprop)
 {
 	GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
 	GtkTreeIter          iter;
@@ -863,17 +862,13 @@ eprop_model_generate_column (GladeEditorProperty *eprop,
 	    type == GDK_TYPE_PIXBUF)
 	{
 		/* Text renderer */
-		if (type == G_TYPE_STRING)
-			renderer = glade_cell_renderer_button_new ();
-		else
-			renderer = gtk_cell_renderer_text_new ();
+		renderer = gtk_cell_renderer_text_new ();
 
 		g_object_set (G_OBJECT (renderer), 
 			      "editable", TRUE, 
 			      "ellipsize", PANGO_ELLIPSIZE_END,
 			      "width", 90,
 			      NULL);
-
 
 		gtk_tree_view_column_pack_start (column, renderer, FALSE);
 		gtk_tree_view_column_set_attributes (column, renderer, 
@@ -892,8 +887,18 @@ eprop_model_generate_column (GladeEditorProperty *eprop,
 		/* Trigger i18n dialog from here */
 		if (type == G_TYPE_STRING)
 		{
-			g_signal_connect (G_OBJECT (renderer), "clicked",
-					  G_CALLBACK (value_i18n_clicked), eprop);
+			GtkCellRenderer *icon_renderer = glade_cell_renderer_icon_new ();
+
+			g_object_set (G_OBJECT (icon_renderer), 
+				      "activatable", TRUE,
+				      "icon-name", GTK_STOCK_EDIT,
+				      NULL);
+
+			gtk_tree_view_column_pack_start (column, icon_renderer, FALSE);
+
+			g_object_set_data (G_OBJECT (icon_renderer), "column-number", GINT_TO_POINTER (colnum));
+			g_signal_connect (G_OBJECT (icon_renderer), "activate",
+					  G_CALLBACK (value_i18n_activate), eprop);
 		}
 
 	}
@@ -1261,7 +1266,7 @@ glade_eprop_model_data_create_input (GladeEditorProperty *eprop)
 			  G_CALLBACK (eprop_treeview_key_press),
 			  eprop);
 
-	
+	gtk_tree_view_set_grid_lines (GTK_TREE_VIEW (eprop_data->view), GTK_TREE_VIEW_GRID_LINES_BOTH);
 	gtk_tree_view_set_reorderable (GTK_TREE_VIEW (eprop_data->view), TRUE);
 	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (eprop_data->view), TRUE);
 	gtk_container_add (GTK_CONTAINER (swin), GTK_WIDGET (eprop_data->view));

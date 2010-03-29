@@ -5,6 +5,11 @@
 	* gladeui/glade-signal-editor.c: Use new activatable pixbuf renderer to render a devhelp icon
 	  and fire signal contextual devhelp searches.
 
+	* plugins/gtk+/glade-model-data.c, plugins/gtk+/glade-attributes.c: Use GladeCellRendererIcon
+	  instead of GladeCellRendererButton which was more convoluted (included only an icon when editing).
+
+	* plugins/gtk+/Makefile.am: Removed glade-cell-renderer-button.[ch]
+
 2010-03-28  Marco Diego Aurélio Mesquita <marcodiegomesquita@gmail.com>
 
 	* gladeui/glade-base-editor.c: Avoid GtkEntry feedback loop with g_signal_handlers_block_by_func(),

@@ -24,7 +24,7 @@ libgladegtk_la_CFLAGS =  \
 	$(AM_CFLAGS)
 
 libgladegtk_la_SOURCES     = glade-gtk.c glade-accels.c glade-attributes.c glade-convert.c fixed-bg.xpm \
-	glade-column-types.c  glade-model-data.c glade-text-button.c glade-cell-renderer-button.c \
+	glade-column-types.c  glade-model-data.c glade-text-button.c \
 	glade-icon-sources.c glade-button-editor.c glade-tool-button-editor.c glade-image-editor.c \
 	glade-image-item-editor.c glade-icon-factory-editor.c glade-store-editor.c glade-label-editor.c \
 	glade-cell-renderer-editor.c glade-treeview-editor.c glade-entry-editor.c glade-activatable-editor.c
@@ -34,7 +34,7 @@ libgladegtk_la_LIBADD      = $(libgladeui) $(GTK_LIBS)
 
 libgladegtkincludedir= $(includedir)/libgladeui-1.0/gladeui
 libgladegtkinclude_HEADERS = glade-gtk.h glade-accels.h glade-attributes.h glade-column-types.h glade-model-data.h \
-	glade-text-button.h glade-cell-renderer-button.h glade-icon-sources.h glade-button-editor.h \
+	glade-text-button.h glade-icon-sources.h glade-button-editor.h \
 	glade-tool-button-editor.h glade-image-editor.h glade-image-item-editor.h glade-icon-factory-editor.h \
 	glade-store-editor.h glade-label-editor.h glade-cell-renderer-editor.h glade-treeview-editor.h \
 	glade-entry-editor.h glade-activatable-editor.h
