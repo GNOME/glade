@@ -11,6 +11,15 @@ G_BEGIN_DECLS
 #define GLADE_TYPE_EPROP_ACCEL         (glade_eprop_accel_get_type())
 
 
+#define GLADE_TAG_ACCEL             "accelerator"
+#define GLADE_TAG_ACCEL_KEY         "key"
+#define GLADE_TAG_ACCEL_MODIFIERS   "modifiers"
+#define GLADE_TAG_ACCEL_SIGNAL      "signal"
+
+#define GLADE_TAG_ACCEL_GROUPS "accel-groups"
+#define GLADE_TAG_ACCEL_GROUP  "group"
+
+
 typedef struct _GladeKey                GladeKey;
 typedef struct _GladeAccelInfo          GladeAccelInfo;
 
@@ -39,6 +48,12 @@ GList       *glade_accel_list_copy         (GList         *accels);
 void         glade_accel_list_free         (GList         *accels);
 
 gchar       *glade_accels_make_string      (GList *accels);
+
+GladeAccelInfo *glade_accel_read           (GladeXmlNode     *node,
+					    gboolean          require_signal);
+GladeXmlNode   *glade_accel_write          (GladeAccelInfo   *accel_info,
+					    GladeXmlContext  *context,
+					    gboolean          write_signal);
 
 G_END_DECLS
 

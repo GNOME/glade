@@ -25,7 +25,16 @@
 
 	* gladeui/glade-widget.c: GladeWidget takes a new "support-changed" to broadcast support changes
 	  on the widget.
-	
+
+	* gladeui/glade-popup.c: Allow adding new actions to action groups from the palette ("Add widget here").
+
+	* plugins/gtk+/glade-accels.[ch]: Moved individual accelerator [de]serialization here, special integration
+	  for action types, for actions only show one accelerator and dont load/save the "activate" signal name.
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Added support for GtkActionGroup <--> GtkAction
+	  relationships and support for editing/loading/saving of accelerators which can be associated with
+	  actions inside an action group.
+
 2010-03-28  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/Makefile.am, gladeui/glade-cell-renderer-icon.[ch]: Added activatable pixbuf renderer

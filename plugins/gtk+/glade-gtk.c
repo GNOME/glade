@@ -235,16 +235,13 @@ glade_gtk_widget_depends (GladeWidgetAdaptor *adaptor,
 			  GladeWidget        *widget,
 			  GladeWidget        *another)
 {
-	if (GTK_IS_ICON_FACTORY (another->object))
+	if (GTK_IS_ICON_FACTORY (another->object) ||
+	    GTK_IS_ACTION       (another->object) ||
+	    GTK_IS_ACTION_GROUP (another->object))
 		return TRUE; 
 
 	return GWA_GET_CLASS (G_TYPE_OBJECT)->depends (adaptor, widget, another);
 }
-
-#define GLADE_TAG_ACCEL             "accelerator"
-#define GLADE_TAG_ACCEL_KEY         "key"
-#define GLADE_TAG_ACCEL_MODIFIERS   "modifiers"
-#define GLADE_TAG_ACCEL_SIGNAL      "signal"
 
 #define GLADE_TAG_A11Y_A11Y         "accessibility"
 #define GLADE_TAG_A11Y_ACTION_NAME  "action_name" /* We should make -/_ synonymous */
@@ -296,69 +293,10 @@ static const gchar *atk_relations_list[] = {
 	NULL
 };
 
-static GdkModifierType
-glade_gtk_parse_modifiers (const gchar *string)
-{
-	const gchar     *pos = string;
-	GdkModifierType	 modifiers = 0;
-
-	while (pos && pos[0])
-	{
-		if (!strncmp(pos, "GDK_", 4)) {
-			pos += 4;
-			if (!strncmp(pos, "SHIFT_MASK", 10)) {
-				modifiers |= GDK_SHIFT_MASK;
-				pos += 10;
-			} else if (!strncmp(pos, "LOCK_MASK", 9)) {
-				modifiers |= GDK_LOCK_MASK;
-				pos += 9;
-			} else if (!strncmp(pos, "CONTROL_MASK", 12)) {
-				modifiers |= GDK_CONTROL_MASK;
-				pos += 12;
-			} else if (!strncmp(pos, "MOD", 3) &&
-				   !strncmp(pos+4, "_MASK", 5)) {
-				switch (pos[3]) {
-				case '1':
-					modifiers |= GDK_MOD1_MASK; break;
-				case '2':
-					modifiers |= GDK_MOD2_MASK; break;
-				case '3':
-					modifiers |= GDK_MOD3_MASK; break;
-				case '4':
-					modifiers |= GDK_MOD4_MASK; break;
-				case '5':
-					modifiers |= GDK_MOD5_MASK; break;
-				}
-				pos += 9;
-			} else if (!strncmp(pos, "BUTTON", 6) &&
-				   !strncmp(pos+7, "_MASK", 5)) {
-				switch (pos[6]) {
-				case '1':
-					modifiers |= GDK_BUTTON1_MASK; break;
-				case '2':
-					modifiers |= GDK_BUTTON2_MASK; break;
-				case '3':
-					modifiers |= GDK_BUTTON3_MASK; break;
-				case '4':
-					modifiers |= GDK_BUTTON4_MASK; break;
-				case '5':
-					modifiers |= GDK_BUTTON5_MASK; break;
-				}
-				pos += 12;
-			} else if (!strncmp(pos, "RELEASE_MASK", 12)) {
-				modifiers |= GDK_RELEASE_MASK;
-				pos += 12;
-			} else
-				pos++;
-		} else
-			pos++;
-	}
-	return modifiers;
-}
-
 static void
-glade_gtk_widget_read_accels (GladeWidget  *widget,
-			      GladeXmlNode *node)
+glade_gtk_read_accels (GladeWidget  *widget,
+		       GladeXmlNode *node,
+		       gboolean      require_signal)
 {
 	GladeProperty  *property;
 	GladeXmlNode   *prop;
@@ -369,27 +307,11 @@ glade_gtk_widget_read_accels (GladeWidget  *widget,
 	for (prop = glade_xml_node_get_children (node); 
 	     prop; prop = glade_xml_node_next (prop))
 	{
-		gchar *key, *modifiers, *signal;
-
-
 		if (!glade_xml_node_verify_silent (prop, GLADE_TAG_ACCEL))
 			continue;
 
-		/* Get from xml... */
-		key = glade_xml_get_property_string_required
-			(prop, GLADE_TAG_ACCEL_KEY, NULL);
-		signal = glade_xml_get_property_string_required
-			(prop, GLADE_TAG_ACCEL_SIGNAL, NULL);
-		modifiers = glade_xml_get_property_string (prop, GLADE_TAG_ACCEL_MODIFIERS);
-
-		/* translate to GladeAccelInfo... */
-		ainfo = g_new0 (GladeAccelInfo, 1);
-		ainfo->key = gdk_keyval_from_name(key);
-		ainfo->signal = signal; /* take string ownership... */
-		ainfo->modifiers = glade_gtk_parse_modifiers (modifiers);
-
-		accels = g_list_prepend (accels, ainfo);
-		g_free (modifiers);
+		if ((ainfo = glade_accel_read (prop, require_signal)) != NULL)
+			accels = g_list_prepend (accels, ainfo);
 	}
 
 	if (accels)
@@ -636,7 +558,7 @@ glade_gtk_widget_read_widget (GladeWidgetAdaptor *adaptor,
         GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
 
 	/* Read in accelerators */
-	glade_gtk_widget_read_accels (widget, node);
+	glade_gtk_read_accels (widget, node, TRUE);
 
 	/* Read in atk props */
 	glade_gtk_widget_read_atk_props (widget, node);
@@ -870,107 +792,11 @@ glade_gtk_widget_write_atk_props (GladeWidget        *widget,
 		glade_gtk_widget_write_atk_properties_gtkbuilder (widget, context, node);
 }
 
-static gchar *
-glade_gtk_modifier_string_from_bits (GdkModifierType modifiers)
-{
-    GString *string = g_string_new ("");
-
-    if (modifiers & GDK_SHIFT_MASK) {
-	if (string->len > 0)
-	    g_string_append (string, " | ");
-	g_string_append (string, "GDK_SHIFT_MASK");
-    }
-
-    if (modifiers & GDK_LOCK_MASK) {
-	if (string->len > 0)
-	    g_string_append (string, " | ");
-	g_string_append (string, "GDK_LOCK_MASK");
-    }
-
-    if (modifiers & GDK_CONTROL_MASK) {
-	if (string->len > 0)
-	    g_string_append (string, " | ");
-	g_string_append (string, "GDK_CONTROL_MASK");
-    }
-
-    if (modifiers & GDK_MOD1_MASK) {
-	if (string->len > 0)
-	    g_string_append (string, " | ");
-	g_string_append (string, "GDK_MOD1_MASK");
-    }
-
-    if (modifiers & GDK_MOD2_MASK) {
-	if (string->len > 0)
-	    g_string_append (string, " | ");
-	g_string_append (string, "GDK_MOD2_MASK");
-    }
-
-    if (modifiers & GDK_MOD3_MASK) {
-	if (string->len > 0)
-	    g_string_append (string, " | ");
-	g_string_append (string, "GDK_MOD3_MASK");
-    }
-
-    if (modifiers & GDK_MOD4_MASK) {
-	if (string->len > 0)
-	    g_string_append (string, " | ");
-	g_string_append (string, "GDK_MOD4_MASK");
-    }
-
-    if (modifiers & GDK_MOD5_MASK) {
-	if (string->len > 0)
-	    g_string_append (string, " | ");
-	g_string_append (string, "GDK_MOD5_MASK");
-    }
-
-    if (modifiers & GDK_BUTTON1_MASK) {
-	if (string->len > 0)
-	    g_string_append (string, " | ");
-	g_string_append (string, "GDK_BUTTON1_MASK");
-    }
-
-    if (modifiers & GDK_BUTTON2_MASK) {
-	if (string->len > 0)
-	    g_string_append (string, " | ");
-	g_string_append (string, "GDK_BUTTON2_MASK");
-    }
-
-    if (modifiers & GDK_BUTTON3_MASK) {
-	if (string->len > 0)
-	    g_string_append (string, " | ");
-	g_string_append (string, "GDK_BUTTON3_MASK");
-    }
-
-    if (modifiers & GDK_BUTTON4_MASK) {
-	if (string->len > 0)
-	    g_string_append (string, " | ");
-	g_string_append (string, "GDK_BUTTON4_MASK");
-    }
-
-    if (modifiers & GDK_BUTTON5_MASK) {
-	if (string->len > 0)
-	    g_string_append (string, " | ");
-	g_string_append (string, "GDK_BUTTON5_MASK");
-    }
-
-    if (modifiers & GDK_RELEASE_MASK) {
-	if (string->len > 0)
-	    g_string_append (string, " | ");
-	g_string_append (string, "GDK_RELEASE_MASK");
-    }
-
-    if (string->len > 0)
-	return g_string_free (string, FALSE);
-
-    g_string_free (string, TRUE);
-    return NULL;
-}
-
-
 static void
-glade_gtk_widget_write_accels (GladeWidget        *widget,
-			       GladeXmlContext    *context,
-			       GladeXmlNode       *node)
+glade_gtk_write_accels (GladeWidget        *widget,
+			GladeXmlContext    *context,
+			GladeXmlNode       *node,
+			gboolean            write_signal)
 {
 	GladeXmlNode  *accel_node;
 	GladeProperty *property;
@@ -984,22 +810,10 @@ glade_gtk_widget_write_accels (GladeWidget        *widget,
 	     list; list = list->next)
 	{
 		GladeAccelInfo *accel = list->data;
-		gchar *modifiers = glade_gtk_modifier_string_from_bits (accel->modifiers);
 
-		accel_node = glade_xml_node_new (context, GLADE_TAG_ACCEL);
+		accel_node = glade_accel_write (accel, context, write_signal);
 		glade_xml_node_append_child (node, accel_node);
-
-		glade_xml_node_set_property_string (accel_node, GLADE_TAG_ACCEL_KEY,
-						    gdk_keyval_name(accel->key));
-		glade_xml_node_set_property_string (accel_node, GLADE_TAG_ACCEL_SIGNAL,
-						    accel->signal);
-		glade_xml_node_set_property_string (accel_node, GLADE_TAG_ACCEL_MODIFIERS,
-						    modifiers);
-
-		g_free (modifiers);
 	}
-
-
 }
 
 void
@@ -1027,10 +841,10 @@ glade_gtk_widget_write_widget (GladeWidgetAdaptor *adaptor,
 	{
  		glade_gtk_widget_write_atk_props (widget, context, node);
 		glade_widget_write_signals (widget, context, node);
-		glade_gtk_widget_write_accels (widget, context, node);
+		glade_gtk_write_accels (widget, context, node, TRUE);
 	} else {
 		/* The core takes care of signals in GtkBuilder format */
-		glade_gtk_widget_write_accels (widget, context, node);		
+		glade_gtk_write_accels (widget, context, node, TRUE);		
  		glade_gtk_widget_write_atk_props (widget, context, node);
 	}
 }
@@ -5190,9 +5004,6 @@ glade_gtk_window_deep_post_create (GladeWidgetAdaptor *adaptor,
 
 	g_signal_connect (object, "delete-event", G_CALLBACK (glade_gtk_widget_show_on_delete), NULL);
 }
-
-#define GLADE_TAG_ACCEL_GROUPS "accel-groups"
-#define GLADE_TAG_ACCEL_GROUP  "group"
 
 static void
 glade_gtk_window_read_accel_groups (GladeWidget  *widget,
@@ -11746,4 +11557,136 @@ glade_gtk_adjustment_write_widget (GladeWidgetAdaptor *adaptor,
 	glade_property_write (prop, context, node);
 
         GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
+}
+
+
+/*--------------------------- GtkAction ---------------------------------*/
+void
+glade_gtk_action_post_create (GladeWidgetAdaptor *adaptor, 
+			      GObject            *object, 
+			      GladeCreateReason   reason)
+{
+	GladeWidget *gwidget = glade_widget_get_from_gobject (object);
+
+	if (reason == GLADE_CREATE_REBUILD)
+		return;
+
+	if (!gtk_action_get_name (GTK_ACTION (object)))
+		glade_widget_property_set (gwidget, "name", "untitled");
+
+}
+
+/*--------------------------- GtkActionGroup ---------------------------------*/
+void
+glade_gtk_action_group_add_child (GladeWidgetAdaptor *adaptor,
+				  GObject            *container,
+				  GObject            *child)
+{
+	if (GTK_IS_ACTION (child))
+	{
+		/* Dont really add/remove actions (because name conflicts inside groups)
+		 */
+		GladeWidget *ggroup  = glade_widget_get_from_gobject (container);
+		GladeWidget *gaction = glade_widget_get_from_gobject (child);
+		GList       *actions = g_object_get_data (G_OBJECT (ggroup), "glade-actions");
+
+		actions = g_list_copy (actions);
+		actions = g_list_prepend (actions, child);
+
+		g_object_set_data_full (G_OBJECT (ggroup), "glade-actions", actions, 
+					(GDestroyNotify)g_list_free);
+
+		glade_widget_property_set_sensitive (gaction, "accelerator", TRUE, NULL);
+	}
+}
+
+void
+glade_gtk_action_group_remove_child (GladeWidgetAdaptor *adaptor,
+				     GObject            *container,
+				     GObject            *child)
+{
+	if (GTK_IS_ACTION (child))
+	{
+		/* Dont really add/remove actions (because name conflicts inside groups)
+		 */
+		const gchar *insensitive_msg = _("The accelerator can only be set when inside an Action Group.");
+		GladeWidget *ggroup = glade_widget_get_from_gobject (container);
+		GladeWidget *gaction = glade_widget_get_from_gobject (child);
+		GList       *actions = g_object_get_data (G_OBJECT (ggroup), "glade-actions");
+
+		actions = g_list_copy (actions);
+		actions = g_list_remove (actions, child);
+
+		g_object_set_data_full (G_OBJECT (ggroup), "glade-actions", actions, 
+					(GDestroyNotify)g_list_free);
+
+		glade_widget_property_set_sensitive (gaction, "accelerator", FALSE, insensitive_msg);
+	}
+}
+
+void
+glade_gtk_action_group_replace_child (GladeWidgetAdaptor *adaptor,
+				      GObject            *container,
+				      GObject            *current,
+				      GObject            *new_action)
+{
+	glade_gtk_action_group_remove_child (adaptor, container, current);
+	glade_gtk_action_group_add_child (adaptor, container, new_action);
+}
+
+GList *
+glade_gtk_action_group_get_children (GladeWidgetAdaptor  *adaptor,
+				     GObject        *container)
+{
+	GladeWidget *ggroup  = glade_widget_get_from_gobject (container);
+	GList       *actions = g_object_get_data (G_OBJECT (ggroup), "glade-actions");
+
+	return g_list_copy (actions);
+}
+
+
+void
+glade_gtk_action_group_read_child (GladeWidgetAdaptor *adaptor,
+				   GladeWidget        *widget,
+				   GladeXmlNode       *node)
+{
+	GladeXmlNode *widget_node;
+	GladeWidget  *child_widget;
+
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_CHILD))
+		return;
+	
+	if ((widget_node = 
+	     glade_xml_search_child
+	     (node, GLADE_XML_TAG_WIDGET(glade_project_get_format(widget->project)))) != NULL)
+	{
+		if ((child_widget = glade_widget_read (widget->project, 
+						       widget, widget_node, 
+						       NULL)) != NULL)
+		{
+			glade_widget_add_child (widget, child_widget, FALSE);
+
+			/* Read in accelerator */
+			glade_gtk_read_accels (child_widget, node, FALSE);
+		}
+	}
+}
+
+
+void
+glade_gtk_action_group_write_child (GladeWidgetAdaptor *adaptor,
+				    GladeWidget        *widget,
+				    GladeXmlContext    *context,
+				    GladeXmlNode       *node)
+{
+	GladeXmlNode *child_node;
+
+	child_node = glade_xml_node_new (context, GLADE_XML_TAG_CHILD);
+	glade_xml_node_append_child (node, child_node);
+
+	/* Write out the widget */
+	glade_widget_write (widget, context, child_node);
+
+	/* Write accelerator here  */
+	glade_gtk_write_accels (widget, context, child_node, FALSE);		
 }
