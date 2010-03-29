@@ -815,26 +815,31 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 	column = gtk_tree_view_column_new ();
 	column_header_widget (column, _("Signal"), _("The name of the signal to connect to"));
 
- 	renderer = gtk_cell_renderer_text_new ();
+	renderer = gtk_cell_renderer_pixbuf_new ();
+	g_object_set (G_OBJECT (renderer), "icon-name", GTK_STOCK_DIALOG_WARNING, NULL);
+
 	gtk_tree_view_column_pack_start (column, renderer, FALSE);
+	gtk_tree_view_column_set_attributes (column, renderer, 
+					     "visible", GSE_COLUMN_WARN, 
+					     NULL);
+
+
+ 	renderer = gtk_cell_renderer_text_new ();
+	g_object_set (G_OBJECT (renderer),
+		      "ellipsize", PANGO_ELLIPSIZE_END,
+		      "width-chars", 20,
+		      NULL);
+	gtk_tree_view_column_pack_end (column, renderer, TRUE);
 	gtk_tree_view_column_set_attributes (column, renderer, 
 					     "text", GSE_COLUMN_SIGNAL, 
 					     NULL);
-
 
 	gtk_tree_view_column_set_cell_data_func (column, renderer,
 						 glade_signal_editor_signal_cell_data_func,
 						 NULL, NULL);
 
-
-	renderer = gtk_cell_renderer_pixbuf_new ();
-	g_object_set (G_OBJECT (renderer), "icon-name", GTK_STOCK_DIALOG_WARNING, NULL);
-
-	gtk_tree_view_column_pack_end (column, renderer, FALSE);
-	gtk_tree_view_column_set_attributes (column, renderer, 
-					     "visible", GSE_COLUMN_WARN, 
-					     NULL);
-
+ 	gtk_tree_view_column_set_resizable (column, TRUE);
+ 	gtk_tree_view_column_set_expand (column, TRUE);
  	gtk_tree_view_append_column (view, column);
 
 	/************************ handler column ************************/
