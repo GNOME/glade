@@ -75,14 +75,14 @@ G_DEFINE_TYPE (GladeSignalEditor, glade_signal_editor, G_TYPE_OBJECT)
 
 
 #define HANDLER_DEFAULT  _("<Type here>")
-#define USERDATA_DEFAULT HANDLER_DEFAULT
+#define USERDATA_DEFAULT _("<Object>")
 
 static gboolean
 is_void_handler (const gchar *signal_handler)
 {
 	return ( signal_handler == NULL ||
 		*signal_handler == 0    ||
-		 g_utf8_collate (signal_handler, _(HANDLER_DEFAULT)) == 0);
+		 g_utf8_collate (signal_handler, HANDLER_DEFAULT) == 0);
 }
 
 static gboolean
@@ -90,7 +90,7 @@ is_void_userdata (const gchar *user_data)
 {
 	return ( user_data == NULL ||
 		*user_data == 0    ||
-		 g_utf8_collate (user_data, _(USERDATA_DEFAULT)) == 0);
+		 g_utf8_collate (user_data, USERDATA_DEFAULT) == 0);
 }
 
 static void
@@ -168,8 +168,8 @@ append_slot (GtkTreeModel *model, GtkTreeIter *iter_signal)
 
 	gtk_tree_store_append (GTK_TREE_STORE (model), &iter_new_slot, iter_signal);
 	gtk_tree_store_set (GTK_TREE_STORE (model), &iter_new_slot,
-			    GSE_COLUMN_HANDLER,          _(HANDLER_DEFAULT),
-			    GSE_COLUMN_USERDATA,         _(USERDATA_DEFAULT),
+			    GSE_COLUMN_HANDLER,          HANDLER_DEFAULT,
+			    GSE_COLUMN_USERDATA,         USERDATA_DEFAULT,
 			    GSE_COLUMN_SWAPPED,          FALSE,
 			    GSE_COLUMN_SWAPPED_VISIBLE,  FALSE,
 			    GSE_COLUMN_HANDLER_EDITABLE, TRUE,
@@ -335,9 +335,9 @@ glade_signal_editor_handler_editing_done_impl  (GladeSignalEditor *self,
 
 		gtk_tree_store_set
 			(GTK_TREE_STORE (model),          iter,
-				 GSE_COLUMN_HANDLER,          _(HANDLER_DEFAULT),
+				 GSE_COLUMN_HANDLER,          HANDLER_DEFAULT,
 				 GSE_COLUMN_AFTER,            FALSE,
-				 GSE_COLUMN_USERDATA,         _(USERDATA_DEFAULT),
+				 GSE_COLUMN_USERDATA,         USERDATA_DEFAULT,
 				 GSE_COLUMN_SWAPPED,          FALSE,
 				 GSE_COLUMN_SWAPPED_VISIBLE,  FALSE,
 				 GSE_COLUMN_HANDLER_EDITABLE, TRUE,
@@ -411,7 +411,7 @@ glade_signal_editor_userdata_editing_done_impl (GladeSignalEditor *self,
 	{
 		gtk_tree_store_set (GTK_TREE_STORE (model), iter,
 				    GSE_COLUMN_USERDATA_SLOT,   TRUE,
-				    GSE_COLUMN_USERDATA,        _(USERDATA_DEFAULT),
+				    GSE_COLUMN_USERDATA,        USERDATA_DEFAULT,
 				    GSE_COLUMN_SWAPPED,         FALSE,
 				    GSE_COLUMN_SWAPPED_VISIBLE, FALSE, -1);
 	}
@@ -656,7 +656,115 @@ glade_signal_editor_devhelp_cb (GtkCellRenderer   *cell,
 	g_free (book);
 	g_free (signal);
 }
+
+static void
+set_column_header_tooltip_on_realize (GtkWidget *label,
+				      const gchar *tooltip_txt)
+{
+	GtkWidget *header = 
+		gtk_widget_get_ancestor (label, GTK_TYPE_BUTTON);
+
+	if (header)
+		gtk_widget_set_tooltip_text (header, tooltip_txt);
+}
+
+/* convenience function: tooltip_txt must be static memory */
+static void
+column_header_widget (GtkTreeViewColumn *column,
+		      const gchar *txt, 
+		      const gchar *tooltip_txt)
+{
+	GtkWidget *event_box, *label;
+
+	event_box = gtk_event_box_new ();
+	gtk_widget_set_tooltip_text (event_box, tooltip_txt);
+
+	label = gtk_label_new (txt);
+	gtk_misc_set_padding (GTK_MISC (label), 5, 0);
+
+	gtk_widget_show (event_box);
+	gtk_widget_show (label);
 	
+	g_signal_connect_after (G_OBJECT (label), "realize",
+				G_CALLBACK (set_column_header_tooltip_on_realize), (gpointer)tooltip_txt);
+
+	gtk_container_add (GTK_CONTAINER (event_box), label);
+	
+	gtk_tree_view_column_set_widget (column, event_box);
+}	
+
+static void
+glade_signal_editor_user_data_activate (GtkCellRenderer *icon_renderer,
+					const gchar     *path_str,
+					GladeSignalEditor *editor)
+{
+	GtkTreePath  *path = gtk_tree_path_new_from_string (path_str);
+	GtkTreeModel *model = GTK_TREE_MODEL (editor->model);
+	GtkTreeIter   iter;
+	gchar        *object_name = NULL, *signal_name = NULL, *handler = NULL;
+	gboolean      after, swapped;
+	GladeWidget  *project_object = NULL;
+	GladeProject *project;
+	GList        *selected = NULL, *exception = NULL;
+
+	gtk_tree_model_get_iter (model, &iter, path);
+	gtk_tree_model_get (model, &iter,
+			    GSE_COLUMN_SIGNAL,  &signal_name,
+			    GSE_COLUMN_HANDLER, &handler,
+			    GSE_COLUMN_USERDATA,&object_name,
+			    GSE_COLUMN_SWAPPED, &swapped,
+			    GSE_COLUMN_AFTER,   &after, -1);
+
+	project = glade_widget_get_project (editor->widget);
+	
+	if (object_name)
+	{
+		project_object = glade_project_get_widget_by_name (project, NULL, object_name);
+		selected = g_list_prepend (selected, project_object);
+	}
+
+	exception = g_list_prepend (exception, editor->widget);
+	
+	if (glade_editor_property_show_object_dialog (project,
+						      _("Select an object to pass to the handler"),
+						      gtk_widget_get_toplevel (editor->main_window), 
+						      G_TYPE_OBJECT,
+						      editor->widget, &project_object))
+	{
+		GladeSignal *old_signal = glade_signal_new (signal_name, handler, object_name, after, swapped);
+		GladeSignal *new_signal = glade_signal_new (signal_name, handler, 
+							    project_object ? project_object->name : NULL, 
+							    after, swapped);
+
+		glade_command_change_signal (editor->widget, old_signal, new_signal);
+		glade_signal_free (old_signal);
+		glade_signal_free (new_signal);
+
+		/* We are removing userdata */
+		if (project_object == NULL)
+		{
+			gtk_tree_store_set (GTK_TREE_STORE (model),     &iter,
+					    GSE_COLUMN_USERDATA_SLOT,   TRUE,
+					    GSE_COLUMN_USERDATA,        USERDATA_DEFAULT,
+					    GSE_COLUMN_SWAPPED,         FALSE,
+					    GSE_COLUMN_SWAPPED_VISIBLE, FALSE, -1);
+		}
+		else
+		{
+			gtk_tree_store_set (GTK_TREE_STORE (model),     &iter,
+					    GSE_COLUMN_USERDATA_SLOT,   FALSE,
+					    GSE_COLUMN_USERDATA,        project_object->name,
+					    GSE_COLUMN_SWAPPED_VISIBLE, TRUE,
+					    -1);
+		}
+	}
+
+	gtk_tree_path_free (path);
+	g_free (signal_name);
+	g_free (object_name);
+	g_free (handler);
+}
+
 
 void
 glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
@@ -696,7 +804,10 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 	/************************ signal column ************************/
  	renderer = gtk_cell_renderer_text_new ();
 	column = gtk_tree_view_column_new_with_attributes
-		(_("Signal"), renderer, "text", GSE_COLUMN_SIGNAL, NULL);
+		(NULL, renderer, "text", GSE_COLUMN_SIGNAL, NULL);
+
+	column_header_widget (column, _("Signal"), _("The name of the signal to connect to"));
+
 	gtk_tree_view_column_set_cell_data_func (column, renderer,
 						 glade_signal_editor_signal_cell_data_func,
 						 NULL, NULL);
@@ -725,9 +836,12 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 	if (!editor->handler_column)
 	{
 		editor->handler_column = gtk_tree_view_column_new_with_attributes
-			(_("Handler"),     editor->handler_renderer,
-			 "text",           GSE_COLUMN_HANDLER,
-			 "editable",       GSE_COLUMN_HANDLER_EDITABLE, NULL);
+			(NULL,             editor->handler_renderer,
+			 "editable",       GSE_COLUMN_HANDLER_EDITABLE,
+			 "text",           GSE_COLUMN_HANDLER, NULL);
+
+		column_header_widget (editor->handler_column, _("Handler"), 
+				      _("Enter the handler to run for this signal"));
 
 		gtk_tree_view_column_set_cell_data_func (editor->handler_column, editor->handler_renderer,
 							 glade_signal_editor_handler_cell_data_func,
@@ -752,18 +866,37 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 	g_signal_connect (editor->userdata_renderer, "editing-started",
 			  G_CALLBACK (glade_signal_editor_userdata_editing_started),
 			  editor);
-
+	
 	if (!editor->userdata_column)
 	{
 		editor->userdata_column =
 			gtk_tree_view_column_new_with_attributes
-				(_("Object"), editor->userdata_renderer,
-				 "text",           GSE_COLUMN_USERDATA,
-				 "editable",       GSE_COLUMN_USERDATA_EDITABLE, NULL);
+				(NULL,        editor->userdata_renderer,
+				 "text",      GSE_COLUMN_USERDATA, NULL);
+
+		column_header_widget (editor->userdata_column, _("Object"), 
+				      _("An object to pass to the handler"));
 
 		gtk_tree_view_column_set_cell_data_func (editor->userdata_column, editor->userdata_renderer,
 							 glade_signal_editor_userdata_cell_data_func,
 							 NULL, NULL);
+
+		g_object_set (G_OBJECT (editor->userdata_renderer), 
+			      "editable", FALSE, 
+			      "ellipsize", PANGO_ELLIPSIZE_END,
+			      "width-chars", 10,
+			      NULL);
+
+		renderer = glade_cell_renderer_icon_new ();
+		g_object_set (G_OBJECT (renderer), "icon-name", GTK_STOCK_EDIT, NULL);
+
+		g_signal_connect (G_OBJECT (renderer), "activate",
+				  G_CALLBACK (glade_signal_editor_user_data_activate), editor);
+		gtk_tree_view_column_pack_end (editor->userdata_column, renderer, FALSE);
+		gtk_tree_view_column_set_attributes (editor->userdata_column, renderer, 
+						     "activatable", GSE_COLUMN_USERDATA_EDITABLE,
+						     "visible",     GSE_COLUMN_USERDATA_EDITABLE, 
+						     NULL);
 	}
 
  	gtk_tree_view_column_set_expand (editor->userdata_column, TRUE);
@@ -774,12 +907,15 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 	g_signal_connect (renderer, "toggled",
 			  G_CALLBACK (glade_signal_editor_after_swapped_toggled), editor);
 	column = gtk_tree_view_column_new_with_attributes
-		(_("Swapped"), renderer,
+		(NULL, renderer,
 		 "active",  GSE_COLUMN_SWAPPED,
 		 "sensitive", GSE_COLUMN_SWAPPED_VISIBLE, 
 		 "activatable", GSE_COLUMN_SWAPPED_VISIBLE,
 		 "visible", GSE_COLUMN_CONTENT,
 		 NULL);
+
+	column_header_widget (column,_("Swapped"), 
+			      _("Whether the instance and object should be swapped when calling the handler"));
 
  	gtk_tree_view_append_column (view, column);
 
@@ -787,7 +923,7 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 	renderer = gtk_cell_renderer_toggle_new ();
 
 	g_object_set (G_OBJECT (renderer), 
-		      "width", 20,
+		      "xpad", 15,
 		      NULL);
 	g_object_set_data (G_OBJECT (renderer), "signal-after-cell",
 			       GINT_TO_POINTER (TRUE));
@@ -795,12 +931,16 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 	g_signal_connect (renderer, "toggled",
 			  G_CALLBACK (glade_signal_editor_after_swapped_toggled), editor);
  	column = gtk_tree_view_column_new_with_attributes
-		(_("After"), renderer,
+		(NULL, renderer,
 		 "active",  GSE_COLUMN_AFTER,
 		 "sensitive", GSE_COLUMN_AFTER_VISIBLE, 
 		 "activatable", GSE_COLUMN_AFTER_VISIBLE, 
 		 "visible", GSE_COLUMN_CONTENT,
 		 NULL);
+
+	column_header_widget (column, _("After"), 
+			      _("Whether the handler should be called before "
+				"or after the default handler of the signal"));
 
 	/* Append the devhelp icon if we have it */
 	if (glade_util_have_devhelp ())
@@ -961,9 +1101,9 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 			gtk_tree_store_set
 				(editor->model,          &parent_signal,
 				 GSE_COLUMN_SIGNAL,           signal->name,
-				 GSE_COLUMN_HANDLER,          _(HANDLER_DEFAULT),
+				 GSE_COLUMN_HANDLER,          HANDLER_DEFAULT,
 				 GSE_COLUMN_AFTER,            FALSE,
-				 GSE_COLUMN_USERDATA,         _(USERDATA_DEFAULT),
+				 GSE_COLUMN_USERDATA,         USERDATA_DEFAULT,
 				 GSE_COLUMN_SWAPPED,          FALSE,
 				 GSE_COLUMN_SWAPPED_VISIBLE,  FALSE,
 				 GSE_COLUMN_HANDLER_EDITABLE, TRUE,
@@ -998,7 +1138,7 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 				 GSE_COLUMN_AFTER,              widget_signal->after,
 				 GSE_COLUMN_USERDATA,
 				 widget_signal->userdata ?
-				 widget_signal->userdata : _(USERDATA_DEFAULT),
+				 widget_signal->userdata : USERDATA_DEFAULT,
 				 GSE_COLUMN_SWAPPED,            widget_signal->swapped,
 				 GSE_COLUMN_SWAPPED_VISIBLE,
 				 widget_signal->userdata ?  TRUE : FALSE,
@@ -1023,7 +1163,7 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 					 GSE_COLUMN_AFTER,              widget_signal->after,
 					 GSE_COLUMN_USERDATA,
 					 widget_signal->userdata  ?
-					 widget_signal->userdata : _(USERDATA_DEFAULT),
+					 widget_signal->userdata : USERDATA_DEFAULT,
 					 GSE_COLUMN_SWAPPED,            widget_signal->swapped,
 					 GSE_COLUMN_SWAPPED_VISIBLE,
 					 widget_signal->userdata  ? TRUE : FALSE,
@@ -1041,9 +1181,9 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 			gtk_tree_store_append (editor->model, &iter, &parent_signal);
 			gtk_tree_store_set
 				(editor->model,          &iter,
-				 GSE_COLUMN_HANDLER,          _(HANDLER_DEFAULT),
+				 GSE_COLUMN_HANDLER,          HANDLER_DEFAULT,
 				 GSE_COLUMN_AFTER,            FALSE,
-				 GSE_COLUMN_USERDATA,         _(USERDATA_DEFAULT),
+				 GSE_COLUMN_USERDATA,         USERDATA_DEFAULT,
 				 GSE_COLUMN_SWAPPED,          FALSE,
 				 GSE_COLUMN_SWAPPED_VISIBLE,  FALSE,
 				 GSE_COLUMN_HANDLER_EDITABLE, TRUE,

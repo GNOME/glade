@@ -1,3 +1,11 @@
+2010-03-29  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-editor-property.[ch]: Added glade_editor_property_show_object_dialog()
+
+	* gladeui/glade-signal-editor.c: 
+	  - Use glade_editor_property_show_object_dialog() to select project objects for signal user data.
+	  - Added tooltips for the column headers
+
 2010-03-28  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/Makefile.am, gladeui/glade-cell-renderer-icon.[ch]: Added activatable pixbuf renderer

@@ -158,6 +158,13 @@ gboolean             glade_editor_property_show_resource_dialog (GladeProject   
 								 GtkWidget        *parent, 
 								 gchar           **filename);
 
+gboolean             glade_editor_property_show_object_dialog (GladeProject       *project,
+							       const gchar        *title,
+							       GtkWidget          *parent, 
+							       GType               object_type,
+							       GladeWidget        *exception,
+							       GladeWidget       **object);
+
 /* Generic eprops */
 #define GLADE_TYPE_EPROP_NUMERIC         (glade_eprop_numeric_get_type())
 #define GLADE_TYPE_EPROP_ENUM            (glade_eprop_enum_get_type())
