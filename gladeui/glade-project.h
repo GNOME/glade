@@ -190,6 +190,9 @@ void          glade_project_get_target_version     (GladeProject       *project,
 						    gint               *major,
 						    gint               *minor);
 
+void          glade_project_update_signal_support_warning (GladeWidget  *widget,
+							   GladeSignal  *signal);
+
 G_END_DECLS
 
 #endif /* __GLADE_PROJECT_H__ */

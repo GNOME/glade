@@ -1106,7 +1106,7 @@ glade_eprop_flags_show_dialog (GtkWidget           *button,
 					      GTK_STOCK_CLOSE,
 					      GTK_RESPONSE_CLOSE,
 					      NULL);
-					      
+
 	gtk_window_set_default_size (GTK_WINDOW (dialog), 300, 400);
 	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_CLOSE);
@@ -2645,6 +2645,7 @@ glade_eprop_object_view (gboolean             radio)
 	g_object_set_data (G_OBJECT (model), "radio-list", GINT_TO_POINTER (radio));
 
 	view_widget = gtk_tree_view_new_with_model (model);
+	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (view_widget), FALSE);
 
 	/* Pass ownership to the view */
 	g_object_unref (G_OBJECT (model));
@@ -2766,6 +2767,8 @@ glade_editor_property_show_object_dialog (GladeProject       *project,
 						 GTK_RESPONSE_CANCEL,
 						 GLADE_RESPONSE_CLEAR,
 						 -1);
+
+	gtk_window_set_default_size (GTK_WINDOW (dialog), 600, 500);
 	
 	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
@@ -2908,7 +2911,7 @@ glade_eprop_object_show_dialog (GtkWidget           *dialog_button,
 							 -1);
 	}
 		
-	
+	gtk_window_set_default_size (GTK_WINDOW (dialog), 600, 500);
 	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
@@ -3212,6 +3215,8 @@ glade_eprop_objects_show_dialog (GtkWidget           *dialog_button,
 					      GTK_STOCK_OK, GTK_RESPONSE_OK,
 					      NULL);
 	g_free (title);
+
+	gtk_window_set_default_size (GTK_WINDOW (dialog), 600, 500);
 	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 
 	vbox = gtk_vbox_new (FALSE, 6);

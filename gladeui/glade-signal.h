@@ -17,6 +17,9 @@ struct _GladeSignal
 	gchar    *name;         /* Signal name eg "clicked"            */
 	gchar    *handler;      /* Handler function eg "gtk_main_quit" */
 	gchar    *userdata;     /* User data signal handler argument   */
+
+	gchar    *support_warning;/* Message to inform the user about signals introduced in future versions */
+	
 	guint8    after : 1;    /* Connect after TRUE or FALSE         */
 	guint8    swapped : 1;  /* Connect swapped TRUE or FALSE (GtkBuilder only) */
 };
@@ -38,6 +41,9 @@ void         glade_signal_write (GladeSignal        *signal,
 				 GladeProjectFormat  fmt,
 				 GladeXmlContext    *context,
 				 GladeXmlNode       *node);
+
+void         glade_signal_set_support_warning (GladeSignal *signal,
+					       const gchar *support_warning);
 
 G_END_DECLS
 

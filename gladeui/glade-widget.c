@@ -74,6 +74,7 @@ enum
 	BUTTON_PRESS_EVENT,
 	BUTTON_RELEASE_EVENT,
 	MOTION_NOTIFY_EVENT,
+	SUPPORT_CHANGED,
 	LAST_SIGNAL
 };
 
@@ -1257,6 +1258,24 @@ glade_widget_class_init (GladeWidgetClass *klass)
 			      glade_marshal_BOOLEAN__BOXED,
 			      G_TYPE_BOOLEAN, 1,
 			      GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
+
+
+	/**
+	 * GladeWidget::support-changed:
+	 * @gladewidget: the #GladeWidget which received the signal.
+	 *
+	 * Emitted when property and signal support metadatas and messages
+	 * have been updated.
+	 */
+	glade_widget_signals[SUPPORT_CHANGED] =
+		g_signal_new ("support-changed",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      0, NULL, NULL,
+			      g_cclosure_marshal_VOID__VOID,
+			      G_TYPE_NONE, 0);
+
+
 }
 
 /*******************************************************************************
@@ -4425,4 +4444,20 @@ glade_widget_unlock (GladeWidget    *widget)
 	widget->lock->locked_widgets = 
 		g_list_remove (widget->lock->locked_widgets, widget);
 	widget->lock = NULL;
+}
+
+
+/**
+ * glade_widget_support_changed:
+ * @widget: A #GladeWidget
+ *
+ * Notifies that support metadata has changed on the widget.
+ *
+ */
+void
+glade_widget_support_changed (GladeWidget *widget)
+{
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+
+	g_signal_emit (widget, glade_widget_signals[SUPPORT_CHANGED], 0);
 }

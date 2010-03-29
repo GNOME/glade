@@ -1229,10 +1229,7 @@ glade_project_introspect_gtk_version (GladeProject *project)
 		g_free (catalog);
 
 		/* Check widget class version */
-		if (is_gtk_adaptor &&
-		    (target_major < GWA_VERSION_SINCE_MAJOR (widget->adaptor) ||
-		     (target_major == GWA_VERSION_SINCE_MAJOR (widget->adaptor) &&
-		      target_minor < GWA_VERSION_SINCE_MINOR (widget->adaptor))))
+		if (is_gtk_adaptor && !GWA_VERSION_CHECK (widget->adaptor, target_major, target_minor))
        		{
 			target_major = GWA_VERSION_SINCE_MAJOR (widget->adaptor);
 			target_minor = GWA_VERSION_SINCE_MINOR (widget->adaptor);
@@ -1261,9 +1258,7 @@ glade_project_introspect_gtk_version (GladeProject *project)
 
 			/* Check GTK+ property class versions */
 			if (is_gtk_adaptor &&
-			    (target_major < property->klass->version_since_major ||
-			     (target_major == property->klass->version_since_major &&
-			      target_minor < property->klass->version_since_minor)))
+			    !GPC_VERSION_CHECK (property->klass, target_major, target_minor))
 			{
 				target_major = property->klass->version_since_major;
 				target_minor = property->klass->version_since_minor;
@@ -1774,6 +1769,10 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
 /* translators: reffers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d' */
 #define SIGNAL_VERSION_CONFLICT_FMT            _("[%s] Signal '%s' of object class '%s' was introduced in %s %d.%d\n")
 
+/* translators: reffers to a signal in toolkit version '%s %d.%d' 
+ * and a project targeting toolkit version '%s %d.%d' */
+#define SIGNAL_VERSION_CONFLICT_MSGFMT         _("This signal was introduced in %s %d.%d while project targets %s %d.%d")
+
 static void
 glade_project_verify_property (GladeProject   *project,
 			       GladeProperty  *property, 
@@ -1826,9 +1825,7 @@ glade_project_verify_property (GladeProject   *project,
 						property->klass->name, 
 						adaptor->title);
 	} 
-	else if (target_major < property->klass->version_since_major ||
-		 (target_major == property->klass->version_since_major &&
-		  target_minor < property->klass->version_since_minor))
+	else if (!GPC_VERSION_CHECK (property->klass, target_major, target_minor))
 	{
 		if (forwidget)
 		{
@@ -1854,9 +1851,7 @@ glade_project_verify_property (GladeProject   *project,
 						property->klass->version_since_minor);
 	} 
 	else if (project->priv->format == GLADE_PROJECT_FORMAT_GTKBUILDER &&
-		 (target_major < property->klass->builder_since_major ||
-		  (target_major == property->klass->builder_since_major &&
-		   target_minor < property->klass->builder_since_minor)))
+		 !GPC_BUILDER_VERSION_CHECK (property->klass, target_major, target_minor))
 	{
 		if (forwidget)
 		{
@@ -1887,7 +1882,6 @@ glade_project_verify_property (GladeProject   *project,
 	g_free (catalog);
 }
 
-
 static void
 glade_project_verify_properties_internal (GladeWidget  *widget, 
 					  const gchar  *path_name,
@@ -1914,26 +1908,12 @@ glade_project_verify_properties_internal (GladeWidget  *widget,
 	}
 }
 
-
-/**
- * glade_project_verify_properties:
- * @widget: A #GladeWidget
- *
- * Synchonizes @widget with user visible information
- * about version compatability
- */
-void
-glade_project_verify_properties (GladeWidget *widget)
-{
-	g_return_if_fail (GLADE_IS_WIDGET (widget));
-	glade_project_verify_properties_internal (widget, NULL, NULL, TRUE);
-}
-
 static void
 glade_project_verify_signal (GladeWidget  *widget,
 			     GladeSignal  *signal,
 			     const gchar  *path_name,
-			     GString      *string)
+			     GString      *string,
+			     gboolean      forwidget)
 {
 	GladeSignalClass *signal_class;
 	gint target_major, target_minor;
@@ -1953,26 +1933,48 @@ glade_project_verify_signal (GladeWidget  *widget,
 						  &target_major,
 						  &target_minor);
 
-	if (target_major < signal_class->version_since_major ||
-	    (target_major == signal_class->version_since_major &&
-	     target_minor < signal_class->version_since_minor))
-		g_string_append_printf (string, 
-					SIGNAL_VERSION_CONFLICT_FMT,
-					path_name,
-					signal->name,
-					signal_class->adaptor->title, 
-					catalog,
-					signal_class->version_since_major,
-					signal_class->version_since_minor);
+	if (!GSC_VERSION_CHECK (signal_class, target_major, target_minor))
+	{
+		if (forwidget)
+		{
+			gchar *warning;
+
+			warning = g_strdup_printf (SIGNAL_VERSION_CONFLICT_MSGFMT,
+						   catalog,
+						   signal_class->version_since_major,
+						   signal_class->version_since_minor,
+						   catalog, target_major, target_minor);
+			glade_signal_set_support_warning (signal, warning);
+			g_free (warning);
+		}
+		else
+			g_string_append_printf (string, 
+						SIGNAL_VERSION_CONFLICT_FMT,
+						path_name,
+						signal->name,
+						signal_class->adaptor->title, 
+						catalog,
+						signal_class->version_since_major,
+						signal_class->version_since_minor);
+	}
+	else if (forwidget)
+		glade_signal_set_support_warning (signal, NULL);
 
 	g_free (catalog);
 }
 
+void
+glade_project_update_signal_support_warning (GladeWidget  *widget,
+					     GladeSignal  *signal)
+{
+	glade_project_verify_signal (widget, signal, NULL, NULL, TRUE);
+}
 
 static void
 glade_project_verify_signals (GladeWidget  *widget, 
 			      const gchar  *path_name,
-			      GString      *string)
+			      GString      *string,
+			      gboolean      forwidget)
 {
 	GladeSignal      *signal;
 	GList *signals, *list;
@@ -1982,10 +1984,29 @@ glade_project_verify_signals (GladeWidget  *widget,
 		for (list = signals; list; list = list->next)
 		{
 			signal = list->data;
-			glade_project_verify_signal (widget, signal, path_name, string);
+			glade_project_verify_signal (widget, signal, path_name, string, forwidget);
 		}
 		g_list_free (signals);
 	}	
+}
+
+
+/**
+ * glade_project_verify_properties:
+ * @widget: A #GladeWidget
+ *
+ * Synchonizes @widget with user visible information
+ * about version compatability and notifies the UI
+ * it should update.
+ */
+void
+glade_project_verify_properties (GladeWidget *widget)
+{
+	g_return_if_fail (GLADE_IS_WIDGET (widget));
+	glade_project_verify_properties_internal (widget, NULL, NULL, TRUE);
+	glade_project_verify_signals (widget, NULL, NULL, TRUE);
+
+	glade_widget_support_changed (widget);
 }
 
 static gboolean
@@ -2047,7 +2068,7 @@ glade_project_verify (GladeProject *project,
 		glade_project_verify_adaptor (project, widget->adaptor, 
 					      path_name, string, saving, FALSE, NULL);
 		glade_project_verify_properties_internal (widget, path_name, string, FALSE);
-		glade_project_verify_signals (widget, path_name, string);
+		glade_project_verify_signals (widget, path_name, string, FALSE);
 
 		g_free (path_name);
 	}
@@ -2103,9 +2124,7 @@ glade_project_verify_adaptor (GladeProject       *project,
 
 		/* Only one versioning message (builder or otherwise)...
 		 */
-		if (target_major < GWA_VERSION_SINCE_MAJOR (adaptor_iter) ||
-		    (target_major == GWA_VERSION_SINCE_MAJOR (adaptor_iter) &&
-		     target_minor < GWA_VERSION_SINCE_MINOR (adaptor_iter)))
+		if (!GWA_VERSION_CHECK (adaptor_iter, target_major, target_minor))
 		{
 			if (forwidget)
 				g_string_append_printf (string, 

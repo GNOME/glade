@@ -191,7 +191,7 @@ static void
 move_row (GtkTreeModel *model, GtkTreeIter *from, GtkTreeIter *to)
 {
 	gchar *handler;
-	gchar *userdata;
+	gchar *userdata, *support_warning;
 	gboolean after;
 	gboolean slot;
 	gboolean visible;
@@ -200,7 +200,7 @@ move_row (GtkTreeModel *model, GtkTreeIter *from, GtkTreeIter *to)
 	gboolean userdata_editable;
 	gboolean swapped;
 	gboolean swapped_visible;
-	gboolean bold, content;
+	gboolean bold, content, warn;
 
 	gtk_tree_model_get (model,                        from,
 			    GSE_COLUMN_HANDLER,           &handler,
@@ -215,6 +215,8 @@ move_row (GtkTreeModel *model, GtkTreeIter *from, GtkTreeIter *to)
 			    GSE_COLUMN_SWAPPED_VISIBLE,   &swapped_visible,
 			    GSE_COLUMN_BOLD,              &bold,
 			    GSE_COLUMN_CONTENT,           &content,
+			    GSE_COLUMN_WARN,              &warn,
+			    GSE_COLUMN_TOOLTIP,           &support_warning,
 			    -1);
 
 	gtk_tree_store_set (GTK_TREE_STORE (model),       to,
@@ -230,7 +232,11 @@ move_row (GtkTreeModel *model, GtkTreeIter *from, GtkTreeIter *to)
 			    GSE_COLUMN_SWAPPED_VISIBLE,   swapped_visible,
 			    GSE_COLUMN_BOLD,              bold,
 			    GSE_COLUMN_CONTENT,           content,
+			    GSE_COLUMN_WARN,              warn,
+			    GSE_COLUMN_TOOLTIP,           support_warning,
 			    -1);
+
+	g_free (support_warning);
 	g_free (handler);
 	g_free (userdata);
 }
@@ -789,7 +795,9 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 		 G_TYPE_BOOLEAN,  /* Userdata editable  */
 		 G_TYPE_BOOLEAN,  /* New slot           */
 		 G_TYPE_BOOLEAN,  /* Mark with bold     */
-		 G_TYPE_BOOLEAN); /* Not a class title slot */ 
+		 G_TYPE_BOOLEAN,  /* Not a class title slot */ 
+		 G_TYPE_BOOLEAN,  /* Show a warning icon for the signal */ 
+		 G_TYPE_STRING);  /* A tooltip for the signal row */ 
 
 	model = GTK_TREE_MODEL (editor->model);
 
@@ -798,19 +806,35 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 
 	view = GTK_TREE_VIEW (view_widget);
 
+	gtk_tree_view_set_tooltip_column (view, GSE_COLUMN_TOOLTIP);
+
 	/* the view now holds a reference, we can get rid of our own */
 	g_object_unref (G_OBJECT (editor->model));
 
 	/************************ signal column ************************/
- 	renderer = gtk_cell_renderer_text_new ();
-	column = gtk_tree_view_column_new_with_attributes
-		(NULL, renderer, "text", GSE_COLUMN_SIGNAL, NULL);
-
+	column = gtk_tree_view_column_new ();
 	column_header_widget (column, _("Signal"), _("The name of the signal to connect to"));
+
+ 	renderer = gtk_cell_renderer_text_new ();
+	gtk_tree_view_column_pack_start (column, renderer, FALSE);
+	gtk_tree_view_column_set_attributes (column, renderer, 
+					     "text", GSE_COLUMN_SIGNAL, 
+					     NULL);
+
 
 	gtk_tree_view_column_set_cell_data_func (column, renderer,
 						 glade_signal_editor_signal_cell_data_func,
 						 NULL, NULL);
+
+
+	renderer = gtk_cell_renderer_pixbuf_new ();
+	g_object_set (G_OBJECT (renderer), "icon-name", GTK_STOCK_DIALOG_WARNING, NULL);
+
+	gtk_tree_view_column_pack_end (column, renderer, FALSE);
+	gtk_tree_view_column_set_attributes (column, renderer, 
+					     "visible", GSE_COLUMN_WARN, 
+					     NULL);
+
  	gtk_tree_view_append_column (view, column);
 
 	/************************ handler column ************************/
@@ -823,6 +847,8 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 		g_object_set (G_OBJECT (editor->handler_renderer),
 			      "model", editor->handler_store,
 			      "text-column", 0,
+			      "ellipsize", PANGO_ELLIPSIZE_END,
+			      "width-chars", 14,
 			      NULL);
 	}
 
@@ -848,6 +874,7 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 							 NULL, NULL);
 	}
 
+ 	gtk_tree_view_column_set_resizable (editor->handler_column, TRUE);
  	gtk_tree_view_column_set_expand (editor->handler_column, TRUE);
  	gtk_tree_view_append_column (view, editor->handler_column);
 
@@ -899,6 +926,7 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 						     NULL);
 	}
 
+ 	gtk_tree_view_column_set_resizable (editor->userdata_column, TRUE);
  	gtk_tree_view_column_set_expand (editor->userdata_column, TRUE);
  	gtk_tree_view_append_column (view, editor->userdata_column);
 
@@ -1040,6 +1068,14 @@ glade_signal_editor_new (gpointer *editor)
 	return signal_editor;
 }
 
+static void
+glade_signal_editor_refresh_support (GladeWidget *widget,
+				     GladeSignalEditor *editor)
+{
+	g_assert (editor->widget == widget);
+	glade_signal_editor_load_widget (editor, editor->widget);
+}
+
 /**
  * glade_signal_editor_load_widget:
  * @editor: a #GladeSignalEditor
@@ -1064,9 +1100,27 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 
 	gtk_tree_store_clear (editor->model);
 
-	editor->widget = widget;
-	editor->adaptor = widget ? widget->adaptor : NULL;
-
+	if (editor->widget != widget)
+	{
+		if (editor->widget)
+		{
+			g_signal_handler_disconnect (editor->widget, editor->refresh_id);
+			editor->refresh_id = 0;
+			g_object_unref (editor->widget);
+		}
+		
+		editor->widget = widget;
+		editor->adaptor = widget ? widget->adaptor : NULL;
+		
+		if (editor->widget)
+		{
+			g_object_ref (editor->widget);
+			editor->refresh_id =
+				g_signal_connect (G_OBJECT (editor->widget), "support-changed",
+						  G_CALLBACK (glade_signal_editor_refresh_support), editor);
+		}
+	}
+	
 	if (!widget)
 		return;
 
@@ -1075,6 +1129,10 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 	for (list = editor->adaptor->signals; list; list = list->next)
 	{
 		GladeSignalClass *signal = (GladeSignalClass *) list->data;
+		GladeSignal *sig = glade_signal_new (signal->name, NULL, NULL, FALSE, FALSE);
+
+		/* Check versioning here with a virtual signal */
+		glade_project_update_signal_support_warning (editor->widget, sig);
 
 		/* Add class name that this signal belongs to.
 		 */
@@ -1098,8 +1156,9 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 
 		if (!signals || signals->len == 0)
 		{
+
 			gtk_tree_store_set
-				(editor->model,          &parent_signal,
+				(editor->model,              &parent_signal,
 				 GSE_COLUMN_SIGNAL,           signal->name,
 				 GSE_COLUMN_HANDLER,          HANDLER_DEFAULT,
 				 GSE_COLUMN_AFTER,            FALSE,
@@ -1112,6 +1171,8 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 				 GSE_COLUMN_SLOT,             TRUE,
 				 GSE_COLUMN_USERDATA_SLOT,    TRUE,
 				 GSE_COLUMN_CONTENT,          TRUE,
+				 GSE_COLUMN_WARN,             sig->support_warning != NULL,
+				 GSE_COLUMN_TOOLTIP,          sig->support_warning,	
 				 -1);
 		}
 		else
@@ -1150,6 +1211,8 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 				 widget_signal->userdata  ? FALSE : TRUE,
 				 GSE_COLUMN_BOLD,               TRUE, 
 				 GSE_COLUMN_CONTENT,            TRUE,
+				 GSE_COLUMN_WARN,               widget_signal->support_warning != NULL,
+				 GSE_COLUMN_TOOLTIP,            widget_signal->support_warning,
 				 -1);
 
 			for (i = 1; i < signals->len; i++)
@@ -1174,6 +1237,8 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 					 GSE_COLUMN_USERDATA_SLOT,
 					 widget_signal->userdata  ? FALSE : TRUE,
 					 GSE_COLUMN_CONTENT,            TRUE,
+					 GSE_COLUMN_WARN,               widget_signal->support_warning != NULL,
+					 GSE_COLUMN_TOOLTIP,            widget_signal->support_warning,
 					 -1);
 			}
 
@@ -1192,8 +1257,13 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 				 GSE_COLUMN_SLOT,             TRUE,
 				 GSE_COLUMN_USERDATA_SLOT,    TRUE,
 				 GSE_COLUMN_CONTENT,          TRUE,
+				 GSE_COLUMN_WARN,             sig->support_warning != NULL,
+				 GSE_COLUMN_TOOLTIP,          sig->support_warning,
 				 -1);
 		}
+
+		glade_signal_free (sig);
+
 	}
 
 	path_first = gtk_tree_path_new_first ();

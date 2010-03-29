@@ -427,6 +427,8 @@ void                    glade_widget_lock                   (GladeWidget      *w
 							     GladeWidget      *locked);
 void                    glade_widget_unlock                 (GladeWidget      *widget);
 
+void                    glade_widget_support_changed        (GladeWidget      *widget);
+
 G_END_DECLS
 
 #endif /* __GLADE_WIDGET_H__ */

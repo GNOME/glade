@@ -35,7 +35,7 @@ G_BEGIN_DECLS
 
 
 /**
- * GPC_CHECK_RUNTIME:
+ * GPC_VERSION_CHECK:
  * @klass: A #GladePropertyClass
  * @major_version: The major version to check
  * @minor_version: The minor version to check
@@ -44,8 +44,24 @@ G_BEGIN_DECLS
  *
  */
 #define GPC_VERSION_CHECK(klass, major_version, minor_version)		\
-	(GLADE_PROPERTY_CLASS (klass)->version_since_major <= major_version && \
-	 GLADE_PROPERTY_CLASS (klass)->version_since_minor <= (minor_version))
+	((GLADE_PROPERTY_CLASS (klass)->version_since_major == major_version) ? \
+	 (GLADE_PROPERTY_CLASS (klass)->version_since_minor <= minor_version) : \
+	 (GLADE_PROPERTY_CLASS (klass)->version_since_major <= major_version))
+
+/**
+ * GPC_BUILDER_VERSION_CHECK:
+ * @klass: A #GladePropertyClass
+ * @major_version: The major version to check
+ * @minor_version: The minor version to check
+ *
+ * Evaluates to %TRUE if @klass is available for use with GtkBuilder in its 
+ * owning library version-@major_verion.@minor_version.
+ *
+ */
+#define GPC_BUILDER_VERSION_CHECK(klass, major_version, minor_version)	\
+	((GLADE_PROPERTY_CLASS (klass)->builder_since_major == major_version) ? \
+	 (GLADE_PROPERTY_CLASS (klass)->builder_since_minor <= minor_version) : \
+	 (GLADE_PROPERTY_CLASS (klass)->builder_since_major <= major_version))
 
 
 #define GPC_OBJECT_DELIMITER ", "

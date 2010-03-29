@@ -48,7 +48,7 @@ GladeSignal *glade_signal_new (const gchar *name,
 			       gboolean     after,
 			       gboolean     swapped)
 {
-	GladeSignal *signal = g_new0 (GladeSignal, 1);
+	GladeSignal *signal = g_slice_new0 (GladeSignal);
 
 	signal->name     = g_strdup (name);
 	signal->handler  = g_strdup (handler);
@@ -73,7 +73,8 @@ glade_signal_free (GladeSignal *signal)
 	g_free (signal->name);
 	g_free (signal->handler);
 	g_free (signal->userdata);
-	g_free (signal);
+	g_free (signal->support_warning);
+	g_slice_free (GladeSignal, signal);
 }
 
 /**
@@ -89,7 +90,8 @@ glade_signal_equal (GladeSignal *sig1, GladeSignal *sig2)
 	gboolean ret = FALSE;
 	g_return_val_if_fail (GLADE_IS_SIGNAL (sig1), FALSE);
 	g_return_val_if_fail (GLADE_IS_SIGNAL (sig2), FALSE);
-	
+
+	/* Intentionally ignore support_warning */
 	if (!strcmp (sig1->name, sig2->name)        &&
 	    !strcmp (sig1->handler, sig2->handler)  &&
 	    sig1->after   == sig2->after            &&
@@ -113,14 +115,19 @@ glade_signal_equal (GladeSignal *sig1, GladeSignal *sig2)
 GladeSignal *
 glade_signal_clone (const GladeSignal *signal)
 {
-	g_return_val_if_fail (signal != NULL, NULL);
+	GladeSignal *dup;
 
-	return glade_signal_new (signal->name,
-				 signal->handler,
-				 signal->userdata,
-				 signal->after,
-				 signal->swapped);
+	g_return_val_if_fail (GLADE_IS_SIGNAL (signal), NULL);
 
+	dup = glade_signal_new (signal->name,
+				signal->handler,
+				signal->userdata,
+				signal->after,
+				signal->swapped);
+
+	glade_signal_set_support_warning (dup, signal->support_warning);
+	
+	return dup;
 }
 
 /**
@@ -219,4 +226,18 @@ glade_signal_read (GladeXmlNode *node)
 							   signal->userdata != NULL);
 
 	return signal;
+}
+
+void
+glade_signal_set_support_warning (GladeSignal *signal,
+				  const gchar *support_warning)
+{
+	g_return_if_fail (GLADE_IS_SIGNAL (signal));
+
+	if (g_strcmp0 (signal->support_warning, support_warning))
+	{
+		g_free (signal->support_warning);
+		signal->support_warning = 
+			support_warning ? g_strdup (support_warning) : NULL;
+	}
 }

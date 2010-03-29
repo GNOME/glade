@@ -34,6 +34,9 @@ enum
 	GSE_COLUMN_SLOT, /* if this row contains a "<Type...>" label */
 	GSE_COLUMN_BOLD,
 	GSE_COLUMN_CONTENT,
+
+	GSE_COLUMN_WARN,
+	GSE_COLUMN_TOOLTIP,
 	GSE_NUM_COLUMNS
 };
 
@@ -59,6 +62,8 @@ struct _GladeSignalEditor
 	GtkCellRenderer *handler_renderer, *userdata_renderer;
 	GtkTreeViewColumn *handler_column, *userdata_column;
 	IsVoidFunc is_void_handler, is_void_userdata;
+
+	gulong refresh_id;
 };
 
 struct _GladeSignalEditorClass

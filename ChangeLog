@@ -1,11 +1,29 @@
 2010-03-29  Tristan Van Berkom <tvb@gnome.org>
 
-	* gladeui/glade-editor-property.[ch]: Added glade_editor_property_show_object_dialog()
+	* gladeui/glade-editor-property.[ch]: 
+	  - Added glade_editor_property_show_object_dialog()
+	  - Give object dialogs a bigger default size and hide the column headers
 
 	* gladeui/glade-signal-editor.c: 
 	  - Use glade_editor_property_show_object_dialog() to select project objects for signal user data.
 	  - Added tooltips for the column headers
+	  - Now show an icon and tooltip in rows for signals that are only
+	    supported in the future, refresh them when support changes.
 
+	* gladeui/glade-widget-adaptor.h, gladeui/glade-property-class.h: Added some version checking macros.
+
+	* gladeui/glade-signal.[ch]: Add support warning meta data to signals
+	
+	* gladeui/glade-project.c: 
+	  - Simplify code with new version checking macros
+	  - Do the verify on signals for widgets as well as project warnings
+	    (update the signals a verify time).
+
+	* gladeui/glade-widget.c: GladeWidget takes a new "support-changed" to broadcast support changes
+	  on the widget.
+
+	* gladeui/glade-signal-editor.c: 
+	
 2010-03-28  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/Makefile.am, gladeui/glade-cell-renderer-icon.[ch]: Added activatable pixbuf renderer
