@@ -42,6 +42,7 @@
 #include "glade-widget-adaptor.h"
 #include "glade-signal.h"
 #include "glade-signal-editor.h"
+#include "glade-cell-renderer-icon.h"
 #include "glade-editor.h"
 #include "glade-command.h"
 #include "glade-marshallers.h"
@@ -177,6 +178,7 @@ append_slot (GtkTreeModel *model, GtkTreeIter *iter_signal)
 			    GSE_COLUMN_AFTER_VISIBLE,    FALSE,
 			    GSE_COLUMN_SLOT,             TRUE,
 			    GSE_COLUMN_USERDATA_SLOT,    TRUE,
+			    GSE_COLUMN_CONTENT,          TRUE,
 			    -1);
 	gtk_tree_model_iter_parent (model, &iter_class, iter_signal);
 
@@ -198,9 +200,9 @@ move_row (GtkTreeModel *model, GtkTreeIter *from, GtkTreeIter *to)
 	gboolean userdata_editable;
 	gboolean swapped;
 	gboolean swapped_visible;
-	gboolean bold;
+	gboolean bold, content;
 
-	gtk_tree_model_get (model,                     from,
+	gtk_tree_model_get (model,                        from,
 			    GSE_COLUMN_HANDLER,           &handler,
 			    GSE_COLUMN_USERDATA,          &userdata,
 			    GSE_COLUMN_AFTER,             &after,
@@ -212,9 +214,10 @@ move_row (GtkTreeModel *model, GtkTreeIter *from, GtkTreeIter *to)
 			    GSE_COLUMN_SWAPPED,           &swapped,
 			    GSE_COLUMN_SWAPPED_VISIBLE,   &swapped_visible,
 			    GSE_COLUMN_BOLD,              &bold,
+			    GSE_COLUMN_CONTENT,           &content,
 			    -1);
 
-	gtk_tree_store_set (GTK_TREE_STORE (model),   to,
+	gtk_tree_store_set (GTK_TREE_STORE (model),       to,
 			    GSE_COLUMN_HANDLER,           handler,
 			    GSE_COLUMN_USERDATA,          userdata,
 			    GSE_COLUMN_AFTER,             after,
@@ -225,7 +228,8 @@ move_row (GtkTreeModel *model, GtkTreeIter *from, GtkTreeIter *to)
 			    GSE_COLUMN_USERDATA_SLOT,     userdata_slot,
 			    GSE_COLUMN_SWAPPED,           swapped,
 			    GSE_COLUMN_SWAPPED_VISIBLE,   swapped_visible,
-			    GSE_COLUMN_BOLD,              &bold,
+			    GSE_COLUMN_BOLD,              bold,
+			    GSE_COLUMN_CONTENT,           content,
 			    -1);
 	g_free (handler);
 	g_free (userdata);
@@ -341,6 +345,7 @@ glade_signal_editor_handler_editing_done_impl  (GladeSignalEditor *self,
 				 GSE_COLUMN_AFTER_VISIBLE,    FALSE,
 				 GSE_COLUMN_SLOT,             TRUE,
 				 GSE_COLUMN_USERDATA_SLOT,    TRUE,
+				 GSE_COLUMN_CONTENT,          TRUE,
 				 -1);
 
 		remove_slot (model, is_top_handler ? NULL : iter, &iter_signal);
@@ -621,6 +626,38 @@ glade_signal_editor_userdata_cell_data_func (GtkTreeViewColumn *tree_column,
 			      "foreground", NULL, NULL);
 }
 
+static void 
+glade_signal_editor_devhelp_cb (GtkCellRenderer   *cell,
+				const gchar       *path_str,
+				GladeSignalEditor *editor)
+{
+	GtkTreePath  *path = gtk_tree_path_new_from_string (path_str);
+	GtkTreeModel *model = GTK_TREE_MODEL (editor->model);
+	GtkTreeIter   iter;
+	GladeSignalClass *signal_class;
+	gchar        *signal, *search, *book = NULL;
+
+	g_return_if_fail (gtk_tree_model_get_iter (model, &iter, path));
+	gtk_tree_path_free (path);
+
+	signal  = glade_signal_editor_get_signal_name (model, &iter);
+	search  = g_strdup_printf ("The %s signal", signal);
+
+	signal_class = glade_widget_adaptor_get_signal_class (editor->widget->adaptor,
+							      signal);
+	g_assert (signal_class);
+
+	g_object_get (signal_class->adaptor, "book", &book, NULL);
+
+	glade_editor_search_doc_search (glade_app_get_editor (),
+					book, signal_class->adaptor->name, search);
+
+	g_free (search);
+	g_free (book);
+	g_free (signal);
+}
+	
+
 void
 glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 {
@@ -643,7 +680,8 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 		 G_TYPE_BOOLEAN,  /* Handler editable   */
 		 G_TYPE_BOOLEAN,  /* Userdata editable  */
 		 G_TYPE_BOOLEAN,  /* New slot           */
-		 G_TYPE_BOOLEAN); /* Mark with bold     */
+		 G_TYPE_BOOLEAN,  /* Mark with bold     */
+		 G_TYPE_BOOLEAN); /* Not a class title slot */ 
 
 	model = GTK_TREE_MODEL (editor->model);
 
@@ -738,20 +776,54 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 	column = gtk_tree_view_column_new_with_attributes
 		(_("Swapped"), renderer,
 		 "active",  GSE_COLUMN_SWAPPED,
-		 "visible", GSE_COLUMN_SWAPPED_VISIBLE, NULL);
+		 "sensitive", GSE_COLUMN_SWAPPED_VISIBLE, 
+		 "activatable", GSE_COLUMN_SWAPPED_VISIBLE,
+		 "visible", GSE_COLUMN_CONTENT,
+		 NULL);
 
  	gtk_tree_view_append_column (view, column);
 
 	/************************ after column ************************/
 	renderer = gtk_cell_renderer_toggle_new ();
+
+	g_object_set (G_OBJECT (renderer), 
+		      "width", 20,
+		      NULL);
+
 	g_signal_connect (renderer, "toggled",
 			  G_CALLBACK (glade_signal_editor_after_swapped_toggled), editor);
  	column = gtk_tree_view_column_new_with_attributes
 		(_("After"), renderer,
 		 "active",  GSE_COLUMN_AFTER,
-		 "visible", GSE_COLUMN_AFTER_VISIBLE, NULL);
- 	gtk_tree_view_append_column (view, column);
+		 "sensitive", GSE_COLUMN_AFTER_VISIBLE, 
+		 "activatable", GSE_COLUMN_AFTER_VISIBLE, 
+		 "visible", GSE_COLUMN_CONTENT,
+		 NULL);
 
+	/* Append the devhelp icon if we have it */
+	if (glade_util_have_devhelp ())
+	{
+		renderer = glade_cell_renderer_icon_new ();
+
+		g_object_set (G_OBJECT (renderer), 
+			      "activatable", TRUE,
+			      NULL);
+
+		if (gtk_icon_theme_has_icon (gtk_icon_theme_get_default (), GLADE_DEVHELP_ICON_NAME))
+			g_object_set (G_OBJECT (renderer), "icon-name", GLADE_DEVHELP_ICON_NAME, NULL);
+		else
+			g_object_set (G_OBJECT (renderer), "icon-name", GTK_STOCK_INFO, NULL);
+
+		g_signal_connect (G_OBJECT (renderer), "activate",
+				  G_CALLBACK (glade_signal_editor_devhelp_cb), editor);
+
+		gtk_tree_view_column_pack_end (column, renderer, FALSE);
+		gtk_tree_view_column_set_attributes (column, renderer, 
+						     "visible", GSE_COLUMN_CONTENT, NULL);
+
+	}
+
+ 	gtk_tree_view_append_column (view, column);
 	g_object_set_data (G_OBJECT (renderer), "signal-after-cell",
 			       GINT_TO_POINTER (TRUE));
 
@@ -875,7 +947,9 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 					       GSE_COLUMN_HANDLER_EDITABLE, FALSE,
 					       GSE_COLUMN_USERDATA_EDITABLE,FALSE,
 					       GSE_COLUMN_SLOT,             FALSE,
-					       GSE_COLUMN_BOLD,             FALSE, -1);
+					       GSE_COLUMN_BOLD,             FALSE, 
+					       GSE_COLUMN_CONTENT,          FALSE,
+					       -1);
 			last_type = signal->type;
 		}
 
@@ -897,6 +971,7 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 				 GSE_COLUMN_AFTER_VISIBLE,    FALSE,
 				 GSE_COLUMN_SLOT,             TRUE,
 				 GSE_COLUMN_USERDATA_SLOT,    TRUE,
+				 GSE_COLUMN_CONTENT,          TRUE,
 				 -1);
 		}
 		else
@@ -933,7 +1008,9 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 				 GSE_COLUMN_SLOT,               FALSE,
 				 GSE_COLUMN_USERDATA_SLOT,
 				 widget_signal->userdata  ? FALSE : TRUE,
-				 GSE_COLUMN_BOLD,               TRUE, -1);
+				 GSE_COLUMN_BOLD,               TRUE, 
+				 GSE_COLUMN_CONTENT,            TRUE,
+				 -1);
 
 			for (i = 1; i < signals->len; i++)
 			{
@@ -956,6 +1033,7 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 					 GSE_COLUMN_SLOT,               FALSE,
 					 GSE_COLUMN_USERDATA_SLOT,
 					 widget_signal->userdata  ? FALSE : TRUE,
+					 GSE_COLUMN_CONTENT,            TRUE,
 					 -1);
 			}
 
@@ -972,7 +1050,9 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 				 GSE_COLUMN_USERDATA_EDITABLE,FALSE,
 				 GSE_COLUMN_AFTER_VISIBLE,    FALSE,
 				 GSE_COLUMN_SLOT,             TRUE,
-				 GSE_COLUMN_USERDATA_SLOT,    TRUE, -1);
+				 GSE_COLUMN_USERDATA_SLOT,    TRUE,
+				 GSE_COLUMN_CONTENT,          TRUE,
+				 -1);
 		}
 	}
 

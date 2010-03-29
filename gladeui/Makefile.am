@@ -59,7 +59,8 @@ libgladeui_1_la_SOURCES = \
 	glade-name-context.c \
 	glade-displayable-values.c \
 	glade-editable.c \
-	glade-editor-table.c
+	glade-editor-table.c \
+	glade-cell-renderer-icon.c
 
 libgladeui_1_la_CPPFLAGS =  \
 	$(common_defines)   \
@@ -113,7 +114,9 @@ libgladeuiinclude_HEADERS = \
 	glade-name-context.h \
 	glade-displayable-values.h \
 	glade-editable.h \
-	glade-editor-table.h
+	glade-editor-table.h \
+	glade-cell-renderer-icon.c
+
 
 
 if PLATFORM_WIN32

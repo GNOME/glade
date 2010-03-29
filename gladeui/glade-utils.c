@@ -58,8 +58,6 @@
 #define GLADE_UTIL_SELECTION_NODE_SIZE 7
 #define GLADE_UTIL_COPY_BUFFSIZE       1024
 
-#define GLADE_DEVHELP_ICON_NAME           "devhelp"
-#define GLADE_DEVHELP_FALLBACK_ICON_FILE  "devhelp.png"
 
 /* List of widgets that have selection
  */

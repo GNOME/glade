@@ -6,6 +6,9 @@
 
 G_BEGIN_DECLS
 
+#define GLADE_DEVHELP_ICON_NAME           "devhelp"
+#define GLADE_DEVHELP_FALLBACK_ICON_FILE  "devhelp.png"
+
 typedef enum _GladeUtilFileDialogType
 {
         GLADE_FILE_DIALOG_ACTION_OPEN,

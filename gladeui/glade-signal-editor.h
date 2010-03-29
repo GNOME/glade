@@ -33,6 +33,7 @@ enum
 	GSE_COLUMN_USERDATA_EDITABLE,
 	GSE_COLUMN_SLOT, /* if this row contains a "<Type...>" label */
 	GSE_COLUMN_BOLD,
+	GSE_COLUMN_CONTENT,
 	GSE_NUM_COLUMNS
 };
 

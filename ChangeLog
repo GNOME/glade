@@ -1,3 +1,10 @@
+2010-03-28  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/Makefile.am, gladeui/glade-cell-renderer-icon.[ch]: Added activatable pixbuf renderer
+
+	* gladeui/glade-signal-editor.c: Use new activatable pixbuf renderer to render a devhelp icon
+	  and fire signal contextual devhelp searches.
+
 2010-03-28  Marco Diego Aurélio Mesquita <marcodiegomesquita@gmail.com>
 
 	* gladeui/glade-base-editor.c: Avoid GtkEntry feedback loop with g_signal_handlers_block_by_func(),
