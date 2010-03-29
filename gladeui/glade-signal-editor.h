@@ -60,7 +60,7 @@ struct _GladeSignalEditor
 
 	GtkTreeModel *handler_store, *userdata_store;
 	GtkCellRenderer *handler_renderer, *userdata_renderer;
-	GtkTreeViewColumn *handler_column, *userdata_column;
+	GtkTreeViewColumn *handler_column, *userdata_column, *swapped_column_ptr;
 	IsVoidFunc is_void_handler, is_void_userdata;
 
 	gulong refresh_id;

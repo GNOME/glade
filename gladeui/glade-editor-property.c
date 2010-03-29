@@ -3421,16 +3421,15 @@ glade_eprop_adjustment_load (GladeEditorProperty *eprop, GladeProperty *property
 		object = g_value_get_object (property->value);
 
 		if (object)
+		{
 			adj = GTK_ADJUSTMENT (object);
 		
-		/* Keep track of external adjustment changes */
-		g_signal_connect (object, "value-changed",
-				  G_CALLBACK (glade_eprop_adj_value_changed),
-				  eprop);
+			/* Keep track of external adjustment changes */
+			g_signal_connect (object, "value-changed",
+					  G_CALLBACK (glade_eprop_adj_value_changed),
+					  eprop);
 	
-		/* Update adjustment's values */
-		if (adj)
-		{
+			/* Update adjustment's values */
 			gtk_adjustment_set_value (eprop_adj->value_adj, gtk_adjustment_get_value (adj));
 			gtk_adjustment_set_lower (eprop_adj->value_adj, gtk_adjustment_get_lower (adj));
 			gtk_adjustment_set_upper (eprop_adj->value_adj, gtk_adjustment_get_upper (adj));
@@ -3445,7 +3444,7 @@ glade_eprop_adjustment_load (GladeEditorProperty *eprop, GladeProperty *property
 			gtk_adjustment_set_upper (eprop_adj->value_adj, 100.0);
 			gtk_adjustment_set_step_increment (eprop_adj->value_adj, 1);
 			gtk_adjustment_set_page_increment (eprop_adj->value_adj, 10);
-			gtk_adjustment_set_page_size (eprop_adj->value_adj, 10);
+			gtk_adjustment_set_page_size (eprop_adj->value_adj, 0);
 		}
 
 		/* Block Handlers */

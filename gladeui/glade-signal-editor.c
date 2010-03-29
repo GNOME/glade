@@ -947,6 +947,9 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 
  	gtk_tree_view_append_column (view, column);
 
+	/* - No need for a ref here - */
+	editor->swapped_column_ptr = column;
+
 	/************************ after column ************************/
 	renderer = gtk_cell_renderer_toggle_new ();
 
@@ -1123,6 +1126,11 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 	
 	if (!widget)
 		return;
+
+	if (glade_project_get_format (glade_widget_get_project (widget)) == GLADE_PROJECT_FORMAT_GTKBUILDER)
+		gtk_tree_view_column_set_visible (editor->swapped_column_ptr, TRUE);
+	else
+		gtk_tree_view_column_set_visible (editor->swapped_column_ptr, FALSE);
 
 	/* Loop over every signal type
 	 */
