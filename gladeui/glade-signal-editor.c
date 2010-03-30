@@ -161,10 +161,15 @@ glade_signal_editor_after_swapped_toggled (GtkCellRendererToggle *cell,
 }
 
 static void
-append_slot (GtkTreeModel *model, GtkTreeIter *iter_signal)
+append_slot (GladeSignalEditor *self, GtkTreeIter *iter_signal, const gchar *signal_name)
 {
 	GtkTreeIter iter_new_slot;
 	GtkTreeIter iter_class;
+	GtkTreeModel *model = GTK_TREE_MODEL (self->model);
+	GladeSignal *sig = glade_signal_new (signal_name, NULL, NULL, FALSE, FALSE);
+
+	/* Check versioning warning here with a virtual signal */
+	glade_project_update_signal_support_warning (self->widget, sig);
 
 	gtk_tree_store_append (GTK_TREE_STORE (model), &iter_new_slot, iter_signal);
 	gtk_tree_store_set (GTK_TREE_STORE (model), &iter_new_slot,
@@ -179,12 +184,16 @@ append_slot (GtkTreeModel *model, GtkTreeIter *iter_signal)
 			    GSE_COLUMN_SLOT,             TRUE,
 			    GSE_COLUMN_USERDATA_SLOT,    TRUE,
 			    GSE_COLUMN_CONTENT,          TRUE,
+			    GSE_COLUMN_WARN,             FALSE,
+			    GSE_COLUMN_TOOLTIP,          sig->support_warning,
 			    -1);
 	gtk_tree_model_iter_parent (model, &iter_class, iter_signal);
 
 	/* mark the signal & class name as bold */
 	gtk_tree_store_set (GTK_TREE_STORE (model), iter_signal, GSE_COLUMN_BOLD, TRUE, -1);
 	gtk_tree_store_set (GTK_TREE_STORE (model), &iter_class, GSE_COLUMN_BOLD, TRUE, -1);
+
+	glade_signal_free (sig);
 }
 
 static void
@@ -324,7 +333,7 @@ glade_signal_editor_handler_editing_done_impl  (GladeSignalEditor *self,
 				    GSE_COLUMN_USERDATA_EDITABLE,TRUE, -1);
 
 		/* append a <Type...> slot */
-		append_slot (model, &iter_signal);
+		append_slot (self, &iter_signal, signal_name);
 	}
 
 	/* we're removing a signal handler */
@@ -715,13 +724,13 @@ glade_signal_editor_user_data_activate (GtkCellRenderer *icon_renderer,
 
 	gtk_tree_model_get_iter (model, &iter, path);
 	gtk_tree_model_get (model, &iter,
-			    GSE_COLUMN_SIGNAL,  &signal_name,
 			    GSE_COLUMN_HANDLER, &handler,
 			    GSE_COLUMN_USERDATA,&object_name,
 			    GSE_COLUMN_SWAPPED, &swapped,
 			    GSE_COLUMN_AFTER,   &after, -1);
 
-	project = glade_widget_get_project (editor->widget);
+	signal_name  = glade_signal_editor_get_signal_name (model, &iter);
+	project      = glade_widget_get_project (editor->widget);
 	
 	if (object_name)
 	{
@@ -1250,7 +1259,7 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 					 GSE_COLUMN_USERDATA_SLOT,
 					 widget_signal->userdata  ? FALSE : TRUE,
 					 GSE_COLUMN_CONTENT,            TRUE,
-					 GSE_COLUMN_WARN,               widget_signal->support_warning != NULL,
+					 GSE_COLUMN_WARN,               FALSE,
 					 GSE_COLUMN_TOOLTIP,            widget_signal->support_warning,
 					 -1);
 			}
@@ -1270,7 +1279,7 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 				 GSE_COLUMN_SLOT,             TRUE,
 				 GSE_COLUMN_USERDATA_SLOT,    TRUE,
 				 GSE_COLUMN_CONTENT,          TRUE,
-				 GSE_COLUMN_WARN,             sig->support_warning != NULL,
+				 GSE_COLUMN_WARN,             FALSE,
 				 GSE_COLUMN_TOOLTIP,          sig->support_warning,
 				 -1);
 		}

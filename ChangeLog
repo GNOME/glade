@@ -4,6 +4,10 @@
 	  handler when updating the buffer text (this feedback loop was causing segfaults when undoing
 	  modifications to a text buffer's text).
 
+	* gladeui/glade-signal-editor.c: Fixed access to signal name in object dialog hander (was a crasher).
+
+	* gladeui/glade-widget.c: Fixed GladeWidget to update support warnings on newly added signals.
+
 2010-03-29  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-editor-property.[ch]: 
