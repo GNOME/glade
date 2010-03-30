@@ -3345,6 +3345,7 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkTextBuffer" generic-name="textbuffer" _title="Text Buffer" 
 			libglade-unsupported="True" toplevel="True">
       <post-create-function>glade_gtk_text_buffer_post_create</post-create-function>
+      <set-property-function>glade_gtk_text_buffer_set_property</set-property-function>
       <signals>
 	<signal id="paste-done" since="2.16"/>
       </signals>

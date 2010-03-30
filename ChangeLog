@@ -1,3 +1,9 @@
+2010-03-30  Tristan Van Berkom <tvb@gnome.org>
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Block the glade_gtk_text_buffer_changed()
+	  handler when updating the buffer text (this feedback loop was causing segfaults when undoing
+	  modifications to a text buffer's text).
+
 2010-03-29  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-editor-property.[ch]: 

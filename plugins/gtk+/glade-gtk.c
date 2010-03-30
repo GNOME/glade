@@ -8591,7 +8591,7 @@ glade_gtk_text_buffer_changed (GtkTextBuffer *buffer, GladeWidget *gbuffy)
 	{
 		glade_property_get (prop, &text_prop);
 
-		if (text_prop == NULL || text == NULL || strcmp (text, text_prop))
+		if (g_strcmp0 (text, text_prop))
 			glade_command_set_property (prop, text);
 	}
 	g_free (text);
@@ -8609,6 +8609,32 @@ glade_gtk_text_buffer_post_create (GladeWidgetAdaptor *adaptor,
 	g_signal_connect (object, "changed",
 			  G_CALLBACK (glade_gtk_text_buffer_changed),
 			  gbuffy);
+}
+
+
+void
+glade_gtk_text_buffer_set_property (GladeWidgetAdaptor *adaptor,
+				    GObject            *object, 
+				    const gchar        *id,
+				    const GValue       *value)
+{
+	GladeWidget   *gwidget = glade_widget_get_from_gobject (object);
+	GladeProperty *property = glade_widget_get_property (gwidget, id);
+
+	if (!strcmp (id, "text"))
+	{
+		g_signal_handlers_block_by_func (object, glade_gtk_text_buffer_changed, gwidget);
+
+		if (g_value_get_string (value))
+			gtk_text_buffer_set_text (GTK_TEXT_BUFFER (object), g_value_get_string (value), -1);
+		else
+			gtk_text_buffer_set_text (GTK_TEXT_BUFFER (object), "", -1);
+
+		g_signal_handlers_unblock_by_func (object, glade_gtk_text_buffer_changed, gwidget);
+
+       	}
+	else if (GPC_VERSION_CHECK (property->klass, gtk_major_version, gtk_minor_version + 1))
+		GWA_GET_CLASS (G_TYPE_OBJECT)->set_property (adaptor, object, id, value);
 }
 
 /* ----------------------------- GtkTextView ------------------------------ */
