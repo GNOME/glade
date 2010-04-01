@@ -1177,8 +1177,7 @@ glade_base_editor_set_container (GladeBaseEditor *editor,
 {
 	GladeBaseEditorPrivate *e = editor->priv;
 
-	if (e->project)
-		glade_base_editor_project_disconnect (editor);
+	glade_base_editor_project_disconnect (editor);
 	
 	if (container == NULL)
 	{
@@ -1237,15 +1236,27 @@ glade_base_editor_finalize (GObject *object)
 {
 	GladeBaseEditor *cobj = GLADE_BASE_EDITOR (object);
 
+	g_free (cobj->priv);
+
+	G_OBJECT_CLASS(parent_class)->finalize (object);
+}
+
+static void
+glade_base_editor_dispose (GObject *object)
+{
+	GladeBaseEditor *cobj = GLADE_BASE_EDITOR (object);
+
+	glade_signal_editor_load_widget (cobj->priv->signal_editor, NULL);
+
 	reset_child_types (cobj);
 
-	/* Free private members, etc. */
 	glade_base_editor_project_disconnect (cobj);
 
-	g_object_unref (cobj->priv->group);
-	
-	g_free (cobj->priv);
-	G_OBJECT_CLASS(parent_class)->finalize(object);
+	if (cobj->priv->group)
+		cobj->priv->group =
+			(g_object_unref (cobj->priv->group), NULL);
+
+	G_OBJECT_CLASS(parent_class)->dispose (object);
 }
 
 static void
@@ -1430,6 +1441,7 @@ glade_base_editor_class_init (GladeBaseEditorClass *klass)
 	parent_class = g_type_class_peek_parent(klass);
 
 	object_class->finalize     = glade_base_editor_finalize;
+	object_class->dispose      = glade_base_editor_dispose;
 	object_class->set_property = glade_base_editor_set_property;
 	object_class->get_property = glade_base_editor_get_property;
 
