@@ -64,6 +64,7 @@
 #define CONFIG_KEY_MAXIMIZED        "maximized"
 #define CONFIG_KEY_SHOW_TOOLBAR     "show-toolbar"
 #define CONFIG_KEY_SHOW_TABS        "show-tabs"
+#define CONFIG_KEY_SHOW_STATUS      "show-statusbar"
 
 #define GLADE_WINDOW_GET_PRIVATE(object) (G_TYPE_INSTANCE_GET_PRIVATE ((object),  \
 					  GLADE_TYPE_WINDOW,                      \
@@ -1957,6 +1958,15 @@ toggle_toolbar_cb (GtkAction *action, GladeWindow *window)
 }
 
 static void
+toggle_statusbar_cb (GtkAction *action, GladeWindow *window)
+{
+	if (gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action)))
+		gtk_widget_show (window->priv->statusbar);
+	else
+		gtk_widget_hide (window->priv->statusbar);
+}
+
+static void
 toggle_tabs_cb (GtkAction *action, GladeWindow *window)
 {
 	if (gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action)))
@@ -2128,6 +2138,7 @@ static const gchar ui_info[] =
 "    </menu>"
 "    <menu action='ViewMenu'>"
 "      <menuitem action='ToolbarVisible'/>"
+"      <menuitem action='StatusbarVisible'/>"
 "      <menuitem action='ProjectTabsVisible'/>"
 "      <menu action='PaletteAppearance'>"
 "        <menuitem action='IconsAndLabels'/>"
@@ -2265,11 +2276,15 @@ static GtkToggleActionEntry view_entries[] = {
 	  N_("Dock the editor into the main window"),
 	  G_CALLBACK (toggle_dock_cb), TRUE },
 
-	{ "ToolbarVisible", NULL, N_("Toolbar"), NULL,
-	  N_("Show the main toolbar"),
+	{ "ToolbarVisible", NULL, N_("Tool_bar"), NULL,
+	  N_("Show the toolbar"),
 	  G_CALLBACK (toggle_toolbar_cb), TRUE },
 
-	{ "ProjectTabsVisible", NULL, N_("Project Tabs"), NULL,
+	{ "StatusbarVisible", NULL, N_("_Statusbar"), NULL,
+	  N_("Show the statusbar"),
+	  G_CALLBACK (toggle_statusbar_cb), TRUE },
+
+	{ "ProjectTabsVisible", NULL, N_("Project _Tabs"), NULL,
 	  N_("Show notebook tabs for loaded projects"),
 	  G_CALLBACK (toggle_tabs_cb), TRUE },
 
@@ -2980,6 +2995,11 @@ save_windows_config (GladeWindow *window, GKeyFile *config)
 
 	g_key_file_set_boolean (config, 
 				CONFIG_GROUP_WINDOWS,
+				CONFIG_KEY_SHOW_STATUS, 
+				gtk_widget_get_visible (window->priv->statusbar));
+
+	g_key_file_set_boolean (config, 
+				CONFIG_GROUP_WINDOWS,
 				CONFIG_KEY_SHOW_TABS, 
 				gtk_notebook_get_show_tabs (GTK_NOTEBOOK (window->priv->notebook)));
 }
@@ -3039,12 +3059,21 @@ key_file_get_window_position (GKeyFile     *config,
 	pos->width = key_file_get_int (config, CONFIG_GROUP_WINDOWS, key_width, pos->width);
 	pos->height = key_file_get_int (config, CONFIG_GROUP_WINDOWS, key_height, pos->height);
 
-	if (detached && g_key_file_has_key (config, CONFIG_GROUP_WINDOWS, key_detached, NULL))
-		*detached = g_key_file_get_boolean (config, CONFIG_GROUP_WINDOWS, key_detached, NULL);
+	if (detached)
+	{
+		if (g_key_file_has_key (config, CONFIG_GROUP_WINDOWS, key_detached, NULL))
+			*detached = g_key_file_get_boolean (config, CONFIG_GROUP_WINDOWS, key_detached, NULL);
+		else 
+			*detached = FALSE;
+	}
 
-	if (maximized && g_key_file_has_key (config, CONFIG_GROUP_WINDOWS, key_maximized, NULL))
-		*maximized = g_key_file_get_boolean (config, CONFIG_GROUP_WINDOWS, key_maximized, NULL);
-	
+	if (maximized)
+	{
+		if (g_key_file_has_key (config, CONFIG_GROUP_WINDOWS, key_maximized, NULL))
+			*maximized = g_key_file_get_boolean (config, CONFIG_GROUP_WINDOWS, key_maximized, NULL);
+		else
+			*maximized = FALSE;
+	}
 
 	g_free (key_x);
 	g_free (key_y);
@@ -3108,20 +3137,47 @@ static void
 glade_window_config_load (GladeWindow *window)
 {
 	GKeyFile *config = glade_app_get_config ();
-	gboolean show_toolbar, show_tabs;
+	gboolean show_toolbar, show_tabs, show_status;
 	GtkAction *action;
+	GError *error = NULL;
 
 	/* Initial main dimensions */
 	glade_window_set_initial_size (window, config);	
 
 	/* toolbar and tabs */
-	show_toolbar = g_key_file_get_boolean (config, CONFIG_GROUP_WINDOWS, CONFIG_KEY_SHOW_TOOLBAR, NULL);
-	show_tabs    = g_key_file_get_boolean (config, CONFIG_GROUP_WINDOWS, CONFIG_KEY_SHOW_TABS, NULL);
+	if ((show_toolbar = 
+	     g_key_file_get_boolean (config, CONFIG_GROUP_WINDOWS, CONFIG_KEY_SHOW_TOOLBAR, &error)) == FALSE &&
+	    error != NULL)
+	{
+		show_toolbar = TRUE;
+		error = (g_error_free (error), NULL);
+	}
+
+	if ((show_tabs = 
+	     g_key_file_get_boolean (config, CONFIG_GROUP_WINDOWS, CONFIG_KEY_SHOW_TABS, &error)) == FALSE &&
+	    error != NULL)
+	{
+		show_tabs = TRUE;
+		error = (g_error_free (error), NULL);
+	}
+
+	if ((show_status = 
+	     g_key_file_get_boolean (config, CONFIG_GROUP_WINDOWS, CONFIG_KEY_SHOW_STATUS, &error)) == FALSE &&
+	    error != NULL)
+	{
+		show_status = TRUE;
+		error = (g_error_free (error), NULL);
+	}
 
 	if (show_toolbar)
 		gtk_widget_show (window->priv->toolbar);
 	else
 		gtk_widget_hide (window->priv->toolbar);
+
+	if (show_status)
+		gtk_widget_show (window->priv->statusbar);
+	else
+		gtk_widget_hide (window->priv->statusbar);
 
 	gtk_notebook_set_show_tabs (GTK_NOTEBOOK (window->priv->notebook), show_tabs);
 
@@ -3129,6 +3185,9 @@ glade_window_config_load (GladeWindow *window)
 	gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action), show_toolbar);
 
 	action = gtk_action_group_get_action (window->priv->static_actions, "ProjectTabsVisible");
+	gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action), show_tabs);
+
+	action = gtk_action_group_get_action (window->priv->static_actions, "StatusbarVisible");
 	gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action), show_tabs);
 
 	/* Paned positions */
