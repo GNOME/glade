@@ -1,3 +1,8 @@
+2010-04-01  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-project.c: Display GTK+ in caps and always assume GTK+ as a project dependency
+	  (so that empty projects still depend on GTK+ for display purposes).
+
 2010-03-31  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-signal-editor.c: Moved unrefs from finalize --> dispose, unload the loaded

@@ -3170,6 +3170,11 @@ glade_project_required_libs (GladeProject *project)
 				required = g_list_prepend (required, catalog);
 		}
 	}
+
+	/* Assume GTK+ here */
+	if (!required)
+		required = g_list_prepend (required, g_strdup ("gtk+"));
+
 	return g_list_reverse (required);
 }
 
@@ -4033,10 +4038,11 @@ glade_project_build_prefs_box (GladeProject *project)
 						  &major,
 						  &minor);
 
-		string = g_strdup_printf (_("%s catalog"), 
-					  glade_catalog_get_name (catalog));
-		label = gtk_label_new (string);
-		g_free (string);
+		/* Special case to mark GTK+ in upper case */
+		if (strcmp (glade_catalog_get_name (catalog), "gtk+") == 0)
+			label = gtk_label_new ("GTK+");
+		else
+			label = gtk_label_new (glade_catalog_get_name (catalog));
 		gtk_misc_set_alignment (GTK_MISC (label), 0.0F, 0.5F);
 		
 		gtk_box_pack_start (GTK_BOX (vbox), label, TRUE, TRUE, 2);
