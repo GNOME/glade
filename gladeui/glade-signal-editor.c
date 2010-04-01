@@ -695,7 +695,6 @@ column_header_widget (GtkTreeViewColumn *column,
 	gtk_widget_set_tooltip_text (event_box, tooltip_txt);
 
 	label = gtk_label_new (txt);
-	gtk_misc_set_padding (GTK_MISC (label), 5, 0);
 
 	gtk_widget_show (event_box);
 	gtk_widget_show (label);
@@ -956,7 +955,7 @@ glade_signal_editor_construct_signals_list (GladeSignalEditor *editor)
 		 "visible", GSE_COLUMN_CONTENT,
 		 NULL);
 
-	column_header_widget (column,_("Swapped"), 
+	column_header_widget (column,_("Swap"), 
 			      _("Whether the instance and object should be swapped when calling the handler"));
 
  	gtk_tree_view_append_column (view, column);
