@@ -879,7 +879,6 @@ GladeProject *
 glade_project_new (void)
 {
 	GladeProject *project = g_object_new (GLADE_TYPE_PROJECT, NULL);
-	glade_project_preferences (project);
 	return project;
 }
 
