@@ -62,6 +62,7 @@ enum
 	CHANGED,
 	PARSE_FINISHED,
 	CONVERT_FINISHED,
+	TARGETS_CHANGED,
 	LAST_SIGNAL
 };
 
@@ -798,6 +799,22 @@ glade_project_class_init (GladeProjectClass *klass)
 			      G_SIGNAL_RUN_FIRST,
 			      G_STRUCT_OFFSET (GladeProjectClass, parse_finished),
 			      NULL, NULL,
+			      g_cclosure_marshal_VOID__VOID,
+			      G_TYPE_NONE,
+			      0);
+
+
+	/**
+	 * GladeProject::targets-changed:
+	 * @gladeproject: the #GladeProject which received the signal.
+	 *
+	 * Emitted when @gladeproject target versions change.
+	 */
+	glade_project_signals[TARGETS_CHANGED] =
+		g_signal_new ("targets-changed",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_FIRST,
+			      0, NULL, NULL,
 			      g_cclosure_marshal_VOID__VOID,
 			      G_TYPE_NONE,
 			      0);
@@ -2861,6 +2878,8 @@ glade_project_set_target_version (GladeProject *project,
 	}
 
 	glade_project_verify_project_for_ui (project);
+
+	g_signal_emit (project, glade_project_signals [TARGETS_CHANGED], 0);
 }
 
 static void
@@ -4145,4 +4164,41 @@ glade_project_preferences (GladeProject *project)
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 
 	gtk_window_present (GTK_WINDOW (project->priv->prefs_dialog));
+}
+
+
+gchar *
+glade_project_display_dependencies (GladeProject *project)
+{
+	GList *catalogs, *l;
+	GString *string;
+
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
+
+	string = g_string_new ("");
+
+	catalogs = glade_project_required_libs (project);
+	for (l = catalogs; l; l = l->next)
+	{
+		gchar *catalog = l->data;
+		gint   major = 0, minor = 0;
+
+		glade_project_get_target_version (project, catalog, &major, &minor);
+
+		if (l != catalogs)
+			g_string_append (string, ", ");
+
+		/* Capitalize GTK+ */
+		if (strcmp (catalog, "gtk+") == 0)
+			g_string_append_printf (string, "GTK+ >= %d.%d", major, minor);
+		else if (major && minor)
+			g_string_append_printf (string, "%s >= %d.%d", catalog, major, minor);
+		else
+			g_string_append_printf (string, "%s", catalog);
+
+		g_free (catalog);
+	}
+	g_list_free (catalogs);
+
+	return g_string_free (string, FALSE);
 }

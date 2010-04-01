@@ -1115,8 +1115,6 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 	g_return_if_fail (GLADE_IS_SIGNAL_EDITOR (editor));
 	g_return_if_fail (widget == NULL || GLADE_IS_WIDGET (widget));
 
-	gtk_tree_store_clear (editor->model);
-
 	if (editor->widget != widget)
 	{
 		if (editor->widget)
@@ -1140,6 +1138,8 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 	
 	if (!widget)
 		return;
+
+	gtk_tree_store_clear (editor->model);
 
 	if (glade_project_get_format (glade_widget_get_project (widget)) == GLADE_PROJECT_FORMAT_GTKBUILDER)
 		gtk_tree_view_column_set_visible (editor->swapped_column_ptr, TRUE);
@@ -1362,14 +1362,18 @@ glade_signal_editor_set_property  (GObject      *object,
 }
 
 static void
-glade_signal_editor_finalize (GObject *object)
+glade_signal_editor_dispose (GObject *object)
 {
 	GladeSignalEditor *self = GLADE_SIGNAL_EDITOR (object);
+	
+	glade_signal_editor_load_widget (self, NULL);
 
-	g_object_unref (self->handler_store);
-	g_object_unref (self->userdata_store);
+	if (self->handler_store)
+		g_object_unref (self->handler_store);
+	if (self->userdata_store)
+		g_object_unref (self->userdata_store);
 
-	G_OBJECT_CLASS (glade_signal_editor_parent_class)->finalize (object);
+	G_OBJECT_CLASS (glade_signal_editor_parent_class)->dispose (object);
 }
 
 static void
@@ -1391,7 +1395,7 @@ glade_signal_editor_class_init (GladeSignalEditorClass *klass)
 	object_class->constructor = glade_signal_editor_constructor;
 	object_class->get_property = glade_signal_editor_get_property;
 	object_class->set_property = glade_signal_editor_set_property;
-	object_class->finalize = glade_signal_editor_finalize;
+	object_class->dispose = glade_signal_editor_dispose;
 	klass->handler_editing_done = glade_signal_editor_handler_editing_done_impl;
 	klass->userdata_editing_done = glade_signal_editor_userdata_editing_done_impl;
 	klass->handler_editing_started = NULL;

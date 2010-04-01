@@ -658,9 +658,9 @@ glade_palette_update_appearance (GladePalette *palette)
 
 	switch (priv->item_appearance)
        	{
-	case GLADE_ITEM_ICON_AND_LABEL: style = GTK_TOOLBAR_BOTH;   break;
-	case GLADE_ITEM_ICON_ONLY:      style = GTK_TOOLBAR_ICONS;  break;
-	case GLADE_ITEM_LABEL_ONLY:     style = GTK_TOOLBAR_TEXT;   break;
+	case GLADE_ITEM_ICON_AND_LABEL: style = GTK_TOOLBAR_BOTH_HORIZ; break;
+	case GLADE_ITEM_ICON_ONLY:      style = GTK_TOOLBAR_ICONS;      break;
+	case GLADE_ITEM_LABEL_ONLY:     style = GTK_TOOLBAR_TEXT;       break;
 	default:
 		g_assert_not_reached ();
 		break;

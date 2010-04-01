@@ -1,3 +1,22 @@
+2010-03-31  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-signal-editor.c: Moved unrefs from finalize --> dispose, unload the loaded
+	  widget and disconnect from support-changed signal, avoid clearing liststore when its owning
+	  view is destroyed and we're unsetting the widget in ->dispose.
+
+	* src/Makefile.am, src/glade-close-button.[ch]: Using Paolo Borelli's close button code for notebook
+	  tab close buttons.
+
+	* src/glade-window.c: 
+	  - Added option to disable toolbar in View menu and session data (bug 586194).
+	  - Added option to show notebook tabs for open projects also in the View menu and session data.
+
+	* gladeui/glade-palette.c: Made "both" mode use text horizontally again, still get alot of unwanted 
+	  ellipsize here.
+
+	* gladeui/glade-project.c: Added the targets-changed signal to refresh views with data about 
+	  target project versions (notebook tabs).
+
 2010-03-30  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Block the glade_gtk_text_buffer_changed()

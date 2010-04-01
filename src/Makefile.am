@@ -21,6 +21,8 @@ glade_3_LDADD = $(top_builddir)/gladeui/libgladeui-1.la $(IGE_MAC_LIBS)
 glade_3_SOURCES = \
 	glade-window.c \
 	glade-window.h \
+	glade-close-button.c \
+	glade-close-button.h \
 	main.c
 
 if NATIVE_WIN32

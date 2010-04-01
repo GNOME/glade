@@ -159,6 +159,8 @@ gint              glade_utils_hijack_key_press (GtkWindow          *win,
 						gpointer            user_data);
 	
 
+gchar           *glade_utils_replace_home_dir_with_tilde (const gchar *uri);
+
 G_END_DECLS
 
 #endif /* __GLADE_UTILS_H__ */
