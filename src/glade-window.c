@@ -2310,11 +2310,7 @@ menu_item_selected_cb (GtkWidget *item, GladeWindow *window)
 	GtkAction *action;
 	gchar *tooltip;
 
-#if (GTK_MAJOR_VERSION == 2) && (GTK_MINOR_VERSION < 16)
-	action = gtk_widget_get_action (item);
-#else
 	action = gtk_activatable_get_related_action (GTK_ACTIVATABLE (item));
-#endif
 	g_object_get (G_OBJECT (action), "tooltip", &tooltip, NULL);
 
 	if (tooltip != NULL)
@@ -3322,13 +3318,8 @@ glade_window_init (GladeWindow *window)
 	undo_action = gtk_ui_manager_get_action (priv->ui, "/MenuBar/EditMenu/Undo");
 	redo_action = gtk_ui_manager_get_action (priv->ui, "/MenuBar/EditMenu/Redo");
 	
-#if (GTK_MAJOR_VERSION == 2) && (GTK_MINOR_VERSION < 16)
-	gtk_action_connect_proxy (undo_action, GTK_WIDGET (priv->undo));
-	gtk_action_connect_proxy (redo_action, GTK_WIDGET (priv->redo));
-#else
 	gtk_activatable_set_related_action (GTK_ACTIVATABLE (priv->undo), undo_action);
 	gtk_activatable_set_related_action (GTK_ACTIVATABLE (priv->redo), redo_action);
-#endif
 	
 	/* main contents */
 	hpaned1 = gtk_hpaned_new ();
