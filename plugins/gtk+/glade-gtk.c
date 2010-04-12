@@ -6971,11 +6971,9 @@ glade_gtk_image_menu_item_set_use_stock (GObject *object, const GValue *value)
 		glade_widget_property_set_sensitive (widget, "accel-group", FALSE, NOT_SELECTED_MSG);
 	}
 
-#if GTK_CHECK_VERSION (2, 16, 0)
 	gtk_image_menu_item_set_use_stock (GTK_IMAGE_MENU_ITEM (object), use_stock);
 
 	sync_use_appearance (widget);
-#endif
 }
 
 static gboolean
