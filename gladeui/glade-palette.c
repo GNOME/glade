@@ -604,9 +604,9 @@ glade_palette_new_item_group (GladePalette *palette, GladeWidgetGroup *group)
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
 	gtk_widget_show (label);
 
-	item_group = (GtkWidget *)g_object_new (GTK_TYPE_TOOL_ITEM_GROUP,
-						"label-widget", label,
-						NULL);
+	item_group = gtk_tool_item_group_new ("");
+	gtk_tool_item_group_set_label_widget (GTK_TOOL_ITEM_GROUP (item_group),
+	                                      label);
 
 	/* Tell the item group to ellipsize our custom label for us */
 	gtk_tool_item_group_set_ellipsize (GTK_TOOL_ITEM_GROUP (item_group), 
