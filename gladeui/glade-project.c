@@ -2698,18 +2698,6 @@ glade_project_add_object (GladeProject *project,
 	 */
 	if ((gwidget = glade_widget_get_from_gobject (object)) == NULL)
 		return;
-
-	/* Dont add widgets that are already in the project */
-	if (glade_project_has_object (project, object))
-		return;
-
-	if (old_project && 
-	    glade_project_has_object (old_project, object))
-	{
-		g_critical ("Trying to add object %s to a project but its already in another project", 
-			    gwidget->name);
-		return;
-	}
 		
 	/* set the project */
 	if (gwidget->project != project)
@@ -2756,10 +2744,8 @@ glade_project_add_object (GladeProject *project,
 		       glade_project_signals [ADD_WIDGET],
 		       0, gwidget);
 
-	g_message ("Adding widget - loading!");
 	if (!project->priv->loading)
 	{
-		g_message ("Adding widget!");
 		glade_project_model_get_iter_for_object (project, object, &iter);
 		path = gtk_tree_model_get_path (GTK_TREE_MODEL (project), &iter);
 	
