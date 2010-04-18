@@ -412,6 +412,8 @@ GladeWidget            *glade_widget_get_parent             (GladeWidget      *w
 void                    glade_widget_set_parent             (GladeWidget      *widget,
 							     GladeWidget      *parent);
 
+GList                  *glade_widget_get_children	    (GladeWidget* widget);
+
 GladeWidget            *glade_widget_get_toplevel           (GladeWidget      *widget);
  
 gboolean                glade_widget_superuser              (void);
