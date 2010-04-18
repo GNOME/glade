@@ -299,6 +299,8 @@ glade_project_dispose (GObject *object)
 		g_object_unref (G_OBJECT (list->data)); /* Remove the GladeProject reference */
 		g_object_unref (G_OBJECT (gwidget));  /* Remove the overall "Glade" reference */
 	}
+	g_list_free (list);
+	g_list_free (project->priv->tree);
 	project->priv->tree = NULL;
 
 	G_OBJECT_CLASS (glade_project_parent_class)->dispose (object);
@@ -1416,6 +1418,7 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 
 	/* Hack a tree widget */
 	{
+		g_message ("Creating demo widget!");
 		GtkWidget* window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 		GtkWidget* tree_view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (project));
 		GtkWidget* scrolled_win = gtk_scrolled_window_new (NULL, NULL);
@@ -2742,9 +2745,10 @@ glade_project_add_object (GladeProject *project,
 	}
 
 	glade_widget_set_project (gwidget, (gpointer)project);
+	g_object_ref (object);
 	if (glade_widget_get_parent (gwidget) == NULL)
 	{
-		project->priv->tree = g_list_insert_sorted (project->priv->tree, g_object_ref (object), 
+		project->priv->tree = g_list_insert_sorted (project->priv->tree, object, 
 		                                            (GCompareFunc)sort_project_dependancies);
 	}
 
@@ -2752,14 +2756,14 @@ glade_project_add_object (GladeProject *project,
 		       glade_project_signals [ADD_WIDGET],
 		       0, gwidget);
 
+	g_message ("Adding widget - loading!");
 	if (!project->priv->loading)
 	{
+		g_message ("Adding widget!");
 		glade_project_model_get_iter_for_object (project, object, &iter);
 		path = gtk_tree_model_get_path (GTK_TREE_MODEL (project), &iter);
 	
-		g_signal_emit_by_name (G_OBJECT (project),
-			               "row_inserted",
-	        		       iter, path, NULL);
+		gtk_tree_model_row_inserted (GTK_TREE_MODEL (project), path, &iter);
 	}
 	                       
 	               
@@ -2823,24 +2827,21 @@ glade_project_remove_object (GladeProject *project, GObject *object)
 
 	if ((link = g_list_find (glade_project_get_objects (project), object)) != NULL)
 	{
-		gboolean toplevel = FALSE;
+		GtkTreeIter iter;
+		GtkTreePath* path;
 		if (glade_widget_get_parent (gwidget) == NULL)
 		{
-			GtkTreeIter iter;
-			GtkTreePath* path;
-			glade_project_model_get_iter_for_object (project, object, &iter);
-			path = gtk_tree_model_get_path (GTK_TREE_MODEL (project),
-			                                &iter);
-			g_signal_emit_by_name (project, "row-deleted",
-			                       &iter, path);
-			toplevel = TRUE;
+			project->priv->tree = g_list_delete_link (project->priv->tree, link);
 		}
-
+		glade_project_model_get_iter_for_object (project, object, &iter);
+		path = gtk_tree_model_get_path (GTK_TREE_MODEL (project),
+		                                &iter);
+		gtk_tree_model_row_deleted (GTK_TREE_MODEL (project),
+		                            path);
 		g_object_unref (object);
 		glade_project_release_widget_name (project, gwidget,
 						   glade_widget_get_name (gwidget));
-		if (toplevel)
-			project->priv->tree = g_list_delete_link (project->priv->tree, link);
+			
 
 		g_signal_emit (G_OBJECT (project),
 			       glade_project_signals [REMOVE_WIDGET],
@@ -2856,7 +2857,7 @@ adjust_naming_policy (GladeProject       *project,
 	GList *list, *objects;
 	GladeWidget *widget;
 
-	objects = g_list_copy (glade_project_get_objects(project));
+	objects = project->priv->tree;
 
 	/* Remove all toplevels (recursive operation) */
 	for (list = objects; list; list = list->next)
@@ -3567,7 +3568,7 @@ glade_project_create_object_list_foreach (GtkTreeModel* model,
 	/* Get rid of the extra reference */
 	g_object_unref (object);
 	*list = g_list_append (*list, object);
-
+	
 	/* Continue iteration */
 	return FALSE;
 }
@@ -4350,36 +4351,43 @@ glade_project_model_get_iter (GtkTreeModel* model,
 	GladeProject* project = GLADE_PROJECT (model);
 	gint* indices = gtk_tree_path_get_indices (path);
 	gint depth = gtk_tree_path_get_depth (path);
+	GladeWidget* widget;
+	GObject* object;
+
 	gint i;
-	GladeWidget* widget = NULL;
+	GList* parent;
 	
-	for (i = 0; i < depth; i++)
+	if ((parent = g_list_nth (project->priv->tree, indices[0])) != NULL)
 	{
-		GList* list;
-		GObject* object;
-		if (i == 0)
-		{
-			list = project->priv->tree;
-		}
-		else
-		{
-			list = glade_widget_get_children (widget);
-		}
-		if (!list)
+		object = parent->data;
+		widget = glade_widget_get_from_gobject (object);
+	}
+	else
+		return FALSE;
+	
+	for (i = 1; i < depth; i++)
+	{		
+		GList* children = glade_widget_get_children (widget);
+		GList* node;
+		if (!children)
 			return FALSE;
 
-		object = g_list_nth_data (list, indices[i]);
+		node = g_list_nth (children, indices[i]);
 		
-		if (!object)
-			return FALSE;
+		if (node)
+		{
+			object = G_OBJECT (node->data);
+		}
+		g_list_free (children);
 
+		if (!node)
+			return FALSE;
+		
 		widget = 
 			glade_widget_get_from_gobject (object);
-		if (i > 0)
-			g_list_free (list);
 	}
 	glade_project_model_get_iter_for_object (project,
-	                                         glade_widget_get_object (widget),
+	                                         object,
 	                                         iter);
 	return TRUE;
 }
@@ -4458,55 +4466,38 @@ glade_project_model_iter_next (GtkTreeModel* model,
                                GtkTreeIter* iter)
 {
 	GladeProject* project = GLADE_PROJECT (model);
-	GladeWidget* widget = glade_widget_get_from_gobject (iter->user_data);
+	GObject* object = iter->user_data;
+	GladeWidget* widget = glade_widget_get_from_gobject (object);
 	GladeWidget* parent = glade_widget_get_parent (widget);
+	GList* children;
+	GList* child;
+	GList* next;
+	gboolean retval = FALSE;
+	
 	if (parent)
 	{
-		gboolean retval = FALSE;
-		GList* children = glade_widget_get_children(parent);
-		GList* next = g_list_find (children, widget);
-		if ((next = g_list_next (next)) != NULL)
+		children = glade_widget_get_children(parent);
+	}
+	else
+	{
+		children = project->priv->tree;
+	}
+
+	child = g_list_find (children, object);
+	if (child)
+	{
+		next = g_list_next (child);
+		if (next)
 		{
 			glade_project_model_get_iter_for_object (project,
 			                                         next->data,
 			                                         iter);
 			retval = TRUE;
 		}
+	}
+	if (children != project->priv->tree)
 		g_list_free (children);
-		return retval;
-	}
-	else
-	{
-		GList* next = project->priv->tree;
-		if ((next = g_list_next (next)) != NULL)
-		{
-			glade_project_model_get_iter_for_object (project,
-			                                         glade_widget_get_object (next->data),
-			                                         iter);
-			return TRUE;
-		}
-	}
-	return FALSE;
-}
-
-static gboolean
-glade_project_model_iter_children (GtkTreeModel* model,
-                                   GtkTreeIter* iter,
-                                   GtkTreeIter* parent)
-{
-	GladeProject* project = GLADE_PROJECT (model);
-	GladeWidget* widget = glade_widget_get_from_gobject (parent->user_data);
-	GList* children = glade_widget_get_children(widget);
-	if (children)
-	{
-		glade_project_model_get_iter_for_object (project,
-			                                 children->data,
-	        		                         iter);
-		g_list_free (children);
-		return TRUE;
-	}
-	return FALSE;
-	
+	return retval;
 }
 
 static gboolean
@@ -4525,16 +4516,22 @@ glade_project_model_iter_has_child (GtkTreeModel* model,
 
 static gint
 glade_project_model_iter_n_children (GtkTreeModel* model,
-                               GtkTreeIter* iter)
+                                     GtkTreeIter* iter)
 {
-	GladeWidget* widget = glade_widget_get_from_gobject (iter->user_data);
-	GList* children = glade_widget_get_children(widget);
-	if (children)
+	GladeProject* project = GLADE_PROJECT (model);
+	if (iter)
 	{
-		gint n = g_list_length (children);
-		g_list_free (children);
-		return n;
+		GladeWidget* widget = glade_widget_get_from_gobject (iter->user_data);
+		GList* children = glade_widget_get_children(widget);
+		if (children)
+		{
+			gint n = g_list_length (children);
+			g_list_free (children);
+			return n;
+		}
 	}
+	else
+		return g_list_length (project->priv->tree);
 	return 0;
 }
 
@@ -4548,9 +4545,10 @@ glade_project_model_iter_nth_child (GtkTreeModel* model,
 	GList* children;
 	if (parent != NULL)
 	{
-		GladeWidget* widget = glade_widget_get_from_gobject (parent->user_data);
+		GObject* object = parent->user_data;
+		GladeWidget* widget = glade_widget_get_from_gobject (object);
 		children = glade_widget_get_children(widget);
-	}
+	}		
 	else
 	{
 		children = project->priv->tree;
@@ -4567,10 +4565,44 @@ glade_project_model_iter_nth_child (GtkTreeModel* model,
 			                                         iter);
 			retval = TRUE;
 		}
-		g_list_free (children);
-		return TRUE;
+		if (children != project->priv->tree)
+			g_list_free (children);
+		return retval;
 	}
 	return FALSE;
+}
+
+static gboolean
+glade_project_model_iter_children (GtkTreeModel* model,
+                                   GtkTreeIter* iter,
+                                   GtkTreeIter* parent)
+{
+	GladeProject* project = GLADE_PROJECT (model);
+	if (parent)
+	{
+		GladeWidget* widget = glade_widget_get_from_gobject (parent->user_data);
+		GList* children = glade_widget_get_children (widget);
+		if (children)
+		{
+			glade_project_model_get_iter_for_object (project,
+			                                         G_OBJECT(children->data),
+			                                         iter);
+			g_list_free (children);
+			return TRUE;
+		}
+		return FALSE;
+	}
+	else
+	{
+		if (project->priv->tree)
+		{
+			glade_project_model_get_iter_for_object (project,
+			                                         G_OBJECT(project->priv->tree->data),
+			                                         iter);
+			return TRUE;
+		}
+		return FALSE;
+	}
 }
 
 static gboolean
@@ -4579,7 +4611,7 @@ glade_project_model_iter_parent (GtkTreeModel* model,
                                  GtkTreeIter* child)
 {
 	GladeProject* project = GLADE_PROJECT (model);
-	GladeWidget* widget = glade_widget_get_from_gobject (iter->user_data);
+	GladeWidget* widget = glade_widget_get_from_gobject (child->user_data);
 	GladeWidget* parent = glade_widget_get_parent (widget);
 	if (parent)
 	{
