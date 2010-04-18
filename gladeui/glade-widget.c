@@ -3442,6 +3442,31 @@ glade_widget_set_parent (GladeWidget *widget,
 }
 
 /**
+ * glade_widget_get_children
+ * @widget: A #GladeWidget
+ *
+ * Returns: The children of widget
+ */
+GList *
+glade_widget_get_children (GladeWidget* widget)
+{
+	GladeWidgetAdaptor* adaptor = glade_widget_get_adaptor (widget);
+	GList* adaptor_children = NULL;
+	GList* children = NULL;
+	GList* node;
+
+	adaptor_children = glade_widget_adaptor_get_children (adaptor, widget->object);
+	for (node = adaptor_children; node != NULL; node = g_list_next (node))
+	{
+		children = g_list_append (children, node->data);
+	}
+	g_list_free (adaptor_children);
+	
+	return children;
+}
+	
+
+/**
  * glade_widget_get_toplevel:
  * @widget: A #GladeWidget
  *
@@ -3728,7 +3753,7 @@ glade_widget_read (GladeProject *project,
 	gchar        *klass, *id;
 
 	glade_widget_push_superuser ();
-
+	
 	if (!glade_xml_node_verify
 	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (project))))
 		return NULL;
@@ -3792,7 +3817,7 @@ glade_widget_read (GladeProject *project,
 	}
 
 	glade_widget_pop_superuser ();
-
+	
 	return widget;
 }
 
