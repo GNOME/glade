@@ -76,15 +76,6 @@ enum
 	PROP_FORMAT
 };
 
-enum
-{
-	COLUMN_PIXBUF,
-	COLUMN_NAME,
-	COLUMN_TYPE_NAME,
-	COLUMN_OBJECT,
-	N_COLUMNS
-};
-
 struct _GladeProjectPrivate
 {
 	gchar *path;            /* The full canonical path of the glade file for this project */
@@ -1415,25 +1406,6 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 	/* Update ui with versioning info
 	 */
 	glade_project_verify_project_for_ui (project);
-
-	/* Hack a tree widget */
-	{
-		g_message ("Creating demo widget!");
-		GtkWidget* window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-		GtkWidget* tree_view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (project));
-		GtkWidget* scrolled_win = gtk_scrolled_window_new (NULL, NULL);
-		GtkCellRenderer* renderer = gtk_cell_renderer_text_new ();
-		GtkTreeViewColumn *column;
-
-		column = gtk_tree_view_column_new_with_attributes ("Widget",
-                                                   renderer,
-                                                   "text", COLUMN_NAME,
-                                                   NULL);
-		gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
-		gtk_container_add (GTK_CONTAINER (scrolled_win), tree_view);		
-		gtk_container_add (GTK_CONTAINER (window), scrolled_win);
-		gtk_widget_show_all (window);
-	}
 
 	return TRUE;
 
@@ -3549,7 +3521,7 @@ glade_project_create_object_list_foreach (GtkTreeModel* model,
 {
 	GList** list = user_data;
 	GObject* object;
-	gtk_tree_model_get (model, iter, COLUMN_OBJECT, &object, -1);
+	gtk_tree_model_get (model, iter, GLADE_PROJECT_MODEL_COLUMN_OBJECT, &object, -1);
 
 	/* Get rid of the extra reference */
 	g_object_unref (object);
@@ -4306,7 +4278,7 @@ glade_project_model_get_flags (GtkTreeModel* model)
 static gint
 glade_project_model_get_n_columns (GtkTreeModel* model)
 {
-	return N_COLUMNS;
+	return GLADE_PROJECT_MODEL_N_COLUMNS;
 }
 
 static GType
@@ -4315,13 +4287,13 @@ glade_project_model_get_column_type (GtkTreeModel* model,
 {
 	switch (column)
 	{
-		case COLUMN_PIXBUF:
+		case GLADE_PROJECT_MODEL_COLUMN_PIXBUF:
 			return GDK_TYPE_PIXBUF;
-		case COLUMN_NAME:
+		case GLADE_PROJECT_MODEL_COLUMN_NAME:
 			return G_TYPE_STRING;
-		case COLUMN_TYPE_NAME:
+		case GLADE_PROJECT_MODEL_COLUMN_TYPE_NAME:
 			return G_TYPE_STRING;
-		case COLUMN_OBJECT:
+		case GLADE_PROJECT_MODEL_COLUMN_OBJECT:
 			return G_TYPE_OBJECT;
 		default:
 			g_assert_not_reached();
@@ -4428,18 +4400,18 @@ glade_project_model_get_value (GtkTreeModel* model,
 	
 	switch (column)
 	{
-		case COLUMN_PIXBUF:
+		case GLADE_PROJECT_MODEL_COLUMN_PIXBUF:
 			g_value_set_object (value, NULL);
 			break;
-		case COLUMN_NAME:
+		case GLADE_PROJECT_MODEL_COLUMN_NAME:
 			g_value_set_string (value,
 			                    glade_widget_get_name (widget));
 			break;
-		case COLUMN_TYPE_NAME:
+		case GLADE_PROJECT_MODEL_COLUMN_TYPE_NAME:
 			g_value_set_static_string (value,
 			                           G_OBJECT_TYPE_NAME(object));
 			break;
-		case COLUMN_OBJECT:
+		case GLADE_PROJECT_MODEL_COLUMN_OBJECT:
 			g_value_set_object (value, object);
 			break;
 		default:

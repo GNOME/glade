@@ -29,6 +29,26 @@ typedef enum
 	GLADE_SUPPORT_LIBGLADE_ONLY        = (0x01 << 3)
 } GladeSupportMask;
 
+/**
+ * GladeProjectModelColumns:
+ * @COLUMN_PIXBUF: Icon for the widget
+ * @COLUMN_NAME: Name of the widget
+ * @COLUMN_OBJECT: the GObject of the widget
+ * @N_COLUMNS: Number of columns
+ *
+ * The tree view columns provided by the GtkTreeModel implemented
+ * by GladeProject
+ *
+ **/
+typedef enum
+{
+	GLADE_PROJECT_MODEL_COLUMN_PIXBUF,
+	GLADE_PROJECT_MODEL_COLUMN_NAME,
+	GLADE_PROJECT_MODEL_COLUMN_TYPE_NAME,
+	GLADE_PROJECT_MODEL_COLUMN_OBJECT,
+	GLADE_PROJECT_MODEL_N_COLUMNS
+} GladeProjectModelColumns;
+
 struct _GladeProject
 {
 	GObject parent_instance;
