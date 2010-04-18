@@ -4287,8 +4287,8 @@ glade_project_model_get_column_type (GtkTreeModel* model,
 {
 	switch (column)
 	{
-		case GLADE_PROJECT_MODEL_COLUMN_PIXBUF:
-			return GDK_TYPE_PIXBUF;
+		case GLADE_PROJECT_MODEL_COLUMN_ICON_NAME:
+			return G_TYPE_STRING;
 		case GLADE_PROJECT_MODEL_COLUMN_NAME:
 			return G_TYPE_STRING;
 		case GLADE_PROJECT_MODEL_COLUMN_TYPE_NAME:
@@ -4393,15 +4393,16 @@ glade_project_model_get_value (GtkTreeModel* model,
 {
 	GObject* object = iter->user_data;
 	GladeWidget* widget = glade_widget_get_from_gobject (object);
-
+	gchar* icon_name;
 
 	value = g_value_init (value, 
 	                      glade_project_model_get_column_type (model, column));
 	
 	switch (column)
 	{
-		case GLADE_PROJECT_MODEL_COLUMN_PIXBUF:
-			g_value_set_object (value, NULL);
+		case GLADE_PROJECT_MODEL_COLUMN_ICON_NAME:
+			g_object_get (widget->adaptor, "icon-name", &icon_name, NULL);
+			g_value_take_string (value, icon_name);
 			break;
 		case GLADE_PROJECT_MODEL_COLUMN_NAME:
 			g_value_set_string (value,
