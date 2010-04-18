@@ -3458,7 +3458,8 @@ glade_widget_get_children (GladeWidget* widget)
 	adaptor_children = glade_widget_adaptor_get_children (adaptor, widget->object);
 	for (node = adaptor_children; node != NULL; node = g_list_next (node))
 	{
-		children = g_list_append (children, node->data);
+		if (GLADE_IS_WIDGET (glade_widget_get_from_gobject (node->data)))
+			children = g_list_append (children, node->data);
 	}
 	g_list_free (adaptor_children);
 	
