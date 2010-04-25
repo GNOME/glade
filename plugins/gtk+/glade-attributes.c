@@ -488,8 +488,10 @@ glade_gtk_string_from_attr (GladeAttribute * gattr)
         /* PangoAttrFloat */
       case PANGO_ATTR_SCALE:
         /* doubles */
+        gchar buf[G_ASCII_DTOSTR_BUF_SIZE];
+
         fval = g_value_get_double (&(gattr->value));
-        ret = g_strdup_printf ("%f", fval);
+        ret = g_strdup (g_ascii_dtostr (buf, sizeof (buf), fval));
         break;
 
         /* PangoAttrColor */
@@ -591,7 +593,7 @@ glade_gtk_attribute_from_string (PangoAttrType type, const gchar * strval)
       case PANGO_ATTR_SCALE:
         /* doubles */
         g_value_init (&(gattr->value), G_TYPE_DOUBLE);
-        g_value_set_double (&(gattr->value), strtod (strval, NULL));
+        g_value_set_double (&(gattr->value), g_ascii_strtod (strval, NULL));
         break;
 
         /* PangoAttrColor */
