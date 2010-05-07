@@ -1138,21 +1138,6 @@ glade_signal_editor_constructor (GType                  type,
 }
 
 /**
- * glade_signal_editor_get_widget:
- * @editor: a #GladeSignalEditor
- *
- * Returns: the #GtkWidget that is the main window for @editor, or %NULL if
- *          it does not exist
- */
-GtkWidget *
-glade_signal_editor_get_widget (GladeSignalEditor *editor)
-{
-	g_return_val_if_fail (GLADE_IS_SIGNAL_EDITOR (editor), NULL);
-
-	return GTK_WIDGET (editor);
-}
-
-/**
  * glade_signal_editor_new:
  * @editor: a #GladeEditor
  *
