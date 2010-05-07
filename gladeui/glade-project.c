@@ -2397,7 +2397,7 @@ glade_project_get_widget_by_name (GladeProject *project, GladeWidget *ancestor, 
 	}
 
 	/* Now try searching in only toplevel objects... */
-	for (list = project->priv->toplevels; list; list = list->next) {
+	for (list = project->priv->tree; list; list = list->next) {
 		GladeWidget *widget;
 
 		widget = glade_widget_get_from_gobject (list->data);
@@ -2821,13 +2821,9 @@ adjust_naming_policy (GladeProject       *project,
 	for (list = objects; list; list = list->next)
 	{
 		widget = glade_widget_get_from_gobject (list->data);
-		if (!widget->parent)
-       		{
-			g_object_ref (widget->object);
-			g_object_ref (widget);
-			glade_project_remove_object (project, widget->object);
-		}
-
+		g_object_ref (widget->object);
+		g_object_ref (widget);
+		glade_project_remove_object (project, widget->object);
 	}
 
 	project->priv->naming_policy = policy;
@@ -2835,13 +2831,9 @@ adjust_naming_policy (GladeProject       *project,
 	/* Put the toplevels back with the new policy (recursive operation) */
 	for (list = objects; list; list = list->next)
 	{
-		widget = glade_widget_get_from_gobject (list->data);
-		if (!widget->parent)
-		{
-			glade_project_add_object (project, project, widget->object);
-			g_object_unref (widget->object);
-			g_object_unref (widget);
-		}
+		glade_project_add_object (project, project, widget->object);
+		g_object_unref (widget->object);
+		g_object_unref (widget);
 	}
 
 	g_list_free (objects);
