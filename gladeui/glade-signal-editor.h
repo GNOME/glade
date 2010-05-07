@@ -18,30 +18,6 @@ typedef struct _GladeSignalEditor  GladeSignalEditor;
 typedef struct _GladeSignalEditorPrivate  GladeSignalEditorPrivate;
 typedef struct _GladeSignalEditorClass  GladeSignalEditorClass;
 
-typedef gboolean (*IsVoidFunc) (const gchar *signal_handler);
-
-enum
-{
-	GSE_COLUMN_SIGNAL,
-	GSE_COLUMN_HANDLER,
-	GSE_COLUMN_AFTER,
-	GSE_COLUMN_USERDATA,
-	GSE_COLUMN_SWAPPED,
-
-	GSE_COLUMN_USERDATA_SLOT,
-	GSE_COLUMN_SWAPPED_VISIBLE,
-	GSE_COLUMN_AFTER_VISIBLE,
-	GSE_COLUMN_HANDLER_EDITABLE,
-	GSE_COLUMN_USERDATA_EDITABLE,
-	GSE_COLUMN_SLOT, /* if this row contains a "<Type...>" label */
-	GSE_COLUMN_BOLD,
-	GSE_COLUMN_CONTENT,
-
-	GSE_COLUMN_WARN,
-	GSE_COLUMN_TOOLTIP,
-	GSE_NUM_COLUMNS
-};
-
 /* The GladeSignalEditor is used to house the signal editor interface and
  * associated functionality.
  */
