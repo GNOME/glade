@@ -3448,12 +3448,15 @@ glade_widget_set_parent (GladeWidget *widget,
  * Returns: The children of widget
  */
 GList *
-glade_widget_get_children (GladeWidget* widget)
+glade_widget_get_children (GladeWidget *widget)
 {
-	GladeWidgetAdaptor* adaptor = glade_widget_get_adaptor (widget);
-	GList* children = NULL;
-	GList* node;
+	GladeWidgetAdaptor *adaptor;
+	GList *children = NULL;
+	GList *node;
 
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
+
+	adaptor = glade_widget_get_adaptor (widget);
 	children = glade_widget_adaptor_get_children (adaptor, widget->object);
 	for (node = children; node != NULL; node = g_list_next (node))
 	{

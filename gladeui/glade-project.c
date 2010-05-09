@@ -4532,6 +4532,8 @@ glade_project_model_iter_children (GtkTreeModel* model,
 	if (parent)
 	{
 		GladeWidget* widget = glade_widget_get_from_gobject (parent->user_data);
+		if (widget)
+			return FALSE;
 		GList* children = glade_widget_get_children (widget);
 		if (children)
 		{
