@@ -1090,7 +1090,7 @@ glade_util_find_iter (GtkTreeModel *model,
 		      gint          column)
 {
 	GtkTreeIter *retval = NULL;
-	GladeWidget *widget;
+	GObject* object;
 	GtkTreeIter *next;
 
 	g_return_val_if_fail (GTK_IS_TREE_MODEL (model), NULL);
@@ -1101,8 +1101,8 @@ glade_util_find_iter (GtkTreeModel *model,
 
 	while (retval == NULL)
 	{
-		gtk_tree_model_get (model, next, column, &widget, -1);
-		if (widget == findme)
+		gtk_tree_model_get (model, next, column, &object, -1);
+		if (object == glade_widget_get_object (findme))
 		{
 			retval = gtk_tree_iter_copy (next);
 			break;
@@ -1116,6 +1116,8 @@ glade_util_find_iter (GtkTreeModel *model,
 				break;
 		}
 
+		g_object_unref (object);
+		
 		if (!gtk_tree_model_iter_next (model, next))
 			break;
 	}
