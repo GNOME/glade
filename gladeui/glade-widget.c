@@ -3450,24 +3450,25 @@ glade_widget_set_parent (GladeWidget *widget,
 GList *
 glade_widget_get_children (GladeWidget *widget)
 {
-	GladeWidgetAdaptor *adaptor;
-	GList *children = NULL;
+	GList *adapter_children; 
+	GList *real_children = NULL;
 	GList *node;
 
 	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
 
-	adaptor = glade_widget_get_adaptor (widget);
-	children = glade_widget_adaptor_get_children (adaptor, widget->object);
-	for (node = children; node != NULL; node = g_list_next (node))
+	adapter_children = glade_widget_adaptor_get_children (glade_widget_get_adaptor (widget),
+	                                                      widget->object);
+	
+	for (node = adapter_children; node != NULL; node = g_list_next (node))
 	{
-		if (!glade_widget_get_from_gobject (node->data))
+		if (glade_widget_get_from_gobject (node->data))
 		{
-			children = g_list_delete_link (children, node);
-			node = children;
+			real_children = g_list_append (real_children, node->data);
 		}
 	}
+	g_list_free (adapter_children);
 	
-	return children;
+	return real_children;
 }
 	
 
