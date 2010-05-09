@@ -408,6 +408,68 @@ glade_inspector_finalize (GObject *object)
 }
 
 static void
+project_selection_changed_cb (GladeProject     *project,
+			      GladeInspector   *inspector)
+{
+	GladeWidget      *widget;
+	GtkTreeSelection *selection;
+	GtkTreeModel     *model;
+	GtkTreeIter      *iter;
+	GtkTreePath      *path, *ancestor_path;
+	GList            *list;
+
+	g_return_if_fail (GLADE_IS_INSPECTOR (inspector));
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+	g_return_if_fail (inspector->priv->project == project);
+
+	g_signal_handlers_block_by_func (gtk_tree_view_get_selection (GTK_TREE_VIEW (inspector->priv->view)),
+					 G_CALLBACK (selection_changed_cb),
+					 inspector);
+
+	selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (inspector->priv->view));
+	g_return_if_fail (selection != NULL);
+
+	model = inspector->priv->filter;
+
+	gtk_tree_selection_unselect_all (selection);
+
+	for (list = glade_project_selection_get (project);
+	     list && list->data; list = list->next)
+	{
+		if ((widget = glade_widget_get_from_gobject (G_OBJECT (list->data))) != NULL)
+		{
+			if ((iter = glade_util_find_iter_by_widget (model, widget, GLADE_PROJECT_MODEL_COLUMN_OBJECT)) != NULL)
+			{
+				path = gtk_tree_model_get_path (model, iter);
+				ancestor_path = gtk_tree_path_copy (path);
+
+				/* expand parent node */
+				if (gtk_tree_path_up (ancestor_path))
+					gtk_tree_view_expand_to_path
+						(GTK_TREE_VIEW (inspector->priv->view), ancestor_path);
+
+				gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (inspector->priv->view),
+							      path,
+							      NULL,
+							      TRUE,
+							      0.5,
+							      0);
+
+				gtk_tree_selection_select_iter (selection, iter);
+
+				gtk_tree_iter_free (iter);
+				gtk_tree_path_free (path);
+				gtk_tree_path_free (ancestor_path);
+			}
+		}
+	}
+
+	g_signal_handlers_unblock_by_func (gtk_tree_view_get_selection (GTK_TREE_VIEW (inspector->priv->view)),
+					   G_CALLBACK (selection_changed_cb),
+					   inspector);
+}
+
+static void
 selection_foreach_func (GtkTreeModel *model, 
 		        GtkTreePath  *path,
 		        GtkTreeIter  *iter, 
@@ -425,12 +487,20 @@ static void
 selection_changed_cb (GtkTreeSelection *selection,
 		      GladeInspector   *inspector)
 {
+	g_signal_handlers_block_by_func (inspector->priv->project,
+					 G_CALLBACK (project_selection_changed_cb),
+					 inspector);
+	
 	glade_app_selection_clear (FALSE);
 	
 	gtk_tree_selection_selected_foreach (selection,
 					     selection_foreach_func,
 					     inspector);
 	glade_app_selection_changed ();
+
+	g_signal_handlers_unblock_by_func (inspector->priv->project,
+					   G_CALLBACK (project_selection_changed_cb),
+					   inspector);
 
 	g_signal_emit (inspector, glade_inspector_signals[SELECTION_CHANGED], 0);
 }
@@ -544,6 +614,9 @@ glade_inspector_set_project (GladeInspector *inspector,
 
 	if (inspector->priv->project)
 	{
+		g_signal_handlers_disconnect_by_func (G_OBJECT (project),
+		                                      G_CALLBACK (project_selection_changed_cb),
+		                                      inspector);
 		g_object_unref (inspector->priv->project);
 		inspector->priv->project = NULL;
 	}
@@ -560,6 +633,9 @@ glade_inspector_set_project (GladeInspector *inspector,
 						inspector, NULL);
 
 		gtk_tree_view_set_model (GTK_TREE_VIEW (priv->view), priv->filter);
+		g_signal_connect (G_OBJECT (project), "selection-changed",
+		                  G_CALLBACK (project_selection_changed_cb),
+		                  inspector);
 	}
 
 	gtk_tree_view_expand_all (GTK_TREE_VIEW (inspector->priv->view));
@@ -654,6 +730,9 @@ glade_inspector_new_with_project (GladeProject *project)
 				  "project", project,
 				  NULL);
 
+	/* Make sure we expended to the right path */
+	project_selection_changed_cb (project, inspector);
+	
 	return GTK_WIDGET (inspector);
 }
 
