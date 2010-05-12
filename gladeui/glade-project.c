@@ -3524,8 +3524,6 @@ glade_project_create_object_list_foreach (GtkTreeModel* model,
 	g_object_unref (object);	
 	*list = g_list_prepend (*list, object);
 
-	g_message ("Object: %p", object);
-	
 	/* Continue iteration */
 	return FALSE;
 }
@@ -4456,8 +4454,6 @@ glade_project_model_iter_next (GtkTreeModel* model,
 	if (children != project->priv->tree)
 		g_list_free (children);
 
-	if (retval)
-	g_message ("Next: %p", iter->user_data);
 	return retval;
 }
 
