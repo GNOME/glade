@@ -609,7 +609,7 @@ struct _GladeSignalClass
 	guint16      version_since_minor;
 
 	const gchar *name;         /* Name of the signal, eg clicked */
-	gchar       *type;         /* Name of the object class that this signal belongs to
+	const gchar *type;         /* Name of the object class that this signal belongs to
 				    * eg GtkButton */
 
 };
