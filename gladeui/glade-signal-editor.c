@@ -1446,11 +1446,6 @@ glade_signal_editor_dispose (GObject *object)
 	
 	glade_signal_editor_load_widget (self, NULL);
 
-	if (priv->handler_store)
-		g_object_unref (priv->handler_store);
-	if (priv->userdata_store)
-		g_object_unref (priv->userdata_store);
-
 	G_OBJECT_CLASS (glade_signal_editor_parent_class)->dispose (object);
 }
 
