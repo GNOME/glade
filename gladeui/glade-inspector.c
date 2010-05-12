@@ -192,6 +192,22 @@ glade_inspector_class_init (GladeInspectorClass *klass)
 }
 
 static gboolean
+find_in_string_insensitive (const gchar *_haystack,
+			    const gchar *_needle)
+{
+	gboolean visible;
+	gchar *haystack = g_utf8_casefold (_haystack, -1);
+	gchar *needle   = g_utf8_casefold (_needle, -1);
+
+	visible = strstr (haystack, needle) != NULL;
+
+	g_free (haystack);
+	g_free (needle);
+
+	return visible;
+}
+
+static gboolean
 glade_inspector_visible_func (GtkTreeModel* model,
                               GtkTreeIter* parent,
                               gpointer data)
@@ -216,18 +232,14 @@ glade_inspector_visible_func (GtkTreeModel* model,
 	}
 	if (!retval)
 	{
-		gchar* prefix = g_ascii_strdown (gtk_entry_get_text (GTK_ENTRY(priv->entry)), -1);
+		const gchar* text = gtk_entry_get_text (GTK_ENTRY(priv->entry));
 		gchar* widget_name;
-		gchar* haystack;
 		
 		gtk_tree_model_get (model, parent, GLADE_PROJECT_MODEL_COLUMN_NAME,
 		                    &widget_name, -1);
-		haystack = g_ascii_strdown (widget_name, -1);
 
-		retval = g_str_has_prefix (haystack, prefix);
+		retval = find_in_string_insensitive (widget_name, text);
 
-		g_free (prefix);
-		g_free (haystack);
 		g_free (widget_name);
 	}
 
@@ -337,7 +349,9 @@ glade_inspector_init (GladeInspector *inspector)
 	gtk_entry_completion_set_inline_completion (priv->completion, TRUE);	
 	gtk_entry_completion_set_inline_selection (priv->completion, TRUE);
 	gtk_entry_completion_set_popup_completion (priv->completion, FALSE);
+
 	gtk_entry_set_completion (GTK_ENTRY(priv->entry), priv->completion);
+	
 	search_entry_update (inspector);
 	gtk_widget_show (priv->entry);
 	gtk_box_pack_start (GTK_BOX (inspector), priv->entry, FALSE, FALSE, 2);
