@@ -684,7 +684,9 @@ glade_widget_adaptor_finalize (GObject *object)
 	g_list_foreach (adaptor->packing_props, (GFunc) glade_property_class_free, NULL);
 	g_list_free (adaptor->packing_props);
 
-	g_list_foreach (adaptor->signals, (GFunc) glade_signal_free, NULL);
+	/* Be careful, this list holds GladeSignalClass* not GladeSignal,
+	 * thus g_free is enough as all members are const */
+	g_list_foreach (adaptor->signals, (GFunc) g_free, NULL);
 	g_list_free (adaptor->signals);
 
 
@@ -723,8 +725,6 @@ glade_widget_adaptor_finalize (GObject *object)
 				NULL);
 		g_list_free (adaptor->packing_actions);
 	}
-	
-	g_free (adaptor->priv);
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -1178,6 +1178,7 @@ static void
 glade_widget_adaptor_init (GladeWidgetAdaptor *adaptor)
 {
 	adaptor->priv = GLADE_WIDGET_ADAPTOR_GET_PRIVATE (adaptor);
+
 }
 
 static void
@@ -3698,3 +3699,4 @@ glade_widget_adaptor_create_editable (GladeWidgetAdaptor   *adaptor,
 	return GLADE_WIDGET_ADAPTOR_GET_CLASS
 		(adaptor)->create_editable (adaptor, type);
 }
+
