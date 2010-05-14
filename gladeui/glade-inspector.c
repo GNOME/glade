@@ -716,7 +716,8 @@ update_project_completion (GladeProject    *project,
 
 	items = glade_project_get_objects (priv->project);
 
-	g_completion_add_items (priv->completion, items);
+	/* GCompletion API should take 'const GList *' */
+	g_completion_add_items (priv->completion, (GList *)items);
 }
 
 static void

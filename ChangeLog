@@ -1,10 +1,27 @@
+2010-05-14  Johannes Schmid <jhs@jsschmid.de>
+
+	* gladeui/glade-app.c: Allow destruction/recreation of the GladeApp object
+
+	* gladeui/glade-signal-editor.[ch]: Some refactoring to make the signal editor
+	  object itself a dockable widget and remove some cruft api.
+
+	* gladeui/glade-project.[ch]: Implement GtkTreeModel
+
+	* gladeui/glade-base-editor.c, gladeui/glade-editor.c: Adjust for new signal
+	  editor api
+
+	* gladeui/glade-inspector.c: Remove duplicate store and use the the GladeProject
+	  as the store directly.
+
+	* src/glade-window.c: Removed some code related to old signal editor api cruft.
+
 2010-05-01  Javier Jardón <jjardon@gnome.org>
 
 	* gladeui/glade-signal-editor.c: Do not show the event box in signal editor
 
 2010-04-01  Tristan Van Berkom <tvb@gnome.org>
 
-	* gladeui/glade-project.c: 
+	* gladeui/glade-project.c:
 	  - Display GTK+ in caps and always assume GTK+ as a project dependency
 	    (so that empty projects still depend on GTK+ for display purposes).
 	  - Stop showing preferences at project new time (now we have tooltips that tell you this stuff),
