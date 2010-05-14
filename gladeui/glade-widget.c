@@ -3442,10 +3442,17 @@ glade_widget_set_parent (GladeWidget *widget,
 }
 
 /**
- * glade_widget_get_children
+ * glade_widget_get_children:
  * @widget: A #GladeWidget
  *
+ * Fetches any wrapped children of @widget.
+ *
  * Returns: The children of widget
+ *
+ * <note><para>This differs from a direct call to glade_widget_adaptor_get_children() as
+ * it only returns children which have an associated GladeWidget. This function will
+ * not return any placeholders or internal composite children that have not been 
+ * exposed for Glade configuration</para></note>
  */
 GList *
 glade_widget_get_children (GladeWidget *widget)
@@ -3463,12 +3470,12 @@ glade_widget_get_children (GladeWidget *widget)
 	{
 		if (glade_widget_get_from_gobject (node->data))
 		{
-			real_children = g_list_append (real_children, node->data);
+			real_children = g_list_prepend (real_children, node->data);
 		}
 	}
 	g_list_free (adapter_children);
 	
-	return real_children;
+	return g_list_reverse (real_children);
 }
 	
 
