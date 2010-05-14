@@ -74,7 +74,8 @@ struct _GladeInspectorPrivate
 	GladeProject *project;
 
 	GtkWidget    *entry;
-	GtkEntryCompletion * completion;
+	GCompletion * completion;
+	guint idle_complete;
 	gboolean      search_disabled;
 };
 
@@ -266,6 +267,33 @@ search_entry_changed_cb (GtkEntry *entry,
 	glade_inspector_filter (inspector);
 }
 
+static gboolean
+search_complete_idle (GladeInspector *inspector)
+{
+	GladeInspectorPrivate *priv = inspector->priv;
+	const gchar           *str;
+	gchar                 *completed = NULL;
+	GList                 *list;
+	gsize                  length;
+
+	str = gtk_entry_get_text (GTK_ENTRY (priv->entry));
+
+	list = g_completion_complete (priv->completion, str, &completed);
+	if (completed) {
+		length = strlen (str);
+
+		gtk_entry_set_text (GTK_ENTRY (priv->entry), completed);
+		gtk_editable_set_position (GTK_EDITABLE (priv->entry), length);
+		gtk_editable_select_region (GTK_EDITABLE (priv->entry),
+		                            length, -1);
+		g_free (completed);
+	}
+
+	priv->idle_complete = 0;
+
+	return FALSE;
+}
+
 static void
 search_entry_text_inserted_cb (GtkEntry       *entry,
                                const gchar    *text,
@@ -273,7 +301,57 @@ search_entry_text_inserted_cb (GtkEntry       *entry,
                                gint           *position,
                                GladeInspector *inspector)
 {
-	glade_inspector_filter (inspector);
+	GladeInspectorPrivate *priv = inspector->priv;
+
+	if (!priv->search_disabled && !priv->idle_complete) {
+		priv->idle_complete =
+			g_idle_add ((GSourceFunc) search_complete_idle,
+			            inspector);
+	}
+}
+
+static gboolean
+search_entry_key_press_event_cb (GtkEntry    *entry,
+                                 GdkEventKey *event,
+                                 GladeInspector *inspector)
+{
+	GladeInspectorPrivate *priv = inspector->priv;
+	const gchar           *str;
+
+	if (event->keyval == GDK_Tab)
+	{
+		if (event->state & GDK_CONTROL_MASK)
+		{
+			gtk_widget_grab_focus (priv->view);
+		}
+		else
+		{
+			gtk_editable_set_position (GTK_EDITABLE (entry), -1);
+			gtk_editable_select_region (GTK_EDITABLE (entry), -1, -1);
+		}
+		return TRUE;
+	}
+
+	if (event->keyval == GDK_Return || event->keyval == GDK_KP_Enter)
+	{
+		GladeWidget *widget;
+		GList       *list;
+
+		str = gtk_entry_get_text (GTK_ENTRY (priv->entry));
+
+		if (str && (list = g_completion_complete (priv->completion, str, NULL)) != NULL)
+		{
+			widget = glade_widget_get_from_gobject (list->data);
+
+			gtk_entry_set_text (GTK_ENTRY (entry), widget->name);
+
+			gtk_editable_set_position (GTK_EDITABLE (entry), -1);
+			gtk_editable_select_region (GTK_EDITABLE (entry), -1, -1);
+		}
+		return TRUE;
+        }
+
+	return FALSE;
 }
 
 static void
@@ -284,6 +362,14 @@ widget_font_desc_set_style (GtkWidget *widget, PangoStyle style)
 	pango_font_description_set_style (font_desc, style);
 	gtk_widget_modify_font (widget, font_desc);
 	pango_font_description_free (font_desc);
+}
+
+static const gchar *
+search_complete_func (GObject *object)
+{
+	GladeWidget *widget = glade_widget_get_from_gobject (object);
+	g_assert (widget);
+	return glade_widget_get_name (widget);
 }
 
 static void
@@ -344,33 +430,32 @@ glade_inspector_init (GladeInspector *inspector)
 	priv->project = NULL;
 
 	priv->entry = gtk_entry_new ();
-	priv->completion = gtk_entry_completion_new ();
-	gtk_entry_completion_set_text_column (priv->completion, GLADE_PROJECT_MODEL_COLUMN_NAME);
-	gtk_entry_completion_set_inline_completion (priv->completion, TRUE);	
-	gtk_entry_completion_set_inline_selection (priv->completion, TRUE);
-	gtk_entry_completion_set_popup_completion (priv->completion, FALSE);
-
-	gtk_entry_set_completion (GTK_ENTRY(priv->entry), priv->completion);
 	
 	search_entry_update (inspector);
 	gtk_widget_show (priv->entry);
 	gtk_box_pack_start (GTK_BOX (inspector), priv->entry, FALSE, FALSE, 2);
 
-        g_signal_connect_after (priv->entry, "changed",
-                                G_CALLBACK (search_entry_changed_cb),
-                                inspector);
+	g_signal_connect (priv->entry, "changed",
+	                  G_CALLBACK (search_entry_changed_cb),
+	                  inspector);
 
-        g_signal_connect_after (priv->entry, "insert-text",
-                                G_CALLBACK (search_entry_text_inserted_cb),
-                                inspector);
+	g_signal_connect (priv->entry, "key-press-event",
+	                  G_CALLBACK (search_entry_key_press_event_cb),
+	                  inspector);
 
-        g_signal_connect (priv->entry, "focus-in-event",
-                          G_CALLBACK (search_entry_focus_in_cb),
-                          inspector);
-        
+	g_signal_connect_after (priv->entry, "insert-text",
+	                        G_CALLBACK (search_entry_text_inserted_cb),
+	                        inspector);
+
+	g_signal_connect (priv->entry, "focus-in-event",
+	                  G_CALLBACK (search_entry_focus_in_cb),
+	                  inspector);
+
 	g_signal_connect (priv->entry, "focus-out-event",
-                          G_CALLBACK (search_entry_focus_out_cb),
-                          inspector);
+	                  G_CALLBACK (search_entry_focus_out_cb),
+	                  inspector);
+
+	priv->completion = g_completion_new ((GCompletionFunc) search_complete_func);
 
 	priv->view = gtk_tree_view_new ();
 	gtk_tree_view_set_enable_search (GTK_TREE_VIEW (priv->view), FALSE);
@@ -616,6 +701,62 @@ add_columns (GtkTreeView *view)
 	gtk_tree_view_set_headers_visible (view, FALSE);
 }
 
+static void
+update_project_completion (GladeProject    *project,
+                           GladeWidget     *widget,
+                           GladeInspector  *inspector)
+{
+	GladeInspectorPrivate *priv = inspector->priv;
+	GList* items;
+
+	g_completion_clear_items (priv->completion);
+
+	if (!priv->project)
+		return;
+
+	items = glade_project_get_objects (priv->project);
+
+	g_completion_add_items (priv->completion, items);
+
+	g_list_free (items);
+}
+
+static void
+disconnect_project_signals (GladeInspector *inspector,
+			    GladeProject   *project)
+{
+	g_signal_handlers_disconnect_by_func (G_OBJECT (project),
+					      G_CALLBACK (update_project_completion),
+					      inspector);
+	g_signal_handlers_disconnect_by_func (G_OBJECT (project),
+					      G_CALLBACK (update_project_completion),
+					      inspector);
+	g_signal_handlers_disconnect_by_func (G_OBJECT (project),
+					      G_CALLBACK (update_project_completion),
+					      inspector);
+	g_signal_handlers_disconnect_by_func (G_OBJECT (project),
+					      G_CALLBACK (project_selection_changed_cb),
+					      inspector);
+}
+
+static void
+connect_project_signals (GladeInspector *inspector,
+			 GladeProject   *project)
+{
+	g_signal_connect (G_OBJECT (project), "add-widget",
+			  G_CALLBACK (update_project_completion),
+			  inspector);
+	g_signal_connect (G_OBJECT (project), "remove-widget",
+			  G_CALLBACK (update_project_completion),
+			  inspector);
+	g_signal_connect (G_OBJECT (project), "widget-name-changed",
+			  G_CALLBACK (update_project_completion),
+			  inspector);
+	g_signal_connect (G_OBJECT (project), "selection-changed",
+			  G_CALLBACK (project_selection_changed_cb),
+			  inspector);
+}
+
 /**
  * glade_inspector_set_project:
  * @inspector: a #GladeInspector
@@ -635,12 +776,9 @@ glade_inspector_set_project (GladeInspector *inspector,
 
 	if (inspector->priv->project)
 	{
-		g_signal_handlers_disconnect_by_func (G_OBJECT (project),
-		                                      G_CALLBACK (project_selection_changed_cb),
-		                                      inspector);
+		disconnect_project_signals (inspector, project);
 		g_object_unref (priv->project);
 		priv->project = NULL;
-		gtk_entry_completion_set_model (priv->completion, NULL);
 	}
 	
 	if (project)
@@ -655,13 +793,11 @@ glade_inspector_set_project (GladeInspector *inspector,
 						inspector, NULL);
 
 		gtk_tree_view_set_model (GTK_TREE_VIEW (priv->view), priv->filter);
-		g_signal_connect (G_OBJECT (project), "selection-changed",
-		                  G_CALLBACK (project_selection_changed_cb),
-		                  inspector);
-
-		gtk_entry_completion_set_model (priv->completion, GTK_TREE_MODEL (project));
+		connect_project_signals (inspector, project);
 	}
 
+	update_project_completion (project, NULL, inspector);
+	
 	gtk_tree_view_expand_all (GTK_TREE_VIEW (inspector->priv->view));
 	
 	g_object_notify (G_OBJECT (inspector), "project");
