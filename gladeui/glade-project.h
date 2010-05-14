@@ -119,7 +119,7 @@ void           glade_project_reset_path          (GladeProject *project);
 
 gboolean       glade_project_get_readonly        (GladeProject *project);
 
-GList	      *glade_project_get_objects         (GladeProject *project);
+const GList   *glade_project_get_objects         (GladeProject *project);
 
 void           glade_project_add_object          (GladeProject *project, 
 						  GladeProject *old_project,
