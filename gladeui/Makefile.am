@@ -115,7 +115,7 @@ libgladeuiinclude_HEADERS = \
 	glade-displayable-values.h \
 	glade-editable.h \
 	glade-editor-table.h \
-	glade-cell-renderer-icon.c
+	glade-cell-renderer-icon.h
 
 
 
