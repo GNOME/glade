@@ -707,7 +707,7 @@ update_project_completion (GladeProject    *project,
                            GladeInspector  *inspector)
 {
 	GladeInspectorPrivate *priv = inspector->priv;
-	GList* items;
+	const GList* items;
 
 	g_completion_clear_items (priv->completion);
 
@@ -717,8 +717,6 @@ update_project_completion (GladeProject    *project,
 	items = glade_project_get_objects (priv->project);
 
 	g_completion_add_items (priv->completion, items);
-
-	g_list_free (items);
 }
 
 static void
