@@ -1,5 +1,7 @@
 2010-04-14  Tristan Van Berkom <tvb@gnome.org>
 
+	* configure.ac, NEWS: Rolling Glade 3.7.1
+
 	* gladeui/glade-widget.c: Added some clarification to the docs of glade_widget_get_children(),
 	  fixed glade_widget_get_children() to not call g_list_append() in a loop.
 
@@ -8,7 +10,7 @@
 	* gladeui/glade-app.c: Allow destruction/recreation of the GladeApp object
 
 	* gladeui/glade-signal-editor.[ch]: Some refactoring to make the signal editor
-	  object itself a dockable widget and remove some cruft api.
+	  object itself a dockable widget and remove some cruft api (bug 618020)
 
 	* gladeui/glade-project.[ch]: Implement GtkTreeModel
 
@@ -41,7 +43,7 @@
 	* src/Makefile.am, src/glade-close-button.[ch]: Using Paolo Borelli's close button code for notebook
 	  tab close buttons.
 
-	* src/glade-window.c: 
+	* src/glade-window.c:
 	  - Added option to disable toolbar in View menu and session data (bug 586194).
 	  - Added option to show notebook tabs for open projects also in the View menu and session data.
 	  - Added option to show/hide statusbar in the View menu and session data.
@@ -49,7 +51,7 @@
 	* gladeui/glade-palette.c: Made "both" mode use text horizontally again, still get alot of unwanted 
 	  ellipsize here.
 
-	* gladeui/glade-project.c: Added the targets-changed signal to refresh views with data about 
+	* gladeui/glade-project.c: Added the targets-changed signal to refresh views with data about
 	  target project versions (notebook tabs).
 
 	* gladeui/glade-base-editor.c: Fixed to unref in ->dispose() and to unset the loaded widget
@@ -89,8 +91,8 @@
 	* gladeui/glade-widget-adaptor.h, gladeui/glade-property-class.h: Added some version checking macros.
 
 	* gladeui/glade-signal.[ch]: Add support warning meta data to signals
-	
-	* gladeui/glade-project.c: 
+
+	* gladeui/glade-project.c:
 	  - Simplify code with new version checking macros
 	  - Do the verify on signals for widgets as well as project warnings
 	    (update the signals a verify time).
@@ -144,8 +146,8 @@
 	to the project.
 
 	* gladeui/glade-xml-utils.h: Added "swapped" attribute definition
-	
-	* gladeui/glade-signal.c: Added "swapped" attribute and read/write from xml, swapped attribute is 
+
+	* gladeui/glade-signal.c: Added "swapped" attribute and read/write from xml, swapped attribute is
 	always saved, if its missing on load and user_data (object) is set, we assume a swapped default.
 
 	* gladeui/glade-signal-editor.c: Allow toggling "swapped" flag of a signal if user data is set.
@@ -154,7 +156,7 @@
 
 2010-03-27  Tristan Van Berkom <tvb@gnome.org>
 
-	* gladeui/glade-marshallers.list, gladeui/glade-placeholder.c: 
+	* gladeui/glade-marshallers.list, gladeui/glade-placeholder.c:
 	  Make GladePlaceholder a scrollable widget (hypothetically) to avoid runtime warnings.
 
 	* plugins/gtk+/gtk+.xml.in: Disabled "has-separator" of GtkMessageDialog as it ignores the separator
@@ -162,19 +164,19 @@
 
 	* gladeui/glade-project.[ch]: Expose glade_project_get_target_version()
 
-	* plugins/gtk+/glade-gtk.c: 
+	* plugins/gtk+/glade-gtk.c:
 	  - check project target gtk+ version to decide initial state
 	    of GtkEntry::buffer.
 	  - Substitute the old manual evaluation with GPC_VERSION_CHECK()
 	  - Avoid critical warnings when setting GtkColorButton properties to NULL
 	  - Avoid critical warnings when setting GtkComboBoxEntry::text-column < 0
-	  - Check for type compatibility before setting cell renderer attributes 
+	  - Check for type compatibility before setting cell renderer attributes
 	  - Clear cell renderer attributes before setting liststore column types and resync them after
 	    (Avoids cricital warnings where the underlying data types changed and dont match the properties
 	    of the renderers)
 	  - Fill in the gaps in model data while loading some columns with non serializable types
 	    (fixes severe bug: model data was loaded with missing columns of data).
-	
+
 	* gladeui/glade-property-class.h: Created convenience macro GPC_VERSION_CHECK
 
 	* gladeui/glade-utils.c: Allow loading of libraries installed in optional non-system prefixes;

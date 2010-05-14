@@ -1,5 +1,40 @@
 
 ===========
+Glade 3.7.1
+===========
+	- Changed "Close without saving" acelerator key from 'c' to 'w', (Aaron Brown, bug 612538)
+	- Save Glade files with UTF-8 encoding (Christian Persch, bug 596205)
+	- Save maximized window state of all windows in session data (Marco Diego Aurélio Mesquita, bug 607670)
+	- use g_timeout_add_seconds() (Javier Jardón, bug 581255)
+	- Fixed signal name serialization in GtkBuilder format to use '-' instead of '_' (bug 600031)
+	- Disable orientation properties completely and disregard them wherever they cause breakage
+	  (Federico Mena Quintero, bug 594231)
+	- Now print a summery of all missing icons at startup instead of a warning for each missing icon
+	- Fixed some remaining crashers introduced by recent GSEAL patches
+	- Integrated GtkToolPalette as the internal implementation of Glade's palette (bug 613956).
+	- Added tooltip to palette (bug 558983)
+	- Revamped internal treeview support, less warnings and better refresh of workspace when
+	  editing cell renderer attributes and liststores.
+	- Glade now loads/saves the "swapped" <signal> attribute.
+	- Signal editor revamped to now:
+	   o show documentation links
+	   o show warning icons for version mismatches
+	   o edit "swapped" attribute
+	   o edit the user-data object using an object selection dialog.
+	   o now the signal editor is a proper widget-class (Johannes Schmid, bug 618020)
+	- Disallow adding of non-scrollable widgets to scrolled windows (now an informative
+	  popup comes up instead).
+	- Fixed hangs in menu/treeview editors (Marco Diego Aurélio Mesquita, bug 609612)
+	- Changed the old glade-cell-renderer-button for a new activatable pixbuf renderer
+	  glade-cell-renderer-icon.[ch].
+	- Added support to add GtkActions to GtkActionGroups
+	- Added support to edit the <accelerator> for an action when in a group.
+	- Added notebook tabs to the Glade frontend with informative labels (per open project).
+	- Stop showing preferences dialog at startup time (bug 574095)
+	- GladeProject now implements GtkTreeModel and GladeInspector view saves lots of code (Johannes Schmid)
+	- Allow destruction of GladeApp object (Johannes Schmid, bug 618468).
+
+===========
 Glade 3.7.0
 ===========
 	- Fixed loading state of assigned GtkTreeModels of GtkCellRendererCombo objects (bug 566928).
