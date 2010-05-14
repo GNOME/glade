@@ -1442,7 +1442,6 @@ static void
 glade_signal_editor_dispose (GObject *object)
 {
 	GladeSignalEditor *self = GLADE_SIGNAL_EDITOR (object);
-	GladeSignalEditorPrivate *priv = self->priv;
 	
 	glade_signal_editor_load_widget (self, NULL);
 
