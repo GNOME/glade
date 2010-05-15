@@ -2699,17 +2699,10 @@ glade_project_add_object (GladeProject *project,
 	}
 
 	glade_project_reserve_widget_name (project, gwidget, gwidget->name);
-	
-	if ((children = glade_widget_get_children (gwidget)) != NULL)
-	{
-		for (list = children; list && list->data; list = list->next)
-			glade_project_add_object
-				(project, old_project, G_OBJECT (list->data));
-		g_list_free (children);
-	}
 
 	glade_widget_set_project (gwidget, (gpointer)project);
 	g_object_ref (object);
+
 	if (glade_widget_get_parent (gwidget) == NULL)
 	{
 		project->priv->tree = g_list_insert_sorted (project->priv->tree, object, 
@@ -2719,10 +2712,6 @@ glade_project_add_object (GladeProject *project,
 	/* Be sure to update the list before emitting signals */
 	project->priv->objects = g_list_prepend (project->priv->objects,
 	                                         object);
-	
-	g_signal_emit (G_OBJECT (project),
-		       glade_project_signals [ADD_WIDGET],
-		       0, gwidget);
 
 	if (!project->priv->loading)
 	{
@@ -2731,11 +2720,26 @@ glade_project_add_object (GladeProject *project,
 	
 		gtk_tree_model_row_inserted (GTK_TREE_MODEL (project), path, &iter);
 	}
-	                       
-	               
+
+	/* NOTE: Sensitive ordering here, we need to recurse after updating
+	 * the tree model listeners (and update those listeners after our
+	 * internal lists have been resolved), otherwise children are added
+	 * before the parents (and the views dont like that).
+	 */
+	if ((children = glade_widget_get_children (gwidget)) != NULL)
+	{
+		for (list = children; list && list->data; list = list->next)
+			glade_project_add_object
+				(project, old_project, G_OBJECT (list->data));
+		g_list_free (children);
+	}
 
 	/* Update user visible compatability info */
 	glade_project_verify_properties (gwidget);
+	
+	g_signal_emit (G_OBJECT (project),
+		       glade_project_signals [ADD_WIDGET],
+		       0, gwidget);
 }
 
 /**
@@ -4348,7 +4352,7 @@ glade_project_model_get_path (GtkTreeModel* model,
 
 	while ((parent = glade_widget_get_parent (widget)) != NULL)
 	{
-		GList* children = glade_widget_get_children(parent);
+		GList* children = glade_widget_get_children (parent);
 		GList* child = g_list_find (children, glade_widget_get_object (widget));
 		
 		g_assert (child != NULL);
@@ -4359,6 +4363,7 @@ glade_project_model_get_path (GtkTreeModel* model,
 		g_list_free (children);
 		widget = parent;
 	}
+
 	/* Get the index for the top-level list */
 	top = g_list_find (project->priv->tree, 
 	                   glade_widget_get_object (toplevel));
