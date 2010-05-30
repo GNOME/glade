@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade3&component=general\n"
 "POT-Creation-Date: 2010-05-15 16:13+0000\n"
-"PO-Revision-Date: 2010-05-29 17:26+0700\n"
+"PO-Revision-Date: 2010-05-30 10:51+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: GNOME Indonesian Translation Team <gnome@i15n.org>\n"
 "MIME-Version: 1.0\n"
@@ -506,9 +506,8 @@ msgid "Do you want to reload the project?"
 msgstr "Anda ingin memuat ulang projek?"
 
 #: ../src/glade-window.c:2703
-#, fuzzy
 msgid "_Reload"
-msgstr "_Buka Ulang"
+msgstr "_Muat Ulang"
 
 #: ../src/glade-window.c:2825
 #, fuzzy
@@ -519,7 +518,7 @@ msgstr "_Batalkan"
 #: ../src/glade-window.c:2827 ../gladeui/glade-app.c:275
 #, fuzzy, c-format
 msgid "Undo: %s"
-msgstr "_Batalkan"
+msgstr "Batalkan: %s"
 
 #: ../src/glade-window.c:2827 ../src/glade-window.c:2838
 #: ../gladeui/glade-app.c:276
@@ -534,17 +533,17 @@ msgstr "_Jadi Lagi"
 #: ../src/glade-window.c:2838 ../gladeui/glade-app.c:275
 #, fuzzy, c-format
 msgid "Redo: %s"
-msgstr "_Jadi Lagi"
+msgstr "Jadi Lagi: %s"
 
 #: ../src/glade-window.c:3308
 #, fuzzy
 msgid "Go back in undo history"
-msgstr "Undur dalam sejarah melungsur"
+msgstr "Mundur dalam riwayat pembatalan"
 
 #: ../src/glade-window.c:3310
 #, fuzzy
 msgid "Go forward in undo history"
-msgstr "Maju dalam sejarah melungsur "
+msgstr "Maju dalam riwayat pembatalan"
 
 #: ../src/glade-window.c:3359
 msgid "Palette"
@@ -578,7 +577,7 @@ msgstr "Mode penunjuk"
 
 #: ../gladeui/glade-app.c:532
 msgid "Current mode for the pointer in the workspace"
-msgstr ""
+msgstr "Mode pointer kini di ruang kerja"
 
 #: ../gladeui/glade-app.c:602
 #, c-format
@@ -586,6 +585,8 @@ msgid ""
 "Trying to save private data to %s directory but it is a regular file.\n"
 "No private data will be saved in this session"
 msgstr ""
+"Mencoba menyimpan data privat ke direktori %s tapi itu adalah berkas biasa.\n"
+"Tak ada data privat yang akan disimpan pada sesi ini"
 
 #: ../gladeui/glade-app.c:615
 #, c-format
@@ -593,6 +594,8 @@ msgid ""
 "Failed to create directory %s to save private data.\n"
 "No private data will be saved in this session"
 msgstr ""
+"Gagal membuat direktori %s untuk menyimpan data privat.\n"
+"Tak ada data privat yang akan disimpan sesi ini"
 
 #: ../gladeui/glade-app.c:643
 #, c-format
@@ -600,6 +603,8 @@ msgid ""
 "Error writing private data to %s (%s).\n"
 "No private data will be saved in this session"
 msgstr ""
+"Kesalahan menulis data privat ke %s (%s).\n"
+"Tak ada data privat yang akan disimpan sesi ini"
 
 #: ../gladeui/glade-app.c:655
 #, c-format
@@ -607,6 +612,8 @@ msgid ""
 "Error serializing configuration data to save (%s).\n"
 "No private data will be saved in this session"
 msgstr ""
+"Kesalahan menserialisasi data konfigurasi untuk disimpan (%s).\n"
+"Tak ada data privat yang akan disimpan sesi ini"
 
 #: ../gladeui/glade-app.c:668
 #, c-format
@@ -614,6 +621,8 @@ msgid ""
 "Error opening %s to write private data (%s).\n"
 "No private data will be saved in this session"
 msgstr ""
+"Kesalahan membuka %s untuk menulis data privat (%s).\n"
+"Tak ada data privat yang akan disimpan sesi ini"
 
 #: ../gladeui/glade-app.c:1181 ../gladeui/glade-app.c:1222
 #: ../gladeui/glade-app.c:1387
@@ -622,19 +631,19 @@ msgstr "Tak ada widget yang dipilih."
 
 #: ../gladeui/glade-app.c:1274
 msgid "Unable to paste to the selected parent"
-msgstr ""
+msgstr "Tak bisa menempel ke induk yang dipilih"
 
 #: ../gladeui/glade-app.c:1285
 msgid "Unable to paste to multiple widgets"
-msgstr ""
+msgstr "Tak bisa menempel ke widget berganda"
 
 #: ../gladeui/glade-app.c:1301 ../gladeui/glade-app.c:1407
 msgid "No widget selected on the clipboard"
-msgstr ""
+msgstr "Tak ada widget yang dipilih pada clipboard"
 
 #: ../gladeui/glade-app.c:1333
 msgid "Only one widget can be pasted at a time to this container"
-msgstr ""
+msgstr "Hanya satu widget dapat ditempelkan pada suatu saat ke wadah ini"
 
 #: ../gladeui/glade-app.c:1345
 msgid "Insufficient amount of placeholders in target container"
@@ -646,15 +655,13 @@ msgstr "Otentikasi"
 
 #. GTK_STOCK_DIALOG_AUTHENTICATION
 #: ../gladeui/glade-builtins.c:72
-#, fuzzy
 msgid "DnD"
-msgstr "Kode DnD"
+msgstr ""
 
 #. GTK_STOCK_DND
 #: ../gladeui/glade-builtins.c:73
-#, fuzzy
 msgid "DnD Multiple"
-msgstr "Banyak bahasa"
+msgstr ""
 
 #. GTK_STOCK_DND_MULTIPLE
 #: ../gladeui/glade-builtins.c:74
@@ -707,100 +714,93 @@ msgstr "Nama Berkas Gambar"
 #: ../gladeui/glade-builtins.c:499
 msgid "Enter a filename, relative path or full path to load the image"
 msgstr ""
+"Masukkan nama berkas, path relatif, atau path lengkap untuk memuat gambar"
 
 #: ../gladeui/glade-builtins.c:508
 msgid "GdkColor"
 msgstr "GdkColor"
 
 #: ../gladeui/glade-builtins.c:509
-#, fuzzy
 msgid "A GDK color value"
-msgstr "Isi warna GDK"
+msgstr "Nilai warna GDK"
 
 #: ../gladeui/glade-builtins.c:519
 msgid "Integer"
 msgstr "Integer"
 
 #: ../gladeui/glade-builtins.c:520
-#, fuzzy
 msgid "An integer value"
-msgstr "&Nilai numerik:"
+msgstr "Nilai integer"
 
 #: ../gladeui/glade-builtins.c:528
-#, fuzzy
 msgid "Unsigned Integer"
-msgstr "Bagian integer"
+msgstr "Integer tak bertanda"
 
 #: ../gladeui/glade-builtins.c:529
-#, fuzzy
 msgid "An unsigned integer value"
-msgstr "Bagian integer dari nilai yang ditampilkan [i]"
+msgstr "Nilai integer tak bertanda"
 
 #: ../gladeui/glade-builtins.c:536
 msgid "String"
 msgstr "String"
 
 #: ../gladeui/glade-builtins.c:537
-#, fuzzy
 msgid "An entry"
-msgstr "entri"
+msgstr "Suatu entri"
 
 #: ../gladeui/glade-builtins.c:544
 msgid "Strv"
 msgstr "Strv"
 
 #: ../gladeui/glade-builtins.c:545
-#, fuzzy
 msgid "String array"
-msgstr "Deretan melengkung"
+msgstr "Larik string"
 
 #: ../gladeui/glade-builtins.c:553
 msgid "Float"
 msgstr "Float"
 
 #: ../gladeui/glade-builtins.c:554
-#, fuzzy
 msgid "A floating point entry"
-msgstr "Titik Masukan Pertama"
+msgstr "Entri bilangan pecahan"
 
 #: ../gladeui/glade-builtins.c:562
 msgid "Boolean"
 msgstr "Boolean"
 
 #: ../gladeui/glade-builtins.c:563
-#, fuzzy
 msgid "A boolean value"
-msgstr "Nilai Boolean"
+msgstr "Suatu nilai boolean"
 
 #: ../gladeui/glade-base-editor.c:536
 #, c-format
 msgid "Setting object type on %s to %s"
-msgstr ""
+msgstr "Menata tipe objek pada %s menjadi %s"
 
 #: ../gladeui/glade-base-editor.c:677
-#, fuzzy, c-format
+#, c-format
 msgid "Add a %s to %s"
-msgstr "&Tambahkan ke antrian"
+msgstr "Menambahkan suatu %s ke %s"
 
 #: ../gladeui/glade-base-editor.c:762
-#, fuzzy, c-format
+#, c-format
 msgid "Add %s item"
-msgstr "Tambah Butir"
+msgstr "Menambah butir %s"
 
 #: ../gladeui/glade-base-editor.c:792
-#, fuzzy, c-format
+#, c-format
 msgid "Add child %s item"
-msgstr "Temukan objek yang mau d_itambahkan ke \"%s\":"
+msgstr "Menambah butir %s anak"
 
 #: ../gladeui/glade-base-editor.c:879
-#, fuzzy, c-format
+#, c-format
 msgid "Delete %s child from %s"
-msgstr "Hapus _Dari Drive"
+msgstr "Menghapus anak %s dari %s"
 
 #: ../gladeui/glade-base-editor.c:1007
-#, fuzzy, c-format
+#, c-format
 msgid "Reorder %s's children"
-msgstr "Anak _Tak-berinduk"
+msgstr "Mengurut ulang anak %s"
 
 #: ../gladeui/glade-base-editor.c:1456 ../plugins/gtk+/gtk+.xml.in.h:97
 msgid "Container"
@@ -808,7 +808,7 @@ msgstr "Kontainer"
 
 #: ../gladeui/glade-base-editor.c:1457
 msgid "The container object this editor is currently editing"
-msgstr ""
+msgstr "Objek wadah yang kini sedang disunting"
 
 #: ../gladeui/glade-base-editor.c:1682 ../gladeui/glade-editor.c:997
 msgid "General"
@@ -839,6 +839,11 @@ msgid ""
 "  * Drag &amp; Drop to reorder.\n"
 "  * Type column is editable."
 msgstr ""
+"<big><b>Petunjuk:</b></big>\n"
+" * Klik kanan di atas treeview untuk menambah butir.\n"
+" * Tekan Delete untuk menghapus butir yang dipilih.\n"
+" * Drag &amp; Drop untuk mengurut ulang.\n"
+" * Kolom tipe dapat disunting."
 
 #: ../gladeui/glade-clipboard-view.c:209 ../gladeui/glade-editor.c:162
 #: ../plugins/gtk+/gtk+.xml.in.h:517
@@ -846,74 +851,74 @@ msgid "Widget"
 msgstr "Widget"
 
 #: ../gladeui/glade-command.c:598
-#, fuzzy, c-format
+#, c-format
 msgid "Setting multiple properties"
-msgstr "Keterangan Lagu"
+msgstr "Menata beberapa properti"
 
 #: ../gladeui/glade-command.c:611
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s of %s"
-msgstr "Tatanan"
+msgstr "Menata %s dari %s"
 
 #: ../gladeui/glade-command.c:615 ../gladeui/glade-editor-property.c:3010
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s of %s to %s"
-msgstr "%s: Gagal mengatur %s menjadi %s"
+msgstr "Menata %s dari %s ke %s"
 
 #: ../gladeui/glade-command.c:850 ../gladeui/glade-command.c:877
-#, fuzzy, c-format
+#, c-format
 msgid "Renaming %s to %s"
-msgstr "Mengganti nama \"%s\" menjadi \"%s\"."
+msgstr "Mengganti nama %s menjadi %s"
 
 #: ../gladeui/glade-command.c:1006
-#, fuzzy, c-format
+#, c-format
 msgid "Add %s"
-msgstr "T_ambah..."
+msgstr "Menambah %s"
 
 #: ../gladeui/glade-command.c:1007 ../gladeui/glade-command.c:1738
 #: ../gladeui/glade-command.c:1762 ../gladeui/glade-command.c:1785
 #: ../gladeui/glade-command.c:1810 ../gladeui/glade-command.c:1914
 #: ../gladeui/glade-command.c:1947
-#, fuzzy
 msgid "multiple"
-msgstr "Banyak"
+msgstr "berganda"
 
 #: ../gladeui/glade-command.c:1163
 msgid "You cannot remove a widget internal to a composite widget."
 msgstr ""
+"Anda tak dapat menghapus suatu widget yang internal terhadap suatu widget "
+"komposit."
 
 #: ../gladeui/glade-command.c:1170
 #, c-format
 msgid "%s is locked by %s, edit %s first."
-msgstr ""
+msgstr "%s dikunci oleh %s, sunting %s terlebih dahulu."
 
 #: ../gladeui/glade-command.c:1180
-#, fuzzy, c-format
+#, c-format
 msgid "Remove %s"
-msgstr "_Hapus"
+msgstr "Hapus %s"
 
 #: ../gladeui/glade-command.c:1183
-#, fuzzy
 msgid "Remove multiple"
-msgstr "Banyak bahasa"
+msgstr "Hapus beberapa"
 
 #: ../gladeui/glade-command.c:1557
 #, fuzzy, c-format
 msgid "Clipboard add %s"
-msgstr "&Tambah penanda..."
+msgstr "Tambah %s ke clipboard"
 
 #: ../gladeui/glade-command.c:1560
 msgid "Clipboard add multiple"
-msgstr ""
+msgstr "Menambah beberapa ke clipboard"
 
 #: ../gladeui/glade-command.c:1565
 #, fuzzy, c-format
 msgid "Clipboard remove %s"
-msgstr "&Hapus kunci"
+msgstr "Hapus %s dari clipboard"
 
 #: ../gladeui/glade-command.c:1568
 msgid "Clipboard remove multiple"
-msgstr ""
+msgstr "Menghapus beberapa dari clipboard"
 
 #: ../gladeui/glade-command.c:1738
 #, c-format
@@ -943,7 +948,7 @@ msgstr "Tempel %s"
 #: ../gladeui/glade-command.c:1946
 #, c-format
 msgid "Drag-n-Drop from %s to %s"
-msgstr ""
+msgstr "Drag-n-Drop dari %s ke %s"
 
 #: ../gladeui/glade-command.c:2068
 #, fuzzy, c-format
@@ -963,67 +968,60 @@ msgstr "Tidak dapat menset pengolah sinyal"
 #: ../gladeui/glade-command.c:2295
 #, c-format
 msgid "Setting i18n metadata"
-msgstr ""
+msgstr "Menata metadata i18n"
 
 #: ../gladeui/glade-command.c:2499
-#, fuzzy, c-format
+#, c-format
 msgid "Converting %s to %s format"
-msgstr "Perangkat yang hendak diformat"
+msgstr "Konversi dari %s ke format %s"
 
 #: ../gladeui/glade-command.c:2657 ../gladeui/glade-project.c:3700
 #, c-format
 msgid "Setting %s to use a %s naming policy"
-msgstr ""
+msgstr "Menata %s untuk memakai suatu kebijakan penamaan %s"
 
 #: ../gladeui/glade-command.c:2797
 #, c-format
 msgid "Locking %s by widget %s"
-msgstr ""
+msgstr "Mengunci %s oleh widget %s"
 
 #: ../gladeui/glade-command.c:2836
-#, fuzzy, c-format
+#, c-format
 msgid "Unlocking %s"
-msgstr "<b>Kagal membuka kunci</b>"
+msgstr "Buka kunci %s"
 
 #: ../gladeui/glade-cursor.c:186
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to load image (%s)"
-msgstr ""
-"Tidak bisa membaca gambar:\n"
-"%s"
+msgstr "Gagal memuat gambar (%s)"
 
 #: ../gladeui/glade-editor-property.c:598
-#, fuzzy
 msgid "Property Class"
-msgstr "Daftar kelas"
+msgstr "Kelas Properti"
 
 #: ../gladeui/glade-editor-property.c:599
 msgid "The GladePropertyClass this GladeEditorProperty was created for"
-msgstr ""
+msgstr "GladeEditorProperty ini dibuat untuk GladePropertyClass mana"
 
 #: ../gladeui/glade-editor-property.c:605
-#, fuzzy
 msgid "Use Command"
-msgstr "Pergunakan perintah baris"
+msgstr "Pakai Perintah"
 
 #: ../gladeui/glade-editor-property.c:606
 msgid "Whether we should use the command API for the undo/redo stack"
-msgstr ""
+msgstr "Apakah kita mesti memakai API perintah bagi stack undo/redo"
 
 #: ../gladeui/glade-editor-property.c:1103
-#, fuzzy
 msgid "Select Fields"
-msgstr "Isian tambahan..."
+msgstr "Pilih Ruas"
 
 #: ../gladeui/glade-editor-property.c:1127
-#, fuzzy
 msgid "_Select individual fields:"
-msgstr "Popups untuk daerah yang dipilih"
+msgstr "Pilih rua_s individual:"
 
 #: ../gladeui/glade-editor-property.c:1437
-#, fuzzy
 msgid "Select Named Icon"
-msgstr "Pilih sebuah warna"
+msgstr "Pilih Ikon Bernama"
 
 #: ../gladeui/glade-editor-property.c:1701
 msgid "Edit Text"
@@ -1041,17 +1039,16 @@ msgstr "Dapat dite_rjemahkan"
 
 #: ../gladeui/glade-editor-property.c:1773 ../gladeui/glade-property.c:589
 msgid "Whether this property is translatable"
-msgstr ""
+msgstr "Apakah properti ini dapat diterjemahkan"
 
 #. Has Context
 #: ../gladeui/glade-editor-property.c:1776
-#, fuzzy
 msgid "_Has context prefix"
-msgstr "moniker menggunakan prefiks yang tidak dikenal"
+msgstr "_Punya prefiks konteks"
 
 #: ../gladeui/glade-editor-property.c:1780 ../gladeui/glade-property.c:596
 msgid "Whether the translatable string has a context prefix"
-msgstr ""
+msgstr "Apakah string yang dapat diterjemahkan memiliki suatu awalan konteks"
 
 #: ../gladeui/glade-editor-property.c:1791
 msgid "Conte_xt for translation:"
@@ -1063,7 +1060,7 @@ msgstr "Ko_mentar bagi penerjemah:"
 
 #: ../gladeui/glade-editor-property.c:1948
 msgid "Select a file from the project resource directory"
-msgstr ""
+msgstr "Pilih suatu berkas dari direktori sumber daya projek"
 
 #: ../gladeui/glade-editor-property.c:2229
 #: ../gladeui/glade-editor-property.c:2245
@@ -1088,22 +1085,22 @@ msgstr "Kelas"
 #: ../gladeui/glade-editor-property.c:2714
 #, c-format
 msgid "Choose parentless %s type objects in this project"
-msgstr ""
+msgstr "Pilih objek bertipe %s tanpa induk di projek ini"
 
 #: ../gladeui/glade-editor-property.c:2714
 #, c-format
 msgid "Choose a parentless %s in this project"
-msgstr ""
+msgstr "Pilih suatu %s tanpa induk di projek ini"
 
 #: ../gladeui/glade-editor-property.c:2717
-#, fuzzy, c-format
+#, c-format
 msgid "Choose %s type objects in this project"
-msgstr "Simpan Proyek sekarang"
+msgstr "Pilih objek bertipe %s di projek ini"
 
 #: ../gladeui/glade-editor-property.c:2717
 #, c-format
 msgid "Choose a %s in this project"
-msgstr ""
+msgstr "Pilih suatu %s di projek ini"
 
 #. Checklist
 #: ../gladeui/glade-editor-property.c:2792
@@ -1112,15 +1109,14 @@ msgid "O_bjects:"
 msgstr "O_bjek:"
 
 #: ../gladeui/glade-editor-property.c:2884
-#, fuzzy
 msgid "_New"
-msgstr "Buat Bar_u"
+msgstr "Bar_u"
 
 #. translators: Creating 'a widget' for 'a property' of 'a widget'
 #: ../gladeui/glade-editor-property.c:3036
-#, fuzzy, c-format
+#, c-format
 msgid "Creating %s for %s of %s"
-msgstr "Dikompilasi untuk:"
+msgstr "Membuat %s bagi %s dari %s"
 
 #. Checklist
 #: ../gladeui/glade-editor-property.c:3230
@@ -1138,7 +1134,7 @@ msgstr "Nilai kini"
 #: ../gladeui/glade-editor-property.c:3630
 #, fuzzy
 msgid "Lower:"
-msgstr "Bawah"
+msgstr "Bawah:"
 
 #: ../gladeui/glade-editor-property.c:3631
 msgid "The minimum value"
@@ -1147,25 +1143,23 @@ msgstr "Nilai minimum"
 #: ../gladeui/glade-editor-property.c:3633
 #, fuzzy
 msgid "Upper:"
-msgstr "Atas"
+msgstr "Atas:"
 
 #: ../gladeui/glade-editor-property.c:3634
 msgid "The maximum value"
 msgstr "Nilai maksimum"
 
 #: ../gladeui/glade-editor-property.c:3636
-#, fuzzy
 msgid "Step inc:"
-msgstr "Undur Langkah"
+msgstr ""
 
 #: ../gladeui/glade-editor-property.c:3637
 msgid "The increment to use to make minor changes to the value"
 msgstr ""
 
 #: ../gladeui/glade-editor-property.c:3639
-#, fuzzy
 msgid "Page inc:"
-msgstr "Pilih &halaman:"
+msgstr ""
 
 #: ../gladeui/glade-editor-property.c:3640
 msgid "The increment to use to make major changes to the value"
@@ -1183,9 +1177,8 @@ msgid ""
 msgstr ""
 
 #: ../gladeui/glade-editor-table.c:356
-#, fuzzy
 msgid "The Object's name"
-msgstr "Nama obyek"
+msgstr "Nama objek"
 
 #: ../gladeui/glade-editor.c:154
 msgid "Show info"
@@ -1240,9 +1233,9 @@ msgid "_Common"
 msgstr "Umum"
 
 #: ../gladeui/glade-editor.c:826
-#, fuzzy, c-format
+#, c-format
 msgid "Create a %s"
-msgstr "Buat"
+msgstr "Buat suatu %s"
 
 #: ../gladeui/glade-editor.c:946
 msgid "Reset"
@@ -1268,7 +1261,7 @@ msgstr ""
 
 #: ../gladeui/glade-editor.c:1198
 msgid "Reset Widget Properties"
-msgstr ""
+msgstr "Reset Properti Widget"
 
 #. Checklist
 #: ../gladeui/glade-editor.c:1215
@@ -1286,9 +1279,8 @@ msgstr "Hapus semua pilihan"
 
 #. Description
 #: ../gladeui/glade-editor.c:1260
-#, fuzzy
 msgid "Property _Description:"
-msgstr "Deskripsi panjang"
+msgstr "_Deskripsi Properti:"
 
 #. Translators: first %s is the project name, second is a widget name
 #: ../gladeui/glade-editor.c:1356
@@ -1297,23 +1289,21 @@ msgid "%s - %s Properties"
 msgstr "%s - Properti %s"
 
 #: ../gladeui/glade-fixed.c:491 ../plugins/gtk+/glade-gtk.c:2625
-#, fuzzy, c-format
+#, c-format
 msgid "Placing %s inside %s"
-msgstr "Didalam Kubus"
+msgstr "Menempatkan %s di dalam %s"
 
 #: ../gladeui/glade-fixed.c:982
-#, fuzzy
 msgid "X position property"
-msgstr "&Properti Panel"
+msgstr "Properti posisi X"
 
 #: ../gladeui/glade-fixed.c:983
 msgid "The property used to set the X position of a child object"
 msgstr ""
 
 #: ../gladeui/glade-fixed.c:989
-#, fuzzy
 msgid "Y position property"
-msgstr "&Properti Panel"
+msgstr "Properti posisi Y"
 
 #: ../gladeui/glade-fixed.c:990
 msgid "The property used to set the Y position of a child object"
@@ -1344,9 +1334,8 @@ msgid "Whether this container supports resizes of child widgets"
 msgstr ""
 
 #: ../gladeui/glade-palette.c:745
-#, fuzzy
 msgid "Widget selector"
-msgstr "Pemilih codec:"
+msgstr "Pemilih widget"
 
 #: ../gladeui/glade-palette.c:746
 #, fuzzy
@@ -2282,7 +2271,6 @@ msgid "Unset"
 msgstr "Belum diset"
 
 #: ../plugins/gtk+/glade-attributes.c:723
-#, fuzzy
 msgid "Select a color"
 msgstr "Pilih sebuah warna"
 
@@ -2414,9 +2402,8 @@ msgid "This property only applies to named icons"
 msgstr ""
 
 #: ../plugins/gtk+/glade-gtk.c:6389
-#, fuzzy
 msgid "<separator>"
-msgstr "Pemisah"
+msgstr "<pemisah>"
 
 #: ../plugins/gtk+/glade-gtk.c:6399
 #, fuzzy
@@ -2424,51 +2411,42 @@ msgid "<custom>"
 msgstr "Gubahan"
 
 #: ../plugins/gtk+/glade-gtk.c:6578
-#, fuzzy
 msgid "Tool Item"
-msgstr "Hapus item"
+msgstr "Butir Alat"
 
 #: ../plugins/gtk+/glade-gtk.c:6587
 msgid "Packing"
 msgstr ""
 
 #: ../plugins/gtk+/glade-gtk.c:6606 ../plugins/gtk+/gtk+.xml.in.h:277
-#, fuzzy
 msgid "Menu Item"
-msgstr "anggota menu"
+msgstr "Butir Menu"
 
 #: ../plugins/gtk+/glade-gtk.c:6642 ../plugins/gtk+/glade-gtk.c:6650
-#, fuzzy
 msgid "Normal item"
-msgstr "Hapus item"
+msgstr "Butir normal"
 
 #: ../plugins/gtk+/glade-gtk.c:6643 ../plugins/gtk+/glade-gtk.c:6651
-#, fuzzy
 msgid "Image item"
-msgstr "Hapus item"
+msgstr "Butir gambar"
 
 #: ../plugins/gtk+/glade-gtk.c:6644 ../plugins/gtk+/glade-gtk.c:6652
-#, fuzzy
 msgid "Check item"
-msgstr "isi menu centang"
+msgstr "Butir centang"
 
 #: ../plugins/gtk+/glade-gtk.c:6645 ../plugins/gtk+/glade-gtk.c:6653
-#, fuzzy
 msgid "Radio item"
-msgstr "anggota menu radio"
+msgstr "Butir radio"
 
 #: ../plugins/gtk+/glade-gtk.c:6646 ../plugins/gtk+/glade-gtk.c:6654
-#, fuzzy
 msgid "Separator item"
-msgstr "Hapus item"
+msgstr "Butir pemisah"
 
 #: ../plugins/gtk+/glade-gtk.c:6678 ../plugins/gtk+/glade-gtk.c:6722
-#, fuzzy
 msgid "Edit Menu Bar"
-msgstr "Perlihatkan Papan Menu"
+msgstr "Sunting Bilah Menu"
 
 #: ../plugins/gtk+/glade-gtk.c:6680 ../plugins/gtk+/glade-gtk.c:6724
-#, fuzzy
 msgid "Edit Menu"
 msgstr "Sunting Menu"
 
@@ -2513,7 +2491,6 @@ msgid "_Restart Game"
 msgstr "_Ulagi Permainan"
 
 #: ../plugins/gtk+/glade-gtk.c:7135
-#, fuzzy
 msgid "_Hint"
 msgstr "_Petunjuk"
 
@@ -2543,12 +2520,10 @@ msgid "_Settings"
 msgstr "_Pengaturan"
 
 #: ../plugins/gtk+/glade-gtk.c:7162
-#, fuzzy
 msgid "Fi_les"
 msgstr "_Berkas"
 
 #: ../plugins/gtk+/glade-gtk.c:7165
-#, fuzzy
 msgid "_Windows"
 msgstr "_Jendela"
 
@@ -2569,7 +2544,6 @@ msgstr "ganti"
 
 #: ../plugins/gtk+/glade-gtk.c:7638 ../plugins/gtk+/glade-gtk.c:7649
 #: ../plugins/gtk+/glade-gtk.c:7657
-#, fuzzy
 msgid "Radio"
 msgstr "Radio"
 
@@ -2578,7 +2552,6 @@ msgid "Menu"
 msgstr "Menu"
 
 #: ../plugins/gtk+/glade-gtk.c:7640 ../plugins/gtk+/gtk+.xml.in.h:109
-#, fuzzy
 msgid "Custom"
 msgstr "Gubahan"
 
@@ -2594,14 +2567,12 @@ msgstr "Normal"
 
 #: ../plugins/gtk+/glade-gtk.c:7647 ../plugins/gtk+/glade-gtk.c:7655
 #: ../plugins/gtk+/gtk+.xml.in.h:217
-#, fuzzy
 msgid "Image"
 msgstr "Gambar"
 
 #: ../plugins/gtk+/glade-gtk.c:7648 ../plugins/gtk+/glade-gtk.c:7656
-#, fuzzy
 msgid "Check"
-msgstr "Memeriksa"
+msgstr "Centang"
 
 #: ../plugins/gtk+/glade-gtk.c:7670
 msgid "Tool Bar Editor"
@@ -2616,19 +2587,16 @@ msgid "This property does not apply when Angle is set."
 msgstr ""
 
 #: ../plugins/gtk+/glade-gtk.c:9185
-#, fuzzy
 msgid "Introduction page"
-msgstr "Pilih &halaman:"
+msgstr "Halaman pengantar"
 
 #: ../plugins/gtk+/glade-gtk.c:9189
-#, fuzzy
 msgid "Content page"
-msgstr "Pilih &halaman:"
+msgstr "Halaman isi"
 
 #: ../plugins/gtk+/glade-gtk.c:9193
-#, fuzzy
 msgid "Confirmation page"
-msgstr "Pilih &halaman:"
+msgstr "Halaman konfirmasi"
 
 #: ../plugins/gtk+/glade-gtk.c:10827
 #, c-format
@@ -2669,15 +2637,13 @@ msgstr "Teks"
 #. Accelerator
 #: ../plugins/gtk+/glade-gtk.c:11338 ../plugins/gtk+/glade-gtk.c:11419
 #: ../plugins/gtk+/gtk+.xml.in.h:14
-#, fuzzy
 msgid "Accelerator"
-msgstr "Akselerator baru..."
+msgstr "Akselerator"
 
 #: ../plugins/gtk+/glade-gtk.c:11339 ../plugins/gtk+/glade-gtk.c:11420
 #: ../plugins/gtk+/gtk+.xml.in.h:90
-#, fuzzy
 msgid "Combo"
-msgstr "Tombol Kombo"
+msgstr "Kombo"
 
 #: ../plugins/gtk+/glade-gtk.c:11340 ../plugins/gtk+/glade-gtk.c:11421
 #, fuzzy
@@ -2685,7 +2651,6 @@ msgid "Spin"
 msgstr "Pusing"
 
 #: ../plugins/gtk+/glade-gtk.c:11341 ../plugins/gtk+/glade-gtk.c:11422
-#, fuzzy
 msgid "Pixbuf"
 msgstr "Pixbuf"
 
@@ -2832,9 +2797,8 @@ msgid "Activate"
 msgstr "Aktifkan"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:29
-#, fuzzy
 msgid "Active column"
-msgstr "Properti kolom"
+msgstr "Kolom aktif"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:30
 #, fuzzy
@@ -2902,7 +2866,6 @@ msgid "Arrow"
 msgstr "Panah"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:45
-#, fuzzy
 msgid "Ascending"
 msgstr "Naik"
 
@@ -3012,12 +2975,10 @@ msgid "Button Release"
 msgstr "Rilis"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:70
-#, fuzzy
 msgid "Calendar"
 msgstr "Kalender"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:71
-#, fuzzy
 msgid "Cancel"
 msgstr "Batal"
 
@@ -3040,19 +3001,16 @@ msgid "Center on Parent"
 msgstr "Tengah _di Halaman"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:77
-#, fuzzy
 msgid "Centimeters"
 msgstr "Sentimeter"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:78
-#, fuzzy
 msgid "Character"
-msgstr "Huruf"
+msgstr "Karakter"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:79
-#, fuzzy
 msgid "Check Button"
-msgstr "Tombol Solo:"
+msgstr "Tombol Centang"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:80
 #, fuzzy
@@ -3073,12 +3031,10 @@ msgid "Close"
 msgstr "Tutup"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:85
-#, fuzzy
 msgid "Color Button"
-msgstr "Tombol Solo:"
+msgstr "Tombol Warna"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:86
-#, fuzzy
 msgid "Color Selection"
 msgstr "Pemilihan Warna"
 
@@ -3093,14 +3049,12 @@ msgid "Columned List"
 msgstr "Daftar file"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:89
-#, fuzzy
 msgid "Columns"
 msgstr "Kolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:91
-#, fuzzy
 msgid "Combo Box"
-msgstr "kotak kombo"
+msgstr "Kotak Kombo"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:92
 #, fuzzy
@@ -3131,9 +3085,8 @@ msgid "Containers"
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:99
-#, fuzzy
 msgid "Content"
-msgstr "Isi:"
+msgstr "Isi"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:100
 #, fuzzy
@@ -3176,7 +3129,6 @@ msgid "Custom widget"
 msgstr "Widget label"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:111
-#, fuzzy
 msgid "Data"
 msgstr "Data"
 
@@ -3245,14 +3197,12 @@ msgid "Discrete"
 msgstr "Blok diskret"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:125
-#, fuzzy
 msgid "Dock"
-msgstr "&Dok/Lepas Dok..."
+msgstr "Dok"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:126
-#, fuzzy
 msgid "Double"
-msgstr "Dua"
+msgstr "Ganda"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:127
 #, fuzzy
@@ -3408,9 +3358,8 @@ msgid "Family column"
 msgstr "Properti kolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:159
-#, fuzzy
 msgid "Fifth Key"
-msgstr "&Hapus kunci"
+msgstr "Kunci Ke Lima"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:160
 #, fuzzy
@@ -3433,9 +3382,8 @@ msgid "File Chooser Widget"
 msgstr "Sistem pemilih berkas utama"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:164
-#, fuzzy
 msgid "File Filter"
-msgstr "&Sekumpulan filter:"
+msgstr "Filter Berkas"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:165 ../plugins/gtk+/glade-icon-sources.c:772
 msgid "File Name"
@@ -3451,14 +3399,12 @@ msgid "Fill"
 msgstr "Isi"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:168
-#, fuzzy
 msgid "First Mouse Button"
-msgstr "arah tombol mouse"
+msgstr "Tombol Mouse Pertama"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:169
-#, fuzzy
 msgid "Fixed"
-msgstr "Baku"
+msgstr "Tetap"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:170
 #, fuzzy
@@ -3514,23 +3460,20 @@ msgid "Foreground Color column"
 msgstr "Kolom Warna Latar"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:181
-#, fuzzy
 msgid "Forth Mouse Button"
-msgstr "arah tombol mouse"
+msgstr "Tombol Mouse Ke Empat"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:182
 msgid "Frame"
 msgstr "Bingkai"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:183
-#, fuzzy
 msgid "Free"
-msgstr "Luang"
+msgstr "Bebas"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:184
-#, fuzzy
 msgid "Gamma Curve"
-msgstr "Pilih kurva:"
+msgstr "Kurva Gamma"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:185
 #, fuzzy
@@ -3547,9 +3490,8 @@ msgid "Gtk+ Obsolete"
 msgstr "(%i baru, %i usang)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:188
-#, fuzzy
 msgid "Half"
-msgstr "1:2 Setengah"
+msgstr "Setengah"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:189
 #, fuzzy
@@ -3581,9 +3523,8 @@ msgid "Horizontal Alignment column"
 msgstr "Penyesuaian letak horisontal label"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:196
-#, fuzzy
 msgid "Horizontal Box"
-msgstr "Ukuran kotak"
+msgstr "Kotak Horisontal"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:197
 msgid "Horizontal Button Box"
@@ -3599,17 +3540,14 @@ msgid "Horizontal Padding column"
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:200
-#, fuzzy
 msgid "Horizontal Panes"
-msgstr "Stereo Horizontal"
+msgstr "Panel Horizontal"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:201
-#, fuzzy
 msgid "Horizontal Ruler"
-msgstr "Penunjuk Vertikal"
+msgstr "Penggaris Horisontal"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:202
-#, fuzzy
 msgid "Horizontal Scale"
 msgstr "Skala Horisontal"
 
@@ -3652,7 +3590,6 @@ msgid "Icon Sources"
 msgstr "&Sumber Tambahan"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:214
-#, fuzzy
 msgid "Icon View"
 msgstr "Tampilan Ikon"
 
@@ -3677,14 +3614,12 @@ msgid "Immediate"
 msgstr "immediate tidak valid"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:220
-#, fuzzy
 msgid "In"
-msgstr "_Masuk"
+msgstr "In"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:221
-#, fuzzy
 msgid "Inches"
-msgstr "Inch"
+msgstr "Inci"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:222
 #, fuzzy
@@ -3772,38 +3707,32 @@ msgid "Info"
 msgstr "Info"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:239
-#, fuzzy
 msgid "Input Dialog"
-msgstr "Dialog pilih"
+msgstr "Dialog Masukan"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:240
-#, fuzzy
 msgid "Insert After"
-msgstr "Masukkan Se&telah"
+msgstr "Sisipkan Setelah"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:241
-#, fuzzy
 msgid "Insert Before"
-msgstr "Masukkan Se&belum"
+msgstr "Sisipkan Sebelum"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:242
-#, fuzzy
 msgid "Insert Column"
-msgstr "Properti kolom"
+msgstr "Sisipkan Kolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:243
 msgid "Insert Page After"
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:244
-#, fuzzy
 msgid "Insert Page Before"
-msgstr "Akhiri halaman sebelum"
+msgstr "Sisipkan Halaman Sebelum"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:245
-#, fuzzy
 msgid "Insert Row"
-msgstr "Baris tabel"
+msgstr "Sisipkan Baris"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:246
 msgid "Intro"
@@ -3829,19 +3758,16 @@ msgid "Italic"
 msgstr "Miring"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:251
-#, fuzzy
 msgid "Items"
-msgstr "sejumlah objek"
+msgstr "Butir"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:252
-#, fuzzy
 msgid "Key Press"
-msgstr "<Tekan Tombol>"
+msgstr "Kunci Ditekan"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:253
-#, fuzzy
 msgid "Key Release"
-msgstr "Rilis"
+msgstr "Kunci Dilepas"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:254
 #, fuzzy
@@ -3849,9 +3775,8 @@ msgid "Keycode column"
 msgstr "Properti kolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:256
-#, fuzzy
 msgid "Label For"
-msgstr "Untuk nama"
+msgstr "Label Untuk"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:257
 #, fuzzy
@@ -3882,7 +3807,6 @@ msgid "Leave Notify"
 msgstr "Name=Beritahu"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:263 ../plugins/gnome/bonobo.xml.in.h:4
-#, fuzzy
 msgid "Left"
 msgstr "Kiri"
 
@@ -4058,14 +3982,12 @@ msgid "On"
 msgstr "Nyala"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:308
-#, fuzzy
 msgid "Open"
 msgstr "Buka"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:309
-#, fuzzy
 msgid "Option Menu"
-msgstr "---  Menu DVD"
+msgstr "Menu Opsi"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:310
 #, fuzzy
@@ -4073,14 +3995,12 @@ msgid "Orientation column"
 msgstr "Properti kolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:311 ../plugins/gnome/gnome.xml.in.h:42
-#, fuzzy
 msgid "Other"
 msgstr "Lainnya"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:312
-#, fuzzy
 msgid "Out"
-msgstr "_Keluar"
+msgstr "Keluar"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:313
 msgid "Paned"
@@ -4107,12 +4027,10 @@ msgid "Pixbuf Renderer"
 msgstr "Pengemuka teks"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:319
-#, fuzzy
 msgid "Pixbuf column"
 msgstr "Kolom pixbuf"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:320
-#, fuzzy
 msgid "Pixels"
 msgstr "Piksel"
 
@@ -4135,7 +4053,6 @@ msgid "Popup For"
 msgstr "Dikompilasi untuk:"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:325
-#, fuzzy
 msgid "Popup Menu"
 msgstr "Menu Popup"
 
@@ -4146,7 +4063,6 @@ msgstr "Posisi"
 
 #. Atk press property
 #: ../plugins/gtk+/gtk+.xml.in.h:328
-#, fuzzy
 msgid "Press"
 msgstr "Tekan"
 
@@ -4156,9 +4072,8 @@ msgid "Primary Icon Activatable"
 msgstr "Ikon primer dapat mengaktifkan"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:330
-#, fuzzy
 msgid "Primary Icon Name"
-msgstr "Nama ikon utama"
+msgstr "Nama Ikon Primer"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:331
 msgid "Primary Icon Pixbuf"
@@ -4232,28 +4147,24 @@ msgid "Queue"
 msgstr "Antrian"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:347
-#, fuzzy
 msgid "Radio Action"
-msgstr "Aksi perintah"
+msgstr "Aksi Rerintah"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:348
-#, fuzzy
 msgid "Radio Button"
-msgstr "tombol radio"
+msgstr "Tombol Radio"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:349
-#, fuzzy
 msgid "Radio Menu Item"
-msgstr "anggota menu radio"
+msgstr "Butir Menu Radio"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:350
 msgid "Radio Tool Button"
-msgstr ""
+msgstr "Tombol Alat Radio"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:351
-#, fuzzy
 msgid "Radio column"
-msgstr "Properti kolom"
+msgstr "Kolom radio"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:352
 #, fuzzy
@@ -4283,7 +4194,6 @@ msgstr "Aksi Terkait"
 
 #. Atk release property
 #: ../plugins/gtk+/gtk+.xml.in.h:359
-#, fuzzy
 msgid "Release"
 msgstr "Rilis"
 
@@ -4340,7 +4250,6 @@ msgid "Ruler"
 msgstr "Penggaris"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:371
-#, fuzzy
 msgid "Save"
 msgstr "Simpan"
 
@@ -4355,7 +4264,6 @@ msgid "Scale column"
 msgstr "Properti kolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:374
-#, fuzzy
 msgid "Scroll"
 msgstr "Gulung"
 
@@ -4365,9 +4273,8 @@ msgid "Scrolled Window"
 msgstr "Window Maker"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:376
-#, fuzzy
 msgid "Second Mouse Button"
-msgstr "arah tombol mouse"
+msgstr "Tombol Mouse Kedua"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:377
 #, fuzzy
@@ -4375,9 +4282,8 @@ msgid "Secondary Icon Activatable"
 msgstr "Ikon sekunder dapat mengaktifkan"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:378
-#, fuzzy
 msgid "Secondary Icon Name"
-msgstr "Nama ikon sekunder"
+msgstr "Nama Ikon Sekunder"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:379
 msgid "Secondary Icon Pixbuf"
@@ -4403,7 +4309,6 @@ msgid "Secondary Stock Icon"
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:384
-#, fuzzy
 msgid "Select Folder"
 msgstr "Pilih Folder"
 
@@ -4479,9 +4384,8 @@ msgid "Single Paragraph Mode column"
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:401
-#, fuzzy
 msgid "Sixth Key"
-msgstr "&Hapus kunci"
+msgstr "Kunci Ke Enam"
 
 #. Objects
 #: ../plugins/gtk+/gtk+.xml.in.h:403
@@ -4612,11 +4516,11 @@ msgstr "Properti kolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:431
 msgid "Substructure"
-msgstr ""
+msgstr "Substruktur"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:432
 msgid "Subwindow Of"
-msgstr ""
+msgstr "Subwindow Dari"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:433
 msgid "Summary"
@@ -4632,14 +4536,12 @@ msgid "Table"
 msgstr "Tabel"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:438
-#, fuzzy
 msgid "Text Buffer"
 msgstr "Penyangga Teks"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:439
-#, fuzzy
 msgid "Text Buffers"
-msgstr "Penimbal hilang"
+msgstr "Penyangga Teks"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:440
 #, fuzzy
@@ -4647,9 +4549,8 @@ msgid "Text Column column"
 msgstr "Kolom Teks"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:441
-#, fuzzy
 msgid "Text Entry"
-msgstr "Sembunyikan teks masukan"
+msgstr "Entri Teks"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:442
 msgid "Text Horizontal Alignment column"
@@ -4661,12 +4562,10 @@ msgid "Text Renderer"
 msgstr "Pengemuka teks"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:444
-#, fuzzy
 msgid "Text Tag"
-msgstr "Tabel Tag Teks"
+msgstr "Tag Teks"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:445
-#, fuzzy
 msgid "Text Tag Table"
 msgstr "Tabel Tag Teks"
 
@@ -4675,22 +4574,18 @@ msgid "Text Vertical Alignment column"
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:447
-#, fuzzy
 msgid "Text View"
 msgstr "Tampilan teks"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:448
-#, fuzzy
 msgid "Text below icons"
 msgstr "Teks di bawah ikon"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:450
-#, fuzzy
 msgid "Text column"
 msgstr "Kolom teks"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:451
-#, fuzzy
 msgid "Text only"
 msgstr "Hanya teks"
 
@@ -4869,9 +4764,8 @@ msgid "Underline column"
 msgstr "Kolom Bergaris Bawah"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:490
-#, fuzzy
 msgid "Up"
-msgstr "Atas"
+msgstr "Naik"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:491
 #, fuzzy
@@ -4879,33 +4773,27 @@ msgid "Use Action Appearance"
 msgstr "Gunakan Penampilan Aksi"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:492
-#, fuzzy
 msgid "Use Underline"
-msgstr "Gunakan garis bawah"
+msgstr "Gunakan Garis Bawah"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:493
-#, fuzzy
 msgid "Utility"
-msgstr "Alat"
+msgstr "Utilitas"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:494
-#, fuzzy
 msgid "Value column"
-msgstr "Properti kolom"
+msgstr "Kolom nilai"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:495
-#, fuzzy
 msgid "Variant column"
-msgstr "Properti kolom"
+msgstr "Kolom varian"
 
 #. Objects
 #: ../plugins/gtk+/gtk+.xml.in.h:497 ../plugins/gtk+/glade-model-data.c:1245
-#, fuzzy
 msgid "Vertical"
 msgstr "Vertikal"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:498
-#, fuzzy
 msgid "Vertical Alignment"
 msgstr "Perataan Vertikal"
 
@@ -4915,13 +4803,12 @@ msgid "Vertical Alignment column"
 msgstr "Aline cell vertikal"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:500
-#, fuzzy
 msgid "Vertical Box"
-msgstr "Ukuran kotak"
+msgstr "Kotak Vertikal"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:501
 msgid "Vertical Button Box"
-msgstr ""
+msgstr "Kotak Tombol Vertikal"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:502
 #, fuzzy
@@ -4933,19 +4820,16 @@ msgid "Vertical Padding column"
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:504
-#, fuzzy
 msgid "Vertical Panes"
-msgstr "Penunjuk Vertikal"
+msgstr "Panel Vertikal"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:505
-#, fuzzy
 msgid "Vertical Ruler"
-msgstr "Penunjuk Vertikal"
+msgstr "Penggaris Vertikal"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:506
-#, fuzzy
 msgid "Vertical Scale"
-msgstr "Skala vertikal"
+msgstr "Skala Vertikal"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:507
 #, fuzzy
@@ -4958,9 +4842,8 @@ msgid "Vertical Separator"
 msgstr "Lebar Separator Vertikal"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:509
-#, fuzzy
 msgid "Viewport"
-msgstr "viewport"
+msgstr "Viewport"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:510
 #, fuzzy
@@ -4968,7 +4851,6 @@ msgid "Visibility Notify"
 msgstr "Name=Beritahu"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:511
-#, fuzzy
 msgid "Visible"
 msgstr "Tampak"
 
@@ -4983,7 +4865,6 @@ msgid "Volume Button"
 msgstr "Tombol Solo:"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:514 ../plugins/gnome/gnome.xml.in.h:69
-#, fuzzy
 msgid "Warning"
 msgstr "Peringatan"
 
@@ -4993,20 +4874,17 @@ msgid "Weight column"
 msgstr "Properti kolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:516
-#, fuzzy
 msgid "West"
 msgstr "Barat"
 
 #. Objects
 #: ../plugins/gtk+/gtk+.xml.in.h:519
-#, fuzzy
 msgid "Widgets"
 msgstr "Widget"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:520
-#, fuzzy
 msgid "Width column"
-msgstr "Lebar Kolom"
+msgstr "Kolom lebar"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:521
 #, fuzzy
@@ -5014,19 +4892,16 @@ msgid "Width in Characters column"
 msgstr "Lebar Maksimum Dalam Karakter"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:522
-#, fuzzy
 msgid "Window"
 msgstr "Jendela"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:523
-#, fuzzy
 msgid "Window Group"
-msgstr "Hak akses grup"
+msgstr "Grup Jendela"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:524
-#, fuzzy
 msgid "Word"
-msgstr "kata"
+msgstr "Kata"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:525
 #, fuzzy
@@ -5044,9 +4919,8 @@ msgid "Wrap Width column"
 msgstr "Lebar kolom saat ini"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:528
-#, fuzzy
 msgid "Yes, No"
-msgstr " (ya atau tidak)"
+msgstr "Ya, Tidak"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:529
 msgid ""
@@ -5098,22 +4972,18 @@ msgid "Page Setup Dialog"
 msgstr "Tentukan penataan halaman"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:10
-#, fuzzy
 msgid "Preview"
-msgstr "Pratampil"
+msgstr "Pratilik"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:11
-#, fuzzy
 msgid "Print Dialog"
-msgstr "Dialog Pencetakan Gnome"
+msgstr "Dialog Pencetakan"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:12
-#, fuzzy
 msgid "Reverse"
-msgstr "_Kembali"
+msgstr "Balik"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:13
-#, fuzzy
 msgid "Scale"
 msgstr "Skala"
 
@@ -5131,29 +5001,24 @@ msgid "< define a new column >"
 msgstr "Definisikan Tampilan Baru"
 
 #: ../plugins/gtk+/glade-column-types.c:783
-#, fuzzy
 msgid "Add and remove columns:"
-msgstr "Tambah dan buang applets"
+msgstr "Tambah dan hapus kolom:"
 
 #: ../plugins/gtk+/glade-column-types.c:837
-#, fuzzy
 msgid "Column type"
-msgstr "Kolom"
+msgstr "Tipe kolom"
 
 #: ../plugins/gtk+/glade-column-types.c:859
-#, fuzzy
 msgid "Column name"
-msgstr "Kolom"
+msgstr "Nama kolom"
 
 #: ../plugins/gtk+/glade-model-data.c:1204
-#, fuzzy
 msgid "Add and remove rows:"
-msgstr "Tambah dan buang applets"
+msgstr "Tambah dan hapus baris:"
 
 #: ../plugins/gtk+/glade-model-data.c:1234
-#, fuzzy
 msgid "Sequential editing:"
-msgstr "Pengeditan gagal"
+msgstr "Penyuntingan berurut:"
 
 #: ../plugins/gtk+/glade-icon-sources.c:694
 #, c-format
@@ -5268,9 +5133,8 @@ msgstr "Label Edit"
 #: ../plugins/gtk+/glade-tool-button-editor.c:494
 #: ../plugins/gtk+/glade-image-editor.c:345
 #: ../plugins/gtk+/glade-image-item-editor.c:429
-#, fuzzy
 msgid "Edit Image"
-msgstr "Sunting Gambar"
+msgstr ""
 
 #: ../plugins/gtk+/glade-image-editor.c:313
 #, c-format
@@ -5279,19 +5143,17 @@ msgstr ""
 
 #. Image size frame...
 #: ../plugins/gtk+/glade-image-editor.c:398
-#, fuzzy
 msgid "Set Image Size"
-msgstr "Tetapkan ukuran tahapan"
+msgstr "Tetapkan Ukuran Gambar"
 
 #: ../plugins/gtk+/glade-image-item-editor.c:218
 #, c-format
 msgid "Setting %s to use a stock item"
-msgstr ""
+msgstr "Menata %s untuk memakai butir stok"
 
 #: ../plugins/gtk+/glade-image-item-editor.c:350
-#, fuzzy
 msgid "Stock Item:"
-msgstr "Hapus item"
+msgstr "Butir Stok:"
 
 #: ../plugins/gtk+/glade-image-item-editor.c:384
 msgid "Custom label and image:"
@@ -5332,17 +5194,17 @@ msgstr ""
 #: ../plugins/gtk+/glade-label-editor.c:321
 #, c-format
 msgid "Setting %s to use a pattern string"
-msgstr ""
+msgstr "Menata %s untuk memakai suatu string pola"
 
 #: ../plugins/gtk+/glade-label-editor.c:357
 #, c-format
 msgid "Setting %s to set desired width in characters"
-msgstr ""
+msgstr "Menata %s untuk mengatur lebar yang diinginkan dalam karakter"
 
 #: ../plugins/gtk+/glade-label-editor.c:388
 #, c-format
 msgid "Setting %s to set maximum width in characters"
-msgstr ""
+msgstr "Menata %s untuk mengatur lebar maksimum dalam karakter"
 
 #: ../plugins/gtk+/glade-label-editor.c:422
 #, c-format
@@ -5352,7 +5214,7 @@ msgstr ""
 #: ../plugins/gtk+/glade-label-editor.c:457
 #, c-format
 msgid "Setting %s to use a single line"
-msgstr ""
+msgstr "Menata %s untuk memakai suatu baris tunggal"
 
 #: ../plugins/gtk+/glade-label-editor.c:492
 #, c-format
@@ -5362,19 +5224,17 @@ msgstr ""
 #. Label appearance...
 #: ../plugins/gtk+/glade-label-editor.c:538
 msgid "Edit label appearance"
-msgstr ""
+msgstr "Sunting penampilan label"
 
 #. Label formatting...
 #: ../plugins/gtk+/glade-label-editor.c:609
-#, fuzzy
 msgid "Format label"
-msgstr "&Trek Label"
+msgstr ""
 
 #. Line Wrapping...
 #: ../plugins/gtk+/glade-label-editor.c:675
-#, fuzzy
 msgid "Text line wrapping"
-msgstr "Mode baris wraping"
+msgstr ""
 
 #: ../plugins/gtk+/glade-label-editor.c:694
 msgid "Text wraps normally"
@@ -5383,216 +5243,196 @@ msgstr ""
 #: ../plugins/gtk+/glade-cell-renderer-editor.c:228
 #, c-format
 msgid "Setting %s to use the %s property as an attribute"
-msgstr ""
+msgstr "Menata %s untuk memakai properti %s sebagai suatu atribut"
 
 #: ../plugins/gtk+/glade-cell-renderer-editor.c:246
 #, c-format
 msgid "Setting %s to use the %s property directly"
-msgstr ""
+msgstr "Menata %s untuk memakai properti %s secara langsung"
 
 #: ../plugins/gtk+/glade-cell-renderer-editor.c:369
 #, c-format
 msgid "Retrieve %s from model (type %s)"
-msgstr ""
+msgstr "Mengambil %s dari model (tipe %s)"
 
 #. translators: the adjective not the verb
 #: ../plugins/gtk+/glade-cell-renderer-editor.c:509
-#, fuzzy
 msgid "unset"
-msgstr "Belum diset"
+msgstr "tak diset"
 
 #: ../plugins/gtk+/glade-cell-renderer-editor.c:532
-#, fuzzy
 msgid "no model"
-msgstr "_Model papan ketik:"
+msgstr "tanpa model"
 
 #: ../plugins/gtk+/glade-treeview-editor.c:241
 msgid ""
 "Choose a Data Model and define some\n"
 "columns in the data store first"
 msgstr ""
+"Pilih suatu Model Data dan definisikan dulu\n"
+"beberapa kolom pada penyimpanan data"
 
 #: ../plugins/gtk+/glade-entry-editor.c:229
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use static text"
-msgstr "%s: Gagal mengatur %s menjadi %s"
+msgstr "Menata %s untuk memakai teks statik"
 
 #: ../plugins/gtk+/glade-entry-editor.c:267
 #, c-format
 msgid "Setting %s to use an external buffer"
-msgstr ""
+msgstr "Menata %s untuk memakai suatu penyangga eksternal"
 
 #: ../plugins/gtk+/glade-entry-editor.c:352
 #, c-format
 msgid "Setting %s to use a primary icon from stock"
-msgstr ""
+msgstr "Menata %s untuk memakai ikon primer dari stok"
 
 #: ../plugins/gtk+/glade-entry-editor.c:376
 #, c-format
 msgid "Setting %s to use a primary icon from the icon theme"
-msgstr ""
+msgstr "Menata %s untuk memakai ikon primer dari tema ikon"
 
 #: ../plugins/gtk+/glade-entry-editor.c:399
 #, c-format
 msgid "Setting %s to use a primary icon from filename"
-msgstr ""
+msgstr "Menata %s untuk memakai ikon primer dari nama berkas"
 
 #: ../plugins/gtk+/glade-entry-editor.c:424
 #, c-format
 msgid "Setting %s to use a secondary icon from stock"
-msgstr ""
+msgstr "Menata %s untuk memakai ikon sekunder dari stok"
 
 #: ../plugins/gtk+/glade-entry-editor.c:448
 #, c-format
 msgid "Setting %s to use a secondary icon from the icon theme"
-msgstr ""
+msgstr "Menata %s untuk memakai ikon sekunder dari tema ikon"
 
 #: ../plugins/gtk+/glade-entry-editor.c:471
 #, c-format
 msgid "Setting %s to use a secondary icon from filename"
-msgstr ""
+msgstr "Menata %s untuk memakai ikon sekunder dari nama berkas"
 
 #. Primary icon...
 #: ../plugins/gtk+/glade-entry-editor.c:596
-#, fuzzy
 msgid "Primary icon"
-msgstr "Desain ikon"
+msgstr "Ikon primer"
 
 #. Secondary icon...
 #: ../plugins/gtk+/glade-entry-editor.c:670
-#, fuzzy
 msgid "Secondary icon"
-msgstr "Desain ikon"
+msgstr "Ikon Sekunder"
 
 #: ../plugins/gtk+/glade-activatable-editor.c:331
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s action"
-msgstr "Aksi perintah"
+msgstr "Menata aksi %s"
 
 #: ../plugins/gtk+/glade-activatable-editor.c:359
 #, c-format
 msgid "Setting %s to use action appearance"
-msgstr ""
+msgstr "Menata %s untuk memakai penampilan aksi"
 
 #: ../plugins/gtk+/glade-activatable-editor.c:360
 #, c-format
 msgid "Setting %s to not use action appearance"
-msgstr ""
+msgstr "Menata %s untuk tidak memakai penampilan aksi"
 
 #: ../plugins/gnome/glade-gnome.c:292
-#, fuzzy
 msgid "Status Message."
-msgstr "Pesan %d / %d / Status: %s"
+msgstr "Pesan Status."
 
 #: ../plugins/gnome/glade-gnome.c:659
-#, fuzzy
 msgid "The position in the druid"
-msgstr "posisi pertengahan (dalam %)"
+msgstr "Posisi di druid"
 
 #: ../plugins/gnome/glade-gnome.c:1011
 msgid "Message box type"
-msgstr ""
+msgstr "Tipe kotak pesan"
 
 #: ../plugins/gnome/glade-gnome.c:1012
 msgid "The type of the message box"
-msgstr ""
+msgstr "Tipe kotak pesan"
 
 #: ../plugins/gnome/glade-gnome.c:1220
 msgid "This property is valid only in font information mode"
-msgstr ""
+msgstr "Properti hanya valid pada mode informasi fonta"
 
 #. This is deprecated
 #: ../plugins/gnome/glade-gnome.c:1308 ../plugins/gnome/canvas.xml.in.h:20
-#, fuzzy
 msgid "Selection Mode"
-msgstr "Modus Pemilihan"
+msgstr "Mode Pemilihan"
 
 #: ../plugins/gnome/glade-gnome.c:1309
-#, fuzzy
 msgid "Choose the Selection Mode"
-msgstr "Modus K&otak Pemilihan"
+msgstr "Pilih Mode Pemilihan"
 
 #: ../plugins/gnome/glade-gnome.c:1449
-#, fuzzy
 msgid "Placement"
-msgstr "_Penempatan"
+msgstr "Penempatan"
 
 #: ../plugins/gnome/glade-gnome.c:1450
-#, fuzzy
 msgid "Choose the BonoboDockPlacement type"
-msgstr "Pilih tipe klik _beforehand"
+msgstr "Pilih tipe BonoboDockPlacement"
 
 #: ../plugins/gnome/glade-gnome.c:1478
-#, fuzzy
 msgid "Behavior"
 msgstr "Perilaku"
 
 #: ../plugins/gnome/glade-gnome.c:1479
-#, fuzzy
 msgid "Choose the BonoboDockItemBehavior type"
-msgstr "Pilih tipe klik _beforehand"
+msgstr "Pilih tipe BonoboDockItemBehavior"
 
 #: ../plugins/gnome/glade-gnome.c:1488
-#, fuzzy
 msgid "Pack Type"
-msgstr "Tipe pak"
+msgstr "Tipe Pak"
 
 #: ../plugins/gnome/glade-gnome.c:1489
-#, fuzzy
 msgid "Choose the Pack Type"
-msgstr "Tipe pak tab"
+msgstr "Pilih Tipe Pak"
 
 #: ../plugins/gnome/gnome.xml.in.h:1
-#, fuzzy
 msgid "24-Hour Format"
-msgstr "Format _24 jam"
+msgstr "Format 24 Jam"
 
 #: ../plugins/gnome/gnome.xml.in.h:3
-#, fuzzy
 msgid "Background Color"
-msgstr "Warna latar belakang"
+msgstr "Warna Latar Belakang"
 
 #: ../plugins/gnome/gnome.xml.in.h:4
-#, fuzzy
 msgid "Contents Background Color"
 msgstr "Warna Latar Belakang Isi"
 
 #: ../plugins/gnome/gnome.xml.in.h:5
 msgid "Display Seconds"
-msgstr ""
+msgstr "Tampilkan Detik"
 
 #: ../plugins/gnome/gnome.xml.in.h:6
-#, fuzzy
 msgid "Dither"
 msgstr "Dither"
 
 #: ../plugins/gnome/gnome.xml.in.h:12
-#, fuzzy
 msgid "Font Information"
-msgstr "Informasi pembuatan"
+msgstr "Informasi Fonta"
 
 #: ../plugins/gnome/gnome.xml.in.h:13
 msgid "GNOME About"
 msgstr "Tentang GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:14
-#, fuzzy
 msgid "GNOME App"
-msgstr "Datadir App GNOME"
+msgstr "App GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:15
-#, fuzzy
 msgid "GNOME App Bar"
-msgstr "Datadir App GNOME"
+msgstr "Bilah App GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:16
 msgid "GNOME Color Picker"
-msgstr ""
+msgstr "Pemilih Warna GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:17
-#, fuzzy
 msgid "GNOME Date Edit"
-msgstr "Ubah Profile GMAudio"
+msgstr "Sunting Tanggal GNOME"
 
 #. Deprecated Widget Classes :)
 #: ../plugins/gnome/gnome.xml.in.h:19
@@ -5600,190 +5440,160 @@ msgid "GNOME Dialog"
 msgstr "Dialog GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:20
-#, fuzzy
 msgid "GNOME Druid"
-msgstr "Judul druid"
+msgstr "Druid GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:21
 msgid "GNOME Druid Page Edge"
-msgstr ""
+msgstr "Tepi Halaman Druid GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:22
 msgid "GNOME Druid Page Standard"
-msgstr ""
+msgstr "Standar Halaman Druid GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:23
-#, fuzzy
 msgid "GNOME File Entry"
-msgstr "daerah masukan berkas"
+msgstr "Entri Berkas GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:24
-#, fuzzy
 msgid "GNOME Font Picker"
-msgstr "Mode operasi pemilih fonta"
+msgstr "Pemilih Fonta GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:25
-#, fuzzy
 msgid "GNOME HRef"
-msgstr "Terminal GNOME"
+msgstr "HRef GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:26
 msgid "GNOME Icon Entry"
-msgstr ""
+msgstr "Entri Ikon GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:27
-#, fuzzy
 msgid "GNOME Icon Selection"
-msgstr "Dialog pemilih ikon"
+msgstr "Pemilihan Ikon GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:28
 msgid "GNOME Message Box"
-msgstr ""
+msgstr "Kotak Pesan GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:29
-#, fuzzy
 msgid "GNOME Pixmap"
-msgstr "Direktori Pixmap"
+msgstr "Pixmap GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:30
 msgid "GNOME Pixmap Entry"
-msgstr ""
+msgstr "Entri Pixmap GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:31
 msgid "GNOME Property Box"
-msgstr ""
+msgstr "Kotak Properti GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:32
-#, fuzzy
 msgid "GNOME UI Obsolete"
-msgstr "Dukungan UI GConf GNOME"
+msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:33
-#, fuzzy
 msgid "GNOME User Interface"
-msgstr "Kejadian user interface"
+msgstr "Antar Muka Pengguna GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:34
-#, fuzzy
 msgid "Generic"
 msgstr "Generik"
 
 #: ../plugins/gnome/gnome.xml.in.h:35
-#, fuzzy
 msgid "Information"
 msgstr "Informasi"
 
 #: ../plugins/gnome/gnome.xml.in.h:36
-#, fuzzy
 msgid "Logo"
 msgstr "Logo"
 
 #: ../plugins/gnome/gnome.xml.in.h:37
-#, fuzzy
 msgid "Logo Background Color"
-msgstr "Warna latar belakang logo"
+msgstr "Warna Latar Belakang Logo"
 
 #: ../plugins/gnome/gnome.xml.in.h:38
-#, fuzzy
 msgid "Max Saved"
-msgstr "Lampiran telah disimpan."
+msgstr "Simpan Maks"
 
 #: ../plugins/gnome/gnome.xml.in.h:39
-#, fuzzy
 msgid "Message"
 msgstr "Pesan"
 
 #: ../plugins/gnome/gnome.xml.in.h:40
-#, fuzzy
 msgid "Monday First"
-msgstr "Halaman pertama"
+msgstr "Pertama Senin"
 
 #: ../plugins/gnome/gnome.xml.in.h:43
-#, fuzzy
 msgid "Padding"
-msgstr "Isian"
+msgstr "Ganjal"
 
 #: ../plugins/gnome/gnome.xml.in.h:44
-#, fuzzy
 msgid "Pixmap"
 msgstr "Pixmap"
 
 #: ../plugins/gnome/gnome.xml.in.h:46
-#, fuzzy
 msgid "Program Name"
-msgstr "Nama program"
+msgstr "Nama Program"
 
 #: ../plugins/gnome/gnome.xml.in.h:47
-#, fuzzy
 msgid "Program Version"
-msgstr "Versi program"
+msgstr "Versi Program"
 
 #: ../plugins/gnome/gnome.xml.in.h:49
-#, fuzzy
 msgid "Scaled Height"
-msgstr "Tinggi kota"
+msgstr "Tinggi Terskala"
 
 #: ../plugins/gnome/gnome.xml.in.h:50
-#, fuzzy
 msgid "Scaled Width"
-msgstr "Lebar sempadan"
+msgstr "Lebar Terskala"
 
 #: ../plugins/gnome/gnome.xml.in.h:51
-#, fuzzy
 msgid "Show Time"
-msgstr "Tampilkan _waktu tersisa"
+msgstr "Tampilkan Waktu"
 
 #: ../plugins/gnome/gnome.xml.in.h:53
-#, fuzzy
 msgid "StatusBar"
-msgstr "kolom status"
+msgstr "StatusBar"
 
 #: ../plugins/gnome/gnome.xml.in.h:54
-#, fuzzy
 msgid "Store Config"
-msgstr "Konfigurasi tersisa"
+msgstr "Simpan Konfigurasi"
 
 #: ../plugins/gnome/gnome.xml.in.h:56
-#, fuzzy
 msgid "Text Foreground Color"
-msgstr "Warna latar depan judul"
+msgstr "Warna Latar Depan Teks"
 
 #: ../plugins/gnome/gnome.xml.in.h:57
 msgid "The height to scale the pixmap to"
-msgstr ""
+msgstr "Tinggi untuk menskalakan pixmap"
 
 #: ../plugins/gnome/gnome.xml.in.h:58
 msgid "The maximum number of history entries saved"
-msgstr ""
+msgstr "Cacah maksimum entri riwayat yang disimpan"
 
 #: ../plugins/gnome/gnome.xml.in.h:59
-#, fuzzy
 msgid "The pixmap file"
-msgstr "&Atribut berkas..."
+msgstr "Berkas pixmap"
 
 #: ../plugins/gnome/gnome.xml.in.h:60
 msgid "The width to scale the pixmap to"
-msgstr ""
+msgstr "Lebar untuk menskalakan pixmap"
 
 #: ../plugins/gnome/gnome.xml.in.h:62
-#, fuzzy
 msgid "Title Foreground Color"
-msgstr "Warna latar depan judul"
+msgstr "Warna Latar Depan Judul"
 
 #: ../plugins/gnome/gnome.xml.in.h:63
-#, fuzzy
 msgid "Top Watermark"
-msgstr "Tanda air atas"
+msgstr "Watermark Puncak"
 
 #: ../plugins/gnome/gnome.xml.in.h:64
-#, fuzzy
 msgid "Unknown"
-msgstr "Tidak diketahui"
+msgstr "Tak dikenal"
 
 #: ../plugins/gnome/gnome.xml.in.h:65
-#, fuzzy
 msgid "Use Alpha"
-msgstr "Gunakan alfa"
+msgstr "Gunakan Alfa"
 
 #: ../plugins/gnome/gnome.xml.in.h:66
 msgid ""
@@ -5791,89 +5601,79 @@ msgid ""
 "within the overall GnomeDruid. This enables the correct \"surrounding\" "
 "content for the page to be drawn"
 msgstr ""
+"Dipakai untuk menyampaikan informasi tentang posisi dari suatu "
+"GnomeDruidPage di dalam GnomeDruid. Ini memungkinkan isi \"sekeliling\" yang "
+"benar bagi halaman untuk digambar"
 
 #: ../plugins/gnome/gnome.xml.in.h:67
-#, fuzzy
 msgid "User"
-msgstr "User"
+msgstr "Pengguna"
 
 #: ../plugins/gnome/gnome.xml.in.h:68
-#, fuzzy
 msgid "User Widget"
-msgstr "Widget label"
+msgstr "Widget Pengguna"
 
 #: ../plugins/gnome/gnome.xml.in.h:70
-#, fuzzy
 msgid "Watermark"
-msgstr "Tanda air atas"
+msgstr "Watermark"
 
 #: ../plugins/gnome/bonobo.xml.in.h:2
-#, fuzzy
 msgid "Exclusive"
 msgstr "Eksklusif"
 
 #: ../plugins/gnome/bonobo.xml.in.h:3
-#, fuzzy
 msgid "Floating"
-msgstr "%1 (Mengambang)"
+msgstr "Mengambang"
 
 #: ../plugins/gnome/bonobo.xml.in.h:5
-#, fuzzy
 msgid "Locked"
 msgstr "Terkunci"
 
 #: ../plugins/gnome/bonobo.xml.in.h:6
-#, fuzzy
 msgid "Never Floating"
-msgstr "Titik Ambang"
+msgstr "Tak Pernah Mengambang"
 
 #: ../plugins/gnome/bonobo.xml.in.h:7
-#, fuzzy
 msgid "Never Horizontal"
-msgstr "Stereo Horizontal"
+msgstr "Tak Pernah Horizontal"
 
 #: ../plugins/gnome/bonobo.xml.in.h:8
-#, fuzzy
 msgid "Never Vertical"
-msgstr "Penunjuk Vertikal"
+msgstr "Tak Pernah Vertikal"
 
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:2
-#, fuzzy
 msgid "Column Spacing"
 msgstr "Jarak Antar Kolom"
 
 #: ../plugins/gnome/canvas.xml.in.h:3
-#, fuzzy
 msgid "GNOME Canvas"
-msgstr "Kanvas Baru"
+msgstr "Kanvas GNOME"
 
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:5
 msgid "GNOME Icon List"
-msgstr ""
+msgstr "Daftar Ikon GNOME"
 
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:7
-#, fuzzy
 msgid "Icon Width"
-msgstr "Lebar sempadan"
+msgstr "Lebar Ikon"
 
 #: ../plugins/gnome/canvas.xml.in.h:8
 msgid "If the icon text can be edited by the user"
-msgstr ""
+msgstr "Bila teks ikon dapat disunting oleh pengguna"
 
 #: ../plugins/gnome/canvas.xml.in.h:9
 msgid ""
 "If the icon text is static, in which case it will not be copied by the "
 "GnomeIconList"
-msgstr ""
+msgstr "Bila teks ikon statik, maka tidak akan disalin oleh GnomeIconList"
 
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:11
-#, fuzzy
 msgid "List Icons"
-msgstr "Daftar benda"
+msgstr "Ikon Daftar"
 
 #: ../plugins/gnome/canvas.xml.in.h:12
 msgid "Max X"
@@ -5897,39 +5697,33 @@ msgstr "Piksel per unit"
 
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:18
-#, fuzzy
 msgid "Row Spacing"
 msgstr "Jarak Antar Baris"
 
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:22
-#, fuzzy
 msgid "Text Below"
-msgstr "Tampilan teks"
+msgstr "Teks Di Bawah"
 
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:24
-#, fuzzy
 msgid "Text Editable"
-msgstr "Lokasi yang bisa disunting"
+msgstr "Teks Dapat Disunting"
 
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:26
-#, fuzzy
 msgid "Text Right"
-msgstr "Kanan atas"
+msgstr "Teks Di Kanan"
 
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:28
-#, fuzzy
 msgid "Text Spacing"
-msgstr "Kurangi ruang"
+msgstr "Jarak Teks"
 
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:30
-#, fuzzy
 msgid "Text Static"
-msgstr "IP Statis"
+msgstr "Statis Teks"
 
 #: ../plugins/gnome/canvas.xml.in.h:31
 msgid "The maximum X coordinate"
@@ -5949,19 +5743,19 @@ msgstr "Koordinat Y minimum"
 
 #: ../plugins/gnome/canvas.xml.in.h:35
 msgid "The number of pixels between columns of icons"
-msgstr ""
+msgstr "Cacah piksel antara kolom-kolom ikon"
 
 #: ../plugins/gnome/canvas.xml.in.h:36
 msgid "The number of pixels between rows of icons"
-msgstr ""
+msgstr "Cacah piksel antara baris-baris ikon"
 
 #: ../plugins/gnome/canvas.xml.in.h:37
 msgid "The number of pixels between the text and the icon"
-msgstr ""
+msgstr "Cacah piksel antara teks dan ikon"
 
 #: ../plugins/gnome/canvas.xml.in.h:38
 msgid "The number of pixels corresponding to one unit"
-msgstr ""
+msgstr "Cacah piksel yang setara dengan satu unit"
 
 #: ../plugins/gnome/canvas.xml.in.h:39
 msgid "The selection mode"
