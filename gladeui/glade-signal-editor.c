@@ -42,6 +42,7 @@
 #include "glade-widget-adaptor.h"
 #include "glade-signal.h"
 #include "glade-signal-editor.h"
+#include "glade-signal-model.h"
 #include "glade-cell-renderer-icon.h"
 #include "glade-editor.h"
 #include "glade-command.h"
@@ -1292,6 +1293,21 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 	path_first = gtk_tree_path_new_first ();
 	gtk_tree_view_expand_row (GTK_TREE_VIEW (editor->signals_list), path_first, FALSE);
 	gtk_tree_path_free (path_first);
+
+	/* DEBUG */
+	{
+		GtkWidget* window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+		GtkWidget* tree = gtk_tree_view_new_with_model (glade_signal_model_new (widget));
+		GtkCellRenderer* renderer = gtk_cell_renderer_text_new ();
+		GtkTreeViewColumn* column = gtk_tree_view_column_new_with_attributes ("Name",
+		                                                             renderer,
+		                                                             "text", GLADE_SIGNAL_COLUMN_NAME,
+		                                                             NULL);
+		gtk_tree_view_append_column (GTK_TREE_VIEW (tree), column);
+
+		gtk_container_add (GTK_CONTAINER (window), tree);
+		gtk_widget_show_all (window);
+	}
 }
 
 static void
