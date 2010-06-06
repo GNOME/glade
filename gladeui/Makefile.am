@@ -60,7 +60,8 @@ libgladeui_1_la_SOURCES = \
 	glade-displayable-values.c \
 	glade-editable.c \
 	glade-editor-table.c \
-	glade-cell-renderer-icon.c
+	glade-cell-renderer-icon.c \
+	glade-signal-model.c
 
 libgladeui_1_la_CPPFLAGS =  \
 	$(common_defines)   \
@@ -115,7 +116,8 @@ libgladeuiinclude_HEADERS = \
 	glade-displayable-values.h \
 	glade-editable.h \
 	glade-editor-table.h \
-	glade-cell-renderer-icon.c
+	glade-cell-renderer-icon.h \
+	glade-signal-model.h
 
 
 
