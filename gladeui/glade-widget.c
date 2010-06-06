@@ -3442,6 +3442,44 @@ glade_widget_set_parent (GladeWidget *widget,
 }
 
 /**
+ * glade_widget_get_children:
+ * @widget: A #GladeWidget
+ *
+ * Fetches any wrapped children of @widget.
+ *
+ * Returns: The children of widget
+ *
+ * <note><para>This differs from a direct call to glade_widget_adaptor_get_children() as
+ * it only returns children which have an associated GladeWidget. This function will
+ * not return any placeholders or internal composite children that have not been 
+ * exposed for Glade configuration</para></note>
+ */
+GList *
+glade_widget_get_children (GladeWidget *widget)
+{
+	GList *adapter_children; 
+	GList *real_children = NULL;
+	GList *node;
+
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
+
+	adapter_children = glade_widget_adaptor_get_children (glade_widget_get_adaptor (widget),
+	                                                      widget->object);
+	
+	for (node = adapter_children; node != NULL; node = g_list_next (node))
+	{
+		if (glade_widget_get_from_gobject (node->data))
+		{
+			real_children = g_list_prepend (real_children, node->data);
+		}
+	}
+	g_list_free (adapter_children);
+	
+	return g_list_reverse (real_children);
+}
+	
+
+/**
  * glade_widget_get_toplevel:
  * @widget: A #GladeWidget
  *
@@ -3728,7 +3766,7 @@ glade_widget_read (GladeProject *project,
 	gchar        *klass, *id;
 
 	glade_widget_push_superuser ();
-
+	
 	if (!glade_xml_node_verify
 	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (project))))
 		return NULL;
@@ -3792,7 +3830,7 @@ glade_widget_read (GladeProject *project,
 	}
 
 	glade_widget_pop_superuser ();
-
+	
 	return widget;
 }
 

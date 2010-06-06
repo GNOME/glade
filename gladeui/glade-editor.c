@@ -586,11 +586,11 @@ glade_editor_set_signal_editor (GladeEditor *editor, GladeSignalEditor *signal_e
 {
 	if (editor->signal_editor) {
 		gtk_container_remove (GTK_CONTAINER (editor->page_signals),
-		                      glade_signal_editor_get_widget (editor->signal_editor));
+		                      GTK_WIDGET(editor->signal_editor));
 	}
 	editor->signal_editor = signal_editor;
 	gtk_container_add (GTK_CONTAINER (editor->page_signals),
-			    glade_signal_editor_get_widget (editor->signal_editor));
+	                   GTK_WIDGET(editor->signal_editor));
 }
 
 static void
@@ -599,7 +599,7 @@ glade_editor_load_signal_page (GladeEditor *editor)
 	if (editor->signal_editor == NULL) {
 		editor->signal_editor = glade_signal_editor_new ((gpointer) editor);
 		gtk_container_add (GTK_CONTAINER (editor->page_signals),
-				    glade_signal_editor_get_widget (editor->signal_editor));
+				   GTK_WIDGET(editor->signal_editor));
 	}
 }
 

@@ -70,7 +70,7 @@ struct _GladeBaseEditorPrivate
 	/* Editor UI */
 	GtkSizeGroup *group;
 	GtkWidget *paned, *table, *treeview, *main_scroll, *notebook;
-	GtkWidget *remove_button, *signal_editor_w;
+	GtkWidget *remove_button;
 	GladeSignalEditor *signal_editor;
 
 	GList *child_types;
@@ -1782,10 +1782,9 @@ glade_base_editor_init (GladeBaseEditor *editor)
 
 	/* Signal Editor */
 	e->signal_editor = glade_signal_editor_new (NULL);
-	e->signal_editor_w = glade_signal_editor_get_widget (e->signal_editor);
-	gtk_widget_show (e->signal_editor_w);
-	gtk_widget_set_size_request (e->signal_editor_w, -1, 96);
-	gtk_paned_pack2 (GTK_PANED (paned), e->signal_editor_w, FALSE, FALSE);
+	gtk_widget_show (GTK_WIDGET(e->signal_editor));
+	gtk_widget_set_size_request (GTK_WIDGET(e->signal_editor), -1, 96);
+	gtk_paned_pack2 (GTK_PANED (paned), GTK_WIDGET(e->signal_editor), FALSE, FALSE);
 	
 	/* Update the treeview on realize event */
 	g_signal_connect (editor, "realize",
@@ -2145,9 +2144,9 @@ glade_base_editor_set_show_signal_editor (GladeBaseEditor *editor, gboolean val)
 	g_return_if_fail (GLADE_IS_BASE_EDITOR (editor));
 	
 	if (val)
-		gtk_widget_show (editor->priv->signal_editor_w);
+		gtk_widget_show (GTK_WIDGET(editor->priv->signal_editor));
 	else
-		gtk_widget_hide (editor->priv->signal_editor_w);
+		gtk_widget_hide (GTK_WIDGET(editor->priv->signal_editor));
 }
 
 /* Convenience functions */

@@ -3379,16 +3379,6 @@ glade_window_init (GladeWindow *window)
 	show_dock_first_time (window, DOCK_INSPECTOR, "DockInspector");
 	show_dock_first_time (window, DOCK_EDITOR, "DockEditor");
 
-	/* signal editor */
-	g_signal_connect (G_OBJECT (glade_app_get_editor()->signal_editor),
-	                  "handler-editing-started",
-	                  G_CALLBACK (glade_signal_editor_handler_editing_started_default_impl),
-	                  NULL);
-	g_signal_connect (G_OBJECT (glade_app_get_editor()->signal_editor),
-	                  "userdata-editing-started",
-	                  G_CALLBACK (glade_signal_editor_userdata_editing_started_default_impl),
-	                  NULL);
-
 	/* status bar */
 	priv->statusbar = gtk_statusbar_new ();
 	priv->statusbar_menu_context_id = gtk_statusbar_get_context_id (GTK_STATUSBAR (priv->statusbar),

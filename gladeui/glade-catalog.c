@@ -533,6 +533,11 @@ glade_catalog_load_all (void)
 	gchar        **split;
 	GString       *icon_warning = NULL;
 	gint           i;
+
+
+	/* Make sure we don't init the catalogs twice */
+	if (loaded_catalogs)
+		return loaded_catalogs;
 	
 	/* First load catalogs from user specified directories ... */
 	if ((search_path = g_getenv (GLADE_ENV_CATALOG_PATH)) != NULL)
@@ -724,7 +729,6 @@ catalog_destroy (GladeCatalog *catalog)
 
 	if (catalog->adaptors)
 	{
-		/* TODO: free adaptors */
 		g_list_free (catalog->adaptors);
 	}
 
