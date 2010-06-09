@@ -50,8 +50,8 @@
 
 #define READONLY_INDICATOR (_("[Read Only]"))
 
-#define URL_USER_MANUAL      "http://glade.gnome.org/manual/index.html"
-#define URL_DEVELOPER_MANUAL "http://glade.gnome.org/docs/index.html"
+#define URL_USER_MANUAL      "http://library.gnome.org/devel/glade/"
+#define URL_DEVELOPER_MANUAL "http://library.gnome.org/devel/gladeui/"
 
 #define CONFIG_GROUP_WINDOWS        "Glade Windows"
 #define GLADE_WINDOW_DEFAULT_WIDTH  720
