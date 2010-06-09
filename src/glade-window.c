@@ -148,101 +148,6 @@ static void glade_window_config_save (GladeWindow *window);
 
 G_DEFINE_TYPE (GladeWindow, glade_window, GTK_TYPE_WINDOW)
 
-static void
-about_dialog_activate_link_func (GtkAboutDialog *dialog, const gchar *link, GladeWindow *window)
-{
-	GtkWidget *warning_dialog;
-	gboolean retval;
-	
-	retval = glade_util_url_show (link);
-	
-	if (!retval)
-	{
-		warning_dialog = gtk_message_dialog_new (GTK_WINDOW (dialog),
-							 GTK_DIALOG_MODAL,
-							 GTK_MESSAGE_ERROR,
-							 GTK_BUTTONS_OK,
-							 _("Could not display the URL '%s'"),
-							 link);
-						 
-		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (warning_dialog),
-							  _("No suitable web browser could be found."));
-						 	
-		gtk_window_set_title (GTK_WINDOW (warning_dialog), "");
-		
-		g_signal_connect_swapped (warning_dialog, "response",
-					  G_CALLBACK (gtk_widget_destroy),
-					  warning_dialog);
-				
-		gtk_widget_show (warning_dialog);
-	}	
-
-}
-
-/* locates the help file "glade.xml" with respect to current locale */
-static gchar*
-locate_help_file ()
-{
-	const gchar* const* locales = g_get_language_names ();
-
-	/* check if user manual has been installed, if not, GLADE_GNOMEHELPDIR is empty */
-	if (strlen (GLADE_GNOMEHELPDIR) == 0)
-		return NULL;
-
-	for (; *locales; locales++)
-	{
-		gchar *path;
-		
-		path = g_build_path (G_DIR_SEPARATOR_S, GLADE_GNOMEHELPDIR, "glade", *locales, "glade.xml", NULL);
-
-		if (g_file_test (path, G_FILE_TEST_EXISTS))
-		{
-			return (path);
-		}
-		g_free (path);
-	}
-	
-	return NULL;
-}
-
-static gboolean
-help_show (const gchar *link_id)
-{
-	gchar *file, *url, *command;
-	gboolean retval;
-	gint exit_status = -1;
-	GError *error = NULL; 	
-
-	file = locate_help_file ();
-	if (file == NULL)
-		return FALSE;
-
-	if (link_id != NULL) {
-		url = g_strconcat ("ghelp://", file, "?", link_id, NULL);
-	} else {
-		url = g_strconcat ("ghelp://", file, NULL);	
-	}
-
-	command = g_strconcat ("gnome-open ", url, NULL);
-			
-	retval = g_spawn_command_line_sync (command,
-					    NULL,
-					    NULL,
-					    &exit_status,
-					    &error);
-
-	if (!retval) {
-		g_error_free (error);
-		error = NULL;
-	}		
-	
-	g_free (command);
-	g_free (file);
-	g_free (url);
-	
-	return retval && !exit_status;
-}
-
 
 /* the following functions are taken from gedit-utils.c */
 
@@ -1978,75 +1883,27 @@ toggle_tabs_cb (GtkAction *action, GladeWindow *window)
 static void
 show_help_cb (GtkAction *action, GladeWindow *window)
 {
-	GtkWidget *dialog;
 	gboolean retval;
-	
-	retval = help_show (NULL);
+
+	retval = glade_util_url_show ("ghelp:glade");
 	if (retval)
 		return;
-	
-	/* fallback to displaying online user manual */ 
-	retval = glade_util_url_show (URL_USER_MANUAL);	
 
-	if (!retval)
-	{
-		dialog = gtk_message_dialog_new (GTK_WINDOW (window),
-						 GTK_DIALOG_MODAL,
-						 GTK_MESSAGE_ERROR,
-						 GTK_BUTTONS_OK,
-						 _("Could not display the online user manual"));
-						 
-		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog),
-							  _("No suitable web browser executable could be found "
-							    "to be executed and to display the URL: %s"),
-							    URL_USER_MANUAL);
-						 	
-		gtk_window_set_title (GTK_WINDOW (dialog), "");
-
-		g_signal_connect_swapped (dialog, "response",
-					  G_CALLBACK (gtk_widget_destroy),
-					  dialog);
-
-		gtk_widget_show (dialog);
-		
-	}
+	/* fallback to displaying online user manual */
+	glade_util_url_show (URL_USER_MANUAL);
 }
 
 static void 
 show_developer_manual_cb (GtkAction *action, GladeWindow *window)
 {
-	GtkWidget *dialog;
-	gboolean retval;
-	
 	if (glade_util_have_devhelp ())
 	{
 		glade_util_search_devhelp ("gladeui", NULL, NULL);
 		return;	
 	}
-	
-	retval = glade_util_url_show (URL_DEVELOPER_MANUAL);	
 
-	if (!retval)
-	{
-		dialog = gtk_message_dialog_new (GTK_WINDOW (window),
-						 GTK_DIALOG_MODAL,
-						 GTK_MESSAGE_ERROR,
-						 GTK_BUTTONS_OK,
-						 _("Could not display the online developer reference manual"));
-						 
-		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog),
-							  _("No suitable web browser executable could be found "
-							    "to be executed and to display the URL: %s"),
-							    URL_DEVELOPER_MANUAL);
-						 	
-		gtk_window_set_title (GTK_WINDOW (dialog), "");
-
-		g_signal_connect_swapped (dialog, "response",
-					  G_CALLBACK (gtk_widget_destroy),
-					  dialog);
-
-		gtk_widget_show (dialog);
-	}	
+	/* fallback to displaying online developer manual */
+	glade_util_url_show (URL_DEVELOPER_MANUAL);
 }
 
 static void 
@@ -3471,9 +3328,6 @@ glade_window_init (GladeWindow *window)
 	g_signal_connect (G_OBJECT (glade_app_get_clipboard ()), "notify::has-selection",
 			  G_CALLBACK (clipboard_notify_handler_cb),
 			  window);
-
-	
-	gtk_about_dialog_set_url_hook ((GtkAboutDialogActivateLinkFunc) about_dialog_activate_link_func, window, NULL);
 
 	glade_app_set_window (GTK_WIDGET (window));
 

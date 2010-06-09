@@ -1780,127 +1780,6 @@ glade_util_object_is_loading (GObject *object)
 	return glade_project_is_loading (project);
 }
 
-#ifdef G_OS_WIN32
-
-static gboolean
-glade_util_url_show_win32 (const gchar *url)
-{
-	HINSTANCE h;
-	
-	h = ShellExecuteA (NULL, "open", url, NULL, NULL, SW_SHOWNORMAL);
-	
-	if ((int)h <= 32)
-		return FALSE;
-
-	return TRUE;
-}
-
-#else
-
-/* pilfered from Beast - birnetutils.cc */
-static gboolean
-glade_util_url_show_unix (const gchar *url)
-{
-	static struct {
-	const gchar   *prg, *arg1, *prefix, *postfix;
-	gboolean       asyncronous; /* start asyncronously and check exit code to catch launch errors */
-	volatile gboolean disabled;
-	} browsers[] = {
-
-	/* configurable, working browser launchers */
-	{ "gnome-open",             NULL,           "", "", 0 }, /* opens in background, correct exit_code */
-	{ "exo-open",               NULL,           "", "", 0 }, /* opens in background, correct exit_code */
-
-	/* non-configurable working browser launchers */
-	{ "kfmclient",              "openURL",      "", "", 0 }, /* opens in background, correct exit_code */
-	{ "gnome-moz-remote",       "--newwin",     "", "", 0 }, /* opens in background, correct exit_code */
-
-#if 0   /* broken/unpredictable browser launchers */
-	{ "browser-config",         NULL,            "", "", 0 }, /* opens in background (+ sleep 5), broken exit_code (always 0) */
-	{ "xdg-open",               NULL,            "", "", 0 }, /* opens in foreground (first browser) or background, correct exit_code */
-	{ "sensible-browser",       NULL,            "", "", 0 }, /* opens in foreground (first browser) or background, correct exit_code */
-	{ "htmlview",               NULL,            "", "", 0 }, /* opens in foreground (first browser) or background, correct exit_code */
-#endif
-
-	/* direct browser invocation */
-	{ "x-www-browser",          NULL,           "", "", 1 }, /* opens in foreground, browser alias */
-	{ "firefox",                NULL,           "", "", 1 }, /* opens in foreground, correct exit_code */
-	{ "mozilla-firefox",        NULL,           "", "", 1 }, /* opens in foreground, correct exit_code */
-	{ "mozilla",                NULL,           "", "", 1 }, /* opens in foreground, correct exit_code */
-	{ "konqueror",              NULL,           "", "", 1 }, /* opens in foreground, correct exit_code */
-	{ "opera",                  "-newwindow",   "", "", 1 }, /* opens in foreground, correct exit_code */
-	{ "epiphany",               NULL,           "", "", 1 }, /* opens in foreground, correct exit_code */	
-	{ "galeon",                 NULL,           "", "", 1 }, /* opens in foreground, correct exit_code */
-	{ "amaya",                  NULL,           "", "", 1 }, /* opens in foreground, correct exit_code */
-	{ "dillo",                  NULL,           "", "", 1 }, /* opens in foreground, correct exit_code */
-
-	};
-  
-	guint i;
-	for (i = 0; i < G_N_ELEMENTS (browsers); i++)
-
-		if (!browsers[i].disabled)
-		{
-		        gchar *args[128] = { 0, };
-		        guint n = 0;
-		        gchar *string;
-		        gchar fallback_error[64] = "Ok";
-		        gboolean success;
-
-		        args[n++] = (gchar*) browsers[i].prg;
-		        
-		        if (browsers[i].arg1)
-		        	args[n++] = (gchar*) browsers[i].arg1;
-		        
-		        string = g_strconcat (browsers[i].prefix, url, browsers[i].postfix, NULL);
-		        args[n] = string;
-        
-		        if (!browsers[i].asyncronous) /* start syncronously and check exit code */
-			{
-				gint exit_status = -1;
-				success = g_spawn_sync (NULL, /* cwd */
-		                                        args,
-		                                        NULL, /* envp */
-		                                        G_SPAWN_SEARCH_PATH,
-		                                        NULL, /* child_setup() */
-		                                        NULL, /* user_data */
-		                                        NULL, /* standard_output */
-		                                        NULL, /* standard_error */
-		                                        &exit_status,
-		                                        NULL);
-		                success = success && !exit_status;
-		            
-				if (exit_status)
-					g_snprintf (fallback_error, sizeof (fallback_error), "exitcode: %u", exit_status);
-
-			}
-		        else
-			{
-				success = g_spawn_async (NULL, /* cwd */
-							 args,
-							 NULL, /* envp */
-							 G_SPAWN_SEARCH_PATH,
-							 NULL, /* child_setup() */
-							 NULL, /* user_data */
-							 NULL, /* child_pid */
-							 NULL);
-			}
-			
-			g_free (string);
-			if (success)
-				return TRUE;
-			browsers[i].disabled = TRUE;
-	}
-	
-	/* reset all disabled states if no browser could be found */
-	for (i = 0; i < G_N_ELEMENTS (browsers); i++)
-		browsers[i].disabled = FALSE;
-		     
-	return FALSE;	
-}
-
-#endif
-
 /**
  * glade_util_url_show:
  * @url: An URL to display
@@ -1908,18 +1787,43 @@ glade_util_url_show_unix (const gchar *url)
  * Portable function for showing an URL @url in a web browser.
  *
  * Returns: TRUE if a web browser was successfully launched, or FALSE
- * 
+ *
  */
 gboolean
 glade_util_url_show (const gchar *url)
 {
+	GtkWidget *widget;
+	GError *error = NULL;
+	gboolean ret;
+
 	g_return_val_if_fail (url != NULL, FALSE);
 
-#ifdef G_OS_WIN32
-	return glade_util_url_show_win32 (url);
-#else
-	return glade_util_url_show_unix (url);
-#endif
+	widget = glade_app_get_window ();
+
+	ret = gtk_show_uri (gtk_widget_get_screen (widget),
+	                    url,
+	                    gtk_get_current_event_time (),
+	                    &error);
+	if (error != NULL)
+	{
+		GtkWidget *dialog_widget;
+
+		dialog_widget = gtk_message_dialog_new (GTK_WINDOW (widget),
+		                                        GTK_DIALOG_DESTROY_WITH_PARENT,
+		                                        GTK_MESSAGE_ERROR,
+		                                        GTK_BUTTONS_CLOSE,
+		                                        "%s", _("Could not show link:"));
+		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog_widget),
+		                                          "%s", error->message);
+		g_error_free (error);
+
+		g_signal_connect (dialog_widget, "response",
+		                  G_CALLBACK (gtk_widget_destroy), NULL);
+
+		gtk_window_present (GTK_WINDOW (dialog_widget));
+	}
+
+	return ret;
 }
 
 /**
