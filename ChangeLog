@@ -10,6 +10,11 @@
 	* plugins/gtk/gtk+.xml.in, plugins/gtk/glade-gtk.c: Removed all reference to
 	  deprecated GTK+ widgets (anything removed in 3.0).
 
+	* gladeui/Makefile.am, gladeui/glade-custom.[ch]: Removed support for old
+	  fashioned custom widgets from glade-2.
+
+	* plugins/python/Makefile.am: Fixed to link with new core library (libgladeui-2).
+
 2010-06-10  Javier Jardón <jjardon@gnome.org>
 
 	* m4/python.m4: quote the definition of AM_CHECK_PYMOD

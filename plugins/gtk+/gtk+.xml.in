@@ -1724,14 +1724,6 @@ embedded in another object</_tooltip>
     
     <glade-widget-class name="GtkFontSelection" generic-name="fontselection" _title="Font Selection"/>
     
-    <glade-widget-class name="Custom" generic-name="custom" _title="Custom widget" deprecated="True" libglade-only="True">
-      <properties>
-	<property id="creation-function"/>
-	<property id="string1"/>
-	<property id="string2"/>
-      </properties>
-    </glade-widget-class>
-
     <glade-widget-class name="GtkAssistant" generic-name="assistant" _title="Assistant" since="2.10">
       <post-create-function>glade_gtk_assistant_post_create</post-create-function>
       <add-child-function>glade_gtk_assistant_add_child</add-child-function>
@@ -3433,8 +3425,6 @@ embedded in another object</_tooltip>
 
     <glade-widget-class-ref name="GtkHRuler"/>
     <glade-widget-class-ref name="GtkVRuler"/>
-
-    <glade-widget-class-ref name="Custom"/>
   </glade-widget-group>
 
 </glade-catalog>
