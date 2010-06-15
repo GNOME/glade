@@ -7,7 +7,7 @@ m4_define(glade_minor_version, 7)
 m4_define(glade_micro_version, 1)
 m4_define(glade_version, glade_major_version.glade_minor_version.glade_micro_version)
 
-AC_INIT([glade3], [glade_version],
+AC_INIT([glade], [glade_version],
 	[http://bugzilla.gnome.org/enter_bug.cgi?product=glade3])
 	
 AC_CONFIG_HEADERS([config.h])
@@ -53,7 +53,7 @@ AM_PROG_LIBTOOL
 # If any interfaces have been removed since the last public release, then set GLADE_AGE to 0.
 # Reference: http://www.gnu.org/software/libtool/manual.html#Versioning
 GLADE_REVISION=0
-GLADE_CURRENT=10
+GLADE_CURRENT=0
 GLADE_AGE=0
 GLADE_CURRENT_MINUS_AGE=`expr $GLADE_CURRENT - $GLADE_AGE`
 AC_SUBST(GLADE_REVISION)
@@ -121,7 +121,7 @@ GTK_DOC_CHECK(1.9)
 dnl ================================================================
 dnl Check for gtk+
 dnl ================================================================
-PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.20 gthread-2.0 libxml-2.0 >= 2.4.0])
+PKG_CHECK_MODULES(GTK, [gtk+-3.0 libxml-2.0 >= 2.4.0])
 AC_SUBST(GTK_LIBS)
 AC_SUBST(GTK_CFLAGS)
 
@@ -131,25 +131,6 @@ dnl ================================================================
 LIBS=$GTK_LIBS
 AC_CHECK_FUNCS(gtk_print_unix_dialog_new,[have_unix_print=yes]; break,[have_unix_print=no])
 AM_CONDITIONAL(HAVE_GTK_UNIX_PRINT, test x"$have_unix_print" = "xyes")
-
-dnl ================================================================
-dnl Check for optional gnome libs
-dnl ================================================================
-AC_ARG_ENABLE(gnome,
-    AS_HELP_STRING([--disable-gnome], [disable gnome catalog]),
-    check_gnome=$enableval, check_gnome=yes)
-
-if test x"$check_gnome" = x"yes"; then
-  PKG_CHECK_MODULES(GNOME, [libbonoboui-2.0 libgnomeui-2.0],
-    [have_gnome=yes],[have_gnome=no])
-  AC_SUBST(GNOME_LIBS)
-  AC_SUBST(GNOME_CFLAGS)
-else
-  have_gnome=no
-fi
-
-AM_CONDITIONAL(BUILD_GNOME, test x"$have_gnome" = "xyes")
-
 
 dnl ================================================================
 dnl Python for optional python dev libs
@@ -249,6 +230,10 @@ if test "x$_gdk_tgt" = xquartz; then
    AC_SUBST(IGE_MAC_CFLAGS)
 fi
 
+
+AC_SUBST([GLADE_PREFIX])
+
+
 AC_SUBST([AM_CPPFLAGS])
 AC_SUBST([AM_CFLAGS])
 AC_SUBST([AM_CXXFLAGS])
@@ -276,16 +261,12 @@ data/icons/hicolor/scalable/apps/Makefile
 gladeui/Makefile
 gladeui/gladeui.rc
 src/Makefile
-src/glade-3.rc
+src/glade.rc
 plugins/Makefile
 plugins/gtk+/Makefile
 plugins/gtk+/icons/Makefile
 plugins/gtk+/icons/16x16/Makefile
 plugins/gtk+/icons/22x22/Makefile
-plugins/gnome/Makefile
-plugins/gnome/icons/Makefile
-plugins/gnome/icons/16x16/Makefile
-plugins/gnome/icons/22x22/Makefile
 plugins/python/Makefile
 po/Makefile.in
 doc/Makefile
@@ -302,7 +283,6 @@ Configuration:
 	Source code location:	 ${srcdir}
 	Compiler:		 ${CC}
 	GTK+ UNIX Print Widgets: ${have_unix_print}
-	GNOME UI Widgets:	 ${have_gnome}
 	PYTHON Widgets support:	 ${have_python}
 
 	Build Reference Manual:  ${enable_gtk_doc}

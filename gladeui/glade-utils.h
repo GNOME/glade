@@ -49,10 +49,6 @@ gint              glade_util_compare_stock_labels (gconstpointer a, gconstpointe
 
 void              glade_util_hide_window		(GtkWindow *window);
 
-gchar            *glade_util_gtk_combo_func	(gpointer data);
-
-gpointer          glade_util_gtk_combo_find	(GtkCombo *combo);
-
 
 GtkWidget        *glade_util_file_dialog_new (const gchar *title,
 					      GladeProject *project,

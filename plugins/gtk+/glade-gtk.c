@@ -5167,18 +5167,6 @@ glade_gtk_file_chooser_forall (GtkWidget *widget, gpointer data)
 				      NULL);
 }
 
-static void
-glade_gtk_input_dialog_forall (GtkWidget *widget, gpointer data)
-{
-	/* Make every option menu insensitive, yes it use a deprecated widget */
-	if (GTK_IS_OPTION_MENU (widget))
-		gtk_widget_set_sensitive (widget, FALSE);
-	else if (GTK_IS_CONTAINER (widget))
-		gtk_container_forall (GTK_CONTAINER (widget),
-				      glade_gtk_input_dialog_forall,
-				      NULL);
-}
-
 void 
 glade_gtk_dialog_post_create (GladeWidgetAdaptor *adaptor,
 			      GObject            *object, 
@@ -5187,8 +5175,8 @@ glade_gtk_dialog_post_create (GladeWidgetAdaptor *adaptor,
 	GtkDialog    *dialog = GTK_DIALOG (object);
 	GladeWidget  *widget;
 	GladeWidget  *vbox_widget, *actionarea_widget, *colorsel, *fontsel;
-	GladeWidget  *save_button = NULL, *close_button = NULL, *ok_button = NULL,
-		*cancel_button = NULL, *help_button = NULL, *apply_button = NULL;
+	GladeWidget  *ok_button = NULL, *cancel_button = NULL, 
+		*help_button = NULL, *apply_button = NULL;
 	
 	g_return_if_fail (GTK_IS_DIALOG (dialog));
 
@@ -5202,40 +5190,7 @@ glade_gtk_dialog_post_create (GladeWidgetAdaptor *adaptor,
 		glade_widget_property_set (widget, "border-width", 5);
 	}
 
-	if (GTK_IS_INPUT_DIALOG (object))
-	{
-		GtkInputDialog *id = GTK_INPUT_DIALOG (dialog);
-
-		save_button = glade_widget_adaptor_create_internal
-			(widget, G_OBJECT (id->save_button),
-			 "save_button", "inputdialog", FALSE, reason);
-		close_button = glade_widget_adaptor_create_internal
-			(widget, G_OBJECT (id->close_button),
-			 "close_button", "inputdialog", FALSE, reason);
-		/*
-		  On device and mode menu items "activate" signal handlers 
-		  GtkInputDialog call gtk_widget_get_toplevel() and assume that
-		  the toplevel returned is the GtkInputDialog but since the 
-		  dialog is embed inside glade the returned pointer is not what
-		  expected and this gives a segfault :S
-		*/
-		gtk_container_forall (GTK_CONTAINER (dialog),
-				      glade_gtk_input_dialog_forall,
-				      NULL);
-		
-		glade_gtk_dialog_stop_offending_signals (GTK_WIDGET (dialog));
-	}
-	else if (GTK_IS_FILE_SELECTION (object))
-	{
-		ok_button = glade_widget_adaptor_create_internal
-			(widget, G_OBJECT (GTK_FILE_SELECTION (object)->ok_button),
-			 "ok_button", "filesel", FALSE, reason);
-
-		cancel_button = glade_widget_adaptor_create_internal
-			(widget, G_OBJECT (GTK_FILE_SELECTION (object)->cancel_button),
-			 "cancel_button", "filesel", FALSE, reason);
-	}
-	else if (GTK_IS_COLOR_SELECTION_DIALOG (object))
+	if (GTK_IS_COLOR_SELECTION_DIALOG (object))
 	{
 		ok_button = glade_widget_adaptor_create_internal
 			(widget, G_OBJECT (GTK_COLOR_SELECTION_DIALOG (object)->ok_button),
@@ -5346,21 +5301,7 @@ glade_gtk_dialog_get_internal_child (GladeWidgetAdaptor  *adaptor,
 
 	g_return_val_if_fail (GTK_IS_DIALOG (dialog), NULL);
 
-	if (GTK_IS_INPUT_DIALOG (dialog))
-	{
-		if (strcmp ("close_button", name) == 0)
-			child = GTK_INPUT_DIALOG (dialog)->close_button;
-		else if (strcmp ("save_button", name) == 0)
-			child = GTK_INPUT_DIALOG (dialog)->save_button;
-	}
-	else if (GTK_IS_FILE_SELECTION (dialog))
-	{
-		if (strcmp ("ok_button", name) == 0)
-			child = GTK_FILE_SELECTION (dialog)->ok_button;
-		else if (strcmp ("cancel_button", name) == 0)
-			child = GTK_FILE_SELECTION (dialog)->cancel_button;
-	}
-	else if (GTK_IS_COLOR_SELECTION_DIALOG (dialog))
+	if (GTK_IS_COLOR_SELECTION_DIALOG (dialog))
 	{
 		if (strcmp ("ok_button", name) == 0)
 			child = GTK_COLOR_SELECTION_DIALOG (dialog)->ok_button;
@@ -5405,17 +5346,7 @@ glade_gtk_dialog_get_children (GladeWidgetAdaptor  *adaptor,
 
 	list = glade_util_container_get_all_children (GTK_CONTAINER (dialog));
 
-	if (GTK_IS_INPUT_DIALOG (dialog))
-	{
-		list = g_list_prepend (list, GTK_INPUT_DIALOG (dialog)->close_button);
-		list = g_list_prepend (list, GTK_INPUT_DIALOG (dialog)->save_button);
-	}
-	else if (GTK_IS_FILE_SELECTION (dialog))
-	{
-		list = g_list_prepend (list, GTK_FILE_SELECTION (dialog)->ok_button);
-		list = g_list_prepend (list, GTK_FILE_SELECTION (dialog)->cancel_button);
-	}
-	else if (GTK_IS_COLOR_SELECTION_DIALOG (dialog))
+	if (GTK_IS_COLOR_SELECTION_DIALOG (dialog))
 	{
 		list = g_list_prepend (list, GTK_COLOR_SELECTION_DIALOG (dialog)->ok_button);
 		list = g_list_prepend (list, GTK_COLOR_SELECTION_DIALOG (dialog)->cancel_button);
@@ -8900,156 +8831,6 @@ glade_gtk_spin_button_set_property (GladeWidgetAdaptor *adaptor,
 		GWA_GET_CLASS (GTK_TYPE_ENTRY)->set_property (adaptor,
 							      object,
 							      id, value);
-}
-
-/* ----------------------------- GtkCombo ------------------------------ */
-void
-glade_gtk_combo_post_create (GladeWidgetAdaptor *adaptor,
-			     GObject            *object,
-			     GladeCreateReason   reason)
-{
-	GladeWidget  *gcombo, *gentry, *glist;
-
-	g_return_if_fail (GTK_IS_COMBO (object));
-
-	if ((gcombo = glade_widget_get_from_gobject (object)) == NULL)
-		return;
-	
-	gentry = glade_widget_adaptor_create_internal
-		(gcombo, G_OBJECT (GTK_COMBO (object)->entry),
-		 "entry", "combo", FALSE, reason);
-
-	/* We mark this 'anarchist' since its outside of the hierarchy */
-	glist  = glade_widget_adaptor_create_internal
-		(gcombo, G_OBJECT (GTK_COMBO (object)->list),
-		 "list", "combo", TRUE, reason);
-
-}
-
-GObject *
-glade_gtk_combo_get_internal_child (GladeWidgetAdaptor *adaptor,
-				    GtkCombo           *combo,
-				    const gchar        *name)
-{
-	GObject *child = NULL;
-
-	g_return_val_if_fail (GTK_IS_COMBO (combo), NULL);
-	
-	if (strcmp ("list", name) == 0)
-		child = G_OBJECT (combo->list);
-	else if (strcmp ("entry", name) == 0)
-		child = G_OBJECT (combo->entry);
-
-	return child;
-}
-
-GList *
-glade_gtk_combo_get_children (GladeWidgetAdaptor *adaptor, GtkCombo *combo)
-{
-	GList *list = NULL;
-
-	g_return_val_if_fail (GTK_IS_COMBO (combo), NULL);
-
-	list = glade_util_container_get_all_children (GTK_CONTAINER (combo));
-
-	/* Ensure that we only return one 'combo->list' */
-	if (g_list_find (list, combo->list) == NULL)
-		list = g_list_append (list, combo->list);
-
-	return list;
-}
-
-/* ----------------------------- GtkListItem ------------------------------ */
-void
-glade_gtk_list_item_post_create (GladeWidgetAdaptor *adaptor,
-				 GObject            *object, 
-				 GladeCreateReason   reason)
-{
-	GtkWidget *label;
-
-	g_return_if_fail (GTK_IS_LIST_ITEM (object));
-
-	label = gtk_label_new ("");
-	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-	gtk_misc_set_padding (GTK_MISC (label), 0, 1);
-
-	gtk_container_add (GTK_CONTAINER (object), label);
-	gtk_widget_show (label);
-}
-
-static void
-glade_gtk_list_item_set_label (GObject *object, const GValue *value)
-{
-	GtkWidget *label;
-
-	g_return_if_fail (GTK_IS_LIST_ITEM (object));
-
-	label = gtk_bin_get_child (GTK_BIN (object));
-
-	gtk_label_set_text (GTK_LABEL (label), g_value_get_string (value));
-}
-
-static void
-glade_gtk_list_item_get_label (GObject *object, GValue *value)
-{
-	GtkWidget *label;
-
-	g_return_if_fail (GTK_IS_LIST_ITEM (object));
-
-	label = gtk_bin_get_child (GTK_BIN (object));
-
-	g_value_set_string (value, gtk_label_get_text (GTK_LABEL (label)));
-}
-
-void
-glade_gtk_list_item_set_property (GladeWidgetAdaptor *adaptor,
-				  GObject            *object, 
-				  const gchar        *id,
-				  const GValue       *value)
-{
-	if (!strcmp (id, "label"))
-		glade_gtk_list_item_set_label (object, value);
-	else
-		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor,
-								  object,
-								  id, value);
-}
-
-void
-glade_gtk_list_item_get_property (GladeWidgetAdaptor *adaptor,
-				  GObject            *object, 
-				  const gchar        *id,
-				  GValue             *value)
-{
-	if (!strcmp (id, "label"))
-		glade_gtk_list_item_get_label (object, value);
-	else
-		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor,
-								  object,
-								  id, value);
-}
-
-
-void
-glade_gtk_listitem_add_child (GladeWidgetAdaptor  *adaptor,
-			      GObject             *object, 
-			      GObject             *child)
-{
-	g_return_if_fail (GTK_IS_CONTAINER (object));
-	g_return_if_fail (GTK_IS_WIDGET (child));
-
-	gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
-}
-
-void
-glade_gtk_listitem_remove_child (GladeWidgetAdaptor  *adaptor,
-				 GObject             *object, 
-				 GObject             *child)
-{
-	g_return_if_fail (GTK_IS_CONTAINER (object));
-	g_return_if_fail (GTK_IS_WIDGET (child));
-
-	gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
 }
 
 /* ------------------------------ GtkAssistant ------------------------------ */

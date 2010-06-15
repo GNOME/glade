@@ -2,10 +2,6 @@
 
 SUBDIRS = gtk+
 
-if BUILD_GNOME
-SUBDIRS += gnome
-endif
-
 if BUILD_PYTHON
 SUBDIRS += python
 endif

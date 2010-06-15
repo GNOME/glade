@@ -101,7 +101,6 @@ static guint glade_app_signals[LAST_SIGNAL] = { 0 };
 /* installation paths */
 static gchar *catalogs_dir = NULL;
 static gchar *modules_dir  = NULL;
-static gchar *plugins_dir  = NULL;
 static gchar *pixmaps_dir  = NULL;
 static gchar *locale_dir   = NULL;
 
@@ -340,15 +339,6 @@ glade_app_get_modules_dir (void)
 }
 
 const gchar *
-glade_app_get_plugins_dir (void)
-{
-	glade_init_check ();
-
-	return plugins_dir;
-}
-
-
-const gchar *
 glade_app_get_pixmaps_dir (void)
 {
 	glade_init_check ();
@@ -389,7 +379,6 @@ build_package_paths (void)
 #else
 	catalogs_dir = g_strdup (GLADE_CATALOGSDIR);
 	modules_dir  = g_strdup (GLADE_MODULESDIR);
-	plugins_dir  = g_strdup (GLADE_PLUGINSDIR);
 	pixmaps_dir  = g_strdup (GLADE_PIXMAPSDIR);
 	locale_dir   = g_strdup (GLADE_LOCALEDIR);
 #endif

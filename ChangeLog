@@ -1,3 +1,15 @@
+2010-06-15  Tristan Van Berkom <tvb@gnome.org>
+
+	* configure.ac: Require GTK+ 3.0 and change package domain from glade3 -> glade
+
+	* src/Makefile.am, gladeui/Makefile.am: application 'glade-3' -> 'glade', 
+	  library libgladeui-1 -> libgladeui-2
+
+	* plugins/Makefile.am, plugins/gnome/*: Removed libgnomeui support.
+
+	* plugins/gtk/gtk+.xml.in, plugins/gtk/glade-gtk.c: Removed all reference to
+	  deprecated GTK+ widgets (anything removed in 3.0).
+
 2010-06-10  Javier Jardón <jjardon@gnome.org>
 
 	* m4/python.m4: quote the definition of AM_CHECK_PYMOD
