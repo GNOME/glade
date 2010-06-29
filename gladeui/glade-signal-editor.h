@@ -35,9 +35,7 @@ struct _GladeSignalEditorClass
 
 GType glade_signal_editor_get_type (void) G_GNUC_CONST;
 
-GladeSignalEditor *glade_signal_editor_new (gpointer *editor);
-
-void glade_signal_editor_construct_signals_list (GladeSignalEditor *editor);
+GladeSignalEditor *glade_signal_editor_new (void);
 
 void glade_signal_editor_load_widget (GladeSignalEditor *editor, GladeWidget *widget);
 
