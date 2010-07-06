@@ -5,7 +5,7 @@
  * 
  * glade3 is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or
+ * Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  * 
  * glade3 is distributed in the hope that it will be useful, but
@@ -45,8 +45,9 @@ typedef enum
 	GLADE_SIGNAL_COLUMN_AFTER,
 	GLADE_SIGNAL_COLUMN_IS_HANDLER,
 	GLADE_SIGNAL_COLUMN_IS_LABEL,
-	GLADE_SIGNAL_COLUMN_IS_DUMMY,
+	GLADE_SIGNAL_COLUMN_NOT_DUMMY,
 	GLADE_SIGNAL_COLUMN_VERSION_WARNING,
+	GLADE_SIGNAL_COLUMN_SIGNAL,
 	GLADE_SIGNAL_N_COLUMNS
 } GladeSignalModelColumns;
 
