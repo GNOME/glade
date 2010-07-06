@@ -190,14 +190,14 @@ void                    glade_widget_show                   (GladeWidget      *w
 void                    glade_widget_hide                   (GladeWidget      *widget);
  
 void                    glade_widget_add_signal_handler     (GladeWidget      *widget,
-							     GladeSignal      *signal_handler);
+							     const GladeSignal      *signal_handler);
  
 void                    glade_widget_remove_signal_handler  (GladeWidget      *widget,
-							     GladeSignal      *signal_handler);
+							     const GladeSignal      *signal_handler);
  
 void                    glade_widget_change_signal_handler  (GladeWidget      *widget,
-							     GladeSignal      *old_signal_handler,
-							     GladeSignal      *new_signal_handler);
+							     const GladeSignal      *old_signal_handler,
+							     const GladeSignal      *new_signal_handler);
  
 GPtrArray *             glade_widget_list_signal_handlers   (GladeWidget      *widget,
 							     const gchar      *signal_name);
