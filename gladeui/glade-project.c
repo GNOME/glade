@@ -96,6 +96,7 @@ struct _GladeProjectPrivate
 
 	GList *tree; /* List of toplevel Objects in this projects */
 	GList *objects; /* List of all objects in this project */
+	gint stamp; /* Stamp used for the iterators, increment when iterators become invalid */
 
 	GList *selection; /* We need to keep the selection in the project
 			   * because we have multiple projects and when the
@@ -2658,7 +2659,6 @@ glade_project_add_object (GladeProject *project,
 	GladeWidget      *gwidget;
 	GList            *list, *children;
 	gchar            *name;
-	GtkTreeIter      iter;
 	GtkTreePath	 *path;
 
 	g_return_if_fail (GLADE_IS_PROJECT (project));
@@ -2715,10 +2715,12 @@ glade_project_add_object (GladeProject *project,
 
 	if (!project->priv->loading)
 	{
+		GtkTreeIter iter;
 		glade_project_model_get_iter_for_object (project, object, &iter);
 		path = gtk_tree_model_get_path (GTK_TREE_MODEL (project), &iter);
 	
 		gtk_tree_model_row_inserted (GTK_TREE_MODEL (project), path, &iter);
+		project->priv->stamp++;
 	}
 
 	/* NOTE: Sensitive ordering here, we need to recurse after updating
@@ -2809,6 +2811,7 @@ glade_project_remove_object (GladeProject *project, GObject *object)
 		                                iter);
 		gtk_tree_model_row_deleted (GTK_TREE_MODEL (project),
 		                            path);
+		project->priv->stamp++;
 		g_object_unref (object);
 		glade_project_release_widget_name (project, gwidget,
 						   glade_widget_get_name (gwidget));
@@ -4252,8 +4255,7 @@ glade_project_model_get_iter_for_object (GladeProject* project,
                                          GObject* object,
                                          GtkTreeIter* iter)
 {
-	/* Is this unique??? */
-	iter->stamp = GPOINTER_TO_INT (object);
+	iter->stamp = project->priv->stamp;
 	iter->user_data = object;
 }
 
