@@ -209,6 +209,8 @@ glade_signal_model_get_column_type (GtkTreeModel* model,
 			return G_TYPE_BOOLEAN;
 		case GLADE_SIGNAL_COLUMN_NOT_DUMMY:
 			return G_TYPE_BOOLEAN;
+		case GLADE_SIGNAL_COLUMN_HAS_HANDLERS:
+			return G_TYPE_BOOLEAN;
 		case GLADE_SIGNAL_COLUMN_SIGNAL:
 			return G_TYPE_POINTER;
 		default:
@@ -308,6 +310,43 @@ static GList* glade_signal_model_create_signal_list (GladeSignalModel* sig_model
 }
 
 static gboolean
+glade_signal_model_has_handlers (GladeSignalModel* model, GtkTreeIter* iter)
+{
+	const gchar* widget = iter->user_data;
+	GladeSignalClass* sig_class = iter->user_data2;
+	GladeSignal* signal = iter->user_data3;
+
+	if (signal)
+		return FALSE;
+
+	if (sig_class)
+	{
+		GPtrArray* handlers = g_hash_table_lookup (model->priv->widget->signals,
+		                                           sig_class->name);
+		if (handlers && handlers->len > 0)
+			return TRUE;
+	}
+	else if (widget)
+	{
+		GList* signals = glade_signal_model_create_signal_list (model, widget);
+		GList* class_iter;
+		for (class_iter = signals; class_iter != NULL; class_iter = g_list_next (class_iter))
+		{
+			sig_class = class_iter->data;
+			GPtrArray* handlers = g_hash_table_lookup (model->priv->widget->signals,
+			                                           sig_class->name);
+			if (handlers && handlers->len > 0)
+			{
+				g_list_free (signals);
+				return TRUE;
+			}
+		}
+		g_list_free (signals);
+	}
+	return FALSE;		 
+}
+
+static gboolean
 glade_signal_model_iter_for_signal (GladeSignalModel* model, const GladeSignal* signal, GtkTreeIter* iter)
 {
 	GList* list;
@@ -329,6 +368,30 @@ glade_signal_model_iter_for_signal (GladeSignalModel* model, const GladeSignal* 
 	return FALSE;
 }
 
+/* Be sure to update the parent columns when signals are added/removed
+ * as that might affect the appearance */
+static void
+glade_signal_model_update_parents (GladeSignalModel* model,
+                                   GtkTreeIter* iter)
+{
+	GtkTreeIter sig_class_iter;
+	GtkTreeIter widget_iter;
+	GtkTreePath* sig_class_path;
+	GtkTreePath* widget_path;
+
+	gtk_tree_model_iter_parent (GTK_TREE_MODEL (model), &sig_class_iter, iter);
+	gtk_tree_model_iter_parent (GTK_TREE_MODEL (model), &widget_iter, &sig_class_iter);
+
+	sig_class_path = gtk_tree_model_get_path (GTK_TREE_MODEL (model), &sig_class_iter);
+	widget_path = gtk_tree_model_get_path (GTK_TREE_MODEL (model), &widget_iter);
+
+	gtk_tree_model_row_changed (GTK_TREE_MODEL (model), sig_class_path, &sig_class_iter);
+	gtk_tree_model_row_changed (GTK_TREE_MODEL (model), widget_path, &widget_iter);
+
+	gtk_tree_path_free (sig_class_path);
+	gtk_tree_path_free (widget_path);
+}
+
 static void
 on_glade_signal_model_added (GladeWidget* widget, const GladeSignal* signal,
                              GladeSignalModel* model)
@@ -341,6 +404,7 @@ on_glade_signal_model_added (GladeWidget* widget, const GladeSignal* signal,
 		gtk_tree_model_row_inserted (GTK_TREE_MODEL (model),
 		                             path,
 		                             &iter);
+		glade_signal_model_update_parents (model, &iter);
 		gtk_tree_path_free (path);
 		model->priv->stamp++;
 	}
@@ -358,6 +422,7 @@ on_glade_signal_model_removed (GladeWidget* widget, const GladeSignal* signal,
 		gtk_tree_model_row_deleted (GTK_TREE_MODEL (model),
 		                            gtk_tree_model_get_path (GTK_TREE_MODEL (model),
 		                                                     &iter));
+		glade_signal_model_update_parents (model, &iter);
 		gtk_tree_path_free (path);
 		model->priv->stamp++;
 	}
@@ -617,14 +682,15 @@ glade_signal_model_get_value (GtkTreeModel* model,
 			g_value_set_boolean (value,
 			                     widget && sig_class && handler);
 			break;
-		case GLADE_SIGNAL_COLUMN_IS_LABEL:
-			g_value_set_boolean (value,
-			                     !(widget && sig_class && handler));
-			break;
 		case GLADE_SIGNAL_COLUMN_NOT_DUMMY:
 			g_value_set_boolean (value,
 				                 glade_signal_model_not_dummy_handler (sig_model,
 				                                                      iter));
+			break;
+		case GLADE_SIGNAL_COLUMN_HAS_HANDLERS:
+			g_value_set_boolean (value,
+			                     glade_signal_model_has_handlers (sig_model,
+			                                                      iter));
 			break;
 		case GLADE_SIGNAL_COLUMN_SIGNAL:
 			g_value_set_pointer (value, handler);
