@@ -255,7 +255,14 @@ glade_widget_remove_signal_handler(GladeWidget *widget, const GladeSignal *signa
 		{
 			g_signal_emit (widget, glade_widget_signals[REMOVE_SIGNAL_HANDLER], 0, tmp_signal_handler);
 			g_ptr_array_remove_index (signals, i);
-			glade_signal_free (tmp_signal_handler);
+			if (signals->len == 0)
+			{
+				g_hash_table_remove (widget->signals, tmp_signal_handler->name);
+			}
+			else
+			{
+				glade_signal_free (tmp_signal_handler);
+			}
 			break;
 		}
 	}

@@ -85,7 +85,7 @@ glade_signal_free (GladeSignal *signal)
  * Returns: %TRUE if @sig1 and @sig2 have identical attributes, %FALSE otherwise
  */
 gboolean
-glade_signal_equal (GladeSignal *sig1, GladeSignal *sig2)
+glade_signal_equal (const GladeSignal *sig1, const GladeSignal *sig2)
 {
 	gboolean ret = FALSE;
 	g_return_val_if_fail (GLADE_IS_SIGNAL (sig1), FALSE);
