@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade3&component=general\n"
-"POT-Creation-Date: 2009-01-15 17:02+0000\n"
-"PO-Revision-Date: 2008-01-20 03:37+0000\n"
-"Last-Translator: yairhr@gmail.com\n"
+"POT-Creation-Date: 2010-06-10 02:38+0000\n"
+"PO-Revision-Date: 2010-07-16 18:48+0200\n"
+"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,17 +20,18 @@ msgstr ""
 msgid "Create or open user interface designs for GTK+ applications"
 msgstr "צור או פתח עיצוב מנשק משתמש ליישומי GTK+"
 
-#: ../data/glade-3.desktop.in.in.h:2
+#: ../data/glade-3.desktop.in.in.h:2 ../src/main.c:42
+msgid "Glade"
+msgstr "Glade"
+
+#: ../data/glade-3.desktop.in.in.h:3
 msgid "Glade Interface Designer"
 msgstr "מעצב המנשק Glade"
 
-#: ../data/glade-3.desktop.in.in.h:3 ../src/glade-window.c:439
-msgid "User Interface Designer"
-msgstr "מעצב מנשק משתמש"
-
-#: ../src/main.c:42
-msgid "Glade"
-msgstr "Glade"
+#: ../data/glade-3.desktop.in.in.h:4
+#| msgid "User Interface Designer"
+msgid "Interface Designer"
+msgstr "מעצב מנשקי משתמש"
 
 #: ../src/main.c:52
 msgid "Output version information and exit"
@@ -75,129 +76,121 @@ msgstr ""
 msgid "Unable to open '%s', the file does not exist.\n"
 msgstr "Unable to open '%s', the file does not exist.\n"
 
-#: ../src/glade-window.c:45
+#: ../src/glade-window.c:51
 msgid "[Read Only]"
 msgstr "[קריאה בלבד]"
 
-#: ../src/glade-window.c:154
-#, c-format
-msgid "Could not display the URL '%s'"
-msgstr "לא ניתן להציג את הכתובת '%s'"
-
-#: ../src/glade-window.c:158
-msgid "No suitable web browser could be found."
-msgstr "לא נימצא דפדפן אינטרנט."
+#: ../src/glade-window.c:355
+msgid "User Interface Designer"
+msgstr "מעצב מנשק משתמש"
 
 #. translators: referring to the action of activating a file named '%s'.
 #. *              we also indicate to users that the file may be read-only with
 #. *              the second '%s'
-#: ../src/glade-window.c:691
+#: ../src/glade-window.c:562
 #, c-format
 msgid "Activate '%s' %s"
 msgstr "הפעל את '%s'‏ %s"
 
 #. translators: referring to the action of activating a file named '%s'
 #. FIXME add hint for translators
-#: ../src/glade-window.c:698 ../src/glade-window.c:706
+#: ../src/glade-window.c:569 ../src/glade-window.c:577
 #, c-format
 msgid "Activate '%s'"
 msgstr "הפעל את '%s'"
 
-#: ../src/glade-window.c:1104
+#. Name
+#: ../src/glade-window.c:622 ../gladeui/glade-base-editor.c:1991
+#: ../gladeui/glade-editor-table.c:359
+msgid "Name:"
+msgstr "שם:"
+
+#: ../src/glade-window.c:624
+#| msgid "Format"
+msgid "Format:"
+msgstr "תצורה:"
+
+#: ../src/glade-window.c:626
+msgid "Requires:"
+msgstr "דרישות:"
+
+#: ../src/glade-window.c:1052
 msgid "Open…"
 msgstr "פתח..."
 
-#: ../src/glade-window.c:1147
+#: ../src/glade-window.c:1095
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr "הקובץ %s השתנה מאז שקראת אותו"
 
-#: ../src/glade-window.c:1151
+#: ../src/glade-window.c:1099
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr "אם תשמור אותו, כל השינויים החיצוניים עלולים להאבד. לשמור?"
 
-#: ../src/glade-window.c:1155
+#: ../src/glade-window.c:1103
 msgid "_Save Anyway"
 msgstr "_שמור"
 
-#: ../src/glade-window.c:1162
+#: ../src/glade-window.c:1110
 msgid "_Don't Save"
 msgstr "_אל תשמור"
 
-#: ../src/glade-window.c:1185
+#: ../src/glade-window.c:1136
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "נכשל בשמירת %s:‏ %s"
 
-#: ../src/glade-window.c:1206
+#: ../src/glade-window.c:1159
 #, c-format
 msgid "Project '%s' saved"
 msgstr "הפרוייקט '%s' נשמר"
 
-#: ../src/glade-window.c:1226
+#: ../src/glade-window.c:1179
 msgid "Save As…"
 msgstr "שמור בשם..."
 
-#: ../src/glade-window.c:1271
+#: ../src/glade-window.c:1224
 #, c-format
 msgid "Could not save the file %s"
 msgstr "לא ניתן לשמור את הקובץ %s"
 
-#: ../src/glade-window.c:1275
+#: ../src/glade-window.c:1228
 msgid "You do not have the permissions necessary to save the file."
 msgstr "אין לך את ההרשאות הדרושות לשמור את הקובץ."
 
-#: ../src/glade-window.c:1296
+#: ../src/glade-window.c:1249
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr "לא ניתן לשמור את הקובץ %s. פרוייקט אחר בנתיב זה כבר פתוח."
 
-#: ../src/glade-window.c:1321
+#: ../src/glade-window.c:1274
 msgid "No open projects to save"
 msgstr "אין פרוייקט פתוח לשמור"
 
-#: ../src/glade-window.c:1351
+#: ../src/glade-window.c:1304
 #, c-format
-msgid ""
-"<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" before "
-"closing?</span>\n"
-"\n"
-"Your changes will be lost if you don't save them."
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">לשמור את השינויים לפרוייקט \"%s\" לפני "
-"סגירתו?</span>\n"
-"\n"
-"השינויים יאבדו אם לא תשמור אותם."
+msgid "Save changes to project \"%s\" before closing?"
+msgstr "האם לשמור את השינויים למיזם \"%s\" לפני הסגירה?"
 
-#: ../src/glade-window.c:1364
-msgid "_Close without Saving"
-msgstr "_סגור מבלי לשמור"
+#: ../src/glade-window.c:1315
+msgid "Your changes will be lost if you don't save them."
+msgstr "השינויים שלך יאבדו אם לא ישמרו."
 
-#: ../src/glade-window.c:1391
+#: ../src/glade-window.c:1319
+#| msgid "_Close without Saving"
+msgid "Close _without Saving"
+msgstr "_סגירה ללא שמירה"
+
+#: ../src/glade-window.c:1346
 #, c-format
 msgid "Failed to save %s to %s: %s"
 msgstr "נכשל בשמירת %s אל %s: %s"
 
-#: ../src/glade-window.c:1403
+#: ../src/glade-window.c:1358
 msgid "Save…"
 msgstr "שמור..."
 
-#: ../src/glade-window.c:1901
-msgid "Could not display the online user manual"
-msgstr "לא ניתן להציג את מדריך המשתמש המקוון"
-
-#: ../src/glade-window.c:1904 ../src/glade-window.c:1942
-#, c-format
-msgid ""
-"No suitable web browser executable could be found to be executed and to "
-"display the URL: %s"
-msgstr "לא נמצא קובץ הפעלה תואם לדפדפן להפעלה ולהצגת הכתובת: %s"
-
-#: ../src/glade-window.c:1939
-msgid "Could not display the online developer reference manual"
-msgstr "לא ניתן להציג את המדריך המקוון למפתחים"
-
-#: ../src/glade-window.c:1982
+#: ../src/glade-window.c:1935
 msgid ""
 "Glade is free software; you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -227,7 +220,7 @@ msgstr ""
 "Glade; if not, write to the Free Software Foundation, Inc., 51 Franklin "
 "Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: ../src/glade-window.c:2008
+#: ../src/glade-window.c:1961
 msgid "translator-credits"
 msgstr ""
 "יאיר הרשקוביץ <yairhr@gmail.com>‏\n"
@@ -236,311 +229,344 @@ msgstr ""
 "פרוייקט תרגום GNOME לעברית\n"
 "‏http://gnome-il.berlios.de"
 
-#: ../src/glade-window.c:2009
+#: ../src/glade-window.c:1962
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr "מעצב מנשק משתמש עבור GTK+ ו-GNOME."
 
 #. File
-#: ../src/glade-window.c:2081 ../plugins/gtk+/glade-gtk.c:6911
-#: ../plugins/gtk+/glade-gtk.c:7234
+#: ../src/glade-window.c:2037 ../plugins/gtk+/glade-gtk.c:7150
+#: ../plugins/gtk+/glade-gtk.c:7473
 msgid "_File"
 msgstr "_קובץ"
 
 #. Edit
-#: ../src/glade-window.c:2082 ../plugins/gtk+/glade-gtk.c:6914
-#: ../plugins/gtk+/glade-gtk.c:7244
+#: ../src/glade-window.c:2038 ../plugins/gtk+/glade-gtk.c:7153
+#: ../plugins/gtk+/glade-gtk.c:7483
 msgid "_Edit"
 msgstr "_עריכה"
 
 #. View
-#: ../src/glade-window.c:2083 ../plugins/gtk+/glade-gtk.c:6917
-#: ../plugins/gtk+/glade-gtk.c:7252
+#: ../src/glade-window.c:2039 ../plugins/gtk+/glade-gtk.c:7156
+#: ../plugins/gtk+/glade-gtk.c:7491
 msgid "_View"
 msgstr "_תצוגה"
 
-#: ../src/glade-window.c:2084
+#: ../src/glade-window.c:2040
 msgid "_Projects"
 msgstr "_פרוייקטים"
 
 #. Help
-#: ../src/glade-window.c:2085 ../plugins/gtk+/glade-gtk.c:6929
-#: ../plugins/gtk+/glade-gtk.c:7255
+#: ../src/glade-window.c:2041 ../plugins/gtk+/glade-gtk.c:7168
+#: ../plugins/gtk+/glade-gtk.c:7494
 msgid "_Help"
 msgstr "_עזרה"
 
-#: ../src/glade-window.c:2091
+#: ../src/glade-window.c:2047
 msgid "Create a new project"
 msgstr "צור פרוייקט חדש"
 
-#: ../src/glade-window.c:2093
+#: ../src/glade-window.c:2049
 msgid "_Open…"
 msgstr "_פתח..."
 
-#: ../src/glade-window.c:2094
+#: ../src/glade-window.c:2050
 msgid "Open a project"
 msgstr "פתח פרוייקט"
 
-#: ../src/glade-window.c:2096
+#: ../src/glade-window.c:2052
 msgid "Open _Recent"
 msgstr "נפתחו לא_חרונה"
 
-#: ../src/glade-window.c:2099
+#: ../src/glade-window.c:2055
 msgid "Quit the program"
 msgstr "צא מהתוכנית"
 
 #. ViewMenu
-#: ../src/glade-window.c:2102
+#: ../src/glade-window.c:2058
 msgid "Palette _Appearance"
 msgstr ""
 
-#: ../src/glade-window.c:2106
+#: ../src/glade-window.c:2062
 msgid "About this application"
 msgstr "אודות יישום זה"
 
-#: ../src/glade-window.c:2108
+#: ../src/glade-window.c:2064
 msgid "_Contents"
 msgstr "_תכנים"
 
-#: ../src/glade-window.c:2109
+#: ../src/glade-window.c:2065
 msgid "Display the user manual"
 msgstr "הצג את מדריך המשתמש"
 
-#: ../src/glade-window.c:2111
+#: ../src/glade-window.c:2067
 msgid "_Developer Reference"
 msgstr "_תיעוד למפתחים"
 
-#: ../src/glade-window.c:2112
+#: ../src/glade-window.c:2068
 msgid "Display the developer reference manual"
 msgstr "הצג את מדריך התיעוד למפתחים"
 
-#: ../src/glade-window.c:2121
+#: ../src/glade-window.c:2077
 msgid "Save the current project"
 msgstr "שמור את הפרוייקט הנוכחי"
 
-#: ../src/glade-window.c:2123
+#: ../src/glade-window.c:2079
 msgid "Save _As…"
 msgstr "שמור _בשם..."
 
-#: ../src/glade-window.c:2124
+#: ../src/glade-window.c:2080
 msgid "Save the current project with a different name"
 msgstr "שמור את הפרוייקט הנוכחי בשם אחר"
 
-#: ../src/glade-window.c:2127
+#: ../src/glade-window.c:2083
 msgid "Close the current project"
 msgstr "סגור את הפרוייקט הנוכחי"
 
-#: ../src/glade-window.c:2131
+#: ../src/glade-window.c:2087
 msgid "Undo the last action"
 msgstr "בטל את הפעולה האחרונה"
 
-#: ../src/glade-window.c:2134
+#: ../src/glade-window.c:2090
 msgid "Redo the last action"
 msgstr "שחזר את הפעולה האחרונה"
 
-#: ../src/glade-window.c:2137
+#: ../src/glade-window.c:2093
 msgid "Cut the selection"
 msgstr "גזור את הבחירה"
 
-#: ../src/glade-window.c:2140
+#: ../src/glade-window.c:2096
 msgid "Copy the selection"
 msgstr "העתק את הבחירה"
 
-#: ../src/glade-window.c:2143
+#: ../src/glade-window.c:2099
 msgid "Paste the clipboard"
-msgstr ""
+msgstr "הדבקת לוח הגזירים"
 
-#: ../src/glade-window.c:2146
+#: ../src/glade-window.c:2102
 msgid "Delete the selection"
 msgstr "מחק את הבחירה"
 
-#: ../src/glade-window.c:2149
+#: ../src/glade-window.c:2105
 msgid "Modify project preferences"
 msgstr "שנה את העדפות הפרוייקט"
 
 #. ProjectsMenu
-#: ../src/glade-window.c:2152
+#: ../src/glade-window.c:2108
 msgid "_Previous Project"
 msgstr "הפרוייקט ה_קודם"
 
-#: ../src/glade-window.c:2153
+#: ../src/glade-window.c:2109
 msgid "Activate previous project"
 msgstr "הפעל את הפרוייקט הקודם"
 
-#: ../src/glade-window.c:2155
+#: ../src/glade-window.c:2111
 msgid "_Next Project"
 msgstr "הפרוייקט ה_בא"
 
-#: ../src/glade-window.c:2156
+#: ../src/glade-window.c:2112
 msgid "Activate next project"
 msgstr "הפעל את הפרוייקט הבא"
 
-#: ../src/glade-window.c:2164
+#: ../src/glade-window.c:2120
 msgid "_Use Small Icons"
 msgstr "השתמש באיקונים _קטנים"
 
-#: ../src/glade-window.c:2165
+#: ../src/glade-window.c:2121
 msgid "Show items using small icons"
 msgstr "הצג פריטים בעזרת גופנים קטנים"
 
-#: ../src/glade-window.c:2168
+#: ../src/glade-window.c:2124
 msgid "Dock _Palette"
 msgstr ""
 
-#: ../src/glade-window.c:2169
+#: ../src/glade-window.c:2125
 msgid "Dock the palette into the main window"
 msgstr ""
 
-#: ../src/glade-window.c:2172
+#: ../src/glade-window.c:2128
 msgid "Dock _Inspector"
 msgstr ""
 
-#: ../src/glade-window.c:2173
+#: ../src/glade-window.c:2129
 msgid "Dock the inspector into the main window"
 msgstr ""
 
-#: ../src/glade-window.c:2176
-#, fuzzy
+#: ../src/glade-window.c:2132
 #| msgid "Properties"
 msgid "Dock Prop_erties"
-msgstr "מאפיינים"
+msgstr "מאפייני ה_מעגן"
 
-#: ../src/glade-window.c:2177
+#: ../src/glade-window.c:2133
 msgid "Dock the editor into the main window"
 msgstr ""
 
-#: ../src/glade-window.c:2185 ../plugins/gtk+/gtk+.xml.in.h:424
+#: ../src/glade-window.c:2136
+#| msgid "Toolbar"
+msgid "Tool_bar"
+msgstr "סרגל _כלים"
+
+#: ../src/glade-window.c:2137
+#| msgid "Show the clipboard"
+msgid "Show the toolbar"
+msgstr "הצגת סרגל הכלים"
+
+#: ../src/glade-window.c:2140
+#| msgid "StatusBar"
+msgid "_Statusbar"
+msgstr "שורת _מצב"
+
+#: ../src/glade-window.c:2141
+#| msgid "Show the clipboard"
+msgid "Show the statusbar"
+msgstr "הצגת שורת המצב"
+
+#: ../src/glade-window.c:2144
+#| msgid "_Projects"
+msgid "Project _Tabs"
+msgstr "_לשוניות מיזמים"
+
+#: ../src/glade-window.c:2145
+msgid "Show notebook tabs for loaded projects"
+msgstr ""
+
+#: ../src/glade-window.c:2153 ../plugins/gtk+/gtk+.xml.in.h:449
 msgid "Text beside icons"
 msgstr "טקסט לצד איקונים"
 
-#: ../src/glade-window.c:2186
+#: ../src/glade-window.c:2154
 msgid "Display items as text beside icons"
 msgstr "הצג פריטים כטקסט ליד איקונים"
 
-#: ../src/glade-window.c:2188
+#: ../src/glade-window.c:2156
 msgid "_Icons only"
 msgstr "_איקונים בלבד"
 
-#: ../src/glade-window.c:2189
+#: ../src/glade-window.c:2157
 msgid "Display items as icons only"
 msgstr "הצג פריטים כאיקונים בלבד"
 
-#: ../src/glade-window.c:2191
+#: ../src/glade-window.c:2159
 msgid "_Text only"
 msgstr "_טקסט בלבד"
 
-#: ../src/glade-window.c:2192
+#: ../src/glade-window.c:2160
 msgid "Display items as text only"
 msgstr "הצג פריטים כטקסט בלבד"
 
-#: ../src/glade-window.c:2381
+#: ../src/glade-window.c:2346
 msgid "Select"
 msgstr "בחר"
 
-#: ../src/glade-window.c:2385
+#: ../src/glade-window.c:2349
 msgid "Select widgets in the workspace"
 msgstr ""
 
-#: ../src/glade-window.c:2409
+#: ../src/glade-window.c:2372
 msgid "Drag Resize"
 msgstr ""
 
-#: ../src/glade-window.c:2413
+#: ../src/glade-window.c:2375
 msgid "Drag and resize widgets in the workspace"
 msgstr ""
 
-#: ../src/glade-window.c:2455
+#: ../src/glade-window.c:2417
+#| msgid "Insert Column"
+msgid "Close document"
+msgstr "סגירת מסמך"
+
+#: ../src/glade-window.c:2483
 msgid "Could not create a new project."
 msgstr "לא ניתן ליצור פרוייקט חדש."
 
-#: ../src/glade-window.c:2509
+#: ../src/glade-window.c:2537
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr "לפרוייקט %s שינויים לא שמורים"
 
-#: ../src/glade-window.c:2513
+#: ../src/glade-window.c:2541
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr "אם תטען אותו מחדש, כל השינויים הלא שמורים יאבדו. לטעון מחדש?"
 
-#: ../src/glade-window.c:2522
+#: ../src/glade-window.c:2550
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr "קובץ הפרוייקט %s שונה על ידי מקור חיצוני"
 
-#: ../src/glade-window.c:2526
+#: ../src/glade-window.c:2554
 msgid "Do you want to reload the project?"
 msgstr "לטעון מחדש את הפרוייקט?"
 
-#: ../src/glade-window.c:2532
+#: ../src/glade-window.c:2560
 msgid "_Reload"
 msgstr "_רענן"
 
-#: ../src/glade-window.c:2654
+#: ../src/glade-window.c:2682
 msgid "_Undo"
 msgstr "_בטל"
 
 #. Change tooltips
-#: ../src/glade-window.c:2656 ../gladeui/glade-app.c:268
+#: ../src/glade-window.c:2684 ../gladeui/glade-app.c:275
 #, c-format
 msgid "Undo: %s"
 msgstr "בטל: %s"
 
-#: ../src/glade-window.c:2656 ../src/glade-window.c:2667
-#: ../gladeui/glade-app.c:269
+#: ../src/glade-window.c:2684 ../src/glade-window.c:2695
+#: ../gladeui/glade-app.c:276
 msgid "the last action"
 msgstr "הפעולה האחרונה"
 
-#: ../src/glade-window.c:2665
+#: ../src/glade-window.c:2693
 msgid "_Redo"
 msgstr "_שחזר"
 
-#: ../src/glade-window.c:2667 ../gladeui/glade-app.c:268
+#: ../src/glade-window.c:2695 ../gladeui/glade-app.c:275
 #, c-format
 msgid "Redo: %s"
 msgstr "שחזר: %s"
 
-#: ../src/glade-window.c:2975
+#: ../src/glade-window.c:3165
 msgid "Go back in undo history"
 msgstr ""
 
-#: ../src/glade-window.c:2977
+#: ../src/glade-window.c:3167
 msgid "Go forward in undo history"
 msgstr ""
 
-#: ../src/glade-window.c:3024
+#: ../src/glade-window.c:3216
 msgid "Palette"
 msgstr ""
 
-#: ../src/glade-window.c:3035
+#: ../src/glade-window.c:3226
 msgid "Inspector"
 msgstr ""
 
-#: ../src/glade-window.c:3042 ../gladeui/glade-editor.c:350
-#: ../gladeui/glade-widget.c:1089 ../plugins/gtk+/glade-gtk.c:6373
-#: ../plugins/gtk+/glade-gtk.c:6403 ../plugins/gtk+/glade-gtk.c:10662
+#: ../src/glade-window.c:3233 ../gladeui/glade-editor.c:350
+#: ../gladeui/glade-widget.c:1100 ../plugins/gtk+/glade-gtk.c:6582
+#: ../plugins/gtk+/glade-gtk.c:6612 ../plugins/gtk+/glade-gtk.c:11288
 msgid "Properties"
 msgstr "מאפיינים"
 
-#: ../gladeui/glade-app.c:430
+#: ../gladeui/glade-app.c:455
 msgid "Clipboard"
 msgstr "לוח גזירים"
 
-#: ../gladeui/glade-app.c:478
+#: ../gladeui/glade-app.c:524
 msgid "Active Project"
 msgstr "פרוייקט פעיל"
 
-#: ../gladeui/glade-app.c:479
+#: ../gladeui/glade-app.c:525
 msgid "The active project"
 msgstr "הפרוייקט הפעיל"
 
-#: ../gladeui/glade-app.c:485
+#: ../gladeui/glade-app.c:531
 msgid "Pointer Mode"
 msgstr "מצב סמן"
 
-#: ../gladeui/glade-app.c:486
+#: ../gladeui/glade-app.c:532
 msgid "Current mode for the pointer in the workspace"
 msgstr ""
 
-#: ../gladeui/glade-app.c:556
+#: ../gladeui/glade-app.c:602
 #, c-format
 msgid ""
 "Trying to save private data to %s directory but it is a regular file.\n"
@@ -549,7 +575,7 @@ msgstr ""
 "מנסה לשמור נתונים פרטיים אל התיקיה %s אבל זהו קובץ רגיל.\n"
 "לא יישמר כל מידע פרטי בהפעלה זאת"
 
-#: ../gladeui/glade-app.c:569
+#: ../gladeui/glade-app.c:615
 #, c-format
 msgid ""
 "Failed to create directory %s to save private data.\n"
@@ -558,7 +584,7 @@ msgstr ""
 "נכשל ביצירת התיקייה %s לשמירת מידע פרטי.\n"
 "לא יישמר כל מידע פרטי בהפעלה זאת"
 
-#: ../gladeui/glade-app.c:597
+#: ../gladeui/glade-app.c:643
 #, c-format
 msgid ""
 "Error writing private data to %s (%s).\n"
@@ -567,47 +593,46 @@ msgstr ""
 "שגיאה בכתיבת מידע פרטי אל %s ‏(%s).‏\n"
 "לא יישמר כל מידע פרטי בהפעלה זאת"
 
-#: ../gladeui/glade-app.c:609
+#: ../gladeui/glade-app.c:655
 #, c-format
 msgid ""
 "Error serializing configuration data to save (%s).\n"
 "No private data will be saved in this session"
 msgstr ""
 
-#: ../gladeui/glade-app.c:622
+#: ../gladeui/glade-app.c:668
 #, c-format
 msgid ""
 "Error opening %s to write private data (%s).\n"
 "No private data will be saved in this session"
 msgstr ""
 
-#: ../gladeui/glade-app.c:1135 ../gladeui/glade-app.c:1176
-#: ../gladeui/glade-app.c:1335
+#: ../gladeui/glade-app.c:1181 ../gladeui/glade-app.c:1222
+#: ../gladeui/glade-app.c:1387
 msgid "No widget selected."
 msgstr "לא ניבחר פריט."
 
-#: ../gladeui/glade-app.c:1228
+#: ../gladeui/glade-app.c:1274
 msgid "Unable to paste to the selected parent"
 msgstr "לא ניתן להדביק להורה שנבחר"
 
-#: ../gladeui/glade-app.c:1239
+#: ../gladeui/glade-app.c:1285
 msgid "Unable to paste to multiple widgets"
 msgstr ""
 
-#: ../gladeui/glade-app.c:1249 ../gladeui/glade-app.c:1355
+#: ../gladeui/glade-app.c:1301 ../gladeui/glade-app.c:1407
 msgid "No widget selected on the clipboard"
 msgstr ""
 
-#: ../gladeui/glade-app.c:1281
+#: ../gladeui/glade-app.c:1333
 msgid "Only one widget can be pasted at a time to this container"
 msgstr ""
 
-#: ../gladeui/glade-app.c:1293
+#: ../gladeui/glade-app.c:1345
 msgid "Insufficient amount of placeholders in target container"
 msgstr ""
 
 #: ../gladeui/glade-builtins.c:71
-#| msgid "the last action"
 msgid "Authentication"
 msgstr "אימות"
 
@@ -623,7 +648,6 @@ msgstr ""
 
 #. GTK_STOCK_DND_MULTIPLE
 #: ../gladeui/glade-builtins.c:74
-#| msgid "GNOME Color Picker"
 msgid "Color Picker"
 msgstr "‏בוחר צבעים"
 
@@ -633,16 +657,15 @@ msgid "Directory"
 msgstr "ספרייה"
 
 #. GTK_STOCK_DIRECTORY
-#: ../gladeui/glade-builtins.c:76 ../plugins/gnome/gnome.xml.in.h:9
+#: ../gladeui/glade-builtins.c:76 ../plugins/gnome/gnome.xml.in.h:10
 msgid "File"
 msgstr "קובץ"
 
 #. GTK_STOCK_FILE
 #: ../gladeui/glade-builtins.c:77
-#, fuzzy
 #| msgid "Message"
 msgid "Missing Image"
-msgstr "הודעה"
+msgstr "תמונה חסרה"
 
 #: ../gladeui/glade-builtins.c:321
 msgid "Stock"
@@ -660,7 +683,7 @@ msgstr ""
 msgid "A builtin stock image"
 msgstr ""
 
-#: ../gladeui/glade-builtins.c:488 ../gladeui/glade-inspector.c:692
+#: ../gladeui/glade-builtins.c:488
 msgid "Objects"
 msgstr "אובייקטים"
 
@@ -669,21 +692,22 @@ msgid "A list of objects"
 msgstr "רשימה של אובייקטים"
 
 #: ../gladeui/glade-builtins.c:498
-#| msgid "File Name"
 msgid "Image File Name"
 msgstr "שם קובץ תמונה"
 
 #: ../gladeui/glade-builtins.c:499
-msgid "Enter a filename, relative or fullpath to load the image"
-msgstr "הכנס שם קובץ, נתיב יחסי או מלא, לטעון את התמונה"
+#| msgid "Enter a filename, relative or fullpath to load the image"
+msgid "Enter a filename, relative path or full path to load the image"
+msgstr "יש להזין שם קובץ, בנתיב יחסי או מלא כדי לטעון את התמונה"
 
 #: ../gladeui/glade-builtins.c:508
 msgid "GdkColor"
 msgstr "GdkColor"
 
 #: ../gladeui/glade-builtins.c:509
-msgid "A gdk color value"
-msgstr "ערך צבע gdk"
+#| msgid "A gdk color value"
+msgid "A GDK color value"
+msgstr "ערך צבע ל־GDK"
 
 #: ../gladeui/glade-builtins.c:519
 msgid "Integer"
@@ -733,83 +757,79 @@ msgstr "בוליאני"
 msgid "A boolean value"
 msgstr "ערך בוליאני"
 
-#: ../gladeui/glade-base-editor.c:529
+#: ../gladeui/glade-base-editor.c:536
 #, c-format
 msgid "Setting object type on %s to %s"
 msgstr ""
 
-#: ../gladeui/glade-base-editor.c:670
+#: ../gladeui/glade-base-editor.c:677
 #, c-format
 msgid "Add a %s to %s"
 msgstr "הוסף %s ל-%s"
 
-#: ../gladeui/glade-base-editor.c:755
-#, fuzzy, c-format
+#: ../gladeui/glade-base-editor.c:762
+#, c-format
 #| msgid "Add Item"
 msgid "Add %s item"
-msgstr "הוסף פריט"
+msgstr "הוספת פריט %s"
 
-#: ../gladeui/glade-base-editor.c:785
-#, fuzzy, c-format
+#: ../gladeui/glade-base-editor.c:792
+#, c-format
 #| msgid "Add Child Item"
 msgid "Add child %s item"
-msgstr "הוסף פריט בן"
+msgstr "הוספת פריט צאצא %s"
 
-#: ../gladeui/glade-base-editor.c:872
+#: ../gladeui/glade-base-editor.c:879
 #, c-format
 msgid "Delete %s child from %s"
 msgstr ""
 
-#: ../gladeui/glade-base-editor.c:1000
+#: ../gladeui/glade-base-editor.c:1007
 #, c-format
 msgid "Reorder %s's children"
 msgstr ""
 
-#: ../gladeui/glade-base-editor.c:1437 ../plugins/gtk+/gtk+.xml.in.h:96
+#: ../gladeui/glade-base-editor.c:1456 ../plugins/gtk+/gtk+.xml.in.h:97
 msgid "Container"
 msgstr ""
 
-#: ../gladeui/glade-base-editor.c:1438
+#: ../gladeui/glade-base-editor.c:1457
 msgid "The container object this editor is currently editing"
 msgstr ""
 
-#: ../gladeui/glade-base-editor.c:1663 ../gladeui/glade-editor.c:979
+#: ../gladeui/glade-base-editor.c:1682 ../gladeui/glade-editor.c:997
 msgid "General"
 msgstr "כללי"
 
-#: ../gladeui/glade-base-editor.c:1671
+#: ../gladeui/glade-base-editor.c:1690
 msgid "Hierarchy"
 msgstr "היררכיה"
 
-#: ../gladeui/glade-base-editor.c:1705 ../plugins/gtk+/gtk+.xml.in.h:252
+#: ../gladeui/glade-base-editor.c:1724 ../plugins/gtk+/gtk+.xml.in.h:255
 msgid "Label"
 msgstr "תווית"
 
-#: ../gladeui/glade-base-editor.c:1719 ../gladeui/glade-widget-adaptor.c:1219
+#: ../gladeui/glade-base-editor.c:1738 ../gladeui/glade-widget-adaptor.c:1244
 msgid "Type"
 msgstr "סוג"
 
-#. Name
-#: ../gladeui/glade-base-editor.c:1974
-msgid "Name :"
-msgstr "שם :"
-
 #. Type
-#: ../gladeui/glade-base-editor.c:1986
-msgid "Type :"
-msgstr "סוג :"
+#: ../gladeui/glade-base-editor.c:2004
+#| msgid "Type :"
+msgid "Type:"
+msgstr "סוג:"
 
-#: ../gladeui/glade-base-editor.c:2199
+#: ../gladeui/glade-base-editor.c:2217
 msgid ""
 "<big><b>Tips:</b></big>\n"
-"  * Right click over the treeview to add items.\n"
+"  * Right-click over the treeview to add items.\n"
 "  * Press Delete to remove the selected item.\n"
 "  * Drag &amp; Drop to reorder.\n"
 "  * Type column is editable."
 msgstr ""
 
 #: ../gladeui/glade-clipboard-view.c:209 ../gladeui/glade-editor.c:162
-#: ../plugins/gtk+/gtk+.xml.in.h:492
+#: ../plugins/gtk+/gtk+.xml.in.h:517
 msgid "Widget"
 msgstr ""
 
@@ -818,318 +838,325 @@ msgstr ""
 msgid "Setting multiple properties"
 msgstr "קובע מאפיינים מרובים"
 
-#: ../gladeui/glade-command.c:608
+#: ../gladeui/glade-command.c:611
 #, c-format
 msgid "Setting %s of %s"
 msgstr ""
 
-#: ../gladeui/glade-command.c:612 ../gladeui/glade-editor-property.c:2871
+#: ../gladeui/glade-command.c:615 ../gladeui/glade-editor-property.c:3010
 #, c-format
 msgid "Setting %s of %s to %s"
 msgstr ""
 
-#: ../gladeui/glade-command.c:846 ../gladeui/glade-command.c:873
+#: ../gladeui/glade-command.c:850 ../gladeui/glade-command.c:877
 #, c-format
 msgid "Renaming %s to %s"
 msgstr "שנה את %s ל-%s"
 
-#: ../gladeui/glade-command.c:1002
+#: ../gladeui/glade-command.c:1006
 #, c-format
 msgid "Add %s"
 msgstr "הוסף %s"
 
-#: ../gladeui/glade-command.c:1003 ../gladeui/glade-command.c:1733
-#: ../gladeui/glade-command.c:1757 ../gladeui/glade-command.c:1780
-#: ../gladeui/glade-command.c:1805 ../gladeui/glade-command.c:1910
-#: ../gladeui/glade-command.c:1943
+#: ../gladeui/glade-command.c:1007 ../gladeui/glade-command.c:1738
+#: ../gladeui/glade-command.c:1762 ../gladeui/glade-command.c:1785
+#: ../gladeui/glade-command.c:1810 ../gladeui/glade-command.c:1914
+#: ../gladeui/glade-command.c:1947
 msgid "multiple"
 msgstr ""
 
-#: ../gladeui/glade-command.c:1159
+#: ../gladeui/glade-command.c:1163
 msgid "You cannot remove a widget internal to a composite widget."
 msgstr ""
 
-#: ../gladeui/glade-command.c:1166
+#: ../gladeui/glade-command.c:1170
 #, c-format
 msgid "%s is locked by %s, edit %s first."
 msgstr ""
 
-#: ../gladeui/glade-command.c:1176
+#: ../gladeui/glade-command.c:1180
 #, c-format
 msgid "Remove %s"
 msgstr "הסר %s"
 
-#: ../gladeui/glade-command.c:1179
+#: ../gladeui/glade-command.c:1183
 msgid "Remove multiple"
 msgstr ""
 
-#: ../gladeui/glade-command.c:1552
+#: ../gladeui/glade-command.c:1557
 #, c-format
 msgid "Clipboard add %s"
 msgstr ""
 
-#: ../gladeui/glade-command.c:1555
+#: ../gladeui/glade-command.c:1560
 msgid "Clipboard add multiple"
 msgstr ""
 
-#: ../gladeui/glade-command.c:1560
+#: ../gladeui/glade-command.c:1565
 #, c-format
 msgid "Clipboard remove %s"
 msgstr ""
 
-#: ../gladeui/glade-command.c:1563
+#: ../gladeui/glade-command.c:1568
 msgid "Clipboard remove multiple"
 msgstr ""
 
-#: ../gladeui/glade-command.c:1733
+#: ../gladeui/glade-command.c:1738
 #, c-format
 msgid "Create %s"
 msgstr "צור %s"
 
-#: ../gladeui/glade-command.c:1757
+#: ../gladeui/glade-command.c:1762
 #, c-format
 msgid "Delete %s"
 msgstr "מחק %s"
 
-#: ../gladeui/glade-command.c:1780
+#: ../gladeui/glade-command.c:1785
 #, c-format
 msgid "Cut %s"
 msgstr "גזור %s"
 
-#: ../gladeui/glade-command.c:1805
+#: ../gladeui/glade-command.c:1810
 #, c-format
 msgid "Copy %s"
 msgstr "העתק %s"
 
-#: ../gladeui/glade-command.c:1910
+#: ../gladeui/glade-command.c:1914
 #, c-format
 msgid "Paste %s"
 msgstr "הדבק %s"
 
-#: ../gladeui/glade-command.c:1942
+#: ../gladeui/glade-command.c:1946
 #, c-format
 msgid "Drag-n-Drop from %s to %s"
 msgstr ""
 
-#: ../gladeui/glade-command.c:2064
+#: ../gladeui/glade-command.c:2068
 #, c-format
 msgid "Add signal handler %s"
 msgstr ""
 
-#: ../gladeui/glade-command.c:2065
+#: ../gladeui/glade-command.c:2069
 #, c-format
 msgid "Remove signal handler %s"
 msgstr ""
 
-#: ../gladeui/glade-command.c:2066
+#: ../gladeui/glade-command.c:2070
 #, c-format
 msgid "Change signal handler %s"
 msgstr ""
 
-#: ../gladeui/glade-command.c:2291
+#: ../gladeui/glade-command.c:2295
 #, c-format
 msgid "Setting i18n metadata"
 msgstr ""
 
-#: ../gladeui/glade-command.c:2495
-#, fuzzy, c-format
+#: ../gladeui/glade-command.c:2499
+#, c-format
 #| msgid "Renaming %s to %s"
 msgid "Converting %s to %s format"
-msgstr "שנה את %s ל-%s"
+msgstr "המבנה %s משתנה ל־%s"
 
-#: ../gladeui/glade-command.c:2656
+#: ../gladeui/glade-command.c:2657 ../gladeui/glade-project.c:3700
 #, c-format
 msgid "Setting %s to use a %s naming policy"
 msgstr ""
 
-#: ../gladeui/glade-command.c:2798
+#: ../gladeui/glade-command.c:2797
 #, c-format
 msgid "Locking %s by widget %s"
 msgstr ""
 
-#: ../gladeui/glade-command.c:2837
-#, fuzzy, c-format
+#: ../gladeui/glade-command.c:2836
+#, c-format
 #| msgid "Undo: %s"
 msgid "Unlocking %s"
-msgstr "בטל: %s"
+msgstr "שחרור %s"
 
 #: ../gladeui/glade-cursor.c:186
 #, c-format
 msgid "Unable to load image (%s)"
 msgstr "לא ניתן לטעון תמונה (%s)"
 
-#: ../gladeui/glade-editor-property.c:590
+#: ../gladeui/glade-editor-property.c:598
 msgid "Property Class"
 msgstr ""
 
-#: ../gladeui/glade-editor-property.c:591
+#: ../gladeui/glade-editor-property.c:599
 msgid "The GladePropertyClass this GladeEditorProperty was created for"
 msgstr ""
 
-#: ../gladeui/glade-editor-property.c:597
+#: ../gladeui/glade-editor-property.c:605
 msgid "Use Command"
 msgstr "השתמש בפקודה"
 
-#: ../gladeui/glade-editor-property.c:598
+#: ../gladeui/glade-editor-property.c:606
 msgid "Whether we should use the command API for the undo/redo stack"
 msgstr ""
 
-#: ../gladeui/glade-editor-property.c:1096
+#: ../gladeui/glade-editor-property.c:1103
 msgid "Select Fields"
 msgstr "בחר שדות"
 
-#: ../gladeui/glade-editor-property.c:1118
+#: ../gladeui/glade-editor-property.c:1127
 msgid "_Select individual fields:"
 msgstr ""
 
-#: ../gladeui/glade-editor-property.c:1691
+#: ../gladeui/glade-editor-property.c:1437
+#| msgid "Select a color"
+msgid "Select Named Icon"
+msgstr "בחירת איקון בעל שם"
+
+#: ../gladeui/glade-editor-property.c:1701
 msgid "Edit Text"
 msgstr "ערוך טקסט"
 
 #. Text
-#: ../gladeui/glade-editor-property.c:1720
+#: ../gladeui/glade-editor-property.c:1732
 msgid "_Text:"
 msgstr "_טקסט:"
 
 #. Translatable
-#: ../gladeui/glade-editor-property.c:1756
+#: ../gladeui/glade-editor-property.c:1768
 msgid "T_ranslatable"
 msgstr "ניתן ל_תרגום"
 
-#: ../gladeui/glade-editor-property.c:1761 ../gladeui/glade-property.c:585
-msgid "Whether this property is translatable or not"
+#: ../gladeui/glade-editor-property.c:1773 ../gladeui/glade-property.c:589
+#| msgid "Whether this property is translatable or not"
+msgid "Whether this property is translatable"
 msgstr "האם מאפיין זה ניתן לתרגום"
 
 #. Has Context
-#: ../gladeui/glade-editor-property.c:1764
+#: ../gladeui/glade-editor-property.c:1776
 msgid "_Has context prefix"
 msgstr ""
 
-#: ../gladeui/glade-editor-property.c:1768 ../gladeui/glade-property.c:592
-msgid "Whether or not the translatable string has a context prefix"
-msgstr ""
+#: ../gladeui/glade-editor-property.c:1780 ../gladeui/glade-property.c:596
+#| msgid "Whether this property is translatable or not"
+msgid "Whether the translatable string has a context prefix"
+msgstr "האם למחרוזת הניתנת לתרגום יש קידומת הקשר"
 
-#: ../gladeui/glade-editor-property.c:1779
-#| msgid "Comment for translators"
+#: ../gladeui/glade-editor-property.c:1791
 msgid "Conte_xt for translation:"
 msgstr "ה_קשר עבור תרגום:"
 
-#: ../gladeui/glade-editor-property.c:1817
+#: ../gladeui/glade-editor-property.c:1829
 msgid "Co_mments for translators:"
 msgstr "הערות עבור _המתרגמים"
 
-#: ../gladeui/glade-editor-property.c:1935
+#: ../gladeui/glade-editor-property.c:1948
 msgid "Select a file from the project resource directory"
 msgstr ""
 
-#: ../gladeui/glade-editor-property.c:2207
-#: ../gladeui/glade-editor-property.c:2223
+#: ../gladeui/glade-editor-property.c:2229
+#: ../gladeui/glade-editor-property.c:2245
 msgid "Yes"
 msgstr "כן"
 
-#: ../gladeui/glade-editor-property.c:2207
-#: ../gladeui/glade-editor-property.c:2223
-#: ../gladeui/glade-editor-property.c:2238
+#: ../gladeui/glade-editor-property.c:2229
+#: ../gladeui/glade-editor-property.c:2245
+#: ../gladeui/glade-editor-property.c:2260
 msgid "No"
 msgstr "לא"
 
-#: ../gladeui/glade-editor-property.c:2681 ../gladeui/glade-widget.c:1041
-#: ../gladeui/glade-widget-adaptor.c:1211
+#: ../gladeui/glade-editor-property.c:2686 ../gladeui/glade-widget.c:1052
+#: ../gladeui/glade-widget-adaptor.c:1236
 msgid "Name"
 msgstr "שם"
 
-#: ../gladeui/glade-editor-property.c:2693 ../gladeui/glade-property.c:549
+#: ../gladeui/glade-editor-property.c:2698 ../gladeui/glade-property.c:553
 msgid "Class"
 msgstr "מחלקה"
 
-#: ../gladeui/glade-editor-property.c:2709
+#: ../gladeui/glade-editor-property.c:2714
 #, c-format
-msgid "Choose parentless %s(s) in this project"
+#| msgid "Choose a %s in this project"
+msgid "Choose parentless %s type objects in this project"
 msgstr ""
 
-#: ../gladeui/glade-editor-property.c:2709
+#: ../gladeui/glade-editor-property.c:2714
 #, c-format
 msgid "Choose a parentless %s in this project"
 msgstr ""
 
-#: ../gladeui/glade-editor-property.c:2712
+#: ../gladeui/glade-editor-property.c:2717
 #, fuzzy, c-format
 #| msgid "Close the current project"
-msgid "Choose %s(s) in this project"
+msgid "Choose %s type objects in this project"
 msgstr "סגור את הפרוייקט הנוכחי"
 
-#: ../gladeui/glade-editor-property.c:2712
+#: ../gladeui/glade-editor-property.c:2717
 #, c-format
 msgid "Choose a %s in this project"
 msgstr "בחר %s בפרוייקט זה"
 
-#: ../gladeui/glade-editor-property.c:2762
-#| msgid "_View"
-msgid "_New"
-msgstr "_חדש"
-
 #. Checklist
-#: ../gladeui/glade-editor-property.c:2810
+#: ../gladeui/glade-editor-property.c:2792
+#: ../gladeui/glade-editor-property.c:2934
 msgid "O_bjects:"
 msgstr "או_בייקטים:"
 
+#: ../gladeui/glade-editor-property.c:2884
+msgid "_New"
+msgstr "_חדש"
+
 #. translators: Creating 'a widget' for 'a property' of 'a widget'
-#: ../gladeui/glade-editor-property.c:2897
+#: ../gladeui/glade-editor-property.c:3036
 #, fuzzy, c-format
 #| msgid "Renaming %s to %s"
 msgid "Creating %s for %s of %s"
 msgstr "שנה את %s ל-%s"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:3087
+#: ../gladeui/glade-editor-property.c:3230
 msgid "Objects:"
 msgstr "אובייקטים:"
 
-#: ../gladeui/glade-editor-property.c:3452
+#: ../gladeui/glade-editor-property.c:3627
 msgid "Value:"
 msgstr "ערך:"
 
-#: ../gladeui/glade-editor-property.c:3453
+#: ../gladeui/glade-editor-property.c:3628
 msgid "The current value"
 msgstr "הערך הנוכחי"
 
-#: ../gladeui/glade-editor-property.c:3455
+#: ../gladeui/glade-editor-property.c:3630
 msgid "Lower:"
 msgstr ""
 
-#: ../gladeui/glade-editor-property.c:3456
+#: ../gladeui/glade-editor-property.c:3631
 msgid "The minimum value"
 msgstr "הערך המינימאלי"
 
-#: ../gladeui/glade-editor-property.c:3458
+#: ../gladeui/glade-editor-property.c:3633
 msgid "Upper:"
 msgstr ""
 
-#: ../gladeui/glade-editor-property.c:3459
+#: ../gladeui/glade-editor-property.c:3634
 msgid "The maximum value"
 msgstr "הערך המקסימאלי"
 
-#: ../gladeui/glade-editor-property.c:3461
+#: ../gladeui/glade-editor-property.c:3636
 msgid "Step inc:"
 msgstr ""
 
-#: ../gladeui/glade-editor-property.c:3462
+#: ../gladeui/glade-editor-property.c:3637
 msgid "The increment to use to make minor changes to the value"
 msgstr ""
 
-#: ../gladeui/glade-editor-property.c:3464
+#: ../gladeui/glade-editor-property.c:3639
 msgid "Page inc:"
 msgstr ""
 
-#: ../gladeui/glade-editor-property.c:3465
+#: ../gladeui/glade-editor-property.c:3640
 msgid "The increment to use to make major changes to the value"
 msgstr ""
 
-#: ../gladeui/glade-editor-property.c:3467
+#: ../gladeui/glade-editor-property.c:3642
 msgid "Page size:"
 msgstr "גודל עמוד:"
 
-#: ../gladeui/glade-editor-property.c:3468
+#: ../gladeui/glade-editor-property.c:3643
 msgid ""
 "The page size (in a GtkScrollbar this is the size of the area which is "
 "currently visible)"
@@ -1138,11 +1165,6 @@ msgstr ""
 #: ../gladeui/glade-editor-table.c:356
 msgid "The Object's name"
 msgstr "שם האובייקט"
-
-#. Name
-#: ../gladeui/glade-editor-table.c:359
-msgid "Name:"
-msgstr "שם:"
 
 #: ../gladeui/glade-editor.c:154
 msgid "Show info"
@@ -1158,7 +1180,7 @@ msgstr "הפריט הטעון הנוכחי בעורך זה"
 
 #. construct tab label widget
 #: ../gladeui/glade-editor.c:203 ../gladeui/glade-editor.c:402
-#: ../gladeui/glade-editor.c:999
+#: ../gladeui/glade-editor.c:1017
 msgid "Accessibility"
 msgstr "נגישות"
 
@@ -1193,179 +1215,184 @@ msgstr "_אריזה"
 msgid "_Common"
 msgstr "_משותף"
 
-#: ../gladeui/glade-editor.c:809
+#: ../gladeui/glade-editor.c:826
 #, c-format
 msgid "Create a %s"
 msgstr "צור %s"
 
-#: ../gladeui/glade-editor.c:928
+#: ../gladeui/glade-editor.c:946
 msgid "Reset"
 msgstr "אפס"
 
-#: ../gladeui/glade-editor.c:943
+#: ../gladeui/glade-editor.c:961
 msgid "Property"
 msgstr "מאפיין"
 
-#: ../gladeui/glade-editor.c:989
+#: ../gladeui/glade-editor.c:1007
 msgid "Common"
 msgstr "משותף"
 
-#: ../gladeui/glade-editor.c:1033
+#: ../gladeui/glade-editor.c:1051
 msgid "(default)"
 msgstr "(ברירת מחדל)"
 
-#: ../gladeui/glade-editor.c:1048
+#: ../gladeui/glade-editor.c:1066
 msgid "Select the properties that you want to reset to their default values"
 msgstr "בחר את המאפיינים אותם ברצונך לאפס לברירת המחדל"
 
-#: ../gladeui/glade-editor.c:1180
+#: ../gladeui/glade-editor.c:1198
 msgid "Reset Widget Properties"
 msgstr "אפס מאפייני פריט"
 
 #. Checklist
-#: ../gladeui/glade-editor.c:1197
+#: ../gladeui/glade-editor.c:1215
 msgid "_Properties:"
 msgstr "_מאפיינים:"
 
-#: ../gladeui/glade-editor.c:1226
+#: ../gladeui/glade-editor.c:1244
 msgid "_Select All"
 msgstr "_בחר הכל"
 
-#: ../gladeui/glade-editor.c:1233
+#: ../gladeui/glade-editor.c:1251
 msgid "_Unselect All"
 msgstr ""
 
 #. Description
-#: ../gladeui/glade-editor.c:1242
+#: ../gladeui/glade-editor.c:1260
 msgid "Property _Description:"
 msgstr "תיאור _מאפיין"
 
-#: ../gladeui/glade-fixed.c:482 ../plugins/gtk+/glade-gtk.c:2692
+#. Translators: first %s is the project name, second is a widget name
+#: ../gladeui/glade-editor.c:1356
+#, fuzzy, c-format
+#| msgid "%s [%s] - Properties"
+msgid "%s - %s Properties"
+msgstr "%s [%s] - מאפיינים"
+
+#: ../gladeui/glade-fixed.c:491 ../plugins/gtk+/glade-gtk.c:2625
 #, c-format
 msgid "Placing %s inside %s"
 msgstr ""
 
-#: ../gladeui/glade-fixed.c:971
+#: ../gladeui/glade-fixed.c:982
 msgid "X position property"
 msgstr "מאפיין מיקום X"
 
-#: ../gladeui/glade-fixed.c:972
+#: ../gladeui/glade-fixed.c:983
 msgid "The property used to set the X position of a child object"
-msgstr ""
-"המאפיין אשר קובע את מיקום ה-X של אובייקט בן"
+msgstr "המאפיין אשר קובע את מיקום ה-X של אובייקט בן"
 
-#: ../gladeui/glade-fixed.c:978
+#: ../gladeui/glade-fixed.c:989
 msgid "Y position property"
 msgstr "מאפיין מיקום Y"
 
-#: ../gladeui/glade-fixed.c:979
+#: ../gladeui/glade-fixed.c:990
 msgid "The property used to set the Y position of a child object"
-msgstr ""
-"המאפיין אשר קובע את מיקום ה-Y של אובייקט בן"
+msgstr "המאפיין אשר קובע את מיקום ה-Y של אובייקט בן"
 
-#: ../gladeui/glade-fixed.c:985
+#: ../gladeui/glade-fixed.c:996
 msgid "Width property"
 msgstr "מאפיין רוחב"
 
-#: ../gladeui/glade-fixed.c:986
+#: ../gladeui/glade-fixed.c:997
 msgid "The property used to set the width of a child object"
 msgstr ""
 
-#: ../gladeui/glade-fixed.c:992
+#: ../gladeui/glade-fixed.c:1003
 msgid "Height property"
 msgstr "מאפיין גובה"
 
-#: ../gladeui/glade-fixed.c:993
+#: ../gladeui/glade-fixed.c:1004
 msgid "The property used to set the height of a child object"
 msgstr ""
 
-#: ../gladeui/glade-fixed.c:999
+#: ../gladeui/glade-fixed.c:1010
 msgid "Can resize"
 msgstr ""
 
-#: ../gladeui/glade-fixed.c:1000
+#: ../gladeui/glade-fixed.c:1011
 msgid "Whether this container supports resizes of child widgets"
 msgstr ""
 
-#: ../gladeui/glade-palette.c:694
+#: ../gladeui/glade-palette.c:745
 msgid "Widget selector"
 msgstr ""
 
-#: ../gladeui/glade-palette.c:695
+#: ../gladeui/glade-palette.c:746
 #, fuzzy
 #| msgid "Create Folder"
 msgid "Create root widget"
 msgstr "צור תיקייה"
 
-#: ../gladeui/glade-popup.c:442
+#: ../gladeui/glade-popup.c:467 ../gladeui/glade-popup.c:476
 msgid "_Add widget here"
 msgstr "_הוסף פריט כאן"
 
-#: ../gladeui/glade-popup.c:444 ../gladeui/glade-popup.c:668
+#: ../gladeui/glade-popup.c:480 ../gladeui/glade-popup.c:704
 msgid "Add widget as _toplevel"
 msgstr ""
 
-#: ../gladeui/glade-popup.c:455
+#: ../gladeui/glade-popup.c:491
 msgid "_Select"
 msgstr "_בחר"
 
-#: ../gladeui/glade-popup.c:537 ../gladeui/glade-popup.c:676
-#: ../gladeui/glade-popup.c:753
+#: ../gladeui/glade-popup.c:573 ../gladeui/glade-popup.c:712
+#: ../gladeui/glade-popup.c:789
 msgid "Read _documentation"
 msgstr "קרא _תיעוד"
 
-#: ../gladeui/glade-popup.c:746
+#: ../gladeui/glade-popup.c:782
 msgid "Set default value"
 msgstr "קבע ערך ברירת מחדל"
 
-#: ../gladeui/glade-project.c:811
+#: ../gladeui/glade-project.c:837
 msgid "Whether project has been modified since it was last saved"
 msgstr ""
 
-#: ../gladeui/glade-project.c:818
+#: ../gladeui/glade-project.c:844
 msgid "Has Selection"
 msgstr "יש בחירה"
 
-#: ../gladeui/glade-project.c:819
+#: ../gladeui/glade-project.c:845
 msgid "Whether project has a selection"
 msgstr ""
 
-#: ../gladeui/glade-project.c:826
+#: ../gladeui/glade-project.c:852
 msgid "Path"
 msgstr "נתיב"
 
-#: ../gladeui/glade-project.c:827
+#: ../gladeui/glade-project.c:853
 msgid "The filesystem path of the project"
 msgstr "נתיב מערכת הקבצים של הפרוייקט"
 
-#: ../gladeui/glade-project.c:834
+#: ../gladeui/glade-project.c:860
 msgid "Read Only"
 msgstr "קריאה בלבד"
 
-#: ../gladeui/glade-project.c:835
-msgid "Whether project is read only or not"
-msgstr ""
+#: ../gladeui/glade-project.c:861
+#, fuzzy
+#| msgid "From the project directory"
+msgid "Whether project is read-only"
+msgstr "מספריית הפרוייקט"
 
-#: ../gladeui/glade-project.c:842
-#| msgid "File format"
+#: ../gladeui/glade-project.c:868
 msgid "Format"
 msgstr "תצורה"
 
-#: ../gladeui/glade-project.c:843
+#: ../gladeui/glade-project.c:869
 msgid "The project file format"
 msgstr "תצורת הקובץ של הפרוייקט"
 
-#: ../gladeui/glade-project.c:995
+#: ../gladeui/glade-project.c:1026
 #, c-format
 msgid ""
 "Failed to load %s.\n"
 "The following required catalogs are unavailable: %s"
 msgstr ""
 
-#: ../gladeui/glade-project.c:1276 ../gladeui/glade-project.c:1524
-#: ../gladeui/glade-project.c:3870
+#: ../gladeui/glade-project.c:1445 ../gladeui/glade-project.c:1693
+#: ../gladeui/glade-project.c:4159
 #, c-format
-#| msgid "Modify project preferences"
 msgid "%s preferences"
 msgstr "מאפייני %s"
 
@@ -1373,19 +1400,19 @@ msgstr "מאפייני %s"
 #. Verify code here (versioning, incompatability checks)
 #. ******************************************************************
 #. translators: reffers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1553
+#: ../gladeui/glade-project.c:1722
 #, c-format
 msgid "This widget was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
 
 #. translators: reffers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1556
+#: ../gladeui/glade-project.c:1725
 #, c-format
 msgid "[%s] Object class '%s' was introduced in %s %d.%d\n"
 msgstr ""
 
 #. translators: reffers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1559
+#: ../gladeui/glade-project.c:1728
 #, c-format
 msgid ""
 "This widget was made available in GtkBuilder format in %s %d.%d while "
@@ -1393,41 +1420,40 @@ msgid ""
 msgstr ""
 
 #. translators: reffers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1563
+#: ../gladeui/glade-project.c:1732
 #, c-format
 msgid ""
 "[%s] Object class '%s' was made available in GtkBuilder format in %s %d.%d\n"
 msgstr ""
 
-#: ../gladeui/glade-project.c:1566
+#: ../gladeui/glade-project.c:1735
 msgid "This widget is only supported in libglade format"
 msgstr ""
 
 #. translators: reffers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1569
+#: ../gladeui/glade-project.c:1738
 #, c-format
 msgid ""
 "[%s] Object class '%s' from %s %d.%d is only supported in libglade format\n"
 msgstr ""
 
-#: ../gladeui/glade-project.c:1572
+#: ../gladeui/glade-project.c:1741
 msgid "This widget is not supported in libglade format"
-msgstr ""
-"פריט זה אינו נתמך בתצורת libglade"
+msgstr "פריט זה אינו נתמך בתצורת libglade"
 
 #. translators: reffers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1575
+#: ../gladeui/glade-project.c:1744
 #, c-format
 msgid ""
 "[%s] Object class '%s' from %s %d.%d is not supported in libglade format\n"
 msgstr ""
 
-#: ../gladeui/glade-project.c:1578
+#: ../gladeui/glade-project.c:1747
 msgid "This widget is deprecated"
 msgstr "פריט זה מיושן"
 
 #. translators: reffers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1581
+#: ../gladeui/glade-project.c:1750
 #, c-format
 msgid "[%s] Object class '%s' from %s %d.%d is deprecated\n"
 msgstr ""
@@ -1436,31 +1462,31 @@ msgstr ""
 #. * you can only comment about the line directly following, forcing you to write
 #. * ugly messy code with comments in line breaks inside function calls).
 #.
-#: ../gladeui/glade-project.c:1588
+#: ../gladeui/glade-project.c:1757
 msgid "This property is not supported in libglade format"
 msgstr ""
 
 #. translators: reffers to a property '%s' of widget '[%s]'
-#: ../gladeui/glade-project.c:1591
+#: ../gladeui/glade-project.c:1760
 #, c-format
 msgid ""
 "[%s] Property '%s' of object class '%s' is not supported in libglade format\n"
 msgstr ""
 
 #. translators: reffers to a property '%s' of widget '[%s]'
-#: ../gladeui/glade-project.c:1594
+#: ../gladeui/glade-project.c:1763
 #, c-format
 msgid ""
 "[%s] Packing property '%s' of object class '%s' is not supported in libglade "
 "format\n"
 msgstr ""
 
-#: ../gladeui/glade-project.c:1597
+#: ../gladeui/glade-project.c:1766
 msgid "This property is only supported in libglade format"
 msgstr ""
 
 #. translators: reffers to a property '%s' of widget '[%s]'
-#: ../gladeui/glade-project.c:1600
+#: ../gladeui/glade-project.c:1769
 #, c-format
 msgid ""
 "[%s] Property '%s' of object class '%s' is only supported in libglade "
@@ -1468,7 +1494,7 @@ msgid ""
 msgstr ""
 
 #. translators: reffers to a property '%s' of widget '[%s]'
-#: ../gladeui/glade-project.c:1604
+#: ../gladeui/glade-project.c:1773
 #, c-format
 msgid ""
 "[%s] Packing property '%s' of object class '%s' is only supported in "
@@ -1477,26 +1503,26 @@ msgstr ""
 
 #. translators: reffers to a property in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1609
+#: ../gladeui/glade-project.c:1778
 #, c-format
 msgid "This property was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
 
 #. translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1612
+#: ../gladeui/glade-project.c:1781
 #, c-format
 msgid "[%s] Property '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr ""
 
 #. translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1615
+#: ../gladeui/glade-project.c:1784
 #, c-format
 msgid ""
 "[%s] Packing property '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr ""
 
 #. translators: reffers to a property in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1619
+#: ../gladeui/glade-project.c:1788
 #, c-format
 msgid ""
 "This property was made available in GtkBuilder format in %s %d.%d while "
@@ -1504,7 +1530,7 @@ msgid ""
 msgstr ""
 
 #. translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1623
+#: ../gladeui/glade-project.c:1792
 #, c-format
 msgid ""
 "[%s] Property '%s' of object class '%s' was made available in GtkBuilder "
@@ -1512,7 +1538,7 @@ msgid ""
 msgstr ""
 
 #. translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1627
+#: ../gladeui/glade-project.c:1796
 #, c-format
 msgid ""
 "[%s] Packing property '%s' of object class '%s' was made available in "
@@ -1520,208 +1546,251 @@ msgid ""
 msgstr ""
 
 #. translators: reffers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1631
+#: ../gladeui/glade-project.c:1800
 #, c-format
 msgid "[%s] Signal '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr ""
 
-#: ../gladeui/glade-project.c:1862
+#. translators: reffers to a signal in toolkit version '%s %d.%d'
+#. * and a project targeting toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1804
+#, c-format
+msgid "This signal was introduced in %s %d.%d while project targets %s %d.%d"
+msgstr ""
+
+#: ../gladeui/glade-project.c:2057
 msgid "Details"
 msgstr "פרטים"
 
-#: ../gladeui/glade-project.c:1878
-#, c-format
-msgid "Project %s has errors, save anyway ?"
+#: ../gladeui/glade-project.c:2073
+#, fuzzy, c-format
+#| msgid "Project %s has errors, save anyway ?"
+msgid "Project \"%s\" has errors. Save anyway?"
 msgstr "בפרוייקט %s יש שגיאות, לשמור בכל זאת?"
 
-#: ../gladeui/glade-project.c:1879
+#: ../gladeui/glade-project.c:2074
 #, c-format
-msgid "Project %s has deprecated widgets and/or version mismatches."
+msgid "Project \"%s\" has deprecated widgets and/or version mismatches."
 msgstr ""
 
-#: ../gladeui/glade-project.c:3267
+#: ../gladeui/glade-project.c:3501
 #, c-format
 msgid "Unsaved %i"
 msgstr "לא שמור %i"
 
-#: ../gladeui/glade-project.c:3475
+#: ../gladeui/glade-project.c:3763
 #, c-format
 msgid "Project %s has no deprecated widgets or version mismatches."
 msgstr ""
 
-#: ../gladeui/glade-project.c:3594
+#: ../gladeui/glade-project.c:3882
 msgid "Set options in your project"
 msgstr "קבע אפשרויות בפרוייקט שלך"
 
 #. Project format
-#: ../gladeui/glade-project.c:3611
-#| msgid "File format"
+#: ../gladeui/glade-project.c:3899
 msgid "Project file format:"
 msgstr "תצורת קובץ פרוייקט:"
 
 #. Naming policy format
-#: ../gladeui/glade-project.c:3654
+#: ../gladeui/glade-project.c:3942
 msgid "Object names are unique:"
 msgstr ""
 
-#: ../gladeui/glade-project.c:3667
+#: ../gladeui/glade-project.c:3955
 #, fuzzy
 #| msgid "The active project"
 msgid "within the project"
 msgstr "הפרוייקט הפעיל"
 
-#: ../gladeui/glade-project.c:3669
+#: ../gladeui/glade-project.c:3957
 msgid "inside toplevels"
 msgstr ""
 
 #. Resource path
-#: ../gladeui/glade-project.c:3696
+#: ../gladeui/glade-project.c:3984
 msgid "Image resources are loaded locally:"
 msgstr ""
 
 #. Project directory...
-#: ../gladeui/glade-project.c:3712
-#| msgid "Could not create directory: %s"
+#: ../gladeui/glade-project.c:4000
 msgid "From the project directory"
 msgstr "מספריית הפרוייקט"
 
-#: ../gladeui/glade-project.c:3719
+#: ../gladeui/glade-project.c:4007
 #, fuzzy
 #| msgid "Could not create directory: %s"
 msgid "From a project relative directory"
 msgstr "לא ניתן ליצור תיקייה: %s"
 
-#: ../gladeui/glade-project.c:3731
+#: ../gladeui/glade-project.c:4019
 msgid "From this directory"
 msgstr "מספרייה זאת"
 
-#: ../gladeui/glade-project.c:3734
+#: ../gladeui/glade-project.c:4022
 msgid "Choose a path to load image resources"
 msgstr ""
 
 #. Target versions
-#: ../gladeui/glade-project.c:3755
-msgid "Toolkit version(s) required:"
+#: ../gladeui/glade-project.c:4043
+msgid "Toolkit versions required:"
 msgstr ""
 
-#: ../gladeui/glade-project.c:3789
-#, c-format
-msgid "%s catalog"
-msgstr ""
-
-#: ../gladeui/glade-project.c:3851
+#: ../gladeui/glade-project.c:4140
 msgid "Verify versions and deprecations:"
 msgstr ""
 
-#: ../gladeui/glade-property.c:550
+#: ../gladeui/glade-property.c:554
 msgid "The GladePropertyClass for this property"
 msgstr "‏GladePropertyClass של מאפיין זה"
 
-#: ../gladeui/glade-property.c:556
+#: ../gladeui/glade-property.c:560
 msgid "Enabled"
 msgstr "מופעל"
 
-#: ../gladeui/glade-property.c:557
+#: ../gladeui/glade-property.c:561
 msgid "If the property is optional, this is its enabled state"
 msgstr ""
 
-#: ../gladeui/glade-property.c:563 ../gladeui/glade-widget-action.c:168
+#: ../gladeui/glade-property.c:567 ../gladeui/glade-widget-action.c:168
 msgid "Sensitive"
 msgstr ""
 
-#: ../gladeui/glade-property.c:564
+#: ../gladeui/glade-property.c:568
 msgid "This gives backends control to set property sensitivity"
 msgstr ""
 
-#: ../gladeui/glade-property.c:570
-#| msgid "Content"
+#: ../gladeui/glade-property.c:574
 msgid "Context"
 msgstr "הקשר"
 
-#: ../gladeui/glade-property.c:571
-#| msgid "Comment for translators"
+#: ../gladeui/glade-property.c:575
 msgid "Context for translation"
 msgstr "הקשר עבור תרגום"
 
-#: ../gladeui/glade-property.c:577
+#: ../gladeui/glade-property.c:581
 msgid "Comment"
 msgstr "הערה"
 
-#: ../gladeui/glade-property.c:578
+#: ../gladeui/glade-property.c:582
 msgid "Comment for translators"
 msgstr "הערה למתרגמים"
 
-#: ../gladeui/glade-property.c:584
+#: ../gladeui/glade-property.c:588
 msgid "Translatable"
 msgstr "ניתן לתרגום"
 
-#: ../gladeui/glade-property.c:591
+#: ../gladeui/glade-property.c:595
 msgid "Has Context"
 msgstr "יש הקשר"
 
-#: ../gladeui/glade-property.c:598
+#: ../gladeui/glade-property.c:602
 msgid "Visual State"
 msgstr ""
 
-#: ../gladeui/glade-property.c:599
+#: ../gladeui/glade-property.c:603
 msgid "Priority information for the property editor to act on"
 msgstr ""
 
-#: ../gladeui/glade-signal-editor.c:67
+#: ../gladeui/glade-signal-editor.c:117
 msgid "<Type here>"
 msgstr "<הקש כאן>"
 
-#: ../gladeui/glade-signal-editor.c:687 ../plugins/gtk+/glade-accels.c:426
+#: ../gladeui/glade-signal-editor.c:118
+#, fuzzy
+#| msgid "Object"
+msgid "<Object>"
+msgstr "אובייקט"
+
+#: ../gladeui/glade-signal-editor.c:830
+msgid "Select an object to pass to the handler"
+msgstr ""
+
+#: ../gladeui/glade-signal-editor.c:913 ../plugins/gtk+/glade-accels.c:454
 msgid "Signal"
 msgstr ""
 
-#: ../gladeui/glade-signal-editor.c:707
+#: ../gladeui/glade-signal-editor.c:913
+#, fuzzy
+#| msgid "The name of the widget"
+msgid "The name of the signal to connect to"
+msgstr "שם הפריט"
+
+#: ../gladeui/glade-signal-editor.c:971
 msgid "Handler"
 msgstr ""
 
-#: ../gladeui/glade-signal-editor.c:729
-msgid "User data"
-msgstr "נתוני משתמש"
-
-#: ../gladeui/glade-signal-editor.c:743
-msgid "Lookup"
+#: ../gladeui/glade-signal-editor.c:972
+msgid "Enter the handler to run for this signal"
 msgstr ""
 
-#: ../gladeui/glade-signal-editor.c:754 ../plugins/gtk+/gtk+.xml.in.h:33
+#: ../gladeui/glade-signal-editor.c:1006 ../gladeui/glade-widget.c:1075
+msgid "Object"
+msgstr "אובייקט"
+
+#: ../gladeui/glade-signal-editor.c:1007
+#, fuzzy
+#| msgid "Unable to paste to the selected parent"
+msgid "An object to pass to the handler"
+msgstr "לא ניתן להדביק להורה שנבחר"
+
+#: ../gladeui/glade-signal-editor.c:1047
+msgid "Swap"
+msgstr ""
+
+#: ../gladeui/glade-signal-editor.c:1048
+msgid ""
+"Whether the instance and object should be swapped when calling the handler"
+msgstr ""
+
+#: ../gladeui/glade-signal-editor.c:1074 ../plugins/gtk+/gtk+.xml.in.h:34
 msgid "After"
 msgstr ""
 
-#: ../gladeui/glade-utils.c:144 ../gladeui/glade-utils.c:175
+#: ../gladeui/glade-signal-editor.c:1075
+msgid ""
+"Whether the handler should be called before or after the default handler of "
+"the signal"
+msgstr ""
+
+#: ../gladeui/glade-utils.c:142 ../gladeui/glade-utils.c:173
 #, c-format
 msgid "We could not find the symbol \"%s\""
 msgstr "We could not find the symbol \"%s\""
 
-#: ../gladeui/glade-utils.c:151
+#: ../gladeui/glade-utils.c:149
 #, c-format
 msgid "Could not get the type from \"%s\""
 msgstr "Could not get the type from \"%s\""
 
-#: ../gladeui/glade-utils.c:521
+#: ../gladeui/glade-utils.c:286
+#, c-format
+msgid ""
+"Cannot add non scrollable %s widget to a %s directly.\n"
+"Add a %s first."
+msgstr ""
+
+#: ../gladeui/glade-utils.c:539
 msgid "File format"
 msgstr "תצורת קובץ"
 
-#: ../gladeui/glade-utils.c:602
+#: ../gladeui/glade-utils.c:620
 msgid "All Files"
 msgstr "כל הקבצים"
 
-#: ../gladeui/glade-utils.c:607
+#: ../gladeui/glade-utils.c:625
 msgid "Libglade Files"
 msgstr "קבצי LibGlade"
 
-#: ../gladeui/glade-utils.c:612
+#: ../gladeui/glade-utils.c:630
 msgid "GtkBuilder Files"
 msgstr "קבצי GtkBuilder"
 
-#: ../gladeui/glade-utils.c:618
+#: ../gladeui/glade-utils.c:636
 msgid "All Glade Files"
 msgstr "כל קבצי Glade"
 
-#: ../gladeui/glade-utils.c:1320
+#: ../gladeui/glade-utils.c:1346
 #, c-format
 msgid ""
 "%s exists.\n"
@@ -1730,150 +1799,151 @@ msgstr ""
 "‏%s קיים.\n"
 "להחליפו?"
 
-#: ../gladeui/glade-utils.c:1348
+#: ../gladeui/glade-utils.c:1374
 #, c-format
 msgid "Error writing to %s: %s"
 msgstr "שגיאה בכתיבה אל %s: %s"
 
-#: ../gladeui/glade-utils.c:1362
+#: ../gladeui/glade-utils.c:1388
 #, c-format
 msgid "Error reading %s: %s"
 msgstr "שגיאה בקריאת %s: %s"
 
-#: ../gladeui/glade-utils.c:1377 ../gladeui/glade-utils.c:1398
+#: ../gladeui/glade-utils.c:1403 ../gladeui/glade-utils.c:1424
 #, c-format
 msgid "Error shutting down I/O channel %s: %s"
 msgstr ""
 
-#: ../gladeui/glade-utils.c:1387
+#: ../gladeui/glade-utils.c:1413
 #, c-format
 msgid "Failed to open %s for writing: %s"
 msgstr "נכשל בפתיחת %s לכתיבה: %s"
 
-#: ../gladeui/glade-utils.c:1407
+#: ../gladeui/glade-utils.c:1433
 #, c-format
 msgid "Failed to open %s for reading: %s"
 msgstr "נכשל בפתיחת %s לקריאה: %s"
 
+#: ../gladeui/glade-utils.c:1815
+#, fuzzy
+#| msgid "Could not save the file %s"
+msgid "Could not show link:"
+msgstr "לא ניתן לשמור את הקובץ %s"
+
 #. Reset the column
 #. Objects
-#: ../gladeui/glade-utils.c:2251 ../plugins/gtk+/glade-attributes.c:799
-#: ../plugins/gtk+/gtk+.xml.in.h:287
+#: ../gladeui/glade-utils.c:2197 ../plugins/gtk+/glade-attributes.c:799
+#: ../plugins/gtk+/gtk+.xml.in.h:291
 msgid "None"
 msgstr "ללא"
 
-#: ../gladeui/glade-widget.c:1042
+#: ../gladeui/glade-widget.c:1053
 msgid "The name of the widget"
 msgstr "שם הפריט"
 
-#: ../gladeui/glade-widget.c:1049
+#: ../gladeui/glade-widget.c:1060
 msgid "Internal name"
 msgstr "שם פנימי"
 
-#: ../gladeui/glade-widget.c:1050
+#: ../gladeui/glade-widget.c:1061
 msgid "The internal name of the widget"
 msgstr "השם הפנימי של הפריט"
 
-#: ../gladeui/glade-widget.c:1056
+#: ../gladeui/glade-widget.c:1067
 msgid "Anarchist"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1057
+#: ../gladeui/glade-widget.c:1068
 msgid ""
 "Whether this composite child is an ancestral child or an anarchist child"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1064
-msgid "Object"
-msgstr "אובייקט"
-
-#: ../gladeui/glade-widget.c:1065
+#: ../gladeui/glade-widget.c:1076
 msgid "The object associated"
 msgstr "האובייקט המשוייך"
 
-#: ../gladeui/glade-widget.c:1072
+#: ../gladeui/glade-widget.c:1083
 msgid "Adaptor"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1073
+#: ../gladeui/glade-widget.c:1084
 msgid "The class adaptor for the associated widget"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1080 ../gladeui/glade-inspector.c:204
+#: ../gladeui/glade-widget.c:1091 ../gladeui/glade-inspector.c:187
 msgid "Project"
 msgstr "פרוייקט"
 
-#: ../gladeui/glade-widget.c:1081
+#: ../gladeui/glade-widget.c:1092
 msgid "The glade project that this widget belongs to"
 msgstr "פרוייקט ה-glade שפריט זה שייך אליו"
 
-#: ../gladeui/glade-widget.c:1090
+#: ../gladeui/glade-widget.c:1101
 msgid "A list of GladeProperties"
 msgstr "רשימה של GladeProperties"
 
-#: ../gladeui/glade-widget.c:1096 ../plugins/gtk+/gtk+.xml.in.h:310
+#: ../gladeui/glade-widget.c:1107 ../plugins/gtk+/gtk+.xml.in.h:314
 msgid "Parent"
 msgstr "הורה"
 
-#: ../gladeui/glade-widget.c:1097
+#: ../gladeui/glade-widget.c:1108
 msgid "A pointer to the parenting GladeWidget"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1104
+#: ../gladeui/glade-widget.c:1115
 msgid "Internal Name"
 msgstr "שם פנימי"
 
-#: ../gladeui/glade-widget.c:1105
+#: ../gladeui/glade-widget.c:1116
 msgid "A generic name prefix for internal widgets"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1110
+#: ../gladeui/glade-widget.c:1121
 msgid "Template"
 msgstr "תבנית"
 
-#: ../gladeui/glade-widget.c:1111
+#: ../gladeui/glade-widget.c:1122
 msgid "A GladeWidget template to base a new widget on"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1117
-#| msgid "Template"
+#: ../gladeui/glade-widget.c:1128
 msgid "Exact Template"
 msgstr "תבנית מדוייקת"
 
-#: ../gladeui/glade-widget.c:1118
+#: ../gladeui/glade-widget.c:1129
 msgid "Whether we are creating an exact duplicate when using a template"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1123
+#: ../gladeui/glade-widget.c:1134
 msgid "Reason"
 msgstr "סיבה"
 
-#: ../gladeui/glade-widget.c:1124
+#: ../gladeui/glade-widget.c:1135
 msgid "A GladeCreateReason for this creation"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1132
+#: ../gladeui/glade-widget.c:1143
 msgid "Toplevel Width"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1133
+#: ../gladeui/glade-widget.c:1144
 msgid "The width of the widget when toplevel in the GladeDesignLayout"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1142
+#: ../gladeui/glade-widget.c:1153
 msgid "Toplevel Height"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1143
+#: ../gladeui/glade-widget.c:1154
 msgid "The height of the widget when toplevel in the GladeDesignLayout"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1152
+#: ../gladeui/glade-widget.c:1163
 #, fuzzy
 msgid "Support Warning"
 msgstr "אזהרה"
 
-#: ../gladeui/glade-widget.c:1153
+#: ../gladeui/glade-widget.c:1164
 msgid "A warning string about version mismatches"
 msgstr ""
 
@@ -1882,134 +1952,117 @@ msgstr ""
 msgid "A derived adaptor (%s) of %s already exist!"
 msgstr ""
 
-#: ../gladeui/glade-widget-adaptor.c:1212
+#: ../gladeui/glade-widget-adaptor.c:1237
 msgid "Name of the class"
 msgstr "שם המחלקה"
 
-#: ../gladeui/glade-widget-adaptor.c:1220
+#: ../gladeui/glade-widget-adaptor.c:1245
 msgid "GType of the class"
 msgstr "סוג ה-GType של המחלקה"
 
-#: ../gladeui/glade-widget-adaptor.c:1227 ../plugins/gnome/gnome.xml.in.h:60
+#: ../gladeui/glade-widget-adaptor.c:1252 ../plugins/gnome/gnome.xml.in.h:61
 msgid "Title"
 msgstr "כותרת"
 
-#: ../gladeui/glade-widget-adaptor.c:1228
+#: ../gladeui/glade-widget-adaptor.c:1253
 msgid "Translated title for the class used in the glade UI"
 msgstr ""
 
-#: ../gladeui/glade-widget-adaptor.c:1235
+#: ../gladeui/glade-widget-adaptor.c:1260
 msgid "Generic Name"
 msgstr "שם כללי"
 
-#: ../gladeui/glade-widget-adaptor.c:1236
+#: ../gladeui/glade-widget-adaptor.c:1261
 msgid "Used to generate names of new widgets"
 msgstr ""
 
-#: ../gladeui/glade-widget-adaptor.c:1243 ../plugins/gtk+/gtk+.xml.in.h:206
+#: ../gladeui/glade-widget-adaptor.c:1268 ../plugins/gtk+/gtk+.xml.in.h:209
 msgid "Icon Name"
 msgstr "שם איקון"
 
-#: ../gladeui/glade-widget-adaptor.c:1244
+#: ../gladeui/glade-widget-adaptor.c:1269
 msgid "The icon name"
 msgstr "שם האיקון"
 
-#: ../gladeui/glade-widget-adaptor.c:1251
+#: ../gladeui/glade-widget-adaptor.c:1276
 msgid "Catalog"
 msgstr "קטלוג"
 
-#: ../gladeui/glade-widget-adaptor.c:1252
+#: ../gladeui/glade-widget-adaptor.c:1277
 msgid "The name of the widget catalog this class was declared by"
 msgstr ""
 
-#: ../gladeui/glade-widget-adaptor.c:1259
+#: ../gladeui/glade-widget-adaptor.c:1284
 msgid "Book"
 msgstr "ספר"
 
-#: ../gladeui/glade-widget-adaptor.c:1260
+#: ../gladeui/glade-widget-adaptor.c:1285
 msgid "DevHelp search namespace for this widget class"
 msgstr ""
 
-#: ../gladeui/glade-widget-adaptor.c:1267
+#: ../gladeui/glade-widget-adaptor.c:1292
 msgid "Special Child Type"
 msgstr ""
 
-#: ../gladeui/glade-widget-adaptor.c:1268
+#: ../gladeui/glade-widget-adaptor.c:1293
 msgid ""
 "Holds the name of the packing property to depict special children for this "
 "container class"
 msgstr ""
 
-#: ../gladeui/glade-widget-adaptor.c:1276 ../plugins/gtk+/gtk+.xml.in.h:106
+#: ../gladeui/glade-widget-adaptor.c:1301 ../plugins/gtk+/gtk+.xml.in.h:107
 msgid "Cursor"
 msgstr "סמן"
 
-#: ../gladeui/glade-widget-adaptor.c:1277
+#: ../gladeui/glade-widget-adaptor.c:1302
 msgid "A cursor for inserting widgets in the UI"
 msgstr ""
 
-#: ../gladeui/glade-inspector.c:205
+#: ../gladeui/glade-inspector.c:188
 msgid "The project being inspected"
 msgstr ""
 
-#: ../gladeui/glade-inspector.c:465
+#: ../gladeui/glade-inspector.c:385
 msgid "< search widgets >"
 msgstr ""
 
-#. Objects
-#: ../gladeui/glade-inspector.c:673 ../plugins/gtk+/gtk+.xml.in.h:494
-#, fuzzy
-#| msgid "Weight"
-msgid "Widgets"
-msgstr "משקל"
-
-#: ../gladeui/glade-inspector.c:994
-#, c-format
-msgid "(internal %s)"
-msgstr "‏(%s פנימי)"
-
-#: ../gladeui/glade-inspector.c:998
-#, c-format
-msgid "(%s child)"
-msgstr ""
-
-#: ../gladeui/glade-custom.c:216
+#: ../gladeui/glade-custom.c:223
 msgid "Creation Function"
 msgstr "פונקציית יצירה"
 
-#: ../gladeui/glade-custom.c:217
+#: ../gladeui/glade-custom.c:224
 msgid "The function which creates this widget"
 msgstr ""
 
-#: ../gladeui/glade-custom.c:223
+#: ../gladeui/glade-custom.c:230
 msgid "String 1"
 msgstr "מחרוזת 1"
 
-#: ../gladeui/glade-custom.c:224
+#: ../gladeui/glade-custom.c:231
 msgid "The first string argument to pass to the function"
 msgstr ""
 
-#: ../gladeui/glade-custom.c:230
+#: ../gladeui/glade-custom.c:237
 msgid "String 2"
 msgstr "מחרוזת 2"
 
-#: ../gladeui/glade-custom.c:231
+#: ../gladeui/glade-custom.c:238
 msgid "The second string argument to pass to the function"
 msgstr ""
 
-#: ../gladeui/glade-custom.c:237
+#: ../gladeui/glade-custom.c:244
 msgid "Integer 1"
 msgstr "שלם 1"
 
-#: ../gladeui/glade-custom.c:238
+#: ../gladeui/glade-custom.c:245
 msgid "The first integer argument to pass to the function"
 msgstr "הארגומנט השלם הראשון להעביר לפונקציה"
 
-#: ../gladeui/glade-custom.c:244
+#: ../gladeui/glade-custom.c:251
 msgid "Integer 2"
 msgstr "שלם 2"
 
-#: ../gladeui/glade-custom.c:245
+#: ../gladeui/glade-custom.c:252
 msgid "The second integer argument to pass to the function"
 msgstr "הארגומנט השלם השני להעביר לפונקציה"
 
@@ -2022,31 +2075,44 @@ msgid "GladeWidgetActionClass structure pointer"
 msgstr ""
 
 #: ../gladeui/glade-widget-action.c:169
-msgid "Whether or not this action is sensitive"
-msgstr ""
+#, fuzzy
+#| msgid "Whether this property is translatable or not"
+msgid "Whether this action is sensitive"
+msgstr "האם מאפיין זה ניתן לתרגום"
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:479
 msgid "All Contexts"
 msgstr "כל ההקשרים"
 
-#: ../gladeui/glade-named-icon-chooser-dialog.c:1363
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1365
 msgid "Named Icon Chooser"
 msgstr ""
 
-#: ../gladeui/glade-named-icon-chooser-dialog.c:1401
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1405
 msgid "Icon _Name:"
 msgstr "שם _איקון:"
 
-#: ../gladeui/glade-named-icon-chooser-dialog.c:1484
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1445
+#| msgid "Context"
+msgid "C_ontexts:"
+msgstr "ה_קשרים:"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1466
+#, fuzzy
+#| msgid "Icon _Name:"
+msgid "Icon Na_mes:"
+msgstr "שם _איקון:"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1488
 msgid "_List standard icons only"
 msgstr "ה_צג איקונים רגילים בלבד"
 
-#: ../gladeui/glade-named-icon-chooser-dialog.c:1700
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1704
 #, c-format
 msgid "Could not create directory: %s"
 msgstr "לא ניתן ליצור תיקייה: %s"
 
-#: ../gladeui/icon-naming-spec.c:35 ../plugins/gtk+/gtk+.xml.in.h:24
+#: ../gladeui/icon-naming-spec.c:35 ../plugins/gtk+/gtk+.xml.in.h:25
 msgid "Actions"
 msgstr "פעולות"
 
@@ -2086,108 +2152,96 @@ msgstr "מקומות"
 msgid "Status"
 msgstr "סטטוס"
 
-#: ../plugins/gtk+/glade-attributes.c:216
-#| msgid "Style"
+#: ../plugins/gtk+/glade-attributes.c:215
 msgctxt "textattr"
 msgid "Style"
 msgstr "סגנון"
 
-#: ../plugins/gtk+/glade-attributes.c:220
-#| msgid "Weight"
+#: ../plugins/gtk+/glade-attributes.c:219
 msgctxt "textattr"
 msgid "Weight"
 msgstr "משקל"
 
-#: ../plugins/gtk+/glade-attributes.c:224
+#: ../plugins/gtk+/glade-attributes.c:223
 #, fuzzy
 msgctxt "textattr"
 msgid "Variant"
 msgstr "הורה"
 
-#: ../plugins/gtk+/glade-attributes.c:228
-#, fuzzy
+#: ../plugins/gtk+/glade-attributes.c:227
 #| msgid "Stretch"
 msgctxt "textattr"
 msgid "Stretch"
-msgstr "7"
+msgstr "מתיחה"
 
-#: ../plugins/gtk+/glade-attributes.c:232
-#| msgid "Underline"
+#: ../plugins/gtk+/glade-attributes.c:231
 msgctxt "textattr"
 msgid "Underline"
 msgstr "קו תחתי"
 
-#: ../plugins/gtk+/glade-attributes.c:236
-#| msgid "Strikethrough"
+#: ../plugins/gtk+/glade-attributes.c:235
 msgctxt "textattr"
 msgid "Strikethrough"
 msgstr "קו חוצה"
 
-#: ../plugins/gtk+/glade-attributes.c:240
+#: ../plugins/gtk+/glade-attributes.c:239
 msgctxt "textattr"
 msgid "Gravity"
 msgstr ""
 
-#: ../plugins/gtk+/glade-attributes.c:244
+#: ../plugins/gtk+/glade-attributes.c:243
 msgctxt "textattr"
 msgid "Gravity Hint"
 msgstr ""
 
-#: ../plugins/gtk+/glade-attributes.c:255
-#| msgid "Size"
+#: ../plugins/gtk+/glade-attributes.c:254
 msgctxt "textattr"
 msgid "Size"
 msgstr "גודל"
 
-#: ../plugins/gtk+/glade-attributes.c:259
-#| msgid "Absolute Size"
+#: ../plugins/gtk+/glade-attributes.c:258
 msgctxt "textattr"
 msgid "Absolute Size"
 msgstr "גודל מוחלט"
 
-#: ../plugins/gtk+/glade-attributes.c:266
-#| msgid "Foreground Color"
+#: ../plugins/gtk+/glade-attributes.c:265
 msgctxt "textattr"
 msgid "Foreground Color"
 msgstr "צבע קדמה"
 
-#: ../plugins/gtk+/glade-attributes.c:270
-#| msgid "Background Color"
+#: ../plugins/gtk+/glade-attributes.c:269
 msgctxt "textattr"
 msgid "Background Color"
 msgstr "צבע רקע"
 
-#: ../plugins/gtk+/glade-attributes.c:274
-#| msgid "Underline Color"
+#: ../plugins/gtk+/glade-attributes.c:273
 msgctxt "textattr"
 msgid "Underline Color"
 msgstr "צבע קו תחתי"
 
-#: ../plugins/gtk+/glade-attributes.c:278
-#| msgid "Strikethrough Color"
+#: ../plugins/gtk+/glade-attributes.c:277
 msgctxt "textattr"
 msgid "Strikethrough Color"
 msgstr "צבע קו חוצה"
 
-#: ../plugins/gtk+/glade-attributes.c:288
-#, fuzzy
+#: ../plugins/gtk+/glade-attributes.c:287
 #| msgid "Save"
 msgctxt "textattr"
 msgid "Scale"
-msgstr "שמור"
+msgstr "שינוי גודל"
 
 #. XXX Interesting... can we get the defaults ? what can we do to let the user
 #. * unset the value ??
 #.
-#: ../plugins/gtk+/glade-attributes.c:316
-#: ../plugins/gtk+/glade-attributes.c:354
-#: ../plugins/gtk+/glade-attributes.c:361
-#: ../plugins/gtk+/glade-attributes.c:365
+#: ../plugins/gtk+/glade-attributes.c:315
+#: ../plugins/gtk+/glade-attributes.c:353
+#: ../plugins/gtk+/glade-attributes.c:360
+#: ../plugins/gtk+/glade-attributes.c:364
 #: ../plugins/gtk+/glade-attributes.c:802
 msgid "<Enter Value>"
 msgstr "<הכנס ערך>"
 
-#: ../plugins/gtk+/glade-attributes.c:354
+#: ../plugins/gtk+/glade-attributes.c:353
 #, fuzzy
 msgid "Unset"
 msgstr "משתמש"
@@ -2204,407 +2258,419 @@ msgstr "תכונה"
 msgid "Value"
 msgstr "ערך"
 
-#: ../plugins/gtk+/glade-attributes.c:1014
+#: ../plugins/gtk+/glade-attributes.c:1026
 msgid "Setup Text Attributes"
 msgstr "קבע תכונות טקסט"
 
-#: ../plugins/gtk+/glade-gtk.c:60
+#: ../plugins/gtk+/glade-gtk.c:61
 msgid "This property does not apply unless Use Underline is set."
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:61
-#, fuzzy
+#: ../plugins/gtk+/glade-gtk.c:62
 #| msgid "Copy the selection"
 msgid "Property not selected"
-msgstr "העתק את הבחירה"
+msgstr "התכונה לא נבחרה"
 
-#: ../plugins/gtk+/glade-gtk.c:62
-msgid "this property is only for use in dialog action buttons"
+#: ../plugins/gtk+/glade-gtk.c:63
+msgid "This property is only for use in dialog action buttons"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:189
+#: ../plugins/gtk+/glade-gtk.c:64
+msgid "This property is set to be controled by an Action"
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:191
 msgid "GnomeUIInfo"
 msgstr "GnomeUIInfo"
 
-#: ../plugins/gtk+/glade-gtk.c:190
+#: ../plugins/gtk+/glade-gtk.c:192
 msgid "Choose the GnomeUIInfo stock item"
 msgstr ""
 
 #. We have to save/load icon-size as int, and fake the enum
-#: ../plugins/gtk+/glade-gtk.c:199 ../plugins/gtk+/gtk+.xml.in.h:209
-#| msgid "Icon View"
+#: ../plugins/gtk+/glade-gtk.c:201 ../plugins/gtk+/gtk+.xml.in.h:212
 msgid "Icon Size"
 msgstr "גודל איקון"
 
-#: ../plugins/gtk+/glade-gtk.c:200
+#: ../plugins/gtk+/glade-gtk.c:202
 msgid "Symbolic size to use for stock icon, icon set or named icon"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:1221
+#: ../plugins/gtk+/glade-gtk.c:1051
 #, c-format
 msgid "Removing parent of %s"
 msgstr "מסיר את ההורה של %s"
 
-#: ../plugins/gtk+/glade-gtk.c:1273
+#: ../plugins/gtk+/glade-gtk.c:1108
 #, fuzzy, c-format
 #| msgid "Adding parent %s to %s"
 msgid "Adding parent %s for %s"
 msgstr "מוסיף את ההורה %s ל-%s"
 
-#: ../plugins/gtk+/glade-gtk.c:1357
+#: ../plugins/gtk+/glade-gtk.c:1192
 #, fuzzy, c-format
 #| msgid "Adding parent %s to %s"
 msgid "Adding %s to Size Group %s"
 msgstr "מוסיף את ההורה %s ל-%s"
 
-#: ../plugins/gtk+/glade-gtk.c:1359
+#: ../plugins/gtk+/glade-gtk.c:1194
 #, c-format
 msgid "Adding %s to a new Size Group"
 msgstr ""
 
 #. Add trailing new... item
-#: ../plugins/gtk+/glade-gtk.c:1414
+#: ../plugins/gtk+/glade-gtk.c:1249
 msgid "New Size Group"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:1755
+#: ../plugins/gtk+/glade-gtk.c:1615
 #, c-format
 msgid "Ordering children of %s"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:2278 ../plugins/gtk+/glade-gtk.c:2285
+#: ../plugins/gtk+/glade-gtk.c:2172 ../plugins/gtk+/glade-gtk.c:2179
 #, c-format
 msgid "Insert placeholder to %s"
-msgstr "הכנס ממלא מקום ל-%s"
+msgstr "הוספת ממלא מקום ל־%s"
 
-#: ../plugins/gtk+/glade-gtk.c:2292
+#: ../plugins/gtk+/glade-gtk.c:2186
 #, c-format
 msgid "Remove placeholder from %s"
-msgstr "הסר ממלא מקום מ-%s"
+msgstr "הסרת ממלא מקום מ־%s"
 
-#: ../plugins/gtk+/glade-gtk.c:3262 ../plugins/gtk+/glade-gtk.c:3270
+#: ../plugins/gtk+/glade-gtk.c:3244 ../plugins/gtk+/glade-gtk.c:3252
 #, c-format
 msgid "Insert Row on %s"
-msgstr "הכנס שורה ב-%s"
+msgstr "הוספת שורה ב־%s"
 
-#: ../plugins/gtk+/glade-gtk.c:3278 ../plugins/gtk+/glade-gtk.c:3286
+#: ../plugins/gtk+/glade-gtk.c:3260 ../plugins/gtk+/glade-gtk.c:3268
 #, c-format
 msgid "Insert Column on %s"
-msgstr "הכנס עמודה ב-%s"
+msgstr "הוספת עמודה ב־%s"
 
-#: ../plugins/gtk+/glade-gtk.c:3294
+#: ../plugins/gtk+/glade-gtk.c:3276
 #, c-format
 msgid "Remove Column on %s"
-msgstr "הסר עמודה מ-%s"
+msgstr "הסרת עמודה מ־%s"
 
-#: ../plugins/gtk+/glade-gtk.c:3302
+#: ../plugins/gtk+/glade-gtk.c:3284
 #, c-format
 msgid "Remove Row on %s"
-msgstr "הסר שורה מ-%s"
+msgstr "הסרת שורה מ־%s"
 
-#: ../plugins/gtk+/glade-gtk.c:4387 ../plugins/gtk+/glade-gtk.c:4394
+#: ../plugins/gtk+/glade-gtk.c:4364 ../plugins/gtk+/glade-gtk.c:4371
 #, c-format
 msgid "Insert page on %s"
-msgstr "הוסף דף ב-%s"
+msgstr "הוספת דף ב־%s"
 
-#: ../plugins/gtk+/glade-gtk.c:4401
+#: ../plugins/gtk+/glade-gtk.c:4378
 #, c-format
 msgid "Remove page from %s"
-msgstr "הסר דף מ-%s"
+msgstr "הסרת דף מ־%s"
 
-#: ../plugins/gtk+/glade-gtk.c:5914
+#: ../plugins/gtk+/glade-gtk.c:6121
 msgid "This property only applies to stock images"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:5916
+#: ../plugins/gtk+/glade-gtk.c:6123
 msgid "This property only applies to named icons"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:6180
+#: ../plugins/gtk+/glade-gtk.c:6389
 msgid "<separator>"
 msgstr "<מפריד>"
 
-#: ../plugins/gtk+/glade-gtk.c:6190
+#: ../plugins/gtk+/glade-gtk.c:6399
 msgid "<custom>"
 msgstr "<מותאם אישית>"
 
-#: ../plugins/gtk+/glade-gtk.c:6369
+#: ../plugins/gtk+/glade-gtk.c:6578
 #, fuzzy
 #| msgid "Add Tool Item"
 msgid "Tool Item"
 msgstr "הוסף פריט סרגל כלים"
 
-#: ../plugins/gtk+/glade-gtk.c:6378
-#| msgid "_Packing"
+#: ../plugins/gtk+/glade-gtk.c:6587
 msgid "Packing"
 msgstr "אריזה"
 
-#: ../plugins/gtk+/glade-gtk.c:6397 ../plugins/gtk+/gtk+.xml.in.h:274
+#: ../plugins/gtk+/glade-gtk.c:6606 ../plugins/gtk+/gtk+.xml.in.h:277
 msgid "Menu Item"
 msgstr "פריט תפריט"
 
-#: ../plugins/gtk+/glade-gtk.c:6433 ../plugins/gtk+/glade-gtk.c:6441
-#| msgid "Normal"
+#: ../plugins/gtk+/glade-gtk.c:6642 ../plugins/gtk+/glade-gtk.c:6650
 msgid "Normal item"
 msgstr "פריט רגיל"
 
-#: ../plugins/gtk+/glade-gtk.c:6434 ../plugins/gtk+/glade-gtk.c:6442
-#| msgid "Image Type"
+#: ../plugins/gtk+/glade-gtk.c:6643 ../plugins/gtk+/glade-gtk.c:6651
 msgid "Image item"
 msgstr "פריט תמונה"
 
-#: ../plugins/gtk+/glade-gtk.c:6435 ../plugins/gtk+/glade-gtk.c:6443
-#| msgid "Check"
+#: ../plugins/gtk+/glade-gtk.c:6644 ../plugins/gtk+/glade-gtk.c:6652
 msgid "Check item"
 msgstr "פריט סימון"
 
-#: ../plugins/gtk+/glade-gtk.c:6436 ../plugins/gtk+/glade-gtk.c:6444
-#| msgid "Radio"
+#: ../plugins/gtk+/glade-gtk.c:6645 ../plugins/gtk+/glade-gtk.c:6653
 msgid "Radio item"
 msgstr "פריט בחירה"
 
-#: ../plugins/gtk+/glade-gtk.c:6437 ../plugins/gtk+/glade-gtk.c:6445
-#| msgid "Separator"
+#: ../plugins/gtk+/glade-gtk.c:6646 ../plugins/gtk+/glade-gtk.c:6654
 msgid "Separator item"
 msgstr "פריט מפריד"
 
-#: ../plugins/gtk+/glade-gtk.c:6469 ../plugins/gtk+/glade-gtk.c:6496
+#: ../plugins/gtk+/glade-gtk.c:6678 ../plugins/gtk+/glade-gtk.c:6722
 msgid "Edit Menu Bar"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:6471 ../plugins/gtk+/glade-gtk.c:6498
+#: ../plugins/gtk+/glade-gtk.c:6680 ../plugins/gtk+/glade-gtk.c:6724
 msgid "Edit Menu"
 msgstr "ערוך תפריט"
 
-#: ../plugins/gtk+/glade-gtk.c:6869
+#: ../plugins/gtk+/glade-gtk.c:7108
 msgid "Print S_etup"
 msgstr "הגדרות ה_דפסה"
 
-#: ../plugins/gtk+/glade-gtk.c:6873
+#: ../plugins/gtk+/glade-gtk.c:7112
 msgid "Find Ne_xt"
 msgstr "חפש את _הבא"
 
-#: ../plugins/gtk+/glade-gtk.c:6877
+#: ../plugins/gtk+/glade-gtk.c:7116
 msgid "_Undo Move"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:6881
+#: ../plugins/gtk+/glade-gtk.c:7120
 msgid "_Redo Move"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:6884
+#: ../plugins/gtk+/glade-gtk.c:7123
 msgid "Select _All"
-msgstr "בחר ה_כל"
+msgstr "בחירת ה_כול"
 
-#: ../plugins/gtk+/glade-gtk.c:6887
+#: ../plugins/gtk+/glade-gtk.c:7126
 msgid "_New Game"
 msgstr "_משחק חדש"
 
-#: ../plugins/gtk+/glade-gtk.c:6890
+#: ../plugins/gtk+/glade-gtk.c:7129
 msgid "_Pause game"
-msgstr "_השהה את המשחק"
+msgstr "ה_שהיית המשחק"
 
-#: ../plugins/gtk+/glade-gtk.c:6893
+#: ../plugins/gtk+/glade-gtk.c:7132
 msgid "_Restart Game"
-msgstr "_השהה משחק"
+msgstr "ה_תחלת המשחק מחדש"
 
-#: ../plugins/gtk+/glade-gtk.c:6896
+#: ../plugins/gtk+/glade-gtk.c:7135
 msgid "_Hint"
 msgstr "_רמז"
 
-#: ../plugins/gtk+/glade-gtk.c:6899
+#: ../plugins/gtk+/glade-gtk.c:7138
 msgid "_Scores..."
 msgstr "_תוצאות..."
 
-#: ../plugins/gtk+/glade-gtk.c:6902
+#: ../plugins/gtk+/glade-gtk.c:7141
 msgid "_End Game"
-msgstr "_סיים משחק"
+msgstr "_סיום משחק"
 
-#: ../plugins/gtk+/glade-gtk.c:6905
+#: ../plugins/gtk+/glade-gtk.c:7144
 msgid "Create New _Window"
-msgstr "צור _חלון חדש"
+msgstr "יצירת _חלון חדש"
 
-#: ../plugins/gtk+/glade-gtk.c:6908
+#: ../plugins/gtk+/glade-gtk.c:7147
 msgid "_Close This Window"
-msgstr "_סגור חלון זה"
+msgstr "_סגירת חלון זה"
 
-#: ../plugins/gtk+/glade-gtk.c:6920
+#: ../plugins/gtk+/glade-gtk.c:7159
 msgid "_Settings"
-msgstr "_הגדרות"
+msgstr "ה_גדרות"
 
-#: ../plugins/gtk+/glade-gtk.c:6923
+#: ../plugins/gtk+/glade-gtk.c:7162
 msgid "Fi_les"
 msgstr "_קבצים"
 
-#: ../plugins/gtk+/glade-gtk.c:6926
+#: ../plugins/gtk+/glade-gtk.c:7165
 msgid "_Windows"
 msgstr "_חלונות"
 
-#: ../plugins/gtk+/glade-gtk.c:6932
+#: ../plugins/gtk+/glade-gtk.c:7171
 msgid "_Game"
 msgstr "_משחק"
 
-#: ../plugins/gtk+/glade-gtk.c:7397 ../plugins/gtk+/gtk+.xml.in.h:61
+#: ../plugins/gtk+/glade-gtk.c:7636 ../plugins/gtk+/gtk+.xml.in.h:62
 msgid "Button"
 msgstr "כפתור"
 
-#: ../plugins/gtk+/glade-gtk.c:7398 ../plugins/gtk+/glade-gtk.c:10717
-#: ../plugins/gtk+/glade-gtk.c:10797
+#: ../plugins/gtk+/glade-gtk.c:7637 ../plugins/gtk+/glade-gtk.c:11343
+#: ../plugins/gtk+/glade-gtk.c:11424
 msgid "Toggle"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:7399 ../plugins/gtk+/glade-gtk.c:7410
-#: ../plugins/gtk+/glade-gtk.c:7418
+#: ../plugins/gtk+/glade-gtk.c:7638 ../plugins/gtk+/glade-gtk.c:7649
+#: ../plugins/gtk+/glade-gtk.c:7657
 msgid "Radio"
 msgstr "בחירה"
 
-#: ../plugins/gtk+/glade-gtk.c:7400 ../plugins/gtk+/gtk+.xml.in.h:272
+#: ../plugins/gtk+/glade-gtk.c:7639 ../plugins/gtk+/gtk+.xml.in.h:275
 msgid "Menu"
 msgstr "תפריט"
 
-#: ../plugins/gtk+/glade-gtk.c:7401 ../plugins/gtk+/gtk+.xml.in.h:108
+#: ../plugins/gtk+/glade-gtk.c:7640 ../plugins/gtk+/gtk+.xml.in.h:109
 msgid "Custom"
 msgstr "מותאם אישית"
 
-#: ../plugins/gtk+/glade-gtk.c:7402 ../plugins/gtk+/glade-gtk.c:7411
-#: ../plugins/gtk+/glade-gtk.c:7419
+#: ../plugins/gtk+/glade-gtk.c:7641 ../plugins/gtk+/glade-gtk.c:7650
+#: ../plugins/gtk+/glade-gtk.c:7658
 msgid "Separator"
 msgstr "מפריד"
 
-#: ../plugins/gtk+/glade-gtk.c:7407 ../plugins/gtk+/glade-gtk.c:7415
-#: ../plugins/gtk+/gtk+.xml.in.h:288
+#: ../plugins/gtk+/glade-gtk.c:7646 ../plugins/gtk+/glade-gtk.c:7654
+#: ../plugins/gtk+/gtk+.xml.in.h:292
 msgid "Normal"
 msgstr "רגיל"
 
-#: ../plugins/gtk+/glade-gtk.c:7408 ../plugins/gtk+/glade-gtk.c:7416
-#: ../plugins/gtk+/gtk+.xml.in.h:215
+#: ../plugins/gtk+/glade-gtk.c:7647 ../plugins/gtk+/glade-gtk.c:7655
+#: ../plugins/gtk+/gtk+.xml.in.h:217
 msgid "Image"
 msgstr "תמונה"
 
-#: ../plugins/gtk+/glade-gtk.c:7409 ../plugins/gtk+/glade-gtk.c:7417
+#: ../plugins/gtk+/glade-gtk.c:7648 ../plugins/gtk+/glade-gtk.c:7656
 msgid "Check"
 msgstr "סימון"
 
-#: ../plugins/gtk+/glade-gtk.c:7431
+#: ../plugins/gtk+/glade-gtk.c:7670
 msgid "Tool Bar Editor"
 msgstr "עורך סרגל כלים"
 
-#: ../plugins/gtk+/glade-gtk.c:7961
+#: ../plugins/gtk+/glade-gtk.c:8216
 msgid "This property does not apply when Ellipsize is set."
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:7978
+#: ../plugins/gtk+/glade-gtk.c:8233
 msgid "This property does not apply when Angle is set."
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:8761
+#: ../plugins/gtk+/glade-gtk.c:9185
 msgid "Introduction page"
 msgstr "עמוד הכירות"
 
-#: ../plugins/gtk+/glade-gtk.c:8765
+#: ../plugins/gtk+/glade-gtk.c:9189
 msgid "Content page"
 msgstr "עמוד תוכן"
 
-#: ../plugins/gtk+/glade-gtk.c:8769
+#: ../plugins/gtk+/glade-gtk.c:9193
 msgid "Confirmation page"
 msgstr "דף אישור"
 
-#: ../plugins/gtk+/glade-gtk.c:10258
+#: ../plugins/gtk+/glade-gtk.c:10827
 #, c-format
 msgid "%s is set to load %s from the model"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:10260
+#: ../plugins/gtk+/glade-gtk.c:10829
 #, c-format
 msgid "%s is set to manipulate %s directly"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:10657 ../plugins/gtk+/gtk+.xml.in.h:461
+#: ../plugins/gtk+/glade-gtk.c:11283 ../plugins/gtk+/gtk+.xml.in.h:486
 #, fuzzy
 #| msgid "Remove Column"
 msgid "Tree View Column"
 msgstr "הסר עמודה"
 
-#: ../plugins/gtk+/glade-gtk.c:10657 ../plugins/gtk+/gtk+.xml.in.h:73
+#: ../plugins/gtk+/glade-gtk.c:11283 ../plugins/gtk+/gtk+.xml.in.h:74
 msgid "Cell Renderer"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:10662
+#: ../plugins/gtk+/glade-gtk.c:11288
 #, fuzzy
 #| msgid "Edit Attributes"
 msgid "Properties and Attributes"
 msgstr "ערוך תכונות"
 
-#: ../plugins/gtk+/glade-gtk.c:10667
+#: ../plugins/gtk+/glade-gtk.c:11293
 msgid "Common Properties and Attributes"
 msgstr ""
 
 #. Text of the textview
-#: ../plugins/gtk+/glade-gtk.c:10711 ../plugins/gtk+/glade-gtk.c:10791
-#: ../plugins/gtk+/gtk+.xml.in.h:412 ../plugins/gnome/gnome.xml.in.h:54
+#. Text...
+#: ../plugins/gtk+/glade-gtk.c:11337 ../plugins/gtk+/glade-gtk.c:11418
+#: ../plugins/gtk+/gtk+.xml.in.h:437 ../plugins/gtk+/glade-entry-editor.c:520
+#: ../plugins/gnome/gnome.xml.in.h:55
 msgid "Text"
 msgstr "טקסט"
 
-#: ../plugins/gtk+/glade-gtk.c:10712 ../plugins/gtk+/glade-gtk.c:10792
-#| msgid "Accelerators"
+#. Accelerator
+#: ../plugins/gtk+/glade-gtk.c:11338 ../plugins/gtk+/glade-gtk.c:11419
+#: ../plugins/gtk+/gtk+.xml.in.h:14
 msgid "Accelerator"
 msgstr "מאיץ"
 
-#: ../plugins/gtk+/glade-gtk.c:10713 ../plugins/gtk+/glade-gtk.c:10793
-#: ../plugins/gtk+/gtk+.xml.in.h:89
+#: ../plugins/gtk+/glade-gtk.c:11339 ../plugins/gtk+/glade-gtk.c:11420
+#: ../plugins/gtk+/gtk+.xml.in.h:90
 msgid "Combo"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:10714 ../plugins/gtk+/glade-gtk.c:10794
+#: ../plugins/gtk+/glade-gtk.c:11340 ../plugins/gtk+/glade-gtk.c:11421
 #, fuzzy
 #| msgid "String"
 msgid "Spin"
 msgstr "מחרוזת"
 
-#: ../plugins/gtk+/glade-gtk.c:10715 ../plugins/gtk+/glade-gtk.c:10795
+#: ../plugins/gtk+/glade-gtk.c:11341 ../plugins/gtk+/glade-gtk.c:11422
 msgid "Pixbuf"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:10716 ../plugins/gtk+/glade-gtk.c:10796
-#: ../plugins/gtk+/gtk+.xml.in.h:325
+#. Progress...
+#: ../plugins/gtk+/glade-gtk.c:11342 ../plugins/gtk+/glade-gtk.c:11423
+#: ../plugins/gtk+/gtk+.xml.in.h:336 ../plugins/gtk+/glade-entry-editor.c:563
 msgid "Progress"
 msgstr "התקדמות"
 
-#: ../plugins/gtk+/glade-gtk.c:10728
-#| msgid "Icon View"
+#: ../plugins/gtk+/glade-gtk.c:11344 ../plugins/gtk+/glade-gtk.c:11425
+#: ../plugins/gtk+/gtk+.xml.in.h:413
+#, fuzzy
+#| msgid "String"
+msgid "Spinner"
+msgstr "מחרוזת"
+
+#: ../plugins/gtk+/glade-gtk.c:11355
 msgid "Icon View Editor"
 msgstr "עורך תצוגת איקונים"
 
-#: ../plugins/gtk+/glade-gtk.c:10728
+#: ../plugins/gtk+/glade-gtk.c:11355
 #, fuzzy
 #| msgid "Tool Bar Editor"
 msgid "Combo Editor"
 msgstr "עורך סרגל כלים"
 
-#: ../plugins/gtk+/glade-gtk.c:10787
+#: ../plugins/gtk+/glade-gtk.c:11414
 #, fuzzy
 #| msgid "Common"
 msgid "Column"
 msgstr "משותף"
 
-#: ../plugins/gtk+/glade-gtk.c:10806
+#: ../plugins/gtk+/glade-gtk.c:11434
 msgid "Tree View Editor"
 msgstr "עורך תצוגת עץ"
 
-#: ../plugins/gtk+/glade-accels.c:298 ../plugins/gtk+/glade-accels.c:366
+#. Dont really add/remove actions (because name conflicts inside groups)
+#.
+#: ../plugins/gtk+/glade-gtk.c:11636
+msgid "The accelerator can only be set when inside an Action Group."
+msgstr ""
+
+#: ../plugins/gtk+/glade-accels.c:320 ../plugins/gtk+/glade-accels.c:394
 msgid "<choose a key>"
 msgstr "<בחר מקש>"
 
-#: ../plugins/gtk+/glade-accels.c:447
+#: ../plugins/gtk+/glade-accels.c:475
 msgid "Accelerator Key"
 msgstr "מקש האצה"
 
-#: ../plugins/gtk+/glade-accels.c:506
+#: ../plugins/gtk+/glade-accels.c:534
 msgid "Choose accelerator keys..."
 msgstr "בחר מקשי האצה..."
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1
-msgid "A filname, full or relative path to load an icon for this toolbutton"
+msgid "A file name, full or relative path to load an icon for this toolbutton"
 msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:2
@@ -2629,1996 +2695,2098 @@ msgstr ""
 #.
 #: ../plugins/gtk+/gtk+.xml.in.h:10
 msgid "About Dialog"
-msgstr "דו-שיח אודות"
+msgstr "דו־שיח על אודות"
 
-#. need to fake this pspec since its not available in gtk+ yet
-#: ../plugins/gtk+/gtk+.xml.in.h:12
+#: ../plugins/gtk+/gtk+.xml.in.h:11
 #, fuzzy
 #| msgid "Accelerators"
 msgid "Accel Group"
 msgstr "מאיצים"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:13
+#: ../plugins/gtk+/gtk+.xml.in.h:12
 msgid "Accel Label"
 msgstr "תווית מאיץ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:14
+#: ../plugins/gtk+/gtk+.xml.in.h:15
 #, fuzzy
 #| msgid "Accelerator Key"
 msgid "Accelerator Mode column"
 msgstr "מקש האצה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:15
+#: ../plugins/gtk+/gtk+.xml.in.h:16
 #, fuzzy
 #| msgid "Accelerator Key"
 msgid "Accelerator Modifiers column"
 msgstr "מקש האצה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:16
+#: ../plugins/gtk+/gtk+.xml.in.h:17
 #, fuzzy
 #| msgid "Accelerator Key"
 msgid "Accelerator Renderer"
 msgstr "מקש האצה"
 
 #. Accelerators
-#: ../plugins/gtk+/gtk+.xml.in.h:18
+#: ../plugins/gtk+/gtk+.xml.in.h:19
 msgid "Accelerators"
 msgstr "מאיצים"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:19
+#: ../plugins/gtk+/gtk+.xml.in.h:20
 msgid "Accessible Description"
 msgstr "תיאור נגיש"
 
 #. Atk name and description properties
-#: ../plugins/gtk+/gtk+.xml.in.h:21
+#: ../plugins/gtk+/gtk+.xml.in.h:22
 msgid "Accessible Name"
 msgstr "שם נגיש"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:22
-#| msgid "Actions"
+#: ../plugins/gtk+/gtk+.xml.in.h:23
+#: ../plugins/gtk+/glade-activatable-editor.c:395
 msgid "Action"
 msgstr "פעולה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:23
+#: ../plugins/gtk+/gtk+.xml.in.h:24
 #, fuzzy
 #| msgid "Actions"
 msgid "Action Group"
 msgstr "פעולות"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:25
+#: ../plugins/gtk+/gtk+.xml.in.h:26
 #, fuzzy
 #| msgid "Activate"
 msgid "Activatable column"
 msgstr "הפעל"
 
 #. Atk activate property
-#: ../plugins/gtk+/gtk+.xml.in.h:27
+#: ../plugins/gtk+/gtk+.xml.in.h:28
 msgid "Activate"
 msgstr "הפעל"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:28
-#| msgid "Remove Column"
+#: ../plugins/gtk+/gtk+.xml.in.h:29
 msgid "Active column"
 msgstr "עמודה פעילה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:29
+#: ../plugins/gtk+/gtk+.xml.in.h:30
 msgid "Add Parent"
 msgstr "הוסף הורה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:30
+#: ../plugins/gtk+/gtk+.xml.in.h:31
 msgid "Add to Size Group"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:31
+#: ../plugins/gtk+/gtk+.xml.in.h:32
 msgid "Adjustment"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:32
+#: ../plugins/gtk+/gtk+.xml.in.h:33
 #, fuzzy
 #| msgid "Insert Column"
 msgid "Adjustment column"
 msgstr "הכנס עמודה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:34
+#: ../plugins/gtk+/gtk+.xml.in.h:35
 msgid "Alignment"
 msgstr "יישור"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:35
+#: ../plugins/gtk+/gtk+.xml.in.h:36
 #, fuzzy
 #| msgid "Alignment"
 msgid "Alignment column"
 msgstr "יישור"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:36
-msgid "All"
-msgstr "הכל"
-
 #: ../plugins/gtk+/gtk+.xml.in.h:37
+msgid "All"
+msgstr "הכול"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:38
 msgid "All Events"
 msgstr "כל האירועים"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:38
+#: ../plugins/gtk+/gtk+.xml.in.h:39
 #, fuzzy
 #| msgid "All Files"
 msgid "All Modifiers"
 msgstr "כל הקבצים"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:39
+#: ../plugins/gtk+/gtk+.xml.in.h:40
 #, fuzzy
 #| msgid "Accelerator Key"
 msgid "Alt Key"
 msgstr "מקש האצה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:40 ../plugins/gnome/gnome.xml.in.h:2
+#: ../plugins/gtk+/gtk+.xml.in.h:41 ../plugins/gnome/gnome.xml.in.h:2
 msgid "Always"
 msgstr "תמיד"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:41
+#: ../plugins/gtk+/gtk+.xml.in.h:42
 msgid "Always Center"
 msgstr "תמיד מרכז"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:42
-msgid "An accel group for accelerators from stock items"
-msgstr ""
-
 #: ../plugins/gtk+/gtk+.xml.in.h:43
+#, fuzzy
+#| msgid "Accelerator Key"
+msgid "An accelerator key for this action"
+msgstr "מקש האצה"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:44
 msgid "Arrow"
 msgstr "חץ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:44
-msgid "Ascending"
-msgstr "עולה"
-
 #: ../plugins/gtk+/gtk+.xml.in.h:45
+msgid "Ascending"
+msgstr "סדר עולה"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:46
 msgid "Aspect Frame"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:46
+#: ../plugins/gtk+/gtk+.xml.in.h:47
 msgid "Assistant"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:47
+#: ../plugins/gtk+/gtk+.xml.in.h:48
 msgid "Attributes"
 msgstr "תכונות"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:48
+#: ../plugins/gtk+/gtk+.xml.in.h:49
 #, fuzzy
 #| msgid "Attributes"
 msgid "Attributes column"
 msgstr "תכונות"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:49
+#: ../plugins/gtk+/gtk+.xml.in.h:50
 msgid "Automatic"
 msgstr "אוטומטי"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:50
+#: ../plugins/gtk+/gtk+.xml.in.h:51
 #, fuzzy
 #| msgid "Background Color"
 msgid "Background Color Name column"
 msgstr "צבע רקע"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:51
+#: ../plugins/gtk+/gtk+.xml.in.h:52
 #, fuzzy
 #| msgid "Background Color"
 msgid "Background Color column"
 msgstr "צבע רקע"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:52
+#: ../plugins/gtk+/gtk+.xml.in.h:53
 msgid "Before"
 msgstr "לפני"
 
 #. Objects
-#: ../plugins/gtk+/gtk+.xml.in.h:54
+#: ../plugins/gtk+/gtk+.xml.in.h:55
 #, fuzzy
 #| msgid "North"
 msgid "Both"
 msgstr "צפון"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:55 ../plugins/gnome/bonobo.xml.in.h:1
+#: ../plugins/gtk+/gtk+.xml.in.h:56 ../plugins/gnome/bonobo.xml.in.h:1
 msgid "Bottom"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:56
+#: ../plugins/gtk+/gtk+.xml.in.h:57
 msgid "Bottom Left"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:57
+#: ../plugins/gtk+/gtk+.xml.in.h:58
 msgid "Bottom Right"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:58
+#: ../plugins/gtk+/gtk+.xml.in.h:59
 msgid "Bottom to Top"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:59
+#: ../plugins/gtk+/gtk+.xml.in.h:60
 msgid "Box"
 msgstr "תיבה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:60
+#: ../plugins/gtk+/gtk+.xml.in.h:61
 msgid "Browse"
 msgstr "עיון"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:62
+#: ../plugins/gtk+/gtk+.xml.in.h:63
 msgid "Button 1 Motion"
 msgstr "תנועה - כפתור 1"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:63
+#: ../plugins/gtk+/gtk+.xml.in.h:64
 msgid "Button 2 Motion"
 msgstr "תנועה - כפתור 2"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:64
+#: ../plugins/gtk+/gtk+.xml.in.h:65
 msgid "Button 3 Motion"
 msgstr "תנועה - כפתור 3"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:65
+#: ../plugins/gtk+/gtk+.xml.in.h:66
 msgid "Button Box"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:66
+#: ../plugins/gtk+/gtk+.xml.in.h:67
 msgid "Button Motion"
 msgstr "תנועת כפתור"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:67
+#: ../plugins/gtk+/gtk+.xml.in.h:68
 msgid "Button Press"
 msgstr "לחיצת כפתור"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:68
+#: ../plugins/gtk+/gtk+.xml.in.h:69
 msgid "Button Release"
 msgstr "שחרור כפתור"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:69
+#: ../plugins/gtk+/gtk+.xml.in.h:70
 msgid "Calendar"
 msgstr "יומן"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:70
+#: ../plugins/gtk+/gtk+.xml.in.h:71
 msgid "Cancel"
 msgstr "בטל"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:71
+#: ../plugins/gtk+/gtk+.xml.in.h:72
 #, fuzzy
 #| msgid "Background Color"
 msgid "Cell Background Color column"
 msgstr "צבע רקע"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:72
+#: ../plugins/gtk+/gtk+.xml.in.h:73
 #, fuzzy
 #| msgid "Background Color"
 msgid "Cell Background Color name column"
 msgstr "צבע רקע"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:74
+#: ../plugins/gtk+/gtk+.xml.in.h:75
 msgid "Center"
 msgstr "מרכז"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:75
+#: ../plugins/gtk+/gtk+.xml.in.h:76
 msgid "Center on Parent"
 msgstr "מרכז ההורה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:76
+#: ../plugins/gtk+/gtk+.xml.in.h:77
 msgid "Centimeters"
 msgstr "סנטימטרים"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:77
+#: ../plugins/gtk+/gtk+.xml.in.h:78
 msgid "Character"
 msgstr "תו"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:78
+#: ../plugins/gtk+/gtk+.xml.in.h:79
 msgid "Check Button"
 msgstr "כפתור סימון"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:79
+#: ../plugins/gtk+/gtk+.xml.in.h:80
 msgid "Check Menu Item"
 msgstr ""
 
 #. Atk click property
-#: ../plugins/gtk+/gtk+.xml.in.h:81
+#: ../plugins/gtk+/gtk+.xml.in.h:82
 msgid "Click"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:82
+#: ../plugins/gtk+/gtk+.xml.in.h:83
 msgid "Climb Rate column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:83
+#: ../plugins/gtk+/gtk+.xml.in.h:84
 msgid "Close"
 msgstr "סגור"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:84
+#: ../plugins/gtk+/gtk+.xml.in.h:85
 msgid "Color Button"
 msgstr "כפתור צבע"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:85
+#: ../plugins/gtk+/gtk+.xml.in.h:86
 msgid "Color Selection"
 msgstr "בחירת צבע"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:86
-msgid "Color Selection Dialog"
-msgstr "דו-שיח בחירת צבע"
-
 #: ../plugins/gtk+/gtk+.xml.in.h:87
+msgid "Color Selection Dialog"
+msgstr "דו־שיח בחירת צבע"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:88
 msgid "Columned List"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:88
-#| msgid "Common"
+#: ../plugins/gtk+/gtk+.xml.in.h:89
 msgid "Columns"
 msgstr "עמודות"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:90
+#: ../plugins/gtk+/gtk+.xml.in.h:91
 msgid "Combo Box"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:91
+#: ../plugins/gtk+/gtk+.xml.in.h:92
 msgid "Combo Box Entry"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:92
+#: ../plugins/gtk+/gtk+.xml.in.h:93
 msgid "Combo Renderer"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:93
+#: ../plugins/gtk+/gtk+.xml.in.h:94
 msgid "Composite Widgets"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:94
+#: ../plugins/gtk+/gtk+.xml.in.h:95
 #, fuzzy
 #| msgid "_Contents"
 msgid "Condensed"
 msgstr "_תכנים"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:95
+#: ../plugins/gtk+/gtk+.xml.in.h:96
 msgid "Confirm"
 msgstr "אישור"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:97
+#: ../plugins/gtk+/gtk+.xml.in.h:98
 msgid "Containers"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:98
+#: ../plugins/gtk+/gtk+.xml.in.h:99
 msgid "Content"
 msgstr "תוכן"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:99
+#: ../plugins/gtk+/gtk+.xml.in.h:100
 msgid "Continuous"
 msgstr "מתמשך"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:100
+#: ../plugins/gtk+/gtk+.xml.in.h:101
 #, fuzzy
 #| msgid "Control"
 msgid "Control Key"
 msgstr "Control"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:101
+#: ../plugins/gtk+/gtk+.xml.in.h:102
 msgid "Control and Display"
 msgstr "בקרה ותצוגה"
 
 #. Atk relationset properties
-#: ../plugins/gtk+/gtk+.xml.in.h:103
+#: ../plugins/gtk+/gtk+.xml.in.h:104
 msgid "Controlled By"
 msgstr "נשלט על ידי"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:104
+#: ../plugins/gtk+/gtk+.xml.in.h:105
 msgid "Controller For"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:105
+#: ../plugins/gtk+/gtk+.xml.in.h:106
 msgid "Create Folder"
 msgstr "צור תיקייה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:107
+#: ../plugins/gtk+/gtk+.xml.in.h:108
 msgid "Curve"
 msgstr "עקומה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:109
+#: ../plugins/gtk+/gtk+.xml.in.h:110
 msgid "Custom widget"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:110
+#: ../plugins/gtk+/gtk+.xml.in.h:111
 msgid "Data"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:111
+#: ../plugins/gtk+/gtk+.xml.in.h:112
 msgid "Data column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:112
+#: ../plugins/gtk+/gtk+.xml.in.h:113
 msgid "Default"
 msgstr "ברירת מחדל"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:113
+#: ../plugins/gtk+/gtk+.xml.in.h:114
 msgid "Delayed"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:114
-msgid "Descending"
-msgstr "יורד"
-
 #: ../plugins/gtk+/gtk+.xml.in.h:115
+msgid "Descending"
+msgstr "סדר יורד"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:116
 msgid "Described By"
 msgstr "מתואר על ידי"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:116
+#: ../plugins/gtk+/gtk+.xml.in.h:117
 msgid "Description For"
 msgstr "תיאור עבור"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:117
+#: ../plugins/gtk+/gtk+.xml.in.h:118
 msgid "Description of an object, formatted for assistive technology access"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:118
+#: ../plugins/gtk+/gtk+.xml.in.h:119
 msgid "Desktop"
 msgstr "שולחן עבודה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:119
+#: ../plugins/gtk+/gtk+.xml.in.h:120
 msgid "Dialog"
 msgstr "דו-שיח"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:120
+#: ../plugins/gtk+/gtk+.xml.in.h:121
 msgid "Dialog Box"
 msgstr "תיבת דו-שיח"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:121
+#: ../plugins/gtk+/gtk+.xml.in.h:122
 msgid "Digits column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:122
+#: ../plugins/gtk+/gtk+.xml.in.h:123
 msgid "Discontinuous"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:123
+#: ../plugins/gtk+/gtk+.xml.in.h:124
 msgid "Discrete"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:124
+#: ../plugins/gtk+/gtk+.xml.in.h:125
 msgid "Dock"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:125
+#: ../plugins/gtk+/gtk+.xml.in.h:126
 msgid "Double"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:126
+#: ../plugins/gtk+/gtk+.xml.in.h:127
 msgid "Down"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:127
+#: ../plugins/gtk+/gtk+.xml.in.h:128
 msgid "Drag & Drop"
 msgstr "גרור ושחרר"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:128
+#: ../plugins/gtk+/gtk+.xml.in.h:129
 msgid "Drag and Drop"
 msgstr "גרור ושחרר"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:129
+#: ../plugins/gtk+/gtk+.xml.in.h:130
 msgid "Drawing Area"
 msgstr "איזור ציור"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:130
+#: ../plugins/gtk+/gtk+.xml.in.h:131
 msgid "Drop Down Menu"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:131
+#: ../plugins/gtk+/gtk+.xml.in.h:132
 msgid "East"
 msgstr "מזרח"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:132
+#: ../plugins/gtk+/gtk+.xml.in.h:133
 msgid "Edge"
 msgstr "קצה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:133
+#: ../plugins/gtk+/gtk+.xml.in.h:134
 #, fuzzy
 #| msgid "Add Separator"
 msgid "Edit Separately"
 msgstr "הוסף מפריד"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:134
+#: ../plugins/gtk+/gtk+.xml.in.h:135
 msgid "Edit&#8230;"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:135
+#: ../plugins/gtk+/gtk+.xml.in.h:136
 msgid "Editable column"
 msgstr "עמודה ניתנת לעריכה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:136
+#: ../plugins/gtk+/gtk+.xml.in.h:137
 msgid "Eighth Key"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:137
+#: ../plugins/gtk+/gtk+.xml.in.h:138
 msgid "Ellipsize column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:138
+#: ../plugins/gtk+/gtk+.xml.in.h:139
 msgid "Embedded By"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:139
+#: ../plugins/gtk+/gtk+.xml.in.h:140
 msgid "Embeds"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:140 ../plugins/gnome/gnome.xml.in.h:6
+#: ../plugins/gtk+/gtk+.xml.in.h:141 ../plugins/gnome/gnome.xml.in.h:7
 msgid "End"
 msgstr "סוף"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:141
+#: ../plugins/gtk+/gtk+.xml.in.h:142
 msgid "Enter Notify"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:142
+#: ../plugins/gtk+/gtk+.xml.in.h:143
 msgid "Enter a list of column types for this data store"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:143
+#: ../plugins/gtk+/gtk+.xml.in.h:144
 msgid "Enter a list of values to be applied on each row"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:144
+#: ../plugins/gtk+/gtk+.xml.in.h:145
+#, fuzzy
+#| msgid "Text View"
+msgid "Entry Buffer"
+msgstr "תצוגת טקסט"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:146
 #, fuzzy
 #| msgid "Font Selection"
 msgid "Entry Completion"
 msgstr "בחירת גופן"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:145 ../plugins/gnome/gnome.xml.in.h:7
+#: ../plugins/gtk+/gtk+.xml.in.h:147 ../plugins/gnome/gnome.xml.in.h:8
 msgid "Error"
 msgstr "שגיאה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:146
+#: ../plugins/gtk+/gtk+.xml.in.h:148
 msgid "Etched In"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:147
+#: ../plugins/gtk+/gtk+.xml.in.h:149
 msgid "Etched Out"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:148
+#: ../plugins/gtk+/gtk+.xml.in.h:150
 msgid "Event Box"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:149 ../plugins/gnome/gnome.xml.in.h:8
+#: ../plugins/gtk+/gtk+.xml.in.h:151 ../plugins/gnome/gnome.xml.in.h:9
 msgid "Expand"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:150
+#: ../plugins/gtk+/gtk+.xml.in.h:152
 msgid "Expanded"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:151
+#: ../plugins/gtk+/gtk+.xml.in.h:153
 msgid "Expander"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:152
+#: ../plugins/gtk+/gtk+.xml.in.h:154
 msgid "Exposure"
 msgstr "חשיפה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:153
+#: ../plugins/gtk+/gtk+.xml.in.h:155
 msgid "Extended"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:154
+#: ../plugins/gtk+/gtk+.xml.in.h:156
 msgid "Extra Condensed"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:155
+#: ../plugins/gtk+/gtk+.xml.in.h:157
 msgid "Extra Expanded"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:156
+#: ../plugins/gtk+/gtk+.xml.in.h:158
 msgid "Family column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:157
+#: ../plugins/gtk+/gtk+.xml.in.h:159
 msgid "Fifth Key"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:158
+#: ../plugins/gtk+/gtk+.xml.in.h:160
 #, fuzzy
 #| msgid "File Chooser Button"
 msgid "Fifth Mouse Button"
 msgstr "כפתור בחירת קובץ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:159
+#: ../plugins/gtk+/gtk+.xml.in.h:161
 msgid "File Chooser Button"
 msgstr "כפתור בחירת קובץ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:160
+#: ../plugins/gtk+/gtk+.xml.in.h:162
 msgid "File Chooser Dialog"
 msgstr "דו-שיח בחירת קובץ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:161
+#: ../plugins/gtk+/gtk+.xml.in.h:163
 msgid "File Chooser Widget"
 msgstr "פריט בחירת קבצים"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:162
+#: ../plugins/gtk+/gtk+.xml.in.h:164
 #, fuzzy
 #| msgid "Libglade Files"
 msgid "File Filter"
 msgstr "קבצי LibGlade"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:163 ../plugins/gtk+/glade-icon-sources.c:772
+#: ../plugins/gtk+/gtk+.xml.in.h:165 ../plugins/gtk+/glade-icon-sources.c:772
 msgid "File Name"
 msgstr "שם קובץ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:164
+#: ../plugins/gtk+/gtk+.xml.in.h:166
 msgid "File Selection"
 msgstr "בחירת קובץ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:165 ../plugins/gnome/gnome.xml.in.h:10
+#: ../plugins/gtk+/gtk+.xml.in.h:167 ../plugins/gnome/gnome.xml.in.h:11
 msgid "Fill"
 msgstr "מלא"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:166
-#| msgid "File Chooser Button"
+#: ../plugins/gtk+/gtk+.xml.in.h:168
 msgid "First Mouse Button"
 msgstr "כפתור העכבר הראשון"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:167
+#: ../plugins/gtk+/gtk+.xml.in.h:169
 msgid "Fixed"
 msgstr "קבוע"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:168
+#: ../plugins/gtk+/gtk+.xml.in.h:170
 msgid "Flows From"
 msgstr "זורם מ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:169
+#: ../plugins/gtk+/gtk+.xml.in.h:171
 msgid "Flows To"
 msgstr "זורם ל"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:170
+#: ../plugins/gtk+/gtk+.xml.in.h:172
 msgid "Focus Change"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:171
+#: ../plugins/gtk+/gtk+.xml.in.h:173
 msgid "Follow State column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:172
+#: ../plugins/gtk+/gtk+.xml.in.h:174
 msgid "Font Button"
 msgstr "כפתור גופן"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:173
+#: ../plugins/gtk+/gtk+.xml.in.h:175
 #, fuzzy
 #| msgid "Description For"
 msgid "Font Description column"
 msgstr "תיאור עבור"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:174
+#: ../plugins/gtk+/gtk+.xml.in.h:176
 msgid "Font Selection"
 msgstr "בחירת גופן"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:175
+#: ../plugins/gtk+/gtk+.xml.in.h:177
 msgid "Font Selection Dialog"
 msgstr "דו-שיח בחירת גופנים"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:176
-#| msgid "Insert Column"
+#: ../plugins/gtk+/gtk+.xml.in.h:178
 msgid "Font column"
 msgstr "עמודת גופן"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:177
+#: ../plugins/gtk+/gtk+.xml.in.h:179
 #, fuzzy
 #| msgid "Foreground Color"
 msgid "Foreground Color Name column"
 msgstr "צבע קדמה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:178
+#: ../plugins/gtk+/gtk+.xml.in.h:180
 #, fuzzy
 #| msgid "Foreground Color"
 msgid "Foreground Color column"
 msgstr "צבע קדמה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:179
+#: ../plugins/gtk+/gtk+.xml.in.h:181
 #, fuzzy
 #| msgid "Font Button"
 msgid "Forth Mouse Button"
 msgstr "כפתור גופן"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:180
+#: ../plugins/gtk+/gtk+.xml.in.h:182
 msgid "Frame"
 msgstr "מסגרת"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:181
+#: ../plugins/gtk+/gtk+.xml.in.h:183
 msgid "Free"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:182
+#: ../plugins/gtk+/gtk+.xml.in.h:184
 msgid "Gamma Curve"
 msgstr "עקומת גמה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:183
+#: ../plugins/gtk+/gtk+.xml.in.h:185
 msgid "Grow Only"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:184
+#: ../plugins/gtk+/gtk+.xml.in.h:186
 msgid "Gtk"
 msgstr "Gtk"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:185
+#: ../plugins/gtk+/gtk+.xml.in.h:187
+msgid "Gtk+ Obsolete"
+msgstr "‏+Gtk מיושן"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:188
 msgid "Half"
 msgstr "חצי"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:186
+#: ../plugins/gtk+/gtk+.xml.in.h:189
 msgid "Handle Box"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:187
+#: ../plugins/gtk+/gtk+.xml.in.h:190
 msgid "Has Entry column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:188
+#: ../plugins/gtk+/gtk+.xml.in.h:191
 #, fuzzy
 #| msgid "Insert Column"
 msgid "Height column"
 msgstr "הכנס עמודה"
 
 #. Objects
-#: ../plugins/gtk+/gtk+.xml.in.h:190 ../plugins/gtk+/glade-model-data.c:1236
+#: ../plugins/gtk+/gtk+.xml.in.h:193 ../plugins/gtk+/glade-model-data.c:1244
 msgid "Horizontal"
 msgstr "אופקי"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:191
-#| msgid "Horizontal Ruler"
+#: ../plugins/gtk+/gtk+.xml.in.h:194
 msgid "Horizontal Alignment"
 msgstr "יישור אופקי"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:192
+#: ../plugins/gtk+/gtk+.xml.in.h:195
 #, fuzzy
 #| msgid "Horizontal and Vertical"
 msgid "Horizontal Alignment column"
 msgstr "אנכי ואופקי"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:193
+#: ../plugins/gtk+/gtk+.xml.in.h:196
 msgid "Horizontal Box"
 msgstr "תיבה אופקית"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:194
+#: ../plugins/gtk+/gtk+.xml.in.h:197
 msgid "Horizontal Button Box"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:195
+#: ../plugins/gtk+/gtk+.xml.in.h:198
 #, fuzzy
 #| msgid "Horizontal"
 msgid "Horizontal Padding"
 msgstr "אופקי"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:196
+#: ../plugins/gtk+/gtk+.xml.in.h:199
 #, fuzzy
 #| msgid "Horizontal and Vertical"
 msgid "Horizontal Padding column"
 msgstr "אנכי ואופקי"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:197
+#: ../plugins/gtk+/gtk+.xml.in.h:200
 msgid "Horizontal Panes"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:198
+#: ../plugins/gtk+/gtk+.xml.in.h:201
 msgid "Horizontal Ruler"
 msgstr "קו אופקי"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:199
+#: ../plugins/gtk+/gtk+.xml.in.h:202
 msgid "Horizontal Scale"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:200
+#: ../plugins/gtk+/gtk+.xml.in.h:203
 msgid "Horizontal Scrollbar"
 msgstr "פס גלילה אופקי"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:201
+#: ../plugins/gtk+/gtk+.xml.in.h:204
 msgid "Horizontal Separator"
 msgstr "קו מפריד אופקי"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:202
+#: ../plugins/gtk+/gtk+.xml.in.h:205
 msgid "Horizontal and Vertical"
 msgstr "אנכי ואופקי"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:203
+#: ../plugins/gtk+/gtk+.xml.in.h:206
 msgid "Hyper Modifier"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:204
-#| msgid "Icon Name"
+#: ../plugins/gtk+/gtk+.xml.in.h:207
 msgid "Icon"
 msgstr "איקון"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:205
+#: ../plugins/gtk+/gtk+.xml.in.h:208
 #, fuzzy
 #| msgid "Icons only"
 msgid "Icon Factory"
 msgstr "איקונים בלבד"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:207
+#: ../plugins/gtk+/gtk+.xml.in.h:210
 #, fuzzy
 #| msgid "Icon Name"
 msgid "Icon Name column"
 msgstr "שם איקון"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:210
+#: ../plugins/gtk+/gtk+.xml.in.h:213
 msgid "Icon Sources"
 msgstr "מקורות איקון"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:211
+#: ../plugins/gtk+/gtk+.xml.in.h:214
 msgid "Icon View"
 msgstr "תצוגת איקונים"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:212
+#: ../plugins/gtk+/gtk+.xml.in.h:215
 msgid "Icons only"
 msgstr "איקונים בלבד"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:213
+#: ../plugins/gtk+/gtk+.xml.in.h:216
 msgid "If Valid"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:214
-msgid ""
-"If set, an underline in the text indicates the next character should be used "
-"for the mnemonic accelerator key"
-msgstr ""
-
-#: ../plugins/gtk+/gtk+.xml.in.h:216
+#: ../plugins/gtk+/gtk+.xml.in.h:218
 msgid "Image Menu Item"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:217
+#: ../plugins/gtk+/gtk+.xml.in.h:219
 msgid "Immediate"
 msgstr "מיידי"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:218
+#: ../plugins/gtk+/gtk+.xml.in.h:220
 msgid "In"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:219
+#: ../plugins/gtk+/gtk+.xml.in.h:221
 msgid "Inches"
 msgstr "אינצ'ים"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:220
+#: ../plugins/gtk+/gtk+.xml.in.h:222
 #, fuzzy
 #| msgid "Insert Column"
 msgid "Inconsistent column"
 msgstr "הכנס עמודה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:221
+#: ../plugins/gtk+/gtk+.xml.in.h:223
 msgid ""
 "Indicates a subwindow attached to a component but otherwise has no "
 "connection in the UI hierarchy to that component"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:222
+#: ../plugins/gtk+/gtk+.xml.in.h:224
 msgid "Indicates an object controlled by one or more target objects"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:223
+#: ../plugins/gtk+/gtk+.xml.in.h:225
 msgid ""
 "Indicates an object is a cell in a treetable which is displayed because a "
 "cell in the same column is expanded and identifies that cell"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:224
+#: ../plugins/gtk+/gtk+.xml.in.h:226
 msgid "Indicates an object is a controller for one or more target objects"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:225
+#: ../plugins/gtk+/gtk+.xml.in.h:227
 msgid "Indicates an object is a label for one or more target objects"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:226
+#: ../plugins/gtk+/gtk+.xml.in.h:228
 msgid ""
 "Indicates an object is a member of a group of one or more target objects"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:227
+#: ../plugins/gtk+/gtk+.xml.in.h:229
 msgid "Indicates an object is labelled by one or more target objects"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:228
+#: ../plugins/gtk+/gtk+.xml.in.h:230
 msgid "Indicates that an object is a parent window of another object"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:229
+#: ../plugins/gtk+/gtk+.xml.in.h:231
 msgid "Indicates that an object is a popup for another object"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:230
+#: ../plugins/gtk+/gtk+.xml.in.h:232
 msgid ""
 "Indicates that an object provides descriptive information about another "
 "object; more verbose than 'Label For'"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:231
+#: ../plugins/gtk+/gtk+.xml.in.h:233
 msgid ""
 "Indicates that another object provides descriptive information about this "
 "object; more verbose than 'Labelled By'"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:232
+#: ../plugins/gtk+/gtk+.xml.in.h:234
 msgid ""
 "Indicates that the object has content that flows logically from another "
 "AtkObject in a sequential way, (for instance text-flow)"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:233
+#: ../plugins/gtk+/gtk+.xml.in.h:235
 msgid ""
 "Indicates that the object has content that flows logically to another "
 "AtkObject in a sequential way, (for instance text-flow)"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:234
+#: ../plugins/gtk+/gtk+.xml.in.h:236
 msgid ""
 "Indicates that the object visually embeds another object's content, i.e. "
 "this object's content flows around another's content"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:235
+#: ../plugins/gtk+/gtk+.xml.in.h:237
 msgid "Indicator Size column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:236
+#: ../plugins/gtk+/gtk+.xml.in.h:238
 msgid "Info"
 msgstr "מידע"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:237
+#: ../plugins/gtk+/gtk+.xml.in.h:239
 msgid "Input Dialog"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:238
+#: ../plugins/gtk+/gtk+.xml.in.h:240
 msgid "Insert After"
 msgstr "הכנס אחרי"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:239
+#: ../plugins/gtk+/gtk+.xml.in.h:241
 msgid "Insert Before"
 msgstr "הכנס לפני"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:240
+#: ../plugins/gtk+/gtk+.xml.in.h:242
 msgid "Insert Column"
 msgstr "הכנס עמודה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:241
+#: ../plugins/gtk+/gtk+.xml.in.h:243
 msgid "Insert Page After"
 msgstr "הכנס דף אחרי"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:242
+#: ../plugins/gtk+/gtk+.xml.in.h:244
 msgid "Insert Page Before"
 msgstr "הכנס דף לפני"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:243
+#: ../plugins/gtk+/gtk+.xml.in.h:245
 msgid "Insert Row"
 msgstr "הוסף שורה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:244
+#: ../plugins/gtk+/gtk+.xml.in.h:246
 msgid "Intro"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:245
+#: ../plugins/gtk+/gtk+.xml.in.h:247
 msgid "Invalid"
 msgstr "לא תקין"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:246
+#: ../plugins/gtk+/gtk+.xml.in.h:248
 msgid ""
 "Inverse of 'Embeds', indicates that this object's content is visually "
 "embedded in another object"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:247
-#| msgid "Invalid"
+#: ../plugins/gtk+/gtk+.xml.in.h:249
+msgid "Invisible Char Set"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:250
 msgid "Italic"
 msgstr "נטוי"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:248
+#: ../plugins/gtk+/gtk+.xml.in.h:251
 msgid "Items"
 msgstr "פריטים"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:249
+#: ../plugins/gtk+/gtk+.xml.in.h:252
 msgid "Key Press"
 msgstr "לחיצת מקש"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:250
+#: ../plugins/gtk+/gtk+.xml.in.h:253
 msgid "Key Release"
 msgstr "שחרור מקש"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:251
+#: ../plugins/gtk+/gtk+.xml.in.h:254
 #, fuzzy
 #| msgid "Remove Column"
 msgid "Keycode column"
 msgstr "הסר עמודה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:253
+#: ../plugins/gtk+/gtk+.xml.in.h:256
 msgid "Label For"
 msgstr "תווית עבור"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:254
+#: ../plugins/gtk+/gtk+.xml.in.h:257
 msgid "Labelled By"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:255
+#: ../plugins/gtk+/gtk+.xml.in.h:258
 msgid "Language column"
 msgstr "עמודת שפה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:256
+#: ../plugins/gtk+/gtk+.xml.in.h:259
 msgid "Large Toolbar"
 msgstr "סרגל כלים גדול"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:257
+#: ../plugins/gtk+/gtk+.xml.in.h:260
 msgid "Layout"
 msgstr "פריסה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:258
+#: ../plugins/gtk+/gtk+.xml.in.h:261
 msgid "Least Recently Used first"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:259
+#: ../plugins/gtk+/gtk+.xml.in.h:262
 msgid "Leave Notify"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:260 ../plugins/gnome/bonobo.xml.in.h:4
+#: ../plugins/gtk+/gtk+.xml.in.h:263 ../plugins/gnome/bonobo.xml.in.h:4
 msgid "Left"
 msgstr "שמאל"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:261
+#: ../plugins/gtk+/gtk+.xml.in.h:264
 msgid "Left to Right"
 msgstr "שמאל לימין"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:262
+#: ../plugins/gtk+/gtk+.xml.in.h:265
 msgid "Linear"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:263
+#: ../plugins/gtk+/gtk+.xml.in.h:266
 msgid "Link Button"
 msgstr "כפתור קישור"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:264
+#: ../plugins/gtk+/gtk+.xml.in.h:267
 msgid "List"
 msgstr "רשימה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:265
+#: ../plugins/gtk+/gtk+.xml.in.h:268
 msgid "List Item"
 msgstr "פריט רשימה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:266
+#: ../plugins/gtk+/gtk+.xml.in.h:269
 #, fuzzy
 #| msgid "List Item"
 msgid "List Store"
 msgstr "פריט רשימה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:267
+#: ../plugins/gtk+/gtk+.xml.in.h:270
 msgid "List of widgets in this group"
 msgstr "רשימת הפריטים בקבוצה זאת"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:268
+#: ../plugins/gtk+/gtk+.xml.in.h:271
 #, fuzzy
 #| msgid "Locked"
 msgid "Lock Key"
 msgstr "נעול"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:269
+#: ../plugins/gtk+/gtk+.xml.in.h:272
 msgid "Low"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:270
+#: ../plugins/gtk+/gtk+.xml.in.h:273
 msgid "Markup column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:271
+#: ../plugins/gtk+/gtk+.xml.in.h:274
 msgid "Member Of"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:273
+#: ../plugins/gtk+/gtk+.xml.in.h:276
 msgid "Menu Bar"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:275
+#: ../plugins/gtk+/gtk+.xml.in.h:278
 msgid "Menu Shell"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:276
+#: ../plugins/gtk+/gtk+.xml.in.h:279
 msgid "Menu Tool Button"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:277
+#: ../plugins/gtk+/gtk+.xml.in.h:280
 msgid "Message Dialog"
-msgstr "דו-שיח הודעות"
+msgstr "דו־שיח הודעות"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:278
+#: ../plugins/gtk+/gtk+.xml.in.h:281
 msgid "Meta Modifier"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:279
+#: ../plugins/gtk+/gtk+.xml.in.h:282
 msgid "Middle"
 msgstr "אמצע"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:280
+#: ../plugins/gtk+/gtk+.xml.in.h:283
+msgid "Miscellaneous"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:284
 #, fuzzy
 #| msgid "Remove Column"
 msgid "Model column"
 msgstr "הסר עמודה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:281
+#: ../plugins/gtk+/gtk+.xml.in.h:285
 msgid "Most Recently Used first"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:282
+#: ../plugins/gtk+/gtk+.xml.in.h:286
 msgid "Mouse"
 msgstr "עכבר"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:283
+#: ../plugins/gtk+/gtk+.xml.in.h:287
 msgid "Multiple"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:284 ../plugins/gnome/gnome.xml.in.h:40
+#: ../plugins/gtk+/gtk+.xml.in.h:288 ../plugins/gnome/gnome.xml.in.h:41
 msgid "Never"
 msgstr "לעולם לא"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:285
+#: ../plugins/gtk+/gtk+.xml.in.h:289
 msgid "Node Child Of"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:289
+#: ../plugins/gtk+/gtk+.xml.in.h:293
 msgid "North"
 msgstr "צפון"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:290
+#: ../plugins/gtk+/gtk+.xml.in.h:294
 msgid "North East"
 msgstr "צפון מזרח"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:291
+#: ../plugins/gtk+/gtk+.xml.in.h:295
 msgid "North West"
 msgstr "צפון מערב"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:292
+#: ../plugins/gtk+/gtk+.xml.in.h:296
 msgid "Notebook"
 msgstr "מחברת"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:293
+#: ../plugins/gtk+/gtk+.xml.in.h:297
 msgid "Notification"
 msgstr "הודעה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:294
-#| msgid "Number of pages"
+#: ../plugins/gtk+/gtk+.xml.in.h:298
 msgid "Number of Pages"
 msgstr "מספר הדפים"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:295
+#: ../plugins/gtk+/gtk+.xml.in.h:299
 msgid "Number of items"
 msgstr "מספר הפריטים"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:296
+#: ../plugins/gtk+/gtk+.xml.in.h:300
 msgid "Number of pages"
 msgstr "מספר הדפים"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:297
+#: ../plugins/gtk+/gtk+.xml.in.h:301
 #, fuzzy
 #| msgid "The number of pages in the notebook"
 msgid "Number of pages in this assistant"
 msgstr "מספר הדפים במחברת"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:298
+#: ../plugins/gtk+/gtk+.xml.in.h:302
 msgid "Object instance's name formatted for assistive technology access"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:299
+#: ../plugins/gtk+/gtk+.xml.in.h:303
 msgid "Oblique"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:300 ../plugins/gtk+/glade-model-data.c:1235
+#: ../plugins/gtk+/gtk+.xml.in.h:304 ../plugins/gtk+/glade-model-data.c:1243
 msgid "Off"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:301
+#: ../plugins/gtk+/gtk+.xml.in.h:305
 msgid "Ok"
 msgstr "אישור"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:302
+#: ../plugins/gtk+/gtk+.xml.in.h:306
 msgid "Ok, Cancel"
 msgstr "אישור, ביטול"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:303
+#: ../plugins/gtk+/gtk+.xml.in.h:307
 msgid "On"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:304
+#: ../plugins/gtk+/gtk+.xml.in.h:308
 msgid "Open"
 msgstr "פתח"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:305
+#: ../plugins/gtk+/gtk+.xml.in.h:309
 msgid "Option Menu"
 msgstr "תפריט אפשרויות"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:306
-#| msgid "Creation Function"
+#: ../plugins/gtk+/gtk+.xml.in.h:310
 msgid "Orientation column"
 msgstr "עמודת כיוון"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:307 ../plugins/gnome/gnome.xml.in.h:41
+#: ../plugins/gtk+/gtk+.xml.in.h:311 ../plugins/gnome/gnome.xml.in.h:42
 msgid "Other"
 msgstr "אחר"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:308
+#: ../plugins/gtk+/gtk+.xml.in.h:312
 msgid "Out"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:309
+#: ../plugins/gtk+/gtk+.xml.in.h:313
 msgid "Paned"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:311
+#: ../plugins/gtk+/gtk+.xml.in.h:315
 msgid "Parent Window Of"
 msgstr "חלון הורה של"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:312
+#: ../plugins/gtk+/gtk+.xml.in.h:316
 msgid "Pixbuf Expander Closed column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:313
+#: ../plugins/gtk+/gtk+.xml.in.h:317
 msgid "Pixbuf Expander Open column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:314
+#: ../plugins/gtk+/gtk+.xml.in.h:318
 msgid "Pixbuf Renderer"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:315
+#: ../plugins/gtk+/gtk+.xml.in.h:319
 msgid "Pixbuf column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:316
+#: ../plugins/gtk+/gtk+.xml.in.h:320
 msgid "Pixels"
 msgstr "פיקסלים"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:317
+#: ../plugins/gtk+/gtk+.xml.in.h:321
 msgid "Pointer Motion"
 msgstr "תנועת סמן"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:318
+#: ../plugins/gtk+/gtk+.xml.in.h:322
 msgid "Pointer Motion Hint"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:319
+#: ../plugins/gtk+/gtk+.xml.in.h:323
 msgid "Popup"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:320
+#: ../plugins/gtk+/gtk+.xml.in.h:324
 msgid "Popup For"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:321
+#: ../plugins/gtk+/gtk+.xml.in.h:325
 msgid "Popup Menu"
 msgstr "תפריט קופץ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:322 ../plugins/gnome/glade-gnome.c:658
-#: ../plugins/gnome/gnome.xml.in.h:44
+#: ../plugins/gtk+/gtk+.xml.in.h:326 ../plugins/gnome/glade-gnome.c:658
+#: ../plugins/gnome/gnome.xml.in.h:45
 msgid "Position"
 msgstr "מיקום"
 
 #. Atk press property
-#: ../plugins/gtk+/gtk+.xml.in.h:324
+#: ../plugins/gtk+/gtk+.xml.in.h:328
 msgid "Press"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:326
+#: ../plugins/gtk+/gtk+.xml.in.h:329
+msgid "Primary Icon Activatable"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:330
+#, fuzzy
+#| msgid "Icon Name"
+msgid "Primary Icon Name"
+msgstr "שם איקון"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:331
+msgid "Primary Icon Pixbuf"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:332
+msgid "Primary Icon Sensitive"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:333
+msgid "Primary Icon Tooltip Markup"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:334
+msgid "Primary Icon Tooltip Text"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:335
+msgid "Primary Stock Icon"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:337
 msgid "Progress Bar"
 msgstr "פס התקדמות"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:327
+#: ../plugins/gtk+/gtk+.xml.in.h:338
+#, fuzzy
+#| msgid "Progress Bar"
+msgid "Progress Fraction"
+msgstr "פס התקדמות"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:339
+#, fuzzy
+#| msgid "Progress Bar"
+msgid "Progress Pulse Step"
+msgstr "פס התקדמות"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:340
 #, fuzzy
 #| msgid "Progress Bar"
 msgid "Progress Renderer"
 msgstr "פס התקדמות"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:328
+#: ../plugins/gtk+/gtk+.xml.in.h:341
 msgid "Property Change"
 msgstr "שינוי"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:329
+#: ../plugins/gtk+/gtk+.xml.in.h:342
 msgid "Proximity  Out"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:330
+#: ../plugins/gtk+/gtk+.xml.in.h:343
 msgid "Proximity In"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:331
+#: ../plugins/gtk+/gtk+.xml.in.h:344
 #, fuzzy
 #| msgid "Insert Column"
 msgid "Pulse column"
 msgstr "הכנס עמודה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:332 ../plugins/gnome/gnome.xml.in.h:47
+#: ../plugins/gtk+/gtk+.xml.in.h:345 ../plugins/gnome/gnome.xml.in.h:48
 msgid "Question"
 msgstr "שאלה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:333
+#: ../plugins/gtk+/gtk+.xml.in.h:346
 msgid "Queue"
 msgstr "תור"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:334
+#: ../plugins/gtk+/gtk+.xml.in.h:347
 #, fuzzy
 #| msgid "Radio Button"
 msgid "Radio Action"
 msgstr "כפתור בחירה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:335
+#: ../plugins/gtk+/gtk+.xml.in.h:348
 msgid "Radio Button"
 msgstr "כפתור בחירה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:336
+#: ../plugins/gtk+/gtk+.xml.in.h:349
 msgid "Radio Menu Item"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:337
+#: ../plugins/gtk+/gtk+.xml.in.h:350
 msgid "Radio Tool Button"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:338
+#: ../plugins/gtk+/gtk+.xml.in.h:351
 #, fuzzy
 #| msgid "Radio Button"
 msgid "Radio column"
 msgstr "כפתור בחירה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:339
+#: ../plugins/gtk+/gtk+.xml.in.h:352
 msgid "Range"
 msgstr "טווח"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:340
+#: ../plugins/gtk+/gtk+.xml.in.h:353
 #, fuzzy
 #| msgid "Redo the last action"
 msgid "Recent Action"
 msgstr "שחזר את הפעולה האחרונה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:341
+#: ../plugins/gtk+/gtk+.xml.in.h:354
 msgid "Recent Chooser"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:342
+#: ../plugins/gtk+/gtk+.xml.in.h:355
 msgid "Recent Chooser Dialog"
 msgstr ""
 
+#. GtkActivatable
+#: ../plugins/gtk+/gtk+.xml.in.h:357
+#, fuzzy
+#| msgid "Radio Button"
+msgid "Related Action"
+msgstr "כפתור בחירה"
+
 #. Atk release property
-#: ../plugins/gtk+/gtk+.xml.in.h:344
+#: ../plugins/gtk+/gtk+.xml.in.h:359
 msgid "Release"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:345
+#: ../plugins/gtk+/gtk+.xml.in.h:360
 msgid "Release Modifier"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:346
+#: ../plugins/gtk+/gtk+.xml.in.h:361
 msgid "Remove Column"
-msgstr "הסר עמודה"
+msgstr "הסרת עמודה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:347
+#: ../plugins/gtk+/gtk+.xml.in.h:362
 msgid "Remove Page"
-msgstr "הסר עמוד"
+msgstr "הסרת עמוד"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:348
+#: ../plugins/gtk+/gtk+.xml.in.h:363
 msgid "Remove Parent"
-msgstr "הסר הורה"
+msgstr "הסרת הורה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:349
+#: ../plugins/gtk+/gtk+.xml.in.h:364
 msgid "Remove Row"
-msgstr "הסר שורה"
+msgstr "הסרת שורה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:350
+#: ../plugins/gtk+/gtk+.xml.in.h:365
 msgid "Remove Slot"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:351
+#: ../plugins/gtk+/gtk+.xml.in.h:366
 msgid "Response ID"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:352 ../plugins/gnome/bonobo.xml.in.h:9
+#: ../plugins/gtk+/gtk+.xml.in.h:367 ../plugins/gnome/bonobo.xml.in.h:9
 msgid "Right"
 msgstr "ימין"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:353
+#: ../plugins/gtk+/gtk+.xml.in.h:368
 msgid "Right to Left"
 msgstr "ימין לשמאל"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:354
+#: ../plugins/gtk+/gtk+.xml.in.h:369
 #, fuzzy
 #| msgid "Insert Column"
 msgid "Rise column"
 msgstr "הכנס עמודה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:355
+#: ../plugins/gtk+/gtk+.xml.in.h:370
 msgid "Ruler"
 msgstr "סרגל"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:356
+#: ../plugins/gtk+/gtk+.xml.in.h:371
 msgid "Save"
-msgstr "שמור"
+msgstr "שמירה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:357
+#: ../plugins/gtk+/gtk+.xml.in.h:372
 msgid "Scale Button"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:358
+#: ../plugins/gtk+/gtk+.xml.in.h:373
 msgid "Scale column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:359
+#: ../plugins/gtk+/gtk+.xml.in.h:374
 msgid "Scroll"
 msgstr "גלילה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:360
+#: ../plugins/gtk+/gtk+.xml.in.h:375
 msgid "Scrolled Window"
 msgstr "חלון עם גלילה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:361
+#: ../plugins/gtk+/gtk+.xml.in.h:376
 #, fuzzy
 #| msgid "File Chooser Button"
 msgid "Second Mouse Button"
 msgstr "כפתור בחירת קובץ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:362
+#: ../plugins/gtk+/gtk+.xml.in.h:377
+msgid "Secondary Icon Activatable"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:378
+#, fuzzy
+#| msgid "Icon Name"
+msgid "Secondary Icon Name"
+msgstr "שם איקון"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:379
+msgid "Secondary Icon Pixbuf"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:380
+msgid "Secondary Icon Sensitive"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:381
+msgid "Secondary Icon Tooltip Markup"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:382
+msgid "Secondary Icon Tooltip Text"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:383
+msgid "Secondary Stock Icon"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:384
 msgid "Select Folder"
 msgstr "בחר תיקייה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:363
+#: ../plugins/gtk+/gtk+.xml.in.h:385
 msgid "Semi Condensed"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:364
+#: ../plugins/gtk+/gtk+.xml.in.h:386
 msgid "Semi Expanded"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:365
+#: ../plugins/gtk+/gtk+.xml.in.h:387
 #, fuzzy
 #| msgid "Insert Column"
 msgid "Sensitive column"
 msgstr "הכנס עמודה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:366
+#: ../plugins/gtk+/gtk+.xml.in.h:388
 msgid "Separator Menu Item"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:367
+#: ../plugins/gtk+/gtk+.xml.in.h:389
 msgid "Separator Tool Item"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:368
+#: ../plugins/gtk+/gtk+.xml.in.h:390
 msgid "Set the current page (strictly for editing purposes)"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:369
+#: ../plugins/gtk+/gtk+.xml.in.h:391
 msgid "Set the description of the Activate atk action"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:370
+#: ../plugins/gtk+/gtk+.xml.in.h:392
 msgid "Set the description of the Click atk action"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:371
+#: ../plugins/gtk+/gtk+.xml.in.h:393
 msgid "Set the description of the Press atk action"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:372
+#: ../plugins/gtk+/gtk+.xml.in.h:394
 msgid "Set the description of the Release atk action"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:373
+#: ../plugins/gtk+/gtk+.xml.in.h:395
 msgid "Set the text in the view's text buffer"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:374
+#: ../plugins/gtk+/gtk+.xml.in.h:396
 msgid "Seventh Key"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:375
+#: ../plugins/gtk+/gtk+.xml.in.h:397
 #, fuzzy
 #| msgid "Shift"
 msgid "Shift Key"
 msgstr "Shift"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:376
+#: ../plugins/gtk+/gtk+.xml.in.h:398
 msgid "Shrink"
 msgstr "כווץ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:377
+#: ../plugins/gtk+/gtk+.xml.in.h:399
 msgid "Single"
 msgstr "יחיד"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:378
+#: ../plugins/gtk+/gtk+.xml.in.h:400
 msgid "Single Paragraph Mode column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:379
+#: ../plugins/gtk+/gtk+.xml.in.h:401
 msgid "Sixth Key"
 msgstr "מקש שישי"
 
 #. Objects
-#: ../plugins/gtk+/gtk+.xml.in.h:381
+#: ../plugins/gtk+/gtk+.xml.in.h:403
 msgid "Size Group"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:382
+#: ../plugins/gtk+/gtk+.xml.in.h:404
 msgid "Size column"
 msgstr "עמודת גודל"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:383
+#: ../plugins/gtk+/gtk+.xml.in.h:405
 msgid "Small Capitals"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:384
+#: ../plugins/gtk+/gtk+.xml.in.h:406
 msgid "Small Toolbar"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:385
+#: ../plugins/gtk+/gtk+.xml.in.h:407
 msgid "South"
 msgstr "דרום"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:386
+#: ../plugins/gtk+/gtk+.xml.in.h:408
 msgid "South East"
 msgstr "דרום מזרח"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:387
+#: ../plugins/gtk+/gtk+.xml.in.h:409
 msgid "South West"
 msgstr "דרום מערב"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:388
+#: ../plugins/gtk+/gtk+.xml.in.h:410
+msgid "Specialized Widgets"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:411
 msgid "Spin Button"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:389
+#: ../plugins/gtk+/gtk+.xml.in.h:412
 msgid "Spin Renderer"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:390
+#: ../plugins/gtk+/gtk+.xml.in.h:414
+#, fuzzy
+#| msgid "Accelerator Key"
+msgid "Spinner Renderer"
+msgstr "מקש האצה"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:415
 msgid "Splash Screen"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:391
+#: ../plugins/gtk+/gtk+.xml.in.h:416
 msgid "Spline"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:392
+#: ../plugins/gtk+/gtk+.xml.in.h:417
 msgid "Spread"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:393 ../plugins/gnome/gnome.xml.in.h:51
+#: ../plugins/gtk+/gtk+.xml.in.h:418 ../plugins/gnome/gnome.xml.in.h:52
 msgid "Start"
 msgstr "התחלה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:394
+#: ../plugins/gtk+/gtk+.xml.in.h:419
 msgid "Static"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:395
+#: ../plugins/gtk+/gtk+.xml.in.h:420
 msgid "Status Bar"
 msgstr "שורת מצב"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:396
+#: ../plugins/gtk+/gtk+.xml.in.h:421
 #, fuzzy
 #| msgid "Status"
 msgid "Status Icon"
 msgstr "סטטוס"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:397
+#: ../plugins/gtk+/gtk+.xml.in.h:422
 msgid "Stock Button"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:398
+#: ../plugins/gtk+/gtk+.xml.in.h:423
 msgid "Stock Detail column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:399
+#: ../plugins/gtk+/gtk+.xml.in.h:424
 msgid "Stock Item"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:400
+#: ../plugins/gtk+/gtk+.xml.in.h:425
 msgid "Stock Size column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:401
+#: ../plugins/gtk+/gtk+.xml.in.h:426
 msgid "Stock column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:402
+#: ../plugins/gtk+/gtk+.xml.in.h:427
 #, fuzzy
 #| msgid "Stretch"
 msgid "Stretch column"
 msgstr "7"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:403
+#: ../plugins/gtk+/gtk+.xml.in.h:428
 #, fuzzy
 #| msgid "Strikethrough Color"
 msgid "Strikethrough column"
 msgstr "צבע קו חוצה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:404
+#: ../plugins/gtk+/gtk+.xml.in.h:429
 msgid "Structure"
 msgstr "מבנה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:405
+#: ../plugins/gtk+/gtk+.xml.in.h:430
 msgid "Style column"
 msgstr "עמודת סגנון"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:406
+#: ../plugins/gtk+/gtk+.xml.in.h:431
 msgid "Substructure"
 msgstr "תת מבנה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:407
+#: ../plugins/gtk+/gtk+.xml.in.h:432
 msgid "Subwindow Of"
 msgstr "תת חלון של"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:408
+#: ../plugins/gtk+/gtk+.xml.in.h:433
 msgid "Summary"
 msgstr "סיכום"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:409
+#: ../plugins/gtk+/gtk+.xml.in.h:434
 msgid "Super Modifier"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:410
+#: ../plugins/gtk+/gtk+.xml.in.h:435
 msgid "Table"
 msgstr "טבלה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:413
+#: ../plugins/gtk+/gtk+.xml.in.h:438
 #, fuzzy
 #| msgid "Text View"
 msgid "Text Buffer"
 msgstr "תצוגת טקסט"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:414
+#: ../plugins/gtk+/gtk+.xml.in.h:439
 msgid "Text Buffers"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:415
+#: ../plugins/gtk+/gtk+.xml.in.h:440
 #, fuzzy
 #| msgid "Insert Column on %s"
 msgid "Text Column column"
 msgstr "הכנס עמודה ב-%s"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:416
+#: ../plugins/gtk+/gtk+.xml.in.h:441
 msgid "Text Entry"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:417
+#: ../plugins/gtk+/gtk+.xml.in.h:442
 msgid "Text Horizontal Alignment column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:418
+#: ../plugins/gtk+/gtk+.xml.in.h:443
 msgid "Text Renderer"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:419
+#: ../plugins/gtk+/gtk+.xml.in.h:444
 #, fuzzy
 #| msgid "Text"
 msgid "Text Tag"
 msgstr "טקסט"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:420
+#: ../plugins/gtk+/gtk+.xml.in.h:445
 #, fuzzy
 #| msgid "Text Editable"
 msgid "Text Tag Table"
 msgstr "טקסט ניתן לעריכה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:421
+#: ../plugins/gtk+/gtk+.xml.in.h:446
 msgid "Text Vertical Alignment column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:422
+#: ../plugins/gtk+/gtk+.xml.in.h:447
 msgid "Text View"
 msgstr "תצוגת טקסט"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:423
+#: ../plugins/gtk+/gtk+.xml.in.h:448
 msgid "Text below icons"
 msgstr "טקסט מתחת לאיקונים"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:425
+#: ../plugins/gtk+/gtk+.xml.in.h:450
 #, fuzzy
 #| msgid "Text only"
 msgid "Text column"
 msgstr "טקסט בלבד"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:426
+#: ../plugins/gtk+/gtk+.xml.in.h:451
 msgid "Text only"
 msgstr "טקסט בלבד"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:427
+#: ../plugins/gtk+/gtk+.xml.in.h:452
 msgid "The column in the model to load the value from"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:428
+#: ../plugins/gtk+/gtk+.xml.in.h:453
 msgid "The items in this combo box"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:429
+#: ../plugins/gtk+/gtk+.xml.in.h:454
 msgid "The number of items in the box"
 msgstr "מספר הפריטים בתיבה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:430
+#: ../plugins/gtk+/gtk+.xml.in.h:455
 msgid "The number of pages in the notebook"
 msgstr "מספר הדפים במחברת"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:431
+#: ../plugins/gtk+/gtk+.xml.in.h:456
 msgid "The page position in the Assistant"
 msgstr "מיקום הדף באשף"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:432
+#: ../plugins/gtk+/gtk+.xml.in.h:457
 msgid "The pango attributes for this label"
 msgstr "מאפייני pango בתווית זאת"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:433
+#: ../plugins/gtk+/gtk+.xml.in.h:458
 msgid "The position of the menu item in the menu shell"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:434
+#: ../plugins/gtk+/gtk+.xml.in.h:459
 msgid "The position of the tool item in the toolbar"
 msgstr "מיקום הפריט בסרגל הכלים"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:435
+#: ../plugins/gtk+/gtk+.xml.in.h:460
 msgid "The response ID of this button in a dialog"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:436
+#: ../plugins/gtk+/gtk+.xml.in.h:461
 msgid ""
-"The stock icon displayed on the item (chose an item from gtk+ stock or from "
+"The stock icon displayed on the item (choose an item from GTK+ stock or from "
 "an icon factory)"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:437
+#: ../plugins/gtk+/gtk+.xml.in.h:462
 msgid "The stock item for this button"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:438
+#: ../plugins/gtk+/gtk+.xml.in.h:463
 msgid "The stock item for this menu item"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:439
-msgid "The text of the menu item"
-msgstr ""
-
-#: ../plugins/gtk+/gtk+.xml.in.h:440
+#: ../plugins/gtk+/gtk+.xml.in.h:464
 msgid "The text to display"
 msgstr "הטקסט להצגה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:441
+#: ../plugins/gtk+/gtk+.xml.in.h:465
 #, fuzzy
 #| msgid "File Chooser Button"
 msgid "Third Mouse Button"
 msgstr "כפתור בחירת קובץ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:442
+#: ../plugins/gtk+/gtk+.xml.in.h:466
 #, fuzzy
 #| msgid "Actions"
 msgid "Toggle Action"
 msgstr "פעולות"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:443
+#: ../plugins/gtk+/gtk+.xml.in.h:467
 msgid "Toggle Button"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:444
+#: ../plugins/gtk+/gtk+.xml.in.h:468
 msgid "Toggle Renderer"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:445
+#: ../plugins/gtk+/gtk+.xml.in.h:469
 msgid "Toggle Tool Button"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:446
+#: ../plugins/gtk+/gtk+.xml.in.h:470
 msgid "Tool Bar"
 msgstr "סרגל כלים"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:447
+#: ../plugins/gtk+/gtk+.xml.in.h:471
 msgid "Tool Button"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:448
+#: ../plugins/gtk+/gtk+.xml.in.h:472
 msgid "Toolbar"
 msgstr "סרגל כלים"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:449
+#: ../plugins/gtk+/gtk+.xml.in.h:473
 msgid "Tooltip"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:450 ../plugins/gnome/bonobo.xml.in.h:10
+#: ../plugins/gtk+/gtk+.xml.in.h:474 ../plugins/gnome/bonobo.xml.in.h:10
 msgid "Top"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:451
+#: ../plugins/gtk+/gtk+.xml.in.h:475
 msgid "Top Left"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:452
+#: ../plugins/gtk+/gtk+.xml.in.h:476
 msgid "Top Level"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:453
+#: ../plugins/gtk+/gtk+.xml.in.h:477
 msgid "Top Right"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:454
+#: ../plugins/gtk+/gtk+.xml.in.h:478
 msgid "Top to Bottom"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:455
+#: ../plugins/gtk+/gtk+.xml.in.h:479
 msgid "Toplevels"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:456
+#: ../plugins/gtk+/gtk+.xml.in.h:480
+#, fuzzy
+#| msgid "Tree View"
+msgid "Tree Model"
+msgstr "תצוגת עץ"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:481
 msgid "Tree Model Filter"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:457
+#: ../plugins/gtk+/gtk+.xml.in.h:482
 msgid "Tree Model Sort"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:458
+#: ../plugins/gtk+/gtk+.xml.in.h:483
 #, fuzzy
 #| msgid "File Selection"
 msgid "Tree Selection"
 msgstr "בחירת קובץ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:459
+#: ../plugins/gtk+/gtk+.xml.in.h:484
 msgid "Tree Store"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:460
+#: ../plugins/gtk+/gtk+.xml.in.h:485
 msgid "Tree View"
 msgstr "תצוגת עץ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:462
-msgid "UI Manager"
-msgstr "מנהל מנשק משתמש"
-
-#: ../plugins/gtk+/gtk+.xml.in.h:463
+#: ../plugins/gtk+/gtk+.xml.in.h:487
 msgid "Ultra Condensed"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:464
+#: ../plugins/gtk+/gtk+.xml.in.h:488
 msgid "Ultra Expanded"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:465
+#: ../plugins/gtk+/gtk+.xml.in.h:489
 #, fuzzy
 #| msgid "Underline Color"
 msgid "Underline column"
 msgstr "צבע קו תחתי"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:466
+#: ../plugins/gtk+/gtk+.xml.in.h:490
 msgid "Up"
 msgstr "למעלה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:467
+#: ../plugins/gtk+/gtk+.xml.in.h:491
+msgid "Use Action Appearance"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:492
 msgid "Use Underline"
 msgstr "השתמש בקו תחתי"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:468
+#: ../plugins/gtk+/gtk+.xml.in.h:493
 msgid "Utility"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:469
+#: ../plugins/gtk+/gtk+.xml.in.h:494
 msgid "Value column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:470
+#: ../plugins/gtk+/gtk+.xml.in.h:495
 #, fuzzy
 msgid "Variant column"
 msgstr "הורה"
 
 #. Objects
-#: ../plugins/gtk+/gtk+.xml.in.h:472 ../plugins/gtk+/glade-model-data.c:1237
+#: ../plugins/gtk+/gtk+.xml.in.h:497 ../plugins/gtk+/glade-model-data.c:1245
 msgid "Vertical"
 msgstr "אנכי"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:473
+#: ../plugins/gtk+/gtk+.xml.in.h:498
 #, fuzzy
 #| msgid "Vertical Ruler"
 msgid "Vertical Alignment"
 msgstr "קו אנכי"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:474
+#: ../plugins/gtk+/gtk+.xml.in.h:499
 msgid "Vertical Alignment column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:475
+#: ../plugins/gtk+/gtk+.xml.in.h:500
 msgid "Vertical Box"
 msgstr "תיבה אנכית"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:476
+#: ../plugins/gtk+/gtk+.xml.in.h:501
 msgid "Vertical Button Box"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:477
+#: ../plugins/gtk+/gtk+.xml.in.h:502
 #, fuzzy
 #| msgid "Vertical"
 msgid "Vertical Padding"
 msgstr "אנכי"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:478
+#: ../plugins/gtk+/gtk+.xml.in.h:503
 msgid "Vertical Padding column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:479
+#: ../plugins/gtk+/gtk+.xml.in.h:504
 msgid "Vertical Panes"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:480
+#: ../plugins/gtk+/gtk+.xml.in.h:505
 msgid "Vertical Ruler"
 msgstr "קו אנכי"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:481
+#: ../plugins/gtk+/gtk+.xml.in.h:506
 msgid "Vertical Scale"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:482
+#: ../plugins/gtk+/gtk+.xml.in.h:507
 msgid "Vertical Scrollbar"
 msgstr "פס גלילה אנכי"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:483
+#: ../plugins/gtk+/gtk+.xml.in.h:508
 msgid "Vertical Separator"
 msgstr "קו מפריד אנכי"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:484
+#: ../plugins/gtk+/gtk+.xml.in.h:509
 msgid "Viewport"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:485
+#: ../plugins/gtk+/gtk+.xml.in.h:510
 msgid "Visibility Notify"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:486
+#: ../plugins/gtk+/gtk+.xml.in.h:511
 msgid "Visible"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:487
+#: ../plugins/gtk+/gtk+.xml.in.h:512
 msgid "Visible column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:488
+#: ../plugins/gtk+/gtk+.xml.in.h:513
 msgid "Volume Button"
 msgstr "כפתור עוצמת שמע"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:489 ../plugins/gnome/gnome.xml.in.h:68
+#: ../plugins/gtk+/gtk+.xml.in.h:514 ../plugins/gnome/gnome.xml.in.h:69
 msgid "Warning"
 msgstr "אזהרה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:490
+#: ../plugins/gtk+/gtk+.xml.in.h:515
 #, fuzzy
 #| msgid "Weight"
 msgid "Weight column"
 msgstr "משקל"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:491
+#: ../plugins/gtk+/gtk+.xml.in.h:516
 msgid "West"
 msgstr "מערב"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:495
+#. Objects
+#: ../plugins/gtk+/gtk+.xml.in.h:519
+#, fuzzy
+#| msgid "Weight"
+msgid "Widgets"
+msgstr "משקל"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:520
 msgid "Width column"
 msgstr "עמודת רוחב"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:496
+#: ../plugins/gtk+/gtk+.xml.in.h:521
 msgid "Width in Characters column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:497
+#: ../plugins/gtk+/gtk+.xml.in.h:522
 msgid "Window"
 msgstr "חלון"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:498
+#: ../plugins/gtk+/gtk+.xml.in.h:523
 #, fuzzy
 #| msgid "Window"
 msgid "Window Group"
 msgstr "חלון"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:499
+#: ../plugins/gtk+/gtk+.xml.in.h:524
 msgid "Word"
 msgstr "מילה"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:500
+#: ../plugins/gtk+/gtk+.xml.in.h:525
 msgid "Word Character"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:501
+#: ../plugins/gtk+/gtk+.xml.in.h:526
 msgid "Wrap Mode column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:502
+#: ../plugins/gtk+/gtk+.xml.in.h:527
 msgid "Wrap Width column"
 msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:503
+#: ../plugins/gtk+/gtk+.xml.in.h:528
 msgid "Yes, No"
 msgstr "כן, לא"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:504
+#: ../plugins/gtk+/gtk+.xml.in.h:529
 msgid ""
 "You can mark this as translatable and set one name/address if you want to "
 "show a translation specific translator, otherwise you should list all "
@@ -4626,60 +4794,115 @@ msgid ""
 msgstr ""
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:1
-msgid "GTK+ Unix Print Toplevels"
+msgid "Collate"
 msgstr ""
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:2
+#, fuzzy
+#| msgid "Properties"
+msgid "Copies"
+msgstr "מאפיינים"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:3
+msgid "GTK+ Unix Print Toplevels"
+msgstr ""
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:4
+#, fuzzy
+#| msgid "General"
+msgid "Generate PDF"
+msgstr "כללי"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:5
+#, fuzzy
+#| msgid "General"
+msgid "Generate PS"
+msgstr "כללי"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:6
+#, fuzzy
+#| msgid "Number of pages"
+msgid "Number Up"
+msgstr "מספר הדפים"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:7
+msgid "Number Up Layout"
+msgstr ""
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:8
+#, fuzzy
+#| msgid "Page size:"
+msgid "Page Set"
+msgstr "גודל עמוד:"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:9
 msgid "Page Setup Dialog"
 msgstr "דו-שיח הגדרות עמוד"
 
-#: ../plugins/gtk+/gtkunixprint.xml.in.h:3
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:10
+#, fuzzy
+#| msgid "Tree View"
+msgid "Preview"
+msgstr "תצוגת עץ"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:11
 msgid "Print Dialog"
 msgstr "דו-שיח הדפסה"
 
-#: ../plugins/gtk+/glade-column-types.c:374
-#: ../plugins/gtk+/glade-column-types.c:423
-#: ../plugins/gtk+/glade-column-types.c:486
-#: ../plugins/gtk+/glade-column-types.c:699
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:12
+#, fuzzy
+#| msgid "be verbose"
+msgid "Reverse"
+msgstr "be verbose"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:13
+#, fuzzy
+#| msgid "Save"
+msgid "Scale"
+msgstr "שמור"
+
+#: ../plugins/gtk+/glade-column-types.c:333
+#: ../plugins/gtk+/glade-column-types.c:382
+#: ../plugins/gtk+/glade-column-types.c:445
+#: ../plugins/gtk+/glade-column-types.c:657
 #, fuzzy, c-format
 #| msgid "Insert Column on %s"
 msgid "Setting columns on %s"
 msgstr "הכנס עמודה ב-%s"
 
-#: ../plugins/gtk+/glade-column-types.c:514
+#: ../plugins/gtk+/glade-column-types.c:473
 msgid "< define a new column >"
 msgstr "< הגדר עמודה חדשה >"
 
-#: ../plugins/gtk+/glade-column-types.c:827
-#| msgid "Remove Column"
+#: ../plugins/gtk+/glade-column-types.c:783
 msgid "Add and remove columns:"
 msgstr "הוסף והסר עמודות:"
 
-#: ../plugins/gtk+/glade-model-data.c:1196
+#: ../plugins/gtk+/glade-column-types.c:837
+#, fuzzy
+#| msgid "Common"
+msgid "Column type"
+msgstr "משותף"
+
+#: ../plugins/gtk+/glade-column-types.c:859
+#, fuzzy
+#| msgid "Common"
+msgid "Column name"
+msgstr "משותף"
+
+#: ../plugins/gtk+/glade-model-data.c:1204
 msgid "Add and remove rows:"
 msgstr "הוסף והסר שורות:"
 
-#: ../plugins/gtk+/glade-model-data.c:1226
+#: ../plugins/gtk+/glade-model-data.c:1234
 msgid "Sequential editing:"
 msgstr ""
-
-#: ../plugins/gtk+/glade-cell-renderer-button.c:90
-#, fuzzy
-#| msgid "Text Editable"
-msgid "Entry Editable"
-msgstr "טקסט ניתן לעריכה"
-
-#: ../plugins/gtk+/glade-cell-renderer-button.c:91
-#, fuzzy
-#| msgid "Whether this property is translatable or not"
-msgid "Whether the entry is editable"
-msgstr "האם מאפיין זה ניתן לתרגום"
 
 #: ../plugins/gtk+/glade-icon-sources.c:694
 #, c-format
 msgid ""
 "Enter a filename or a relative or full path for this source of '%s' (Glade "
-"will only ever load them inthe runtime from your project directory)."
+"will only ever load them in the runtime from your project directory)."
 msgstr ""
 
 #: ../plugins/gtk+/glade-icon-sources.c:701
@@ -4713,71 +4936,71 @@ msgstr ""
 msgid "Set the state for this source of '%s'"
 msgstr ""
 
-#: ../plugins/gtk+/glade-button-editor.c:228
+#: ../plugins/gtk+/glade-button-editor.c:237
 #, c-format
 msgid "Setting %s to use standard configuration"
 msgstr ""
 
-#: ../plugins/gtk+/glade-button-editor.c:282
+#: ../plugins/gtk+/glade-button-editor.c:295
 #, c-format
 msgid "Setting %s to use a custom child"
 msgstr ""
 
-#: ../plugins/gtk+/glade-button-editor.c:325
+#: ../plugins/gtk+/glade-button-editor.c:339
 #, c-format
 msgid "Setting %s to use a stock button"
 msgstr ""
 
-#: ../plugins/gtk+/glade-button-editor.c:364
+#: ../plugins/gtk+/glade-button-editor.c:383
 #: ../plugins/gtk+/glade-image-item-editor.c:260
 #, c-format
 msgid "Setting %s to use a label and image"
 msgstr ""
 
-#: ../plugins/gtk+/glade-button-editor.c:419
+#: ../plugins/gtk+/glade-button-editor.c:442
 msgid "Configure button content"
 msgstr ""
 
-#: ../plugins/gtk+/glade-button-editor.c:421
+#: ../plugins/gtk+/glade-button-editor.c:444
 msgid "Add custom button content"
 msgstr ""
 
-#: ../plugins/gtk+/glade-button-editor.c:423
+#: ../plugins/gtk+/glade-button-editor.c:446
 #, fuzzy
 #| msgid "Check Button"
 msgid "Stock button"
 msgstr "כפתור סימון"
 
-#: ../plugins/gtk+/glade-button-editor.c:425
+#: ../plugins/gtk+/glade-button-editor.c:448
 msgid "Label with optional image"
 msgstr ""
 
-#: ../plugins/gtk+/glade-tool-button-editor.c:176
+#: ../plugins/gtk+/glade-tool-button-editor.c:188
 #, c-format
 msgid "Setting %s to use standard label text"
 msgstr ""
 
-#: ../plugins/gtk+/glade-tool-button-editor.c:211
+#: ../plugins/gtk+/glade-tool-button-editor.c:223
 #, c-format
 msgid "Setting %s to use a custom label widget"
 msgstr ""
 
-#: ../plugins/gtk+/glade-tool-button-editor.c:241
+#: ../plugins/gtk+/glade-tool-button-editor.c:253
 #: ../plugins/gtk+/glade-image-editor.c:266
 #, c-format
 msgid "Setting %s to use an image from stock"
 msgstr ""
 
-#: ../plugins/gtk+/glade-tool-button-editor.c:276
-#: ../plugins/gtk+/glade-tool-button-editor.c:310
-#: ../plugins/gtk+/glade-tool-button-editor.c:344
+#: ../plugins/gtk+/glade-tool-button-editor.c:288
+#: ../plugins/gtk+/glade-tool-button-editor.c:322
+#: ../plugins/gtk+/glade-tool-button-editor.c:356
 #: ../plugins/gtk+/glade-image-editor.c:290
 #, c-format
 msgid "Setting %s to use an image from the icon theme"
 msgstr ""
 
 #. Label area frame...
-#: ../plugins/gtk+/glade-tool-button-editor.c:440
+#: ../plugins/gtk+/glade-tool-button-editor.c:452
 #: ../plugins/gtk+/glade-image-item-editor.c:395
 #, fuzzy
 #| msgid "Label"
@@ -4787,7 +5010,7 @@ msgstr "תווית"
 #. Image area frame...
 #. Image content frame...
 #. Internal Image area...
-#: ../plugins/gtk+/glade-tool-button-editor.c:482
+#: ../plugins/gtk+/glade-tool-button-editor.c:494
 #: ../plugins/gtk+/glade-image-editor.c:345
 #: ../plugins/gtk+/glade-image-item-editor.c:429
 #, fuzzy
@@ -4830,15 +5053,15 @@ msgstr ""
 #. Add descriptive label
 #: ../plugins/gtk+/glade-store-editor.c:197
 msgid ""
-"Define columns for your liststore, giving them meaningful names will help "
+"Define columns for your liststore; giving them meaningful names will help "
 "you to retrieve them when setting cell renderer attributes (press the Delete "
 "key to remove the selected column)"
 msgstr ""
 
 #. Add descriptive label
-#: ../plugins/gtk+/glade-store-editor.c:224
+#: ../plugins/gtk+/glade-store-editor.c:227
 msgid ""
-"Add remove and edit rows of data (you can optionally use CNTL-N to add new "
+"Add remove and edit rows of data (you can optionally use Ctrl+N to add new "
 "rows and the Delete key to remove the selected row)"
 msgstr ""
 
@@ -4849,7 +5072,7 @@ msgstr ""
 
 #: ../plugins/gtk+/glade-label-editor.c:286
 #, c-format
-msgid "Setting %s to use a pango markup string"
+msgid "Setting %s to use a Pango markup string"
 msgstr ""
 
 #: ../plugins/gtk+/glade-label-editor.c:321
@@ -4858,13 +5081,14 @@ msgid "Setting %s to use a pattern string"
 msgstr ""
 
 #: ../plugins/gtk+/glade-label-editor.c:357
-#, c-format
-msgid "Setting %s to set desired width in charachters"
-msgstr ""
+#, fuzzy, c-format
+#| msgid "Setting multiple properties"
+msgid "Setting %s to set desired width in characters"
+msgstr "קובע מאפיינים מרובים"
 
 #: ../plugins/gtk+/glade-label-editor.c:388
 #, c-format
-msgid "Setting %s to set maximum width in charachters"
+msgid "Setting %s to set maximum width in characters"
 msgstr ""
 
 #: ../plugins/gtk+/glade-label-editor.c:422
@@ -4879,7 +5103,7 @@ msgstr ""
 
 #: ../plugins/gtk+/glade-label-editor.c:492
 #, c-format
-msgid "Setting %s to use specific pango word wrapping"
+msgid "Setting %s to use specific Pango word wrapping"
 msgstr ""
 
 #. Label appearance...
@@ -4901,29 +5125,29 @@ msgstr ""
 msgid "Text wraps normally"
 msgstr ""
 
-#: ../plugins/gtk+/glade-cell-renderer-editor.c:241
+#: ../plugins/gtk+/glade-cell-renderer-editor.c:228
 #, c-format
 msgid "Setting %s to use the %s property as an attribute"
 msgstr ""
 
-#: ../plugins/gtk+/glade-cell-renderer-editor.c:259
+#: ../plugins/gtk+/glade-cell-renderer-editor.c:246
 #, fuzzy, c-format
 #| msgid "Setting multiple properties"
 msgid "Setting %s to use the %s property directly"
 msgstr "קובע מאפיינים מרובים"
 
-#: ../plugins/gtk+/glade-cell-renderer-editor.c:436
+#: ../plugins/gtk+/glade-cell-renderer-editor.c:369
 #, c-format
 msgid "Retrieve %s from model (type %s)"
 msgstr ""
 
 #. translators: the adjective not the verb
-#: ../plugins/gtk+/glade-cell-renderer-editor.c:593
+#: ../plugins/gtk+/glade-cell-renderer-editor.c:509
 #, fuzzy
 msgid "unset"
 msgstr "משתמש"
 
-#: ../plugins/gtk+/glade-cell-renderer-editor.c:616
+#: ../plugins/gtk+/glade-cell-renderer-editor.c:532
 msgid "no model"
 msgstr ""
 
@@ -4932,6 +5156,81 @@ msgid ""
 "Choose a Data Model and define some\n"
 "columns in the data store first"
 msgstr ""
+
+#: ../plugins/gtk+/glade-entry-editor.c:229
+#, fuzzy, c-format
+#| msgid "Setting multiple properties"
+msgid "Setting %s to use static text"
+msgstr "קובע מאפיינים מרובים"
+
+#: ../plugins/gtk+/glade-entry-editor.c:267
+#, c-format
+msgid "Setting %s to use an external buffer"
+msgstr ""
+
+#: ../plugins/gtk+/glade-entry-editor.c:352
+#, fuzzy, c-format
+#| msgid "Setting multiple properties"
+msgid "Setting %s to use a primary icon from stock"
+msgstr "קובע מאפיינים מרובים"
+
+#: ../plugins/gtk+/glade-entry-editor.c:376
+#, fuzzy, c-format
+#| msgid "Setting multiple properties"
+msgid "Setting %s to use a primary icon from the icon theme"
+msgstr "קובע מאפיינים מרובים"
+
+#: ../plugins/gtk+/glade-entry-editor.c:399
+#, fuzzy, c-format
+#| msgid "Setting multiple properties"
+msgid "Setting %s to use a primary icon from filename"
+msgstr "קובע מאפיינים מרובים"
+
+#: ../plugins/gtk+/glade-entry-editor.c:424
+#, fuzzy, c-format
+#| msgid "Setting multiple properties"
+msgid "Setting %s to use a secondary icon from stock"
+msgstr "קובע מאפיינים מרובים"
+
+#: ../plugins/gtk+/glade-entry-editor.c:448
+#, fuzzy, c-format
+#| msgid "Setting multiple properties"
+msgid "Setting %s to use a secondary icon from the icon theme"
+msgstr "קובע מאפיינים מרובים"
+
+#: ../plugins/gtk+/glade-entry-editor.c:471
+#, fuzzy, c-format
+#| msgid "Setting multiple properties"
+msgid "Setting %s to use a secondary icon from filename"
+msgstr "קובע מאפיינים מרובים"
+
+#. Primary icon...
+#: ../plugins/gtk+/glade-entry-editor.c:596
+msgid "Primary icon"
+msgstr ""
+
+#. Secondary icon...
+#: ../plugins/gtk+/glade-entry-editor.c:670
+msgid "Secondary icon"
+msgstr ""
+
+#: ../plugins/gtk+/glade-activatable-editor.c:331
+#, fuzzy, c-format
+#| msgid "Insert Column on %s"
+msgid "Setting %s action"
+msgstr "הכנס עמודה ב-%s"
+
+#: ../plugins/gtk+/glade-activatable-editor.c:359
+#, fuzzy, c-format
+#| msgid "Setting multiple properties"
+msgid "Setting %s to use action appearance"
+msgstr "קובע מאפיינים מרובים"
+
+#: ../plugins/gtk+/glade-activatable-editor.c:360
+#, fuzzy, c-format
+#| msgid "Setting multiple properties"
+msgid "Setting %s to not use action appearance"
+msgstr "קובע מאפיינים מרובים"
 
 #: ../plugins/gnome/glade-gnome.c:292
 msgid "Status Message."
@@ -4954,7 +5253,7 @@ msgid "This property is valid only in font information mode"
 msgstr ""
 
 #. This is deprecated
-#: ../plugins/gnome/glade-gnome.c:1308 ../plugins/gnome/canvas.xml.in.h:18
+#: ../plugins/gnome/glade-gnome.c:1308 ../plugins/gnome/canvas.xml.in.h:20
 msgid "Selection Mode"
 msgstr "מצב בחירה"
 
@@ -4999,210 +5298,216 @@ msgid "Contents Background Color"
 msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:5
+#, fuzzy
+#| msgid "Display items as icons only"
+msgid "Display Seconds"
+msgstr "הצג פריטים כאיקונים בלבד"
+
+#: ../plugins/gnome/gnome.xml.in.h:6
 msgid "Dither"
 msgstr ""
 
-#: ../plugins/gnome/gnome.xml.in.h:11
+#: ../plugins/gnome/gnome.xml.in.h:12
 msgid "Font Information"
 msgstr "מידע גופן"
 
-#: ../plugins/gnome/gnome.xml.in.h:12
+#: ../plugins/gnome/gnome.xml.in.h:13
 msgid "GNOME About"
 msgstr "‏GNOME - אודות"
 
-#: ../plugins/gnome/gnome.xml.in.h:13
+#: ../plugins/gnome/gnome.xml.in.h:14
 msgid "GNOME App"
 msgstr "‏GNOME - יישום"
 
-#: ../plugins/gnome/gnome.xml.in.h:14
+#: ../plugins/gnome/gnome.xml.in.h:15
 msgid "GNOME App Bar"
 msgstr ""
 
-#: ../plugins/gnome/gnome.xml.in.h:15
+#: ../plugins/gnome/gnome.xml.in.h:16
 msgid "GNOME Color Picker"
 msgstr "‏GNOME - בוחר צבעים"
 
-#: ../plugins/gnome/gnome.xml.in.h:16
+#: ../plugins/gnome/gnome.xml.in.h:17
 msgid "GNOME Date Edit"
 msgstr "‏GNOME - עריכת תאריך"
 
 #. Deprecated Widget Classes :)
-#: ../plugins/gnome/gnome.xml.in.h:18
+#: ../plugins/gnome/gnome.xml.in.h:19
 msgid "GNOME Dialog"
 msgstr "‏GNOME - דו שיח"
 
-#: ../plugins/gnome/gnome.xml.in.h:19
+#: ../plugins/gnome/gnome.xml.in.h:20
 msgid "GNOME Druid"
 msgstr "‏GNOME - אשף"
 
-#: ../plugins/gnome/gnome.xml.in.h:20
+#: ../plugins/gnome/gnome.xml.in.h:21
 msgid "GNOME Druid Page Edge"
 msgstr ""
 
-#: ../plugins/gnome/gnome.xml.in.h:21
+#: ../plugins/gnome/gnome.xml.in.h:22
 msgid "GNOME Druid Page Standard"
 msgstr ""
 
-#: ../plugins/gnome/gnome.xml.in.h:22
+#: ../plugins/gnome/gnome.xml.in.h:23
 msgid "GNOME File Entry"
 msgstr ""
 
-#: ../plugins/gnome/gnome.xml.in.h:23
+#: ../plugins/gnome/gnome.xml.in.h:24
 msgid "GNOME Font Picker"
 msgstr "‏GNOME - בוחר גופנים"
 
-#: ../plugins/gnome/gnome.xml.in.h:24
+#: ../plugins/gnome/gnome.xml.in.h:25
 msgid "GNOME HRef"
 msgstr ""
 
-#: ../plugins/gnome/gnome.xml.in.h:25
+#: ../plugins/gnome/gnome.xml.in.h:26
 msgid "GNOME Icon Entry"
 msgstr ""
 
-#: ../plugins/gnome/gnome.xml.in.h:26
+#: ../plugins/gnome/gnome.xml.in.h:27
 msgid "GNOME Icon Selection"
 msgstr "‏GNOME - בחירת איקונים"
 
-#: ../plugins/gnome/gnome.xml.in.h:27
+#: ../plugins/gnome/gnome.xml.in.h:28
 msgid "GNOME Message Box"
 msgstr "‏GNOME - תיבת הודעות"
 
-#: ../plugins/gnome/gnome.xml.in.h:28
+#: ../plugins/gnome/gnome.xml.in.h:29
 msgid "GNOME Pixmap"
 msgstr ""
 
-#: ../plugins/gnome/gnome.xml.in.h:29
+#: ../plugins/gnome/gnome.xml.in.h:30
 msgid "GNOME Pixmap Entry"
 msgstr ""
 
-#: ../plugins/gnome/gnome.xml.in.h:30
+#: ../plugins/gnome/gnome.xml.in.h:31
 msgid "GNOME Property Box"
 msgstr ""
 
-#: ../plugins/gnome/gnome.xml.in.h:31
+#: ../plugins/gnome/gnome.xml.in.h:32
 msgid "GNOME UI Obsolete"
 msgstr "‏GNOME (מיושן) - מנשק משתמש"
 
-#: ../plugins/gnome/gnome.xml.in.h:32
+#: ../plugins/gnome/gnome.xml.in.h:33
 msgid "GNOME User Interface"
 msgstr "‏GNOME - מנשק משתמש"
 
-#: ../plugins/gnome/gnome.xml.in.h:33
+#: ../plugins/gnome/gnome.xml.in.h:34
 msgid "Generic"
 msgstr "כללי"
 
-#: ../plugins/gnome/gnome.xml.in.h:34
+#: ../plugins/gnome/gnome.xml.in.h:35
 msgid "Information"
 msgstr "מידע"
 
-#: ../plugins/gnome/gnome.xml.in.h:35
+#: ../plugins/gnome/gnome.xml.in.h:36
 msgid "Logo"
 msgstr "סמליל"
 
-#: ../plugins/gnome/gnome.xml.in.h:36
+#: ../plugins/gnome/gnome.xml.in.h:37
 msgid "Logo Background Color"
 msgstr "צבע רקע הסמליל"
 
-#: ../plugins/gnome/gnome.xml.in.h:37
+#: ../plugins/gnome/gnome.xml.in.h:38
 msgid "Max Saved"
 msgstr ""
 
-#: ../plugins/gnome/gnome.xml.in.h:38
+#: ../plugins/gnome/gnome.xml.in.h:39
 msgid "Message"
 msgstr "הודעה"
 
-#: ../plugins/gnome/gnome.xml.in.h:39
+#: ../plugins/gnome/gnome.xml.in.h:40
 msgid "Monday First"
 msgstr "יום שני ראשון"
 
-#: ../plugins/gnome/gnome.xml.in.h:42
+#: ../plugins/gnome/gnome.xml.in.h:43
 msgid "Padding"
 msgstr ""
 
-#: ../plugins/gnome/gnome.xml.in.h:43
+#: ../plugins/gnome/gnome.xml.in.h:44
 msgid "Pixmap"
 msgstr ""
 
-#: ../plugins/gnome/gnome.xml.in.h:45
+#: ../plugins/gnome/gnome.xml.in.h:46
 msgid "Program Name"
 msgstr "שם התוכנית"
 
-#: ../plugins/gnome/gnome.xml.in.h:46
+#: ../plugins/gnome/gnome.xml.in.h:47
 msgid "Program Version"
 msgstr "גירסת התוכנית"
 
-#: ../plugins/gnome/gnome.xml.in.h:48
+#: ../plugins/gnome/gnome.xml.in.h:49
 msgid "Scaled Height"
 msgstr ""
 
-#: ../plugins/gnome/gnome.xml.in.h:49
+#: ../plugins/gnome/gnome.xml.in.h:50
 msgid "Scaled Width"
 msgstr ""
 
-#: ../plugins/gnome/gnome.xml.in.h:50
+#: ../plugins/gnome/gnome.xml.in.h:51
 msgid "Show Time"
 msgstr ""
 
-#: ../plugins/gnome/gnome.xml.in.h:52
+#: ../plugins/gnome/gnome.xml.in.h:53
 msgid "StatusBar"
 msgstr "שורת מצב"
 
-#: ../plugins/gnome/gnome.xml.in.h:53
+#: ../plugins/gnome/gnome.xml.in.h:54
 msgid "Store Config"
 msgstr ""
 
-#: ../plugins/gnome/gnome.xml.in.h:55
+#: ../plugins/gnome/gnome.xml.in.h:56
 msgid "Text Foreground Color"
 msgstr "צבע קדמת טקסט"
 
-#: ../plugins/gnome/gnome.xml.in.h:56
+#: ../plugins/gnome/gnome.xml.in.h:57
 msgid "The height to scale the pixmap to"
 msgstr ""
 
-#: ../plugins/gnome/gnome.xml.in.h:57
+#: ../plugins/gnome/gnome.xml.in.h:58
 msgid "The maximum number of history entries saved"
 msgstr ""
 
-#: ../plugins/gnome/gnome.xml.in.h:58
+#: ../plugins/gnome/gnome.xml.in.h:59
 msgid "The pixmap file"
 msgstr "קובץ ה-pixmap"
 
-#: ../plugins/gnome/gnome.xml.in.h:59
+#: ../plugins/gnome/gnome.xml.in.h:60
 msgid "The width to scale the pixmap to"
 msgstr ""
 
-#: ../plugins/gnome/gnome.xml.in.h:61
+#: ../plugins/gnome/gnome.xml.in.h:62
 msgid "Title Foreground Color"
 msgstr "צבע קדמת כותרת"
 
-#: ../plugins/gnome/gnome.xml.in.h:62
+#: ../plugins/gnome/gnome.xml.in.h:63
 msgid "Top Watermark"
 msgstr ""
 
-#: ../plugins/gnome/gnome.xml.in.h:63
+#: ../plugins/gnome/gnome.xml.in.h:64
 msgid "Unknown"
 msgstr "לא ידוע"
 
-#: ../plugins/gnome/gnome.xml.in.h:64
+#: ../plugins/gnome/gnome.xml.in.h:65
 msgid "Use Alpha"
 msgstr "השתש באלפא"
 
-#: ../plugins/gnome/gnome.xml.in.h:65
+#: ../plugins/gnome/gnome.xml.in.h:66
 msgid ""
 "Used to pass around information about the position of a GnomeDruidPage "
 "within the overall GnomeDruid. This enables the correct \"surrounding\" "
 "content for the page to be drawn"
 msgstr ""
 
-#: ../plugins/gnome/gnome.xml.in.h:66
+#: ../plugins/gnome/gnome.xml.in.h:67
 msgid "User"
 msgstr "משתמש"
 
-#: ../plugins/gnome/gnome.xml.in.h:67
+#: ../plugins/gnome/gnome.xml.in.h:68
 msgid "User Widget"
 msgstr ""
 
-#: ../plugins/gnome/gnome.xml.in.h:69
+#: ../plugins/gnome/gnome.xml.in.h:70
 msgid "Watermark"
 msgstr ""
 
@@ -5259,136 +5564,151 @@ msgid ""
 "GnomeIconList"
 msgstr ""
 
-#: ../plugins/gnome/canvas.xml.in.h:10
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:11
+#, fuzzy
+#| msgid "List Item"
+msgid "List Icons"
+msgstr "פריט רשימה"
+
+#: ../plugins/gnome/canvas.xml.in.h:12
 msgid "Max X"
 msgstr "‏X מקסימאלי"
 
-#: ../plugins/gnome/canvas.xml.in.h:11
+#: ../plugins/gnome/canvas.xml.in.h:13
 msgid "Max Y"
 msgstr "‏Y מקסימאלי"
 
-#: ../plugins/gnome/canvas.xml.in.h:12
+#: ../plugins/gnome/canvas.xml.in.h:14
 msgid "Min X"
 msgstr "‏X מינימאלי"
 
-#: ../plugins/gnome/canvas.xml.in.h:13
+#: ../plugins/gnome/canvas.xml.in.h:15
 msgid "Min Y"
 msgstr "‏Y מיניאלי"
 
-#: ../plugins/gnome/canvas.xml.in.h:14
+#: ../plugins/gnome/canvas.xml.in.h:16
 msgid "Pixels per unit"
 msgstr ""
 
 #. This is deprecated
-#: ../plugins/gnome/canvas.xml.in.h:16
+#: ../plugins/gnome/canvas.xml.in.h:18
 msgid "Row Spacing"
 msgstr ""
 
 #. This is deprecated
-#: ../plugins/gnome/canvas.xml.in.h:20
+#: ../plugins/gnome/canvas.xml.in.h:22
+#, fuzzy
+#| msgid "Text View"
+msgid "Text Below"
+msgstr "תצוגת טקסט"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:24
 msgid "Text Editable"
 msgstr "טקסט ניתן לעריכה"
 
 #. This is deprecated
-#: ../plugins/gnome/canvas.xml.in.h:22
+#: ../plugins/gnome/canvas.xml.in.h:26
+#, fuzzy
+#| msgid "Left to Right"
+msgid "Text Right"
+msgstr "שמאל לימין"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:28
 msgid "Text Spacing"
 msgstr ""
 
 #. This is deprecated
-#: ../plugins/gnome/canvas.xml.in.h:24
+#: ../plugins/gnome/canvas.xml.in.h:30
 msgid "Text Static"
 msgstr ""
 
-#: ../plugins/gnome/canvas.xml.in.h:25
-msgid "The maximum x coordinate"
+#: ../plugins/gnome/canvas.xml.in.h:31
+#, fuzzy
+#| msgid "The maximum x coordinate"
+msgid "The maximum X coordinate"
 msgstr "קואורדינטת ה-x המקסימאלית"
 
-#: ../plugins/gnome/canvas.xml.in.h:26
-msgid "The maximum y coordinate"
-msgstr "קואורדינטת ה-y המקסימאלית"
+#: ../plugins/gnome/canvas.xml.in.h:32
+#, fuzzy
+#| msgid "The maximum x coordinate"
+msgid "The maximum Y coordinate"
+msgstr "קואורדינטת ה-x המקסימאלית"
 
-#: ../plugins/gnome/canvas.xml.in.h:27
-msgid "The minimum x coordinate"
+#: ../plugins/gnome/canvas.xml.in.h:33
+#, fuzzy
+#| msgid "The minimum x coordinate"
+msgid "The minimum X coordinate"
 msgstr "קואורדינטת ה-x המינימאלית"
 
-#: ../plugins/gnome/canvas.xml.in.h:28
-msgid "The minimum y coordinate"
-msgstr "קואורדינטת ה-y המיניאלית"
+#: ../plugins/gnome/canvas.xml.in.h:34
+#, fuzzy
+#| msgid "The minimum x coordinate"
+msgid "The minimum Y coordinate"
+msgstr "קואורדינטת ה-x המינימאלית"
 
-#: ../plugins/gnome/canvas.xml.in.h:29
+#: ../plugins/gnome/canvas.xml.in.h:35
 msgid "The number of pixels between columns of icons"
 msgstr "מסםר הפיקסלים בין עמודות של איקונים"
 
-#: ../plugins/gnome/canvas.xml.in.h:30
+#: ../plugins/gnome/canvas.xml.in.h:36
 msgid "The number of pixels between rows of icons"
 msgstr "מסםר הפיקסלים בין שורות של איקונים"
 
-#: ../plugins/gnome/canvas.xml.in.h:31
+#: ../plugins/gnome/canvas.xml.in.h:37
 msgid "The number of pixels between the text and the icon"
 msgstr "מסםר הפיקסלים בין הטקסט ןהאיקוןכ"
 
-#: ../plugins/gnome/canvas.xml.in.h:32
+#: ../plugins/gnome/canvas.xml.in.h:38
 msgid "The number of pixels corresponding to one unit"
 msgstr ""
 
-#: ../plugins/gnome/canvas.xml.in.h:33
+#: ../plugins/gnome/canvas.xml.in.h:39
 msgid "The selection mode"
 msgstr "מצב הבחירה"
 
-#: ../plugins/gnome/canvas.xml.in.h:34
+#: ../plugins/gnome/canvas.xml.in.h:40
 msgid "The width of each icon"
 msgstr "הרוחב של כל איקון"
 
-#~ msgid "_Clipboard"
-#~ msgstr "לוח _גזירים"
+#~ msgid "Could not display the URL '%s'"
+#~ msgstr "לא ניתן להציג את הכתובת '%s'"
 
-#~ msgid "Show the clipboard"
-#~ msgstr "הצג את לוח הגזירים"
+#~ msgid "No suitable web browser could be found."
+#~ msgstr "לא נימצא דפדפן אינטרנט."
 
-#~ msgid "A pixbuf value"
-#~ msgstr "ערך pixbuf"
+#~ msgid ""
+#~ "<span weight=\"bold\" size=\"larger\">Save changes to project \"%s\" "
+#~ "before closing?</span>\n"
+#~ "\n"
+#~ "Your changes will be lost if you don't save them."
+#~ msgstr ""
+#~ "<span weight=\"bold\" size=\"larger\">לשמור את השינויים לפרוייקט \"%s\" "
+#~ "לפני סגירתו?</span>\n"
+#~ "\n"
+#~ "השינויים יאבדו אם לא תשמור אותם."
 
-#~ msgid "View GTK+ documentation for this property"
-#~ msgstr "הצג את תיעוד GTK+ עבור מאפיין זה"
+#~ msgid "Could not display the online user manual"
+#~ msgstr "לא ניתן להציג את מדריך המשתמש המקוון"
 
-#~ msgid "Show Info"
-#~ msgstr "הצג מידע"
+#~ msgid ""
+#~ "No suitable web browser executable could be found to be executed and to "
+#~ "display the URL: %s"
+#~ msgstr "לא נמצא קובץ הפעלה תואם לדפדפן להפעלה ולהצגת הכתובת: %s"
 
-#~ msgid "Target Versions:"
-#~ msgstr "גירסאות מטרה:"
+#~ msgid "Could not display the online developer reference manual"
+#~ msgstr "לא ניתן להציג את המדריך המקוון למפתחים"
 
-#~ msgid "A list of attributes"
-#~ msgstr "רשימה של תכונות"
+#~ msgid "Name :"
+#~ msgstr "שם :"
 
-#~ msgid "Pixel Size takes precedence over Icon size"
-#~ msgstr "לגודל הפיקסל עדיפות על גודל האיקון"
+#~ msgid "User data"
+#~ msgstr "נתוני משתמש"
 
-#~ msgid "Item"
-#~ msgstr "פריט"
+#~ msgid "(internal %s)"
+#~ msgstr "‏(%s פנימי)"
 
-#~ msgid "Add Radio Button"
-#~ msgstr "הוסף כפתור בחירה"
-
-#~ msgid "Filename"
-#~ msgstr "שם קובץ"
-
-#~ msgid "Gtk+ Obsolete"
-#~ msgstr "‏+Gtk מיושן"
-
-#~ msgid "Icon Theme"
-#~ msgstr "ערכת נושא עבור איקונים"
-
-#~ msgid "Maximum Width"
-#~ msgstr "רוחב מקסימאלי"
-
-#~ msgid "Functions"
-#~ msgstr "פונקציות"
-
-#~ msgid "Key"
-#~ msgstr "מקש"
-
-#~ msgid "Alt"
-#~ msgstr "Alt"
-
-#~ msgid "%s [%s] - Properties"
-#~ msgstr "%s [%s] - מאפיינים"
+#~ msgid "UI Manager"
+#~ msgstr "מנהל מנשק משתמש"
