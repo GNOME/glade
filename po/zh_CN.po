@@ -1,31 +1,33 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Free Software Foundation, Inc.
+# Chinese (China) translation of glade3
+# Copyright (C) 2005, 2007, 2010 Free Software Foundation, Inc.
+# This file is distributed under the same license as the glade3 package.
 # Funda Wang <fundawang@linux.net.cn>, 2005
 # Weisheng Wu <wwssir@gmail.com>, 2007
+# Tao Wang <dancefire@gmail.com>, 2010
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glade3\n"
+"Project-Id-Version: glade3 master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-17 03:39+0000\n"
-"PO-Revision-Date: 2008-01-17 22:13+0800\n"
-"Last-Translator: Weisheng Wu <wwssir@gmail.com>\n"
-"Language-Team: zh_CN <i18n-zh@googlegroups.com>\n"
+"POT-Creation-Date: 2010-07-23 16:38+0800\n"
+"PO-Revision-Date: 2010-07-23 16:35+0800\n"
+"Last-Translator: Tao Wang <dancefire@gmail.com>\n"
+"Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../data/glade-3.desktop.in.in.h:1
 msgid "Create or open user interface designs for GTK+ applications"
-msgstr "新建或打开GTK+程序用户界面设计"
+msgstr "新建或打开 GTK+ 程序用户界面设计"
 
 #: ../data/glade-3.desktop.in.in.h:2
 msgid "Glade Interface Designer"
-msgstr "Glade界面设计大师"
+msgstr "Glade 界面设计师"
 
 #: ../data/glade-3.desktop.in.in.h:3 ../src/glade-window.c:440
 msgid "User Interface Designer"
-msgstr "用户界面设计大师"
+msgstr "用户界面设计师"
 
 #: ../src/main.c:42
 msgid "Glade"
@@ -37,7 +39,7 @@ msgstr "输出版本信息并退出"
 
 #: ../src/main.c:55
 msgid "Disable Devhelp integration"
-msgstr "禁用Devhelp集成"
+msgstr "禁用 Devhelp 集成"
 
 #: ../src/main.c:58
 msgid "[FILE...]"
@@ -49,24 +51,24 @@ msgstr "长篇大论"
 
 #: ../src/main.c:93
 msgid "Create or edit user interface designs for GTK+ or GNOME applications."
-msgstr "新建或编辑GTK+｜GNOME应用程序用户界面设计"
+msgstr "新建或编辑 GTK+ 或 GNOME 应用程序用户界面设计"
 
 #: ../src/main.c:97 ../src/main.c:98
 msgid "Glade options"
-msgstr "Glade选项"
+msgstr "Glade 选项"
 
 #: ../src/main.c:105
 msgid "Glade debug options"
-msgstr "Glade调试选项"
+msgstr "Glade 调试选项"
 
 #: ../src/main.c:106
 msgid "Show Glade debug options"
-msgstr "显示Glade调试选项"
+msgstr "显示 Glade 调试选项"
 
 #: ../src/main.c:149
 msgid ""
 "gmodule support not found. gmodule support is required for glade to work"
-msgstr "未找到gmodule 支持。glade正常工作需要dmodule支持"
+msgstr "未找到 gmodule 支持。Glade 正常工作需要 dmodule 支持"
 
 #: ../src/main.c:176
 #, c-format
@@ -88,9 +90,9 @@ msgstr "无法找到合适的浏览器"
 
 #. translators: referring to the properties of a widget named '%s [%s]'
 #: ../src/glade-window.c:669
-#, c-format
+#, fuzzy, c-format
 msgid "%s [%s] - Properties"
-msgstr "%s [%s] - 属性"
+msgstr "%s - %s 属性"
 
 #: ../src/glade-window.c:682 ../src/glade-window.c:688
 #: ../src/glade-window.c:3121 ../src/glade-window.c:3127
@@ -104,18 +106,19 @@ msgstr "属性"
 #: ../src/glade-window.c:716
 #, c-format
 msgid "Activate '%s' %s"
-msgstr "激活‘%s’ %s"
+msgstr "激活“%s” %s"
 
 #. translators: referring to the action of activating a file named '%s'
 #. FIXME add hint for translators
 #: ../src/glade-window.c:723 ../src/glade-window.c:731
 #, c-format
 msgid "Activate '%s'"
-msgstr "激活‘%s’"
+msgstr "激活“%s”"
 
 #: ../src/glade-window.c:1161
+#, fuzzy
 msgid "Open…"
-msgstr "打开..."
+msgstr "打开"
 
 #: ../src/glade-window.c:1203
 #, c-format
@@ -124,7 +127,7 @@ msgstr "文件 %s 已改变"
 
 #: ../src/glade-window.c:1207
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
-msgstr "如果您保存它，所有的外部变化将丢失。仍然保存吗？"
+msgstr "如果您保存它，所有的外部修改将丢失。仍然保存吗？"
 
 #: ../src/glade-window.c:1211
 msgid "_Save Anyway"
@@ -137,21 +140,22 @@ msgstr "不保存(_D)"
 #: ../src/glade-window.c:1241
 #, c-format
 msgid "Failed to save %s: %s"
-msgstr "保存%s: %s失败"
+msgstr "保存 %s 失败: %s"
 
 #: ../src/glade-window.c:1262
 #, c-format
 msgid "Project '%s' saved"
-msgstr "工程“%s”已保存"
+msgstr "项目“%s”已保存"
 
 #: ../src/glade-window.c:1282
+#, fuzzy
 msgid "Save As…"
 msgstr "另存为..."
 
 #: ../src/glade-window.c:1327
 #, c-format
 msgid "Could not save the file %s"
-msgstr "无法保存文件 %s"
+msgstr "无法保存 %s 文件 "
 
 #: ../src/glade-window.c:1331
 msgid "You do not have the permissions necessary to save the file."
@@ -160,7 +164,7 @@ msgstr "您没有保存文件需要的权限。"
 #: ../src/glade-window.c:1352
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
-msgstr "无法保存文件 %s。另一个工程正指向此路径。"
+msgstr "无法保存 %s 文件 。另一个打开的项目正在使用该路径。"
 
 #. Just in case the menu-item or button is not insensitive
 #: ../src/glade-window.c:1376
@@ -174,21 +178,24 @@ msgid ""
 "closing?</span>\n"
 "\n"
 "Your changes will be lost if you don't save them."
-msgstr "<span weight=\"bold\" size=\"larger\">在关闭前保存变更到工程“%s”吗？</span>"
-"如果您不保存它们，您的修改将丢失。"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">在关闭前保存变更到项目“%s”吗？</span>如"
+"果您不保存它们，您的修改将丢失。"
 
 #: ../src/glade-window.c:1418
+#, fuzzy
 msgid "_Close without Saving"
-msgstr "关闭而不保存(_C)"
+msgstr "关闭而不保存(_W)"
 
 #: ../src/glade-window.c:1445
 #, c-format
 msgid "Failed to save %s to %s: %s"
-msgstr "保存文件 %s 到 %s：%s 失败"
+msgstr "保存 %s 到 %s 失败：%s"
 
 #: ../src/glade-window.c:1457
+#, fuzzy
 msgid "Save…"
-msgstr "保存…"
+msgstr "保存"
 
 #: ../src/glade-window.c:2015
 msgid "Could not display the online user manual"
@@ -233,51 +240,56 @@ msgstr ""
 
 #: ../src/glade-window.c:2122
 msgid "translator-credits"
-msgstr "翻译者信誉"
+msgstr ""
+"Funda Wang <fundawang@linux.net.cn>, 2005\n"
+"Weisheng Wu <wwssir@gmail.com>, 2007\n"
+"Tao Wang <dancefire@gmail.com>, 2010\n"
+"Aron Xu <aronxu@gnome.org>, 2010."
 
 #: ../src/glade-window.c:2123
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr "GTK+ 和 GNOME 的用户界面设计器"
 
 #. File
-#: ../src/glade-window.c:2196 ../plugins/gtk+/glade-gtk.c:5123
-#: ../plugins/gtk+/glade-gtk.c:5446
+#: ../src/glade-window.c:2196 ../plugins/gtk+/glade-gtk.c:5133
+#: ../plugins/gtk+/glade-gtk.c:5456
 msgid "_File"
 msgstr "文件(_F)"
 
 #. Edit
-#: ../src/glade-window.c:2197 ../plugins/gtk+/glade-gtk.c:5126
-#: ../plugins/gtk+/glade-gtk.c:5456
+#: ../src/glade-window.c:2197 ../plugins/gtk+/glade-gtk.c:5136
+#: ../plugins/gtk+/glade-gtk.c:5466
 msgid "_Edit"
 msgstr "编辑(_E)"
 
 #. View
-#: ../src/glade-window.c:2198 ../plugins/gtk+/glade-gtk.c:5129
-#: ../plugins/gtk+/glade-gtk.c:5464
+#: ../src/glade-window.c:2198 ../plugins/gtk+/glade-gtk.c:5139
+#: ../plugins/gtk+/glade-gtk.c:5474
 msgid "_View"
 msgstr "视图(_V)"
 
 #: ../src/glade-window.c:2199
 msgid "_Projects"
-msgstr "工程(_P)"
+msgstr "项目(_P)"
 
 #. Help
-#: ../src/glade-window.c:2200 ../plugins/gtk+/glade-gtk.c:5141
-#: ../plugins/gtk+/glade-gtk.c:5467
+#: ../src/glade-window.c:2200 ../plugins/gtk+/glade-gtk.c:5151
+#: ../plugins/gtk+/glade-gtk.c:5477
 msgid "_Help"
 msgstr "帮助(_H)"
 
 #: ../src/glade-window.c:2206
 msgid "Create a new project"
-msgstr "建新一个工程。"
+msgstr "新建一个项目。"
 
 #: ../src/glade-window.c:2208
+#, fuzzy
 msgid "_Open…"
-msgstr "打开(_O)…"
+msgstr "打开"
 
 #: ../src/glade-window.c:2209
 msgid "Open a project"
-msgstr "打开一个工程"
+msgstr "打开一个项目"
 
 #: ../src/glade-window.c:2211
 msgid "Open _Recent"
@@ -314,27 +326,28 @@ msgstr "显示开发者参考手册"
 
 #: ../src/glade-window.c:2236
 msgid "Save the current project"
-msgstr "保存当前工程"
+msgstr "保存当前项目"
 
 #: ../src/glade-window.c:2238
+#, fuzzy
 msgid "Save _As…"
-msgstr "另存为(_A)"
+msgstr "另存为(_A)..."
 
 #: ../src/glade-window.c:2239
 msgid "Save the current project with a different name"
-msgstr "以不同名称保存当前工程"
+msgstr "以不同名称保存当前项目"
 
 #: ../src/glade-window.c:2242
 msgid "Close the current project"
-msgstr "关闭当前工程"
+msgstr "关闭当前项目"
 
 #: ../src/glade-window.c:2246
 msgid "Undo the last action"
-msgstr "取消最后修改"
+msgstr "取消上一个操作"
 
 #: ../src/glade-window.c:2249
 msgid "Redo the last action"
-msgstr "重做最后修改"
+msgstr "重做上一个操作"
 
 #: ../src/glade-window.c:2252
 msgid "Cut the selection"
@@ -346,7 +359,7 @@ msgstr "复制选择内容"
 
 #: ../src/glade-window.c:2258
 msgid "Paste the clipboard"
-msgstr "从剪贴板将数据粘贴入"
+msgstr "从剪贴板粘贴"
 
 #: ../src/glade-window.c:2261
 msgid "Delete the selection"
@@ -358,25 +371,26 @@ msgid "_Clipboard"
 msgstr "剪贴板(_C)"
 
 #: ../src/glade-window.c:2266
+#, fuzzy
 msgid "Show the clipboard"
-msgstr "显示剪贴板"
+msgstr "显示工具栏"
 
 #. ProjectsMenu
 #: ../src/glade-window.c:2270
 msgid "_Previous Project"
-msgstr "前一个工程(_P)"
+msgstr "上一个项目(_P)"
 
 #: ../src/glade-window.c:2271
 msgid "Activate previous project"
-msgstr "激活前一个工程"
+msgstr "激活上一个项目"
 
 #: ../src/glade-window.c:2273
 msgid "_Next Project"
-msgstr "下一个工程(_N)"
+msgstr "下一个项目(_N)"
 
 #: ../src/glade-window.c:2274
 msgid "Activate next project"
-msgstr "激活下一个工程"
+msgstr "激活下一个项目"
 
 #: ../src/glade-window.c:2282
 msgid "_Use Small Icons"
@@ -404,21 +418,22 @@ msgstr "停靠调色板到主窗口"
 
 #: ../src/glade-window.c:2294
 msgid "Dock _Inspector"
-msgstr "停靠检查器"
+msgstr "停靠检查器(_I)"
 
 #: ../src/glade-window.c:2295
 msgid "Dock the inspector into the main window"
 msgstr "停靠检查器到主窗口"
 
 #: ../src/glade-window.c:2298
+#, fuzzy
 msgid "Dock _Editor"
-msgstr "停靠编辑器"
+msgstr "停靠检查器(_I)"
 
 #: ../src/glade-window.c:2299
 msgid "Dock the editor into the main window"
 msgstr "停靠编辑器到主窗口"
 
-#: ../src/glade-window.c:2307 ../plugins/gtk+/gtk+.xml.in.h:306
+#: ../src/glade-window.c:2307 ../plugins/gtk+/gtk+.xml.in.h:411
 msgid "Text beside icons"
 msgstr "文字在图标旁"
 
@@ -428,19 +443,19 @@ msgstr "显示条目为文字在图标旁边"
 
 #: ../src/glade-window.c:2310
 msgid "_Icons only"
-msgstr "只有图标"
+msgstr "只有图标(_I)"
 
 #: ../src/glade-window.c:2311
 msgid "Display items as icons only"
-msgstr "显示条目为只有图标"
+msgstr "只显示条目图标"
 
 #: ../src/glade-window.c:2313
 msgid "_Text only"
-msgstr "只有文字"
+msgstr "只有文字(T)"
 
 #: ../src/glade-window.c:2314
 msgid "Display items as text only"
-msgstr "显示条目为只有文字"
+msgstr "只显示条目文字"
 
 #: ../src/glade-window.c:2501
 msgid "Select"
@@ -448,7 +463,7 @@ msgstr "选择"
 
 #: ../src/glade-window.c:2505
 msgid "Select widgets in the workspace"
-msgstr "在工作区中选择部件"
+msgstr "在工作区中选择组件"
 
 #: ../src/glade-window.c:2529
 msgid "Drag Resize"
@@ -456,54 +471,54 @@ msgstr "拖拽调整大小"
 
 #: ../src/glade-window.c:2533
 msgid "Drag and resize widgets in the workspace"
-msgstr "拖拽并调整工作区部件的大小"
+msgstr "拖拽并调整工作区组件的大小"
 
 #: ../src/glade-window.c:2571
 msgid "Could not create a new project."
-msgstr "无法创建新工程。"
+msgstr "无法创建新项目。"
 
 #: ../src/glade-window.c:2625
 #, c-format
 msgid "The project %s has unsaved changes"
-msgstr "工程 %s 存在没有保存的改变"
+msgstr "%s 项目有未保存的更改"
 
 #: ../src/glade-window.c:2629
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
-msgstr "如果重新加载，所有未保存的改变将丢失，确定要重新加载吗？"
+msgstr "如果重新加载，所有未保存的更改将丢失，确定要重新加载吗？"
 
 #: ../src/glade-window.c:2638
 #, c-format
 msgid "The project file %s has been externally modified"
-msgstr "工程文件 %s 已经在外部被改变"
+msgstr "项目文件 %s 已经在外部被修改"
 
 #: ../src/glade-window.c:2642
 msgid "Do you want to reload the project?"
-msgstr "您确定要重新加载项目？"
+msgstr "您想重新加载该项目吗？"
 
 #: ../src/glade-window.c:2648
 msgid "_Reload"
-msgstr "重新加载"
+msgstr "重新加载(_R)"
 
 #: ../src/glade-window.c:2765
 msgid "_Undo"
 msgstr "撤消(_U)"
 
 #. Change tooltips
-#: ../src/glade-window.c:2767 ../gladeui/glade-app.c:267
+#: ../src/glade-window.c:2767 ../gladeui/glade-app.c:268
 #, c-format
 msgid "Undo: %s"
 msgstr "撤消(_U)：%s"
 
 #: ../src/glade-window.c:2767 ../src/glade-window.c:2778
-#: ../gladeui/glade-app.c:268
+#: ../gladeui/glade-app.c:269
 msgid "the last action"
-msgstr "最后修改"
+msgstr "上一步操作"
 
 #: ../src/glade-window.c:2776
 msgid "_Redo"
 msgstr "重做(_R)"
 
-#: ../src/glade-window.c:2778 ../gladeui/glade-app.c:267
+#: ../src/glade-window.c:2778 ../gladeui/glade-app.c:268
 #, c-format
 msgid "Redo: %s"
 msgstr "重做：%s"
@@ -524,114 +539,114 @@ msgstr "调色板"
 msgid "Inspector"
 msgstr "检查器"
 
-#: ../gladeui/glade-app.c:457
+#: ../gladeui/glade-app.c:458
 msgid "Clipboard"
 msgstr "剪贴板"
 
-#: ../gladeui/glade-app.c:505
-msgid "Active Project"
-msgstr "活动工程"
-
 #: ../gladeui/glade-app.c:506
-msgid "The active project"
-msgstr "当前活动的工程"
+msgid "Active Project"
+msgstr "活动项目"
 
-#: ../gladeui/glade-app.c:512
+#: ../gladeui/glade-app.c:507
+msgid "The active project"
+msgstr "当前活动的项目"
+
+#: ../gladeui/glade-app.c:513
 msgid "Pointer Mode"
 msgstr "指针模式"
 
-#: ../gladeui/glade-app.c:513
+#: ../gladeui/glade-app.c:514
 msgid "Current mode for the pointer in the workspace"
-msgstr "工作区中当前模式为指针"
+msgstr "工作区中当前的指针模式"
 
-#: ../gladeui/glade-app.c:592
+#: ../gladeui/glade-app.c:593
 #, c-format
 msgid ""
 "Trying to save private data to %s directory but it is a regular file.\n"
 "No private data will be saved in this session"
 msgstr ""
-"试图保存私有数据到 %s 目录，但是它是一个正常的文件。\n"
+"试图保存私有数据到 %s 文件夹，但是它是一个常规文件。\n"
 "此会话将不保存私有数据"
 
-#: ../gladeui/glade-app.c:605
+#: ../gladeui/glade-app.c:606
 #, c-format
 msgid ""
 "Failed to create directory %s to save private data.\n"
 "No private data will be saved in this session"
 msgstr ""
-"保存私有数据时创建目录 %s 失败。\n"
+"保存私有数据时创建 %s 文件夹失败。\n"
 "此会话将不保存私有数据"
 
-#: ../gladeui/glade-app.c:633
+#: ../gladeui/glade-app.c:634
 #, c-format
 msgid ""
 "Error writing private data to %s (%s).\n"
 "No private data will be saved in this session"
 msgstr ""
-"写私有数据到 %s (%s)时发生错误。\n"
+"写私有数据到 %s 时发生错误(%s)。\n"
 "此会话将不保存私有数据"
 
-#: ../gladeui/glade-app.c:645
+#: ../gladeui/glade-app.c:646
 #, c-format
 msgid ""
 "Error serializing configuration data to save (%s).\n"
 "No private data will be saved in this session"
 msgstr ""
-"序列化设置数据用以保存(%s)时发生错误。\n"
+"序列化设置数据用以保存时发生错误(%s)。\n"
 "此会话将不保存私有数据"
 
-#: ../gladeui/glade-app.c:658
+#: ../gladeui/glade-app.c:659
 #, c-format
 msgid ""
 "Error opening %s to write private data (%s).\n"
 "No private data will be saved in this session"
 msgstr ""
-"打开 %s 以写入私有数据(%s)时出错。\n"
+"打开 %s 以写入私有数据时出错(%s)。\n"
 "此会话将不保存私有数据"
 
-#: ../gladeui/glade-app.c:1096
+#: ../gladeui/glade-app.c:1117
 msgid "You cannot copy a widget internal to a composite widget."
-msgstr "您不能复制复合部件的内部部件"
+msgstr "您不能复制复合组件的内部组件"
 
-#: ../gladeui/glade-app.c:1111 ../gladeui/glade-app.c:1164
-#: ../gladeui/glade-app.c:1338
+#: ../gladeui/glade-app.c:1132 ../gladeui/glade-app.c:1185
+#: ../gladeui/glade-app.c:1359
 msgid "No widget selected."
-msgstr "未选择部件。"
+msgstr "未选择组件。"
 
-#: ../gladeui/glade-app.c:1149
+#: ../gladeui/glade-app.c:1170
 msgid "You cannot cut a widget internal to a composite widget."
-msgstr "您不能剪切复合部件的内部部件"
+msgstr "您不能剪切复合组件的内部组件"
 
-#: ../gladeui/glade-app.c:1208
+#: ../gladeui/glade-app.c:1229
 msgid "Unable to paste to the selected parent"
 msgstr "无法粘贴到上一级"
 
-#: ../gladeui/glade-app.c:1219
+#: ../gladeui/glade-app.c:1240
 msgid "Unable to paste to multiple widgets"
-msgstr "无法粘贴到多个部件"
+msgstr "无法粘贴到多个组件"
 
-#: ../gladeui/glade-app.c:1229 ../gladeui/glade-app.c:1359
+#: ../gladeui/glade-app.c:1250 ../gladeui/glade-app.c:1380
 msgid "No widget selected on the clipboard"
-msgstr "没有从剪贴板选择部件"
+msgstr "没有从剪贴板选择组件"
 
-#: ../gladeui/glade-app.c:1255
+#: ../gladeui/glade-app.c:1276
 #, c-format
 msgid "Unable to paste widget %s without a parent"
-msgstr "没有上一级部件不能粘贴部件 %s"
+msgstr "没有上一级组件不能粘贴组件 %s"
 
-#: ../gladeui/glade-app.c:1272
+#: ../gladeui/glade-app.c:1293
 msgid "Only one widget can be pasted at a time to this container"
-msgstr "在该容器中每次只能粘贴一个部件"
+msgstr "在该容器中每次只能粘贴一个组件"
 
-#: ../gladeui/glade-app.c:1284
+#: ../gladeui/glade-app.c:1305
 msgid "Insufficient amount of placeholders in target container"
 msgstr "目标容器中没有足够的放置位置"
 
-#: ../gladeui/glade-app.c:1323 ../gladeui/glade-app.c:1369
+#: ../gladeui/glade-app.c:1344 ../gladeui/glade-app.c:1390
 msgid "You cannot delete a widget internal to a composite widget."
-msgstr "您不能删除复合部件的内部部件。"
+msgstr "您不能删除复合组件的内部组件。"
 
-#: ../gladeui/glade-builtins.c:265 ../plugins/gtk+/gtk+.xml.in.h:292
+#: ../gladeui/glade-builtins.c:265 ../plugins/gtk+/gtk+.xml.in.h:397
 msgid "Stock"
 msgstr "库存"
 
@@ -639,7 +654,7 @@ msgstr "库存"
 msgid "A builtin stock item"
 msgstr "一个内部库存的条目"
 
-#: ../gladeui/glade-builtins.c:274 ../plugins/gtk+/gtk+.xml.in.h:294
+#: ../gladeui/glade-builtins.c:274 ../plugins/gtk+/gtk+.xml.in.h:399
 msgid "Stock Image"
 msgstr "库存图像"
 
@@ -647,131 +662,134 @@ msgstr "库存图像"
 msgid "A builtin stock image"
 msgstr "一幅内部库存的图像"
 
-#: ../gladeui/glade-builtins.c:605
+#: ../gladeui/glade-builtins.c:607
 msgid "Objects"
 msgstr "对象"
 
-#: ../gladeui/glade-builtins.c:606
+#: ../gladeui/glade-builtins.c:608
 msgid "A list of objects"
 msgstr "一组对象的列表"
 
-#: ../gladeui/glade-builtins.c:615
+#: ../gladeui/glade-builtins.c:617
 msgid "Pixbuf"
 msgstr "Pixbuf"
 
-#: ../gladeui/glade-builtins.c:616
+#: ../gladeui/glade-builtins.c:618
 msgid "A pixbuf value"
 msgstr "pixbuf值"
 
-#: ../gladeui/glade-builtins.c:624
+#: ../gladeui/glade-builtins.c:626
 msgid "GdkColor"
 msgstr "Gdk颜色"
 
-#: ../gladeui/glade-builtins.c:625
+#: ../gladeui/glade-builtins.c:627
+#, fuzzy
 msgid "A gdk color value"
-msgstr "gdk颜色值"
+msgstr "GDK 颜色值"
 
 #. Accelerators
-#: ../gladeui/glade-builtins.c:633 ../gladeui/glade-property-class.c:1211
+#: ../gladeui/glade-builtins.c:635 ../gladeui/glade-property-class.c:1211
 #: ../plugins/gtk+/gtk+.xml.in.h:11
 msgid "Accelerators"
-msgstr "加速键"
+msgstr "快捷键"
 
-#: ../gladeui/glade-builtins.c:634 ../gladeui/glade-property-class.c:1212
+#: ../gladeui/glade-builtins.c:636 ../gladeui/glade-property-class.c:1212
 msgid "A list of accelerator keys"
-msgstr "加速键列表"
+msgstr "快捷键列表"
 
-#: ../gladeui/glade-builtins.c:645
+#: ../gladeui/glade-builtins.c:647
 msgid "Integer"
 msgstr "整型"
 
-#: ../gladeui/glade-builtins.c:646
+#: ../gladeui/glade-builtins.c:648
 msgid "An integer value"
 msgstr "一个整数值"
 
-#: ../gladeui/glade-builtins.c:654
+#: ../gladeui/glade-builtins.c:656
 msgid "Unsigned Integer"
 msgstr "无符号整型"
 
-#: ../gladeui/glade-builtins.c:655
+#: ../gladeui/glade-builtins.c:657
 msgid "An unsigned integer value"
 msgstr "一个无符号整数"
 
-#: ../gladeui/glade-builtins.c:662
+#: ../gladeui/glade-builtins.c:664
 msgid "String"
 msgstr "字符串"
 
-#: ../gladeui/glade-builtins.c:663
+#: ../gladeui/glade-builtins.c:665
 msgid "An entry"
-msgstr "一个条目或一段陈述"
+msgstr "一个条目"
 
-#: ../gladeui/glade-builtins.c:670
+#: ../gladeui/glade-builtins.c:672
 msgid "Strv"
 msgstr "Strv"
 
-#: ../gladeui/glade-builtins.c:671
+#: ../gladeui/glade-builtins.c:673
 msgid "String array"
 msgstr "字符串数组"
 
-#: ../gladeui/glade-builtins.c:679
+#: ../gladeui/glade-builtins.c:681
 msgid "Float"
 msgstr "浮点型"
 
-#: ../gladeui/glade-builtins.c:680
+#: ../gladeui/glade-builtins.c:682
 msgid "A floating point entry"
-msgstr "一个浮点数"
+msgstr "一个浮点型条目"
 
-#: ../gladeui/glade-builtins.c:688
+#: ../gladeui/glade-builtins.c:690
 msgid "Boolean"
 msgstr "布尔型"
 
-#: ../gladeui/glade-builtins.c:689
+#: ../gladeui/glade-builtins.c:691
 msgid "A boolean value"
 msgstr "一个布尔值"
 
-#: ../gladeui/glade-base-editor.c:477
+#: ../gladeui/glade-base-editor.c:487
 #, c-format
 msgid "Setting object type on %s to %s"
-msgstr "设置对象类型 %s 为 %s"
+msgstr "设置 %s 的对象类型为 %s"
 
-#: ../gladeui/glade-base-editor.c:642
+#: ../gladeui/glade-base-editor.c:652
 #, c-format
 msgid "Add a %s to %s"
 msgstr "加一个 %s 到 %s 上"
 
-#: ../gladeui/glade-base-editor.c:719
+#: ../gladeui/glade-base-editor.c:729
 #, c-format
 msgid "Delete %s child from %s"
 msgstr "从 %2$s 删除 %1$s 子结点"
 
-#: ../gladeui/glade-base-editor.c:842
+#: ../gladeui/glade-base-editor.c:852
 #, c-format
 msgid "Reorder %s's children"
 msgstr "重新安排 %s 的子结点"
 
-#: ../gladeui/glade-base-editor.c:1419 ../plugins/gtk+/gtk+.xml.in.h:178
+#: ../gladeui/glade-base-editor.c:1435 ../plugins/gtk+/gtk+.xml.in.h:220
 msgid "Label"
-msgstr "标签"
+msgstr "标签(Label)"
 
-#: ../gladeui/glade-base-editor.c:1432 ../gladeui/glade-widget-adaptor.c:812
+#: ../gladeui/glade-base-editor.c:1448 ../gladeui/glade-widget-adaptor.c:812
 msgid "Type"
 msgstr "类型"
 
 #. Name
-#: ../gladeui/glade-base-editor.c:1605
+#: ../gladeui/glade-base-editor.c:1621
 msgid "Name :"
 msgstr "名称："
 
 #. Type
-#: ../gladeui/glade-base-editor.c:1615
+#: ../gladeui/glade-base-editor.c:1631
+#, fuzzy
 msgid "Type :"
 msgstr "类型："
 
-#: ../gladeui/glade-clipboard-view.c:209 ../plugins/gtk+/gtk+.xml.in.h:347
+#: ../gladeui/glade-clipboard-view.c:209 ../plugins/gtk+/gtk+.xml.in.h:452
 msgid "Widget"
-msgstr "部件"
+msgstr "组件"
 
 #: ../gladeui/glade-command.c:549
+#, c-format
 msgid "Setting multiple properties"
 msgstr "设置复合属性"
 
@@ -783,7 +801,7 @@ msgstr "设置 %2$s 的 %1$s"
 #: ../gladeui/glade-command.c:561
 #, c-format
 msgid "Setting %s of %s to %s"
-msgstr "设置 %2$s 的 %1$s 到 %3$s"
+msgstr "将 %2$s 的 %1$s 设置为 %3$s"
 
 #: ../gladeui/glade-command.c:779 ../gladeui/glade-command.c:806
 #, c-format
@@ -800,38 +818,39 @@ msgstr "增加 %s"
 #: ../gladeui/glade-command.c:1642 ../gladeui/glade-command.c:1676
 #: ../gladeui/glade-command.c:1703
 msgid "multiple"
-msgstr "乘数"
+msgstr "多个"
 
 #: ../gladeui/glade-command.c:1027
 msgid "You cannot remove a widget internal to a composite widget."
-msgstr "您不能删除复合部件的内部部件。"
+msgstr "您不能删除复合组件的内部组件。"
 
 #: ../gladeui/glade-command.c:1074
 #, c-format
 msgid "Remove %s"
-msgstr "清除 %s"
+msgstr "移除 %s"
 
 #: ../gladeui/glade-command.c:1078
+#, c-format
 msgid "Remove multiple"
-msgstr "清除乘数"
+msgstr "移除多个"
 
 #: ../gladeui/glade-command.c:1391
 #, c-format
 msgid "Clipboard add %s"
-msgstr "剪贴板增加 %s"
+msgstr "剪贴板添加 %s"
 
 #: ../gladeui/glade-command.c:1394
 msgid "Clipboard add multiple"
-msgstr "剪贴板增加乘数"
+msgstr "剪贴板增加多个"
 
 #: ../gladeui/glade-command.c:1399
 #, c-format
 msgid "Clipboard remove %s"
-msgstr "剪贴板清除 %s"
+msgstr "剪贴板移除 %s"
 
 #: ../gladeui/glade-command.c:1402
 msgid "Clipboard remove multiple"
-msgstr "剪贴板清除乘数"
+msgstr "剪贴板移除多个"
 
 #: ../gladeui/glade-command.c:1570
 #, c-format
@@ -861,7 +880,7 @@ msgstr "粘贴 %s"
 #: ../gladeui/glade-command.c:1702
 #, c-format
 msgid "Drag-n-Drop from %s to %s"
-msgstr "拖拽并放下，从 %s 到 %s"
+msgstr "从 %s 拖放到 %s"
 
 #: ../gladeui/glade-command.c:1824
 #, c-format
@@ -879,218 +898,222 @@ msgid "Change signal handler %s"
 msgstr "改变信号处理函数 %s"
 
 #: ../gladeui/glade-command.c:2030
+#, c-format
 msgid "Setting i18n metadata"
-msgstr "设置 i18n 解释资料"
+msgstr "设置 i18n 元数据"
 
 #: ../gladeui/glade-cursor.c:186
 #, c-format
 msgid "Unable to load image (%s)"
-msgstr "无法加载图像(%s)。"
+msgstr "无法加载图像(%s)"
 
-#: ../gladeui/glade-editor-property.c:257
+#: ../gladeui/glade-editor-property.c:261
 msgid "View GTK+ documentation for this property"
 msgstr "查看该属性的Gtk+文档"
 
-#: ../gladeui/glade-editor-property.c:542
+#: ../gladeui/glade-editor-property.c:546
 msgid "Property Class"
 msgstr "属性类"
 
-#: ../gladeui/glade-editor-property.c:543
+#: ../gladeui/glade-editor-property.c:547
 msgid "The GladePropertyClass this GladeEditorProperty was created for"
-msgstr "Glade属性类，创建Glade编译器属性是为了"
+msgstr "Glade 属性类，创建 Glade 编译器属性是为了"
 
-#: ../gladeui/glade-editor-property.c:549
+#: ../gladeui/glade-editor-property.c:553
 msgid "Use Command"
 msgstr "使用命令"
 
-#: ../gladeui/glade-editor-property.c:550
+#: ../gladeui/glade-editor-property.c:554
 msgid "Whether we should use the command API for the undo/redo stack"
-msgstr "是否对堆积的撤销/重做使用命令API"
+msgstr "是否对撤销/重做堆栈使用命令API"
 
-#: ../gladeui/glade-editor-property.c:556
+#: ../gladeui/glade-editor-property.c:560
 msgid "Show Info"
 msgstr "显示信息"
 
-#: ../gladeui/glade-editor-property.c:557
+#: ../gladeui/glade-editor-property.c:561
 msgid "Whether we should show an informational button"
 msgstr "是否我们应该显示一个信息按扭"
 
-#: ../gladeui/glade-editor-property.c:1083
+#: ../gladeui/glade-editor-property.c:1087
 msgid "Select Fields"
 msgstr "选择区域"
 
-#: ../gladeui/glade-editor-property.c:1105
+#: ../gladeui/glade-editor-property.c:1109
 msgid "_Select individual fields:"
 msgstr "选择独立区域(_S)："
 
-#: ../gladeui/glade-editor-property.c:1643
+#: ../gladeui/glade-editor-property.c:1633
 msgid "Edit Text"
 msgstr "编辑文本"
 
 #. Text
-#: ../gladeui/glade-editor-property.c:1672
+#: ../gladeui/glade-editor-property.c:1662
 msgid "_Text:"
-msgstr "文本(_T)"
+msgstr "文本(_T)："
 
-#: ../gladeui/glade-editor-property.c:1708
+#: ../gladeui/glade-editor-property.c:1698
 msgid "T_ranslatable"
-msgstr "可译的(_r)"
+msgstr "可译的(_R)"
 
-#: ../gladeui/glade-editor-property.c:1721
+#: ../gladeui/glade-editor-property.c:1711
 msgid "_Has context prefix"
-msgstr "存在上下文前缀"
+msgstr "存在上下文前缀(_H)"
 
 #. Comments.
-#: ../gladeui/glade-editor-property.c:1739
+#: ../gladeui/glade-editor-property.c:1729
 msgid "Co_mments for translators:"
-msgstr "翻译者注释(_m)"
+msgstr "翻译者注释(_M)："
 
-#: ../gladeui/glade-editor-property.c:1909
-#: ../gladeui/glade-editor-property.c:1925
+#: ../gladeui/glade-editor-property.c:1898
+#: ../gladeui/glade-editor-property.c:1914
 msgid "Yes"
 msgstr "是"
 
-#: ../gladeui/glade-editor-property.c:1909
-#: ../gladeui/glade-editor-property.c:1925
-#: ../gladeui/glade-editor-property.c:1940
+#: ../gladeui/glade-editor-property.c:1898
+#: ../gladeui/glade-editor-property.c:1914
+#: ../gladeui/glade-editor-property.c:1929
 msgid "No"
 msgstr "否"
 
-#: ../gladeui/glade-editor-property.c:2529 ../gladeui/glade-widget.c:1005
+#: ../gladeui/glade-editor-property.c:2524 ../gladeui/glade-widget.c:1005
 #: ../gladeui/glade-widget-adaptor.c:804
 msgid "Name"
 msgstr "名称"
 
-#: ../gladeui/glade-editor-property.c:2541
+#: ../gladeui/glade-editor-property.c:2536
 msgid "Class"
 msgstr "类"
 
-#: ../gladeui/glade-editor-property.c:2555
+#: ../gladeui/glade-editor-property.c:2550
 #, c-format
 msgid "Choose %s implementors"
 msgstr "选择 %s 设备"
 
-#: ../gladeui/glade-editor-property.c:2555
+#: ../gladeui/glade-editor-property.c:2550
 #, c-format
 msgid "Choose a %s in this project"
-msgstr "在工程中选择 %s "
+msgstr "在项目中选择 %s "
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:2620
+#: ../gladeui/glade-editor-property.c:2615
 msgid "O_bjects:"
-msgstr "对象(_b)："
+msgstr "对象(_B)："
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:2829
+#: ../gladeui/glade-editor-property.c:2827
 msgid "Objects:"
 msgstr "对象："
 
-#: ../gladeui/glade-editor-property.c:3142
+#: ../gladeui/glade-editor-property.c:3140
 msgid "Value:"
 msgstr "值："
 
-#: ../gladeui/glade-editor-property.c:3143
+#: ../gladeui/glade-editor-property.c:3141
 msgid "The current value"
 msgstr "当前值"
 
-#: ../gladeui/glade-editor-property.c:3145
+#: ../gladeui/glade-editor-property.c:3143
 msgid "Lower:"
 msgstr "降低："
 
-#: ../gladeui/glade-editor-property.c:3146
+#: ../gladeui/glade-editor-property.c:3144
 msgid "The minimum value"
 msgstr "最小值"
 
-#: ../gladeui/glade-editor-property.c:3148
+#: ../gladeui/glade-editor-property.c:3146
 msgid "Upper:"
 msgstr "增高："
 
-#: ../gladeui/glade-editor-property.c:3149
+#: ../gladeui/glade-editor-property.c:3147
 msgid "The maximum value"
 msgstr "最大值"
 
-#: ../gladeui/glade-editor-property.c:3151
+#: ../gladeui/glade-editor-property.c:3149
 msgid "Step inc:"
-msgstr "单步增量："
+msgstr "步进："
+
+#: ../gladeui/glade-editor-property.c:3150
+msgid "The increment to use to make minor changes to the value"
+msgstr "用来小幅改变值的增量"
 
 #: ../gladeui/glade-editor-property.c:3152
-msgid "The increment to use to make minor changes to the value"
-msgstr "用来产生值的较小变化的增量"
-
-#: ../gladeui/glade-editor-property.c:3154
 msgid "Page inc:"
 msgstr "页面增量："
 
-#: ../gladeui/glade-editor-property.c:3155
+#: ../gladeui/glade-editor-property.c:3153
 msgid "The increment to use to make major changes to the value"
-msgstr "用来产生值的主要变化的增量"
+msgstr "用来大幅改变值的增量"
 
-#: ../gladeui/glade-editor-property.c:3157
+#: ../gladeui/glade-editor-property.c:3155
 msgid "Page size:"
 msgstr "页面大小："
 
-#: ../gladeui/glade-editor-property.c:3158
+#: ../gladeui/glade-editor-property.c:3156
 msgid ""
 "The page size (in a GtkScrollbar this is the size of the area which is "
 "currently visible)"
-msgstr "页面大小(在Gtk滚动条中，这是当前可视区域的大小)"
+msgstr "页面大小(在 GtkScrollbar 中，这是当前可视区域的大小)"
 
-#: ../gladeui/glade-editor-property.c:3235
+#: ../gladeui/glade-editor-property.c:3233
 msgid "Alphanumerical"
 msgstr "字母与数字"
 
-#: ../gladeui/glade-editor-property.c:3240
+#: ../gladeui/glade-editor-property.c:3238
 msgid "Extra"
 msgstr "附加"
 
-#: ../gladeui/glade-editor-property.c:3245
+#: ../gladeui/glade-editor-property.c:3243
 msgid "Keypad"
 msgstr "小键盘"
 
-#: ../gladeui/glade-editor-property.c:3250
+#: ../gladeui/glade-editor-property.c:3248
 msgid "Functions"
 msgstr "功能键"
 
-#: ../gladeui/glade-editor-property.c:3255 ../plugins/gtk+/gtk+.xml.in.h:222
+#: ../gladeui/glade-editor-property.c:3253 ../plugins/gtk+/gtk+.xml.in.h:285
 #: ../plugins/gnome/gnome.xml.in.h:43
 msgid "Other"
 msgstr "其他"
 
-#: ../gladeui/glade-editor-property.c:3426
-#: ../gladeui/glade-editor-property.c:3460
-#: ../gladeui/glade-editor-property.c:3505
+#: ../gladeui/glade-editor-property.c:3424
+#: ../gladeui/glade-editor-property.c:3458
+#: ../gladeui/glade-editor-property.c:3503
 msgid "<choose a key>"
 msgstr "<选择一个键>"
 
-#: ../gladeui/glade-editor-property.c:3459 ../plugins/gtk+/gtk+.xml.in.h:205
+#: ../gladeui/glade-editor-property.c:3457 ../plugins/gtk+/gtk+.xml.in.h:247
 #: ../plugins/gnome/bonobo.xml.in.h:13
 msgid "None"
 msgstr "无"
 
-#: ../gladeui/glade-editor-property.c:3585
+#: ../gladeui/glade-editor-property.c:3583
 #: ../gladeui/glade-signal-editor.c:694
 msgid "Signal"
 msgstr "信号"
 
-#: ../gladeui/glade-editor-property.c:3612
+#: ../gladeui/glade-editor-property.c:3610
+#, fuzzy
 msgid "Key"
-msgstr "键"
+msgstr "小键盘"
 
-#: ../gladeui/glade-editor-property.c:3626
+#: ../gladeui/glade-editor-property.c:3624
+#, fuzzy
 msgid "Shift"
-msgstr "Shift"
+msgstr "Shift 键"
 
-#: ../gladeui/glade-editor-property.c:3642
+#: ../gladeui/glade-editor-property.c:3640
+#, fuzzy
 msgid "Control"
-msgstr "Control"
+msgstr "Control 键"
 
-#: ../gladeui/glade-editor-property.c:3658
+#: ../gladeui/glade-editor-property.c:3656
 msgid "Alt"
 msgstr "Alt"
 
-#: ../gladeui/glade-editor-property.c:3724
+#: ../gladeui/glade-editor-property.c:3722
 msgid "Choose accelerator keys..."
-msgstr "选择加速键..."
+msgstr "选择快捷键..."
 
 #: ../gladeui/glade-editor.c:152
 msgid "Show info"
@@ -1098,7 +1121,7 @@ msgstr "显示信息"
 
 #: ../gladeui/glade-editor.c:153
 msgid "Whether to show an informational button for the loaded widget"
-msgstr "是否为加载的部件显示一个信息按扭"
+msgstr "是否为加载的组件显示一个信息按钮"
 
 #: ../gladeui/glade-editor.c:160
 msgid "Show context info"
@@ -1112,7 +1135,7 @@ msgstr "是否在编辑器中为每一个属性显示一个信息按扭"
 
 #. construct tab label widget
 #: ../gladeui/glade-editor.c:202 ../gladeui/glade-editor.c:321
-#: ../gladeui/glade-editor.c:1173
+#: ../gladeui/glade-editor.c:1184
 msgid "Accessibility"
 msgstr "辅助"
 
@@ -1123,11 +1146,11 @@ msgstr "信号(_S)"
 
 #: ../gladeui/glade-editor.c:283
 msgid "View documentation for the selected widget"
-msgstr "查看选择部件的文档"
+msgstr "查看选择组件的文档"
 
 #: ../gladeui/glade-editor.c:303
 msgid "Reset widget properties to their defaults"
-msgstr "重置部件属性为默认值"
+msgstr "将组件属性重置为默认值"
 
 #: ../gladeui/glade-editor.c:317
 msgid "_General"
@@ -1135,77 +1158,77 @@ msgstr "常规(_G)"
 
 #: ../gladeui/glade-editor.c:318
 msgid "_Packing"
-msgstr "包装(_P)"
+msgstr "打包(_P)"
 
 #: ../gladeui/glade-editor.c:319
 msgid "_Common"
 msgstr "公共(_C)"
 
 #. Name
-#: ../gladeui/glade-editor.c:463
+#: ../gladeui/glade-editor.c:464
 msgid "Name:"
 msgstr "名称："
 
 #. Class
-#: ../gladeui/glade-editor.c:491
+#: ../gladeui/glade-editor.c:492
 msgid "Class:"
 msgstr "类："
 
-#: ../gladeui/glade-editor.c:979
+#: ../gladeui/glade-editor.c:990
 #, c-format
 msgid "Create a %s"
 msgstr "创建 %s"
 
-#: ../gladeui/glade-editor.c:1104
+#: ../gladeui/glade-editor.c:1115
 msgid "Reset"
 msgstr "重置"
 
-#: ../gladeui/glade-editor.c:1118
+#: ../gladeui/glade-editor.c:1129
 msgid "Property"
 msgstr "属性"
 
-#: ../gladeui/glade-editor.c:1153
+#: ../gladeui/glade-editor.c:1164
 msgid "General"
 msgstr "常规"
 
-#: ../gladeui/glade-editor.c:1163
+#: ../gladeui/glade-editor.c:1174
 msgid "Common"
-msgstr "通用"
+msgstr "常用"
 
-#: ../gladeui/glade-editor.c:1208
+#: ../gladeui/glade-editor.c:1219
 msgid "(default)"
 msgstr "(默认)"
 
-#: ../gladeui/glade-editor.c:1223
+#: ../gladeui/glade-editor.c:1234
 msgid "Select the properties that you want to reset to their default values"
 msgstr "选择你要重置为默认值的属性"
 
-#: ../gladeui/glade-editor.c:1355
+#: ../gladeui/glade-editor.c:1366
 msgid "Reset Widget Properties"
-msgstr "重置部件属性"
+msgstr "重置组件属性"
 
 #. Checklist
-#: ../gladeui/glade-editor.c:1372
+#: ../gladeui/glade-editor.c:1383
 msgid "_Properties:"
 msgstr "属性(_P)："
 
-#: ../gladeui/glade-editor.c:1401
+#: ../gladeui/glade-editor.c:1412
 msgid "_Select All"
 msgstr "全部选择(_S)"
 
-#: ../gladeui/glade-editor.c:1408
+#: ../gladeui/glade-editor.c:1419
 msgid "_Unselect All"
 msgstr "全部不选(_U)"
 
 #. Description
-#: ../gladeui/glade-editor.c:1417
+#: ../gladeui/glade-editor.c:1428
 msgid "Property _Description:"
 msgstr "属性描述(_D)："
 
-#: ../gladeui/glade-fixed.c:482 ../plugins/gtk+/glade-gtk.c:1667
+#: ../gladeui/glade-fixed.c:482 ../plugins/gtk+/glade-gtk.c:1677
 #, c-format
 msgid "Placing %s inside %s"
-msgstr "放置 %s 在 %s 内"
+msgstr "将 %s 放置在 %s 内"
 
 #: ../gladeui/glade-fixed.c:971
 msgid "X position property"
@@ -1245,11 +1268,11 @@ msgstr "可改变大小"
 
 #: ../gladeui/glade-fixed.c:1000
 msgid "Whether this container supports resizes of child widgets"
-msgstr "容器是否支持子部件改变大小"
+msgstr "容器是否支持子组件改变大小"
 
 #: ../gladeui/glade-palette.c:619
 msgid "Widget selector"
-msgstr "部件选择器"
+msgstr "组件选择器"
 
 #: ../gladeui/glade-parser.c:1193
 #, c-format
@@ -1262,6 +1285,7 @@ msgid "Errors parsing glade file %s"
 msgstr "解析glade文件 %s 错误"
 
 #: ../gladeui/glade-parser.c:1658
+#, c-format
 msgid "Could not allocate memory for interface"
 msgstr "无法为界面分配内存"
 
@@ -1269,47 +1293,48 @@ msgstr "无法为界面分配内存"
 msgid "_Select"
 msgstr "选择(_S)"
 
-#: ../gladeui/glade-project.c:691
+#: ../gladeui/glade-project.c:686
 msgid "Whether project has been modified since it was last saved"
-msgstr "工程在上次保存后是否已被修改"
+msgstr "项目在上次保存后是否已被修改"
 
-#: ../gladeui/glade-project.c:698
+#: ../gladeui/glade-project.c:693
 msgid "Has Selection"
 msgstr "存在选择内容"
 
-#: ../gladeui/glade-project.c:699
+#: ../gladeui/glade-project.c:694
 msgid "Whether project has a selection"
-msgstr "工程是否有选择内容"
+msgstr "项目是否有选择内容"
 
-#: ../gladeui/glade-project.c:706
+#: ../gladeui/glade-project.c:701
 msgid "Read Only"
 msgstr "只读"
 
-#: ../gladeui/glade-project.c:707
+#: ../gladeui/glade-project.c:702
+#, fuzzy
 msgid "Whether project is read only or not"
-msgstr "工程是否只读"
+msgstr "项目是否只读"
 
-#: ../gladeui/glade-project.c:714
+#: ../gladeui/glade-project.c:709
 msgid "Path"
 msgstr "路径"
 
-#: ../gladeui/glade-project.c:715
+#: ../gladeui/glade-project.c:710
 msgid "The filesystem path of the project"
-msgstr "工程的文件系统路径"
+msgstr "项目的文件系统路径"
 
-#: ../gladeui/glade-project.c:1573
+#: ../gladeui/glade-project.c:1595
 #, c-format
 msgid ""
 "Failed to load %s.\n"
 "The following required catalogs are unavailable: %s"
 msgstr ""
 "加载 %s 失败。\n"
-"无法得到后面要求的类型：%s"
+"以下必需的分类不可用：%s"
 
-#: ../gladeui/glade-project.c:2243
+#: ../gladeui/glade-project.c:2265
 #, c-format
 msgid "Unsaved %i"
-msgstr "未保存 %i"
+msgstr "未保存的 %i"
 
 #. Atk click property
 #: ../gladeui/glade-property-class.c:67 ../plugins/gtk+/gtk+.xml.in.h:53
@@ -1317,29 +1342,29 @@ msgid "Click"
 msgstr "单击"
 
 #. Atk click property
-#: ../gladeui/glade-property-class.c:68 ../plugins/gtk+/gtk+.xml.in.h:271
+#: ../gladeui/glade-property-class.c:68 ../plugins/gtk+/gtk+.xml.in.h:376
 msgid "Set the description of the Click atk action"
-msgstr "设置单击atk行为的描述"
+msgstr "设置单击 atk 动作的描述"
 
 #. Atk press property
-#: ../gladeui/glade-property-class.c:69 ../plugins/gtk+/gtk+.xml.in.h:235
+#: ../gladeui/glade-property-class.c:69 ../plugins/gtk+/gtk+.xml.in.h:298
 msgid "Press"
 msgstr "按下"
 
 #. Atk press property
-#: ../gladeui/glade-property-class.c:70 ../plugins/gtk+/gtk+.xml.in.h:273
+#: ../gladeui/glade-property-class.c:70 ../plugins/gtk+/gtk+.xml.in.h:378
 msgid "Set the description of the Press atk action"
-msgstr "设置按下atk行为的描述"
+msgstr "设置按下 atk 动作的描述"
 
 #. Atk release property
-#: ../gladeui/glade-property-class.c:71 ../plugins/gtk+/gtk+.xml.in.h:250
+#: ../gladeui/glade-property-class.c:71 ../plugins/gtk+/gtk+.xml.in.h:313
 msgid "Release"
 msgstr "释放"
 
 #. Atk release property
-#: ../gladeui/glade-property-class.c:72 ../plugins/gtk+/gtk+.xml.in.h:275
+#: ../gladeui/glade-property-class.c:72 ../plugins/gtk+/gtk+.xml.in.h:380
 msgid "Set the description of the Release atk action"
-msgstr "设置释放atk行为的描述"
+msgstr "设置释放 atk 动作的描述"
 
 #. Atk activate property
 #: ../gladeui/glade-property-class.c:73 ../plugins/gtk+/gtk+.xml.in.h:16
@@ -1347,9 +1372,9 @@ msgid "Activate"
 msgstr "激活"
 
 #. Atk activate property
-#: ../gladeui/glade-property-class.c:74 ../plugins/gtk+/gtk+.xml.in.h:269
+#: ../gladeui/glade-property-class.c:74 ../plugins/gtk+/gtk+.xml.in.h:374
 msgid "Set the description of the Activate atk action"
-msgstr "设置激活atk行为的描述"
+msgstr "设置激活 atk 动作的描述"
 
 #. Atk relationset properties
 #: ../gladeui/glade-property-class.c:78 ../plugins/gtk+/gtk+.xml.in.h:69
@@ -1357,7 +1382,7 @@ msgid "Controlled By"
 msgstr "受控于"
 
 #. Atk relationset properties
-#: ../gladeui/glade-property-class.c:79 ../plugins/gtk+/gtk+.xml.in.h:151
+#: ../gladeui/glade-property-class.c:79 ../plugins/gtk+/gtk+.xml.in.h:193
 msgid "Indicates an object controlled by one or more target objects"
 msgstr "指示一个对象被一个或多个目标对象控制"
 
@@ -1365,31 +1390,31 @@ msgstr "指示一个对象被一个或多个目标对象控制"
 msgid "Controller For"
 msgstr "控制器，为了"
 
-#: ../gladeui/glade-property-class.c:82 ../plugins/gtk+/gtk+.xml.in.h:153
+#: ../gladeui/glade-property-class.c:82 ../plugins/gtk+/gtk+.xml.in.h:195
 msgid "Indicates an object is a controller for one or more target objects"
 msgstr "指示一个对象控制一个或多个目标对象"
 
-#: ../gladeui/glade-property-class.c:84 ../plugins/gtk+/gtk+.xml.in.h:180
+#: ../gladeui/glade-property-class.c:84 ../plugins/gtk+/gtk+.xml.in.h:222
 msgid "Labelled By"
 msgstr "被标号，由"
 
-#: ../gladeui/glade-property-class.c:85 ../plugins/gtk+/gtk+.xml.in.h:156
+#: ../gladeui/glade-property-class.c:85 ../plugins/gtk+/gtk+.xml.in.h:198
 msgid "Indicates an object is labelled by one or more target objects"
 msgstr "指示一个对象由一个或多个目标对象标号"
 
-#: ../gladeui/glade-property-class.c:87 ../plugins/gtk+/gtk+.xml.in.h:179
+#: ../gladeui/glade-property-class.c:87 ../plugins/gtk+/gtk+.xml.in.h:221
 msgid "Label For"
 msgstr "标签，为了"
 
-#: ../gladeui/glade-property-class.c:88 ../plugins/gtk+/gtk+.xml.in.h:154
+#: ../gladeui/glade-property-class.c:88 ../plugins/gtk+/gtk+.xml.in.h:196
 msgid "Indicates an object is a label for one or more target objects"
 msgstr "指示一个对象是一个或多个目标对象的标签"
 
-#: ../gladeui/glade-property-class.c:90 ../plugins/gtk+/gtk+.xml.in.h:192
+#: ../gladeui/glade-property-class.c:90 ../plugins/gtk+/gtk+.xml.in.h:234
 msgid "Member Of"
 msgstr "成员，属于"
 
-#: ../gladeui/glade-property-class.c:91 ../plugins/gtk+/gtk+.xml.in.h:155
+#: ../gladeui/glade-property-class.c:91 ../plugins/gtk+/gtk+.xml.in.h:197
 msgid ""
 "Indicates an object is a member of a group of one or more target objects"
 msgstr "指示一个对象是一个或多个目标对象组的成员"
@@ -1398,7 +1423,7 @@ msgstr "指示一个对象是一个或多个目标对象组的成员"
 msgid "Child Node Of"
 msgstr "子结点，属于"
 
-#: ../gladeui/glade-property-class.c:94 ../plugins/gtk+/gtk+.xml.in.h:152
+#: ../gladeui/glade-property-class.c:94 ../plugins/gtk+/gtk+.xml.in.h:194
 msgid ""
 "Indicates an object is a cell in a treetable which is displayed because a "
 "cell in the same column is expanded and identifies that cell"
@@ -1406,7 +1431,7 @@ msgstr ""
 "指示一个对象是树列表中的一个单元，树列表被显示是因为在同一列中一个单元被展开"
 "并确定这个单元"
 
-#: ../gladeui/glade-property-class.c:97 ../plugins/gtk+/gtk+.xml.in.h:118
+#: ../gladeui/glade-property-class.c:97 ../plugins/gtk+/gtk+.xml.in.h:160
 msgid "Flows To"
 msgstr "流向"
 
@@ -1416,59 +1441,59 @@ msgid ""
 "AtkObject in a sequential way (text-flow, for instance)."
 msgstr "指示对象存在逻辑上依顺序方式流向另一个AtkObject的内容(例如：文本流)"
 
-#: ../gladeui/glade-property-class.c:101 ../plugins/gtk+/gtk+.xml.in.h:117
+#: ../gladeui/glade-property-class.c:101 ../plugins/gtk+/gtk+.xml.in.h:159
 msgid "Flows From"
 msgstr "流自"
 
-#: ../gladeui/glade-property-class.c:102 ../plugins/gtk+/gtk+.xml.in.h:161
+#: ../gladeui/glade-property-class.c:102 ../plugins/gtk+/gtk+.xml.in.h:203
 msgid ""
 "Indicates that the object has content that flows logically from another "
 "AtkObject in a sequential way, (for instance text-flow)"
 msgstr "指示对象存在逻辑上依顺序方式流自另一个AtkObject的内容(例如：文本流)"
 
-#: ../gladeui/glade-property-class.c:105 ../plugins/gtk+/gtk+.xml.in.h:298
+#: ../gladeui/glade-property-class.c:105 ../plugins/gtk+/gtk+.xml.in.h:403
 msgid "Subwindow Of"
 msgstr "子窗口，属于"
 
-#: ../gladeui/glade-property-class.c:106 ../plugins/gtk+/gtk+.xml.in.h:149
+#: ../gladeui/glade-property-class.c:106 ../plugins/gtk+/gtk+.xml.in.h:191
 msgid ""
 "Indicates a subwindow attached to a component but otherwise has no "
 "connection in the UI hierarchy to that component"
 msgstr "指示一个子窗口属于一个组件，但是除此之外不存在用户界面层次到组件的连接"
 
-#: ../gladeui/glade-property-class.c:109 ../plugins/gtk+/gtk+.xml.in.h:98
+#: ../gladeui/glade-property-class.c:109 ../plugins/gtk+/gtk+.xml.in.h:119
 msgid "Embeds"
 msgstr "内嵌"
 
-#: ../gladeui/glade-property-class.c:110 ../plugins/gtk+/gtk+.xml.in.h:163
+#: ../gladeui/glade-property-class.c:110 ../plugins/gtk+/gtk+.xml.in.h:205
 msgid ""
 "Indicates that the object visually embeds another object's content, i.e. "
 "this object's content flows around another's content"
 msgstr "指示对象直观地嵌入了另一个对象的内容，例如：对象的内容围绕另一个流动"
 
-#: ../gladeui/glade-property-class.c:113 ../plugins/gtk+/gtk+.xml.in.h:97
+#: ../gladeui/glade-property-class.c:113 ../plugins/gtk+/gtk+.xml.in.h:118
 msgid "Embedded By"
 msgstr "嵌入于"
 
-#: ../gladeui/glade-property-class.c:114 ../plugins/gtk+/gtk+.xml.in.h:174
+#: ../gladeui/glade-property-class.c:114 ../plugins/gtk+/gtk+.xml.in.h:216
 msgid ""
 "Inverse of 'Embeds', indicates that this object's content is visually "
 "embedded in another object"
 msgstr "内嵌的反方向，指示对象的内容直观地嵌入于另一个对象"
 
-#: ../gladeui/glade-property-class.c:117 ../plugins/gtk+/gtk+.xml.in.h:231
+#: ../gladeui/glade-property-class.c:117 ../plugins/gtk+/gtk+.xml.in.h:294
 msgid "Popup For"
 msgstr "弹出，为"
 
-#: ../gladeui/glade-property-class.c:118 ../plugins/gtk+/gtk+.xml.in.h:158
+#: ../gladeui/glade-property-class.c:118 ../plugins/gtk+/gtk+.xml.in.h:200
 msgid "Indicates that an object is a popup for another object"
 msgstr "指示一个对象是另一个对象的弹出项"
 
-#: ../gladeui/glade-property-class.c:120 ../plugins/gtk+/gtk+.xml.in.h:226
+#: ../gladeui/glade-property-class.c:120 ../plugins/gtk+/gtk+.xml.in.h:289
 msgid "Parent Window Of"
 msgstr "父窗口，属于"
 
-#: ../gladeui/glade-property-class.c:121 ../plugins/gtk+/gtk+.xml.in.h:157
+#: ../gladeui/glade-property-class.c:121 ../plugins/gtk+/gtk+.xml.in.h:199
 msgid "Indicates that an object is a parent window of another object"
 msgstr "指示一个对象是另一个对象的父窗口"
 
@@ -1501,14 +1526,16 @@ msgid "Translatable"
 msgstr "可译的"
 
 #: ../gladeui/glade-property.c:627
+#, fuzzy
 msgid "Whether this property is translatable or not"
-msgstr "属性是否可译"
+msgstr "该属性是否可以翻译"
 
 #: ../gladeui/glade-property.c:633
 msgid "Has Context"
 msgstr "存在上下文"
 
 #: ../gladeui/glade-property.c:634
+#, fuzzy
 msgid "Whether or not the translatable string has a context prefix"
 msgstr "可译的字符串是否存在上下文前缀"
 
@@ -1518,7 +1545,7 @@ msgstr "<在这里输入>"
 
 #: ../gladeui/glade-signal-editor.c:714
 msgid "Handler"
-msgstr "操作句柄"
+msgstr "处理函数"
 
 #: ../gladeui/glade-signal-editor.c:736
 msgid "User data"
@@ -1530,7 +1557,7 @@ msgstr "查找"
 
 #: ../gladeui/glade-signal-editor.c:761 ../plugins/gtk+/gtk+.xml.in.h:18
 msgid "After"
-msgstr "After"
+msgstr "之后"
 
 #: ../gladeui/glade-utils.c:144 ../gladeui/glade-utils.c:175
 #, c-format
@@ -1540,15 +1567,16 @@ msgstr "无法找到符号“%s”"
 #: ../gladeui/glade-utils.c:151
 #, c-format
 msgid "Could not get the type from \"%s\""
-msgstr "无法从“%s”取得类型"
+msgstr "无法从“%s”获知类型"
 
 #: ../gladeui/glade-utils.c:516
 msgid "All Files"
 msgstr "全部文件"
 
 #: ../gladeui/glade-utils.c:521
+#, fuzzy
 msgid "Glade Files"
-msgstr "Glade文件"
+msgstr "全部 Glade 文件"
 
 #: ../gladeui/glade-utils.c:1236
 #, c-format
@@ -1557,27 +1585,27 @@ msgid ""
 "Do you want to replace it?"
 msgstr ""
 "%s 已存在。\n"
-"您想覆盖它吗？"
+"您想替换它吗？"
 
 #: ../gladeui/glade-utils.c:1264
 #, c-format
 msgid "Error writing to %s: %s"
-msgstr "写入到 %s：%s 时发生错误"
+msgstr "写入到 %s 时发生错误：%s"
 
 #: ../gladeui/glade-utils.c:1278
 #, c-format
 msgid "Error reading %s: %s"
-msgstr "读取 %s：%s 时发生错误"
+msgstr "读取 %s 时发生错误：%s"
 
 #: ../gladeui/glade-utils.c:1293
 #, c-format
 msgid "Error shutting down I/O channel %s: %s"
-msgstr "关闭I/O通道 %s：%s 时发生错误"
+msgstr "关闭I/O通道 %s 时发生错误：%s"
 
 #: ../gladeui/glade-utils.c:1303
 #, c-format
 msgid "Failed to open %s for writing: %s"
-msgstr "打开 %s 以便写入：%s 时失败"
+msgstr "打开 %s 以便写入时失败：%s"
 
 #: ../gladeui/glade-utils.c:1314
 #, c-format
@@ -1587,11 +1615,11 @@ msgstr "关闭I/O通道 %s：%s 时发生错误"
 #: ../gladeui/glade-utils.c:1323
 #, c-format
 msgid "Failed to open %s for reading: %s"
-msgstr "打开 %s 以便读取 %s时失败"
+msgstr "打开 %s 以读取时失败：%s"
 
 #: ../gladeui/glade-widget.c:1006
 msgid "The name of the widget"
-msgstr "部件名称"
+msgstr "组件名称"
 
 #: ../gladeui/glade-widget.c:1013
 msgid "Internal name"
@@ -1599,7 +1627,7 @@ msgstr "内部名称"
 
 #: ../gladeui/glade-widget.c:1014
 msgid "The internal name of the widget"
-msgstr "部件的内部名称"
+msgstr "组件的内部名称"
 
 #: ../gladeui/glade-widget.c:1020
 msgid "Anarchist"
@@ -1624,27 +1652,27 @@ msgstr "适配器"
 
 #: ../gladeui/glade-widget.c:1037
 msgid "The class adaptor for the associated widget"
-msgstr "相关部件的类适配器"
+msgstr "相关组件的类适配器"
 
 #: ../gladeui/glade-widget.c:1044 ../gladeui/glade-inspector.c:199
 msgid "Project"
-msgstr "工程"
+msgstr "项目"
 
 #: ../gladeui/glade-widget.c:1045
 msgid "The glade project that this widget belongs to"
-msgstr "部件属于的glade工程"
+msgstr "组件从属的 glade 项目"
 
 #: ../gladeui/glade-widget.c:1054
 msgid "A list of GladeProperties"
-msgstr "一组GladeProperties列表"
+msgstr "一组 GladeProperties 列表"
 
-#: ../gladeui/glade-widget.c:1060 ../plugins/gtk+/gtk+.xml.in.h:225
+#: ../gladeui/glade-widget.c:1060 ../plugins/gtk+/gtk+.xml.in.h:288
 msgid "Parent"
 msgstr "上一级"
 
 #: ../gladeui/glade-widget.c:1061
 msgid "A pointer to the parenting GladeWidget"
-msgstr "到上一级Gladewidget的指针"
+msgstr "到上一级 Gladewidget 的指针"
 
 #: ../gladeui/glade-widget.c:1068
 msgid "Internal Name"
@@ -1652,7 +1680,7 @@ msgstr "内部名称"
 
 #: ../gladeui/glade-widget.c:1069
 msgid "A generic name prefix for internal widgets"
-msgstr "内部部件的常规名称前缀"
+msgstr "内部组件的常规名称前缀"
 
 #: ../gladeui/glade-widget.c:1074
 msgid "Template"
@@ -1660,23 +1688,23 @@ msgstr "模板"
 
 #: ../gladeui/glade-widget.c:1075
 msgid "A GladeWidget template to base a new widget on"
-msgstr "GladeWidget模板做为新部件基模板"
+msgstr "GladeWidget模板做为新组件基模板"
 
-#: ../gladeui/glade-widget.c:1081 ../plugins/gtk+/gtk+.xml.in.h:164
+#: ../gladeui/glade-widget.c:1081 ../plugins/gtk+/gtk+.xml.in.h:206
 msgid "Info"
 msgstr "信息"
 
 #: ../gladeui/glade-widget.c:1082
 msgid "A GladeWidgetInfo struct to base a new widget on"
-msgstr "GladeWidgetInfo结构做为新部件的基础结构"
+msgstr "GladeWidgetInfo结构做为新组件的基础结构"
 
 #: ../gladeui/glade-widget.c:1087
 msgid "Reason"
-msgstr "动机"
+msgstr "原因"
 
 #: ../gladeui/glade-widget.c:1088
 msgid "A GladeCreateReason for this creation"
-msgstr "GladeCreateReason用来说明此创建的动机"
+msgstr "GladeCreateReason 用来说明此创建的原因"
 
 #: ../gladeui/glade-widget.c:1096
 msgid "Toplevel Width"
@@ -1684,7 +1712,7 @@ msgstr "顶层宽度"
 
 #: ../gladeui/glade-widget.c:1097
 msgid "The width of the widget when toplevel in the GladeDesignLayout"
-msgstr "在GladeDesignLayout中部件为顶层部件时的宽度"
+msgstr "在 GladeDesignLayout 中组件为顶层组件时的宽度"
 
 #: ../gladeui/glade-widget.c:1106
 msgid "Toplevel Height"
@@ -1692,12 +1720,12 @@ msgstr "顶层高度"
 
 #: ../gladeui/glade-widget.c:1107
 msgid "The height of the widget when toplevel in the GladeDesignLayout"
-msgstr "在GladeDesignLayout中部件为顶层部件时的高度"
+msgstr "在 GladeDesignLayout 中组件为顶层组件时的高度"
 
 #: ../gladeui/glade-widget-adaptor.c:254
 #, c-format
 msgid "A derived adaptor (%s) of %s already exist!"
-msgstr "一个继承的 %2$s 适配器(%1$s)已存在！"
+msgstr "%2$s 的一个继承的适配器(%1$s)已存在！"
 
 #: ../gladeui/glade-widget-adaptor.c:805
 msgid "Name of the class"
@@ -1705,7 +1733,7 @@ msgstr "类名称"
 
 #: ../gladeui/glade-widget-adaptor.c:813
 msgid "GType of the class"
-msgstr "类的GType"
+msgstr "类的 GType"
 
 #: ../gladeui/glade-widget-adaptor.c:820 ../plugins/gnome/gnome.xml.in.h:64
 msgid "Title"
@@ -1713,7 +1741,7 @@ msgstr "标题"
 
 #: ../gladeui/glade-widget-adaptor.c:821
 msgid "Translated title for the class used in the glade UI"
-msgstr "在glade UI中用到的类的翻译名称"
+msgstr "在 Glade UI 中用到的类的翻译名称"
 
 #: ../gladeui/glade-widget-adaptor.c:828
 msgid "Generic Name"
@@ -1721,9 +1749,9 @@ msgstr "常规名称"
 
 #: ../gladeui/glade-widget-adaptor.c:829
 msgid "Used to generate names of new widgets"
-msgstr "用于生成新部件的名称"
+msgstr "用于生成新组件的名称"
 
-#: ../gladeui/glade-widget-adaptor.c:836 ../plugins/gtk+/gtk+.xml.in.h:138
+#: ../gladeui/glade-widget-adaptor.c:836 ../plugins/gtk+/gtk+.xml.in.h:180
 msgid "Icon Name"
 msgstr "图标名称"
 
@@ -1737,7 +1765,7 @@ msgstr "分类"
 
 #: ../gladeui/glade-widget-adaptor.c:845
 msgid "The name of the widget catalog this class was declared by"
-msgstr "类被声明的部件分类名称"
+msgstr "声明此类的组件分类的名称"
 
 #: ../gladeui/glade-widget-adaptor.c:852
 msgid "Book"
@@ -1745,11 +1773,11 @@ msgstr "书籍"
 
 #: ../gladeui/glade-widget-adaptor.c:853
 msgid "DevHelp search namespace for this widget class"
-msgstr "此部件类的Devhelp搜索名字空间"
+msgstr "此组件类的 Devhelp 搜索名字空间"
 
 #: ../gladeui/glade-widget-adaptor.c:860
 msgid "Special Child Type"
-msgstr "具体的子类型"
+msgstr "特定的子类型"
 
 #: ../gladeui/glade-widget-adaptor.c:861
 msgid ""
@@ -1757,17 +1785,17 @@ msgid ""
 "container class"
 msgstr "保持包装属性名称以便为此容器类描述该容器类的具体子结点"
 
-#: ../gladeui/glade-widget-adaptor.c:869 ../plugins/gtk+/gtk+.xml.in.h:72
+#: ../gladeui/glade-widget-adaptor.c:869 ../plugins/gtk+/gtk+.xml.in.h:93
 msgid "Cursor"
 msgstr "指针"
 
 #: ../gladeui/glade-widget-adaptor.c:870
 msgid "A cursor for inserting widgets in the UI"
-msgstr "用于插入部件到UI的指针"
+msgstr "用于插入组件到 UI 的指针"
 
 #: ../gladeui/glade-inspector.c:200
 msgid "The project being inspected"
-msgstr "正在检查工程"
+msgstr "正在检查的项目"
 
 #: ../gladeui/glade-inspector.c:591
 #, c-format
@@ -1785,7 +1813,7 @@ msgstr "创建函数"
 
 #: ../gladeui/glade-custom.c:217
 msgid "The function which creates this widget"
-msgstr "创建该部件的函数"
+msgstr "创建该组件的函数"
 
 #: ../gladeui/glade-custom.c:223
 msgid "String 1"
@@ -1825,11 +1853,12 @@ msgstr "类"
 
 #: ../gladeui/glade-widget-action.c:152
 msgid "GladeWidgetActionClass structure pointer"
-msgstr "GladeWidgetActionClass结构指针"
+msgstr "GladeWidgetActionClass 结构指针"
 
 #: ../gladeui/glade-widget-action.c:159
+#, fuzzy
 msgid "Whether or not this action is sensitive"
-msgstr "是否此动作是敏感的"
+msgstr "此动作是否敏感"
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:479
 msgid "All Contexts"
@@ -1841,16 +1870,16 @@ msgstr "命名的图标选择器"
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1401
 msgid "Icon _Name:"
-msgstr "图标名称：(_N)"
+msgstr "图标名称(_N)："
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1484
 msgid "_List standard icons only"
-msgstr "只列出标准图标"
+msgstr "只列出标准图标(_L)"
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1700
 #, c-format
 msgid "Could not create directory: %s"
-msgstr "无法创建新目录：%s"
+msgstr "无法创建文件夹：%s"
 
 #: ../gladeui/icon-naming-spec.c:35
 msgid "Actions"
@@ -1912,134 +1941,140 @@ msgstr "用于编辑图像的方法"
 msgid "The method to use to edit this button"
 msgstr "用于编辑按扭的方法"
 
-#: ../plugins/gtk+/glade-gtk.c:355
+#: ../plugins/gtk+/glade-gtk.c:365
 #, c-format
 msgid "Removing parent of %s"
-msgstr "清除 %s 的上一级"
+msgstr "移除 %s 的上一级"
 
-#: ../plugins/gtk+/glade-gtk.c:406
-#, c-format
+#: ../plugins/gtk+/glade-gtk.c:416
+#, fuzzy, c-format
 msgid "Adding parent %s to %s"
-msgstr "添加上一级 %s 到 %s"
+msgstr "添加上一级 %s 给 %s"
 
-#: ../plugins/gtk+/glade-gtk.c:774
+#: ../plugins/gtk+/glade-gtk.c:784
 #, c-format
 msgid "Ordering children of %s"
 msgstr "次序 %s 的子结点"
 
-#: ../plugins/gtk+/glade-gtk.c:1253 ../plugins/gtk+/glade-gtk.c:1260
+#: ../plugins/gtk+/glade-gtk.c:1263 ../plugins/gtk+/glade-gtk.c:1270
 #, c-format
 msgid "Insert placeholder to %s"
 msgstr "插入位置保持器到 %s"
 
-#: ../plugins/gtk+/glade-gtk.c:1267
+#: ../plugins/gtk+/glade-gtk.c:1277
 #, c-format
 msgid "Remove placeholder from %s"
-msgstr "从 %s 清除位置保持器"
+msgstr "从 %s 移除位置保持器"
 
-#: ../plugins/gtk+/glade-gtk.c:2182 ../plugins/gtk+/glade-gtk.c:2190
+#: ../plugins/gtk+/glade-gtk.c:2192 ../plugins/gtk+/glade-gtk.c:2200
 #, c-format
 msgid "Insert Row on %s"
 msgstr "在 %s 上插入行"
 
-#: ../plugins/gtk+/glade-gtk.c:2198 ../plugins/gtk+/glade-gtk.c:2206
+#: ../plugins/gtk+/glade-gtk.c:2208 ../plugins/gtk+/glade-gtk.c:2216
 #, c-format
 msgid "Insert Column on %s"
 msgstr "在 %s 上插入列"
 
-#: ../plugins/gtk+/glade-gtk.c:2214
+#: ../plugins/gtk+/glade-gtk.c:2224
 #, c-format
 msgid "Remove Column on %s"
-msgstr "在 %s 上清除列"
+msgstr "在 %s 上移除列"
 
-#: ../plugins/gtk+/glade-gtk.c:2222
+#: ../plugins/gtk+/glade-gtk.c:2232
 #, c-format
 msgid "Remove Row on %s"
-msgstr "在 %s 上清除行"
+msgstr "在 %s 上移除行"
 
-#: ../plugins/gtk+/glade-gtk.c:3162 ../plugins/gtk+/glade-gtk.c:3169
+#: ../plugins/gtk+/glade-gtk.c:3172 ../plugins/gtk+/glade-gtk.c:3179
 #, c-format
 msgid "Insert page on %s"
 msgstr "在 %s 上插入页"
 
-#: ../plugins/gtk+/glade-gtk.c:3176
+#: ../plugins/gtk+/glade-gtk.c:3186
 #, c-format
 msgid "Remove page from %s"
-msgstr "从 %s 清除页"
+msgstr "从 %s 移除页"
 
-#: ../plugins/gtk+/glade-gtk.c:3921 ../plugins/gtk+/glade-gtk.c:3925
-#: ../plugins/gtk+/glade-gtk.c:4100 ../plugins/gtk+/glade-gtk.c:4104
+#: ../plugins/gtk+/glade-gtk.c:3931 ../plugins/gtk+/glade-gtk.c:3935
+#: ../plugins/gtk+/glade-gtk.c:4110 ../plugins/gtk+/glade-gtk.c:4114
 msgid "This only applies with label type buttons"
 msgstr "这只适用于标签型的按扭"
 
-#: ../plugins/gtk+/glade-gtk.c:3936 ../plugins/gtk+/glade-gtk.c:3940
-#: ../plugins/gtk+/glade-gtk.c:4092 ../plugins/gtk+/glade-gtk.c:4096
+#: ../plugins/gtk+/glade-gtk.c:3946 ../plugins/gtk+/glade-gtk.c:3950
+#: ../plugins/gtk+/glade-gtk.c:4102 ../plugins/gtk+/glade-gtk.c:4106
 msgid "This only applies with stock type buttons"
 msgstr "这只适用于库存的按扭"
 
-#: ../plugins/gtk+/glade-gtk.c:4200 ../plugins/gtk+/glade-gtk.c:4222
+#: ../plugins/gtk+/glade-gtk.c:4210 ../plugins/gtk+/glade-gtk.c:4232
 msgid "You must remove any children before you can set the type"
-msgstr "在设置类型前您必须清除所有子结点"
+msgstr "在设置类型前您必须移除所有子结点"
 
-#: ../plugins/gtk+/glade-gtk.c:4246 ../plugins/gtk+/glade-gtk.c:5759
+#: ../plugins/gtk+/glade-gtk.c:4256 ../plugins/gtk+/glade-gtk.c:5769
 msgid "This only applies with file type images"
 msgstr "这只适用于文件类型的图像"
 
-#: ../plugins/gtk+/glade-gtk.c:4254 ../plugins/gtk+/glade-gtk.c:5763
+#: ../plugins/gtk+/glade-gtk.c:4264 ../plugins/gtk+/glade-gtk.c:5773
+#, fuzzy
 msgid "This only applies to Icon Theme type images"
-msgstr "这只适用于图标主题类型的图像"
+msgstr "这只适用于文件类型的图像"
 
-#: ../plugins/gtk+/glade-gtk.c:4264 ../plugins/gtk+/glade-gtk.c:5761
+#: ../plugins/gtk+/glade-gtk.c:4274 ../plugins/gtk+/glade-gtk.c:5771
+#, fuzzy
 msgid "This only applies with stock type images"
-msgstr "这只适用于库存类型的图像"
+msgstr "这只适用于文件类型的图像"
 
-#: ../plugins/gtk+/glade-gtk.c:4276
+#: ../plugins/gtk+/glade-gtk.c:4286
 msgid ""
 "Pixel Size takes precedence over Icon Size; if you want to use Icon Size, "
 "set Pixel size to -1"
 msgstr "像素大小比图标大小有优先权；如果您想使用图标大小请设置像素大小为 -1"
 
-#: ../plugins/gtk+/glade-gtk.c:4302
+#: ../plugins/gtk+/glade-gtk.c:4312
 msgid "Pixel Size takes precedence over Icon size"
 msgstr "像素大小比图标大小有优先权"
 
-#: ../plugins/gtk+/glade-gtk.c:4615 ../plugins/gtk+/glade-gtk.c:5609
+#: ../plugins/gtk+/glade-gtk.c:4625 ../plugins/gtk+/glade-gtk.c:5619
 msgid "<separator>"
 msgstr "<分割条>"
 
-#: ../plugins/gtk+/glade-gtk.c:4789 ../plugins/gtk+/gtk+.xml.in.h:206
+#: ../plugins/gtk+/glade-gtk.c:4799 ../plugins/gtk+/gtk+.xml.in.h:248
 msgid "Normal"
 msgstr "普通的"
 
-#: ../plugins/gtk+/glade-gtk.c:4790 ../plugins/gtk+/gtk+.xml.in.h:143
+#: ../plugins/gtk+/glade-gtk.c:4800 ../plugins/gtk+/gtk+.xml.in.h:185
 msgid "Image"
-msgstr "图像"
+msgstr "图像(Image)"
 
-#: ../plugins/gtk+/glade-gtk.c:4791
+#: ../plugins/gtk+/glade-gtk.c:4801
 msgid "Check"
 msgstr "复选"
 
-#: ../plugins/gtk+/glade-gtk.c:4792 ../plugins/gtk+/glade-gtk.c:5673
+#: ../plugins/gtk+/glade-gtk.c:4802 ../plugins/gtk+/glade-gtk.c:5683
 msgid "Radio"
 msgstr "单选"
 
-#: ../plugins/gtk+/glade-gtk.c:4793 ../plugins/gtk+/glade-gtk.c:5676
+#: ../plugins/gtk+/glade-gtk.c:4803 ../plugins/gtk+/glade-gtk.c:5686
 msgid "Separator"
 msgstr "分割条"
 
-#: ../plugins/gtk+/glade-gtk.c:4797
+#: ../plugins/gtk+/glade-gtk.c:4807
+#, fuzzy
 msgid "Add Item"
-msgstr "添加项目"
+msgstr "添加 %s 项目"
 
-#: ../plugins/gtk+/glade-gtk.c:4798
+#: ../plugins/gtk+/glade-gtk.c:4808
+#, fuzzy
 msgid "Add Child Item"
-msgstr "添加子项目"
+msgstr "添加子项 %s"
 
-#: ../plugins/gtk+/glade-gtk.c:4799 ../plugins/gtk+/glade-gtk.c:5685
+#: ../plugins/gtk+/glade-gtk.c:4809 ../plugins/gtk+/glade-gtk.c:5695
+#, fuzzy
 msgid "Add Separator"
-msgstr "添加分割条"
+msgstr "分割条"
 
-#: ../plugins/gtk+/glade-gtk.c:4812
+#: ../plugins/gtk+/glade-gtk.c:4822
+#, fuzzy
 msgid ""
 "<big><b>Tips:</b></big>\n"
 "  * Right click over the treeview to add items.\n"
@@ -2050,142 +2085,145 @@ msgstr ""
 "<big><b>提示：</b></big>\n"
 "  * 在树视图右单击可以添加条目。\n"
 "  * 按下删除键可以删除条目。\n"
-"  * 拖拽 &amp；放下可以重新排序。\n"
-"  * 样式列是可编辑的。"
+"  * 拖拽 &amp; 放下可以重新排序。\n"
+"  * 类型列是可编辑的。"
 
-#: ../plugins/gtk+/glade-gtk.c:4828 ../plugins/gtk+/glade-gtk.c:5343
+#: ../plugins/gtk+/glade-gtk.c:4838 ../plugins/gtk+/glade-gtk.c:5353
 msgid "Edit Menu Bar"
 msgstr "编辑菜单条"
 
-#: ../plugins/gtk+/glade-gtk.c:4830 ../plugins/gtk+/glade-gtk.c:5345
+#: ../plugins/gtk+/glade-gtk.c:4840 ../plugins/gtk+/glade-gtk.c:5355
 msgid "Edit Menu"
 msgstr "编辑菜单"
 
-#: ../plugins/gtk+/glade-gtk.c:5081
+#: ../plugins/gtk+/glade-gtk.c:5091
 msgid "Print S_etup"
-msgstr "打印设置(_e)"
+msgstr "打印设置(_E)"
 
-#: ../plugins/gtk+/glade-gtk.c:5085
+#: ../plugins/gtk+/glade-gtk.c:5095
 msgid "Find Ne_xt"
-msgstr "查找下一个(_x)"
+msgstr "查找下一个(_X)"
 
-#: ../plugins/gtk+/glade-gtk.c:5089
+#: ../plugins/gtk+/glade-gtk.c:5099
 msgid "_Undo Move"
 msgstr "撤消移动(_U)"
 
-#: ../plugins/gtk+/glade-gtk.c:5093
+#: ../plugins/gtk+/glade-gtk.c:5103
 msgid "_Redo Move"
 msgstr "重做移动(_R)"
 
-#: ../plugins/gtk+/glade-gtk.c:5096
+#: ../plugins/gtk+/glade-gtk.c:5106
 msgid "Select _All"
 msgstr "选择全部(_A)"
 
-#: ../plugins/gtk+/glade-gtk.c:5099
+#: ../plugins/gtk+/glade-gtk.c:5109
 msgid "_New Game"
 msgstr "新游戏(_N)"
 
-#: ../plugins/gtk+/glade-gtk.c:5102
+#: ../plugins/gtk+/glade-gtk.c:5112
 msgid "_Pause game"
 msgstr "暂停游戏(_P)"
 
-#: ../plugins/gtk+/glade-gtk.c:5105
+#: ../plugins/gtk+/glade-gtk.c:5115
 msgid "_Restart Game"
 msgstr "重新开始游戏(_R)"
 
-#: ../plugins/gtk+/glade-gtk.c:5108
+#: ../plugins/gtk+/glade-gtk.c:5118
 msgid "_Hint"
 msgstr "提示(_H)"
 
-#: ../plugins/gtk+/glade-gtk.c:5111
+#: ../plugins/gtk+/glade-gtk.c:5121
 msgid "_Scores..."
 msgstr "分数(_S)..."
 
-#: ../plugins/gtk+/glade-gtk.c:5114
+#: ../plugins/gtk+/glade-gtk.c:5124
 msgid "_End Game"
 msgstr "结束游戏(_E)"
 
-#: ../plugins/gtk+/glade-gtk.c:5117
+#: ../plugins/gtk+/glade-gtk.c:5127
 msgid "Create New _Window"
 msgstr "创建新窗口(_W)"
 
-#: ../plugins/gtk+/glade-gtk.c:5120
+#: ../plugins/gtk+/glade-gtk.c:5130
 msgid "_Close This Window"
 msgstr "关闭窗口(_C)"
 
-#: ../plugins/gtk+/glade-gtk.c:5132
+#: ../plugins/gtk+/glade-gtk.c:5142
 msgid "_Settings"
 msgstr "设置(_S)"
 
-#: ../plugins/gtk+/glade-gtk.c:5135
+#: ../plugins/gtk+/glade-gtk.c:5145
 msgid "Fi_les"
-msgstr "文件(_l)"
+msgstr "文件(_L)"
 
-#: ../plugins/gtk+/glade-gtk.c:5138
+#: ../plugins/gtk+/glade-gtk.c:5148
 msgid "_Windows"
 msgstr "窗口(_W)"
 
-#: ../plugins/gtk+/glade-gtk.c:5144
+#: ../plugins/gtk+/glade-gtk.c:5154
 msgid "_Game"
 msgstr "游戏(_G)"
 
-#: ../plugins/gtk+/glade-gtk.c:5240
+#: ../plugins/gtk+/glade-gtk.c:5250
+#, fuzzy
 msgid "This does not apply with stock items"
-msgstr "此操作不能应用到库存条目"
+msgstr "这只适用于库存的按扭"
 
-#: ../plugins/gtk+/glade-gtk.c:5618
+#: ../plugins/gtk+/glade-gtk.c:5628
 msgid "<custom>"
 msgstr "<定制>"
 
-#: ../plugins/gtk+/glade-gtk.c:5671 ../plugins/gtk+/gtk+.xml.in.h:36
+#: ../plugins/gtk+/glade-gtk.c:5681 ../plugins/gtk+/gtk+.xml.in.h:36
 msgid "Button"
-msgstr "按扭"
+msgstr "按钮(Button)"
 
-#: ../plugins/gtk+/glade-gtk.c:5672
+#: ../plugins/gtk+/glade-gtk.c:5682
 msgid "Toggle"
-msgstr "双态"
+msgstr "开关"
 
-#: ../plugins/gtk+/glade-gtk.c:5674 ../plugins/gtk+/gtk+.xml.in.h:193
+#: ../plugins/gtk+/glade-gtk.c:5684 ../plugins/gtk+/gtk+.xml.in.h:235
 msgid "Menu"
 msgstr "菜单"
 
-#: ../plugins/gtk+/glade-gtk.c:5675
+#: ../plugins/gtk+/glade-gtk.c:5685
 msgid "Item"
 msgstr "条目"
 
-#: ../plugins/gtk+/glade-gtk.c:5680
+#: ../plugins/gtk+/glade-gtk.c:5690
 msgid "Add Tool Button"
 msgstr "添加工具按扭"
 
-#: ../plugins/gtk+/glade-gtk.c:5681
+#: ../plugins/gtk+/glade-gtk.c:5691
 msgid "Add Toggle Button"
 msgstr "添加双态按扭"
 
-#: ../plugins/gtk+/glade-gtk.c:5682
+#: ../plugins/gtk+/glade-gtk.c:5692
 msgid "Add Radio Button"
 msgstr "添加单选按扭"
 
-#: ../plugins/gtk+/glade-gtk.c:5683
-msgid "Add Menu Button"
-msgstr "添加菜单按扭"
-
-#: ../plugins/gtk+/glade-gtk.c:5684
-msgid "Add Tool Item"
-msgstr "添加工具条目"
-
 #: ../plugins/gtk+/glade-gtk.c:5693
+#, fuzzy
+msgid "Add Menu Button"
+msgstr "添加双态按扭"
+
+#: ../plugins/gtk+/glade-gtk.c:5694
+#, fuzzy
+msgid "Add Tool Item"
+msgstr "工具条目"
+
+#: ../plugins/gtk+/glade-gtk.c:5703
 msgid "Tool Bar Editor"
 msgstr "工具条编辑器"
 
-#: ../plugins/gtk+/glade-gtk.c:6509
+#: ../plugins/gtk+/glade-gtk.c:6519
 msgid "Introduction page"
 msgstr "介绍页"
 
-#: ../plugins/gtk+/glade-gtk.c:6513
+#: ../plugins/gtk+/glade-gtk.c:6523
 msgid "Content page"
 msgstr "内容页"
 
-#: ../plugins/gtk+/glade-gtk.c:6517
+#: ../plugins/gtk+/glade-gtk.c:6527
 msgid "Confirmation page"
 msgstr "确认页"
 
@@ -2203,11 +2241,11 @@ msgstr "部分的工具提示文字"
 #.
 #: ../plugins/gtk+/gtk+.xml.in.h:8
 msgid "About Dialog"
-msgstr "关于对话框"
+msgstr "关于对话框(About Dialog)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:9
 msgid "Accel Label"
-msgstr "加速键列表"
+msgstr "快捷键标签"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:12
 msgid "Accessible Description"
@@ -2224,7 +2262,7 @@ msgstr "添加上一级"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:19
 msgid "Alignment"
-msgstr "对齐"
+msgstr "对齐(Alignment)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:20
 msgid "All"
@@ -2244,7 +2282,7 @@ msgstr "总是在中心"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:24
 msgid "Arrow"
-msgstr "箭头"
+msgstr "箭头(Arrow)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:25
 msgid "Ascending"
@@ -2252,11 +2290,11 @@ msgstr "上升的"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:26
 msgid "Aspect Frame"
-msgstr "外观框架"
+msgstr "外观框架(Aspect Frame)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:27
 msgid "Assistant"
-msgstr "辅助的"
+msgstr "助手(Assistant)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:28
 msgid "Automatic"
@@ -2284,7 +2322,7 @@ msgstr "自底至顶"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:34
 msgid "Box"
-msgstr "框"
+msgstr "框(Box)"
 
 #. This is deprecated
 #: ../plugins/gtk+/gtk+.xml.in.h:35 ../plugins/gnome/canvas.xml.in.h:2
@@ -2293,35 +2331,35 @@ msgstr "浏览"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:37
 msgid "Button 1 Motion"
-msgstr "按扭1移动"
+msgstr "按钮1移动"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:38
 msgid "Button 2 Motion"
-msgstr "按扭2移动"
+msgstr "按钮2移动"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:39
 msgid "Button 3 Motion"
-msgstr "按扭3移动"
+msgstr "按钮3移动"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:40
 msgid "Button Box"
-msgstr "按扭框"
+msgstr "按钮框(Button Box)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:41
 msgid "Button Motion"
-msgstr "按扭移动"
+msgstr "按钮移动"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:42
 msgid "Button Press"
-msgstr "按扭按下"
+msgstr "按钮按下"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:43
 msgid "Button Release"
-msgstr "按扭释放"
+msgstr "按钮释放"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:44
 msgid "Calendar"
-msgstr "日历"
+msgstr "日历(Calendar)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:45
 msgid "Cancel"
@@ -2345,7 +2383,7 @@ msgstr "字符"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:50
 msgid "Check Button"
-msgstr "复选按扭"
+msgstr "复选按钮(Check Button)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:51
 msgid "Check Menu Item"
@@ -2357,19 +2395,19 @@ msgstr "关闭"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:55
 msgid "Color Button"
-msgstr "颜色按扭"
+msgstr "颜色按钮(Color Button)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:56
 msgid "Color Selection"
-msgstr "颜色选择器"
+msgstr "颜色选择器(Color Selection)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:57
 msgid "Color Selection Dialog"
-msgstr "颜色选择对话框"
+msgstr "颜色选择对话框(Color Selection Dialog)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:58
 msgid "Columned List"
-msgstr "按列分布的列表"
+msgstr "按列分布的列表(Columned List)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:59
 msgid "Combo"
@@ -2377,11 +2415,11 @@ msgstr "组合"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:60
 msgid "Combo Box"
-msgstr "组合框"
+msgstr "组合框(Combo Box)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:61
 msgid "Combo Box Entry"
-msgstr "组合框条目"
+msgstr "组合框条目(Combo Box Entry)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:62
 msgid "Confirm"
@@ -2407,937 +2445,1045 @@ msgstr "连续的"
 msgid "Control and Display"
 msgstr "控制和显示"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:71 ../plugins/gnome/gnome.xml.in.h:5
+#. Commenting out new widgets untill string freeze is over
+#.
+#. <glade-widget-class name="GtkScaleButton" generic-name="scalebutton" _title="Scale Button">
+#. <properties>
+#. <property id="size">
+#. <displayable-values>
+#. <value id="GTK_ICON_SIZE_INVALID" _name="Invalid"/>
+#. <value id="GTK_ICON_SIZE_MENU" _name="Menu"/>
+#. <value id="GTK_ICON_SIZE_SMALL_TOOLBAR" _name="Small Toolbar"/>
+#. <value id="GTK_ICON_SIZE_LARGE_TOOLBAR" _name="Large Toolbar"/>
+#. <value id="GTK_ICON_SIZE_BUTTON" _name="Button"/>
+#. <value id="GTK_ICON_SIZE_DND" _name="Drag'n Drop"/>
+#. <value id="GTK_ICON_SIZE_DIALOG" _name="Dialog"/>
+#. </displayable-values>
+#. </property>
+#. </properties>
+#. </glade-widget-class>
+#.
+#. <glade-widget-class name="GtkVolumeButton" generic-name="volumebutton" _title="Volume Button"/>
+#.
+#.
+#: ../plugins/gtk+/gtk+.xml.in.h:92 ../plugins/gnome/gnome.xml.in.h:5
 msgid "Create Folder"
 msgstr "创建目录"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:73
+#: ../plugins/gtk+/gtk+.xml.in.h:94
 msgid "Curve"
-msgstr "曲线"
+msgstr "曲线(Curve)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:74
+#: ../plugins/gtk+/gtk+.xml.in.h:95
 msgid "Custom"
 msgstr "定制"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:75
+#: ../plugins/gtk+/gtk+.xml.in.h:96
 msgid "Custom widget"
-msgstr "定制部件"
+msgstr "定制组件(Custom widget)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:76
+#: ../plugins/gtk+/gtk+.xml.in.h:97
 msgid "Default"
 msgstr "默认"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:77
+#: ../plugins/gtk+/gtk+.xml.in.h:98
 msgid "Delayed"
 msgstr "延迟"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:78
+#: ../plugins/gtk+/gtk+.xml.in.h:99
 msgid "Descending"
 msgstr "下降的"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:79
+#: ../plugins/gtk+/gtk+.xml.in.h:100
 msgid "Described By"
 msgstr "说明，由"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:80
+#: ../plugins/gtk+/gtk+.xml.in.h:101
 msgid "Description For"
 msgstr "说明，为了"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:81
+#: ../plugins/gtk+/gtk+.xml.in.h:102
 msgid "Description of an object, formatted for assistive technology access"
 msgstr "对象的说明，为辅助技术存取已格式化"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:82
+#: ../plugins/gtk+/gtk+.xml.in.h:103
 msgid "Desktop"
 msgstr "桌面"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:83
+#: ../plugins/gtk+/gtk+.xml.in.h:104
 msgid "Dialog"
-msgstr "对话框"
+msgstr "对话框(Dialog)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:84
+#: ../plugins/gtk+/gtk+.xml.in.h:105
 msgid "Dialog Box"
 msgstr "对话框"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:85
+#: ../plugins/gtk+/gtk+.xml.in.h:106
 msgid "Discontinuous"
-msgstr "间断的"
+msgstr "间断"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:86
+#: ../plugins/gtk+/gtk+.xml.in.h:107
 msgid "Discrete"
-msgstr "离散的"
+msgstr "离散"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:87
+#: ../plugins/gtk+/gtk+.xml.in.h:108
 msgid "Dock"
 msgstr "停靠"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:88
+#: ../plugins/gtk+/gtk+.xml.in.h:109
 msgid "Down"
 msgstr "下"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:89
+#: ../plugins/gtk+/gtk+.xml.in.h:110
 msgid "Drag & Drop"
 msgstr "拖拽 & 放下"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:90
+#: ../plugins/gtk+/gtk+.xml.in.h:111
 msgid "Drag and Drop"
 msgstr "下拉"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:91
+#: ../plugins/gtk+/gtk+.xml.in.h:112
 msgid "Drawing Area"
-msgstr "绘图区域"
+msgstr "绘图区域(Drawing Area)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:92
+#: ../plugins/gtk+/gtk+.xml.in.h:113
 msgid "Drop Down Menu"
 msgstr "下拉式菜单"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:93
+#: ../plugins/gtk+/gtk+.xml.in.h:114
 msgid "East"
 msgstr "东"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:94
+#: ../plugins/gtk+/gtk+.xml.in.h:115
 msgid "Edge"
 msgstr "边"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:95
+#: ../plugins/gtk+/gtk+.xml.in.h:116
 msgid "Edit Type"
 msgstr "编辑类型"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:96
+#: ../plugins/gtk+/gtk+.xml.in.h:117
 msgid "Edit&#8230;"
 msgstr "Edit&#8230"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:99 ../plugins/gnome/gnome.xml.in.h:7
+#: ../plugins/gtk+/gtk+.xml.in.h:120 ../plugins/gnome/gnome.xml.in.h:7
 msgid "End"
 msgstr "结束"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:100
+#: ../plugins/gtk+/gtk+.xml.in.h:121
 msgid "Enter Notify"
 msgstr "输入通知"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:101 ../plugins/gnome/gnome.xml.in.h:8
+#: ../plugins/gtk+/gtk+.xml.in.h:122 ../plugins/gnome/gnome.xml.in.h:8
 msgid "Error"
 msgstr "错误"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:102 ../plugins/gnome/bonobo.xml.in.h:2
+#: ../plugins/gtk+/gtk+.xml.in.h:123 ../plugins/gnome/bonobo.xml.in.h:2
 msgid "Etched In"
 msgstr "向内蚀刻"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:103 ../plugins/gnome/bonobo.xml.in.h:3
+#: ../plugins/gtk+/gtk+.xml.in.h:124 ../plugins/gnome/bonobo.xml.in.h:3
 msgid "Etched Out"
 msgstr "向外蚀刻"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:104
+#: ../plugins/gtk+/gtk+.xml.in.h:125
 msgid "Event Box"
-msgstr "事件框"
+msgstr "事件框(Event Box)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:105 ../plugins/gnome/gnome.xml.in.h:9
+#: ../plugins/gtk+/gtk+.xml.in.h:126 ../plugins/gnome/gnome.xml.in.h:9
 msgid "Expand"
 msgstr "展开"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:106
+#: ../plugins/gtk+/gtk+.xml.in.h:127
 msgid "Expander"
-msgstr "展开器"
+msgstr "展开器(Expander)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:107
+#: ../plugins/gtk+/gtk+.xml.in.h:128
 msgid "Exposure"
 msgstr "暴露"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:108
+#: ../plugins/gtk+/gtk+.xml.in.h:129
 msgid "Extended"
 msgstr "伸展的"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:109
+#: ../plugins/gtk+/gtk+.xml.in.h:130
 msgid "File Chooser Button"
-msgstr "文件选择按扭"
+msgstr "文件选择按钮(File Chooser Button)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:110
+#: ../plugins/gtk+/gtk+.xml.in.h:131
 msgid "File Chooser Dialog"
-msgstr "文件选择对话框"
+msgstr "文件选择对话框(File Chooser Dialog)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:111
+#. Commenting out new widgets untill string freeze is over
+#.
+#. <glade-widget-class name="GtkScaleButton" generic-name="scalebutton" _title="Scale Button">
+#. <properties>
+#. <property id="size">
+#. <displayable-values>
+#. <value id="GTK_ICON_SIZE_INVALID" _name="Invalid"/>
+#. <value id="GTK_ICON_SIZE_MENU" _name="Menu"/>
+#. <value id="GTK_ICON_SIZE_SMALL_TOOLBAR" _name="Small Toolbar"/>
+#. <value id="GTK_ICON_SIZE_LARGE_TOOLBAR" _name="Large Toolbar"/>
+#. <value id="GTK_ICON_SIZE_BUTTON" _name="Button"/>
+#. <value id="GTK_ICON_SIZE_DND" _name="Drag'n Drop"/>
+#. <value id="GTK_ICON_SIZE_DIALOG" _name="Dialog"/>
+#. </displayable-values>
+#. </property>
+#. </properties>
+#. </glade-widget-class>
+#.
+#. <glade-widget-class name="GtkVolumeButton" generic-name="volumebutton" _title="Volume Button"/>
+#.
+#.
+#: ../plugins/gtk+/gtk+.xml.in.h:153
 msgid "File Chooser Widget"
-msgstr "文件选择部件"
+msgstr "文件选择组件(File Chooser Widget)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:112
+#: ../plugins/gtk+/gtk+.xml.in.h:154
 msgid "File Name"
 msgstr "文件的名称"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:113
+#: ../plugins/gtk+/gtk+.xml.in.h:155
 msgid "File Selection"
-msgstr "文件选择器"
+msgstr "文件选择器(File Selection)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:114
+#: ../plugins/gtk+/gtk+.xml.in.h:156
 msgid "Filename"
 msgstr "文件名"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:115 ../plugins/gnome/gnome.xml.in.h:11
+#: ../plugins/gtk+/gtk+.xml.in.h:157 ../plugins/gnome/gnome.xml.in.h:11
 msgid "Fill"
 msgstr "填充"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:116
+#: ../plugins/gtk+/gtk+.xml.in.h:158
 msgid "Fixed"
-msgstr "固定的"
+msgstr "固定的(Fixed)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:119
+#: ../plugins/gtk+/gtk+.xml.in.h:161
 msgid "Focus Change"
 msgstr "焦点改变"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:120
+#: ../plugins/gtk+/gtk+.xml.in.h:162
 msgid "Font Button"
-msgstr "字体按扭"
+msgstr "字体按钮(Font Button)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:121
+#: ../plugins/gtk+/gtk+.xml.in.h:163
 msgid "Font Selection"
-msgstr "字体选择器"
+msgstr "字体选择器(Font Selection)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:122
+#: ../plugins/gtk+/gtk+.xml.in.h:164
 msgid "Font Selection Dialog"
-msgstr "字体选择对话框"
+msgstr "字体选择对话框(Font Selection Dialog)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:123
+#: ../plugins/gtk+/gtk+.xml.in.h:165
 msgid "Frame"
-msgstr "框架"
+msgstr "框架(Frame)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:124
+#: ../plugins/gtk+/gtk+.xml.in.h:166
 msgid "Free"
 msgstr "自由"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:125
+#: ../plugins/gtk+/gtk+.xml.in.h:167
 msgid "Gamma Curve"
-msgstr "Gamma曲线"
+msgstr "Gamma 曲线(Gamma Curve)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:126
+#: ../plugins/gtk+/gtk+.xml.in.h:168
 msgid "Gtk+ Obsolete"
 msgstr "过时的Gtk+"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:127
+#: ../plugins/gtk+/gtk+.xml.in.h:169
 msgid "Half"
 msgstr "二分之一"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:128
+#: ../plugins/gtk+/gtk+.xml.in.h:170
 msgid "Handle Box"
-msgstr "可移动的框"
+msgstr "可移动的框(Handle Box)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:129 ../plugins/gnome/bonobo.xml.in.h:6
+#: ../plugins/gtk+/gtk+.xml.in.h:171 ../plugins/gnome/bonobo.xml.in.h:6
 msgid "Horizontal"
-msgstr "水平的"
+msgstr "水平的(Horizontal)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:130
+#: ../plugins/gtk+/gtk+.xml.in.h:172
 msgid "Horizontal Box"
-msgstr "水平框"
+msgstr "水平框(Horizontal Box)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:131
+#: ../plugins/gtk+/gtk+.xml.in.h:173
 msgid "Horizontal Button Box"
-msgstr "水平按扭框"
+msgstr "水平按钮框(Horizontal Button Box)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:132
+#: ../plugins/gtk+/gtk+.xml.in.h:174
 msgid "Horizontal Panes"
-msgstr "水平窗格"
+msgstr "水平窗格(Horizontal Panes)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:133
+#: ../plugins/gtk+/gtk+.xml.in.h:175
 msgid "Horizontal Ruler"
-msgstr "水平尺"
+msgstr "水平尺(Horizontal Ruler)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:134
+#: ../plugins/gtk+/gtk+.xml.in.h:176
 msgid "Horizontal Scale"
-msgstr "水平比例"
+msgstr "水平比例(Horizontal Scale)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:135
+#: ../plugins/gtk+/gtk+.xml.in.h:177
 msgid "Horizontal Scrollbar"
-msgstr "水平滚动条"
+msgstr "水平滚动条(Horizontal Scrollbar)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:136
+#: ../plugins/gtk+/gtk+.xml.in.h:178
 msgid "Horizontal Separator"
-msgstr "水平分割条"
+msgstr "水平分割条(Horizontal Separator)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:137
+#: ../plugins/gtk+/gtk+.xml.in.h:179
 msgid "Horizontal and Vertical"
-msgstr "水平与垂直"
+msgstr "水平与垂直(Horizontal and Vertical)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:139
+#: ../plugins/gtk+/gtk+.xml.in.h:181
 msgid "Icon Theme"
 msgstr "图标主题"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:140
+#: ../plugins/gtk+/gtk+.xml.in.h:182
 msgid "Icon View"
-msgstr "图标视图"
+msgstr "图标视图(Icon View)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:141
+#: ../plugins/gtk+/gtk+.xml.in.h:183
 msgid "Icons only"
 msgstr "只有图标"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:142
+#: ../plugins/gtk+/gtk+.xml.in.h:184
 msgid "If Valid"
 msgstr "如果合法"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:144
+#: ../plugins/gtk+/gtk+.xml.in.h:186
 msgid "Image Menu Item"
-msgstr "图像菜单条目"
+msgstr "图像菜单条目(Image Menu Item)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:145
+#: ../plugins/gtk+/gtk+.xml.in.h:187
 msgid "Image Type"
 msgstr "图像类型"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:146
+#: ../plugins/gtk+/gtk+.xml.in.h:188
 msgid "Immediate"
 msgstr "立刻的"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:147 ../plugins/gnome/bonobo.xml.in.h:7
+#: ../plugins/gtk+/gtk+.xml.in.h:189 ../plugins/gnome/bonobo.xml.in.h:7
 msgid "In"
 msgstr "里面"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:148
+#: ../plugins/gtk+/gtk+.xml.in.h:190
 msgid "Inches"
 msgstr "英寸"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:159
+#: ../plugins/gtk+/gtk+.xml.in.h:201
 msgid ""
 "Indicates that an object provides descriptive information about another "
 "object; more verbose than 'Label For'"
 msgstr "指示对象提供另一个对象的描述性信息，比“被标签号，由”的信息量多"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:160
+#: ../plugins/gtk+/gtk+.xml.in.h:202
 msgid ""
 "Indicates that another object provides descriptive information about this "
 "object; more verbose than 'Labelled By'"
 msgstr "指示另一个对象提供此对象的描述性信息，比“被标签号，由”的信息量多"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:162
+#: ../plugins/gtk+/gtk+.xml.in.h:204
 msgid ""
 "Indicates that the object has content that flows logically to another "
 "AtkObject in a sequential way, (for instance text-flow)"
-msgstr "指示对象有逻辑上按顺序方式流向另一个AtkObject的内容，(例如：文本流)"
+msgstr "指示对象有逻辑上按顺序方式流向另一个 AtkObject 的内容，(例如：文本流)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:165
+#: ../plugins/gtk+/gtk+.xml.in.h:207
 msgid "Input Dialog"
-msgstr "输入对话框"
+msgstr "输入对话框(Input Dialog)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:166
+#: ../plugins/gtk+/gtk+.xml.in.h:208
 msgid "Insert After"
 msgstr "插入，位于后面内容之后"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:167
+#: ../plugins/gtk+/gtk+.xml.in.h:209
 msgid "Insert Before"
 msgstr "插入，位于后面内容之前"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:168
+#: ../plugins/gtk+/gtk+.xml.in.h:210
 msgid "Insert Column"
 msgstr "插入列"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:169
+#: ../plugins/gtk+/gtk+.xml.in.h:211
 msgid "Insert Page After"
 msgstr "插入页，位于后面内容之后"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:170
+#: ../plugins/gtk+/gtk+.xml.in.h:212
 msgid "Insert Page Before"
 msgstr "插入页，位于后面内容之前"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:171
+#: ../plugins/gtk+/gtk+.xml.in.h:213
 msgid "Insert Row"
 msgstr "插入行"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:172
+#: ../plugins/gtk+/gtk+.xml.in.h:214
 msgid "Intro"
 msgstr "介绍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:173
+#: ../plugins/gtk+/gtk+.xml.in.h:215
 msgid "Invalid"
 msgstr "不合法"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:175
+#: ../plugins/gtk+/gtk+.xml.in.h:217
 msgid "Items"
 msgstr "条目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:176
+#: ../plugins/gtk+/gtk+.xml.in.h:218
 msgid "Key Press"
 msgstr "键按下"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:177
+#: ../plugins/gtk+/gtk+.xml.in.h:219
 msgid "Key Release"
 msgstr "键释放"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:181
+#: ../plugins/gtk+/gtk+.xml.in.h:223
 msgid "Large Toolbar"
 msgstr "大工具栏"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:182
+#: ../plugins/gtk+/gtk+.xml.in.h:224
 msgid "Layout"
-msgstr "陈列"
+msgstr "布局(Layout)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:183
+#: ../plugins/gtk+/gtk+.xml.in.h:225
 msgid "Least Recently Used first"
 msgstr "最近使用最少的第一个"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:184
+#: ../plugins/gtk+/gtk+.xml.in.h:226
 msgid "Leave Notify"
 msgstr "留下通知"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:185 ../plugins/gnome/bonobo.xml.in.h:8
+#: ../plugins/gtk+/gtk+.xml.in.h:227 ../plugins/gnome/bonobo.xml.in.h:8
 msgid "Left"
 msgstr "左"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:186
+#: ../plugins/gtk+/gtk+.xml.in.h:228
 msgid "Left to Right"
 msgstr "自左至右"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:187
+#: ../plugins/gtk+/gtk+.xml.in.h:229
 msgid "Linear"
 msgstr "线性的"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:188
+#: ../plugins/gtk+/gtk+.xml.in.h:230
 msgid "Link Button"
-msgstr "链接按扭"
+msgstr "链接按钮(Link Button)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:189
+#: ../plugins/gtk+/gtk+.xml.in.h:231
 msgid "List"
-msgstr "列表"
+msgstr "列表(List)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:190
+#: ../plugins/gtk+/gtk+.xml.in.h:232
 msgid "List Item"
 msgstr "列表条目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:191
+#: ../plugins/gtk+/gtk+.xml.in.h:233
 msgid "Maximum Width"
 msgstr "最大宽度"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:194
+#: ../plugins/gtk+/gtk+.xml.in.h:236
 msgid "Menu Bar"
-msgstr "菜单条"
+msgstr "菜单条(Menu Bar)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:195
+#: ../plugins/gtk+/gtk+.xml.in.h:237
 msgid "Menu Item"
 msgstr "菜单条目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:196
+#: ../plugins/gtk+/gtk+.xml.in.h:238
 msgid "Menu Shell"
 msgstr "菜单外壳"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:197
+#: ../plugins/gtk+/gtk+.xml.in.h:239
 msgid "Menu Tool Button"
-msgstr "菜单工具按扭"
+msgstr "菜单工具按钮(Menu Tool Button)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:198
+#: ../plugins/gtk+/gtk+.xml.in.h:240
 msgid "Message Dialog"
-msgstr "消息对话框"
+msgstr "消息对话框(Message Dialog)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:199
+#: ../plugins/gtk+/gtk+.xml.in.h:241
 msgid "Middle"
 msgstr "中间"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:200
+#: ../plugins/gtk+/gtk+.xml.in.h:242
 msgid "Most Recently Used first"
 msgstr "最近使用最多的第一个"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:201
+#: ../plugins/gtk+/gtk+.xml.in.h:243
 msgid "Mouse"
 msgstr "鼠标"
 
 #. This is deprecated
-#: ../plugins/gtk+/gtk+.xml.in.h:202 ../plugins/gnome/canvas.xml.in.h:17
+#: ../plugins/gtk+/gtk+.xml.in.h:244 ../plugins/gnome/canvas.xml.in.h:17
 msgid "Multiple"
 msgstr "乘数"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:203 ../plugins/gnome/gnome.xml.in.h:41
+#: ../plugins/gtk+/gtk+.xml.in.h:245 ../plugins/gnome/gnome.xml.in.h:41
 msgid "Never"
 msgstr "从不"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:204
+#: ../plugins/gtk+/gtk+.xml.in.h:246
 msgid "Node Child Of"
 msgstr "子结点，属于"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:207
+#: ../plugins/gtk+/gtk+.xml.in.h:249
 msgid "North"
 msgstr "北"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:208
+#: ../plugins/gtk+/gtk+.xml.in.h:250
 msgid "North East"
 msgstr "东北"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:209
+#: ../plugins/gtk+/gtk+.xml.in.h:251
 msgid "North West"
 msgstr "西北"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:210
+#: ../plugins/gtk+/gtk+.xml.in.h:252
 msgid "Notebook"
-msgstr "笔记本"
+msgstr "笔记本(Notebook)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:211
+#: ../plugins/gtk+/gtk+.xml.in.h:253
 msgid "Notification"
 msgstr "通知"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:212
+#: ../plugins/gtk+/gtk+.xml.in.h:254
 msgid "Number of items"
 msgstr "条目数"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:213
+#: ../plugins/gtk+/gtk+.xml.in.h:255
 msgid "Number of pages"
 msgstr "页数"
 
 #. Atk name and description properties
-#: ../plugins/gtk+/gtk+.xml.in.h:215
+#: ../plugins/gtk+/gtk+.xml.in.h:257
 msgid "Object instance's name formatted for assistive technology access"
 msgstr "对象实例名称被格式化，为辅助技术存取"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:216
+#: ../plugins/gtk+/gtk+.xml.in.h:258
 msgid "Off"
 msgstr "关闭"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:217
+#: ../plugins/gtk+/gtk+.xml.in.h:259
 msgid "Ok"
 msgstr "确定"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:218
+#: ../plugins/gtk+/gtk+.xml.in.h:260
 msgid "Ok, Cancel"
 msgstr "确定，取消"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:219
+#: ../plugins/gtk+/gtk+.xml.in.h:261
 msgid "On"
 msgstr "打开"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:220 ../plugins/gnome/gnome.xml.in.h:42
+#. Commenting out new widgets untill string freeze is over
+#.
+#. <glade-widget-class name="GtkScaleButton" generic-name="scalebutton" _title="Scale Button">
+#. <properties>
+#. <property id="size">
+#. <displayable-values>
+#. <value id="GTK_ICON_SIZE_INVALID" _name="Invalid"/>
+#. <value id="GTK_ICON_SIZE_MENU" _name="Menu"/>
+#. <value id="GTK_ICON_SIZE_SMALL_TOOLBAR" _name="Small Toolbar"/>
+#. <value id="GTK_ICON_SIZE_LARGE_TOOLBAR" _name="Large Toolbar"/>
+#. <value id="GTK_ICON_SIZE_BUTTON" _name="Button"/>
+#. <value id="GTK_ICON_SIZE_DND" _name="Drag'n Drop"/>
+#. <value id="GTK_ICON_SIZE_DIALOG" _name="Dialog"/>
+#. </displayable-values>
+#. </property>
+#. </properties>
+#. </glade-widget-class>
+#.
+#. <glade-widget-class name="GtkVolumeButton" generic-name="volumebutton" _title="Volume Button"/>
+#.
+#.
+#: ../plugins/gtk+/gtk+.xml.in.h:283 ../plugins/gnome/gnome.xml.in.h:42
 msgid "Open"
 msgstr "打开"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:221
+#: ../plugins/gtk+/gtk+.xml.in.h:284
 msgid "Option Menu"
-msgstr "选项菜单"
+msgstr "选项菜单(Option Menu)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:223 ../plugins/gnome/bonobo.xml.in.h:14
+#: ../plugins/gtk+/gtk+.xml.in.h:286 ../plugins/gnome/bonobo.xml.in.h:14
 msgid "Out"
 msgstr "突出"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:224
+#: ../plugins/gtk+/gtk+.xml.in.h:287
 msgid "Paned"
 msgstr "镶嵌"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:227
+#: ../plugins/gtk+/gtk+.xml.in.h:290
 msgid "Pixels"
 msgstr "像素"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:228
+#: ../plugins/gtk+/gtk+.xml.in.h:291
 msgid "Pointer Motion"
 msgstr "指针移动"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:229
+#: ../plugins/gtk+/gtk+.xml.in.h:292
 msgid "Pointer Motion Hint"
 msgstr "指针移动提示"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:230
+#: ../plugins/gtk+/gtk+.xml.in.h:293
 msgid "Popup"
 msgstr "弹出"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:232
+#: ../plugins/gtk+/gtk+.xml.in.h:295
 msgid "Popup Menu"
-msgstr "弹出式菜单"
+msgstr "弹出式菜单(Popup Menu)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:233 ../plugins/gnome/glade-gnome.c:649
+#: ../plugins/gtk+/gtk+.xml.in.h:296 ../plugins/gnome/glade-gnome.c:658
 #: ../plugins/gnome/gnome.xml.in.h:46
 msgid "Position"
 msgstr "位置"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:236
+#: ../plugins/gtk+/gtk+.xml.in.h:299
 msgid "Progress"
 msgstr "进度"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:237
+#: ../plugins/gtk+/gtk+.xml.in.h:300
 msgid "Progress Bar"
 msgstr "进度条"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:238
+#: ../plugins/gtk+/gtk+.xml.in.h:301
 msgid "Property Change"
 msgstr "属性改变"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:239
+#: ../plugins/gtk+/gtk+.xml.in.h:302
 msgid "Proximity  Out"
 msgstr "邻近转出"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:240
+#: ../plugins/gtk+/gtk+.xml.in.h:303
 msgid "Proximity In"
 msgstr "邻近转入"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:241 ../plugins/gnome/gnome.xml.in.h:49
+#: ../plugins/gtk+/gtk+.xml.in.h:304 ../plugins/gnome/gnome.xml.in.h:49
 msgid "Question"
 msgstr "问题"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:242
+#: ../plugins/gtk+/gtk+.xml.in.h:305
 msgid "Queue"
 msgstr "队列"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:243
+#: ../plugins/gtk+/gtk+.xml.in.h:306
 msgid "Radio Button"
-msgstr "单选按扭"
+msgstr "单选按钮(Radio Button)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:244
+#: ../plugins/gtk+/gtk+.xml.in.h:307
 msgid "Radio Menu Item"
 msgstr "单选菜单条目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:245
+#: ../plugins/gtk+/gtk+.xml.in.h:308
 msgid "Radio Tool Button"
-msgstr "单选工具按扭"
+msgstr "单选工具按钮(Radio Tool Button)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:246
+#: ../plugins/gtk+/gtk+.xml.in.h:309
 msgid "Range"
 msgstr "范围"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:247
+#: ../plugins/gtk+/gtk+.xml.in.h:310
 msgid "Recent Chooser"
-msgstr "最近选择器"
+msgstr "最近选择器(Recent Chooser)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:248
+#: ../plugins/gtk+/gtk+.xml.in.h:311
 msgid "Recent Chooser Dialog"
-msgstr "最近选择对话框"
+msgstr "最近选择对话框(Recent Chooser Dialog)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:251
+#: ../plugins/gtk+/gtk+.xml.in.h:314
 msgid "Remove Column"
-msgstr "清除列"
+msgstr "移除列"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:252
+#: ../plugins/gtk+/gtk+.xml.in.h:315
 msgid "Remove Page"
-msgstr "清除页"
+msgstr "移除页"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:253
+#: ../plugins/gtk+/gtk+.xml.in.h:316
 msgid "Remove Parent"
-msgstr "清除上一级"
+msgstr "移除上一级"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:254
+#: ../plugins/gtk+/gtk+.xml.in.h:317
 msgid "Remove Row"
-msgstr "清除行"
+msgstr "移除行"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:255
+#: ../plugins/gtk+/gtk+.xml.in.h:318
 msgid "Remove Slot"
 msgstr "狭缝"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:256
+#: ../plugins/gtk+/gtk+.xml.in.h:319
 msgid "Response ID"
 msgstr "响应 ID"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:257 ../plugins/gnome/bonobo.xml.in.h:15
+#: ../plugins/gtk+/gtk+.xml.in.h:320 ../plugins/gnome/bonobo.xml.in.h:15
 msgid "Right"
 msgstr "右"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:258
+#: ../plugins/gtk+/gtk+.xml.in.h:321
 msgid "Right to Left"
 msgstr "自右到左"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:259
+#: ../plugins/gtk+/gtk+.xml.in.h:322
 msgid "Ruler"
 msgstr "直尺"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:260 ../plugins/gnome/gnome.xml.in.h:50
+#. Commenting out new widgets untill string freeze is over
+#.
+#. <glade-widget-class name="GtkScaleButton" generic-name="scalebutton" _title="Scale Button">
+#. <properties>
+#. <property id="size">
+#. <displayable-values>
+#. <value id="GTK_ICON_SIZE_INVALID" _name="Invalid"/>
+#. <value id="GTK_ICON_SIZE_MENU" _name="Menu"/>
+#. <value id="GTK_ICON_SIZE_SMALL_TOOLBAR" _name="Small Toolbar"/>
+#. <value id="GTK_ICON_SIZE_LARGE_TOOLBAR" _name="Large Toolbar"/>
+#. <value id="GTK_ICON_SIZE_BUTTON" _name="Button"/>
+#. <value id="GTK_ICON_SIZE_DND" _name="Drag'n Drop"/>
+#. <value id="GTK_ICON_SIZE_DIALOG" _name="Dialog"/>
+#. </displayable-values>
+#. </property>
+#. </properties>
+#. </glade-widget-class>
+#.
+#. <glade-widget-class name="GtkVolumeButton" generic-name="volumebutton" _title="Volume Button"/>
+#.
+#.
+#: ../plugins/gtk+/gtk+.xml.in.h:344 ../plugins/gnome/gnome.xml.in.h:50
 msgid "Save"
 msgstr "保存"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:261
+#: ../plugins/gtk+/gtk+.xml.in.h:345
 msgid "Scale"
 msgstr "比例"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:262
+#: ../plugins/gtk+/gtk+.xml.in.h:346
 msgid "Scroll"
 msgstr "滚动"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:263
+#: ../plugins/gtk+/gtk+.xml.in.h:347
 msgid "Scrolled Window"
-msgstr "可滚动的窗口"
+msgstr "可滚动的窗口(Scrolled Window)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:264 ../plugins/gnome/gnome.xml.in.h:53
+#. Commenting out new widgets untill string freeze is over
+#.
+#. <glade-widget-class name="GtkScaleButton" generic-name="scalebutton" _title="Scale Button">
+#. <properties>
+#. <property id="size">
+#. <displayable-values>
+#. <value id="GTK_ICON_SIZE_INVALID" _name="Invalid"/>
+#. <value id="GTK_ICON_SIZE_MENU" _name="Menu"/>
+#. <value id="GTK_ICON_SIZE_SMALL_TOOLBAR" _name="Small Toolbar"/>
+#. <value id="GTK_ICON_SIZE_LARGE_TOOLBAR" _name="Large Toolbar"/>
+#. <value id="GTK_ICON_SIZE_BUTTON" _name="Button"/>
+#. <value id="GTK_ICON_SIZE_DND" _name="Drag'n Drop"/>
+#. <value id="GTK_ICON_SIZE_DIALOG" _name="Dialog"/>
+#. </displayable-values>
+#. </property>
+#. </properties>
+#. </glade-widget-class>
+#.
+#. <glade-widget-class name="GtkVolumeButton" generic-name="volumebutton" _title="Volume Button"/>
+#.
+#.
+#: ../plugins/gtk+/gtk+.xml.in.h:369 ../plugins/gnome/gnome.xml.in.h:53
 msgid "Select Folder"
 msgstr "选择目录"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:265
+#: ../plugins/gtk+/gtk+.xml.in.h:370
 msgid "Separator Menu Item"
 msgstr "分割菜单条目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:266
+#: ../plugins/gtk+/gtk+.xml.in.h:371
 msgid "Separator Tool Item"
 msgstr "分割工具条目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:267
+#: ../plugins/gtk+/gtk+.xml.in.h:372
 msgid "Set the current page (strictly for editing purposes)"
 msgstr "设置当前页(严格地为编辑目的)"
 
 #. Text of the textview
-#: ../plugins/gtk+/gtk+.xml.in.h:277
+#: ../plugins/gtk+/gtk+.xml.in.h:382
 msgid "Set the text in the view's text buffer"
 msgstr "在视图文本缓冲区设置文字"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:278
+#: ../plugins/gtk+/gtk+.xml.in.h:383
 msgid "Shrink"
 msgstr "收缩"
 
 #. This is deprecated
-#: ../plugins/gtk+/gtk+.xml.in.h:279 ../plugins/gnome/canvas.xml.in.h:24
+#: ../plugins/gtk+/gtk+.xml.in.h:384 ../plugins/gnome/canvas.xml.in.h:24
 msgid "Single"
 msgstr "单一的"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:280
+#: ../plugins/gtk+/gtk+.xml.in.h:385
+#, fuzzy
 msgid "Size"
 msgstr "大小"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:281
+#: ../plugins/gtk+/gtk+.xml.in.h:386
 msgid "Small Toolbar"
 msgstr "小工具栏"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:282
+#: ../plugins/gtk+/gtk+.xml.in.h:387
 msgid "South"
 msgstr "南"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:283
+#: ../plugins/gtk+/gtk+.xml.in.h:388
 msgid "South East"
 msgstr "东南"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:284
+#: ../plugins/gtk+/gtk+.xml.in.h:389
 msgid "South West"
 msgstr "西南"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:285
+#: ../plugins/gtk+/gtk+.xml.in.h:390
 msgid "Spin Button"
-msgstr "Spin 按扭"
+msgstr "微调按钮(Spin Button)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:286
+#: ../plugins/gtk+/gtk+.xml.in.h:391
 msgid "Splash Screen"
-msgstr "Splash屏幕"
+msgstr "启动画面"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:287
+#: ../plugins/gtk+/gtk+.xml.in.h:392
 msgid "Spline"
 msgstr "Spline"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:288
+#: ../plugins/gtk+/gtk+.xml.in.h:393
 msgid "Spread"
 msgstr "展开"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:289 ../plugins/gnome/gnome.xml.in.h:55
+#: ../plugins/gtk+/gtk+.xml.in.h:394 ../plugins/gnome/gnome.xml.in.h:55
 msgid "Start"
 msgstr "开始"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:290
+#: ../plugins/gtk+/gtk+.xml.in.h:395
 msgid "Static"
 msgstr "静态的"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:291
+#: ../plugins/gtk+/gtk+.xml.in.h:396
 msgid "Status Bar"
-msgstr "状态栏"
+msgstr "状态栏(Status Bar)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:293
+#: ../plugins/gtk+/gtk+.xml.in.h:398
 msgid "Stock Button"
-msgstr "库存按扭"
+msgstr "库存按钮(Stock Button)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:295
+#: ../plugins/gtk+/gtk+.xml.in.h:400
 msgid "Stock Item"
-msgstr "库存条目"
+msgstr "库存(Stock)条目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:296
+#: ../plugins/gtk+/gtk+.xml.in.h:401
 msgid "Structure"
 msgstr "结构"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:297
+#: ../plugins/gtk+/gtk+.xml.in.h:402
 msgid "Substructure"
 msgstr "子结构"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:299
+#: ../plugins/gtk+/gtk+.xml.in.h:404
 msgid "Summary"
 msgstr "摘要"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:300
+#: ../plugins/gtk+/gtk+.xml.in.h:405
 msgid "Table"
-msgstr "表格"
+msgstr "表格(Table)"
 
 #. Text of the textview
-#: ../plugins/gtk+/gtk+.xml.in.h:302 ../plugins/gnome/gnome.xml.in.h:58
+#: ../plugins/gtk+/gtk+.xml.in.h:407 ../plugins/gnome/gnome.xml.in.h:58
 msgid "Text"
 msgstr "文本"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:303
+#: ../plugins/gtk+/gtk+.xml.in.h:408
 msgid "Text Entry"
-msgstr "文本条目"
+msgstr "文本条目(Text Entry)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:304
+#: ../plugins/gtk+/gtk+.xml.in.h:409
 msgid "Text View"
-msgstr "文本视图"
+msgstr "文本视图(Text View)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:305
+#: ../plugins/gtk+/gtk+.xml.in.h:410
 msgid "Text below icons"
 msgstr "文字在图标下方"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:307
+#: ../plugins/gtk+/gtk+.xml.in.h:412
 msgid "Text only"
 msgstr "只有文字"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:308
+#: ../plugins/gtk+/gtk+.xml.in.h:413
 msgid "The items in this combo box"
 msgstr "组合框中的条目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:309
+#: ../plugins/gtk+/gtk+.xml.in.h:414
 msgid "The number of items in the box"
 msgstr "框中的条目数"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:310
+#: ../plugins/gtk+/gtk+.xml.in.h:415
 msgid "The number of pages in the notebook"
 msgstr "笔记本中的页数"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:311
+#: ../plugins/gtk+/gtk+.xml.in.h:416
 msgid "The page position in the Assistant"
-msgstr "辅助的页面位置"
+msgstr "助手的页面位置"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:312
+#: ../plugins/gtk+/gtk+.xml.in.h:417
 msgid "The position of the menu item in the menu shell"
 msgstr "菜单中菜单条目的位置"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:313
+#: ../plugins/gtk+/gtk+.xml.in.h:418
 msgid "The position of the tool item in the toolbar"
 msgstr "工具栏中工具条目的位置"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:314
+#: ../plugins/gtk+/gtk+.xml.in.h:419
+#, fuzzy
 msgid ""
 "The response ID of this button in a dialog (it's NOT useful if this button "
 "is not in a GtkDialog)"
-msgstr "对话框中按扭的响应ID，如果按扭不是Gtk对话框将无效"
+msgstr "对话框中该按钮的响应ID"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:315
+#: ../plugins/gtk+/gtk+.xml.in.h:420
 msgid "The stock item for this button"
-msgstr "库存的按扭条目"
+msgstr "库存的按钮条目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:316
+#: ../plugins/gtk+/gtk+.xml.in.h:421
+#, fuzzy
 msgid "The stock item for this image"
-msgstr "库存的图像条目"
+msgstr "该菜单项的库存条目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:317
+#: ../plugins/gtk+/gtk+.xml.in.h:422
 msgid "The text of the menu item"
 msgstr "菜单条目的文字"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:318
+#: ../plugins/gtk+/gtk+.xml.in.h:423
 msgid "The text to display"
 msgstr "要显示的文字"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:319
+#: ../plugins/gtk+/gtk+.xml.in.h:424
 msgid "Toggle Button"
-msgstr "双态按扭"
+msgstr "开关按钮(Toggle Button)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:320
+#: ../plugins/gtk+/gtk+.xml.in.h:425
 msgid "Toggle Tool Button"
-msgstr "两态工具按扭"
+msgstr "开关工具按钮(Toggle Tool Button)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:321
+#: ../plugins/gtk+/gtk+.xml.in.h:426
 msgid "Tool Bar"
-msgstr "工具条"
+msgstr "工具条(Tool Bar)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:322
+#: ../plugins/gtk+/gtk+.xml.in.h:427
 msgid "Tool Button"
-msgstr "工具按扭"
+msgstr "工具按钮(Tool Button)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:323
+#: ../plugins/gtk+/gtk+.xml.in.h:428
 msgid "Toolbar"
-msgstr "工具栏"
+msgstr "工具栏(v)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:324
+#: ../plugins/gtk+/gtk+.xml.in.h:429
 msgid "Tooltip"
-msgstr "工具提示"
+msgstr "工具提示(Tooltip)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:325 ../plugins/gnome/bonobo.xml.in.h:16
+#: ../plugins/gtk+/gtk+.xml.in.h:430 ../plugins/gnome/bonobo.xml.in.h:16
 msgid "Top"
 msgstr "顶"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:326
+#: ../plugins/gtk+/gtk+.xml.in.h:431
 msgid "Top Left"
 msgstr "左上"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:327
+#: ../plugins/gtk+/gtk+.xml.in.h:432
 msgid "Top Level"
 msgstr "顶层"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:328
+#: ../plugins/gtk+/gtk+.xml.in.h:433
 msgid "Top Right"
 msgstr "右上"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:329
+#: ../plugins/gtk+/gtk+.xml.in.h:434
 msgid "Top to Bottom"
 msgstr "自顶到底"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:330
+#: ../plugins/gtk+/gtk+.xml.in.h:435
 msgid "Toplevels"
 msgstr "顶层"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:331
+#: ../plugins/gtk+/gtk+.xml.in.h:436
 msgid "Tree View"
-msgstr "树视图"
+msgstr "树视图(Tree View)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:332
+#: ../plugins/gtk+/gtk+.xml.in.h:437
 msgid "Up"
 msgstr "上"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:333
+#: ../plugins/gtk+/gtk+.xml.in.h:438
 msgid "Use Underline"
 msgstr "使用下划线"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:334
+#: ../plugins/gtk+/gtk+.xml.in.h:439
 msgid "Utility"
 msgstr "实用"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:335 ../plugins/gnome/bonobo.xml.in.h:17
+#: ../plugins/gtk+/gtk+.xml.in.h:440 ../plugins/gnome/bonobo.xml.in.h:17
 msgid "Vertical"
 msgstr "垂直的"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:336
+#: ../plugins/gtk+/gtk+.xml.in.h:441
 msgid "Vertical Box"
-msgstr "垂直框"
+msgstr "垂直框(Vertical Box)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:337
+#: ../plugins/gtk+/gtk+.xml.in.h:442
 msgid "Vertical Button Box"
-msgstr "垂直按扭框"
+msgstr "垂直按钮框(Vertical Button Box)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:338
+#: ../plugins/gtk+/gtk+.xml.in.h:443
 msgid "Vertical Panes"
-msgstr "垂直窗格"
+msgstr "垂直窗格(Vertical Panes)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:339
+#: ../plugins/gtk+/gtk+.xml.in.h:444
 msgid "Vertical Ruler"
-msgstr "垂直标尺"
+msgstr "垂直标尺(Vertical Ruler)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:340
+#: ../plugins/gtk+/gtk+.xml.in.h:445
 msgid "Vertical Scale"
-msgstr "垂直比例"
+msgstr "垂直比例(Vertical Scale)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:341
+#: ../plugins/gtk+/gtk+.xml.in.h:446
 msgid "Vertical Scrollbar"
-msgstr "垂直滚动条"
+msgstr "垂直滚动条(Vertical Scrollbar)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:342
+#: ../plugins/gtk+/gtk+.xml.in.h:447
 msgid "Vertical Separator"
-msgstr "垂直分分割条"
+msgstr "垂直分割条(Vertical Separator)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:343
+#: ../plugins/gtk+/gtk+.xml.in.h:448
 msgid "Viewport"
-msgstr "视口"
+msgstr "观察窗(Viewport)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:344
+#: ../plugins/gtk+/gtk+.xml.in.h:449
 msgid "Visibility Notify"
-msgstr "能见度通知"
+msgstr "可见性通知"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:345 ../plugins/gnome/gnome.xml.in.h:72
+#: ../plugins/gtk+/gtk+.xml.in.h:450 ../plugins/gnome/gnome.xml.in.h:72
 msgid "Warning"
 msgstr "警告"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:346
+#: ../plugins/gtk+/gtk+.xml.in.h:451
 msgid "West"
 msgstr "西方"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:348
+#: ../plugins/gtk+/gtk+.xml.in.h:453
 msgid "Window"
-msgstr "窗口"
+msgstr "窗口(Window)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:349
+#: ../plugins/gtk+/gtk+.xml.in.h:454
 msgid "Word"
 msgstr "单词"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:350
+#: ../plugins/gtk+/gtk+.xml.in.h:455
 msgid "Word Character"
 msgstr "单词字母"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:351
+#: ../plugins/gtk+/gtk+.xml.in.h:456
 msgid "Yes, No"
-msgstr "是，否"
+msgstr "是、否"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:352
+#: ../plugins/gtk+/gtk+.xml.in.h:457
 msgid ""
 "You can mark this as translatable and set one name/address if you want to "
 "show a translation specific translator, otherwise you should list all "
@@ -3348,7 +3494,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:1
 msgid "GTK+ Unix Print Toplevels"
-msgstr "GTK+ Unix打印顶层"
+msgstr "GTK+ Unix 打印顶层"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:2
 msgid "Page Setup Dialog"
@@ -3362,54 +3508,54 @@ msgstr "打印对话框"
 msgid "Status Message."
 msgstr "状态消息"
 
-#: ../plugins/gnome/glade-gnome.c:650
+#: ../plugins/gnome/glade-gnome.c:659
 msgid "The position in the druid"
-msgstr "在druid中的位置"
+msgstr "在向导(Druid)中的位置"
 
-#: ../plugins/gnome/glade-gnome.c:1002
+#: ../plugins/gnome/glade-gnome.c:1011
 msgid "Message box type"
 msgstr "消息框类型"
 
-#: ../plugins/gnome/glade-gnome.c:1003
+#: ../plugins/gnome/glade-gnome.c:1012
 msgid "The type of the message box"
 msgstr "消息框类型"
 
-#: ../plugins/gnome/glade-gnome.c:1211
+#: ../plugins/gnome/glade-gnome.c:1220
 msgid "This property is valid only in font information mode"
 msgstr "此属性只在字体信息模式下有效"
 
 #. This is deprecated
-#: ../plugins/gnome/glade-gnome.c:1299 ../plugins/gnome/canvas.xml.in.h:22
+#: ../plugins/gnome/glade-gnome.c:1308 ../plugins/gnome/canvas.xml.in.h:22
 msgid "Selection Mode"
 msgstr "选择器模式"
 
-#: ../plugins/gnome/glade-gnome.c:1300
+#: ../plugins/gnome/glade-gnome.c:1309
 msgid "Choose the Selection Mode"
 msgstr "选择选择器模式"
 
-#: ../plugins/gnome/glade-gnome.c:1437
+#: ../plugins/gnome/glade-gnome.c:1446
 msgid "Placement"
 msgstr "布置"
 
-#: ../plugins/gnome/glade-gnome.c:1438
+#: ../plugins/gnome/glade-gnome.c:1447
 msgid "Choose the BonoboDockPlacement type"
 msgstr "选择BonoboDockPlacement类型"
 
-#: ../plugins/gnome/glade-gnome.c:1466
+#: ../plugins/gnome/glade-gnome.c:1475
 msgid "Behavior"
 msgstr "行为"
 
-#: ../plugins/gnome/glade-gnome.c:1467
+#: ../plugins/gnome/glade-gnome.c:1476
 msgid "Choose the BonoboDockItemBehavior type"
 msgstr "选择BonoboDockItemBehavior类型"
 
-#: ../plugins/gnome/glade-gnome.c:1476
+#: ../plugins/gnome/glade-gnome.c:1485
 msgid "Pack Type"
-msgstr "包裹类型"
+msgstr "包装类型"
 
-#: ../plugins/gnome/glade-gnome.c:1477
+#: ../plugins/gnome/glade-gnome.c:1486
 msgid "Choose the Pack Type"
-msgstr "选择包裹类型"
+msgstr "选择包装类型"
 
 #: ../plugins/gnome/gnome.xml.in.h:1
 msgid "24-Hour Format"
@@ -3437,28 +3583,28 @@ msgstr "字体信息"
 
 #: ../plugins/gnome/gnome.xml.in.h:13
 msgid "GNOME About"
-msgstr "GNOME关于"
+msgstr "GNOME 关于"
 
 #: ../plugins/gnome/gnome.xml.in.h:14
 msgid "GNOME App"
-msgstr "GNOME程序"
+msgstr "GNOME 程序"
 
 #: ../plugins/gnome/gnome.xml.in.h:15
 msgid "GNOME App Bar"
-msgstr "GNOME程序条"
+msgstr "GNOME 程序条"
 
 #: ../plugins/gnome/gnome.xml.in.h:16
 msgid "GNOME Color Picker"
-msgstr "GNOME颜色拾取器"
+msgstr "GNOME 颜色拾取器"
 
 #: ../plugins/gnome/gnome.xml.in.h:17
 msgid "GNOME Date Edit"
-msgstr "GNOME日期编辑器"
+msgstr "GNOME 日期编辑器"
 
 #. Deprecated Widget Classes :)
 #: ../plugins/gnome/gnome.xml.in.h:19
 msgid "GNOME Dialog"
-msgstr "GNOME对话框"
+msgstr "GNOME 对话框"
 
 #: ../plugins/gnome/gnome.xml.in.h:20
 msgid "GNOME Druid"
@@ -3466,35 +3612,35 @@ msgstr "GNOME 向导"
 
 #: ../plugins/gnome/gnome.xml.in.h:21
 msgid "GNOME Druid Page Edge"
-msgstr "GNOME向导页边"
+msgstr "GNOME 向导页面边界"
 
 #: ../plugins/gnome/gnome.xml.in.h:22
 msgid "GNOME Druid Page Standard"
-msgstr "GNOME向导页面标准"
+msgstr "GNOME 向导页面标准"
 
 #: ../plugins/gnome/gnome.xml.in.h:23
 msgid "GNOME File Entry"
-msgstr "GNOME文件条目"
+msgstr "GNOME 文件条目"
 
 #: ../plugins/gnome/gnome.xml.in.h:24
 msgid "GNOME Font Picker"
-msgstr "GNOME字体拾取器"
+msgstr "GNOME 字体拾取器"
 
 #: ../plugins/gnome/gnome.xml.in.h:25
 msgid "GNOME HRef"
-msgstr "GNOME超链接标签"
+msgstr "GNOME 超链接标签"
 
 #: ../plugins/gnome/gnome.xml.in.h:26
 msgid "GNOME Icon Entry"
-msgstr "GNOME图标条目"
+msgstr "GNOME 图标条目"
 
 #: ../plugins/gnome/gnome.xml.in.h:27
 msgid "GNOME Icon Selection"
-msgstr "GNOME图标选择器"
+msgstr "GNOME 图标选择器"
 
 #: ../plugins/gnome/gnome.xml.in.h:28
 msgid "GNOME Message Box"
-msgstr "GNOME消息框"
+msgstr "GNOME 消息框"
 
 #: ../plugins/gnome/gnome.xml.in.h:29
 msgid "GNOME Pixmap"
@@ -3542,7 +3688,7 @@ msgstr "消息"
 
 #: ../plugins/gnome/gnome.xml.in.h:40
 msgid "Monday First"
-msgstr "星期一为第一天"
+msgstr "周一为首日"
 
 #: ../plugins/gnome/gnome.xml.in.h:44
 msgid "Padding"
@@ -3574,11 +3720,11 @@ msgstr "显示时间"
 
 #: ../plugins/gnome/gnome.xml.in.h:56
 msgid "StatusBar"
-msgstr "状态栏"
+msgstr "状态栏(StatusBar)"
 
 #: ../plugins/gnome/gnome.xml.in.h:57
 msgid "Store Config"
-msgstr "存贮设置"
+msgstr "库设置"
 
 #: ../plugins/gnome/gnome.xml.in.h:59
 msgid "Text Foreground Color"
@@ -3586,11 +3732,11 @@ msgstr "文本前景色"
 
 #: ../plugins/gnome/gnome.xml.in.h:60
 msgid "The height to scale the pixmap to"
-msgstr "缩放pixmap到高度"
+msgstr "缩放 pixmap 到高度"
 
 #: ../plugins/gnome/gnome.xml.in.h:61
 msgid "The maximum number of history entries saved"
-msgstr "保存历史实体最大数目"
+msgstr "保存历史条目最大数目"
 
 #: ../plugins/gnome/gnome.xml.in.h:62
 msgid "The pixmap file"
@@ -3598,7 +3744,7 @@ msgstr "pixmap文件"
 
 #: ../plugins/gnome/gnome.xml.in.h:63
 msgid "The width to scale the pixmap to"
-msgstr "缩放pixmap到宽度"
+msgstr "缩放 pixmap 到宽度"
 
 #: ../plugins/gnome/gnome.xml.in.h:65
 msgid "Title Foreground Color"
@@ -3622,8 +3768,8 @@ msgid ""
 "within the overall GnomeDruid. This enables the correct \"surrounding\" "
 "content for the page to be drawn"
 msgstr ""
-"在整个Gnome向导内，用于传递Gnome向导页位置的周边信息。它为将要绘制的页面启用"
-"了正确的前后内容"
+"在整个 GnomeDruid (Gnome 向导)内，用于传递GnomeDruidPage (向导页)位置的周边信"
+"息。它为将要绘制的页面启用了正确的前后内容"
 
 #: ../plugins/gnome/gnome.xml.in.h:70
 msgid "User"
@@ -3631,7 +3777,7 @@ msgstr "用户"
 
 #: ../plugins/gnome/gnome.xml.in.h:71
 msgid "User Widget"
-msgstr "用户部件"
+msgstr "用户组件"
 
 #: ../plugins/gnome/gnome.xml.in.h:73
 msgid "Watermark"
@@ -3643,7 +3789,7 @@ msgstr "互斥的"
 
 #: ../plugins/gnome/bonobo.xml.in.h:5
 msgid "Floating"
-msgstr "漂移的"
+msgstr "浮动的"
 
 #: ../plugins/gnome/bonobo.xml.in.h:9
 msgid "Locked"
@@ -3651,7 +3797,7 @@ msgstr "已锁定"
 
 #: ../plugins/gnome/bonobo.xml.in.h:10
 msgid "Never Floating"
-msgstr "从不漂移"
+msgstr "从不浮动"
 
 #: ../plugins/gnome/bonobo.xml.in.h:11
 msgid "Never Horizontal"
@@ -3659,7 +3805,7 @@ msgstr "从不水平"
 
 #: ../plugins/gnome/bonobo.xml.in.h:12
 msgid "Never Vertical"
-msgstr "从不竖立"
+msgstr "从不竖直"
 
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:4
@@ -3668,12 +3814,12 @@ msgstr "列间距"
 
 #: ../plugins/gnome/canvas.xml.in.h:5
 msgid "GNOME Canvas"
-msgstr "GNOME画布"
+msgstr "GNOME 画布"
 
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:7
 msgid "GNOME Icon List"
-msgstr "GNOME图标列表"
+msgstr "GNOME 图标列表"
 
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:9
@@ -3688,7 +3834,7 @@ msgstr "如果图标文本能被用户编辑"
 msgid ""
 "If the icon text is static, in which case it will not be copied by the "
 "GnomeIconList"
-msgstr "如果图标文本是静态的，它将不能被GnomeIconList复制。"
+msgstr "如果图标文本是静态的，它将不能被 GnomeIconList 复制。"
 
 #: ../plugins/gnome/canvas.xml.in.h:12
 msgid "Max X"
@@ -3708,7 +3854,7 @@ msgstr "最小Y"
 
 #: ../plugins/gnome/canvas.xml.in.h:18
 msgid "Pixels per unit"
-msgstr "每单元像素"
+msgstr "每单元像素数"
 
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:20
@@ -3731,16 +3877,18 @@ msgid "Text Static"
 msgstr "静态文本"
 
 #: ../plugins/gnome/canvas.xml.in.h:31
+#, fuzzy
 msgid "The maximum x coordinate"
-msgstr "最大x坐标"
+msgstr "最大 X 坐标"
 
 #: ../plugins/gnome/canvas.xml.in.h:32
 msgid "The maximum y coordinate"
 msgstr "最大y坐标"
 
 #: ../plugins/gnome/canvas.xml.in.h:33
+#, fuzzy
 msgid "The minimum x coordinate"
-msgstr "最小x坐标"
+msgstr "最小 X 坐标"
 
 #: ../plugins/gnome/canvas.xml.in.h:34
 msgid "The minimum y coordinate"
@@ -3768,4 +3916,1366 @@ msgstr "选择模式"
 
 #: ../plugins/gnome/canvas.xml.in.h:40
 msgid "The width of each icon"
-msgstr "每图标宽度"
+msgstr "每个图标宽度"
+
+#~ msgid "Interface Designer"
+#~ msgstr "用户界面设计师"
+
+#~ msgid "Format:"
+#~ msgstr "格式："
+
+#~ msgid "Requires:"
+#~ msgstr "需求："
+
+#~ msgid "Open..."
+#~ msgstr "打开..."
+
+#~ msgid "Save changes to project \"%s\" before closing?"
+#~ msgstr "在关闭前保存对“%s”项目的修改？"
+
+#~ msgid "Your changes will be lost if you don't save them."
+#~ msgstr "如果不保存，您的修改将会丢失。"
+
+#~ msgid "Save..."
+#~ msgstr "保存..."
+
+#~ msgid "_Open..."
+#~ msgstr "打开(_O)..."
+
+#~ msgid "Modify project preferences"
+#~ msgstr "修改项目首选项"
+
+#~ msgid "Dock Prop_erties"
+#~ msgstr "停靠属性(_E)"
+
+#~ msgid "Tool_bar"
+#~ msgstr "工具栏(_B)"
+
+#~ msgid "_Statusbar"
+#~ msgstr "状态栏(_S)"
+
+#~ msgid "Show the statusbar"
+#~ msgstr "显示状态栏"
+
+#~ msgid "Project _Tabs"
+#~ msgstr "项目标签(_T)"
+
+#~ msgid "Show notebook tabs for loaded projects"
+#~ msgstr "为加载的项目显示标签页"
+
+#~ msgid "Close document"
+#~ msgstr "关闭文档"
+
+#~ msgid "Authentication"
+#~ msgstr "验证"
+
+#~ msgid "DnD"
+#~ msgstr "拖拽"
+
+#~ msgid "DnD Multiple"
+#~ msgstr "多个拖拽"
+
+#~ msgid "Color Picker"
+#~ msgstr "颜色拾取器"
+
+#~ msgid "Directory"
+#~ msgstr "文件夹"
+
+#~ msgid "Missing Image"
+#~ msgstr "缺少图片"
+
+#~ msgid "Image File Name"
+#~ msgstr "图片文件名"
+
+#~ msgid "Enter a filename, relative path or full path to load the image"
+#~ msgstr "请输入文件名、相对路径或完整路径以加载图片"
+
+#~ msgid "The container object this editor is currently editing"
+#~ msgstr "编辑器中正在编辑的容器对象"
+
+#~ msgid "Hierarchy"
+#~ msgstr "层次"
+
+#~ msgid "%s is locked by %s, edit %s first."
+#~ msgstr "%s 被 %s 锁定，请先编辑 %s。"
+
+#~ msgid "Converting %s to %s format"
+#~ msgstr "将 %s 转换为 %s 格式"
+
+#~ msgid "Setting %s to use a %s naming policy"
+#~ msgstr "设置 %s 使用 %s 命名策略"
+
+#~ msgid "Locking %s by widget %s"
+#~ msgstr "%s 由组件 %s 锁定"
+
+#~ msgid "Unlocking %s"
+#~ msgstr "解锁 %s"
+
+#~ msgid "Select Named Icon"
+#~ msgstr "选择命名图标"
+
+#~ msgid "Conte_xt for translation:"
+#~ msgstr "为翻译者写的注释(_X)："
+
+#~ msgid "Select a file from the project resource directory"
+#~ msgstr "从项目资源文件夹中选择一个文件"
+
+#~ msgid "Choose parentless %s type objects in this project"
+#~ msgstr "在项目中选择无从属 %s 类型对象"
+
+#~ msgid "Choose a parentless %s in this project"
+#~ msgstr "选择项目中无从属的 %s "
+
+#~ msgid "Choose %s type objects in this project"
+#~ msgstr "选择项目中 %s 类型的对象"
+
+#~ msgid "_New"
+#~ msgstr "新建(_N)"
+
+#~ msgid "Creating %s for %s of %s"
+#~ msgstr "为 %3$s 的 %2$s 创建 %1$s"
+
+#~ msgid "The Object's name"
+#~ msgstr "对象的名称"
+
+#~ msgid "The currently loaded widget in this editor"
+#~ msgstr "这个编辑器中当前加载的组件"
+
+#~ msgid "%s Properties - %s [%s]"
+#~ msgstr "%s 属性 - %s [%s]"
+
+#~ msgid "Create root widget"
+#~ msgstr "创建根组件"
+
+#~ msgid "_Add widget here"
+#~ msgstr "在这里添加组件(_A)"
+
+#~ msgid "Add widget as _toplevel"
+#~ msgstr "在顶层添加组件(_T)"
+
+#~ msgid "Read _documentation"
+#~ msgstr "阅读文档(_D)"
+
+#~ msgid "Set default value"
+#~ msgstr "设置默认值"
+
+#~ msgid "Format"
+#~ msgstr "格式"
+
+#~ msgid "The project file format"
+#~ msgstr "项目文件格式"
+
+#~ msgid "%s preferences"
+#~ msgstr "%s 首选项"
+
+#~ msgid ""
+#~ "This widget was introduced in %s %d.%d while project targets %s %d.%d"
+#~ msgstr "这个组件在 %s %d.%d 中被引入，而项目目标是 %s %d.%d"
+
+#~ msgid "[%s] Object class '%s' was introduced in %s %d.%d\n"
+#~ msgstr "[%s] 对象类“%s”在 %s %d.%d 中被引入\n"
+
+#~ msgid ""
+#~ "This widget was made available in GtkBuilder format in %s %d.%d while "
+#~ "project targets %s %d.%d"
+#~ msgstr "这个组件在 GtkBuilder 格式的 %s %d.%d 中可用，而项目目标为 %s %d.%d"
+
+#~ msgid ""
+#~ "[%s] Object class '%s' was made available in GtkBuilder format in %s %d.%"
+#~ "d\n"
+#~ msgstr "[%s] 对象类“%s”在 GtkBuilder 格式的 %s %d.%d 中可用\n"
+
+#~ msgid "This widget is only supported in libglade format"
+#~ msgstr "这个组件只在 libglade 格式中支持"
+
+#~ msgid ""
+#~ "[%s] Object class '%s' from %s %d.%d is only supported in libglade "
+#~ "format\n"
+#~ msgstr "[%s] 对象类“%s”来自于 %s %d.%d，其只在 libglade 格式中支持\n"
+
+#~ msgid "This widget is not supported in libglade format"
+#~ msgstr "组件在 libglade 格式中不支持"
+
+#~ msgid ""
+#~ "[%s] Object class '%s' from %s %d.%d is not supported in libglade format\n"
+#~ msgstr "[%s] 对象类“%s”来自于 %s %d. %d，它不被 libglade 格式支持\n"
+
+#~ msgid "This widget is deprecated"
+#~ msgstr "该组件已被废弃"
+
+#~ msgid "[%s] Object class '%s' from %s %d.%d is deprecated\n"
+#~ msgstr "[%s] 对象类“%s”来自于 %s %d.%d 已不推荐使用\n"
+
+#~ msgid "This property is not supported in libglade format"
+#~ msgstr "libglade 格式中不支持该属性"
+
+#~ msgid ""
+#~ "[%s] Property '%s' of object class '%s' is not supported in libglade "
+#~ "format\n"
+#~ msgstr "[%s] 属性“%s”于对象类“%s”不被 libglade 格式支持\n"
+
+#~ msgid ""
+#~ "[%s] Packing property '%s' of object class '%s' is not supported in "
+#~ "libglade format\n"
+#~ msgstr "[%s] 包装属性“%s”于对象类“%s”不被 libglade 格式支持\n"
+
+#~ msgid "This property is only supported in libglade format"
+#~ msgstr "该属性只在 libglade 格式中支持"
+
+#~ msgid ""
+#~ "[%s] Property '%s' of object class '%s' is only supported in libglade "
+#~ "format\n"
+#~ msgstr "[%s] 属性“%s”于对象类“%s”只被 libglade 格式支持\n"
+
+#~ msgid ""
+#~ "[%s] Packing property '%s' of object class '%s' is only supported in "
+#~ "libglade format\n"
+#~ msgstr "[%s] 包装属性“%s”于对象类“%s”只被 libglade 格式支持\n"
+
+#~ msgid ""
+#~ "This property was introduced in %s %d.%d while project targets %s %d.%d"
+#~ msgstr "该属性在 %s %d.%d 中被引入，而项目目标为 %s %d.%d"
+
+#~ msgid "[%s] Property '%s' of object class '%s' was introduced in %s %d.%d\n"
+#~ msgstr "[%s] 属性“%s”于对象类“%s”在 %s %d.%d 中被引入\n"
+
+#~ msgid ""
+#~ "[%s] Packing property '%s' of object class '%s' was introduced in %s %d.%"
+#~ "d\n"
+#~ msgstr "[%s] 包装属性“%s”于对象类“%s”在 %s %d.%d 中被引入\n"
+
+#~ msgid ""
+#~ "This property was made available in GtkBuilder format in %s %d.%d while "
+#~ "project targets %s %d.%d"
+#~ msgstr ""
+#~ "该属性在以 GtkBuilder 格式下在 %s %d.%d 中可用，而项目目标为 %s %d.%d"
+
+#~ msgid ""
+#~ "[%s] Property '%s' of object class '%s' was made available in GtkBuilder "
+#~ "format in %s %d.%d\n"
+#~ msgstr "[%s] 属性“%s”于对象类“%s”在以 GtkBuilder 格式下在 %s %d.%d 中可用\n"
+
+#~ msgid ""
+#~ "[%s] Packing property '%s' of object class '%s' was made available in "
+#~ "GtkBuilder format in %s %d.%d\n"
+#~ msgstr ""
+#~ "[%s] 包装属性“%s”于对象类“%s”在以 GtkBuilder 格式下在 %s %d.%d 中可用\n"
+
+#~ msgid "[%s] Signal '%s' of object class '%s' was introduced in %s %d.%d\n"
+#~ msgstr "[%s] 信号“%s”于对象类“%s”在 %s %d.%d 被引入\n"
+
+#~ msgid ""
+#~ "This signal was introduced in %s %d.%d while project targets %s %d.%d"
+#~ msgstr "信号在 %s %d.%d 被引入，而项目目标为 %s %d.%d"
+
+#~ msgid "Details"
+#~ msgstr "细节"
+
+#~ msgid "Project \"%s\" has errors. Save anyway?"
+#~ msgstr "项目“%s”有错误。仍然保存？"
+
+#~ msgid "Project \"%s\" has deprecated widgets and/or version mismatches."
+#~ msgstr "项目“%s”包含有废弃的组件和/或版本不匹配。"
+
+#~ msgid "Project %s has no deprecated widgets or version mismatches."
+#~ msgstr "项目 %s 没有废弃的组件或版本不匹配。"
+
+#~ msgid "Set options in your project"
+#~ msgstr "设置您项目中的选项"
+
+#~ msgid "Project file format:"
+#~ msgstr "项目文件格式："
+
+#~ msgid "Object names are unique:"
+#~ msgstr "对象名称是唯一的："
+
+#~ msgid "within the project"
+#~ msgstr "在项目内"
+
+#~ msgid "inside toplevels"
+#~ msgstr "在顶层里"
+
+#~ msgid "Image resources are loaded locally:"
+#~ msgstr "图片资源从本地加载："
+
+#~ msgid "From the project directory"
+#~ msgstr "来自项目目录"
+
+#~ msgid "From a project relative directory"
+#~ msgstr "来自项目相对目录"
+
+#~ msgid "From this directory"
+#~ msgstr "从本目录"
+
+#~ msgid "Choose a path to load image resources"
+#~ msgstr "选择一个路径以加载图像资源"
+
+#~ msgid "Toolkit versions required:"
+#~ msgstr "所需工具集的版本："
+
+#~ msgid "Verify versions and deprecations:"
+#~ msgstr "检查版本和废弃组件："
+
+#~ msgid "The GladePropertyClass for this property"
+#~ msgstr "该属性的 GladePropertyClass"
+
+#~ msgid "Context"
+#~ msgstr "上下文"
+
+#~ msgid "Context for translation"
+#~ msgstr "翻译的上下文"
+
+#~ msgid "Visual State"
+#~ msgstr "视觉状态"
+
+#~ msgid "Priority information for the property editor to act on"
+#~ msgstr "要操作的属性编辑器的优先级信息"
+
+#~ msgid "<Object>"
+#~ msgstr "<对象>"
+
+#~ msgid "Select an object to pass to the handler"
+#~ msgstr "选择一个要传递给处理函数的对象"
+
+#~ msgid "The name of the signal to connect to"
+#~ msgstr "要连接的信号名称"
+
+#~ msgid "Enter the handler to run for this signal"
+#~ msgstr "输入一个响应此信号的处理函数"
+
+#~ msgid "An object to pass to the handler"
+#~ msgstr "传递给处理函数的对象"
+
+#~ msgid "Swap"
+#~ msgstr "交换"
+
+#~ msgid ""
+#~ "Whether the instance and object should be swapped when calling the handler"
+#~ msgstr "在调用这个处理函数的时候，是否交换实例和对象"
+
+#~ msgid ""
+#~ "Whether the handler should be called before or after the default handler "
+#~ "of the signal"
+#~ msgstr "在信号的默认处理函数被调用之前还是之后调用该处理函数"
+
+#~ msgid ""
+#~ "Cannot add non scrollable %s widget to a %s directly.\n"
+#~ "Add a %s first."
+#~ msgstr ""
+#~ "无法直接添加无法滚动的 %s 组件到 %s。\n"
+#~ "请先添加一个 %s。"
+
+#~ msgid "File format"
+#~ msgstr "文件格式"
+
+#~ msgid "Libglade Files"
+#~ msgstr "Libglade 文件"
+
+#~ msgid "GtkBuilder Files"
+#~ msgstr "GtkBuilder 文件"
+
+#~ msgid "Could not show link:"
+#~ msgstr "无法显示链接："
+
+#~ msgid "Exact Template"
+#~ msgstr "精确模板"
+
+#~ msgid "Whether we are creating an exact duplicate when using a template"
+#~ msgstr "当使用模板的时候，是否要创建一个完全一样的副本"
+
+#~ msgid "Support Warning"
+#~ msgstr "支持警告"
+
+#~ msgid "A warning string about version mismatches"
+#~ msgstr "关于版本不匹配的警告字符串"
+
+#~ msgid "< search widgets >"
+#~ msgstr "< 搜索组件 >"
+
+#~ msgid "C_ontexts:"
+#~ msgstr "上下文(_C)："
+
+#~ msgid "Icon Na_mes:"
+#~ msgstr "图标名称(_M)："
+
+#~ msgctxt "textattr"
+#~ msgid "Style"
+#~ msgstr "样式"
+
+#~ msgctxt "textattr"
+#~ msgid "Weight"
+#~ msgstr "重量"
+
+#~ msgctxt "textattr"
+#~ msgid "Variant"
+#~ msgstr "变量"
+
+#~ msgctxt "textattr"
+#~ msgid "Stretch"
+#~ msgstr "拉伸"
+
+#~ msgctxt "textattr"
+#~ msgid "Underline"
+#~ msgstr "下划线"
+
+#~ msgctxt "textattr"
+#~ msgid "Strikethrough"
+#~ msgstr "删除线"
+
+#~ msgctxt "textattr"
+#~ msgid "Gravity"
+#~ msgstr "重力"
+
+#~ msgctxt "textattr"
+#~ msgid "Gravity Hint"
+#~ msgstr "重力提示"
+
+#~ msgctxt "textattr"
+#~ msgid "Absolute Size"
+#~ msgstr "绝对大小"
+
+#~ msgctxt "textattr"
+#~ msgid "Foreground Color"
+#~ msgstr "前景色"
+
+#~ msgctxt "textattr"
+#~ msgid "Background Color"
+#~ msgstr "背景色"
+
+#~ msgctxt "textattr"
+#~ msgid "Underline Color"
+#~ msgstr "下划线颜色"
+
+#~ msgctxt "textattr"
+#~ msgid "Strikethrough Color"
+#~ msgstr "删除线颜色"
+
+#~ msgctxt "textattr"
+#~ msgid "Scale"
+#~ msgstr "比例"
+
+#~ msgid "<Enter Value>"
+#~ msgstr "<输入值>"
+
+#~ msgid "Unset"
+#~ msgstr "重置"
+
+#~ msgid "Select a color"
+#~ msgstr "选择颜色"
+
+#~ msgid "Attribute"
+#~ msgstr "特性"
+
+#~ msgid "Value"
+#~ msgstr "值"
+
+#~ msgid "Setup Text Attributes"
+#~ msgstr "设置文本特性"
+
+#~ msgid "This property does not apply unless Use Underline is set."
+#~ msgstr "除非设置了“使用下划线”，否则该属性无法应用。"
+
+#~ msgid "Property not selected"
+#~ msgstr "未选择属性"
+
+#~ msgid "This property is only for use in dialog action buttons"
+#~ msgstr "此属性用于对话框动作按钮"
+
+#~ msgid "This property is set to be controled by an Action"
+#~ msgstr "该属性将由“动作”控制"
+
+#~ msgid "Icon Size"
+#~ msgstr "图标大小"
+
+#~ msgid "Symbolic size to use for stock icon, icon set or named icon"
+#~ msgstr "用于库存图标、图标集或命名图标的符号大小"
+
+#~ msgid "Adding %s to Size Group %s"
+#~ msgstr "添加 %s 到尺寸组 %s"
+
+#~ msgid "Adding %s to a new Size Group"
+#~ msgstr "添加 %s 至新的尺寸组"
+
+#~ msgid "New Size Group"
+#~ msgstr "新建尺寸组"
+
+#~ msgid "This property only applies to stock images"
+#~ msgstr "此属性只用于库存图像"
+
+#~ msgid "This property only applies to named icons"
+#~ msgstr "此属性只用于命名图标"
+
+#~ msgid "Packing"
+#~ msgstr "包装"
+
+#~ msgid "Normal item"
+#~ msgstr "普通条目"
+
+#~ msgid "Image item"
+#~ msgstr "图像条目"
+
+#~ msgid "Check item"
+#~ msgstr "复选条目"
+
+#~ msgid "Radio item"
+#~ msgstr "单选条目"
+
+#~ msgid "Separator item"
+#~ msgstr "分割条目"
+
+#~ msgid "This property does not apply when Ellipsize is set."
+#~ msgstr "当设置了 Ellipsize 时，无法应用该属性。"
+
+#~ msgid "This property does not apply when Angle is set."
+#~ msgstr "当设置了 Angle 时，无法应用该属性。"
+
+#~ msgid "%s is set to load %s from the model"
+#~ msgstr "%s 设置以从该模型中加载 %s"
+
+#~ msgid "%s is set to manipulate %s directly"
+#~ msgstr "%s 设置以直接操作 %s"
+
+#~ msgid "Tree View Column"
+#~ msgstr "树视图栏"
+
+#~ msgid "Cell Renderer"
+#~ msgstr "单元格(Cell)渲染"
+
+#~ msgid "Properties and Attributes"
+#~ msgstr "属性和特性"
+
+#~ msgid "Common Properties and Attributes"
+#~ msgstr "通用属性和特性"
+
+#~ msgid "Accelerator"
+#~ msgstr "快捷键"
+
+#~ msgid "Spin"
+#~ msgstr "微调(Spin)"
+
+#~ msgid "Spinner"
+#~ msgstr "动画(Spinner)"
+
+#~ msgid "Icon View Editor"
+#~ msgstr "图标视图编辑器"
+
+#~ msgid "Combo Editor"
+#~ msgstr "组合(Combo)编辑器"
+
+#~ msgid "Column"
+#~ msgstr "栏"
+
+#~ msgid "Tree View Editor"
+#~ msgstr "树视图编辑器"
+
+#~ msgid "The accelerator can only be set when inside an Action Group."
+#~ msgstr "快捷键只可在“动作组”中设置。"
+
+#~ msgid "Accelerator Key"
+#~ msgstr "快捷键"
+
+#~ msgid ""
+#~ "A file name, full or relative path to load an icon for this toolbutton"
+#~ msgstr "为该工具按钮(Toolbutton)加载图标用的一个文件名、完整或相对路径"
+
+#~ msgid "A list of sources for this icon factory"
+#~ msgstr "这个图标工厂的源列表"
+
+#~ msgid "A symbolic icon size for the stock icon"
+#~ msgstr "库存图标的符号图标大小"
+
+#~ msgid "Accel Group"
+#~ msgstr "快捷键组"
+
+#~ msgid "Accelerator Mode column"
+#~ msgstr "快捷键模式栏"
+
+#~ msgid "Accelerator Modifiers column"
+#~ msgstr "快捷键修饰栏"
+
+#~ msgid "Accelerator Renderer"
+#~ msgstr "快捷键(Accelerator)渲染"
+
+#~ msgid "Action"
+#~ msgstr "动作(Action)"
+
+#~ msgid "Action Group"
+#~ msgstr "动作组(Action Group)"
+
+#~ msgid "Activatable column"
+#~ msgstr "可激活栏"
+
+#~ msgid "Active column"
+#~ msgstr "激活栏"
+
+#~ msgid "Add to Size Group"
+#~ msgstr "添加一个尺寸组"
+
+#~ msgid "Adjustment"
+#~ msgstr "调整(Adjustment)"
+
+#~ msgid "Adjustment column"
+#~ msgstr "调整栏"
+
+#~ msgid "Alignment column"
+#~ msgstr "对齐栏"
+
+#~ msgid "All Modifiers"
+#~ msgstr "全部修饰"
+
+#~ msgid "Alt Key"
+#~ msgstr "Alt 键"
+
+#~ msgid "An accelerator key for this action"
+#~ msgstr "为这个动作设置一个快捷键"
+
+#~ msgid "Attributes"
+#~ msgstr "特性"
+
+#~ msgid "Attributes column"
+#~ msgstr "特性栏"
+
+#~ msgid "Background Color Name column"
+#~ msgstr "背景色名称栏"
+
+#~ msgid "Background Color column"
+#~ msgstr "背景色栏"
+
+#~ msgid "Both"
+#~ msgstr "都"
+
+#~ msgid "Cell Background Color column"
+#~ msgstr "单元格背景色栏"
+
+#~ msgid "Cell Background Color name column"
+#~ msgstr "单元格背景色名称栏"
+
+#~ msgid "Climb Rate column"
+#~ msgstr "爬升率栏"
+
+#~ msgid "Columns"
+#~ msgstr "栏"
+
+#~ msgid "Combo Renderer"
+#~ msgstr "组合(Combo)渲染器"
+
+#~ msgid "Composite Widgets"
+#~ msgstr "组合组件"
+
+#~ msgid "Condensed"
+#~ msgstr "压缩的"
+
+#~ msgid "Data"
+#~ msgstr "数据"
+
+#~ msgid "Data column"
+#~ msgstr "数据栏"
+
+#~ msgid "Digits column"
+#~ msgstr "数字栏"
+
+#~ msgid "Double"
+#~ msgstr "双倍"
+
+#~ msgid "Edit Separately"
+#~ msgstr "分别编辑"
+
+#~ msgid "Editable column"
+#~ msgstr "可编辑栏"
+
+#~ msgid "Eighth Key"
+#~ msgstr "第八键"
+
+#~ msgid "Ellipsize column"
+#~ msgstr "Ellipsize 栏"
+
+#~ msgid "Enter a list of column types for this data store"
+#~ msgstr "为这个数据库输入栏一列栏类型"
+
+#~ msgid "Enter a list of values to be applied on each row"
+#~ msgstr "输入将应用到每行一列数值"
+
+#~ msgid "Entry Buffer"
+#~ msgstr "输入缓冲区"
+
+#~ msgid "Entry Completion"
+#~ msgstr "输入补全(Entry Completion)"
+
+#~ msgid "Expanded"
+#~ msgstr "展开"
+
+#~ msgid "Extra Condensed"
+#~ msgstr "额外浓缩"
+
+#~ msgid "Extra Expanded"
+#~ msgstr "额外展开"
+
+#~ msgid "Family column"
+#~ msgstr "家族栏"
+
+#~ msgid "Fifth Key"
+#~ msgstr "第五键"
+
+#~ msgid "Fifth Mouse Button"
+#~ msgstr "第五鼠标键"
+
+#~ msgid "File Filter"
+#~ msgstr "文件过滤器(File Filter)"
+
+#~ msgid "First Mouse Button"
+#~ msgstr "第一鼠标键"
+
+#~ msgid "Follow State column"
+#~ msgstr "跟随状态栏"
+
+#~ msgid "Font Description column"
+#~ msgstr "字体描述栏"
+
+#~ msgid "Font column"
+#~ msgstr "字体栏"
+
+#~ msgid "Foreground Color Name column"
+#~ msgstr "前景色名称栏"
+
+#~ msgid "Foreground Color column"
+#~ msgstr "前景色栏"
+
+#~ msgid "Forth Mouse Button"
+#~ msgstr "第四鼠标键"
+
+#~ msgid "Grow Only"
+#~ msgstr "仅增长"
+
+#~ msgid "Gtk"
+#~ msgstr "Gtk"
+
+#~ msgid "Has Entry column"
+#~ msgstr "有输入栏"
+
+#~ msgid "Height column"
+#~ msgstr "高度栏"
+
+#~ msgid "Horizontal Alignment"
+#~ msgstr "水平对齐(Horizontal Alignment)"
+
+#~ msgid "Horizontal Alignment column"
+#~ msgstr "水平对齐栏"
+
+#~ msgid "Horizontal Padding"
+#~ msgstr "水平填充"
+
+#~ msgid "Horizontal Padding column"
+#~ msgstr "水平填充栏"
+
+#~ msgid "Hyper Modifier"
+#~ msgstr "Hyper 修饰"
+
+#~ msgid "Icon"
+#~ msgstr "图标"
+
+#~ msgid "Icon Factory"
+#~ msgstr "图标工厂"
+
+#~ msgid "Icon Name column"
+#~ msgstr "图标名称栏"
+
+#~ msgid "Icon Sources"
+#~ msgstr "图标源"
+
+#~ msgid "Inconsistent column"
+#~ msgstr "不一致列"
+
+#~ msgid "Indicator Size column"
+#~ msgstr "指示器尺寸栏"
+
+#~ msgid "Invisible Char Set"
+#~ msgstr "不可见字符集"
+
+#~ msgid "Italic"
+#~ msgstr "斜体"
+
+#~ msgid "Keycode column"
+#~ msgstr "键码栏"
+
+#~ msgid "Language column"
+#~ msgstr "语言栏"
+
+#~ msgid "List Store"
+#~ msgstr "列表库(List Store)"
+
+#~ msgid "List of widgets in this group"
+#~ msgstr "该组中组件列表"
+
+#~ msgid "Lock Key"
+#~ msgstr "锁定键"
+
+#~ msgid "Low"
+#~ msgstr "低"
+
+#~ msgid "Markup column"
+#~ msgstr "标记栏"
+
+#~ msgid "Meta Modifier"
+#~ msgstr "元修饰"
+
+#~ msgid "Miscellaneous"
+#~ msgstr "杂项"
+
+#~ msgid "Model column"
+#~ msgstr "模型列"
+
+#~ msgid "Number of Pages"
+#~ msgstr "页数"
+
+#~ msgid "Number of pages in this assistant"
+#~ msgstr "该助手中的页数"
+
+#~ msgid "Oblique"
+#~ msgstr "斜体"
+
+#~ msgid "Orientation column"
+#~ msgstr "方向栏"
+
+#~ msgid "Pixbuf Expander Closed column"
+#~ msgstr "Pixbuf 展开器关闭栏"
+
+#~ msgid "Pixbuf Expander Open column"
+#~ msgstr "Pixbuf 展开器打开栏"
+
+#~ msgid "Pixbuf Renderer"
+#~ msgstr "Pixbuf 渲染"
+
+#~ msgid "Pixbuf column"
+#~ msgstr "Pixbuf 栏"
+
+#~ msgid "Primary Icon Activatable"
+#~ msgstr "主图标可激活"
+
+#~ msgid "Primary Icon Name"
+#~ msgstr "主图标名称"
+
+#~ msgid "Primary Icon Pixbuf"
+#~ msgstr "主图标 Pixbuf"
+
+#~ msgid "Primary Icon Sensitive"
+#~ msgstr "主图标敏感"
+
+#~ msgid "Primary Icon Tooltip Markup"
+#~ msgstr "主图标工具提示标记"
+
+#~ msgid "Primary Icon Tooltip Text"
+#~ msgstr "主图标工具提示文本"
+
+#~ msgid "Primary Stock Icon"
+#~ msgstr "主库存图标"
+
+#~ msgid "Progress Fraction"
+#~ msgstr "进度部分"
+
+#~ msgid "Progress Pulse Step"
+#~ msgstr "进度条步进量"
+
+#~ msgid "Progress Renderer"
+#~ msgstr "进度渲染"
+
+#~ msgid "Pulse column"
+#~ msgstr "步进栏"
+
+#~ msgid "Radio Action"
+#~ msgstr "单选动作(Radio Action)"
+
+#~ msgid "Radio column"
+#~ msgstr "单选栏"
+
+#~ msgid "Recent Action"
+#~ msgstr "最近的动作(Recent Action)"
+
+#~ msgid "Related Action"
+#~ msgstr "相关的操作"
+
+#~ msgid "Release Modifier"
+#~ msgstr "释放修饰"
+
+#~ msgid "Rise column"
+#~ msgstr "提升栏"
+
+#~ msgid "Scale Button"
+#~ msgstr "比例按钮(Scale Button)"
+
+#~ msgid "Scale column"
+#~ msgstr "比例栏"
+
+#~ msgid "Second Mouse Button"
+#~ msgstr "第二鼠标键"
+
+#~ msgid "Secondary Icon Activatable"
+#~ msgstr "副图标可激活"
+
+#~ msgid "Secondary Icon Name"
+#~ msgstr "副图标名称"
+
+#~ msgid "Secondary Icon Pixbuf"
+#~ msgstr "副图标 Pixbuf"
+
+#~ msgid "Secondary Icon Sensitive"
+#~ msgstr "副图标敏感"
+
+#~ msgid "Secondary Icon Tooltip Markup"
+#~ msgstr "副图标工具提示标记"
+
+#~ msgid "Secondary Icon Tooltip Text"
+#~ msgstr "副图标工具提示文本"
+
+#~ msgid "Secondary Stock Icon"
+#~ msgstr "副库存图标"
+
+#~ msgid "Semi Condensed"
+#~ msgstr "半压缩"
+
+#~ msgid "Semi Expanded"
+#~ msgstr "半展开(Semi Expanded)"
+
+#~ msgid "Sensitive column"
+#~ msgstr "敏感栏"
+
+#~ msgid "Seventh Key"
+#~ msgstr "第七键"
+
+#~ msgid "Single Paragraph Mode column"
+#~ msgstr "单段模式栏"
+
+#~ msgid "Sixth Key"
+#~ msgstr "第六键"
+
+#~ msgid "Size Group"
+#~ msgstr "尺寸组(Size Group)"
+
+#~ msgid "Size column"
+#~ msgstr "尺寸栏"
+
+#~ msgid "Small Capitals"
+#~ msgstr "小型大写字母"
+
+#~ msgid "Specialized Widgets"
+#~ msgstr "专业组件"
+
+#~ msgid "Spin Renderer"
+#~ msgstr "微调(Spin)渲染"
+
+#~ msgid "Spinner Renderer"
+#~ msgstr "动画(Spinner)渲染"
+
+#~ msgid "Status Icon"
+#~ msgstr "状态图标"
+
+#~ msgid "Stock Detail column"
+#~ msgstr "库存细节栏"
+
+#~ msgid "Stock Size column"
+#~ msgstr "库存大小栏"
+
+#~ msgid "Stock column"
+#~ msgstr "库存栏"
+
+#~ msgid "Stretch column"
+#~ msgstr "拉伸栏"
+
+#~ msgid "Strikethrough column"
+#~ msgstr "删除线栏"
+
+#~ msgid "Style column"
+#~ msgstr "样式栏"
+
+#~ msgid "Super Modifier"
+#~ msgstr "Super 修饰"
+
+#~ msgid "Text Buffer"
+#~ msgstr "文本缓冲区(Text Buffer)"
+
+#~ msgid "Text Buffers"
+#~ msgstr "文本缓冲区"
+
+#~ msgid "Text Column column"
+#~ msgstr "文本栏(Text Column)栏"
+
+#~ msgid "Text Horizontal Alignment column"
+#~ msgstr "文本水平对齐栏"
+
+#~ msgid "Text Renderer"
+#~ msgstr "文本(Text)渲染"
+
+#~ msgid "Text Tag"
+#~ msgstr "文本标签(Text Tag)"
+
+#~ msgid "Text Tag Table"
+#~ msgstr "文本标签表(Text Tag Table)"
+
+#~ msgid "Text Vertical Alignment column"
+#~ msgstr "文本垂直对齐栏"
+
+#~ msgid "Text column"
+#~ msgstr "文本栏"
+
+#~ msgid "The column in the model to load the value from"
+#~ msgstr "模型中加载值的栏"
+
+#~ msgid "The pango attributes for this label"
+#~ msgstr "该标签的 pango 特性"
+
+#~ msgid ""
+#~ "The stock icon displayed on the item (choose an item from GTK+ stock or "
+#~ "from an icon factory)"
+#~ msgstr "显示于条目上的库存图标(从 GTK+ 库中或者从图标工厂中选择一项)"
+
+#~ msgid "Third Mouse Button"
+#~ msgstr "第三鼠标键"
+
+#~ msgid "Toggle Action"
+#~ msgstr "开关动作(Toggle Action)"
+
+#~ msgid "Toggle Renderer"
+#~ msgstr "开关(Toggle)渲染"
+
+#~ msgid "Tree Model"
+#~ msgstr "树模型(Tree Model)"
+
+#~ msgid "Tree Model Filter"
+#~ msgstr "树模型过滤器(Tree Model Filter)"
+
+#~ msgid "Tree Model Sort"
+#~ msgstr "树模型排序(Tree Model Sort)"
+
+#~ msgid "Tree Selection"
+#~ msgstr "树选择(Tree Selection)"
+
+#~ msgid "Tree Store"
+#~ msgstr "树库(Tree Store)"
+
+#~ msgid "Ultra Condensed"
+#~ msgstr "超压缩"
+
+#~ msgid "Ultra Expanded"
+#~ msgstr "超展开(Ultra Expanded)"
+
+#~ msgid "Underline column"
+#~ msgstr "下划线栏"
+
+#~ msgid "Use Action Appearance"
+#~ msgstr "使用动作外观"
+
+#~ msgid "Value column"
+#~ msgstr "值栏"
+
+#~ msgid "Variant column"
+#~ msgstr "变量栏"
+
+#~ msgid "Vertical Alignment"
+#~ msgstr "垂直对齐(Vertical Alignment)"
+
+#~ msgid "Vertical Alignment column"
+#~ msgstr "垂直对齐栏"
+
+#~ msgid "Vertical Padding"
+#~ msgstr "垂直填充"
+
+#~ msgid "Vertical Padding column"
+#~ msgstr "垂直填充栏"
+
+#~ msgid "Visible"
+#~ msgstr "可视的"
+
+#~ msgid "Visible column"
+#~ msgstr "可视栏"
+
+#~ msgid "Volume Button"
+#~ msgstr "音量按钮(Volume Button)"
+
+#~ msgid "Weight column"
+#~ msgstr "重量栏"
+
+#~ msgid "Widgets"
+#~ msgstr "组件"
+
+#~ msgid "Width column"
+#~ msgstr "宽度栏"
+
+#~ msgid "Width in Characters column"
+#~ msgstr "以字符为单位的宽度栏"
+
+#~ msgid "Window Group"
+#~ msgstr "窗口组(Window Group)"
+
+#~ msgid "Wrap Mode column"
+#~ msgstr "自动换行模式栏"
+
+#~ msgid "Wrap Width column"
+#~ msgstr "自动换行宽度栏"
+
+#~ msgid "Collate"
+#~ msgstr "校对"
+
+#~ msgid "Copies"
+#~ msgstr "副本数"
+
+#~ msgid "Generate PDF"
+#~ msgstr "生成 PDF"
+
+#~ msgid "Generate PS"
+#~ msgstr "生成 PS"
+
+#~ msgid "Number Up"
+#~ msgstr "列举"
+
+#~ msgid "Number Up Layout"
+#~ msgstr "列举布局"
+
+#~ msgid "Page Set"
+#~ msgstr "页面设置"
+
+#~ msgid "Preview"
+#~ msgstr "预览"
+
+#~ msgid "Reverse"
+#~ msgstr "反向"
+
+#~ msgid "Setting columns on %s"
+#~ msgstr "在 %s 上设置栏"
+
+#~ msgid "< define a new column >"
+#~ msgstr "< 定义一个新的栏 >"
+
+#~ msgid "Add and remove columns:"
+#~ msgstr "添加和删除栏："
+
+#~ msgid "Column type"
+#~ msgstr "栏类型"
+
+#~ msgid "Column name"
+#~ msgstr "栏名称"
+
+#~ msgid "Add and remove rows:"
+#~ msgstr "添加和删除行："
+
+#~ msgid "Sequential editing:"
+#~ msgstr "顺序编辑："
+
+#~ msgid ""
+#~ "Enter a filename or a relative or full path for this source of '%"
+#~ "s' (Glade will only ever load them in the runtime from your project "
+#~ "directory)."
+#~ msgstr ""
+#~ "为“%s”的该源输入一个文件名或者相对或绝对路径(Glade 只会在运行时从你的项目"
+#~ "目录加载它们)。"
+
+#~ msgid ""
+#~ "Set whether you want to specify a text direction for this source of '%s'"
+#~ msgstr "设置你是否想为“%s”的这个源指定一个文本方向"
+
+#~ msgid "Set the text direction for this source of '%s'"
+#~ msgstr "为“%s”的该源设置文本方向"
+
+#~ msgid "Set whether you want to specify an icon size for this source of '%s'"
+#~ msgstr "设置您是否想为“%s”的这个源指定一个图标大小"
+
+#~ msgid "Set the icon size for this source of '%s'"
+#~ msgstr "为“%s”的这个源设置图标大小"
+
+#~ msgid "Set whether you want to specify a state for this source of '%s'"
+#~ msgstr "设置您是否想为“%s”的这个源指定一个状态"
+
+#~ msgid "Set the state for this source of '%s'"
+#~ msgstr "为“%s”的这个源设置状态"
+
+#~ msgid "Setting %s to use standard configuration"
+#~ msgstr "设置 %s 以使用标准配置"
+
+#~ msgid "Setting %s to use a custom child"
+#~ msgstr "设置 %s 以使用自定义子控件"
+
+#~ msgid "Setting %s to use a stock button"
+#~ msgstr "设置 %s 以使用库存(Stock)按钮"
+
+#~ msgid "Setting %s to use a label and image"
+#~ msgstr "设置 %s 以使用标签和图像"
+
+#~ msgid "Configure button content"
+#~ msgstr "配置按钮内容"
+
+#~ msgid "Add custom button content"
+#~ msgstr "添加自定义按钮内容"
+
+#~ msgid "Stock button"
+#~ msgstr "库存(Stock)按钮"
+
+#~ msgid "Label with optional image"
+#~ msgstr "带可选图像的标签"
+
+#~ msgid "Setting %s to use standard label text"
+#~ msgstr "设置 %s 以使用标准标签文本"
+
+#~ msgid "Setting %s to use a custom label widget"
+#~ msgstr "设置 %s 以使用自定义标签控件"
+
+#~ msgid "Setting %s to use an image from stock"
+#~ msgstr "设置 %s 以使用一个库存中的图像"
+
+#~ msgid "Setting %s to use an image from the icon theme"
+#~ msgstr "设置 %s 以使用图标主题中的图像"
+
+#~ msgid "Edit Label"
+#~ msgstr "编辑标签"
+
+#~ msgid "Edit Image"
+#~ msgstr "编辑图像"
+
+#~ msgid "Setting %s to use an image from filename"
+#~ msgstr "设置 %s 以通过指定文件名使用图像"
+
+#~ msgid "Set Image Size"
+#~ msgstr "设置图像大小"
+
+#~ msgid "Setting %s to use a stock item"
+#~ msgstr "设置 %s 以使用库存条目"
+
+#~ msgid "Stock Item:"
+#~ msgstr "库存条目："
+
+#~ msgid "Custom label and image:"
+#~ msgstr "自定义标签和图像："
+
+#~ msgid ""
+#~ "First add a stock name in the entry below, then add and define sources "
+#~ "for that icon in the treeview."
+#~ msgstr ""
+#~ "首先在该条目下添加一个库存名称，然后在树视图(Treeview)中为该图标添加并定义"
+#~ "一个源。"
+
+#~ msgid ""
+#~ "Define columns for your liststore; giving them meaningful names will help "
+#~ "you to retrieve them when setting cell renderer attributes (press the "
+#~ "Delete key to remove the selected column)"
+#~ msgstr ""
+#~ "为你的列表库(Liststore)定义一个栏；使用一个有意义的名字会帮助你在设置单元"
+#~ "格(Cell)渲染特性的时候找到它们(按删除键删除选中的栏)"
+
+#~ msgid ""
+#~ "Add remove and edit rows of data (you can optionally use Ctrl+N to add "
+#~ "new rows and the Delete key to remove the selected row)"
+#~ msgstr ""
+#~ "添加、删除和修改数据行(您也可以使用 Ctrl+N 来添加新行，或按删除键来删除选"
+#~ "中的行)"
+
+#~ msgid "Setting %s to use an attribute list"
+#~ msgstr "设置 %s 以使用特性列表"
+
+#~ msgid "Setting %s to use a Pango markup string"
+#~ msgstr "设置 %s 以使用 Pango 标记字符串"
+
+#~ msgid "Setting %s to use a pattern string"
+#~ msgstr "设置 %s 以使用模式字符串"
+
+#~ msgid "Setting %s to set desired width in characters"
+#~ msgstr "设置 %s 以设置以字符数为单位的期望的宽度"
+
+#~ msgid "Setting %s to set maximum width in characters"
+#~ msgstr "设置 %s 以设置以字符为单位的最大宽度"
+
+#~ msgid "Setting %s to use normal line wrapping"
+#~ msgstr "设置 %s 以使用普通的自动换行"
+
+#~ msgid "Setting %s to use a single line"
+#~ msgstr "设置 %s 以使用单行"
+
+#~ msgid "Setting %s to use specific Pango word wrapping"
+#~ msgstr "设置 %s 以使用指定的 Pango 自动换行"
+
+#~ msgid "Edit label appearance"
+#~ msgstr "编辑标签外观"
+
+#~ msgid "Format label"
+#~ msgstr "格式化标签"
+
+#~ msgid "Text line wrapping"
+#~ msgstr "文本换行"
+
+#~ msgid "Text wraps normally"
+#~ msgstr "文本正常换行"
+
+#~ msgid "Setting %s to use the %s property as an attribute"
+#~ msgstr "设置 %s 以使用 %s 属性作为一个特性"
+
+#~ msgid "Setting %s to use the %s property directly"
+#~ msgstr "设置 %s 以直接使用 %s 属性"
+
+#~ msgid "Retrieve %s from model (type %s)"
+#~ msgstr "收到 %s 于模型(类型 %s)"
+
+#~ msgid "unset"
+#~ msgstr "重置"
+
+#~ msgid "no model"
+#~ msgstr "无模型"
+
+#~ msgid ""
+#~ "Choose a Data Model and define some\n"
+#~ "columns in the data store first"
+#~ msgstr ""
+#~ "选择数据模型并且先在数据库中\n"
+#~ "定义一些栏"
+
+#~ msgid "Setting %s to use static text"
+#~ msgstr "设置 %s 以使用静态文本"
+
+#~ msgid "Setting %s to use an external buffer"
+#~ msgstr "设置 %s 以使用外部缓冲区"
+
+#~ msgid "Setting %s to use a primary icon from stock"
+#~ msgstr "设置 %s 以从库中使用主图标"
+
+#~ msgid "Setting %s to use a primary icon from the icon theme"
+#~ msgstr "设置 %s 以从图标主题中使用主图标"
+
+#~ msgid "Setting %s to use a primary icon from filename"
+#~ msgstr "设置 %s 以从文件名使用主图标"
+
+#~ msgid "Setting %s to use a secondary icon from stock"
+#~ msgstr "设置 %s 以从库中使用副图标"
+
+#~ msgid "Setting %s to use a secondary icon from the icon theme"
+#~ msgstr "设置 %s 以从图标主题中使用副图标"
+
+#~ msgid "Setting %s to use a secondary icon from filename"
+#~ msgstr "设置 %s 以从文件名使用副图标"
+
+#~ msgid "Primary icon"
+#~ msgstr "主图标"
+
+#~ msgid "Secondary icon"
+#~ msgstr "副图标"
+
+#~ msgid "Setting %s action"
+#~ msgstr "设置 %s 动作"
+
+#~ msgid "Setting %s to use action appearance"
+#~ msgstr "设置 %s 以使用动作外观"
+
+#~ msgid "Setting %s to not use action appearance"
+#~ msgstr "设置 %s 不使用动作外观"
+
+#~ msgid "Display Seconds"
+#~ msgstr "显示秒"
+
+#~ msgid "List Icons"
+#~ msgstr "列出图标"
+
+#~ msgid "Text Below"
+#~ msgstr "文本在下方"
+
+#~ msgid "Text Right"
+#~ msgstr "文本在右侧"
+
+#~ msgid "The maximum Y coordinate"
+#~ msgstr "最大 Y 坐标"
+
+#~ msgid "The minimum Y coordinate"
+#~ msgstr "最小 Y 坐标"
