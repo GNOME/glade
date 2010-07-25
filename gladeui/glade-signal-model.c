@@ -44,6 +44,7 @@ enum
 };
 
 static void gtk_tree_model_iface_init (GtkTreeModelIface* iface);
+static void gtk_tree_drag_source_iface_init (GtkTreeDragSourceIface* iface);
 
 static void
 on_glade_signal_model_added (GladeWidget* widget, const GladeSignal* signal,
@@ -57,7 +58,9 @@ on_glade_signal_model_changed (GladeWidget* widget, const GladeSignal* old_signa
 
 G_DEFINE_TYPE_WITH_CODE (GladeSignalModel, glade_signal_model, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (GTK_TYPE_TREE_MODEL,
-                                      gtk_tree_model_iface_init))
+                                      gtk_tree_model_iface_init);
+                         G_IMPLEMENT_INTERFACE (GTK_TYPE_TREE_DRAG_SOURCE,
+                                      gtk_tree_drag_source_iface_init))
 
 static void
 glade_signal_model_init (GladeSignalModel *object)
@@ -935,4 +938,60 @@ gtk_tree_model_iface_init (GtkTreeModelIface *iface)
 	iface->iter_n_children = glade_signal_model_iter_n_children;
 	iface->iter_nth_child = glade_signal_model_iter_nth_child;
 	iface->iter_parent = glade_signal_model_iter_parent;
+}
+
+static gboolean
+glade_signal_model_row_draggable (GtkTreeDragSource* model, 
+                                  GtkTreePath* path)
+{
+	GtkTreeIter iter;
+	gtk_tree_model_get_iter (GTK_TREE_MODEL (model), &iter, path);
+
+	return glade_signal_model_not_dummy_handler (GLADE_SIGNAL_MODEL (model),
+	                                             &iter);
+}
+
+static gboolean
+glade_signal_model_drag_data_get (GtkTreeDragSource* model, 
+                                  GtkTreePath* path,
+                                  GtkSelectionData* data)
+{
+	GtkTreeIter iter;
+
+	if (gtk_tree_model_get_iter (GTK_TREE_MODEL (model), &iter, path))
+	{
+		GladeSignal* signal;
+		const gchar* widget = iter.user_data;
+		gchar* dnd_text;
+
+		gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+		                    GLADE_SIGNAL_COLUMN_SIGNAL, &signal, -1);
+
+		dnd_text = g_strdup_printf ("%s:%s:%s", widget, signal->name, signal->handler);
+		gtk_selection_data_set_text (data, dnd_text, strlen (dnd_text));
+
+		g_free (dnd_text);
+		
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
+}
+
+static gboolean
+glade_signal_model_drag_data_delete (GtkTreeDragSource* model, 
+                                     GtkTreePath* path)
+{
+	/* We don't move rows... */
+	return FALSE;
+}
+
+static void
+gtk_tree_drag_source_iface_init (GtkTreeDragSourceIface* iface)
+{
+	iface->row_draggable = glade_signal_model_row_draggable;
+	iface->drag_data_get = glade_signal_model_drag_data_get;
+	iface->drag_data_delete = glade_signal_model_drag_data_delete;
 }

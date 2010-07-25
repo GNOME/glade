@@ -327,6 +327,39 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 	g_object_set (priv->renderer_userdata, "model", glade_app_get_project (), NULL);
 }
 
+/**
+ * glade_signal_editor_enable_dnd:
+ * @editor: a #GladeSignalEditor
+ * @enabled: whether the drag and drop support should be enabled
+ *
+ * If drag and drop support is enabled, the user will be able to drag signal handler
+ * from the tree to some editor. The type of the dnd data will be "application/x-glade-signal"
+ * and it will be in the form of "widget:signal:handler" so for example 
+ * "GtkToggleButton:toggled:on_toggle_button_toggled".
+ */ 
+void 
+glade_signal_editor_enable_dnd (GladeSignalEditor *editor, gboolean enabled)
+{
+	GladeSignalEditorPrivate *priv = editor->priv;
+	if (enabled)
+	{
+		const GtkTargetEntry entry = {
+			"application/x-glade-signal",
+			GTK_TARGET_OTHER_WIDGET,
+			1
+		};
+		gtk_drag_source_set (priv->signal_tree,
+		                     0,
+		                     &entry,
+		                     1,
+		                     GDK_ACTION_COPY);
+	}
+	else
+	{
+		gtk_drag_source_unset (priv->signal_tree);
+	}
+}
+
 static void
 glade_signal_editor_dispose (GObject *object)
 {

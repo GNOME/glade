@@ -39,6 +39,8 @@ GladeSignalEditor *glade_signal_editor_new (void);
 
 void glade_signal_editor_load_widget (GladeSignalEditor *editor, GladeWidget *widget);
 
+void glade_signal_editor_enable_dnd (GladeSignalEditor *editor, gboolean enabled);
+
 G_END_DECLS
 
 #endif /* __GLADE_SIGNAL_EDITOR_H__ */
