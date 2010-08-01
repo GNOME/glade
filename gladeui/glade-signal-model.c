@@ -945,10 +945,16 @@ glade_signal_model_row_draggable (GtkTreeDragSource* model,
                                   GtkTreePath* path)
 {
 	GtkTreeIter iter;
+	gboolean is_handler;
+	gboolean not_dummy;
 	gtk_tree_model_get_iter (GTK_TREE_MODEL (model), &iter, path);
 
-	return glade_signal_model_not_dummy_handler (GLADE_SIGNAL_MODEL (model),
-	                                             &iter);
+	gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+	                    GLADE_SIGNAL_COLUMN_IS_HANDLER, &is_handler,
+	                    GLADE_SIGNAL_COLUMN_NOT_DUMMY, &not_dummy,
+	                    -1);
+	
+	return (is_handler && not_dummy);
 }
 
 static gboolean
@@ -968,10 +974,14 @@ glade_signal_model_drag_data_get (GtkTreeDragSource* model,
 		                    GLADE_SIGNAL_COLUMN_SIGNAL, &signal, -1);
 
 		dnd_text = g_strdup_printf ("%s:%s:%s", widget, signal->name, signal->handler);
-		gtk_selection_data_set_text (data, dnd_text, strlen (dnd_text));
+		g_message ("Sent: %s", dnd_text);
+		gtk_selection_data_set (data,
+		                        gdk_atom_intern_static_string ("application/x-glade-signal"),
+		                        8,
+		                        (guchar*) dnd_text,
+		                        strlen (dnd_text));
 
 		g_free (dnd_text);
-		
 		return TRUE;
 	}
 	else

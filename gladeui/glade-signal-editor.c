@@ -348,15 +348,16 @@ glade_signal_editor_enable_dnd (GladeSignalEditor *editor, gboolean enabled)
 			GTK_TARGET_OTHER_WIDGET,
 			1
 		};
-		gtk_drag_source_set (priv->signal_tree,
-		                     0,
-		                     &entry,
-		                     1,
-		                     GDK_ACTION_COPY);
+		/* DND */
+		gtk_tree_view_enable_model_drag_source (GTK_TREE_VIEW(priv->signal_tree),
+		                                        GDK_BUTTON1_MASK,
+		                                        &entry,
+		                                        1,
+		                                        GDK_ACTION_COPY);
 	}
 	else
 	{
-		gtk_drag_source_unset (priv->signal_tree);
+		gtk_tree_view_unset_rows_drag_source (GTK_TREE_VIEW (priv->signal_tree));
 	}
 }
 
@@ -399,7 +400,83 @@ name_cell_data_func (GtkTreeViewColumn* column,
 	
 	g_free (name);
 }
+
+static GdkPixmap*
+create_rich_drag_icon (GtkWidget* widget, const gchar* text)
+{
+	PangoLayout* layout = pango_layout_new (gtk_widget_get_pango_context (widget));
+	GdkPixmap* pixmap;
+	cairo_t cr;
+	gint width, height;
 	
+	pango_layout_set_text (layout, text, -1);
+	pango_layout_get_size (layout, &width, &height);
+	width = PANGO_PIXELS(width) + 10;
+	height = PANGO_PIXELS(height) + 10;
+	
+	pixmap = gdk_pixmap_new (gtk_widget_get_window (widget),
+	                         width,
+	                         height,
+	                         -1);
+	cr = gdk_cairo_create (pixmap);
+	gdk_cairo_set_source_pixmap (cr, pixmap, 0, 0);
+	
+	gdk_draw_rectangle (GDK_DRAWABLE (pixmap),
+	                    gtk_widget_get_style (widget)->base_gc [gtk_widget_get_state (widget)],
+	                    TRUE, 
+	                    0, 0,
+	                    width, height);
+	
+	gdk_draw_layout (GDK_DRAWABLE (pixmap),
+	                 gtk_widget_get_style (widget)->text_gc [gtk_widget_get_state (widget)],
+	                 5,
+	                 5,
+	                 layout);
+	gdk_draw_rectangle (GDK_DRAWABLE (pixmap),
+	                    gtk_widget_get_style (widget)->black_gc,
+	                    FALSE,
+	                    0, 0,
+	                    width - 1, height - 1);
+	g_object_unref (layout);
+
+	
+	return pixmap;
+}
+
+static void
+glade_signal_editor_drag_begin (GtkWidget* widget,
+                                GdkDragContext* context,
+                                gpointer user_data)
+{
+	GdkPixmap     *pixmap = NULL;
+	GtkTreeModel *model;
+	GtkTreeIter iter;
+	GtkTreeSelection* selection;
+
+	selection =  gtk_tree_view_get_selection (GTK_TREE_VIEW (widget));
+
+	if (gtk_tree_selection_get_selected (selection, &model, &iter))
+	{
+		gchar* handler;
+		gtk_tree_model_get (model, &iter,
+		                    GLADE_SIGNAL_COLUMN_HANDLER, &handler, -1);
+		pixmap = create_rich_drag_icon (widget, handler);
+	}
+	
+	if (pixmap)
+	{
+		gtk_drag_set_icon_pixmap (context,
+		                          gdk_drawable_get_colormap (GDK_DRAWABLE(gtk_widget_get_window (widget))),
+		                          pixmap,
+		                          NULL,
+		                          -2, -2);
+		g_object_unref (pixmap);
+	}
+	else
+	{
+		gtk_drag_set_icon_default (context);
+	}
+}
 
 static void
 glade_signal_editor_init (GladeSignalEditor *self)
@@ -484,9 +561,15 @@ glade_signal_editor_init (GladeSignalEditor *self)
 					     GTK_SHADOW_IN);
 	
 	gtk_container_add (GTK_CONTAINER (scroll), self->priv->signal_tree);
-
+	
 	gtk_box_pack_start (GTK_BOX (self), scroll, TRUE, TRUE, 0);
 
+	/* Dnd */
+	g_signal_connect_after (self->priv->signal_tree,
+	                        "drag-begin",
+	                        G_CALLBACK(glade_signal_editor_drag_begin),
+	                        self);
+	
 	gtk_widget_show_all (GTK_WIDGET(self));
 }
 
