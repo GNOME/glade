@@ -3556,7 +3556,7 @@ glade_eprop_adjustment_ ## p ## _changed (GtkSpinButton *spin,		\
 {									\
 	GtkAdjustment *adj = glade_eprop_adjustment_dup_adj (eprop);	\
 	if (adj == NULL) return;					\
-	adj->p = gtk_spin_button_get_value (spin);			\
+	gtk_adjustment_set_ ## p (adj, gtk_spin_button_get_value (spin));	\
 	glade_eprop_adjustment_prop_changed_common (eprop, adj);	\
 }
 
