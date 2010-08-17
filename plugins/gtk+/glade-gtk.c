@@ -3747,7 +3747,7 @@ glade_gtk_notebook_insert_children (GtkWidget *notebook, NotebookChildren *nchil
 
 static void
 glade_gtk_notebook_switch_page (GtkNotebook     *notebook,
-				GtkNotebookPage *page,
+				GtkWidget       *page,
 				guint            page_num,
 				gpointer         user_data)
 {
@@ -4895,10 +4895,11 @@ glade_gtk_fixed_layout_finalize(GdkPixmap *backing)
 static void
 glade_gtk_fixed_layout_realize (GtkWidget *widget)
 {
-	GdkPixmap *backing =
-		gdk_pixmap_colormap_create_from_xpm_d (NULL, gtk_widget_get_colormap (widget),
-						       NULL, NULL, fixed_bg_xpm);
+	GdkPixbuf *pixbuf = gdk_pixbuf_new_from_xpm_data (fixed_bg_xpm);
+	GdkPixmap *backing;
 
+	gdk_pixbuf_render_pixmap_and_mask (pixbuf, &backing, NULL, 1);
+	
 	if (GTK_IS_LAYOUT (widget))
 		gdk_window_set_back_pixmap (gtk_layout_get_bin_window (GTK_LAYOUT (widget)),
 					    backing, FALSE);
@@ -5192,22 +5193,28 @@ glade_gtk_dialog_post_create (GladeWidgetAdaptor *adaptor,
 
 	if (GTK_IS_COLOR_SELECTION_DIALOG (object))
 	{
+		GtkWidget *child;
+
+		child = gtk_dialog_get_widget_for_response (dialog, GTK_RESPONSE_OK);
 		ok_button = glade_widget_adaptor_create_internal
-			(widget, G_OBJECT (GTK_COLOR_SELECTION_DIALOG (object)->ok_button),
+			(widget, G_OBJECT (child),
 			 "ok_button", "colorsel", FALSE, reason);
 
+		child = gtk_dialog_get_widget_for_response (dialog, GTK_RESPONSE_CANCEL);
 		cancel_button = glade_widget_adaptor_create_internal
-			(widget, G_OBJECT (GTK_COLOR_SELECTION_DIALOG (object)->cancel_button),
+			(widget, G_OBJECT (child),
 			 "cancel_button", "colorsel", FALSE, reason);
 
+		child = gtk_dialog_get_widget_for_response (dialog, GTK_RESPONSE_HELP);
 		help_button = glade_widget_adaptor_create_internal
-			(widget, G_OBJECT (GTK_COLOR_SELECTION_DIALOG (object)->help_button),
+			(widget, G_OBJECT (child),
 			 "help_button", "colorsel", FALSE, reason);
 
+		child = gtk_color_selection_dialog_get_color_selection (GTK_COLOR_SELECTION_DIALOG (dialog));
 		colorsel = glade_widget_adaptor_create_internal
-			(widget, G_OBJECT (GTK_COLOR_SELECTION_DIALOG (object)->colorsel),
+			(widget, G_OBJECT (child),
 			 "color_selection", "colorsel", FALSE, reason);
-
+		
 		/* Set this to 1 at load time, if there are any children then
 		 * size will adjust appropriately (otherwise the default "3" gets
 		 * set and we end up with extra placeholders).
@@ -5218,20 +5225,26 @@ glade_gtk_dialog_post_create (GladeWidgetAdaptor *adaptor,
 	}
 	else if (GTK_IS_FONT_SELECTION_DIALOG (object))
 	{
+		GtkWidget *child;
+
+		child = gtk_font_selection_dialog_get_ok_button (GTK_FONT_SELECTION_DIALOG (dialog));
 		ok_button = glade_widget_adaptor_create_internal
-			(widget, G_OBJECT (GTK_FONT_SELECTION_DIALOG (object)->ok_button),
+			(widget, G_OBJECT (child),
 			 "ok_button", "fontsel", FALSE, reason);
 
+		child = gtk_dialog_get_widget_for_response (dialog, GTK_RESPONSE_APPLY);
 		apply_button = glade_widget_adaptor_create_internal
-			(widget, G_OBJECT (GTK_FONT_SELECTION_DIALOG (object)->apply_button),
+			(widget, G_OBJECT (child),
 			 "apply_button", "fontsel", FALSE, reason);
 		
+		child = gtk_font_selection_dialog_get_cancel_button (GTK_FONT_SELECTION_DIALOG (dialog));
 		cancel_button = glade_widget_adaptor_create_internal
-			(widget, G_OBJECT (GTK_FONT_SELECTION_DIALOG (object)->cancel_button),
+			(widget, G_OBJECT (child),
 			 "cancel_button", "fontsel", FALSE, reason);
 
+		child = gtk_font_selection_dialog_get_font_selection (GTK_FONT_SELECTION_DIALOG (dialog));
 		fontsel =  glade_widget_adaptor_create_internal
-			(widget, G_OBJECT (GTK_FONT_SELECTION_DIALOG (object)->fontsel),
+			(widget, G_OBJECT (child),
 			 "font_selection", "fontsel", FALSE, reason);
 
 		/* Set this to 1 at load time, if there are any children then
@@ -5304,24 +5317,29 @@ glade_gtk_dialog_get_internal_child (GladeWidgetAdaptor  *adaptor,
 	if (GTK_IS_COLOR_SELECTION_DIALOG (dialog))
 	{
 		if (strcmp ("ok_button", name) == 0)
-			child = GTK_COLOR_SELECTION_DIALOG (dialog)->ok_button;
+			child = gtk_dialog_get_widget_for_response (dialog, GTK_RESPONSE_OK);
 		else if (strcmp ("cancel_button", name) == 0)
-			child = GTK_COLOR_SELECTION_DIALOG (dialog)->cancel_button;
+			child = gtk_dialog_get_widget_for_response (dialog, GTK_RESPONSE_CANCEL);
 		else if (strcmp ("help_button", name) == 0)
-			child = GTK_COLOR_SELECTION_DIALOG (dialog)->help_button;
+			child = gtk_dialog_get_widget_for_response (dialog, GTK_RESPONSE_HELP);
 		else if (strcmp ("color_selection", name) == 0)
-			child = GTK_COLOR_SELECTION_DIALOG (dialog)->colorsel;
+			child = gtk_color_selection_dialog_get_color_selection
+				(GTK_COLOR_SELECTION_DIALOG (dialog));
 	}
 	else if (GTK_IS_FONT_SELECTION_DIALOG (dialog))
 	{
+
 		if (strcmp ("ok_button", name) == 0)
-			child = GTK_FONT_SELECTION_DIALOG (dialog)->ok_button;
+			child = gtk_font_selection_dialog_get_ok_button (GTK_FONT_SELECTION_DIALOG (dialog));
 		else if (strcmp ("apply_button", name) == 0)
-			child = GTK_FONT_SELECTION_DIALOG (dialog)->apply_button;
+			child = gtk_dialog_get_widget_for_response (dialog, GTK_RESPONSE_APPLY);
 		else if (strcmp ("cancel_button", name) == 0)
-			child = GTK_FONT_SELECTION_DIALOG (dialog)->cancel_button;
+			child = gtk_font_selection_dialog_get_cancel_button
+				(GTK_FONT_SELECTION_DIALOG (dialog));
 		else if (strcmp ("font_selection", name) == 0)
-			child = GTK_FONT_SELECTION_DIALOG (dialog)->fontsel;
+			child = gtk_font_selection_dialog_get_font_selection
+				(GTK_FONT_SELECTION_DIALOG (dialog));
+
 	}
 	else
 	{
@@ -5348,17 +5366,35 @@ glade_gtk_dialog_get_children (GladeWidgetAdaptor  *adaptor,
 
 	if (GTK_IS_COLOR_SELECTION_DIALOG (dialog))
 	{
-		list = g_list_prepend (list, GTK_COLOR_SELECTION_DIALOG (dialog)->ok_button);
-		list = g_list_prepend (list, GTK_COLOR_SELECTION_DIALOG (dialog)->cancel_button);
-		list = g_list_prepend (list, GTK_COLOR_SELECTION_DIALOG (dialog)->help_button);
-		list = g_list_prepend (list, GTK_COLOR_SELECTION_DIALOG (dialog)->colorsel);
+		GtkWidget *widget;
+		
+		widget = gtk_dialog_get_widget_for_response (dialog, GTK_RESPONSE_OK);
+		if (widget) list = g_list_prepend (list, widget);
+
+		widget = gtk_dialog_get_widget_for_response (dialog, GTK_RESPONSE_CANCEL);
+		if (widget) list = g_list_prepend (list, widget);
+
+		widget = gtk_dialog_get_widget_for_response (dialog, GTK_RESPONSE_HELP);
+		if (widget) list = g_list_prepend (list, widget);
+
+		widget = gtk_color_selection_dialog_get_color_selection (GTK_COLOR_SELECTION_DIALOG (dialog));
+		if (widget) list = g_list_prepend (list, widget);
 	}
 	else if (GTK_IS_FONT_SELECTION_DIALOG (dialog))
 	{
-		list = g_list_prepend (list, GTK_FONT_SELECTION_DIALOG (dialog)->ok_button);
-		list = g_list_prepend (list, GTK_FONT_SELECTION_DIALOG (dialog)->apply_button);
-		list = g_list_prepend (list, GTK_FONT_SELECTION_DIALOG (dialog)->cancel_button);
-		list = g_list_prepend (list, GTK_FONT_SELECTION_DIALOG (dialog)->fontsel);
+		GtkWidget *widget;
+
+		widget = gtk_font_selection_dialog_get_ok_button (GTK_FONT_SELECTION_DIALOG (dialog));
+		if (widget) list = g_list_prepend (list, widget);
+
+		widget = gtk_dialog_get_widget_for_response (dialog, GTK_RESPONSE_APPLY);
+		if (widget) list = g_list_prepend (list, widget);
+
+		widget = gtk_font_selection_dialog_get_cancel_button (GTK_FONT_SELECTION_DIALOG (dialog));
+		if (widget) list = g_list_prepend (list, widget);
+
+		widget = gtk_font_selection_dialog_get_font_selection (GTK_FONT_SELECTION_DIALOG (dialog));
+		if (widget) list = g_list_prepend (list, widget);
 	}
 	return list;
 }

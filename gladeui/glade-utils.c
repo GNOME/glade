@@ -683,31 +683,31 @@ glade_util_get_window_positioned_in (GtkWidget *widget)
 }
 
 static void
-glade_util_draw_nodes (GdkWindow *window, GdkGC *gc,
+glade_util_draw_nodes (cairo_t *cr, GdkColor *color,
 		       gint x, gint y,
 		       gint width, gint height)
 {
 	if (width > GLADE_UTIL_SELECTION_NODE_SIZE && height > GLADE_UTIL_SELECTION_NODE_SIZE) {
-		gdk_draw_rectangle (window, gc, TRUE,
-				    x, y,
-				    GLADE_UTIL_SELECTION_NODE_SIZE,
-				    GLADE_UTIL_SELECTION_NODE_SIZE);
-		gdk_draw_rectangle (window, gc, TRUE,
-				    x, y + height - GLADE_UTIL_SELECTION_NODE_SIZE,
-				    GLADE_UTIL_SELECTION_NODE_SIZE,
-				    GLADE_UTIL_SELECTION_NODE_SIZE);
-		gdk_draw_rectangle (window, gc, TRUE,
-				    x + width - GLADE_UTIL_SELECTION_NODE_SIZE, y,
-				    GLADE_UTIL_SELECTION_NODE_SIZE,
-				    GLADE_UTIL_SELECTION_NODE_SIZE);
-		gdk_draw_rectangle (window, gc, TRUE,
-				    x + width - GLADE_UTIL_SELECTION_NODE_SIZE,
-				    y + height - GLADE_UTIL_SELECTION_NODE_SIZE,
-				    GLADE_UTIL_SELECTION_NODE_SIZE,
-				    GLADE_UTIL_SELECTION_NODE_SIZE);
+		glade_utils_cairo_draw_rectangle (cr, color, TRUE,
+						  x, y,
+						  GLADE_UTIL_SELECTION_NODE_SIZE,
+						  GLADE_UTIL_SELECTION_NODE_SIZE);
+		glade_utils_cairo_draw_rectangle (cr, color, TRUE,
+						  x, y + height - GLADE_UTIL_SELECTION_NODE_SIZE,
+						  GLADE_UTIL_SELECTION_NODE_SIZE,
+						  GLADE_UTIL_SELECTION_NODE_SIZE);
+		glade_utils_cairo_draw_rectangle (cr, color, TRUE,
+						  x + width - GLADE_UTIL_SELECTION_NODE_SIZE, y,
+						  GLADE_UTIL_SELECTION_NODE_SIZE,
+						  GLADE_UTIL_SELECTION_NODE_SIZE);
+		glade_utils_cairo_draw_rectangle (cr, color, TRUE,
+						  x + width - GLADE_UTIL_SELECTION_NODE_SIZE,
+						  y + height - GLADE_UTIL_SELECTION_NODE_SIZE,
+						  GLADE_UTIL_SELECTION_NODE_SIZE,
+						  GLADE_UTIL_SELECTION_NODE_SIZE);
 	}
 
-	gdk_draw_rectangle (window, gc, FALSE, x, y, width - 1, height - 1);
+	glade_utils_cairo_draw_rectangle (cr, color, FALSE, x, y, width - 1, height - 1);
 }
 
 /* This calculates the offset of the given window within its toplevel.
@@ -793,15 +793,16 @@ glade_util_draw_selection_nodes (GdkWindow *expose_win)
 	gint expose_win_x, expose_win_y;
 	gint expose_win_w, expose_win_h;
 	GdkWindow   *expose_toplevel;
-	GdkGC *gc;
+	GdkColor *color;
 	GList *elem;
+	cairo_t *cr;
 
 	g_return_if_fail (GDK_IS_WINDOW (expose_win));
 
 	/* Find the corresponding GtkWidget */
 	gdk_window_get_user_data (expose_win, (gpointer)&expose_widget);
 
-	gc = gtk_widget_get_style (expose_widget)->black_gc;
+	color = &(gtk_widget_get_style (expose_widget)->black);
 
 	/* Calculate the offset of the expose window within its toplevel. */
 	glade_util_calculate_window_offset (expose_win,
@@ -811,6 +812,8 @@ glade_util_draw_selection_nodes (GdkWindow *expose_win)
 
 	gdk_drawable_get_size (expose_win,
 			       &expose_win_w, &expose_win_h);
+
+	cr = gdk_cairo_create (expose_win);
 
 	/* Step through all the selected widgets. */
 	for (elem = glade_util_selection; elem; elem = elem->next) {
@@ -846,11 +849,12 @@ glade_util_draw_selection_nodes (GdkWindow *expose_win)
 			   expose window bounds. */
 			if (x < expose_win_w && x + w >= 0
 			    && y < expose_win_h && y + h >= 0) {
-				glade_util_draw_nodes (expose_win, gc,
-						       x, y, w, h);
+				glade_util_draw_nodes (cr, color, x, y, w, h);
 			}
 		}
 	}
+
+	cairo_destroy (cr);
 }
 
 /**
@@ -2226,4 +2230,49 @@ glade_utils_replace_home_dir_with_tilde (const gchar *uri)
 	g_free (home);
 
 	return g_strdup (uri);
+}
+
+
+void
+glade_utils_cairo_draw_line (cairo_t  *cr,
+			     GdkColor *color,
+			     gint      x1,
+			     gint      y1,
+			     gint      x2,
+			     gint      y2)
+{
+  cairo_save (cr);
+
+  gdk_cairo_set_source_color (cr, color);
+  cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);
+
+  cairo_move_to (cr, x1 + 0.5, y1 + 0.5);
+  cairo_line_to (cr, x2 + 0.5, y2 + 0.5);
+  cairo_stroke (cr);
+
+  cairo_restore (cr);
+}
+
+
+void
+glade_utils_cairo_draw_rectangle (cairo_t *cr,
+				  GdkColor *color,
+				  gboolean filled,
+				  gint x,
+				  gint y,
+				  gint width,
+				  gint height)
+{
+  gdk_cairo_set_source_color (cr, color);
+
+  if (filled)
+    {
+      cairo_rectangle (cr, x, y, width, height);
+      cairo_fill (cr);
+    }
+  else
+    {
+      cairo_rectangle (cr, x + 0.5, y + 0.5, width, height);
+      cairo_stroke (cr);
+    }
 }

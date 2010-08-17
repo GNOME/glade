@@ -71,7 +71,7 @@ static gboolean  glade_placeholder_button_press        (GtkWidget      *widget,
 static gboolean  glade_placeholder_popup_menu          (GtkWidget      *widget);
 
 
-static char *placeholder_xpm[] = {
+static const char *placeholder_xpm[] = {
 	/* columns rows colors chars-per-pixel */
 	"8 8 2 1",
 	"  c #bbbbbb",
@@ -231,9 +231,9 @@ glade_placeholder_realize (GtkWidget *widget)
 
 	if (!placeholder->placeholder_pixmap)
 	{
-		placeholder->placeholder_pixmap = gdk_pixmap_colormap_create_from_xpm_d (NULL,
-									    gtk_widget_get_colormap (GTK_WIDGET (placeholder)),
-									    NULL, NULL, placeholder_xpm);
+		GdkPixbuf *pixbuf = gdk_pixbuf_new_from_xpm_data (placeholder_xpm);
+
+		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &placeholder->placeholder_pixmap, NULL, 1);
 		g_assert(G_IS_OBJECT(placeholder->placeholder_pixmap));
 	}
 
@@ -291,21 +291,28 @@ static gboolean
 glade_placeholder_expose (GtkWidget *widget, GdkEventExpose *event)
 {
 	GtkStyle *style;
-	GdkGC *light_gc;
-	GdkGC *dark_gc;
-	gint w, h;
+	GdkColor *light;
+	GdkColor *dark;
+	cairo_t  *cr;
+	gint      w, h;
 
 	g_return_val_if_fail (GLADE_IS_PLACEHOLDER (widget), FALSE);
 
 	style = gtk_widget_get_style (widget);
-	light_gc = style->light_gc[GTK_STATE_NORMAL];
-	dark_gc  = style->dark_gc[GTK_STATE_NORMAL];
+	light = &style->light[GTK_STATE_NORMAL];
+	dark  = &style->dark[GTK_STATE_NORMAL];
+
 	gdk_drawable_get_size (event->window, &w, &h);
 
-	gdk_draw_line (event->window, light_gc, 0, 0, w - 1, 0);
-	gdk_draw_line (event->window, light_gc, 0, 0, 0, h - 1);
-	gdk_draw_line (event->window, dark_gc, 0, h - 1, w - 1, h - 1);
-	gdk_draw_line (event->window, dark_gc, w - 1, 0, w - 1, h - 1);
+	cr = gdk_cairo_create (event->window);
+	cairo_set_line_width (cr, 1.0);
+
+	glade_utils_cairo_draw_line (cr, light, 0, 0, w - 1, 0);
+	glade_utils_cairo_draw_line (cr, light, 0, 0, 0, h - 1);
+	glade_utils_cairo_draw_line (cr, dark, 0, h - 1, w - 1, h - 1);
+	glade_utils_cairo_draw_line (cr, dark, w - 1, 0, w - 1, h - 1);
+
+	cairo_destroy (cr);
 
 	glade_util_draw_selection_nodes (event->window);
 

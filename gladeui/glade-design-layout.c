@@ -787,42 +787,43 @@ glade_design_layout_expose_event (GtkWidget *widget, GdkEventExpose *ev)
 	window = gtk_widget_get_window (widget);
 	style = gtk_widget_get_style (widget);
 	gtk_widget_get_allocation (widget, &allocation);
-	/* draw a white widget background */
-	gdk_draw_rectangle (window,
-			    style->base_gc [gtk_widget_get_state (widget)],
-			    TRUE,
-			    allocation.x + border_width,
-			    allocation.y + border_width,
-			    allocation.width - 2 * border_width,
-			    allocation.height - 2 * border_width);
 
 	child = gtk_bin_get_child (GTK_BIN (widget));
 
+	cr = gdk_cairo_create (window);
+
+	/* draw a white widget background */
+	glade_utils_cairo_draw_rectangle (cr,
+					  &style->base [gtk_widget_get_state (widget)],
+					  TRUE,
+					  allocation.x + border_width,
+					  allocation.y + border_width,
+					  allocation.width - 2 * border_width,
+					  allocation.height - 2 * border_width);
+
 	if (child && gtk_widget_get_visible (child))
 	{
+		/* draw frame */
 		gtk_widget_get_allocation (child, &child_allocation);
 		x = child_allocation.x - OUTLINE_WIDTH / 2;
 		y = child_allocation.y - OUTLINE_WIDTH / 2;
 		w = child_allocation.width + OUTLINE_WIDTH;
 		h = child_allocation.height + OUTLINE_WIDTH;
-
-		/* draw frame */
-		cr = gdk_cairo_create (window);
 		
 		draw_frame (widget, cr, x, y, w, h);
-		
-		cairo_destroy (cr);
 
 		/* draw a filled rectangle in case child does not draw 
 		 * it's own background (a GTK_WIDGET_NO_WINDOW child). */
-		gdk_draw_rectangle (window,
-				    style->bg_gc[GTK_STATE_NORMAL],
-				    TRUE,
-				    x + OUTLINE_WIDTH / 2, y + OUTLINE_WIDTH / 2,
-				    w - OUTLINE_WIDTH, h - OUTLINE_WIDTH);
+		glade_utils_cairo_draw_rectangle (cr,
+						  &style->bg[GTK_STATE_NORMAL],
+						  TRUE,
+						  x + OUTLINE_WIDTH / 2, y + OUTLINE_WIDTH / 2,
+						  w - OUTLINE_WIDTH, h - OUTLINE_WIDTH);
 
 		GTK_WIDGET_CLASS (glade_design_layout_parent_class)->expose_event (widget, ev);
 	}	
+
+	cairo_destroy (cr);
 
 	return TRUE;
 }

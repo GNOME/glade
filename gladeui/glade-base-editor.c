@@ -1620,7 +1620,7 @@ glade_base_editor_realize_callback (GtkWidget *widget, gpointer user_data)
 
 static void 
 glade_base_editor_switch_page (GtkNotebook     *notebook,
-			       GtkNotebookPage *page,
+			       GtkWidget       *page,
 			       guint            page_num,
 			       GladeBaseEditor *editor)
 {

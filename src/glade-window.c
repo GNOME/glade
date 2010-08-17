@@ -1558,9 +1558,9 @@ next_project_cb (GtkAction *action, GladeWindow *window)
 
 static void
 notebook_switch_page_cb (GtkNotebook *notebook,
-			     GtkNotebookPage *page,
-			     guint page_num,
-			     GladeWindow *window)
+			 GtkWidget *page,
+			 guint page_num,
+			 GladeWindow *window)
 {
 	GladeDesignView *view;
 	GladeProject *project;
@@ -1604,9 +1604,9 @@ notebook_switch_page_cb (GtkNotebook *notebook,
 
 static void
 notebook_tab_added_cb (GtkNotebook *notebook,
-			   GladeDesignView *view,
-			   guint page_num,
-			   GladeWindow *window)
+		       GladeDesignView *view,
+		       guint page_num,
+		       GladeWindow *window)
 {
 	GladeProject *project;
 	GtkWidget    *inspector;
