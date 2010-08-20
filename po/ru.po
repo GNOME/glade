@@ -6,10 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glade3 trunk\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glade3&component=general\n"
-"POT-Creation-Date: 2010-08-06 11:29+0000\n"
-"PO-Revision-Date: 2010-03-10 20:59+0300\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-08-20 12:57+0300\n"
+"PO-Revision-Date: 2010-08-14 22:06+0300\n"
 "Last-Translator: Yuri Myasoedov <omerta13@yandex.ru>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -109,13 +108,12 @@ msgid "Name:"
 msgstr "Название:"
 
 #: ../src/glade-window.c:624
-#, fuzzy
 msgid "Format:"
-msgstr "Формат"
+msgstr "Формат:"
 
 #: ../src/glade-window.c:626
 msgid "Requires:"
-msgstr ""
+msgstr "Требуется:"
 
 #: ../src/glade-window.c:1052
 msgid "Open…"
@@ -183,9 +181,8 @@ msgid "Your changes will be lost if you don't save them."
 msgstr "Если не сохранить, изменения будут потеряны."
 
 #: ../src/glade-window.c:1319
-#, fuzzy
 msgid "Close _without Saving"
-msgstr "Закрыть без сохранения"
+msgstr "Закрыть _без сохранения"
 
 #: ../src/glade-window.c:1346
 #, c-format
@@ -235,20 +232,20 @@ msgid "A user interface designer for GTK+ and GNOME."
 msgstr "Редактор пользовательского интерфейса для GTK+ и GNOME."
 
 #. File
-#: ../src/glade-window.c:2037 ../plugins/gtk+/glade-gtk.c:7081
-#: ../plugins/gtk+/glade-gtk.c:7404
+#: ../src/glade-window.c:2037 ../plugins/gtk+/glade-gtk.c:7117
+#: ../plugins/gtk+/glade-gtk.c:7440
 msgid "_File"
 msgstr "_Файл"
 
 #. Edit
-#: ../src/glade-window.c:2038 ../plugins/gtk+/glade-gtk.c:7084
-#: ../plugins/gtk+/glade-gtk.c:7414
+#: ../src/glade-window.c:2038 ../plugins/gtk+/glade-gtk.c:7120
+#: ../plugins/gtk+/glade-gtk.c:7450
 msgid "_Edit"
 msgstr "_Правка"
 
 #. View
-#: ../src/glade-window.c:2039 ../plugins/gtk+/glade-gtk.c:7087
-#: ../plugins/gtk+/glade-gtk.c:7422
+#: ../src/glade-window.c:2039 ../plugins/gtk+/glade-gtk.c:7123
+#: ../plugins/gtk+/glade-gtk.c:7458
 msgid "_View"
 msgstr "_Вид"
 
@@ -257,8 +254,8 @@ msgid "_Projects"
 msgstr "_Проекты"
 
 #. Help
-#: ../src/glade-window.c:2041 ../plugins/gtk+/glade-gtk.c:7099
-#: ../plugins/gtk+/glade-gtk.c:7425
+#: ../src/glade-window.c:2041 ../plugins/gtk+/glade-gtk.c:7135
+#: ../plugins/gtk+/glade-gtk.c:7461
 msgid "_Help"
 msgstr "_Справка"
 
@@ -401,31 +398,28 @@ msgid "Dock the editor into the main window"
 msgstr "Прикрепить редактор к главному окну"
 
 #: ../src/glade-window.c:2136
-#, fuzzy
 msgid "Tool_bar"
-msgstr "Панель инструментов"
+msgstr "_Панель инструментов"
 
 #: ../src/glade-window.c:2137
 msgid "Show the toolbar"
-msgstr ""
+msgstr "Показывать панель инструментов"
 
 #: ../src/glade-window.c:2140
-#, fuzzy
 msgid "_Statusbar"
-msgstr "Строка состояния"
+msgstr "_Строка состояния"
 
 #: ../src/glade-window.c:2141
 msgid "Show the statusbar"
-msgstr ""
+msgstr "Показывать строку состояния"
 
 #: ../src/glade-window.c:2144
-#, fuzzy
 msgid "Project _Tabs"
-msgstr "_Проекты"
+msgstr "_Вкладки проекта"
 
 #: ../src/glade-window.c:2145
 msgid "Show notebook tabs for loaded projects"
-msgstr ""
+msgstr "Показывать вкладки для загруженных проектов"
 
 #: ../src/glade-window.c:2153 ../plugins/gtk+/gtk+.xml.in.h:431
 msgid "Text beside icons"
@@ -468,9 +462,8 @@ msgid "Drag and resize widgets in the workspace"
 msgstr "Изменить размер виджетов в рабочей области"
 
 #: ../src/glade-window.c:2417
-#, fuzzy
 msgid "Close document"
-msgstr "Столбец мигания"
+msgstr "Закрыть документ"
 
 #: ../src/glade-window.c:2483
 msgid "Could not create a new project."
@@ -541,8 +534,8 @@ msgid "Inspector"
 msgstr "Структура проекта"
 
 #: ../src/glade-window.c:3233 ../gladeui/glade-editor.c:350
-#: ../gladeui/glade-widget.c:1100 ../plugins/gtk+/glade-gtk.c:6513
-#: ../plugins/gtk+/glade-gtk.c:6543 ../plugins/gtk+/glade-gtk.c:11069
+#: ../gladeui/glade-widget.c:1100 ../plugins/gtk+/glade-gtk.c:6549
+#: ../plugins/gtk+/glade-gtk.c:6579 ../plugins/gtk+/glade-gtk.c:11105
 msgid "Properties"
 msgstr "Свойства"
 
@@ -1559,9 +1552,10 @@ msgstr "[%s] Сигнал «%s» объектов класса «%s» был в�
 #. translators: reffers to a signal in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:1804
-#, fuzzy, c-format
+#, c-format
 msgid "This signal was introduced in %s %d.%d while project targets %s %d.%d"
-msgstr "Этот виджет был введён в %s %d.%d, проект использует %s %d.%d"
+msgstr ""
+"Этот сигнал был введён в %s %d.%d, в то время как проект использует %s %d.%d"
 
 #: ../gladeui/glade-project.c:2057
 msgid "Details"
@@ -1697,22 +1691,20 @@ msgid "<Type here>"
 msgstr "<Заполните>"
 
 #: ../gladeui/glade-signal-editor.c:118
-#, fuzzy
 msgid "<Object>"
-msgstr "Объект"
+msgstr "<Объект>"
 
 #: ../gladeui/glade-signal-editor.c:830
 msgid "Select an object to pass to the handler"
-msgstr ""
+msgstr "Выберите объект, передаваемый обработчику"
 
 #: ../gladeui/glade-signal-editor.c:913 ../plugins/gtk+/glade-accels.c:454
 msgid "Signal"
 msgstr "Сигнал"
 
 #: ../gladeui/glade-signal-editor.c:913
-#, fuzzy
 msgid "The name of the signal to connect to"
-msgstr "Название виджета"
+msgstr "Название сигнала для подключения"
 
 #: ../gladeui/glade-signal-editor.c:971
 msgid "Handler"
@@ -1720,25 +1712,26 @@ msgstr "Обработчик"
 
 #: ../gladeui/glade-signal-editor.c:972
 msgid "Enter the handler to run for this signal"
-msgstr ""
+msgstr "Введите обработчик для этого сигнала"
 
 #: ../gladeui/glade-signal-editor.c:1006 ../gladeui/glade-widget.c:1075
 msgid "Object"
 msgstr "Объект"
 
 #: ../gladeui/glade-signal-editor.c:1007
-#, fuzzy
 msgid "An object to pass to the handler"
-msgstr "Невозможно вставить в выделенное место"
+msgstr "Объект, передаваемый обработчику"
 
 #: ../gladeui/glade-signal-editor.c:1047
 msgid "Swap"
-msgstr ""
+msgstr "Обменять"
 
 #: ../gladeui/glade-signal-editor.c:1048
 msgid ""
 "Whether the instance and object should be swapped when calling the handler"
 msgstr ""
+"Должны ли экземпляр, высылающий сигнал, и объект меняться местами при вызове "
+"обработчика"
 
 #: ../gladeui/glade-signal-editor.c:1074 ../plugins/gtk+/gtk+.xml.in.h:34
 msgid "After"
@@ -1749,6 +1742,7 @@ msgid ""
 "Whether the handler should be called before or after the default handler of "
 "the signal"
 msgstr ""
+"Должен ли обработчик вызываться до или после обработчика по умолчанию сигнала"
 
 #: ../gladeui/glade-utils.c:142 ../gladeui/glade-utils.c:173
 #, c-format
@@ -1766,6 +1760,8 @@ msgid ""
 "Cannot add non scrollable %s widget to a %s directly.\n"
 "Add a %s first."
 msgstr ""
+"Невозможно добавить виджет %s без полос прокрутки непосредственно в %s.\n"
+"Сначала добавьте %s."
 
 #: ../gladeui/glade-utils.c:468
 msgid "File format"
@@ -1787,7 +1783,7 @@ msgstr "Файлы GtkBuilder"
 msgid "All Glade Files"
 msgstr "Все файлы Glade"
 
-#: ../gladeui/glade-utils.c:1275
+#: ../gladeui/glade-utils.c:1279
 #, c-format
 msgid ""
 "%s exists.\n"
@@ -1796,39 +1792,38 @@ msgstr ""
 "%s уже существует.\n"
 "Хотите его перезаписать?"
 
-#: ../gladeui/glade-utils.c:1303
+#: ../gladeui/glade-utils.c:1307
 #, c-format
 msgid "Error writing to %s: %s"
 msgstr "Ошибка при записи %s: %s"
 
-#: ../gladeui/glade-utils.c:1317
+#: ../gladeui/glade-utils.c:1321
 #, c-format
 msgid "Error reading %s: %s"
 msgstr "Ошибка при чтении %s: %s"
 
-#: ../gladeui/glade-utils.c:1332 ../gladeui/glade-utils.c:1353
+#: ../gladeui/glade-utils.c:1336 ../gladeui/glade-utils.c:1357
 #, c-format
 msgid "Error shutting down I/O channel %s: %s"
 msgstr "При завершении работы канала ввода-вывода %s возникла ошибка: %s"
 
-#: ../gladeui/glade-utils.c:1342
+#: ../gladeui/glade-utils.c:1346
 #, c-format
 msgid "Failed to open %s for writing: %s"
 msgstr "Не удалось открыть файл %s на чтение: %s"
 
-#: ../gladeui/glade-utils.c:1362
+#: ../gladeui/glade-utils.c:1366
 #, c-format
 msgid "Failed to open %s for reading: %s"
 msgstr "Не удалось открыть %s для чтения: %s"
 
-#: ../gladeui/glade-utils.c:1744
-#, fuzzy
+#: ../gladeui/glade-utils.c:1748
 msgid "Could not show link:"
-msgstr "Не удалось сохранить файл %s"
+msgstr "Не удалось показать ссылку:"
 
 #. Reset the column
 #. Objects
-#: ../gladeui/glade-utils.c:2126 ../plugins/gtk+/glade-attributes.c:799
+#: ../gladeui/glade-utils.c:2130 ../plugins/gtk+/glade-attributes.c:799
 #: ../plugins/gtk+/gtk+.xml.in.h:275
 msgid "None"
 msgstr "Нет"
@@ -2317,280 +2312,280 @@ msgstr "Вставить страницу в %s"
 msgid "Remove page from %s"
 msgstr "Удалить страницу из %s"
 
-#: ../plugins/gtk+/glade-gtk.c:6052
+#: ../plugins/gtk+/glade-gtk.c:6088
 msgid "This property only applies to stock images"
 msgstr "Это свойство применимо только к встроенным значкам"
 
-#: ../plugins/gtk+/glade-gtk.c:6054
+#: ../plugins/gtk+/glade-gtk.c:6090
 msgid "This property only applies to named icons"
 msgstr "Это свойство применяется только к значкам из темы"
 
-#: ../plugins/gtk+/glade-gtk.c:6320
+#: ../plugins/gtk+/glade-gtk.c:6356
 msgid "<separator>"
 msgstr "<разделитель>"
 
-#: ../plugins/gtk+/glade-gtk.c:6330
+#: ../plugins/gtk+/glade-gtk.c:6366
 msgid "<custom>"
 msgstr "<другой>"
 
-#: ../plugins/gtk+/glade-gtk.c:6509
+#: ../plugins/gtk+/glade-gtk.c:6545
 msgid "Tool Item"
 msgstr "Элемент панели инструментов"
 
-#: ../plugins/gtk+/glade-gtk.c:6518
+#: ../plugins/gtk+/glade-gtk.c:6554
 msgid "Packing"
 msgstr "Упаковка"
 
-#: ../plugins/gtk+/glade-gtk.c:6537 ../plugins/gtk+/gtk+.xml.in.h:262
+#: ../plugins/gtk+/glade-gtk.c:6573 ../plugins/gtk+/gtk+.xml.in.h:262
 msgid "Menu Item"
 msgstr "Элемент меню"
 
-#: ../plugins/gtk+/glade-gtk.c:6573 ../plugins/gtk+/glade-gtk.c:6581
+#: ../plugins/gtk+/glade-gtk.c:6609 ../plugins/gtk+/glade-gtk.c:6617
 msgid "Normal item"
 msgstr "Обычный элемент"
 
-#: ../plugins/gtk+/glade-gtk.c:6574 ../plugins/gtk+/glade-gtk.c:6582
+#: ../plugins/gtk+/glade-gtk.c:6610 ../plugins/gtk+/glade-gtk.c:6618
 msgid "Image item"
 msgstr "Значок"
 
-#: ../plugins/gtk+/glade-gtk.c:6575 ../plugins/gtk+/glade-gtk.c:6583
+#: ../plugins/gtk+/glade-gtk.c:6611 ../plugins/gtk+/glade-gtk.c:6619
 msgid "Check item"
 msgstr "Кнопка с отметкой"
 
-#: ../plugins/gtk+/glade-gtk.c:6576 ../plugins/gtk+/glade-gtk.c:6584
+#: ../plugins/gtk+/glade-gtk.c:6612 ../plugins/gtk+/glade-gtk.c:6620
 msgid "Radio item"
 msgstr "Кнопка выбора"
 
-#: ../plugins/gtk+/glade-gtk.c:6577 ../plugins/gtk+/glade-gtk.c:6585
+#: ../plugins/gtk+/glade-gtk.c:6613 ../plugins/gtk+/glade-gtk.c:6621
 msgid "Separator item"
 msgstr "Разделитель"
 
-#: ../plugins/gtk+/glade-gtk.c:6609 ../plugins/gtk+/glade-gtk.c:6653
+#: ../plugins/gtk+/glade-gtk.c:6645 ../plugins/gtk+/glade-gtk.c:6689
 msgid "Edit Menu Bar"
 msgstr "Правка строки меню"
 
-#: ../plugins/gtk+/glade-gtk.c:6611 ../plugins/gtk+/glade-gtk.c:6655
+#: ../plugins/gtk+/glade-gtk.c:6647 ../plugins/gtk+/glade-gtk.c:6691
 msgid "Edit Menu"
 msgstr "Правка меню"
 
-#: ../plugins/gtk+/glade-gtk.c:7039
+#: ../plugins/gtk+/glade-gtk.c:7075
 msgid "Print S_etup"
 msgstr "Пара_метры страницы"
 
-#: ../plugins/gtk+/glade-gtk.c:7043
+#: ../plugins/gtk+/glade-gtk.c:7079
 msgid "Find Ne_xt"
 msgstr "Найти след_ующее"
 
-#: ../plugins/gtk+/glade-gtk.c:7047
+#: ../plugins/gtk+/glade-gtk.c:7083
 msgid "_Undo Move"
 msgstr "_Отменить передвижение"
 
-#: ../plugins/gtk+/glade-gtk.c:7051
+#: ../plugins/gtk+/glade-gtk.c:7087
 msgid "_Redo Move"
 msgstr "_Вернуть передвижение"
 
-#: ../plugins/gtk+/glade-gtk.c:7054
+#: ../plugins/gtk+/glade-gtk.c:7090
 msgid "Select _All"
 msgstr "Выделить вс_ё"
 
-#: ../plugins/gtk+/glade-gtk.c:7057
+#: ../plugins/gtk+/glade-gtk.c:7093
 msgid "_New Game"
 msgstr "_Новая игра"
 
-#: ../plugins/gtk+/glade-gtk.c:7060
+#: ../plugins/gtk+/glade-gtk.c:7096
 msgid "_Pause game"
 msgstr "_Пауза"
 
-#: ../plugins/gtk+/glade-gtk.c:7063
+#: ../plugins/gtk+/glade-gtk.c:7099
 msgid "_Restart Game"
 msgstr "_Перезапустить"
 
-#: ../plugins/gtk+/glade-gtk.c:7066
+#: ../plugins/gtk+/glade-gtk.c:7102
 msgid "_Hint"
 msgstr "П_одсказка"
 
-#: ../plugins/gtk+/glade-gtk.c:7069
+#: ../plugins/gtk+/glade-gtk.c:7105
 msgid "_Scores..."
 msgstr "_Результаты…"
 
-#: ../plugins/gtk+/glade-gtk.c:7072
+#: ../plugins/gtk+/glade-gtk.c:7108
 msgid "_End Game"
 msgstr "_Закончить игру"
 
-#: ../plugins/gtk+/glade-gtk.c:7075
+#: ../plugins/gtk+/glade-gtk.c:7111
 msgid "Create New _Window"
 msgstr "Создать _новое окно"
 
-#: ../plugins/gtk+/glade-gtk.c:7078
+#: ../plugins/gtk+/glade-gtk.c:7114
 msgid "_Close This Window"
 msgstr "_Закрыть это окно"
 
-#: ../plugins/gtk+/glade-gtk.c:7090
+#: ../plugins/gtk+/glade-gtk.c:7126
 msgid "_Settings"
 msgstr "_Настройки"
 
-#: ../plugins/gtk+/glade-gtk.c:7093
+#: ../plugins/gtk+/glade-gtk.c:7129
 msgid "Fi_les"
 msgstr "Файл_ы"
 
-#: ../plugins/gtk+/glade-gtk.c:7096
+#: ../plugins/gtk+/glade-gtk.c:7132
 msgid "_Windows"
 msgstr "Ок_на"
 
-#: ../plugins/gtk+/glade-gtk.c:7102
+#: ../plugins/gtk+/glade-gtk.c:7138
 msgid "_Game"
 msgstr "_Игра"
 
-#: ../plugins/gtk+/glade-gtk.c:7567 ../plugins/gtk+/gtk+.xml.in.h:60
+#: ../plugins/gtk+/glade-gtk.c:7603 ../plugins/gtk+/gtk+.xml.in.h:60
 msgid "Button"
 msgstr "Кнопка"
 
-#: ../plugins/gtk+/glade-gtk.c:7568 ../plugins/gtk+/glade-gtk.c:11124
-#: ../plugins/gtk+/glade-gtk.c:11205
+#: ../plugins/gtk+/glade-gtk.c:7604 ../plugins/gtk+/glade-gtk.c:11160
+#: ../plugins/gtk+/glade-gtk.c:11241
 msgid "Toggle"
 msgstr "Кнопка-переключатель"
 
-#: ../plugins/gtk+/glade-gtk.c:7569 ../plugins/gtk+/glade-gtk.c:7580
-#: ../plugins/gtk+/glade-gtk.c:7588
+#: ../plugins/gtk+/glade-gtk.c:7605 ../plugins/gtk+/glade-gtk.c:7616
+#: ../plugins/gtk+/glade-gtk.c:7624
 msgid "Radio"
 msgstr "Радио"
 
-#: ../plugins/gtk+/glade-gtk.c:7570 ../plugins/gtk+/gtk+.xml.in.h:260
+#: ../plugins/gtk+/glade-gtk.c:7606 ../plugins/gtk+/gtk+.xml.in.h:260
 msgid "Menu"
 msgstr "Меню"
 
-#: ../plugins/gtk+/glade-gtk.c:7571 ../plugins/gtk+/gtk+.xml.in.h:105
+#: ../plugins/gtk+/glade-gtk.c:7607 ../plugins/gtk+/gtk+.xml.in.h:105
 msgid "Custom"
 msgstr "Дополнительно"
 
-#: ../plugins/gtk+/glade-gtk.c:7572 ../plugins/gtk+/glade-gtk.c:7581
-#: ../plugins/gtk+/glade-gtk.c:7589
+#: ../plugins/gtk+/glade-gtk.c:7608 ../plugins/gtk+/glade-gtk.c:7617
+#: ../plugins/gtk+/glade-gtk.c:7625
 msgid "Separator"
 msgstr "Разделитель"
 
-#: ../plugins/gtk+/glade-gtk.c:7577 ../plugins/gtk+/glade-gtk.c:7585
+#: ../plugins/gtk+/glade-gtk.c:7613 ../plugins/gtk+/glade-gtk.c:7621
 #: ../plugins/gtk+/gtk+.xml.in.h:276
 msgid "Normal"
 msgstr "Нормальный"
 
-#: ../plugins/gtk+/glade-gtk.c:7578 ../plugins/gtk+/glade-gtk.c:7586
+#: ../plugins/gtk+/glade-gtk.c:7614 ../plugins/gtk+/glade-gtk.c:7622
 #: ../plugins/gtk+/gtk+.xml.in.h:206
 msgid "Image"
 msgstr "Изображение"
 
-#: ../plugins/gtk+/glade-gtk.c:7579 ../plugins/gtk+/glade-gtk.c:7587
+#: ../plugins/gtk+/glade-gtk.c:7615 ../plugins/gtk+/glade-gtk.c:7623
 msgid "Check"
 msgstr "Отметка"
 
-#: ../plugins/gtk+/glade-gtk.c:7601
+#: ../plugins/gtk+/glade-gtk.c:7637
 msgid "Tool Bar Editor"
 msgstr "Правка панели инструментов"
 
-#: ../plugins/gtk+/glade-gtk.c:8147
+#: ../plugins/gtk+/glade-gtk.c:8183
 msgid "This property does not apply when Ellipsize is set."
 msgstr ""
 "Это свойство не применимо, когда не установлено использование многоточий."
 
-#: ../plugins/gtk+/glade-gtk.c:8164
+#: ../plugins/gtk+/glade-gtk.c:8200
 msgid "This property does not apply when Angle is set."
 msgstr "Это свойство не применимо, когда угол не установлен."
 
-#: ../plugins/gtk+/glade-gtk.c:8966
+#: ../plugins/gtk+/glade-gtk.c:9002
 msgid "Introduction page"
 msgstr "Вводная страница"
 
-#: ../plugins/gtk+/glade-gtk.c:8970
+#: ../plugins/gtk+/glade-gtk.c:9006
 msgid "Content page"
 msgstr "Страница с содержимым"
 
-#: ../plugins/gtk+/glade-gtk.c:8974
+#: ../plugins/gtk+/glade-gtk.c:9010
 msgid "Confirmation page"
 msgstr "Страница подтверждения"
 
-#: ../plugins/gtk+/glade-gtk.c:10608
+#: ../plugins/gtk+/glade-gtk.c:10644
 #, c-format
 msgid "%s is set to load %s from the model"
 msgstr "%s загружает %s из модели"
 
-#: ../plugins/gtk+/glade-gtk.c:10610
+#: ../plugins/gtk+/glade-gtk.c:10646
 #, c-format
 msgid "%s is set to manipulate %s directly"
 msgstr "%s работает напрямую с %s"
 
-#: ../plugins/gtk+/glade-gtk.c:11064 ../plugins/gtk+/gtk+.xml.in.h:467
+#: ../plugins/gtk+/glade-gtk.c:11100 ../plugins/gtk+/gtk+.xml.in.h:467
 msgid "Tree View Column"
 msgstr "Столбец дерева"
 
-#: ../plugins/gtk+/glade-gtk.c:11064 ../plugins/gtk+/gtk+.xml.in.h:72
+#: ../plugins/gtk+/glade-gtk.c:11100 ../plugins/gtk+/gtk+.xml.in.h:72
 msgid "Cell Renderer"
 msgstr "Отрисовка ячейки"
 
-#: ../plugins/gtk+/glade-gtk.c:11069
+#: ../plugins/gtk+/glade-gtk.c:11105
 msgid "Properties and Attributes"
 msgstr "Параметры и атрибуты"
 
-#: ../plugins/gtk+/glade-gtk.c:11074
+#: ../plugins/gtk+/glade-gtk.c:11110
 msgid "Common Properties and Attributes"
 msgstr "Общие параметры и атрибуты"
 
 #. Text of the textview
 #. Text...
-#: ../plugins/gtk+/glade-gtk.c:11118 ../plugins/gtk+/glade-gtk.c:11199
+#: ../plugins/gtk+/glade-gtk.c:11154 ../plugins/gtk+/glade-gtk.c:11235
 #: ../plugins/gtk+/gtk+.xml.in.h:419 ../plugins/gtk+/glade-entry-editor.c:520
 msgid "Text"
 msgstr "Текст"
 
 #. Accelerator
-#: ../plugins/gtk+/glade-gtk.c:11119 ../plugins/gtk+/glade-gtk.c:11200
+#: ../plugins/gtk+/glade-gtk.c:11155 ../plugins/gtk+/glade-gtk.c:11236
 #: ../plugins/gtk+/gtk+.xml.in.h:14
 msgid "Accelerator"
 msgstr "Ускоритель"
 
-#: ../plugins/gtk+/glade-gtk.c:11120 ../plugins/gtk+/glade-gtk.c:11201
+#: ../plugins/gtk+/glade-gtk.c:11156 ../plugins/gtk+/glade-gtk.c:11237
 #: ../plugins/gtk+/gtk+.xml.in.h:87
 msgid "Combo"
 msgstr "Выпадающий список"
 
-#: ../plugins/gtk+/glade-gtk.c:11121 ../plugins/gtk+/glade-gtk.c:11202
+#: ../plugins/gtk+/glade-gtk.c:11157 ../plugins/gtk+/glade-gtk.c:11238
 msgid "Spin"
 msgstr "Прокрутка"
 
-#: ../plugins/gtk+/glade-gtk.c:11122 ../plugins/gtk+/glade-gtk.c:11203
+#: ../plugins/gtk+/glade-gtk.c:11158 ../plugins/gtk+/glade-gtk.c:11239
 msgid "Pixbuf"
 msgstr "Изображение"
 
 #. Progress...
-#: ../plugins/gtk+/glade-gtk.c:11123 ../plugins/gtk+/glade-gtk.c:11204
+#: ../plugins/gtk+/glade-gtk.c:11159 ../plugins/gtk+/glade-gtk.c:11240
 #: ../plugins/gtk+/gtk+.xml.in.h:319 ../plugins/gtk+/glade-entry-editor.c:563
 msgid "Progress"
 msgstr "Индикатор выполнения"
 
-#: ../plugins/gtk+/glade-gtk.c:11125 ../plugins/gtk+/glade-gtk.c:11206
+#: ../plugins/gtk+/glade-gtk.c:11161 ../plugins/gtk+/glade-gtk.c:11242
 #: ../plugins/gtk+/gtk+.xml.in.h:396
 msgid "Spinner"
 msgstr "Индикатор ожидания"
 
-#: ../plugins/gtk+/glade-gtk.c:11136
+#: ../plugins/gtk+/glade-gtk.c:11172
 msgid "Icon View Editor"
 msgstr "Редактор области значков"
 
-#: ../plugins/gtk+/glade-gtk.c:11136
+#: ../plugins/gtk+/glade-gtk.c:11172
 msgid "Combo Editor"
 msgstr "Редактор выпадающего списка"
 
-#: ../plugins/gtk+/glade-gtk.c:11195
+#: ../plugins/gtk+/glade-gtk.c:11231
 msgid "Column"
 msgstr "Столбец"
 
-#: ../plugins/gtk+/glade-gtk.c:11215
+#: ../plugins/gtk+/glade-gtk.c:11251
 msgid "Tree View Editor"
 msgstr "Редактор дерева"
 
 #. Dont really add/remove actions (because name conflicts inside groups)
 #.
-#: ../plugins/gtk+/glade-gtk.c:11417
+#: ../plugins/gtk+/glade-gtk.c:11453
 msgid "The accelerator can only be set when inside an Action Group."
-msgstr ""
+msgstr "Ускоритель может быть установлен только в группе действий."
 
 #: ../plugins/gtk+/glade-accels.c:320 ../plugins/gtk+/glade-accels.c:394
 msgid "<choose a key>"
@@ -2739,9 +2734,8 @@ msgid "Always Center"
 msgstr "Всегда по центру"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:43
-#, fuzzy
 msgid "An accelerator key for this action"
-msgstr "Объект GladeCreateReason для создания"
+msgstr "Клавиша ускорителя для этого действия"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:44
 msgid "Arrow"
@@ -4532,61 +4526,53 @@ msgstr ""
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:1
 msgid "Collate"
-msgstr ""
+msgstr "Упорядочить"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:2
-#, fuzzy
 msgid "Copies"
-msgstr "Свойства"
+msgstr "Копии"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:3
 msgid "GTK+ Unix Print Toplevels"
 msgstr "Окна GTK+ верхнего уровня системы печати Unix"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:4
-#, fuzzy
 msgid "Generate PDF"
-msgstr "Основные"
+msgstr "Создать PDF"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:5
-#, fuzzy
 msgid "Generate PS"
-msgstr "Основные"
+msgstr "Создать PS"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:6
-#, fuzzy
 msgid "Number Up"
-msgstr "Число страниц"
+msgstr "Страниц на сторону"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:7
 msgid "Number Up Layout"
-msgstr ""
+msgstr "Расположение страниц на стороне"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:8
-#, fuzzy
 msgid "Page Set"
-msgstr "Размер страницы:"
+msgstr "Параметры страницы"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:9
 msgid "Page Setup Dialog"
 msgstr "Диалог параметров страницы"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:10
-#, fuzzy
 msgid "Preview"
-msgstr "Дерево"
+msgstr "Предпросмотр"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:11
 msgid "Print Dialog"
 msgstr "Диалог печати"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:12
-#, fuzzy
 msgid "Reverse"
-msgstr "Отпускание"
+msgstr "В обратном порядке"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:13
-#, fuzzy
 msgid "Scale"
 msgstr "Масштаб"
 
@@ -4883,14 +4869,14 @@ msgstr ""
 "столбцы для данных"
 
 #: ../plugins/gtk+/glade-entry-editor.c:229
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use static text"
-msgstr "использование встроенного значка в %s"
+msgstr "Параметр %s для использования статического текста"
 
 #: ../plugins/gtk+/glade-entry-editor.c:267
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use an external buffer"
-msgstr "использование в %s строки-шаблона"
+msgstr "Параметр %s для использования внешнего буфера"
 
 #: ../plugins/gtk+/glade-entry-editor.c:352
 #, c-format
