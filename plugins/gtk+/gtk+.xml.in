@@ -324,8 +324,8 @@ embedded in another object</_tooltip>
         <!-- position needs to be always saved in case of using pack end -->
         <property id="position" weight="0" save-always="True"/>
         <property id="padding" transfer-on-paste="True" weight="0.5"/>
-        <property id="expand" transfer-on-paste="True"/>
-        <property id="fill" transfer-on-paste="True"/>
+        <property id="expand" transfer-on-paste="True" save-always="True"/>
+        <property id="fill" transfer-on-paste="True" save-always="True"/>
         <property id="pack-type" transfer-on-paste="True">
           <displayable-values>
             <value id="GTK_PACK_START" _name="Start"/>
