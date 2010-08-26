@@ -1345,7 +1345,10 @@ glade_gtk_container_add_child (GladeWidgetAdaptor *adaptor,
 			       GtkWidget          *container,
 			       GtkWidget          *child)
 {
-	GtkWidget *container_child = gtk_bin_get_child (GTK_BIN (container));
+	GtkWidget *container_child = NULL;
+
+	if (GTK_IS_BIN (container)) 
+		container_child = gtk_bin_get_child (GTK_BIN (container));
 
 	/* Get a placeholder out of the way before adding the child if its a GtkBin
 	 */
@@ -3384,6 +3387,7 @@ glade_gtk_frame_add_child (GladeWidgetAdaptor *adaptor,
 			   GObject            *object, 
 			   GObject            *child)
 {
+	GtkWidget *bin_child;
 	gchar *special_child_type;
 
 	special_child_type = g_object_get_data (child, "special-child-type");
@@ -3404,6 +3408,19 @@ glade_gtk_frame_add_child (GladeWidgetAdaptor *adaptor,
 	}
 	else
 	{
+		/* Get a placeholder out of the way before adding the child
+		 */
+		bin_child = gtk_bin_get_child (GTK_BIN (object));
+		if (bin_child)
+		{
+			if (GLADE_IS_PLACEHOLDER (bin_child))
+				gtk_container_remove (GTK_CONTAINER (object), bin_child);
+			else
+			{
+				g_critical ("Cant add more than one widget to a GtkFrame");
+				return;
+			}
+		}
 		gtk_container_add (GTK_CONTAINER (object),
 				   GTK_WIDGET (child));
 	}
