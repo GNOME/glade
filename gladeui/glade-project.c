@@ -50,7 +50,8 @@
 #include "glade-command.h"
 #include "glade-name-context.h"
 
-#define GLADE_PROJECT_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), GLADE_TYPE_PROJECT, GladeProjectPrivate))
+
+#define VALID_ITER(project, iter) ((iter)!= NULL && G_IS_OBJECT ((iter)->user_data) && ((GladeProject*)(project))->priv->stamp == (iter)->stamp)
 
 enum
 {
@@ -94,8 +95,10 @@ struct _GladeProjectPrivate
 			       * requested
 			       */
 
-	GList *tree; /* List of toplevel Objects in this projects */
-	GList *objects; /* List of all objects in this project */
+	gint   stamp;     /* A a random int per instance of project used to stamp/check the
+			   * GtkTreeIter->stamps */
+	GList *tree;      /* List of toplevel Objects in this projects */
+	GList *objects;   /* List of all objects in this project */
 
 	GList *selection; /* We need to keep the selection in the project
 			   * because we have multiple projects and when the
@@ -594,7 +597,8 @@ glade_project_init (GladeProject *project)
 	GladeProjectPrivate *priv;
 	GList *list;
 
-	project->priv = priv = GLADE_PROJECT_GET_PRIVATE (project);	
+	project->priv = priv = 
+		G_TYPE_INSTANCE_GET_PRIVATE ((project), GLADE_TYPE_PROJECT, GladeProjectPrivate);
 
 	priv->path = NULL;
 	priv->instance_count = 0;
@@ -615,8 +619,11 @@ glade_project_init (GladeProject *project)
 
 	priv->unsaved_number = glade_id_allocator_allocate (get_unsaved_number_allocator ());
 
-	priv->format = GLADE_PROJECT_FORMAT_GTKBUILDER;
+	do { /* Get a random non-zero TreeIter stamper */
+		priv->stamp = g_random_int ();
+	} while (priv->stamp == 0);
 
+	priv->format = GLADE_PROJECT_FORMAT_GTKBUILDER;
 
 	priv->target_versions_major = g_hash_table_new_full (g_str_hash,
 							     g_str_equal,
@@ -2354,21 +2361,21 @@ search_ancestry_by_name (GladeWidget *toplevel, const gchar *name)
 	GladeWidget *widget = NULL, *iter;
 	GList *list, *children;
 
-	if ((children = glade_widget_adaptor_get_children (toplevel->adaptor,
-							   toplevel->object)) != NULL)
+	if ((children = glade_widget_get_children (toplevel)) != NULL)
 	{
 		for (list = children; list; list = list->next) 
-			if ((iter = glade_widget_get_from_gobject (list->data)) != NULL)
-			{
-				if (iter->name && strcmp (iter->name, name) == 0)
-				{
-					widget = iter;
-					break;
-				}
-				else if ((widget = search_ancestry_by_name (iter, name)) != NULL)
-					break;
-			}
+		{
+			iter = glade_widget_get_from_gobject (list->data);
 
+			if (iter->name && strcmp (iter->name, name) == 0)
+			{
+				widget = iter;
+				break;
+			}
+			else if ((widget = search_ancestry_by_name (iter, name)) != NULL)
+				break;
+		}
+		
 		g_list_free (children);
 	}
 	return widget;
@@ -2787,8 +2794,7 @@ glade_project_remove_object (GladeProject *project, GObject *object)
 		return;
 	
 	if ((children = 
-	     glade_widget_adaptor_get_children (gwidget->adaptor,
-						gwidget->object)) != NULL)
+	     glade_widget_get_children (gwidget)) != NULL)
 	{
 		for (list = children; list && list->data; list = list->next)
 			glade_project_remove_object (project, G_OBJECT (list->data));
@@ -4252,8 +4258,9 @@ glade_project_model_get_iter_for_object (GladeProject* project,
                                          GObject* object,
                                          GtkTreeIter* iter)
 {
-	/* Is this unique??? */
-	iter->stamp = GPOINTER_TO_INT (object);
+	g_assert (object);
+
+	iter->stamp     = project->priv->stamp;
 	iter->user_data = object;
 }
 
@@ -4309,14 +4316,22 @@ glade_project_model_get_iter (GtkTreeModel* model,
 		widget = glade_widget_get_from_gobject (object);
 	}
 	else
+	{
+		iter->stamp = 0;
+		iter->user_data = NULL;
 		return FALSE;
-	
+	}
+
 	for (i = 1; i < depth; i++)
 	{		
 		GList* children = glade_widget_get_children (widget);
 		GList* node;
 		if (!children)
+		{
+			iter->stamp = 0;
+			iter->user_data = NULL;
 			return FALSE;
+		}
 
 		node = g_list_nth (children, indices[i]);
 		
@@ -4327,15 +4342,29 @@ glade_project_model_get_iter (GtkTreeModel* model,
 		g_list_free (children);
 
 		if (!node)
+		{
+			iter->stamp = 0;
+			iter->user_data = NULL;
 			return FALSE;
+		}
 		
 		widget = 
 			glade_widget_get_from_gobject (object);
 	}
-	glade_project_model_get_iter_for_object (project,
-	                                         object,
-	                                         iter);
-	return TRUE;
+
+	if (object)
+	{
+		glade_project_model_get_iter_for_object (project,
+							 object,
+							 iter);
+		return TRUE;
+	}
+	else
+	{
+		iter->stamp = 0;
+		iter->user_data = NULL;
+		return FALSE;
+	}
 }
 
 static GtkTreePath*
@@ -4343,12 +4372,21 @@ glade_project_model_get_path (GtkTreeModel* model,
                               GtkTreeIter* iter)
 {
 	GladeProject* project = GLADE_PROJECT (model);
-	GtkTreePath* path = gtk_tree_path_new ();
-	GObject* object = iter->user_data;
-	GladeWidget* widget = glade_widget_get_from_gobject (object);
-	GladeWidget* toplevel = glade_widget_get_toplevel (widget);
-	GladeWidget* parent = widget;
+	GtkTreePath* path;
+	GObject* object;
+	GladeWidget* widget;
+	GladeWidget* toplevel;
+	GladeWidget* parent;
 	GList* top;
+
+	g_return_val_if_fail (VALID_ITER (project, iter), NULL);
+
+	object   = iter->user_data;
+	widget   = glade_widget_get_from_gobject (object);
+	toplevel = glade_widget_get_toplevel (widget);
+	parent   = widget;
+
+	path = gtk_tree_path_new ();
 
 	while ((parent = glade_widget_get_parent (widget)) != NULL)
 	{
@@ -4380,9 +4418,14 @@ glade_project_model_get_value (GtkTreeModel* model,
                                gint column,
                                GValue* value)
 {
-	GObject* object = iter->user_data;
-	GladeWidget* widget = glade_widget_get_from_gobject (object);
+	GObject* object;
+	GladeWidget* widget;
 	gchar* icon_name;
+
+	g_return_if_fail (VALID_ITER (model, iter));
+
+	object = iter->user_data;
+	widget = glade_widget_get_from_gobject (object);
 
 	value = g_value_init (value, 
 	                      glade_project_model_get_column_type (model, column));
@@ -4415,12 +4458,17 @@ glade_project_model_iter_next (GtkTreeModel* model,
 {
 	GladeProject* project = GLADE_PROJECT (model);
 	GObject* object = iter->user_data;
-	GladeWidget* widget = glade_widget_get_from_gobject (object);
-	GladeWidget* parent = glade_widget_get_parent (widget);
+	GladeWidget* widget;
+	GladeWidget* parent;
 	GList* children;
 	GList* child;
 	GList* next;
 	gboolean retval = FALSE;
+
+	g_return_val_if_fail (VALID_ITER (project, iter), FALSE);
+
+	widget = glade_widget_get_from_gobject (object);
+	parent = glade_widget_get_parent (widget);
 	
 	if (parent)
 	{
@@ -4453,8 +4501,14 @@ static gboolean
 glade_project_model_iter_has_child (GtkTreeModel* model,
                                     GtkTreeIter* iter)
 {
-	GladeWidget* widget = glade_widget_get_from_gobject (iter->user_data);
-	GList* children = glade_widget_get_children(widget);
+	GladeWidget* widget;
+	GList* children;
+
+	g_return_val_if_fail (VALID_ITER (model, iter), FALSE);
+
+	widget = glade_widget_get_from_gobject (iter->user_data);
+	children = glade_widget_get_children(widget);
+
 	if (children != NULL)
 	{
 		g_list_free (children);
@@ -4468,6 +4522,9 @@ glade_project_model_iter_n_children (GtkTreeModel* model,
                                      GtkTreeIter* iter)
 {
 	GladeProject* project = GLADE_PROJECT (model);
+
+	g_return_val_if_fail (iter == NULL || VALID_ITER (project, iter), 0);
+
 	if (iter)
 	{
 		GladeWidget* widget = glade_widget_get_from_gobject (iter->user_data);
@@ -4492,6 +4549,9 @@ glade_project_model_iter_nth_child (GtkTreeModel* model,
 {
 	GladeProject* project = GLADE_PROJECT (model);
 	GList* children;
+
+	g_return_val_if_fail (parent == NULL || VALID_ITER (project, parent), FALSE);
+
 	if (parent != NULL)
 	{
 		GObject* object = parent->user_data;
@@ -4514,10 +4574,21 @@ glade_project_model_iter_nth_child (GtkTreeModel* model,
 			                                         iter);
 			retval = TRUE;
 		}
+		else
+		{
+			iter->stamp = 0;
+			iter->user_data = NULL;
+		}
+
 		if (children != project->priv->tree)
 			g_list_free (children);
+
 		return retval;
 	}
+
+	iter->stamp = 0;
+	iter->user_data = NULL;
+
 	return FALSE;
 }
 
@@ -4527,7 +4598,9 @@ glade_project_model_iter_children (GtkTreeModel* model,
                                    GtkTreeIter* parent)
 {
 	GladeProject* project = GLADE_PROJECT (model);
-	
+
+	g_return_val_if_fail (parent == NULL || VALID_ITER (project, parent), FALSE);
+
 	if (parent)
 	{
 		GladeWidget* widget = glade_widget_get_from_gobject (parent->user_data);
@@ -4541,7 +4614,6 @@ glade_project_model_iter_children (GtkTreeModel* model,
 			g_list_free (children);
 			return TRUE;
 		}
-		return FALSE;
 	}
 	else
 	{
@@ -4552,8 +4624,11 @@ glade_project_model_iter_children (GtkTreeModel* model,
 			                                         iter);
 			return TRUE;
 		}
-		return FALSE;
 	}
+
+	iter->stamp = 0;
+	iter->user_data = NULL;
+	return FALSE;
 }
 
 static gboolean
@@ -4562,8 +4637,14 @@ glade_project_model_iter_parent (GtkTreeModel* model,
                                  GtkTreeIter* child)
 {
 	GladeProject* project = GLADE_PROJECT (model);
-	GladeWidget* widget = glade_widget_get_from_gobject (child->user_data);
-	GladeWidget* parent = glade_widget_get_parent (widget);
+	GladeWidget* widget;
+	GladeWidget* parent;
+
+	g_return_val_if_fail (VALID_ITER (project, child), FALSE);
+
+	widget = glade_widget_get_from_gobject (child->user_data);
+	parent = glade_widget_get_parent (widget);
+
 	if (parent)
 	{
 		glade_project_model_get_iter_for_object (project,
@@ -4571,6 +4652,10 @@ glade_project_model_iter_parent (GtkTreeModel* model,
 	        		                         iter);
 		return TRUE;
 	}
+
+	iter->stamp = 0;
+	iter->user_data = NULL;
+
 	return FALSE;
 }
 

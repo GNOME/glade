@@ -3,6 +3,12 @@
 	* plugins/gtk+/glade-gtk.c: Fixed glade_gtk_frame_add_child() to remove any previous
 	  placeholders.
 
+	* gladeui/glade-project.c:
+	  - Simplified code to use glade_widget_get_children() instead
+	    of glade_widget_adaptor_get_children()
+	  - Added treemodel stamp and attempt to stamp and validate all
+	    GtkTreeIters.
+
 2010-06-15  Tristan Van Berkom <tvb@gnome.org>
 
 	* configure.ac: Require GTK+ 3.0 and change package domain from glade3 -> glade
