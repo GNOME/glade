@@ -2726,6 +2726,7 @@ glade_project_add_object (GladeProject *project,
 		path = gtk_tree_model_get_path (GTK_TREE_MODEL (project), &iter);
 	
 		gtk_tree_model_row_inserted (GTK_TREE_MODEL (project), path, &iter);
+		project->priv->stamp++;
 	}
 
 	/* NOTE: Sensitive ordering here, we need to recurse after updating
@@ -2815,6 +2816,7 @@ glade_project_remove_object (GladeProject *project, GObject *object)
 		                                iter);
 		gtk_tree_model_row_deleted (GTK_TREE_MODEL (project),
 		                            path);
+		project->priv->stamp++;
 		g_object_unref (object);
 		glade_project_release_widget_name (project, gwidget,
 						   glade_widget_get_name (gwidget));
