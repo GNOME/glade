@@ -4284,17 +4284,19 @@ glade_project_model_get_column_type (GtkTreeModel* model,
 {
 	switch (column)
 	{
-		case GLADE_PROJECT_MODEL_COLUMN_ICON_NAME:
-			return G_TYPE_STRING;
-		case GLADE_PROJECT_MODEL_COLUMN_NAME:
-			return G_TYPE_STRING;
-		case GLADE_PROJECT_MODEL_COLUMN_TYPE_NAME:
-			return G_TYPE_STRING;
-		case GLADE_PROJECT_MODEL_COLUMN_OBJECT:
-			return G_TYPE_OBJECT;
-		default:
-			g_assert_not_reached();
-			return G_TYPE_NONE;
+	case GLADE_PROJECT_MODEL_COLUMN_ICON_NAME:
+		return G_TYPE_STRING;
+	case GLADE_PROJECT_MODEL_COLUMN_NAME:
+		return G_TYPE_STRING;
+	case GLADE_PROJECT_MODEL_COLUMN_TYPE_NAME:
+		return G_TYPE_STRING;
+	case GLADE_PROJECT_MODEL_COLUMN_OBJECT:
+		return G_TYPE_OBJECT;
+	case GLADE_PROJECT_MODEL_COLUMN_MISC:
+		return G_TYPE_STRING;
+	default:
+		g_assert_not_reached();
+		return G_TYPE_NONE;
 	}
 }
 
@@ -4422,7 +4424,7 @@ glade_project_model_get_value (GtkTreeModel* model,
 {
 	GObject* object;
 	GladeWidget* widget;
-	gchar* icon_name;
+	gchar *str = NULL, *child_type;
 
 	g_return_if_fail (VALID_ITER (model, iter));
 
@@ -4434,23 +4436,34 @@ glade_project_model_get_value (GtkTreeModel* model,
 	
 	switch (column)
 	{
-		case GLADE_PROJECT_MODEL_COLUMN_ICON_NAME:
-			g_object_get (widget->adaptor, "icon-name", &icon_name, NULL);
-			g_value_take_string (value, icon_name);
-			break;
-		case GLADE_PROJECT_MODEL_COLUMN_NAME:
-			g_value_set_string (value,
-			                    glade_widget_get_name (widget));
-			break;
-		case GLADE_PROJECT_MODEL_COLUMN_TYPE_NAME:
-			g_value_set_static_string (value,
-			                           G_OBJECT_TYPE_NAME(object));
-			break;
-		case GLADE_PROJECT_MODEL_COLUMN_OBJECT:
-			g_value_set_object (value, object);
-			break;
-		default:
-			g_assert_not_reached();
+	case GLADE_PROJECT_MODEL_COLUMN_ICON_NAME:
+		g_object_get (widget->adaptor, "icon-name", &str, NULL);
+		g_value_take_string (value, str);
+		break;
+	case GLADE_PROJECT_MODEL_COLUMN_NAME:
+		g_value_set_string (value,
+				    glade_widget_get_name (widget));
+		break;
+	case GLADE_PROJECT_MODEL_COLUMN_TYPE_NAME:
+		g_value_set_static_string (value,
+					   G_OBJECT_TYPE_NAME(object));
+		break;
+	case GLADE_PROJECT_MODEL_COLUMN_OBJECT:
+		g_value_set_object (value, object);
+		break;
+	case GLADE_PROJECT_MODEL_COLUMN_MISC:
+		/* special child type / internal child */
+		if (glade_widget_get_internal (widget) != NULL)
+			str = g_strdup_printf (_("(internal %s)"),  
+					       glade_widget_get_internal (widget));
+		else if ((child_type = g_object_get_data (glade_widget_get_object (widget),
+							  "special-child-type")) != NULL)
+			str = g_strdup_printf (_("(%s child)"), child_type);
+		
+		g_value_take_string (value, str);
+		break;
+	default:
+		g_assert_not_reached();
 	}
 }
 

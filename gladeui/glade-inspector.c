@@ -671,30 +671,41 @@ static void
 add_columns (GtkTreeView *view)
 {
 	GtkTreeViewColumn *column;
-	GtkCellRenderer *renderer_pixbuf, *renderer_name, *renderer_type;
+	GtkCellRenderer *renderer;
 
 	column = gtk_tree_view_column_new ();
 
-	renderer_pixbuf = gtk_cell_renderer_pixbuf_new ();
-	gtk_tree_view_column_pack_start (column, renderer_pixbuf, FALSE);
+	renderer = gtk_cell_renderer_pixbuf_new ();
+	gtk_tree_view_column_pack_start (column, renderer, FALSE);
 	gtk_tree_view_column_set_attributes (column,
-	                                     renderer_pixbuf,
+	                                     renderer,
 	                                     "icon_name", GLADE_PROJECT_MODEL_COLUMN_ICON_NAME,
 	                                     NULL);
 
-	renderer_name = gtk_cell_renderer_text_new ();
-	gtk_tree_view_column_pack_start (column, renderer_name, FALSE);
+	renderer = gtk_cell_renderer_text_new ();
+	gtk_tree_view_column_pack_start (column, renderer, FALSE);
 	gtk_tree_view_column_set_attributes (column,
-	                                     renderer_name,
+	                                     renderer,
 	                                     "text", GLADE_PROJECT_MODEL_COLUMN_NAME,
 	                                     NULL);
 
-	renderer_type = gtk_cell_renderer_text_new ();
-	g_object_set (renderer_type, "style", PANGO_STYLE_ITALIC, NULL);
-	gtk_tree_view_column_pack_start (column, renderer_type, FALSE);	
+	renderer = gtk_cell_renderer_text_new ();
+	g_object_set (renderer, "style", PANGO_STYLE_ITALIC, NULL);
+	gtk_tree_view_column_pack_start (column, renderer, FALSE);	
 	gtk_tree_view_column_set_attributes (column,
-	                                     renderer_type,
+	                                     renderer,
 	                                     "text", GLADE_PROJECT_MODEL_COLUMN_TYPE_NAME,
+	                                     NULL);
+
+
+	renderer = gtk_cell_renderer_text_new ();
+	g_object_set (G_OBJECT (renderer), 
+		      "style", PANGO_STYLE_ITALIC,
+		      "foreground", "Gray", NULL);
+	gtk_tree_view_column_pack_start (column, renderer, FALSE);	
+	gtk_tree_view_column_set_attributes (column,
+	                                     renderer,
+	                                     "text", GLADE_PROJECT_MODEL_COLUMN_MISC,
 	                                     NULL);
 
 	gtk_tree_view_append_column (view, column);

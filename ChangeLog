@@ -1,6 +1,14 @@
 2010-08-29  Tristan Van Berkom <tristanvb@openismus.com>
 
-	* gladeui/glade-project.c: Applied Johannes Schmid's changes in bug 623879.
+	* gladeui/glade-project.[ch]:
+	  - Applied Johannes Schmid's changes in bug 623879.
+	  - Added MISC column to the project model (displayable information
+	    about whether the widget is an internal child of a composite widget
+	    or a frame's label or notebook's tab).
+
+	* gladeui/glade-inspector.c: Fixed regression in the inspector; inspector
+	  was failing to display information about frame labels and internal action 
+	  areas and such.
 
 2010-08-26  Tristan Van Berkom <tristanvb@openismus.com>
 
