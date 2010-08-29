@@ -8803,6 +8803,8 @@ glade_gtk_combo_box_set_property (GladeWidgetAdaptor *adaptor,
 								  id, value);
 }
 
+
+
 /* ----------------------------- GtkComboBoxEntry ------------------------------ */
 void
 glade_gtk_combo_box_entry_post_create (GladeWidgetAdaptor *adaptor,
@@ -11192,40 +11194,56 @@ glade_gtk_cell_layout_launch_editor (GObject  *layout)
 }
 
 
+static void
+glade_gtk_cell_layout_launch_editor_action (GObject *object)
+{
+	GladeWidget *w = glade_widget_get_from_gobject (object);
+	
+	do
+	{
+		if (GTK_IS_TREE_VIEW (w->object))
+		{
+			glade_gtk_treeview_launch_editor (w->object);
+			break;
+		} 
+		else if (GTK_IS_ICON_VIEW (w->object))
+		{
+			glade_gtk_cell_layout_launch_editor (w->object);
+			break;
+		}
+		else if (GTK_IS_COMBO_BOX (w->object))
+		{
+			glade_gtk_cell_layout_launch_editor (w->object);
+			break;
+		}
+
+	} while ((w = glade_widget_get_parent (w)));
+}
+
 void
 glade_gtk_cell_layout_action_activate (GladeWidgetAdaptor *adaptor,
 				       GObject *object,
 				       const gchar *action_path)
 {
 	if (strcmp (action_path, "launch_editor") == 0)
-	{
-		GladeWidget *w = glade_widget_get_from_gobject (object);
-		
-		do
-		{
-			if (GTK_IS_TREE_VIEW (w->object))
-			{
-				glade_gtk_treeview_launch_editor (w->object);
-				break;
-			} 
-			else if (GTK_IS_ICON_VIEW (w->object))
-			{
-				glade_gtk_cell_layout_launch_editor (w->object);
-				break;
-			}
-			else if (GTK_IS_COMBO_BOX (w->object))
-			{
-				glade_gtk_cell_layout_launch_editor (w->object);
-				break;
-			}
-
-		} while ((w = glade_widget_get_parent (w)));
-
-	}
+		glade_gtk_cell_layout_launch_editor_action (object);
 	else
 		GWA_GET_CLASS (G_TYPE_OBJECT)->action_activate (adaptor,
 								object,
 								action_path);
+}
+
+void
+glade_gtk_cell_layout_action_activate_as_widget (GladeWidgetAdaptor *adaptor,
+						 GObject *object,
+						 const gchar *action_path)
+{
+	if (strcmp (action_path, "launch_editor") == 0)
+		glade_gtk_cell_layout_launch_editor_action (object);
+	else
+		GWA_GET_CLASS (GTK_TYPE_WIDGET)->action_activate (adaptor,
+								  object,
+								  action_path);
 }
 
 

@@ -7,8 +7,13 @@
 	    or a frame's label or notebook's tab).
 
 	* gladeui/glade-inspector.c: Fixed regression in the inspector; inspector
-	  was failing to display information about frame labels and internal action 
+	  was failing to display information about frame labels and internal action
 	  areas and such.
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in:
+	  Fixed GtkComboBox/GtkIconView popup actions (was missing
+	  the GtkWidgetClass actions such as add/remove parent)
+	  Fixes bug 628146.
 
 2010-08-26  Tristan Van Berkom <tristanvb@openismus.com>
 
