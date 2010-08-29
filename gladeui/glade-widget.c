@@ -1398,7 +1398,7 @@ glade_widget_dup_internal (GladeWidget *main_target,
 	gchar       *child_type;
 	GList       *l;
 	
-	g_return_val_if_fail (template_widget != NULL && GLADE_IS_WIDGET(template_widget), NULL);
+	g_return_val_if_fail (GLADE_IS_WIDGET (template_widget), NULL);
 	g_return_val_if_fail (parent == NULL || GLADE_IS_WIDGET (parent), NULL);
 
 	/* Dont actually duplicate internal widgets, but recurse through them anyway. */
