@@ -1747,7 +1747,9 @@ embedded in another object</_tooltip>
 	<property id="title" translatable="True" since="2.10"/>
 	<property id="header-image" since="2.10"/>
 	<property id="sidebar-image" since="2.10"/>
-        <property id="complete" disabled="True"/>
+        <property id="complete" ignore="True" _name="Initially Complete">
+	  <_tooltip>Whether this page will initially be marked as complete regardless of user input.</_tooltip>
+	</property>
 	<property id="page-type" ignore="True">
   	  <displayable-values>
 	    <value id="GTK_ASSISTANT_PAGE_CONTENT" _name="Content"/>
