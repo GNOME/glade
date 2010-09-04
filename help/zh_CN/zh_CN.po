@@ -2,13 +2,14 @@
 # Copyright (C) 2009 Free Software Foundation, Inc.
 # This file is distributed under the same license as glade3 package.
 # 苏运强 <wzssyqa@gmail.com>, 2009.
+# Tao Wang <dancefire@gmail.com>, 2010
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glade3-help 3.0\n"
-"POT-Creation-Date: 2009-11-12 16:19+0000\n"
-"PO-Revision-Date: 2009-11-13 00:18+0800\n"
-"Last-Translator: 苏运强 <wzssyqa@gmail.com>\n"
+"POT-Creation-Date: 2010-05-20 23:48+0000\n"
+"PO-Revision-Date: 2010-07-05 09:00+1000\n"
+"Last-Translator: Tao Wang <dancefire@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,7 +27,7 @@ msgstr ""
 "对于本文档的复制、分发和/或修改必须遵循自由软件基金会 (Free Software "
 "Foundation) 发布的 GNU 自由文档许可证 (GFDL) 版本 1.1 或更高版本，该许可证没"
 "有固定的部分、没有封面和背页文本。您可以在 <ulink type=\"help\" url=\"ghelp:"
-"fdl\">link</ulink> 或在随本手册一起分发的 COPYING-DOCS 文件中找到 GFDL 的副"
+"fdl\">链接</ulink> 或在随本手册一起分发的 COPYING-DOCS 文件中找到 GFDL 的副"
 "本。"
 
 #: C/legal.xml:12(para)
@@ -422,7 +423,7 @@ msgstr ""
 
 #: C/glade.xml:256(title)
 msgid "Working with Projects"
-msgstr ""
+msgstr "与项目一起使用"
 
 #: C/glade.xml:261(title)
 msgid "Creating a New Project"
@@ -483,7 +484,7 @@ msgstr ""
 
 #: C/glade.xml:285(title)
 msgid "Working with Widgets"
-msgstr ""
+msgstr "与 Widget 一起使用"
 
 #: C/glade.xml:287(title)
 msgid "To Select Widgets From the Palette Window"
@@ -493,7 +494,7 @@ msgstr "从构件库选择控件"
 msgid ""
 "You can work with the widgets in the <guilabel>Palette</guilabel> window in "
 "the following ways:"
-msgstr ""
+msgstr "你可以以以下方式在 <guilabel>构件库</guilabel> 中使用 widget。"
 
 #: C/glade.xml:295(term)
 msgid "Selection mode"
@@ -507,12 +508,17 @@ msgid ""
 "use the <guilabel>Properties</guilabel> window to edit the properties of the "
 "widgets."
 msgstr ""
+"要用选择模式，请点击 <guilabel>Selector</guilabel> 箭头。鼠标会变为一个箭头以"
+"表示现在已经是选择模式了。在这种模式下，你在你的项目中用鼠标来选择一个 "
+"widget。你可以用 <guilabel>属性</guilabel> 窗口来编辑 widget 的属性。"
 
 #: C/glade.xml:306(para)
 msgid ""
 "You can also use the widget context menu to select a widget. Right-click on "
 "a widget to open the widget context menu."
 msgstr ""
+"你也可以使用 widget 上下文菜单来选择一个 widget。右键点击一个 widget 来打开 "
+"widget 上下文菜单。"
 
 #: C/glade.xml:307(para)
 msgid ""
@@ -522,10 +528,14 @@ msgid ""
 "guilabel> arrow or another widget in the <guilabel>Palette</guilabel> to "
 "return to normal mode."
 msgstr ""
+"当你选择一个 widget 时，你可以通过按住 <keycap>Control</keycap> 键，从 "
+"<guilabel>构件库</guilabel> 中，添加多个特定类型的 widget 到你的项目中。你需"
+"要点击<guilabel>构件库</guilabel> 中的 <guilabel>Selector</guilabel> 箭头或其"
+"它 widget 来返回普通模式。"
 
 #: C/glade.xml:318(term)
 msgid "Widget placement mode"
-msgstr ""
+msgstr "Widget 摆放模式"
 
 #: C/glade.xml:320(para)
 msgid ""
@@ -535,6 +545,10 @@ msgid ""
 "level widgets, and so on. After you place a widget, the mode returns to "
 "selection mode."
 msgstr ""
+"要使用 widget 摆放模式，请选择 <guilabel>构件库</guilabel> 窗口中的一个 "
+"widget。当你选择了大多数的 widget，鼠标将变为一个箭头加一个十字。你可以把 "
+"widget 放置到容器内、顶层 widget 等等。当你放置好 widget 后，会自动回到选择模"
+"式。"
 
 #: C/glade.xml:335(term)
 msgid "Top-level placement mode"
@@ -749,6 +763,10 @@ msgid ""
 "\"http\">developer</ulink> mailing lists. In addition to subscribing, you "
 "might also want to browse the list archives, available via these same links."
 msgstr ""
+"另一个不错的信息来源是 Glade <ulink url=\"http://lists.ximian.com/mailman/"
+"listinfo/glade-users\" type=\"http\">user</ulink> and <ulink url=\"http://"
+"lists.ximian.com/mailman/listinfo/glade-devel\" type=\"http\">开发者</ulink> "
+"邮件列表。除了订阅外，你也许会像浏览一下列表存档，同样也在上面的这个链接里。"
 
 #: C/glade.xml:476(para)
 msgid ""
@@ -766,4 +784,6 @@ msgstr ""
 #. Put one translator per line, in the form of NAME <EMAIL>, YEAR1, YEAR2
 #: C/glade.xml:0(None)
 msgid "translator-credits"
-msgstr "苏运强 wzssyqa@gmail.com"
+msgstr ""
+"苏运强 <wzssyqa@gmail.com>, 2009\n"
+"Tao Wang <dancefire@gmail.com>, 2010"
