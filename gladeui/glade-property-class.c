@@ -200,7 +200,7 @@ glade_property_class_free (GladePropertyClass *property_class)
 }
 
 
-static GValue *
+GValue *
 glade_property_class_get_default_from_spec (GParamSpec *spec)
 {
 	GValue *value;

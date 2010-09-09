@@ -625,6 +625,8 @@ struct _GladeWidgetAdaptor
 
 	GType        type;         /* GType of the widget */
 
+	GType        real_type;
+	
 	gchar       *name;         /* Name of the widget, for example GtkButton */
 
 

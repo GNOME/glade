@@ -346,14 +346,14 @@ gwa_add_signals (GladeWidgetAdaptor *adaptor, GList **signals, GType type)
 }
 
 static GList * 
-gwa_list_signals (GladeWidgetAdaptor *adaptor) 
+gwa_list_signals (GladeWidgetAdaptor *adaptor, GType real_type) 
 {
 	GList *signals = NULL;
 	GType type, parent, *i, *p;
 
-	g_return_val_if_fail (adaptor->type != 0, NULL);
+	g_return_val_if_fail (real_type != 0, NULL);
 
-	for (type = adaptor->type; g_type_is_a (type, G_TYPE_OBJECT); type = parent)
+	for (type = real_type; g_type_is_a (type, G_TYPE_OBJECT); type = parent)
 	{
 		parent = g_type_parent (type);
 		
@@ -593,7 +593,7 @@ glade_widget_adaptor_constructor (GType                  type,
 	if ((object_class = g_type_class_ref (adaptor->type)))
 	{
 		/* Build signals & properties */
-		adaptor->signals = gwa_list_signals (adaptor);
+		adaptor->signals = gwa_list_signals (adaptor, adaptor->type);
 
 		gwa_inherit_signals (adaptor);
 		gwa_setup_properties (adaptor, object_class, FALSE);
@@ -744,6 +744,7 @@ glade_widget_adaptor_real_set_property (GObject         *object,
 	case PROP_NAME:
 		/* assume once (construct-only) */
 		adaptor->name = g_value_dup_string (value);
+		adaptor->real_type = g_type_from_name (adaptor->name);
 		break;
 	case PROP_ICON_NAME:
 		/* assume once (construct-only) */
@@ -1855,6 +1856,188 @@ gwa_update_properties_from_node (GladeWidgetAdaptor  *adaptor,
 	}
 }
 
+static GParamSpec *
+pspec_dup (GParamSpec *spec)
+{
+	const gchar *name, *nick, *blurb;
+	GType  spec_type, value_type;
+	GParamSpec *pspec = NULL;
+
+	spec_type = G_PARAM_SPEC_TYPE (spec);
+	value_type = spec->value_type;
+
+	name = g_param_spec_get_name (spec);	
+	nick = g_param_spec_get_nick (spec);
+	blurb = g_param_spec_get_blurb (spec);
+
+	if (spec_type == G_TYPE_PARAM_ENUM   ||
+	    spec_type == G_TYPE_PARAM_FLAGS  ||
+	    spec_type == G_TYPE_PARAM_BOXED  ||
+	    spec_type == G_TYPE_PARAM_OBJECT ||
+	    spec_type == GLADE_TYPE_PARAM_OBJECTS)
+	{
+
+		if (spec_type == G_TYPE_PARAM_ENUM)
+		{
+			GParamSpecEnum *p = (GParamSpecEnum *)spec;
+			pspec = g_param_spec_enum (name, nick, blurb, value_type, p->default_value, 0);
+		}
+		else if (spec_type == G_TYPE_PARAM_FLAGS)
+		{
+			GParamSpecFlags *p = (GParamSpecFlags *)spec;
+			pspec = g_param_spec_flags (name, nick, blurb, value_type, p->default_value, 0);
+		}
+		else if (spec_type == G_TYPE_PARAM_OBJECT)
+			pspec = g_param_spec_object (name, nick, blurb, value_type, 0);
+		else if (spec_type == GLADE_TYPE_PARAM_OBJECTS)
+			pspec = glade_param_spec_objects (name, nick, blurb, value_type, 0);
+		else
+			pspec = g_param_spec_boxed (name, nick, blurb, value_type, 0);
+	}
+	else if (spec_type == G_TYPE_PARAM_STRING)
+	{
+		GParamSpecString *p = (GParamSpecString *)spec;
+		pspec = g_param_spec_string (name, nick, blurb, p->default_value, 0);
+	}
+	else if (spec_type == G_TYPE_PARAM_BOOLEAN)
+	{
+		GParamSpecBoolean *p = (GParamSpecBoolean *)spec;
+		pspec = g_param_spec_boolean (name, nick, blurb, p->default_value, 0);
+	}
+	else
+	{
+		if (spec_type == G_TYPE_PARAM_CHAR)
+		{
+			GParamSpecChar *p = (GParamSpecChar *)spec;
+			pspec = g_param_spec_char (name, nick, blurb,
+			                           p->minimum, p->maximum, p->default_value, 0);
+		}
+		else if (spec_type == G_TYPE_PARAM_UCHAR)
+		{
+			GParamSpecUChar *p = (GParamSpecUChar *)spec;
+			pspec = g_param_spec_uchar (name, nick, blurb,
+			                            p->minimum, p->maximum, p->default_value, 0);
+		}
+		else if (spec_type == G_TYPE_PARAM_INT)
+		{
+			GParamSpecInt *p = (GParamSpecInt *)spec;
+			pspec = g_param_spec_int (name, nick, blurb,
+			                          p->minimum, p->maximum, p->default_value, 0);
+		}
+		else if (spec_type == G_TYPE_PARAM_UINT)
+		{
+			GParamSpecUInt *p = (GParamSpecUInt *)spec;
+			pspec = g_param_spec_uint (name, nick, blurb,
+			                           p->minimum, p->maximum, p->default_value, 0);
+		}
+		else if (spec_type == G_TYPE_PARAM_LONG)
+		{
+			GParamSpecLong *p = (GParamSpecLong *)spec;
+			pspec = g_param_spec_long (name, nick, blurb,
+			                           p->minimum, p->maximum, p->default_value, 0);
+		}
+		else if (spec_type == G_TYPE_PARAM_ULONG)
+		{
+			GParamSpecULong *p = (GParamSpecULong *)spec;
+			pspec = g_param_spec_ulong (name, nick, blurb,
+			                            p->minimum, p->maximum, p->default_value, 0);
+		}
+		else if (spec_type == G_TYPE_PARAM_INT64)
+		{
+			GParamSpecInt64 *p = (GParamSpecInt64 *)spec;
+			pspec = g_param_spec_int64 (name, nick, blurb,
+			                            p->minimum, p->maximum, p->default_value, 0);
+		}
+		else if (spec_type == G_TYPE_PARAM_UINT64)
+		{
+			GParamSpecUInt64 *p = (GParamSpecUInt64 *)spec;
+			pspec = g_param_spec_uint64 (name, nick, blurb,
+			                             p->minimum, p->maximum, p->default_value, 0);
+		}
+		else if (spec_type == G_TYPE_PARAM_FLOAT)
+		{
+			GParamSpecFloat *p = (GParamSpecFloat *)spec;
+			pspec = g_param_spec_float (name, nick, blurb,
+			                            p->minimum, p->maximum, p->default_value, 0);
+		}
+		else if (spec_type == G_TYPE_PARAM_DOUBLE)
+		{
+			GParamSpecDouble *p = (GParamSpecDouble *)spec;
+			pspec = g_param_spec_float (name, nick, blurb,
+			                            p->minimum, p->maximum, p->default_value, 0);
+		}
+	}
+	return pspec;
+}
+
+static void
+gwa_update_properties_from_type (GladeWidgetAdaptor  *adaptor,
+				 GType                type,
+                                 GList              **properties,
+				 gboolean             is_packing)
+{
+	gpointer object_class = g_type_class_ref (type);
+	GParamSpec **specs = NULL, *spec;
+	guint i, n_specs = 0;
+
+	/* only GtkContainer child propeties can be introspected */
+	if (is_packing && !g_type_is_a (adaptor->type, GTK_TYPE_CONTAINER))
+		return;
+
+	if (is_packing)
+		specs = gtk_container_class_list_child_properties (object_class, &n_specs);
+	else
+		specs = g_object_class_list_properties (object_class, &n_specs);
+
+	for (i = 0; i < n_specs; i++)
+	{
+		GladePropertyClass *property_class;
+		GList *list;
+		
+		/* find the property in our list, if not found append a new property */
+		for (list = *properties; list && list->data; list = list->next)
+		{
+			property_class = GLADE_PROPERTY_CLASS (list->data);
+			if (property_class->id != NULL &&
+			    g_ascii_strcasecmp (specs[i]->name, property_class->id) == 0)
+				break;
+		}
+
+		if (list == NULL && (spec = pspec_dup (specs[i])))
+		{
+			property_class = glade_property_class_new (adaptor);
+			property_class->id = g_strdup (spec->name);
+			
+			property_class->pspec = spec;
+
+			/* Make sure we can tell properties apart by there 
+			 * owning class.
+			 */
+			property_class->pspec->owner_type = adaptor->type;
+
+			/* Disable properties by default since the does not really implement them */
+			property_class->virt = TRUE;
+			property_class->ignore = TRUE;
+
+			property_class->tooltip = g_strdup (g_param_spec_get_blurb (spec));
+			property_class->name = g_strdup (g_param_spec_get_nick (spec));
+			
+			if (property_class->pspec->flags & G_PARAM_CONSTRUCT_ONLY)
+				property_class->construct_only = TRUE;
+
+			property_class->orig_def = glade_property_class_get_default_from_spec (spec);
+
+			property_class->def = glade_property_class_get_default_from_spec (spec);			
+
+			property_class->packing = is_packing;
+
+			*properties = g_list_append (*properties, property_class);
+		}
+	}
+
+	g_free (specs);
+}			 
+
 static void
 gwa_action_update_from_node (GladeWidgetAdaptor *adaptor,
 			     gboolean is_packing,
@@ -2052,9 +2235,10 @@ static GType
 generate_type (const char *name, 
 	       const char *parent_name)
 {
-	GType parent_type;
+	GType parent_type, retval;
 	GTypeQuery query;
 	GTypeInfo *type_info;
+	char *new_name;
 	
 	g_return_val_if_fail (name != NULL, 0);
 	g_return_val_if_fail (parent_name != NULL, 0);
@@ -2064,12 +2248,29 @@ generate_type (const char *name,
 	
 	g_type_query (parent_type, &query);
 	g_return_val_if_fail (query.type != 0, 0);
-	
+
+	/*
+	 * If the type already exist it means we want to use the parent type
+	 * instead of the real one at runtime.
+	 * This is currently used to instantiate GtkWindow as a GtkEventBox
+	 * at runtime.	 
+	 */
+	if (g_type_from_name (name))
+		new_name = g_strdup_printf ("GladeFake%s", name);
+	else
+		new_name = NULL;
+
 	type_info = g_new0 (GTypeInfo, 1);
 	type_info->class_size = query.class_size;
 	type_info->instance_size = query.instance_size;
+		
+	retval = g_type_register_static (parent_type,
+	                                 (new_name) ? new_name : name,
+	                                 type_info, 0);
+
+	g_free (new_name);
 	
-	return g_type_register_static (parent_type, name, type_info, 0);
+	return retval;
 }
 
 
@@ -2130,7 +2331,24 @@ glade_widget_adaptor_from_catalog (GladeCatalog         *catalog,
 	else if ((func_name = glade_xml_get_property_string (class_node, GLADE_TAG_GET_TYPE_FUNCTION)) != NULL)
 		object_type = glade_util_get_type_from_name (func_name, TRUE);
 	else
+	{
+		GType type_iter;
+		
 		object_type = glade_util_get_type_from_name (name, FALSE);
+		
+		for (type_iter = g_type_parent (object_type);
+		     type_iter;
+		     type_iter = g_type_parent (type_iter))
+		{
+			GladeWidgetAdaptor *a = glade_widget_adaptor_get_by_name (g_type_name (type_iter));
+
+			if (a && a->real_type != a->type)
+			{
+				object_type = generate_type (name, g_type_name (a->type));
+				break;
+			}
+		}
+	}
 	
 	if (object_type == 0)
 	{
@@ -2246,6 +2464,22 @@ glade_widget_adaptor_from_catalog (GladeCatalog         *catalog,
 			   name, GLADE_TAG_GENERIC_NAME);
 	}
 
+	/* if adaptor->type (the runtime used by glade) differs from adaptor->name
+	 * (the name specified in the catalog) means we are using the type specified in the
+	 * the parent tag as the runtime and the class already exist.
+	 * So we need to add the properties and signals from the real class
+	 * even though they wont be aplied at runtime.
+	 *//*
+	if (adaptor->type != adaptor->real_type)
+	{
+		adaptor->signals = gwa_list_signals (adaptor, adaptor->real_type);
+		
+		gwa_update_properties_from_type (adaptor, adaptor->real_type,
+		                                 &adaptor->properties, FALSE);
+		gwa_update_properties_from_type (adaptor, adaptor->real_type,
+		                                 &adaptor->packing_props, TRUE);
+	}*/
+	
 	/* Perform a stoopid fallback just incase */
 	if (adaptor->generic_name == NULL)
 		adaptor->generic_name = g_strdup ("widget");
@@ -2646,6 +2880,19 @@ glade_widget_adaptor_construct_object (GladeWidgetAdaptor *adaptor,
 				       GParameter         *parameters)
 {
 	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
+
+/*
+	if (g_type_is_a (adaptor->type, GTK_TYPE_WINDOW))
+	{
+		GParameter type = {0, };
+
+		type.name = "type";
+		g_value_init (&type.value, GTK_TYPE_WINDOW_TYPE);
+		g_value_set_enum (&type.value, GTK_WINDOW_OFFSCREEN);
+
+		n_parameters = 1;
+		parameters = &type;
+	}*/
 
 	return GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->construct_object (adaptor, n_parameters, parameters);
 }

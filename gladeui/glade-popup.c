@@ -498,9 +498,14 @@ glade_popup_create_menu (GladeWidget      *widget,
 	/* paste is placholder specific when the popup is on a placeholder */
 	sensitive = glade_clipboard_get_has_selection (glade_app_get_clipboard ());
 	non_window = FALSE;
+
 	for (list = glade_app_get_clipboard ()->selection; list; list = list->next)
-		if (!GTK_IS_WINDOW (GLADE_WIDGET (list->data)->object))
+	{
+		GladeWidget *gwidget = GLADE_WIDGET (list->data);
+		if (!GTK_IS_WIDGET (gwidget->object) ||
+		    !gtk_widget_get_has_window (GTK_WIDGET (gwidget->object)))
 			non_window = TRUE;
+	}
 
 	if (placeholder)
 		glade_popup_append_item (popup_menu, GTK_STOCK_PASTE, NULL, NULL, sensitive,

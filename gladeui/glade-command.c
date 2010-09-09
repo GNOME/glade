@@ -997,7 +997,7 @@ glade_command_add (GList            *widgets,
 	 * fix the bugs as they pop up.
 	 */
 	widget = GLADE_WIDGET (widgets->data);
-	if (placeholder && GTK_IS_WINDOW (widget->object) == FALSE)
+	if (placeholder && GWA_IS_TOPLEVEL (widget->adaptor) == FALSE)
 		me->project = glade_placeholder_get_project (placeholder);
 	else 
 		me->project = glade_app_get_project();
@@ -1023,9 +1023,9 @@ glade_command_add (GList            *widgets,
 		/* Parent */
 		if (parent == NULL)
 			cdata->parent = glade_widget_get_parent (widget);
-		else if (placeholder && GTK_IS_WINDOW (widget->object) == FALSE)
+		else if (placeholder && GWA_IS_TOPLEVEL (widget->adaptor) == FALSE)
 			cdata->parent = glade_placeholder_get_parent (placeholder);
-		else if (GTK_IS_WINDOW (widget->object) == FALSE)
+		else if (GWA_IS_TOPLEVEL (widget->adaptor) == FALSE)
 			cdata->parent = parent;
 
 		/* Placeholder */
@@ -1896,9 +1896,9 @@ glade_command_paste(GList *widgets, GladeWidget *parent, GladePlaceholder *place
 	
 	g_return_if_fail (widgets != NULL);
 	
-/* 	if (placeholder && GTK_IS_WINDOW (widget->object) == FALSE) */
+/* 	if (placeholder && GWA_IS_TOPLEVEL (widget->adaptor) == FALSE) */
 /* 		target_project = glade_placeholder_get_project (placeholder); */
-/* 	else if (parent && GTK_IS_WINDOW (widget->object) == FALSE) */
+/* 	else if (parent && GWA_IS_TOPLEVEL (widget->adaptor) == FALSE) */
 /* 		target_project = glade_widget_get_project (parent); */
 /* 	else  */
 /* 		target_project = glade_app_get_project(); */
@@ -2439,7 +2439,7 @@ find_format_rejected_object (GObject *object, gpointer fmtptr)
 	      /* ... and widget is a non GtkWidget object */
 	      !GTK_IS_WIDGET (widget->object) ||
 	      /* ... and its a non-window toplevel */
-	      (!widget->parent && !GTK_IS_WINDOW (widget->object) && !widget->internal))))
+	      (!widget->parent && g_strcmp0 (widget->adaptor->name, "GtkWindow") && !widget->internal))))
 		return 0;
 
 	return -1;

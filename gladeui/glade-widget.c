@@ -63,8 +63,6 @@ static void         glade_widget_set_adaptor           (GladeWidget           *w
 							GladeWidgetAdaptor    *adaptor);
 static void         glade_widget_set_properties        (GladeWidget           *widget,
 							GList                 *properties);
-static gboolean     glade_window_is_embedded           (GtkWindow *window);
-static gboolean     glade_widget_embed                 (GladeWidget *widget);
 
 enum
 {
@@ -1522,20 +1520,11 @@ glade_widget_dup_internal (GladeWidget *main_target,
 	for (l = gwidget->properties; l; l = l->next)
 		glade_property_load (GLADE_PROPERTY (l->data));
 
-	/* Special case GtkWindow here and ensure the pasted window
-	 * has the same size as the 'Cut' one.
-	 */
-	if (GTK_IS_WINDOW (gwidget->object))
-	{
-		gint width, height;
-		g_assert (GTK_IS_WINDOW (template_widget->object));
-
-		gtk_window_get_size (GTK_WINDOW (template_widget->object), 
-				     &width, &height);
-		gtk_window_resize (GTK_WINDOW (gwidget->object),
-				   width, height);
-	}
-
+	if (GWA_IS_TOPLEVEL (gwidget->adaptor) && GTK_IS_WIDGET (gwidget->object))
+		g_object_set (gwidget, 
+		              "toplevel-width", template_widget->width,
+		              "toplevel-height", template_widget->height,
+		              NULL);
 	return gwidget;
 }
 
@@ -1947,7 +1936,7 @@ glade_widget_add_to_layout (GladeWidget *widget, GtkWidget *layout)
 		gtk_container_remove (GTK_CONTAINER (layout), gtk_bin_get_child (GTK_BIN (layout)));
 
 	gtk_container_add (GTK_CONTAINER (layout), GTK_WIDGET (widget->object));
-
+	GLADE_DESIGN_LAYOUT (layout)->child = GTK_WIDGET (widget->object);
 	gtk_widget_show_all (GTK_WIDGET (widget->object));
 }
 
@@ -1969,12 +1958,6 @@ glade_widget_show (GladeWidget *widget)
 	/* Position window at saved coordinates or in the center */
 	if (GTK_IS_WIDGET (widget->object) && !widget->parent)
 	{
-		if (GTK_IS_WINDOW (widget->object) && !glade_widget_embed (widget))
-		{
-			g_warning ("Unable to embed %s\n", widget->name);
-			return;
-		}
-
 		/* Maybe a property references this widget internally, show that widget instead */
 		if ((property = glade_widget_get_parentless_widget_ref (widget)) != NULL)
 		{
@@ -4230,142 +4213,6 @@ glade_widget_remove_pack_action (GladeWidget *widget, const gchar *action_path)
 	
 	glade_widget_action_lookup (&widget->packing_actions, action_path, TRUE);
 }
-
-/*******************************************************************************
- *                           Toplevel GladeWidget Embedding                    *
- ******************************************************************************
- *
- * Overrides realize() and size_allocate() by signal connection on GtkWindows.
- *
- * This is high crack code and should be replaced by a more robust implementation
- * in GTK+ proper. 
- *
- */
-
-static GQuark
-embedded_window_get_quark ()
-{
-	static GQuark embedded_window_quark = 0;
-
-	if (embedded_window_quark == 0)
-		embedded_window_quark = g_quark_from_string ("GladeEmbedWindow");
-	
-	return embedded_window_quark;
-}
-
-static gboolean
-glade_window_is_embedded (GtkWindow *window)
-{
-	return GPOINTER_TO_INT (g_object_get_qdata ((GObject *) window, embedded_window_get_quark ()));	 
-}
-
-static void
-embedded_window_realize_handler (GtkWidget *widget)
-{
-	GtkAllocation allocation;
-	GtkStyle *style;
-	GdkWindow *window;
-	GdkWindowAttr attributes;
-	gint attributes_mask;
-
-	gtk_widget_set_realized (widget, TRUE);
-
-	attributes.window_type = GDK_WINDOW_CHILD;
-	attributes.wclass = GDK_INPUT_OUTPUT;
-	attributes.visual = gtk_widget_get_visual (widget);
-	attributes.colormap = gtk_widget_get_colormap (widget);
-
-	gtk_widget_get_allocation (widget, &allocation);
-	attributes.x = allocation.x;
-	attributes.y = allocation.y;
-	attributes.width = allocation.width;
-	attributes.height = allocation.height;
-
-	attributes.event_mask = gtk_widget_get_events (widget) |
-				GDK_EXPOSURE_MASK              |
-                                GDK_FOCUS_CHANGE_MASK          |
-			        GDK_KEY_PRESS_MASK             |
-			        GDK_KEY_RELEASE_MASK           |
-			        GDK_ENTER_NOTIFY_MASK          |
-			        GDK_LEAVE_NOTIFY_MASK          |
-				GDK_STRUCTURE_MASK;
-
-	attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
-
-	/* destroy the previously created window */
-	window = gtk_widget_get_window (widget);
-	if (GDK_IS_WINDOW (window))
-	{
-		gdk_window_hide (window);
-	}
-
-	window = gdk_window_new (gtk_widget_get_parent_window (widget),
-				 &attributes, attributes_mask);
-	gtk_widget_set_window (widget, window);
-
-	gdk_window_enable_synchronized_configure (window);
-
-	gdk_window_set_user_data (window, GTK_WINDOW (widget));
-
-	gtk_widget_style_attach (widget);
-	style = gtk_widget_get_style (widget);
-	gtk_style_set_background (style, window, GTK_STATE_NORMAL);
-}
-
-static void
-embedded_window_size_allocate_handler (GtkWidget *widget)
-{
-	GtkAllocation allocation;
-
-	if (gtk_widget_get_realized (widget))
-	{
-		gtk_widget_get_allocation (widget, &allocation);
-		gdk_window_move_resize (gtk_widget_get_window (widget),
-					allocation.x,
-					allocation.y,
-					allocation.width,
-					allocation.height);
-	}
-}
-
-/**
- * glade_widget_embed:
- * @window: a #GtkWindow
- *
- * Embeds a window by signal connection method
- */
-static gboolean
-glade_widget_embed (GladeWidget *gwidget)
-{
-	GtkWindow *window;
-	GtkWidget *widget;
-	
-	g_return_val_if_fail (GLADE_IS_WIDGET (gwidget), FALSE);
-	g_return_val_if_fail (GTK_IS_WINDOW (gwidget->object), FALSE);
-	
-	window = GTK_WINDOW (gwidget->object);
-	widget = GTK_WIDGET (window);
-	
-	if (glade_window_is_embedded (window)) return TRUE;
-	
-	if (gtk_widget_get_realized (widget)) gtk_widget_unrealize (widget);
-
-	GTK_WIDGET_UNSET_FLAGS (widget, GTK_TOPLEVEL);
-	gtk_container_set_resize_mode (GTK_CONTAINER (window), GTK_RESIZE_PARENT);
-
-	g_signal_connect (window, "realize",
-			  G_CALLBACK (embedded_window_realize_handler), NULL);
-	g_signal_connect (window, "size-allocate",
-			  G_CALLBACK (embedded_window_size_allocate_handler), NULL);
-
-	/* mark window as embedded */
-	g_object_set_qdata (G_OBJECT (window), embedded_window_get_quark (),
-			    GINT_TO_POINTER (TRUE));
-	
-	return TRUE;
-}
-
-
 
 /**
  * glade_widget_create_editor_property:

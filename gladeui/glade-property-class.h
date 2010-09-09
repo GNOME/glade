@@ -278,6 +278,8 @@ gint                glade_property_class_compare                 (GladePropertyC
 								  const GValue       *value2,
 								  GladeProjectFormat  fmt);
 
+GValue             *glade_property_class_get_default_from_spec   (GParamSpec *spec);
+
 G_END_DECLS
 
 #endif /* __GLADE_PROPERTY_CLASS_H__ */

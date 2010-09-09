@@ -672,23 +672,12 @@ glade_app_config_save ()
 void
 glade_app_set_transient_parent (GtkWindow *parent)
 {
-	GList     *projects, *objects;
 	GladeApp  *app;
 	
 	g_return_if_fail (GTK_IS_WINDOW (parent));
 
 	app = glade_app_get ();
 	app->priv->transient_parent = parent;
-
-	/* Loop over all projects/widgets and set_transient_for the toplevels.
-	 */
-	for (projects = glade_app_get_projects (); /* projects */
-	     projects; projects = projects->next) 
-		for (objects = (GList *) glade_project_get_objects (GLADE_PROJECT (projects->data));  /* widgets */
-		     objects; objects = objects->next)
-			if (GTK_IS_WINDOW (objects->data))
-				gtk_window_set_transient_for
-					(GTK_WINDOW (objects->data), parent);
 }
 
 GtkWindow *
@@ -1004,7 +993,8 @@ glade_app_add_project (GladeProject *project)
 		{
 			GObject *obj = G_OBJECT (node->data);
 
-			if (GTK_IS_WINDOW (obj))
+			if (GTK_IS_WIDGET (obj) &&
+			    gtk_widget_get_has_window (GTK_WIDGET (obj)))
 			{
 				glade_project_selection_set (project, obj, TRUE);
 				glade_widget_show (glade_widget_get_from_gobject (obj));

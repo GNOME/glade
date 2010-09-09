@@ -796,14 +796,13 @@ convert_menus_finished (GladeProject  *project,
 		if (accel_group == NULL)
 		{
 			GladeWidget *toplevel = glade_widget_get_toplevel (widget);
-
+			GladeProperty *groups_prop;
+			
 			accel_group = glade_command_create (glade_widget_adaptor_get_by_type (GTK_TYPE_ACCEL_GROUP),
 							    NULL, NULL, project);
 
-
-			if (GTK_IS_WINDOW (toplevel->object))
+			if ((groups_prop = glade_widget_get_property (toplevel, "accel-groups")))
 			{
-				GladeProperty *groups_prop = glade_widget_get_property (toplevel, "accel-groups");
 				GList *list = g_list_append (NULL, accel_group->object);
 				glade_command_set_property (groups_prop, list);
 				g_list_free (list);

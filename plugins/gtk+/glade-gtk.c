@@ -952,7 +952,7 @@ glade_gtk_widget_deep_post_create (GladeWidgetAdaptor *adaptor,
 	
 	glade_widget_set_action_sensitive (gwidget, "remove_parent", FALSE);
 
-	if (GTK_IS_WINDOW (widget) || gwidget->internal)
+	if (GWA_IS_TOPLEVEL (adaptor) || gwidget->internal)
 		glade_widget_set_action_sensitive (gwidget, "add_parent", FALSE);
 
 
@@ -5000,29 +5000,6 @@ glade_gtk_fixed_layout_remove_child (GladeWidgetAdaptor  *adaptor,
 }
 
 /* ----------------------------- GtkWindow ------------------------------ */
-static gint
-glade_gtk_widget_show_on_delete (GtkWidget *widget,
-				 gpointer   user_data)
-{
-	gtk_widget_show (widget);
-	return TRUE;
-}
-
-void
-glade_gtk_window_deep_post_create (GladeWidgetAdaptor *adaptor,
-				   GObject            *object,
-				   GladeCreateReason   reason)
-{
-	GtkWindow *window = GTK_WINDOW (object);
-
-	g_return_if_fail (GTK_IS_WINDOW (window));
-
-	/* Chain her up first */
-	GWA_GET_CLASS (GTK_TYPE_CONTAINER)->deep_post_create (adaptor, object, reason);
-
-	g_signal_connect (object, "delete-event", G_CALLBACK (glade_gtk_widget_show_on_delete), NULL);
-}
-
 static void
 glade_gtk_window_read_accel_groups (GladeWidget  *widget,
 				    GladeXmlNode *node)
@@ -5601,8 +5578,8 @@ glade_gtk_message_dialog_image_determine_action (GtkMessageDialog *dialog,
 			g_warning ("Setting property to an object outside the project");
 			return MD_IMAGE_ACTION_INVALID;
 		}
-		
-		if (glade_widget_get_parent (*gimage) || GTK_IS_WINDOW (*image))
+
+		if (glade_widget_get_parent (*gimage) || GWA_IS_TOPLEVEL ((*gimage)->adaptor))
 			return MD_IMAGE_ACTION_INVALID;
 
 		return MD_IMAGE_ACTION_SET;

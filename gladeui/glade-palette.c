@@ -324,13 +324,6 @@ glade_palette_toggled (GladePalette *palette)
 		 * disabled so no chance of creating a non-window toplevel here
 		 */
 		widget = glade_palette_create_root_widget (palette, adaptor);
-		
-		/* if this is a top level widget set the accel group */
-		if (widget && glade_app_get_accel_group () && GTK_IS_WINDOW (widget->object))
-		{
-			gtk_window_add_accel_group (GTK_WINDOW (widget->object),
-						    glade_app_get_accel_group ());
-		}
 	}
 }
 
