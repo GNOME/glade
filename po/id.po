@@ -5,11 +5,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glade3 master\n"
+"Project-Id-Version: glade3 gnome-2-28\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade3&component=general\n"
-"POT-Creation-Date: 2010-08-05 07:01+0000\n"
-"PO-Revision-Date: 2010-08-06 15:23+0700\n"
+"POT-Creation-Date: 2010-09-04 20:28+0000\n"
+"PO-Revision-Date: 2010-09-12 15:22+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: GNOME Indonesian Translation Team <gnome@i15n.org>\n"
 "MIME-Version: 1.0\n"
@@ -46,7 +46,7 @@ msgstr "Nonaktifkan integrasi Devhelp"
 
 #: ../src/main.c:58
 msgid "[FILE...]"
-msgstr "[FILE...]"
+msgstr "[BERKAS...]"
 
 #: ../src/main.c:68
 msgid "be verbose"
@@ -1094,36 +1094,32 @@ msgid "The current value"
 msgstr "Nilai kini"
 
 #: ../gladeui/glade-editor-property.c:3472
-#, fuzzy
 msgid "Lower:"
-msgstr "Bawah"
+msgstr "Min:"
 
 #: ../gladeui/glade-editor-property.c:3473
 msgid "The minimum value"
 msgstr "Nilai minimum"
 
 #: ../gladeui/glade-editor-property.c:3475
-#, fuzzy
 msgid "Upper:"
-msgstr "Atas"
+msgstr "Maks:"
 
 #: ../gladeui/glade-editor-property.c:3476
 msgid "The maximum value"
 msgstr "Nilai maksimum"
 
 #: ../gladeui/glade-editor-property.c:3478
-#, fuzzy
 msgid "Step inc:"
-msgstr "+ kecil:"
+msgstr "Ubah kecil:"
 
 #: ../gladeui/glade-editor-property.c:3479
 msgid "The increment to use to make minor changes to the value"
 msgstr "Penambahan yang dipakai untuk membuat perubahan kecil ke nilai"
 
 #: ../gladeui/glade-editor-property.c:3481
-#, fuzzy
 msgid "Page inc:"
-msgstr "+ besar:"
+msgstr "Ubah besar:"
 
 #: ../gladeui/glade-editor-property.c:3482
 msgid "The increment to use to make major changes to the value"
@@ -1188,17 +1184,14 @@ msgid "%s Properties - %s [%s]"
 msgstr "Properti %s - %s [%s]"
 
 #: ../gladeui/glade-editor.c:398
-#, fuzzy
 msgid "_General"
-msgstr "Umum"
+msgstr "_Umum"
 
 #: ../gladeui/glade-editor.c:399
-#, fuzzy
 msgid "_Packing"
-msgstr "Packing"
+msgstr "_Packing"
 
 #: ../gladeui/glade-editor.c:400
-#, fuzzy
 msgid "_Common"
 msgstr "_Biasa"
 
@@ -1216,7 +1209,6 @@ msgid "Property"
 msgstr "Properti"
 
 #: ../gladeui/glade-editor.c:1001
-#, fuzzy
 msgid "Common"
 msgstr "Biasa"
 
@@ -1704,7 +1696,6 @@ msgid "User data"
 msgstr "Data pengguna"
 
 #: ../gladeui/glade-signal-editor.c:803
-#, fuzzy
 msgid "Lookup"
 msgstr "Cari"
 
@@ -1802,7 +1793,7 @@ msgstr "Anarkis"
 #: ../gladeui/glade-widget.c:1064
 msgid ""
 "Whether this composite child is an ancestral child or an anarchist child"
-msgstr ""
+msgstr "Apakah anak komposit ini suatu anak ancestral atau anak anarkis"
 
 #: ../gladeui/glade-widget.c:1071
 msgid "Object"
@@ -1899,7 +1890,7 @@ msgstr "String peringatan tentang ketidakcocokan versi"
 #: ../gladeui/glade-widget-adaptor.c:250
 #, c-format
 msgid "A derived adaptor (%s) of %s already exist!"
-msgstr ""
+msgstr "Adaptor yang diturunkan (%s) dari %s telah ada!"
 
 #: ../gladeui/glade-widget-adaptor.c:1230
 msgid "Name of the class"
@@ -1939,7 +1930,7 @@ msgstr "Katalog"
 
 #: ../gladeui/glade-widget-adaptor.c:1270
 msgid "The name of the widget catalog this class was declared by"
-msgstr ""
+msgstr "Nama katalog widget tempat kelas ini dideklarasikan"
 
 #: ../gladeui/glade-widget-adaptor.c:1277
 msgid "Book"
@@ -1947,7 +1938,7 @@ msgstr "Buku"
 
 #: ../gladeui/glade-widget-adaptor.c:1278
 msgid "DevHelp search namespace for this widget class"
-msgstr ""
+msgstr "Pencarian namespace DevHelp bagi kelas widget ini"
 
 #: ../gladeui/glade-widget-adaptor.c:1285
 msgid "Special Child Type"
@@ -1958,6 +1949,8 @@ msgid ""
 "Holds the name of the packing property to depict special children for this "
 "container class"
 msgstr ""
+"Memegang nama dari properti packing untuk menggambakan anak khusus bagi "
+"kelas wadah ini"
 
 #: ../gladeui/glade-widget-adaptor.c:1294 ../plugins/gtk+/gtk+.xml.in.h:105
 msgid "Cursor"
@@ -2085,8 +2078,9 @@ msgid "Emblems"
 msgstr "Emblem"
 
 #: ../gladeui/icon-naming-spec.c:40
+#, fuzzy
 msgid "Emotes"
-msgstr ""
+msgstr "Ikon senyum"
 
 #: ../gladeui/icon-naming-spec.c:41
 msgid "International"
@@ -2135,7 +2129,6 @@ msgid "Strikethrough"
 msgstr "Dicoret"
 
 #: ../plugins/gtk+/glade-attributes.c:240
-#, fuzzy
 msgctxt "textattr"
 msgid "Gravity"
 msgstr "Gravitasi"
@@ -2143,7 +2136,7 @@ msgstr "Gravitasi"
 #: ../plugins/gtk+/glade-attributes.c:244
 msgctxt "textattr"
 msgid "Gravity Hint"
-msgstr ""
+msgstr "Petunjuk Gravitasi"
 
 #: ../plugins/gtk+/glade-attributes.c:255
 msgctxt "textattr"
@@ -2192,7 +2185,6 @@ msgid "<Enter Value>"
 msgstr "<Masukkan Nilai>"
 
 #: ../plugins/gtk+/glade-attributes.c:354
-#, fuzzy
 msgid "Unset"
 msgstr "Belum diset"
 
@@ -2226,7 +2218,7 @@ msgstr "Properti ini hanya untuk dipakai di tombol aksi dialog"
 
 #: ../plugins/gtk+/glade-gtk.c:64
 msgid "This property is set to be controled by an Action"
-msgstr ""
+msgstr "Properti ini ditata untuk dikendalikan oleh suatu Aksi"
 
 #: ../plugins/gtk+/glade-gtk.c:191
 msgid "GnomeUIInfo"
@@ -2234,7 +2226,7 @@ msgstr "GnomeUIInfo"
 
 #: ../plugins/gtk+/glade-gtk.c:192
 msgid "Choose the GnomeUIInfo stock item"
-msgstr ""
+msgstr "Pilih butir stok GnomeUIInfo"
 
 #. We have to save/load icon-size as int, and fake the enum
 #: ../plugins/gtk+/glade-gtk.c:201 ../plugins/gtk+/gtk+.xml.in.h:209
@@ -2632,7 +2624,7 @@ msgstr "Kolom Mode Akselerator"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:14
 msgid "Accelerator Modifiers column"
-msgstr ""
+msgstr "Kolom Pengubah Akselerator"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:15
 msgid "Accelerator Renderer"
@@ -2644,15 +2636,13 @@ msgid "Accelerators"
 msgstr "Akselerator"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:18
-#, fuzzy
 msgid "Accessible Description"
-msgstr "Keterangan Akses"
+msgstr "Keterangan Dapat Diakses"
 
 #. Atk name and description properties
 #: ../plugins/gtk+/gtk+.xml.in.h:20
-#, fuzzy
 msgid "Accessible Name"
-msgstr "Nama Akses"
+msgstr "Nama Dapat Diakses"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:21
 #: ../plugins/gtk+/glade-activatable-editor.c:395
@@ -2665,7 +2655,7 @@ msgstr "Grup Aksi"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:24
 msgid "Activatable column"
-msgstr ""
+msgstr "Kolom Dapat Mengaktifkan"
 
 #. Atk activate property
 #: ../plugins/gtk+/gtk+.xml.in.h:26
@@ -2710,7 +2700,7 @@ msgstr "Semua Kejadian"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:37
 msgid "All Modifiers"
-msgstr ""
+msgstr "Semua Pengubah"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:38
 msgid "Alt Key"
@@ -2725,8 +2715,9 @@ msgid "Always Center"
 msgstr "Selalu Tengah"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:41
+#, fuzzy
 msgid "An accel group for accelerators from stock items"
-msgstr ""
+msgstr "Suatu kelompok accel bagi pintasan dari butir stok"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:42
 msgid "Arrow"
@@ -2738,7 +2729,7 @@ msgstr "Naik"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:44
 msgid "Aspect Frame"
-msgstr ""
+msgstr "Bingkai Aspek"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:45
 msgid "Assistant"
@@ -3033,10 +3024,9 @@ msgstr "Turun"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:126
 msgid "Drag & Drop"
-msgstr ""
+msgstr "Seret & Taruh"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:127
-#, fuzzy
 msgid "Drag and Drop"
 msgstr "Seret dan Letakkan"
 
@@ -3058,11 +3048,11 @@ msgstr "Tepi"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:132
 msgid "Edit Separately"
-msgstr ""
+msgstr "Disunting Secara Terpisah"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:133
 msgid "Edit&#8230;"
-msgstr ""
+msgstr "Sunting&#8230;"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:134
 msgid "Editable column"
@@ -3074,15 +3064,15 @@ msgstr "Kunci Ke Delapan"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:136
 msgid "Ellipsize column"
-msgstr ""
+msgstr "Menyingkat kolom"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:137
 msgid "Embedded By"
-msgstr ""
+msgstr "Ditanam Oleh"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:138
 msgid "Embeds"
-msgstr ""
+msgstr "Tertanam"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:139 ../plugins/gnome/gnome.xml.in.h:6
 msgid "End"
@@ -3094,62 +3084,61 @@ msgstr "Enter Notify"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:141
 msgid "Enter a list of column types for this data store"
-msgstr ""
+msgstr "Masukkan suatu daftar jenis kolom bagi penyimpanan data ini"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:142
 msgid "Enter a list of values to be applied on each row"
-msgstr ""
+msgstr "Masukkan suatu daftar nilai untuk diterapkan pada setiap baris"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:143
 msgid "Entry Completion"
-msgstr ""
+msgstr "Pelengkapan Entri"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:144 ../plugins/gnome/gnome.xml.in.h:7
 msgid "Error"
 msgstr "Galat"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:145
+#, fuzzy
 msgid "Etched In"
-msgstr ""
+msgstr "Diukir Tenggelam"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:146
+#, fuzzy
 msgid "Etched Out"
-msgstr ""
+msgstr "Diukir Timbul"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:147
 msgid "Event Box"
-msgstr ""
+msgstr "Kotak Kejadian"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:148 ../plugins/gnome/gnome.xml.in.h:8
-#, fuzzy
 msgid "Expand"
-msgstr "Ekspansi"
+msgstr "Kembangkan"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:149
-#, fuzzy
 msgid "Expanded"
-msgstr "Terbuka"
+msgstr "Terkembang"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:150
 msgid "Expander"
-msgstr ""
+msgstr "Pengembang"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:151
-#, fuzzy
 msgid "Exposure"
 msgstr "Pencahayaan"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:152
 msgid "Extended"
-msgstr ""
+msgstr "Diperluas"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:153
 msgid "Extra Condensed"
-msgstr ""
+msgstr "Dimampatkan Ekstra"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:154
 msgid "Extra Expanded"
-msgstr ""
+msgstr "Diperluas Ekstra"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:155
 msgid "Family column"
@@ -3276,7 +3265,6 @@ msgid "Half"
 msgstr "Setengah"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:186
-#, fuzzy
 msgid "Handle Box"
 msgstr "Kotak Handle"
 
@@ -3310,12 +3298,10 @@ msgid "Horizontal Button Box"
 msgstr "Kotak Tombol Horisontal"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:195
-#, fuzzy
 msgid "Horizontal Padding"
 msgstr "Pengganjal Horisontal"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:196
-#, fuzzy
 msgid "Horizontal Padding column"
 msgstr "Kolom Pengganjal Horisontal"
 
@@ -3376,13 +3362,12 @@ msgid "If Valid"
 msgstr "Bila Valid"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:214
-#, fuzzy
 msgid ""
 "If set, an underline in the text indicates the next character should be used "
 "for the mnemonic accelerator key"
 msgstr ""
-"Bila diset, karakter yang diberi garis bawah adalah karakter kunci "
-"akselerator mnemonik."
+"Bila diset, suatu garis bawah pada teks mengindikasikan bahwa karakter "
+"berikutnya adalah karakter kunci akselerator mnemonik"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:216
 msgid "Image Menu Item"
@@ -3409,71 +3394,89 @@ msgid ""
 "Indicates a subwindow attached to a component but otherwise has no "
 "connection in the UI hierarchy to that component"
 msgstr ""
+"Menandakan suatu sub jendela ditempelkan ke suatu komponen akan tetapi tak "
+"memiliki koneksi dalam hirarki UI ke komponen itu"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:222
 msgid "Indicates an object controlled by one or more target objects"
-msgstr ""
+msgstr "Menandakan suatu objek dikendalikan oleh satu atau lebih objek target"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:223
 msgid ""
 "Indicates an object is a cell in a treetable which is displayed because a "
 "cell in the same column is expanded and identifies that cell"
 msgstr ""
+"Menandakan suatu objek adalah suatu sel dalam tabel pohon yang ditampilkan "
+"karena suatu sel pada kolom yang sama dikembangkan dan mengidentifikasi sel "
+"tersebut"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:224
 msgid "Indicates an object is a controller for one or more target objects"
 msgstr ""
+"Menandakan suatu objek adalah pengendali bagi satu atau lebih objek target"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:225
 msgid "Indicates an object is a label for one or more target objects"
-msgstr ""
+msgstr "Menandakan suatu objek adalah label bagi satu atau lebih objek target"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:226
 msgid ""
 "Indicates an object is a member of a group of one or more target objects"
 msgstr ""
+"Menandakan suatu objek adalah anggota dari suatu grup dari satu atau lebih "
+"objek target"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:227
 msgid "Indicates an object is labelled by one or more target objects"
-msgstr ""
+msgstr "Menandakan suatu objek dilabeli oleh satu atau lebih objek target"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:228
 msgid "Indicates that an object is a parent window of another object"
-msgstr ""
+msgstr "Menandakan bahwa objek adalah jendela induk dari objek lain"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:229
 msgid "Indicates that an object is a popup for another object"
-msgstr ""
+msgstr "Menandakan bahwa objek adalah popup bagi objek lain"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:230
 msgid ""
 "Indicates that an object provides descriptive information about another "
 "object; more verbose than 'Label For'"
 msgstr ""
+"Menandakan bahwa objek lain menyediakan informasi deskriptif tentang objek "
+"ini; lebih rinci daripada 'Label For'"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:231
 msgid ""
 "Indicates that another object provides descriptive information about this "
 "object; more verbose than 'Labelled By'"
 msgstr ""
+"Menandakan bahwa objek lain menyediakan informasi deskriptif tentang objek "
+"ini; lebih rinci daripada 'Labelled By'"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:232
 msgid ""
 "Indicates that the object has content that flows logically from another "
 "AtkObject in a sequential way, (for instance text-flow)"
 msgstr ""
+"Menandakan bahwa objek punya isi yang secara logis mengalir dari AtkObject "
+"lain secara berurutan, (seperti misalnya aliran-teks)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:233
 msgid ""
 "Indicates that the object has content that flows logically to another "
 "AtkObject in a sequential way, (for instance text-flow)"
 msgstr ""
+"Menandakan bahwa objek punya isi yang secara logis mengalir ke AtkObject "
+"lain secara berurutan, (seperti misalnya aliran-teks)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:234
 msgid ""
 "Indicates that the object visually embeds another object's content, i.e. "
 "this object's content flows around another's content"
 msgstr ""
+"Menandakan bahwa objek secara visual melingkungi isi objek lain, yaitu isi "
+"objek ini mengalir di sekeliling isi lainnya"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:235
 msgid "Indicator Size column"
@@ -3760,7 +3763,6 @@ msgid "Out"
 msgstr "Keluar"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:311
-#, fuzzy
 msgid "Paned"
 msgstr "Dipanelkan"
 
@@ -3855,7 +3857,6 @@ msgid "Progress Fraction"
 msgstr "Fraksi Kemajuan"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:337
-#, fuzzy
 msgid "Progress Pulse Step"
 msgstr "Langkah Pulsa Kemajuan"
 
@@ -4315,12 +4316,11 @@ msgid "The response ID of this button in a dialog"
 msgstr "ID respon dari tombol ini dalam suatu dialog"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:457
-#, fuzzy
 msgid ""
 "The stock icon displayed on the item (chose an item from gtk+ stock or from "
 "an icon factory)"
 msgstr ""
-"Ikon stok yang ditampilkan pada butir (pilih suatu butir dari stok GTK+ atau "
+"Ikon stok yang ditampilkan pada butir (pilih suatu butir dari stok gtk+ atau "
 "dari suatu pabrik ikon)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:458
@@ -4332,9 +4332,8 @@ msgid "The stock item for this menu item"
 msgstr "Butir stok bagi butir menu ini"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:460
-#, fuzzy
 msgid "The text of the menu item"
-msgstr "Butir stok bagi butir menu ini"
+msgstr "Teks dari butir menu"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:461
 msgid "The text to display"
@@ -5361,163 +5360,3 @@ msgstr "Moda pilihan"
 #: ../plugins/gnome/canvas.xml.in.h:34
 msgid "The width of each icon"
 msgstr "Lebar setiap ikon"
-
-#~ msgid "Interface Designer"
-#~ msgstr "Perancang Antar Muka"
-
-#~ msgid "Format:"
-#~ msgstr "Format:"
-
-#~ msgid "Requires:"
-#~ msgstr "Memerlukan:"
-
-#~ msgid "Tool_bar"
-#~ msgstr "_Bilah Alat"
-
-#~ msgid "Show the toolbar"
-#~ msgstr "Tampilkan bilah alat"
-
-#~ msgid "_Statusbar"
-#~ msgstr "Bilah _Status"
-
-#~ msgid "Show the statusbar"
-#~ msgstr "Tampilkan bilah status"
-
-#~ msgid "Project _Tabs"
-#~ msgstr "_Tab Projek"
-
-#~ msgid "Show notebook tabs for loaded projects"
-#~ msgstr "Tampilkan tab notebook bagi projek yang dimuat"
-
-#~ msgid "Close document"
-#~ msgstr "Tutup dokumen"
-
-#~ msgid "Select Named Icon"
-#~ msgstr "Pilih Ikon Bernama"
-
-#~ msgid "Choose parentless %s type objects in this project"
-#~ msgstr "Pilih objek bertipe %s tanpa induk di projek ini"
-
-#~ msgid "Choose %s type objects in this project"
-#~ msgstr "Pilih objek bertipe %s di projek ini"
-
-#~ msgid "%s - %s Properties"
-#~ msgstr "%s - Properti %s"
-
-#~ msgid ""
-#~ "This signal was introduced in %s %d.%d while project targets %s %d.%d"
-#~ msgstr ""
-#~ "Sinyal ini diperkenalkan di %s %d.%d sedangkan projek menarget %s %d.%d"
-
-#~ msgid "<Object>"
-#~ msgstr "<Objek>"
-
-#~ msgid "Select an object to pass to the handler"
-#~ msgstr "Pilih suatu objek untuk dilewatkan ke penangan"
-
-#~ msgid "The name of the signal to connect to"
-#~ msgstr "Nama sinyal untuk dihubungi"
-
-#~ msgid "Enter the handler to run for this signal"
-#~ msgstr "Masukkan penangan untuk dijalankan bagi sinyal ini"
-
-#~ msgid "An object to pass to the handler"
-#~ msgstr "Suatu objek untuk dilewatkan ke penangan"
-
-#~ msgid "Swap"
-#~ msgstr "Tukar"
-
-#~ msgid ""
-#~ "Whether the instance and object should be swapped when calling the handler"
-#~ msgstr ""
-#~ "Apakah instansi dan objek mesti dipertukarkan ketika memanggil penangan"
-
-#~ msgid ""
-#~ "Whether the handler should be called before or after the default handler "
-#~ "of the signal"
-#~ msgstr ""
-#~ "Apakah penangan mesti dipanggil sebelum atau setelah penangan sinyal "
-#~ "bawaan"
-
-#~ msgid ""
-#~ "Cannot add non scrollable %s widget to a %s directly.\n"
-#~ "Add a %s first."
-#~ msgstr ""
-#~ "Tak bisa menambahkan widget %s yang tak dapat digulung ke %s secara "
-#~ "langsung.\n"
-#~ "Tambahkan dulu %s."
-
-#~ msgid "C_ontexts:"
-#~ msgstr "K_onteks:"
-
-#~ msgid "Icon Na_mes:"
-#~ msgstr "Na_ma Ikon:"
-
-#~ msgid "Spinner"
-#~ msgstr "Spinner"
-
-#~ msgid "An accelerator key for this action"
-#~ msgstr "Tombol akselerator bagi aksi ini"
-
-#~ msgid "Spinner Renderer"
-#~ msgstr "Perender Spinner"
-
-#~ msgid "Collate"
-#~ msgstr "Collate"
-
-#~ msgid "Copies"
-#~ msgstr "Copies"
-
-#~ msgid "Generate PDF"
-#~ msgstr "Generate PDF"
-
-#~ msgid "Generate PS"
-#~ msgstr "Generate PS"
-
-#~ msgid "Number Up"
-#~ msgstr "Number Up"
-
-#~ msgid "Number Up Layout"
-#~ msgstr "Number Up Layout"
-
-#~ msgid "Page Set"
-#~ msgstr "Page Set"
-
-#~ msgid "Preview"
-#~ msgstr "Preview"
-
-#~ msgid "Reverse"
-#~ msgstr "Reverse"
-
-#~ msgid "Scale"
-#~ msgstr "Scale"
-
-#~ msgid "Column type"
-#~ msgstr "Tipe kolom"
-
-#~ msgid "Column name"
-#~ msgstr "Nama kolom"
-
-#~ msgid "Setting %s to use static text"
-#~ msgstr "Menata %s untuk memakai teks statik"
-
-#~ msgid "Setting %s to use an external buffer"
-#~ msgstr "Menata %s untuk memakai suatu penyangga eksternal"
-
-#~ msgid "Display Seconds"
-#~ msgstr "Tampilkan Detik"
-
-#~ msgid "List Icons"
-#~ msgstr "Ikon Daftar"
-
-#~ msgid "Text Below"
-#~ msgstr "Teks Di Bawah"
-
-#~ msgid "Text Right"
-#~ msgstr "Teks Di Kanan"
-
-#~ msgid "The maximum Y coordinate"
-#~ msgstr "Koordinat Y maksimum"
-
-#~ msgid "The minimum Y coordinate"
-#~ msgstr "Koordinat Y minimum"
