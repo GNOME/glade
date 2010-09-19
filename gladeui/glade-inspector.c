@@ -318,7 +318,7 @@ search_entry_key_press_event_cb (GtkEntry    *entry,
 	GladeInspectorPrivate *priv = inspector->priv;
 	const gchar           *str;
 
-	if (event->keyval == GDK_Tab)
+	if (event->keyval == GDK_KEY_Tab)
 	{
 		if (event->state & GDK_CONTROL_MASK)
 		{
@@ -332,7 +332,7 @@ search_entry_key_press_event_cb (GtkEntry    *entry,
 		return TRUE;
 	}
 
-	if (event->keyval == GDK_Return || event->keyval == GDK_KP_Enter)
+	if (event->keyval == GDK_KEY_Return || event->keyval == GDK_KEY_KP_Enter)
 	{
 		GladeWidget *widget;
 		GList       *list;

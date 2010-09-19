@@ -1365,8 +1365,6 @@ glade_named_icon_chooser_dialog_init (GladeNamedIconChooserDialog *dialog)
 	gtk_window_set_title (GTK_WINDOW (dialog), _("Named Icon Chooser"));
 	
 	gtk_window_set_default_size (GTK_WINDOW (dialog), 610, 480);
-	
-	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);	
 
 	content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
 	gtk_container_set_border_width (GTK_CONTAINER (content_area), 12);

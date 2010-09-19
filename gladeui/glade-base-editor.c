@@ -893,7 +893,7 @@ glade_base_editor_treeview_key_press_event (GtkWidget *widget,
 					    GdkEventKey *event,
 					    GladeBaseEditor *e)
 {
-	if (event->keyval == GDK_Delete)
+	if (event->keyval == GDK_KEY_Delete)
 		glade_base_editor_delete_child (e);
 	
 	return FALSE;

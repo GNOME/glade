@@ -826,8 +826,7 @@ glade_editor_query_dialog (GladeEditor *editor, GladeWidget *widget)
 	title = g_strdup_printf (_("Create a %s"), widget->adaptor->name);
 
 	dialog = gtk_dialog_new_with_buttons (title, NULL,
-		 			      GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT |
-					      GTK_DIALOG_NO_SEPARATOR,
+		 			      GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
 					      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 					      GTK_STOCK_OK, GTK_RESPONSE_OK,
 					      NULL);
@@ -1201,8 +1200,6 @@ glade_editor_reset_dialog (GladeEditor *editor)
 					      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 					      GTK_STOCK_OK, GTK_RESPONSE_OK,
 					      NULL);
-
-	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 
 	vbox = gtk_vbox_new (FALSE, 6);
 	gtk_widget_show (vbox);

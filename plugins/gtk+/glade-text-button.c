@@ -104,7 +104,7 @@ glade_text_button_key_press_event (GtkEntry    *entry,
 				   GdkEventKey *key_event,
 				   GladeTextButton *button)
 {
-	if (key_event->keyval == GDK_Escape)
+	if (key_event->keyval == GDK_KEY_Escape)
 	{
 		g_object_get (entry,
 			      "editing-canceled", TRUE,
@@ -116,7 +116,7 @@ glade_text_button_key_press_event (GtkEntry    *entry,
 	}
 
 	/* override focus */
-	if (key_event->keyval == GDK_Up || key_event->keyval == GDK_Down)
+	if (key_event->keyval == GDK_KEY_Up || key_event->keyval == GDK_KEY_Down)
 	{
 		gtk_cell_editable_editing_done (GTK_CELL_EDITABLE (button));
 		gtk_cell_editable_remove_widget (GTK_CELL_EDITABLE (button));		

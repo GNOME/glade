@@ -2177,8 +2177,9 @@ menu_item_selected_cb (GtkWidget *item, GladeWindow *window)
 	g_free (tooltip);
 }
 
+/* FIXME: GtkItem does not exist anymore? */
 static void
-menu_item_deselected_cb (GtkItem *item, GladeWindow *window)
+menu_item_deselected_cb (gpointer item, GladeWindow *window)
 {
 	gtk_statusbar_pop (GTK_STATUSBAR (window->priv->statusbar),
 			   window->priv->statusbar_menu_context_id);

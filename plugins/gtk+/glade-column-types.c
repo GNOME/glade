@@ -358,7 +358,7 @@ eprop_treeview_key_press (GtkWidget           *treeview,
 	GValue                 value = { 0, };
 	gchar                 *column_name;
 
-	if (event->keyval == GDK_Delete &&
+	if (event->keyval == GDK_KEY_Delete &&
 	    gtk_tree_selection_get_selected (eprop_types->selection, NULL, &iter))
 	{
 		gtk_tree_model_get (GTK_TREE_MODEL (eprop_types->store), &iter,
@@ -398,7 +398,7 @@ eprop_treeview_key_press (GtkWidget           *treeview,
 
 	}
 
-	return (event->keyval == GDK_Delete);
+	return (event->keyval == GDK_KEY_Delete);
 }
 
 static gboolean

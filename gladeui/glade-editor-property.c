@@ -1108,7 +1108,6 @@ glade_eprop_flags_show_dialog (GtkWidget           *button,
 					      NULL);
 
 	gtk_window_set_default_size (GTK_WINDOW (dialog), 300, 400);
-	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_CLOSE);
 
 	/* HIG spacings */
@@ -1705,7 +1704,6 @@ glade_editor_property_show_i18n_dialog (GtkWidget            *parent,
 					      GTK_STOCK_OK, GTK_RESPONSE_OK,
 					      NULL);
 
-	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
 	gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
@@ -1952,7 +1950,6 @@ glade_editor_property_show_resource_dialog (GladeProject *project, GtkWidget *pa
 					      GTK_STOCK_OPEN, GTK_RESPONSE_OK,
 					      NULL);
 
-	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
 	gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
@@ -2769,8 +2766,7 @@ glade_editor_property_show_object_dialog (GladeProject       *project,
 						 -1);
 
 	gtk_window_set_default_size (GTK_WINDOW (dialog), 600, 500);
-	
-	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
+
 	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
 	/* HIG settings */
@@ -2912,7 +2908,6 @@ glade_eprop_object_show_dialog (GtkWidget           *dialog_button,
 	}
 		
 	gtk_window_set_default_size (GTK_WINDOW (dialog), 600, 500);
-	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
 	/* HIG settings */
@@ -3217,7 +3212,6 @@ glade_eprop_objects_show_dialog (GtkWidget           *dialog_button,
 	g_free (title);
 
 	gtk_window_set_default_size (GTK_WINDOW (dialog), 600, 500);
-	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 
 	vbox = gtk_vbox_new (FALSE, 6);
 	gtk_widget_show (vbox);

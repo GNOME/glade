@@ -4182,8 +4182,6 @@ glade_project_build_prefs_dialog (GladeProject *project)
 	gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);
 	gtk_box_set_spacing (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), 2);
 
-	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
-
 	/* HIG spacings */
 	gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);
 	gtk_box_set_spacing (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), 2); /* 2 * 5 + 2 = 12 */

@@ -2172,12 +2172,12 @@ glade_utils_hijack_key_press (GtkWindow          *win,
 
 	focus_widget = gtk_window_get_focus (win);
 	if (focus_widget &&
-	    (event->keyval == GDK_Delete || /* Filter Delete from accelerator keys */
+	    (event->keyval == GDK_KEY_Delete || /* Filter Delete from accelerator keys */
 	     ((event->state & GDK_CONTROL_MASK) && /* CNTL keys... */
-	      ((event->keyval == GDK_c || event->keyval == GDK_C) || /* CNTL-C (copy)  */
-	       (event->keyval == GDK_x || event->keyval == GDK_X) || /* CNTL-X (cut)   */
-	       (event->keyval == GDK_v || event->keyval == GDK_V) || /* CNTL-V (paste) */
-	       (event->keyval == GDK_n || event->keyval == GDK_N))))) /* CNTL-N (new project) */
+	      ((event->keyval == GDK_KEY_c || event->keyval == GDK_KEY_C) || /* CNTL-C (copy)  */
+	       (event->keyval == GDK_KEY_x || event->keyval == GDK_KEY_X) || /* CNTL-X (cut)   */
+	       (event->keyval == GDK_KEY_v || event->keyval == GDK_KEY_V) || /* CNTL-V (paste) */
+	       (event->keyval == GDK_KEY_n || event->keyval == GDK_KEY_N))))) /* CNTL-N (new project) */
 	{
 		return gtk_widget_event (focus_widget,
 					 (GdkEvent *)event);
