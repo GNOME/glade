@@ -7,15 +7,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glade3\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-23 20:38+0200\n"
-"PO-Revision-Date: 2010-09-21 15:22+0200\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=glade3&component=general\n"
+"POT-Creation-Date: 2010-09-24 10:13+0000\n"
+"PO-Revision-Date: 2010-09-25 15:20+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
+"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: pl\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
 "X-Poedit-Language: Polish\n"
@@ -88,13 +89,13 @@ msgid "[Read Only]"
 msgstr "[Tylko do odczytu]"
 
 #: ../src/glade-window.c:159
-#, fuzzy, c-format
+#, c-format
 msgid "Could not display the URL '%s'"
-msgstr "Nie można zapisać pliku %s"
+msgstr "Nie można wyświetlić adresu URL \"%s\""
 
 #: ../src/glade-window.c:163
 msgid "No suitable web browser could be found."
-msgstr ""
+msgstr "Nie można odnaleźć odpowiedniej przeglądarki WWW."
 
 #. translators: referring to the action of activating a file named '%s'.
 #. *              we also indicate to users that the file may be read-only with
@@ -177,7 +178,6 @@ msgid "Your changes will be lost if you don't save them."
 msgstr "Zmiany zostaną utracone, jeśli nie zostanie zapisane."
 
 #: ../src/glade-window.c:1349
-#, fuzzy
 msgid "_Close without Saving"
 msgstr "Zamknij _bez zapisywania"
 
@@ -191,9 +191,8 @@ msgid "Save…"
 msgstr "Zapisz…"
 
 #: ../src/glade-window.c:1886
-#, fuzzy
 msgid "Could not display the online user manual"
-msgstr "Wyświetla podręcznik użytkownika"
+msgstr "Nie można wyświetlić podręcznika użytkownika w trybie online"
 
 #: ../src/glade-window.c:1889 ../src/glade-window.c:1927
 #, c-format
@@ -201,11 +200,12 @@ msgid ""
 "No suitable web browser executable could be found to be executed and to "
 "display the URL: %s"
 msgstr ""
+"Nie można odnaleźć odpowiedniego pliku wykonywalnego przeglądarki WWW do "
+"wykonania i wyświetlenia adresu URL: %s"
 
 #: ../src/glade-window.c:1924
-#, fuzzy
 msgid "Could not display the online developer reference manual"
-msgstr "Wyświetla podręczniki programistyczny"
+msgstr "Wyświetla podręcznika programistycznego w trybie online"
 
 #: ../src/glade-window.c:1967
 msgid ""
@@ -680,7 +680,6 @@ msgid "Image File Name"
 msgstr "Nazwa pliku obrazu"
 
 #: ../gladeui/glade-builtins.c:499
-#, fuzzy
 msgid "Enter a filename, relative or fullpath to load the image"
 msgstr ""
 "Proszę wprowadzić nazwę pliku albo względną lub pełną ścieżkę, aby wczytać "
@@ -691,7 +690,6 @@ msgid "GdkColor"
 msgstr "Kolor GDK"
 
 #: ../gladeui/glade-builtins.c:509
-#, fuzzy
 msgid "A gdk color value"
 msgstr "Wartość koloru GDK"
 
@@ -799,18 +797,15 @@ msgstr "Typ"
 
 #. Name
 #: ../gladeui/glade-base-editor.c:1974
-#, fuzzy
 msgid "Name :"
 msgstr "Nazwa:"
 
 #. Type
 #: ../gladeui/glade-base-editor.c:1986
-#, fuzzy
 msgid "Type :"
 msgstr "Typ:"
 
 #: ../gladeui/glade-base-editor.c:2199
-#, fuzzy
 msgid ""
 "<big><b>Tips:</b></big>\n"
 "  * Right click over the treeview to add items.\n"
@@ -1011,19 +1006,17 @@ msgid "T_ranslatable"
 msgstr "_Możliwość tłumaczenia"
 
 #: ../gladeui/glade-editor-property.c:1766 ../gladeui/glade-property.c:592
-#, fuzzy
 msgid "Whether this property is translatable or not"
 msgstr "Określa, czy właściwość może być tłumaczona"
 
 #. Has Context
 #: ../gladeui/glade-editor-property.c:1769
 msgid "_Has context prefix"
-msgstr "_Ma prefiks kontekstu"
+msgstr "_Ma przedrostek kontekstu"
 
 #: ../gladeui/glade-editor-property.c:1773 ../gladeui/glade-property.c:599
-#, fuzzy
 msgid "Whether or not the translatable string has a context prefix"
-msgstr "Określa, czy tłumaczony ciąg posiada prefiks kontekstu"
+msgstr "Określa, czy tłumaczony ciąg posiada przedrostek kontekstu"
 
 #: ../gladeui/glade-editor-property.c:1784
 msgid "Conte_xt for translation:"
@@ -1058,7 +1051,7 @@ msgid "Class"
 msgstr "Klasa"
 
 #: ../gladeui/glade-editor-property.c:2720
-#, fuzzy, c-format
+#, c-format
 msgid "Choose parentless %s(s) in this project"
 msgstr "Wybór braku nadrzędności %s w tym projekcie"
 
@@ -1068,7 +1061,7 @@ msgid "Choose a parentless %s in this project"
 msgstr "Wybór braku nadrzędności %s w tym projekcie"
 
 #: ../gladeui/glade-editor-property.c:2723
-#, fuzzy, c-format
+#, c-format
 msgid "Choose %s(s) in this project"
 msgstr "Wybór %s w tym projekcie"
 
@@ -1354,7 +1347,6 @@ msgid "Read Only"
 msgstr "Tylko do odczytu"
 
 #: ../gladeui/glade-project.c:835
-#, fuzzy
 msgid "Whether project is read only or not"
 msgstr "Określa, czy projekt jest tylko do odczytu"
 
@@ -1414,8 +1406,8 @@ msgstr ""
 msgid ""
 "[%s] Object class '%s' was made available in GtkBuilder format in %s %d.%d\n"
 msgstr ""
-"[%s] Klasa obiektów \"%s\" jest dostępna w formacie GtkBuilder w bibliotece %"
-"s %d.%d\n"
+"[%s] Klasa obiektów \"%s\" jest dostępna w formacie GtkBuilder w bibliotece "
+"%s %d.%d\n"
 
 #: ../gladeui/glade-project.c:1712
 msgid "This widget is only supported in libglade format"
@@ -1537,8 +1529,8 @@ msgid ""
 "This property was made available in GtkBuilder format in %s %d.%d while "
 "project targets %s %d.%d"
 msgstr ""
-"Ta właściwość stała się dostępna w formacie GtkBuilder w bibliotece %s %d.%"
-"d, a projekt używa biblioteki %s %d.%d"
+"Ta właściwość stała się dostępna w formacie GtkBuilder w bibliotece %s %d."
+"%d, a projekt używa biblioteki %s %d.%d"
 
 #. translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:1769
@@ -1565,22 +1557,22 @@ msgstr ""
 #, c-format
 msgid "[%s] Signal '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr ""
-"[%s] Sygnał \"%s\" klasy obiektów \"%s\" został wprowadzony w bibliotece %s %"
-"d.%d\n"
+"[%s] Sygnał \"%s\" klasy obiektów \"%s\" został wprowadzony w bibliotece %s "
+"%d.%d\n"
 
 #: ../gladeui/glade-project.c:2008
 msgid "Details"
 msgstr "Szczegóły"
 
 #: ../gladeui/glade-project.c:2024
-#, fuzzy, c-format
+#, c-format
 msgid "Project %s has errors, save anyway ?"
-msgstr "Projekt \"%s\" posiada błędy. Zapisać mimo to?"
+msgstr "Projekt %s posiada błędy. Zapisać mimo to?"
 
 #: ../gladeui/glade-project.c:2025
-#, fuzzy, c-format
+#, c-format
 msgid "Project %s has deprecated widgets and/or version mismatches."
-msgstr "Projekt \"%s\" posiada przestarzałe widżety i/lub niezgodności wersji."
+msgstr "Projekt %s posiada przestarzałe widżety i/lub niezgodności wersji."
 
 #: ../gladeui/glade-project.c:3415
 #, c-format
@@ -1639,14 +1631,13 @@ msgstr "Wybór ścieżki do wczytywania zasobów obrazów"
 
 #. Target versions
 #: ../gladeui/glade-project.c:3951
-#, fuzzy
 msgid "Toolkit version(s) required:"
 msgstr "Wymagane wersje zestawu narzędzi:"
 
 #: ../gladeui/glade-project.c:3985
-#, fuzzy, c-format
+#, c-format
 msgid "%s catalog"
-msgstr "Katalog"
+msgstr "Katalog %s"
 
 #: ../gladeui/glade-project.c:4047
 msgid "Verify versions and deprecations:"
@@ -1720,12 +1711,11 @@ msgstr "Program obsługujący"
 
 #: ../gladeui/glade-signal-editor.c:786
 msgid "User data"
-msgstr ""
+msgstr "Dane użytkownika"
 
 #: ../gladeui/glade-signal-editor.c:803
-#, fuzzy
 msgid "Lookup"
-msgstr "Książka"
+msgstr "Wyszukanie"
 
 #: ../gladeui/glade-signal-editor.c:814 ../plugins/gtk+/gtk+.xml.in.h:32
 msgid "After"
@@ -2021,49 +2011,44 @@ msgid "(%s child)"
 msgstr "(potomek %s)"
 
 #: ../gladeui/glade-custom.c:216
-#, fuzzy
 msgid "Creation Function"
-msgstr "Kolumna położenia"
+msgstr "Funkcja utworzenia"
 
 #: ../gladeui/glade-custom.c:217
 msgid "The function which creates this widget"
-msgstr ""
+msgstr "Funkcja tworząca ten widżet"
 
 #: ../gladeui/glade-custom.c:223
-#, fuzzy
 msgid "String 1"
-msgstr "Ciąg"
+msgstr "Ciąg 1"
 
 #: ../gladeui/glade-custom.c:224
 msgid "The first string argument to pass to the function"
-msgstr ""
+msgstr "Pierwszy parametr ciągu do przekazania do funkcji"
 
 #: ../gladeui/glade-custom.c:230
-#, fuzzy
 msgid "String 2"
-msgstr "Ciąg"
+msgstr "Ciąg 2"
 
 #: ../gladeui/glade-custom.c:231
 msgid "The second string argument to pass to the function"
-msgstr ""
+msgstr "Drugi parametr ciągu do przekazania do funkcji"
 
 #: ../gladeui/glade-custom.c:237
-#, fuzzy
 msgid "Integer 1"
-msgstr "Liczba całkowita"
+msgstr "Liczba całkowita 1"
 
 #: ../gladeui/glade-custom.c:238
 msgid "The first integer argument to pass to the function"
-msgstr ""
+msgstr "Pierwszy parametr liczby całkowitej do przekazania do funkcji"
 
 #: ../gladeui/glade-custom.c:244
-#, fuzzy
 msgid "Integer 2"
-msgstr "Liczba całkowita"
+msgstr "Liczba całkowita 2"
 
 #: ../gladeui/glade-custom.c:245
 msgid "The second integer argument to pass to the function"
-msgstr ""
+msgstr "Drugi parametr liczby całkowitej do przekazania do funkcji"
 
 #: ../gladeui/glade-widget-action.c:161
 msgid "class"
@@ -2074,7 +2059,6 @@ msgid "GladeWidgetActionClass structure pointer"
 msgstr "Wskaźnik do struktury GladeWidgetActionClass"
 
 #: ../gladeui/glade-widget-action.c:169
-#, fuzzy
 msgid "Whether or not this action is sensitive"
 msgstr "Określa, czy to działanie jest aktywne"
 
@@ -2624,11 +2608,10 @@ msgid "Choose accelerator keys..."
 msgstr "Wybierz klawisze skrótów..."
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1
-#, fuzzy
 msgid "A filname, full or relative path to load an icon for this toolbutton"
 msgstr ""
 "Nazwa pliku albo pełna lub względna ścieżka do wczytania ikony dla tego "
-"paska narzędziowego"
+"przycisku narzędziowego"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:2
 msgid "A list of accelerator keys"
@@ -2760,7 +2743,7 @@ msgstr "Zawsze na środku"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:41
 msgid "An accel group for accelerators from stock items"
-msgstr ""
+msgstr "Grupa skrótów dla skrótów elementów standardowych"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:42
 msgid "Arrow"
@@ -2768,7 +2751,7 @@ msgstr "Strzałka"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:43
 msgid "Ascending"
-msgstr ""
+msgstr "Rosnąco"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:44
 msgid "Aspect Frame"
@@ -2829,7 +2812,7 @@ msgstr "Skrzynka"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:59
 msgid "Browse"
-msgstr ""
+msgstr "Przeglądanie"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:61
 msgid "Button 1 Motion"
@@ -2925,9 +2908,8 @@ msgid "Color Selection Dialog"
 msgstr "Okno wyboru koloru"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:86
-#, fuzzy
 msgid "Columned List"
-msgstr "Kolumny"
+msgstr "Lista kolumn"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:87
 msgid "Columns"
@@ -2992,12 +2974,11 @@ msgstr "Utworzenie katalogu"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:106
 msgid "Curve"
-msgstr ""
+msgstr "Krzywa"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:108
-#, fuzzy
 msgid "Custom widget"
-msgstr "Utworzenie głównego widżetu"
+msgstr "Własny widżet"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:109
 msgid "Data"
@@ -3017,7 +2998,7 @@ msgstr "Opóźnione"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:113
 msgid "Descending"
-msgstr ""
+msgstr "Malejąco"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:114
 msgid "Described By"
@@ -3172,9 +3153,8 @@ msgid "Exposure"
 msgstr "Odsłonięcie"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:152
-#, fuzzy
 msgid "Extended"
-msgstr "Rozwinięte"
+msgstr "Rozszerzone"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:153
 msgid "Extra Condensed"
@@ -3217,9 +3197,8 @@ msgid "File Name"
 msgstr "Nazwa pliku"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:163
-#, fuzzy
 msgid "File Selection"
-msgstr "Wybór czcionki"
+msgstr "Wybór pliku"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:164 ../plugins/gnome/gnome.xml.in.h:10
 msgid "Fill"
@@ -3286,13 +3265,12 @@ msgid "Frame"
 msgstr "Ramka"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:180
-#, fuzzy
 msgid "Free"
-msgstr "Ramka"
+msgstr "Wolne"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:181
 msgid "Gamma Curve"
-msgstr ""
+msgstr "Krzywa gamma"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:182
 msgid "Grow Only"
@@ -3304,7 +3282,7 @@ msgstr "GTK"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:184
 msgid "Gtk+ Obsolete"
-msgstr ""
+msgstr "Przestarzałe biblioteki GTK+"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:185
 msgid "Half"
@@ -3412,6 +3390,8 @@ msgid ""
 "If set, an underline in the text indicates the next character should be used "
 "for the mnemonic accelerator key"
 msgstr ""
+"Jeśli ustawione, podkreślenie w tekście wskazuje następny znak do użycia dla "
+"klawisza skrótu"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:216
 msgid "Image Menu Item"
@@ -3537,9 +3517,8 @@ msgid "Info"
 msgstr "Informacje"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:237
-#, fuzzy
 msgid "Input Dialog"
-msgstr "Okno informacyjne"
+msgstr "Okno wprowadzania danych"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:238
 msgid "Insert After"
@@ -3642,9 +3621,8 @@ msgid "Left to Right"
 msgstr "Od lewej do prawej"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:263
-#, fuzzy
 msgid "Linear"
-msgstr "Spinner"
+msgstr "Liniowo"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:264
 msgid "Link Button"
@@ -3652,12 +3630,11 @@ msgstr "Przycisk odnośnika"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:265
 msgid "List"
-msgstr ""
+msgstr "Lista"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:266
-#, fuzzy
 msgid "List Item"
-msgstr "Lista przechowalni"
+msgstr "Element listy"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:267
 msgid "List Store"
@@ -3724,9 +3701,8 @@ msgid "Mouse"
 msgstr "Mysz"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:285
-#, fuzzy
 msgid "Multiple"
-msgstr "wielu"
+msgstr "Wiele"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:286 ../plugins/gnome/gnome.xml.in.h:40
 msgid "Never"
@@ -3802,9 +3778,8 @@ msgid "Open"
 msgstr "Otwarcie"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:307
-#, fuzzy
 msgid "Option Menu"
-msgstr "Menu rozwijane"
+msgstr "Menu opcji"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:308
 msgid "Orientation column"
@@ -4209,9 +4184,8 @@ msgid "Splash Screen"
 msgstr "Ekran powitalny"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:412
-#, fuzzy
 msgid "Spline"
-msgstr "Krzywa"
+msgstr "Funkcja sklejana"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:413
 msgid "Spread"
@@ -4378,7 +4352,6 @@ msgid "The response ID of this button in a dialog"
 msgstr "Identyfikator odpowiedzi tego przycisku w oknie dialogowym"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:457
-#, fuzzy
 msgid ""
 "The stock icon displayed on the item (chose an item from gtk+ stock or from "
 "an icon factory)"
@@ -4395,13 +4368,12 @@ msgid "The stock item for this menu item"
 msgstr "Standardowy element dla tego elementu menu"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:460
-#, fuzzy
 msgid "The text of the menu item"
-msgstr "Standardowy element dla tego elementu menu"
+msgstr "Tekst elementu menu"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:461
 msgid "The text to display"
-msgstr ""
+msgstr "Tekst do wyświetlenia"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:462
 msgid "Third Mouse Button"
@@ -4489,7 +4461,7 @@ msgstr "Widok drzewa"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:484
 msgid "UI Manager"
-msgstr ""
+msgstr "Menedżer interfejsu użytkownika"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:485
 msgid "Ultra Condensed"
@@ -4693,15 +4665,14 @@ msgstr "Modyfikowanie sekwencyjne:"
 
 #: ../plugins/gtk+/glade-cell-renderer-button.c:90
 msgid "Entry Editable"
-msgstr ""
+msgstr "Modyfikowalne pole wprowadzania"
 
 #: ../plugins/gtk+/glade-cell-renderer-button.c:91
-#, fuzzy
 msgid "Whether the entry is editable"
-msgstr "Określa, czy właściwość może być tłumaczona"
+msgstr "Określa, czy pole wprowadzania może być modyfikowane"
 
 #: ../plugins/gtk+/glade-icon-sources.c:694
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Enter a filname or a relative or full path for this source of '%s' (Glade "
 "will only ever load them in the runtime from your project directory)."
@@ -4851,7 +4822,6 @@ msgstr ""
 
 #. Add descriptive label
 #: ../plugins/gtk+/glade-store-editor.c:197
-#, fuzzy
 msgid ""
 "Define columns for your liststore, giving them meaningful names will help "
 "you to retrieve them when setting cell renderer attributes (press the Delete "
@@ -4863,7 +4833,6 @@ msgstr ""
 
 #. Add descriptive label
 #: ../plugins/gtk+/glade-store-editor.c:227
-#, fuzzy
 msgid ""
 "Add remove and edit rows of data (you can optionally use CNTL-N to add new "
 "rows and the Delete key to remove the selected row)"
@@ -4878,7 +4847,7 @@ msgid "Setting %s to use an attribute list"
 msgstr "Ustawianie %s na używanie listy atrybutów"
 
 #: ../plugins/gtk+/glade-label-editor.c:286
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use a pango markup string"
 msgstr "Ustawianie %s na używanie ciągów znaczników biblioteki Pango"
 
@@ -4888,12 +4857,12 @@ msgid "Setting %s to use a pattern string"
 msgstr "Ustawianie %s na używanie ciągu wzorów"
 
 #: ../plugins/gtk+/glade-label-editor.c:357
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to set desired width in charachters"
 msgstr "Ustawianie %s na ustawienie żądanej szerokości w znakach"
 
 #: ../plugins/gtk+/glade-label-editor.c:388
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to set maximum width in charachters"
 msgstr "Ustawianie %s na ustawienie maksymalnej szerokości w znakach"
 
@@ -4908,9 +4877,9 @@ msgid "Setting %s to use a single line"
 msgstr "Ustawianie %s na używanie pojedynczego wiersza"
 
 #: ../plugins/gtk+/glade-label-editor.c:492
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use specific pango word wrapping"
-msgstr "Ustawianie %s na używanie zwijania słów biblioteki Pango"
+msgstr "Ustawianie %s na używanie zawijania słów biblioteki Pango"
 
 #. Label appearance...
 #: ../plugins/gtk+/glade-label-editor.c:538
@@ -5019,292 +4988,258 @@ msgid "Setting %s to not use action appearance"
 msgstr "Ustawianie %s na nieużywanie wyglądu czynności"
 
 #: ../plugins/gnome/glade-gnome.c:292
-#, fuzzy
 msgid "Status Message."
-msgstr "Pasek stanu"
+msgstr "Komunikat stanu."
 
 #: ../plugins/gnome/glade-gnome.c:659
-#, fuzzy
 msgid "The position in the druid"
-msgstr "Położenie strony w asystencie"
+msgstr "Położenie w asystencie"
 
 #: ../plugins/gnome/glade-gnome.c:1011
-#, fuzzy
 msgid "Message box type"
-msgstr "Okno komunikatu"
+msgstr "Typ okna komunikatu"
 
 #: ../plugins/gnome/glade-gnome.c:1012
-#, fuzzy
 msgid "The type of the message box"
-msgstr "Liczba elementów w polu"
+msgstr "Typ okna komunikatu"
 
 #: ../plugins/gnome/glade-gnome.c:1220
-#, fuzzy
 msgid "This property is valid only in font information mode"
-msgstr ""
-"Tej właściwości można używać tylko w przyciskach czynności okien dialogowych"
+msgstr "Ta właściwość jest prawidłowa tylko w trybie informacji o czcionce"
 
 #. This is deprecated
 #: ../plugins/gnome/glade-gnome.c:1308 ../plugins/gnome/canvas.xml.in.h:18
-#, fuzzy
 msgid "Selection Mode"
-msgstr "Wybór katalogu"
+msgstr "Tryb wyboru"
 
 #: ../plugins/gnome/glade-gnome.c:1309
-#, fuzzy
 msgid "Choose the Selection Mode"
-msgstr "Kopiuje zaznaczone"
+msgstr "Wybór trybu wyboru"
 
 #: ../plugins/gnome/glade-gnome.c:1449
-#, fuzzy
 msgid "Placement"
-msgstr "Rodzic"
+msgstr "Umieszczenie"
 
 #: ../plugins/gnome/glade-gnome.c:1450
 msgid "Choose the BonoboDockPlacement type"
-msgstr ""
+msgstr "Wybór typu BonoboDockPlacement"
 
 #: ../plugins/gnome/glade-gnome.c:1478
 msgid "Behavior"
-msgstr ""
+msgstr "Zachowanie"
 
 #: ../plugins/gnome/glade-gnome.c:1479
 msgid "Choose the BonoboDockItemBehavior type"
-msgstr ""
+msgstr "Wybór typu BonoboDockItemBehavior"
 
 #: ../plugins/gnome/glade-gnome.c:1488
-#, fuzzy
 msgid "Pack Type"
-msgstr "Typ"
+msgstr "Typ pakietu"
 
 #: ../plugins/gnome/glade-gnome.c:1489
 msgid "Choose the Pack Type"
-msgstr ""
+msgstr "Wybór typu pakietu"
 
 #: ../plugins/gnome/gnome.xml.in.h:1
-#, fuzzy
 msgid "24-Hour Format"
-msgstr "Format"
+msgstr "Format 24-godzinny"
 
 #: ../plugins/gnome/gnome.xml.in.h:3
-#, fuzzy
 msgid "Background Color"
 msgstr "Kolor tła"
 
 #: ../plugins/gnome/gnome.xml.in.h:4
-#, fuzzy
 msgid "Contents Background Color"
-msgstr "Kolor tła"
+msgstr "Kolor tła treści"
 
 #: ../plugins/gnome/gnome.xml.in.h:5
-#, fuzzy
 msgid "Dither"
-msgstr "Inne"
+msgstr "Rozpraszanie"
 
 #: ../plugins/gnome/gnome.xml.in.h:11
-#, fuzzy
 msgid "Font Information"
-msgstr "Kontekst dla tłumaczenia"
+msgstr "Informacje o czcionce"
 
 #: ../plugins/gnome/gnome.xml.in.h:12
 msgid "GNOME About"
-msgstr ""
+msgstr "Okno informacji o GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:13
 msgid "GNOME App"
-msgstr ""
+msgstr "Program GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:14
 msgid "GNOME App Bar"
-msgstr ""
+msgstr "Pasek programów GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:15
-#, fuzzy
 msgid "GNOME Color Picker"
-msgstr "Wybór koloru"
+msgstr "Wybór koloru GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:16
 msgid "GNOME Date Edit"
-msgstr ""
+msgstr "Modyfikacja daty GNOME"
 
 #. Deprecated Widget Classes :)
 #: ../plugins/gnome/gnome.xml.in.h:18
-#, fuzzy
 msgid "GNOME Dialog"
-msgstr "Okno dialogowe"
+msgstr "Okno dialogowe GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:19
 msgid "GNOME Druid"
-msgstr ""
+msgstr "Asystent GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:20
 msgid "GNOME Druid Page Edge"
-msgstr ""
+msgstr "Krawędź strony asystenta GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:21
 msgid "GNOME Druid Page Standard"
-msgstr ""
+msgstr "Standardowa strona asystenta GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:22
 msgid "GNOME File Entry"
-msgstr ""
+msgstr "Pole wprowadzania pliku GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:23
 msgid "GNOME Font Picker"
-msgstr ""
+msgstr "Wybór czcionki GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:24
 msgid "GNOME HRef"
-msgstr ""
+msgstr "Odnośnik href GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:25
 msgid "GNOME Icon Entry"
-msgstr ""
+msgstr "Pole wprowadzania ikony GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:26
-#, fuzzy
 msgid "GNOME Icon Selection"
-msgstr "Wybór czcionki"
+msgstr "Wybór ikony GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:27
 msgid "GNOME Message Box"
-msgstr ""
+msgstr "Okno komunikatu GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:28
 msgid "GNOME Pixmap"
-msgstr ""
+msgstr "Mapa pikseli GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:29
 msgid "GNOME Pixmap Entry"
-msgstr ""
+msgstr "Pole wprowadzania mapy pikseli GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:30
-#, fuzzy
 msgid "GNOME Property Box"
-msgstr "Właściwość"
+msgstr "Pole właściwości GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:31
 msgid "GNOME UI Obsolete"
-msgstr ""
+msgstr "Przestarzały interfejs użytkownika GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:32
-#, fuzzy
 msgid "GNOME User Interface"
-msgstr "Narzędzie do projektowania interfejsów użytkownika"
+msgstr "Interfejs użytkownika GNOME"
 
 #: ../plugins/gnome/gnome.xml.in.h:33
-#, fuzzy
 msgid "Generic"
-msgstr "Nazwa ogólna"
+msgstr "Ogólne"
 
 #: ../plugins/gnome/gnome.xml.in.h:34
-#, fuzzy
 msgid "Information"
-msgstr "Międzynarodowy"
+msgstr "Informacje"
 
 #: ../plugins/gnome/gnome.xml.in.h:35
 msgid "Logo"
-msgstr ""
+msgstr "Logo"
 
 #: ../plugins/gnome/gnome.xml.in.h:36
-#, fuzzy
 msgid "Logo Background Color"
-msgstr "Kolor tła"
+msgstr "Kolor tła logo"
 
 #: ../plugins/gnome/gnome.xml.in.h:37
-#, fuzzy
 msgid "Max Saved"
-msgstr "Zapisanie"
+msgstr "Maksymalnie zapisane"
 
 #: ../plugins/gnome/gnome.xml.in.h:38
-#, fuzzy
 msgid "Message"
-msgstr "Okno komunikatu"
+msgstr "Komunikat"
 
 #: ../plugins/gnome/gnome.xml.in.h:39
 msgid "Monday First"
-msgstr ""
+msgstr "Najpierw poniedziałek"
 
 #: ../plugins/gnome/gnome.xml.in.h:42
-#, fuzzy
 msgid "Padding"
-msgstr "Pakowanie"
+msgstr "Wypełnienie"
 
 #: ../plugins/gnome/gnome.xml.in.h:43
 msgid "Pixmap"
-msgstr ""
+msgstr "Mapa pikseli"
 
 #: ../plugins/gnome/gnome.xml.in.h:45
-#, fuzzy
 msgid "Program Name"
-msgstr "Postęp"
+msgstr "Nazwa programu"
 
 #: ../plugins/gnome/gnome.xml.in.h:46
-#, fuzzy
 msgid "Program Version"
-msgstr "Ułamek postępu"
+msgstr "Wersja programu"
 
 #: ../plugins/gnome/gnome.xml.in.h:48
-#, fuzzy
 msgid "Scaled Height"
-msgstr "Wysokość najwyższego poziomu"
+msgstr "Wysokość wyskalowana"
 
 #: ../plugins/gnome/gnome.xml.in.h:49
-#, fuzzy
 msgid "Scaled Width"
-msgstr "Wyspecjalizowane widżety"
+msgstr "Szerokość wyskalowana"
 
 #: ../plugins/gnome/gnome.xml.in.h:50
-#, fuzzy
 msgid "Show Time"
-msgstr "Wyświetlanie informacji"
+msgstr "Czas wyświetlania"
 
 #: ../plugins/gnome/gnome.xml.in.h:52
-#, fuzzy
 msgid "StatusBar"
 msgstr "Pasek stanu"
 
 #: ../plugins/gnome/gnome.xml.in.h:53
 msgid "Store Config"
-msgstr ""
+msgstr "Konfiguracja przechowalni"
 
 #: ../plugins/gnome/gnome.xml.in.h:55
-#, fuzzy
 msgid "Text Foreground Color"
 msgstr "Kolor tekstu"
 
 #: ../plugins/gnome/gnome.xml.in.h:56
 msgid "The height to scale the pixmap to"
-msgstr ""
+msgstr "Wysokość, do jakiej skalować mapy pikseli"
 
 #: ../plugins/gnome/gnome.xml.in.h:57
 msgid "The maximum number of history entries saved"
-msgstr ""
+msgstr "Maksymalna liczba zapisanych wpisów historii"
 
 #: ../plugins/gnome/gnome.xml.in.h:58
 msgid "The pixmap file"
-msgstr ""
+msgstr "Plik mapy pikseli"
 
 #: ../plugins/gnome/gnome.xml.in.h:59
 msgid "The width to scale the pixmap to"
-msgstr ""
+msgstr "Szerokość, do jakiej skalować mapy pikseli"
 
 #: ../plugins/gnome/gnome.xml.in.h:61
-#, fuzzy
 msgid "Title Foreground Color"
-msgstr "Kolor tekstu"
+msgstr "Kolor tekstu tytułu"
 
 #: ../plugins/gnome/gnome.xml.in.h:62
 msgid "Top Watermark"
-msgstr ""
+msgstr "Górny znak wodny"
 
 #: ../plugins/gnome/gnome.xml.in.h:63
 msgid "Unknown"
-msgstr ""
+msgstr "Nieznane"
 
 #: ../plugins/gnome/gnome.xml.in.h:64
 msgid "Use Alpha"
-msgstr ""
+msgstr "Użycie alfy"
 
 #: ../plugins/gnome/gnome.xml.in.h:65
 msgid ""
@@ -5312,326 +5247,153 @@ msgid ""
 "within the overall GnomeDruid. This enables the correct \"surrounding\" "
 "content for the page to be drawn"
 msgstr ""
+"Używane do przekazania informacji o położeniu strony GnomeDruidPage w całym "
+"asystencie GnomeDruid. Włącza poprawne \"otaczanie\" wyświetlanej treści "
+"strony"
 
 #: ../plugins/gnome/gnome.xml.in.h:66
-#, fuzzy
 msgid "User"
-msgstr "Nieustawione"
+msgstr "Użytkownik"
 
 #: ../plugins/gnome/gnome.xml.in.h:67
-#, fuzzy
 msgid "User Widget"
-msgstr "Widżet"
+msgstr "Widżet użytkownika"
 
 #: ../plugins/gnome/gnome.xml.in.h:69
 msgid "Watermark"
-msgstr ""
+msgstr "Znak wodny"
 
 #: ../plugins/gnome/bonobo.xml.in.h:2
 msgid "Exclusive"
-msgstr ""
+msgstr "Wyłączne"
 
 #: ../plugins/gnome/bonobo.xml.in.h:3
-#, fuzzy
 msgid "Floating"
-msgstr "Liczba zmiennoprzecinkowa"
+msgstr "Pływające"
 
 #: ../plugins/gnome/bonobo.xml.in.h:5
-#, fuzzy
 msgid "Locked"
-msgstr "Klawisz blokady"
+msgstr "Zablokowane"
 
 #: ../plugins/gnome/bonobo.xml.in.h:6
 msgid "Never Floating"
-msgstr ""
+msgstr "Nigdy nie pływające"
 
 #: ../plugins/gnome/bonobo.xml.in.h:7
-#, fuzzy
 msgid "Never Horizontal"
-msgstr "Poziome"
+msgstr "Nigdy poziome"
 
 #: ../plugins/gnome/bonobo.xml.in.h:8
-#, fuzzy
 msgid "Never Vertical"
-msgstr "Pionowe"
+msgstr "Nigdy pionowe"
 
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:2
-#, fuzzy
 msgid "Column Spacing"
-msgstr "Typ kolumny"
+msgstr "Odstęp kolumny"
 
 #: ../plugins/gnome/canvas.xml.in.h:3
 msgid "GNOME Canvas"
-msgstr ""
+msgstr "Canvas GNOME"
 
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:5
 msgid "GNOME Icon List"
-msgstr ""
+msgstr "Lista ikon GNOME"
 
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:7
-#, fuzzy
 msgid "Icon Width"
-msgstr "Rozmiar ikony"
+msgstr "Szerokość ikony"
 
 #: ../plugins/gnome/canvas.xml.in.h:8
 msgid "If the icon text can be edited by the user"
-msgstr ""
+msgstr "Czy tekst ikony może być modyfikowany przez użytkownika"
 
 #: ../plugins/gnome/canvas.xml.in.h:9
 msgid ""
 "If the icon text is static, in which case it will not be copied by the "
 "GnomeIconList"
 msgstr ""
+"Jeśli tekst ikon jest statyczny, to nie zostanie skopiowany przez "
+"GnomeIconList"
 
 #: ../plugins/gnome/canvas.xml.in.h:10
 msgid "Max X"
-msgstr ""
+msgstr "Maksymalna współrzędna X"
 
 #: ../plugins/gnome/canvas.xml.in.h:11
 msgid "Max Y"
-msgstr ""
+msgstr "Maksymalna współrzędna Y"
 
 #: ../plugins/gnome/canvas.xml.in.h:12
 msgid "Min X"
-msgstr ""
+msgstr "Minimalna współrzędna X"
 
 #: ../plugins/gnome/canvas.xml.in.h:13
 msgid "Min Y"
-msgstr ""
+msgstr "Minimalna współrzędna Y"
 
 #: ../plugins/gnome/canvas.xml.in.h:14
 msgid "Pixels per unit"
-msgstr ""
+msgstr "Pikseli na jednostkę"
 
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:16
 msgid "Row Spacing"
-msgstr ""
+msgstr "Odstęp wierszy"
 
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:20
-#, fuzzy
 msgid "Text Editable"
-msgstr "Tabela znacznika tekstu"
+msgstr "Modyfikowalny tekst"
 
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:22
-#, fuzzy
 msgid "Text Spacing"
-msgstr "Znacznik tekstu"
+msgstr "Odstęp tekstu"
 
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:24
-#, fuzzy
 msgid "Text Static"
-msgstr "Statyczne"
+msgstr "Statyczny tekst"
 
 #: ../plugins/gnome/canvas.xml.in.h:25
-#, fuzzy
 msgid "The maximum x coordinate"
-msgstr "Maksymalna wartość"
+msgstr "Maksymalna współrzędna X"
 
 #: ../plugins/gnome/canvas.xml.in.h:26
-#, fuzzy
 msgid "The maximum y coordinate"
-msgstr "Maksymalna wartość"
+msgstr "Maksymalna współrzędna Y"
 
 #: ../plugins/gnome/canvas.xml.in.h:27
-#, fuzzy
 msgid "The minimum x coordinate"
-msgstr "Minimalna wartość"
+msgstr "Minimalna współrzędna X"
 
 #: ../plugins/gnome/canvas.xml.in.h:28
-#, fuzzy
 msgid "The minimum y coordinate"
-msgstr "Minimalna wartość"
+msgstr "Minimalna współrzędna Y"
 
 #: ../plugins/gnome/canvas.xml.in.h:29
-#, fuzzy
 msgid "The number of pixels between columns of icons"
-msgstr "Liczba stron w notatniku"
+msgstr "Liczba pikseli między kolumnami ikon"
 
 #: ../plugins/gnome/canvas.xml.in.h:30
-#, fuzzy
 msgid "The number of pixels between rows of icons"
-msgstr "Liczba stron w notatniku"
+msgstr "Liczba pikseli między rzędami ikon"
 
 #: ../plugins/gnome/canvas.xml.in.h:31
-#, fuzzy
 msgid "The number of pixels between the text and the icon"
-msgstr "Liczba stron w notatniku"
+msgstr "Liczba pikseli między tekstem a ikoną"
 
 #: ../plugins/gnome/canvas.xml.in.h:32
-#, fuzzy
 msgid "The number of pixels corresponding to one unit"
-msgstr "Liczba stron w notatniku"
+msgstr "Liczba pikseli odpowiadająca jednej jednostce"
 
 #: ../plugins/gnome/canvas.xml.in.h:33
-#, fuzzy
 msgid "The selection mode"
-msgstr "Wybór drzewa"
+msgstr "Tryb wyboru"
 
 #: ../plugins/gnome/canvas.xml.in.h:34
 msgid "The width of each icon"
-msgstr ""
-
-#~ msgid "Interface Designer"
-#~ msgstr "Narzędzie do projektowania interfejsów użytkownika"
-
-#~ msgid "Format:"
-#~ msgstr "Format:"
-
-#~ msgid "Requires:"
-#~ msgstr "Wymaga:"
-
-#~ msgid "Tool_bar"
-#~ msgstr "Pasek _narzędziowy"
-
-#~ msgid "Show the toolbar"
-#~ msgstr "Wyświetla pasek narzędziowy"
-
-#~ msgid "_Statusbar"
-#~ msgstr "Pasek _stanu"
-
-#~ msgid "Show the statusbar"
-#~ msgstr "Wyświetla pasek stanu"
-
-#~ msgid "Project _Tabs"
-#~ msgstr "_Karty projektów"
-
-#~ msgid "Show notebook tabs for loaded projects"
-#~ msgstr "Wyświetla karty dla wczytanych projektów"
-
-#~ msgid "Close document"
-#~ msgstr "Zamknij dokument"
-
-#~ msgid "Select Named Icon"
-#~ msgstr "Wybór nazwanej ikony"
-
-#~ msgid "Choose parentless %s type objects in this project"
-#~ msgstr "Wybór braku nadrzędności obiektów typu %s w tym projekcie"
-
-#~ msgid "Choose %s type objects in this project"
-#~ msgstr "Wybór obiektów typu %s w tym projekcie"
-
-#~ msgid "%s - %s Properties"
-#~ msgstr "Właściwości %s - %s"
-
-#~ msgid ""
-#~ "This signal was introduced in %s %d.%d while project targets %s %d.%d"
-#~ msgstr ""
-#~ "Ten sygnał został wprowadzony w bibliotece %s %d.%d, a ten projekt używa "
-#~ "biblioteki %s %d.%d"
-
-#~ msgid "<Object>"
-#~ msgstr "<Obiekt>"
-
-#~ msgid "Select an object to pass to the handler"
-#~ msgstr "Wybór obiektu do przekazania programowi obsługującemu"
-
-#~ msgid "The name of the signal to connect to"
-#~ msgstr "Nazwa sygnału, z którym połączyć"
-
-#~ msgid "Enter the handler to run for this signal"
-#~ msgstr ""
-#~ "Proszę wprowadzić nazwę programu obsługującego, który ma zostać wykonany "
-#~ "dla tego sygnału"
-
-#~ msgid "An object to pass to the handler"
-#~ msgstr "Obiekt do przekazania do programu obsługującego"
-
-#~ msgid "Swap"
-#~ msgstr "Wymiana"
-
-#~ msgid ""
-#~ "Whether the instance and object should be swapped when calling the handler"
-#~ msgstr ""
-#~ "Określa, czy instancja i obiekt powinny być wymieniane podczas "
-#~ "wywoływania programu obsługującego"
-
-#~ msgid ""
-#~ "Whether the handler should be called before or after the default handler "
-#~ "of the signal"
-#~ msgstr ""
-#~ "Określa, czy program obsługujący powinien być wywoływany przed czy po "
-#~ "domyślnym programie obsługującym sygnał"
-
-#~ msgid ""
-#~ "Cannot add non scrollable %s widget to a %s directly.\n"
-#~ "Add a %s first."
-#~ msgstr ""
-#~ "Nie można dodać nieprzewijalnego widżetu %s bezpośrednio do %s.\n"
-#~ "Należy najpierw dodać %s."
-
-#~ msgid "Could not show link:"
-#~ msgstr "Nie można wyświetlić odnośnika:"
-
-#~ msgid "C_ontexts:"
-#~ msgstr "K_onteksty:"
-
-#~ msgid "Icon Na_mes:"
-#~ msgstr "_Nazwy ikon:"
-
-#~ msgid "The accelerator can only be set when inside an Action Group."
-#~ msgstr "Klawisz skrótu można zastosować tylko wewnątrz grupy czynności."
-
-#~ msgid "An accelerator key for this action"
-#~ msgstr "Klawisz skrótu dla tej czynności"
-
-#~ msgid "Entry Buffer"
-#~ msgstr "Bufor wprowadzania"
-
-#~ msgid "Initially Complete"
-#~ msgstr "Początkowo pełne"
-
-#~ msgid "Spinner Renderer"
-#~ msgstr "Wyświetlanie spinnera"
-
-#~ msgid ""
-#~ "Whether this page will initially be marked as complete regardless of user "
-#~ "input."
-#~ msgstr ""
-#~ "Określa, czy ta strona ma zostać początkowo oznaczona jako pełna, "
-#~ "niezależnie od tego, co wprowadził użytkownik."
-
-#~ msgid "Collate"
-#~ msgstr "Porównanie"
-
-#~ msgid "Copies"
-#~ msgstr "Kopie"
-
-#~ msgid "Generate PDF"
-#~ msgstr "Utworzenie pliku PDF"
-
-#~ msgid "Generate PS"
-#~ msgstr "Utworzenie pliku PostScript"
-
-#~ msgid "Number Up"
-#~ msgstr "Liczba do góry"
-
-#~ msgid "Number Up Layout"
-#~ msgstr "Układ liczb do góry"
-
-#~ msgid "Page Set"
-#~ msgstr "Ustawienie strony"
-
-#~ msgid "Preview"
-#~ msgstr "Podgląd"
-
-#~ msgid "Reverse"
-#~ msgstr "Odwrócenie"
-
-#~ msgid "Scale"
-#~ msgstr "Skalowanie"
-
-#~ msgid "Column name"
-#~ msgstr "Nazwa kolumny"
-
-#~ msgid "Setting %s to use static text"
-#~ msgstr "Ustawianie %s na używanie statycznego tekstu"
-
-#~ msgid "Setting %s to use an external buffer"
-#~ msgstr "Ustawianie %s na używanie zewnętrznego bufora"
+msgstr "Szerokość każdej ikony"
