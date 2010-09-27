@@ -2,13 +2,15 @@
 # This file is distributed under the same license as the glade package.
 # Copyright (C) Zhanna Sargsyan, 2010.
 # Zhanna Sargsyan <zhanna.sargsyan@yahoo.com>
+# Nune <nune@instigatedesign.com>
+# Narine Martirosyan <training@instigate.am>
 msgid ""
 msgstr ""
 "Project-Id-Version: glade3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-31 12:29+0500\n"
-"PO-Revision-Date: 2010-08-31 12:26+0400\n"
-"Last-Translator: Nune <nune@instigatedesign.com>\n"
+"POT-Creation-Date: 2010-09-27 11:49+0500\n"
+"PO-Revision-Date: 2010-08-31 10:08+0400\n"
+"Last-Translator: Narine Martirosyan <training@instigate.am>\n"
 "Language-Team:  <norik@freenet.am>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -82,13 +84,12 @@ msgid "[Read Only]"
 msgstr "[Միայն Կարդալու Համար]"
 
 #: ../src/glade-window.c:159
-#, c-format
 msgid "Could not display the URL '%s'"
-msgstr "Չի հաջողվել ցուցադրել %s URL-ը"
+msgstr "Չի հաջողվել ցույց տալ URL '%s'"
 
 #: ../src/glade-window.c:163
 msgid "No suitable web browser could be found."
-msgstr "Համապատասխան վեբ զննիչ գտնված չէ"
+msgstr "Համապատասխան web զննարկիչ գտնված չէ։"
 
 #. translators: referring to the action of activating a file named '%s'.
 #. *              we also indicate to users that the file may be read-only with
@@ -185,7 +186,7 @@ msgstr "Պահպանել․․․"
 
 #: ../src/glade-window.c:1886
 msgid "Could not display the online user manual"
-msgstr "Չի հաջողվել ցուցադրել օգտագործողի օնլայն ձեռնարկը"
+msgstr "Չի հաջողվել ցույց տալ օգտագործողի ձեռնարկը"
 
 #: ../src/glade-window.c:1889 ../src/glade-window.c:1927
 #, c-format
@@ -193,12 +194,10 @@ msgid ""
 "No suitable web browser executable could be found to be executed and to "
 "display the URL: %s"
 msgstr ""
-"Համապատասխան վեբ զննիչի գործարկիչ գտնված չէ գործարկման և URL ցուցադրման "
-"համար․ %s"
 
 #: ../src/glade-window.c:1924
 msgid "Could not display the online developer reference manual"
-msgstr "Չի հաջողվել ցուցադրել նախագծողի օնլայն ուղեցույցը"
+msgstr "Չի հաջողվել ցույց տալ նախագծողի ուղեցույցը"
 
 #: ../src/glade-window.c:1967
 msgid ""
@@ -672,7 +671,7 @@ msgstr "Նկարի Ֆայլի Անուն"
 #: ../gladeui/glade-builtins.c:499
 msgid "Enter a filename, relative or fullpath to load the image"
 msgstr ""
-"Նկարը բեռնելու համար ներմուծեք ֆայլի անվանումը, հարաբերական կամ բացարձակ "
+"Նկարը բեռնելու համար ներմուծեք ֆայլի անունը, հարաբերական կամ բացարձակ "
 "ճանապարհը"
 
 #: ../gladeui/glade-builtins.c:508
@@ -681,7 +680,7 @@ msgstr "GdkColor"
 
 #: ../gladeui/glade-builtins.c:509
 msgid "A gdk color value"
-msgstr "gdk գույնի արժեքը"
+msgstr "gdk color-ի արժեքը"
 
 #: ../gladeui/glade-builtins.c:519
 msgid "Integer"
@@ -807,7 +806,7 @@ msgstr ""
 "  * Ծառում էլեմենտ ավելացնելու համար մկնիկի աջ կոճակով կտտացրեք ծառի վրա։\n"
 "  * Նշված էլեմենտը ջնջելու համար սեղմել Delete.\n"
 "  * Էլեմենտների դասավորությունը փոփոխելու համար տեղափոխել դրանք մկնիկով.\n"
-"  * Տիպի սյունը խմբագրվող է."
+"  * Տիպի սյունը կարելի է խմբագրել."
 
 #: ../gladeui/glade-clipboard-view.c:209 ../gladeui/glade-editor.c:162
 #: ../plugins/gtk+/gtk+.xml.in.h:515
@@ -998,7 +997,7 @@ msgstr "Թ_արգմանվող"
 
 #: ../gladeui/glade-editor-property.c:1766 ../gladeui/glade-property.c:592
 msgid "Whether this property is translatable or not"
-msgstr "Այս հատկությունը արդյոք թարգմանվող է, թե՞ ոչ"
+msgstr "Այս հատկությունը արդյո՞ք ենթակա է թարգմանվելու համար"
 
 #. Has Context
 #: ../gladeui/glade-editor-property.c:1769
@@ -1007,7 +1006,7 @@ msgstr "_Ունի՞ կոնտեքստային նախածանց"
 
 #: ../gladeui/glade-editor-property.c:1773 ../gladeui/glade-property.c:599
 msgid "Whether or not the translatable string has a context prefix"
-msgstr "Թարգմանվեղ տողն ունի արդյոք կոնտեքստային նախածանց, թե՞ ոչ"
+msgstr "Թարգմանվող տողն ունի արդյո՞ք կոնտեքստային նախածանց"
 
 #: ../gladeui/glade-editor-property.c:1784
 msgid "Conte_xt for translation:"
@@ -1042,9 +1041,8 @@ msgid "Class"
 msgstr "Դաս"
 
 #: ../gladeui/glade-editor-property.c:2720
-#, c-format
 msgid "Choose parentless %s(s) in this project"
-msgstr "Այս պրոյեկտում ընտրեք առանց ծնողի %s(ներ)"
+msgstr "Այս պրոյեկտում ընտրեք առանց ծնողի %s"
 
 #: ../gladeui/glade-editor-property.c:2720
 #, c-format
@@ -1052,9 +1050,8 @@ msgid "Choose a parentless %s in this project"
 msgstr "Այս պրոյեկտում ընտրեք առանց ծնողի %s"
 
 #: ../gladeui/glade-editor-property.c:2723
-#, c-format
 msgid "Choose %s(s) in this project"
-msgstr "Այս պրոյեկտում ընտրեք %s(s)-ը"
+msgstr "Այս պրոյեկտում ընտրեք %s - ը"
 
 #: ../gladeui/glade-editor-property.c:2723
 #, c-format
@@ -1337,7 +1334,7 @@ msgstr "Միայն Կարդալու Համար"
 
 #: ../gladeui/glade-project.c:835
 msgid "Whether project is read only or not"
-msgstr "Պրոյեկտը արդյոք միայն կարդալու համար է, թե՞ ոչ"
+msgstr "Պրոյեկտը միայն կարդալու համա՞ր է"
 
 #: ../gladeui/glade-project.c:842
 msgid "Format"
@@ -1550,12 +1547,10 @@ msgid "Details"
 msgstr "Մանրամասներ"
 
 #: ../gladeui/glade-project.c:2024
-#, c-format
 msgid "Project %s has errors, save anyway ?"
-msgstr "%s պրոյեկտն ունի սխալներ։ Պահպանե՞լ ամեն դեպքում։"
+msgstr "%s պրոյեկտն ունի սխալներ։ Պահպանե՞լ ամեն դեպքում:"
 
 #: ../gladeui/glade-project.c:2025
-#, c-format
 msgid "Project %s has deprecated widgets and/or version mismatches."
 msgstr ""
 "%s պրոյեկտն ունի հնացած վիջեթներ և/կամ տարբերակի անհամապատասխանություն։"
@@ -1618,12 +1613,11 @@ msgstr "Ընտրեք նկարները բեռնելու ուղին"
 #. Target versions
 #: ../gladeui/glade-project.c:3951
 msgid "Toolkit version(s) required:"
-msgstr "Գրադարանի պահանջվող տարբերակ(ներ)․"
+msgstr "Գրադարանի պահանջվող տարբերակներ․"
 
 #: ../gladeui/glade-project.c:3985
-#, c-format
 msgid "%s catalog"
-msgstr "%s Կատալոգ"
+msgstr "%s կատալոգ"
 
 #: ../gladeui/glade-project.c:4047
 msgid "Verify versions and deprecations:"
@@ -1695,11 +1689,11 @@ msgstr "Մշակող ծրագիր"
 
 #: ../gladeui/glade-signal-editor.c:786
 msgid "User data"
-msgstr "Օգտագործողի տվյալներ"
+msgstr ""
 
 #: ../gladeui/glade-signal-editor.c:803
 msgid "Lookup"
-msgstr "Որոնել"
+msgstr "Փնտրել"
 
 #: ../gladeui/glade-signal-editor.c:814 ../plugins/gtk+/gtk+.xml.in.h:32
 msgid "After"
@@ -2000,7 +1994,7 @@ msgstr "Ստեղծման Ֆունկցիա"
 
 #: ../gladeui/glade-custom.c:217
 msgid "The function which creates this widget"
-msgstr "Այս վիջեթը ստեղծող ֆունկցիա"
+msgstr ""
 
 #: ../gladeui/glade-custom.c:223
 msgid "String 1"
@@ -2008,7 +2002,7 @@ msgstr "Տող 1"
 
 #: ../gladeui/glade-custom.c:224
 msgid "The first string argument to pass to the function"
-msgstr "Ֆունկցիային փոխանցվող առաջին տողային արգումենտ"
+msgstr ""
 
 #: ../gladeui/glade-custom.c:230
 msgid "String 2"
@@ -2016,7 +2010,7 @@ msgstr "Տող 2"
 
 #: ../gladeui/glade-custom.c:231
 msgid "The second string argument to pass to the function"
-msgstr "Ֆունկցիային փոխանցվող երկրորդ տողային արգումենտ"
+msgstr ""
 
 #: ../gladeui/glade-custom.c:237
 msgid "Integer 1"
@@ -2024,7 +2018,7 @@ msgstr "Ամբողջ թիվ 1"
 
 #: ../gladeui/glade-custom.c:238
 msgid "The first integer argument to pass to the function"
-msgstr "Ֆունկցիային փոխանցվող առաջին ամբողջ արգումենտ"
+msgstr ""
 
 #: ../gladeui/glade-custom.c:244
 msgid "Integer 2"
@@ -2032,7 +2026,7 @@ msgstr "Ամբողջ թիվ 2"
 
 #: ../gladeui/glade-custom.c:245
 msgid "The second integer argument to pass to the function"
-msgstr "Ֆունկցիային փոխանցվող երկրորդ ամբողջ արգումենտ"
+msgstr ""
 
 #: ../gladeui/glade-widget-action.c:161
 msgid "class"
@@ -2044,7 +2038,7 @@ msgstr "Ցուցիչ GladeWidgetActionClass դասի ստրուկտուրայի 
 
 #: ../gladeui/glade-widget-action.c:169
 msgid "Whether or not this action is sensitive"
-msgstr "Գործողությունը զգայուն է արդյոք, թե՞ ոչ"
+msgstr "Գործողությունը զգայու՞ն է"
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:479
 msgid "All Contexts"
@@ -2102,6 +2096,81 @@ msgstr "Տեղեր"
 #: ../gladeui/icon-naming-spec.c:44
 msgid "Status"
 msgstr "Կարգավիճակ"
+
+#: ../plugins/gtk+/glade-attributes.c:216
+msgctxt "textattr"
+msgid "Style"
+msgstr "Ոճ"
+
+#: ../plugins/gtk+/glade-attributes.c:220
+msgctxt "textattr"
+msgid "Weight"
+msgstr "Քաշ"
+
+#: ../plugins/gtk+/glade-attributes.c:224
+msgctxt "textattr"
+msgid "Variant"
+msgstr "Տարբերակ"
+
+#: ../plugins/gtk+/glade-attributes.c:228
+msgctxt "textattr"
+msgid "Stretch"
+msgstr "Ձգում"
+
+#: ../plugins/gtk+/glade-attributes.c:232
+msgctxt "textattr"
+msgid "Underline"
+msgstr "Ընդգծում"
+
+#: ../plugins/gtk+/glade-attributes.c:236
+msgctxt "textattr"
+msgid "Strikethrough"
+msgstr "Վրագծված"
+
+#: ../plugins/gtk+/glade-attributes.c:240
+msgctxt "textattr"
+msgid "Gravity"
+msgstr "Ձգողություն"
+
+#: ../plugins/gtk+/glade-attributes.c:244
+msgctxt "textattr"
+msgid "Gravity Hint"
+msgstr "Ձգողությն հուշում"
+
+#: ../plugins/gtk+/glade-attributes.c:255
+msgctxt "textattr"
+msgid "Size"
+msgstr "Չափը"
+
+#: ../plugins/gtk+/glade-attributes.c:259
+msgctxt "textattr"
+msgid "Absolute Size"
+msgstr "Բացարձալ Չափը"
+
+#: ../plugins/gtk+/glade-attributes.c:266
+msgctxt "textattr"
+msgid "Foreground Color"
+msgstr "Տեքստի Գույնը"
+
+#: ../plugins/gtk+/glade-attributes.c:270
+msgctxt "textattr"
+msgid "Background Color"
+msgstr "Ֆոնային Գույնը"
+
+#: ../plugins/gtk+/glade-attributes.c:274
+msgctxt "textattr"
+msgid "Underline Color"
+msgstr "Ընդգծման Գույնը"
+
+#: ../plugins/gtk+/glade-attributes.c:278
+msgctxt "textattr"
+msgid "Strikethrough Color"
+msgstr "Վրագծման Գույնը"
+
+#: ../plugins/gtk+/glade-attributes.c:288
+msgctxt "textattr"
+msgid "Scale"
+msgstr "Մասշտաբ"
 
 #. XXX Interesting... can we get the defaults ? what can we do to let the user
 #. * unset the value ??
@@ -2514,9 +2583,8 @@ msgstr "Ընտրեք արագացուցչի ստեղներ․․․"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:1
 msgid "A filname, full or relative path to load an icon for this toolbutton"
-msgstr ""
-"Ֆայլի անվանում, լրիվ կամ հարաբերական ճանապարհ այս գործիքների վահանակի կոճակի "
-"պատկերակ բեռնելու համար"
+msgstr "Ֆայլի անուն, լրիվ կամ հարաբերական ճանապարհը գործիքների վահանակի կոճակի"
+" պատկերակ բեռնելու համար"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:2
 msgid "A list of accelerator keys"
@@ -2648,7 +2716,7 @@ msgstr "Միշտ Ըստ Կենտրոնի"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:41
 msgid "An accel group for accelerators from stock items"
-msgstr "Արագացուցիչների համար արագացուցիչների խումբ պահեստային տարրերից"
+msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:42
 msgid "Arrow"
@@ -2656,7 +2724,7 @@ msgstr "Սլաք"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:43
 msgid "Ascending"
-msgstr "Աճող"
+msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:44
 msgid "Aspect Frame"
@@ -2717,7 +2785,7 @@ msgstr "Խումբ"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:59
 msgid "Browse"
-msgstr "Զննել"
+msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:61
 msgid "Button 1 Motion"
@@ -2814,7 +2882,7 @@ msgstr "Գույնի Ընտրության երկխոսություն"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:86
 msgid "Columned List"
-msgstr "Սյուներով ցուցակ"
+msgstr "Սյունային Ցուցակ"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:87
 msgid "Columns"
@@ -2879,11 +2947,11 @@ msgstr "Ստեղծել Պանակ"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:106
 msgid "Curve"
-msgstr "Կոր"
+msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:108
 msgid "Custom widget"
-msgstr "Լրացուցիչ վիջեթ"
+msgstr "Օգտագործողի վիջեթ"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:109
 msgid "Data"
@@ -2903,7 +2971,7 @@ msgstr "Հետաձգված"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:113
 msgid "Descending"
-msgstr "Նվազող"
+msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:114
 msgid "Described By"
@@ -3061,7 +3129,7 @@ msgstr "Պահում"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:152
 msgid "Extended"
-msgstr "Ընդլայնված"
+msgstr "Ընդարձակված"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:153
 msgid "Extra Condensed"
@@ -3173,11 +3241,11 @@ msgstr "Շրջանակ"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:180
 msgid "Free"
-msgstr "Ազատ"
+msgstr "Անվճար"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:181
 msgid "Gamma Curve"
-msgstr "Գամմա Կոր"
+msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:182
 msgid "Grow Only"
@@ -3189,7 +3257,7 @@ msgstr "Gtk"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:184
 msgid "Gtk+ Obsolete"
-msgstr "Gtk+ Հնացած"
+msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:185
 msgid "Half"
@@ -3297,8 +3365,6 @@ msgid ""
 "If set, an underline in the text indicates the next character should be used "
 "for the mnemonic accelerator key"
 msgstr ""
-"Եթե սահմանված է, տողում ընդգծումը նշանակում է, որ հաջորդ նիշը պետք է "
-"օգտագործվի մնեմոնիկ արագացուցչի ստեղնի համար"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:216
 msgid "Image Menu Item"
@@ -3417,7 +3483,7 @@ msgstr "Ինֆորմացիա"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:237
 msgid "Input Dialog"
-msgstr "Մուտքային երկխոսություն"
+msgstr "Ներմուծման երկխոսություն պատուհան"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:238
 msgid "Insert After"
@@ -3533,7 +3599,7 @@ msgstr "Ցուցակ"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:266
 msgid "List Item"
-msgstr "Ցուցակի Տարր"
+msgstr "Ցուցակի Կետ"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:267
 msgid "List Store"
@@ -3679,7 +3745,7 @@ msgstr "Բացել"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:307
 msgid "Option Menu"
-msgstr "Ընտրանքների Մենյու"
+msgstr "Ընտրության Մենյու"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:308
 msgid "Orientation column"
@@ -4080,7 +4146,7 @@ msgstr "Էկրան"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:412
 msgid "Spline"
-msgstr "Սպլայն"
+msgstr "Սահմանագիծ"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:413
 msgid "Spread"
@@ -4248,10 +4314,10 @@ msgstr "Դիալոգում այս կոճակի պատասխանի իդենտիֆ
 
 #: ../plugins/gtk+/gtk+.xml.in.h:457
 msgid ""
-"The stock icon displayed on the item (chose an item from gtk+ stock or from "
+"The stock icon displayed on the item (chose an item from GTK+ stock or from "
 "an icon factory)"
 msgstr ""
-"Տարրի վրա ցուցադրվող պահեստային պատկերակը (ընտրեք տարր gtk+-ի պահեստից կամ "
+"Տարրի վրա ցուցադրվող պահեստային պատկերակը (ընտրեք տարր GTK+ - ի պահեստից կամ "
 "պատկերակների ֆաբրիկայից)"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:458
@@ -4264,11 +4330,11 @@ msgstr "Պատկերային տարր այս մենյուի տարրի համա�
 
 #: ../plugins/gtk+/gtk+.xml.in.h:460
 msgid "The text of the menu item"
-msgstr "Մենյուի տարրի տեքստ"
+msgstr "Մենյուի տարրի տեքստը"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:461
 msgid "The text to display"
-msgstr "Ցուցադրման ենթական տեքստ"
+msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:462
 msgid "Third Mouse Button"
@@ -4356,7 +4422,7 @@ msgstr "Ծառ"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:484
 msgid "UI Manager"
-msgstr "UI Կառավարիչ"
+msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:485
 msgid "Ultra Condensed"
@@ -4559,19 +4625,18 @@ msgstr "Հաջորդական խմբագրում․"
 
 #: ../plugins/gtk+/glade-cell-renderer-button.c:90
 msgid "Entry Editable"
-msgstr "Մուտքատեղը Խմբագրվող է"
+msgstr ""
 
 #: ../plugins/gtk+/glade-cell-renderer-button.c:91
 msgid "Whether the entry is editable"
-msgstr "Այս մուտքատեղի պարունակությունը արդյո՞ք խմբագրվող է"
+msgstr "Այս տարրը արդյո՞ք ենթակա է խմբագրմանը"
 
 #: ../plugins/gtk+/glade-icon-sources.c:694
-#, c-format
 msgid ""
 "Enter a filname or a relative or full path for this source of '%s' (Glade "
 "will only ever load them in the runtime from your project directory)."
 msgstr ""
-"Ներմուծեք ֆայլի անվանումը, հարբերական կամ լրիվ ուղին '%s' - ի սկզբնակետի "
+"Ներմուծեք ֆայլի անունը կամ հարբերական կամ լրիվ ուղին '%s' - ի սկզբնակետի "
 "համար (Glade-ը դրանք բեռնում է միայն կատարման ժամանակ ձեր նախագծի պանակից)"
 
 #: ../plugins/gtk+/glade-icon-sources.c:701
@@ -4720,7 +4785,7 @@ msgid ""
 "you to retrieve them when setting cell renderer attributes (press the Delete "
 "key to remove the selected column)"
 msgstr ""
-"Սահմանեք սյուներ ձեր աղյուսակի համար; դրանց իմաստալից անուններ տալը կօգնի "
+"Սահմանեք սյուներ ձեր ցուցակի համար; դրանց իմաստալից անուններ տալը կօգնի "
 "վերստանալ դրանք բջջի ատրիբուտների սահմանման ժամանակ (սեղմեք Delete ստեղնը "
 "նշված սյունը հեռացնելու համար)"
 
@@ -4730,8 +4795,8 @@ msgid ""
 "Add remove and edit rows of data (you can optionally use CNTL-N to add new "
 "rows and the Delete key to remove the selected row)"
 msgstr ""
-"Ավելացրեք, հեռացրեք և խմբագրեք տվյաների տողերը (դուք կարող եք օգտագործել Ctrl"
-"+N ավելացնելու համար նոր տողեր և Delete ստեղնը նշված տողը հեռացնելու համար)"
+"Ավելացնեք, հեռացրեք և խմբագրեք տվյաների տողերը (դուք կարող եք օգտագործել Ctrl"
+"-N ավելացնելու համար նոր տողեր և Delete ստեղնը նշված տողը հեռացնելու համար)"
 
 #: ../plugins/gtk+/glade-label-editor.c:254
 #, c-format
@@ -4739,9 +4804,8 @@ msgid "Setting %s to use an attribute list"
 msgstr "Սահմանեք %s ատրիբուտների ցուցակի օգտագործման համար"
 
 #: ../plugins/gtk+/glade-label-editor.c:286
-#, c-format
 msgid "Setting %s to use a pango markup string"
-msgstr "%s պարամետրը pango տողերի նշում օգտագործելու համար է"
+msgstr "Սահմանեք %s pango նշման տողերի օգտագործման համար"
 
 #: ../plugins/gtk+/glade-label-editor.c:321
 #, c-format
@@ -4749,14 +4813,12 @@ msgid "Setting %s to use a pattern string"
 msgstr "Սահմանեք %s նմուշ տողերի օգտագործման համար"
 
 #: ../plugins/gtk+/glade-label-editor.c:357
-#, c-format
 msgid "Setting %s to set desired width in charachters"
-msgstr "%s պարամետրը նախընտրելի լայնությունը նիշերով սահմանելու համար է"
+msgstr "%s պարամետրը նախընտրելի լայնությունը սիմվոլներով սահմանելու համար է"
 
 #: ../plugins/gtk+/glade-label-editor.c:388
-#, c-format
 msgid "Setting %s to set maximum width in charachters"
-msgstr "%s պարամետրը առավելագույն լայնությունը նիշերով սահմանելու համար է"
+msgstr "%s պարամետրը առավելագույն լայնությունը սիմվոլներով սահմանելու համար է"
 
 #: ../plugins/gtk+/glade-label-editor.c:422
 #, c-format
@@ -4769,9 +4831,8 @@ msgid "Setting %s to use a single line"
 msgstr "%s պարամետրը մեկ տողի օգտագործման համար է"
 
 #: ../plugins/gtk+/glade-label-editor.c:492
-#, c-format
 msgid "Setting %s to use specific pango word wrapping"
-msgstr "%s պարամետրը յուրահատուկ pango բառի տողադարձի օգտագործման համար է"
+msgstr "Սահմանեք %s յուրահատուկ pango բառի տողադարձի օգտագործման համար"
 
 #. Label appearance...
 #: ../plugins/gtk+/glade-label-editor.c:538
@@ -4883,28 +4944,28 @@ msgstr "Չօգտագործել %s գործողության արտաքին տես
 
 #: ../plugins/gnome/glade-gnome.c:292
 msgid "Status Message."
-msgstr "Վիճակի Հաղորդագրություն"
+msgstr "Կարգավիճակի Հաղորդակցություն"
 
 #: ../plugins/gnome/glade-gnome.c:659
 msgid "The position in the druid"
-msgstr "Օգնական ծրագրում դիրքը"
+msgstr "Դիռքը դրուիդի մեջ"
 
 #: ../plugins/gnome/glade-gnome.c:1011
 msgid "Message box type"
-msgstr "Հաղորդագրության Երկխոսության տիպը"
+msgstr "Հաղորդագրության տեսակը"
 
 #: ../plugins/gnome/glade-gnome.c:1012
 msgid "The type of the message box"
-msgstr "Հաղորդագրության երկխոսության տիպը"
+msgstr "Հաղորդակցուցյան պատուհանի տեսակը"
 
 #: ../plugins/gnome/glade-gnome.c:1220
 msgid "This property is valid only in font information mode"
-msgstr "Այս հատկությունը վավեր է միայն տառատեսակի ինֆորմացիայի ռեժիմում"
+msgstr "Այս հատկությունը վավերական է միայն ֆսնտի ինֆորմացիոն ռեժիմում"
 
 #. This is deprecated
 #: ../plugins/gnome/glade-gnome.c:1308 ../plugins/gnome/canvas.xml.in.h:18
 msgid "Selection Mode"
-msgstr "Ընտության Ռեժիմ"
+msgstr "Ընտրության Ռեժիմ"
 
 #: ../plugins/gnome/glade-gnome.c:1309
 msgid "Choose the Selection Mode"
@@ -4912,228 +4973,228 @@ msgstr "Ընտրել Ընտրության Ռեժիմը"
 
 #: ../plugins/gnome/glade-gnome.c:1449
 msgid "Placement"
-msgstr "Տեղադրություն"
+msgstr "Փոխարինում"
 
 #: ../plugins/gnome/glade-gnome.c:1450
 msgid "Choose the BonoboDockPlacement type"
-msgstr "Ընտրել BonoboDockPlacement տիպ"
+msgstr ""
 
 #: ../plugins/gnome/glade-gnome.c:1478
 msgid "Behavior"
-msgstr "Վարքագիծ"
+msgstr ""
 
 #: ../plugins/gnome/glade-gnome.c:1479
 msgid "Choose the BonoboDockItemBehavior type"
-msgstr "Ընտրել BonoboDockItemBehavior տիպ"
+msgstr ""
 
 #: ../plugins/gnome/glade-gnome.c:1488
 msgid "Pack Type"
-msgstr "Փաթեթավորման Տիպ"
+msgstr "Փաթեթի Տեսակ"
 
 #: ../plugins/gnome/glade-gnome.c:1489
 msgid "Choose the Pack Type"
-msgstr "Ընտրել Pack տիպ"
+msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:1
 msgid "24-Hour Format"
-msgstr "24-Ժամյա Ֆորմատ"
+msgstr "24-Ժամյան Ֆորմատ"
 
 #: ../plugins/gnome/gnome.xml.in.h:3
 msgid "Background Color"
-msgstr "Ֆոնային Գույն"
+msgstr "Ֆոնային Գույնը"
 
 #: ../plugins/gnome/gnome.xml.in.h:4
 msgid "Contents Background Color"
-msgstr "Պարունակության Ֆոնային Գույն"
+msgstr "Բովանդակության Ֆոնային Գույնը"
 
 #: ../plugins/gnome/gnome.xml.in.h:5
 msgid "Dither"
-msgstr "Լղոզել"
+msgstr "Dither"
 
 #: ../plugins/gnome/gnome.xml.in.h:11
 msgid "Font Information"
-msgstr "Տառատեսակի Ինֆորմացիա"
+msgstr "Ինֆորմացիա Ֆոնտի մասին"
 
 #: ../plugins/gnome/gnome.xml.in.h:12
 msgid "GNOME About"
-msgstr "Ծրագրի մասին"
+msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:13
 msgid "GNOME App"
-msgstr "Աշխատածրագիր"
+msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:14
 msgid "GNOME App Bar"
-msgstr "Աշխատածրագրերի վահանակ"
+msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:15
 msgid "GNOME Color Picker"
-msgstr "GNOME-ի Գույնի ընտրություն"
+msgstr "GNOME-ի Գույնի Հավաքող"
 
 #: ../plugins/gnome/gnome.xml.in.h:16
 msgid "GNOME Date Edit"
-msgstr "Տվյալների Ծմբագրիչ"
+msgstr ""
 
 #. Deprecated Widget Classes :)
 #: ../plugins/gnome/gnome.xml.in.h:18
 msgid "GNOME Dialog"
-msgstr "GNOME Երկխոսություն"
+msgstr "GNOME-ի երկխոսության պատուհան"
 
 #: ../plugins/gnome/gnome.xml.in.h:19
 msgid "GNOME Druid"
-msgstr "Օգնական"
+msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:20
 msgid "GNOME Druid Page Edge"
-msgstr "Օգնականի Եզրային Էջ"
+msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:21
 msgid "GNOME Druid Page Standard"
-msgstr "Օգնականի Ստանդարտ Էջ"
+msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:22
 msgid "GNOME File Entry"
-msgstr "Ֆայլի Անվան Մուտք"
+msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:23
 msgid "GNOME Font Picker"
-msgstr "Տառատեսակի Ընտրություն"
+msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:24
 msgid "GNOME HRef"
-msgstr "Հիպերհղում"
+msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:25
 msgid "GNOME Icon Entry"
-msgstr "Պատկերակի Մուտքագրում"
+msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:26
 msgid "GNOME Icon Selection"
-msgstr "GNOME Պատկերակի Ընտրություն"
+msgstr "GNOME Պատկերի Ընտրություն"
 
 #: ../plugins/gnome/gnome.xml.in.h:27
 msgid "GNOME Message Box"
-msgstr "հաղորդագրությունների Երկխոսություն"
+msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:28
 msgid "GNOME Pixmap"
-msgstr "Պատկեր"
+msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:29
 msgid "GNOME Pixmap Entry"
-msgstr "Պատկերի Մուտքագրում"
+msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:30
 msgid "GNOME Property Box"
-msgstr "GNOME Հատկություն"
+msgstr "GNOME Հատկություն Պատուհան"
 
 #: ../plugins/gnome/gnome.xml.in.h:31
 msgid "GNOME UI Obsolete"
-msgstr "Հնացած GNOME UI"
+msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:32
 msgid "GNOME User Interface"
-msgstr "GNOME Օգտագործողի Ինտերֆեյս"
+msgstr "GNOME Օգտագործողի Ինտերֆեյսը"
 
 #: ../plugins/gnome/gnome.xml.in.h:33
 msgid "Generic"
-msgstr "Հիմնական"
+msgstr "Ընդհանուր"
 
 #: ../plugins/gnome/gnome.xml.in.h:34
 msgid "Information"
-msgstr "Ինֆորմացիա"
+msgstr "Ինֆորմացիոն"
 
 #: ../plugins/gnome/gnome.xml.in.h:35
 msgid "Logo"
-msgstr "Պատկերանիշ"
+msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:36
 msgid "Logo Background Color"
-msgstr "Պատկերակի Ֆոնային Գույն"
+msgstr "Logo-ի Ֆոնային Գույնը"
 
 #: ../plugins/gnome/gnome.xml.in.h:37
 msgid "Max Saved"
-msgstr "Պահպանման համար Առավելագույն Արժեք"
+msgstr "Առավելագույն արժեքը պահպանման համար"
 
 #: ../plugins/gnome/gnome.xml.in.h:38
 msgid "Message"
-msgstr "Հաղորդագրություն"
+msgstr "Հաղորդագրության"
 
 #: ../plugins/gnome/gnome.xml.in.h:39
 msgid "Monday First"
-msgstr "Սկզբում Երկուշաբթի"
+msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:42
 msgid "Padding"
-msgstr "Հեռավորություն"
+msgstr "Ինտերվալներ"
 
 #: ../plugins/gnome/gnome.xml.in.h:43
 msgid "Pixmap"
-msgstr "Պատկեր"
+msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:45
 msgid "Program Name"
-msgstr "Ծրագրի անուն"
+msgstr "Ծրագրի Անվանումը"
 
 #: ../plugins/gnome/gnome.xml.in.h:46
 msgid "Program Version"
-msgstr "Ծրագրի Տարբերակ"
+msgstr "Ծրագրի Տարբերակը"
 
 #: ../plugins/gnome/gnome.xml.in.h:48
 msgid "Scaled Height"
-msgstr "Մասշտաբավորման Բարձրություն"
+msgstr "Մասշտաբային Բարփրությունը"
 
 #: ../plugins/gnome/gnome.xml.in.h:49
 msgid "Scaled Width"
-msgstr "Մասշտաբավորման Լայնություն"
+msgstr "Մասշտաբային Լայմությունը"
 
 #: ../plugins/gnome/gnome.xml.in.h:50
 msgid "Show Time"
-msgstr "Ցուցադրել Ժամանակը"
+msgstr "Ցույց տալ Ժամանակը"
 
 #: ../plugins/gnome/gnome.xml.in.h:52
 msgid "StatusBar"
-msgstr "Վիճակի տող"
+msgstr "Կարգավիճակի Տող"
 
 #: ../plugins/gnome/gnome.xml.in.h:53
 msgid "Store Config"
-msgstr "Պահպանել կոնֆիգուրացիան"
+msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:55
 msgid "Text Foreground Color"
-msgstr "Տեքստի Գույն"
+msgstr "Տեքստի Գույնը"
 
 #: ../plugins/gnome/gnome.xml.in.h:56
 msgid "The height to scale the pixmap to"
-msgstr "Մասշտաբավորման բարձրությունը"
+msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:57
 msgid "The maximum number of history entries saved"
-msgstr "Պատմության մեջ առավելագույն տարրերի քանակը"
+msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:58
 msgid "The pixmap file"
-msgstr "Պատկերային ֆայլ"
+msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:59
 msgid "The width to scale the pixmap to"
-msgstr "Մասշտաբավորման լայնությունը"
+msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:61
 msgid "Title Foreground Color"
-msgstr "Վերնագրի Գույն"
+msgstr "Վերնագրի Տառերի Գույնը"
 
 #: ../plugins/gnome/gnome.xml.in.h:62
 msgid "Top Watermark"
-msgstr "Վերին Ջրանիշ"
+msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:63
 msgid "Unknown"
-msgstr "Անհայտ"
+msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:64
 msgid "Use Alpha"
-msgstr "Օգտագործել Ալֆա"
+msgstr ""
 
 #: ../plugins/gnome/gnome.xml.in.h:65
 msgid ""
@@ -5141,8 +5202,6 @@ msgid ""
 "within the overall GnomeDruid. This enables the correct \"surrounding\" "
 "content for the page to be drawn"
 msgstr ""
-"Օգտագործվում է GnomeDruid-ում GnomeDruidPage-ի դիրքի մասին ինֆորմացիա "
-"փոխանցելու համար։ Այսպիսով ստեղծվում է ճիշտ \"միջավայր\" էջի համար"
 
 #: ../plugins/gnome/gnome.xml.in.h:66
 msgid "User"
@@ -5154,15 +5213,15 @@ msgstr "Օգտագործողի Վիջեթ"
 
 #: ../plugins/gnome/gnome.xml.in.h:69
 msgid "Watermark"
-msgstr "Ջրանիշ"
+msgstr ""
 
 #: ../plugins/gnome/bonobo.xml.in.h:2
 msgid "Exclusive"
-msgstr "Բացառիկ"
+msgstr ""
 
 #: ../plugins/gnome/bonobo.xml.in.h:3
 msgid "Floating"
-msgstr "Սահող ստորակետով"
+msgstr "Սահող"
 
 #: ../plugins/gnome/bonobo.xml.in.h:5
 msgid "Locked"
@@ -5170,7 +5229,7 @@ msgstr "Արգելափակված"
 
 #: ../plugins/gnome/bonobo.xml.in.h:6
 msgid "Never Floating"
-msgstr "Երբեք Չսահող"
+msgstr ""
 
 #: ../plugins/gnome/bonobo.xml.in.h:7
 msgid "Never Horizontal"
@@ -5183,68 +5242,66 @@ msgstr "Երբեք Ուղղահայաց"
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:2
 msgid "Column Spacing"
-msgstr "Սյուների Հեռավորություն"
+msgstr "Սյան Հեռավորությունը"
 
 #: ../plugins/gnome/canvas.xml.in.h:3
 msgid "GNOME Canvas"
-msgstr "GNOME Կտավ"
+msgstr ""
 
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:5
 msgid "GNOME Icon List"
-msgstr "GNOME Պատկերակների Ցուցակ"
+msgstr ""
 
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:7
 msgid "Icon Width"
-msgstr "Պատկերակի Լայնություն"
+msgstr "Պատկերակի Լայնությունը"
 
 #: ../plugins/gnome/canvas.xml.in.h:8
 msgid "If the icon text can be edited by the user"
-msgstr "Եթե պատկերակի տեքստը կարող է խմբագրվել օգտագործողի կողմից"
+msgstr ""
 
 #: ../plugins/gnome/canvas.xml.in.h:9
 msgid ""
 "If the icon text is static, in which case it will not be copied by the "
 "GnomeIconList"
 msgstr ""
-"Եթե պատկերակի տեքստը ստատիկ է, որի դեպքում այն չի պատճենվի GnomeIconList-ի "
-"կողմից"
 
 #: ../plugins/gnome/canvas.xml.in.h:10
 msgid "Max X"
-msgstr "Առավելագույն X"
+msgstr ""
 
 #: ../plugins/gnome/canvas.xml.in.h:11
 msgid "Max Y"
-msgstr "Առավելագույն Y"
+msgstr ""
 
 #: ../plugins/gnome/canvas.xml.in.h:12
 msgid "Min X"
-msgstr "Նվազագույն X"
+msgstr ""
 
 #: ../plugins/gnome/canvas.xml.in.h:13
 msgid "Min Y"
-msgstr "Նվազագույն Y"
+msgstr ""
 
 #: ../plugins/gnome/canvas.xml.in.h:14
 msgid "Pixels per unit"
-msgstr "Միավորում պիքսելների քանակը"
+msgstr ""
 
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:16
 msgid "Row Spacing"
-msgstr "Միջտողային տարածություն"
+msgstr ""
 
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:20
 msgid "Text Editable"
-msgstr "Խմբագրվող Տեքստ"
+msgstr " Խմբագրվող Տեքստ"
 
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:22
 msgid "Text Spacing"
-msgstr "Տեքստի մեջ Տարծությունը"
+msgstr "Տեքստի Հեռավորությունը"
 
 #. This is deprecated
 #: ../plugins/gnome/canvas.xml.in.h:24
@@ -5269,24 +5326,24 @@ msgstr "Նվազագույն y կոորդինատը"
 
 #: ../plugins/gnome/canvas.xml.in.h:29
 msgid "The number of pixels between columns of icons"
-msgstr "Պատկերակի սյուների միջև պիքսելների քանակը"
+msgstr "Պիքսելների քանակը պատկերների սյուների միջև"
 
 #: ../plugins/gnome/canvas.xml.in.h:30
 msgid "The number of pixels between rows of icons"
-msgstr "Պատկերակի տողերի միջև պիքսելների քանակը"
+msgstr "Պիքսելների քանակը պատկերների տողերի միջև"
 
 #: ../plugins/gnome/canvas.xml.in.h:31
 msgid "The number of pixels between the text and the icon"
-msgstr "Պատկերակի և տեքստի միջև պիքսելների քանակը"
+msgstr "Պիքսելների քանակը տեքստի և պատկերների միջև"
 
 #: ../plugins/gnome/canvas.xml.in.h:32
 msgid "The number of pixels corresponding to one unit"
-msgstr "Մեկ միավորին համապատասխանող պիքսելների քանակը"
+msgstr "Պիքսելների քանակը համապատասխան մեկ միավորին"
 
 #: ../plugins/gnome/canvas.xml.in.h:33
 msgid "The selection mode"
-msgstr "Ընտրության Ռեժիմ"
+msgstr "Ընտրության ռեժիմը"
 
 #: ../plugins/gnome/canvas.xml.in.h:34
 msgid "The width of each icon"
-msgstr "Յուրաքանչյուր պատկերակի լայնություն"
+msgstr ""
