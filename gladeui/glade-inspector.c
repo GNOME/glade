@@ -47,7 +47,11 @@
 
 #include <string.h>
 #include <glib/gi18n-lib.h>
+#if GTK_CHECK_VERSION (2, 21, 8)
+#include <gdk/gdkkeysyms-compat.h>
+#else
 #include <gdk/gdkkeysyms.h>
+#endif
 
 #define GLADE_INSPECTOR_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object),\
 					    GLADE_TYPE_INSPECTOR,                 \
