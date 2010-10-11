@@ -500,14 +500,9 @@ static void
 glade_inspector_dispose (GObject *object)
 {
 	GladeInspector *inspector = GLADE_INSPECTOR(object);
-	GladeInspectorPrivate *priv = inspector->priv;
 	
-	if (priv->project)
-	{
-		g_object_unref (priv->project);
-		priv->project = NULL;
-	}
-	
+	glade_inspector_set_project (inspector, NULL);
+
 	G_OBJECT_CLASS (glade_inspector_parent_class)->dispose (object);
 }
 
@@ -790,23 +785,28 @@ glade_inspector_set_project (GladeInspector *inspector,
 
 	if (inspector->priv->project)
 	{
-		disconnect_project_signals (inspector, project);
-		g_object_unref (priv->project);
+		disconnect_project_signals (inspector, inspector->priv->project);
+
+		/* Release our filter which releases the project */
+		gtk_tree_view_set_model (GTK_TREE_VIEW (priv->view), NULL);
+		priv->filter = NULL;
 		priv->project = NULL;
 	}
 	
 	if (project)
 	{		
 		priv->project = project;
-		g_object_ref (priv->project);
 
-		priv->filter = gtk_tree_model_filter_new (GTK_TREE_MODEL (priv->project), NULL);	
+		/* The filter holds our reference to 'project' */
+		priv->filter = gtk_tree_model_filter_new (GTK_TREE_MODEL (priv->project), NULL);
 
 		gtk_tree_model_filter_set_visible_func (GTK_TREE_MODEL_FILTER (priv->filter),
 						(GtkTreeModelFilterVisibleFunc)glade_inspector_visible_func,
 						inspector, NULL);
 
 		gtk_tree_view_set_model (GTK_TREE_VIEW (priv->view), priv->filter);
+		g_object_unref (priv->filter); /* pass ownership of the filter to the model */
+
 		connect_project_signals (inspector, project);
 	}
 
