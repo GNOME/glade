@@ -758,6 +758,22 @@ glade_xml_context_get_doc (GladeXmlContext *context)
 	return context->doc;
 }
 
+gchar *
+glade_xml_dump_from_context (GladeXmlContext *context)
+{
+	GladeXmlDoc *doc;
+	xmlChar *string = NULL;
+	gchar *text;
+	int size;
+
+	doc = glade_xml_context_get_doc (context);
+	xmlDocDumpFormatMemory(&(doc->doc), &string, &size, 1);
+
+	text = claim_string (string);
+
+	return text;
+}
+
 gboolean
 glade_xml_node_is_comment (GladeXmlNode *node_in) 
 {

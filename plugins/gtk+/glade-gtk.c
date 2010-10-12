@@ -1029,13 +1029,21 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor *adaptor,
 	GladeWidget *gwidget = glade_widget_get_from_gobject (object), *gparent;
 	GList       this_widget = { 0, }, that_widget = { 0, };
 	GtkWidget   *parent = gtk_widget_get_parent (GTK_WIDGET (object));
+	GladeProject *project;
 
 	if (parent)
 		gparent = glade_widget_get_from_gobject (parent);
 	else
 		gparent = NULL;
 
-	if (strcmp (action_path, "edit_separate") == 0)
+	if (strcmp (action_path, "preview") == 0)
+	{
+		project = glade_widget_get_project (gwidget);
+		glade_project_preview (project,
+				       glade_widget_get_from_gobject((gpointer)object)
+				      );
+	}
+	else if (strcmp (action_path, "edit_separate") == 0)
 	{
 		GtkWidget *dialog = 
 			glade_editor_dialog_for_widget (gwidget);

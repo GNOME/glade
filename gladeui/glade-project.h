@@ -95,8 +95,10 @@ GladeProject  *glade_project_load                (const gchar  *path);
 gboolean       glade_project_save                (GladeProject *project, 
 						  const gchar   *path, 
 						  GError       **error);
-						 
-const gchar   *glade_project_get_path            (GladeProject *project);						 
+
+void           glade_project_preview             (GladeProject *project, GladeWidget *gwidget);
+
+const gchar   *glade_project_get_path            (GladeProject *project);
 
 gchar         *glade_project_get_name            (GladeProject *project);
 
@@ -185,6 +187,8 @@ guint          glade_project_get_instance_count   (GladeProject *project);
 void           glade_project_set_instance_count   (GladeProject *project, guint instance_count);
 
 gboolean       glade_project_get_modified         (GladeProject *project);
+
+gboolean       glade_project_get_previewable      (GladeProject *project);
 
 void           glade_project_set_format      	  (GladeProject *project, GladeProjectFormat format);
 

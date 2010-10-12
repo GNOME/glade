@@ -1,3 +1,26 @@
+2010-10-12  Marco Diego Aurélio Mesquita <marcodiegomesquita@gmail.com>
+
+	Implemented preview feature for Glade.
+
+	* gladeui/Makefile.am, gladeui/glade-previewer.c: Added program to preview
+	  glade files.
+
+	* gladeui/glade-project.[ch]: Implemented glade_project_preview() to spawn a
+	  child preview process, reap it when it dies and close all previews when
+	  project closes.
+
+	* src/glade-window.c: Added toolbar button to spawn the preview.
+
+	* gladeui/glade-xml-utils.[ch]: Added glade_xml_dump_from_context().
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Added actions to preview a widget.
+
+	* gladeui/glade-app.[ch]: Added glade_app_get_bin_dir() for resolving of previewer path.
+
+2010-10-11  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-inspector.c: Fixed project leakage at dispose time.
+
 2010-10-09  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* configure.ac: Default GTK+ version is 3.0, compiling --with-gtk=2.0 is

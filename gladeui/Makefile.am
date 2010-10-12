@@ -1,16 +1,51 @@
+## Previewer
+
+bin_PROGRAMS = glade-previewer
+
+glade_previewer_CPPFLAGS = \
+	-I$(top_srcdir)    \
+	-I$(top_builddir)  \
+	-DGLADE_GNOMEHELPDIR="\"$(HELP_DIR)\""
+	$(AM_CPPFLAGS)
+
+glade_previewer_CFLAGS =   \
+	$(GTK_CFLAGS)      \
+	$(IGE_MAC_CFLAGS)  \
+	$(WARN_CFLAGS)     \
+	$(AM_CFLAGS)
+
+glade_previewer_LDFLAGS = $(AM_LDFLAGS)
+
+glade_previewer_LDADD = $(top_builddir)/gladeui/libgladeui-2.la $(IGE_MAC_LIBS)
+
+glade_previewer_SOURCES = \
+	glade-previewer.c
+
+if NATIVE_WIN32
+glade_previewer_LDADD += glade-win32-res.o
+if !GLADE_UNSTABLE
+glade_previewer_LDFLAGS += -mwindows
+endif
+endif
+
+glade-win32-res.o: glade-previewer.rc
+	$(WINDRES) $< $@
+
+## Rest of the UI ;)
 
 common_defines = \
 	-DG_LOG_DOMAIN=\"GladeUI\"                      \
 	-DGLADE_CATALOGSDIR="\"$(pkgdatadir)/catalogs\""\
 	-DGLADE_MODULESDIR="\"$(pkglibdir)/modules\""	\
 	-DGLADE_PIXMAPSDIR="\"$(pkgdatadir)/pixmaps\""	\
-	-DGLADE_LOCALEDIR="\"$(datadir)/locale\""
+	-DGLADE_LOCALEDIR="\"$(datadir)/locale\""\
+  -DGLADE_BINDIR="\"$(bindir)\""
 
 lib_LTLIBRARIES = libgladeui-2.la
 
 BUILT_SOURCES = glade-marshallers.c glade-marshallers.h
 
-EXTRA_DIST = glade-marshallers.list gladeui.rc.in icon-naming-spec.c
+EXTRA_DIST = glade-marshallers.list gladeui.rc.in icon-naming-spec.c glade-previewer.rc.in
 
 # The glade-3 core library
 libgladeui_2_la_SOURCES = \
