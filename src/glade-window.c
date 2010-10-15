@@ -3125,29 +3125,6 @@ glade_window_config_load (GladeWindow *window)
 	load_paned_position (config, window->priv->right_pane, "right_pane", 220);
 }
 
-static gboolean
-glade_window_state_event (GtkWidget           *widget,
-			  GdkEventWindowState *event)
-{
-	GladeWindow *window = GLADE_WINDOW (widget);
-
-	/* Incase GtkWindow decides to do something */
-	if (GTK_WIDGET_CLASS (glade_window_parent_class)->window_state_event)
-		GTK_WIDGET_CLASS (glade_window_parent_class)->window_state_event (widget, event);
-
-	if (event->changed_mask &
-	    (GDK_WINDOW_STATE_MAXIMIZED | GDK_WINDOW_STATE_FULLSCREEN))
-	{
-		gboolean show;
-
-		show = !(event->new_window_state &
-			(GDK_WINDOW_STATE_MAXIMIZED | GDK_WINDOW_STATE_FULLSCREEN));
-
-		gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (window->priv->statusbar), show);
-	}
-
-	return FALSE;
-}
 
 static void
 show_dock_first_time (GladeWindow    *window,
@@ -3448,7 +3425,6 @@ glade_window_class_init (GladeWindowClass *klass)
 	object_class->finalize = glade_window_finalize;
 
 	widget_class->configure_event    = glade_window_configure_event;
-	widget_class->window_state_event = glade_window_state_event;
 
 	g_type_class_add_private (klass, sizeof (GladeWindowPrivate));
 }
