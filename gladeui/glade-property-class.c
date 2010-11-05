@@ -731,9 +731,7 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
 	{
 		if (property_class->pspec->value_type == GDK_TYPE_COLOR)
 		{
-			if (gdk_color_parse(string, &color) &&
-			    gdk_colormap_alloc_color(gtk_widget_get_default_colormap(),
-						     &color, FALSE, TRUE))
+			if (gdk_color_parse(string, &color))
 				g_value_set_boxed(value, &color);
 			else
 				g_warning ("could not parse colour name `%s'", string);

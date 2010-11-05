@@ -447,7 +447,7 @@ glade_app_init (GladeApp *app)
 	
 	/* Create Editor */
 	app->priv->editor = GLADE_EDITOR (glade_editor_new ());
-	g_object_ref_sink (GTK_OBJECT (app->priv->editor));
+	g_object_ref_sink (G_OBJECT (app->priv->editor));
 	
 	glade_editor_refresh (app->priv->editor);
 	

@@ -632,17 +632,15 @@ child_realize (GtkWidget *widget, GtkWidget *parent)
 
 	window = gtk_widget_get_window (widget);
 
-	gdk_drawable_get_size (GDK_DRAWABLE (window),
-	                       &attributes.width,
-	                       &attributes.height);
+	attributes.width = gdk_window_get_width (window);
+	attributes.height = gdk_window_get_width (window);
 
 	attributes.window_type = GDK_WINDOW_OFFSCREEN;
 	attributes.wclass = GDK_INPUT_OUTPUT;
 	attributes.event_mask = gdk_window_get_events (window);
 	attributes.visual = gtk_widget_get_visual (widget);
-	attributes.colormap = gtk_widget_get_colormap (widget);
 	
-	new_window = gdk_window_new (NULL, &attributes, GDK_WA_VISUAL | GDK_WA_COLORMAP);
+	new_window = gdk_window_new (NULL, &attributes, GDK_WA_VISUAL);
 	gtk_widget_set_window (widget, new_window);
 
 	gdk_window_set_user_data (new_window, parent);
@@ -754,11 +752,11 @@ draw_frame (GtkWidget *widget,
 }
 
 static gboolean
-glade_design_layout_expose_event (GtkWidget *widget, GdkEventExpose *ev)
+glade_design_layout_draw (GtkWidget *widget, cairo_t *cr)
 {
 	GladeDesignLayout *layout = GLADE_DESIGN_LAYOUT (widget);
 
-	if (ev->window == gtk_widget_get_window (widget))
+	if (gtk_cairo_should_draw_window (cr, gtk_widget_get_window (widget)))
 	{
 		GtkStyle *style;
 		GtkAllocation allocation;
@@ -766,7 +764,6 @@ glade_design_layout_expose_event (GtkWidget *widget, GdkEventExpose *ev)
 		GdkWindow *window;
 		gint x, y, w, h;
 		gint border_width;
-		cairo_t *cr;
 
 		border_width = gtk_container_get_border_width (GTK_CONTAINER (widget));
 
@@ -775,8 +772,6 @@ glade_design_layout_expose_event (GtkWidget *widget, GdkEventExpose *ev)
 		gtk_widget_get_allocation (widget, &allocation);
 
 		child = layout->child;
-
-		cr = gdk_cairo_create (window);
 
 		/* draw a white widget background */
 		glade_utils_cairo_draw_rectangle (cr,
@@ -789,16 +784,18 @@ glade_design_layout_expose_event (GtkWidget *widget, GdkEventExpose *ev)
 
 		if (child && gtk_widget_get_visible (child))
 		{
-			GdkPixmap *child_pixmap = gdk_offscreen_window_get_pixmap (gtk_widget_get_window (child));
+			GdkWindow* child_window = gtk_widget_get_window (child);
 
-			gdk_drawable_get_size (GDK_DRAWABLE (child_pixmap), &w, &h);
+			w = gdk_window_get_width (child_window);
+			h = gdk_window_get_height (child_window);
 
 			x = allocation.x + border_width;
 			y = allocation.y + border_width;
 
 			g_message ("aaaa %d %d %d %d ", x, y, w, h);
 
-			gdk_cairo_set_source_pixmap (cr, child_pixmap, 0, 0);
+			
+			gdk_cairo_set_source_window (cr, child_window, 0, 0);
 			cairo_rectangle (cr, x + OUTLINE_WIDTH/2, y + OUTLINE_WIDTH/2, w, h);
 			cairo_paint (cr);
 
@@ -809,12 +806,7 @@ glade_design_layout_expose_event (GtkWidget *widget, GdkEventExpose *ev)
 			draw_frame (widget, cr, x, y, w, h);
 		}
 
-		cairo_destroy (cr);
 		return TRUE;
-	}
-	else if (ev->window == gtk_widget_get_window (layout->child))
-	{
-		g_message ("ev->window == layout->child->window");
 	}
 
 	return FALSE;
@@ -935,7 +927,7 @@ glade_design_layout_class_init (GladeDesignLayoutClass *klass)
 	widget_class->leave_notify_event    = glade_design_layout_leave_notify_event;
 	widget_class->button_press_event    = glade_design_layout_button_press_event;
 	widget_class->button_release_event  = glade_design_layout_button_release_event;
-	widget_class->expose_event          = glade_design_layout_expose_event;
+	widget_class->draw                  = glade_design_layout_draw;
 	widget_class->size_request          = glade_design_layout_size_request;
 	widget_class->size_allocate         = glade_design_layout_size_allocate;
 

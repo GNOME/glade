@@ -72,7 +72,7 @@ void              glade_util_clear_selection  (void);
 
 GList            *glade_util_get_selection    (void);
 
-void              glade_util_draw_selection_nodes (GdkWindow *expose_win);
+void              glade_util_draw_selection_nodes (GtkWidget* expose_widget, cairo_t *cr);
 
 GList            *glade_util_container_get_all_children (GtkContainer *container);
 

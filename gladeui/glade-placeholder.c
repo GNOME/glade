@@ -59,8 +59,8 @@ static void      glade_placeholder_size_allocate  (GtkWidget         *widget,
 					      
 static void      glade_placeholder_send_configure (GladePlaceholder  *placeholder);
 
-static gboolean  glade_placeholder_expose         (GtkWidget         *widget,
-					           GdkEventExpose    *event);
+static gboolean  glade_placeholder_draw           (GtkWidget         *widget,
+					           cairo_t *cr);
 					      
 static gboolean  glade_placeholder_motion_notify_event (GtkWidget      *widget,
 						        GdkEventMotion *event);
@@ -98,23 +98,10 @@ glade_placeholder_class_init (GladePlaceholderClass *klass)
 	object_class->finalize = glade_placeholder_finalize;
 	widget_class->realize = glade_placeholder_realize;
 	widget_class->size_allocate = glade_placeholder_size_allocate;
-	widget_class->expose_event = glade_placeholder_expose;
+	widget_class->draw = glade_placeholder_draw;
 	widget_class->motion_notify_event = glade_placeholder_motion_notify_event;
 	widget_class->button_press_event = glade_placeholder_button_press;
 	widget_class->popup_menu = glade_placeholder_popup_menu;
-
-	/* Avoid warnings when adding placeholders to scrolled windows */
-	widget_class->set_scroll_adjustments_signal =
-		g_signal_new ("set-scroll-adjustments",
-			      G_TYPE_FROM_CLASS (klass),
-			      G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-			      0, /* G_STRUCT_OFFSET (GladePlaceholderClass, set_scroll_adjustments) */
-			      NULL, NULL,
-			      glade_marshal_VOID__OBJECT_OBJECT,
-			      G_TYPE_NONE, 2,
-			      GTK_TYPE_ADJUSTMENT,
-			      GTK_TYPE_ADJUSTMENT);
-
 }
 
 static void
@@ -139,7 +126,6 @@ glade_placeholder_notify_parent (GObject    *gobject,
 static void
 glade_placeholder_init (GladePlaceholder *placeholder)
 {
-	placeholder->placeholder_pixmap = NULL;
 	placeholder->packing_actions = NULL;
 
 	gtk_widget_set_can_focus (GTK_WIDGET (placeholder), TRUE);
@@ -174,11 +160,6 @@ glade_placeholder_finalize (GObject *object)
 	g_return_if_fail (GLADE_IS_PLACEHOLDER (object));
 	placeholder = GLADE_PLACEHOLDER (object);
 
-	/* placeholder->placeholder_pixmap can be NULL if the placeholder is 
-         * destroyed before it's realized */
-	if (placeholder->placeholder_pixmap)
-		g_object_unref (placeholder->placeholder_pixmap);
-
 	if (placeholder->packing_actions)
 	{
 		g_list_foreach (placeholder->packing_actions, (GFunc)g_object_unref, NULL);
@@ -211,7 +192,6 @@ glade_placeholder_realize (GtkWidget *widget)
 	attributes.height = allocation.height;
 	attributes.wclass = GDK_INPUT_OUTPUT;
 	attributes.visual = gtk_widget_get_visual (widget);
-	attributes.colormap = gtk_widget_get_colormap (widget);
 	attributes.event_mask = 
 		gtk_widget_get_events (widget) |
 		GDK_EXPOSURE_MASK              |
@@ -219,7 +199,7 @@ glade_placeholder_realize (GtkWidget *widget)
 		GDK_BUTTON_RELEASE_MASK        |
 		GDK_POINTER_MOTION_MASK;
 
-	attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
+	attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL;
 
 	window = gdk_window_new (gtk_widget_get_parent_window (widget), &attributes, attributes_mask);
 	gtk_widget_set_window (widget, window);
@@ -228,16 +208,6 @@ glade_placeholder_realize (GtkWidget *widget)
 	gtk_widget_style_attach (widget);
 
 	glade_placeholder_send_configure (GLADE_PLACEHOLDER (widget));
-
-	if (!placeholder->placeholder_pixmap)
-	{
-		GdkPixbuf *pixbuf = gdk_pixbuf_new_from_xpm_data (placeholder_xpm);
-
-		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &placeholder->placeholder_pixmap, NULL, 1);
-		g_assert(G_IS_OBJECT(placeholder->placeholder_pixmap));
-	}
-
-	gdk_window_set_back_pixmap (gtk_widget_get_window (GTK_WIDGET (placeholder)), placeholder->placeholder_pixmap, FALSE);
 }
 
 static void
@@ -288,13 +258,11 @@ glade_placeholder_get_project (GladePlaceholder *placeholder)
 }
 
 static gboolean
-glade_placeholder_expose (GtkWidget *widget, GdkEventExpose *event)
+glade_placeholder_draw (GtkWidget *widget, cairo_t *cr)
 {
 	GtkStyle *style;
 	GdkColor *light;
 	GdkColor *dark;
-	cairo_t  *cr;
-	gint      w, h;
 
 	g_return_val_if_fail (GLADE_IS_PLACEHOLDER (widget), FALSE);
 
@@ -302,19 +270,21 @@ glade_placeholder_expose (GtkWidget *widget, GdkEventExpose *event)
 	light = &style->light[GTK_STATE_NORMAL];
 	dark  = &style->dark[GTK_STATE_NORMAL];
 
-	gdk_drawable_get_size (event->window, &w, &h);
-
-	cr = gdk_cairo_create (event->window);
 	cairo_set_line_width (cr, 1.0);
+	cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);
 
-	glade_utils_cairo_draw_line (cr, light, 0, 0, w - 1, 0);
-	glade_utils_cairo_draw_line (cr, light, 0, 0, 0, h - 1);
-	glade_utils_cairo_draw_line (cr, dark, 0, h - 1, w - 1, h - 1);
-	glade_utils_cairo_draw_line (cr, dark, w - 1, 0, w - 1, h - 1);
+	gdk_cairo_set_source_color (cr, light);
+	cairo_move_to (cr, 0, 0);
+	cairo_line_to (cr, 1, 0);
+	cairo_move_to (cr, 0, 0);
+	cairo_line_to (cr, 0, 1);
 
-	cairo_destroy (cr);
+	gdk_cairo_set_source_color (cr, light);
+	cairo_move_to (cr, 0, 1);
+	cairo_line_to (cr, 1, 1);
+	cairo_line_to (cr, 1, 0);
 
-	glade_util_draw_selection_nodes (event->window);
+	glade_util_draw_selection_nodes (widget, cr);
 
 	return FALSE;
 }

@@ -393,12 +393,8 @@ gwa_clone_parent_properties (GladeWidgetAdaptor *adaptor, gboolean is_packing)
 			if (strcmp (adaptor->priv->catalog, 
 				    parent_adaptor->priv->catalog))
 			{
-				pclass->version_since_major =
-					pclass->version_since_major = 0;
-
-				pclass->builder_since_major =
-					pclass->builder_since_major = 0;
-
+				pclass->version_since_major = 0;
+				pclass->builder_since_major = 0;
 			}
 			properties = g_list_prepend (properties, pclass);
 		}
@@ -547,8 +543,7 @@ gwa_inherit_signals (GladeWidgetAdaptor *adaptor)
 				/* Reset versioning in derived catalogs just once */
 				if (strcmp (adaptor->priv->catalog, 
 					    parent_adaptor->priv->catalog))
-					signal->version_since_major =
-						signal->version_since_major = 0;
+					signal->version_since_major = 0;
 				else
 				{
 					signal->version_since_major = 
@@ -601,9 +596,8 @@ glade_widget_adaptor_constructor (GType                  type,
 	}
 
 	/* Detect scrollability */
-	if (g_type_is_a (adaptor->type, GTK_TYPE_WIDGET) &&
-	    GTK_WIDGET_CLASS (object_class)->set_scroll_adjustments_signal != 0)
-		GLADE_WIDGET_ADAPTOR_GET_CLASS(adaptor)->scrollable = TRUE;
+	if (g_type_is_a (adaptor->type, GTK_TYPE_SCROLLABLE))
+	    GLADE_WIDGET_ADAPTOR_GET_CLASS(adaptor)->scrollable = TRUE;
 
 	/* Inherit packing defaults here */
 	adaptor->child_packings = gwa_inherit_child_packing (adaptor);

@@ -1782,11 +1782,11 @@ glade_widget_set_adaptor (GladeWidget *widget, GladeWidgetAdaptor *adaptor)
 }
 
 static gboolean
-expose_draw_selection (GtkWidget       *widget_gtk,
-		       GdkEventExpose  *event,
-		       GladeWidget     *gwidget)
+draw_selection (GtkWidget       *widget_gtk,
+		cairo_t         *cr,
+		GladeWidget     *gwidget)
 {
-	glade_util_draw_selection_nodes (event->window);
+	glade_util_draw_selection_nodes (widget_gtk, cr);
         return FALSE;
 }
 
@@ -1817,8 +1817,8 @@ glade_widget_connect_signal_handlers (GtkWidget   *widget_gtk,
 		g_signal_connect (G_OBJECT (widget_gtk), "event",
 				  callback, gwidget);
 
-		g_signal_connect_after (G_OBJECT (widget_gtk), "expose-event",
-					G_CALLBACK (expose_draw_selection), gwidget);
+		g_signal_connect_after (G_OBJECT (widget_gtk), "draw",
+					G_CALLBACK (draw_selection), gwidget);
 		
 		
 		g_object_set_data (G_OBJECT (widget_gtk),
@@ -3329,8 +3329,6 @@ glade_widget_set_object (GladeWidget *gwidget, GObject *new_object)
 	/* Add internal reference to new widget if its not internal */
 	if (gwidget->internal)
 		gwidget->object = G_OBJECT(new_object);
-	else if (GTK_IS_OBJECT (new_object))
-		gwidget->object = g_object_ref (G_OBJECT(new_object));
 	else
 		/* If this is a base GObject; assume ownership of the initial ref count */
 		gwidget->object = new_object;

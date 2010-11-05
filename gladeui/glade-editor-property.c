@@ -1229,9 +1229,7 @@ glade_eprop_color_load (GladeEditorProperty *eprop, GladeProperty *property)
 
 			/* Manually fill it with black for an NULL value.
 			 */
-			if (gdk_color_parse("Black", &black) &&
-			    gdk_colormap_alloc_color(gtk_widget_get_default_colormap(),
-						     &black, FALSE, TRUE))
+			if (gdk_color_parse("Black", &black))
 				gtk_color_button_set_color
 					(GTK_COLOR_BUTTON (eprop_color->cbutton),
 					 &black);
@@ -1530,7 +1528,7 @@ glade_eprop_text_load (GladeEditorProperty *eprop, GladeProperty *property)
 
 	if (GTK_IS_COMBO_BOX (eprop_text->text_entry))
 	{
-		if (GTK_IS_COMBO_BOX_ENTRY (eprop_text->text_entry))
+		if (gtk_combo_box_get_has_entry (GTK_COMBO_BOX (eprop_text->text_entry)))
 		{
 			const gchar *text = g_value_get_string (property->value);
 			if (!text) text = "";
@@ -2064,7 +2062,7 @@ eprop_text_stock_changed (GtkComboBox *combo,
 		glade_eprop_text_changed_common (eprop, text, eprop->use_command);
 		g_free (text);
 	}
-	else if (GTK_IS_COMBO_BOX_ENTRY (combo))
+	else if (gtk_combo_box_get_has_entry (combo))
 	{
 		str = gtk_entry_get_text (GTK_ENTRY (gtk_bin_get_child (GTK_BIN (combo))));
 		glade_eprop_text_changed_common (eprop, str, eprop->use_command);
@@ -2086,7 +2084,7 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
 	{
 		GtkCellRenderer *renderer;
 		GtkWidget       *child;
-		GtkWidget       *combo = gtk_combo_box_entry_new ();
+		GtkWidget       *combo = gtk_combo_box_new_with_entry ();
 
 		eprop_text->store = (GtkTreeModel *)
 			glade_eprop_text_create_store (klass->stock ? GLADE_TYPE_STOCK :
@@ -2095,7 +2093,7 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
 		gtk_combo_box_set_model (GTK_COMBO_BOX (combo), GTK_TREE_MODEL (eprop_text->store));
 
 		/* let the comboboxentry prepend its intrusive cell first... */
-		gtk_combo_box_entry_set_text_column (GTK_COMBO_BOX_ENTRY (combo),
+		gtk_combo_box_set_entry_text_column (GTK_COMBO_BOX (combo),
 						     COMBO_COLUMN_TEXT);
 
 		renderer = gtk_cell_renderer_pixbuf_new ();

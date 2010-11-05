@@ -2409,10 +2409,8 @@ create_preview_tool_button (GtkToolbar *toolbar)
 	button = gtk_tool_button_new_from_stock (GTK_STOCK_EXECUTE);
 	gtk_tool_button_set_label (GTK_TOOL_BUTTON(button), _("Preview snapshot"));
 
-	gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (button),
-				   toolbar->tooltips,
-				   _("Previews snapshot of project"),
-				   NULL);
+	gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (button),
+				   _("Previews snapshot of project"));
 
 	gtk_widget_show (GTK_WIDGET (button));
 

@@ -787,34 +787,18 @@ glade_util_can_draw_nodes (GtkWidget *sel_widget, GdkWindow *sel_win,
  *
  */
 void
-glade_util_draw_selection_nodes (GdkWindow *expose_win)
+glade_util_draw_selection_nodes (GtkWidget* expose_widget, cairo_t *cr)
 {
-	GtkWidget *expose_widget;
-	gint expose_win_x, expose_win_y;
-	gint expose_win_w, expose_win_h;
+#if 0
 	GdkWindow   *expose_toplevel;
 	GdkColor *color;
 	GList *elem;
-	cairo_t *cr;
-
-	g_return_if_fail (GDK_IS_WINDOW (expose_win));
-
-	/* Find the corresponding GtkWidget */
-	gdk_window_get_user_data (expose_win, (gpointer)&expose_widget);
+	GtkAllocation expose_allocation;
 
 	color = &(gtk_widget_get_style (expose_widget)->black);
 
-	/* Calculate the offset of the expose window within its toplevel. */
-	glade_util_calculate_window_offset (expose_win,
-					    &expose_win_x,
-					    &expose_win_y,
-					    &expose_toplevel);
-
-	gdk_drawable_get_size (expose_win,
-			       &expose_win_w, &expose_win_h);
-
-	cr = gdk_cairo_create (expose_win);
-
+	gtk_widget_get_allocation (expose_widget, &expose_allocation);
+	
 	/* Step through all the selected widgets. */
 	for (elem = glade_util_selection; elem; elem = elem->next) {
 
@@ -836,25 +820,24 @@ glade_util_draw_selection_nodes (GdkWindow *expose_win)
 		   event is in the same toplevel as the selected widget. */
 		if (expose_toplevel == sel_toplevel
 		    && glade_util_can_draw_nodes (sel_widget, sel_win,
-						  expose_win)) {
-			GtkAllocation allocation;
+		                                  cr)) {
+		                                  GtkAllocation allocation;
 
 			gtk_widget_get_allocation (sel_widget, &allocation);
-			x = sel_x + allocation.x - expose_win_x;
-			y = sel_y + allocation.y - expose_win_y;
+			x = sel_x + allocation.x - expose_allocation.x;
+			y = sel_y + allocation.y - expose_allocation.y;
 			w = allocation.width;
 			h = allocation.height;
 
 			/* Draw the selection nodes if they intersect the
 			   expose window bounds. */
-			if (x < expose_win_w && x + w >= 0
-			    && y < expose_win_h && y + h >= 0) {
+			if (x < expose_allocation.width && x + w >= 0
+			    && y < expose_allocation.height && y + h >= 0) {
 				glade_util_draw_nodes (cr, color, x, y, w, h);
 			}
 		}
 	}
-
-	cairo_destroy (cr);
+#endif
 }
 
 /**

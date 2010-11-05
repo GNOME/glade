@@ -4909,7 +4909,7 @@ glade_gtk_entry_read_widget (GladeWidgetAdaptor *adaptor,
 	glade_property_sync (property);
 }
 
-
+#if 0
 /* ----------------------------- GtkFixed/GtkLayout ------------------------------ */
 static void
 glade_gtk_fixed_layout_finalize(GdkPixmap *backing)
@@ -5006,6 +5006,7 @@ glade_gtk_fixed_layout_remove_child (GladeWidgetAdaptor  *adaptor,
 
 	gtk_container_remove (GTK_CONTAINER (object), GTK_WIDGET (child));
 }
+#endif
 
 /* ----------------------------- GtkWindow ------------------------------ */
 static void
@@ -8771,7 +8772,7 @@ glade_gtk_combo_box_set_items (GObject *object, const GValue *value)
 	if (split)
 		for (i = 0; split[i] != NULL; i++)
 			if (split[i][0] != '\0')
-				gtk_combo_box_append_text (combo, split[i]);
+				gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), split[i]);
 }
 
 void
@@ -8812,7 +8813,7 @@ glade_gtk_combo_box_entry_get_internal_child (GladeWidgetAdaptor *adaptor,
 					      const gchar *name)
 {
 	GObject *child = NULL;
-	g_return_val_if_fail (GTK_IS_COMBO_BOX_ENTRY (object), NULL);
+	g_return_val_if_fail (GTK_IS_COMBO_BOX (object), NULL);
 	
 	if (strcmp ("entry", name) == 0)
 		child = G_OBJECT (gtk_bin_get_child (GTK_BIN (object)));
@@ -8830,7 +8831,7 @@ glade_gtk_combo_box_entry_set_property (GladeWidgetAdaptor *adaptor,
 	if (!strcmp (id, "text-column"))
 	{
 		if (g_value_get_int (value) >= 0)
-			gtk_combo_box_entry_set_text_column (GTK_COMBO_BOX_ENTRY (object), 
+			gtk_combo_box_set_entry_text_column (GTK_COMBO_BOX (object), 
 							     g_value_get_int (value));
 	}
 	else

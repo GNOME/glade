@@ -43,8 +43,6 @@ typedef struct _GladePlaceholderClass GladePlaceholderClass;
 struct _GladePlaceholder
 {
 	GtkWidget widget;
-
-	GdkPixmap *placeholder_pixmap;
 	
 	GList *packing_actions;
 };
