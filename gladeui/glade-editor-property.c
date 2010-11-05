@@ -3532,7 +3532,6 @@ glade_eprop_adjustment_prop_changed_common (GladeEditorProperty *eprop,
 	    gtk_adjustment_get_page_increment (adjustment) == 10.00 &&
 	    gtk_adjustment_get_page_size (adjustment) == 10.00)
 	{
-		gtk_object_destroy (GTK_OBJECT (adjustment));
 		g_value_set_object (&value, NULL);
 	}
 	else

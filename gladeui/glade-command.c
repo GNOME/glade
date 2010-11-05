@@ -909,9 +909,9 @@ GLADE_MAKE_COMMAND (GladeCommandAddRemove, glade_command_add_remove);
 #define GLADE_IS_COMMAND_ADD_REMOVE_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), GLADE_COMMAND_ADD_REMOVE_TYPE))
 
 static void 
-glade_command_placeholder_destroyed (GtkObject *object, CommandData *cdata)
+glade_command_placeholder_destroyed (GtkWidget *object, CommandData *cdata)
 {
-	if (GTK_OBJECT (cdata->placeholder) == object)
+	if (cdata->placeholder == object)
 	{
 		cdata->placeholder = NULL;
 		cdata->handler_id = 0;

@@ -106,7 +106,7 @@ convert_adjustments_finished (GladeProject  *project,
 			glade_command_set_property (adata->property, widget->object);
 
 			/* destroy the fabricated object */
-			gtk_object_destroy (GTK_OBJECT (adata->adjustment));
+			g_object_unref (G_OBJECT (adata->adjustment));
 		} 
 		else
 		{

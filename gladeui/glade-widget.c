@@ -828,8 +828,8 @@ glade_widget_dispose (GObject *object)
 	/* We do not keep a reference to internal widgets */
 	if (widget->internal == NULL)
 	{
-		if (GTK_IS_OBJECT (widget->object))
-			gtk_object_destroy (GTK_OBJECT (widget->object));
+		if (GTK_IS_WIDGET (widget->object))
+			gtk_widget_destroy (GTK_WIDGET (widget->object));
 		else 
 			g_object_unref (widget->object);
 	}
@@ -2409,8 +2409,8 @@ glade_widget_rebuild (GladeWidget *gwidget)
 				      old_object, new_object);
 
 	/* Must call dispose for cases like dialogs and toplevels */
-	if (g_type_is_a (adaptor->type, GTK_TYPE_OBJECT))
-		gtk_object_destroy  (GTK_OBJECT (old_object));
+	if (g_type_is_a (adaptor->type, GTK_TYPE_WIDGET))
+		gtk_widget_destroy  (GTK_WIDGET (old_object));
 	else
 		g_object_run_dispose (G_OBJECT (old_object));
 
