@@ -4633,11 +4633,13 @@ glade_project_model_get_path (GtkTreeModel* model,
 	{
 		GList* children = glade_widget_get_children (parent);
 		GList* child = g_list_find (children, glade_widget_get_object (widget));
-		
-		g_assert (child != NULL);
-		
-		gtk_tree_path_prepend_index (path,
-		                             g_list_position (children, child));
+
+		if (!child)
+			gtk_tree_path_prepend_index (path,
+			                             0);
+		else
+			gtk_tree_path_prepend_index (path,
+			                             g_list_position (children, child));
 		
 		g_list_free (children);
 		widget = parent;
