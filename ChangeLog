@@ -1,3 +1,11 @@
+2010-11-12  Johannes Schmid <jhs@gnome.org>
+
+	* gladeui/glade-project.c:
+	project-model: Don't be picky about non-existing children
+	It is sometimes possible that children are added before their parents
+	in the tree. We simply ignore that for now as it doesn't 
+	cause any harm in the tree model.
+
 2010-10-12  Marco Diego Aurélio Mesquita <marcodiegomesquita@gmail.com>
 
 	Implemented preview feature for Glade.
