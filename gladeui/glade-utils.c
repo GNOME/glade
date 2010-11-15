@@ -789,16 +789,30 @@ glade_util_can_draw_nodes (GtkWidget *sel_widget, GdkWindow *sel_win,
 void
 glade_util_draw_selection_nodes (GtkWidget* expose_widget, cairo_t *cr)
 {
-#if 0
-	GdkWindow   *expose_toplevel;
+	gint expose_win_x, expose_win_y;
+	gint expose_win_w, expose_win_h;
+	GdkWindow   *expose_win;
+	GdkWindow   *expose_toplevel;	
 	GdkColor *color;
 	GList *elem;
-	GtkAllocation expose_allocation;
+
+	cairo_save (cr);
+	
+	g_return_if_fail (GTK_IS_WIDGET (expose_widget));
 
 	color = &(gtk_widget_get_style (expose_widget)->black);
 
-	gtk_widget_get_allocation (expose_widget, &expose_allocation);
-	
+	/* Calculate the offset of the expose window within its toplevel. */
+	expose_toplevel = gtk_widget_get_window (gtk_widget_get_toplevel (expose_widget));
+	expose_win = gtk_widget_get_window (expose_widget);
+	glade_util_calculate_window_offset (expose_win,
+					    &expose_win_x,
+					    &expose_win_y,
+					    &expose_toplevel);
+
+	expose_win_w = gtk_widget_get_allocated_width (expose_widget);
+	expose_win_h = gtk_widget_get_allocated_height (expose_widget);
+
 	/* Step through all the selected widgets. */
 	for (elem = glade_util_selection; elem; elem = elem->next) {
 
@@ -807,10 +821,10 @@ glade_util_draw_selection_nodes (GtkWidget* expose_widget, cairo_t *cr)
 		gint sel_x, sel_y, x, y, w, h;
 
 		sel_widget = elem->data;
-		
+
 		if ((sel_win = glade_util_get_window_positioned_in (sel_widget)) == NULL)
 			continue;
-		
+
 		/* Calculate the offset of the selected widget's window
 		   within its toplevel. */
 		glade_util_calculate_window_offset (sel_win, &sel_x, &sel_y,
@@ -820,24 +834,23 @@ glade_util_draw_selection_nodes (GtkWidget* expose_widget, cairo_t *cr)
 		   event is in the same toplevel as the selected widget. */
 		if (expose_toplevel == sel_toplevel
 		    && glade_util_can_draw_nodes (sel_widget, sel_win,
-		                                  cr)) {
-		                                  GtkAllocation allocation;
+						  expose_win)) {
+			GtkAllocation allocation;
 
 			gtk_widget_get_allocation (sel_widget, &allocation);
-			x = sel_x + allocation.x - expose_allocation.x;
-			y = sel_y + allocation.y - expose_allocation.y;
+			x = sel_x + allocation.x - expose_win_x;
+			y = sel_y + allocation.y - expose_win_y;
 			w = allocation.width;
 			h = allocation.height;
 
 			/* Draw the selection nodes if they intersect the
 			   expose window bounds. */
-			if (x < expose_allocation.width && x + w >= 0
-			    && y < expose_allocation.height && y + h >= 0) {
+			if (x < expose_win_w && x + w >= 0
+			    && y < expose_win_h && y + h >= 0) {
 				glade_util_draw_nodes (cr, color, x, y, w, h);
 			}
 		}
 	}
-#endif
 }
 
 /**

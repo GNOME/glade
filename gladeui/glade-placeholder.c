@@ -263,6 +263,7 @@ glade_placeholder_draw (GtkWidget *widget, cairo_t *cr)
 	GtkStyle *style;
 	GdkColor *light;
 	GdkColor *dark;
+	gint      w, h;
 
 	g_return_val_if_fail (GLADE_IS_PLACEHOLDER (widget), FALSE);
 
@@ -270,21 +271,17 @@ glade_placeholder_draw (GtkWidget *widget, cairo_t *cr)
 	light = &style->light[GTK_STATE_NORMAL];
 	dark  = &style->dark[GTK_STATE_NORMAL];
 
+	h = gtk_widget_get_allocated_height (widget);
+	w = gtk_widget_get_allocated_width (widget);
+
 	cairo_set_line_width (cr, 1.0);
-	cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);
 
-	gdk_cairo_set_source_color (cr, light);
-	cairo_move_to (cr, 0, 0);
-	cairo_line_to (cr, 1, 0);
-	cairo_move_to (cr, 0, 0);
-	cairo_line_to (cr, 0, 1);
+	glade_utils_cairo_draw_line (cr, light, 0, 0, w - 1, 0);
+	glade_utils_cairo_draw_line (cr, light, 0, 0, 0, h - 1);
+	glade_utils_cairo_draw_line (cr, dark, 0, h - 1, w - 1, h - 1);
+	glade_utils_cairo_draw_line (cr, dark, w - 1, 0, w - 1, h - 1);
 
-	gdk_cairo_set_source_color (cr, light);
-	cairo_move_to (cr, 0, 1);
-	cairo_line_to (cr, 1, 1);
-	cairo_line_to (cr, 1, 0);
-
-	glade_util_draw_selection_nodes (widget, cr);
+	glade_util_draw_selection_nodes (widget, cr);	
 
 	return FALSE;
 }
