@@ -911,7 +911,7 @@ GLADE_MAKE_COMMAND (GladeCommandAddRemove, glade_command_add_remove);
 static void 
 glade_command_placeholder_destroyed (GtkWidget *object, CommandData *cdata)
 {
-	if (cdata->placeholder == object)
+	if (GTK_WIDGET (cdata->placeholder) == object)
 	{
 		cdata->placeholder = NULL;
 		cdata->handler_id = 0;
