@@ -243,36 +243,6 @@ glade_editor_property_button_pressed (GtkWidget           *widget,
 }
 
 
-#define EDITOR_COLUMN_SIZE 90
-
-static void
-eprop_item_label_size_allocate_after (GtkWidget *widget, GtkAllocation *allocation,
-				      GladeEditorProperty *eprop)
-{
-	gint width = EDITOR_COLUMN_SIZE;
-	gint icon_width = 0;
-
-	if (gtk_widget_get_visible (eprop->warning) && gtk_widget_get_mapped (eprop->warning))
-	{
-		GtkRequisition req = { -1, -1 };
-		gtk_widget_size_request (eprop->warning, &req);
-		/* Here we have to subtract the icon and remaining
-		 * padding inside eprop->item_label so that we are
-		 * only dealing with the size of the label.
-		 * (note the '4' here comes from the hbox spacing).
-		 */
-		icon_width = req.width + 4;
-	}
-
-	if (allocation->width > width)
-		width = allocation->width;
-
-	gtk_widget_set_size_request (eprop->label, CLAMP (width - icon_width, 0, width), -1);
-	/* Sometimes labels aren't drawn correctly after resize without this */
-	gtk_widget_queue_draw (eprop->label);
-}
-
-
 static GObject *
 glade_editor_property_constructor (GType                  type,
 				   guint                  n_construct_properties,
@@ -317,10 +287,6 @@ glade_editor_property_constructor (GType                  type,
 
 	gtk_label_set_line_wrap (GTK_LABEL(eprop->label), TRUE);
 	gtk_label_set_line_wrap_mode (GTK_LABEL(eprop->label), PANGO_WRAP_WORD_CHAR);
-
-	/* A Hack so that PANGO_WRAP_WORD_CHAR works nicely */
-	g_signal_connect_after (G_OBJECT (eprop->item_label), "size-allocate",
-				G_CALLBACK (eprop_item_label_size_allocate_after), eprop);
 
 	gtk_misc_set_alignment (GTK_MISC(eprop->label), 1.0, 0.5);
 
