@@ -46,6 +46,7 @@
 #include "glade-cursor.h"
 #include "glade-widget.h"
 #include "glade-app.h"
+#include <math.h>
 
 #define WIDTH_REQUISITION    20
 #define HEIGHT_REQUISITION   20
@@ -69,23 +70,6 @@ static gboolean  glade_placeholder_button_press        (GtkWidget      *widget,
 						        GdkEventButton *event);
 						
 static gboolean  glade_placeholder_popup_menu          (GtkWidget      *widget);
-
-
-static const char *placeholder_xpm[] = {
-	/* columns rows colors chars-per-pixel */
-	"8 8 2 1",
-	"  c #bbbbbb",
-	". c #d6d6d6",
-	/* pixels */
-	" .  .   ",
-	".    .  ",
-	"      ..",
-	"      ..",
-	".    .  ",
-	" .  .   ",
-	"  ..    ",
-	"  ..    "
-};
 
 G_DEFINE_TYPE (GladePlaceholder, glade_placeholder, GTK_TYPE_WIDGET)
 
@@ -257,6 +241,37 @@ glade_placeholder_get_project (GladePlaceholder *placeholder)
 	return parent ? GLADE_PROJECT (parent->project) : NULL;
 }
 
+static void
+glade_placeholder_draw_background (GtkWidget* widget, cairo_t *cr)
+{
+	cairo_surface_t *surface;
+	cairo_t *cr2;
+	const gint width = 10;
+	const gint height = 10;
+
+	surface = cairo_image_surface_create (CAIRO_FORMAT_RGB24, width, height);
+	cr2 = cairo_create (surface);
+	cairo_surface_destroy (surface);
+
+	cairo_set_source_rgb (cr2, 0.75, 0.75, 0.75); /* light gray */
+	cairo_paint (cr2);
+
+	cairo_set_source_rgb (cr2, 0.5, 0.5, 0.5); /* dark gray */
+	cairo_rectangle (cr2, width / 2,  0, width / 2, height / 2);
+	cairo_rectangle (cr2, 0, height / 2, width / 2, height / 2);
+	cairo_fill (cr2);
+
+	surface = cairo_surface_reference (cairo_get_target (cr2));
+	cairo_destroy (cr2);
+
+	cairo_save (cr);
+	cairo_set_source_surface (cr, surface, 0, 0);
+	cairo_surface_destroy (surface);
+	cairo_pattern_set_filter (cairo_get_source (cr), CAIRO_FILTER_NEAREST);
+	cairo_pattern_set_extend (cairo_get_source (cr), CAIRO_EXTEND_REPEAT);
+	cairo_paint (cr);
+}
+
 static gboolean
 glade_placeholder_draw (GtkWidget *widget, cairo_t *cr)
 {
@@ -274,6 +289,8 @@ glade_placeholder_draw (GtkWidget *widget, cairo_t *cr)
 	h = gtk_widget_get_allocated_height (widget);
 	w = gtk_widget_get_allocated_width (widget);
 
+	glade_placeholder_draw_background (widget, cr);
+	
 	cairo_set_line_width (cr, 1.0);
 
 	glade_utils_cairo_draw_line (cr, light, 0, 0, w - 1, 0);
