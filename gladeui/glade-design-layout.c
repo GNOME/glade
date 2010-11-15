@@ -628,7 +628,7 @@ child_realize (GtkWidget *widget, GtkWidget *parent)
 	window = gtk_widget_get_window (widget);
 
 	attributes.width = gdk_window_get_width (window);
-	attributes.height = gdk_window_get_width (window);
+	attributes.height = gdk_window_get_height (window);
 
 	attributes.window_type = GDK_WINDOW_OFFSCREEN;
 	attributes.wclass = GDK_INPUT_OUTPUT;
@@ -909,7 +909,7 @@ glade_design_layout_class_init (GladeDesignLayoutClass *klass)
 	widget_class->button_release_event  = glade_design_layout_button_release_event;
 	widget_class->draw                  = glade_design_layout_draw;
 	widget_class->get_preferred_height  = glade_design_layout_get_preferred_height;
-	widget_class->get_preferred_width  = glade_design_layout_get_preferred_width;
+	widget_class->get_preferred_width   = glade_design_layout_get_preferred_width;
 	widget_class->size_allocate         = glade_design_layout_size_allocate;
 
 	klass->widget_event          = glade_design_layout_widget_event_impl;
