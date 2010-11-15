@@ -170,7 +170,6 @@ glade_design_layout_update_child (GladeDesignLayout *layout,
 
 	gtk_widget_size_allocate (child, allocation);
 	gtk_widget_queue_resize (GTK_WIDGET (layout));
-//	gtk_window_resize (GTK_WINDOW (child), allocation->width, allocation->height);
 }
 
 
@@ -452,7 +451,7 @@ glade_design_layout_get_preferred_height (GtkWidget *widget,
 	priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
 
 	*minimum = 0;
-	*natural = 0;
+	*natural = 0;	
 
 	child = GLADE_DESIGN_LAYOUT (widget)->child;
 
@@ -476,8 +475,8 @@ glade_design_layout_get_preferred_height (GtkWidget *widget,
 		
 	}
 
-	minimum += border_width * 2;
-	natural += border_width * 2;
+	*minimum += border_width * 2;
+	*natural += border_width * 2;
 }
                                           
 
@@ -519,8 +518,8 @@ glade_design_layout_get_preferred_width (GtkWidget *widget,
 	}
 
 	border_width = gtk_container_get_border_width (GTK_CONTAINER (widget));
-	minimum += border_width * 2;
-	natural += border_width * 2;
+	*minimum += border_width * 2;
+	*natural += border_width * 2;
 }
 
 static void
@@ -567,6 +566,7 @@ glade_design_layout_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 		gdk_window_resize (gtk_widget_get_window (child), child_allocation.width, child_allocation.height);
 		
 		gtk_widget_size_allocate (child, &child_allocation);
+		g_message ("size: %d %d", child_allocation.width, child_allocation.height);
 	}
 }
 
@@ -752,7 +752,7 @@ glade_design_layout_draw (GtkWidget *widget, cairo_t *cr)
 		window = gtk_widget_get_window (widget);
 		style = gtk_widget_get_style (widget);
 		gtk_widget_get_allocation (widget, &allocation);
-
+		
 		child = layout->child;
 
 		/* draw a white widget background */
@@ -766,28 +766,27 @@ glade_design_layout_draw (GtkWidget *widget, cairo_t *cr)
 
 		if (child && gtk_widget_get_visible (child))
 		{
-			GdkWindow* child_window = gtk_widget_get_window (child);
-
-			w = gdk_window_get_width (child_window);
-			h = gdk_window_get_height (child_window);
+			cairo_surface_t *surface = 
+				gdk_offscreen_window_get_surface (gtk_widget_get_window (child));
+			
+			w = gdk_window_get_width (gtk_widget_get_window (child));
+			h = gdk_window_get_height (gtk_widget_get_window (child));
 
 			x = allocation.x + border_width;
 			y = allocation.y + border_width;
 
 			g_message ("aaaa %d %d %d %d ", x, y, w, h);
 
-			
-			gdk_cairo_set_source_window (cr, child_window, 0, 0);
+			cairo_set_source_surface (cr, surface, 0, 0);
 			cairo_rectangle (cr, x + OUTLINE_WIDTH/2, y + OUTLINE_WIDTH/2, w, h);
-			cairo_paint (cr);
+			cairo_fill (cr);
 
 			w += border_width + OUTLINE_WIDTH;
 			h += border_width + OUTLINE_WIDTH;
-
+			
 			/* draw frame */
 			draw_frame (widget, cr, x, y, w, h);
 		}
-
 		return TRUE;
 	}
 

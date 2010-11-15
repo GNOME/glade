@@ -248,7 +248,7 @@ glade_placeholder_draw_background (GtkWidget* widget, cairo_t *cr)
 	cairo_t *cr2;
 	const gint width = 10;
 	const gint height = 10;
-
+	
 	surface = cairo_image_surface_create (CAIRO_FORMAT_RGB24, width, height);
 	cr2 = cairo_create (surface);
 	cairo_surface_destroy (surface);
@@ -270,6 +270,7 @@ glade_placeholder_draw_background (GtkWidget* widget, cairo_t *cr)
 	cairo_pattern_set_filter (cairo_get_source (cr), CAIRO_FILTER_NEAREST);
 	cairo_pattern_set_extend (cairo_get_source (cr), CAIRO_EXTEND_REPEAT);
 	cairo_paint (cr);
+	cairo_restore (cr);
 }
 
 static gboolean
