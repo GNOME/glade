@@ -246,13 +246,6 @@ glade_editor_property_button_pressed (GtkWidget           *widget,
 #define EDITOR_COLUMN_SIZE 90
 
 static void
-eprop_item_label_size_request (GtkWidget *widget, GtkRequisition *requisition, 
-			       GladeEditorProperty *eprop)
-{
-	requisition->width = EDITOR_COLUMN_SIZE;
-}
-
-static void
 eprop_item_label_size_allocate_after (GtkWidget *widget, GtkAllocation *allocation,
 				      GladeEditorProperty *eprop)
 {
@@ -326,8 +319,6 @@ glade_editor_property_constructor (GType                  type,
 	gtk_label_set_line_wrap_mode (GTK_LABEL(eprop->label), PANGO_WRAP_WORD_CHAR);
 
 	/* A Hack so that PANGO_WRAP_WORD_CHAR works nicely */
-	g_signal_connect (G_OBJECT (eprop->item_label), "size-request",
-			  G_CALLBACK (eprop_item_label_size_request), eprop);
 	g_signal_connect_after (G_OBJECT (eprop->item_label), "size-allocate",
 				G_CALLBACK (eprop_item_label_size_allocate_after), eprop);
 

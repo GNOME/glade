@@ -133,51 +133,6 @@ glade_design_layout_get_pointer_region (GladeDesignLayout *layout, gint x, gint 
 	return region;
 }
 
-
-/* this handler ensures that the user cannot
- * resize a widget below it minimum acceptable size */
-static void
-child_size_request_handler (GtkWidget         *widget,
-			    GtkRequisition    *req,
-			    GladeDesignLayout *layout)
-{
-	GladeDesignLayoutPrivate *priv;
-	GtkAllocation allocation;
-	GtkRequisition requisition;
-	gint new_width, new_height;
-	gint old_width, old_height;
-		
-	priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (layout);
-
-	priv->current_size_request->width = req->width;
-	priv->current_size_request->height = req->height;
-
-	gtk_widget_get_allocation (widget, &allocation);
-	new_width = allocation.width;
-	new_height = allocation.height;
-
-	if (req->width > new_width)
-		new_width = req->width;
-
-	if (req->height > new_height)
-		new_height = req->height;
-
-	if ((new_width != allocation.width) ||
-	    (new_height != allocation.height))
-	{
-		gtk_widget_size_request (widget, &requisition);
-		old_width = requisition.width;
-		old_height = requisition.height;
-
-		gtk_widget_set_size_request (widget,
-					     (old_width > new_width) ? old_width : new_width,
-					     (old_height > new_height) ? old_height : new_height);
-	}
-	
-	gtk_widget_queue_draw (GTK_WIDGET (layout));
-	
-}
-
 static gboolean
 glade_design_layout_leave_notify_event (GtkWidget *widget, GdkEventCrossing *ev)
 {
@@ -484,20 +439,20 @@ glade_design_layout_button_release_event (GtkWidget *widget, GdkEventButton *ev)
 }
 
 static void
-glade_design_layout_size_request (GtkWidget *widget, GtkRequisition *requisition)
+glade_design_layout_get_preferred_height (GtkWidget *widget,
+                                          gint *minimum,
+                                          gint *natural)
 {
 	GladeDesignLayoutPrivate *priv;
-	GtkRequisition child_requisition;
 	GtkWidget *child;
 	GladeWidget *gchild;
-	gint child_width = 0;
 	gint child_height = 0;
 	guint border_width = 0;
 
 	priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
 
-	requisition->width = 0;
-	requisition->height = 0;
+	*minimum = 0;
+	*natural = 0;
 
 	child = GLADE_DESIGN_LAYOUT (widget)->child;
 
@@ -506,26 +461,66 @@ glade_design_layout_size_request (GtkWidget *widget, GtkRequisition *requisition
 		gchild = glade_widget_get_from_gobject (child);
 		g_assert (gchild);
 
-		gtk_widget_size_request (child, &child_requisition);
+		gtk_widget_get_preferred_height (child, minimum, natural);
 
 		g_object_get (gchild, 
-			      "toplevel-width", &child_width,
 			      "toplevel-height", &child_height,
 			      NULL);
 			
-		child_width = MAX (child_width, child_requisition.width);
-		child_height = MAX (child_height, child_requisition.height);
+		child_height = MAX (child_height, *minimum);
 
-		requisition->width = MAX (requisition->width,
-		                          2 * PADDING + child_width + 2 * OUTLINE_WIDTH);
+		*minimum = MAX (*minimum,
+		               2 * PADDING + child_height + 2 * OUTLINE_WIDTH);
+		*natural = MAX (*natural,
+		               2 * PADDING + child_height + 2 * OUTLINE_WIDTH);
+		
+	}
 
-		requisition->height = MAX (requisition->height,
-		                          2 * PADDING + child_height + 2 * OUTLINE_WIDTH);
+	minimum += border_width * 2;
+	natural += border_width * 2;
+}
+                                          
+
+static void
+glade_design_layout_get_preferred_width (GtkWidget *widget, 
+                                         gint *minimum,
+                                         gint *natural)
+{
+	GladeDesignLayoutPrivate *priv;
+	GtkWidget *child;
+	GladeWidget *gchild;
+	gint child_width = 0;
+	guint border_width = 0;
+
+	priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
+
+	*minimum = 0;
+	*natural = 0;
+	
+	child = GLADE_DESIGN_LAYOUT (widget)->child;
+
+	if (child && gtk_widget_get_visible (child))
+	{
+		gchild = glade_widget_get_from_gobject (child);
+		g_assert (gchild);
+
+		gtk_widget_get_preferred_width (child, minimum, natural);
+
+		g_object_get (gchild, 
+			      "toplevel-width", &child_width,
+			      NULL);
+			
+		child_width = MAX (child_width, *minimum);
+
+		*minimum = MAX (*minimum,
+		               2 * PADDING + child_width + 2 * OUTLINE_WIDTH);
+		*natural = MAX (*natural,
+		               2 * PADDING + child_width + 2 * OUTLINE_WIDTH);
 	}
 
 	border_width = gtk_container_get_border_width (GTK_CONTAINER (widget));
-	requisition->width += border_width * 2;
-	requisition->height += border_width * 2;
+	minimum += border_width * 2;
+	natural += border_width * 2;
 }
 
 static void
@@ -670,24 +665,11 @@ glade_design_layout_add (GtkContainer *container, GtkWidget *widget)
 	layout->priv->current_size_request->width = 0;
 	layout->priv->current_size_request->height = 0;
 	
-	g_signal_connect (G_OBJECT (widget), "size-request", 
-			  G_CALLBACK (child_size_request_handler),
-	                  container);
 	g_signal_connect_after (G_OBJECT (widget), "realize", 
 			  G_CALLBACK (child_realize),
 	                  GTK_WIDGET (container));
 
 //	GTK_CONTAINER_CLASS (glade_design_layout_parent_class)->add (container, widget);
-}
-
-static void
-glade_design_layout_remove (GtkContainer *container, GtkWidget *widget)
-{
-	g_signal_handlers_disconnect_by_func(G_OBJECT (widget), 
-					     G_CALLBACK (child_size_request_handler), 
-					     container);	
-
-	GTK_CONTAINER_CLASS (glade_design_layout_parent_class)->remove (container, widget);
 }
 
 static void
@@ -921,14 +903,14 @@ glade_design_layout_class_init (GladeDesignLayoutClass *klass)
 	object_class->finalize              = glade_design_layout_finalize;
 	
 	container_class->add                = glade_design_layout_add;
-	container_class->remove             = glade_design_layout_remove;
 
 	widget_class->motion_notify_event   = glade_design_layout_motion_notify_event;
 	widget_class->leave_notify_event    = glade_design_layout_leave_notify_event;
 	widget_class->button_press_event    = glade_design_layout_button_press_event;
 	widget_class->button_release_event  = glade_design_layout_button_release_event;
 	widget_class->draw                  = glade_design_layout_draw;
-	widget_class->size_request          = glade_design_layout_size_request;
+	widget_class->get_preferred_height  = glade_design_layout_get_preferred_height;
+	widget_class->get_preferred_width  = glade_design_layout_get_preferred_width;
 	widget_class->size_allocate         = glade_design_layout_size_allocate;
 
 	klass->widget_event          = glade_design_layout_widget_event_impl;
