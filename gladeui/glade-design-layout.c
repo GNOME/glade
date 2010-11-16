@@ -640,8 +640,8 @@ child_realize (GtkWidget *widget, GtkWidget *parent)
 
 	gdk_window_set_user_data (new_window, parent);
 
-	 g_signal_connect (gtk_widget_get_window (parent), "pick-embedded-child",
-	                   G_CALLBACK (pick_offscreen_child), GLADE_DESIGN_LAYOUT (parent));
+	g_signal_connect (gtk_widget_get_window (parent), "pick-embedded-child",
+	                  G_CALLBACK (pick_offscreen_child), GLADE_DESIGN_LAYOUT (parent));
 	
 	gdk_offscreen_window_set_embedder (gtk_widget_get_window (widget), gtk_widget_get_window (parent));
 	g_signal_connect (gtk_widget_get_window (widget), "to-embedder",
@@ -741,17 +741,17 @@ glade_design_layout_draw (GtkWidget *widget, cairo_t *cr)
 	if (gtk_cairo_should_draw_window (cr, gtk_widget_get_window (widget)))
 	{
 		GtkStyle *style;
-		GtkAllocation allocation;
 		GtkWidget *child;
 		GdkWindow *window;
-		gint x, y, w, h;
 		gint border_width;
+		gint width, height;
 
 		border_width = gtk_container_get_border_width (GTK_CONTAINER (widget));
 
 		window = gtk_widget_get_window (widget);
 		style = gtk_widget_get_style (widget);
-		gtk_widget_get_allocation (widget, &allocation);
+		width = gtk_widget_get_allocated_width (widget);
+		height = gtk_widget_get_allocated_height (widget);
 		
 		child = layout->child;
 
@@ -759,21 +759,22 @@ glade_design_layout_draw (GtkWidget *widget, cairo_t *cr)
 		glade_utils_cairo_draw_rectangle (cr,
 		                                  &style->base [gtk_widget_get_state (widget)],
 		                                  TRUE,
-		                                  allocation.x + border_width,
-		                                  allocation.y + border_width,
-		                                  allocation.width - 2 * border_width,
-		                                  allocation.height - 2 * border_width);
+		                                  border_width,
+		                                  border_width,
+		                                  width - 2 * border_width,
+		                                  height - 2 * border_width);
 
 		if (child && gtk_widget_get_visible (child))
 		{
+			gint x, y, w, h;
 			cairo_surface_t *surface = 
 				gdk_offscreen_window_get_surface (gtk_widget_get_window (child));
 			
 			w = gdk_window_get_width (gtk_widget_get_window (child));
 			h = gdk_window_get_height (gtk_widget_get_window (child));
 
-			x = allocation.x + border_width;
-			y = allocation.y + border_width;
+			x = border_width;
+			y = border_width;
 
 			g_message ("aaaa %d %d %d %d ", x, y, w, h);
 
@@ -787,7 +788,6 @@ glade_design_layout_draw (GtkWidget *widget, cairo_t *cr)
 			/* draw frame */
 			draw_frame (widget, cr, x, y, w, h);
 		}
-		return TRUE;
 	}
 
 	return FALSE;
