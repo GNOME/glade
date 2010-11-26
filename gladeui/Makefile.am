@@ -1,6 +1,7 @@
 ## Previewer
 
 bin_PROGRAMS = glade-previewer
+lib_LTLIBRARIES = libgladeui-2.la
 
 glade_previewer_CPPFLAGS = \
 	-I$(top_srcdir)    \
@@ -40,8 +41,6 @@ common_defines = \
 	-DGLADE_PIXMAPSDIR="\"$(pkgdatadir)/pixmaps\""	\
 	-DGLADE_LOCALEDIR="\"$(datadir)/locale\""\
   -DGLADE_BINDIR="\"$(bindir)\""
-
-lib_LTLIBRARIES = libgladeui-2.la
 
 BUILT_SOURCES = glade-marshallers.c glade-marshallers.h
 
