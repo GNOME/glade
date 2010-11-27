@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-libgladeui = $(top_builddir)/gladeui/libgladeui-2.la
+libgladeui = $(top_builddir)/gladeui/libgladeui-3.la
 
 
 # libgladepython
