@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-12-07 16:54+0200\n"
-"PO-Revision-Date: 2010-12-07 17:28+0200\n"
+"PO-Revision-Date: 2010-12-09 14:40+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: he\n"
 "MIME-Version: 1.0\n"
@@ -380,13 +380,12 @@ msgid "Dock the palette into the main window"
 msgstr "עיגון הפלטה לחלון הראשי"
 
 #: ../src/glade-window.c:2175
-#, fuzzy
 msgid "Dock _Inspector"
-msgstr "מנתח האתרים"
+msgstr "עיגון ה_בוחן"
 
 #: ../src/glade-window.c:2176
 msgid "Dock the inspector into the main window"
-msgstr ""
+msgstr "עגינת הבוחן לחלון הראשי"
 
 #: ../src/glade-window.c:2179
 msgid "Dock Prop_erties"
@@ -394,7 +393,7 @@ msgstr "מאפייני ה_מעגן"
 
 #: ../src/glade-window.c:2180
 msgid "Dock the editor into the main window"
-msgstr ""
+msgstr "עגינת העורך לחלון הראשי"
 
 #: ../src/glade-window.c:2183
 msgid "Tool_bar"
@@ -418,7 +417,7 @@ msgstr "_לשוניות מיזמים"
 
 #: ../src/glade-window.c:2192
 msgid "Show notebook tabs for loaded projects"
-msgstr ""
+msgstr "הצגת לשוניות מחברת למיזמים שנטענו"
 
 #: ../src/glade-window.c:2200 ../plugins/gtk+/gtk+.xml.in.h:433
 msgid "Text beside icons"
@@ -564,7 +563,7 @@ msgstr "מצב סמן"
 
 #: ../gladeui/glade-app.c:534
 msgid "Current mode for the pointer in the workspace"
-msgstr ""
+msgstr "המצב הנוכחי של הסמן במרחב העבודה"
 
 #: ../gladeui/glade-app.c:604
 #, c-format
@@ -599,6 +598,8 @@ msgid ""
 "Error serializing configuration data to save (%s).\n"
 "No private data will be saved in this session"
 msgstr ""
+"שגיאה בסידור טורי של נתוני התצורה לשמירה (%s).\n"
+"לא יישמרו נתונים אישיים בהפעלה זו"
 
 #: ../gladeui/glade-app.c:670
 #, c-format
@@ -606,6 +607,8 @@ msgid ""
 "Error opening %s to write private data (%s).\n"
 "No private data will be saved in this session"
 msgstr ""
+"שגיאה בפתיחת %s לכתיבת נתונים פרטיים (%s).\n"
+"לא יישמר מידע פרטי בהפעלה זו"
 
 #: ../gladeui/glade-app.c:1183 ../gladeui/glade-app.c:1224
 #: ../gladeui/glade-app.c:1389
@@ -626,11 +629,11 @@ msgstr "לא נבחר פריט בלוח הגזירה"
 
 #: ../gladeui/glade-app.c:1335
 msgid "Only one widget can be pasted at a time to this container"
-msgstr ""
+msgstr "ניתן להדביק וידג׳ט אחד בלבד בכל פעם למכל זה"
 
 #: ../gladeui/glade-app.c:1347
 msgid "Insufficient amount of placeholders in target container"
-msgstr ""
+msgstr "מספר ממלאי מקום במכל היעד אינו מספיק"
 
 #: ../gladeui/glade-builtins.c:71
 msgid "Authentication"
@@ -734,7 +737,7 @@ msgstr "רשומה"
 
 #: ../gladeui/glade-builtins.c:544
 msgid "Strv"
-msgstr ""
+msgstr "Strv"
 
 #: ../gladeui/glade-builtins.c:545
 msgid "String array"
@@ -794,7 +797,7 @@ msgstr "מכל"
 
 #: ../gladeui/glade-base-editor.c:1457
 msgid "The container object this editor is currently editing"
-msgstr "פריט המכל אותו עורך זה עורך כרגע"
+msgstr "פריט המכל אותו הנמצא בעריכה כרגע בעורך זה"
 
 #: ../gladeui/glade-base-editor.c:1682 ../gladeui/glade-editor.c:997
 msgid "General"
@@ -825,6 +828,11 @@ msgid ""
 "  * Drag &amp; Drop to reorder.\n"
 "  * Type column is editable."
 msgstr ""
+"<big><b>עצום:</b></big>\n"
+"  * יש ללחוץ מקש ימני על תצוגת העץ כדי להוסיף פריטים.\n"
+"  * יש ללחוץ על Delete כדי להסיר את הפריט הנבחר.\n"
+"  * יש לגרור ולהשליך כדי לסדר מחדש.\n"
+"  * עמודת הסוג ניתנת לעריכה."
 
 #: ../gladeui/glade-clipboard-view.c:209 ../gladeui/glade-editor.c:162
 #: ../plugins/gtk+/gtk+.xml.in.h:501
@@ -865,7 +873,7 @@ msgstr "מספר"
 
 #: ../gladeui/glade-command.c:1163
 msgid "You cannot remove a widget internal to a composite widget."
-msgstr ""
+msgstr "לא ניתן להסיר וידג׳ט המוגדר פנימי לווידג׳ט מרוכב."
 
 #: ../gladeui/glade-command.c:1170
 #, fuzzy, c-format
@@ -959,7 +967,7 @@ msgstr "המבנה %s משתנה ל־%s"
 #: ../gladeui/glade-command.c:2657 ../gladeui/glade-project.c:3947
 #, c-format
 msgid "Setting %s to use a %s naming policy"
-msgstr ""
+msgstr "%s הוגדר להשתמש במדיניות מתן השמות %s"
 
 #: ../gladeui/glade-command.c:2797
 #, fuzzy, c-format
@@ -983,7 +991,7 @@ msgstr "מחלקת אפיון"
 
 #: ../gladeui/glade-editor-property.c:599
 msgid "The GladePropertyClass this GladeEditorProperty was created for"
-msgstr ""
+msgstr "ה־GladePropertyClass ש־GladeEditorProperty זה נוצר עבורו"
 
 #: ../gladeui/glade-editor-property.c:605
 msgid "Use Command"
@@ -991,7 +999,7 @@ msgstr "שימוש בפקודה"
 
 #: ../gladeui/glade-editor-property.c:606
 msgid "Whether we should use the command API for the undo/redo stack"
-msgstr ""
+msgstr "האם עלינו להשתמש במנשק API לפקודות עבור ערימת הביטול/ביצוע חוזר"
 
 #: ../gladeui/glade-editor-property.c:1103
 msgid "Select Fields"
@@ -1040,7 +1048,7 @@ msgstr "ה_קשר עבור תרגום:"
 
 #: ../gladeui/glade-editor-property.c:1829
 msgid "Co_mments for translators:"
-msgstr "הערות עבור ה_מתרגמים"
+msgstr "הערות עבור ה_מתרגמים:"
 
 #: ../gladeui/glade-editor-property.c:1948
 #, fuzzy
@@ -1070,7 +1078,7 @@ msgstr "מחלקה"
 #: ../gladeui/glade-editor-property.c:2714
 #, c-format
 msgid "Choose parentless %s type objects in this project"
-msgstr ""
+msgstr "בחירת הסוג %s מחוסרי ההורים במיזם זה"
 
 #: ../gladeui/glade-editor-property.c:2714
 #, fuzzy, c-format
@@ -1156,13 +1164,13 @@ msgstr "ההגדלה לשימוש בעת עריכת שינויים מזעריי�
 
 #: ../gladeui/glade-editor-property.c:3642
 msgid "Page size:"
-msgstr "גודל עמוד:"
+msgstr "גודל דף:"
 
 #: ../gladeui/glade-editor-property.c:3643
 msgid ""
 "The page size (in a GtkScrollbar this is the size of the area which is "
 "currently visible)"
-msgstr ""
+msgstr "גודל הדף (ב־GtkScrollbar זהו גודל האזור הזמין כעת)"
 
 #: ../gladeui/glade-editor-table.c:356
 msgid "The Object's name"
@@ -1174,7 +1182,7 @@ msgstr "הצגת מידע"
 
 #: ../gladeui/glade-editor.c:155
 msgid "Whether to show an informational button for the loaded widget"
-msgstr ""
+msgstr "האם להציג לחצן מידע עבור הווידג׳ט שנטען"
 
 #: ../gladeui/glade-editor.c:163
 msgid "The currently loaded widget in this editor"
@@ -1198,7 +1206,7 @@ msgstr "הצגת תיעוד עבור הפריט הנבחר"
 
 #: ../gladeui/glade-editor.c:302
 msgid "Reset widget properties to their defaults"
-msgstr ""
+msgstr "איפוס מאפייני וידג׳ט לבררות המחדל שלהם"
 
 #. translators: referring to the properties of a widget named '%s [%s]'
 #: ../gladeui/glade-editor.c:338
@@ -1250,11 +1258,11 @@ msgstr "איפוס מאפייני פריט"
 #. Checklist
 #: ../gladeui/glade-editor.c:1215
 msgid "_Properties:"
-msgstr "_מאפיינים:"
+msgstr "מ_אפיינים:"
 
 #: ../gladeui/glade-editor.c:1244
 msgid "_Select All"
-msgstr "_בחירת הכול"
+msgstr "בחירת ה_כול"
 
 #: ../gladeui/glade-editor.c:1251
 msgid "_Unselect All"
@@ -1331,7 +1339,7 @@ msgstr "יצירת פריט שורש"
 
 #: ../gladeui/glade-popup.c:467 ../gladeui/glade-popup.c:476
 msgid "_Add widget here"
-msgstr "_הוספת פריט כאן"
+msgstr "הו_ספת וידג׳ט כאן"
 
 #: ../gladeui/glade-popup.c:480 ../gladeui/glade-popup.c:704
 #, fuzzy
@@ -1382,11 +1390,11 @@ msgstr "האם המיזם הוא לקריאה בלבד"
 
 #: ../gladeui/glade-project.c:955
 msgid "Format"
-msgstr "תצורה"
+msgstr "מבנה"
 
 #: ../gladeui/glade-project.c:956
 msgid "The project file format"
-msgstr "תצורת הקובץ של המיזם"
+msgstr "מבנה הקובץ של המיזם"
 
 #: ../gladeui/glade-project.c:965
 #, fuzzy
@@ -1404,6 +1412,8 @@ msgid ""
 "Failed to load %s.\n"
 "The following required catalogs are unavailable: %s"
 msgstr ""
+"אירע כשל בטעינת %s.\n"
+"הקטלוגים הדרושים הבאים אינם זמינים: %s"
 
 #: ../gladeui/glade-project.c:1542 ../gladeui/glade-project.c:1790
 #: ../gladeui/glade-project.c:4406
@@ -1428,7 +1438,7 @@ msgstr "ארע כשל בטעינת היישום!"
 #: ../gladeui/glade-project.c:1931
 #, c-format
 msgid "This widget was introduced in %s %d.%d while project targets %s %d.%d"
-msgstr ""
+msgstr "הווידג׳ט הוצג ב־%s‏ %d.%d בעוד שהמיזם מיועד ל־%s‏ %d.%d"
 
 #. translators: reffers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:1934
@@ -1443,13 +1453,14 @@ msgid ""
 "This widget was made available in GtkBuilder format in %s %d.%d while "
 "project targets %s %d.%d"
 msgstr ""
+"וידג׳ט זה הפך זמין במבנה GtkBuilder תחת %s‏ %d.%d בעוד שהמיזם מיועד ל־%s‏ %d.%d"
 
 #. translators: reffers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:1941
 #, c-format
 msgid ""
 "[%s] Object class '%s' was made available in GtkBuilder format in %s %d.%d\n"
-msgstr ""
+msgstr "[%s] מחלקת הפריטים '%s' הפכה לזמינה במבנה GtkBuilder תחת %s‏ %d.%d\n"
 
 #: ../gladeui/glade-project.c:1944
 #, fuzzy
@@ -1461,7 +1472,7 @@ msgstr "פריט זה אינו נתמך בתצורת libglade"
 #, c-format
 msgid ""
 "[%s] Object class '%s' from %s %d.%d is only supported in libglade format\n"
-msgstr ""
+msgstr "[%s] מחלקת הפריטים '%s' מ־%s‏ %d.%d נתמכת רק במבנה libglade\n"
 
 #: ../gladeui/glade-project.c:1950
 msgid "This widget is not supported in libglade format"
@@ -1472,7 +1483,7 @@ msgstr "וידג׳ט זה אינו נתמך בתצורת libglade"
 #, c-format
 msgid ""
 "[%s] Object class '%s' from %s %d.%d is not supported in libglade format\n"
-msgstr ""
+msgstr "[%s] מחלקת הפריטים '%s' מ־%s‏ %d.%d אינה נתמכת במבנה libglade\n"
 
 #: ../gladeui/glade-project.c:1956
 msgid "This widget is deprecated"
@@ -1584,7 +1595,7 @@ msgstr ""
 #: ../gladeui/glade-project.c:2013
 #, c-format
 msgid "This signal was introduced in %s %d.%d while project targets %s %d.%d"
-msgstr ""
+msgstr "אות זה הוצג ב־%s‏ %d.%d בעוד המיזם מיועד ל־%s‏ %d.%d"
 
 #: ../gladeui/glade-project.c:2266
 msgid "Details"
@@ -1598,7 +1609,7 @@ msgstr "בפרוייקט %s יש שגיאות, לשמור בכל זאת?"
 #: ../gladeui/glade-project.c:2283
 #, c-format
 msgid "Project \"%s\" has deprecated widgets and/or version mismatches."
-msgstr ""
+msgstr "למיזם \"%s\" יש וידג׳טים שנזנחו ו/או גרסתם אינה תואמת."
 
 #: ../gladeui/glade-project.c:3742
 #, c-format
@@ -1608,7 +1619,7 @@ msgstr "%i שלא נשמר"
 #: ../gladeui/glade-project.c:4010
 #, c-format
 msgid "Project %s has no deprecated widgets or version mismatches."
-msgstr ""
+msgstr "למיזם %s אין וידג׳טים או אי התאמות של גרסאות."
 
 #: ../gladeui/glade-project.c:4129
 msgid "Set options in your project"
@@ -1637,7 +1648,7 @@ msgstr "הצבת %s בתוך %s"
 #. Resource path
 #: ../gladeui/glade-project.c:4231
 msgid "Image resources are loaded locally:"
-msgstr ""
+msgstr "משאבי התמונה נטענו באופן מקומי:"
 
 #. Project directory...
 #: ../gladeui/glade-project.c:4247
@@ -1655,7 +1666,7 @@ msgstr "מתיקייה זו"
 
 #: ../gladeui/glade-project.c:4269
 msgid "Choose a path to load image resources"
-msgstr ""
+msgstr "נא לבחור נתיב לטעינת משאבי תמונה"
 
 #. Target versions
 #: ../gladeui/glade-project.c:4290
@@ -1688,7 +1699,7 @@ msgstr "מופעל"
 
 #: ../gladeui/glade-property.c:561
 msgid "If the property is optional, this is its enabled state"
-msgstr ""
+msgstr "אם התכונה אינה מחייבת, זהו המצב הפעיל שלה"
 
 #: ../gladeui/glade-property.c:567 ../gladeui/glade-widget-action.c:168
 msgid "Sensitive"
@@ -1786,9 +1797,8 @@ msgid ""
 msgstr "האם להחליף בין המופע והפריט בעת קריאה למטפל"
 
 #: ../gladeui/glade-signal-editor.c:1074 ../plugins/gtk+/gtk+.xml.in.h:34
-#, fuzzy
 msgid "After"
-msgstr "אחרי"
+msgstr "לאחר"
 
 #: ../gladeui/glade-signal-editor.c:1075
 #, fuzzy
@@ -1813,6 +1823,8 @@ msgid ""
 "Cannot add non scrollable %s widget to a %s directly.\n"
 "Add a %s first."
 msgstr ""
+"לא ניתן להוסיף וידג׳ט %s הניתן לגלילה ישירות אל %s.\n"
+"יש להוסיף %s תחילה."
 
 #: ../gladeui/glade-utils.c:468
 msgid "File format"
@@ -1846,12 +1858,12 @@ msgstr ""
 #: ../gladeui/glade-utils.c:1307
 #, c-format
 msgid "Error writing to %s: %s"
-msgstr "שגיאה בכתיבה אל %s: %s"
+msgstr "שגיאה בכתיבה אל %s:‏ %s"
 
 #: ../gladeui/glade-utils.c:1321
 #, c-format
 msgid "Error reading %s: %s"
-msgstr "שגיאה בקריאת %s: %s"
+msgstr "שגיאה בקריאת %s:‏ %s"
 
 #: ../gladeui/glade-utils.c:1336 ../gladeui/glade-utils.c:1357
 #, fuzzy, c-format
@@ -1893,25 +1905,24 @@ msgstr "השם הפנימי של הפריט"
 
 #: ../gladeui/glade-widget.c:1067
 msgid "Anarchist"
-msgstr ""
+msgstr "חורג סדר"
 
 #: ../gladeui/glade-widget.c:1068
 msgid ""
 "Whether this composite child is an ancestral child or an anarchist child"
-msgstr ""
+msgstr "האם צאצא מרוכב זה הוא צאצא יורש או צאצא החורג מהסדר"
 
 #: ../gladeui/glade-widget.c:1076
 msgid "The object associated"
 msgstr "הפריט המשויך"
 
 #: ../gladeui/glade-widget.c:1083
-#, fuzzy
 msgid "Adaptor"
-msgstr "התקן אלחוטי של Intel"
+msgstr "מתאם"
 
 #: ../gladeui/glade-widget.c:1084
 msgid "The class adaptor for the associated widget"
-msgstr ""
+msgstr "מאמץ המחלקה לווידג׳ט המשויך"
 
 #: ../gladeui/glade-widget.c:1091 ../gladeui/glade-inspector.c:191
 msgid "Project"
@@ -1939,7 +1950,7 @@ msgstr "שם פנימי"
 
 #: ../gladeui/glade-widget.c:1116
 msgid "A generic name prefix for internal widgets"
-msgstr ""
+msgstr "קידומת שם גנרית לווידג׳טים פנימיים"
 
 #: ../gladeui/glade-widget.c:1121
 msgid "Template"
@@ -1947,7 +1958,7 @@ msgstr "תבנית"
 
 #: ../gladeui/glade-widget.c:1122
 msgid "A GladeWidget template to base a new widget on"
-msgstr ""
+msgstr "תבנית GladeWidget עליה יש לבסס וידג׳טים חדשים"
 
 #: ../gladeui/glade-widget.c:1128
 msgid "Exact Template"
@@ -1955,7 +1966,7 @@ msgstr "תבנית מדויקת"
 
 #: ../gladeui/glade-widget.c:1129
 msgid "Whether we are creating an exact duplicate when using a template"
-msgstr ""
+msgstr "האם נוצר כפיל מושלם בעת שימוש בתבנית"
 
 #: ../gladeui/glade-widget.c:1134
 msgid "Reason"
@@ -1967,39 +1978,33 @@ msgid "A GladeCreateReason for this creation"
 msgstr "A tooltip for this action."
 
 #: ../gladeui/glade-widget.c:1143
-#, fuzzy
 msgid "Toplevel Width"
 msgstr "רוחב ברמה העליונה"
 
 #: ../gladeui/glade-widget.c:1144
-#, fuzzy
 msgid "The width of the widget when toplevel in the GladeDesignLayout"
-msgstr "רוחב הווידג'ט כאשר הוא ברמה העליונה ב־GladeDesignLayout"
+msgstr "רוחב הווידג׳ט כאשר הוא ברמה העליונה ב־GladeDesignLayout"
 
 #: ../gladeui/glade-widget.c:1153
-#, fuzzy
 msgid "Toplevel Height"
 msgstr "גובה ברמה העליונה"
 
 #: ../gladeui/glade-widget.c:1154
-#, fuzzy
 msgid "The height of the widget when toplevel in the GladeDesignLayout"
-msgstr "גובה הווידג'ט כאשר הוא ברמה העליונה ב־GladeDesignLayout"
+msgstr "גובה הווידג׳ט כאשר הוא ברמה העליונה ב־GladeDesignLayout"
 
 #: ../gladeui/glade-widget.c:1163
-#, fuzzy
 msgid "Support Warning"
-msgstr "Warning message"
+msgstr "אזהרת תמיכה"
 
 #: ../gladeui/glade-widget.c:1164
-#, fuzzy
 msgid "A warning string about version mismatches"
-msgstr "מחרוזת אזהרה אודות חוסר תאימות גרסאות"
+msgstr "מחרוזת אזהרה בנוגע לחוסר תאימות גרסאות"
 
 #: ../gladeui/glade-widget-adaptor.c:250
-#, fuzzy, c-format
+#, c-format
 msgid "A derived adaptor (%s) of %s already exist!"
-msgstr "Can't rename file, filename already exist"
+msgstr "מתאם נגזר (%s) של %s כבר קיים!"
 
 #: ../gladeui/glade-widget-adaptor.c:1237
 msgid "Name of the class"
@@ -2015,7 +2020,7 @@ msgstr "כותרת"
 
 #: ../gladeui/glade-widget-adaptor.c:1253
 msgid "Translated title for the class used in the glade UI"
-msgstr ""
+msgstr "כותרת מתורגמת עבור המחלקה בה נעשה שימוש במנשק המשתמש glade"
 
 #: ../gladeui/glade-widget-adaptor.c:1260
 msgid "Generic Name"
@@ -2023,7 +2028,7 @@ msgstr "שם כללי"
 
 #: ../gladeui/glade-widget-adaptor.c:1261
 msgid "Used to generate names of new widgets"
-msgstr ""
+msgstr "משמש ליצירת שמות לווידג׳טים חדשים"
 
 #: ../gladeui/glade-widget-adaptor.c:1268 ../plugins/gtk+/gtk+.xml.in.h:198
 msgid "Icon Name"
@@ -2039,7 +2044,7 @@ msgstr "קטלוג"
 
 #: ../gladeui/glade-widget-adaptor.c:1277
 msgid "The name of the widget catalog this class was declared by"
-msgstr ""
+msgstr "השם של קטלוג הווידג׳טים שעל ידיו הוכרזה מחלקה זו"
 
 #: ../gladeui/glade-widget-adaptor.c:1284
 msgid "Book"
@@ -2050,9 +2055,8 @@ msgid "DevHelp search namespace for this widget class"
 msgstr ""
 
 #: ../gladeui/glade-widget-adaptor.c:1292
-#, fuzzy
 msgid "Special Child Type"
-msgstr "PRESÉU [PARTICIÓN[+/-[TIPU]]] ..."
+msgstr "סוג צאצא מיוחד"
 
 #: ../gladeui/glade-widget-adaptor.c:1293
 msgid ""
@@ -2069,9 +2073,8 @@ msgid "A cursor for inserting widgets in the UI"
 msgstr ""
 
 #: ../gladeui/glade-inspector.c:192
-#, fuzzy
 msgid "The project being inspected"
-msgstr "The GIcon being displayed"
+msgstr "המיזם שנבחן"
 
 #: ../gladeui/glade-inspector.c:389
 msgid "< search widgets >"
@@ -2082,9 +2085,8 @@ msgid "class"
 msgstr "מחלקה"
 
 #: ../gladeui/glade-widget-action.c:162
-#, fuzzy
 msgid "GladeWidgetActionClass structure pointer"
-msgstr "מאפייני לכידת סמן"
+msgstr "מצביע למבנה GladeWidgetActionClass"
 
 #: ../gladeui/glade-widget-action.c:169
 msgid "Whether this action is sensitive"
@@ -2095,9 +2097,8 @@ msgid "All Contexts"
 msgstr "כל ההקשרים"
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1365
-#, fuzzy
 msgid "Named Icon Chooser"
-msgstr "בחירת איקון בעל שם"
+msgstr "בחירת סמל בעל שם"
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1405
 msgid "Icon _Name:"
@@ -2137,9 +2138,8 @@ msgid "Devices"
 msgstr "התקנים"
 
 #: ../gladeui/icon-naming-spec.c:39
-#, fuzzy
 msgid "Emblems"
-msgstr "סמלים"
+msgstr "סמלונים"
 
 #: ../gladeui/icon-naming-spec.c:40
 msgid "Emotes"
@@ -2172,10 +2172,9 @@ msgid "Weight"
 msgstr "משקל"
 
 #: ../plugins/gtk+/glade-attributes.c:223
-#, fuzzy
 msgctxt "textattr"
 msgid "Variant"
-msgstr "Font variant"
+msgstr "הגוון"
 
 #: ../plugins/gtk+/glade-attributes.c:227
 msgctxt "textattr"
@@ -2193,16 +2192,14 @@ msgid "Strikethrough"
 msgstr "קו חוצה"
 
 #: ../plugins/gtk+/glade-attributes.c:239
-#, fuzzy
 msgctxt "textattr"
 msgid "Gravity"
-msgstr "Gravity"
+msgstr "כוח משיכה"
 
 #: ../plugins/gtk+/glade-attributes.c:243
-#, fuzzy
 msgctxt "textattr"
 msgid "Gravity Hint"
-msgstr "State Hint"
+msgstr "רמז כוח משיכה"
 
 #: ../plugins/gtk+/glade-attributes.c:254
 msgctxt "textattr"
@@ -2248,12 +2245,11 @@ msgstr "שינוי גודל"
 #: ../plugins/gtk+/glade-attributes.c:364
 #: ../plugins/gtk+/glade-attributes.c:802
 msgid "<Enter Value>"
-msgstr "<הוספת ערך>"
+msgstr "<הזנת ערך>"
 
 #: ../plugins/gtk+/glade-attributes.c:353
-#, fuzzy
 msgid "Unset"
-msgstr "Unset"
+msgstr "ביטול ההגדרה"
 
 #: ../plugins/gtk+/glade-attributes.c:723
 msgid "Select a color"
@@ -2269,7 +2265,7 @@ msgstr "ערך"
 
 #: ../plugins/gtk+/glade-attributes.c:1026
 msgid "Setup Text Attributes"
-msgstr "הגדת תכונות טקסט"
+msgstr "הגדרת תכונות טקסט"
 
 #: ../plugins/gtk+/glade-gtk.c:61
 msgid "This property does not apply unless Use Underline is set."
@@ -2292,9 +2288,8 @@ msgid "GnomeUIInfo"
 msgstr "GnomeUIInfo"
 
 #: ../plugins/gtk+/glade-gtk.c:192
-#, fuzzy
 msgid "Choose the GnomeUIInfo stock item"
-msgstr "The stock icon displayed on the item"
+msgstr "בחירת פריט הערימה מסוג GnomeUIInfo"
 
 #. We have to save/load icon-size as int, and fake the enum
 #: ../plugins/gtk+/glade-gtk.c:201 ../plugins/gtk+/gtk+.xml.in.h:201
@@ -2438,7 +2433,7 @@ msgstr "הגדרות ה_דפסה"
 
 #: ../plugins/gtk+/glade-gtk.c:7104
 msgid "Find Ne_xt"
-msgstr "חיפוש _הבא"
+msgstr "חיפוש ה_בא"
 
 #: ../plugins/gtk+/glade-gtk.c:7108
 msgid "_Undo Move"
@@ -2520,7 +2515,7 @@ msgstr "תפריט"
 
 #: ../plugins/gtk+/glade-gtk.c:7632 ../plugins/gtk+/gtk+.xml.in.h:105
 msgid "Custom"
-msgstr "מותאם אישית"
+msgstr "בהתאמה אישית"
 
 #: ../plugins/gtk+/glade-gtk.c:7633 ../plugins/gtk+/glade-gtk.c:7642
 #: ../plugins/gtk+/glade-gtk.c:7650
@@ -2555,11 +2550,11 @@ msgstr ""
 
 #: ../plugins/gtk+/glade-gtk.c:9029
 msgid "Introduction page"
-msgstr "עמוד הכירות"
+msgstr "עמוד היכרות"
 
 #: ../plugins/gtk+/glade-gtk.c:9033
 msgid "Content page"
-msgstr "עמוד תוכן"
+msgstr "דף תוכן"
 
 #: ../plugins/gtk+/glade-gtk.c:9037
 msgid "Confirmation page"
@@ -2628,7 +2623,6 @@ msgstr "התקדמות"
 
 #: ../plugins/gtk+/glade-gtk.c:11188 ../plugins/gtk+/glade-gtk.c:11285
 #: ../plugins/gtk+/gtk+.xml.in.h:398
-#, fuzzy
 msgid "Spinner"
 msgstr "הנפשת המתנה"
 
@@ -2765,14 +2759,12 @@ msgid "Add to Size Group"
 msgstr "הוספה לקבוצת גודל"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:32
-#, fuzzy
 msgid "Adjustment"
-msgstr "Adjustment"
+msgstr "התאמה"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:33
-#, fuzzy
 msgid "Adjustment column"
-msgstr "כותרות העמודות"
+msgstr "עמודת ההתאמה"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:35
 msgid "Alignment"
@@ -2791,14 +2783,12 @@ msgid "All Events"
 msgstr "כל האירועים"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:39
-#, fuzzy
 msgid "All Modifiers"
-msgstr "Accelerator modifiers"
+msgstr "כל מקשי ההחלפה"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:40
-#, fuzzy
 msgid "Alt Key"
-msgstr "Comprobar tecla Alt"
+msgstr "מקש ה־Alt"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:41
 msgid "Always"
@@ -2806,12 +2796,11 @@ msgstr "תמיד"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:42
 msgid "Always Center"
-msgstr "תמיד מרכז"
+msgstr "תמיד מירכוז"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:43
-#, fuzzy
 msgid "An accelerator key for this action"
-msgstr "The mnemonic accelerator key for this label"
+msgstr "מקש האצה לפעולה זו"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:44
 msgid "Arrow"
@@ -2823,9 +2812,8 @@ msgid "Aspect Frame"
 msgstr "קצב פריימים"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:46
-#, fuzzy
 msgid "Assistant"
-msgstr "עוזר"
+msgstr "מסייע"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:47
 msgid "Attributes"
@@ -2853,27 +2841,22 @@ msgstr "לפני"
 
 #. Objects
 #: ../plugins/gtk+/gtk+.xml.in.h:54
-#, fuzzy
 msgid "Both"
 msgstr "שניהם"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:55
-#, fuzzy
 msgid "Bottom"
-msgstr "למטה"
+msgstr "תחתון"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:56
-#, fuzzy
 msgid "Bottom Left"
 msgstr "למטה משמאל"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:57
-#, fuzzy
 msgid "Bottom Right"
 msgstr "למטה מימין"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:58
-#, fuzzy
 msgid "Bottom to Top"
 msgstr "מלמטה למעלה"
 
@@ -2894,9 +2877,8 @@ msgid "Button 3 Motion"
 msgstr "תנועה - כפתור 3"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:64
-#, fuzzy
 msgid "Button Box"
-msgstr "Dialog Box"
+msgstr "תיבת לחצן"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:65
 msgid "Button Motion"
@@ -2916,17 +2898,15 @@ msgstr "יומן"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:69
 msgid "Cancel"
-msgstr "בטל"
+msgstr "ביטול"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:70
-#, fuzzy
 msgid "Cell Background Color column"
-msgstr "Cell background color name"
+msgstr "עמודת צבע רקע התא"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:71
-#, fuzzy
 msgid "Cell Background Color name column"
-msgstr "Cell background color as a string"
+msgstr "עמודת שם צבע רקע התא"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:73
 msgid "Center"
@@ -2949,20 +2929,17 @@ msgid "Check Button"
 msgstr "כפתור סימון"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:78
-#, fuzzy
 msgid "Check Menu Item"
-msgstr "Fake menu item %d\n"
+msgstr "פריט סימון בתפריט"
 
 #. Atk click property
 #: ../plugins/gtk+/gtk+.xml.in.h:80
-#, fuzzy
 msgid "Click"
-msgstr "Single Click"
+msgstr "לחיצה"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:81
-#, fuzzy
 msgid "Climb Rate column"
-msgstr "הצגת _רוחב העמודה"
+msgstr "עמודת יחס טיפוס"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:82
 msgid "Close"
@@ -2985,29 +2962,24 @@ msgid "Columns"
 msgstr "עמודות"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:88
-#, fuzzy
 msgid "Combo Box"
-msgstr "The model for the combo box"
+msgstr "תיבת בררה"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:89
-#, fuzzy
 msgid "Combo Box Entry"
-msgstr "Whether combo box has an entry"
+msgstr "רשומת תיבת בררה"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:90
-#, fuzzy
 msgid "Combo Renderer"
-msgstr "המפענח של GStreamer"
+msgstr "מעבר תיבות בררה"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:91
-#, fuzzy
 msgid "Composite Widgets"
-msgstr "< חיפוש בווידג'טים >"
+msgstr "וידג׳טים מרוכבים"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:92
-#, fuzzy
 msgid "Condensed"
-msgstr "_תכנים"
+msgstr "דחוס"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:93
 msgid "Confirm"
@@ -3026,9 +2998,8 @@ msgid "Continuous"
 msgstr "מתמשך"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:98
-#, fuzzy
 msgid "Control Key"
-msgstr "Comprobar tecla Ctrl"
+msgstr "לחצן Ctrl"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:99
 msgid "Control and Display"
@@ -3040,9 +3011,8 @@ msgid "Controlled By"
 msgstr "נשלט על ידי"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:102
-#, fuzzy
 msgid "Controller For"
-msgstr "_תבנית"
+msgstr "בקר עבור"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:103
 msgid "Create Folder"
@@ -3089,9 +3059,8 @@ msgid "Dialog Box"
 msgstr "תיבת דו־שיח"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:116
-#, fuzzy
 msgid "Digits column"
-msgstr "כותרות העמודות"
+msgstr "עמודת הספרות"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:117
 msgid "Discontinuous"
@@ -3154,9 +3123,8 @@ msgid "Eighth Key"
 msgstr "מקש שמיני"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:132
-#, fuzzy
 msgid "Ellipsize column"
-msgstr "כותרות העמודות"
+msgstr "עמודת ההשמטה"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:133
 msgid "Embedded By"
@@ -3177,21 +3145,19 @@ msgstr "התרעת הפעלה"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:137
 msgid "Enter a list of column types for this data store"
-msgstr ""
+msgstr "נא להזין רשימה של סוגי עמודות לאחסון נתונים זה"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:138
 msgid "Enter a list of values to be applied on each row"
-msgstr ""
+msgstr "נא להזין רשימת ערכים שיוצבו בכל שורה"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:139
-#, fuzzy
 msgid "Entry Buffer"
-msgstr "Text Buffer"
+msgstr "אוגר רשומה"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:140
-#, fuzzy
 msgid "Entry Completion"
-msgstr "השלמה אוטומטית"
+msgstr "השלמת רשומה"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:141
 msgid "Error"
@@ -3208,43 +3174,36 @@ msgid "Etched Out"
 msgstr "התרחק"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:144
-#, fuzzy
 msgid "Event Box"
-msgstr "Dialog Box"
+msgstr "תיבת אירוע"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:145
-#, fuzzy
 msgid "Expand"
-msgstr "Expand"
+msgstr "הרחבה"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:146
-#, fuzzy
 msgid "Expanded"
-msgstr "Expanded"
+msgstr "מורחב"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:147
-#, fuzzy
 msgid "Expander"
-msgstr "Is Expander"
+msgstr "מרחיב"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:148
 msgid "Exposure"
 msgstr "חשיפה"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:149
-#, fuzzy
 msgid "Extra Condensed"
-msgstr "ְA3 מוגדל"
+msgstr "יותר דחוס"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:150
-#, fuzzy
 msgid "Extra Expanded"
-msgstr "תצוגה _מורחבת"
+msgstr "יותר מורחב"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:151
-#, fuzzy
 msgid "Family column"
-msgstr "כותרות העמודות"
+msgstr "עמודת משפחה"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:152
 msgid "Fifth Key"
@@ -3341,9 +3300,8 @@ msgid "Frame"
 msgstr "מסגרת"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:175
-#, fuzzy
 msgid "Grow Only"
-msgstr "השהייה בלבד"
+msgstr "גדילה בלבד"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:176
 msgid "Gtk"
@@ -3449,11 +3407,11 @@ msgstr "מקורות סמלים"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:203
 msgid "Icon View"
-msgstr "תצוגת איקונים"
+msgstr "תצוגת סמלים"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:204
 msgid "Icons only"
-msgstr "איקונים בלבד"
+msgstr "סמלים בלבד"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:205
 #, fuzzy
@@ -3592,7 +3550,7 @@ msgstr "הוספת שורה"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:235
 msgid "Intro"
-msgstr ""
+msgstr "הקדמה"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:236
 msgid "Invalid"
@@ -3821,7 +3779,7 @@ msgstr "פעיל"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:293
 msgid "Open"
-msgstr "פתח"
+msgstr "פתיחה"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:294
 msgid "Orientation column"
@@ -4680,7 +4638,7 @@ msgstr "עמודה גלויה"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:496
 msgid "Volume Button"
-msgstr "כפתור עוצמת שמע"
+msgstr "כפתור עצמת שמע"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:497
 msgid "Warning"
@@ -4976,9 +4934,8 @@ msgid "Stock Item:"
 msgstr "פריט ערימה:"
 
 #: ../plugins/gtk+/glade-image-item-editor.c:384
-#, fuzzy
 msgid "Custom label and image:"
-msgstr "תרשימי תמונה ותרשימים אינטראקטיביים"
+msgstr "תווית ותמונה מותאמות אישית:"
 
 #. Add descriptive label
 #: ../plugins/gtk+/glade-icon-factory-editor.c:196
@@ -5003,9 +4960,9 @@ msgid ""
 msgstr ""
 
 #: ../plugins/gtk+/glade-label-editor.c:254
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use an attribute list"
-msgstr "White list of additional plugins to use"
+msgstr "הגדרת %s לשימוש ברשימת מאפיינים"
 
 #: ../plugins/gtk+/glade-label-editor.c:286
 #, c-format
@@ -5013,14 +4970,14 @@ msgid "Setting %s to use a Pango markup string"
 msgstr ""
 
 #: ../plugins/gtk+/glade-label-editor.c:321
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use a pattern string"
-msgstr "ID string to use for this application"
+msgstr "הגדרת %s לשימוש במחרוזת תבנית"
 
 #: ../plugins/gtk+/glade-label-editor.c:357
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to set desired width in characters"
-msgstr "קובע מאפיינים מרובים"
+msgstr "הגדרת %s לצורך הגדרת הרוחב הרצוי בתווים"
 
 #: ../plugins/gtk+/glade-label-editor.c:388
 #, c-format
@@ -5044,26 +5001,22 @@ msgstr ""
 
 #. Label appearance...
 #: ../plugins/gtk+/glade-label-editor.c:538
-#, fuzzy
 msgid "Edit label appearance"
-msgstr "עריכת _תווית מערכת הקבצים"
+msgstr "עריכת מראה התווים"
 
 #. Label formatting...
 #: ../plugins/gtk+/glade-label-editor.c:609
-#, fuzzy
 msgid "Format label"
-msgstr "טקסט התווית"
+msgstr "עיצוב תווית"
 
 #. Line Wrapping...
 #: ../plugins/gtk+/glade-label-editor.c:675
-#, fuzzy
 msgid "Text line wrapping"
-msgstr "Line Wrapping Mode"
+msgstr "הטקסט נשבר בין השורות"
 
 #: ../plugins/gtk+/glade-label-editor.c:694
-#, fuzzy
 msgid "Text wraps normally"
-msgstr "מפענח כתוביות טקסט"
+msgstr "הטקסט גולש כרגיל"
 
 #: ../plugins/gtk+/glade-cell-renderer-editor.c:228
 #, c-format
@@ -5071,14 +5024,14 @@ msgid "Setting %s to use the %s property as an attribute"
 msgstr ""
 
 #: ../plugins/gtk+/glade-cell-renderer-editor.c:246
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use the %s property directly"
-msgstr "השתמש ב-L כדי לגשת ישירות על הפעילות \n"
+msgstr "הגדרת %s לשימוש במאפיין %s ישירות"
 
 #: ../plugins/gtk+/glade-cell-renderer-editor.c:369
-#, fuzzy, c-format
+#, c-format
 msgid "Retrieve %s from model (type %s)"
-msgstr "אחזר את הפרופיל מהתצוגה"
+msgstr "קבלת %s מהדגם (סוג %s)"
 
 #. translators: the adjective not the verb
 #: ../plugins/gtk+/glade-cell-renderer-editor.c:509
@@ -5096,44 +5049,44 @@ msgid ""
 msgstr ""
 
 #: ../plugins/gtk+/glade-entry-editor.c:229
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use static text"
-msgstr "הטקסט לשימוש כתווית"
+msgstr "הגדרת %s לשימוש בטקסט סטטי"
 
 #: ../plugins/gtk+/glade-entry-editor.c:267
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use an external buffer"
-msgstr "External program to use for editing images"
+msgstr "הגדרת %s לשימוש באוגר חיצוני"
 
 #: ../plugins/gtk+/glade-entry-editor.c:352
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use a primary icon from stock"
-msgstr "קובע מאפיינים מרובים"
+msgstr "הגדרת %s לשימוש בסמל עיקרי מערימה"
 
 #: ../plugins/gtk+/glade-entry-editor.c:376
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use a primary icon from the icon theme"
-msgstr "קובע מאפיינים מרובים"
+msgstr "הגדרת %s לשימוש בסמל עיקרי מערכת סמלים"
 
 #: ../plugins/gtk+/glade-entry-editor.c:399
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use a primary icon from filename"
-msgstr "קובע מאפיינים מרובים"
+msgstr "הגדרת %s לשימוש בסמל עיקרי משם קובץ"
 
 #: ../plugins/gtk+/glade-entry-editor.c:424
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use a secondary icon from stock"
-msgstr "קובע מאפיינים מרובים"
+msgstr "הגדרת %s לשימוש בסמל משני מערימה"
 
 #: ../plugins/gtk+/glade-entry-editor.c:448
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use a secondary icon from the icon theme"
-msgstr "קובע מאפיינים מרובים"
+msgstr "הגדרת %s לשימוש בסמל משני מערכת סמלים"
 
 #: ../plugins/gtk+/glade-entry-editor.c:471
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use a secondary icon from filename"
-msgstr "קובע מאפיינים מרובים"
+msgstr "הגדרת %s לשימוש בסמל משני משם קובץ"
 
 #. Primary icon...
 #: ../plugins/gtk+/glade-entry-editor.c:596
