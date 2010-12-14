@@ -2,6 +2,8 @@
 
 	* Reverted 3.0 commit, now targetting this branch to the final GTK+ 2.x chapter
 
+	* Reverted the commit that removes the old fashioned "Custom Widget" handling.
+
 2010-11-12  Johannes Schmid <jhs@gnome.org>
 
 	* gladeui/glade-project.c:
@@ -89,11 +91,6 @@
 
 	* plugins/gtk/gtk+.xml.in, plugins/gtk/glade-gtk.c: Removed all reference to
 	  deprecated GTK+ widgets (anything removed in 3.0).
-
-	* gladeui/Makefile.am, gladeui/glade-custom.[ch]: Removed support for old
-	  fashioned custom widgets from glade-2.
-
-	* plugins/python/Makefile.am: Fixed to link with new core library (libgladeui-2).
 
 2010-06-10  Javier Jardón <jjardon@gnome.org>
 
