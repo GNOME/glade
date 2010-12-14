@@ -1,9 +1,13 @@
+2010-12-14  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* Reverted 3.0 commit, now targetting this branch to the final GTK+ 2.x chapter
+
 2010-11-12  Johannes Schmid <jhs@gnome.org>
 
 	* gladeui/glade-project.c:
 	project-model: Don't be picky about non-existing children
 	It is sometimes possible that children are added before their parents
-	in the tree. We simply ignore that for now as it doesn't 
+	in the tree. We simply ignore that for now as it doesn't
 	cause any harm in the tree model.
 
 2010-10-12  Marco Diego Aurélio Mesquita <marcodiegomesquita@gmail.com>
@@ -78,7 +82,7 @@
 
 	* configure.ac: Require GTK+ 3.0 and change package domain from glade3 -> glade
 
-	* src/Makefile.am, gladeui/Makefile.am: application 'glade-3' -> 'glade', 
+	* src/Makefile.am, gladeui/Makefile.am: application 'glade-3' -> 'glade',
 	  library libgladeui-1 -> libgladeui-2
 
 	* plugins/Makefile.am, plugins/gnome/*: Removed libgnomeui support.

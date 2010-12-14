@@ -7,7 +7,7 @@ m4_define(glade_minor_version, 7)
 m4_define(glade_micro_version, 1)
 m4_define(glade_version, glade_major_version.glade_minor_version.glade_micro_version)
 
-AC_INIT([glade], [glade_version],
+AC_INIT([glade3], [glade_version],
 	[http://bugzilla.gnome.org/enter_bug.cgi?product=glade3])
 	
 AC_CONFIG_HEADERS([config.h])
@@ -53,7 +53,7 @@ AM_PROG_LIBTOOL
 # If any interfaces have been removed since the last public release, then set GLADE_AGE to 0.
 # Reference: http://www.gnu.org/software/libtool/manual.html#Versioning
 GLADE_REVISION=0
-GLADE_CURRENT=0
+GLADE_CURRENT=10
 GLADE_AGE=0
 GLADE_CURRENT_MINUS_AGE=`expr $GLADE_CURRENT - $GLADE_AGE`
 AC_SUBST(GLADE_REVISION)
@@ -121,39 +121,9 @@ GTK_DOC_CHECK(1.9)
 dnl ================================================================
 dnl Check for gtk+
 dnl ================================================================
-# Which gtk+ API version to compile against
-
-AC_MSG_CHECKING([which gtk+ version to compile against])
-AC_ARG_WITH([gtk],
-  [AS_HELP_STRING([--with-gtk=2.0|3.0],[which gtk+ version to compile against (default: 3.0)])],
-  [case "$with_gtk" in
-     2.0|3.0) ;;
-     *) AC_MSG_ERROR([invalid gtk version specified]) ;;
-   esac],
-  [with_gtk=3.0])
-AC_MSG_RESULT([$with_gtk])
-
-case "$with_gtk" in
-  2.0) GTK_API_VERSION=2.0
-       GTK_REQUIRED=2.14.0
-       ;;
-  3.0) GTK_API_VERSION=3.0
-       GTK_REQUIRED=2.90.0
-       ;;
-esac
-
+PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.20 gthread-2.0 libxml-2.0 >= 2.4.0])
 AC_SUBST(GTK_LIBS)
 AC_SUBST(GTK_CFLAGS)
-AC_SUBST([GTK_API_VERSION])
-
-AM_CONDITIONAL([HAVE_GTK_2],[test "$with_gtk" = "2.0"])
-AM_CONDITIONAL([HAVE_GTK_3],[test "$with_gtk" = "3.0"])
-
-PKG_CHECK_MODULES([GTK],[
-  gtk+-$GTK_API_VERSION >= $GTK_REQUIRED
-  libxml-2.0 >= 2.4.0
-])
-
 
 dnl ================================================================
 dnl Check for the unix print widgets in gtk+
@@ -161,6 +131,25 @@ dnl ================================================================
 LIBS=$GTK_LIBS
 AC_CHECK_FUNCS(gtk_print_unix_dialog_new,[have_unix_print=yes]; break,[have_unix_print=no])
 AM_CONDITIONAL(HAVE_GTK_UNIX_PRINT, test x"$have_unix_print" = "xyes")
+
+dnl ================================================================
+dnl Check for optional gnome libs
+dnl ================================================================
+AC_ARG_ENABLE(gnome,
+    AS_HELP_STRING([--disable-gnome], [disable gnome catalog]),
+    check_gnome=$enableval, check_gnome=yes)
+
+if test x"$check_gnome" = x"yes"; then
+  PKG_CHECK_MODULES(GNOME, [libbonoboui-2.0 libgnomeui-2.0],
+    [have_gnome=yes],[have_gnome=no])
+  AC_SUBST(GNOME_LIBS)
+  AC_SUBST(GNOME_CFLAGS)
+else
+  have_gnome=no
+fi
+
+AM_CONDITIONAL(BUILD_GNOME, test x"$have_gnome" = "xyes")
+
 
 dnl ================================================================
 dnl Python for optional python dev libs
@@ -260,10 +249,6 @@ if test "x$_gdk_tgt" = xquartz; then
    AC_SUBST(IGE_MAC_CFLAGS)
 fi
 
-
-AC_SUBST([GLADE_PREFIX])
-
-
 AC_SUBST([AM_CPPFLAGS])
 AC_SUBST([AM_CFLAGS])
 AC_SUBST([AM_CXXFLAGS])
@@ -291,12 +276,16 @@ data/icons/hicolor/scalable/apps/Makefile
 gladeui/Makefile
 gladeui/gladeui.rc
 src/Makefile
-src/glade.rc
+src/glade-3.rc
 plugins/Makefile
 plugins/gtk+/Makefile
 plugins/gtk+/icons/Makefile
 plugins/gtk+/icons/16x16/Makefile
 plugins/gtk+/icons/22x22/Makefile
+plugins/gnome/Makefile
+plugins/gnome/icons/Makefile
+plugins/gnome/icons/16x16/Makefile
+plugins/gnome/icons/22x22/Makefile
 plugins/python/Makefile
 po/Makefile.in
 doc/Makefile
@@ -312,8 +301,8 @@ Configuration:
 
 	Source code location:	 ${srcdir}
 	Compiler:		 ${CC}
-	GTK+ version:            $with_gtk
 	GTK+ UNIX Print Widgets: ${have_unix_print}
+	GNOME UI Widgets:	 ${have_gnome}
 	PYTHON Widgets support:	 ${have_python}
 
 	Build Reference Manual:  ${enable_gtk_doc}

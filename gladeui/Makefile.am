@@ -36,18 +36,23 @@ glade-win32-res.o: glade-previewer.rc
 
 common_defines = \
 	-DG_LOG_DOMAIN=\"GladeUI\"                      \
+	-DGLADE_DATADIR="\"$(pkgdatadir)\""		\
+	-DGLADE_LIBDIR="\"$(pkglibdir)\""		\
 	-DGLADE_CATALOGSDIR="\"$(pkgdatadir)/catalogs\""\
 	-DGLADE_MODULESDIR="\"$(pkglibdir)/modules\""	\
+	-DGLADE_PLUGINSDIR="\"$(pkglibdir)/plugins\""	\
 	-DGLADE_PIXMAPSDIR="\"$(pkgdatadir)/pixmaps\""	\
-	-DGLADE_LOCALEDIR="\"$(datadir)/locale\""\
-  -DGLADE_BINDIR="\"$(bindir)\""
+	-DGLADE_LOCALEDIR="\"$(datadir)/locale\""	\
+	-DGLADE_BINDIR="\"$(bindir)\""
+
+lib_LTLIBRARIES = libgladeui-1.la
 
 BUILT_SOURCES = glade-marshallers.c glade-marshallers.h
 
 EXTRA_DIST = glade-marshallers.list gladeui.rc.in icon-naming-spec.c glade-previewer.rc.in
 
 # The glade-3 core library
-libgladeui_2_la_SOURCES = \
+libgladeui_1_la_SOURCES = \
 	glade-widget-adaptor.c \
 	glade-debug.c \
 	glade-project.c \
@@ -92,24 +97,24 @@ libgladeui_2_la_SOURCES = \
 	glade-editor-table.c \
 	glade-cell-renderer-icon.c
 
-libgladeui_2_la_CPPFLAGS =  \
+libgladeui_1_la_CPPFLAGS =  \
 	$(common_defines)   \
 	-I$(top_srcdir)     \
 	-I$(top_builddir)   \
 	$(AM_CPPFLAGS)
 
-libgladeui_2_la_CFLAGS =    \
+libgladeui_1_la_CFLAGS =    \
 	$(GTK_CFLAGS)       \
 	$(IGE_MAC_BUNDLE_FLAG) \
 	$(IGE_MAC_CFLAGS)  \
 	$(WARN_CFLAGS)      \
 	$(AM_CFLAGS)
 
-libgladeui_2_la_LDFLAGS = -version-info $(GLADE_CURRENT):$(GLADE_REVISION):$(GLADE_AGE) $(AM_LDFLAGS)
-libgladeui_2_la_LIBADD = $(GTK_LIBS) $(IGE_MAC_LIBS)
+libgladeui_1_la_LDFLAGS = -version-info $(GLADE_CURRENT):$(GLADE_REVISION):$(GLADE_AGE) $(AM_LDFLAGS)
+libgladeui_1_la_LIBADD = $(GTK_LIBS) $(IGE_MAC_LIBS)
 
 
-libgladeuiincludedir=$(includedir)/libgladeui-2.0/gladeui
+libgladeuiincludedir=$(includedir)/libgladeui-1.0/gladeui
 libgladeuiinclude_HEADERS = \
 	glade.h \
 	glade-debug.h \
@@ -149,12 +154,12 @@ libgladeuiinclude_HEADERS = \
 
 
 if PLATFORM_WIN32
-libgladeui_2_la_LDFLAGS += -no-undefined
+libgladeui_1_la_LDFLAGS += -no-undefined
 endif
 
 if NATIVE_WIN32
-libgladeui_2_la_LDFLAGS += -Wl,gladeui-win32-res.o -export-symbols gladeui.def
-libgladeui_2_la_DEPENDENCIES = gladeui-win32-res.o gladeui.def
+libgladeui_1_la_LDFLAGS += -Wl,gladeui-win32-res.o -export-symbols gladeui.def
+libgladeui_1_la_DEPENDENCIES = gladeui-win32-res.o gladeui.def
 endif
 
 gladeui-win32-res.o: gladeui.rc
