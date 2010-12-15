@@ -3944,12 +3944,6 @@ glade_gtk_notebook_set_n_pages (GObject *object, const GValue *value)
 			if (old_size == 0 && new_size > 1)
 			{
 				gtab = glade_gtk_notebook_generate_tab (widget, position + 1);
-
-				/* Must tell the project that were adding a widget (so that
-				 * saving works properly & it appears in the inspector properly)
-				 */
-				glade_project_add_object (glade_widget_get_project (widget), 
-							  NULL, gtab->object);
 				
 				/* Must pass through GladeWidget api so that packing props
 				 * are correctly assigned.
@@ -3960,7 +3954,7 @@ glade_gtk_notebook_set_n_pages (GObject *object, const GValue *value)
 			{
 				GtkWidget *tab_placeholder = glade_placeholder_new ();
 
-				g_object_set_data (tab_placeholder, "special-child-type", "tab");
+				g_object_set_data (G_OBJECT (tab_placeholder), "special-child-type", "tab");
 
 				gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook), placeholder, 
 							    tab_placeholder);

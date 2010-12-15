@@ -23,7 +23,7 @@ typedef struct _GladeWidgetClass  GladeWidgetClass;
 
 struct _GladeWidget
 {
-	GObject parent_instance;
+	GInitiallyUnowned parent_instance;
 
 	GladeWidgetAdaptor *adaptor; /* An adaptor class for the object type */
 
@@ -117,7 +117,7 @@ struct _GladeWidget
 
 struct _GladeWidgetClass
 {
-	GObjectClass parent_class;
+	GInitiallyUnownedClass parent_class;
 
 	void         (*add_child)               (GladeWidget *, GladeWidget *, gboolean);
 	void         (*remove_child)            (GladeWidget *, GladeWidget *);
