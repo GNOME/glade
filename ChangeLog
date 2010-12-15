@@ -1,3 +1,18 @@
+2010-12-15  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-project.c: Cleanup glade_project_remove_object(), make sure row_deleted is
+	  fired before modifying internal data structures (and dont use the glade_util_ function
+	  to find a widget iter).
+
+	* plugins/gtk+/glade-gtk.c: Fixed errors when undoing the addition of notebook pages.
+	  The problem at length was an issue of orphaned project widgets left in the project model.
+
+2010-12-14  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* Reverted 3.0 commit, now targetting this branch to the final GTK+ 2.x chapter
+
+	* Reverted the commit that removes the old fashioned "Custom Widget" handling.
+
 2010-11-12  Johannes Schmid <jhs@gnome.org>
 
 	* gladeui/glade-project.c:
