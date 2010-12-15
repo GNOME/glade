@@ -2880,7 +2880,10 @@ glade_project_add_object (GladeProject *project,
 
 	if (glade_project_has_object (project, object))
 	{
-		g_warning ("Trying to add an object to the project that is already in the project\n");
+		/* FIXME: It's possible we need to notify the model iface if this 
+		 * happens to make sure the hierarchy is the same, I dont know, this 
+		 * happens when message dialogs with children are rebuilt but the 
+		 * hierarchy still looks good afterwards. */
 		return;
 	}
 

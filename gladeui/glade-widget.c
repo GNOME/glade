@@ -126,6 +126,8 @@ glade_widget_add_child_impl (GladeWidget  *widget,
 			     GladeWidget  *child,
 			     gboolean      at_mouse)
 {
+	g_object_ref (child);
+
 	/* Safe to set the parent first... setting it afterwards
 	 * creates packing properties, and that is not always
 	 * desirable.
@@ -162,6 +164,8 @@ glade_widget_remove_child_impl (GladeWidget  *widget,
 {
 	glade_widget_adaptor_remove
 		(widget->adaptor, widget->object, child->object);
+
+	g_object_unref (child);
 }
 
 static void
@@ -174,6 +178,8 @@ glade_widget_replace_child_impl (GladeWidget *widget,
 
 	if (gnew_widget)
 	{
+		g_object_ref (gnew_widget);
+
 		gnew_widget->parent = widget;
 
 		/* Set packing actions first so we have access from the plugin
@@ -181,8 +187,13 @@ glade_widget_replace_child_impl (GladeWidget *widget,
 		glade_widget_set_packing_actions (gnew_widget, widget);
 	}
 
-	if (gold_widget && gold_widget != gnew_widget)
-		gold_widget->parent = NULL;
+	if (gold_widget)
+	{ 
+		g_object_unref (gold_widget);
+
+		if (gold_widget != gnew_widget)
+			gold_widget->parent = NULL;
+	}
 
 	glade_widget_adaptor_replace_child 
 		(widget->adaptor, widget->object,
@@ -802,6 +813,11 @@ glade_widget_finalize (GObject *object)
 
 	g_return_if_fail (GLADE_IS_WIDGET (object));
 
+#if 0
+	/* A good way to check if refcounts are balancing at project close time */
+	g_print ("Finalizing widget %s\n", widget->name);
+#endif
+
 	g_free (widget->name);
 	g_free (widget->internal);
 	g_free (widget->support_warning);
@@ -831,7 +847,7 @@ glade_widget_dispose (GObject *object)
 	GladeWidget *child;
 	GList *children, *list;
 
-	g_return_if_fail (GLADE_IS_WIDGET (object));
+	glade_widget_push_superuser ();
 
 	/* Release references by way of object properties... */
 	while (widget->prop_refs)
@@ -840,14 +856,8 @@ glade_widget_dispose (GObject *object)
 		glade_property_set (property, NULL);
 	}
 
-	/* We have to make sure properties release thier references on other widgets first 
-	 * hence the reset (for object properties) */
 	if (widget->properties)
-	{
 		g_list_foreach (widget->properties, (GFunc)reset_object_property, widget->project);
-		g_list_foreach (widget->properties, (GFunc)g_object_unref, NULL);
-		g_list_free (widget->properties);
-	}
 
 	/* Unparent all children */
 	if ((children = 
@@ -863,6 +873,15 @@ glade_widget_dispose (GObject *object)
 		g_list_free (children);
 	}
 
+	/* We have to make sure properties release thier references on other widgets first 
+	 * hence the reset (for object properties) */
+	if (widget->properties)
+	{
+		g_list_foreach (widget->properties, (GFunc)g_object_unref, NULL);
+		g_list_free (widget->properties);
+		widget->properties = NULL;
+	}
+
 	/* We do not keep a reference to internal widgets */
 	glade_widget_set_object (widget, NULL);
 
@@ -875,19 +894,24 @@ glade_widget_dispose (GObject *object)
 	{
 		g_list_foreach (widget->packing_properties, (GFunc)g_object_unref, NULL);
 		g_list_free (widget->packing_properties);
+		widget->packing_properties = NULL;
 	}
 	
 	if (widget->actions)
 	{
 		g_list_foreach (widget->actions, (GFunc)g_object_unref, NULL);
 		g_list_free (widget->actions);
+		widget->actions = NULL;
 	}
 	
 	if (widget->packing_actions)
 	{
 		g_list_foreach (widget->packing_actions, (GFunc)g_object_unref, NULL);
 		g_list_free (widget->packing_actions);
+		widget->packing_actions = NULL;
 	}
+
+	glade_widget_pop_superuser ();
 
 	G_OBJECT_CLASS (glade_widget_parent_class)->dispose (object);
 }
@@ -1919,57 +1943,6 @@ glade_widget_get_from_gobject (gpointer object)
 }
 
 static void
-glade_widget_debug_real (GladeWidget *widget, int indent)
-{
-	g_print ("%*sGladeWidget at %p\n", indent, "", widget);
-	g_print ("%*sname = [%s]\n", indent, "", widget->name ? widget->name : "-");
-	g_print ("%*sinternal = [%s]\n", indent, "", widget->internal ? widget->internal : "-");
-	g_print ("%*sgobject = %p [%s]\n",
-		 indent, "", widget->object, G_OBJECT_TYPE_NAME (widget->object));
-	if (GTK_IS_WIDGET (widget->object))
-		g_print ("%*sgtkwidget->parent = %p\n", indent, "",
-			 gtk_widget_get_parent (GTK_WIDGET(widget->object)));
-	if (GTK_IS_CONTAINER (widget->object)) {
-		GList *children, *l;
-		children = glade_util_container_get_all_children
-			(GTK_CONTAINER (widget->object));
-		for (l = children; l; l = l->next) {
-			GtkWidget *widget_gtk = GTK_WIDGET (l->data);
-			GladeWidget *widget = glade_widget_get_from_gobject (widget_gtk);
-			if (widget) {
-				glade_widget_debug_real (widget, indent + 2);
-			} else if (GLADE_IS_PLACEHOLDER (widget_gtk)) {
-				g_print ("%*sGtkWidget child %p is a placeholder.\n",
-					 indent + 2, "", widget_gtk);
-			} else {
-				g_print ("%*sGtkWidget child %p [%s] has no glade widget.\n",
-					 indent + 2, "",
-					 widget_gtk, G_OBJECT_TYPE_NAME (widget_gtk));
-			}
-		}
-		if (!children)
-			g_print ("%*shas no children\n", indent, "");
-		g_list_free (children);
-	} else {
-		g_print ("%*snot a container\n", indent, "");
-	}
-	g_print ("\n");
-}
-
-/**
- * glade_widget_debug:
- * @widget: a #GladeWidget
- *
- * Prints some information about a #GladeWidget, currently
- * this is unmaintained.
- */
-static void
-glade_widget_debug (GladeWidget *widget)
-{
-	glade_widget_debug_real (widget, 0);
-}
-
-static void
 glade_widget_add_to_layout (GladeWidget *widget, GtkWidget *layout)
 {
 	if (gtk_bin_get_child (GTK_BIN (layout)) != NULL)
@@ -2387,6 +2360,11 @@ glade_widget_rebuild (GladeWidget *gwidget)
 
 	adaptor = gwidget->adaptor;
 
+	g_object_ref (gwidget);
+
+	/* Extract and keep the child hierarchies aside... */
+	children = glade_widget_extract_children (gwidget);
+
 	/* Here we take care removing the widget from the project and
 	 * the selection before rebuilding the instance.
 	 */
@@ -2406,10 +2384,8 @@ glade_widget_rebuild (GladeWidget *gwidget)
 		glade_project_remove_object (gwidget->project, gwidget->object);
 	}
 
-	/* Extract and keep the child hierarchies aside... */
-	children = glade_widget_extract_children (gwidget);
-
-	/* parentless_widget and object properties that reffer to this widget should be unset before transfering */
+	/* parentless_widget and object properties that reffer to this widget 
+	 * should be unset before transfering */
 	l = g_list_copy (gwidget->properties);
 	save_properties = g_list_copy (gwidget->prop_refs);
 	save_properties = g_list_concat (l, save_properties);
@@ -2511,6 +2487,8 @@ glade_widget_rebuild (GladeWidget *gwidget)
  	/* We shouldnt show if its not already visible */
 	if (gwidget->visible)
 		glade_widget_show (gwidget);
+
+	g_object_unref (gwidget);
 }
 
 /**

@@ -15,6 +15,11 @@
 	  that will be implicitly added, now glade-gtk.c does not directly manually add any
 	  widgets to the project).
 
+	* gladeui/glade-widget.c, gladeui/glade-project.c: Fixed some final things with
+	  new GInitiallyUnowned strategy, push superuser mode at dispose time so that
+	  the plugin doesnt screw up, also hold a ref to widgets being rebuilt since
+	  they can go out and into the project.
+
 2010-12-14  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* Reverted 3.0 commit, now targetting this branch to the final GTK+ 2.x chapter
