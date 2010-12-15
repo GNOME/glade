@@ -3340,14 +3340,12 @@ glade_gtk_frame_post_create (GladeWidgetAdaptor *adaptor,
 							   NULL);
 
 		label_text = g_strdup_printf ("<b>%s</b>", glade_widget_get_name (gframe));
-
 		glade_widget_property_set (glabel, "label", label_text);
 		glade_widget_property_set (glabel, "use-markup", "TRUE");
+		g_free (label_text);
 
 		g_object_set_data (glabel->object, "special-child-type", "label_item");
-		gtk_frame_set_label_widget (GTK_FRAME (frame), GTK_WIDGET (glabel->object));
-		gtk_widget_show (GTK_WIDGET (glabel->object));
-		g_free (label_text);
+		glade_widget_add_child (gframe, glabel, FALSE);
 
 		/* add alignment */
 		galignment = glade_widget_adaptor_create_widget (alignment_adaptor, FALSE,
@@ -3356,8 +3354,7 @@ glade_gtk_frame_post_create (GladeWidgetAdaptor *adaptor,
 					                       NULL);
 
 		glade_widget_property_set (galignment, "left-padding", 12);
-		gtk_container_add (GTK_CONTAINER (frame), GTK_WIDGET (galignment->object));
-		gtk_widget_show (GTK_WIDGET (galignment->object));
+		glade_widget_add_child (gframe, galignment, FALSE);
 	}
 
 	/* Chain Up */
@@ -4612,10 +4609,7 @@ glade_gtk_expander_post_create (GladeWidgetAdaptor *adaptor,
 		glade_widget_property_set (glabel, "label", "expander");
 
 		g_object_set_data (glabel->object, "special-child-type", "label_item");
-		gtk_expander_set_label_widget (GTK_EXPANDER (expander), 
-					       GTK_WIDGET (glabel->object));
-
-		gtk_widget_show (GTK_WIDGET (glabel->object));
+		glade_widget_add_child (gexpander, glabel, FALSE);
 	}
 
 	gtk_expander_set_expanded (GTK_EXPANDER (expander), TRUE);

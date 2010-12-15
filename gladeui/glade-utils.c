@@ -1023,7 +1023,7 @@ glade_util_find_iter (GtkTreeModel *model,
 		      gint          column)
 {
 	GtkTreeIter *retval = NULL;
-	GObject* object;
+	GObject* object = NULL;
 	GtkTreeIter *next;
 
 	g_return_val_if_fail (GTK_IS_TREE_MODEL (model), NULL);
@@ -1049,7 +1049,9 @@ glade_util_find_iter (GtkTreeModel *model,
 				break;
 		}
 
-		g_object_unref (object);
+		if (object &&
+		    gtk_tree_model_get_column_type (model, column) == G_TYPE_OBJECT)
+			g_object_unref (object);
 		
 		if (!gtk_tree_model_iter_next (model, next))
 			break;
