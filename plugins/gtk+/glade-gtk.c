@@ -1392,9 +1392,10 @@ glade_gtk_container_set_child_property (GladeWidgetAdaptor *adaptor,
 					const gchar        *property_name,
 					const GValue       *value)
 {
-	gtk_container_child_set_property (GTK_CONTAINER (container),
-					  GTK_WIDGET (child),
-					  property_name, value);
+	if (gtk_widget_get_parent (GTK_WIDGET (child)) == GTK_WIDGET (container))
+		gtk_container_child_set_property (GTK_CONTAINER (container),
+						  GTK_WIDGET (child),
+						  property_name, value);
 }
 
 void
@@ -1404,9 +1405,10 @@ glade_gtk_container_get_child_property (GladeWidgetAdaptor *adaptor,
 					const gchar        *property_name,
 					GValue             *value)
 {
-	gtk_container_child_get_property (GTK_CONTAINER (container),
-					  GTK_WIDGET (child),
-					  property_name, value);
+	if (gtk_widget_get_parent (GTK_WIDGET (child)) == GTK_WIDGET (container))
+		gtk_container_child_get_property (GTK_CONTAINER (container),
+						  GTK_WIDGET (child),
+						  property_name, value);
 }
 
 
@@ -1720,6 +1722,9 @@ glade_gtk_box_set_child_property (GladeWidgetAdaptor *adaptor,
 	gchild = glade_widget_get_from_gobject (child);
 
 	g_return_if_fail (GLADE_IS_WIDGET (gbox));
+
+	if (gtk_widget_get_parent (GTK_WIDGET (child)) != GTK_WIDGET (container))
+		return;
 
 	/* Get old position */
 	if ((is_position = (strcmp (property_name, "position") == 0)) != FALSE)
@@ -5764,6 +5769,25 @@ glade_gtk_file_chooser_widget_post_create (GladeWidgetAdaptor *adaptor,
 			      NULL);
 }
 
+void
+glade_gtk_file_chooser_button_set_property (GladeWidgetAdaptor *adaptor,
+					    GObject            *object, 
+					    const gchar        *id,
+					    const GValue       *value)
+{
+	/* Avoid a warning */
+	if (!strcmp (id, "action"))
+	{
+		if (g_value_get_enum (value) == GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER ||
+		    g_value_get_enum (value) == GTK_FILE_CHOOSER_ACTION_SAVE)
+		    return;
+	}
+
+	GWA_GET_CLASS (GTK_TYPE_BOX)->set_property (adaptor,
+						    object,
+						    id, value);
+}
+
 /* ----------------------------- GtkFontButton ------------------------------ */
 /* Use the font-buttons launch dialog to actually set the font-name
  * glade property through the glade-command api.
@@ -8830,6 +8854,13 @@ glade_gtk_combo_box_set_property (GladeWidgetAdaptor *adaptor,
 {
 	if (!strcmp (id, "items"))
 		glade_gtk_combo_box_set_items (object, value);
+	else if (!strcmp (id, "entry-text-column"))
+	{
+		/* Avoid warnings */
+		if (g_value_get_int (value) >= 0)
+			gtk_combo_box_set_entry_text_column (GTK_COMBO_BOX (object),
+							     g_value_get_int (value));
+	}
 	else
 		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor,
 								  object,
@@ -8901,6 +8932,16 @@ glade_gtk_spin_button_set_adjustment (GObject *object, const GValue *value)
 	if (adjustment && GTK_IS_ADJUSTMENT (adjustment))
 	{
 		adj = GTK_ADJUSTMENT (adjustment);
+
+		if (gtk_adjustment_get_page_size (adj) > 0)
+		{
+			GladeWidget *gadj = glade_widget_get_from_gobject (adj);
+
+			/* Silently set any spin-button adjustment page size to 0 */
+			glade_widget_property_set (gadj, "page-size", 0.0F);
+			gtk_adjustment_set_page_size (adj, 0);
+		}
+
 		gtk_spin_button_set_adjustment (GTK_SPIN_BUTTON (object), adj);
 		gtk_spin_button_set_value (GTK_SPIN_BUTTON (object),
 					   gtk_adjustment_get_value (adj));
