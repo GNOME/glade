@@ -4189,8 +4189,6 @@ glade_gtk_notebook_replace_child (GladeWidgetAdaptor *adaptor,
 		glade_widget_pack_property_get (gcurrent, "position", &position);
 	else
 	{
-		g_assert (GLADE_IS_PLACEHOLDER (current));
-
 		if ((position = gtk_notebook_page_num (notebook, current)) < 0)
 		{
 			position = notebook_search_tab (notebook, current);
