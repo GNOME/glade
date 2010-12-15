@@ -20,6 +20,13 @@
 	  the plugin doesnt screw up, also hold a ref to widgets being rebuilt since
 	  they can go out and into the project.
 
+	* plugins/gtk+/glade-gtk.c: Make sure any manually created glade widgets pass
+	  through glade_widget_add_child() and get a proper ref from the parent (fixing
+	  more last minute crahsers).
+
+	* gladeui/glade-utils.c: Fixed crasher bug 628233 partially using patch by
+	  ramz <ramanathan.nitt@gmail.com>.
+
 2010-12-14  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* Reverted 3.0 commit, now targetting this branch to the final GTK+ 2.x chapter
