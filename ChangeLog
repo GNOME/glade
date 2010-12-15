@@ -7,6 +7,14 @@
 	* plugins/gtk+/glade-gtk.c: Fixed errors when undoing the addition of notebook pages.
 	  The problem at length was an issue of orphaned project widgets left in the project model.
 
+	* gladeui/glade-widget.[ch], gladeui/glade-project.c, plugins/gtk+/glade-gtk.c: Cleanup
+	  object ref count cycles, now GladeProject just releases all widgets from the project
+	  and keeps a reference to the GladeWidget instead of the GObject, GladeWidget is now
+	  GInitiallyUnowned and GladeProject assumes ownership when objects are added to the
+	  project (glade-gtk.c in this patch avoids needlessly adding a widget to the project
+	  that will be implicitly added, now glade-gtk.c does not directly manually add any
+	  widgets to the project).
+
 2010-12-14  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* Reverted 3.0 commit, now targetting this branch to the final GTK+ 2.x chapter

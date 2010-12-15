@@ -263,9 +263,7 @@ static void
 glade_project_dispose (GObject *object)
 {
 	GladeProject  *project = GLADE_PROJECT (object);
-	GList   *list;
-	GladeWidget   *gwidget;
-	GladeProperty *property;
+	GList         *list, *tree;
 	
 	/* Emit close signal */
 	g_signal_emit (object, glade_project_signals [CLOSE], 0);
@@ -275,41 +273,11 @@ glade_project_dispose (GObject *object)
 	glade_project_list_unref (project->priv->undo_stack);
 	project->priv->undo_stack = NULL;
 
-	/* Unparent all widgets in the heirarchy first 
-	 * (Since we are bookkeeping exact reference counts, we 
-	 * dont want the hierarchy to just get destroyed)
-	 */
-	for (list = project->priv->objects; list; list = list->next)
-	{
-		gwidget = glade_widget_get_from_gobject (list->data);
-
-		if (gwidget->parent &&
-		    gwidget->internal == NULL &&
-		    glade_widget_adaptor_has_child (gwidget->parent->adaptor,
-						    gwidget->parent->object,
-						    gwidget->object))
-			glade_widget_remove_child (gwidget->parent, gwidget);
-
-		/* Release references by way of object properties... */
-		while (gwidget->prop_refs)
-		{
-			property = GLADE_PROPERTY (gwidget->prop_refs->data);
-			glade_property_set (property, NULL);
-		}
-	}
-
 	/* Remove objects from the project */
-	for (list = project->priv->objects; list; list = list->next)
-	{
-		gwidget = glade_widget_get_from_gobject (list->data);
-		g_object_unref (G_OBJECT (list->data)); /* Remove the GladeProject reference */
-		g_object_unref (G_OBJECT (gwidget));  /* Remove the overall "Glade" reference */
-	}
-	g_list_free (list);
-	g_list_free (project->priv->objects);
-	g_list_free (project->priv->tree);
-	project->priv->tree = NULL;
-	project->priv->objects = NULL;
+	tree = g_list_copy (project->priv->tree);
+	for (list = tree; list; list = list->next)
+		glade_project_remove_object (project, list->data);
+	g_list_free (tree);
 
 	G_OBJECT_CLASS (glade_project_parent_class)->dispose (object);
 }
@@ -1472,9 +1440,7 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 			continue;
 
 		if ((widget = glade_widget_read (project, NULL, node, NULL)) != NULL)
-		{
 			glade_project_add_object (project, NULL, widget->object);
-		}
 	}
 
 	if (!has_gtk_dep)
@@ -2895,7 +2861,7 @@ glade_project_add_object (GladeProject *project,
 	GladeWidget      *gwidget;
 	GList            *list, *children;
 	gchar            *name;
-	GtkTreeIter      iter;
+	GtkTreeIter       iter;
 	GtkTreePath	 *path;
 
 	g_return_if_fail (GLADE_IS_PROJECT (project));
@@ -2911,10 +2877,12 @@ glade_project_add_object (GladeProject *project,
 	 */
 	if ((gwidget = glade_widget_get_from_gobject (object)) == NULL)
 		return;
-		
-	/* set the project */
-	if (gwidget->project != project)
-		glade_widget_set_project (gwidget, project);
+
+	if (glade_project_has_object (project, object))
+	{
+		g_warning ("Trying to add an object to the project that is already in the project\n");
+		return;
+	}
 
 	/* Create a name context for newly added toplevels... */
 	if (!gwidget->parent)
@@ -2938,7 +2906,7 @@ glade_project_add_object (GladeProject *project,
 	glade_project_reserve_widget_name (project, gwidget, gwidget->name);
 
 	glade_widget_set_project (gwidget, (gpointer)project);
-	g_object_ref (object);
+	g_object_ref_sink (gwidget);
 
 	if (glade_widget_get_parent (gwidget) == NULL)
 	{
@@ -2947,8 +2915,7 @@ glade_project_add_object (GladeProject *project,
 	}
 
 	/* Be sure to update the list before emitting signals */
-	project->priv->objects = g_list_prepend (project->priv->objects,
-	                                         object);
+	project->priv->objects = g_list_prepend (project->priv->objects, object);
 
 	if (!project->priv->loading)
 	{
@@ -2996,8 +2963,6 @@ glade_project_has_object (GladeProject *project, GObject *object)
 	return (g_list_find (project->priv->objects, object)) != NULL;
 }
 
-
-GladeWidget *project_debug_widget;
 /**
  * glade_project_remove_object:
  * @project: a #GladeProject
@@ -3025,8 +2990,6 @@ glade_project_remove_object (GladeProject *project, GObject *object)
 
 	if ((gwidget = glade_widget_get_from_gobject (object)) == NULL)
 		return;
-
-	project_debug_widget = gwidget;
 
 	/* Recurse and remove deepest children first */
 	if ((children = 
@@ -3062,7 +3025,7 @@ glade_project_remove_object (GladeProject *project, GObject *object)
 	}
 
 	project->priv->objects = g_list_remove (project->priv->objects, object);
-	g_object_unref (object);
+	g_object_unref (gwidget);
 
 	project->priv->stamp++;
 
