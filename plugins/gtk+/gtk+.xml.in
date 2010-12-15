@@ -1011,6 +1011,7 @@ embedded in another object</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkFileChooserButton" generic-name="filechooserbutton" _title="File Chooser Button">
+      <set-property-function>glade_gtk_file_chooser_button_set_property</set-property-function>
 
       <signals>
 	<signal id="file-set" since="2.12"/>
@@ -1033,6 +1034,7 @@ embedded in another object</_tooltip>
 	<property id="preview-widget" parentless-widget="True" libglade-unsupported="True"/>
 	<property id="filter" libglade-unsupported="True"/>
 	<property id="create-folders" since="2.18"/>
+	<property id="select-multiple" disabled="True"/>
       </properties>
     </glade-widget-class>
 
