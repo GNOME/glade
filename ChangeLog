@@ -27,6 +27,9 @@
 	* gladeui/glade-utils.c: Fixed crasher bug 628233 partially using patch by
 	  ramz <ramanathan.nitt@gmail.com>.
 
+	* gladeui/glade-project.c: Fix glade_project_fix_object_props() to copy the
+	  list which risks changing order while iterating.
+
 2010-12-14  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* Reverted 3.0 commit, now targetting this branch to the final GTK+ 2.x chapter

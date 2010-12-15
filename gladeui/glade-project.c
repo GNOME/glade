@@ -963,13 +963,14 @@ glade_project_new (void)
 static void 
 glade_project_fix_object_props (GladeProject *project)
 {
-	GList         *l, *ll;
+	GList         *l, *ll, *objects;
 	GValue        *value;
 	GladeWidget   *gwidget;
 	GladeProperty *property;
 	gchar         *txt;
 
-	for (l = project->priv->objects; l; l = l->next)
+	objects = g_list_copy (project->priv->objects);
+	for (l = objects; l; l = l->next)
 	{
 		gwidget = glade_widget_get_from_gobject (l->data);
 
@@ -998,6 +999,7 @@ glade_project_fix_object_props (GladeProject *project)
 			}
 		}
 	}
+	g_list_free (objects);
 }
 
 static gchar *
