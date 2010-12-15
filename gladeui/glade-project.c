@@ -2997,6 +2997,7 @@ glade_project_has_object (GladeProject *project, GObject *object)
 }
 
 
+GladeWidget *project_debug_widget;
 /**
  * glade_project_remove_object:
  * @project: a #GladeProject
@@ -3012,9 +3013,9 @@ void
 glade_project_remove_object (GladeProject *project, GObject *object)
 {
 	GladeWidget   *gwidget;
-	GList         *list, *children;
-	GtkTreeIter* iter;
-	GtkTreePath* path;
+	GList         *list, *children, *link;
+	GtkTreeIter    iter;
+	GtkTreePath   *path;
 	
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (G_IS_OBJECT      (object));
@@ -3024,7 +3025,10 @@ glade_project_remove_object (GladeProject *project, GObject *object)
 
 	if ((gwidget = glade_widget_get_from_gobject (object)) == NULL)
 		return;
-	
+
+	project_debug_widget = gwidget;
+
+	/* Recurse and remove deepest children first */
 	if ((children = 
 	     glade_widget_get_children (gwidget)) != NULL)
 	{
@@ -3032,38 +3036,35 @@ glade_project_remove_object (GladeProject *project, GObject *object)
 			glade_project_remove_object (project, G_OBJECT (list->data));
 		g_list_free (children);
 	}
-	
+
+	/* Notify views that the row is being deleted *before* deleting it */
+	glade_project_model_get_iter_for_object (project, object, &iter);
+
+	path = gtk_tree_model_get_path (GTK_TREE_MODEL (project), &iter);
+	gtk_tree_model_row_deleted (GTK_TREE_MODEL (project), path);
+	gtk_tree_path_free (path);
+
+	/* Remove selection and release name from the name context */
 	glade_project_selection_remove (project, object, TRUE);
+	glade_project_release_widget_name (project, gwidget,
+					   glade_widget_get_name (gwidget));
+
+	g_signal_emit (G_OBJECT (project),
+		       glade_project_signals [REMOVE_WIDGET],
+		       0,
+		       gwidget);
+
+	/* Update internal data structure (remove from lists) */
+	link = g_list_find (project->priv->tree, object);
+	if (link)
+	{
+		project->priv->tree = g_list_delete_link (project->priv->tree, link);
+	}
 
 	project->priv->objects = g_list_remove (project->priv->objects, object);
-	
-	iter = glade_util_find_iter_by_widget (GTK_TREE_MODEL (project), gwidget,
-	                                       GLADE_PROJECT_MODEL_COLUMN_OBJECT);
-	if (iter)					       
-	{
-		GList *link = g_list_find (project->priv->tree, object);
+	g_object_unref (object);
 
-		path = gtk_tree_model_get_path (GTK_TREE_MODEL (project),
-		                                iter);
-		gtk_tree_model_row_deleted (GTK_TREE_MODEL (project),
-		                            path);
-		project->priv->stamp++;
-		g_object_unref (object);
-		glade_project_release_widget_name (project, gwidget,
-						   glade_widget_get_name (gwidget));
-			
-
-		if (link)
-		{
-			project->priv->tree = g_list_delete_link (project->priv->tree, link);
-		}
-		
-		g_signal_emit (G_OBJECT (project),
-			       glade_project_signals [REMOVE_WIDGET],
-			       0,
-			       gwidget);
-		gtk_tree_iter_free (iter);
-	}
+	project->priv->stamp++;
 
 	glade_project_update_previewable (project);
 }
