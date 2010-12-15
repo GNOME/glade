@@ -802,8 +802,6 @@ glade_widget_finalize (GObject *object)
 
 	g_return_if_fail (GLADE_IS_WIDGET (object));
 
-	g_print ("Finalizing a widget with name %s\n", widget->name);
-
 	g_free (widget->name);
 	g_free (widget->internal);
 	g_free (widget->support_warning);
