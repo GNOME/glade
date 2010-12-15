@@ -3882,10 +3882,35 @@ glade_gtk_notebook_get_first_blank_page (GtkNotebook *notebook)
 	return position;
 }
 
+static GladeWidget *
+glade_gtk_notebook_generate_tab (GladeWidget  *notebook,
+				 gint          page_id)
+{
+	static GladeWidgetAdaptor *wadaptor = NULL;
+	gchar       *str;
+	GladeWidget *glabel;
+
+	if (wadaptor == NULL)
+		wadaptor = glade_widget_adaptor_get_by_type (GTK_TYPE_LABEL);
+
+	glabel = glade_widget_adaptor_create_widget (wadaptor, FALSE,
+						     "parent", notebook, 
+						     "project", glade_widget_get_project (notebook), 
+						     NULL);
+	
+	str = g_strdup_printf ("page %d", page_id);
+	glade_widget_property_set (glabel, "label", str);
+	g_free (str);
+	
+	g_object_set_data (glabel->object, "special-child-type", "tab");
+	gtk_widget_show (GTK_WIDGET (glabel->object));
+
+	return glabel;
+}
+
 static void
 glade_gtk_notebook_set_n_pages (GObject *object, const GValue *value)
 {
-	static GladeWidgetAdaptor *wadaptor = NULL;
 	GladeWidget *widget;
 	GtkNotebook *notebook;
 	GtkWidget   *child_widget, *tab_widget;
@@ -3899,9 +3924,7 @@ glade_gtk_notebook_set_n_pages (GObject *object, const GValue *value)
 	g_return_if_fail (widget != NULL);
 
 	new_size = g_value_get_int (value);
-
-	if (wadaptor == NULL)
-		wadaptor = glade_widget_adaptor_get_by_type (GTK_TYPE_LABEL);
+	old_size = gtk_notebook_get_n_pages (GTK_NOTEBOOK (notebook));
 	
 	/* Ensure base size of notebook */
 	if (glade_widget_superuser () == FALSE)
@@ -3910,37 +3933,40 @@ glade_gtk_notebook_set_n_pages (GObject *object, const GValue *value)
 		{
 			gint position = glade_gtk_notebook_get_first_blank_page (notebook);
 			GtkWidget *placeholder = glade_placeholder_new ();
-			gchar *str;
+			GladeWidget *gtab;
 
-			GladeWidget *glabel =
-				glade_widget_adaptor_create_widget
-				(wadaptor, FALSE,
-				 "parent", widget, 
-				 "project", glade_widget_get_project (widget), 
-				 NULL);
-			str = g_strdup_printf ("page %d", i + 1);
-			glade_widget_property_set (glabel, "label", str);
-			g_free (str);
-			
-			g_object_set_data (glabel->object, "special-child-type", "tab");
-			gtk_widget_show (GTK_WIDGET (glabel->object));
-			
-			gtk_notebook_insert_page (notebook, placeholder,
-						  NULL, position);
+			gtk_notebook_insert_page (notebook, placeholder, NULL, position);
 
-			/* Must tell the project that were adding a widget (so that
-			 * saving works properly & it appears in the inspector properly)
+			/* XXX Ugly hack amongst many, this one only creates project widgets
+			 * when the 'n-pages' of a notebook is initially set, otherwise it puts
+			 * placeholders. (this makes the job easier when doing "insert before/after")
 			 */
-			glade_project_add_object (glade_widget_get_project (widget), NULL, glabel->object);
+			if (old_size == 0 && new_size > 1)
+			{
+				gtab = glade_gtk_notebook_generate_tab (widget, position + 1);
 
-			/* Must pass through GladeWidget api so that packing props
-			 * are correctly assigned.
-			 */
-			glade_widget_add_child (widget, glabel, FALSE);
+				/* Must tell the project that were adding a widget (so that
+				 * saving works properly & it appears in the inspector properly)
+				 */
+				glade_project_add_object (glade_widget_get_project (widget), 
+							  NULL, gtab->object);
+				
+				/* Must pass through GladeWidget api so that packing props
+				 * are correctly assigned.
+				 */
+				glade_widget_add_child (widget, gtab, FALSE);
+			}
+			else
+			{
+				GtkWidget *tab_placeholder = glade_placeholder_new ();
+
+				g_object_set_data (tab_placeholder, "special-child-type", "tab");
+
+				gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook), placeholder, 
+							    tab_placeholder);
+			}
 		}
 	}
-
-	old_size = gtk_notebook_get_n_pages (GTK_NOTEBOOK (notebook));
 
 	/*
 	 * Thing to remember is that GtkNotebook starts the
@@ -3948,8 +3974,8 @@ glade_gtk_notebook_set_n_pages (GObject *object, const GValue *value)
 	 * old_size-1, where we're referring to "nth" widget.
 	 */
 	while (old_size > new_size) {
-		/* Get the last widget. */
-		GladeWidget *gtab;
+		/* Get the last page and remove it (project objects have been cleared by
+		 * the action code already). */
 		child_widget = gtk_notebook_get_nth_page (notebook, old_size-1);
 		tab_widget   = gtk_notebook_get_tab_label (notebook, child_widget);
 
@@ -3962,14 +3988,6 @@ glade_gtk_notebook_set_n_pages (GObject *object, const GValue *value)
 			g_critical ("Bug in notebook_set_n_pages()");
 		
 		gtk_notebook_remove_page (notebook, old_size-1);
-
-		/* Cleanup possible tab widgets
-		 */
-		if ((gtab = glade_widget_get_from_gobject (tab_widget)) != NULL)
-		{
-			glade_project_remove_object (glade_widget_get_project (gtab), gtab->object);
-			g_object_unref (gtab);
-		}
 
 		old_size--;
 	}
@@ -4349,7 +4367,7 @@ glade_gtk_box_notebook_child_insert_remove_action (GladeWidgetAdaptor *adaptor,
 		offset = 1;
 	}
 	
-	/* Reoder children */
+	/* Reoder children (fix the position property tracking widget positions) */
 	for (l = g_list_last (children); l; l = g_list_previous (l))
 	{
 		GladeWidget *gchild = glade_widget_get_from_gobject (l->data);
@@ -4369,6 +4387,25 @@ glade_gtk_box_notebook_child_insert_remove_action (GladeWidgetAdaptor *adaptor,
 		/* Shrink container */
 		glade_command_set_property (glade_widget_get_property (parent, size_prop),
 					    size - 1);
+	}
+	/* If it's a notebook we need to create an undoable tab now */
+	else if (GTK_IS_NOTEBOOK (container))
+	{
+		gint       new_pos = after ? child_pos + 1 : child_pos;
+		GtkWidget *new_page;
+		GtkWidget *tab_placeholder;
+		GladeWidget *gtab;
+		GList       list = { 0, };
+
+		new_page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (container), new_pos);
+
+		/* Deleting the project widget gives us a real placeholder now */
+		new_page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (container), new_pos);
+		tab_placeholder = gtk_notebook_get_tab_label (GTK_NOTEBOOK (container), new_page);
+		gtab = glade_gtk_notebook_generate_tab (parent, new_pos + 1);
+		list.data = gtab;
+
+		glade_command_paste (&list, parent, GLADE_PLACEHOLDER (tab_placeholder));
 	}
 	
 	g_list_foreach (children, (GFunc) g_object_unref, NULL);
