@@ -8925,8 +8925,9 @@ glade_gtk_combo_box_set_property (GladeWidgetAdaptor *adaptor,
 	{
 		/* Avoid warnings */
 		if (g_value_get_int (value) >= 0)
-			gtk_combo_box_set_entry_text_column (GTK_COMBO_BOX (object),
-							     g_value_get_int (value));
+			GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor,
+									  object,
+									  id, value);
 	}
 	else
 		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor,
