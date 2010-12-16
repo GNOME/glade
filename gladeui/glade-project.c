@@ -2773,7 +2773,9 @@ glade_project_set_widget_name (GladeProject *project,
 			       GladeWidget  *widget, 
 			       const gchar  *name)
 {
-	gchar  *new_name;
+	gchar       *new_name;
+	GtkTreeIter  iter;
+	GtkTreePath *path;
 
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
@@ -2800,6 +2802,12 @@ glade_project_set_widget_name (GladeProject *project,
 		       0, widget);
 
 	g_free (new_name);
+
+	/* Notify views about the iter change */
+	glade_project_model_get_iter_for_object (project, widget->object, &iter);
+	path = gtk_tree_model_get_path (GTK_TREE_MODEL (project), &iter);
+	gtk_tree_model_row_changed (GTK_TREE_MODEL (project), path, &iter);
+	gtk_tree_path_free (path);
 }
 
 static gint
@@ -2924,11 +2932,14 @@ glade_project_add_object (GladeProject *project,
 
 	if (!project->priv->loading)
 	{
+		/* The state of old iters go invalid and then the new iter is valid
+		 * until the next change */
+		project->priv->stamp++;
+
 		glade_project_model_get_iter_for_object (project, object, &iter);
 		path = gtk_tree_model_get_path (GTK_TREE_MODEL (project), &iter);
-	
 		gtk_tree_model_row_inserted (GTK_TREE_MODEL (project), path, &iter);
-		project->priv->stamp++;
+		gtk_tree_path_free (path);
 	}
 
 	/* NOTE: Sensitive ordering here, we need to recurse after updating

@@ -3,6 +3,10 @@
 	* plugins/gtk+/glade-gtk.c: Avoid using gtk_combo_box_set_entry_text_column directly (build
 	  for GTK+ 2.20).
 
+	* gladeui/glade-project.c: Notify iter changes when the widget name changes, increment project
+	  iter stamp before notifying row-inserted (old iters are invalid, the new iter persists),
+	  fixed leaked GtkTreePath when rows are inserted.
+
 2010-12-15  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-project.c: Cleanup glade_project_remove_object(), make sure row_deleted is
