@@ -82,8 +82,6 @@ struct _GladeProjectPrivate
 {
 	gchar *path;            /* The full canonical path of the glade file for this project */
 
-	guint   instance_count; /* How many projects with this name */
-
 	gint   unsaved_number;  /* A unique number for this project if it is untitled */
 
 	gboolean readonly;      /* A flag that is set if the project is readonly */
@@ -647,7 +645,6 @@ glade_project_init (GladeProject *project)
 		G_TYPE_INSTANCE_GET_PRIVATE ((project), GLADE_TYPE_PROJECT, GladeProjectPrivate);
 
 	priv->path = NULL;
-	priv->instance_count = 0;
 	priv->readonly = FALSE;
 	priv->tree = NULL;
 	priv->toplevels = NULL;
@@ -3757,22 +3754,6 @@ glade_project_get_objects (GladeProject *project)
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
 
 	return project->priv->objects;
-}
-
-guint
-glade_project_get_instance_count (GladeProject *project)
-{
-	g_return_val_if_fail (GLADE_IS_PROJECT (project), 0);
-
-	return project->priv->instance_count;
-}
-
-void
-glade_project_set_instance_count (GladeProject *project, guint instance_count)
-{
-	g_return_if_fail (GLADE_IS_PROJECT (project));
-
-	project->priv->instance_count = instance_count;
 }
 
 /** 

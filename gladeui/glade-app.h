@@ -166,9 +166,6 @@ void               glade_app_set_accel_group (GtkAccelGroup *accel_group);
 
 GtkAccelGroup     *glade_app_get_accel_group (void);
  
-void               glade_app_update_instance_count  (GladeProject *project);
-
- 
 GtkWidget         *glade_app_undo_button_new (void);
  
 GtkWidget         *glade_app_redo_button_new (void);

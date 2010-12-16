@@ -931,50 +931,6 @@ glade_app_hide_properties (void)
 }
 
 void
-glade_app_update_instance_count (GladeProject *project)
-{
-	GladeApp  *app;
-	GList *l;
-	gint temp, max = 0, i = 0, uncounted_projects = 0;
-	gchar *project_name;
-
-	g_return_if_fail (GLADE_IS_PROJECT (project));
-		
-	if (glade_project_get_instance_count (project) > 0)
-		return;
-
-	project_name = glade_project_get_name (project);
-
-	app = glade_app_get ();
-
-	for (l = app->priv->projects; l; l = l->next)
-	{
-		GladeProject *prj = GLADE_PROJECT (l->data);
-		gchar *name = glade_project_get_name (project);
-
-		if (prj != project && !g_utf8_collate (name, project_name))
-		{
-			i++;
-			temp = MAX (glade_project_get_instance_count (prj) + 1, i);
-			max  = MAX (temp, max);
-
-			if (glade_project_get_instance_count (prj) < 1)
-				uncounted_projects++;
-		}
-		
-		g_free (name);
-	}
-	
-	g_free (project_name);
-
-	/* Dont reset the initially opened project */
-	if (uncounted_projects > 1 || g_list_find (app->priv->projects, project) == NULL)
-	{
-		glade_project_set_instance_count (project, MAX (max, i));
-	}
-}
-
-void
 glade_app_add_project (GladeProject *project)
 {
 	GladeApp  *app;
@@ -991,7 +947,6 @@ glade_app_add_project (GladeProject *project)
 		glade_app_set_project (project);
 		return;
 	}
-	glade_app_update_instance_count (project);
 	
 	/* Take a reference for GladeApp here... */
 	app->priv->projects = g_list_append (app->priv->projects, 
