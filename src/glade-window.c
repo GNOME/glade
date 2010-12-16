@@ -1188,8 +1188,6 @@ save (GladeWindow *window, GladeProject *project, const gchar *path)
 		return;
 	}
 	
-	glade_app_update_instance_count (project);
-
 	/* Get display_name here, it could have changed with "Save As..." */
 	display_name = glade_project_get_name (project);
 
