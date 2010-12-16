@@ -13,6 +13,9 @@
 	* gladeui/glade-base-editor.c: Fixed glade_base_editor_dispose to not access the signal
 	  editor, it's automatically destroyed as being a child of the editor.
 
+	* plugins/gtk+/glade-gtk.c: Set added treeviewcolumns to fixed sizing mode if the
+	  treeview is set to use fixed height mode (closing bug 596480).
+
 2010-12-15  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-project.c: Cleanup glade_project_remove_object(), make sure row_deleted is

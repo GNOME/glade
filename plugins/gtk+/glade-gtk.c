@@ -11700,6 +11700,13 @@ glade_gtk_treeview_get_children (GladeWidgetAdaptor *adaptor,
 	return gtk_tree_view_get_columns (view);
 }
 
+/* XXX FIXME: We should hide the actual "fixed-height-mode" setting from
+ * treeview editors and provide a custom control that sets all its columns
+ * to fixed size and then control the column's sensitivity accordingly.
+ */
+#define INSENSITIVE_COLUMN_SIZING_MSG \
+	_("Columns must have a fixed size inside a treeview with fixed height mode set")
+
 void
 glade_gtk_treeview_add_child (GladeWidgetAdaptor *adaptor,
 			      GObject *container,
@@ -11707,9 +11714,18 @@ glade_gtk_treeview_add_child (GladeWidgetAdaptor *adaptor,
 {
 	GtkTreeView *view = GTK_TREE_VIEW (container);
 	GtkTreeViewColumn *column;
+	GladeWidget       *gcolumn;
 
 	if (!GTK_IS_TREE_VIEW_COLUMN (child))
 		return;
+
+	if (gtk_tree_view_get_fixed_height_mode (view))
+	{
+		gcolumn = glade_widget_get_from_gobject (child);
+		glade_widget_property_set (gcolumn, "sizing", GTK_TREE_VIEW_COLUMN_FIXED);
+		glade_widget_property_set_sensitive (gcolumn, "sizing", FALSE,
+						     INSENSITIVE_COLUMN_SIZING_MSG);
+	}
 
 	column = GTK_TREE_VIEW_COLUMN (child);
 	gtk_tree_view_append_column (view, column);
