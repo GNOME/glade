@@ -7,6 +7,9 @@
 	  iter stamp before notifying row-inserted (old iters are invalid, the new iter persists),
 	  fixed leaked GtkTreePath when rows are inserted.
 
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Fixed GtkComboBox to handle cell-layout
+	  children as well as the possible internal entry (fixes bug 581580).
+
 2010-12-15  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-project.c: Cleanup glade_project_remove_object(), make sure row_deleted is
