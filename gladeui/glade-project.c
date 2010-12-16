@@ -4087,18 +4087,13 @@ glade_project_build_prefs_box (GladeProject *project)
 		*sizegroup2 = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL),
 		*sizegroup3 = gtk_size_group_new (GTK_SIZE_GROUP_VERTICAL);
 
-	string = g_strdup_printf ("<big><b>%s</b></big>", _("Set options in your project"));
 	main_frame = gtk_frame_new (NULL);
+	gtk_frame_set_shadow_type (GTK_FRAME (main_frame), GTK_SHADOW_NONE);
 	main_alignment = gtk_alignment_new (0.5F, 0.5F, 0.8F, 0.8F);
 	main_box = gtk_vbox_new (FALSE, 0);
 
-	gtk_alignment_set_padding (GTK_ALIGNMENT (main_alignment), 12, 0, 4, 0);
+	gtk_alignment_set_padding (GTK_ALIGNMENT (main_alignment), 0, 0, 4, 0);
 
-	label = gtk_label_new (string);
-	g_free (string);
-	gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
-
-	gtk_frame_set_label_widget (GTK_FRAME (main_frame), label);
 	gtk_container_add (GTK_CONTAINER (main_alignment), main_box);
 	gtk_container_add (GTK_CONTAINER (main_frame), main_alignment);
 
