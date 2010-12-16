@@ -8866,7 +8866,25 @@ glade_gtk_combo_box_set_property (GladeWidgetAdaptor *adaptor,
 								  id, value);
 }
 
+GList *glade_gtk_cell_layout_get_children (GladeWidgetAdaptor  *adaptor, GObject  *container);
 
+GList *
+glade_gtk_combo_box_get_children (GladeWidgetAdaptor *adaptor, GtkComboBox *combo)
+{
+	GList *list = NULL;
+
+	list = glade_gtk_cell_layout_get_children (adaptor, G_OBJECT (combo));
+
+	/* return the internal entry.
+	 *
+	 * FIXME: for recent gtk+ we have no comboboxentry
+	 * but a "has-entry" property instead
+	 */
+	if (GTK_IS_COMBO_BOX_ENTRY (combo))
+		list = g_list_append (list, gtk_bin_get_child (GTK_BIN (combo)));
+
+	return list;
+}
 
 /* ----------------------------- GtkComboBoxEntry ------------------------------ */
 void
@@ -10976,7 +10994,7 @@ glade_gtk_cell_layout_remove_child (GladeWidgetAdaptor *adaptor,
 
 GList *
 glade_gtk_cell_layout_get_children (GladeWidgetAdaptor  *adaptor,
-				    GObject        *container)
+				    GObject             *container)
 {
 	return gtk_cell_layout_get_cells (GTK_CELL_LAYOUT (container));
 }
@@ -11076,25 +11094,43 @@ glade_gtk_cell_layout_read_child (GladeWidgetAdaptor *adaptor,
 {
 	GladeXmlNode *widget_node;
 	GladeWidget  *child_widget;
+	gchar        *internal_name;
 
 	if (!glade_xml_node_verify (node, GLADE_XML_TAG_CHILD))
 		return;
+
+	internal_name = glade_xml_get_property_string (node, GLADE_XML_TAG_INTERNAL_CHILD);
 	
 	if ((widget_node = 
 	     glade_xml_search_child
 	     (node, GLADE_XML_TAG_WIDGET(glade_project_get_format(widget->project)))) != NULL)
 	{
+
+		if (internal_name)
+			g_warning ("Cell layout reading internal %s\n", internal_name);
+
+		/* Combo box is a special brand of cell-layout, it can also have the internal entry */
 		if ((child_widget = glade_widget_read (widget->project, 
 						       widget, widget_node, 
-						       NULL)) != NULL)
+						       internal_name)) != NULL)
 		{
-			glade_widget_add_child (widget, child_widget, FALSE);
+			/* Dont set any packing properties on internal children here,
+			 * its possible but just not relevant for known celllayouts...
+			 * i.e. maybe GtkTreeViewColumn will expose the internal button ?
+			 * but no need for packing properties there either.
+			 */
+			if (!internal_name)
+			{
+				glade_widget_add_child (widget, child_widget, FALSE);
 
-			glade_gtk_cell_renderer_read_attributes (child_widget, node);
+				glade_gtk_cell_renderer_read_attributes (child_widget, node);
 
-			g_idle_add ((GSourceFunc)glade_gtk_cell_renderer_sync_attributes, child_widget->object);
+				g_idle_add ((GSourceFunc)glade_gtk_cell_renderer_sync_attributes, 
+					    child_widget->object);
+			}
 		}
-	}
+	}	
+	g_free (internal_name);
 }
 
 static void
@@ -11158,6 +11194,12 @@ glade_gtk_cell_layout_write_child (GladeWidgetAdaptor *adaptor,
 
 	child_node = glade_xml_node_new (context, GLADE_XML_TAG_CHILD);
 	glade_xml_node_append_child (node, child_node);
+
+	/* ComboBox can have an internal entry */
+	if (widget->internal)
+		glade_xml_node_set_property_string (child_node, 
+						    GLADE_XML_TAG_INTERNAL_CHILD, 
+						    widget->internal);
 
 	/* Write out the widget */
 	glade_widget_write (widget, context, child_node);
