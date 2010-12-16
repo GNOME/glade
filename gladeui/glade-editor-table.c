@@ -168,8 +168,6 @@ widget_finalized (GladeEditorTable *table,
 {
 	table->loaded_widget = NULL;
 
-	g_warning ("Finalized widget in editor %p\n", table);
-
 	glade_editable_load (GLADE_EDITABLE (table), NULL);
 }
 
