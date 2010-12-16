@@ -16,6 +16,16 @@
 	* plugins/gtk+/glade-gtk.c: Set added treeviewcolumns to fixed sizing mode if the
 	  treeview is set to use fixed height mode (closing bug 596480).
 
+	* gladeui/glade-inspector.c:
+	  - Avoid changing project selection when selection is cleared, selection get's cleared
+	    when the user changes a widget name and a filter is applied (removing the entry from
+	    the filtered model), avoiding syncing project selection avoids making the editor disappear
+	    when the user changes a widget name (fixes bug 604322).
+	  - Also plugged some leaked objects retrieved by gtk_tree_model_get().
+
+	* gladeui/glade-editor-table.c: Fire a warning when entry is edited with no widget
+	  loaded, also change the ->loading flag strategy for blocking signal emission instead.
+
 2010-12-15  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-project.c: Cleanup glade_project_remove_object(), make sure row_deleted is

@@ -69,9 +69,6 @@ struct _GladeEditorTable
 				   * the general tab, a packing tab or the query popup ?
 				   */
 
-	gboolean  loading; /* Avoid recursion while loading values into widgets
-			    */
-
 	gint rows;
 };
 
