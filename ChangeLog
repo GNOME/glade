@@ -10,6 +10,8 @@
 	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Fixed GtkComboBox to handle cell-layout
 	  children as well as the possible internal entry (fixes bug 581580).
 
+	* doc/Makefile.am: For master branch, change doc build to link against libgladeui-2 library.
+
 2010-12-15  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-project.c: Cleanup glade_project_remove_object(), make sure row_deleted is
