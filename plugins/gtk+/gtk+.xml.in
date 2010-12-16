@@ -30,6 +30,7 @@
       </signals>
 
       <actions>
+	<action id="preview" _name="Preview snapshot"/>
         <action id="edit_separate" _name="Edit Separately" stock="gtk-edit"/>
         <action id="remove_parent" _name="Remove Parent" stock="gtk-remove"/>
         <action id="add_parent" _name="Add Parent" stock="gtk-add">
@@ -324,8 +325,8 @@ embedded in another object</_tooltip>
         <!-- position needs to be always saved in case of using pack end -->
         <property id="position" weight="0" save-always="True"/>
         <property id="padding" transfer-on-paste="True" weight="0.5"/>
-        <property id="expand" transfer-on-paste="True"/>
-        <property id="fill" transfer-on-paste="True"/>
+        <property id="expand" transfer-on-paste="True" save-always="True"/>
+        <property id="fill" transfer-on-paste="True" save-always="True"/>
         <property id="pack-type" transfer-on-paste="True">
           <displayable-values>
             <value id="GTK_PACK_START" _name="Start"/>
@@ -1105,7 +1106,7 @@ embedded in another object</_tooltip>
       <get-children-function>glade_gtk_cell_layout_get_children</get-children-function>
       <read-child-function>glade_gtk_cell_layout_read_child</read-child-function>
       <write-child-function>glade_gtk_cell_layout_write_child</write-child-function>
-      <action-activate-function>glade_gtk_cell_layout_action_activate</action-activate-function>
+      <action-activate-function>glade_gtk_cell_layout_action_activate_as_widget</action-activate-function>
       <child-set-property-function>glade_gtk_cell_layout_set_child_property</child-set-property-function>
       <child-get-property-function>glade_gtk_cell_layout_get_child_property</child-get-property-function>
       
@@ -1649,12 +1650,6 @@ embedded in another object</_tooltip>
         <property id="has-separator"  disabled="True"/>
       </properties>
     </glade-widget-class>
-
-    <glade-widget-class name="GtkInputDialog" generic-name="inputdialog" deprecated="True" _title="Input Dialog">
-      <properties>
-        <property id="has-separator"  disabled="True"/>
-      </properties>
-    </glade-widget-class>
     
     <glade-widget-class name="GtkMessageDialog" generic-name="messagedialog" _title="Message Dialog" default-width="400" default-height="115">
       <set-property-function>glade_gtk_message_dialog_set_property</set-property-function>
@@ -1726,107 +1721,10 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkCombo" generic-name="combo" _title="Combo" deprecated="True" libglade-only="True">
-      <post-create-function>glade_gtk_combo_post_create</post-create-function>
-      <get-internal-child-function>glade_gtk_combo_get_internal_child</get-internal-child-function>
-      <get-children-function>glade_gtk_combo_get_children</get-children-function>
-
-      <properties>
-	<property id="size" disabled="True"/>
-
-	<!-- Atk press property -->
-	<property id="atk-press" _name="Press" ignore="True" atk-property="True" save="False">
-	  <parameter-spec>
-	    <type>GParamString</type>
-	  </parameter-spec>
-	  <_tooltip>Set the description of the Press atk action</_tooltip>
-	  <visible-lines>2</visible-lines>
-	</property>
-      </properties>
-
-    </glade-widget-class>
-    
-    <glade-widget-class name="GtkOptionMenu" generic-name="optionmenu" _title="Option Menu" deprecated="True" libglade-only="True">
-      <properties>
-	<!-- Atk press property -->
-	<property id="atk-press" _name="Press" ignore="True" atk-property="True" save="False">
-	  <parameter-spec>
-	    <type>GParamString</type>
-	  </parameter-spec>
-	  <_tooltip>Set the description of the Press atk action</_tooltip>
-	  <visible-lines>2</visible-lines>
-	</property>
-      </properties>
-    </glade-widget-class>
-
-    <glade-widget-class name="GtkList" generic-name="list" _title="List" deprecated="True" libglade-only="True">
-      <add-child-function>glade_gtk_listitem_add_child</add-child-function>
-      <remove-child-function>glade_gtk_listitem_remove_child</remove-child-function>
-      <properties>
-        <property id="selection-mode">
-  	  <displayable-values>
-	    <value id="GTK_SELECTION_NONE" _name="None"/>
-	    <value id="GTK_SELECTION_SINGLE" _name="Single"/>
-	    <value id="GTK_SELECTION_BROWSE" _name="Browse"/>
-	    <value id="GTK_SELECTION_MULTIPLE" _name="Multiple"/>
-	    <value id="GTK_SELECTION_EXTENDED" _name="Extended"/>
-	  </displayable-values>
-	</property>
-      </properties>
-    </glade-widget-class>
-
-    <glade-widget-class name="GtkListItem" generic-name="listitem" _title="List Item" deprecated="True" libglade-only="True">
-      <post-create-function>glade_gtk_list_item_post_create</post-create-function>
-      <set-property-function>glade_gtk_list_item_set_property</set-property-function>
-      <get-property-function>glade_gtk_list_item_get_property</get-property-function>
-      <properties>
-	<property id="label" _name="Label" translatable="True">
-	  <parameter-spec>
-	    <type>GParamString</type>
-	  </parameter-spec>
-	  <_tooltip>The text to display</_tooltip>
-	</property>
-      </properties>
-    </glade-widget-class>
-
-    <glade-widget-class name="GtkCList" generic-name="clist" _title="Columned List" deprecated="True" libglade-only="True">
-      <properties>
-        <property id="sort-type">
-  	  <displayable-values>
-	    <value id="GTK_SORT_ASCENDING" _name="Ascending"/>
-	    <value id="GTK_SORT_DESCENDING" _name="Descending"/>
-	  </displayable-values>
-	</property>
-      </properties>
-    </glade-widget-class>
-
     <glade-widget-class name="GtkColorSelection" generic-name="colorselection" _title="Color Selection"/>
     
     <glade-widget-class name="GtkFontSelection" generic-name="fontselection" _title="Font Selection"/>
     
-    <glade-widget-class name="GtkCurve" generic-name="curve" _title="Curve" deprecated="True">
-      <properties>
-	<property id="curve-type" default="GTK_CURVE_TYPE_SPLINE">
-  	  <displayable-values>
-	    <value id="GTK_CURVE_TYPE_LINEAR" _name="Linear"/>
-	    <value id="GTK_CURVE_TYPE_SPLINE" _name="Spline"/>
-	    <value id="GTK_CURVE_TYPE_FREE" _name="Free"/>
-	  </displayable-values>
-	</property>
-      </properties>
-    </glade-widget-class>
-    
-    <glade-widget-class name="GtkGammaCurve" generic-name="gammacurve" _title="Gamma Curve" deprecated="True"/>
-
-    <glade-widget-class name="GtkFileSelection" generic-name="fileselection" _title="File Selection" deprecated="True" libglade-only="True"/>
-    <glade-widget-class name="Custom" generic-name="custom" _title="Custom widget" deprecated="True" libglade-only="True">
-      <properties>
-	<property id="creation-function"/>
-	<property id="string1"/>
-	<property id="string2"/>
-      </properties>
-    </glade-widget-class>
-
     <glade-widget-class name="GtkAssistant" generic-name="assistant" _title="Assistant" since="2.10">
       <post-create-function>glade_gtk_assistant_post_create</post-create-function>
       <add-child-function>glade_gtk_assistant_add_child</add-child-function>
@@ -1850,7 +1748,9 @@ embedded in another object</_tooltip>
 	<property id="title" translatable="True" since="2.10"/>
 	<property id="header-image" since="2.10"/>
 	<property id="sidebar-image" since="2.10"/>
-        <property id="complete" disabled="True"/>
+        <property id="complete" ignore="True" _name="Initially Complete">
+	  <_tooltip>Whether this page will initially be marked as complete regardless of user input.</_tooltip>
+	</property>
 	<property id="page-type" ignore="True">
   	  <displayable-values>
 	    <value id="GTK_ASSISTANT_PAGE_CONTENT" _name="Content"/>
@@ -2161,7 +2061,7 @@ embedded in another object</_tooltip>
       <get-children-function>glade_gtk_cell_layout_get_children</get-children-function>
       <read-child-function>glade_gtk_cell_layout_read_child</read-child-function>
       <write-child-function>glade_gtk_cell_layout_write_child</write-child-function>
-      <action-activate-function>glade_gtk_cell_layout_action_activate</action-activate-function>
+      <action-activate-function>glade_gtk_cell_layout_action_activate_as_widget</action-activate-function>
       <child-set-property-function>glade_gtk_cell_layout_set_child_property</child-set-property-function>
       <child-get-property-function>glade_gtk_cell_layout_get_child_property</child-get-property-function>
       
@@ -3404,7 +3304,6 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkColorSelectionDialog"/>
     <glade-widget-class-ref name="GtkFileChooserDialog"/>
     <glade-widget-class-ref name="GtkFontSelectionDialog"/>
-    <glade-widget-class-ref name="GtkInputDialog"/>
     <glade-widget-class-ref name="GtkMessageDialog"/>
     <glade-widget-class-ref name="GtkRecentChooserDialog"/>
     <glade-widget-class-ref name="GtkAssistant"/>
@@ -3529,20 +3428,6 @@ embedded in another object</_tooltip>
 
     <glade-widget-class-ref name="GtkHRuler"/>
     <glade-widget-class-ref name="GtkVRuler"/>
-
-    <glade-widget-class-ref name="GtkCurve"/>
-    <glade-widget-class-ref name="GtkGammaCurve"/>
   </glade-widget-group>
 
-  <glade-widget-group name="gtk-obsolete" _title="Gtk+ Obsolete">
-
-    <default-palette-state expanded="False"/>
-
-    <glade-widget-class-ref name="GtkCombo"/>
-    <glade-widget-class-ref name="GtkOptionMenu"/>
-    <glade-widget-class-ref name="GtkList"/>
-    <glade-widget-class-ref name="GtkCList"/>
-    <glade-widget-class-ref name="GtkFileSelection"/>
-    <glade-widget-class-ref name="Custom"/>
-  </glade-widget-group>
 </glade-catalog>

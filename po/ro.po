@@ -1,0 +1,5008 @@
+# Romanian translation for glade3.
+# Copyright (C) 2010 glade3's COPYRIGHT HOLDER
+# This file is distributed under the same license as the glade3 package.
+# Lucian Adrian Grijincu <lucian.grijincu@gmail.com>, 2010.
+# Daniel Șerbănescu <cyber19rider@gmail.com>, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: glade3 master\n"
+"Report-Msgid-Bugs-To: "
+"http://bugzilla.gnome.org/enter_bug.cgi?product=glade3&component=general\n"
+"POT-Creation-Date: 2010-09-23 17:29+0000\n"
+"PO-Revision-Date: 2010-09-24 12:47+0300\n"
+"Last-Translator: Lucian Adrian Grijincu <lucian.grijincu@gmail.com>\n"
+"Language-Team: Romanian Gnome Team <gnomero-list@lists.sourceforge.net>\n"
+"Language: ro\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
+"20)) ? 1 : 2);;\n"
+"X-Generator: Virtaal 0.6.1\n"
+
+#: ../data/glade-3.desktop.in.in.h:1
+msgid "Create or open user interface designs for GTK+ applications"
+msgstr ""
+"Creeați sau deschideți design-uri de interfețe cu utilizatorul pentru "
+"aplicații GTK+"
+
+#: ../data/glade-3.desktop.in.in.h:2 ../src/main.c:42
+msgid "Glade"
+msgstr "Glade"
+
+#: ../data/glade-3.desktop.in.in.h:3
+msgid "Glade Interface Designer"
+msgstr "Glade Designer de interfață"
+
+#: ../data/glade-3.desktop.in.in.h:4
+msgid "Interface Designer"
+msgstr "Designer de interfață"
+
+#: ../src/main.c:52
+msgid "Output version information and exit"
+msgstr "Afișează informații despre versiune și ieși"
+
+#: ../src/main.c:55
+msgid "Disable Devhelp integration"
+msgstr "Dezactivează integrarea cu Devhelp"
+
+#: ../src/main.c:58
+msgid "[FILE...]"
+msgstr "[FIȘIER...]"
+
+#: ../src/main.c:68
+msgid "be verbose"
+msgstr "fii detaliat"
+
+#: ../src/main.c:93
+msgid "Create or edit user interface designs for GTK+ or GNOME applications."
+msgstr ""
+"Creeați sau editați design-uri de interfețe cu utilizatorul pentru aplicații "
+"GTK sau GNOME."
+
+#: ../src/main.c:97 ../src/main.c:98
+msgid "Glade options"
+msgstr "Opțiuni Glade"
+
+#: ../src/main.c:105
+msgid "Glade debug options"
+msgstr "Opțiuni de depanare Glade"
+
+#: ../src/main.c:106
+msgid "Show Glade debug options"
+msgstr "Afișează opțiunile de depanare pentru Glade"
+
+#: ../src/main.c:149
+msgid ""
+"gmodule support not found. gmodule support is required for glade to work"
+msgstr ""
+"suportul pentru gmodule nu a fost găsit. suportul pentru gmodule este "
+"necesar pentru ca glade să funcționeze"
+
+#: ../src/main.c:176
+#, c-format
+msgid "Unable to open '%s', the file does not exist.\n"
+msgstr "Nu s-a putut deschide „%s”, fișierul nu există.\n"
+
+#: ../src/glade-window.c:51
+msgid "[Read Only]"
+msgstr "[Doar citire]"
+
+#: ../src/glade-window.c:355
+msgid "User Interface Designer"
+msgstr "Designer de interfață cu utilizatorul"
+
+#. translators: referring to the action of activating a file named '%s'.
+#. *              we also indicate to users that the file may be read-only with
+#. *              the second '%s'
+#: ../src/glade-window.c:562
+#, c-format
+msgid "Activate '%s' %s"
+msgstr "Activează „%s” %s"
+
+#. translators: referring to the action of activating a file named '%s'
+#. FIXME add hint for translators
+#: ../src/glade-window.c:569 ../src/glade-window.c:577
+#, c-format
+msgid "Activate '%s'"
+msgstr "Activează „%s”"
+
+#. Name
+#: ../src/glade-window.c:622 ../gladeui/glade-base-editor.c:1991
+#: ../gladeui/glade-editor-table.c:359
+msgid "Name:"
+msgstr "Nume:"
+
+#: ../src/glade-window.c:624
+msgid "Format:"
+msgstr "Format:"
+
+#: ../src/glade-window.c:626
+msgid "Requires:"
+msgstr "Cerințe:"
+
+#: ../src/glade-window.c:1052
+msgid "Open…"
+msgstr "Deschide…"
+
+#: ../src/glade-window.c:1095
+#, c-format
+msgid "The file %s has been modified since reading it"
+msgstr "Fișierul %s a fost modificat de la ultima citire"
+
+#: ../src/glade-window.c:1099
+msgid "If you save it, all the external changes could be lost. Save it anyway?"
+msgstr ""
+"Dacă îl salvați, toate modificările externe pot fi pierdute. Salvați oricum?"
+
+#: ../src/glade-window.c:1103
+msgid "_Save Anyway"
+msgstr "_Salvează oricum"
+
+#: ../src/glade-window.c:1110
+msgid "_Don't Save"
+msgstr "_Nu salva"
+
+#: ../src/glade-window.c:1136
+#, c-format
+msgid "Failed to save %s: %s"
+msgstr "Nu s-a putut salva %s: %s"
+
+#: ../src/glade-window.c:1159
+#, c-format
+msgid "Project '%s' saved"
+msgstr "Proiectul „%s” salvat"
+
+#: ../src/glade-window.c:1179
+msgid "Save As…"
+msgstr "Salvează ca…"
+
+#: ../src/glade-window.c:1224
+#, c-format
+msgid "Could not save the file %s"
+msgstr "Nu s-a putut salva fișierul %s"
+
+#: ../src/glade-window.c:1228
+msgid "You do not have the permissions necessary to save the file."
+msgstr "Nu aveți permisiunile necesare pentru a salva fișierul."
+
+#: ../src/glade-window.c:1249
+#, c-format
+msgid "Could not save file %s. Another project with that path is open."
+msgstr "Nu s-a putut salva fișierul %s. Alt proiect cu acea cale este deschis."
+
+#: ../src/glade-window.c:1274
+msgid "No open projects to save"
+msgstr "Nu există proiecte deschise de salvat"
+
+#: ../src/glade-window.c:1304
+#, c-format
+msgid "Save changes to project \"%s\" before closing?"
+msgstr "Salvați modificările proiectului „%s” înainte de închidere?"
+
+#: ../src/glade-window.c:1315
+msgid "Your changes will be lost if you don't save them."
+msgstr "Modificările vor fi pierdute dacă nu le salvați."
+
+#: ../src/glade-window.c:1319
+msgid "Close _without Saving"
+msgstr "Închide _fără a salva"
+
+#: ../src/glade-window.c:1346
+#, c-format
+msgid "Failed to save %s to %s: %s"
+msgstr "Nu s-a putut salva %s în %s: %s"
+
+#: ../src/glade-window.c:1358
+msgid "Save…"
+msgstr "Salvează…"
+
+#: ../src/glade-window.c:1935
+msgid ""
+"Glade is free software; you can redistribute it and/or modify it under the "
+"terms of the GNU General Public License as published by the Free Software "
+"Foundation; either version 2 of the License, or (at your option) any later "
+"version.\n"
+"\n"
+"Glade is distributed in the hope that it will be useful, but WITHOUT ANY "
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"Glade; if not, write to the Free Software Foundation, Inc., 51 Franklin "
+"Street, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr ""
+"Glade este software liber; îl puteți redistribui și/sau modifica în termenii "
+"licenței GNU General Public License cum a fost publicat de Free Software "
+"Foundation; fie versiunea 2 a licenței, fie (la opțiunea dumneavoatstră) "
+"orice altă versiune ulterioară.\n"
+"\n"
+"Glade este distribuit în speranța că va fi de folos, dar FĂRĂ NICI UN FEL DE "
+"GARANȚIE; chiar și fără orice garanție de POTRIVIRE LA VREUN ANUME SCOP. A "
+"se vedea Licența GNU General Public License pentru mai multe detalii.\n"
+"\n"
+"Ar fi trebuit să fi primit o copie a licenței GNU General Public License "
+"împreună Glade; dacă nu, scrieți către Free Software Foundation, Inc., 51 "
+"Franklin St, Fifth Floor, Boston, MA 0110-1301, USA"
+
+#: ../src/glade-window.c:1961
+msgid "translator-credits"
+msgstr "Lucian Adrian Grijincu <lucian.grijincu@gmail.com>"
+
+#: ../src/glade-window.c:1962
+msgid "A user interface designer for GTK+ and GNOME."
+msgstr "Un designer de interfețe cu utilizatorul pentru GTK+ și GNOME."
+
+#. File
+#: ../src/glade-window.c:2037 ../plugins/gtk+/glade-gtk.c:7134
+#: ../plugins/gtk+/glade-gtk.c:7457
+msgid "_File"
+msgstr "_Fișier"
+
+#. Edit
+#: ../src/glade-window.c:2038 ../plugins/gtk+/glade-gtk.c:7137
+#: ../plugins/gtk+/glade-gtk.c:7467
+msgid "_Edit"
+msgstr "_Editare"
+
+#. View
+#: ../src/glade-window.c:2039 ../plugins/gtk+/glade-gtk.c:7140
+#: ../plugins/gtk+/glade-gtk.c:7475
+msgid "_View"
+msgstr "_Vizualizare"
+
+#: ../src/glade-window.c:2040
+msgid "_Projects"
+msgstr "_Proiecte"
+
+#. Help
+#: ../src/glade-window.c:2041 ../plugins/gtk+/glade-gtk.c:7152
+#: ../plugins/gtk+/glade-gtk.c:7478
+msgid "_Help"
+msgstr "_Ajutor"
+
+#: ../src/glade-window.c:2047
+msgid "Create a new project"
+msgstr "Creează un proiect nou"
+
+#: ../src/glade-window.c:2049
+msgid "_Open…"
+msgstr "_Deschide…"
+
+#: ../src/glade-window.c:2050
+msgid "Open a project"
+msgstr "Deschide un proiect"
+
+#: ../src/glade-window.c:2052
+msgid "Open _Recent"
+msgstr "Deschide _recent"
+
+#: ../src/glade-window.c:2055
+msgid "Quit the program"
+msgstr "Închide aplicația"
+
+#. ViewMenu
+#: ../src/glade-window.c:2058
+msgid "Palette _Appearance"
+msgstr "_Aparență paletă"
+
+#: ../src/glade-window.c:2062
+msgid "About this application"
+msgstr "Despre această aplicație"
+
+#: ../src/glade-window.c:2064
+msgid "_Contents"
+msgstr "_Conținut"
+
+#: ../src/glade-window.c:2065
+msgid "Display the user manual"
+msgstr "Afișează manualul utilizatorului"
+
+#: ../src/glade-window.c:2067
+msgid "_Developer Reference"
+msgstr "Referințe pentru _dezvoltatori"
+
+#: ../src/glade-window.c:2068
+msgid "Display the developer reference manual"
+msgstr "Afișează referințele pentru dezvoltatori"
+
+#: ../src/glade-window.c:2077
+msgid "Save the current project"
+msgstr "Salvează proiectul curent"
+
+#: ../src/glade-window.c:2079
+msgid "Save _As…"
+msgstr "Salvează c_a…"
+
+#: ../src/glade-window.c:2080
+msgid "Save the current project with a different name"
+msgstr "Salvează proiectul curent cu un alt nume"
+
+#: ../src/glade-window.c:2083
+msgid "Close the current project"
+msgstr "Închide proiectul curent"
+
+#: ../src/glade-window.c:2087
+msgid "Undo the last action"
+msgstr "Anulează ultima acțiune"
+
+#: ../src/glade-window.c:2090
+msgid "Redo the last action"
+msgstr "Refă ultima acțiune"
+
+#: ../src/glade-window.c:2093
+msgid "Cut the selection"
+msgstr "Taie selecția"
+
+#: ../src/glade-window.c:2096
+msgid "Copy the selection"
+msgstr "Copiază selecția"
+
+#: ../src/glade-window.c:2099
+msgid "Paste the clipboard"
+msgstr "Lipește ce este în clipboard"
+
+#: ../src/glade-window.c:2102
+msgid "Delete the selection"
+msgstr "Șterge acestă selecție"
+
+#: ../src/glade-window.c:2105
+msgid "Modify project preferences"
+msgstr "Modifică preferințele proiectului"
+
+#. ProjectsMenu
+#: ../src/glade-window.c:2108
+msgid "_Previous Project"
+msgstr "_Proiectul precedent"
+
+#: ../src/glade-window.c:2109
+msgid "Activate previous project"
+msgstr "Activează proiectul precedent"
+
+#: ../src/glade-window.c:2111
+msgid "_Next Project"
+msgstr "Proiectul ur_mător"
+
+#: ../src/glade-window.c:2112
+msgid "Activate next project"
+msgstr "Activează proiectul următor"
+
+#: ../src/glade-window.c:2120
+msgid "_Use Small Icons"
+msgstr "_Utilizează iconițe mici"
+
+#: ../src/glade-window.c:2121
+msgid "Show items using small icons"
+msgstr "Afișează elementele utilizând iconițe mici"
+
+#: ../src/glade-window.c:2124
+msgid "Dock _Palette"
+msgstr "Andochează _paleta"
+
+#: ../src/glade-window.c:2125
+msgid "Dock the palette into the main window"
+msgstr "Andochează paleta în fereastra principală"
+
+#: ../src/glade-window.c:2128
+msgid "Dock _Inspector"
+msgstr "Andochează _inspectorul"
+
+#: ../src/glade-window.c:2129
+msgid "Dock the inspector into the main window"
+msgstr "Andochează inspectorul în fereastra principală"
+
+#LG: e un meniu de tip checkbox care zice daca se andochează sau nu un panou
+#: ../src/glade-window.c:2132
+msgid "Dock Prop_erties"
+msgstr "Andochează propri_etățile"
+
+#: ../src/glade-window.c:2133
+msgid "Dock the editor into the main window"
+msgstr "Andochează editorul în fereastra principală"
+
+#: ../src/glade-window.c:2136
+msgid "Tool_bar"
+msgstr "_Bară de unelte"
+
+#: ../src/glade-window.c:2137
+msgid "Show the toolbar"
+msgstr "Arată bara de unelte"
+
+#: ../src/glade-window.c:2140
+msgid "_Statusbar"
+msgstr "Bara de _stare"
+
+#: ../src/glade-window.c:2141
+msgid "Show the statusbar"
+msgstr "Arată bara de stare"
+
+#: ../src/glade-window.c:2144
+msgid "Project _Tabs"
+msgstr "_Taburi proiect"
+
+#: ../src/glade-window.c:2145
+msgid "Show notebook tabs for loaded projects"
+msgstr "Arată filele carnețelului pentru proiectele încărcate"
+
+#: ../src/glade-window.c:2153 ../plugins/gtk+/gtk+.xml.in.h:432
+msgid "Text beside icons"
+msgstr "Text lângă iconițe"
+
+#: ../src/glade-window.c:2154
+msgid "Display items as text beside icons"
+msgstr "Afișează elementele ca text lângă iconițe"
+
+#: ../src/glade-window.c:2156
+msgid "_Icons only"
+msgstr "Doar _iconițe"
+
+#: ../src/glade-window.c:2157
+msgid "Display items as icons only"
+msgstr "Afișează elementele ca iconițe"
+
+#: ../src/glade-window.c:2159
+msgid "_Text only"
+msgstr "Doar _text"
+
+#: ../src/glade-window.c:2160
+msgid "Display items as text only"
+msgstr "Afișează elementele ca text"
+
+#: ../src/glade-window.c:2346
+msgid "Select"
+msgstr "Selectează"
+
+#: ../src/glade-window.c:2349
+msgid "Select widgets in the workspace"
+msgstr "Selectează widget-uri în spațiul de lucru"
+
+#: ../src/glade-window.c:2372
+msgid "Drag Resize"
+msgstr "Trage Redimensionează"
+
+#: ../src/glade-window.c:2375
+msgid "Drag and resize widgets in the workspace"
+msgstr "Trage și redimensionează widget-uri în spațiul de lucru"
+
+#: ../src/glade-window.c:2417
+msgid "Close document"
+msgstr "Închide documentul"
+
+#: ../src/glade-window.c:2483
+msgid "Could not create a new project."
+msgstr "Nu s-a putut crea un proiect nou."
+
+#: ../src/glade-window.c:2537
+#, c-format
+msgid "The project %s has unsaved changes"
+msgstr "Proiectul are %s modificări nesalvate"
+
+#: ../src/glade-window.c:2541
+msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
+msgstr ""
+"Dacă în reîncărcați, toate modificările nesalvate vor fi pierdute. "
+"Reîncărcați oricum?"
+
+#: ../src/glade-window.c:2550
+#, c-format
+msgid "The project file %s has been externally modified"
+msgstr "Fișierul %s al proiectului a fost modificat extern"
+
+#: ../src/glade-window.c:2554
+msgid "Do you want to reload the project?"
+msgstr "Doriți să reîncărcați proiectul?"
+
+#: ../src/glade-window.c:2560
+msgid "_Reload"
+msgstr "_Reîncarcă"
+
+#: ../src/glade-window.c:2682
+msgid "_Undo"
+msgstr "_Anulează"
+
+#. Change tooltips
+#: ../src/glade-window.c:2684 ../gladeui/glade-app.c:274
+#, c-format
+msgid "Undo: %s"
+msgstr "Anulează: %s"
+
+#: ../src/glade-window.c:2684 ../src/glade-window.c:2695
+#: ../gladeui/glade-app.c:275
+msgid "the last action"
+msgstr "ultima acțiune"
+
+#: ../src/glade-window.c:2693
+msgid "_Redo"
+msgstr "_Refă"
+
+#: ../src/glade-window.c:2695 ../gladeui/glade-app.c:274
+#, c-format
+msgid "Redo: %s"
+msgstr "Refă: %s"
+
+#: ../src/glade-window.c:3165
+msgid "Go back in undo history"
+msgstr "Navighează înapoi în istoricul anulărilor"
+
+#: ../src/glade-window.c:3167
+msgid "Go forward in undo history"
+msgstr "Navighează înainte în istoricul anulărilor"
+
+#: ../src/glade-window.c:3216
+msgid "Palette"
+msgstr "Paletă"
+
+#: ../src/glade-window.c:3226
+msgid "Inspector"
+msgstr "Inspector"
+
+#: ../src/glade-window.c:3233 ../gladeui/glade-editor.c:350
+#: ../gladeui/glade-widget.c:1100 ../plugins/gtk+/glade-gtk.c:6566
+#: ../plugins/gtk+/glade-gtk.c:6596 ../plugins/gtk+/glade-gtk.c:11124
+msgid "Properties"
+msgstr "Proprietăți"
+
+#: ../gladeui/glade-app.c:444
+msgid "Clipboard"
+msgstr "Clipboard"
+
+#: ../gladeui/glade-app.c:513
+msgid "Active Project"
+msgstr "Proiect activ"
+
+#: ../gladeui/glade-app.c:514
+msgid "The active project"
+msgstr "Proiectul activ"
+
+#: ../gladeui/glade-app.c:520
+msgid "Pointer Mode"
+msgstr "Mod indicator"
+
+#: ../gladeui/glade-app.c:521
+msgid "Current mode for the pointer in the workspace"
+msgstr "Modul curent al indicatorului în spațiul de lucru"
+
+#: ../gladeui/glade-app.c:591
+#, c-format
+msgid ""
+"Trying to save private data to %s directory but it is a regular file.\n"
+"No private data will be saved in this session"
+msgstr ""
+"S-a încercat să se salveze datele private în dosarul %s, dar acesta este un "
+"fișier normal.\n"
+"Datele private nu vor fi salvate în această sesiune"
+
+#: ../gladeui/glade-app.c:604
+#, c-format
+msgid ""
+"Failed to create directory %s to save private data.\n"
+"No private data will be saved in this session"
+msgstr ""
+"Nu s-a putut crea dosarul %s în care să se salveze datele private.\n"
+"Datele private nu vor fi salvate în această sesiune"
+
+#: ../gladeui/glade-app.c:632
+#, c-format
+msgid ""
+"Error writing private data to %s (%s).\n"
+"No private data will be saved in this session"
+msgstr ""
+"Nu s-au putut scrie datele private în %s (%s).\n"
+"Datele private nu vor fi salvate în această sesiune"
+
+#: ../gladeui/glade-app.c:644
+#, c-format
+msgid ""
+"Error serializing configuration data to save (%s).\n"
+"No private data will be saved in this session"
+msgstr ""
+"Nu s-au putut serializa datele de configurație pentru salvare (%s).\n"
+"Datele private nu vor fi salvate în această sesiune"
+
+#: ../gladeui/glade-app.c:657
+#, c-format
+msgid ""
+"Error opening %s to write private data (%s).\n"
+"No private data will be saved in this session"
+msgstr ""
+"Nu s-a putut deschide %s pentru a scrie datele private (%s).\n"
+"Datele private nu vor fi salvate în această sesiune"
+
+#: ../gladeui/glade-app.c:1170 ../gladeui/glade-app.c:1211
+#: ../gladeui/glade-app.c:1376
+msgid "No widget selected."
+msgstr "Niciun widget selectat."
+
+#: ../gladeui/glade-app.c:1263
+msgid "Unable to paste to the selected parent"
+msgstr "Nu s-a putut lipi în părintele selectat"
+
+#: ../gladeui/glade-app.c:1274
+msgid "Unable to paste to multiple widgets"
+msgstr "Nu se poate lipi în widget-uri multiple"
+
+#: ../gladeui/glade-app.c:1290 ../gladeui/glade-app.c:1396
+msgid "No widget selected on the clipboard"
+msgstr "Niciun widget selectat în clipboard"
+
+#: ../gladeui/glade-app.c:1322
+msgid "Only one widget can be pasted at a time to this container"
+msgstr ""
+"Doar un singur widget poate fi lipit la un moment dat în acest container"
+
+#: ../gladeui/glade-app.c:1334
+msgid "Insufficient amount of placeholders in target container"
+msgstr "Locțiitori insuficienți în containerul țintă"
+
+#: ../gladeui/glade-builtins.c:71
+msgid "Authentication"
+msgstr "Autentificare"
+
+#. GTK_STOCK_DIALOG_AUTHENTICATION
+#: ../gladeui/glade-builtins.c:72
+msgid "DnD"
+msgstr "DnD"
+
+#. GTK_STOCK_DND
+#: ../gladeui/glade-builtins.c:73
+msgid "DnD Multiple"
+msgstr "DnD Multiplu"
+
+#. GTK_STOCK_DND_MULTIPLE
+#: ../gladeui/glade-builtins.c:74
+msgid "Color Picker"
+msgstr "Selector de culoare"
+
+#. GTK_STOCK_COLOR_PICKER
+#: ../gladeui/glade-builtins.c:75
+msgid "Directory"
+msgstr "Dosar"
+
+#. GTK_STOCK_DIRECTORY
+#: ../gladeui/glade-builtins.c:76
+msgid "File"
+msgstr "Fișier"
+
+#. GTK_STOCK_FILE
+#: ../gladeui/glade-builtins.c:77
+msgid "Missing Image"
+msgstr "Imagine lipsă"
+
+#: ../gladeui/glade-builtins.c:321
+msgid "Stock"
+msgstr "Stoc"
+
+#: ../gladeui/glade-builtins.c:322
+msgid "A builtin stock item"
+msgstr "Un element integrat din stoc"
+
+#: ../gladeui/glade-builtins.c:330
+msgid "Stock Image"
+msgstr "Imagine din stoc"
+
+#: ../gladeui/glade-builtins.c:331
+msgid "A builtin stock image"
+msgstr "O imagine integrată din stoc"
+
+#: ../gladeui/glade-builtins.c:488
+msgid "Objects"
+msgstr "Obiecte"
+
+#: ../gladeui/glade-builtins.c:489
+msgid "A list of objects"
+msgstr "O listă de obiecte"
+
+#: ../gladeui/glade-builtins.c:498
+msgid "Image File Name"
+msgstr "Nume fișier imagine"
+
+#: ../gladeui/glade-builtins.c:499
+msgid "Enter a filename, relative path or full path to load the image"
+msgstr ""
+"Introduceți un nume de fișier, o cale relativă sau absolută pentru a încărca "
+"imaginea"
+
+#: ../gladeui/glade-builtins.c:508
+msgid "GdkColor"
+msgstr "GdkColor"
+
+#: ../gladeui/glade-builtins.c:509
+msgid "A GDK color value"
+msgstr "O valoare de culoare GDK"
+
+#: ../gladeui/glade-builtins.c:519
+msgid "Integer"
+msgstr "Întreg"
+
+#: ../gladeui/glade-builtins.c:520
+msgid "An integer value"
+msgstr "O valoare întreagă"
+
+#: ../gladeui/glade-builtins.c:528
+msgid "Unsigned Integer"
+msgstr "Întreg fără semn"
+
+#: ../gladeui/glade-builtins.c:529
+msgid "An unsigned integer value"
+msgstr "O valoare întreagă fără semn"
+
+#: ../gladeui/glade-builtins.c:536
+msgid "String"
+msgstr "Șir"
+
+#: ../gladeui/glade-builtins.c:537
+msgid "An entry"
+msgstr "O intrare"
+
+#: ../gladeui/glade-builtins.c:544
+msgid "Strv"
+msgstr "Strv"
+
+#: ../gladeui/glade-builtins.c:545
+msgid "String array"
+msgstr "Vector de șiruri"
+
+#: ../gladeui/glade-builtins.c:553
+msgid "Float"
+msgstr "Virgulă mobilă"
+
+#: ../gladeui/glade-builtins.c:554
+msgid "A floating point entry"
+msgstr "O intrare în virgulă mobilă"
+
+#: ../gladeui/glade-builtins.c:562
+msgid "Boolean"
+msgstr "Boolean"
+
+#: ../gladeui/glade-builtins.c:563
+msgid "A boolean value"
+msgstr "O valoare booleană"
+
+#: ../gladeui/glade-base-editor.c:536
+#, c-format
+msgid "Setting object type on %s to %s"
+msgstr "Se stabilește tipul obiectului %s la %s"
+
+#: ../gladeui/glade-base-editor.c:677
+#, c-format
+msgid "Add a %s to %s"
+msgstr "Adaugă un %s la un %s"
+
+#: ../gladeui/glade-base-editor.c:762
+#, c-format
+msgid "Add %s item"
+msgstr "Adaugă un element %s"
+
+#: ../gladeui/glade-base-editor.c:792
+#, c-format
+msgid "Add child %s item"
+msgstr "Adaugă un elementele copil %s"
+
+#: ../gladeui/glade-base-editor.c:879
+#, c-format
+msgid "Delete %s child from %s"
+msgstr "Șterge copilul %s din %s"
+
+#: ../gladeui/glade-base-editor.c:1007
+#, c-format
+msgid "Reorder %s's children"
+msgstr "Reordonează copii lui %s"
+
+#: ../gladeui/glade-base-editor.c:1456 ../plugins/gtk+/gtk+.xml.in.h:94
+msgid "Container"
+msgstr "Container"
+
+#: ../gladeui/glade-base-editor.c:1457
+msgid "The container object this editor is currently editing"
+msgstr "Obiectul container pe care acest editor în editează în acest moment"
+
+#: ../gladeui/glade-base-editor.c:1682 ../gladeui/glade-editor.c:997
+msgid "General"
+msgstr "General"
+
+#: ../gladeui/glade-base-editor.c:1690
+msgid "Hierarchy"
+msgstr "Ierarhie"
+
+#: ../gladeui/glade-base-editor.c:1724 ../plugins/gtk+/gtk+.xml.in.h:244
+msgid "Label"
+msgstr "Etichetă"
+
+#: ../gladeui/glade-base-editor.c:1738 ../gladeui/glade-widget-adaptor.c:1244
+msgid "Type"
+msgstr "Tip"
+
+#. Type
+#: ../gladeui/glade-base-editor.c:2004
+msgid "Type:"
+msgstr "Tip:"
+
+#: ../gladeui/glade-base-editor.c:2217
+msgid ""
+"<big><b>Tips:</b></big>\n"
+"  * Right-click over the treeview to add items.\n"
+"  * Press Delete to remove the selected item.\n"
+"  * Drag &amp; Drop to reorder.\n"
+"  * Type column is editable."
+msgstr ""
+"<big><b>Indicații:</b></big>\n"
+"  * Clic dreapta pe vizualizarea arborescentă pentru a adăuga elemente.\n"
+"  * Apăsați Delete pentru a elimina elementul selectat.\n"
+"  * Tragere și plasare pentru reordonare.\n"
+"  * Coloana tip este editabilă."
+
+#: ../gladeui/glade-clipboard-view.c:209 ../gladeui/glade-editor.c:162
+#: ../plugins/gtk+/gtk+.xml.in.h:500
+msgid "Widget"
+msgstr "Widget"
+
+#: ../gladeui/glade-command.c:598
+#, c-format
+msgid "Setting multiple properties"
+msgstr "Se stabilesc proprietăți multiple"
+
+#: ../gladeui/glade-command.c:611
+#, c-format
+msgid "Setting %s of %s"
+msgstr "Se stabilește %s din %s"
+
+#: ../gladeui/glade-command.c:615 ../gladeui/glade-editor-property.c:3010
+#, c-format
+msgid "Setting %s of %s to %s"
+msgstr "Se stabilește %s din %s la %s"
+
+#: ../gladeui/glade-command.c:850 ../gladeui/glade-command.c:877
+#, c-format
+msgid "Renaming %s to %s"
+msgstr "Se redenumește %s la %s"
+
+#: ../gladeui/glade-command.c:1006
+#, c-format
+msgid "Add %s"
+msgstr "Adaugă %s"
+
+#: ../gladeui/glade-command.c:1007 ../gladeui/glade-command.c:1738
+#: ../gladeui/glade-command.c:1762 ../gladeui/glade-command.c:1785
+#: ../gladeui/glade-command.c:1810 ../gladeui/glade-command.c:1914
+#: ../gladeui/glade-command.c:1947
+msgid "multiple"
+msgstr "multiple"
+
+#: ../gladeui/glade-command.c:1163
+msgid "You cannot remove a widget internal to a composite widget."
+msgstr "Nu puteți elimina un widget care face parte dintr-un widget compus."
+
+#: ../gladeui/glade-command.c:1170
+#, c-format
+msgid "%s is locked by %s, edit %s first."
+msgstr "%s este blocat de %s, editați %s mai întâi."
+
+#: ../gladeui/glade-command.c:1180
+#, c-format
+msgid "Remove %s"
+msgstr "Elimină %s"
+
+#: ../gladeui/glade-command.c:1183
+msgid "Remove multiple"
+msgstr "Elimină multiple"
+
+#: ../gladeui/glade-command.c:1557
+#, c-format
+msgid "Clipboard add %s"
+msgstr "Adaugă %s în clipboard"
+
+#: ../gladeui/glade-command.c:1560
+msgid "Clipboard add multiple"
+msgstr "Adaugă multiple în clipboard"
+
+#: ../gladeui/glade-command.c:1565
+#, c-format
+msgid "Clipboard remove %s"
+msgstr "Elimină %s din clipboard"
+
+#: ../gladeui/glade-command.c:1568
+msgid "Clipboard remove multiple"
+msgstr "Elimină multiple din clipboard"
+
+#: ../gladeui/glade-command.c:1738
+#, c-format
+msgid "Create %s"
+msgstr "Creează %s"
+
+#: ../gladeui/glade-command.c:1762
+#, c-format
+msgid "Delete %s"
+msgstr "Șterge %s"
+
+#: ../gladeui/glade-command.c:1785
+#, c-format
+msgid "Cut %s"
+msgstr "Taie %s"
+
+#: ../gladeui/glade-command.c:1810
+#, c-format
+msgid "Copy %s"
+msgstr "Copiază %s"
+
+#: ../gladeui/glade-command.c:1914
+#, c-format
+msgid "Paste %s"
+msgstr "Lipește %s"
+
+#: ../gladeui/glade-command.c:1946
+#, c-format
+msgid "Drag-n-Drop from %s to %s"
+msgstr "Trageți și plasați din %s în %s"
+
+#: ../gladeui/glade-command.c:2068
+#, c-format
+msgid "Add signal handler %s"
+msgstr "Adaugă rutina de tratare a semnalului %s"
+
+#: ../gladeui/glade-command.c:2069
+#, c-format
+msgid "Remove signal handler %s"
+msgstr "Elimină rutina de tratare a semnalului %s"
+
+#: ../gladeui/glade-command.c:2070
+#, c-format
+msgid "Change signal handler %s"
+msgstr "Modifică rutina de tratare a semnalului %s"
+
+#: ../gladeui/glade-command.c:2295
+#, c-format
+msgid "Setting i18n metadata"
+msgstr "Se stabilesc metadatele i18n"
+
+#: ../gladeui/glade-command.c:2499
+#, c-format
+msgid "Converting %s to %s format"
+msgstr "Se convertește %s în formatul %s"
+
+#: ../gladeui/glade-command.c:2657 ../gladeui/glade-project.c:3708
+#, c-format
+msgid "Setting %s to use a %s naming policy"
+msgstr "Se setează %s pentru a utiliza politica de denumire %s"
+
+#: ../gladeui/glade-command.c:2797
+#, c-format
+msgid "Locking %s by widget %s"
+msgstr "Se blochează %s de către widget-ul %s"
+
+#: ../gladeui/glade-command.c:2836
+#, c-format
+msgid "Unlocking %s"
+msgstr "Se deblochează %s"
+
+#: ../gladeui/glade-cursor.c:186
+#, c-format
+msgid "Unable to load image (%s)"
+msgstr "Nu s-a putut încărca imaginea (%s)"
+
+#: ../gladeui/glade-editor-property.c:598
+msgid "Property Class"
+msgstr "Clasă proprietate"
+
+#: ../gladeui/glade-editor-property.c:599
+msgid "The GladePropertyClass this GladeEditorProperty was created for"
+msgstr ""
+"GladePropertyClass-ul pentru care a fost creat acest GladeEditorProperty"
+
+#: ../gladeui/glade-editor-property.c:605
+msgid "Use Command"
+msgstr "Utilizează comanda"
+
+#: ../gladeui/glade-editor-property.c:606
+msgid "Whether we should use the command API for the undo/redo stack"
+msgstr ""
+"Specifică dacă se utilizează API-ul de comandă pentru stiva de anulare/"
+"refacere"
+
+#: ../gladeui/glade-editor-property.c:1103
+msgid "Select Fields"
+msgstr "Alegere câmpuri"
+
+#: ../gladeui/glade-editor-property.c:1127
+msgid "_Select individual fields:"
+msgstr "_Alegeți câmpuri individuale:"
+
+#: ../gladeui/glade-editor-property.c:1437
+msgid "Select Named Icon"
+msgstr "Alegere iconiță numită"
+
+#: ../gladeui/glade-editor-property.c:1701
+msgid "Edit Text"
+msgstr "Editare text"
+
+#. Text
+#: ../gladeui/glade-editor-property.c:1732
+msgid "_Text:"
+msgstr "_Text:"
+
+#. Translatable
+#: ../gladeui/glade-editor-property.c:1768
+msgid "T_ranslatable"
+msgstr "T_raductibil"
+
+#: ../gladeui/glade-editor-property.c:1773 ../gladeui/glade-property.c:589
+msgid "Whether this property is translatable"
+msgstr "Specifică dacă această proprietate este traductibilă"
+
+#. Has Context
+#: ../gladeui/glade-editor-property.c:1776
+msgid "_Has context prefix"
+msgstr "_Are prefix de context"
+
+#: ../gladeui/glade-editor-property.c:1780 ../gladeui/glade-property.c:596
+msgid "Whether the translatable string has a context prefix"
+msgstr "Specifică dacă șirul traductibil are un prefix de context"
+
+#: ../gladeui/glade-editor-property.c:1791
+msgid "Conte_xt for translation:"
+msgstr "Conte_xt pentru traducere:"
+
+#: ../gladeui/glade-editor-property.c:1829
+msgid "Co_mments for translators:"
+msgstr "Co_mentarii pentru traducători:"
+
+#: ../gladeui/glade-editor-property.c:1948
+msgid "Select a file from the project resource directory"
+msgstr "Alegeți un fișier din dosarul de resurse al proiectului"
+
+#: ../gladeui/glade-editor-property.c:2229
+#: ../gladeui/glade-editor-property.c:2245
+msgid "Yes"
+msgstr "Da"
+
+#: ../gladeui/glade-editor-property.c:2229
+#: ../gladeui/glade-editor-property.c:2245
+#: ../gladeui/glade-editor-property.c:2260
+msgid "No"
+msgstr "Nu"
+
+#: ../gladeui/glade-editor-property.c:2686 ../gladeui/glade-widget.c:1052
+#: ../gladeui/glade-widget-adaptor.c:1236
+msgid "Name"
+msgstr "Nume"
+
+#: ../gladeui/glade-editor-property.c:2698 ../gladeui/glade-property.c:553
+msgid "Class"
+msgstr "Clasă"
+
+#: ../gladeui/glade-editor-property.c:2714
+#, c-format
+msgid "Choose parentless %s type objects in this project"
+msgstr "Alegeți obiecte fără părinte de tip %s din acest proiect"
+
+#: ../gladeui/glade-editor-property.c:2714
+#, c-format
+msgid "Choose a parentless %s in this project"
+msgstr "Alegeți un %s fără părinte din acest proiect"
+
+#: ../gladeui/glade-editor-property.c:2717
+#, c-format
+msgid "Choose %s type objects in this project"
+msgstr "Alegeți obiecte de tip %s din acest proiect"
+
+#: ../gladeui/glade-editor-property.c:2717
+#, c-format
+msgid "Choose a %s in this project"
+msgstr "Alegeți un %s din acest proiect"
+
+#. Checklist
+#: ../gladeui/glade-editor-property.c:2792
+#: ../gladeui/glade-editor-property.c:2934
+msgid "O_bjects:"
+msgstr "O_biecte:"
+
+#: ../gladeui/glade-editor-property.c:2884
+msgid "_New"
+msgstr "_Nou"
+
+#. translators: Creating 'a widget' for 'a property' of 'a widget'
+#: ../gladeui/glade-editor-property.c:3036
+#, c-format
+msgid "Creating %s for %s of %s"
+msgstr "Se crează %s pentru %s a %s"
+
+#. Checklist
+#: ../gladeui/glade-editor-property.c:3230
+msgid "Objects:"
+msgstr "Obiecte:"
+
+#: ../gladeui/glade-editor-property.c:3627
+msgid "Value:"
+msgstr "Valoare:"
+
+#: ../gladeui/glade-editor-property.c:3628
+msgid "The current value"
+msgstr "Valoarea curentă"
+
+#: ../gladeui/glade-editor-property.c:3630
+msgid "Lower:"
+msgstr "Inferioară:"
+
+#: ../gladeui/glade-editor-property.c:3631
+msgid "The minimum value"
+msgstr "Valoarea minimă"
+
+#: ../gladeui/glade-editor-property.c:3633
+msgid "Upper:"
+msgstr "Superioară:"
+
+#: ../gladeui/glade-editor-property.c:3634
+msgid "The maximum value"
+msgstr "Valoarea maximă"
+
+#: ../gladeui/glade-editor-property.c:3636
+msgid "Step inc:"
+msgstr "Pas incrementare:"
+
+#: ../gladeui/glade-editor-property.c:3637
+msgid "The increment to use to make minor changes to the value"
+msgstr ""
+"Pasul de incrementare utilizat pentru a face modificări minore ale valorii"
+
+#: ../gladeui/glade-editor-property.c:3639
+msgid "Page inc:"
+msgstr "Pagină de incrementare:"
+
+#: ../gladeui/glade-editor-property.c:3640
+msgid "The increment to use to make major changes to the value"
+msgstr ""
+"Pasul de incrementare utilizat pentru a face modificări majore ale valorii"
+
+#: ../gladeui/glade-editor-property.c:3642
+msgid "Page size:"
+msgstr "Mărime pagină:"
+
+#: ../gladeui/glade-editor-property.c:3643
+msgid ""
+"The page size (in a GtkScrollbar this is the size of the area which is "
+"currently visible)"
+msgstr ""
+"Mărimea paginii (într-un GtkScrollbar aceasta este dimensiunea suprafeței "
+"care curent vizibile)"
+
+#: ../gladeui/glade-editor-table.c:356
+msgid "The Object's name"
+msgstr "Numele obiectului"
+
+#: ../gladeui/glade-editor.c:154
+msgid "Show info"
+msgstr "Arată informații"
+
+#: ../gladeui/glade-editor.c:155
+msgid "Whether to show an informational button for the loaded widget"
+msgstr ""
+"Specifică dacă se afișează un buton informațional pentru widget-ul încărcat"
+
+#: ../gladeui/glade-editor.c:163
+msgid "The currently loaded widget in this editor"
+msgstr "Widget-ul încărcat curent în acest editor"
+
+#. construct tab label widget
+#: ../gladeui/glade-editor.c:203 ../gladeui/glade-editor.c:402
+#: ../gladeui/glade-editor.c:1017
+msgid "Accessibility"
+msgstr "Accesibilitate"
+
+#. configure page container
+#: ../gladeui/glade-editor.c:220 ../gladeui/glade-editor.c:401
+msgid "_Signals"
+msgstr "_Semnale"
+
+#: ../gladeui/glade-editor.c:283
+msgid "View documentation for the selected widget"
+msgstr "Vizualizați informații despre widget-ul selectat"
+
+#: ../gladeui/glade-editor.c:302
+msgid "Reset widget properties to their defaults"
+msgstr "Resetează proprietățile widget-ului la valorile implicite"
+
+#. translators: referring to the properties of a widget named '%s [%s]'
+#: ../gladeui/glade-editor.c:338
+#, c-format
+msgid "%s Properties - %s [%s]"
+msgstr "Proprietăți %s - %s [%s]"
+
+#: ../gladeui/glade-editor.c:398
+msgid "_General"
+msgstr "_General"
+
+#: ../gladeui/glade-editor.c:399
+msgid "_Packing"
+msgstr "Îm_pachetare"
+
+#: ../gladeui/glade-editor.c:400
+msgid "_Common"
+msgstr "_Comun"
+
+#: ../gladeui/glade-editor.c:826
+#, c-format
+msgid "Create a %s"
+msgstr "Creează un %s"
+
+#: ../gladeui/glade-editor.c:946
+msgid "Reset"
+msgstr "Resetează"
+
+#: ../gladeui/glade-editor.c:961
+msgid "Property"
+msgstr "Proprietate"
+
+#: ../gladeui/glade-editor.c:1007
+msgid "Common"
+msgstr "Comun"
+
+#: ../gladeui/glade-editor.c:1051
+msgid "(default)"
+msgstr "(implicit)"
+
+#: ../gladeui/glade-editor.c:1066
+msgid "Select the properties that you want to reset to their default values"
+msgstr ""
+"Alegeți proprietățile pe care vreți să le resetați va valorile lor "
+"implicite"
+
+#: ../gladeui/glade-editor.c:1198
+msgid "Reset Widget Properties"
+msgstr "Resetează proprietățile widget-ului"
+
+#. Checklist
+#: ../gladeui/glade-editor.c:1215
+msgid "_Properties:"
+msgstr "_Proprietăți:"
+
+#: ../gladeui/glade-editor.c:1244
+msgid "_Select All"
+msgstr "_Selectează tot"
+
+#: ../gladeui/glade-editor.c:1251
+msgid "_Unselect All"
+msgstr "_Deselectează tot"
+
+#. Description
+#: ../gladeui/glade-editor.c:1260
+msgid "Property _Description:"
+msgstr "_Descriere proprietate:"
+
+#. Translators: first %s is the project name, second is a widget name
+#: ../gladeui/glade-editor.c:1356
+#, c-format
+msgid "%s - %s Properties"
+msgstr "%s - Proprietăți %s"
+
+#: ../gladeui/glade-fixed.c:491 ../plugins/gtk+/glade-gtk.c:2628
+#, c-format
+msgid "Placing %s inside %s"
+msgstr "Se plasează %s în %s"
+
+#: ../gladeui/glade-fixed.c:982
+msgid "X position property"
+msgstr "Proprietatea poziție X"
+
+#: ../gladeui/glade-fixed.c:983
+msgid "The property used to set the X position of a child object"
+msgstr "Proprietatea utilizată pentru a stabili poziția X a obiectului copil"
+
+#: ../gladeui/glade-fixed.c:989
+msgid "Y position property"
+msgstr "Proprietatea poziție Y"
+
+#: ../gladeui/glade-fixed.c:990
+msgid "The property used to set the Y position of a child object"
+msgstr "Proprietatea utilizată pentru a stabili poziția Y a obiectului copil"
+
+#: ../gladeui/glade-fixed.c:996
+msgid "Width property"
+msgstr "Proprietatea lățime"
+
+#: ../gladeui/glade-fixed.c:997
+msgid "The property used to set the width of a child object"
+msgstr "Proprietatea utilizată pentru a stabili lățimea obiectului copil"
+
+#: ../gladeui/glade-fixed.c:1003
+msgid "Height property"
+msgstr "Proprietatea înălțime"
+
+#: ../gladeui/glade-fixed.c:1004
+msgid "The property used to set the height of a child object"
+msgstr "Proprietatea utilizată pentru a stabili înălțimea obiectului copil"
+
+#: ../gladeui/glade-fixed.c:1010
+msgid "Can resize"
+msgstr "Poate redimensiona"
+
+#: ../gladeui/glade-fixed.c:1011
+msgid "Whether this container supports resizes of child widgets"
+msgstr ""
+"Specifică dacă acest container suportă redimensionarea widget-urilor copii"
+
+#: ../gladeui/glade-palette.c:745
+msgid "Widget selector"
+msgstr "Selector de widget-uri"
+
+#: ../gladeui/glade-palette.c:746
+msgid "Create root widget"
+msgstr "Creează widget rădăcină"
+
+#: ../gladeui/glade-popup.c:467 ../gladeui/glade-popup.c:476
+msgid "_Add widget here"
+msgstr "_Adaugă widget aici"
+
+#: ../gladeui/glade-popup.c:480 ../gladeui/glade-popup.c:704
+msgid "Add widget as _toplevel"
+msgstr "Adaugă widge_t la nivelul cel mai de sus"
+
+#: ../gladeui/glade-popup.c:491
+msgid "_Select"
+msgstr "_Alege"
+
+#: ../gladeui/glade-popup.c:573 ../gladeui/glade-popup.c:712
+#: ../gladeui/glade-popup.c:789
+msgid "Read _documentation"
+msgstr "Consultă _documentația"
+
+#: ../gladeui/glade-popup.c:782
+msgid "Set default value"
+msgstr "Stabilește valoarea implicită"
+
+#: ../gladeui/glade-project.c:844
+msgid "Whether project has been modified since it was last saved"
+msgstr "Specifică dacă proiectul a fost modificat de la ultima salvare"
+
+#: ../gladeui/glade-project.c:851
+msgid "Has Selection"
+msgstr "Are selecție"
+
+#: ../gladeui/glade-project.c:852
+msgid "Whether project has a selection"
+msgstr "Specifică dacă proiectul are o selecție"
+
+#: ../gladeui/glade-project.c:859
+msgid "Path"
+msgstr "Cale"
+
+#: ../gladeui/glade-project.c:860
+msgid "The filesystem path of the project"
+msgstr "Calea proiectului în sistemul de fișiere"
+
+#: ../gladeui/glade-project.c:867
+msgid "Read Only"
+msgstr "Doar citire"
+
+#: ../gladeui/glade-project.c:868
+msgid "Whether project is read-only"
+msgstr "Specifică dacă proiectul poate fi doar citit"
+
+#: ../gladeui/glade-project.c:875
+msgid "Format"
+msgstr "Format"
+
+#: ../gladeui/glade-project.c:876
+msgid "The project file format"
+msgstr "Formatul fișierului proiect"
+
+#: ../gladeui/glade-project.c:1033
+#, c-format
+msgid ""
+"Failed to load %s.\n"
+"The following required catalogs are unavailable: %s"
+msgstr ""
+"Nu s-a putut încărca %s.\n"
+"Următoarele cataloage necesare nu sunt disponibile: %s"
+
+#: ../gladeui/glade-project.c:1452 ../gladeui/glade-project.c:1700
+#: ../gladeui/glade-project.c:4167
+#, c-format
+msgid "%s preferences"
+msgstr "Preferințe %s"
+
+#. ******************************************************************
+#. Verify code here (versioning, incompatability checks)
+#. ******************************************************************
+#. translators: reffers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1729
+#, c-format
+msgid "This widget was introduced in %s %d.%d while project targets %s %d.%d"
+msgstr ""
+"Widget-ul acesta a fost introdus în %s %d.%d, dar proiectul are ca obiectiv %"
+"s %d.%d"
+
+#. translators: reffers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1732
+#, c-format
+msgid "[%s] Object class '%s' was introduced in %s %d.%d\n"
+msgstr "[%s] Clasa de obiecte „%s” a fost introdusă în %s %d.%d\n"
+
+#. translators: reffers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1735
+#, c-format
+msgid ""
+"This widget was made available in GtkBuilder format in %s %d.%d while "
+"project targets %s %d.%d"
+msgstr ""
+"Widget-ul acesta a fost introdus în format GtkBuilder în %s %d.%d, dar "
+"proiectul are ca obiectiv %s %d.%d"
+
+#. translators: reffers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1739
+#, c-format
+msgid ""
+"[%s] Object class '%s' was made available in GtkBuilder format in %s %d.%d\n"
+msgstr ""
+"[%s] Clasa de obiecte „%s” a fost introdusă în format GtkBuilder în %s %d.%"
+"d\n"
+
+#: ../gladeui/glade-project.c:1742
+msgid "This widget is only supported in libglade format"
+msgstr "Widget-ul este suportat doar în format libglade"
+
+#. translators: reffers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1745
+#, c-format
+msgid ""
+"[%s] Object class '%s' from %s %d.%d is only supported in libglade format\n"
+msgstr ""
+"[%s] Clasa de obiecte „%s” din %s %d.%d este suportată doar în format "
+"libglade\n"
+
+#: ../gladeui/glade-project.c:1748
+msgid "This widget is not supported in libglade format"
+msgstr "Widget-ul nu este suportat în format libglade"
+
+#. translators: reffers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1751
+#, c-format
+msgid ""
+"[%s] Object class '%s' from %s %d.%d is not supported in libglade format\n"
+msgstr ""
+"[%s] Clasa de obiecte „%s” %s %d.%d nu este suportată în format libglade\n"
+
+#: ../gladeui/glade-project.c:1754
+msgid "This widget is deprecated"
+msgstr "Acest widget este învechit"
+
+#. translators: reffers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1757
+#, c-format
+msgid "[%s] Object class '%s' from %s %d.%d is deprecated\n"
+msgstr "[%s] Clasa de obiecte „%s” din %s %d.%d este învechită\n"
+
+#. Defined here for pretty translator comments (bug in intl tools, for some reason
+#. * you can only comment about the line directly following, forcing you to write
+#. * ugly messy code with comments in line breaks inside function calls).
+#.
+#: ../gladeui/glade-project.c:1764
+msgid "This property is not supported in libglade format"
+msgstr "Proprietatea aceasta nu este suportată în format libglade"
+
+#. translators: reffers to a property '%s' of widget '[%s]'
+#: ../gladeui/glade-project.c:1767
+#, c-format
+msgid ""
+"[%s] Property '%s' of object class '%s' is not supported in libglade format\n"
+msgstr ""
+"[%s] Proprietatea „%s” a clasei de obiecte „%s” nu este suportată în format "
+"libglade\n"
+
+#. translators: reffers to a property '%s' of widget '[%s]'
+#: ../gladeui/glade-project.c:1770
+#, c-format
+msgid ""
+"[%s] Packing property '%s' of object class '%s' is not supported in libglade "
+"format\n"
+msgstr ""
+"[%s] Proprietatea de împachetare „%s” a clasei de obiecte „%s” nu este "
+"suportată în format libglade\n"
+
+#: ../gladeui/glade-project.c:1773
+msgid "This property is only supported in libglade format"
+msgstr "Proprietatea aceasta este suportată doar în format libglade"
+
+#. translators: reffers to a property '%s' of widget '[%s]'
+#: ../gladeui/glade-project.c:1776
+#, c-format
+msgid ""
+"[%s] Property '%s' of object class '%s' is only supported in libglade "
+"format\n"
+msgstr ""
+"[%s] Proprietatea „%s” a clasei de obiecte „%s” este suportată doar în "
+"format libglade\n"
+
+#. translators: reffers to a property '%s' of widget '[%s]'
+#: ../gladeui/glade-project.c:1780
+#, c-format
+msgid ""
+"[%s] Packing property '%s' of object class '%s' is only supported in "
+"libglade format\n"
+msgstr ""
+"[%s] Proprietatea de împachetare „%s” a clasei de obiecte „%s” este "
+"suportată doar în format libglade\n"
+
+#. translators: reffers to a property in toolkit version '%s %d.%d'
+#. * and a project targeting toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1785
+#, c-format
+msgid "This property was introduced in %s %d.%d while project targets %s %d.%d"
+msgstr ""
+"Proprietatea acesta a fost introdusă în %s %d.%d, dar proiectul are ca "
+"obiectiv %s %d.%d"
+
+#. translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1788
+#, c-format
+msgid "[%s] Property '%s' of object class '%s' was introduced in %s %d.%d\n"
+msgstr ""
+"[%s] Proprietatea „%s” a clasei de obiecte „%s” a fost introdusă în %s %d.%"
+"d\n"
+
+#. translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1791
+#, c-format
+msgid ""
+"[%s] Packing property '%s' of object class '%s' was introduced in %s %d.%d\n"
+msgstr ""
+"[%s] Proprietatea de împachetare „%s” a clasei de obiecte „%s” a fost "
+"introdusă în %s %d.%d\n"
+
+#. translators: reffers to a property in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1795
+#, c-format
+msgid ""
+"This property was made available in GtkBuilder format in %s %d.%d while "
+"project targets %s %d.%d"
+msgstr ""
+"Această proprietate a fost introdusă în format GtkBuilder în %s %d.%d, dar "
+"proiectul are ca obiectiv %s %d.%d"
+
+#. translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1799
+#, c-format
+msgid ""
+"[%s] Property '%s' of object class '%s' was made available in GtkBuilder "
+"format in %s %d.%d\n"
+msgstr ""
+"[%s] Proprietatea „%s” a clasei de obiecte „%s” a fost introdusă în format "
+"GtkBuilder în %s %d.%d\n"
+
+#. translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1803
+#, c-format
+msgid ""
+"[%s] Packing property '%s' of object class '%s' was made available in "
+"GtkBuilder format in %s %d.%d\n"
+msgstr ""
+"[%s] Proprietatea de împachetare „%s” a clasei de obiecte „%s” a fost "
+"introdusă în format GtkBuilder în %s %d.%d\n"
+
+#. translators: reffers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1807
+#, c-format
+msgid "[%s] Signal '%s' of object class '%s' was introduced in %s %d.%d\n"
+msgstr ""
+"[%s] Semnalul „%s” al clasei de obiecte „%s” a fost introdus în %s %d.%d\n"
+
+#. translators: reffers to a signal in toolkit version '%s %d.%d'
+#. * and a project targeting toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1811
+#, c-format
+msgid "This signal was introduced in %s %d.%d while project targets %s %d.%d"
+msgstr ""
+"Semnalul acesta a fost introdus în %s %d.%d, dar proiectul are ca obiectiv %"
+"s %d.%d"
+
+#: ../gladeui/glade-project.c:2064
+msgid "Details"
+msgstr "Detalii"
+
+#: ../gladeui/glade-project.c:2080
+#, c-format
+msgid "Project \"%s\" has errors. Save anyway?"
+msgstr "Proiectul „%s” are erori. Salvați oricum?"
+
+#: ../gladeui/glade-project.c:2081
+#, c-format
+msgid "Project \"%s\" has deprecated widgets and/or version mismatches."
+msgstr ""
+"Proiectul „%s” are widget-uri învechite și/sau cu versiuni nepotrivite."
+
+#: ../gladeui/glade-project.c:3509
+#, c-format
+msgid "Unsaved %i"
+msgstr "Nesalvat %i"
+
+#: ../gladeui/glade-project.c:3771
+#, c-format
+msgid "Project %s has no deprecated widgets or version mismatches."
+msgstr ""
+"Proiectul „%s” nu are widget-uri învechite sau cu versiuni nepotrivite."
+
+#: ../gladeui/glade-project.c:3890
+msgid "Set options in your project"
+msgstr "Stabiliți opțiunile proiectului"
+
+#. Project format
+#: ../gladeui/glade-project.c:3907
+msgid "Project file format:"
+msgstr "Formatul fișierului proiect:"
+
+#. Naming policy format
+#: ../gladeui/glade-project.c:3950
+msgid "Object names are unique:"
+msgstr "Numele obiectelor sunt unice:"
+
+#: ../gladeui/glade-project.c:3963
+msgid "within the project"
+msgstr "în cadrul proiectului"
+
+#: ../gladeui/glade-project.c:3965
+msgid "inside toplevels"
+msgstr "sub nivelurile superioare"
+
+#. Resource path
+#: ../gladeui/glade-project.c:3992
+msgid "Image resources are loaded locally:"
+msgstr "Resursele imagini sunt încărcate local:"
+
+#. Project directory...
+#: ../gladeui/glade-project.c:4008
+msgid "From the project directory"
+msgstr "Din dosarul proiectului"
+
+#: ../gladeui/glade-project.c:4015
+msgid "From a project relative directory"
+msgstr "Dintr-un dosar relativ proiectului"
+
+#: ../gladeui/glade-project.c:4027
+msgid "From this directory"
+msgstr "Din acest dosar"
+
+#: ../gladeui/glade-project.c:4030
+msgid "Choose a path to load image resources"
+msgstr "Alegeți o cale pentru încărcarea resurselor imagine"
+
+#. Target versions
+#: ../gladeui/glade-project.c:4051
+msgid "Toolkit versions required:"
+msgstr "Versiuni de toolkit necesare:"
+
+#: ../gladeui/glade-project.c:4148
+msgid "Verify versions and deprecations:"
+msgstr "Verifică versiunile și învechirile:"
+
+#: ../gladeui/glade-project.c:4457
+#, c-format
+msgid "(internal %s)"
+msgstr "(%s intern)"
+
+#: ../gladeui/glade-project.c:4461
+#, c-format
+msgid "(%s child)"
+msgstr "(copil %s)"
+
+#: ../gladeui/glade-property.c:554
+msgid "The GladePropertyClass for this property"
+msgstr "GladePropertyClass pentru această proprietate"
+
+#: ../gladeui/glade-property.c:560
+msgid "Enabled"
+msgstr "Activat"
+
+#: ../gladeui/glade-property.c:561
+msgid "If the property is optional, this is its enabled state"
+msgstr "Dacă proprietatea este opțională, aceasta este starea sa activă"
+
+#: ../gladeui/glade-property.c:567 ../gladeui/glade-widget-action.c:168
+msgid "Sensitive"
+msgstr "Senzitiv"
+
+#: ../gladeui/glade-property.c:568
+msgid "This gives backends control to set property sensitivity"
+msgstr "Dă backend-ului contro pentru a stabili proprietatea de senzitivitate"
+
+#: ../gladeui/glade-property.c:574
+msgid "Context"
+msgstr "Context"
+
+#: ../gladeui/glade-property.c:575
+msgid "Context for translation"
+msgstr "Context pentru traducere"
+
+#: ../gladeui/glade-property.c:581
+msgid "Comment"
+msgstr "Comentariu"
+
+#: ../gladeui/glade-property.c:582
+msgid "Comment for translators"
+msgstr "Comentariu pentru traducători"
+
+#: ../gladeui/glade-property.c:588
+msgid "Translatable"
+msgstr "Traductibil"
+
+#: ../gladeui/glade-property.c:595
+msgid "Has Context"
+msgstr "Are context"
+
+#: ../gladeui/glade-property.c:602
+msgid "Visual State"
+msgstr "Stare vizuală"
+
+#: ../gladeui/glade-property.c:603
+msgid "Priority information for the property editor to act on"
+msgstr "Informații de prioritate utilizate de editorul de proprietăți"
+
+#: ../gladeui/glade-signal-editor.c:117
+msgid "<Type here>"
+msgstr "<Tastați aici>"
+
+#: ../gladeui/glade-signal-editor.c:118
+msgid "<Object>"
+msgstr "<Obiect>"
+
+#: ../gladeui/glade-signal-editor.c:830
+msgid "Select an object to pass to the handler"
+msgstr "Alegeți un obiect de trimis rutinei de tratare"
+
+#: ../gladeui/glade-signal-editor.c:913 ../plugins/gtk+/glade-accels.c:454
+msgid "Signal"
+msgstr "Semnal"
+
+#: ../gladeui/glade-signal-editor.c:913
+msgid "The name of the signal to connect to"
+msgstr "Numele semnalului la care se face conexiunea"
+
+#: ../gladeui/glade-signal-editor.c:971
+msgid "Handler"
+msgstr "Rutină de tratare"
+
+#: ../gladeui/glade-signal-editor.c:972
+msgid "Enter the handler to run for this signal"
+msgstr "Introduceți rutina de tratare de executat pentru acest semnal"
+
+#: ../gladeui/glade-signal-editor.c:1006 ../gladeui/glade-widget.c:1075
+msgid "Object"
+msgstr "Obiect"
+
+#: ../gladeui/glade-signal-editor.c:1007
+msgid "An object to pass to the handler"
+msgstr "Un obiect de trimis rutinei de tratare"
+
+#: ../gladeui/glade-signal-editor.c:1047
+msgid "Swap"
+msgstr "Swap"
+
+#: ../gladeui/glade-signal-editor.c:1048
+msgid ""
+"Whether the instance and object should be swapped when calling the handler"
+msgstr ""
+"Specifică dacă instanța și obiectul să fie inversate când este apelată "
+"rutina de tratare"
+
+#: ../gladeui/glade-signal-editor.c:1074 ../plugins/gtk+/gtk+.xml.in.h:34
+msgid "After"
+msgstr "După"
+
+#: ../gladeui/glade-signal-editor.c:1075
+msgid ""
+"Whether the handler should be called before or after the default handler of "
+"the signal"
+msgstr ""
+"Specifică dacă rutina de tratare trebuie chemată înainte sau după rutina de "
+"tratare implicită a semnalului"
+
+#: ../gladeui/glade-utils.c:142 ../gladeui/glade-utils.c:173
+#, c-format
+msgid "We could not find the symbol \"%s\""
+msgstr "Nu s-a putut găsi simbolul „%s”"
+
+#: ../gladeui/glade-utils.c:149
+#, c-format
+msgid "Could not get the type from \"%s\""
+msgstr "Nu s-a putut obține tipul din „%s”"
+
+#: ../gladeui/glade-utils.c:286
+#, c-format
+msgid ""
+"Cannot add non scrollable %s widget to a %s directly.\n"
+"Add a %s first."
+msgstr ""
+"Nu se poate adăuga un widget nederulabil %s direct în %s.\n"
+"Adăugați mai întâi %s."
+
+#: ../gladeui/glade-utils.c:468
+msgid "File format"
+msgstr "Format fișier"
+
+#: ../gladeui/glade-utils.c:549
+msgid "All Files"
+msgstr "Toate fișierele"
+
+#: ../gladeui/glade-utils.c:554
+msgid "Libglade Files"
+msgstr "Fișiere libglade"
+
+#: ../gladeui/glade-utils.c:559
+msgid "GtkBuilder Files"
+msgstr "Fișiere GtkBuilder"
+
+#: ../gladeui/glade-utils.c:565
+msgid "All Glade Files"
+msgstr "Toate fișierele Glade"
+
+#: ../gladeui/glade-utils.c:1279
+#, c-format
+msgid ""
+"%s exists.\n"
+"Do you want to replace it?"
+msgstr ""
+"%s există.\n"
+"Doriți să-l înlocuiți?"
+
+#: ../gladeui/glade-utils.c:1307
+#, c-format
+msgid "Error writing to %s: %s"
+msgstr "Eroare la scrierea în %s: %s"
+
+#: ../gladeui/glade-utils.c:1321
+#, c-format
+msgid "Error reading %s: %s"
+msgstr "Eroare la citirea %s: %s"
+
+#: ../gladeui/glade-utils.c:1336 ../gladeui/glade-utils.c:1357
+#, c-format
+msgid "Error shutting down I/O channel %s: %s"
+msgstr "Eroare la oprirea canalului I/O: %s: %s"
+
+#: ../gladeui/glade-utils.c:1346
+#, c-format
+msgid "Failed to open %s for writing: %s"
+msgstr "Nu s-a putut deschide %s pentru scriere: %s"
+
+#: ../gladeui/glade-utils.c:1366
+#, c-format
+msgid "Failed to open %s for reading: %s"
+msgstr "Nu s-a putut deschide %s pentru citire: %s"
+
+#: ../gladeui/glade-utils.c:1748
+msgid "Could not show link:"
+msgstr "Legătura nu poate fi afișată:"
+
+#. Reset the column
+#. Objects
+#: ../gladeui/glade-utils.c:2130 ../plugins/gtk+/glade-attributes.c:799
+#: ../plugins/gtk+/gtk+.xml.in.h:276
+msgid "None"
+msgstr "Niciuna"
+
+#: ../gladeui/glade-widget.c:1053
+msgid "The name of the widget"
+msgstr "Numele widget-ului"
+
+#: ../gladeui/glade-widget.c:1060
+msgid "Internal name"
+msgstr "Nume intern"
+
+#: ../gladeui/glade-widget.c:1061
+msgid "The internal name of the widget"
+msgstr "Numele intern al widget-ului"
+
+#: ../gladeui/glade-widget.c:1067
+msgid "Anarchist"
+msgstr "Anarhist"
+
+#: ../gladeui/glade-widget.c:1068
+msgid ""
+"Whether this composite child is an ancestral child or an anarchist child"
+msgstr ""
+"Specifică dacă acest copil compus este un copil moștenitor sau un copil "
+"anarhist"
+
+#: ../gladeui/glade-widget.c:1076
+msgid "The object associated"
+msgstr "Obiectul asociat"
+
+#: ../gladeui/glade-widget.c:1083
+msgid "Adaptor"
+msgstr "Adaptor"
+
+#: ../gladeui/glade-widget.c:1084
+msgid "The class adaptor for the associated widget"
+msgstr "Adaptorul de clarsă pentru widget-ul asociat"
+
+#: ../gladeui/glade-widget.c:1091 ../gladeui/glade-inspector.c:191
+msgid "Project"
+msgstr "Proiect"
+
+#: ../gladeui/glade-widget.c:1092
+msgid "The glade project that this widget belongs to"
+msgstr "Proiectul glade căruia îi aparține acest widget"
+
+#: ../gladeui/glade-widget.c:1101
+msgid "A list of GladeProperties"
+msgstr "O listă de GladeProperties"
+
+#: ../gladeui/glade-widget.c:1107 ../plugins/gtk+/gtk+.xml.in.h:298
+msgid "Parent"
+msgstr "Părinte"
+
+#: ../gladeui/glade-widget.c:1108
+msgid "A pointer to the parenting GladeWidget"
+msgstr "Pointer la GladeWidget-ul părinte"
+
+#: ../gladeui/glade-widget.c:1115
+msgid "Internal Name"
+msgstr "Nume intern"
+
+#: ../gladeui/glade-widget.c:1116
+msgid "A generic name prefix for internal widgets"
+msgstr "Un prefix de nume generic pentru widget-uri interne"
+
+#: ../gladeui/glade-widget.c:1121
+msgid "Template"
+msgstr "Șablon"
+
+#: ../gladeui/glade-widget.c:1122
+msgid "A GladeWidget template to base a new widget on"
+msgstr "Un șablon GladeWidget pe care se va baza noul widget"
+
+#: ../gladeui/glade-widget.c:1128
+msgid "Exact Template"
+msgstr "Extragere șablon"
+
+#: ../gladeui/glade-widget.c:1129
+msgid "Whether we are creating an exact duplicate when using a template"
+msgstr "Specifică dacă se creează o copie identică utilizând doar un șablon"
+
+#: ../gladeui/glade-widget.c:1134
+msgid "Reason"
+msgstr "Motiv"
+
+#: ../gladeui/glade-widget.c:1135
+msgid "A GladeCreateReason for this creation"
+msgstr "O GladeCreateReason pentru această creație"
+
+#: ../gladeui/glade-widget.c:1143
+msgid "Toplevel Width"
+msgstr "Lățimea nivelului superior"
+
+#: ../gladeui/glade-widget.c:1144
+msgid "The width of the widget when toplevel in the GladeDesignLayout"
+msgstr "Lățimea nivelului superior din GladeDesignLayout"
+
+#: ../gladeui/glade-widget.c:1153
+msgid "Toplevel Height"
+msgstr "Înălțimea nivelului superior"
+
+#: ../gladeui/glade-widget.c:1154
+msgid "The height of the widget when toplevel in the GladeDesignLayout"
+msgstr "Înălțimea nivelului superior din GladeDesignLayout"
+
+#: ../gladeui/glade-widget.c:1163
+msgid "Support Warning"
+msgstr "Avertisment de suport"
+
+#: ../gladeui/glade-widget.c:1164
+msgid "A warning string about version mismatches"
+msgstr "Un avertisment despre versiuni nepotrivite"
+
+#: ../gladeui/glade-widget-adaptor.c:250
+#, c-format
+msgid "A derived adaptor (%s) of %s already exist!"
+msgstr "Un adaptor derivat (%s) al %s deja există!"
+
+#: ../gladeui/glade-widget-adaptor.c:1237
+msgid "Name of the class"
+msgstr "Numele clasei"
+
+#: ../gladeui/glade-widget-adaptor.c:1245
+msgid "GType of the class"
+msgstr "Tipul GType al clasei"
+
+#: ../gladeui/glade-widget-adaptor.c:1252
+msgid "Title"
+msgstr "Titlu"
+
+#: ../gladeui/glade-widget-adaptor.c:1253
+msgid "Translated title for the class used in the glade UI"
+msgstr "Titlul tradus al clasei utilizată în interfața utilizator glade"
+
+#: ../gladeui/glade-widget-adaptor.c:1260
+msgid "Generic Name"
+msgstr "Nume generic"
+
+#: ../gladeui/glade-widget-adaptor.c:1261
+msgid "Used to generate names of new widgets"
+msgstr "Utilizat pentru a genera nume pentru widget-uri noi"
+
+#: ../gladeui/glade-widget-adaptor.c:1268 ../plugins/gtk+/gtk+.xml.in.h:198
+msgid "Icon Name"
+msgstr "Nume iconiță"
+
+#: ../gladeui/glade-widget-adaptor.c:1269
+msgid "The icon name"
+msgstr "Numele iconiței"
+
+#: ../gladeui/glade-widget-adaptor.c:1276
+msgid "Catalog"
+msgstr "Catalog"
+
+#: ../gladeui/glade-widget-adaptor.c:1277
+msgid "The name of the widget catalog this class was declared by"
+msgstr "Numele catalogului de widget-uri în care este declarată această clasă"
+
+#: ../gladeui/glade-widget-adaptor.c:1284
+msgid "Book"
+msgstr "Carte"
+
+#: ../gladeui/glade-widget-adaptor.c:1285
+msgid "DevHelp search namespace for this widget class"
+msgstr "Spațiul de căutare DevHelp pentru această clasă widget"
+
+#: ../gladeui/glade-widget-adaptor.c:1292
+msgid "Special Child Type"
+msgstr "Tip special de copil"
+
+#: ../gladeui/glade-widget-adaptor.c:1293
+msgid ""
+"Holds the name of the packing property to depict special children for this "
+"container class"
+msgstr ""
+"Ține numele proprietății de împachetare pentru a denumi copii speciali ai "
+"acestei clase de container"
+
+#: ../gladeui/glade-widget-adaptor.c:1301 ../plugins/gtk+/gtk+.xml.in.h:104
+msgid "Cursor"
+msgstr "Cursor"
+
+#: ../gladeui/glade-widget-adaptor.c:1302
+msgid "A cursor for inserting widgets in the UI"
+msgstr "Un cursor pentru introducere de widget-uri în interfața cu utilizatorul"
+
+#: ../gladeui/glade-inspector.c:192
+msgid "The project being inspected"
+msgstr "Proiectul ce se inspectează"
+
+#: ../gladeui/glade-inspector.c:389
+msgid "< search widgets >"
+msgstr "< caută widget-uri >"
+
+#: ../gladeui/glade-widget-action.c:161
+msgid "class"
+msgstr "clasă"
+
+#: ../gladeui/glade-widget-action.c:162
+msgid "GladeWidgetActionClass structure pointer"
+msgstr "Pointer la o structură GladeWidgetActionClass"
+
+#: ../gladeui/glade-widget-action.c:169
+msgid "Whether this action is sensitive"
+msgstr "Specifică dacă acțiunea este senzitivă"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:479
+msgid "All Contexts"
+msgstr "Toate contextele"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1365
+msgid "Named Icon Chooser"
+msgstr "Alegere iconițe cu nume"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1405
+msgid "Icon _Name:"
+msgstr "_Nume iconiță:"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1445
+msgid "C_ontexts:"
+msgstr "C_ontexte:"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1466
+msgid "Icon Na_mes:"
+msgstr "Nu_me iconițe:"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1488
+msgid "_List standard icons only"
+msgstr "_Listează doar iconițele standard"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1704
+#, c-format
+msgid "Could not create directory: %s"
+msgstr "Nu s-a putut crea dosarul: %s"
+
+#: ../gladeui/icon-naming-spec.c:35 ../plugins/gtk+/gtk+.xml.in.h:25
+msgid "Actions"
+msgstr "Acțiuni"
+
+#: ../gladeui/icon-naming-spec.c:36
+msgid "Applications"
+msgstr "Aplicații"
+
+#: ../gladeui/icon-naming-spec.c:37
+msgid "Categories"
+msgstr "Categorii"
+
+#: ../gladeui/icon-naming-spec.c:38
+msgid "Devices"
+msgstr "Dispozitive"
+
+#: ../gladeui/icon-naming-spec.c:39
+msgid "Emblems"
+msgstr "Embleme"
+
+#: ../gladeui/icon-naming-spec.c:40
+msgid "Emotes"
+msgstr "Emoticoane"
+
+#: ../gladeui/icon-naming-spec.c:41
+msgid "International"
+msgstr "Internațional"
+
+#: ../gladeui/icon-naming-spec.c:42
+msgid "MIME Types"
+msgstr "Tipuri MIME"
+
+#: ../gladeui/icon-naming-spec.c:43
+msgid "Places"
+msgstr "Locuri"
+
+#: ../gladeui/icon-naming-spec.c:44
+msgid "Status"
+msgstr "Stare"
+
+#: ../plugins/gtk+/glade-attributes.c:215
+msgctxt "textattr"
+msgid "Style"
+msgstr "Stil"
+
+#: ../plugins/gtk+/glade-attributes.c:219
+msgctxt "textattr"
+msgid "Weight"
+msgstr "Greutate"
+
+#: ../plugins/gtk+/glade-attributes.c:223
+msgctxt "textattr"
+msgid "Variant"
+msgstr "Variantă"
+
+#: ../plugins/gtk+/glade-attributes.c:227
+msgctxt "textattr"
+msgid "Stretch"
+msgstr "Întins"
+
+#: ../plugins/gtk+/glade-attributes.c:231
+msgctxt "textattr"
+msgid "Underline"
+msgstr "Subliniat"
+
+#: ../plugins/gtk+/glade-attributes.c:235
+msgctxt "textattr"
+msgid "Strikethrough"
+msgstr "Tăiat"
+
+#: ../plugins/gtk+/glade-attributes.c:239
+msgctxt "textattr"
+msgid "Gravity"
+msgstr "Gravitate"
+
+#: ../plugins/gtk+/glade-attributes.c:243
+msgctxt "textattr"
+msgid "Gravity Hint"
+msgstr "Indiciu gravitate"
+
+#: ../plugins/gtk+/glade-attributes.c:254
+msgctxt "textattr"
+msgid "Size"
+msgstr "Mărime"
+
+#: ../plugins/gtk+/glade-attributes.c:258
+msgctxt "textattr"
+msgid "Absolute Size"
+msgstr "Dimensiune absolută"
+
+#: ../plugins/gtk+/glade-attributes.c:265
+msgctxt "textattr"
+msgid "Foreground Color"
+msgstr "Culoare prim-plan"
+
+#: ../plugins/gtk+/glade-attributes.c:269
+msgctxt "textattr"
+msgid "Background Color"
+msgstr "Culoare fundal"
+
+#: ../plugins/gtk+/glade-attributes.c:273
+msgctxt "textattr"
+msgid "Underline Color"
+msgstr "Culoare subliniere"
+
+#: ../plugins/gtk+/glade-attributes.c:277
+msgctxt "textattr"
+msgid "Strikethrough Color"
+msgstr "Culoare tăiere"
+
+#: ../plugins/gtk+/glade-attributes.c:287
+msgctxt "textattr"
+msgid "Scale"
+msgstr "Scară"
+
+#. XXX Interesting... can we get the defaults ? what can we do to let the user
+#. * unset the value ??
+#.
+#: ../plugins/gtk+/glade-attributes.c:315
+#: ../plugins/gtk+/glade-attributes.c:353
+#: ../plugins/gtk+/glade-attributes.c:360
+#: ../plugins/gtk+/glade-attributes.c:364
+#: ../plugins/gtk+/glade-attributes.c:802
+msgid "<Enter Value>"
+msgstr "<Introduceți valoare>"
+
+#: ../plugins/gtk+/glade-attributes.c:353
+msgid "Unset"
+msgstr "Nestabilită"
+
+#: ../plugins/gtk+/glade-attributes.c:723
+msgid "Select a color"
+msgstr "Alegeți o culoare"
+
+#: ../plugins/gtk+/glade-attributes.c:859
+msgid "Attribute"
+msgstr "Atribut"
+
+#: ../plugins/gtk+/glade-attributes.c:869
+msgid "Value"
+msgstr "Valoare"
+
+#: ../plugins/gtk+/glade-attributes.c:1026
+msgid "Setup Text Attributes"
+msgstr "Stabilire atribute text"
+
+#: ../plugins/gtk+/glade-gtk.c:61
+msgid "This property does not apply unless Use Underline is set."
+msgstr ""
+"Această proprietate nu se aplică dacă „Utilizează subliniere” nu este "
+"stabilită."
+
+#: ../plugins/gtk+/glade-gtk.c:62
+msgid "Property not selected"
+msgstr "Proprietate neselectată"
+
+#: ../plugins/gtk+/glade-gtk.c:63
+msgid "This property is only for use in dialog action buttons"
+msgstr ""
+"Această proprietate poate fi utilizată doar în butoane de acțiune din "
+"dialoguri"
+
+#: ../plugins/gtk+/glade-gtk.c:64
+msgid "This property is set to be controled by an Action"
+msgstr "Această proprietate este stabilită să fie controlată de o Acțiune"
+
+#: ../plugins/gtk+/glade-gtk.c:191
+msgid "GnomeUIInfo"
+msgstr "GnomeUIInfo"
+
+#: ../plugins/gtk+/glade-gtk.c:192
+msgid "Choose the GnomeUIInfo stock item"
+msgstr "Alegeți elementul GnomeUIInfo din stoc"
+
+#. We have to save/load icon-size as int, and fake the enum
+#: ../plugins/gtk+/glade-gtk.c:201 ../plugins/gtk+/gtk+.xml.in.h:201
+msgid "Icon Size"
+msgstr "Mărime iconiță"
+
+#: ../plugins/gtk+/glade-gtk.c:202
+msgid "Symbolic size to use for stock icon, icon set or named icon"
+msgstr ""
+"Mărimea simbolică a iconiței standard, a setului de iconițe sau a iconiței "
+"denumite"
+
+#: ../plugins/gtk+/glade-gtk.c:1051
+#, c-format
+msgid "Removing parent of %s"
+msgstr "Se elimină părintele lui %s"
+
+#: ../plugins/gtk+/glade-gtk.c:1108
+#, c-format
+msgid "Adding parent %s for %s"
+msgstr "Se adaugă părintele %s lui %s"
+
+#: ../plugins/gtk+/glade-gtk.c:1192
+#, c-format
+msgid "Adding %s to Size Group %s"
+msgstr "Se adaugă %s la Grupul de dimensiuni %s"
+
+#: ../plugins/gtk+/glade-gtk.c:1194
+#, c-format
+msgid "Adding %s to a new Size Group"
+msgstr "Se adaugă %s la un nou Grup de dimensiuni"
+
+#. Add trailing new... item
+#: ../plugins/gtk+/glade-gtk.c:1249
+msgid "New Size Group"
+msgstr "Nou Grup de dimensiuni"
+
+#: ../plugins/gtk+/glade-gtk.c:1618
+#, c-format
+msgid "Ordering children of %s"
+msgstr "Se ordonează copii lui %s"
+
+#: ../plugins/gtk+/glade-gtk.c:2175 ../plugins/gtk+/glade-gtk.c:2182
+#, c-format
+msgid "Insert placeholder to %s"
+msgstr "Introdu locțiitor în %s"
+
+#: ../plugins/gtk+/glade-gtk.c:2189
+#, c-format
+msgid "Remove placeholder from %s"
+msgstr "Elimină locțiitor din %s"
+
+#: ../plugins/gtk+/glade-gtk.c:3247 ../plugins/gtk+/glade-gtk.c:3255
+#, c-format
+msgid "Insert Row on %s"
+msgstr "Introdu rând în %s"
+
+#: ../plugins/gtk+/glade-gtk.c:3263 ../plugins/gtk+/glade-gtk.c:3271
+#, c-format
+msgid "Insert Column on %s"
+msgstr "Introdu coloană în %s"
+
+#: ../plugins/gtk+/glade-gtk.c:3279
+#, c-format
+msgid "Remove Column on %s"
+msgstr "Elimină coloană din %s"
+
+#: ../plugins/gtk+/glade-gtk.c:3287
+#, c-format
+msgid "Remove Row on %s"
+msgstr "Elimină rând din %s"
+
+#: ../plugins/gtk+/glade-gtk.c:4381 ../plugins/gtk+/glade-gtk.c:4388
+#, c-format
+msgid "Insert page on %s"
+msgstr "Introdu pagină în %s"
+
+#: ../plugins/gtk+/glade-gtk.c:4395
+#, c-format
+msgid "Remove page from %s"
+msgstr "Elimină pagină din %s"
+
+#: ../plugins/gtk+/glade-gtk.c:6105
+msgid "This property only applies to stock images"
+msgstr "Această proprietate se aplică doar imaginilor din stoc"
+
+#: ../plugins/gtk+/glade-gtk.c:6107
+msgid "This property only applies to named icons"
+msgstr "Această proprietate se aplică doar iconițelor numite"
+
+#: ../plugins/gtk+/glade-gtk.c:6373
+msgid "<separator>"
+msgstr "<separator>"
+
+#: ../plugins/gtk+/glade-gtk.c:6383
+msgid "<custom>"
+msgstr "<personalizat>"
+
+#: ../plugins/gtk+/glade-gtk.c:6562
+msgid "Tool Item"
+msgstr "Element-unealtă"
+
+#: ../plugins/gtk+/glade-gtk.c:6571
+msgid "Packing"
+msgstr "Împachetare"
+
+#: ../plugins/gtk+/glade-gtk.c:6590 ../plugins/gtk+/gtk+.xml.in.h:263
+msgid "Menu Item"
+msgstr "Element meniu"
+
+#: ../plugins/gtk+/glade-gtk.c:6626 ../plugins/gtk+/glade-gtk.c:6634
+msgid "Normal item"
+msgstr "Element normal"
+
+#: ../plugins/gtk+/glade-gtk.c:6627 ../plugins/gtk+/glade-gtk.c:6635
+msgid "Image item"
+msgstr "Element imagine"
+
+#: ../plugins/gtk+/glade-gtk.c:6628 ../plugins/gtk+/glade-gtk.c:6636
+msgid "Check item"
+msgstr "Element de meniu bifabil"
+
+#: ../plugins/gtk+/glade-gtk.c:6629 ../plugins/gtk+/glade-gtk.c:6637
+msgid "Radio item"
+msgstr "Element meniu radio"
+
+#: ../plugins/gtk+/glade-gtk.c:6630 ../plugins/gtk+/glade-gtk.c:6638
+msgid "Separator item"
+msgstr "Element separator"
+
+#: ../plugins/gtk+/glade-gtk.c:6662 ../plugins/gtk+/glade-gtk.c:6706
+msgid "Edit Menu Bar"
+msgstr "Editare bară meniu"
+
+#: ../plugins/gtk+/glade-gtk.c:6664 ../plugins/gtk+/glade-gtk.c:6708
+msgid "Edit Menu"
+msgstr "Editare meniu"
+
+#: ../plugins/gtk+/glade-gtk.c:7092
+msgid "Print S_etup"
+msgstr "Configurări tipărir_e"
+
+#: ../plugins/gtk+/glade-gtk.c:7096
+msgid "Find Ne_xt"
+msgstr "Caută urmă_tor"
+
+#: ../plugins/gtk+/glade-gtk.c:7100
+msgid "_Undo Move"
+msgstr "An_ulează mutarea"
+
+#: ../plugins/gtk+/glade-gtk.c:7104
+msgid "_Redo Move"
+msgstr "_Refă mutarea"
+
+#: ../plugins/gtk+/glade-gtk.c:7107
+msgid "Select _All"
+msgstr "Selecte_ază tot"
+
+#: ../plugins/gtk+/glade-gtk.c:7110
+msgid "_New Game"
+msgstr "Joc _nou"
+
+#: ../plugins/gtk+/glade-gtk.c:7113
+msgid "_Pause game"
+msgstr "_Pauză joc"
+
+#: ../plugins/gtk+/glade-gtk.c:7116
+msgid "_Restart Game"
+msgstr "_Repornește jocul"
+
+#: ../plugins/gtk+/glade-gtk.c:7119
+msgid "_Hint"
+msgstr "Su_gestie"
+
+#: ../plugins/gtk+/glade-gtk.c:7122
+msgid "_Scores..."
+msgstr "_Scoruri..."
+
+#: ../plugins/gtk+/glade-gtk.c:7125
+msgid "_End Game"
+msgstr "_Termină jocul"
+
+#: ../plugins/gtk+/glade-gtk.c:7128
+msgid "Create New _Window"
+msgstr "Creare _fereastră nouă"
+
+#: ../plugins/gtk+/glade-gtk.c:7131
+msgid "_Close This Window"
+msgstr "În_chide această fereastră"
+
+#: ../plugins/gtk+/glade-gtk.c:7143
+msgid "_Settings"
+msgstr "_Opțiuni"
+
+#: ../plugins/gtk+/glade-gtk.c:7146
+msgid "Fi_les"
+msgstr "Fișie_re"
+
+#: ../plugins/gtk+/glade-gtk.c:7149
+msgid "_Windows"
+msgstr "Fere_stre"
+
+#: ../plugins/gtk+/glade-gtk.c:7155
+msgid "_Game"
+msgstr "_Joc"
+
+#: ../plugins/gtk+/glade-gtk.c:7620 ../plugins/gtk+/gtk+.xml.in.h:60
+msgid "Button"
+msgstr "Buton"
+
+#: ../plugins/gtk+/glade-gtk.c:7621 ../plugins/gtk+/glade-gtk.c:11179
+#: ../plugins/gtk+/glade-gtk.c:11276
+msgid "Toggle"
+msgstr "Comută"
+
+#: ../plugins/gtk+/glade-gtk.c:7622 ../plugins/gtk+/glade-gtk.c:7633
+#: ../plugins/gtk+/glade-gtk.c:7641
+msgid "Radio"
+msgstr "Radio"
+
+#: ../plugins/gtk+/glade-gtk.c:7623 ../plugins/gtk+/gtk+.xml.in.h:261
+msgid "Menu"
+msgstr "Meniu"
+
+#: ../plugins/gtk+/glade-gtk.c:7624 ../plugins/gtk+/gtk+.xml.in.h:105
+msgid "Custom"
+msgstr "Personalizat"
+
+#: ../plugins/gtk+/glade-gtk.c:7625 ../plugins/gtk+/glade-gtk.c:7634
+#: ../plugins/gtk+/glade-gtk.c:7642
+msgid "Separator"
+msgstr "Separator"
+
+#: ../plugins/gtk+/glade-gtk.c:7630 ../plugins/gtk+/glade-gtk.c:7638
+#: ../plugins/gtk+/gtk+.xml.in.h:277
+msgid "Normal"
+msgstr "Normal"
+
+#: ../plugins/gtk+/glade-gtk.c:7631 ../plugins/gtk+/glade-gtk.c:7639
+#: ../plugins/gtk+/gtk+.xml.in.h:206
+msgid "Image"
+msgstr "Imagine"
+
+#: ../plugins/gtk+/glade-gtk.c:7632 ../plugins/gtk+/glade-gtk.c:7640
+msgid "Check"
+msgstr "Bifează"
+
+#: ../plugins/gtk+/glade-gtk.c:7654
+msgid "Tool Bar Editor"
+msgstr "Editor al barei de unelte"
+
+#: ../plugins/gtk+/glade-gtk.c:8200
+msgid "This property does not apply when Ellipsize is set."
+msgstr "Această proprietate nu se aplică dacă „Prescurtare” este stabilită."
+
+#: ../plugins/gtk+/glade-gtk.c:8217
+msgid "This property does not apply when Angle is set."
+msgstr "Această proprietate nu se aplică când un Unghi este stabilit."
+
+#: ../plugins/gtk+/glade-gtk.c:9021
+msgid "Introduction page"
+msgstr "Pagină de introducere"
+
+#: ../plugins/gtk+/glade-gtk.c:9025
+msgid "Content page"
+msgstr "Pagina curentă"
+
+#: ../plugins/gtk+/glade-gtk.c:9029
+msgid "Confirmation page"
+msgstr "Pagină de confirmare"
+
+#: ../plugins/gtk+/glade-gtk.c:10663
+#, c-format
+msgid "%s is set to load %s from the model"
+msgstr "%s este configurată să încarce %s din model"
+
+#: ../plugins/gtk+/glade-gtk.c:10665
+#, c-format
+msgid "%s is set to manipulate %s directly"
+msgstr "%s este configurată să manipuleze %s în mod direct"
+
+#: ../plugins/gtk+/glade-gtk.c:11119 ../plugins/gtk+/gtk+.xml.in.h:468
+msgid "Tree View Column"
+msgstr "Coloană vizualizare arborescentă"
+
+#: ../plugins/gtk+/glade-gtk.c:11119 ../plugins/gtk+/gtk+.xml.in.h:72
+msgid "Cell Renderer"
+msgstr "Randor celulă"
+
+#: ../plugins/gtk+/glade-gtk.c:11124
+msgid "Properties and Attributes"
+msgstr "Proprietăți și atribute"
+
+#: ../plugins/gtk+/glade-gtk.c:11129
+msgid "Common Properties and Attributes"
+msgstr "Proprietăți și atribute comune"
+
+#. Text of the textview
+#. Text...
+#: ../plugins/gtk+/glade-gtk.c:11173 ../plugins/gtk+/glade-gtk.c:11270
+#: ../plugins/gtk+/gtk+.xml.in.h:420 ../plugins/gtk+/glade-entry-editor.c:520
+msgid "Text"
+msgstr "Text"
+
+#. Accelerator
+#: ../plugins/gtk+/glade-gtk.c:11174 ../plugins/gtk+/glade-gtk.c:11271
+#: ../plugins/gtk+/gtk+.xml.in.h:14
+msgid "Accelerator"
+msgstr "Accelerator"
+
+#: ../plugins/gtk+/glade-gtk.c:11175 ../plugins/gtk+/glade-gtk.c:11272
+#: ../plugins/gtk+/gtk+.xml.in.h:87
+msgid "Combo"
+msgstr "Listă de selecție"
+
+#: ../plugins/gtk+/glade-gtk.c:11176 ../plugins/gtk+/glade-gtk.c:11273
+msgid "Spin"
+msgstr "Spin"
+
+#: ../plugins/gtk+/glade-gtk.c:11177 ../plugins/gtk+/glade-gtk.c:11274
+msgid "Pixbuf"
+msgstr "Pixbuf"
+
+#. Progress...
+#: ../plugins/gtk+/glade-gtk.c:11178 ../plugins/gtk+/glade-gtk.c:11275
+#: ../plugins/gtk+/gtk+.xml.in.h:320 ../plugins/gtk+/glade-entry-editor.c:563
+msgid "Progress"
+msgstr "Progres"
+
+#: ../plugins/gtk+/glade-gtk.c:11180 ../plugins/gtk+/glade-gtk.c:11277
+#: ../plugins/gtk+/gtk+.xml.in.h:397
+msgid "Spinner"
+msgstr "Spinner"
+
+#: ../plugins/gtk+/glade-gtk.c:11191
+msgid "Icon View Editor"
+msgstr "Editor vizualizare iconițe"
+
+#: ../plugins/gtk+/glade-gtk.c:11191
+msgid "Combo Editor"
+msgstr "Editor listă de selecție"
+
+#: ../plugins/gtk+/glade-gtk.c:11266
+msgid "Column"
+msgstr "Coloană"
+
+#: ../plugins/gtk+/glade-gtk.c:11286
+msgid "Tree View Editor"
+msgstr "Editor vizualizare arborescentă"
+
+#. Dont really add/remove actions (because name conflicts inside groups)
+#.
+#: ../plugins/gtk+/glade-gtk.c:11488
+msgid "The accelerator can only be set when inside an Action Group."
+msgstr "Acceleratorul poate fi definit doar într-un Grup de acțiuni."
+
+#: ../plugins/gtk+/glade-accels.c:320 ../plugins/gtk+/glade-accels.c:394
+msgid "<choose a key>"
+msgstr "<alegeți o tastă>"
+
+#: ../plugins/gtk+/glade-accels.c:475
+msgid "Accelerator Key"
+msgstr "Tastă accelerator"
+
+#: ../plugins/gtk+/glade-accels.c:534
+msgid "Choose accelerator keys..."
+msgstr "Alegeți tastele acceleratoare..."
+
+#: ../plugins/gtk+/gtk+.xml.in.h:1
+msgid "A file name, full or relative path to load an icon for this toolbutton"
+msgstr ""
+"Un nume de fișier, cale absolută sau relativă, din care se va încărca "
+"iconița acestui buton-unealtă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:2
+msgid "A list of accelerator keys"
+msgstr "O listă de taste acceleratori"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:3
+msgid "A list of sources for this icon factory"
+msgstr "O listă de surse pentru această fabrică de iconițe"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:4
+msgid "A symbolic icon size for the stock icon"
+msgstr "O dimensiune simbolică pentru iconița din stoc"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:5
+msgid "A tooltip text for this widget"
+msgstr "Textul indiciu pentru acest widget"
+
+#. NOT AVAILABLES ON WIN32
+#. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
+#. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
+#.
+#: ../plugins/gtk+/gtk+.xml.in.h:10
+msgid "About Dialog"
+msgstr "Dialog Despre"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:11
+msgid "Accel Group"
+msgstr "Grup de acceleratori"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:12
+msgid "Accel Label"
+msgstr "Etichetă accelerator"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:15
+msgid "Accelerator Mode column"
+msgstr "Coloană Mod accelerator"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:16
+msgid "Accelerator Modifiers column"
+msgstr "Coloană Modificatori accelerator"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:17
+msgid "Accelerator Renderer"
+msgstr "Randor accelerator"
+
+#. Accelerators
+#: ../plugins/gtk+/gtk+.xml.in.h:19
+msgid "Accelerators"
+msgstr "Acceleratori"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:20
+msgid "Accessible Description"
+msgstr "Descriere accesibilă"
+
+#. Atk name and description properties
+#: ../plugins/gtk+/gtk+.xml.in.h:22
+msgid "Accessible Name"
+msgstr "Nume accesibil"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:23
+#: ../plugins/gtk+/glade-activatable-editor.c:395
+msgid "Action"
+msgstr "Acțiune"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:24
+msgid "Action Group"
+msgstr "Grup de acțiuni"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:26
+msgid "Activatable column"
+msgstr "Coloană activabilă"
+
+#. Atk activate property
+#: ../plugins/gtk+/gtk+.xml.in.h:28
+msgid "Activate"
+msgstr "Activează"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:29
+msgid "Active column"
+msgstr "Activează coloana"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:30
+msgid "Add Parent"
+msgstr "Adaugă părinte"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:31
+msgid "Add to Size Group"
+msgstr "Adaugă la Grupul de dimensiuni"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:32
+msgid "Adjustment"
+msgstr "Ajustare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:33
+msgid "Adjustment column"
+msgstr "Coloană ajustare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:35
+msgid "Alignment"
+msgstr "Aliniere"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:36
+msgid "Alignment column"
+msgstr "Coloană aliniere"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:37
+msgid "All"
+msgstr "Toate"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:38
+msgid "All Events"
+msgstr "Toate evenimentele"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:39
+msgid "All Modifiers"
+msgstr "Toți modificatorii"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:40
+msgid "Alt Key"
+msgstr "Tasta Alt"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:41
+msgid "Always"
+msgstr "Întotdeauna"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:42
+msgid "Always Center"
+msgstr "Întotdeauna centrat"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:43
+msgid "An accelerator key for this action"
+msgstr "O tastă accelerator pentru această acțiune"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:44
+msgid "Arrow"
+msgstr "Săgeată"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:45
+msgid "Aspect Frame"
+msgstr "Cadru aspect"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:46
+msgid "Assistant"
+msgstr "Asistent"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:47
+msgid "Attributes"
+msgstr "Atribute"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:48
+msgid "Attributes column"
+msgstr "Coloană atribute"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:49
+msgid "Automatic"
+msgstr "Automat"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:50
+msgid "Background Color Name column"
+msgstr "Coloană nume culoare de fundal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:51
+msgid "Background Color column"
+msgstr "Coloană culoare de fundal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:52
+msgid "Before"
+msgstr "Înainte"
+
+#. Objects
+#: ../plugins/gtk+/gtk+.xml.in.h:54
+msgid "Both"
+msgstr "Ambele"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:55
+msgid "Bottom"
+msgstr "Jos"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:56
+msgid "Bottom Left"
+msgstr "Stânga jos"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:57
+msgid "Bottom Right"
+msgstr "Dreapta jos"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:58
+msgid "Bottom to Top"
+msgstr "De jos în sus"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:59
+msgid "Box"
+msgstr "Căsuță"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:61
+msgid "Button 1 Motion"
+msgstr "Mișcare buton 1"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:62
+msgid "Button 2 Motion"
+msgstr "Mișcare buton 2"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:63
+msgid "Button 3 Motion"
+msgstr "Mișcare buton 3"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:64
+msgid "Button Box"
+msgstr "Căsuță de butoane"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:65
+msgid "Button Motion"
+msgstr "Mișcare buton"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:66
+msgid "Button Press"
+msgstr "Apăsare buton"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:67
+msgid "Button Release"
+msgstr "Eliberare buton"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:68
+msgid "Calendar"
+msgstr "Calendar"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:69
+msgid "Cancel"
+msgstr "Anulează"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:70
+msgid "Cell Background Color column"
+msgstr "Coloană culoare de fundal celulă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:71
+msgid "Cell Background Color name column"
+msgstr "Coloană nume culoare de fundal celulă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:73
+msgid "Center"
+msgstr "Centrează"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:74
+msgid "Center on Parent"
+msgstr "Centrează în părinte"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:75
+msgid "Centimeters"
+msgstr "Centimetri"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:76
+msgid "Character"
+msgstr "Caracter"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:77
+msgid "Check Button"
+msgstr "Buton bifare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:78
+msgid "Check Menu Item"
+msgstr "Element meniu de bifare"
+
+#. Atk click property
+#: ../plugins/gtk+/gtk+.xml.in.h:80
+msgid "Click"
+msgstr "Clic"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:81
+msgid "Climb Rate column"
+msgstr "Coloană rată de urcare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:82
+msgid "Close"
+msgstr "Închide"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:83
+msgid "Color Button"
+msgstr "Buton culoare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:84
+msgid "Color Selection"
+msgstr "Selecție de culoare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:85
+msgid "Color Selection Dialog"
+msgstr "Dialog de selecție de culoare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:86
+msgid "Columns"
+msgstr "Coloane"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:88
+msgid "Combo Box"
+msgstr "Listă de selecție"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:89
+msgid "Combo Box Entry"
+msgstr "Înregistrare în lista de selecție"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:90
+msgid "Combo Renderer"
+msgstr "Randor de combinare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:91
+msgid "Composite Widgets"
+msgstr "Widget-uri compuse"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:92
+msgid "Condensed"
+msgstr "Condensat"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:93
+msgid "Confirm"
+msgstr "Confirm"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:95
+msgid "Containers"
+msgstr "Containere"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:96
+msgid "Content"
+msgstr "Conținut"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:97
+msgid "Continuous"
+msgstr "Continuu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:98
+msgid "Control Key"
+msgstr "Tasta Control"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:99
+msgid "Control and Display"
+msgstr "Control și afișaj"
+
+#. Atk relationset properties
+#: ../plugins/gtk+/gtk+.xml.in.h:101
+msgid "Controlled By"
+msgstr "Controlat de"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:102
+msgid "Controller For"
+msgstr "Controler pentru"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:103
+msgid "Create Folder"
+msgstr "Creează un dosar"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:106
+msgid "Data"
+msgstr "Date"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:107
+msgid "Data column"
+msgstr "Coloană date"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:108
+msgid "Default"
+msgstr "Implicit"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:109
+msgid "Delayed"
+msgstr "Întârziat"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:110
+msgid "Described By"
+msgstr "Descris de"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:111
+msgid "Description For"
+msgstr "Descriere pentru"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:112
+msgid "Description of an object, formatted for assistive technology access"
+msgstr "Descrierea unui obiect, formatată pentru accesul asistat"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:113
+msgid "Desktop"
+msgstr "Desktop"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:114
+msgid "Dialog"
+msgstr "Dialog"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:115
+msgid "Dialog Box"
+msgstr "Fereastră de dialog"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:116
+msgid "Digits column"
+msgstr "Coloană cifre"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:117
+msgid "Discontinuous"
+msgstr "Discontinuu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:118
+msgid "Discrete"
+msgstr "Discret"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:119
+msgid "Dock"
+msgstr "Doc"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:120
+msgid "Double"
+msgstr "Dublu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:121
+msgid "Down"
+msgstr "În jos"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:122
+msgid "Drag & Drop"
+msgstr "Trage și mută"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:123
+msgid "Drag and Drop"
+msgstr "Trage și mută"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:124
+msgid "Drawing Area"
+msgstr "Zonă de desenat"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:125
+msgid "Drop Down Menu"
+msgstr "Meniu derulant"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:126
+msgid "East"
+msgstr "Est"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:127
+msgid "Edge"
+msgstr "Margine"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:128
+msgid "Edit Separately"
+msgstr "Editează separat"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:129
+msgid "Edit&#8230;"
+msgstr "Editare&#8230;"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:130
+msgid "Editable column"
+msgstr "Coloană editabilă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:131
+msgid "Eighth Key"
+msgstr "A opta tastă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:132
+msgid "Ellipsize column"
+msgstr "Prescurtează coloana"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:133
+msgid "Embedded By"
+msgstr "Încorporat de"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:134
+msgid "Embeds"
+msgstr "Încorporează"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:135
+msgid "End"
+msgstr "End"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:136
+msgid "Enter Notify"
+msgstr "Anunță intrarea"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:137
+msgid "Enter a list of column types for this data store"
+msgstr "Introduce"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:138
+msgid "Enter a list of values to be applied on each row"
+msgstr "Introduceți o listă de valori de aplicat pe fiecare rând"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:139
+msgid "Entry Buffer"
+msgstr "Buffer intrare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:140
+msgid "Entry Completion"
+msgstr "Completare intrare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:141
+msgid "Error"
+msgstr "Eroare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:142
+msgid "Etched In"
+msgstr "Gravat înăuntru"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:143
+msgid "Etched Out"
+msgstr "Gravat în afară"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:144
+msgid "Event Box"
+msgstr "Căsuță eveniment"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:145
+msgid "Expand"
+msgstr "Extinde"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:146
+msgid "Expanded"
+msgstr "Extins"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:147
+msgid "Expander"
+msgstr "Extinzător"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:148
+msgid "Exposure"
+msgstr "Expunere"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:149
+msgid "Extra Condensed"
+msgstr "Extra condensat"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:150
+msgid "Extra Expanded"
+msgstr "Extra extins"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:151
+msgid "Family column"
+msgstr "Coloană familie"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:152
+msgid "Fifth Key"
+msgstr "A cincea tastă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:153
+msgid "Fifth Mouse Button"
+msgstr "Al cincilea buton al mausului"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:154
+msgid "File Chooser Button"
+msgstr "Buton alegere fișiere"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:155
+msgid "File Chooser Dialog"
+msgstr "Dialog alegere fișiere"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:156
+msgid "File Chooser Widget"
+msgstr "Widget alegere fișiere"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:157
+msgid "File Filter"
+msgstr "Filtru fișiere"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:158 ../plugins/gtk+/glade-icon-sources.c:772
+msgid "File Name"
+msgstr "Nume fișier"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:159
+msgid "Fill"
+msgstr "Umplere"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:160
+msgid "First Mouse Button"
+msgstr "Primul buton al mausului"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:161
+msgid "Fixed"
+msgstr "Fixat"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:162
+msgid "Flows From"
+msgstr "Curge din"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:163
+msgid "Flows To"
+msgstr "Curge în"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:164
+msgid "Focus Change"
+msgstr "Schimbare focalizare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:165
+msgid "Follow State column"
+msgstr "Coloană ce urmărește starea"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:166
+msgid "Font Button"
+msgstr "Buton font"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:167
+msgid "Font Description column"
+msgstr "Coloană descriere font"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:168
+msgid "Font Selection"
+msgstr "Selecție font"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:169
+msgid "Font Selection Dialog"
+msgstr "Dialog de selecție de font"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:170
+msgid "Font column"
+msgstr "Coloană font"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:171
+msgid "Foreground Color Name column"
+msgstr "Coloană nume culoare de prim-plan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:172
+msgid "Foreground Color column"
+msgstr "Coloană culoare de prim-plan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:173
+msgid "Forth Mouse Button"
+msgstr "Al patrulea buton al mausului"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:174
+msgid "Frame"
+msgstr "Cadru"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:175
+msgid "Grow Only"
+msgstr "Doar creștere"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:176
+msgid "Gtk"
+msgstr "Gtk"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:177
+msgid "Half"
+msgstr "Jumătate"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:178
+msgid "Handle Box"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:179
+msgid "Has Entry column"
+msgstr "Are coloană Intrare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:180
+msgid "Height column"
+msgstr "Coloană înălțime"
+
+#. Objects
+#: ../plugins/gtk+/gtk+.xml.in.h:182 ../plugins/gtk+/glade-model-data.c:1244
+msgid "Horizontal"
+msgstr "Orizontal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:183
+msgid "Horizontal Alignment"
+msgstr "Aliniere orizontală"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:184
+msgid "Horizontal Alignment column"
+msgstr "Coloană aliniere orizontală"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:185
+msgid "Horizontal Box"
+msgstr "Căsuță orizontală"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:186
+msgid "Horizontal Button Box"
+msgstr "Căsuță orizontală de butoane"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:187
+msgid "Horizontal Padding"
+msgstr "Umplere orizontală"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:188
+msgid "Horizontal Padding column"
+msgstr "Coloană umplere orizontală"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:189
+msgid "Horizontal Panes"
+msgstr "Panouri orizontale"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:190
+msgid "Horizontal Ruler"
+msgstr "Riglă orizontală"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:191
+msgid "Horizontal Scale"
+msgstr "Scalare orizontală"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:192
+msgid "Horizontal Scrollbar"
+msgstr "Bară de defilare orizontală"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:193
+msgid "Horizontal Separator"
+msgstr "Separator orizontal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:194
+msgid "Horizontal and Vertical"
+msgstr "Orizontal și vertical"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:195
+msgid "Hyper Modifier"
+msgstr "Modificator Hyper"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:196
+msgid "Icon"
+msgstr "Iconiță"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:197
+msgid "Icon Factory"
+msgstr "Fabrică de iconițe"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:199
+msgid "Icon Name column"
+msgstr "Coloană nume iconiță"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:202
+msgid "Icon Sources"
+msgstr "Surse iconițe"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:203
+msgid "Icon View"
+msgstr "Vizualizare iconițe"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:204
+msgid "Icons only"
+msgstr "Doar iconițe"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:205
+msgid "If Valid"
+msgstr "Dacă este valid"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:207
+msgid "Image Menu Item"
+msgstr "Element de meniu de tip imagine"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:208
+msgid "Immediate"
+msgstr "Instantaneu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:209
+msgid "In"
+msgstr "Mărește"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:210
+msgid "Inches"
+msgstr "Țoli"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:211
+msgid "Inconsistent column"
+msgstr "Coloană inconsecventă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:212
+msgid ""
+"Indicates a subwindow attached to a component but otherwise has no "
+"connection in the UI hierarchy to that component"
+msgstr ""
+"Indică o subfereastră atașată la o componentă, dar care nu are nicio altă "
+"conexiune în ierarhia interfeței cu utilizatorul cu acea componentă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:213
+msgid "Indicates an object controlled by one or more target objects"
+msgstr "Indică un obiect controlat de unul sau mai multe obiecte țintă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:214
+msgid ""
+"Indicates an object is a cell in a treetable which is displayed because a "
+"cell in the same column is expanded and identifies that cell"
+msgstr ""
+"Indică faptul că un obiect este o celulă într-un tabel arborescent care este "
+"afișat deoarece o celulă din aceeași coloană este expandată și identifică "
+"acea celulă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:215
+msgid "Indicates an object is a controller for one or more target objects"
+msgstr "Indică un obiect controler pentru unul sau mai multe obiecte țintă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:216
+msgid "Indicates an object is a label for one or more target objects"
+msgstr "Indică un obiect etichetă pentru unul sau mai multe obiecte țintă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:217
+msgid ""
+"Indicates an object is a member of a group of one or more target objects"
+msgstr ""
+"Indică un obiect membru al unui grup de unul sau mai multe obiecte țintă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:218
+msgid "Indicates an object is labelled by one or more target objects"
+msgstr "Indică un obiect etichetat de unul sau mai multe obiecte țintă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:219
+msgid "Indicates that an object is a parent window of another object"
+msgstr "Indică faptul că un obiect este fereastră părinte pentru alt obiect"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:220
+msgid "Indicates that an object is a popup for another object"
+msgstr "Indică faptul că un obiect este popup pentru alt obiect"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:221
+msgid ""
+"Indicates that an object provides descriptive information about another "
+"object; more verbose than 'Label For'"
+msgstr ""
+"Indică faptul că un obiect oferă informații descriptive despre alt obiect; "
+"mai detaliat decât „Etichetată pentru”"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:222
+msgid ""
+"Indicates that another object provides descriptive information about this "
+"object; more verbose than 'Labelled By'"
+msgstr ""
+"Indică faptul că un obiect oferă informații descriptive despre acest obiect; "
+"mai detaliat decât „Etichetat de”"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:223
+msgid ""
+"Indicates that the object has content that flows logically from another "
+"AtkObject in a sequential way, (for instance text-flow)"
+msgstr ""
+"Indică faptul că obiectul are conținut care curge logic din alt AtkObject "
+"într-o manieră secvențială (de ex. text-flow)"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:224
+msgid ""
+"Indicates that the object has content that flows logically to another "
+"AtkObject in a sequential way, (for instance text-flow)"
+msgstr ""
+"Indică faptul că obiectul are conținut care curge logic în alt AtkObject "
+"într-o manieră secvențială (de ex. text-flow)"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:225
+msgid ""
+"Indicates that the object visually embeds another object's content, i.e. "
+"this object's content flows around another's content"
+msgstr ""
+"Indică faptul că obiectul încorporează vizual conținutul altui obiect, adică "
+"conținutul obiectului curge în jurul conținutului altuia"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:226
+msgid "Indicator Size column"
+msgstr "Coloană dimensiune indicator"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:227
+msgid "Info"
+msgstr "Info"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:228
+msgid "Initially Complete"
+msgstr "Completare intrare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:229
+msgid "Insert After"
+msgstr "Inserează după"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:230
+msgid "Insert Before"
+msgstr "Inserează înainte"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:231
+msgid "Insert Column"
+msgstr "Coloană inserare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:232
+msgid "Insert Page After"
+msgstr "Inserează pagină după"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:233
+msgid "Insert Page Before"
+msgstr "Inserează pagină înainte"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:234
+msgid "Insert Row"
+msgstr "Inserează rând"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:235
+msgid "Intro"
+msgstr "Introducere"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:236
+msgid "Invalid"
+msgstr "Nevalid"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:237
+msgid ""
+"Inverse of 'Embeds', indicates that this object's content is visually "
+"embedded in another object"
+msgstr ""
+"Inversul lui „Incorporează”, indică faptul că conținutul acestui obiect este "
+"vizual incorporat în alt obiect"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:238
+msgid "Invisible Char Set"
+msgstr "Set de caractere invizibile"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:239
+msgid "Italic"
+msgstr "Italic"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:240
+msgid "Items"
+msgstr "Elemente"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:241
+msgid "Key Press"
+msgstr "Apăsare tastă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:242
+msgid "Key Release"
+msgstr "Eliberare tastă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:243
+msgid "Keycode column"
+msgstr "Coloană codului tastei"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:245
+msgid "Label For"
+msgstr "Etichetă pentru"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:246
+msgid "Labelled By"
+msgstr "Etichetat de"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:247
+msgid "Language column"
+msgstr "Coloană limbă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:248
+msgid "Large Toolbar"
+msgstr "Bară de unelte mare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:249
+msgid "Layout"
+msgstr "Aspect"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:250
+msgid "Least Recently Used first"
+msgstr "Cel mai puțin recent utilizat primul"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:251
+msgid "Leave Notify"
+msgstr "Anunță ieșirea"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:252
+msgid "Left"
+msgstr "Stânga"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:253
+msgid "Left to Right"
+msgstr "Stânga la dreapta"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:254
+msgid "Link Button"
+msgstr "Buton legătură"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:255
+msgid "List Store"
+msgstr "Lista de stocare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:256
+msgid "List of widgets in this group"
+msgstr "Lista widget-urilor din acest grup"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:257
+msgid "Lock Key"
+msgstr "Blochează cheia"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:258
+msgid "Low"
+msgstr "Redus"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:259
+msgid "Markup column"
+msgstr "Coloană marcaj"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:260
+msgid "Member Of"
+msgstr "Membru al"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:262
+msgid "Menu Bar"
+msgstr "Bară de meniu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:264
+msgid "Menu Shell"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:265
+msgid "Menu Tool Button"
+msgstr "Buton-meniu în bara de unelte"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:266
+msgid "Message Dialog"
+msgstr "Dialog mesaj"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:267
+msgid "Meta Modifier"
+msgstr "Modificator Meta"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:268
+msgid "Middle"
+msgstr "Mijloc"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:269
+msgid "Miscellaneous"
+msgstr "Diverse"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:270
+msgid "Model column"
+msgstr "Coloană model"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:271
+msgid "Most Recently Used first"
+msgstr "Cel mai recent utilizat primul"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:272
+msgid "Mouse"
+msgstr "Maus"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:273
+msgid "Never"
+msgstr "Niciodată"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:274
+msgid "Node Child Of"
+msgstr "Nod copil al"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:278
+msgid "North"
+msgstr "Nord"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:279
+msgid "North East"
+msgstr "Nord-Est"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:280
+msgid "North West"
+msgstr "Nord-Vest"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:281
+msgid "Notebook"
+msgstr "Carnețel"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:282
+msgid "Notification"
+msgstr "Notificare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:283
+msgid "Number of Pages"
+msgstr "Număr de pagini"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:284
+msgid "Number of items"
+msgstr "Număr de elemente"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:285
+msgid "Number of pages"
+msgstr "Număr de pagini"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:286
+msgid "Number of pages in this assistant"
+msgstr "Numărul de pagini din acest asistent"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:287
+msgid "Object instance's name formatted for assistive technology access"
+msgstr "Numele instanței obiectului formatat pentru accesul asistat"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:288
+msgid "Oblique"
+msgstr "Oblic"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:289 ../plugins/gtk+/glade-model-data.c:1243
+msgid "Off"
+msgstr "Oprit"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:290
+msgid "Ok"
+msgstr "Ok"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:291
+msgid "Ok, Cancel"
+msgstr "Ok, Anulează"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:292
+msgid "On"
+msgstr "Pornit"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:293
+msgid "Open"
+msgstr "Deschide"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:294
+msgid "Orientation column"
+msgstr "Coloană orientare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:295
+msgid "Other"
+msgstr "Alta"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:296
+msgid "Out"
+msgstr "Micșorează"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:297
+msgid "Paned"
+msgstr "În fereastra panoului"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:299
+msgid "Parent Window Of"
+msgstr "Fereastra părinte a"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:300
+msgid "Pixbuf Expander Closed column"
+msgstr "Coloană Desfășurător pixbuf închis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:301
+msgid "Pixbuf Expander Open column"
+msgstr "Coloană Desfășurător pixbuf deschis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:302
+msgid "Pixbuf Renderer"
+msgstr "Randor pixbuf"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:303
+msgid "Pixbuf column"
+msgstr "Coloană pixbuf"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:304
+msgid "Pixels"
+msgstr "Pixeli"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:305
+msgid "Pointer Motion"
+msgstr "Mișcare indicator"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:306
+msgid "Pointer Motion Hint"
+msgstr "Indiciu de mișcare indicator"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:307
+msgid "Popup"
+msgstr "Popup"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:308
+msgid "Popup For"
+msgstr "Popup pentru"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:309
+msgid "Popup Menu"
+msgstr "Meniu contextual"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:310
+msgid "Position"
+msgstr "Poziție"
+
+#. Atk press property
+#: ../plugins/gtk+/gtk+.xml.in.h:312
+msgid "Press"
+msgstr "Apăsare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:313
+msgid "Primary Icon Activatable"
+msgstr "Iconiță primară activabilă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:314
+msgid "Primary Icon Name"
+msgstr "Nume iconiță primară"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:315
+msgid "Primary Icon Pixbuf"
+msgstr "Pixbuf iconiță primară"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:316
+msgid "Primary Icon Sensitive"
+msgstr "Iconiță primară senzitivă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:317
+msgid "Primary Icon Tooltip Markup"
+msgstr "Evidențiere indiciu iconiță primară"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:318
+msgid "Primary Icon Tooltip Text"
+msgstr "Text indiciu iconiță primară"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:319
+msgid "Primary Stock Icon"
+msgstr "Iconiță primară din stoc"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:321
+msgid "Progress Bar"
+msgstr "Bară de progres"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:322
+msgid "Progress Fraction"
+msgstr "Porțiune progres"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:323
+msgid "Progress Pulse Step"
+msgstr "Pas puls progres"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:324
+msgid "Progress Renderer"
+msgstr "Randor progres"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:325
+msgid "Property Change"
+msgstr "Schimbare proprietate"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:326
+msgid "Proximity  Out"
+msgstr "Proximitate exterioară"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:327
+msgid "Proximity In"
+msgstr "Proximitate interioară"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:328
+msgid "Pulse column"
+msgstr "Coloană puls"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:329
+msgid "Question"
+msgstr "Întrebare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:330
+msgid "Queue"
+msgstr "Coadă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:331
+msgid "Radio Action"
+msgstr "Acțiune radio"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:332
+msgid "Radio Button"
+msgstr "Buton radio"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:333
+msgid "Radio Menu Item"
+msgstr "Element meniu radio"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:334
+msgid "Radio Tool Button"
+msgstr "Buton-unealtă de tip radio"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:335
+msgid "Radio column"
+msgstr "Coloană radio"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:336
+msgid "Range"
+msgstr "Interval"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:337
+msgid "Recent Action"
+msgstr "Acțiune recentă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:338
+msgid "Recent Chooser"
+msgstr "Alegător recent"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:339
+msgid "Recent Chooser Dialog"
+msgstr "Dialog alegere recent"
+
+#. GtkActivatable
+#: ../plugins/gtk+/gtk+.xml.in.h:341
+msgid "Related Action"
+msgstr "Acțiune înrudită"
+
+#. Atk release property
+#: ../plugins/gtk+/gtk+.xml.in.h:343
+msgid "Release"
+msgstr "Eliberare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:344
+msgid "Release Modifier"
+msgstr "Modificator eliberare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:345
+msgid "Remove Column"
+msgstr "Elimină coloana"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:346
+msgid "Remove Page"
+msgstr "Elimină pagina"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:347
+msgid "Remove Parent"
+msgstr "Elimină părintele"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:348
+msgid "Remove Row"
+msgstr "Elimină rândul"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:349
+msgid "Remove Slot"
+msgstr "Elimină slotul"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:350
+msgid "Response ID"
+msgstr "Identificator răspuns"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:351
+msgid "Right"
+msgstr "Dreapta"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:352
+msgid "Right to Left"
+msgstr "Dreapta la stânga"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:353
+msgid "Rise column"
+msgstr "Ridică coloana"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:354
+msgid "Ruler"
+msgstr "Riglă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:355
+msgid "Save"
+msgstr "Salvează"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:356
+msgid "Scale Button"
+msgstr "Buton scalare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:357
+msgid "Scale column"
+msgstr "Coloană scalare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:358
+msgid "Scroll"
+msgstr "Derulare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:359
+msgid "Scrolled Window"
+msgstr "Fereastră derulată"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:360
+msgid "Second Mouse Button"
+msgstr "Al doilea buton al mausului"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:361
+msgid "Secondary Icon Activatable"
+msgstr "Iconiță secundară activabilă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:362
+msgid "Secondary Icon Name"
+msgstr "Nume iconiță secundară"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:363
+msgid "Secondary Icon Pixbuf"
+msgstr "Pixbuf iconiță secundară"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:364
+msgid "Secondary Icon Sensitive"
+msgstr "Iconiță secundară senzitivă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:365
+msgid "Secondary Icon Tooltip Markup"
+msgstr "Evidențiere indiciu iconiță secundară"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:366
+msgid "Secondary Icon Tooltip Text"
+msgstr "Text indiciu iconiță secundară"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:367
+msgid "Secondary Stock Icon"
+msgstr "Iconiță secundară din stoc"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:368
+msgid "Select Folder"
+msgstr "Alegere dosar"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:369
+msgid "Semi Condensed"
+msgstr "Semicondensat"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:370
+msgid "Semi Expanded"
+msgstr "Semidesfășurat"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:371
+msgid "Sensitive column"
+msgstr "Coloană senzitivă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:372
+msgid "Separator Menu Item"
+msgstr "Element de meniu separator"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:373
+msgid "Separator Tool Item"
+msgstr "Separatorul elementului din meniu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:374
+msgid "Set the current page (strictly for editing purposes)"
+msgstr "Stabilește pagina curentă (doar pentru editare)"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:375
+msgid "Set the description of the Activate atk action"
+msgstr "Stabilește descrierea acțiunii atk „Activare”"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:376
+msgid "Set the description of the Click atk action"
+msgstr "Stabilește descrierea acțiunii atk „Clic”"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:377
+msgid "Set the description of the Press atk action"
+msgstr "Stabilește descrierea acțiunii atk „Apăsare”"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:378
+msgid "Set the description of the Release atk action"
+msgstr "Stabilește descrierea acțiunii atk „Eliberare”"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:379
+msgid "Set the text in the view's text buffer"
+msgstr "Stabilește textul în text buffer-ul vizualizării"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:380
+msgid "Seventh Key"
+msgstr "A șaptea tastă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:381
+msgid "Shift Key"
+msgstr "Tasta Shift"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:382
+msgid "Shrink"
+msgstr "Micșorează"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:383
+msgid "Single"
+msgstr "Unic"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:384
+msgid "Single Paragraph Mode column"
+msgstr "Coloana mod paragraf unic"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:385
+msgid "Sixth Key"
+msgstr "A șasea tastă"
+
+#. Objects
+#: ../plugins/gtk+/gtk+.xml.in.h:387
+msgid "Size Group"
+msgstr "Grup de dimensiuni"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:388
+msgid "Size column"
+msgstr "Coloană dimensiune"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:389
+msgid "Small Capitals"
+msgstr "Majuscule mici"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:390
+msgid "Small Toolbar"
+msgstr "Bară de unelte mică"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:391
+msgid "South"
+msgstr "Sud"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:392
+msgid "South East"
+msgstr "Sud-Est"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:393
+msgid "South West"
+msgstr "Sud-Vest"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:394
+msgid "Specialized Widgets"
+msgstr "Widget-uri specializate"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:395
+msgid "Spin Button"
+msgstr "Buton spin"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:396
+msgid "Spin Renderer"
+msgstr "Randor incrementabil"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:398
+msgid "Spinner Renderer"
+msgstr "Randor pentru indicarea progresului"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:399
+msgid "Splash Screen"
+msgstr "Ecran de pornire"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:400
+msgid "Spread"
+msgstr "Întindere"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:401
+msgid "Start"
+msgstr "Start"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:402
+msgid "Static"
+msgstr "Static"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:403
+msgid "Status Bar"
+msgstr "Bara de stare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:404
+msgid "Status Icon"
+msgstr "Iconiță stare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:405
+msgid "Stock Button"
+msgstr "Buton din stoc"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:406
+msgid "Stock Detail column"
+msgstr "Coloana detaliilor despre stoc"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:407
+msgid "Stock Item"
+msgstr "Element din stoc"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:408
+msgid "Stock Size column"
+msgstr "Coloană dimensiune stoc"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:409
+msgid "Stock column"
+msgstr "Coloana stoc"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:410
+msgid "Stretch column"
+msgstr "Coloană întindere"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:411
+msgid "Strikethrough column"
+msgstr "Culoare tăiere"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:412
+msgid "Structure"
+msgstr "Structură"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:413
+msgid "Style column"
+msgstr "Coloană stil"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:414
+msgid "Substructure"
+msgstr "Substructură"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:415
+msgid "Subwindow Of"
+msgstr "Subfereastră a"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:416
+msgid "Summary"
+msgstr "Rezumat"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:417
+msgid "Super Modifier"
+msgstr "Modificator Super"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:418
+msgid "Table"
+msgstr "Tabel"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:421
+msgid "Text Buffer"
+msgstr "Buffer de text"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:422
+msgid "Text Buffers"
+msgstr "Buffere de text"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:423
+msgid "Text Column column"
+msgstr "Coloana „Coloană text”"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:424
+msgid "Text Entry"
+msgstr "Introducere text"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:425
+msgid "Text Horizontal Alignment column"
+msgstr "Coloană aliniere orizontală text"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:426
+msgid "Text Renderer"
+msgstr "Randor de text"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:427
+msgid "Text Tag"
+msgstr "Etichetă text"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:428
+msgid "Text Tag Table"
+msgstr "Tabel cu etichete text"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:429
+msgid "Text Vertical Alignment column"
+msgstr "Coloană aliniere verticală text"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:430
+msgid "Text View"
+msgstr "Vizualizare text"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:431
+msgid "Text below icons"
+msgstr "Text sub iconițe"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:433
+msgid "Text column"
+msgstr "Coloană text"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:434
+msgid "Text only"
+msgstr "Doar text"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:435
+msgid "The column in the model to load the value from"
+msgstr "Coloana din model din care se încarcă valoarea"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:436
+msgid "The items in this combo box"
+msgstr "Elementele din această listă de selecție"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:437
+msgid "The number of items in the box"
+msgstr "Numărul elementelor din această căsuță"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:438
+msgid "The number of pages in the notebook"
+msgstr "Numărul de pagini din acest carnețel"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:439
+msgid "The page position in the Assistant"
+msgstr "Poziția paginii în acest asistent"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:440
+msgid "The pango attributes for this label"
+msgstr "Atributele pango ale acestei etichete"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:441
+msgid "The position of the menu item in the menu shell"
+msgstr "Poziția elementului de meniu în cadrul meniului"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:442
+msgid "The position of the tool item in the toolbar"
+msgstr "Poziția uneltei în bara de unelte"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:443
+msgid "The response ID of this button in a dialog"
+msgstr "Identificatorul de răspuns al acestui buton într-un dialog"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:444
+msgid ""
+"The stock icon displayed on the item (choose an item from GTK+ stock or from "
+"an icon factory)"
+msgstr ""
+"Iconița din stoc afișat pe element (alegeți un element din stocul GTK+ sau "
+"dintr-o fabrică de iconițe)"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:445
+msgid "The stock item for this button"
+msgstr "Elementul din stoc pentru acest buton"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:446
+msgid "The stock item for this menu item"
+msgstr "Elementul din stoc pentru acest element de meniu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:447
+msgid "Third Mouse Button"
+msgstr "Al treilea buton al mausului"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:448
+msgid "Toggle Action"
+msgstr "Acțiune comutare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:449
+msgid "Toggle Button"
+msgstr "Buton comutare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:450
+msgid "Toggle Renderer"
+msgstr "Comută randor"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:451
+msgid "Toggle Tool Button"
+msgstr "Comută la buton-unealtă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:452
+msgid "Tool Bar"
+msgstr "Bară de unelte"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:453
+msgid "Tool Button"
+msgstr "Buton-unealtă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:454
+msgid "Toolbar"
+msgstr "Bară de unelte"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:455
+msgid "Tooltip"
+msgstr "Indiciu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:456
+msgid "Top"
+msgstr "Sus"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:457
+msgid "Top Left"
+msgstr "Stânga sus"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:458
+msgid "Top Level"
+msgstr "Nivel superior"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:459
+msgid "Top Right"
+msgstr "Dreapta sus"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:460
+msgid "Top to Bottom"
+msgstr "De sus în jos"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:461
+msgid "Toplevels"
+msgstr "Nivelele superioare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:462
+msgid "Tree Model"
+msgstr "Model arborescent "
+
+#: ../plugins/gtk+/gtk+.xml.in.h:463
+msgid "Tree Model Filter"
+msgstr "Filtru arborescent"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:464
+msgid "Tree Model Sort"
+msgstr "Sortare arborescentă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:465
+msgid "Tree Selection"
+msgstr "Selecție arborescentă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:466
+msgid "Tree Store"
+msgstr "Depozitare arborescentă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:467
+msgid "Tree View"
+msgstr "Vizualizare arborescentă"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:469
+msgid "Ultra Condensed"
+msgstr "Ultra condensat"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:470
+msgid "Ultra Expanded"
+msgstr "Ultra extins"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:471
+msgid "Underline column"
+msgstr "Coloană subliniere"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:472
+msgid "Up"
+msgstr "Sus"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:473
+msgid "Use Action Appearance"
+msgstr "Utilizează ilustrarea acțiunii"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:474
+msgid "Use Underline"
+msgstr "Utilizează subliniere"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:475
+msgid "Utility"
+msgstr "Utilitate"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:476
+msgid "Value column"
+msgstr "Coloană valoare"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:477
+msgid "Variant column"
+msgstr "Coloană variantă"
+
+#. Objects
+#: ../plugins/gtk+/gtk+.xml.in.h:479 ../plugins/gtk+/glade-model-data.c:1245
+msgid "Vertical"
+msgstr "Vertical"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:480
+msgid "Vertical Alignment"
+msgstr "Aliniere verticală"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:481
+msgid "Vertical Alignment column"
+msgstr "Coloană aliniere verticală"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:482
+msgid "Vertical Box"
+msgstr "Căsuță verticală"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:483
+msgid "Vertical Button Box"
+msgstr "Căsuță verticală de butoane"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:484
+msgid "Vertical Padding"
+msgstr "Umplere verticală"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:485
+msgid "Vertical Padding column"
+msgstr "Coloană umplere verticală"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:486
+msgid "Vertical Panes"
+msgstr "Panouri verticale"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:487
+msgid "Vertical Ruler"
+msgstr "Riglă verticală"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:488
+msgid "Vertical Scale"
+msgstr "Scalare verticală"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:489
+msgid "Vertical Scrollbar"
+msgstr "Bară de defilare verticală"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:490
+msgid "Vertical Separator"
+msgstr "Separator vertical"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:491
+msgid "Viewport"
+msgstr "Vizor"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:492
+msgid "Visibility Notify"
+msgstr "Notificare vizibilitate"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:493
+msgid "Visible"
+msgstr "Vizibil"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:494
+msgid "Visible column"
+msgstr "Coloană vizibilitate"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:495
+msgid "Volume Button"
+msgstr "Buton volum"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:496
+msgid "Warning"
+msgstr "Avertisment"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:497
+msgid "Weight column"
+msgstr "Coloană greutate"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:498
+msgid "West"
+msgstr "Vest"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:499
+msgid ""
+"Whether this page will initially be marked as complete regardless of user "
+"input."
+msgstr ""
+"Specifică dacă această pagină va fi marcată inițial ca fiind completă "
+"indiferent de ce declară utilizatorul."
+
+#. Objects
+#: ../plugins/gtk+/gtk+.xml.in.h:502
+msgid "Widgets"
+msgstr "Widget-uri"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:503
+msgid "Width column"
+msgstr "Coloană lățime"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:504
+msgid "Width in Characters column"
+msgstr "Coloană lățime în caractere"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:505
+msgid "Window"
+msgstr "Fereastră"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:506
+msgid "Window Group"
+msgstr "Grup de ferestre"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:507
+msgid "Word"
+msgstr "Cuvânt"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:508
+msgid "Word Character"
+msgstr "Caracter cuvânt"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:509
+msgid "Wrap Mode column"
+msgstr "Coloană Mod despărțire rânduri"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:510
+msgid "Wrap Width column"
+msgstr "Coloană Lățime despărțire rânduri"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:511
+msgid "Yes, No"
+msgstr "Da, Nu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:512
+msgid ""
+"You can mark this as translatable and set one name/address if you want to "
+"show a translation specific translator, otherwise you should list all "
+"translators and unmark this string for translation"
+msgstr ""
+"Puteți marca acest element ca fiind traductibil și să stabiliți un nume și o "
+"adresă dacă doriți să afișați doar traducătorii specifici unei traduceri, "
+"altfel listați toți traducătorii și nu marcați acest element ca fiind "
+"traductibil"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:1
+msgid "Collate"
+msgstr "Asamblat"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:2
+msgid "Copies"
+msgstr "Cópii"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:3
+msgid "GTK+ Unix Print Toplevels"
+msgstr "Nivele superioare de tipărire GTK+ Unix"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:4
+msgid "Generate PDF"
+msgstr "Generează PDF"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:5
+msgid "Generate PS"
+msgstr "Generează PS"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:6
+msgid "Number Up"
+msgstr "Pagini per filă multiple"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:7
+msgid "Number Up Layout"
+msgstr "Aspect pagini per filă multiple"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:8
+msgid "Page Set"
+msgstr "Set de pagini"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:9
+msgid "Page Setup Dialog"
+msgstr "Dialog de configurare a paginii"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:10
+msgid "Preview"
+msgstr "Previzualizare"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:11
+msgid "Print Dialog"
+msgstr "Dialog Tipărire"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:12
+msgid "Reverse"
+msgstr "Invers"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:13
+msgid "Scale"
+msgstr "Scară"
+
+#: ../plugins/gtk+/glade-column-types.c:333
+#: ../plugins/gtk+/glade-column-types.c:382
+#: ../plugins/gtk+/glade-column-types.c:445
+#: ../plugins/gtk+/glade-column-types.c:657
+#, c-format
+msgid "Setting columns on %s"
+msgstr "Se stabilesc coloanele din %s"
+
+#: ../plugins/gtk+/glade-column-types.c:473
+msgid "< define a new column >"
+msgstr "< definește o coloană nouă >"
+
+#: ../plugins/gtk+/glade-column-types.c:783
+msgid "Add and remove columns:"
+msgstr "Adaugă și elimină coloane:"
+
+#: ../plugins/gtk+/glade-column-types.c:837
+msgid "Column type"
+msgstr "Tip coloană"
+
+#: ../plugins/gtk+/glade-column-types.c:859
+msgid "Column name"
+msgstr "Nume coloană"
+
+#: ../plugins/gtk+/glade-model-data.c:1204
+msgid "Add and remove rows:"
+msgstr "Adaugă și elimină rânduri:"
+
+#: ../plugins/gtk+/glade-model-data.c:1234
+msgid "Sequential editing:"
+msgstr "Editare secvențială:"
+
+#: ../plugins/gtk+/glade-icon-sources.c:694
+#, c-format
+msgid ""
+"Enter a filename or a relative or full path for this source of '%s' (Glade "
+"will only ever load them in the runtime from your project directory)."
+msgstr ""
+"Introduceți un nume de fișier sau o cale relativă sau absolută pentru acestă "
+"sursă a „%s” (Glade le va încărca doar în timpul rulării din dosarul "
+"proiectului)."
+
+#: ../plugins/gtk+/glade-icon-sources.c:701
+#, c-format
+msgid ""
+"Set whether you want to specify a text direction for this source of '%s'"
+msgstr ""
+"Stabilește dacă vreți să specificați o direcție a textului pentru această "
+"sursă a „%s”"
+
+#: ../plugins/gtk+/glade-icon-sources.c:706
+#, c-format
+msgid "Set the text direction for this source of '%s'"
+msgstr "Stabilește direcția textului pentru această sursă a „%s”"
+
+#: ../plugins/gtk+/glade-icon-sources.c:711
+#, c-format
+msgid "Set whether you want to specify an icon size for this source of '%s'"
+msgstr ""
+"Stabilește dacă vreți să specificați o dimensiune a iconiței pentru această "
+"sursă a „%s”"
+
+#: ../plugins/gtk+/glade-icon-sources.c:716
+#, c-format
+msgid "Set the icon size for this source of '%s'"
+msgstr "Stabilește dimensiunea iconiței pentru această sursă a „%s”"
+
+#: ../plugins/gtk+/glade-icon-sources.c:721
+#, c-format
+msgid "Set whether you want to specify a state for this source of '%s'"
+msgstr ""
+"Stabilește dacă vreți să specificați o stare pentru această sursă a „%s”"
+
+#: ../plugins/gtk+/glade-icon-sources.c:726
+#, c-format
+msgid "Set the state for this source of '%s'"
+msgstr "Stabilește starea pentru această sursă a „%s”"
+
+#: ../plugins/gtk+/glade-button-editor.c:237
+#, c-format
+msgid "Setting %s to use standard configuration"
+msgstr "Se configurează %s să utilizeze configurația standard"
+
+#: ../plugins/gtk+/glade-button-editor.c:295
+#, c-format
+msgid "Setting %s to use a custom child"
+msgstr "Se configurează %s să utilizeze un copil personalizat"
+
+#: ../plugins/gtk+/glade-button-editor.c:339
+#, c-format
+msgid "Setting %s to use a stock button"
+msgstr "Se configurează %s să utilizeze un buton din stoc"
+
+#: ../plugins/gtk+/glade-button-editor.c:383
+#: ../plugins/gtk+/glade-image-item-editor.c:260
+#, c-format
+msgid "Setting %s to use a label and image"
+msgstr "Se configurează %s să utilizeze o etichetă și o imagine"
+
+#: ../plugins/gtk+/glade-button-editor.c:442
+msgid "Configure button content"
+msgstr "Configurează conținutul butonului"
+
+#: ../plugins/gtk+/glade-button-editor.c:444
+msgid "Add custom button content"
+msgstr "Adaugă conținut personalizat butonului"
+
+#: ../plugins/gtk+/glade-button-editor.c:446
+msgid "Stock button"
+msgstr "Buton din stoc"
+
+#: ../plugins/gtk+/glade-button-editor.c:448
+msgid "Label with optional image"
+msgstr "Etichetă cu imagine opțională"
+
+#: ../plugins/gtk+/glade-tool-button-editor.c:188
+#, c-format
+msgid "Setting %s to use standard label text"
+msgstr "Se configurează %s să utilizeze o etichetă text standard"
+
+#: ../plugins/gtk+/glade-tool-button-editor.c:223
+#, c-format
+msgid "Setting %s to use a custom label widget"
+msgstr "Se configurează %s să utilizeze un widget etichetă personalizat"
+
+#: ../plugins/gtk+/glade-tool-button-editor.c:253
+#: ../plugins/gtk+/glade-image-editor.c:266
+#, c-format
+msgid "Setting %s to use an image from stock"
+msgstr "Se configurează %s să utilizeze o imagine din stoc"
+
+#: ../plugins/gtk+/glade-tool-button-editor.c:288
+#: ../plugins/gtk+/glade-tool-button-editor.c:322
+#: ../plugins/gtk+/glade-tool-button-editor.c:356
+#: ../plugins/gtk+/glade-image-editor.c:290
+#, c-format
+msgid "Setting %s to use an image from the icon theme"
+msgstr "Se configurează %s să utilizeze o imagine din tema de iconițe"
+
+#. Label area frame...
+#: ../plugins/gtk+/glade-tool-button-editor.c:452
+#: ../plugins/gtk+/glade-image-item-editor.c:395
+msgid "Edit Label"
+msgstr "Etichetare etichetă"
+
+#. Image area frame...
+#. Image content frame...
+#. Internal Image area...
+#: ../plugins/gtk+/glade-tool-button-editor.c:494
+#: ../plugins/gtk+/glade-image-editor.c:345
+#: ../plugins/gtk+/glade-image-item-editor.c:429
+msgid "Edit Image"
+msgstr "Editare imagine"
+
+#: ../plugins/gtk+/glade-image-editor.c:313
+#, c-format
+msgid "Setting %s to use an image from filename"
+msgstr "Se configurează %s să utilizeze o imagine din fișier"
+
+#. Image size frame...
+#: ../plugins/gtk+/glade-image-editor.c:398
+msgid "Set Image Size"
+msgstr "Definire dimensiune imagine"
+
+#: ../plugins/gtk+/glade-image-item-editor.c:218
+#, c-format
+msgid "Setting %s to use a stock item"
+msgstr "Se configurează %s să utilizeze un element din stoc"
+
+#: ../plugins/gtk+/glade-image-item-editor.c:350
+msgid "Stock Item:"
+msgstr "Element din stoc:"
+
+#: ../plugins/gtk+/glade-image-item-editor.c:384
+msgid "Custom label and image:"
+msgstr "Etichetă și imagine personalizată:"
+
+#. Add descriptive label
+#: ../plugins/gtk+/glade-icon-factory-editor.c:196
+msgid ""
+"First add a stock name in the entry below, then add and define sources for "
+"that icon in the treeview."
+msgstr ""
+"Întâi adăugați un nume din stoc în intrarea de mai jos, apoi adăugați și "
+"definiți sursele pentru acea iconiță în vizualizarea arborescentă."
+
+#. Add descriptive label
+#: ../plugins/gtk+/glade-store-editor.c:197
+msgid ""
+"Define columns for your liststore; giving them meaningful names will help "
+"you to retrieve them when setting cell renderer attributes (press the Delete "
+"key to remove the selected column)"
+msgstr ""
+"Definiți coloane pentru lista dumneavoastră de depozitare; numindu-le "
+"semnificativ vă va ajuta să le recuperați când setați atributele de randare "
+"ale celulei (apăsați tasta Delete pentru a elimina coloana selectată)"
+
+#. Add descriptive label
+#: ../plugins/gtk+/glade-store-editor.c:227
+msgid ""
+"Add remove and edit rows of data (you can optionally use Ctrl+N to add new "
+"rows and the Delete key to remove the selected row)"
+msgstr ""
+"Adaugă, elimină și editează rânduri de date (opțional puteți utiliza Ctrl+N "
+"pentru a adăuga noi rânduri, și tasta Delete pentru a elimina rândul "
+"selectat)"
+
+#: ../plugins/gtk+/glade-label-editor.c:254
+#, c-format
+msgid "Setting %s to use an attribute list"
+msgstr "Se configurează %s să utilizeze o listă de atribute"
+
+#: ../plugins/gtk+/glade-label-editor.c:286
+#, c-format
+msgid "Setting %s to use a Pango markup string"
+msgstr "Se configurează %s să utilizeze un șir de marcare Pango"
+
+#: ../plugins/gtk+/glade-label-editor.c:321
+#, c-format
+msgid "Setting %s to use a pattern string"
+msgstr "Se configurează %s să utilizeze un șir șablon"
+
+#: ../plugins/gtk+/glade-label-editor.c:357
+#, c-format
+msgid "Setting %s to set desired width in characters"
+msgstr "Se configurează %s să definească lățimea dorită a caracterelor"
+
+#: ../plugins/gtk+/glade-label-editor.c:388
+#, c-format
+msgid "Setting %s to set maximum width in characters"
+msgstr "Se configurează %s să definească lățimea maximă a caracterelor"
+
+#: ../plugins/gtk+/glade-label-editor.c:422
+#, c-format
+msgid "Setting %s to use normal line wrapping"
+msgstr "Se configurează %s să utilizeze despărțirea normală pe rânduri"
+
+#: ../plugins/gtk+/glade-label-editor.c:457
+#, c-format
+msgid "Setting %s to use a single line"
+msgstr "Se configurează %s să utilizeze o singură linie"
+
+#: ../plugins/gtk+/glade-label-editor.c:492
+#, c-format
+msgid "Setting %s to use specific Pango word wrapping"
+msgstr "Se configurează %s să utilizeze despărțirea pe rânduri specifică Pango"
+
+#. Label appearance...
+#: ../plugins/gtk+/glade-label-editor.c:538
+msgid "Edit label appearance"
+msgstr "Editează apariția etichetei"
+
+#. Label formatting...
+#: ../plugins/gtk+/glade-label-editor.c:609
+msgid "Format label"
+msgstr "Formatează eticheta"
+
+#. Line Wrapping...
+#: ../plugins/gtk+/glade-label-editor.c:675
+msgid "Text line wrapping"
+msgstr "Despărțire pe rânduri a textului"
+
+#: ../plugins/gtk+/glade-label-editor.c:694
+msgid "Text wraps normally"
+msgstr "Textul se desparte pe rânduri normal"
+
+#: ../plugins/gtk+/glade-cell-renderer-editor.c:228
+#, c-format
+msgid "Setting %s to use the %s property as an attribute"
+msgstr "Se configurează %s să utilizeze proprietatea %s ca un atribute"
+
+#: ../plugins/gtk+/glade-cell-renderer-editor.c:246
+#, c-format
+msgid "Setting %s to use the %s property directly"
+msgstr "Se configurează %s să utilizeze proprietatea %s direct"
+
+#: ../plugins/gtk+/glade-cell-renderer-editor.c:369
+#, c-format
+msgid "Retrieve %s from model (type %s)"
+msgstr "Obține %s din model (tipul %s)"
+
+#. translators: the adjective not the verb
+#: ../plugins/gtk+/glade-cell-renderer-editor.c:509
+msgid "unset"
+msgstr "nesetat"
+
+#: ../plugins/gtk+/glade-cell-renderer-editor.c:532
+msgid "no model"
+msgstr "niciun model"
+
+#: ../plugins/gtk+/glade-treeview-editor.c:241
+msgid ""
+"Choose a Data Model and define some\n"
+"columns in the data store first"
+msgstr ""
+"Alege un model de date și definește niște\n"
+"coloane în depozitul de date mai întâi"
+
+#: ../plugins/gtk+/glade-entry-editor.c:229
+#, c-format
+msgid "Setting %s to use static text"
+msgstr "Se configurează %s să utilizeze text static"
+
+#: ../plugins/gtk+/glade-entry-editor.c:267
+#, c-format
+msgid "Setting %s to use an external buffer"
+msgstr "Se configurează %s să utilizeze un buffer extern"
+
+#: ../plugins/gtk+/glade-entry-editor.c:352
+#, c-format
+msgid "Setting %s to use a primary icon from stock"
+msgstr "Se configurează %s să utilizeze o iconiță principală din stoc"
+
+#: ../plugins/gtk+/glade-entry-editor.c:376
+#, c-format
+msgid "Setting %s to use a primary icon from the icon theme"
+msgstr ""
+"Se configurează %s să utilizeze o iconiță principală din tema de iconițe"
+
+#: ../plugins/gtk+/glade-entry-editor.c:399
+#, c-format
+msgid "Setting %s to use a primary icon from filename"
+msgstr "Se configurează %s să utilizeze o iconiță principală din fișier"
+
+#: ../plugins/gtk+/glade-entry-editor.c:424
+#, c-format
+msgid "Setting %s to use a secondary icon from stock"
+msgstr "Se configurează %s să utilizeze o iconiță secundară din stoc"
+
+#: ../plugins/gtk+/glade-entry-editor.c:448
+#, c-format
+msgid "Setting %s to use a secondary icon from the icon theme"
+msgstr ""
+"Se configurează %s să utilizeze o iconiță secundară din tema de iconițe"
+
+#: ../plugins/gtk+/glade-entry-editor.c:471
+#, c-format
+msgid "Setting %s to use a secondary icon from filename"
+msgstr "Se configurează %s să utilizeze o iconiță secundară din fișier"
+
+#. Primary icon...
+#: ../plugins/gtk+/glade-entry-editor.c:596
+msgid "Primary icon"
+msgstr "Iconiță primară"
+
+#. Secondary icon...
+#: ../plugins/gtk+/glade-entry-editor.c:670
+msgid "Secondary icon"
+msgstr "Iconiță secundară"
+
+#: ../plugins/gtk+/glade-activatable-editor.c:331
+#, c-format
+msgid "Setting %s action"
+msgstr "Se configurează acțiunea %s"
+
+#: ../plugins/gtk+/glade-activatable-editor.c:359
+#, c-format
+msgid "Setting %s to use action appearance"
+msgstr "Se configurează %s pentru a folosi acțiunea de apariție"
+
+#: ../plugins/gtk+/glade-activatable-editor.c:360
+#, c-format
+msgid "Setting %s to not use action appearance"
+msgstr "Se configurează %s pentru a nu folosi acțiunea de apariție"

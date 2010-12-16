@@ -1,0 +1,5516 @@
+# Translation of glade3 into Indonesian
+# Copyright (C) 2010 THE glade3'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the glade3 package.
+# Andika Triwidada <andika@gmail.com>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: glade3 master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=glade3&component=general\n"
+"POT-Creation-Date: 2010-05-15 16:13+0000\n"
+"PO-Revision-Date: 2010-06-05 15:53+0700\n"
+"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
+"Language-Team: GNOME Indonesian Translation Team <gnome@i15n.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-Language: Indonesian\n"
+"X-Poedit-Country: Indonesia\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: ../data/glade-3.desktop.in.in.h:1
+msgid "Create or open user interface designs for GTK+ applications"
+msgstr "Buat atau buka rancangan antar muka pengguna bagi aplikasi GTK+"
+
+#: ../data/glade-3.desktop.in.in.h:2 ../src/main.c:42
+msgid "Glade"
+msgstr "Glade"
+
+#: ../data/glade-3.desktop.in.in.h:3
+msgid "Glade Interface Designer"
+msgstr "Perancang Antar Muka Glade"
+
+#: ../data/glade-3.desktop.in.in.h:4
+msgid "Interface Designer"
+msgstr "Perancang Antar Muka"
+
+#: ../src/main.c:52
+msgid "Output version information and exit"
+msgstr "Tampilkan informasi versi dan keluar"
+
+#: ../src/main.c:55
+msgid "Disable Devhelp integration"
+msgstr "Nonaktifkan integrasi Devhelp"
+
+#: ../src/main.c:58
+msgid "[FILE...]"
+msgstr "[FILE...]"
+
+#: ../src/main.c:68
+msgid "be verbose"
+msgstr "uraikanlah"
+
+#: ../src/main.c:93
+msgid "Create or edit user interface designs for GTK+ or GNOME applications."
+msgstr ""
+"Buat atau sunting rancangan antar muka pengguna bagi aplikasi GTK+ atau "
+"GNOME."
+
+#: ../src/main.c:97 ../src/main.c:98
+msgid "Glade options"
+msgstr "Opsi glade"
+
+#: ../src/main.c:105
+msgid "Glade debug options"
+msgstr "Opsi debug Glade"
+
+#: ../src/main.c:106
+msgid "Show Glade debug options"
+msgstr "Tampilkan opsi debug Glade"
+
+#: ../src/main.c:149
+msgid ""
+"gmodule support not found. gmodule support is required for glade to work"
+msgstr ""
+"Dukungan gmodule tak ditemukan. Dukungan gmodule diperlukan agar glade "
+"bekerja"
+
+#: ../src/main.c:176
+#, c-format
+msgid "Unable to open '%s', the file does not exist.\n"
+msgstr "Tak bisa membuka '%s', berkas tak ada.\n"
+
+#: ../src/glade-window.c:51
+msgid "[Read Only]"
+msgstr "[Hanya Baca]"
+
+#: ../src/glade-window.c:165
+#, c-format
+msgid "Could not display the URL '%s'"
+msgstr "Tak bisa menampilkan URL '%s'"
+
+#: ../src/glade-window.c:169
+msgid "No suitable web browser could be found."
+msgstr "Tak ditemukan peramban web yang cocok."
+
+#: ../src/glade-window.c:450
+msgid "User Interface Designer"
+msgstr "Perancang Antar Muka Pengguna"
+
+#. translators: referring to the action of activating a file named '%s'.
+#. *              we also indicate to users that the file may be read-only with
+#. *              the second '%s'
+#: ../src/glade-window.c:657
+#, c-format
+msgid "Activate '%s' %s"
+msgstr "Aktifkan '%s' %s"
+
+#. translators: referring to the action of activating a file named '%s'
+#. FIXME add hint for translators
+#: ../src/glade-window.c:664 ../src/glade-window.c:672
+#, c-format
+msgid "Activate '%s'"
+msgstr "Aktifkan '%s'"
+
+#. Name
+#: ../src/glade-window.c:717 ../gladeui/glade-base-editor.c:1991
+#: ../gladeui/glade-editor-table.c:359
+msgid "Name:"
+msgstr "Nama:"
+
+#: ../src/glade-window.c:719
+msgid "Format:"
+msgstr "Format:"
+
+#: ../src/glade-window.c:721
+msgid "Requires:"
+msgstr "Memerlukan:"
+
+#: ../src/glade-window.c:1147
+msgid "Open…"
+msgstr "Buka..."
+
+#: ../src/glade-window.c:1190
+#, c-format
+msgid "The file %s has been modified since reading it"
+msgstr "Berkas %s telah diubah semenjak terakhir dibaca."
+
+#: ../src/glade-window.c:1194
+msgid "If you save it, all the external changes could be lost. Save it anyway?"
+msgstr ""
+"Jika Anda menyimpannya, seluruh perubahan dari luar akan hilang. Simpan saja?"
+
+#: ../src/glade-window.c:1198
+msgid "_Save Anyway"
+msgstr "_Simpan Saja"
+
+#: ../src/glade-window.c:1205
+msgid "_Don't Save"
+msgstr "_Jangan Simpan"
+
+#: ../src/glade-window.c:1231
+#, c-format
+msgid "Failed to save %s: %s"
+msgstr "Gagal menyimpan %s: %s"
+
+#: ../src/glade-window.c:1254
+#, c-format
+msgid "Project '%s' saved"
+msgstr "Projek '%s' telah disimpan"
+
+#: ../src/glade-window.c:1274
+msgid "Save As…"
+msgstr "Simpan Sebagai..."
+
+#: ../src/glade-window.c:1319
+#, c-format
+msgid "Could not save the file %s"
+msgstr "Tak bisa menyimpan berkas %s"
+
+#: ../src/glade-window.c:1323
+msgid "You do not have the permissions necessary to save the file."
+msgstr "Anda tidak memiliki izin yang dibutuhkan untuk menyimpan berkas."
+
+#: ../src/glade-window.c:1344
+#, c-format
+msgid "Could not save file %s. Another project with that path is open."
+msgstr ""
+"Tak bisa menyimpan berkas %s. Projek lain dengan path tersebut sedang dibuka."
+
+#: ../src/glade-window.c:1369
+msgid "No open projects to save"
+msgstr "Tak ada projek terbuka untuk disimpan"
+
+#: ../src/glade-window.c:1399
+#, c-format
+msgid "Save changes to project \"%s\" before closing?"
+msgstr "Simpan perubahan ke projek \"%s\" sebelum ditutup?"
+
+#: ../src/glade-window.c:1410
+msgid "Your changes will be lost if you don't save them."
+msgstr "Perubahan yang Anda buat akan hilang bila tidak Anda simpan."
+
+#: ../src/glade-window.c:1414
+msgid "Close _without Saving"
+msgstr "Tutup _tanpa Menyimpan"
+
+#: ../src/glade-window.c:1441
+#, c-format
+msgid "Failed to save %s to %s: %s"
+msgstr "Gagal menyimpan %s ke %s: %s"
+
+#: ../src/glade-window.c:1453
+msgid "Save…"
+msgstr "Simpan..."
+
+#: ../src/glade-window.c:1997
+msgid "Could not display the online user manual"
+msgstr "Tak bisa tampilkan manual pengguna daring"
+
+#: ../src/glade-window.c:2000 ../src/glade-window.c:2038
+#, c-format
+msgid ""
+"No suitable web browser executable could be found to be executed and to "
+"display the URL: %s"
+msgstr ""
+"Tak menemukan executable peramban web yang cocok untuk dieksekusi dan untuk "
+"menampilkan URL: %s"
+
+#: ../src/glade-window.c:2035
+msgid "Could not display the online developer reference manual"
+msgstr "Tak dapat menampilkan manual acuan pengembang daring"
+
+#: ../src/glade-window.c:2078
+msgid ""
+"Glade is free software; you can redistribute it and/or modify it under the "
+"terms of the GNU General Public License as published by the Free Software "
+"Foundation; either version 2 of the License, or (at your option) any later "
+"version.\n"
+"\n"
+"Glade is distributed in the hope that it will be useful, but WITHOUT ANY "
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"Glade; if not, write to the Free Software Foundation, Inc., 51 Franklin "
+"Street, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr ""
+"Glade adalah perangkat lunak bebas; Anda dapat menyebarluaskannya dan/atau "
+"mengubahnya di bawah syarat GNU General Public License sebagaimana "
+"dipublikasikan oleh Free Software Foundation; baik versi 2 dari Lisensi, "
+"atau (terserah pilihan Anda) versi setelahnya.\n"
+"\n"
+"Glade didistribusikan dengan harapan akan berguna, tetapi TANPA ADANYA "
+"JAMINAN; termasuk tanpa jaminan KETERDAGANGAN atau KECOCOKAN UNTUK TUJUAN "
+"TERTENTU. Lihat GNU General Public License untuk rincian lebih lanjut.\n"
+"\n"
+"Anda seharusnya menerima salinan dari GNU General Public License bersama "
+"dengan program ini; jika tidak, kirimkan surat Anda ke Free Software "
+"Foundation, Inc, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+
+#: ../src/glade-window.c:2104
+msgid "translator-credits"
+msgstr "Andika Triwidada <andika@gmail.com>, 2010."
+
+#: ../src/glade-window.c:2105
+msgid "A user interface designer for GTK+ and GNOME."
+msgstr "Perancang antar muka pengguna bagi GTK+ dan GNOME."
+
+#. File
+#: ../src/glade-window.c:2180 ../plugins/gtk+/glade-gtk.c:7150
+#: ../plugins/gtk+/glade-gtk.c:7473
+msgid "_File"
+msgstr "_Berkas"
+
+#. Edit
+#: ../src/glade-window.c:2181 ../plugins/gtk+/glade-gtk.c:7153
+#: ../plugins/gtk+/glade-gtk.c:7483
+msgid "_Edit"
+msgstr "_Sunting"
+
+#. View
+#: ../src/glade-window.c:2182 ../plugins/gtk+/glade-gtk.c:7156
+#: ../plugins/gtk+/glade-gtk.c:7491
+msgid "_View"
+msgstr "_Tilik"
+
+#: ../src/glade-window.c:2183
+msgid "_Projects"
+msgstr "_Projek"
+
+#. Help
+#: ../src/glade-window.c:2184 ../plugins/gtk+/glade-gtk.c:7168
+#: ../plugins/gtk+/glade-gtk.c:7494
+msgid "_Help"
+msgstr "Ba_ntuan"
+
+#: ../src/glade-window.c:2190
+msgid "Create a new project"
+msgstr "Buat projek baru"
+
+#: ../src/glade-window.c:2192
+msgid "_Open…"
+msgstr "_Buka..."
+
+#: ../src/glade-window.c:2193
+msgid "Open a project"
+msgstr "Buka projek"
+
+#: ../src/glade-window.c:2195
+msgid "Open _Recent"
+msgstr "Buka Te_rkini"
+
+#: ../src/glade-window.c:2198
+msgid "Quit the program"
+msgstr "Keluar dari program"
+
+#. ViewMenu
+#: ../src/glade-window.c:2201
+msgid "Palette _Appearance"
+msgstr "Penampilan P_alet"
+
+#: ../src/glade-window.c:2205
+msgid "About this application"
+msgstr "Tentang aplikasi ini"
+
+#: ../src/glade-window.c:2207
+msgid "_Contents"
+msgstr "Daftar _Isi"
+
+#: ../src/glade-window.c:2208
+msgid "Display the user manual"
+msgstr "Tampilkan manual pengguna"
+
+#: ../src/glade-window.c:2210
+msgid "_Developer Reference"
+msgstr "_Acuan Pengembang"
+
+#: ../src/glade-window.c:2211
+msgid "Display the developer reference manual"
+msgstr "Tampilkan manual acuan pengembang"
+
+#: ../src/glade-window.c:2220
+msgid "Save the current project"
+msgstr "Simpan projek sekarang"
+
+#: ../src/glade-window.c:2222
+msgid "Save _As…"
+msgstr "Simp_an Sebagai..."
+
+#: ../src/glade-window.c:2223
+msgid "Save the current project with a different name"
+msgstr "Simpan projek kini dengan nama yang berbeda"
+
+#: ../src/glade-window.c:2226
+msgid "Close the current project"
+msgstr "Tutup projek kini"
+
+#: ../src/glade-window.c:2230
+msgid "Undo the last action"
+msgstr "Batalkan aksi terakhir"
+
+#: ../src/glade-window.c:2233
+msgid "Redo the last action"
+msgstr "Ulangi langkah terakhir"
+
+#: ../src/glade-window.c:2236
+msgid "Cut the selection"
+msgstr "Potong bagian yang dipilih"
+
+#: ../src/glade-window.c:2239
+msgid "Copy the selection"
+msgstr "Salin bagian yang dipilih"
+
+#: ../src/glade-window.c:2242
+msgid "Paste the clipboard"
+msgstr "Tempel isi clipboard"
+
+#: ../src/glade-window.c:2245
+msgid "Delete the selection"
+msgstr "Hapus bagian yang dipilih"
+
+#: ../src/glade-window.c:2248
+msgid "Modify project preferences"
+msgstr "Ubah preferensi projek"
+
+#. ProjectsMenu
+#: ../src/glade-window.c:2251
+msgid "_Previous Project"
+msgstr "_Projek Sebelumnya:"
+
+#: ../src/glade-window.c:2252
+msgid "Activate previous project"
+msgstr "Aktifkan projek sebelumnya"
+
+#: ../src/glade-window.c:2254
+msgid "_Next Project"
+msgstr "Projek Sela_njutnya"
+
+#: ../src/glade-window.c:2255
+msgid "Activate next project"
+msgstr "Aktifkan projek selanjutnya"
+
+#: ../src/glade-window.c:2263
+msgid "_Use Small Icons"
+msgstr "G_unakan Ikon Kecil"
+
+#: ../src/glade-window.c:2264
+msgid "Show items using small icons"
+msgstr "Tampilkan butir-butir memakai ikon kecil"
+
+#: ../src/glade-window.c:2267
+msgid "Dock _Palette"
+msgstr "Dok _Palet"
+
+#: ../src/glade-window.c:2268
+msgid "Dock the palette into the main window"
+msgstr "Sandarkan palet ke jendela utama"
+
+#: ../src/glade-window.c:2271
+msgid "Dock _Inspector"
+msgstr "Dok Pemer_iksa..."
+
+#: ../src/glade-window.c:2272
+msgid "Dock the inspector into the main window"
+msgstr "Sandarkan pemeriksa ke jendela utama"
+
+#: ../src/glade-window.c:2275
+msgid "Dock Prop_erties"
+msgstr "Dok Prop_erti"
+
+#: ../src/glade-window.c:2276
+msgid "Dock the editor into the main window"
+msgstr "Sandarkan penyunting ke jendela utama"
+
+#: ../src/glade-window.c:2279
+msgid "Tool_bar"
+msgstr "_Bilah Alat"
+
+#: ../src/glade-window.c:2280
+msgid "Show the toolbar"
+msgstr "Tampilkan bilah alat"
+
+#: ../src/glade-window.c:2283
+msgid "_Statusbar"
+msgstr "Bilah _Status"
+
+#: ../src/glade-window.c:2284
+msgid "Show the statusbar"
+msgstr "Tampilkan bilah status"
+
+#: ../src/glade-window.c:2287
+msgid "Project _Tabs"
+msgstr "_Tab Projek"
+
+#: ../src/glade-window.c:2288
+msgid "Show notebook tabs for loaded projects"
+msgstr "Tampilkan tab notebook bagi projek yang dimuat"
+
+#: ../src/glade-window.c:2296 ../plugins/gtk+/gtk+.xml.in.h:449
+msgid "Text beside icons"
+msgstr "Teks di samping ikon"
+
+#: ../src/glade-window.c:2297
+msgid "Display items as text beside icons"
+msgstr "Tampilkan butir sebagai teks di samping ikon"
+
+#: ../src/glade-window.c:2299
+msgid "_Icons only"
+msgstr "_Ikon saja"
+
+#: ../src/glade-window.c:2300
+msgid "Display items as icons only"
+msgstr "Tampilkan butir hanya sebagai ikon"
+
+#: ../src/glade-window.c:2302
+msgid "_Text only"
+msgstr "_Teks saja"
+
+#: ../src/glade-window.c:2303
+msgid "Display items as text only"
+msgstr "Tampilkan butir hanya sebagai teks"
+
+#: ../src/glade-window.c:2489
+msgid "Select"
+msgstr "Pilih"
+
+#: ../src/glade-window.c:2492
+msgid "Select widgets in the workspace"
+msgstr "Pilih widget di ruang kerja"
+
+#: ../src/glade-window.c:2515
+msgid "Drag Resize"
+msgstr "Seret Ubah Ukuran"
+
+#: ../src/glade-window.c:2518
+msgid "Drag and resize widgets in the workspace"
+msgstr "Seret dan ubah ukuran widget di ruang kerja"
+
+#: ../src/glade-window.c:2560
+msgid "Close document"
+msgstr "Tutup dokumen"
+
+#: ../src/glade-window.c:2626
+msgid "Could not create a new project."
+msgstr "Tak dapat membuat projek baru."
+
+#: ../src/glade-window.c:2680
+#, c-format
+msgid "The project %s has unsaved changes"
+msgstr "Projek %s memiliki perubahan yang belum disimpan"
+
+#: ../src/glade-window.c:2684
+msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
+msgstr ""
+"Bila Anda memuat ulang, semua perubahan yang belum tersimpan akan hilang. "
+"Muat ulang saja?"
+
+#: ../src/glade-window.c:2693
+#, c-format
+msgid "The project file %s has been externally modified"
+msgstr "Berkas %s dari projek telah diubah dari luar"
+
+#: ../src/glade-window.c:2697
+msgid "Do you want to reload the project?"
+msgstr "Anda ingin memuat ulang projek?"
+
+#: ../src/glade-window.c:2703
+msgid "_Reload"
+msgstr "_Muat Ulang"
+
+#: ../src/glade-window.c:2825
+#, fuzzy
+msgid "_Undo"
+msgstr "_Batalkan"
+
+#. Change tooltips
+#: ../src/glade-window.c:2827 ../gladeui/glade-app.c:275
+#, fuzzy, c-format
+msgid "Undo: %s"
+msgstr "Batalkan: %s"
+
+#: ../src/glade-window.c:2827 ../src/glade-window.c:2838
+#: ../gladeui/glade-app.c:276
+msgid "the last action"
+msgstr "aksi terakhir"
+
+#: ../src/glade-window.c:2836
+#, fuzzy
+msgid "_Redo"
+msgstr "_Jadi Lagi"
+
+#: ../src/glade-window.c:2838 ../gladeui/glade-app.c:275
+#, fuzzy, c-format
+msgid "Redo: %s"
+msgstr "Jadi Lagi: %s"
+
+#: ../src/glade-window.c:3308
+#, fuzzy
+msgid "Go back in undo history"
+msgstr "Mundur dalam riwayat pembatalan"
+
+#: ../src/glade-window.c:3310
+#, fuzzy
+msgid "Go forward in undo history"
+msgstr "Maju dalam riwayat pembatalan"
+
+#: ../src/glade-window.c:3359
+msgid "Palette"
+msgstr "Palet"
+
+#: ../src/glade-window.c:3369
+msgid "Inspector"
+msgstr "Pemeriksa"
+
+#: ../src/glade-window.c:3376 ../gladeui/glade-editor.c:350
+#: ../gladeui/glade-widget.c:1100 ../plugins/gtk+/glade-gtk.c:6582
+#: ../plugins/gtk+/glade-gtk.c:6612 ../plugins/gtk+/glade-gtk.c:11288
+msgid "Properties"
+msgstr "Properti"
+
+#: ../gladeui/glade-app.c:455
+msgid "Clipboard"
+msgstr "Tempel isi clipboard"
+
+#: ../gladeui/glade-app.c:524
+msgid "Active Project"
+msgstr "Projek Aktif"
+
+#: ../gladeui/glade-app.c:525
+msgid "The active project"
+msgstr "Projek yang sedang aktif"
+
+#: ../gladeui/glade-app.c:531
+msgid "Pointer Mode"
+msgstr "Mode penunjuk"
+
+#: ../gladeui/glade-app.c:532
+msgid "Current mode for the pointer in the workspace"
+msgstr "Mode pointer kini di ruang kerja"
+
+#: ../gladeui/glade-app.c:602
+#, c-format
+msgid ""
+"Trying to save private data to %s directory but it is a regular file.\n"
+"No private data will be saved in this session"
+msgstr ""
+"Mencoba menyimpan data privat ke direktori %s tapi itu adalah berkas biasa.\n"
+"Tak ada data privat yang akan disimpan pada sesi ini"
+
+#: ../gladeui/glade-app.c:615
+#, c-format
+msgid ""
+"Failed to create directory %s to save private data.\n"
+"No private data will be saved in this session"
+msgstr ""
+"Gagal membuat direktori %s untuk menyimpan data privat.\n"
+"Tak ada data privat yang akan disimpan sesi ini"
+
+#: ../gladeui/glade-app.c:643
+#, c-format
+msgid ""
+"Error writing private data to %s (%s).\n"
+"No private data will be saved in this session"
+msgstr ""
+"Kesalahan menulis data privat ke %s (%s).\n"
+"Tak ada data privat yang akan disimpan sesi ini"
+
+#: ../gladeui/glade-app.c:655
+#, c-format
+msgid ""
+"Error serializing configuration data to save (%s).\n"
+"No private data will be saved in this session"
+msgstr ""
+"Kesalahan menserialisasi data konfigurasi untuk disimpan (%s).\n"
+"Tak ada data privat yang akan disimpan sesi ini"
+
+#: ../gladeui/glade-app.c:668
+#, c-format
+msgid ""
+"Error opening %s to write private data (%s).\n"
+"No private data will be saved in this session"
+msgstr ""
+"Kesalahan membuka %s untuk menulis data privat (%s).\n"
+"Tak ada data privat yang akan disimpan sesi ini"
+
+#: ../gladeui/glade-app.c:1181 ../gladeui/glade-app.c:1222
+#: ../gladeui/glade-app.c:1387
+msgid "No widget selected."
+msgstr "Tak ada widget yang dipilih."
+
+#: ../gladeui/glade-app.c:1274
+msgid "Unable to paste to the selected parent"
+msgstr "Tak bisa menempel ke induk yang dipilih"
+
+#: ../gladeui/glade-app.c:1285
+msgid "Unable to paste to multiple widgets"
+msgstr "Tak bisa menempel ke widget berganda"
+
+#: ../gladeui/glade-app.c:1301 ../gladeui/glade-app.c:1407
+msgid "No widget selected on the clipboard"
+msgstr "Tak ada widget yang dipilih pada clipboard"
+
+#: ../gladeui/glade-app.c:1333
+msgid "Only one widget can be pasted at a time to this container"
+msgstr "Hanya satu widget dapat ditempelkan pada suatu saat ke wadah ini"
+
+#: ../gladeui/glade-app.c:1345
+#, fuzzy
+msgid "Insufficient amount of placeholders in target container"
+msgstr "Cacah placeholder tak mencukupi pada wadah target"
+
+#: ../gladeui/glade-builtins.c:71
+msgid "Authentication"
+msgstr "Otentikasi"
+
+#. GTK_STOCK_DIALOG_AUTHENTICATION
+#: ../gladeui/glade-builtins.c:72
+#, fuzzy
+msgid "DnD"
+msgstr "DnD"
+
+#. GTK_STOCK_DND
+#: ../gladeui/glade-builtins.c:73
+#, fuzzy
+msgid "DnD Multiple"
+msgstr "DnD Berganda"
+
+#. GTK_STOCK_DND_MULTIPLE
+#: ../gladeui/glade-builtins.c:74
+msgid "Color Picker"
+msgstr "Pemilih Warna"
+
+#. GTK_STOCK_COLOR_PICKER
+#: ../gladeui/glade-builtins.c:75
+msgid "Directory"
+msgstr "Direktori"
+
+#. GTK_STOCK_DIRECTORY
+#: ../gladeui/glade-builtins.c:76 ../plugins/gnome/gnome.xml.in.h:10
+msgid "File"
+msgstr "Berkas"
+
+#. GTK_STOCK_FILE
+#: ../gladeui/glade-builtins.c:77
+msgid "Missing Image"
+msgstr "Gambar Hilang"
+
+#: ../gladeui/glade-builtins.c:321
+msgid "Stock"
+msgstr "Stok"
+
+#: ../gladeui/glade-builtins.c:322
+#, fuzzy
+msgid "A builtin stock item"
+msgstr "Butir stok bawaan"
+
+#: ../gladeui/glade-builtins.c:330
+msgid "Stock Image"
+msgstr "Gambar Stok"
+
+#: ../gladeui/glade-builtins.c:331
+#, fuzzy
+msgid "A builtin stock image"
+msgstr "Gambar stok bawaan"
+
+#: ../gladeui/glade-builtins.c:488
+msgid "Objects"
+msgstr "Objek"
+
+#: ../gladeui/glade-builtins.c:489
+msgid "A list of objects"
+msgstr "Daftar objek"
+
+#: ../gladeui/glade-builtins.c:498
+msgid "Image File Name"
+msgstr "Nama Berkas Gambar"
+
+#: ../gladeui/glade-builtins.c:499
+msgid "Enter a filename, relative path or full path to load the image"
+msgstr ""
+"Masukkan nama berkas, path relatif, atau path lengkap untuk memuat gambar"
+
+#: ../gladeui/glade-builtins.c:508
+msgid "GdkColor"
+msgstr "GdkColor"
+
+#: ../gladeui/glade-builtins.c:509
+msgid "A GDK color value"
+msgstr "Nilai warna GDK"
+
+#: ../gladeui/glade-builtins.c:519
+msgid "Integer"
+msgstr "Integer"
+
+#: ../gladeui/glade-builtins.c:520
+msgid "An integer value"
+msgstr "Nilai integer"
+
+#: ../gladeui/glade-builtins.c:528
+msgid "Unsigned Integer"
+msgstr "Integer tak bertanda"
+
+#: ../gladeui/glade-builtins.c:529
+msgid "An unsigned integer value"
+msgstr "Nilai integer tak bertanda"
+
+#: ../gladeui/glade-builtins.c:536
+msgid "String"
+msgstr "String"
+
+#: ../gladeui/glade-builtins.c:537
+msgid "An entry"
+msgstr "Suatu entri"
+
+#: ../gladeui/glade-builtins.c:544
+msgid "Strv"
+msgstr "Strv"
+
+#: ../gladeui/glade-builtins.c:545
+msgid "String array"
+msgstr "Larik string"
+
+#: ../gladeui/glade-builtins.c:553
+msgid "Float"
+msgstr "Float"
+
+#: ../gladeui/glade-builtins.c:554
+msgid "A floating point entry"
+msgstr "Entri bilangan pecahan"
+
+#: ../gladeui/glade-builtins.c:562
+msgid "Boolean"
+msgstr "Boolean"
+
+#: ../gladeui/glade-builtins.c:563
+msgid "A boolean value"
+msgstr "Suatu nilai boolean"
+
+#: ../gladeui/glade-base-editor.c:536
+#, c-format
+msgid "Setting object type on %s to %s"
+msgstr "Menata tipe objek pada %s menjadi %s"
+
+#: ../gladeui/glade-base-editor.c:677
+#, c-format
+msgid "Add a %s to %s"
+msgstr "Menambahkan suatu %s ke %s"
+
+#: ../gladeui/glade-base-editor.c:762
+#, c-format
+msgid "Add %s item"
+msgstr "Menambah butir %s"
+
+#: ../gladeui/glade-base-editor.c:792
+#, c-format
+msgid "Add child %s item"
+msgstr "Menambah butir %s anak"
+
+#: ../gladeui/glade-base-editor.c:879
+#, c-format
+msgid "Delete %s child from %s"
+msgstr "Menghapus anak %s dari %s"
+
+#: ../gladeui/glade-base-editor.c:1007
+#, c-format
+msgid "Reorder %s's children"
+msgstr "Mengurut ulang anak %s"
+
+#: ../gladeui/glade-base-editor.c:1456 ../plugins/gtk+/gtk+.xml.in.h:97
+msgid "Container"
+msgstr "Kontainer"
+
+#: ../gladeui/glade-base-editor.c:1457
+msgid "The container object this editor is currently editing"
+msgstr "Objek wadah yang kini sedang disunting"
+
+#: ../gladeui/glade-base-editor.c:1682 ../gladeui/glade-editor.c:997
+msgid "General"
+msgstr "Umum"
+
+#: ../gladeui/glade-base-editor.c:1690
+msgid "Hierarchy"
+msgstr "Hirarki"
+
+#: ../gladeui/glade-base-editor.c:1724 ../plugins/gtk+/gtk+.xml.in.h:255
+msgid "Label"
+msgstr "Label"
+
+#: ../gladeui/glade-base-editor.c:1738 ../gladeui/glade-widget-adaptor.c:1244
+msgid "Type"
+msgstr "Jenis"
+
+#. Type
+#: ../gladeui/glade-base-editor.c:2004
+msgid "Type:"
+msgstr "Jenis:"
+
+#: ../gladeui/glade-base-editor.c:2217
+msgid ""
+"<big><b>Tips:</b></big>\n"
+"  * Right-click over the treeview to add items.\n"
+"  * Press Delete to remove the selected item.\n"
+"  * Drag &amp; Drop to reorder.\n"
+"  * Type column is editable."
+msgstr ""
+"<big><b>Petunjuk:</b></big>\n"
+" * Klik kanan di atas treeview untuk menambah butir.\n"
+" * Tekan Delete untuk menghapus butir yang dipilih.\n"
+" * Drag &amp; Drop untuk mengurut ulang.\n"
+" * Kolom tipe dapat disunting."
+
+#: ../gladeui/glade-clipboard-view.c:209 ../gladeui/glade-editor.c:162
+#: ../plugins/gtk+/gtk+.xml.in.h:517
+msgid "Widget"
+msgstr "Widget"
+
+#: ../gladeui/glade-command.c:598
+#, c-format
+msgid "Setting multiple properties"
+msgstr "Menata beberapa properti"
+
+#: ../gladeui/glade-command.c:611
+#, c-format
+msgid "Setting %s of %s"
+msgstr "Menata %s dari %s"
+
+#: ../gladeui/glade-command.c:615 ../gladeui/glade-editor-property.c:3010
+#, c-format
+msgid "Setting %s of %s to %s"
+msgstr "Menata %s dari %s ke %s"
+
+#: ../gladeui/glade-command.c:850 ../gladeui/glade-command.c:877
+#, c-format
+msgid "Renaming %s to %s"
+msgstr "Mengganti nama %s menjadi %s"
+
+#: ../gladeui/glade-command.c:1006
+#, c-format
+msgid "Add %s"
+msgstr "Menambah %s"
+
+#: ../gladeui/glade-command.c:1007 ../gladeui/glade-command.c:1738
+#: ../gladeui/glade-command.c:1762 ../gladeui/glade-command.c:1785
+#: ../gladeui/glade-command.c:1810 ../gladeui/glade-command.c:1914
+#: ../gladeui/glade-command.c:1947
+msgid "multiple"
+msgstr "berganda"
+
+#: ../gladeui/glade-command.c:1163
+msgid "You cannot remove a widget internal to a composite widget."
+msgstr ""
+"Anda tak dapat menghapus suatu widget yang internal terhadap suatu widget "
+"komposit."
+
+#: ../gladeui/glade-command.c:1170
+#, c-format
+msgid "%s is locked by %s, edit %s first."
+msgstr "%s dikunci oleh %s, sunting %s terlebih dahulu."
+
+#: ../gladeui/glade-command.c:1180
+#, c-format
+msgid "Remove %s"
+msgstr "Hapus %s"
+
+#: ../gladeui/glade-command.c:1183
+msgid "Remove multiple"
+msgstr "Hapus beberapa"
+
+#: ../gladeui/glade-command.c:1557
+#, fuzzy, c-format
+msgid "Clipboard add %s"
+msgstr "Tambah %s ke clipboard"
+
+#: ../gladeui/glade-command.c:1560
+msgid "Clipboard add multiple"
+msgstr "Tambah beberapa ke clipboard"
+
+#: ../gladeui/glade-command.c:1565
+#, fuzzy, c-format
+msgid "Clipboard remove %s"
+msgstr "Hapus %s dari clipboard"
+
+#: ../gladeui/glade-command.c:1568
+msgid "Clipboard remove multiple"
+msgstr "Menghapus beberapa dari clipboard"
+
+#: ../gladeui/glade-command.c:1738
+#, c-format
+msgid "Create %s"
+msgstr "Buat %s"
+
+#: ../gladeui/glade-command.c:1762
+#, c-format
+msgid "Delete %s"
+msgstr "Hapus %s"
+
+#: ../gladeui/glade-command.c:1785
+#, c-format
+msgid "Cut %s"
+msgstr "Potong %s"
+
+#: ../gladeui/glade-command.c:1810
+#, c-format
+msgid "Copy %s"
+msgstr "Salin %s"
+
+#: ../gladeui/glade-command.c:1914
+#, c-format
+msgid "Paste %s"
+msgstr "Tempel %s"
+
+#: ../gladeui/glade-command.c:1946
+#, c-format
+msgid "Drag-n-Drop from %s to %s"
+msgstr "Drag-n-Drop dari %s ke %s"
+
+#: ../gladeui/glade-command.c:2068
+#, c-format
+msgid "Add signal handler %s"
+msgstr "Tambahkan penangan sinyal %s"
+
+#: ../gladeui/glade-command.c:2069
+#, c-format
+msgid "Remove signal handler %s"
+msgstr "Hapus penangan sinyal %s"
+
+#: ../gladeui/glade-command.c:2070
+#, c-format
+msgid "Change signal handler %s"
+msgstr "Ubah penangan sinyal %s"
+
+#: ../gladeui/glade-command.c:2295
+#, c-format
+msgid "Setting i18n metadata"
+msgstr "Menata metadata i18n"
+
+#: ../gladeui/glade-command.c:2499
+#, c-format
+msgid "Converting %s to %s format"
+msgstr "Konversi dari %s ke format %s"
+
+#: ../gladeui/glade-command.c:2657 ../gladeui/glade-project.c:3700
+#, c-format
+msgid "Setting %s to use a %s naming policy"
+msgstr "Menata %s untuk memakai suatu kebijakan penamaan %s"
+
+#: ../gladeui/glade-command.c:2797
+#, c-format
+msgid "Locking %s by widget %s"
+msgstr "Mengunci %s oleh widget %s"
+
+#: ../gladeui/glade-command.c:2836
+#, c-format
+msgid "Unlocking %s"
+msgstr "Buka kunci %s"
+
+#: ../gladeui/glade-cursor.c:186
+#, c-format
+msgid "Unable to load image (%s)"
+msgstr "Gagal memuat gambar (%s)"
+
+#: ../gladeui/glade-editor-property.c:598
+msgid "Property Class"
+msgstr "Kelas Properti"
+
+#: ../gladeui/glade-editor-property.c:599
+msgid "The GladePropertyClass this GladeEditorProperty was created for"
+msgstr "GladeEditorProperty ini dibuat untuk GladePropertyClass mana"
+
+#: ../gladeui/glade-editor-property.c:605
+msgid "Use Command"
+msgstr "Pakai Perintah"
+
+#: ../gladeui/glade-editor-property.c:606
+msgid "Whether we should use the command API for the undo/redo stack"
+msgstr "Apakah kita mesti memakai API perintah bagi stack undo/redo"
+
+#: ../gladeui/glade-editor-property.c:1103
+msgid "Select Fields"
+msgstr "Pilih Ruas"
+
+#: ../gladeui/glade-editor-property.c:1127
+msgid "_Select individual fields:"
+msgstr "Pilih rua_s individual:"
+
+#: ../gladeui/glade-editor-property.c:1437
+msgid "Select Named Icon"
+msgstr "Pilih Ikon Bernama"
+
+#: ../gladeui/glade-editor-property.c:1701
+msgid "Edit Text"
+msgstr "Sunting Teks"
+
+#. Text
+#: ../gladeui/glade-editor-property.c:1732
+msgid "_Text:"
+msgstr "_Teks:"
+
+#. Translatable
+#: ../gladeui/glade-editor-property.c:1768
+msgid "T_ranslatable"
+msgstr "Dapat dite_rjemahkan"
+
+#: ../gladeui/glade-editor-property.c:1773 ../gladeui/glade-property.c:589
+msgid "Whether this property is translatable"
+msgstr "Apakah properti ini dapat diterjemahkan"
+
+#. Has Context
+#: ../gladeui/glade-editor-property.c:1776
+msgid "_Has context prefix"
+msgstr "_Punya prefiks konteks"
+
+#: ../gladeui/glade-editor-property.c:1780 ../gladeui/glade-property.c:596
+msgid "Whether the translatable string has a context prefix"
+msgstr "Apakah string yang dapat diterjemahkan memiliki suatu awalan konteks"
+
+#: ../gladeui/glade-editor-property.c:1791
+msgid "Conte_xt for translation:"
+msgstr "Konte_ks penerjemahan:"
+
+#: ../gladeui/glade-editor-property.c:1829
+msgid "Co_mments for translators:"
+msgstr "Ko_mentar bagi penerjemah:"
+
+#: ../gladeui/glade-editor-property.c:1948
+msgid "Select a file from the project resource directory"
+msgstr "Pilih suatu berkas dari direktori sumber daya projek"
+
+#: ../gladeui/glade-editor-property.c:2229
+#: ../gladeui/glade-editor-property.c:2245
+msgid "Yes"
+msgstr "Ya"
+
+#: ../gladeui/glade-editor-property.c:2229
+#: ../gladeui/glade-editor-property.c:2245
+#: ../gladeui/glade-editor-property.c:2260
+msgid "No"
+msgstr "Tidak"
+
+#: ../gladeui/glade-editor-property.c:2686 ../gladeui/glade-widget.c:1052
+#: ../gladeui/glade-widget-adaptor.c:1236
+msgid "Name"
+msgstr "Nama"
+
+#: ../gladeui/glade-editor-property.c:2698 ../gladeui/glade-property.c:553
+msgid "Class"
+msgstr "Kelas"
+
+#: ../gladeui/glade-editor-property.c:2714
+#, c-format
+msgid "Choose parentless %s type objects in this project"
+msgstr "Pilih objek bertipe %s tanpa induk di projek ini"
+
+#: ../gladeui/glade-editor-property.c:2714
+#, c-format
+msgid "Choose a parentless %s in this project"
+msgstr "Pilih suatu %s tanpa induk di projek ini"
+
+#: ../gladeui/glade-editor-property.c:2717
+#, c-format
+msgid "Choose %s type objects in this project"
+msgstr "Pilih objek bertipe %s di projek ini"
+
+#: ../gladeui/glade-editor-property.c:2717
+#, c-format
+msgid "Choose a %s in this project"
+msgstr "Pilih suatu %s di projek ini"
+
+#. Checklist
+#: ../gladeui/glade-editor-property.c:2792
+#: ../gladeui/glade-editor-property.c:2934
+msgid "O_bjects:"
+msgstr "O_bjek:"
+
+#: ../gladeui/glade-editor-property.c:2884
+msgid "_New"
+msgstr "Bar_u"
+
+#. translators: Creating 'a widget' for 'a property' of 'a widget'
+#: ../gladeui/glade-editor-property.c:3036
+#, c-format
+msgid "Creating %s for %s of %s"
+msgstr "Membuat %s bagi %s dari %s"
+
+#. Checklist
+#: ../gladeui/glade-editor-property.c:3230
+msgid "Objects:"
+msgstr "Objek:"
+
+#: ../gladeui/glade-editor-property.c:3627
+msgid "Value:"
+msgstr "Nilai:"
+
+#: ../gladeui/glade-editor-property.c:3628
+msgid "The current value"
+msgstr "Nilai kini"
+
+#: ../gladeui/glade-editor-property.c:3630
+#, fuzzy
+msgid "Lower:"
+msgstr "Bawah:"
+
+#: ../gladeui/glade-editor-property.c:3631
+msgid "The minimum value"
+msgstr "Nilai minimum"
+
+#: ../gladeui/glade-editor-property.c:3633
+#, fuzzy
+msgid "Upper:"
+msgstr "Atas:"
+
+#: ../gladeui/glade-editor-property.c:3634
+msgid "The maximum value"
+msgstr "Nilai maksimum"
+
+#: ../gladeui/glade-editor-property.c:3636
+#, fuzzy
+msgid "Step inc:"
+msgstr "+ kecil:"
+
+#: ../gladeui/glade-editor-property.c:3637
+msgid "The increment to use to make minor changes to the value"
+msgstr "Penambahan yang dipakai untuk membuat perubahan kecil ke nilai"
+
+#: ../gladeui/glade-editor-property.c:3639
+#, fuzzy
+msgid "Page inc:"
+msgstr "+ besar:"
+
+#: ../gladeui/glade-editor-property.c:3640
+msgid "The increment to use to make major changes to the value"
+msgstr "Penambahan yang dipakai untuk membuat perubahan besar ke nilai"
+
+#: ../gladeui/glade-editor-property.c:3642
+msgid "Page size:"
+msgstr "Ukuran halaman:"
+
+#: ../gladeui/glade-editor-property.c:3643
+msgid ""
+"The page size (in a GtkScrollbar this is the size of the area which is "
+"currently visible)"
+msgstr ""
+"Ukuran halaman (dalam suatu GtkScrollbar ini adalah ukuran wilayah yang kini "
+"nampak)"
+
+#: ../gladeui/glade-editor-table.c:356
+msgid "The Object's name"
+msgstr "Nama objek"
+
+#: ../gladeui/glade-editor.c:154
+msgid "Show info"
+msgstr "Tampilkan info"
+
+#: ../gladeui/glade-editor.c:155
+msgid "Whether to show an informational button for the loaded widget"
+msgstr "Apakah menampilkan suatu tombol informasi bagi widget yang dimuat"
+
+#: ../gladeui/glade-editor.c:163
+msgid "The currently loaded widget in this editor"
+msgstr "Widget yang sedang dimuat di penyunting ini"
+
+#. construct tab label widget
+#: ../gladeui/glade-editor.c:203 ../gladeui/glade-editor.c:402
+#: ../gladeui/glade-editor.c:1017
+msgid "Accessibility"
+msgstr "Aksesibilitas"
+
+#. configure page container
+#: ../gladeui/glade-editor.c:220 ../gladeui/glade-editor.c:401
+msgid "_Signals"
+msgstr "_Sinyal"
+
+#: ../gladeui/glade-editor.c:283
+msgid "View documentation for the selected widget"
+msgstr "Tilik dokumentasi bagi widget yang dipilih"
+
+#: ../gladeui/glade-editor.c:302
+msgid "Reset widget properties to their defaults"
+msgstr "Reset properti widget ke bawaan"
+
+#. translators: referring to the properties of a widget named '%s [%s]'
+#: ../gladeui/glade-editor.c:338
+#, c-format
+msgid "%s Properties - %s [%s]"
+msgstr "Properti %s - %s [%s]"
+
+#: ../gladeui/glade-editor.c:398
+#, fuzzy
+msgid "_General"
+msgstr "_Umum"
+
+#: ../gladeui/glade-editor.c:399
+#, fuzzy
+msgid "_Packing"
+msgstr "_Packing"
+
+#: ../gladeui/glade-editor.c:400
+#, fuzzy
+msgid "_Common"
+msgstr "_Biasa"
+
+#: ../gladeui/glade-editor.c:826
+#, c-format
+msgid "Create a %s"
+msgstr "Buat suatu %s"
+
+#: ../gladeui/glade-editor.c:946
+msgid "Reset"
+msgstr "Reset"
+
+#: ../gladeui/glade-editor.c:961
+msgid "Property"
+msgstr "Properti"
+
+#: ../gladeui/glade-editor.c:1007
+#, fuzzy
+msgid "Common"
+msgstr "Biasa"
+
+#: ../gladeui/glade-editor.c:1051
+msgid "(default)"
+msgstr "(bawaan)"
+
+#: ../gladeui/glade-editor.c:1066
+msgid "Select the properties that you want to reset to their default values"
+msgstr "Pilih properti yang ingin Anda reset ke nilai bawaannya"
+
+#: ../gladeui/glade-editor.c:1198
+msgid "Reset Widget Properties"
+msgstr "Reset Properti Widget"
+
+#. Checklist
+#: ../gladeui/glade-editor.c:1215
+msgid "_Properties:"
+msgstr "_Properti:"
+
+#: ../gladeui/glade-editor.c:1244
+msgid "_Select All"
+msgstr "Pilih _Semua"
+
+#: ../gladeui/glade-editor.c:1251
+msgid "_Unselect All"
+msgstr "Pilih Tak Sat_upun"
+
+#. Description
+#: ../gladeui/glade-editor.c:1260
+msgid "Property _Description:"
+msgstr "_Deskripsi Properti:"
+
+#. Translators: first %s is the project name, second is a widget name
+#: ../gladeui/glade-editor.c:1356
+#, c-format
+msgid "%s - %s Properties"
+msgstr "%s - Properti %s"
+
+#: ../gladeui/glade-fixed.c:491 ../plugins/gtk+/glade-gtk.c:2625
+#, c-format
+msgid "Placing %s inside %s"
+msgstr "Menempatkan %s di dalam %s"
+
+#: ../gladeui/glade-fixed.c:982
+msgid "X position property"
+msgstr "Properti posisi X"
+
+#: ../gladeui/glade-fixed.c:983
+msgid "The property used to set the X position of a child object"
+msgstr "Properti yang dipakai untuk menata posisi X dari suatu objek anak"
+
+#: ../gladeui/glade-fixed.c:989
+msgid "Y position property"
+msgstr "Properti posisi Y"
+
+#: ../gladeui/glade-fixed.c:990
+msgid "The property used to set the Y position of a child object"
+msgstr "Properti yang dipakai untuk menata posisi Y dari suatu objek anak"
+
+#: ../gladeui/glade-fixed.c:996
+msgid "Width property"
+msgstr "Properti lebar"
+
+#: ../gladeui/glade-fixed.c:997
+msgid "The property used to set the width of a child object"
+msgstr "Properti yang dipakai untuk menata lebar dari suatu objek anak"
+
+#: ../gladeui/glade-fixed.c:1003
+msgid "Height property"
+msgstr "Properti tinggi"
+
+#: ../gladeui/glade-fixed.c:1004
+msgid "The property used to set the height of a child object"
+msgstr "Properti yang dipakai untuk menata tinggi dari suatu objek anak"
+
+#: ../gladeui/glade-fixed.c:1010
+msgid "Can resize"
+msgstr "Dapat diubah ukuran"
+
+#: ../gladeui/glade-fixed.c:1011
+msgid "Whether this container supports resizes of child widgets"
+msgstr "Apakah wadah ini mendukung pengubahan ukuran dari widget anak"
+
+#: ../gladeui/glade-palette.c:745
+msgid "Widget selector"
+msgstr "Pemilih widget"
+
+#: ../gladeui/glade-palette.c:746
+msgid "Create root widget"
+msgstr "Buat widget akar"
+
+#: ../gladeui/glade-popup.c:467 ../gladeui/glade-popup.c:476
+msgid "_Add widget here"
+msgstr "T_ambahkan widget disini"
+
+#: ../gladeui/glade-popup.c:480 ../gladeui/glade-popup.c:704
+msgid "Add widget as _toplevel"
+msgstr "_Tambahkan widget sebagai aras puncak"
+
+#: ../gladeui/glade-popup.c:491
+msgid "_Select"
+msgstr "_Pilih"
+
+#: ../gladeui/glade-popup.c:573 ../gladeui/glade-popup.c:712
+#: ../gladeui/glade-popup.c:789
+msgid "Read _documentation"
+msgstr "Baca _dokumentasi"
+
+#: ../gladeui/glade-popup.c:782
+msgid "Set default value"
+msgstr "Tata nilai bawaan"
+
+#: ../gladeui/glade-project.c:837
+msgid "Whether project has been modified since it was last saved"
+msgstr "Apakah projek telah diubah sejak terakhir kali disimpan"
+
+#: ../gladeui/glade-project.c:844
+msgid "Has Selection"
+msgstr "Punya Pilihan"
+
+#: ../gladeui/glade-project.c:845
+msgid "Whether project has a selection"
+msgstr "Apakah projek punya suatu pilihan"
+
+#: ../gladeui/glade-project.c:852
+msgid "Path"
+msgstr "Path"
+
+#: ../gladeui/glade-project.c:853
+msgid "The filesystem path of the project"
+msgstr "Path sistem berkas dari projek"
+
+#: ../gladeui/glade-project.c:860
+msgid "Read Only"
+msgstr "Hanya Baca"
+
+#: ../gladeui/glade-project.c:861
+msgid "Whether project is read-only"
+msgstr "Apakah projek hanya dapat dibaca"
+
+#: ../gladeui/glade-project.c:868
+msgid "Format"
+msgstr "Format"
+
+#: ../gladeui/glade-project.c:869
+msgid "The project file format"
+msgstr "Format berkas projek"
+
+#: ../gladeui/glade-project.c:1026
+#, c-format
+msgid ""
+"Failed to load %s.\n"
+"The following required catalogs are unavailable: %s"
+msgstr ""
+"Gagal memuat %s.\n"
+"Katalog yang diperlukan tak tersedia: %s"
+
+#: ../gladeui/glade-project.c:1445 ../gladeui/glade-project.c:1693
+#: ../gladeui/glade-project.c:4159
+#, c-format
+msgid "%s preferences"
+msgstr "preferensi %s"
+
+#. ******************************************************************
+#. Verify code here (versioning, incompatability checks)
+#. ******************************************************************
+#. translators: reffers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1722
+#, c-format
+msgid "This widget was introduced in %s %d.%d while project targets %s %d.%d"
+msgstr "Widget diperkenalkan di %s %d.%d sedangkan projek menarget %s %d.%d"
+
+#. translators: reffers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1725
+#, c-format
+msgid "[%s] Object class '%s' was introduced in %s %d.%d\n"
+msgstr "[%s] Kelas objek '%s' diperkenalkan di %s %d.%d\n"
+
+#. translators: reffers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1728
+#, c-format
+msgid ""
+"This widget was made available in GtkBuilder format in %s %d.%d while "
+"project targets %s %d.%d"
+msgstr ""
+"Widget ini dibuat tersedia dalam format GtkBuilder di %s %d.%d sedangkan "
+"projek menarget %s %d.%d"
+
+#. translators: reffers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1732
+#, c-format
+msgid ""
+"[%s] Object class '%s' was made available in GtkBuilder format in %s %d.%d\n"
+msgstr ""
+"[%s] Kelas objek '%s' dibuat tersedia dalam format GtkBuilder di %s %d.%d\n"
+
+#: ../gladeui/glade-project.c:1735
+msgid "This widget is only supported in libglade format"
+msgstr "Widget ini hanya didukung dalam format libglade"
+
+#. translators: reffers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1738
+#, c-format
+msgid ""
+"[%s] Object class '%s' from %s %d.%d is only supported in libglade format\n"
+msgstr ""
+"[%s] Kelas objek '%s' dari %s %d.%d hanya didukung dalam format libglade\n"
+
+#: ../gladeui/glade-project.c:1741
+msgid "This widget is not supported in libglade format"
+msgstr "Widget ini tak didukung dalam format libglade"
+
+#. translators: reffers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1744
+#, c-format
+msgid ""
+"[%s] Object class '%s' from %s %d.%d is not supported in libglade format\n"
+msgstr ""
+"[%s] Kelas objek '%s' dari %s %d.%d tak didukung dalam format libglade\n"
+
+#: ../gladeui/glade-project.c:1747
+msgid "This widget is deprecated"
+msgstr "Widget ini tak dipakai lagi"
+
+#. translators: reffers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1750
+#, c-format
+msgid "[%s] Object class '%s' from %s %d.%d is deprecated\n"
+msgstr "[%s] Kelas objek '%s' dari %s %d.%d tak dipakai lagi\n"
+
+#. Defined here for pretty translator comments (bug in intl tools, for some reason
+#. * you can only comment about the line directly following, forcing you to write
+#. * ugly messy code with comments in line breaks inside function calls).
+#.
+#: ../gladeui/glade-project.c:1757
+msgid "This property is not supported in libglade format"
+msgstr "Properti ini tak didukung dalam format liblade"
+
+#. translators: reffers to a property '%s' of widget '[%s]'
+#: ../gladeui/glade-project.c:1760
+#, c-format
+msgid ""
+"[%s] Property '%s' of object class '%s' is not supported in libglade format\n"
+msgstr ""
+"[%s] Properti '%s' dari kelas objek '%s' tak didukung dalam format libglade\n"
+
+#. translators: reffers to a property '%s' of widget '[%s]'
+#: ../gladeui/glade-project.c:1763
+#, c-format
+msgid ""
+"[%s] Packing property '%s' of object class '%s' is not supported in libglade "
+"format\n"
+msgstr ""
+
+#: ../gladeui/glade-project.c:1766
+msgid "This property is only supported in libglade format"
+msgstr "Properti ini hanya didukung dalam format libglade"
+
+#. translators: reffers to a property '%s' of widget '[%s]'
+#: ../gladeui/glade-project.c:1769
+#, c-format
+msgid ""
+"[%s] Property '%s' of object class '%s' is only supported in libglade "
+"format\n"
+msgstr ""
+"[%s] Properti '%s' dari kelas objek '%s' hanya didukung dalam format "
+"libglade\n"
+
+#. translators: reffers to a property '%s' of widget '[%s]'
+#: ../gladeui/glade-project.c:1773
+#, c-format
+msgid ""
+"[%s] Packing property '%s' of object class '%s' is only supported in "
+"libglade format\n"
+msgstr ""
+
+#. translators: reffers to a property in toolkit version '%s %d.%d'
+#. * and a project targeting toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1778
+#, c-format
+msgid "This property was introduced in %s %d.%d while project targets %s %d.%d"
+msgstr ""
+"Properti ini diperkenalkan di %s %d.%d sedangkan projek menarget %s %d.%d"
+
+#. translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1781
+#, c-format
+msgid "[%s] Property '%s' of object class '%s' was introduced in %s %d.%d\n"
+msgstr "[%s] Properti '%s' dari kelas objek '%s' diperkenalkan di %s %d.%d\n"
+
+#. translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1784
+#, c-format
+msgid ""
+"[%s] Packing property '%s' of object class '%s' was introduced in %s %d.%d\n"
+msgstr ""
+
+#. translators: reffers to a property in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1788
+#, c-format
+msgid ""
+"This property was made available in GtkBuilder format in %s %d.%d while "
+"project targets %s %d.%d"
+msgstr ""
+"Properti ini dibuat tersedia dalam format GtkBuilder di %s %d.%d sedangkan "
+"projek menarget %s %d.%d"
+
+#. translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1792
+#, c-format
+msgid ""
+"[%s] Property '%s' of object class '%s' was made available in GtkBuilder "
+"format in %s %d.%d\n"
+msgstr ""
+"[%s] Properti '%s' dari kelas objek '%s' dibuat tersedia dalam format "
+"GtkBuilder dalam %s %d.%d\n"
+
+#. translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1796
+#, c-format
+msgid ""
+"[%s] Packing property '%s' of object class '%s' was made available in "
+"GtkBuilder format in %s %d.%d\n"
+msgstr ""
+"[%s] Properti pengepakan '%s' dari kelas objek '%s' dibuat tersedia dalam "
+"format GtkBuilder dalam %s %d.%d\n"
+
+#. translators: reffers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1800
+#, c-format
+msgid "[%s] Signal '%s' of object class '%s' was introduced in %s %d.%d\n"
+msgstr "[%s] Sinyal '%s' dari kelas objek '%s' diperkenalkan di %s %d.%d\n"
+
+#. translators: reffers to a signal in toolkit version '%s %d.%d'
+#. * and a project targeting toolkit version '%s %d.%d'
+#: ../gladeui/glade-project.c:1804
+#, c-format
+msgid "This signal was introduced in %s %d.%d while project targets %s %d.%d"
+msgstr ""
+"Sinyal ini diperkenalkan di %s %d.%d sedangkan projek menarget %s %d.%d"
+
+#: ../gladeui/glade-project.c:2057
+msgid "Details"
+msgstr "Rincian"
+
+#: ../gladeui/glade-project.c:2073
+#, c-format
+msgid "Project \"%s\" has errors. Save anyway?"
+msgstr "Projek \"%s\" punya kesalahan. Simpan saja?"
+
+#: ../gladeui/glade-project.c:2074
+#, c-format
+msgid "Project \"%s\" has deprecated widgets and/or version mismatches."
+msgstr ""
+"Projek \"%s\" memiliki widget yang tak berlaku lagi dan/atau ketidakcocokan "
+"versi."
+
+#: ../gladeui/glade-project.c:3501
+#, c-format
+msgid "Unsaved %i"
+msgstr "Belum disimpan %i"
+
+#: ../gladeui/glade-project.c:3763
+#, c-format
+msgid "Project %s has no deprecated widgets or version mismatches."
+msgstr ""
+"Projek %s tak punya widget yang tak berlaku lagi atau ketidakcocokan versi."
+
+#: ../gladeui/glade-project.c:3882
+msgid "Set options in your project"
+msgstr "Tata opsi di projek Anda"
+
+#. Project format
+#: ../gladeui/glade-project.c:3899
+msgid "Project file format:"
+msgstr "Format berkas projek:"
+
+#. Naming policy format
+#: ../gladeui/glade-project.c:3942
+msgid "Object names are unique:"
+msgstr "Nama objek unik:"
+
+#: ../gladeui/glade-project.c:3955
+msgid "within the project"
+msgstr "di dalam projek"
+
+#: ../gladeui/glade-project.c:3957
+msgid "inside toplevels"
+msgstr "di dalam aras puncak"
+
+#. Resource path
+#: ../gladeui/glade-project.c:3984
+msgid "Image resources are loaded locally:"
+msgstr "Sumber daya gambar dimuat secara lokal:"
+
+#. Project directory...
+#: ../gladeui/glade-project.c:4000
+msgid "From the project directory"
+msgstr "Dari direktori projek"
+
+#: ../gladeui/glade-project.c:4007
+msgid "From a project relative directory"
+msgstr "Dari suatu direktori relatif projek"
+
+#: ../gladeui/glade-project.c:4019
+msgid "From this directory"
+msgstr "Dari direktori ini"
+
+#: ../gladeui/glade-project.c:4022
+msgid "Choose a path to load image resources"
+msgstr "Pilih path untuk memuat sumber daya gambar"
+
+#. Target versions
+#: ../gladeui/glade-project.c:4043
+msgid "Toolkit versions required:"
+msgstr "Versi toolkit yang diperlukan:"
+
+#: ../gladeui/glade-project.c:4140
+msgid "Verify versions and deprecations:"
+msgstr "Pastikan versi dan ketidakberlakuan"
+
+#: ../gladeui/glade-property.c:554
+msgid "The GladePropertyClass for this property"
+msgstr "GladePropertyClass bagi properti ini"
+
+#: ../gladeui/glade-property.c:560
+msgid "Enabled"
+msgstr "Diaktifkan"
+
+#: ../gladeui/glade-property.c:561
+msgid "If the property is optional, this is its enabled state"
+msgstr "Bila properti opsional, ini adalah keadaan teraktifkannya"
+
+#: ../gladeui/glade-property.c:567 ../gladeui/glade-widget-action.c:168
+msgid "Sensitive"
+msgstr "Sensitif"
+
+#: ../gladeui/glade-property.c:568
+msgid "This gives backends control to set property sensitivity"
+msgstr "Ini memberi backend kendali untuk menata kepekaan properti"
+
+#: ../gladeui/glade-property.c:574
+msgid "Context"
+msgstr "Konteks"
+
+#: ../gladeui/glade-property.c:575
+msgid "Context for translation"
+msgstr "Konteks penerjemahan"
+
+#: ../gladeui/glade-property.c:581
+msgid "Comment"
+msgstr "Komentar"
+
+#: ../gladeui/glade-property.c:582
+msgid "Comment for translators"
+msgstr "Komentar bagi penerjemah"
+
+#: ../gladeui/glade-property.c:588
+msgid "Translatable"
+msgstr "Dapat diterjemahkan"
+
+#: ../gladeui/glade-property.c:595
+msgid "Has Context"
+msgstr "Punya Konteks"
+
+#: ../gladeui/glade-property.c:602
+msgid "Visual State"
+msgstr "Keadaan Visual"
+
+#: ../gladeui/glade-property.c:603
+msgid "Priority information for the property editor to act on"
+msgstr "Informasi properti tempat penyunting properti beraksi"
+
+#: ../gladeui/glade-signal-editor.c:117
+msgid "<Type here>"
+msgstr "<Tikkan disini>"
+
+#: ../gladeui/glade-signal-editor.c:118
+msgid "<Object>"
+msgstr "<Objek>"
+
+#: ../gladeui/glade-signal-editor.c:830
+msgid "Select an object to pass to the handler"
+msgstr "Pilih suatu objek untuk dilewatkan ke penangan"
+
+#: ../gladeui/glade-signal-editor.c:913 ../plugins/gtk+/glade-accels.c:454
+msgid "Signal"
+msgstr "Sinyal"
+
+#: ../gladeui/glade-signal-editor.c:913
+msgid "The name of the signal to connect to"
+msgstr "Nama sinyal untuk dihubungi"
+
+#: ../gladeui/glade-signal-editor.c:971
+msgid "Handler"
+msgstr "Penangan"
+
+#: ../gladeui/glade-signal-editor.c:972
+msgid "Enter the handler to run for this signal"
+msgstr "Masukkan penangan untuk dijalankan bagi sinyal ini"
+
+#: ../gladeui/glade-signal-editor.c:1006 ../gladeui/glade-widget.c:1075
+msgid "Object"
+msgstr "Objek"
+
+#: ../gladeui/glade-signal-editor.c:1007
+msgid "An object to pass to the handler"
+msgstr "Suatu objek untuk dilewatkan ke penangan"
+
+#: ../gladeui/glade-signal-editor.c:1047
+msgid "Swap"
+msgstr "Tukar"
+
+#: ../gladeui/glade-signal-editor.c:1048
+msgid ""
+"Whether the instance and object should be swapped when calling the handler"
+msgstr ""
+"Apakah instansi dan objek mesti dipertukarkan ketika memanggil penangan"
+
+#: ../gladeui/glade-signal-editor.c:1074 ../plugins/gtk+/gtk+.xml.in.h:34
+msgid "After"
+msgstr "Setelah"
+
+#: ../gladeui/glade-signal-editor.c:1075
+msgid ""
+"Whether the handler should be called before or after the default handler of "
+"the signal"
+msgstr ""
+"Apakah penangan mesti dipanggil sebelum atau setelah penangan sinyal bawaan"
+
+#: ../gladeui/glade-utils.c:142 ../gladeui/glade-utils.c:173
+#, c-format
+msgid "We could not find the symbol \"%s\""
+msgstr "Simbol \"%s\" tak dapat ditemukan"
+
+#: ../gladeui/glade-utils.c:149
+#, c-format
+msgid "Could not get the type from \"%s\""
+msgstr "Tak bisa memperoleh tipe dari \"%s\""
+
+#: ../gladeui/glade-utils.c:286
+#, c-format
+msgid ""
+"Cannot add non scrollable %s widget to a %s directly.\n"
+"Add a %s first."
+msgstr ""
+
+#: ../gladeui/glade-utils.c:539
+msgid "File format"
+msgstr "Format berkas"
+
+#: ../gladeui/glade-utils.c:620
+msgid "All Files"
+msgstr "Semua Berkas"
+
+#: ../gladeui/glade-utils.c:625
+msgid "Libglade Files"
+msgstr "Berkas Libglade"
+
+#: ../gladeui/glade-utils.c:630
+msgid "GtkBuilder Files"
+msgstr "Berkas GtkBuilder"
+
+#: ../gladeui/glade-utils.c:636
+msgid "All Glade Files"
+msgstr "Semua Berkas Glade"
+
+#: ../gladeui/glade-utils.c:1346
+#, c-format
+msgid ""
+"%s exists.\n"
+"Do you want to replace it?"
+msgstr ""
+"%s sudah ada.\n"
+"Apakah Anda ingin menimpanya?"
+
+#: ../gladeui/glade-utils.c:1374
+#, c-format
+msgid "Error writing to %s: %s"
+msgstr "Kesalahan menulis ke %s: %s"
+
+#: ../gladeui/glade-utils.c:1388
+#, c-format
+msgid "Error reading %s: %s"
+msgstr "Kesalahan membaca %s: %s"
+
+#: ../gladeui/glade-utils.c:1403 ../gladeui/glade-utils.c:1424
+#, c-format
+msgid "Error shutting down I/O channel %s: %s"
+msgstr ""
+
+#: ../gladeui/glade-utils.c:1413
+#, c-format
+msgid "Failed to open %s for writing: %s"
+msgstr "Gagal membuka %s untuk menulis: %s"
+
+#: ../gladeui/glade-utils.c:1433
+#, c-format
+msgid "Failed to open %s for reading: %s"
+msgstr "Gagal membuka %s untuk membaca: %s"
+
+#. Reset the column
+#. Objects
+#: ../gladeui/glade-utils.c:2293 ../plugins/gtk+/glade-attributes.c:799
+#: ../plugins/gtk+/gtk+.xml.in.h:291
+msgid "None"
+msgstr "Tak Ada"
+
+#: ../gladeui/glade-widget.c:1053
+msgid "The name of the widget"
+msgstr "Nama widget"
+
+#: ../gladeui/glade-widget.c:1060
+msgid "Internal name"
+msgstr "Nama internal"
+
+#: ../gladeui/glade-widget.c:1061
+msgid "The internal name of the widget"
+msgstr "Nama internal dari widget"
+
+#: ../gladeui/glade-widget.c:1067
+msgid "Anarchist"
+msgstr "Anarkis"
+
+#: ../gladeui/glade-widget.c:1068
+msgid ""
+"Whether this composite child is an ancestral child or an anarchist child"
+msgstr ""
+
+#: ../gladeui/glade-widget.c:1076
+msgid "The object associated"
+msgstr ""
+
+#: ../gladeui/glade-widget.c:1083
+msgid "Adaptor"
+msgstr "Adaptor"
+
+#: ../gladeui/glade-widget.c:1084
+msgid "The class adaptor for the associated widget"
+msgstr ""
+
+#: ../gladeui/glade-widget.c:1091 ../gladeui/glade-inspector.c:187
+msgid "Project"
+msgstr "Projek"
+
+#: ../gladeui/glade-widget.c:1092
+msgid "The glade project that this widget belongs to"
+msgstr ""
+
+#: ../gladeui/glade-widget.c:1101
+msgid "A list of GladeProperties"
+msgstr "Daftar dari GladeProperties"
+
+#: ../gladeui/glade-widget.c:1107 ../plugins/gtk+/gtk+.xml.in.h:314
+msgid "Parent"
+msgstr "Induk"
+
+#: ../gladeui/glade-widget.c:1108
+msgid "A pointer to the parenting GladeWidget"
+msgstr "Pointer ke GladeWidget induk"
+
+#: ../gladeui/glade-widget.c:1115
+msgid "Internal Name"
+msgstr "Nama Internal"
+
+#: ../gladeui/glade-widget.c:1116
+msgid "A generic name prefix for internal widgets"
+msgstr ""
+
+#: ../gladeui/glade-widget.c:1121
+msgid "Template"
+msgstr "Templat"
+
+#: ../gladeui/glade-widget.c:1122
+msgid "A GladeWidget template to base a new widget on"
+msgstr ""
+
+#: ../gladeui/glade-widget.c:1128
+msgid "Exact Template"
+msgstr "Templat Persis"
+
+#: ../gladeui/glade-widget.c:1129
+msgid "Whether we are creating an exact duplicate when using a template"
+msgstr ""
+
+#: ../gladeui/glade-widget.c:1134
+msgid "Reason"
+msgstr "Alasan"
+
+#: ../gladeui/glade-widget.c:1135
+msgid "A GladeCreateReason for this creation"
+msgstr ""
+
+#: ../gladeui/glade-widget.c:1143
+msgid "Toplevel Width"
+msgstr "Lebar Aras Puncak"
+
+#: ../gladeui/glade-widget.c:1144
+msgid "The width of the widget when toplevel in the GladeDesignLayout"
+msgstr ""
+
+#: ../gladeui/glade-widget.c:1153
+msgid "Toplevel Height"
+msgstr ""
+
+#: ../gladeui/glade-widget.c:1154
+msgid "The height of the widget when toplevel in the GladeDesignLayout"
+msgstr ""
+
+#: ../gladeui/glade-widget.c:1163
+msgid "Support Warning"
+msgstr "Peringatan Dukungan"
+
+#: ../gladeui/glade-widget.c:1164
+msgid "A warning string about version mismatches"
+msgstr ""
+
+#: ../gladeui/glade-widget-adaptor.c:250
+#, c-format
+msgid "A derived adaptor (%s) of %s already exist!"
+msgstr ""
+
+#: ../gladeui/glade-widget-adaptor.c:1237
+msgid "Name of the class"
+msgstr "Nama kelas"
+
+#: ../gladeui/glade-widget-adaptor.c:1245
+msgid "GType of the class"
+msgstr "GType dari kelas"
+
+#: ../gladeui/glade-widget-adaptor.c:1252 ../plugins/gnome/gnome.xml.in.h:61
+msgid "Title"
+msgstr "Judul"
+
+#: ../gladeui/glade-widget-adaptor.c:1253
+msgid "Translated title for the class used in the glade UI"
+msgstr ""
+
+#: ../gladeui/glade-widget-adaptor.c:1260
+msgid "Generic Name"
+msgstr "Nama Generik"
+
+#: ../gladeui/glade-widget-adaptor.c:1261
+msgid "Used to generate names of new widgets"
+msgstr ""
+
+#: ../gladeui/glade-widget-adaptor.c:1268 ../plugins/gtk+/gtk+.xml.in.h:209
+msgid "Icon Name"
+msgstr "Nama Ikon"
+
+#: ../gladeui/glade-widget-adaptor.c:1269
+msgid "The icon name"
+msgstr "Nama ikon"
+
+#: ../gladeui/glade-widget-adaptor.c:1276
+msgid "Catalog"
+msgstr "Katalog"
+
+#: ../gladeui/glade-widget-adaptor.c:1277
+msgid "The name of the widget catalog this class was declared by"
+msgstr ""
+
+#: ../gladeui/glade-widget-adaptor.c:1284
+msgid "Book"
+msgstr "Buku"
+
+#: ../gladeui/glade-widget-adaptor.c:1285
+msgid "DevHelp search namespace for this widget class"
+msgstr ""
+
+#: ../gladeui/glade-widget-adaptor.c:1292
+msgid "Special Child Type"
+msgstr ""
+
+#: ../gladeui/glade-widget-adaptor.c:1293
+msgid ""
+"Holds the name of the packing property to depict special children for this "
+"container class"
+msgstr ""
+
+#: ../gladeui/glade-widget-adaptor.c:1301 ../plugins/gtk+/gtk+.xml.in.h:107
+msgid "Cursor"
+msgstr "Kursor"
+
+#: ../gladeui/glade-widget-adaptor.c:1302
+msgid "A cursor for inserting widgets in the UI"
+msgstr "Suatu kursor untuk menyisipkan widget ke dalam UI"
+
+#: ../gladeui/glade-inspector.c:188
+msgid "The project being inspected"
+msgstr "Projek yang sedang diperiksa"
+
+#: ../gladeui/glade-inspector.c:385
+msgid "< search widgets >"
+msgstr "< cari widget >"
+
+#: ../gladeui/glade-custom.c:223
+msgid "Creation Function"
+msgstr "Fungsi Kreasi"
+
+#: ../gladeui/glade-custom.c:224
+msgid "The function which creates this widget"
+msgstr "Fungsi yang membuat widget ini"
+
+#: ../gladeui/glade-custom.c:230
+msgid "String 1"
+msgstr "String 1"
+
+#: ../gladeui/glade-custom.c:231
+msgid "The first string argument to pass to the function"
+msgstr "Argumen string pertama untuk dilewatkan ke fungsi"
+
+#: ../gladeui/glade-custom.c:237
+msgid "String 2"
+msgstr "String 2"
+
+#: ../gladeui/glade-custom.c:238
+msgid "The second string argument to pass to the function"
+msgstr "Argumen string kedua untuk dilewatkan ke fungsi"
+
+#: ../gladeui/glade-custom.c:244
+msgid "Integer 1"
+msgstr "Integer 1"
+
+#: ../gladeui/glade-custom.c:245
+msgid "The first integer argument to pass to the function"
+msgstr "Argumen integer pertama untuk dilewatkan ke fungsi"
+
+#: ../gladeui/glade-custom.c:251
+msgid "Integer 2"
+msgstr "Integer 2"
+
+#: ../gladeui/glade-custom.c:252
+msgid "The second integer argument to pass to the function"
+msgstr "Argumen integer kedua untuk dilewatkan ke fungsi"
+
+#: ../gladeui/glade-widget-action.c:161
+msgid "class"
+msgstr "kelas"
+
+#: ../gladeui/glade-widget-action.c:162
+msgid "GladeWidgetActionClass structure pointer"
+msgstr "Pointer struktur GladeWidgetActionClass"
+
+#: ../gladeui/glade-widget-action.c:169
+msgid "Whether this action is sensitive"
+msgstr ""
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:479
+msgid "All Contexts"
+msgstr "Semua Konteks"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1365
+msgid "Named Icon Chooser"
+msgstr ""
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1405
+msgid "Icon _Name:"
+msgstr "_Nama Ikon:"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1445
+msgid "C_ontexts:"
+msgstr "K_onteks:"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1466
+msgid "Icon Na_mes:"
+msgstr "Na_ma Ikon:"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1488
+msgid "_List standard icons only"
+msgstr ""
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1704
+#, c-format
+msgid "Could not create directory: %s"
+msgstr "Tak dapat membuat direktori: %s"
+
+#: ../gladeui/icon-naming-spec.c:35 ../plugins/gtk+/gtk+.xml.in.h:25
+msgid "Actions"
+msgstr "Aksi"
+
+#: ../gladeui/icon-naming-spec.c:36
+msgid "Applications"
+msgstr "Aplikasi"
+
+#: ../gladeui/icon-naming-spec.c:37
+msgid "Categories"
+msgstr "Kategori"
+
+#: ../gladeui/icon-naming-spec.c:38
+msgid "Devices"
+msgstr "Perangkat"
+
+#: ../gladeui/icon-naming-spec.c:39
+msgid "Emblems"
+msgstr "Emblem"
+
+#: ../gladeui/icon-naming-spec.c:40
+msgid "Emotes"
+msgstr ""
+
+#: ../gladeui/icon-naming-spec.c:41
+msgid "International"
+msgstr "Internasional"
+
+#: ../gladeui/icon-naming-spec.c:42
+msgid "MIME Types"
+msgstr "Tipe MIME"
+
+#: ../gladeui/icon-naming-spec.c:43
+msgid "Places"
+msgstr "Tempat"
+
+#: ../gladeui/icon-naming-spec.c:44
+msgid "Status"
+msgstr "Status"
+
+#: ../plugins/gtk+/glade-attributes.c:215
+msgctxt "textattr"
+msgid "Style"
+msgstr "Gaya"
+
+#: ../plugins/gtk+/glade-attributes.c:219
+msgctxt "textattr"
+msgid "Weight"
+msgstr "Bobot"
+
+#: ../plugins/gtk+/glade-attributes.c:223
+msgctxt "textattr"
+msgid "Variant"
+msgstr "Varian"
+
+#: ../plugins/gtk+/glade-attributes.c:227
+msgctxt "textattr"
+msgid "Stretch"
+msgstr "Regangan"
+
+#: ../plugins/gtk+/glade-attributes.c:231
+msgctxt "textattr"
+msgid "Underline"
+msgstr "Garis bawah"
+
+#: ../plugins/gtk+/glade-attributes.c:235
+msgctxt "textattr"
+msgid "Strikethrough"
+msgstr "Dicoret"
+
+#: ../plugins/gtk+/glade-attributes.c:239
+msgctxt "textattr"
+msgid "Gravity"
+msgstr ""
+
+#: ../plugins/gtk+/glade-attributes.c:243
+msgctxt "textattr"
+msgid "Gravity Hint"
+msgstr ""
+
+#: ../plugins/gtk+/glade-attributes.c:254
+msgctxt "textattr"
+msgid "Size"
+msgstr "Ukuran"
+
+#: ../plugins/gtk+/glade-attributes.c:258
+msgctxt "textattr"
+msgid "Absolute Size"
+msgstr "Ukuran Absolut"
+
+#: ../plugins/gtk+/glade-attributes.c:265
+msgctxt "textattr"
+msgid "Foreground Color"
+msgstr "Warna Latar Depan"
+
+#: ../plugins/gtk+/glade-attributes.c:269
+msgctxt "textattr"
+msgid "Background Color"
+msgstr "Warna Latar Belakang"
+
+#: ../plugins/gtk+/glade-attributes.c:273
+msgctxt "textattr"
+msgid "Underline Color"
+msgstr "Warna Garis Bawah"
+
+#: ../plugins/gtk+/glade-attributes.c:277
+msgctxt "textattr"
+msgid "Strikethrough Color"
+msgstr "Warna Coret"
+
+#: ../plugins/gtk+/glade-attributes.c:287
+msgctxt "textattr"
+msgid "Scale"
+msgstr "Skala"
+
+#. XXX Interesting... can we get the defaults ? what can we do to let the user
+#. * unset the value ??
+#.
+#: ../plugins/gtk+/glade-attributes.c:315
+#: ../plugins/gtk+/glade-attributes.c:353
+#: ../plugins/gtk+/glade-attributes.c:360
+#: ../plugins/gtk+/glade-attributes.c:364
+#: ../plugins/gtk+/glade-attributes.c:802
+msgid "<Enter Value>"
+msgstr "<Masukkan Nilai>"
+
+#: ../plugins/gtk+/glade-attributes.c:353
+#, fuzzy
+msgid "Unset"
+msgstr "Belum diset"
+
+#: ../plugins/gtk+/glade-attributes.c:723
+msgid "Select a color"
+msgstr "Pilih sebuah warna"
+
+#: ../plugins/gtk+/glade-attributes.c:859
+msgid "Attribute"
+msgstr "Atribut"
+
+#: ../plugins/gtk+/glade-attributes.c:869
+msgid "Value"
+msgstr "Nilai"
+
+#: ../plugins/gtk+/glade-attributes.c:1026
+msgid "Setup Text Attributes"
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:61
+msgid "This property does not apply unless Use Underline is set."
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:62
+msgid "Property not selected"
+msgstr "Properti tak dipilih"
+
+#: ../plugins/gtk+/glade-gtk.c:63
+msgid "This property is only for use in dialog action buttons"
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:64
+msgid "This property is set to be controled by an Action"
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:191
+msgid "GnomeUIInfo"
+msgstr "GnomeUIInfo"
+
+#: ../plugins/gtk+/glade-gtk.c:192
+msgid "Choose the GnomeUIInfo stock item"
+msgstr ""
+
+#. We have to save/load icon-size as int, and fake the enum
+#: ../plugins/gtk+/glade-gtk.c:201 ../plugins/gtk+/gtk+.xml.in.h:212
+msgid "Icon Size"
+msgstr "Ukuran Ikon"
+
+#: ../plugins/gtk+/glade-gtk.c:202
+msgid "Symbolic size to use for stock icon, icon set or named icon"
+msgstr ""
+"Ukuran simbolik untuk digunakan pada ikon stok, set ikon, atau ikon bernama"
+
+#: ../plugins/gtk+/glade-gtk.c:1051
+#, c-format
+msgid "Removing parent of %s"
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:1108
+#, c-format
+msgid "Adding parent %s for %s"
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:1192
+#, c-format
+msgid "Adding %s to Size Group %s"
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:1194
+#, c-format
+msgid "Adding %s to a new Size Group"
+msgstr ""
+
+#. Add trailing new... item
+#: ../plugins/gtk+/glade-gtk.c:1249
+msgid "New Size Group"
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:1615
+#, c-format
+msgid "Ordering children of %s"
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:2172 ../plugins/gtk+/glade-gtk.c:2179
+#, c-format
+msgid "Insert placeholder to %s"
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:2186
+#, c-format
+msgid "Remove placeholder from %s"
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:3244 ../plugins/gtk+/glade-gtk.c:3252
+#, c-format
+msgid "Insert Row on %s"
+msgstr "Sisipkan Baris pada %s"
+
+#: ../plugins/gtk+/glade-gtk.c:3260 ../plugins/gtk+/glade-gtk.c:3268
+#, c-format
+msgid "Insert Column on %s"
+msgstr "Sisipkan Kolom pada %s"
+
+#: ../plugins/gtk+/glade-gtk.c:3276
+#, c-format
+msgid "Remove Column on %s"
+msgstr "Hapus Kolom pada %s"
+
+#: ../plugins/gtk+/glade-gtk.c:3284
+#, c-format
+msgid "Remove Row on %s"
+msgstr "Hapus Baris pada %s"
+
+#: ../plugins/gtk+/glade-gtk.c:4364 ../plugins/gtk+/glade-gtk.c:4371
+#, c-format
+msgid "Insert page on %s"
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:4378
+#, c-format
+msgid "Remove page from %s"
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:6121
+msgid "This property only applies to stock images"
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:6123
+msgid "This property only applies to named icons"
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:6389
+msgid "<separator>"
+msgstr "<pemisah>"
+
+#: ../plugins/gtk+/glade-gtk.c:6399
+msgid "<custom>"
+msgstr "<gubahan>"
+
+#: ../plugins/gtk+/glade-gtk.c:6578
+msgid "Tool Item"
+msgstr "Butir Alat"
+
+#: ../plugins/gtk+/glade-gtk.c:6587
+msgid "Packing"
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:6606 ../plugins/gtk+/gtk+.xml.in.h:277
+msgid "Menu Item"
+msgstr "Butir Menu"
+
+#: ../plugins/gtk+/glade-gtk.c:6642 ../plugins/gtk+/glade-gtk.c:6650
+msgid "Normal item"
+msgstr "Butir normal"
+
+#: ../plugins/gtk+/glade-gtk.c:6643 ../plugins/gtk+/glade-gtk.c:6651
+msgid "Image item"
+msgstr "Butir gambar"
+
+#: ../plugins/gtk+/glade-gtk.c:6644 ../plugins/gtk+/glade-gtk.c:6652
+msgid "Check item"
+msgstr "Butir centang"
+
+#: ../plugins/gtk+/glade-gtk.c:6645 ../plugins/gtk+/glade-gtk.c:6653
+msgid "Radio item"
+msgstr "Butir radio"
+
+#: ../plugins/gtk+/glade-gtk.c:6646 ../plugins/gtk+/glade-gtk.c:6654
+msgid "Separator item"
+msgstr "Butir pemisah"
+
+#: ../plugins/gtk+/glade-gtk.c:6678 ../plugins/gtk+/glade-gtk.c:6722
+msgid "Edit Menu Bar"
+msgstr "Sunting Bilah Menu"
+
+#: ../plugins/gtk+/glade-gtk.c:6680 ../plugins/gtk+/glade-gtk.c:6724
+msgid "Edit Menu"
+msgstr "Sunting Menu"
+
+#: ../plugins/gtk+/glade-gtk.c:7108
+msgid "Print S_etup"
+msgstr "P_ersiapan Pencetakan"
+
+#: ../plugins/gtk+/glade-gtk.c:7112
+msgid "Find Ne_xt"
+msgstr "Temukan Sel_anjutnya"
+
+#: ../plugins/gtk+/glade-gtk.c:7116
+msgid "_Undo Move"
+msgstr "_Batalkan Langkah"
+
+#: ../plugins/gtk+/glade-gtk.c:7120
+msgid "_Redo Move"
+msgstr "_Kembalikan Langkah"
+
+#: ../plugins/gtk+/glade-gtk.c:7123
+msgid "Select _All"
+msgstr "Pilih Semu_a"
+
+#: ../plugins/gtk+/glade-gtk.c:7126
+msgid "_New Game"
+msgstr "Permainan _Baru"
+
+#: ../plugins/gtk+/glade-gtk.c:7129
+msgid "_Pause game"
+msgstr "_Jeda bermain"
+
+#: ../plugins/gtk+/glade-gtk.c:7132
+msgid "_Restart Game"
+msgstr "Ulangi Pe_rmainan"
+
+#: ../plugins/gtk+/glade-gtk.c:7135
+msgid "_Hint"
+msgstr "_Petunjuk"
+
+#: ../plugins/gtk+/glade-gtk.c:7138
+msgid "_Scores..."
+msgstr "_Nilai..."
+
+#: ../plugins/gtk+/glade-gtk.c:7141
+msgid "_End Game"
+msgstr "Akhiri P_ermainan"
+
+#: ../plugins/gtk+/glade-gtk.c:7144
+msgid "Create New _Window"
+msgstr "Buat _Jendela Baru"
+
+#: ../plugins/gtk+/glade-gtk.c:7147
+msgid "_Close This Window"
+msgstr "_Tutup Jendela Ini"
+
+#: ../plugins/gtk+/glade-gtk.c:7159
+msgid "_Settings"
+msgstr "_Tatanan"
+
+#: ../plugins/gtk+/glade-gtk.c:7162
+msgid "Fi_les"
+msgstr "_Berkas"
+
+#: ../plugins/gtk+/glade-gtk.c:7165
+msgid "_Windows"
+msgstr "_Jendela"
+
+#: ../plugins/gtk+/glade-gtk.c:7171
+msgid "_Game"
+msgstr "_Permainan"
+
+#: ../plugins/gtk+/glade-gtk.c:7636 ../plugins/gtk+/gtk+.xml.in.h:62
+msgid "Button"
+msgstr "Tombol"
+
+#: ../plugins/gtk+/glade-gtk.c:7637 ../plugins/gtk+/glade-gtk.c:11343
+#: ../plugins/gtk+/glade-gtk.c:11424
+msgid "Toggle"
+msgstr "Jungkit"
+
+#: ../plugins/gtk+/glade-gtk.c:7638 ../plugins/gtk+/glade-gtk.c:7649
+#: ../plugins/gtk+/glade-gtk.c:7657
+msgid "Radio"
+msgstr "Radio"
+
+#: ../plugins/gtk+/glade-gtk.c:7639 ../plugins/gtk+/gtk+.xml.in.h:275
+msgid "Menu"
+msgstr "Menu"
+
+#: ../plugins/gtk+/glade-gtk.c:7640 ../plugins/gtk+/gtk+.xml.in.h:109
+msgid "Custom"
+msgstr "Gubahan"
+
+#: ../plugins/gtk+/glade-gtk.c:7641 ../plugins/gtk+/glade-gtk.c:7650
+#: ../plugins/gtk+/glade-gtk.c:7658
+msgid "Separator"
+msgstr "Pemisah"
+
+#: ../plugins/gtk+/glade-gtk.c:7646 ../plugins/gtk+/glade-gtk.c:7654
+#: ../plugins/gtk+/gtk+.xml.in.h:292
+msgid "Normal"
+msgstr "Normal"
+
+#: ../plugins/gtk+/glade-gtk.c:7647 ../plugins/gtk+/glade-gtk.c:7655
+#: ../plugins/gtk+/gtk+.xml.in.h:217
+msgid "Image"
+msgstr "Gambar"
+
+#: ../plugins/gtk+/glade-gtk.c:7648 ../plugins/gtk+/glade-gtk.c:7656
+msgid "Check"
+msgstr "Centang"
+
+#: ../plugins/gtk+/glade-gtk.c:7670
+msgid "Tool Bar Editor"
+msgstr "Penyunting Bilah Alat"
+
+#: ../plugins/gtk+/glade-gtk.c:8216
+msgid "This property does not apply when Ellipsize is set."
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:8233
+msgid "This property does not apply when Angle is set."
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:9185
+msgid "Introduction page"
+msgstr "Halaman pengantar"
+
+#: ../plugins/gtk+/glade-gtk.c:9189
+msgid "Content page"
+msgstr "Halaman isi"
+
+#: ../plugins/gtk+/glade-gtk.c:9193
+msgid "Confirmation page"
+msgstr "Halaman konfirmasi"
+
+#: ../plugins/gtk+/glade-gtk.c:10827
+#, c-format
+msgid "%s is set to load %s from the model"
+msgstr "%s ditata untuk memuat %s dari model"
+
+#: ../plugins/gtk+/glade-gtk.c:10829
+#, c-format
+msgid "%s is set to manipulate %s directly"
+msgstr "%s ditata untuk memanipulasi %s secara langsung"
+
+#: ../plugins/gtk+/glade-gtk.c:11283 ../plugins/gtk+/gtk+.xml.in.h:486
+msgid "Tree View Column"
+msgstr "Kolom Tilikan Tree"
+
+#: ../plugins/gtk+/glade-gtk.c:11283 ../plugins/gtk+/gtk+.xml.in.h:74
+msgid "Cell Renderer"
+msgstr "Perender Sel"
+
+#: ../plugins/gtk+/glade-gtk.c:11288
+msgid "Properties and Attributes"
+msgstr "Properti dan Atribut"
+
+#: ../plugins/gtk+/glade-gtk.c:11293
+msgid "Common Properties and Attributes"
+msgstr "Properti dan Atribut Bersama"
+
+#. Text of the textview
+#. Text...
+#: ../plugins/gtk+/glade-gtk.c:11337 ../plugins/gtk+/glade-gtk.c:11418
+#: ../plugins/gtk+/gtk+.xml.in.h:437 ../plugins/gtk+/glade-entry-editor.c:520
+#: ../plugins/gnome/gnome.xml.in.h:55
+msgid "Text"
+msgstr "Teks"
+
+#. Accelerator
+#: ../plugins/gtk+/glade-gtk.c:11338 ../plugins/gtk+/glade-gtk.c:11419
+#: ../plugins/gtk+/gtk+.xml.in.h:14
+msgid "Accelerator"
+msgstr "Akselerator"
+
+#: ../plugins/gtk+/glade-gtk.c:11339 ../plugins/gtk+/glade-gtk.c:11420
+#: ../plugins/gtk+/gtk+.xml.in.h:90
+msgid "Combo"
+msgstr "Kombo"
+
+#: ../plugins/gtk+/glade-gtk.c:11340 ../plugins/gtk+/glade-gtk.c:11421
+msgid "Spin"
+msgstr "Spin"
+
+#: ../plugins/gtk+/glade-gtk.c:11341 ../plugins/gtk+/glade-gtk.c:11422
+msgid "Pixbuf"
+msgstr "Pixbuf"
+
+#. Progress...
+#: ../plugins/gtk+/glade-gtk.c:11342 ../plugins/gtk+/glade-gtk.c:11423
+#: ../plugins/gtk+/gtk+.xml.in.h:336 ../plugins/gtk+/glade-entry-editor.c:563
+msgid "Progress"
+msgstr "Kemajuan"
+
+#: ../plugins/gtk+/glade-gtk.c:11344 ../plugins/gtk+/glade-gtk.c:11425
+#: ../plugins/gtk+/gtk+.xml.in.h:413
+msgid "Spinner"
+msgstr "Spinner"
+
+#: ../plugins/gtk+/glade-gtk.c:11355
+msgid "Icon View Editor"
+msgstr "Penyunting Tilikan Ikon"
+
+#: ../plugins/gtk+/glade-gtk.c:11355
+msgid "Combo Editor"
+msgstr "Penyunting Kombo"
+
+#: ../plugins/gtk+/glade-gtk.c:11414
+msgid "Column"
+msgstr "Kolom"
+
+#: ../plugins/gtk+/glade-gtk.c:11434
+msgid "Tree View Editor"
+msgstr "Penyunting Tilikan Tree"
+
+#. Dont really add/remove actions (because name conflicts inside groups)
+#.
+#: ../plugins/gtk+/glade-gtk.c:11636
+msgid "The accelerator can only be set when inside an Action Group."
+msgstr ""
+
+#: ../plugins/gtk+/glade-accels.c:320 ../plugins/gtk+/glade-accels.c:394
+msgid "<choose a key>"
+msgstr "<pilih kunci>"
+
+#: ../plugins/gtk+/glade-accels.c:475
+msgid "Accelerator Key"
+msgstr "Tombol Akselerator"
+
+#: ../plugins/gtk+/glade-accels.c:534
+msgid "Choose accelerator keys..."
+msgstr "Pilih tombol akselerator..."
+
+#: ../plugins/gtk+/gtk+.xml.in.h:1
+msgid "A file name, full or relative path to load an icon for this toolbutton"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:2
+msgid "A list of accelerator keys"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:3
+msgid "A list of sources for this icon factory"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:4
+msgid "A symbolic icon size for the stock icon"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:5
+msgid "A tooltip text for this widget"
+msgstr ""
+
+#. NOT AVAILABLES ON WIN32
+#. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
+#. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
+#.
+#: ../plugins/gtk+/gtk+.xml.in.h:10
+msgid "About Dialog"
+msgstr "Dialog Ihwal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:11
+msgid "Accel Group"
+msgstr "Grup Aksel"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:12
+msgid "Accel Label"
+msgstr "Label Aksel"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:15
+msgid "Accelerator Mode column"
+msgstr "Kolom Mode Akselerator"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:16
+msgid "Accelerator Modifiers column"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:17
+msgid "Accelerator Renderer"
+msgstr "Perender Akselerator"
+
+#. Accelerators
+#: ../plugins/gtk+/gtk+.xml.in.h:19
+msgid "Accelerators"
+msgstr "Akselerator"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:20
+msgid "Accessible Description"
+msgstr ""
+
+#. Atk name and description properties
+#: ../plugins/gtk+/gtk+.xml.in.h:22
+msgid "Accessible Name"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:23
+#: ../plugins/gtk+/glade-activatable-editor.c:395
+msgid "Action"
+msgstr "Aksi"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:24
+msgid "Action Group"
+msgstr "Grup Aksi"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:26
+msgid "Activatable column"
+msgstr ""
+
+#. Atk activate property
+#: ../plugins/gtk+/gtk+.xml.in.h:28
+msgid "Activate"
+msgstr "Aktifkan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:29
+msgid "Active column"
+msgstr "Kolom aktif"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:30
+msgid "Add Parent"
+msgstr "Tambah Induk"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:31
+msgid "Add to Size Group"
+msgstr "Tambah ke Grup Ukuran"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:32
+msgid "Adjustment"
+msgstr "Penyesuaian"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:33
+msgid "Adjustment column"
+msgstr "Kolom penyesuaian"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:35
+msgid "Alignment"
+msgstr "Perataan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:36
+msgid "Alignment column"
+msgstr "Kolom perataan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:37
+msgid "All"
+msgstr "Semua"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:38
+msgid "All Events"
+msgstr "Semua Kejadian"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:39
+msgid "All Modifiers"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:40
+msgid "Alt Key"
+msgstr "Tombol Alt"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:41 ../plugins/gnome/gnome.xml.in.h:2
+msgid "Always"
+msgstr "Selalu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:42
+msgid "Always Center"
+msgstr "Selalu Tengah"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:43
+msgid "An accelerator key for this action"
+msgstr "Tombol akselerator bagi aksi ini"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:44
+msgid "Arrow"
+msgstr "Panah"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:45
+msgid "Ascending"
+msgstr "Naik"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:46
+msgid "Aspect Frame"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:47
+msgid "Assistant"
+msgstr "Asisten"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:48
+msgid "Attributes"
+msgstr "Atribut"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:49
+msgid "Attributes column"
+msgstr "Kolom Atribut"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:50
+msgid "Automatic"
+msgstr "Otomatis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:51
+msgid "Background Color Name column"
+msgstr "Kolom Nama Warna Latar"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:52
+msgid "Background Color column"
+msgstr "Kolom Warna Latar"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:53
+msgid "Before"
+msgstr "Sebelum"
+
+#. Objects
+#: ../plugins/gtk+/gtk+.xml.in.h:55
+msgid "Both"
+msgstr "Keduanya"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:56 ../plugins/gnome/bonobo.xml.in.h:1
+msgid "Bottom"
+msgstr "Dasar"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:57
+msgid "Bottom Left"
+msgstr "Kiri Bawah"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:58
+msgid "Bottom Right"
+msgstr "Kanan Bawah"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:59
+msgid "Bottom to Top"
+msgstr "Dasar ke Puncak"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:60
+msgid "Box"
+msgstr "Kotak"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:61
+msgid "Browse"
+msgstr "Ramban"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:63
+msgid "Button 1 Motion"
+msgstr "Pergerakan Tombol 1"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:64
+msgid "Button 2 Motion"
+msgstr "Pergerakan Tombol 2"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:65
+msgid "Button 3 Motion"
+msgstr "Pergerakan Tombol 3"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:66
+msgid "Button Box"
+msgstr "Kotak Tombol"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:67
+msgid "Button Motion"
+msgstr "Pergerakan Tombol"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:68
+msgid "Button Press"
+msgstr "Tombol Ditekan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:69
+msgid "Button Release"
+msgstr "Tombol Dilepas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:70
+msgid "Calendar"
+msgstr "Kalender"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:71
+msgid "Cancel"
+msgstr "Batal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:72
+msgid "Cell Background Color column"
+msgstr "Kolom Warna Latar Sel"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:73
+msgid "Cell Background Color name column"
+msgstr "Kolom Nama Warna Latar Sel"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:75
+msgid "Center"
+msgstr "Tengah"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:76
+msgid "Center on Parent"
+msgstr "Terpusat pada Induk"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:77
+msgid "Centimeters"
+msgstr "Sentimeter"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:78
+msgid "Character"
+msgstr "Karakter"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:79
+msgid "Check Button"
+msgstr "Tombol Centang"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:80
+msgid "Check Menu Item"
+msgstr "Butir Menu Centang"
+
+#. Atk click property
+#: ../plugins/gtk+/gtk+.xml.in.h:82
+msgid "Click"
+msgstr "Klik"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:83
+msgid "Climb Rate column"
+msgstr "Kolom Laju Menanjak"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:84
+msgid "Close"
+msgstr "Tutup"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:85
+msgid "Color Button"
+msgstr "Tombol Warna"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:86
+msgid "Color Selection"
+msgstr "Pemilihan Warna"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:87
+msgid "Color Selection Dialog"
+msgstr "Dialog Pemilihan Warna"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:88
+msgid "Columned List"
+msgstr "Daftar Terkolomkan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:89
+msgid "Columns"
+msgstr "Kolom"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:91
+msgid "Combo Box"
+msgstr "Kotak Kombo"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:92
+msgid "Combo Box Entry"
+msgstr "Entri Kotak Kombo"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:93
+msgid "Combo Renderer"
+msgstr "Perender Kombo"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:94
+msgid "Composite Widgets"
+msgstr "Widget Komposit"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:95
+msgid "Condensed"
+msgstr "Dimampatkan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:96
+#, fuzzy
+msgid "Confirm"
+msgstr "Konfirmasi"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:98
+msgid "Containers"
+msgstr "Wadah"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:99
+msgid "Content"
+msgstr "Isi"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:100
+msgid "Continuous"
+msgstr "Berkelanjutan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:101
+msgid "Control Key"
+msgstr "Kunci Kendali"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:102
+msgid "Control and Display"
+msgstr "Kendali dan Tampilan"
+
+#. Atk relationset properties
+#: ../plugins/gtk+/gtk+.xml.in.h:104
+msgid "Controlled By"
+msgstr "Dikendalikan Oleh"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:105
+msgid "Controller For"
+msgstr "Dikendalikan Bagi"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:106
+msgid "Create Folder"
+msgstr "Buat Folder"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:108
+msgid "Curve"
+msgstr "Kurva"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:110
+msgid "Custom widget"
+msgstr "Widget Gubahan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:111
+msgid "Data"
+msgstr "Data"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:112
+msgid "Data column"
+msgstr "Kolom data"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:113
+msgid "Default"
+msgstr "Bawaan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:114
+msgid "Delayed"
+msgstr "Tertunda"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:115
+msgid "Descending"
+msgstr "Turun"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:116
+msgid "Described By"
+msgstr "Diterangkan Oleh"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:117
+msgid "Description For"
+msgstr "Keterangan Bagi"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:118
+#, fuzzy
+msgid "Description of an object, formatted for assistive technology access"
+msgstr "Keterangan objek yang digunakan dalam teknologi kemudahan akses"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:119
+msgid "Desktop"
+msgstr "Desktop"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:120
+msgid "Dialog"
+msgstr "Dialog"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:121
+msgid "Dialog Box"
+msgstr "Kotak Dialog"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:122
+msgid "Digits column"
+msgstr "Kolom digit"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:123
+msgid "Discontinuous"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:124
+msgid "Discrete"
+msgstr "Diskret"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:125
+msgid "Dock"
+msgstr "Dok"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:126
+msgid "Double"
+msgstr "Ganda"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:127
+msgid "Down"
+msgstr "Turun"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:128
+msgid "Drag & Drop"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:129
+msgid "Drag and Drop"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:130
+msgid "Drawing Area"
+msgstr "Area Menggambar"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:131
+msgid "Drop Down Menu"
+msgstr "Menu Drop Down"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:132
+msgid "East"
+msgstr "Timur"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:133
+msgid "Edge"
+msgstr "Tepi"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:134
+msgid "Edit Separately"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:135
+msgid "Edit&#8230;"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:136
+msgid "Editable column"
+msgstr "Kolom yang dapat disunting"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:137
+msgid "Eighth Key"
+msgstr "Kunci Ke Delapan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:138
+msgid "Ellipsize column"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:139
+msgid "Embedded By"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:140
+msgid "Embeds"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:141 ../plugins/gnome/gnome.xml.in.h:7
+msgid "End"
+msgstr "Akhir"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:142
+msgid "Enter Notify"
+msgstr "Enter Notify"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:143
+msgid "Enter a list of column types for this data store"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:144
+msgid "Enter a list of values to be applied on each row"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:145
+msgid "Entry Buffer"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:146
+msgid "Entry Completion"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:147 ../plugins/gnome/gnome.xml.in.h:8
+msgid "Error"
+msgstr "Galat"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:148
+msgid "Etched In"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:149
+msgid "Etched Out"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:150
+msgid "Event Box"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:151 ../plugins/gnome/gnome.xml.in.h:9
+msgid "Expand"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:152
+msgid "Expanded"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:153
+msgid "Expander"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:154
+msgid "Exposure"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:155
+msgid "Extended"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:156
+msgid "Extra Condensed"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:157
+msgid "Extra Expanded"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:158
+msgid "Family column"
+msgstr "Kolom famili"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:159
+msgid "Fifth Key"
+msgstr "Kunci Ke Lima"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:160
+msgid "Fifth Mouse Button"
+msgstr "Tombol Mouse Ke Lima"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:161
+msgid "File Chooser Button"
+msgstr "Tombol Pemilih Berkas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:162
+msgid "File Chooser Dialog"
+msgstr "Dialog Pemilih Berkas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:163
+msgid "File Chooser Widget"
+msgstr "Widget Pemilih Berkas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:164
+msgid "File Filter"
+msgstr "Filter Berkas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:165 ../plugins/gtk+/glade-icon-sources.c:772
+msgid "File Name"
+msgstr "Nama Berkas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:166
+msgid "File Selection"
+msgstr "Pilihan Berkas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:167 ../plugins/gnome/gnome.xml.in.h:11
+msgid "Fill"
+msgstr "Isi"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:168
+msgid "First Mouse Button"
+msgstr "Tombol Mouse Pertama"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:169
+msgid "Fixed"
+msgstr "Tetap"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:170
+msgid "Flows From"
+msgstr "Mengalir Dari"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:171
+msgid "Flows To"
+msgstr "Mengalir Ke"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:172
+msgid "Focus Change"
+msgstr "Ganti Fokus"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:173
+msgid "Follow State column"
+msgstr "Kolom Ikuti Keadaan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:174
+msgid "Font Button"
+msgstr "Tombol Fonta"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:175
+#, fuzzy
+msgid "Font Description column"
+msgstr "Keterangan Kolom Tabel Akses"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:176
+msgid "Font Selection"
+msgstr "Pilihan Fonta"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:177
+msgid "Font Selection Dialog"
+msgstr "Dialog Pemilihan Fonta"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:178
+msgid "Font column"
+msgstr "Kolom fonta"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:179
+msgid "Foreground Color Name column"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:180
+msgid "Foreground Color column"
+msgstr "Kolom Warna Depan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:181
+msgid "Forth Mouse Button"
+msgstr "Tombol Mouse Ke Empat"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:182
+msgid "Frame"
+msgstr "Bingkai"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:183
+msgid "Free"
+msgstr "Bebas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:184
+msgid "Gamma Curve"
+msgstr "Kurva Gamma"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:185
+msgid "Grow Only"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:186
+msgid "Gtk"
+msgstr "Gtk"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:187
+msgid "Gtk+ Obsolete"
+msgstr "Gtk+ Obsolete"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:188
+msgid "Half"
+msgstr "Setengah"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:189
+#, fuzzy
+msgid "Handle Box"
+msgstr "Kotak Handle"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:190
+msgid "Has Entry column"
+msgstr "Kolom Punya Entri"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:191
+msgid "Height column"
+msgstr "Kolom tinggi"
+
+#. Objects
+#: ../plugins/gtk+/gtk+.xml.in.h:193 ../plugins/gtk+/glade-model-data.c:1244
+msgid "Horizontal"
+msgstr "Horisontal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:194
+msgid "Horizontal Alignment"
+msgstr "Perataan Horisontal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:195
+msgid "Horizontal Alignment column"
+msgstr "Kolom Perataan Horisontal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:196
+msgid "Horizontal Box"
+msgstr "Kotak Horisontal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:197
+msgid "Horizontal Button Box"
+msgstr "Kotak Tombol Horisontal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:198
+#, fuzzy
+msgid "Horizontal Padding"
+msgstr "Pengganjal Horisontal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:199
+#, fuzzy
+msgid "Horizontal Padding column"
+msgstr "Kolom Pengganjal Horisontal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:200
+msgid "Horizontal Panes"
+msgstr "Panel Horizontal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:201
+msgid "Horizontal Ruler"
+msgstr "Penggaris Horisontal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:202
+msgid "Horizontal Scale"
+msgstr "Skala Horisontal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:203
+msgid "Horizontal Scrollbar"
+msgstr "Penggulung Horisontal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:204
+msgid "Horizontal Separator"
+msgstr "Pemisah Horisontal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:205
+msgid "Horizontal and Vertical"
+msgstr "Horisontal dan Vertikal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:206
+msgid "Hyper Modifier"
+msgstr "Perubah Hiper"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:207
+msgid "Icon"
+msgstr "Ikon"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:208
+msgid "Icon Factory"
+msgstr "Pabrik Ikon"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:210
+msgid "Icon Name column"
+msgstr "Kolom Nama Ikon"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:213
+msgid "Icon Sources"
+msgstr "Sumber Ikon"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:214
+msgid "Icon View"
+msgstr "Tampilan Ikon"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:215
+msgid "Icons only"
+msgstr "Hanya ikon"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:216
+msgid "If Valid"
+msgstr "Bila Valid"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:218
+msgid "Image Menu Item"
+msgstr "Butir Menu Gambar"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:219
+msgid "Immediate"
+msgstr "Seketika"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:220
+msgid "In"
+msgstr "In"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:221
+msgid "Inches"
+msgstr "Inci"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:222
+msgid "Inconsistent column"
+msgstr "Kolom tak konsisten"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:223
+msgid ""
+"Indicates a subwindow attached to a component but otherwise has no "
+"connection in the UI hierarchy to that component"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:224
+msgid "Indicates an object controlled by one or more target objects"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:225
+msgid ""
+"Indicates an object is a cell in a treetable which is displayed because a "
+"cell in the same column is expanded and identifies that cell"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:226
+msgid "Indicates an object is a controller for one or more target objects"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:227
+msgid "Indicates an object is a label for one or more target objects"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:228
+msgid ""
+"Indicates an object is a member of a group of one or more target objects"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:229
+msgid "Indicates an object is labelled by one or more target objects"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:230
+msgid "Indicates that an object is a parent window of another object"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:231
+msgid "Indicates that an object is a popup for another object"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:232
+msgid ""
+"Indicates that an object provides descriptive information about another "
+"object; more verbose than 'Label For'"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:233
+msgid ""
+"Indicates that another object provides descriptive information about this "
+"object; more verbose than 'Labelled By'"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:234
+msgid ""
+"Indicates that the object has content that flows logically from another "
+"AtkObject in a sequential way, (for instance text-flow)"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:235
+msgid ""
+"Indicates that the object has content that flows logically to another "
+"AtkObject in a sequential way, (for instance text-flow)"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:236
+msgid ""
+"Indicates that the object visually embeds another object's content, i.e. "
+"this object's content flows around another's content"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:237
+msgid "Indicator Size column"
+msgstr "Kolom Ukuran Indikator"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:238
+msgid "Info"
+msgstr "Info"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:239
+msgid "Input Dialog"
+msgstr "Dialog Masukan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:240
+msgid "Insert After"
+msgstr "Sisipkan Setelah"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:241
+msgid "Insert Before"
+msgstr "Sisipkan Sebelum"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:242
+msgid "Insert Column"
+msgstr "Sisipkan Kolom"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:243
+msgid "Insert Page After"
+msgstr "Sisipkan Halaman Setelah"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:244
+msgid "Insert Page Before"
+msgstr "Sisipkan Halaman Sebelum"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:245
+msgid "Insert Row"
+msgstr "Sisipkan Baris"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:246
+msgid "Intro"
+msgstr "Perkenalan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:247
+msgid "Invalid"
+msgstr "Tak valid"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:248
+msgid ""
+"Inverse of 'Embeds', indicates that this object's content is visually "
+"embedded in another object"
+msgstr ""
+"Kebalikan dari 'Embed', menandakan bahwa isi objek ini secara visual di-"
+"embed ke dalam objek lain"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:249
+msgid "Invisible Char Set"
+msgstr "Set Karakter Tak Nampak"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:250
+msgid "Italic"
+msgstr "Miring"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:251
+msgid "Items"
+msgstr "Butir"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:252
+msgid "Key Press"
+msgstr "Kunci Ditekan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:253
+msgid "Key Release"
+msgstr "Kunci Dilepas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:254
+msgid "Keycode column"
+msgstr "Kolom kode tombol"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:256
+msgid "Label For"
+msgstr "Label Untuk"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:257
+msgid "Labelled By"
+msgstr "Dilabeli Oleh"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:258
+msgid "Language column"
+msgstr "Kolom bahasa"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:259
+msgid "Large Toolbar"
+msgstr "Bilah Alat Besar"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:260
+msgid "Layout"
+msgstr "Tata Letak"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:261
+msgid "Least Recently Used first"
+msgstr "Yang Dipakai Terdahulu pertama"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:262
+msgid "Leave Notify"
+msgstr "Leave Notify"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:263 ../plugins/gnome/bonobo.xml.in.h:4
+msgid "Left"
+msgstr "Kiri"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:264
+msgid "Left to Right"
+msgstr "Kiri ke Kanan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:265
+msgid "Linear"
+msgstr "Linier"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:266
+msgid "Link Button"
+msgstr "Tombol Taut"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:267
+msgid "List"
+msgstr "Daftar"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:268
+msgid "List Item"
+msgstr "Butir Daftar"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:269
+msgid "List Store"
+msgstr "Penyimpanan Daftar"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:270
+msgid "List of widgets in this group"
+msgstr "Daftar widget dalam grup ini"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:271
+msgid "Lock Key"
+msgstr "Tombol Kunci"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:272
+msgid "Low"
+msgstr "Rendah"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:273
+msgid "Markup column"
+msgstr "Kolom markup"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:274
+msgid "Member Of"
+msgstr "Anggota Dari"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:276
+msgid "Menu Bar"
+msgstr "Bilah Menu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:278
+msgid "Menu Shell"
+msgstr "Shell Menu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:279
+msgid "Menu Tool Button"
+msgstr "Tombol Alat Menu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:280
+msgid "Message Dialog"
+msgstr "Dialog Pesan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:281
+msgid "Meta Modifier"
+msgstr "Perubah Meta"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:282
+msgid "Middle"
+msgstr "Tengah"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:283
+msgid "Miscellaneous"
+msgstr "Serba neka"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:284
+msgid "Model column"
+msgstr "Kolom model"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:285
+msgid "Most Recently Used first"
+msgstr "Yang Dipakai Terkini pertama"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:286
+msgid "Mouse"
+msgstr "Tetikus"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:287
+msgid "Multiple"
+msgstr "Berganda"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:288 ../plugins/gnome/gnome.xml.in.h:41
+msgid "Never"
+msgstr "Tak pernah"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:289
+msgid "Node Child Of"
+msgstr "Node Anak Dari"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:293
+msgid "North"
+msgstr "Utara"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:294
+msgid "North East"
+msgstr "Timur Laut"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:295
+msgid "North West"
+msgstr "Barat Laut"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:296
+msgid "Notebook"
+msgstr "Notebook"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:297
+msgid "Notification"
+msgstr "Notifikasi"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:298
+msgid "Number of Pages"
+msgstr "Cacah Halaman"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:299
+msgid "Number of items"
+msgstr "Cacah butir"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:300
+msgid "Number of pages"
+msgstr "Cacah halaman"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:301
+msgid "Number of pages in this assistant"
+msgstr "Cacah halaman di asisten ini"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:302
+msgid "Object instance's name formatted for assistive technology access"
+msgstr "Nama turunan objek yang digunakan untuk teknologi kemudahan akses"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:303
+msgid "Oblique"
+msgstr "Miring"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:304 ../plugins/gtk+/glade-model-data.c:1243
+msgid "Off"
+msgstr "Mati"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:305
+msgid "Ok"
+msgstr "Ok"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:306
+msgid "Ok, Cancel"
+msgstr "Ok, Batal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:307
+msgid "On"
+msgstr "Nyala"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:308
+msgid "Open"
+msgstr "Buka"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:309
+msgid "Option Menu"
+msgstr "Menu Opsi"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:310
+msgid "Orientation column"
+msgstr "Kolom orientasi"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:311 ../plugins/gnome/gnome.xml.in.h:42
+msgid "Other"
+msgstr "Lainnya"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:312
+msgid "Out"
+msgstr "Keluar"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:313
+#, fuzzy
+msgid "Paned"
+msgstr "Dipanelkan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:315
+msgid "Parent Window Of"
+msgstr "Jendela Induk Dari"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:316
+msgid "Pixbuf Expander Closed column"
+msgstr "Kolom Pengembang Pixbux Ditutup"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:317
+msgid "Pixbuf Expander Open column"
+msgstr "Kolom Pengembang Pixbuf Dibuka"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:318
+msgid "Pixbuf Renderer"
+msgstr "Perender Pixbuf"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:319
+msgid "Pixbuf column"
+msgstr "Kolom pixbuf"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:320
+msgid "Pixels"
+msgstr "Piksel"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:321
+msgid "Pointer Motion"
+msgstr "Pergerakan Penunjuk"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:322
+msgid "Pointer Motion Hint"
+msgstr "Petunjuk Pergerakan Penunjuk"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:323
+msgid "Popup"
+msgstr "Popup"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:324
+msgid "Popup For"
+msgstr "Popup Untuk"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:325
+msgid "Popup Menu"
+msgstr "Menu Popup"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:326 ../plugins/gnome/glade-gnome.c:658
+#: ../plugins/gnome/gnome.xml.in.h:45
+msgid "Position"
+msgstr "Posisi"
+
+#. Atk press property
+#: ../plugins/gtk+/gtk+.xml.in.h:328
+msgid "Press"
+msgstr "Tekan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:329
+msgid "Primary Icon Activatable"
+msgstr "Ikon Primer Dapat Mengaktifkan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:330
+msgid "Primary Icon Name"
+msgstr "Nama Ikon Primer"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:331
+msgid "Primary Icon Pixbuf"
+msgstr "Pixbuf Ikon Primer"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:332
+msgid "Primary Icon Sensitive"
+msgstr "Ikon Primer Sensitif"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:333
+msgid "Primary Icon Tooltip Markup"
+msgstr "Markup Tooltip Ikon Primer"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:334
+msgid "Primary Icon Tooltip Text"
+msgstr "Teks Tooltip Ikon Primer"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:335
+msgid "Primary Stock Icon"
+msgstr "Ikon Stok Primer"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:337
+msgid "Progress Bar"
+msgstr "Bilah Kemajuan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:338
+msgid "Progress Fraction"
+msgstr "Fraksi Kemajuan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:339
+#, fuzzy
+msgid "Progress Pulse Step"
+msgstr "Langkah Pulsa Kemajuan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:340
+msgid "Progress Renderer"
+msgstr "Perender Kemajuan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:341
+msgid "Property Change"
+msgstr "Ganti Properti"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:342
+msgid "Proximity  Out"
+msgstr "Proksimitas Keluar"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:343
+msgid "Proximity In"
+msgstr "Proksimitas Masuk"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:344
+msgid "Pulse column"
+msgstr "Kolom pulsa"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:345 ../plugins/gnome/gnome.xml.in.h:48
+msgid "Question"
+msgstr "Pertanyaan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:346
+msgid "Queue"
+msgstr "Antrian"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:347
+msgid "Radio Action"
+msgstr "Aksi Rerintah"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:348
+msgid "Radio Button"
+msgstr "Tombol Radio"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:349
+msgid "Radio Menu Item"
+msgstr "Butir Menu Radio"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:350
+msgid "Radio Tool Button"
+msgstr "Tombol Alat Radio"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:351
+msgid "Radio column"
+msgstr "Kolom radio"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:352
+msgid "Range"
+msgstr "Cakupan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:353
+msgid "Recent Action"
+msgstr "Aksi Terkini"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:354
+msgid "Recent Chooser"
+msgstr "Pemilihan Terkini"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:355
+msgid "Recent Chooser Dialog"
+msgstr "Dialog Pemilih Terkini"
+
+#. GtkActivatable
+#: ../plugins/gtk+/gtk+.xml.in.h:357
+msgid "Related Action"
+msgstr "Aksi Terkait"
+
+#. Atk release property
+#: ../plugins/gtk+/gtk+.xml.in.h:359
+msgid "Release"
+msgstr "Rilis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:360
+msgid "Release Modifier"
+msgstr "Perubah Rilis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:361
+msgid "Remove Column"
+msgstr "Hapus Kolom"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:362
+msgid "Remove Page"
+msgstr "Hapus Halaman"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:363
+msgid "Remove Parent"
+msgstr "Hapus Induk"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:364
+msgid "Remove Row"
+msgstr "Hapus Baris"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:365
+msgid "Remove Slot"
+msgstr "Hapus Slot"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:366
+msgid "Response ID"
+msgstr "ID respon"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:367 ../plugins/gnome/bonobo.xml.in.h:9
+msgid "Right"
+msgstr "Kanan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:368
+msgid "Right to Left"
+msgstr "Kanan ke Kiri"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:369
+msgid "Rise column"
+msgstr "Kolom angkat"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:370
+msgid "Ruler"
+msgstr "Penggaris"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:371
+msgid "Save"
+msgstr "Simpan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:372
+msgid "Scale Button"
+msgstr "Tombol Skala"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:373
+msgid "Scale column"
+msgstr "Kolom skala"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:374
+msgid "Scroll"
+msgstr "Gulung"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:375
+msgid "Scrolled Window"
+msgstr "Jendela Tergulung"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:376
+msgid "Second Mouse Button"
+msgstr "Tombol Mouse Kedua"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:377
+msgid "Secondary Icon Activatable"
+msgstr "Ikon Sekunder Dapat Diaktifkan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:378
+msgid "Secondary Icon Name"
+msgstr "Nama Ikon Sekunder"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:379
+msgid "Secondary Icon Pixbuf"
+msgstr "Pixbuf Ikon Sekunder"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:380
+msgid "Secondary Icon Sensitive"
+msgstr "Sensitif Ikon Sekunder"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:381
+msgid "Secondary Icon Tooltip Markup"
+msgstr "Markup Tooltip Ikon Sekunder"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:382
+msgid "Secondary Icon Tooltip Text"
+msgstr "Teks Tooltip Ikon Sekunder"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:383
+msgid "Secondary Stock Icon"
+msgstr "Ikon Stok Sekunder"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:384
+msgid "Select Folder"
+msgstr "Pilih Folder"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:385
+msgid "Semi Condensed"
+msgstr "Agak Dimampatkan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:386
+msgid "Semi Expanded"
+msgstr "Agak Terkembang"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:387
+msgid "Sensitive column"
+msgstr "Kolom sensitif"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:388
+msgid "Separator Menu Item"
+msgstr "Butir Menu Pemisah"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:389
+msgid "Separator Tool Item"
+msgstr "Butir Alat Pemisah"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:390
+msgid "Set the current page (strictly for editing purposes)"
+msgstr "Tata halaman kini (hanya untuk keperluan penyuntingan)"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:391
+msgid "Set the description of the Activate atk action"
+msgstr "Tata deskripsi dari aksi atk Aktifkan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:392
+msgid "Set the description of the Click atk action"
+msgstr "Tata deskripsi dari aksi atk Klik"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:393
+msgid "Set the description of the Press atk action"
+msgstr "Tata deskripsi dari aksi atk Tekan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:394
+msgid "Set the description of the Release atk action"
+msgstr "Tata deskripsi dari aksi atk Rilis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:395
+msgid "Set the text in the view's text buffer"
+msgstr "Tata teks di penyangga teks milik tilikan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:396
+msgid "Seventh Key"
+msgstr "Kunci Ke Tujuh"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:397
+msgid "Shift Key"
+msgstr "Tombol Shift"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:398
+msgid "Shrink"
+msgstr "Dikecilkan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:399
+msgid "Single"
+msgstr "Tunggal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:400
+msgid "Single Paragraph Mode column"
+msgstr "Kolom Mode Paragraf Tunggal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:401
+msgid "Sixth Key"
+msgstr "Kunci Ke Enam"
+
+#. Objects
+#: ../plugins/gtk+/gtk+.xml.in.h:403
+msgid "Size Group"
+msgstr "Grup Ukuran"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:404
+msgid "Size column"
+msgstr "Kolom ukuran"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:405
+msgid "Small Capitals"
+msgstr "Kapital Kecil"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:406
+msgid "Small Toolbar"
+msgstr "Bilah Alat Kecil"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:407
+msgid "South"
+msgstr "Selatan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:408
+msgid "South East"
+msgstr "Tenggara"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:409
+msgid "South West"
+msgstr "Barat Daya"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:410
+msgid "Specialized Widgets"
+msgstr "Widget Khusus"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:411
+msgid "Spin Button"
+msgstr "Tombol Spin"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:412
+msgid "Spin Renderer"
+msgstr "Perender Spin"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:414
+msgid "Spinner Renderer"
+msgstr "Perender Spinner"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:415
+msgid "Splash Screen"
+msgstr "Layar Pembuka"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:416
+msgid "Spline"
+msgstr "Spline"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:417
+msgid "Spread"
+msgstr "Sebar"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:418 ../plugins/gnome/gnome.xml.in.h:52
+msgid "Start"
+msgstr "Awal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:419
+msgid "Static"
+msgstr "Statis"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:420
+msgid "Status Bar"
+msgstr "Bilah Status"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:421
+msgid "Status Icon"
+msgstr "Ikon Status"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:422
+msgid "Stock Button"
+msgstr "Tombol Stok"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:423
+msgid "Stock Detail column"
+msgstr "Kolom Rincian Stok"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:424
+msgid "Stock Item"
+msgstr "Butir Stok"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:425
+msgid "Stock Size column"
+msgstr "Kolom Ukuran Stok"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:426
+msgid "Stock column"
+msgstr "Kolom stok"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:427
+msgid "Stretch column"
+msgstr "Kolom regang"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:428
+msgid "Strikethrough column"
+msgstr "Kolom coret"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:429
+msgid "Structure"
+msgstr "Struktur"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:430
+msgid "Style column"
+msgstr "Kolom gaya"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:431
+msgid "Substructure"
+msgstr "Substruktur"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:432
+msgid "Subwindow Of"
+msgstr "Subwindow Dari"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:433
+msgid "Summary"
+msgstr "Ringkasan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:434
+msgid "Super Modifier"
+msgstr "Perubah Super"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:435
+msgid "Table"
+msgstr "Tabel"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:438
+msgid "Text Buffer"
+msgstr "Penyangga Teks"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:439
+msgid "Text Buffers"
+msgstr "Penyangga Teks"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:440
+msgid "Text Column column"
+msgstr "Kolom Kolom Teks"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:441
+msgid "Text Entry"
+msgstr "Entri Teks"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:442
+msgid "Text Horizontal Alignment column"
+msgstr "Kolom Perataan Horisontal Teks"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:443
+msgid "Text Renderer"
+msgstr "Perender Teks"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:444
+msgid "Text Tag"
+msgstr "Tag Teks"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:445
+msgid "Text Tag Table"
+msgstr "Tabel Tag Teks"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:446
+msgid "Text Vertical Alignment column"
+msgstr "Kolom Perataan Vertikal Teks"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:447
+msgid "Text View"
+msgstr "Tampilan teks"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:448
+msgid "Text below icons"
+msgstr "Teks di bawah ikon"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:450
+msgid "Text column"
+msgstr "Kolom teks"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:451
+msgid "Text only"
+msgstr "Hanya teks"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:452
+msgid "The column in the model to load the value from"
+msgstr "Kolom pada model tempat mengambil nilai"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:453
+msgid "The items in this combo box"
+msgstr "Butir-butir di kotak kombo ini"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:454
+msgid "The number of items in the box"
+msgstr "Cacah butir di dalam kotak"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:455
+msgid "The number of pages in the notebook"
+msgstr "Cacah halaman di notebook"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:456
+msgid "The page position in the Assistant"
+msgstr "Posisi halaman di Asisten"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:457
+msgid "The pango attributes for this label"
+msgstr "Atribut pango dari label ini"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:458
+msgid "The position of the menu item in the menu shell"
+msgstr "Posisi butir menu pada shell menu"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:459
+msgid "The position of the tool item in the toolbar"
+msgstr "Posisi butir alat pada bilah alat"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:460
+msgid "The response ID of this button in a dialog"
+msgstr "ID respon dari tombol ini dalam suatu dialog"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:461
+msgid ""
+"The stock icon displayed on the item (choose an item from GTK+ stock or from "
+"an icon factory)"
+msgstr ""
+"Ikon stok yang ditampilkan pada butir (pilih suatu butir dari stok GTK+ atau "
+"dari suatu pabrik ikon)"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:462
+msgid "The stock item for this button"
+msgstr "Butir stok bagi tombol ini"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:463
+msgid "The stock item for this menu item"
+msgstr "Butir stok bagi butir menu ini"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:464
+msgid "The text to display"
+msgstr "Teks yang hendak ditampilkan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:465
+msgid "Third Mouse Button"
+msgstr "Tombol Mouse Ke Tiga"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:466
+msgid "Toggle Action"
+msgstr "Aksi Jungkit"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:467
+msgid "Toggle Button"
+msgstr "Tombol Jungkit"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:468
+msgid "Toggle Renderer"
+msgstr "Perender Jungkit"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:469
+msgid "Toggle Tool Button"
+msgstr "Tombol Alat Jungkit"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:470
+msgid "Tool Bar"
+msgstr "Bilah Alat"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:471
+msgid "Tool Button"
+msgstr "Tombol Alat"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:472
+msgid "Toolbar"
+msgstr "Bilah alat"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:473
+msgid "Tooltip"
+msgstr "Kalimat bantuan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:474 ../plugins/gnome/bonobo.xml.in.h:10
+msgid "Top"
+msgstr "Puncak"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:475
+msgid "Top Left"
+msgstr "Kiri Atas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:476
+msgid "Top Level"
+msgstr "Aras Puncak"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:477
+msgid "Top Right"
+msgstr "Kanan Atas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:478
+msgid "Top to Bottom"
+msgstr "Puncak ke Dasar"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:479
+msgid "Toplevels"
+msgstr "Aras Puncak"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:480
+msgid "Tree Model"
+msgstr "Model Pohon"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:481
+msgid "Tree Model Filter"
+msgstr "Filter Model Pohon"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:482
+msgid "Tree Model Sort"
+msgstr "Urut Model Pohon"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:483
+msgid "Tree Selection"
+msgstr "Pilihan Pohon"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:484
+msgid "Tree Store"
+msgstr "Penyimpanan Pohon"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:485
+msgid "Tree View"
+msgstr "Tilikan Pohon"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:487
+msgid "Ultra Condensed"
+msgstr "Termampat Ultra"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:488
+msgid "Ultra Expanded"
+msgstr "Terkembang Ultra"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:489
+msgid "Underline column"
+msgstr "Kolom garis bawah"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:490
+msgid "Up"
+msgstr "Naik"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:491
+msgid "Use Action Appearance"
+msgstr "Gunakan Penampilan Aksi"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:492
+msgid "Use Underline"
+msgstr "Gunakan Garis Bawah"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:493
+msgid "Utility"
+msgstr "Utilitas"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:494
+msgid "Value column"
+msgstr "Kolom nilai"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:495
+msgid "Variant column"
+msgstr "Kolom varian"
+
+#. Objects
+#: ../plugins/gtk+/gtk+.xml.in.h:497 ../plugins/gtk+/glade-model-data.c:1245
+msgid "Vertical"
+msgstr "Vertikal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:498
+msgid "Vertical Alignment"
+msgstr "Perataan Vertikal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:499
+msgid "Vertical Alignment column"
+msgstr "Kolom Perataan Vertikal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:500
+msgid "Vertical Box"
+msgstr "Kotak Vertikal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:501
+msgid "Vertical Button Box"
+msgstr "Kotak Tombol Vertikal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:502
+msgid "Vertical Padding"
+msgstr "Ganjal Vertikal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:503
+msgid "Vertical Padding column"
+msgstr "Kolom Ganjal Vertikal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:504
+msgid "Vertical Panes"
+msgstr "Panel Vertikal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:505
+msgid "Vertical Ruler"
+msgstr "Penggaris Vertikal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:506
+msgid "Vertical Scale"
+msgstr "Skala Vertikal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:507
+msgid "Vertical Scrollbar"
+msgstr "Bilah Gulung Vertikal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:508
+msgid "Vertical Separator"
+msgstr "Pemisah Vertikal"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:509
+msgid "Viewport"
+msgstr "Viewport"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:510
+msgid "Visibility Notify"
+msgstr "Visibility Notify"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:511
+msgid "Visible"
+msgstr "Tampak"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:512
+msgid "Visible column"
+msgstr "Kolom nampak"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:513
+msgid "Volume Button"
+msgstr "Tombol Volume"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:514 ../plugins/gnome/gnome.xml.in.h:69
+msgid "Warning"
+msgstr "Peringatan"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:515
+msgid "Weight column"
+msgstr "Kolom bobot"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:516
+msgid "West"
+msgstr "Barat"
+
+#. Objects
+#: ../plugins/gtk+/gtk+.xml.in.h:519
+msgid "Widgets"
+msgstr "Widget"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:520
+msgid "Width column"
+msgstr "Kolom lebar"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:521
+msgid "Width in Characters column"
+msgstr "Kolom Lebar dalam Karakter"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:522
+msgid "Window"
+msgstr "Jendela"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:523
+msgid "Window Group"
+msgstr "Grup Jendela"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:524
+msgid "Word"
+msgstr "Kata"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:525
+msgid "Word Character"
+msgstr "Karakter Kata"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:526
+msgid "Wrap Mode column"
+msgstr "Kolom Mode Lipat"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:527
+msgid "Wrap Width column"
+msgstr "Kolom Lebar Lipat"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:528
+msgid "Yes, No"
+msgstr "Ya, Tidak"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:529
+msgid ""
+"You can mark this as translatable and set one name/address if you want to "
+"show a translation specific translator, otherwise you should list all "
+"translators and unmark this string for translation"
+msgstr ""
+"Anda dapat menandai ini sebagai dapat diterjemahkan dan menata satu nama/"
+"alamat bila Anda ingin menampilkan suatu penerjemah spesifik terjemahan, "
+"bila tidak Anda mesti mendaftar semua penerjemah dan tidak menandai string "
+"ini untuk penerjemahan"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:1
+msgid "Collate"
+msgstr "Collate"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:2
+msgid "Copies"
+msgstr "Copies"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:3
+msgid "GTK+ Unix Print Toplevels"
+msgstr "Aras Puncak Pencetakan Unix GTK+"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:4
+msgid "Generate PDF"
+msgstr "Generate PDF"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:5
+msgid "Generate PS"
+msgstr "Generate PS"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:6
+msgid "Number Up"
+msgstr "Number Up"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:7
+msgid "Number Up Layout"
+msgstr "Number Up Layout"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:8
+msgid "Page Set"
+msgstr "Page Set"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:9
+msgid "Page Setup Dialog"
+msgstr "Dialog Penyiapan Halaman"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:10
+msgid "Preview"
+msgstr "Preview"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:11
+msgid "Print Dialog"
+msgstr "Dialog Pencetakan"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:12
+msgid "Reverse"
+msgstr "Reverse"
+
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:13
+msgid "Scale"
+msgstr "Scale"
+
+#: ../plugins/gtk+/glade-column-types.c:333
+#: ../plugins/gtk+/glade-column-types.c:382
+#: ../plugins/gtk+/glade-column-types.c:445
+#: ../plugins/gtk+/glade-column-types.c:657
+#, c-format
+msgid "Setting columns on %s"
+msgstr "Menata kolom pada %s"
+
+#: ../plugins/gtk+/glade-column-types.c:473
+msgid "< define a new column >"
+msgstr "< definisikan suatu kolom baru >"
+
+#: ../plugins/gtk+/glade-column-types.c:783
+msgid "Add and remove columns:"
+msgstr "Tambah dan hapus kolom:"
+
+#: ../plugins/gtk+/glade-column-types.c:837
+msgid "Column type"
+msgstr "Tipe kolom"
+
+#: ../plugins/gtk+/glade-column-types.c:859
+msgid "Column name"
+msgstr "Nama kolom"
+
+#: ../plugins/gtk+/glade-model-data.c:1204
+msgid "Add and remove rows:"
+msgstr "Tambah dan hapus baris:"
+
+#: ../plugins/gtk+/glade-model-data.c:1234
+msgid "Sequential editing:"
+msgstr "Penyuntingan berurut:"
+
+#: ../plugins/gtk+/glade-icon-sources.c:694
+#, c-format
+msgid ""
+"Enter a filename or a relative or full path for this source of '%s' (Glade "
+"will only ever load them in the runtime from your project directory)."
+msgstr ""
+"Masukkan suatu nama berkas atau path lengkap atau relatif bagi sumber ini "
+"dari '%s' (Glade hanya akan memuat "
+
+#: ../plugins/gtk+/glade-icon-sources.c:701
+#, c-format
+msgid ""
+"Set whether you want to specify a text direction for this source of '%s'"
+msgstr ""
+"Tata apakah Anda ingin menyatakan suatu arah teks bagi sumber ini dari '%s'"
+
+#: ../plugins/gtk+/glade-icon-sources.c:706
+#, c-format
+msgid "Set the text direction for this source of '%s'"
+msgstr "Tata arah teks bagi sumber ini dari '%s'"
+
+#: ../plugins/gtk+/glade-icon-sources.c:711
+#, c-format
+msgid "Set whether you want to specify an icon size for this source of '%s'"
+msgstr ""
+"Tata apakah Anda ingin menyatakan suatu ukuran ikon bagi sumber ini dari '%s'"
+
+#: ../plugins/gtk+/glade-icon-sources.c:716
+#, c-format
+msgid "Set the icon size for this source of '%s'"
+msgstr "Tata ukuran ikon bagi sumber ini dari '%s'"
+
+#: ../plugins/gtk+/glade-icon-sources.c:721
+#, c-format
+msgid "Set whether you want to specify a state for this source of '%s'"
+msgstr ""
+"Tata apakah Anda ingin menyatakan suatu keadaan bagi sumber ini dari '%s'"
+
+#: ../plugins/gtk+/glade-icon-sources.c:726
+#, c-format
+msgid "Set the state for this source of '%s'"
+msgstr "Tata keadaan bagi sumber ini dari '%s'"
+
+#: ../plugins/gtk+/glade-button-editor.c:237
+#, c-format
+msgid "Setting %s to use standard configuration"
+msgstr "Menata %s untuk memakai konfigurasi standar"
+
+#: ../plugins/gtk+/glade-button-editor.c:295
+#, c-format
+msgid "Setting %s to use a custom child"
+msgstr "Menata %s untuk memakai anak gubahan"
+
+#: ../plugins/gtk+/glade-button-editor.c:339
+#, c-format
+msgid "Setting %s to use a stock button"
+msgstr "Menata %s untuk memakai tombol stok"
+
+#: ../plugins/gtk+/glade-button-editor.c:383
+#: ../plugins/gtk+/glade-image-item-editor.c:260
+#, c-format
+msgid "Setting %s to use a label and image"
+msgstr "Menata %s untuk memakai suatu label dan gambar"
+
+#: ../plugins/gtk+/glade-button-editor.c:442
+msgid "Configure button content"
+msgstr "Tata isi tombol"
+
+#: ../plugins/gtk+/glade-button-editor.c:444
+msgid "Add custom button content"
+msgstr "Tambahkan isi tombol gubahan"
+
+#: ../plugins/gtk+/glade-button-editor.c:446
+msgid "Stock button"
+msgstr "Tombol stok"
+
+#: ../plugins/gtk+/glade-button-editor.c:448
+msgid "Label with optional image"
+msgstr "Label dengan gambar opsional"
+
+#: ../plugins/gtk+/glade-tool-button-editor.c:188
+#, c-format
+msgid "Setting %s to use standard label text"
+msgstr "Menata %s untuk memakai teks label standar"
+
+#: ../plugins/gtk+/glade-tool-button-editor.c:223
+#, c-format
+msgid "Setting %s to use a custom label widget"
+msgstr "Menata %s untuk memakai widget label gubahan"
+
+#: ../plugins/gtk+/glade-tool-button-editor.c:253
+#: ../plugins/gtk+/glade-image-editor.c:266
+#, c-format
+msgid "Setting %s to use an image from stock"
+msgstr "Menata %s untuk memakai suatu gambar dari stok"
+
+#: ../plugins/gtk+/glade-tool-button-editor.c:288
+#: ../plugins/gtk+/glade-tool-button-editor.c:322
+#: ../plugins/gtk+/glade-tool-button-editor.c:356
+#: ../plugins/gtk+/glade-image-editor.c:290
+#, c-format
+msgid "Setting %s to use an image from the icon theme"
+msgstr "Menata %s untuk memakai suatu gambar dari tema ikon"
+
+#. Label area frame...
+#: ../plugins/gtk+/glade-tool-button-editor.c:452
+#: ../plugins/gtk+/glade-image-item-editor.c:395
+msgid "Edit Label"
+msgstr "Sunting Label"
+
+#. Image area frame...
+#. Image content frame...
+#. Internal Image area...
+#: ../plugins/gtk+/glade-tool-button-editor.c:494
+#: ../plugins/gtk+/glade-image-editor.c:345
+#: ../plugins/gtk+/glade-image-item-editor.c:429
+msgid "Edit Image"
+msgstr "Sunting Gambar"
+
+#: ../plugins/gtk+/glade-image-editor.c:313
+#, c-format
+msgid "Setting %s to use an image from filename"
+msgstr "Menata %s untuk memakai suatu gambar dari nama berkas"
+
+#. Image size frame...
+#: ../plugins/gtk+/glade-image-editor.c:398
+msgid "Set Image Size"
+msgstr "Tetapkan Ukuran Gambar"
+
+#: ../plugins/gtk+/glade-image-item-editor.c:218
+#, c-format
+msgid "Setting %s to use a stock item"
+msgstr "Menata %s untuk memakai butir stok"
+
+#: ../plugins/gtk+/glade-image-item-editor.c:350
+msgid "Stock Item:"
+msgstr "Butir Stok:"
+
+#: ../plugins/gtk+/glade-image-item-editor.c:384
+msgid "Custom label and image:"
+msgstr "Gambar dan label gubahan:"
+
+#. Add descriptive label
+#: ../plugins/gtk+/glade-icon-factory-editor.c:196
+msgid ""
+"First add a stock name in the entry below, then add and define sources for "
+"that icon in the treeview."
+msgstr ""
+"Pertama tambahkan suatu nama stok di entri di bawah, lalu tambahkan dan "
+"definisikan sumber bagi ikon itu di treeview."
+
+#. Add descriptive label
+#: ../plugins/gtk+/glade-store-editor.c:197
+msgid ""
+"Define columns for your liststore; giving them meaningful names will help "
+"you to retrieve them when setting cell renderer attributes (press the Delete "
+"key to remove the selected column)"
+msgstr ""
+"Tentukan kolom bagi liststore Anda; memberi mereka nama yang bermakna akan "
+"membantu Anda memperoleh mereka ketika menata atribut perender sel (tekan "
+"tombol Delete untuk menghapus kolom yang dipilih)"
+
+#. Add descriptive label
+#: ../plugins/gtk+/glade-store-editor.c:227
+msgid ""
+"Add remove and edit rows of data (you can optionally use Ctrl+N to add new "
+"rows and the Delete key to remove the selected row)"
+msgstr ""
+"Tambah, hapus, dan sunting baris data (Anda juga dapat memakai Ctrl+N untuk "
+"menambah baris baru dan tombol Delete untuk menghapus baris yang dipilih)"
+
+#: ../plugins/gtk+/glade-label-editor.c:254
+#, c-format
+msgid "Setting %s to use an attribute list"
+msgstr "Menata %s untuk memakai suatu daftar atribut"
+
+#: ../plugins/gtk+/glade-label-editor.c:286
+#, c-format
+msgid "Setting %s to use a Pango markup string"
+msgstr "Menata %s untuk memakai string markup Pango"
+
+#: ../plugins/gtk+/glade-label-editor.c:321
+#, c-format
+msgid "Setting %s to use a pattern string"
+msgstr "Menata %s untuk memakai suatu string pola"
+
+#: ../plugins/gtk+/glade-label-editor.c:357
+#, c-format
+msgid "Setting %s to set desired width in characters"
+msgstr "Menata %s untuk mengatur lebar yang diinginkan dalam karakter"
+
+#: ../plugins/gtk+/glade-label-editor.c:388
+#, c-format
+msgid "Setting %s to set maximum width in characters"
+msgstr "Menata %s untuk mengatur lebar maksimum dalam karakter"
+
+#: ../plugins/gtk+/glade-label-editor.c:422
+#, c-format
+msgid "Setting %s to use normal line wrapping"
+msgstr "Menata %s untuk memakai pelipatan baris normal"
+
+#: ../plugins/gtk+/glade-label-editor.c:457
+#, c-format
+msgid "Setting %s to use a single line"
+msgstr "Menata %s untuk memakai suatu baris tunggal"
+
+#: ../plugins/gtk+/glade-label-editor.c:492
+#, c-format
+msgid "Setting %s to use specific Pango word wrapping"
+msgstr "Menata %s untuk memakai pelipatan kata Pango spesifik"
+
+#. Label appearance...
+#: ../plugins/gtk+/glade-label-editor.c:538
+msgid "Edit label appearance"
+msgstr "Sunting penampilan label"
+
+#. Label formatting...
+#: ../plugins/gtk+/glade-label-editor.c:609
+msgid "Format label"
+msgstr "Format label"
+
+#. Line Wrapping...
+#: ../plugins/gtk+/glade-label-editor.c:675
+msgid "Text line wrapping"
+msgstr "Pelipatan baris teks"
+
+#: ../plugins/gtk+/glade-label-editor.c:694
+msgid "Text wraps normally"
+msgstr "Teks dilipat secara normal"
+
+#: ../plugins/gtk+/glade-cell-renderer-editor.c:228
+#, c-format
+msgid "Setting %s to use the %s property as an attribute"
+msgstr "Menata %s untuk memakai properti %s sebagai suatu atribut"
+
+#: ../plugins/gtk+/glade-cell-renderer-editor.c:246
+#, c-format
+msgid "Setting %s to use the %s property directly"
+msgstr "Menata %s untuk memakai properti %s secara langsung"
+
+#: ../plugins/gtk+/glade-cell-renderer-editor.c:369
+#, c-format
+msgid "Retrieve %s from model (type %s)"
+msgstr "Mengambil %s dari model (tipe %s)"
+
+#. translators: the adjective not the verb
+#: ../plugins/gtk+/glade-cell-renderer-editor.c:509
+msgid "unset"
+msgstr "tak diset"
+
+#: ../plugins/gtk+/glade-cell-renderer-editor.c:532
+msgid "no model"
+msgstr "tanpa model"
+
+#: ../plugins/gtk+/glade-treeview-editor.c:241
+msgid ""
+"Choose a Data Model and define some\n"
+"columns in the data store first"
+msgstr ""
+"Pilih suatu Model Data dan definisikan dulu\n"
+"beberapa kolom pada penyimpanan data"
+
+#: ../plugins/gtk+/glade-entry-editor.c:229
+#, c-format
+msgid "Setting %s to use static text"
+msgstr "Menata %s untuk memakai teks statik"
+
+#: ../plugins/gtk+/glade-entry-editor.c:267
+#, c-format
+msgid "Setting %s to use an external buffer"
+msgstr "Menata %s untuk memakai suatu penyangga eksternal"
+
+#: ../plugins/gtk+/glade-entry-editor.c:352
+#, c-format
+msgid "Setting %s to use a primary icon from stock"
+msgstr "Menata %s untuk memakai ikon primer dari stok"
+
+#: ../plugins/gtk+/glade-entry-editor.c:376
+#, c-format
+msgid "Setting %s to use a primary icon from the icon theme"
+msgstr "Menata %s untuk memakai ikon primer dari tema ikon"
+
+#: ../plugins/gtk+/glade-entry-editor.c:399
+#, c-format
+msgid "Setting %s to use a primary icon from filename"
+msgstr "Menata %s untuk memakai ikon primer dari nama berkas"
+
+#: ../plugins/gtk+/glade-entry-editor.c:424
+#, c-format
+msgid "Setting %s to use a secondary icon from stock"
+msgstr "Menata %s untuk memakai ikon sekunder dari stok"
+
+#: ../plugins/gtk+/glade-entry-editor.c:448
+#, c-format
+msgid "Setting %s to use a secondary icon from the icon theme"
+msgstr "Menata %s untuk memakai ikon sekunder dari tema ikon"
+
+#: ../plugins/gtk+/glade-entry-editor.c:471
+#, c-format
+msgid "Setting %s to use a secondary icon from filename"
+msgstr "Menata %s untuk memakai ikon sekunder dari nama berkas"
+
+#. Primary icon...
+#: ../plugins/gtk+/glade-entry-editor.c:596
+msgid "Primary icon"
+msgstr "Ikon primer"
+
+#. Secondary icon...
+#: ../plugins/gtk+/glade-entry-editor.c:670
+msgid "Secondary icon"
+msgstr "Ikon Sekunder"
+
+#: ../plugins/gtk+/glade-activatable-editor.c:331
+#, c-format
+msgid "Setting %s action"
+msgstr "Menata aksi %s"
+
+#: ../plugins/gtk+/glade-activatable-editor.c:359
+#, c-format
+msgid "Setting %s to use action appearance"
+msgstr "Menata %s untuk memakai penampilan aksi"
+
+#: ../plugins/gtk+/glade-activatable-editor.c:360
+#, c-format
+msgid "Setting %s to not use action appearance"
+msgstr "Menata %s untuk tidak memakai penampilan aksi"
+
+#: ../plugins/gnome/glade-gnome.c:292
+msgid "Status Message."
+msgstr "Pesan Status."
+
+#: ../plugins/gnome/glade-gnome.c:659
+msgid "The position in the druid"
+msgstr "Posisi di druid"
+
+#: ../plugins/gnome/glade-gnome.c:1011
+msgid "Message box type"
+msgstr "Tipe kotak pesan"
+
+#: ../plugins/gnome/glade-gnome.c:1012
+msgid "The type of the message box"
+msgstr "Tipe kotak pesan"
+
+#: ../plugins/gnome/glade-gnome.c:1220
+msgid "This property is valid only in font information mode"
+msgstr "Properti hanya valid pada mode informasi fonta"
+
+#. This is deprecated
+#: ../plugins/gnome/glade-gnome.c:1308 ../plugins/gnome/canvas.xml.in.h:20
+msgid "Selection Mode"
+msgstr "Mode Pemilihan"
+
+#: ../plugins/gnome/glade-gnome.c:1309
+msgid "Choose the Selection Mode"
+msgstr "Pilih Mode Pemilihan"
+
+#: ../plugins/gnome/glade-gnome.c:1449
+msgid "Placement"
+msgstr "Penempatan"
+
+#: ../plugins/gnome/glade-gnome.c:1450
+msgid "Choose the BonoboDockPlacement type"
+msgstr "Pilih tipe BonoboDockPlacement"
+
+#: ../plugins/gnome/glade-gnome.c:1478
+msgid "Behavior"
+msgstr "Perilaku"
+
+#: ../plugins/gnome/glade-gnome.c:1479
+msgid "Choose the BonoboDockItemBehavior type"
+msgstr "Pilih tipe BonoboDockItemBehavior"
+
+#: ../plugins/gnome/glade-gnome.c:1488
+msgid "Pack Type"
+msgstr "Tipe Pak"
+
+#: ../plugins/gnome/glade-gnome.c:1489
+msgid "Choose the Pack Type"
+msgstr "Pilih Tipe Pak"
+
+#: ../plugins/gnome/gnome.xml.in.h:1
+msgid "24-Hour Format"
+msgstr "Format 24 Jam"
+
+#: ../plugins/gnome/gnome.xml.in.h:3
+msgid "Background Color"
+msgstr "Warna Latar Belakang"
+
+#: ../plugins/gnome/gnome.xml.in.h:4
+msgid "Contents Background Color"
+msgstr "Warna Latar Belakang Isi"
+
+#: ../plugins/gnome/gnome.xml.in.h:5
+msgid "Display Seconds"
+msgstr "Tampilkan Detik"
+
+#: ../plugins/gnome/gnome.xml.in.h:6
+msgid "Dither"
+msgstr "Dither"
+
+#: ../plugins/gnome/gnome.xml.in.h:12
+msgid "Font Information"
+msgstr "Informasi Fonta"
+
+#: ../plugins/gnome/gnome.xml.in.h:13
+msgid "GNOME About"
+msgstr "Tentang GNOME"
+
+#: ../plugins/gnome/gnome.xml.in.h:14
+msgid "GNOME App"
+msgstr "App GNOME"
+
+#: ../plugins/gnome/gnome.xml.in.h:15
+msgid "GNOME App Bar"
+msgstr "Bilah App GNOME"
+
+#: ../plugins/gnome/gnome.xml.in.h:16
+msgid "GNOME Color Picker"
+msgstr "Pemilih Warna GNOME"
+
+#: ../plugins/gnome/gnome.xml.in.h:17
+msgid "GNOME Date Edit"
+msgstr "Sunting Tanggal GNOME"
+
+#. Deprecated Widget Classes :)
+#: ../plugins/gnome/gnome.xml.in.h:19
+msgid "GNOME Dialog"
+msgstr "Dialog GNOME"
+
+#: ../plugins/gnome/gnome.xml.in.h:20
+msgid "GNOME Druid"
+msgstr "Druid GNOME"
+
+#: ../plugins/gnome/gnome.xml.in.h:21
+msgid "GNOME Druid Page Edge"
+msgstr "Tepi Halaman Druid GNOME"
+
+#: ../plugins/gnome/gnome.xml.in.h:22
+msgid "GNOME Druid Page Standard"
+msgstr "Standar Halaman Druid GNOME"
+
+#: ../plugins/gnome/gnome.xml.in.h:23
+msgid "GNOME File Entry"
+msgstr "Entri Berkas GNOME"
+
+#: ../plugins/gnome/gnome.xml.in.h:24
+msgid "GNOME Font Picker"
+msgstr "Pemilih Fonta GNOME"
+
+#: ../plugins/gnome/gnome.xml.in.h:25
+msgid "GNOME HRef"
+msgstr "HRef GNOME"
+
+#: ../plugins/gnome/gnome.xml.in.h:26
+msgid "GNOME Icon Entry"
+msgstr "Entri Ikon GNOME"
+
+#: ../plugins/gnome/gnome.xml.in.h:27
+msgid "GNOME Icon Selection"
+msgstr "Pemilihan Ikon GNOME"
+
+#: ../plugins/gnome/gnome.xml.in.h:28
+msgid "GNOME Message Box"
+msgstr "Kotak Pesan GNOME"
+
+#: ../plugins/gnome/gnome.xml.in.h:29
+msgid "GNOME Pixmap"
+msgstr "Pixmap GNOME"
+
+#: ../plugins/gnome/gnome.xml.in.h:30
+msgid "GNOME Pixmap Entry"
+msgstr "Entri Pixmap GNOME"
+
+#: ../plugins/gnome/gnome.xml.in.h:31
+msgid "GNOME Property Box"
+msgstr "Kotak Properti GNOME"
+
+#: ../plugins/gnome/gnome.xml.in.h:32
+msgid "GNOME UI Obsolete"
+msgstr "UI Obsolete GNOME"
+
+#: ../plugins/gnome/gnome.xml.in.h:33
+msgid "GNOME User Interface"
+msgstr "Antar Muka Pengguna GNOME"
+
+#: ../plugins/gnome/gnome.xml.in.h:34
+msgid "Generic"
+msgstr "Generik"
+
+#: ../plugins/gnome/gnome.xml.in.h:35
+msgid "Information"
+msgstr "Informasi"
+
+#: ../plugins/gnome/gnome.xml.in.h:36
+msgid "Logo"
+msgstr "Logo"
+
+#: ../plugins/gnome/gnome.xml.in.h:37
+msgid "Logo Background Color"
+msgstr "Warna Latar Belakang Logo"
+
+#: ../plugins/gnome/gnome.xml.in.h:38
+msgid "Max Saved"
+msgstr "Simpan Maks"
+
+#: ../plugins/gnome/gnome.xml.in.h:39
+msgid "Message"
+msgstr "Pesan"
+
+#: ../plugins/gnome/gnome.xml.in.h:40
+msgid "Monday First"
+msgstr "Pertama Senin"
+
+#: ../plugins/gnome/gnome.xml.in.h:43
+msgid "Padding"
+msgstr "Ganjal"
+
+#: ../plugins/gnome/gnome.xml.in.h:44
+msgid "Pixmap"
+msgstr "Pixmap"
+
+#: ../plugins/gnome/gnome.xml.in.h:46
+msgid "Program Name"
+msgstr "Nama Program"
+
+#: ../plugins/gnome/gnome.xml.in.h:47
+msgid "Program Version"
+msgstr "Versi Program"
+
+#: ../plugins/gnome/gnome.xml.in.h:49
+msgid "Scaled Height"
+msgstr "Tinggi Terskala"
+
+#: ../plugins/gnome/gnome.xml.in.h:50
+msgid "Scaled Width"
+msgstr "Lebar Terskala"
+
+#: ../plugins/gnome/gnome.xml.in.h:51
+msgid "Show Time"
+msgstr "Tampilkan Waktu"
+
+#: ../plugins/gnome/gnome.xml.in.h:53
+msgid "StatusBar"
+msgstr "StatusBar"
+
+#: ../plugins/gnome/gnome.xml.in.h:54
+msgid "Store Config"
+msgstr "Simpan Konfigurasi"
+
+#: ../plugins/gnome/gnome.xml.in.h:56
+msgid "Text Foreground Color"
+msgstr "Warna Latar Depan Teks"
+
+#: ../plugins/gnome/gnome.xml.in.h:57
+msgid "The height to scale the pixmap to"
+msgstr "Tinggi untuk menskalakan pixmap"
+
+#: ../plugins/gnome/gnome.xml.in.h:58
+msgid "The maximum number of history entries saved"
+msgstr "Cacah maksimum entri riwayat yang disimpan"
+
+#: ../plugins/gnome/gnome.xml.in.h:59
+msgid "The pixmap file"
+msgstr "Berkas pixmap"
+
+#: ../plugins/gnome/gnome.xml.in.h:60
+msgid "The width to scale the pixmap to"
+msgstr "Lebar untuk menskalakan pixmap"
+
+#: ../plugins/gnome/gnome.xml.in.h:62
+msgid "Title Foreground Color"
+msgstr "Warna Latar Depan Judul"
+
+#: ../plugins/gnome/gnome.xml.in.h:63
+msgid "Top Watermark"
+msgstr "Watermark Puncak"
+
+#: ../plugins/gnome/gnome.xml.in.h:64
+msgid "Unknown"
+msgstr "Tak dikenal"
+
+#: ../plugins/gnome/gnome.xml.in.h:65
+msgid "Use Alpha"
+msgstr "Gunakan Alfa"
+
+#: ../plugins/gnome/gnome.xml.in.h:66
+msgid ""
+"Used to pass around information about the position of a GnomeDruidPage "
+"within the overall GnomeDruid. This enables the correct \"surrounding\" "
+"content for the page to be drawn"
+msgstr ""
+"Dipakai untuk menyampaikan informasi tentang posisi dari suatu "
+"GnomeDruidPage di dalam GnomeDruid. Ini memungkinkan isi \"sekeliling\" yang "
+"benar bagi halaman untuk digambar"
+
+#: ../plugins/gnome/gnome.xml.in.h:67
+msgid "User"
+msgstr "Pengguna"
+
+#: ../plugins/gnome/gnome.xml.in.h:68
+msgid "User Widget"
+msgstr "Widget Pengguna"
+
+#: ../plugins/gnome/gnome.xml.in.h:70
+msgid "Watermark"
+msgstr "Watermark"
+
+#: ../plugins/gnome/bonobo.xml.in.h:2
+msgid "Exclusive"
+msgstr "Eksklusif"
+
+#: ../plugins/gnome/bonobo.xml.in.h:3
+msgid "Floating"
+msgstr "Mengambang"
+
+#: ../plugins/gnome/bonobo.xml.in.h:5
+msgid "Locked"
+msgstr "Terkunci"
+
+#: ../plugins/gnome/bonobo.xml.in.h:6
+msgid "Never Floating"
+msgstr "Tak Pernah Mengambang"
+
+#: ../plugins/gnome/bonobo.xml.in.h:7
+msgid "Never Horizontal"
+msgstr "Tak Pernah Horizontal"
+
+#: ../plugins/gnome/bonobo.xml.in.h:8
+msgid "Never Vertical"
+msgstr "Tak Pernah Vertikal"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:2
+msgid "Column Spacing"
+msgstr "Jarak Antar Kolom"
+
+#: ../plugins/gnome/canvas.xml.in.h:3
+msgid "GNOME Canvas"
+msgstr "Kanvas GNOME"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:5
+msgid "GNOME Icon List"
+msgstr "Daftar Ikon GNOME"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:7
+msgid "Icon Width"
+msgstr "Lebar Ikon"
+
+#: ../plugins/gnome/canvas.xml.in.h:8
+msgid "If the icon text can be edited by the user"
+msgstr "Bila teks ikon dapat disunting oleh pengguna"
+
+#: ../plugins/gnome/canvas.xml.in.h:9
+msgid ""
+"If the icon text is static, in which case it will not be copied by the "
+"GnomeIconList"
+msgstr "Bila teks ikon statik, maka tidak akan disalin oleh GnomeIconList"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:11
+msgid "List Icons"
+msgstr "Ikon Daftar"
+
+#: ../plugins/gnome/canvas.xml.in.h:12
+msgid "Max X"
+msgstr "Maks X"
+
+#: ../plugins/gnome/canvas.xml.in.h:13
+msgid "Max Y"
+msgstr "Maks Y"
+
+#: ../plugins/gnome/canvas.xml.in.h:14
+msgid "Min X"
+msgstr "Min X"
+
+#: ../plugins/gnome/canvas.xml.in.h:15
+msgid "Min Y"
+msgstr "Min Y"
+
+#: ../plugins/gnome/canvas.xml.in.h:16
+msgid "Pixels per unit"
+msgstr "Piksel per unit"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:18
+msgid "Row Spacing"
+msgstr "Jarak Antar Baris"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:22
+msgid "Text Below"
+msgstr "Teks Di Bawah"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:24
+msgid "Text Editable"
+msgstr "Teks Dapat Disunting"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:26
+msgid "Text Right"
+msgstr "Teks Di Kanan"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:28
+msgid "Text Spacing"
+msgstr "Jarak Teks"
+
+#. This is deprecated
+#: ../plugins/gnome/canvas.xml.in.h:30
+msgid "Text Static"
+msgstr "Statis Teks"
+
+#: ../plugins/gnome/canvas.xml.in.h:31
+msgid "The maximum X coordinate"
+msgstr "Koordinat X maksimum"
+
+#: ../plugins/gnome/canvas.xml.in.h:32
+msgid "The maximum Y coordinate"
+msgstr "Koordinat Y maksimum"
+
+#: ../plugins/gnome/canvas.xml.in.h:33
+msgid "The minimum X coordinate"
+msgstr "Koordinat X minimum"
+
+#: ../plugins/gnome/canvas.xml.in.h:34
+msgid "The minimum Y coordinate"
+msgstr "Koordinat Y minimum"
+
+#: ../plugins/gnome/canvas.xml.in.h:35
+msgid "The number of pixels between columns of icons"
+msgstr "Cacah piksel antara kolom-kolom ikon"
+
+#: ../plugins/gnome/canvas.xml.in.h:36
+msgid "The number of pixels between rows of icons"
+msgstr "Cacah piksel antara baris-baris ikon"
+
+#: ../plugins/gnome/canvas.xml.in.h:37
+msgid "The number of pixels between the text and the icon"
+msgstr "Cacah piksel antara teks dan ikon"
+
+#: ../plugins/gnome/canvas.xml.in.h:38
+msgid "The number of pixels corresponding to one unit"
+msgstr "Cacah piksel yang setara dengan satu unit"
+
+#: ../plugins/gnome/canvas.xml.in.h:39
+msgid "The selection mode"
+msgstr "Moda pilihan"
+
+#: ../plugins/gnome/canvas.xml.in.h:40
+msgid "The width of each icon"
+msgstr "Lebar setiap ikon"

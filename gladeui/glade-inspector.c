@@ -47,7 +47,11 @@
 
 #include <string.h>
 #include <glib/gi18n-lib.h>
+#if GTK_CHECK_VERSION (2, 21, 8)
+#include <gdk/gdkkeysyms-compat.h>
+#else
 #include <gdk/gdkkeysyms.h>
+#endif
 
 #define GLADE_INSPECTOR_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object),\
 					    GLADE_TYPE_INSPECTOR,                 \
@@ -496,14 +500,9 @@ static void
 glade_inspector_dispose (GObject *object)
 {
 	GladeInspector *inspector = GLADE_INSPECTOR(object);
-	GladeInspectorPrivate *priv = inspector->priv;
 	
-	if (priv->project)
-	{
-		g_object_unref (priv->project);
-		priv->project = NULL;
-	}
-	
+	glade_inspector_set_project (inspector, NULL);
+
 	G_OBJECT_CLASS (glade_inspector_parent_class)->dispose (object);
 }
 
@@ -671,30 +670,41 @@ static void
 add_columns (GtkTreeView *view)
 {
 	GtkTreeViewColumn *column;
-	GtkCellRenderer *renderer_pixbuf, *renderer_name, *renderer_type;
+	GtkCellRenderer *renderer;
 
 	column = gtk_tree_view_column_new ();
 
-	renderer_pixbuf = gtk_cell_renderer_pixbuf_new ();
-	gtk_tree_view_column_pack_start (column, renderer_pixbuf, FALSE);
+	renderer = gtk_cell_renderer_pixbuf_new ();
+	gtk_tree_view_column_pack_start (column, renderer, FALSE);
 	gtk_tree_view_column_set_attributes (column,
-	                                     renderer_pixbuf,
+	                                     renderer,
 	                                     "icon_name", GLADE_PROJECT_MODEL_COLUMN_ICON_NAME,
 	                                     NULL);
 
-	renderer_name = gtk_cell_renderer_text_new ();
-	gtk_tree_view_column_pack_start (column, renderer_name, FALSE);
+	renderer = gtk_cell_renderer_text_new ();
+	gtk_tree_view_column_pack_start (column, renderer, FALSE);
 	gtk_tree_view_column_set_attributes (column,
-	                                     renderer_name,
+	                                     renderer,
 	                                     "text", GLADE_PROJECT_MODEL_COLUMN_NAME,
 	                                     NULL);
 
-	renderer_type = gtk_cell_renderer_text_new ();
-	g_object_set (renderer_type, "style", PANGO_STYLE_ITALIC, NULL);
-	gtk_tree_view_column_pack_start (column, renderer_type, FALSE);	
+	renderer = gtk_cell_renderer_text_new ();
+	g_object_set (renderer, "style", PANGO_STYLE_ITALIC, NULL);
+	gtk_tree_view_column_pack_start (column, renderer, FALSE);	
 	gtk_tree_view_column_set_attributes (column,
-	                                     renderer_type,
+	                                     renderer,
 	                                     "text", GLADE_PROJECT_MODEL_COLUMN_TYPE_NAME,
+	                                     NULL);
+
+
+	renderer = gtk_cell_renderer_text_new ();
+	g_object_set (G_OBJECT (renderer), 
+		      "style", PANGO_STYLE_ITALIC,
+		      "foreground", "Gray", NULL);
+	gtk_tree_view_column_pack_start (column, renderer, FALSE);	
+	gtk_tree_view_column_set_attributes (column,
+	                                     renderer,
+	                                     "text", GLADE_PROJECT_MODEL_COLUMN_MISC,
 	                                     NULL);
 
 	gtk_tree_view_append_column (view, column);
@@ -775,23 +785,28 @@ glade_inspector_set_project (GladeInspector *inspector,
 
 	if (inspector->priv->project)
 	{
-		disconnect_project_signals (inspector, project);
-		g_object_unref (priv->project);
+		disconnect_project_signals (inspector, inspector->priv->project);
+
+		/* Release our filter which releases the project */
+		gtk_tree_view_set_model (GTK_TREE_VIEW (priv->view), NULL);
+		priv->filter = NULL;
 		priv->project = NULL;
 	}
 	
 	if (project)
 	{		
 		priv->project = project;
-		g_object_ref (priv->project);
 
-		priv->filter = gtk_tree_model_filter_new (GTK_TREE_MODEL (priv->project), NULL);	
+		/* The filter holds our reference to 'project' */
+		priv->filter = gtk_tree_model_filter_new (GTK_TREE_MODEL (priv->project), NULL);
 
 		gtk_tree_model_filter_set_visible_func (GTK_TREE_MODEL_FILTER (priv->filter),
 						(GtkTreeModelFilterVisibleFunc)glade_inspector_visible_func,
 						inspector, NULL);
 
 		gtk_tree_view_set_model (GTK_TREE_VIEW (priv->view), priv->filter);
+		g_object_unref (priv->filter); /* pass ownership of the filter to the model */
+
 		connect_project_signals (inspector, project);
 	}
 

@@ -49,10 +49,6 @@ gint              glade_util_compare_stock_labels (gconstpointer a, gconstpointe
 
 void              glade_util_hide_window		(GtkWindow *window);
 
-gchar            *glade_util_gtk_combo_func	(gpointer data);
-
-gpointer          glade_util_gtk_combo_find	(GtkCombo *combo);
-
 
 GtkWidget        *glade_util_file_dialog_new (const gchar *title,
 					      GladeProject *project,
@@ -160,6 +156,22 @@ gint              glade_utils_hijack_key_press (GtkWindow          *win,
 	
 
 gchar           *glade_utils_replace_home_dir_with_tilde (const gchar *uri);
+
+void             glade_utils_cairo_draw_line (cairo_t  *cr,
+					      GdkColor *color,
+					      gint      x1,
+					      gint      y1,
+					      gint      x2,
+					      gint      y2);
+
+
+void             glade_utils_cairo_draw_rectangle (cairo_t *cr,
+						   GdkColor *color,
+						   gboolean filled,
+						   gint x,
+						   gint y,
+						   gint width,
+						   gint height);
 
 G_END_DECLS
 

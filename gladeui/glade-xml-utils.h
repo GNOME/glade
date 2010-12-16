@@ -281,6 +281,9 @@ GladeXmlContext * glade_xml_context_new_from_path (const gchar *full_path,
 						   const gchar *root_name);
 GladeXmlDoc *     glade_xml_context_get_doc (GladeXmlContext *context);
 
+/* Dumps an xml string from a context */
+gchar * glade_xml_dump_from_context (GladeXmlContext *context);
+
 gboolean        glade_xml_load_sym_from_node (GladeXmlNode     *node_in,
 					      GModule          *module,
 					      gchar            *tagname,

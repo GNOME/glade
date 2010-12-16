@@ -1,28 +1,59 @@
+## Previewer
+
+bin_PROGRAMS = glade-previewer
+
+glade_previewer_CPPFLAGS = \
+	-I$(top_srcdir)    \
+	-I$(top_builddir)  \
+	-DGLADE_GNOMEHELPDIR="\"$(HELP_DIR)\""
+	$(AM_CPPFLAGS)
+
+glade_previewer_CFLAGS =   \
+	$(GTK_CFLAGS)      \
+	$(IGE_MAC_CFLAGS)  \
+	$(WARN_CFLAGS)     \
+	$(AM_CFLAGS)
+
+glade_previewer_LDFLAGS = $(AM_LDFLAGS)
+
+glade_previewer_LDADD = $(top_builddir)/gladeui/libgladeui-2.la $(IGE_MAC_LIBS)
+
+glade_previewer_SOURCES = \
+	glade-previewer.c
+
+if NATIVE_WIN32
+glade_previewer_LDADD += glade-win32-res.o
+if !GLADE_UNSTABLE
+glade_previewer_LDFLAGS += -mwindows
+endif
+endif
+
+glade-win32-res.o: glade-previewer.rc
+	$(WINDRES) $< $@
+
+## Rest of the UI ;)
 
 common_defines = \
 	-DG_LOG_DOMAIN=\"GladeUI\"                      \
-	-DGLADE_DATADIR="\"$(pkgdatadir)\""		\
-	-DGLADE_LIBDIR="\"$(pkglibdir)\""		\
 	-DGLADE_CATALOGSDIR="\"$(pkgdatadir)/catalogs\""\
 	-DGLADE_MODULESDIR="\"$(pkglibdir)/modules\""	\
-	-DGLADE_PLUGINSDIR="\"$(pkglibdir)/plugins\""	\
 	-DGLADE_PIXMAPSDIR="\"$(pkgdatadir)/pixmaps\""	\
-	-DGLADE_LOCALEDIR="\"$(datadir)/locale\""
+	-DGLADE_LOCALEDIR="\"$(datadir)/locale\""\
+  -DGLADE_BINDIR="\"$(bindir)\""
 
-lib_LTLIBRARIES = libgladeui-1.la
+lib_LTLIBRARIES = libgladeui-2.la
 
 BUILT_SOURCES = glade-marshallers.c glade-marshallers.h
 
-EXTRA_DIST = glade-marshallers.list gladeui.rc.in icon-naming-spec.c
+EXTRA_DIST = glade-marshallers.list gladeui.rc.in icon-naming-spec.c glade-previewer.rc.in
 
 # The glade-3 core library
-libgladeui_1_la_SOURCES = \
+libgladeui_2_la_SOURCES = \
 	glade-widget-adaptor.c \
 	glade-debug.c \
 	glade-project.c \
 	glade-parameter.c \
 	glade-placeholder.c \
-	glade-custom.c \
 	glade-inspector.c \
 	glade-xml-utils.c \
 	glade-palette.c \
@@ -63,24 +94,24 @@ libgladeui_1_la_SOURCES = \
 	glade-cell-renderer-icon.c \
 	glade-signal-model.c
 
-libgladeui_1_la_CPPFLAGS =  \
+libgladeui_2_la_CPPFLAGS =  \
 	$(common_defines)   \
 	-I$(top_srcdir)     \
 	-I$(top_builddir)   \
 	$(AM_CPPFLAGS)
 
-libgladeui_1_la_CFLAGS =    \
+libgladeui_2_la_CFLAGS =    \
 	$(GTK_CFLAGS)       \
 	$(IGE_MAC_BUNDLE_FLAG) \
 	$(IGE_MAC_CFLAGS)  \
 	$(WARN_CFLAGS)      \
 	$(AM_CFLAGS)
 
-libgladeui_1_la_LDFLAGS = -version-info $(GLADE_CURRENT):$(GLADE_REVISION):$(GLADE_AGE) $(AM_LDFLAGS)
-libgladeui_1_la_LIBADD = $(GTK_LIBS) $(IGE_MAC_LIBS)
+libgladeui_2_la_LDFLAGS = -version-info $(GLADE_CURRENT):$(GLADE_REVISION):$(GLADE_AGE) $(AM_LDFLAGS)
+libgladeui_2_la_LIBADD = $(GTK_LIBS) $(IGE_MAC_LIBS)
 
 
-libgladeuiincludedir=$(includedir)/libgladeui-1.0/gladeui
+libgladeuiincludedir=$(includedir)/libgladeui-2.0/gladeui
 libgladeuiinclude_HEADERS = \
 	glade.h \
 	glade-debug.h \
@@ -88,7 +119,6 @@ libgladeuiinclude_HEADERS = \
 	glade-inspector.h \
 	glade-parameter.h \
 	glade-placeholder.h \
-	glade-custom.h \
 	glade-editor.h \
 	glade-editor-property.h \
 	glade-signal-editor.h \
@@ -122,12 +152,12 @@ libgladeuiinclude_HEADERS = \
 
 
 if PLATFORM_WIN32
-libgladeui_1_la_LDFLAGS += -no-undefined
+libgladeui_2_la_LDFLAGS += -no-undefined
 endif
 
 if NATIVE_WIN32
-libgladeui_1_la_LDFLAGS += -Wl,gladeui-win32-res.o -export-symbols gladeui.def
-libgladeui_1_la_DEPENDENCIES = gladeui-win32-res.o gladeui.def
+libgladeui_2_la_LDFLAGS += -Wl,gladeui-win32-res.o -export-symbols gladeui.def
+libgladeui_2_la_DEPENDENCIES = gladeui-win32-res.o gladeui.def
 endif
 
 gladeui-win32-res.o: gladeui.rc

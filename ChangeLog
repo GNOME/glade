@@ -1,3 +1,109 @@
+2010-11-12  Johannes Schmid <jhs@gnome.org>
+
+	* gladeui/glade-project.c:
+	project-model: Don't be picky about non-existing children
+	It is sometimes possible that children are added before their parents
+	in the tree. We simply ignore that for now as it doesn't 
+	cause any harm in the tree model.
+
+2010-10-12  Marco Diego Aurélio Mesquita <marcodiegomesquita@gmail.com>
+
+	Implemented preview feature for Glade.
+
+	* gladeui/Makefile.am, gladeui/glade-previewer.c: Added program to preview
+	  glade files.
+
+	* gladeui/glade-project.[ch]: Implemented glade_project_preview() to spawn a
+	  child preview process, reap it when it dies and close all previews when
+	  project closes.
+
+	* src/glade-window.c: Added toolbar button to spawn the preview.
+
+	* gladeui/glade-xml-utils.[ch]: Added glade_xml_dump_from_context().
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Added actions to preview a widget.
+
+	* gladeui/glade-app.[ch]: Added glade_app_get_bin_dir() for resolving of previewer path.
+
+2010-10-11  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-inspector.c: Fixed project leakage at dispose time.
+
+2010-10-09  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* configure.ac: Default GTK+ version is 3.0, compiling --with-gtk=2.0 is
+	  just a hack to enable building glade for 2.0 while it doesnt run for 3.0.
+
+2010-08-30  Matthias Clasen <mclasen@redhat.com>
+
+	* gladeui/glade-inspector.c, gladeui/glade-named-icon-chooser-dialog.c:
+	Some build fixes to help compile against GTK+ 3.0
+
+2010-08-30  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* plugins/gtk+/glade-gtk.c: Enable GtkAssistant(child):complete property
+	  and override property name and tooltip for the Glade environment to say:
+	  "Initially Complete"/"Whether this page will initially be marked as complete 
+	  regardless of user input." (closes bug 529595).
+
+2010-08-29  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-project.[ch]:
+	  - Applied Johannes Schmid's changes in bug 623879.
+	  - Added MISC column to the project model (displayable information
+	    about whether the widget is an internal child of a composite widget
+	    or a frame's label or notebook's tab).
+
+	* gladeui/glade-inspector.c: Fixed regression in the inspector; inspector
+	  was failing to display information about frame labels and internal action
+	  areas and such.
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in:
+	  Fixed GtkComboBox/GtkIconView popup actions (was missing
+	  the GtkWidgetClass actions such as add/remove parent)
+	  Fixes bug 628146.
+
+2010-08-26  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* plugins/gtk+/glade-gtk.c: Fixed glade_gtk_frame_add_child() to remove any previous
+	  placeholders.
+
+	* gladeui/glade-project.c:
+	  - Simplified code to use glade_widget_get_children() instead
+	    of glade_widget_adaptor_get_children()
+	  - Added treemodel stamp and attempt to stamp and validate all
+	    GtkTreeIters.
+
+2010-06-15  Tristan Van Berkom <tvb@gnome.org>
+
+	* configure.ac: Require GTK+ 3.0 and change package domain from glade3 -> glade
+
+	* src/Makefile.am, gladeui/Makefile.am: application 'glade-3' -> 'glade', 
+	  library libgladeui-1 -> libgladeui-2
+
+	* plugins/Makefile.am, plugins/gnome/*: Removed libgnomeui support.
+
+	* plugins/gtk/gtk+.xml.in, plugins/gtk/glade-gtk.c: Removed all reference to
+	  deprecated GTK+ widgets (anything removed in 3.0).
+
+	* gladeui/Makefile.am, gladeui/glade-custom.[ch]: Removed support for old
+	  fashioned custom widgets from glade-2.
+
+	* plugins/python/Makefile.am: Fixed to link with new core library (libgladeui-2).
+
+2010-06-10  Javier Jardón <jjardon@gnome.org>
+
+	* m4/python.m4: quote the definition of AM_CHECK_PYMOD
+
+2010-06-10  Javier Jardón <jjardon@gnome.org>
+
+	* gladeui/glade-utils.c: Use gtk_show_uri() instead custom code
+	* src/glade-window.c: Use the same api (based in gtk_show_uri()) to show the help and urls.
+
+2010-06-10  Javier Jardón <jjardon@gnome.org>
+
+	* src/glade-window.c: Fix the user and developer url location
+
 2010-05-15  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-project.c: Fixed crasher on cross-project copy paste by reordering

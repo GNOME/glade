@@ -63,7 +63,7 @@ glade_cell_renderer_icon_init (GladeCellRendererIcon *cellicon)
   cellicon->activatable = TRUE;
   cellicon->active = FALSE;
 
-  GTK_CELL_RENDERER (cellicon)->mode = GTK_CELL_RENDERER_MODE_ACTIVATABLE;
+  g_object_set (G_OBJECT (cellicon), "mode", GTK_CELL_RENDERER_MODE_ACTIVATABLE, NULL);
 }
 
 static void

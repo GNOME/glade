@@ -100,9 +100,9 @@ static guint glade_app_signals[LAST_SIGNAL] = { 0 };
 /* installation paths */
 static gchar *catalogs_dir = NULL;
 static gchar *modules_dir  = NULL;
-static gchar *plugins_dir  = NULL;
 static gchar *pixmaps_dir  = NULL;
 static gchar *locale_dir   = NULL;
+static gchar *bin_dir      = NULL;
 
 static GladeApp *singleton_app = NULL;
 static gboolean check_initialised = FALSE;
@@ -199,6 +199,7 @@ glade_app_finalize (GObject *app)
 	g_free (modules_dir);
 	g_free (pixmaps_dir);	
 	g_free (locale_dir);
+	g_free (bin_dir);
 
 	singleton_app = NULL;
 	check_initialised = FALSE;
@@ -333,15 +334,6 @@ glade_app_get_modules_dir (void)
 }
 
 const gchar *
-glade_app_get_plugins_dir (void)
-{
-	glade_init_check ();
-
-	return plugins_dir;
-}
-
-
-const gchar *
 glade_app_get_pixmaps_dir (void)
 {
 	glade_init_check ();
@@ -356,6 +348,15 @@ glade_app_get_locale_dir (void)
 	
 	return locale_dir;
 }
+
+const gchar *
+glade_app_get_bin_dir (void)
+{
+	glade_init_check ();
+	
+	return bin_dir;
+}
+
 
 /* build package paths at runtime */
 static void
@@ -377,14 +378,15 @@ build_package_paths (void)
 	catalogs_dir = g_build_filename (prefix, "share", PACKAGE, "catalogs", NULL);
 	modules_dir  = g_build_filename (prefix, "lib", PACKAGE, "modules", NULL);
 	locale_dir   = g_build_filename (prefix, "share", "locale", NULL);
+	bin_dir      = g_build_filename (prefix, "bin", NULL);
 
 	g_free (prefix);
 #else
 	catalogs_dir = g_strdup (GLADE_CATALOGSDIR);
 	modules_dir  = g_strdup (GLADE_MODULESDIR);
-	plugins_dir  = g_strdup (GLADE_PLUGINSDIR);
 	pixmaps_dir  = g_strdup (GLADE_PIXMAPSDIR);
 	locale_dir   = g_strdup (GLADE_LOCALEDIR);
+	bin_dir      = g_strdup (GLADE_BINDIR);
 #endif
 }
 
