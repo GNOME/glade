@@ -314,15 +314,13 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 	}
 
 	gtk_tree_view_set_model (GTK_TREE_VIEW (priv->signal_tree), NULL);
-	if (priv->model)
-		g_object_unref (priv->model);
 	priv->model = NULL;
 
 	
 	if (!widget)
 		return;
 
-	priv->model = glade_signal_model_new (widget);
+	priv->model = glade_widget_get_signal_model (widget);
 	gtk_tree_view_set_model (GTK_TREE_VIEW (priv->signal_tree), priv->model);
 	g_object_set (priv->renderer_userdata, "model", glade_app_get_project (), NULL);
 }
@@ -364,10 +362,6 @@ glade_signal_editor_enable_dnd (GladeSignalEditor *editor, gboolean enabled)
 static void
 glade_signal_editor_dispose (GObject *object)
 {
-	GladeSignalEditor *self = GLADE_SIGNAL_EDITOR (object);
-	
-	glade_signal_editor_load_widget (self, NULL);
-
 	G_OBJECT_CLASS (glade_signal_editor_parent_class)->dispose (object);
 }
 
@@ -406,7 +400,7 @@ create_rich_drag_icon (GtkWidget* widget, const gchar* text)
 {
 	PangoLayout* layout = pango_layout_new (gtk_widget_get_pango_context (widget));
 	GdkPixmap* pixmap;
-	cairo_t cr;
+	cairo_t* cr;
 	gint width, height;
 	
 	pango_layout_set_text (layout, text, -1);

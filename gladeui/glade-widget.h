@@ -107,6 +107,9 @@ struct _GladeWidget
 			       */
 	GList          *locked_widgets; /* A list of widgets this widget has locked down.
 					 */
+
+	GtkTreeModel   *signal_model; /* Signal model (or NULL if not yet requested) */
+
 	
 	/* Construct parameters: */
 	GladeWidget       *construct_template;
@@ -430,6 +433,9 @@ void                    glade_widget_lock                   (GladeWidget      *w
 void                    glade_widget_unlock                 (GladeWidget      *widget);
 
 void                    glade_widget_support_changed        (GladeWidget      *widget);
+
+GtkTreeModel           *glade_widget_get_signal_model       (GladeWidget      *widget);
+
 
 G_END_DECLS
 

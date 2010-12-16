@@ -56,7 +56,7 @@
 #include "glade-app.h"
 #include "glade-design-view.h"
 #include "glade-widget-action.h"
-
+#include "glade-signal-model.h"
 
 
 static void         glade_widget_set_adaptor           (GladeWidget           *widget,
@@ -894,6 +894,11 @@ glade_widget_dispose (GObject *object)
 	{
 		g_list_foreach (widget->packing_actions, (GFunc)g_object_unref, NULL);
 		g_list_free (widget->packing_actions);
+	}
+	if (widget->signal_model)
+	{
+		g_object_unref (widget->signal_model);
+		widget->signal_model = NULL;
 	}
 	
 	G_OBJECT_CLASS (glade_widget_parent_class)->dispose (object);
@@ -4482,4 +4487,21 @@ glade_widget_support_changed (GladeWidget *widget)
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 
 	g_signal_emit (widget, glade_widget_signals[SUPPORT_CHANGED], 0);
+}
+
+/**
+ * glade_widget_get_signal_model:
+ * @widget: A #GladeWidget
+ * 
+ * Returns: a GtkTreeModel that can be used to view the widget's signals.
+ *          The signal model is owned by the #GladeWidget.
+ */
+GtkTreeModel *
+glade_widget_get_signal_model (GladeWidget *widget)
+{
+	if (!widget->signal_model)
+	{
+		widget->signal_model = glade_signal_model_new (widget);
+	}
+	return widget->signal_model;
 }
