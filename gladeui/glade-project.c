@@ -101,9 +101,6 @@ struct _GladeProjectPrivate
 	gint stamp; /* Stamp used for the iterators, increment when iterators become invalid */
 	gboolean previewable;
 
-	gint   stamp;     /* A a random int per instance of project used to stamp/check the
-			   * GtkTreeIter->stamps */
-
 	GList *selection; /* We need to keep the selection in the project
 			   * because we have multiple projects and when the
 			   * user switchs between them, he will probably

@@ -1246,8 +1246,6 @@ glade_base_editor_dispose (GObject *object)
 {
 	GladeBaseEditor *cobj = GLADE_BASE_EDITOR (object);
 
-	glade_signal_editor_load_widget (cobj->priv->signal_editor, NULL);
-
 	reset_child_types (cobj);
 
 	glade_base_editor_project_disconnect (cobj);
