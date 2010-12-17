@@ -3052,28 +3052,31 @@ adjust_naming_policy (GladeProject       *project,
 	GList *list, *objects;
 	GladeWidget *widget;
 
-	objects = project->priv->tree;
-
-	/* Remove all toplevels (recursive operation) */
-	for (list = objects; list; list = list->next)
+	/* Ref *all* objects */
+	for (list = project->priv->objects; list; list = list->next)
 	{
 		widget = glade_widget_get_from_gobject (list->data);
-		g_object_ref (widget->object);
 		g_object_ref (widget);
-		glade_project_remove_object (project, widget->object);
 	}
+
+	/* Remove all toplevels (recursive operation) */
+	objects = g_list_copy (project->priv->tree);
+	for (list = objects; list; list = list->next)
+		glade_project_remove_object (project, G_OBJECT (list->data));
 
 	project->priv->naming_policy = policy;
 
 	/* Put the toplevels back with the new policy (recursive operation) */
 	for (list = objects; list; list = list->next)
-	{
-		glade_project_add_object (project, project, widget->object);
-		g_object_unref (widget->object);
-		g_object_unref (widget);
-	}
-
+		glade_project_add_object (project, project, G_OBJECT (list->data));
 	g_list_free (objects);
+
+	/* Unref them now */
+	for (list = project->priv->objects; list; list = list->next)
+	{
+		widget = glade_widget_get_from_gobject (list->data);
+		g_object_ref (widget);
+	}
 }
 
 /*******************************************************************
