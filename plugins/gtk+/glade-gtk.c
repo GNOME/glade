@@ -4845,6 +4845,22 @@ glade_gtk_entry_set_property (GladeWidgetAdaptor *adaptor,
 			break;
 		}
 	}
+	else if (!strcmp (id, "primary-icon-tooltip-text") ||
+		 !strcmp (id, "primary-icon-tooltip-markup"))
+	{
+		/* Avoid a silly crash in GTK+ */
+		if (gtk_entry_get_icon_storage_type (GTK_ENTRY (object),
+						     GTK_ENTRY_ICON_PRIMARY) != GTK_IMAGE_EMPTY)
+			GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
+	}
+	else if (!strcmp (id, "secondary-icon-tooltip-text") ||
+		 !strcmp (id, "secondary-icon-tooltip-markup"))
+	{
+		/* Avoid a silly crash in GTK+ */
+		if (gtk_entry_get_icon_storage_type (GTK_ENTRY (object),
+						     GTK_ENTRY_ICON_SECONDARY) != GTK_IMAGE_EMPTY)
+			GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
+	}
 	else if (!strcmp (id, "text"))
 	{
 		g_signal_handlers_block_by_func (object, glade_gtk_entry_changed, gwidget);
@@ -5340,7 +5356,12 @@ glade_gtk_dialog_post_create (GladeWidgetAdaptor *adaptor,
 			(widget, G_OBJECT (child),
 			 "cancel_button", "fontsel", FALSE, reason);
 
-		child = gtk_font_selection_dialog_get_font_selection (GTK_FONT_SELECTION_DIALOG (dialog));
+#if GTK_CHECK_VERSION (2, 24, 0)
+		child = gtk_font_selection_dialog_get_font_selection
+			(GTK_FONT_SELECTION_DIALOG (dialog));
+#else
+		child = GTK_FONT_SELECTION_DIALOG (dialog)->fontsel;
+#endif
 		fontsel =  glade_widget_adaptor_create_internal
 			(widget, G_OBJECT (child),
 			 "font_selection", "fontsel", FALSE, reason);
@@ -5449,9 +5470,14 @@ glade_gtk_dialog_get_internal_child (GladeWidgetAdaptor  *adaptor,
 			child = gtk_font_selection_dialog_get_cancel_button
 				(GTK_FONT_SELECTION_DIALOG (dialog));
 		else if (strcmp ("font_selection", name) == 0)
+		{
+#if GTK_CHECK_VERSION (2, 24, 0)
 			child = gtk_font_selection_dialog_get_font_selection
 				(GTK_FONT_SELECTION_DIALOG (dialog));
-
+#else
+			child = GTK_FONT_SELECTION_DIALOG (dialog)->fontsel;
+#endif
+		}
 	}
 	else
 	{
@@ -5515,7 +5541,12 @@ glade_gtk_dialog_get_children (GladeWidgetAdaptor  *adaptor,
 		widget = gtk_font_selection_dialog_get_cancel_button (GTK_FONT_SELECTION_DIALOG (dialog));
 		if (widget) list = g_list_prepend (list, widget);
 
+#if GTK_CHECK_VERSION (2, 24, 0)
 		widget = gtk_font_selection_dialog_get_font_selection (GTK_FONT_SELECTION_DIALOG (dialog));
+#else
+		widget = GTK_FONT_SELECTION_DIALOG (dialog)->fontsel;
+#endif
+
 		if (widget) list = g_list_prepend (list, widget);
 	}
 	return list;
