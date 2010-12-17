@@ -14,6 +14,10 @@
 	* gladeui/glade-utils.c: Change glade_util_find_iter_by_widget() to use
 	  glade_widget_is_ancestor() and speed up searches a little this way.
 
+	* plugins/gtk+/glade-gtk.c:
+	  - Defensively avoid crash when setting entry icon tooltips
+	  - Add version check macro to compile with GTK+ 2.20
+
 2010-12-16  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* plugins/gtk+/glade-gtk.c: Avoid using gtk_combo_box_set_entry_text_column directly (build
