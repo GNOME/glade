@@ -18,6 +18,9 @@
 	  - Defensively avoid crash when setting entry icon tooltips
 	  - Add version check macro to compile with GTK+ 2.20
 
+	* plugins/gtk+/glade-gtk.c: Fixed crashes when textview's buffer is deleted, fix
+	  by Martin Schlemmer, bug 609748.
+
 2010-12-16  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* plugins/gtk+/glade-gtk.c: Avoid using gtk_combo_box_set_entry_text_column directly (build
