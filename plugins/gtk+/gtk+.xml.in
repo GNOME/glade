@@ -296,6 +296,7 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkBox" _title="Box" fixed="True">
       <post-create-function>glade_gtk_box_post_create</post-create-function>
       <get-internal-child-function>glade_gtk_box_get_internal_child</get-internal-child-function>
+      <get-children-function>glade_gtk_box_get_children</get-children-function>
       <set-property-function>glade_gtk_box_set_property</set-property-function>
       <get-property-function>glade_gtk_box_get_property</get-property-function>
       <verify-function>glade_gtk_box_verify_property</verify-function>
