@@ -4010,6 +4010,35 @@ glade_widget_write (GladeWidget     *widget,
 }
 
 
+/**
+ * gtk_widget_is_ancestor:
+ * @widget: a #GladeWidget
+ * @ancestor: another #GladeWidget
+ *
+ * Determines whether @widget is somewhere inside @ancestor, possibly with
+ * intermediate containers.
+ *
+ * Return value: %TRUE if @ancestor contains @widget as a child,
+ *    grandchild, great grandchild, etc.
+ **/
+gboolean
+glade_widget_is_ancestor (GladeWidget      *widget,
+			  GladeWidget      *ancestor)
+{
+  g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+  g_return_val_if_fail (GLADE_IS_WIDGET (ancestor), FALSE);
+
+  while (widget)
+    {
+      if (widget->parent == ancestor)
+	return TRUE;
+      widget = widget->parent;
+    }
+
+  return FALSE;
+}
+
+
 static gint glade_widget_su_stack = 0;
 
 /**

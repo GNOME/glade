@@ -1401,7 +1401,7 @@ glade_command_add_execute (GladeCommandAddRemove *me)
 
 			glade_widget_show (cdata->widget);
 		}
-		glade_app_selection_changed ();
+		glade_app_queue_selection_changed ();
 	}
 	return TRUE;
 	

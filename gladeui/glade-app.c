@@ -94,6 +94,8 @@ struct _GladeAppPrivate
 	GList *undo_list, *redo_list;	/* Lists of buttons to refresh in update-ui signal */
 
 	GladePointerMode pointer_mode;  /* Current mode for the pointer in the workspace */
+
+	guint selection_changed_id; /* for queue_selection_changed() */
 };
 
 static guint glade_app_signals[LAST_SIGNAL] = { 0 };
@@ -1607,6 +1609,25 @@ glade_app_selection_changed (void)
 		glade_project_selection_changed (project);
 	}
 }
+
+static gboolean
+selection_change_idle (GladeApp *app)
+{
+	glade_app_selection_changed ();
+	app->priv->selection_changed_id = 0;
+	return FALSE;
+}
+
+void
+glade_app_queue_selection_changed (void)
+{
+	GladeApp  *app = glade_app_get ();
+
+	if (app->priv->selection_changed_id == 0)
+		app->priv->selection_changed_id = 
+			g_idle_add ((GSourceFunc)selection_change_idle, app);
+}
+
 
 GladeApp*
 glade_app_new (void)

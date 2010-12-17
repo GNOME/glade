@@ -273,6 +273,10 @@ GladeEditorProperty    *glade_widget_create_editor_property (GladeWidget      *w
 							     gboolean          use_command);
 
 gchar                  *glade_widget_generate_path_name     (GladeWidget      *widget);
+
+gboolean                glade_widget_is_ancestor            (GladeWidget      *widget,
+							     GladeWidget      *ancestor);
+
 /*******************************************************************************
                       Project, object property references
  *******************************************************************************/
