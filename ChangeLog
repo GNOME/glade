@@ -1,3 +1,7 @@
+2010-12-18  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* NEWS, configure.ac: Rolling 3.7.2.
+
 2010-12-17  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-app.[ch]: Added glade_app_queue_selection_changed()
@@ -2084,7 +2088,7 @@
 	  on ia64 platform (bug 530143).
 
 2008-05-05  Tristan Van Berkom <tvb@gnome.org>
-	
+
 	* gladeui/glade-editor-property.c: Avoid feedback loops when committing properties,
 	  fixes bug 527896.
 
@@ -2109,7 +2113,7 @@
 2008-04-17  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* gladeui/glade-property-class.[ch]: added glade_property_class_compare()
-	
+
 	* gladeui/glade-editor-property.c: use new compare function in
 	  glade_editor_property_commit() instead of g_param_values_cmp()
 	  since GBoxed comparison is not well defined.
@@ -2157,7 +2161,7 @@
 
 	* gladeui/glade-project.c, gladeui/glade-project.h: fix some mistakes,
 	added translator comments to new strings
-	
+
 	* src/glade-window.c: Added padding on top of undocked tools, removed
 	custom label handling of widget name.
 
@@ -2174,7 +2178,7 @@
 
 	* gladeui/glade-editor-property.c, gladeui/glade-editor-property.h:
 	Loaded and watched the new support_warning on GladeProperty
-	
+
 	* gladeui/glade-widget.c, gladeui/glade-widget.h: Keep a support-warning
 	property around as metadata updated by GladeProject.
 
@@ -2189,18 +2193,18 @@
 	Preferences dialog is not modal anymore ;-)
 
 	* gladeui/glade-signal.c: Removed a bogus return.
-	
+
 2008-04-09  Tristan Van Berkom <tvb@gnome.org>
 
 	* NEWS, configure.ac: Rolling 3.5.2. quick bugfix release
 
 	* gladeui/glade-widget-adaptor.c: oops, was parsing booleans
 	as doubles, fixed bugs with builder-unsupported and deprecated.
-	
+
 2008-04-09  Tristan Van Berkom <tvb@gnome.org>
 
 	* NEWS, configure.ac: Rolling 3.5.1.
-	
+
 	* plugins/gtk+/gtk+.xml.in: Filled in all since, deprecated and
 	  builder-unsupported properties.
 

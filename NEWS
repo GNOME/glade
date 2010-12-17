@@ -1,3 +1,36 @@
+===========
+Glade 3.7.2
+===========
+	- Use gtk_show_uri() instead of previous custom code in place (Javier Jardón)
+	- Fixed user/developer url locations (Javier Jardón)
+	- Fixed ComboBox and IconView to include basic actions in the popup menu
+	- Revived the "misc" column on the project data model (now the inspector shows
+	  whether a widget is an internal child or a frame's label or such, again).
+	- Expose GtkAssistant:complete packing property (bug 529595).
+	- Implemented Preview feature, Glade now includes a project previewing program
+	  that is accessible in the UI and runs as a child process (Marco Diego Aurélio Mesquita).
+	- Ignore "resize-mode" property incase of crashes (as reported in bug 622996).
+	- Fixed crash with notebook rebuilding children (bug 365462).
+	- Fixed crasher bug 628233 (based on patch by: ramz <ramanathan.nitt@gmail.com>).
+	- GladeWidget is now GInitiallyUnowned (now refcounts balance again at project close time).
+	- Fixed errors when undoing the addition of notebook pages.
+	- Default adjustment page size -> 0 (bug 585085).
+	- Removing frame shadow (and label) from project preferences (bug 574098).
+	- Setting dialog type-hint default to Dialog (closes old bug 459917).
+	- Fixed floating project menus when context menu is fired (bug 141714).
+	- Removed notion of project "instance_count" (which is by now unused).
+	- Avoid clearing the project selection from the inspector (fixing bug 604322).
+	- Set added treeviewcolumns to fixed sizing mode if the treeview is set to use 
+	  fixed height mode (closing bug 596480).
+	- Fixed GtkComboBox to handle cell-layout children as well as the possible internal 
+	  entry (fixes bug 581580)
+	- Notify GtkTreeIter changes when the widget name changes (now the inspector updates
+	  when a widget name is changed automatically).
+	- Fixed crasher when adjusting project naming policy (bug 622528, thanks goes to 
+	  Sébastien Granjoux and Martin Schlemmer for looking at this one).
+	- Fixed crashes when textview's buffer is deleted, fix by Martin Schlemmer, bug 609748.
+	- Defensively avoid crash when setting entry icon tooltips on an entry with no icons set.
+	- 
 
 ===========
 Glade 3.7.1
