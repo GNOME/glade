@@ -1411,7 +1411,6 @@ glade_gtk_container_get_child_property (GladeWidgetAdaptor *adaptor,
 						  property_name, value);
 }
 
-
 GList *
 glade_gtk_container_get_children (GladeWidgetAdaptor  *adaptor,
 				  GtkContainer        *container)
@@ -1701,6 +1700,29 @@ sort_box_children (GtkWidget *widget_a, GtkWidget *widget_b)
 	return position_a - position_b;
 }
 
+static gint
+alpha_sort_box_children (GtkWidget *a, GtkWidget *b)
+{
+	GladeWidget *ga, *gb;
+
+	ga = glade_widget_get_from_gobject (a);
+	gb = glade_widget_get_from_gobject (b);
+
+	if (!ga || !gb)
+		return 1;
+	else 
+		return strcmp (ga->name, gb->name);
+}
+
+GList *
+glade_gtk_box_get_children (GladeWidgetAdaptor  *adaptor,
+			    GtkContainer        *container)
+{
+	GList *children = glade_util_container_get_all_children (container);
+
+	return g_list_sort (children, (GCompareFunc)alpha_sort_box_children);
+}
+
 void
 glade_gtk_box_set_child_property (GladeWidgetAdaptor *adaptor,
 				  GObject            *container,
@@ -1815,7 +1837,6 @@ glade_gtk_box_set_child_property (GladeWidgetAdaptor *adaptor,
 	gtk_container_check_resize (GTK_CONTAINER (container));
 
 }
-
 
 void
 glade_gtk_box_get_property (GladeWidgetAdaptor *adaptor,
