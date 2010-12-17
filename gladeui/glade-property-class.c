@@ -674,7 +674,7 @@ glade_property_class_make_objects_from_string (GladePropertyClass *property_clas
 		}
 		g_strfreev (split);
 	}
-	return objects;
+	return g_list_reverse (objects);
 }
 
 /**
