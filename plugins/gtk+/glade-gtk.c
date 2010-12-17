@@ -61,7 +61,7 @@
 #define MNEMONIC_INSENSITIVE_MSG   _("This property does not apply unless Use Underline is set.")
 #define NOT_SELECTED_MSG           _("Property not selected")
 #define RESPID_INSENSITIVE_MSG     _("This property is only for use in dialog action buttons")
-#define ACTION_APPEARANCE_MSG      _("This property is set to be controled by an Action")
+#define ACTION_APPEARANCE_MSG      _("This property is set to be controlled by an Action")
 /* -------------------------------- ParamSpecs ------------------------------ */
 /*
 GtkImageMenuItem GnomeUI "stock_item" property special case:
