@@ -8723,7 +8723,8 @@ glade_gtk_text_view_changed (GtkTextBuffer *buffer, GladeWidget *gtext)
 	GladeProperty *prop;
 	gchar *text = NULL;
 	
-	g_object_get (buffer, "text", &text, NULL);
+	if (buffer)
+ 		g_object_get (buffer, "text", &text, NULL);
 
 	project = glade_widget_get_project (gtext);
 
@@ -8784,6 +8785,21 @@ glade_gtk_text_view_post_create (GladeWidgetAdaptor *adaptor,
 }
 
 static void
+glade_gtk_text_view_set_buffer (GObject *object, const GValue *value)
+{
+	GtkTextBuffer *buffy;
+	GladeWidget *gtext;
+
+	gtext = glade_widget_get_from_gobject (object);
+	
+	if ((buffy = g_value_get_object (value)) == NULL) return;
+
+	g_signal_handlers_block_by_func (buffy, glade_gtk_text_view_changed, gtext);
+	gtk_text_view_set_buffer (GTK_TEXT_VIEW (object), buffy);
+	g_signal_handlers_unblock_by_func (buffy, glade_gtk_text_view_changed, gtext);
+}
+
+static void
 glade_gtk_text_view_set_text (GObject *object, const GValue *value)
 {
 	GtkTextBuffer *buffy;
@@ -8791,15 +8807,14 @@ glade_gtk_text_view_set_text (GObject *object, const GValue *value)
 	const gchar *text;
 	GladeProject *project;
 
-	g_return_if_fail (GTK_IS_TEXT_VIEW (object));
 	gtext = glade_widget_get_from_gobject (object);
-	g_return_if_fail (GLADE_IS_WIDGET (gtext));
 
 	project = glade_widget_get_project (gtext);
 	if (glade_project_get_format (project) != GLADE_PROJECT_FORMAT_LIBGLADE)
 		return;
 	
 	buffy = gtk_text_view_get_buffer (GTK_TEXT_VIEW (object));
+	if (buffy == NULL) return;
 	
 	if ((text = g_value_get_string (value)) == NULL) return;
 
@@ -8816,6 +8831,8 @@ glade_gtk_text_view_set_property (GladeWidgetAdaptor *adaptor,
 {
 	if (!strcmp (id, "text"))
 		glade_gtk_text_view_set_text (object, value);
+	else if (!strcmp (id, "buffer"))
+		glade_gtk_text_view_set_buffer (object, value);
 	else
 		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor,
 								  object,
