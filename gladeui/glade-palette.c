@@ -562,7 +562,10 @@ glade_palette_item_button_press (GtkWidget      *button,
 static GtkWidget*
 glade_palette_new_item (GladePalette *palette, GladeWidgetAdaptor *adaptor)
 {
-	GtkWidget *item, *button, *label, *box;
+	GtkWidget *item, *button, *label;
+#if GTK_CHECK_VERSION (2, 24, 0)
+	GtkWidget *box;
+#endif
 
 	item = (GtkWidget *)gtk_toggle_tool_button_new ();
 	g_object_set_data (G_OBJECT (item), "glade-widget-adaptor", adaptor);
@@ -570,7 +573,10 @@ glade_palette_new_item (GladePalette *palette, GladeWidgetAdaptor *adaptor)
 	button = gtk_bin_get_child (GTK_BIN (item));
 	g_assert (GTK_IS_BUTTON (button));
 	
-	/* Add a box to avoid the ellipsize on the items */
+	/* Add a box to avoid the ellipsize on the items
+	 * (old versions expect a label as the label widget, too bad for them) 
+	 */
+#if GTK_CHECK_VERSION (2, 24, 0)
 	box = gtk_hbox_new (FALSE, 0);
 	label = gtk_label_new (adaptor->title);
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
@@ -578,6 +584,13 @@ glade_palette_new_item (GladePalette *palette, GladeWidgetAdaptor *adaptor)
 	gtk_widget_show (box);
 	gtk_container_add (GTK_CONTAINER (box), label);
 	gtk_tool_button_set_label_widget (GTK_TOOL_BUTTON (item), box);
+#else
+	label = gtk_label_new (adaptor->title);
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_widget_show (label);
+	gtk_tool_button_set_label_widget (GTK_TOOL_BUTTON (item), label);
+#endif
+
 	glade_palette_item_refresh (item);
 
 	/* Update selection when the item is pushed */
