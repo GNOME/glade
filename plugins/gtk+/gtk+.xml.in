@@ -1750,7 +1750,14 @@ embedded in another object</_tooltip>
     </glade-widget-class>
     
     <glade-widget-class name="GtkOptionMenu" generic-name="optionmenu" _title="Option Menu" deprecated="True" libglade-only="True">
+      <post-create-function>empty</post-create-function>
+      <add-child-function>glade_gtk_option_menu_add_child</add-child-function>
+      <remove-child-function>glade_gtk_option_menu_remove_child</remove-child-function>
+      <get-children-function>glade_gtk_option_menu_get_children</get-children-function>
+
       <properties>
+	<property id="menu" disabled="True"/>
+
 	<!-- Atk press property -->
 	<property id="atk-press" _name="Press" ignore="True" atk-property="True" save="False">
 	  <parameter-spec>

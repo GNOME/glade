@@ -9080,8 +9080,11 @@ glade_gtk_spin_button_set_adjustment (GObject *object, const GValue *value)
 		{
 			GladeWidget *gadj = glade_widget_get_from_gobject (adj);
 
-			/* Silently set any spin-button adjustment page size to 0 */
-			glade_widget_property_set (gadj, "page-size", 0.0F);
+			/* It can be with an old file the GladeWidget is not built yet at load time */
+			if (gadj)
+				/* Silently set any spin-button adjustment page size to 0 */
+				glade_widget_property_set (gadj, "page-size", 0.0F);
+
 			gtk_adjustment_set_page_size (adj, 0);
 		}
 
@@ -9158,6 +9161,40 @@ glade_gtk_combo_get_children (GladeWidgetAdaptor *adaptor, GtkCombo *combo)
 	/* Ensure that we only return one 'combo->list' */
 	if (g_list_find (list, combo->list) == NULL)
 		list = g_list_append (list, combo->list);
+
+	return list;
+}
+
+/* ----------------------------- GtkOptionMenu ------------------------------ */
+void
+glade_gtk_option_menu_add_child (GladeWidgetAdaptor  *adaptor,
+				 GObject             *object, 
+				 GObject             *child)
+{
+	if (GTK_IS_MENU (child))
+		gtk_option_menu_set_menu (GTK_OPTION_MENU (object), GTK_WIDGET (child));
+}
+
+void
+glade_gtk_option_menu_remove_child (GladeWidgetAdaptor  *adaptor,
+				    GObject             *object, 
+				    GObject             *child)
+{
+	if (GTK_IS_MENU (child))
+		gtk_option_menu_remove_menu (GTK_OPTION_MENU (object));
+}
+
+GList *
+glade_gtk_option_menu_get_children (GladeWidgetAdaptor *adaptor, 
+				    GtkOptionMenu      *option_menu)
+{
+	GList *list = NULL;
+	GtkWidget *menu;
+
+	menu = gtk_option_menu_get_menu (option_menu);
+
+	if (menu)
+		list = g_list_prepend (list, menu);
 
 	return list;
 }
