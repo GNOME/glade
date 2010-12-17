@@ -1671,6 +1671,22 @@ glade_project_write_resource_path (GladeProject    *project,
 	}
 }
 
+static gint
+sort_project_dependancies (GObject *a, GObject *b)
+{
+	GladeWidget *ga, *gb;
+
+	ga = glade_widget_get_from_gobject (a);
+	gb = glade_widget_get_from_gobject (b);
+
+	if (glade_widget_adaptor_depends (ga->adaptor, ga, gb))
+		return 1;
+	else if (glade_widget_adaptor_depends (gb->adaptor, gb, ga))
+		return -1;
+	else 
+		return strcmp (ga->name, gb->name);
+}
+
 static GladeXmlContext *
 glade_project_write (GladeProject *project)
 {
@@ -1695,6 +1711,11 @@ glade_project_write (GladeProject *project)
 	glade_project_write_naming_policy (project, context, root);
 
 	glade_project_write_resource_path (project, context, root);
+
+	/* Sort the whole thing */
+	project->priv->objects = 
+		g_list_sort (project->priv->objects, 
+			     (GCompareFunc)sort_project_dependancies);
 
 	for (list = project->priv->objects; list; list = list->next)
 	{
@@ -2807,22 +2828,6 @@ glade_project_set_widget_name (GladeProject *project,
 	gtk_tree_path_free (path);
 }
 
-static gint
-sort_project_dependancies (GObject *a, GObject *b)
-{
-	GladeWidget *ga, *gb;
-
-	ga = glade_widget_get_from_gobject (a);
-	gb = glade_widget_get_from_gobject (b);
-
-	if (glade_widget_adaptor_depends (ga->adaptor, ga, gb))
-		return 1;
-	else if (glade_widget_adaptor_depends (gb->adaptor, gb, ga))
-		return -1;
-	else 
-		return 1;
-}
-
 static gboolean
 glade_project_has_widget (GladeProject *project)
 {
@@ -2918,13 +2923,10 @@ glade_project_add_object (GladeProject *project,
 	glade_widget_set_project (gwidget, (gpointer)project);
 	g_object_ref_sink (gwidget);
 
+	/* Be sure to update the lists before emitting signals */
 	if (glade_widget_get_parent (gwidget) == NULL)
-	{
-		project->priv->tree = g_list_insert_sorted (project->priv->tree, object, 
-		                                            (GCompareFunc)sort_project_dependancies);
-	}
+		project->priv->tree = g_list_append (project->priv->tree, object);
 
-	/* Be sure to update the list before emitting signals */
 	project->priv->objects = g_list_prepend (project->priv->objects, object);
 
 	if (!project->priv->loading)
