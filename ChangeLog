@@ -21,6 +21,9 @@
 	* plugins/gtk+/glade-gtk.c: Fixed crashes when textview's buffer is deleted, fix
 	  by Martin Schlemmer, bug 609748.
 
+	* gladeui/glade-project.c: Fixed crasher when adjusting project naming policy (bug 622528,
+	  thanks goes to Sébastien Granjoux and Martin Schlemmer for looking at this one).
+
 2010-12-16  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* plugins/gtk+/glade-gtk.c: Avoid using gtk_combo_box_set_entry_text_column directly (build
