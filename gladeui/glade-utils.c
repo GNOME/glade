@@ -1105,25 +1105,38 @@ glade_util_find_iter (GtkTreeModel *model,
 
 	while (retval == NULL)
 	{
+		GladeWidget *widget;
+
 		gtk_tree_model_get (model, next, column, &object, -1);
-		if (object == glade_widget_get_object (findme))
+		if (object &&
+		    gtk_tree_model_get_column_type (model, column) == G_TYPE_OBJECT)
+			g_object_unref (object);
+
+		widget = glade_widget_get_from_gobject (object);
+
+		if (widget == findme)
 		{
 			retval = gtk_tree_iter_copy (next);
 			break;
 		}
-		else if (gtk_tree_model_iter_has_child (model, next))
+		else if (glade_widget_is_ancestor (findme, widget))
 		{
-			GtkTreeIter  child;
-			gtk_tree_model_iter_children (model, &child, next);
-			if ((retval = glade_util_find_iter
-			     (model, &child, findme, column)) != NULL)
-				break;
+			if (gtk_tree_model_iter_has_child (model, next))
+			{
+				GtkTreeIter  child;
+				gtk_tree_model_iter_children (model, &child, next);
+				if ((retval = glade_util_find_iter
+				     (model, &child, findme, column)) != NULL)
+					break;
+			}
+
+			/* Only search the branches where the searched widget
+			 * is actually a child of the this row, optimize the
+			 * searching this way
+			 */
+			break;
 		}
 
-		if (object &&
-		    gtk_tree_model_get_column_type (model, column) == G_TYPE_OBJECT)
-			g_object_unref (object);
-		
 		if (!gtk_tree_model_iter_next (model, next))
 			break;
 	}

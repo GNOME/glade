@@ -322,6 +322,31 @@ glade_base_editor_project_widget_name_changed (GladeProject *project,
 					       GladeWidget  *widget,
 					       GladeBaseEditor *editor);
 
+
+static GladeWidget *
+glade_base_editor_delegate_build_child (GladeBaseEditor *editor,
+					GladeWidget     *parent,
+					GType            type)
+{
+	GladeWidget *child = NULL;
+	g_signal_emit (editor, glade_base_editor_signals[SIGNAL_BUILD_CHILD],
+		       0, parent, type, &child);
+	return child;
+}
+
+static gboolean
+glade_base_editor_delegate_delete_child (GladeBaseEditor *editor,
+					 GladeWidget     *parent,
+					 GladeWidget     *child)
+{
+	gboolean retval;
+
+	g_signal_emit (editor, glade_base_editor_signals[SIGNAL_DELETE_CHILD],
+		       0, parent, child, &retval);
+
+	return retval;
+}
+
 static void
 glade_base_editor_name_activate (GtkEntry *entry, GladeWidget *gchild)
 {
@@ -678,9 +703,8 @@ glade_base_editor_add_child (GladeBaseEditor *editor,
 				  glade_widget_get_name (gparent));
 	
 	/* Build Child */
-	g_signal_emit (editor, glade_base_editor_signals[SIGNAL_BUILD_CHILD],
-		       0, gparent, type, &gchild_new);
-	
+	gchild_new = glade_base_editor_delegate_build_child (editor, gparent, type);
+
 	if (gchild_new == NULL)
 	{
 		glade_command_pop_group ();
@@ -862,7 +886,6 @@ glade_base_editor_delete_child (GladeBaseEditor *e)
 {
 	GladeWidget *child, *gparent;
 	GtkTreeIter iter, parent;
-	gboolean retval;
 
 	if (!glade_base_editor_get_child_selected (e, &iter)) return;
 
@@ -881,8 +904,7 @@ glade_base_editor_delete_child (GladeBaseEditor *e)
 				  glade_widget_get_name (gparent));
 	
 	/* Emit delete-child signal */
-	g_signal_emit (e, glade_base_editor_signals[SIGNAL_DELETE_CHILD],
-		       0, gparent, child, &retval);
+	glade_base_editor_delegate_delete_child (e, gparent, child);
 
 	glade_command_pop_group ();
 }
@@ -1302,10 +1324,8 @@ glade_base_editor_change_type (GladeBaseEditor *editor,
 			       GladeWidget *gchild,
 			       GType type)
 {
-	GladeBaseEditorPrivate *e = editor->priv;
-	GladeWidgetAdaptor     *adaptor = glade_widget_adaptor_get_by_type (type);
 	GladeWidget            *parent, *gchild_new;
-	GList                   list = {0, }, *children, *l;
+	GList                  *children, *l;
 	GObject                *child, *child_new;
 	GtkTreeIter             iter;
 	gchar                  *name, *class_name;
@@ -1322,11 +1342,12 @@ glade_base_editor_change_type (GladeBaseEditor *editor,
 	glade_base_editor_find_child (editor, gchild, &iter);
 	
 	/* Create new widget */
-	gchild_new = glade_command_create (adaptor, parent, NULL, e->project);
+	gchild_new = glade_base_editor_delegate_build_child (editor, parent, type);
+
 	child_new = glade_widget_get_object (gchild_new);
 
 	/* Cut and Paste childrens */
-	if ((children = glade_widget_adaptor_get_children (gchild->adaptor, child)))
+	if ((children = glade_widget_get_children (gchild)) != NULL)
 	{
 		GList *gchildren = NULL;
 		
@@ -1354,10 +1375,13 @@ glade_base_editor_change_type (GladeBaseEditor *editor,
 	glade_widget_copy_properties (gchild_new, gchild, TRUE, TRUE);
 	
 	/* Delete old widget */
-	list.data = gchild;
-	glade_command_delete (&list);
+ 	glade_base_editor_delegate_delete_child (editor, parent, gchild);
 	
-	/* Apply packing properties to the new object */
+	/* Apply packing properties to the new object 
+	 * 
+	 * No need to use GladeCommand here on the newly created widget,
+	 * they just become the initial state for this object.
+	 */
 	l = gchild->packing_properties;
 	while (l)
 	{

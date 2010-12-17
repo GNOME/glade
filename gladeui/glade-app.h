@@ -193,6 +193,8 @@ void               glade_app_selection_clear   (gboolean  emit_signal);
  
 void               glade_app_selection_changed (void);
 
+void               glade_app_queue_selection_changed (void);
+
 /* package paths */
 
 const gchar       *glade_app_get_catalogs_dir  (void) G_GNUC_CONST;
