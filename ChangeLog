@@ -3,6 +3,9 @@
 	* src/Makefile.am, gladeui/Makefile.am, plugins/gtk+/Makefile.am, plugins/gnome/Makefile.am:
 	  Fixed makefiles as per bug 521713 (patch initially by Daniel Macks).
 
+	* gladeui/glade-editor-property.c: Hide editor properties when the property is not available
+	  on the widget, bug 585299, fix by Marco Diego Aurélio Mesquita.
+
 2010-12-17  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-gtk.c: Added support for deprecated GtkOptionMenu.
