@@ -6,13 +6,13 @@ lib_LTLIBRARIES = libgladeui-2.la
 glade_previewer_CPPFLAGS = \
 	-I$(top_srcdir)    \
 	-I$(top_builddir)  \
-	-DGLADE_GNOMEHELPDIR="\"$(HELP_DIR)\""
-	$(AM_CPPFLAGS)
-
-glade_previewer_CFLAGS =   \
+	-DGLADE_GNOMEHELPDIR="\"$(HELP_DIR)\"" \
 	$(GTK_CFLAGS)      \
 	$(IGE_MAC_CFLAGS)  \
 	$(WARN_CFLAGS)     \
+	$(AM_CPPFLAGS)
+
+glade_previewer_CFLAGS =   \
 	$(AM_CFLAGS)
 
 glade_previewer_LDFLAGS = $(AM_LDFLAGS)
@@ -96,13 +96,13 @@ libgladeui_2_la_CPPFLAGS =  \
 	$(common_defines)   \
 	-I$(top_srcdir)     \
 	-I$(top_builddir)   \
-	$(AM_CPPFLAGS)
-
-libgladeui_2_la_CFLAGS =    \
 	$(GTK_CFLAGS)       \
 	$(IGE_MAC_BUNDLE_FLAG) \
 	$(IGE_MAC_CFLAGS)  \
 	$(WARN_CFLAGS)      \
+	$(AM_CPPFLAGS)
+
+libgladeui_1_la_CFLAGS =    \
 	$(AM_CFLAGS)
 
 libgladeui_2_la_LDFLAGS = -version-info $(GLADE_CURRENT):$(GLADE_REVISION):$(GLADE_AGE) $(AM_LDFLAGS)
