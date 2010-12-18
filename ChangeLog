@@ -6,6 +6,10 @@
 	* gladeui/glade-editor-property.c: Hide editor properties when the property is not available
 	  on the widget, bug 585299, fix by Marco Diego Aurélio Mesquita.
 
+	* gladeui/glade-editor-property.c: Unload currently loaded property in
+	  glade_editor_property_load_by_widget() when a NULL widget is specified or the property
+	  is not found.
+
 2010-12-17  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-project.c: Restore proper sorting of objects at save time.
