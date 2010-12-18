@@ -11,8 +11,7 @@ gladegnome_LTLIBRARIES = libgladegnome.la
 gladegnomedir = $(pkglibdir)/modules
 
 libgladegnome_la_SOURCES = glade-gnome.c
-libgladegnome_la_CPPFLAGS = $(AM_CPPFLAGS)
-libgladegnome_la_CFLAGS = \
+libgladegnome_la_CPPFLAGS = \
         -DG_LOG_DOMAIN=\"GladeUI-GNOME\" \
 	-I$(top_srcdir)                  \
 	-I$(top_builddir)                \
@@ -20,6 +19,9 @@ libgladegnome_la_CFLAGS = \
 	$(GNOME_CFLAGS)                  \
 	$(PLUGINS_WARN_CFLAGS)           \
 	$(AM_CPPFLAGS)
+
+libgladegnome_la_CFLAGS = \
+	$(AM_CFLAGS)
 libgladegnome_la_LDFLAGS = -module -avoid-version $(GNOME_LIBS) $(AM_LDFLAGS)
 libgladegnome_la_LIBADD = $(libgladeui) $(GLADE_LIBS)
 

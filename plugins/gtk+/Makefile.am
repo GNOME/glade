@@ -10,18 +10,15 @@ libgladeui = $(top_builddir)/gladeui/libgladeui-1.la
 gladegtk_LTLIBRARIES = libgladegtk.la
 gladegtkdir = $(pkglibdir)/modules
 
-libgladegtk_la_CPPLAGS =   \
+libgladegtk_la_CPPFLAGS =   \
 	-I$(top_srcdir)    \
 	-I$(top_builddir)  \
-	$(AM_CPPFLAGS)
-
-libgladegtk_la_CFLAGS =  \
 	-DG_LOG_DOMAIN=\"GladeUI-GTK\" \
-	-I$(top_srcdir)                \
-	-I$(top_builddir)              \
 	$(GTK_CFLAGS)	               \
 	$(PLUGINS_WARN_CFLAGS)         \
-	$(AM_CFLAGS)
+	$(AM_CPPFLAGS)
+
+libgladegtk_la_CFLAGS = $(AM_CFLAGS)
 
 libgladegtk_la_SOURCES     = glade-gtk.c glade-accels.c glade-attributes.c glade-convert.c fixed-bg.xpm \
 	glade-column-types.c  glade-model-data.c glade-text-button.c \
