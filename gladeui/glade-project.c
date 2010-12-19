@@ -2993,7 +2993,7 @@ void
 glade_project_remove_object (GladeProject *project, GObject *object)
 {
 	GladeWidget   *gwidget;
-	GList         *list, *children, *link;
+	GList         *list, *children;
 	GtkTreeIter    iter;
 	GtkTreePath   *path;
 	
@@ -3033,12 +3033,7 @@ glade_project_remove_object (GladeProject *project, GObject *object)
 		       gwidget);
 
 	/* Update internal data structure (remove from lists) */
-	link = g_list_find (project->priv->tree, object);
-	if (link)
-	{
-		project->priv->tree = g_list_delete_link (project->priv->tree, link);
-	}
-
+	project->priv->tree    = g_list_remove (project->priv->tree, object);
 	project->priv->objects = g_list_remove (project->priv->objects, object);
 	g_object_unref (gwidget);
 
