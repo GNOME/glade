@@ -1708,10 +1708,16 @@ alpha_sort_box_children (GtkWidget *a, GtkWidget *b)
 	ga = glade_widget_get_from_gobject (a);
 	gb = glade_widget_get_from_gobject (b);
 
-	if (!ga || !gb)
+	if (!GLADE_IS_WIDGET (ga) && !GLADE_IS_WIDGET (gb))
+		return 0;
+
+	if (!GLADE_IS_WIDGET (ga))
 		return 1;
-	else 
-		return strcmp (ga->name, gb->name);
+
+	if (!GLADE_IS_WIDGET (gb))
+		return -1;
+
+	return strcmp (ga->name, gb->name);
 }
 
 GList *
