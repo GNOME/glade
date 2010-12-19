@@ -1700,33 +1700,13 @@ sort_box_children (GtkWidget *widget_a, GtkWidget *widget_b)
 	return position_a - position_b;
 }
 
-static gint
-alpha_sort_box_children (GtkWidget *a, GtkWidget *b)
-{
-	GladeWidget *ga, *gb;
-
-	ga = glade_widget_get_from_gobject (a);
-	gb = glade_widget_get_from_gobject (b);
-
-	if (!GLADE_IS_WIDGET (ga) && !GLADE_IS_WIDGET (gb))
-		return 0;
-
-	if (!GLADE_IS_WIDGET (ga))
-		return 1;
-
-	if (!GLADE_IS_WIDGET (gb))
-		return -1;
-
-	return strcmp (ga->name, gb->name);
-}
-
 GList *
 glade_gtk_box_get_children (GladeWidgetAdaptor  *adaptor,
 			    GtkContainer        *container)
 {
 	GList *children = glade_util_container_get_all_children (container);
 
-	return g_list_sort (children, (GCompareFunc)alpha_sort_box_children);
+	return g_list_sort (children, (GCompareFunc)sort_box_children);
 }
 
 void
