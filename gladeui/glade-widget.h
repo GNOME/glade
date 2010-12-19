@@ -398,9 +398,6 @@ void                    glade_widget_set_internal	    (GladeWidget      *widget,
 							     const gchar      *internal);
  
 G_CONST_RETURN gchar   *glade_widget_get_internal           (GladeWidget      *widget);
-
-void                    glade_widget_set_object		    (GladeWidget      *gwidget,
-							     GObject          *new_object);
  
 GObject                *glade_widget_get_object             (GladeWidget      *widget);
 

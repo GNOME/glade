@@ -6,6 +6,10 @@
 	* plugins/gtk+/glade-gtk.c: Removed alpha_sort_box_children(), project needs to be
 	  sorted with box children by position, loading process depends on this.
 
+	* gladeui/glade-widget.[ch]: Hide glade_widget_set_object(), improved reference count
+	  balancing and fixed segfaults upon closing projects that contain filechooser dialogs
+	  referenced by filechooserbuttons.
+
 2010-12-18  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* src/Makefile.am, gladeui/Makefile.am, plugins/gtk+/Makefile.am, plugins/gnome/Makefile.am:
