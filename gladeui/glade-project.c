@@ -1931,18 +1931,21 @@ glade_project_preview (GladeProject *project, GladeWidget *gwidget)
 {
 	GladeXmlContext *context;
 	gchar *text;
-	GtkWidget *widget = GTK_WIDGET (gwidget->object);
+	GtkWidget *widget;
 
-	g_return_if_fail (GTK_WIDGET (widget));
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 
 	context = glade_project_write (project);
 
 	text = glade_xml_dump_from_context (context);
 
+	gwidget = glade_widget_get_toplevel (gwidget);
+	if (!GTK_IS_WIDGET (gwidget->object)) return;
+	widget = GTK_WIDGET (gwidget->object);
+
 	glade_project_launch_preview (project, text, widget);
 
-	g_free(text);
+	g_free (text);
 }
 
 /*******************************************************************
