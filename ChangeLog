@@ -9,6 +9,9 @@
 	* gladeui/glade-project.c: Applying Marco Diego Aurélio Mesquita's patch to
 	  make the project preview only preview toplevels.
 
+	* gladeui/glade-editor.c: Fixed class header of GladeEditor to update when
+	  widgets unload (patch by Marco Diego Aurélio Mesquita, bug 637541).
+
 2010-12-19  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* plugins/gtk+/glade-gtk.c: Fix alpha_sort_box_children() to give a consistent
