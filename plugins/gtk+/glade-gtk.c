@@ -1744,7 +1744,6 @@ glade_gtk_box_set_child_property (GladeWidgetAdaptor *adaptor,
 		
 		/* Get the real value */
 		new_position = g_value_get_int (value);
-
 	}
 
 	if (is_position && recursion == FALSE)
@@ -1862,7 +1861,7 @@ glade_gtk_box_get_first_blank (GtkBox *box)
 		{
 			gint gwidget_position;
 			GladeProperty *property =
-				glade_widget_get_property (gwidget, "position");
+				glade_widget_get_pack_property (gwidget, "position");
 			gwidget_position = g_value_get_int (property->value);
 
 			if (gwidget_position > position)

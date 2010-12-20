@@ -12,6 +12,11 @@
 	* gladeui/glade-editor.c: Fixed class header of GladeEditor to update when
 	  widgets unload (patch by Marco Diego Aurélio Mesquita, bug 637541).
 
+	* gladeui/glade-editor-property.c, gladeui/glade-property.c, gladeui/glade-widget.c,
+	  plugins/gtk+/glade-gtk.c: Fixing some discrepincies searching for properties as
+	  regular properties or packing properties. Now the conflicting "position" property
+	  on a GtkPaned widget packed into a GtkBox widget works properly (bug 637475).
+
 2010-12-19  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* plugins/gtk+/glade-gtk.c: Fix alpha_sort_box_children() to give a consistent

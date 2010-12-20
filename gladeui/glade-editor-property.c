@@ -3765,12 +3765,17 @@ glade_editor_property_load_by_widget (GladeEditorProperty *eprop,
 	if (widget)
 	{
 		/* properties are allowed to be missing on some internal widgets */
-		property = glade_widget_get_property (widget, eprop->klass->id);
+		if (eprop->klass->packing)
+			property = glade_widget_get_pack_property (widget, eprop->klass->id);
+		else
+			property = glade_widget_get_property (widget, eprop->klass->id);
 
 		glade_editor_property_load (eprop, property);
 
 		if (property) 
 		{
+			g_assert (eprop->klass == property->klass);
+
 			gtk_widget_show (GTK_WIDGET (eprop));
 			gtk_widget_show (GTK_WIDGET (eprop->item_label));
 		}

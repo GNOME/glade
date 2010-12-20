@@ -1335,8 +1335,7 @@ glade_widget_copy_packing_props (GladeWidget *parent,
 	for (l = child->packing_properties; l && l->data; l = l->next)
 	{
 		dup_prop  = GLADE_PROPERTY(l->data);
-		orig_prop =
-			glade_widget_get_property (template_widget, dup_prop->klass->id);
+		orig_prop = glade_widget_get_pack_property (template_widget, dup_prop->klass->id);
 		glade_property_set_value (dup_prop, orig_prop->value);
 	}
 }
