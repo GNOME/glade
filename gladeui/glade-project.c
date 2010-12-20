@@ -258,6 +258,34 @@ glade_project_list_unref (GList *original_list)
 }
 
 static void
+unparent_objects_recurse (GladeWidget *widget)
+{
+	GladeWidget *child;
+	GList       *children, *list;
+
+	/* Unparent all children */
+	if ((children = 
+	     glade_widget_get_children (widget)) != NULL)
+	{
+		for (list = children; list; list = list->next)
+		{
+			child = glade_widget_get_from_gobject (list->data);
+
+			unparent_objects_recurse (child);
+
+			if (child->internal == NULL)
+			{
+				g_print ("Project dispose unreffing %s's child %s\n", 
+					 widget->name, child->name);
+
+				glade_widget_remove_child (widget, child);
+			}
+		}
+		g_list_free (children);
+	}
+}
+
+static void
 glade_project_dispose (GObject *object)
 {
 	GladeProject  *project = GLADE_PROJECT (object);
@@ -274,8 +302,21 @@ glade_project_dispose (GObject *object)
 	/* Remove objects from the project */
 	tree = g_list_copy (project->priv->tree);
 	for (list = tree; list; list = list->next)
+	{
+		GladeWidget *gwidget = glade_widget_get_from_gobject (list->data);
+
+		g_object_ref (gwidget);
+
 		glade_project_remove_object (project, list->data);
+
+		unparent_objects_recurse (gwidget);
+
+		g_object_unref (gwidget);
+	}
 	g_list_free (tree);
+
+	g_assert (project->priv->tree == NULL);
+	g_assert (project->priv->objects == NULL);
 
 	G_OBJECT_CLASS (glade_project_parent_class)->dispose (object);
 }
