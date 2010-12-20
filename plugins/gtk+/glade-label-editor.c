@@ -589,10 +589,9 @@ append_label_appearance (GladeLabelEditor   *label_editor,
 	table_attach (table, GTK_WIDGET (eprop), 1, 3, label_editor->appearance_group);
 	label_editor->properties = g_list_prepend (label_editor->properties, eprop);
 
-	/* Add invisible eprops at the end of this table... */
-	gtk_widget_set_no_show_all (GTK_WIDGET (markup_property), TRUE);
-	gtk_widget_hide (GTK_WIDGET (markup_property));
-	table_attach (table, GTK_WIDGET (markup_property), 0, 4, label_editor->appearance_group);
+	/* Tie the invisible editor property to the table's life-cycle */
+	g_object_set_data_full (G_OBJECT (table), "glade-markup-property-destroy-me", 
+				markup_property, (GDestroyNotify)gtk_widget_destroy);
 }
 
 
@@ -718,10 +717,9 @@ append_label_wrapping (GladeLabelEditor   *label_editor,
 	table_attach (table, GTK_WIDGET (eprop), 1, row++, label_editor->wrap_group);
 	label_editor->properties = g_list_prepend (label_editor->properties, eprop);
 
-	/* Add invisible eprops at the end of this table... */
-	gtk_widget_set_no_show_all (GTK_WIDGET (single_line_eprop), TRUE);
-	gtk_widget_hide (GTK_WIDGET (single_line_eprop));
-	table_attach (table, GTK_WIDGET (single_line_eprop), 0, row, label_editor->wrap_group);
+	/* Tie the invisible editor property to the table's life-cycle */
+	g_object_set_data_full (G_OBJECT (table), "glade-single-line-property-destroy-me", 
+				single_line_eprop, (GDestroyNotify)gtk_widget_destroy);
 }
 
 GtkWidget *
