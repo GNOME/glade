@@ -168,9 +168,9 @@ glade_widget_remove_child_impl (GladeWidget  *widget,
 	glade_widget_adaptor_remove
 		(widget->adaptor, widget->object, child->object);
 
-	g_object_unref (child);
-
 	child->parent = NULL;
+
+	g_object_unref (child);
 }
 
 static void
@@ -854,20 +854,6 @@ glade_widget_dispose (GObject *object)
 	GList *children, *list;
 
 	glade_widget_push_superuser ();
-
-	/* Unparent all children */
-	if ((children = 
-	     glade_widget_get_children (widget)) != NULL)
-	{
-		for (list = children; list; list = list->next)
-		{
-			child = glade_widget_get_from_gobject (list->data);
-
-			if (child->internal == NULL)
-				glade_widget_remove_child (widget, child);
-		}
-		g_list_free (children);
-	}
 
 	/* Release references by way of object properties... */
 	while (widget->prop_refs)
@@ -3384,7 +3370,6 @@ glade_widget_set_object (GladeWidget *gwidget, GObject *new_object, gboolean des
 
 		if (gwidget->internal == NULL)
 		{
-
 #if _YOU_WANT_TO_LOOK_AT_PROJECT_REFCOUNT_BALANCING_
 			g_print ("Killing '%s::%s' widget's object with reference count %d\n",
 				 gwidget->adaptor->name, gwidget->name ? gwidget->name : "(unknown)",
