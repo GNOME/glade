@@ -274,12 +274,7 @@ unparent_objects_recurse (GladeWidget *widget)
 			unparent_objects_recurse (child);
 
 			if (child->internal == NULL)
-			{
-				g_print ("Project dispose unreffing %s's child %s\n", 
-					 widget->name, child->name);
-
 				glade_widget_remove_child (widget, child);
-			}
 		}
 		g_list_free (children);
 	}
