@@ -90,6 +90,12 @@
 
 2010-12-20  Tristan Van Berkom <tristanvb@openismus.com>
 
+	* plugins/gtk+/glade-label-editor.c: Dont add invisible properties to the editor,
+	  instead the invisible editor-property gets tied to the life-cycle of the table
+	  it would have been added to (since recently glade_editor_property() explicitly
+	  shows/hides properties according to if thier widget actually has an instance
+	  of the property).
+
 	* plugins/gtk+/glade-gtk.c, plugins/gtk+/glade-column-types.[ch]: Added
 	  glade_column_type_new() to create a GladeColumnType struct properly using
 	  g_slice_new0(). An occurance of allocating the struct with g_new0 was causing
