@@ -12,6 +12,9 @@
 	  Glade to crash when freeing the block with g_slice_free (bug 637563). Many
 	  big thanks to Benjamin Otte for tracking down the problem.
 
+	* gladeui/glade-project.c: Applying Marco Diego Aurélio Mesquita's patch to
+	  make the project preview only preview toplevels.
+
 2010-12-19  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* plugins/gtk+/glade-gtk.c: Fix alpha_sort_box_children() to give a consistent
