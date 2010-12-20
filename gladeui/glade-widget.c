@@ -850,8 +850,6 @@ static void
 glade_widget_dispose (GObject *object)
 {
 	GladeWidget *widget = GLADE_WIDGET (object);
-	GladeWidget *child;
-	GList *children, *list;
 
 	glade_widget_push_superuser ();
 
@@ -3375,7 +3373,6 @@ glade_widget_set_object (GladeWidget *gwidget, GObject *new_object, gboolean des
 				 gwidget->adaptor->name, gwidget->name ? gwidget->name : "(unknown)",
 				 old_object->ref_count);
 #endif
-
 			if (GTK_IS_WINDOW (old_object) && destroy)
 				gtk_widget_destroy (GTK_WIDGET (old_object));
 			else
