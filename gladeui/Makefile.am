@@ -17,7 +17,7 @@ glade_previewer_CFLAGS =   \
 
 glade_previewer_LDFLAGS = $(AM_LDFLAGS)
 
-glade_previewer_LDADD = $(top_builddir)/gladeui/libgladeui-1.la $(IGE_MAC_LIBS)
+glade_previewer_LDADD = libgladeui-1.la $(IGE_MAC_LIBS)
 
 glade_previewer_SOURCES = \
 	glade-previewer.c
