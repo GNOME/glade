@@ -217,6 +217,9 @@ void          glade_project_update_signal_support_warning (GladeWidget  *widget,
 
 gchar        *glade_project_display_dependencies (GladeProject *project);
 
+void          glade_project_push_progress (GladeProject *project);
+gboolean      glade_project_load_cancelled (GladeProject *project);
+
 G_END_DECLS
 
 #endif /* __GLADE_PROJECT_H__ */

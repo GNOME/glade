@@ -3748,6 +3748,9 @@ void
 glade_widget_read_child (GladeWidget  *widget,
 			 GladeXmlNode *node)
 {
+	if (glade_project_load_cancelled (widget->project))
+		return;
+
 	glade_widget_adaptor_read_child (widget->adaptor, widget, node);
 }
 
@@ -3768,6 +3771,9 @@ glade_widget_read (GladeProject *project,
 	GladeWidgetAdaptor *adaptor;
 	GladeWidget  *widget = NULL;
 	gchar        *klass, *id;
+
+	if (glade_project_load_cancelled (project))
+		return NULL;
 
 	glade_widget_push_superuser ();
 	
@@ -3834,7 +3840,9 @@ glade_widget_read (GladeProject *project,
 	}
 
 	glade_widget_pop_superuser ();
-	
+
+	glade_project_push_progress (project);
+
 	return widget;
 }
 
