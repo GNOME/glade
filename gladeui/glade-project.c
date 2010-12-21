@@ -157,6 +157,13 @@ struct _GladeProjectPrivate
 	GtkWidget *relative_path_entry;
 	GtkWidget *full_path_button;
 
+	/* For the loading progress dialog */
+	GtkWidget *progress_dialog;
+	GtkWidget *progress;
+	gint       progress_step;
+	gint       progress_full;
+	gboolean   load_cancel;
+
 	/* Store preview processes, so we can kill them on close */
 	GHashTable *preview_channels;
 };
@@ -228,6 +235,9 @@ static void	    gtk_tree_model_iface_init (GtkTreeModelIface* iface);
 static void         glade_project_model_get_iter_for_object (GladeProject* project,
                                                              GObject* object,
                                                              GtkTreeIter* iter);
+
+
+#define GLADE_PROJECT_LARGE_PROJECT 40
 
 G_DEFINE_TYPE_WITH_CODE (GladeProject, glade_project, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (GTK_TYPE_TREE_MODEL,
@@ -1412,6 +1422,119 @@ glade_project_introspect_gtk_version (GladeProject *project)
 }
 
 
+static gint 
+glade_project_count_xml_objects (GladeProject *project, GladeXmlNode *root, gint count)
+{
+	GladeXmlNode    *node;
+
+	for (node = glade_xml_node_get_children (root); 
+	     node; node = glade_xml_node_next (node))
+	{
+		if (glade_xml_node_verify_silent
+		    (node, GLADE_XML_TAG_WIDGET (project->priv->format)))
+			count = glade_project_count_xml_objects (project, node, ++count);
+		else if (glade_xml_node_verify_silent (node, GLADE_XML_TAG_CHILD))
+			count = glade_project_count_xml_objects (project, node, count);			
+	}
+	return count;
+}
+
+static gboolean
+glade_progress_dialog_show_on_delete (GtkWidget *widget,
+				      GdkEvent  *event,
+				      gpointer   nothing)
+{
+	gtk_widget_show (widget);
+	return TRUE;
+}
+
+static void
+project_load_cancelled (GtkWidget    *button,
+			GladeProject *project)
+{
+	project->priv->load_cancel = TRUE;
+}
+
+static void
+glade_project_loading_dialog (GladeProject *project, gint count)
+{	
+	GtkWidget *content, *cancel;
+	gchar     *str, *name;
+
+	project->priv->progress_dialog = gtk_dialog_new ();
+	content = gtk_dialog_get_content_area (GTK_DIALOG (project->priv->progress_dialog));
+
+	gtk_window_set_default_size (GTK_WINDOW (project->priv->progress_dialog), 400, -1);
+	gtk_window_set_deletable (GTK_WINDOW (project->priv->progress_dialog), FALSE);
+	g_signal_connect (project->priv->progress_dialog, "delete-event",
+			  G_CALLBACK (glade_progress_dialog_show_on_delete), NULL);
+
+	project->priv->progress = gtk_progress_bar_new ();
+	name     = glade_project_get_name (project);
+	str      = g_strdup_printf (_("Loading project %s"), name);
+	gtk_window_set_title (GTK_WINDOW (project->priv->progress_dialog), str);
+	g_free (str);
+	g_free (name);
+
+	gtk_box_pack_start (GTK_BOX (content), project->priv->progress, FALSE, FALSE, 2);
+	gtk_widget_show (project->priv->progress);
+
+	cancel = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
+	gtk_widget_show (cancel);
+	gtk_dialog_add_action_widget (GTK_DIALOG (project->priv->progress_dialog),
+				      cancel, GTK_RESPONSE_CANCEL);
+	g_signal_connect (cancel, "clicked", G_CALLBACK (project_load_cancelled), project);
+
+	project->priv->progress_full = count;
+	project->priv->progress_step = 0;
+
+	gtk_widget_show (project->priv->progress_dialog);
+}
+
+static void
+glade_project_destroy_loading_dialog (GladeProject *project)
+{
+	if (project->priv->progress_dialog)
+	{
+		gtk_widget_destroy (project->priv->progress_dialog);
+		project->priv->progress_dialog = NULL;
+		project->priv->progress = NULL;
+	}
+}
+
+gboolean
+glade_project_load_cancelled (GladeProject *project)
+{
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+
+	return project->priv->load_cancel;
+}
+
+void
+glade_project_push_progress (GladeProject *project)
+{
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+
+	if (project->priv->progress)
+	{
+		gchar  *text;
+		project->priv->progress_step++;
+
+		text = g_strdup_printf ("Loaded %d of %d objects", 
+					project->priv->progress_step,
+					project->priv->progress_full);
+		gtk_progress_bar_set_text (GTK_PROGRESS_BAR (project->priv->progress), text);
+		g_free (text);
+
+		gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (project->priv->progress),
+					       project->priv->progress_step * 1.0 / 
+					       project->priv->progress_full);
+
+		while (gtk_events_pending ())
+			gtk_main_iteration ();
+	}
+}
+
 static gboolean
 glade_project_load_from_file (GladeProject *project, const gchar *path)
 {
@@ -1421,6 +1544,7 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 	GladeXmlNode    *node;
 	GladeWidget     *widget;
 	gboolean         has_gtk_dep = FALSE;
+	gint             count;
 
 	project->priv->selection = NULL;
 	project->priv->toplevels = NULL;
@@ -1466,6 +1590,12 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 
 	glade_project_read_resource_path (project, root);
 
+	/* Launch a dialog if it's going to take enough time to be
+	 * worth showing at all */
+	count = glade_project_count_xml_objects (project, root, 0);
+	if (count > GLADE_PROJECT_LARGE_PROJECT)
+		glade_project_loading_dialog (project, count);
+
 	for (node = glade_xml_node_get_children (root); 
 	     node; node = glade_xml_node_next (node))
 	{
@@ -1476,16 +1606,24 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 
 		if ((widget = glade_widget_read (project, NULL, node, NULL)) != NULL)
 			glade_project_add_object (project, NULL, widget->object);
+
+		if (project->priv->load_cancel)
+			break;
 	}
+
+	/* Finished with the xml context */
+	glade_xml_context_free (context);
+
+	glade_project_destroy_loading_dialog (project);
+
+	if (project->priv->load_cancel)
+		return FALSE;
 
 	if (!has_gtk_dep)
 		glade_project_introspect_gtk_version (project);
 
 	if (glade_util_file_is_writeable (project->priv->path) == FALSE)
 		glade_project_set_readonly (project, TRUE);
-
-	/* Finished with the xml context */
-	glade_xml_context_free (context);
 
 	project->priv->mtime = glade_util_get_file_mtime (project->priv->path, NULL);
 

@@ -930,6 +930,9 @@ glade_widget_adaptor_object_read_widget (GladeWidgetAdaptor *adaptor,
 	{
 		if (glade_xml_node_verify_silent (iter_node, GLADE_XML_TAG_CHILD))
 			glade_widget_read_child (widget, iter_node);
+
+		if (glade_project_load_cancelled (widget->project))
+			return;
 	}
 }
 

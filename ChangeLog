@@ -1,3 +1,16 @@
+2010-12-21  Tristan Van Berkom <tristanvb@openismus.com>
+
+	Added loading objects dialog with progress and cancel.
+
+	* src/main.c: Display window before loading command line specified projects.
+
+	* gladeui/glade-project.[ch]: Added dialog that pops up when about to load
+	  a large project with glade_project_push_project() to push the progress and
+	  glade_project_load_cancelled() to check and abort while loading the project.
+
+	* gladeui/glade-widget.c, gladeui/glade-widget-adaptor.c: Push progress and
+	  abort loading when project indicates the user cancelled the load.
+
 2010-12-20  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* plugins/gtk+/glade-gtk.c, plugins/gtk+/glade-column-types.[ch]: Added

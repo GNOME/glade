@@ -161,7 +161,8 @@ main (int argc, char *argv[])
 	
 	if (without_devhelp == FALSE)
 		glade_window_check_devhelp (window);
-	
+
+	gtk_widget_show (GTK_WIDGET (window));
 	
 	/* load files specified on commandline */
 	if (files != NULL)
@@ -180,8 +181,6 @@ main (int argc, char *argv[])
 
 	if (glade_app_get_project () == NULL)
 		glade_window_new_project (window);
-
-	gtk_widget_show (GTK_WIDGET (window));
 
 	gtk_main ();
 
