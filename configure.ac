@@ -244,8 +244,8 @@ AC_SUBST([AM_LDFLAGS])
 
 AC_CONFIG_FILES([
 Makefile
-data/gladeui-3.0.pc
-data/glade-3.desktop.in
+data/gladeui-2.0.pc
+data/glade.desktop.in
 data/Makefile
 data/icons/Makefile
 data/icons/hicolor/Makefile
