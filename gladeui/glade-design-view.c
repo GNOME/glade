@@ -185,6 +185,7 @@ glade_design_view_init (GladeDesignView *view)
 	gtk_widget_show (filler);
 	gtk_box_pack_start (GTK_BOX (view->priv->progress_window), filler, TRUE, TRUE, 0);
 	view->priv->progress = gtk_progress_bar_new ();
+	gtk_progress_bar_set_show_text (GTK_PROGRESS_BAR (view->priv->progress), TRUE);
 	gtk_widget_show (view->priv->progress);
 	gtk_box_pack_start (GTK_BOX (view->priv->progress_window), view->priv->progress, FALSE, TRUE, 0);
 	filler = gtk_label_new (NULL);
