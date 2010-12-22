@@ -3480,8 +3480,7 @@ glade_window_class_init (GladeWindowClass *klass)
 					 "   -GtkProgressBar-min-horizontal-bar-height : 1;\n"
 					 "   -GtkProgressBar-xspacing : 4;\n"
 					 "   -GtkProgressBar-yspacing : 0;\n"
-					 "   xthickness : 0;\n"
-					 "   ythickness : 0;\n"
+					 "   padding : 0;\n"
 					 " }", 
 					 -1, NULL);
 
