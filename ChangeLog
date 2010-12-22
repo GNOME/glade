@@ -9,6 +9,8 @@
 	* plugins/gtk+/gtk+.xml.in: Removing Ruler classes, added GtkBox, GtkPaned, GtkButtonBox
 	  base classes that are now instantiatable
 
+	* gladeui/glade-previewer.c: Fixed to not use gtk_set_locale().
+
 2010-12-22  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-project.[ch]: Removed dialog and added "load-progress" signal
