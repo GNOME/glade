@@ -2524,6 +2524,7 @@ create_notebook_tab (GladeWindow *window, GladeProject *project, gboolean for_fi
 	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
 
 	progress = gtk_progress_bar_new ();
+	gtk_progress_bar_set_show_text (GTK_PROGRESS_BAR (progress), TRUE);
 	gtk_widget_add_events (progress,
 			       GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);
 	gtk_widget_set_name (progress, "glade-tab-label-progress");
@@ -3462,6 +3463,7 @@ glade_window_class_init (GladeWindowClass *klass)
 {
 	GObjectClass *object_class;
 	GtkWidgetClass *widget_class;
+	GtkCssProvider *provider;
 
 	object_class = G_OBJECT_CLASS (klass);
 	widget_class = GTK_WIDGET_CLASS (klass);
@@ -3471,17 +3473,22 @@ glade_window_class_init (GladeWindowClass *klass)
 
 	widget_class->configure_event    = glade_window_configure_event;
 
-	gtk_rc_parse_string ("style \"short_progress\"\n"
-			     " { \n"
-			     "    GtkProgressBar::min-horizontal-bar-height = 1\n"
-			     "    GtkProgressBar::min-horizontal-bar-width = 1\n"
-			     "    GtkProgressBar::yspacing = 0\n"
-			     "    GtkProgressBar::xspacing = 4\n"
-			     "    xthickness = 0\n"
-			     "    ythickness = 0\n"
-			     " }\n"
-			     "\n"
-			     "widget \"*.glade-tab-label-progress\" style \"short_progress\"");
+	provider = gtk_css_provider_new ();
+	gtk_css_provider_load_from_data (provider,
+					 "GtkProgressBar#glade-tab-label-progress {\n"
+					 "   -GtkProgressBar-min-horizontal-bar-width : 1;\n"
+					 "   -GtkProgressBar-min-horizontal-bar-height : 1;\n"
+					 "   -GtkProgressBar-xspacing : 4;\n"
+					 "   -GtkProgressBar-yspacing : 0;\n"
+					 "   xthickness : 0;\n"
+					 "   ythickness : 0;\n"
+					 " }", 
+					 -1, NULL);
+
+	gtk_style_context_add_provider_for_screen (gdk_screen_get_default (),
+						   GTK_STYLE_PROVIDER (provider),
+						   GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+	g_object_unref (provider);
 
 	g_type_class_add_private (klass, sizeof (GladeWindowPrivate));
 }
