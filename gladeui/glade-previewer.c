@@ -184,7 +184,7 @@ preview_widget (gchar *name, gchar *buffer, gsize length)
 		g_object_unref(widget);
 	}
 
-	g_signal_connect (GTK_OBJECT (window), "destroy", G_CALLBACK (gtk_main_quit), NULL);
+	g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
 	gtk_widget_show_all (window);	
 }
 

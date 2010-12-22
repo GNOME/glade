@@ -8921,7 +8921,7 @@ glade_gtk_combo_box_get_children (GladeWidgetAdaptor *adaptor, GtkComboBox *comb
 	 * FIXME: for recent gtk+ we have no comboboxentry
 	 * but a "has-entry" property instead
 	 */
-	if (GTK_IS_COMBO_BOX_ENTRY (combo))
+	if (gtk_combo_box_get_has_entry (combo))
 		list = g_list_append (list, gtk_bin_get_child (GTK_BIN (combo)));
 
 	return list;

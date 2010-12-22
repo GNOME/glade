@@ -16,7 +16,7 @@ glade_CFLAGS =           \
 
 glade_LDFLAGS = $(AM_LDFLAGS)
 
-glade_LDADD = $(top_builddir)/gladeui/libgladeui-3.la $(IGE_MAC_LIBS)
+glade_LDADD = $(top_builddir)/gladeui/libgladeui-2.la $(IGE_MAC_LIBS)
 
 glade_SOURCES = \
 	glade-window.c \
