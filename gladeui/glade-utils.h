@@ -159,8 +159,6 @@ gint              glade_utils_hijack_key_press (GtkWindow          *win,
 						gpointer            user_data);
 	
 
-gchar           *glade_utils_replace_home_dir_with_tilde (const gchar *uri);
-
 void             glade_utils_cairo_draw_line (cairo_t  *cr,
 					      GdkColor *color,
 					      gint      x1,
@@ -176,6 +174,8 @@ void             glade_utils_cairo_draw_rectangle (cairo_t *cr,
 						   gint y,
 						   gint width,
 						   gint height);
+
+gchar           *glade_utils_replace_home_dir_with_tilde (const gchar *path);
 
 G_END_DECLS
 

@@ -57,6 +57,11 @@ struct _GladeDesignViewPrivate
 	GtkWidget      *layout;
 
 	GladeProject   *project;
+
+	GtkWidget      *scrolled_window;
+
+	GtkWidget      *progress;
+	GtkWidget      *progress_window;
 };
 
 static GtkVBoxClass *parent_class = NULL;
@@ -64,15 +69,53 @@ static GtkVBoxClass *parent_class = NULL;
 
 G_DEFINE_TYPE(GladeDesignView, glade_design_view, GTK_TYPE_VBOX)
 
+
+static void
+glade_design_view_parse_began (GladeProject    *project,
+			       GladeDesignView *view)
+{
+	gtk_widget_hide (view->priv->scrolled_window);
+	gtk_widget_show (view->priv->progress_window);
+}
+
+static void
+glade_design_view_parse_finished (GladeProject    *project,
+				  GladeDesignView *view)
+{
+	gtk_widget_hide (view->priv->progress_window);
+	gtk_widget_show (view->priv->scrolled_window);
+}
+
+static void
+glade_design_view_load_progress (GladeProject    *project,
+				 gint             total,
+				 gint             step,
+				 GladeDesignView *view)
+{
+	gchar *path;
+	gchar *str;
+
+	path = glade_utils_replace_home_dir_with_tilde (glade_project_get_path (project));
+	str  = g_strdup_printf (_("Loading %s: loaded %d of %d objects"), path, step, total);
+	gtk_progress_bar_set_text (GTK_PROGRESS_BAR (view->priv->progress), str);
+	g_free (str);
+	g_free (path);
+				
+	gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (view->priv->progress), step * 1.0 / total);
+}
+
 static void
 glade_design_view_set_project (GladeDesignView *view, GladeProject *project)
 {
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 
 	view->priv->project = project;
-	
-	g_object_set_data (G_OBJECT (view->priv->project), GLADE_DESIGN_VIEW_KEY, view);
 
+	g_signal_connect (project, "parse-began", G_CALLBACK (glade_design_view_parse_began), view);
+	g_signal_connect (project, "parse-finished", G_CALLBACK (glade_design_view_parse_finished), view);
+	g_signal_connect (project, "load-progress", G_CALLBACK (glade_design_view_load_progress), view);
+
+	g_object_set_data (G_OBJECT (view->priv->project), GLADE_DESIGN_VIEW_KEY, view);
 }
 
 static void 
@@ -112,28 +155,42 @@ glade_design_view_get_property (GObject    *object,
 static void
 glade_design_view_init (GladeDesignView *view)
 {
-	GtkWidget *sw;
-	GtkWidget *viewport;
+	GtkWidget *viewport, *filler;
 
 	view->priv = GLADE_DESIGN_VIEW_GET_PRIVATE (view);
 
 	view->priv->project = NULL;
 	view->priv->layout = glade_design_layout_new ();
 
-	sw = gtk_scrolled_window_new (NULL, NULL);
-	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), GTK_SHADOW_IN);
+	view->priv->scrolled_window = gtk_scrolled_window_new (NULL, NULL);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (view->priv->scrolled_window), 
+					GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (view->priv->scrolled_window), 
+					     GTK_SHADOW_IN);
 
 	viewport = gtk_viewport_new (NULL, NULL);
 	gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport), GTK_SHADOW_NONE);
 	gtk_container_add (GTK_CONTAINER (viewport), view->priv->layout);
-	gtk_container_add (GTK_CONTAINER (sw), viewport);
+	gtk_container_add (GTK_CONTAINER (view->priv->scrolled_window), viewport);
 
-	gtk_widget_show (sw);
+	gtk_widget_show (view->priv->scrolled_window);
 	gtk_widget_show (viewport);
 	gtk_widget_show (view->priv->layout);
 
-	gtk_box_pack_start (GTK_BOX (view), sw, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (view), view->priv->scrolled_window, TRUE, TRUE, 0);
+
+	/* The progress window */
+	view->priv->progress_window = gtk_vbox_new (FALSE, 0);
+	filler = gtk_label_new (NULL);
+	gtk_widget_show (filler);
+	gtk_box_pack_start (GTK_BOX (view->priv->progress_window), filler, TRUE, TRUE, 0);
+	view->priv->progress = gtk_progress_bar_new ();
+	gtk_widget_show (view->priv->progress);
+	gtk_box_pack_start (GTK_BOX (view->priv->progress_window), view->priv->progress, FALSE, TRUE, 0);
+	filler = gtk_label_new (NULL);
+	gtk_widget_show (filler);
+	gtk_box_pack_start (GTK_BOX (view->priv->progress_window), filler, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (view), view->priv->progress_window, TRUE, TRUE, 0);
 
 	gtk_container_set_border_width (GTK_CONTAINER (view), 0);
 }

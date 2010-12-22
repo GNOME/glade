@@ -6,6 +6,16 @@
 
 	* src/glade-window.c: Added load progressbar to notebook tabs.
 
+	* gladeui/glade-project.c: Added "parse-began" signal
+
+	* gladeui/glade-design-view.c: Hide workspace and show load progress
+	  while loading so that one cannot access project widgets during the load
+	  (insensitive workspace was problematic and causing some loaded project
+	  windows to be permanently insensitive).
+
+	* src/glade-window.c: Avoid any messups during project load, cannot close
+	  projects while they are loading, etc.
+
 2010-12-21  Tristan Van Berkom <tristanvb@openismus.com>
 
 	Added loading objects dialog with progress and cancel.

@@ -61,7 +61,8 @@ enum
 	SELECTION_CHANGED,
 	CLOSE,
 	CHANGED,
-	PARSE_FINISHED,
+ 	PARSE_BEGAN,
+ 	PARSE_FINISHED,
 	CONVERT_FINISHED,
 	TARGETS_CHANGED,
 	LOAD_PROGRESS,
@@ -874,6 +875,21 @@ glade_project_class_init (GladeProjectClass *klass)
 			      GLADE_TYPE_COMMAND, G_TYPE_BOOLEAN);
 
 	/**
+	 * GladeProject::parse-began:
+	 * @gladeproject: the #GladeProject which received the signal.
+	 *
+	 * Emitted when @gladeproject parsing starts.
+	 */
+	glade_project_signals[PARSE_BEGAN] =
+		g_signal_new ("parse-began",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_FIRST,
+			      0, NULL, NULL,
+			      g_cclosure_marshal_VOID__VOID,
+			      G_TYPE_NONE,
+			      0);
+
+	/**
 	 * GladeProject::parse-finished:
 	 * @gladeproject: the #GladeProject which received the signal.
 	 *
@@ -1527,6 +1543,8 @@ glade_project_load_internal (GladeProject *project)
 		return FALSE;
 	}
 
+	project->priv->mtime = glade_util_get_file_mtime (project->priv->path, NULL);
+
 	doc  = glade_xml_context_get_doc (context);
 	root = glade_xml_doc_get_root (doc);
 
@@ -1541,6 +1559,9 @@ glade_project_load_internal (GladeProject *project)
 		glade_xml_context_free (context);
 		return FALSE;
 	}
+
+	/* Emit "parse-began" signal */
+	g_signal_emit (project, glade_project_signals [PARSE_BEGAN], 0);
 
 	/* XXX Need to load project->priv->comment ! */
 	glade_project_read_comment (project, doc);
@@ -1591,8 +1612,6 @@ glade_project_load_internal (GladeProject *project)
 	if (glade_util_file_is_writeable (project->priv->path) == FALSE)
 		glade_project_set_readonly (project, TRUE);
 
-	project->priv->mtime = glade_util_get_file_mtime (project->priv->path, NULL);
-
 	/* Reset project status here too so that you get a clean
 	 * slate after calling glade_project_open().
 	 */
@@ -1604,14 +1623,15 @@ glade_project_load_internal (GladeProject *project)
 	 */
 	glade_project_fix_object_props (project);
 
-
 	/* Emit "parse-finished" signal */
 	g_signal_emit (project, glade_project_signals [PARSE_FINISHED], 0);
-	
 
 	/* Update ui with versioning info
 	 */
 	glade_project_verify_project_for_ui (project);
+
+	/* Update various things in the UI */
+	glade_app_update_ui ();
 
 	return TRUE;
 
@@ -1920,6 +1940,11 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
 	GladeXmlDoc     *doc;
 	gchar           *canonical_path;
 	gint             ret;
+
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+
+	if (glade_project_is_loading (project))
+		return FALSE;
 
 	if (!glade_project_verify (project, TRUE))
 		return FALSE;

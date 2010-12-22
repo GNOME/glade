@@ -2272,52 +2272,6 @@ glade_utils_hijack_key_press (GtkWindow          *win,
 }
 
 
-/* copied from gedit */
-gchar *
-glade_utils_replace_home_dir_with_tilde (const gchar *uri)
-{
-	gchar *tmp;
-	gchar *home;
-
-	g_return_val_if_fail (uri != NULL, NULL);
-
-	/* Note that g_get_home_dir returns a const string */
-	tmp = (gchar *)g_get_home_dir ();
-
-	if (tmp == NULL)
-		return g_strdup (uri);
-
-	home = g_filename_to_utf8 (tmp, -1, NULL, NULL, NULL);
-	if (home == NULL)
-		return g_strdup (uri);
-
-	if (strcmp (uri, home) == 0)
-	{
-		g_free (home);
-		
-		return g_strdup ("~");
-	}
-
-	tmp = home;
-	home = g_strdup_printf ("%s/", tmp);
-	g_free (tmp);
-
-	if (g_str_has_prefix (uri, home))
-	{
-		gchar *res;
-
-		res = g_strdup_printf ("~/%s", uri + strlen (home));
-
-		g_free (home);
-		
-		return res;		
-	}
-
-	g_free (home);
-
-	return g_strdup (uri);
-}
-
 
 void
 glade_utils_cairo_draw_line (cairo_t  *cr,
@@ -2361,4 +2315,55 @@ glade_utils_cairo_draw_rectangle (cairo_t *cr,
       cairo_rectangle (cr, x + 0.5, y + 0.5, width, height);
       cairo_stroke (cr);
     }
+}
+
+
+/* copied from gedit */
+gchar *
+glade_utils_replace_home_dir_with_tilde (const gchar *path)
+{
+#ifdef G_OS_UNIX
+	gchar *tmp;
+	gchar *home;
+
+	g_return_val_if_fail (path != NULL, NULL);
+
+	/* Note that g_get_home_dir returns a const string */
+	tmp = (gchar *) g_get_home_dir ();
+
+	if (tmp == NULL)
+		return g_strdup (path);
+
+	home = g_filename_to_utf8 (tmp, -1, NULL, NULL, NULL);
+	if (home == NULL)
+		return g_strdup (path);
+
+	if (strcmp (path, home) == 0)
+	{
+		g_free (home);
+		
+		return g_strdup ("~");
+	}
+
+	tmp = home;
+	home = g_strdup_printf ("%s/", tmp);
+	g_free (tmp);
+
+	if (g_str_has_prefix (path, home))
+	{
+		gchar *res;
+
+		res = g_strdup_printf ("~/%s", path + strlen (home));
+
+		g_free (home);
+		
+		return res;		
+	}
+
+	g_free (home);
+
+	return g_strdup (path);
+#else
+	return g_strdup (path);
+#endif
 }
