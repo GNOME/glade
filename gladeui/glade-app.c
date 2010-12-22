@@ -1128,10 +1128,9 @@ glade_app_command_copy (void)
 	gboolean            failed = FALSE;
 
 	app = glade_app_get();
-	if (app->priv->active_project == NULL)
-	{
+	if (app->priv->active_project == NULL ||
+	    glade_project_is_loading (app->priv->active_project))
 		return;
-	}
 
 	for (list = glade_app_get_selection ();
 	     list && list->data; list = list->next)
@@ -1171,7 +1170,8 @@ glade_app_command_cut (void)
 	gboolean            failed = FALSE;
 
 	app = glade_app_get();
-	if (app->priv->active_project == NULL)
+	if (app->priv->active_project == NULL ||
+	    glade_project_is_loading (app->priv->active_project))
 		return;
 	
 	for (list = glade_app_get_selection ();
@@ -1213,8 +1213,16 @@ glade_app_command_paste (GladePlaceholder *placeholder)
 	GladeFixed	   *fixed = NULL;
 
 	app = glade_app_get();
-	if (app->priv->active_project == NULL)
+	if (app->priv->active_project == NULL ||
+	    glade_project_is_loading (app->priv->active_project))
 		return;
+
+	if (placeholder)
+	{
+		if (glade_placeholder_get_project (placeholder) == NULL ||
+		    glade_project_is_loading (glade_placeholder_get_project (placeholder)))
+			return;
+	}
 
 	list      = glade_project_selection_get (app->priv->active_project);
 	clipboard = glade_app_get_clipboard ();
@@ -1336,7 +1344,8 @@ glade_app_command_delete (void)
 	gboolean            failed = FALSE;
 
 	app = glade_app_get();
-	if (app->priv->active_project == NULL)
+	if (app->priv->active_project == NULL ||
+	    glade_project_is_loading (app->priv->active_project))
 		return;
 
 	for (list = glade_app_get_selection ();

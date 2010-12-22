@@ -91,6 +91,8 @@ GType          glade_project_get_type            (void) G_GNUC_CONST;
 GladeProject  *glade_project_new                 (void);
 
 GladeProject  *glade_project_load                (const gchar  *path);
+gboolean       glade_project_load_from_file      (GladeProject *project, 
+						  const gchar  *path);
 
 gboolean       glade_project_save                (GladeProject *project, 
 						  const gchar   *path, 
@@ -219,6 +221,7 @@ gchar        *glade_project_display_dependencies (GladeProject *project);
 
 void          glade_project_push_progress (GladeProject *project);
 gboolean      glade_project_load_cancelled (GladeProject *project);
+void          glade_project_cancel_load (GladeProject *project);
 
 G_END_DECLS
 
