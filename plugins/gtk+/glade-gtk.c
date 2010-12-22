@@ -4959,17 +4959,19 @@ glade_gtk_entry_read_widget (GladeWidgetAdaptor *adaptor,
 	glade_property_sync (property);
 }
 
-#if 0
 /* ----------------------------- GtkFixed/GtkLayout ------------------------------ */
+#if 0
 static void
 glade_gtk_fixed_layout_finalize(GdkPixmap *backing)
 {
 	g_object_unref(backing);
 }
+#endif
 
 static void
 glade_gtk_fixed_layout_realize (GtkWidget *widget)
 {
+#if _FIXME_FIXME_CAIRO_
 	GdkPixbuf *pixbuf = gdk_pixbuf_new_from_xpm_data (fixed_bg_xpm);
 	GdkPixmap *backing;
 
@@ -4981,11 +4983,11 @@ glade_gtk_fixed_layout_realize (GtkWidget *widget)
 	else
 		gdk_window_set_back_pixmap (gtk_widget_get_window (widget), backing, FALSE);
 
-
 	/* For cleanup later
 	 */
 	g_object_weak_ref(G_OBJECT(widget), 
 			  (GWeakNotify)glade_gtk_fixed_layout_finalize, backing);
+#endif
 }
 
 static void
@@ -5056,7 +5058,6 @@ glade_gtk_fixed_layout_remove_child (GladeWidgetAdaptor  *adaptor,
 
 	gtk_container_remove (GTK_CONTAINER (object), GTK_WIDGET (child));
 }
-#endif
 
 /* ----------------------------- GtkWindow ------------------------------ */
 static void
@@ -8858,6 +8859,11 @@ glade_gtk_combo_box_post_create (GladeWidgetAdaptor *adaptor,
 		gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (object), cell,
 						"text", 0, NULL);
 	}
+
+	if (gtk_combo_box_get_has_entry (GTK_COMBO_BOX (object)))
+		glade_widget_adaptor_create_internal
+			(widget, G_OBJECT (gtk_bin_get_child (GTK_BIN (object))),
+			 "entry", "comboboxentry", FALSE, reason);
 }
 
 static void
@@ -8901,6 +8907,12 @@ glade_gtk_combo_box_set_property (GladeWidgetAdaptor *adaptor,
 									  object,
 									  id, value);
 	}
+	else if (!strcmp (id, "text-column"))
+	{
+		if (g_value_get_int (value) >= 0)
+			gtk_combo_box_set_entry_text_column (GTK_COMBO_BOX (object), 
+							     g_value_get_int (value));
+	}
 	else
 		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor,
 								  object,
@@ -8927,53 +8939,18 @@ glade_gtk_combo_box_get_children (GladeWidgetAdaptor *adaptor, GtkComboBox *comb
 	return list;
 }
 
-/* ----------------------------- GtkComboBoxEntry ------------------------------ */
-void
-glade_gtk_combo_box_entry_post_create (GladeWidgetAdaptor *adaptor,
-				       GObject            *object, 
-				       GladeCreateReason   reason)
-{
-	GladeWidget *gcombo = glade_widget_get_from_gobject (object);
-
-	/* Chain up */
-	GWA_GET_CLASS (GTK_TYPE_CONTAINER)->post_create (adaptor, object, reason);
-
-	glade_widget_adaptor_create_internal
-		(gcombo, G_OBJECT (gtk_bin_get_child (GTK_BIN (object))),
-		 "entry", "comboboxentry", FALSE, reason);
-}
-
 GObject *
-glade_gtk_combo_box_entry_get_internal_child (GladeWidgetAdaptor *adaptor,
-					      GObject *object, 
-					      const gchar *name)
+glade_gtk_combo_box_get_internal_child (GladeWidgetAdaptor *adaptor,
+					GObject *object, 
+					const gchar *name)
 {
 	GObject *child = NULL;
 	g_return_val_if_fail (GTK_IS_COMBO_BOX (object), NULL);
 	
-	if (strcmp ("entry", name) == 0)
+	if (gtk_combo_box_get_has_entry (GTK_COMBO_BOX (object)) && strcmp ("entry", name) == 0)
 		child = G_OBJECT (gtk_bin_get_child (GTK_BIN (object)));
 
 	return child;
-}
-
-
-void
-glade_gtk_combo_box_entry_set_property (GladeWidgetAdaptor *adaptor,
-					GObject            *object, 
-					const gchar        *id,
-					const GValue       *value)
-{
-	if (!strcmp (id, "text-column"))
-	{
-		if (g_value_get_int (value) >= 0)
-			gtk_combo_box_set_entry_text_column (GTK_COMBO_BOX (object), 
-							     g_value_get_int (value));
-	}
-	else
-		GWA_GET_CLASS (GTK_TYPE_COMBO_BOX)->set_property (adaptor,
-								  object,
-								  id, value);
 }
 
 /* ----------------------------- GtkSpinButton ------------------------------ */

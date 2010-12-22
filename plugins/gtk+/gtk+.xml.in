@@ -293,7 +293,7 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
     
-    <glade-widget-class name="GtkBox" _title="Box" fixed="True">
+    <glade-widget-class name="GtkBox" generic-name="box" _title="Box" fixed="True">
       <post-create-function>glade_gtk_box_post_create</post-create-function>
       <get-internal-child-function>glade_gtk_box_get_internal_child</get-internal-child-function>
       <get-children-function>glade_gtk_box_get_children</get-children-function>
@@ -335,6 +335,17 @@ embedded in another object</_tooltip>
           </displayable-values>
         </property>
       </packing-properties>
+    </glade-widget-class>
+
+    <glade-widget-class name="GtkHBox" generic-name="hbox" _title="Horizontal Box">
+      <properties>
+	<property id="orientation" disabled="True"/>
+      </properties>
+    </glade-widget-class>
+    <glade-widget-class name="GtkVBox" generic-name="vbox" _title="Vertical Box">
+      <properties>
+	<property id="orientation" disabled="True"/>
+      </properties>
     </glade-widget-class>
     
     <glade-widget-class name="GtkWindow" generic-name="window" _title="Window" toplevel="True" default-width="440" default-height="250">
@@ -1107,6 +1118,7 @@ embedded in another object</_tooltip>
       <add-child-function>glade_gtk_cell_layout_add_child</add-child-function>
       <remove-child-function>glade_gtk_cell_layout_remove_child</remove-child-function> 
       <get-children-function>glade_gtk_combo_box_get_children</get-children-function>
+      <get-internal-child-function>glade_gtk_combo_box_get_internal_child</get-internal-child-function>
       <read-child-function>glade_gtk_cell_layout_read_child</read-child-function>
       <write-child-function>glade_gtk_cell_layout_write_child</write-child-function>
       <action-activate-function>glade_gtk_cell_layout_action_activate_as_widget</action-activate-function>
@@ -1154,12 +1166,6 @@ embedded in another object</_tooltip>
 	  <visible-lines>2</visible-lines>
 	</property>
       </properties>
-    </glade-widget-class>
-
-    <glade-widget-class name="GtkComboBoxEntry" generic-name="comboboxentry" _title="Combo Box Entry">
-      <post-create-function>glade_gtk_combo_box_entry_post_create</post-create-function>
-      <get-internal-child-function>glade_gtk_combo_box_entry_get_internal_child</get-internal-child-function>
-      <set-property-function>glade_gtk_combo_box_entry_set_property</set-property-function>
     </glade-widget-class>
 
     <glade-widget-class name="GtkProgressBar" generic-name="progressbar" _title="Progress Bar">
@@ -1240,17 +1246,6 @@ embedded in another object</_tooltip>
 
     </glade-widget-class>
 
-    <glade-widget-class name="GtkHBox" generic-name="hbox" _title="Horizontal Box">
-      <properties>
-	<property id="orientation" disabled="True"/>
-      </properties>
-    </glade-widget-class>
-    <glade-widget-class name="GtkVBox" generic-name="vbox" _title="Vertical Box">
-      <properties>
-	<property id="orientation" disabled="True"/>
-      </properties>
-    </glade-widget-class>
-
     <glade-widget-class name="GtkTable" generic-name="table" _title="Table" fixed="True">
       <post-create-function>glade_gtk_table_post_create</post-create-function>
       <child-set-property-function>glade_gtk_table_set_child_property</child-set-property-function>
@@ -1295,7 +1290,7 @@ embedded in another object</_tooltip>
       </packing-properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkPaned" _title="Paned">
+    <glade-widget-class name="GtkPaned" generic-name="paned" _title="Paned">
       <post-create-function>glade_gtk_paned_post_create</post-create-function>
       <add-child-function>glade_gtk_paned_add_child</add-child-function>
       <remove-child-function>glade_gtk_paned_remove_child</remove-child-function>
@@ -1462,7 +1457,7 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkButtonBox" _title="Button Box">
+    <glade-widget-class name="GtkButtonBox" generic-name="buttonbox" _title="Button Box">
       <properties>
       	<property id="layout-style">
   	  <displayable-values>
@@ -1695,32 +1690,6 @@ embedded in another object</_tooltip>
 	    <value id="GTK_BUTTONS_OK_CANCEL" _name="Ok, Cancel"/>
 	  </displayable-values>
 	</property>
-      </properties>
-    </glade-widget-class>
-
-    <glade-widget-class name="GtkRuler" generic-name="ruler" _title="Ruler">
-      <properties>
-	<property default="10.0" id="upper"/>
-	<property default="5.0" id="position"/>
-	<property default="10.0" id="max-size"/>
-        <property id="metric">
-  	  <displayable-values>
-	    <value id="GTK_PIXELS" _name="Pixels"/>
-	    <value id="GTK_INCHES" _name="Inches"/>
-	    <value id="GTK_CENTIMETERS" _name="Centimeters"/>
-	  </displayable-values>
-	</property>
-      </properties>
-    </glade-widget-class>
-
-    <glade-widget-class name="GtkHRuler" generic-name="hruler" _title="Horizontal Ruler">
-      <properties>
-	<property id="orientation" disabled="True"/>
-      </properties>
-    </glade-widget-class>
-    <glade-widget-class name="GtkVRuler" generic-name="vruler" _title="Vertical Ruler">
-      <properties>
-	<property id="orientation" disabled="True"/>
       </properties>
     </glade-widget-class>
 
@@ -3313,6 +3282,7 @@ embedded in another object</_tooltip>
   </glade-widget-group>
 
   <glade-widget-group name="gtk-containers" _title="Containers">
+    <glade-widget-class-ref name="GtkBox"/>
     <glade-widget-class-ref name="GtkHBox"/>
     <glade-widget-class-ref name="GtkVBox"/>
     <glade-widget-class-ref name="GtkTable"/>
@@ -3321,8 +3291,10 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkAspectFrame"/>
     <glade-widget-class-ref name="GtkMenuBar"/>
     <glade-widget-class-ref name="GtkToolbar"/>
+    <glade-widget-class-ref name="GtkPaned"/>
     <glade-widget-class-ref name="GtkHPaned"/>
     <glade-widget-class-ref name="GtkVPaned"/>
+    <glade-widget-class-ref name="GtkButtonBox"/>
     <glade-widget-class-ref name="GtkHButtonBox"/>
     <glade-widget-class-ref name="GtkVButtonBox"/>
     <glade-widget-class-ref name="GtkLayout"/>
@@ -3359,7 +3331,6 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkVScrollbar"/>
 
     <glade-widget-class-ref name="GtkComboBox"/>
-    <glade-widget-class-ref name="GtkComboBoxEntry"/>
     <glade-widget-class-ref name="GtkProgressBar"/>
     <glade-widget-class-ref name="GtkSpinner"/>
 
@@ -3423,14 +3394,6 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkIconFactory"/>
     <glade-widget-class-ref name="GtkStatusIcon"/>
     <glade-widget-class-ref name="GtkFileFilter"/>
-  </glade-widget-group>
-
-  <glade-widget-group name="gtk-specialized" _title="Specialized Widgets">
-
-    <default-palette-state expanded="False"/>
-
-    <glade-widget-class-ref name="GtkHRuler"/>
-    <glade-widget-class-ref name="GtkVRuler"/>
   </glade-widget-group>
 
 </glade-catalog>

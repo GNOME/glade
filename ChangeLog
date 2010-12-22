@@ -3,6 +3,12 @@
 	* Making offscreen-gtk3 branch compile again after merging master,
 	  also making libgladeui library libgladeui-2.
 
+	* plugins/gtk+/glade-gtk.c: Removing some combobox entry stuff, reenabling
+	  the fixed_layout stuff
+
+	* plugins/gtk+/gtk+.xml.in: Removing Ruler classes, added GtkBox, GtkPaned, GtkButtonBox
+	  base classes that are now instantiatable
+
 2010-12-22  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-project.[ch]: Removed dialog and added "load-progress" signal
