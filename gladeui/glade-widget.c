@@ -1917,12 +1917,14 @@ glade_widget_get_from_gobject (gpointer object)
 static void
 glade_widget_add_to_layout (GladeWidget *widget, GtkWidget *layout)
 {
-	if (gtk_bin_get_child (GTK_BIN (layout)) != NULL)
-		gtk_container_remove (GTK_CONTAINER (layout), gtk_bin_get_child (GTK_BIN (layout)));
+	if (gtk_bin_get_child (GTK_BIN (layout)) != GTK_WIDGET (widget->object))
+	{
+		if (gtk_bin_get_child (GTK_BIN (layout)) != NULL)
+			gtk_container_remove (GTK_CONTAINER (layout), gtk_bin_get_child (GTK_BIN (layout)));
 
-	gtk_container_add (GTK_CONTAINER (layout), GTK_WIDGET (widget->object));
-	GLADE_DESIGN_LAYOUT (layout)->child = GTK_WIDGET (widget->object);
-	gtk_widget_show_all (GTK_WIDGET (widget->object));
+		gtk_container_add (GTK_CONTAINER (layout), GTK_WIDGET (widget->object));
+		gtk_widget_show_all (GTK_WIDGET (widget->object));
+	}
 }
 
 /**

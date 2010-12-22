@@ -11,6 +11,13 @@
 
 	* gladeui/glade-previewer.c: Fixed to not use gtk_set_locale().
 
+	* gladeui/glade-design-layout.[ch]: Reverted to GtkBin class, cannot do this
+	  with a GtkEventBox (the child gets a separate allocation and we use the border,
+	  we're really better with priv->event_window).
+
+	* gladeui/glade-widget.c: Fixed to not access GLADE_DESIGN_LAYOUT (widget)->child which
+	  doesnt (and shouldnt) exist.
+
 2010-12-22  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-project.[ch]: Removed dialog and added "load-progress" signal
