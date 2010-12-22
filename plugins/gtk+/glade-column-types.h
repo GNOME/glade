@@ -41,6 +41,8 @@ GType        glade_eprop_column_types_get_type    (void) G_GNUC_CONST;
 void         glade_column_list_free               (GList *list);
 GList       *glade_column_list_copy               (GList *list);
 
+GladeColumnType *glade_column_type_new            (const gchar *type_name,
+						   const gchar *column_name);
 void             glade_column_type_free           (GladeColumnType *column);
 GladeColumnType *glade_column_list_find_column    (GList *list, const gchar *column_name);
 

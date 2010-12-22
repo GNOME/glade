@@ -578,30 +578,50 @@ static void
 selection_foreach_func (GtkTreeModel *model, 
 		        GtkTreePath  *path,
 		        GtkTreeIter  *iter, 
-		        gpointer      data)
+		        GList       **selection)
 {
 	GObject* object;
 	
 	gtk_tree_model_get (model, iter, GLADE_PROJECT_MODEL_COLUMN_OBJECT, &object, -1);
 
 	if (object)
-		glade_app_selection_add (object, FALSE);
+	{
+		*selection = g_list_prepend (*selection, object);
+		g_object_unref (object);
+	}
 }
 
 static void
 selection_changed_cb (GtkTreeSelection *selection,
 		      GladeInspector   *inspector)
 {
+	GList *sel = NULL, *l;
+
+	gtk_tree_selection_selected_foreach (selection,
+					     (GtkTreeSelectionForeachFunc)selection_foreach_func,
+					     &sel);
+
+	/* We dont modify the project selection for a change that
+	 * leaves us with no selection. 
+	 *
+	 * This is typically because the user is changing the name
+	 * of a widget and the filter is active, the new name causes
+	 * the row to go out of the model and the selection to be
+	 * cleared, if we clear the selection we remove the editor
+	 * that the user is trying to type into.
+	 */
+	if (!sel)
+		return;
+
 	g_signal_handlers_block_by_func (inspector->priv->project,
 					 G_CALLBACK (project_selection_changed_cb),
 					 inspector);
-	
+
 	glade_app_selection_clear (FALSE);
-	
-	gtk_tree_selection_selected_foreach (selection,
-					     selection_foreach_func,
-					     inspector);
+	for (l = sel; l; l = l->next)
+		glade_app_selection_add (G_OBJECT (l->data), FALSE);
 	glade_app_selection_changed ();
+	g_list_free (sel);
 
 	g_signal_handlers_unblock_by_func (inspector->priv->project,
 					   G_CALLBACK (project_selection_changed_cb),
@@ -648,7 +668,8 @@ button_press_cb (GtkWidget      *widget,
 						    GLADE_PROJECT_MODEL_COLUMN_OBJECT, &object, -1);
 
 				if (widget != NULL)
-					glade_popup_widget_pop (glade_widget_get_from_gobject (object), event, TRUE);
+					glade_popup_widget_pop (glade_widget_get_from_gobject (object), 
+								event, TRUE);
 				else
 					glade_popup_simple_pop (event);
 				
@@ -864,6 +885,7 @@ glade_inspector_get_selected_items (GladeInspector *inspector)
 		gtk_tree_model_get (GTK_TREE_MODEL (priv->project), &iter, 
 		                    GLADE_PROJECT_MODEL_COLUMN_OBJECT, &object, -1);
 		
+		g_object_unref (object);
 		items = g_list_prepend (items, glade_widget_get_from_gobject (object));
 	}
 	

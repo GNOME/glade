@@ -145,16 +145,26 @@ glade_column_list_copy (GList *list)
 	
 	for (l = list; l; l = g_list_next (l))
 	{
-		GladeColumnType *new_data = g_slice_new0 (GladeColumnType);
 		GladeColumnType *data = l->data;
-		
-		new_data->type_name = g_strdup (data->type_name);
-		new_data->column_name = g_strdup (data->column_name);
-		
+		GladeColumnType *new_data = 
+			glade_column_type_new (data->type_name, data->column_name);
+
 		retval = g_list_prepend (retval, new_data);
 	}
 	
 	return g_list_reverse (retval);
+}
+
+GladeColumnType *
+glade_column_type_new (const gchar *type_name,
+		       const gchar *column_name)
+{
+	GladeColumnType *column = g_slice_new0 (GladeColumnType);
+
+	column->type_name   = g_strdup (type_name);
+	column->column_name = g_strdup (column_name);
+
+	return column;
 }
 
 void
@@ -323,9 +333,7 @@ eprop_column_append (GladeEditorProperty *eprop,
 	if (columns)
 		columns = glade_column_list_copy (columns);
 
-	data = g_slice_new0 (GladeColumnType);
-	data->column_name = g_strdup (column_name);
-	data->type_name   = g_strdup (type_name);
+	data = glade_column_type_new (type_name, column_name);
 
 	columns = g_list_append (columns, data);
 

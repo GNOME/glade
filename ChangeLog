@@ -1,3 +1,210 @@
+2010-12-22  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-project.[ch]: Removed dialog and added "load-progress" signal
+
+	* gladeui/glade-app.c: Protect against commands executed on loading projects
+
+	* src/glade-window.c: Added load progressbar to notebook tabs.
+
+	* gladeui/glade-project.c: Added "parse-began" signal
+
+	* gladeui/glade-design-view.c: Hide workspace and show load progress
+	  while loading so that one cannot access project widgets during the load
+	  (insensitive workspace was problematic and causing some loaded project
+	  windows to be permanently insensitive).
+
+	* src/glade-window.c: Avoid any messups during project load, cannot close
+	  projects while they are loading, etc.
+
+2010-12-21  Tristan Van Berkom <tristanvb@openismus.com>
+
+	Added loading objects dialog with progress and cancel.
+
+	* src/main.c: Display window before loading command line specified projects.
+
+	* gladeui/glade-project.[ch]: Added dialog that pops up when about to load
+	  a large project with glade_project_push_project() to push the progress and
+	  glade_project_load_cancelled() to check and abort while loading the project.
+
+	* gladeui/glade-widget.c, gladeui/glade-widget-adaptor.c: Push progress and
+	  abort loading when project indicates the user cancelled the load.
+
+2010-12-20  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/glade-column-types.[ch]: Added
+	  glade_column_type_new() to create a GladeColumnType struct properly using
+	  g_slice_new0(). An occurance of allocating the struct with g_new0 was causing
+	  Glade to crash when freeing the block with g_slice_free (bug 637563). Many
+	  big thanks to Benjamin Otte for tracking down the problem.
+
+	* gladeui/glade-project.c: Applying Marco Diego Aurélio Mesquita's patch to
+	  make the project preview only preview toplevels.
+
+	* gladeui/glade-editor.c: Fixed class header of GladeEditor to update when
+	  widgets unload (patch by Marco Diego Aurélio Mesquita, bug 637541).
+
+	* gladeui/glade-editor-property.c, gladeui/glade-property.c, gladeui/glade-widget.c,
+	  plugins/gtk+/glade-gtk.c: Fixing some discrepincies searching for properties as
+	  regular properties or packing properties. Now the conflicting "position" property
+	  on a GtkPaned widget packed into a GtkBox widget works properly (bug 637475).
+
+2010-12-19  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* plugins/gtk+/glade-gtk.c: Fix alpha_sort_box_children() to give a consistent
+	  order to placeholders (bug 637534 fix by Marco Diego Aurélio Mesquita).
+
+	* plugins/gtk+/glade-gtk.c: Removed alpha_sort_box_children(), project needs to be
+	  sorted with box children by position, loading process depends on this.
+
+	* gladeui/glade-widget.[ch]: Hide glade_widget_set_object(), improved reference count
+	  balancing and fixed segfaults upon closing projects that contain filechooser dialogs
+	  referenced by filechooserbuttons.
+
+2010-12-18  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* src/Makefile.am, gladeui/Makefile.am, plugins/gtk+/Makefile.am, plugins/gnome/Makefile.am:
+	  Fixed makefiles as per bug 521713 (patch initially by Daniel Macks).
+
+	* gladeui/glade-editor-property.c: Hide editor properties when the property is not available
+	  on the widget, bug 585299, fix by Marco Diego Aurélio Mesquita.
+
+	* gladeui/glade-editor-property.c: Unload currently loaded property in
+	  glade_editor_property_load_by_widget() when a NULL widget is specified or the property
+	  is not found.
+
+2010-12-17  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-project.c: Restore proper sorting of objects at save time.
+
+	* gladeui/glade-property-class.c: Properly order object properties
+
+	* plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-gtk.c: Alphabetically sort GtkBox children for save.
+
+	* plugins/gtk+/glade-gtk.c, po/*.po: Fixed 'controled' typo with updates to po files, patch
+	  by Matt Woelfel for bug 633957.
+
+	* Marking ChangeLog, this is where 3.7.2 was rolled.
+
+2010-12-17  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* NEWS, configure.ac: Rolling 3.7.2.
+
+2010-12-17  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-app.[ch]: Added glade_app_queue_selection_changed()
+
+	* gladeui/glade-command.c: queue selection changes when widgets are added, this
+	  avoids synchrounously poking the model when the selection changes various times
+	  in a command sequence such as changing a menu item's type.
+
+	* gladeui/glade-base-editor.c: Dont call glade_command_create/delete() directly
+	  in change-type, keep delegating this work to build-child/delete-child signals.
+
+	* gladeui/glade-widget.[ch]: Added glade_widget_is_ancestor()
+
+	* gladeui/glade-utils.c: Change glade_util_find_iter_by_widget() to use
+	  glade_widget_is_ancestor() and speed up searches a little this way.
+
+	* plugins/gtk+/glade-gtk.c:
+	  - Defensively avoid crash when setting entry icon tooltips
+	  - Add version check macro to compile with GTK+ 2.20
+
+	* plugins/gtk+/glade-gtk.c: Fixed crashes when textview's buffer is deleted, fix
+	  by Martin Schlemmer, bug 609748.
+
+	* gladeui/glade-project.c: Fixed crasher when adjusting project naming policy (bug 622528,
+	  thanks goes to Sébastien Granjoux and Martin Schlemmer for looking at this one).
+
+2010-12-16  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* plugins/gtk+/glade-gtk.c: Avoid using gtk_combo_box_set_entry_text_column directly (build
+	  for GTK+ 2.20).
+
+	* gladeui/glade-project.c: Notify iter changes when the widget name changes, increment project
+	  iter stamp before notifying row-inserted (old iters are invalid, the new iter persists),
+	  fixed leaked GtkTreePath when rows are inserted.
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Fixed GtkComboBox to handle cell-layout
+	  children as well as the possible internal entry (fixes bug 581580).
+
+	* doc/Makefile.am: For master branch, change doc build to link against libgladeui-2 library.
+
+	* gladeui/glade-base-editor.c: Fixed glade_base_editor_dispose to not access the signal
+	  editor, it's automatically destroyed as being a child of the editor.
+
+	* plugins/gtk+/glade-gtk.c: Set added treeviewcolumns to fixed sizing mode if the
+	  treeview is set to use fixed height mode (closing bug 596480).
+
+	* gladeui/glade-inspector.c:
+	  - Avoid changing project selection when selection is cleared, selection get's cleared
+	    when the user changes a widget name and a filter is applied (removing the entry from
+	    the filtered model), avoiding syncing project selection avoids making the editor disappear
+	    when the user changes a widget name (fixes bug 604322).
+	  - Also plugged some leaked objects retrieved by gtk_tree_model_get().
+
+	* gladeui/glade-editor-table.c: Fire a warning when entry is edited with no widget
+	  loaded, also change the ->loading flag strategy for blocking signal emission instead.
+
+	* plugins/gtk+/glade-gtk.c: Fixed floating project menus when context menu is fired (bug 141714).
+
+	* gladeui/glade-project.[ch], gladeui/glade-app.[ch], src/glade-window.c: Removed notion
+	  of project "instance_count" which is now unused.
+
+	* plugins/gtk+/gtk+.xml.in: Setting dialog type-hint default to Dialog (closes old bug 459917)
+
+	* gladeui/glade-project.c: Removing frame shadow (and label) from project preferences (bug 574098).
+
+	* plugins/gtk+/gtk+.xml.in: default adjustment page size -> 0 (bug 585085).
+
+2010-12-15  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-project.c: Cleanup glade_project_remove_object(), make sure row_deleted is
+	  fired before modifying internal data structures (and dont use the glade_util_ function
+	  to find a widget iter).
+
+	* plugins/gtk+/glade-gtk.c: Fixed errors when undoing the addition of notebook pages.
+	  The problem at length was an issue of orphaned project widgets left in the project model.
+
+	* gladeui/glade-widget.[ch], gladeui/glade-project.c, plugins/gtk+/glade-gtk.c: Cleanup
+	  object ref count cycles, now GladeProject just releases all widgets from the project
+	  and keeps a reference to the GladeWidget instead of the GObject, GladeWidget is now
+	  GInitiallyUnowned and GladeProject assumes ownership when objects are added to the
+	  project (glade-gtk.c in this patch avoids needlessly adding a widget to the project
+	  that will be implicitly added, now glade-gtk.c does not directly manually add any
+	  widgets to the project).
+
+	* gladeui/glade-widget.c, gladeui/glade-project.c: Fixed some final things with
+	  new GInitiallyUnowned strategy, push superuser mode at dispose time so that
+	  the plugin doesnt screw up, also hold a ref to widgets being rebuilt since
+	  they can go out and into the project.
+
+	* plugins/gtk+/glade-gtk.c: Make sure any manually created glade widgets pass
+	  through glade_widget_add_child() and get a proper ref from the parent (fixing
+	  more last minute crahsers).
+
+	* gladeui/glade-utils.c: Fixed crasher bug 628233 partially using patch by
+	  ramz <ramanathan.nitt@gmail.com>.
+
+	* gladeui/glade-project.c: Fix glade_project_fix_object_props() to copy the
+	  list which risks changing order while iterating.
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Avoid warnings when
+	  loading glade files.
+
+	* plugins/gtk+/gtk+.xml.in: Ignore "resize-mode" property incase of crashes
+	  (as reported in bug 622996).
+
+	* gladeui/glade-palette.c: Add a label in a box to the palette items to avoid
+	  the evil ellipsization.
+
+	* plugins/gtk+/glade-gtk.c: Fixed crash with notebook rebuilding children (bug 365462).
+
+2010-12-14  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* Reverted 3.0 commit, now targetting this branch to the final GTK+ 2.x chapter
+
+	* Reverted the commit that removes the old fashioned "Custom Widget" handling.
+
 2010-11-12  Johannes Schmid <jhs@gnome.org>
 
 	* gladeui/glade-project.c:

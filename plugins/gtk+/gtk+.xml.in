@@ -282,7 +282,7 @@ embedded in another object</_tooltip>
 
       <properties>
         <property id="border-width" common="True" weight="2.5"/>
-        <property id="resize-mode" common="True" weight="4.7">
+        <property id="resize-mode" ignore="True" common="True" weight="4.7">
   	  <displayable-values>
 	    <value id="GTK_RESIZE_PARENT" _name="Parent"/>
 	    <value id="GTK_RESIZE_QUEUE" _name="Queue"/>
@@ -296,6 +296,7 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkBox" _title="Box" fixed="True">
       <post-create-function>glade_gtk_box_post_create</post-create-function>
       <get-internal-child-function>glade_gtk_box_get_internal_child</get-internal-child-function>
+      <get-children-function>glade_gtk_box_get_children</get-children-function>
       <set-property-function>glade_gtk_box_set_property</set-property-function>
       <get-property-function>glade_gtk_box_get_property</get-property-function>
       <verify-function>glade_gtk_box_verify_property</verify-function>
@@ -1011,6 +1012,7 @@ embedded in another object</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkFileChooserButton" generic-name="filechooserbutton" _title="File Chooser Button">
+      <set-property-function>glade_gtk_file_chooser_button_set_property</set-property-function>
 
       <signals>
 	<signal id="file-set" since="2.12"/>
@@ -1033,6 +1035,7 @@ embedded in another object</_tooltip>
 	<property id="preview-widget" parentless-widget="True" libglade-unsupported="True"/>
 	<property id="filter" libglade-unsupported="True"/>
 	<property id="create-folders" since="2.18"/>
+	<property id="select-multiple" disabled="True"/>
       </properties>
     </glade-widget-class>
 
@@ -1103,7 +1106,7 @@ embedded in another object</_tooltip>
       <set-property-function>glade_gtk_combo_box_set_property</set-property-function>
       <add-child-function>glade_gtk_cell_layout_add_child</add-child-function>
       <remove-child-function>glade_gtk_cell_layout_remove_child</remove-child-function> 
-      <get-children-function>glade_gtk_cell_layout_get_children</get-children-function>
+      <get-children-function>glade_gtk_combo_box_get_children</get-children-function>
       <read-child-function>glade_gtk_cell_layout_read_child</read-child-function>
       <write-child-function>glade_gtk_cell_layout_write_child</write-child-function>
       <action-activate-function>glade_gtk_cell_layout_action_activate_as_widget</action-activate-function>
@@ -1232,7 +1235,7 @@ embedded in another object</_tooltip>
 	<property id="default-width"  default="320" optional="True" optional-default="False"/>
 	<property id="default-height" default="260" optional="True" optional-default="False"/>
 	<property id="has-separator"  default="False"/>
-	<property id="type-hint"  save-always="True"/>
+	<property id="type-hint" default="GDK_WINDOW_TYPE_HINT_DIALOG" save-always="True"/>
       </properties>
 
     </glade-widget-class>
@@ -1846,7 +1849,7 @@ embedded in another object</_tooltip>
 	<property id="upper" default="100.0" save="False"/>
 	<property id="page-increment" default="10.0"/>
 	<property id="step-increment" default="1.0"/>
-	<property id="page-size" default="10.0"/>
+	<property id="page-size" default="0.0"/>
       </properties>
     </glade-widget-class>
 

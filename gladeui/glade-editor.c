@@ -346,6 +346,7 @@ glade_editor_update_class_field (GladeEditor *editor)
 	}
 	else
 	{
+		gtk_widget_hide (editor->class_icon);
 		gtk_widget_hide (editor->warning);
 		gtk_label_set_text (GTK_LABEL (editor->class_label), _("Properties"));
 	}
@@ -721,6 +722,9 @@ glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 		gtk_widget_set_sensitive (editor->info_button, FALSE);
 
 		editor->loaded_widget = NULL;
+
+		/* Clear class header */
+		glade_editor_update_class_field (editor);
 
 		g_object_notify (G_OBJECT (editor), "widget");
 		return;

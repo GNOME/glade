@@ -1,3 +1,37 @@
+## Previewer
+
+bin_PROGRAMS = glade-previewer
+lib_LTLIBRARIES = libgladeui-2.la
+
+glade_previewer_CPPFLAGS = \
+	-I$(top_srcdir)    \
+	-I$(top_builddir)  \
+	-DGLADE_GNOMEHELPDIR="\"$(HELP_DIR)\"" \
+	$(GTK_CFLAGS)      \
+	$(IGE_MAC_CFLAGS)  \
+	$(WARN_CFLAGS)     \
+	$(AM_CPPFLAGS)
+
+glade_previewer_CFLAGS =   \
+	$(AM_CFLAGS)
+
+glade_previewer_LDFLAGS = $(AM_LDFLAGS)
+
+glade_previewer_LDADD = libgladeui-2.la $(IGE_MAC_LIBS)
+
+glade_previewer_SOURCES = \
+	glade-previewer.c
+
+if NATIVE_WIN32
+glade_previewer_LDADD += glade-win32-res.o
+if !GLADE_UNSTABLE
+glade_previewer_LDFLAGS += -mwindows
+endif
+endif
+
+glade-win32-res.o: glade-previewer.rc
+	$(WINDRES) $< $@
+
 ## Rest of the UI ;)
 
 common_defines = \
@@ -8,14 +42,12 @@ common_defines = \
 	-DGLADE_LOCALEDIR="\"$(datadir)/locale\""\
   -DGLADE_BINDIR="\"$(bindir)\""
 
-lib_LTLIBRARIES = libgladeui-3.la
-
 BUILT_SOURCES = glade-marshallers.c glade-marshallers.h
 
 EXTRA_DIST = glade-marshallers.list gladeui.rc.in icon-naming-spec.c glade-previewer.rc.in
 
-# The glade-3 core library
-libgladeui_3_la_SOURCES = \
+# The glade core library
+libgladeui_2_la_SOURCES = \
 	glade-widget-adaptor.c \
 	glade-debug.c \
 	glade-project.c \
@@ -60,24 +92,24 @@ libgladeui_3_la_SOURCES = \
 	glade-editor-table.c \
 	glade-cell-renderer-icon.c
 
-libgladeui_3_la_CPPFLAGS =  \
+libgladeui_2_la_CPPFLAGS =  \
 	$(common_defines)   \
 	-I$(top_srcdir)     \
 	-I$(top_builddir)   \
-	$(AM_CPPFLAGS)
-
-libgladeui_3_la_CFLAGS =    \
 	$(GTK_CFLAGS)       \
 	$(IGE_MAC_BUNDLE_FLAG) \
 	$(IGE_MAC_CFLAGS)  \
 	$(WARN_CFLAGS)      \
+	$(AM_CPPFLAGS)
+
+libgladeui_2_la_CFLAGS =    \
 	$(AM_CFLAGS)
 
-libgladeui_3_la_LDFLAGS = -version-info $(GLADE_CURRENT):$(GLADE_REVISION):$(GLADE_AGE) $(AM_LDFLAGS)
-libgladeui_3_la_LIBADD = $(GTK_LIBS) $(IGE_MAC_LIBS)
+libgladeui_2_la_LDFLAGS = -version-info $(GLADE_CURRENT):$(GLADE_REVISION):$(GLADE_AGE) $(AM_LDFLAGS)
+libgladeui_2_la_LIBADD = $(GTK_LIBS) $(IGE_MAC_LIBS)
 
 
-libgladeuiincludedir=$(includedir)/libgladeui-3.0/gladeui
+libgladeuiincludedir=$(includedir)/libgladeui-2.0/gladeui
 libgladeuiinclude_HEADERS = \
 	glade.h \
 	glade-debug.h \
@@ -117,12 +149,12 @@ libgladeuiinclude_HEADERS = \
 
 
 if PLATFORM_WIN32
-libgladeui_3_la_LDFLAGS += -no-undefined
+libgladeui_2_la_LDFLAGS += -no-undefined
 endif
 
 if NATIVE_WIN32
-libgladeui_3_la_LDFLAGS += -Wl,gladeui-win32-res.o -export-symbols gladeui.def
-libgladeui_3_la_DEPENDENCIES = gladeui-win32-res.o gladeui.def
+libgladeui_2_la_LDFLAGS += -Wl,gladeui-win32-res.o -export-symbols gladeui.def
+libgladeui_2_la_DEPENDENCIES = gladeui-win32-res.o gladeui.def
 endif
 
 gladeui-win32-res.o: gladeui.rc

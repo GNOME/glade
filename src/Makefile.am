@@ -5,13 +5,13 @@ bin_PROGRAMS = glade
 glade_CPPFLAGS = \
 	-I$(top_srcdir)    \
 	-I$(top_builddir)  \
-	-DGLADE_GNOMEHELPDIR="\"$(HELP_DIR)\""
-	$(AM_CPPFLAGS)
-
-glade_CFLAGS =           \
+	-DGLADE_GNOMEHELPDIR="\"$(HELP_DIR)\"" \
 	$(GTK_CFLAGS)      \
 	$(IGE_MAC_CFLAGS)  \
 	$(WARN_CFLAGS)     \
+	$(AM_CPPFLAGS)
+
+glade_CFLAGS =           \
 	$(AM_CFLAGS)
 
 glade_LDFLAGS = $(AM_LDFLAGS)

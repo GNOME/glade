@@ -1401,7 +1401,7 @@ glade_command_add_execute (GladeCommandAddRemove *me)
 
 			glade_widget_show (cdata->widget);
 		}
-		glade_app_selection_changed ();
+		glade_app_queue_selection_changed ();
 	}
 	return TRUE;
 	
@@ -1735,12 +1735,11 @@ glade_command_create(GladeWidgetAdaptor *adaptor, GladeWidget *parent, GladePlac
 		return NULL;
 	}
 	widgets = g_list_prepend(widgets, widget);
-	glade_command_push_group(_("Create %s"), g_list_length (widgets) == 1 ? widget->name : _("multiple"));
+	glade_command_push_group(_("Create %s"), widget->name);
 	glade_command_add(widgets, parent, placeholder, FALSE);
 	glade_command_pop_group();
-	
-	if (widgets)
-		g_list_free(widgets);
+
+	g_list_free(widgets);
 	
 	return widget;
 }
