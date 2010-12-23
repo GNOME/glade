@@ -11549,6 +11549,43 @@ glade_gtk_treeview_remove_child (GladeWidgetAdaptor *adaptor,
 	gtk_tree_view_remove_column (view, column);
 }
 
+void
+glade_gtk_treeview_replace_child (GladeWidgetAdaptor *adaptor,
+				  GObject            *container,
+				  GObject            *current,
+				  GObject            *new_column)
+{
+	GtkTreeView *view = GTK_TREE_VIEW (container);
+	GList             *columns;
+	GtkTreeViewColumn *column;
+	GladeWidget       *gcolumn;
+	gint               index;
+
+	if (!GTK_IS_TREE_VIEW_COLUMN (current))
+		return;
+
+	column = GTK_TREE_VIEW_COLUMN (current);
+
+	columns = gtk_tree_view_get_columns (view);
+	index   = g_list_index (columns, column);
+	g_list_free (columns);
+
+	gtk_tree_view_remove_column (view, column);
+	column = GTK_TREE_VIEW_COLUMN (new_column);
+
+	gtk_tree_view_insert_column (view, column, index);
+
+	if (gtk_tree_view_get_fixed_height_mode (view))
+	{
+		gcolumn = glade_widget_get_from_gobject (column);
+		glade_widget_property_set (gcolumn, "sizing", GTK_TREE_VIEW_COLUMN_FIXED);
+		glade_widget_property_set_sensitive (gcolumn, "sizing", FALSE,
+						     INSENSITIVE_COLUMN_SIZING_MSG);
+	}
+
+	glade_gtk_cell_layout_sync_attributes (G_OBJECT (column));
+}
+
 gboolean
 glade_gtk_treeview_depends (GladeWidgetAdaptor *adaptor,
 			    GladeWidget        *widget,
