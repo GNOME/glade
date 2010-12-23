@@ -1954,7 +1954,6 @@ glade_widget_show (GladeWidget *widget)
 			return;
 		}
 
-
 		view = glade_design_view_get_from_project (glade_widget_get_project (widget));
 
 		if (!view)

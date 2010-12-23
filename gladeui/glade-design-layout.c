@@ -179,114 +179,6 @@ glade_design_layout_update_child (GladeDesignLayout *layout,
 	gtk_widget_queue_resize (GTK_WIDGET (layout));
 }
 
-
-/* A temp data struct that we use when looking for a widget inside a container
- * we need a struct, because the forall can only pass one pointer
- */
-typedef struct {
-	gint x;
-	gint y;
-	gboolean   any;
-	GtkWidget *found;
-	GtkWidget *toplevel;
-} GladeFindInContainerData;
-
-static void
-glade_design_layout_find_inside_container (GtkWidget *widget, GladeFindInContainerData *data)
-{
-	GtkAllocation allocation;
-	gint x;
-	gint y;
-
-	gtk_widget_translate_coordinates (data->toplevel, widget, data->x, data->y, &x, &y);
-	gtk_widget_get_allocation (widget, &allocation);
-
-	if (gtk_widget_get_mapped(widget) &&
-	    x >= 0 && x < allocation.width && y >= 0 && y < allocation.height)
-	{
-		if (glade_widget_get_from_gobject (widget) || data->any)
-			data->found = widget;
-		else if (GTK_IS_CONTAINER (widget))
-		{
-			/* Recurse and see if any project objects exist
-			 * under this container that is not in the project
-			 * (mostly for dialog buttons).
-			 */
-			GladeFindInContainerData search;
-			search.x = data->x;
-			search.y = data->y;
-			search.toplevel = data->toplevel;
-			search.found = NULL;
-
-			gtk_container_forall (GTK_CONTAINER (widget), (GtkCallback)
-					      glade_design_layout_find_inside_container, &search);
-
-			data->found = search.found;
-		}
-	}
-}
-
-static GladeWidget *
-glade_design_layout_deepest_gwidget_at_position (GtkContainer *toplevel,
-						 GtkContainer *container,
-						 gint top_x, gint top_y)
-{
-	GladeFindInContainerData data;
-	GladeWidget *ret_widget = NULL;
-
-	data.x = top_x;
-	data.y = top_y;
-	data.any = FALSE;
-	data.toplevel = GTK_WIDGET (toplevel);
-	data.found = NULL;
-
-	gtk_container_forall (container, (GtkCallback)
-			      glade_design_layout_find_inside_container, &data);
-
-	if (data.found)
-	{
-		if (GTK_IS_CONTAINER (data.found))
-			ret_widget = glade_design_layout_deepest_gwidget_at_position
-				(toplevel, GTK_CONTAINER (data.found), top_x, top_y);
-		else
-			ret_widget = glade_widget_get_from_gobject (data.found);
-	}
-
-	if (!ret_widget)
-		ret_widget = glade_widget_get_from_gobject (container);
-
-	return ret_widget;
-}
-
-
-static GtkWidget *
-glade_design_layout_deepest_widget_at_position (GtkContainer *toplevel,
-						GtkContainer *container,
-						gint top_x, gint top_y)
-{
-	GladeFindInContainerData data;
-	GtkWidget *ret_widget = NULL;
-
-	data.x = top_x;
-	data.y = top_y;
-	data.any = TRUE;
-	data.toplevel = GTK_WIDGET (toplevel);
-	data.found = NULL;
-
-	gtk_container_forall (container, (GtkCallback)
-			      glade_design_layout_find_inside_container, &data);
-
-	if (data.found && GTK_IS_CONTAINER (data.found))
-		ret_widget = glade_design_layout_deepest_widget_at_position
-			(toplevel, GTK_CONTAINER (data.found), top_x, top_y);
-	else if (data.found)
-		ret_widget = data.found;
-	else
-		ret_widget = GTK_WIDGET (container);
-
-	return ret_widget;
-}
-
 static gboolean
 glade_design_layout_motion_notify_event (GtkWidget *widget, GdkEventMotion *ev)
 {
@@ -704,6 +596,46 @@ glade_design_layout_draw (GtkWidget *widget, cairo_t *cr)
 	return GTK_WIDGET_CLASS (glade_design_layout_parent_class)->draw (widget, cr);
 }
 
+
+
+typedef struct {
+	GtkWidget   *toplevel;
+	gint         x;
+	gint         y;
+	GtkWidget   *placeholder;
+	GladeWidget *gwidget;
+} GladeFindInContainerData;
+
+static void
+glade_design_layout_find_inside_container (GtkWidget *widget, GladeFindInContainerData *data)
+{
+	GtkAllocation allocation;
+	gint x;
+	gint y;
+
+	if (data->gwidget || !gtk_widget_get_mapped (widget))
+		return;
+
+	gtk_widget_translate_coordinates (data->toplevel, widget, data->x, data->y, &x, &y);
+	gtk_widget_get_allocation (widget, &allocation);
+
+	if (x >= 0 && x < allocation.width && 
+	    y >= 0 && y < allocation.height)
+	{
+		if (GLADE_IS_PLACEHOLDER (widget))
+			data->placeholder = widget;
+		else
+		{
+			if (GTK_IS_CONTAINER (widget))
+				gtk_container_forall (GTK_CONTAINER (widget), (GtkCallback)
+						      glade_design_layout_find_inside_container, data);
+
+			if (!data->gwidget)
+				data->gwidget = glade_widget_get_from_gobject (widget);
+		}
+	}
+}
+
 /**
  * glade_design_layout_widget_event:
  * @layout:        A #GladeDesignLayout
@@ -721,34 +653,28 @@ glade_design_layout_widget_event (GladeDesignLayout *layout,
 				  GladeWidget       *event_gwidget,
 				  GdkEvent          *event)
 {
-	GladeWidget *gwidget;
-	GtkWidget   *child;
+	GladeFindInContainerData data = { 0, };
 	gboolean     retval;
-	gint         x, y;
-	
-	gtk_widget_get_pointer (GTK_WIDGET (layout), &x, &y);
-	gwidget = glade_design_layout_deepest_gwidget_at_position
-		(GTK_CONTAINER (gtk_bin_get_child (GTK_BIN (layout))), 
-		 GTK_CONTAINER (gtk_bin_get_child (GTK_BIN (layout))), x, y);
 
-	child = glade_design_layout_deepest_widget_at_position 
-		(GTK_CONTAINER (gtk_bin_get_child (GTK_BIN (layout))), 
-		 GTK_CONTAINER (gtk_bin_get_child (GTK_BIN (layout))), x, y);
+	data.toplevel = GTK_WIDGET (layout);
+	gtk_widget_get_pointer (GTK_WIDGET (layout), &data.x, &data.y);
+
+	glade_design_layout_find_inside_container (gtk_bin_get_child (GTK_BIN (layout)), &data);
 
 	/* First try a placeholder */
-	if (GLADE_IS_PLACEHOLDER (child) && event->type != GDK_EXPOSE)
+	if (data.placeholder && event->type != GDK_EXPOSE)
 	{
-		retval = gtk_widget_event (child, event);
+		retval = gtk_widget_event (data.placeholder, event);
 
 		if (retval)
 			return retval;
 	}
 
 	/* Then we try a GladeWidget */
-	if (gwidget) 
+	if (data.gwidget) 
 	{
 		g_signal_emit_by_name (layout, "widget-event",
-				       gwidget, event, &retval);
+				       data.gwidget, event, &retval);
 
 		if (retval)
 			return retval;

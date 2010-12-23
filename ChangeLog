@@ -15,6 +15,9 @@
 
 	* gladeui/glade-design-layout.c: Re-fixed child allocation to allocate at least the requisition.
 
+	* gladeui/glade-design-layout.c: Fixed search-for-inner widget and placeholder algorithm, now
+	  it loops less and actually finds the widgets.
+
 2010-12-22  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* Making offscreen-gtk3 branch compile again after merging master,
