@@ -45,6 +45,8 @@ struct _GladePlaceholder
 	GtkWidget widget;
 	
 	GList *packing_actions;
+
+	GdkWindow *event_window;
 };
 
 struct _GladePlaceholderClass

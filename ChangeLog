@@ -1,3 +1,14 @@
+2010-12-23  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-widget.c: Check if object is actually in the parent when rebuilding
+	  (for setting construct properties during a load process).
+
+	* plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-gtk.c: Added glade_gtk_treeview_replace_child(),
+	  this was never needed before since treeview columns did not have construct-only properties
+	  (so they did not hit "rebuild" codepaths).
+
+	* gladeui/glade-placeholder.[ch]: Make GladePlaceholder use an event window and have no window.
+
 2010-12-22  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* Making offscreen-gtk3 branch compile again after merging master,
