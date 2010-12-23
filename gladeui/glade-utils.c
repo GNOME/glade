@@ -650,38 +650,6 @@ glade_util_duplicate_underscores (const gchar *name)
 	return underscored_name;
 }
 
-/* This returns the window that the given widget's position is relative to.
-   Usually this is the widget's parent's window. But if the widget is a
-   toplevel, we use its own window, as it doesn't have a parent.
-   Some widgets also lay out widgets in different ways. */
-static GdkWindow*
-glade_util_get_window_positioned_in (GtkWidget *widget)
-{
-	GtkWidget *parent;
-
-	parent = gtk_widget_get_parent (widget);
-
-#ifdef USE_GNOME
-	/* BonoboDockItem widgets use a different window when floating.
-	   FIXME: I've left this here so we remember to add it when we add
-	   GNOME support. */
-	if (BONOBO_IS_DOCK_ITEM (widget)
-	    && BONOBO_DOCK_ITEM (widget)->is_floating) {
-		return BONOBO_DOCK_ITEM (widget)->float_window;
-	}
-
-	if (parent && BONOBO_IS_DOCK_ITEM (parent)
-	    && BONOBO_DOCK_ITEM (parent)->is_floating) {
-		return BONOBO_DOCK_ITEM (parent)->float_window;
-	}
-#endif
-
-	if (parent)
-		return gtk_widget_get_window (parent);
-
-	return gtk_widget_get_window (widget);
-}
-
 static void
 glade_util_draw_nodes (cairo_t *cr, GdkColor *color,
 		       gint x, gint y,
@@ -710,147 +678,34 @@ glade_util_draw_nodes (cairo_t *cr, GdkColor *color,
 	glade_utils_cairo_draw_rectangle (cr, color, FALSE, x, y, width - 1, height - 1);
 }
 
-/* This calculates the offset of the given window within its toplevel.
-   It also returns the toplevel. */
-static void
-glade_util_calculate_window_offset (GdkWindow *window,
-				    gint *x, gint *y,
-				    GdkWindow **toplevel)
-{
-	gint tmp_x, tmp_y;
-
-	/* Calculate the offset of the window within its toplevel. */
-	*x = 0;
-	*y = 0;
-
-	for (;;) {
-		if (gdk_window_get_window_type (window) != GDK_WINDOW_CHILD)
-			break;
-		gdk_window_get_position (window, &tmp_x, &tmp_y);
-		*x += tmp_x;
-		*y += tmp_y;
-		window = gdk_window_get_parent (window);
-	}
-
-	*toplevel = window;
-}
-
-/* This returns TRUE if it is OK to draw the selection nodes for the given
-   selected widget inside the given window that has received an expose event.
-   For most widgets it returns TRUE, but if a selected widget is inside a
-   widget like a viewport, that uses its own coordinate system, then it only
-   returns TRUE if the expose window is inside the viewport as well. */
-static gboolean
-glade_util_can_draw_nodes (GtkWidget *sel_widget, GdkWindow *sel_win,
-			   GdkWindow *expose_win)
-{
-	GtkWidget *widget, *viewport = NULL;
-	GdkWindow *viewport_win = NULL;
-
-	/* Check if the selected widget is inside a viewport. */
-	for (widget = gtk_widget_get_parent (sel_widget); widget; widget = gtk_widget_get_parent (widget)) {
-		if (GTK_IS_VIEWPORT (widget)) {
-			viewport = widget;
-			viewport_win = gtk_viewport_get_bin_window (GTK_VIEWPORT (widget));
-			break;
-		}
-	}
-
-	/* If there is no viewport-type widget above the selected widget,
-	   it is OK to draw the selection anywhere. */
-	if (!viewport)
-		return TRUE;
-
-	/* If we have a viewport-type widget, check if the expose_win is
-	   beneath the viewport. If it is, we can draw in it. If not, we
-	   can't.*/
-	for (;;) {
-		if (expose_win == sel_win)
-			return TRUE;
-		if (expose_win == viewport_win)
-			return FALSE;
-		if (gdk_window_get_window_type (expose_win) != GDK_WINDOW_CHILD)
-			break;
-		expose_win = gdk_window_get_parent (expose_win);
-	}
-
-	return FALSE;
-}
-
 /**
  * glade_util_draw_selection_nodes:
- * @expose_win: a #GdkWindow
+ * @widget: a #GtkWidget
+ * @cr: the #cairo_t to draw with
  *
- * Redraws any selection nodes that intersect @expose_win. Steps through all
- * selected widgets, finds their coordinates, and calls glade_util_draw_nodes()
- * if appropriate.
- *
+ * Draws selection on @widget if @widget is selected.
  */
 void
-glade_util_draw_selection_nodes (GtkWidget* expose_widget, cairo_t *cr)
+glade_util_draw_selection_nodes (GtkWidget *widget, cairo_t *cr)
 {
-	gint expose_win_x, expose_win_y;
-	gint expose_win_w, expose_win_h;
-	GdkWindow   *expose_win;
-	GdkWindow   *expose_toplevel;	
 	GdkColor *color;
-	GList *elem;
+	
+	g_return_if_fail (GTK_IS_WIDGET (widget));
 
 	cairo_save (cr);
-	
-	g_return_if_fail (GTK_IS_WIDGET (expose_widget));
 
-	color = &(gtk_widget_get_style (expose_widget)->black);
+	color = &(gtk_widget_get_style (widget)->black);
 
-	/* Calculate the offset of the expose window within its toplevel. */
-	expose_toplevel = gtk_widget_get_window (gtk_widget_get_toplevel (expose_widget));
-	expose_win = gtk_widget_get_window (expose_widget);
-	glade_util_calculate_window_offset (expose_win,
-					    &expose_win_x,
-					    &expose_win_y,
-					    &expose_toplevel);
+	if (g_list_find (glade_util_selection, widget))
+	{
+		GtkAllocation allocation;
 
-	expose_win_w = gtk_widget_get_allocated_width (expose_widget);
-	expose_win_h = gtk_widget_get_allocated_height (expose_widget);
-
-	/* Step through all the selected widgets. */
-	for (elem = glade_util_selection; elem; elem = elem->next) {
-
-		GtkWidget *sel_widget;
-		GdkWindow *sel_win, *sel_toplevel;
-		gint sel_x, sel_y, x, y, w, h;
-
-		sel_widget = elem->data;
-
-		if ((sel_win = glade_util_get_window_positioned_in (sel_widget)) == NULL)
-			continue;
-
-		/* Calculate the offset of the selected widget's window
-		   within its toplevel. */
-		glade_util_calculate_window_offset (sel_win, &sel_x, &sel_y,
-						    &sel_toplevel);
-
-		/* We only draw the nodes if the window that got the expose
-		   event is in the same toplevel as the selected widget. */
-		if (expose_toplevel == sel_toplevel
-		    && glade_util_can_draw_nodes (sel_widget, sel_win,
-						  expose_win)) {
-			GtkAllocation allocation;
-
-			gtk_widget_get_allocation (sel_widget, &allocation);
-			x = sel_x + allocation.x - expose_win_x;
-			y = sel_y + allocation.y - expose_win_y;
-			w = allocation.width;
-			h = allocation.height;
-
-			/* Draw the selection nodes if they intersect the
-			   expose window bounds. */
-			if (x < expose_win_w && x + w >= 0
-			    && y < expose_win_h && y + h >= 0) {
-				glade_util_draw_nodes (cr, color, x, y, w, h);
-			}
-		}
+		gtk_widget_get_allocation (widget, &allocation);
+		glade_util_draw_nodes (cr, color, 
+				       0, 0, allocation.width, allocation.height);
 	}
+
+	cairo_restore (cr);
 }
 
 /**
@@ -892,7 +747,9 @@ glade_util_remove_selection (GtkWidget *widget)
 	/* We redraw the parent, since the selection rectangle may not be
 	   cleared if we just redraw the widget itself. */
 	parent = gtk_widget_get_parent (widget);
-	gtk_widget_queue_draw (parent ? parent : widget);
+	if (parent)
+		gtk_widget_queue_draw (parent);
+	gtk_widget_queue_draw (widget);
 }
 
 /**
@@ -913,7 +770,10 @@ glade_util_clear_selection (void)
 	{
 		widget = list->data;
 		parent = gtk_widget_get_parent (widget);
-		gtk_widget_queue_draw (parent ? parent : widget);
+
+		if (parent)
+			gtk_widget_queue_draw (parent);
+		gtk_widget_queue_draw (widget);
 	}
 	glade_util_selection =
 		(g_list_free (glade_util_selection), NULL);
