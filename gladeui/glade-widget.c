@@ -2320,7 +2320,7 @@ glade_widget_rebuild (GladeWidget *gwidget)
 	GObject            *new_object, *old_object;
 	GladeWidgetAdaptor *adaptor;
 	GList              *children;
-	gboolean            reselect = FALSE, inproject;
+	gboolean            reselect = FALSE, inproject, inparent;
 	GList              *restore_properties = NULL;
 	GList              *save_properties, *l;
 	
@@ -2393,8 +2393,15 @@ glade_widget_rebuild (GladeWidget *gwidget)
 	glade_widget_adaptor_post_create (adaptor, new_object, GLADE_CREATE_REBUILD);
 
 	/* Replace old object with new object in parent
+	 * (this can happen during construction before the object is actually
+	 * added to the parent but the parent pointer is set).
 	 */
-	if (gwidget->parent)
+
+	inparent = (gwidget->parent &&
+		    glade_widget_adaptor_has_child (gwidget->parent->adaptor, 
+						    gwidget->parent->object, 
+						    old_object));
+	if (inparent)
 		glade_widget_replace (gwidget->parent,
 				      old_object, new_object);
 
@@ -2438,7 +2445,7 @@ glade_widget_rebuild (GladeWidget *gwidget)
 
 	/* Sync packing.
 	 */
-	if (gwidget->parent)
+	if (inparent)
 		glade_widget_sync_packing_props (gwidget);
 
 	/* If the widget was in a project (and maybe the selection), then
