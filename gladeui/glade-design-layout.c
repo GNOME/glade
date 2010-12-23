@@ -541,8 +541,7 @@ glade_design_layout_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 {
 	GladeDesignLayoutPrivate *priv;
 	GladeWidget *gchild;
-	GtkRequisition child_requisition;
-	GtkAllocation child_allocation, widget_allocation;
+	GtkAllocation child_allocation;
 	GtkWidget *child;
 	gint border_width;
 	gint child_width = 0;
@@ -554,14 +553,9 @@ glade_design_layout_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 	border_width = gtk_container_get_border_width (GTK_CONTAINER (widget));
 
 	if (gtk_widget_get_realized (widget))
-	{
-		gdk_window_move_resize (gtk_widget_get_window (widget),
-					allocation->x, allocation->y,
-					allocation->width, allocation->height);
 		gdk_window_move_resize (priv->event_window,
 					allocation->x, allocation->y,
 					allocation->width, allocation->height);
-	}
 
 	child = gtk_bin_get_child (GTK_BIN (widget));
 	
@@ -570,23 +564,20 @@ glade_design_layout_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 		gchild = glade_widget_get_from_gobject (child);
 		g_assert (gchild);
 
-		gtk_widget_get_requisition (child, &child_requisition);
-
 		g_object_get (gchild, 
 			      "toplevel-width", &child_width,
 			      "toplevel-height", &child_height,
 			      NULL);
 
-		child_width = MAX (child_width, child_requisition.width);
-		child_height = MAX (child_height, child_requisition.height);
+		child_allocation.x = allocation->x + border_width + PADDING + OUTLINE_WIDTH;
+		child_allocation.y = allocation->y + border_width + PADDING + OUTLINE_WIDTH;
 
-		gtk_widget_get_allocation (widget, &widget_allocation);
-		child_allocation.x = widget_allocation.x + border_width + PADDING + OUTLINE_WIDTH;
-		child_allocation.y = widget_allocation.y + border_width + PADDING + OUTLINE_WIDTH;
+		child_allocation.width = allocation->width - 2 * (border_width + PADDING + OUTLINE_WIDTH);
+		child_allocation.height = allocation->height - 2 * (border_width + PADDING + OUTLINE_WIDTH);
 
-		child_allocation.width = child_width - 2 * border_width;
-		child_allocation.height = child_height - 2 * border_width;
-		
+		child_allocation.width = MIN (child_allocation.width, child_width);
+		child_allocation.height = MIN (child_allocation.height, child_height);
+
 		gtk_widget_size_allocate (child, &child_allocation);
 	}
 }
@@ -815,7 +806,6 @@ glade_design_layout_realize (GtkWidget *widget)
                GDK_POINTER_MOTION_HINT_MASK   |
                GDK_BUTTON_PRESS_MASK          |
                GDK_BUTTON_RELEASE_MASK        |
-               GDK_EXPOSURE_MASK              |
                GDK_ENTER_NOTIFY_MASK          |
                GDK_LEAVE_NOTIFY_MASK;
        attributes_mask = GDK_WA_X | GDK_WA_Y;
@@ -850,7 +840,7 @@ glade_design_layout_unrealize (GtkWidget *widget)
 
 }
 
- static void
+static void
 glade_design_layout_map (GtkWidget *widget)
 {
        GladeDesignLayoutPrivate *priv;
@@ -894,6 +884,8 @@ glade_design_layout_init (GladeDesignLayout *layout)
 
 	priv->new_width = -1;
 	priv->new_height = -1;
+
+	gtk_widget_set_has_window (GTK_WIDGET (layout), FALSE);
 }
 
 static void
