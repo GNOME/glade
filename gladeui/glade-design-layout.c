@@ -180,9 +180,6 @@ glade_design_layout_update_child (GladeDesignLayout *layout,
 }
 
 
-
-
-
 /* A temp data struct that we use when looking for a widget inside a container
  * we need a struct, because the forall can only pass one pointer
  */
@@ -427,8 +424,6 @@ glade_design_layout_button_press_event (GtkWidget *widget, GdkEventButton *ev)
 			gdk_window_set_cursor (priv->event_window, 
 					       priv->cursor_resize_bottom_right);
 		}
-
-		g_print ("Clicked, activity is now: %s\n", ACTIVITY_STR (priv->activity));
 	}
 		
 	return FALSE;
@@ -561,6 +556,8 @@ glade_design_layout_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 	
 	if (child && gtk_widget_get_visible (child))
 	{
+		GtkRequisition requisition;
+
 		gchild = glade_widget_get_from_gobject (child);
 		g_assert (gchild);
 
@@ -569,14 +566,13 @@ glade_design_layout_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 			      "toplevel-height", &child_height,
 			      NULL);
 
+		gtk_widget_get_preferred_size (child, &requisition, NULL);
+
 		child_allocation.x = allocation->x + border_width + PADDING + OUTLINE_WIDTH;
 		child_allocation.y = allocation->y + border_width + PADDING + OUTLINE_WIDTH;
 
-		child_allocation.width = allocation->width - 2 * (border_width + PADDING + OUTLINE_WIDTH);
-		child_allocation.height = allocation->height - 2 * (border_width + PADDING + OUTLINE_WIDTH);
-
-		child_allocation.width = MIN (child_allocation.width, child_width);
-		child_allocation.height = MIN (child_allocation.height, child_height);
+		child_allocation.width = MAX (requisition.width, child_width);
+		child_allocation.height = MAX (requisition.height, child_height);
 
 		gtk_widget_size_allocate (child, &child_allocation);
 	}
