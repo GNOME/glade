@@ -25,41 +25,38 @@
 G_DEFINE_TYPE (GladeCloseButton, glade_close_button, GTK_TYPE_BUTTON)
 
 static void
-glade_close_button_style_set (GtkWidget *button,
-			      GtkStyle *previous_style)
-{
-	gint h, w;
-
-	gtk_icon_size_lookup_for_settings (gtk_widget_get_settings (button),
-					   GTK_ICON_SIZE_MENU, &w, &h);
-
-	gtk_widget_set_size_request (button, w + 2, h + 2);
-
-	GTK_WIDGET_CLASS (glade_close_button_parent_class)->style_set (button, previous_style);
-}
-
-static void
 glade_close_button_class_init (GladeCloseButtonClass *klass)
 {
-	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
-
-	widget_class->style_set = glade_close_button_style_set;
 }
 
 static void
 glade_close_button_init (GladeCloseButton *button)
 {
-	GtkRcStyle *rcstyle;
 	GtkWidget *image;
+	GtkCssProvider *provider;
+
+	gtk_widget_set_can_focus (GTK_WIDGET (button), FALSE);
 
 	/* make it as small as possible */
-	rcstyle = gtk_rc_style_new ();
-	rcstyle->xthickness = rcstyle->ythickness = 0;
-	gtk_widget_modify_style (GTK_WIDGET (button), rcstyle);
-	g_object_unref (rcstyle);
+	provider = gtk_css_provider_new ();
+	gtk_css_provider_load_from_data (provider, 
+					 "* {\n"
+					 "  -GtkButton-default-border : 0;\n"
+					 "  -GtkButton-default-outside-border : 0;\n"
+					 "  -GtkButton-inner-border : 0;\n"
+					 "  -GtkWidget-focus-line-width : 0;\n"
+					 "  -GtkWidget-focus-padding : 0;\n"
+					 "  padding : 0;\n"
+					 "}", -1, NULL);
+
+	gtk_style_context_add_provider (gtk_widget_get_style_context (GTK_WIDGET (button)),
+					GTK_STYLE_PROVIDER (provider),
+					GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+	g_object_unref (provider);
 
 	image = gtk_image_new_from_stock (GTK_STOCK_CLOSE,
 					  GTK_ICON_SIZE_MENU);
+
 	gtk_widget_show (image);
 
 	gtk_container_add (GTK_CONTAINER (button), image);
