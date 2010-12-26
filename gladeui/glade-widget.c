@@ -103,6 +103,11 @@ static guint         glade_widget_signals[LAST_SIGNAL] = {0};
 static GQuark        glade_widget_name_quark = 0;
 
 
+#define IS_GLADE_WIDGET_EVENT(event)		 \
+	((event) == GDK_BUTTON_PRESS ||		 \
+	 (event) == GDK_BUTTON_RELEASE ||	 \
+	 (event) == GDK_MOTION_NOTIFY)
+
 G_DEFINE_TYPE (GladeWidget, glade_widget, G_TYPE_INITIALLY_UNOWNED)
 
 /*******************************************************************************
@@ -3280,6 +3285,11 @@ glade_widget_event_private (GtkWidget   *widget,
 			    GladeWidget *gwidget)
 {
 	GtkWidget *layout = widget;
+
+	/* Dont run heavy machienery for events we're not interested in 
+	 * marshalling */
+	if (!IS_GLADE_WIDGET_EVENT (event->type))
+		return FALSE;
 
 	/* Find the parenting layout container */
 	while (layout && !GLADE_IS_DESIGN_LAYOUT (layout))
