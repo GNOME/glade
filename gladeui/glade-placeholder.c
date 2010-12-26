@@ -163,11 +163,9 @@ glade_placeholder_realize (GtkWidget *widget)
 {
 	GladePlaceholder *placeholder;
 	GtkAllocation allocation;
-	GtkStyle *style;
 	GdkWindow *window;
 	GdkWindowAttr attributes;
 	gint attributes_mask;
-	guint border_width;
 	
 	placeholder = GLADE_PLACEHOLDER (widget);
 	
@@ -312,13 +310,6 @@ glade_placeholder_draw (GtkWidget *widget, cairo_t *cr)
 	GdkColor *light;
 	GdkColor *dark;
 	gint      w, h;
-
-
-	gdouble debug_x, debug_y;      
-	cairo_device_to_user (cr, &debug_x, &debug_y);
-
-	g_print ("Drawing placeholder %p with cairo x:%d/y:%d\n", 
-		 widget, (int)debug_x, (int)debug_y);
 
 	style = gtk_widget_get_style (widget);
 	light = &style->light[GTK_STATE_NORMAL];
