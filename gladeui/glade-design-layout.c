@@ -486,6 +486,18 @@ glade_design_layout_add (GtkContainer *container, GtkWidget *widget)
 	gtk_widget_set_parent_window (widget, gtk_widget_get_window (parent));
 
 	GTK_CONTAINER_CLASS (glade_design_layout_parent_class)->add (container, widget);
+
+	gtk_widget_queue_draw (GTK_WIDGET (container));
+}
+
+static void
+glade_design_layout_remove (GtkContainer *container, GtkWidget *widget)
+{
+	/* Make sure toplevels dont "pop out" of the workspace */
+	gtk_widget_hide (widget);
+	GTK_CONTAINER_CLASS (glade_design_layout_parent_class)->remove (container, widget);
+
+	gtk_widget_queue_draw (GTK_WIDGET (container));
 }
 
 static void
@@ -825,6 +837,7 @@ glade_design_layout_class_init (GladeDesignLayoutClass *klass)
 	object_class->finalize              = glade_design_layout_finalize;
 	
 	container_class->add                = glade_design_layout_add;
+	container_class->remove             = glade_design_layout_remove;
 
 	widget_class->map                   = glade_design_layout_map;
 	widget_class->unmap                 = glade_design_layout_unmap;
