@@ -375,7 +375,7 @@ append_name_field (GladeEditorTable *table)
 	
 	/* Name */
 	table->name_label = gtk_label_new (_("Name:"));
-	gtk_misc_set_alignment (GTK_MISC (table->name_label), 0.0, 0.5);
+	gtk_misc_set_alignment (GTK_MISC (table->name_label), 1.0, 0.5);
 	gtk_widget_show (table->name_label);
 	gtk_widget_set_no_show_all (table->name_label, TRUE);
 
