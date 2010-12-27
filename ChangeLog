@@ -1,3 +1,14 @@
+2010-12-27  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-project.c: Fixed glade-project to unset the loading flag when
+	  loading project dependancies are not satisfied and there is an early return.
+
+	* gladui/glade-editor-table.c: Align name field on the right with all the other
+	  properties.
+
+	* gladui/glade-editor-property.c: Set a width-chars on the eprop label so that
+	  line wrapping kicks in.
+
 2010-12-26  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-previewer.c: Added include <locale.h> for setlocale() (bug 638035).
@@ -11,12 +22,6 @@
 
 	* gladeui/glade-widget.c: Reduce processing of events by not running the
 	  widget lookup event redirection for events we're not interested in.
-
-	* gladui/glade-editor-table.c: Align name field on the right with all the other
-	  properties.
-
-	* gladui/glade-editor-property.c: Set a width-chars on the eprop label so that
-	  line wrapping kicks in.
 
 2010-12-23  Tristan Van Berkom <tristanvb@openismus.com>
 

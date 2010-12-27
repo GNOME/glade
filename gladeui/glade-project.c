@@ -1494,27 +1494,6 @@ glade_project_push_progress (GladeProject *project)
 	g_signal_emit (project, glade_project_signals [LOAD_PROGRESS], 0,
 		       project->priv->progress_full,
 		       project->priv->progress_step);
-
-#if 0
-	if (project->priv->progress)
-	{
-		gchar  *text;
-		project->priv->progress_step++;
-
-		text = g_strdup_printf ("Loaded %d of %d objects", 
-					project->priv->progress_step,
-					project->priv->progress_full);
-		gtk_progress_bar_set_text (GTK_PROGRESS_BAR (project->priv->progress), text);
-		g_free (text);
-
-		gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (project->priv->progress),
-					       project->priv->progress_step * 1.0 / 
-					       project->priv->progress_full);
-
-		while (gtk_events_pending ())
-			gtk_main_iteration ();
-	}
-#endif
 }
 
 static gboolean
@@ -1540,6 +1519,7 @@ glade_project_load_internal (GladeProject *project)
 					       NULL)))
 	{
 		g_warning ("Couldn't open glade file [%s].", project->priv->path);
+		project->priv->loading = FALSE;
 		return FALSE;
 	}
 
@@ -1557,6 +1537,7 @@ glade_project_load_internal (GladeProject *project)
 		g_warning ("Couldnt determine project format, skipping %s", 
 			   project->priv->path);
 		glade_xml_context_free (context);
+		project->priv->loading = FALSE;
 		return FALSE;
 	}
 
@@ -1568,6 +1549,7 @@ glade_project_load_internal (GladeProject *project)
 
 	if (glade_project_read_requires (project, root, project->priv->path, &has_gtk_dep) == FALSE)
 	{
+		project->priv->loading = FALSE;
 		glade_xml_context_free (context);
 		return FALSE;
 	}
