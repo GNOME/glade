@@ -2466,7 +2466,7 @@ glade_widget_adaptor_from_catalog (GladeCatalog         *catalog,
 	 * the parent tag as the runtime and the class already exist.
 	 * So we need to add the properties and signals from the real class
 	 * even though they wont be aplied at runtime.
-	 *//*
+	 */
 	if (adaptor->type != adaptor->real_type)
 	{
 		adaptor->signals = gwa_list_signals (adaptor, adaptor->real_type);
@@ -2475,7 +2475,7 @@ glade_widget_adaptor_from_catalog (GladeCatalog         *catalog,
 		                                 &adaptor->properties, FALSE);
 		gwa_update_properties_from_type (adaptor, adaptor->real_type,
 		                                 &adaptor->packing_props, TRUE);
-	}*/
+	}
 	
 	/* Perform a stoopid fallback just incase */
 	if (adaptor->generic_name == NULL)
