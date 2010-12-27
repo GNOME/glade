@@ -179,8 +179,7 @@ typedef struct _GladeWidgetAdaptorClass   GladeWidgetAdaptorClass;
  * Checks whether this is a GtkWidgetClass with scrolling capabilities.
  */
 #define GWA_SCROLLABLE_WIDGET(obj) \
-        ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->scrollable : FALSE)
-
+        ((obj) ? g_type_is_a (GLADE_WIDGET_ADAPTOR (obj)->type, GTK_TYPE_SCROLLABLE) : FALSE)
 
 /**
  * GWA_GET_CLASS:
@@ -695,11 +694,6 @@ struct _GladeWidgetAdaptorClass
 
 	guint                      use_placeholders : 1;     /* Whether or not to use placeholders
 							      * to interface with child widgets.
-							      */
-
-	guint                      scrollable : 1;           /* Whether this is a widget class that has
-							      * klass->set_scroll_adjustments_signal != NULL (i.e.
-							      * can be directly added to a GtkScrolledWindow).
 							      */
 
 	gint                       default_width;  /* Default width in GladeDesignLayout */

@@ -595,10 +595,6 @@ glade_widget_adaptor_constructor (GType                  type,
 		gwa_setup_properties (adaptor, object_class, TRUE);
 	}
 
-	/* Detect scrollability */
-	if (g_type_is_a (adaptor->type, GTK_TYPE_SCROLLABLE))
-	    GLADE_WIDGET_ADAPTOR_GET_CLASS(adaptor)->scrollable = TRUE;
-
 	/* Inherit packing defaults here */
 	adaptor->child_packings = gwa_inherit_child_packing (adaptor);
 

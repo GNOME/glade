@@ -15,6 +15,9 @@
 	* gladui/glade-placeholder.c: Made GladePlaceholder Implement GtkScrollable so
 	  as to avoid warnings when using placeholders inside scrolled windows.
 
+	* gladeui/glade-widget-adaptor.[ch]: Removed the '->scrollable' flag on the adaptor
+	  class in favor of just checking if the class type implements GtkScrollable
+
 2010-12-26  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-previewer.c: Added include <locale.h> for setlocale() (bug 638035).
