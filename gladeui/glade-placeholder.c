@@ -52,7 +52,14 @@
 #define HEIGHT_REQUISITION   20
 
 static void      glade_placeholder_finalize       (GObject           *object);
-
+static void      glade_placeholder_set_property   (GObject           *object,
+						   guint              prop_id,
+						   const GValue      *value,
+						   GParamSpec        *pspec);
+static void      glade_placeholder_get_property   (GObject           *object,
+						   guint              prop_id,
+						   GValue            *value,
+						   GParamSpec        *pspec);
 static void      glade_placeholder_realize        (GtkWidget         *widget);
 static void      glade_placeholder_unrealize      (GtkWidget         *widget);
 static void      glade_placeholder_map            (GtkWidget         *widget);
@@ -72,7 +79,16 @@ static gboolean  glade_placeholder_button_press        (GtkWidget      *widget,
 						
 static gboolean  glade_placeholder_popup_menu          (GtkWidget      *widget);
 
-G_DEFINE_TYPE (GladePlaceholder, glade_placeholder, GTK_TYPE_WIDGET)
+enum {
+	PROP_0,
+	PROP_HADJUSTMENT,
+	PROP_VADJUSTMENT,
+	PROP_HSCROLL_POLICY,
+	PROP_VSCROLL_POLICY
+};
+
+G_DEFINE_TYPE_WITH_CODE (GladePlaceholder, glade_placeholder, GTK_TYPE_WIDGET,
+			 G_IMPLEMENT_INTERFACE (GTK_TYPE_SCROLLABLE, NULL))
 
 static void
 glade_placeholder_class_init (GladePlaceholderClass *klass)
@@ -81,6 +97,9 @@ glade_placeholder_class_init (GladePlaceholderClass *klass)
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
 	object_class->finalize = glade_placeholder_finalize;
+	object_class->set_property = glade_placeholder_set_property;
+	object_class->get_property = glade_placeholder_get_property;
+
 	widget_class->realize = glade_placeholder_realize;
 	widget_class->unrealize = glade_placeholder_unrealize;
 	widget_class->map = glade_placeholder_map;
@@ -90,6 +109,13 @@ glade_placeholder_class_init (GladePlaceholderClass *klass)
 	widget_class->motion_notify_event = glade_placeholder_motion_notify_event;
 	widget_class->button_press_event = glade_placeholder_button_press;
 	widget_class->popup_menu = glade_placeholder_popup_menu;
+
+
+	/* GtkScrollable implementation */
+	g_object_class_override_property (object_class, PROP_HADJUSTMENT,    "hadjustment");
+	g_object_class_override_property (object_class, PROP_VADJUSTMENT,    "vadjustment");
+	g_object_class_override_property (object_class, PROP_HSCROLL_POLICY, "hscroll-policy");
+	g_object_class_override_property (object_class, PROP_VSCROLL_POLICY, "vscroll-policy");
 }
 
 static void
@@ -156,6 +182,48 @@ glade_placeholder_finalize (GObject *object)
 	}
 	
 	G_OBJECT_CLASS (glade_placeholder_parent_class)->finalize (object);
+}
+
+static void
+glade_placeholder_set_property (GObject           *object,
+				guint              prop_id,
+				const GValue      *value,
+				GParamSpec        *pspec)
+{
+
+  switch (prop_id)
+    {
+    case PROP_HADJUSTMENT:
+    case PROP_VADJUSTMENT:
+    case PROP_HSCROLL_POLICY:
+    case PROP_VSCROLL_POLICY:
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+glade_placeholder_get_property (GObject           *object,
+				guint              prop_id,
+				GValue            *value,
+				GParamSpec        *pspec)
+{
+  switch (prop_id)
+    {
+    case PROP_HADJUSTMENT:
+    case PROP_VADJUSTMENT:
+      g_value_set_object (value, NULL);
+      break;
+    case PROP_HSCROLL_POLICY:
+    case PROP_VSCROLL_POLICY:
+      g_value_set_enum (value, GTK_SCROLL_MINIMUM);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
 }
 
 static void

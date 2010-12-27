@@ -12,6 +12,9 @@
 	* gladeui/glade-widget-adaptor.c: Uncommenting some code that for some reason
 	  got "fallout" from the offscreen branches.
 
+	* gladui/glade-placeholder.c: Made GladePlaceholder Implement GtkScrollable so
+	  as to avoid warnings when using placeholders inside scrolled windows.
+
 2010-12-26  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-previewer.c: Added include <locale.h> for setlocale() (bug 638035).
