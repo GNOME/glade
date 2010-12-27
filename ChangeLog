@@ -1,3 +1,8 @@
+2010-12-27  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-project.c: Fixed glade-project to unset the loading flag when
+	  loading project dependancies are not satisfied and there is an early return.
+
 2010-12-22  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-project.[ch]: Removed dialog and added "load-progress" signal
