@@ -3,11 +3,11 @@
 	* gladeui/glade-project.c: Fixed glade-project to unset the loading flag when
 	  loading project dependancies are not satisfied and there is an early return.
 
-	* gladui/glade-editor-table.c: Align name field on the right with all the other
-	  properties.
-
 	* gladui/glade-editor-property.c: Set a width-chars on the eprop label so that
 	  line wrapping kicks in.
+
+	* gladeui/glade-editor-property.c: Align property labels left instead of right
+	  (get back the old look and feel).
 
 	* gladeui/glade-widget-adaptor.c: Uncommenting some code that for some reason
 	  got "fallout" from the offscreen branches.

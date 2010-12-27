@@ -289,7 +289,7 @@ glade_editor_property_constructor (GType                  type,
 	gtk_label_set_width_chars (GTK_LABEL(eprop->label), 10);
 	gtk_label_set_line_wrap_mode (GTK_LABEL(eprop->label), PANGO_WRAP_WORD_CHAR);
 
-	gtk_misc_set_alignment (GTK_MISC(eprop->label), 1.0, 0.5);
+	gtk_misc_set_alignment (GTK_MISC(eprop->label), 0.0, 0.5);
 
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->label, TRUE, TRUE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->warning, FALSE, FALSE, 0);
