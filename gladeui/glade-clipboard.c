@@ -36,7 +36,6 @@
 
 #include <glib/gi18n-lib.h>
 #include "glade.h"
-#include "glade-clipboard-view.h"
 #include "glade-clipboard.h"
 #include "glade-widget.h"
 #include "glade-placeholder.h"
@@ -89,7 +88,6 @@ static void
 glade_clipboard_init (GladeClipboard *clipboard)
 {
 	clipboard->widgets   = NULL;
-	clipboard->view      = NULL;
 	clipboard->selection = NULL;
 	clipboard->has_selection = FALSE;
 }
@@ -186,17 +184,8 @@ glade_clipboard_add (GladeClipboard *clipboard, GList *widgets)
 		clipboard->widgets = 
 			g_list_prepend (clipboard->widgets, 
 					g_object_ref (G_OBJECT (widget)));
-		/*
-		 * Update view.
-		 */
+
 		glade_clipboard_selection_add (clipboard, widget);
-		if (clipboard->view)
-		{
-			glade_clipboard_view_add
-				(GLADE_CLIPBOARD_VIEW (clipboard->view), widget);
-			glade_clipboard_view_refresh_sel 
-				(GLADE_CLIPBOARD_VIEW (clipboard->view));
-		}
 	}
 
 }
@@ -221,13 +210,6 @@ glade_clipboard_remove (GladeClipboard *clipboard, GList *widgets)
 		clipboard->widgets   = 
 			g_list_remove (clipboard->widgets, widget);
 		glade_clipboard_selection_remove (clipboard, widget);
-
-		/*
-		 * If there is a view present, update it.
-		 */
-		if (clipboard->view)
-			glade_clipboard_view_remove
-				(GLADE_CLIPBOARD_VIEW (clipboard->view), widget);
 		
 		g_object_unref (G_OBJECT (widget));
 	}
@@ -240,8 +222,6 @@ glade_clipboard_remove (GladeClipboard *clipboard, GList *widgets)
 	{
 		glade_clipboard_selection_add
 			(clipboard, GLADE_WIDGET (list->data));
-		glade_clipboard_view_refresh_sel 
-			(GLADE_CLIPBOARD_VIEW (clipboard->view));
 	}
 }
 

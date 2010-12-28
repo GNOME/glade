@@ -3257,7 +3257,6 @@ glade_window_init (GladeWindow *window)
 	GtkWidget *widget;
 	GtkWidget *sep;
 	GtkAction *undo_action, *redo_action;
-	GtkAccelGroup *accel_group;	
 
 	window->priv = priv = GLADE_WINDOW_GET_PRIVATE (window);
 	
@@ -3323,6 +3322,7 @@ glade_window_init (GladeWindow *window)
 
 	/* notebook */
 	priv->notebook = gtk_notebook_new ();
+	gtk_notebook_set_scrollable (GTK_NOTEBOOK (priv->notebook), TRUE);
 
 	/* Show tabs (user preference) */
 	gtk_notebook_set_show_tabs (GTK_NOTEBOOK (priv->notebook), TRUE);
@@ -3460,10 +3460,6 @@ glade_window_init (GladeWindow *window)
 			  window);
 
 	glade_app_set_window (GTK_WIDGET (window));
-
-	accel_group = gtk_ui_manager_get_accel_group(priv->ui);
-
-	gtk_window_add_accel_group (GTK_WINDOW (glade_app_get_clipboard_view ()), accel_group);
 
 	glade_window_config_load (window);
 

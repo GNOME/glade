@@ -76,7 +76,6 @@ libgladeui_1_la_SOURCES = \
 	glade-signal.c \
 	glade-signal-editor.c \
 	glade-clipboard.c \
-	glade-clipboard-view.c \
 	glade-command.c \
 	glade-id-allocator.c \
 	glade-id-allocator.h \
@@ -134,7 +133,6 @@ libgladeuiinclude_HEADERS = \
 	glade-property-class.h \
 	glade-utils.h \
 	glade-clipboard.h \
-	glade-clipboard-view.h \
 	glade-command.h \
 	glade-app.h \
 	glade-builtins.h \
