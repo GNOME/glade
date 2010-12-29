@@ -271,6 +271,7 @@ glade_editor_property_constructor (GType                  type,
 
 	/* Create the class specific input widget and add it */
 	eprop->input = GLADE_EDITOR_PROPERTY_GET_CLASS (eprop)->create_input (eprop);
+	gtk_widget_set_hexpand (eprop->input, TRUE);
 	gtk_widget_show (eprop->input);
 
 	/* Create the warning icon */
