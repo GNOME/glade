@@ -436,23 +436,14 @@ glade_popup_create_menu (GladeWidget      *widget,
 			 GladePlaceholder *placeholder,
 			 gboolean          packing)
 {
-	GladeProjectFormat fmt;
 	GladeWidgetAdaptor *current_item;
-	GladeProject *project;
 	GtkWidget *popup_menu;
 	GtkWidget *separator;
-	GList *list;
-	gboolean   sensitive, non_window;
+	gboolean   sensitive;
 	GladePlaceholder *tmp_placeholder;
 	gchar     *book;
 
 	sensitive = (current_item = glade_palette_get_current_item (glade_app_get_palette ())) != NULL;
-
-	/* Resolve project format first... */
-	project = widget ? glade_widget_get_project (widget) :
-		placeholder ? glade_placeholder_get_project (placeholder) : glade_app_get_project ();
-	fmt = glade_project_get_format (project);
-
 
 	popup_menu = gtk_menu_new ();
 	
@@ -478,8 +469,7 @@ glade_popup_create_menu (GladeWidget      *widget,
 		}
 
 		glade_popup_append_item (popup_menu, NULL, _("Add widget as _toplevel"), NULL, 
-					 fmt != GLADE_PROJECT_FORMAT_LIBGLADE,
-					 glade_popup_root_add_cb, NULL);
+					 TRUE, glade_popup_root_add_cb, NULL);
 
 		separator = gtk_menu_item_new ();		
 		gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), separator);
@@ -497,15 +487,6 @@ glade_popup_create_menu (GladeWidget      *widget,
 
 	/* paste is placholder specific when the popup is on a placeholder */
 	sensitive = glade_clipboard_get_has_selection (glade_app_get_clipboard ());
-	non_window = FALSE;
-
-	for (list = glade_app_get_clipboard ()->selection; list; list = list->next)
-	{
-		GladeWidget *gwidget = GLADE_WIDGET (list->data);
-		if (!GTK_IS_WIDGET (gwidget->object) ||
-		    !gtk_widget_get_has_window (GTK_WIDGET (gwidget->object)))
-			non_window = TRUE;
-	}
 
 	if (placeholder)
 		glade_popup_append_item (popup_menu, GTK_STOCK_PASTE, NULL, NULL, sensitive,
@@ -514,11 +495,8 @@ glade_popup_create_menu (GladeWidget      *widget,
 		glade_popup_append_item (popup_menu, GTK_STOCK_PASTE, NULL, NULL, sensitive,
 					 glade_popup_paste_cb, widget);
 	else
-		/* No toplevel non-GtkWindow pastes in libglade */
-		glade_popup_append_item (popup_menu, GTK_STOCK_PASTE, NULL, NULL, 
-					 sensitive && !(non_window &&  (fmt == GLADE_PROJECT_FORMAT_LIBGLADE)),
+		glade_popup_append_item (popup_menu, GTK_STOCK_PASTE, NULL, NULL, sensitive,
 					 glade_popup_paste_cb, NULL);
-
 
 
 	glade_popup_append_item (popup_menu, GTK_STOCK_DELETE, NULL, NULL, (widget != NULL),
@@ -692,7 +670,6 @@ void
 glade_popup_palette_pop (GladeWidgetAdaptor *adaptor,
 			 GdkEventButton     *event)
 {
-	GladeProjectFormat fmt;
 	GladeProject *project;
 	GtkWidget *popup_menu;
 	gchar *book = NULL;
@@ -704,11 +681,9 @@ glade_popup_palette_pop (GladeWidgetAdaptor *adaptor,
 	popup_menu = gtk_menu_new ();
 	
 	project = glade_app_get_project ();
-	fmt = glade_project_get_format (project);
 
 	glade_popup_append_item (popup_menu, NULL, _("Add widget as _toplevel"), NULL, 
-				 (fmt != GLADE_PROJECT_FORMAT_LIBGLADE),
-				 glade_popup_root_add_cb, adaptor);
+				 TRUE, glade_popup_root_add_cb, adaptor);
 
 	g_object_get (adaptor, "book", &book, NULL);
 	if (book && glade_util_have_devhelp ())

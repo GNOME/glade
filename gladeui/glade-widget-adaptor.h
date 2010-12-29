@@ -560,7 +560,6 @@ typedef GladeEditorProperty *(* GladeCreateEPropFunc) (GladeWidgetAdaptor *adapt
  * @adaptor: A #GladeWidgetAdaptor
  * @klass: The #GladePropertyClass 
  * @value: The #GValue to convert to a string
- * @fmt: The #GladeProjectFormat the string should conform to
  * 
  * For normal properties this is used to serialize
  * property values, for custom properties (only when new pspecs are 
@@ -571,8 +570,7 @@ typedef GladeEditorProperty *(* GladeCreateEPropFunc) (GladeWidgetAdaptor *adapt
  */
 typedef gchar   *(* GladeStringFromValueFunc) (GladeWidgetAdaptor *adaptor,
 					       GladePropertyClass *klass,
-					       const GValue       *value,
-					       GladeProjectFormat  fmt);
+					       const GValue       *value);
 
 
 
@@ -673,20 +671,9 @@ struct _GladeWidgetAdaptorClass
 	guint16                    version_since_major; /* Version in which this widget was */
 	guint16                    version_since_minor; /* introduced.                      */
 
-	guint16                    builder_since_major; /* Version in which this widget became */
-	guint16                    builder_since_minor; /* available in GtkBuilder format      */
-
-
 	guint                      deprecated : 1;          /* If this widget is currently
 							     * deprecated
 							     */
-	guint                      libglade_unsupported : 1; /* If this widget is not supported
-							      * by libglade
-							      */
-	guint                      libglade_only : 1;        /* If this widget is only supported
-							      * by libglade
-							      */
-
 	guint                      fixed : 1;                /* If this is a Container, use free-form
 							      * placement with drag/resize/paste at mouse...
 							      */
@@ -975,8 +962,7 @@ GladeEditorProperty *glade_widget_adaptor_create_eprop_by_name (GladeWidgetAdapt
 
 gchar               *glade_widget_adaptor_string_from_value  (GladeWidgetAdaptor *adaptor,
 							      GladePropertyClass *klass,
-							      const GValue       *value,
-							      GladeProjectFormat  fmt);
+							      const GValue       *value);
 
 GladeEditable       *glade_widget_adaptor_create_editable    (GladeWidgetAdaptor *adaptor,
 							      GladeEditorPageType type);

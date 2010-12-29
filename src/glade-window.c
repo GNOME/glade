@@ -550,7 +550,6 @@ refresh_notebook_tab_for_project (GladeWindow *window, GladeProject *project)
 
 		if (project == glade_design_view_get_project (GLADE_DESIGN_VIEW (view)))
 		{
-			GladeProjectFormat fmt = glade_project_get_format (project);
 			gchar *path, *deps;
 
 			tab_label = gtk_notebook_get_tab_label (GTK_NOTEBOOK (window->priv->notebook), view);
@@ -572,12 +571,9 @@ refresh_notebook_tab_for_project (GladeWindow *window, GladeProject *project)
 			deps = glade_project_display_dependencies (project);
 			str =  g_markup_printf_escaped (" <b>%s</b> %s \n"
 							" %s \n"
-						        " <b>%s</b> %s \n"
 						        " <b>%s</b> %s ",
 						        _("Name:"), path,
 							glade_project_get_readonly (project) ? READONLY_INDICATOR : "",
-						        _("Format:"), 
-							fmt == GLADE_PROJECT_FORMAT_GTKBUILDER ? "GtkBuilder" : "Libglade",
 						        _("Requires:"), deps);
 
 			gtk_widget_set_tooltip_markup (eventbox, str);

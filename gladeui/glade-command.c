@@ -484,19 +484,11 @@ glade_command_set_property_unifies (GladeCommand *this_cmd, GladeCommand *other_
 			
 			for (list = cmd1->sdata; list; list = list->next)
 			{
-				GladeProject *project;
-				GladeProjectFormat fmt = GLADE_PROJECT_FORMAT_GTKBUILDER;
 				pdata1 = list->data;
-				
-				if (pdata1->property->widget)
-				{
-					project = glade_widget_get_project (pdata1->property->widget);
-					fmt     = glade_project_get_format (project);
-				}
 
 				if (glade_property_class_compare (pdata1->property->klass,
 								  pdata1->old_value,
-								  pdata1->new_value, fmt))
+								  pdata1->new_value))
 					return FALSE;
 			}
 			return TRUE;
@@ -585,8 +577,7 @@ glade_command_set_property_collapse (GladeCommand *this_cmd, GladeCommand *other
 
 #define MAX_UNDO_MENU_ITEM_VALUE_LEN	10
 static gchar *
-glade_command_set_property_description (GladeCommandSetProperty *me,
-					GladeProjectFormat       fmt)
+glade_command_set_property_description (GladeCommandSetProperty *me)
 {
 	GCSetPropData   *sdata;
 	gchar *description = NULL;
@@ -601,7 +592,7 @@ glade_command_set_property_description (GladeCommandSetProperty *me,
 		sdata = me->sdata->data;
 		value_name = glade_widget_adaptor_string_from_value
 			(GLADE_WIDGET_ADAPTOR (sdata->property->klass->handle),
-			 sdata->property->klass, sdata->new_value, fmt);
+			 sdata->property->klass, sdata->new_value);
 
 		g_assert (sdata->property->klass->name);
 		g_assert (sdata->property->widget->name);
@@ -649,8 +640,7 @@ glade_command_set_properties_list (GladeProject *project, GList *props)
 
 	me->sdata        = props;
 	cmd->description = 
-		glade_command_set_property_description 
-		(me, glade_project_get_format (project));
+		glade_command_set_property_description (me);
 
 
 	multiple = g_list_length (me->sdata) > 1;
@@ -2134,11 +2124,9 @@ typedef struct {
 	GladeCommand   parent;
 	GladeProperty *property;
 	gboolean       translatable;
-	gboolean       has_context;
 	gchar         *context;
 	gchar         *comment;
 	gboolean       old_translatable;
-	gboolean       old_has_context;
 	gchar         *old_context;
 	gchar         *old_comment;
 } GladeCommandSetI18n;
@@ -2156,7 +2144,6 @@ glade_command_set_i18n_execute(GladeCommand *cmd)
 {
 	GladeCommandSetI18n *me = (GladeCommandSetI18n *)cmd;
 	gboolean  temp_translatable;
-	gboolean  temp_has_context;
 	gchar    *temp_context;
 	gchar    *temp_comment;
 	
@@ -2166,21 +2153,17 @@ glade_command_set_i18n_execute(GladeCommand *cmd)
 
 	/* set the new values in the property */
 	glade_property_i18n_set_translatable(me->property, me->translatable);	
-	glade_property_i18n_set_has_context(me->property, me->has_context);
 	glade_property_i18n_set_context(me->property, me->context);
 	glade_property_i18n_set_comment(me->property, me->comment);
 
 	/* swap the current values with the old values to prepare for undo */
 	temp_translatable = me->translatable;
-	temp_has_context = me->has_context;
 	temp_context = me->context;
 	temp_comment = me->comment;
 	me->translatable = me->old_translatable;
-	me->has_context = me->old_has_context;
 	me->context = me->old_context;
 	me->comment = me->old_comment;
 	me->old_translatable = temp_translatable;
-	me->old_has_context = temp_has_context;
 	me->old_context = temp_context;
 	me->old_comment = temp_comment;
 	
@@ -2239,7 +2222,6 @@ glade_command_set_i18n_collapse (GladeCommand *this_cmd, GladeCommand *other_cmd
 
 	/* adjust this command to contain, as its old values, the other command's current values */
 	this->old_translatable = other->old_translatable;
-	this->old_has_context = other->old_has_context;
 	g_free (this->old_context);
 	g_free (this->old_comment);
 	this->old_context = other->old_context;
@@ -2254,7 +2236,6 @@ glade_command_set_i18n_collapse (GladeCommand *this_cmd, GladeCommand *other_cmd
  * glade_command_set_i18n:
  * @property: a #GladeProperty
  * @translatable: a #gboolean
- * @has_context: a #gboolean
  * @context: a #const gchar *
  * @comment: a #const gchar *
  *
@@ -2263,7 +2244,6 @@ glade_command_set_i18n_collapse (GladeCommand *this_cmd, GladeCommand *other_cmd
 void
 glade_command_set_i18n (GladeProperty *property, 
 			gboolean translatable, 
-			gboolean has_context, 
 			const gchar *context,
 			const gchar *comment)
 {
@@ -2273,22 +2253,17 @@ glade_command_set_i18n (GladeProperty *property,
 	
 	/* check that something changed before continuing with the command */
 	if (translatable == property->i18n_translatable &&
-	    has_context == property->i18n_has_context   &&
-	    /* XXX add context string shit herex */
-
-	    ((comment == NULL && property->i18n_comment == NULL) ||
-	     (comment && property->i18n_comment && !strcmp(property->i18n_comment, comment))))
+	    !g_strcmp0 (property->i18n_context, context) &&
+	    !g_strcmp0 (property->i18n_comment, comment))
 		return;
 
 	/* load up the command */
  	me = g_object_new(GLADE_COMMAND_SET_I18N_TYPE, NULL);
 	me->property = property;
 	me->translatable = translatable;
-	me->has_context = has_context;
 	me->context = g_strdup(context);
 	me->comment = g_strdup(comment);
 	me->old_translatable = property->i18n_translatable;
-	me->old_has_context = property->i18n_has_context;
 	me->old_context = g_strdup(property->i18n_context);
 	me->old_comment = g_strdup(property->i18n_comment);
 	GLADE_COMMAND(me)->description = g_strdup_printf(_("Setting i18n metadata"));;
@@ -2305,250 +2280,6 @@ glade_command_set_i18n (GladeProperty *property,
 		g_object_unref(G_OBJECT(me));
 	}
 }
-
-
-
-
-/******************************************************************************
- * 
- * set project format
- * 
- * This command sets the format on the project.
- * 
- *****************************************************************************/
-
-typedef struct {
-	GladeCommand   parent;
-	GladeProject  *project;
-	GladeProjectFormat format;
-	GladeProjectFormat old_format;
-} GladeCommandSetFormat;
-
-
-GLADE_MAKE_COMMAND (GladeCommandSetFormat, glade_command_set_format);
-#define GLADE_COMMAND_SET_FORMAT_TYPE			(glade_command_set_format_get_type ())
-#define GLADE_COMMAND_SET_FORMAT(o)	  		(G_TYPE_CHECK_INSTANCE_CAST ((o), GLADE_COMMAND_SET_FORMAT_TYPE, GladeCommandSetFormat))
-#define GLADE_COMMAND_SET_FORMAT_CLASS(k)		(G_TYPE_CHECK_CLASS_CAST ((k), GLADE_COMMAND_SET_FORMAT_TYPE, GladeCommandSetFormatClass))
-#define GLADE_IS_COMMAND_SET_FORMAT(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), GLADE_COMMAND_SET_FORMAT_TYPE))
-#define GLADE_IS_COMMAND_SET_FORMAT_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), GLADE_COMMAND_SET_FORMAT_TYPE))
-
-static gboolean
-glade_command_set_format_execute(GladeCommand *cmd)
-{
-	GladeCommandSetFormat *me = (GladeCommandSetFormat *)cmd;
-	GladeProjectFormat fmt;
-
-	/* sanity check */
-	g_return_val_if_fail (me != NULL, TRUE);
-	g_return_val_if_fail (me->project != NULL, TRUE);
-
-	/* set the new format */
-	glade_project_set_format (me->project, me->format);
-
-	/* swap the current values with the old values to prepare for undo */
-	fmt            = me->format;
-	me->format     = me->old_format;
-	me->old_format = fmt;
-	
-	return TRUE;
-}
-
-static gboolean
-glade_command_set_format_undo(GladeCommand *cmd)
-{
-	return glade_command_set_format_execute(cmd);
-}
-
-static void
-glade_command_set_format_finalize(GObject *obj)
-{
-/* 	GladeCommandSetFormat	*me; */
-	
-	g_return_if_fail(GLADE_IS_COMMAND_SET_FORMAT(obj));
-	
-	glade_command_finalize(obj);
-}
-
-static gboolean
-glade_command_set_format_unifies (GladeCommand *this_cmd, GladeCommand *other_cmd)
-{
-/* 	GladeCommandSetFormat *cmd1; */
-/* 	GladeCommandSetFormat *cmd2; */
-
-	return FALSE;
-}
-
-static void
-glade_command_set_format_collapse (GladeCommand *this_cmd, GladeCommand *other_cmd)
-{
-	/* this command is the one that will be used for an undo of the sequence of like commands */
-	//GladeCommandSetFormat *this = GLADE_COMMAND_SET_FORMAT (this_cmd);
-	
-	/* the other command contains the values that will be used for a redo */
-	//GladeCommandSetFormat *other = GLADE_COMMAND_SET_FORMAT (other_cmd);
-
-	g_return_if_fail (GLADE_IS_COMMAND_SET_FORMAT (this_cmd) && GLADE_IS_COMMAND_SET_FORMAT (other_cmd));
-
-	/* no unify/collapse */
-}
-
-
-static void
-glade_command_convert_cleanup_props (GList              *properties,
-				     GladeProjectFormat  fmt)
-{
-	GladeProperty *property;
-	GList *list;
-
-	for (list = properties; list; list = list->next)
-	{
-		property = list->data;
-
-		if (glade_property_original_default (property))
-			continue;
-
-		/* Reset any unsupported properties to thier defaults */
-		if ((fmt == GLADE_PROJECT_FORMAT_GTKBUILDER &&
-		     property->klass->libglade_only) ||
-		    (fmt == GLADE_PROJECT_FORMAT_LIBGLADE &&
-		     property->klass->libglade_unsupported))
-		{
-			GValue value = { 0, };
-
-			glade_property_get_default (property, &value);
-			glade_command_set_property (property, &value);
-			g_value_unset (&value);
-		}
-	}
-}
-
-
-static gint
-find_format_rejected_object (GObject *object, gpointer fmtptr)
-{
-	GladeWidget *widget = glade_widget_get_from_gobject (object);
-	GladeProjectFormat fmt = GPOINTER_TO_INT (fmtptr);
-
-	if ((fmt == GLADE_PROJECT_FORMAT_GTKBUILDER &&
-	     GWA_LIBGLADE_ONLY (widget->adaptor)) ||
-	    /* If going in libglade format... */
-	    (fmt == GLADE_PROJECT_FORMAT_LIBGLADE &&
-	     /* ... and widget is unsupported by libglade */
-	     (GWA_LIBGLADE_UNSUPPORTED (widget->adaptor) ||
-	      /* ... and widget is a non GtkWidget object */
-	      !GTK_IS_WIDGET (widget->object) ||
-	      /* ... and its a non-window toplevel */
-	      (!widget->parent && g_strcmp0 (widget->adaptor->name, "GtkWindow") && !widget->internal))))
-		return 0;
-
-	return -1;
-}
-
-
-static void
-glade_command_convert_cleanup (GladeProject       *project, 
-			       GladeProjectFormat  fmt)
-{
-	GladeWidget   *widget;
-	const GList   *objects, *list;
-	GList         *l;
-
-	/* List safely delete widgets */
-	while ((l = g_list_find_custom ((GList *)glade_project_get_objects (project), GINT_TO_POINTER (fmt),
-					(GCompareFunc)find_format_rejected_object)) != NULL)
-	{
-		GList delete = { 0, };
-		widget = glade_widget_get_from_gobject (l->data);
-		delete.data = widget;
-		glade_command_delete (&delete);
-	}
-
-	/* Deal with properties of remaining widgets */
-	objects = glade_project_get_objects (project);
-	for (list = objects; list; list = list->next)
-	{
-		widget = glade_widget_get_from_gobject (list->data);
-		glade_command_convert_cleanup_props (widget->properties, fmt);
-		glade_command_convert_cleanup_props (widget->packing_properties, fmt);
-	}
-}
-
-
-/**
- * glade_command_set_project_format:
- * @project: a #GladeProject
- * @fmt: the #GladeProjectFormat
- *
- * Sets the format of the project.
- */
-void
-glade_command_set_project_format (GladeProject        *project, 
-				  GladeProjectFormat   fmt)
-{
-	GladeCommandSetFormat *me;
-	GList *req_libs, *list;
-	gchar *cat_name;
-	GladeCatalog *catalog;
-	
-	g_return_if_fail (GLADE_IS_PROJECT (project));
-
-	if (glade_project_get_format (project) != fmt)
-	{
-		gchar *prj_name = glade_project_get_name (project);
-		glade_command_push_group (_("Converting %s to %s format"),
-					  prj_name, 
-					  fmt == GLADE_PROJECT_FORMAT_LIBGLADE ? "libglade" : "Gtk+ Builder");
-		g_free (prj_name);
-
-		/* load up the command */
-		me = g_object_new(GLADE_COMMAND_SET_FORMAT_TYPE, NULL);
-		me->project = project;
-		me->format = fmt;
-		me->old_format = glade_project_get_format (project);
-
-		GLADE_COMMAND(me)->description = g_strdup_printf("dummy string");
-	
-		glade_command_check_group(GLADE_COMMAND(me));
-
-		if ((req_libs = glade_project_required_libs (project)) != NULL)
-		{
-			for (list = req_libs; list; list = list->next)
-			{
-				cat_name = list->data;
-				catalog  = glade_app_get_catalog (cat_name);
-				
-				glade_catalog_convert_project (catalog, project, fmt);
-				
-				g_free (cat_name);
-			}
-			g_list_free (req_libs);
-		}
-
-		glade_command_convert_cleanup (project, fmt);
-
-		/* execute the command and push it on the stack if successful 
-		 * this sets the actual format
-		 */
-		if (glade_command_set_format_execute(GLADE_COMMAND(me)))
-		{
-			glade_project_push_undo(glade_app_get_project(), GLADE_COMMAND(me));
-		}
-		else
-		{
-			g_object_unref(G_OBJECT(me));
-		}
-		
-		/* Emit "convert-finished" signal after setting the actual format */
-		g_signal_emit_by_name (project, "convert-finished");
-
-		glade_command_pop_group ();
-
-		glade_editor_refresh (glade_app_get_editor ());
-		
-		glade_project_verify_project_for_ui (project);
-	}
-}
-
 
 
 /******************************************************************************

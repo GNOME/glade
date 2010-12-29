@@ -443,70 +443,6 @@ glade_util_hide_window (GtkWindow *window)
 	gtk_window_move(window, x, y);
 }
 
-
-static void
-format_libglade_button_clicked (GtkWidget *widget,
-				GladeProject *project)
-{
-	glade_project_set_format (project, GLADE_PROJECT_FORMAT_LIBGLADE);
-}
-
-static void
-format_builder_button_clicked (GtkWidget *widget,
-			       GladeProject *project)
-{
-	glade_project_set_format (project, GLADE_PROJECT_FORMAT_GTKBUILDER);
-}
-
-static void
-add_format_options (GtkDialog    *dialog,
-		    GladeProject *project)
-{
-	GtkWidget *vbox, *frame;
-	GtkWidget *glade_radio, *builder_radio;
-	GtkWidget *label, *alignment;
-	gchar     *string = g_strdup_printf ("<b>%s</b>", _("File format"));
-
-	frame = gtk_frame_new (NULL);
-	vbox = gtk_vbox_new (FALSE, 0);
-	alignment = gtk_alignment_new (0.5F, 0.5F, 1.0F, 1.0F);
-
-	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 2, 0, 12, 0);
-
-	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
-
-	label = gtk_label_new (string);
-	g_free (string);
-	gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
-
-	glade_radio = gtk_radio_button_new_with_label (NULL, "Libglade");
-	builder_radio = gtk_radio_button_new_with_label_from_widget
-		(GTK_RADIO_BUTTON (glade_radio), "GtkBuilder");
-
-	if (glade_project_get_format (project) == GLADE_PROJECT_FORMAT_GTKBUILDER)
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (builder_radio), TRUE);
-	else
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (glade_radio), TRUE);
-
-	g_signal_connect (G_OBJECT (glade_radio), "clicked",
-			  G_CALLBACK (format_libglade_button_clicked), project);
-
-	g_signal_connect (G_OBJECT (builder_radio), "clicked",
-			  G_CALLBACK (format_builder_button_clicked), project);
-
-	gtk_box_pack_start (GTK_BOX (vbox), builder_radio, TRUE, TRUE, 2);
-	gtk_box_pack_start (GTK_BOX (vbox), glade_radio, TRUE, TRUE, 2);
-
-	gtk_frame_set_label_widget (GTK_FRAME (frame), label);
-	gtk_container_add (GTK_CONTAINER (alignment), vbox);
-	gtk_container_add (GTK_CONTAINER (frame), alignment);
-
-	gtk_widget_show_all (frame);
-	
-	gtk_box_pack_end (GTK_BOX (gtk_dialog_get_content_area (dialog)), frame, FALSE, TRUE, 2);
-}
-
-
 /**
  * glade_util_file_dialog_new:
  * @title: dialog title
@@ -539,10 +475,6 @@ glade_util_file_dialog_new (const gchar             *title,
 						   GTK_STOCK_OPEN : GTK_STOCK_SAVE,
 						   GTK_RESPONSE_OK,
 						   NULL);
-
-
-	if (action == GLADE_FILE_DIALOG_ACTION_SAVE)
-		add_format_options (GTK_DIALOG (file_dialog), project);
 	
 	file_filter = gtk_file_filter_new ();
 	gtk_file_filter_add_pattern (file_filter, "*");
@@ -1720,7 +1652,7 @@ glade_utils_enum_string_from_value_real (GType enum_type, gint value, gboolean d
 	g_value_init (&gvalue, enum_type);
 	g_value_set_enum (&gvalue, value);
 
-	string = glade_utils_string_from_value (&gvalue, GLADE_PROJECT_FORMAT_GTKBUILDER);
+	string = glade_utils_string_from_value (&gvalue);
 	g_value_unset (&gvalue);
 
 	if (displayable && string)
@@ -1778,7 +1710,7 @@ glade_utils_flags_string_from_value_real (GType flags_type, gint value, gboolean
 	g_value_init (&gvalue, flags_type);
 	g_value_set_flags (&gvalue, value);
 
-	string = glade_utils_string_from_value (&gvalue, GLADE_PROJECT_FORMAT_GTKBUILDER);
+	string = glade_utils_string_from_value (&gvalue);
 	g_value_unset (&gvalue);
 
 	if (displayable && string)
@@ -1949,7 +1881,6 @@ glade_utils_value_from_string (GType               type,
 /**
  * glade_utils_string_from_value:
  * @value: a #GValue to convert
- * @fmt: the #GladeProjectFormat to honor
  *
  * Serializes #GValue into a string 
  * (using glade conversion routines) 
@@ -1957,15 +1888,14 @@ glade_utils_value_from_string (GType               type,
  * Returns: A newly allocated string
  */
 gchar *
-glade_utils_string_from_value (const GValue       *value,
-			       GladeProjectFormat  fmt)
+glade_utils_string_from_value (const GValue       *value)
 {
 	GladePropertyClass *pclass;
 
 	g_return_val_if_fail (value != NULL, NULL);
 
 	if ((pclass = pclass_from_gtype (G_VALUE_TYPE (value))) != NULL)
-		return glade_property_class_make_string_from_gvalue (pclass, value, fmt);
+		return glade_property_class_make_string_from_gvalue (pclass, value);
 
 	return NULL;
 }

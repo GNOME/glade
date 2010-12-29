@@ -145,8 +145,7 @@ GValue           *glade_utils_value_from_string   (GType               type,
 						   GladeProject       *project,
 						   GladeWidget        *widget);
 
-gchar            *glade_utils_string_from_value   (const GValue       *value,
-						   GladeProjectFormat  fmt);
+gchar            *glade_utils_string_from_value   (const GValue       *value);
 
 GtkListStore     *glade_utils_liststore_from_enum_type  (GType enum_type, gboolean include_empty);
 

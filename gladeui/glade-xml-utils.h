@@ -25,30 +25,11 @@ typedef struct _GladeWidget    GladeWidget;
 typedef struct _GladeProperty  GladeProperty;
 typedef struct _GladeProject   GladeProject;
 
-
-/* We define this here only because our headers need
- * a good sorting
- */
-typedef enum
-{
-	GLADE_PROJECT_FORMAT_LIBGLADE,
-	GLADE_PROJECT_FORMAT_GTKBUILDER
-} GladeProjectFormat;
-
-
 typedef enum {
 	GLADE_POLICY_PROJECT_WIDE = 0,    /* widget names are unique throughout the project */
 	GLADE_POLICY_TOPLEVEL_CONTEXTUAL  /* toplevel names are unique, and widgets inside a toplevel */
 } GladeNamingPolicy;
 
-
-#define GLADE_XML_TAG_PROJECT(type) \
-	((type == GLADE_PROJECT_FORMAT_LIBGLADE) ? \
-	 GLADE_XML_TAG_LIBGLADE_PROJECT : GLADE_XML_TAG_BUILDER_PROJECT)
-
-#define GLADE_XML_TAG_WIDGET(type) \
-	((type == GLADE_PROJECT_FORMAT_LIBGLADE) ? \
-	 GLADE_XML_TAG_LIBGLADE_WIDGET : GLADE_XML_TAG_BUILDER_WIDGET)
 
 #define GLADE_GTKBUILDER_VERSIONING_BASE_MAJOR    2
 #define GLADE_GTKBUILDER_VERSIONING_BASE_MINOR    14
@@ -58,10 +39,8 @@ typedef enum {
 
 
 /* Used for catalog tags and attributes */
-#define GLADE_XML_TAG_LIBGLADE_PROJECT            "glade-interface"
-#define GLADE_XML_TAG_BUILDER_PROJECT             "interface"
-#define GLADE_XML_TAG_LIBGLADE_WIDGET             "widget"
-#define GLADE_XML_TAG_BUILDER_WIDGET              "object"
+#define GLADE_XML_TAG_PROJECT                     "interface"
+#define GLADE_XML_TAG_WIDGET                      "object"
 
 #define GLADE_XML_TAG_VERSION                     "version"
 #define GLADE_XML_TAG_REQUIRES                    "requires"
@@ -94,12 +73,6 @@ typedef enum {
 #define GLADE_TAG_BUILDER_SINCE                   "gtkbuilder-since"
 #define GLADE_TAG_DEPRECATED                      "deprecated"
 
-#define GLADE_TAG_LIBGLADE_ONLY                   "libglade-only"
-#define GLADE_TAG_LIBGLADE_UNSUPPORTED            "libglade-unsupported"
-#define GLADE_TAG_SUPPORTS                        "supports"
-#define GLADE_TAG_GTKBUILDER                      "gtkbuilder"
-#define GLADE_TAG_LIBGLADE                        "libglade"
-
 #define GLADE_TAG_GLADE_CATALOG                   "glade-catalog"
 #define GLADE_TAG_GLADE_WIDGET_CLASSES            "glade-widget-classes"
 #define GLADE_TAG_GLADE_WIDGET_CLASS              "glade-widget-class"
@@ -118,7 +91,6 @@ typedef enum {
 #define GLADE_TAG_CONSTRUCT_ONLY                  "construct-only"
 #define GLADE_TAG_NEEDS_SYNC                      "needs-sync"
 #define GLADE_TAG_DEFAULT_PALETTE_STATE           "default-palette-state"
-#define GLADE_TAG_PROJECT_CONVERT_FUNCTION        "project-convert-function"
 #define GLADE_TAG_REPLACE_CHILD_FUNCTION          "replace-child-function"
 #define GLADE_TAG_CONSTRUCT_OBJECT_FUNCTION       "construct-object-function"
 #define GLADE_TAG_DEEP_POST_CREATE_FUNCTION       "deep-post-create-function"

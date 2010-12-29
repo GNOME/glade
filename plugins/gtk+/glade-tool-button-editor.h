@@ -39,7 +39,6 @@ typedef struct _GladeToolButtonEditorClass   GladeToolButtonEditorClass;
 typedef enum {
 	GLADE_TB_MODE_STOCK = 0, /* default */
 	GLADE_TB_MODE_ICON,
-	GLADE_TB_MODE_FILENAME,
 	GLADE_TB_MODE_CUSTOM
 } GladeToolButtonImageMode;
 
@@ -60,7 +59,6 @@ struct _GladeToolButtonEditor
 	GtkWidget *image_table;
 	GtkWidget *stock_radio;    /* Create the image from stock-id */
 	GtkWidget *icon_radio;     /* Create the image with the icon theme */
-	GtkWidget *file_radio;     /* Create the image from filename (libglade only) */
 	GtkWidget *custom_radio;   /* Set a widget to be used in the image position */
 
 

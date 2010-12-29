@@ -844,8 +844,7 @@ static void
 reset_object_property (GladeProperty *property,
 		       GladeProject  *project)
 {
-	if (glade_property_class_is_object (property->klass, 
-					    glade_project_get_format (project)))
+	if (glade_property_class_is_object (property->klass))
 		glade_property_reset (property);
 }
 
@@ -3027,8 +3026,7 @@ glade_widget_property_string (GladeWidget      *widget,
 	if ((property = glade_widget_get_property (widget, id_property)) != NULL)
 		ret_string = glade_widget_adaptor_string_from_value
 			(GLADE_WIDGET_ADAPTOR (property->klass->handle),
-			 property->klass, value ? value : property->value,
-			 glade_project_get_format (widget->project));
+			 property->klass, value ? value : property->value);
 
 	return ret_string;
 }
@@ -3058,8 +3056,7 @@ glade_widget_pack_property_string (GladeWidget      *widget,
 	if ((property = glade_widget_get_pack_property (widget, id_property)) != NULL)
 		ret_string = glade_widget_adaptor_string_from_value
 			(GLADE_WIDGET_ADAPTOR (property->klass->handle),
-			 property->klass, value ? value : property->value,
-			 glade_project_get_format (widget->project));
+			 property->klass, value ? value : property->value);
 
 	return ret_string;
 }
@@ -3633,7 +3630,7 @@ glade_widget_write_special_child_prop (GladeWidget     *parent,
 				       GladeXmlContext *context,
 				       GladeXmlNode    *node)
 {
-	GladeXmlNode *prop_node, *packing_node;
+	GladeXmlNode *packing_node;
 	gchar        *buff, *special_child_type;
 
 	buff = g_object_get_data (object, "special-child-type");
@@ -3643,27 +3640,9 @@ glade_widget_write_special_child_prop (GladeWidget     *parent,
 
 	if (special_child_type && buff)
 	{
-		switch (glade_project_get_format (parent->project))
-		{
-		case GLADE_PROJECT_FORMAT_LIBGLADE:	
-			prop_node = glade_xml_node_new (context, GLADE_XML_TAG_PROPERTY);
-			glade_xml_node_append_child (packing_node, prop_node);
-			
-			/* Name and value */
-			glade_xml_node_set_property_string (prop_node, 
-							    GLADE_XML_TAG_NAME, 
-							    special_child_type);
-			glade_xml_set_content (prop_node, buff);
-			break;
-		case GLADE_PROJECT_FORMAT_GTKBUILDER:
-			glade_xml_node_set_property_string (node, 
-							    GLADE_XML_TAG_TYPE, 
-							    buff);
-			break;
-		default:
-			g_assert_not_reached ();
-		}
-		
+		glade_xml_node_set_property_string (node, 
+						    GLADE_XML_TAG_TYPE, 
+						    buff);
 	}
 	g_free (special_child_type);
 }
@@ -3674,8 +3653,7 @@ glade_widget_set_child_type_from_node (GladeWidget   *parent,
 				       GObject       *child,
 				       GladeXmlNode  *node)
 {
-	GladeXmlNode *packing_node, *prop;
-	gchar        *special_child_type, *name, *value;
+	gchar        *special_child_type, *value;
 
 	if (!glade_xml_node_verify (node, GLADE_XML_TAG_CHILD))
 		return;
@@ -3684,55 +3662,14 @@ glade_widget_set_child_type_from_node (GladeWidget   *parent,
 	if (!special_child_type)
 		return;
  
-	switch (glade_project_get_format (parent->project))
+	/* all child types here are depicted by the "type" property */
+	if ((value = 
+	     glade_xml_get_property_string (node, GLADE_XML_TAG_TYPE)))
 	{
-	case GLADE_PROJECT_FORMAT_LIBGLADE:	
-		if ((packing_node = 
-		     glade_xml_search_child (node, GLADE_XML_TAG_PACKING)) != NULL)
-		{
-			for (prop = glade_xml_node_get_children (packing_node); 
-			     prop; prop = glade_xml_node_next (prop))
-			{
-				if (!(name = 
-				      glade_xml_get_property_string_required
-				      (prop, GLADE_XML_TAG_NAME, NULL)))
-					continue;
-			
-				if (!(value = glade_xml_get_content (prop)))
-				{
-					/* XXX should be glade_xml_get_content_required()... */
-					g_free (name);
-					continue;
-				}
-			
-				if (!strcmp (name, special_child_type))
-				{
-					g_object_set_data_full (child,
-								"special-child-type",
-								g_strdup (value),
-								g_free);
-					g_free (name);
-					g_free (value);
-					break;
-				}
-				g_free (name);
-				g_free (value);
-			}
-		}
-		break;
-	case GLADE_PROJECT_FORMAT_GTKBUILDER:
-		/* all child types here are depicted by the "type" property */
-		if ((value = 
-		     glade_xml_get_property_string (node, GLADE_XML_TAG_TYPE)))
-		{
-			g_object_set_data_full (child,
-						"special-child-type",
-						value,
-						g_free);
-		}
-		break;
-	default:
-		g_assert_not_reached ();
+		g_object_set_data_full (child,
+					"special-child-type",
+					value,
+					g_free);
 	}
 	g_free (special_child_type);
 }
@@ -3778,8 +3715,7 @@ glade_widget_read (GladeProject *project,
 
 	glade_widget_push_superuser ();
 	
-	if (!glade_xml_node_verify
-	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (project))))
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return NULL;
 
 	if ((klass = 
@@ -3913,7 +3849,6 @@ glade_widget_write_placeholder (GladeWidget     *parent,
 typedef struct {
 	GladeXmlContext    *context;
 	GladeXmlNode       *node;
-	GladeProjectFormat  fmt;
 } WriteSignalsInfo;
 
 static void
@@ -3931,7 +3866,6 @@ glade_widget_adaptor_write_signals (gpointer key,
 	{
 		GladeSignal *signal = g_ptr_array_index (signals, i);
 		glade_signal_write (signal,
-				    info->fmt,
 				    info->context,
 				    info->node);
 	}
@@ -3946,7 +3880,6 @@ glade_widget_write_signals (GladeWidget     *widget,
 
 	info.context = context;
 	info.node = node;
-	info.fmt = glade_project_get_format (widget->project);
 
 	g_hash_table_foreach (widget->signals,
 			      glade_widget_adaptor_write_signals,
@@ -3970,9 +3903,8 @@ glade_widget_write (GladeWidget     *widget,
 {
 	GladeXmlNode *widget_node;
 	GList *l, *list;
-	GladeProjectFormat fmt = glade_project_get_format (widget->project);
 
-	widget_node = glade_xml_node_new (context, GLADE_XML_TAG_WIDGET (fmt));
+	widget_node = glade_xml_node_new (context, GLADE_XML_TAG_WIDGET);
 	glade_xml_node_append_child (node, widget_node);
 
 	/* Set class and id */
@@ -3987,10 +3919,8 @@ glade_widget_write (GladeWidget     *widget,
 	glade_widget_adaptor_write_widget (widget->adaptor, widget, context, widget_node);
 		
 	/* Write the signals strictly after all properties and before children
-	 * when in builder format
 	 */
-	if (fmt == GLADE_PROJECT_FORMAT_GTKBUILDER)
-		glade_widget_write_signals (widget, context, widget_node);
+	glade_widget_write_signals (widget, context, widget_node);
 
 	/* Write the children */
 	if ((list =

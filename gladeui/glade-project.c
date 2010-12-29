@@ -63,7 +63,6 @@ enum
 	CHANGED,
  	PARSE_BEGAN,
  	PARSE_FINISHED,
-	CONVERT_FINISHED,
 	TARGETS_CHANGED,
 	LOAD_PROGRESS,
 	LAST_SIGNAL
@@ -76,7 +75,6 @@ enum
 	PROP_HAS_SELECTION,
 	PROP_PATH,
 	PROP_READ_ONLY,
-	PROP_FORMAT,
 	PROP_PREVIEWABLE
 };
 
@@ -134,8 +132,6 @@ struct _GladeProjectPrivate
 			 
 	time_t  mtime;         /* last UTC modification time of file, or 0 if it could not be read */
 
-	GladeProjectFormat format; /* file format */
-
 	GHashTable *target_versions_major; /* target versions by catalog */
 	GHashTable *target_versions_minor; /* target versions by catalog */
 
@@ -147,8 +143,6 @@ struct _GladeProjectPrivate
 	
 	/* Control on the preferences dialog to update buttons etc when properties change */
 	GtkWidget *prefs_dialog;
-	GtkWidget *glade_radio;
-	GtkWidget *builder_radio;
 	GtkWidget *project_wide_radio;
 	GtkWidget *toplevel_contextual_radio;
 	GHashTable *target_radios;
@@ -214,10 +208,6 @@ static GladeWidget *search_ancestry_by_name                 (GladeWidget       *
 
 static GtkWidget   *glade_project_build_prefs_dialog        (GladeProject      *project);
 
-static void         format_libglade_button_toggled          (GtkWidget         *widget,
-							     GladeProject      *project);
-static void         format_builder_button_toggled           (GtkWidget         *widget,
-							     GladeProject      *project);
 static void         policy_project_wide_button_clicked      (GtkWidget         *widget,
 							     GladeProject      *project);
 static void         policy_toplevel_contextual_button_clicked (GtkWidget       *widget,
@@ -380,9 +370,6 @@ glade_project_get_property (GObject    *object,
 			break;				
 		case PROP_READ_ONLY:
 			g_value_set_boolean (value, project->priv->readonly);
-			break;
-		case PROP_FORMAT:
-			g_value_set_int (value, project->priv->format);
 			break;
 		case PROP_PREVIEWABLE:
 			g_value_set_boolean (value, project->priv->previewable);
@@ -713,8 +700,6 @@ glade_project_init (GladeProject *project)
 		priv->stamp = g_random_int ();
 	} while (priv->stamp == 0);
 
-	priv->format = GLADE_PROJECT_FORMAT_GTKBUILDER;
-
 	priv->target_versions_major = g_hash_table_new_full (g_str_hash,
 							     g_str_equal,
 							     g_free,
@@ -905,27 +890,6 @@ glade_project_class_init (GladeProjectClass *klass)
 			      G_TYPE_NONE,
 			      0);
 
-	/**
-	 * GladeProject::convert-finished:
-	 * @gladeproject: the #GladeProject which received the signal.
-	 *
-	 * Emitted when @gladeproject format conversion has finished.
-	 *
-	 * NOTE: Some properties are internally handled differently
-	 * when the project is in a said format, this signal is fired after
-	 * the new format is in effect to allow the backend access to both
-	 * before and after.
-	 */
-	glade_project_signals[CONVERT_FINISHED] =
-		g_signal_new ("convert-finished",
-			      G_TYPE_FROM_CLASS (object_class),
-			      G_SIGNAL_RUN_FIRST,
-			      G_STRUCT_OFFSET (GladeProjectClass, parse_finished),
-			      NULL, NULL,
-			      g_cclosure_marshal_VOID__VOID,
-			      G_TYPE_NONE,
-			      0);
-
         /**
 	 * GladeProject::targets-changed:
          * @gladeproject: the #GladeProject which received the signal.
@@ -990,16 +954,6 @@ glade_project_class_init (GladeProjectClass *klass)
 							       G_PARAM_READABLE));
 
 	g_object_class_install_property (object_class,
-					 PROP_FORMAT,
-					 g_param_spec_int ("format",
-							   _("Format"),
-							   _("The project file format"),
-							   GLADE_PROJECT_FORMAT_LIBGLADE,
-							   GLADE_PROJECT_FORMAT_GTKBUILDER,
-							   GLADE_PROJECT_FORMAT_GTKBUILDER,
-							   G_PARAM_READABLE));
-
-	g_object_class_install_property (object_class,
 					 PROP_PREVIEWABLE,
 					 g_param_spec_boolean ("previewable",
 							      _("Previewable"),
@@ -1050,8 +1004,7 @@ glade_project_fix_object_props (GladeProject *project)
 		{
 			property = GLADE_PROPERTY (ll->data);
 
-			if (glade_property_class_is_object (property->klass, 
-							    project->priv->format) &&
+			if (glade_property_class_is_object (property->klass) &&
 			    (txt = g_object_get_data (G_OBJECT (property), 
 						      "glade-loaded-object")) != NULL)
 			{
@@ -1265,7 +1218,7 @@ update_project_for_resource_path (GladeProject *project)
 				gchar *string;
 
 				string = glade_property_class_make_string_from_gvalue
-					(property->klass, property->value, project->priv->format);
+					(property->klass, property->value);
 
 				value = glade_property_class_make_gvalue_from_string 
 					(property->klass, string, project, widget);
@@ -1368,17 +1321,9 @@ glade_project_introspect_signal_versions (const gchar *signal_name,
 static void
 glade_project_introspect_gtk_version (GladeProject *project)
 {
-	GladeProjectFormat fmt;
 	GladeWidget *widget;
 	GList *list, *l;
-	gint  target_major = 2, target_minor = 0;
-
-	fmt = glade_project_get_format (project);
-
-	if (fmt == GLADE_PROJECT_FORMAT_GTKBUILDER)
-		target_minor = 12;
-	else
-		target_minor = 6;
+	gint  target_major = 2, target_minor = 12;
 
 	for (list = project->priv->objects; list; list = list->next)
        	{
@@ -1459,8 +1404,7 @@ glade_project_count_xml_objects (GladeProject *project, GladeXmlNode *root, gint
 	for (node = glade_xml_node_get_children (root); 
 	     node; node = glade_xml_node_next (node))
 	{
-		if (glade_xml_node_verify_silent
-		    (node, GLADE_XML_TAG_WIDGET (project->priv->format)))
+		if (glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET))
 			count = glade_project_count_xml_objects (project, node, ++count);
 		else if (glade_xml_node_verify_silent (node, GLADE_XML_TAG_CHILD))
 			count = glade_project_count_xml_objects (project, node, count);			
@@ -1528,14 +1472,9 @@ glade_project_load_internal (GladeProject *project)
 	doc  = glade_xml_context_get_doc (context);
 	root = glade_xml_doc_get_root (doc);
 
-	if (glade_xml_node_verify_silent (root, GLADE_XML_TAG_LIBGLADE_PROJECT))
-		glade_project_set_format (project, GLADE_PROJECT_FORMAT_LIBGLADE);
-	else if (glade_xml_node_verify_silent (root, GLADE_XML_TAG_BUILDER_PROJECT))
-		glade_project_set_format (project, GLADE_PROJECT_FORMAT_GTKBUILDER);
-	else
+	if (!glade_xml_node_verify_silent (root, GLADE_XML_TAG_PROJECT))
 	{
-		g_warning ("Couldnt determine project format, skipping %s", 
-			   project->priv->path);
+		g_warning ("Couldnt recognize GtkBuilder xml, skipping %s", project->priv->path);
 		glade_xml_context_free (context);
 		project->priv->loading = FALSE;
 		return FALSE;
@@ -1568,8 +1507,7 @@ glade_project_load_internal (GladeProject *project)
 	     node; node = glade_xml_node_next (node))
 	{
 		/* Skip "requires" tags */
-		if (!glade_xml_node_verify_silent
-		    (node, GLADE_XML_TAG_WIDGET (project->priv->format)))
+		if (!glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET))
 			continue;
 
 		if ((widget = glade_widget_read (project, NULL, node, NULL)) != NULL)
@@ -1748,13 +1686,10 @@ glade_project_write_required_libs (GladeProject    *project,
 				   GladeXmlContext *context,
 				   GladeXmlNode    *root)
 {
-	GladeProjectFormat fmt;
 	GladeXmlNode    *req_node;
 	GList           *required, *list;
 	gint             major, minor;
 	gchar           *version;
-
-	fmt = glade_project_get_format (project);
 
 	if ((required = glade_project_required_libs (project)) != NULL)
 	{
@@ -1766,49 +1701,31 @@ glade_project_write_required_libs (GladeProject    *project,
 			version = g_strdup_printf ("%d.%d", major, minor);
 
 			/* Write the standard requires tag */
-			if (fmt == GLADE_PROJECT_FORMAT_GTKBUILDER ||
-			    (fmt == GLADE_PROJECT_FORMAT_LIBGLADE &&
-			     strcmp ("gtk+", (gchar *)list->data)))
+			if (GLADE_GTKBUILDER_HAS_VERSIONING (major, minor))
 			{
-				if (GLADE_GTKBUILDER_HAS_VERSIONING (major, minor))
-				{
-					req_node = glade_xml_node_new (context, GLADE_XML_TAG_REQUIRES);
-					glade_xml_node_append_child (root, req_node);
-					glade_xml_node_set_property_string (req_node, 
-									    GLADE_XML_TAG_LIB, 
-									    (gchar *)list->data);
-				}
-				else
-				{
-					gchar *comment = 
-						g_strdup_printf (" interface-requires %s %s ", 
-								 (gchar *)list->data, version);
-					req_node = glade_xml_node_new_comment (context, comment);
-					glade_xml_node_append_child (root, req_node);
-					g_free (comment);
-				}
-
-				if (fmt != GLADE_PROJECT_FORMAT_LIBGLADE)
-					glade_xml_node_set_property_string 
-						(req_node, GLADE_XML_TAG_VERSION, version);
+				req_node = glade_xml_node_new (context, GLADE_XML_TAG_REQUIRES);
+				glade_xml_node_append_child (root, req_node);
+				glade_xml_node_set_property_string (req_node, 
+								    GLADE_XML_TAG_LIB, 
+								    (gchar *)list->data);
 			}
-
-			/* Add extra metadata for libglade */
-			if (fmt == GLADE_PROJECT_FORMAT_LIBGLADE)
+			else
 			{
-				gchar *comment = g_strdup_printf (" interface-requires %s %s ", 
-								  (gchar *)list->data, version);
+				gchar *comment = 
+					g_strdup_printf (" interface-requires %s %s ", 
+							 (gchar *)list->data, version);
 				req_node = glade_xml_node_new_comment (context, comment);
 				glade_xml_node_append_child (root, req_node);
 				g_free (comment);
 			}
+			
+			glade_xml_node_set_property_string (req_node, GLADE_XML_TAG_VERSION, version);
 			g_free (version);
 
 		}
 		g_list_foreach (required, (GFunc)g_free, NULL);
 		g_list_free (required);
 	}
-
 }
 
 static void
@@ -1868,7 +1785,7 @@ glade_project_write (GladeProject *project)
 
 	doc     = glade_xml_doc_new ();
 	context = glade_xml_context_new (doc, NULL);
-	root    = glade_xml_node_new (context, GLADE_XML_TAG_PROJECT (project->priv->format));
+	root    = glade_xml_node_new (context, GLADE_XML_TAG_PROJECT);
 	glade_xml_doc_set_root (doc, root);
 
 	glade_project_update_comment (project);
@@ -2098,26 +2015,6 @@ glade_project_preview (GladeProject *project, GladeWidget *gwidget)
 /* translators: reffers to a widget '[%s]' introduced in toolkit version '%s %d.%d' */
 #define WIDGET_VERSION_CONFLICT_FMT            _("[%s] Object class '%s' was introduced in %s %d.%d\n")
 
-/* translators: reffers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d' */
-#define WIDGET_BUILDER_VERSION_CONFLICT_MSGFMT _("This widget was made available in GtkBuilder format in %s %d.%d " \
-						 "while project targets %s %d.%d")
-
-/* translators: reffers to a widget '[%s]' introduced in toolkit version '%s %d.%d' */
-#define WIDGET_BUILDER_VERSION_CONFLICT_FMT    _("[%s] Object class '%s' was made available in GtkBuilder format " \
-						 "in %s %d.%d\n")
-
-#define WIDGET_LIBGLADE_ONLY_MSG               _("This widget is only supported in libglade format")
-
-/* translators: reffers to a widget '[%s]' loaded from toolkit version '%s %d.%d' */
-#define WIDGET_LIBGLADE_ONLY_FMT               _("[%s] Object class '%s' from %s %d.%d " \
-						 "is only supported in libglade format\n")
-
-#define WIDGET_LIBGLADE_UNSUPPORTED_MSG        _("This widget is not supported in libglade format")
-
-/* translators: reffers to a widget '[%s]' loaded from toolkit version '%s %d.%d' */
-#define WIDGET_LIBGLADE_UNSUPPORTED_FMT        _("[%s] Object class '%s' from %s %d.%d " \
-						 "is not supported in libglade format\n")
-
 #define WIDGET_DEPRECATED_MSG                  _("This widget is deprecated")
 
 /* translators: reffers to a widget '[%s]' loaded from toolkit version '%s %d.%d' */
@@ -2128,24 +2025,6 @@ glade_project_preview (GladeProject *project, GladeWidget *gwidget)
  * you can only comment about the line directly following, forcing you to write
  * ugly messy code with comments in line breaks inside function calls).
  */
-#define PROP_LIBGLADE_UNSUPPORTED_MSG          _("This property is not supported in libglade format")
-
-/* translators: reffers to a property '%s' of widget '[%s]' */
-#define PROP_LIBGLADE_UNSUPPORTED_FMT          _("[%s] Property '%s' of object class '%s' is not " \
-						 "supported in libglade format\n")
-/* translators: reffers to a property '%s' of widget '[%s]' */
-#define PACK_PROP_LIBGLADE_UNSUPPORTED_FMT     _("[%s] Packing property '%s' of object class '%s' is not " \
-						 "supported in libglade format\n")
-
-#define PROP_LIBGLADE_ONLY_MSG                 _("This property is only supported in libglade format")
-
-/* translators: reffers to a property '%s' of widget '[%s]' */
-#define PROP_LIBGLADE_ONLY_FMT                 _("[%s] Property '%s' of object class '%s' is only " \
-						 "supported in libglade format\n")
-
-/* translators: reffers to a property '%s' of widget '[%s]' */
-#define PACK_PROP_LIBGLADE_ONLY_FMT            _("[%s] Packing property '%s' of object class '%s' is only " \
-						 "supported in libglade format\n")
 
 /* translators: reffers to a property in toolkit version '%s %d.%d' 
  * and a project targeting toolkit version '%s %d.%d' */
@@ -2157,18 +2036,6 @@ glade_project_preview (GladeProject *project, GladeWidget *gwidget)
 /* translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d' */
 #define PACK_PROP_VERSION_CONFLICT_FMT         _("[%s] Packing property '%s' of object class '%s' " \
 						 "was introduced in %s %d.%d\n")
-
-/* translators: reffers to a property in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d' */
-#define PROP_BUILDER_VERSION_CONFLICT_MSGFMT   _("This property was made available in GtkBuilder format in %s %d.%d " \
-						 "while project targets %s %d.%d")
-
-/* translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d' */
-#define PROP_BUILDER_VERSION_CONFLICT_FMT      _("[%s] Property '%s' of object class '%s' was " \
-						 "made available in GtkBuilder format in %s %d.%d\n")
-
-/* translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d' */
-#define PACK_PROP_BUILDER_VERSION_CONFLICT_FMT _("[%s] Packing property '%s' of object class '%s' " \
-						 "was made available in GtkBuilder format in %s %d.%d\n")
 
 /* translators: reffers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d' */
 #define SIGNAL_VERSION_CONFLICT_FMT            _("[%s] Signal '%s' of object class '%s' was introduced in %s %d.%d\n")
@@ -2199,37 +2066,7 @@ glade_project_verify_property (GladeProject   *project,
 						  &target_major,
 						  &target_minor);
 	
-	if (project->priv->format == GLADE_PROJECT_FORMAT_LIBGLADE &&
-	    property->klass->libglade_unsupported)
-	{
-		if (forwidget)
-			glade_property_set_support_warning
-				(property, TRUE, PROP_LIBGLADE_UNSUPPORTED_MSG);
-		else
-			g_string_append_printf (string,
-						property->klass->packing ?
-						PACK_PROP_LIBGLADE_UNSUPPORTED_FMT :
-						PROP_LIBGLADE_UNSUPPORTED_FMT,
-						path_name,
-						property->klass->name, 
-						adaptor->title);
-	}
-	else if (project->priv->format == GLADE_PROJECT_FORMAT_GTKBUILDER &&
-		 property->klass->libglade_only)
-	{
-		if (forwidget)
-			glade_property_set_support_warning
-				(property, TRUE, PROP_LIBGLADE_ONLY_MSG);
-		else
-			g_string_append_printf (string,
-						property->klass->packing ?
-						PACK_PROP_LIBGLADE_ONLY_FMT :
-						PROP_LIBGLADE_ONLY_FMT,
-						path_name,
-						property->klass->name, 
-						adaptor->title);
-	} 
-	else if (!GPC_VERSION_CHECK (property->klass, target_major, target_minor))
+	if (!GPC_VERSION_CHECK (property->klass, target_major, target_minor))
 	{
 		if (forwidget)
 		{
@@ -2253,32 +2090,6 @@ glade_project_verify_property (GladeProject   *project,
 						adaptor->title, catalog,
 						property->klass->version_since_major,
 						property->klass->version_since_minor);
-	} 
-	else if (project->priv->format == GLADE_PROJECT_FORMAT_GTKBUILDER &&
-		 !GPC_BUILDER_VERSION_CHECK (property->klass, target_major, target_minor))
-	{
-		if (forwidget)
-		{
-			tooltip = g_strdup_printf (PROP_BUILDER_VERSION_CONFLICT_MSGFMT,
-						   catalog,
-						   property->klass->builder_since_major,
-						   property->klass->builder_since_minor,
-						   catalog,
-						   target_major, target_minor);
-			
-			glade_property_set_support_warning (property, FALSE, tooltip);
-			g_free (tooltip);
-		}
-		else
-			g_string_append_printf (string,
-						property->klass->packing ?
-						PACK_PROP_BUILDER_VERSION_CONFLICT_FMT :
-						PROP_BUILDER_VERSION_CONFLICT_FMT,
-						path_name,
-						property->klass->name, 
-						adaptor->title, catalog,
-						property->klass->builder_since_major,
-						property->klass->builder_since_minor);
 	} 
 	else if (forwidget)
 		glade_property_set_support_warning (property, FALSE, NULL);
@@ -2545,64 +2356,6 @@ glade_project_verify_adaptor (GladeProject       *project,
 							GWA_VERSION_SINCE_MINOR (adaptor_iter));
 			
 			support_mask |= GLADE_SUPPORT_MISMATCH;
-		}
-		else if (project->priv->format == GLADE_PROJECT_FORMAT_GTKBUILDER &&
-			 (target_major < GWA_BUILDER_SINCE_MAJOR (adaptor_iter) ||
-			  (target_major == GWA_BUILDER_SINCE_MAJOR (adaptor_iter) &&
-			   target_minor < GWA_BUILDER_SINCE_MINOR (adaptor_iter))))
-		{
-			if (forwidget)
-				g_string_append_printf (string, 
-							WIDGET_BUILDER_VERSION_CONFLICT_MSGFMT,
-							catalog,
-							GWA_BUILDER_SINCE_MAJOR (adaptor_iter),
-							GWA_BUILDER_SINCE_MINOR (adaptor_iter),
-							catalog, target_major, target_minor);
-			else
-				g_string_append_printf (string, 
-							WIDGET_BUILDER_VERSION_CONFLICT_FMT,
-							path_name, adaptor_iter->title, catalog,
-							GWA_BUILDER_SINCE_MAJOR (adaptor_iter),
-							GWA_BUILDER_SINCE_MINOR (adaptor_iter));
-
-			support_mask |= GLADE_SUPPORT_MISMATCH;
-		}
-
-		/* Now accumulate some more messages...
-		 */
-		if (project->priv->format == GLADE_PROJECT_FORMAT_GTKBUILDER &&
-		    GWA_LIBGLADE_ONLY (adaptor_iter))
-		{
-			if (forwidget)
-			{
-				if (string->len)
-					g_string_append (string, "\n");
-				g_string_append_printf (string, WIDGET_LIBGLADE_ONLY_MSG);
-			}
-			else
-				g_string_append_printf (string,
-							WIDGET_LIBGLADE_ONLY_FMT,
-							path_name, adaptor_iter->title, catalog,
-							target_major, target_minor);
-
-			support_mask |= GLADE_SUPPORT_LIBGLADE_ONLY;
-		}
-		else if (project->priv->format == GLADE_PROJECT_FORMAT_LIBGLADE &&
-			 GWA_LIBGLADE_UNSUPPORTED (adaptor_iter))
-		{
-			if (forwidget)
-			{
-				if (string->len)
-					g_string_append (string, "\n");
-
-				g_string_append_printf (string, WIDGET_LIBGLADE_UNSUPPORTED_MSG);
-			}
-			else
-				g_string_append_printf (string, WIDGET_LIBGLADE_UNSUPPORTED_FMT,
-							path_name, adaptor_iter->title, catalog,
-							target_major, target_minor);
-
-			support_mask |= GLADE_SUPPORT_LIBGLADE_UNSUPPORTED;
 		}
 
 		if (!saving && GWA_DEPRECATED (adaptor_iter))
@@ -4017,68 +3770,6 @@ glade_project_get_naming_policy (GladeProject *project)
 	return project->priv->naming_policy;
 }
 
-
-/** 
- * glade_project_set_format:
- * @project: a #GladeProject
- * @format: the #GladeProjectFormat
- *
- * Sets @project format to @format, used internally to set the actual format
- * state; note that conversions should be done through the glade-command api.
- */ 
-void
-glade_project_set_format (GladeProject *project, GladeProjectFormat format)
-{
-	g_return_if_fail (GLADE_IS_PROJECT (project));
-
-	if (project->priv->format != format)
-	{
-		project->priv->format = format; 
-		g_object_notify (G_OBJECT (project), "format");
-		glade_project_verify_project_for_ui (project);
-
-		/* Update the toggle button in the prefs dialog here: */
-		g_signal_handlers_block_by_func (project->priv->glade_radio,
-						 G_CALLBACK (format_libglade_button_toggled), project);
-		g_signal_handlers_block_by_func (project->priv->builder_radio,
-						 G_CALLBACK (format_builder_button_toggled), project);
-
-		if (format == GLADE_PROJECT_FORMAT_GTKBUILDER)
-			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (project->priv->builder_radio), TRUE);
-		else
-			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (project->priv->glade_radio), TRUE);
-
-		g_signal_handlers_unblock_by_func (project->priv->glade_radio,
-						   G_CALLBACK (format_libglade_button_toggled), project);
-		g_signal_handlers_unblock_by_func (project->priv->builder_radio,
-						   G_CALLBACK (format_builder_button_toggled), project);
-
-	}
-}
-
-GladeProjectFormat
-glade_project_get_format (GladeProject *project)
-{
-	g_return_val_if_fail (GLADE_IS_PROJECT (project), -1);
-
-	return project->priv->format;
-}
-
-
-static void
-format_libglade_button_toggled (GtkWidget *widget,
-				GladeProject *project)
-{
-	glade_command_set_project_format (project, GLADE_PROJECT_FORMAT_LIBGLADE);
-}
-
-static void
-format_builder_button_toggled (GtkWidget *widget,
-			       GladeProject *project)
-{
-	glade_command_set_project_format (project, GLADE_PROJECT_FORMAT_GTKBUILDER);
-}
-
 static gint
 count_objects_with_name (GladeProject *project,
 			 const gchar  *name)
@@ -4296,50 +3987,6 @@ glade_project_build_prefs_box (GladeProject *project)
 
 	gtk_container_add (GTK_CONTAINER (main_alignment), main_box);
 	gtk_container_add (GTK_CONTAINER (main_frame), main_alignment);
-
-
-	/* Project format */
-	string = g_strdup_printf ("<b>%s</b>", _("Project file format:"));
-	frame = gtk_frame_new (NULL);
-	hbox = gtk_hbox_new (FALSE, 0);
-	alignment = gtk_alignment_new (0.5F, 0.5F, 0.8F, 0.8F);
-
-	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 8, 0, 12, 0);
-
-	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
-
-	label = gtk_label_new (string);
-	g_free (string);
-	gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
-
-	project->priv->glade_radio = gtk_radio_button_new_with_label (NULL, "Libglade");
-	project->priv->builder_radio = gtk_radio_button_new_with_label_from_widget
-		(GTK_RADIO_BUTTON (project->priv->glade_radio), "GtkBuilder");
-
-	gtk_size_group_add_widget (sizegroup1, project->priv->builder_radio);
-	gtk_size_group_add_widget (sizegroup2, project->priv->glade_radio);
-
-	gtk_frame_set_label_widget (GTK_FRAME (frame), label);
-	gtk_container_add (GTK_CONTAINER (alignment), hbox);
-	gtk_container_add (GTK_CONTAINER (frame), alignment);
-
-	gtk_box_pack_start (GTK_BOX (hbox), project->priv->builder_radio, TRUE, TRUE, 2);
-	gtk_box_pack_start (GTK_BOX (hbox), project->priv->glade_radio, TRUE, TRUE, 2);
-
-	gtk_box_pack_start (GTK_BOX (main_box), frame, TRUE, TRUE, 2);
-
-
-	if (glade_project_get_format (project) == GLADE_PROJECT_FORMAT_GTKBUILDER)
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (project->priv->builder_radio), TRUE);
-	else
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (project->priv->glade_radio), TRUE);
-
-	g_signal_connect (G_OBJECT (project->priv->glade_radio), "toggled",
-			  G_CALLBACK (format_libglade_button_toggled), project);
-
-	g_signal_connect (G_OBJECT (project->priv->builder_radio), "toggled",
-			  G_CALLBACK (format_builder_button_toggled), project);
-
 
 	/* Naming policy format */
 	string = g_strdup_printf ("<b>%s</b>", _("Object names are unique:"));

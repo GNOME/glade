@@ -63,136 +63,6 @@
 #define RESPID_INSENSITIVE_MSG     _("This property is only for use in dialog action buttons")
 #define ACTION_APPEARANCE_MSG      _("This property is set to be controlled by an Action")
 /* -------------------------------- ParamSpecs ------------------------------ */
-/*
-GtkImageMenuItem GnomeUI "stock_item" property special case:
-	
-"stock_item" property is added by glade2 gnome support and makes reference to
-GNOMEUIINFO_MENU_* macros. This set-function maps these properties to 
-existing non deprecated gtk ones.
-*/
-typedef enum {
-	GNOMEUIINFO_MENU_NONE,
-	/* The 'File' menu */
-	GNOMEUIINFO_MENU_NEW_ITEM,
-	GNOMEUIINFO_MENU_NEW_SUBTREE,
-	GNOMEUIINFO_MENU_OPEN_ITEM,
-	GNOMEUIINFO_MENU_SAVE_ITEM,
-	GNOMEUIINFO_MENU_SAVE_AS_ITEM,
-	GNOMEUIINFO_MENU_REVERT_ITEM,
-	GNOMEUIINFO_MENU_PRINT_ITEM,
-	GNOMEUIINFO_MENU_PRINT_SETUP_ITEM,
-	GNOMEUIINFO_MENU_CLOSE_ITEM,
-	GNOMEUIINFO_MENU_EXIT_ITEM,
-	GNOMEUIINFO_MENU_QUIT_ITEM,
-	/* The "Edit" menu */
-	GNOMEUIINFO_MENU_CUT_ITEM,
-	GNOMEUIINFO_MENU_COPY_ITEM,
-	GNOMEUIINFO_MENU_PASTE_ITEM,
-	GNOMEUIINFO_MENU_SELECT_ALL_ITEM,
-	GNOMEUIINFO_MENU_CLEAR_ITEM,
-	GNOMEUIINFO_MENU_UNDO_ITEM,
-	GNOMEUIINFO_MENU_REDO_ITEM,
-	GNOMEUIINFO_MENU_FIND_ITEM,
-	GNOMEUIINFO_MENU_FIND_AGAIN_ITEM,
-	GNOMEUIINFO_MENU_REPLACE_ITEM,
-	GNOMEUIINFO_MENU_PROPERTIES_ITEM,
-	/* The Settings menu */
-	GNOMEUIINFO_MENU_PREFERENCES_ITEM,
-	/* The Windows menu */
-	GNOMEUIINFO_MENU_NEW_WINDOW_ITEM,
-	GNOMEUIINFO_MENU_CLOSE_WINDOW_ITEM,
-	/* And the "Help" menu */
-	GNOMEUIINFO_MENU_ABOUT_ITEM,
-	/* The "Game" menu */
-	GNOMEUIINFO_MENU_NEW_GAME_ITEM,
-	GNOMEUIINFO_MENU_PAUSE_GAME_ITEM,
-	GNOMEUIINFO_MENU_RESTART_GAME_ITEM,
-	GNOMEUIINFO_MENU_UNDO_MOVE_ITEM,
-	GNOMEUIINFO_MENU_REDO_MOVE_ITEM,
-	GNOMEUIINFO_MENU_HINT_ITEM,
-	GNOMEUIINFO_MENU_SCORES_ITEM,
-	GNOMEUIINFO_MENU_END_GAME_ITEM,
-	/* Some standard menus */
-	GNOMEUIINFO_MENU_FILE_TREE,
-	GNOMEUIINFO_MENU_EDIT_TREE,
-	GNOMEUIINFO_MENU_VIEW_TREE,
-	GNOMEUIINFO_MENU_SETTINGS_TREE,
-	GNOMEUIINFO_MENU_FILES_TREE,
-	GNOMEUIINFO_MENU_WINDOWS_TREE,
-	GNOMEUIINFO_MENU_HELP_TREE,
-	GNOMEUIINFO_MENU_GAME_TREE
-} GladeGtkGnomeUIInfoEnum;
-
-static GType
-glade_gtk_gnome_ui_info_get_type (void)
-{
-	static GType etype = 0;
-	if (etype == 0) {
-		static const GEnumValue values[] = {
-			{ GNOMEUIINFO_MENU_NONE, "GNOMEUIINFO_MENU_NONE", NULL},
-			/* The 'File' menu */
-			{ GNOMEUIINFO_MENU_NEW_ITEM, "GNOMEUIINFO_MENU_NEW_ITEM", "gtk-new"},
-			{ GNOMEUIINFO_MENU_OPEN_ITEM, "GNOMEUIINFO_MENU_OPEN_ITEM", "gtk-open"},
-			{ GNOMEUIINFO_MENU_SAVE_ITEM, "GNOMEUIINFO_MENU_SAVE_ITEM", "gtk-save"},
-			{ GNOMEUIINFO_MENU_SAVE_AS_ITEM, "GNOMEUIINFO_MENU_SAVE_AS_ITEM", "gtk-save-as"},
-			{ GNOMEUIINFO_MENU_REVERT_ITEM, "GNOMEUIINFO_MENU_REVERT_ITEM", "gtk-revert-to-saved"},
-			{ GNOMEUIINFO_MENU_PRINT_ITEM, "GNOMEUIINFO_MENU_PRINT_ITEM", "gtk-print"},
-			{ GNOMEUIINFO_MENU_PRINT_SETUP_ITEM, "GNOMEUIINFO_MENU_PRINT_SETUP_ITEM", NULL},
-			{ GNOMEUIINFO_MENU_CLOSE_ITEM, "GNOMEUIINFO_MENU_CLOSE_ITEM", "gtk-close"},
-			{ GNOMEUIINFO_MENU_EXIT_ITEM, "GNOMEUIINFO_MENU_EXIT_ITEM", "gtk-quit"},
-			{ GNOMEUIINFO_MENU_QUIT_ITEM, "GNOMEUIINFO_MENU_QUIT_ITEM", "gtk-quit"},
-			/* The "Edit" menu */
-			{ GNOMEUIINFO_MENU_CUT_ITEM, "GNOMEUIINFO_MENU_CUT_ITEM", "gtk-cut"},
-			{ GNOMEUIINFO_MENU_COPY_ITEM, "GNOMEUIINFO_MENU_COPY_ITEM", "gtk-copy"},
-			{ GNOMEUIINFO_MENU_PASTE_ITEM, "GNOMEUIINFO_MENU_PASTE_ITEM", "gtk-paste"},
-			{ GNOMEUIINFO_MENU_SELECT_ALL_ITEM, "GNOMEUIINFO_MENU_SELECT_ALL_ITEM", NULL},
-			{ GNOMEUIINFO_MENU_CLEAR_ITEM, "GNOMEUIINFO_MENU_CLEAR_ITEM", "gtk-clear"},
-			{ GNOMEUIINFO_MENU_UNDO_ITEM, "GNOMEUIINFO_MENU_UNDO_ITEM", "gtk-undo"},
-			{ GNOMEUIINFO_MENU_REDO_ITEM, "GNOMEUIINFO_MENU_REDO_ITEM", "gtk-redo"},
-			{ GNOMEUIINFO_MENU_FIND_ITEM, "GNOMEUIINFO_MENU_FIND_ITEM", "gtk-find"},
-			{ GNOMEUIINFO_MENU_FIND_AGAIN_ITEM, "GNOMEUIINFO_MENU_FIND_AGAIN_ITEM", NULL},
-			{ GNOMEUIINFO_MENU_REPLACE_ITEM, "GNOMEUIINFO_MENU_REPLACE_ITEM", "gtk-find-and-replace"},
-			{ GNOMEUIINFO_MENU_PROPERTIES_ITEM, "GNOMEUIINFO_MENU_PROPERTIES_ITEM", "gtk-properties"},
-			/* The Settings menu */
-			{ GNOMEUIINFO_MENU_PREFERENCES_ITEM, "GNOMEUIINFO_MENU_PREFERENCES_ITEM", "gtk-preferences"},
-			/* The Windows menu */
-			{ GNOMEUIINFO_MENU_NEW_WINDOW_ITEM, "GNOMEUIINFO_MENU_NEW_WINDOW_ITEM", NULL},
-			{ GNOMEUIINFO_MENU_CLOSE_WINDOW_ITEM, "GNOMEUIINFO_MENU_CLOSE_WINDOW_ITEM", NULL},
-			/* And the "Help" menu */
-			{ GNOMEUIINFO_MENU_ABOUT_ITEM, "GNOMEUIINFO_MENU_ABOUT_ITEM", "gtk-about"},
-			/* The "Game" menu */
-			{ GNOMEUIINFO_MENU_NEW_GAME_ITEM, "GNOMEUIINFO_MENU_NEW_GAME_ITEM", NULL},
-			{ GNOMEUIINFO_MENU_PAUSE_GAME_ITEM, "GNOMEUIINFO_MENU_PAUSE_GAME_ITEM", NULL},
-			{ GNOMEUIINFO_MENU_RESTART_GAME_ITEM, "GNOMEUIINFO_MENU_RESTART_GAME_ITEM", NULL},
-			{ GNOMEUIINFO_MENU_UNDO_MOVE_ITEM, "GNOMEUIINFO_MENU_UNDO_MOVE_ITEM", NULL},
-			{ GNOMEUIINFO_MENU_REDO_MOVE_ITEM, "GNOMEUIINFO_MENU_REDO_MOVE_ITEM", NULL},
-			{ GNOMEUIINFO_MENU_HINT_ITEM, "GNOMEUIINFO_MENU_HINT_ITEM", NULL},
-			{ GNOMEUIINFO_MENU_SCORES_ITEM, "GNOMEUIINFO_MENU_SCORES_ITEM", NULL},
-			{ GNOMEUIINFO_MENU_END_GAME_ITEM, "GNOMEUIINFO_MENU_END_GAME_ITEM", NULL},
-			/* Some standard menus */
-			{ GNOMEUIINFO_MENU_FILE_TREE, "GNOMEUIINFO_MENU_FILE_TREE", NULL},
-			{ GNOMEUIINFO_MENU_EDIT_TREE, "GNOMEUIINFO_MENU_EDIT_TREE", NULL},
-			{ GNOMEUIINFO_MENU_VIEW_TREE, "GNOMEUIINFO_MENU_VIEW_TREE", NULL},
-			{ GNOMEUIINFO_MENU_SETTINGS_TREE, "GNOMEUIINFO_MENU_SETTINGS_TREE", NULL},
-			{ GNOMEUIINFO_MENU_FILES_TREE, "GNOMEUIINFO_MENU_FILES_TREE", NULL},
-			{ GNOMEUIINFO_MENU_WINDOWS_TREE, "GNOMEUIINFO_MENU_WINDOWS_TREE", NULL},
-			{ GNOMEUIINFO_MENU_HELP_TREE, "GNOMEUIINFO_MENU_HELP_TREE", NULL},
-			{ GNOMEUIINFO_MENU_GAME_TREE, "GNOMEUIINFO_MENU_GAME_TREE", NULL},
-			{ 0, NULL, NULL }
-		};
-		etype = g_enum_register_static ("GladeGtkGnomeUIInfo", values);
-	}
-	return etype;
-}
-
-GParamSpec *
-glade_gtk_gnome_ui_info_spec (void)
-{
-	return g_param_spec_enum ("gnomeuiinfo", _("GnomeUIInfo"), 
-				  _("Choose the GnomeUIInfo stock item"),
-				  glade_gtk_gnome_ui_info_get_type (),
-				  0, G_PARAM_READWRITE);
-}
 
 /* Fake GtkImage::icon-size since its an int pspec in the image */
 GParamSpec *
@@ -253,25 +123,9 @@ glade_gtk_widget_depends (GladeWidgetAdaptor *adaptor,
 
 #define GLADE_TAG_ATTRIBUTES        "attributes"
 #define GLADE_TAG_ATTRIBUTE         "attribute"
-
-#define GLADE_TAG_A11Y_LIBGLADE_RELATION     "atkrelation"
-#define GLADE_TAG_A11Y_LIBGLADE_ACTION       "atkaction"
-#define GLADE_TAG_A11Y_LIBGLADE_PROPERTY     "atkproperty"
-#define GLADE_TAG_A11Y_GTKBUILDER_RELATION   "relation"
-#define GLADE_TAG_A11Y_GTKBUILDER_ACTION     "action"
-#define GLADE_TAG_A11Y_GTKBUILDER_PROPERTY   "property"
-
-#define GLADE_TAG_A11Y_PROPERTY(type) \
-	((type == GLADE_PROJECT_FORMAT_LIBGLADE) ? \
-	 GLADE_TAG_A11Y_LIBGLADE_PROPERTY : GLADE_TAG_A11Y_GTKBUILDER_PROPERTY)
-
-#define GLADE_TAG_A11Y_ACTION(type) \
-	((type == GLADE_PROJECT_FORMAT_LIBGLADE) ? \
-	 GLADE_TAG_A11Y_LIBGLADE_ACTION : GLADE_TAG_A11Y_GTKBUILDER_ACTION)
-
-#define GLADE_TAG_A11Y_RELATION(type) \
-	((type == GLADE_PROJECT_FORMAT_LIBGLADE) ? \
-	 GLADE_TAG_A11Y_LIBGLADE_RELATION : GLADE_TAG_A11Y_GTKBUILDER_RELATION)
+#define GLADE_TAG_A11Y_RELATION     "relation"
+#define GLADE_TAG_A11Y_ACTION       "action"
+#define GLADE_TAG_A11Y_PROPERTY     "property"
 
 
 static const gchar *atk_relations_list[] = {
@@ -332,22 +186,19 @@ static void
 glade_gtk_parse_atk_props (GladeWidget  *widget,
 			   GladeXmlNode *node)
 {
-	GladeProjectFormat fmt;
 	GladeXmlNode  *prop;
 	GladeProperty *property;
 	GValue        *gvalue;
 	gchar         *value, *name, *id, *comment;
-	gint           translatable, has_context;
+	gint           translatable;
 	gboolean       is_action;
-
-	fmt = glade_project_get_format (widget->project);
 
 	for (prop = glade_xml_node_get_children (node); 
 	     prop; prop = glade_xml_node_next (prop))
 	{
-		if (glade_xml_node_verify_silent (prop, GLADE_TAG_A11Y_PROPERTY (fmt)))
+		if (glade_xml_node_verify_silent (prop, GLADE_TAG_A11Y_PROPERTY))
 			is_action = FALSE;
-		else if (glade_xml_node_verify_silent (prop, GLADE_TAG_A11Y_ACTION (fmt)))
+		else if (glade_xml_node_verify_silent (prop, GLADE_TAG_A11Y_ACTION))
 			is_action = TRUE;
 		else 
 			continue;
@@ -400,18 +251,14 @@ glade_gtk_parse_atk_props (GladeWidget  *widget,
 			g_value_unset (gvalue);
 			g_free (gvalue);
 
-			/* Deal with i18n... */
+			/* Deal with i18n... ... XXX Do i18n context !!! */
 			translatable = glade_xml_get_property_boolean
 				(prop, GLADE_TAG_TRANSLATABLE, FALSE);
-			has_context = glade_xml_get_property_boolean
-				(prop, GLADE_TAG_HAS_CONTEXT, FALSE);
 			comment = glade_xml_get_property_string
 				(prop, GLADE_TAG_COMMENT);
 
 			glade_property_i18n_set_translatable
 				(property, translatable);
-			glade_property_i18n_set_has_context
-				(property, has_context);
 			glade_property_i18n_set_comment
 				(property, comment);
 			
@@ -441,8 +288,7 @@ glade_gtk_parse_atk_props_gtkbuilder (GladeWidget  *widget,
 			{
 				if (!strcmp (internal, GLADE_TAG_A11Y_INTERNAL_NAME) &&
 				    (object_node = 
-				     glade_xml_search_child_required 
-				     (child, GLADE_XML_TAG_BUILDER_WIDGET)))
+				     glade_xml_search_child_required (child, GLADE_XML_TAG_WIDGET)))
 					glade_gtk_parse_atk_props (widget, object_node);
 
 				g_free (internal);
@@ -455,17 +301,14 @@ static void
 glade_gtk_parse_atk_relation (GladeProperty *property,
 			      GladeXmlNode  *node)
 {
-	GladeProjectFormat fmt;
 	GladeXmlNode *prop;
 	gchar *type, *target, *id, *tmp;
 	gchar *string = NULL;
 
-	fmt = glade_project_get_format (property->widget->project);
-
 	for (prop = glade_xml_node_get_children (node); 
 	     prop; prop = glade_xml_node_next (prop))
 	{
-		if (!glade_xml_node_verify_silent (prop, GLADE_TAG_A11Y_RELATION (fmt)))
+		if (!glade_xml_node_verify_silent (prop, GLADE_TAG_A11Y_RELATION))
 			continue;
 
 		if (!(type = 
@@ -522,8 +365,7 @@ glade_gtk_widget_read_atk_props (GladeWidget  *widget,
 	GladeProperty *property;
 	gint           i;
 
-	if (glade_project_get_format (widget->project) == GLADE_PROJECT_FORMAT_GTKBUILDER)
-		glade_gtk_parse_atk_props_gtkbuilder (widget, node);
+	glade_gtk_parse_atk_props_gtkbuilder (widget, node);
 
 	if ((atk_node = 
 	     glade_xml_search_child (node, GLADE_TAG_A11Y_A11Y)) != NULL)
@@ -550,8 +392,7 @@ glade_gtk_widget_read_widget (GladeWidgetAdaptor *adaptor,
 			      GladeWidget        *widget,
 			      GladeXmlNode       *node)
 {
-	if (!glade_xml_node_verify 
-	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return;
 
 	/* First chain up and read in all the normal properties.. */
@@ -570,16 +411,13 @@ glade_gtk_widget_write_atk_property (GladeProperty      *property,
 				     GladeXmlContext    *context,
 				     GladeXmlNode       *node)
 {
-	GladeProjectFormat fmt;
 	GladeXmlNode  *prop_node;
 	gchar         *value;
-	
-	fmt = glade_project_get_format (property->widget->project);
 
 	glade_property_get (property, &value);
 	if (value && value[0])
 	{
-		prop_node = glade_xml_node_new (context, GLADE_TAG_A11Y_PROPERTY (fmt));
+		prop_node = glade_xml_node_new (context, GLADE_TAG_A11Y_PROPERTY);
 		glade_xml_node_append_child (node, prop_node);
 
 		glade_xml_node_set_property_string (prop_node, 
@@ -588,16 +426,11 @@ glade_gtk_widget_write_atk_property (GladeProperty      *property,
 
 		glade_xml_set_content (prop_node, value);
 
+		/* XXX Do context !!! */
 		if (property->i18n_translatable)
 			glade_xml_node_set_property_string (prop_node, 
 							    GLADE_TAG_TRANSLATABLE, 
 							    GLADE_XML_TAG_I18N_TRUE);
-
-		if (property->i18n_has_context)
-			glade_xml_node_set_property_string (prop_node, 
-							    GLADE_TAG_HAS_CONTEXT, 
-							    GLADE_XML_TAG_I18N_TRUE);
-
 
 		if (property->i18n_comment)
 			glade_xml_node_set_property_string (prop_node, 
@@ -607,23 +440,9 @@ glade_gtk_widget_write_atk_property (GladeProperty      *property,
 }
 
 static void
-glade_gtk_widget_write_atk_properties_libglade (GladeWidget        *widget,
-						GladeXmlContext    *context,
-						GladeXmlNode       *node)
-{
-	GladeProperty *name_prop, *desc_prop;
-
-	name_prop = glade_widget_get_property (widget, "AtkObject::accessible-name");
-	desc_prop = glade_widget_get_property (widget, "AtkObject::accessible-description");
-
-	glade_gtk_widget_write_atk_property (name_prop, context, node);
-	glade_gtk_widget_write_atk_property (desc_prop, context, node);
-}
-
-static void
-glade_gtk_widget_write_atk_properties_gtkbuilder (GladeWidget        *widget,
-						  GladeXmlContext    *context,
-						  GladeXmlNode       *node)
+glade_gtk_widget_write_atk_properties (GladeWidget        *widget,
+				       GladeXmlContext    *context,
+				       GladeXmlNode       *node)
 {
 	GladeXmlNode  *child_node, *object_node;
 	GladeProperty *name_prop, *desc_prop;
@@ -644,7 +463,7 @@ glade_gtk_widget_write_atk_properties_gtkbuilder (GladeWidget        *widget,
 						    GLADE_XML_TAG_INTERNAL_CHILD, 
 						    GLADE_TAG_A11Y_INTERNAL_NAME);
 
-		object_node = glade_xml_node_new (context, GLADE_XML_TAG_BUILDER_WIDGET);
+		object_node = glade_xml_node_new (context, GLADE_XML_TAG_WIDGET);
 		glade_xml_node_append_child (child_node, object_node);
 
 		glade_xml_node_set_property_string (object_node, 
@@ -670,23 +489,20 @@ glade_gtk_widget_write_atk_relation (GladeProperty      *property,
 				     GladeXmlContext    *context,
 				     GladeXmlNode       *node)
 {
-	GladeProjectFormat fmt;
 	GladeXmlNode *prop_node;
 	gchar        *value, **split;
 	gint          i;
-	
-	fmt = glade_project_get_format (property->widget->project);
 
 	if ((value = glade_widget_adaptor_string_from_value
 	     (GLADE_WIDGET_ADAPTOR (property->klass->handle),
-	      property->klass, property->value, fmt)) != NULL)
+	      property->klass, property->value)) != NULL)
 	{
 		if ((split = g_strsplit (value, GPC_OBJECT_DELIMITER, 0)) != NULL)
 		{
 			for (i = 0; split[i] != NULL; i++)
 			{
 				prop_node = glade_xml_node_new (context, 
-								GLADE_TAG_A11Y_RELATION (fmt));
+								GLADE_TAG_A11Y_RELATION);
 				glade_xml_node_append_child (node, prop_node);
 
 				glade_xml_node_set_property_string (prop_node, 
@@ -726,17 +542,14 @@ glade_gtk_widget_write_atk_action (GladeProperty      *property,
 				   GladeXmlContext    *context,
 				   GladeXmlNode       *node)
 {
- 	GladeProjectFormat fmt;
 	GladeXmlNode *prop_node;
 	gchar        *value = NULL;
-	
-	fmt = glade_project_get_format (property->widget->project);
 
 	glade_property_get (property, &value);
 
 	if (value && value[0])
 	{
-		prop_node = glade_xml_node_new (context, GLADE_TAG_A11Y_ACTION (fmt));
+		prop_node = glade_xml_node_new (context, GLADE_TAG_A11Y_ACTION);
 		glade_xml_node_append_child (node, prop_node);
 
 		glade_xml_node_set_property_string (prop_node, 
@@ -770,15 +583,9 @@ glade_gtk_widget_write_atk_props (GladeWidget        *widget,
 				  GladeXmlContext    *context,
 				  GladeXmlNode       *node)
 {
- 	GladeProjectFormat  fmt;
 	GladeXmlNode       *atk_node;
 
-	fmt = glade_project_get_format (widget->project);
-
 	atk_node = glade_xml_node_new (context, GLADE_TAG_A11Y_A11Y);
-
-	if (fmt == GLADE_PROJECT_FORMAT_LIBGLADE)
-		glade_gtk_widget_write_atk_properties_libglade (widget, context, atk_node);
 
 	glade_gtk_widget_write_atk_relations (widget, context, atk_node);
 	glade_gtk_widget_write_atk_actions (widget, context, atk_node);
@@ -788,8 +595,7 @@ glade_gtk_widget_write_atk_props (GladeWidget        *widget,
 	else
 		glade_xml_node_append_child (node, atk_node);
 
-	if (fmt == GLADE_PROJECT_FORMAT_GTKBUILDER)
-		glade_gtk_widget_write_atk_properties_gtkbuilder (widget, context, node);
+	glade_gtk_widget_write_atk_properties (widget, context, node);
 }
 
 static void
@@ -822,31 +628,15 @@ glade_gtk_widget_write_widget (GladeWidgetAdaptor *adaptor,
 			       GladeXmlContext    *context,
 			       GladeXmlNode       *node)
 {
- 	GladeProjectFormat  fmt;
-
-	fmt = glade_project_get_format (widget->project);
-
-	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET (fmt)))
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return;
 
 	/* First chain up and read in all the normal properties.. */
         GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
 
-
-	/* in Libglade the order must be Properties, Atk, Signals, Accels. 
-	 * in builder it doesnt matter so long as signals are after properties
-	 * and before objects.
-	 */
-	if (fmt == GLADE_PROJECT_FORMAT_LIBGLADE)
-	{
- 		glade_gtk_widget_write_atk_props (widget, context, node);
-		glade_widget_write_signals (widget, context, node);
-		glade_gtk_write_accels (widget, context, node, TRUE);
-	} else {
-		/* The core takes care of signals in GtkBuilder format */
-		glade_gtk_write_accels (widget, context, node, TRUE);		
- 		glade_gtk_widget_write_atk_props (widget, context, node);
-	}
+	/* The core takes care of signals */
+	glade_gtk_write_accels (widget, context, node, TRUE);		
+	glade_gtk_widget_write_atk_props (widget, context, node);
 }
 
 
@@ -874,8 +664,7 @@ glade_gtk_widget_create_eprop (GladeWidgetAdaptor *adaptor,
 gchar *
 glade_gtk_widget_string_from_value (GladeWidgetAdaptor *adaptor,
 				    GladePropertyClass *klass,
-				    const GValue       *value,
-				    GladeProjectFormat  fmt)
+				    const GValue       *value)
 {
 	if (klass->pspec->value_type == GLADE_TYPE_ACCEL_GLIST)
 		return glade_accels_make_string (g_value_get_boxed (value));
@@ -883,8 +672,7 @@ glade_gtk_widget_string_from_value (GladeWidgetAdaptor *adaptor,
 		return GWA_GET_CLASS 
 			(G_TYPE_OBJECT)->string_from_value (adaptor, 
 							    klass, 
-							    value,
-							    fmt);
+							    value);
 }
 
 static void
@@ -903,39 +691,6 @@ widget_parent_changed (GtkWidget          *widget,
 		glade_widget_set_action_sensitive (gwidget, "remove_parent", TRUE);
 	else
 		glade_widget_set_action_sensitive (gwidget, "remove_parent", FALSE);
-}
-
-
-static void
-widget_format_changed (GladeProject *project, 
-		       GParamSpec   *pspec,
-		       GladeWidget  *gwidget)
-{
-	if (glade_project_get_format (project) == GLADE_PROJECT_FORMAT_LIBGLADE)
-		glade_widget_set_action_sensitive (gwidget, "sizegroup_add", FALSE);
-	else
-		glade_widget_set_action_sensitive (gwidget, "sizegroup_add", TRUE);
-}
-
-static void
-widget_project_changed (GladeWidget *gwidget, 
-			GParamSpec  *pspec,
-			gpointer     userdata)
-{
-	GladeProject
-		*project = glade_widget_get_project (gwidget),
-		*old_project = g_object_get_data (G_OBJECT (gwidget), "widget-project-ptr");
-	
-	if (old_project)
-		g_signal_handlers_disconnect_by_func (G_OBJECT (old_project), 
-						      G_CALLBACK (widget_format_changed),
-						      gwidget);
-
-	if (project)
-		g_signal_connect (G_OBJECT (project), "notify::format", 
-				  G_CALLBACK (widget_format_changed), gwidget);
-
-	g_object_set_data (G_OBJECT (gwidget), "widget-project-ptr", project);
 }
 
 void
@@ -961,10 +716,6 @@ glade_gtk_widget_deep_post_create (GladeWidgetAdaptor *adaptor,
 		g_signal_connect (G_OBJECT (widget), "notify::parent",
 				  G_CALLBACK (widget_parent_changed), adaptor);
 	
-	g_signal_connect (G_OBJECT (gwidget), "notify::project",
-			  G_CALLBACK (widget_project_changed), NULL);
-
-	widget_project_changed (gwidget, NULL, NULL);
 }
 
 
@@ -3475,12 +3226,9 @@ write_special_child_label_item (GladeWidgetAdaptor *adaptor,
 	gchar *special_child_type = NULL;
 	GObject *child;
 
-	if (glade_project_get_format (widget->project) == GLADE_PROJECT_FORMAT_GTKBUILDER)
-	{
-		child = widget->object;
-		if (child)
-			special_child_type = g_object_get_data (child, "special-child-type");
-	}
+	child = widget->object;
+	if (child)
+		special_child_type = g_object_get_data (child, "special-child-type");
 
 	if (special_child_type && !strcmp (special_child_type, "label_item"))
 	{
@@ -4890,8 +4638,7 @@ glade_gtk_entry_read_widget (GladeWidgetAdaptor *adaptor,
 {
 	GladeProperty *property;
 
-	if (!glade_xml_node_verify 
-	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return;
 
 	/* First chain up and read in all the normal properties.. */
@@ -5115,8 +4862,7 @@ glade_gtk_window_read_widget (GladeWidgetAdaptor *adaptor,
 			      GladeWidget        *widget,
 			      GladeXmlNode       *node)
 {
-	if (!glade_xml_node_verify 
-	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return;
 
 	/* First chain up and read in all the normal properties.. */
@@ -5162,8 +4908,7 @@ glade_gtk_window_write_widget (GladeWidgetAdaptor *adaptor,
 			       GladeXmlContext    *context,
 			       GladeXmlNode       *node)
 {
-	if (!glade_xml_node_verify
-	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return;
 
 	/* First chain up and read in all the normal properties.. */
@@ -5510,14 +5255,8 @@ glade_gtk_dialog_read_child (GladeWidgetAdaptor *adaptor,
 			     GladeXmlNode       *node)
 {
 	GladeXmlNode *widgets_node;
-	GladeProject *project;
 
 	GWA_GET_CLASS (GTK_TYPE_CONTAINER)->read_child (adaptor, widget, node);
-
-	project = widget->project;
-
-	if (glade_project_get_format (project) != GLADE_PROJECT_FORMAT_GTKBUILDER)
-		return;
 
 	node = glade_xml_node_get_parent (node);
 
@@ -5551,8 +5290,7 @@ glade_gtk_dialog_write_responses (GladeWidget     *widget,
 		widget_node = glade_xml_node_new (context, GLADE_TAG_ACTION_WIDGET);
 		glade_xml_node_append_child (node, widget_node);
 
-		str = glade_property_class_make_string_from_gvalue (property->klass, property->value, 
-								    GLADE_PROJECT_FORMAT_GTKBUILDER);
+		str = glade_property_class_make_string_from_gvalue (property->klass, property->value);
 
 		glade_xml_node_set_property_string (widget_node, GLADE_TAG_RESPONSE, str);
 		glade_xml_set_content (widget_node, action_widget->name);
@@ -5579,8 +5317,7 @@ glade_gtk_dialog_write_child (GladeWidgetAdaptor *adaptor,
 	parent = widget->parent;
 	project = widget->project;
 
-	if (parent && GTK_IS_DIALOG (parent->object) &&
-	    glade_project_get_format (project) == GLADE_PROJECT_FORMAT_GTKBUILDER)
+	if (parent && GTK_IS_DIALOG (parent->object))
 	{
 		widgets_node = glade_xml_node_new (context, GLADE_TAG_ACTION_WIDGETS);
 
@@ -6027,8 +5764,7 @@ glade_gtk_button_read_widget (GladeWidgetAdaptor *adaptor,
 	gboolean  use_stock;
 	gchar    *label = NULL;
 
-	if (!glade_xml_node_verify 
-	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return;
 
 	/* First chain up and read in all the normal properties.. */
@@ -6049,13 +5785,11 @@ glade_gtk_button_write_widget (GladeWidgetAdaptor *adaptor,
 			       GladeXmlContext    *context,
 			       GladeXmlNode       *node)
 {
-	GladeProject  *project = widget->project;
 	GladeProperty *prop;
 	gboolean       use_stock;
 	gchar         *stock = NULL;
 
-	if (!glade_xml_node_verify
-	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return;
 
 	/* Do not save GtkColorButton and GtkFontButton label property */
@@ -6077,11 +5811,6 @@ glade_gtk_button_write_widget (GladeWidgetAdaptor *adaptor,
 		g_object_unref (G_OBJECT (prop));
 	}
 
-	prop = glade_widget_get_property (widget, "response-id");
-	if (glade_property_get_enabled (prop) && 
-	    glade_project_get_format (project) == GLADE_PROJECT_FORMAT_LIBGLADE)
-		glade_property_write (prop, context, node);
-
 	/* Write out other normal properties and any other class derived custom properties after ... */
         GWA_GET_CLASS (GTK_TYPE_CONTAINER)->write_widget (adaptor, widget, context, node);
 }
@@ -6095,8 +5824,7 @@ glade_gtk_image_read_widget (GladeWidgetAdaptor *adaptor,
 {
 	GladeProperty *property;
 
-	if (!glade_xml_node_verify 
-	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return;
 
 	/* First chain up and read in all the normal properties.. */
@@ -6133,8 +5861,7 @@ glade_gtk_image_write_widget (GladeWidgetAdaptor *adaptor,
 	GtkIconSize    icon_size;
 	gchar         *value;
 
-	if (!glade_xml_node_verify
-	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return;
 
 	/* First chain up and write all the normal properties (including "use-stock")... */
@@ -6301,24 +6028,6 @@ glade_gtk_menu_constructor (GType                  type,
 
 	return ret_obj;
 }
-
-void
-glade_gtk_menu_read_widget (GladeWidgetAdaptor *adaptor,
-			    GladeWidget        *widget,
-			    GladeXmlNode       *node)
-{
-	if (!glade_xml_node_verify 
-	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
-		return;
-
-	/* First chain up and read in all the normal properties.. */
-        GWA_GET_CLASS (GTK_TYPE_WIDGET)->read_widget (adaptor, widget, node);
-
-	if (glade_project_get_format (widget->project) == GLADE_PROJECT_FORMAT_LIBGLADE &&
-	    widget->parent && GTK_IS_MENU_ITEM (widget->parent->object))
-		g_object_set_data (widget->object, "special-child-type", "submenu");
-}
-
 
 /* ----------------------------- GtkMenuShell ------------------------------ */
 void
@@ -6666,12 +6375,6 @@ glade_gtk_menu_shell_tool_item_child_selected (GladeBaseEditor *editor,
 
 	glade_base_editor_add_label (editor, _("Properties"));
 
-	if (glade_project_get_format (gchild->project) == GLADE_PROJECT_FORMAT_LIBGLADE)
-		glade_base_editor_add_properties (editor, gchild, FALSE, "tooltip", NULL);
-	else
-		glade_base_editor_add_properties (editor, gchild, FALSE, "tooltip-text", NULL);
-
-
 	if (type != GTK_TYPE_IMAGE_MENU_ITEM)
 		glade_base_editor_add_properties (editor, gchild, FALSE, "label", "tooltip", NULL);
 
@@ -6924,51 +6627,6 @@ glade_gtk_menu_item_set_property (GladeWidgetAdaptor *adaptor,
 								  id, value);
 }
 
-static gboolean
-write_special_child_submenu_item (GladeWidgetAdaptor *adaptor,
-				  GladeWidget        *widget,
-				  GladeXmlContext    *context,
-				  GladeXmlNode       *node,
-				  GladeWriteWidgetFunc write_func)
-{
-	gchar *special_child_type = NULL;
-	GObject *child;
-
-	if (glade_project_get_format (widget->project) == GLADE_PROJECT_FORMAT_LIBGLADE)
-	{
-		child = widget->object;
-		if (child)
-			special_child_type = g_object_get_data (child, "special-child-type");
-	}
-
-	if (special_child_type && !strcmp (special_child_type, "submenu"))
-	{
-		g_object_set_data (child, "special-child-type", NULL);
-		write_func (adaptor, widget, context, node);
-		g_object_set_data (child, "special-child-type", "submenu");
-		return TRUE;
-	}
-	else
-		return FALSE;
-}
-
-void
-glade_gtk_menu_item_write_child (GladeWidgetAdaptor *adaptor,
-			        GladeWidget        *widget,
-			        GladeXmlContext    *context,
-			        GladeXmlNode       *node)
-{
-
-	if (!write_special_child_submenu_item (adaptor, widget, context, node,
-					       GWA_GET_CLASS(GTK_TYPE_CONTAINER)->write_child))
-		/* Chain Up */
-		GWA_GET_CLASS
-			(GTK_TYPE_CONTAINER)->write_child (adaptor,
-							   widget,
-							   context,
-							   node);
-}
-
 /* ----------------------------- GtkImageMenuItem ------------------------------ */
 
 GList *
@@ -6984,10 +6642,6 @@ glade_gtk_image_menu_item_get_children (GladeWidgetAdaptor *adaptor,
 	if ((child = gtk_menu_item_get_submenu (GTK_MENU_ITEM (object))))
 		list = g_list_append (list, child);
 	
-	if (glade_project_get_format (gitem->project) == GLADE_PROJECT_FORMAT_LIBGLADE &&
-	    (child = gtk_image_menu_item_get_image (GTK_IMAGE_MENU_ITEM (object))))
-		list = g_list_append (list, child);
-
 	return list;
 }
 
@@ -7115,140 +6769,6 @@ glade_gtk_image_menu_item_set_property (GladeWidgetAdaptor *adaptor,
 								  id, value);
 }
 
-static GladeWidget *
-glade_gtk_image_menu_item_create_image (GladeWidget *gitem)
-{
-	GladeWidget *gimage;
-
-	gimage = glade_widget_adaptor_create_widget 
-		(glade_widget_adaptor_get_by_type (GTK_TYPE_IMAGE), FALSE,
-		 "parent", gitem, 
-		 "project", glade_widget_get_project (gitem), 
-		 NULL);
-	
-	gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (gitem->object), 
-				       GTK_WIDGET (gimage->object));
-
-	glade_widget_lock (gitem, gimage);
-
-	return gimage;
-}
-
-static void
-glade_gtk_image_menu_item_fix_stock_item (GladeWidget *widget)
-{
-	GladeWidget *gimage;
-	GEnumClass  *eclass;
-	GEnumValue  *eval;
-	gint         val = GNOMEUIINFO_MENU_NONE;
-	gchar       *label = NULL, *icon = NULL;
-	
-	glade_widget_property_get (widget, "stock-item", &val);
-	if (val == GNOMEUIINFO_MENU_NONE) return;
-	
-	/* Get the GEnumValue ... */
-	eclass = g_type_class_ref (glade_gtk_gnome_ui_info_get_type ());
-	if ((eval = g_enum_get_value (eclass, val)) == NULL)
-	{
-		g_type_class_unref (eclass);
-		return;
-	}
-	g_type_class_unref (eclass);
-	
-	/* set use-underline */
-	glade_widget_property_set (widget, "use-underline", TRUE);
-	
-	if (eval->value_nick)
-	{
-		glade_widget_property_set (widget, "use-stock", TRUE);
-		glade_widget_property_set (widget, "label", eval->value_nick);		
-		return;
-	}
-	
-	switch (val)
-	{
-		case GNOMEUIINFO_MENU_PRINT_SETUP_ITEM:
-			icon = "gtk-print";
-			label = _("Print S_etup");
-		break;
-		case GNOMEUIINFO_MENU_FIND_AGAIN_ITEM:
-			icon = "gtk-find";
-			label = _("Find Ne_xt");
-		break;
-		case GNOMEUIINFO_MENU_UNDO_MOVE_ITEM:
-			icon = "gtk-undo";
-			label = _("_Undo Move");
-		break;
-		case GNOMEUIINFO_MENU_REDO_MOVE_ITEM:
-			icon = "gtk-redo";
-			label = _("_Redo Move");
-		break;
-		case GNOMEUIINFO_MENU_SELECT_ALL_ITEM:
-			label =  _("Select _All");
-		break;			
-		case GNOMEUIINFO_MENU_NEW_GAME_ITEM:
-			label =  _("_New Game");
-		break;
-		case GNOMEUIINFO_MENU_PAUSE_GAME_ITEM:
-			label =  _("_Pause game");
-		break;
-		case GNOMEUIINFO_MENU_RESTART_GAME_ITEM:
-			label =  _("_Restart Game");
-		break;
-		case GNOMEUIINFO_MENU_HINT_ITEM:
-			label =  _("_Hint"); 
-		break;
-		case GNOMEUIINFO_MENU_SCORES_ITEM:
-			label =  _("_Scores...");
-		break;
-		case GNOMEUIINFO_MENU_END_GAME_ITEM:
-			label =  _("_End Game");
-		break;
-		case GNOMEUIINFO_MENU_NEW_WINDOW_ITEM:
-			label =  _("Create New _Window");
-		break;
-		case GNOMEUIINFO_MENU_CLOSE_WINDOW_ITEM:
-			label =  _("_Close This Window");
-		break;
-		case GNOMEUIINFO_MENU_FILE_TREE:
-			label =  _("_File");
-		break;
-		case GNOMEUIINFO_MENU_EDIT_TREE:
-			label =  _("_Edit");
-		break;
-		case GNOMEUIINFO_MENU_VIEW_TREE:
-			label =  _("_View");
-		break;
-		case GNOMEUIINFO_MENU_SETTINGS_TREE:
-			label =  _("_Settings");
-		break;
-		case GNOMEUIINFO_MENU_FILES_TREE:
-			label =  _("Fi_les");
-		break;
-		case GNOMEUIINFO_MENU_WINDOWS_TREE:
-			label =  _("_Windows");
-		break;
-		case GNOMEUIINFO_MENU_HELP_TREE:
-			label =  _("_Help");
-		break;
-		case GNOMEUIINFO_MENU_GAME_TREE:
-			label =  _("_Game");
-		break;
-		default:
-			return;
-		break;
-	}
-
-	if (icon)
-	{
-		gimage = glade_gtk_image_menu_item_create_image	(widget);
-		glade_widget_property_set (gimage, "stock", icon);
-		glade_widget_property_set (gimage, "icon-size", GTK_ICON_SIZE_MENU);
-	}
-	
-	glade_widget_property_set (widget, "label", label);
-}
-
 static void
 glade_gtk_image_menu_item_parse_finished (GladeProject *project, 
 					  GladeWidget  *widget)
@@ -7270,15 +6790,11 @@ glade_gtk_image_menu_item_read_widget (GladeWidgetAdaptor *adaptor,
 	gboolean use_stock;
 	gchar *label = NULL;
 
-	if (!glade_xml_node_verify 
-	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return;
 
 	/* First chain up and read in all the normal properties.. */
         GWA_GET_CLASS (GTK_TYPE_MENU_ITEM)->read_widget (adaptor, widget, node);
-
-	/* This will read legacy "stock-item" properties and make them usable */
-	glade_gtk_image_menu_item_fix_stock_item (widget);
 
 	glade_widget_property_get (widget, "use-stock", &use_stock);
 	if (use_stock)
@@ -7297,10 +6813,9 @@ glade_gtk_image_menu_item_read_widget (GladeWidgetAdaptor *adaptor,
 
 
 	/* Run this after the load so that image is resolved. */
-	if (glade_project_get_format (widget->project) == GLADE_PROJECT_FORMAT_GTKBUILDER)
-		g_signal_connect (G_OBJECT (widget->project), "parse-finished",
-				  G_CALLBACK (glade_gtk_image_menu_item_parse_finished),
-				  widget);
+	g_signal_connect (G_OBJECT (widget->project), "parse-finished",
+			  G_CALLBACK (glade_gtk_image_menu_item_parse_finished),
+			  widget);
 }
 
 
@@ -7314,8 +6829,7 @@ glade_gtk_image_menu_item_write_widget (GladeWidgetAdaptor *adaptor,
 	gboolean       use_stock;
 	gchar         *stock;
 
-	if (!glade_xml_node_verify
-	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return;
 
 	/* Make a copy of the GladeProperty, override its value if use-stock is TRUE */
@@ -7335,71 +6849,6 @@ glade_gtk_image_menu_item_write_widget (GladeWidgetAdaptor *adaptor,
         GWA_GET_CLASS (GTK_TYPE_MENU_ITEM)->write_widget (adaptor, widget, context, node);
 
 }
-
-
-/* Read in the internal "image" widgets as normal "locked" widgets...
- */
-void
-glade_gtk_image_menu_item_read_child (GladeWidgetAdaptor *adaptor,
-				      GladeWidget        *widget,
-				      GladeXmlNode       *node)
-{
-	GladeXmlNode *widget_node;
-	GladeWidget  *child_widget;
-	gchar        *internal_name;
-
-	if (!glade_xml_node_verify (node, GLADE_XML_TAG_CHILD))
-		return;
-
-	internal_name = 
-		glade_xml_get_property_string 
-		(node, GLADE_XML_TAG_INTERNAL_CHILD);
-	
-	if ((widget_node = 
-	     glade_xml_search_child
-	     (node, GLADE_XML_TAG_WIDGET(glade_project_get_format(widget->project)))) != NULL)
-	{
-		/* Menu item children have no packing to take care of, just
-		 * need to treat images a little different. */		
-		if ((child_widget = glade_widget_read (widget->project, 
-						       widget, widget_node, 
-						       NULL)) != NULL)
-		{
-			if (GTK_IS_IMAGE (child_widget->object) &&
-			    internal_name && strcmp (internal_name, "image") == 0)
-				glade_widget_lock (widget, child_widget);
-
-			glade_widget_add_child (widget, child_widget, FALSE);
-		}
-	}
-	g_free (internal_name);
-}
-
-void
-glade_gtk_image_menu_item_write_child (GladeWidgetAdaptor *adaptor,
-				       GladeWidget        *widget,
-				       GladeXmlContext    *context,
-				       GladeXmlNode       *node)
-{
-	GladeXmlNode *child_node;
-
-	if (glade_project_get_format (widget->project) == GLADE_PROJECT_FORMAT_GTKBUILDER ||
-	    !GTK_IS_IMAGE (widget->object))
-	{
-		GWA_GET_CLASS (GTK_TYPE_MENU_ITEM)->write_child (adaptor, widget, context, node);
-		return;
-	}
-
-	child_node = glade_xml_node_new (context, GLADE_XML_TAG_CHILD);
-	glade_xml_node_append_child (node, child_node);
-
-	/* Set fake internal child here */
-	glade_xml_node_set_property_string (child_node, GLADE_XML_TAG_INTERNAL_CHILD, "image");
-
-	/* Write out the widget (no packing properties) */
-	glade_widget_write (widget, context, child_node);
-}
-
 
 /* We need write_widget to write child images as internal, in builder, they are
  * attached as a property
@@ -7827,7 +7276,6 @@ glade_gtk_tool_button_set_image_mode (GObject *object, const GValue *value)
 
 	glade_widget_property_set_sensitive (gbutton, "stock-id", FALSE, NOT_SELECTED_MSG);
 	glade_widget_property_set_sensitive (gbutton, "icon-name", FALSE, NOT_SELECTED_MSG);
-	glade_widget_property_set_sensitive (gbutton, "icon", FALSE, NOT_SELECTED_MSG);
 	glade_widget_property_set_sensitive (gbutton, "icon-widget", FALSE, NOT_SELECTED_MSG);
 	
 	switch (g_value_get_int (value))
@@ -7837,9 +7285,6 @@ glade_gtk_tool_button_set_image_mode (GObject *object, const GValue *value)
 		break;
 	case GLADE_TB_MODE_ICON:
 		glade_widget_property_set_sensitive (gbutton, "icon-name", TRUE, NULL);
-		break;
-	case GLADE_TB_MODE_FILENAME:
-		glade_widget_property_set_sensitive (gbutton, "icon", TRUE, NULL);
 		break;
 	case GLADE_TB_MODE_CUSTOM:
 		glade_widget_property_set_sensitive (gbutton, "icon-widget", TRUE, NULL);
@@ -7895,25 +7340,6 @@ glade_gtk_tool_button_set_stock_id (GObject *object, const GValue *value)
 	gtk_tool_button_set_stock_id (GTK_TOOL_BUTTON (object), stock_id);
 }
 
-/* legacy libglade property */
-static void
-glade_gtk_tool_button_set_icon (GObject *object, const GValue *value)
-{
-	GladeWidget *gbutton;
-	GObject *pixbuf;
-	GtkWidget *image = NULL;
-	
-	g_return_if_fail (GTK_IS_TOOL_BUTTON (object));
-	gbutton = glade_widget_get_from_gobject (object);
-	
-	if ((pixbuf = g_value_get_object (value)))
-	{
-		image = gtk_image_new_from_pixbuf (GDK_PIXBUF (pixbuf));
-		gtk_widget_show (image);
-	}
-	gtk_tool_button_set_icon_widget (GTK_TOOL_BUTTON (object), image);
-}
-
 static void
 glade_gtk_tool_button_set_icon_name (GObject *object, const GValue *value)
 {
@@ -7938,8 +7364,6 @@ glade_gtk_tool_button_set_property (GladeWidgetAdaptor *adaptor,
 		glade_gtk_tool_button_set_image_mode (object, value);
 	else if (!strcmp (id, "icon-name"))
 		glade_gtk_tool_button_set_icon_name (object, value);
-	else if (!strcmp (id, "icon"))
-		glade_gtk_tool_button_set_icon (object, value);
 	else if (!strcmp (id, "stock-id"))
 		glade_gtk_tool_button_set_stock_id (object, value);
 	else if (!strcmp (id, "label"))
@@ -7958,12 +7382,10 @@ glade_gtk_tool_button_parse_finished (GladeProject *project,
 {
 	gchar     *stock_str = NULL, *icon_name = NULL;
 	gint       stock_id = 0;
-	GdkPixbuf *pixbuf = NULL;
 	GtkWidget *label_widget = NULL, *image_widget = NULL;
 
 	glade_widget_property_get (widget, "stock-id", &stock_str);
 	glade_widget_property_get (widget, "icon-name", &icon_name);
-	glade_widget_property_get (widget, "icon", &pixbuf);
 	glade_widget_property_get (widget, "icon-widget", &image_widget);
 	glade_widget_property_get (widget, "label-widget", &label_widget);
 
@@ -7974,8 +7396,6 @@ glade_gtk_tool_button_parse_finished (GladeProject *project,
 	
 	if (image_widget)
 		glade_widget_property_set (widget, "image-mode", GLADE_TB_MODE_CUSTOM);
-	else if (pixbuf)
-		glade_widget_property_set (widget, "image-mode", GLADE_TB_MODE_FILENAME);
 	else if (icon_name)
 		glade_widget_property_set (widget, "image-mode", GLADE_TB_MODE_ICON);
 	else if (stock_str)
@@ -7997,8 +7417,7 @@ glade_gtk_tool_button_read_widget (GladeWidgetAdaptor *adaptor,
 				   GladeWidget        *widget,
 				   GladeXmlNode       *node)
 {
-	if (!glade_xml_node_verify 
-	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return;
 
 	/* First chain up and read in all the normal properties.. */
@@ -8402,8 +7821,7 @@ glade_gtk_label_read_widget (GladeWidgetAdaptor *adaptor,
 			     GladeXmlNode       *node)
 {
 	GladeProperty *prop;
-	if (!glade_xml_node_verify 
-	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return;
 
 	/* First chain up and read in all the normal properties.. */
@@ -8480,8 +7898,7 @@ glade_gtk_label_write_widget (GladeWidgetAdaptor *adaptor,
 {
 	GladeXmlNode       *attrs_node;
 
-	if (!glade_xml_node_verify
-	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return;
 
 	/* First chain up and read in all the normal properties.. */
@@ -8501,8 +7918,7 @@ glade_gtk_label_write_widget (GladeWidgetAdaptor *adaptor,
 gchar *
 glade_gtk_label_string_from_value (GladeWidgetAdaptor *adaptor,
 				   GladePropertyClass *klass,
-				   const GValue       *value,
-				   GladeProjectFormat  fmt)
+				   const GValue       *value)
 {
 	if (klass->pspec->value_type == GLADE_TYPE_ATTR_GLIST)
 	{
@@ -8527,8 +7943,7 @@ glade_gtk_label_string_from_value (GladeWidgetAdaptor *adaptor,
 		return GWA_GET_CLASS 
 			(GTK_TYPE_WIDGET)->string_from_value (adaptor, 
 							      klass, 
-							      value,
-							      fmt);
+							      value);
 }
 
 
@@ -8700,32 +8115,6 @@ glade_gtk_text_buffer_set_property (GladeWidgetAdaptor *adaptor,
 }
 
 /* ----------------------------- GtkTextView ------------------------------ */
-static void
-glade_gtk_text_view_changed (GtkTextBuffer *buffer, GladeWidget *gtext)
-{
-	const gchar *text_prop = NULL;
-	GladeProject  *project;
-	GladeProperty *prop;
-	gchar *text = NULL;
-	
-	if (buffer)
- 		g_object_get (buffer, "text", &text, NULL);
-
-	project = glade_widget_get_project (gtext);
-
-	if (glade_project_get_format (project) == GLADE_PROJECT_FORMAT_LIBGLADE)
-	{
-       		if ((prop = glade_widget_get_property (gtext, "text")))
-		{
-			glade_property_get (prop, &text_prop);
-	
-			if (text_prop == NULL || text == NULL || strcmp (text, text_prop))
-				glade_command_set_property (prop, text);
-		}
-	}
-	g_free (text);
-}
-
 static gboolean
 glade_gtk_text_view_stop_double_click (GtkWidget *widget,
 				       GdkEventButton *event,
@@ -8741,154 +8130,49 @@ glade_gtk_text_view_post_create (GladeWidgetAdaptor *adaptor,
 				 GObject            *object, 
 				 GladeCreateReason   reason)
 {
-	GtkTextBuffer *buffy;
 	GladeWidget   *gtext;
-	GladeProject  *project;
 	
 	gtext = glade_widget_get_from_gobject (object);
-	
+
 	/* This makes gtk_text_view_set_buffer() stop complaing */
 	gtk_drag_dest_set (GTK_WIDGET (object), 0, NULL, 0, 0);
 
-	project = glade_widget_get_project (gtext);
-
-	if (glade_project_get_format (project) == GLADE_PROJECT_FORMAT_LIBGLADE)
-	{
-		buffy = gtk_text_buffer_new (NULL);		
-		gtk_text_view_set_buffer (GTK_TEXT_VIEW (object), buffy);
-		g_signal_connect (buffy, "changed",
-				  G_CALLBACK (glade_gtk_text_view_changed),
-				  gtext);
-	
-		g_object_unref (G_OBJECT (buffy));
-	}
-
-	/* Glade3 hangs when a TextView gets a double click. So we stop them */
+	/* Glade hangs when a TextView gets a double click. So we stop them */
 	g_signal_connect (object, "button-press-event",
 			  G_CALLBACK (glade_gtk_text_view_stop_double_click),
 			  NULL);
 }
 
-static void
-glade_gtk_text_view_set_buffer (GObject *object, const GValue *value)
-{
-	GtkTextBuffer *buffy;
-	GladeWidget *gtext;
-
-	gtext = glade_widget_get_from_gobject (object);
-	
-	if ((buffy = g_value_get_object (value)) == NULL) return;
-
-	g_signal_handlers_block_by_func (buffy, glade_gtk_text_view_changed, gtext);
-	gtk_text_view_set_buffer (GTK_TEXT_VIEW (object), buffy);
-	g_signal_handlers_unblock_by_func (buffy, glade_gtk_text_view_changed, gtext);
-}
-
-static void
-glade_gtk_text_view_set_text (GObject *object, const GValue *value)
-{
-	GtkTextBuffer *buffy;
-	GladeWidget *gtext;
-	const gchar *text;
-	GladeProject *project;
-
-	gtext = glade_widget_get_from_gobject (object);
-
-	project = glade_widget_get_project (gtext);
-	if (glade_project_get_format (project) != GLADE_PROJECT_FORMAT_LIBGLADE)
-		return;
-	
-	buffy = gtk_text_view_get_buffer (GTK_TEXT_VIEW (object));
-	if (buffy == NULL) return;
-	
-	if ((text = g_value_get_string (value)) == NULL) return;
-
-	g_signal_handlers_block_by_func (buffy, glade_gtk_text_view_changed, gtext);
-	gtk_text_buffer_set_text (buffy, text, -1);
-	g_signal_handlers_unblock_by_func (buffy, glade_gtk_text_view_changed, gtext);
-}
-
 void
 glade_gtk_text_view_set_property (GladeWidgetAdaptor *adaptor,
-				  GObject            *object, 
-				  const gchar        *id,
+				  GObject            *object,
+				  const gchar        *property_name,
 				  const GValue       *value)
 {
-	if (!strcmp (id, "text"))
-		glade_gtk_text_view_set_text (object, value);
-	else if (!strcmp (id, "buffer"))
-		glade_gtk_text_view_set_buffer (object, value);
-	else
-		GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor,
-								  object,
-								  id, value);
-}
+	if (strcmp (property_name, "buffer") == 0)
+	{
+		if (!g_value_get_object (value))
+			return;
+	}
 
+	GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor,
+							  object,
+							  property_name, 
+							  value);
+}
 
 /* ----------------------------- GtkComboBox ------------------------------ */
-static void
-combo_ensure_model (GObject *combo)
-{
-	GtkListStore *store;
-
-	if (!gtk_combo_box_get_model (GTK_COMBO_BOX (combo)))
-	{
-		/* Add store */
-		store = gtk_list_store_new (1, G_TYPE_STRING);
-		gtk_combo_box_set_model (GTK_COMBO_BOX (combo), GTK_TREE_MODEL (store));
-		g_object_unref (store);
-	}
-}
-
 void
 glade_gtk_combo_box_post_create (GladeWidgetAdaptor *adaptor,
 				 GObject            *object, 
 				 GladeCreateReason   reason)
 {
-	GtkCellRenderer *cell;
 	GladeWidget     *widget = glade_widget_get_from_gobject (object);
-
-	if (glade_project_get_format (widget->project) == GLADE_PROJECT_FORMAT_LIBGLADE)
-	{
-
-		combo_ensure_model (object);
-
-		/* Add cell renderer */
-		cell = gtk_cell_renderer_text_new ();
-		gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (object), cell, TRUE);
-		gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (object), cell,
-						"text", 0, NULL);
-	}
 
 	if (gtk_combo_box_get_has_entry (GTK_COMBO_BOX (object)))
 		glade_widget_adaptor_create_internal
 			(widget, G_OBJECT (gtk_bin_get_child (GTK_BIN (object))),
 			 "entry", "comboboxentry", FALSE, reason);
-}
-
-static void
-glade_gtk_combo_box_set_items (GObject *object, const GValue *value)
-{
-	GtkComboBox *combo  = GTK_COMBO_BOX (object);
-	GladeWidget *widget = glade_widget_get_from_gobject (object);
-	gchar **split;
-	gint    i;
-
-	if (glade_project_get_format (widget->project) != GLADE_PROJECT_FORMAT_LIBGLADE)
-		return;
-
-	combo_ensure_model (object);
-
-	/* Empty the combo box */
-	gtk_list_store_clear (GTK_LIST_STORE (gtk_combo_box_get_model (combo)));
-
-	/* Refill the combo box */
-	split = g_value_get_boxed (value);
-
-	if (split)
-		for (i = 0; split[i] != NULL; i++)
-			if (split[i][0] != '\0')
-				gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), split[i]);
 }
 
 void
@@ -8897,9 +8181,7 @@ glade_gtk_combo_box_set_property (GladeWidgetAdaptor *adaptor,
 				  const gchar        *id,
 				  const GValue       *value)
 {
-	if (!strcmp (id, "items"))
-		glade_gtk_combo_box_set_items (object, value);
-	else if (!strcmp (id, "entry-text-column"))
+	if (!strcmp (id, "entry-text-column"))
 	{
 		/* Avoid warnings */
 		if (g_value_get_int (value) >= 0)
@@ -9417,8 +8699,7 @@ glade_gtk_size_group_read_widget (GladeWidgetAdaptor *adaptor,
 				  GladeWidget        *widget,
 				  GladeXmlNode       *node)
 {
-	if (!glade_xml_node_verify 
-	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return;
 
 	/* First chain up and read in all the normal properties.. */
@@ -9464,8 +8745,7 @@ glade_gtk_size_group_write_widget (GladeWidgetAdaptor *adaptor,
 				   GladeXmlContext    *context,
 				   GladeXmlNode       *node)
 {
-	if (!glade_xml_node_verify
-	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return;
 
 	/* First chain up and read in all the normal properties.. */
@@ -9644,8 +8924,7 @@ glade_gtk_icon_factory_read_widget (GladeWidgetAdaptor *adaptor,
 				    GladeWidget        *widget,
 				    GladeXmlNode       *node)
 {
-	if (!glade_xml_node_verify 
-	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return;
 
 	/* First chain up and read in any normal properties.. */
@@ -9747,8 +9026,7 @@ glade_gtk_icon_factory_write_widget (GladeWidgetAdaptor *adaptor,
 				     GladeXmlContext    *context,
 				     GladeXmlNode       *node)
 {
-	if (!glade_xml_node_verify
-	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return;
 
 	/* First chain up and write all the normal properties.. */
@@ -9853,8 +9131,7 @@ serialize_icon_sources (gchar          *icon_name,
 gchar *
 glade_gtk_icon_factory_string_from_value (GladeWidgetAdaptor *adaptor,
 					  GladePropertyClass *klass,
-					  const GValue       *value,
-					  GladeProjectFormat  fmt)
+					  const GValue       *value)
 {
 	GString *string;
 
@@ -9873,8 +9150,7 @@ glade_gtk_icon_factory_string_from_value (GladeWidgetAdaptor *adaptor,
 		return GWA_GET_CLASS 
 			(G_TYPE_OBJECT)->string_from_value (adaptor, 
 							    klass, 
-							    value,
-							    fmt);
+							    value);
 }
 
 
@@ -10240,8 +9516,7 @@ glade_gtk_store_create_editable (GladeWidgetAdaptor  *adaptor,
 gchar *
 glade_gtk_store_string_from_value (GladeWidgetAdaptor *adaptor,
 				   GladePropertyClass *klass,
-				   const GValue       *value,
-				   GladeProjectFormat  fmt)
+				   const GValue       *value)
 {
 	GString *string;
 
@@ -10283,7 +9558,7 @@ glade_gtk_store_string_from_value (GladeWidgetAdaptor *adaptor,
 				    G_VALUE_TYPE (&data->value) == G_TYPE_INVALID)
 					str = g_strdup ("(virtual)");
 				else if (G_VALUE_TYPE (&data->value) != G_TYPE_POINTER)
-					str = glade_utils_string_from_value (&data->value, fmt);
+					str = glade_utils_string_from_value (&data->value);
 				else
 					str = g_strdup ("(null)");
 
@@ -10310,8 +9585,7 @@ glade_gtk_store_string_from_value (GladeWidgetAdaptor *adaptor,
 		return GWA_GET_CLASS 
 			(G_TYPE_OBJECT)->string_from_value (adaptor, 
 							    klass, 
-							    value,
-							    fmt);
+							    value);
 }
 
 static void
@@ -10390,8 +9664,7 @@ glade_gtk_store_write_data (GladeWidget        *widget,
 			    G_VALUE_TYPE (&data->value) == G_TYPE_POINTER)
 				continue;
 
-			string = glade_utils_string_from_value (&data->value, 
-								glade_project_get_format (widget->project));
+			string = glade_utils_string_from_value (&data->value);
 			
 			/* XXX Log error: data col j exceeds columns on row i */
 			if (!g_list_nth (columns, colnum))
@@ -10437,8 +9710,7 @@ glade_gtk_store_write_widget (GladeWidgetAdaptor *adaptor,
 			      GladeXmlContext    *context,
 			      GladeXmlNode       *node)
 {
-	if (!glade_xml_node_verify
-	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return;
 
 	/* First chain up and write all the normal properties.. */
@@ -10624,8 +9896,7 @@ glade_gtk_store_read_widget (GladeWidgetAdaptor *adaptor,
 			     GladeWidget        *widget,
 			     GladeXmlNode       *node)
 {
-	if (!glade_xml_node_verify 
-	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return;
 
 	/* First chain up and read in all the normal properties.. */
@@ -10664,37 +9935,6 @@ glade_gtk_cell_renderer_action_activate (GladeWidgetAdaptor *adaptor,
 								action_path);
 }
 
-
-static void
-renderer_format_changed (GladeProject *project, 
-			 GParamSpec   *pspec,
-			 GladeWidget  *gwidget)
-{
-	if (glade_project_get_format (project) == GLADE_PROJECT_FORMAT_GTKBUILDER)
-		g_idle_add ((GSourceFunc)glade_gtk_cell_renderer_sync_attributes, gwidget->object);
-}
-
-static void
-renderer_project_changed (GladeWidget *gwidget, 
-			  GParamSpec  *pspec,
-			  gpointer     userdata)
-{
-	GladeProject
-		*project = glade_widget_get_project (gwidget),
-		*old_project = g_object_get_data (G_OBJECT (gwidget), "renderer-project-ptr");
-	
-	if (old_project)
-		g_signal_handlers_disconnect_by_func (G_OBJECT (old_project), 
-						      G_CALLBACK (renderer_format_changed),
-						      gwidget);
-
-	if (project)
-		g_signal_connect (G_OBJECT (project), "notify::format", 
-				  G_CALLBACK (renderer_format_changed), gwidget);
-
-	g_object_set_data (G_OBJECT (gwidget), "renderer-project-ptr", project);
-}
-
 void
 glade_gtk_cell_renderer_deep_post_create (GladeWidgetAdaptor *adaptor, 
 					  GObject            *object, 
@@ -10718,11 +9958,7 @@ glade_gtk_cell_renderer_deep_post_create (GladeWidgetAdaptor *adaptor,
 		}
 	}
 
-	g_signal_connect (G_OBJECT (widget), "notify::project",
-			  G_CALLBACK (renderer_project_changed), NULL);
-
-	renderer_project_changed (widget, NULL, NULL);
-
+	g_idle_add ((GSourceFunc)glade_gtk_cell_renderer_sync_attributes, widget->object);
 }
 
 GladeEditorProperty *
@@ -10892,8 +10128,7 @@ glade_gtk_cell_renderer_write_widget (GladeWidgetAdaptor *adaptor,
 				      GladeXmlContext    *context,
 				      GladeXmlNode       *node)
 {
-	if (!glade_xml_node_verify
-	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return;
 
 	/* Write our normal properties, then chain up to write any other normal properties,
@@ -10946,8 +10181,7 @@ glade_gtk_cell_renderer_read_widget (GladeWidgetAdaptor *adaptor,
 				     GladeWidget        *widget,
 				     GladeXmlNode       *node)
 {
-	if (!glade_xml_node_verify 
-	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return;
 
 	/* First chain up and read in all the properties... */
@@ -11122,8 +10356,7 @@ glade_gtk_cell_layout_read_child (GladeWidgetAdaptor *adaptor,
 	internal_name = glade_xml_get_property_string (node, GLADE_XML_TAG_INTERNAL_CHILD);
 	
 	if ((widget_node = 
-	     glade_xml_search_child
-	     (node, GLADE_XML_TAG_WIDGET(glade_project_get_format(widget->project)))) != NULL)
+	     glade_xml_search_child (node, GLADE_XML_TAG_WIDGET)) != NULL)
 	{
 
 		if (internal_name)
@@ -11606,8 +10839,7 @@ glade_gtk_adjustment_write_widget (GladeWidgetAdaptor *adaptor,
 {
 	GladeProperty *prop;
 
-	if (!glade_xml_node_verify
-	    (node, GLADE_XML_TAG_WIDGET (glade_project_get_format (widget->project))))
+	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
 		return;
 
 	/* Ensure proper order of adjustment properties by writing them here. */
@@ -11721,8 +10953,7 @@ glade_gtk_action_group_read_child (GladeWidgetAdaptor *adaptor,
 		return;
 	
 	if ((widget_node = 
-	     glade_xml_search_child
-	     (node, GLADE_XML_TAG_WIDGET(glade_project_get_format(widget->project)))) != NULL)
+	     glade_xml_search_child (node, GLADE_XML_TAG_WIDGET)) != NULL)
 	{
 		if ((child_widget = glade_widget_read (widget->project, 
 						       widget, widget_node, 

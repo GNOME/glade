@@ -676,7 +676,6 @@ value_i18n_activate (GladeCellRendererIcon    *cell,
 	GNode               *data_tree = NULL;
 	GladeModelData      *data;
 	gchar               *new_text;
-	gboolean             has_context_dummy;
 
 	if (!gtk_tree_model_get_iter_from_string (GTK_TREE_MODEL (eprop_data->store), &iter, path))
 		return;
@@ -699,11 +698,9 @@ value_i18n_activate (GladeCellRendererIcon    *cell,
 	new_text = g_value_dup_string (&data->value);
 	
 	if (glade_editor_property_show_i18n_dialog (NULL,
-						    GLADE_PROJECT_FORMAT_GTKBUILDER,
 						    &new_text,
 						    &data->i18n_context,
 						    &data->i18n_comment,
-						    &has_context_dummy,
 						    &data->i18n_translatable))
 	{
 		g_value_set_string (&data->value, new_text);
@@ -793,7 +790,7 @@ enum_flags_format_cell_data (GtkCellLayout *cell_layout,
 	gtk_tree_model_get_value (tree_model, iter,
 				  NUM_COLUMNS + colnum, &value);
 
-	string = glade_utils_string_from_value (&value, GLADE_PROJECT_FORMAT_GTKBUILDER);
+	string = glade_utils_string_from_value (&value);
 
 	g_object_set (cell, "text", string && string[0] ? 
 		      glade_get_displayable_value (G_VALUE_TYPE (&value), string) : "", NULL);

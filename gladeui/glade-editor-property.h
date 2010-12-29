@@ -148,11 +148,9 @@ void                 glade_editor_property_commit_no_callback (GladeEditorProper
 							       GValue              *value);
 
 gboolean             glade_editor_property_show_i18n_dialog (GtkWidget            *parent,
-							     GladeProjectFormat    fmt,
 							     gchar               **text,
 							     gchar               **context,
 							     gchar               **comment,
-							     gboolean             *has_context,
 							     gboolean             *translatable);
 gboolean             glade_editor_property_show_resource_dialog (GladeProject     *project, 
 								 GtkWidget        *parent, 
@@ -176,7 +174,6 @@ gboolean             glade_editor_property_show_object_dialog (GladeProject     
 #define GLADE_TYPE_EPROP_UNICHAR         (glade_eprop_unichar_get_type())
 #define GLADE_TYPE_EPROP_OBJECT          (glade_eprop_object_get_type())
 #define GLADE_TYPE_EPROP_OBJECTS         (glade_eprop_objects_get_type())
-#define GLADE_TYPE_EPROP_ADJUSTMENT      (glade_eprop_adjustment_get_type())
 GType     glade_eprop_numeric_get_type     (void) G_GNUC_CONST;
 GType     glade_eprop_enum_get_type        (void) G_GNUC_CONST;
 GType     glade_eprop_flags_get_type       (void) G_GNUC_CONST;
@@ -187,7 +184,6 @@ GType     glade_eprop_bool_get_type        (void) G_GNUC_CONST;
 GType     glade_eprop_unichar_get_type     (void) G_GNUC_CONST;
 GType     glade_eprop_object_get_type      (void) G_GNUC_CONST;
 GType     glade_eprop_objects_get_type     (void) G_GNUC_CONST;
-GType     glade_eprop_adjustment_get_type  (void) G_GNUC_CONST;
 
 
 G_END_DECLS

@@ -394,7 +394,7 @@ gwa_clone_parent_properties (GladeWidgetAdaptor *adaptor, gboolean is_packing)
 				    parent_adaptor->priv->catalog))
 			{
 				pclass->version_since_major = 0;
-				pclass->builder_since_major = 0;
+				pclass->version_since_minor = 0;
 			}
 			properties = g_list_prepend (properties, pclass);
 		}
@@ -611,9 +611,6 @@ glade_widget_adaptor_constructor (GType                  type,
 	{
 		GLADE_WIDGET_ADAPTOR_GET_CLASS(adaptor)->version_since_major = 
 			GLADE_WIDGET_ADAPTOR_GET_CLASS(adaptor)->version_since_minor = 0;
-
-		GLADE_WIDGET_ADAPTOR_GET_CLASS(adaptor)->builder_since_major = 
-			GLADE_WIDGET_ADAPTOR_GET_CLASS(adaptor)->builder_since_minor = 0;
 	}
 
 	/* Copy parent actions */
@@ -964,8 +961,7 @@ glade_widget_adaptor_object_read_child (GladeWidgetAdaptor *adaptor,
 		(node, GLADE_XML_TAG_INTERNAL_CHILD);
 	
 	if ((widget_node = 
-	     glade_xml_search_child
-	     (node, GLADE_XML_TAG_WIDGET(glade_project_get_format(widget->project)))) != NULL)
+	     glade_xml_search_child (node, GLADE_XML_TAG_WIDGET)) != NULL)
 	{
 		child_widget = 
 			glade_widget_read (widget->project, 
@@ -1110,8 +1106,6 @@ glade_widget_adaptor_get_eprop_type (GParamSpec *pspec)
 	{
 		if (pspec->value_type == GDK_TYPE_PIXBUF)
 			type = GLADE_TYPE_EPROP_TEXT;
-		else if (pspec->value_type == GTK_TYPE_ADJUSTMENT)
-			type = GLADE_TYPE_EPROP_ADJUSTMENT;
 		else
 			type = GLADE_TYPE_EPROP_OBJECT;
 	}
@@ -1151,10 +1145,9 @@ glade_widget_adaptor_object_create_eprop (GladeWidgetAdaptor *adaptor,
 static gchar *
 glade_widget_adaptor_object_string_from_value (GladeWidgetAdaptor *adaptor,
 					       GladePropertyClass *klass,
-					       const GValue       *value,
-					       GladeProjectFormat  fmt)
+					       const GValue       *value)
 {
-	return glade_property_class_make_string_from_gvalue (klass, value, fmt);
+	return glade_property_class_make_string_from_gvalue (klass, value);
 }
 
 static GladeEditable *
@@ -1519,11 +1512,6 @@ gwa_derived_class_init (GladeWidgetAdaptorClass *adaptor_class,
 	if (module) gwa_extend_with_node_load_sym (adaptor_class, node, module);
 
 	glade_xml_get_property_version
-		(node, GLADE_TAG_BUILDER_SINCE, 
-		 &adaptor_class->builder_since_major,
-		 &adaptor_class->builder_since_minor);
-
-	glade_xml_get_property_version
 		(node, GLADE_TAG_VERSION_SINCE, 
 		 &adaptor_class->version_since_major,
 		 &adaptor_class->version_since_minor);
@@ -1531,14 +1519,6 @@ gwa_derived_class_init (GladeWidgetAdaptorClass *adaptor_class,
 	adaptor_class->deprecated = 
 		glade_xml_get_property_boolean
 		(node, GLADE_TAG_DEPRECATED, adaptor_class->deprecated);
-
-	adaptor_class->libglade_unsupported = 
-		glade_xml_get_property_boolean
-		(node, GLADE_TAG_LIBGLADE_UNSUPPORTED, adaptor_class->libglade_unsupported);
-
-	adaptor_class->libglade_only = 
-		glade_xml_get_property_boolean
-		(node, GLADE_TAG_LIBGLADE_ONLY, adaptor_class->libglade_only);
 
 	adaptor_class->fixed = 
 		glade_xml_get_property_boolean
@@ -2483,11 +2463,6 @@ glade_widget_adaptor_from_catalog (GladeCatalog         *catalog,
 		adaptor->priv->book = g_strdup (glade_catalog_get_book (catalog));
 
 	gwa_extend_with_node (adaptor, class_node, module, glade_catalog_get_domain (catalog));
-
-	if (!glade_catalog_supports_libglade (catalog))
-		GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->libglade_unsupported = TRUE;
-	if (!glade_catalog_supports_gtkbuilder (catalog))
-		GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->libglade_only = TRUE;
 
 	/* Set default weight on properties */
 	for (parent_type = adaptor->type;
@@ -3866,7 +3841,6 @@ glade_widget_adaptor_create_eprop_by_name (GladeWidgetAdaptor *adaptor,
  * @adaptor: A #GladeWidgetAdaptor
  * @klass: The #GladePropertyClass 
  * @value: The #GValue to convert to a string
- * @fmt: The #GladeProjectFormat the string should conform to
  * 
  * For normal properties this is used to serialize
  * property values, for custom properties its still
@@ -3877,15 +3851,13 @@ glade_widget_adaptor_create_eprop_by_name (GladeWidgetAdaptor *adaptor,
 gchar *
 glade_widget_adaptor_string_from_value (GladeWidgetAdaptor *adaptor,
 					GladePropertyClass *klass,
-					const GValue       *value,
-					GladeProjectFormat  fmt)
+					const GValue       *value)
 {
 	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
 	g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (klass), NULL);
 	g_return_val_if_fail (value != NULL, NULL);
 
-	return GLADE_WIDGET_ADAPTOR_GET_CLASS
-		(adaptor)->string_from_value (adaptor, klass, value, fmt);
+	return GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->string_from_value (adaptor, klass, value);
 }
 
 

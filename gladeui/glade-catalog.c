@@ -40,9 +40,6 @@ struct _GladeCatalog
 
 	GList *targetable_versions; /* list of suitable version targets */
 
-	gboolean libglade_supported; /* whether this catalog supports libglade */
-	gboolean builder_supported; /* whether this catalog supports gtkbuilder */
-
 	gchar *library;          /* Library name for backend support  */
 
 	gchar *name;             /* Symbolic catalog name             */
@@ -70,8 +67,6 @@ struct _GladeCatalog
 	
 	gchar *init_function_name;/* Catalog's init function name */
 	GladeCatalogInitFunc init_function;
-
-	GladeProjectConvertFunc project_convert_function; /* pointer to module's project converter */
 };
 
 struct _GladeWidgetGroup
@@ -143,8 +138,6 @@ catalog_allocate (void)
 	catalog->adaptors = NULL;
 	catalog->widget_groups = NULL;
 
-	catalog->libglade_supported = FALSE;
-	catalog->builder_supported = TRUE;
 	return catalog;
 }
 
@@ -156,7 +149,6 @@ catalog_open (const gchar *filename)
 	GladeXmlContext *context;
 	GladeXmlDoc     *doc;
 	GladeXmlNode    *root;
-	gchar           *str;
 
 	/* get the context & root node of the catalog file */
 	context = glade_xml_context_new_from_path (filename,
@@ -215,22 +207,6 @@ catalog_open (const gchar *filename)
 
 	if (!catalog->domain)
 		catalog->domain = g_strdup (catalog->library);
-
-	if ((str = glade_xml_get_property_string (root, GLADE_TAG_SUPPORTS)) != NULL)
-	{
-		gchar **split = g_strsplit (str, ",", 0);
-		gint i;
-
-		catalog->builder_supported = FALSE;
-		
-		for (i = 0; split[i]; i++)
-		{
-			if (!strcmp (split[i], GLADE_TAG_LIBGLADE))
-				catalog->libglade_supported = TRUE;
-			else if (!strcmp (split[i], GLADE_TAG_GTKBUILDER))
-				catalog->builder_supported = TRUE;
-		}
-	}
 	
 	/* catalog->icon_prefix defaults to catalog->name */
 	if (!catalog->icon_prefix)
@@ -240,11 +216,6 @@ catalog_open (const gchar *filename)
 		catalog_get_function (catalog, catalog->init_function_name,
 				      (gpointer) &catalog->init_function);
 	
-	if ((str = glade_xml_get_value_string (root, GLADE_TAG_PROJECT_CONVERT_FUNCTION)) != NULL)
-	{
-		catalog_get_function (catalog, str, (gpointer) &catalog->project_convert_function);
-	}
-
 	return catalog;
 }
 
@@ -638,23 +609,6 @@ glade_catalog_get_icon_prefix (GladeCatalog *catalog)
 	return catalog->icon_prefix;
 }
 
-gboolean
-glade_catalog_supports_libglade (GladeCatalog *catalog)
-{
-	g_return_val_if_fail (GLADE_IS_CATALOG (catalog), FALSE);
-
-	return catalog->libglade_supported;
-}
-
-gboolean
-glade_catalog_supports_gtkbuilder (GladeCatalog *catalog)
-{
-	g_return_val_if_fail (GLADE_IS_CATALOG (catalog), FALSE);
-
-	return catalog->builder_supported;
-}
-
-
 guint16
 glade_catalog_get_major_version (GladeCatalog *catalog)
 {
@@ -813,31 +767,4 @@ widget_group_destroy (GladeWidgetGroup *group)
 	g_list_free (group->adaptors);
 
 	g_slice_free (GladeWidgetGroup, group);
-}
-	
-
-
-/**
- * glade_catalog_convert_project:
- * @catalog: A #GladeCatalog
- * @project: The #GladeProject to convert
- * @new_format: The format to convert @project to
- *
- * Do any data changes needed to the project for the new
- * format in an undoable way.
- *
- * Returns: FALSE if any errors occurred during the conversion.
- */
-gboolean
-glade_catalog_convert_project (GladeCatalog     *catalog,
-			       GladeProject     *project,
-			       GladeProjectFormat  new_format)
-{
-	g_return_val_if_fail (GLADE_IS_CATALOG (catalog), FALSE);
-	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
-
-	if (catalog->project_convert_function)
-		return catalog->project_convert_function (project, new_format);
-
-	return TRUE;
 }

@@ -280,17 +280,10 @@ custom_toggled (GtkWidget            *widget,
 
 		property = glade_widget_get_property (loaded, "image");
 
-		if (glade_project_get_format (loaded->project) == GLADE_PROJECT_FORMAT_LIBGLADE)
-			image =	glade_command_create (glade_widget_adaptor_get_by_type (GTK_TYPE_IMAGE),
-						      item_editor->loaded_widget, NULL, 
-						      glade_widget_get_project (loaded));
-		else
-		{
-			image =	glade_command_create (glade_widget_adaptor_get_by_type (GTK_TYPE_IMAGE),
-						      NULL, NULL, glade_widget_get_project (loaded));
+		image =	glade_command_create (glade_widget_adaptor_get_by_type (GTK_TYPE_IMAGE),
+					      NULL, NULL, glade_widget_get_project (loaded));
 
-			glade_command_set_property (property, image->object);
-		}
+		glade_command_set_property (property, image->object);
 
 		/* Make sure nobody deletes this... */
 		glade_command_lock_widget (loaded, image);

@@ -79,7 +79,6 @@ struct _GladeProperty
 
 	/* Used only for translatable strings. */
 	guint     i18n_translatable : 1;
-	guint     i18n_has_context : 1;
 	gchar    *i18n_context;
 	gchar    *i18n_comment;
 		
@@ -206,12 +205,6 @@ void                    glade_property_i18n_set_translatable (GladeProperty     
 							      gboolean            translatable);
 
 gboolean                glade_property_i18n_get_translatable (GladeProperty      *property);
-
-void                    glade_property_i18n_set_has_context  (GladeProperty      *property,
-							      gboolean            has_context);
-
-gboolean                glade_property_i18n_get_has_context  (GladeProperty      *property);
-
 
 void                    glade_property_push_superuser        (void);
 

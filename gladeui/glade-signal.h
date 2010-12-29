@@ -38,7 +38,6 @@ gboolean     glade_signal_equal (GladeSignal *sig1, GladeSignal *sig2);
 
 GladeSignal *glade_signal_read  (GladeXmlNode *node);
 void         glade_signal_write (GladeSignal        *signal,
-				 GladeProjectFormat  fmt,
 				 GladeXmlContext    *context,
 				 GladeXmlNode       *node);
 

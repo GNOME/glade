@@ -145,9 +145,6 @@ glade_tool_button_editor_load (GladeEditable *editable,
 		case GLADE_TB_MODE_ICON:
 			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button_editor->icon_radio), TRUE);
 			break;
-		case GLADE_TB_MODE_FILENAME:
-			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button_editor->file_radio), TRUE);
-			break;
 		case GLADE_TB_MODE_CUSTOM:
 			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button_editor->custom_radio), TRUE);
 			break;
@@ -295,40 +292,6 @@ icon_toggled (GtkWidget             *widget,
 	glade_command_set_property (property, NULL);
 	property = glade_widget_get_property (button_editor->loaded_widget, "image-mode");
 	glade_command_set_property (property, GLADE_TB_MODE_ICON);
-
-	glade_command_pop_group ();
-
-	button_editor->modifying = FALSE;
-
-	/* reload buttons and sensitivity and stuff... */
-	glade_editable_load (GLADE_EDITABLE (button_editor), 
-			     button_editor->loaded_widget);
-}
-
-static void
-file_toggled (GtkWidget             *widget,
-	      GladeToolButtonEditor *button_editor)
-{
-	GladeProperty     *property;
-
-	if (button_editor->loading || !button_editor->loaded_widget)
-		return;
-
-	if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button_editor->file_radio)))
-		return;
-
-	button_editor->modifying = TRUE;
-
-	glade_command_push_group (_("Setting %s to use an image from the icon theme"), button_editor->loaded_widget->name);
-
-	property = glade_widget_get_property (button_editor->loaded_widget, "stock-id");
-	glade_command_set_property (property, NULL);
-	property = glade_widget_get_property (button_editor->loaded_widget, "icon-name");
-	glade_command_set_property (property, NULL);
-	property = glade_widget_get_property (button_editor->loaded_widget, "icon-widget");
-	glade_command_set_property (property, NULL);
-	property = glade_widget_get_property (button_editor->loaded_widget, "image-mode");
-	glade_command_set_property (property, GLADE_TB_MODE_FILENAME);
 
 	glade_command_pop_group ();
 
@@ -524,17 +487,6 @@ glade_tool_button_editor_new (GladeWidgetAdaptor *adaptor,
 	table_attach (table, GTK_WIDGET (eprop), 1, 1);
 	button_editor->properties = g_list_prepend (button_editor->properties, eprop);
 
-	/* Filename... */
-	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "icon", FALSE, TRUE);
-	hbox  = gtk_hbox_new (FALSE, 0);
-	button_editor->file_radio = gtk_radio_button_new_from_widget 
-	  (GTK_RADIO_BUTTON (button_editor->stock_radio));
-	gtk_box_pack_start (GTK_BOX (hbox), button_editor->file_radio, FALSE, FALSE, 2);
-	gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
-	table_attach (table, hbox, 0, 2);
-	table_attach (table, GTK_WIDGET (eprop), 1, 2);
-	button_editor->properties = g_list_prepend (button_editor->properties, eprop);
-
 	/* Custom embedded image widget... */
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "icon-widget", FALSE, TRUE);
 	hbox  = gtk_hbox_new (FALSE, 0);
@@ -542,8 +494,8 @@ glade_tool_button_editor_new (GladeWidgetAdaptor *adaptor,
 		(GTK_RADIO_BUTTON (button_editor->stock_radio));
 	gtk_box_pack_start (GTK_BOX (hbox), button_editor->custom_radio, FALSE, FALSE, 2);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
-	table_attach (table, hbox, 0, 3);
-	table_attach (table, GTK_WIDGET (eprop), 1, 3);
+	table_attach (table, hbox, 0, 2);
+	table_attach (table, GTK_WIDGET (eprop), 1, 2);
 	button_editor->properties = g_list_prepend (button_editor->properties, eprop);
 
 	/* Connect radio button signals... */
@@ -555,8 +507,6 @@ glade_tool_button_editor_new (GladeWidgetAdaptor *adaptor,
 			  G_CALLBACK (stock_toggled), button_editor);
 	g_signal_connect (G_OBJECT (button_editor->icon_radio), "toggled",
 			  G_CALLBACK (icon_toggled), button_editor);
-	g_signal_connect (G_OBJECT (button_editor->file_radio), "toggled",
-			  G_CALLBACK (file_toggled), button_editor);
 	g_signal_connect (G_OBJECT (button_editor->custom_radio), "toggled",
 			  G_CALLBACK (custom_toggled), button_editor);
 

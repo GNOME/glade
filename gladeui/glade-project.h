@@ -24,9 +24,7 @@ typedef enum
 {
 	GLADE_SUPPORT_OK                   = 0,
 	GLADE_SUPPORT_DEPRECATED           = (0x01 << 0),
-	GLADE_SUPPORT_MISMATCH             = (0x01 << 1),
-	GLADE_SUPPORT_LIBGLADE_UNSUPPORTED = (0x01 << 2),
-	GLADE_SUPPORT_LIBGLADE_ONLY        = (0x01 << 3)
+	GLADE_SUPPORT_MISMATCH             = (0x01 << 1)
 } GladeSupportMask;
 
 /**
@@ -187,10 +185,6 @@ time_t         glade_project_get_file_mtime       (GladeProject *project);
 gboolean       glade_project_get_modified         (GladeProject *project);
 
 gboolean       glade_project_get_previewable      (GladeProject *project);
-
-void           glade_project_set_format      	  (GladeProject *project, GladeProjectFormat format);
-
-GladeProjectFormat glade_project_get_format  	  (GladeProject *project);
 
 void           glade_project_preferences          (GladeProject *project);
 

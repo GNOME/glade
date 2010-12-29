@@ -85,22 +85,16 @@ static void
 glade_editor_property_commit_common (GladeEditorProperty *eprop,
 				     GValue              *value)
 {
-	GladeProject *project;
-	GladeProjectFormat fmt;
-
 	if (eprop->use_command == FALSE)
 		glade_property_set_value (eprop->property, value);
 	else
 		glade_command_set_property_value (eprop->property, value);
 
-	project = glade_widget_get_project (eprop->property->widget);
-	fmt     = glade_project_get_format (project);
-
 	/* If the value was denied by a verify function, we'll have to
 	 * reload the real value.
 	 */
 	if (glade_property_class_compare (eprop->property->klass,
-					  eprop->property->value, value, fmt) != 0)
+					  eprop->property->value, value) != 0)
 		GLADE_EDITOR_PROPERTY_GET_CLASS (eprop)->load (eprop, eprop->property);
 	else
 		/* publish a value change to those interested */
@@ -1157,7 +1151,6 @@ glade_eprop_color_finalize (GObject *object)
 static void
 glade_eprop_color_load (GladeEditorProperty *eprop, GladeProperty *property)
 {
-	GladeProjectFormat fmt;
 	GladeEPropColor *eprop_color = GLADE_EPROP_COLOR (eprop);
 	GdkColor        *color;
 	gchar           *text;
@@ -1167,11 +1160,9 @@ glade_eprop_color_load (GladeEditorProperty *eprop, GladeProperty *property)
 	
 	if (property)
 	{
-		fmt = glade_project_get_format (property->widget->project);
-
 		if ((text = glade_widget_adaptor_string_from_value
 		     (GLADE_WIDGET_ADAPTOR (eprop->klass->handle),
-		      eprop->klass, property->value, fmt)) != NULL)
+		      eprop->klass, property->value)) != NULL)
 		{
 			gtk_entry_set_text (GTK_ENTRY (eprop_color->entry), text);
 			g_free (text);
@@ -1475,15 +1466,12 @@ glade_eprop_text_finalize (GObject *object)
 static void
 glade_eprop_text_load (GladeEditorProperty *eprop, GladeProperty *property)
 {
-	GladeProjectFormat fmt;
 	GladeEPropText *eprop_text = GLADE_EPROP_TEXT (eprop);
 
 	/* Chain up first */
 	editor_property_class->load (eprop, property);
 	
 	if (property == NULL) return;
-
-	fmt = glade_project_get_format (property->widget->project);
 
 	if (GTK_IS_COMBO_BOX (eprop_text->text_entry))
 	{
@@ -1529,7 +1517,7 @@ glade_eprop_text_load (GladeEditorProperty *eprop, GladeProperty *property)
 		{
 			gchar *text = glade_widget_adaptor_string_from_value
 				(GLADE_WIDGET_ADAPTOR (property->klass->handle),
-				 property->klass, property->value, fmt);
+				 property->klass, property->value);
 			gtk_text_buffer_set_text (buffer, text ? text : "", -1);
 			g_free (text);
 		}
@@ -1621,11 +1609,9 @@ glade_eprop_text_buffer_changed (GtkTextBuffer       *buffer,
 /**
  * glade_editor_property_show_i18n_dialog:
  * @parent: The parent widget for the dialog.
- * @fmt: the #GladeProjectFormat
  * @text: A read/write pointer to the text property
  * @context: A read/write pointer to the translation context
  * @comment: A read/write pointer to the translator comment
- * @has_context: A read/write pointer to the context setting (libglade only)
  * @translatable: A read/write pointer to the translatable setting]
  *
  * Runs a dialog and updates the provided values.
@@ -1634,11 +1620,9 @@ glade_eprop_text_buffer_changed (GtkTextBuffer       *buffer,
  */
 gboolean
 glade_editor_property_show_i18n_dialog (GtkWidget            *parent,
-					GladeProjectFormat    fmt,
 					gchar               **text,
 					gchar               **context,
 					gchar               **comment,
-					gboolean             *has_context,
 					gboolean             *translatable)
 {
 	GtkWidget     *dialog;
@@ -1648,11 +1632,11 @@ glade_editor_property_show_i18n_dialog (GtkWidget            *parent,
 	GtkWidget     *alignment;
 	GtkWidget     *text_view, *comment_view, *context_view;
 	GtkTextBuffer *text_buffer, *comment_buffer, *context_buffer = NULL;
-	GtkWidget     *translatable_button, *context_button;
+	GtkWidget     *translatable_button;
 	GtkWidget     *content_area, *action_area;
 	gint           res;
 
-	g_return_val_if_fail (text && context && comment && translatable && has_context, FALSE);
+	g_return_val_if_fail (text && context && comment && translatable, FALSE);
 
 	dialog = gtk_dialog_new_with_buttons (_("Edit Text"),
 					      parent ? GTK_WINDOW (gtk_widget_get_toplevel (parent)) : NULL,
@@ -1727,53 +1711,42 @@ glade_editor_property_show_i18n_dialog (GtkWidget            *parent,
 	gtk_widget_set_tooltip_text (translatable_button,
 				     _("Whether this property is translatable"));
 	
-	/* Has Context */
-	context_button = gtk_check_button_new_with_mnemonic (_("_Has context prefix"));
-	gtk_box_pack_start (GTK_BOX (hbox), context_button, FALSE, FALSE, 0);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (context_button), *has_context);
-	gtk_widget_set_tooltip_text (context_button,
-				     _("Whether the translatable string has a context prefix"));
-	if (fmt == GLADE_PROJECT_FORMAT_LIBGLADE)
-		gtk_widget_show (context_button);
 
 	/* Context. */
-	if (fmt != GLADE_PROJECT_FORMAT_LIBGLADE)
+	alignment = gtk_alignment_new (0.5, 0.5, 1, 1);
+	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 12, 0, 0, 0);
+	gtk_widget_show (alignment);
+	
+	label = gtk_label_new_with_mnemonic (_("Conte_xt for translation:"));
+	gtk_widget_show (label);
+	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+	gtk_container_add (GTK_CONTAINER (alignment), label);
+	gtk_box_pack_start (GTK_BOX (vbox), alignment, FALSE, FALSE, 0);
+	gtk_widget_set_tooltip_text (alignment,
+				     "XXX Some explanation about translation context please ???");
+		
+	sw = gtk_scrolled_window_new (NULL, NULL);
+	gtk_widget_show (sw);
+	gtk_box_pack_start (GTK_BOX (vbox), sw, TRUE, TRUE, 0);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
+					GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), GTK_SHADOW_IN);
+	
+	context_view = gtk_text_view_new ();
+	gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (context_view), GTK_WRAP_WORD);
+	gtk_widget_show (context_view);
+	
+	gtk_label_set_mnemonic_widget (GTK_LABEL (label), context_view);
+	
+	gtk_container_add (GTK_CONTAINER (sw), context_view);
+	
+	context_buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (context_view));
+	
+	if (*context)
 	{
-		alignment = gtk_alignment_new (0.5, 0.5, 1, 1);
-		gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 12, 0, 0, 0);
-		gtk_widget_show (alignment);
-		
-		label = gtk_label_new_with_mnemonic (_("Conte_xt for translation:"));
-		gtk_widget_show (label);
-		gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
-		gtk_container_add (GTK_CONTAINER (alignment), label);
-		gtk_box_pack_start (GTK_BOX (vbox), alignment, FALSE, FALSE, 0);
-		gtk_widget_set_tooltip_text (alignment,
-					     "XXX Some explanation about translation context please ???");
-		
-		sw = gtk_scrolled_window_new (NULL, NULL);
-		gtk_widget_show (sw);
-		gtk_box_pack_start (GTK_BOX (vbox), sw, TRUE, TRUE, 0);
-		gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
-						GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-		gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), GTK_SHADOW_IN);
-		
-		context_view = gtk_text_view_new ();
-		gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (context_view), GTK_WRAP_WORD);
-		gtk_widget_show (context_view);
-		
-		gtk_label_set_mnemonic_widget (GTK_LABEL (label), context_view);
-		
-		gtk_container_add (GTK_CONTAINER (sw), context_view);
-		
-		context_buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (context_view));
-		
-		if (*context)
-		{
-			gtk_text_buffer_set_text (context_buffer,
-						  *context,
-						  -1);
-		}
+		gtk_text_buffer_set_text (context_buffer,
+					  *context,
+					  -1);
 	}
 
 	/* Comments. */
@@ -1821,7 +1794,6 @@ glade_editor_property_show_i18n_dialog (GtkWidget            *parent,
 
 		/* get the new values for translatable, has_context, and comment */
 		*translatable = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (translatable_button));
-		*has_context = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (context_button));
 
 		/* Comment */
 		gtk_text_buffer_get_bounds (comment_buffer, &start, &end);
@@ -1842,15 +1814,12 @@ glade_editor_property_show_i18n_dialog (GtkWidget            *parent,
 		}
 
 		/* Context */
-		if (fmt != GLADE_PROJECT_FORMAT_LIBGLADE)
+		gtk_text_buffer_get_bounds (context_buffer, &start, &end);
+		*context = gtk_text_buffer_get_text (context_buffer, &start, &end, TRUE);
+		if (*context[0] == '\0')
 		{
-			gtk_text_buffer_get_bounds (context_buffer, &start, &end);
-			*context = gtk_text_buffer_get_text (context_buffer, &start, &end, TRUE);
-			if (*context[0] == '\0')
-			{
-				g_free (*context);
-				*context = NULL;
-			}
+			g_free (*context);
+			*context = NULL;
 		}
 
 		gtk_widget_destroy (dialog);
@@ -1865,21 +1834,14 @@ static void
 glade_eprop_text_show_i18n_dialog (GtkWidget           *entry,
 				   GladeEditorProperty *eprop)
 {
-	GladeProject *project;
-	GladeProjectFormat fmt;
 	gchar *text = g_value_dup_string (eprop->property->value);
 	gchar *context = g_strdup (glade_property_i18n_get_context (eprop->property));
 	gchar *comment = g_strdup (glade_property_i18n_get_comment (eprop->property));
 	gboolean translatable = glade_property_i18n_get_translatable (eprop->property);
-	gboolean has_context = glade_property_i18n_get_has_context (eprop->property);
 
-	project = eprop->property->widget->project;
-	fmt = glade_project_get_format (project);
-
-	if (glade_editor_property_show_i18n_dialog (entry, fmt, &text, &context, &comment, 
-						    &has_context, &translatable))
+	if (glade_editor_property_show_i18n_dialog (entry, &text, &context, &comment, &translatable))
 	{
-		glade_command_set_i18n (eprop->property, translatable, has_context, context, comment);
+		glade_command_set_i18n (eprop->property, translatable, context, comment);
 		glade_eprop_text_changed_common (eprop, text, eprop->use_command);
 
 		glade_editor_property_load (eprop, eprop->property);
@@ -1947,12 +1909,8 @@ static void
 glade_eprop_text_show_resource_dialog (GtkWidget           *entry,
 				       GladeEditorProperty *eprop)
 {
-	GladeProject *project;
-	GladeProjectFormat fmt;
+	GladeProject *project = eprop->property->widget->project;
 	gchar *text = NULL;
-
-	project = eprop->property->widget->project;
-	fmt = glade_project_get_format (project);
 
 	if (glade_editor_property_show_resource_dialog (project, entry, &text))
 	{
@@ -2817,15 +2775,12 @@ glade_eprop_object_show_dialog (GtkWidget           *dialog_button,
 	project = glade_widget_get_project (eprop->property->widget);
 	parent = gtk_widget_get_toplevel (GTK_WIDGET (eprop));
 
-	if (glade_project_get_format (project) != GLADE_PROJECT_FORMAT_LIBGLADE)
-	{
-		if (eprop->property->klass->create_type)
-			create_adaptor = glade_widget_adaptor_get_by_name (eprop->property->klass->create_type);
-		if (!create_adaptor && 
-		    G_TYPE_IS_INSTANTIATABLE (eprop->klass->pspec->value_type) &&
-		    !G_TYPE_IS_ABSTRACT (eprop->klass->pspec->value_type))
-			create_adaptor = glade_widget_adaptor_get_by_type (eprop->klass->pspec->value_type);
-	}
+	if (eprop->property->klass->create_type)
+		create_adaptor = glade_widget_adaptor_get_by_name (eprop->property->klass->create_type);
+	if (!create_adaptor && 
+	    G_TYPE_IS_INSTANTIATABLE (eprop->klass->pspec->value_type) &&
+	    !G_TYPE_IS_ABSTRACT (eprop->klass->pspec->value_type))
+		create_adaptor = glade_widget_adaptor_get_by_type (eprop->klass->pspec->value_type);
 
 	if (create_adaptor)
 	{
@@ -3024,7 +2979,6 @@ glade_eprop_object_show_dialog (GtkWidget           *dialog_button,
 static void
 glade_eprop_object_load (GladeEditorProperty *eprop, GladeProperty *property)
 {
-	GladeProjectFormat fmt;
 	GladeEPropObject *eprop_object = GLADE_EPROP_OBJECT (eprop);
 	gchar *obj_name;
 
@@ -3033,11 +2987,9 @@ glade_eprop_object_load (GladeEditorProperty *eprop, GladeProperty *property)
 
 	if (property == NULL) return;
 
-	fmt = glade_project_get_format (property->widget->project);
-
 	if ((obj_name = glade_widget_adaptor_string_from_value
 	     (GLADE_WIDGET_ADAPTOR (eprop->klass->handle),
-	      eprop->klass, property->value, fmt)) != NULL)
+	      eprop->klass, property->value)) != NULL)
 	{
 		gtk_entry_set_text (GTK_ENTRY (eprop_object->entry), obj_name);
 		g_free (obj_name);
@@ -3098,7 +3050,6 @@ glade_eprop_objects_finalize (GObject *object)
 static void
 glade_eprop_objects_load (GladeEditorProperty *eprop, GladeProperty *property)
 {
-	GladeProjectFormat fmt;
 	GladeEPropObjects *eprop_objects = GLADE_EPROP_OBJECTS (eprop);
 	gchar *obj_name;
 
@@ -3107,11 +3058,9 @@ glade_eprop_objects_load (GladeEditorProperty *eprop, GladeProperty *property)
 
 	if (property == NULL) return;
 
-	fmt = glade_project_get_format (property->widget->project);
-
 	if ((obj_name = glade_widget_adaptor_string_from_value
 	     (GLADE_WIDGET_ADAPTOR (eprop->klass->handle),
-	      eprop->klass, property->value, fmt)) != NULL)
+	      eprop->klass, property->value)) != NULL)
 	{
 		gtk_entry_set_text (GTK_ENTRY (eprop_objects->entry), obj_name);
 		g_free (obj_name);
@@ -3271,383 +3220,6 @@ glade_eprop_objects_create_input (GladeEditorProperty *eprop)
 			  eprop);
 	return hbox;
 }
-
-
-/*******************************************************************************
-                        GladeEditorPropertyAdjustmentClass
- *******************************************************************************/
-typedef struct {
-	GladeEditorProperty parent_instance;
-
-	GtkWidget *notebook;
-
-	GtkWidget *libglade;
-	GtkWidget *entry;
-
-	GtkWidget *value, *lower, *upper, *step_increment, *page_increment, *page_size;
-	GtkAdjustment *value_adj;
-	struct
-	{
-		gulong value, lower, upper, step_increment, page_increment, page_size;
-	}ids;
-} GladeEPropAdjustment;
-
-GLADE_MAKE_EPROP (GladeEPropAdjustment, glade_eprop_adjustment)
-#define GLADE_EPROP_ADJUSTMENT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EPROP_ADJUSTMENT, GladeEPropAdjustment))
-#define GLADE_EPROP_ADJUSTMENT_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EPROP_ADJUSTMENT, GladeEPropAdjustmentClass))
-#define GLADE_IS_EPROP_ADJUSTMENT(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_ADJUSTMENT))
-#define GLADE_IS_EPROP_ADJUSTMENT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_ADJUSTMENT))
-#define GLADE_EPROP_ADJUSTMENT_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_ADJUSTMENT, GladeEPropAdjustmentClass))
-
-static void
-glade_eprop_adjustment_finalize (GObject *object)
-{
-	/* Chain up */
-	G_OBJECT_CLASS (editor_property_class)->finalize (object);
-}
-
-typedef struct _EPropAdjIdle EPropAdjIdleData;
-
-struct _EPropAdjIdle
-{
-	GladeEditorProperty *eprop;
-	gdouble value;
-};
-
-static gboolean
-glade_eprop_adj_set_value_idle (gpointer p)
-{
-	EPropAdjIdleData *data = (EPropAdjIdleData *) p;
-	GladeEPropAdjustment *eprop_adj = GLADE_EPROP_ADJUSTMENT (data->eprop);
-	
-	gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_adj->value), data->value);
-	
-	g_free (p);
-	
-	return FALSE;
-}
-
-static void
-glade_eprop_adj_value_changed (GtkAdjustment *adj, GladeEditorProperty *eprop)
-{
-	EPropAdjIdleData *data;
-	
-	g_signal_handlers_disconnect_by_func (adj, glade_eprop_adj_value_changed, eprop);	
-
-	/* Don`t do anything if the loaded property is not the same */
-	if (adj != g_value_get_object (eprop->property->value)) return;
-	
-	data = g_new (EPropAdjIdleData, 1);
-	
-	data->eprop = eprop;
-	data->value = gtk_adjustment_get_value (adj);
-	
-	/* Update GladeEPropAdjustment value spinbutton in an idle funtion */
-	g_idle_add (glade_eprop_adj_set_value_idle, data);
-		
-	/* Set adjustment to the old value */
-	gtk_adjustment_set_value (adj, gtk_spin_button_get_value (GTK_SPIN_BUTTON (
-					GLADE_EPROP_ADJUSTMENT (eprop)->value)));
-}
-
-static void
-glade_eprop_adjustment_load (GladeEditorProperty *eprop, GladeProperty *property)
-{
-	GladeEPropAdjustment *eprop_adj = GLADE_EPROP_ADJUSTMENT (eprop);
-	GladeProjectFormat fmt;
-	GObject *object;
-	GtkAdjustment *adj = NULL;
-
-	/* Chain up first */
-	editor_property_class->load (eprop, property);
-
-	if (property == NULL) return;
-	
-	fmt = glade_project_get_format (property->widget->project);
-
-	gtk_widget_hide (eprop_adj->libglade);
-
-	if (fmt == GLADE_PROJECT_FORMAT_LIBGLADE)
-	{
-		object = g_value_get_object (property->value);
-
-		if (object)
-		{
-			adj = GTK_ADJUSTMENT (object);
-		
-			/* Keep track of external adjustment changes */
-			g_signal_connect (object, "value-changed",
-					  G_CALLBACK (glade_eprop_adj_value_changed),
-					  eprop);
-	
-			/* Update adjustment's values */
-			gtk_adjustment_set_value (eprop_adj->value_adj, gtk_adjustment_get_value (adj));
-			gtk_adjustment_set_lower (eprop_adj->value_adj, gtk_adjustment_get_lower (adj));
-			gtk_adjustment_set_upper (eprop_adj->value_adj, gtk_adjustment_get_upper (adj));
-			gtk_adjustment_set_step_increment (eprop_adj->value_adj, gtk_adjustment_get_step_increment (adj));
-			gtk_adjustment_set_page_increment (eprop_adj->value_adj, gtk_adjustment_get_page_increment (adj));
-			gtk_adjustment_set_page_size (eprop_adj->value_adj, gtk_adjustment_get_page_size (adj));
-		}
-		else
-		{
-			gtk_adjustment_set_value (eprop_adj->value_adj, 0.0);
-			gtk_adjustment_set_lower (eprop_adj->value_adj, 0.0);
-			gtk_adjustment_set_upper (eprop_adj->value_adj, 100.0);
-			gtk_adjustment_set_step_increment (eprop_adj->value_adj, 1);
-			gtk_adjustment_set_page_increment (eprop_adj->value_adj, 10);
-			gtk_adjustment_set_page_size (eprop_adj->value_adj, 0);
-		}
-
-		/* Block Handlers */
-		g_signal_handler_block (eprop_adj->value, eprop_adj->ids.value);
-		g_signal_handler_block (eprop_adj->lower, eprop_adj->ids.lower);
-		g_signal_handler_block (eprop_adj->upper, eprop_adj->ids.upper);
-		g_signal_handler_block (eprop_adj->step_increment, eprop_adj->ids.step_increment);
-		g_signal_handler_block (eprop_adj->page_increment, eprop_adj->ids.page_increment);
-		g_signal_handler_block (eprop_adj->page_size, eprop_adj->ids.page_size);
-		
-		/* Update spinbuttons values */
-		gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_adj->value),
-					   gtk_adjustment_get_value (eprop_adj->value_adj));
-		gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_adj->lower),
-					   gtk_adjustment_get_lower (eprop_adj->value_adj));
-		gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_adj->upper),
-					   gtk_adjustment_get_upper (eprop_adj->value_adj));
-		gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_adj->step_increment),
-					   gtk_adjustment_get_step_increment (eprop_adj->value_adj));
-		gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_adj->page_increment),
-					   gtk_adjustment_get_page_increment (eprop_adj->value_adj));
-		gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_adj->page_size),
-					   gtk_adjustment_get_page_size (eprop_adj->value_adj));
-		
-		/* Unblock Handlers */
-		g_signal_handler_unblock (eprop_adj->value, eprop_adj->ids.value);
-		g_signal_handler_unblock (eprop_adj->lower, eprop_adj->ids.lower);
-		g_signal_handler_unblock (eprop_adj->upper, eprop_adj->ids.upper);
-		g_signal_handler_unblock (eprop_adj->step_increment, eprop_adj->ids.step_increment);
-		g_signal_handler_unblock (eprop_adj->page_increment, eprop_adj->ids.page_increment);
-		g_signal_handler_unblock (eprop_adj->page_size, eprop_adj->ids.page_size);
-
-		gtk_widget_show (eprop_adj->libglade);
-		gtk_notebook_set_current_page (GTK_NOTEBOOK (eprop_adj->notebook), 0);
-	}
-	else
-	{
-		gchar *obj_name;
-
-		fmt = glade_project_get_format (property->widget->project);
-
-		if ((obj_name = glade_widget_adaptor_string_from_value
-		     (GLADE_WIDGET_ADAPTOR (eprop->klass->handle),
-		      eprop->klass, property->value, fmt)) != NULL)
-		{
-			gtk_entry_set_text (GTK_ENTRY (eprop_adj->entry), obj_name);
-			g_free (obj_name);
-		}
-		else
-			gtk_entry_set_text (GTK_ENTRY (eprop_adj->entry), "");
-
-		gtk_notebook_set_current_page (GTK_NOTEBOOK (eprop_adj->notebook), 1);
-	}
-
-	gtk_widget_queue_resize (eprop_adj->notebook);
-}
-
-static GtkAdjustment *
-glade_eprop_adjustment_dup_adj (GladeEditorProperty *eprop)
-{
-	GtkAdjustment *adj;
-	GObject *object;
-	
-	object = g_value_get_object (eprop->property->value);
-	if (object == NULL) 
-		return GTK_ADJUSTMENT (gtk_adjustment_new (0.0, 0.0, 100.0,
-							   1.0, 10.0, 10.0));
-	
-	adj = GTK_ADJUSTMENT (object);
-
-	return GTK_ADJUSTMENT (gtk_adjustment_new (gtk_adjustment_get_value (adj),
-						   gtk_adjustment_get_lower (adj),
-						   gtk_adjustment_get_upper (adj),
-						   gtk_adjustment_get_step_increment (adj),
-						   gtk_adjustment_get_page_increment (adj),
-						   gtk_adjustment_get_page_size (adj)));
-}
-
-static void
-glade_eprop_adjustment_prop_changed_common (GladeEditorProperty *eprop, 
-					    GtkAdjustment *adjustment)
-{
-	GValue value = {0, };
-	
-	g_value_init (&value, GTK_TYPE_ADJUSTMENT);
-
-	if (gtk_adjustment_get_value (adjustment) == 0.00 &&
-	    gtk_adjustment_get_lower (adjustment) == 0.00 &&
-	    gtk_adjustment_get_upper (adjustment) == 100.00 &&
-	    gtk_adjustment_get_step_increment (adjustment) == 1.00 &&
-	    gtk_adjustment_get_page_increment (adjustment) == 10.00 &&
-	    gtk_adjustment_get_page_size (adjustment) == 10.00)
-	{
-		g_value_set_object (&value, NULL);
-	}
-	else
-		g_value_set_object (&value, G_OBJECT (adjustment));
-	
-	glade_editor_property_commit_no_callback (eprop, &value);
-
-	g_value_unset (&value);
-}
-
-#define GLADE_EPROP_ADJUSTMENT_DEFINE_VALUE_CHANGED_FUNC(p)		\
-static void								\
-glade_eprop_adjustment_ ## p ## _changed (GtkSpinButton *spin,		\
-					  GladeEditorProperty *eprop)	\
-{									\
-	GtkAdjustment *adj = glade_eprop_adjustment_dup_adj (eprop);	\
-	if (adj == NULL) return;					\
-	gtk_adjustment_set_ ## p (adj, gtk_spin_button_get_value (spin));	\
-	glade_eprop_adjustment_prop_changed_common (eprop, adj);	\
-}
-
-GLADE_EPROP_ADJUSTMENT_DEFINE_VALUE_CHANGED_FUNC (value)
-GLADE_EPROP_ADJUSTMENT_DEFINE_VALUE_CHANGED_FUNC (lower)
-GLADE_EPROP_ADJUSTMENT_DEFINE_VALUE_CHANGED_FUNC (upper)
-GLADE_EPROP_ADJUSTMENT_DEFINE_VALUE_CHANGED_FUNC (step_increment)
-GLADE_EPROP_ADJUSTMENT_DEFINE_VALUE_CHANGED_FUNC (page_increment)
-GLADE_EPROP_ADJUSTMENT_DEFINE_VALUE_CHANGED_FUNC (page_size)
-
-#define GLADE_EPROP_ADJUSTMENT_CONNECT(object, prop) \
-g_signal_connect (object, "value_changed", \
-G_CALLBACK (glade_eprop_adjustment_ ## prop ## _changed), eprop);
-
-static void
-glade_eprop_adjustment_table_add_label (GtkTable *table,
-					gint pos,
-					gchar *label,
-					gchar *tip)
-{
-	GtkWidget *widget;
-	
-	widget = gtk_label_new (label);
-	gtk_misc_set_alignment (GTK_MISC (widget), 1, 0);
-
-	gtk_widget_set_tooltip_text (widget, tip);
-	
-	gtk_table_attach_defaults (table, widget, 0, 1, pos, pos + 1);
-}
-
-static GtkWidget *
-glade_eprop_adjustment_create_input_libglade (GladeEditorProperty *eprop)
-{
-	GladeEPropAdjustment *eprop_adj = GLADE_EPROP_ADJUSTMENT (eprop);
-	GtkWidget *widget;
-	GtkTable *table;
-	
-	eprop_adj->value = gtk_spin_button_new_with_range (-G_MAXDOUBLE, G_MAXDOUBLE, 1);
-	gtk_spin_button_set_digits (GTK_SPIN_BUTTON (eprop_adj->value), 2);
-	eprop_adj->ids.value = GLADE_EPROP_ADJUSTMENT_CONNECT (eprop_adj->value, value);
-	eprop_adj->value_adj = gtk_spin_button_get_adjustment (GTK_SPIN_BUTTON (eprop_adj->value));
-	
-	eprop_adj->lower = gtk_spin_button_new_with_range (-G_MAXDOUBLE, G_MAXDOUBLE, 1);
-	gtk_spin_button_set_digits (GTK_SPIN_BUTTON (eprop_adj->lower), 2);
-	eprop_adj->ids.lower = GLADE_EPROP_ADJUSTMENT_CONNECT (eprop_adj->lower, lower);
-	
-	eprop_adj->upper = gtk_spin_button_new_with_range (-G_MAXDOUBLE, G_MAXDOUBLE, 1);
-	gtk_spin_button_set_digits (GTK_SPIN_BUTTON (eprop_adj->upper), 2);
-	eprop_adj->ids.upper = GLADE_EPROP_ADJUSTMENT_CONNECT (eprop_adj->upper, upper);
-	
-	eprop_adj->step_increment = gtk_spin_button_new_with_range (0, G_MAXDOUBLE, 1);
-	gtk_spin_button_set_digits (GTK_SPIN_BUTTON (eprop_adj->step_increment), 2);
-	eprop_adj->ids.step_increment = GLADE_EPROP_ADJUSTMENT_CONNECT (eprop_adj->step_increment, step_increment);
-	
-	eprop_adj->page_increment = gtk_spin_button_new_with_range (0, G_MAXDOUBLE, 1);
-	gtk_spin_button_set_digits (GTK_SPIN_BUTTON (eprop_adj->page_increment), 2);
-	eprop_adj->ids.page_increment = GLADE_EPROP_ADJUSTMENT_CONNECT (eprop_adj->page_increment, page_increment);
-
-	eprop_adj->page_size = gtk_spin_button_new_with_range (0, G_MAXDOUBLE, 1);
-	gtk_spin_button_set_digits (GTK_SPIN_BUTTON (eprop_adj->page_size), 2);
-	eprop_adj->ids.page_size = GLADE_EPROP_ADJUSTMENT_CONNECT (eprop_adj->page_size, page_size);
-
-	/* Eprop */
-	widget = gtk_table_new (6, 2, FALSE);
-	table = GTK_TABLE (widget);
-	gtk_table_set_col_spacings (table, 4);
-	
-	glade_eprop_adjustment_table_add_label (table, 0, _("Value:"),
-						_("The current value"));
-
-	glade_eprop_adjustment_table_add_label (table, 1, _("Lower:"),
-						_("The minimum value"));
-	
-	glade_eprop_adjustment_table_add_label (table, 2, _("Upper:"),
-						_("The maximum value"));
-			
-	glade_eprop_adjustment_table_add_label (table, 3, _("Step inc:"),
-		_("The increment to use to make minor changes to the value"));
-	
-	glade_eprop_adjustment_table_add_label (table, 4, _("Page inc:"),
-		_("The increment to use to make major changes to the value"));
-	
-	glade_eprop_adjustment_table_add_label (table, 5, _("Page size:"),
-		_("The page size (in a GtkScrollbar this is the size of the area which is currently visible)"));
-
-	gtk_table_attach_defaults (table, eprop_adj->value,          1, 2, 0, 1);
-	gtk_table_attach_defaults (table, eprop_adj->lower,          1, 2, 1, 2);
-	gtk_table_attach_defaults (table, eprop_adj->upper,          1, 2, 2, 3);
-	gtk_table_attach_defaults (table, eprop_adj->step_increment, 1, 2, 3, 4);
-	gtk_table_attach_defaults (table, eprop_adj->page_increment, 1, 2, 4, 5);
-	gtk_table_attach_defaults (table, eprop_adj->page_size,      1, 2, 5, 6);
-
-	gtk_widget_show_all (widget);
-
-	return widget;
-}
-
-static GtkWidget *
-glade_eprop_adjustment_create_input_builder (GladeEditorProperty *eprop)
-{
-	GladeEPropAdjustment *eprop_adj = GLADE_EPROP_ADJUSTMENT (eprop);
-	GtkWidget        *hbox;
-	GtkWidget        *button;
-
-	hbox             = gtk_hbox_new (FALSE, 0);
-	eprop_adj->entry = gtk_entry_new ();
-	gtk_editable_set_editable (GTK_EDITABLE (eprop_adj->entry), FALSE);
-	gtk_widget_show (eprop_adj->entry);
-	gtk_box_pack_start (GTK_BOX (hbox), eprop_adj->entry, TRUE, TRUE, 0);
-
-	button = gtk_button_new_with_label ("...");
-	gtk_widget_show (button);
-	gtk_box_pack_start (GTK_BOX (hbox), button,  FALSE, FALSE, 0);
-
-	g_signal_connect (G_OBJECT (button), "clicked",
-			  G_CALLBACK (glade_eprop_object_show_dialog),
-			  eprop);
-	return hbox;
-}
-
-static GtkWidget *
-glade_eprop_adjustment_create_input (GladeEditorProperty *eprop)
-{
-	GladeEPropAdjustment *eprop_adj = GLADE_EPROP_ADJUSTMENT (eprop);
-	GtkWidget *builder;
-
-	eprop_adj->libglade = glade_eprop_adjustment_create_input_libglade (eprop);
-	builder = glade_eprop_adjustment_create_input_builder (eprop);
-
-	gtk_widget_show (eprop_adj->libglade);
-	gtk_widget_show (builder);
-	
-	eprop_adj->notebook = gtk_notebook_new ();
-	gtk_notebook_set_show_tabs (GTK_NOTEBOOK (eprop_adj->notebook), FALSE);
-	gtk_notebook_set_show_border (GTK_NOTEBOOK (eprop_adj->notebook), FALSE);
-
-	gtk_notebook_append_page (GTK_NOTEBOOK (eprop_adj->notebook), eprop_adj->libglade, NULL);
-	gtk_notebook_append_page (GTK_NOTEBOOK (eprop_adj->notebook), builder, NULL);
-	return eprop_adj->notebook;
-}
-
 
 /*******************************************************************************
                                      API
