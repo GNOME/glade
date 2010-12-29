@@ -2008,7 +2008,7 @@ about_cb (GtkAction *action, GladeWindow *window)
 			       "wrap-license", TRUE,
 			       "copyright", copyright,
 			       "version", PACKAGE_VERSION,
-			       "website", "http://glade.gnome.org",
+			       "website", PACKAGE_URL,
 			       NULL);
 }
 

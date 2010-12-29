@@ -1,10 +1,10 @@
+ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
+
 SUBDIRS = po data gladeui src plugins doc
 
 if HAVE_GNOME_DOC_UTILS
 SUBDIRS += help
 endif
-
-ACLOCAL_AMFLAGS = -I m4
 
 EXTRA_DIST = \
 	autogen.sh \
