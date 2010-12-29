@@ -1987,9 +1987,9 @@ glade_project_launch_preview (GladeProject *project, gchar *buffer, GtkWidget *w
 	
 
 	#ifdef WINDOWS
-	argv[0] = g_build_filename (glade_app_get_bin_dir(), "glade-previewer.exe", NULL);
+	argv[0] = g_build_filename (glade_app_get_bin_dir(), "glade-3-previewer.exe", NULL);
 	#else
-	argv[0] = g_build_filename (glade_app_get_bin_dir(), "glade-previewer", NULL);
+	argv[0] = g_build_filename (glade_app_get_bin_dir(), "glade-3-previewer", NULL);
 	#endif
 
 

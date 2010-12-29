@@ -1,9 +1,9 @@
 ## Previewer
 
-bin_PROGRAMS = glade-previewer
+bin_PROGRAMS = glade-3-previewer
 lib_LTLIBRARIES = libgladeui-1.la
 
-glade_previewer_CPPFLAGS = \
+glade_3_previewer_CPPFLAGS = \
 	-I$(top_srcdir)    \
 	-I$(top_builddir)  \
 	-DGLADE_GNOMEHELPDIR="\"$(HELP_DIR)\"" \
@@ -12,20 +12,20 @@ glade_previewer_CPPFLAGS = \
 	$(WARN_CFLAGS)     \
 	$(AM_CPPFLAGS)
 
-glade_previewer_CFLAGS =   \
+glade_3_previewer_CFLAGS =   \
 	$(AM_CFLAGS)
 
-glade_previewer_LDFLAGS = $(AM_LDFLAGS)
+glade_3_previewer_LDFLAGS = $(AM_LDFLAGS)
 
-glade_previewer_LDADD = libgladeui-1.la $(IGE_MAC_LIBS)
+glade_3_previewer_LDADD = libgladeui-1.la $(IGE_MAC_LIBS)
 
-glade_previewer_SOURCES = \
+glade_3_previewer_SOURCES = \
 	glade-previewer.c
 
 if NATIVE_WIN32
-glade_previewer_LDADD += glade-win32-res.o
+glade_3_previewer_LDADD += glade-win32-res.o
 if !GLADE_UNSTABLE
-glade_previewer_LDFLAGS += -mwindows
+glade_3_previewer_LDFLAGS += -mwindows
 endif
 endif
 
