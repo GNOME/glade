@@ -718,13 +718,10 @@ glade_design_layout_realize (GtkWidget *widget)
        GdkWindow *window;
        GdkWindowAttr attributes;
        gint attributes_mask;
-       guint border_width;
 
        priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
 
        gtk_widget_set_realized (widget, TRUE);
-
-       border_width = gtk_container_get_border_width (GTK_CONTAINER (widget));
 
        gtk_widget_get_allocation (widget, &allocation);
        attributes.x = allocation.x;
