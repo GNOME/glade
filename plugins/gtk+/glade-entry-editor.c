@@ -479,22 +479,18 @@ secondary_pixbuf_toggled (GtkWidget        *widget,
 			     entry_editor->loaded_widget);
 }
 
+
 static void
 table_attach (GtkWidget *table, 
 	      GtkWidget *child, 
-	      gint pos, gint row,
-	      GtkSizeGroup *group)
+	      gint pos, gint row)
 {
-	gtk_table_attach (GTK_TABLE (table), child,
-			  pos, pos+1, row, row +1,
-			  pos ? 0 : GTK_EXPAND | GTK_FILL,
-			  GTK_EXPAND | GTK_FILL,
-			  3, 1);
+	gtk_grid_attach (GTK_GRID (table), child,
+			 pos, row, 1, 1);
 
 	if (pos)
-		gtk_size_group_add_widget (group, child);
+		gtk_widget_set_hexpand (child, TRUE);
 }
-
 
 GtkWidget *
 glade_entry_editor_new (GladeWidgetAdaptor *adaptor,
@@ -503,7 +499,6 @@ glade_entry_editor_new (GladeWidgetAdaptor *adaptor,
 	GladeEntryEditor    *entry_editor;
 	GladeEditorProperty *eprop;
 	GtkWidget           *table, *frame, *alignment, *label, *hbox;
-	GtkSizeGroup        *group;
 	gchar               *str;
 
 	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
@@ -530,10 +525,10 @@ glade_entry_editor_new (GladeWidgetAdaptor *adaptor,
 	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 6, 0, 12, 0);
 	gtk_container_add (GTK_CONTAINER (frame), alignment);
 
-	table = gtk_table_new (0, 0, FALSE);
+	table = gtk_grid_new ();
+	gtk_orientable_set_orientation (GTK_ORIENTABLE (table), GTK_ORIENTATION_VERTICAL);
+	gtk_grid_set_row_spacing (GTK_GRID (table), 4);
 	gtk_container_add (GTK_CONTAINER (alignment), table);
-
-	group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
 	/* Text */
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "text", FALSE, TRUE);
@@ -541,8 +536,8 @@ glade_entry_editor_new (GladeWidgetAdaptor *adaptor,
 	entry_editor->text_radio = gtk_radio_button_new (NULL);
 	gtk_box_pack_start (GTK_BOX (hbox), entry_editor->text_radio, FALSE, FALSE, 2);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
-	table_attach (table, hbox, 0, 0, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 0, group);
+	table_attach (table, hbox, 0, 0);
+	table_attach (table, GTK_WIDGET (eprop), 1, 0);
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
 
 	/* Buffer */
@@ -552,12 +547,9 @@ glade_entry_editor_new (GladeWidgetAdaptor *adaptor,
 	  (GTK_RADIO_BUTTON (entry_editor->text_radio));
 	gtk_box_pack_start (GTK_BOX (hbox), entry_editor->buffer_radio, FALSE, FALSE, 2);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
-	table_attach (table, hbox, 0, 1, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 1, group);
+	table_attach (table, hbox, 0, 1);
+	table_attach (table, GTK_WIDGET (eprop), 1, 1);
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
-
-	g_object_unref (group);
-
 
 	/* Progress... */
 	str = g_strdup_printf ("<b>%s</b>", _("Progress"));
@@ -573,24 +565,22 @@ glade_entry_editor_new (GladeWidgetAdaptor *adaptor,
 	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 6, 0, 12, 0);
 	gtk_container_add (GTK_CONTAINER (frame), alignment);
 
-	table = gtk_table_new (0, 0, FALSE);
+	table = gtk_grid_new ();
+	gtk_orientable_set_orientation (GTK_ORIENTABLE (table), GTK_ORIENTATION_VERTICAL);
+	gtk_grid_set_row_spacing (GTK_GRID (table), 4);
 	gtk_container_add (GTK_CONTAINER (alignment), table);
-
-	group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
 	/* Fraction */
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "progress-fraction", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, 0, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 0, group);
+	table_attach (table, eprop->item_label, 0, 0);
+	table_attach (table, GTK_WIDGET (eprop), 1, 0);
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
 
 	/* Pulse */
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "progress-pulse-step", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, 1, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 1, group);
+	table_attach (table, eprop->item_label, 0, 1);
+	table_attach (table, GTK_WIDGET (eprop), 1, 1);
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
-
-	g_object_unref (group);
 
 	/* Primary icon... */
 	str = g_strdup_printf ("<b>%s</b>", _("Primary icon"));
@@ -606,10 +596,10 @@ glade_entry_editor_new (GladeWidgetAdaptor *adaptor,
 	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 6, 0, 12, 0);
 	gtk_container_add (GTK_CONTAINER (frame), alignment);
 
-	table = gtk_table_new (0, 0, FALSE);
+	table = gtk_grid_new ();
+	gtk_orientable_set_orientation (GTK_ORIENTABLE (table), GTK_ORIENTATION_VERTICAL);
+	gtk_grid_set_row_spacing (GTK_GRID (table), 4);
 	gtk_container_add (GTK_CONTAINER (alignment), table);
-
-	group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
 	/* Pixbuf */
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, PIXBUF_NAME(TRUE), FALSE, TRUE);
@@ -617,8 +607,8 @@ glade_entry_editor_new (GladeWidgetAdaptor *adaptor,
 	entry_editor->primary_pixbuf_radio = gtk_radio_button_new (NULL);
 	gtk_box_pack_start (GTK_BOX (hbox), entry_editor->primary_pixbuf_radio, FALSE, FALSE, 2);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
-	table_attach (table, hbox, 0, 0, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 0, group);
+	table_attach (table, hbox, 0, 0);
+	table_attach (table, GTK_WIDGET (eprop), 1, 0);
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
 
 	/* Stock */
@@ -628,8 +618,8 @@ glade_entry_editor_new (GladeWidgetAdaptor *adaptor,
 	  (GTK_RADIO_BUTTON (entry_editor->primary_pixbuf_radio));
 	gtk_box_pack_start (GTK_BOX (hbox), entry_editor->primary_stock_radio, FALSE, FALSE, 2);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
-	table_attach (table, hbox, 0, 1, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 1, group);
+	table_attach (table, hbox, 0, 1);
+	table_attach (table, GTK_WIDGET (eprop), 1, 1);
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
 
 	/* Icon name */
@@ -639,32 +629,30 @@ glade_entry_editor_new (GladeWidgetAdaptor *adaptor,
 	  (GTK_RADIO_BUTTON (entry_editor->primary_pixbuf_radio));
 	gtk_box_pack_start (GTK_BOX (hbox), entry_editor->primary_icon_name_radio, FALSE, FALSE, 2);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
-	table_attach (table, hbox, 0, 2, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 2, group);
+	table_attach (table, hbox, 0, 2);
+	table_attach (table, GTK_WIDGET (eprop), 1, 2);
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
 
 	/* Other primary icon related properties */
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "primary-icon-activatable", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, 3, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 3, group);
+	table_attach (table, eprop->item_label, 0, 3);
+	table_attach (table, GTK_WIDGET (eprop), 1, 3);
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
 
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "primary-icon-sensitive", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, 4, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 4, group);
+	table_attach (table, eprop->item_label, 0, 4);
+	table_attach (table, GTK_WIDGET (eprop), 1, 4);
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
 
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "primary-icon-tooltip-text", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, 5, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 5, group);
+	table_attach (table, eprop->item_label, 0, 5);
+	table_attach (table, GTK_WIDGET (eprop), 1, 5);
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
 
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "primary-icon-tooltip-markup", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, 6, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 6, group);
+	table_attach (table, eprop->item_label, 0, 6);
+	table_attach (table, GTK_WIDGET (eprop), 1, 6);
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
-
-	g_object_unref (group);
 
 	/* Secondary icon... */
 	str = g_strdup_printf ("<b>%s</b>", _("Secondary icon"));
@@ -680,10 +668,10 @@ glade_entry_editor_new (GladeWidgetAdaptor *adaptor,
 	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 6, 0, 12, 0);
 	gtk_container_add (GTK_CONTAINER (frame), alignment);
 
-	table = gtk_table_new (0, 0, FALSE);
+	table = gtk_grid_new ();
+	gtk_orientable_set_orientation (GTK_ORIENTABLE (table), GTK_ORIENTATION_VERTICAL);
+	gtk_grid_set_row_spacing (GTK_GRID (table), 4);
 	gtk_container_add (GTK_CONTAINER (alignment), table);
-
-	group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
 	/* Pixbuf */
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, PIXBUF_NAME(FALSE), FALSE, TRUE);
@@ -691,8 +679,8 @@ glade_entry_editor_new (GladeWidgetAdaptor *adaptor,
 	entry_editor->secondary_pixbuf_radio = gtk_radio_button_new (NULL);
 	gtk_box_pack_start (GTK_BOX (hbox), entry_editor->secondary_pixbuf_radio, FALSE, FALSE, 2);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
-	table_attach (table, hbox, 0, 0, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 0, group);
+	table_attach (table, hbox, 0, 0);
+	table_attach (table, GTK_WIDGET (eprop), 1, 0);
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
 
 	/* Stock */
@@ -702,8 +690,8 @@ glade_entry_editor_new (GladeWidgetAdaptor *adaptor,
 	  (GTK_RADIO_BUTTON (entry_editor->secondary_pixbuf_radio));
 	gtk_box_pack_start (GTK_BOX (hbox), entry_editor->secondary_stock_radio, FALSE, FALSE, 2);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
-	table_attach (table, hbox, 0, 1, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 1, group);
+	table_attach (table, hbox, 0, 1);
+	table_attach (table, GTK_WIDGET (eprop), 1, 1);
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
 
 	/* Icon name */
@@ -713,32 +701,30 @@ glade_entry_editor_new (GladeWidgetAdaptor *adaptor,
 	  (GTK_RADIO_BUTTON (entry_editor->secondary_pixbuf_radio));
 	gtk_box_pack_start (GTK_BOX (hbox), entry_editor->secondary_icon_name_radio, FALSE, FALSE, 2);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
-	table_attach (table, hbox, 0, 2, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 2, group);
+	table_attach (table, hbox, 0, 2);
+	table_attach (table, GTK_WIDGET (eprop), 1, 2);
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
 
 	/* Other secondary icon related properties */
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "secondary-icon-activatable", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, 3, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 3, group);
+	table_attach (table, eprop->item_label, 0, 3);
+	table_attach (table, GTK_WIDGET (eprop), 1, 3);
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
 
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "secondary-icon-sensitive", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, 4, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 4, group);
+	table_attach (table, eprop->item_label, 0, 4);
+	table_attach (table, GTK_WIDGET (eprop), 1, 4);
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
 
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "secondary-icon-tooltip-text", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, 5, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 5, group);
+	table_attach (table, eprop->item_label, 0, 5);
+	table_attach (table, GTK_WIDGET (eprop), 1, 5);
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
 
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "secondary-icon-tooltip-markup", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, 6, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 6, group);
+	table_attach (table, eprop->item_label, 0, 6);
+	table_attach (table, GTK_WIDGET (eprop), 1, 6);
 	entry_editor->properties = g_list_prepend (entry_editor->properties, eprop);
-
-	g_object_unref (group);
 
 	gtk_widget_show_all (GTK_WIDGET (entry_editor));
 

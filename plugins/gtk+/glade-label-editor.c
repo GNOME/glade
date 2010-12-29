@@ -53,9 +53,6 @@ glade_label_editor_class_init (GladeLabelEditorClass *klass)
 static void
 glade_label_editor_init (GladeLabelEditor *self)
 {
-	self->appearance_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
-	self->formatting_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
-	self->wrap_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 }
 
 static void
@@ -217,10 +214,6 @@ glade_label_editor_finalize (GObject *object)
 	label_editor->embed      = NULL;
 
 	glade_editable_load (GLADE_EDITABLE (object), NULL);
-
-	g_object_unref (label_editor->appearance_group);
-	g_object_unref (label_editor->formatting_group);
-	g_object_unref (label_editor->wrap_group);
 
 	G_OBJECT_CLASS (glade_label_editor_parent_class)->finalize (object);
 }
@@ -509,21 +502,16 @@ wrap_mode_toggled (GtkWidget        *widget,
 			     label_editor->loaded_widget);
 }
 
-
 static void
 table_attach (GtkWidget *table, 
 	      GtkWidget *child, 
-	      gint pos, gint row,
-	      GtkSizeGroup *group)
+	      gint pos, gint row)
 {
-	gtk_table_attach (GTK_TABLE (table), child,
-			  pos, pos+1, row, row +1,
-			  pos ? 0 : GTK_EXPAND | GTK_FILL,
-			  GTK_EXPAND | GTK_FILL,
-			  3, 1);
+	gtk_grid_attach (GTK_GRID (table), child,
+			 pos, row, 1, 1);
 
 	if (pos)
-		gtk_size_group_add_widget (group, child);
+		gtk_widget_set_hexpand (child, TRUE);
 }
 
 static void
@@ -548,13 +536,15 @@ append_label_appearance (GladeLabelEditor   *label_editor,
 	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 6, 0, 12, 0);
 	gtk_container_add (GTK_CONTAINER (frame), alignment);
 
-	table = gtk_table_new (0, 0, FALSE);
+	table = gtk_grid_new ();
+	gtk_orientable_set_orientation (GTK_ORIENTABLE (table), GTK_ORIENTATION_VERTICAL);
+	gtk_grid_set_row_spacing (GTK_GRID (table), 4);
 	gtk_container_add (GTK_CONTAINER (alignment), table);
 
 	/* Edit the label itself... */
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "label", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, 0, label_editor->appearance_group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 0, label_editor->appearance_group);
+	table_attach (table, eprop->item_label, 0, 0);
+	table_attach (table, GTK_WIDGET (eprop), 1, 0);
 	label_editor->properties = g_list_prepend (label_editor->properties, eprop);
 
 	/* Edit by attributes... */
@@ -563,8 +553,8 @@ append_label_appearance (GladeLabelEditor   *label_editor,
 	label_editor->attributes_radio = gtk_radio_button_new (NULL);
 	gtk_box_pack_start (GTK_BOX (hbox), label_editor->attributes_radio, FALSE, FALSE, 2);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
-	table_attach (table, hbox, 0, 1, label_editor->appearance_group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 1, label_editor->appearance_group);
+	table_attach (table, hbox, 0, 1);
+	table_attach (table, GTK_WIDGET (eprop), 1, 1);
 	label_editor->properties = g_list_prepend (label_editor->properties, eprop);
 
 	/* Edit with label as pango markup strings... */
@@ -574,7 +564,7 @@ append_label_appearance (GladeLabelEditor   *label_editor,
 		(GTK_RADIO_BUTTON (label_editor->attributes_radio));
 	gtk_box_pack_start (GTK_BOX (hbox), label_editor->markup_radio, FALSE, FALSE, 2);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
-	table_attach (table, hbox, 0, 2, label_editor->appearance_group);
+	table_attach (table, hbox, 0, 2);
 	label_editor->properties = g_list_prepend (label_editor->properties, eprop);
 	markup_property = eprop; /* Its getting into a hidden row on the bottom... */
 
@@ -585,8 +575,8 @@ append_label_appearance (GladeLabelEditor   *label_editor,
 		(GTK_RADIO_BUTTON (label_editor->attributes_radio));
 	gtk_box_pack_start (GTK_BOX (hbox), label_editor->pattern_radio, FALSE, FALSE, 2);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
-	table_attach (table, hbox, 0, 3, label_editor->appearance_group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 3, label_editor->appearance_group);
+	table_attach (table, hbox, 0, 3);
+	table_attach (table, GTK_WIDGET (eprop), 1, 3);
 	label_editor->properties = g_list_prepend (label_editor->properties, eprop);
 
 	/* Tie the invisible editor property to the table's life-cycle */
@@ -618,25 +608,27 @@ append_label_formatting (GladeLabelEditor   *label_editor,
 	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 6, 0, 12, 0);
 	gtk_container_add (GTK_CONTAINER (frame), alignment);
 
-	table = gtk_table_new (0, 0, FALSE);
+	table = gtk_grid_new ();
+	gtk_orientable_set_orientation (GTK_ORIENTABLE (table), GTK_ORIENTATION_VERTICAL);
+	gtk_grid_set_row_spacing (GTK_GRID (table), 4);
 	gtk_container_add (GTK_CONTAINER (alignment), table);
 
 	/* ellipsize... */
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "ellipsize", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, row, label_editor->formatting_group);
-	table_attach (table, GTK_WIDGET (eprop), 1, row++, label_editor->formatting_group);
+	table_attach (table, eprop->item_label, 0, row);
+	table_attach (table, GTK_WIDGET (eprop), 1, row++);
 	label_editor->properties = g_list_prepend (label_editor->properties, eprop);
 
 	/* justify... */
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "justify", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, row, label_editor->formatting_group);
-	table_attach (table, GTK_WIDGET (eprop), 1, row++, label_editor->formatting_group);
+	table_attach (table, eprop->item_label, 0, row);
+	table_attach (table, GTK_WIDGET (eprop), 1, row++);
 	label_editor->properties = g_list_prepend (label_editor->properties, eprop);
 
 	/* angle... */
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "angle", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, row, label_editor->formatting_group);
-	table_attach (table, GTK_WIDGET (eprop), 1, row++, label_editor->formatting_group);
+	table_attach (table, eprop->item_label, 0, row);
+	table_attach (table, GTK_WIDGET (eprop), 1, row++);
 	label_editor->properties = g_list_prepend (label_editor->properties, eprop);
 
 	/* width-chars ... */
@@ -645,8 +637,8 @@ append_label_formatting (GladeLabelEditor   *label_editor,
 	label_editor->width_radio = gtk_radio_button_new (NULL);
 	gtk_box_pack_start (GTK_BOX (hbox), label_editor->width_radio, FALSE, FALSE, 2);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
-	table_attach (table, hbox, 0, row, label_editor->formatting_group);
-	table_attach (table, GTK_WIDGET (eprop), 1, row++, label_editor->formatting_group);
+	table_attach (table, hbox, 0, row);
+	table_attach (table, GTK_WIDGET (eprop), 1, row++);
 	label_editor->properties = g_list_prepend (label_editor->properties, eprop);
 
 	/* max-width-chars ... */
@@ -656,8 +648,8 @@ append_label_formatting (GladeLabelEditor   *label_editor,
 		(GTK_RADIO_BUTTON (label_editor->width_radio));
 	gtk_box_pack_start (GTK_BOX (hbox), label_editor->max_width_radio, FALSE, FALSE, 2);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
-	table_attach (table, hbox, 0, row, label_editor->formatting_group);
-	table_attach (table, GTK_WIDGET (eprop), 1, row++, label_editor->formatting_group);
+	table_attach (table, hbox, 0, row);
+	table_attach (table, GTK_WIDGET (eprop), 1, row++);
 	label_editor->properties = g_list_prepend (label_editor->properties, eprop);
 }
 
@@ -684,7 +676,9 @@ append_label_wrapping (GladeLabelEditor   *label_editor,
 	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 6, 0, 12, 0);
 	gtk_container_add (GTK_CONTAINER (frame), alignment);
 
-	table = gtk_table_new (0, 0, FALSE);
+	table = gtk_grid_new ();
+	gtk_orientable_set_orientation (GTK_ORIENTABLE (table), GTK_ORIENTATION_VERTICAL);
+	gtk_grid_set_row_spacing (GTK_GRID (table), 4);
 	gtk_container_add (GTK_CONTAINER (alignment), table);
 
 	/* Append defaut epropless radio... */
@@ -694,7 +688,7 @@ append_label_wrapping (GladeLabelEditor   *label_editor,
 	gtk_misc_set_alignment (GTK_MISC (label_editor->wrap_free_label), 0.0F, 0.5F);
 	gtk_box_pack_start (GTK_BOX (hbox), label_editor->wrap_free_radio, FALSE, FALSE, 2);
 	gtk_box_pack_start (GTK_BOX (hbox), label_editor->wrap_free_label, TRUE, TRUE, 2);
-	table_attach (table, hbox, 0, row++, label_editor->wrap_group);
+	table_attach (table, hbox, 0, row++);
 
 	/* single-line-mode ... */
 	single_line_eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "single-line-mode", FALSE, TRUE);
@@ -703,7 +697,7 @@ append_label_wrapping (GladeLabelEditor   *label_editor,
 		(GTK_RADIO_BUTTON (label_editor->wrap_free_radio));
 	gtk_box_pack_start (GTK_BOX (hbox), label_editor->single_radio, FALSE, FALSE, 2);
 	gtk_box_pack_start (GTK_BOX (hbox), single_line_eprop->item_label, TRUE, TRUE, 2);
-	table_attach (table, hbox, 0, row++, label_editor->wrap_group);
+	table_attach (table, hbox, 0, row++);
 	label_editor->properties = g_list_prepend (label_editor->properties, single_line_eprop);
 
 	/* wrap-mode ... */
@@ -713,8 +707,8 @@ append_label_wrapping (GladeLabelEditor   *label_editor,
 		(GTK_RADIO_BUTTON (label_editor->wrap_free_radio));
 	gtk_box_pack_start (GTK_BOX (hbox), label_editor->wrap_mode_radio, FALSE, FALSE, 2);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
-	table_attach (table, hbox, 0, row, label_editor->wrap_group);
-	table_attach (table, GTK_WIDGET (eprop), 1, row++, label_editor->wrap_group);
+	table_attach (table, hbox, 0, row);
+	table_attach (table, GTK_WIDGET (eprop), 1, row++);
 	label_editor->properties = g_list_prepend (label_editor->properties, eprop);
 
 	/* Tie the invisible editor property to the table's life-cycle */

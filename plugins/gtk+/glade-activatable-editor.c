@@ -172,17 +172,13 @@ glade_activatable_editor_grab_focus (GtkWidget *widget)
 static void
 table_attach (GtkWidget *table, 
 	      GtkWidget *child, 
-	      gint pos, gint row,
-	      GtkSizeGroup *group)
+	      gint pos, gint row)
 {
-	gtk_table_attach (GTK_TABLE (table), child,
-			  pos, pos+1, row, row +1,
-			  pos ? 0 : GTK_EXPAND | GTK_FILL,
-			  GTK_EXPAND | GTK_FILL,
-			  3, 1);
+	gtk_grid_attach (GTK_GRID (table), child,
+			 pos, row, 1, 1);
 
 	if (pos)
-		gtk_size_group_add_widget (group, child);
+		gtk_widget_set_hexpand (child, TRUE);
 }
 
 static void
@@ -379,7 +375,6 @@ glade_activatable_editor_new (GladeWidgetAdaptor *adaptor,
 	GladeActivatableEditor    *activatable_editor;
 	GladeEditorProperty *eprop;
 	GtkWidget           *table, *frame, *alignment, *label;
-	GtkSizeGroup        *group;
 	gchar               *str;
 	gint                 row = 0;
 
@@ -405,14 +400,15 @@ glade_activatable_editor_new (GladeWidgetAdaptor *adaptor,
 	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 6, 0, 12, 0);
 	gtk_container_add (GTK_CONTAINER (frame), alignment);
 
-	table = gtk_table_new (0, 0, FALSE);
+	table = gtk_grid_new ();
+	gtk_orientable_set_orientation (GTK_ORIENTABLE (table), GTK_ORIENTATION_VERTICAL);
+	gtk_grid_set_row_spacing (GTK_GRID (table), 4);
+
 	gtk_container_add (GTK_CONTAINER (alignment), table);
 
-	group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
-
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "related-action", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, row, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, row++, group);
+	table_attach (table, eprop->item_label, 0, row);
+	table_attach (table, GTK_WIDGET (eprop), 1, row++);
 	activatable_editor->properties = g_list_prepend (activatable_editor->properties, eprop);
 
 	g_signal_connect (G_OBJECT (eprop), "commit",
@@ -421,8 +417,8 @@ glade_activatable_editor_new (GladeWidgetAdaptor *adaptor,
 				G_CALLBACK (related_action_post_commit), activatable_editor);
 
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "use-action-appearance", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, row, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, row++, group);
+	table_attach (table, eprop->item_label, 0, row);
+	table_attach (table, GTK_WIDGET (eprop), 1, row++);
 	activatable_editor->properties = g_list_prepend (activatable_editor->properties, eprop);
 
 	gtk_widget_show_all (GTK_WIDGET (activatable_editor));

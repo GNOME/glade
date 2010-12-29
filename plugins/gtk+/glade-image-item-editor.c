@@ -307,21 +307,16 @@ custom_toggled (GtkWidget            *widget,
 			     item_editor->loaded_widget);
 }
 
-
 static void
 table_attach (GtkWidget *table, 
 	      GtkWidget *child, 
-	      gint pos, gint row,
-	      GtkSizeGroup *group)
+	      gint pos, gint row)
 {
-	gtk_table_attach (GTK_TABLE (table), child,
-			  pos, pos+1, row, row +1,
-			  pos ? 0 : GTK_EXPAND | GTK_FILL,
-			  GTK_EXPAND | GTK_FILL,
-			  3, 1);
+	gtk_grid_attach (GTK_GRID (table), child,
+			 pos, row, 1, 1);
 
 	if (pos)
-		gtk_size_group_add_widget (group, child);
+		gtk_widget_set_hexpand (child, TRUE);
 }
 
 GtkWidget *
@@ -331,7 +326,6 @@ glade_image_item_editor_new (GladeWidgetAdaptor *adaptor,
 	GladeImageItemEditor    *item_editor;
 	GladeEditorProperty     *eprop;
 	GtkWidget               *label, *alignment, *frame, *main_table, *table, *vbox;
-	GtkSizeGroup            *group;
 	gchar                   *str;
 
 	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
@@ -344,52 +338,44 @@ glade_image_item_editor_new (GladeWidgetAdaptor *adaptor,
 	gtk_box_pack_start (GTK_BOX (item_editor), GTK_WIDGET (embed), FALSE, FALSE, 0);
 
 	/* Put a radio button to control use-stock here on top... */
-	main_table = gtk_table_new (0, 0, FALSE);
+	main_table = gtk_grid_new ();
+	gtk_orientable_set_orientation (GTK_ORIENTABLE (main_table), GTK_ORIENTATION_VERTICAL);
+	gtk_grid_set_row_spacing (GTK_GRID (main_table), 4);
 	gtk_box_pack_start (GTK_BOX (item_editor), main_table, FALSE, FALSE, 8);
 
 	item_editor->stock_radio = gtk_radio_button_new_with_label (NULL, _("Stock Item:"));
-	table_attach (main_table, item_editor->stock_radio, 0, 0, NULL);
+	table_attach (main_table, item_editor->stock_radio, 0, 0);
 
 	alignment = gtk_alignment_new (0.5F, 0.5F, 1.0F, 1.0F);
 	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 6, 0, 12, 0);
-	gtk_table_attach (GTK_TABLE (main_table), alignment,
-			  0, 2, /* left and right */ 
-			  1, 2, /* top and bottom */
-			  GTK_EXPAND | GTK_FILL,
-			  GTK_EXPAND | GTK_FILL,
-			  3, 6);
+	gtk_grid_attach (GTK_GRID (main_table), alignment, 0, 1, 2, 1);
+	gtk_widget_set_hexpand (alignment, TRUE);
 
-	table = gtk_table_new (0, 0, FALSE);
+	table = gtk_grid_new ();
+	gtk_orientable_set_orientation (GTK_ORIENTABLE (table), GTK_ORIENTATION_VERTICAL);
+	gtk_grid_set_row_spacing (GTK_GRID (table), 4);
 	gtk_container_add (GTK_CONTAINER (alignment), table);
-
-	group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
 	/* The stock item */
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "stock", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, 0, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 0, group);
+	table_attach (table, eprop->item_label, 0, 0);
+	table_attach (table, GTK_WIDGET (eprop), 1, 0);
 	item_editor->properties = g_list_prepend (item_editor->properties, eprop);
 
 	/* An accel group for the item's accelerator */
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "accel-group", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, 1, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 1, group);
+	table_attach (table, eprop->item_label, 0, 1);
+	table_attach (table, GTK_WIDGET (eprop), 1, 1);
 	item_editor->properties = g_list_prepend (item_editor->properties, eprop);
-
-	g_object_unref (group);
 
 	/* Now put a radio button in the same table for the custom image editing */
 	item_editor->custom_radio = gtk_radio_button_new_with_label_from_widget
 		(GTK_RADIO_BUTTON (item_editor->stock_radio),
 		 _("Custom label and image:"));
-	table_attach (main_table, item_editor->custom_radio, 0, 2, NULL);
+	table_attach (main_table, item_editor->custom_radio, 0, 2);
 	vbox = gtk_vbox_new (FALSE, 0);
-	gtk_table_attach (GTK_TABLE (main_table), vbox,
-			  0, 2, /* left and right */ 
-			  3, 4, /* top and bottom */
-			  GTK_EXPAND | GTK_FILL,
-			  GTK_EXPAND | GTK_FILL,
-			  3, 6);
+	gtk_grid_attach (GTK_GRID (main_table), vbox, 0, 3, 2, 1);
+	gtk_widget_set_hexpand (vbox, TRUE);
 
 	/* Label area frame... */
 	str = g_strdup_printf ("<b>%s</b>", _("Edit Label"));
@@ -406,24 +392,22 @@ glade_image_item_editor_new (GladeWidgetAdaptor *adaptor,
 	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 6, 0, 12, 0);
 	gtk_container_add (GTK_CONTAINER (frame), alignment);
 
-	table = gtk_table_new (0, 0, FALSE);
+	table = gtk_grid_new ();
+	gtk_orientable_set_orientation (GTK_ORIENTABLE (table), GTK_ORIENTATION_VERTICAL);
+	gtk_grid_set_row_spacing (GTK_GRID (table), 4);
 	gtk_container_add (GTK_CONTAINER (alignment), table);
-
-	group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
 	/* The menu label... */
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "label", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, 0, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 0, group);
+	table_attach (table, eprop->item_label, 0, 0);
+	table_attach (table, GTK_WIDGET (eprop), 1, 0);
 	item_editor->properties = g_list_prepend (item_editor->properties, eprop);
 
 	/* Whether to use-underline... */
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "use-underline", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, 1, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 1, group);
+	table_attach (table, eprop->item_label, 0, 1);
+	table_attach (table, GTK_WIDGET (eprop), 1, 1);
 	item_editor->properties = g_list_prepend (item_editor->properties, eprop);
-
-	g_object_unref (group);
 
 	/* Internal Image area... */
 	str = g_strdup_printf ("<b>%s</b>", _("Edit Image"));

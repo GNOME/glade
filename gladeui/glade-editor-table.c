@@ -33,7 +33,7 @@ static void      glade_editor_table_editable_init      (GladeEditableIface    *i
 static void      glade_editor_table_realize            (GtkWidget             *widget);
 static void      glade_editor_table_grab_focus         (GtkWidget             *widget);
 
-G_DEFINE_TYPE_WITH_CODE (GladeEditorTable, glade_editor_table, GTK_TYPE_TABLE,
+G_DEFINE_TYPE_WITH_CODE (GladeEditorTable, glade_editor_table, GTK_TYPE_GRID,
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
                                                 glade_editor_table_editable_init));
 
@@ -65,7 +65,8 @@ glade_editor_table_class_init (GladeEditorTableClass *klass)
 static void
 glade_editor_table_init (GladeEditorTable *self)
 {
-	self->group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
+	gtk_orientable_set_orientation (GTK_ORIENTABLE (self), GTK_ORIENTATION_VERTICAL);
+	gtk_grid_set_row_spacing (GTK_GRID (self), 4);
 }
 
 static void
@@ -82,10 +83,6 @@ glade_editor_table_dispose (GObject *object)
 	table->name_entry = NULL;
 
 	glade_editable_load (GLADE_EDITABLE (table), NULL);
-
-	if (table->group) 
-		g_object_unref (table->group);
-	table->group = NULL;
 
 	G_OBJECT_CLASS (glade_editor_table_parent_class)->dispose (object);
 }
@@ -259,15 +256,11 @@ glade_editor_table_attach (GladeEditorTable *table,
 			   GtkWidget *child, 
 			   gint pos, gint row)
 {
-	gtk_table_attach (GTK_TABLE (table), child,
-			  pos, pos+1, row, row +1,
-			  pos ? 0 : GTK_EXPAND | GTK_FILL,
-			  0,
-			  3, 1);
-	
-	if (pos)
-		gtk_size_group_add_widget (table->group, child);
+	gtk_grid_attach (GTK_GRID (table), child,
+			 pos, row, 1, 1);
 
+	if (pos)
+		gtk_widget_set_hexpand (child, TRUE);
 }
 
 static gint

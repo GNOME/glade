@@ -189,17 +189,13 @@ glade_image_editor_grab_focus (GtkWidget *widget)
 static void
 table_attach (GtkWidget *table, 
 	      GtkWidget *child, 
-	      gint pos, gint row,
-	      GtkSizeGroup *group)
+	      gint pos, gint row)
 {
-	gtk_table_attach (GTK_TABLE (table), child,
-			  pos, pos+1, row, row +1,
-			  pos ? 0 : GTK_EXPAND | GTK_FILL,
-			  GTK_EXPAND | GTK_FILL,
-			  3, 1);
+	gtk_grid_attach (GTK_GRID (table), child,
+			 pos, row, 1, 1);
 
 	if (pos)
-		gtk_size_group_add_widget (group, child);
+		gtk_widget_set_hexpand (child, TRUE);
 }
 
 static void
@@ -329,7 +325,6 @@ glade_image_editor_new (GladeWidgetAdaptor *adaptor,
 	GladeImageEditor    *image_editor;
 	GladeEditorProperty *eprop;
 	GtkWidget           *table, *frame, *alignment, *label, *hbox;
-	GtkSizeGroup        *group;
 	gchar               *str;
 
 	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
@@ -355,10 +350,10 @@ glade_image_editor_new (GladeWidgetAdaptor *adaptor,
 	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 6, 0, 12, 0);
 	gtk_container_add (GTK_CONTAINER (frame), alignment);
 
-	table = gtk_table_new (0, 0, FALSE);
+	table = gtk_grid_new ();
+	gtk_orientable_set_orientation (GTK_ORIENTABLE (table), GTK_ORIENTATION_VERTICAL);
+	gtk_grid_set_row_spacing (GTK_GRID (table), 4);
 	gtk_container_add (GTK_CONTAINER (alignment), table);
-
-	group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
 	/* Stock image... */
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "stock", FALSE, TRUE);
@@ -366,8 +361,8 @@ glade_image_editor_new (GladeWidgetAdaptor *adaptor,
 	image_editor->stock_radio = gtk_radio_button_new (NULL);
 	gtk_box_pack_start (GTK_BOX (hbox), image_editor->stock_radio, FALSE, FALSE, 2);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
-	table_attach (table, hbox, 0, 0, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 0, group);
+	table_attach (table, hbox, 0, 0);
+	table_attach (table, GTK_WIDGET (eprop), 1, 0);
 	image_editor->properties = g_list_prepend (image_editor->properties, eprop);
 
 	/* Icon theme image... */
@@ -377,8 +372,8 @@ glade_image_editor_new (GladeWidgetAdaptor *adaptor,
 	  (GTK_RADIO_BUTTON (image_editor->stock_radio));
 	gtk_box_pack_start (GTK_BOX (hbox), image_editor->icon_radio, FALSE, FALSE, 2);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
-	table_attach (table, hbox, 0, 1, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 1, group);
+	table_attach (table, hbox, 0, 1);
+	table_attach (table, GTK_WIDGET (eprop), 1, 1);
 	image_editor->properties = g_list_prepend (image_editor->properties, eprop);
 
 	/* Filename... */
@@ -388,11 +383,9 @@ glade_image_editor_new (GladeWidgetAdaptor *adaptor,
 	  (GTK_RADIO_BUTTON (image_editor->stock_radio));
 	gtk_box_pack_start (GTK_BOX (hbox), image_editor->file_radio, FALSE, FALSE, 2);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
-	table_attach (table, hbox, 0, 2, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 2, group);
+	table_attach (table, hbox, 0, 2);
+	table_attach (table, GTK_WIDGET (eprop), 1, 2);
 	image_editor->properties = g_list_prepend (image_editor->properties, eprop);
-
-	g_object_unref (group);
 
 	/* Image size frame... */
 	str = g_strdup_printf ("<b>%s</b>", _("Set Image Size"));
@@ -408,23 +401,22 @@ glade_image_editor_new (GladeWidgetAdaptor *adaptor,
 	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 6, 0, 12, 0);
 	gtk_container_add (GTK_CONTAINER (frame), alignment);
 
-	table = gtk_table_new (0, 0, FALSE);
+	table = gtk_grid_new ();
+	gtk_orientable_set_orientation (GTK_ORIENTABLE (table), GTK_ORIENTATION_VERTICAL);
+	gtk_grid_set_row_spacing (GTK_GRID (table), 4);
 	gtk_container_add (GTK_CONTAINER (alignment), table);
-	group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
 	/* Icon Size... */
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "icon-size", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, 0, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 0, group);
+	table_attach (table, eprop->item_label, 0, 0);
+	table_attach (table, GTK_WIDGET (eprop), 1, 0);
 	image_editor->properties = g_list_prepend (image_editor->properties, eprop);
 
 	/* Pixel Size... */
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "pixel-size", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, 1, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 1, group);
+	table_attach (table, eprop->item_label, 0, 1);
+	table_attach (table, GTK_WIDGET (eprop), 1, 1);
 	image_editor->properties = g_list_prepend (image_editor->properties, eprop);
-
-	g_object_unref (group);
 
 	/* Connect radio button signals... */
 	g_signal_connect (G_OBJECT (image_editor->stock_radio), "toggled",

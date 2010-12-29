@@ -68,7 +68,6 @@ struct _GladeBaseEditorPrivate
 	GladeWidget *gcontainer; /* The container we are editing */
 	
 	/* Editor UI */
-	GtkSizeGroup *group;
 	GtkWidget *paned, *table, *treeview, *main_scroll, *notebook;
 	GtkWidget *remove_button;
 	GladeSignalEditor *signal_editor;
@@ -376,24 +375,20 @@ glade_base_editor_table_attach (GladeBaseEditor *e,
 				GtkWidget *child1,
 				GtkWidget *child2)
 {
-	GtkTable *table = GTK_TABLE (e->priv->table);
+	GtkGrid *table = GTK_GRID (e->priv->table);
 	gint row = e->priv->row;
 	
 	if (child1)
 	{
-		gtk_table_attach (table, child1, 0, 1, row, row + 1,
-				  GTK_EXPAND | GTK_FILL, GTK_FILL, 2, 0);
+		gtk_grid_attach (table, child1, 0, row, 1, 1);
+		gtk_widget_set_hexpand (child1, TRUE);
 		gtk_widget_show (child1);
 	}
 	
 	if (child2)
 	{
-		gtk_table_attach (table, child2, 1, 2, row, row + 1,
-				  0, GTK_FILL, 2, 0);
+		gtk_grid_attach (table, child2, 1, row, 1, 1);
 		gtk_widget_show (child2);
-
-
-		gtk_size_group_add_widget (e->priv->group, child2);
 	}
 	
 	e->priv->row++;
@@ -1272,10 +1267,6 @@ glade_base_editor_dispose (GObject *object)
 	glade_base_editor_project_disconnect (cobj);
 	cobj->priv->project = NULL;
 
-	if (cobj->priv->group)
-		cobj->priv->group =
-			(g_object_unref (cobj->priv->group), NULL);
-
 	G_OBJECT_CLASS(parent_class)->dispose (object);
 }
 
@@ -1682,8 +1673,6 @@ glade_base_editor_init (GladeBaseEditor *editor)
 	gtk_box_set_spacing (GTK_BOX (editor), 8);
 	
 	e = editor->priv = g_new0(GladeBaseEditorPrivate, 1);
-
-	e->group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 	
 	/* Paned */
 	e->paned = paned = gtk_vpaned_new ();
@@ -1797,9 +1786,11 @@ glade_base_editor_init (GladeBaseEditor *editor)
 	gtk_box_pack_start (GTK_BOX (vbox), scroll, TRUE, TRUE, 0);
 
 	/* Tables */
-	e->table = gtk_table_new (1, 2, FALSE);
+	e->table = gtk_grid_new ();
+	gtk_orientable_set_orientation (GTK_ORIENTABLE (e->table), GTK_ORIENTATION_VERTICAL);
+	gtk_grid_set_column_spacing (GTK_GRID (e->table), 4);
+	gtk_grid_set_row_spacing (GTK_GRID (e->table), 4);
 	gtk_widget_show (e->table);
-	gtk_table_set_row_spacings (GTK_TABLE (e->table), 4);
 	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scroll), e->table);
 
 	/* Signal Editor */
@@ -2110,8 +2101,9 @@ glade_base_editor_add_editable (GladeBaseEditor     *editor,
 	gtk_widget_show (GTK_WIDGET (editable));
 
 	row = editor->priv->row;
-	gtk_table_attach (GTK_TABLE (editor->priv->table), GTK_WIDGET (editable), 0, 2, row, row + 1,
-			  GTK_FILL, GTK_EXPAND | GTK_FILL, 2, 0);
+
+	gtk_grid_attach (GTK_GRID (editor->priv->table), GTK_WIDGET (editable), 0, row, 2, 1);
+	gtk_widget_set_hexpand (GTK_WIDGET (editable), TRUE);
 
 	editor->priv->row++;
 
@@ -2145,8 +2137,8 @@ glade_base_editor_add_label (GladeBaseEditor *editor, gchar *str)
 	gtk_label_set_markup (GTK_LABEL (label), markup);
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
 	gtk_misc_set_padding (GTK_MISC (label), 0, 6);
-	gtk_table_attach (GTK_TABLE (editor->priv->table), label, 0, 2, row, row + 1,
-			  GTK_FILL, GTK_FILL, 2, 0);
+
+	gtk_grid_attach (GTK_GRID (editor->priv->table), label, 0, row, 2, 1);
 	gtk_widget_show (label);
 	editor->priv->row++;
 	

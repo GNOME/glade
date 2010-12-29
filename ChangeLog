@@ -1,3 +1,14 @@
+2010-12-29  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-base-editor.c, gladeui/glade-editor-property.c,
+	gladeui/glade-editor-table.c, gladeui/glade-editor-table.h,
+	plugins/gtk+/glade-activatable-editor.c, plugins/gtk+/glade-button-editor.c,
+	plugins/gtk+/glade-entry-editor.c, plugins/gtk+/glade-image-editor.c,
+	plugins/gtk+/glade-image-item-editor.c, plugins/gtk+/glade-label-editor.c,
+	plugins/gtk+/glade-label-editor.h, plugins/gtk+/glade-tool-button-editor.c:
+	Removed the GtkTables and use GtkGrid in property editors so that line wrapping
+	is hieght-for-width.
+
 2010-12-28  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/Makefile.am, gladeui/glade.h, gladeui/glade-clipboard.c, gladeui/glade-app.[ch],
