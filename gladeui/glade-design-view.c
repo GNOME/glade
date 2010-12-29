@@ -155,7 +155,7 @@ glade_design_view_get_property (GObject    *object,
 static void
 glade_design_view_init (GladeDesignView *view)
 {
-	GtkWidget *viewport, *filler;
+	GtkWidget *viewport, *filler, *align;
 
 	view->priv = GLADE_DESIGN_VIEW_GET_PRIVATE (view);
 
@@ -184,10 +184,17 @@ glade_design_view_init (GladeDesignView *view)
 	filler = gtk_label_new (NULL);
 	gtk_widget_show (filler);
 	gtk_box_pack_start (GTK_BOX (view->priv->progress_window), filler, TRUE, TRUE, 0);
+
+	align = gtk_alignment_new (0.5, 0.5, 0.75, 1.0);
+	gtk_widget_show (align);
+	gtk_box_pack_start (GTK_BOX (view->priv->progress_window), align, FALSE, TRUE, 0);
+
 	view->priv->progress = gtk_progress_bar_new ();
 	gtk_progress_bar_set_show_text (GTK_PROGRESS_BAR (view->priv->progress), TRUE);
+	gtk_progress_bar_set_ellipsize (GTK_PROGRESS_BAR (view->priv->progress), PANGO_ELLIPSIZE_END);
 	gtk_widget_show (view->priv->progress);
-	gtk_box_pack_start (GTK_BOX (view->priv->progress_window), view->priv->progress, FALSE, TRUE, 0);
+	gtk_container_add (GTK_CONTAINER (align), view->priv->progress);
+
 	filler = gtk_label_new (NULL);
 	gtk_widget_show (filler);
 	gtk_box_pack_start (GTK_BOX (view->priv->progress_window), filler, TRUE, TRUE, 0);
