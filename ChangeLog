@@ -9,6 +9,12 @@
 	Removed the GtkTables and use GtkGrid in property editors so that line wrapping
 	is hieght-for-width.
 
+	* gladeui/glade-editor-property.c: Make all input widgets want to expand.
+
+	* plugins/gtk+/glade-cell-renderer-editor.c: Fixed to use a GtkGrid to align the
+	  properties and do height-for-width, also now use GtkComboBox:fixed-width = FALSE
+	  to allow popups to show the full column values instead of the old hack in place.
+
 2010-12-28  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/Makefile.am, gladeui/glade.h, gladeui/glade-clipboard.c, gladeui/glade-app.[ch],

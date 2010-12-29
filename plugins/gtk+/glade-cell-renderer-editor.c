@@ -315,8 +315,9 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor  *adaptor,
 	GladeEditorProperty      *eprop;
 	GladePropertyClass       *pclass, *attr_pclass, *use_attr_pclass;
 	GList                    *list, *sorted;
-	GtkWidget                *hbox, *separator;
+	GtkWidget                *hbox_left, *hbox_right, *grid;
 	gchar                    *str;
+	gint                      row = 0;
 
 	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
 	g_return_val_if_fail (GLADE_IS_EDITABLE (embed), NULL);
@@ -326,6 +327,12 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor  *adaptor,
 
 	/* Pack the parent on top... */
 	gtk_box_pack_start (GTK_BOX (renderer_editor), GTK_WIDGET (embed), FALSE, FALSE, 0);
+
+	/* Next pack in a grid for all the renderers */
+	grid = gtk_grid_new ();
+	gtk_orientable_set_orientation (GTK_ORIENTABLE (grid), GTK_ORIENTATION_VERTICAL);
+	gtk_grid_set_row_spacing (GTK_GRID (grid), 4);
+	gtk_box_pack_start (GTK_BOX (renderer_editor), grid, FALSE, FALSE, 0);
 
 	sorted = get_sorted_properties (adaptor, type);
 
@@ -357,13 +364,10 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor  *adaptor,
 			tab->attr_pclass     = attr_pclass;
 			tab->use_attr_pclass = use_attr_pclass;
 
-			/* Spacing */
-			separator = gtk_hbox_new (FALSE, 0);
-			gtk_box_pack_start (GTK_BOX (renderer_editor), separator, FALSE, FALSE, 4);
-
-
 			/* Label appearance... */
-			hbox   = gtk_hbox_new (FALSE, 0);
+			hbox_left  = gtk_hbox_new (FALSE, 0);
+			hbox_right = gtk_hbox_new (FALSE, 0);
+			gtk_widget_set_hexpand (hbox_right, TRUE);
 
 			tab->attributes_check = gtk_check_button_new ();
 			str    = g_strdup_printf (_("Retrieve %s from model (type %s)"),
@@ -371,16 +375,12 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor  *adaptor,
 			gtk_widget_set_tooltip_text (tab->attributes_check, str);
 			g_free (str);
 
-			gtk_box_pack_start (GTK_BOX (hbox), tab->attributes_check, FALSE, FALSE, 4);
-			gtk_box_pack_start (GTK_BOX (renderer_editor), hbox, FALSE, FALSE, 0);
-
-			/* A Hack so that PANGO_WRAP_WORD_CHAR works nicely */
-			g_object_set_data (G_OBJECT (hbox), "attributes-check", tab->attributes_check);
+			gtk_box_pack_start (GTK_BOX (hbox_left), tab->attributes_check, FALSE, FALSE, 4);
 
 			/* Edit property */
 			eprop           = glade_widget_adaptor_create_eprop (adaptor, pclass, TRUE);
-			gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 4);
-			gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (eprop), FALSE, FALSE, 4);
+			gtk_box_pack_start (GTK_BOX (hbox_left), eprop->item_label, TRUE, TRUE, 4);
+			gtk_box_pack_start (GTK_BOX (hbox_right), GTK_WIDGET (eprop), FALSE, FALSE, 4);
 			renderer_editor->properties = g_list_prepend (renderer_editor->properties, eprop);
 
 			tab->use_prop_label = eprop->item_label;
@@ -388,8 +388,11 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor  *adaptor,
 
 			/* Edit attribute */
 			eprop = glade_widget_adaptor_create_eprop (adaptor, attr_pclass, TRUE);
-			gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (eprop), FALSE, FALSE, 4);
+			gtk_box_pack_start (GTK_BOX (hbox_right), GTK_WIDGET (eprop), FALSE, FALSE, 4);
 			renderer_editor->properties = g_list_prepend (renderer_editor->properties, eprop);
+
+			gtk_grid_attach (GTK_GRID (grid), hbox_left, 0, row, 1, 1);
+			gtk_grid_attach (GTK_GRID (grid), hbox_right, 1, row++, 1, 1);
 
 			tab->use_attr_label = eprop->item_label;
 			tab->use_attr_eprop = GTK_WIDGET (eprop);
@@ -568,37 +571,6 @@ spin_changed (GtkWidget           *spin,
 	g_value_unset (&val);
 }
 
-static void
-combo_popup_down (GtkWidget *combo,
-		  GParamSpec *spec,
-		  GtkCellRenderer *cell)
-{
-	gboolean popup_shown = FALSE;
-
-	g_object_get (G_OBJECT (combo), "popup-shown", &popup_shown, NULL);
-
-	g_object_ref (cell);
-
-	gtk_cell_layout_clear (GTK_CELL_LAYOUT (combo));
-
-	gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (combo), cell, TRUE);
-	gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (combo), cell,
-					"text", 0, NULL);
-
-	g_object_unref (cell);
-
-	if (popup_shown)
-		g_object_set (cell, 
-			      "ellipsize", PANGO_ELLIPSIZE_NONE,
-			      "width", -1, 
-			      NULL);
-	else
-		g_object_set (cell, 
-			      "ellipsize", PANGO_ELLIPSIZE_END,
-			      "width", 60, 
-			      NULL);
-}
-
 static GtkWidget *
 glade_eprop_cell_attribute_create_input (GladeEditorProperty *eprop)
 {
@@ -615,13 +587,15 @@ glade_eprop_cell_attribute_create_input (GladeEditorProperty *eprop)
 	eprop_attribute->columns = (GtkTreeModel *)gtk_list_store_new (1, G_TYPE_STRING);
 	eprop_attribute->combo   = gtk_combo_box_new_with_model (eprop_attribute->columns);
 
+	gtk_combo_box_set_popup_fixed_width (GTK_COMBO_BOX (eprop_attribute->combo), FALSE);
+
 	/* Add cell renderer */
 	cell = gtk_cell_renderer_text_new ();
 	g_object_set (cell,
 		      "xpad", 0,
 		      "xalign", 0.0F,
  		      "ellipsize", PANGO_ELLIPSIZE_END,
-		      "width", 60,
+		      "width-chars", 10,
 		      NULL);
 
 	gtk_cell_layout_clear (GTK_CELL_LAYOUT (eprop_attribute->combo));
@@ -629,9 +603,6 @@ glade_eprop_cell_attribute_create_input (GladeEditorProperty *eprop)
 	gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (eprop_attribute->combo), cell, TRUE);
 	gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (eprop_attribute->combo), cell,
 					"text", 0, NULL);
-
-	g_signal_connect (G_OBJECT (eprop_attribute->combo), "notify::popup-shown",
-			  G_CALLBACK (combo_popup_down), cell);
 
  	gtk_box_pack_start (GTK_BOX (hbox), eprop_attribute->spin, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop_attribute->combo, FALSE, FALSE, 0);
