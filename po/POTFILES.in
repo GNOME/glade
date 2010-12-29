@@ -3,7 +3,7 @@
 
 
 # Main application
-data/glade-3.desktop.in.in
+data/glade.desktop.in.in
 src/main.c
 src/glade-close-button.c
 src/glade-window.c
@@ -11,9 +11,11 @@ src/glade-window.c
 # libgladeui shared core library
 gladeui/glade-app.c
 gladeui/glade-builtins.c
+gladeui/glade-design-layout.c
+gladeui/glade-design-view.c
+gladeui/glade-previewer.c
 gladeui/glade-base-editor.c
 gladeui/glade-catalog.c
-gladeui/glade-clipboard-view.c
 gladeui/glade-clipboard.c
 gladeui/glade-command.c
 gladeui/glade-cursor.c
@@ -41,7 +43,6 @@ gladeui/glade-named-icon-chooser-dialog.c
 gladeui/icon-naming-spec.c
 
 # gtk plugin backend
-plugins/gtk+/glade-convert.c
 plugins/gtk+/glade-attributes.c
 plugins/gtk+/glade-gtk.c
 plugins/gtk+/glade-accels.c
