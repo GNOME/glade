@@ -9,7 +9,7 @@ m4_define(glade_version, glade_major_version.glade_minor_version.glade_micro_ver
 
 AC_INIT([glade], [glade_version],
 	[http://bugzilla.gnome.org/enter_bug.cgi?product=glade3],
-	[glade3],
+	[glade],
 	[http://glade.gnome.org/])
 
 AC_CONFIG_HEADERS([config.h])

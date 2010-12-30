@@ -7,6 +7,11 @@
 	the runtime, modified the backend appropriately to create a GladeFixed for widgets that were
 	using the "fixed" property.
 
+	* configure.ac: Fixed package name to be 'glade' and not 'glade3', this was
+	  screwing up the installation directory and loading catalogs/modues for GTK+ 2.x.
+	  (i.e. from ${prefix}/share/glade3/catalogs instead of ${prefix}/share/glade/catalogs
+	  which is the new path).
+
 2010-12-29  Javier Jardón <jjardon@gnome.org>
 
 	* configure.ac: Use upstream gettext
