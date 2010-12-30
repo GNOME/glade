@@ -48,14 +48,15 @@ enum
 
 struct _GladeDesignLayout
 {
-	GtkBin parent_instance;
-
+	GtkBin     parent_instance;
+	
 	GladeDesignLayoutPrivate *priv;
 };
 
 struct _GladeDesignLayoutClass
 {
 	GtkBinClass parent_class;
+
 	gboolean      (*widget_event)        (GladeProject *project,
 					      GladeWidget *gwidget,
 					      GdkEvent *event);

@@ -1231,14 +1231,14 @@ glade_named_icon_chooser_dialog_unmap (GtkWidget *widget)
  * to be fully painted before loading begins
  */ 
 static gboolean
-glade_named_icon_chooser_dialog_expose_event (GtkWidget      *widget,
-					      GdkEventExpose *event)
+glade_named_icon_chooser_dialog_draw (GtkWidget      *widget,
+                                      cairo_t        *cr)
 {
 	GladeNamedIconChooserDialog *dialog = GLADE_NAMED_ICON_CHOOSER_DIALOG (widget);
 	gboolean retval;
 
-	retval = GTK_WIDGET_CLASS (glade_named_icon_chooser_dialog_parent_class)->expose_event (widget,
-												event);
+	retval = GTK_WIDGET_CLASS (glade_named_icon_chooser_dialog_parent_class)->draw (widget,
+												cr);
 	if (!dialog->priv->icons_loaded)
 	{
 		change_icon_theme (GLADE_NAMED_ICON_CHOOSER_DIALOG (widget));
@@ -1365,6 +1365,7 @@ glade_named_icon_chooser_dialog_init (GladeNamedIconChooserDialog *dialog)
 	gtk_window_set_title (GTK_WINDOW (dialog), _("Named Icon Chooser"));
 	
 	gtk_window_set_default_size (GTK_WINDOW (dialog), 610, 480);
+
 #if !GTK_CHECK_VERSION (2, 21, 8)
 	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);	
 #endif
@@ -1521,7 +1522,7 @@ glade_named_icon_chooser_dialog_class_init (GladeNamedIconChooserDialogClass *kl
 	
 	widget_class->map                = glade_named_icon_chooser_dialog_map;
 	widget_class->unmap              = glade_named_icon_chooser_dialog_unmap;
-	widget_class->expose_event       = glade_named_icon_chooser_dialog_expose_event;
+	widget_class->draw               = glade_named_icon_chooser_dialog_draw;
 	widget_class->show_all           = glade_named_icon_chooser_dialog_show_all;
 	widget_class->style_set          = glade_named_icon_chooser_dialog_style_set;
 	widget_class->screen_changed     = glade_named_icon_chooser_dialog_screen_changed;

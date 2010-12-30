@@ -909,9 +909,9 @@ GLADE_MAKE_COMMAND (GladeCommandAddRemove, glade_command_add_remove);
 #define GLADE_IS_COMMAND_ADD_REMOVE_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), GLADE_COMMAND_ADD_REMOVE_TYPE))
 
 static void 
-glade_command_placeholder_destroyed (GtkObject *object, CommandData *cdata)
+glade_command_placeholder_destroyed (GtkWidget *object, CommandData *cdata)
 {
-	if (GTK_OBJECT (cdata->placeholder) == object)
+	if (GTK_WIDGET (cdata->placeholder) == object)
 	{
 		cdata->placeholder = NULL;
 		cdata->handler_id = 0;
@@ -997,7 +997,7 @@ glade_command_add (GList            *widgets,
 	 * fix the bugs as they pop up.
 	 */
 	widget = GLADE_WIDGET (widgets->data);
-	if (placeholder && GTK_IS_WINDOW (widget->object) == FALSE)
+	if (placeholder && GWA_IS_TOPLEVEL (widget->adaptor) == FALSE)
 		me->project = glade_placeholder_get_project (placeholder);
 	else 
 		me->project = glade_app_get_project();
@@ -1023,9 +1023,9 @@ glade_command_add (GList            *widgets,
 		/* Parent */
 		if (parent == NULL)
 			cdata->parent = glade_widget_get_parent (widget);
-		else if (placeholder && GTK_IS_WINDOW (widget->object) == FALSE)
+		else if (placeholder && GWA_IS_TOPLEVEL (widget->adaptor) == FALSE)
 			cdata->parent = glade_placeholder_get_parent (placeholder);
-		else if (GTK_IS_WINDOW (widget->object) == FALSE)
+		else if (GWA_IS_TOPLEVEL (widget->adaptor) == FALSE)
 			cdata->parent = parent;
 
 		/* Placeholder */
@@ -1401,7 +1401,7 @@ glade_command_add_execute (GladeCommandAddRemove *me)
 
 			glade_widget_show (cdata->widget);
 		}
-		glade_app_selection_changed ();
+		glade_app_queue_selection_changed ();
 	}
 	return TRUE;
 	
@@ -1735,12 +1735,11 @@ glade_command_create(GladeWidgetAdaptor *adaptor, GladeWidget *parent, GladePlac
 		return NULL;
 	}
 	widgets = g_list_prepend(widgets, widget);
-	glade_command_push_group(_("Create %s"), g_list_length (widgets) == 1 ? widget->name : _("multiple"));
+	glade_command_push_group(_("Create %s"), widget->name);
 	glade_command_add(widgets, parent, placeholder, FALSE);
 	glade_command_pop_group();
-	
-	if (widgets)
-		g_list_free(widgets);
+
+	g_list_free(widgets);
 	
 	return widget;
 }
@@ -1896,9 +1895,9 @@ glade_command_paste(GList *widgets, GladeWidget *parent, GladePlaceholder *place
 	
 	g_return_if_fail (widgets != NULL);
 	
-/* 	if (placeholder && GTK_IS_WINDOW (widget->object) == FALSE) */
+/* 	if (placeholder && GWA_IS_TOPLEVEL (widget->adaptor) == FALSE) */
 /* 		target_project = glade_placeholder_get_project (placeholder); */
-/* 	else if (parent && GTK_IS_WINDOW (widget->object) == FALSE) */
+/* 	else if (parent && GWA_IS_TOPLEVEL (widget->adaptor) == FALSE) */
 /* 		target_project = glade_widget_get_project (parent); */
 /* 	else  */
 /* 		target_project = glade_app_get_project(); */
@@ -2439,7 +2438,7 @@ find_format_rejected_object (GObject *object, gpointer fmtptr)
 	      /* ... and widget is a non GtkWidget object */
 	      !GTK_IS_WIDGET (widget->object) ||
 	      /* ... and its a non-window toplevel */
-	      (!widget->parent && !GTK_IS_WINDOW (widget->object) && !widget->internal))))
+	      (!widget->parent && g_strcmp0 (widget->adaptor->name, "GtkWindow") && !widget->internal))))
 		return 0;
 
 	return -1;

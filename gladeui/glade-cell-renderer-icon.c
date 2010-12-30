@@ -32,13 +32,12 @@ static void glade_cell_renderer_icon_set_property  (GObject                    *
 						    guint                       param_id,
 						    const GValue               *value,
 						    GParamSpec                 *pspec);
-
 static gboolean glade_cell_renderer_icon_activate  (GtkCellRenderer            *cell,
 						    GdkEvent                   *event,
 						    GtkWidget                  *widget,
 						    const gchar                *path,
-						    GdkRectangle               *background_area,
-						    GdkRectangle               *cell_area,
+						    const GdkRectangle         *background_area,
+						    const GdkRectangle         *cell_area,
 						    GtkCellRendererState        flags);
 
 enum {
@@ -158,8 +157,8 @@ glade_cell_renderer_icon_activate (GtkCellRenderer      *cell,
 				   GdkEvent             *event,
 				   GtkWidget            *widget,
 				   const gchar          *path,
-				   GdkRectangle         *background_area,
-				   GdkRectangle         *cell_area,
+				   const GdkRectangle   *background_area,
+				   const GdkRectangle   *cell_area,
 				   GtkCellRendererState  flags)
 {
   GladeCellRendererIcon *cellicon;

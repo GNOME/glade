@@ -346,6 +346,7 @@ glade_editor_update_class_field (GladeEditor *editor)
 	}
 	else
 	{
+		gtk_widget_hide (editor->class_icon);
 		gtk_widget_hide (editor->warning);
 		gtk_label_set_text (GTK_LABEL (editor->class_label), _("Properties"));
 	}
@@ -722,6 +723,9 @@ glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 
 		editor->loaded_widget = NULL;
 
+		/* Clear class header */
+		glade_editor_update_class_field (editor);
+
 		g_object_notify (G_OBJECT (editor), "widget");
 		return;
 	}
@@ -826,8 +830,7 @@ glade_editor_query_dialog (GladeEditor *editor, GladeWidget *widget)
 	title = g_strdup_printf (_("Create a %s"), widget->adaptor->name);
 
 	dialog = gtk_dialog_new_with_buttons (title, NULL,
-		 			      GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT |
-					      GTK_DIALOG_NO_SEPARATOR,
+		 			      GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
 					      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 					      GTK_STOCK_OK, GTK_RESPONSE_OK,
 					      NULL);
@@ -1201,8 +1204,6 @@ glade_editor_reset_dialog (GladeEditor *editor)
 					      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 					      GTK_STOCK_OK, GTK_RESPONSE_OK,
 					      NULL);
-
-	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 
 	vbox = gtk_vbox_new (FALSE, 6);
 	gtk_widget_show (vbox);

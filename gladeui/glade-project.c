@@ -61,9 +61,11 @@ enum
 	SELECTION_CHANGED,
 	CLOSE,
 	CHANGED,
-	PARSE_FINISHED,
+ 	PARSE_BEGAN,
+ 	PARSE_FINISHED,
 	CONVERT_FINISHED,
 	TARGETS_CHANGED,
+	LOAD_PROGRESS,
 	LAST_SIGNAL
 };
 
@@ -81,8 +83,6 @@ enum
 struct _GladeProjectPrivate
 {
 	gchar *path;            /* The full canonical path of the glade file for this project */
-
-	guint   instance_count; /* How many projects with this name */
 
 	gint   unsaved_number;  /* A unique number for this project if it is untitled */
 
@@ -157,6 +157,11 @@ struct _GladeProjectPrivate
 	GtkWidget *relative_path_entry;
 	GtkWidget *full_path_button;
 
+	/* For the loading progress bars ("load-progress" signal) */
+	gint       progress_step;
+	gint       progress_full;
+	gboolean   load_cancel;
+
 	/* Store preview processes, so we can kill them on close */
 	GHashTable *preview_channels;
 };
@@ -229,6 +234,9 @@ static void         glade_project_model_get_iter_for_object (GladeProject* proje
                                                              GObject* object,
                                                              GtkTreeIter* iter);
 
+
+#define GLADE_PROJECT_LARGE_PROJECT 40
+
 G_DEFINE_TYPE_WITH_CODE (GladeProject, glade_project, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (GTK_TYPE_TREE_MODEL,
                                       gtk_tree_model_iface_init))
@@ -258,12 +266,33 @@ glade_project_list_unref (GList *original_list)
 }
 
 static void
+unparent_objects_recurse (GladeWidget *widget)
+{
+	GladeWidget *child;
+	GList       *children, *list;
+
+	/* Unparent all children */
+	if ((children = 
+	     glade_widget_get_children (widget)) != NULL)
+	{
+		for (list = children; list; list = list->next)
+		{
+			child = glade_widget_get_from_gobject (list->data);
+
+			unparent_objects_recurse (child);
+
+			if (child->internal == NULL)
+				glade_widget_remove_child (widget, child);
+		}
+		g_list_free (children);
+	}
+}
+
+static void
 glade_project_dispose (GObject *object)
 {
 	GladeProject  *project = GLADE_PROJECT (object);
-	GList   *list;
-	GladeWidget   *gwidget;
-	GladeProperty *property;
+	GList         *list, *tree;
 	
 	/* Emit close signal */
 	g_signal_emit (object, glade_project_signals [CLOSE], 0);
@@ -273,41 +302,24 @@ glade_project_dispose (GObject *object)
 	glade_project_list_unref (project->priv->undo_stack);
 	project->priv->undo_stack = NULL;
 
-	/* Unparent all widgets in the heirarchy first 
-	 * (Since we are bookkeeping exact reference counts, we 
-	 * dont want the hierarchy to just get destroyed)
-	 */
-	for (list = project->priv->objects; list; list = list->next)
-	{
-		gwidget = glade_widget_get_from_gobject (list->data);
-
-		if (gwidget->parent &&
-		    gwidget->internal == NULL &&
-		    glade_widget_adaptor_has_child (gwidget->parent->adaptor,
-						    gwidget->parent->object,
-						    gwidget->object))
-			glade_widget_remove_child (gwidget->parent, gwidget);
-
-		/* Release references by way of object properties... */
-		while (gwidget->prop_refs)
-		{
-			property = GLADE_PROPERTY (gwidget->prop_refs->data);
-			glade_property_set (property, NULL);
-		}
-	}
-
 	/* Remove objects from the project */
-	for (list = project->priv->objects; list; list = list->next)
+	tree = g_list_copy (project->priv->tree);
+	for (list = tree; list; list = list->next)
 	{
-		gwidget = glade_widget_get_from_gobject (list->data);
-		g_object_unref (G_OBJECT (list->data)); /* Remove the GladeProject reference */
-		g_object_unref (G_OBJECT (gwidget));  /* Remove the overall "Glade" reference */
+		GladeWidget *gwidget = glade_widget_get_from_gobject (list->data);
+
+		g_object_ref (gwidget);
+
+		glade_project_remove_object (project, list->data);
+
+		unparent_objects_recurse (gwidget);
+
+		g_object_unref (gwidget);
 	}
-	g_list_free (list);
-	g_list_free (project->priv->objects);
-	g_list_free (project->priv->tree);
-	project->priv->tree = NULL;
-	project->priv->objects = NULL;
+	g_list_free (tree);
+
+	g_assert (project->priv->tree == NULL);
+	g_assert (project->priv->objects == NULL);
 
 	G_OBJECT_CLASS (glade_project_parent_class)->dispose (object);
 }
@@ -318,7 +330,6 @@ glade_project_finalize (GObject *object)
 	GladeProject *project = GLADE_PROJECT (object);
 	GList        *list;
 	TopLevelInfo *tinfo;
-	
 
 	/* XXX FIXME: Destroy dialog related sizegroups here... */
 	gtk_widget_destroy (project->priv->prefs_dialog);
@@ -677,7 +688,6 @@ glade_project_init (GladeProject *project)
 		G_TYPE_INSTANCE_GET_PRIVATE ((project), GLADE_TYPE_PROJECT, GladeProjectPrivate);
 
 	priv->path = NULL;
-	priv->instance_count = 0;
 	priv->readonly = FALSE;
 	priv->tree = NULL;
 	priv->toplevels = NULL;
@@ -863,6 +873,21 @@ glade_project_class_init (GladeProjectClass *klass)
 			      GLADE_TYPE_COMMAND, G_TYPE_BOOLEAN);
 
 	/**
+	 * GladeProject::parse-began:
+	 * @gladeproject: the #GladeProject which received the signal.
+	 *
+	 * Emitted when @gladeproject parsing starts.
+	 */
+	glade_project_signals[PARSE_BEGAN] =
+		g_signal_new ("parse-began",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_FIRST,
+			      0, NULL, NULL,
+			      g_cclosure_marshal_VOID__VOID,
+			      G_TYPE_NONE,
+			      0);
+
+	/**
 	 * GladeProject::parse-finished:
 	 * @gladeproject: the #GladeProject which received the signal.
 	 *
@@ -899,21 +924,36 @@ glade_project_class_init (GladeProjectClass *klass)
 			      G_TYPE_NONE,
 			      0);
 
-
-	/**
+        /**
 	 * GladeProject::targets-changed:
-	 * @gladeproject: the #GladeProject which received the signal.
-	 *
-	 * Emitted when @gladeproject target versions change.
-	 */
+         * @gladeproject: the #GladeProject which received the signal.
+         *
+         * Emitted when @gladeproject target versions change.
+         */
 	glade_project_signals[TARGETS_CHANGED] =
 		g_signal_new ("targets-changed",
-			      G_TYPE_FROM_CLASS (object_class),
-			      G_SIGNAL_RUN_FIRST,
-			      0, NULL, NULL,
+                              G_TYPE_FROM_CLASS (object_class),
+                              G_SIGNAL_RUN_FIRST,
+                              0, NULL, NULL,
 			      g_cclosure_marshal_VOID__VOID,
 			      G_TYPE_NONE,
 			      0);
+ 
+	/**
+	 * GladeProject::load-progress:
+	 * @gladeproject: the #GladeProject which received the signal.
+	 * @objects_total: the total amount of objects to load
+	 * @objects_loaded: the current amount of loaded objects
+	 *
+	 * Emitted while @project is loading.
+	 */
+	glade_project_signals[LOAD_PROGRESS] =
+		g_signal_new ("load-progress",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_FIRST,
+			      0, NULL, NULL,
+			      glade_marshal_VOID__INT_INT,
+			      G_TYPE_NONE, 2, G_TYPE_INT, G_TYPE_INT);
 
 	g_object_class_install_property (object_class,
 					 PROP_MODIFIED,
@@ -993,13 +1033,14 @@ glade_project_new (void)
 static void 
 glade_project_fix_object_props (GladeProject *project)
 {
-	GList         *l, *ll;
+	GList         *l, *ll, *objects;
 	GValue        *value;
 	GladeWidget   *gwidget;
 	GladeProperty *property;
 	gchar         *txt;
 
-	for (l = project->priv->objects; l; l = l->next)
+	objects = g_list_copy (project->priv->objects);
+	for (l = objects; l; l = l->next)
 	{
 		gwidget = glade_widget_get_from_gobject (l->data);
 
@@ -1028,6 +1069,7 @@ glade_project_fix_object_props (GladeProject *project)
 			}
 		}
 	}
+	g_list_free (objects);
 }
 
 static gchar *
@@ -1407,8 +1449,74 @@ glade_project_introspect_gtk_version (GladeProject *project)
 }
 
 
+static gint 
+glade_project_count_xml_objects (GladeProject *project, GladeXmlNode *root, gint count)
+{
+	GladeXmlNode    *node;
+
+	for (node = glade_xml_node_get_children (root); 
+	     node; node = glade_xml_node_next (node))
+	{
+		if (glade_xml_node_verify_silent
+		    (node, GLADE_XML_TAG_WIDGET (project->priv->format)))
+			count = glade_project_count_xml_objects (project, node, ++count);
+		else if (glade_xml_node_verify_silent (node, GLADE_XML_TAG_CHILD))
+			count = glade_project_count_xml_objects (project, node, count);			
+	}
+	return count;
+}
+
+void
+glade_project_cancel_load (GladeProject *project)
+{
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+
+	project->priv->load_cancel = TRUE;
+}
+
+gboolean
+glade_project_load_cancelled (GladeProject *project)
+{
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+
+	return project->priv->load_cancel;
+}
+
+void
+glade_project_push_progress (GladeProject *project)
+{
+	g_return_if_fail (GLADE_IS_PROJECT (project));
+
+	project->priv->progress_step++;
+
+	g_signal_emit (project, glade_project_signals [LOAD_PROGRESS], 0,
+		       project->priv->progress_full,
+		       project->priv->progress_step);
+
+#if 0
+	if (project->priv->progress)
+	{
+		gchar  *text;
+		project->priv->progress_step++;
+
+		text = g_strdup_printf ("Loaded %d of %d objects", 
+					project->priv->progress_step,
+					project->priv->progress_full);
+		gtk_progress_bar_set_text (GTK_PROGRESS_BAR (project->priv->progress), text);
+		g_free (text);
+
+		gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (project->priv->progress),
+					       project->priv->progress_step * 1.0 / 
+					       project->priv->progress_full);
+
+		while (gtk_events_pending ())
+			gtk_main_iteration ();
+	}
+#endif
+}
+
 static gboolean
-glade_project_load_from_file (GladeProject *project, const gchar *path)
+glade_project_load_internal (GladeProject *project)
 {
 	GladeXmlContext *context;
 	GladeXmlDoc     *doc;
@@ -1416,23 +1524,24 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 	GladeXmlNode    *node;
 	GladeWidget     *widget;
 	gboolean         has_gtk_dep = FALSE;
+	gint             count;
 
 	project->priv->selection = NULL;
 	project->priv->toplevels = NULL;
 	project->priv->objects = NULL;
 	project->priv->loading = TRUE;
 
-	project->priv->path = glade_util_canonical_path (path);	
-
 	/* get the context & root node of the catalog file */
 	if (!(context = 
-	      glade_xml_context_new_from_path (path,
+	      glade_xml_context_new_from_path (project->priv->path,
 					       NULL, 
 					       NULL)))
 	{
-		g_warning ("Couldn't open glade file [%s].", path);
+		g_warning ("Couldn't open glade file [%s].", project->priv->path);
 		return FALSE;
 	}
+
+	project->priv->mtime = glade_util_get_file_mtime (project->priv->path, NULL);
 
 	doc  = glade_xml_context_get_doc (context);
 	root = glade_xml_doc_get_root (doc);
@@ -1443,15 +1552,19 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 		glade_project_set_format (project, GLADE_PROJECT_FORMAT_GTKBUILDER);
 	else
 	{
-		g_warning ("Couldnt determine project format, skipping %s", path);
+		g_warning ("Couldnt determine project format, skipping %s", 
+			   project->priv->path);
 		glade_xml_context_free (context);
 		return FALSE;
 	}
 
+	/* Emit "parse-began" signal */
+	g_signal_emit (project, glade_project_signals [PARSE_BEGAN], 0);
+
 	/* XXX Need to load project->priv->comment ! */
 	glade_project_read_comment (project, doc);
 
-	if (glade_project_read_requires (project, root, path, &has_gtk_dep) == FALSE)
+	if (glade_project_read_requires (project, root, project->priv->path, &has_gtk_dep) == FALSE)
 	{
 		glade_xml_context_free (context);
 		return FALSE;
@@ -1460,6 +1573,12 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 	glade_project_read_naming_policy (project, root);
 
 	glade_project_read_resource_path (project, root);
+
+	/* Launch a dialog if it's going to take enough time to be
+	 * worth showing at all */
+	count = glade_project_count_xml_objects (project, root, 0);
+	project->priv->progress_full = count;
+	project->priv->progress_step = 0;
 
 	for (node = glade_xml_node_get_children (root); 
 	     node; node = glade_xml_node_next (node))
@@ -1470,9 +1589,19 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 			continue;
 
 		if ((widget = glade_widget_read (project, NULL, node, NULL)) != NULL)
-		{
 			glade_project_add_object (project, NULL, widget->object);
-		}
+
+		if (project->priv->load_cancel)
+			break;
+	}
+
+	/* Finished with the xml context */
+	glade_xml_context_free (context);
+
+	if (project->priv->load_cancel)
+	{
+		project->priv->loading = FALSE;
+		return FALSE;
 	}
 
 	if (!has_gtk_dep)
@@ -1480,11 +1609,6 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 
 	if (glade_util_file_is_writeable (project->priv->path) == FALSE)
 		glade_project_set_readonly (project, TRUE);
-
-	/* Finished with the xml context */
-	glade_xml_context_free (context);
-
-	project->priv->mtime = glade_util_get_file_mtime (project->priv->path, NULL);
 
 	/* Reset project status here too so that you get a clean
 	 * slate after calling glade_project_open().
@@ -1497,17 +1621,45 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
 	 */
 	glade_project_fix_object_props (project);
 
-
 	/* Emit "parse-finished" signal */
 	g_signal_emit (project, glade_project_signals [PARSE_FINISHED], 0);
-	
 
 	/* Update ui with versioning info
 	 */
 	glade_project_verify_project_for_ui (project);
 
+	/* Update various things in the UI */
+	glade_app_update_ui ();
+
 	return TRUE;
 
+}
+
+gboolean
+glade_project_load_from_file (GladeProject *project, 
+			      const gchar  *path)
+{
+	gboolean retval;
+	
+	g_return_val_if_fail (path != NULL, FALSE);
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+	
+	project->priv->path = glade_util_canonical_path (path);	
+	
+	retval = glade_project_load_internal (project);
+	
+	if (retval)
+	{
+		gchar *name, *title;
+
+		/* Update prefs dialogs here... */
+		name = glade_project_get_name (project);
+		title = g_strdup_printf (_("%s preferences"), name);
+		gtk_window_set_title (GTK_WINDOW (project->priv->prefs_dialog), title);
+		g_free (title);
+		g_free (name);
+	}
+	return retval;
 }
 
 /**
@@ -1528,8 +1680,10 @@ glade_project_load (const gchar *path)
 	g_return_val_if_fail (path != NULL, NULL);
 	
 	project = g_object_new (GLADE_TYPE_PROJECT, NULL);
+
+	project->priv->path = glade_util_canonical_path (path);	
 	
-	retval = glade_project_load_from_file (project, path);
+	retval = glade_project_load_internal (project);
 	
 	if (retval)
 	{
@@ -1704,6 +1858,22 @@ glade_project_write_resource_path (GladeProject    *project,
 	}
 }
 
+static gint
+sort_project_dependancies (GObject *a, GObject *b)
+{
+	GladeWidget *ga, *gb;
+
+	ga = glade_widget_get_from_gobject (a);
+	gb = glade_widget_get_from_gobject (b);
+
+	if (glade_widget_adaptor_depends (ga->adaptor, ga, gb))
+		return 1;
+	else if (glade_widget_adaptor_depends (gb->adaptor, gb, ga))
+		return -1;
+	else 
+		return strcmp (ga->name, gb->name);
+}
+
 static GladeXmlContext *
 glade_project_write (GladeProject *project)
 {
@@ -1728,6 +1898,11 @@ glade_project_write (GladeProject *project)
 	glade_project_write_naming_policy (project, context, root);
 
 	glade_project_write_resource_path (project, context, root);
+
+	/* Sort the whole thing */
+	project->priv->objects = 
+		g_list_sort (project->priv->objects, 
+			     (GCompareFunc)sort_project_dependancies);
 
 	for (list = project->priv->objects; list; list = list->next)
 	{
@@ -1763,6 +1938,11 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
 	GladeXmlDoc     *doc;
 	gchar           *canonical_path;
 	gint             ret;
+
+	g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+
+	if (glade_project_is_loading (project))
+		return FALSE;
 
 	if (!glade_project_verify (project, TRUE))
 		return FALSE;
@@ -1907,18 +2087,21 @@ glade_project_preview (GladeProject *project, GladeWidget *gwidget)
 {
 	GladeXmlContext *context;
 	gchar *text;
-	GtkWidget *widget = GTK_WIDGET (gwidget->object);
+	GtkWidget *widget;
 
-	g_return_if_fail (GTK_WIDGET (widget));
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 
 	context = glade_project_write (project);
 
 	text = glade_xml_dump_from_context (context);
 
+	gwidget = glade_widget_get_toplevel (gwidget);
+	if (!GTK_IS_WIDGET (gwidget->object)) return;
+	widget = GTK_WIDGET (gwidget->object);
+
 	glade_project_launch_preview (project, text, widget);
 
-	g_free(text);
+	g_free (text);
 }
 
 /*******************************************************************
@@ -2803,7 +2986,9 @@ glade_project_set_widget_name (GladeProject *project,
 			       GladeWidget  *widget, 
 			       const gchar  *name)
 {
-	gchar  *new_name;
+	gchar       *new_name;
+	GtkTreeIter  iter;
+	GtkTreePath *path;
 
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
@@ -2830,22 +3015,12 @@ glade_project_set_widget_name (GladeProject *project,
 		       0, widget);
 
 	g_free (new_name);
-}
 
-static gint
-sort_project_dependancies (GObject *a, GObject *b)
-{
-	GladeWidget *ga, *gb;
-
-	ga = glade_widget_get_from_gobject (a);
-	gb = glade_widget_get_from_gobject (b);
-
-	if (glade_widget_adaptor_depends (ga->adaptor, ga, gb))
-		return 1;
-	else if (glade_widget_adaptor_depends (gb->adaptor, gb, ga))
-		return -1;
-	else 
-		return 1;
+	/* Notify views about the iter change */
+	glade_project_model_get_iter_for_object (project, widget->object, &iter);
+	path = gtk_tree_model_get_path (GTK_TREE_MODEL (project), &iter);
+	gtk_tree_model_row_changed (GTK_TREE_MODEL (project), path, &iter);
+	gtk_tree_path_free (path);
 }
 
 static gboolean
@@ -2876,6 +3051,47 @@ glade_project_update_previewable (GladeProject *project)
 	g_object_notify (G_OBJECT (project), "previewable");
 }
 
+static void 
+glade_project_notify_row_inserted (GladeProject *project,
+				   GladeWidget  *gwidget)
+{
+	GtkTreeIter       iter;
+	GtkTreePath	 *path;
+
+	/* The state of old iters go invalid and then the new iter is valid
+	 * until the next change */
+	project->priv->stamp++;
+
+	glade_project_model_get_iter_for_object (project, gwidget->object, &iter);
+	path = gtk_tree_model_get_path (GTK_TREE_MODEL (project), &iter);
+	gtk_tree_model_row_inserted (GTK_TREE_MODEL (project), path, &iter);
+	gtk_tree_path_free (path);
+
+	/* XXX Need to check and call this 
+	 * gtk_tree_model_row_has_child_toggled 
+	 */
+}
+
+static void 
+glade_project_notify_row_deleted (GladeProject *project,
+				   GladeWidget  *gwidget)
+{
+	GtkTreeIter    iter;
+	GtkTreePath   *path;
+
+	glade_project_model_get_iter_for_object (project, gwidget->object, &iter);
+	path = gtk_tree_model_get_path (GTK_TREE_MODEL (project), &iter);
+	gtk_tree_model_row_deleted (GTK_TREE_MODEL (project), path);
+	gtk_tree_path_free (path);
+
+	/* XXX Need to check and call this 
+	 * gtk_tree_model_row_has_child_toggled 
+	 */
+
+
+	project->priv->stamp++;
+}
+
 /**
  * glade_project_add_object:
  * @project: the #GladeProject the widget is added to
@@ -2893,7 +3109,6 @@ glade_project_add_object (GladeProject *project,
 	GladeWidget      *gwidget;
 	GList            *list, *children;
 	gchar            *name;
-	GtkTreePath	 *path;
 
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (G_IS_OBJECT      (object));
@@ -2908,10 +3123,15 @@ glade_project_add_object (GladeProject *project,
 	 */
 	if ((gwidget = glade_widget_get_from_gobject (object)) == NULL)
 		return;
-		
-	/* set the project */
-	if (gwidget->project != project)
-		glade_widget_set_project (gwidget, project);
+
+	if (glade_project_has_object (project, object))
+	{
+		/* FIXME: It's possible we need to notify the model iface if this 
+		 * happens to make sure the hierarchy is the same, I dont know, this 
+		 * happens when message dialogs with children are rebuilt but the 
+		 * hierarchy still looks good afterwards. */
+		return;
+	}
 
 	/* Create a name context for newly added toplevels... */
 	if (!gwidget->parent)
@@ -2935,27 +3155,13 @@ glade_project_add_object (GladeProject *project,
 	glade_project_reserve_widget_name (project, gwidget, gwidget->name);
 
 	glade_widget_set_project (gwidget, (gpointer)project);
-	g_object_ref (object);
+	g_object_ref_sink (gwidget);
 
+	/* Be sure to update the lists before emitting signals */
 	if (glade_widget_get_parent (gwidget) == NULL)
-	{
-		project->priv->tree = g_list_insert_sorted (project->priv->tree, object, 
-		                                            (GCompareFunc)sort_project_dependancies);
-	}
+		project->priv->tree = g_list_append (project->priv->tree, object);
 
-	/* Be sure to update the list before emitting signals */
-	project->priv->objects = g_list_prepend (project->priv->objects,
-	                                         object);
-
-	if (!project->priv->loading)
-	{
-		GtkTreeIter iter;
-		glade_project_model_get_iter_for_object (project, object, &iter);
-		path = gtk_tree_model_get_path (GTK_TREE_MODEL (project), &iter);
-	
-		gtk_tree_model_row_inserted (GTK_TREE_MODEL (project), path, &iter);
-		project->priv->stamp++;
-	}
+	project->priv->objects = g_list_prepend (project->priv->objects, object);
 
 	/* NOTE: Sensitive ordering here, we need to recurse after updating
 	 * the tree model listeners (and update those listeners after our
@@ -2994,7 +3200,6 @@ glade_project_has_object (GladeProject *project, GObject *object)
 	return (g_list_find (project->priv->objects, object)) != NULL;
 }
 
-
 /**
  * glade_project_remove_object:
  * @project: a #GladeProject
@@ -3011,8 +3216,6 @@ glade_project_remove_object (GladeProject *project, GObject *object)
 {
 	GladeWidget   *gwidget;
 	GList         *list, *children;
-	GtkTreeIter* iter;
-	GtkTreePath* path;
 	
 	g_return_if_fail (GLADE_IS_PROJECT (project));
 	g_return_if_fail (G_IS_OBJECT      (object));
@@ -3022,7 +3225,8 @@ glade_project_remove_object (GladeProject *project, GObject *object)
 
 	if ((gwidget = glade_widget_get_from_gobject (object)) == NULL)
 		return;
-	
+
+	/* Recurse and remove deepest children first */
 	if ((children = 
 	     glade_widget_get_children (gwidget)) != NULL)
 	{
@@ -3030,38 +3234,24 @@ glade_project_remove_object (GladeProject *project, GObject *object)
 			glade_project_remove_object (project, G_OBJECT (list->data));
 		g_list_free (children);
 	}
-	
+
+	/* Notify views that the row is being deleted *before* deleting it */
+	glade_project_notify_row_deleted (project, gwidget);
+
+	/* Remove selection and release name from the name context */
 	glade_project_selection_remove (project, object, TRUE);
+	glade_project_release_widget_name (project, gwidget,
+					   glade_widget_get_name (gwidget));
 
+	g_signal_emit (G_OBJECT (project),
+		       glade_project_signals [REMOVE_WIDGET],
+		       0,
+		       gwidget);
+
+	/* Update internal data structure (remove from lists) */
+	project->priv->tree    = g_list_remove (project->priv->tree, object);
 	project->priv->objects = g_list_remove (project->priv->objects, object);
-	
-	iter = glade_util_find_iter_by_widget (GTK_TREE_MODEL (project), gwidget,
-	                                       GLADE_PROJECT_MODEL_COLUMN_OBJECT);
-	if (iter)					       
-	{
-		GList *link = g_list_find (project->priv->tree, object);
-
-		path = gtk_tree_model_get_path (GTK_TREE_MODEL (project),
-		                                iter);
-		gtk_tree_model_row_deleted (GTK_TREE_MODEL (project),
-		                            path);
-		project->priv->stamp++;
-		g_object_unref (object);
-		glade_project_release_widget_name (project, gwidget,
-						   glade_widget_get_name (gwidget));
-			
-
-		if (link)
-		{
-			project->priv->tree = g_list_delete_link (project->priv->tree, link);
-		}
-		
-		g_signal_emit (G_OBJECT (project),
-			       glade_project_signals [REMOVE_WIDGET],
-			       0,
-			       gwidget);
-		gtk_tree_iter_free (iter);
-	}
+	g_object_unref (gwidget);
 
 	glade_project_update_previewable (project);
 }
@@ -3073,28 +3263,31 @@ adjust_naming_policy (GladeProject       *project,
 	GList *list, *objects;
 	GladeWidget *widget;
 
-	objects = project->priv->tree;
-
-	/* Remove all toplevels (recursive operation) */
-	for (list = objects; list; list = list->next)
+	/* Ref *all* objects */
+	for (list = project->priv->objects; list; list = list->next)
 	{
 		widget = glade_widget_get_from_gobject (list->data);
-		g_object_ref (widget->object);
 		g_object_ref (widget);
-		glade_project_remove_object (project, widget->object);
 	}
+
+	/* Remove all toplevels (recursive operation) */
+	objects = g_list_copy (project->priv->tree);
+	for (list = objects; list; list = list->next)
+		glade_project_remove_object (project, G_OBJECT (list->data));
 
 	project->priv->naming_policy = policy;
 
 	/* Put the toplevels back with the new policy (recursive operation) */
 	for (list = objects; list; list = list->next)
-	{
-		glade_project_add_object (project, project, widget->object);
-		g_object_unref (widget->object);
-		g_object_unref (widget);
-	}
-
+		glade_project_add_object (project, project, G_OBJECT (list->data));
 	g_list_free (objects);
+
+	/* Unref them now */
+	for (list = project->priv->objects; list; list = list->next)
+	{
+		widget = glade_widget_get_from_gobject (list->data);
+		g_object_ref (widget);
+	}
 }
 
 /*******************************************************************
@@ -3670,7 +3863,6 @@ glade_project_redo_items (GladeProject *project)
 	return menu;
 }
 
-
 void
 glade_project_reset_path (GladeProject *project)
 {
@@ -3775,22 +3967,6 @@ glade_project_get_objects (GladeProject *project)
 	g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
 
 	return project->priv->objects;
-}
-
-guint
-glade_project_get_instance_count (GladeProject *project)
-{
-	g_return_val_if_fail (GLADE_IS_PROJECT (project), 0);
-
-	return project->priv->instance_count;
-}
-
-void
-glade_project_set_instance_count (GladeProject *project, guint instance_count)
-{
-	g_return_if_fail (GLADE_IS_PROJECT (project));
-
-	project->priv->instance_count = instance_count;
 }
 
 /** 
@@ -4124,18 +4300,13 @@ glade_project_build_prefs_box (GladeProject *project)
 		*sizegroup2 = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL),
 		*sizegroup3 = gtk_size_group_new (GTK_SIZE_GROUP_VERTICAL);
 
-	string = g_strdup_printf ("<big><b>%s</b></big>", _("Set options in your project"));
 	main_frame = gtk_frame_new (NULL);
+	gtk_frame_set_shadow_type (GTK_FRAME (main_frame), GTK_SHADOW_NONE);
 	main_alignment = gtk_alignment_new (0.5F, 0.5F, 0.8F, 0.8F);
 	main_box = gtk_vbox_new (FALSE, 0);
 
-	gtk_alignment_set_padding (GTK_ALIGNMENT (main_alignment), 12, 0, 4, 0);
+	gtk_alignment_set_padding (GTK_ALIGNMENT (main_alignment), 0, 0, 4, 0);
 
-	label = gtk_label_new (string);
-	g_free (string);
-	gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
-
-	gtk_frame_set_label_widget (GTK_FRAME (main_frame), label);
 	gtk_container_add (GTK_CONTAINER (main_alignment), main_box);
 	gtk_container_add (GTK_CONTAINER (main_frame), main_alignment);
 
@@ -4418,8 +4589,6 @@ glade_project_build_prefs_dialog (GladeProject *project)
 
 	gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);
 	gtk_box_set_spacing (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), 2);
-
-	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 
 	/* HIG spacings */
 	gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);

@@ -934,8 +934,9 @@ glade_eprop_icon_sources_create_input (GladeEditorProperty *eprop)
 	gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
 
 	eprop_sources->icon_names_store = gtk_list_store_new (1, G_TYPE_STRING);
-	eprop_sources->combo = gtk_combo_box_entry_new_with_model 
-		(GTK_TREE_MODEL (eprop_sources->icon_names_store), 0);
+	eprop_sources->combo = gtk_combo_box_new_with_entry ();
+	gtk_combo_box_set_model (GTK_COMBO_BOX (eprop_sources->combo),
+	                         GTK_TREE_MODEL (eprop_sources->icon_names_store));
 	g_signal_connect (G_OBJECT (gtk_bin_get_child (GTK_BIN (eprop_sources->combo))), "activate",
 			  G_CALLBACK (icon_name_entry_activated), eprop);
 

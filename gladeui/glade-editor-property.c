@@ -243,43 +243,6 @@ glade_editor_property_button_pressed (GtkWidget           *widget,
 }
 
 
-#define EDITOR_COLUMN_SIZE 90
-
-static void
-eprop_item_label_size_request (GtkWidget *widget, GtkRequisition *requisition, 
-			       GladeEditorProperty *eprop)
-{
-	requisition->width = EDITOR_COLUMN_SIZE;
-}
-
-static void
-eprop_item_label_size_allocate_after (GtkWidget *widget, GtkAllocation *allocation,
-				      GladeEditorProperty *eprop)
-{
-	gint width = EDITOR_COLUMN_SIZE;
-	gint icon_width = 0;
-
-	if (gtk_widget_get_visible (eprop->warning) && gtk_widget_get_mapped (eprop->warning))
-	{
-		GtkRequisition req = { -1, -1 };
-		gtk_widget_size_request (eprop->warning, &req);
-		/* Here we have to subtract the icon and remaining
-		 * padding inside eprop->item_label so that we are
-		 * only dealing with the size of the label.
-		 * (note the '4' here comes from the hbox spacing).
-		 */
-		icon_width = req.width + 4;
-	}
-
-	if (allocation->width > width)
-		width = allocation->width;
-
-	gtk_widget_set_size_request (eprop->label, CLAMP (width - icon_width, 0, width), -1);
-	/* Sometimes labels aren't drawn correctly after resize without this */
-	gtk_widget_queue_draw (eprop->label);
-}
-
-
 static GObject *
 glade_editor_property_constructor (GType                  type,
 				   guint                  n_construct_properties,
@@ -324,12 +287,6 @@ glade_editor_property_constructor (GType                  type,
 
 	gtk_label_set_line_wrap (GTK_LABEL(eprop->label), TRUE);
 	gtk_label_set_line_wrap_mode (GTK_LABEL(eprop->label), PANGO_WRAP_WORD_CHAR);
-
-	/* A Hack so that PANGO_WRAP_WORD_CHAR works nicely */
-	g_signal_connect (G_OBJECT (eprop->item_label), "size-request",
-			  G_CALLBACK (eprop_item_label_size_request), eprop);
-	g_signal_connect_after (G_OBJECT (eprop->item_label), "size-allocate",
-				G_CALLBACK (eprop_item_label_size_allocate_after), eprop);
 
 	gtk_misc_set_alignment (GTK_MISC(eprop->label), 1.0, 0.5);
 
@@ -1108,7 +1065,6 @@ glade_eprop_flags_show_dialog (GtkWidget           *button,
 					      NULL);
 
 	gtk_window_set_default_size (GTK_WINDOW (dialog), 300, 400);
-	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_CLOSE);
 
 	/* HIG spacings */
@@ -1230,9 +1186,7 @@ glade_eprop_color_load (GladeEditorProperty *eprop, GladeProperty *property)
 
 			/* Manually fill it with black for an NULL value.
 			 */
-			if (gdk_color_parse("Black", &black) &&
-			    gdk_colormap_alloc_color(gtk_widget_get_default_colormap(),
-						     &black, FALSE, TRUE))
+			if (gdk_color_parse("Black", &black))
 				gtk_color_button_set_color
 					(GTK_COLOR_BUTTON (eprop_color->cbutton),
 					 &black);
@@ -1531,7 +1485,7 @@ glade_eprop_text_load (GladeEditorProperty *eprop, GladeProperty *property)
 
 	if (GTK_IS_COMBO_BOX (eprop_text->text_entry))
 	{
-		if (GTK_IS_COMBO_BOX_ENTRY (eprop_text->text_entry))
+		if (gtk_combo_box_get_has_entry (GTK_COMBO_BOX (eprop_text->text_entry)))
 		{
 			const gchar *text = g_value_get_string (property->value);
 			if (!text) text = "";
@@ -1705,7 +1659,6 @@ glade_editor_property_show_i18n_dialog (GtkWidget            *parent,
 					      GTK_STOCK_OK, GTK_RESPONSE_OK,
 					      NULL);
 
-	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
 	gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
@@ -1952,7 +1905,6 @@ glade_editor_property_show_resource_dialog (GladeProject *project, GtkWidget *pa
 					      GTK_STOCK_OPEN, GTK_RESPONSE_OK,
 					      NULL);
 
-	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
 	gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
@@ -2067,7 +2019,7 @@ eprop_text_stock_changed (GtkComboBox *combo,
 		glade_eprop_text_changed_common (eprop, text, eprop->use_command);
 		g_free (text);
 	}
-	else if (GTK_IS_COMBO_BOX_ENTRY (combo))
+	else if (gtk_combo_box_get_has_entry (combo))
 	{
 		str = gtk_entry_get_text (GTK_ENTRY (gtk_bin_get_child (GTK_BIN (combo))));
 		glade_eprop_text_changed_common (eprop, str, eprop->use_command);
@@ -2089,7 +2041,7 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
 	{
 		GtkCellRenderer *renderer;
 		GtkWidget       *child;
-		GtkWidget       *combo = gtk_combo_box_entry_new ();
+		GtkWidget       *combo = gtk_combo_box_new_with_entry ();
 
 		eprop_text->store = (GtkTreeModel *)
 			glade_eprop_text_create_store (klass->stock ? GLADE_TYPE_STOCK :
@@ -2098,7 +2050,7 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
 		gtk_combo_box_set_model (GTK_COMBO_BOX (combo), GTK_TREE_MODEL (eprop_text->store));
 
 		/* let the comboboxentry prepend its intrusive cell first... */
-		gtk_combo_box_entry_set_text_column (GTK_COMBO_BOX_ENTRY (combo),
+		gtk_combo_box_set_entry_text_column (GTK_COMBO_BOX (combo),
 						     COMBO_COLUMN_TEXT);
 
 		renderer = gtk_cell_renderer_pixbuf_new ();
@@ -2769,8 +2721,7 @@ glade_editor_property_show_object_dialog (GladeProject       *project,
 						 -1);
 
 	gtk_window_set_default_size (GTK_WINDOW (dialog), 600, 500);
-	
-	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
+
 	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
 	/* HIG settings */
@@ -2912,7 +2863,6 @@ glade_eprop_object_show_dialog (GtkWidget           *dialog_button,
 	}
 		
 	gtk_window_set_default_size (GTK_WINDOW (dialog), 600, 500);
-	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
 	/* HIG settings */
@@ -3217,7 +3167,6 @@ glade_eprop_objects_show_dialog (GtkWidget           *dialog_button,
 	g_free (title);
 
 	gtk_window_set_default_size (GTK_WINDOW (dialog), 600, 500);
-	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 
 	vbox = gtk_vbox_new (FALSE, 6);
 	gtk_widget_show (vbox);
@@ -3538,7 +3487,6 @@ glade_eprop_adjustment_prop_changed_common (GladeEditorProperty *eprop,
 	    gtk_adjustment_get_page_increment (adjustment) == 10.00 &&
 	    gtk_adjustment_get_page_size (adjustment) == 10.00)
 	{
-		gtk_object_destroy (GTK_OBJECT (adjustment));
 		g_value_set_object (&value, NULL);
 	}
 	else
@@ -3765,9 +3713,27 @@ glade_editor_property_load_by_widget (GladeEditorProperty *eprop,
 	if (widget)
 	{
 		/* properties are allowed to be missing on some internal widgets */
-		property = glade_widget_get_property (widget, eprop->klass->id);
+		if (eprop->klass->packing)
+			property = glade_widget_get_pack_property (widget, eprop->klass->id);
+		else
+			property = glade_widget_get_property (widget, eprop->klass->id);
 
 		glade_editor_property_load (eprop, property);
+
+		if (property) 
+		{
+			g_assert (eprop->klass == property->klass);
+
+			gtk_widget_show (GTK_WIDGET (eprop));
+			gtk_widget_show (GTK_WIDGET (eprop->item_label));
+		}
+		else 
+		{
+			gtk_widget_hide (GTK_WIDGET (eprop));
+			gtk_widget_hide (GTK_WIDGET (eprop->item_label));
+		}
 	}
+	else
+		glade_editor_property_load (eprop, NULL);
 }
 

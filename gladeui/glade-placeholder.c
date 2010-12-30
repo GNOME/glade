@@ -46,6 +46,7 @@
 #include "glade-cursor.h"
 #include "glade-widget.h"
 #include "glade-app.h"
+#include <math.h>
 
 #define WIDTH_REQUISITION    20
 #define HEIGHT_REQUISITION   20
@@ -53,14 +54,15 @@
 static void      glade_placeholder_finalize       (GObject           *object);
 
 static void      glade_placeholder_realize        (GtkWidget         *widget);
+static void      glade_placeholder_unrealize      (GtkWidget         *widget);
+static void      glade_placeholder_map            (GtkWidget         *widget);
+static void      glade_placeholder_unmap          (GtkWidget         *widget);
 
 static void      glade_placeholder_size_allocate  (GtkWidget         *widget,
 					           GtkAllocation     *allocation);
-					      
-static void      glade_placeholder_send_configure (GladePlaceholder  *placeholder);
 
-static gboolean  glade_placeholder_expose         (GtkWidget         *widget,
-					           GdkEventExpose    *event);
+static gboolean  glade_placeholder_draw           (GtkWidget         *widget,
+					           cairo_t *cr);
 					      
 static gboolean  glade_placeholder_motion_notify_event (GtkWidget      *widget,
 						        GdkEventMotion *event);
@@ -69,23 +71,6 @@ static gboolean  glade_placeholder_button_press        (GtkWidget      *widget,
 						        GdkEventButton *event);
 						
 static gboolean  glade_placeholder_popup_menu          (GtkWidget      *widget);
-
-
-static const char *placeholder_xpm[] = {
-	/* columns rows colors chars-per-pixel */
-	"8 8 2 1",
-	"  c #bbbbbb",
-	". c #d6d6d6",
-	/* pixels */
-	" .  .   ",
-	".    .  ",
-	"      ..",
-	"      ..",
-	".    .  ",
-	" .  .   ",
-	"  ..    ",
-	"  ..    "
-};
 
 G_DEFINE_TYPE (GladePlaceholder, glade_placeholder, GTK_TYPE_WIDGET)
 
@@ -97,24 +82,14 @@ glade_placeholder_class_init (GladePlaceholderClass *klass)
 
 	object_class->finalize = glade_placeholder_finalize;
 	widget_class->realize = glade_placeholder_realize;
+	widget_class->unrealize = glade_placeholder_unrealize;
+	widget_class->map = glade_placeholder_map;
+	widget_class->unmap = glade_placeholder_unmap;
 	widget_class->size_allocate = glade_placeholder_size_allocate;
-	widget_class->expose_event = glade_placeholder_expose;
+	widget_class->draw = glade_placeholder_draw;
 	widget_class->motion_notify_event = glade_placeholder_motion_notify_event;
 	widget_class->button_press_event = glade_placeholder_button_press;
 	widget_class->popup_menu = glade_placeholder_popup_menu;
-
-	/* Avoid warnings when adding placeholders to scrolled windows */
-	widget_class->set_scroll_adjustments_signal =
-		g_signal_new ("set-scroll-adjustments",
-			      G_TYPE_FROM_CLASS (klass),
-			      G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-			      0, /* G_STRUCT_OFFSET (GladePlaceholderClass, set_scroll_adjustments) */
-			      NULL, NULL,
-			      glade_marshal_VOID__OBJECT_OBJECT,
-			      G_TYPE_NONE, 2,
-			      GTK_TYPE_ADJUSTMENT,
-			      GTK_TYPE_ADJUSTMENT);
-
 }
 
 static void
@@ -139,10 +114,10 @@ glade_placeholder_notify_parent (GObject    *gobject,
 static void
 glade_placeholder_init (GladePlaceholder *placeholder)
 {
-	placeholder->placeholder_pixmap = NULL;
 	placeholder->packing_actions = NULL;
 
 	gtk_widget_set_can_focus (GTK_WIDGET (placeholder), TRUE);
+	gtk_widget_set_has_window (GTK_WIDGET (placeholder), FALSE);
 
 	gtk_widget_set_size_request (GTK_WIDGET (placeholder),
 				     WIDTH_REQUISITION,
@@ -174,11 +149,6 @@ glade_placeholder_finalize (GObject *object)
 	g_return_if_fail (GLADE_IS_PLACEHOLDER (object));
 	placeholder = GLADE_PLACEHOLDER (object);
 
-	/* placeholder->placeholder_pixmap can be NULL if the placeholder is 
-         * destroyed before it's realized */
-	if (placeholder->placeholder_pixmap)
-		g_object_unref (placeholder->placeholder_pixmap);
-
 	if (placeholder->packing_actions)
 	{
 		g_list_foreach (placeholder->packing_actions, (GFunc)g_object_unref, NULL);
@@ -193,90 +163,106 @@ glade_placeholder_realize (GtkWidget *widget)
 {
 	GladePlaceholder *placeholder;
 	GtkAllocation allocation;
+	GtkStyle *style;
 	GdkWindow *window;
 	GdkWindowAttr attributes;
 	gint attributes_mask;
-
-	g_return_if_fail (GLADE_IS_PLACEHOLDER (widget));
-
+	guint border_width;
+	
 	placeholder = GLADE_PLACEHOLDER (widget);
-
+	
 	gtk_widget_set_realized (widget, TRUE);
 
-	attributes.window_type = GDK_WINDOW_CHILD;
 	gtk_widget_get_allocation (widget, &allocation);
 	attributes.x = allocation.x;
 	attributes.y = allocation.y;
 	attributes.width = allocation.width;
 	attributes.height = allocation.height;
-	attributes.wclass = GDK_INPUT_OUTPUT;
-	attributes.visual = gtk_widget_get_visual (widget);
-	attributes.colormap = gtk_widget_get_colormap (widget);
+	
+	attributes.window_type = GDK_WINDOW_CHILD;
+	attributes.wclass = GDK_INPUT_ONLY;
 	attributes.event_mask = 
 		gtk_widget_get_events (widget) |
-		GDK_EXPOSURE_MASK              |
+		GDK_POINTER_MOTION_MASK        |
+		GDK_POINTER_MOTION_HINT_MASK   |
 		GDK_BUTTON_PRESS_MASK          |
 		GDK_BUTTON_RELEASE_MASK        |
-		GDK_POINTER_MOTION_MASK;
-
-	attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
-
-	window = gdk_window_new (gtk_widget_get_parent_window (widget), &attributes, attributes_mask);
-	gtk_widget_set_window (widget, window);
-	gdk_window_set_user_data (window, placeholder);
-
+		GDK_ENTER_NOTIFY_MASK          |
+		GDK_LEAVE_NOTIFY_MASK;
+	attributes_mask = GDK_WA_X | GDK_WA_Y;
+	
+	window = gtk_widget_get_parent_window (widget);
+	gtk_widget_set_window (widget, g_object_ref (window));
+	
+	placeholder->event_window = gdk_window_new (gtk_widget_get_parent_window (widget),
+						    &attributes, attributes_mask);
+	gdk_window_set_user_data (placeholder->event_window, widget);
+	
 	gtk_widget_style_attach (widget);
+}
 
-	glade_placeholder_send_configure (GLADE_PLACEHOLDER (widget));
+static void
+glade_placeholder_unrealize (GtkWidget *widget)
+{
+	GladePlaceholder *placeholder;
 
-	if (!placeholder->placeholder_pixmap)
+	placeholder = GLADE_PLACEHOLDER (widget);
+
+	if (placeholder->event_window)
 	{
-		GdkPixbuf *pixbuf = gdk_pixbuf_new_from_xpm_data (placeholder_xpm);
+		gdk_window_set_user_data (placeholder->event_window, NULL);
+		gdk_window_destroy (placeholder->event_window);
+		placeholder->event_window = NULL;
+	}
+	
+	GTK_WIDGET_CLASS (glade_placeholder_parent_class)->unrealize (widget);
+}
 
-		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &placeholder->placeholder_pixmap, NULL, 1);
-		g_assert(G_IS_OBJECT(placeholder->placeholder_pixmap));
+static void
+glade_placeholder_map (GtkWidget *widget)
+{
+	GladePlaceholder *placeholder;
+
+	placeholder = GLADE_PLACEHOLDER (widget);
+
+	if (placeholder->event_window)
+	{
+               gdk_window_show (placeholder->event_window);
 	}
 
-	gdk_window_set_back_pixmap (gtk_widget_get_window (GTK_WIDGET (placeholder)), placeholder->placeholder_pixmap, FALSE);
+	GTK_WIDGET_CLASS (glade_placeholder_parent_class)->map (widget);
+}
+
+static void
+glade_placeholder_unmap (GtkWidget *widget)
+{
+	GladePlaceholder *placeholder;
+
+	placeholder = GLADE_PLACEHOLDER (widget);
+
+	if (placeholder->event_window)
+	{
+               gdk_window_hide (placeholder->event_window);
+	}
+
+	GTK_WIDGET_CLASS (glade_placeholder_parent_class)->unmap (widget);
 }
 
 static void
 glade_placeholder_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 {
-	g_return_if_fail (GLADE_IS_PLACEHOLDER (widget));
-	g_return_if_fail (allocation != NULL);
+	GladePlaceholder *placeholder;
+
+	placeholder = GLADE_PLACEHOLDER (widget);
 
 	gtk_widget_set_allocation (widget, allocation);
 
 	if (gtk_widget_get_realized (widget))
 	{
-		gdk_window_move_resize (gtk_widget_get_window (widget),
+		gdk_window_move_resize (placeholder->event_window,
 					allocation->x, allocation->y,
 					allocation->width, allocation->height);
-
-		glade_placeholder_send_configure (GLADE_PLACEHOLDER (widget));
 	}
-}
-
-static void
-glade_placeholder_send_configure (GladePlaceholder *placeholder)
-{
-	GtkWidget *widget;
-	GtkAllocation allocation;
-	GdkEvent *event = gdk_event_new (GDK_CONFIGURE);
-
-	widget = GTK_WIDGET (placeholder);
-
-	event->configure.window = g_object_ref (gtk_widget_get_window (widget));
-	event->configure.send_event = TRUE;
-	gtk_widget_get_allocation (widget, &allocation);
-	event->configure.x = allocation.x;
-	event->configure.y = allocation.y;
-	event->configure.width = allocation.width;
-	event->configure.height = allocation.height;
-
-	gtk_widget_event (widget, event);
-	gdk_event_free (event);
 }
 
 GladeProject*
@@ -287,24 +273,62 @@ glade_placeholder_get_project (GladePlaceholder *placeholder)
 	return parent ? GLADE_PROJECT (parent->project) : NULL;
 }
 
+static void
+glade_placeholder_draw_background (GtkWidget* widget, cairo_t *cr)
+{
+	cairo_surface_t *surface;
+	cairo_t *cr2;
+	const gint width = 10;
+	const gint height = 10;
+	
+	surface = cairo_image_surface_create (CAIRO_FORMAT_RGB24, width, height);
+	cr2 = cairo_create (surface);
+	cairo_surface_destroy (surface);
+
+	cairo_set_source_rgb (cr2, 0.75, 0.75, 0.75); /* light gray */
+	cairo_paint (cr2);
+
+	cairo_set_source_rgb (cr2, 0.5, 0.5, 0.5); /* dark gray */
+	cairo_rectangle (cr2, width / 2,  0, width / 2, height / 2);
+	cairo_rectangle (cr2, 0, height / 2, width / 2, height / 2);
+	cairo_fill (cr2);
+
+	surface = cairo_surface_reference (cairo_get_target (cr2));
+	cairo_destroy (cr2);
+
+	cairo_save (cr);
+	cairo_set_source_surface (cr, surface, 0, 0);
+	cairo_surface_destroy (surface);
+	cairo_pattern_set_filter (cairo_get_source (cr), CAIRO_FILTER_NEAREST);
+	cairo_pattern_set_extend (cairo_get_source (cr), CAIRO_EXTEND_REPEAT);
+	cairo_paint (cr);
+	cairo_restore (cr);
+}
+
 static gboolean
-glade_placeholder_expose (GtkWidget *widget, GdkEventExpose *event)
+glade_placeholder_draw (GtkWidget *widget, cairo_t *cr)
 {
 	GtkStyle *style;
 	GdkColor *light;
 	GdkColor *dark;
-	cairo_t  *cr;
 	gint      w, h;
 
-	g_return_val_if_fail (GLADE_IS_PLACEHOLDER (widget), FALSE);
+
+	gdouble debug_x, debug_y;      
+	cairo_device_to_user (cr, &debug_x, &debug_y);
+
+	g_print ("Drawing placeholder %p with cairo x:%d/y:%d\n", 
+		 widget, (int)debug_x, (int)debug_y);
 
 	style = gtk_widget_get_style (widget);
 	light = &style->light[GTK_STATE_NORMAL];
 	dark  = &style->dark[GTK_STATE_NORMAL];
 
-	gdk_drawable_get_size (event->window, &w, &h);
+	h = gtk_widget_get_allocated_height (widget);
+	w = gtk_widget_get_allocated_width (widget);
 
-	cr = gdk_cairo_create (event->window);
+	glade_placeholder_draw_background (widget, cr);
+	
 	cairo_set_line_width (cr, 1.0);
 
 	glade_utils_cairo_draw_line (cr, light, 0, 0, w - 1, 0);
@@ -312,9 +336,7 @@ glade_placeholder_expose (GtkWidget *widget, GdkEventExpose *event)
 	glade_utils_cairo_draw_line (cr, dark, 0, h - 1, w - 1, h - 1);
 	glade_utils_cairo_draw_line (cr, dark, w - 1, 0, w - 1, h - 1);
 
-	cairo_destroy (cr);
-
-	glade_util_draw_selection_nodes (event->window);
+	glade_util_draw_selection_nodes (widget, cr);	
 
 	return FALSE;
 }

@@ -93,6 +93,8 @@ struct _GladeAppPrivate
 	GList *undo_list, *redo_list;	/* Lists of buttons to refresh in update-ui signal */
 
 	GladePointerMode pointer_mode;  /* Current mode for the pointer in the workspace */
+
+	guint selection_changed_id; /* for queue_selection_changed() */
 };
 
 static guint glade_app_signals[LAST_SIGNAL] = { 0 };
@@ -440,7 +442,7 @@ glade_app_init (GladeApp *app)
 	
 	/* Create Editor */
 	app->priv->editor = GLADE_EDITOR (glade_editor_new ());
-	g_object_ref_sink (GTK_OBJECT (app->priv->editor));
+	g_object_ref_sink (G_OBJECT (app->priv->editor));
 	
 	glade_editor_refresh (app->priv->editor);
 	
@@ -657,23 +659,12 @@ glade_app_config_save ()
 void
 glade_app_set_transient_parent (GtkWindow *parent)
 {
-	GList     *projects, *objects;
 	GladeApp  *app;
 	
 	g_return_if_fail (GTK_IS_WINDOW (parent));
 
 	app = glade_app_get ();
 	app->priv->transient_parent = parent;
-
-	/* Loop over all projects/widgets and set_transient_for the toplevels.
-	 */
-	for (projects = glade_app_get_projects (); /* projects */
-	     projects; projects = projects->next) 
-		for (objects = (GList *) glade_project_get_objects (GLADE_PROJECT (projects->data));  /* widgets */
-		     objects; objects = objects->next)
-			if (GTK_IS_WINDOW (objects->data))
-				gtk_window_set_transient_for
-					(GTK_WINDOW (objects->data), parent);
 }
 
 GtkWindow *
@@ -903,50 +894,6 @@ glade_app_hide_properties (void)
 }
 
 void
-glade_app_update_instance_count (GladeProject *project)
-{
-	GladeApp  *app;
-	GList *l;
-	gint temp, max = 0, i = 0, uncounted_projects = 0;
-	gchar *project_name;
-
-	g_return_if_fail (GLADE_IS_PROJECT (project));
-		
-	if (glade_project_get_instance_count (project) > 0)
-		return;
-
-	project_name = glade_project_get_name (project);
-
-	app = glade_app_get ();
-
-	for (l = app->priv->projects; l; l = l->next)
-	{
-		GladeProject *prj = GLADE_PROJECT (l->data);
-		gchar *name = glade_project_get_name (project);
-
-		if (prj != project && !g_utf8_collate (name, project_name))
-		{
-			i++;
-			temp = MAX (glade_project_get_instance_count (prj) + 1, i);
-			max  = MAX (temp, max);
-
-			if (glade_project_get_instance_count (prj) < 1)
-				uncounted_projects++;
-		}
-		
-		g_free (name);
-	}
-	
-	g_free (project_name);
-
-	/* Dont reset the initially opened project */
-	if (uncounted_projects > 1 || g_list_find (app->priv->projects, project) == NULL)
-	{
-		glade_project_set_instance_count (project, MAX (max, i));
-	}
-}
-
-void
 glade_app_add_project (GladeProject *project)
 {
 	GladeApp  *app;
@@ -963,7 +910,6 @@ glade_app_add_project (GladeProject *project)
 		glade_app_set_project (project);
 		return;
 	}
-	glade_app_update_instance_count (project);
 	
 	/* Take a reference for GladeApp here... */
 	app->priv->projects = g_list_append (app->priv->projects, 
@@ -989,7 +935,8 @@ glade_app_add_project (GladeProject *project)
 		{
 			GObject *obj = G_OBJECT (node->data);
 
-			if (GTK_IS_WINDOW (obj))
+			if (GTK_IS_WIDGET (obj) &&
+			    gtk_widget_get_has_window (GTK_WIDGET (obj)))
 			{
 				glade_project_selection_set (project, obj, TRUE);
 				glade_widget_show (glade_widget_get_from_gobject (obj));
@@ -1132,10 +1079,9 @@ glade_app_command_copy (void)
 	gboolean            failed = FALSE;
 
 	app = glade_app_get();
-	if (app->priv->active_project == NULL)
-	{
+	if (app->priv->active_project == NULL ||
+	    glade_project_is_loading (app->priv->active_project))
 		return;
-	}
 
 	for (list = glade_app_get_selection ();
 	     list && list->data; list = list->next)
@@ -1175,7 +1121,8 @@ glade_app_command_cut (void)
 	gboolean            failed = FALSE;
 
 	app = glade_app_get();
-	if (app->priv->active_project == NULL)
+	if (app->priv->active_project == NULL ||
+	    glade_project_is_loading (app->priv->active_project))
 		return;
 	
 	for (list = glade_app_get_selection ();
@@ -1217,8 +1164,16 @@ glade_app_command_paste (GladePlaceholder *placeholder)
 	GladeFixed	   *fixed = NULL;
 
 	app = glade_app_get();
-	if (app->priv->active_project == NULL)
+	if (app->priv->active_project == NULL ||
+	    glade_project_is_loading (app->priv->active_project))
 		return;
+
+	if (placeholder)
+	{
+		if (glade_placeholder_get_project (placeholder) == NULL ||
+		    glade_project_is_loading (glade_placeholder_get_project (placeholder)))
+			return;
+	}
 
 	list      = glade_project_selection_get (app->priv->active_project);
 	clipboard = glade_app_get_clipboard ();
@@ -1340,7 +1295,8 @@ glade_app_command_delete (void)
 	gboolean            failed = FALSE;
 
 	app = glade_app_get();
-	if (app->priv->active_project == NULL)
+	if (app->priv->active_project == NULL ||
+	    glade_project_is_loading (app->priv->active_project))
 		return;
 
 	for (list = glade_app_get_selection ();
@@ -1624,6 +1580,25 @@ glade_app_selection_changed (void)
 		glade_project_selection_changed (project);
 	}
 }
+
+static gboolean
+selection_change_idle (GladeApp *app)
+{
+	glade_app_selection_changed ();
+	app->priv->selection_changed_id = 0;
+	return FALSE;
+}
+
+void
+glade_app_queue_selection_changed (void)
+{
+	GladeApp  *app = glade_app_get ();
+
+	if (app->priv->selection_changed_id == 0)
+		app->priv->selection_changed_id = 
+			g_idle_add ((GSourceFunc)selection_change_idle, app);
+}
+
 
 GladeApp*
 glade_app_new (void)

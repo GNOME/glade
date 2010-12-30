@@ -27,6 +27,8 @@
 #include <string.h>
 #include <gtk/gtk.h>
 
+#include <gladeui/glade.h>
+
 #include <glib/gi18n-lib.h>
 
 static void
@@ -184,7 +186,7 @@ preview_widget (gchar *name, gchar *buffer, gsize length)
 		g_object_unref(widget);
 	}
 
-	g_signal_connect (GTK_OBJECT (window), "destroy", G_CALLBACK (gtk_main_quit), NULL);
+	g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
 	gtk_widget_show_all (window);	
 }
 
@@ -315,7 +317,12 @@ int main (int argc, char **argv)
 	gchar *file_name;
 	gchar *toplevel_name;
 
-	gtk_set_locale ();
+#ifdef ENABLE_NLS
+	setlocale (LC_ALL, "");
+	bindtextdomain (GETTEXT_PACKAGE, glade_app_get_locale_dir ());
+	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+	textdomain (GETTEXT_PACKAGE);
+#endif
 
 	parse_arguments (argc, argv, &toplevel_name, &file_name);
 

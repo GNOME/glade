@@ -23,7 +23,7 @@ typedef struct _GladeWidgetClass  GladeWidgetClass;
 
 struct _GladeWidget
 {
-	GObject parent_instance;
+	GInitiallyUnowned parent_instance;
 
 	GladeWidgetAdaptor *adaptor; /* An adaptor class for the object type */
 
@@ -120,7 +120,7 @@ struct _GladeWidget
 
 struct _GladeWidgetClass
 {
-	GObjectClass parent_class;
+	GInitiallyUnownedClass parent_class;
 
 	void         (*add_child)               (GladeWidget *, GladeWidget *, gboolean);
 	void         (*remove_child)            (GladeWidget *, GladeWidget *);
@@ -276,6 +276,10 @@ GladeEditorProperty    *glade_widget_create_editor_property (GladeWidget      *w
 							     gboolean          use_command);
 
 gchar                  *glade_widget_generate_path_name     (GladeWidget      *widget);
+
+gboolean                glade_widget_is_ancestor            (GladeWidget      *widget,
+							     GladeWidget      *ancestor);
+
 /*******************************************************************************
                       Project, object property references
  *******************************************************************************/
@@ -397,9 +401,6 @@ void                    glade_widget_set_internal	    (GladeWidget      *widget,
 							     const gchar      *internal);
  
 G_CONST_RETURN gchar   *glade_widget_get_internal           (GladeWidget      *widget);
-
-void                    glade_widget_set_object		    (GladeWidget      *gwidget,
-							     GObject          *new_object);
  
 GObject                *glade_widget_get_object             (GladeWidget      *widget);
 

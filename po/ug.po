@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glade3&component=general\n"
-"POT-Creation-Date: 2010-11-05 15:03+0000\n"
+"POT-Creation-Date: 2010-12-22 08:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Gheyret Kenji<gheyret@yahoo.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
@@ -31,7 +31,7 @@ msgstr ""
 
 #: ../data/glade-3.desktop.in.in.h:4
 msgid "Interface Designer"
-msgstr ""
+msgstr "ئارايۈز لايىھىلىگۈچى"
 
 #: ../src/main.c:52
 msgid "Output version information and exit"
@@ -39,7 +39,7 @@ msgstr "نەشر ئۇچۇرىنى كۆرسىتىپ ئاخىرلاشتۇرىدۇ"
 
 #: ../src/main.c:55
 msgid "Disable Devhelp integration"
-msgstr ""
+msgstr "Devhelp بىلەن يۈرۈشلەشتۈرۈشنى ئىناۋەتسىز قىل"
 
 #: ../src/main.c:58
 msgid "[FILE...]"
@@ -70,7 +70,7 @@ msgid ""
 "gmodule support not found. gmodule support is required for glade to work"
 msgstr ""
 
-#: ../src/main.c:176
+#: ../src/main.c:177
 #, c-format
 msgid "Unable to open '%s', the file does not exist.\n"
 msgstr ""
@@ -79,115 +79,120 @@ msgstr ""
 msgid "[Read Only]"
 msgstr ""
 
-#: ../src/glade-window.c:358
+#: ../src/glade-window.c:310
 msgid "User Interface Designer"
 msgstr ""
 
 #. translators: referring to the action of activating a file named '%s'.
 #. *              we also indicate to users that the file may be read-only with
 #. *              the second '%s'
-#: ../src/glade-window.c:565
+#: ../src/glade-window.c:517
 #, c-format
 msgid "Activate '%s' %s"
-msgstr ""
+msgstr "'%s' %s نى ئاكتىپلايدۇ"
 
 #. translators: referring to the action of activating a file named '%s'
 #. FIXME add hint for translators
-#: ../src/glade-window.c:572 ../src/glade-window.c:580
+#: ../src/glade-window.c:524 ../src/glade-window.c:532
 #, c-format
 msgid "Activate '%s'"
 msgstr "'%s' نى ئاكتىپلاۋاتىدۇ"
 
 #. Name
-#: ../src/glade-window.c:625 ../gladeui/glade-base-editor.c:1991
-#: ../gladeui/glade-editor-table.c:359
+#: ../src/glade-window.c:577 ../gladeui/glade-base-editor.c:2013
+#: ../gladeui/glade-editor-table.c:377
 msgid "Name:"
 msgstr "ئاتى:"
 
-#: ../src/glade-window.c:627
+#: ../src/glade-window.c:579
 msgid "Format:"
 msgstr "فورمات:"
 
-#: ../src/glade-window.c:629
+#: ../src/glade-window.c:581
 msgid "Requires:"
 msgstr ""
 
-#: ../src/glade-window.c:1099
+#: ../src/glade-window.c:1051
 msgid "Open…"
+msgstr "ئېچىش…"
+
+#: ../src/glade-window.c:1084
+#, c-format
+msgid "Project %s is still loading."
 msgstr ""
 
-#: ../src/glade-window.c:1142
+#: ../src/glade-window.c:1113
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr ""
 
-#: ../src/glade-window.c:1146
+#: ../src/glade-window.c:1117
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr "ئەگەر ساقلانسا، سىرتتا ئۆزگەرتىلگەنلەرنىڭ ھەممىسى يوقايدۇ. ساقلاۋېرەمسىز؟"
 
-#: ../src/glade-window.c:1150
+#: ../src/glade-window.c:1121
 msgid "_Save Anyway"
 msgstr ""
 
-#: ../src/glade-window.c:1157
+#: ../src/glade-window.c:1128
 msgid "_Don't Save"
 msgstr ""
 
-#: ../src/glade-window.c:1183
+#: ../src/glade-window.c:1154
 #, c-format
 msgid "Failed to save %s: %s"
-msgstr ""
+msgstr "%s ساقلاش مەغلۇپ بولدى: %s"
 
-#: ../src/glade-window.c:1206
+#: ../src/glade-window.c:1175
 #, c-format
 msgid "Project '%s' saved"
 msgstr ""
 
-#: ../src/glade-window.c:1226
+#: ../src/glade-window.c:1198
 msgid "Save As…"
 msgstr "باشقا نامدا ساقلا…"
 
-#: ../src/glade-window.c:1271
+#: ../src/glade-window.c:1243
 #, c-format
 msgid "Could not save the file %s"
 msgstr "%s ھۆججەتنى ساقلىيالمىدى"
 
-#: ../src/glade-window.c:1275
+#: ../src/glade-window.c:1247
 msgid "You do not have the permissions necessary to save the file."
 msgstr ""
 
-#: ../src/glade-window.c:1296
+#: ../src/glade-window.c:1268
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr ""
 
-#: ../src/glade-window.c:1321
+#: ../src/glade-window.c:1293
 msgid "No open projects to save"
-msgstr ""
+msgstr "ساقلايدىغان ئوچۇق قۇرۇلۇش يوق"
 
-#: ../src/glade-window.c:1351
+#: ../src/glade-window.c:1323
 #, c-format
 msgid "Save changes to project \"%s\" before closing?"
 msgstr ""
 
-#: ../src/glade-window.c:1362
+#: ../src/glade-window.c:1334
 msgid "Your changes will be lost if you don't save them."
 msgstr ""
 
-#: ../src/glade-window.c:1366
+#: ../src/glade-window.c:1338
 msgid "Close _without Saving"
 msgstr "ساقلىماي تاقا(_W)"
 
-#: ../src/glade-window.c:1393
+#: ../src/glade-window.c:1365
 #, c-format
 msgid "Failed to save %s to %s: %s"
-msgstr ""
+msgstr "%s نى %s غا ساقلاش مەغلۇپ بولدى: %s"
 
-#: ../src/glade-window.c:1405
+#: ../src/glade-window.c:1377
 msgid "Save…"
 msgstr "ساقلا…"
 
-#: ../src/glade-window.c:1982
+#: ../src/glade-window.c:1983
 msgid ""
 "Glade is free software; you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -202,410 +207,412 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Glade; if not, write to the Free Software Foundation, Inc., 51 Franklin "
 "Street, Fifth Floor, Boston, MA 02110-1301, USA."
-msgstr ""
-
-#: ../src/glade-window.c:2008
-msgid "translator-credits"
-msgstr "Sahran <sahran@live.com>\n"
-"Gheyret T.Kenji <gheyret@yahoo.com>\n"
-"Zeper <zeper@msn.com>\n"
-"Abduxukur Abdurixit <abduxukur.abdurixit@t-systems.ch>"
+msgstr "Glade ئەركىن يۇمشاق دېتال؛ سىز ئەركىن يۇمشاق دېتال ۋەخپىسى تارقاتقان GNU ئادەتتىكى ئاممىۋى ئىجازەتنامە بويىچە ئۇنى قايتا تارقىتالايسىز ياكى ئۆزگەرتەلەيسىز؛ سىز شۇ ئىجازەت كېلىشىمىنىڭ ئىككىنچى نەشرى ياكى يۇقىرى نەشرىنى ئىشلەتسىڭىز بولىدۇ.\n"
+"\n"
+"Glade نى تارقىتىشتىكى مەقسەت سىزگە قۇلايلىق ئېلىپ كېلىش، ئەمما سودا ياكى باشقا ئالاھىدە قوللىنىشقا نىسبەتەن ھېچقانداق كاپالەت يوق.  GNU ئادەتتىكى ئاممىۋى ئىجازەت كېلىشىمىنى كۆرۈپ تېخىمۇ كۆپ تەپسىلاتقا ئېرىشىڭ.\n"
+"\n"
+"مەزكۇر پروگرامما بىلەن بىرگە ئادەتتىكى ئاممىۋى ئىجازەتنامە(GNU General Public) ئىجازەتنامىسى چوقۇم بىرگە بولىدۇ. ئۇنداق بولمىسا ئەركىن يۇمشاق دېتال ۋەخپىسىگە خەت يېزىڭ. ئادرېسى: 51 FranklinStreet, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: ../src/glade-window.c:2009
+msgid "translator-credits"
+msgstr "Gheyret Kenji <gheyret@gmail.com>\n"
+"Sahran<sahran@live.com>"
+
+#: ../src/glade-window.c:2010
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr ""
 
 #. File
-#: ../src/glade-window.c:2084 ../plugins/gtk+/glade-gtk.c:7142
-#: ../plugins/gtk+/glade-gtk.c:7465
+#: ../src/glade-window.c:2085 ../plugins/gtk+/glade-gtk.c:7235
+#: ../plugins/gtk+/glade-gtk.c:7558
 msgid "_File"
 msgstr "ھۆججەت(_F)"
 
 #. Edit
-#: ../src/glade-window.c:2085 ../plugins/gtk+/glade-gtk.c:7145
-#: ../plugins/gtk+/glade-gtk.c:7475
+#: ../src/glade-window.c:2086 ../plugins/gtk+/glade-gtk.c:7238
+#: ../plugins/gtk+/glade-gtk.c:7568
 msgid "_Edit"
 msgstr "تەھرىر(_E)"
 
 #. View
-#: ../src/glade-window.c:2086 ../plugins/gtk+/glade-gtk.c:7148
-#: ../plugins/gtk+/glade-gtk.c:7483
+#: ../src/glade-window.c:2087 ../plugins/gtk+/glade-gtk.c:7241
+#: ../plugins/gtk+/glade-gtk.c:7576
 msgid "_View"
 msgstr "كۆرۈنۈش(_V)"
 
-#: ../src/glade-window.c:2087
+#: ../src/glade-window.c:2088
 msgid "_Projects"
 msgstr ""
 
 #. Help
-#: ../src/glade-window.c:2088 ../plugins/gtk+/glade-gtk.c:7160
-#: ../plugins/gtk+/glade-gtk.c:7486
+#: ../src/glade-window.c:2089 ../plugins/gtk+/glade-gtk.c:7253
+#: ../plugins/gtk+/glade-gtk.c:7579
 msgid "_Help"
 msgstr "ياردەم(_H)"
 
-#: ../src/glade-window.c:2094
+#: ../src/glade-window.c:2095
 msgid "Create a new project"
 msgstr "يېڭىدىن قۇرۇلۇش ياسايدۇ"
 
-#: ../src/glade-window.c:2096
-msgid "_Open…"
-msgstr "ئاچ(_O)"
-
 #: ../src/glade-window.c:2097
+msgid "_Open…"
+msgstr "ئاچ(_O)…"
+
+#: ../src/glade-window.c:2098
 msgid "Open a project"
 msgstr "قۇرۇلۇش ئاچىدۇ"
 
-#: ../src/glade-window.c:2099
+#: ../src/glade-window.c:2100
 msgid "Open _Recent"
 msgstr "يېقىنقىنى ئاچ(_R)"
 
-#: ../src/glade-window.c:2102
+#: ../src/glade-window.c:2103
 msgid "Quit the program"
 msgstr "پروگراممىدىن چېكىنىش"
 
 #. ViewMenu
-#: ../src/glade-window.c:2105
+#: ../src/glade-window.c:2106
 msgid "Palette _Appearance"
 msgstr ""
 
-#: ../src/glade-window.c:2109
+#: ../src/glade-window.c:2110
 msgid "About this application"
 msgstr "بۇ پروگرامما ھەققىدە"
 
-#: ../src/glade-window.c:2111
+#: ../src/glade-window.c:2112
 msgid "_Contents"
 msgstr "مەزمۇنلار(_C)"
 
-#: ../src/glade-window.c:2112
+#: ../src/glade-window.c:2113
 msgid "Display the user manual"
-msgstr ""
+msgstr "ئىشلەتكۈچى قوللانمىسىنى كۆرسىتىدۇ"
 
-#: ../src/glade-window.c:2114
+#: ../src/glade-window.c:2115
 msgid "_Developer Reference"
 msgstr ""
 
-#: ../src/glade-window.c:2115
+#: ../src/glade-window.c:2116
 msgid "Display the developer reference manual"
-msgstr ""
+msgstr "ئىجادىيەتچىلەرنىڭ قوللانمىسىنى كۆرسىتىدۇ"
 
-#: ../src/glade-window.c:2124
+#: ../src/glade-window.c:2125
 msgid "Save the current project"
 msgstr ""
 
-#: ../src/glade-window.c:2126
+#: ../src/glade-window.c:2127
 msgid "Save _As…"
 msgstr "باشقا ئاتتا ساقلا(_A)…"
 
-#: ../src/glade-window.c:2127
+#: ../src/glade-window.c:2128
 msgid "Save the current project with a different name"
 msgstr ""
 
-#: ../src/glade-window.c:2130
+#: ../src/glade-window.c:2131
 msgid "Close the current project"
 msgstr ""
 
-#: ../src/glade-window.c:2134
+#: ../src/glade-window.c:2135
 msgid "Undo the last action"
-msgstr "ئاخىرقى مەشغۇلاتتىن يېنىۋال"
+msgstr "ئاخىرقى مەشغۇلاتتىن يېنىۋالىدۇ"
 
-#: ../src/glade-window.c:2137
+#: ../src/glade-window.c:2138
 msgid "Redo the last action"
-msgstr ""
+msgstr "ئاخىرقى مەشغۇلاتنى قايتىلايدۇ"
 
-#: ../src/glade-window.c:2140
+#: ../src/glade-window.c:2141
 msgid "Cut the selection"
 msgstr "تاللىغاننى كەس"
 
-#: ../src/glade-window.c:2143
+#: ../src/glade-window.c:2144
 msgid "Copy the selection"
 msgstr "تاللىغاننى كۆچۈر"
 
-#: ../src/glade-window.c:2146
+#: ../src/glade-window.c:2147
 msgid "Paste the clipboard"
 msgstr "چاپلاش تاختىسىدىن چاپلا"
 
-#: ../src/glade-window.c:2149
+#: ../src/glade-window.c:2150
 msgid "Delete the selection"
 msgstr "تاللانمىنى ئۆچۈرىدۇ"
 
-#: ../src/glade-window.c:2152
+#: ../src/glade-window.c:2153
 msgid "Modify project preferences"
 msgstr ""
 
 #. ProjectsMenu
-#: ../src/glade-window.c:2155
+#: ../src/glade-window.c:2156
 msgid "_Previous Project"
 msgstr ""
 
-#: ../src/glade-window.c:2156
+#: ../src/glade-window.c:2157
 msgid "Activate previous project"
-msgstr ""
+msgstr "ئالدىنقى قۇرۇلۇشنى ئاكتىپلايدۇ"
 
-#: ../src/glade-window.c:2158
+#: ../src/glade-window.c:2159
 msgid "_Next Project"
 msgstr ""
 
-#: ../src/glade-window.c:2159
+#: ../src/glade-window.c:2160
 msgid "Activate next project"
-msgstr ""
+msgstr "كېيىنكى قۇرۇلۇشنى ئاكتىپلايدۇ"
 
-#: ../src/glade-window.c:2167
+#: ../src/glade-window.c:2168
 msgid "_Use Small Icons"
 msgstr ""
 
-#: ../src/glade-window.c:2168
+#: ../src/glade-window.c:2169
 msgid "Show items using small icons"
 msgstr ""
 
-#: ../src/glade-window.c:2171
+#: ../src/glade-window.c:2172
 msgid "Dock _Palette"
 msgstr ""
 
-#: ../src/glade-window.c:2172
+#: ../src/glade-window.c:2173
 msgid "Dock the palette into the main window"
 msgstr ""
 
-#: ../src/glade-window.c:2175
+#: ../src/glade-window.c:2176
 msgid "Dock _Inspector"
 msgstr ""
 
-#: ../src/glade-window.c:2176
+#: ../src/glade-window.c:2177
 msgid "Dock the inspector into the main window"
 msgstr ""
 
-#: ../src/glade-window.c:2179
-msgid "Dock Prop_erties"
-msgstr ""
-
 #: ../src/glade-window.c:2180
+msgid "Dock Prop_erties"
+msgstr "Dock خاسلىقلىرى(_E)"
+
+#: ../src/glade-window.c:2181
 msgid "Dock the editor into the main window"
 msgstr ""
 
-#: ../src/glade-window.c:2183
+#: ../src/glade-window.c:2184
 msgid "Tool_bar"
 msgstr ""
 
-#: ../src/glade-window.c:2184
+#: ../src/glade-window.c:2185
 msgid "Show the toolbar"
 msgstr ""
 
-#: ../src/glade-window.c:2187
+#: ../src/glade-window.c:2188
 msgid "_Statusbar"
 msgstr "ھالەت بالداق(_S)"
 
-#: ../src/glade-window.c:2188
+#: ../src/glade-window.c:2189
 msgid "Show the statusbar"
 msgstr ""
 
-#: ../src/glade-window.c:2191
+#: ../src/glade-window.c:2192
 msgid "Project _Tabs"
 msgstr ""
 
-#: ../src/glade-window.c:2192
+#: ../src/glade-window.c:2193
 msgid "Show notebook tabs for loaded projects"
 msgstr ""
 
-#: ../src/glade-window.c:2200 ../plugins/gtk+/gtk+.xml.in.h:433
+#: ../src/glade-window.c:2201 ../plugins/gtk+/gtk+.xml.in.h:433
 msgid "Text beside icons"
-msgstr "تېكىست سىنبەلگىنىڭ يېنىدا كۆرسىتىلسۇن"
+msgstr "تېكىست سىنبەلگە يېنىدا"
 
-#: ../src/glade-window.c:2201
+#: ../src/glade-window.c:2202
 msgid "Display items as text beside icons"
-msgstr ""
+msgstr "تۈرلەرنى سىنبەلگە ۋە تېكىست بىلەن كۆرسەت"
 
-#: ../src/glade-window.c:2203
+#: ../src/glade-window.c:2204
 msgid "_Icons only"
 msgstr "سىنبەلگىلا(_I)"
 
-#: ../src/glade-window.c:2204
+#: ../src/glade-window.c:2205
 msgid "Display items as icons only"
-msgstr ""
+msgstr "تۈرلەرنى سىنبەلگە بىلەنلا كۆرسەت"
 
-#: ../src/glade-window.c:2206
+#: ../src/glade-window.c:2207
 msgid "_Text only"
 msgstr "تېكىستلا(_T)"
 
-#: ../src/glade-window.c:2207
+#: ../src/glade-window.c:2208
 msgid "Display items as text only"
-msgstr ""
+msgstr "تۈرلەرنى تېكىست بىلەنلا كۆرسەت"
 
-#: ../src/glade-window.c:2393
+#: ../src/glade-window.c:2394
 msgid "Select"
 msgstr "تاللا"
 
-#: ../src/glade-window.c:2396
+#: ../src/glade-window.c:2397
 msgid "Select widgets in the workspace"
 msgstr ""
 
-#: ../src/glade-window.c:2409 ../plugins/gtk+/gtk+.xml.in.h:313
+#: ../src/glade-window.c:2410 ../plugins/gtk+/gtk+.xml.in.h:313
 msgid "Preview snapshot"
 msgstr ""
 
-#: ../src/glade-window.c:2413
+#: ../src/glade-window.c:2414
 msgid "Previews snapshot of project"
 msgstr ""
 
-#: ../src/glade-window.c:2437
+#: ../src/glade-window.c:2438
 msgid "Drag Resize"
 msgstr ""
 
-#: ../src/glade-window.c:2440
+#: ../src/glade-window.c:2441
 msgid "Drag and resize widgets in the workspace"
 msgstr ""
 
-#: ../src/glade-window.c:2482
+#: ../src/glade-window.c:2514
 msgid "Close document"
 msgstr "پۈتۈكنى ياپىدۇ"
 
-#: ../src/glade-window.c:2552
+#: ../src/glade-window.c:2600
 msgid "Could not create a new project."
-msgstr ""
+msgstr "يېڭى قۇرۇلۇش قۇرالمىدى."
 
-#: ../src/glade-window.c:2606
+#: ../src/glade-window.c:2654
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr ""
 
-#: ../src/glade-window.c:2610
+#: ../src/glade-window.c:2658
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
-msgstr ""
+msgstr "ئەگەر قايتا ئوقۇسىڭىز، ساقلانمىغان ئۆزگىرىشلەر يوقىلىدۇ. قايتا ئوقۇمسىز؟"
 
-#: ../src/glade-window.c:2619
+#: ../src/glade-window.c:2667
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr ""
 
-#: ../src/glade-window.c:2623
+#: ../src/glade-window.c:2671
 msgid "Do you want to reload the project?"
-msgstr ""
+msgstr "قۇرۇلۇشنى قايتا ئوقۇمسىز؟"
 
-#: ../src/glade-window.c:2629
+#: ../src/glade-window.c:2677
 msgid "_Reload"
 msgstr "قايتا يۈكلە(_R)"
 
-#: ../src/glade-window.c:2751
+#: ../src/glade-window.c:2798
 msgid "_Undo"
 msgstr "يېنىۋال(_U)"
 
 #. Change tooltips
-#: ../src/glade-window.c:2753 ../gladeui/glade-app.c:276
+#: ../src/glade-window.c:2800 ../gladeui/glade-app.c:278
 #, c-format
 msgid "Undo: %s"
 msgstr ""
 
-#: ../src/glade-window.c:2753 ../src/glade-window.c:2764
-#: ../gladeui/glade-app.c:277
+#: ../src/glade-window.c:2800 ../src/glade-window.c:2811
+#: ../gladeui/glade-app.c:279
 msgid "the last action"
 msgstr ""
 
-#: ../src/glade-window.c:2762
+#: ../src/glade-window.c:2809
 msgid "_Redo"
 msgstr "قايتىلا(_R)"
 
-#: ../src/glade-window.c:2764 ../gladeui/glade-app.c:276
+#: ../src/glade-window.c:2811 ../gladeui/glade-app.c:278
 #, c-format
 msgid "Redo: %s"
-msgstr ""
+msgstr "قايتىلا: %s"
 
-#: ../src/glade-window.c:3240
+#: ../src/glade-window.c:3287
 msgid "Go back in undo history"
 msgstr ""
 
-#: ../src/glade-window.c:3242
+#: ../src/glade-window.c:3289
 msgid "Go forward in undo history"
 msgstr ""
 
-#: ../src/glade-window.c:3291
+#: ../src/glade-window.c:3338
 msgid "Palette"
 msgstr "رەڭ تاختىسى"
 
-#: ../src/glade-window.c:3301
+#: ../src/glade-window.c:3348
 msgid "Inspector"
 msgstr ""
 
-#: ../src/glade-window.c:3308 ../gladeui/glade-editor.c:350
-#: ../gladeui/glade-widget.c:1100 ../plugins/gtk+/glade-gtk.c:6574
-#: ../plugins/gtk+/glade-gtk.c:6604 ../plugins/gtk+/glade-gtk.c:11132
+#: ../src/glade-window.c:3355 ../gladeui/glade-editor.c:351
+#: ../gladeui/glade-widget.c:1137 ../plugins/gtk+/glade-gtk.c:6658
+#: ../plugins/gtk+/glade-gtk.c:6688 ../plugins/gtk+/glade-gtk.c:11304
 msgid "Properties"
-msgstr "ئالاھىدىلىكى"
+msgstr "خاسلىق"
 
-#: ../gladeui/glade-app.c:457
+#: ../gladeui/glade-app.c:459
 msgid "Clipboard"
 msgstr "چاپلاش تاختىسى"
 
-#: ../gladeui/glade-app.c:526
+#: ../gladeui/glade-app.c:528
 msgid "Active Project"
-msgstr ""
+msgstr "ئاكتىپ قۇرۇلۇش"
 
-#: ../gladeui/glade-app.c:527
+#: ../gladeui/glade-app.c:529
 msgid "The active project"
 msgstr ""
 
-#: ../gladeui/glade-app.c:533
+#: ../gladeui/glade-app.c:535
 msgid "Pointer Mode"
 msgstr ""
 
-#: ../gladeui/glade-app.c:534
+#: ../gladeui/glade-app.c:536
 msgid "Current mode for the pointer in the workspace"
 msgstr ""
 
-#: ../gladeui/glade-app.c:604
+#: ../gladeui/glade-app.c:606
 #, c-format
 msgid ""
 "Trying to save private data to %s directory but it is a regular file.\n"
 "No private data will be saved in this session"
 msgstr ""
 
-#: ../gladeui/glade-app.c:617
+#: ../gladeui/glade-app.c:619
 #, c-format
 msgid ""
 "Failed to create directory %s to save private data.\n"
 "No private data will be saved in this session"
 msgstr ""
 
-#: ../gladeui/glade-app.c:645
+#: ../gladeui/glade-app.c:647
 #, c-format
 msgid ""
 "Error writing private data to %s (%s).\n"
 "No private data will be saved in this session"
-msgstr ""
+msgstr "خۇسۇسىي سانلىق-مەلۇماتلارنى %s (%s) غا يېزىۋاتقاندا خاتالىق كۆرۈلدى.\\ بۇ ئەڭگىمەگە ھېچقانداق خۇسۇسىي ئۇچۇر يېزىلمايدۇ"
 
-#: ../gladeui/glade-app.c:657
+#: ../gladeui/glade-app.c:659
 #, c-format
 msgid ""
 "Error serializing configuration data to save (%s).\n"
 "No private data will be saved in this session"
 msgstr ""
 
-#: ../gladeui/glade-app.c:670
+#: ../gladeui/glade-app.c:672
 #, c-format
 msgid ""
 "Error opening %s to write private data (%s).\n"
 "No private data will be saved in this session"
 msgstr ""
 
-#: ../gladeui/glade-app.c:1183 ../gladeui/glade-app.c:1224
-#: ../gladeui/glade-app.c:1389
+#: ../gladeui/glade-app.c:1139 ../gladeui/glade-app.c:1181
+#: ../gladeui/glade-app.c:1355
 msgid "No widget selected."
 msgstr ""
 
-#: ../gladeui/glade-app.c:1276
+#: ../gladeui/glade-app.c:1241
 msgid "Unable to paste to the selected parent"
 msgstr ""
 
-#: ../gladeui/glade-app.c:1287
+#: ../gladeui/glade-app.c:1252
 msgid "Unable to paste to multiple widgets"
 msgstr ""
 
-#: ../gladeui/glade-app.c:1303 ../gladeui/glade-app.c:1409
+#: ../gladeui/glade-app.c:1268 ../gladeui/glade-app.c:1375
 msgid "No widget selected on the clipboard"
 msgstr ""
 
-#: ../gladeui/glade-app.c:1335
+#: ../gladeui/glade-app.c:1300
 msgid "Only one widget can be pasted at a time to this container"
 msgstr ""
 
-#: ../gladeui/glade-app.c:1347
+#: ../gladeui/glade-app.c:1312
 msgid "Insufficient amount of placeholders in target container"
 msgstr ""
 
@@ -616,7 +623,7 @@ msgstr "سالاھىيەت دەلىللەش"
 #. GTK_STOCK_DIALOG_AUTHENTICATION
 #: ../gladeui/glade-builtins.c:72
 msgid "DnD"
-msgstr ""
+msgstr "DnD"
 
 #. GTK_STOCK_DND
 #: ../gladeui/glade-builtins.c:73
@@ -661,7 +668,7 @@ msgstr ""
 
 #: ../gladeui/glade-builtins.c:488
 msgid "Objects"
-msgstr "ئوبيېكتلار"
+msgstr "نەڭلەر"
 
 #: ../gladeui/glade-builtins.c:489
 msgid "A list of objects"
@@ -669,7 +676,7 @@ msgstr ""
 
 #: ../gladeui/glade-builtins.c:498
 msgid "Image File Name"
-msgstr ""
+msgstr "سۈرەت ھۆججىتى ئاتى"
 
 #: ../gladeui/glade-builtins.c:499
 msgid "Enter a filename, relative path or full path to load the image"
@@ -689,7 +696,7 @@ msgstr "پۈتۈن سان"
 
 #: ../gladeui/glade-builtins.c:520
 msgid "An integer value"
-msgstr ""
+msgstr "پۈتۈن سان"
 
 #: ../gladeui/glade-builtins.c:528
 msgid "Unsigned Integer"
@@ -697,11 +704,11 @@ msgstr ""
 
 #: ../gladeui/glade-builtins.c:529
 msgid "An unsigned integer value"
-msgstr ""
+msgstr "ئالامەتسىز پۈتۈن سان"
 
 #: ../gladeui/glade-builtins.c:536
 msgid "String"
-msgstr "ھەرپ-بەلگە تىزىقى"
+msgstr "تېكىست"
 
 #: ../gladeui/glade-builtins.c:537
 msgid "An entry"
@@ -725,72 +732,72 @@ msgstr ""
 
 #: ../gladeui/glade-builtins.c:562
 msgid "Boolean"
-msgstr "بولىئان رەقىمى"
+msgstr "بۇلىن"
 
 #: ../gladeui/glade-builtins.c:563
 msgid "A boolean value"
 msgstr ""
 
-#: ../gladeui/glade-base-editor.c:536
+#: ../gladeui/glade-base-editor.c:561
 #, c-format
 msgid "Setting object type on %s to %s"
 msgstr ""
 
-#: ../gladeui/glade-base-editor.c:677
+#: ../gladeui/glade-base-editor.c:702
 #, c-format
 msgid "Add a %s to %s"
-msgstr ""
+msgstr "%s نى %s غا قوشىدۇ"
 
-#: ../gladeui/glade-base-editor.c:762
+#: ../gladeui/glade-base-editor.c:786
 #, c-format
 msgid "Add %s item"
-msgstr ""
+msgstr "%s تۈرىنى قوش"
 
-#: ../gladeui/glade-base-editor.c:792
+#: ../gladeui/glade-base-editor.c:816
 #, c-format
 msgid "Add child %s item"
 msgstr ""
 
-#: ../gladeui/glade-base-editor.c:879
+#: ../gladeui/glade-base-editor.c:902
 #, c-format
 msgid "Delete %s child from %s"
 msgstr ""
 
-#: ../gladeui/glade-base-editor.c:1007
+#: ../gladeui/glade-base-editor.c:1029
 #, c-format
 msgid "Reorder %s's children"
 msgstr ""
 
-#: ../gladeui/glade-base-editor.c:1456 ../plugins/gtk+/gtk+.xml.in.h:94
+#: ../gladeui/glade-base-editor.c:1478 ../plugins/gtk+/gtk+.xml.in.h:94
 msgid "Container"
 msgstr "قاچا"
 
-#: ../gladeui/glade-base-editor.c:1457
+#: ../gladeui/glade-base-editor.c:1479
 msgid "The container object this editor is currently editing"
 msgstr ""
 
-#: ../gladeui/glade-base-editor.c:1682 ../gladeui/glade-editor.c:997
+#: ../gladeui/glade-base-editor.c:1704 ../gladeui/glade-editor.c:1001
 msgid "General"
-msgstr "ئادەتتە"
+msgstr "ئادەتتىكى"
 
-#: ../gladeui/glade-base-editor.c:1690
+#: ../gladeui/glade-base-editor.c:1712
 msgid "Hierarchy"
-msgstr ""
+msgstr "قاتلام قۇرۇلما"
 
-#: ../gladeui/glade-base-editor.c:1724 ../plugins/gtk+/gtk+.xml.in.h:244
+#: ../gladeui/glade-base-editor.c:1746 ../plugins/gtk+/gtk+.xml.in.h:244
 msgid "Label"
-msgstr "بەلگە"
+msgstr "ئەن"
 
-#: ../gladeui/glade-base-editor.c:1738 ../gladeui/glade-widget-adaptor.c:1244
+#: ../gladeui/glade-base-editor.c:1760 ../gladeui/glade-widget-adaptor.c:1247
 msgid "Type"
 msgstr "تىپى"
 
 #. Type
-#: ../gladeui/glade-base-editor.c:2004
+#: ../gladeui/glade-base-editor.c:2026
 msgid "Type:"
 msgstr "تىپى:"
 
-#: ../gladeui/glade-base-editor.c:2217
+#: ../gladeui/glade-base-editor.c:2239
 msgid ""
 "<big><b>Tips:</b></big>\n"
 "  * Right-click over the treeview to add items.\n"
@@ -822,17 +829,16 @@ msgstr ""
 #: ../gladeui/glade-command.c:850 ../gladeui/glade-command.c:877
 #, c-format
 msgid "Renaming %s to %s"
-msgstr ""
+msgstr "%s نى %s غا ئۆزگەرتىش"
 
 #: ../gladeui/glade-command.c:1006
 #, c-format
 msgid "Add %s"
 msgstr "%s نى قوش"
 
-#: ../gladeui/glade-command.c:1007 ../gladeui/glade-command.c:1738
-#: ../gladeui/glade-command.c:1762 ../gladeui/glade-command.c:1785
-#: ../gladeui/glade-command.c:1810 ../gladeui/glade-command.c:1914
-#: ../gladeui/glade-command.c:1947
+#: ../gladeui/glade-command.c:1007 ../gladeui/glade-command.c:1761
+#: ../gladeui/glade-command.c:1784 ../gladeui/glade-command.c:1809
+#: ../gladeui/glade-command.c:1913 ../gladeui/glade-command.c:1946
 msgid "multiple"
 msgstr ""
 
@@ -877,67 +883,67 @@ msgstr ""
 msgid "Create %s"
 msgstr "%s نى قۇر"
 
-#: ../gladeui/glade-command.c:1762
+#: ../gladeui/glade-command.c:1761
 #, c-format
 msgid "Delete %s"
-msgstr ""
+msgstr "%s نى ئۆچۈرۈش"
 
-#: ../gladeui/glade-command.c:1785
+#: ../gladeui/glade-command.c:1784
 #, c-format
 msgid "Cut %s"
 msgstr ""
 
-#: ../gladeui/glade-command.c:1810
+#: ../gladeui/glade-command.c:1809
 #, c-format
 msgid "Copy %s"
 msgstr ""
 
-#: ../gladeui/glade-command.c:1914
+#: ../gladeui/glade-command.c:1913
 #, c-format
 msgid "Paste %s"
 msgstr ""
 
-#: ../gladeui/glade-command.c:1946
+#: ../gladeui/glade-command.c:1945
 #, c-format
 msgid "Drag-n-Drop from %s to %s"
 msgstr ""
 
-#: ../gladeui/glade-command.c:2068
+#: ../gladeui/glade-command.c:2067
 #, c-format
 msgid "Add signal handler %s"
 msgstr ""
 
-#: ../gladeui/glade-command.c:2069
+#: ../gladeui/glade-command.c:2068
 #, c-format
 msgid "Remove signal handler %s"
 msgstr ""
 
-#: ../gladeui/glade-command.c:2070
+#: ../gladeui/glade-command.c:2069
 #, c-format
 msgid "Change signal handler %s"
 msgstr ""
 
-#: ../gladeui/glade-command.c:2295
+#: ../gladeui/glade-command.c:2294
 #, c-format
 msgid "Setting i18n metadata"
 msgstr ""
 
-#: ../gladeui/glade-command.c:2499
+#: ../gladeui/glade-command.c:2498
 #, c-format
 msgid "Converting %s to %s format"
 msgstr ""
 
-#: ../gladeui/glade-command.c:2657 ../gladeui/glade-project.c:3947
+#: ../gladeui/glade-command.c:2656 ../gladeui/glade-project.c:4126
 #, c-format
 msgid "Setting %s to use a %s naming policy"
 msgstr ""
 
-#: ../gladeui/glade-command.c:2797
+#: ../gladeui/glade-command.c:2796
 #, c-format
 msgid "Locking %s by widget %s"
 msgstr ""
 
-#: ../gladeui/glade-command.c:2836
+#: ../gladeui/glade-command.c:2835
 #, c-format
 msgid "Unlocking %s"
 msgstr ""
@@ -989,7 +995,7 @@ msgstr "تېكىست(_T):"
 msgid "T_ranslatable"
 msgstr ""
 
-#: ../gladeui/glade-editor-property.c:1773 ../gladeui/glade-property.c:589
+#: ../gladeui/glade-editor-property.c:1773 ../gladeui/glade-property.c:590
 msgid "Whether this property is translatable"
 msgstr ""
 
@@ -998,7 +1004,7 @@ msgstr ""
 msgid "_Has context prefix"
 msgstr ""
 
-#: ../gladeui/glade-editor-property.c:1780 ../gladeui/glade-property.c:596
+#: ../gladeui/glade-editor-property.c:1780 ../gladeui/glade-property.c:597
 msgid "Whether the translatable string has a context prefix"
 msgstr ""
 
@@ -1025,14 +1031,14 @@ msgstr "ھەئە"
 msgid "No"
 msgstr "ياق"
 
-#: ../gladeui/glade-editor-property.c:2686 ../gladeui/glade-widget.c:1052
-#: ../gladeui/glade-widget-adaptor.c:1236
+#: ../gladeui/glade-editor-property.c:2686 ../gladeui/glade-widget.c:1089
+#: ../gladeui/glade-widget-adaptor.c:1239
 msgid "Name"
 msgstr "ئاتى"
 
-#: ../gladeui/glade-editor-property.c:2698 ../gladeui/glade-property.c:553
+#: ../gladeui/glade-editor-property.c:2698 ../gladeui/glade-property.c:554
 msgid "Class"
-msgstr "تۈر"
+msgstr "خىل"
 
 #: ../gladeui/glade-editor-property.c:2714
 #, c-format
@@ -1058,7 +1064,7 @@ msgstr ""
 #: ../gladeui/glade-editor-property.c:2792
 #: ../gladeui/glade-editor-property.c:2934
 msgid "O_bjects:"
-msgstr ""
+msgstr "نەڭلەر(_B):"
 
 #: ../gladeui/glade-editor-property.c:2884
 msgid "_New"
@@ -1073,7 +1079,7 @@ msgstr ""
 #. Checklist
 #: ../gladeui/glade-editor-property.c:3230
 msgid "Objects:"
-msgstr ""
+msgstr "نەڭلەر:"
 
 #: ../gladeui/glade-editor-property.c:3627
 msgid "Value:"
@@ -1125,7 +1131,7 @@ msgid ""
 "currently visible)"
 msgstr ""
 
-#: ../gladeui/glade-editor-table.c:356
+#: ../gladeui/glade-editor-table.c:374
 msgid "The Object's name"
 msgstr ""
 
@@ -1142,13 +1148,13 @@ msgid "The currently loaded widget in this editor"
 msgstr ""
 
 #. construct tab label widget
-#: ../gladeui/glade-editor.c:203 ../gladeui/glade-editor.c:402
-#: ../gladeui/glade-editor.c:1017
+#: ../gladeui/glade-editor.c:203 ../gladeui/glade-editor.c:403
+#: ../gladeui/glade-editor.c:1021
 msgid "Accessibility"
 msgstr "ياردەم ئىقتىدارى"
 
 #. configure page container
-#: ../gladeui/glade-editor.c:220 ../gladeui/glade-editor.c:401
+#: ../gladeui/glade-editor.c:220 ../gladeui/glade-editor.c:402
 msgid "_Signals"
 msgstr ""
 
@@ -1164,74 +1170,74 @@ msgstr ""
 #: ../gladeui/glade-editor.c:338
 #, c-format
 msgid "%s Properties - %s [%s]"
-msgstr ""
+msgstr "%s خاسلىق - %s [%s]"
 
-#: ../gladeui/glade-editor.c:398
+#: ../gladeui/glade-editor.c:399
 msgid "_General"
 msgstr "ئادەتتىكى(_G)"
 
-#: ../gladeui/glade-editor.c:399
+#: ../gladeui/glade-editor.c:400
 msgid "_Packing"
 msgstr ""
 
-#: ../gladeui/glade-editor.c:400
+#: ../gladeui/glade-editor.c:401
 msgid "_Common"
 msgstr ""
 
-#: ../gladeui/glade-editor.c:826
+#: ../gladeui/glade-editor.c:830
 #, c-format
 msgid "Create a %s"
-msgstr ""
+msgstr "%s قۇرىدۇ"
 
-#: ../gladeui/glade-editor.c:946
+#: ../gladeui/glade-editor.c:950
 msgid "Reset"
 msgstr "ئەسلىگە قايتۇر"
 
-#: ../gladeui/glade-editor.c:961
+#: ../gladeui/glade-editor.c:965
 msgid "Property"
 msgstr "خاسلىق"
 
-#: ../gladeui/glade-editor.c:1007
+#: ../gladeui/glade-editor.c:1011
 msgid "Common"
 msgstr "ئادەتتىكى"
 
-#: ../gladeui/glade-editor.c:1051
+#: ../gladeui/glade-editor.c:1055
 msgid "(default)"
 msgstr "(كۆڭۈلدىكى)"
 
-#: ../gladeui/glade-editor.c:1066
+#: ../gladeui/glade-editor.c:1070
 msgid "Select the properties that you want to reset to their default values"
 msgstr ""
 
-#: ../gladeui/glade-editor.c:1198
+#: ../gladeui/glade-editor.c:1202
 msgid "Reset Widget Properties"
 msgstr ""
 
 #. Checklist
-#: ../gladeui/glade-editor.c:1215
+#: ../gladeui/glade-editor.c:1219
 msgid "_Properties:"
 msgstr ""
 
-#: ../gladeui/glade-editor.c:1244
+#: ../gladeui/glade-editor.c:1248
 msgid "_Select All"
 msgstr "ھەممىنى تاللا(_S)"
 
-#: ../gladeui/glade-editor.c:1251
+#: ../gladeui/glade-editor.c:1255
 msgid "_Unselect All"
 msgstr ""
 
 #. Description
-#: ../gladeui/glade-editor.c:1260
+#: ../gladeui/glade-editor.c:1264
 msgid "Property _Description:"
 msgstr ""
 
 #. Translators: first %s is the project name, second is a widget name
-#: ../gladeui/glade-editor.c:1356
+#: ../gladeui/glade-editor.c:1360
 #, c-format
 msgid "%s - %s Properties"
-msgstr ""
+msgstr "%s - %s خاسلىقى"
 
-#: ../gladeui/glade-fixed.c:491 ../plugins/gtk+/glade-gtk.c:2636
+#: ../gladeui/glade-fixed.c:491 ../plugins/gtk+/glade-gtk.c:2647
 #, c-format
 msgid "Placing %s inside %s"
 msgstr ""
@@ -1262,7 +1268,7 @@ msgstr ""
 
 #: ../gladeui/glade-fixed.c:1003
 msgid "Height property"
-msgstr ""
+msgstr "ئېگىزلىك خاسلىقى"
 
 #: ../gladeui/glade-fixed.c:1004
 msgid "The property used to set the height of a child object"
@@ -1276,11 +1282,11 @@ msgstr ""
 msgid "Whether this container supports resizes of child widgets"
 msgstr ""
 
-#: ../gladeui/glade-palette.c:745
+#: ../gladeui/glade-palette.c:752
 msgid "Widget selector"
 msgstr ""
 
-#: ../gladeui/glade-palette.c:746
+#: ../gladeui/glade-palette.c:753
 msgid "Create root widget"
 msgstr ""
 
@@ -1299,96 +1305,96 @@ msgstr "تاللا(_S)"
 #: ../gladeui/glade-popup.c:573 ../gladeui/glade-popup.c:712
 #: ../gladeui/glade-popup.c:789
 msgid "Read _documentation"
-msgstr ""
+msgstr "پۈتۈك ئوقۇ(_D)"
 
 #: ../gladeui/glade-popup.c:782
 msgid "Set default value"
 msgstr ""
 
-#: ../gladeui/glade-project.c:924
+#: ../gladeui/glade-project.c:964
 msgid "Whether project has been modified since it was last saved"
 msgstr ""
 
-#: ../gladeui/glade-project.c:931
+#: ../gladeui/glade-project.c:971
 msgid "Has Selection"
 msgstr "تاللانما بار"
 
-#: ../gladeui/glade-project.c:932
+#: ../gladeui/glade-project.c:972
 msgid "Whether project has a selection"
 msgstr ""
 
-#: ../gladeui/glade-project.c:939
+#: ../gladeui/glade-project.c:979
 msgid "Path"
 msgstr "يول"
 
-#: ../gladeui/glade-project.c:940
+#: ../gladeui/glade-project.c:980
 msgid "The filesystem path of the project"
 msgstr ""
 
-#: ../gladeui/glade-project.c:947
+#: ../gladeui/glade-project.c:987
 msgid "Read Only"
 msgstr "ئوقۇشقىلا بولىدىغان"
 
-#: ../gladeui/glade-project.c:948
+#: ../gladeui/glade-project.c:988
 msgid "Whether project is read-only"
 msgstr ""
 
-#: ../gladeui/glade-project.c:955
+#: ../gladeui/glade-project.c:995
 msgid "Format"
 msgstr "فورمات"
 
-#: ../gladeui/glade-project.c:956
+#: ../gladeui/glade-project.c:996
 msgid "The project file format"
 msgstr ""
 
-#: ../gladeui/glade-project.c:965
+#: ../gladeui/glade-project.c:1005
 msgid "Previewable"
 msgstr ""
 
-#: ../gladeui/glade-project.c:966
+#: ../gladeui/glade-project.c:1006
 msgid "Wether the project can be previewed"
 msgstr ""
 
-#: ../gladeui/glade-project.c:1123
+#: ../gladeui/glade-project.c:1165
 #, c-format
 msgid ""
 "Failed to load %s.\n"
 "The following required catalogs are unavailable: %s"
 msgstr ""
 
-#: ../gladeui/glade-project.c:1542 ../gladeui/glade-project.c:1790
-#: ../gladeui/glade-project.c:4406
+#: ../gladeui/glade-project.c:1659 ../gladeui/glade-project.c:1696
+#: ../gladeui/glade-project.c:1970 ../gladeui/glade-project.c:4580
 #, c-format
 msgid "%s preferences"
 msgstr ""
 
-#: ../gladeui/glade-project.c:1848
+#: ../gladeui/glade-project.c:2028
 #, c-format
 msgid "Error launching previewer: %s\n"
-msgstr ""
+msgstr "ئالدىن كۆرگۈچنى ئىجرا قىلىۋاتقاندا خاتالىق كۆرۈلدى: %s\n"
 
-#: ../gladeui/glade-project.c:1851
+#: ../gladeui/glade-project.c:2031
 #, c-format
 msgid "Failed to launch preview: %s.\n"
-msgstr ""
+msgstr "ئالدىن كۆرۈشنى ئىجرا قىلىش مەغلۇپ بولدى: %s.\n"
 
 #. ******************************************************************
 #. Verify code here (versioning, incompatability checks)
 #. ******************************************************************
 #. translators: reffers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1931
+#: ../gladeui/glade-project.c:2114
 #, c-format
 msgid "This widget was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
 
 #. translators: reffers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1934
+#: ../gladeui/glade-project.c:2117
 #, c-format
 msgid "[%s] Object class '%s' was introduced in %s %d.%d\n"
 msgstr ""
 
 #. translators: reffers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1937
+#: ../gladeui/glade-project.c:2120
 #, c-format
 msgid ""
 "This widget was made available in GtkBuilder format in %s %d.%d while "
@@ -1396,40 +1402,40 @@ msgid ""
 msgstr ""
 
 #. translators: reffers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1941
+#: ../gladeui/glade-project.c:2124
 #, c-format
 msgid ""
 "[%s] Object class '%s' was made available in GtkBuilder format in %s %d.%d\n"
 msgstr ""
 
-#: ../gladeui/glade-project.c:1944
+#: ../gladeui/glade-project.c:2127
 msgid "This widget is only supported in libglade format"
 msgstr ""
 
 #. translators: reffers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1947
+#: ../gladeui/glade-project.c:2130
 #, c-format
 msgid ""
 "[%s] Object class '%s' from %s %d.%d is only supported in libglade format\n"
 msgstr ""
 
-#: ../gladeui/glade-project.c:1950
+#: ../gladeui/glade-project.c:2133
 msgid "This widget is not supported in libglade format"
 msgstr ""
 
 #. translators: reffers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1953
+#: ../gladeui/glade-project.c:2136
 #, c-format
 msgid ""
 "[%s] Object class '%s' from %s %d.%d is not supported in libglade format\n"
 msgstr ""
 
-#: ../gladeui/glade-project.c:1956
+#: ../gladeui/glade-project.c:2139
 msgid "This widget is deprecated"
 msgstr ""
 
 #. translators: reffers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1959
+#: ../gladeui/glade-project.c:2142
 #, c-format
 msgid "[%s] Object class '%s' from %s %d.%d is deprecated\n"
 msgstr ""
@@ -1438,31 +1444,31 @@ msgstr ""
 #. * you can only comment about the line directly following, forcing you to write
 #. * ugly messy code with comments in line breaks inside function calls).
 #.
-#: ../gladeui/glade-project.c:1966
+#: ../gladeui/glade-project.c:2149
 msgid "This property is not supported in libglade format"
 msgstr ""
 
 #. translators: reffers to a property '%s' of widget '[%s]'
-#: ../gladeui/glade-project.c:1969
+#: ../gladeui/glade-project.c:2152
 #, c-format
 msgid ""
 "[%s] Property '%s' of object class '%s' is not supported in libglade format\n"
 msgstr ""
 
 #. translators: reffers to a property '%s' of widget '[%s]'
-#: ../gladeui/glade-project.c:1972
+#: ../gladeui/glade-project.c:2155
 #, c-format
 msgid ""
 "[%s] Packing property '%s' of object class '%s' is not supported in libglade "
 "format\n"
 msgstr ""
 
-#: ../gladeui/glade-project.c:1975
+#: ../gladeui/glade-project.c:2158
 msgid "This property is only supported in libglade format"
 msgstr ""
 
 #. translators: reffers to a property '%s' of widget '[%s]'
-#: ../gladeui/glade-project.c:1978
+#: ../gladeui/glade-project.c:2161
 #, c-format
 msgid ""
 "[%s] Property '%s' of object class '%s' is only supported in libglade "
@@ -1470,7 +1476,7 @@ msgid ""
 msgstr ""
 
 #. translators: reffers to a property '%s' of widget '[%s]'
-#: ../gladeui/glade-project.c:1982
+#: ../gladeui/glade-project.c:2165
 #, c-format
 msgid ""
 "[%s] Packing property '%s' of object class '%s' is only supported in "
@@ -1479,26 +1485,26 @@ msgstr ""
 
 #. translators: reffers to a property in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1987
+#: ../gladeui/glade-project.c:2170
 #, c-format
 msgid "This property was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
 
 #. translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1990
+#: ../gladeui/glade-project.c:2173
 #, c-format
 msgid "[%s] Property '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr ""
 
 #. translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1993
+#: ../gladeui/glade-project.c:2176
 #, c-format
 msgid ""
 "[%s] Packing property '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr ""
 
 #. translators: reffers to a property in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1997
+#: ../gladeui/glade-project.c:2180
 #, c-format
 msgid ""
 "This property was made available in GtkBuilder format in %s %d.%d while "
@@ -1506,7 +1512,7 @@ msgid ""
 msgstr ""
 
 #. translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2001
+#: ../gladeui/glade-project.c:2184
 #, c-format
 msgid ""
 "[%s] Property '%s' of object class '%s' was made available in GtkBuilder "
@@ -1514,7 +1520,7 @@ msgid ""
 msgstr ""
 
 #. translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2005
+#: ../gladeui/glade-project.c:2188
 #, c-format
 msgid ""
 "[%s] Packing property '%s' of object class '%s' was made available in "
@@ -1522,154 +1528,150 @@ msgid ""
 msgstr ""
 
 #. translators: reffers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2009
+#: ../gladeui/glade-project.c:2192
 #, c-format
 msgid "[%s] Signal '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr ""
 
 #. translators: reffers to a signal in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2013
+#: ../gladeui/glade-project.c:2196
 #, c-format
 msgid "This signal was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
 
-#: ../gladeui/glade-project.c:2266
+#: ../gladeui/glade-project.c:2449
 msgid "Details"
 msgstr "تەپسىلاتى"
 
-#: ../gladeui/glade-project.c:2282
+#: ../gladeui/glade-project.c:2465
 #, c-format
 msgid "Project \"%s\" has errors. Save anyway?"
 msgstr ""
 
-#: ../gladeui/glade-project.c:2283
+#: ../gladeui/glade-project.c:2466
 #, c-format
 msgid "Project \"%s\" has deprecated widgets and/or version mismatches."
 msgstr ""
 
-#: ../gladeui/glade-project.c:3742
+#: ../gladeui/glade-project.c:3937
 #, c-format
 msgid "Unsaved %i"
 msgstr ""
 
-#: ../gladeui/glade-project.c:4010
+#: ../gladeui/glade-project.c:4189
 #, c-format
 msgid "Project %s has no deprecated widgets or version mismatches."
 msgstr ""
 
-#: ../gladeui/glade-project.c:4129
-msgid "Set options in your project"
-msgstr ""
-
 #. Project format
-#: ../gladeui/glade-project.c:4146
+#: ../gladeui/glade-project.c:4320
 msgid "Project file format:"
 msgstr ""
 
 #. Naming policy format
-#: ../gladeui/glade-project.c:4189
+#: ../gladeui/glade-project.c:4363
 msgid "Object names are unique:"
 msgstr ""
 
-#: ../gladeui/glade-project.c:4202
+#: ../gladeui/glade-project.c:4376
 msgid "within the project"
 msgstr ""
 
-#: ../gladeui/glade-project.c:4204
+#: ../gladeui/glade-project.c:4378
 msgid "inside toplevels"
 msgstr ""
 
 #. Resource path
-#: ../gladeui/glade-project.c:4231
+#: ../gladeui/glade-project.c:4405
 msgid "Image resources are loaded locally:"
 msgstr ""
 
 #. Project directory...
-#: ../gladeui/glade-project.c:4247
+#: ../gladeui/glade-project.c:4421
 msgid "From the project directory"
 msgstr ""
 
-#: ../gladeui/glade-project.c:4254
+#: ../gladeui/glade-project.c:4428
 msgid "From a project relative directory"
 msgstr ""
 
-#: ../gladeui/glade-project.c:4266
+#: ../gladeui/glade-project.c:4440
 msgid "From this directory"
 msgstr ""
 
-#: ../gladeui/glade-project.c:4269
+#: ../gladeui/glade-project.c:4443
 msgid "Choose a path to load image resources"
 msgstr ""
 
 #. Target versions
-#: ../gladeui/glade-project.c:4290
+#: ../gladeui/glade-project.c:4464
 msgid "Toolkit versions required:"
 msgstr ""
 
-#: ../gladeui/glade-project.c:4387
+#: ../gladeui/glade-project.c:4561
 msgid "Verify versions and deprecations:"
 msgstr ""
 
-#: ../gladeui/glade-project.c:4696
+#: ../gladeui/glade-project.c:4872
 #, c-format
 msgid "(internal %s)"
 msgstr ""
 
-#: ../gladeui/glade-project.c:4700
+#: ../gladeui/glade-project.c:4876
 #, c-format
 msgid "(%s child)"
-msgstr ""
+msgstr "(%s بالا)"
 
-#: ../gladeui/glade-property.c:554
+#: ../gladeui/glade-property.c:555
 msgid "The GladePropertyClass for this property"
 msgstr ""
 
-#: ../gladeui/glade-property.c:560
+#: ../gladeui/glade-property.c:561
 msgid "Enabled"
 msgstr "قوزغىتىلغان"
 
-#: ../gladeui/glade-property.c:561
+#: ../gladeui/glade-property.c:562
 msgid "If the property is optional, this is its enabled state"
 msgstr ""
 
-#: ../gladeui/glade-property.c:567 ../gladeui/glade-widget-action.c:168
+#: ../gladeui/glade-property.c:568 ../gladeui/glade-widget-action.c:168
 msgid "Sensitive"
 msgstr ""
 
-#: ../gladeui/glade-property.c:568
+#: ../gladeui/glade-property.c:569
 msgid "This gives backends control to set property sensitivity"
 msgstr ""
 
-#: ../gladeui/glade-property.c:574
+#: ../gladeui/glade-property.c:575
 msgid "Context"
 msgstr "تىل مۇھىتى"
 
-#: ../gladeui/glade-property.c:575
+#: ../gladeui/glade-property.c:576
 msgid "Context for translation"
 msgstr ""
 
-#: ../gladeui/glade-property.c:581
+#: ../gladeui/glade-property.c:582
 msgid "Comment"
 msgstr "ئىزاھات"
 
-#: ../gladeui/glade-property.c:582
+#: ../gladeui/glade-property.c:583
 msgid "Comment for translators"
 msgstr ""
 
-#: ../gladeui/glade-property.c:588
+#: ../gladeui/glade-property.c:589
 msgid "Translatable"
 msgstr ""
 
-#: ../gladeui/glade-property.c:595
+#: ../gladeui/glade-property.c:596
 msgid "Has Context"
 msgstr ""
 
-#: ../gladeui/glade-property.c:602
+#: ../gladeui/glade-property.c:603
 msgid "Visual State"
 msgstr ""
 
-#: ../gladeui/glade-property.c:603
+#: ../gladeui/glade-property.c:604
 msgid "Priority information for the property editor to act on"
 msgstr ""
 
@@ -1679,7 +1681,7 @@ msgstr ""
 
 #: ../gladeui/glade-signal-editor.c:118
 msgid "<Object>"
-msgstr ""
+msgstr "<نەڭ>"
 
 #: ../gladeui/glade-signal-editor.c:830
 msgid "Select an object to pass to the handler"
@@ -1701,7 +1703,7 @@ msgstr ""
 msgid "Enter the handler to run for this signal"
 msgstr ""
 
-#: ../gladeui/glade-signal-editor.c:1006 ../gladeui/glade-widget.c:1075
+#: ../gladeui/glade-signal-editor.c:1006 ../gladeui/glade-widget.c:1112
 msgid "Object"
 msgstr "Object"
 
@@ -1736,7 +1738,7 @@ msgstr ""
 #: ../gladeui/glade-utils.c:149
 #, c-format
 msgid "Could not get the type from \"%s\""
-msgstr ""
+msgstr "«%s» دىن تىپقا ئېرىشەلمىدى"
 
 #: ../gladeui/glade-utils.c:286
 #, c-format
@@ -1759,161 +1761,162 @@ msgstr ""
 
 #: ../gladeui/glade-utils.c:559
 msgid "GtkBuilder Files"
-msgstr ""
+msgstr "GtkBuilder ھۆججەتلىرى"
 
 #: ../gladeui/glade-utils.c:565
 msgid "All Glade Files"
 msgstr ""
 
-#: ../gladeui/glade-utils.c:1279
+#: ../gladeui/glade-utils.c:1294
 #, c-format
 msgid ""
 "%s exists.\n"
 "Do you want to replace it?"
-msgstr ""
+msgstr "%s مەۋجۇت.\n"
+"قاپلىۋېتەمسىز؟"
 
-#: ../gladeui/glade-utils.c:1307
+#: ../gladeui/glade-utils.c:1322
 #, c-format
 msgid "Error writing to %s: %s"
-msgstr ""
+msgstr "%s غا يېزىۋاتقاندا خاتالىق كۆرۈلدى: %s"
 
-#: ../gladeui/glade-utils.c:1321
+#: ../gladeui/glade-utils.c:1336
 #, c-format
 msgid "Error reading %s: %s"
-msgstr ""
+msgstr "%s ئوقۇۋاتقاندا خاتالىق كۆرۈلدى: %s"
 
-#: ../gladeui/glade-utils.c:1336 ../gladeui/glade-utils.c:1357
+#: ../gladeui/glade-utils.c:1351 ../gladeui/glade-utils.c:1372
 #, c-format
 msgid "Error shutting down I/O channel %s: %s"
 msgstr ""
 
-#: ../gladeui/glade-utils.c:1346
+#: ../gladeui/glade-utils.c:1361
 #, c-format
 msgid "Failed to open %s for writing: %s"
 msgstr ""
 
-#: ../gladeui/glade-utils.c:1366
+#: ../gladeui/glade-utils.c:1381
 #, c-format
 msgid "Failed to open %s for reading: %s"
 msgstr ""
 
-#: ../gladeui/glade-utils.c:1748
+#: ../gladeui/glade-utils.c:1763
 msgid "Could not show link:"
-msgstr ""
+msgstr "ئۇلانمىنى كۆرسىتەلمىدى:"
 
 #. Reset the column
 #. Objects
-#: ../gladeui/glade-utils.c:2130 ../plugins/gtk+/glade-attributes.c:799
+#: ../gladeui/glade-utils.c:2145 ../plugins/gtk+/glade-attributes.c:799
 #: ../plugins/gtk+/gtk+.xml.in.h:276
 msgid "None"
 msgstr "يوق"
 
-#: ../gladeui/glade-widget.c:1053
+#: ../gladeui/glade-widget.c:1090
 msgid "The name of the widget"
 msgstr "widget نىڭ ئاتى"
 
-#: ../gladeui/glade-widget.c:1060
+#: ../gladeui/glade-widget.c:1097
 msgid "Internal name"
-msgstr ""
+msgstr "ئىچكى ئاتى"
 
-#: ../gladeui/glade-widget.c:1061
+#: ../gladeui/glade-widget.c:1098
 msgid "The internal name of the widget"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1067
+#: ../gladeui/glade-widget.c:1104
 msgid "Anarchist"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1068
+#: ../gladeui/glade-widget.c:1105
 msgid ""
 "Whether this composite child is an ancestral child or an anarchist child"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1076
+#: ../gladeui/glade-widget.c:1113
 msgid "The object associated"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1083
+#: ../gladeui/glade-widget.c:1120
 msgid "Adaptor"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1084
+#: ../gladeui/glade-widget.c:1121
 msgid "The class adaptor for the associated widget"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1091 ../gladeui/glade-inspector.c:191
+#: ../gladeui/glade-widget.c:1128 ../gladeui/glade-inspector.c:191
 msgid "Project"
 msgstr "قۇرۇلۇش"
 
-#: ../gladeui/glade-widget.c:1092
+#: ../gladeui/glade-widget.c:1129
 msgid "The glade project that this widget belongs to"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1101
+#: ../gladeui/glade-widget.c:1138
 msgid "A list of GladeProperties"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1107 ../plugins/gtk+/gtk+.xml.in.h:298
+#: ../gladeui/glade-widget.c:1144 ../plugins/gtk+/gtk+.xml.in.h:298
 msgid "Parent"
-msgstr ""
+msgstr "تەۋەلىكى"
 
-#: ../gladeui/glade-widget.c:1108
+#: ../gladeui/glade-widget.c:1145
 msgid "A pointer to the parenting GladeWidget"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1115
+#: ../gladeui/glade-widget.c:1152
 msgid "Internal Name"
-msgstr ""
+msgstr "ئىچكى ئاتى"
 
-#: ../gladeui/glade-widget.c:1116
+#: ../gladeui/glade-widget.c:1153
 msgid "A generic name prefix for internal widgets"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1121
+#: ../gladeui/glade-widget.c:1158
 msgid "Template"
 msgstr "قېلىپ"
 
-#: ../gladeui/glade-widget.c:1122
+#: ../gladeui/glade-widget.c:1159
 msgid "A GladeWidget template to base a new widget on"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1128
+#: ../gladeui/glade-widget.c:1165
 msgid "Exact Template"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1129
+#: ../gladeui/glade-widget.c:1166
 msgid "Whether we are creating an exact duplicate when using a template"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1134
+#: ../gladeui/glade-widget.c:1171
 msgid "Reason"
 msgstr "سەۋەب"
 
-#: ../gladeui/glade-widget.c:1135
+#: ../gladeui/glade-widget.c:1172
 msgid "A GladeCreateReason for this creation"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1143
+#: ../gladeui/glade-widget.c:1180
 msgid "Toplevel Width"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1144
+#: ../gladeui/glade-widget.c:1181
 msgid "The width of the widget when toplevel in the GladeDesignLayout"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1153
+#: ../gladeui/glade-widget.c:1190
 msgid "Toplevel Height"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1154
+#: ../gladeui/glade-widget.c:1191
 msgid "The height of the widget when toplevel in the GladeDesignLayout"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1163
+#: ../gladeui/glade-widget.c:1200
 msgid "Support Warning"
 msgstr ""
 
-#: ../gladeui/glade-widget.c:1164
+#: ../gladeui/glade-widget.c:1201
 msgid "A warning string about version mismatches"
 msgstr ""
 
@@ -1922,69 +1925,69 @@ msgstr ""
 msgid "A derived adaptor (%s) of %s already exist!"
 msgstr ""
 
-#: ../gladeui/glade-widget-adaptor.c:1237
+#: ../gladeui/glade-widget-adaptor.c:1240
 msgid "Name of the class"
-msgstr ""
+msgstr "خىلنىڭ ئاتى"
 
-#: ../gladeui/glade-widget-adaptor.c:1245
+#: ../gladeui/glade-widget-adaptor.c:1248
 msgid "GType of the class"
-msgstr ""
+msgstr "تىپنىڭ GType ئى"
 
-#: ../gladeui/glade-widget-adaptor.c:1252
+#: ../gladeui/glade-widget-adaptor.c:1255
 msgid "Title"
-msgstr "ماۋزۇ(ئاتى)"
+msgstr "ماۋزۇ"
 
-#: ../gladeui/glade-widget-adaptor.c:1253
+#: ../gladeui/glade-widget-adaptor.c:1256
 msgid "Translated title for the class used in the glade UI"
 msgstr ""
 
-#: ../gladeui/glade-widget-adaptor.c:1260
+#: ../gladeui/glade-widget-adaptor.c:1263
 msgid "Generic Name"
 msgstr ""
 
-#: ../gladeui/glade-widget-adaptor.c:1261
+#: ../gladeui/glade-widget-adaptor.c:1264
 msgid "Used to generate names of new widgets"
 msgstr ""
 
-#: ../gladeui/glade-widget-adaptor.c:1268 ../plugins/gtk+/gtk+.xml.in.h:198
+#: ../gladeui/glade-widget-adaptor.c:1271 ../plugins/gtk+/gtk+.xml.in.h:198
 msgid "Icon Name"
 msgstr "سىنبەلگە ئاتى"
 
-#: ../gladeui/glade-widget-adaptor.c:1269
+#: ../gladeui/glade-widget-adaptor.c:1272
 msgid "The icon name"
 msgstr ""
 
-#: ../gladeui/glade-widget-adaptor.c:1276
+#: ../gladeui/glade-widget-adaptor.c:1279
 msgid "Catalog"
-msgstr ""
+msgstr "كاتالوگ"
 
-#: ../gladeui/glade-widget-adaptor.c:1277
+#: ../gladeui/glade-widget-adaptor.c:1280
 msgid "The name of the widget catalog this class was declared by"
 msgstr ""
 
-#: ../gladeui/glade-widget-adaptor.c:1284
+#: ../gladeui/glade-widget-adaptor.c:1287
 msgid "Book"
 msgstr "كىتاب"
 
-#: ../gladeui/glade-widget-adaptor.c:1285
+#: ../gladeui/glade-widget-adaptor.c:1288
 msgid "DevHelp search namespace for this widget class"
 msgstr ""
 
-#: ../gladeui/glade-widget-adaptor.c:1292
+#: ../gladeui/glade-widget-adaptor.c:1295
 msgid "Special Child Type"
 msgstr ""
 
-#: ../gladeui/glade-widget-adaptor.c:1293
+#: ../gladeui/glade-widget-adaptor.c:1296
 msgid ""
 "Holds the name of the packing property to depict special children for this "
 "container class"
 msgstr ""
 
-#: ../gladeui/glade-widget-adaptor.c:1301 ../plugins/gtk+/gtk+.xml.in.h:104
+#: ../gladeui/glade-widget-adaptor.c:1304 ../plugins/gtk+/gtk+.xml.in.h:104
 msgid "Cursor"
 msgstr "نۇر بەلگە"
 
-#: ../gladeui/glade-widget-adaptor.c:1302
+#: ../gladeui/glade-widget-adaptor.c:1305
 msgid "A cursor for inserting widgets in the UI"
 msgstr ""
 
@@ -2010,7 +2013,7 @@ msgstr ""
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:479
 msgid "All Contexts"
-msgstr ""
+msgstr "بارلىق كونتېكىستلار"
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1365
 msgid "Named Icon Chooser"
@@ -2018,15 +2021,15 @@ msgstr ""
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1405
 msgid "Icon _Name:"
-msgstr ""
+msgstr "سىنبەلگە ئاتى(_N):"
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1445
 msgid "C_ontexts:"
-msgstr ""
+msgstr "مەزمۇنلار(_O):"
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1466
 msgid "Icon Na_mes:"
-msgstr ""
+msgstr "سىنبەلگە ئاتى(_M):"
 
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1488
 msgid "_List standard icons only"
@@ -2035,7 +2038,7 @@ msgstr ""
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1704
 #, c-format
 msgid "Could not create directory: %s"
-msgstr ""
+msgstr "مۇندەرىجىنى قۇرۇغىلى بولمىدى:%s"
 
 #: ../gladeui/icon-naming-spec.c:35 ../plugins/gtk+/gtk+.xml.in.h:25
 msgid "Actions"
@@ -2067,7 +2070,7 @@ msgstr "خەلقئارا"
 
 #: ../gladeui/icon-naming-spec.c:42
 msgid "MIME Types"
-msgstr ""
+msgstr "MIME تىپلىرى"
 
 #: ../gladeui/icon-naming-spec.c:43
 msgid "Places"
@@ -2085,7 +2088,7 @@ msgstr "ئۇسلۇب"
 #: ../plugins/gtk+/glade-attributes.c:219
 msgctxt "textattr"
 msgid "Weight"
-msgstr ""
+msgstr "توم ئىنچىكىلىك"
 
 #: ../plugins/gtk+/glade-attributes.c:223
 msgctxt "textattr"
@@ -2125,7 +2128,7 @@ msgstr "چوڭلۇقى"
 #: ../plugins/gtk+/glade-attributes.c:258
 msgctxt "textattr"
 msgid "Absolute Size"
-msgstr ""
+msgstr "مۇتلەق چوڭلۇقى"
 
 #: ../plugins/gtk+/glade-attributes.c:265
 msgctxt "textattr"
@@ -2169,7 +2172,7 @@ msgstr "解除"
 
 #: ../plugins/gtk+/glade-attributes.c:723
 msgid "Select a color"
-msgstr ""
+msgstr "بىر رەڭنى تاللاڭ"
 
 #: ../plugins/gtk+/glade-attributes.c:859
 msgid "Attribute"
@@ -2196,7 +2199,7 @@ msgid "This property is only for use in dialog action buttons"
 msgstr ""
 
 #: ../plugins/gtk+/glade-gtk.c:64
-msgid "This property is set to be controled by an Action"
+msgid "This property is set to be controlled by an Action"
 msgstr ""
 
 #: ../plugins/gtk+/glade-gtk.c:191
@@ -2241,322 +2244,331 @@ msgstr ""
 msgid "New Size Group"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:1626
+#: ../plugins/gtk+/glade-gtk.c:1627
 #, c-format
 msgid "Ordering children of %s"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:2183 ../plugins/gtk+/glade-gtk.c:2190
+#: ../plugins/gtk+/glade-gtk.c:2194 ../plugins/gtk+/glade-gtk.c:2201
 #, c-format
 msgid "Insert placeholder to %s"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:2197
+#: ../plugins/gtk+/glade-gtk.c:2208
 #, c-format
 msgid "Remove placeholder from %s"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:3255 ../plugins/gtk+/glade-gtk.c:3263
+#: ../plugins/gtk+/glade-gtk.c:3266 ../plugins/gtk+/glade-gtk.c:3274
 #, c-format
 msgid "Insert Row on %s"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:3271 ../plugins/gtk+/glade-gtk.c:3279
+#: ../plugins/gtk+/glade-gtk.c:3282 ../plugins/gtk+/glade-gtk.c:3290
 #, c-format
 msgid "Insert Column on %s"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:3287
+#: ../plugins/gtk+/glade-gtk.c:3298
 #, c-format
 msgid "Remove Column on %s"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:3295
+#: ../plugins/gtk+/glade-gtk.c:3306
 #, c-format
 msgid "Remove Row on %s"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:4389 ../plugins/gtk+/glade-gtk.c:4396
+#: ../plugins/gtk+/glade-gtk.c:4426 ../plugins/gtk+/glade-gtk.c:4433
 #, c-format
 msgid "Insert page on %s"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:4403
+#: ../plugins/gtk+/glade-gtk.c:4440
 #, c-format
 msgid "Remove page from %s"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:6113
+#: ../plugins/gtk+/glade-gtk.c:6197
 msgid "This property only applies to stock images"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:6115
+#: ../plugins/gtk+/glade-gtk.c:6199
 msgid "This property only applies to named icons"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:6381
+#: ../plugins/gtk+/glade-gtk.c:6465
 msgid "<separator>"
-msgstr ""
+msgstr "<separator>"
 
-#: ../plugins/gtk+/glade-gtk.c:6391
+#: ../plugins/gtk+/glade-gtk.c:6475
 msgid "<custom>"
-msgstr ""
+msgstr "<custom>"
 
-#: ../plugins/gtk+/glade-gtk.c:6570
+#: ../plugins/gtk+/glade-gtk.c:6654
 msgid "Tool Item"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:6579
+#: ../plugins/gtk+/glade-gtk.c:6663
 msgid "Packing"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:6598 ../plugins/gtk+/gtk+.xml.in.h:263
+#: ../plugins/gtk+/glade-gtk.c:6682 ../plugins/gtk+/gtk+.xml.in.h:263
 msgid "Menu Item"
-msgstr ""
+msgstr "تىزىملىك تۈرى"
 
-#: ../plugins/gtk+/glade-gtk.c:6634 ../plugins/gtk+/glade-gtk.c:6642
+#: ../plugins/gtk+/glade-gtk.c:6718 ../plugins/gtk+/glade-gtk.c:6726
 msgid "Normal item"
-msgstr ""
+msgstr "نورمال تۈر"
 
-#: ../plugins/gtk+/glade-gtk.c:6635 ../plugins/gtk+/glade-gtk.c:6643
+#: ../plugins/gtk+/glade-gtk.c:6719 ../plugins/gtk+/glade-gtk.c:6727
 msgid "Image item"
-msgstr ""
+msgstr "سۈرەت تۈرى"
 
-#: ../plugins/gtk+/glade-gtk.c:6636 ../plugins/gtk+/glade-gtk.c:6644
+#: ../plugins/gtk+/glade-gtk.c:6720 ../plugins/gtk+/glade-gtk.c:6728
 msgid "Check item"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:6637 ../plugins/gtk+/glade-gtk.c:6645
+#: ../plugins/gtk+/glade-gtk.c:6721 ../plugins/gtk+/glade-gtk.c:6729
 msgid "Radio item"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:6638 ../plugins/gtk+/glade-gtk.c:6646
+#: ../plugins/gtk+/glade-gtk.c:6722 ../plugins/gtk+/glade-gtk.c:6730
 msgid "Separator item"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:6670 ../plugins/gtk+/glade-gtk.c:6714
+#: ../plugins/gtk+/glade-gtk.c:6754 ../plugins/gtk+/glade-gtk.c:6804
 msgid "Edit Menu Bar"
-msgstr ""
+msgstr "تىزىملىك بالدىقىنى تەھرىرلەش"
 
-#: ../plugins/gtk+/glade-gtk.c:6672 ../plugins/gtk+/glade-gtk.c:6716
+#: ../plugins/gtk+/glade-gtk.c:6756 ../plugins/gtk+/glade-gtk.c:6806
 msgid "Edit Menu"
 msgstr "menu تەھرىرلە"
 
-#: ../plugins/gtk+/glade-gtk.c:7100
+#: ../plugins/gtk+/glade-gtk.c:7193
 msgid "Print S_etup"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:7104
+#: ../plugins/gtk+/glade-gtk.c:7197
 msgid "Find Ne_xt"
 msgstr "كېيىنكىنى ئىزدە(_X)"
 
-#: ../plugins/gtk+/glade-gtk.c:7108
+#: ../plugins/gtk+/glade-gtk.c:7201
 msgid "_Undo Move"
 msgstr "يۆتكەشتىن يېنىۋال(_U)"
 
-#: ../plugins/gtk+/glade-gtk.c:7112
+#: ../plugins/gtk+/glade-gtk.c:7205
 msgid "_Redo Move"
 msgstr "يۆتكەشنى تەكرارلا(_R)"
 
-#: ../plugins/gtk+/glade-gtk.c:7115
+#: ../plugins/gtk+/glade-gtk.c:7208
 msgid "Select _All"
 msgstr "ھەممىنى تاللا(_A)"
 
-#: ../plugins/gtk+/glade-gtk.c:7118
+#: ../plugins/gtk+/glade-gtk.c:7211
 msgid "_New Game"
 msgstr "يېڭى ئويۇن(_N)"
 
-#: ../plugins/gtk+/glade-gtk.c:7121
+#: ../plugins/gtk+/glade-gtk.c:7214
 msgid "_Pause game"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:7124
+#: ../plugins/gtk+/glade-gtk.c:7217
 msgid "_Restart Game"
 msgstr "ئويۇننى قايتا قوزغات(_R)"
 
-#: ../plugins/gtk+/glade-gtk.c:7127
+#: ../plugins/gtk+/glade-gtk.c:7220
 msgid "_Hint"
 msgstr "يىپ ئۇچى(_H)"
 
-#: ../plugins/gtk+/glade-gtk.c:7130
+#: ../plugins/gtk+/glade-gtk.c:7223
 msgid "_Scores..."
 msgstr "شەرەپ سەھنىسى(_S)..."
 
-#: ../plugins/gtk+/glade-gtk.c:7133
+#: ../plugins/gtk+/glade-gtk.c:7226
 msgid "_End Game"
 msgstr "ئويۇننى ئاخىرلاشتۇر(_E)"
 
-#: ../plugins/gtk+/glade-gtk.c:7136
+#: ../plugins/gtk+/glade-gtk.c:7229
 msgid "Create New _Window"
 msgstr "يېڭى كۆزنەك قۇر(_W)"
 
-#: ../plugins/gtk+/glade-gtk.c:7139
+#: ../plugins/gtk+/glade-gtk.c:7232
 msgid "_Close This Window"
 msgstr "بۇ كۆزنەكنى ياپ(_C)"
 
-#: ../plugins/gtk+/glade-gtk.c:7151
+#: ../plugins/gtk+/glade-gtk.c:7244
 msgid "_Settings"
 msgstr "تەڭشەك(_S)"
 
-#: ../plugins/gtk+/glade-gtk.c:7154
+#: ../plugins/gtk+/glade-gtk.c:7247
 msgid "Fi_les"
 msgstr "ھۆججەتلەر(_L)"
 
-#: ../plugins/gtk+/glade-gtk.c:7157
+#: ../plugins/gtk+/glade-gtk.c:7250
 msgid "_Windows"
 msgstr "كۆزنەك(_W)"
 
-#: ../plugins/gtk+/glade-gtk.c:7163
+#: ../plugins/gtk+/glade-gtk.c:7256
 msgid "_Game"
 msgstr "ئويۇن(_G)"
 
-#: ../plugins/gtk+/glade-gtk.c:7628 ../plugins/gtk+/gtk+.xml.in.h:60
+#: ../plugins/gtk+/glade-gtk.c:7721 ../plugins/gtk+/gtk+.xml.in.h:60
 msgid "Button"
 msgstr "توپچا"
 
-#: ../plugins/gtk+/glade-gtk.c:7629 ../plugins/gtk+/glade-gtk.c:11187
-#: ../plugins/gtk+/glade-gtk.c:11284
+#: ../plugins/gtk+/glade-gtk.c:7722 ../plugins/gtk+/glade-gtk.c:11359
+#: ../plugins/gtk+/glade-gtk.c:11456
 msgid "Toggle"
 msgstr "ئالماشتۇر"
 
-#: ../plugins/gtk+/glade-gtk.c:7630 ../plugins/gtk+/glade-gtk.c:7641
-#: ../plugins/gtk+/glade-gtk.c:7649
+#: ../plugins/gtk+/glade-gtk.c:7723 ../plugins/gtk+/glade-gtk.c:7734
+#: ../plugins/gtk+/glade-gtk.c:7742
 msgid "Radio"
 msgstr "رادىئو"
 
-#: ../plugins/gtk+/glade-gtk.c:7631 ../plugins/gtk+/gtk+.xml.in.h:261
+#: ../plugins/gtk+/glade-gtk.c:7724 ../plugins/gtk+/gtk+.xml.in.h:261
 msgid "Menu"
 msgstr "تىزىملىك"
 
-#: ../plugins/gtk+/glade-gtk.c:7632 ../plugins/gtk+/gtk+.xml.in.h:105
+#: ../plugins/gtk+/glade-gtk.c:7725 ../plugins/gtk+/gtk+.xml.in.h:105
 msgid "Custom"
 msgstr "ئىختىيارى"
 
-#: ../plugins/gtk+/glade-gtk.c:7633 ../plugins/gtk+/glade-gtk.c:7642
-#: ../plugins/gtk+/glade-gtk.c:7650
+#: ../plugins/gtk+/glade-gtk.c:7726 ../plugins/gtk+/glade-gtk.c:7735
+#: ../plugins/gtk+/glade-gtk.c:7743
 msgid "Separator"
 msgstr "ئايرىغۇچ"
 
-#: ../plugins/gtk+/glade-gtk.c:7638 ../plugins/gtk+/glade-gtk.c:7646
+#: ../plugins/gtk+/glade-gtk.c:7731 ../plugins/gtk+/glade-gtk.c:7739
 #: ../plugins/gtk+/gtk+.xml.in.h:277
 msgid "Normal"
 msgstr "نورمال"
 
-#: ../plugins/gtk+/glade-gtk.c:7639 ../plugins/gtk+/glade-gtk.c:7647
+#: ../plugins/gtk+/glade-gtk.c:7732 ../plugins/gtk+/glade-gtk.c:7740
 #: ../plugins/gtk+/gtk+.xml.in.h:206
 msgid "Image"
 msgstr "سۈرەت"
 
-#: ../plugins/gtk+/glade-gtk.c:7640 ../plugins/gtk+/glade-gtk.c:7648
+#: ../plugins/gtk+/glade-gtk.c:7733 ../plugins/gtk+/glade-gtk.c:7741
 msgid "Check"
 msgstr "تەكشۈر"
 
-#: ../plugins/gtk+/glade-gtk.c:7662
+#: ../plugins/gtk+/glade-gtk.c:7755
 msgid "Tool Bar Editor"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:8208
+#: ../plugins/gtk+/glade-gtk.c:8301
 msgid "This property does not apply when Ellipsize is set."
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:8225
+#: ../plugins/gtk+/glade-gtk.c:8318
 msgid "This property does not apply when Angle is set."
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:9029
+#: ../plugins/gtk+/glade-gtk.c:9175
 msgid "Introduction page"
-msgstr ""
+msgstr "چۈشەندۈرۈش بېتى"
 
-#: ../plugins/gtk+/glade-gtk.c:9033
+#: ../plugins/gtk+/glade-gtk.c:9179
 msgid "Content page"
 msgstr "مەزمۇن بېتى"
 
-#: ../plugins/gtk+/glade-gtk.c:9037
+#: ../plugins/gtk+/glade-gtk.c:9183
 msgid "Confirmation page"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:10671
+#: ../plugins/gtk+/glade-gtk.c:10819
 #, c-format
 msgid "%s is set to load %s from the model"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:10673
+#: ../plugins/gtk+/glade-gtk.c:10821
 #, c-format
 msgid "%s is set to manipulate %s directly"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:11127 ../plugins/gtk+/gtk+.xml.in.h:469
+#: ../plugins/gtk+/glade-gtk.c:11299 ../plugins/gtk+/gtk+.xml.in.h:469
 msgid "Tree View Column"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:11127 ../plugins/gtk+/gtk+.xml.in.h:72
+#: ../plugins/gtk+/glade-gtk.c:11299 ../plugins/gtk+/gtk+.xml.in.h:72
 msgid "Cell Renderer"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:11132
+#: ../plugins/gtk+/glade-gtk.c:11304
 msgid "Properties and Attributes"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:11137
+#: ../plugins/gtk+/glade-gtk.c:11309
 msgid "Common Properties and Attributes"
 msgstr ""
 
 #. Text of the textview
 #. Text...
-#: ../plugins/gtk+/glade-gtk.c:11181 ../plugins/gtk+/glade-gtk.c:11278
+#: ../plugins/gtk+/glade-gtk.c:11353 ../plugins/gtk+/glade-gtk.c:11450
 #: ../plugins/gtk+/gtk+.xml.in.h:421 ../plugins/gtk+/glade-entry-editor.c:520
 msgid "Text"
 msgstr "تېكىست"
 
 #. Accelerator
-#: ../plugins/gtk+/glade-gtk.c:11182 ../plugins/gtk+/glade-gtk.c:11279
+#: ../plugins/gtk+/glade-gtk.c:11354 ../plugins/gtk+/glade-gtk.c:11451
 #: ../plugins/gtk+/gtk+.xml.in.h:14
 msgid "Accelerator"
 msgstr "Accelerator تېزلەتكۈچ"
 
-#: ../plugins/gtk+/glade-gtk.c:11183 ../plugins/gtk+/glade-gtk.c:11280
+#: ../plugins/gtk+/glade-gtk.c:11355 ../plugins/gtk+/glade-gtk.c:11452
 #: ../plugins/gtk+/gtk+.xml.in.h:87
 msgid "Combo"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:11184 ../plugins/gtk+/glade-gtk.c:11281
+#: ../plugins/gtk+/glade-gtk.c:11356 ../plugins/gtk+/glade-gtk.c:11453
 msgid "Spin"
 msgstr "ئايلاندۇر"
 
-#: ../plugins/gtk+/glade-gtk.c:11185 ../plugins/gtk+/glade-gtk.c:11282
+#: ../plugins/gtk+/glade-gtk.c:11357 ../plugins/gtk+/glade-gtk.c:11454
 msgid "Pixbuf"
 msgstr "Pixbuf"
 
 #. Progress...
-#: ../plugins/gtk+/glade-gtk.c:11186 ../plugins/gtk+/glade-gtk.c:11283
+#: ../plugins/gtk+/glade-gtk.c:11358 ../plugins/gtk+/glade-gtk.c:11455
 #: ../plugins/gtk+/gtk+.xml.in.h:321 ../plugins/gtk+/glade-entry-editor.c:563
 msgid "Progress"
 msgstr "سۈرئەت"
 
-#: ../plugins/gtk+/glade-gtk.c:11188 ../plugins/gtk+/glade-gtk.c:11285
+#: ../plugins/gtk+/glade-gtk.c:11360 ../plugins/gtk+/glade-gtk.c:11457
 #: ../plugins/gtk+/gtk+.xml.in.h:398
 msgid "Spinner"
 msgstr "مىكرو تەڭشەك"
 
-#: ../plugins/gtk+/glade-gtk.c:11199
+#: ../plugins/gtk+/glade-gtk.c:11371
 msgid "Icon View Editor"
-msgstr ""
+msgstr "سىنبەلگە كۆرۈش تەھرىرلىگۈچى"
 
-#: ../plugins/gtk+/glade-gtk.c:11199
+#: ../plugins/gtk+/glade-gtk.c:11371
 msgid "Combo Editor"
 msgstr ""
 
-#: ../plugins/gtk+/glade-gtk.c:11274
+#: ../plugins/gtk+/glade-gtk.c:11446
 msgid "Column"
 msgstr "ئىستون"
 
-#: ../plugins/gtk+/glade-gtk.c:11294
+#: ../plugins/gtk+/glade-gtk.c:11466
 msgid "Tree View Editor"
+msgstr ""
+
+#. XXX FIXME: We should hide the actual "fixed-height-mode" setting from
+#. * treeview editors and provide a custom control that sets all its columns
+#. * to fixed size and then control the column's sensitivity accordingly.
+#.
+#: ../plugins/gtk+/glade-gtk.c:11554
+msgid ""
+"Columns must have a fixed size inside a treeview with fixed height mode set"
 msgstr ""
 
 #. Dont really add/remove actions (because name conflicts inside groups)
 #.
-#: ../plugins/gtk+/glade-gtk.c:11496
+#: ../plugins/gtk+/glade-gtk.c:11684
 msgid "The accelerator can only be set when inside an Action Group."
 msgstr ""
 
@@ -2654,7 +2666,7 @@ msgstr "ئاكتىپ"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:29
 msgid "Active column"
-msgstr ""
+msgstr "ئاكتىپ ئىستون"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:30
 msgid "Add Parent"
@@ -2686,15 +2698,15 @@ msgstr "ھەممىسى"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:38
 msgid "All Events"
-msgstr ""
+msgstr "بارلىق ھادىسىلەر"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:39
 msgid "All Modifiers"
-msgstr ""
+msgstr "بارلىق سۈپەتلىگۈچىلەر"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:40
 msgid "Alt Key"
-msgstr ""
+msgstr "Alt كۇنۇپكىسى"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:41
 msgid "Always"
@@ -2702,11 +2714,11 @@ msgstr "ھەمىشە"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:42
 msgid "Always Center"
-msgstr ""
+msgstr "ھەمىشە ئوتتۇرىدا"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:43
 msgid "An accelerator key for this action"
-msgstr ""
+msgstr "بۇ مەشغۇلاتنىڭ تېزلەتمە كۇنۇپكىسى"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:44
 msgid "Arrow"
@@ -2726,7 +2738,7 @@ msgstr "خاسلىق"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:48
 msgid "Attributes column"
-msgstr ""
+msgstr "خاسلىقلار ئىستونى"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:49
 msgid "Automatic"
@@ -2738,7 +2750,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:51
 msgid "Background Color column"
-msgstr ""
+msgstr "تەگلىك رەڭگى ئىستونى"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:52
 msgid "Before"
@@ -2929,7 +2941,7 @@ msgstr "سانلىق مەلۇمات"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:107
 msgid "Data column"
-msgstr ""
+msgstr "سانلىق-مەلۇمات ئىستونى"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:108
 msgid "Default"
@@ -2953,7 +2965,7 @@ msgstr "ئوبيېكت چۈشەندۈرۈشى، قوشۇمچە تېخنىكىل�
 
 #: ../plugins/gtk+/gtk+.xml.in.h:113
 msgid "Desktop"
-msgstr "ئۈستەليۈزى"
+msgstr "ئۈستەلئۈستى"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:114
 msgid "Dialog"
@@ -2965,7 +2977,7 @@ msgstr "سۆزلەشكۈ رامكىسى"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:116
 msgid "Digits column"
-msgstr ""
+msgstr "رەقەملەر ئىستونى"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:117
 msgid "Discontinuous"
@@ -2989,7 +3001,7 @@ msgstr "تۆۋەن"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:122
 msgid "Drag & Drop"
-msgstr ""
+msgstr "سۆرەپ تاشلاش"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:123
 msgid "Drag and Drop"
@@ -2997,7 +3009,7 @@ msgstr "سۆرەپ تاشلا"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:124
 msgid "Drawing Area"
-msgstr ""
+msgstr "سىزىش رايونى"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:125
 msgid "Drop Down Menu"
@@ -3013,15 +3025,15 @@ msgstr "گىرۋەك"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:128
 msgid "Edit Separately"
-msgstr ""
+msgstr "ئايرىم-ئايرىم تەھرىرلەش"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:129
 msgid "Edit&#8230;"
-msgstr ""
+msgstr "تەھرىر&#8230;"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:130
 msgid "Editable column"
-msgstr ""
+msgstr "تەھرىرلىگىلى بولىدىغان ئىستون"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:131
 msgid "Eighth Key"
@@ -3033,11 +3045,11 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:133
 msgid "Embedded By"
-msgstr ""
+msgstr "سىڭدۈرگۈچى"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:134
 msgid "Embeds"
-msgstr ""
+msgstr "سىڭدۈرۈلمىلەر"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:135
 msgid "End"
@@ -3117,11 +3129,11 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:154
 msgid "File Chooser Button"
-msgstr ""
+msgstr "ھۆججەت تاللاش توپچىسى"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:155
 msgid "File Chooser Dialog"
-msgstr ""
+msgstr "ھۆججەت تاللاش سۆزلەشكۈسى"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:156
 msgid "File Chooser Widget"
@@ -3165,7 +3177,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:166
 msgid "Font Button"
-msgstr ""
+msgstr "خەت نۇسخىسى توپچىسى"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:167
 msgid "Font Description column"
@@ -3177,11 +3189,11 @@ msgstr "خەت نۇسخا تاللاش"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:169
 msgid "Font Selection Dialog"
-msgstr ""
+msgstr "خەت نۇسخىسىنى تاللاش سۆزلەشكۈسى"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:170
 msgid "Font column"
-msgstr ""
+msgstr "خەت نۇسخىسى ئىستونى"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:171
 msgid "Foreground Color Name column"
@@ -3205,7 +3217,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:176
 msgid "Gtk"
-msgstr ""
+msgstr "Gtk"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:177
 msgid "Half"
@@ -3286,15 +3298,15 @@ msgstr "سىنبەلگە"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:197
 msgid "Icon Factory"
-msgstr ""
+msgstr "سىنبەلگە زاۋۇتى"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:199
 msgid "Icon Name column"
-msgstr ""
+msgstr "سىنبەلگە ئاتى ئىستونى"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:202
 msgid "Icon Sources"
-msgstr ""
+msgstr "سىنبەلگە مەنبەلىرى"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:203
 msgid "Icon View"
@@ -3306,11 +3318,11 @@ msgstr "سىنبەلگىلەرلا"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:205
 msgid "If Valid"
-msgstr ""
+msgstr "ئىناۋەتلىك بولسا،"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:207
 msgid "Image Menu Item"
-msgstr ""
+msgstr "سۈرەت تىزىملىكى ئاتى"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:208
 msgid "Immediate"
@@ -3401,11 +3413,11 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:226
 msgid "Indicator Size column"
-msgstr ""
+msgstr "كۆرسەتكۈچ چوڭلۇق ئىستونى"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:227
 msgid "Info"
-msgstr "ئۇچۇر"
+msgstr "ئۇچۇرى"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:228
 msgid "Initially Complete"
@@ -3413,11 +3425,11 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:229
 msgid "Insert After"
-msgstr ""
+msgstr "كەينىگە قىستۇرۇش"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:230
 msgid "Insert Before"
-msgstr ""
+msgstr "ئالدىغا قىستۇرۇش"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:231
 msgid "Insert Column"
@@ -3425,11 +3437,11 @@ msgstr "ئىستون قىستۇر"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:232
 msgid "Insert Page After"
-msgstr ""
+msgstr "بەتنىڭ كەينىگە قىستۇرۇش"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:233
 msgid "Insert Page Before"
-msgstr ""
+msgstr "بەتنىڭ ئالدىغا قىستۇرۇش"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:234
 msgid "Insert Row"
@@ -3437,7 +3449,7 @@ msgstr "قۇر قىستۇر"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:235
 msgid "Intro"
-msgstr ""
+msgstr "چۈشەندۈرۈش"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:236
 msgid "Invalid"
@@ -3451,7 +3463,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:238
 msgid "Invisible Char Set"
-msgstr ""
+msgstr "كۆرۈنمەيدىغان ھەرپ توپلىمى"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:239
 msgid "Italic"
@@ -3459,7 +3471,7 @@ msgstr "يانتۇ"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:240
 msgid "Items"
-msgstr ""
+msgstr "تۈرلەر"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:241
 msgid "Key Press"
@@ -3483,11 +3495,11 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:247
 msgid "Language column"
-msgstr ""
+msgstr "تىل ئىستونى"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:248
 msgid "Large Toolbar"
-msgstr ""
+msgstr "چوڭ قورال بالداق"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:249
 msgid "Layout"
@@ -3547,11 +3559,11 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:265
 msgid "Menu Tool Button"
-msgstr ""
+msgstr "تىزىملىك قورال توپچىسى"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:266
 msgid "Message Dialog"
-msgstr ""
+msgstr "ئۇچۇر سۆزلەشكۈسى"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:267
 msgid "Meta Modifier"
@@ -3812,7 +3824,7 @@ msgstr "دائىرىسى"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:338
 msgid "Recent Action"
-msgstr ""
+msgstr "يېقىنقى مەشغۇلاتلار"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:339
 msgid "Recent Chooser"
@@ -3830,7 +3842,7 @@ msgstr "مۇناسىۋەتلىك مەشغۇلاتلار"
 #. Atk release property
 #: ../plugins/gtk+/gtk+.xml.in.h:344
 msgid "Release"
-msgstr ""
+msgstr "تارقاتقۇچى"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:345
 msgid "Release Modifier"
@@ -3838,11 +3850,11 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:346
 msgid "Remove Column"
-msgstr ""
+msgstr "ئىستوننى چىقىرىۋېتىش"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:347
 msgid "Remove Page"
-msgstr ""
+msgstr "بەتنى چىقىرىۋېتىش"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:348
 msgid "Remove Parent"
@@ -3850,7 +3862,7 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:349
 msgid "Remove Row"
-msgstr ""
+msgstr "قۇرنى چىقىرىۋېتىش"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:350
 msgid "Remove Slot"
@@ -4167,7 +4179,7 @@ msgstr "تېكىست كۆرۈنۈش"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:432
 msgid "Text below icons"
-msgstr ""
+msgstr "تېكىست سىنبەلگە ئاستىدا"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:434
 msgid "Text column"
@@ -4437,7 +4449,7 @@ msgstr ""
 #. Objects
 #: ../plugins/gtk+/gtk+.xml.in.h:503
 msgid "Widgets"
-msgstr ""
+msgstr "ۋىجېتلار"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:504
 msgid "Width column"
@@ -4528,39 +4540,39 @@ msgstr ""
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:12
 msgid "Reverse"
-msgstr ""
+msgstr "ئەكسىچە"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:13
 msgid "Scale"
 msgstr "نىسبىتى"
 
-#: ../plugins/gtk+/glade-column-types.c:333
-#: ../plugins/gtk+/glade-column-types.c:382
-#: ../plugins/gtk+/glade-column-types.c:445
-#: ../plugins/gtk+/glade-column-types.c:657
+#: ../plugins/gtk+/glade-column-types.c:341
+#: ../plugins/gtk+/glade-column-types.c:390
+#: ../plugins/gtk+/glade-column-types.c:453
+#: ../plugins/gtk+/glade-column-types.c:665
 #, c-format
 msgid "Setting columns on %s"
 msgstr ""
 
-#: ../plugins/gtk+/glade-column-types.c:473
+#: ../plugins/gtk+/glade-column-types.c:481
 msgid "< define a new column >"
 msgstr ""
 
-#: ../plugins/gtk+/glade-column-types.c:783
+#: ../plugins/gtk+/glade-column-types.c:791
 msgid "Add and remove columns:"
-msgstr ""
+msgstr "ئىستونلارنى قوشۇش ۋە ئۆچۈرۈش:"
 
-#: ../plugins/gtk+/glade-column-types.c:837
+#: ../plugins/gtk+/glade-column-types.c:845
 msgid "Column type"
-msgstr ""
+msgstr "ئىستون تىپى"
 
-#: ../plugins/gtk+/glade-column-types.c:859
+#: ../plugins/gtk+/glade-column-types.c:867
 msgid "Column name"
 msgstr ""
 
 #: ../plugins/gtk+/glade-model-data.c:1204
 msgid "Add and remove rows:"
-msgstr ""
+msgstr "قۇرلارنى قوشۇش ۋە ئۆچۈرۈش:"
 
 #: ../plugins/gtk+/glade-model-data.c:1234
 msgid "Sequential editing:"
@@ -4701,7 +4713,7 @@ msgstr ""
 
 #: ../plugins/gtk+/glade-image-item-editor.c:384
 msgid "Custom label and image:"
-msgstr ""
+msgstr "ئىختىيارىي ئەن ۋە سۈرەت:"
 
 #. Add descriptive label
 #: ../plugins/gtk+/glade-icon-factory-editor.c:196

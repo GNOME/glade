@@ -539,8 +539,6 @@ glade_eprop_accel_show_dialog (GtkWidget           *dialog_button,
 					      GTK_STOCK_OK, GTK_RESPONSE_OK,
 					      NULL);
 
-	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
-
 	vbox = gtk_vbox_new (FALSE, 6);
 	gtk_widget_show (vbox);
 

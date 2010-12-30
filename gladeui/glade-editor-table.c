@@ -37,6 +37,20 @@ G_DEFINE_TYPE_WITH_CODE (GladeEditorTable, glade_editor_table, GTK_TYPE_TABLE,
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
                                                 glade_editor_table_editable_init));
 
+
+#define BLOCK_NAME_ENTRY_CB(table)					\
+	do { if (table->name_entry)					\
+			g_signal_handlers_block_by_func (G_OBJECT (table->name_entry), \
+							 G_CALLBACK (widget_name_edited), table); \
+	} while (0);
+
+#define UNBLOCK_NAME_ENTRY_CB(table)					\
+	do { if (table->name_entry)					\
+			g_signal_handlers_unblock_by_func (G_OBJECT (table->name_entry), \
+							   G_CALLBACK (widget_name_edited), table); \
+	} while (0);
+
+
 static void
 glade_editor_table_class_init (GladeEditorTableClass *klass)
 {
@@ -107,6 +121,29 @@ glade_editor_table_grab_focus (GtkWidget *widget)
 		GTK_WIDGET_CLASS (glade_editor_table_parent_class)->grab_focus (widget);
 }
 
+static void
+widget_name_edited (GtkWidget *editable, GladeEditorTable *table)
+{
+	GladeWidget *widget;
+	gchar *new_name;
+	
+	g_return_if_fail (GTK_IS_EDITABLE (editable));
+	g_return_if_fail (GLADE_IS_EDITOR_TABLE (table));
+
+	if (table->loaded_widget == NULL)
+	{
+		g_warning ("Name entry edited with no loaded widget in editor %p!\n",
+			   table);
+		return;
+	}
+
+	widget = table->loaded_widget;
+	new_name = gtk_editable_get_chars (GTK_EDITABLE (editable), 0, -1);
+
+	if (glade_project_available_widget_name (widget->project, widget, new_name))
+		glade_command_set_name (widget, new_name);
+	g_free (new_name);
+}
 
 static void
 widget_name_changed (GladeWidget      *widget,
@@ -116,10 +153,12 @@ widget_name_changed (GladeWidget      *widget,
 	if (!gtk_widget_get_mapped (GTK_WIDGET (table)))
 		return;
 
-	table->loading = TRUE;
 	if (table->name_entry)
+	{	
+		BLOCK_NAME_ENTRY_CB (table);
 		gtk_entry_set_text (GTK_ENTRY (table->name_entry), table->loaded_widget->name);
-	table->loading = FALSE;
+		UNBLOCK_NAME_ENTRY_CB (table);
+	}
 
 }	
 
@@ -142,11 +181,8 @@ glade_editor_table_load (GladeEditable *editable,
 	GList               *list;
 
 	/* abort mission */
-	if ((!table->loaded_widget && !widget) ||
-	    (table->loaded_widget && table->loaded_widget == widget))
+	if (table->loaded_widget == widget)
 		return;
-
-	table->loading = TRUE;
 
 	if (table->loaded_widget)
 	{
@@ -160,6 +196,8 @@ glade_editor_table_load (GladeEditable *editable,
 	}
 
 	table->loaded_widget = widget;
+
+	BLOCK_NAME_ENTRY_CB (table);
 
 	if (table->loaded_widget)
 	{
@@ -178,14 +216,14 @@ glade_editor_table_load (GladeEditable *editable,
 	else if (table->name_entry)
 		gtk_entry_set_text (GTK_ENTRY (table->name_entry), "");
 
+	UNBLOCK_NAME_ENTRY_CB (table);
+
 	/* Sync up properties, even if widget is NULL */
 	for (list = table->properties; list; list = list->next)
 	{
 		property = list->data;
 		glade_editor_property_load_by_widget (property, widget);
 	}
-
-	table->loading = FALSE;
 }
 
 static void
@@ -329,26 +367,6 @@ append_items (GladeEditorTable     *table,
 
 	table->properties = g_list_reverse (table->properties);
 }
-
-static void
-widget_name_edited (GtkWidget *editable, GladeEditorTable *table)
-{
-	GladeWidget *widget;
-	gchar *new_name;
-	
-	g_return_if_fail (GTK_IS_EDITABLE (editable));
-	g_return_if_fail (GLADE_IS_EDITOR_TABLE (table));
-	
-	if (table->loading) return;
-
-	widget = table->loaded_widget;
-	new_name = gtk_editable_get_chars (GTK_EDITABLE (editable), 0, -1);
-
-	if (glade_project_available_widget_name (widget->project, widget, new_name))
-		glade_command_set_name (widget, new_name);
-	g_free (new_name);
-}
-
 
 static void
 append_name_field (GladeEditorTable *table)

@@ -1,22 +1,23 @@
 ## Previewer
 
 bin_PROGRAMS = glade-previewer
+lib_LTLIBRARIES = libgladeui-2.la
 
 glade_previewer_CPPFLAGS = \
 	-I$(top_srcdir)    \
 	-I$(top_builddir)  \
-	-DGLADE_GNOMEHELPDIR="\"$(HELP_DIR)\""
-	$(AM_CPPFLAGS)
-
-glade_previewer_CFLAGS =   \
+	-DGLADE_GNOMEHELPDIR="\"$(HELP_DIR)\"" \
 	$(GTK_CFLAGS)      \
 	$(IGE_MAC_CFLAGS)  \
 	$(WARN_CFLAGS)     \
+	$(AM_CPPFLAGS)
+
+glade_previewer_CFLAGS =   \
 	$(AM_CFLAGS)
 
 glade_previewer_LDFLAGS = $(AM_LDFLAGS)
 
-glade_previewer_LDADD = $(top_builddir)/gladeui/libgladeui-2.la $(IGE_MAC_LIBS)
+glade_previewer_LDADD = libgladeui-2.la $(IGE_MAC_LIBS)
 
 glade_previewer_SOURCES = \
 	glade-previewer.c
@@ -41,13 +42,11 @@ common_defines = \
 	-DGLADE_LOCALEDIR="\"$(datadir)/locale\""\
   -DGLADE_BINDIR="\"$(bindir)\""
 
-lib_LTLIBRARIES = libgladeui-2.la
-
 BUILT_SOURCES = glade-marshallers.c glade-marshallers.h
 
 EXTRA_DIST = glade-marshallers.list gladeui.rc.in icon-naming-spec.c glade-previewer.rc.in
 
-# The glade-3 core library
+# The glade core library
 libgladeui_2_la_SOURCES = \
 	glade-widget-adaptor.c \
 	glade-debug.c \
@@ -98,13 +97,13 @@ libgladeui_2_la_CPPFLAGS =  \
 	$(common_defines)   \
 	-I$(top_srcdir)     \
 	-I$(top_builddir)   \
-	$(AM_CPPFLAGS)
-
-libgladeui_2_la_CFLAGS =    \
 	$(GTK_CFLAGS)       \
 	$(IGE_MAC_BUNDLE_FLAG) \
 	$(IGE_MAC_CFLAGS)  \
 	$(WARN_CFLAGS)      \
+	$(AM_CPPFLAGS)
+
+libgladeui_2_la_CFLAGS =    \
 	$(AM_CFLAGS)
 
 libgladeui_2_la_LDFLAGS = -version-info $(GLADE_CURRENT):$(GLADE_REVISION):$(GLADE_AGE) $(AM_LDFLAGS)

@@ -72,7 +72,7 @@ void              glade_util_clear_selection  (void);
 
 GList            *glade_util_get_selection    (void);
 
-void              glade_util_draw_selection_nodes (GdkWindow *expose_win);
+void              glade_util_draw_selection_nodes (GtkWidget* expose_widget, cairo_t *cr);
 
 GList            *glade_util_container_get_all_children (GtkContainer *container);
 
@@ -155,8 +155,6 @@ gint              glade_utils_hijack_key_press (GtkWindow          *win,
 						gpointer            user_data);
 	
 
-gchar           *glade_utils_replace_home_dir_with_tilde (const gchar *uri);
-
 void             glade_utils_cairo_draw_line (cairo_t  *cr,
 					      GdkColor *color,
 					      gint      x1,
@@ -172,6 +170,8 @@ void             glade_utils_cairo_draw_rectangle (cairo_t *cr,
 						   gint y,
 						   gint width,
 						   gint height);
+
+gchar           *glade_utils_replace_home_dir_with_tilde (const gchar *path);
 
 G_END_DECLS
 

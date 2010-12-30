@@ -480,13 +480,13 @@ eprop_treeview_key_press (GtkWidget           *treeview,
 			  GdkEventKey         *event,
 			  GladeEditorProperty *eprop)
 {
-	if (event->keyval == GDK_Delete)
+	if (event->keyval == GDK_KEY_Delete)
 	{
 		glade_eprop_model_data_delete_selected (eprop);
 		return TRUE;
 	}
 	else if ((event->state & GDK_CONTROL_MASK) != 0 &&
-		 (event->keyval == GDK_n || event->keyval == GDK_N))
+		 (event->keyval == GDK_KEY_n || event->keyval == GDK_KEY_N))
 	{
 		glade_eprop_model_data_add_row (eprop);
 		return TRUE;
@@ -1239,10 +1239,10 @@ glade_eprop_model_data_create_input (GladeEditorProperty *eprop)
 	gtk_misc_set_padding (GTK_MISC (label), 2, 0);
 	gtk_box_pack_start (GTK_BOX (hbox), label,  FALSE, FALSE, 0);
 
-	combo = gtk_combo_box_new_text ();
-	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Off"));
-	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Horizontal"));
-	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Vertical"));
+	combo = gtk_combo_box_text_new ();
+	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), _("Off"));
+	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), _("Horizontal"));
+	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), _("Vertical"));
 
 
 	gtk_combo_box_set_active (GTK_COMBO_BOX (combo), eprop_data->sequence);

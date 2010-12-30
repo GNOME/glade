@@ -324,13 +324,6 @@ glade_palette_toggled (GladePalette *palette)
 		 * disabled so no chance of creating a non-window toplevel here
 		 */
 		widget = glade_palette_create_root_widget (palette, adaptor);
-		
-		/* if this is a top level widget set the accel group */
-		if (widget && glade_app_get_accel_group () && GTK_IS_WINDOW (widget->object))
-		{
-			gtk_window_add_accel_group (GTK_WINDOW (widget->object),
-						    glade_app_get_accel_group ());
-		}
 	}
 }
 
@@ -562,15 +555,22 @@ glade_palette_item_button_press (GtkWidget      *button,
 static GtkWidget*
 glade_palette_new_item (GladePalette *palette, GladeWidgetAdaptor *adaptor)
 {
-	GtkWidget *item, *button;
+	GtkWidget *item, *button, *label, *box;
 
 	item = (GtkWidget *)gtk_toggle_tool_button_new ();
 	g_object_set_data (G_OBJECT (item), "glade-widget-adaptor", adaptor);
 
 	button = gtk_bin_get_child (GTK_BIN (item));
 	g_assert (GTK_IS_BUTTON (button));
-
-	gtk_tool_button_set_label (GTK_TOOL_BUTTON (item), adaptor->title);
+	
+	/* Add a box to avoid the ellipsize on the items */
+	box = gtk_hbox_new (FALSE, 0);
+	label = gtk_label_new (adaptor->title);
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_widget_show (label);
+	gtk_widget_show (box);
+	gtk_container_add (GTK_CONTAINER (box), label);
+	gtk_tool_button_set_label_widget (GTK_TOOL_BUTTON (item), box);
 	glade_palette_item_refresh (item);
 
 	/* Update selection when the item is pushed */
@@ -760,6 +760,8 @@ glade_palette_init (GladePalette *palette)
 
 	gtk_widget_show (sw);
 	gtk_widget_show (priv->toolpalette);
+
+	glade_palette_update_appearance (palette);
 	
 	gtk_widget_set_no_show_all (GTK_WIDGET (palette), TRUE);
 }
