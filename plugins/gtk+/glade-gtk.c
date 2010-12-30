@@ -12031,14 +12031,21 @@ glade_gtk_action_child_selected (GladeBaseEditor *editor,
 				 GladeWidget *gchild,
 				 gpointer data)
 {
-	GObject *child = glade_widget_get_object (gchild);
-	
 	glade_base_editor_add_label (editor, _("Action"));
 	
 	glade_base_editor_add_default_properties (editor, gchild);
 	
 	glade_base_editor_add_label (editor, _("Properties"));
 	glade_base_editor_add_editable (editor, gchild, GLADE_PAGE_GENERAL);
+}
+
+static gboolean
+glade_gtk_action_move_child (GladeBaseEditor *editor,
+			     GladeWidget *gparent,
+			     GladeWidget *gchild,
+			     gpointer data)
+{	
+	return FALSE;
 }
 
 static void
@@ -12063,6 +12070,7 @@ glade_gtk_action_launch_editor (GObject  *action)
 					NULL);
 
 	g_signal_connect (editor, "child-selected", G_CALLBACK (glade_gtk_action_child_selected), NULL);
+	g_signal_connect (editor, "move-child", G_CALLBACK (glade_gtk_action_move_child), NULL);
 
 	gtk_widget_show (GTK_WIDGET (editor));
 	
