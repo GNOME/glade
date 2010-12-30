@@ -12039,12 +12039,6 @@ glade_gtk_action_child_selected (GladeBaseEditor *editor,
 	
 	glade_base_editor_add_label (editor, _("Properties"));
 	glade_base_editor_add_editable (editor, gchild, GLADE_PAGE_GENERAL);
-
-	if (GTK_IS_CELL_RENDERER (child))
-	{
-		glade_base_editor_add_label (editor, _("Common Properties and Attributes"));
-		glade_base_editor_add_editable (editor, gchild, GLADE_PAGE_COMMON);
-	}
 }
 
 static void
@@ -12072,7 +12066,7 @@ glade_gtk_action_launch_editor (GObject  *action)
 
 	gtk_widget_show (GTK_WIDGET (editor));
 	
-	window = glade_base_editor_pack_new_window (editor, _("Tree View Editor"), NULL);
+	window = glade_base_editor_pack_new_window (editor, _("Action Group Editor"), NULL);
 	gtk_widget_show (window);
 }
 
