@@ -1804,7 +1804,7 @@ glade_base_editor_init (GladeBaseEditor * editor)
                                          e->table);
 
   /* Signal Editor */
-  e->signal_editor = glade_signal_editor_new (NULL);
+  e->signal_editor = glade_signal_editor_new ();
   gtk_widget_show (GTK_WIDGET (e->signal_editor));
   gtk_widget_set_size_request (GTK_WIDGET (e->signal_editor), -1, 96);
   gtk_paned_pack2 (GTK_PANED (paned), GTK_WIDGET (e->signal_editor), FALSE,
