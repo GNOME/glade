@@ -1,4 +1,3 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * Copyright (C) 2001 Ximian, Inc.
  * Copyright (C) 2004 Imendio AB
@@ -47,22 +46,6 @@ typedef struct _GladeWidgetGroup GladeWidgetGroup;
  */
 typedef void      (*GladeCatalogInitFunc)    (const gchar *name);
 
-/**
- * GladeProjectConvertFunc:
- * @project: A #GladeProject
- * @new_format: The format to convert @project to
- *
- * Generally format transperency is implemented at load/save time,
- * but if some objects need to be setup differently, or some new
- * objects created (like real GtkAdjustment objects for old inline
- * property values) this is the place to do those things, be careful
- * to use the GladeCommand api because conversions are undoable.
- *
- * Returns: FALSE if any errors occurred during the conversion.
- */
-typedef gboolean  (*GladeProjectConvertFunc) (GladeProject        *project, 
-					      GladeProjectFormat   new_format);
-
 
 typedef struct {
 	gint major;
@@ -98,11 +81,6 @@ const gchar  *glade_widget_group_get_title          (GladeWidgetGroup *group);
 gboolean      glade_widget_group_get_expanded       (GladeWidgetGroup *group);
 
 const GList  *glade_widget_group_get_adaptors       (GladeWidgetGroup *group);
-
-gboolean      glade_catalog_convert_project         (GladeCatalog     *catalog,
-						     GladeProject     *project,
-						     GladeProjectFormat  new_format);
-
 
 gboolean      glade_catalog_supports_libglade       (GladeCatalog     *catalog);
 gboolean      glade_catalog_supports_gtkbuilder     (GladeCatalog     *catalog);

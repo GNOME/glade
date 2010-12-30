@@ -1,4 +1,3 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * glade-editable.c
  *
@@ -38,8 +37,8 @@
 
 static void
 glade_editable_class_init (gpointer g_iface)
-{	
-	/* */
+{
+  /* */
 }
 
 GType
@@ -49,10 +48,11 @@ glade_editable_get_type (void)
 
   if (!editable_type)
     editable_type =
-      g_type_register_static_simple (G_TYPE_INTERFACE, "GladeEditable",
-				       sizeof (GladeEditableIface),
-				       (GClassInitFunc) glade_editable_class_init,
-				       0, NULL, (GTypeFlags)0);
+        g_type_register_static_simple (G_TYPE_INTERFACE, "GladeEditable",
+                                       sizeof (GladeEditableIface),
+                                       (GClassInitFunc)
+                                       glade_editable_class_init, 0, NULL,
+                                       (GTypeFlags) 0);
 
   return editable_type;
 }
@@ -67,20 +67,19 @@ glade_editable_get_type (void)
  * until its loaded with another widget or %NULL)
  */
 void
-glade_editable_load (GladeEditable *editable,
-		     GladeWidget   *widget)
+glade_editable_load (GladeEditable * editable, GladeWidget * widget)
 {
-	GladeEditableIface *iface;
-	g_return_if_fail (GLADE_IS_EDITABLE (editable));
-	g_return_if_fail (widget == NULL || GLADE_IS_WIDGET (widget));
+  GladeEditableIface *iface;
+  g_return_if_fail (GLADE_IS_EDITABLE (editable));
+  g_return_if_fail (widget == NULL || GLADE_IS_WIDGET (widget));
 
-	iface = GLADE_EDITABLE_GET_IFACE (editable);
+  iface = GLADE_EDITABLE_GET_IFACE (editable);
 
-	if (iface->load)
-		iface->load (editable, widget);
-	else
-		g_critical ("No GladeEditable::load() support on type %s", 
-			    G_OBJECT_TYPE_NAME (editable));
+  if (iface->load)
+    iface->load (editable, widget);
+  else
+    g_critical ("No GladeEditable::load() support on type %s",
+                G_OBJECT_TYPE_NAME (editable));
 }
 
 
@@ -95,15 +94,13 @@ glade_editable_load (GladeEditable *editable,
  * to its embedded editable.
  */
 void
-glade_editable_set_show_name  (GladeEditable  *editable,
-			       gboolean        show_name)
+glade_editable_set_show_name (GladeEditable * editable, gboolean show_name)
 {
-	GladeEditableIface *iface;
-	g_return_if_fail (GLADE_IS_EDITABLE (editable));
+  GladeEditableIface *iface;
+  g_return_if_fail (GLADE_IS_EDITABLE (editable));
 
-	iface = GLADE_EDITABLE_GET_IFACE (editable);
+  iface = GLADE_EDITABLE_GET_IFACE (editable);
 
-	if (iface->set_show_name)
-		iface->set_show_name (editable, show_name);
+  if (iface->set_show_name)
+    iface->set_show_name (editable, show_name);
 }
-

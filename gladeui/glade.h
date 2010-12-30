@@ -1,4 +1,3 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * glade.h
  *
@@ -37,7 +36,6 @@
 #include <gladeui/glade-editor-property.h>
 #include <gladeui/glade-palette.h>
 #include <gladeui/glade-clipboard.h>
-#include <gladeui/glade-clipboard-view.h>
 #include <gladeui/glade-inspector.h>
 #include <gladeui/glade-placeholder.h>
 #include <gladeui/glade-utils.h>

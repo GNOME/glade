@@ -1,4 +1,3 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * Copyright (C) 2008 Tristan Van Berkom.
  *
@@ -72,10 +71,6 @@ struct _GladeLabelEditor
 	GtkWidget *wrap_mode_radio;
 
 	GList *properties;         /* A list of eprops to update at load() time */
-
-	GtkSizeGroup *appearance_group;
-	GtkSizeGroup *formatting_group;
-	GtkSizeGroup *wrap_group;
 
 	gboolean loading;          /* Loading flag for loading widgets in the editor */
 	gboolean modifying;        /* Flag for monitoring project changes */

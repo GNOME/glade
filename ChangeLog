@@ -1,3 +1,103 @@
+2010-12-30  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-widget-adaptor.[ch], gladeui/glade-xml-utils.c, plugins/gtk+/glade-gtk.c,
+	plugins/gtk+/gtk+.xml.in:
+	  Removed the boolean "fixed" property for catalogs and replaced it with a "create-widget-function"
+	tag that allows the backend to create a GladeWidget derived object to handle instances in
+	the runtime, modified the backend appropriately to create a GladeFixed for widgets that were
+	using the "fixed" property.
+
+	* configure.ac: Fixed package name to be 'glade' and not 'glade3', this was
+	  screwing up the installation directory and loading catalogs/modues for GTK+ 2.x.
+	  (i.e. from ${prefix}/share/glade3/catalogs instead of ${prefix}/share/glade/catalogs
+	  which is the new path).
+
+	* ALL SOURCE FILES: Removed 8-space indentation, reformatted all code with:
+	indent   \
+	--braces-after-if-line   \
+	--case-brace-indentation0   \
+	--case-indentation2   \
+	--braces-after-struct-decl-line   \
+	--line-length80   --no-tabs  \
+	--dont-line-up-parentheses   \
+	--continuation-indentation4 \
+	--continue-at-parentheses  \
+	--honour-newlines  --tab-size8  --indent-level2 -nbbo
+
+	* plugins/gtk+/gtk+.xml.in: Updated catalog for 2.22 and 2.24 symbols.
+
+2010-12-29  Javier Jardón <jjardon@gnome.org>
+
+	* configure.ac: Use upstream gettext
+
+2010-12-29  Javier Jardón <jjardon@gnome.org>
+
+	* autogen.sh, configure.ac: Modernize autotools configuration
+
+2010-12-29  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-base-editor.c, gladeui/glade-editor-property.c,
+	gladeui/glade-editor-table.c, gladeui/glade-editor-table.h,
+	plugins/gtk+/glade-activatable-editor.c, plugins/gtk+/glade-button-editor.c,
+	plugins/gtk+/glade-entry-editor.c, plugins/gtk+/glade-image-editor.c,
+	plugins/gtk+/glade-image-item-editor.c, plugins/gtk+/glade-label-editor.c,
+	plugins/gtk+/glade-label-editor.h, plugins/gtk+/glade-tool-button-editor.c:
+	Removed the GtkTables and use GtkGrid in property editors so that line wrapping
+	is hieght-for-width.
+
+	* gladeui/glade-editor-property.c: Make all input widgets want to expand.
+
+	* plugins/gtk+/glade-cell-renderer-editor.c: Fixed to use a GtkGrid to align the
+	  properties and do height-for-width, also now use GtkComboBox:fixed-width = FALSE
+	  to allow popups to show the full column values instead of the old hack in place.
+
+	* gladeui/glade-design-view.c: Made loading progress bar nicer looking and ellipsizing.
+
+	* Whole tree updated to remove all notion of project conversions and dual project formats,
+	  no more libglade.
+
+	* Fixing distcheck, bumping version to 3.9.0
+
+2010-12-28  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/Makefile.am, gladeui/glade.h, gladeui/glade-clipboard.c, gladeui/glade-app.[ch],
+	  src/glade-window.c, gladeui/glade-clipboard-view.[ch]:
+	Removed GladeClipboradView completely.
+
+2010-12-27  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-project.c: Fixed glade-project to unset the loading flag when
+	  loading project dependancies are not satisfied and there is an early return.
+
+	* gladui/glade-editor-property.c: Set a width-chars on the eprop label so that
+	  line wrapping kicks in.
+
+	* gladeui/glade-editor-property.c: Align property labels left instead of right
+	  (get back the old look and feel).
+
+	* gladeui/glade-widget-adaptor.c: Uncommenting some code that for some reason
+	  got "fallout" from the offscreen branches.
+
+	* gladui/glade-placeholder.c: Made GladePlaceholder Implement GtkScrollable so
+	  as to avoid warnings when using placeholders inside scrolled windows.
+
+	* gladeui/glade-widget-adaptor.[ch]: Removed the '->scrollable' flag on the adaptor
+	  class in favor of just checking if the class type implements GtkScrollable
+
+2010-12-26  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-previewer.c: Added include <locale.h> for setlocale() (bug 638035).
+
+	* gladeui/glade-placeholder.c: Removed debug printing and some unused variables.
+
+	* gladeui/glade-design-layout.c: Make sure to hide widgets going out of the workspace
+	  so that embedded toplevels dont "pop out" of the workspace
+
+	* src/glade-close-button.c: Made the close button in notebook tabs smaller.
+
+	* gladeui/glade-widget.c: Reduce processing of events by not running the
+	  widget lookup event redirection for events we're not interested in.
+
 2010-12-23  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-widget.c: Check if object is actually in the parent when rebuilding
@@ -75,6 +175,12 @@
 	  abort loading when project indicates the user cancelled the load.
 
 2010-12-20  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* plugins/gtk+/glade-label-editor.c: Dont add invisible properties to the editor,
+	  instead the invisible editor-property gets tied to the life-cycle of the table
+	  it would have been added to (since recently glade_editor_property() explicitly
+	  shows/hides properties according to if thier widget actually has an instance
+	  of the property).
 
 	* plugins/gtk+/glade-gtk.c, plugins/gtk+/glade-column-types.[ch]: Added
 	  glade_column_type_new() to create a GladeColumnType struct properly using

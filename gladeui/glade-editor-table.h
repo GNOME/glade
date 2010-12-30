@@ -1,4 +1,3 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * Copyright (C) 2008 Tristan Van Berkom.
  *
@@ -40,7 +39,7 @@ typedef struct _GladeEditorTableClass   GladeEditorTableClass;
 
 struct _GladeEditorTable
 {
-	GtkTable  parent;
+	GtkGrid  parent;
 
 	GladeWidgetAdaptor *adaptor; /* The GladeWidgetAdaptor this
 				      * table was created for.
@@ -48,8 +47,6 @@ struct _GladeEditorTable
 
 	GladeWidget *loaded_widget; /* A pointer to the currently loaded GladeWidget
 				     */
-
-	GtkSizeGroup *group; /* Group of editing widgets in the right hand column */
 	
 	GtkWidget *name_label; /* A pointer to the "Name:" label (for show/hide) */
 	GtkWidget *name_entry; /* A pointer to the gtk_entry that holds
@@ -74,7 +71,7 @@ struct _GladeEditorTable
 
 struct _GladeEditorTableClass
 {
-	GtkTableClass parent;
+	GtkGridClass parent;
 };
 
 GType            glade_editor_table_get_type (void);

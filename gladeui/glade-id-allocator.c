@@ -1,4 +1,3 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * Copyright (C) 2004 Owen Taylor
  *
@@ -33,8 +32,8 @@
 
 struct _GladeIDAllocator
 {
-	guint     n_words;
-	guint32  *data;
+  guint n_words;
+  guint32 *data;
 };
 
 /**
@@ -45,14 +44,14 @@ struct _GladeIDAllocator
 GladeIDAllocator *
 glade_id_allocator_new (void)
 {
-	GladeIDAllocator *allocator = g_slice_new (GladeIDAllocator);
+  GladeIDAllocator *allocator = g_slice_new (GladeIDAllocator);
 
-	allocator->n_words = INITIAL_WORDS;
-	allocator->data = g_new (guint32, INITIAL_WORDS);
-	
-	memset (allocator->data, 0xff, INITIAL_WORDS * sizeof (guint32));
-      
-	return allocator;
+  allocator->n_words = INITIAL_WORDS;
+  allocator->data = g_new (guint32, INITIAL_WORDS);
+
+  memset (allocator->data, 0xff, INITIAL_WORDS * sizeof (guint32));
+
+  return allocator;
 }
 
 /**
@@ -62,45 +61,45 @@ glade_id_allocator_new (void)
  * Frees @allocator and its associated memory
  */
 void
-glade_id_allocator_destroy (GladeIDAllocator *allocator)
+glade_id_allocator_destroy (GladeIDAllocator * allocator)
 {
-	g_return_if_fail (allocator != NULL);
+  g_return_if_fail (allocator != NULL);
 
-	g_free (allocator->data);
-	g_slice_free (GladeIDAllocator, allocator);
+  g_free (allocator->data);
+  g_slice_free (GladeIDAllocator, allocator);
 }
 
 static inline gint
 first_set_bit (guint32 word)
 {
-	static const char table[16] = {
-		4, 0, 1, 0,
-		2, 0, 1, 0,
-		3, 0, 1, 0,
-		2, 0, 1, 0
-	};
+  static const char table[16] = {
+    4, 0, 1, 0,
+    2, 0, 1, 0,
+    3, 0, 1, 0,
+    2, 0, 1, 0
+  };
 
-	gint result = 0;
-  
-	if ((word & 0xffff) == 0)
-	{
-		word >>= 16;
-		result += 16;
-	}
+  gint result = 0;
 
-	if ((word & 0xff) == 0)
-	{
-		word >>= 8;
-		result += 8;
-	}
+  if ((word & 0xffff) == 0)
+    {
+      word >>= 16;
+      result += 16;
+    }
 
-	if ((word & 0xf) == 0)
-	{
-		word >>= 4;
-		result += 4;
-	}
+  if ((word & 0xff) == 0)
+    {
+      word >>= 8;
+      result += 8;
+    }
 
-	return result + table[word & 0xf];
+  if ((word & 0xf) == 0)
+    {
+      word >>= 4;
+      result += 4;
+    }
+
+  return result + table[word & 0xf];
 }
 
 /**
@@ -111,34 +110,34 @@ first_set_bit (guint32 word)
  * Returns:
  */
 guint
-glade_id_allocator_allocate (GladeIDAllocator *allocator)
+glade_id_allocator_allocate (GladeIDAllocator * allocator)
 {
-	guint i;
+  guint i;
 
-	g_return_val_if_fail (allocator != NULL, 0);
+  g_return_val_if_fail (allocator != NULL, 0);
 
-	for (i = 0; i < allocator->n_words; i++)
-	{
-		if (allocator->data[i] != 0)
-		{
-			gint free_bit = first_set_bit (allocator->data[i]);
-			allocator->data[i] &= ~(1 << free_bit);
+  for (i = 0; i < allocator->n_words; i++)
+    {
+      if (allocator->data[i] != 0)
+        {
+          gint free_bit = first_set_bit (allocator->data[i]);
+          allocator->data[i] &= ~(1 << free_bit);
 
-			return 32 * i + free_bit + 1;
-		}
-	}
+          return 32 * i + free_bit + 1;
+        }
+    }
 
-	{
-		guint n_words = allocator->n_words;
-    
-		allocator->data = g_renew (guint32, allocator->data, n_words * 2);
-		memset (&allocator->data[n_words], 0xff, n_words * sizeof (guint32));
-		allocator->n_words = n_words * 2;
-    
-		allocator->data[n_words] = 0xffffffff - 1;
-    
-		return 32 * n_words + 1;
-	}
+  {
+    guint n_words = allocator->n_words;
+
+    allocator->data = g_renew (guint32, allocator->data, n_words * 2);
+    memset (&allocator->data[n_words], 0xff, n_words * sizeof (guint32));
+    allocator->n_words = n_words * 2;
+
+    allocator->data[n_words] = 0xffffffff - 1;
+
+    return 32 * n_words + 1;
+  }
 }
 
 /**
@@ -149,42 +148,42 @@ glade_id_allocator_allocate (GladeIDAllocator *allocator)
  * TODO: write me
  */
 void
-glade_id_allocator_release (GladeIDAllocator *allocator,
-			    guint             id)
+glade_id_allocator_release (GladeIDAllocator * allocator, guint id)
 {
-	g_return_if_fail (allocator != NULL);
+  g_return_if_fail (allocator != NULL);
 
-	id = id > 0 ? id - 1 : 0;
-	allocator->data[id >> 5] |= 1 << (id & 31);
+  id = id > 0 ? id - 1 : 0;
+  allocator->data[id >> 5] |= 1 << (id & 31);
 }
 
 #ifdef GLADE_ID_ALLOCATOR_TEST
-int main (int argc, char **argv)
+int
+main (int argc, char **argv)
 {
-	GladeIDAllocator *allocator = glade_id_allocator_new ();
-	guint i;
-	guint iter;
+  GladeIDAllocator *allocator = glade_id_allocator_new ();
+  guint i;
+  guint iter;
 
-	for (i = 0; i < 1000; i++)
-	{
-		guint id = glade_id_allocator_allocate (allocator);
-		g_assert (id == i);
-	}
-  
-	for (i = 0; i < 1000; i++)
-		glade_id_allocator_release (allocator, i);
+  for (i = 0; i < 1000; i++)
+    {
+      guint id = glade_id_allocator_allocate (allocator);
+      g_assert (id == i);
+    }
 
-	for (iter = 0; iter < 10000; iter++)
-	{
-		for (i = 0; i < 1000; i++)
-			glade_id_allocator_alloc (allocator);
-      
-		for (i = 0; i < 1000; i++)
-			glade_id_allocator_release (allocator, i);
-	}
+  for (i = 0; i < 1000; i++)
+    glade_id_allocator_release (allocator, i);
 
-	glade_id_allocator_destroy (allocator);
+  for (iter = 0; iter < 10000; iter++)
+    {
+      for (i = 0; i < 1000; i++)
+        glade_id_allocator_alloc (allocator);
 
-	return 0;
+      for (i = 0; i < 1000; i++)
+        glade_id_allocator_release (allocator, i);
+    }
+
+  glade_id_allocator_destroy (allocator);
+
+  return 0;
 }
 #endif

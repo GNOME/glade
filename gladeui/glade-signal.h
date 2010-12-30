@@ -1,4 +1,3 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 #ifndef __GLADE_SIGNAL_H__
 #define __GLADE_SIGNAL_H__
 
@@ -38,7 +37,6 @@ gboolean     glade_signal_equal (const GladeSignal *sig1, const GladeSignal *sig
 
 GladeSignal *glade_signal_read  (GladeXmlNode *node);
 void         glade_signal_write (GladeSignal        *signal,
-				 GladeProjectFormat  fmt,
 				 GladeXmlContext    *context,
 				 GladeXmlNode       *node);
 

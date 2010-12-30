@@ -1,4 +1,3 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 #ifndef __GLADE_COMMAND_H__
 #define __GLADE_COMMAND_H__
 
@@ -87,9 +86,6 @@ void           glade_command_collapse      (GladeCommand      *command,
 
 /************************** project *********************************/
 
-void           glade_command_set_project_format  (GladeProject       *project,
-						  GladeProjectFormat  fmt);
-
 void           glade_command_set_project_naming_policy  (GladeProject       *project,
 							 GladeNamingPolicy   policy);
 
@@ -160,7 +156,6 @@ void           glade_command_change_signal (GladeWidget       *glade_widget,
 
 void           glade_command_set_i18n      (GladeProperty     *property,
 					    gboolean translatable,
-					    gboolean has_context,
 					    const gchar *context,
 					    const gchar *comment);
 

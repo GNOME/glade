@@ -1,4 +1,3 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 #ifndef __GLADE_PROPERTY_CLASS_H__
 #define __GLADE_PROPERTY_CLASS_H__
 
@@ -79,9 +78,6 @@ struct _GladePropertyClass
 	guint16     version_since_major; /* Version in which this property was */
 	guint16     version_since_minor; /* introduced.                       */
 
-	guint16     builder_since_major; /* Version in which this property became */
-	guint16     builder_since_minor; /* available in GtkBuilder format        */
-
 	GParamSpec *pspec; /* The Parameter Specification for this property.
 			    */
 
@@ -117,10 +113,6 @@ struct _GladePropertyClass
 	gint  visible_lines; /* When this pspec calls for a text editor, how many
 			      * lines should be visible in the editor.
 			      */
-
-	/* For catalogs that support libglade: */
-	guint    libglade_only : 1;       /* Mark special libglade virtual properties */
-	guint    libglade_unsupported : 1;/* Mark properties that are not available in libglade */
 
 	guint virt : 1; /* Whether this is a virtual property with its pspec supplied
 			 * via the catalog (or hard code-paths); or FALSE if its a real
@@ -233,8 +225,7 @@ void                glade_property_class_free                    (GladePropertyC
 
 gboolean            glade_property_class_is_visible              (GladePropertyClass  *property_class);
 
-gboolean            glade_property_class_is_object               (GladePropertyClass  *property_class,
-								  GladeProjectFormat   fmt);
+gboolean            glade_property_class_is_object               (GladePropertyClass  *property_class);
 
 GValue             *glade_property_class_make_gvalue_from_string (GladePropertyClass  *property_class,
 								  const gchar         *string,
@@ -242,8 +233,7 @@ GValue             *glade_property_class_make_gvalue_from_string (GladePropertyC
 								  GladeWidget         *widget);
 
 gchar              *glade_property_class_make_string_from_gvalue (GladePropertyClass  *property_class,
-								  const GValue        *value,
-								  GladeProjectFormat   fmt);
+								  const GValue        *value);
 
 GValue             *glade_property_class_make_gvalue_from_vl     (GladePropertyClass  *property_class,
 								  va_list              vl);
@@ -275,8 +265,7 @@ gboolean            glade_property_class_void_value              (GladePropertyC
 
 gint                glade_property_class_compare                 (GladePropertyClass *klass,
 								  const GValue       *value1,
-								  const GValue       *value2,
-								  GladeProjectFormat  fmt);
+								  const GValue       *value2);
 
 GValue             *glade_property_class_get_default_from_spec   (GParamSpec *spec);
 

@@ -1,4 +1,3 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * Copyright (C) 2001 Ximian, Inc.
  *
@@ -104,14 +103,12 @@ gboolean           glade_app_get_catalog_version (const gchar *name, gint *major
 GList             *glade_app_get_catalogs (void);
 
 GladeCatalog      *glade_app_get_catalog (const gchar *name);
- 
+
 GladeEditor*       glade_app_get_editor (void);
- 
+
 GladePalette*      glade_app_get_palette (void);
- 
+
 GladeClipboard*    glade_app_get_clipboard (void);
- 
-GtkWidget*         glade_app_get_clipboard_view (void);
 
 GladeProject*      glade_app_get_project (void);
 

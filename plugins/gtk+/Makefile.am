@@ -20,7 +20,7 @@ libgladegtk_la_CPPFLAGS =   \
 
 libgladegtk_la_CFLAGS = $(AM_CFLAGS)
 
-libgladegtk_la_SOURCES     = glade-gtk.c glade-accels.c glade-attributes.c glade-convert.c fixed-bg.xpm \
+libgladegtk_la_SOURCES     = glade-gtk.c glade-accels.c glade-attributes.c fixed-bg.xpm \
 	glade-column-types.c  glade-model-data.c glade-text-button.c \
 	glade-icon-sources.c glade-button-editor.c glade-tool-button-editor.c glade-image-editor.c \
 	glade-image-item-editor.c glade-icon-factory-editor.c glade-store-editor.c glade-label-editor.c \

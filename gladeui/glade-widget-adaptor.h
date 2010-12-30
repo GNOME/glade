@@ -1,4 +1,3 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 #ifndef __GLADE_WIDGET_ADAPTOR_H__
 #define __GLADE_WIDGET_ADAPTOR_H__
 
@@ -23,16 +22,6 @@ G_BEGIN_DECLS
 typedef struct _GladeWidgetAdaptor        GladeWidgetAdaptor;
 typedef struct _GladeWidgetAdaptorPrivate GladeWidgetAdaptorPrivate;
 typedef struct _GladeWidgetAdaptorClass   GladeWidgetAdaptorClass;
-
-/**
- * GWA_IS_FIXED:
- * @obj: A #GladeWidgetAdaptor
- *
- * Checks whether this widget adaptor should be handled 
- * as a free-form container
- */
-#define GWA_IS_FIXED(obj) \
-        ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->fixed : FALSE)
 
 /**
  * GWA_DEPRECATED:
@@ -179,8 +168,7 @@ typedef struct _GladeWidgetAdaptorClass   GladeWidgetAdaptorClass;
  * Checks whether this is a GtkWidgetClass with scrolling capabilities.
  */
 #define GWA_SCROLLABLE_WIDGET(obj) \
-        ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->scrollable : FALSE)
-
+        ((obj) ? g_type_is_a (GLADE_WIDGET_ADAPTOR (obj)->type, GTK_TYPE_SCROLLABLE) : FALSE)
 
 /**
  * GWA_GET_CLASS:
@@ -251,6 +239,22 @@ typedef enum
 } GladeCreateReason;
 
 #define GLADE_TYPE_CREATE_REASON (glade_create_reason_get_type())
+
+/**
+ * GladeSetPropertyFunc:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @first_property_name: the name of the first property
+ * @var_args: the value of the first property, followed optionally by more
+ *  name/value pairs, followed by %NULL
+ *
+ * This entry point allows the backend to create a specialized GladeWidget
+ * derived object for handling instances in the core.
+ *
+ * Returns: A newly created #GladeWidget for the said adaptor.
+ */
+typedef GladeWidget * (* GladeCreateWidgetFunc) (GladeWidgetAdaptor *adaptor,
+						 const gchar        *first_property_name,
+						 va_list             var_args);
 
 /**
  * GladeSetPropertyFunc:
@@ -561,7 +565,6 @@ typedef GladeEditorProperty *(* GladeCreateEPropFunc) (GladeWidgetAdaptor *adapt
  * @adaptor: A #GladeWidgetAdaptor
  * @klass: The #GladePropertyClass 
  * @value: The #GValue to convert to a string
- * @fmt: The #GladeProjectFormat the string should conform to
  * 
  * For normal properties this is used to serialize
  * property values, for custom properties (only when new pspecs are 
@@ -572,8 +575,7 @@ typedef GladeEditorProperty *(* GladeCreateEPropFunc) (GladeWidgetAdaptor *adapt
  */
 typedef gchar   *(* GladeStringFromValueFunc) (GladeWidgetAdaptor *adaptor,
 					       GladePropertyClass *klass,
-					       const GValue       *value,
-					       GladeProjectFormat  fmt);
+					       const GValue       *value);
 
 
 
@@ -674,36 +676,19 @@ struct _GladeWidgetAdaptorClass
 	guint16                    version_since_major; /* Version in which this widget was */
 	guint16                    version_since_minor; /* introduced.                      */
 
-	guint16                    builder_since_major; /* Version in which this widget became */
-	guint16                    builder_since_minor; /* available in GtkBuilder format      */
-
-
 	guint                      deprecated : 1;          /* If this widget is currently
 							     * deprecated
 							     */
-	guint                      libglade_unsupported : 1; /* If this widget is not supported
-							      * by libglade
-							      */
-	guint                      libglade_only : 1;        /* If this widget is only supported
-							      * by libglade
-							      */
-
-	guint                      fixed : 1;                /* If this is a Container, use free-form
-							      * placement with drag/resize/paste at mouse...
-							      */
 	guint                      toplevel : 1;             /* If this class is toplevel */
 
 	guint                      use_placeholders : 1;     /* Whether or not to use placeholders
 							      * to interface with child widgets.
 							      */
 
-	guint                      scrollable : 1;           /* Whether this is a widget class that has
-							      * klass->set_scroll_adjustments_signal != NULL (i.e.
-							      * can be directly added to a GtkScrolledWindow).
-							      */
-
 	gint                       default_width;  /* Default width in GladeDesignLayout */
 	gint                       default_height; /* Default height in GladeDesignLayout */
+
+	GladeCreateWidgetFunc      create_widget;  /* Creates a GladeWidget for this adaptor */
 
 	GladeConstructObjectFunc   construct_object;  /* Object constructor
 						       */
@@ -981,8 +966,7 @@ GladeEditorProperty *glade_widget_adaptor_create_eprop_by_name (GladeWidgetAdapt
 
 gchar               *glade_widget_adaptor_string_from_value  (GladeWidgetAdaptor *adaptor,
 							      GladePropertyClass *klass,
-							      const GValue       *value,
-							      GladeProjectFormat  fmt);
+							      const GValue       *value);
 
 GladeEditable       *glade_widget_adaptor_create_editable    (GladeWidgetAdaptor *adaptor,
 							      GladeEditorPageType type);
