@@ -596,20 +596,12 @@ glade_editor_set_signal_editor (GladeEditor * editor,
 static void
 glade_editor_load_signal_page (GladeEditor * editor)
 {
-<<<<<<< HEAD
-	if (editor->signal_editor == NULL) {
-		editor->signal_editor = glade_signal_editor_new ();
-		gtk_container_add (GTK_CONTAINER (editor->page_signals),
-				   GTK_WIDGET(editor->signal_editor));
-	}
-=======
   if (editor->signal_editor == NULL)
     {
-      editor->signal_editor = glade_signal_editor_new ((gpointer) editor);
+      editor->signal_editor = glade_signal_editor_new ();
       gtk_container_add (GTK_CONTAINER (editor->page_signals),
                          GTK_WIDGET (editor->signal_editor));
     }
->>>>>>> master
 }
 
 static void
