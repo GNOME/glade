@@ -4,6 +4,9 @@
 
 	* gladeui/glade-base-editor.c, gladeui/glade-command.c: Avoid setting a null name on a widget.
 
+	* plugins/gtk+/glade-tool-button-editor.c: Fixed unbalanced refcount of a sizegroup in the
+	  toolbutton editor.
+
 2010-12-29  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-design-view.c: Made loading progress bar nicer looking and ellipsizing.

@@ -507,7 +507,7 @@ glade_tool_button_editor_new (GladeWidgetAdaptor *adaptor,
 	button_editor->image_table = table = gtk_table_new (0, 0, FALSE);
 	gtk_container_add (GTK_CONTAINER (alignment), table);
 
-	gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
+	group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
 	/* Stock image... */
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "stock-id", FALSE, TRUE);
