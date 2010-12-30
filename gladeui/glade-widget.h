@@ -125,8 +125,8 @@ struct _GladeWidgetClass
 	void         (*remove_child)            (GladeWidget *, GladeWidget *);
 	void         (*replace_child)           (GladeWidget *, GObject *, GObject *);
 
-	void         (*add_signal_handler)	(GladeWidget *, GladeSignal *);
-	void         (*remove_signal_handler)	(GladeWidget *, GladeSignal *);
+	void         (*add_signal_handler)	(GladeWidget *, const GladeSignal *);
+	void         (*remove_signal_handler)	(GladeWidget *, const GladeSignal *);
 	void         (*change_signal_handler)	(GladeWidget *, GladeSignal *, GladeSignal *);
 	
 	gint         (*button_press_event)      (GladeWidget *, GdkEvent *);

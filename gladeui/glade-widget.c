@@ -247,9 +247,9 @@ glade_widget_add_signal_handler (GladeWidget *widget, const GladeSignal *signal_
  * Removes a signal handler from @widget 
  */
 
-static void
+void
 glade_widget_remove_signal_handler (GladeWidget * widget,
-                                    GladeSignal * signal_handler)
+                                    const GladeSignal * signal_handler)
 {
   GPtrArray *signals;
   GladeSignal *tmp_signal_handler;
@@ -1106,10 +1106,6 @@ glade_widget_class_init (GladeWidgetClass * klass)
   klass->remove_child = glade_widget_remove_child_impl;
   klass->replace_child = glade_widget_replace_child_impl;
   klass->event = glade_widget_event_impl;
-
-  klass->add_signal_handler = glade_widget_add_signal_handler_impl;
-  klass->remove_signal_handler = glade_widget_remove_signal_handler_impl;
-  klass->change_signal_handler = glade_widget_change_signal_handler_impl;
 
   klass->button_press_event = glade_widget_button_press_event_impl;
   klass->button_release_event = NULL;
@@ -2471,60 +2467,6 @@ glade_widget_rebuild (GladeWidget * gwidget)
     glade_widget_show (gwidget);
 
   g_object_unref (gwidget);
-}
-
-/**
- * glade_widget_add_signal_handler:
- * @widget: A #GladeWidget
- * @signal_handler: The #GladeSignal
- *
- * Adds a signal handler for @widget 
- */
-void
-glade_widget_add_signal_handler (GladeWidget * widget,
-                                 GladeSignal * signal_handler)
-{
-  g_return_if_fail (GLADE_IS_WIDGET (widget));
-
-  g_signal_emit (widget, glade_widget_signals[ADD_SIGNAL_HANDLER], 0,
-                 signal_handler);
-}
-
-
-/**
- * glade_widget_remove_signal_handler:
- * @widget: A #GladeWidget
- * @signal_handler: The #GladeSignal
- *
- * Removes a signal handler from @widget 
- */
-void
-glade_widget_remove_signal_handler (GladeWidget * widget,
-                                    GladeSignal * signal_handler)
-{
-  g_return_if_fail (GLADE_IS_WIDGET (widget));
-
-  g_signal_emit (widget, glade_widget_signals[REMOVE_SIGNAL_HANDLER], 0,
-                 signal_handler);
-}
-
-/**
- * glade_widget_change_signal_handler:
- * @widget: A #GladeWidget
- * @old_signal_handler: the old #GladeSignal
- * @new_signal_handler: the new #GladeSignal
- *
- * Changes a #GladeSignal on @widget 
- */
-void
-glade_widget_change_signal_handler (GladeWidget * widget,
-                                    GladeSignal * old_signal_handler,
-                                    GladeSignal * new_signal_handler)
-{
-  g_return_if_fail (GLADE_IS_WIDGET (widget));
-
-  g_signal_emit (widget, glade_widget_signals[CHANGE_SIGNAL_HANDLER], 0,
-                 old_signal_handler, new_signal_handler);
 }
 
 /**
