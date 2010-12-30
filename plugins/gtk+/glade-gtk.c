@@ -11889,6 +11889,8 @@ glade_gtk_adjustment_write_widget (GladeWidgetAdaptor *adaptor,
 
 
 /*--------------------------- GtkAction ---------------------------------*/
+#define ACTION_ACCEL_INSENSITIVE_MSG _("The accelerator can only be set when inside an Action Group.")
+
 void
 glade_gtk_action_post_create (GladeWidgetAdaptor *adaptor, 
 			      GObject            *object, 
@@ -11902,6 +11904,9 @@ glade_gtk_action_post_create (GladeWidgetAdaptor *adaptor,
 	if (!gtk_action_get_name (GTK_ACTION (object)))
 		glade_widget_property_set (gwidget, "name", "untitled");
 
+	glade_widget_set_action_sensitive (gwidget, "launch_editor", FALSE);
+	glade_widget_property_set_sensitive (gwidget, "accelerator", FALSE, 
+					     ACTION_ACCEL_INSENSITIVE_MSG);
 }
 
 /*--------------------------- GtkActionGroup ---------------------------------*/
@@ -11925,6 +11930,7 @@ glade_gtk_action_group_add_child (GladeWidgetAdaptor *adaptor,
 					(GDestroyNotify)g_list_free);
 
 		glade_widget_property_set_sensitive (gaction, "accelerator", TRUE, NULL);
+		glade_widget_set_action_sensitive (gaction, "launch_editor", TRUE);
 	}
 }
 
@@ -11937,7 +11943,6 @@ glade_gtk_action_group_remove_child (GladeWidgetAdaptor *adaptor,
 	{
 		/* Dont really add/remove actions (because name conflicts inside groups)
 		 */
-		const gchar *insensitive_msg = _("The accelerator can only be set when inside an Action Group.");
 		GladeWidget *ggroup = glade_widget_get_from_gobject (container);
 		GladeWidget *gaction = glade_widget_get_from_gobject (child);
 		GList       *actions = g_object_get_data (G_OBJECT (ggroup), "glade-actions");
@@ -11948,7 +11953,9 @@ glade_gtk_action_group_remove_child (GladeWidgetAdaptor *adaptor,
 		g_object_set_data_full (G_OBJECT (ggroup), "glade-actions", actions, 
 					(GDestroyNotify)g_list_free);
 
-		glade_widget_property_set_sensitive (gaction, "accelerator", FALSE, insensitive_msg);
+		glade_widget_property_set_sensitive (gaction, "accelerator", FALSE, 
+						     ACTION_ACCEL_INSENSITIVE_MSG);
+		glade_widget_set_action_sensitive (gaction, "launch_editor", FALSE);
 	}
 }
 
@@ -12017,4 +12024,66 @@ glade_gtk_action_group_write_child (GladeWidgetAdaptor *adaptor,
 
 	/* Write accelerator here  */
 	glade_gtk_write_accels (widget, context, child_node, FALSE);		
+}
+
+static void
+glade_gtk_action_child_selected (GladeBaseEditor *editor,
+				 GladeWidget *gchild,
+				 gpointer data)
+{
+	GObject *child = glade_widget_get_object (gchild);
+	
+	glade_base_editor_add_label (editor, _("Action"));
+	
+	glade_base_editor_add_default_properties (editor, gchild);
+	
+	glade_base_editor_add_label (editor, _("Properties"));
+	glade_base_editor_add_editable (editor, gchild, GLADE_PAGE_GENERAL);
+
+	if (GTK_IS_CELL_RENDERER (child))
+	{
+		glade_base_editor_add_label (editor, _("Common Properties and Attributes"));
+		glade_base_editor_add_editable (editor, gchild, GLADE_PAGE_COMMON);
+	}
+}
+
+static void
+glade_gtk_action_launch_editor (GObject  *action)
+{
+	GladeWidget *widget = glade_widget_get_from_gobject (action);
+	GladeBaseEditor *editor;
+	GladeEditable *action_editor;
+	GtkWidget *window;
+
+	/* Make sure we get the group here */
+	widget = glade_widget_get_toplevel (widget);
+
+	action_editor = glade_widget_adaptor_create_editable (widget->adaptor, GLADE_PAGE_GENERAL);
+
+	/* Editor */
+	editor = glade_base_editor_new (widget->object, action_editor,
+					_("Action"), GTK_TYPE_ACTION,
+					_("Toggle"), GTK_TYPE_TOGGLE_ACTION,
+					_("Radio"), GTK_TYPE_RADIO_ACTION,
+					_("Recent"), GTK_TYPE_RECENT_ACTION,
+					NULL);
+
+	g_signal_connect (editor, "child-selected", G_CALLBACK (glade_gtk_action_child_selected), NULL);
+
+	gtk_widget_show (GTK_WIDGET (editor));
+	
+	window = glade_base_editor_pack_new_window (editor, _("Tree View Editor"), NULL);
+	gtk_widget_show (window);
+}
+
+
+void
+glade_gtk_action_action_activate (GladeWidgetAdaptor *adaptor,
+				  GObject *object,
+				  const gchar *action_path)
+{
+	if (strcmp (action_path, "launch_editor") == 0)
+	{
+		glade_gtk_action_launch_editor (object);
+	}
 }
