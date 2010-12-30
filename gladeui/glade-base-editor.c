@@ -353,7 +353,7 @@ glade_base_editor_name_activate (GtkEntry *entry, GladeWidget *gchild)
 	const gchar *text = gtk_entry_get_text (GTK_ENTRY (entry));
 	GladeBaseEditor *editor = g_object_get_data (G_OBJECT (entry), "editor");
 
-	if (strcmp (glade_widget_get_name (gchild), text))
+	if (text && text[0] && strcmp (glade_widget_get_name (gchild), text))
 	{
 		g_signal_handlers_block_by_func (gchild->project,
 						 glade_base_editor_project_widget_name_changed,
