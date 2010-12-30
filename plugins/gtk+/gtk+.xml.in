@@ -280,7 +280,8 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
     
-    <glade-widget-class name="GtkBox" generic-name="box" _title="Box" fixed="True">
+    <glade-widget-class name="GtkBox" generic-name="box" _title="Box">
+      <create-widget-function>glade_gtk_create_fixed_widget</create-widget-function>
       <post-create-function>glade_gtk_box_post_create</post-create-function>
       <get-internal-child-function>glade_gtk_box_get_internal_child</get-internal-child-function>
       <get-children-function>glade_gtk_box_get_children</get-children-function>
@@ -1192,7 +1193,8 @@ embedded in another object</_tooltip>
 
     </glade-widget-class>
 
-    <glade-widget-class name="GtkTable" generic-name="table" _title="Table" fixed="True">
+    <glade-widget-class name="GtkTable" generic-name="table" _title="Table">
+      <create-widget-function>glade_gtk_create_fixed_widget</create-widget-function>
       <post-create-function>glade_gtk_table_post_create</post-create-function>
       <child-set-property-function>glade_gtk_table_set_child_property</child-set-property-function>
       <child-verify-function>glade_gtk_table_child_verify_property</child-verify-function>
@@ -1475,13 +1477,15 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
     
-    <glade-widget-class name="GtkLayout" generic-name="layout" _title="Layout" fixed="True" use-placeholders="False">
+    <glade-widget-class name="GtkLayout" generic-name="layout" _title="Layout" use-placeholders="False">
+      <create-widget-function>glade_gtk_create_fixed_widget</create-widget-function>
       <post-create-function>glade_gtk_fixed_layout_post_create</post-create-function>
       <add-child-function>glade_gtk_fixed_layout_add_child</add-child-function>
       <remove-child-function>glade_gtk_fixed_layout_remove_child</remove-child-function> 
     </glade-widget-class>
     
-    <glade-widget-class name="GtkFixed" generic-name="fixed" _title="Fixed" fixed="True" use-placeholders="False">
+    <glade-widget-class name="GtkFixed" generic-name="fixed" _title="Fixed" use-placeholders="False">
+      <create-widget-function>glade_gtk_create_fixed_widget</create-widget-function>
       <post-create-function>glade_gtk_fixed_layout_post_create</post-create-function>
       <add-child-function>glade_gtk_fixed_layout_add_child</add-child-function>
       <remove-child-function>glade_gtk_fixed_layout_remove_child</remove-child-function> 

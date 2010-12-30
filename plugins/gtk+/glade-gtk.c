@@ -1171,12 +1171,21 @@ glade_gtk_container_get_children (GladeWidgetAdaptor  *adaptor,
 
 GladeEditable *
 glade_gtk_container_create_editable (GladeWidgetAdaptor  *adaptor,
-				       GladeEditorPageType  type)
+				     GladeEditorPageType  type)
 {
-	return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);;
+	return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }
 
 /* ----------------------------- GtkBox ------------------------------ */
+
+GladeWidget *
+glade_gtk_create_fixed_widget (GladeWidgetAdaptor *adaptor,
+			       const gchar        *first_property_name,
+			       va_list             var_args)
+{
+	return (GladeWidget *)g_object_new_valist (GLADE_TYPE_FIXED, first_property_name, var_args);
+}
+
 typedef struct {
 	GtkWidget *widget;
 	gint       position;

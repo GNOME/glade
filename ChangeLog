@@ -1,3 +1,12 @@
+2010-12-30  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-widget-adaptor.[ch], gladeui/glade-xml-utils.c, plugins/gtk+/glade-gtk.c,
+	plugins/gtk+/gtk+.xml.in:
+	  Removed the boolean "fixed" property for catalogs and replaced it with a "create-widget-function"
+	tag that allows the backend to create a GladeWidget derived object to handle instances in
+	the runtime, modified the backend appropriately to create a GladeFixed for widgets that were
+	using the "fixed" property.
+
 2010-12-29  Javier Jardón <jjardon@gnome.org>
 
 	* configure.ac: Use upstream gettext

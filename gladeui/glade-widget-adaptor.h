@@ -25,16 +25,6 @@ typedef struct _GladeWidgetAdaptorPrivate GladeWidgetAdaptorPrivate;
 typedef struct _GladeWidgetAdaptorClass   GladeWidgetAdaptorClass;
 
 /**
- * GWA_IS_FIXED:
- * @obj: A #GladeWidgetAdaptor
- *
- * Checks whether this widget adaptor should be handled 
- * as a free-form container
- */
-#define GWA_IS_FIXED(obj) \
-        ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->fixed : FALSE)
-
-/**
  * GWA_DEPRECATED:
  * @obj: A #GladeWidgetAdaptor
  *
@@ -250,6 +240,22 @@ typedef enum
 } GladeCreateReason;
 
 #define GLADE_TYPE_CREATE_REASON (glade_create_reason_get_type())
+
+/**
+ * GladeSetPropertyFunc:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @first_property_name: the name of the first property
+ * @var_args: the value of the first property, followed optionally by more
+ *  name/value pairs, followed by %NULL
+ *
+ * This entry point allows the backend to create a specialized GladeWidget
+ * derived object for handling instances in the core.
+ *
+ * Returns: A newly created #GladeWidget for the said adaptor.
+ */
+typedef GladeWidget * (* GladeCreateWidgetFunc) (GladeWidgetAdaptor *adaptor,
+						 const gchar        *first_property_name,
+						 va_list             var_args);
 
 /**
  * GladeSetPropertyFunc:
@@ -674,9 +680,6 @@ struct _GladeWidgetAdaptorClass
 	guint                      deprecated : 1;          /* If this widget is currently
 							     * deprecated
 							     */
-	guint                      fixed : 1;                /* If this is a Container, use free-form
-							      * placement with drag/resize/paste at mouse...
-							      */
 	guint                      toplevel : 1;             /* If this class is toplevel */
 
 	guint                      use_placeholders : 1;     /* Whether or not to use placeholders
@@ -685,6 +688,8 @@ struct _GladeWidgetAdaptorClass
 
 	gint                       default_width;  /* Default width in GladeDesignLayout */
 	gint                       default_height; /* Default height in GladeDesignLayout */
+
+	GladeCreateWidgetFunc      create_widget;  /* Creates a GladeWidget for this adaptor */
 
 	GladeConstructObjectFunc   construct_object;  /* Object constructor
 						       */

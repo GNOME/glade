@@ -799,6 +799,14 @@ glade_widget_adaptor_real_get_property (GObject         *object,
 /*******************************************************************************
                   GladeWidgetAdaptor base class implementations
  *******************************************************************************/
+static GladeWidget *
+glade_widget_adaptor_object_create_widget (GladeWidgetAdaptor *adaptor,
+					   const gchar        *first_property_name,
+					   va_list             var_args)
+{
+	return (GladeWidget *)g_object_new_valist (GLADE_TYPE_WIDGET, first_property_name, var_args);
+}
+
 static GObject *
 glade_widget_adaptor_object_construct_object (GladeWidgetAdaptor *adaptor,
 					      guint               n_parameters,
@@ -1184,6 +1192,7 @@ glade_widget_adaptor_class_init (GladeWidgetAdaptorClass *adaptor_class)
 	object_class->get_property          = glade_widget_adaptor_real_get_property;
 
 	/* Class methods */
+	adaptor_class->create_widget        = glade_widget_adaptor_object_create_widget;
 	adaptor_class->construct_object     = glade_widget_adaptor_object_construct_object;
 	adaptor_class->deep_post_create     = NULL;
 	adaptor_class->post_create          = NULL;
@@ -1210,7 +1219,6 @@ glade_widget_adaptor_class_init (GladeWidgetAdaptorClass *adaptor_class)
 	adaptor_class->create_editable      = glade_widget_adaptor_object_create_editable;
 
 	/* Base defaults here */
-	adaptor_class->fixed                = FALSE;
 	adaptor_class->toplevel             = FALSE;
 	adaptor_class->use_placeholders     = FALSE;
 	adaptor_class->default_width        = -1;
@@ -1375,6 +1383,11 @@ gwa_extend_with_node_load_sym (GladeWidgetAdaptorClass *klass,
 		object_class->constructor = symbol;
 
 	if (glade_xml_load_sym_from_node (node, module,
+					  GLADE_TAG_CREATE_WIDGET_FUNCTION,
+					  &symbol))
+		klass->create_widget = symbol;
+
+	if (glade_xml_load_sym_from_node (node, module,
 					  GLADE_TAG_CONSTRUCT_OBJECT_FUNCTION,
 					  &symbol))
 		klass->construct_object = symbol;
@@ -1519,10 +1532,6 @@ gwa_derived_class_init (GladeWidgetAdaptorClass *adaptor_class,
 	adaptor_class->deprecated = 
 		glade_xml_get_property_boolean
 		(node, GLADE_TAG_DEPRECATED, adaptor_class->deprecated);
-
-	adaptor_class->fixed = 
-		glade_xml_get_property_boolean
-		(node, GLADE_TAG_FIXED, adaptor_class->fixed);
 
 	adaptor_class->toplevel =
 		glade_xml_get_property_boolean
@@ -2561,7 +2570,6 @@ glade_widget_adaptor_create_widget_real (gboolean          query,
 					 ...)
 {
 	GladeWidgetAdaptor *adaptor;
-	GType               gwidget_type;
 	GladeWidget        *gwidget;
 	va_list             vl, vl_copy;
 
@@ -2581,15 +2589,8 @@ glade_widget_adaptor_create_widget_real (gboolean          query,
 		return NULL;
 	}
 
-	if (GWA_IS_FIXED (adaptor))
-		gwidget_type = GLADE_TYPE_FIXED;
-	else 
-		gwidget_type = GLADE_TYPE_WIDGET;
+	gwidget = GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->create_widget (adaptor, first_property, vl_copy);
 
-
-	gwidget = (GladeWidget *)g_object_new_valist (gwidget_type,
-						      first_property, 
-						      vl_copy);
 	va_end (vl_copy);
 	
 	if (query && glade_widget_adaptor_query (adaptor))
@@ -2848,19 +2849,6 @@ glade_widget_adaptor_construct_object (GladeWidgetAdaptor *adaptor,
 				       GParameter         *parameters)
 {
 	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
-
-/*
-	if (g_type_is_a (adaptor->type, GTK_TYPE_WINDOW))
-	{
-		GParameter type = {0, };
-
-		type.name = "type";
-		g_value_init (&type.value, GTK_TYPE_WINDOW_TYPE);
-		g_value_set_enum (&type.value, GTK_WINDOW_OFFSCREEN);
-
-		n_parameters = 1;
-		parameters = &type;
-	}*/
 
 	return GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->construct_object (adaptor, n_parameters, parameters);
 }
