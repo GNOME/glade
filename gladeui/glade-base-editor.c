@@ -1872,11 +1872,8 @@ glade_base_editor_new (GObject * container, GladeEditable * main_editable, ...)
   gchar *name;
   va_list args;
 
-  g_return_val_if_fail (GTK_IS_CONTAINER (container), NULL);
-
   gcontainer = glade_widget_get_from_gobject (container);
   g_return_val_if_fail (GLADE_IS_WIDGET (gcontainer), NULL);
-
 
   editor = GLADE_BASE_EDITOR (g_object_new (GLADE_TYPE_BASE_EDITOR, NULL));
   e = editor->priv;
