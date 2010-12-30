@@ -483,7 +483,6 @@ glade_signal_editor_init (GladeSignalEditor *self)
 	priv->column_handler = gtk_tree_view_column_new_with_attributes (_("Handler"),
 	                                                                  renderer,
 	                                                                  "text", GLADE_SIGNAL_COLUMN_HANDLER,
-	                                                                  "visible", GLADE_SIGNAL_COLUMN_IS_HANDLER,
 	                                                                  NULL);
 	gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->signal_tree), priv->column_handler);
 	/* Signal user_data */
@@ -498,9 +497,8 @@ glade_signal_editor_init (GladeSignalEditor *self)
 	priv->column_userdata = gtk_tree_view_column_new_with_attributes (_("User data"),
 	                                                              priv->renderer_userdata,
 	                                                              "text", GLADE_SIGNAL_COLUMN_OBJECT,
-	                                                              "visible", GLADE_SIGNAL_COLUMN_IS_HANDLER,
 	                                                              "sensitive", GLADE_SIGNAL_COLUMN_NOT_DUMMY,
-	                                                               "editable", GLADE_SIGNAL_COLUMN_NOT_DUMMY,
+	                                                              "editable", GLADE_SIGNAL_COLUMN_NOT_DUMMY,
 	                                                              NULL);
 	gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->signal_tree), priv->column_userdata);
 
@@ -510,7 +508,6 @@ glade_signal_editor_init (GladeSignalEditor *self)
 	priv->column_swap = gtk_tree_view_column_new_with_attributes (_("Swap"),
 	                                                              renderer,
 	                                                              "active", GLADE_SIGNAL_COLUMN_SWAP,
-	                                                              "visible", GLADE_SIGNAL_COLUMN_IS_HANDLER,
 	                                                              "sensitive", GLADE_SIGNAL_COLUMN_NOT_DUMMY,
 	                                                              NULL);
 	gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->signal_tree), priv->column_swap);
@@ -521,7 +518,6 @@ glade_signal_editor_init (GladeSignalEditor *self)
 	priv->column_after = gtk_tree_view_column_new_with_attributes (_("After"),
 	                                                               renderer,
 	                                                               "active", GLADE_SIGNAL_COLUMN_AFTER,
-	                                                               "visible", GLADE_SIGNAL_COLUMN_IS_HANDLER,
 	                                                               "sensitive", GLADE_SIGNAL_COLUMN_NOT_DUMMY,
 	                                                               NULL);
 	gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->signal_tree), priv->column_after);

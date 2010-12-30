@@ -259,7 +259,7 @@ glade_signal_model_not_dummy_handler (GladeSignalModel* model,
 	if (widget && sig_class && handler)
 		return handler != glade_signal_model_get_dummy_handler (model,
 		                                                       sig_class);
-	return TRUE;
+	return FALSE;
 }
 
 static void
