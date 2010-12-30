@@ -1,6 +1,6 @@
 <glade-catalog name="gtk+"
-	       version="2.20"
-	       targetable="2.18,2.16,2.14,2.12,2.10,2.8"
+	       version="2.24"
+	       targetable="2.22,2.20,2.18,2.16,2.14,2.12,2.10,2.8"
 	       supports="libglade,gtkbuilder"
                icon-prefix="gtk"
                library="gladegtk"
@@ -1129,6 +1129,8 @@ embedded in another object</_tooltip>
         <property id="active" ignore="True"/>
         <property id="column-span-column" ignore="True"/>
         <property id="row-span-column" ignore="True"/>
+	<property id="entry-text-column" since="2.24"/>
+	<property id="has-entry" since="2.24"/>
 	<property id="items" _name="Items" translatable="True" libglade-only="True">
 	  <parameter-spec>
 	    <type>GParamBoxed</type>
@@ -1156,7 +1158,8 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkComboBoxEntry" generic-name="comboboxentry" _title="Combo Box Entry">
+    <glade-widget-class name="GtkComboBoxEntry" generic-name="comboboxentry" _title="Combo Box Entry" 
+			deprecated="True">
       <post-create-function>glade_gtk_combo_box_entry_post_create</post-create-function>
       <get-internal-child-function>glade_gtk_combo_box_entry_get_internal_child</get-internal-child-function>
       <set-property-function>glade_gtk_combo_box_entry_set_property</set-property-function>
@@ -1355,6 +1358,7 @@ embedded in another object</_tooltip>
 
       <properties>
 	<property id="group" since="2.12"/>
+	<property id="group-name" since="2.24"/>
 	<property id="page" save="False">
 	  <_tooltip>Set the current page (strictly for editing purposes)</_tooltip>
 	</property>
@@ -1627,6 +1631,9 @@ embedded in another object</_tooltip>
 	  <visible-lines>2</visible-lines>
 	</property>
       </properties>
+      <signals>
+	<signal id="activate-link" since="2.24"/>
+      </signals>
    </glade-widget-class>
 
     <glade-widget-class name="GtkColorSelectionDialog" generic-name="colorselectiondialog" _title="Color Selection Dialog">
@@ -2183,6 +2190,7 @@ embedded in another object</_tooltip>
       </actions>
 
       <properties>
+        <property id="item-orientation" since="2.22"/>
         <property id="item-padding" since="2.18"/>
         <property id="text-column" disabled="True"/>
         <property id="markup-column" disabled="True"/>
