@@ -1,4 +1,3 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /* TODO : s/glade_xml_get_/glade_xml_node_get/g */
 #ifndef __GLADE_XML_UTILS_H__
 #define __GLADE_XML_UTILS_H__

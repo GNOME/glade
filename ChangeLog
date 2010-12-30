@@ -12,6 +12,18 @@
 	  (i.e. from ${prefix}/share/glade3/catalogs instead of ${prefix}/share/glade/catalogs
 	  which is the new path).
 
+	* ALL SOURCE FILES: Removed 8-space indentation, reformatted all code with:
+	indent   \
+	--braces-after-if-line   \
+	--case-brace-indentation0   \
+	--case-indentation2   \
+	--braces-after-struct-decl-line   \
+	--line-length80   --no-tabs  \
+	--dont-line-up-parentheses   \
+	--continuation-indentation4 \
+	--continue-at-parentheses  \
+	--honour-newlines  --tab-size8  --indent-level2 -nbbo
+
 2010-12-29  Javier Jardón <jjardon@gnome.org>
 
 	* configure.ac: Use upstream gettext

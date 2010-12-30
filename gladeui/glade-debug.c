@@ -1,4 +1,3 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * Copyright (C) 2003 Joaquin Cuenca Abela
  *
@@ -36,21 +35,20 @@
 
 static void
 glade_log_handler (const char *domain,
-             GLogLevelFlags level,
-             const char *message,
-             gpointer data)
+                   GLogLevelFlags level, const char *message, gpointer data)
 {
-	static volatile int want_breakpoint = 0;
+  static volatile int want_breakpoint = 0;
 
-	g_log_default_handler (domain, level, message, data);
-	if (want_breakpoint && ((level & (G_LOG_LEVEL_CRITICAL /* | G_LOG_LEVEL_WARNING */)) != 0))
-		G_BREAKPOINT ();
+  g_log_default_handler (domain, level, message, data);
+  if (want_breakpoint &&
+      ((level & (G_LOG_LEVEL_CRITICAL /* | G_LOG_LEVEL_WARNING */ )) != 0))
+    G_BREAKPOINT ();
 }
 
 static void
 glade_set_log_handler (const char *domain)
 {
-	g_log_set_handler (domain, G_LOG_LEVEL_MASK, glade_log_handler, NULL);
+  g_log_set_handler (domain, G_LOG_LEVEL_MASK, glade_log_handler, NULL);
 }
 
 /**
@@ -62,10 +60,9 @@ glade_set_log_handler (const char *domain)
 void
 glade_setup_log_handlers ()
 {
-	glade_set_log_handler ("");
-	glade_set_log_handler ("GLib");
-	glade_set_log_handler ("GLib-GObject");
-	glade_set_log_handler ("Gtk");
-	glade_set_log_handler ("Gdk");
+  glade_set_log_handler ("");
+  glade_set_log_handler ("GLib");
+  glade_set_log_handler ("GLib-GObject");
+  glade_set_log_handler ("Gtk");
+  glade_set_log_handler ("Gdk");
 }
-

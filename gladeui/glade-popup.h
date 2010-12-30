@@ -1,4 +1,3 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 #ifndef __GLADE_POPUP_H__
 #define __GLADE_POPUP_H__
 

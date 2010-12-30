@@ -1,4 +1,3 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * glade-clipboard.c - An object for handling Cut/Copy/Paste.
  *
@@ -31,73 +30,70 @@
 
 
 gboolean
-glade_single_object_accumulator (GSignalInvocationHint *ihint,
-				 GValue                *return_accu,
-				 const GValue          *handler_return,
-				 gpointer               dummy)
+glade_single_object_accumulator (GSignalInvocationHint * ihint,
+                                 GValue * return_accu,
+                                 const GValue * handler_return, gpointer dummy)
 {
-	GObject  *object = g_value_get_object (handler_return);
-	g_value_set_object (return_accu, object);
-	
-	return (object == NULL);
+  GObject *object = g_value_get_object (handler_return);
+  g_value_set_object (return_accu, object);
+
+  return (object == NULL);
 }
 
 gboolean
-glade_integer_handled_accumulator (GSignalInvocationHint *ihint,
-				   GValue                *return_accu,
-				   const GValue          *handler_return,
-				   gpointer               dummy)
+glade_integer_handled_accumulator (GSignalInvocationHint * ihint,
+                                   GValue * return_accu,
+                                   const GValue * handler_return,
+                                   gpointer dummy)
 {
-	gboolean continue_emission;
-	gint retval;
-	
-	retval = g_value_get_int (handler_return);
-	g_value_set_int (return_accu, retval >> 1);
-	continue_emission = !(retval & 1);
-	
-	return continue_emission;
+  gboolean continue_emission;
+  gint retval;
+
+  retval = g_value_get_int (handler_return);
+  g_value_set_int (return_accu, retval >> 1);
+  continue_emission = !(retval & 1);
+
+  return continue_emission;
 }
 
 /* From gtkmain.c */
 gboolean
-glade_boolean_handled_accumulator (GSignalInvocationHint *ihint,
-				   GValue                *return_accu,
-				   const GValue          *handler_return,
-				   gpointer               dummy)
+glade_boolean_handled_accumulator (GSignalInvocationHint * ihint,
+                                   GValue * return_accu,
+                                   const GValue * handler_return,
+                                   gpointer dummy)
 {
-	gboolean continue_emission;
-	gboolean signal_handled;
-	
-	signal_handled = g_value_get_boolean (handler_return);
-	g_value_set_boolean (return_accu, signal_handled);
-	continue_emission = !signal_handled;
-	
-	return continue_emission;
+  gboolean continue_emission;
+  gboolean signal_handled;
+
+  signal_handled = g_value_get_boolean (handler_return);
+  g_value_set_boolean (return_accu, signal_handled);
+  continue_emission = !signal_handled;
+
+  return continue_emission;
 }
 
 gboolean
-glade_string_accumulator (GSignalInvocationHint *ihint,
-			  GValue                *return_accu,
-			  const GValue          *handler_return,
-			  gpointer               dummy)
+glade_string_accumulator (GSignalInvocationHint * ihint,
+                          GValue * return_accu,
+                          const GValue * handler_return, gpointer dummy)
 {
-	const gchar *handler_str;
-	
-	g_free ((void *)g_value_get_string (return_accu));
-	
-	handler_str = g_value_get_string (handler_return);
-	g_value_set_string (return_accu, handler_str);
-	
-	return (handler_str == NULL);
+  const gchar *handler_str;
+
+  g_free ((void *) g_value_get_string (return_accu));
+
+  handler_str = g_value_get_string (handler_return);
+  g_value_set_string (return_accu, handler_str);
+
+  return (handler_str == NULL);
 }
 
 gboolean
-glade_stop_emission_accumulator (GSignalInvocationHint *ihint,
-				 GValue                *return_accu,
-				 const GValue          *handler_return,
-				 gpointer               dummy)
+glade_stop_emission_accumulator (GSignalInvocationHint * ihint,
+                                 GValue * return_accu,
+                                 const GValue * handler_return, gpointer dummy)
 {
-	g_value_copy (handler_return, return_accu);
-	
-	return FALSE;
+  g_value_copy (handler_return, return_accu);
+
+  return FALSE;
 }

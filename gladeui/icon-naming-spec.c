@@ -28,25 +28,35 @@
 #include <glib/gi18n-lib.h>
 
 /* Standard Contexts */
-static const struct {
-	const char  *name;
-	const char  *title;
-} standard_contexts[] = {
-	{ "Actions",        N_("Actions")        },
-	{ "Applications",   N_("Applications")   },
-	{ "Categories",     N_("Categories")     },
-	{ "Devices",        N_("Devices")        },
-	{ "Emblems",        N_("Emblems")        },
-	{ "Emotes",         N_("Emotes")         },
-	{ "International",  N_("International")  },
-	{ "MimeTypes",      N_("MIME Types")     },
-	{ "Places",         N_("Places")         },
-	{ "Status",         N_("Status")         },
-};
+static const struct
+{
+  const char *name;
+  const char *title;
+} standard_contexts[] =
+{
+  {
+  "Actions", N_("Actions")},
+  {
+  "Applications", N_("Applications")},
+  {
+  "Categories", N_("Categories")},
+  {
+  "Devices", N_("Devices")},
+  {
+  "Emblems", N_("Emblems")},
+  {
+  "Emotes", N_("Emotes")},
+  {
+  "International", N_("International")},
+  {
+  "MimeTypes", N_("MIME Types")},
+  {
+  "Places", N_("Places")},
+  {
+"Status", N_("Status")},};
 
 /* Standard Icon Names */
-static const char* const standard_icon_names[] =
-{  
+static const char *const standard_icon_names[] = {
   /* Action Icons */
   "address-book-new",
   "application-exit",
@@ -137,7 +147,7 @@ static const char* const standard_icon_names[] =
   "tools-check-spelling",
   "view-fullscreen",
   "view-refresh",
-  "view-restore", 
+  "view-restore",
   "view-sort-ascending",
   "view-sort-descending",
   "window-close",
@@ -203,7 +213,7 @@ static const char* const standard_icon_names[] =
   "input-mouse",
   "media-flash",
   "media-floppy",
-  "media-optical", 
+  "media-optical",
   "media-tape",
   "modem",
   "multimedia-player",
@@ -221,7 +231,7 @@ static const char* const standard_icon_names[] =
   "emblem-mail",
   "emblem-photos",
   "emblem-readonly",
-  "emblem-shared", 
+  "emblem-shared",
   "emblem-symbolic-link",
   "emblem-synchronized",
   "emblem-system",
@@ -287,7 +297,7 @@ static const char* const standard_icon_names[] =
   "dialog-password",
   "dialog-question",
   "dialog-warning",
-  "folder-drag-accept", 
+  "folder-drag-accept",
   "folder-open",
   "folder-visiting",
   "image-loading",
@@ -300,7 +310,7 @@ static const char* const standard_icon_names[] =
   "mail-signed-verified",
   "media-playlist-repeat",
   "media-playlist-shuffle",
-  "network-error", 
+  "network-error",
   "network-idle",
   "network-offline",
   "network-receive",
@@ -310,7 +320,7 @@ static const char* const standard_icon_names[] =
   "printer-printing",
   "security-high",
   "security-medium",
-  "security-low", 
+  "security-low",
   "software-update-available",
   "software-update-urgent",
   "sync-error",
@@ -334,4 +344,3 @@ static const char* const standard_icon_names[] =
   "weather-snow",
   "weather-storm",
 };
-

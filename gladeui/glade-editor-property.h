@@ -1,4 +1,3 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 #ifndef __GLADE_EDITOR_PROPERTY_H__
 #define __GLADE_EDITOR_PROPERTY_H__
 
