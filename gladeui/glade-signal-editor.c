@@ -395,12 +395,12 @@ name_cell_data_func (GtkTreeViewColumn* column,
 	g_free (name);
 }
 
-static GdkPixmap*
-create_rich_drag_icon (GtkWidget* widget, const gchar* text)
+static cairo_surface_t*
+create_rich_drag_surface (GtkWidget* widget, const gchar* text)
 {
 	PangoLayout* layout = pango_layout_new (gtk_widget_get_pango_context (widget));
-	GdkPixmap* pixmap;
 	cairo_t* cr;
+	cairo_surface_t* s;
 	gint width, height;
 	
 	pango_layout_set_text (layout, text, -1);
@@ -408,33 +408,17 @@ create_rich_drag_icon (GtkWidget* widget, const gchar* text)
 	width = PANGO_PIXELS(width) + 10;
 	height = PANGO_PIXELS(height) + 10;
 	
-	pixmap = gdk_pixmap_new (gtk_widget_get_window (widget),
-	                         width,
-	                         height,
-	                         -1);
-	cr = gdk_cairo_create (pixmap);
-	gdk_cairo_set_source_pixmap (cr, pixmap, 0, 0);
+	s = cairo_image_surface_create (CAIRO_FORMAT_A1, width, height);
+	cr = cairo_create (s);
 	
-	gdk_draw_rectangle (GDK_DRAWABLE (pixmap),
-	                    gtk_widget_get_style (widget)->base_gc [gtk_widget_get_state (widget)],
-	                    TRUE, 
-	                    0, 0,
-	                    width, height);
-	
-	gdk_draw_layout (GDK_DRAWABLE (pixmap),
-	                 gtk_widget_get_style (widget)->text_gc [gtk_widget_get_state (widget)],
-	                 5,
-	                 5,
-	                 layout);
-	gdk_draw_rectangle (GDK_DRAWABLE (pixmap),
-	                    gtk_widget_get_style (widget)->black_gc,
-	                    FALSE,
-	                    0, 0,
-	                    width - 1, height - 1);
-	g_object_unref (layout);
+	cairo_rectangle (cr, 0, 0, 1, 1);
 
+	cairo_show_text (cr, text);
+	cairo_stroke (cr);	
+
+	g_object_unref (layout);
 	
-	return pixmap;
+	return s;;
 }
 
 static void
@@ -442,7 +426,7 @@ glade_signal_editor_drag_begin (GtkWidget* widget,
                                 GdkDragContext* context,
                                 gpointer user_data)
 {
-	GdkPixmap     *pixmap = NULL;
+	cairo_surface_t *s = NULL;
 	GtkTreeModel *model;
 	GtkTreeIter iter;
 	GtkTreeSelection* selection;
@@ -454,17 +438,13 @@ glade_signal_editor_drag_begin (GtkWidget* widget,
 		gchar* handler;
 		gtk_tree_model_get (model, &iter,
 		                    GLADE_SIGNAL_COLUMN_HANDLER, &handler, -1);
-		pixmap = create_rich_drag_icon (widget, handler);
+		s = create_rich_drag_surface (widget, handler);
 	}
 	
-	if (pixmap)
+	if (s)
 	{
-		gtk_drag_set_icon_pixmap (context,
-		                          gdk_drawable_get_colormap (GDK_DRAWABLE(gtk_widget_get_window (widget))),
-		                          pixmap,
-		                          NULL,
-		                          -2, -2);
-		g_object_unref (pixmap);
+		gtk_drag_set_icon_surface (context, s);
+		g_object_unref (s);
 	}
 	else
 	{
