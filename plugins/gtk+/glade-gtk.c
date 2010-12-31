@@ -11452,10 +11452,6 @@ glade_gtk_cell_layout_read_child (GladeWidgetAdaptor *adaptor,
 	     glade_xml_search_child
 	     (node, GLADE_XML_TAG_WIDGET(glade_project_get_format(widget->project)))) != NULL)
 	{
-
-		if (internal_name)
-			g_warning ("Cell layout reading internal %s\n", internal_name);
-
 		/* Combo box is a special brand of cell-layout, it can also have the internal entry */
 		if ((child_widget = glade_widget_read (widget->project, 
 						       widget, widget_node, 
