@@ -52,6 +52,9 @@
 	<property id="tooltip-text" since="2.12" weight="4.2" translatable="True" >
 	  <visible-lines>2</visible-lines>
 	</property>
+        <property id="can-focus" common="True" save-always="True"/>
+	<property id="has-default" common="True" ignore="True"/>
+	<property id="can-default" common="True" />
 	<property id="tooltip-markup" since="2.12" weight="4.1"/>
 	<property id="visible" default="True" common="True" ignore="True"/>
 	<property id="width-request"  common="True" optional="True" optional-default="False" default="0"/>
@@ -98,7 +101,6 @@
 	<property id="parent" disabled="True"/>
 	<property id="style" disabled="True"/>
 	<property id="sensitive" ignore="True"/>
-	<property id="has-default" ignore="True" common="True"/>
 	<property id="double-buffered" since="2.18"/>
 
 	<!-- Accelerators -->
@@ -781,7 +783,6 @@ embedded in another object</_tooltip>
       </signals>
 
       <properties>
-        <property id="can-focus" save-always="True"/>
 	<property id="text" translatable="True" custom-layout="True"/>
         <property id="buffer" create-type="GtkEntryBuffer" since="2.18" custom-layout="True"/>
 
@@ -869,7 +870,6 @@ embedded in another object</_tooltip>
       <write-widget-function>glade_gtk_button_write_widget</write-widget-function>
 
       <properties>
-	<property id="can-focus" save-always="True"/>
 	<property id="receives-default" save-always="True"/>
 	<property id="image" parentless-widget="True" create-type="GtkImage" custom-layout="True"/>
 	<property id="use-stock" visible="False" custom-layout="True"/>
@@ -962,7 +962,6 @@ embedded in another object</_tooltip>
       <properties>
         <property id="text" disabled="True"/>
         <property id="value" disabled="True"/>
-	<property id="can-focus" default="True"/>
         <property id="adjustment" default="0 0 100 1 10 0"/>
         <property id="update-policy">
   	  <displayable-values>
@@ -1525,7 +1524,6 @@ embedded in another object</_tooltip>
     
     <glade-widget-class name="GtkScrolledWindow" generic-name="scrolledwindow" _title="Scrolled Window">
       <properties>
-        <property id="can-focus" save-always="True"/>
         <property id="window-placement-set" since="2.10" ignore="True"/>
       	<property id="hscrollbar-policy" default="GTK_POLICY_AUTOMATIC">
   	  <displayable-values>
@@ -1615,9 +1613,6 @@ embedded in another object</_tooltip>
 	<property id="default-height" default="115" optional="True" optional-default="False"/>
 
 	<property common="True" id="sensitive"/>
-	<property common="True" id="can-default"/>
-	<property common="True" id="has-default"/>
-	<property common="True" id="can-focus"/>
 
 	<property id="image" since="2.10" parentless-widget="True"/>
 	<property id="secondary-text" translatable="True" since="2.10"/>
