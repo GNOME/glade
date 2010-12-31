@@ -21,7 +21,11 @@
 	  bit of memory for large projects but no crashes.
 
 	* plugins/gtk+/glade-gtk.c: Fixed loaded state of use-action-appearance so that it always
-	  loads as FALSE if there is no "related-action" at load time.
+	  loads as FALSE if there is no "related-action" at load time (closes bug 582882).
+
+	* gladeui/glade-property.c: Fixed glade_property_dup() to not incidentally sync the property
+	  object's value as a consequence of dupping (backend uses this to write properties with custom
+	  values and does not expect that).
 
 2010-12-29  Tristan Van Berkom <tristanvb@openismus.com>
 

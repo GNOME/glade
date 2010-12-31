@@ -111,8 +111,9 @@ glade_property_dup_impl (GladeProperty *template_prop, GladeWidget *widget)
 	else
 		g_value_copy (template_prop->value, property->value);
 
-	/* Need value in place here ... */
-	glade_property_set_enabled (property, template_prop->enabled);
+	property->enabled = template_prop->enabled;
+	property->state   = template_prop->state;
+
 	glade_property_set_sensitive (property, template_prop->sensitive,
 				      template_prop->insensitive_tooltip);
 	
