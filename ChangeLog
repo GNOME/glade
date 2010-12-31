@@ -1,8 +1,3 @@
-2010-12-30  Christian Persch <chpe@gnome.org>
-
-	* plugins/gtk+/glade-attributes.c: Use locale-independent strtod &
-	dtostr. Fixes bug 616787
-
 2010-12-31  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-project.c: Further fixing project dispose cycle, still leaking a little
@@ -14,6 +9,11 @@
 	* gladeui/glade-property.c: Fixed glade_property_dup() to not incidentally sync the property
 	  object's value as a consequence of dupping (backend uses this to write properties with custom
 	  values and does not expect that).
+
+2010-12-30  Christian Persch <chpe@gnome.org>
+
+	* plugins/gtk+/glade-attributes.c: Use locale-independent strtod &
+	dtostr. Fixes bug 616787
 
 2010-12-30  Tristan Van Berkom <tristanvb@openismus.com>
 
