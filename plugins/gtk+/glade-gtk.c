@@ -5506,28 +5506,18 @@ glade_gtk_color_button_set_property (GladeWidgetAdaptor * adaptor,
 }
 
 
-/* ----------------------------- GtkButton ------------------------------ */
-
+/* ----------------------------- GtkActivatable ------------------------------ */
 static void
-sync_use_appearance (GladeWidget * gwidget)
+activatable_parse_finished (GladeProject *project, 
+			    GladeWidget  *widget)
 {
-  GladeProperty *prop =
-      glade_widget_get_property (gwidget, "use-action-appearance");
-  gboolean use_appearance = FALSE;
+	GObject *related_action = NULL;
 
-  /* This is the kind of thing we avoid doing at project load time ;-) */
-  if (glade_widget_superuser ())
-    return;
-
-  glade_property_get (prop, &use_appearance);
-  if (use_appearance)
-    {
-      glade_property_set (prop, FALSE);
-      glade_property_set (prop, TRUE);
-    }
+	glade_widget_property_get (widget, "related-action", &related_action);
+	if (related_action == NULL)
+		glade_widget_property_set (widget, "use-action-appearance", FALSE);
 }
 
-/* shared between menuitems and toolitems too */
 static void
 evaluate_activatable_property_sensitivity (GObject * object,
                                            const gchar * id,
@@ -5538,7 +5528,7 @@ evaluate_activatable_property_sensitivity (GObject * object,
   if (!strcmp (id, "related-action"))
     {
       GtkAction *action = g_value_get_object (value);
-
+      
       if (action)
         {
           glade_widget_property_set_sensitive (gwidget, "visible", FALSE,
@@ -5611,6 +5601,25 @@ evaluate_activatable_property_sensitivity (GObject * object,
     }
 }
 
+/* ----------------------------- GtkButton ------------------------------ */
+static void 
+sync_use_appearance (GladeWidget *gwidget)
+{
+  GladeProperty *prop = glade_widget_get_property (gwidget, "use-action-appearance");
+  gboolean       use_appearance = FALSE;
+
+  /* This is the kind of thing we avoid doing at project load time ;-) */
+  if (glade_widget_superuser ())
+    return;
+
+  glade_property_get (prop, &use_appearance);
+  if (use_appearance)
+    {
+      glade_property_set (prop, FALSE);
+      glade_property_set (prop, TRUE);
+    }
+}
+
 GladeEditable *
 glade_gtk_button_create_editable (GladeWidgetAdaptor * adaptor,
                                   GladeEditorPageType type)
@@ -5652,6 +5661,11 @@ glade_gtk_button_post_create (GladeWidgetAdaptor * adaptor,
   glade_widget_property_set_sensitive (gbutton, "response-id", FALSE,
                                        RESPID_INSENSITIVE_MSG);
   glade_widget_property_set_enabled (gbutton, "response-id", FALSE);
+
+  if (reason == GLADE_CREATE_LOAD)
+    g_signal_connect (G_OBJECT (gbutton->project), "parse-finished",
+		      G_CALLBACK (activatable_parse_finished),
+		      gbutton);
 }
 
 void
@@ -5694,10 +5708,8 @@ glade_gtk_button_set_property (GladeWidgetAdaptor * adaptor,
                                                         id, value);
       sync_use_appearance (widget);
     }
-  else if (GPC_VERSION_CHECK
-           (property->klass, gtk_major_version, gtk_minor_version + 1))
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id,
-                                                      value);
+  else if (GPC_VERSION_CHECK (property->klass, gtk_major_version, gtk_minor_version + 1))
+    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
 }
 
 void
@@ -5735,9 +5747,8 @@ glade_gtk_button_write_widget (GladeWidgetAdaptor * adaptor,
     return;
 
   /* Do not save GtkColorButton and GtkFontButton label property */
-  if (!
-      (GTK_IS_COLOR_BUTTON (widget->object) ||
-       GTK_IS_FONT_BUTTON (widget->object)))
+  if (!(GTK_IS_COLOR_BUTTON (widget->object) ||
+	GTK_IS_FONT_BUTTON (widget->object)))
     {
       /* Make a copy of the GladeProperty, 
        * override its value and ensure non-translatable if use-stock is TRUE
@@ -5758,6 +5769,7 @@ glade_gtk_button_write_widget (GladeWidgetAdaptor * adaptor,
   /* Write out other normal properties and any other class derived custom properties after ... */
   GWA_GET_CLASS (GTK_TYPE_CONTAINER)->write_widget (adaptor, widget, context,
                                                     node);
+
 }
 
 
@@ -6452,7 +6464,6 @@ glade_gtk_menu_item_action_activate (GladeWidgetAdaptor * adaptor,
     gtk_menu_shell_deactivate (GTK_MENU_SHELL (shell));
 }
 
-
 GObject *
 glade_gtk_menu_item_constructor (GType type,
                                  guint n_construct_properties,
@@ -6489,6 +6500,11 @@ glade_gtk_menu_item_post_create (GladeWidgetAdaptor * adaptor,
       gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
       gtk_container_add (GTK_CONTAINER (object), label);
     }
+
+  if (reason == GLADE_CREATE_LOAD)
+    g_signal_connect (G_OBJECT (gitem->project), "parse-finished",
+		      G_CALLBACK (activatable_parse_finished),
+		      gitem);
 }
 
 GList *
@@ -7203,6 +7219,11 @@ glade_gtk_tool_item_post_create (GladeWidgetAdaptor * adaptor,
   if (reason == GLADE_CREATE_USER &&
       gtk_bin_get_child (GTK_BIN (object)) == NULL)
     gtk_container_add (GTK_CONTAINER (object), glade_placeholder_new ());
+
+  if (reason == GLADE_CREATE_LOAD)
+    g_signal_connect (G_OBJECT (gitem->project), "parse-finished",
+		      G_CALLBACK (activatable_parse_finished),
+		      gitem);
 }
 
 void
@@ -7213,7 +7234,7 @@ glade_gtk_tool_item_set_property (GladeWidgetAdaptor * adaptor,
   GladeWidget *gwidget = glade_widget_get_from_gobject (object);
   GladeProperty *property = glade_widget_get_property (gwidget, id);
 
-  //evaluate_activatable_property_sensitivity (object, id, value);
+  evaluate_activatable_property_sensitivity (object, id, value);
   if (GPC_VERSION_CHECK
       (property->klass, gtk_major_version, gtk_minor_version + 1))
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id,
