@@ -17,6 +17,9 @@
 	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Added editor to edit
 	  GtkAction/GtkActionGroup hierarchies.
 
+	* gladeui/glade-project.c: Further fixing project dispose cycle, still leaking a little
+	  bit of memory for large projects but no crashes.
+
 2010-12-29  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-design-view.c: Made loading progress bar nicer looking and ellipsizing.

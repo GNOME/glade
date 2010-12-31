@@ -310,15 +310,15 @@ glade_project_dispose (GObject *object)
 	{
 		GladeWidget *gwidget = glade_widget_get_from_gobject (list->data);
 
-		g_object_ref (gwidget);
-
-		glade_project_remove_object (project, list->data);
-
 		unparent_objects_recurse (gwidget);
-
-		g_object_unref (gwidget);
 	}
 	g_list_free (tree);
+
+	while (project->priv->tree)
+		glade_project_remove_object (project, project->priv->tree->data);
+
+	while (project->priv->objects)
+		glade_project_remove_object (project, project->priv->objects->data);
 
 	g_assert (project->priv->tree == NULL);
 	g_assert (project->priv->objects == NULL);
@@ -4806,9 +4806,12 @@ glade_project_model_get_path (GtkTreeModel* model,
 	/* Get the index for the top-level list */
 	top = g_list_find (project->priv->tree, 
 	                   glade_widget_get_object (toplevel));
-	g_assert (top != NULL);
-	gtk_tree_path_prepend_index (path, g_list_position (project->priv->tree,
-	                                                    top));
+
+	/* While the project is disposing widgets are unparented and sometimes no longer in the tree */
+	if (top)
+		gtk_tree_path_prepend_index (path, g_list_position (project->priv->tree, top));
+	else
+		gtk_tree_path_prepend_index (path, 0);
 	
 	return path;
 }
