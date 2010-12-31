@@ -7208,10 +7208,11 @@ glade_gtk_tool_item_constructor (GType type,
 }
 
 void
-glade_gtk_tool_item_post_create (GladeWidgetAdaptor * adaptor,
-                                 GObject * object, GladeCreateReason reason)
+glade_gtk_tool_item_post_create (GladeWidgetAdaptor *adaptor,
+                                 GObject            *object, 
+				 GladeCreateReason   reason)
 {
-  g_return_if_fail (GTK_IS_TOOL_ITEM (object));
+  GladeWidget *gitem = glade_widget_get_from_gobject (object);
 
   if (GTK_IS_SEPARATOR_TOOL_ITEM (object))
     return;
