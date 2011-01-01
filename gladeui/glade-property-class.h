@@ -102,14 +102,6 @@ struct _GladePropertyClass
 			   * correctly); all property classes have and orig_def.
 			   */
 
-	GList *parameters; /* list of GladeParameter objects. This list
-			    * provides with an extra set of key-value
-			    * pairs to specify aspects of this property.
-			    *
-			    * This is unused by glade and only maintained
-			    * to be of possible use in plugin code.
-			    */
-
 	gint  visible_lines; /* When this pspec calls for a text editor, how many
 			      * lines should be visible in the editor.
 			      */

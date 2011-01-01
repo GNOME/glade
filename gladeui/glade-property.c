@@ -48,7 +48,6 @@
 #include "glade-widget.h"
 #include "glade-property.h"
 #include "glade-property-class.h"
-#include "glade-parameter.h"
 #include "glade-project.h"
 #include "glade-widget-adaptor.h"
 #include "glade-debug.h"

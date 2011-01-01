@@ -19,6 +19,11 @@
 	* gladeui/glade-project.[ch], gladeui/glade-widget.c, gladeui/glade-command.c:
 	  Removing legacy 'old_project' argument from glade_project_add_object().
 
+	* gladeui/Makefile.am, gladeui/glade-editor.c, gladeui/glade-property-class.[ch],
+	gladeui/glade-property.c, gladeui/glade-xml-utils.h, po/POTFILES.in:
+	Completely removed GladeParameter, a legacy unused mechanism to store parameters in
+	the glade catalog for later retrieval from the plugin.
+
 2010-12-31  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-project.c: Further fixing project dispose cycle, still leaking a little

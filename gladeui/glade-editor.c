@@ -43,7 +43,6 @@
 #include "glade-widget-adaptor.h"
 #include "glade-editor.h"
 #include "glade-signal-editor.h"
-#include "glade-parameter.h"
 #include "glade-property.h"
 #include "glade-property-class.h"
 #include "glade-command.h"

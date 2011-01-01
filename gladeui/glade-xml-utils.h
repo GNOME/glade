@@ -127,8 +127,6 @@ typedef enum {
 #define GLADE_TAG_MIN_VALUE                       "min"
 #define GLADE_TAG_VALUE_TYPE                      "value-type"
 #define GLADE_TAG_TOOLTIP                         "tooltip"
-#define GLADE_TAG_PARAMETERS                      "parameters"
-#define GLADE_TAG_PARAMETER                       "parameter"
 #define GLADE_TAG_SET_FUNCTION                    "set-property-function"
 #define GLADE_TAG_GET_FUNCTION                    "get-property-function"
 #define GLADE_TAG_VERIFY_FUNCTION                 "verify-function"

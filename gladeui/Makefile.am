@@ -51,7 +51,6 @@ libgladeui_2_la_SOURCES = \
 	glade-widget-adaptor.c \
 	glade-debug.c \
 	glade-project.c \
-	glade-parameter.c \
 	glade-placeholder.c \
 	glade-inspector.c \
 	glade-xml-utils.c \
@@ -114,7 +113,6 @@ libgladeuiinclude_HEADERS = \
 	glade-debug.h \
 	glade-project.h \
 	glade-inspector.h \
-	glade-parameter.h \
 	glade-placeholder.h \
 	glade-editor.h \
 	glade-editor-property.h \

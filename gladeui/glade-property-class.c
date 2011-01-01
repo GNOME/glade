@@ -42,7 +42,6 @@
 
 #include "glade.h"
 #include "glade-widget.h"
-#include "glade-parameter.h"
 #include "glade-property.h"
 #include "glade-property-class.h"
 #include "glade-editor-property.h"
@@ -76,7 +75,6 @@ glade_property_class_new (gpointer handle)
   property_class->tooltip = NULL;
   property_class->def = NULL;
   property_class->orig_def = NULL;
-  property_class->parameters = NULL;
   property_class->query = FALSE;
   property_class->optional = FALSE;
   property_class->optional_default = FALSE;
@@ -144,17 +142,6 @@ glade_property_class_clone (GladePropertyClass * property_class)
       g_value_copy (property_class->orig_def, clone->orig_def);
     }
 
-  if (clone->parameters)
-    {
-      GList *parameter;
-
-      clone->parameters = g_list_copy (clone->parameters);
-
-      for (parameter = clone->parameters;
-           parameter != NULL; parameter = parameter->next)
-        parameter->data =
-            glade_parameter_clone ((GladeParameter *) parameter->data);
-    }
   return clone;
 }
 
@@ -187,9 +174,6 @@ glade_property_class_free (GladePropertyClass * property_class)
         g_value_unset (property_class->def);
       g_free (property_class->def);
     }
-  g_list_foreach (property_class->parameters, (GFunc) glade_parameter_free,
-                  NULL);
-  g_list_free (property_class->parameters);
   g_free (property_class);
 }
 
@@ -1571,11 +1555,6 @@ glade_property_class_update_from_node (GladeXmlNode * node,
   /* Visible lines */
   glade_xml_get_value_int (node, GLADE_TAG_VISIBLE_LINES,
                            &klass->visible_lines);
-
-  /* Get the Parameters */
-  if ((child = glade_xml_search_child (node, GLADE_TAG_PARAMETERS)) != NULL)
-    klass->parameters =
-        glade_parameter_list_new_from_node (klass->parameters, child);
 
   klass->construct_only =
       glade_xml_get_property_boolean (node, GLADE_TAG_CONSTRUCT_ONLY,
