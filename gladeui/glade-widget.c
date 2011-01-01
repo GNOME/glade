@@ -1984,8 +1984,6 @@ glade_widget_hide (GladeWidget * widget)
           if (child == GTK_WIDGET (widget->object))
             gtk_container_remove (GTK_CONTAINER (layout), child);
         }
-
-      gtk_widget_hide (GTK_WIDGET (widget->object));
     }
   widget->visible = FALSE;
 }
