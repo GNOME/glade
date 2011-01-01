@@ -1365,11 +1365,10 @@ glade_base_editor_change_type (GladeBaseEditor * editor,
   l = glade_widget_get_packing_properties (gchild);
   while (l)
     {
-      GladeProperty *orig_prop = (GladeProperty *) l->data;
-      GladeProperty *dup_prop = glade_widget_get_property (gchild_new,
-                                                           orig_prop->klass->
-                                                           id);
-      glade_property_set_value (dup_prop, orig_prop->value);
+      GladeProperty      *orig_prop = (GladeProperty *) l->data;
+      GladePropertyClass *pclass = glade_property_get_class (orig_prop);
+      GladeProperty *dup_prop = glade_widget_get_property (gchild_new, pclass->id);
+      glade_property_set_value (dup_prop, glade_property_inline_value (orig_prop));
       l = g_list_next (l);
     }
 

@@ -388,7 +388,7 @@ glade_eprop_model_data_add_row (GladeEditorProperty * eprop)
   GList *columns = NULL;
 
   glade_property_get (eprop->property, &node);
-  glade_widget_property_get (eprop->property->widget, "columns", &columns);
+  glade_widget_property_get (glade_property_get_widget (eprop->property), "columns", &columns);
 
   if (!columns)
     return;
@@ -749,13 +749,14 @@ value_text_edited (GtkCellRendererText * cell,
                                            glade_get_value_from_displayable
                                            (G_VALUE_TYPE (&data->value),
                                             new_text),
-                                           glade_widget_get_project (eprop->property->widget),
-                                           eprop->property->widget);
+                                           glade_widget_get_project
+					   (glade_property_get_widget (eprop->property)),
+                                           glade_property_get_widget (eprop->property));
   else
     value =
         glade_utils_value_from_string (G_VALUE_TYPE (&data->value), new_text,
-                                       glade_widget_get_project (eprop->property->widget),
-                                       eprop->property->widget);
+                                       glade_widget_get_project (glade_property_get_widget (eprop->property)),
+                                       glade_property_get_widget (eprop->property));
 
 
   g_value_copy (value, &data->value);

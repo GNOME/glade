@@ -534,7 +534,7 @@ glade_eprop_cell_attribute_load (GladeEditorProperty * eprop,
       gtk_list_store_clear (store);
 
       /* Generate model and set active iter */
-      if ((gmodel = glade_cell_renderer_get_model (property->widget)) != NULL)
+      if ((gmodel = glade_cell_renderer_get_model (glade_property_get_widget (property))) != NULL)
         {
           GList *columns = NULL, *l;
 
@@ -557,7 +557,7 @@ glade_eprop_cell_attribute_load (GladeEditorProperty * eprop,
             }
 
           gtk_combo_box_set_active (GTK_COMBO_BOX (eprop_attribute->combo),
-                                    CLAMP (g_value_get_int (property->value) +
+                                    CLAMP (g_value_get_int (glade_property_inline_value (property)) +
                                            1, 0, g_list_length (columns) + 1));
 
           gtk_widget_set_sensitive (eprop_attribute->combo, TRUE);
@@ -571,7 +571,7 @@ glade_eprop_cell_attribute_load (GladeEditorProperty * eprop,
         }
 
       gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_attribute->spin),
-                                 (gdouble) g_value_get_int (property->value));
+                                 (gdouble) g_value_get_int (glade_property_inline_value (property)));
     }
 }
 

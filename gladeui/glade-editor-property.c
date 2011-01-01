@@ -94,8 +94,7 @@ glade_editor_property_commit_common (GladeEditorProperty * eprop,
   /* If the value was denied by a verify function, we'll have to
    * reload the real value.
    */
-  if (glade_property_class_compare (eprop->property->klass,
-                                    eprop->property->value, value) != 0)
+  if (glade_property_equals_value (eprop->property, value))
     GLADE_EDITOR_PROPERTY_GET_CLASS (eprop)->load (eprop, eprop->property);
   else
     /* publish a value change to those interested */
@@ -143,7 +142,7 @@ glade_editor_property_sensitivity_cb (GladeProperty * property,
 {
   gboolean sensitive = glade_property_get_sensitive (eprop->property);
   gboolean support_sensitive =
-      (eprop->property->state & GLADE_STATE_SUPPORT_DISABLED) == 0;
+    (glade_property_get_state (eprop->property) & GLADE_STATE_SUPPORT_DISABLED) == 0;
 
   gtk_widget_set_sensitive (eprop->input, sensitive && support_sensitive &&
                             glade_property_get_enabled (property));
@@ -170,7 +169,7 @@ glade_editor_property_fix_label (GladeEditorProperty * eprop)
     return;
 
   /* refresh label */
-  if ((eprop->property->state & GLADE_STATE_CHANGED) != 0)
+  if ((glade_property_get_state (eprop->property) & GLADE_STATE_CHANGED) != 0)
     text = g_strdup_printf ("<b>%s:</b>", eprop->klass->name);
   else
     text = g_strdup_printf ("%s:", eprop->klass->name);
@@ -178,7 +177,7 @@ glade_editor_property_fix_label (GladeEditorProperty * eprop)
   g_free (text);
 
   /* refresh icon */
-  if ((eprop->property->state & GLADE_STATE_UNSUPPORTED) != 0)
+  if ((glade_property_get_state (eprop->property) & GLADE_STATE_UNSUPPORTED) != 0)
     gtk_widget_show (eprop->warning);
   else
     gtk_widget_hide (eprop->warning);
@@ -210,7 +209,7 @@ glade_editor_property_enabled_cb (GladeProperty * property,
       if (enabled == FALSE)
         gtk_widget_set_sensitive (eprop->input, FALSE);
       else if (glade_property_get_sensitive (property) ||
-               (property->state & GLADE_STATE_SUPPORT_DISABLED) != 0)
+               (glade_property_get_state (property) & GLADE_STATE_SUPPORT_DISABLED) != 0)
         gtk_widget_set_sensitive (eprop->input, TRUE);
 
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (eprop->check), enabled);
@@ -419,6 +418,8 @@ glade_editor_property_load_common (GladeEditorProperty * eprop,
    */
   if (eprop->property != property && property != NULL)
     {
+      GladePropertyClass *pclass = glade_property_get_class (property);
+
       eprop->property = property;
 
       eprop->tooltip_id =
@@ -456,9 +457,9 @@ glade_editor_property_load_common (GladeEditorProperty * eprop,
       /* Load initial tooltips
        */
       glade_editor_property_tooltip_cb
-          (property,
-           property->klass->tooltip,
-           property->insensitive_tooltip, property->support_warning, eprop);
+          (property, pclass->tooltip,
+	   glade_propert_get_insensitive_tooltip (property),
+	   glade_property_get_support_warning (property), eprop);
 
       /* Load initial enabled state
        */
@@ -605,28 +606,31 @@ glade_eprop_numeric_load (GladeEditorProperty * eprop, GladeProperty * property)
 {
   gfloat val = 0.0F;
   GladeEPropNumeric *eprop_numeric = GLADE_EPROP_NUMERIC (eprop);
+  GValue *value;
 
   /* Chain up first */
   editor_property_class->load (eprop, property);
 
   if (property)
     {
+      value = glade_property_inline_value (property);
+
       if (G_IS_PARAM_SPEC_INT (eprop->klass->pspec))
-        val = (gfloat) g_value_get_int (property->value);
+        val = (gfloat) g_value_get_int (value);
       else if (G_IS_PARAM_SPEC_UINT (eprop->klass->pspec))
-        val = (gfloat) g_value_get_uint (property->value);
+        val = (gfloat) g_value_get_uint (value);
       else if (G_IS_PARAM_SPEC_LONG (eprop->klass->pspec))
-        val = (gfloat) g_value_get_long (property->value);
+        val = (gfloat) g_value_get_long (value);
       else if (G_IS_PARAM_SPEC_ULONG (eprop->klass->pspec))
-        val = (gfloat) g_value_get_ulong (property->value);
+        val = (gfloat) g_value_get_ulong (value);
       else if (G_IS_PARAM_SPEC_INT64 (eprop->klass->pspec))
-        val = (gfloat) g_value_get_int64 (property->value);
+        val = (gfloat) g_value_get_int64 (value);
       else if (G_IS_PARAM_SPEC_UINT64 (eprop->klass->pspec))
-        val = (gfloat) g_value_get_uint64 (property->value);
+        val = (gfloat) g_value_get_uint64 (value);
       else if (G_IS_PARAM_SPEC_DOUBLE (eprop->klass->pspec))
-        val = (gfloat) g_value_get_double (property->value);
+        val = (gfloat) g_value_get_double (value);
       else if (G_IS_PARAM_SPEC_FLOAT (eprop->klass->pspec))
-        val = g_value_get_float (property->value);
+        val = g_value_get_float (value);
       else
         g_warning ("Unsupported type %s\n",
                    g_type_name (G_PARAM_SPEC_TYPE (eprop->klass->pspec)));
@@ -736,7 +740,7 @@ glade_eprop_enum_load (GladeEditorProperty * eprop, GladeProperty * property)
   if (property)
     {
       eclass = g_type_class_ref (eprop->klass->pspec->value_type);
-      value = g_value_get_enum (property->value);
+      value  = g_value_get_enum (glade_property_inline_value (property));
 
       for (i = 0; i < eclass->n_values; i++)
         if (eclass->values[i].value == value)
@@ -866,8 +870,8 @@ glade_eprop_flags_load (GladeEditorProperty * eprop, GladeProperty * property)
   if (property)
     {
       /* Populate the model with the flags. */
-      klass = g_type_class_ref (G_VALUE_TYPE (property->value));
-      value = g_value_get_flags (property->value);
+      klass = g_type_class_ref (G_VALUE_TYPE (glade_property_inline_value (property)));
+      value = g_value_get_flags (glade_property_inline_value (property));
 
       /* Step through each of the flags in the class. */
       for (flag_num = 0; flag_num < klass->n_values; flag_num++)
@@ -921,14 +925,17 @@ flag_toggled_direct (GtkCellRendererToggle * cell,
   guint value = 0;
   gint flag_num = 0;
   GFlagsClass *klass;
+  GValue *gvalue;
 
   GladeEPropFlags *eprop_flags = GLADE_EPROP_FLAGS (eprop);
 
   if (!eprop->property)
     return;
 
-  klass = g_type_class_ref (G_VALUE_TYPE (eprop->property->value));
-  value = g_value_get_flags (eprop->property->value);
+  gvalue = glade_property_inline_value (eprop->property);
+
+  klass = g_type_class_ref (G_VALUE_TYPE (gvalue));
+  value = g_value_get_flags (gvalue);
 
   gtk_tree_model_get_iter_from_string (eprop_flags->model, &iter, path_string);
 
@@ -965,7 +972,7 @@ flag_toggled_direct (GtkCellRendererToggle * cell,
     {
       GValue val = { 0, };
 
-      g_value_init (&val, G_VALUE_TYPE (eprop->property->value));
+      g_value_init (&val, G_VALUE_TYPE (gvalue));
       g_value_set_flags (&val, new_value);
 
       glade_editor_property_commit_no_callback (eprop, &val);
@@ -1141,9 +1148,7 @@ glade_eprop_color_load (GladeEditorProperty * eprop, GladeProperty * property)
 
   if (property)
     {
-      if ((text = glade_widget_adaptor_string_from_value
-           (GLADE_WIDGET_ADAPTOR (eprop->klass->handle),
-            eprop->klass, property->value)) != NULL)
+      if ((text = glade_property_make_string (property)) != NULL)
         {
           gtk_entry_set_text (GTK_ENTRY (eprop_color->entry), text);
           g_free (text);
@@ -1151,9 +1156,8 @@ glade_eprop_color_load (GladeEditorProperty * eprop, GladeProperty * property)
       else
         gtk_entry_set_text (GTK_ENTRY (eprop_color->entry), "");
 
-      if ((color = g_value_get_boxed (property->value)) != NULL)
-        gtk_color_button_set_color (GTK_COLOR_BUTTON (eprop_color->cbutton),
-                                    color);
+      if ((color = g_value_get_boxed (glade_property_inline_value (property))) != NULL)
+        gtk_color_button_set_color (GTK_COLOR_BUTTON (eprop_color->cbutton), color);
       else
         {
           GdkColor black = { 0, };
@@ -1246,7 +1250,7 @@ glade_eprop_named_icon_load (GladeEditorProperty * eprop,
     return;
 
   entry = GTK_ENTRY (eprop_named_icon->entry);
-  text = g_value_get_string (property->value);
+  text = glade_property_make_string (property);
 
   gtk_entry_set_text (entry, text ? text : "");
 }
@@ -1458,7 +1462,7 @@ glade_eprop_text_load (GladeEditorProperty * eprop, GladeProperty * property)
     {
       if (gtk_combo_box_get_has_entry (GTK_COMBO_BOX (eprop_text->text_entry)))
         {
-          const gchar *text = g_value_get_string (property->value);
+          const gchar *text = glade_property_make_string (property);
           if (!text)
             text = "";
           gtk_entry_set_text (GTK_ENTRY
@@ -1467,7 +1471,7 @@ glade_eprop_text_load (GladeEditorProperty * eprop, GladeProperty * property)
         }
       else
         {
-          const gchar *text = g_value_get_string (property->value);
+          const gchar *text = glade_property_make_string (property);
           gint value = text ?
               glade_utils_enum_value_from_string (GLADE_TYPE_STOCK, text) : 0;
 
@@ -1481,11 +1485,11 @@ glade_eprop_text_load (GladeEditorProperty * eprop, GladeProperty * property)
       GtkEntry *entry = GTK_ENTRY (eprop_text->text_entry);
       const gchar *text = NULL;
 
-      if (G_VALUE_TYPE (property->value) == G_TYPE_STRING)
-        text = g_value_get_string (property->value);
-      else if (G_VALUE_TYPE (property->value) == GDK_TYPE_PIXBUF)
+      if (eprop->klass->pspec->value_type == G_TYPE_STRING)
+        text = glade_property_make_string (property);
+      else if (eprop->klass->pspec->value_type == GDK_TYPE_PIXBUF)
         {
-          GObject *object = g_value_get_object (property->value);
+          GObject *object = g_value_get_object (glade_property_inline_value (property));
           if (object)
             text = g_object_get_data (object, "GladeFileName");
         }
@@ -1498,18 +1502,19 @@ glade_eprop_text_load (GladeEditorProperty * eprop, GladeProperty * property)
       buffer =
           gtk_text_view_get_buffer (GTK_TEXT_VIEW (eprop_text->text_entry));
 
-      if (G_VALUE_HOLDS (property->value, G_TYPE_STRV) ||
-          G_VALUE_HOLDS (property->value, G_TYPE_VALUE_ARRAY))
+      if (eprop->klass->pspec->value_type == G_TYPE_STRV ||
+          eprop->klass->pspec->value_type == G_TYPE_VALUE_ARRAY)
         {
+	  GladePropertyClass *pclass = glade_property_get_class (property);
           gchar *text = glade_widget_adaptor_string_from_value
-              (GLADE_WIDGET_ADAPTOR (property->klass->handle),
-               property->klass, property->value);
+              (GLADE_WIDGET_ADAPTOR (pclass->handle),
+               pclass, glade_property_inline_value (property));
           gtk_text_buffer_set_text (buffer, text ? text : "", -1);
           g_free (text);
         }
       else
         {
-          const gchar *text = g_value_get_string (property->value);
+          const gchar *text = glade_property_make_string (property);
           gtk_text_buffer_set_text (buffer, text ? text : "", -1);
         }
     }
@@ -1526,14 +1531,14 @@ glade_eprop_text_changed_common (GladeEditorProperty * eprop,
   GValue *val;
   gchar *prop_text;
 
-  if (eprop->property->klass->pspec->value_type == G_TYPE_STRV ||
-      eprop->property->klass->pspec->value_type == G_TYPE_VALUE_ARRAY ||
-      eprop->property->klass->pspec->value_type == GDK_TYPE_PIXBUF)
+  if (eprop->klass->pspec->value_type == G_TYPE_STRV ||
+      eprop->klass->pspec->value_type == G_TYPE_VALUE_ARRAY ||
+      eprop->klass->pspec->value_type == GDK_TYPE_PIXBUF)
     {
       val = glade_property_class_make_gvalue_from_string
-          (eprop->property->klass, text,
-           glade_widget_get_project (eprop->property->widget), 
-	   eprop->property->widget);
+          (eprop->klass, text,
+           glade_widget_get_project (glade_property_get_widget (eprop->property)), 
+	   glade_property_get_widget (eprop->property));
     }
   else
     {
@@ -1817,7 +1822,7 @@ static void
 glade_eprop_text_show_i18n_dialog (GtkWidget * entry,
                                    GladeEditorProperty * eprop)
 {
-  gchar *text = g_value_dup_string (eprop->property->value);
+  gchar *text = glade_property_make_string (eprop->property);
   gchar *context = g_strdup (glade_property_i18n_get_context (eprop->property));
   gchar *comment = g_strdup (glade_property_i18n_get_comment (eprop->property));
   gboolean translatable =
@@ -1897,7 +1902,8 @@ static void
 glade_eprop_text_show_resource_dialog (GtkWidget * entry,
                                        GladeEditorProperty * eprop)
 {
-  GladeProject *project = glade_widget_get_project (eprop->property->widget);
+  GladeWidget  *widget  = glade_property_get_widget (eprop->property);
+  GladeProject *project = glade_widget_get_project (widget);
   gchar *text = NULL;
 
   if (glade_editor_property_show_resource_dialog (project, entry, &text))
@@ -2125,7 +2131,7 @@ glade_eprop_bool_load (GladeEditorProperty * eprop, GladeProperty * property)
 
   if (property)
     {
-      state = g_value_get_boolean (property->value);
+      state = g_value_get_boolean (glade_property_inline_value (property));
 
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (eprop_bool->toggle),
                                     state);
@@ -2207,7 +2213,7 @@ glade_eprop_unichar_load (GladeEditorProperty * eprop, GladeProperty * property)
       gchar utf8st[8];
       gint n;
 
-      if ((n = g_unichar_to_utf8 (g_value_get_uint (property->value), utf8st)))
+      if ((n = g_unichar_to_utf8 (g_value_get_uint (glade_property_inline_value (property)), utf8st)))
         {
           utf8st[n] = '\0';
           gtk_entry_set_text (entry, utf8st);
@@ -2739,17 +2745,19 @@ glade_eprop_object_show_dialog (GtkWidget * dialog_button,
   GtkWidget *content_area;
   GtkWidget *action_area;
   GladeProject *project;
+  GladeWidget  *widget;
   gchar *title = glade_eprop_object_dialog_title (eprop);
   gint res;
   GladeWidgetAdaptor *create_adaptor = NULL;
   GList *selected_list = NULL, *exception_list = NULL;
 
-  project = glade_widget_get_project (eprop->property->widget);
+  widget  = glade_property_get_widget (eprop->property);
+  project = glade_widget_get_project (widget);
   parent = gtk_widget_get_toplevel (GTK_WIDGET (eprop));
 
-  if (eprop->property->klass->create_type)
+  if (eprop->klass->create_type)
     create_adaptor =
-        glade_widget_adaptor_get_by_name (eprop->property->klass->create_type);
+        glade_widget_adaptor_get_by_name (eprop->klass->create_type);
   if (!create_adaptor &&
       G_TYPE_IS_INSTANTIATABLE (eprop->klass->pspec->value_type) &&
       !G_TYPE_IS_ABSTRACT (eprop->klass->pspec->value_type))
@@ -2826,12 +2834,12 @@ glade_eprop_object_show_dialog (GtkWidget * dialog_button,
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), GTK_SHADOW_IN);
 
 
-  exception_list = g_list_prepend (exception_list, eprop->property->widget);
-  if (g_value_get_object (eprop->property->value))
+  exception_list = g_list_prepend (exception_list, widget);
+  if (g_value_get_object (glade_property_inline_value (eprop->property)))
     selected_list = g_list_prepend (selected_list,
                                     glade_widget_get_from_gobject
                                     (g_value_get_object
-                                     (eprop->property->value)));
+                                     (glade_property_inline_value (eprop->property))));
 
   tree_view = glade_eprop_object_view (TRUE);
   glade_eprop_object_populate_view (project, GTK_TREE_VIEW (tree_view),
@@ -2866,12 +2874,11 @@ glade_eprop_object_show_dialog (GtkWidget * dialog_button,
           GValue *value;
 
           glade_project_selection_set (project, 
-				       glade_widget_get_object (eprop->property->widget),
+				       glade_widget_get_object (widget),
                                        TRUE);
 
           value = glade_property_class_make_gvalue_from_string
-	    (eprop->klass, glade_widget_get_name (selected), 
-	     project, eprop->property->widget);
+	    (eprop->klass, glade_widget_get_name (selected), project, widget);
 
           /* Unparent the widget so we can reuse it for this property */
           if (eprop->klass->parentless_widget)
@@ -2895,8 +2902,8 @@ glade_eprop_object_show_dialog (GtkWidget * dialog_button,
                            glade_widget_get_parentless_widget_ref (new_widget)))
                         {
                           glade_command_push_group (_("Setting %s of %s to %s"),
-                                                    eprop->property->klass->name,
-						    glade_widget_get_name (eprop->property->widget), 
+                                                    eprop->klass->name,
+						    glade_widget_get_name (widget), 
 						    glade_widget_get_name (new_widget));
                           glade_command_set_property (old_ref, NULL);
                           glade_editor_property_commit (eprop, value);
@@ -2922,14 +2929,14 @@ glade_eprop_object_show_dialog (GtkWidget * dialog_button,
       /* translators: Creating 'a widget' for 'a property' of 'a widget' */
       glade_command_push_group (_("Creating %s for %s of %s"),
                                 create_adaptor->name,
-                                eprop->property->klass->name,
-                                glade_widget_get_name (eprop->property->widget));
+                                eprop->klass->name,
+                                glade_widget_get_name (widget));
 
       /* Dont bother if the user canceled the widget */
       if ((new_widget =
            glade_command_create (create_adaptor, NULL, NULL, project)) != NULL)
         {
-          glade_project_selection_set (project, glade_widget_get_object (eprop->property->widget), TRUE);
+          glade_project_selection_set (project, glade_widget_get_object (widget), TRUE);
 
           value = glade_property_class_make_gvalue_from_string
 	    (eprop->klass, glade_widget_get_name (new_widget), project, NULL);
@@ -2945,7 +2952,7 @@ glade_eprop_object_show_dialog (GtkWidget * dialog_button,
   else if (res == GLADE_RESPONSE_CLEAR)
     {
       GValue *value = glade_property_class_make_gvalue_from_string
-          (eprop->klass, NULL, project, eprop->property->widget);
+	(eprop->klass, NULL, project, glade_property_get_widget (eprop->property));
 
       glade_editor_property_commit (eprop, value);
 
@@ -2971,7 +2978,7 @@ glade_eprop_object_load (GladeEditorProperty * eprop, GladeProperty * property)
 
   if ((obj_name = glade_widget_adaptor_string_from_value
        (GLADE_WIDGET_ADAPTOR (eprop->klass->handle),
-        eprop->klass, property->value)) != NULL)
+        eprop->klass, glade_property_inline_value (property))) != NULL)
     {
       gtk_entry_set_text (GTK_ENTRY (eprop_object->entry), obj_name);
       g_free (obj_name);
@@ -3041,7 +3048,7 @@ glade_eprop_objects_load (GladeEditorProperty * eprop, GladeProperty * property)
 
   if ((obj_name = glade_widget_adaptor_string_from_value
        (GLADE_WIDGET_ADAPTOR (eprop->klass->handle),
-        eprop->klass, property->value)) != NULL)
+        eprop->klass, glade_property_inline_value (property))) != NULL)
     {
       gtk_entry_set_text (GTK_ENTRY (eprop_objects->entry), obj_name);
       g_free (obj_name);
@@ -3080,14 +3087,15 @@ glade_eprop_objects_show_dialog (GtkWidget * dialog_button,
   GtkWidget *dialog, *parent;
   GtkWidget *vbox, *label, *sw;
   GtkWidget *tree_view;
+  GladeWidget *widget;
   GladeProject *project;
   gchar *title = glade_eprop_object_dialog_title (eprop);
   gint res;
   GList *selected_list = NULL, *exception_list = NULL, *selected_objects = NULL;
 
-  project = glade_widget_get_project (eprop->property->widget);
-  parent = gtk_widget_get_toplevel (GTK_WIDGET (eprop));
-
+  widget  = glade_property_get_widget (eprop->property);
+  project = glade_widget_get_project (widget);
+  parent  = gtk_widget_get_toplevel (GTK_WIDGET (eprop));
 
   dialog = gtk_dialog_new_with_buttons (title,
                                         GTK_WINDOW (parent),
@@ -3126,16 +3134,16 @@ glade_eprop_objects_show_dialog (GtkWidget * dialog_button,
   tree_view = glade_eprop_object_view (FALSE);
 
 
-  exception_list = g_list_prepend (exception_list, eprop->property->widget);
+  exception_list = g_list_prepend (exception_list, widget);
 
-  if (g_value_get_object (eprop->property->value))
+  /* XXX This looks broken, do "object list" properties hold an object ? I doubt it... */
+  if (g_value_get_object (glade_property_inline_value (eprop->property)))
     {
       GList *l;
       glade_property_get (eprop->property, &selected_objects);
       for (l = selected_objects; l; l = l->next)
         selected_list = g_list_prepend (selected_list,
-                                        glade_widget_get_from_gobject (l->
-                                                                       data));
+                                        glade_widget_get_from_gobject (l->data));
     }
   glade_eprop_object_populate_view (project, GTK_TREE_VIEW (tree_view),
                                     selected_list, exception_list,
@@ -3276,7 +3284,7 @@ glade_editor_property_load_by_widget (GladeEditorProperty * eprop,
 
       if (property)
         {
-          g_assert (eprop->klass == property->klass);
+          g_assert (eprop->klass == glade_property_get_class (property));
 
           gtk_widget_show (GTK_WIDGET (eprop));
           gtk_widget_show (GTK_WIDGET (eprop->item_label));

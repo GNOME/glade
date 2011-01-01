@@ -285,7 +285,7 @@ eprop_column_adjust_rows (GladeEditorProperty * eprop, GList * columns)
 {
   GladeColumnType *column;
   GNode *data_tree = NULL;
-  GladeWidget *widget = eprop->property->widget;
+  GladeWidget *widget = glade_property_get_widget (eprop->property);
   GList *list;
   GladeProperty *property;
   gint idx;
@@ -344,7 +344,7 @@ eprop_column_append (GladeEditorProperty * eprop,
 
   eprop_types->adding_column = TRUE;
   glade_command_push_group (_("Setting columns on %s"),
-                            glade_widget_get_name (eprop->property->widget));
+                            glade_widget_get_name (glade_property_get_widget (eprop->property)));
 
   g_value_init (&value, GLADE_TYPE_COLUMN_TYPE_LIST);
   g_value_take_boxed (&value, columns);
@@ -392,8 +392,7 @@ eprop_treeview_key_press (GtkWidget * treeview,
       glade_column_type_free (column);
 
       glade_command_push_group (_("Setting columns on %s"),
-                                glade_widget_get_name (eprop->property->
-                                                       widget));
+                                glade_widget_get_name (glade_property_get_widget (eprop->property)));
 
       eprop_types->want_focus = TRUE;
 
@@ -458,7 +457,7 @@ columns_changed_idle (GladeEditorProperty * eprop)
   g_list_free (columns);
 
   glade_command_push_group (_("Setting columns on %s"),
-                            glade_widget_get_name (eprop->property->widget));
+                            glade_widget_get_name (glade_property_get_widget (eprop->property)));
 
   g_value_init (&value, GLADE_TYPE_COLUMN_TYPE_LIST);
   g_value_take_boxed (&value, g_list_reverse (new_list));
@@ -677,7 +676,7 @@ column_name_edited (GtkCellRendererText * cell,
   column_name = g_strdup (column_name);
 
   glade_command_push_group (_("Setting columns on %s"),
-                            glade_widget_get_name (eprop->property->widget));
+                            glade_widget_get_name (glade_property_get_widget (eprop->property)));
 
   eprop_types->want_focus = TRUE;
 
@@ -686,7 +685,7 @@ column_name_edited (GtkCellRendererText * cell,
   glade_editor_property_commit (eprop, &value);
   g_value_unset (&value);
 
-  property = glade_widget_get_property (eprop->property->widget, "data");
+  property = glade_widget_get_property (glade_property_get_widget (eprop->property), "data");
   glade_property_get (property, &data_tree);
   if (data_tree)
     {

@@ -140,7 +140,7 @@ typedef struct
 typedef struct
 {
   GtkTreeIter *iter;
-  gchar *name;                  /* <-- dont free */
+  const gchar *name;                  /* <-- dont free */
 } GladeEpropIterTab;
 
 GLADE_MAKE_EPROP (GladeEPropAccel, glade_eprop_accel)
@@ -173,7 +173,7 @@ glade_eprop_accel_load (GladeEditorProperty * eprop, GladeProperty * property)
     return;
 
   if ((accels =
-       glade_accels_make_string (g_value_get_boxed (property->value))) != NULL)
+       glade_accels_make_string (g_value_get_boxed (glade_property_inline_value (property)))) != NULL)
     {
       gtk_entry_set_text (GTK_ENTRY (eprop_accel->entry), accels);
       g_free (accels);
@@ -210,7 +210,7 @@ glade_eprop_accel_populate_view (GladeEditorProperty * eprop,
   GList *list, *l, *found, *accelerators;
   gchar *name, *accel_text;
 
-  accelerators = g_value_get_boxed (eprop->property->value);
+  accelerators = g_value_get_boxed (glade_property_inline_value (eprop->property));
 
   /* First make parent iters...
    */
@@ -505,7 +505,7 @@ glade_eprop_accel_show_dialog (GtkWidget * dialog_button,
   GList *accelerators = NULL;
   gint res;
 
-  project = glade_widget_get_project (eprop->property->widget);
+  project = glade_widget_get_project (glade_property_get_widget (eprop->property));
   parent = gtk_widget_get_toplevel (GTK_WIDGET (eprop));
 
   dialog = gtk_dialog_new_with_buttons (_("Choose accelerator keys..."),

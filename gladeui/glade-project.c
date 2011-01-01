@@ -980,9 +980,12 @@ glade_project_fix_object_props (GladeProject * project)
 
       for (ll = glade_widget_get_properties (gwidget); ll; ll = ll->next)
         {
-          property = GLADE_PROPERTY (ll->data);
+	  GladePropertyClass *klass;
 
-          if (glade_property_class_is_object (property->klass) &&
+          property = GLADE_PROPERTY (ll->data);
+	  klass    = glade_property_get_class (property);
+
+          if (glade_property_class_is_object (klass) &&
               (txt = g_object_get_data (G_OBJECT (property),
                                         "glade-loaded-object")) != NULL)
             {
@@ -990,7 +993,7 @@ glade_project_fix_object_props (GladeProject * project)
                * (this magicly works for both objects & object lists)
                */
               value = glade_property_class_make_gvalue_from_string
-                  (property->klass, txt, glade_widget_get_project (gwidget), gwidget);
+                  (klass, txt, glade_widget_get_project (gwidget), gwidget);
 
               glade_property_set_value (property, value);
 
@@ -1190,23 +1193,24 @@ update_project_for_resource_path (GladeProject * project)
 
       for (list = glade_widget_get_properties (widget); list; list = list->next)
         {
+	  GladePropertyClass *klass;
+
           property = list->data;
+	  klass    = glade_property_get_class (property);
 
           /* XXX We should have a "resource" flag on properties that need
            *   to be loaded from the resource path, but that would require
            * that they can serialize both ways (custom properties are only
            * required to generate unique strings for value comparisons).
            */
-          if (property->klass->pspec->value_type == GDK_TYPE_PIXBUF)
+          if (klass->pspec->value_type == GDK_TYPE_PIXBUF)
             {
               GValue *value;
-              gchar *string;
+              gchar  *string;
 
-              string = glade_property_class_make_string_from_gvalue
-                  (property->klass, property->value);
-
-              value = glade_property_class_make_gvalue_from_string
-                  (property->klass, string, project, widget);
+              string = glade_property_make_string (property);
+              value  = glade_property_class_make_gvalue_from_string
+                  (klass, string, project, widget);
 
               glade_property_set_value (property, value);
 
@@ -1332,6 +1336,7 @@ glade_project_introspect_gtk_version (GladeProject * project)
       for (l = glade_widget_get_properties (widget); l; l = l->next)
         {
           GladeProperty *property = l->data;
+	  GladePropertyClass *pclass = glade_property_get_class (property);
           GladeWidgetAdaptor *prop_adaptor, *adaptor;
 
           /* Unset properties ofcourse dont count... */
@@ -1339,10 +1344,9 @@ glade_project_introspect_gtk_version (GladeProject * project)
             continue;
 
           /* Check if this property originates from a GTK+ widget class */
-          prop_adaptor = glade_widget_adaptor_from_pclass (property->klass);
+          prop_adaptor = glade_widget_adaptor_from_pclass (pclass);
           adaptor =
-              glade_widget_adaptor_from_pspec (prop_adaptor,
-                                               property->klass->pspec);
+              glade_widget_adaptor_from_pspec (prop_adaptor, pclass->pspec);
 
           catalog = NULL;
           is_gtk_adaptor = FALSE;
@@ -1353,10 +1357,10 @@ glade_project_introspect_gtk_version (GladeProject * project)
 
           /* Check GTK+ property class versions */
           if (is_gtk_adaptor &&
-              !GPC_VERSION_CHECK (property->klass, target_major, target_minor))
+              !GPC_VERSION_CHECK (pclass, target_major, target_minor))
             {
-              target_major = property->klass->version_since_major;
-              target_minor = property->klass->version_since_minor;
+              target_major = pclass->version_since_major;
+              target_minor = pclass->version_since_minor;
             }
         }
 
@@ -2045,28 +2049,31 @@ glade_project_verify_property (GladeProject * project,
                                GString * string, gboolean forwidget)
 {
   GladeWidgetAdaptor *adaptor, *prop_adaptor;
+  GladeWidget        *widget;
+  GladePropertyClass *pclass;
   gint target_major, target_minor;
   gchar *catalog, *tooltip;
 
   if (glade_property_original_default (property) && !forwidget)
     return;
 
-  prop_adaptor = glade_widget_adaptor_from_pclass (property->klass);
-  adaptor =
-      glade_widget_adaptor_from_pspec (prop_adaptor, property->klass->pspec);
+  pclass       = glade_property_get_class (property);
+  prop_adaptor = glade_widget_adaptor_from_pclass (pclass);
+  adaptor      = glade_widget_adaptor_from_pspec (prop_adaptor, pclass->pspec);
+  widget       = glade_property_get_widget (property);
 
   g_object_get (adaptor, "catalog", &catalog, NULL);
-  glade_project_target_version_for_adaptor (glade_widget_get_project (property->widget), adaptor,
+  glade_project_target_version_for_adaptor (glade_widget_get_project (widget), adaptor,
                                             &target_major, &target_minor);
 
-  if (!GPC_VERSION_CHECK (property->klass, target_major, target_minor))
+  if (!GPC_VERSION_CHECK (pclass, target_major, target_minor))
     {
       if (forwidget)
         {
           tooltip = g_strdup_printf (PROP_VERSION_CONFLICT_MSGFMT,
                                      catalog,
-                                     property->klass->version_since_major,
-                                     property->klass->version_since_minor,
+                                     pclass->version_since_major,
+                                     pclass->version_since_minor,
                                      catalog, target_major, target_minor);
 
           glade_property_set_support_warning (property, FALSE, tooltip);
@@ -2074,14 +2081,14 @@ glade_project_verify_property (GladeProject * project,
         }
       else
         g_string_append_printf (string,
-                                property->klass->packing ?
+                                pclass->packing ?
                                 PACK_PROP_VERSION_CONFLICT_FMT :
                                 PROP_VERSION_CONFLICT_FMT,
                                 path_name,
-                                property->klass->name,
+                                pclass->name,
                                 adaptor->title, catalog,
-                                property->klass->version_since_major,
-                                property->klass->version_since_minor);
+                                pclass->version_since_major,
+                                pclass->version_since_minor);
     }
   else if (forwidget)
     glade_property_set_support_warning (property, FALSE, NULL);

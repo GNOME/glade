@@ -980,6 +980,7 @@ glade_editor_populate_reset_view (GladeEditor * editor, GtkTreeView * tree_view)
   GtkTreeIter property_iter, general_iter, common_iter, atk_iter, *iter;
   GList *list;
   GladeProperty *property;
+  GladePropertyClass *pclass;
   gboolean def;
 
   g_return_if_fail (editor->loaded_widget != NULL);
@@ -1012,13 +1013,14 @@ glade_editor_populate_reset_view (GladeEditor * editor, GtkTreeView * tree_view)
   for (list = glade_widget_get_properties (editor->loaded_widget); list; list = list->next)
     {
       property = list->data;
+      pclass   = glade_property_get_class (property);
 
-      if (glade_property_class_is_visible (property->klass) == FALSE)
+      if (glade_property_class_is_visible (pclass) == FALSE)
         continue;
 
-      if (property->klass->atk)
+      if (pclass->atk)
         iter = &atk_iter;
-      else if (property->klass->common)
+      else if (pclass->common)
         iter = &common_iter;
       else
         iter = &general_iter;
@@ -1028,7 +1030,7 @@ glade_editor_populate_reset_view (GladeEditor * editor, GtkTreeView * tree_view)
       gtk_tree_store_append (model, &property_iter, iter);
       gtk_tree_store_set (model, &property_iter,
                           COLUMN_ENABLED, !def,
-                          COLUMN_PROP_NAME, property->klass->name,
+                          COLUMN_PROP_NAME, pclass->name,
                           COLUMN_PROPERTY, property,
                           COLUMN_WEIGHT, PANGO_WEIGHT_NORMAL,
                           COLUMN_CHILD, TRUE,
@@ -1046,6 +1048,7 @@ glade_editor_reset_selection_changed_cb (GtkTreeSelection * selection,
   GladeProperty *property = NULL;
   GtkTreeModel *model = NULL;
   GtkTextBuffer *text_buffer;
+  GladePropertyClass *pclass = NULL;
 
   const gchar *message =
       _("Select the properties that you want to reset to their default values");
@@ -1055,8 +1058,12 @@ glade_editor_reset_selection_changed_cb (GtkTreeSelection * selection,
     {
       text_buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (desc_view));
       gtk_tree_model_get (model, &iter, COLUMN_PROPERTY, &property, -1);
+
+      if (property)
+	pclass = glade_property_get_class (property);
+
       gtk_text_buffer_set_text (text_buffer,
-                                property ? property->klass->tooltip : message,
+                                pclass ? pclass->tooltip : message,
                                 -1);
       if (property)
         g_object_unref (G_OBJECT (property));
@@ -1140,13 +1147,14 @@ glade_editor_reset_properties (GList * props)
   GList *list, *sdata_list = NULL;
   GCSetPropData *sdata;
   GladeProperty *prop;
+  GladeWidget   *widget;
   GladeProject *project = NULL;
 
   for (list = props; list; list = list->next)
     {
-      prop = list->data;
-
-      project = glade_widget_get_project (prop->widget);
+      prop    = list->data;
+      widget  = glade_property_get_widget (prop);
+      project = glade_widget_get_project (widget);
 
       sdata = g_new (GCSetPropData, 1);
       sdata->property = prop;

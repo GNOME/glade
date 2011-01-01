@@ -968,8 +968,10 @@ glade_widget_adaptor_object_write_widget (GladeWidgetAdaptor * adaptor,
   /* Write the properties */
   for (props = glade_widget_get_properties (widget); props; props = props->next)
     {
-      if (GLADE_PROPERTY (props->data)->klass->save &&
-          GLADE_PROPERTY (props->data)->enabled)
+      GladeProperty      *property = props->data;
+      GladePropertyClass *klass = glade_property_get_class (property);
+
+      if (klass->save && glade_property_get_enabled (property))
         glade_property_write (GLADE_PROPERTY (props->data), context, node);
     }
 }
@@ -1078,8 +1080,10 @@ glade_widget_adaptor_object_write_child (GladeWidgetAdaptor * adaptor,
 
   for (props = glade_widget_get_packing_properties (widget); props; props = props->next)
     {
-      if (GLADE_PROPERTY (props->data)->klass->save &&
-          GLADE_PROPERTY (props->data)->enabled)
+      GladeProperty      *property = props->data;
+      GladePropertyClass *klass = glade_property_get_class (property);
+
+      if (klass->save && glade_property_get_enabled (property))
         glade_property_write (GLADE_PROPERTY (props->data),
                               context, packing_node);
     }

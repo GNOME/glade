@@ -27,6 +27,9 @@
 	* gladeui/glade-clipboard.h, gladeui/glade-app.c: Removed clipboard->view member and
 	  make GladeApp properly destroy the clipboard when disposing.
 
+	* Made GladeProperty internalize *everything* into a private data structure,
+	17 files changed, 766 insertions(+), 592 deletions(-)
+
 2010-12-31  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-project.c: Further fixing project dispose cycle, still leaking a little

@@ -951,7 +951,7 @@ glade_eprop_attrs_populate_view (GladeEditorProperty * eprop,
   GladeAttribute *gattr;
   gchar *text;
 
-  attributes = g_value_get_boxed (eprop->property->value);
+  attributes = g_value_get_boxed (glade_property_inline_value (eprop->property));
 
   append_empty_row (model, PANGO_ATTR_LANGUAGE);
   append_empty_row (model, PANGO_ATTR_STYLE);
@@ -1012,12 +1012,12 @@ glade_eprop_attrs_show_dialog (GtkWidget * dialog_button,
   GList *old_attributes;
   gint res;
 
-  project = glade_widget_get_project (eprop->property->widget);
+  project = glade_widget_get_project (glade_property_get_widget (eprop->property));
   parent = gtk_widget_get_toplevel (GTK_WIDGET (eprop));
 
 
   /* Keep a copy for commit time... */
-  old_attributes = g_value_dup_boxed (eprop->property->value);
+  old_attributes = g_value_dup_boxed (glade_property_inline_value (eprop->property));
 
   dialog = gtk_dialog_new_with_buttons (_("Setup Text Attributes"),
                                         GTK_WINDOW (parent),
