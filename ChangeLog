@@ -16,6 +16,9 @@
 	* Made GladeWidget internalize *everything* into a private data structure,
 	33 files changed, 1318 insertions(+), 1230 deletions(-)
 
+	* gladeui/glade-project.[ch], gladeui/glade-widget.c, gladeui/glade-command.c:
+	  Removing legacy 'old_project' argument from glade_project_add_object().
+
 2010-12-31  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-project.c: Further fixing project dispose cycle, still leaking a little

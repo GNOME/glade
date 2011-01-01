@@ -1368,13 +1368,13 @@ glade_command_add_execute (GladeCommandAddRemove * me)
                 }
             }
 
-          glade_project_add_object (GLADE_COMMAND (me)->project, NULL, 
+          glade_project_add_object (GLADE_COMMAND (me)->project,
 				    glade_widget_get_object (cdata->widget));
 
           for (l = cdata->reffed; l; l = l->next)
             {
               GladeWidget *reffed = l->data;
-              glade_project_add_object (GLADE_COMMAND (me)->project, NULL,
+              glade_project_add_object (GLADE_COMMAND (me)->project,
                                         glade_widget_get_object (reffed));
             }
 

@@ -2525,7 +2525,7 @@ glade_widget_rebuild (GladeWidget * gwidget)
    */
   if (project)
     {
-      glade_project_add_object (project, NULL, gwidget->priv->object);
+      glade_project_add_object (project, gwidget->priv->object);
       if (reselect)
         glade_project_selection_add (project, gwidget->priv->object, TRUE);
     }

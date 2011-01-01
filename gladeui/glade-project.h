@@ -39,47 +39,47 @@ typedef enum
  **/
 typedef enum
 {
-	GLADE_PROJECT_MODEL_COLUMN_ICON_NAME,
-	GLADE_PROJECT_MODEL_COLUMN_NAME,
-	GLADE_PROJECT_MODEL_COLUMN_TYPE_NAME,
-	GLADE_PROJECT_MODEL_COLUMN_OBJECT,
-	GLADE_PROJECT_MODEL_COLUMN_MISC,
-	GLADE_PROJECT_MODEL_N_COLUMNS
+  GLADE_PROJECT_MODEL_COLUMN_ICON_NAME,
+  GLADE_PROJECT_MODEL_COLUMN_NAME,
+  GLADE_PROJECT_MODEL_COLUMN_TYPE_NAME,
+  GLADE_PROJECT_MODEL_COLUMN_OBJECT,
+  GLADE_PROJECT_MODEL_COLUMN_MISC,
+  GLADE_PROJECT_MODEL_N_COLUMNS
 } GladeProjectModelColumns;
 
 struct _GladeProject
 {
-	GObject parent_instance;
+  GObject parent_instance;
 
-	GladeProjectPrivate *priv;
+  GladeProjectPrivate *priv;
 };
 
 struct _GladeProjectClass
 {
-	GObjectClass parent_class;
+  GObjectClass parent_class;
 
-	void          (*add_object)          (GladeProject *project,
-					      GladeWidget  *widget);
-	void          (*remove_object)       (GladeProject *project,
-					      GladeWidget  *widget);
-	
-	void          (*undo)                (GladeProject *project);
-	void          (*redo)                (GladeProject *project);
-	GladeCommand *(*next_undo_item)      (GladeProject *project);
-	GladeCommand *(*next_redo_item)      (GladeProject *project);
-	void          (*push_undo)           (GladeProject *project,
-					      GladeCommand *command);
+  void          (*add_object)          (GladeProject *project,
+					GladeWidget  *widget);
+  void          (*remove_object)       (GladeProject *project,
+					GladeWidget  *widget);
 
-	void          (*changed)             (GladeProject *project,
-					      GladeCommand *command,
-					      gboolean      forward);
+  void          (*undo)                (GladeProject *project);
+  void          (*redo)                (GladeProject *project);
+  GladeCommand *(*next_undo_item)      (GladeProject *project);
+  GladeCommand *(*next_redo_item)      (GladeProject *project);
+  void          (*push_undo)           (GladeProject *project,
+					GladeCommand *command);
 
-	void          (*widget_name_changed) (GladeProject *project,
-					      GladeWidget  *widget);
-	void          (*selection_changed)   (GladeProject *project); 
-	void          (*close)               (GladeProject *project);
+  void          (*changed)             (GladeProject *project,
+					GladeCommand *command,
+					gboolean      forward);
 
-	void          (*parse_finished)      (GladeProject *project);
+  void          (*widget_name_changed) (GladeProject *project,
+					GladeWidget  *widget);
+  void          (*selection_changed)   (GladeProject *project); 
+  void          (*close)               (GladeProject *project);
+
+  void          (*parse_finished)      (GladeProject *project);
 };
 
 
@@ -124,7 +124,6 @@ gboolean       glade_project_get_readonly        (GladeProject *project);
 const GList   *glade_project_get_objects         (GladeProject *project);
 
 void           glade_project_add_object          (GladeProject *project, 
-						  GladeProject *old_project,
 						  GObject      *object);
 
 void           glade_project_remove_object       (GladeProject *project, 

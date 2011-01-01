@@ -1496,7 +1496,7 @@ glade_project_load_internal (GladeProject * project)
         continue;
 
       if ((widget = glade_widget_read (project, NULL, node, NULL)) != NULL)
-        glade_project_add_object (project, NULL, glade_widget_get_object (widget));
+        glade_project_add_object (project, glade_widget_get_object (widget));
 
       if (project->priv->load_cancel)
         break;
@@ -2827,15 +2827,12 @@ glade_project_notify_row_deleted (GladeProject * project, GladeWidget * gwidget)
 /**
  * glade_project_add_object:
  * @project: the #GladeProject the widget is added to
- * @old_project: the #GladeProject the widget was previously in
- *               (or %NULL for the clipboard)
  * @object: the #GObject to add
  *
  * Adds an object to the project.
  */
 void
-glade_project_add_object (GladeProject * project,
-                          GladeProject * old_project, GObject * object)
+glade_project_add_object (GladeProject * project, GObject * object)
 {
   GladeWidget *gwidget;
   GList *list, *children;
@@ -2906,7 +2903,7 @@ glade_project_add_object (GladeProject * project,
   if ((children = glade_widget_get_children (gwidget)) != NULL)
     {
       for (list = children; list && list->data; list = list->next)
-        glade_project_add_object (project, old_project, G_OBJECT (list->data));
+        glade_project_add_object (project, G_OBJECT (list->data));
       g_list_free (children);
     }
 
@@ -3022,7 +3019,7 @@ adjust_naming_policy (GladeProject * project, GladeNamingPolicy policy)
 
   /* Put the toplevels back with the new policy (recursive operation) */
   for (list = objects; list; list = list->next)
-    glade_project_add_object (project, project, G_OBJECT (list->data));
+    glade_project_add_object (project, G_OBJECT (list->data));
   g_list_free (objects);
 
   /* Unref them now */
