@@ -2213,7 +2213,14 @@ glade_project_verify_signals (GladeWidget * widget,
 void
 glade_project_verify_properties (GladeWidget * widget)
 {
+  GladeProject *project;
+
   g_return_if_fail (GLADE_IS_WIDGET (widget));
+
+  project = glade_widget_get_project (widget);
+  if (!project || project->priv->loading)
+    return;
+
   glade_project_verify_properties_internal (widget, NULL, NULL, TRUE);
   glade_project_verify_signals (widget, NULL, NULL, TRUE);
 
@@ -2615,7 +2622,6 @@ glade_project_available_widget_name (GladeProject * project,
 
   g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
   g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
-  g_return_val_if_fail (widget->project == project, FALSE);
 
   if (!name || !name[0])
     return FALSE;
@@ -2693,7 +2699,6 @@ glade_project_new_widget_name (GladeProject * project,
 
   g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
   g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
-  g_return_val_if_fail (widget->project == project, NULL);
   g_return_val_if_fail (base_name && base_name[0], NULL);
 
   context = name_context_by_widget (project, widget);
@@ -2740,7 +2745,6 @@ glade_project_set_widget_name (GladeProject * project,
 
   g_return_if_fail (GLADE_IS_PROJECT (project));
   g_return_if_fail (GLADE_IS_WIDGET (widget));
-  g_return_if_fail (widget->project == project);
   g_return_if_fail (name && name[0]);
 
   if (strcmp (name, widget->name) == 0)
@@ -2799,6 +2803,14 @@ glade_project_update_previewable (GladeProject * project)
 }
 
 static void
+glade_project_notify_row_has_child (GladeProject *project,
+				    GladeWidget  *gwidget,
+				    gboolean      adding)
+{
+}
+
+
+static void
 glade_project_notify_row_inserted (GladeProject * project,
                                    GladeWidget * gwidget)
 {
@@ -2814,9 +2826,7 @@ glade_project_notify_row_inserted (GladeProject * project,
   gtk_tree_model_row_inserted (GTK_TREE_MODEL (project), path, &iter);
   gtk_tree_path_free (path);
 
-  /* XXX Need to check and call this 
-   * gtk_tree_model_row_has_child_toggled 
-   */
+  glade_project_notify_row_has_child (project, gwidget, TRUE);
 }
 
 static void
@@ -2830,10 +2840,7 @@ glade_project_notify_row_deleted (GladeProject * project, GladeWidget * gwidget)
   gtk_tree_model_row_deleted (GTK_TREE_MODEL (project), path);
   gtk_tree_path_free (path);
 
-  /* XXX Need to check and call this 
-   * gtk_tree_model_row_has_child_toggled 
-   */
-
+  glade_project_notify_row_has_child (project, gwidget, FALSE);
 
   project->priv->stamp++;
 }
@@ -2901,6 +2908,7 @@ glade_project_add_object (GladeProject * project,
   glade_project_reserve_widget_name (project, gwidget, gwidget->name);
 
   glade_widget_set_project (gwidget, (gpointer) project);
+  gwidget->in_project = TRUE;
   g_object_ref_sink (gwidget);
 
   /* Be sure to update the lists before emitting signals */
@@ -2941,9 +2949,16 @@ glade_project_add_object (GladeProject * project,
 gboolean
 glade_project_has_object (GladeProject * project, GObject * object)
 {
+  GladeWidget *gwidget;
+
   g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
   g_return_val_if_fail (G_IS_OBJECT (object), FALSE);
-  return (g_list_find (project->priv->objects, object)) != NULL;
+
+  gwidget = glade_widget_get_from_gobject (object);
+
+  g_return_val_if_fail (GLADE_IS_WIDGET (gwidget), FALSE);
+
+  return (glade_widget_get_project (gwidget) == project && gwidget->in_project);
 }
 
 /**
@@ -2965,6 +2980,9 @@ glade_project_remove_object (GladeProject * project, GObject * object)
 
   g_return_if_fail (GLADE_IS_PROJECT (project));
   g_return_if_fail (G_IS_OBJECT (object));
+
+  if (!glade_project_has_object (project, object))
+    return;
 
   if (GLADE_IS_PLACEHOLDER (object))
     return;
@@ -2994,6 +3012,10 @@ glade_project_remove_object (GladeProject * project, GObject * object)
   /* Update internal data structure (remove from lists) */
   project->priv->tree = g_list_remove (project->priv->tree, object);
   project->priv->objects = g_list_remove (project->priv->objects, object);
+
+  /* Unset the project pointer on the GladeWidget */
+  glade_widget_set_project (gwidget, NULL);
+  gwidget->in_project = FALSE;
   g_object_unref (gwidget);
 
   glade_project_update_previewable (project);
@@ -3266,7 +3288,7 @@ glade_project_selection_add (GladeProject * project,
 {
   g_return_if_fail (GLADE_IS_PROJECT (project));
   g_return_if_fail (G_IS_OBJECT (object));
-  g_return_if_fail (g_list_find (project->priv->objects, object) != NULL);
+  g_return_if_fail (glade_project_has_object (project, object));
 
   if (glade_project_is_selected (project, object) == FALSE)
     {
@@ -3299,7 +3321,7 @@ glade_project_selection_set (GladeProject * project,
   g_return_if_fail (GLADE_IS_PROJECT (project));
   g_return_if_fail (G_IS_OBJECT (object));
 
-  if (g_list_find (project->priv->objects, object) == NULL)
+  if (!glade_project_has_object (project, object))
     return;
 
   if (project->priv->selection == NULL)

@@ -22,96 +22,97 @@ typedef struct _GladeWidgetClass  GladeWidgetClass;
 
 struct _GladeWidget
 {
-	GInitiallyUnowned parent_instance;
+  GInitiallyUnowned parent_instance;
 
-	GladeWidgetAdaptor *adaptor; /* An adaptor class for the object type */
+  GladeWidgetAdaptor *adaptor; /* An adaptor class for the object type */
 
-	GladeProject       *project; /* A pointer to the project that this 
-					widget currently belongs to. */
+  GladeProject       *project; /* A pointer to the project that this 
+				  widget currently belongs to. */
 
-	GladeWidget  *parent;  /* A pointer to the parent widget in the hierarchy */
+  GladeWidget  *parent;  /* A pointer to the parent widget in the hierarchy */
 	
-	gchar *name; /* The name of the widget. For example window1 or
-		      * button2. This is a unique name and is the one
-		      * used when loading widget with libglade
+  gchar *name; /* The name of the widget. For example window1 or
+		* button2. This is a unique name and is the one
+		* used when loading widget with libglade
+		*/
+
+  gchar *support_warning; /* A warning message for version incompatabilities
+			   * in this widget
+			   */
+
+  gchar *internal; /* If the widget is an internal child of 
+		    * another widget this is the name of the 
+		    * internal child, otherwise is NULL.
+		    * Internal children cannot be deleted.
+		    */
+
+  gboolean anarchist; /* Some composite widgets have internal children
+		       * that are not part of the same hierarchy; hence 'anarchists',
+		       * typicly a popup window or its child (we need to mark
+		       * them so we can avoid bookkeeping packing props on them etc.).
+		       */
+
+  GObject *object; /* A pointer to the object that was created.
+		    * if it is a GtkWidget; it is shown as a "view"
+		    * of the GladeWidget. This object is updated as
+		    * the properties are modified for the GladeWidget.
+		    */
+
+  GList *properties; /* A list of GladeProperty. A GladeProperty is an
+		      * instance of a GladePropertyClass. If a
+		      * GladePropertyClass for a gtkbutton is label, its
+		      * property is "Ok". 
 		      */
 
-	gchar *support_warning; /* A warning message for version incompatabilities
-				 * in this widget
-				 */
-	
+  GList *packing_properties; /* A list of GladeProperty. Note that these
+			      * properties are related to the container
+			      * of the widget, thus they change after
+			      * pasting the widget to a different
+			      * container. Toplevels widget do not have
+			      * packing properties.
+			      * See also child_properties of 
+			      * GladeWidgetClass.
+			      */
 
-	gchar *internal; /* If the widget is an internal child of 
-			  * another widget this is the name of the 
-			  * internal child, otherwise is NULL.
-			  * Internal children cannot be deleted.
-			  */
-	
-	gboolean anarchist; /* Some composite widgets have internal children
-			     * that are not part of the same hierarchy; hence 'anarchists',
-			     * typicly a popup window or its child (we need to mark
-			     * them so we can avoid bookkeeping packing props on them etc.).
-			     */
+  GHashTable *props_hash; /* A Quick reference table to speed up calls to glade_widget_get_property()
+			   */	
+  GHashTable *pack_props_hash; /* A Quick reference table to speed up calls to glade_widget_get_pack_property()
+				*/
 
-	GObject *object; /* A pointer to the object that was created.
-			  * if it is a GtkWidget; it is shown as a "view"
-			  * of the GladeWidget. This object is updated as
-			  * the properties are modified for the GladeWidget.
-			  */
-	
-	GList *properties; /* A list of GladeProperty. A GladeProperty is an
-			    * instance of a GladePropertyClass. If a
-			    * GladePropertyClass for a gtkbutton is label, its
-			    * property is "Ok". 
-			    */
+  GHashTable *signals; /* A table with a GPtrArray of GladeSignals (signal handlers),
+			* indexed by its name */
 
-	GList *packing_properties; /* A list of GladeProperty. Note that these
-				    * properties are related to the container
-				    * of the widget, thus they change after
-				    * pasting the widget to a different
-				    * container. Toplevels widget do not have
-				    * packing properties.
-				    * See also child_properties of 
-				    * GladeWidgetClass.
-				    */
+  GList     *prop_refs; /* List of properties in the project who's value are `this object'
+			 * (this is used to set/unset those properties when the object is
+			 * added/removed from the project).
+			 */
 
-	GHashTable *props_hash; /* A Quick reference table to speed up calls to glade_widget_get_property()
-				 */	
-	GHashTable *pack_props_hash; /* A Quick reference table to speed up calls to glade_widget_get_pack_property()
-				      */
+  gint               width;   /* Current size used in the UI, this is only */
+  gint               height;  /* usefull for parentless widgets in the
+			       * GladeDesignLayout */
 
-	GHashTable *signals; /* A table with a GPtrArray of GladeSignals (signal handlers),
-			      * indexed by its name */
+  GList *actions;		/* A GladeWidgetAction list */
 
-	gboolean   visible; /* Local copy of widget visibility, we need to keep track of this
-			     * since the objects copy may be invalid due to a rebuild.
-			     */
-
-	GList     *prop_refs; /* List of properties in the project who's value are `this object'
-			       * (this is used to set/unset those properties when the object is
-			       * added/removed from the project).
-			       */
-
-	gint               width;   /* Current size used in the UI, this is only */
-	gint               height;  /* usefull for parentless widgets in the
-				     * GladeDesignLayout */
-
-	GList *actions;		/* A GladeWidgetAction list */
-	
-	GList *packing_actions;	/* A GladeWidgetAction list, this actions are
+  GList *packing_actions;	/* A GladeWidgetAction list, this actions are
 				 * related to the container and they are not always present.
 				 */
 
-	GladeWidget    *lock; /* The glade widget that has locked this widget down.
-			       */
-	GList          *locked_widgets; /* A list of widgets this widget has locked down.
-					 */
-	
-	/* Construct parameters: */
-	GladeWidget       *construct_template;
-	GladeCreateReason  construct_reason;
-	gchar             *construct_internal;
-	gboolean           construct_exact;
+  GladeWidget    *lock; /* The glade widget that has locked this widget down.
+			 */
+  GList          *locked_widgets; /* A list of widgets this widget has locked down.
+				   */
+
+  /* Construct parameters: */
+  GladeWidget       *construct_template;
+  GladeCreateReason  construct_reason;
+  gchar             *construct_internal;
+  guint              construct_exact : 1;
+
+  guint              in_project : 1;
+
+  guint              visible : 1; /* Local copy of widget visibility, we need to keep track of this
+				   * since the objects copy may be invalid due to a rebuild.
+				   */
 };
 
 struct _GladeWidgetClass

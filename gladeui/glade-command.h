@@ -33,33 +33,35 @@ typedef struct _GCSetPropData     GCSetPropData;
  * their old and new #GValue.
  */
 struct _GCSetPropData {
-	GladeProperty *property;
-	GValue        *new_value;
-	GValue        *old_value;
+  GladeProperty *property;
+  GValue        *new_value;
+  GValue        *old_value;
 };
 
 struct _GladeCommand
 {
-	GObject parent;
+  GObject parent;
 
-	gchar *description; /* a string describing the command.
-			     * It's used in the undo/redo menu entry.
-			     */
+  GladeProject *project; /* The project this command is created for */
 
-	gint   group_id;    /* If this is part of a command group, this is
-			     * the group id (id is needed only to ensure that
-			     * consecutive groups dont get merged).
-			     */
+  gchar *description; /* a string describing the command.
+		       * It's used in the undo/redo menu entry.
+		       */
+
+  gint   group_id;    /* If this is part of a command group, this is
+		       * the group id (id is needed only to ensure that
+		       * consecutive groups dont get merged).
+		       */
 };
 
 struct _GladeCommandClass
 {
-	GObjectClass parent_class;
+  GObjectClass parent_class;
 
-	gboolean (* execute)     (GladeCommand *this_cmd);
-	gboolean (* undo)        (GladeCommand *this_cmd);
-	gboolean (* unifies)     (GladeCommand *this_cmd, GladeCommand *other_cmd);
-	void     (* collapse)    (GladeCommand *this_cmd, GladeCommand *other_cmd);
+  gboolean (* execute)     (GladeCommand *this_cmd);
+  gboolean (* undo)        (GladeCommand *this_cmd);
+  gboolean (* unifies)     (GladeCommand *this_cmd, GladeCommand *other_cmd);
+  void     (* collapse)    (GladeCommand *this_cmd, GladeCommand *other_cmd);
 };
 
 

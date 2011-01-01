@@ -1,3 +1,18 @@
+2011-01-01  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-command.[ch], Added GladeProject member to base command structure, now
+	  all commands reffer to that structure instead of trying to pull a project pointer from
+	  a widget.
+
+	* gladeui/glade-project.c: Unset project pointer on widgets when they leave the project,
+	  manage an "in_project" flag on widgets to differenciate the moment when they widgets are
+	  loading and have the project pointer but are still not added to the project yet. Also speed up
+	  glade_project_has_object() by not traversing the list but simply checking the widget's project
+	  and in_project flag.
+
+	* gladeui/glade-widget.[ch]: Added the "in_project" flag to GladeWidget, fixed glade_widget_rebuild
+	  to save the previous project pointer.
+
 2010-12-31  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-project.c: Further fixing project dispose cycle, still leaking a little

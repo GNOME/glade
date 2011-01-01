@@ -305,6 +305,7 @@ glade_property_set_value_impl (GladeProperty * property, const GValue * value)
                      glade_property_signals[VALUE_CHANGED],
                      0, &old_value, property->value);
 
+      
       glade_project_verify_properties (property->widget);
     }
 

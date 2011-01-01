@@ -2288,8 +2288,9 @@ glade_widget_rebuild (GladeWidget * gwidget)
 {
   GObject *new_object, *old_object;
   GladeWidgetAdaptor *adaptor;
+  GladeProject *project = NULL;
   GList *children;
-  gboolean reselect = FALSE, inproject, inparent;
+  gboolean reselect = FALSE, inparent;
   GList *restore_properties = NULL;
   GList *save_properties, *l;
 
@@ -2305,19 +2306,17 @@ glade_widget_rebuild (GladeWidget * gwidget)
   /* Here we take care removing the widget from the project and
    * the selection before rebuilding the instance.
    */
-  inproject = gwidget->project ?
-      (glade_project_has_object
-       (gwidget->project, gwidget->object) ? TRUE : FALSE) : FALSE;
+  if (gwidget->project && glade_project_has_object (gwidget->project, gwidget->object))
+    project = gwidget->project;
 
-  if (inproject)
+  if (project)
     {
-      if (glade_project_is_selected (gwidget->project, gwidget->object))
+      if (glade_project_is_selected (project, gwidget->object))
         {
           reselect = TRUE;
-          glade_project_selection_remove
-              (gwidget->project, gwidget->object, FALSE);
+          glade_project_selection_remove (project, gwidget->object, FALSE);
         }
-      glade_project_remove_object (gwidget->project, gwidget->object);
+      glade_project_remove_object (project, gwidget->object);
     }
 
   /* parentless_widget and object properties that reffer to this widget 
@@ -2418,11 +2417,11 @@ glade_widget_rebuild (GladeWidget * gwidget)
   /* If the widget was in a project (and maybe the selection), then
    * restore that stuff.
    */
-  if (inproject)
+  if (project)
     {
-      glade_project_add_object (gwidget->project, NULL, gwidget->object);
+      glade_project_add_object (project, NULL, gwidget->object);
       if (reselect)
-        glade_project_selection_add (gwidget->project, gwidget->object, TRUE);
+        glade_project_selection_add (project, gwidget->object, TRUE);
     }
 
   /* We shouldnt show if its not already visible */
@@ -3657,10 +3656,10 @@ glade_widget_read (GladeProject * project,
   if (glade_project_load_cancelled (project))
     return NULL;
 
-  glade_widget_push_superuser ();
-
   if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
     return NULL;
+
+  glade_widget_push_superuser ();
 
   if ((klass =
        glade_xml_get_property_string_required
@@ -3687,7 +3686,7 @@ glade_widget_read (GladeProject * project,
                       g_warning ("Failed to locate "
                                  "internal child %s of %s",
                                  internal, glade_widget_get_name (parent));
-                      return FALSE;
+		      goto out;
                     }
 
                   if (!(widget = glade_widget_get_from_gobject (child_object)))
@@ -3714,6 +3713,7 @@ glade_widget_read (GladeProject * project,
       g_free (klass);
     }
 
+ out:
   glade_widget_pop_superuser ();
 
   glade_project_push_progress (project);
