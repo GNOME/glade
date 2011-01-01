@@ -335,7 +335,7 @@ search_entry_key_press_event_cb (GtkEntry * entry,
         {
           widget = glade_widget_get_from_gobject (list->data);
 
-          gtk_entry_set_text (GTK_ENTRY (entry), widget->name);
+          gtk_entry_set_text (GTK_ENTRY (entry), glade_widget_get_name (widget));
 
           gtk_editable_set_position (GTK_EDITABLE (entry), -1);
           gtk_editable_select_region (GTK_EDITABLE (entry), -1, -1);

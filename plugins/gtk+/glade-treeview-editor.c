@@ -84,13 +84,14 @@ get_model_widget (GladeWidget * view)
 {
 
   GtkTreeModel *model = NULL;
+  GObject      *object = glade_widget_get_object (view);
 
-  if (GTK_IS_TREE_VIEW (view->object))
-    model = gtk_tree_view_get_model (GTK_TREE_VIEW (view->object));
-  else if (GTK_IS_ICON_VIEW (view->object))
-    model = gtk_icon_view_get_model (GTK_ICON_VIEW (view->object));
-  else if (GTK_IS_COMBO_BOX (view->object))
-    model = gtk_combo_box_get_model (GTK_COMBO_BOX (view->object));
+  if (GTK_IS_TREE_VIEW (object))
+    model = gtk_tree_view_get_model (GTK_TREE_VIEW (object));
+  else if (GTK_IS_ICON_VIEW (object))
+    model = gtk_icon_view_get_model (GTK_ICON_VIEW (object));
+  else if (GTK_IS_COMBO_BOX (object))
+    model = gtk_combo_box_get_model (GTK_COMBO_BOX (object));
 
   if (model)
     return glade_widget_get_from_gobject (model);
@@ -107,14 +108,12 @@ glade_tree_view_editor_load (GladeEditable * editable, GladeWidget * widget)
   /* Since we watch the project */
   if (view_editor->loaded_widget)
     {
-      g_signal_handlers_disconnect_by_func (G_OBJECT
-                                            (view_editor->loaded_widget->
-                                             project),
+      g_signal_handlers_disconnect_by_func (glade_widget_get_project (view_editor->loaded_widget),
                                             G_CALLBACK (project_changed),
                                             view_editor);
 
       /* The widget could die unexpectedly... */
-      g_object_weak_unref (G_OBJECT (view_editor->loaded_widget->project),
+      g_object_weak_unref (G_OBJECT (glade_widget_get_project (view_editor->loaded_widget)),
                            (GWeakNotify) project_finalized, view_editor);
     }
 
@@ -124,11 +123,11 @@ glade_tree_view_editor_load (GladeEditable * editable, GladeWidget * widget)
   if (view_editor->loaded_widget)
     {
       /* This fires for undo/redo */
-      g_signal_connect (G_OBJECT (view_editor->loaded_widget->project),
+      g_signal_connect (glade_widget_get_project (view_editor->loaded_widget),
                         "changed", G_CALLBACK (project_changed), view_editor);
 
       /* The widget/project could die unexpectedly... */
-      g_object_weak_ref (G_OBJECT (view_editor->loaded_widget->project),
+      g_object_weak_ref (G_OBJECT (glade_widget_get_project (view_editor->loaded_widget)),
                          (GWeakNotify) project_finalized, view_editor);
     }
 
@@ -149,14 +148,14 @@ glade_tree_view_editor_load (GladeEditable * editable, GladeWidget * widget)
       /* Finalize safe code here... */
       if (widget && (model_widget = get_model_widget (widget)))
         {
-          if (GTK_IS_LIST_STORE (model_widget->object))
+          if (GTK_IS_LIST_STORE (glade_widget_get_object (model_widget)))
             {
               gtk_widget_show (view_editor->embed_list_store);
               glade_editable_load (GLADE_EDITABLE
                                    (view_editor->embed_list_store),
                                    model_widget);
             }
-          else if (GTK_IS_TREE_STORE (model_widget->object))
+          else if (GTK_IS_TREE_STORE (glade_widget_get_object (model_widget)))
             {
               gtk_widget_show (view_editor->embed_tree_store);
               glade_editable_load (GLADE_EDITABLE

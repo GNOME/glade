@@ -364,8 +364,9 @@ activate_action (GtkToolButton * toolbutton, GladeWidgetAction * action)
   GladeWidget *widget;
 
   if ((widget = g_object_get_data (G_OBJECT (toolbutton), "glade-widget")))
-    glade_widget_adaptor_action_activate (widget->adaptor,
-                                          widget->object, action->klass->path);
+    glade_widget_adaptor_action_activate (glade_widget_get_adaptor (widget),
+                                          glade_widget_get_object (widget), 
+					  action->klass->path);
 }
 
 static void
@@ -484,8 +485,8 @@ project_selection_changed_cb (GladeProject * project, GladeWindow * window)
           glade_widget_show (glade_widget);
 
           clean_actions (window);
-          if (glade_widget->actions)
-            add_actions (window, glade_widget, glade_widget->actions);
+          if (glade_widget_get_actions (glade_widget))
+            add_actions (window, glade_widget, glade_widget_get_actions (glade_widget));
         }
     }
 }

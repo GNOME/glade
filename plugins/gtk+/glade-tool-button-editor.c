@@ -92,14 +92,12 @@ glade_tool_button_editor_load (GladeEditable * editable, GladeWidget * widget)
   /* Since we watch the project */
   if (button_editor->loaded_widget)
     {
-      g_signal_handlers_disconnect_by_func (G_OBJECT
-                                            (button_editor->loaded_widget->
-                                             project),
+      g_signal_handlers_disconnect_by_func (glade_widget_get_project (button_editor->loaded_widget),
                                             G_CALLBACK (project_changed),
                                             button_editor);
 
       /* The widget could die unexpectedly... */
-      g_object_weak_unref (G_OBJECT (button_editor->loaded_widget->project),
+      g_object_weak_unref (G_OBJECT (glade_widget_get_project (button_editor->loaded_widget)),
                            (GWeakNotify) project_finalized, button_editor);
     }
 
@@ -109,11 +107,11 @@ glade_tool_button_editor_load (GladeEditable * editable, GladeWidget * widget)
   if (button_editor->loaded_widget)
     {
       /* This fires for undo/redo */
-      g_signal_connect (G_OBJECT (button_editor->loaded_widget->project),
+      g_signal_connect (glade_widget_get_project (button_editor->loaded_widget),
                         "changed", G_CALLBACK (project_changed), button_editor);
 
       /* The widget/project could die unexpectedly... */
-      g_object_weak_ref (G_OBJECT (button_editor->loaded_widget->project),
+      g_object_weak_ref (G_OBJECT (glade_widget_get_project (button_editor->loaded_widget)),
                          (GWeakNotify) project_finalized, button_editor);
     }
 
@@ -189,7 +187,7 @@ standard_label_toggled (GtkWidget * widget,
   button_editor->modifying = TRUE;
 
   glade_command_push_group (_("Setting %s to use standard label text"),
-                            button_editor->loaded_widget->name);
+                            glade_widget_get_name (button_editor->loaded_widget));
 
   property =
       glade_widget_get_property (button_editor->loaded_widget, "label-widget");
@@ -227,7 +225,7 @@ custom_label_toggled (GtkWidget * widget, GladeToolButtonEditor * button_editor)
   button_editor->modifying = TRUE;
 
   glade_command_push_group (_("Setting %s to use a custom label widget"),
-                            button_editor->loaded_widget->name);
+                            glade_widget_get_name (button_editor->loaded_widget));
 
   property = glade_widget_get_property (button_editor->loaded_widget, "label");
   glade_command_set_property (property, NULL);
@@ -259,7 +257,7 @@ stock_toggled (GtkWidget * widget, GladeToolButtonEditor * button_editor)
   button_editor->modifying = TRUE;
 
   glade_command_push_group (_("Setting %s to use an image from stock"),
-                            button_editor->loaded_widget->name);
+                            glade_widget_get_name (button_editor->loaded_widget));
 
   property =
       glade_widget_get_property (button_editor->loaded_widget, "icon-name");
@@ -298,7 +296,7 @@ icon_toggled (GtkWidget * widget, GladeToolButtonEditor * button_editor)
   button_editor->modifying = TRUE;
 
   glade_command_push_group (_("Setting %s to use an image from the icon theme"),
-                            button_editor->loaded_widget->name);
+                            glade_widget_get_name (button_editor->loaded_widget));
 
   property =
       glade_widget_get_property (button_editor->loaded_widget, "stock-id");
@@ -336,7 +334,7 @@ custom_toggled (GtkWidget * widget, GladeToolButtonEditor * button_editor)
   button_editor->modifying = TRUE;
 
   glade_command_push_group (_("Setting %s to use an image from the icon theme"),
-                            button_editor->loaded_widget->name);
+                            glade_widget_get_name (button_editor->loaded_widget));
 
   property =
       glade_widget_get_property (button_editor->loaded_widget, "stock-id");

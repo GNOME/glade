@@ -479,7 +479,7 @@ value_filename_edited (GtkCellRendererText * cell,
 
   /* get new pixbuf value... */
   value = glade_utils_value_from_string (GDK_TYPE_PIXBUF, new_text,
-                                         eprop->property->widget->project,
+                                         glade_widget_get_project (eprop->property->widget),
                                          eprop->property->widget);
   pixbuf = g_value_get_object (value);
 

@@ -587,21 +587,18 @@ glade_command_set_property_description (GladeCommandSetProperty * me)
           (GLADE_WIDGET_ADAPTOR (sdata->property->klass->handle),
            sdata->property->klass, sdata->new_value);
 
-      g_assert (sdata->property->klass->name);
-      g_assert (sdata->property->widget->name);
-
       if (!value_name || strlen (value_name) > MAX_UNDO_MENU_ITEM_VALUE_LEN
           || strchr (value_name, '_'))
         {
           description = g_strdup_printf (_("Setting %s of %s"),
                                          sdata->property->klass->name,
-                                         sdata->property->widget->name);
+                                         glade_widget_get_name (sdata->property->widget));
         }
       else
         {
           description = g_strdup_printf (_("Setting %s of %s to %s"),
                                          sdata->property->klass->name,
-                                         sdata->property->widget->name,
+                                         glade_widget_get_name (sdata->property->widget),
                                          value_name);
         }
       g_free (value_name);
@@ -704,7 +701,7 @@ glade_command_set_properties (GladeProperty * property,
     }
   va_end (vl);
 
-  glade_command_set_properties_list (property->widget->project, list);
+  glade_command_set_properties_list (glade_widget_get_project (property->widget), list);
 }
 
 void
@@ -855,16 +852,16 @@ glade_command_set_name (GladeWidget * widget, const gchar * name)
 
   /* Dont spam the queue with false name changes.
    */
-  if (!strcmp (widget->name, name))
+  if (!strcmp (glade_widget_get_name (widget), name))
     return;
 
   me = g_object_new (GLADE_COMMAND_SET_NAME_TYPE, NULL);
   cmd = GLADE_COMMAND (me);
-  cmd->project = widget->project;
+  cmd->project = glade_widget_get_project (widget);
 
   me->widget = widget;
   me->name = g_strdup (name);
-  me->old_name = g_strdup (widget->name);
+  me->old_name = g_strdup (glade_widget_get_name (widget));
 
   cmd->description =
       g_strdup_printf (_("Renaming %s to %s"), me->old_name, me->name);
@@ -936,15 +933,12 @@ get_all_parentless_reffed_widgets (GList * reffed, GladeWidget * widget)
   if ((list = glade_widget_get_parentless_reffed_widgets (widget)) != NULL)
     reffed = g_list_concat (reffed, list);
 
-  children = glade_widget_adaptor_get_children (widget->adaptor,
-                                                widget->object);
+  children = glade_widget_get_children (widget);
 
   for (l = children; l; l = l->next)
     {
-      if ((child = glade_widget_get_from_gobject (l->data)) != NULL)
-        {
-          reffed = get_all_parentless_reffed_widgets (reffed, child);
-        }
+      child  = glade_widget_get_from_gobject (l->data);
+      reffed = get_all_parentless_reffed_widgets (reffed, child);
     }
 
   g_list_free (children);
@@ -975,6 +969,7 @@ glade_command_add (GList * widgets,
   GladeCommand *cmd;
   CommandData *cdata;
   GladeWidget *widget = NULL;
+  GladeWidgetAdaptor *adaptor;
   GList *l, *list, *children, *placeholders = NULL;
   GtkWidget *child;
 
@@ -990,22 +985,26 @@ glade_command_add (GList * widgets,
    * we make no real attempt here to recover, just g_critical() and
    * fix the bugs as they pop up.
    */
-  widget = GLADE_WIDGET (widgets->data);
-  if (placeholder && GWA_IS_TOPLEVEL (widget->adaptor) == FALSE)
+  widget  = GLADE_WIDGET (widgets->data);
+  adaptor = glade_widget_get_adaptor (widget);
+
+  if (placeholder && GWA_IS_TOPLEVEL (adaptor) == FALSE)
     cmd->project = glade_placeholder_get_project (placeholder);
   else
     cmd->project = glade_app_get_project ();
 
   GLADE_COMMAND (me)->description =
       g_strdup_printf (_("Add %s"), g_list_length (widgets) == 1 ?
-                       widget->name : _("multiple"));
+                       glade_widget_get_name (widget) : _("multiple"));
 
   for (list = widgets; list && list->data; list = list->next)
     {
       widget = list->data;
       cdata = g_new0 (CommandData, 1);
-      if (widget->internal)
+      if (glade_widget_get_internal (widget))
         g_critical ("Internal widget in Add");
+
+      adaptor = glade_widget_get_adaptor (widget);
 
       /* Widget */
       cdata->widget = g_object_ref (G_OBJECT (widget));
@@ -1018,9 +1017,9 @@ glade_command_add (GList * widgets,
       /* Parent */
       if (parent == NULL)
         cdata->parent = glade_widget_get_parent (widget);
-      else if (placeholder && GWA_IS_TOPLEVEL (widget->adaptor) == FALSE)
+      else if (placeholder && GWA_IS_TOPLEVEL (adaptor) == FALSE)
         cdata->parent = glade_placeholder_get_parent (placeholder);
-      else if (GWA_IS_TOPLEVEL (widget->adaptor) == FALSE)
+      else if (GWA_IS_TOPLEVEL (adaptor) == FALSE)
         cdata->parent = parent;
 
       /* Placeholder */
@@ -1031,29 +1030,30 @@ glade_command_add (GList * widgets,
       else if (cdata->parent &&
                glade_widget_placeholder_relation (cdata->parent, widget))
         {
-          GtkContainer *cont = GTK_CONTAINER (cdata->parent->object);
+          GtkContainer *cont = GTK_CONTAINER (glade_widget_get_object (cdata->parent));
 
           child = glade_util_get_placeholder_from_pointer (cont);
+
           if (child && g_list_find (placeholders, child) == NULL)
             {
               placeholders = g_list_append (placeholders, child);
               glade_command_placeholder_connect
                   (cdata, GLADE_PLACEHOLDER (child));
             }
-          else if ((children = glade_widget_adaptor_get_children
-                    (cdata->parent->adaptor, cdata->parent->object)) != NULL)
+          else if ((children = 
+		    glade_widget_adaptor_get_children (glade_widget_get_adaptor (cdata->parent), 
+						       glade_widget_get_object (cdata->parent))) != NULL)
             {
               for (l = children; l && l->data; l = l->next)
                 {
                   child = l->data;
 
                   /* Find a placeholder for this child */
-                  if (GLADE_IS_PLACEHOLDER (child) &&
-                      g_list_find (placeholders, child) == NULL)
+                  if (GLADE_IS_PLACEHOLDER (child) && 
+		      g_list_find (placeholders, child) == NULL)
                     {
                       placeholders = g_list_append (placeholders, child);
-                      glade_command_placeholder_connect
-                          (cdata, GLADE_PLACEHOLDER (child));
+                      glade_command_placeholder_connect (cdata, GLADE_PLACEHOLDER (child));
                       break;
                     }
                 }
@@ -1083,12 +1083,15 @@ static void
 glade_command_delete_prop_refs (GladeWidget * widget)
 {
   GladeProperty *property;
+  GList         *refs, *l;
 
-  while (widget->prop_refs)
+  refs = glade_widget_list_prop_refs (widget);
+  for (l = refs; l; l = l->next)
     {
-      property = GLADE_PROPERTY (widget->prop_refs->data);
+      property = l->data;
       glade_command_set_property (property, NULL);
     }
+  g_list_free (refs);
 }
 
 static void glade_command_remove (GList * widgets);
@@ -1099,9 +1102,9 @@ glade_command_remove_locked (GladeWidget * widget, GList * reffed)
   GList list = { 0, }, *widgets, *l;
   GladeWidget *locked;
 
-  widgets = g_list_copy (widget->locked_widgets);
+  widgets = glade_widget_list_locked_widgets (widget);
 
-  for (l = widget->locked_widgets; l; l = l->next)
+  for (l = widgets; l; l = l->next)
     {
       locked = l->data;
       list.data = locked;
@@ -1128,6 +1131,7 @@ glade_command_remove (GList * widgets)
 {
   GladeCommandAddRemove *me;
   GladeWidget *widget = NULL;
+  GladeWidget *lock;
   CommandData *cdata;
   GtkWidget *placeholder;
   GList *list, *l;
@@ -1142,7 +1146,9 @@ glade_command_remove (GList * widgets)
   for (list = widgets; list && list->data; list = list->next)
     {
       widget = list->data;
-      if (widget->internal)
+      lock   = glade_widget_get_locker (widget);
+
+      if (glade_widget_get_internal (widget))
         {
           glade_util_ui_message (glade_app_get_window (),
                                  GLADE_UI_WARN, NULL,
@@ -1150,13 +1156,14 @@ glade_command_remove (GList * widgets)
                                  ("You cannot remove a widget internal to a composite widget."));
           return;
         }
-      if (widget->lock)
+      else if (lock)
         {
           glade_util_ui_message (glade_app_get_window (),
                                  GLADE_UI_WARN, NULL,
                                  _("%s is locked by %s, edit %s first."),
-                                 widget->name, widget->lock->name,
-                                 widget->lock->name);
+                                 glade_widget_get_name (widget), 
+				 glade_widget_get_name (lock),
+                                 glade_widget_get_name (lock));
           return;
         }
     }
@@ -1166,7 +1173,7 @@ glade_command_remove (GList * widgets)
 
   if (g_list_length (widgets) == 1)
     glade_command_push_group (_("Remove %s"),
-                              GLADE_WIDGET (widgets->data)->name);
+                              glade_widget_get_name (GLADE_WIDGET (widgets->data)));
   else
     glade_command_push_group (_("Remove multiple"));
 
@@ -1188,12 +1195,6 @@ glade_command_remove (GList * widgets)
       /* Undoably unlock and remove any widgets locked by this widget */
       glade_command_remove_locked (widget, cdata->reffed);
 
-      if (widget->internal)
-        g_critical ("Internal widget in Remove");
-
-      if (widget->lock)
-        g_critical ("Locked widget in Remove");
-
       if (cdata->parent != NULL &&
           glade_widget_placeholder_relation (cdata->parent, cdata->widget))
         {
@@ -1211,7 +1212,7 @@ glade_command_remove (GList * widgets)
       /* Record packing props if not deleted from the clipboard */
       if (me->from_clipboard == FALSE)
         {
-          for (l = widget->packing_properties; l; l = l->next)
+          for (l = glade_widget_get_packing_properties (widget); l; l = l->next)
             cdata->pack_props =
                 g_list_prepend (cdata->pack_props,
                                 glade_property_dup (GLADE_PROPERTY (l->data),
@@ -1276,12 +1277,12 @@ glade_command_add_execute (GladeCommandAddRemove * me)
                   if (cdata->props_recorded == FALSE)
                     {
                       /* Clear it the first time */
-                      g_object_set_data (cdata->widget->object,
+                      g_object_set_data (glade_widget_get_object (cdata->widget),
                                          "special-child-type", NULL);
                     }
                   else
                     {
-                      g_object_set_data_full (cdata->widget->object,
+                      g_object_set_data_full (glade_widget_get_object (cdata->widget),
                                               "special-child-type",
                                               g_strdup (cdata->special_type),
                                               g_free);
@@ -1292,12 +1293,10 @@ glade_command_add_execute (GladeCommandAddRemove * me)
                    */
                   saved_props =
                       glade_widget_dup_properties (cdata->widget,
-                                                   cdata->widget->
-                                                   packing_properties, FALSE,
-                                                   FALSE, FALSE);
+                                                   glade_widget_get_packing_properties (cdata->widget), 
+						   FALSE, FALSE, FALSE);
 
-                  glade_widget_set_packing_properties (cdata->widget,
-                                                       cdata->parent);
+                  glade_widget_set_packing_properties (cdata->widget, cdata->parent);
                 }
 
               /* glade_command_paste ganauntees that if 
@@ -1306,9 +1305,9 @@ glade_command_add_execute (GladeCommandAddRemove * me)
                */
               if (cdata->placeholder)
                 {
-                  glade_widget_replace
-                      (cdata->parent,
-                       G_OBJECT (cdata->placeholder), cdata->widget->object);
+                  glade_widget_replace (cdata->parent,
+					G_OBJECT (cdata->placeholder), 
+					glade_widget_get_object (cdata->widget));
                 }
               else
                 {
@@ -1316,7 +1315,6 @@ glade_command_add_execute (GladeCommandAddRemove * me)
                                           cdata->widget,
                                           cdata->props_recorded == FALSE);
                 }
-
 
               glade_command_transfer_props (cdata->widget, saved_props);
 
@@ -1350,17 +1348,15 @@ glade_command_add_execute (GladeCommandAddRemove * me)
                    * Otherwise this recorded marker was set when cutting
                    */
                   g_assert (cdata->pack_props == NULL);
-                  for (l = cdata->widget->packing_properties; l; l = l->next)
-                    cdata->pack_props =
-                        g_list_prepend
-                        (cdata->pack_props,
-                         glade_property_dup
-                         (GLADE_PROPERTY (l->data), cdata->widget));
-
+                  for (l = glade_widget_get_packing_properties (cdata->widget); l; l = l->next)
+                    cdata->pack_props = 
+		      g_list_prepend (cdata->pack_props,
+				      glade_property_dup (GLADE_PROPERTY (l->data), 
+							  cdata->widget));
 
                   /* Record the special-type here after replacing */
                   if ((special_child_type =
-                       g_object_get_data (cdata->widget->object,
+                       g_object_get_data (glade_widget_get_object (cdata->widget),
                                           "special-child-type")) != NULL)
                     {
                       g_free (cdata->special_type);
@@ -1372,16 +1368,17 @@ glade_command_add_execute (GladeCommandAddRemove * me)
                 }
             }
 
-          glade_project_add_object (GLADE_COMMAND (me)->project, NULL, cdata->widget->object);
+          glade_project_add_object (GLADE_COMMAND (me)->project, NULL, 
+				    glade_widget_get_object (cdata->widget));
 
           for (l = cdata->reffed; l; l = l->next)
             {
               GladeWidget *reffed = l->data;
               glade_project_add_object (GLADE_COMMAND (me)->project, NULL,
-                                        reffed->object);
+                                        glade_widget_get_object (reffed));
             }
 
-          glade_app_selection_add (cdata->widget->object, FALSE);
+          glade_app_selection_add (glade_widget_get_object (cdata->widget), FALSE);
 
           glade_widget_show (cdata->widget);
         }
@@ -1404,19 +1401,19 @@ glade_command_remove_execute (GladeCommandAddRemove * me)
       glade_widget_hide (cdata->widget);
 
       glade_project_remove_object (GLADE_COMMAND (me)->project,
-                                   cdata->widget->object);
+                                   glade_widget_get_object (cdata->widget));
 
       for (l = cdata->reffed; l; l = l->next)
         {
           reffed = l->data;
           glade_project_remove_object (GLADE_COMMAND (me)->project,
-                                       reffed->object);
+                                       glade_widget_get_object (reffed));
         }
 
       if (cdata->parent)
         {
           if (cdata->placeholder)
-            glade_widget_replace (cdata->parent, cdata->widget->object,
+            glade_widget_replace (cdata->parent, glade_widget_get_object (cdata->widget),
                                   G_OBJECT (cdata->placeholder));
           else
             glade_widget_remove_child (cdata->parent, cdata->widget);
@@ -1544,19 +1541,17 @@ glade_command_clipboard_add_remove_common (GList * widgets, gboolean add)
     {
       if (g_list_length (widgets) == 1)
         GLADE_COMMAND (me)->description =
-            g_strdup_printf (_("Clipboard add %s"), widget->name);
+	  g_strdup_printf (_("Clipboard add %s"), glade_widget_get_name (widget));
       else
-        GLADE_COMMAND (me)->description =
-            g_strdup (_("Clipboard add multiple"));
+        GLADE_COMMAND (me)->description = g_strdup (_("Clipboard add multiple"));
     }
   else
     {
       if (g_list_length (widgets) == 1)
         GLADE_COMMAND (me)->description =
-            g_strdup_printf (_("Clipboard remove %s"), widget->name);
+	  g_strdup_printf (_("Clipboard remove %s"), glade_widget_get_name (widget));
       else
-        GLADE_COMMAND (me)->description =
-            g_strdup (_("Clipboard remove multiple"));
+        GLADE_COMMAND (me)->description = g_strdup (_("Clipboard remove multiple"));
     }
 
   glade_command_check_group (GLADE_COMMAND (me));
@@ -1711,7 +1706,7 @@ glade_command_create (GladeWidgetAdaptor * adaptor, GladeWidget * parent,
       return NULL;
     }
   widgets = g_list_prepend (widgets, widget);
-  glade_command_push_group (_("Create %s"), widget->name);
+  glade_command_push_group (_("Create %s"), glade_widget_get_name (widget));
   glade_command_add (widgets, parent, placeholder, FALSE);
   glade_command_pop_group ();
 
@@ -1735,8 +1730,8 @@ glade_command_delete (GList * widgets)
 
   widget = widgets->data;
   glade_command_push_group (_("Delete %s"),
-                            g_list_length (widgets) ==
-                            1 ? widget->name : _("multiple"));
+                            g_list_length (widgets) == 1 ? 
+			    glade_widget_get_name (widget) : _("multiple"));
   glade_command_remove (widgets);
   glade_command_pop_group ();
 }
@@ -1761,8 +1756,8 @@ glade_command_cut (GList * widgets)
 
   widget = widgets->data;
   glade_command_push_group (_("Cut %s"),
-                            g_list_length (widgets) ==
-                            1 ? widget->name : _("multiple"));
+                            g_list_length (widgets) == 1 ? 
+			    glade_widget_get_name (widget) : _("multiple"));
   glade_command_remove (widgets);
   glade_command_clipboard_add (widgets);
   glade_command_pop_group ();
@@ -1788,8 +1783,8 @@ glade_command_copy (GList * widgets)
       copied_widgets = g_list_prepend (copied_widgets, copied_widget);
     }
   glade_command_push_group (_("Copy %s"),
-                            g_list_length (widgets) ==
-                            1 ? copied_widget->name : _("multiple"));
+                            g_list_length (widgets) == 1 ? 
+			    glade_widget_get_name (copied_widget) : _("multiple"));
   glade_command_clipboard_add (copied_widgets);
   glade_command_pop_group ();
 
@@ -1890,8 +1885,8 @@ glade_command_paste (GList * widgets, GladeWidget * parent,
     }
 
   glade_command_push_group (_("Paste %s"),
-                            g_list_length (widgets) ==
-                            1 ? copied_widget->name : _("multiple"));
+                            g_list_length (widgets) == 1 ? 
+			    glade_widget_get_name (copied_widget) : _("multiple"));
 
   glade_command_add (copied_widgets, parent, placeholder, TRUE);
   glade_command_pop_group ();
@@ -1920,9 +1915,9 @@ glade_command_dnd (GList * widgets, GladeWidget * parent,
 
   widget = widgets->data;
   glade_command_push_group (_("Drag-n-Drop from %s to %s"),
-                            parent->name,
-                            g_list_length (widgets) ==
-                            1 ? widget->name : _("multiple"));
+                            glade_widget_get_name (parent),
+                            g_list_length (widgets) == 1 ? 
+			    glade_widget_get_name (widget) : _("multiple"));
   glade_command_remove (widgets);
   glade_command_add (widgets, parent, placeholder, TRUE);
   glade_command_pop_group ();
@@ -2037,7 +2032,7 @@ glade_command_add_remove_change_signal (GladeWidget * glade_widget,
 
   /* we can only add/remove a signal to a widget that has been wrapped by a GladeWidget */
   g_assert (glade_widget != NULL);
-  g_assert (glade_widget->project != NULL);
+  g_assert (glade_widget_get_project (glade_widget) != NULL);
 
   me->widget = g_object_ref (glade_widget);
   me->type = type;
@@ -2264,7 +2259,7 @@ glade_command_set_i18n (GladeProperty * property,
   me->old_context = g_strdup (property->i18n_context);
   me->old_comment = g_strdup (property->i18n_comment);
 
-  GLADE_COMMAND (me)->project = property->widget->project;
+  GLADE_COMMAND (me)->project = glade_widget_get_project (property->widget);
   GLADE_COMMAND (me)->description =
       g_strdup_printf (_("Setting i18n metadata"));;
 
@@ -2272,13 +2267,9 @@ glade_command_set_i18n (GladeProperty * property,
 
   /* execute the command and push it on the stack if successful */
   if (glade_command_set_i18n_execute (GLADE_COMMAND (me)))
-    {
-      glade_project_push_undo (GLADE_COMMAND (me)->project, GLADE_COMMAND (me));
-    }
+    glade_project_push_undo (GLADE_COMMAND (me)->project, GLADE_COMMAND (me));
   else
-    {
-      g_object_unref (G_OBJECT (me));
-    }
+    g_object_unref (G_OBJECT (me));
 }
 
 
@@ -2514,7 +2505,7 @@ glade_command_lock_widget (GladeWidget * widget, GladeWidget * locked)
 
   g_return_if_fail (GLADE_IS_WIDGET (widget));
   g_return_if_fail (GLADE_IS_WIDGET (locked));
-  g_return_if_fail (locked->lock == NULL);
+  g_return_if_fail (glade_widget_get_locker (locked) == NULL);
 
   /* load up the command */
   me = g_object_new (GLADE_COMMAND_LOCK_TYPE, NULL);
@@ -2524,8 +2515,9 @@ glade_command_lock_widget (GladeWidget * widget, GladeWidget * locked)
 
   GLADE_COMMAND (me)->project = glade_widget_get_project (widget);
   GLADE_COMMAND (me)->description =
-      g_strdup_printf (_("Locking %s by widget %s"), locked->name,
-                       widget->name);
+    g_strdup_printf (_("Locking %s by widget %s"), 
+		     glade_widget_get_name (locked),
+		     glade_widget_get_name (widget));
 
   glade_command_check_group (GLADE_COMMAND (me));
 
@@ -2554,17 +2546,17 @@ glade_command_unlock_widget (GladeWidget * widget)
   GladeCommandLock *me;
 
   g_return_if_fail (GLADE_IS_WIDGET (widget));
-  g_return_if_fail (GLADE_IS_WIDGET (widget->lock));
+  g_return_if_fail (GLADE_IS_WIDGET (glade_widget_get_locker (widget)));
 
   /* load up the command */
   me = g_object_new (GLADE_COMMAND_LOCK_TYPE, NULL);
-  me->widget = g_object_ref (widget->lock);
+  me->widget = g_object_ref (glade_widget_get_locker (widget));
   me->locked = g_object_ref (widget);
   me->locking = FALSE;
 
   GLADE_COMMAND (me)->project = glade_widget_get_project (widget);
   GLADE_COMMAND (me)->description =
-      g_strdup_printf (_("Unlocking %s"), widget->name);
+    g_strdup_printf (_("Unlocking %s"), glade_widget_get_name (widget));
 
   glade_command_check_group (GLADE_COMMAND (me));
 

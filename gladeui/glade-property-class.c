@@ -284,7 +284,7 @@ glade_property_class_make_string_from_object (GladePropertyClass *
         string = g_strdup (filename);
     }
   else if ((gwidget = glade_widget_get_from_gobject (object)) != NULL)
-    string = g_strdup (gwidget->name);
+    string = g_strdup (glade_widget_get_name (gwidget));
   else
     g_critical ("Object type property refers to an object "
                 "outside the project");
@@ -606,7 +606,7 @@ glade_property_class_make_object_from_string (GladePropertyClass *
       GladeWidget *gwidget;
       if ((gwidget = glade_project_get_widget_by_name
            (project, widget, string)) != NULL)
-        object = gwidget->object;
+        object = glade_widget_get_object (gwidget);
     }
 
   return object;

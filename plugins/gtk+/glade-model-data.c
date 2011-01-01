@@ -749,12 +749,12 @@ value_text_edited (GtkCellRendererText * cell,
                                            glade_get_value_from_displayable
                                            (G_VALUE_TYPE (&data->value),
                                             new_text),
-                                           eprop->property->widget->project,
+                                           glade_widget_get_project (eprop->property->widget),
                                            eprop->property->widget);
   else
     value =
         glade_utils_value_from_string (G_VALUE_TYPE (&data->value), new_text,
-                                       eprop->property->widget->project,
+                                       glade_widget_get_project (eprop->property->widget),
                                        eprop->property->widget);
 
 

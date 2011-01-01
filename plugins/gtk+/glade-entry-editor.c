@@ -93,15 +93,12 @@ glade_entry_editor_load (GladeEditable * editable, GladeWidget * widget)
   if (entry_editor->loaded_widget)
     {
       /* watch custom-child and use-stock properties here for reloads !!! */
-
-      g_signal_handlers_disconnect_by_func (G_OBJECT
-                                            (entry_editor->loaded_widget->
-                                             project),
+      g_signal_handlers_disconnect_by_func (glade_widget_get_project (entry_editor->loaded_widget),
                                             G_CALLBACK (project_changed),
                                             entry_editor);
 
       /* The widget could die unexpectedly... */
-      g_object_weak_unref (G_OBJECT (entry_editor->loaded_widget->project),
+      g_object_weak_unref (G_OBJECT (glade_widget_get_project (entry_editor->loaded_widget)),
                            (GWeakNotify) project_finalized, entry_editor);
     }
 
@@ -111,11 +108,11 @@ glade_entry_editor_load (GladeEditable * editable, GladeWidget * widget)
   if (entry_editor->loaded_widget)
     {
       /* This fires for undo/redo */
-      g_signal_connect (G_OBJECT (entry_editor->loaded_widget->project),
+      g_signal_connect (glade_widget_get_project (entry_editor->loaded_widget),
                         "changed", G_CALLBACK (project_changed), entry_editor);
 
       /* The widget/project could die unexpectedly... */
-      g_object_weak_ref (G_OBJECT (entry_editor->loaded_widget->project),
+      g_object_weak_ref (G_OBJECT (glade_widget_get_project (entry_editor->loaded_widget)),
                          (GWeakNotify) project_finalized, entry_editor);
     }
 
@@ -241,7 +238,7 @@ text_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
   entry_editor->modifying = TRUE;
 
   glade_command_push_group (_("Setting %s to use static text"),
-                            entry_editor->loaded_widget->name);
+                            glade_widget_get_name (entry_editor->loaded_widget));
 
   property = glade_widget_get_property (entry_editor->loaded_widget, "buffer");
   glade_command_set_property (property, NULL);
@@ -282,7 +279,7 @@ buffer_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
   entry_editor->modifying = TRUE;
 
   glade_command_push_group (_("Setting %s to use an external buffer"),
-                            entry_editor->loaded_widget->name);
+                            glade_widget_get_name (entry_editor->loaded_widget));
 
   /* Reset the text while still in static text mode */
   property = glade_widget_get_property (entry_editor->loaded_widget, "text");
@@ -390,7 +387,7 @@ primary_stock_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
   entry_editor->modifying = TRUE;
 
   glade_command_push_group (_("Setting %s to use a primary icon from stock"),
-                            entry_editor->loaded_widget->name);
+                            glade_widget_get_name (entry_editor->loaded_widget));
   set_stock_mode (entry_editor, TRUE);
   glade_command_pop_group ();
 
@@ -414,9 +411,8 @@ primary_icon_name_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
 
   entry_editor->modifying = TRUE;
 
-  glade_command_push_group (_
-                            ("Setting %s to use a primary icon from the icon theme"),
-                            entry_editor->loaded_widget->name);
+  glade_command_push_group (_("Setting %s to use a primary icon from the icon theme"),
+                            glade_widget_get_name (entry_editor->loaded_widget));
   set_icon_name_mode (entry_editor, TRUE);
   glade_command_pop_group ();
 
@@ -440,7 +436,7 @@ primary_pixbuf_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
   entry_editor->modifying = TRUE;
 
   glade_command_push_group (_("Setting %s to use a primary icon from filename"),
-                            entry_editor->loaded_widget->name);
+                            glade_widget_get_name (entry_editor->loaded_widget));
   set_pixbuf_mode (entry_editor, TRUE);
   glade_command_pop_group ();
 
@@ -466,7 +462,7 @@ secondary_stock_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
   entry_editor->modifying = TRUE;
 
   glade_command_push_group (_("Setting %s to use a secondary icon from stock"),
-                            entry_editor->loaded_widget->name);
+                            glade_widget_get_name (entry_editor->loaded_widget));
   set_stock_mode (entry_editor, FALSE);
   glade_command_pop_group ();
 
@@ -491,9 +487,8 @@ secondary_icon_name_toggled (GtkWidget * widget,
 
   entry_editor->modifying = TRUE;
 
-  glade_command_push_group (_
-                            ("Setting %s to use a secondary icon from the icon theme"),
-                            entry_editor->loaded_widget->name);
+  glade_command_push_group (_("Setting %s to use a secondary icon from the icon theme"),
+                            glade_widget_get_name (entry_editor->loaded_widget));
   set_icon_name_mode (entry_editor, FALSE);
   glade_command_pop_group ();
 
@@ -516,9 +511,8 @@ secondary_pixbuf_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
 
   entry_editor->modifying = TRUE;
 
-  glade_command_push_group (_
-                            ("Setting %s to use a secondary icon from filename"),
-                            entry_editor->loaded_widget->name);
+  glade_command_push_group (_("Setting %s to use a secondary icon from filename"),
+                            glade_widget_get_name (entry_editor->loaded_widget));
   set_pixbuf_mode (entry_editor, FALSE);
   glade_command_pop_group ();
 

@@ -13,6 +13,9 @@
 	* gladeui/glade-widget.[ch]: Added the "in_project" flag to GladeWidget, fixed glade_widget_rebuild
 	  to save the previous project pointer.
 
+	* Made GladeWidget internalize *everything* into a private data structure,
+	33 files changed, 1318 insertions(+), 1230 deletions(-)
+
 2010-12-31  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-project.c: Further fixing project dispose cycle, still leaking a little

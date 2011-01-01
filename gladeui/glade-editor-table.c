@@ -137,7 +137,8 @@ widget_name_edited (GtkWidget * editable, GladeEditorTable * table)
   widget = table->loaded_widget;
   new_name = gtk_editable_get_chars (GTK_EDITABLE (editable), 0, -1);
 
-  if (glade_project_available_widget_name (widget->project, widget, new_name))
+  if (glade_project_available_widget_name (glade_widget_get_project (widget), 
+					   widget, new_name))
     glade_command_set_name (widget, new_name);
   g_free (new_name);
 }
@@ -153,7 +154,7 @@ widget_name_changed (GladeWidget * widget,
     {
       BLOCK_NAME_ENTRY_CB (table);
       gtk_entry_set_text (GTK_ENTRY (table->name_entry),
-                          table->loaded_widget->name);
+                          glade_widget_get_name (table->loaded_widget));
       UNBLOCK_NAME_ENTRY_CB (table);
     }
 
@@ -204,7 +205,8 @@ glade_editor_table_load (GladeEditable * editable, GladeWidget * widget)
                          (GWeakNotify) widget_finalized, table);
 
       if (table->name_entry)
-        gtk_entry_set_text (GTK_ENTRY (table->name_entry), widget->name);
+        gtk_entry_set_text (GTK_ENTRY (table->name_entry), 
+			    glade_widget_get_name (widget));
 
     }
   else if (table->name_entry)

@@ -108,14 +108,12 @@ glade_cell_renderer_editor_load (GladeEditable * editable, GladeWidget * widget)
   /* Since we watch the project */
   if (renderer_editor->loaded_widget)
     {
-      g_signal_handlers_disconnect_by_func (G_OBJECT
-                                            (renderer_editor->loaded_widget->
-                                             project),
+      g_signal_handlers_disconnect_by_func (glade_widget_get_project (renderer_editor->loaded_widget),
                                             G_CALLBACK (project_changed),
                                             renderer_editor);
 
       /* The widget could die unexpectedly... */
-      g_object_weak_unref (G_OBJECT (renderer_editor->loaded_widget->project),
+      g_object_weak_unref (G_OBJECT (glade_widget_get_project (renderer_editor->loaded_widget)),
                            (GWeakNotify) project_finalized, renderer_editor);
     }
 
@@ -125,12 +123,12 @@ glade_cell_renderer_editor_load (GladeEditable * editable, GladeWidget * widget)
   if (renderer_editor->loaded_widget)
     {
       /* This fires for undo/redo */
-      g_signal_connect (G_OBJECT (renderer_editor->loaded_widget->project),
+      g_signal_connect (glade_widget_get_project (renderer_editor->loaded_widget),
                         "changed", G_CALLBACK (project_changed),
                         renderer_editor);
 
       /* The widget/project could die unexpectedly... */
-      g_object_weak_ref (G_OBJECT (renderer_editor->loaded_widget->project),
+      g_object_weak_ref (G_OBJECT (glade_widget_get_project (renderer_editor->loaded_widget)),
                          (GWeakNotify) project_finalized, renderer_editor);
     }
 
@@ -235,9 +233,8 @@ attributes_toggled (GtkWidget * widget, CheckTab * tab)
   if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (tab->attributes_check)))
     {
 
-      glade_command_push_group (_
-                                ("Setting %s to use the %s property as an attribute"),
-                                renderer_editor->loaded_widget->name,
+      glade_command_push_group (_("Setting %s to use the %s property as an attribute"),
+                                glade_widget_get_name (renderer_editor->loaded_widget),
                                 tab->pclass->id);
 
 
@@ -260,7 +257,7 @@ attributes_toggled (GtkWidget * widget, CheckTab * tab)
   else
     {
       glade_command_push_group (_("Setting %s to use the %s property directly"),
-                                renderer_editor->loaded_widget->name,
+                                glade_widget_get_name (renderer_editor->loaded_widget),
                                 tab->pclass->id);
 
 
@@ -480,32 +477,34 @@ GladeWidget *
 glade_cell_renderer_get_model (GladeWidget * renderer)
 {
   GladeWidget *model = NULL;
+  GladeWidget *parent = glade_widget_get_parent (renderer);
 
   /* Keep inline with all new cell layouts !!! */
-  if (renderer->parent && GTK_IS_TREE_VIEW_COLUMN (renderer->parent->object))
+  if (parent && GTK_IS_TREE_VIEW_COLUMN (glade_widget_get_object (parent)))
     {
-      GladeWidget *column = renderer->parent;
+      GladeWidget *column = parent;
+      GladeWidget *column_parent = glade_widget_get_parent (column);
 
-      if (column->parent && GTK_IS_TREE_VIEW (column->parent->object))
+      if (column_parent && GTK_IS_TREE_VIEW (glade_widget_get_object (column_parent)))
         {
-          GladeWidget *view = column->parent;
+          GladeWidget *view = column_parent;
           GtkTreeModel *real_model = NULL;
           glade_widget_property_get (view, "model", &real_model);
           if (real_model)
             model = glade_widget_get_from_gobject (real_model);
         }
     }
-  else if (renderer->parent && GTK_IS_ICON_VIEW (renderer->parent->object))
+  else if (parent && GTK_IS_ICON_VIEW (glade_widget_get_object (parent)))
     {
-      GladeWidget *view = renderer->parent;
+      GladeWidget *view = parent;
       GtkTreeModel *real_model = NULL;
       glade_widget_property_get (view, "model", &real_model);
       if (real_model)
         model = glade_widget_get_from_gobject (real_model);
     }
-  else if (renderer->parent && GTK_IS_COMBO_BOX (renderer->parent->object))
+  else if (parent && GTK_IS_COMBO_BOX (glade_widget_get_object (parent)))
     {
-      GladeWidget *combo = renderer->parent;
+      GladeWidget *combo = parent;
       GtkTreeModel *real_model = NULL;
       glade_widget_property_get (combo, "model", &real_model);
       if (real_model)

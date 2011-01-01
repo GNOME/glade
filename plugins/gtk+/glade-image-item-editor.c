@@ -83,7 +83,7 @@ static GladeWidget *
 get_image_widget (GladeWidget * widget)
 {
   GtkWidget *image;
-  image = gtk_image_menu_item_get_image (GTK_IMAGE_MENU_ITEM (widget->object));
+  image = gtk_image_menu_item_get_image (GTK_IMAGE_MENU_ITEM (glade_widget_get_object (widget)));
   return image ? glade_widget_get_from_gobject (image) : NULL;
 }
 
@@ -100,14 +100,12 @@ glade_image_item_editor_load (GladeEditable * editable, GladeWidget * widget)
   /* Since we watch the project */
   if (item_editor->loaded_widget)
     {
-      g_signal_handlers_disconnect_by_func (G_OBJECT
-                                            (item_editor->loaded_widget->
-                                             project),
+      g_signal_handlers_disconnect_by_func (glade_widget_get_project (item_editor->loaded_widget),
                                             G_CALLBACK (project_changed),
                                             item_editor);
 
       /* The widget could die unexpectedly... */
-      g_object_weak_unref (G_OBJECT (item_editor->loaded_widget->project),
+      g_object_weak_unref (G_OBJECT (glade_widget_get_project (item_editor->loaded_widget)),
                            (GWeakNotify) project_finalized, item_editor);
     }
 
@@ -117,11 +115,11 @@ glade_image_item_editor_load (GladeEditable * editable, GladeWidget * widget)
   if (item_editor->loaded_widget)
     {
       /* This fires for undo/redo */
-      g_signal_connect (G_OBJECT (item_editor->loaded_widget->project),
+      g_signal_connect (glade_widget_get_project (item_editor->loaded_widget),
                         "changed", G_CALLBACK (project_changed), item_editor);
 
       /* The widget/project could die unexpectedly... */
-      g_object_weak_ref (G_OBJECT (item_editor->loaded_widget->project),
+      g_object_weak_ref (G_OBJECT (glade_widget_get_project (item_editor->loaded_widget)),
                          (GWeakNotify) project_finalized, item_editor);
     }
 
@@ -217,7 +215,7 @@ stock_toggled (GtkWidget * widget, GladeImageItemEditor * item_editor)
   item_editor->modifying = TRUE;
   loaded = item_editor->loaded_widget;
 
-  glade_command_push_group (_("Setting %s to use a stock item"), loaded->name);
+  glade_command_push_group (_("Setting %s to use a stock item"), glade_widget_get_name (loaded));
 
   property = glade_widget_get_property (loaded, "label");
   glade_command_set_property (property, NULL);
@@ -231,7 +229,8 @@ stock_toggled (GtkWidget * widget, GladeImageItemEditor * item_editor)
       list.data = image;
       glade_command_unlock_widget (image);
       glade_command_delete (&list);
-      glade_project_selection_set (loaded->project, loaded->object, TRUE);
+      glade_project_selection_set (glade_widget_get_project (loaded), 
+				   glade_widget_get_object (loaded), TRUE);
     }
 
   property = glade_widget_get_property (loaded, "use-stock");
@@ -250,6 +249,7 @@ static void
 custom_toggled (GtkWidget * widget, GladeImageItemEditor * item_editor)
 {
   GladeProperty *property;
+  GladeWidgetAdaptor *adaptor;
 
   if (item_editor->loading || !item_editor->loaded_widget)
     return;
@@ -260,8 +260,10 @@ custom_toggled (GtkWidget * widget, GladeImageItemEditor * item_editor)
 
   item_editor->modifying = TRUE;
 
+  adaptor = glade_widget_get_adaptor (item_editor->loaded_widget);
+
   glade_command_push_group (_("Setting %s to use a label and image"),
-                            item_editor->loaded_widget->name);
+                            glade_widget_get_name (item_editor->loaded_widget));
 
   /* First clear stock...  */
   property = glade_widget_get_property (item_editor->loaded_widget, "stock");
@@ -272,11 +274,8 @@ custom_toggled (GtkWidget * widget, GladeImageItemEditor * item_editor)
 
   /* Now setup default label and create image... */
   property = glade_widget_get_property (item_editor->loaded_widget, "label");
-  glade_command_set_property (property,
-                              item_editor->loaded_widget->adaptor->
-                              generic_name);
-  property =
-      glade_widget_get_property (item_editor->loaded_widget, "use-underline");
+  glade_command_set_property (property, adaptor->generic_name);
+  property = glade_widget_get_property (item_editor->loaded_widget, "use-underline");
   glade_command_set_property (property, FALSE);
 
   /* There shouldnt be an image widget here... */
@@ -293,13 +292,14 @@ custom_toggled (GtkWidget * widget, GladeImageItemEditor * item_editor)
                                 (GTK_TYPE_IMAGE), NULL, NULL,
                                 glade_widget_get_project (loaded));
 
-      glade_command_set_property (property, image->object);
+      glade_command_set_property (property, glade_widget_get_object (image));
 
       /* Make sure nobody deletes this... */
       glade_command_lock_widget (loaded, image);
 
       /* reload widget by selection ;-) */
-      glade_project_selection_set (loaded->project, loaded->object, TRUE);
+      glade_project_selection_set (glade_widget_get_project (loaded), 
+				   glade_widget_get_object (loaded), TRUE);
     }
   glade_command_pop_group ();
 

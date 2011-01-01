@@ -1532,7 +1532,8 @@ glade_eprop_text_changed_common (GladeEditorProperty * eprop,
     {
       val = glade_property_class_make_gvalue_from_string
           (eprop->property->klass, text,
-           eprop->property->widget->project, eprop->property->widget);
+           glade_widget_get_project (eprop->property->widget), 
+	   eprop->property->widget);
     }
   else
     {
@@ -1896,7 +1897,7 @@ static void
 glade_eprop_text_show_resource_dialog (GtkWidget * entry,
                                        GladeEditorProperty * eprop)
 {
-  GladeProject *project = eprop->property->widget->project;
+  GladeProject *project = glade_widget_get_project (eprop->property->widget);
   gchar *text = NULL;
 
   if (glade_editor_property_show_resource_dialog (project, entry, &text))
@@ -2380,21 +2381,22 @@ glade_eprop_object_populate_view_real (GtkTreeStore * model,
   for (list = widgets; list; list = list->next)
     {
       GladeWidget *widget;
+      GladeWidgetAdaptor *adaptor;
 
       if ((widget = glade_widget_get_from_gobject (list->data)) != NULL)
         {
+	  adaptor = glade_widget_get_adaptor (widget);
 
           has_decendant = !parentless && glade_widget_has_decendant
               (widget, object_type);
 
-          good_type = (widget->adaptor->type == object_type ||
-                       g_type_is_a (widget->adaptor->type, object_type) ||
-                       glade_util_class_implements_interface (widget->adaptor->
-                                                              type,
+          good_type = (adaptor->type == object_type ||
+                       g_type_is_a (adaptor->type, object_type) ||
+                       glade_util_class_implements_interface (adaptor->type,
                                                               object_type));
 
           if (parentless)
-            good_type = good_type && !GWA_IS_TOPLEVEL (widget->adaptor);
+            good_type = good_type && !GWA_IS_TOPLEVEL (adaptor);
 
           if (good_type || has_decendant)
             {
@@ -2403,8 +2405,8 @@ glade_eprop_object_populate_view_real (GtkTreeStore * model,
                   (model, &iter,
                    OBJ_COLUMN_WIDGET, widget,
                    OBJ_COLUMN_WIDGET_NAME,
-                   glade_eprop_object_name (widget->name, model, parent_iter),
-                   OBJ_COLUMN_WIDGET_CLASS, widget->adaptor->title,
+                   glade_eprop_object_name (glade_widget_get_name (widget), model, parent_iter),
+                   OBJ_COLUMN_WIDGET_CLASS, adaptor->title,
                    /* Selectable if its a compatible type and
                     * its not itself.
                     */
@@ -2416,7 +2418,7 @@ glade_eprop_object_populate_view_real (GtkTreeStore * model,
 
           if (has_decendant &&
               (children = glade_widget_adaptor_get_children
-               (widget->adaptor, widget->object)) != NULL)
+               (adaptor, glade_widget_get_object (widget))) != NULL)
             {
               GtkTreeIter *copy = NULL;
 
@@ -2451,7 +2453,7 @@ glade_eprop_object_populate_view (GladeProject * project,
       GladeWidget *gwidget = glade_widget_get_from_gobject (object);
       g_assert (gwidget);
 
-      if (gwidget->parent == NULL)
+      if (glade_widget_get_parent (gwidget) == NULL)
         toplevels = g_list_append (toplevels, object);
     }
 
@@ -2863,11 +2865,13 @@ glade_eprop_object_show_dialog (GtkWidget * dialog_button,
         {
           GValue *value;
 
-          glade_project_selection_set (project, eprop->property->widget->object,
+          glade_project_selection_set (project, 
+				       glade_widget_get_object (eprop->property->widget),
                                        TRUE);
 
           value = glade_property_class_make_gvalue_from_string
-              (eprop->klass, selected->name, project, eprop->property->widget);
+	    (eprop->klass, glade_widget_get_name (selected), 
+	     project, eprop->property->widget);
 
           /* Unparent the widget so we can reuse it for this property */
           if (eprop->klass->parentless_widget)
@@ -2891,10 +2895,9 @@ glade_eprop_object_show_dialog (GtkWidget * dialog_button,
                            glade_widget_get_parentless_widget_ref (new_widget)))
                         {
                           glade_command_push_group (_("Setting %s of %s to %s"),
-                                                    eprop->property->klass->
-                                                    name,
-                                                    eprop->property->widget->
-                                                    name, new_widget->name);
+                                                    eprop->property->klass->name,
+						    glade_widget_get_name (eprop->property->widget), 
+						    glade_widget_get_name (new_widget));
                           glade_command_set_property (old_ref, NULL);
                           glade_editor_property_commit (eprop, value);
                           glade_command_pop_group ();
@@ -2920,17 +2923,16 @@ glade_eprop_object_show_dialog (GtkWidget * dialog_button,
       glade_command_push_group (_("Creating %s for %s of %s"),
                                 create_adaptor->name,
                                 eprop->property->klass->name,
-                                eprop->property->widget->name);
+                                glade_widget_get_name (eprop->property->widget));
 
       /* Dont bother if the user canceled the widget */
       if ((new_widget =
            glade_command_create (create_adaptor, NULL, NULL, project)) != NULL)
         {
-          glade_project_selection_set (project, eprop->property->widget->object,
-                                       TRUE);
+          glade_project_selection_set (project, glade_widget_get_object (eprop->property->widget), TRUE);
 
           value = glade_property_class_make_gvalue_from_string
-              (eprop->klass, new_widget->name, project, NULL);
+	    (eprop->klass, glade_widget_get_name (new_widget), project, NULL);
 
           glade_editor_property_commit (eprop, value);
 
@@ -3064,7 +3066,8 @@ glade_eprop_objects_selected_widget (GtkTreeModel * model,
 
   if (selected)
     {
-      *ret = g_list_append (*ret, widget->object);
+      *ret = g_list_append (*ret, glade_widget_get_object (widget));
+      g_object_unref (widget);
     }
 
   return FALSE;

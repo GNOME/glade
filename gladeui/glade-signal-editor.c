@@ -727,8 +727,8 @@ glade_signal_editor_devhelp_cb (GtkCellRenderer * cell,
   signal = glade_signal_editor_get_signal_name (model, &iter);
   search = g_strdup_printf ("The %s signal", signal);
 
-  signal_class = glade_widget_adaptor_get_signal_class (priv->widget->adaptor,
-                                                        signal);
+  signal_class = 
+    glade_widget_adaptor_get_signal_class (glade_widget_get_adaptor (priv->widget), signal);
   g_assert (signal_class);
 
   g_object_get (signal_class->adaptor, "book", &book, NULL);
@@ -823,7 +823,7 @@ glade_signal_editor_user_data_activate (GtkCellRenderer * icon_renderer,
           glade_signal_new (signal_name, handler, object_name, after, swapped);
       GladeSignal *new_signal = glade_signal_new (signal_name, handler,
                                                   project_object ?
-                                                  project_object->name : NULL,
+                                                  glade_widget_get_name (project_object) : NULL,
                                                   after, swapped);
 
       glade_command_change_signal (priv->widget, old_signal, new_signal);
@@ -843,7 +843,7 @@ glade_signal_editor_user_data_activate (GtkCellRenderer * icon_renderer,
         {
           gtk_tree_store_set (GTK_TREE_STORE (model), &iter,
                               GSE_COLUMN_USERDATA_SLOT, FALSE,
-                              GSE_COLUMN_USERDATA, project_object->name,
+                              GSE_COLUMN_USERDATA, glade_widget_get_name (project_object),
                               GSE_COLUMN_SWAPPED_VISIBLE, TRUE, -1);
         }
     }
@@ -1186,7 +1186,7 @@ glade_signal_editor_load_widget (GladeSignalEditor * editor,
         }
 
       priv->widget = widget;
-      priv->adaptor = widget ? widget->adaptor : NULL;
+      priv->adaptor = widget ? glade_widget_get_adaptor (widget) : NULL;
 
       if (priv->widget)
         {
@@ -1603,12 +1603,15 @@ glade_signal_editor_userdata_store_update (GladeSignalEditor * self,
 {
   GtkTreeIter tmp_iter;
   GList *list;
+  GladeProject *project;
 
   GladeSignalEditorPrivate *priv = self->priv;
 
+  project = glade_widget_get_project (priv->widget);
+
   gtk_list_store_clear (store);
 
-  for (list = (GList *) glade_project_get_objects (priv->widget->project);
+  for (list = (GList *) glade_project_get_objects (project);
        list && list->data; list = g_list_next (list))
     {
       GladeWidget *widget = glade_widget_get_from_gobject (list->data);
@@ -1616,7 +1619,7 @@ glade_signal_editor_userdata_store_update (GladeSignalEditor * self,
       if (widget)
         {
           gtk_list_store_append (store, &tmp_iter);
-          gtk_list_store_set (store, &tmp_iter, 0, widget->name, -1);
+          gtk_list_store_set (store, &tmp_iter, 0, glade_widget_get_name (widget), -1);
         }
     }
 

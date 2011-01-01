@@ -87,15 +87,12 @@ glade_store_editor_load (GladeEditable * editable, GladeWidget * widget)
   if (store_editor->loaded_widget)
     {
       /* watch custom-child and use-stock properties here for reloads !!! */
-
-      g_signal_handlers_disconnect_by_func (G_OBJECT
-                                            (store_editor->loaded_widget->
-                                             project),
+      g_signal_handlers_disconnect_by_func (glade_widget_get_project (store_editor->loaded_widget),
                                             G_CALLBACK (project_changed),
                                             store_editor);
 
       /* The widget could die unexpectedly... */
-      g_object_weak_unref (G_OBJECT (store_editor->loaded_widget->project),
+      g_object_weak_unref (G_OBJECT (glade_widget_get_project (store_editor->loaded_widget)),
                            (GWeakNotify) project_finalized, store_editor);
     }
 
@@ -105,11 +102,11 @@ glade_store_editor_load (GladeEditable * editable, GladeWidget * widget)
   if (store_editor->loaded_widget)
     {
       /* This fires for undo/redo */
-      g_signal_connect (G_OBJECT (store_editor->loaded_widget->project),
+      g_signal_connect (glade_widget_get_project (store_editor->loaded_widget),
                         "changed", G_CALLBACK (project_changed), store_editor);
 
       /* The widget/project could die unexpectedly... */
-      g_object_weak_ref (G_OBJECT (store_editor->loaded_widget->project),
+      g_object_weak_ref (G_OBJECT (glade_widget_get_project (store_editor->loaded_widget)),
                          (GWeakNotify) project_finalized, store_editor);
     }
 

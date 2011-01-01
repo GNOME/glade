@@ -92,16 +92,13 @@ glade_activatable_editor_load (GladeEditable * editable, GladeWidget * widget)
   if (activatable_editor->loaded_widget)
     {
       /* watch custom-child and use-stock properties here for reloads !!! */
-
-      g_signal_handlers_disconnect_by_func (G_OBJECT
-                                            (activatable_editor->loaded_widget->
-                                             project),
+      g_signal_handlers_disconnect_by_func (glade_widget_get_project (activatable_editor->loaded_widget),
                                             G_CALLBACK (project_changed),
                                             activatable_editor);
 
       /* The widget could die unexpectedly... */
       g_object_weak_unref (G_OBJECT
-                           (activatable_editor->loaded_widget->project),
+                           (glade_widget_get_project (activatable_editor->loaded_widget)),
                            (GWeakNotify) project_finalized, activatable_editor);
     }
 
@@ -111,12 +108,12 @@ glade_activatable_editor_load (GladeEditable * editable, GladeWidget * widget)
   if (activatable_editor->loaded_widget)
     {
       /* This fires for undo/redo */
-      g_signal_connect (G_OBJECT (activatable_editor->loaded_widget->project),
+      g_signal_connect (glade_widget_get_project (activatable_editor->loaded_widget),
                         "changed", G_CALLBACK (project_changed),
                         activatable_editor);
 
       /* The widget/project could die unexpectedly... */
-      g_object_weak_ref (G_OBJECT (activatable_editor->loaded_widget->project),
+      g_object_weak_ref (G_OBJECT (glade_widget_get_project (activatable_editor->loaded_widget)),
                          (GWeakNotify) project_finalized, activatable_editor);
     }
 
@@ -205,9 +202,8 @@ get_image_widget (GladeWidget * widget)
 {
   GtkWidget *image = NULL;
 
-  if (GTK_IS_IMAGE_MENU_ITEM (widget->object))
-    image =
-        gtk_image_menu_item_get_image (GTK_IMAGE_MENU_ITEM (widget->object));
+  if (GTK_IS_IMAGE_MENU_ITEM (glade_widget_get_object (widget)))
+    image = gtk_image_menu_item_get_image (GTK_IMAGE_MENU_ITEM (glade_widget_get_object (widget)));
   return image ? glade_widget_get_from_gobject (image) : NULL;
 }
 
@@ -216,10 +212,14 @@ reset_properties (GladeWidget * gwidget,
                   GtkAction * action,
                   gboolean use_appearance, gboolean use_appearance_changed)
 {
+  GObject *object;
+
   reset_property (gwidget, "visible");
   reset_property (gwidget, "sensitive");
 
-  if (GTK_IS_MENU_ITEM (gwidget->object))
+  object = glade_widget_get_object (gwidget);
+
+  if (GTK_IS_MENU_ITEM (object))
     {
       if (!use_appearance_changed)
         reset_property (gwidget, "accel-group");
@@ -255,7 +255,7 @@ reset_properties (GladeWidget * gwidget,
 
         }
     }
-  else if (GTK_IS_TOOL_ITEM (gwidget->object))
+  else if (GTK_IS_TOOL_ITEM (object))
     {
       reset_property (gwidget, "visible-horizontal");
       reset_property (gwidget, "visible-vertical");
@@ -272,7 +272,7 @@ reset_properties (GladeWidget * gwidget,
           reset_property (gwidget, "image-mode");
         }
     }
-  else if (GTK_IS_BUTTON (gwidget->object))
+  else if (GTK_IS_BUTTON (object))
     {
       reset_property (gwidget, "active");
 
@@ -285,12 +285,12 @@ reset_properties (GladeWidget * gwidget,
           GladeProperty *property;
 
           /* If theres a widget customly inside... command remove it first... */
-          button = GTK_WIDGET (gwidget->object);
+          button = GTK_WIDGET (object);
           child = gtk_bin_get_child (GTK_BIN (button));
           if (child)
             gchild = glade_widget_get_from_gobject (child);
 
-          if (gchild && gchild->parent == gwidget)
+          if (gchild && glade_widget_get_parent (gchild) == gwidget)
             {
               GList widgets = { 0, };
               widgets.data = gchild;
@@ -316,7 +316,7 @@ reset_properties (GladeWidget * gwidget,
   /* Make sure none of our property resets screw with the current selection,
    * since we rely on the selection during commit time.
    */
-  glade_project_selection_set (gwidget->project, gwidget->object, TRUE);
+  glade_project_selection_set (glade_widget_get_project (gwidget), object, TRUE);
 }
 
 static void
@@ -330,7 +330,7 @@ related_action_pre_commit (GladeEditorProperty * property,
 
   glade_widget_property_get (gwidget, "use-action-appearance", &use_appearance);
 
-  glade_command_push_group (_("Setting %s action"), gwidget->name);
+  glade_command_push_group (_("Setting %s action"), glade_widget_get_name (gwidget));
 
   reset_properties (gwidget, action, use_appearance, FALSE);
 
@@ -360,7 +360,7 @@ use_appearance_pre_commit (GladeEditorProperty * property,
   glade_command_push_group (use_appearance ?
                             _("Setting %s to use action appearance") :
                             _("Setting %s to not use action appearance"),
-                            gwidget->name);
+                            glade_widget_get_name (gwidget));
 
   reset_properties (gwidget, action, use_appearance, TRUE);
 }

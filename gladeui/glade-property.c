@@ -191,18 +191,19 @@ static gboolean
 glade_property_verify (GladeProperty * property, const GValue * value)
 {
   gboolean ret = FALSE;
+  GladeWidget *parent;
 
-  if (property->klass->packing && property->widget->parent)
+  parent = glade_widget_get_parent (property->widget);
+
+  if (property->klass->packing && parent)
     ret =
-        glade_widget_adaptor_child_verify_property (property->widget->parent->
-                                                    adaptor,
-                                                    property->widget->parent->
-                                                    object,
-                                                    property->widget->object,
-                                                    property->klass->id, value);
+      glade_widget_adaptor_child_verify_property (glade_widget_get_adaptor (parent),
+						  glade_widget_get_object (parent),
+						  glade_widget_get_object (property->widget),
+						  property->klass->id, value);
   else if (!property->klass->packing)
-    ret = glade_widget_adaptor_verify_property (property->widget->adaptor,
-                                                property->widget->object,
+    ret = glade_widget_adaptor_verify_property (glade_widget_get_adaptor (property->widget),
+                                                glade_widget_get_object (property->widget),
                                                 property->klass->id, value);
 
   return ret;
@@ -1057,7 +1058,7 @@ glade_property_write (GladeProperty * property,
   g_return_if_fail (GLADE_IS_PROPERTY (property));
   g_return_if_fail (node != NULL);
 
-  project = property->widget->project;
+  project = glade_widget_get_project (property->widget);
 
   /* This code should work the same for <packing> and <widget> */
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_PACKING) ||

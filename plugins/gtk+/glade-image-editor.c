@@ -91,15 +91,12 @@ glade_image_editor_load (GladeEditable * editable, GladeWidget * widget)
   if (image_editor->loaded_widget)
     {
       /* watch custom-child and use-stock properties here for reloads !!! */
-
-      g_signal_handlers_disconnect_by_func (G_OBJECT
-                                            (image_editor->loaded_widget->
-                                             project),
+      g_signal_handlers_disconnect_by_func (glade_widget_get_project (image_editor->loaded_widget),
                                             G_CALLBACK (project_changed),
                                             image_editor);
 
       /* The widget could die unexpectedly... */
-      g_object_weak_unref (G_OBJECT (image_editor->loaded_widget->project),
+      g_object_weak_unref (G_OBJECT (glade_widget_get_project (image_editor->loaded_widget)),
                            (GWeakNotify) project_finalized, image_editor);
     }
 
@@ -109,11 +106,11 @@ glade_image_editor_load (GladeEditable * editable, GladeWidget * widget)
   if (image_editor->loaded_widget)
     {
       /* This fires for undo/redo */
-      g_signal_connect (G_OBJECT (image_editor->loaded_widget->project),
+      g_signal_connect (glade_widget_get_project (image_editor->loaded_widget),
                         "changed", G_CALLBACK (project_changed), image_editor);
 
       /* The widget/project could die unexpectedly... */
-      g_object_weak_ref (G_OBJECT (image_editor->loaded_widget->project),
+      g_object_weak_ref (G_OBJECT (glade_widget_get_project (image_editor->loaded_widget)),
                          (GWeakNotify) project_finalized, image_editor);
     }
 
@@ -265,7 +262,7 @@ stock_toggled (GtkWidget * widget, GladeImageEditor * image_editor)
   image_editor->modifying = TRUE;
 
   glade_command_push_group (_("Setting %s to use an image from stock"),
-                            image_editor->loaded_widget->name);
+                            glade_widget_get_name (image_editor->loaded_widget));
   set_stock_mode (image_editor);
   glade_command_pop_group ();
 
@@ -290,7 +287,7 @@ icon_toggled (GtkWidget * widget, GladeImageEditor * image_editor)
   image_editor->modifying = TRUE;
 
   glade_command_push_group (_("Setting %s to use an image from the icon theme"),
-                            image_editor->loaded_widget->name);
+                            glade_widget_get_name (image_editor->loaded_widget));
   set_icon_mode (image_editor);
   glade_command_pop_group ();
 
@@ -314,7 +311,7 @@ file_toggled (GtkWidget * widget, GladeImageEditor * image_editor)
   image_editor->modifying = TRUE;
 
   glade_command_push_group (_("Setting %s to use an image from filename"),
-                            image_editor->loaded_widget->name);
+                            glade_widget_get_name (image_editor->loaded_widget));
   set_file_mode (image_editor);
   glade_command_pop_group ();
 

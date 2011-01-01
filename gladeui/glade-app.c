@@ -1167,8 +1167,7 @@ glade_app_command_paste (GladePlaceholder * placeholder)
   if (placeholder)
     {
       if (glade_placeholder_get_project (placeholder) == NULL ||
-          glade_project_is_loading (glade_placeholder_get_project
-                                    (placeholder)))
+          glade_project_is_loading (glade_placeholder_get_project (placeholder)))
         return;
     }
 
@@ -1186,14 +1185,14 @@ glade_app_command_paste (GladePlaceholder * placeholder)
   /* Ignore parent argument if we are pasting a toplevel
    */
   if (g_list_length (clipboard->selection) == 1 &&
-      widget && GWA_IS_TOPLEVEL (widget->adaptor))
+      widget && GWA_IS_TOPLEVEL (glade_widget_get_adaptor (widget)))
     parent = NULL;
 
   if (parent && GLADE_IS_FIXED (parent))
     fixed = GLADE_FIXED (parent);
 
   /* Check if parent is actually a container of any sort */
-  if (parent && !glade_widget_adaptor_is_container (parent->adaptor))
+  if (parent && !glade_widget_adaptor_is_container (glade_widget_get_adaptor (parent)))
     {
       glade_util_ui_message (glade_app_get_window (),
                              GLADE_UI_INFO, NULL,
@@ -1217,7 +1216,7 @@ glade_app_command_paste (GladePlaceholder * placeholder)
 
   /* Abort operation when adding a non scrollable widget to any kind of GtkScrolledWindow. */
   if (parent && widget &&
-      glade_util_check_and_warn_scrollable (parent, widget->adaptor,
+      glade_util_check_and_warn_scrollable (parent, glade_widget_get_adaptor (widget),
                                             glade_app_get_window ()))
     return;
 
@@ -1235,7 +1234,7 @@ glade_app_command_paste (GladePlaceholder * placeholder)
     {
       widget = list->data;
 
-      if (!GWA_IS_TOPLEVEL (widget->adaptor) && parent)
+      if (!GWA_IS_TOPLEVEL (glade_widget_get_adaptor (widget)) && parent)
         {
           /* Count placeholder relations
            */
@@ -1249,9 +1248,9 @@ glade_app_command_paste (GladePlaceholder * placeholder)
   /* A GladeFixed that doesnt use placeholders can only paste one
    * at a time
    */
-  if (GTK_IS_WIDGET (widget->object) &&
-      gtk_widget_is_toplevel (GTK_WIDGET (widget->object)) == FALSE &&
-      parent && fixed && !GWA_USE_PLACEHOLDERS (parent->adaptor) &&
+  if (GTK_IS_WIDGET (glade_widget_get_object (widget)) &&
+      parent && fixed && 
+      !GWA_USE_PLACEHOLDERS (glade_widget_get_adaptor (parent)) &&
       g_list_length (clipboard->selection) != 1)
     {
       glade_util_ui_message (glade_app_get_window (),
@@ -1263,7 +1262,7 @@ glade_app_command_paste (GladePlaceholder * placeholder)
 
   /* Check that enough placeholders are available */
   if (parent &&
-      GWA_USE_PLACEHOLDERS (parent->adaptor) &&
+      GWA_USE_PLACEHOLDERS (glade_widget_get_adaptor (parent)) &&
       glade_util_count_placeholders (parent) < placeholder_relations)
     {
       glade_util_ui_message (glade_app_get_window (),

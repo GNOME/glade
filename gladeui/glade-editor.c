@@ -254,9 +254,9 @@ glade_editor_on_docs_click (GtkButton * button, GladeEditor * editor)
 
   if (editor->loaded_widget)
     {
-      g_object_get (editor->loaded_widget->adaptor, "book", &book, NULL);
+      g_object_get (editor->loaded_adaptor, "book", &book, NULL);
       glade_editor_search_doc_search (editor, book,
-                                      editor->loaded_widget->adaptor->name,
+                                      editor->loaded_adaptor->name,
                                       NULL);
       g_free (book);
     }
@@ -308,12 +308,12 @@ static void
 glade_editor_update_class_warning_cb (GladeWidget * widget,
                                       GParamSpec * pspec, GladeEditor * editor)
 {
-  if (widget->support_warning)
+  if (glade_widget_support_warning (widget))
     gtk_widget_show (editor->warning);
   else
     gtk_widget_hide (editor->warning);
 
-  gtk_widget_set_tooltip_text (editor->warning, widget->support_warning);
+  gtk_widget_set_tooltip_text (editor->warning, glade_widget_support_warning (widget));
 }
 
 
@@ -326,14 +326,15 @@ glade_editor_update_class_field (GladeEditor * editor)
       gchar *text;
 
       gtk_image_set_from_icon_name (GTK_IMAGE (editor->class_icon),
-                                    widget->adaptor->icon_name,
+                                    editor->loaded_adaptor->icon_name,
                                     GTK_ICON_SIZE_BUTTON);
       gtk_widget_show (editor->class_icon);
 
       /* translators: referring to the properties of a widget named '%s [%s]' */
       text = g_strdup_printf (_("%s Properties - %s [%s]"),
-                              widget->adaptor->title,
-                              widget->adaptor->name, widget->name);
+                              editor->loaded_adaptor->title,
+                              editor->loaded_adaptor->name, 
+			      glade_widget_get_name (widget));
       gtk_label_set_text (GTK_LABEL (editor->class_label), text);
       g_free (text);
 
@@ -644,21 +645,24 @@ static void
 glade_editor_load_editable (GladeEditor * editor,
                             GladeWidget * widget, GladeEditorPageType type)
 {
-  GtkWidget *editable;
+  GtkWidget   *editable;
+  GladeWidget *parent = glade_widget_get_parent (widget);
 
   /* Use the parenting adaptor for packing pages... so deffer creating the widgets
    * until load time.
    */
-  if (type == GLADE_PAGE_PACKING && widget->parent)
+  if (type == GLADE_PAGE_PACKING && parent)
     {
-      GladeWidgetAdaptor *adaptor = widget->parent->adaptor;
+      GladeWidgetAdaptor *adaptor = glade_widget_get_adaptor (parent);
       editable =
           glade_editor_load_editable_in_page (editor, adaptor,
                                               GLADE_PAGE_PACKING);
     }
   else
-    editable = glade_editor_get_editable_by_adaptor
-        (editor, widget->adaptor, type);
+    editable = 
+      glade_editor_get_editable_by_adaptor (editor, 
+					    glade_widget_get_adaptor (widget), 
+					    type);
 
   g_assert (editable);
 
@@ -711,7 +715,7 @@ glade_editor_load_widget_real (GladeEditor * editor, GladeWidget * widget)
     }
 
   /* Load the GladeWidgetClass */
-  adaptor = widget ? widget->adaptor : NULL;
+  adaptor = widget ? glade_widget_get_adaptor (widget) : NULL;
   if (editor->loaded_adaptor != adaptor || adaptor == NULL)
     glade_editor_load_widget_class (editor, adaptor);
 
@@ -823,19 +827,23 @@ query_dialog_style_set_cb (GtkWidget * dialog,
 gboolean
 glade_editor_query_dialog (GladeEditor * editor, GladeWidget * widget)
 {
+  GladeWidgetAdaptor *adaptor;
   GtkWidget *dialog, *editable, *content_area;
   gchar *title;
   gint answer;
   gboolean retval = TRUE;
 
-  title = g_strdup_printf (_("Create a %s"), widget->adaptor->name);
+  g_return_val_if_fail (GLADE_IS_EDITOR (editor), FALSE);
+  g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+  
+  adaptor = glade_widget_get_adaptor (widget);
 
+  title = g_strdup_printf (_("Create a %s"), adaptor->name);
   dialog = gtk_dialog_new_with_buttons (title, NULL,
                                         GTK_DIALOG_MODAL |
                                         GTK_DIALOG_DESTROY_WITH_PARENT,
                                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                                         GTK_STOCK_OK, GTK_RESPONSE_OK, NULL);
-
   g_free (title);
 
   gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
@@ -843,9 +851,7 @@ glade_editor_query_dialog (GladeEditor * editor, GladeWidget * widget)
                                            GTK_RESPONSE_CANCEL, -1);
   gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
-  editable = glade_editor_get_editable_by_adaptor (editor,
-                                                   widget->adaptor,
-                                                   GLADE_PAGE_QUERY);
+  editable = glade_editor_get_editable_by_adaptor (editor, adaptor, GLADE_PAGE_QUERY);
 
   content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
   gtk_box_pack_start (GTK_BOX (content_area), editable, FALSE, FALSE, 6);
@@ -1004,7 +1010,7 @@ glade_editor_populate_reset_view (GladeEditor * editor, GtkTreeView * tree_view)
                       COLUMN_DEFAULT, FALSE, COLUMN_NDEFAULT, FALSE, -1);
 
   /* General & Common */
-  for (list = editor->loaded_widget->properties; list; list = list->next)
+  for (list = glade_widget_get_properties (editor->loaded_widget); list; list = list->next)
     {
       property = list->data;
 
@@ -1324,14 +1330,13 @@ glade_editor_dialog_for_widget (GladeWidget * widget)
   GtkWidget *window, *editor;
   gchar *title, *prj_name;
 
-
   g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
 
   /* Window */
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_type_hint (GTK_WINDOW (window), GDK_WINDOW_TYPE_HINT_DIALOG);
 
-  prj_name = glade_project_get_name (widget->project);
+  prj_name = glade_project_get_name (glade_widget_get_project (widget));
   /* Translators: first %s is the project name, second is a widget name */
   title = g_strdup_printf (_("%s - %s Properties"), prj_name,
                            glade_widget_get_name (widget));

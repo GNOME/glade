@@ -914,7 +914,7 @@ glade_widget_adaptor_object_read_widget (GladeWidgetAdaptor * adaptor,
       /* Some properties may be special child type of custom, just leave them for the adaptor */
       if ((property = glade_widget_get_property (widget, prop_name)) != NULL)
         {
-          glade_property_read (property, widget->project, iter_node);
+          glade_property_read (property, glade_widget_get_project (widget), iter_node);
           read_properties = g_list_prepend (read_properties, property);
         }
 
@@ -923,7 +923,7 @@ glade_widget_adaptor_object_read_widget (GladeWidgetAdaptor * adaptor,
     }
 
   /* Sync the remaining values not read in from the Glade file.. */
-  for (l = widget->properties; l; l = l->next)
+  for (l = glade_widget_get_properties (widget); l; l = l->next)
     {
       property = l->data;
 
@@ -952,7 +952,7 @@ glade_widget_adaptor_object_read_widget (GladeWidgetAdaptor * adaptor,
       if (glade_xml_node_verify_silent (iter_node, GLADE_XML_TAG_CHILD))
         glade_widget_read_child (widget, iter_node);
 
-      if (glade_project_load_cancelled (widget->project))
+      if (glade_project_load_cancelled (glade_widget_get_project (widget)))
         return;
     }
 }
@@ -966,7 +966,7 @@ glade_widget_adaptor_object_write_widget (GladeWidgetAdaptor * adaptor,
   GList *props;
 
   /* Write the properties */
-  for (props = widget->properties; props; props = props->next)
+  for (props = glade_widget_get_properties (widget); props; props = props->next)
     {
       if (GLADE_PROPERTY (props->data)->klass->save &&
           GLADE_PROPERTY (props->data)->enabled)
@@ -995,15 +995,15 @@ glade_widget_adaptor_object_read_child (GladeWidgetAdaptor * adaptor,
        glade_xml_search_child (node, GLADE_XML_TAG_WIDGET)) != NULL)
     {
       child_widget =
-          glade_widget_read (widget->project,
-                             widget, widget_node, internal_name);
+	glade_widget_read (glade_widget_get_project (widget),
+			   widget, widget_node, internal_name);
 
       if (child_widget)
         {
           if (!internal_name)
             {
               glade_widget_set_child_type_from_node
-                  (widget, child_widget->object, node);
+		(widget, glade_widget_get_object (child_widget), node);
               glade_widget_add_child (widget, child_widget, FALSE);
             }
 
@@ -1031,7 +1031,8 @@ glade_widget_adaptor_object_read_child (GladeWidgetAdaptor * adaptor,
                   if ((property =
                        glade_widget_get_pack_property (child_widget,
                                                        prop_name)) != NULL)
-                    glade_property_read (property, child_widget->project,
+                    glade_property_read (property, 
+					 glade_widget_get_project (child_widget),
                                          iter_node);
 
                   g_free (prop_name);
@@ -1045,8 +1046,7 @@ glade_widget_adaptor_object_read_child (GladeWidgetAdaptor * adaptor,
     {
       GObject *palaceholder = G_OBJECT (glade_placeholder_new ());
       glade_widget_set_child_type_from_node (widget, palaceholder, node);
-      glade_widget_adaptor_add (adaptor, widget->object, palaceholder);
-
+      glade_widget_adaptor_add (adaptor, glade_widget_get_object (widget), palaceholder);
     }
   g_free (internal_name);
 }
@@ -1064,10 +1064,10 @@ glade_widget_adaptor_object_write_child (GladeWidgetAdaptor * adaptor,
   glade_xml_node_append_child (node, child_node);
 
   /* Set internal child */
-  if (widget->internal)
+  if (glade_widget_get_internal (widget))
     glade_xml_node_set_property_string (child_node,
                                         GLADE_XML_TAG_INTERNAL_CHILD,
-                                        widget->internal);
+                                        glade_widget_get_internal (widget));
 
   /* Write out the widget */
   glade_widget_write (widget, context, child_node);
@@ -1076,7 +1076,7 @@ glade_widget_adaptor_object_write_child (GladeWidgetAdaptor * adaptor,
   packing_node = glade_xml_node_new (context, GLADE_XML_TAG_PACKING);
   glade_xml_node_append_child (child_node, packing_node);
 
-  for (props = widget->packing_properties; props; props = props->next)
+  for (props = glade_widget_get_packing_properties (widget); props; props = props->next)
     {
       if (GLADE_PROPERTY (props->data)->klass->save &&
           GLADE_PROPERTY (props->data)->enabled)
@@ -1084,8 +1084,9 @@ glade_widget_adaptor_object_write_child (GladeWidgetAdaptor * adaptor,
                               context, packing_node);
     }
 
-  glade_widget_write_special_child_prop (widget->parent,
-                                         widget->object, context, child_node);
+  glade_widget_write_special_child_prop (glade_widget_get_parent (widget),
+                                         glade_widget_get_object (widget), 
+					 context, child_node);
 
   /* Default packing properties and such are not saved,
    * so lets check afterwords if there was anything saved
