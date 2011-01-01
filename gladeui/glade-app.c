@@ -177,7 +177,7 @@ glade_app_dispose (GObject * app)
     }
   if (priv->clipboard)
     {
-      gtk_widget_destroy (GTK_WIDGET (priv->clipboard->view));
+      g_object_unref (priv->clipboard);
       priv->clipboard = NULL;
     }
   /* FIXME: Remove projects */

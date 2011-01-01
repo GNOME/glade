@@ -19,7 +19,6 @@ struct _GladeClipboard
 	GList     *widgets;     /* A list of GladeWidget's on the clipboard */
 	GList     *selection;   /* Selection list of GladeWidget's */
 	gboolean   has_selection; /* TRUE if clipboard has selection */
-	GtkWidget *view;        /* see glade-clipboard-view.c */
 };
 
 struct _GladeClipboardClass

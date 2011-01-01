@@ -24,6 +24,9 @@
 	Completely removed GladeParameter, a legacy unused mechanism to store parameters in
 	the glade catalog for later retrieval from the plugin.
 
+	* gladeui/glade-clipboard.h, gladeui/glade-app.c: Removed clipboard->view member and
+	  make GladeApp properly destroy the clipboard when disposing.
+
 2010-12-31  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-project.c: Further fixing project dispose cycle, still leaking a little
