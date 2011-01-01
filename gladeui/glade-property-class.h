@@ -47,21 +47,6 @@ G_BEGIN_DECLS
 	 (GLADE_PROPERTY_CLASS (klass)->version_since_minor <= minor_version) : \
 	 (GLADE_PROPERTY_CLASS (klass)->version_since_major <= major_version))
 
-/**
- * GPC_BUILDER_VERSION_CHECK:
- * @klass: A #GladePropertyClass
- * @major_version: The major version to check
- * @minor_version: The minor version to check
- *
- * Evaluates to %TRUE if @klass is available for use with GtkBuilder in its 
- * owning library version-@major_verion.@minor_version.
- *
- */
-#define GPC_BUILDER_VERSION_CHECK(klass, major_version, minor_version)	\
-	((GLADE_PROPERTY_CLASS (klass)->builder_since_major == major_version) ? \
-	 (GLADE_PROPERTY_CLASS (klass)->builder_since_minor <= minor_version) : \
-	 (GLADE_PROPERTY_CLASS (klass)->builder_since_major <= major_version))
-
 
 #define GPC_OBJECT_DELIMITER ", "
 #define GPC_PROPERTY_NAMELEN 512  /* Enough space for a property name I think */
@@ -128,7 +113,6 @@ struct _GladePropertyClass
 			    * when instantiating a widget with this property (through a popup
 			    * dialog).
 			    */
-
 	
 	guint translatable : 1; /* The property should be translatable, which
 				 * means that it needs extra parameters in the

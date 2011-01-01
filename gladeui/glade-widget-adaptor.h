@@ -33,24 +33,6 @@ typedef struct _GladeWidgetAdaptorClass   GladeWidgetAdaptorClass;
         ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->deprecated : FALSE)
 
 /**
- * GWA_LIBGLADE_UNSUPPORTED:
- * @obj: A #GladeWidgetAdaptor
- *
- * Checks whether this widget class is unsupported by Libglade
- */
-#define GWA_LIBGLADE_UNSUPPORTED(obj) \
-        ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->libglade_unsupported : FALSE)
-
-/**
- * GWA_LIBGLADE_ONLY:
- * @obj: A #GladeWidgetAdaptor
- *
- * Checks whether this widget class is only supported by libglade
- */
-#define GWA_LIBGLADE_ONLY(obj) \
-        ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->libglade_only : FALSE)
-
-/**
  * GWA_VERSION_SINCE_MAJOR:
  * @obj: A #GladeWidgetAdaptor
  *
@@ -69,25 +51,6 @@ typedef struct _GladeWidgetAdaptorClass   GladeWidgetAdaptorClass;
         ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->version_since_minor : 0)
 
 /**
- * GWA_BUILDER_SINCE_MAJOR:
- * @obj: A #GladeWidgetAdaptor
- *
- * Checks major version in which this widget introduced gtkbuilder support
- */
-#define GWA_BUILDER_SINCE_MAJOR(obj) \
-        ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->builder_since_major : 0)
-
-/**
- * GWA_BUILDER_SINCE_MINOR:
- * @obj: A #GladeWidgetAdaptor
- *
- * Checks minor version in which this widget introduced gtkbuilder support
- */
-#define GWA_BUILDER_SINCE_MINOR(obj) \
-        ((obj) ? GLADE_WIDGET_ADAPTOR_GET_CLASS(obj)->builder_since_minor : 0)
-
-
-/**
  * GWA_VERSION_CHECK:
  * @adaptor: A #GladeWidgetAdaptor
  * @major_version: The major version to check
@@ -100,23 +63,6 @@ typedef struct _GladeWidgetAdaptorClass   GladeWidgetAdaptorClass;
 	((GWA_VERSION_SINCE_MAJOR (adaptor) == major_version) ? \
 	 (GWA_VERSION_SINCE_MINOR (adaptor) <= minor_version) : \
 	 (GWA_VERSION_SINCE_MAJOR (adaptor) <= major_version))
-
-
-
-/**
- * GWA_BUILDER_VERSION_CHECK:
- * @adaptor: A #GladeWidgetAdaptor
- * @major_version: The major version to check
- * @minor_version: The minor version to check
- *
- * Evaluates to %TRUE if @adaptor is available for use with GtkBuilder in its 
- * owning library version-@major_verion.@minor_version.
- *
- */
-#define GWA_BUILDER_VERSION_CHECK(adaptor, major_version, minor_version) \
-	((GWA_BUILDER_SINCE_MAJOR (adaptor) == major_version) ? \
-	 (GWA_BUILDER_SINCE_MINOR (adaptor) <= minor_version) : \
-	 (GWA_BUILDER_SINCE_MAJOR (adaptor) <= major_version))
 
 /**
  * GWA_IS_TOPLEVEL:
