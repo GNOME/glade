@@ -325,7 +325,7 @@ glade_widget_add_signal_handler_impl (GladeWidget * widget,
   new_signal_handler = glade_signal_clone (signal_handler);
   g_ptr_array_add (signals, new_signal_handler);
 
-  glade_project_update_signal_support_warning (widget, new_signal_handler);
+  glade_project_verify_signal (widget, new_signal_handler);
 }
 
 static void

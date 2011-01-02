@@ -2042,11 +2042,13 @@ glade_project_preview (GladeProject * project, GladeWidget * gwidget)
  * and a project targeting toolkit version '%s %d.%d' */
 #define SIGNAL_VERSION_CONFLICT_MSGFMT         _("This signal was introduced in %s %d.%d while project targets %s %d.%d")
 
+
+
 static void
-glade_project_verify_property (GladeProject * project,
-                               GladeProperty * property,
-                               const gchar * path_name,
-                               GString * string, gboolean forwidget)
+glade_project_verify_property_internal (GladeProject * project,
+					GladeProperty * property,
+					const gchar * path_name,
+					GString * string, gboolean forwidget)
 {
   GladeWidgetAdaptor *adaptor, *prop_adaptor;
   GladeWidget        *widget;
@@ -2107,8 +2109,9 @@ glade_project_verify_properties_internal (GladeWidget * widget,
   for (list = glade_widget_get_properties (widget); list; list = list->next)
     {
       property = list->data;
-      glade_project_verify_property (glade_widget_get_project (widget), property, path_name,
-                                     string, forwidget);
+      glade_project_verify_property_internal (glade_widget_get_project (widget), 
+					      property, path_name,
+					      string, forwidget);
     }
 
   /* Sometimes widgets on the clipboard have packing props with no parent */
@@ -2117,17 +2120,17 @@ glade_project_verify_properties_internal (GladeWidget * widget,
       for (list = glade_widget_get_packing_properties (widget); list; list = list->next)
         {
           property = list->data;
-          glade_project_verify_property (glade_widget_get_project (widget), 
-					 property, path_name, string, forwidget);
+          glade_project_verify_property_internal (glade_widget_get_project (widget), 
+						  property, path_name, string, forwidget);
         }
     }
 }
 
 static void
-glade_project_verify_signal (GladeWidget * widget,
-                             GladeSignal * signal,
-                             const gchar * path_name,
-                             GString * string, gboolean forwidget)
+glade_project_verify_signal_internal (GladeWidget * widget,
+				      GladeSignal * signal,
+				      const gchar * path_name,
+				      GString * string, gboolean forwidget)
 {
   GladeSignalClass *signal_class;
   gint target_major, target_minor;
@@ -2176,10 +2179,24 @@ glade_project_verify_signal (GladeWidget * widget,
 }
 
 void
-glade_project_update_signal_support_warning (GladeWidget * widget,
-                                             GladeSignal * signal)
+glade_project_verify_property (GladeProperty * property)
 {
-  glade_project_verify_signal (widget, signal, NULL, NULL, TRUE);
+  GladeWidget  *widget;
+  GladeProject *project;
+
+  g_return_if_fail (GLADE_IS_PROPERTY (property));
+
+  widget  = glade_property_get_widget (property);
+  project = glade_widget_get_project (widget);
+
+  glade_project_verify_property_internal (project, property, NULL, NULL, TRUE);
+}
+
+void
+glade_project_verify_signal (GladeWidget * widget,
+			     GladeSignal * signal)
+{
+  glade_project_verify_signal_internal (widget, signal, NULL, NULL, TRUE);
 }
 
 static void
@@ -2195,8 +2212,8 @@ glade_project_verify_signals (GladeWidget * widget,
       for (list = signals; list; list = list->next)
         {
           signal = list->data;
-          glade_project_verify_signal (widget, signal, path_name, string,
-                                       forwidget);
+          glade_project_verify_signal_internal (widget, signal, path_name, string,
+						forwidget);
         }
       g_list_free (signals);
     }

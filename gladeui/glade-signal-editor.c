@@ -228,7 +228,7 @@ append_slot (GladeSignalEditor * self, GtkTreeIter * iter_signal,
   GladeSignal *sig = glade_signal_new (signal_name, NULL, NULL, FALSE, FALSE);
 
   /* Check versioning warning here with a virtual signal */
-  glade_project_update_signal_support_warning (priv->widget, sig);
+  glade_project_verify_signal (priv->widget, sig);
 
   gtk_tree_store_append (GTK_TREE_STORE (model), &iter_new_slot, iter_signal);
   gtk_tree_store_set (GTK_TREE_STORE (model), &iter_new_slot,
@@ -1212,7 +1212,7 @@ glade_signal_editor_load_widget (GladeSignalEditor * editor,
           glade_signal_new (signal->name, NULL, NULL, FALSE, FALSE);
 
       /* Check versioning here with a virtual signal */
-      glade_project_update_signal_support_warning (priv->widget, sig);
+      glade_project_verify_signal (priv->widget, sig);
 
       /* Add class name that this signal belongs to.
        */

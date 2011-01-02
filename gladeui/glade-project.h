@@ -205,8 +205,9 @@ void          glade_project_get_target_version     (GladeProject       *project,
 						    gint               *major,
 						    gint               *minor);
 
-void          glade_project_update_signal_support_warning (GladeWidget  *widget,
-							   GladeSignal  *signal);
+void          glade_project_verify_property        (GladeProperty      *property);
+void          glade_project_verify_signal          (GladeWidget        *widget,
+						    GladeSignal        *signal);
 
 
 gchar        *glade_project_display_dependencies (GladeProject *project);
