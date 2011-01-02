@@ -287,11 +287,13 @@ property_class_comp (gconstpointer a, gconstpointer b)
 static GList *
 get_sorted_properties (GladeWidgetAdaptor * adaptor, GladeEditorPageType type)
 {
-  GList *l, *list = NULL, *properties;
+  const GList *l, *properties;
+  GList *list = NULL;
 
   properties =
-      (type ==
-       GLADE_PAGE_PACKING) ? adaptor->packing_props : adaptor->properties;
+    (type == GLADE_PAGE_PACKING) ? 
+    glade_widget_adaptor_get_packing_props (adaptor) : 
+    glade_widget_adaptor_get_properties (adaptor);
 
   for (l = properties; l; l = g_list_next (l))
     {
@@ -323,7 +325,7 @@ append_item (GladeEditorTable * table,
          klass, from_query_dialog == FALSE)))
     {
       g_critical ("Unable to create editor for property '%s' of class '%s'",
-                  klass->id, GLADE_WIDGET_ADAPTOR (klass->handle)->name);
+                  klass->id, glade_widget_adaptor_get_name (GLADE_WIDGET_ADAPTOR (klass->handle)));
       return NULL;
     }
 

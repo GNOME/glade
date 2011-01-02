@@ -19,6 +19,9 @@
 	  project when the appropriate data changes (speeds up editing, with latest changes editing labels
 	  in huge projects is smooth).
 
+	* Made GladeWidgetAdaptor internalize *everything* into a private data structure,
+	21 files changed, 694 insertions(+), 670 deletions(-)
+
 2011-01-01  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-command.[ch], Added GladeProject member to base command structure, now

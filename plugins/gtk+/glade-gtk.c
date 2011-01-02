@@ -841,7 +841,8 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
             return;
 
           glade_command_push_group (_("Adding parent %s for %s"),
-                                    adaptor->title, glade_widget_get_name (gwidget));
+                                    glade_widget_adaptor_get_title (adaptor), 
+				    glade_widget_get_name (gwidget));
 
           /* Record packing properties */
           saved_props =
@@ -9993,11 +9994,11 @@ glade_gtk_cell_renderer_deep_post_create (GladeWidgetAdaptor * adaptor,
   GladePropertyClass *pclass;
   GladeProperty *property;
   GladeWidget *widget;
-  GList *l;
+  const GList *l;
 
   widget = glade_widget_get_from_gobject (object);
 
-  for (l = adaptor->properties; l; l = l->next)
+  for (l = glade_widget_adaptor_get_properties (adaptor); l; l = l->next)
     {
       pclass = l->data;
 

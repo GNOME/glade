@@ -137,9 +137,9 @@ glade_placeholder_notify_parent (GObject * gobject,
   if (parent)
     parent_adaptor = glade_widget_get_adaptor (parent);
 
-  if (parent_adaptor && parent_adaptor->packing_actions)
+  if (parent_adaptor)
     placeholder->packing_actions =
-        glade_widget_adaptor_pack_actions_new (parent_adaptor);
+      glade_widget_adaptor_pack_actions_new (parent_adaptor);
 }
 
 static void

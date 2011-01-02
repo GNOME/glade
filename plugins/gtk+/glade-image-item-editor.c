@@ -274,7 +274,7 @@ custom_toggled (GtkWidget * widget, GladeImageItemEditor * item_editor)
 
   /* Now setup default label and create image... */
   property = glade_widget_get_property (item_editor->loaded_widget, "label");
-  glade_command_set_property (property, adaptor->generic_name);
+  glade_command_set_property (property, glade_widget_adaptor_get_generic_name (adaptor));
   property = glade_widget_get_property (item_editor->loaded_widget, "use-underline");
   glade_command_set_property (property, FALSE);
 

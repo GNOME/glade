@@ -54,15 +54,16 @@ static void
 column_types_store_populate_enums_flags (GtkListStore * store, gboolean enums)
 {
   GtkTreeIter iter;
-  GList *types = NULL, *list, *l;
+  GList *types = NULL, *list;
   GList *adaptors = glade_widget_adaptor_list_adaptors ();
+  const GList *l;
 
   for (list = adaptors; list; list = list->next)
     {
       GladeWidgetAdaptor *adaptor = list->data;
       GladePropertyClass *pclass;
 
-      for (l = adaptor->properties; l; l = l->next)
+      for (l = glade_widget_adaptor_get_properties (adaptor); l; l = l->next)
         {
           pclass = l->data;
 

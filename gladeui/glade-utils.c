@@ -288,8 +288,10 @@ glade_util_check_and_warn_scrollable (GladeWidget * parent,
       glade_util_ui_message (parent_widget,
                              GLADE_UI_INFO, NULL,
                              _("Cannot add non scrollable %s widget to a %s directly.\n"
-			       "Add a %s first."), child_adaptor->title,
-                             parent_adaptor->title, vadaptor->title);
+			       "Add a %s first."), 
+			     glade_widget_adaptor_get_title (child_adaptor),
+                             glade_widget_adaptor_get_title (parent_adaptor), 
+			     glade_widget_adaptor_get_title (vadaptor));
       return TRUE;
     }
   return FALSE;

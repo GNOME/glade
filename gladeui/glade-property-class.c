@@ -1109,7 +1109,7 @@ gpc_read_displayable_values_from_node (GladeXmlNode * node,
   if (n_values != registered_values)
     g_message ("%d missing displayable value for %s::%s",
                n_values - registered_values,
-               ((GladeWidgetAdaptor *) klass->handle)->name, klass->id);
+               glade_widget_adaptor_get_name ((GladeWidgetAdaptor *) klass->handle), klass->id);
 
   g_type_class_unref (the_class);
 

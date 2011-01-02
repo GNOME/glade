@@ -734,7 +734,9 @@ glade_signal_editor_devhelp_cb (GtkCellRenderer * cell,
   g_object_get (signal_class->adaptor, "book", &book, NULL);
 
   glade_editor_search_doc_search (glade_app_get_editor (),
-                                  book, signal_class->adaptor->name, search);
+                                  book, 
+				  glade_widget_adaptor_get_name (signal_class->adaptor), 
+				  search);
 
   g_free (search);
   g_free (book);
@@ -1162,7 +1164,7 @@ void
 glade_signal_editor_load_widget (GladeSignalEditor * editor,
                                  GladeWidget * widget)
 {
-  GList *list;
+  const GList *list;
   const gchar *last_type = "";
   GtkTreeIter iter;
   GtkTreeIter parent_class;
@@ -1205,7 +1207,7 @@ glade_signal_editor_load_widget (GladeSignalEditor * editor,
 
   /* Loop over every signal type
    */
-  for (list = priv->adaptor->signals; list; list = list->next)
+  for (list = glade_widget_adaptor_get_signals (priv->adaptor); list; list = list->next)
     {
       GladeSignalClass *signal = (GladeSignalClass *) list->data;
       GladeSignal *sig =

@@ -207,20 +207,21 @@ glade_eprop_accel_populate_view (GladeEditorProperty * eprop,
   GtkTreeIter iter;
   GladeEpropIterTab *parent_tab;
   GladeAccelInfo *info;
-  GList *list, *l, *found, *accelerators;
+  GList *l, *found, *accelerators;
   gchar *name, *accel_text;
+  const GList *list;
 
   accelerators = g_value_get_boxed (glade_property_inline_value (eprop->property));
 
   /* First make parent iters...
    */
-  for (list = adaptor->signals; list; list = list->next)
+  for (list = glade_widget_adaptor_get_signals (adaptor); list; list = list->next)
     {
       sclass = list->data;
 
       /* Special case for GtkAction accelerators  */
-      if (adaptor->type == GTK_TYPE_ACTION ||
-          g_type_is_a (adaptor->type, GTK_TYPE_ACTION))
+      if (glade_widget_adaptor_get_object_type (adaptor) == GTK_TYPE_ACTION ||
+          g_type_is_a (glade_widget_adaptor_get_object_type (adaptor), GTK_TYPE_ACTION))
         {
           if (g_strcmp0 (sclass->type, "GtkAction") != 0 ||
               g_strcmp0 (sclass->name, "activate") != 0)
@@ -251,13 +252,13 @@ glade_eprop_accel_populate_view (GladeEditorProperty * eprop,
 
   /* Now we populate...
    */
-  for (list = adaptor->signals; list; list = list->next)
+  for (list = glade_widget_adaptor_get_signals (adaptor); list; list = list->next)
     {
       sclass = list->data;
 
       /* Special case for GtkAction accelerators  */
-      if (adaptor->type == GTK_TYPE_ACTION ||
-          g_type_is_a (adaptor->type, GTK_TYPE_ACTION))
+      if (glade_widget_adaptor_get_object_type (adaptor) == GTK_TYPE_ACTION ||
+          g_type_is_a (glade_widget_adaptor_get_object_type (adaptor), GTK_TYPE_ACTION))
         {
           if (g_strcmp0 (sclass->type, "GtkAction") != 0 ||
               g_strcmp0 (sclass->name, "activate") != 0)
@@ -303,8 +304,8 @@ glade_eprop_accel_populate_view (GladeEditorProperty * eprop,
             }
 
           /* Special case for GtkAction accelerators  */
-          if ((adaptor->type == GTK_TYPE_ACTION ||
-               g_type_is_a (adaptor->type, GTK_TYPE_ACTION)) &&
+          if ((glade_widget_adaptor_get_object_type (adaptor) == GTK_TYPE_ACTION ||
+               g_type_is_a (glade_widget_adaptor_get_object_type (adaptor), GTK_TYPE_ACTION)) &&
               g_list_length (accelerators) > 0)
             continue;
 
@@ -346,8 +347,8 @@ accel_edited (GtkCellRendererAccel * accel,
                                             &iter, path_string))
     return;
 
-  is_action = (adaptor->type == GTK_TYPE_ACTION ||
-               g_type_is_a (adaptor->type, GTK_TYPE_ACTION));
+  is_action = (glade_widget_adaptor_get_object_type (adaptor) == GTK_TYPE_ACTION ||
+               g_type_is_a (glade_widget_adaptor_get_object_type (adaptor), GTK_TYPE_ACTION));
 
   gtk_tree_model_get (eprop_accel->model, &iter,
                       ACCEL_COLUMN_KEY_ENTERED, &key_was_set, -1);

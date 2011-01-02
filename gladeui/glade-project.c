@@ -2088,7 +2088,8 @@ glade_project_verify_property_internal (GladeProject * project,
                                 PROP_VERSION_CONFLICT_FMT,
                                 path_name,
                                 pclass->name,
-                                adaptor->title, catalog,
+                                glade_widget_adaptor_get_title (adaptor), 
+				catalog,
                                 pclass->version_since_major,
                                 pclass->version_since_minor);
     }
@@ -2167,7 +2168,7 @@ glade_project_verify_signal_internal (GladeWidget * widget,
                                 SIGNAL_VERSION_CONFLICT_FMT,
                                 path_name,
                                 signal->name,
-                                signal_class->adaptor->title,
+                                glade_widget_adaptor_get_title (signal_class->adaptor),
                                 catalog,
                                 signal_class->version_since_major,
                                 signal_class->version_since_minor);
@@ -2368,7 +2369,9 @@ glade_project_verify_adaptor (GladeProject * project,
           else
             g_string_append_printf (string,
                                     WIDGET_VERSION_CONFLICT_FMT,
-                                    path_name, adaptor_iter->title, catalog,
+                                    path_name, 
+				    glade_widget_adaptor_get_title (adaptor_iter), 
+				    catalog,
                                     GWA_VERSION_SINCE_MAJOR (adaptor_iter),
                                     GWA_VERSION_SINCE_MINOR (adaptor_iter));
 
@@ -2386,8 +2389,9 @@ glade_project_verify_adaptor (GladeProject * project,
             }
           else
             g_string_append_printf (string, WIDGET_DEPRECATED_FMT,
-                                    path_name, adaptor_iter->title, catalog,
-                                    target_major, target_minor);
+                                    path_name, 
+				    glade_widget_adaptor_get_title (adaptor_iter), 
+				    catalog, target_major, target_minor);
 
           support_mask |= GLADE_SUPPORT_DEPRECATED;
         }

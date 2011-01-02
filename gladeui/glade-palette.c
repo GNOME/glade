@@ -527,20 +527,21 @@ glade_palette_item_refresh (GtkWidget * item)
                                       GTK_STOCK_DIALOG_WARNING);
       else
         gtk_tool_button_set_icon_name (GTK_TOOL_BUTTON (item),
-                                       adaptor->icon_name);
+                                       glade_widget_adaptor_get_icon_name (adaptor));
 
       /* prepend widget title */
-      text = g_strdup_printf ("%s: %s", adaptor->title, warning);
+      text = g_strdup_printf ("%s: %s", glade_widget_adaptor_get_title (adaptor), warning);
       gtk_widget_set_tooltip_text (item, text);
       g_free (text);
       g_free (warning);
     }
   else
     {
-      gtk_widget_set_tooltip_text (GTK_WIDGET (item), adaptor->title);
+      gtk_widget_set_tooltip_text (GTK_WIDGET (item), 
+				   glade_widget_adaptor_get_title (adaptor));
       gtk_widget_set_sensitive (GTK_WIDGET (item), TRUE);
       gtk_tool_button_set_icon_name (GTK_TOOL_BUTTON (item),
-                                     adaptor->icon_name);
+                                     glade_widget_adaptor_get_icon_name (adaptor));
     }
 }
 
@@ -575,7 +576,7 @@ glade_palette_new_item (GladePalette * palette, GladeWidgetAdaptor * adaptor)
 
   /* Add a box to avoid the ellipsize on the items */
   box = gtk_hbox_new (FALSE, 0);
-  label = gtk_label_new (adaptor->title);
+  label = gtk_label_new (glade_widget_adaptor_get_title (adaptor));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_widget_show (label);
   gtk_widget_show (box);

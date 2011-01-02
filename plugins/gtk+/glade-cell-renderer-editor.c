@@ -310,9 +310,10 @@ property_class_comp (gconstpointer a, gconstpointer b)
 static GList *
 get_sorted_properties (GladeWidgetAdaptor * adaptor, GladeEditorPageType type)
 {
-  GList *l, *list = NULL;
+  GList *list = NULL;
+  const GList *l;
 
-  for (l = adaptor->properties; l; l = g_list_next (l))
+  for (l = glade_widget_adaptor_get_properties (adaptor); l; l = l->next)
     {
       GladePropertyClass *klass = l->data;
 

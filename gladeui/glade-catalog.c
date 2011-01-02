@@ -547,7 +547,7 @@ glade_catalog_load_all (void)
     {
       GladeWidgetAdaptor *adaptor = l->data;
 
-      if (adaptor->missing_icon)
+      if (glade_widget_adaptor_get_missing_icon (adaptor))
         {
           if (!icon_warning)
             icon_warning = g_string_new ("Glade needs artwork; "
@@ -556,7 +556,8 @@ glade_catalog_load_all (void)
 
           g_string_append_printf (icon_warning,
                                   "\n\t%s\tneeds an icon named '%s'",
-                                  adaptor->name, adaptor->missing_icon);
+                                  glade_widget_adaptor_get_name (adaptor), 
+				  glade_widget_adaptor_get_missing_icon (adaptor));
         }
 
     }

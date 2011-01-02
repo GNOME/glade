@@ -2399,9 +2399,9 @@ glade_eprop_object_populate_view_real (GtkTreeStore * model,
           has_decendant = !parentless && glade_widget_has_decendant
               (widget, object_type);
 
-          good_type = (adaptor->type == object_type ||
-                       g_type_is_a (adaptor->type, object_type) ||
-                       glade_util_class_implements_interface (adaptor->type,
+          good_type = (glade_widget_adaptor_get_object_type (adaptor) == object_type ||
+                       g_type_is_a (glade_widget_adaptor_get_object_type (adaptor), object_type) ||
+                       glade_util_class_implements_interface (glade_widget_adaptor_get_object_type (adaptor),
                                                               object_type));
 
           if (parentless)
@@ -2415,7 +2415,7 @@ glade_eprop_object_populate_view_real (GtkTreeStore * model,
                    OBJ_COLUMN_WIDGET, widget,
                    OBJ_COLUMN_WIDGET_NAME,
                    glade_eprop_object_name (glade_widget_get_name (widget), model, parent_iter),
-                   OBJ_COLUMN_WIDGET_CLASS, adaptor->title,
+                   OBJ_COLUMN_WIDGET_CLASS, glade_widget_adaptor_get_title (adaptor),
                    /* Selectable if its a compatible type and
                     * its not itself.
                     */
@@ -2618,7 +2618,7 @@ glade_eprop_object_dialog_title (GladeEditorProperty * eprop)
   else if ((adaptor =
             glade_widget_adaptor_get_by_type
             (eprop->klass->pspec->value_type)) != NULL)
-    return g_strdup_printf (format, adaptor->title);
+    return g_strdup_printf (format, glade_widget_adaptor_get_title (adaptor));
 
   /* Fallback on type name (which would look like "GtkButton"
    * instead of "Button" and maybe not translated).
@@ -2931,7 +2931,7 @@ glade_eprop_object_show_dialog (GtkWidget * dialog_button,
 
       /* translators: Creating 'a widget' for 'a property' of 'a widget' */
       glade_command_push_group (_("Creating %s for %s of %s"),
-                                create_adaptor->name,
+                                glade_widget_adaptor_get_name (create_adaptor),
                                 eprop->klass->name,
                                 glade_widget_get_name (widget));
 

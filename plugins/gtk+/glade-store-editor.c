@@ -203,8 +203,8 @@ glade_store_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (eprop), FALSE, FALSE, 4);
 
 
-  if (adaptor->type == GTK_TYPE_LIST_STORE ||
-      g_type_is_a (adaptor->type, GTK_TYPE_LIST_STORE))
+  if (glade_widget_adaptor_get_object_type (adaptor) == GTK_TYPE_LIST_STORE ||
+      g_type_is_a (glade_widget_adaptor_get_object_type (adaptor), GTK_TYPE_LIST_STORE))
     {
       /* -------------- The data area here -------------- */
       /* Label item in frame label widget on top.. */

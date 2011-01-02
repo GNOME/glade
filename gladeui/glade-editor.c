@@ -255,7 +255,7 @@ glade_editor_on_docs_click (GtkButton * button, GladeEditor * editor)
     {
       g_object_get (editor->loaded_adaptor, "book", &book, NULL);
       glade_editor_search_doc_search (editor, book,
-                                      editor->loaded_adaptor->name,
+                                      glade_widget_adaptor_get_name (editor->loaded_adaptor),
                                       NULL);
       g_free (book);
     }
@@ -325,14 +325,14 @@ glade_editor_update_class_field (GladeEditor * editor)
       gchar *text;
 
       gtk_image_set_from_icon_name (GTK_IMAGE (editor->class_icon),
-                                    editor->loaded_adaptor->icon_name,
+                                    glade_widget_adaptor_get_icon_name (editor->loaded_adaptor),
                                     GTK_ICON_SIZE_BUTTON);
       gtk_widget_show (editor->class_icon);
 
       /* translators: referring to the properties of a widget named '%s [%s]' */
       text = g_strdup_printf (_("%s Properties - %s [%s]"),
-                              editor->loaded_adaptor->title,
-                              editor->loaded_adaptor->name, 
+                              glade_widget_adaptor_get_title (editor->loaded_adaptor),
+                              glade_widget_adaptor_get_name (editor->loaded_adaptor), 
 			      glade_widget_get_name (widget));
       gtk_label_set_text (GTK_LABEL (editor->class_label), text);
       g_free (text);
@@ -837,7 +837,7 @@ glade_editor_query_dialog (GladeEditor * editor, GladeWidget * widget)
   
   adaptor = glade_widget_get_adaptor (widget);
 
-  title = g_strdup_printf (_("Create a %s"), adaptor->name);
+  title = g_strdup_printf (_("Create a %s"), glade_widget_adaptor_get_name (adaptor));
   dialog = gtk_dialog_new_with_buttons (title, NULL,
                                         GTK_DIALOG_MODAL |
                                         GTK_DIALOG_DESTROY_WITH_PARENT,
