@@ -560,8 +560,7 @@ refresh_notebook_tab_for_project (GladeWindow * window, GladeProject * project)
           eventbox = g_object_get_data (G_OBJECT (tab_label), "tab-event-box");
 
           str = get_formatted_project_name_for_display (project,
-                                                        FORMAT_NAME_MARK_UNSAVED
-                                                        |
+                                                        FORMAT_NAME_MARK_UNSAVED |
                                                         FORMAT_NAME_MIDDLE_TRUNCATE);
           gtk_label_set_text (GTK_LABEL (label), str);
           g_free (str);
@@ -593,15 +592,6 @@ refresh_notebook_tab_for_project (GladeWindow * window, GladeProject * project)
         }
     }
   g_list_free (children);
-}
-
-static void
-refresh_notebook_tabs (GladeWindow * window)
-{
-  GList *list;
-
-  for (list = glade_app_get_projects (); list; list = list->next)
-    refresh_notebook_tab_for_project (window, GLADE_PROJECT (list->data));
 }
 
 static void
@@ -702,6 +692,7 @@ project_notify_handler_cb (GladeProject * project, GParamSpec * spec,
     {
       refresh_title (window);
       refresh_projects_list_item (window, project);
+      refresh_notebook_tab_for_project (window, project);
     }
   else if (strcmp (spec->name, "read-only") == 0)
     {
@@ -2874,6 +2865,7 @@ static void
 update_ui (GladeApp * app, GladeWindow * window)
 {
   GladeProject *project;
+
   if (window->priv->active_view)
     {
       project = glade_design_view_get_project (window->priv->active_view);
@@ -2883,8 +2875,6 @@ update_ui (GladeApp * app, GladeWindow * window)
     }
 
   refresh_undo_redo (window);
-
-  refresh_notebook_tabs (window);
 }
 
 static void

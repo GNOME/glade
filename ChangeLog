@@ -15,6 +15,10 @@
 	  implementations... GladeProject already emits this after collapsing whenever the project
 	  changes.
 
+	* src/glade-window.c: Dont refresh notebook tabs at every update-ui, just for the appropriate
+	  project when the appropriate data changes (speeds up editing, with latest changes editing labels
+	  in huge projects is smooth).
+
 2011-01-01  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-command.[ch], Added GladeProject member to base command structure, now
