@@ -1367,7 +1367,7 @@ glade_base_editor_change_type (GladeBaseEditor * editor,
     {
       GladeProperty      *orig_prop = (GladeProperty *) l->data;
       GladePropertyClass *pclass = glade_property_get_class (orig_prop);
-      GladeProperty *dup_prop = glade_widget_get_property (gchild_new, pclass->id);
+      GladeProperty      *dup_prop = glade_widget_get_property (gchild_new, glade_property_class_id (pclass));
       glade_property_set_value (dup_prop, glade_property_inline_value (orig_prop));
       l = g_list_next (l);
     }

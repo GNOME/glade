@@ -262,11 +262,15 @@ glade_editor_table_attach (GladeEditorTable * table,
 static gint
 property_class_comp (gconstpointer a, gconstpointer b)
 {
-  const GladePropertyClass *ca = a, *cb = b;
+  GladePropertyClass *ca = (GladePropertyClass *)a, *cb = (GladePropertyClass *)b;
+  GParamSpec *pa, *pb;
 
-  if (ca->pspec->owner_type == cb->pspec->owner_type)
+  pa = glade_property_class_get_pspec (ca);
+  pb = glade_property_class_get_pspec (cb);
+
+  if (pa->owner_type == pb->owner_type)
     {
-      gdouble result = ca->weight - cb->weight;
+      gdouble result = glade_property_class_weight (ca) - glade_property_class_weight (cb);
       /* Avoid cast to int */
       if (result < 0.0)
         return -1;
@@ -277,10 +281,10 @@ property_class_comp (gconstpointer a, gconstpointer b)
     }
   else
     {
-      if (g_type_is_a (ca->pspec->owner_type, cb->pspec->owner_type))
-        return (ca->common || ca->packing) ? 1 : -1;
+      if (g_type_is_a (pa->owner_type, pb->owner_type))
+        return (glade_property_class_common (ca) || glade_property_class_get_is_packing (ca)) ? 1 : -1;
       else
-        return (ca->common || ca->packing) ? -1 : 1;
+        return (glade_property_class_common (ca) || glade_property_class_get_is_packing (ca)) ? -1 : 1;
     }
 }
 
@@ -303,9 +307,8 @@ get_sorted_properties (GladeWidgetAdaptor * adaptor, GladeEditorPageType type)
        * invisible properties, allow adaptors to filter out properties from
        * the GladeEditorTable using the "custom-layout" attribute.
        */
-      if ((!klass->custom_layout) && GLADE_PROPERTY_CLASS_IS_TYPE (klass, type)
-          && (glade_property_class_is_visible (klass) ||
-              type == GLADE_PAGE_QUERY))
+      if (!glade_property_class_custom_layout (klass) && GLADE_PROPERTY_CLASS_IS_TYPE (klass, type)
+          && (glade_property_class_is_visible (klass) || type == GLADE_PAGE_QUERY))
         {
           list = g_list_prepend (list, klass);
         }
@@ -321,11 +324,11 @@ append_item (GladeEditorTable * table,
   GladeEditorProperty *property;
 
   if (!(property = glade_widget_adaptor_create_eprop
-        (GLADE_WIDGET_ADAPTOR (klass->handle),
-         klass, from_query_dialog == FALSE)))
+        (glade_property_class_get_adaptor (klass), klass, from_query_dialog == FALSE)))
     {
       g_critical ("Unable to create editor for property '%s' of class '%s'",
-                  klass->id, glade_widget_adaptor_get_name (GLADE_WIDGET_ADAPTOR (klass->handle)));
+                  glade_property_class_id (klass), 
+		  glade_widget_adaptor_get_name (glade_property_class_get_adaptor (klass)));
       return NULL;
     }
 

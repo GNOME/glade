@@ -926,7 +926,7 @@ glade_editor_reset_view (GladeEditor * editor)
   view_widget = gtk_tree_view_new_with_model (model);
   g_object_set (G_OBJECT (view_widget), "enable-search", FALSE, NULL);
 
-        /********************* fake invisible column *********************/
+  /********************* fake invisible column *********************/
   renderer = gtk_cell_renderer_text_new ();
   g_object_set (G_OBJECT (renderer), "editable", FALSE, "visible", FALSE, NULL);
 
@@ -936,7 +936,7 @@ glade_editor_reset_view (GladeEditor * editor)
   gtk_tree_view_column_set_visible (column, FALSE);
   gtk_tree_view_set_expander_column (GTK_TREE_VIEW (view_widget), column);
 
-        /************************ enabled column ************************/
+  /************************ enabled column ************************/
   renderer = gtk_cell_renderer_toggle_new ();
   g_object_set (G_OBJECT (renderer),
                 "mode", GTK_CELL_RENDERER_MODE_ACTIVATABLE,
@@ -950,7 +950,7 @@ glade_editor_reset_view (GladeEditor * editor)
        "activatable", COLUMN_NDEFAULT,
        "active", COLUMN_ENABLED, "visible", COLUMN_CHILD, NULL);
 
-        /********************* property name column *********************/
+  /********************* property name column *********************/
   renderer = gtk_cell_renderer_text_new ();
   g_object_set (G_OBJECT (renderer), "editable", FALSE, NULL);
 
@@ -959,7 +959,7 @@ glade_editor_reset_view (GladeEditor * editor)
        _("Property"), renderer,
        "text", COLUMN_PROP_NAME, "weight", COLUMN_WEIGHT, NULL);
 
-        /******************* default indicator column *******************/
+  /******************* default indicator column *******************/
   renderer = gtk_cell_renderer_text_new ();
   g_object_set (G_OBJECT (renderer),
                 "editable", FALSE,
@@ -1018,9 +1018,9 @@ glade_editor_populate_reset_view (GladeEditor * editor, GtkTreeView * tree_view)
       if (glade_property_class_is_visible (pclass) == FALSE)
         continue;
 
-      if (pclass->atk)
+      if (glade_property_class_atk (pclass))
         iter = &atk_iter;
-      else if (pclass->common)
+      else if (glade_property_class_common (pclass))
         iter = &common_iter;
       else
         iter = &general_iter;
@@ -1030,7 +1030,7 @@ glade_editor_populate_reset_view (GladeEditor * editor, GtkTreeView * tree_view)
       gtk_tree_store_append (model, &property_iter, iter);
       gtk_tree_store_set (model, &property_iter,
                           COLUMN_ENABLED, !def,
-                          COLUMN_PROP_NAME, pclass->name,
+                          COLUMN_PROP_NAME, glade_property_class_get_name (pclass),
                           COLUMN_PROPERTY, property,
                           COLUMN_WEIGHT, PANGO_WEIGHT_NORMAL,
                           COLUMN_CHILD, TRUE,
@@ -1063,7 +1063,7 @@ glade_editor_reset_selection_changed_cb (GtkTreeSelection * selection,
 	pclass = glade_property_get_class (property);
 
       gtk_text_buffer_set_text (text_buffer,
-                                pclass ? pclass->tooltip : message,
+                                pclass ? glade_property_class_get_tooltip (pclass) : message,
                                 -1);
       if (property)
         g_object_unref (G_OBJECT (property));

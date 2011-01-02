@@ -693,18 +693,20 @@ glade_popup_property_docs_cb (GtkMenuItem * item, GladeProperty * property)
 {
   GladeWidgetAdaptor *adaptor, *prop_adaptor;
   GladePropertyClass *pclass;
-  gchar *search, *book;
+  GParamSpec         *pspec;
+  gchar              *search, *book;
 
   pclass       = glade_property_get_class (property);
-  prop_adaptor = glade_widget_adaptor_from_pclass (pclass);
-  adaptor      = glade_widget_adaptor_from_pspec (prop_adaptor, pclass->pspec);
-  search       = g_strdup_printf ("The %s property", pclass->id);
+  pspec        = glade_property_class_get_pspec (pclass);
+  prop_adaptor = glade_property_class_get_adaptor (pclass);
+  adaptor      = glade_widget_adaptor_from_pspec (prop_adaptor, pspec);
+  search       = g_strdup_printf ("The %s property", glade_property_class_id (pclass));
 
   g_object_get (adaptor, "book", &book, NULL);
 
   glade_editor_search_doc_search (glade_app_get_editor (),
                                   book, 
-				  g_type_name (pclass->pspec->owner_type), search);
+				  g_type_name (pspec->owner_type), search);
 
   g_free (book);
   g_free (search);
@@ -716,14 +718,16 @@ glade_popup_property_pop (GladeProperty * property, GdkEventButton * event)
 
   GladeWidgetAdaptor *adaptor, *prop_adaptor;
   GladePropertyClass *pclass;
+  GParamSpec         *pspec;
   GtkWidget *popup_menu;
   gchar *book = NULL;
   gint button;
   gint event_time;
 
   pclass       = glade_property_get_class (property);
-  prop_adaptor = glade_widget_adaptor_from_pclass (pclass);
-  adaptor      = glade_widget_adaptor_from_pspec (prop_adaptor, pclass->pspec);
+  pspec        = glade_property_class_get_pspec (pclass);
+  prop_adaptor = glade_property_class_get_adaptor (pclass);
+  adaptor      = glade_widget_adaptor_from_pspec (prop_adaptor, pspec);
 
   g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
 

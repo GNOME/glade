@@ -19,7 +19,6 @@ G_BEGIN_DECLS
 #define GLADE_IS_WIDGET_ADAPTOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_WIDGET_ADAPTOR))
 #define GLADE_WIDGET_ADAPTOR_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_WIDGET_ADAPTOR, GladeWidgetAdaptorClass))
 
-typedef struct _GladeWidgetAdaptor        GladeWidgetAdaptor;
 typedef struct _GladeWidgetAdaptorPrivate GladeWidgetAdaptorPrivate;
 typedef struct _GladeWidgetAdaptorClass   GladeWidgetAdaptorClass;
 
@@ -674,9 +673,6 @@ struct _GladeWidgetAdaptorClass
 
 #define glade_widget_adaptor_create_widget(adaptor, query, ...) \
     (glade_widget_adaptor_create_widget_real (query, "adaptor", adaptor, __VA_ARGS__));
-
-#define glade_widget_adaptor_from_pclass(pclass) \
-    ((pclass) ? (GladeWidgetAdaptor *)((GladePropertyClass *)(pclass))->handle : NULL)
 
 
 GType                 glade_widget_adaptor_get_type         (void) G_GNUC_CONST;

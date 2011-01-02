@@ -1194,16 +1194,18 @@ update_project_for_resource_path (GladeProject * project)
       for (list = glade_widget_get_properties (widget); list; list = list->next)
         {
 	  GladePropertyClass *klass;
+	  GParamSpec         *pspec;
 
           property = list->data;
 	  klass    = glade_property_get_class (property);
+	  pspec    = glade_property_class_get_pspec (klass);
 
           /* XXX We should have a "resource" flag on properties that need
            *   to be loaded from the resource path, but that would require
            * that they can serialize both ways (custom properties are only
            * required to generate unique strings for value comparisons).
            */
-          if (klass->pspec->value_type == GDK_TYPE_PIXBUF)
+          if (pspec->value_type == GDK_TYPE_PIXBUF)
             {
               GValue *value;
               gchar  *string;
@@ -1338,15 +1340,16 @@ glade_project_introspect_gtk_version (GladeProject * project)
           GladeProperty *property = l->data;
 	  GladePropertyClass *pclass = glade_property_get_class (property);
           GladeWidgetAdaptor *prop_adaptor, *adaptor;
+	  GParamSpec         *pspec;
 
           /* Unset properties ofcourse dont count... */
           if (glade_property_original_default (property))
             continue;
 
           /* Check if this property originates from a GTK+ widget class */
-          prop_adaptor = glade_widget_adaptor_from_pclass (pclass);
-          adaptor =
-              glade_widget_adaptor_from_pspec (prop_adaptor, pclass->pspec);
+	  pspec        = glade_property_class_get_pspec (pclass);
+          prop_adaptor = glade_property_class_get_adaptor (pclass);
+          adaptor      = glade_widget_adaptor_from_pspec (prop_adaptor, pspec);
 
           catalog = NULL;
           is_gtk_adaptor = FALSE;
@@ -1359,8 +1362,8 @@ glade_project_introspect_gtk_version (GladeProject * project)
           if (is_gtk_adaptor &&
               !GPC_VERSION_CHECK (pclass, target_major, target_minor))
             {
-              target_major = pclass->version_since_major;
-              target_minor = pclass->version_since_minor;
+              target_major = glade_property_class_since_major (pclass);
+              target_minor = glade_property_class_since_minor (pclass);
             }
         }
 
@@ -2053,6 +2056,7 @@ glade_project_verify_property_internal (GladeProject * project,
   GladeWidgetAdaptor *adaptor, *prop_adaptor;
   GladeWidget        *widget;
   GladePropertyClass *pclass;
+  GParamSpec         *pspec;
   gint target_major, target_minor;
   gchar *catalog, *tooltip;
 
@@ -2060,12 +2064,13 @@ glade_project_verify_property_internal (GladeProject * project,
     return;
 
   pclass       = glade_property_get_class (property);
-  prop_adaptor = glade_widget_adaptor_from_pclass (pclass);
-  adaptor      = glade_widget_adaptor_from_pspec (prop_adaptor, pclass->pspec);
+  pspec        = glade_property_class_get_pspec (pclass);
+  prop_adaptor = glade_property_class_get_adaptor (pclass);
+  adaptor      = glade_widget_adaptor_from_pspec (prop_adaptor, pspec);
   widget       = glade_property_get_widget (property);
 
   g_object_get (adaptor, "catalog", &catalog, NULL);
-  glade_project_target_version_for_adaptor (glade_widget_get_project (widget), adaptor,
+  glade_project_target_version_for_adaptor (project, adaptor,
                                             &target_major, &target_minor);
 
   if (!GPC_VERSION_CHECK (pclass, target_major, target_minor))
@@ -2074,8 +2079,8 @@ glade_project_verify_property_internal (GladeProject * project,
         {
           tooltip = g_strdup_printf (PROP_VERSION_CONFLICT_MSGFMT,
                                      catalog,
-                                     pclass->version_since_major,
-                                     pclass->version_since_minor,
+                                     glade_property_class_since_major (pclass),
+                                     glade_property_class_since_minor (pclass),
                                      catalog, target_major, target_minor);
 
           glade_property_set_support_warning (property, FALSE, tooltip);
@@ -2083,15 +2088,15 @@ glade_project_verify_property_internal (GladeProject * project,
         }
       else
         g_string_append_printf (string,
-                                pclass->packing ?
+                                glade_property_class_get_is_packing (pclass) ?
                                 PACK_PROP_VERSION_CONFLICT_FMT :
                                 PROP_VERSION_CONFLICT_FMT,
                                 path_name,
-                                pclass->name,
+                                glade_property_class_get_name (pclass),
                                 glade_widget_adaptor_get_title (adaptor), 
 				catalog,
-                                pclass->version_since_major,
-                                pclass->version_since_minor);
+				glade_property_class_since_major (pclass),
+				glade_property_class_since_minor (pclass));
     }
   else if (forwidget)
     glade_property_set_support_warning (property, FALSE, NULL);
@@ -2190,7 +2195,8 @@ glade_project_verify_property (GladeProperty * property)
   widget  = glade_property_get_widget (property);
   project = glade_widget_get_project (widget);
 
-  glade_project_verify_property_internal (project, property, NULL, NULL, TRUE);
+  if (project)
+    glade_project_verify_property_internal (project, property, NULL, NULL, TRUE);
 }
 
 void

@@ -565,9 +565,9 @@ glade_widget_template_params (GladeWidget * widget,
        */
       if (!glade_property_get_enabled (glade_property) || 
 	  pclass == NULL ||     /* Unaccounted for in the builder */
-          pclass->virt ||       /* should not be set before 
-                                   GladeWidget wrapper exists */
-          pclass->ignore)       /* Catalog explicitly ignores the object */
+          glade_property_class_get_virtual (pclass) ||  /* should not be set before 
+							   GladeWidget wrapper exists */
+          glade_property_class_get_ignore (pclass))     /* Catalog explicitly ignores the object */
         continue;
 
       if (construct &&
@@ -578,7 +578,7 @@ glade_widget_template_params (GladeWidget * widget,
                 (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY)) != 0)
         continue;
 
-      if (g_value_type_compatible (G_VALUE_TYPE (pclass->def),
+      if (g_value_type_compatible (G_VALUE_TYPE (glade_property_class_get_default (pclass)),
                                    pspec[i]->value_type) == FALSE)
         {
           g_critical ("Type mismatch on %s property of %s",
@@ -589,9 +589,8 @@ glade_widget_template_params (GladeWidget * widget,
 
       if (g_param_values_cmp (pspec[i],
                               glade_property_inline_value (glade_property), 
-			      pclass->orig_def) == 0)
+			      glade_property_class_get_original_default (pclass)) == 0)
         continue;
-
 
       /* Not sure if it's safe to use glade_property_get_value() instead as the 
        * value type might differ than the real pspec 
@@ -689,10 +688,10 @@ glade_widget_dup_properties (GladeWidget * dest_widget, GList * template_props,
       GladeProperty      *prop = list->data;
       GladePropertyClass *pclass = glade_property_get_class (prop);
 
-      if (pclass->save == FALSE && as_load)
+      if (glade_property_class_save (pclass) == FALSE && as_load)
         continue;
 
-      if (pclass->parentless_widget && copy_parentless)
+      if (glade_property_class_parentless_widget (pclass) && copy_parentless)
         {
           GObject *object = NULL;
           GladeWidget *parentless;
@@ -762,11 +761,14 @@ glade_widget_set_catalog_defaults (GList * list)
   GList *l;
   for (l = list; l && l->data; l = l->next)
     {
-      GladeProperty *prop = l->data;
+      GladeProperty      *prop = l->data;
       GladePropertyClass *klass = glade_property_get_class (prop);
+      GParamSpec         *pspec = glade_property_class_get_pspec (klass);
 
-      if (glade_property_equals_value (prop, klass->orig_def) &&
-          g_param_values_cmp (klass->pspec, klass->orig_def, klass->def))
+      if (glade_property_equals_value (prop, glade_property_class_get_original_default (klass)) &&
+          g_param_values_cmp (pspec, 
+			      glade_property_class_get_original_default (klass), 
+			      glade_property_class_get_default (klass)))
         glade_property_reset (prop);
     }
 }
@@ -780,7 +782,8 @@ glade_widget_sync_custom_props (GladeWidget * widget)
       GladeProperty      *prop = GLADE_PROPERTY (l->data);
       GladePropertyClass *pclass = glade_property_get_class (prop);
 
-      if (pclass->virt || pclass->needs_sync)
+      if (glade_property_class_get_virtual (pclass) || 
+	  glade_property_class_needs_sync (pclass))
         glade_property_sync (prop);
     }
 }
@@ -864,7 +867,7 @@ glade_widget_constructor (GType type,
           GladeProperty      *property = list->data;
 	  GladePropertyClass *pclass = glade_property_get_class (property);
 
-          if (pclass->parentless_widget)
+          if (glade_property_class_parentless_widget (pclass))
             glade_property_sync (property);
         }
     }
@@ -1421,7 +1424,7 @@ glade_widget_copy_packing_props (GladeWidget * parent,
 
       dup_prop  = GLADE_PROPERTY (l->data);
       pclass    = glade_property_get_class (dup_prop);
-      orig_prop = glade_widget_get_pack_property (template_widget, pclass->id);
+      orig_prop = glade_widget_get_pack_property (template_widget, glade_property_class_id (pclass));
 
       glade_property_set_value (dup_prop, glade_property_inline_value (orig_prop));
     }
@@ -1443,7 +1446,8 @@ glade_widget_set_default_packing_properties (GladeWidget * container,
 
       if ((def =
            glade_widget_adaptor_get_packing_default
-           (child->priv->adaptor, container->priv->adaptor, property_class->id)) == NULL)
+           (child->priv->adaptor, container->priv->adaptor, 
+	    glade_property_class_id (property_class))) == NULL)
         continue;
 
       value = glade_property_class_make_gvalue_from_string (property_class,
@@ -1452,7 +1456,7 @@ glade_widget_set_default_packing_properties (GladeWidget * container,
                                                             child);
 
       glade_widget_child_set_property (container, child,
-                                       property_class->id, value);
+                                       glade_property_class_id (property_class), value);
       g_value_unset (value);
       g_free (value);
     }
@@ -1770,7 +1774,7 @@ glade_widget_insert_children (GladeWidget * gwidget, GList * children)
               GladeProperty      *saved_prop = l->data;
 	      GladePropertyClass *pclass = glade_property_get_class (saved_prop);
               GladeProperty      *widget_prop = 
-		glade_widget_get_property (gchild, pclass->id);
+		glade_widget_get_property (gchild, glade_property_class_id (pclass));
 
               glade_property_get_value (saved_prop, &value);
               glade_property_set_value (widget_prop, &value);
@@ -1796,7 +1800,7 @@ glade_widget_insert_children (GladeWidget * gwidget, GList * children)
               GladeProperty      *saved_prop = l->data;
 	      GladePropertyClass *pclass = glade_property_get_class (saved_prop);
               GladeProperty      *widget_prop =
-                  glade_widget_get_pack_property (extract->widget, pclass->id);
+		glade_widget_get_pack_property (extract->widget, glade_property_class_id (pclass));
 
               glade_property_get_value (saved_prop, &value);
               glade_property_set_value (widget_prop, &value);
@@ -1850,7 +1854,9 @@ glade_widget_set_properties (GladeWidget * widget, GList * properties)
 	  pclass = glade_property_get_class (property);
 	  glade_property_set_widget (property, widget);
 
-          g_hash_table_insert (widget->priv->props_hash, pclass->id, property);
+          g_hash_table_insert (widget->priv->props_hash, 
+			       (gchar *)glade_property_class_id (pclass), 
+			       property);
         }
     }
 }
@@ -1880,7 +1886,8 @@ glade_widget_set_adaptor (GladeWidget * widget, GladeWidgetAdaptor * adaptor)
           if ((property = glade_property_new (property_class,
                                               widget, NULL)) == NULL)
             {
-              g_warning ("Failed to create [%s] property", property_class->id);
+              g_warning ("Failed to create [%s] property", 
+			 glade_property_class_id (property_class));
               continue;
             }
           properties = g_list_prepend (properties, property);
@@ -2112,7 +2119,7 @@ glade_widget_add_prop_ref (GladeWidget * widget, GladeProperty * property)
    * they cant be in the design view.
    */
   pclass = glade_property_get_class (property);
-  if (pclass->parentless_widget)
+  if (glade_property_class_parentless_widget (pclass))
     glade_widget_hide (widget);
 }
 
@@ -2158,7 +2165,7 @@ glade_widget_get_parentless_widget_ref (GladeWidget * widget)
       property = l->data;
       pclass   = glade_property_get_class (property);
 
-      if (pclass->parentless_widget)
+      if (glade_property_class_parentless_widget (pclass))
         /* only one external property can point to this widget */
         return property;
     }
@@ -2182,7 +2189,7 @@ glade_widget_get_parentless_reffed_widgets (GladeWidget * widget)
       pclass   = glade_property_get_class (property);
       reffed = NULL;
 
-      if (pclass->parentless_widget)
+      if (glade_property_class_parentless_widget (pclass))
         {
           glade_property_get (property, &reffed);
           if (reffed)
@@ -2289,7 +2296,8 @@ glade_widget_copy_properties (GladeWidget * widget,
       GladePropertyClass *widget_pclass, *template_pclass = NULL;
 
       widget_pclass = glade_property_get_class (widget_prop);
-      template_prop = glade_widget_get_property (template_widget, widget_pclass->id);
+      template_prop = glade_widget_get_property (template_widget, 
+						 glade_property_class_id (widget_pclass));
       if (template_prop)
 	template_pclass = glade_property_get_class (template_prop);
 
@@ -2301,7 +2309,7 @@ glade_widget_copy_properties (GladeWidget * widget,
       if (template_pclass != NULL &&
           glade_property_class_match (template_pclass, widget_pclass))
         {
-          if (template_pclass->parentless_widget && copy_parentless)
+          if (glade_property_class_parentless_widget (template_pclass) && copy_parentless)
             {
               GObject *object = NULL;
               GladeWidget *parentless;
@@ -2449,11 +2457,12 @@ glade_widget_rebuild (GladeWidget * gwidget)
       GladeProperty      *property = l->data;
       GladePropertyClass *pclass = glade_property_get_class (property);
 
-      if (glade_property_get_widget (property) != gwidget || pclass->parentless_widget)
+      if (glade_property_get_widget (property) != gwidget || 
+	  glade_property_class_parentless_widget (pclass))
         {
           PropertyData *prop_data;
 
-          if (!G_IS_PARAM_SPEC_OBJECT (pclass->pspec))
+          if (!G_IS_PARAM_SPEC_OBJECT (glade_property_class_get_pspec (pclass)))
             g_warning ("Parentless widget property should be of object type");
 
           prop_data = g_new0 (PropertyData, 1);
@@ -3105,8 +3114,9 @@ glade_widget_pack_property_set_save_always (GladeWidget * widget,
  * Returns: A newly allocated string representing @id_property
  */
 gchar *
-glade_widget_property_string (GladeWidget * widget,
-                              const gchar * id_property, const GValue * value)
+glade_widget_property_string (GladeWidget  *widget,
+                              const gchar  *id_property, 
+			      const GValue *value)
 {
   GladeProperty      *property;
   GladePropertyClass *pclass;
@@ -3119,7 +3129,7 @@ glade_widget_property_string (GladeWidget * widget,
     {
       pclass     = glade_property_get_class (property);
       ret_string = glade_widget_adaptor_string_from_value
-        (GLADE_WIDGET_ADAPTOR (pclass->handle), pclass, 
+        (glade_property_class_get_adaptor (pclass), pclass, 
 	 value ? value : glade_property_inline_value (property));
     }
 
@@ -3153,7 +3163,7 @@ glade_widget_pack_property_string (GladeWidget * widget,
     {
       pclass     = glade_property_get_class (property);
       ret_string = glade_widget_adaptor_string_from_value
-        (GLADE_WIDGET_ADAPTOR (pclass->handle), pclass, 
+        (glade_property_class_get_adaptor (pclass), pclass, 
 	 value ? value : glade_property_inline_value (property));
     }
 
@@ -3637,7 +3647,9 @@ glade_widget_set_packing_properties (GladeWidget * widget,
       GladeProperty      *property = list->data;
       GladePropertyClass *pclass = glade_property_get_class (property);
 
-      g_hash_table_insert (widget->priv->pack_props_hash, pclass->id, property);
+      g_hash_table_insert (widget->priv->pack_props_hash, 
+			   (gchar *)glade_property_class_id (pclass), 
+			   property);
     }
 
   /* Dont introspect on properties that are not parented yet.
@@ -3658,7 +3670,10 @@ glade_widget_set_packing_properties (GladeWidget * widget,
 	  GValue             *value    = glade_property_inline_value (property);
 
           g_value_reset (value);
-          glade_widget_child_get_property (container, widget, pclass->id, value);
+          glade_widget_child_get_property (container, 
+					   widget, 
+					   glade_property_class_id (pclass), 
+					   value);
         }
     }
 }

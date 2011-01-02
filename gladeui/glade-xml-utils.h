@@ -20,9 +20,10 @@ typedef struct _GladeXmlDoc     GladeXmlDoc;
 
 /* FIXME: forward declarations to get around circular header dependencies.
  */
-typedef struct _GladeWidget    GladeWidget;
-typedef struct _GladeProperty  GladeProperty;
-typedef struct _GladeProject   GladeProject;
+typedef struct _GladeWidget         GladeWidget;
+typedef struct _GladeWidgetAdaptor  GladeWidgetAdaptor;
+typedef struct _GladeProperty       GladeProperty;
+typedef struct _GladeProject        GladeProject;
 
 typedef enum {
 	GLADE_POLICY_PROJECT_WIDE = 0,    /* widget names are unique throughout the project */
@@ -158,7 +159,7 @@ typedef enum {
 #define GLADE_TAG_SAVE_ALWAYS                     "save-always"
 #define GLADE_TAG_EDITABLE                        "editable"
 #define GLADE_TAG_IGNORE                          "ignore"
-#define GLADE_TAG_VISIBLE_LINES                   "visible-lines"
+#define GLADE_TAG_MULTILINE                       "multiline"
 #define GLADE_TAG_RESOURCE                        "resource"
 #define GLADE_TAG_STOCK                           "stock"
 #define GLADE_TAG_STOCK_ICON                      "stock-icon"

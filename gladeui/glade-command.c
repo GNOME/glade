@@ -391,11 +391,11 @@ glade_command_set_property_execute (GladeCommand * cmd)
       /* Packing properties need to be refreshed here since
        * they are reset when they get added to containers.
        */
-      if (pclass->packing)
+      if (glade_property_class_get_is_packing (pclass))
         {
           GladeProperty *tmp_prop;
 
-          tmp_prop = glade_widget_get_pack_property (widget, pclass->id);
+          tmp_prop = glade_widget_get_pack_property (widget, glade_property_class_id (pclass));
 
           if (sdata->property != tmp_prop)
             {
@@ -591,19 +591,19 @@ glade_command_set_property_description (GladeCommandSetProperty * me)
       pclass = glade_property_get_class (sdata->property);
       widget = glade_property_get_widget (sdata->property);
       value_name = glade_widget_adaptor_string_from_value
-          (GLADE_WIDGET_ADAPTOR (pclass->handle), pclass, sdata->new_value);
+	(glade_property_class_get_adaptor (pclass), pclass, sdata->new_value);
 
       if (!value_name || strlen (value_name) > MAX_UNDO_MENU_ITEM_VALUE_LEN
           || strchr (value_name, '_'))
         {
           description = g_strdup_printf (_("Setting %s of %s"),
-                                         pclass->name,
+                                         glade_property_class_get_name (pclass),
                                          glade_widget_get_name (widget));
         }
       else
         {
           description = g_strdup_printf (_("Setting %s of %s to %s"),
-                                         pclass->name,
+                                         glade_property_class_get_name (pclass),
                                          glade_widget_get_name (widget),
                                          value_name);
         }
@@ -1251,9 +1251,9 @@ glade_command_transfer_props (GladeWidget * gnew, GList * saved_props)
       GladeProperty *prop, *sprop = l->data;
       GladePropertyClass *pclass = glade_property_get_class (sprop);
 
-      prop = glade_widget_get_pack_property (gnew, pclass->id);
+      prop = glade_widget_get_pack_property (gnew, glade_property_class_id (pclass));
 
-      if (prop && pclass->transfer_on_paste &&
+      if (prop && glade_property_class_transfer_on_paste (pclass) &&
           glade_property_class_match (glade_property_get_class (prop), pclass))
         glade_property_set_value (prop, glade_property_inline_value (sprop));
     }
@@ -1340,7 +1340,7 @@ glade_command_add_execute (GladeCommandAddRemove * me)
                   GladeProperty      *saved_prop = l->data;
 		  GladePropertyClass *pclass = glade_property_get_class (saved_prop);
                   GladeProperty      *widget_prop =
-                      glade_widget_get_pack_property (cdata->widget, pclass->id);
+		    glade_widget_get_pack_property (cdata->widget, glade_property_class_id (pclass));
 
                   glade_property_get_value (saved_prop, &value);
                   glade_property_set_value (widget_prop, &value);

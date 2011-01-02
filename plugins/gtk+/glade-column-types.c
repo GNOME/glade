@@ -62,40 +62,39 @@ column_types_store_populate_enums_flags (GtkListStore * store, gboolean enums)
     {
       GladeWidgetAdaptor *adaptor = list->data;
       GladePropertyClass *pclass;
+      GParamSpec         *pspec;
 
       for (l = glade_widget_adaptor_get_properties (adaptor); l; l = l->next)
         {
           pclass = l->data;
+	  pspec  = glade_property_class_get_pspec (pclass);
 
           /* special case out a few of these... */
-          if (strcmp
-              (g_type_name (pclass->pspec->value_type),
-               "GladeGtkGnomeUIInfo") == 0 ||
-              strcmp (g_type_name (pclass->pspec->value_type),
+          if (strcmp (g_type_name (pspec->value_type),
                       "GladeStock") == 0 ||
-              strcmp (g_type_name (pclass->pspec->value_type),
+              strcmp (g_type_name (pspec->value_type),
                       "GladeStockImage") == 0 ||
-              strcmp (g_type_name (pclass->pspec->value_type),
+              strcmp (g_type_name (pspec->value_type),
                       "GladeGtkImageType") == 0 ||
-              strcmp (g_type_name (pclass->pspec->value_type),
+              strcmp (g_type_name (pspec->value_type),
                       "GladeGtkButtonType") == 0 ||
-              strcmp (g_type_name (pclass->pspec->value_type),
+              strcmp (g_type_name (pspec->value_type),
                       "GladeGnomeDruidPagePosition") == 0 ||
-              strcmp (g_type_name (pclass->pspec->value_type),
+              strcmp (g_type_name (pspec->value_type),
                       "GladeGnomeIconListSelectionMode") == 0 ||
-              strcmp (g_type_name (pclass->pspec->value_type),
+              strcmp (g_type_name (pspec->value_type),
                       "GladeGnomeMessageBoxType") == 0)
             continue;
 
-          if ((enums ? G_TYPE_IS_ENUM (pclass->pspec->value_type) :
-               G_TYPE_IS_FLAGS (pclass->pspec->value_type)) &&
+          if ((enums ? G_TYPE_IS_ENUM (pspec->value_type) :
+               G_TYPE_IS_FLAGS (pspec->value_type)) &&
               !g_list_find_custom (types,
-                                   g_type_name (pclass->pspec->value_type),
+                                   g_type_name (pspec->value_type),
                                    (GCompareFunc) find_by_type_name))
             types =
                 g_list_prepend (types,
                                 g_strdup (g_type_name
-                                          (pclass->pspec->value_type)));
+                                          (pspec->value_type)));
 
         }
     }

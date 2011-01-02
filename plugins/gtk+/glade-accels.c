@@ -202,7 +202,7 @@ glade_eprop_accel_populate_view (GladeEditorProperty * eprop,
 {
   GladeEPropAccel *eprop_accel = GLADE_EPROP_ACCEL (eprop);
   GladeSignalClass *sclass;
-  GladeWidgetAdaptor *adaptor = glade_widget_adaptor_from_pclass (eprop->klass);
+  GladeWidgetAdaptor *adaptor = glade_property_class_get_adaptor (eprop->klass);
   GtkTreeStore *model = (GtkTreeStore *) gtk_tree_view_get_model (view);
   GtkTreeIter iter;
   GladeEpropIterTab *parent_tab;
@@ -339,8 +339,7 @@ accel_edited (GtkCellRendererAccel * accel,
   GtkTreeIter iter, parent_iter, new_iter;
   gchar *accel_text;
   GladeWidgetAdaptor *adaptor =
-      glade_widget_adaptor_from_pclass (GLADE_EDITOR_PROPERTY (eprop_accel)->
-                                        klass);
+      glade_property_class_get_adaptor (GLADE_EDITOR_PROPERTY (eprop_accel)->klass);
   gboolean is_action;
 
   if (!gtk_tree_model_get_iter_from_string (eprop_accel->model,
