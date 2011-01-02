@@ -568,8 +568,6 @@ glade_command_set_property_collapse (GladeCommand * this_cmd,
   g_free (this_cmd->description);
   this_cmd->description = other_cmd->description;
   other_cmd->description = NULL;
-
-  glade_app_update_ui ();
 }
 
 
@@ -848,8 +846,6 @@ glade_command_set_name_collapse (GladeCommand * this_cmd,
   g_free (this_cmd->description);
   this_cmd->description =
       g_strdup_printf (_("Renaming %s to %s"), nthis->name, nthis->old_name);
-
-  glade_app_update_ui ();
 }
 
 /* this function takes the ownership of name */
@@ -2234,8 +2230,6 @@ glade_command_set_i18n_collapse (GladeCommand * this_cmd,
   this->old_comment = other->old_comment;
   other->old_context = NULL;
   other->old_comment = NULL;
-
-  glade_app_update_ui ();
 }
 
 /**

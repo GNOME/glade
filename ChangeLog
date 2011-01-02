@@ -11,6 +11,10 @@
 	* gladeui/glade-project.c: Export glade_project_verify_property() to allow verification of
 	  a single property instead of the whole widget when a property changes.
 
+	* gladeui/glade-command.c: Removed explicit calls to glade_app_update_ui in command->collapse
+	  implementations... GladeProject already emits this after collapsing whenever the project
+	  changes.
+
 2011-01-01  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-command.[ch], Added GladeProject member to base command structure, now
