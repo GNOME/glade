@@ -589,9 +589,9 @@ glade_command_set_property_description (GladeCommandSetProperty * me)
     description = g_strdup_printf (_("Setting multiple properties"));
   else
     {
+      sdata  = me->sdata->data;
       pclass = glade_property_get_class (sdata->property);
       widget = glade_property_get_widget (sdata->property);
-      sdata  = me->sdata->data;
       value_name = glade_widget_adaptor_string_from_value
           (GLADE_WIDGET_ADAPTOR (pclass->handle), pclass, sdata->new_value);
 

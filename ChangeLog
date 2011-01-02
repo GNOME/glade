@@ -3,6 +3,11 @@
 	* gladeui/glade-project.c: Fixed GladeProject to only ever report widgets that are
 	  actually in the project from the GtkTreeModel interface.
 
+	* gladeui/glade-command.c: Fixed segfault introduced by my recent GladeProperty migration
+
+	* gladeui/glade-editor-property.c: Avoid infinite recursion when committing properties more
+	  aggressively (found that editing text properties now make some recursion for some reason).
+
 2011-01-01  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-command.[ch], Added GladeProject member to base command structure, now

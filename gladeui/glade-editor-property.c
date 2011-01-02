@@ -108,6 +108,9 @@ glade_editor_property_commit_no_callback (GladeEditorProperty * eprop,
 {
   g_return_if_fail (GLADE_IS_EDITOR_PROPERTY (eprop));
 
+  if (eprop->committing)
+    return;
+
   g_signal_handler_block (G_OBJECT (eprop->property), eprop->changed_id);
   eprop->committing = TRUE;
   glade_editor_property_commit (eprop, value);
