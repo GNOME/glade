@@ -34,6 +34,13 @@
 	  for loaded widgets with a number), fixes crash when setting naming policy for
 	  glom_developer.glade.
 
+	* gladeui/glade-app.[ch], gladeui/glade-command.c, gladeui/glade-editor.[ch],
+	gladeui/glade-popup.c, gladeui/glade-project.c, gladeui/glade-signal-editor.c,
+	gladeui/glade-widget-adaptor.c, src/glade-window.c, src/main.c:
+	- Removed glade_app_get_editor(), Now the editor is not overly-refreshed by the
+	  core and editors can be created at will, the core doesnt need to hold on to one.
+	- Also, "gtk-doc-search" signal has been moved from the GladeEditor to the GladeApp.
+
 2011-01-02  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-project.c: Fixed GladeProject to only ever report widgets that are

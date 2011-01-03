@@ -450,8 +450,6 @@ glade_project_undo_impl (GladeProject * project)
           (next_cmd->group_id == 0 || next_cmd->group_id != cmd->group_id))
         break;
     }
-
-  glade_editor_refresh (glade_app_get_editor ());
 }
 
 static void
@@ -472,8 +470,6 @@ glade_project_redo_impl (GladeProject * project)
           (next_cmd->group_id == 0 || next_cmd->group_id != cmd->group_id))
         break;
     }
-
-  glade_editor_refresh (glade_app_get_editor ());
 }
 
 static GladeCommand *

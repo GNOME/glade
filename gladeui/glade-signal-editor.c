@@ -733,10 +733,7 @@ glade_signal_editor_devhelp_cb (GtkCellRenderer * cell,
 
   g_object_get (signal_class->adaptor, "book", &book, NULL);
 
-  glade_editor_search_doc_search (glade_app_get_editor (),
-                                  book, 
-				  glade_widget_adaptor_get_name (signal_class->adaptor), 
-				  search);
+  glade_app_search_docs (book, glade_widget_adaptor_get_name (signal_class->adaptor), search);
 
   g_free (search);
   g_free (book);

@@ -102,8 +102,6 @@ GList             *glade_app_get_catalogs (void);
 
 GladeCatalog      *glade_app_get_catalog (const gchar *name);
 
-GladeEditor*       glade_app_get_editor (void);
-
 GladePalette*      glade_app_get_palette (void);
 
 GladeClipboard*    glade_app_get_clipboard (void);
@@ -139,6 +137,10 @@ void               glade_app_set_accel_group (GtkAccelGroup *accel_group);
 GtkAccelGroup     *glade_app_get_accel_group (void);
 
 GList             *glade_app_get_selection (void);
+
+void               glade_app_search_docs (const gchar *book, 
+					  const gchar *page, 
+					  const gchar *search);
 
 /* package paths */
 

@@ -2668,10 +2668,8 @@ glade_widget_adaptor_create_widget_real (gboolean query,
 
   if (query && glade_widget_adaptor_query (adaptor))
     {
-      GladeEditor *editor = glade_app_get_editor ();
-
       /* If user pressed cancel on query popup. */
-      if (!glade_editor_query_dialog (editor, gwidget))
+      if (!glade_editor_query_dialog (gwidget))
         {
           g_object_unref (G_OBJECT (gwidget));
           return NULL;

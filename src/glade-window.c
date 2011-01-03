@@ -103,7 +103,10 @@ struct _GladeWindowPrivate
 
   GtkWidget *inspectors_notebook;
 
-  GtkWidget *statusbar;         /* A pointer to the status bar. */
+  GladeEditor *editor;                  /* The editor */
+
+
+  GtkWidget *statusbar;                 /* A pointer to the status bar. */
   guint statusbar_menu_context_id;      /* The context id of the menu bar */
   guint statusbar_actions_context_id;   /* The context id of actions messages */
 
@@ -495,7 +498,7 @@ project_selection_changed_cb (GladeProject * project, GladeWindow * window)
         }
     }
 
-  glade_editor_load_widget (glade_app_get_editor (), glade_widget);
+  glade_editor_load_widget (window->priv->editor, glade_widget);
 }
 
 static GladeDesignView *
@@ -1747,7 +1750,11 @@ notebook_tab_removed_cb (GtkNotebook     *notebook,
   --window->priv->num_tabs;
 
   if (window->priv->num_tabs == 0)
-    window->priv->active_view = NULL;
+    {
+      gtk_widget_set_sensitive (GTK_WIDGET (window->priv->editor), FALSE);
+
+      window->priv->active_view = NULL;
+    }
 
   project = glade_design_view_get_project (view);
 
@@ -2612,6 +2619,8 @@ add_project (GladeWindow * window, GladeProject * project, gboolean for_file)
   gtk_notebook_set_current_page (GTK_NOTEBOOK (window->priv->notebook), -1);
 
   refresh_notebook_tab_for_project (window, project);
+
+  gtk_widget_set_sensitive (GTK_WIDGET (window->priv->editor), TRUE);
 }
 
 void
@@ -3278,6 +3287,10 @@ glade_window_init (GladeWindow * window)
   vbox = gtk_vbox_new (FALSE, 0);
   gtk_container_add (GTK_CONTAINER (window), vbox);
 
+  /* editor */
+  priv->editor = GLADE_EDITOR (glade_editor_new ());
+  g_object_ref_sink (G_OBJECT (priv->editor));
+
   /* menubar */
   menubar = construct_menu (window);
   gtk_box_pack_start (GTK_BOX (vbox), menubar, FALSE, TRUE, 0);
@@ -3366,7 +3379,7 @@ glade_window_init (GladeWindow * window)
               _("Inspector"), "inspector", vpaned, TRUE);
 
   /* editor */
-  dockitem = GTK_WIDGET (glade_app_get_editor ());
+  dockitem = GTK_WIDGET (priv->editor);
   gtk_paned_pack2 (GTK_PANED (vpaned), dockitem, TRUE, FALSE);
   gtk_widget_show_all (dockitem);
   setup_dock (&priv->docks[DOCK_EDITOR], dockitem, 500, 700,
@@ -3525,12 +3538,9 @@ glade_window_check_devhelp (GladeWindow * window)
 
   if (glade_util_have_devhelp ())
     {
-      GladeEditor *editor = glade_app_get_editor ();
-      glade_editor_show_info (editor);
+      glade_editor_show_info (window->priv->editor);
 
-      g_signal_handlers_disconnect_by_func (editor, doc_search_cb, window);
-
-      g_signal_connect (editor, "gtk-doc-search",
+      g_signal_connect (glade_app_get (), "doc-search",
                         G_CALLBACK (doc_search_cb), window);
 
     }

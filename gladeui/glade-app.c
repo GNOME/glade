@@ -58,6 +58,7 @@
 enum
 {
   SIGNAL_EDITOR_CREATED,
+  DOC_SEARCH,
   LAST_SIGNAL
 };
 
@@ -72,7 +73,6 @@ struct _GladeAppPrivate
   GtkWidget *window;
 
   GladePalette *palette;        /* See glade-palette */
-  GladeEditor *editor;          /* See glade-editor */
   GladeClipboard *clipboard;    /* See glade-clipboard */
   GList *catalogs;              /* See glade-catalog */
 
@@ -158,11 +158,6 @@ glade_app_dispose (GObject * app)
 {
   GladeAppPrivate *priv = GLADE_APP_GET_PRIVATE (app);
 
-  if (priv->editor)
-    {
-      g_object_unref (priv->editor);
-      priv->editor = NULL;
-    }
   if (priv->palette)
     {
       g_object_unref (priv->palette);
@@ -382,12 +377,6 @@ glade_app_init (GladeApp * app)
   app->priv->palette = (GladePalette *) glade_palette_new (app->priv->catalogs);
   g_object_ref_sink (app->priv->palette);
 
-  /* Create Editor */
-  app->priv->editor = GLADE_EDITOR (glade_editor_new ());
-  g_object_ref_sink (G_OBJECT (app->priv->editor));
-
-  glade_editor_refresh (app->priv->editor);
-
   /* Create clipboard */
   app->priv->clipboard = glade_clipboard_new ();
 
@@ -430,6 +419,24 @@ glade_app_class_init (GladeAppClass * klass)
                                      signal_editor_created),
                     NULL, NULL,
                     glade_marshal_VOID__OBJECT, G_TYPE_NONE, 1, G_TYPE_OBJECT);
+
+
+  /**
+   * GladeApp::doc-search:
+   * @gladeeditor: the #GladeEditor which received the signal.
+   * @arg1: the (#gchar *) book to search or %NULL
+   * @arg2: the (#gchar *) page to search or %NULL
+   * @arg3: the (#gchar *) search string or %NULL
+   *
+   * Emitted when the glade core requests that a doc-search be performed.
+   */
+  glade_app_signals[DOC_SEARCH] =
+      g_signal_new ("doc-search",
+                    G_TYPE_FROM_CLASS (object_class),
+                    G_SIGNAL_RUN_LAST, 0, NULL, NULL,
+                    glade_marshal_VOID__STRING_STRING_STRING,
+                    G_TYPE_NONE, 3,
+                    G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
 
   g_object_class_install_property
       (object_class, PROP_POINTER_MODE,
@@ -647,13 +654,6 @@ glade_app_get_window (void)
   return app->priv->window;
 }
 
-GladeEditor *
-glade_app_get_editor (void)
-{
-  GladeApp *app = glade_app_get ();
-  return app->priv->editor;
-}
-
 GladePalette *
 glade_app_get_palette (void)
 {
@@ -810,7 +810,6 @@ glade_app_add_project (GladeProject * project)
 
   /* XXX I think the palette & editor should detect this by itself */
   gtk_widget_set_sensitive (GTK_WIDGET (app->priv->palette), TRUE);
-  gtk_widget_set_sensitive (GTK_WIDGET (app->priv->editor), TRUE);
 }
 
 void
@@ -829,11 +828,6 @@ glade_app_remove_project (GladeProject * project)
       /* XXX I think the palette & editor should detect this. */
       gtk_widget_set_sensitive (GTK_WIDGET (app->priv->palette), FALSE);
 
-      /* set loaded widget to NULL first so that we dont mess
-       * around with sensitivity of the editor children.
-       */
-      glade_editor_load_widget (app->priv->editor, NULL);
-      gtk_widget_set_sensitive (GTK_WIDGET (app->priv->editor), FALSE);
     }
 
   /* Its safe to just release the project as the project emits a
@@ -883,7 +877,7 @@ glade_app_get_pointer_mode (void)
  * from the plugin backend.
  */
 void
-glade_app_set_accel_group (GtkAccelGroup * accel_group)
+glade_app_set_accel_group (GtkAccelGroup *accel_group)
 {
   GladeApp *app;
   g_return_if_fail (GTK_IS_ACCEL_GROUP (accel_group));
@@ -903,4 +897,17 @@ GladeApp *
 glade_app_new (void)
 {
   return g_object_new (GLADE_TYPE_APP, NULL);
+}
+
+void
+glade_app_search_docs (const gchar *book,
+		       const gchar *page, 
+		       const gchar *search)
+{
+  GladeApp *app;
+
+  app = glade_app_get ();
+
+  g_signal_emit (G_OBJECT (app), glade_app_signals[DOC_SEARCH], 0, 
+		 book, page, search);
 }

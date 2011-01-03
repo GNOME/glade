@@ -2220,9 +2220,6 @@ glade_command_set_project_naming_policy (GladeProject * project,
         }
 
       glade_command_pop_group ();
-
-      /* XXX Do we need this ??? */
-      glade_editor_refresh (glade_app_get_editor ());
     }
 }
 

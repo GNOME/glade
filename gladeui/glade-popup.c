@@ -44,9 +44,7 @@ glade_popup_docs_cb (GtkMenuItem * item, GladeWidgetAdaptor * adaptor)
   g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
 
   g_object_get (adaptor, "book", &book, NULL);
-  glade_editor_search_doc_search (glade_app_get_editor (), book, 
-				  glade_widget_adaptor_get_name (adaptor),
-                                  NULL);
+  glade_app_search_docs (book, glade_widget_adaptor_get_name (adaptor), NULL);
   g_free (book);
 }
 
@@ -659,9 +657,7 @@ glade_popup_property_docs_cb (GtkMenuItem * item, GladeProperty * property)
 
   g_object_get (adaptor, "book", &book, NULL);
 
-  glade_editor_search_doc_search (glade_app_get_editor (),
-                                  book, 
-				  g_type_name (pspec->owner_type), search);
+  glade_app_search_docs (book, g_type_name (pspec->owner_type), search);
 
   g_free (book);
   g_free (search);

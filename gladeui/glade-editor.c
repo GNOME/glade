@@ -59,29 +59,9 @@ enum
   PROP_WIDGET
 };
 
-enum
-{
-  GTK_DOC_SEARCH,
-  LAST_SIGNAL
-};
-
 static GtkVBoxClass *parent_class = NULL;
-static guint glade_editor_signals[LAST_SIGNAL] = { 0 };
 
 static void glade_editor_reset_dialog (GladeEditor * editor);
-
-
-void
-glade_editor_search_doc_search (GladeEditor * editor,
-                                const gchar * book,
-                                const gchar * page, const gchar * search)
-{
-  g_return_if_fail (GLADE_IS_EDITOR (editor));
-
-  g_signal_emit (G_OBJECT (editor),
-                 glade_editor_signals[GTK_DOC_SEARCH], 0, book, page, search);
-
-}
 
 static void
 glade_editor_set_property (GObject * object,
@@ -140,8 +120,6 @@ glade_editor_class_init (GladeEditorClass * klass)
   object_class->set_property = glade_editor_set_property;
   object_class->get_property = glade_editor_get_property;
 
-  klass->gtk_doc_search = NULL;
-
   /* Properties */
   g_object_class_install_property
       (object_class, PROP_SHOW_INFO,
@@ -158,26 +136,6 @@ glade_editor_class_init (GladeEditorClass * klass)
                             _("The currently loaded widget in this editor"),
                             GLADE_TYPE_WIDGET, G_PARAM_READWRITE));
 
-
-        /**
-	 * GladeEditor::gtk-doc-search:
-	 * @gladeeditor: the #GladeEditor which received the signal.
-	 * @arg1: the (#gchar *) book to search or %NULL
-	 * @arg2: the (#gchar *) page to search or %NULL
-	 * @arg3: the (#gchar *) search string or %NULL
-	 *
-	 * Emitted when the editor requests that a doc-search be performed.
-	 */
-  glade_editor_signals[GTK_DOC_SEARCH] =
-      g_signal_new ("gtk-doc-search",
-                    G_TYPE_FROM_CLASS (object_class),
-                    G_SIGNAL_RUN_LAST,
-                    G_STRUCT_OFFSET (GladeEditorClass,
-                                     gtk_doc_search),
-                    NULL, NULL,
-                    glade_marshal_VOID__STRING_STRING_STRING,
-                    G_TYPE_NONE, 3,
-                    G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
 }
 
 static GtkWidget *
@@ -254,9 +212,9 @@ glade_editor_on_docs_click (GtkButton * button, GladeEditor * editor)
   if (editor->loaded_widget)
     {
       g_object_get (editor->loaded_adaptor, "book", &book, NULL);
-      glade_editor_search_doc_search (editor, book,
-                                      glade_widget_adaptor_get_name (editor->loaded_adaptor),
-                                      NULL);
+      glade_app_search_docs (book, 
+			     glade_widget_adaptor_get_name (editor->loaded_adaptor),
+			     NULL);
       g_free (book);
     }
 }
@@ -822,9 +780,8 @@ query_dialog_style_set_cb (GtkWidget * dialog,
   gtk_box_set_spacing (GTK_BOX (action_area), 6);
 }
 
-
 gboolean
-glade_editor_query_dialog (GladeEditor * editor, GladeWidget * widget)
+glade_editor_query_dialog (GladeWidget * widget)
 {
   GladeWidgetAdaptor *adaptor;
   GtkWidget *dialog, *editable, *content_area;
@@ -832,7 +789,6 @@ glade_editor_query_dialog (GladeEditor * editor, GladeWidget * widget)
   gint answer;
   gboolean retval = TRUE;
 
-  g_return_val_if_fail (GLADE_IS_EDITOR (editor), FALSE);
   g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
   
   adaptor = glade_widget_get_adaptor (widget);
@@ -850,7 +806,7 @@ glade_editor_query_dialog (GladeEditor * editor, GladeWidget * widget)
                                            GTK_RESPONSE_CANCEL, -1);
   gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
-  editable = glade_editor_get_editable_by_adaptor (editor, adaptor, GLADE_PAGE_QUERY);
+  editable = (GtkWidget *) glade_widget_adaptor_create_editable (adaptor, GLADE_PAGE_QUERY);
 
   content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
   gtk_box_pack_start (GTK_BOX (content_area), editable, FALSE, FALSE, 6);
@@ -869,8 +825,6 @@ glade_editor_query_dialog (GladeEditor * editor, GladeWidget * widget)
    */
   if (answer == GTK_RESPONSE_CANCEL)
     retval = FALSE;
-
-  gtk_container_remove (GTK_CONTAINER (content_area), editable);
 
   gtk_widget_destroy (dialog);
   return retval;

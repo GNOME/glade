@@ -112,15 +112,6 @@ struct _GladeEditorClass
 {
 	GtkVBoxClass parent_class;
 
-	void   (*add_signal) (GladeEditor *editor, const char *id_widget,
-			      GType type_widget, guint id_signal,
-			      const char *callback_name);
-
-	void   (*gtk_doc_search) (GladeEditor *,
-				  const gchar *,
-				  const gchar *,
-				  const gchar *);
-
 };
 
 
@@ -135,17 +126,12 @@ void         glade_editor_load_widget        (GladeEditor *editor,
 
 void         glade_editor_refresh            (GladeEditor *editor);
 
-gboolean     glade_editor_query_dialog       (GladeEditor *editor,
-					      GladeWidget *widget);
+gboolean     glade_editor_query_dialog       (GladeWidget *widget);
 
 void         glade_editor_show_info          (GladeEditor *editor);
 
 void         glade_editor_hide_info          (GladeEditor *editor);
 
-void         glade_editor_search_doc_search  (GladeEditor *editor,
-					      const gchar *book,
-					      const gchar *page,
-					      const gchar *search);
 void glade_editor_set_signal_editor (GladeEditor *editor, GladeSignalEditor *signal_editor);
 
 G_END_DECLS
