@@ -57,7 +57,6 @@
 
 enum
 {
-  UPDATE_UI,
   SIGNAL_EDITOR_CREATED,
   LAST_SIGNAL
 };
@@ -89,7 +88,6 @@ struct _GladeAppPrivate
                                  * GladeWidgets.
                                  */
   GtkAccelGroup *accel_group;   /* Default acceleration group for this app */
-  GList *undo_list, *redo_list; /* Lists of buttons to refresh in update-ui signal */
 
   GladePointerMode pointer_mode;        /* Current mode for the pointer in the workspace */
 
@@ -250,47 +248,6 @@ glade_app_get_property (GObject * object,
  *                    GladeAppClass                              *
  *****************************************************************/
 static void
-glade_app_refresh_undo_redo_button (GladeApp * app,
-                                    GtkWidget * button, gboolean undo)
-{
-  GladeCommand *command = NULL;
-  GladeProject *project;
-  gchar *desc;
-
-  if ((project = glade_app_get_project ()) != NULL)
-    {
-      if (undo)
-        command = glade_project_next_undo_item (project);
-      else
-        command = glade_project_next_redo_item (project);
-    }
-
-  /* Change tooltips */
-  desc = g_strdup_printf ((undo) ? _("Undo: %s") : _("Redo: %s"),
-                          command ? command->
-                          description : _("the last action"));
-  gtk_widget_set_tooltip_text (button, desc);
-  g_free (desc);
-
-  /* Set sensitivity on the button */
-  gtk_widget_set_sensitive (button, command != NULL);
-}
-
-static void
-glade_app_update_ui_default (GladeApp * app)
-{
-  GList *list;
-
-  for (list = app->priv->undo_list; list; list = list->next)
-    if (list->data)
-      glade_app_refresh_undo_redo_button (app, list->data, TRUE);
-
-  for (list = app->priv->redo_list; list; list = list->next)
-    if (list->data)
-      glade_app_refresh_undo_redo_button (app, list->data, FALSE);
-}
-
-static void
 glade_app_signal_editor_created_default (GladeApp * app,
                                          GladeSignalEditor * signal_editor)
 {
@@ -447,9 +404,6 @@ glade_app_init (GladeApp * app)
 
   /* Load the configuration file */
   app->priv->config = glade_app_config_load (app);
-
-  /* Undo/Redo button list */
-  app->priv->undo_list = app->priv->redo_list = NULL;
 }
 
 static void
@@ -465,35 +419,20 @@ glade_app_class_init (GladeAppClass * klass)
   object_class->get_property = glade_app_get_property;
   object_class->set_property = glade_app_set_property;
 
-  klass->update_ui_signal = glade_app_update_ui_default;
   klass->signal_editor_created = glade_app_signal_editor_created_default;
   klass->show_properties = NULL;
   klass->hide_properties = NULL;
 
-        /**
-	 * GladeApp::update-ui:
-	 * @gladeapp: the #GladeApp which received the signal.
-	 *
-	 * Emitted when a project name changes or a cut/copy/paste/delete occurred.
-	 */
-  glade_app_signals[UPDATE_UI] =
-      g_signal_new ("update-ui",
-                    G_TYPE_FROM_CLASS (object_class),
-                    G_SIGNAL_RUN_FIRST,
-                    G_STRUCT_OFFSET (GladeAppClass,
-                                     update_ui_signal),
-                    NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
-
-        /**
-	 * GladeApp::signal-editor-created:
-	 * @gladeapp: the #GladeApp which received the signal.
-	 * @signal_editor: the new #GladeSignalEditor.
-	 *
-	 * Emitted when a new signal editor created.
-	 * A tree view is created in the default handler.
-	 * Connect your handler before the default handler for setting a custom column or renderer
-	 * and after it for connecting to the tree view signals
-	 */
+  /**
+   * GladeApp::signal-editor-created:
+   * @gladeapp: the #GladeApp which received the signal.
+   * @signal_editor: the new #GladeSignalEditor.
+   *
+   * Emitted when a new signal editor created.
+   * A tree view is created in the default handler.
+   * Connect your handler before the default handler for setting a custom column or renderer
+   * and after it for connecting to the tree view signals
+   */
   glade_app_signals[SIGNAL_EDITOR_CREATED] =
       g_signal_new ("signal-editor-created",
                     G_TYPE_FROM_CLASS (object_class),
@@ -689,14 +628,6 @@ glade_app_get (void)
   if (!singleton_app)
     g_critical ("No available GladeApp");
   return singleton_app;
-}
-
-void
-glade_app_update_ui (void)
-{
-  GladeApp *app = glade_app_get ();
-
-  g_signal_emit (G_OBJECT (app), glade_app_signals[UPDATE_UI], 0);
 }
 
 void
@@ -1021,9 +952,6 @@ glade_app_set_project (GladeProject * project)
   /* refresh palette for active project */
   glade_palette_refresh (glade_app_get_palette ());
 
-  /* Update UI */
-  glade_app_update_ui ();
-
   g_object_notify (G_OBJECT (app), "active-project");
 }
 
@@ -1088,10 +1016,7 @@ glade_app_command_copy (void)
     }
 
   if (failed == FALSE && widgets != NULL)
-    {
-      glade_command_copy (widgets);
-      glade_app_update_ui ();
-    }
+    glade_command_copy (widgets);
   else if (widgets == NULL)
     glade_util_ui_message (glade_app_get_window (),
                            GLADE_UI_INFO, NULL, _("No widget selected."));
@@ -1129,10 +1054,7 @@ glade_app_command_cut (void)
     }
 
   if (failed == FALSE && widgets != NULL)
-    {
-      glade_command_cut (widgets);
-      glade_app_update_ui ();
-    }
+    glade_command_cut (widgets);
   else if (widgets == NULL)
     glade_util_ui_message (glade_app_get_window (),
                            GLADE_UI_INFO, NULL, _("No widget selected."));
@@ -1273,7 +1195,6 @@ glade_app_command_paste (GladePlaceholder * placeholder)
     }
 
   glade_command_paste (clipboard->selection, parent, placeholder);
-  glade_app_update_ui ();
 }
 
 
@@ -1302,10 +1223,7 @@ glade_app_command_delete (void)
     }
 
   if (failed == FALSE && widgets != NULL)
-    {
-      glade_command_delete (widgets);
-      glade_app_update_ui ();
-    }
+    glade_command_delete (widgets);
   else if (widgets == NULL)
     glade_util_ui_message (glade_app_get_window (),
                            GLADE_UI_INFO, NULL, _("No widget selected."));
@@ -1334,34 +1252,6 @@ glade_app_command_delete_clipboard (void)
     }
 
   glade_command_delete (clipboard->selection);
-  glade_app_update_ui ();
-}
-
-
-void
-glade_app_command_undo (void)
-{
-  GladeApp *app = glade_app_get ();
-  if (app->priv->active_project)
-    {
-      glade_project_undo (app->priv->active_project);
-      glade_editor_refresh (app->priv->editor);
-      /* Update UI. */
-      glade_app_update_ui ();
-    }
-}
-
-void
-glade_app_command_redo (void)
-{
-  GladeApp *app = glade_app_get ();
-  if (app->priv->active_project)
-    {
-      glade_project_redo (app->priv->active_project);
-      glade_editor_refresh (app->priv->editor);
-      /* Update UI. */
-      glade_app_update_ui ();
-    }
 }
 
 /*
@@ -1386,75 +1276,6 @@ GtkAccelGroup *
 glade_app_get_accel_group (void)
 {
   return glade_app_get ()->priv->accel_group;
-}
-
-static gboolean
-glade_app_undo_button_destroyed (GtkWidget * button, GladeApp * app)
-{
-  app->priv->undo_list = g_list_remove (app->priv->undo_list, button);
-  return FALSE;
-}
-
-static gboolean
-glade_app_redo_button_destroyed (GtkWidget * button, GladeApp * app)
-{
-  app->priv->redo_list = g_list_remove (app->priv->redo_list, button);
-  return FALSE;
-}
-
-static GtkWidget *
-glade_app_undo_redo_button_new (GladeApp * app, gboolean undo)
-{
-  GtkWidget *button;
-
-  button = gtk_button_new_from_stock ((undo) ? GTK_STOCK_UNDO : GTK_STOCK_REDO);
-
-  g_signal_connect_swapped (button, "clicked",
-                            (undo) ? G_CALLBACK (glade_app_command_undo) :
-                            G_CALLBACK (glade_app_command_redo), app);
-
-  if (undo)
-    {
-      app->priv->undo_list = g_list_prepend (app->priv->undo_list, button);
-      g_signal_connect (button, "destroy",
-                        G_CALLBACK (glade_app_undo_button_destroyed), app);
-    }
-  else
-    {
-      app->priv->redo_list = g_list_prepend (app->priv->redo_list, button);
-      g_signal_connect (button, "destroy",
-                        G_CALLBACK (glade_app_redo_button_destroyed), app);
-    }
-
-  glade_app_refresh_undo_redo_button (app, button, undo);
-
-  return button;
-}
-
-/*
- * glade_app_undo_button_new:
- *
- * Creates a new GtkButton undo widget.
- * The button will be automatically updated with @app's undo stack.
- */
-GtkWidget *
-glade_app_undo_button_new (void)
-{
-  GladeApp *app = glade_app_get ();
-  return glade_app_undo_redo_button_new (app, TRUE);
-}
-
-/*
- * glade_app_redo_button_new:
- *
- * Creates a new GtkButton redo widget.
- * The button will be automatically updated with @app's redo stack.
- */
-GtkWidget *
-glade_app_redo_button_new (void)
-{
-  GladeApp *app = glade_app_get ();
-  return glade_app_undo_redo_button_new (app, FALSE);
 }
 
 GList *

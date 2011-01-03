@@ -120,7 +120,6 @@ struct _GladeWindowPrivate
   gchar *default_path;          /* the default path for open/save operations */
 
   GtkToggleToolButton *selector_button; /* the widget selector button (replaces the one in the palette) */
-  GtkToolButton *preview_button;        /* the project preview button (replaces the one in the palette) */
   GtkToggleToolButton *drag_resize_button;      /* sets the pointer to drag/resize mode */
   gboolean setting_pointer_mode;        /* avoid feedback signal loops */
 
@@ -139,7 +138,7 @@ struct _GladeWindowPrivate
   ToolDock docks[N_DOCKS];
 };
 
-static void refresh_undo_redo (GladeWindow * window);
+static void refresh_undo_redo (GladeWindow *window, GladeProject *project);
 
 static void recent_chooser_item_activated_cb (GtkRecentChooser * chooser,
                                               GladeWindow * window);
@@ -427,11 +426,12 @@ add_actions (GladeWindow * window, GladeWidget * widget, GList * actions)
           continue;
         }
 
-      item =
-          gtk_tool_button_new_from_stock ((a->klass->stock) ? a->klass->
-                                          stock : "gtk-execute");
+      item = gtk_tool_button_new_from_stock ((a->klass->stock) ? a->klass->stock : "gtk-execute");
       if (a->klass->label)
-        gtk_tool_button_set_label (GTK_TOOL_BUTTON (item), a->klass->label);
+	{
+	  gtk_tool_button_set_label (GTK_TOOL_BUTTON (item), a->klass->label);
+	  gtk_widget_set_tooltip_text (GTK_WIDGET (item), a->klass->label);
+	}
 
       g_object_set_data (G_OBJECT (item), "glade-widget", widget);
 
@@ -601,6 +601,20 @@ project_targets_changed_cb (GladeProject * project, GladeWindow * window)
 }
 
 static void
+project_changed_cb (GladeProject *project, 
+		    GladeCommand *command,
+		    gboolean      execute,
+		    GladeWindow  *window)
+{
+  GladeProject *active_project;
+
+  active_project = glade_design_view_get_project (window->priv->active_view);
+  
+  if (project == active_project)
+    refresh_undo_redo (window, project);
+}
+
+static void
 refresh_projects_list_item (GladeWindow * window, GladeProject * project)
 {
   GtkAction *action;
@@ -751,50 +765,6 @@ on_selector_button_toggled (GtkToggleToolButton * button, GladeWindow * window)
   else
     gtk_toggle_tool_button_set_active (window->priv->selector_button, TRUE);
 }
-
-static void
-on_preview_button_clicked (GtkToggleToolButton * button, GladeWindow * window)
-{
-  GladeProject *project;
-
-  const GList *objects;
-
-  GtkWidget *widget = NULL;
-  GtkWidget *window_to_preview = NULL;
-  GladeWidget *glade_widget = NULL;
-
-  project = glade_design_view_get_project (window->priv->active_view);
-
-  if (project == NULL)
-    return;
-
-  objects = glade_project_get_objects (project);
-
-  while (objects != NULL)
-    {
-      if (GTK_IS_WIDGET (objects->data))
-        {
-          widget = GTK_WIDGET (objects->data);
-          if (GTK_IS_WINDOW (widget))
-            {
-              window_to_preview = widget;
-              break;
-            }
-        }
-      objects = objects->next;
-    }
-
-  if (widget != NULL)
-    {
-      glade_widget = glade_widget_get_from_gobject (G_OBJECT (widget));
-    }
-
-  if (window_to_preview != NULL)
-    widget = window_to_preview;
-  glade_project_preview (project,
-                         glade_widget_get_from_gobject ((gpointer) widget));
-}
-
 
 static void
 on_drag_resize_button_toggled (GtkToggleToolButton * button,
@@ -1265,9 +1235,8 @@ save_as (GladeWindow * window)
                                        real_path);
 
       gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog),
-                                                _
-                                                ("You do not have the permissions "
-                                                 "necessary to save the file."));
+						_("You do not have the permissions "
+						  "necessary to save the file."));
 
       gtk_window_set_title (GTK_WINDOW (dialog), "");
 
@@ -1352,9 +1321,7 @@ confirm_close_project (GladeWindow * window, GladeProject * project)
                                    GTK_MESSAGE_WARNING,
                                    GTK_BUTTONS_NONE, "%s", msg);
   gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog),
-                                            "%s",
-                                            _
-                                            ("Your changes will be lost if you don't save them."));
+                                            "%s", _("Your changes will be lost if you don't save them."));
   gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER);
 
   gtk_dialog_add_buttons (GTK_DIALOG (dialog),
@@ -1578,23 +1545,31 @@ preferences_cb (GtkAction * action, GladeWindow * window)
 static void
 undo_cb (GtkAction * action, GladeWindow * window)
 {
-  if (!glade_app_get_project ())
+  GladeProject *active_project;
+
+  if (!window->priv->active_view)
     {
       g_warning ("undo should not be sensitive: we don't have a project");
       return;
     }
-  glade_app_command_undo ();
+
+  active_project = glade_design_view_get_project (window->priv->active_view);
+  glade_project_undo (active_project);
 }
 
 static void
 redo_cb (GtkAction * action, GladeWindow * window)
 {
-  if (!glade_app_get_project ())
+  GladeProject *active_project;
+
+  if (!window->priv->active_view)
     {
       g_warning ("redo should not be sensitive: we don't have a project");
       return;
     }
-  glade_app_command_redo ();
+
+  active_project = glade_design_view_get_project (window->priv->active_view);
+  glade_project_redo (active_project);
 }
 
 static void
@@ -1661,6 +1636,8 @@ notebook_switch_page_cb (GtkNotebook * notebook,
     gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action), TRUE);
 
   g_free (action_name);
+
+  refresh_undo_redo (window, project);
 }
 
 static void
@@ -1695,6 +1672,8 @@ notebook_tab_added_cb (GtkNotebook * notebook,
                     G_CALLBACK (project_selection_changed_cb), window);
   g_signal_connect (G_OBJECT (project), "targets-changed",
                     G_CALLBACK (project_targets_changed_cb), window);
+  g_signal_connect (G_OBJECT (project), "changed",
+                    G_CALLBACK (project_changed_cb), window);
 
   /* create inspector */
   inspector = glade_inspector_new ();
@@ -1727,9 +1706,10 @@ notebook_tab_added_cb (GtkNotebook * notebook,
 }
 
 static void
-notebook_tab_removed_cb (GtkNotebook * notebook,
-                         GladeDesignView * view,
-                         guint page_num, GladeWindow * window)
+notebook_tab_removed_cb (GtkNotebook     *notebook,
+                         GladeDesignView *view,
+                         guint            page_num, 
+			 GladeWindow     *window)
 {
   GladeProject *project;
 
@@ -1744,10 +1724,13 @@ notebook_tab_removed_cb (GtkNotebook * notebook,
                                         G_CALLBACK (project_notify_handler_cb),
                                         window);
   g_signal_handlers_disconnect_by_func (G_OBJECT (project),
-                                        G_CALLBACK
-                                        (project_selection_changed_cb), window);
+                                        G_CALLBACK (project_selection_changed_cb), 
+					window);
   g_signal_handlers_disconnect_by_func (G_OBJECT (project),
                                         G_CALLBACK (project_targets_changed_cb),
+                                        window);
+  g_signal_handlers_disconnect_by_func (G_OBJECT (project),
+                                        G_CALLBACK (project_changed_cb),
                                         window);
 
 
@@ -2436,22 +2419,6 @@ create_selector_tool_button (GtkToolbar * toolbar)
 }
 
 static GtkWidget *
-create_preview_tool_button (GtkToolbar * toolbar)
-{
-  GtkToolItem *button;
-  button = gtk_tool_button_new_from_stock (GTK_STOCK_EXECUTE);
-  gtk_tool_button_set_label (GTK_TOOL_BUTTON (button), _("Preview snapshot"));
-
-  gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (button),
-                                  _("Previews snapshot of project"));
-
-  gtk_widget_show (GTK_WIDGET (button));
-
-  return GTK_WIDGET (button);
-}
-
-
-static GtkWidget *
 create_drag_resize_tool_button (GtkToolbar * toolbar)
 {
   GtkToolItem *button;
@@ -2600,9 +2567,6 @@ add_project (GladeWindow * window, GladeProject * project, gboolean for_file)
 
   g_object_set_data (G_OBJECT (view), "view-added-while-loading",
                      GINT_TO_POINTER (for_file));
-
-  /* Update preview button */
-  gtk_widget_set_sensitive (GTK_WIDGET (window->priv->preview_button), FALSE);
 
   /* Pass ownership of the project to the app */
   glade_app_add_project (project);
@@ -2776,8 +2740,6 @@ glade_window_open_project (GladeWindow * window, const gchar * path)
     }
 }
 
-
-
 static void
 change_menu_label (GladeWindow * window,
                    const gchar * path,
@@ -2810,14 +2772,11 @@ change_menu_label (GladeWindow * window,
 }
 
 static void
-refresh_undo_redo (GladeWindow * window)
+refresh_undo_redo (GladeWindow *window, GladeProject *project)
 {
   GladeCommand *undo = NULL, *redo = NULL;
-  GladeProject *project;
-  GtkAction *action;
-  gchar *tooltip;
-
-  project = glade_app_get_project ();
+  GtkAction    *action;
+  gchar        *tooltip;
 
   if (project != NULL)
     {
@@ -2859,22 +2818,6 @@ refresh_undo_redo (GladeWindow * window)
   gtk_menu_tool_button_set_menu (GTK_MENU_TOOL_BUTTON (window->priv->redo),
                                  glade_project_redo_items (project));
 
-}
-
-static void
-update_ui (GladeApp * app, GladeWindow * window)
-{
-  GladeProject *project;
-
-  if (window->priv->active_view)
-    {
-      project = glade_design_view_get_project (window->priv->active_view);
-      gtk_widget_set_sensitive (GTK_WIDGET (window->priv->preview_button),
-                                glade_project_get_previewable (project));
-      gtk_widget_queue_draw (GTK_WIDGET (window->priv->active_view));
-    }
-
-  refresh_undo_redo (window);
 }
 
 static void
@@ -3436,13 +3379,6 @@ glade_window_init (GladeWindow * window)
   gtk_toolbar_insert (GTK_TOOLBAR (priv->toolbar),
                       GTK_TOOL_ITEM (priv->selector_button), -1);
 
-  priv->preview_button =
-      GTK_TOOL_BUTTON (create_preview_tool_button
-                       (GTK_TOOLBAR (priv->toolbar)));
-  gtk_toolbar_insert (GTK_TOOLBAR (priv->toolbar),
-                      GTK_TOOL_ITEM (priv->preview_button), -1);
-  gtk_widget_set_sensitive (GTK_WIDGET (priv->preview_button), FALSE);
-
   priv->drag_resize_button =
       GTK_TOGGLE_TOOL_BUTTON (create_drag_resize_tool_button
                               (GTK_TOOLBAR (priv->toolbar)));
@@ -3454,8 +3390,6 @@ glade_window_init (GladeWindow * window)
 
   g_signal_connect (G_OBJECT (priv->selector_button), "toggled",
                     G_CALLBACK (on_selector_button_toggled), window);
-  g_signal_connect (G_OBJECT (priv->preview_button), "clicked",
-                    G_CALLBACK (on_preview_button_clicked), window);
   g_signal_connect (G_OBJECT (priv->drag_resize_button), "toggled",
                     G_CALLBACK (on_drag_resize_button_toggled), window);
   g_signal_connect (G_OBJECT (glade_app_get ()), "notify::pointer-mode",
@@ -3488,10 +3422,6 @@ glade_window_init (GladeWindow * window)
   /* GtkWindow events */
   g_signal_connect (G_OBJECT (window), "key-press-event",
                     G_CALLBACK (glade_utils_hijack_key_press), window);
-
-  /* GladeApp signals */
-  g_signal_connect (G_OBJECT (priv->app), "update-ui",
-                    G_CALLBACK (update_ui), window);
 
   /* Clipboard signals */
   g_signal_connect (G_OBJECT (glade_app_get_clipboard ()),

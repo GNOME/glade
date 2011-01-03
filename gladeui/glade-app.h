@@ -80,8 +80,7 @@ struct _GladeAppClass
 	void   (*  hide_properties) (GladeApp* app);
 
 	/* signals */
-	void   (* update_ui_signal) (GladeApp    *app);
-	void   (* signal_editor_created) (GladeApp *app, GladeSignalEditor *signal_editor);
+	void   (*  signal_editor_created) (GladeApp *app, GladeSignalEditor *signal_editor);
 };
 
  
@@ -92,8 +91,6 @@ GladeApp*          glade_app_new        (void);
 GType              glade_pointer_mode_get_type (void) G_GNUC_CONST;
 
 GladeApp*          glade_app_get        (void);
-
-void               glade_app_update_ui  (void);
 
 void               glade_app_set_window (GtkWidget *window);
  
@@ -162,12 +159,7 @@ GtkWindow         *glade_app_get_transient_parent (void);
 void               glade_app_set_accel_group (GtkAccelGroup *accel_group);
 
 GtkAccelGroup     *glade_app_get_accel_group (void);
- 
-GtkWidget         *glade_app_undo_button_new (void);
- 
-GtkWidget         *glade_app_redo_button_new (void);
 
- 
 GList             *glade_app_get_selection (void);
 
 

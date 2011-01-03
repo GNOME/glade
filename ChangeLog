@@ -1,3 +1,21 @@
+2011-01-03  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-app.[ch]:
+	  - Removed "update-ui" signal, This signal was encouraging bad behaviour and too much
+	    action on every project change.
+	  - Removed glade_app_create_undo/redo_button().
+
+	* gladeui/glade-project.c: Stop calling glade_app_update_ui ().
+
+	* gladeui/glade-window.c:
+	  - Listen to GladeProject::changed instead of update-ui and only update the
+	    undo/redo actions when the active project changes.
+	  - Remove the preview toolbutton
+	  - Add tooltips to important actions
+
+	* plugins/gtk+/gtk+.xml.in: Mark the "preview" action as "important" so it shows
+	  up in the app toolbar automatically.
+
 2011-01-02  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-project.c: Fixed GladeProject to only ever report widgets that are

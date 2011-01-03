@@ -537,7 +537,6 @@ glade_project_push_undo_impl (GladeProject * project, GladeCommand * cmd)
     {
       GladeCommand *cmd1 = priv->prev_redo_item->data;
 
-
       if (glade_command_unifies (cmd1, cmd))
         {
           glade_command_collapse (cmd1, cmd);
@@ -550,10 +549,12 @@ glade_project_push_undo_impl (GladeProject * project, GladeCommand * cmd)
               glade_project_free_undo_item (project, tmp_redo_item);
               priv->undo_stack =
                   g_list_delete_link (priv->undo_stack, tmp_redo_item);
+
+	      cmd1 = NULL;
             }
 
           g_signal_emit (G_OBJECT (project),
-                         glade_project_signals[CHANGED], 0, NULL, TRUE);
+                         glade_project_signals[CHANGED], 0, cmd1, TRUE);
           return;
         }
     }
@@ -565,7 +566,6 @@ glade_project_push_undo_impl (GladeProject * project, GladeCommand * cmd)
     priv->prev_redo_item = priv->undo_stack;
   else
     priv->prev_redo_item = g_list_next (priv->prev_redo_item);
-
 
   g_signal_emit (G_OBJECT (project),
                  glade_project_signals[CHANGED], 0, cmd, TRUE);
@@ -649,7 +649,6 @@ glade_project_changed_impl (GladeProject * project,
       else
         glade_project_set_modified (project, TRUE);
     }
-  glade_app_update_ui ();
 }
 
 
@@ -744,13 +743,13 @@ glade_project_class_init (GladeProjectClass * klass)
   klass->close = glade_project_close_impl;
   klass->changed = glade_project_changed_impl;
 
-        /**
-	 * GladeProject::add-widget:
-	 * @gladeproject: the #GladeProject which received the signal.
-	 * @arg1: the #GladeWidget that was added to @gladeproject.
-	 *
-	 * Emitted when a widget is added to a project.
-	 */
+  /**
+   * GladeProject::add-widget:
+   * @gladeproject: the #GladeProject which received the signal.
+   * @arg1: the #GladeWidget that was added to @gladeproject.
+   *
+   * Emitted when a widget is added to a project.
+   */
   glade_project_signals[ADD_WIDGET] =
       g_signal_new ("add_widget",
                     G_TYPE_FROM_CLASS (object_class),
@@ -760,13 +759,13 @@ glade_project_class_init (GladeProjectClass * klass)
                     g_cclosure_marshal_VOID__OBJECT,
                     G_TYPE_NONE, 1, GLADE_TYPE_WIDGET);
 
-        /**
-	 * GladeProject::remove-widget:
-	 * @gladeproject: the #GladeProject which received the signal.
-	 * @arg1: the #GladeWidget that was removed from @gladeproject.
-	 * 
-	 * Emitted when a widget is removed from a project.
-	 */
+  /**
+   * GladeProject::remove-widget:
+   * @gladeproject: the #GladeProject which received the signal.
+   * @arg1: the #GladeWidget that was removed from @gladeproject.
+   * 
+   * Emitted when a widget is removed from a project.
+   */
   glade_project_signals[REMOVE_WIDGET] =
       g_signal_new ("remove_widget",
                     G_TYPE_FROM_CLASS (object_class),
@@ -777,13 +776,13 @@ glade_project_class_init (GladeProjectClass * klass)
                     G_TYPE_NONE, 1, GLADE_TYPE_WIDGET);
 
 
-        /**
-	 * GladeProject::widget-name-changed:
-	 * @gladeproject: the #GladeProject which received the signal.
-	 * @arg1: the #GladeWidget who's name changed.
-	 *
-	 * Emitted when @gwidget's name changes.
-	 */
+  /**
+   * GladeProject::widget-name-changed:
+   * @gladeproject: the #GladeProject which received the signal.
+   * @arg1: the #GladeWidget who's name changed.
+   *
+   * Emitted when @gwidget's name changes.
+   */
   glade_project_signals[WIDGET_NAME_CHANGED] =
       g_signal_new ("widget_name_changed",
                     G_TYPE_FROM_CLASS (object_class),
@@ -794,12 +793,12 @@ glade_project_class_init (GladeProjectClass * klass)
                     G_TYPE_NONE, 1, GLADE_TYPE_WIDGET);
 
 
-        /** 
-	 * GladeProject::selection-changed:
-	 * @gladeproject: the #GladeProject which received the signal.
-	 *
-	 * Emitted when @gladeproject selection list changes.
-	 */
+  /** 
+   * GladeProject::selection-changed:
+   * @gladeproject: the #GladeProject which received the signal.
+   *
+   * Emitted when @gladeproject selection list changes.
+   */
   glade_project_signals[SELECTION_CHANGED] =
       g_signal_new ("selection_changed",
                     G_TYPE_FROM_CLASS (object_class),
@@ -808,13 +807,13 @@ glade_project_class_init (GladeProjectClass * klass)
                     NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
 
-        /**
-	 * GladeProject::close:
-	 * @gladeproject: the #GladeProject which received the signal.
-	 *
-	 * Emitted when a project is closing (a good time to clean up
-	 * any associated resources).
-	 */
+  /**
+   * GladeProject::close:
+   * @gladeproject: the #GladeProject which received the signal.
+   *
+   * Emitted when a project is closing (a good time to clean up
+   * any associated resources).
+   */
   glade_project_signals[CLOSE] =
       g_signal_new ("close",
                     G_TYPE_FROM_CLASS (object_class),
@@ -822,14 +821,14 @@ glade_project_class_init (GladeProjectClass * klass)
                     G_STRUCT_OFFSET (GladeProjectClass, close),
                     NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
-        /**
-	 * GladeProject::changed:
-	 * @gladeproject: the #GladeProject which received the signal.
-	 * @arg1: the #GladeCommand that was executed
-	 * @arg2: whether the command was executed or undone.
-	 *
-	 * Emitted when a @gladeproject's state changes via a #GladeCommand.
-	 */
+  /**
+   * GladeProject::changed:
+   * @gladeproject: the #GladeProject which received the signal.
+   * @arg1: the #GladeCommand that was executed
+   * @arg2: whether the command was executed or undone.
+   *
+   * Emitted when a @gladeproject's state changes via a #GladeCommand.
+   */
   glade_project_signals[CHANGED] =
       g_signal_new ("changed",
                     G_TYPE_FROM_CLASS (object_class),
@@ -839,12 +838,12 @@ glade_project_class_init (GladeProjectClass * klass)
                     glade_marshal_VOID__OBJECT_BOOLEAN,
                     G_TYPE_NONE, 2, GLADE_TYPE_COMMAND, G_TYPE_BOOLEAN);
 
-        /**
-	 * GladeProject::parse-began:
-	 * @gladeproject: the #GladeProject which received the signal.
-	 *
-	 * Emitted when @gladeproject parsing starts.
-	 */
+  /**
+   * GladeProject::parse-began:
+   * @gladeproject: the #GladeProject which received the signal.
+   *
+   * Emitted when @gladeproject parsing starts.
+   */
   glade_project_signals[PARSE_BEGAN] =
       g_signal_new ("parse-began",
                     G_TYPE_FROM_CLASS (object_class),
@@ -852,12 +851,12 @@ glade_project_class_init (GladeProjectClass * klass)
                     0, NULL, NULL,
                     g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
-        /**
-	 * GladeProject::parse-finished:
-	 * @gladeproject: the #GladeProject which received the signal.
-	 *
-	 * Emitted when @gladeproject parsing has finished.
-	 */
+  /**
+   * GladeProject::parse-finished:
+   * @gladeproject: the #GladeProject which received the signal.
+   *
+   * Emitted when @gladeproject parsing has finished.
+   */
   glade_project_signals[PARSE_FINISHED] =
       g_signal_new ("parse-finished",
                     G_TYPE_FROM_CLASS (object_class),
@@ -865,12 +864,12 @@ glade_project_class_init (GladeProjectClass * klass)
                     G_STRUCT_OFFSET (GladeProjectClass, parse_finished),
                     NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
-        /**
-	 * GladeProject::targets-changed:
-         * @gladeproject: the #GladeProject which received the signal.
-         *
-         * Emitted when @gladeproject target versions change.
-         */
+  /**
+   * GladeProject::targets-changed:
+   * @gladeproject: the #GladeProject which received the signal.
+   *
+   * Emitted when @gladeproject target versions change.
+   */
   glade_project_signals[TARGETS_CHANGED] =
       g_signal_new ("targets-changed",
                     G_TYPE_FROM_CLASS (object_class),
@@ -878,14 +877,14 @@ glade_project_class_init (GladeProjectClass * klass)
                     0, NULL, NULL,
                     g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
-        /**
-	 * GladeProject::load-progress:
-	 * @gladeproject: the #GladeProject which received the signal.
-	 * @objects_total: the total amount of objects to load
-	 * @objects_loaded: the current amount of loaded objects
-	 *
-	 * Emitted while @project is loading.
-	 */
+  /**
+   * GladeProject::load-progress:
+   * @gladeproject: the #GladeProject which received the signal.
+   * @objects_total: the total amount of objects to load
+   * @objects_loaded: the current amount of loaded objects
+   *
+   * Emitted while @project is loading.
+   */
   glade_project_signals[LOAD_PROGRESS] =
       g_signal_new ("load-progress",
                     G_TYPE_FROM_CLASS (object_class),
@@ -1541,9 +1540,6 @@ glade_project_load_internal (GladeProject * project)
   /* Update ui with versioning info
    */
   glade_project_verify_project_for_ui (project);
-
-  /* Update various things in the UI */
-  glade_app_update_ui ();
 
   return TRUE;
 
