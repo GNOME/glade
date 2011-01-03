@@ -29,6 +29,10 @@
 
 	19 files changed, 652 insertions(+), 1135 deletions(-)
 
+	* gladeui/glade-project.c, gladeui/glade-id-allocator.c: Dont index unallocated
+	  memory when releasing a widget name that was never allocated (this can happen
+	  for loaded widgets with a number), fixes crash when setting naming policy for
+	  glom_developer.glade.
 
 2011-01-02  Tristan Van Berkom <tristanvb@openismus.com>
 

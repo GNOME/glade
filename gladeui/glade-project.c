@@ -110,8 +110,7 @@ struct _GladeProjectPrivate
   gboolean has_selection;       /* Whether the project has a selection */
 
   GladeNameContext *toplevel_names;     /* Context for uniqueness of names at the toplevel */
-  GList *toplevels;             /* List of toplevels with thier own naming contexts */
-
+  GList *toplevels;                     /* List of toplevels with thier own naming contexts */
 
 
   GList *undo_stack;            /* A stack with the last executed commands */
@@ -164,7 +163,7 @@ struct _GladeProjectPrivate
 
 typedef struct
 {
-  GladeWidget *toplevel;
+  GladeWidget      *toplevel;
   GladeNameContext *names;
 } TopLevelInfo;
 
@@ -2616,7 +2615,6 @@ glade_project_release_widget_name (GladeProject * project,
           g_list_remove (project->priv->toplevels, tinfo);
       g_free (tinfo);
     }
-
 }
 
 /**
@@ -2658,8 +2656,6 @@ glade_project_available_widget_name (GladeProject * project,
   else
     available =
         !glade_name_context_has_name (project->priv->toplevel_names, name);
-
-  //g_print ("widget name %s is available: %d (policy %d)\n", name, available, project->priv->naming_policy);
 
   return available;
 }
@@ -2730,8 +2726,6 @@ glade_project_new_widget_name (GladeProject * project,
   else
     name =
         glade_name_context_new_name (project->priv->toplevel_names, base_name);
-
-  //g_print ("Allocating widget name %s, widget parent %p\n", name, widget->parent);
 
   return name;
 }
@@ -4069,8 +4063,7 @@ glade_project_build_prefs_box (GladeProject * project)
       gtk_radio_button_new_with_label (NULL, _("within the project"));
   project->priv->toplevel_contextual_radio =
       gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON
-                                                   (project->priv->
-                                                    project_wide_radio),
+                                                   (project->priv->project_wide_radio),
                                                    _("inside toplevels"));
 
   gtk_size_group_add_widget (sizegroup1, project->priv->project_wide_radio);
