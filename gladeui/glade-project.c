@@ -2837,7 +2837,6 @@ glade_project_release_widget_name (GladeProject *project, GladeWidget *gwidget, 
 		g_free (tinfo);
 		project->priv->toplevels = g_list_remove (project->priv->toplevels, tinfo);
 	}
-
 }
 
 /**

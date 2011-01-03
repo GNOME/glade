@@ -152,10 +152,23 @@ void
 glade_id_allocator_release (GladeIDAllocator *allocator,
 			    guint             id)
 {
+	guint word_idx;
+
 	g_return_if_fail (allocator != NULL);
 
-	id = id > 0 ? id - 1 : 0;
-	allocator->data[id >> 5] |= 1 << (id & 31);
+	/* Allocated ids start with 1 */
+	if (id > 0)
+	{
+		id = id - 1;
+		word_idx = id >> 5;
+
+		/* Tollerate releasing ids that were never allocated with the allocator 
+		 * or are out of range... when we load Glade files with huge numbers it happens
+		 * that loaded unallocated ids are out of range
+		 */
+		if (word_idx < allocator->n_words)
+			allocator->data[word_idx] |= 1 << (id & 31);
+	}
 }
 
 #ifdef GLADE_ID_ALLOCATOR_TEST
