@@ -47,30 +47,34 @@ typedef struct _GladePaletteClass    GladePaletteClass;
 
 struct _GladePalette
 {
-	GtkVBox parent_instance;
+  GtkVBox parent_instance;
 
-	GladePalettePrivate *priv;
+  GladePalettePrivate *priv;
 };
 
 struct _GladePaletteClass
 {
-	GtkVBoxClass parent_class;
+  GtkVBoxClass parent_class;
 
-	void    (* toggled)    (GladePalette *palette);
-	void    (* refresh)    (GladePalette *palette);
+  void    (* toggled)    (GladePalette *palette);
+  void    (* refresh)    (GladePalette *palette);
 };
 
 typedef enum
 {
-	GLADE_ITEM_ICON_AND_LABEL,
-	GLADE_ITEM_ICON_ONLY,
-	GLADE_ITEM_LABEL_ONLY
+  GLADE_ITEM_ICON_AND_LABEL,
+  GLADE_ITEM_ICON_ONLY,
+  GLADE_ITEM_LABEL_ONLY
 } GladeItemAppearance;
 
 
 GType                glade_palette_get_type                 (void) G_GNUC_CONST;
 
 GtkWidget           *glade_palette_new                      (const GList  *catalogs);
+
+GladeProject        *glade_palette_get_project              (GladePalette *palette);
+void                 glade_palette_set_project              (GladePalette *palette,
+							     GladeProject *project);
 
 void                 glade_palette_deselect_current_item    (GladePalette *palette,
 							     gboolean      sticky_aware);
@@ -91,8 +95,6 @@ void		     glade_palette_set_show_selector_button (GladePalette *palette,
 							     gboolean      show_selector_button);
 							     
 gboolean             glade_palette_get_show_selector_button (GladePalette *palette);
-
-void                 glade_palette_refresh                  (GladePalette *palette);
 
 GladeWidget         *glade_palette_create_root_widget       (GladePalette *palette,
 							     GladeWidgetAdaptor *adaptor);

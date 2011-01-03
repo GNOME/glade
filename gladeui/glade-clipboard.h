@@ -16,8 +16,7 @@ struct _GladeClipboard
 {
 	GObject    parent_instance;
 
-	GList     *widgets;     /* A list of GladeWidget's on the clipboard */
-	GList     *selection;   /* Selection list of GladeWidget's */
+	GList     *widgets;       /* A list of GladeWidget's on the clipboard */
 	gboolean   has_selection; /* TRUE if clipboard has selection */
 };
 
@@ -27,7 +26,6 @@ struct _GladeClipboardClass
 };
 
 
-
 GType           glade_clipboard_get_type         (void);
 
 GladeClipboard *glade_clipboard_new              (void);
@@ -35,19 +33,9 @@ GladeClipboard *glade_clipboard_new              (void);
 void            glade_clipboard_add              (GladeClipboard *clipboard, 
 						  GList          *widgets);
 
-void            glade_clipboard_remove           (GladeClipboard *clipboard, 
-						  GList          *widgets);
-
-void            glade_clipboard_selection_add    (GladeClipboard *clipboard, 
-						  GladeWidget    *widget);
-
-void            glade_clipboard_selection_remove (GladeClipboard *clipboard, 
-						  GladeWidget    *widget);
-
-void            glade_clipboard_selection_clear  (GladeClipboard *clipboard);
+void            glade_clipboard_clear            (GladeClipboard *clipboard);
 
 gboolean        glade_clipboard_get_has_selection  (GladeClipboard *clipboard);
-
 
 G_END_DECLS
 

@@ -771,9 +771,7 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
                                   GObject * object, const gchar * action_path)
 {
   GladeWidget *gwidget = glade_widget_get_from_gobject (object), *gparent;
-  GList this_widget = { 0, }, that_widget =
-  {
-  0,};
+  GList this_widget = { 0, }, that_widget = { 0,};
   GtkWidget *parent = gtk_widget_get_parent (GTK_WIDGET (object));
   GladeProject *project;
 
@@ -782,9 +780,10 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
   else
     gparent = NULL;
 
+  project = glade_widget_get_project (gwidget);
+
   if (strcmp (action_path, "preview") == 0)
     {
-      project = glade_widget_get_project (gwidget);
       glade_project_preview (project,
                              glade_widget_get_from_gobject ((gpointer) object));
     }
@@ -811,7 +810,7 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
       glade_command_delete (&that_widget);
 
       /* Add "this" widget to the new parent */
-      glade_command_paste (&this_widget, new_gparent, NULL);
+      glade_command_paste (&this_widget, new_gparent, NULL, project);
 
       glade_command_pop_group ();
     }
@@ -850,7 +849,6 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
           GladeWidgetAdaptor *adaptor =
               glade_widget_adaptor_get_by_type (new_type);
           GList *saved_props, *prop_cmds;
-          GladeProject *project;
 
           /* Dont add non-scrollable widgets to scrolled windows... */
           if (gparent &&
@@ -870,11 +868,6 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
           /* Remove "this" widget */
           this_widget.data = gwidget;
           glade_command_cut (&this_widget);
-
-          if (gparent)
-            project = glade_widget_get_project (gparent);
-          else
-            project = glade_app_get_project ();
 
           /* Create new widget and put it where the placeholder was */
           if ((that_widget.data =
@@ -902,16 +895,16 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
 
               /* Apply the properties in an undoable way */
               if (prop_cmds)
-                glade_command_set_properties_list (glade_widget_get_project
-                                                   (gparent), prop_cmds);
+                glade_command_set_properties_list 
+		  (glade_widget_get_project (gparent), prop_cmds);
 
               /* Add "this" widget to the new parent */
               glade_command_paste (&this_widget,
-                                   GLADE_WIDGET (that_widget.data), NULL);
+                                   GLADE_WIDGET (that_widget.data), NULL, project);
             }
           else
             /* Create parent was cancelled, paste back to parent */
-            glade_command_paste (&this_widget, gparent, NULL);
+            glade_command_paste (&this_widget, gparent, NULL, project);
 
           glade_command_pop_group ();
         }
@@ -4053,7 +4046,8 @@ glade_gtk_box_notebook_child_insert_remove_action (GladeWidgetAdaptor * adaptor,
       gtab = glade_gtk_notebook_generate_tab (parent, new_pos + 1);
       list.data = gtab;
 
-      glade_command_paste (&list, parent, GLADE_PLACEHOLDER (tab_placeholder));
+      glade_command_paste (&list, parent, GLADE_PLACEHOLDER (tab_placeholder),
+			   glade_widget_get_project (parent));
     }
 
   g_list_foreach (children, (GFunc) g_object_unref, NULL);

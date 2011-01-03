@@ -57,6 +57,8 @@ struct _GladePalettePrivate
 {
   const GList *catalogs;        /* List of widget catalogs */
 
+  GladeProject *project;
+
   GtkWidget *selector_hbox;
   GtkWidget *selector_button;
   GtkWidget *create_root_button;
@@ -83,20 +85,23 @@ enum
   PROP_ITEM_APPEARANCE,
   PROP_USE_SMALL_ITEM_ICONS,
   PROP_SHOW_SELECTOR_BUTTON,
-  PROP_CATALOGS
+  PROP_CATALOGS,
+  PROP_PROJECT
 };
 
 static guint glade_palette_signals[LAST_SIGNAL] = { 0 };
 
 static void glade_palette_append_item_group (GladePalette * palette,
                                              GladeWidgetGroup * group);
+static void glade_palette_refresh           (GladePalette * palette);
 
 static void glade_palette_update_appearance (GladePalette * palette);
 
 G_DEFINE_TYPE (GladePalette, glade_palette, GTK_TYPE_VBOX)
-     static void
-         selector_button_toggled_cb (GtkToggleButton * button,
-                                     GladePalette * palette)
+
+static void
+selector_button_toggled_cb (GtkToggleButton * button,
+			    GladePalette * palette)
 {
   if (gtk_toggle_button_get_active (button))
     {
@@ -131,7 +136,46 @@ glade_palette_set_catalogs (GladePalette * palette, GList * catalogs)
             glade_palette_append_item_group (palette, group);
         }
     }
+}
 
+GladeProject *
+glade_palette_get_project (GladePalette *palette)
+{
+  g_return_val_if_fail (GLADE_IS_PALETTE (palette), NULL);
+
+  return palette->priv->project;
+}
+
+void
+glade_palette_set_project (GladePalette *palette,
+			   GladeProject *project)
+{
+  g_return_if_fail (GLADE_IS_PALETTE (palette));
+
+  if (palette->priv->project != project)
+    {
+
+      if (palette->priv->project)
+	{
+	  g_signal_handlers_disconnect_by_func (G_OBJECT (palette->priv->project),
+						G_CALLBACK (glade_palette_refresh),
+						palette);
+	}
+
+      palette->priv->project = project;
+
+      if (palette->priv->project)
+	{
+	  g_signal_connect_swapped (G_OBJECT (palette->priv->project), "targets-changed",
+				    G_CALLBACK (glade_palette_refresh), palette);
+	  g_signal_connect_swapped (G_OBJECT (palette->priv->project), "parse-finished",
+				    G_CALLBACK (glade_palette_refresh), palette);
+	}
+
+      glade_palette_refresh (palette);
+
+      g_object_notify (G_OBJECT (palette), "project");
+    }
 }
 
 /**
@@ -146,7 +190,9 @@ glade_palette_set_item_appearance (GladePalette * palette,
                                    GladeItemAppearance item_appearance)
 {
   GladePalettePrivate *priv;
+
   g_return_if_fail (GLADE_IS_PALETTE (palette));
+
   priv = palette->priv;
 
   if (priv->item_appearance != item_appearance)
@@ -232,23 +278,26 @@ glade_palette_set_property (GObject * object,
 
   switch (prop_id)
     {
-      case PROP_USE_SMALL_ITEM_ICONS:
-        glade_palette_set_use_small_item_icons (palette,
-                                                g_value_get_boolean (value));
-        break;
-      case PROP_ITEM_APPEARANCE:
-        glade_palette_set_item_appearance (palette, g_value_get_enum (value));
-        break;
-      case PROP_SHOW_SELECTOR_BUTTON:
-        glade_palette_set_show_selector_button (palette,
-                                                g_value_get_boolean (value));
-        break;
-      case PROP_CATALOGS:
-        glade_palette_set_catalogs (palette, g_value_get_pointer (value));
-        break;
-      default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-        break;
+    case PROP_PROJECT:
+      glade_palette_set_project (palette, (GladeProject *)g_value_get_object (value));
+      break;
+    case PROP_USE_SMALL_ITEM_ICONS:
+      glade_palette_set_use_small_item_icons (palette,
+					      g_value_get_boolean (value));
+      break;
+    case PROP_ITEM_APPEARANCE:
+      glade_palette_set_item_appearance (palette, g_value_get_enum (value));
+      break;
+    case PROP_SHOW_SELECTOR_BUTTON:
+      glade_palette_set_show_selector_button (palette,
+					      g_value_get_boolean (value));
+      break;
+    case PROP_CATALOGS:
+      glade_palette_set_catalogs (palette, g_value_get_pointer (value));
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
     }
 }
 
@@ -261,31 +310,34 @@ glade_palette_get_property (GObject * object,
 
   switch (prop_id)
     {
-      case PROP_CURRENT_ITEM:
-        if (priv->current_item)
-          g_value_set_pointer (value, g_object_get_data
-                               (G_OBJECT (priv->current_item),
-                                "glade-widget-adaptor"));
-        else
-          g_value_set_pointer (value, NULL);
-
-        break;
-      case PROP_USE_SMALL_ITEM_ICONS:
-        g_value_set_boolean (value, priv->use_small_item_icons);
-        break;
-      case PROP_SHOW_SELECTOR_BUTTON:
-        g_value_set_boolean (value,
-                             gtk_widget_get_visible (priv->selector_button));
-        break;
-      case PROP_ITEM_APPEARANCE:
-        g_value_set_enum (value, priv->item_appearance);
-        break;
-      case PROP_CATALOGS:
-        g_value_set_pointer (value, (gpointer) priv->catalogs);
-        break;
-      default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-        break;
+    case PROP_PROJECT:
+      g_value_set_object (value, priv->project);
+      break;
+    case PROP_CURRENT_ITEM:
+      if (priv->current_item)
+	g_value_set_pointer (value, g_object_get_data
+			     (G_OBJECT (priv->current_item),
+			      "glade-widget-adaptor"));
+      else
+	g_value_set_pointer (value, NULL);
+      
+      break;
+    case PROP_USE_SMALL_ITEM_ICONS:
+      g_value_set_boolean (value, priv->use_small_item_icons);
+      break;
+    case PROP_SHOW_SELECTOR_BUTTON:
+      g_value_set_boolean (value,
+			   gtk_widget_get_visible (priv->selector_button));
+      break;
+    case PROP_ITEM_APPEARANCE:
+      g_value_set_enum (value, priv->item_appearance);
+      break;
+    case PROP_CATALOGS:
+      g_value_set_pointer (value, (gpointer) priv->catalogs);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
     }
 }
 
@@ -363,6 +415,14 @@ glade_palette_class_init (GladePaletteClass * klass)
                     NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
   g_object_class_install_property (object_class,
+                                   PROP_PROJECT,
+                                   g_param_spec_object ("project",
+							"Project",
+							"This palette's current project",
+							GLADE_TYPE_PROJECT,
+							G_PARAM_READWRITE));
+
+  g_object_class_install_property (object_class,
                                    PROP_ITEM_APPEARANCE,
                                    g_param_spec_enum ("item-appearance",
                                                       "Item Appearance",
@@ -413,8 +473,7 @@ glade_palette_create_root_widget (GladePalette * palette,
 
   /* Dont deselect palette if create is canceled by user in query dialog */
   if ((widget =
-       glade_command_create (adaptor, NULL, NULL,
-                             glade_app_get_project ())) != NULL)
+       glade_command_create (adaptor, NULL, NULL, palette->priv->project)) != NULL)
     glade_palette_deselect_current_item (palette, FALSE);
 
   return widget;
@@ -502,7 +561,8 @@ glade_palette_on_button_toggled (GtkWidget * button, GladePalette * palette)
 
 
 static void
-glade_palette_item_refresh (GtkWidget * item)
+glade_palette_item_refresh (GladePalette *palette, 
+			    GtkWidget    *item)
 {
   GladeProject *project;
   GladeSupportMask support;
@@ -512,7 +572,7 @@ glade_palette_item_refresh (GtkWidget * item)
   adaptor = g_object_get_data (G_OBJECT (item), "glade-widget-adaptor");
   g_assert (adaptor);
 
-  if ((project = glade_app_check_get_project ()) &&
+  if ((project = palette->priv->project) &&
       (warning =
        glade_project_verify_widget_adaptor (project, adaptor,
                                             &support)) != NULL)
@@ -548,15 +608,17 @@ glade_palette_item_refresh (GtkWidget * item)
 
 static gint
 glade_palette_item_button_press (GtkWidget * button,
-                                 GdkEventButton * event, GladePalette * item)
+                                 GdkEventButton * event, GtkToolItem * item)
 {
   if (glade_popup_is_popup_event (event))
     {
       GladeWidgetAdaptor *adaptor;
+      GladePalette       *palette;
 
       adaptor = g_object_get_data (G_OBJECT (item), "glade-widget-adaptor");
+      palette = g_object_get_data (G_OBJECT (item), "glade-palette");
 
-      glade_popup_palette_pop (adaptor, event);
+      glade_popup_palette_pop (palette, adaptor, event);
       return TRUE;
     }
 
@@ -570,6 +632,7 @@ glade_palette_new_item (GladePalette * palette, GladeWidgetAdaptor * adaptor)
 
   item = (GtkWidget *) gtk_toggle_tool_button_new ();
   g_object_set_data (G_OBJECT (item), "glade-widget-adaptor", adaptor);
+  g_object_set_data (G_OBJECT (item), "glade-palette", palette);
 
   button = gtk_bin_get_child (GTK_BIN (item));
   g_assert (GTK_IS_BUTTON (button));
@@ -582,15 +645,15 @@ glade_palette_new_item (GladePalette * palette, GladeWidgetAdaptor * adaptor)
   gtk_widget_show (box);
   gtk_container_add (GTK_CONTAINER (box), label);
   gtk_tool_button_set_label_widget (GTK_TOOL_BUTTON (item), box);
-  glade_palette_item_refresh (item);
+  glade_palette_item_refresh (palette, item);
 
   /* Update selection when the item is pushed */
   g_signal_connect (G_OBJECT (item), "toggled",
                     G_CALLBACK (glade_palette_on_button_toggled), palette);
 
   /* Update palette item when active project state changes */
-  g_signal_connect_swapped (G_OBJECT (palette), "refresh",
-                            G_CALLBACK (glade_palette_item_refresh), item);
+  g_signal_connect (G_OBJECT (palette), "refresh",
+		    G_CALLBACK (glade_palette_item_refresh), item);
 
   /* Fire Glade palette popup menus */
   g_signal_connect (G_OBJECT (button), "button-press-event",
@@ -913,7 +976,7 @@ glade_palette_get_show_selector_button (GladePalette * palette)
  *
  * Refreshes project dependant states of palette buttons
  */
-void
+static void
 glade_palette_refresh (GladePalette * palette)
 {
   g_return_if_fail (GLADE_IS_PALETTE (palette));

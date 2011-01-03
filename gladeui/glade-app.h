@@ -108,12 +108,6 @@ GladePalette*      glade_app_get_palette (void);
 
 GladeClipboard*    glade_app_get_clipboard (void);
 
-GladeProject*      glade_app_get_project (void);
-
-GladeProject*      glade_app_check_get_project (void);
- 
-void               glade_app_set_project (GladeProject *project);
-
 GladePointerMode   glade_app_get_pointer_mode (void);
  
 void               glade_app_set_pointer_mode (GladePointerMode mode);
@@ -133,22 +127,6 @@ GladeProject*      glade_app_get_project_by_path (const gchar *project_path);
 void               glade_app_show_properties (gboolean raise);
  
 void               glade_app_hide_properties (void);
-
- 
-void               glade_app_command_copy (void);
- 
-void               glade_app_command_cut (void);
- 
-void               glade_app_command_paste (GladePlaceholder *placeholder);
- 
-void               glade_app_command_delete (void);
-
-void               glade_app_command_delete_clipboard (void);
- 
-void               glade_app_command_undo (void);
- 
-void               glade_app_command_redo (void);
-
  
 gint               glade_app_config_save (void);
  
@@ -161,28 +139,6 @@ void               glade_app_set_accel_group (GtkAccelGroup *accel_group);
 GtkAccelGroup     *glade_app_get_accel_group (void);
 
 GList             *glade_app_get_selection (void);
-
-
-/* These handle selection on a global scope and take care
- * of multiple project logic.
- */
- 
-gboolean           glade_app_is_selected       (GObject  *object);
- 
-void               glade_app_selection_set     (GObject  *object,
-					        gboolean  emit_signal);
- 
-void               glade_app_selection_add     (GObject  *object,
-					        gboolean  emit_signal);
- 
-void               glade_app_selection_remove  (GObject  *object,
-					        gboolean  emit_signal);
- 
-void               glade_app_selection_clear   (gboolean  emit_signal);
- 
-void               glade_app_selection_changed (void);
-
-void               glade_app_queue_selection_changed (void);
 
 /* package paths */
 

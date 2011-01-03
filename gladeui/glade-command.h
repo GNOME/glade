@@ -128,15 +128,14 @@ GladeWidget   *glade_command_create        (GladeWidgetAdaptor *adaptor,
 					    GladePlaceholder   *placeholder,
 					    GladeProject       *project);
 
-/************************ cut/copy/paste ******************************/
+/************************ cut/paste/dnd ******************************/
 
 void           glade_command_cut           (GList             *widgets);
 
-void           glade_command_copy          (GList             *widgets);
-
 void           glade_command_paste         (GList             *widgets,
 					    GladeWidget       *parent,
-					    GladePlaceholder  *placeholder);
+					    GladePlaceholder  *placeholder,
+					    GladeProject      *project);
 
 void           glade_command_dnd           (GList             *widgets,
 					    GladeWidget       *parent,

@@ -149,9 +149,10 @@ static void glade_window_config_save (GladeWindow * window);
 
 
 G_DEFINE_TYPE (GladeWindow, glade_window, GTK_TYPE_WINDOW)
+
 /* the following functions are taken from gedit-utils.c */
-     static gchar *str_middle_truncate (const gchar * string,
-                                        guint truncate_length)
+static gchar *str_middle_truncate (const gchar * string,
+				   guint truncate_length)
 {
   GString *truncated;
   guint length;
@@ -461,9 +462,13 @@ add_actions (GladeWindow * window, GladeWidget * widget, GList * actions)
 static void
 project_selection_changed_cb (GladeProject * project, GladeWindow * window)
 {
-  GladeWidget *glade_widget = NULL;
-  GList *list;
-  gint num;
+  GladeProject *active_project = NULL;
+  GladeWidget  *glade_widget = NULL;
+  GList        *list;
+  gint          num;
+
+  if (window->priv->active_view)
+    active_project = glade_design_view_get_project (window->priv->active_view);
 
   /* This is sometimes called with a NULL project (to make the label
    * insensitive with no projects loaded)
@@ -473,7 +478,7 @@ project_selection_changed_cb (GladeProject * project, GladeWindow * window)
   /* Only update the toolbar & workspace if the selection has changed on
    * the currently active project.
    */
-  if (project && (project == glade_app_get_project ()))
+  if (project == active_project)
     {
       list = glade_project_selection_get (project);
       num = g_list_length (list);
@@ -489,6 +494,8 @@ project_selection_changed_cb (GladeProject * project, GladeWindow * window)
             add_actions (window, glade_widget, glade_widget_get_actions (glade_widget));
         }
     }
+
+  glade_editor_load_widget (glade_app_get_editor (), glade_widget);
 }
 
 static GladeDesignView *
@@ -698,7 +705,10 @@ static void
 project_notify_handler_cb (GladeProject * project, GParamSpec * spec,
                            GladeWindow * window)
 {
-  GtkAction *action;
+  GladeProject *active_project;
+  GtkAction    *action;
+
+  active_project = glade_design_view_get_project (window->priv->active_view);
 
   if (strcmp (spec->name, "path") == 0 || strcmp (spec->name, "format") == 0)
     refresh_notebook_tab_for_project (window, project);
@@ -716,8 +726,7 @@ project_notify_handler_cb (GladeProject * project, GParamSpec * spec,
           gtk_action_group_get_action (window->priv->project_actions, "Save");
       gtk_action_set_sensitive (action, !glade_project_get_readonly (project));
     }
-  else if (strcmp (spec->name, "has-selection") == 0 &&
-           (project == glade_app_get_project ()))
+  else if (strcmp (spec->name, "has-selection") == 0 && (project == active_project))
     {
       action =
           gtk_action_group_get_action (window->priv->project_actions, "Cut");
@@ -1503,30 +1512,53 @@ quit_cb (GtkAction * action, GladeWindow * window)
 static void
 copy_cb (GtkAction * action, GladeWindow * window)
 {
-  glade_app_command_copy ();
+  GladeProject *project;
+
+  if (!window->priv->active_view)
+    return;
+
+  project = glade_design_view_get_project (window->priv->active_view);
+
+  glade_project_copy_selection (project);
 }
 
 static void
 cut_cb (GtkAction * action, GladeWindow * window)
 {
-  glade_app_command_cut ();
+  GladeProject *project;
+
+  if (!window->priv->active_view)
+    return;
+
+  project = glade_design_view_get_project (window->priv->active_view);
+
+  glade_project_command_cut (project);
 }
 
 static void
 paste_cb (GtkAction * action, GladeWindow * window)
 {
-  glade_app_command_paste (NULL);
+  GladeProject *project;
+
+  if (!window->priv->active_view)
+    return;
+
+  project = glade_design_view_get_project (window->priv->active_view);
+
+  glade_project_command_paste (project, NULL);
 }
 
 static void
 delete_cb (GtkAction * action, GladeWindow * window)
 {
-  if (!glade_app_get_project ())
-    {
-      g_warning ("delete should not be sensitive: we don't have a project");
-      return;
-    }
-  glade_app_command_delete ();
+  GladeProject *project;
+
+  if (!window->priv->active_view)
+    return;
+
+  project = glade_design_view_get_project (window->priv->active_view);
+
+  glade_project_command_delete (project);
 }
 
 static void
@@ -1612,8 +1644,7 @@ notebook_switch_page_cb (GtkNotebook * notebook,
 
   project = glade_design_view_get_project (view);
 
-  /* FIXME: this does not feel good */
-  glade_app_set_project (project);
+  glade_palette_set_project (glade_app_get_palette (), project);
 
   refresh_title (window);
   set_sensitivity_according_to_project (window, project);
@@ -1638,6 +1669,9 @@ notebook_switch_page_cb (GtkNotebook * notebook,
   g_free (action_name);
 
   refresh_undo_redo (window, project);
+
+  /* Refresh the editor and some of the actions */
+  project_selection_changed_cb (project, window);
 }
 
 static void
@@ -1691,14 +1725,11 @@ notebook_tab_added_cb (GtkNotebook * notebook,
   gtk_notebook_append_page (GTK_NOTEBOOK (window->priv->inspectors_notebook),
                             inspector, NULL);
 
-
   set_sensitivity_according_to_project (window, project);
 
   refresh_projects_list_menu (window);
 
   refresh_title (window);
-
-  project_selection_changed_cb (glade_app_get_project (), window);
 
   if (window->priv->num_tabs > 0)
     gtk_action_group_set_sensitive (window->priv->project_actions, TRUE);
@@ -1746,7 +1777,8 @@ notebook_tab_removed_cb (GtkNotebook     *notebook,
 
   refresh_title (window);
 
-  project_selection_changed_cb (glade_app_get_project (), window);
+  /* Refresh the editor and some of the actions */
+  project_selection_changed_cb (project, window);
 
   if (window->priv->active_view)
     set_sensitivity_according_to_project (window,

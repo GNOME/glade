@@ -85,7 +85,6 @@ static void
 glade_clipboard_init (GladeClipboard * clipboard)
 {
   clipboard->widgets = NULL;
-  clipboard->selection = NULL;
   clipboard->has_selection = FALSE;
 }
 
@@ -168,10 +167,7 @@ glade_clipboard_add (GladeClipboard * clipboard, GList * widgets)
   GladeWidget *widget;
   GList *list;
 
-  /*
-   * Clear selection for the new widgets.
-   */
-  glade_clipboard_selection_clear (clipboard);
+  glade_clipboard_clear (clipboard);
 
   /*
    * Add the widgets to the list of children.
@@ -180,73 +176,33 @@ glade_clipboard_add (GladeClipboard * clipboard, GList * widgets)
     {
       widget = list->data;
       clipboard->widgets =
-          g_list_prepend (clipboard->widgets, g_object_ref (G_OBJECT (widget)));
-
-      glade_clipboard_selection_add (clipboard, widget);
+          g_list_prepend (clipboard->widgets, g_object_ref_sink (G_OBJECT (widget)));
     }
-
-}
-
-/**
- * glade_clipboard_remove:
- * @clipboard: a #GladeClipboard
- * @widgets: a #GList of #GladeWidgets
- * 
- * Removes @widgets from @clipboard.
- */
-void
-glade_clipboard_remove (GladeClipboard * clipboard, GList * widgets)
-{
-  GladeWidget *widget;
-  GList *list;
-
-  for (list = widgets; list && list->data; list = list->next)
-    {
-      widget = list->data;
-
-      clipboard->widgets = g_list_remove (clipboard->widgets, widget);
-      glade_clipboard_selection_remove (clipboard, widget);
-
-      g_object_unref (G_OBJECT (widget));
-    }
-
-  /* 
-   * Only default selection if nescisary
-   */
-  if ((g_list_length (clipboard->selection) < 1) &&
-      (list = g_list_first (clipboard->widgets)) != NULL)
-    {
-      glade_clipboard_selection_add (clipboard, GLADE_WIDGET (list->data));
-    }
-}
-
-void
-glade_clipboard_selection_add (GladeClipboard * clipboard, GladeWidget * widget)
-{
-  g_return_if_fail (GLADE_IS_CLIPBOARD (clipboard));
-  g_return_if_fail (GLADE_IS_WIDGET (widget));
-  clipboard->selection = g_list_prepend (clipboard->selection, widget);
 
   glade_clipboard_set_has_selection (clipboard, TRUE);
 }
 
+/**
+ * glade_clipboard_clear:
+ * @clipboard: a #GladeClipboard
+ * 
+ * Removes all widgets from the @clipboard.
+ */
 void
-glade_clipboard_selection_remove (GladeClipboard * clipboard,
-                                  GladeWidget * widget)
+glade_clipboard_clear (GladeClipboard * clipboard)
 {
-  g_return_if_fail (GLADE_IS_CLIPBOARD (clipboard));
-  g_return_if_fail (GLADE_IS_WIDGET (widget));
-  clipboard->selection = g_list_remove (clipboard->selection, widget);
+  GladeWidget *widget;
+  GList *list;
 
-  if (g_list_length (clipboard->selection) == 0)
-    glade_clipboard_set_has_selection (clipboard, FALSE);
-}
+  for (list = clipboard->widgets; list && list->data; list = list->next)
+    {
+      widget = list->data;
 
-void
-glade_clipboard_selection_clear (GladeClipboard * clipboard)
-{
-  g_return_if_fail (GLADE_IS_CLIPBOARD (clipboard));
-  clipboard->selection = (g_list_free (clipboard->selection), NULL);
+      g_object_unref (G_OBJECT (widget));
+    }
+
+  clipboard->widgets = 
+    (g_list_free (clipboard->widgets), NULL);
 
   glade_clipboard_set_has_selection (clipboard, FALSE);
 }

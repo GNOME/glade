@@ -427,16 +427,17 @@ glade_widget_button_press_event_impl (GladeWidget * gwidget,
       if (event->state & GDK_CONTROL_MASK)
         {
           if (glade_project_is_selected (gwidget->priv->project, gwidget->priv->object))
-            glade_app_selection_remove (gwidget->priv->object, TRUE);
+            glade_project_selection_remove (gwidget->priv->project, gwidget->priv->object, TRUE);
           else
-            glade_app_selection_add (gwidget->priv->object, TRUE);
+            glade_project_selection_add (gwidget->priv->project, gwidget->priv->object, TRUE);
           handled = TRUE;
         }
       else if (glade_project_is_selected (gwidget->priv->project,
                                           gwidget->priv->object) == FALSE)
         {
           glade_util_clear_selection ();
-          glade_app_selection_set (gwidget->priv->object, TRUE);
+          glade_project_selection_set (gwidget->priv->project, 
+				       gwidget->priv->object, TRUE);
 
           /* Add selection without interrupting event flow 
            * when shift is down, this allows better behaviour

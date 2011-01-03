@@ -1457,17 +1457,17 @@ glade_base_editor_class_init (GladeBaseEditorClass * klass)
                                     ("The container object this editor is currently editing"),
                                     G_TYPE_OBJECT, G_PARAM_READWRITE));
 
-        /**
-	 * GladeBaseEditor::child-selected:
-	 * @gladebaseeditor: the #GladeBaseEditor which received the signal.
-	 * @gchild: the selected #GladeWidget.
-	 *
-	 * Emited when the user selects a child in the editor's treeview.
-	 * You can add the relevant child properties here using 
-	 * glade_base_editor_add_default_properties() and glade_base_editor_add_properties() 
-	 * You can also add labels with glade_base_editor_add_label to make the
-	 * editor look pretty.
-	 */
+  /**
+   * GladeBaseEditor::child-selected:
+   * @gladebaseeditor: the #GladeBaseEditor which received the signal.
+   * @gchild: the selected #GladeWidget.
+   *
+   * Emited when the user selects a child in the editor's treeview.
+   * You can add the relevant child properties here using 
+   * glade_base_editor_add_default_properties() and glade_base_editor_add_properties() 
+   * You can also add labels with glade_base_editor_add_label to make the
+   * editor look pretty.
+   */
   glade_base_editor_signals[SIGNAL_CHILD_SELECTED] =
       g_signal_new ("child-selected",
                     G_TYPE_FROM_CLASS (object_class),
@@ -1476,14 +1476,14 @@ glade_base_editor_class_init (GladeBaseEditorClass * klass)
                     NULL, NULL,
                     glade_marshal_VOID__OBJECT, G_TYPE_NONE, 1, G_TYPE_OBJECT);
 
-        /**
-	 * GladeBaseEditor::child-change-type:
-	 * @gladebaseeditor: the #GladeBaseEditor which received the signal.
-	 * @child: the #GObject being changed.
-         * @type: the new type for @child.
-	 *
-	 * Returns: TRUE to stop signal emision.
-	 */
+  /**
+   * GladeBaseEditor::child-change-type:
+   * @gladebaseeditor: the #GladeBaseEditor which received the signal.
+   * @child: the #GObject being changed.
+   * @type: the new type for @child.
+   *
+   * Returns: TRUE to stop signal emision.
+   */
   glade_base_editor_signals[SIGNAL_CHANGE_TYPE] =
       g_signal_new ("change-type",
                     G_TYPE_FROM_CLASS (object_class),
@@ -1493,14 +1493,14 @@ glade_base_editor_class_init (GladeBaseEditorClass * klass)
                     glade_marshal_BOOLEAN__OBJECT_UINT,
                     G_TYPE_BOOLEAN, 2, G_TYPE_OBJECT, G_TYPE_UINT);
 
-        /**
-	 * GladeBaseEditor::get-display-name:
-	 * @gladebaseeditor: the #GladeBaseEditor which received the signal.
-	 * @gchild: the child to get display name string to show in @gladebaseeditor
-	 * treeview.
-	 *
-	 * Returns: a newly allocated string.
-	 */
+  /**
+   * GladeBaseEditor::get-display-name:
+   * @gladebaseeditor: the #GladeBaseEditor which received the signal.
+   * @gchild: the child to get display name string to show in @gladebaseeditor
+   * treeview.
+   *
+   * Returns: a newly allocated string.
+   */
   glade_base_editor_signals[SIGNAL_GET_DISPLAY_NAME] =
       g_signal_new ("get-display-name",
                     G_TYPE_FROM_CLASS (object_class),
@@ -1510,17 +1510,17 @@ glade_base_editor_class_init (GladeBaseEditorClass * klass)
                     glade_marshal_STRING__OBJECT,
                     G_TYPE_STRING, 1, G_TYPE_OBJECT);
 
-        /**
-	 * GladeBaseEditor::build-child:
-	 * @gladebaseeditor: the #GladeBaseEditor which received the signal.
-	 * @gparent: the parent of the new child
-	 * @type: the #GType of the child
-	 *
-	 * Create a child widget here if something else must be done other than
-	 * calling glade_command_create() such as creating an intermediate parent.
-	 *
-	 * Returns: the newly created #GladeWidget or NULL if child cant be created
-	 */
+  /**
+   * GladeBaseEditor::build-child:
+   * @gladebaseeditor: the #GladeBaseEditor which received the signal.
+   * @gparent: the parent of the new child
+   * @type: the #GType of the child
+   *
+   * Create a child widget here if something else must be done other than
+   * calling glade_command_create() such as creating an intermediate parent.
+   *
+   * Returns: the newly created #GladeWidget or NULL if child cant be created
+   */
   glade_base_editor_signals[SIGNAL_BUILD_CHILD] =
       g_signal_new ("build-child",
                     G_TYPE_FROM_CLASS (object_class),
@@ -1530,12 +1530,12 @@ glade_base_editor_class_init (GladeBaseEditorClass * klass)
                     glade_marshal_OBJECT__OBJECT_UINT,
                     G_TYPE_OBJECT, 2, G_TYPE_OBJECT, G_TYPE_UINT);
 
-        /**
-	 * GladeBaseEditor::delete-child:
-	 * @gladebaseeditor: the #GladeBaseEditor which received the signal.
-	 * @gparent: the parent
-	 * @gchild: the child to delete
-	 */
+  /**
+   * GladeBaseEditor::delete-child:
+   * @gladebaseeditor: the #GladeBaseEditor which received the signal.
+   * @gparent: the parent
+   * @gchild: the child to delete
+   */
   glade_base_editor_signals[SIGNAL_DELETE_CHILD] =
       g_signal_new ("delete-child",
                     G_TYPE_FROM_CLASS (object_class),
@@ -1545,16 +1545,16 @@ glade_base_editor_class_init (GladeBaseEditorClass * klass)
                     glade_marshal_BOOLEAN__OBJECT_OBJECT,
                     G_TYPE_BOOLEAN, 2, G_TYPE_OBJECT, G_TYPE_OBJECT);
 
-        /**
-	 * GladeBaseEditor::move-child:
-	 * @gladebaseeditor: the #GladeBaseEditor which received the signal.
-	 * @gparent: the new parent of @gchild
-	 * @gchild: the #GladeWidget to move
-	 *
-	 * Move child here if something else must be done other than cut & paste.
-	 *
-	 * Returns: wheater child has been sucessfully moved or not.
-	 */
+  /**
+   * GladeBaseEditor::move-child:
+   * @gladebaseeditor: the #GladeBaseEditor which received the signal.
+   * @gparent: the new parent of @gchild
+   * @gchild: the #GladeWidget to move
+   *
+   * Move child here if something else must be done other than cut & paste.
+   *
+   * Returns: wheater child has been sucessfully moved or not.
+   */
   glade_base_editor_signals[SIGNAL_MOVE_CHILD] =
       g_signal_new ("move-child",
                     G_TYPE_FROM_CLASS (object_class),

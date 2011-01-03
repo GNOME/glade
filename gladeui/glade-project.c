@@ -106,12 +106,13 @@ struct _GladeProjectPrivate
                                  * not want to loose the selection. This is a list
                                  * of #GtkWidget items.
                                  */
+  guint selection_changed_id;
+  gboolean has_selection;       /* Whether the project has a selection */
 
   GladeNameContext *toplevel_names;     /* Context for uniqueness of names at the toplevel */
   GList *toplevels;             /* List of toplevels with thier own naming contexts */
 
 
-  gboolean has_selection;       /* Whether the project has a selection */
 
   GList *undo_stack;            /* A stack with the last executed commands */
   GList *prev_redo_item;        /* Points to the item previous to the redo items */
@@ -283,6 +284,10 @@ glade_project_dispose (GObject * object)
 
   /* Emit close signal */
   g_signal_emit (object, glade_project_signals[CLOSE], 0);
+
+  if (project->priv->selection_changed_id > 0)
+    project->priv->selection_changed_id = 
+      (g_source_remove (project->priv->selection_changed_id), 0);
 
   glade_project_selection_clear (project, TRUE);
 
@@ -2467,10 +2472,6 @@ glade_project_verify_project_for_ui (GladeProject * project)
 
       glade_project_verify_properties (widget);
     }
-
-  /* refresh palette if this is the active project */
-  if (project == glade_app_get_project ())
-    glade_palette_refresh (glade_app_get_palette ());
 }
 
 /*******************************************************************
@@ -2611,9 +2612,9 @@ glade_project_release_widget_name (GladeProject * project,
   if (context && glade_name_context_n_names (context) == 0)
     {
       glade_name_context_destroy (context);
-      g_free (tinfo);
       project->priv->toplevels =
           g_list_remove (project->priv->toplevels, tinfo);
+      g_free (tinfo);
     }
 
 }
@@ -3181,6 +3182,24 @@ glade_project_selection_changed (GladeProject * project)
                  glade_project_signals[SELECTION_CHANGED], 0);
 }
 
+static gboolean
+selection_change_idle (GladeProject *project)
+{
+  glade_project_selection_changed (project);
+  project->priv->selection_changed_id = 0;
+  return FALSE;
+}
+
+void
+glade_project_queue_selection_changed (GladeProject *project)
+{
+  g_return_if_fail (GLADE_IS_PROJECT (project));
+
+  if (project->priv->selection_changed_id == 0)
+    project->priv->selection_changed_id = 
+      g_idle_add ((GSourceFunc) selection_change_idle, project);
+}
+
 static void
 glade_project_set_has_selection (GladeProject * project, gboolean has_selection)
 {
@@ -3299,12 +3318,17 @@ glade_project_selection_add (GladeProject * project,
 
   if (glade_project_is_selected (project, object) == FALSE)
     {
+      gboolean toggle_has_selection = (project->priv->selection == NULL);
+
       if (GTK_IS_WIDGET (object))
         glade_util_add_selection (GTK_WIDGET (object));
-      if (project->priv->selection == NULL)
-        glade_project_set_has_selection (project, TRUE);
+
       project->priv->selection =
-          g_list_prepend (project->priv->selection, object);
+	g_list_prepend (project->priv->selection, object);
+
+      if (toggle_has_selection)
+        glade_project_set_has_selection (project, TRUE);
+
       if (emit_signal)
         glade_project_selection_changed (project);
     }
@@ -3330,9 +3354,6 @@ glade_project_selection_set (GladeProject * project,
 
   if (!glade_project_has_object (project, object))
     return;
-
-  if (project->priv->selection == NULL)
-    glade_project_set_has_selection (project, TRUE);
 
   if (glade_project_is_selected (project, object) == FALSE ||
       g_list_length (project->priv->selection) != 1)
@@ -4832,4 +4853,219 @@ gtk_tree_model_iface_init (GtkTreeModelIface * iface)
   iface->iter_n_children = glade_project_model_iter_n_children;
   iface->iter_nth_child = glade_project_model_iter_nth_child;
   iface->iter_parent = glade_project_model_iter_parent;
+}
+
+
+/*************************************************
+ *                Command Central                *
+ *************************************************/
+void
+glade_project_copy_selection (GladeProject *project)
+{
+  GList       *widgets = NULL, *list;
+  GladeWidget *widget;
+
+  g_return_if_fail (GLADE_IS_PROJECT (project));
+
+  if (glade_project_is_loading (project))
+    return;
+
+  if (!project->priv->selection)
+    {
+      glade_util_ui_message (glade_app_get_window (),
+			     GLADE_UI_INFO, NULL, _("No widget selected."));
+      return;
+    }
+
+  for (list = project->priv->selection; list && list->data; list = list->next)
+    {
+      widget = glade_widget_get_from_gobject (list->data);
+      widget = glade_widget_dup (widget, FALSE);
+
+      widgets = g_list_prepend (widgets, widget);
+    }
+
+  glade_clipboard_add (glade_app_get_clipboard (), widgets);
+  g_list_free (widgets);
+}
+
+void
+glade_project_command_cut (GladeProject     *project)
+{
+  GList *widgets = NULL, *list;
+  GladeWidget *widget;
+  gboolean failed = FALSE;
+
+  g_return_if_fail (GLADE_IS_PROJECT (project));
+
+  if (glade_project_is_loading (project))
+    return;
+
+  for (list = project->priv->selection; list && list->data; list = list->next)
+    {
+      widget  = glade_widget_get_from_gobject (list->data);
+      widgets = g_list_prepend (widgets, widget);
+    }
+
+  if (failed == FALSE && widgets != NULL)
+    glade_command_cut (widgets);
+  else if (widgets == NULL)
+    glade_util_ui_message (glade_app_get_window (),
+                           GLADE_UI_INFO, NULL, _("No widget selected."));
+
+  if (widgets)
+    g_list_free (widgets);
+}
+
+void
+glade_project_command_paste (GladeProject     *project, 
+			     GladePlaceholder *placeholder)
+{
+  GladeClipboard *clipboard;
+  GList *list;
+  GladeWidget *widget = NULL, *parent;
+  gint placeholder_relations = 0;
+  GladeFixed *fixed = NULL;
+
+  g_return_if_fail (GLADE_IS_PROJECT (project));
+
+  if (glade_project_is_loading (project))
+    return;
+
+  if (placeholder)
+    {
+      if (glade_placeholder_get_project (placeholder) == NULL ||
+          glade_project_is_loading (glade_placeholder_get_project (placeholder)))
+        return;
+    }
+
+  list      = project->priv->selection;
+  clipboard = glade_app_get_clipboard ();
+
+  /* If there is a selection, paste in to the selected widget, otherwise
+   * paste into the placeholder's parent, or at the toplevel
+   */
+  parent = list ? glade_widget_get_from_gobject (list->data) :
+      (placeholder) ? glade_placeholder_get_parent (placeholder) : NULL;
+
+  widget = clipboard->widgets ? clipboard->widgets->data : NULL;
+
+  /* Ignore parent argument if we are pasting a toplevel
+   */
+  if (g_list_length (clipboard->widgets) == 1 &&
+      widget && GWA_IS_TOPLEVEL (glade_widget_get_adaptor (widget)))
+    parent = NULL;
+
+  if (parent && GLADE_IS_FIXED (parent))
+    fixed = GLADE_FIXED (parent);
+
+  /* Check if parent is actually a container of any sort */
+  if (parent && !glade_widget_adaptor_is_container (glade_widget_get_adaptor (parent)))
+    {
+      glade_util_ui_message (glade_app_get_window (),
+                             GLADE_UI_INFO, NULL,
+                             _("Unable to paste to the selected parent"));
+      return;
+    }
+
+  /* Check if selection is good */
+  if (project->priv->selection)
+    {
+      if (g_list_length (project->priv->selection) != 1)
+        {
+          glade_util_ui_message (glade_app_get_window (),
+                                 GLADE_UI_INFO, NULL,
+                                 _("Unable to paste to multiple widgets"));
+
+          return;
+        }
+    }
+
+  /* Abort operation when adding a non scrollable widget to any kind of GtkScrolledWindow. */
+  if (parent && widget &&
+      glade_util_check_and_warn_scrollable (parent, glade_widget_get_adaptor (widget),
+                                            glade_app_get_window ()))
+    return;
+
+  /* Check if we have anything to paste */
+  if (g_list_length (clipboard->widgets) == 0)
+    {
+      glade_util_ui_message (glade_app_get_window (), GLADE_UI_INFO, NULL,
+                             _("No widget on the clipboard"));
+
+      return;
+    }
+
+  /* Check that we have compatible heirarchies */
+  for (list = clipboard->widgets; list && list->data; list = list->next)
+    {
+      widget = list->data;
+
+      if (!GWA_IS_TOPLEVEL (glade_widget_get_adaptor (widget)) && parent)
+        {
+          /* Count placeholder relations
+           */
+          if (glade_widget_placeholder_relation (parent, widget))
+            placeholder_relations++;
+        }
+    }
+
+  g_assert (widget);
+
+  /* A GladeFixed that doesnt use placeholders can only paste one
+   * at a time
+   */
+  if (GTK_IS_WIDGET (glade_widget_get_object (widget)) &&
+      parent && fixed && 
+      !GWA_USE_PLACEHOLDERS (glade_widget_get_adaptor (parent)) &&
+      g_list_length (clipboard->widgets) != 1)
+    {
+      glade_util_ui_message (glade_app_get_window (),
+                             GLADE_UI_INFO, NULL,
+                             _("Only one widget can be pasted at a "
+                               "time to this container"));
+      return;
+    }
+
+  /* Check that enough placeholders are available */
+  if (parent &&
+      GWA_USE_PLACEHOLDERS (glade_widget_get_adaptor (parent)) &&
+      glade_util_count_placeholders (parent) < placeholder_relations)
+    {
+      glade_util_ui_message (glade_app_get_window (),
+                             GLADE_UI_INFO, NULL,
+                             _("Insufficient amount of placeholders in "
+                               "target container"));
+      return;
+    }
+
+  glade_command_paste (clipboard->widgets, parent, placeholder, project);
+}
+
+void
+glade_project_command_delete (GladeProject     *project)
+{
+  GList *widgets = NULL, *list;
+  GladeWidget *widget;
+  gboolean failed = FALSE;
+
+  g_return_if_fail (GLADE_IS_PROJECT (project));
+
+  if (glade_project_is_loading (project))
+    return;
+
+  for (list = project->priv->selection; list && list->data; list = list->next)
+    {
+      widget  = glade_widget_get_from_gobject (list->data);
+      widgets = g_list_prepend (widgets, widget);
+    }
+
+  if (failed == FALSE && widgets != NULL)
+    glade_command_delete (widgets);
+  else if (widgets == NULL)
+    glade_util_ui_message (glade_app_get_window (),
+                           GLADE_UI_INFO, NULL, _("No widget selected."));
+
+  if (widgets)
+    g_list_free (widgets);
 }

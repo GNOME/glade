@@ -16,6 +16,20 @@
 	* plugins/gtk+/gtk+.xml.in: Mark the "preview" action as "important" so it shows
 	  up in the app toolbar automatically.
 
+	* Another major refactor, tasks accomplished:
+	  - Removed GladeApp selection handling, only on the project now
+	  - Removed "Copy" as a command, copying widgets no longer dirty documents (bug 546873)
+	  - Removed GladeApp "active_project" concept, every interaction is associated with
+	    a GladeProject
+	  - Simplified GladeClipboard, the clipboard now only has a list of widgets and
+	    not a "selection", everything is removed from the clipboard when new widgets are
+	    added there.
+	  - GladePalette now has a "project" property and does not need to be refreshed
+	    by an external entity.
+
+	19 files changed, 652 insertions(+), 1135 deletions(-)
+
+
 2011-01-02  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-project.c: Fixed GladeProject to only ever report widgets that are

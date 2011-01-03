@@ -73,6 +73,7 @@ main (int argc, char *argv[])
   GOptionContext *option_context;
   GOptionGroup *option_group;
   GError *error = NULL;
+  gboolean opened_project = FALSE;
 
   if (!g_thread_supported ())
     g_thread_init (NULL);
@@ -170,7 +171,10 @@ main (int argc, char *argv[])
       for (i = 0; files[i]; ++i)
         {
           if (g_file_test (files[i], G_FILE_TEST_EXISTS) != FALSE)
-            glade_window_open_project (window, files[i]);
+	    {
+	      if (glade_window_open_project (window, files[i]))
+		opened_project = TRUE;
+	    }
           else
             g_warning (_("Unable to open '%s', the file does not exist.\n"),
                        files[i]);
@@ -178,7 +182,7 @@ main (int argc, char *argv[])
       g_strfreev (files);
     }
 
-  if (glade_app_get_project () == NULL)
+  if (!opened_project)
     glade_window_new_project (window);
 
   gtk_main ();

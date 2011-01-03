@@ -150,24 +150,25 @@ gboolean       glade_project_available_widget_name (GladeProject *project, Glade
 /* Selection */
 
 gboolean       glade_project_is_selected         (GladeProject *project,
-						 GObject      *object);
+						  GObject      *object);
 
 void           glade_project_selection_set       (GladeProject *project,
-						 GObject      *object,
-						 gboolean      emit_signal);
+						  GObject      *object,
+						  gboolean      emit_signal);
 
 void           glade_project_selection_add       (GladeProject *project,
-						 GObject      *object,
-						 gboolean      emit_signal);
+						  GObject      *object,
+						  gboolean      emit_signal);
 
 void           glade_project_selection_remove    (GladeProject *project,
-						 GObject      *object,
-						 gboolean      emit_signal);
+						  GObject      *object,
+						  gboolean      emit_signal);
 
 void           glade_project_selection_clear     (GladeProject *project,
-						 gboolean      emit_signal);
+						  gboolean      emit_signal);
 
 void           glade_project_selection_changed   (GladeProject *project);
+void           glade_project_queue_selection_changed (GladeProject *project);
 
 GList         *glade_project_selection_get       (GladeProject *project);
 
@@ -215,6 +216,14 @@ gchar        *glade_project_display_dependencies (GladeProject *project);
 void          glade_project_push_progress (GladeProject *project);
 gboolean      glade_project_load_cancelled (GladeProject *project);
 void          glade_project_cancel_load (GladeProject *project);
+
+
+/* Command central */
+void          glade_project_copy_selection (GladeProject     *project);
+void          glade_project_command_cut    (GladeProject     *project); 
+void          glade_project_command_paste  (GladeProject     *project, 
+					    GladePlaceholder *placeholder);
+void          glade_project_command_delete (GladeProject     *project);
 
 G_END_DECLS
 
