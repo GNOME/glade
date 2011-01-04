@@ -816,8 +816,6 @@ glade_inspector_set_project (GladeInspector * inspector, GladeProject * project)
 
   update_project_completion (project, NULL, inspector);
 
-  gtk_tree_view_expand_all (GTK_TREE_VIEW (inspector->priv->view));
-
   g_object_notify (G_OBJECT (inspector), "project");
 }
 

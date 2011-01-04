@@ -27,6 +27,9 @@
 
 	* gladeui/glade-design-view.c: Made it a no-show-all widget.
 
+	* gladeui/glade-inspector.c: Fixed to not access the treeview from set_project()
+	  (since we do it in expose and the view gets destroyed without us unsetting the pointer).
+
 2011-01-03  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-app.[ch]:
