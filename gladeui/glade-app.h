@@ -58,66 +58,47 @@ struct _GladeAppClass
   void   (*  signal_editor_created) (GladeApp *app, GladeSignalEditor *signal_editor);
 };
 
- 
-GType              glade_app_get_type   (void) G_GNUC_CONST;
 
-GladeApp*          glade_app_new        (void);
+GType              glade_app_get_type             (void) G_GNUC_CONST;
 
-GladeApp*          glade_app_get        (void);
+GladeApp*          glade_app_new                  (void);
+GladeApp*          glade_app_get                  (void);
+GKeyFile*          glade_app_get_config           (void);
+gint               glade_app_config_save          (void);
 
-void               glade_app_set_window (GtkWidget *window);
- 
-GtkWidget*         glade_app_get_window (void);
+gboolean           glade_app_get_catalog_version  (const gchar   *name, 
+						   gint          *major, 
+						   gint          *minor);
+GList             *glade_app_get_catalogs         (void);
+GladeCatalog      *glade_app_get_catalog          (const gchar   *name);
+GladeClipboard*    glade_app_get_clipboard        (void);
 
-gboolean           glade_app_get_catalog_version (const gchar *name, gint *major, gint *minor);
+void               glade_app_add_project          (GladeProject  *project);
+void               glade_app_remove_project       (GladeProject  *project);
+GList*             glade_app_get_projects         (void);
+gboolean           glade_app_is_project_loaded    (const gchar   *project_path);
+GladeProject*      glade_app_get_project_by_path  (const gchar   *project_path);
 
-GList             *glade_app_get_catalogs (void);
-
-GladeCatalog      *glade_app_get_catalog (const gchar *name);
-
-GladeClipboard*    glade_app_get_clipboard (void);
-
-void               glade_app_add_project (GladeProject *project);
+void               glade_app_set_window           (GtkWidget     *window);
+GtkWidget*         glade_app_get_window           (void);
  
-void               glade_app_remove_project (GladeProject *project);
- 
-GList*             glade_app_get_projects (void);
- 
-GKeyFile*          glade_app_get_config (void);
- 
-gboolean           glade_app_is_project_loaded (const gchar *project_path);
- 
-GladeProject*      glade_app_get_project_by_path (const gchar *project_path);
- 
-gint               glade_app_config_save (void);
- 
-void               glade_app_set_transient_parent (GtkWindow *parent);
- 
+void               glade_app_set_transient_parent (GtkWindow     *parent);
 GtkWindow         *glade_app_get_transient_parent (void);
  
-void               glade_app_set_accel_group (GtkAccelGroup *accel_group);
+void               glade_app_set_accel_group      (GtkAccelGroup *accel_group);
+GtkAccelGroup     *glade_app_get_accel_group      (void);
 
-GtkAccelGroup     *glade_app_get_accel_group (void);
-
-GList             *glade_app_get_selection (void);
-
-void               glade_app_search_docs (const gchar *book, 
-					  const gchar *page, 
-					  const gchar *search);
+void               glade_app_search_docs          (const gchar   *book, 
+						   const gchar   *page, 
+						   const gchar   *search);
 
 /* package paths */
-
-const gchar       *glade_app_get_catalogs_dir  (void) G_GNUC_CONST;
-
-const gchar       *glade_app_get_modules_dir   (void) G_GNUC_CONST;
-
-const gchar       *glade_app_get_plugins_dir   (void) G_GNUC_CONST;
-
-const gchar       *glade_app_get_pixmaps_dir   (void) G_GNUC_CONST;
-
-const gchar       *glade_app_get_locale_dir    (void) G_GNUC_CONST;
-
-const gchar       *glade_app_get_bin_dir       (void) G_GNUC_CONST;
+const gchar       *glade_app_get_catalogs_dir     (void) G_GNUC_CONST;
+const gchar       *glade_app_get_modules_dir      (void) G_GNUC_CONST;
+const gchar       *glade_app_get_plugins_dir      (void) G_GNUC_CONST;
+const gchar       *glade_app_get_pixmaps_dir      (void) G_GNUC_CONST;
+const gchar       *glade_app_get_locale_dir       (void) G_GNUC_CONST;
+const gchar       *glade_app_get_bin_dir          (void) G_GNUC_CONST;
 
 G_END_DECLS
 
