@@ -36,42 +36,23 @@ G_BEGIN_DECLS
 
 typedef struct _GladeEditorTable        GladeEditorTable;
 typedef struct _GladeEditorTableClass   GladeEditorTableClass;
+typedef struct _GladeEditorTablePrivate GladeEditorTablePrivate;
 
 struct _GladeEditorTable
 {
-	GtkGrid  parent;
+  GtkGrid  parent;
 
-	GladeWidgetAdaptor *adaptor; /* The GladeWidgetAdaptor this
-				      * table was created for.
-				      */
-
-	GladeWidget *loaded_widget; /* A pointer to the currently loaded GladeWidget
-				     */
-	
-	GtkWidget *name_label; /* A pointer to the "Name:" label (for show/hide) */
-	GtkWidget *name_entry; /* A pointer to the gtk_entry that holds
-				* the name of the widget. This is the
-				* first item _pack'ed to the table_widget.
-				* We have a pointer here because it is an
-				* entry which will not be created from a
-				* GladeProperty but rather from code.
-				*/
-
-	GList *properties; /* A list of GladeEditorPropery items.
-			    * For each row in the gtk_table, there is a
-			    * corrsponding GladeEditorProperty struct.
-			    */
-
-	GladeEditorPageType type; /* Is this table to be used in the common tab, ?
-				   * the general tab, a packing tab or the query popup ?
-				   */
-
-	gint rows;
+  GladeEditorTablePrivate *priv;
 };
 
 struct _GladeEditorTableClass
 {
-	GtkGridClass parent;
+  GtkGridClass parent;
+
+  void   (* glade_reserved1)   (void);
+  void   (* glade_reserved2)   (void);
+  void   (* glade_reserved3)   (void);
+  void   (* glade_reserved4)   (void);
 };
 
 GType            glade_editor_table_get_type (void);
