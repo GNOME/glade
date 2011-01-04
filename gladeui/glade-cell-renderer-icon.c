@@ -41,6 +41,12 @@ static gboolean glade_cell_renderer_icon_activate (GtkCellRenderer * cell,
                                                    cell_area,
                                                    GtkCellRendererState flags);
 
+struct _GladeCellRendererIconPrivate 
+{
+  guint active : 1;
+  guint activatable : 1;
+};
+
 enum
 {
   ACTIVATE,
@@ -59,11 +65,16 @@ static guint icon_cell_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (GladeCellRendererIcon, glade_cell_renderer_icon,
                GTK_TYPE_CELL_RENDERER_PIXBUF)
-     static void glade_cell_renderer_icon_init (GladeCellRendererIcon *
-                                                cellicon)
+
+static void glade_cell_renderer_icon_init (GladeCellRendererIcon *cellicon)
 {
-  cellicon->activatable = TRUE;
-  cellicon->active = FALSE;
+  cellicon->priv =
+    G_TYPE_INSTANCE_GET_PRIVATE ((cellicon), 
+				 GLADE_TYPE_CELL_RENDERER_ICON, 
+				 GladeCellRendererIconPrivate);
+
+  cellicon->priv->activatable = TRUE;
+  cellicon->priv->active = FALSE;
 
   g_object_set (G_OBJECT (cellicon), "mode", GTK_CELL_RENDERER_MODE_ACTIVATABLE,
                 NULL);
@@ -104,6 +115,8 @@ glade_cell_renderer_icon_class_init (GladeCellRendererIconClass * class)
                     G_STRUCT_OFFSET (GladeCellRendererIconClass, activate),
                     NULL, NULL,
                     glade_marshal_VOID__STRING, G_TYPE_NONE, 1, G_TYPE_STRING);
+
+  g_type_class_add_private (class, sizeof (GladeCellRendererIconPrivate));
 }
 
 static void
@@ -116,10 +129,10 @@ glade_cell_renderer_icon_get_property (GObject * object,
   switch (param_id)
     {
       case PROP_ACTIVE:
-        g_value_set_boolean (value, cellicon->active);
+        g_value_set_boolean (value, cellicon->priv->active);
         break;
       case PROP_ACTIVATABLE:
-        g_value_set_boolean (value, cellicon->activatable);
+        g_value_set_boolean (value, cellicon->priv->activatable);
         break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
@@ -138,10 +151,10 @@ glade_cell_renderer_icon_set_property (GObject * object,
   switch (param_id)
     {
       case PROP_ACTIVE:
-        cellicon->active = g_value_get_boolean (value);
+        cellicon->priv->active = g_value_get_boolean (value);
         break;
       case PROP_ACTIVATABLE:
-        cellicon->activatable = g_value_get_boolean (value);
+        cellicon->priv->activatable = g_value_get_boolean (value);
         break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
@@ -167,7 +180,7 @@ glade_cell_renderer_icon_activate (GtkCellRenderer * cell,
   GladeCellRendererIcon *cellicon;
 
   cellicon = GLADE_CELL_RENDERER_ICON (cell);
-  if (cellicon->activatable)
+  if (cellicon->priv->activatable)
     {
       g_signal_emit (cell, icon_cell_signals[ACTIVATE], 0, path);
       return TRUE;
@@ -181,7 +194,7 @@ glade_cell_renderer_icon_get_active (GladeCellRendererIcon * icon)
 {
   g_return_val_if_fail (GLADE_IS_CELL_RENDERER_ICON (icon), FALSE);
 
-  return icon->active;
+  return icon->priv->active;
 }
 
 void
@@ -190,7 +203,11 @@ glade_cell_renderer_icon_set_active (GladeCellRendererIcon * icon,
 {
   g_return_if_fail (GLADE_IS_CELL_RENDERER_ICON (icon));
 
-  g_object_set (icon, "active", setting ? TRUE : FALSE, NULL);
+  if (icon->priv->active != setting)
+    {
+      icon->priv->active = setting ? TRUE : FALSE;
+      g_object_notify (G_OBJECT (icon), "active");
+    }
 }
 
 gboolean
@@ -198,7 +215,7 @@ glade_cell_renderer_icon_get_activatable (GladeCellRendererIcon * icon)
 {
   g_return_val_if_fail (GLADE_IS_CELL_RENDERER_ICON (icon), FALSE);
 
-  return icon->activatable;
+  return icon->priv->activatable;
 }
 
 void
@@ -207,9 +224,9 @@ glade_cell_renderer_icon_set_activatable (GladeCellRendererIcon * icon,
 {
   g_return_if_fail (GLADE_IS_CELL_RENDERER_ICON (icon));
 
-  if (icon->activatable != setting)
+  if (icon->priv->activatable != setting)
     {
-      icon->activatable = setting ? TRUE : FALSE;
+      icon->priv->activatable = setting ? TRUE : FALSE;
       g_object_notify (G_OBJECT (icon), "activatable");
     }
 }

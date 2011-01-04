@@ -53,8 +53,6 @@
 
 #define GLADE_CONFIG_FILENAME "glade-3.conf"
 
-#define GLADE_APP_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), GLADE_TYPE_APP, GladeAppPrivate))
-
 enum
 {
   SIGNAL_EDITOR_CREATED,
@@ -127,7 +125,7 @@ glade_app_constructor (GType type,
 static void
 glade_app_dispose (GObject * app)
 {
-  GladeAppPrivate *priv = GLADE_APP_GET_PRIVATE (app);
+  GladeAppPrivate *priv = GLADE_APP (app)->priv;
 
   if (priv->clipboard)
     {
@@ -283,8 +281,9 @@ static void
 glade_app_init (GladeApp * app)
 {
   static gboolean initialized = FALSE;
-
-  app->priv = GLADE_APP_GET_PRIVATE (app);
+  GladeAppPrivate *priv =
+    GLADE_APP (app)->priv = 
+    G_TYPE_INSTANCE_GET_PRIVATE ((app), GLADE_TYPE_APP, GladeAppPrivate);
 
   singleton_app = app;
 
@@ -300,16 +299,16 @@ glade_app_init (GladeApp * app)
       initialized = TRUE;
     }
 
-  app->priv->accel_group = NULL;
+  priv->accel_group = NULL;
 
   /* Initialize app objects */
-  app->priv->catalogs = (GList *) glade_catalog_load_all ();
+  priv->catalogs = (GList *) glade_catalog_load_all ();
 
   /* Create clipboard */
-  app->priv->clipboard = glade_clipboard_new ();
+  priv->clipboard = glade_clipboard_new ();
 
   /* Load the configuration file */
-  app->priv->config = glade_app_config_load (app);
+  priv->config = glade_app_config_load (app);
 }
 
 static void
