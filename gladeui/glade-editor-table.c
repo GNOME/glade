@@ -370,9 +370,9 @@ append_item (GladeEditorTable * table,
     }
 
   gtk_widget_show (GTK_WIDGET (property));
-  gtk_widget_show_all (property->item_label);
+  gtk_widget_show_all (glade_editor_property_get_item_label (property));
 
-  glade_editor_table_attach (table, property->item_label, 0, table->priv->rows);
+  glade_editor_table_attach (table, glade_editor_property_get_item_label (property), 0, table->priv->rows);
   glade_editor_table_attach (table, GTK_WIDGET (property), 1, table->priv->rows);
 
   table->priv->rows++;

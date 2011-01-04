@@ -363,7 +363,7 @@ glade_image_item_editor_new (GladeWidgetAdaptor * adaptor,
   /* The stock item */
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "stock", FALSE, TRUE);
-  table_attach (table, eprop->item_label, 0, 0);
+  table_attach (table, glade_editor_property_get_item_label (eprop), 0, 0);
   table_attach (table, GTK_WIDGET (eprop), 1, 0);
   item_editor->properties = g_list_prepend (item_editor->properties, eprop);
 
@@ -371,7 +371,7 @@ glade_image_item_editor_new (GladeWidgetAdaptor * adaptor,
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "accel-group", FALSE,
                                                  TRUE);
-  table_attach (table, eprop->item_label, 0, 1);
+  table_attach (table, glade_editor_property_get_item_label (eprop), 0, 1);
   table_attach (table, GTK_WIDGET (eprop), 1, 1);
   item_editor->properties = g_list_prepend (item_editor->properties, eprop);
 
@@ -408,7 +408,7 @@ glade_image_item_editor_new (GladeWidgetAdaptor * adaptor,
   /* The menu label... */
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "label", FALSE, TRUE);
-  table_attach (table, eprop->item_label, 0, 0);
+  table_attach (table, glade_editor_property_get_item_label (eprop), 0, 0);
   table_attach (table, GTK_WIDGET (eprop), 1, 0);
   item_editor->properties = g_list_prepend (item_editor->properties, eprop);
 
@@ -416,7 +416,7 @@ glade_image_item_editor_new (GladeWidgetAdaptor * adaptor,
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "use-underline",
                                                  FALSE, TRUE);
-  table_attach (table, eprop->item_label, 0, 1);
+  table_attach (table, glade_editor_property_get_item_label (eprop), 0, 1);
   table_attach (table, GTK_WIDGET (eprop), 1, 1);
   item_editor->properties = g_list_prepend (item_editor->properties, eprop);
 

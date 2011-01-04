@@ -202,7 +202,9 @@ glade_eprop_accel_populate_view (GladeEditorProperty * eprop,
 {
   GladeEPropAccel *eprop_accel = GLADE_EPROP_ACCEL (eprop);
   GladeSignalClass *sclass;
-  GladeWidgetAdaptor *adaptor = glade_property_class_get_adaptor (eprop->klass);
+  GladePropertyClass *pclass = glade_editor_property_get_pclass (eprop);
+  GladeProperty      *property = glade_editor_property_get_property (eprop);
+  GladeWidgetAdaptor *adaptor = glade_property_class_get_adaptor (pclass);
   GtkTreeStore *model = (GtkTreeStore *) gtk_tree_view_get_model (view);
   GtkTreeIter iter;
   GladeEpropIterTab *parent_tab;
@@ -211,7 +213,7 @@ glade_eprop_accel_populate_view (GladeEditorProperty * eprop,
   gchar *name, *accel_text;
   const GList *list;
 
-  accelerators = g_value_get_boxed (glade_property_inline_value (eprop->property));
+  accelerators = g_value_get_boxed (glade_property_inline_value (property));
 
   /* First make parent iters...
    */
@@ -338,9 +340,12 @@ accel_edited (GtkCellRendererAccel * accel,
   gboolean key_was_set;
   GtkTreeIter iter, parent_iter, new_iter;
   gchar *accel_text;
-  GladeWidgetAdaptor *adaptor =
-      glade_property_class_get_adaptor (GLADE_EDITOR_PROPERTY (eprop_accel)->klass);
+  GladePropertyClass *pclass;
+  GladeWidgetAdaptor *adaptor;
   gboolean is_action;
+
+  pclass = glade_editor_property_get_pclass (GLADE_EDITOR_PROPERTY (eprop_accel));
+  adaptor = glade_property_class_get_adaptor (pclass);
 
   if (!gtk_tree_model_get_iter_from_string (eprop_accel->model,
                                             &iter, path_string))
@@ -416,22 +421,23 @@ glade_eprop_accel_view (GladeEditorProperty * eprop)
   GtkCellRenderer *renderer;
   GtkTreeViewColumn *column;
 
-  eprop_accel->model = (GtkTreeModel *) gtk_tree_store_new (ACCEL_NUM_COLUMNS, G_TYPE_STRING,   /* The GSignal name formatted for display */
-                                                            G_TYPE_STRING,      /* The GSignal name */
-                                                            G_TYPE_STRING,      /* The text to show in the accelerator cell */
-                                                            G_TYPE_INT, /* PangoWeight attribute for bold headers */
-                                                            G_TYPE_INT, /* PangoStyle attribute for italic grey unset items */
-                                                            G_TYPE_STRING,      /* Foreground colour for italic grey unset items */
-                                                            G_TYPE_BOOLEAN,     /* Visible attribute to hide items for header entries */
-                                                            G_TYPE_BOOLEAN,     /* Whether the key has been entered for this row */
-                                                            G_TYPE_UINT,        /* Hardware keycode */
-                                                            G_TYPE_INT);        /* GdkModifierType */
-
+  eprop_accel->model = (GtkTreeModel *) 
+    gtk_tree_store_new (ACCEL_NUM_COLUMNS, G_TYPE_STRING,   /* The GSignal name formatted for display */
+			G_TYPE_STRING,      /* The GSignal name */
+			G_TYPE_STRING,      /* The text to show in the accelerator cell */
+			G_TYPE_INT, /* PangoWeight attribute for bold headers */
+			G_TYPE_INT, /* PangoStyle attribute for italic grey unset items */
+			G_TYPE_STRING,      /* Foreground colour for italic grey unset items */
+			G_TYPE_BOOLEAN,     /* Visible attribute to hide items for header entries */
+			G_TYPE_BOOLEAN,     /* Whether the key has been entered for this row */
+			G_TYPE_UINT,        /* Hardware keycode */
+			G_TYPE_INT);        /* GdkModifierType */
+  
   view_widget = gtk_tree_view_new_with_model (eprop_accel->model);
   gtk_tree_view_set_show_expanders (GTK_TREE_VIEW (view_widget), FALSE);
   gtk_tree_view_set_enable_search (GTK_TREE_VIEW (view_widget), FALSE);
 
-        /********************* signal name column *********************/
+  /********************* signal name column *********************/
   renderer = gtk_cell_renderer_text_new ();
   g_object_set (G_OBJECT (renderer), "editable", FALSE, NULL);
 
@@ -443,7 +449,7 @@ glade_eprop_accel_view (GladeEditorProperty * eprop)
   gtk_tree_view_column_set_expand (GTK_TREE_VIEW_COLUMN (column), TRUE);
   gtk_tree_view_append_column (GTK_TREE_VIEW (view_widget), column);
 
-        /********************* accel editor column *********************/
+  /********************* accel editor column *********************/
   renderer = gtk_cell_renderer_accel_new ();
   g_object_set (G_OBJECT (renderer), "editable", TRUE, NULL);
 
@@ -501,11 +507,13 @@ glade_eprop_accel_show_dialog (GtkWidget * dialog_button,
   GladeEPropAccel *eprop_accel = GLADE_EPROP_ACCEL (eprop);
   GtkWidget *dialog, *parent, *vbox, *sw, *tree_view;
   GladeProject *project;
+  GladeProperty *property;
   GValue value = { 0, };
   GList *accelerators = NULL;
   gint res;
 
-  project = glade_widget_get_project (glade_property_get_widget (eprop->property));
+  property = glade_editor_property_get_property (eprop);
+  project = glade_widget_get_project (glade_property_get_widget (property));
   parent = gtk_widget_get_toplevel (GTK_WIDGET (eprop));
 
   dialog = gtk_dialog_new_with_buttons (_("Choose accelerator keys..."),

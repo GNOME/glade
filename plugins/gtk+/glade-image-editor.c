@@ -368,7 +368,7 @@ glade_image_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
   image_editor->stock_radio = gtk_radio_button_new (NULL);
   gtk_box_pack_start (GTK_BOX (hbox), image_editor->stock_radio, FALSE, FALSE,
                       2);
-  gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
+  gtk_box_pack_start (GTK_BOX (hbox), glade_editor_property_get_item_label (eprop), TRUE, TRUE, 2);
   table_attach (table, hbox, 0, 0);
   table_attach (table, GTK_WIDGET (eprop), 1, 0);
   image_editor->properties = g_list_prepend (image_editor->properties, eprop);
@@ -382,7 +382,7 @@ glade_image_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
       (GTK_RADIO_BUTTON (image_editor->stock_radio));
   gtk_box_pack_start (GTK_BOX (hbox), image_editor->icon_radio, FALSE, FALSE,
                       2);
-  gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
+  gtk_box_pack_start (GTK_BOX (hbox), glade_editor_property_get_item_label (eprop), TRUE, TRUE, 2);
   table_attach (table, hbox, 0, 1);
   table_attach (table, GTK_WIDGET (eprop), 1, 1);
   image_editor->properties = g_list_prepend (image_editor->properties, eprop);
@@ -396,7 +396,7 @@ glade_image_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
       (GTK_RADIO_BUTTON (image_editor->stock_radio));
   gtk_box_pack_start (GTK_BOX (hbox), image_editor->file_radio, FALSE, FALSE,
                       2);
-  gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
+  gtk_box_pack_start (GTK_BOX (hbox), glade_editor_property_get_item_label (eprop), TRUE, TRUE, 2);
   table_attach (table, hbox, 0, 2);
   table_attach (table, GTK_WIDGET (eprop), 1, 2);
   image_editor->properties = g_list_prepend (image_editor->properties, eprop);
@@ -425,7 +425,7 @@ glade_image_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "icon-size", FALSE,
                                                  TRUE);
-  table_attach (table, eprop->item_label, 0, 0);
+  table_attach (table, glade_editor_property_get_item_label (eprop), 0, 0);
   table_attach (table, GTK_WIDGET (eprop), 1, 0);
   image_editor->properties = g_list_prepend (image_editor->properties, eprop);
 
@@ -433,7 +433,7 @@ glade_image_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "pixel-size", FALSE,
                                                  TRUE);
-  table_attach (table, eprop->item_label, 0, 1);
+  table_attach (table, glade_editor_property_get_item_label (eprop), 0, 1);
   table_attach (table, GTK_WIDGET (eprop), 1, 1);
   image_editor->properties = g_list_prepend (image_editor->properties, eprop);
 

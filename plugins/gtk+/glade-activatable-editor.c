@@ -417,7 +417,7 @@ glade_activatable_editor_new (GladeWidgetAdaptor * adaptor,
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "related-action",
                                                  FALSE, TRUE);
-  table_attach (table, eprop->item_label, 0, row);
+  table_attach (table, glade_editor_property_get_item_label (eprop), 0, row);
   table_attach (table, GTK_WIDGET (eprop), 1, row++);
   activatable_editor->properties =
       g_list_prepend (activatable_editor->properties, eprop);
@@ -432,7 +432,7 @@ glade_activatable_editor_new (GladeWidgetAdaptor * adaptor,
       glade_widget_adaptor_create_eprop_by_name (adaptor,
                                                  "use-action-appearance", FALSE,
                                                  TRUE);
-  table_attach (table, eprop->item_label, 0, row);
+  table_attach (table, glade_editor_property_get_item_label (eprop), 0, row);
   table_attach (table, GTK_WIDGET (eprop), 1, row++);
   activatable_editor->properties =
       g_list_prepend (activatable_editor->properties, eprop);

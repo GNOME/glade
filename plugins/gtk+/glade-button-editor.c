@@ -508,14 +508,14 @@ glade_button_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
 
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "stock", FALSE, TRUE);
-  table_attach (table, eprop->item_label, 0, 0);
+  table_attach (table, glade_editor_property_get_item_label (eprop), 0, 0);
   table_attach (table, GTK_WIDGET (eprop), 1, 0);
   button_editor->properties = g_list_prepend (button_editor->properties, eprop);
 
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "image-position",
                                                  FALSE, TRUE);
-  table_attach (table, eprop->item_label, 0, 1);
+  table_attach (table, glade_editor_property_get_item_label (eprop), 0, 1);
   table_attach (table, GTK_WIDGET (eprop), 1, 1);
   button_editor->properties = g_list_prepend (button_editor->properties, eprop);
 
@@ -538,27 +538,27 @@ glade_button_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
 
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "label", FALSE, TRUE);
-  table_attach (table, eprop->item_label, 0, 0);
+  table_attach (table, glade_editor_property_get_item_label (eprop), 0, 0);
   table_attach (table, GTK_WIDGET (eprop), 1, 0);
   button_editor->properties = g_list_prepend (button_editor->properties, eprop);
 
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "use-underline",
                                                  FALSE, TRUE);
-  table_attach (table, eprop->item_label, 0, 1);
+  table_attach (table, glade_editor_property_get_item_label (eprop), 0, 1);
   table_attach (table, GTK_WIDGET (eprop), 1, 1);
   button_editor->properties = g_list_prepend (button_editor->properties, eprop);
 
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "image", FALSE, TRUE);
-  table_attach (table, eprop->item_label, 0, 2);
+  table_attach (table, glade_editor_property_get_item_label (eprop), 0, 2);
   table_attach (table, GTK_WIDGET (eprop), 1, 2);
   button_editor->properties = g_list_prepend (button_editor->properties, eprop);
 
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "image-position",
                                                  FALSE, TRUE);
-  table_attach (table, eprop->item_label, 0, 3);
+  table_attach (table, glade_editor_property_get_item_label (eprop), 0, 3);
   table_attach (table, GTK_WIDGET (eprop), 1, 3);
   button_editor->properties = g_list_prepend (button_editor->properties, eprop);
 

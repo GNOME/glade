@@ -181,7 +181,7 @@ glade_store_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
                                                  TRUE);
   store_editor->properties = g_list_prepend (store_editor->properties, eprop);
   frame = gtk_frame_new (NULL);
-  gtk_frame_set_label_widget (GTK_FRAME (frame), eprop->item_label);
+  gtk_frame_set_label_widget (GTK_FRAME (frame), glade_editor_property_get_item_label (eprop));
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
   gtk_box_pack_start (GTK_BOX (store_editor), frame, FALSE, FALSE, 12);
 
@@ -214,7 +214,7 @@ glade_store_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
       store_editor->properties =
           g_list_prepend (store_editor->properties, eprop);
       frame = gtk_frame_new (NULL);
-      gtk_frame_set_label_widget (GTK_FRAME (frame), eprop->item_label);
+      gtk_frame_set_label_widget (GTK_FRAME (frame), glade_editor_property_get_item_label (eprop));
       gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
       gtk_box_pack_start (GTK_BOX (store_editor), frame, FALSE, FALSE, 12);
 

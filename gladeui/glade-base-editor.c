@@ -2070,8 +2070,8 @@ glade_base_editor_add_properties (GladeBaseEditor * editor,
           glade_widget_create_editor_property (gchild, property, packing, TRUE);
       if (eprop)
         glade_base_editor_table_attach (editor,
-                                        GLADE_EDITOR_PROPERTY (eprop)->
-                                        item_label, GTK_WIDGET (eprop));
+					glade_editor_property_get_item_label (eprop), 
+					GTK_WIDGET (eprop));
       property = va_arg (args, gchar *);
     }
   va_end (args);

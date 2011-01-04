@@ -675,8 +675,10 @@ sync_object (GladeEPropAttrs * eprop_attrs, gboolean use_command)
     }
   else
     {
-      glade_property_set (GLADE_EDITOR_PROPERTY (eprop_attrs)->property,
-                          g_list_reverse (attributes));
+      GladeProperty *property = 
+	glade_editor_property_get_property (GLADE_EDITOR_PROPERTY (eprop_attrs));
+
+      glade_property_set (property, g_list_reverse (attributes));
       glade_attr_list_free (attributes);
     }
 }
@@ -830,32 +832,33 @@ glade_eprop_attrs_view (GladeEditorProperty * eprop)
   GtkTreeViewColumn *column;
   GtkAdjustment *adjustment;
 
-  eprop_attrs->model = (GtkTreeModel *) gtk_list_store_new (NUM_COLUMNS,
-                                                            /* Main Data */
-                                                            G_TYPE_STRING,      // COLUMN_NAME
-                                                            G_TYPE_INT, // COLUMN_NAME_WEIGHT
-                                                            G_TYPE_INT, // COLUMN_TYPE
-                                                            G_TYPE_INT, // COLUMN_EDIT_TYPE
-                                                            G_TYPE_POINTER,     // COLUMN_VALUE
-                                                            G_TYPE_UINT,        // COLUMN_START
-                                                            G_TYPE_UINT,        // COLUMN_END
-                                                            /* Editor renderer related */
-                                                            G_TYPE_BOOLEAN,     // COLUMN_TOGGLE_ACTIVE
-                                                            G_TYPE_BOOLEAN,     // COLUMN_TOGGLE_DOWN
-                                                            G_TYPE_BOOLEAN,     // COLUMN_BUTTON_ACTIVE
-                                                            G_TYPE_STRING,      // COLUMN_TEXT
-                                                            G_TYPE_INT, // COLUMN_TEXT_STYLE
-                                                            G_TYPE_STRING,      // COLUMN_TEXT_FG
-                                                            G_TYPE_BOOLEAN,     // COLUMN_COMBO_ACTIVE
-                                                            GTK_TYPE_LIST_STORE,        // COLUMN_COMBO_MODEL
-                                                            G_TYPE_BOOLEAN,     // COLUMN_SPIN_ACTIVE
-                                                            G_TYPE_UINT);       // COLUMN_SPIN_DIGITS
-
+  eprop_attrs->model = (GtkTreeModel *) 
+    gtk_list_store_new (NUM_COLUMNS,
+			/* Main Data */
+			G_TYPE_STRING,      // COLUMN_NAME
+			G_TYPE_INT, // COLUMN_NAME_WEIGHT
+			G_TYPE_INT, // COLUMN_TYPE
+			G_TYPE_INT, // COLUMN_EDIT_TYPE
+			G_TYPE_POINTER,     // COLUMN_VALUE
+			G_TYPE_UINT,        // COLUMN_START
+			G_TYPE_UINT,        // COLUMN_END
+			/* Editor renderer related */
+			G_TYPE_BOOLEAN,     // COLUMN_TOGGLE_ACTIVE
+			G_TYPE_BOOLEAN,     // COLUMN_TOGGLE_DOWN
+			G_TYPE_BOOLEAN,     // COLUMN_BUTTON_ACTIVE
+			G_TYPE_STRING,      // COLUMN_TEXT
+			G_TYPE_INT, // COLUMN_TEXT_STYLE
+			G_TYPE_STRING,      // COLUMN_TEXT_FG
+			G_TYPE_BOOLEAN,     // COLUMN_COMBO_ACTIVE
+			GTK_TYPE_LIST_STORE,        // COLUMN_COMBO_MODEL
+			G_TYPE_BOOLEAN,     // COLUMN_SPIN_ACTIVE
+			G_TYPE_UINT);       // COLUMN_SPIN_DIGITS
+  
   view_widget = gtk_tree_view_new_with_model (eprop_attrs->model);
   gtk_tree_view_set_show_expanders (GTK_TREE_VIEW (view_widget), FALSE);
   gtk_tree_view_set_enable_search (GTK_TREE_VIEW (view_widget), FALSE);
 
-        /********************* attribute name column *********************/
+  /********************* attribute name column *********************/
   renderer = gtk_cell_renderer_text_new ();
   g_object_set (G_OBJECT (renderer), "editable", FALSE, NULL);
   column = gtk_tree_view_column_new_with_attributes
@@ -865,7 +868,7 @@ glade_eprop_attrs_view (GladeEditorProperty * eprop)
   gtk_tree_view_column_set_expand (GTK_TREE_VIEW_COLUMN (column), TRUE);
   gtk_tree_view_append_column (GTK_TREE_VIEW (view_widget), column);
 
-        /********************* attribute value column *********************/
+  /********************* attribute value column *********************/
   column = gtk_tree_view_column_new ();
   gtk_tree_view_column_set_title (column, _("Value"));
 
@@ -949,9 +952,11 @@ glade_eprop_attrs_populate_view (GladeEditorProperty * eprop,
   GtkListStore *model = (GtkListStore *) gtk_tree_view_get_model (view);
   GtkTreeIter *iter;
   GladeAttribute *gattr;
+  GladeProperty *property;
   gchar *text;
 
-  attributes = g_value_get_boxed (glade_property_inline_value (eprop->property));
+  property   = glade_editor_property_get_property (eprop);
+  attributes = g_value_get_boxed (glade_property_inline_value (property));
 
   append_empty_row (model, PANGO_ATTR_LANGUAGE);
   append_empty_row (model, PANGO_ATTR_STYLE);
@@ -1009,15 +1014,17 @@ glade_eprop_attrs_show_dialog (GtkWidget * dialog_button,
   GladeEPropAttrs *eprop_attrs = GLADE_EPROP_ATTRS (eprop);
   GtkWidget *dialog, *parent, *vbox, *sw, *tree_view;
   GladeProject *project;
+  GladeProperty *property;
   GList *old_attributes;
   gint res;
 
-  project = glade_widget_get_project (glade_property_get_widget (eprop->property));
-  parent = gtk_widget_get_toplevel (GTK_WIDGET (eprop));
+  property = glade_editor_property_get_property (eprop);
+  project  = glade_widget_get_project (glade_property_get_widget (property));
+  parent   = gtk_widget_get_toplevel (GTK_WIDGET (eprop));
 
 
   /* Keep a copy for commit time... */
-  old_attributes = g_value_dup_boxed (glade_property_inline_value (eprop->property));
+  old_attributes = g_value_dup_boxed (glade_property_inline_value (property));
 
   dialog = gtk_dialog_new_with_buttons (_("Setup Text Attributes"),
                                         GTK_WINDOW (parent),
@@ -1059,7 +1066,7 @@ glade_eprop_attrs_show_dialog (GtkWidget * dialog_button,
       /* Update from old attributes so that there a property change 
        * sitting on the undo stack.
        */
-      glade_property_set (eprop->property, old_attributes);
+      glade_property_set (property, old_attributes);
       sync_object (eprop_attrs, TRUE);
     }
   else if (res == GLADE_RESPONSE_CLEAR)
