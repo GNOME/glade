@@ -3,7 +3,7 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 datarootdir=@datarootdir@
 datadir=@datadir@
-includedir=@includedir@/libgladeui-3.0
+includedir=@includedir@/libgladeui-2.0
 catalogdir=@datadir@/@PACKAGE@/catalogs
 pixmapdir=@datadir@/@PACKAGE@/pixmaps
 moduledir=@libdir@/@PACKAGE@/modules
@@ -14,5 +14,5 @@ Description: Glade interface designer library
 URL: http://glade.gnome.org
 Version: @PACKAGE_VERSION@
 Requires: gtk+-3.0 >= 2.91.2 libxml-2.0 >= 2.4.0
-Libs: -L${libdir} -lgladeui-3
+Libs: -L${libdir} -lgladeui-2
 Cflags: -I${includedir}
