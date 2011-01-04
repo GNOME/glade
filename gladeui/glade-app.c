@@ -35,7 +35,6 @@
 #include "glade-debug.h"
 #include "glade-cursor.h"
 #include "glade-catalog.h"
-#include "glade-fixed.h"
 #include "glade-design-view.h"
 #include "glade-marshallers.h"
 #include "glade-accumulators.h"

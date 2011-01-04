@@ -22,6 +22,9 @@
 
 	* plugins/gtk+/*.c: updated all custom editors to used eprop accessors now
 
+	* gladeui/glade-fixed.[ch] --> plugins/gtk+/glade-fixed.[ch]:
+	Instead of privatizing GladeFixed, moved it to be a detail of the plugin backend.
+
 2011-01-03  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-app.[ch]:

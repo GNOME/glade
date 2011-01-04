@@ -418,13 +418,7 @@ glade_placeholder_motion_notify_event (GtkWidget * widget,
   project      = glade_placeholder_get_project (GLADE_PLACEHOLDER (widget));
   pointer_mode = glade_project_get_pointer_mode (project);
 
-  if (pointer_mode == GLADE_POINTER_SELECT &&
-      /* If we are the child of a widget that is in a GladeFixed, then
-       * we are the means of drag/resize and we dont want to fight for
-       * the cursor (ideally; GladeCursor should somehow deal with such
-       * concurrencies I suppose).
-       */
-      (gparent_parent && GLADE_IS_FIXED (gparent_parent)) == FALSE)
+  if (pointer_mode == GLADE_POINTER_SELECT)
     glade_cursor_set (project, event->window, GLADE_CURSOR_SELECTOR);
   else if (pointer_mode == GLADE_POINTER_ADD_WIDGET)
     glade_cursor_set (project, event->window, GLADE_CURSOR_ADD_WIDGET);

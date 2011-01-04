@@ -5011,7 +5011,6 @@ glade_project_command_paste (GladeProject     *project,
   GList *list;
   GladeWidget *widget = NULL, *parent;
   gint placeholder_relations = 0;
-  GladeFixed *fixed = NULL;
 
   g_return_if_fail (GLADE_IS_PROJECT (project));
 
@@ -5041,9 +5040,6 @@ glade_project_command_paste (GladeProject     *project,
   if (g_list_length (clipboard->widgets) == 1 &&
       widget && GWA_IS_TOPLEVEL (glade_widget_get_adaptor (widget)))
     parent = NULL;
-
-  if (parent && GLADE_IS_FIXED (parent))
-    fixed = GLADE_FIXED (parent);
 
   /* Check if parent is actually a container of any sort */
   if (parent && !glade_widget_adaptor_is_container (glade_widget_get_adaptor (parent)))
@@ -5098,12 +5094,11 @@ glade_project_command_paste (GladeProject     *project,
 
   g_assert (widget);
 
-  /* A GladeFixed that doesnt use placeholders can only paste one
+  /* A GladeWidget that doesnt use placeholders can only paste one
    * at a time
    */
   if (GTK_IS_WIDGET (glade_widget_get_object (widget)) &&
-      parent && fixed && 
-      !GWA_USE_PLACEHOLDERS (glade_widget_get_adaptor (parent)) &&
+      parent && !GWA_USE_PLACEHOLDERS (glade_widget_get_adaptor (parent)) &&
       g_list_length (clipboard->widgets) != 1)
     {
       glade_util_ui_message (glade_app_get_window (),

@@ -47,7 +47,6 @@
 #include "glade-clipboard.h"
 #include "glade-signal.h"
 #include "glade-app.h"
-#include "glade-fixed.h"
 #include "glade-name-context.h"
 
 /* Concerning placeholders: we do not hold any reference to placeholders,

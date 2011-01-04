@@ -78,7 +78,6 @@ libgladeui_2_la_SOURCES = \
 	glade-accumulators.c \
 	glade-builtins.c \
 	glade-app.c \
-	glade-fixed.c \
 	glade-base-editor.c \
 	glade-popup.h \
 	glade-marshallers.h \
@@ -129,7 +128,6 @@ libgladeuiinclude_HEADERS = \
 	glade-command.h \
 	glade-app.h \
 	glade-builtins.h \
-	glade-fixed.h \
 	glade-base-editor.h \
 	glade-xml-utils.h \
 	glade-signal.h \

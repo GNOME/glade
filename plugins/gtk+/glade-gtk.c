@@ -42,6 +42,7 @@
 #include "glade-treeview-editor.h"
 #include "glade-entry-editor.h"
 #include "glade-activatable-editor.h"
+#include "glade-fixed.h"
 
 #include <gladeui/glade-editor-property.h>
 #include <gladeui/glade-base-editor.h>

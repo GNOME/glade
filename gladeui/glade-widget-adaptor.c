@@ -41,6 +41,7 @@
 #include "glade-accumulators.h"
 #include "glade-displayable-values.h"
 #include "glade-editor-table.h"
+#include "glade-cursor.h"
 
 /* For g_file_exists */
 #include <sys/types.h>

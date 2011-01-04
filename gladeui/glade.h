@@ -40,7 +40,6 @@
 #include <gladeui/glade-placeholder.h>
 #include <gladeui/glade-utils.h>
 #include <gladeui/glade-builtins.h>
-#include <gladeui/glade-fixed.h>
 #include <gladeui/glade-name-context.h>
 #include <gladeui/glade-editable.h>
 #include <gladeui/glade-displayable-values.h>

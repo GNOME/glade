@@ -52,10 +52,10 @@
 #include <glib/gi18n-lib.h>
 #include <gdk/gdkkeysyms.h>
 
-#include "glade.h"
-#include "glade-accumulators.h"
-#include "glade-marshallers.h"
-#include "glade-popup.h"
+#include <gladeui/glade.h>
+#include <gladeui/glade-accumulators.h>
+#include <gladeui/glade-marshallers.h>
+#include <gladeui/glade-popup.h>
 #include "glade-fixed.h"
 
 /* properties */

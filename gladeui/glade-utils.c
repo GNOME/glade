@@ -39,7 +39,6 @@
 #include "glade-property.h"
 #include "glade-property-class.h"
 #include "glade-clipboard.h"
-#include "glade-fixed.h"
 
 #include <string.h>
 #include <gdk/gdkkeysyms.h>
