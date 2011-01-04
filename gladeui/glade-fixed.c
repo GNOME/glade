@@ -557,11 +557,12 @@ glade_fixed_handle_child_event (GladeFixed * fixed,
   GtkWidget *fixed_widget, *child_widget;
   gint fixed_x, fixed_y, child_x, child_y;
   gboolean handled = FALSE, sig_handled;
+  GladeProject *project = glade_widget_get_project (GLADE_WIDGET (fixed));
 
   fixed_widget = GTK_WIDGET (glade_widget_get_object (GLADE_WIDGET (fixed)));
   child_widget = GTK_WIDGET (glade_widget_get_object (child));
 
-  pointer_mode = glade_app_get_pointer_mode ();
+  pointer_mode = glade_project_get_pointer_mode (project);
 
   /* when widget->window points to a parent window, these calculations
    * would be wrong if we based them on the GTK_WIDGET (fixed)->window,
@@ -590,16 +591,16 @@ glade_fixed_handle_child_event (GladeFixed * fixed,
           {
             if ((event_state & GDK_SHIFT_MASK) ||
                 pointer_mode == GLADE_POINTER_DRAG_RESIZE)
-              glade_cursor_set (((GdkEventAny *) event)->window, operation);
+              glade_cursor_set (project, ((GdkEventAny *) event)->window, operation);
             else if (pointer_mode == GLADE_POINTER_SELECT)
-              glade_cursor_set (((GdkEventAny *) event)->window,
+              glade_cursor_set (project, ((GdkEventAny *) event)->window,
                                 GLADE_CURSOR_SELECTOR);
 
           }
         else if (fixed->configuring && !(event_state & GDK_BUTTON1_MASK))
           {
             /* Cancel drags that no longer have mouse down */
-            glade_cursor_set (((GdkEventAny *) event)->window, operation);
+            glade_cursor_set (project, ((GdkEventAny *) event)->window, operation);
 
             glade_fixed_cancel_operation (fixed, operation);
             handled = TRUE;
@@ -611,7 +612,7 @@ glade_fixed_handle_child_event (GladeFixed * fixed,
                                     &fixed->mouse_x, &fixed->mouse_y);
 
             glade_fixed_configure_widget (fixed, child);
-            glade_cursor_set (((GdkEventAny *) event)->window,
+            glade_cursor_set (project, ((GdkEventAny *) event)->window,
                               fixed->operation);
             handled = TRUE;
           }
@@ -631,7 +632,7 @@ glade_fixed_handle_child_event (GladeFixed * fixed,
             glade_fixed_save_state (fixed, child);
 
             fixed->operation = operation;
-            glade_cursor_set (((GdkEventAny *) event)->window,
+            glade_cursor_set (project, ((GdkEventAny *) event)->window,
                               fixed->operation);
 
             g_signal_emit (G_OBJECT (fixed),
@@ -647,9 +648,9 @@ glade_fixed_handle_child_event (GladeFixed * fixed,
 
             if ((event_state & GDK_SHIFT_MASK) ||
                 pointer_mode == GLADE_POINTER_DRAG_RESIZE)
-              glade_cursor_set (((GdkEventAny *) event)->window, operation);
+              glade_cursor_set (project, ((GdkEventAny *) event)->window, operation);
             else
-              glade_cursor_set (((GdkEventAny *) event)->window,
+              glade_cursor_set (project, ((GdkEventAny *) event)->window,
                                 GLADE_CURSOR_SELECTOR);
 
             glade_fixed_cancel_operation (fixed, operation);
@@ -667,6 +668,7 @@ glade_fixed_child_event (GladeWidget * gwidget,
                          GdkEvent * event, GladeFixed * fixed)
 {
   GtkWidget *event_widget;
+  GladeProject *project = glade_widget_get_project (gwidget);
 
   /* Get the basic event info... */
   gdk_window_get_user_data (((GdkEventAny *) event)->window,
@@ -686,9 +688,9 @@ glade_fixed_child_event (GladeWidget * gwidget,
    * the palette.
    */
   if (GLADE_IS_FIXED (gwidget) &&
-      glade_app_get_pointer_mode () == GLADE_POINTER_ADD_WIDGET)
+      glade_project_get_pointer_mode (project) == GLADE_POINTER_ADD_WIDGET)
     {
-      glade_cursor_set (((GdkEventAny *) event)->window,
+      glade_cursor_set (project, ((GdkEventAny *) event)->window,
                         GLADE_CURSOR_ADD_WIDGET);
       return FALSE;
     }
@@ -795,9 +797,10 @@ glade_fixed_event (GladeWidget * gwidget_fixed, GdkEvent * event)
   GladeFixed *fixed = GLADE_FIXED (gwidget_fixed);
   GladeWidgetAdaptor *adaptor;
   GtkWidget *event_widget;
+  GladeProject *project = glade_widget_get_project (gwidget_fixed);
   gboolean handled = FALSE;
 
-  adaptor = glade_palette_get_current_item (glade_app_get_palette ());
+  adaptor = glade_project_get_add_item (project);
 
   /* Get the event widget and the deep widget */
   gdk_window_get_user_data (((GdkEventAny *) event)->window,
@@ -843,24 +846,23 @@ glade_fixed_event (GladeWidget * gwidget_fixed, GdkEvent * event)
                                       glade_widget_get_project (GLADE_WIDGET (fixed)));
                 fixed->creating = FALSE;
 
-                glade_palette_deselect_current_item (glade_app_get_palette (),
-                                                     TRUE);
+		glade_project_set_add_item (project, NULL);
 
                 handled = TRUE;
               }
           }
         break;
       case GDK_MOTION_NOTIFY:
-        if (glade_app_get_pointer_mode () == GLADE_POINTER_ADD_WIDGET)
+        if (glade_project_get_pointer_mode (project) == GLADE_POINTER_ADD_WIDGET)
           {
-            glade_cursor_set (((GdkEventAny *) event)->window,
+            glade_cursor_set (project, ((GdkEventAny *) event)->window,
                               GLADE_CURSOR_ADD_WIDGET);
 
             handled = TRUE;
           }
         else if (GLADE_IS_FIXED (glade_widget_get_parent (gwidget_fixed)) == FALSE &&
-                 glade_app_get_pointer_mode () == GLADE_POINTER_SELECT)
-          glade_cursor_set (((GdkEventAny *) event)->window,
+                 glade_project_get_pointer_mode (project) == GLADE_POINTER_SELECT)
+          glade_cursor_set (project, ((GdkEventAny *) event)->window,
                             GLADE_CURSOR_SELECTOR);
         break;
       default:

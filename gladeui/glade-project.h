@@ -15,16 +15,35 @@ G_BEGIN_DECLS
 #define GLADE_IS_PROJECT(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_PROJECT))
 #define GLADE_IS_PROJECT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_PROJECT))
 #define GLADE_PROJECT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_PROJECT, GladeProjectClass))
+#define GLADE_TYPE_POINTER_MODE       (glade_pointer_mode_get_type())
 
 typedef struct _GladeProjectPrivate  GladeProjectPrivate;
 typedef struct _GladeProjectClass    GladeProjectClass;
+typedef enum   _GladePointerMode     GladePointerMode;
+typedef enum   _GladeSupportMask     GladeSupportMask;
 
-typedef enum
+/**
+ * GladePointerMode:
+ * @GLADE_POINTER_SELECT:      Mouse pointer used for selecting widgets
+ * @GLADE_POINTER_ADD_WIDGET:  Mouse pointer used for adding widgets
+ * @GLADE_POINTER_DRAG_RESIZE: Mouse pointer used for dragging and 
+ *                             resizing widgets in containers
+ *
+ * Indicates what the pointer is used for in the workspace.
+ */
+enum _GladePointerMode
 {
-	GLADE_SUPPORT_OK                   = 0,
-	GLADE_SUPPORT_DEPRECATED           = (0x01 << 0),
-	GLADE_SUPPORT_MISMATCH             = (0x01 << 1)
-} GladeSupportMask;
+  GLADE_POINTER_SELECT = 0,
+  GLADE_POINTER_ADD_WIDGET,
+  GLADE_POINTER_DRAG_RESIZE
+};
+
+enum _GladeSupportMask
+{
+  GLADE_SUPPORT_OK                   = 0,
+  GLADE_SUPPORT_DEPRECATED           = (0x01 << 0),
+  GLADE_SUPPORT_MISMATCH             = (0x01 << 1)
+};
 
 /**
  * GladeProjectModelColumns:
@@ -83,147 +102,121 @@ struct _GladeProjectClass
 };
 
 
-GType          glade_project_get_type            (void) G_GNUC_CONST;
+GType               glade_pointer_mode_get_type       (void) G_GNUC_CONST;
+GType               glade_project_get_type            (void) G_GNUC_CONST;
 
-GladeProject  *glade_project_new                 (void);
+GladeProject       *glade_project_new                 (void);
+GladeProject       *glade_project_load                (const gchar         *path);
+gboolean            glade_project_load_from_file      (GladeProject        *project, 
+						       const gchar         *path);
+gboolean            glade_project_save                (GladeProject        *project, 
+						       const gchar         *path, 
+						       GError             **error);
+void                glade_project_push_progress        (GladeProject       *project);
+gboolean            glade_project_load_cancelled       (GladeProject       *project);
+void                glade_project_cancel_load          (GladeProject       *project);
 
-GladeProject  *glade_project_load                (const gchar  *path);
-gboolean       glade_project_load_from_file      (GladeProject *project, 
-						  const gchar  *path);
+void                glade_project_preview              (GladeProject       *project, 
+							GladeWidget        *gwidget);
+void                glade_project_preferences          (GladeProject       *project);
 
-gboolean       glade_project_save                (GladeProject *project, 
-						  const gchar   *path, 
-						  GError       **error);
+/* Commands */
+void                glade_project_undo                 (GladeProject       *project);
+void                glade_project_redo                 (GladeProject       *project);
+GladeCommand       *glade_project_next_undo_item       (GladeProject       *project);
+GladeCommand       *glade_project_next_redo_item       (GladeProject       *project);
+void                glade_project_push_undo            (GladeProject       *project, 
+							GladeCommand       *cmd);
+GtkWidget          *glade_project_undo_items           (GladeProject       *project);
+GtkWidget          *glade_project_redo_items           (GladeProject       *project);
 
-void           glade_project_preview             (GladeProject *project, GladeWidget *gwidget);
+/* Add/Remove Objects */
+const GList        *glade_project_get_objects          (GladeProject       *project);
+void                glade_project_add_object           (GladeProject       *project, 
+							GObject            *object);
+void                glade_project_remove_object        (GladeProject       *project, 
+							GObject            *object);
+gboolean            glade_project_has_object           (GladeProject       *project, 
+							GObject            *object);
+gchar              *glade_project_resource_fullpath    (GladeProject       *project,
+							const gchar        *resource);
 
-const gchar   *glade_project_get_path            (GladeProject *project);
+/* Widget names */
+GladeWidget        *glade_project_get_widget_by_name   (GladeProject       *project, 
+							GladeWidget        *ancestor,
+							const gchar        *name);
+void                glade_project_set_widget_name      (GladeProject       *project, 
+							GladeWidget        *widget, 
+							const gchar        *name);
+gchar              *glade_project_new_widget_name      (GladeProject       *project, 
+							GladeWidget        *widget, 
+							const gchar        *base_name);
+gboolean            glade_project_available_widget_name(GladeProject       *project, 
+							GladeWidget        *widget,
+							const gchar        *name);
 
-gchar         *glade_project_get_name            (GladeProject *project);
-
-
-void           glade_project_undo                (GladeProject *project);
-
-void           glade_project_redo                (GladeProject *project);
-
-GladeCommand  *glade_project_next_undo_item      (GladeProject *project);
-
-GladeCommand  *glade_project_next_redo_item      (GladeProject *project);
-
-void           glade_project_push_undo           (GladeProject *project, 
-						  GladeCommand *cmd);
-
-GtkWidget     *glade_project_undo_items          (GladeProject *project);
-
-GtkWidget     *glade_project_redo_items          (GladeProject *project);
-
-void           glade_project_reset_path          (GladeProject *project);
-
-gboolean       glade_project_get_readonly        (GladeProject *project);
-
-const GList   *glade_project_get_objects         (GladeProject *project);
-
-void           glade_project_add_object          (GladeProject *project, 
-						  GObject      *object);
-
-void           glade_project_remove_object       (GladeProject *project, 
-						  GObject      *object);
-
-gboolean       glade_project_has_object          (GladeProject *project, 
-						  GObject      *object);
-
-GladeWidget   *glade_project_get_widget_by_name  (GladeProject *project, 
-						  GladeWidget  *ancestor,
-						  const gchar  *name);
-
-void           glade_project_set_widget_name     (GladeProject *project, 
-						  GladeWidget  *widget, 
-						  const gchar  *name);
-
-gchar         *glade_project_new_widget_name     (GladeProject *project, 
-						  GladeWidget  *widget, 
-						  const gchar  *base_name);
-
-gboolean       glade_project_available_widget_name (GladeProject *project, GladeWidget  *widget,
-						    const gchar  *name);
 
 /* Selection */
+gboolean            glade_project_is_selected          (GladeProject       *project,
+							GObject            *object);
+void                glade_project_selection_set        (GladeProject       *project,
+							GObject            *object,
+							gboolean            emit_signal);
+void                glade_project_selection_add        (GladeProject       *project,
+							GObject            *object,
+							gboolean            emit_signal);
+void                glade_project_selection_remove     (GladeProject       *project,
+							GObject            *object,
+							gboolean            emit_signal);
+void                glade_project_selection_clear      (GladeProject       *project,
+							gboolean            emit_signal);
+void                glade_project_selection_changed    (GladeProject       *project);
+void                glade_project_queue_selection_changed (GladeProject    *project);
+GList              *glade_project_selection_get        (GladeProject       *project);
+gboolean            glade_project_get_has_selection    (GladeProject       *project);
 
-gboolean       glade_project_is_selected         (GladeProject *project,
-						  GObject      *object);
+/* Accessors */ 
+const gchar        *glade_project_get_path             (GladeProject       *project);
+gchar              *glade_project_get_name             (GladeProject       *project);
+void                glade_project_reset_path           (GladeProject       *project);
+gboolean            glade_project_is_loading           (GladeProject       *project);
+time_t              glade_project_get_file_mtime       (GladeProject       *project);
+gboolean            glade_project_get_readonly         (GladeProject       *project);
+gboolean            glade_project_get_modified         (GladeProject       *project);
+gboolean            glade_project_get_previewable      (GladeProject       *project);
+gboolean            glade_project_get_previewable      (GladeProject       *project);
+void                glade_project_set_pointer_mode     (GladeProject       *project,
+							GladePointerMode    mode);
+GladePointerMode    glade_project_get_pointer_mode     (GladeProject       *project);
+void                glade_project_set_add_item         (GladeProject       *project,
+							GladeWidgetAdaptor *adaptor);
+GladeWidgetAdaptor *glade_project_get_add_item         (GladeProject       *project);
+void                glade_project_set_naming_policy    (GladeProject       *project,
+							GladeNamingPolicy   policy);
+GladeNamingPolicy   glade_project_get_naming_policy    (GladeProject       *project);
+void                glade_project_get_target_version   (GladeProject       *project,
+							const gchar        *catalog,
+							gint               *major,
+							gint               *minor);
+GList              *glade_project_required_libs        (GladeProject       *project);
+gchar              *glade_project_display_dependencies (GladeProject       *project);
 
-void           glade_project_selection_set       (GladeProject *project,
-						  GObject      *object,
-						  gboolean      emit_signal);
+/* Verifications */
+void                glade_project_verify_properties    (GladeWidget        *widget);
+gchar              *glade_project_verify_widget_adaptor(GladeProject       *project,
+							GladeWidgetAdaptor *adaptor,
+							GladeSupportMask   *mask);
+void                glade_project_verify_project_for_ui(GladeProject       *project);
+void                glade_project_verify_property      (GladeProperty      *property);
+void                glade_project_verify_signal        (GladeWidget        *widget,
+							GladeSignal        *signal);
 
-void           glade_project_selection_add       (GladeProject *project,
-						  GObject      *object,
-						  gboolean      emit_signal);
-
-void           glade_project_selection_remove    (GladeProject *project,
-						  GObject      *object,
-						  gboolean      emit_signal);
-
-void           glade_project_selection_clear     (GladeProject *project,
-						  gboolean      emit_signal);
-
-void           glade_project_selection_changed   (GladeProject *project);
-void           glade_project_queue_selection_changed (GladeProject *project);
-
-GList         *glade_project_selection_get       (GladeProject *project);
-
-gboolean       glade_project_get_has_selection   (GladeProject *project);
-
-gchar         *glade_project_resource_fullpath    (GladeProject  *project,
-						   const gchar   *resource);
- 
-gboolean       glade_project_is_loading           (GladeProject *project);
- 
-time_t         glade_project_get_file_mtime       (GladeProject *project);
-
-gboolean       glade_project_get_modified         (GladeProject *project);
-
-gboolean       glade_project_get_previewable      (GladeProject *project);
-
-void           glade_project_preferences          (GladeProject *project);
-
-void           glade_project_verify_properties    (GladeWidget  *widget);
-
-gchar         *glade_project_verify_widget_adaptor (GladeProject       *project,
-						    GladeWidgetAdaptor *adaptor,
-						    GladeSupportMask   *mask);
-
-void          glade_project_verify_project_for_ui (GladeProject  *project);
-
-GList        *glade_project_required_libs          (GladeProject       *project);
-
-void          glade_project_set_naming_policy      (GladeProject       *project,
-						    GladeNamingPolicy   policy);
-
-GladeNamingPolicy glade_project_get_naming_policy  (GladeProject       *project);
-void          glade_project_get_target_version     (GladeProject       *project,
-						    const gchar        *catalog,
-						    gint               *major,
-						    gint               *minor);
-
-void          glade_project_verify_property        (GladeProperty      *property);
-void          glade_project_verify_signal          (GladeWidget        *widget,
-						    GladeSignal        *signal);
-
-
-gchar        *glade_project_display_dependencies (GladeProject *project);
-
-void          glade_project_push_progress (GladeProject *project);
-gboolean      glade_project_load_cancelled (GladeProject *project);
-void          glade_project_cancel_load (GladeProject *project);
-
-
-/* Command central */
-void          glade_project_copy_selection (GladeProject     *project);
-void          glade_project_command_cut    (GladeProject     *project); 
-void          glade_project_command_paste  (GladeProject     *project, 
-					    GladePlaceholder *placeholder);
-void          glade_project_command_delete (GladeProject     *project);
+/* General selection driven commands */
+void                glade_project_copy_selection       (GladeProject       *project);
+void                glade_project_command_cut          (GladeProject       *project); 
+void                glade_project_command_paste        (GladeProject       *project, 
+							GladePlaceholder   *placeholder);
+void                glade_project_command_delete       (GladeProject       *project);
 
 G_END_DECLS
 

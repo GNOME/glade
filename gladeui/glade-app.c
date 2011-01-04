@@ -62,17 +62,10 @@ enum
   LAST_SIGNAL
 };
 
-enum
-{
-  PROP_0,
-  PROP_POINTER_MODE
-};
-
 struct _GladeAppPrivate
 {
   GtkWidget *window;
 
-  GladePalette *palette;        /* See glade-palette */
   GladeClipboard *clipboard;    /* See glade-clipboard */
   GList *catalogs;              /* See glade-catalog */
 
@@ -85,8 +78,6 @@ struct _GladeAppPrivate
                                  * GladeWidgets.
                                  */
   GtkAccelGroup *accel_group;   /* Default acceleration group for this app */
-
-  GladePointerMode pointer_mode;        /* Current mode for the pointer in the workspace */
 };
 
 static guint glade_app_signals[LAST_SIGNAL] = { 0 };
@@ -104,26 +95,6 @@ static gboolean check_initialised = FALSE;
 static void glade_init_check (void);
 
 G_DEFINE_TYPE (GladeApp, glade_app, G_TYPE_OBJECT);
-
-
-GType
-glade_pointer_mode_get_type (void)
-{
-  static GType etype = 0;
-
-  if (etype == 0)
-    {
-      static const GEnumValue values[] = {
-        {GLADE_POINTER_SELECT, "select", "Select widgets"},
-        {GLADE_POINTER_ADD_WIDGET, "add", "Add widgets"},
-        {GLADE_POINTER_DRAG_RESIZE, "drag-resize", "Drag and resize widgets"},
-        {0, NULL, NULL}
-      };
-      etype = g_enum_register_static ("GladePointerMode", values);
-    }
-  return etype;
-}
-
 
 /*****************************************************************
  *                    GObjectClass                               *
@@ -158,11 +129,6 @@ glade_app_dispose (GObject * app)
 {
   GladeAppPrivate *priv = GLADE_APP_GET_PRIVATE (app);
 
-  if (priv->palette)
-    {
-      g_object_unref (priv->palette);
-      priv->palette = NULL;
-    }
   if (priv->clipboard)
     {
       g_object_unref (priv->clipboard);
@@ -192,40 +158,6 @@ glade_app_finalize (GObject * app)
   check_initialised = FALSE;
 
   G_OBJECT_CLASS (glade_app_parent_class)->finalize (app);
-}
-
-static void
-glade_app_set_property (GObject * object,
-                        guint property_id,
-                        const GValue * value, GParamSpec * pspec)
-{
-  switch (property_id)
-    {
-      case PROP_POINTER_MODE:
-        glade_app_set_pointer_mode (g_value_get_enum (value));
-        break;
-      default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
-}
-
-static void
-glade_app_get_property (GObject * object,
-                        guint property_id, GValue * value, GParamSpec * pspec)
-{
-  GladeApp *app = GLADE_APP (object);
-
-
-  switch (property_id)
-    {
-      case PROP_POINTER_MODE:
-        g_value_set_enum (value, app->priv->pointer_mode);
-        break;
-      default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
 }
 
 /*****************************************************************
@@ -373,10 +305,6 @@ glade_app_init (GladeApp * app)
   /* Initialize app objects */
   app->priv->catalogs = (GList *) glade_catalog_load_all ();
 
-  /* Create palette */
-  app->priv->palette = (GladePalette *) glade_palette_new (app->priv->catalogs);
-  g_object_ref_sink (app->priv->palette);
-
   /* Create clipboard */
   app->priv->clipboard = glade_clipboard_new ();
 
@@ -394,12 +322,8 @@ glade_app_class_init (GladeAppClass * klass)
   object_class->constructor = glade_app_constructor;
   object_class->dispose = glade_app_dispose;
   object_class->finalize = glade_app_finalize;
-  object_class->get_property = glade_app_get_property;
-  object_class->set_property = glade_app_set_property;
 
   klass->signal_editor_created = glade_app_signal_editor_created_default;
-  klass->show_properties = NULL;
-  klass->hide_properties = NULL;
 
   /**
    * GladeApp::signal-editor-created:
@@ -437,13 +361,6 @@ glade_app_class_init (GladeAppClass * klass)
                     glade_marshal_VOID__STRING_STRING_STRING,
                     G_TYPE_NONE, 3,
                     G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
-
-  g_object_class_install_property
-      (object_class, PROP_POINTER_MODE,
-       g_param_spec_enum
-       ("pointer-mode", _("Pointer Mode"),
-        _("Current mode for the pointer in the workspace"),
-        GLADE_TYPE_POINTER_MODE, GLADE_POINTER_SELECT, G_PARAM_READWRITE));
 
   g_type_class_add_private (klass, sizeof (GladeAppPrivate));
 }
@@ -654,13 +571,6 @@ glade_app_get_window (void)
   return app->priv->window;
 }
 
-GladePalette *
-glade_app_get_palette (void)
-{
-  GladeApp *app = glade_app_get ();
-  return app->priv->palette;
-}
-
 GladeClipboard *
 glade_app_get_clipboard (void)
 {
@@ -746,34 +656,9 @@ glade_app_get_project_by_path (const gchar * project_path)
 }
 
 void
-glade_app_show_properties (gboolean raise)
-{
-  GladeApp *app = glade_app_get ();
-
-  if (GLADE_APP_GET_CLASS (app)->show_properties)
-    GLADE_APP_GET_CLASS (app)->show_properties (app, raise);
-  else
-    g_critical ("%s not implemented\n", G_STRFUNC);
-}
-
-void
-glade_app_hide_properties (void)
-{
-  GladeApp *app = glade_app_get ();
-
-  if (GLADE_APP_GET_CLASS (app)->hide_properties)
-    GLADE_APP_GET_CLASS (app)->hide_properties (app);
-  else
-    g_critical ("%s not implemented\n", G_STRFUNC);
-
-}
-
-void
 glade_app_add_project (GladeProject * project)
 {
   GladeApp *app;
-  GladeDesignView *view;
-  GladeDesignLayout *layout;
 
   g_return_if_fail (GLADE_IS_PROJECT (project));
 
@@ -785,31 +670,6 @@ glade_app_add_project (GladeProject * project)
 
   /* Take a reference for GladeApp here... */
   app->priv->projects = g_list_append (app->priv->projects, g_object_ref (project));
-
-  /* Select the first window in the project */
-  if (g_list_length (app->priv->projects) == 1 ||
-      !(view = glade_design_view_get_from_project (project)) ||
-      !(layout = glade_design_view_get_layout (view)) ||
-      !gtk_bin_get_child (GTK_BIN (layout)))
-    {
-      const GList *node;
-      for (node = glade_project_get_objects (project);
-           node != NULL; node = g_list_next (node))
-        {
-          GObject *obj = G_OBJECT (node->data);
-
-          if (GTK_IS_WIDGET (obj) &&
-              gtk_widget_get_has_window (GTK_WIDGET (obj)))
-            {
-              glade_project_selection_set (project, obj, TRUE);
-              glade_widget_show (glade_widget_get_from_gobject (obj));
-              break;
-            }
-        }
-    }
-
-  /* XXX I think the palette & editor should detect this by itself */
-  gtk_widget_set_sensitive (GTK_WIDGET (app->priv->palette), TRUE);
 }
 
 void
@@ -822,51 +682,11 @@ glade_app_remove_project (GladeProject * project)
 
   app->priv->projects = g_list_remove (app->priv->projects, project);
 
-  /* If no more projects */
-  if (app->priv->projects == NULL)
-    {
-      /* XXX I think the palette & editor should detect this. */
-      gtk_widget_set_sensitive (GTK_WIDGET (app->priv->palette), FALSE);
-
-    }
-
   /* Its safe to just release the project as the project emits a
    * "close" signal and everyone is responsable for cleaning up at
    * that point.
    */
   g_object_unref (project);
-}
-
-/**
- * glade_app_set_pointer_mode:
- * @mode: A #GladePointerMode
- *
- * Sets the #GladePointerMode
- */
-void
-glade_app_set_pointer_mode (GladePointerMode mode)
-{
-  GladeApp *app = glade_app_get ();
-
-  app->priv->pointer_mode = mode;
-
-  g_object_notify (G_OBJECT (app), "pointer-mode");
-}
-
-
-/**
- * glade_app_get_pointer_mode:
- *
- * Gets the current #GladePointerMode
- * 
- * Returns: The #GladePointerMode
- */
-GladePointerMode
-glade_app_get_pointer_mode (void)
-{
-  GladeApp *app = glade_app_get ();
-
-  return app->priv->pointer_mode;
 }
 
 /*

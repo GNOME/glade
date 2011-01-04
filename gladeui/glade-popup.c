@@ -94,35 +94,37 @@ glade_popup_placeholder_add_cb (GtkMenuItem * item,
                                 GladePlaceholder * placeholder)
 {
   GladeWidgetAdaptor *adaptor;
-  GladeWidget *parent;
+  GladeWidget        *parent;
+  GladeProject       *project;
 
-  adaptor = glade_palette_get_current_item (glade_app_get_palette ());
+
+  parent  = glade_placeholder_get_parent (placeholder);
+  project = glade_placeholder_get_project (placeholder);
+  adaptor = glade_project_get_add_item (project);
+
   g_return_if_fail (adaptor != NULL);
-
-  parent = glade_placeholder_get_parent (placeholder);
 
   if (!glade_util_check_and_warn_scrollable
       (parent, adaptor, glade_app_get_window ()))
     {
       glade_command_create (adaptor, parent,
                             placeholder,
-                            glade_placeholder_get_project (placeholder));
+                            project);
 
-      glade_palette_deselect_current_item (glade_app_get_palette (), TRUE);
+      glade_project_set_add_item (project, NULL);
     }
 }
 
+typedef struct {
+  GladeWidgetAdaptor *adaptor;
+  GladeProject       *project;
+} RootAddData;
+
 static void
-glade_popup_root_add_cb (GtkMenuItem * item, gpointer * user_data)
+glade_popup_root_add_cb (GtkMenuItem *item, 
+			 RootAddData *data)
 {
-  GladeWidgetAdaptor *adaptor = (GladeWidgetAdaptor *) user_data;
-  GladePalette *palette = glade_app_get_palette ();
-
-  if (!adaptor)
-    adaptor = glade_palette_get_current_item (palette);
-  g_return_if_fail (adaptor != NULL);
-
-  glade_palette_create_root_widget (palette, adaptor);
+  glade_command_create (data->adaptor, NULL, NULL, data->project);
 }
 
 static void
@@ -414,20 +416,29 @@ glade_popup_create_menu (GladeWidget      *widget,
 			 GladeProject     *project,
 			 gboolean          packing)
 {
-  GtkWidget *popup_menu;
-  GtkWidget *separator;
-  gboolean sensitive;
-  GladePlaceholder *tmp_placeholder;
-  gchar *book;
+  GtkWidget          *popup_menu;
+  GtkWidget          *separator;
+  gboolean            sensitive;
+  GladePlaceholder   *tmp_placeholder;
+  GladeWidgetAdaptor *adaptor;
+  gchar              *book;
 
   popup_menu = gtk_menu_new ();
 
-  if (glade_palette_get_current_item (glade_app_get_palette ()))
+  adaptor = glade_project_get_add_item (project);
+
+  if (adaptor)
     {
+      RootAddData *data = g_new (RootAddData, 1);
+
+      data->adaptor = adaptor;
+      data->project = project;
+      g_object_set_data_full (G_OBJECT (popup_menu), "root-data-destroy-me", 
+			      data, (GDestroyNotify)g_free);
+
       tmp_placeholder = placeholder;
       if (!tmp_placeholder && widget)
-	tmp_placeholder =
-	  find_placeholder (glade_widget_get_object (widget));
+	tmp_placeholder = find_placeholder (glade_widget_get_object (widget));
 
       glade_popup_append_item (popup_menu, NULL, _("_Add widget here"),
 			       NULL, tmp_placeholder != NULL,
@@ -435,7 +446,7 @@ glade_popup_create_menu (GladeWidget      *widget,
 			       tmp_placeholder);
 
       glade_popup_append_item (popup_menu, NULL, _("Add widget as _toplevel"),
-                               NULL, TRUE, glade_popup_root_add_cb, NULL);
+                               NULL, TRUE, glade_popup_root_add_cb, data);
 
       separator = gtk_menu_item_new ();
       gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), separator);
@@ -596,6 +607,7 @@ glade_popup_palette_pop (GladePalette       *palette,
   gchar *book = NULL;
   gint button;
   gint event_time;
+  RootAddData *data;
 
   g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
 
@@ -603,8 +615,14 @@ glade_popup_palette_pop (GladePalette       *palette,
 
   project = glade_palette_get_project (palette);
 
+  data = g_new (RootAddData, 1);
+  data->adaptor = adaptor;
+  data->project = project;
+  g_object_set_data_full (G_OBJECT (popup_menu), "root-data-destroy-me", 
+			  data, (GDestroyNotify)g_free);
+
   glade_popup_append_item (popup_menu, NULL, _("Add widget as _toplevel"), NULL,
-                           TRUE, glade_popup_root_add_cb, adaptor);
+                           TRUE, glade_popup_root_add_cb, data);
 
   g_object_get (adaptor, "book", &book, NULL);
   if (book && glade_util_have_devhelp ())

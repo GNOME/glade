@@ -36,8 +36,6 @@ G_BEGIN_DECLS
 #define GLADE_IS_APP_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_APP))
 #define GLADE_APP_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_APP, GladeAppClass))
 
-#define GLADE_TYPE_POINTER_MODE   (glade_pointer_mode_get_type())
-
 #define GLADE_ENV_CATALOG_PATH    "GLADE_CATALOG_PATH"
 #define GLADE_ENV_MODULE_PATH     "GLADE_MODULE_PATH"
 
@@ -45,50 +43,25 @@ typedef struct _GladeApp         GladeApp;
 typedef struct _GladeAppPrivate  GladeAppPrivate;
 typedef struct _GladeAppClass    GladeAppClass;
 
-/**
- * GladePointerMode:
- * @GLADE_POINTER_SELECT:      Mouse pointer used for selecting widgets
- * @GLADE_POINTER_ADD_WIDGET:  Mouse pointer used for adding widgets
- * @GLADE_POINTER_DRAG_RESIZE: Mouse pointer used for dragging and 
- *                             resizing widgets in containers
- *
- * Indicates what the pointer is used for in the workspace.
- */
-enum _GladePointerMode
-{
-	GLADE_POINTER_SELECT = 0,
-	GLADE_POINTER_ADD_WIDGET,
-	GLADE_POINTER_DRAG_RESIZE
-};
-typedef enum _GladePointerMode GladePointerMode;
-
-
 struct _GladeApp
 {
-	GObject parent_instance;
-	
-	GladeAppPrivate *priv;
+  GObject parent_instance;
+
+  GladeAppPrivate *priv;
 };
 
 struct _GladeAppClass
 {
-	GObjectClass parent_class;
-	
-	/* class methods */
-	void   (*  show_properties) (GladeApp* app,
-				     gboolean  raise);
-	void   (*  hide_properties) (GladeApp* app);
+  GObjectClass parent_class;
 
-	/* signals */
-	void   (*  signal_editor_created) (GladeApp *app, GladeSignalEditor *signal_editor);
+  /* signals */
+  void   (*  signal_editor_created) (GladeApp *app, GladeSignalEditor *signal_editor);
 };
 
  
 GType              glade_app_get_type   (void) G_GNUC_CONST;
 
 GladeApp*          glade_app_new        (void);
-
-GType              glade_pointer_mode_get_type (void) G_GNUC_CONST;
 
 GladeApp*          glade_app_get        (void);
 
@@ -102,13 +75,7 @@ GList             *glade_app_get_catalogs (void);
 
 GladeCatalog      *glade_app_get_catalog (const gchar *name);
 
-GladePalette*      glade_app_get_palette (void);
-
 GladeClipboard*    glade_app_get_clipboard (void);
-
-GladePointerMode   glade_app_get_pointer_mode (void);
- 
-void               glade_app_set_pointer_mode (GladePointerMode mode);
 
 void               glade_app_add_project (GladeProject *project);
  
@@ -121,10 +88,6 @@ GKeyFile*          glade_app_get_config (void);
 gboolean           glade_app_is_project_loaded (const gchar *project_path);
  
 GladeProject*      glade_app_get_project_by_path (const gchar *project_path);
- 
-void               glade_app_show_properties (gboolean raise);
- 
-void               glade_app_hide_properties (void);
  
 gint               glade_app_config_save (void);
  

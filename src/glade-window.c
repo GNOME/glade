@@ -103,8 +103,8 @@ struct _GladeWindowPrivate
 
   GtkWidget *inspectors_notebook;
 
-  GladeEditor *editor;                  /* The editor */
-
+  GladeEditor  *editor;                 /* The editor */
+  GladePalette *palette;                /* The palette */
 
   GtkWidget *statusbar;                 /* A pointer to the status bar. */
   guint statusbar_menu_context_id;      /* The context id of the menu bar */
@@ -124,7 +124,6 @@ struct _GladeWindowPrivate
 
   GtkToggleToolButton *selector_button; /* the widget selector button (replaces the one in the palette) */
   GtkToggleToolButton *drag_resize_button;      /* sets the pointer to drag/resize mode */
-  gboolean setting_pointer_mode;        /* avoid feedback signal loops */
 
   GtkToolItem *undo;            /* customized buttons for undo/redo with history */
   GtkToolItem *redo;
@@ -462,16 +461,24 @@ add_actions (GladeWindow * window, GladeWidget * widget, GList * actions)
     clean_actions (window);
 }
 
+static GladeProject *
+get_active_project (GladeWindow *window)
+{
+  if (window->priv->active_view)
+    return glade_design_view_get_project (window->priv->active_view);
+
+  return NULL;
+}
+
 static void
 project_selection_changed_cb (GladeProject * project, GladeWindow * window)
 {
-  GladeProject *active_project = NULL;
+  GladeProject *active_project;
   GladeWidget  *glade_widget = NULL;
   GList        *list;
   gint          num;
 
-  if (window->priv->active_view)
-    active_project = glade_design_view_get_project (window->priv->active_view);
+  active_project = get_active_project (window);
 
   /* This is sometimes called with a NULL project (to make the label
    * insensitive with no projects loaded)
@@ -616,9 +623,7 @@ project_changed_cb (GladeProject *project,
 		    gboolean      execute,
 		    GladeWindow  *window)
 {
-  GladeProject *active_project;
-
-  active_project = glade_design_view_get_project (window->priv->active_view);
+  GladeProject *active_project = get_active_project (window);
   
   if (project == active_project)
     refresh_undo_redo (window, project);
@@ -708,10 +713,8 @@ static void
 project_notify_handler_cb (GladeProject * project, GParamSpec * spec,
                            GladeWindow * window)
 {
-  GladeProject *active_project;
+  GladeProject *active_project = get_active_project (window);
   GtkAction    *action;
-
-  active_project = glade_design_view_get_project (window->priv->active_view);
 
   if (strcmp (spec->name, "path") == 0 || strcmp (spec->name, "format") == 0)
     refresh_notebook_tab_for_project (window, project);
@@ -766,54 +769,79 @@ clipboard_notify_handler_cb (GladeClipboard * clipboard, GParamSpec * spec,
 static void
 on_selector_button_toggled (GtkToggleToolButton * button, GladeWindow * window)
 {
-  if (window->priv->setting_pointer_mode)
-    return;
+  GladeProject *active_project = get_active_project (window);
 
   if (gtk_toggle_tool_button_get_active (window->priv->selector_button))
     {
-      glade_palette_deselect_current_item (glade_app_get_palette (), FALSE);
-      glade_app_set_pointer_mode (GLADE_POINTER_SELECT);
+      glade_project_set_add_item (active_project, NULL);
+      glade_project_set_pointer_mode (active_project, GLADE_POINTER_SELECT);
     }
   else
     gtk_toggle_tool_button_set_active (window->priv->selector_button, TRUE);
 }
 
 static void
-on_drag_resize_button_toggled (GtkToggleToolButton * button,
-                               GladeWindow * window)
+on_drag_resize_button_toggled (GtkToggleToolButton *button,
+                               GladeWindow         *window)
 {
-  if (window->priv->setting_pointer_mode)
-    return;
+  GladeProject *active_project = get_active_project (window);
 
   if (gtk_toggle_tool_button_get_active (window->priv->drag_resize_button))
-    glade_app_set_pointer_mode (GLADE_POINTER_DRAG_RESIZE);
+    glade_project_set_pointer_mode (active_project, GLADE_POINTER_DRAG_RESIZE);
   else
     gtk_toggle_tool_button_set_active (window->priv->drag_resize_button, TRUE);
 
 }
 
 static void
-on_pointer_mode_changed (GladeApp * app,
-                         GParamSpec * pspec, GladeWindow * window)
+on_pointer_mode_changed (GladeProject *project,
+                         GParamSpec   *pspec, 
+			 GladeWindow  *window)
 {
-  window->priv->setting_pointer_mode = TRUE;
+  GladeProject *active_project = get_active_project (window);
 
-  if (glade_app_get_pointer_mode () == GLADE_POINTER_SELECT)
-    gtk_toggle_tool_button_set_active (window->priv->selector_button, TRUE);
+  if (!active_project)
+    {
+      gtk_widget_set_sensitive (GTK_WIDGET (window->priv->selector_button), FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (window->priv->drag_resize_button), FALSE);
+      return;
+    }
+  else if (active_project != project)
+    return;
+
+  gtk_widget_set_sensitive (GTK_WIDGET (window->priv->selector_button), TRUE);
+  gtk_widget_set_sensitive (GTK_WIDGET (window->priv->drag_resize_button), TRUE);
+
+  g_signal_handlers_block_by_func (window->priv->selector_button, 
+				   on_selector_button_toggled, window);
+  g_signal_handlers_block_by_func (window->priv->drag_resize_button, 
+				   on_drag_resize_button_toggled, window);
+
+  if (glade_project_get_pointer_mode (project) == GLADE_POINTER_SELECT)
+    {
+      gtk_toggle_tool_button_set_active (window->priv->selector_button, TRUE);
+      gtk_toggle_tool_button_set_active (window->priv->drag_resize_button, FALSE);
+    }
+  else if (glade_project_get_pointer_mode (project) == GLADE_POINTER_DRAG_RESIZE)
+    {
+      gtk_toggle_tool_button_set_active (window->priv->drag_resize_button, TRUE);
+      gtk_toggle_tool_button_set_active (window->priv->selector_button, FALSE);
+    }
   else
-    gtk_toggle_tool_button_set_active (window->priv->selector_button, FALSE);
+    {
+      gtk_toggle_tool_button_set_active (window->priv->drag_resize_button, FALSE);
+      gtk_toggle_tool_button_set_active (window->priv->selector_button, FALSE);
+    }
 
-  if (glade_app_get_pointer_mode () == GLADE_POINTER_DRAG_RESIZE)
-    gtk_toggle_tool_button_set_active (window->priv->drag_resize_button, TRUE);
-  else
-    gtk_toggle_tool_button_set_active (window->priv->drag_resize_button, FALSE);
-
-  window->priv->setting_pointer_mode = FALSE;
+  g_signal_handlers_unblock_by_func (window->priv->selector_button, 
+				     on_selector_button_toggled, window);
+  g_signal_handlers_unblock_by_func (window->priv->drag_resize_button, 
+				     on_drag_resize_button_toggled, window);
 }
 
 static void
-set_sensitivity_according_to_project (GladeWindow * window,
-                                      GladeProject * project)
+set_sensitivity_according_to_project (GladeWindow  *window,
+                                      GladeProject *project)
 {
   GtkAction *action;
 
@@ -1580,30 +1608,28 @@ preferences_cb (GtkAction * action, GladeWindow * window)
 static void
 undo_cb (GtkAction * action, GladeWindow * window)
 {
-  GladeProject *active_project;
+  GladeProject *active_project = get_active_project (window);
 
-  if (!window->priv->active_view)
+  if (!active_project)
     {
       g_warning ("undo should not be sensitive: we don't have a project");
       return;
     }
 
-  active_project = glade_design_view_get_project (window->priv->active_view);
   glade_project_undo (active_project);
 }
 
 static void
 redo_cb (GtkAction * action, GladeWindow * window)
 {
-  GladeProject *active_project;
+  GladeProject *active_project = get_active_project (window);
 
-  if (!window->priv->active_view)
+  if (!active_project)
     {
       g_warning ("redo should not be sensitive: we don't have a project");
       return;
     }
 
-  active_project = glade_design_view_get_project (window->priv->active_view);
   glade_project_redo (active_project);
 }
 
@@ -1647,7 +1673,7 @@ notebook_switch_page_cb (GtkNotebook * notebook,
 
   project = glade_design_view_get_project (view);
 
-  glade_palette_set_project (glade_app_get_palette (), project);
+  glade_palette_set_project (window->priv->palette, project);
 
   refresh_title (window);
   set_sensitivity_according_to_project (window, project);
@@ -1675,6 +1701,8 @@ notebook_switch_page_cb (GtkNotebook * notebook,
 
   /* Refresh the editor and some of the actions */
   project_selection_changed_cb (project, window);
+
+  on_pointer_mode_changed (project, NULL, window);
 }
 
 static void
@@ -1705,6 +1733,8 @@ notebook_tab_added_cb (GtkNotebook * notebook,
                     G_CALLBACK (project_notify_handler_cb), window);
   g_signal_connect (G_OBJECT (project), "notify::read-only",
                     G_CALLBACK (project_notify_handler_cb), window);
+  g_signal_connect (G_OBJECT (project), "notify::pointer-mode",
+                    G_CALLBACK (on_pointer_mode_changed), window);
   g_signal_connect (G_OBJECT (project), "selection-changed",
                     G_CALLBACK (project_selection_changed_cb), window);
   g_signal_connect (G_OBJECT (project), "targets-changed",
@@ -1752,6 +1782,9 @@ notebook_tab_removed_cb (GtkNotebook     *notebook,
   if (window->priv->num_tabs == 0)
     {
       gtk_widget_set_sensitive (GTK_WIDGET (window->priv->editor), FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (window->priv->palette), FALSE);
+
+      glade_palette_set_project (window->priv->palette, NULL);
 
       window->priv->active_view = NULL;
     }
@@ -1770,12 +1803,19 @@ notebook_tab_removed_cb (GtkNotebook     *notebook,
   g_signal_handlers_disconnect_by_func (G_OBJECT (project),
                                         G_CALLBACK (project_changed_cb),
                                         window);
-
+  g_signal_handlers_disconnect_by_func (G_OBJECT (project),
+                                        G_CALLBACK (on_pointer_mode_changed),
+                                        window);
 
   gtk_notebook_remove_page (GTK_NOTEBOOK (window->priv->inspectors_notebook),
                             page_num);
 
   clean_actions (window);
+
+  /* Refresh the editor and some of the actions */
+  project_selection_changed_cb (project, window);
+
+  on_pointer_mode_changed (project, NULL, window);
 
   /* FIXME: this function needs to be preferably called somewhere else */
   glade_app_remove_project (project);
@@ -1783,9 +1823,6 @@ notebook_tab_removed_cb (GtkNotebook     *notebook,
   refresh_projects_list_menu (window);
 
   refresh_title (window);
-
-  /* Refresh the editor and some of the actions */
-  project_selection_changed_cb (project, window);
 
   if (window->priv->active_view)
     set_sensitivity_according_to_project (window,
@@ -1828,14 +1865,14 @@ palette_appearance_change_cb (GtkRadioAction * action,
 
   value = gtk_radio_action_get_current_value (action);
 
-  glade_palette_set_item_appearance (glade_app_get_palette (), value);
+  glade_palette_set_item_appearance (window->priv->palette, value);
 
 }
 
 static void
 palette_toggle_small_icons_cb (GtkAction * action, GladeWindow * window)
 {
-  glade_palette_set_use_small_item_icons (glade_app_get_palette (),
+  glade_palette_set_use_small_item_icons (window->priv->palette,
                                           gtk_toggle_action_get_active
                                           (GTK_TOGGLE_ACTION (action)));
 }
@@ -3291,6 +3328,10 @@ glade_window_init (GladeWindow * window)
   priv->editor = GLADE_EDITOR (glade_editor_new ());
   g_object_ref_sink (G_OBJECT (priv->editor));
 
+  /* palette */
+  priv->palette = GLADE_PALETTE (glade_palette_new ());
+  g_object_ref_sink (G_OBJECT (priv->palette));
+
   /* menubar */
   menubar = construct_menu (window);
   gtk_box_pack_start (GTK_BOX (vbox), menubar, FALSE, TRUE, 0);
@@ -3361,7 +3402,7 @@ glade_window_init (GladeWindow * window)
   gtk_widget_show (priv->notebook);
 
   /* palette */
-  palette = GTK_WIDGET (glade_app_get_palette ());
+  palette = GTK_WIDGET (priv->palette);
   glade_palette_set_show_selector_button (GLADE_PALETTE (palette), FALSE);
   gtk_paned_pack1 (GTK_PANED (hpaned2), palette, FALSE, FALSE);
   setup_dock (&priv->docks[DOCK_PALETTE], palette, 200, 540,
@@ -3437,9 +3478,6 @@ glade_window_init (GladeWindow * window)
                     G_CALLBACK (on_selector_button_toggled), window);
   g_signal_connect (G_OBJECT (priv->drag_resize_button), "toggled",
                     G_CALLBACK (on_drag_resize_button_toggled), window);
-  g_signal_connect (G_OBJECT (glade_app_get ()), "notify::pointer-mode",
-                    G_CALLBACK (on_pointer_mode_changed), window);
-
 
   /* support for opening a file by dragging onto the project window */
   gtk_drag_dest_set (GTK_WIDGET (window),

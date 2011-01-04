@@ -1,3 +1,13 @@
+2011-01-04  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-palette.[ch], gladeui/glade-project.[ch], gladeui/glade-app.[ch],
+	  src/glade-window.c:
+	  - Removed glade_app_get_palette()
+	  - Moved "pointer-mode" property from GladeApp to GladeProject
+	  - Palette now in charge of driving pointer mode on the project it's registered to
+	  - GladeWindow now watches/sets the pointer mode on the currently set project (with
+	    its "selector" and "drag/resize" toolbuttons).
+
 2011-01-03  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-app.[ch]:

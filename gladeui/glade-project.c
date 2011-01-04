@@ -74,7 +74,9 @@ enum
   PROP_HAS_SELECTION,
   PROP_PATH,
   PROP_READ_ONLY,
-  PROP_PREVIEWABLE
+  PROP_PREVIEWABLE,
+  PROP_ADD_ITEM,
+  PROP_POINTER_MODE
 };
 
 struct _GladeProjectPrivate
@@ -83,17 +85,8 @@ struct _GladeProjectPrivate
 
   gint unsaved_number;          /* A unique number for this project if it is untitled */
 
-  gboolean readonly;            /* A flag that is set if the project is readonly */
-
-  gboolean loading;             /* A flags that is set when the project is loading */
-
-  gboolean modified;            /* A flag that is set when a project has unsaved modifications
-                                 * if this flag is not set we don't have to query
-                                 * for confirmation after a close or exit is
-                                 * requested
-                                 */
-
-  gboolean previewable;
+  GladeWidgetAdaptor *add_item; /* The next item to add to the project.
+				 */
 
   gint stamp;                   /* A a random int per instance of project used to stamp/check the
                                  * GtkTreeIter->stamps */
@@ -107,7 +100,6 @@ struct _GladeProjectPrivate
                                  * of #GtkWidget items.
                                  */
   guint selection_changed_id;
-  gboolean has_selection;       /* Whether the project has a selection */
 
   GladeNameContext *toplevel_names;     /* Context for uniqueness of names at the toplevel */
   GList *toplevels;                     /* List of toplevels with thier own naming contexts */
@@ -115,8 +107,6 @@ struct _GladeProjectPrivate
 
   GList *undo_stack;            /* A stack with the last executed commands */
   GList *prev_redo_item;        /* Points to the item previous to the redo items */
-
-  gboolean first_modification_is_na;    /* the flag indicates that  the first_modification item has been lost */
 
   GList *first_modification;    /* we record the first modification, so that we
                                  * can set "modification" to FALSE when we
@@ -152,13 +142,26 @@ struct _GladeProjectPrivate
   GtkWidget *relative_path_entry;
   GtkWidget *full_path_button;
 
+  /* Store preview processes, so we can kill them on close */
+  GHashTable *preview_channels;
+
   /* For the loading progress bars ("load-progress" signal) */
   gint progress_step;
   gint progress_full;
-  gboolean load_cancel;
 
-  /* Store preview processes, so we can kill them on close */
-  GHashTable *preview_channels;
+  /* Flags */
+  guint load_cancel : 1;
+  guint first_modification_is_na : 1;  /* indicates that the first_modification item has been lost */
+  guint has_selection : 1;       /* Whether the project has a selection */
+  guint previewable : 1;
+  guint readonly : 1;            /* A flag that is set if the project is readonly */
+  guint loading : 1;             /* A flags that is set when the project is loading */
+  guint modified : 1;            /* A flag that is set when a project has unsaved modifications
+				  * if this flag is not set we don't have to query
+				  * for confirmation after a close or exit is
+				  * requested
+				  */
+  guint pointer_mode : 2;        /* The currently effective GladePointerMode */
 };
 
 typedef struct
@@ -179,6 +182,24 @@ typedef struct
   guint watch;
 } ChannelWatchPair;
 
+
+GType
+glade_pointer_mode_get_type (void)
+{
+  static GType etype = 0;
+
+  if (etype == 0)
+    {
+      static const GEnumValue values[] = {
+        {GLADE_POINTER_SELECT, "select", "Select widgets"},
+        {GLADE_POINTER_ADD_WIDGET, "add", "Add widgets"},
+        {GLADE_POINTER_DRAG_RESIZE, "drag-resize", "Drag and resize widgets"},
+        {0, NULL, NULL}
+      };
+      etype = g_enum_register_static ("GladePointerMode", values);
+    }
+  return etype;
+}
 
 static void glade_project_set_target_version (GladeProject * project,
                                               const gchar * catalog,
@@ -231,10 +252,12 @@ static void glade_project_model_get_iter_for_object (GladeProject * project,
 G_DEFINE_TYPE_WITH_CODE (GladeProject, glade_project, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (GTK_TYPE_TREE_MODEL,
                                                 gtk_tree_model_iface_init))
+
+
 /*******************************************************************
                             GObjectClass
  *******************************************************************/
-     static GladeIDAllocator *get_unsaved_number_allocator (void)
+static GladeIDAllocator *get_unsaved_number_allocator (void)
 {
   if (unsaved_number_allocator == NULL)
     unsaved_number_allocator = glade_id_allocator_new ();
@@ -357,24 +380,30 @@ glade_project_get_property (GObject * object,
 
   switch (prop_id)
     {
-      case PROP_MODIFIED:
-        g_value_set_boolean (value, project->priv->modified);
-        break;
-      case PROP_HAS_SELECTION:
-        g_value_set_boolean (value, project->priv->has_selection);
-        break;
-      case PROP_PATH:
-        g_value_set_string (value, project->priv->path);
-        break;
-      case PROP_READ_ONLY:
-        g_value_set_boolean (value, project->priv->readonly);
-        break;
-      case PROP_PREVIEWABLE:
-        g_value_set_boolean (value, project->priv->previewable);
-        break;
-      default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-        break;
+    case PROP_MODIFIED:
+      g_value_set_boolean (value, project->priv->modified);
+      break;
+    case PROP_HAS_SELECTION:
+      g_value_set_boolean (value, project->priv->has_selection);
+      break;
+    case PROP_PATH:
+      g_value_set_string (value, project->priv->path);
+      break;
+    case PROP_READ_ONLY:
+      g_value_set_boolean (value, project->priv->readonly);
+      break;
+    case PROP_PREVIEWABLE:
+      g_value_set_boolean (value, project->priv->previewable);
+      break;
+    case PROP_ADD_ITEM:
+      g_value_set_object (value, project->priv->add_item);
+      break;
+    case PROP_POINTER_MODE:
+      g_value_set_enum (value, project->priv->pointer_mode);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
     }
 }
 
@@ -397,7 +426,11 @@ glade_project_get_property (GObject * object,
 static void
 glade_project_set_modified (GladeProject * project, gboolean modified)
 {
-  GladeProjectPrivate *priv = project->priv;
+  GladeProjectPrivate *priv;
+
+  g_return_if_fail (GLADE_IS_PROJECT (project));
+
+  priv = project->priv;
 
   if (priv->modified != modified)
     {
@@ -411,6 +444,71 @@ glade_project_set_modified (GladeProject * project, gboolean modified)
 
       g_object_notify (G_OBJECT (project), "modified");
     }
+}
+
+/**
+ * glade_project_get_modified:
+ * @project: a #GladeProject
+ *
+ * Get's whether the project has been modified since it was last saved.
+ *
+ * Returns: %TRUE if the project has been modified since it was last saved
+ */
+gboolean
+glade_project_get_modified (GladeProject * project)
+{
+  g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+
+  return project->priv->modified;
+}
+
+void
+glade_project_set_pointer_mode (GladeProject       *project,
+				GladePointerMode    mode)
+{
+  g_return_if_fail (GLADE_IS_PROJECT (project));
+
+  if (project->priv->pointer_mode != mode)
+    {
+      project->priv->pointer_mode = mode;
+
+      g_object_notify (G_OBJECT (project), "pointer-mode");
+    }
+}
+
+GladePointerMode
+glade_project_get_pointer_mode (GladeProject *project)
+{
+  g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+
+  return project->priv->pointer_mode;
+}
+
+
+void
+glade_project_set_add_item (GladeProject       *project,
+			    GladeWidgetAdaptor *adaptor)
+{
+  GladeProjectPrivate *priv;
+
+  g_return_if_fail (GLADE_IS_PROJECT (project));
+
+  priv = project->priv;
+
+  if (priv->add_item != adaptor)
+    {
+      priv->add_item = adaptor;
+
+      g_object_notify (G_OBJECT (project), "add-item");
+    }
+}
+
+GladeWidgetAdaptor *
+glade_project_get_add_item (GladeProject *project)
+{
+  g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
+
+  return project->priv->add_item;
 }
 
 /*******************************************************************
@@ -938,7 +1036,22 @@ glade_project_class_init (GladeProjectClass * klass)
                                                          FALSE,
                                                          G_PARAM_READABLE));
 
+  g_object_class_install_property (object_class,
+                                   PROP_ADD_ITEM,
+                                   g_param_spec_object ("add-item",
+							_("Add Item"),
+							_("The current item to add to the project"),
+							GLADE_TYPE_WIDGET_ADAPTOR,
+							G_PARAM_READABLE));
 
+  g_object_class_install_property (object_class,
+                                   PROP_POINTER_MODE,
+                                   g_param_spec_enum ("pointer-mode",
+						      _("Pointer Mode"),
+						      _("The currently effective GladePointerMode"),
+						      GLADE_TYPE_POINTER_MODE,
+						      GLADE_POINTER_SELECT,
+						      G_PARAM_READABLE));
 
   g_type_class_add_private (klass, sizeof (GladeProjectPrivate));
 }
@@ -3743,22 +3856,6 @@ glade_project_get_objects (GladeProject * project)
   g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
 
   return project->priv->objects;
-}
-
-/** 
- * glade_project_get_modified:
- * @project: a #GladeProject
- *
- * Get's whether the project has been modified since it was last saved.
- *
- * Returns: #TRUE if the project has been modified since it was last saved
- */
-gboolean
-glade_project_get_modified (GladeProject * project)
-{
-  g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
-
-  return project->priv->modified;
 }
 
 void

@@ -407,6 +407,7 @@ glade_placeholder_motion_notify_event (GtkWidget * widget,
 {
   GladePointerMode pointer_mode;
   GladeWidget *gparent, *gparent_parent = NULL;
+  GladeProject *project;
 
   g_return_val_if_fail (GLADE_IS_PLACEHOLDER (widget), FALSE);
 
@@ -414,7 +415,8 @@ glade_placeholder_motion_notify_event (GtkWidget * widget,
   if (gparent)
     gparent_parent = glade_widget_get_parent (gparent);
 
-  pointer_mode = glade_app_get_pointer_mode ();
+  project      = glade_placeholder_get_project (GLADE_PLACEHOLDER (widget));
+  pointer_mode = glade_project_get_pointer_mode (project);
 
   if (pointer_mode == GLADE_POINTER_SELECT &&
       /* If we are the child of a widget that is in a GladeFixed, then
@@ -423,9 +425,9 @@ glade_placeholder_motion_notify_event (GtkWidget * widget,
        * concurrencies I suppose).
        */
       (gparent_parent && GLADE_IS_FIXED (gparent_parent)) == FALSE)
-    glade_cursor_set (event->window, GLADE_CURSOR_SELECTOR);
+    glade_cursor_set (project, event->window, GLADE_CURSOR_SELECTOR);
   else if (pointer_mode == GLADE_POINTER_ADD_WIDGET)
-    glade_cursor_set (event->window, GLADE_CURSOR_ADD_WIDGET);
+    glade_cursor_set (project, event->window, GLADE_CURSOR_ADD_WIDGET);
 
   return FALSE;
 }
@@ -433,19 +435,16 @@ glade_placeholder_motion_notify_event (GtkWidget * widget,
 static gboolean
 glade_placeholder_button_press (GtkWidget * widget, GdkEventButton * event)
 {
-  GladePlaceholder *placeholder;
-  GladeProject *project;
+  GladePlaceholder   *placeholder;
+  GladeProject       *project;
   GladeWidgetAdaptor *adaptor;
-  GladePalette *palette;
-  gboolean handled = FALSE;
+  gboolean            handled = FALSE;
 
   g_return_val_if_fail (GLADE_IS_PLACEHOLDER (widget), FALSE);
 
-  adaptor = glade_palette_get_current_item (glade_app_get_palette ());
-
-  palette = glade_app_get_palette ();
   placeholder = GLADE_PLACEHOLDER (widget);
-  project = glade_placeholder_get_project (placeholder);
+  project     = glade_placeholder_get_project (placeholder);
+  adaptor     = glade_project_get_add_item (project);
 
   if (!gtk_widget_has_focus (widget))
     gtk_widget_grab_focus (widget);
@@ -464,11 +463,10 @@ glade_placeholder_button_press (GtkWidget * widget, GdkEventButton * event)
                */
               glade_command_create (adaptor, parent, placeholder, project);
 
-              glade_palette_deselect_current_item (glade_app_get_palette (),
-                                                   TRUE);
+	      glade_project_set_add_item (project, NULL);
 
               /* reset the cursor */
-              glade_cursor_set (event->window, GLADE_CURSOR_SELECTOR);
+              glade_cursor_set (project, event->window, GLADE_CURSOR_SELECTOR);
             }
           handled = TRUE;
         }
