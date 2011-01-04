@@ -50,6 +50,12 @@ struct _GladePropertyKlass
   void             (* value_changed)         (GladeProperty *, GValue *, GValue *);
   void             (* tooltip_changed)       (GladeProperty *, const gchar *, 
 					      const gchar   *, const gchar *);
+  void   (* glade_reserved1)   (void);
+  void   (* glade_reserved2)   (void);
+  void   (* glade_reserved3)   (void);
+  void   (* glade_reserved4)   (void);
+  void   (* glade_reserved5)   (void);
+  void   (* glade_reserved6)   (void);
 };
 
 

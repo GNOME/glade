@@ -669,6 +669,15 @@ struct _GladeWidgetAdaptorClass
   GladeCreateEPropFunc         create_eprop;      /* Creates a GladeEditorProperty */
   GladeStringFromValueFunc     string_from_value; /* Creates a string for a value */
   GladeCreateEditableFunc      create_editable;   /* Creates a page for the editor */
+
+  void   (* glade_reserved1)   (void);
+  void   (* glade_reserved2)   (void);
+  void   (* glade_reserved3)   (void);
+  void   (* glade_reserved4)   (void);
+  void   (* glade_reserved5)   (void);
+  void   (* glade_reserved6)   (void);
+  void   (* glade_reserved7)   (void);
+  void   (* glade_reserved8)   (void);
 };
 
 #define glade_widget_adaptor_create_widget(adaptor, query, ...) \

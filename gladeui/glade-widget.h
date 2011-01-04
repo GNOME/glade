@@ -30,21 +30,30 @@ struct _GladeWidget
 
 struct _GladeWidgetClass
 {
-	GInitiallyUnownedClass parent_class;
+  GInitiallyUnownedClass parent_class;
 
-	void         (*add_child)               (GladeWidget *, GladeWidget *, gboolean);
-	void         (*remove_child)            (GladeWidget *, GladeWidget *);
-	void         (*replace_child)           (GladeWidget *, GObject *, GObject *);
+  void         (*add_child)               (GladeWidget *, GladeWidget *, gboolean);
+  void         (*remove_child)            (GladeWidget *, GladeWidget *);
+  void         (*replace_child)           (GladeWidget *, GObject *, GObject *);
 
-	void         (*add_signal_handler)	(GladeWidget *, GladeSignal *);
-	void         (*remove_signal_handler)	(GladeWidget *, GladeSignal *);
-	void         (*change_signal_handler)	(GladeWidget *, GladeSignal *, GladeSignal *);
-	
-	gint         (*button_press_event)      (GladeWidget *, GdkEvent *);
-	gint         (*button_release_event)    (GladeWidget *, GdkEvent *);
-	gint         (*motion_notify_event)     (GladeWidget *, GdkEvent *);
+  void         (*add_signal_handler)	(GladeWidget *, GladeSignal *);
+  void         (*remove_signal_handler)	(GladeWidget *, GladeSignal *);
+  void         (*change_signal_handler)	(GladeWidget *, GladeSignal *, GladeSignal *);
 
-	gboolean     (*event)                   (GladeWidget *, GdkEvent *);
+  gint         (*button_press_event)      (GladeWidget *, GdkEvent *);
+  gint         (*button_release_event)    (GladeWidget *, GdkEvent *);
+  gint         (*motion_notify_event)     (GladeWidget *, GdkEvent *);
+
+  gboolean     (*event)                   (GladeWidget *, GdkEvent *);
+
+  void   (* glade_reserved1)   (void);
+  void   (* glade_reserved2)   (void);
+  void   (* glade_reserved3)   (void);
+  void   (* glade_reserved4)   (void);
+  void   (* glade_reserved5)   (void);
+  void   (* glade_reserved6)   (void);
+  void   (* glade_reserved7)   (void);
+  void   (* glade_reserved8)   (void);
 };
 
 /*******************************************************************************
