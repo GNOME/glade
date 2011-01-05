@@ -333,6 +333,7 @@ static gboolean
 update_and_focus_data_tree_idle (GladeEditorProperty * eprop)
 {
   GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
+  GladeProperty       *property = glade_editor_property_get_property (eprop);
 
   eprop_data->want_focus = TRUE;
   eprop_data->want_next_focus = TRUE;
@@ -340,7 +341,7 @@ update_and_focus_data_tree_idle (GladeEditorProperty * eprop)
   update_data_tree_idle (eprop);
 
   /* XXX Have to load it regardless if it changed, this is a slow and redundant way... */
-  glade_editor_property_load (eprop, eprop->property);
+  glade_editor_property_load (eprop, property);
 
   eprop_data->want_next_focus = FALSE;
   eprop_data->want_focus = FALSE;
@@ -386,9 +387,10 @@ glade_eprop_model_data_add_row (GladeEditorProperty * eprop)
   GValue value = { 0, };
   GNode *node = NULL;
   GList *columns = NULL;
+  GladeProperty *property = glade_editor_property_get_property (eprop);
 
-  glade_property_get (eprop->property, &node);
-  glade_widget_property_get (eprop->property->widget, "columns", &columns);
+  glade_property_get (property, &node);
+  glade_widget_property_get (glade_property_get_widget (property), "columns", &columns);
 
   if (!columns)
     return;
@@ -417,6 +419,7 @@ glade_eprop_model_data_delete_selected (GladeEditorProperty * eprop)
 {
   GtkTreeIter iter;
   GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
+  GladeProperty *property = glade_editor_property_get_property (eprop);
   GNode *data_tree = NULL, *row;
   gint rownum = -1;
 
@@ -429,7 +432,7 @@ glade_eprop_model_data_delete_selected (GladeEditorProperty * eprop)
   g_assert (rownum >= 0);
 
   /* if theres a sected row, theres data... */
-  glade_property_get (eprop->property, &data_tree);
+  glade_property_get (property, &data_tree);
   g_assert (data_tree);
 
   data_tree = glade_model_data_tree_copy (data_tree);
@@ -491,11 +494,12 @@ static gboolean
 data_changed_idle (GladeEditorProperty * eprop)
 {
   GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
+  GladeProperty *property = glade_editor_property_get_property (eprop);
   GNode *data_tree = NULL, *new_tree, *row;
   GtkTreeIter iter;
   gint rownum;
 
-  glade_property_get (eprop->property, &data_tree);
+  glade_property_get (property, &data_tree);
   g_assert (data_tree);
 
   new_tree = g_node_new (NULL);
@@ -532,7 +536,7 @@ static void
 eprop_treeview_row_deleted (GtkTreeModel * tree_model,
                             GtkTreePath * path, GladeEditorProperty * eprop)
 {
-  if (eprop->loading)
+  if (glade_editor_property_loading (eprop))
     return;
 
   g_idle_add ((GSourceFunc) data_changed_idle, eprop);
@@ -559,10 +563,10 @@ eprop_model_data_generate_store (GladeEditorProperty * eprop)
   GArray *gtypes = g_array_new (FALSE, TRUE, sizeof (GType));
   GtkTreeIter iter;
   gint column_num, row_num;
-  GType index_type = G_TYPE_INT, string_type = G_TYPE_STRING, pointer_type =
-      G_TYPE_POINTER;
+  GType index_type = G_TYPE_INT, string_type = G_TYPE_STRING, pointer_type = G_TYPE_POINTER;
+  GladeProperty *property = glade_editor_property_get_property (eprop);
 
-  glade_property_get (eprop->property, &data_tree);
+  glade_property_get (property, &data_tree);
 
   if (!data_tree || !data_tree->children || !data_tree->children->children)
     return NULL;
@@ -624,12 +628,12 @@ value_toggled (GtkCellRendererToggle * cell,
 {
   GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
   GtkTreeIter iter;
-  gint colnum =
-      GPOINTER_TO_INT (g_object_get_data (G_OBJECT (cell), "column-number"));
+  gint colnum = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (cell), "column-number"));
   gint row;
   GNode *data_tree = NULL;
   GladeModelData *data;
   gboolean active;
+  GladeProperty *property = glade_editor_property_get_property (eprop);
 
   if (!gtk_tree_model_get_iter_from_string
       (GTK_TREE_MODEL (eprop_data->store), &iter, path))
@@ -638,7 +642,7 @@ value_toggled (GtkCellRendererToggle * cell,
   gtk_tree_model_get (GTK_TREE_MODEL (eprop_data->store), &iter,
                       COLUMN_ROW, &row, NUM_COLUMNS + colnum, &active, -1);
 
-  glade_property_get (eprop->property, &data_tree);
+  glade_property_get (property, &data_tree);
 
   /* if we are editing, then there is data in the datatree */
   g_assert (data_tree);
@@ -664,12 +668,12 @@ value_i18n_activate (GladeCellRendererIcon * cell,
 {
   GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
   GtkTreeIter iter;
-  gint colnum =
-      GPOINTER_TO_INT (g_object_get_data (G_OBJECT (cell), "column-number"));
+  gint colnum = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (cell), "column-number"));
   gint row;
   GNode *data_tree = NULL;
   GladeModelData *data;
   gchar *new_text;
+  GladeProperty *property = glade_editor_property_get_property (eprop);
 
   if (!gtk_tree_model_get_iter_from_string
       (GTK_TREE_MODEL (eprop_data->store), &iter, path))
@@ -679,7 +683,7 @@ value_i18n_activate (GladeCellRendererIcon * cell,
   gtk_tree_model_get (GTK_TREE_MODEL (eprop_data->store), &iter,
                       COLUMN_ROW, &row, -1);
 
-  glade_property_get (eprop->property, &data_tree);
+  glade_property_get (property, &data_tree);
 
   /* if we are editing, then there is data in the datatree */
   g_assert (data_tree);
@@ -720,12 +724,12 @@ value_text_edited (GtkCellRendererText * cell,
 {
   GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
   GtkTreeIter iter;
-  gint colnum =
-      GPOINTER_TO_INT (g_object_get_data (G_OBJECT (cell), "column-number"));
+  gint colnum = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (cell), "column-number"));
   gint row;
   GNode *data_tree = NULL;
   GladeModelData *data;
   GValue *value;
+  GladeProperty *property = glade_editor_property_get_property (eprop);
 
   if (!gtk_tree_model_get_iter_from_string
       (GTK_TREE_MODEL (eprop_data->store), &iter, path))
@@ -734,7 +738,7 @@ value_text_edited (GtkCellRendererText * cell,
   gtk_tree_model_get (GTK_TREE_MODEL (eprop_data->store), &iter,
                       COLUMN_ROW, &row, -1);
 
-  glade_property_get (eprop->property, &data_tree);
+  glade_property_get (property, &data_tree);
 
   /* if we are editing, then there is data in the datatree */
   g_assert (data_tree);
@@ -749,13 +753,14 @@ value_text_edited (GtkCellRendererText * cell,
                                            glade_get_value_from_displayable
                                            (G_VALUE_TYPE (&data->value),
                                             new_text),
-                                           eprop->property->widget->project,
-                                           eprop->property->widget);
+                                           glade_widget_get_project
+					   (glade_property_get_widget (property)),
+                                           glade_property_get_widget (property));
   else
     value =
         glade_utils_value_from_string (G_VALUE_TYPE (&data->value), new_text,
-                                       eprop->property->widget->project,
-                                       eprop->property->widget);
+                                       glade_widget_get_project (glade_property_get_widget (property)),
+                                       glade_property_get_widget (property));
 
 
   g_value_copy (value, &data->value);
@@ -985,12 +990,13 @@ static void
 eprop_model_data_generate_columns (GladeEditorProperty * eprop)
 {
   GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
+  GladeProperty *property = glade_editor_property_get_property (eprop);
   GladeModelData *iter_data;
   GtkTreeViewColumn *column;
   GNode *data_tree = NULL, *iter_node;
   gint colnum;
 
-  glade_property_get (eprop->property, &data_tree);
+  glade_property_get (property, &data_tree);
 
   if (!data_tree || !data_tree->children || !data_tree->children->children)
     return;

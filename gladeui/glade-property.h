@@ -12,13 +12,14 @@ G_BEGIN_DECLS
 #define GLADE_IS_PROPERTY_KLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_PROPERTY))
 #define GLADE_PROPERTY_GET_KLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_PROPERTY, GladePropertyKlass))
 
-typedef struct _GladePropertyKlass GladePropertyKlass;
+typedef struct _GladePropertyKlass   GladePropertyKlass;
+typedef struct _GladePropertyPrivate GladePropertyPrivate;
 
 typedef enum {
-	GLADE_STATE_NORMAL              = 0,
-	GLADE_STATE_CHANGED             = (1 << 0),
-	GLADE_STATE_UNSUPPORTED         = (1 << 1),
-	GLADE_STATE_SUPPORT_DISABLED    = (1 << 2)
+  GLADE_STATE_NORMAL              = 0,
+  GLADE_STATE_CHANGED             = (1 << 0),
+  GLADE_STATE_UNSUPPORTED         = (1 << 1),
+  GLADE_STATE_SUPPORT_DISABLED    = (1 << 2)
 } GladePropertyState;
 
 /* A GladeProperty is an instance of a GladePropertyClass.
@@ -27,81 +28,34 @@ typedef enum {
  */
 struct _GladeProperty
 {
-	GObject             parent_instance;
+  GObject             parent_instance;
 
-	GladePropertyClass *klass;     /* A pointer to the GladeProperty that this
-					* setting specifies
-					*/
-	GladeWidget        *widget;    /* A pointer to the GladeWidget that this
-					* GladeProperty is modifying
-					*/
-
-	GladePropertyState  state;     /* Current property state, used by editing widgets.
-					*/
-	
-	GValue             *value;     /* The value of the property
-					*/
-
-	gchar              *insensitive_tooltip; /* Tooltip to display when in insensitive state
-						  * (used to explain why the property is 
-						  *  insensitive)
-						  */
-
-	gchar              *support_warning; /* Tooltip to display when the property
-					      * has format problems
-					      * (used to explain why the property is 
-					      *  insensitive)
-					      */
-	guint               support_disabled : 1; /* Whether this property is disabled due
-						   * to format conflicts
-						   */
-
-	guint               sensitive : 1; /* Whether this property is sensitive (if the
-					    * property is "optional" this takes precedence).
-					    */
-
-	guint               enabled : 1;   /* Enabled is a flag that is used for GladeProperties
-					    * that have the optional flag set to let us know
-					    * if this widget has this setting enabled or
-					    * not. (Like default size, it can be specified or
-					    * unspecified). This flag also sets the state
-					    * of the property->input state for the loaded
-					    * widget.
-					    */
-
-	guint               save_always : 1; /* Used to make a special case exception and always
-					      * save this property regardless of what the default
-					      * value is (used for some special cases like properties
-					      * that are assigned initial values in composite widgets
-					      * or derived widget code).
-					      */
-
-	/* Used only for translatable strings. */
-	guint     i18n_translatable : 1;
-	gchar    *i18n_context;
-	gchar    *i18n_comment;
-		
-	gint      syncing;  /* Avoid recursion while synchronizing object with value */
-	gint      sync_tolerance;
+  GladePropertyPrivate *priv;
 };
 
 
 struct _GladePropertyKlass
 {
-	GObjectClass  parent_class;
+  GObjectClass  parent_class;
 
-	/* Class methods */
-	GladeProperty *         (* dup)                   (GladeProperty *, GladeWidget *);
-	gboolean                (* equals_value)          (GladeProperty *, const GValue *);
-	gboolean                (* set_value)             (GladeProperty *, const GValue *);
-	void                    (* get_value)             (GladeProperty *, GValue *);
-	void                    (* sync)                  (GladeProperty *);
-	void                    (* load)                  (GladeProperty *);
+  /* Class methods */
+  GladeProperty *         (* dup)                   (GladeProperty *, GladeWidget *);
+  gboolean                (* equals_value)          (GladeProperty *, const GValue *);
+  gboolean                (* set_value)             (GladeProperty *, const GValue *);
+  void                    (* get_value)             (GladeProperty *, GValue *);
+  void                    (* sync)                  (GladeProperty *);
+  void                    (* load)                  (GladeProperty *);
 
-	/* Signals */
-	void             (* value_changed)         (GladeProperty *, GValue *, GValue *);
-	void             (* tooltip_changed)       (GladeProperty *, const gchar *, 
-						    const gchar   *, const gchar *);
+  /* Signals */
+  void             (* value_changed)         (GladeProperty *, GValue *, GValue *);
+  void             (* tooltip_changed)       (GladeProperty *, const gchar *, 
+					      const gchar   *, const gchar *);
+  void   (* glade_reserved1)   (void);
+  void   (* glade_reserved2)   (void);
+  void   (* glade_reserved3)   (void);
+  void   (* glade_reserved4)   (void);
+  void   (* glade_reserved5)   (void);
+  void   (* glade_reserved6)   (void);
 };
 
 
@@ -167,13 +121,17 @@ void                    glade_property_write                 (GladeProperty     
 							      GladeXmlContext    *context,
 							      GladeXmlNode       *node);
 
+GladePropertyClass     *glade_property_get_class             (GladeProperty      *property);
+
 void                    glade_property_set_sensitive         (GladeProperty      *property,
 							      gboolean            sensitive,
 							      const gchar        *reason);
+G_CONST_RETURN gchar   *glade_propert_get_insensitive_tooltip(GladeProperty      *property);
 
 void                    glade_property_set_support_warning   (GladeProperty      *property,
 							      gboolean            disable,
 							      const gchar        *reason);
+G_CONST_RETURN gchar   *glade_property_get_support_warning   (GladeProperty      *property);
 
 gboolean                glade_property_get_sensitive         (GladeProperty      *property);
 
@@ -189,6 +147,16 @@ void                    glade_property_set_enabled           (GladeProperty     
 
 gboolean                glade_property_get_enabled           (GladeProperty      *property);
 
+
+gchar                  *glade_property_make_string           (GladeProperty      *property);
+
+GladeWidget            *glade_property_get_widget            (GladeProperty      *property);
+void                    glade_property_set_widget            (GladeProperty      *property,
+							      GladeWidget        *widget);
+
+GValue                 *glade_property_inline_value          (GladeProperty      *property);
+
+GladePropertyState      glade_property_get_state             (GladeProperty      *property);
 
 void                    glade_property_i18n_set_comment      (GladeProperty      *property, 
 							      const gchar        *str);

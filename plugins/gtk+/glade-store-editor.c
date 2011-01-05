@@ -87,15 +87,12 @@ glade_store_editor_load (GladeEditable * editable, GladeWidget * widget)
   if (store_editor->loaded_widget)
     {
       /* watch custom-child and use-stock properties here for reloads !!! */
-
-      g_signal_handlers_disconnect_by_func (G_OBJECT
-                                            (store_editor->loaded_widget->
-                                             project),
+      g_signal_handlers_disconnect_by_func (glade_widget_get_project (store_editor->loaded_widget),
                                             G_CALLBACK (project_changed),
                                             store_editor);
 
       /* The widget could die unexpectedly... */
-      g_object_weak_unref (G_OBJECT (store_editor->loaded_widget->project),
+      g_object_weak_unref (G_OBJECT (glade_widget_get_project (store_editor->loaded_widget)),
                            (GWeakNotify) project_finalized, store_editor);
     }
 
@@ -105,11 +102,11 @@ glade_store_editor_load (GladeEditable * editable, GladeWidget * widget)
   if (store_editor->loaded_widget)
     {
       /* This fires for undo/redo */
-      g_signal_connect (G_OBJECT (store_editor->loaded_widget->project),
+      g_signal_connect (glade_widget_get_project (store_editor->loaded_widget),
                         "changed", G_CALLBACK (project_changed), store_editor);
 
       /* The widget/project could die unexpectedly... */
-      g_object_weak_ref (G_OBJECT (store_editor->loaded_widget->project),
+      g_object_weak_ref (G_OBJECT (glade_widget_get_project (store_editor->loaded_widget)),
                          (GWeakNotify) project_finalized, store_editor);
     }
 
@@ -184,7 +181,7 @@ glade_store_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
                                                  TRUE);
   store_editor->properties = g_list_prepend (store_editor->properties, eprop);
   frame = gtk_frame_new (NULL);
-  gtk_frame_set_label_widget (GTK_FRAME (frame), eprop->item_label);
+  gtk_frame_set_label_widget (GTK_FRAME (frame), glade_editor_property_get_item_label (eprop));
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
   gtk_box_pack_start (GTK_BOX (store_editor), frame, FALSE, FALSE, 12);
 
@@ -206,8 +203,8 @@ glade_store_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (eprop), FALSE, FALSE, 4);
 
 
-  if (adaptor->type == GTK_TYPE_LIST_STORE ||
-      g_type_is_a (adaptor->type, GTK_TYPE_LIST_STORE))
+  if (glade_widget_adaptor_get_object_type (adaptor) == GTK_TYPE_LIST_STORE ||
+      g_type_is_a (glade_widget_adaptor_get_object_type (adaptor), GTK_TYPE_LIST_STORE))
     {
       /* -------------- The data area here -------------- */
       /* Label item in frame label widget on top.. */
@@ -217,7 +214,7 @@ glade_store_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
       store_editor->properties =
           g_list_prepend (store_editor->properties, eprop);
       frame = gtk_frame_new (NULL);
-      gtk_frame_set_label_widget (GTK_FRAME (frame), eprop->item_label);
+      gtk_frame_set_label_widget (GTK_FRAME (frame), glade_editor_property_get_item_label (eprop));
       gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
       gtk_box_pack_start (GTK_BOX (store_editor), frame, FALSE, FALSE, 12);
 

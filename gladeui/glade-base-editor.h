@@ -40,21 +40,21 @@ typedef struct _GladeBaseEditorClass   GladeBaseEditorClass;
 
 struct _GladeBaseEditor
 {
-	GtkVBox parent;
+  GtkVBox parent;
 
-	GladeBaseEditorPrivate *priv;
+  GladeBaseEditorPrivate *priv;
 };
 
 struct _GladeBaseEditorClass
 {
-	GtkVBoxClass parent_class;
+  GtkVBoxClass parent_class;
 
-	void          (*child_selected)   (GladeBaseEditor *, GladeWidget *);
-	gboolean      (*change_type)      (GladeBaseEditor *, GladeWidget *, GType);
-	gchar *       (*get_display_name) (GladeBaseEditor *, GladeWidget *);
-	GladeWidget * (*build_child)      (GladeBaseEditor *, GladeWidget *, GType);
-	gboolean      (*delete_child)     (GladeBaseEditor *, GladeWidget *, GladeWidget *);
-	gboolean      (*move_child)       (GladeBaseEditor *, GladeWidget *, GladeWidget *);
+  void          (*child_selected)   (GladeBaseEditor *, GladeWidget *);
+  gboolean      (*change_type)      (GladeBaseEditor *, GladeWidget *, GType);
+  gchar *       (*get_display_name) (GladeBaseEditor *, GladeWidget *);
+  GladeWidget * (*build_child)      (GladeBaseEditor *, GladeWidget *, GType);
+  gboolean      (*delete_child)     (GladeBaseEditor *, GladeWidget *, GladeWidget *);
+  gboolean      (*move_child)       (GladeBaseEditor *, GladeWidget *, GladeWidget *);
 };
 
 

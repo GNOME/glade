@@ -39,7 +39,6 @@
 #include "glade-property.h"
 #include "glade-property-class.h"
 #include "glade-clipboard.h"
-#include "glade-fixed.h"
 
 #include <string.h>
 #include <gdk/gdkkeysyms.h>
@@ -278,18 +277,20 @@ glade_util_check_and_warn_scrollable (GladeWidget * parent,
                                       GladeWidgetAdaptor * child_adaptor,
                                       GtkWidget * parent_widget)
 {
-  if (GTK_IS_SCROLLED_WINDOW (parent->object) &&
+  if (GTK_IS_SCROLLED_WINDOW (glade_widget_get_object (parent)) &&
       GWA_SCROLLABLE_WIDGET (child_adaptor) == FALSE)
     {
       GladeWidgetAdaptor *vadaptor =
           glade_widget_adaptor_get_by_type (GTK_TYPE_VIEWPORT);
+      GladeWidgetAdaptor *parent_adaptor = glade_widget_get_adaptor (parent);
 
       glade_util_ui_message (parent_widget,
                              GLADE_UI_INFO, NULL,
-                             _
-                             ("Cannot add non scrollable %s widget to a %s directly.\n"
-                              "Add a %s first."), child_adaptor->title,
-                             parent->adaptor->title, vadaptor->title);
+                             _("Cannot add non scrollable %s widget to a %s directly.\n"
+			       "Add a %s first."), 
+			     glade_widget_adaptor_get_title (child_adaptor),
+                             glade_widget_adaptor_get_title (parent_adaptor), 
+			     glade_widget_adaptor_get_title (vadaptor));
       return TRUE;
     }
   return FALSE;
@@ -797,8 +798,9 @@ glade_util_count_placeholders (GladeWidget * parent)
   GList *list, *children;
 
   /* count placeholders */
-  if ((children = glade_widget_adaptor_get_children
-       (parent->adaptor, parent->object)) != NULL)
+  if ((children = 
+       glade_widget_adaptor_get_children (glade_widget_get_adaptor (parent), 
+					  glade_widget_get_object (parent))) != NULL)
     {
       for (list = children; list && list->data; list = list->next)
         {
@@ -1525,7 +1527,7 @@ glade_util_object_is_loading (GObject * object)
 
   project = glade_widget_get_project (widget);
 
-  return glade_project_is_loading (project);
+  return project && glade_project_is_loading (project);
 }
 
 /**

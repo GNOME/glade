@@ -18,9 +18,10 @@ G_BEGIN_DECLS
 #define GLADE_IS_COMMAND_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_COMMAND))
 #define GLADE_COMMAND_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_COMMAND, GladeCommandClass))
 
-typedef struct _GladeCommand      GladeCommand;
-typedef struct _GladeCommandClass GladeCommandClass;
-typedef struct _GCSetPropData     GCSetPropData;
+typedef struct _GladeCommand        GladeCommand;
+typedef struct _GladeCommandClass   GladeCommandClass;
+typedef struct _GladeCommandPrivate GladeCommandPrivate;
+typedef struct _GCSetPropData       GCSetPropData;
 
 /**
  * GCSetPropData
@@ -33,56 +34,50 @@ typedef struct _GCSetPropData     GCSetPropData;
  * their old and new #GValue.
  */
 struct _GCSetPropData {
-	GladeProperty *property;
-	GValue        *new_value;
-	GValue        *old_value;
+  GladeProperty *property;
+  GValue        *new_value;
+  GValue        *old_value;
 };
 
 struct _GladeCommand
 {
-	GObject parent;
+  GObject parent;
 
-	gchar *description; /* a string describing the command.
-			     * It's used in the undo/redo menu entry.
-			     */
-
-	gint   group_id;    /* If this is part of a command group, this is
-			     * the group id (id is needed only to ensure that
-			     * consecutive groups dont get merged).
-			     */
+  GladeCommandPrivate *priv;
 };
 
 struct _GladeCommandClass
 {
-	GObjectClass parent_class;
+  GObjectClass parent_class;
 
-	gboolean (* execute)     (GladeCommand *this_cmd);
-	gboolean (* undo)        (GladeCommand *this_cmd);
-	gboolean (* unifies)     (GladeCommand *this_cmd, GladeCommand *other_cmd);
-	void     (* collapse)    (GladeCommand *this_cmd, GladeCommand *other_cmd);
+  gboolean (* execute)     (GladeCommand *this_cmd);
+  gboolean (* undo)        (GladeCommand *this_cmd);
+  gboolean (* unifies)     (GladeCommand *this_cmd, GladeCommand *other_cmd);
+  void     (* collapse)    (GladeCommand *this_cmd, GladeCommand *other_cmd);
+
+  void   (* glade_reserved1)   (void);
+  void   (* glade_reserved2)   (void);
+  void   (* glade_reserved3)   (void);
+  void   (* glade_reserved4)   (void);
 };
 
 
 
-GType          glade_command_get_type      (void);
+GType                 glade_command_get_type             (void);
 
-void           glade_command_push_group    (const gchar       *fmt,
-					    ...);
+void                  glade_command_push_group           (const gchar       *fmt,
+							  ...);
+void                  glade_command_pop_group            (void);
+gint                  glade_command_get_group_depth      (void);
 
-void           glade_command_pop_group     (void);
-
-gint           glade_command_get_group_depth (void);
-
-
-gboolean       glade_command_execute       (GladeCommand      *command);
-
-gboolean       glade_command_undo          (GladeCommand      *command);
-
-gboolean       glade_command_unifies       (GladeCommand      *command,
-					    GladeCommand      *other);
-
-void           glade_command_collapse      (GladeCommand      *command,
-					    GladeCommand      *other);
+G_CONST_RETURN gchar *glade_command_description          (GladeCommand      *command);
+gint                  glade_command_group_id             (GladeCommand      *command);
+gboolean              glade_command_execute              (GladeCommand      *command);
+gboolean              glade_command_undo                 (GladeCommand      *command);
+gboolean              glade_command_unifies              (GladeCommand      *command,
+							  GladeCommand      *other);
+void                  glade_command_collapse             (GladeCommand      *command,
+							  GladeCommand      *other);
 
 /************************** project *********************************/
 
@@ -126,15 +121,14 @@ GladeWidget   *glade_command_create        (GladeWidgetAdaptor *adaptor,
 					    GladePlaceholder   *placeholder,
 					    GladeProject       *project);
 
-/************************ cut/copy/paste ******************************/
+/************************ cut/paste/dnd ******************************/
 
 void           glade_command_cut           (GList             *widgets);
 
-void           glade_command_copy          (GList             *widgets);
-
 void           glade_command_paste         (GList             *widgets,
 					    GladeWidget       *parent,
-					    GladePlaceholder  *placeholder);
+					    GladePlaceholder  *placeholder,
+					    GladeProject      *project);
 
 void           glade_command_dnd           (GList             *widgets,
 					    GladeWidget       *parent,

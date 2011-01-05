@@ -94,13 +94,12 @@ glade_button_editor_load (GladeEditable * editable, GladeWidget * widget)
     {
       /* watch custom-child and use-stock properties here for reloads !!! */
 
-      g_signal_handlers_disconnect_by_func (G_OBJECT
-                                            (button_editor->loaded_widget->project),
+      g_signal_handlers_disconnect_by_func (glade_widget_get_project (button_editor->loaded_widget),
                                             G_CALLBACK (project_changed),
                                             button_editor);
 
       /* The widget could die unexpectedly... */
-      g_object_weak_unref (G_OBJECT (button_editor->loaded_widget->project),
+      g_object_weak_unref (G_OBJECT (glade_widget_get_project (button_editor->loaded_widget)),
                            (GWeakNotify) project_finalized, button_editor);
     }
 
@@ -110,11 +109,11 @@ glade_button_editor_load (GladeEditable * editable, GladeWidget * widget)
   if (button_editor->loaded_widget)
     {
       /* This fires for undo/redo */
-      g_signal_connect (G_OBJECT (button_editor->loaded_widget->project),
+      g_signal_connect (glade_widget_get_project (button_editor->loaded_widget),
                         "changed", G_CALLBACK (project_changed), button_editor);
 
       /* The widget/project could die unexpectedly... */
-      g_object_weak_ref (G_OBJECT (button_editor->loaded_widget->project),
+      g_object_weak_ref (G_OBJECT (glade_widget_get_project (button_editor->loaded_widget)),
                          (GWeakNotify) project_finalized, button_editor);
     }
 
@@ -132,13 +131,13 @@ glade_button_editor_load (GladeEditable * editable, GladeWidget * widget)
       glade_widget_property_get (widget, "use-action-appearance",
                                  &use_appearance);
 
-      button = GTK_WIDGET (widget->object);
+      button = GTK_WIDGET (glade_widget_get_object (widget));
       child = gtk_bin_get_child (GTK_BIN (button));
       if (child)
         gchild = glade_widget_get_from_gobject (child);
 
       /* Setup radio and sensitivity states */
-      if ((gchild && gchild->parent) || // a widget is manually inside
+      if ((gchild && glade_widget_get_parent (gchild)) || // a widget is manually inside
           GLADE_IS_PLACEHOLDER (child)) // placeholder there, custom mode
         {
           /* Custom */
@@ -239,15 +238,15 @@ standard_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
   button_editor->modifying = TRUE;
 
   glade_command_push_group (_("Setting %s to use standard configuration"),
-                            button_editor->loaded_widget->name);
+                            glade_widget_get_name (button_editor->loaded_widget));
 
   /* If theres a widget customly inside... command remove it first... */
-  button = GTK_WIDGET (button_editor->loaded_widget->object);
+  button = GTK_WIDGET (glade_widget_get_object (button_editor->loaded_widget));
   child = gtk_bin_get_child (GTK_BIN (button));
   if (child)
     gchild = glade_widget_get_from_gobject (child);
 
-  if (gchild && gchild->parent == button_editor->loaded_widget)
+  if (gchild && glade_widget_get_parent (gchild) == button_editor->loaded_widget)
     {
       GList widgets = { 0, };
       widgets.data = gchild;
@@ -301,7 +300,7 @@ custom_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
   button_editor->modifying = TRUE;
 
   glade_command_push_group (_("Setting %s to use a custom child"),
-                            button_editor->loaded_widget->name);
+                            glade_widget_get_name (button_editor->loaded_widget));
 
   /* clear out some things... */
   property = glade_widget_get_property (button_editor->loaded_widget, "image");
@@ -347,7 +346,7 @@ stock_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
   button_editor->modifying = TRUE;
 
   glade_command_push_group (_("Setting %s to use a stock button"),
-                            button_editor->loaded_widget->name);
+                            glade_widget_get_name (button_editor->loaded_widget));
 
   /* clear out stuff... */
   property = glade_widget_get_property (button_editor->loaded_widget, "image");
@@ -395,7 +394,7 @@ label_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
   button_editor->modifying = TRUE;
 
   glade_command_push_group (_("Setting %s to use a label and image"),
-                            button_editor->loaded_widget->name);
+                            glade_widget_get_name (button_editor->loaded_widget));
 
   property = glade_widget_get_property (button_editor->loaded_widget, "stock");
   glade_command_set_property (property, NULL);
@@ -509,14 +508,14 @@ glade_button_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
 
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "stock", FALSE, TRUE);
-  table_attach (table, eprop->item_label, 0, 0);
+  table_attach (table, glade_editor_property_get_item_label (eprop), 0, 0);
   table_attach (table, GTK_WIDGET (eprop), 1, 0);
   button_editor->properties = g_list_prepend (button_editor->properties, eprop);
 
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "image-position",
                                                  FALSE, TRUE);
-  table_attach (table, eprop->item_label, 0, 1);
+  table_attach (table, glade_editor_property_get_item_label (eprop), 0, 1);
   table_attach (table, GTK_WIDGET (eprop), 1, 1);
   button_editor->properties = g_list_prepend (button_editor->properties, eprop);
 
@@ -539,27 +538,27 @@ glade_button_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
 
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "label", FALSE, TRUE);
-  table_attach (table, eprop->item_label, 0, 0);
+  table_attach (table, glade_editor_property_get_item_label (eprop), 0, 0);
   table_attach (table, GTK_WIDGET (eprop), 1, 0);
   button_editor->properties = g_list_prepend (button_editor->properties, eprop);
 
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "use-underline",
                                                  FALSE, TRUE);
-  table_attach (table, eprop->item_label, 0, 1);
+  table_attach (table, glade_editor_property_get_item_label (eprop), 0, 1);
   table_attach (table, GTK_WIDGET (eprop), 1, 1);
   button_editor->properties = g_list_prepend (button_editor->properties, eprop);
 
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "image", FALSE, TRUE);
-  table_attach (table, eprop->item_label, 0, 2);
+  table_attach (table, glade_editor_property_get_item_label (eprop), 0, 2);
   table_attach (table, GTK_WIDGET (eprop), 1, 2);
   button_editor->properties = g_list_prepend (button_editor->properties, eprop);
 
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "image-position",
                                                  FALSE, TRUE);
-  table_attach (table, eprop->item_label, 0, 3);
+  table_attach (table, glade_editor_property_get_item_label (eprop), 0, 3);
   table_attach (table, GTK_WIDGET (eprop), 1, 3);
   button_editor->properties = g_list_prepend (button_editor->properties, eprop);
 

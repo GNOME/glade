@@ -108,14 +108,12 @@ glade_cell_renderer_editor_load (GladeEditable * editable, GladeWidget * widget)
   /* Since we watch the project */
   if (renderer_editor->loaded_widget)
     {
-      g_signal_handlers_disconnect_by_func (G_OBJECT
-                                            (renderer_editor->loaded_widget->
-                                             project),
+      g_signal_handlers_disconnect_by_func (glade_widget_get_project (renderer_editor->loaded_widget),
                                             G_CALLBACK (project_changed),
                                             renderer_editor);
 
       /* The widget could die unexpectedly... */
-      g_object_weak_unref (G_OBJECT (renderer_editor->loaded_widget->project),
+      g_object_weak_unref (G_OBJECT (glade_widget_get_project (renderer_editor->loaded_widget)),
                            (GWeakNotify) project_finalized, renderer_editor);
     }
 
@@ -125,12 +123,12 @@ glade_cell_renderer_editor_load (GladeEditable * editable, GladeWidget * widget)
   if (renderer_editor->loaded_widget)
     {
       /* This fires for undo/redo */
-      g_signal_connect (G_OBJECT (renderer_editor->loaded_widget->project),
+      g_signal_connect (glade_widget_get_project (renderer_editor->loaded_widget),
                         "changed", G_CALLBACK (project_changed),
                         renderer_editor);
 
       /* The widget/project could die unexpectedly... */
-      g_object_weak_ref (G_OBJECT (renderer_editor->loaded_widget->project),
+      g_object_weak_ref (G_OBJECT (glade_widget_get_project (renderer_editor->loaded_widget)),
                          (GWeakNotify) project_finalized, renderer_editor);
     }
 
@@ -149,15 +147,12 @@ glade_cell_renderer_editor_load (GladeEditable * editable, GladeWidget * widget)
           CheckTab *tab = l->data;
           gboolean use_attr = FALSE;
 
-          glade_widget_property_get (widget, tab->use_attr_pclass->id,
-                                     &use_attr);
-          gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON
-                                        (tab->attributes_check), use_attr);
-
+          glade_widget_property_get (widget, glade_property_class_id (tab->use_attr_pclass), &use_attr);
+          gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (tab->attributes_check), use_attr);
 
           if (use_attr)
             {
-              //                              gtk_widget_show (tab->use_attr_label);
+              //gtk_widget_show (tab->use_attr_label);
               gtk_widget_show (tab->use_attr_eprop);
               //gtk_widget_hide (tab->use_prop_label);
               gtk_widget_hide (tab->use_prop_eprop);
@@ -235,22 +230,21 @@ attributes_toggled (GtkWidget * widget, CheckTab * tab)
   if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (tab->attributes_check)))
     {
 
-      glade_command_push_group (_
-                                ("Setting %s to use the %s property as an attribute"),
-                                renderer_editor->loaded_widget->name,
-                                tab->pclass->id);
+      glade_command_push_group (_("Setting %s to use the %s property as an attribute"),
+                                glade_widget_get_name (renderer_editor->loaded_widget),
+                                glade_property_class_id (tab->pclass));
 
 
       property =
           glade_widget_get_property (renderer_editor->loaded_widget,
-                                     tab->pclass->id);
+                                     glade_property_class_id (tab->pclass));
       glade_property_get_default (property, &value);
       glade_command_set_property_value (property, &value);
       g_value_unset (&value);
 
       property =
           glade_widget_get_property (renderer_editor->loaded_widget,
-                                     tab->use_attr_pclass->id);
+                                     glade_property_class_id (tab->use_attr_pclass));
       glade_command_set_property (property, TRUE);
 
       glade_command_pop_group ();
@@ -260,20 +254,19 @@ attributes_toggled (GtkWidget * widget, CheckTab * tab)
   else
     {
       glade_command_push_group (_("Setting %s to use the %s property directly"),
-                                renderer_editor->loaded_widget->name,
-                                tab->pclass->id);
-
+                                glade_widget_get_name (renderer_editor->loaded_widget),
+                                glade_property_class_id (tab->pclass));
 
       property =
           glade_widget_get_property (renderer_editor->loaded_widget,
-                                     tab->attr_pclass->id);
+                                     glade_property_class_id (tab->attr_pclass));
       glade_property_get_default (property, &value);
       glade_command_set_property_value (property, &value);
       g_value_unset (&value);
 
       property =
           glade_widget_get_property (renderer_editor->loaded_widget,
-                                     tab->use_attr_pclass->id);
+                                     glade_property_class_id (tab->use_attr_pclass));
       glade_command_set_property (property, FALSE);
 
       glade_command_pop_group ();
@@ -288,11 +281,15 @@ attributes_toggled (GtkWidget * widget, CheckTab * tab)
 static gint
 property_class_comp (gconstpointer a, gconstpointer b)
 {
-  const GladePropertyClass *ca = a, *cb = b;
+  GladePropertyClass *ca = (GladePropertyClass *)a, *cb = (GladePropertyClass *)b;
+  GParamSpec *pa, *pb;
 
-  if (ca->pspec->owner_type == cb->pspec->owner_type)
+  pa = glade_property_class_get_pspec (ca);
+  pb = glade_property_class_get_pspec (cb);
+
+  if (pa->owner_type == pb->owner_type)
     {
-      gdouble result = ca->weight - cb->weight;
+      gdouble result = glade_property_class_weight (ca) - glade_property_class_weight (cb);
       /* Avoid cast to int */
       if (result < 0.0)
         return -1;
@@ -303,19 +300,20 @@ property_class_comp (gconstpointer a, gconstpointer b)
     }
   else
     {
-      if (g_type_is_a (ca->pspec->owner_type, cb->pspec->owner_type))
-        return (ca->common || ca->packing) ? 1 : -1;
+      if (g_type_is_a (pa->owner_type, pb->owner_type))
+        return (glade_property_class_common (ca) || glade_property_class_get_is_packing (ca)) ? 1 : -1;
       else
-        return (ca->common || ca->packing) ? -1 : 1;
+        return (glade_property_class_common (ca) || glade_property_class_get_is_packing (ca)) ? -1 : 1;
     }
 }
 
 static GList *
 get_sorted_properties (GladeWidgetAdaptor * adaptor, GladeEditorPageType type)
 {
-  GList *l, *list = NULL;
+  GList *list = NULL;
+  const GList *l;
 
-  for (l = adaptor->properties; l; l = g_list_next (l))
+  for (l = glade_widget_adaptor_get_properties (adaptor); l; l = l->next)
     {
       GladePropertyClass *klass = l->data;
 
@@ -370,11 +368,11 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor * adaptor,
 
       pclass = list->data;
 
-      if (pclass->virt)
+      if (glade_property_class_get_virtual (pclass))
         continue;
 
-      attr_name = g_strdup_printf ("attr-%s", pclass->id);
-      use_attr_name = g_strdup_printf ("use-attr-%s", pclass->id);
+      attr_name = g_strdup_printf ("attr-%s", glade_property_class_id (pclass));
+      use_attr_name = g_strdup_printf ("use-attr-%s", glade_property_class_id (pclass));
 
       attr_pclass =
           glade_widget_adaptor_get_property_class (adaptor, attr_name);
@@ -384,6 +382,9 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor * adaptor,
       if (attr_pclass && use_attr_pclass)
         {
           CheckTab *tab = g_new0 (CheckTab, 1);
+	  GParamSpec *pspec;
+
+	  pspec = glade_property_class_get_pspec (pclass);
 
           tab->editor = renderer_editor;
           tab->pclass = pclass;
@@ -397,8 +398,8 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor * adaptor,
 
           tab->attributes_check = gtk_check_button_new ();
           str = g_strdup_printf (_("Retrieve %s from model (type %s)"),
-                                 pclass->name,
-                                 g_type_name (pclass->pspec->value_type));
+                                 glade_property_class_get_name (pclass),
+                                 g_type_name (pspec->value_type));
           gtk_widget_set_tooltip_text (tab->attributes_check, str);
           g_free (str);
 
@@ -407,14 +408,14 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor * adaptor,
 
           /* Edit property */
           eprop = glade_widget_adaptor_create_eprop (adaptor, pclass, TRUE);
-          gtk_box_pack_start (GTK_BOX (hbox_left), eprop->item_label, TRUE,
+          gtk_box_pack_start (GTK_BOX (hbox_left), glade_editor_property_get_item_label (eprop), TRUE,
                               TRUE, 4);
           gtk_box_pack_start (GTK_BOX (hbox_right), GTK_WIDGET (eprop), FALSE,
                               FALSE, 4);
           renderer_editor->properties =
               g_list_prepend (renderer_editor->properties, eprop);
 
-          tab->use_prop_label = eprop->item_label;
+          tab->use_prop_label = glade_editor_property_get_item_label (eprop);
           tab->use_prop_eprop = GTK_WIDGET (eprop);
 
           /* Edit attribute */
@@ -428,7 +429,7 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor * adaptor,
           gtk_grid_attach (GTK_GRID (grid), hbox_left, 0, row, 1, 1);
           gtk_grid_attach (GTK_GRID (grid), hbox_right, 1, row++, 1, 1);
 
-          tab->use_attr_label = eprop->item_label;
+          tab->use_attr_label = glade_editor_property_get_item_label (eprop);
           tab->use_attr_eprop = GTK_WIDGET (eprop);
 
           g_signal_connect (G_OBJECT (tab->attributes_check), "toggled",
@@ -480,32 +481,34 @@ GladeWidget *
 glade_cell_renderer_get_model (GladeWidget * renderer)
 {
   GladeWidget *model = NULL;
+  GladeWidget *parent = glade_widget_get_parent (renderer);
 
   /* Keep inline with all new cell layouts !!! */
-  if (renderer->parent && GTK_IS_TREE_VIEW_COLUMN (renderer->parent->object))
+  if (parent && GTK_IS_TREE_VIEW_COLUMN (glade_widget_get_object (parent)))
     {
-      GladeWidget *column = renderer->parent;
+      GladeWidget *column = parent;
+      GladeWidget *column_parent = glade_widget_get_parent (column);
 
-      if (column->parent && GTK_IS_TREE_VIEW (column->parent->object))
+      if (column_parent && GTK_IS_TREE_VIEW (glade_widget_get_object (column_parent)))
         {
-          GladeWidget *view = column->parent;
+          GladeWidget *view = column_parent;
           GtkTreeModel *real_model = NULL;
           glade_widget_property_get (view, "model", &real_model);
           if (real_model)
             model = glade_widget_get_from_gobject (real_model);
         }
     }
-  else if (renderer->parent && GTK_IS_ICON_VIEW (renderer->parent->object))
+  else if (parent && GTK_IS_ICON_VIEW (glade_widget_get_object (parent)))
     {
-      GladeWidget *view = renderer->parent;
+      GladeWidget *view = parent;
       GtkTreeModel *real_model = NULL;
       glade_widget_property_get (view, "model", &real_model);
       if (real_model)
         model = glade_widget_get_from_gobject (real_model);
     }
-  else if (renderer->parent && GTK_IS_COMBO_BOX (renderer->parent->object))
+  else if (parent && GTK_IS_COMBO_BOX (glade_widget_get_object (parent)))
     {
-      GladeWidget *combo = renderer->parent;
+      GladeWidget *combo = parent;
       GtkTreeModel *real_model = NULL;
       glade_widget_property_get (combo, "model", &real_model);
       if (real_model)
@@ -535,7 +538,7 @@ glade_eprop_cell_attribute_load (GladeEditorProperty * eprop,
       gtk_list_store_clear (store);
 
       /* Generate model and set active iter */
-      if ((gmodel = glade_cell_renderer_get_model (property->widget)) != NULL)
+      if ((gmodel = glade_cell_renderer_get_model (glade_property_get_widget (property))) != NULL)
         {
           GList *columns = NULL, *l;
 
@@ -558,7 +561,7 @@ glade_eprop_cell_attribute_load (GladeEditorProperty * eprop,
             }
 
           gtk_combo_box_set_active (GTK_COMBO_BOX (eprop_attribute->combo),
-                                    CLAMP (g_value_get_int (property->value) +
+                                    CLAMP (g_value_get_int (glade_property_inline_value (property)) +
                                            1, 0, g_list_length (columns) + 1));
 
           gtk_widget_set_sensitive (eprop_attribute->combo, TRUE);
@@ -572,7 +575,7 @@ glade_eprop_cell_attribute_load (GladeEditorProperty * eprop,
         }
 
       gtk_spin_button_set_value (GTK_SPIN_BUTTON (eprop_attribute->spin),
-                                 (gdouble) g_value_get_int (property->value));
+                                 (gdouble) g_value_get_int (glade_property_inline_value (property)));
     }
 }
 
@@ -581,7 +584,7 @@ combo_changed (GtkWidget * combo, GladeEditorProperty * eprop)
 {
   GValue val = { 0, };
 
-  if (eprop->loading)
+  if (glade_editor_property_loading (eprop))
     return;
 
   g_value_init (&val, G_TYPE_INT);
@@ -597,7 +600,7 @@ spin_changed (GtkWidget * spin, GladeEditorProperty * eprop)
 {
   GValue val = { 0, };
 
-  if (eprop->loading)
+  if (glade_editor_property_loading (eprop))
     return;
 
   g_value_init (&val, G_TYPE_INT);
@@ -616,7 +619,7 @@ glade_eprop_cell_attribute_create_input (GladeEditorProperty * eprop)
 
   hbox = gtk_hbox_new (FALSE, 2);
 
-  adjustment = glade_property_class_make_adjustment (eprop->klass);
+  adjustment = glade_property_class_make_adjustment (glade_editor_property_get_pclass (eprop));
   eprop_attribute->spin = gtk_spin_button_new (adjustment, 1.0, 0);
 
   eprop_attribute->columns =

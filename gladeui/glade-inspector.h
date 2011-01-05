@@ -52,32 +52,32 @@ typedef struct _GladeInspectorPrivate  GladeInspectorPrivate;
  */
 struct _GladeInspector
 {
-	GtkVBox parent_instance;
+  GtkVBox parent_instance;
 
-	GladeInspectorPrivate *priv;
+  GladeInspectorPrivate *priv;
 };
 
 struct _GladeInspectorClass
 {
-	GtkVBoxClass parent_class;
+  GtkVBoxClass parent_class;
 
-	void   (* selection_changed) (GladeInspector *inspector);
-			       
-	void   (* item_activated)    (GladeInspector *inspector);
+  void   (* selection_changed) (GladeInspector *inspector);
+  void   (* item_activated)    (GladeInspector *inspector);
+
+  void   (* glade_reserved1)   (void);
+  void   (* glade_reserved2)   (void);
+  void   (* glade_reserved3)   (void);
+  void   (* glade_reserved4)   (void);
 };
 
  
 GType          glade_inspector_get_type           (void) G_GNUC_CONST;
 
 GtkWidget     *glade_inspector_new                (void);
-
 GtkWidget     *glade_inspector_new_with_project   (GladeProject   *project);
-
 void           glade_inspector_set_project        (GladeInspector *inspector,
 					           GladeProject   *project);
-
 GladeProject  *glade_inspector_get_project        (GladeInspector *inspector);
-
 GList         *glade_inspector_get_selected_items (GladeInspector *inspector);
 
 G_END_DECLS

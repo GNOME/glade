@@ -18,122 +18,42 @@ G_BEGIN_DECLS
 #define GLADE_IS_WIDGET_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_WIDGET))
 #define GLADE_WIDGET_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_WIDGET, GladeWidgetClass))
 
-typedef struct _GladeWidgetClass  GladeWidgetClass;
+typedef struct _GladeWidgetClass   GladeWidgetClass;
+typedef struct _GladeWidgetPrivate GladeWidgetPrivate;
 
 struct _GladeWidget
 {
-	GInitiallyUnowned parent_instance;
+  GInitiallyUnowned parent_instance;
 
-	GladeWidgetAdaptor *adaptor; /* An adaptor class for the object type */
-
-	GladeProject       *project; /* A pointer to the project that this 
-					widget currently belongs to. */
-
-	GladeWidget  *parent;  /* A pointer to the parent widget in the hierarchy */
-	
-	gchar *name; /* The name of the widget. For example window1 or
-		      * button2. This is a unique name and is the one
-		      * used when loading widget with libglade
-		      */
-
-	gchar *support_warning; /* A warning message for version incompatabilities
-				 * in this widget
-				 */
-	
-
-	gchar *internal; /* If the widget is an internal child of 
-			  * another widget this is the name of the 
-			  * internal child, otherwise is NULL.
-			  * Internal children cannot be deleted.
-			  */
-	
-	gboolean anarchist; /* Some composite widgets have internal children
-			     * that are not part of the same hierarchy; hence 'anarchists',
-			     * typicly a popup window or its child (we need to mark
-			     * them so we can avoid bookkeeping packing props on them etc.).
-			     */
-
-	GObject *object; /* A pointer to the object that was created.
-			  * if it is a GtkWidget; it is shown as a "view"
-			  * of the GladeWidget. This object is updated as
-			  * the properties are modified for the GladeWidget.
-			  */
-	
-	GList *properties; /* A list of GladeProperty. A GladeProperty is an
-			    * instance of a GladePropertyClass. If a
-			    * GladePropertyClass for a gtkbutton is label, its
-			    * property is "Ok". 
-			    */
-
-	GList *packing_properties; /* A list of GladeProperty. Note that these
-				    * properties are related to the container
-				    * of the widget, thus they change after
-				    * pasting the widget to a different
-				    * container. Toplevels widget do not have
-				    * packing properties.
-				    * See also child_properties of 
-				    * GladeWidgetClass.
-				    */
-
-	GHashTable *props_hash; /* A Quick reference table to speed up calls to glade_widget_get_property()
-				 */	
-	GHashTable *pack_props_hash; /* A Quick reference table to speed up calls to glade_widget_get_pack_property()
-				      */
-
-	GHashTable *signals; /* A table with a GPtrArray of GladeSignals (signal handlers),
-			      * indexed by its name */
-
-	gboolean   visible; /* Local copy of widget visibility, we need to keep track of this
-			     * since the objects copy may be invalid due to a rebuild.
-			     */
-
-	GList     *prop_refs; /* List of properties in the project who's value are `this object'
-			       * (this is used to set/unset those properties when the object is
-			       * added/removed from the project).
-			       */
-
-	gint               width;   /* Current size used in the UI, this is only */
-	gint               height;  /* usefull for parentless widgets in the
-				     * GladeDesignLayout */
-
-	GList *actions;		/* A GladeWidgetAction list */
-	
-	GList *packing_actions;	/* A GladeWidgetAction list, this actions are
-				 * related to the container and they are not always present.
-				 */
-
-	GladeWidget    *lock; /* The glade widget that has locked this widget down.
-			       */
-	GList          *locked_widgets; /* A list of widgets this widget has locked down.
-					 */
-
-	GtkTreeModel   *signal_model; /* Signal model (or NULL if not yet requested) */
-
-	
-	/* Construct parameters: */
-	GladeWidget       *construct_template;
-	GladeCreateReason  construct_reason;
-	gchar             *construct_internal;
-	gboolean           construct_exact;
+  GladeWidgetPrivate *priv;
 };
 
 struct _GladeWidgetClass
 {
-	GInitiallyUnownedClass parent_class;
+  GInitiallyUnownedClass parent_class;
 
-	void         (*add_child)               (GladeWidget *, GladeWidget *, gboolean);
-	void         (*remove_child)            (GladeWidget *, GladeWidget *);
-	void         (*replace_child)           (GladeWidget *, GObject *, GObject *);
+  void         (*add_child)               (GladeWidget *, GladeWidget *, gboolean);
+  void         (*remove_child)            (GladeWidget *, GladeWidget *);
+  void         (*replace_child)           (GladeWidget *, GObject *, GObject *);
 
-	void         (*add_signal_handler)	(GladeWidget *, const GladeSignal *);
-	void         (*remove_signal_handler)	(GladeWidget *, const GladeSignal *);
-	void         (*change_signal_handler)	(GladeWidget *, GladeSignal *, GladeSignal *);
-	
-	gint         (*button_press_event)      (GladeWidget *, GdkEvent *);
-	gint         (*button_release_event)    (GladeWidget *, GdkEvent *);
-	gint         (*motion_notify_event)     (GladeWidget *, GdkEvent *);
+  void         (*add_signal_handler)	(GladeWidget *, GladeSignal *);
+  void         (*remove_signal_handler)	(GladeWidget *, GladeSignal *);
+  void         (*change_signal_handler)	(GladeWidget *, GladeSignal *, GladeSignal *);
 
-	gboolean     (*event)                   (GladeWidget *, GdkEvent *);
+  gint         (*button_press_event)      (GladeWidget *, GdkEvent *);
+  gint         (*button_release_event)    (GladeWidget *, GdkEvent *);
+  gint         (*motion_notify_event)     (GladeWidget *, GdkEvent *);
+
+  gboolean     (*event)                   (GladeWidget *, GdkEvent *);
+
+  void   (* glade_reserved1)   (void);
+  void   (* glade_reserved2)   (void);
+  void   (* glade_reserved3)   (void);
+  void   (* glade_reserved4)   (void);
+  void   (* glade_reserved5)   (void);
+  void   (* glade_reserved6)   (void);
+  void   (* glade_reserved7)   (void);
+  void   (* glade_reserved8)   (void);
 };
 
 /*******************************************************************************
@@ -171,7 +91,10 @@ void                    glade_widget_copy_properties        (GladeWidget      *w
 
 void                    glade_widget_set_packing_properties (GladeWidget      *widget,
 							     GladeWidget      *container);
- 
+
+GList                  *glade_widget_get_properties         (GladeWidget      *widget);
+GList                  *glade_widget_get_packing_properties (GladeWidget      *widget);
+
 GladeProperty          *glade_widget_get_property           (GladeWidget      *widget,
 							     const gchar      *id_property);
  
@@ -219,6 +142,9 @@ GladeWidgetAction      *glade_widget_get_action             (GladeWidget *widget
 GladeWidgetAction      *glade_widget_get_pack_action        (GladeWidget *widget,
 							     const gchar *action_path);
 
+GList                  *glade_widget_get_actions            (GladeWidget *widget);
+GList                  *glade_widget_get_pack_actions       (GladeWidget *widget);
+
 gboolean                glade_widget_set_action_sensitive   (GladeWidget *widget,
 							     const gchar *action_path,
 							     gboolean     sensitive);
@@ -265,9 +191,9 @@ void                    glade_widget_write_special_child_prop (GladeWidget     *
 							       GladeXmlContext *context,
 							       GladeXmlNode    *node);
 
-void                  glade_widget_set_child_type_from_node (GladeWidget         *parent,
-							     GObject             *child,
-							     GladeXmlNode        *node);
+void                    glade_widget_set_child_type_from_node (GladeWidget         *parent,
+							       GObject             *child,
+							       GladeXmlNode        *node);
 
 GladeEditorProperty    *glade_widget_create_editor_property (GladeWidget      *widget,
 							     const gchar      *property,
@@ -288,6 +214,8 @@ void                    glade_widget_add_prop_ref           (GladeWidget      *w
  
 void                    glade_widget_remove_prop_ref        (GladeWidget      *widget,
 							     GladeProperty    *property);
+
+GList                  *glade_widget_list_prop_refs         (GladeWidget      *widget);
 
 GladeProperty          *glade_widget_get_parentless_widget_ref (GladeWidget  *widget);
 
@@ -400,14 +328,18 @@ void                    glade_widget_set_internal	    (GladeWidget      *widget,
 							     const gchar      *internal);
  
 G_CONST_RETURN gchar   *glade_widget_get_internal           (GladeWidget      *widget);
- 
+
 GObject                *glade_widget_get_object             (GladeWidget      *widget);
 
 void                    glade_widget_set_project	    (GladeWidget      *widget,
 							     GladeProject     *project);
  
 GladeProject           *glade_widget_get_project            (GladeWidget      *widget);
- 
+
+void                    glade_widget_set_in_project         (GladeWidget      *widget,
+							     gboolean          in_project);
+gboolean                glade_widget_in_project             (GladeWidget      *widget);
+
 GladeWidgetAdaptor     *glade_widget_get_adaptor            (GladeWidget      *widget);
  
 GladeWidget            *glade_widget_get_parent             (GladeWidget      *widget);
@@ -427,10 +359,15 @@ void                    glade_widget_pop_superuser          (void);
 
 void                    glade_widget_set_support_warning    (GladeWidget      *widget,
 							     const gchar      *warning);
+G_CONST_RETURN gchar   *glade_widget_support_warning        (GladeWidget      *widget);
 
 void                    glade_widget_lock                   (GladeWidget      *widget,
 							     GladeWidget      *locked);
 void                    glade_widget_unlock                 (GladeWidget      *widget);
+
+GladeWidget            *glade_widget_get_locker             (GladeWidget      *widget);
+
+GList                  *glade_widget_list_locked_widgets    (GladeWidget      *widget);
 
 void                    glade_widget_support_changed        (GladeWidget      *widget);
 

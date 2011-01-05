@@ -36,6 +36,18 @@
 #include "glade-project.h"
 #include "glade-app.h"
 
+static void
+glade_popup_docs_cb (GtkMenuItem * item, GladeWidgetAdaptor * adaptor)
+{
+  gchar *book;
+
+  g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
+
+  g_object_get (adaptor, "book", &book, NULL);
+  glade_app_search_docs (book, glade_widget_adaptor_get_name (adaptor), NULL);
+  g_free (book);
+}
+
 /********************************************************
                       WIDGET POPUP
  *******************************************************/
@@ -43,7 +55,8 @@ static void
 glade_popup_select_cb (GtkMenuItem * item, GladeWidget * widget)
 {
   glade_util_clear_selection ();
-  glade_app_selection_set (glade_widget_get_object (widget), TRUE);
+  glade_project_selection_set (glade_widget_get_project (widget),
+			       glade_widget_get_object (widget), TRUE);
 }
 
 static GladePlaceholder *
@@ -81,106 +94,106 @@ glade_popup_placeholder_add_cb (GtkMenuItem * item,
                                 GladePlaceholder * placeholder)
 {
   GladeWidgetAdaptor *adaptor;
-  GladeWidget *parent;
+  GladeWidget        *parent;
+  GladeProject       *project;
 
-  adaptor = glade_palette_get_current_item (glade_app_get_palette ());
+
+  parent  = glade_placeholder_get_parent (placeholder);
+  project = glade_placeholder_get_project (placeholder);
+  adaptor = glade_project_get_add_item (project);
+
   g_return_if_fail (adaptor != NULL);
-
-  parent = glade_placeholder_get_parent (placeholder);
 
   if (!glade_util_check_and_warn_scrollable
       (parent, adaptor, glade_app_get_window ()))
     {
       glade_command_create (adaptor, parent,
                             placeholder,
-                            glade_placeholder_get_project (placeholder));
+                            project);
 
-      glade_palette_deselect_current_item (glade_app_get_palette (), TRUE);
+      glade_project_set_add_item (project, NULL);
     }
 }
 
-static void
-glade_popup_action_add_cb (GtkMenuItem * item, GladeWidget * group)
-{
+typedef struct {
   GladeWidgetAdaptor *adaptor;
-
-  adaptor = glade_palette_get_current_item (glade_app_get_palette ());
-  g_return_if_fail (adaptor != NULL);
-
-  glade_command_create (adaptor, group, NULL, glade_widget_get_project (group));
-
-  glade_palette_deselect_current_item (glade_app_get_palette (), TRUE);
-}
+  GladeProject       *project;
+} RootAddData;
 
 static void
-glade_popup_root_add_cb (GtkMenuItem * item, gpointer * user_data)
+glade_popup_root_add_cb (GtkMenuItem *item, 
+			 RootAddData *data)
 {
-  GladeWidgetAdaptor *adaptor = (GladeWidgetAdaptor *) user_data;
-  GladePalette *palette = glade_app_get_palette ();
-
-  if (!adaptor)
-    adaptor = glade_palette_get_current_item (palette);
-  g_return_if_fail (adaptor != NULL);
-
-  glade_palette_create_root_widget (palette, adaptor);
+  glade_command_create (data->adaptor, NULL, NULL, data->project);
 }
 
 static void
 glade_popup_cut_cb (GtkMenuItem * item, GladeWidget * widget)
 {
-  GladeProject *project = glade_app_get_project ();
+  GladeProject *project = glade_widget_get_project (widget);
 
   glade_util_clear_selection ();
 
-  /* Assign selection first */
-  if (glade_project_is_selected
-      (project, glade_widget_get_object (widget)) == FALSE)
-    {
-      glade_app_selection_set (glade_widget_get_object (widget), FALSE);
-    }
-  glade_app_command_cut ();
+  /* Assign selection first only if its not already assigned (it may be a delete
+   * of multiple widgets) */
+  if (!glade_project_is_selected (project, glade_widget_get_object (widget)))
+    glade_project_selection_set (project, glade_widget_get_object (widget), FALSE);
+
+  glade_project_command_cut (project);
 }
 
 static void
 glade_popup_copy_cb (GtkMenuItem * item, GladeWidget * widget)
 {
-  GladeProject *project = glade_app_get_project ();
+  GladeProject *project = glade_widget_get_project (widget);
 
   glade_util_clear_selection ();
 
   /* Assign selection first */
-  if (glade_project_is_selected
-      (project, glade_widget_get_object (widget)) == FALSE)
-    glade_app_selection_set (glade_widget_get_object (widget), FALSE);
+  if (glade_project_is_selected (project, glade_widget_get_object (widget)) == FALSE)
+    glade_project_selection_set (project, glade_widget_get_object (widget), FALSE);
 
-  glade_app_command_copy ();
+  glade_project_copy_selection (project);
 }
 
 static void
-glade_popup_paste_cb (GtkMenuItem * item, GladeWidget * widget)
+glade_popup_paste_cb (GtkMenuItem * item, gpointer data)
 {
+  GladeWidget  *widget = NULL;
+  GladeProject *project;
+
+  if (GLADE_IS_WIDGET (data))
+    {
+      widget  = GLADE_WIDGET (data);
+      project = glade_widget_get_project (widget);
+    }
+  else if (GLADE_IS_PROJECT (data))
+    project = GLADE_PROJECT (data);
+  else
+    g_return_if_reached ();
+
   glade_util_clear_selection ();
 
   /* The selected widget is the paste destination */
   if (widget)
-    glade_app_selection_set (glade_widget_get_object (widget), FALSE);
+    glade_project_selection_set (project, glade_widget_get_object (widget), FALSE);
   else
-    glade_app_selection_clear (FALSE);
+    glade_project_selection_clear (project, FALSE);
 
-  glade_app_command_paste (NULL);
+  glade_project_command_paste (project, NULL);
 }
 
 static void
 glade_popup_delete_cb (GtkMenuItem * item, GladeWidget * widget)
 {
-  GladeProject *project = glade_app_get_project ();
+  GladeProject *project = glade_widget_get_project (widget);
 
   /* Assign selection first */
   if (glade_project_is_selected
       (project, glade_widget_get_object (widget)) == FALSE)
-    glade_app_selection_set (glade_widget_get_object (widget), FALSE);
+    glade_project_selection_set (project, glade_widget_get_object (widget), FALSE);
 
-  glade_app_command_delete ();
+  glade_project_command_delete (project);
 }
 
 /********************************************************
@@ -190,44 +203,15 @@ static void
 glade_popup_placeholder_paste_cb (GtkMenuItem * item,
                                   GladePlaceholder * placeholder)
 {
+  GladeProject *project;
+
+  project = glade_placeholder_get_project (placeholder);
+
   glade_util_clear_selection ();
-  glade_app_selection_clear (FALSE);
+  glade_project_selection_clear (project, FALSE);
 
-  glade_app_command_paste (placeholder);
+  glade_project_command_paste (project, placeholder);
 }
-
-
-/********************************************************
-                    CLIPBOARD POPUP
- *******************************************************/
-static void
-glade_popup_clipboard_paste_cb (GtkMenuItem * item, GladeWidget * widget)
-{
-  glade_util_clear_selection ();
-  glade_app_selection_clear (FALSE);
-
-  glade_app_command_paste (NULL);
-}
-
-static void
-glade_popup_clipboard_delete_cb (GtkMenuItem * item, GladeWidget * widget)
-{
-  glade_app_command_delete_clipboard ();
-}
-
-static void
-glade_popup_docs_cb (GtkMenuItem * item, GladeWidgetAdaptor * adaptor)
-{
-  gchar *book;
-
-  g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
-
-  g_object_get (adaptor, "book", &book, NULL);
-  glade_editor_search_doc_search (glade_app_get_editor (), book, adaptor->name,
-                                  NULL);
-  g_free (book);
-}
-
 
 /********************************************************
                     POPUP BUILDING
@@ -276,20 +260,23 @@ glade_popup_menuitem_activated (GtkMenuItem * item, const gchar * action_path)
   GladeWidget *widget;
 
   if ((widget = g_object_get_data (G_OBJECT (item), "gwa-data")))
-    glade_widget_adaptor_action_activate (widget->adaptor,
-                                          widget->object, action_path);
+    glade_widget_adaptor_action_activate (glade_widget_get_adaptor (widget),
+                                          glade_widget_get_object (widget), action_path);
 }
 
 static void
 glade_popup_menuitem_packing_activated (GtkMenuItem * item,
                                         const gchar * action_path)
 {
-  GladeWidget *widget;
+  GladeWidget *widget, *parent;
 
   if ((widget = g_object_get_data (G_OBJECT (item), "gwa-data")))
-    glade_widget_adaptor_child_action_activate (widget->parent->adaptor,
-                                                widget->parent->object,
-                                                widget->object, action_path);
+    {
+      parent = glade_widget_get_parent (widget);
+      glade_widget_adaptor_child_action_activate (glade_widget_get_adaptor (parent),
+						  glade_widget_get_object (parent),
+						  glade_widget_get_object (widget), action_path);
+    }
 }
 
 static void
@@ -302,8 +289,8 @@ glade_popup_menuitem_ph_packing_activated (GtkMenuItem * item,
   if ((ph = g_object_get_data (G_OBJECT (item), "gwa-data")))
     {
       parent = glade_placeholder_get_parent (ph);
-      glade_widget_adaptor_child_action_activate (parent->adaptor,
-                                                  parent->object,
+      glade_widget_adaptor_child_action_activate (glade_widget_get_adaptor (parent),
+                                                  glade_widget_get_object (parent),
                                                   G_OBJECT (ph), action_path);
     }
 }
@@ -332,8 +319,8 @@ glade_popup_action_populate_menu_real (GtkWidget * menu,
                                                       callback, data);
         }
       else
-        submenu = glade_widget_adaptor_action_submenu (gwidget->adaptor,
-                                                       gwidget->object,
+        submenu = glade_widget_adaptor_action_submenu (glade_widget_get_adaptor (gwidget),
+                                                       glade_widget_get_object (gwidget),
                                                        a->klass->path);
 
 
@@ -401,12 +388,12 @@ glade_popup_action_populate_menu (GtkWidget * menu,
 
   n = glade_popup_action_populate_menu_real (menu,
                                              widget,
-                                             widget->actions,
+                                             glade_widget_get_actions (widget),
                                              G_CALLBACK
                                              (glade_popup_menuitem_activated),
                                              widget);
 
-  if (packing && widget->packing_actions)
+  if (packing && glade_widget_get_pack_actions (widget))
     {
       if (n)
         {
@@ -414,62 +401,52 @@ glade_popup_action_populate_menu (GtkWidget * menu,
           gtk_menu_shell_append (GTK_MENU_SHELL (menu), separator);
           gtk_widget_show (separator);
         }
-      n += glade_popup_action_populate_menu_real (menu,
-                                                  glade_widget_get_parent
-                                                  (widget),
-                                                  widget->packing_actions,
-                                                  G_CALLBACK
-                                                  (glade_popup_menuitem_packing_activated),
-                                                  widget);
+      n += glade_popup_action_populate_menu_real 
+	(menu, glade_widget_get_parent (widget),
+	 glade_widget_get_pack_actions (widget),
+	 G_CALLBACK (glade_popup_menuitem_packing_activated), widget);
     }
 
   return n;
 }
 
 static GtkWidget *
-glade_popup_create_menu (GladeWidget * widget,
-                         GladePlaceholder * placeholder, gboolean packing)
+glade_popup_create_menu (GladeWidget      *widget,
+                         GladePlaceholder *placeholder, 
+			 GladeProject     *project,
+			 gboolean          packing)
 {
-  GladeWidgetAdaptor *current_item;
-  GtkWidget *popup_menu;
-  GtkWidget *separator;
-  gboolean sensitive;
-  GladePlaceholder *tmp_placeholder;
-  gchar *book;
-
-  sensitive = (current_item =
-               glade_palette_get_current_item (glade_app_get_palette ())) !=
-      NULL;
+  GtkWidget          *popup_menu;
+  GtkWidget          *separator;
+  gboolean            sensitive;
+  GladePlaceholder   *tmp_placeholder;
+  GladeWidgetAdaptor *adaptor;
+  gchar              *book;
 
   popup_menu = gtk_menu_new ();
 
-  if (current_item)
+  adaptor = glade_project_get_add_item (project);
+
+  if (adaptor)
     {
+      RootAddData *data = g_new (RootAddData, 1);
 
-      /* Special case for GtkAction accelerators  */
-      if (widget && GTK_IS_ACTION_GROUP (widget->object) &&
-          (current_item->type == GTK_TYPE_ACTION ||
-           g_type_is_a (current_item->type, GTK_TYPE_ACTION)))
-        {
-          glade_popup_append_item (popup_menu, NULL, _("_Add widget here"),
-                                   NULL, TRUE, glade_popup_action_add_cb,
-                                   widget);
-        }
-      else
-        {
-          tmp_placeholder = placeholder;
-          if (!tmp_placeholder && widget)
-            tmp_placeholder =
-                find_placeholder (glade_widget_get_object (widget));
+      data->adaptor = adaptor;
+      data->project = project;
+      g_object_set_data_full (G_OBJECT (popup_menu), "root-data-destroy-me", 
+			      data, (GDestroyNotify)g_free);
 
-          glade_popup_append_item (popup_menu, NULL, _("_Add widget here"),
-                                   NULL, tmp_placeholder != NULL,
-                                   glade_popup_placeholder_add_cb,
-                                   tmp_placeholder);
-        }
+      tmp_placeholder = placeholder;
+      if (!tmp_placeholder && widget)
+	tmp_placeholder = find_placeholder (glade_widget_get_object (widget));
+
+      glade_popup_append_item (popup_menu, NULL, _("_Add widget here"),
+			       NULL, tmp_placeholder != NULL,
+			       glade_popup_placeholder_add_cb,
+			       tmp_placeholder);
 
       glade_popup_append_item (popup_menu, NULL, _("Add widget as _toplevel"),
-                               NULL, TRUE, glade_popup_root_add_cb, NULL);
+                               NULL, TRUE, glade_popup_root_add_cb, data);
 
       separator = gtk_menu_item_new ();
       gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), separator);
@@ -506,7 +483,7 @@ glade_popup_create_menu (GladeWidget * widget,
   /* packing actions are a little different on placholders */
   if (placeholder)
     {
-      if (widget && widget->actions)
+      if (widget && glade_widget_get_actions (widget))
         {
           GtkWidget *separator = gtk_menu_item_new ();
           gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), separator);
@@ -515,7 +492,7 @@ glade_popup_create_menu (GladeWidget * widget,
           glade_popup_action_populate_menu_real
               (popup_menu,
                widget,
-               widget->actions,
+               glade_widget_get_actions (widget),
                G_CALLBACK (glade_popup_menuitem_activated), widget);
         }
 
@@ -533,7 +510,8 @@ glade_popup_create_menu (GladeWidget * widget,
                placeholder);
         }
     }
-  else if (widget && (widget->actions || (packing && widget->packing_actions)))
+  else if (widget && (glade_widget_get_actions (widget) || 
+		      (packing && glade_widget_get_pack_actions (widget))))
     {
       GtkWidget *separator = gtk_menu_item_new ();
       gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), separator);
@@ -544,7 +522,7 @@ glade_popup_create_menu (GladeWidget * widget,
 
   if (widget)
     {
-      g_object_get (widget->adaptor, "book", &book, NULL);
+      g_object_get (glade_widget_get_adaptor (widget), "book", &book, NULL);
       if (book)
         {
           GtkWidget *icon = glade_util_get_devhelp_icon (GTK_ICON_SIZE_MENU);
@@ -554,30 +532,10 @@ glade_popup_create_menu (GladeWidget * widget,
 
           glade_popup_append_item (popup_menu, NULL, _("Read _documentation"),
                                    icon, TRUE, glade_popup_docs_cb,
-                                   widget->adaptor);
+                                   glade_widget_get_adaptor (widget));
         }
       g_free (book);
     }
-
-  return popup_menu;
-}
-
-static GtkWidget *
-glade_popup_create_clipboard_menu (GladeWidget * widget)
-{
-  GtkWidget *popup_menu;
-
-  popup_menu = gtk_menu_new ();
-
-  if (gtk_widget_is_toplevel (GTK_WIDGET (glade_widget_get_object (widget))))
-    {
-      glade_popup_append_item (popup_menu, GTK_STOCK_PASTE,
-                               NULL, NULL, TRUE,
-                               glade_popup_clipboard_paste_cb, NULL);
-    }
-
-  glade_popup_append_item (popup_menu, GTK_STOCK_DELETE, NULL, NULL, TRUE,
-                           glade_popup_clipboard_delete_cb, widget);
 
   return popup_menu;
 }
@@ -592,7 +550,7 @@ glade_popup_widget_pop (GladeWidget * widget,
 
   g_return_if_fail (GLADE_IS_WIDGET (widget) || widget == NULL);
 
-  popup_menu = glade_popup_create_menu (widget, NULL, packing);
+  popup_menu = glade_popup_create_menu (widget, NULL, glade_widget_get_project (widget), packing);
 
   if (event)
     {
@@ -621,7 +579,8 @@ glade_popup_placeholder_pop (GladePlaceholder * placeholder,
 
   widget = glade_placeholder_get_parent (placeholder);
 
-  popup_menu = glade_popup_create_menu (widget, placeholder, TRUE);
+  popup_menu = glade_popup_create_menu (widget, placeholder, 
+					glade_widget_get_project (widget), TRUE);
 
   if (event)
     {
@@ -639,48 +598,31 @@ glade_popup_placeholder_pop (GladePlaceholder * placeholder,
 }
 
 void
-glade_popup_clipboard_pop (GladeWidget * widget, GdkEventButton * event)
-{
-  GtkWidget *popup_menu;
-  gint button;
-  gint event_time;
-
-  g_return_if_fail (GLADE_IS_WIDGET (widget));
-
-  popup_menu = glade_popup_create_clipboard_menu (widget);
-
-  if (event)
-    {
-      button = event->button;
-      event_time = event->time;
-    }
-  else
-    {
-      button = 0;
-      event_time = gtk_get_current_event_time ();
-    }
-
-  gtk_menu_popup (GTK_MENU (popup_menu), NULL, NULL,
-                  NULL, NULL, button, event_time);
-}
-
-void
-glade_popup_palette_pop (GladeWidgetAdaptor * adaptor, GdkEventButton * event)
+glade_popup_palette_pop (GladePalette       *palette, 
+			 GladeWidgetAdaptor *adaptor, 
+			 GdkEventButton     *event)
 {
   GladeProject *project;
   GtkWidget *popup_menu;
   gchar *book = NULL;
   gint button;
   gint event_time;
+  RootAddData *data;
 
   g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
 
   popup_menu = gtk_menu_new ();
 
-  project = glade_app_get_project ();
+  project = glade_palette_get_project (palette);
+
+  data = g_new (RootAddData, 1);
+  data->adaptor = adaptor;
+  data->project = project;
+  g_object_set_data_full (G_OBJECT (popup_menu), "root-data-destroy-me", 
+			  data, (GDestroyNotify)g_free);
 
   glade_popup_append_item (popup_menu, NULL, _("Add widget as _toplevel"), NULL,
-                           TRUE, glade_popup_root_add_cb, adaptor);
+                           TRUE, glade_popup_root_add_cb, data);
 
   g_object_get (adaptor, "book", &book, NULL);
   if (book && glade_util_have_devhelp ())
@@ -721,19 +663,19 @@ static void
 glade_popup_property_docs_cb (GtkMenuItem * item, GladeProperty * property)
 {
   GladeWidgetAdaptor *adaptor, *prop_adaptor;
-  gchar *search, *book;
+  GladePropertyClass *pclass;
+  GParamSpec         *pspec;
+  gchar              *search, *book;
 
-  prop_adaptor = glade_widget_adaptor_from_pclass (property->klass);
-  adaptor =
-      glade_widget_adaptor_from_pspec (prop_adaptor, property->klass->pspec);
-  search = g_strdup_printf ("The %s property", property->klass->id);
+  pclass       = glade_property_get_class (property);
+  pspec        = glade_property_class_get_pspec (pclass);
+  prop_adaptor = glade_property_class_get_adaptor (pclass);
+  adaptor      = glade_widget_adaptor_from_pspec (prop_adaptor, pspec);
+  search       = g_strdup_printf ("The %s property", glade_property_class_id (pclass));
 
   g_object_get (adaptor, "book", &book, NULL);
 
-  glade_editor_search_doc_search (glade_app_get_editor (),
-                                  book,
-                                  g_type_name (property->klass->pspec->
-                                               owner_type), search);
+  glade_app_search_docs (book, g_type_name (pspec->owner_type), search);
 
   g_free (book);
   g_free (search);
@@ -744,14 +686,17 @@ glade_popup_property_pop (GladeProperty * property, GdkEventButton * event)
 {
 
   GladeWidgetAdaptor *adaptor, *prop_adaptor;
+  GladePropertyClass *pclass;
+  GParamSpec         *pspec;
   GtkWidget *popup_menu;
   gchar *book = NULL;
   gint button;
   gint event_time;
 
-  prop_adaptor = glade_widget_adaptor_from_pclass (property->klass);
-  adaptor =
-      glade_widget_adaptor_from_pspec (prop_adaptor, property->klass->pspec);
+  pclass       = glade_property_get_class (property);
+  pspec        = glade_property_class_get_pspec (pclass);
+  prop_adaptor = glade_property_class_get_adaptor (pclass);
+  adaptor      = glade_widget_adaptor_from_pspec (prop_adaptor, pspec);
 
   g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
 
@@ -785,15 +730,15 @@ glade_popup_property_pop (GladeProperty * property, GdkEventButton * event)
                   NULL, NULL, button, event_time);
 }
 
-
 void
-glade_popup_simple_pop (GdkEventButton * event)
+glade_popup_simple_pop (GladeProject   *project,
+			GdkEventButton *event)
 {
   GtkWidget *popup_menu;
   gint button;
   gint event_time;
 
-  popup_menu = glade_popup_create_menu (NULL, NULL, FALSE);
+  popup_menu = glade_popup_create_menu (NULL, NULL, project, FALSE);
   if (!popup_menu)
     return;
 

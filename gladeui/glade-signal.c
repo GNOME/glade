@@ -30,6 +30,18 @@
 #include "glade-signal.h"
 #include "glade-xml-utils.h"
 
+struct _GladeSignal
+{
+  gchar    *name;         /* Signal name eg "clicked"            */
+  gchar    *handler;      /* Handler function eg "gtk_main_quit" */
+  gchar    *userdata;     /* User data signal handler argument   */
+
+  gchar    *support_warning;/* Message to inform the user about signals introduced in future versions */
+
+  guint8    after : 1;    /* Connect after TRUE or FALSE         */
+  guint8    swapped : 1;  /* Connect swapped TRUE or FALSE (GtkBuilder only) */
+};
+
 /**
  * glade_signal_new:
  * @name: a name for the signal
@@ -118,7 +130,9 @@ glade_signal_clone (const GladeSignal * signal)
 
   dup = glade_signal_new (signal->name,
                           signal->handler,
-                          signal->userdata, signal->after, signal->swapped);
+                          signal->userdata, 
+			  signal->after, 
+			  signal->swapped);
 
   glade_signal_set_support_warning (dup, signal->support_warning);
 
@@ -222,8 +236,108 @@ glade_signal_read (GladeXmlNode * node)
 }
 
 void
-glade_signal_set_support_warning (GladeSignal * signal,
-                                  const gchar * support_warning)
+glade_signal_set_name (GladeSignal *signal,
+		       const gchar *name)
+{
+  g_return_if_fail (GLADE_IS_SIGNAL (signal));
+
+  if (g_strcmp0 (signal->name, name))
+    {
+      g_free (signal->name);
+      signal->name =
+          name ? g_strdup (name) : NULL;
+    }
+}
+
+G_CONST_RETURN gchar *
+glade_signal_get_name (GladeSignal *signal)
+{
+  g_return_val_if_fail (GLADE_IS_SIGNAL (signal), NULL);
+
+  return signal->name;
+}
+
+void
+glade_signal_set_handler (GladeSignal *signal,
+			  const gchar *handler)
+{
+  g_return_if_fail (GLADE_IS_SIGNAL (signal));
+
+  if (g_strcmp0 (signal->handler, handler))
+    {
+      g_free (signal->handler);
+      signal->handler =
+          handler ? g_strdup (handler) : NULL;
+    }
+}
+
+G_CONST_RETURN gchar *
+glade_signal_get_handler (GladeSignal *signal)
+{
+  g_return_val_if_fail (GLADE_IS_SIGNAL (signal), NULL);
+
+  return signal->handler;
+}
+
+void
+glade_signal_set_userdata (GladeSignal *signal,
+			   const gchar *userdata)
+{
+  g_return_if_fail (GLADE_IS_SIGNAL (signal));
+
+  if (g_strcmp0 (signal->userdata, userdata))
+    {
+      g_free (signal->userdata);
+      signal->userdata =
+          userdata ? g_strdup (userdata) : NULL;
+    }
+}
+
+G_CONST_RETURN gchar *
+glade_signal_get_userdata (GladeSignal *signal)
+{
+  g_return_val_if_fail (GLADE_IS_SIGNAL (signal), NULL);
+
+  return signal->userdata;
+}
+
+void
+glade_signal_set_after (GladeSignal *signal,
+			gboolean     after)
+{
+  g_return_if_fail (GLADE_IS_SIGNAL (signal));
+
+  signal->after = after;
+}
+
+gboolean
+glade_signal_get_after (GladeSignal *signal)
+{
+  g_return_val_if_fail (GLADE_IS_SIGNAL (signal), FALSE);
+
+  return signal->after;
+}
+
+void
+glade_signal_set_swapped (GladeSignal *signal,
+			  gboolean     swapped)
+{
+  g_return_if_fail (GLADE_IS_SIGNAL (signal));
+
+  signal->swapped = swapped;
+}
+
+gboolean
+glade_signal_get_swapped (GladeSignal *signal)
+{
+  g_return_val_if_fail (GLADE_IS_SIGNAL (signal), FALSE);
+
+  return signal->swapped;
+}
+
+void
+glade_signal_set_support_warning (GladeSignal *signal,
+                                  const gchar *support_warning)
 {
   g_return_if_fail (GLADE_IS_SIGNAL (signal));
 
@@ -233,4 +347,12 @@ glade_signal_set_support_warning (GladeSignal * signal,
       signal->support_warning =
           support_warning ? g_strdup (support_warning) : NULL;
     }
+}
+
+G_CONST_RETURN gchar *
+glade_signal_get_support_warning (GladeSignal *signal)
+{
+  g_return_val_if_fail (GLADE_IS_SIGNAL (signal), NULL);
+
+  return signal->support_warning;
 }

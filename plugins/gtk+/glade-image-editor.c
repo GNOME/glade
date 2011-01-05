@@ -91,15 +91,12 @@ glade_image_editor_load (GladeEditable * editable, GladeWidget * widget)
   if (image_editor->loaded_widget)
     {
       /* watch custom-child and use-stock properties here for reloads !!! */
-
-      g_signal_handlers_disconnect_by_func (G_OBJECT
-                                            (image_editor->loaded_widget->
-                                             project),
+      g_signal_handlers_disconnect_by_func (glade_widget_get_project (image_editor->loaded_widget),
                                             G_CALLBACK (project_changed),
                                             image_editor);
 
       /* The widget could die unexpectedly... */
-      g_object_weak_unref (G_OBJECT (image_editor->loaded_widget->project),
+      g_object_weak_unref (G_OBJECT (glade_widget_get_project (image_editor->loaded_widget)),
                            (GWeakNotify) project_finalized, image_editor);
     }
 
@@ -109,11 +106,11 @@ glade_image_editor_load (GladeEditable * editable, GladeWidget * widget)
   if (image_editor->loaded_widget)
     {
       /* This fires for undo/redo */
-      g_signal_connect (G_OBJECT (image_editor->loaded_widget->project),
+      g_signal_connect (glade_widget_get_project (image_editor->loaded_widget),
                         "changed", G_CALLBACK (project_changed), image_editor);
 
       /* The widget/project could die unexpectedly... */
-      g_object_weak_ref (G_OBJECT (image_editor->loaded_widget->project),
+      g_object_weak_ref (G_OBJECT (glade_widget_get_project (image_editor->loaded_widget)),
                          (GWeakNotify) project_finalized, image_editor);
     }
 
@@ -265,7 +262,7 @@ stock_toggled (GtkWidget * widget, GladeImageEditor * image_editor)
   image_editor->modifying = TRUE;
 
   glade_command_push_group (_("Setting %s to use an image from stock"),
-                            image_editor->loaded_widget->name);
+                            glade_widget_get_name (image_editor->loaded_widget));
   set_stock_mode (image_editor);
   glade_command_pop_group ();
 
@@ -290,7 +287,7 @@ icon_toggled (GtkWidget * widget, GladeImageEditor * image_editor)
   image_editor->modifying = TRUE;
 
   glade_command_push_group (_("Setting %s to use an image from the icon theme"),
-                            image_editor->loaded_widget->name);
+                            glade_widget_get_name (image_editor->loaded_widget));
   set_icon_mode (image_editor);
   glade_command_pop_group ();
 
@@ -314,7 +311,7 @@ file_toggled (GtkWidget * widget, GladeImageEditor * image_editor)
   image_editor->modifying = TRUE;
 
   glade_command_push_group (_("Setting %s to use an image from filename"),
-                            image_editor->loaded_widget->name);
+                            glade_widget_get_name (image_editor->loaded_widget));
   set_file_mode (image_editor);
   glade_command_pop_group ();
 
@@ -371,7 +368,7 @@ glade_image_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
   image_editor->stock_radio = gtk_radio_button_new (NULL);
   gtk_box_pack_start (GTK_BOX (hbox), image_editor->stock_radio, FALSE, FALSE,
                       2);
-  gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
+  gtk_box_pack_start (GTK_BOX (hbox), glade_editor_property_get_item_label (eprop), TRUE, TRUE, 2);
   table_attach (table, hbox, 0, 0);
   table_attach (table, GTK_WIDGET (eprop), 1, 0);
   image_editor->properties = g_list_prepend (image_editor->properties, eprop);
@@ -385,7 +382,7 @@ glade_image_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
       (GTK_RADIO_BUTTON (image_editor->stock_radio));
   gtk_box_pack_start (GTK_BOX (hbox), image_editor->icon_radio, FALSE, FALSE,
                       2);
-  gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
+  gtk_box_pack_start (GTK_BOX (hbox), glade_editor_property_get_item_label (eprop), TRUE, TRUE, 2);
   table_attach (table, hbox, 0, 1);
   table_attach (table, GTK_WIDGET (eprop), 1, 1);
   image_editor->properties = g_list_prepend (image_editor->properties, eprop);
@@ -399,7 +396,7 @@ glade_image_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
       (GTK_RADIO_BUTTON (image_editor->stock_radio));
   gtk_box_pack_start (GTK_BOX (hbox), image_editor->file_radio, FALSE, FALSE,
                       2);
-  gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
+  gtk_box_pack_start (GTK_BOX (hbox), glade_editor_property_get_item_label (eprop), TRUE, TRUE, 2);
   table_attach (table, hbox, 0, 2);
   table_attach (table, GTK_WIDGET (eprop), 1, 2);
   image_editor->properties = g_list_prepend (image_editor->properties, eprop);
@@ -428,7 +425,7 @@ glade_image_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "icon-size", FALSE,
                                                  TRUE);
-  table_attach (table, eprop->item_label, 0, 0);
+  table_attach (table, glade_editor_property_get_item_label (eprop), 0, 0);
   table_attach (table, GTK_WIDGET (eprop), 1, 0);
   image_editor->properties = g_list_prepend (image_editor->properties, eprop);
 
@@ -436,7 +433,7 @@ glade_image_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "pixel-size", FALSE,
                                                  TRUE);
-  table_attach (table, eprop->item_label, 0, 1);
+  table_attach (table, glade_editor_property_get_item_label (eprop), 0, 1);
   table_attach (table, GTK_WIDGET (eprop), 1, 1);
   image_editor->properties = g_list_prepend (image_editor->properties, eprop);
 

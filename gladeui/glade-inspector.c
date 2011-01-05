@@ -335,7 +335,7 @@ search_entry_key_press_event_cb (GtkEntry * entry,
         {
           widget = glade_widget_get_from_gobject (list->data);
 
-          gtk_entry_set_text (GTK_ENTRY (entry), widget->name);
+          gtk_entry_set_text (GTK_ENTRY (entry), glade_widget_get_name (widget));
 
           gtk_editable_set_position (GTK_EDITABLE (entry), -1);
           gtk_editable_select_region (GTK_EDITABLE (entry), -1, -1);
@@ -604,10 +604,10 @@ selection_changed_cb (GtkTreeSelection * selection, GladeInspector * inspector)
                                    G_CALLBACK (project_selection_changed_cb),
                                    inspector);
 
-  glade_app_selection_clear (FALSE);
+  glade_project_selection_clear (inspector->priv->project, FALSE);
   for (l = sel; l; l = l->next)
-    glade_app_selection_add (G_OBJECT (l->data), FALSE);
-  glade_app_selection_changed ();
+    glade_project_selection_add (inspector->priv->project, G_OBJECT (l->data), FALSE);
+  glade_project_selection_changed (inspector->priv->project);
   g_list_free (sel);
 
   g_signal_handlers_unblock_by_func (inspector->priv->project,
@@ -657,7 +657,7 @@ button_press_cb (GtkWidget * widget,
                 glade_popup_widget_pop (glade_widget_get_from_gobject (object),
                                         event, TRUE);
               else
-                glade_popup_simple_pop (event);
+                glade_popup_simple_pop (priv->project, event);
 
               handled = TRUE;
 
@@ -666,7 +666,7 @@ button_press_cb (GtkWidget * widget,
         }
       else
         {
-          glade_popup_simple_pop (event);
+          glade_popup_simple_pop (priv->project, event);
           handled = TRUE;
         }
     }
@@ -815,8 +815,6 @@ glade_inspector_set_project (GladeInspector * inspector, GladeProject * project)
     }
 
   update_project_completion (project, NULL, inspector);
-
-  gtk_tree_view_expand_all (GTK_TREE_VIEW (inspector->priv->view));
 
   g_object_notify (G_OBJECT (inspector), "project");
 }

@@ -67,9 +67,10 @@ static GtkVBoxClass *parent_class = NULL;
 
 
 G_DEFINE_TYPE (GladeDesignView, glade_design_view, GTK_TYPE_VBOX)
-     static void
-         glade_design_view_parse_began (GladeProject * project,
-                                        GladeDesignView * view)
+
+static void
+glade_design_view_parse_began (GladeProject * project,
+			       GladeDesignView * view)
 {
   gtk_widget_hide (view->priv->scrolled_window);
   gtk_widget_show (view->priv->progress_window);
@@ -161,6 +162,8 @@ glade_design_view_init (GladeDesignView * view)
   GtkWidget *viewport, *filler, *align;
 
   view->priv = GLADE_DESIGN_VIEW_GET_PRIVATE (view);
+
+  gtk_widget_set_no_show_all (GTK_WIDGET (view), TRUE);
 
   view->priv->project = NULL;
   view->priv->layout = glade_design_layout_new ();

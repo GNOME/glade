@@ -555,4 +555,3 @@ glade_signal_editor_class_init (GladeSignalEditorClass *klass)
 
 	g_type_class_add_private (klass, sizeof (GladeSignalEditorPrivate));
 }
-

@@ -239,7 +239,6 @@ static void
 glade_base_editor_fill_store_real (GladeBaseEditor * e,
                                    GladeWidget * gwidget, GtkTreeIter * parent)
 {
-  GObject *object = glade_widget_get_object (gwidget);
   GList *children, *l;
   GladeWidget *gparent = NULL;
   GtkTreeIter iter;
@@ -249,50 +248,45 @@ glade_base_editor_fill_store_real (GladeBaseEditor * e,
                         GLADE_BASE_EDITOR_GWIDGET, &gparent, -1);
 
 
-  children = glade_widget_adaptor_get_children (gwidget->adaptor, object);
+  children = glade_widget_get_children (gwidget);
 
   for (l = children; l; l = l->next)
     {
-      GObject *child = (GObject *) l->data;
       GladeWidget *gchild;
+      GObject     *child = (GObject *) l->data;
+      gchar       *type_name = NULL, *name;
 
-      if (child && (gchild = glade_widget_get_from_gobject (child)))
-        {
-          gchar *type_name = NULL, *name;
+      gchild = glade_widget_get_from_gobject (child);
 
+      /* Have to check parents here for compatibility (could be the parenting menuitem of this menu
+       * supports a menuitem...) */
+      if (glade_base_editor_get_type_info (e, NULL,
+					   G_OBJECT_TYPE (child),
+					   GLADE_BASE_EDITOR_CLASS_NAME,
+					   &type_name, -1))
+	{
+	  gtk_tree_store_append (GTK_TREE_STORE (e->priv->model), &iter, parent);
 
-          /* Have to check parents here for compatibility (could be the parenting menuitem of this menu
-           * supports a menuitem...) */
-          if (glade_base_editor_get_type_info (e, NULL,
-                                               G_OBJECT_TYPE (child),
-                                               GLADE_BASE_EDITOR_CLASS_NAME,
-                                               &type_name, -1))
-            {
-              gtk_tree_store_append (GTK_TREE_STORE (e->priv->model), &iter,
-                                     parent);
+	  name = glade_base_editor_get_display_name (e, gchild);
 
-              name = glade_base_editor_get_display_name (e, gchild);
+	  gtk_tree_store_set (GTK_TREE_STORE (e->priv->model), &iter,
+			      GLADE_BASE_EDITOR_GWIDGET, gchild,
+			      GLADE_BASE_EDITOR_OBJECT, child,
+			      GLADE_BASE_EDITOR_TYPE_NAME, type_name,
+			      GLADE_BASE_EDITOR_NAME, name,
+			      GLADE_BASE_EDITOR_CHILD_TYPES,
+			      get_children_model_for_child_type (e,
+								 G_OBJECT_TYPE
+								 (child)),
+			      -1);
 
-              gtk_tree_store_set (GTK_TREE_STORE (e->priv->model), &iter,
-                                  GLADE_BASE_EDITOR_GWIDGET, gchild,
-                                  GLADE_BASE_EDITOR_OBJECT, child,
-                                  GLADE_BASE_EDITOR_TYPE_NAME, type_name,
-                                  GLADE_BASE_EDITOR_NAME, name,
-                                  GLADE_BASE_EDITOR_CHILD_TYPES,
-                                  get_children_model_for_child_type (e,
-                                                                     G_OBJECT_TYPE
-                                                                     (child)),
-                                  -1);
+	  glade_base_editor_fill_store_real (e, gchild, &iter);
 
-              glade_base_editor_fill_store_real (e, gchild, &iter);
-
-              g_free (name);
-              g_free (type_name);
-            }
-          else
-            glade_base_editor_fill_store_real (e, gchild, parent);
-
-        }
+	  g_free (name);
+	  g_free (type_name);
+	}
+      else
+	glade_base_editor_fill_store_real (e, gchild, parent);
     }
 
   g_list_free (children);
@@ -354,15 +348,13 @@ glade_base_editor_name_activate (GtkEntry * entry, GladeWidget * gchild)
   const gchar *text = gtk_entry_get_text (GTK_ENTRY (entry));
   GladeBaseEditor *editor = g_object_get_data (G_OBJECT (entry), "editor");
 
-  if (strcmp (glade_widget_get_name (gchild), text))
+  if (text && text[0] && strcmp (glade_widget_get_name (gchild), text))
     {
-      g_signal_handlers_block_by_func (gchild->project,
-                                       glade_base_editor_project_widget_name_changed,
-                                       editor);
+      g_signal_handlers_block_by_func (glade_widget_get_project (gchild),
+                                       glade_base_editor_project_widget_name_changed, editor);
       glade_command_set_name (gchild, text);
-      g_signal_handlers_unblock_by_func (gchild->project,
-                                         glade_base_editor_project_widget_name_changed,
-                                         editor);
+      g_signal_handlers_unblock_by_func (glade_widget_get_project (gchild),
+                                         glade_base_editor_project_widget_name_changed, editor);
     }
 }
 
@@ -538,10 +530,10 @@ glade_base_editor_child_change_type (GladeBaseEditor * editor,
   if (type == G_OBJECT_TYPE (child))
     return;
 
-  if (!gchild || !gchild->parent)
+  if (!gchild || !glade_widget_get_parent (gchild))
     return;
 
-  gparent = gchild->parent;
+  gparent = glade_widget_get_parent (gchild);
 
   /* Start of glade-command */
 
@@ -725,8 +717,8 @@ glade_base_editor_add_child (GladeBaseEditor * editor,
                       GLADE_BASE_EDITOR_NAME, name,
                       GLADE_BASE_EDITOR_CHILD_TYPES,
                       get_children_model_for_type (editor,
-                                                   G_OBJECT_TYPE (gparent->
-                                                                  object)), -1);
+                                                   G_OBJECT_TYPE (glade_widget_get_object (gparent))),
+		      -1);
 
   glade_base_editor_reorder_children (editor, &new_iter);
 
@@ -766,12 +758,10 @@ glade_base_editor_popup (GladeBaseEditor * editor, GladeWidget * widget)
 
   if ((model =
        get_children_model_for_child_type (editor,
-                                          G_OBJECT_TYPE (widget->object))) ==
-      NULL)
+                                          G_OBJECT_TYPE (glade_widget_get_object (widget)))) == NULL)
     model =
-        get_children_model_for_type (editor,
-                                     G_OBJECT_TYPE (editor->priv->gcontainer->
-                                                    object));
+      get_children_model_for_type (editor,
+				   G_OBJECT_TYPE (glade_widget_get_object (editor->priv->gcontainer)));
 
   g_assert (model);
 
@@ -808,7 +798,7 @@ glade_base_editor_popup (GladeBaseEditor * editor, GladeWidget * widget)
 
 
   if ((model =
-       get_children_model_for_type (editor, G_OBJECT_TYPE (widget->object))) &&
+       get_children_model_for_type (editor, G_OBJECT_TYPE (glade_widget_get_object (widget)))) &&
       gtk_tree_model_get_iter_first (model, &iter))
     do
       {
@@ -936,7 +926,7 @@ static gboolean
 glade_base_editor_is_child (GladeBaseEditor * e,
                             GladeWidget * gchild, gboolean valid_type)
 {
-  GladeWidget *gcontainer = gchild->parent;
+  GladeWidget *gcontainer = glade_widget_get_parent (gchild);
 
   if (!gcontainer)
     return FALSE;
@@ -945,7 +935,7 @@ glade_base_editor_is_child (GladeBaseEditor * e,
     {
       GObject *child = glade_widget_get_object (gchild);
 
-      if (gchild->internal ||
+      if (glade_widget_get_internal (gchild) ||
           glade_base_editor_get_type_info (e, NULL,
                                            G_OBJECT_TYPE (child), -1) == FALSE)
         return FALSE;
@@ -1103,7 +1093,8 @@ glade_base_editor_project_remove_widget (GladeProject * project,
         }
     }
 
-  if (widget->internal && glade_base_editor_is_child (e, widget, FALSE))
+  if (glade_widget_get_internal (widget) && 
+      glade_base_editor_is_child (e, widget, FALSE))
     glade_base_editor_update_properties (e);
 }
 
@@ -1120,7 +1111,8 @@ glade_base_editor_project_add_widget (GladeProject * project,
       g_idle_add (glade_base_editor_update_treeview_idle, e);
     }
 
-  if (widget->internal && glade_base_editor_is_child (e, widget, FALSE))
+  if (glade_widget_get_internal (widget) && 
+      glade_base_editor_is_child (e, widget, FALSE))
     glade_base_editor_update_properties (e);
 }
 
@@ -1298,7 +1290,7 @@ glade_base_editor_get_property (GObject * object,
   switch (prop_id)
     {
       case PROP_CONTAINER:
-        g_value_set_object (value, editor->priv->gcontainer->object);
+        g_value_set_object (value, glade_widget_get_object (editor->priv->gcontainer));
         break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -1344,7 +1336,7 @@ glade_base_editor_change_type (GladeBaseEditor * editor,
         {
           GladeWidget *w = glade_widget_get_from_gobject (l->data);
 
-          if (w && !w->internal)
+          if (w && !glade_widget_get_internal (w))
             gchildren = g_list_prepend (gchildren, w);
 
           l = g_list_next (l);
@@ -1370,14 +1362,13 @@ glade_base_editor_change_type (GladeBaseEditor * editor,
    * No need to use GladeCommand here on the newly created widget,
    * they just become the initial state for this object.
    */
-  l = gchild->packing_properties;
+  l = glade_widget_get_packing_properties (gchild);
   while (l)
     {
-      GladeProperty *orig_prop = (GladeProperty *) l->data;
-      GladeProperty *dup_prop = glade_widget_get_property (gchild_new,
-                                                           orig_prop->klass->
-                                                           id);
-      glade_property_set_value (dup_prop, orig_prop->value);
+      GladeProperty      *orig_prop = (GladeProperty *) l->data;
+      GladePropertyClass *pclass = glade_property_get_class (orig_prop);
+      GladeProperty      *dup_prop = glade_widget_get_property (gchild_new, glade_property_class_id (pclass));
+      glade_property_set_value (dup_prop, glade_property_inline_value (orig_prop));
       l = g_list_next (l);
     }
 
@@ -1466,17 +1457,17 @@ glade_base_editor_class_init (GladeBaseEditorClass * klass)
                                     ("The container object this editor is currently editing"),
                                     G_TYPE_OBJECT, G_PARAM_READWRITE));
 
-        /**
-	 * GladeBaseEditor::child-selected:
-	 * @gladebaseeditor: the #GladeBaseEditor which received the signal.
-	 * @gchild: the selected #GladeWidget.
-	 *
-	 * Emited when the user selects a child in the editor's treeview.
-	 * You can add the relevant child properties here using 
-	 * glade_base_editor_add_default_properties() and glade_base_editor_add_properties() 
-	 * You can also add labels with glade_base_editor_add_label to make the
-	 * editor look pretty.
-	 */
+  /**
+   * GladeBaseEditor::child-selected:
+   * @gladebaseeditor: the #GladeBaseEditor which received the signal.
+   * @gchild: the selected #GladeWidget.
+   *
+   * Emited when the user selects a child in the editor's treeview.
+   * You can add the relevant child properties here using 
+   * glade_base_editor_add_default_properties() and glade_base_editor_add_properties() 
+   * You can also add labels with glade_base_editor_add_label to make the
+   * editor look pretty.
+   */
   glade_base_editor_signals[SIGNAL_CHILD_SELECTED] =
       g_signal_new ("child-selected",
                     G_TYPE_FROM_CLASS (object_class),
@@ -1485,14 +1476,14 @@ glade_base_editor_class_init (GladeBaseEditorClass * klass)
                     NULL, NULL,
                     glade_marshal_VOID__OBJECT, G_TYPE_NONE, 1, G_TYPE_OBJECT);
 
-        /**
-	 * GladeBaseEditor::child-change-type:
-	 * @gladebaseeditor: the #GladeBaseEditor which received the signal.
-	 * @child: the #GObject being changed.
-         * @type: the new type for @child.
-	 *
-	 * Returns: TRUE to stop signal emision.
-	 */
+  /**
+   * GladeBaseEditor::child-change-type:
+   * @gladebaseeditor: the #GladeBaseEditor which received the signal.
+   * @child: the #GObject being changed.
+   * @type: the new type for @child.
+   *
+   * Returns: TRUE to stop signal emision.
+   */
   glade_base_editor_signals[SIGNAL_CHANGE_TYPE] =
       g_signal_new ("change-type",
                     G_TYPE_FROM_CLASS (object_class),
@@ -1502,14 +1493,14 @@ glade_base_editor_class_init (GladeBaseEditorClass * klass)
                     glade_marshal_BOOLEAN__OBJECT_UINT,
                     G_TYPE_BOOLEAN, 2, G_TYPE_OBJECT, G_TYPE_UINT);
 
-        /**
-	 * GladeBaseEditor::get-display-name:
-	 * @gladebaseeditor: the #GladeBaseEditor which received the signal.
-	 * @gchild: the child to get display name string to show in @gladebaseeditor
-	 * treeview.
-	 *
-	 * Returns: a newly allocated string.
-	 */
+  /**
+   * GladeBaseEditor::get-display-name:
+   * @gladebaseeditor: the #GladeBaseEditor which received the signal.
+   * @gchild: the child to get display name string to show in @gladebaseeditor
+   * treeview.
+   *
+   * Returns: a newly allocated string.
+   */
   glade_base_editor_signals[SIGNAL_GET_DISPLAY_NAME] =
       g_signal_new ("get-display-name",
                     G_TYPE_FROM_CLASS (object_class),
@@ -1519,17 +1510,17 @@ glade_base_editor_class_init (GladeBaseEditorClass * klass)
                     glade_marshal_STRING__OBJECT,
                     G_TYPE_STRING, 1, G_TYPE_OBJECT);
 
-        /**
-	 * GladeBaseEditor::build-child:
-	 * @gladebaseeditor: the #GladeBaseEditor which received the signal.
-	 * @gparent: the parent of the new child
-	 * @type: the #GType of the child
-	 *
-	 * Create a child widget here if something else must be done other than
-	 * calling glade_command_create() such as creating an intermediate parent.
-	 *
-	 * Returns: the newly created #GladeWidget or NULL if child cant be created
-	 */
+  /**
+   * GladeBaseEditor::build-child:
+   * @gladebaseeditor: the #GladeBaseEditor which received the signal.
+   * @gparent: the parent of the new child
+   * @type: the #GType of the child
+   *
+   * Create a child widget here if something else must be done other than
+   * calling glade_command_create() such as creating an intermediate parent.
+   *
+   * Returns: the newly created #GladeWidget or NULL if child cant be created
+   */
   glade_base_editor_signals[SIGNAL_BUILD_CHILD] =
       g_signal_new ("build-child",
                     G_TYPE_FROM_CLASS (object_class),
@@ -1539,12 +1530,12 @@ glade_base_editor_class_init (GladeBaseEditorClass * klass)
                     glade_marshal_OBJECT__OBJECT_UINT,
                     G_TYPE_OBJECT, 2, G_TYPE_OBJECT, G_TYPE_UINT);
 
-        /**
-	 * GladeBaseEditor::delete-child:
-	 * @gladebaseeditor: the #GladeBaseEditor which received the signal.
-	 * @gparent: the parent
-	 * @gchild: the child to delete
-	 */
+  /**
+   * GladeBaseEditor::delete-child:
+   * @gladebaseeditor: the #GladeBaseEditor which received the signal.
+   * @gparent: the parent
+   * @gchild: the child to delete
+   */
   glade_base_editor_signals[SIGNAL_DELETE_CHILD] =
       g_signal_new ("delete-child",
                     G_TYPE_FROM_CLASS (object_class),
@@ -1554,16 +1545,16 @@ glade_base_editor_class_init (GladeBaseEditorClass * klass)
                     glade_marshal_BOOLEAN__OBJECT_OBJECT,
                     G_TYPE_BOOLEAN, 2, G_TYPE_OBJECT, G_TYPE_OBJECT);
 
-        /**
-	 * GladeBaseEditor::move-child:
-	 * @gladebaseeditor: the #GladeBaseEditor which received the signal.
-	 * @gparent: the new parent of @gchild
-	 * @gchild: the #GladeWidget to move
-	 *
-	 * Move child here if something else must be done other than cut & paste.
-	 *
-	 * Returns: wheater child has been sucessfully moved or not.
-	 */
+  /**
+   * GladeBaseEditor::move-child:
+   * @gladebaseeditor: the #GladeBaseEditor which received the signal.
+   * @gparent: the new parent of @gchild
+   * @gchild: the #GladeWidget to move
+   *
+   * Move child here if something else must be done other than cut & paste.
+   *
+   * Returns: wheater child has been sucessfully moved or not.
+   */
   glade_base_editor_signals[SIGNAL_MOVE_CHILD] =
       g_signal_new ("move-child",
                     G_TYPE_FROM_CLASS (object_class),
@@ -1872,11 +1863,8 @@ glade_base_editor_new (GObject * container, GladeEditable * main_editable, ...)
   gchar *name;
   va_list args;
 
-  g_return_val_if_fail (GTK_IS_CONTAINER (container), NULL);
-
   gcontainer = glade_widget_get_from_gobject (container);
   g_return_val_if_fail (GLADE_IS_WIDGET (gcontainer), NULL);
-
 
   editor = GLADE_BASE_EDITOR (g_object_new (GLADE_TYPE_BASE_EDITOR, NULL));
   e = editor->priv;
@@ -1898,8 +1886,8 @@ glade_base_editor_new (GObject * container, GladeEditable * main_editable, ...)
   /* Invent one if not provided */
   if (!main_editable)
     main_editable =
-        glade_widget_adaptor_create_editable (gcontainer->adaptor,
-                                              GLADE_PAGE_GENERAL);
+      glade_widget_adaptor_create_editable (glade_widget_get_adaptor (gcontainer),
+					    GLADE_PAGE_GENERAL);
 
   glade_editable_load (main_editable, gcontainer);
   gtk_widget_show (GTK_WIDGET (main_editable));
@@ -2007,7 +1995,7 @@ glade_base_editor_add_default_properties (GladeBaseEditor * editor,
 
   g_return_if_fail (GLADE_IS_BASE_EDITOR (editor));
   g_return_if_fail (GLADE_IS_WIDGET (gchild));
-  g_return_if_fail (GLADE_IS_WIDGET (gchild->parent));
+  g_return_if_fail (GLADE_IS_WIDGET (glade_widget_get_parent (gchild)));
 
   child = glade_widget_get_object (gchild);
 
@@ -2082,8 +2070,8 @@ glade_base_editor_add_properties (GladeBaseEditor * editor,
           glade_widget_create_editor_property (gchild, property, packing, TRUE);
       if (eprop)
         glade_base_editor_table_attach (editor,
-                                        GLADE_EDITOR_PROPERTY (eprop)->
-                                        item_label, GTK_WIDGET (eprop));
+					glade_editor_property_get_item_label (eprop), 
+					GTK_WIDGET (eprop));
       property = va_arg (args, gchar *);
     }
   va_end (args);
@@ -2110,7 +2098,7 @@ glade_base_editor_add_editable (GladeBaseEditor * editor,
   g_return_if_fail (GLADE_IS_BASE_EDITOR (editor));
   g_return_if_fail (GLADE_IS_WIDGET (gchild));
 
-  editable = glade_widget_adaptor_create_editable (gchild->adaptor, page);
+  editable = glade_widget_adaptor_create_editable (glade_widget_get_adaptor (gchild), page);
   glade_editable_set_show_name (editable, FALSE);
   glade_editable_load (editable, gchild);
   gtk_widget_show (GTK_WIDGET (editable));

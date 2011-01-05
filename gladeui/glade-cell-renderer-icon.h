@@ -35,15 +35,15 @@ G_BEGIN_DECLS
 #define GLADE_IS_CELL_RENDERER_ICON_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_CELL_RENDERER_ICON))
 #define GLADE_CELL_RENDERER_ICON_GET_CLASS(obj)         (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_CELL_RENDERER_ICON, GladeCellRendererIconClass))
 
-typedef struct _GladeCellRendererIcon GladeCellRendererIcon;
-typedef struct _GladeCellRendererIconClass GladeCellRendererIconClass;
+typedef struct _GladeCellRendererIcon        GladeCellRendererIcon;
+typedef struct _GladeCellRendererIconClass   GladeCellRendererIconClass;
+typedef struct _GladeCellRendererIconPrivate GladeCellRendererIconPrivate;
 
 struct _GladeCellRendererIcon
 {
   GtkCellRendererPixbuf parent;
 
-  guint active : 1;
-  guint activatable : 1;
+  GladeCellRendererIconPrivate *priv;
 };
 
 struct _GladeCellRendererIconClass
@@ -51,7 +51,7 @@ struct _GladeCellRendererIconClass
   GtkCellRendererPixbufClass parent_class;
 
   void (* activate) (GladeCellRendererIcon *cell_renderer_icon,
-		     const gchar         *path);
+		     const gchar           *path);
 };
 
 GType            glade_cell_renderer_icon_get_type       (void) G_GNUC_CONST;

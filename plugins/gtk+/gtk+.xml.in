@@ -28,7 +28,7 @@
       </signals>
 
       <actions>
-	<action id="preview" _name="Preview snapshot"/>
+	<action id="preview" _name="Preview snapshot" stock="gtk-execute" important="True"/>
         <action id="edit_separate" _name="Edit Separately" stock="gtk-edit"/>
         <action id="remove_parent" _name="Remove Parent" stock="gtk-remove"/>
         <action id="add_parent" _name="Add Parent" stock="gtk-add">
@@ -49,9 +49,10 @@
       </actions>
 
       <properties>
-	<property id="tooltip-text" since="2.12" weight="4.2" translatable="True" >
-	  <visible-lines>2</visible-lines>
-	</property>
+	<property id="tooltip-text" since="2.12" weight="4.2" translatable="True" multiline="True" />
+        <property id="can-focus" common="True" save-always="True"/>
+	<property id="has-default" common="True" ignore="True"/>
+	<property id="can-default" common="True" />
 	<property id="tooltip-markup" since="2.12" weight="4.1"/>
 	<property id="visible" default="True" common="True" ignore="True"/>
 	<property id="width-request"  common="True" optional="True" optional-default="False" default="0"/>
@@ -98,7 +99,6 @@
 	<property id="parent" disabled="True"/>
 	<property id="style" disabled="True"/>
 	<property id="sensitive" ignore="True"/>
-	<property id="has-default" ignore="True" common="True"/>
 	<property id="double-buffered" since="2.18"/>
 
 	<!-- Accelerators -->
@@ -111,20 +111,20 @@
 	</property>
 
 	<!-- Atk name and description properties -->
-	<property id="AtkObject::accessible-name" _name="Accessible Name" ignore="True" atk-property="True" translatable="True" save="False">
+	<property id="AtkObject::accessible-name" _name="Accessible Name" ignore="True" atk-property="True" 
+		  translatable="True" save="False" multiline="True">
 	  <parameter-spec>
 	    <type>GParamString</type>
 	  </parameter-spec>
 	  <_tooltip>Object instance's name formatted for assistive technology access</_tooltip>
-	  <visible-lines>2</visible-lines>
 	</property>
 
-	<property id="AtkObject::accessible-description" _name="Accessible Description" ignore="True" atk-property="True" translatable="True" save="False">
+	<property id="AtkObject::accessible-description" _name="Accessible Description" ignore="True" 
+		  atk-property="True" translatable="True" save="False" multiline="True">
 	  <parameter-spec>
 	    <type>GParamString</type>
 	  </parameter-spec>
 	  <_tooltip>Description of an object, formatted for assistive technology access</_tooltip>
-	  <visible-lines>2</visible-lines>
 	</property>
 
 	<!-- Atk relationset properties -->
@@ -467,12 +467,12 @@ embedded in another object</_tooltip>
 		  custom-layout="True" needs-sync="True" default="False" since="2.16"/>
 
 	<!-- Atk click property -->
-	<property id="atk-click" _name="Click" ignore="True" atk-property="True" save="False">
+	<property id="atk-click" _name="Click" ignore="True" atk-property="True" save="False" 
+		  multiline="True">
 	  <parameter-spec>
 	    <type>GParamString</type>
 	  </parameter-spec>
 	  <_tooltip>Set the description of the Click atk action</_tooltip>
-	  <visible-lines>2</visible-lines>
 	</property>
         <property id="submenu" since="2.12" disabled="True"/>
       </properties>
@@ -712,9 +712,7 @@ embedded in another object</_tooltip>
 	    <type>GParamInt</type>
 	  </parameter-spec>
         </property>
-      	<property id="label" default="label" translatable="True" custom-layout="True">
-            <visible-lines>2</visible-lines>
-        </property>
+      	<property id="label" default="label" translatable="True" custom-layout="True" multiline="True"/>
 	<property id="glade-attributes" _name="Attributes" save="False" custom-layout="True" 
 		  since="2.16">
 	  <parameter-spec>
@@ -781,7 +779,6 @@ embedded in another object</_tooltip>
       </signals>
 
       <properties>
-        <property id="can-focus" save-always="True"/>
 	<property id="text" translatable="True" custom-layout="True"/>
         <property id="buffer" create-type="GtkEntryBuffer" since="2.18" custom-layout="True"/>
 
@@ -834,12 +831,12 @@ embedded in another object</_tooltip>
         </property>
 
 	<!-- Atk activate property -->
-	<property id="atk-activate" _name="Activate" ignore="True" atk-property="True" save="False">
+	<property id="atk-activate" _name="Activate" ignore="True" atk-property="True" save="False"
+		  multiline="True">
 	  <parameter-spec>
 	    <type>GParamString</type>
 	  </parameter-spec>
 	  <_tooltip>Set the description of the Activate atk action</_tooltip>
-	  <visible-lines>2</visible-lines>
 	</property>
       </properties>
     </glade-widget-class>
@@ -869,13 +866,11 @@ embedded in another object</_tooltip>
       <write-widget-function>glade_gtk_button_write_widget</write-widget-function>
 
       <properties>
-	<property id="can-focus" save-always="True"/>
 	<property id="receives-default" save-always="True"/>
 	<property id="image" parentless-widget="True" create-type="GtkImage" custom-layout="True"/>
 	<property id="use-stock" visible="False" custom-layout="True"/>
-      	<property id="label" default="button" translatable="True" custom-layout="True" save="False">
-            <visible-lines>2</visible-lines>
-	</property>
+      	<property id="label" default="button" translatable="True" custom-layout="True" save="False"
+		  multiline="True"/>
 	<property id="use-underline" custom-layout="True"/>
 	<property id="stock" _name="Stock Button" stock="True" save="False" custom-layout="True">
 	  <parameter-spec>
@@ -908,30 +903,28 @@ embedded in another object</_tooltip>
       	<property id="use-action-appearance" _name="Use Action Appearance" custom-layout="True" default="False" since="2.16"/>
 
 	<!-- Atk click property -->
-	<property id="atk-click" _name="Click" ignore="True" atk-property="True" save="False">
+	<property id="atk-click" _name="Click" ignore="True" atk-property="True" save="False" multiline="True">
 	  <parameter-spec>
 	    <type>GParamString</type>
 	  </parameter-spec>
 	  <_tooltip>Set the description of the Click atk action</_tooltip>
-	  <visible-lines>2</visible-lines>
 	</property>
 
 	<!-- Atk press property -->
-	<property id="atk-press" _name="Press" ignore="True" atk-property="True" save="False">
+	<property id="atk-press" _name="Press" ignore="True" atk-property="True" save="False" multiline="True">
 	  <parameter-spec>
 	    <type>GParamString</type>
 	  </parameter-spec>
 	  <_tooltip>Set the description of the Press atk action</_tooltip>
-	  <visible-lines>2</visible-lines>
 	</property>
 
 	<!-- Atk release property -->
-	<property id="atk-release" _name="Release" ignore="True" atk-property="True" save="False">
+	<property id="atk-release" _name="Release" ignore="True" atk-property="True" save="False" 
+		  multiline="True">
 	  <parameter-spec>
 	    <type>GParamString</type>
 	  </parameter-spec>
 	  <_tooltip>Set the description of the Release atk action</_tooltip>
-	  <visible-lines>2</visible-lines>
 	</property>
       </properties>
 
@@ -962,7 +955,6 @@ embedded in another object</_tooltip>
       <properties>
         <property id="text" disabled="True"/>
         <property id="value" disabled="True"/>
-	<property id="can-focus" default="True"/>
         <property id="adjustment" default="0 0 100 1 10 0"/>
         <property id="update-policy">
   	  <displayable-values>
@@ -1107,12 +1099,11 @@ embedded in another object</_tooltip>
 	<property id="editing-canceled" disabled="True" since="2.20"/>
 
 	<!-- Atk press property -->
-	<property id="atk-press" _name="Press" ignore="True" atk-property="True" save="False">
+	<property id="atk-press" _name="Press" ignore="True" atk-property="True" save="False" multiline="True">
 	  <parameter-spec>
 	    <type>GParamString</type>
 	  </parameter-spec>
 	  <_tooltip>Set the description of the Press atk action</_tooltip>
-	  <visible-lines>2</visible-lines>
 	</property>
       </properties>
     </glade-widget-class>
@@ -1511,12 +1502,12 @@ embedded in another object</_tooltip>
 	<property id="label-widget" disabled="True"/>
 
 	<!-- Atk activate property -->
-	<property id="atk-activate" _name="Activate" ignore="True" atk-property="True" save="False">
+	<property id="atk-activate" _name="Activate" ignore="True" atk-property="True" save="False" 
+		  multiline="True">
 	  <parameter-spec>
 	    <type>GParamString</type>
 	  </parameter-spec>
 	  <_tooltip>Set the description of the Activate atk action</_tooltip>
-	  <visible-lines>2</visible-lines>
 	</property>
       </properties>
     </glade-widget-class>
@@ -1525,7 +1516,6 @@ embedded in another object</_tooltip>
     
     <glade-widget-class name="GtkScrolledWindow" generic-name="scrolledwindow" _title="Scrolled Window">
       <properties>
-        <property id="can-focus" save-always="True"/>
         <property id="window-placement-set" since="2.10" ignore="True"/>
       	<property id="hscrollbar-policy" default="GTK_POLICY_AUTOMATIC">
   	  <displayable-values>
@@ -1554,23 +1544,14 @@ embedded in another object</_tooltip>
    <glade-widget-class name="GtkAboutDialog" generic-name="aboutdialog" _title="About Dialog">
       <properties>
 	<property id="program-name" since="2.12"/>
-	<property id="copyright" translatable="True">
-	  <visible-lines>2</visible-lines>
-	</property>
-	<property id="comments" translatable="True">
-	  <visible-lines>2</visible-lines>
-	</property>
-	<property id="license" translatable="True">
-	  <visible-lines>2</visible-lines>
-	</property>
-	<property id="website-label" translatable="True">
-	  <visible-lines>2</visible-lines>
-	</property>
+	<property id="copyright" translatable="True" multiline="True"/>
+	<property id="comments" translatable="True" multiline="True"/>
+	<property id="license" translatable="True" multiline="True"/>
+	<property id="website-label" translatable="True" multiline="True"/>
 	
 	<!-- It is disputable whether this should really be translatable -->
-	<property id="translator-credits" translatable="True">
+	<property id="translator-credits" translatable="True" multiline="True">
 	  <_tooltip>You can mark this as translatable and set one name/address if you want to show a translation specific translator, otherwise you should list all translators and unmark this string for translation</_tooltip>
-	  <visible-lines>2</visible-lines>
 	</property>
       </properties>
       <signals>
@@ -1615,9 +1596,6 @@ embedded in another object</_tooltip>
 	<property id="default-height" default="115" optional="True" optional-default="False"/>
 
 	<property common="True" id="sensitive"/>
-	<property common="True" id="can-default"/>
-	<property common="True" id="has-default"/>
-	<property common="True" id="can-focus"/>
 
 	<property id="image" since="2.10" parentless-widget="True"/>
 	<property id="secondary-text" translatable="True" since="2.10"/>
@@ -1780,6 +1758,11 @@ embedded in another object</_tooltip>
       <post-create-function>glade_gtk_action_post_create</post-create-function>
       <create-editor-property-function>glade_gtk_widget_create_eprop</create-editor-property-function>
       <string-from-value-function>glade_gtk_widget_string_from_value</string-from-value-function>
+      <action-activate-function>glade_gtk_action_action_activate</action-activate-function>
+      <actions>
+        <action id="launch_editor" _name="Edit&#8230;" stock="gtk-edit" important="True"/>
+      </actions>
+
       <properties>
 	<property id="name" disabled="True"/>
 	<property id="label" translatable="True"/>
@@ -1815,6 +1798,10 @@ embedded in another object</_tooltip>
       <replace-child-function>glade_gtk_action_group_replace_child</replace-child-function>
       <read-child-function>glade_gtk_action_group_read_child</read-child-function>
       <write-child-function>glade_gtk_action_group_write_child</write-child-function>
+      <action-activate-function>glade_gtk_action_action_activate</action-activate-function>
+      <actions>
+        <action id="launch_editor" _name="Edit&#8230;" stock="gtk-edit" important="True"/>
+      </actions>
     </glade-widget-class>
 
     <glade-widget-class name="GtkEntryCompletion" generic-name="entrycompletion" _title="Entry Completion" 
@@ -3160,9 +3147,7 @@ embedded in another object</_tooltip>
       </signals>
       
       <properties>
-	<property id="text" translatable="True">
-	  <visible-lines>2</visible-lines>
-	</property>
+	<property id="text" translatable="True" multiline="True"/>
       </properties>
     </glade-widget-class>
 
@@ -3171,9 +3156,7 @@ embedded in another object</_tooltip>
       <post-create-function>glade_gtk_entry_buffer_post_create</post-create-function>
       <set-property-function>glade_gtk_entry_buffer_set_property</set-property-function>
       <properties>
-	<property id="text" translatable="True">
-	  <visible-lines>2</visible-lines>
-	</property>
+	<property id="text" translatable="True" multiline="True"/>
       </properties>
     </glade-widget-class>
 

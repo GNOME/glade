@@ -74,60 +74,27 @@ GLADE_MAKE_EPROP_TYPE(func, type, GLADE_TYPE_EDITOR_PROPERTY)
 
 typedef struct _GladeEditorProperty        GladeEditorProperty;
 typedef struct _GladeEditorPropertyClass   GladeEditorPropertyClass;
+typedef struct _GladeEditorPropertyPrivate GladeEditorPropertyPrivate;
 
 struct _GladeEditorProperty
 {
-	GtkHBox             parent_instance;
+  GtkHBox             parent_instance;
 
-	GladePropertyClass *klass;          /* The property class this GladeEditorProperty was created for
-					     */
-	GladeProperty      *property;       /* The currently loaded property
-					     */
-
-	GtkWidget          *item_label;     /* The property name portion of the eprop
-					     */
-
-	GtkWidget          *label;          /* The actual property name label
-					     */
-
-	GtkWidget          *warning;        /* Icon to show warnings
-					     */
-
-	GtkWidget          *input;          /* Input part of property (need to set sensitivity seperately)
-					     */
-
-	GtkWidget          *check;          /* Check button for optional properties.
-					     */
-
-	gulong              tooltip_id;     /* signal connection id for tooltip changes        */
-	gulong              sensitive_id;   /* signal connection id for sensitivity changes    */
-	gulong              changed_id;     /* signal connection id for value changes          */
-	gulong              enabled_id;     /* signal connection id for enable/disable changes */
-	gulong              state_id;       /* signal connection id for state changes          */
-	
-	gboolean            loading;        /* True during glade_editor_property_load calls, this
-					     * is used to avoid feedback from input widgets.
-					     */
-	gboolean            committing;     /* True while the editor property itself is applying
-					     * the property with glade_editor_property_commit_no_callback ().
-					     */
-
-	gboolean            use_command;    /* Whether we should use the glade command interface
-					     * or skip directly to GladeProperty interface.
-					     * (used for query dialogs).
-					     */
+  GladeEditorPropertyPrivate *priv;
 };
 
 struct _GladeEditorPropertyClass {
-	GtkHBoxClass  parent_class;
+  GtkHBoxClass  parent_class;
 
-	void        (* load)          (GladeEditorProperty *, GladeProperty *);
+  void        (* load)          (GladeEditorProperty *, GladeProperty *);
+  GtkWidget  *(* create_input)  (GladeEditorProperty *);
+  void        (* commit)        (GladeEditorProperty *, GValue *);
+  void       *(* changed)       (GladeEditorProperty *, GladeProperty *);
 
-	GtkWidget  *(* create_input)  (GladeEditorProperty *);
-
-	void        (* commit)        (GladeEditorProperty *, GValue *);
-
-	void       *(* changed)       (GladeEditorProperty *, GladeProperty *);
+  void   (* glade_reserved1)   (void);
+  void   (* glade_reserved2)   (void);
+  void   (* glade_reserved3)   (void);
+  void   (* glade_reserved4)   (void);
 };
 
 
@@ -145,6 +112,11 @@ void                 glade_editor_property_commit         (GladeEditorProperty *
 
 void                 glade_editor_property_commit_no_callback (GladeEditorProperty *eprop,
 							       GValue              *value);
+
+GtkWidget           *glade_editor_property_get_item_label  (GladeEditorProperty *eprop);
+GladePropertyClass  *glade_editor_property_get_pclass      (GladeEditorProperty *eprop);
+GladeProperty       *glade_editor_property_get_property    (GladeEditorProperty *eprop);
+gboolean             glade_editor_property_loading         (GladeEditorProperty *eprop);
 
 gboolean             glade_editor_property_show_i18n_dialog (GtkWidget            *parent,
 							     gchar               **text,

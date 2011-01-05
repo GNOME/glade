@@ -237,15 +237,16 @@ static void
 populate_store (GladeEPropIconSources * eprop_sources)
 {
   GladeIconSources *sources = NULL;
+  GladeProperty *property;
 
   gtk_tree_store_clear (eprop_sources->store);
   gtk_list_store_clear (eprop_sources->icon_names_store);
 
-  if (!GLADE_EDITOR_PROPERTY (eprop_sources)->property)
+  property = glade_editor_property_get_property (GLADE_EDITOR_PROPERTY (eprop_sources));
+  if (property)
     return;
 
-  glade_property_get (GLADE_EDITOR_PROPERTY (eprop_sources)->property,
-                      &sources);
+  glade_property_get (property, &sources);
 
   if (sources)
     g_hash_table_foreach (sources->sources, (GHFunc) populate_store_foreach,
@@ -272,7 +273,9 @@ glade_eprop_icon_sources_load (GladeEditorProperty * eprop,
 static gboolean
 reload_icon_sources_idle (GladeEditorProperty * eprop)
 {
-  glade_editor_property_load (eprop, eprop->property);
+  GladeProperty *property = glade_editor_property_get_property (eprop);
+
+  glade_editor_property_load (eprop, property);
   return FALSE;
 }
 
@@ -398,6 +401,7 @@ static void
 delete_clicked (GtkWidget * button, GladeEditorProperty * eprop)
 {
   GladeEPropIconSources *eprop_sources = GLADE_EPROP_ICON_SOURCES (eprop);
+  GladeProperty *property = glade_editor_property_get_property (eprop);
   GtkTreeIter iter;
   GladeIconSources *icon_sources = NULL;
   GList *list, *sources, *new_list_head;
@@ -422,7 +426,7 @@ delete_clicked (GtkWidget * button, GladeEditorProperty * eprop)
       return;
     }
 
-  glade_property_get (eprop->property, &icon_sources);
+  glade_property_get (property, &icon_sources);
   if (icon_sources)
     {
       icon_sources = glade_icon_sources_copy (icon_sources);
@@ -454,6 +458,7 @@ value_filename_edited (GtkCellRendererText * cell,
                        const gchar * new_text, GladeEditorProperty * eprop)
 {
   GladeEPropIconSources *eprop_sources = GLADE_EPROP_ICON_SOURCES (eprop);
+  GladeProperty *property = glade_editor_property_get_property (eprop);
   GtkTreeIter iter;
   GladeIconSources *icon_sources = NULL;
   GtkIconSource *source;
@@ -479,12 +484,12 @@ value_filename_edited (GtkCellRendererText * cell,
 
   /* get new pixbuf value... */
   value = glade_utils_value_from_string (GDK_TYPE_PIXBUF, new_text,
-                                         eprop->property->widget->project,
-                                         eprop->property->widget);
+                                         glade_widget_get_project (glade_property_get_widget (property)),
+                                         glade_property_get_widget (property));
   pixbuf = g_value_get_object (value);
 
 
-  glade_property_get (eprop->property, &icon_sources);
+  glade_property_get (property, &icon_sources);
   if (icon_sources)
     {
       icon_sources = glade_icon_sources_copy (icon_sources);
@@ -533,6 +538,7 @@ value_attribute_toggled (GtkCellRendererToggle * cell_renderer,
                          gchar * path, GladeEditorProperty * eprop)
 {
   GladeEPropIconSources *eprop_sources = GLADE_EPROP_ICON_SOURCES (eprop);
+  GladeProperty *property = glade_editor_property_get_property (eprop);
   GtkTreeIter iter;
   GladeIconSources *icon_sources = NULL;
   GtkIconSource *source;
@@ -551,7 +557,7 @@ value_attribute_toggled (GtkCellRendererToggle * cell_renderer,
                       COLUMN_ICON_NAME, &icon_name, COLUMN_LIST_INDEX, &index,
                       edit_column, &edit_column_active, -1);
 
-  glade_property_get (eprop->property, &icon_sources);
+  glade_property_get (property, &icon_sources);
 
   if (icon_sources)
     icon_sources = glade_icon_sources_copy (icon_sources);
@@ -593,6 +599,7 @@ value_attribute_edited (GtkCellRendererText * cell,
                         const gchar * new_text, GladeEditorProperty * eprop)
 {
   GladeEPropIconSources *eprop_sources = GLADE_EPROP_ICON_SOURCES (eprop);
+  GladeProperty *property = glade_editor_property_get_property (eprop);
   GtkTreeIter iter;
   GladeIconSources *icon_sources = NULL;
   GtkIconSource *source;
@@ -612,7 +619,7 @@ value_attribute_edited (GtkCellRendererText * cell,
                       COLUMN_ICON_NAME, &icon_name, COLUMN_LIST_INDEX, &index,
                       -1);
 
-  glade_property_get (eprop->property, &icon_sources);
+  glade_property_get (property, &icon_sources);
 
   if (icon_sources)
     icon_sources = glade_icon_sources_copy (icon_sources);

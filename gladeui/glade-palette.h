@@ -47,35 +47,38 @@ typedef struct _GladePaletteClass    GladePaletteClass;
 
 struct _GladePalette
 {
-	GtkVBox parent_instance;
+  GtkVBox parent_instance;
 
-	GladePalettePrivate *priv;
+  GladePalettePrivate *priv;
 };
 
 struct _GladePaletteClass
 {
-	GtkVBoxClass parent_class;
+  GtkVBoxClass parent_class;
 
-	void    (* toggled)    (GladePalette *palette);
-	void    (* refresh)    (GladePalette *palette);
+  void   (* refresh)    (GladePalette *palette);
+
+  void   (* glade_reserved1)   (void);
+  void   (* glade_reserved2)   (void);
+  void   (* glade_reserved3)   (void);
+  void   (* glade_reserved4)   (void);
 };
 
 typedef enum
 {
-	GLADE_ITEM_ICON_AND_LABEL,
-	GLADE_ITEM_ICON_ONLY,
-	GLADE_ITEM_LABEL_ONLY
+  GLADE_ITEM_ICON_AND_LABEL,
+  GLADE_ITEM_ICON_ONLY,
+  GLADE_ITEM_LABEL_ONLY
 } GladeItemAppearance;
 
 
 GType                glade_palette_get_type                 (void) G_GNUC_CONST;
 
-GtkWidget           *glade_palette_new                      (const GList  *catalogs);
+GtkWidget           *glade_palette_new                      (void);
 
-void                 glade_palette_deselect_current_item    (GladePalette *palette,
-							     gboolean      sticky_aware);
-
-GladeWidgetAdaptor  *glade_palette_get_current_item         (GladePalette *palette);
+GladeProject        *glade_palette_get_project              (GladePalette *palette);
+void                 glade_palette_set_project              (GladePalette *palette,
+							     GladeProject *project);
 
 GladeItemAppearance  glade_palette_get_item_appearance      (GladePalette *palette);
 
@@ -91,11 +94,6 @@ void		     glade_palette_set_show_selector_button (GladePalette *palette,
 							     gboolean      show_selector_button);
 							     
 gboolean             glade_palette_get_show_selector_button (GladePalette *palette);
-
-void                 glade_palette_refresh                  (GladePalette *palette);
-
-GladeWidget         *glade_palette_create_root_widget       (GladePalette *palette,
-							     GladeWidgetAdaptor *adaptor);
 
 G_END_DECLS
 

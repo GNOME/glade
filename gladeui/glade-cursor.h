@@ -45,8 +45,10 @@ typedef enum {
 	GLADE_CURSOR_DRAG
 } GladeCursorType;
 
-void               glade_cursor_init (void);
-void               glade_cursor_set (GdkWindow *window, GladeCursorType type);
+void               glade_cursor_init                  (void);
+void               glade_cursor_set                   (GladeProject    *project,
+						       GdkWindow       *window, 
+						       GladeCursorType  type);
 const GdkPixbuf*   glade_cursor_get_add_widget_pixbuf (void);
 
 G_END_DECLS

@@ -88,14 +88,12 @@ glade_icon_factory_editor_load (GladeEditable * editable, GladeWidget * widget)
   /* Since we watch the project */
   if (factory_editor->loaded_widget)
     {
-      g_signal_handlers_disconnect_by_func (G_OBJECT
-                                            (factory_editor->loaded_widget->
-                                             project),
+      g_signal_handlers_disconnect_by_func (glade_widget_get_project (factory_editor->loaded_widget),
                                             G_CALLBACK (project_changed),
                                             factory_editor);
 
       /* The widget could die unexpectedly... */
-      g_object_weak_unref (G_OBJECT (factory_editor->loaded_widget->project),
+      g_object_weak_unref (G_OBJECT (glade_widget_get_project (factory_editor->loaded_widget)),
                            (GWeakNotify) project_finalized, factory_editor);
     }
 
@@ -105,12 +103,12 @@ glade_icon_factory_editor_load (GladeEditable * editable, GladeWidget * widget)
   if (factory_editor->loaded_widget)
     {
       /* This fires for undo/redo */
-      g_signal_connect (G_OBJECT (factory_editor->loaded_widget->project),
+      g_signal_connect (glade_widget_get_project (factory_editor->loaded_widget),
                         "changed", G_CALLBACK (project_changed),
                         factory_editor);
 
       /* The widget/project could die unexpectedly... */
-      g_object_weak_ref (G_OBJECT (factory_editor->loaded_widget->project),
+      g_object_weak_ref (G_OBJECT (glade_widget_get_project (factory_editor->loaded_widget)),
                          (GWeakNotify) project_finalized, factory_editor);
     }
 
@@ -189,7 +187,7 @@ glade_icon_factory_editor_new (GladeWidgetAdaptor * adaptor,
   factory_editor->properties =
       g_list_prepend (factory_editor->properties, eprop);
   frame = gtk_frame_new (NULL);
-  gtk_frame_set_label_widget (GTK_FRAME (frame), eprop->item_label);
+  gtk_frame_set_label_widget (GTK_FRAME (frame), glade_editor_property_get_item_label (eprop));
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
   gtk_box_pack_start (GTK_BOX (factory_editor), frame, FALSE, FALSE, 12);
 

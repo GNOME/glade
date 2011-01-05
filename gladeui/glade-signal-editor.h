@@ -22,21 +22,29 @@ typedef struct _GladeSignalEditorClass  GladeSignalEditorClass;
  */
 struct _GladeSignalEditor
 {
-	GtkVBox parent;
+  GtkVBox parent;
 
-	GladeSignalEditorPrivate* priv;
+  GladeSignalEditorPrivate* priv;
 };
 
 struct _GladeSignalEditorClass
 {
-	GtkVBoxClass parent_class;
+  GtkVBoxClass parent_class;
+
+  void   (* glade_reserved1)   (void);
+  void   (* glade_reserved2)   (void);
+  void   (* glade_reserved3)   (void);
+  void   (* glade_reserved4)   (void);
+  void   (* glade_reserved5)   (void);
+  void   (* glade_reserved6)   (void);
 };
 
-GType glade_signal_editor_get_type (void) G_GNUC_CONST;
+GType              glade_signal_editor_get_type (void) G_GNUC_CONST;
 
-GladeSignalEditor *glade_signal_editor_new (void);
-
-void glade_signal_editor_load_widget (GladeSignalEditor *editor, GladeWidget *widget);
+GladeSignalEditor *glade_signal_editor_new                    (void);
+void               glade_signal_editor_construct_signals_list (GladeSignalEditor *editor);
+void               glade_signal_editor_load_widget            (GladeSignalEditor *editor, 
+							       GladeWidget       *widget);
 
 void glade_signal_editor_enable_dnd (GladeSignalEditor *editor, gboolean enabled);
 

@@ -123,6 +123,7 @@ glade_placeholder_notify_parent (GObject * gobject,
                                  GParamSpec * arg1, gpointer user_data)
 {
   GladePlaceholder *placeholder = GLADE_PLACEHOLDER (gobject);
+  GladeWidgetAdaptor *parent_adaptor = NULL;
   GladeWidget *parent = glade_placeholder_get_parent (placeholder);
 
   if (placeholder->packing_actions)
@@ -133,9 +134,12 @@ glade_placeholder_notify_parent (GObject * gobject,
       placeholder->packing_actions = NULL;
     }
 
-  if (parent && parent->adaptor->packing_actions)
+  if (parent)
+    parent_adaptor = glade_widget_get_adaptor (parent);
+
+  if (parent_adaptor)
     placeholder->packing_actions =
-        glade_widget_adaptor_pack_actions_new (parent->adaptor);
+      glade_widget_adaptor_pack_actions_new (parent_adaptor);
 }
 
 static void
@@ -333,7 +337,7 @@ glade_placeholder_get_project (GladePlaceholder * placeholder)
 {
   GladeWidget *parent;
   parent = glade_placeholder_get_parent (placeholder);
-  return parent ? GLADE_PROJECT (parent->project) : NULL;
+  return parent ? glade_widget_get_project (parent) : NULL;
 }
 
 static void
@@ -402,23 +406,22 @@ glade_placeholder_motion_notify_event (GtkWidget * widget,
                                        GdkEventMotion * event)
 {
   GladePointerMode pointer_mode;
-  GladeWidget *gparent;
+  GladeWidget *gparent, *gparent_parent = NULL;
+  GladeProject *project;
 
   g_return_val_if_fail (GLADE_IS_PLACEHOLDER (widget), FALSE);
 
   gparent = glade_placeholder_get_parent (GLADE_PLACEHOLDER (widget));
-  pointer_mode = glade_app_get_pointer_mode ();
+  if (gparent)
+    gparent_parent = glade_widget_get_parent (gparent);
 
-  if (pointer_mode == GLADE_POINTER_SELECT &&
-      /* If we are the child of a widget that is in a GladeFixed, then
-       * we are the means of drag/resize and we dont want to fight for
-       * the cursor (ideally; GladeCursor should somehow deal with such
-       * concurrencies I suppose).
-       */
-      (gparent->parent && GLADE_IS_FIXED (gparent->parent)) == FALSE)
-    glade_cursor_set (event->window, GLADE_CURSOR_SELECTOR);
+  project      = glade_placeholder_get_project (GLADE_PLACEHOLDER (widget));
+  pointer_mode = glade_project_get_pointer_mode (project);
+
+  if (pointer_mode == GLADE_POINTER_SELECT)
+    glade_cursor_set (project, event->window, GLADE_CURSOR_SELECTOR);
   else if (pointer_mode == GLADE_POINTER_ADD_WIDGET)
-    glade_cursor_set (event->window, GLADE_CURSOR_ADD_WIDGET);
+    glade_cursor_set (project, event->window, GLADE_CURSOR_ADD_WIDGET);
 
   return FALSE;
 }
@@ -426,19 +429,16 @@ glade_placeholder_motion_notify_event (GtkWidget * widget,
 static gboolean
 glade_placeholder_button_press (GtkWidget * widget, GdkEventButton * event)
 {
-  GladePlaceholder *placeholder;
-  GladeProject *project;
+  GladePlaceholder   *placeholder;
+  GladeProject       *project;
   GladeWidgetAdaptor *adaptor;
-  GladePalette *palette;
-  gboolean handled = FALSE;
+  gboolean            handled = FALSE;
 
   g_return_val_if_fail (GLADE_IS_PLACEHOLDER (widget), FALSE);
 
-  adaptor = glade_palette_get_current_item (glade_app_get_palette ());
-
-  palette = glade_app_get_palette ();
   placeholder = GLADE_PLACEHOLDER (widget);
-  project = glade_placeholder_get_project (placeholder);
+  project     = glade_placeholder_get_project (placeholder);
+  adaptor     = glade_project_get_add_item (project);
 
   if (!gtk_widget_has_focus (widget))
     gtk_widget_grab_focus (widget);
@@ -457,11 +457,10 @@ glade_placeholder_button_press (GtkWidget * widget, GdkEventButton * event)
                */
               glade_command_create (adaptor, parent, placeholder, project);
 
-              glade_palette_deselect_current_item (glade_app_get_palette (),
-                                                   TRUE);
+	      glade_project_set_add_item (project, NULL);
 
               /* reset the cursor */
-              glade_cursor_set (event->window, GLADE_CURSOR_SELECTOR);
+              glade_cursor_set (project, event->window, GLADE_CURSOR_SELECTOR);
             }
           handled = TRUE;
         }

@@ -55,29 +55,22 @@ set_cursor_recurse (GtkWidget * widget, GdkCursor * gdk_cursor)
     }
 }
 
-
 static void
-set_cursor (GdkCursor * gdk_cursor)
+set_cursor (GladeProject *project,
+	    GdkCursor    *gdk_cursor)
 {
-  GladeProject *project;
-  GList *list, *projects;
+  GList *list;
 
-  for (projects = glade_app_get_projects ();
-       projects; projects = projects->next)
+  for (list = (GList *) glade_project_get_objects (project);
+       list; list = list->next)
     {
-      project = projects->data;
+      GObject *object = list->data;
 
-      for (list = (GList *) glade_project_get_objects (project);
-           list; list = list->next)
-        {
-          GObject *object = list->data;
-
-          if (GTK_IS_WIDGET (object) &&
-              gtk_widget_get_has_window (GTK_WIDGET (object)))
-            {
-              set_cursor_recurse (GTK_WIDGET (object), gdk_cursor);
-            }
-        }
+      if (GTK_IS_WIDGET (object) &&
+	  gtk_widget_get_has_window (GTK_WIDGET (object)))
+	{
+	  set_cursor_recurse (GTK_WIDGET (object), gdk_cursor);
+	}
     }
 }
 
@@ -90,7 +83,9 @@ set_cursor (GdkCursor * gdk_cursor)
  * (also sets the cursor on all visible project widgets)
  */
 void
-glade_cursor_set (GdkWindow * window, GladeCursorType type)
+glade_cursor_set (GladeProject    *project,
+		  GdkWindow       *window, 
+		  GladeCursorType  type)
 {
   GladeWidgetAdaptor *adaptor;
   GdkCursor *the_cursor = NULL;
@@ -103,13 +98,12 @@ glade_cursor_set (GdkWindow * window, GladeCursorType type)
         break;
       case GLADE_CURSOR_ADD_WIDGET:
         if ((adaptor =
-             glade_palette_get_current_item (glade_app_get_palette ())) != NULL)
+             glade_project_get_add_item (project)) != NULL)
           {
             g_object_get (adaptor, "cursor", &the_cursor, NULL);
 
             if (the_cursor == NULL)
               the_cursor = cursor->add_widget;
-
           }
         else
           the_cursor = cursor->add_widget;
@@ -145,7 +139,7 @@ glade_cursor_set (GdkWindow * window, GladeCursorType type)
         break;
     }
 
-  set_cursor (cursor->selector);
+  set_cursor (project, cursor->selector);
   gdk_window_set_cursor (window, the_cursor);
 }
 

@@ -1,3 +1,182 @@
+2011-01-05  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/Makefile.am, gladeui/glade-signal-class.[ch], gladeui/glade-widget-adaptor.c,
+	gladeui/glade-signal-editor.c, plugins/gtk+/glade-accels.c:
+
+	Added glade-signal-class.[ch] as an opaque type.
+
+	* gladeui/glade-signal.[ch], gladeui/glade-project.c, gladeui/glade-widget.c,
+	gladeui/glade-signal-editor.c, gladeui/glade-command.c: Made GladeSignal an
+	opaque structure with accessors.
+
+	* gladeui/glade-clipboard.[ch], gladeui/glade-project.c:
+	Privatized GladeClipboard members.
+
+	* gladeui/glade-command.[ch], gladeui/glade-project.c, src/glade-window.c:
+	Privatized GladeCommand members.
+
+2011-01-04  Johannes Schmid <jhs@gnome.org>
+
+	* data/gladeui-2.0.pc.in: Fix include paths and library name
+
+2011-01-04  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-palette.[ch], gladeui/glade-project.[ch], gladeui/glade-app.[ch],
+	  src/glade-window.c:
+	  - Removed glade_app_get_palette()
+	  - Moved "pointer-mode" property from GladeApp to GladeProject
+	  - Palette now in charge of driving pointer mode on the project it's registered to
+	  - GladeWindow now watches/sets the pointer mode on the currently set project (with
+	    its "selector" and "drag/resize" toolbuttons).
+
+	* gladeui/glade-app.h: Cleanup a bit, and removed an unused prototype.
+
+	* gladeui/glade-cell-renderer-icon.[ch]: Privatizing members.
+
+	* Adding padding to classes in various files.
+
+	* gladeui/glade-editor.[ch]: Privatized members of GladeEditor.
+
+	* gladeui/glade-editor-table.[ch]: Privatized members of GladeEditorTable.
+
+	* gladeui/glade-editor-property.[ch]: Privatized members of GladeEditorProperty.
+
+	* plugins/gtk+/*.c: updated all custom editors to used eprop accessors now
+
+	* gladeui/glade-fixed.[ch] --> plugins/gtk+/glade-fixed.[ch]:
+	Instead of privatizing GladeFixed, moved it to be a detail of the plugin backend.
+
+	* gladeui/glade-design-view.c: Made it a no-show-all widget.
+
+	* gladeui/glade-inspector.c: Fixed to not access the treeview from set_project()
+	  (since we do it in expose and the view gets destroyed without us unsetting the pointer).
+
+2011-01-03  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-app.[ch]:
+	  - Removed "update-ui" signal, This signal was encouraging bad behaviour and too much
+	    action on every project change.
+	  - Removed glade_app_create_undo/redo_button().
+
+	* gladeui/glade-project.c: Stop calling glade_app_update_ui ().
+
+	* gladeui/glade-window.c:
+	  - Listen to GladeProject::changed instead of update-ui and only update the
+	    undo/redo actions when the active project changes.
+	  - Remove the preview toolbutton
+	  - Add tooltips to important actions
+
+	* plugins/gtk+/gtk+.xml.in: Mark the "preview" action as "important" so it shows
+	  up in the app toolbar automatically.
+
+	* Another major refactor, tasks accomplished:
+	  - Removed GladeApp selection handling, only on the project now
+	  - Removed "Copy" as a command, copying widgets no longer dirty documents (bug 546873)
+	  - Removed GladeApp "active_project" concept, every interaction is associated with
+	    a GladeProject
+	  - Simplified GladeClipboard, the clipboard now only has a list of widgets and
+	    not a "selection", everything is removed from the clipboard when new widgets are
+	    added there.
+	  - GladePalette now has a "project" property and does not need to be refreshed
+	    by an external entity.
+
+	19 files changed, 652 insertions(+), 1135 deletions(-)
+
+	* gladeui/glade-project.c, gladeui/glade-id-allocator.c: Dont index unallocated
+	  memory when releasing a widget name that was never allocated (this can happen
+	  for loaded widgets with a number), fixes crash when setting naming policy for
+	  glom_developer.glade.
+
+	* gladeui/glade-app.[ch], gladeui/glade-command.c, gladeui/glade-editor.[ch],
+	gladeui/glade-popup.c, gladeui/glade-project.c, gladeui/glade-signal-editor.c,
+	gladeui/glade-widget-adaptor.c, src/glade-window.c, src/main.c:
+	- Removed glade_app_get_editor(), Now the editor is not overly-refreshed by the
+	  core and editors can be created at will, the core doesnt need to hold on to one.
+	- Also, "gtk-doc-search" signal has been moved from the GladeEditor to the GladeApp.
+
+2011-01-02  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-project.c: Fixed GladeProject to only ever report widgets that are
+	  actually in the project from the GtkTreeModel interface.
+
+	* gladeui/glade-command.c: Fixed segfault introduced by my recent GladeProperty migration
+
+	* gladeui/glade-editor-property.c: Avoid infinite recursion when committing properties more
+	  aggressively (found that editing text properties now make some recursion for some reason).
+
+	* gladeui/glade-project.c: Export glade_project_verify_property() to allow verification of
+	  a single property instead of the whole widget when a property changes.
+
+	* gladeui/glade-command.c: Removed explicit calls to glade_app_update_ui in command->collapse
+	  implementations... GladeProject already emits this after collapsing whenever the project
+	  changes.
+
+	* src/glade-window.c: Dont refresh notebook tabs at every update-ui, just for the appropriate
+	  project when the appropriate data changes (speeds up editing, with latest changes editing labels
+	  in huge projects is smooth).
+
+	* Made GladeWidgetAdaptor internalize *everything* into a private data structure,
+	21 files changed, 694 insertions(+), 670 deletions(-)
+
+	* Made GladePropertyClass completely opaque and created loads of api and updated all sources:
+	20 files changed, 1152 insertions(+), 643 deletions(-)
+
+2011-01-01  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-command.[ch], Added GladeProject member to base command structure, now
+	  all commands reffer to that structure instead of trying to pull a project pointer from
+	  a widget.
+
+	* gladeui/glade-project.c: Unset project pointer on widgets when they leave the project,
+	  manage an "in_project" flag on widgets to differenciate the moment when they widgets are
+	  loading and have the project pointer but are still not added to the project yet. Also speed up
+	  glade_project_has_object() by not traversing the list but simply checking the widget's project
+	  and in_project flag.
+
+	* gladeui/glade-widget.[ch]: Added the "in_project" flag to GladeWidget, fixed glade_widget_rebuild
+	  to save the previous project pointer.
+
+	* Made GladeWidget internalize *everything* into a private data structure,
+	33 files changed, 1318 insertions(+), 1230 deletions(-)
+
+	* gladeui/glade-project.[ch], gladeui/glade-widget.c, gladeui/glade-command.c:
+	  Removing legacy 'old_project' argument from glade_project_add_object().
+
+	* gladeui/Makefile.am, gladeui/glade-editor.c, gladeui/glade-property-class.[ch],
+	gladeui/glade-property.c, gladeui/glade-xml-utils.h, po/POTFILES.in:
+	Completely removed GladeParameter, a legacy unused mechanism to store parameters in
+	the glade catalog for later retrieval from the plugin.
+
+	* gladeui/glade-clipboard.h, gladeui/glade-app.c: Removed clipboard->view member and
+	  make GladeApp properly destroy the clipboard when disposing.
+
+	* Made GladeProperty internalize *everything* into a private data structure,
+	17 files changed, 766 insertions(+), 592 deletions(-)
+
+	* gladeui/glade-widget-adaptor.h, gladeui/glade-property-class.h: Removed some obsolete macros.
+
+2010-12-31  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-project.c: Further fixing project dispose cycle, still leaking a little
+	  bit of memory for large projects but no crashes.
+
+	* plugins/gtk+/glade-gtk.c: Fixed loaded state of use-action-appearance so that it always
+	  loads as FALSE if there is no "related-action" at load time (closes bug 582882).
+
+	* gladeui/glade-property.c: Fixed glade_property_dup() to not incidentally sync the property
+	  object's value as a consequence of dupping (backend uses this to write properties with custom
+	  values and does not expect that).
+
+	* m4/python.m4: Applying patch to allow better builds on win32, patch by Dieter Verfaillie,
+	  bug 634978.
+
+	* plugins/gtk+/gtk+.xml.in: Setting "can-focus" as "save-always" for all widgets (bug 638079).
+
+2010-12-30  Christian Persch <chpe@gnome.org>
+
+	* plugins/gtk+/glade-attributes.c: Use locale-independent strtod &
+	dtostr. Fixes bug 616787
+
 2010-12-30  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-widget-adaptor.[ch], gladeui/glade-xml-utils.c, plugins/gtk+/glade-gtk.c,
@@ -25,6 +204,13 @@
 	--honour-newlines  --tab-size8  --indent-level2 -nbbo
 
 	* plugins/gtk+/gtk+.xml.in: Updated catalog for 2.22 and 2.24 symbols.
+
+	* gladeui/glade-base-editor.c, gladeui/glade-command.c: Avoid setting a null name on a widget.
+
+	* gladeui/glade-base-editor.c: Remove restriction for only GtkContainer widgets.
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Added editor to edit
+	  GtkAction/GtkActionGroup hierarchies.
 
 2010-12-29  Javier Jardón <jjardon@gnome.org>
 
