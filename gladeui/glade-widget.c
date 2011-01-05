@@ -349,7 +349,7 @@ glade_widget_remove_signal_handler_impl (GladeWidget * widget,
       tmp_signal_handler = g_ptr_array_index (signals, i);
       if (glade_signal_equal (tmp_signal_handler, signal_handler))
         {
-          glade_signal_free (tmp_signal_handler);
+          g_object_unref (tmp_signal_handler);
           g_ptr_array_remove_index (signals, i);
           break;
         }
@@ -1116,18 +1116,11 @@ static void
 free_signals (gpointer value)
 {
   GPtrArray *signals = (GPtrArray *) value;
-  guint i;
-  guint nb_signals;
 
   if (signals == NULL)
     return;
 
-  /* g_ptr_array_foreach (signals, (GFunc) glade_signal_free, NULL);
-   * only available in modern versions of Gtk+ */
-  nb_signals = signals->len;
-  for (i = 0; i < nb_signals; i++)
-    glade_signal_free (g_ptr_array_index (signals, i));
-
+  g_ptr_array_foreach (signals, (GFunc) g_object_unref, NULL);
   g_ptr_array_free (signals, TRUE);
 }
 

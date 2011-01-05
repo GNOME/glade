@@ -1823,9 +1823,9 @@ glade_command_add_signal_finalize (GObject * obj)
   g_object_unref (cmd->widget);
 
   if (cmd->signal)
-    glade_signal_free (cmd->signal);
+    g_object_unref (cmd->signal);
   if (cmd->new_signal)
-    glade_signal_free (cmd->new_signal);
+    g_object_unref (cmd->new_signal);
 
   glade_command_finalize (obj);
 }

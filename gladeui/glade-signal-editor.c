@@ -209,8 +209,8 @@ glade_signal_editor_after_swapped_toggled (GtkCellRendererToggle * cell,
                       GSE_COLUMN_AFTER, new_after,
                       GSE_COLUMN_SWAPPED, new_swapped, -1);
 
-  glade_signal_free (old_signal);
-  glade_signal_free (new_signal);
+  g_object_unref (old_signal);
+  g_object_unref (new_signal);
   gtk_tree_path_free (path);
   g_free (signal_name);
   g_free (handler);
@@ -254,7 +254,7 @@ append_slot (GladeSignalEditor * self, GtkTreeIter * iter_signal,
   gtk_tree_store_set (GTK_TREE_STORE (model), &iter_class, GSE_COLUMN_BOLD,
                       TRUE, -1);
 
-  glade_signal_free (sig);
+  g_object_unref (sig);
 }
 
 static void
@@ -385,7 +385,7 @@ glade_signal_editor_handler_editing_done (GladeSignalEditor * self,
       GladeSignal *new_signal = glade_signal_new (signal_name, new_handler,
                                                   NULL, FALSE, FALSE);
       glade_command_add_signal (glade_widget, new_signal);
-      glade_signal_free (new_signal);
+      g_object_unref (new_signal);
       gtk_tree_store_set (GTK_TREE_STORE (model), iter,
                           GSE_COLUMN_HANDLER, new_handler,
                           GSE_COLUMN_AFTER_VISIBLE, TRUE,
@@ -405,7 +405,7 @@ glade_signal_editor_handler_editing_done (GladeSignalEditor * self,
                                                   after,
                                                   swapped);
       glade_command_remove_signal (glade_widget, old_signal);
-      glade_signal_free (old_signal);
+      g_object_unref (old_signal);
 
       gtk_tree_store_set
           (GTK_TREE_STORE (model), iter,
@@ -440,8 +440,8 @@ glade_signal_editor_handler_editing_done (GladeSignalEditor * self,
       if (glade_signal_equal (old_signal, new_signal) == FALSE)
         glade_command_change_signal (glade_widget, old_signal, new_signal);
 
-      glade_signal_free (old_signal);
-      glade_signal_free (new_signal);
+      g_object_unref (old_signal);
+      g_object_unref (new_signal);
 
       gtk_tree_store_set (GTK_TREE_STORE (model), iter,
                           GSE_COLUMN_HANDLER, new_handler,
@@ -500,8 +500,8 @@ glade_signal_editor_userdata_editing_done (GladeSignalEditor * self,
   if (glade_signal_equal (old_signal, new_signal) == FALSE)
     glade_command_change_signal (glade_widget, old_signal, new_signal);
 
-  glade_signal_free (old_signal);
-  glade_signal_free (new_signal);
+  g_object_unref (old_signal);
+  g_object_unref (new_signal);
 
   g_free (handler);
   return FALSE;
@@ -829,8 +829,8 @@ glade_signal_editor_user_data_activate (GtkCellRenderer * icon_renderer,
                                                   after, swapped);
 
       glade_command_change_signal (priv->widget, old_signal, new_signal);
-      glade_signal_free (old_signal);
-      glade_signal_free (new_signal);
+      g_object_unref (old_signal);
+      g_object_unref (new_signal);
 
       /* We are removing userdata */
       if (project_object == NULL)
@@ -1342,7 +1342,7 @@ glade_signal_editor_load_widget (GladeSignalEditor * editor,
                GSE_COLUMN_TOOLTIP, glade_signal_get_support_warning (sig), -1);
         }
 
-      glade_signal_free (sig);
+      g_object_unref (sig);
 
     }
 
