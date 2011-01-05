@@ -330,7 +330,7 @@ glade_project_dispose (GObject * object)
     glade_project_remove_object (project, project->priv->tree->data);
 
   while (project->priv->objects)
-	  glade_project_remove_object (project, project->priv->objects->data);
+    glade_project_remove_object (project, project->priv->objects->data);
 
   g_assert (project->priv->tree == NULL);
   g_assert (project->priv->objects == NULL);
@@ -5036,11 +5036,11 @@ glade_project_command_paste (GladeProject     *project,
   parent = list ? glade_widget_get_from_gobject (list->data) :
       (placeholder) ? glade_placeholder_get_parent (placeholder) : NULL;
 
-  widget = clipboard->widgets ? clipboard->widgets->data : NULL;
+  widget = glade_clipboard_widgets (clipboard) ? glade_clipboard_widgets (clipboard)->data : NULL;
 
   /* Ignore parent argument if we are pasting a toplevel
    */
-  if (g_list_length (clipboard->widgets) == 1 &&
+  if (g_list_length (glade_clipboard_widgets (clipboard)) == 1 &&
       widget && GWA_IS_TOPLEVEL (glade_widget_get_adaptor (widget)))
     parent = NULL;
 
@@ -5073,7 +5073,7 @@ glade_project_command_paste (GladeProject     *project,
     return;
 
   /* Check if we have anything to paste */
-  if (g_list_length (clipboard->widgets) == 0)
+  if (g_list_length (glade_clipboard_widgets (clipboard)) == 0)
     {
       glade_util_ui_message (glade_app_get_window (), GLADE_UI_INFO, NULL,
                              _("No widget on the clipboard"));
@@ -5082,7 +5082,7 @@ glade_project_command_paste (GladeProject     *project,
     }
 
   /* Check that we have compatible heirarchies */
-  for (list = clipboard->widgets; list && list->data; list = list->next)
+  for (list = glade_clipboard_widgets (clipboard); list && list->data; list = list->next)
     {
       widget = list->data;
 
@@ -5102,7 +5102,7 @@ glade_project_command_paste (GladeProject     *project,
    */
   if (GTK_IS_WIDGET (glade_widget_get_object (widget)) &&
       parent && !GWA_USE_PLACEHOLDERS (glade_widget_get_adaptor (parent)) &&
-      g_list_length (clipboard->widgets) != 1)
+      g_list_length (glade_clipboard_widgets (clipboard)) != 1)
     {
       glade_util_ui_message (glade_app_get_window (),
                              GLADE_UI_INFO, NULL,
@@ -5123,7 +5123,7 @@ glade_project_command_paste (GladeProject     *project,
       return;
     }
 
-  glade_command_paste (clipboard->widgets, parent, placeholder, project);
+  glade_command_paste (glade_clipboard_widgets (clipboard), parent, placeholder, project);
 }
 
 void
