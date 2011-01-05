@@ -20,6 +20,7 @@
 #endif
 
 #include "glade-signal-model.h"
+#include "glade-project.h"
 
 #include <glib/gi18n-lib.h>
 #include <string.h>
@@ -214,8 +215,6 @@ glade_signal_model_get_column_type (GtkTreeModel* model,
 {
 	switch (column)
 	{
-		case GLADE_SIGNAL_COLUMN_VERSION_WARNING:
-			return GDK_TYPE_PIXBUF;
 		case GLADE_SIGNAL_COLUMN_NAME:
 			return G_TYPE_STRING;
 		case GLADE_SIGNAL_COLUMN_HANDLER:
@@ -232,6 +231,10 @@ glade_signal_model_get_column_type (GtkTreeModel* model,
 			return G_TYPE_BOOLEAN;
 		case GLADE_SIGNAL_COLUMN_HAS_HANDLERS:
 			return G_TYPE_BOOLEAN;
+		case GLADE_SIGNAL_COLUMN_VERSION_WARNING:
+			return G_TYPE_BOOLEAN;
+		case GLADE_SIGNAL_COLUMN_TOOLTIP:
+			return G_TYPE_STRING;
 		case GLADE_SIGNAL_COLUMN_SIGNAL:
 			return G_TYPE_POINTER;
 		default:
@@ -298,12 +301,14 @@ static void
 glade_signal_model_create_handler_iter (GladeSignalModel* sig_model,
                                         const gchar* widget,
                                         GladeSignalClass* signal_class,
-                                        const GladeSignal* signal,
+                                        GladeSignal* signal,
                                         GtkTreeIter* iter)
 {
 	glade_signal_model_create_widget_iter (sig_model, widget, iter);
 	iter->user_data2 = signal_class;
-	iter->user_data3 = (GladeSignal*) signal;
+	iter->user_data3 = signal;
+  	/* Check the version warning here */
+    glade_project_verify_signal (sig_model->priv->widget, signal);
 }
 
 static void
@@ -389,7 +394,7 @@ glade_signal_model_iter_for_signal (GladeSignalModel* model, const GladeSignal* 
 			glade_signal_model_create_handler_iter (model,
 			                                        glade_signal_class_get_type (sig_class),
 			                                        sig_class,
-			                                        signal,
+			                                        (GladeSignal*) signal,
 			                                        iter);
 			return TRUE;
 		}		
@@ -654,10 +659,6 @@ glade_signal_model_get_value (GtkTreeModel* model,
 	
 	switch (column)
 	{
-		case GLADE_SIGNAL_COLUMN_VERSION_WARNING:
-			/* TODO */
-			g_value_set_boolean (value, FALSE);
-			break;
 		case GLADE_SIGNAL_COLUMN_NAME:
 			if (widget && sig_class && handler)
 				g_value_set_static_string (value,
@@ -721,6 +722,24 @@ glade_signal_model_get_value (GtkTreeModel* model,
 			g_value_set_boolean (value,
 			                     glade_signal_model_has_handlers (sig_model,
 			                                                      iter));
+			break;
+		case GLADE_SIGNAL_COLUMN_VERSION_WARNING:
+      {
+        gboolean warn = FALSE;
+			  if (handler)
+        {
+          const gchar* warning = glade_signal_get_support_warning (handler);
+				  warn = warning && strlen (warning);
+        }
+				g_value_set_boolean (value, warn);
+      }
+			break;
+		case GLADE_SIGNAL_COLUMN_TOOLTIP:
+			if (handler)
+				g_value_set_string (value,
+                            glade_signal_get_support_warning (handler));
+      else
+			  g_value_set_static_string (value, NULL);
 			break;
 		case GLADE_SIGNAL_COLUMN_SIGNAL:
 			g_value_set_pointer (value, handler);

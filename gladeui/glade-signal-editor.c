@@ -466,12 +466,29 @@ glade_signal_editor_init (GladeSignalEditor *self)
 
 	/* Create columns */
 	/* Signal name */
+	priv->column_name = gtk_tree_view_column_new ();
+
+	/* version warning */
+	renderer = gtk_cell_renderer_pixbuf_new ();
+	g_object_set (G_OBJECT (renderer), "icon-name", GTK_STOCK_DIALOG_WARNING,
+                NULL);
+	gtk_tree_view_column_pack_start (priv->column_name, renderer, FALSE);
+	gtk_tree_view_column_set_attributes (priv->column_name, renderer,
+	                                     "visible", GLADE_SIGNAL_COLUMN_VERSION_WARNING,
+	                                     NULL);
+	/* signal name */
 	renderer = gtk_cell_renderer_text_new ();
-	priv->column_name = gtk_tree_view_column_new_with_attributes (_("Signal"),
-	                                                              renderer,
-	                                                              NULL);
+	g_object_set (G_OBJECT (renderer),
+                "ellipsize", PANGO_ELLIPSIZE_END, "width-chars", 20, NULL);
+	gtk_tree_view_column_pack_end (priv->column_name, renderer, TRUE);
+
 	gtk_tree_view_column_set_cell_data_func (priv->column_name, renderer,
 	                                         name_cell_data_func, self, NULL);
+  
+	gtk_tree_view_column_set_resizable (priv->column_name, TRUE);
+	gtk_tree_view_column_set_expand (priv->column_name, TRUE);
+  
+	gtk_tree_view_column_set_title (priv->column_name, _("Signal")),
 	gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->signal_tree), priv->column_name);
 
 	/* Signal handler */
@@ -520,7 +537,11 @@ glade_signal_editor_init (GladeSignalEditor *self)
 	                                                               "sensitive", GLADE_SIGNAL_COLUMN_NOT_DUMMY,
 	                                                               NULL);
 	gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->signal_tree), priv->column_after);
-	
+
+	/* Tooltips */
+	gtk_tree_view_set_tooltip_column (GTK_TREE_VIEW (self->priv->signal_tree),
+	                                  GLADE_SIGNAL_COLUMN_TOOLTIP);
+  
 	/* Create scrolled window */
 	scroll = gtk_scrolled_window_new (NULL, NULL);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll),
