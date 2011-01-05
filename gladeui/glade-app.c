@@ -312,18 +312,6 @@ glade_app_class_init (GladeAppClass * klass)
 	object_class->constructor  = glade_app_constructor;
 	object_class->dispose      = glade_app_dispose;
 	object_class->finalize     = glade_app_finalize;
-	object_class->get_property = glade_app_get_property;
-	object_class->set_property = glade_app_set_property;
-
-	klass->update_ui_signal = glade_app_update_ui_default;
-	klass->show_properties  = NULL;
-	klass->hide_properties  = NULL;
-
-  g_object_class_install_property
-      (object_class, PROP_ACTIVE_PROJECT,
-       g_param_spec_object
-       ("active-project", _("Active Project"),
-        _("The active project"), GLADE_TYPE_PROJECT, G_PARAM_READWRITE));
 
   object_class->constructor = glade_app_constructor;
   object_class->dispose = glade_app_dispose;

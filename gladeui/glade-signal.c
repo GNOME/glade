@@ -250,7 +250,7 @@ glade_signal_set_name (GladeSignal *signal,
 }
 
 G_CONST_RETURN gchar *
-glade_signal_get_name (GladeSignal *signal)
+glade_signal_get_name (const GladeSignal *signal)
 {
   g_return_val_if_fail (GLADE_IS_SIGNAL (signal), NULL);
 

@@ -370,7 +370,7 @@ glade_widget_remove_signal_handler (GladeWidget * widget,
 			g_ptr_array_remove_index (signals, i);
 			if (signals->len == 0)
 			{
-				g_hash_table_remove (widget->signals, tmp_signal_handler->name);
+				g_hash_table_remove (widget->priv->signals, glade_signal_get_name (tmp_signal_handler));
 			}
 			else
 			{
@@ -390,9 +390,9 @@ glade_widget_remove_signal_handler (GladeWidget * widget,
  * Changes a #GladeSignal on @widget 
  */
 void
-glade_widget_change_signal_handler_impl (GladeWidget * widget,
-                                         GladeSignal * old_signal_handler,
-                                         GladeSignal * new_signal_handler)
+glade_widget_change_signal_handler (GladeWidget * widget,
+                                    const GladeSignal * old_signal_handler,
+                                    const GladeSignal * new_signal_handler)
 {
   GPtrArray *signals;
   GladeSignal *signal_handler_iter;
@@ -1024,10 +1024,10 @@ glade_widget_dispose (GObject * object)
       widget->priv->packing_actions = NULL;
     }
 
-  if (widget->signal_model)
+  if (widget->priv->signal_model)
     {
-      g_object_unref (widget->signal_model);
-      widget->signal_model = NULL;
+      g_object_unref (widget->priv->signal_model);
+      widget->priv->signal_model = NULL;
     }
 
   glade_widget_pop_superuser ();
@@ -4464,7 +4464,8 @@ glade_widget_get_signal_model (GladeWidget *widget)
 {
 	if (!widget->priv->signal_model)
 	{
-		widget->priv->signal_model = glade_signal_model_new (widget);
+		widget->priv->signal_model = glade_signal_model_new (widget, 
+                                                         widget->priv->signals);
 	}
 	return widget->priv->signal_model;
 }

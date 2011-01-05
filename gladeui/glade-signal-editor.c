@@ -1,4 +1,3 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * Copyright (C) 2001 Ximian, Inc.
  *
@@ -108,8 +107,7 @@ on_handler_edited (GtkCellRendererText* renderer,
 				new_signal = glade_signal_clone (old_signal);
 
 				/* Change the new signal handler */
-				g_free (new_signal->handler);
-				new_signal->handler = g_strdup(handler);
+				glade_signal_set_handler (new_signal, handler);
 
 				glade_command_change_signal (self->priv->widget, old_signal, new_signal);
 
@@ -193,8 +191,7 @@ on_userdata_edited (GtkCellRendererText* renderer,
 		new_signal = glade_signal_clone (old_signal);
 
 		/* Change the new signal handler */
-		g_free (new_signal->userdata);
-		new_signal->userdata = g_strdup(new_userdata);
+		glade_signal_set_userdata (new_signal, new_userdata);
 
 		glade_command_change_signal (self->priv->widget, old_signal, new_signal);
 
@@ -229,7 +226,8 @@ on_swap_toggled (GtkCellRendererToggle* renderer,
 	new_signal = glade_signal_clone (old_signal);
 
 	/* Change the new signal handler */
-	new_signal->swapped = !gtk_cell_renderer_toggle_get_active (renderer);
+	glade_signal_set_swapped (new_signal,
+	                          !gtk_cell_renderer_toggle_get_active (renderer));
 
 	glade_command_change_signal (self->priv->widget, old_signal, new_signal);
 
@@ -263,7 +261,8 @@ on_after_toggled (GtkCellRendererToggle* renderer,
 	new_signal = glade_signal_clone (old_signal);
 
 	/* Change the new signal handler */
-	new_signal->after = !gtk_cell_renderer_toggle_get_active (renderer);
+	glade_signal_set_after (new_signal, 
+	                        !gtk_cell_renderer_toggle_get_active (renderer));
 
 	glade_command_change_signal (self->priv->widget, old_signal, new_signal);
 
@@ -305,7 +304,7 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 	if (priv->widget != widget)
 	{	
 		priv->widget = widget;
-		priv->adaptor = widget ? widget->adaptor : NULL;
+		priv->adaptor = widget ? glade_widget_get_adaptor (widget) : NULL;
 		
 		if (priv->widget)
 		{
@@ -322,7 +321,7 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 
 	priv->model = glade_widget_get_signal_model (widget);
 	gtk_tree_view_set_model (GTK_TREE_VIEW (priv->signal_tree), priv->model);
-	g_object_set (priv->renderer_userdata, "model", glade_app_get_project (), NULL);
+	g_object_set (priv->renderer_userdata, "model", glade_widget_get_project (widget), NULL);
 }
 
 /**

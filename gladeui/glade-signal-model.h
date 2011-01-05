@@ -1,4 +1,3 @@
-/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 4; tab-width: 4 -*- */
 /*
  * glade3
  * Copyright (C) Johannes Schmid 2010 <jhs@gnome.org>
@@ -64,7 +63,8 @@ struct _GladeSignalModel
 };
 
 GType glade_signal_model_get_type (void) G_GNUC_CONST;
-GtkTreeModel *glade_signal_model_new (GladeWidget *widget);
+GtkTreeModel *glade_signal_model_new (GladeWidget *widget,
+                                      GHashTable *signals);
 
 G_END_DECLS
 
