@@ -439,6 +439,8 @@ glade_editor_init (GladeEditor * editor)
 
   gtk_container_set_border_width (GTK_CONTAINER (editor->priv->notebook), 0);
 
+  gtk_notebook_set_scrollable (GTK_NOTEBOOK (editor->priv->notebook), TRUE);
+
   gtk_box_pack_start (GTK_BOX (editor), editor->priv->class_field, FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (editor), editor->priv->notebook, TRUE, TRUE, 0);
 
