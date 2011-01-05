@@ -1861,7 +1861,8 @@ glade_command_add_remove_change_signal (GladeWidget * glade_widget,
   cmd->description =
       g_strdup_printf (type == GLADE_ADD ? _("Add signal handler %s") :
                        type == GLADE_REMOVE ? _("Remove signal handler %s") :
-                       _("Change signal handler %s"), signal->handler);
+                       _("Change signal handler %s"), 
+		       glade_signal_get_handler ((GladeSignal *)signal));
 
   glade_command_check_group (GLADE_COMMAND (me));
 

@@ -1393,7 +1393,8 @@ glade_project_introspect_signal_versions (GladeSignal *signal,
   gboolean            is_gtk_adaptor = FALSE;
 
   signal_class =
-    glade_widget_adaptor_get_signal_class (glade_widget_get_adaptor (data->widget), signal->name);
+    glade_widget_adaptor_get_signal_class (glade_widget_get_adaptor (data->widget), 
+					   glade_signal_get_name (signal));
 
   /*  unknown signal... can it happen ? */
   if (!signal_class) 
@@ -2252,7 +2253,8 @@ glade_project_verify_signal_internal (GladeWidget * widget,
   gchar              *catalog;
 
   signal_class =
-      glade_widget_adaptor_get_signal_class (glade_widget_get_adaptor (widget), signal->name);
+      glade_widget_adaptor_get_signal_class (glade_widget_get_adaptor (widget), 
+					     glade_signal_get_name (signal));
 
   if (!signal_class)
     return;
@@ -2282,7 +2284,7 @@ glade_project_verify_signal_internal (GladeWidget * widget,
         g_string_append_printf (string,
                                 SIGNAL_VERSION_CONFLICT_FMT,
                                 path_name,
-                                signal->name,
+                                glade_signal_get_name (signal),
                                 glade_widget_adaptor_get_title (adaptor),
                                 catalog,
 				glade_signal_class_since_major (signal_class),

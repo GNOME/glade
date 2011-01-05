@@ -55,7 +55,7 @@ glade_signal_class_new  (GladeWidgetAdaptor *adaptor,
    * exist no matter what.
    */
   g_signal_query (signal_id, &(class->query));
-  if (class->query.signal_id != 0)
+  if (class->query.signal_id == 0)
     {
       g_critical ("glade_signal_class_new() called with an invalid signal id");
 

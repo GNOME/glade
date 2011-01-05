@@ -244,7 +244,8 @@ append_slot (GladeSignalEditor * self, GtkTreeIter * iter_signal,
                       GSE_COLUMN_USERDATA_SLOT, TRUE,
                       GSE_COLUMN_CONTENT, TRUE,
                       GSE_COLUMN_WARN, FALSE,
-                      GSE_COLUMN_TOOLTIP, sig->support_warning, -1);
+                      GSE_COLUMN_TOOLTIP, glade_signal_get_support_warning (sig), 
+		      -1);
   gtk_tree_model_iter_parent (model, &iter_class, iter_signal);
 
   /* mark the signal & class name as bold */
@@ -1251,8 +1252,8 @@ glade_signal_editor_load_widget (GladeSignalEditor * editor,
                GSE_COLUMN_SLOT, TRUE,
                GSE_COLUMN_USERDATA_SLOT, TRUE,
                GSE_COLUMN_CONTENT, TRUE,
-               GSE_COLUMN_WARN, sig->support_warning != NULL,
-               GSE_COLUMN_TOOLTIP, sig->support_warning, -1);
+               GSE_COLUMN_WARN, glade_signal_get_support_warning (sig) != NULL,
+               GSE_COLUMN_TOOLTIP, glade_signal_get_support_warning (sig), -1);
         }
       else
         {
@@ -1273,51 +1274,53 @@ glade_signal_editor_load_widget (GladeSignalEditor * editor,
           gtk_tree_path_free (path_parent_class);
 
           gtk_tree_store_set
-              (priv->model, &parent_signal,
-               GSE_COLUMN_SIGNAL, glade_signal_class_get_name (signal),
-               GSE_COLUMN_HANDLER, widget_signal->handler,
-               GSE_COLUMN_AFTER, widget_signal->after,
-               GSE_COLUMN_USERDATA,
-               widget_signal->userdata ?
-               widget_signal->userdata : USERDATA_DEFAULT,
-               GSE_COLUMN_SWAPPED, widget_signal->swapped,
-               GSE_COLUMN_SWAPPED_VISIBLE,
-               widget_signal->userdata ? TRUE : FALSE,
-               GSE_COLUMN_AFTER_VISIBLE, TRUE,
-               GSE_COLUMN_HANDLER_EDITABLE, TRUE,
-               GSE_COLUMN_USERDATA_EDITABLE, TRUE,
-               GSE_COLUMN_SLOT, FALSE,
-               GSE_COLUMN_USERDATA_SLOT,
-               widget_signal->userdata ? FALSE : TRUE,
-               GSE_COLUMN_BOLD, TRUE,
-               GSE_COLUMN_CONTENT, TRUE,
-               GSE_COLUMN_WARN, widget_signal->support_warning != NULL,
-               GSE_COLUMN_TOOLTIP, widget_signal->support_warning, -1);
-
+	    (priv->model, &parent_signal,
+	     GSE_COLUMN_SIGNAL, glade_signal_class_get_name (signal),
+	     GSE_COLUMN_HANDLER, glade_signal_get_handler (widget_signal),
+	     GSE_COLUMN_AFTER, glade_signal_get_after (widget_signal),
+	     GSE_COLUMN_USERDATA,
+	     glade_signal_get_userdata (widget_signal) ?
+	     glade_signal_get_userdata (widget_signal) : USERDATA_DEFAULT,
+	     GSE_COLUMN_SWAPPED, glade_signal_get_swapped (widget_signal),
+	     GSE_COLUMN_SWAPPED_VISIBLE,
+	     glade_signal_get_userdata (widget_signal) ? TRUE : FALSE,
+	     GSE_COLUMN_AFTER_VISIBLE, TRUE,
+	     GSE_COLUMN_HANDLER_EDITABLE, TRUE,
+	     GSE_COLUMN_USERDATA_EDITABLE, TRUE,
+	     GSE_COLUMN_SLOT, FALSE,
+	     GSE_COLUMN_USERDATA_SLOT,
+	     glade_signal_get_userdata (widget_signal) ? FALSE : TRUE,
+	     GSE_COLUMN_BOLD, TRUE,
+	     GSE_COLUMN_CONTENT, TRUE,
+	     GSE_COLUMN_WARN, glade_signal_get_support_warning (widget_signal) != NULL,
+	     GSE_COLUMN_TOOLTIP, glade_signal_get_support_warning (widget_signal), 
+	     -1);
+	  
           for (i = 1; i < signals->len; i++)
             {
               widget_signal = (GladeSignal *) g_ptr_array_index (signals, i);
               gtk_tree_store_append (priv->model, &iter, &parent_signal);
 
               gtk_tree_store_set
-                  (priv->model, &iter,
-                   GSE_COLUMN_HANDLER, widget_signal->handler,
-                   GSE_COLUMN_AFTER, widget_signal->after,
-                   GSE_COLUMN_USERDATA,
-                   widget_signal->userdata ?
-                   widget_signal->userdata : USERDATA_DEFAULT,
-                   GSE_COLUMN_SWAPPED, widget_signal->swapped,
-                   GSE_COLUMN_SWAPPED_VISIBLE,
-                   widget_signal->userdata ? TRUE : FALSE,
-                   GSE_COLUMN_AFTER_VISIBLE, TRUE,
-                   GSE_COLUMN_HANDLER_EDITABLE, TRUE,
-                   GSE_COLUMN_USERDATA_EDITABLE, TRUE,
-                   GSE_COLUMN_SLOT, FALSE,
-                   GSE_COLUMN_USERDATA_SLOT,
-                   widget_signal->userdata ? FALSE : TRUE,
-                   GSE_COLUMN_CONTENT, TRUE,
-                   GSE_COLUMN_WARN, FALSE,
-                   GSE_COLUMN_TOOLTIP, widget_signal->support_warning, -1);
+		(priv->model, &iter,
+		 GSE_COLUMN_HANDLER, glade_signal_get_handler (widget_signal),
+		 GSE_COLUMN_AFTER, glade_signal_get_after (widget_signal),
+		 GSE_COLUMN_USERDATA,
+		 glade_signal_get_userdata (widget_signal) ?
+		 glade_signal_get_userdata (widget_signal) : USERDATA_DEFAULT,
+		 GSE_COLUMN_SWAPPED, glade_signal_get_swapped (widget_signal),
+		 GSE_COLUMN_SWAPPED_VISIBLE,
+		 glade_signal_get_userdata (widget_signal) ? TRUE : FALSE,
+		 GSE_COLUMN_AFTER_VISIBLE, TRUE,
+		 GSE_COLUMN_HANDLER_EDITABLE, TRUE,
+		 GSE_COLUMN_USERDATA_EDITABLE, TRUE,
+		 GSE_COLUMN_SLOT, FALSE,
+		 GSE_COLUMN_USERDATA_SLOT,
+		 glade_signal_get_userdata (widget_signal) ? FALSE : TRUE,
+		 GSE_COLUMN_CONTENT, TRUE,
+		 GSE_COLUMN_WARN, FALSE,
+		 GSE_COLUMN_TOOLTIP, glade_signal_get_support_warning (widget_signal),
+		 -1);
             }
 
           /* add the <Type...> slot */
@@ -1336,7 +1339,7 @@ glade_signal_editor_load_widget (GladeSignalEditor * editor,
                GSE_COLUMN_USERDATA_SLOT, TRUE,
                GSE_COLUMN_CONTENT, TRUE,
                GSE_COLUMN_WARN, FALSE,
-               GSE_COLUMN_TOOLTIP, sig->support_warning, -1);
+               GSE_COLUMN_TOOLTIP, glade_signal_get_support_warning (sig), -1);
         }
 
       glade_signal_free (sig);
