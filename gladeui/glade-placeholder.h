@@ -36,31 +36,34 @@ G_BEGIN_DECLS
 #define GLADE_IS_PLACEHOLDER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_PLACEHOLDER))
 #define GLADE_PLACEHOLDER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_PLACEHOLDER, GladePlaceholderClass))
 
-typedef struct _GladePlaceholder      GladePlaceholder;
-typedef struct _GladePlaceholderClass GladePlaceholderClass;
+typedef struct _GladePlaceholder        GladePlaceholder;
+typedef struct _GladePlaceholderClass   GladePlaceholderClass;
+typedef struct _GladePlaceholderPrivate GladePlaceholderPrivate;
 
 struct _GladePlaceholder
 {
-	GtkWidget widget;
+  GtkWidget widget;
 	
-	GList *packing_actions;
-
-	GdkWindow *event_window;
+  GladePlaceholderPrivate *priv;
 };
 
 struct _GladePlaceholderClass
 {
-	GtkWidgetClass parent_class;
+  GtkWidgetClass parent_class;
+
+  void   (* glade_reserved1)   (void);
+  void   (* glade_reserved2)   (void);
+  void   (* glade_reserved3)   (void);
+  void   (* glade_reserved4)   (void);
 };
 
 
-GType        glade_placeholder_get_type   (void) G_GNUC_CONST;
+GType         glade_placeholder_get_type        (void) G_GNUC_CONST;
 
-GtkWidget   *glade_placeholder_new        (void);
-
-GladeProject* glade_placeholder_get_project (GladePlaceholder *placeholder);
-
-GladeWidget *glade_placeholder_get_parent (GladePlaceholder *placeholder);
+GtkWidget    *glade_placeholder_new             (void);
+GladeProject *glade_placeholder_get_project     (GladePlaceholder *placeholder);
+GladeWidget  *glade_placeholder_get_parent      (GladePlaceholder *placeholder);
+GList        *glade_placeholder_packing_actions (GladePlaceholder *placeholder);
 
 G_END_DECLS
 

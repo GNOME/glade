@@ -76,6 +76,14 @@ static gboolean glade_placeholder_button_press (GtkWidget * widget,
 
 static gboolean glade_placeholder_popup_menu (GtkWidget * widget);
 
+
+struct _GladePlaceholderPrivate
+{
+  GList *packing_actions;
+
+  GdkWindow *event_window;
+};
+
 enum
 {
   PROP_0,
@@ -87,7 +95,8 @@ enum
 
 G_DEFINE_TYPE_WITH_CODE (GladePlaceholder, glade_placeholder, GTK_TYPE_WIDGET,
                          G_IMPLEMENT_INTERFACE (GTK_TYPE_SCROLLABLE, NULL))
-     static void glade_placeholder_class_init (GladePlaceholderClass * klass)
+
+static void glade_placeholder_class_init (GladePlaceholderClass * klass)
 {
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -116,6 +125,8 @@ G_DEFINE_TYPE_WITH_CODE (GladePlaceholder, glade_placeholder, GTK_TYPE_WIDGET,
                                     "hscroll-policy");
   g_object_class_override_property (object_class, PROP_VSCROLL_POLICY,
                                     "vscroll-policy");
+
+  g_type_class_add_private (klass, sizeof (GladePlaceholderPrivate));
 }
 
 static void
@@ -126,26 +137,31 @@ glade_placeholder_notify_parent (GObject * gobject,
   GladeWidgetAdaptor *parent_adaptor = NULL;
   GladeWidget *parent = glade_placeholder_get_parent (placeholder);
 
-  if (placeholder->packing_actions)
+  if (placeholder->priv->packing_actions)
     {
-      g_list_foreach (placeholder->packing_actions, (GFunc) g_object_unref,
+      g_list_foreach (placeholder->priv->packing_actions, (GFunc) g_object_unref,
                       NULL);
-      g_list_free (placeholder->packing_actions);
-      placeholder->packing_actions = NULL;
+      g_list_free (placeholder->priv->packing_actions);
+      placeholder->priv->packing_actions = NULL;
     }
 
   if (parent)
     parent_adaptor = glade_widget_get_adaptor (parent);
 
   if (parent_adaptor)
-    placeholder->packing_actions =
+    placeholder->priv->packing_actions =
       glade_widget_adaptor_pack_actions_new (parent_adaptor);
 }
 
 static void
 glade_placeholder_init (GladePlaceholder * placeholder)
 {
-  placeholder->packing_actions = NULL;
+  placeholder->priv = 
+    G_TYPE_INSTANCE_GET_PRIVATE (placeholder,
+				 GLADE_TYPE_PLACEHOLDER,
+				 GladePlaceholderPrivate);
+
+  placeholder->priv->packing_actions = NULL;
 
   gtk_widget_set_can_focus (GTK_WIDGET (placeholder), TRUE);
   gtk_widget_set_has_window (GTK_WIDGET (placeholder), FALSE);
@@ -159,17 +175,6 @@ glade_placeholder_init (GladePlaceholder * placeholder)
   gtk_widget_show (GTK_WIDGET (placeholder));
 }
 
-/**
- * glade_placeholder_new:
- * 
- * Returns: a new #GladePlaceholder cast as a #GtkWidget
- */
-GtkWidget *
-glade_placeholder_new (void)
-{
-  return g_object_new (GLADE_TYPE_PLACEHOLDER, NULL);
-}
-
 static void
 glade_placeholder_finalize (GObject * object)
 {
@@ -178,11 +183,10 @@ glade_placeholder_finalize (GObject * object)
   g_return_if_fail (GLADE_IS_PLACEHOLDER (object));
   placeholder = GLADE_PLACEHOLDER (object);
 
-  if (placeholder->packing_actions)
+  if (placeholder->priv->packing_actions)
     {
-      g_list_foreach (placeholder->packing_actions, (GFunc) g_object_unref,
-                      NULL);
-      g_list_free (placeholder->packing_actions);
+      g_list_foreach (placeholder->priv->packing_actions, (GFunc) g_object_unref, NULL);
+      g_list_free (placeholder->priv->packing_actions);
     }
 
   G_OBJECT_CLASS (glade_placeholder_parent_class)->finalize (object);
@@ -260,10 +264,10 @@ glade_placeholder_realize (GtkWidget * widget)
   window = gtk_widget_get_parent_window (widget);
   gtk_widget_set_window (widget, g_object_ref (window));
 
-  placeholder->event_window =
+  placeholder->priv->event_window =
       gdk_window_new (gtk_widget_get_parent_window (widget), &attributes,
                       attributes_mask);
-  gdk_window_set_user_data (placeholder->event_window, widget);
+  gdk_window_set_user_data (placeholder->priv->event_window, widget);
 
   gtk_widget_style_attach (widget);
 }
@@ -275,11 +279,11 @@ glade_placeholder_unrealize (GtkWidget * widget)
 
   placeholder = GLADE_PLACEHOLDER (widget);
 
-  if (placeholder->event_window)
+  if (placeholder->priv->event_window)
     {
-      gdk_window_set_user_data (placeholder->event_window, NULL);
-      gdk_window_destroy (placeholder->event_window);
-      placeholder->event_window = NULL;
+      gdk_window_set_user_data (placeholder->priv->event_window, NULL);
+      gdk_window_destroy (placeholder->priv->event_window);
+      placeholder->priv->event_window = NULL;
     }
 
   GTK_WIDGET_CLASS (glade_placeholder_parent_class)->unrealize (widget);
@@ -292,9 +296,9 @@ glade_placeholder_map (GtkWidget * widget)
 
   placeholder = GLADE_PLACEHOLDER (widget);
 
-  if (placeholder->event_window)
+  if (placeholder->priv->event_window)
     {
-      gdk_window_show (placeholder->event_window);
+      gdk_window_show (placeholder->priv->event_window);
     }
 
   GTK_WIDGET_CLASS (glade_placeholder_parent_class)->map (widget);
@@ -307,9 +311,9 @@ glade_placeholder_unmap (GtkWidget * widget)
 
   placeholder = GLADE_PLACEHOLDER (widget);
 
-  if (placeholder->event_window)
+  if (placeholder->priv->event_window)
     {
-      gdk_window_hide (placeholder->event_window);
+      gdk_window_hide (placeholder->priv->event_window);
     }
 
   GTK_WIDGET_CLASS (glade_placeholder_parent_class)->unmap (widget);
@@ -326,18 +330,10 @@ glade_placeholder_size_allocate (GtkWidget * widget, GtkAllocation * allocation)
 
   if (gtk_widget_get_realized (widget))
     {
-      gdk_window_move_resize (placeholder->event_window,
+      gdk_window_move_resize (placeholder->priv->event_window,
                               allocation->x, allocation->y,
                               allocation->width, allocation->height);
     }
-}
-
-GladeProject *
-glade_placeholder_get_project (GladePlaceholder * placeholder)
-{
-  GladeWidget *parent;
-  parent = glade_placeholder_get_parent (placeholder);
-  return parent ? glade_widget_get_project (parent) : NULL;
 }
 
 static void
@@ -485,6 +481,26 @@ glade_placeholder_popup_menu (GtkWidget * widget)
   return TRUE;
 }
 
+
+/**
+ * glade_placeholder_new:
+ * 
+ * Returns: a new #GladePlaceholder cast as a #GtkWidget
+ */
+GtkWidget *
+glade_placeholder_new (void)
+{
+  return g_object_new (GLADE_TYPE_PLACEHOLDER, NULL);
+}
+
+GladeProject *
+glade_placeholder_get_project (GladePlaceholder * placeholder)
+{
+  GladeWidget *parent;
+  parent = glade_placeholder_get_parent (placeholder);
+  return parent ? glade_widget_get_project (parent) : NULL;
+}
+
 GladeWidget *
 glade_placeholder_get_parent (GladePlaceholder * placeholder)
 {
@@ -501,3 +517,12 @@ glade_placeholder_get_parent (GladePlaceholder * placeholder)
     }
   return parent;
 }
+
+GList *
+glade_placeholder_packing_actions (GladePlaceholder *placeholder)
+{
+  g_return_val_if_fail (GLADE_IS_PLACEHOLDER (placeholder), NULL);
+
+  return placeholder->priv->packing_actions;
+}
+

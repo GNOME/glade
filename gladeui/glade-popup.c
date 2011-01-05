@@ -496,7 +496,7 @@ glade_popup_create_menu (GladeWidget      *widget,
                G_CALLBACK (glade_popup_menuitem_activated), widget);
         }
 
-      if (placeholder->packing_actions)
+      if (glade_placeholder_packing_actions (placeholder))
         {
           GtkWidget *separator = gtk_menu_item_new ();
           gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), separator);
@@ -505,7 +505,7 @@ glade_popup_create_menu (GladeWidget      *widget,
           glade_popup_action_populate_menu_real
               (popup_menu,
                widget,
-               placeholder->packing_actions,
+               glade_placeholder_packing_actions (placeholder),
                G_CALLBACK (glade_popup_menuitem_ph_packing_activated),
                placeholder);
         }
