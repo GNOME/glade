@@ -99,6 +99,15 @@ struct _GladeProjectClass
   void          (*close)               (GladeProject *project);
 
   void          (*parse_finished)      (GladeProject *project);
+
+  void   (* glade_reserved1)   (void);
+  void   (* glade_reserved2)   (void);
+  void   (* glade_reserved3)   (void);
+  void   (* glade_reserved4)   (void);
+  void   (* glade_reserved5)   (void);
+  void   (* glade_reserved6)   (void);
+  void   (* glade_reserved7)   (void);
+  void   (* glade_reserved8)   (void);
 };
 
 

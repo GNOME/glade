@@ -29,6 +29,16 @@
 	- Plugin makes actions invisible instead of removing them
 	- Everything updated for new sealed api
 
+	* gladeui/Makefile.am: slight reordering in build
+
+	* gladeui/glade-app.h, gladeui/glade-base-editor.h, gladeui/glade-catalog.h,
+	gladeui/glade-design-layout.h, gladeui/glade-design-view.h, gladeui/glade-editable.h,
+	gladeui/glade-editor-property.h, gladeui/glade-named-icon-chooser-dialog.h,
+	gladeui/glade-project.h: Aligning some indentation in headers, adding padding
+	to core object classes for possible future expansion.
+
+	Glade core api now officially sealed and ABI stable.
+
 2011-01-04  Johannes Schmid <jhs@gnome.org>
 
 	* data/gladeui-2.0.pc.in: Fix include paths and library name

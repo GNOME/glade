@@ -55,7 +55,14 @@ struct _GladeAppClass
   GObjectClass parent_class;
 
   /* signals */
-  void   (*  signal_editor_created) (GladeApp *app, GladeSignalEditor *signal_editor);
+  void   (* signal_editor_created) (GladeApp *app, GladeSignalEditor *signal_editor);
+
+  void   (* glade_reserved1)   (void);
+  void   (* glade_reserved2)   (void);
+  void   (* glade_reserved3)   (void);
+  void   (* glade_reserved4)   (void);
+  void   (* glade_reserved5)   (void);
+  void   (* glade_reserved6)   (void);
 };
 
 

@@ -46,15 +46,19 @@ typedef struct _GladeDesignViewClass    GladeDesignViewClass;
 
 struct _GladeDesignView
 {
-	GtkVBox parent_instance;
+  GtkVBox parent_instance;
 
-	GladeDesignViewPrivate *priv;
+  GladeDesignViewPrivate *priv;
 };
 
 struct _GladeDesignViewClass
 {
-	GtkVBoxClass parent_class;
+  GtkVBoxClass parent_class;
 
+  void   (* glade_reserved1)   (void);
+  void   (* glade_reserved2)   (void);
+  void   (* glade_reserved3)   (void);
+  void   (* glade_reserved4)   (void);
 };
 
 
