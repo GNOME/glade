@@ -33,49 +33,64 @@ G_BEGIN_DECLS
 #define GLADE_IS_WIDGET_ACTION_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_WIDGET_ACTION))
 #define GLADE_WIDGET_ACTION_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_WIDGET_ACTION, GladeWidgetActionClass))
 
-typedef struct _GladeWidgetActionClass GladeWidgetActionClass;
-typedef struct _GladeWidgetAction      GladeWidgetAction;
-typedef struct _GWActionClass          GWActionClass;
+typedef struct _GladeWidgetActionClass   GladeWidgetActionClass;
+typedef struct _GladeWidgetAction        GladeWidgetAction;
+typedef struct _GladeWidgetActionPrivate GladeWidgetActionPrivate;
+typedef struct _GWActionClass            GWActionClass;
 
 struct _GWActionClass
 {
-	gchar    *id;           /* The identifier of this action in the action tree */
-	gchar    *path;		/* Full action path  */
-	gchar    *label;        /* A translated label to show in the UI for this action */
-	gchar    *stock;        /* If set, this stock item will be shown in the UI along side
-				 * the label */
-	gboolean important;	/* If this action is important */
+  const gchar    *id;     /* The identifier of this action in the action tree */
+  gchar          *path;	  /* Full action path  */
+  gchar          *label;  /* A translated label to show in the UI for this action */
+  gchar          *stock;  /* If set, this stock item will be shown in the UI along side
+			   * the label */
+  gboolean        important;  /* If this action is important */
 
-	GList    *actions;      /* Recursive list of child actions */
-};
-
-struct _GladeWidgetActionClass
-{
-	GObjectClass parent_class;
+  GList          *actions;/* Recursive list of child actions */
 };
 
 struct _GladeWidgetAction
 {
-	GObject parent_instance;
-	
-	GWActionClass *klass;	/* The action class */
-	
-	gboolean sensitive;	/* If this action is sensitive or not */
-	
-	GList *actions;		/* List of actions */
+  GObject parent_instance;
+
+  GladeWidgetActionPrivate *priv;
 };
+
+struct _GladeWidgetActionClass
+{
+  GObjectClass parent_class;
+
+  void   (* glade_reserved1)   (void);
+  void   (* glade_reserved2)   (void);
+  void   (* glade_reserved3)   (void);
+  void   (* glade_reserved4)   (void);
+};
+
 
 GType          glade_widget_action_get_type      (void) G_GNUC_CONST;
 
-void           glade_widget_action_class_free    (GWActionClass *action);
-
-GWActionClass *glade_widget_action_class_clone   (GWActionClass *action);
-
-gboolean       glade_widget_action_remove        (GladeWidgetAction *action,
-						  GladeWidgetAction *child);
-
 void           glade_widget_action_set_sensitive (GladeWidgetAction *action,
-						  gboolean sensitive);
+						  gboolean           sensitive);
+gboolean       glade_widget_action_get_sensitive (GladeWidgetAction *action);
+void           glade_widget_action_set_visible   (GladeWidgetAction *action,
+						  gboolean           visible);
+gboolean       glade_widget_action_get_visible   (GladeWidgetAction *action);
+GList         *glade_widget_action_get_children  (GladeWidgetAction *action);
+GWActionClass *glade_widget_action_get_class     (GladeWidgetAction *action);
+
+
+GWActionClass *glade_widget_action_class_new           (const gchar   *path);
+GWActionClass *glade_widget_action_class_clone         (GWActionClass *action);
+void           glade_widget_action_class_free          (GWActionClass *action);
+void           glade_widget_action_class_set_label     (GWActionClass *action,
+							const gchar   *label);
+void           glade_widget_action_class_set_stock     (GWActionClass *action,
+							const gchar   *stock);
+void           glade_widget_action_class_set_important (GWActionClass *action,
+							gboolean       important);
+
+
 G_END_DECLS
 
 #endif /* _GLADE_WIDGET_ACTION_H_ */

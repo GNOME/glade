@@ -18,6 +18,17 @@
 	* gladeui/glade-placeholder.[ch], gladeui/glade-popup.c:
 	Privatized GladePlaceholder members.
 
+	* gladeui/glade-widget-action.[ch], gladeui/glade-widget-adaptor.c, gladeui/glade-widget.[ch],
+	gladeui/glade-popup.c, plugins/gtk+/glade-gtk.c, src/glade-window.c:
+	- Privatized members of GladeWidgetAction
+	- Created glade_widget_action_class_new() and some accessors for better code in
+	  the adaptor
+	- GWActionClass is now on the slice allocator
+	- Added glade_widget_action_set/get_visible()
+	- Removed glade_widget_remove[_pack]_action()
+	- Plugin makes actions invisible instead of removing them
+	- Everything updated for new sealed api
+
 2011-01-04  Johannes Schmid <jhs@gnome.org>
 
 	* data/gladeui-2.0.pc.in: Fix include paths and library name

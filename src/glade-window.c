@@ -363,19 +363,20 @@ create_recent_chooser_menu (GladeWindow * window, GtkRecentManager * manager)
 static void
 activate_action (GtkToolButton * toolbutton, GladeWidgetAction * action)
 {
-  GladeWidget *widget;
+  GladeWidget   *widget;
+  GWActionClass *aclass = glade_widget_action_get_class (action);
 
   if ((widget = g_object_get_data (G_OBJECT (toolbutton), "glade-widget")))
     glade_widget_adaptor_action_activate (glade_widget_get_adaptor (widget),
                                           glade_widget_get_object (widget), 
-					  action->klass->path);
+					  aclass->path);
 }
 
 static void
 action_notify_sensitive (GObject * gobject, GParamSpec * arg1, GtkWidget * item)
 {
   GladeWidgetAction *action = GLADE_WIDGET_ACTION (gobject);
-  gtk_widget_set_sensitive (item, action->sensitive);
+  gtk_widget_set_sensitive (item, glade_widget_action_get_sensitive (action));
 }
 
 static void
@@ -417,23 +418,23 @@ add_actions (GladeWindow * window, GladeWidget * widget, GList * actions)
 
   for (l = actions; l; l = g_list_next (l))
     {
-      GladeWidgetAction *a = l->data;
+      GladeWidgetAction *action = l->data;
+      GWActionClass     *aclass = glade_widget_action_get_class (action);
 
-      if (!a->klass->important)
+      if (!aclass->important || !glade_widget_action_get_visible (action))
         continue;
 
-      if (a->actions)
+      if (glade_widget_action_get_children (action))
         {
-          g_warning
-              ("Trying to add a group action to the toolbar is unsupported");
+          g_warning ("Trying to add a group action to the toolbar is unsupported");
           continue;
         }
 
-      item = gtk_tool_button_new_from_stock ((a->klass->stock) ? a->klass->stock : "gtk-execute");
-      if (a->klass->label)
+      item = gtk_tool_button_new_from_stock ((aclass->stock) ? aclass->stock : "gtk-execute");
+      if (aclass->label)
 	{
-	  gtk_tool_button_set_label (GTK_TOOL_BUTTON (item), a->klass->label);
-	  gtk_widget_set_tooltip_text (GTK_WIDGET (item), a->klass->label);
+	  gtk_tool_button_set_label (GTK_TOOL_BUTTON (item), aclass->label);
+	  gtk_widget_set_tooltip_text (GTK_WIDGET (item), aclass->label);
 	}
 
       g_object_set_data (G_OBJECT (item), "glade-widget", widget);
@@ -444,11 +445,12 @@ add_actions (GladeWindow * window, GladeWidget * widget, GList * actions)
        */
       g_signal_connect_data (item, "clicked",
                              G_CALLBACK (activate_action),
-                             a, action_disconnect, 0);
+                             action, action_disconnect, 0);
 
-      gtk_widget_set_sensitive (GTK_WIDGET (item), a->sensitive);
+      gtk_widget_set_sensitive (GTK_WIDGET (item), 
+				glade_widget_action_get_sensitive (action));
 
-      g_signal_connect (a, "notify::sensitive",
+      g_signal_connect (action, "notify::sensitive",
                         G_CALLBACK (activate_action), GTK_WIDGET (item));
 
       gtk_toolbar_insert (bar, item, -1);

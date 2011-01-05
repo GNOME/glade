@@ -307,32 +307,37 @@ glade_popup_action_populate_menu_real (GtkWidget * menu,
 
   for (list = actions; list; list = g_list_next (list))
     {
-      GladeWidgetAction *a = list->data;
-      GtkWidget *submenu = NULL;
+      GladeWidgetAction *action = list->data;
+      GWActionClass     *aclass = glade_widget_action_get_class (action);
+      GList             *children = glade_widget_action_get_children (action);
+      GtkWidget         *submenu = NULL;
 
-      if (a->actions)
+      if (!glade_widget_action_get_visible (action))
+	continue;
+
+      if (children)
         {
           submenu = gtk_menu_new ();
           n += glade_popup_action_populate_menu_real (submenu,
                                                       gwidget,
-                                                      a->actions,
+                                                      children,
                                                       callback, data);
         }
       else
         submenu = glade_widget_adaptor_action_submenu (glade_widget_get_adaptor (gwidget),
                                                        glade_widget_get_object (gwidget),
-                                                       a->klass->path);
+                                                       aclass->path);
 
 
       item = glade_popup_append_item (menu,
-                                      a->klass->stock,
-                                      a->klass->label, NULL, TRUE,
-                                      (a->actions) ? NULL : callback,
-                                      (a->actions) ? NULL : a->klass->path);
+                                      aclass->stock,
+                                      aclass->label, NULL, TRUE,
+                                      (children) ? NULL : callback,
+                                      (children) ? NULL : aclass->path);
 
       g_object_set_data (G_OBJECT (item), "gwa-data", data);
 
-      gtk_widget_set_sensitive (item, a->sensitive);
+      gtk_widget_set_sensitive (item, glade_widget_action_get_sensitive (action));
 
       if (submenu)
         gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), submenu);
@@ -364,21 +369,27 @@ glade_popup_action_populate_menu (GtkWidget * menu,
   g_return_val_if_fail (GTK_IS_MENU (menu), 0);
   g_return_val_if_fail (GLADE_IS_WIDGET (widget), 0);
 
+  g_return_val_if_fail (action == NULL || GLADE_IS_WIDGET_ACTION (action), 0);
+
   if (action)
     {
-      g_return_val_if_fail (GLADE_IS_WIDGET_ACTION (action), 0);
-      if (glade_widget_get_action (widget, action->klass->path))
+      GWActionClass *aclass = glade_widget_action_get_class (action);
+      GList         *children = glade_widget_action_get_children (action);
+      
+      if (glade_widget_get_action (widget, aclass->path) &&
+	  glade_widget_action_get_visible (action))
         return glade_popup_action_populate_menu_real (menu,
                                                       widget,
-                                                      action->actions,
+                                                      children,
                                                       G_CALLBACK
                                                       (glade_popup_menuitem_activated),
                                                       widget);
 
-      if (glade_widget_get_pack_action (widget, action->klass->path))
+      if (glade_widget_get_pack_action (widget, aclass->path) &&
+	  glade_widget_action_get_visible (action))
         return glade_popup_action_populate_menu_real (menu,
                                                       glade_widget_get_parent
-                                                      (widget), action->actions,
+                                                      (widget), children,
                                                       G_CALLBACK
                                                       (glade_popup_menuitem_packing_activated),
                                                       widget);
@@ -401,6 +412,7 @@ glade_popup_action_populate_menu (GtkWidget * menu,
           gtk_menu_shell_append (GTK_MENU_SHELL (menu), separator);
           gtk_widget_show (separator);
         }
+
       n += glade_popup_action_populate_menu_real 
 	(menu, glade_widget_get_parent (widget),
 	 glade_widget_get_pack_actions (widget),
