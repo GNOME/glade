@@ -225,26 +225,26 @@ glade_eprop_accel_populate_view (GladeEditorProperty * eprop,
       if (glade_widget_adaptor_get_object_type (adaptor) == GTK_TYPE_ACTION ||
           g_type_is_a (glade_widget_adaptor_get_object_type (adaptor), GTK_TYPE_ACTION))
         {
-          if (g_strcmp0 (sclass->type, "GtkAction") != 0 ||
-              g_strcmp0 (sclass->name, "activate") != 0)
+          if (g_strcmp0 (glade_signal_class_get_type (sclass), "GtkAction") != 0 ||
+              g_strcmp0 (glade_signal_class_get_name (sclass), "activate") != 0)
             continue;
         }
       /* Only action signals have accelerators. */
-      else if ((sclass->query.signal_flags & G_SIGNAL_ACTION) == 0)
+      else if ((glade_signal_class_get_flags (sclass) & G_SIGNAL_ACTION) == 0)
         continue;
 
       if (g_list_find_custom (eprop_accel->parent_iters,
-                              sclass->type,
+                              glade_signal_class_get_type (sclass),
                               (GCompareFunc) eprop_find_iter) == NULL)
         {
           gtk_tree_store_append (model, &iter, NULL);
           gtk_tree_store_set (model, &iter,
-                              ACCEL_COLUMN_SIGNAL, sclass->type,
+                              ACCEL_COLUMN_SIGNAL, glade_signal_class_get_type (sclass),
                               ACCEL_COLUMN_WEIGHT, PANGO_WEIGHT_BOLD,
                               ACCEL_COLUMN_VISIBLE, FALSE, -1);
 
           parent_tab = g_new0 (GladeEpropIterTab, 1);
-          parent_tab->name = sclass->type;
+          parent_tab->name = glade_signal_class_get_type (sclass);
           parent_tab->iter = gtk_tree_iter_copy (&iter);
 
           eprop_accel->parent_iters =
@@ -262,20 +262,20 @@ glade_eprop_accel_populate_view (GladeEditorProperty * eprop,
       if (glade_widget_adaptor_get_object_type (adaptor) == GTK_TYPE_ACTION ||
           g_type_is_a (glade_widget_adaptor_get_object_type (adaptor), GTK_TYPE_ACTION))
         {
-          if (g_strcmp0 (sclass->type, "GtkAction") != 0 ||
-              g_strcmp0 (sclass->name, "activate") != 0)
+          if (g_strcmp0 (glade_signal_class_get_type (sclass), "GtkAction") != 0 ||
+              g_strcmp0 (glade_signal_class_get_name (sclass), "activate") != 0)
             continue;
         }
       /* Only action signals have accelerators. */
-      else if ((sclass->query.signal_flags & G_SIGNAL_ACTION) == 0)
+      else if ((glade_signal_class_get_flags (sclass) & G_SIGNAL_ACTION) == 0)
         continue;
 
       if ((found = g_list_find_custom (eprop_accel->parent_iters,
-                                       sclass->type,
+                                       glade_signal_class_get_type (sclass),
                                        (GCompareFunc) eprop_find_iter)) != NULL)
         {
           parent_tab = found->data;
-          name = g_strdup_printf ("    %s", sclass->name);
+          name = g_strdup_printf ("    %s", glade_signal_class_get_name (sclass));
 
           /* Populate from accelerator list
            */
@@ -283,7 +283,7 @@ glade_eprop_accel_populate_view (GladeEditorProperty * eprop,
             {
               info = l->data;
 
-              if (strcmp (info->signal, sclass->name))
+              if (strcmp (info->signal, glade_signal_class_get_name (sclass)))
                 continue;
 
               accel_text = gtk_accelerator_name (info->key, info->modifiers);
@@ -292,7 +292,7 @@ glade_eprop_accel_populate_view (GladeEditorProperty * eprop,
               gtk_tree_store_set
                   (model, &iter,
                    ACCEL_COLUMN_SIGNAL, name,
-                   ACCEL_COLUMN_REAL_SIGNAL, sclass->name,
+                   ACCEL_COLUMN_REAL_SIGNAL, glade_signal_class_get_name (sclass),
                    ACCEL_COLUMN_TEXT, accel_text,
                    ACCEL_COLUMN_WEIGHT, PANGO_WEIGHT_NORMAL,
                    ACCEL_COLUMN_STYLE, PANGO_STYLE_NORMAL,
@@ -316,7 +316,7 @@ glade_eprop_accel_populate_view (GladeEditorProperty * eprop,
           gtk_tree_store_set
               (model, &iter,
                ACCEL_COLUMN_SIGNAL, name,
-               ACCEL_COLUMN_REAL_SIGNAL, sclass->name,
+               ACCEL_COLUMN_REAL_SIGNAL, glade_signal_class_get_name (sclass),
                ACCEL_COLUMN_TEXT, _("<choose a key>"),
                ACCEL_COLUMN_WEIGHT, PANGO_WEIGHT_NORMAL,
                ACCEL_COLUMN_STYLE, PANGO_STYLE_ITALIC,

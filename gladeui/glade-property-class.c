@@ -37,7 +37,6 @@
 
 #include <string.h>
 #include <stdlib.h>
-#include <gmodule.h>
 #include <glib/gi18n-lib.h>
 
 #include "glade.h"
@@ -1846,7 +1845,6 @@ glade_property_class_parse_specifications (GladePropertyClass * klass,
 /**
  * glade_property_class_update_from_node:
  * @node: the property node
- * @module: a #GModule to lookup symbols from the plugin
  * @object_type: the #GType of the owning object
  * @property_class: a pointer to the property class
  * @domain: the domain to translate catalog strings from
@@ -1859,7 +1857,6 @@ glade_property_class_parse_specifications (GladePropertyClass * klass,
  */
 gboolean
 glade_property_class_update_from_node (GladeXmlNode * node,
-                                       GModule * module,
                                        GType object_type,
                                        GladePropertyClass ** property_class,
                                        const gchar * domain)

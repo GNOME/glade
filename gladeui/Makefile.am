@@ -48,45 +48,46 @@ EXTRA_DIST = glade-marshallers.list gladeui.rc.in icon-naming-spec.c glade-previ
 
 # The glade core library
 libgladeui_2_la_SOURCES = \
-	glade-widget-adaptor.c \
 	glade-debug.c \
-	glade-project.c \
-	glade-placeholder.c \
-	glade-inspector.c \
 	glade-xml-utils.c \
-	glade-palette.c \
-	glade-design-layout.c \
-	glade-design-view.c \
-	glade-named-icon-chooser-dialog.c \
-	glade-named-icon-chooser-dialog.h \
-	glade-cursor.c \
 	glade-catalog.c \
-	glade-property.c \
-	glade-property-class.c \
-	glade-popup.c \
+	glade-widget-adaptor.c \
 	glade-widget.c \
+	glade-property-class.c \
+	glade-property.c \
+	glade-signal-class.c \
+	glade-signal.c \
+	glade-editable.c \
+	glade-editor-table.c \
 	glade-editor-property.c \
 	glade-editor.c \
-	glade-utils.c \
-	glade-signal.c \
+	glade-base-editor.c \
 	glade-signal-editor.c \
-	glade-clipboard.c \
-	glade-command.c \
+	glade-palette.c \
+	glade-inspector.c \
+	glade-design-layout.c \
+	glade-design-view.c \
 	glade-id-allocator.c \
 	glade-id-allocator.h \
+	glade-project.c \
+	glade-cursor.c \
+	glade-placeholder.c \
+	glade-named-icon-chooser-dialog.c \
+	glade-named-icon-chooser-dialog.h \
+	glade-popup.c \
+	glade-utils.c \
+	glade-command.c \
 	glade-marshallers.c \
 	glade-accumulators.c \
 	glade-builtins.c \
 	glade-app.c \
-	glade-base-editor.c \
+	glade-clipboard.c \
 	glade-popup.h \
 	glade-marshallers.h \
 	glade-accumulators.h \
 	glade-widget-action.c \
 	glade-name-context.c \
 	glade-displayable-values.c \
-	glade-editable.c \
-	glade-editor-table.c \
 	glade-cell-renderer-icon.c
 
 libgladeui_2_la_CPPFLAGS =  \

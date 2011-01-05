@@ -278,63 +278,46 @@ glade_widget_adaptor_get_parent_adaptor (GladeWidgetAdaptor * adaptor)
 }
 
 static gint
-gwa_signal_comp (gconstpointer a, gconstpointer b)
+gwa_signal_comp (gpointer a, gpointer b)
 {
-  const GladeSignalClass *signal_a = a, *signal_b = b;
-  return strcmp (signal_b->query.signal_name, signal_a->query.signal_name);
+  GladeSignalClass *signal_a = a, *signal_b = b;
+
+  return strcmp (glade_signal_class_get_name (signal_b), 
+		 glade_signal_class_get_name (signal_a));
 }
 
 static gint
-gwa_signal_find_comp (gconstpointer a, gconstpointer b)
+gwa_signal_find_comp (gpointer a, gpointer b)
 {
-  const GladeSignalClass *signal = a;
-  const gchar *name = b;
-  return strcmp (name, signal->query.signal_name);
+  GladeSignalClass *signal = a;
+  gchar *name = b;
+  return strcmp (name, glade_signal_class_get_name (signal));
 }
 
 static void
 gwa_add_signals (GladeWidgetAdaptor * adaptor, GList ** signals, GType type)
 {
-  guint count, *sig_ids, num_signals;
+  guint               count, *sig_ids, num_signals;
   GladeWidgetAdaptor *type_adaptor;
-  GladeSignalClass *cur;
-  GList *list = NULL;
+  GladeSignalClass   *signal;
+  GList              *list = NULL;
 
   type_adaptor = glade_widget_adaptor_get_by_type (type);
 
-  if (G_TYPE_IS_INSTANTIATABLE (type) || G_TYPE_IS_INTERFACE (type))
+  sig_ids = g_signal_list_ids (type, &num_signals);
+
+  for (count = 0; count < num_signals; count++)
     {
-      sig_ids = g_signal_list_ids (type, &num_signals);
+      signal = glade_signal_class_new (type_adaptor ? 
+				       type_adaptor : adaptor,
+				       type, sig_ids[count]);
 
-      for (count = 0; count < num_signals; count++)
-        {
-          cur = g_new0 (GladeSignalClass, 1);
-
-          g_signal_query (sig_ids[count], &(cur->query));
-
-          /* Since glib gave us this signal id... it should
-           * exist no matter what.
-           */
-          g_assert (cur->query.signal_id != 0);
-
-          /* When creating this type, this type is not registered yet,
-           * but we still get the right value here.
-           */
-          cur->adaptor = type_adaptor ? type_adaptor : adaptor;
-          cur->name = (cur->query.signal_name);
-          cur->type = (gchar *) g_type_name (type);
-
-          /* Initialize signal versions to adaptor version */
-          cur->version_since_major = GWA_VERSION_SINCE_MAJOR (cur->adaptor);
-          cur->version_since_minor = GWA_VERSION_SINCE_MINOR (cur->adaptor);
-
-          list = g_list_prepend (list, cur);
-        }
-      g_free (sig_ids);
-
-      list = g_list_sort (list, gwa_signal_comp);
-      *signals = g_list_concat (list, *signals);
+      list = g_list_prepend (list, signal);
     }
+  g_free (sig_ids);
+
+  list = g_list_sort (list, (GCompareFunc)gwa_signal_comp);
+  *signals = g_list_concat (list, *signals);
 }
 
 static GList *
@@ -523,23 +506,20 @@ gwa_inherit_signals (GladeWidgetAdaptor * adaptor)
         {
           signal = list->data;
 
-          if ((node = g_list_find_custom
-               (parent_adaptor->priv->signals, signal->name,
-                (GCompareFunc) gwa_signal_find_comp)) != NULL)
+          if ((node = g_list_find_custom (parent_adaptor->priv->signals, 
+					  glade_signal_class_get_name (signal),
+					  (GCompareFunc) gwa_signal_find_comp)) != NULL)
             {
               parent_signal = node->data;
 
               /* Reset versioning in derived catalogs just once */
               if (strcmp (adaptor->priv->catalog,
                           parent_adaptor->priv->catalog))
-                signal->version_since_major = 0;
+		glade_signal_class_set_since (signal, 0, 0);
               else
-                {
-                  signal->version_since_major =
-                      parent_signal->version_since_major;
-                  signal->version_since_minor =
-                      parent_signal->version_since_minor;
-                }
+		glade_signal_class_set_since (signal, 
+					      glade_signal_class_since_major (parent_signal),
+					      glade_signal_class_since_minor (parent_signal));
             }
         }
     }
@@ -1876,8 +1856,10 @@ gwa_update_properties_from_node (GladeWidgetAdaptor * adaptor,
           list = g_list_last (*properties);
         }
 
-      if ((updated = glade_property_class_update_from_node
-           (child, module, adaptor->priv->type, &property_class, domain)) == FALSE)
+      if ((updated = glade_property_class_update_from_node (child, 
+							    adaptor->priv->type, 
+							    &property_class, 
+							    domain)) == FALSE)
         {
           g_warning ("failed to update %s property of %s from xml",
                      id, adaptor->priv->name);
@@ -2145,12 +2127,14 @@ gwa_action_update_from_node (GladeWidgetAdaptor * adaptor,
 }
 
 static void
-gwa_set_signals_from_node (GladeWidgetAdaptor * adaptor, GladeXmlNode * node)
+gwa_set_signals_from_node (GladeWidgetAdaptor *adaptor, 
+			   GladeXmlNode       *node,
+			   const gchar        *domain)
 {
-  GladeXmlNode *child;
+  GladeXmlNode     *child;
   GladeSignalClass *signal;
-  GList *list;
-  gchar *id;
+  GList            *list;
+  gchar            *id;
 
   for (child = glade_xml_node_get_children (node);
        child; child = glade_xml_node_next (child))
@@ -2158,9 +2142,7 @@ gwa_set_signals_from_node (GladeWidgetAdaptor * adaptor, GladeXmlNode * node)
       if (!glade_xml_node_verify (child, GLADE_TAG_SIGNAL))
         continue;
 
-      if (!
-          (id =
-           glade_xml_get_property_string_required (child, GLADE_TAG_ID, NULL)))
+      if (!(id = glade_xml_get_property_string_required (child, GLADE_TAG_ID, NULL)))
         continue;
 
       if ((list =
@@ -2168,14 +2150,12 @@ gwa_set_signals_from_node (GladeWidgetAdaptor * adaptor, GladeXmlNode * node)
                                (GCompareFunc) gwa_signal_find_comp)) != NULL)
         {
           signal = list->data;
-          glade_xml_get_property_version
-              (child, GLADE_TAG_VERSION_SINCE,
-               &signal->version_since_major, &signal->version_since_minor);
+
+	  glade_signal_class_update_from_node (signal, child, domain);
         }
       g_free (id);
     }
 }
-
 
 static gboolean
 gwa_extend_with_node (GladeWidgetAdaptor * adaptor,
@@ -2205,7 +2185,7 @@ gwa_extend_with_node (GladeWidgetAdaptor * adaptor,
     gwa_set_packing_defaults_from_node (adaptor, child);
 
   if ((child = glade_xml_search_child (node, GLADE_TAG_SIGNALS)) != NULL)
-    gwa_set_signals_from_node (adaptor, child);
+    gwa_set_signals_from_node (adaptor, child, domain);
 
   if ((child = glade_xml_search_child (node, GLADE_TAG_ACTIONS)) != NULL)
     gwa_action_update_from_node (adaptor, FALSE, child, domain, NULL);
@@ -3976,7 +3956,7 @@ glade_widget_adaptor_get_signal_class (GladeWidgetAdaptor * adaptor,
   for (list = adaptor->priv->signals; list; list = list->next)
     {
       signal = list->data;
-      if (!strcmp (signal->name, name))
+      if (!strcmp (glade_signal_class_get_name (signal), name))
         return signal;
     }
 

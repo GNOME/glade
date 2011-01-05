@@ -142,7 +142,6 @@ void                glade_property_class_get_from_gvalue         (GladePropertyC
 								  ...);
 
 gboolean            glade_property_class_update_from_node        (GladeXmlNode        *node,
-								  GModule             *module,
 								  GType                object_type,
 								  GladePropertyClass **property_class,
 								  const gchar         *domain);

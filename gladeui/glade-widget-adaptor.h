@@ -1,9 +1,10 @@
-#ifndef __GLADE_WIDGET_ADAPTOR_H__
-#define __GLADE_WIDGET_ADAPTOR_H__
+#ifndef _GLADE_WIDGET_ADAPTOR_H_
+#define _GLADE_WIDGET_ADAPTOR_H_
 
 #include <gladeui/glade-xml-utils.h>
 #include <gladeui/glade-property-class.h>
 #include <gladeui/glade-editor-property.h>
+#include <gladeui/glade-signal-class.h>
 #include <gladeui/glade-catalog.h>
 #include <gladeui/glade-editable.h>
 #include <glib-object.h>
@@ -137,23 +138,6 @@ typedef struct _GladeWidgetAdaptorClass   GladeWidgetAdaptorClass;
  * Same as GWA_GET_CLASS but casted to GObjectClass
  */
 #define GWA_GET_OCLASS(type) ((GObjectClass*)GWA_GET_CLASS(type))
-
-
-#define GLADE_SIGNAL_CLASS(klass) ((GladeSignalClass *)(klass))
-
-/**
- * GSC_VERSION_CHECK:
- * @klass: A #GladeSignalClass
- * @major_version: The major version to check
- * @minor_version: The minor version to check
- *
- * Evaluates to %TRUE if @klass is available in its owning library version-@major_verion.@minor_version.
- *
- */
-#define GSC_VERSION_CHECK(klass, major_version, minor_version)	\
-  ((GLADE_SIGNAL_CLASS (klass)->version_since_major == major_version) ? \
-   (GLADE_SIGNAL_CLASS (klass)->version_since_minor <= minor_version) : \
-   (GLADE_SIGNAL_CLASS (klass)->version_since_major <= major_version))
 
 
 #define GLADE_VALID_CREATE_REASON(reason) (reason >= 0 && reason < GLADE_CREATE_REASONS)
@@ -542,28 +526,6 @@ typedef GladeEditable *(* GladeCreateEditableFunc) (GladeWidgetAdaptor   *adapto
 						    GladeEditorPageType   type);
 
 
-/* GladeSignalClass contains all the info we need for a given signal, such as
- * the signal name, and maybe more in the future 
- */
-typedef struct _GladeSignalClass GladeSignalClass; 
-struct _GladeSignalClass
-{
-  GladeWidgetAdaptor *adaptor; /* The adaptor that originated this signal.
-				*/
-
-  GSignalQuery query;
-
-  guint16      version_since_major; /* Version in which this signal was
-				     * introduced
-				     */
-  guint16      version_since_minor;
-
-  const gchar *name;         /* Name of the signal, eg clicked */
-  const gchar *type;         /* Name of the object class that this signal belongs to
-			      * eg GtkButton */
-
-};
-
 /* Note that everything that must be processed at the creation of
  * every instance is managed on the instance structure, and everywhere
  * that we want to take advantage of inheritance is handled in the class
@@ -851,4 +813,4 @@ GladeWidgetAdaptor   *glade_widget_adaptor_get_parent_adaptor (GladeWidgetAdapto
 
 G_END_DECLS
 
-#endif /* __GLADE_WIDGET_ADAPTOR_H__ */
+#endif /* _GLADE_WIDGET_ADAPTOR_H_ */

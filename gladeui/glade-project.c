@@ -1387,9 +1387,10 @@ static void
 glade_project_introspect_signal_versions (GladeSignal *signal,
                                           VersionData *data)
 {
-  GladeSignalClass *signal_class;
-  gchar *catalog = NULL;
-  gboolean is_gtk_adaptor = FALSE;
+  GladeSignalClass   *signal_class;
+  GladeWidgetAdaptor *adaptor;
+  gchar              *catalog = NULL;
+  gboolean            is_gtk_adaptor = FALSE;
 
   signal_class =
     glade_widget_adaptor_get_signal_class (glade_widget_get_adaptor (data->widget), signal->name);
@@ -1397,22 +1398,20 @@ glade_project_introspect_signal_versions (GladeSignal *signal,
   /*  unknown signal... can it happen ? */
   if (!signal_class) 
     return;
-  g_assert (signal_class->adaptor);
+
+  adaptor = glade_signal_class_get_adaptor (signal_class);
 
   /* Check if the signal comes from a GTK+ widget class */
-  g_object_get (signal_class->adaptor, "catalog", &catalog, NULL);
+  g_object_get (adaptor, "catalog", &catalog, NULL);
   if (strcmp (catalog, "gtk+") == 0)
     is_gtk_adaptor = TRUE;
   g_free (catalog);
 
-  /* Check GTK+ version that signal was introduced */
-  if (is_gtk_adaptor &&
-      (data->major < signal_class->version_since_major ||
-       (data->major == signal_class->version_since_major &&
-	data->minor < signal_class->version_since_minor)))
+  if (is_gtk_adaptor && 
+      !GSC_VERSION_CHECK (signal_class, data->major, data->minor))
     {
-      data->major = signal_class->version_since_major;
-      data->minor = signal_class->version_since_minor;
+      data->major = glade_signal_class_since_major (signal_class);
+      data->minor = glade_signal_class_since_minor (signal_class);
     }
 }
 
@@ -2247,20 +2246,22 @@ glade_project_verify_signal_internal (GladeWidget * widget,
 				      const gchar * path_name,
 				      GString * string, gboolean forwidget)
 {
-  GladeSignalClass *signal_class;
-  gint target_major, target_minor;
-  gchar *catalog;
+  GladeSignalClass   *signal_class;
+  GladeWidgetAdaptor *adaptor;
+  gint                target_major, target_minor;
+  gchar              *catalog;
 
   signal_class =
       glade_widget_adaptor_get_signal_class (glade_widget_get_adaptor (widget), signal->name);
-  //* Cannot verify unknown signal */
+
   if (!signal_class)
     return;
-  g_assert (signal_class->adaptor);
 
-  g_object_get (signal_class->adaptor, "catalog", &catalog, NULL);
+  adaptor = glade_signal_class_get_adaptor (signal_class);
+
+  g_object_get (adaptor, "catalog", &catalog, NULL);
   glade_project_target_version_for_adaptor (glade_widget_get_project (widget),
-                                            signal_class->adaptor,
+                                            adaptor,
                                             &target_major, &target_minor);
 
   if (!GSC_VERSION_CHECK (signal_class, target_major, target_minor))
@@ -2271,8 +2272,8 @@ glade_project_verify_signal_internal (GladeWidget * widget,
 
           warning = g_strdup_printf (SIGNAL_VERSION_CONFLICT_MSGFMT,
                                      catalog,
-                                     signal_class->version_since_major,
-                                     signal_class->version_since_minor,
+				     glade_signal_class_since_major (signal_class),
+				     glade_signal_class_since_minor (signal_class),
                                      catalog, target_major, target_minor);
           glade_signal_set_support_warning (signal, warning);
           g_free (warning);
@@ -2282,10 +2283,10 @@ glade_project_verify_signal_internal (GladeWidget * widget,
                                 SIGNAL_VERSION_CONFLICT_FMT,
                                 path_name,
                                 signal->name,
-                                glade_widget_adaptor_get_title (signal_class->adaptor),
+                                glade_widget_adaptor_get_title (adaptor),
                                 catalog,
-                                signal_class->version_since_major,
-                                signal_class->version_since_minor);
+				glade_signal_class_since_major (signal_class),
+				glade_signal_class_since_minor (signal_class));
     }
   else if (forwidget)
     glade_signal_set_support_warning (signal, NULL);
