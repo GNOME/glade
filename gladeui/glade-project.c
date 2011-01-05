@@ -545,7 +545,8 @@ glade_project_undo_impl (GladeProject * project)
                      glade_project_signals[CHANGED], 0, cmd, FALSE);
 
       if ((next_cmd = glade_project_next_undo_item (project)) != NULL &&
-          (next_cmd->group_id == 0 || next_cmd->group_id != cmd->group_id))
+          (glade_command_group_id (next_cmd) == 0 || 
+	   glade_command_group_id (next_cmd) != glade_command_group_id (cmd)))
         break;
     }
 }
@@ -565,7 +566,8 @@ glade_project_redo_impl (GladeProject * project)
                      glade_project_signals[CHANGED], 0, cmd, TRUE);
 
       if ((next_cmd = glade_project_next_redo_item (project)) != NULL &&
-          (next_cmd->group_id == 0 || next_cmd->group_id != cmd->group_id))
+          (glade_command_group_id (next_cmd) == 0 || 
+	   glade_command_group_id (next_cmd) != glade_command_group_id (cmd)))
         break;
     }
 }
@@ -3617,7 +3619,9 @@ walk_command (GList * list, gboolean forward)
 
   next_cmd = list ? list->data : NULL;
 
-  while (list && next_cmd->group_id != 0 && next_cmd->group_id == cmd->group_id)
+  while (list && 
+	 glade_command_group_id (next_cmd) != 0 && 
+	 glade_command_group_id (next_cmd) == glade_command_group_id (cmd))
     {
       if (forward)
         list = list->next;
@@ -3699,7 +3703,7 @@ glade_project_undo_items (GladeProject * project)
       if (!menu)
         menu = gtk_menu_new ();
 
-      item = gtk_menu_item_new_with_label (cmd->description);
+      item = gtk_menu_item_new_with_label (glade_command_description (cmd));
       gtk_widget_show (item);
       gtk_menu_shell_append (GTK_MENU_SHELL (menu), GTK_WIDGET (item));
       g_object_set_data (G_OBJECT (item), "command-data", cmd);
@@ -3739,7 +3743,7 @@ glade_project_redo_items (GladeProject * project)
       if (!menu)
         menu = gtk_menu_new ();
 
-      item = gtk_menu_item_new_with_label (cmd->description);
+      item = gtk_menu_item_new_with_label (glade_command_description (cmd));
       gtk_widget_show (item);
       gtk_menu_shell_append (GTK_MENU_SHELL (menu), GTK_WIDGET (item));
       g_object_set_data (G_OBJECT (item), "command-data", cmd);

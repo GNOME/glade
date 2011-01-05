@@ -49,6 +49,20 @@
 #include "glade-app.h"
 #include "glade-name-context.h"
 
+struct _GladeCommandPrivate
+{
+  GladeProject *project; /* The project this command is created for */
+
+  gchar *description; /* a string describing the command.
+		       * It's used in the undo/redo menu entry.
+		       */
+
+  gint   group_id;    /* If this is part of a command group, this is
+		       * the group id (id is needed only to ensure that
+		       * consecutive groups dont get merged).
+		       */
+};
+
 /* Concerning placeholders: we do not hold any reference to placeholders,
  * placeholders that are supplied by the backend are not reffed, placeholders
  * that are created by glade-command are temporarily owned by glade-command
@@ -67,8 +81,6 @@ typedef struct
   gulong handler_id;
 } CommandData;
 
-static GObjectClass *parent_class = NULL;
-
 /* Group description used for the current group
  */
 static gchar *gc_group_description = NULL;
@@ -82,6 +94,59 @@ static gint gc_group_id = 1;
 static gint gc_group_depth = 0;
 
 
+G_DEFINE_TYPE (GladeCommand, glade_command, G_TYPE_OBJECT)
+
+static void
+glade_command_finalize (GObject * obj)
+{
+  GladeCommand *cmd = (GladeCommand *) obj;
+  g_return_if_fail (cmd != NULL);
+
+  if (cmd->priv->description)
+    g_free (cmd->priv->description);
+
+  /* Call the base class dtor */
+  (*G_OBJECT_CLASS (glade_command_parent_class)->finalize) (obj);
+}
+
+static gboolean
+glade_command_unifies_impl (GladeCommand * this_cmd, GladeCommand * other_cmd)
+{
+  return FALSE;
+}
+
+static void
+glade_command_collapse_impl (GladeCommand * this_cmd, GladeCommand * other_cmd)
+{
+  g_return_if_reached ();
+}
+
+static void
+glade_command_init (GladeCommand *command)
+{
+  command->priv = 
+    G_TYPE_INSTANCE_GET_PRIVATE ((command), GLADE_TYPE_COMMAND,
+				 GladeCommandPrivate);
+}
+
+static void
+glade_command_class_init (GladeCommandClass * klass)
+{
+  GObjectClass *object_class;
+
+  object_class = G_OBJECT_CLASS (klass);
+
+  object_class->finalize = glade_command_finalize;
+
+  klass->undo = NULL;
+  klass->execute = NULL;
+  klass->unifies = glade_command_unifies_impl;
+  klass->collapse = glade_command_collapse_impl;
+
+  g_type_class_add_private (klass, sizeof (GladeCommandPrivate));
+}
+
+/* Macros for defining the derived command types */
 #define MAKE_TYPE(func, type, parent)			\
 GType							\
 func ## _get_type (void)				\
@@ -109,49 +174,6 @@ func ## _get_type (void)				\
 	return cmd_type;				\
 }							\
 
-static void
-glade_command_finalize (GObject * obj)
-{
-  GladeCommand *cmd = (GladeCommand *) obj;
-  g_return_if_fail (cmd != NULL);
-
-  if (cmd->description)
-    g_free (cmd->description);
-
-  /* Call the base class dtor */
-  (*G_OBJECT_CLASS (parent_class)->finalize) (obj);
-}
-
-static gboolean
-glade_command_unifies_impl (GladeCommand * this_cmd, GladeCommand * other_cmd)
-{
-  return FALSE;
-}
-
-static void
-glade_command_collapse_impl (GladeCommand * this_cmd, GladeCommand * other_cmd)
-{
-  g_return_if_reached ();
-}
-
-static void
-glade_command_class_init (GladeCommandClass * klass)
-{
-  GObjectClass *object_class;
-
-  object_class = G_OBJECT_CLASS (klass);
-  parent_class = g_type_class_peek_parent (klass);
-
-  object_class->finalize = glade_command_finalize;
-
-  klass->undo = NULL;
-  klass->execute = NULL;
-  klass->unifies = glade_command_unifies_impl;
-  klass->collapse = glade_command_collapse_impl;
-}
-
-/* compose the _get_type function for GladeCommand */
-MAKE_TYPE (glade_command, GladeCommand, G_TYPE_OBJECT)
 #define GLADE_MAKE_COMMAND(type, func)					\
 static gboolean								\
 func ## _undo (GladeCommand *me);					\
@@ -179,6 +201,25 @@ typedef struct {							\
 	GladeCommandClass cmd;						\
 } type ## Class;							\
 static MAKE_TYPE(func, type, GLADE_TYPE_COMMAND)
+
+
+G_CONST_RETURN gchar *
+glade_command_description (GladeCommand *command)
+{
+  g_return_val_if_fail (GLADE_IS_COMMAND (command), NULL);
+
+  return command->priv->description;
+}
+
+gint
+glade_command_group_id (GladeCommand *command)
+{
+  g_return_val_if_fail (GLADE_IS_COMMAND (command), -1);
+
+  return command->priv->group_id;
+}
+
+
 /**
  * glade_command_execute:
  * @command: A #GladeCommand
@@ -187,7 +228,7 @@ static MAKE_TYPE(func, type, GLADE_TYPE_COMMAND)
  *
  * Returns: whether the command was successfully executed
  */
-    gboolean
+gboolean
 glade_command_execute (GladeCommand * command)
 {
   g_return_val_if_fail (GLADE_IS_COMMAND (command), FALSE);
@@ -228,7 +269,7 @@ glade_command_unifies (GladeCommand * command, GladeCommand * other)
   /* Cannot unify with a part of a command group.
    * Unify atomic commands only
    */
-  if (command->group_id != 0 || (other && other->group_id != 0))
+  if (command->priv->group_id != 0 || (other && other->priv->group_id != 0))
     return FALSE;
 
   return GLADE_COMMAND_GET_CLASS (command)->unifies (command, other);
@@ -305,9 +346,9 @@ glade_command_check_group (GladeCommand * cmd)
   g_return_if_fail (GLADE_IS_COMMAND (cmd));
   if (gc_group_description)
     {
-      cmd->description =
-          (g_free (cmd->description), g_strdup (gc_group_description));
-      cmd->group_id = gc_group_id;
+      cmd->priv->description =
+          (g_free (cmd->priv->description), g_strdup (gc_group_description));
+      cmd->priv->group_id = gc_group_id;
     }
 }
 
@@ -564,9 +605,9 @@ glade_command_set_property_collapse (GladeCommand * this_cmd,
 
   /* Set the description
    */
-  g_free (this_cmd->description);
-  this_cmd->description = other_cmd->description;
-  other_cmd->description = NULL;
+  g_free (this_cmd->priv->description);
+  this_cmd->priv->description = other_cmd->priv->description;
+  other_cmd->priv->description = NULL;
 }
 
 
@@ -629,7 +670,7 @@ glade_command_set_properties_list (GladeProject * project, GList * props)
   me = (GladeCommandSetProperty *)
       g_object_new (GLADE_COMMAND_SET_PROPERTY_TYPE, NULL);
   cmd = GLADE_COMMAND (me);
-  cmd->project = project;
+  cmd->priv->project = project;
 
   /* Ref all props */
   for (list = props; list; list = list->next)
@@ -639,11 +680,11 @@ glade_command_set_properties_list (GladeProject * project, GList * props)
     }
 
   me->sdata = props;
-  cmd->description = glade_command_set_property_description (me);
+  cmd->priv->description = glade_command_set_property_description (me);
 
   multiple = g_list_length (me->sdata) > 1;
   if (multiple)
-    glade_command_push_group (cmd->description);
+    glade_command_push_group (cmd->priv->description);
 
   glade_command_check_group (GLADE_COMMAND (me));
 
@@ -651,7 +692,7 @@ glade_command_set_properties_list (GladeProject * project, GList * props)
   success = glade_command_set_property_execute (cmd);
 
   if (success)
-    glade_project_push_undo (cmd->project, cmd);
+    glade_project_push_undo (cmd->priv->project, cmd);
   else
     g_object_unref (G_OBJECT (me));
 
@@ -785,7 +826,7 @@ glade_command_set_name_execute (GladeCommand * cmd)
   g_return_val_if_fail (me->widget != NULL, TRUE);
   g_return_val_if_fail (me->name != NULL, TRUE);
 
-  glade_project_set_widget_name (cmd->project, me->widget, me->name);
+  glade_project_set_widget_name (cmd->priv->project, me->widget, me->name);
 
   tmp = me->old_name;
   me->old_name = me->name;
@@ -842,8 +883,8 @@ glade_command_set_name_collapse (GladeCommand * this_cmd,
   nthis->old_name = nother->old_name;
   nother->old_name = NULL;
 
-  g_free (this_cmd->description);
-  this_cmd->description =
+  g_free (this_cmd->priv->description);
+  this_cmd->priv->description =
       g_strdup_printf (_("Renaming %s to %s"), nthis->name, nthis->old_name);
 }
 
@@ -864,19 +905,19 @@ glade_command_set_name (GladeWidget * widget, const gchar * name)
 
   me = g_object_new (GLADE_COMMAND_SET_NAME_TYPE, NULL);
   cmd = GLADE_COMMAND (me);
-  cmd->project = glade_widget_get_project (widget);
+  cmd->priv->project = glade_widget_get_project (widget);
 
   me->widget = widget;
   me->name = g_strdup (name);
   me->old_name = g_strdup (glade_widget_get_name (widget));
 
-  cmd->description =
+  cmd->priv->description =
       g_strdup_printf (_("Renaming %s to %s"), me->old_name, me->name);
 
   glade_command_check_group (GLADE_COMMAND (me));
 
   if (glade_command_set_name_execute (GLADE_COMMAND (me)))
-    glade_project_push_undo (cmd->project, cmd);
+    glade_project_push_undo (cmd->priv->project, cmd);
   else
     g_object_unref (G_OBJECT (me));
 }
@@ -998,11 +1039,11 @@ glade_command_add (GList            *widgets,
   adaptor = glade_widget_get_adaptor (widget);
 
   if (placeholder && GWA_IS_TOPLEVEL (adaptor) == FALSE)
-    cmd->project = glade_placeholder_get_project (placeholder);
+    cmd->priv->project = glade_placeholder_get_project (placeholder);
   else
-    cmd->project = project;
+    cmd->priv->project = project;
 
-  GLADE_COMMAND (me)->description =
+  GLADE_COMMAND (me)->priv->description =
       g_strdup_printf (_("Add %s"), g_list_length (widgets) == 1 ?
                        glade_widget_get_name (widget) : _("multiple"));
 
@@ -1079,7 +1120,7 @@ glade_command_add (GList            *widgets,
    * Push it onto the undo stack only on success
    */
   if (glade_command_add_remove_execute (cmd))
-    glade_project_push_undo (cmd->project, cmd);
+    glade_project_push_undo (cmd->priv->project, cmd);
   else
     g_object_unref (G_OBJECT (me));
 
@@ -1177,8 +1218,8 @@ glade_command_remove (GList * widgets)
         }
     }
 
-  GLADE_COMMAND (me)->project = glade_widget_get_project (widget);
-  GLADE_COMMAND (me)->description = g_strdup ("dummy");
+  GLADE_COMMAND (me)->priv->project = glade_widget_get_project (widget);
+  GLADE_COMMAND (me)->priv->description = g_strdup ("dummy");
 
   if (g_list_length (widgets) == 1)
     glade_command_push_group (_("Remove %s"),
@@ -1234,7 +1275,7 @@ glade_command_remove (GList * widgets)
   glade_command_check_group (GLADE_COMMAND (me));
 
   if (glade_command_add_remove_execute (GLADE_COMMAND (me)))
-    glade_project_push_undo (GLADE_COMMAND (me)->project,
+    glade_project_push_undo (GLADE_COMMAND (me)->priv->project,
                              GLADE_COMMAND (me));
   else
     g_object_unref (G_OBJECT (me));
@@ -1269,7 +1310,7 @@ glade_command_add_execute (GladeCommandAddRemove * me)
 
   if (me->widgets)
     {
-      glade_project_selection_clear (GLADE_COMMAND (me)->project, FALSE);
+      glade_project_selection_clear (GLADE_COMMAND (me)->priv->project, FALSE);
 
       for (list = me->widgets; list && list->data; list = list->next)
         {
@@ -1375,23 +1416,23 @@ glade_command_add_execute (GladeCommandAddRemove * me)
                 }
             }
 
-          glade_project_add_object (GLADE_COMMAND (me)->project,
+          glade_project_add_object (GLADE_COMMAND (me)->priv->project,
 				    glade_widget_get_object (cdata->widget));
 
           for (l = cdata->reffed; l; l = l->next)
             {
               GladeWidget *reffed = l->data;
-              glade_project_add_object (GLADE_COMMAND (me)->project,
+              glade_project_add_object (GLADE_COMMAND (me)->priv->project,
                                         glade_widget_get_object (reffed));
             }
 
-	  glade_project_selection_add (GLADE_COMMAND (me)->project, 
+	  glade_project_selection_add (GLADE_COMMAND (me)->priv->project, 
 				       glade_widget_get_object (cdata->widget), FALSE);
 
           glade_widget_show (cdata->widget);
         }
 
-      glade_project_queue_selection_changed (GLADE_COMMAND (me)->project);
+      glade_project_queue_selection_changed (GLADE_COMMAND (me)->priv->project);
     }
   return TRUE;
 }                               /* end of glade_command_add_execute() */
@@ -1409,13 +1450,13 @@ glade_command_remove_execute (GladeCommandAddRemove * me)
 
       glade_widget_hide (cdata->widget);
 
-      glade_project_remove_object (GLADE_COMMAND (me)->project,
+      glade_project_remove_object (GLADE_COMMAND (me)->priv->project,
                                    glade_widget_get_object (cdata->widget));
 
       for (l = cdata->reffed; l; l = l->next)
         {
           reffed = l->data;
-          glade_project_remove_object (GLADE_COMMAND (me)->project,
+          glade_project_remove_object (GLADE_COMMAND (me)->priv->project,
                                        glade_widget_get_object (reffed));
         }
 
@@ -1857,8 +1898,8 @@ glade_command_add_remove_change_signal (GladeWidget * glade_widget,
   me->signal = glade_signal_clone (signal);
   me->new_signal = new_signal ? glade_signal_clone (new_signal) : NULL;
 
-  cmd->project = glade_widget_get_project (glade_widget);
-  cmd->description =
+  cmd->priv->project = glade_widget_get_project (glade_widget);
+  cmd->priv->description =
       g_strdup_printf (type == GLADE_ADD ? _("Add signal handler %s") :
                        type == GLADE_REMOVE ? _("Remove signal handler %s") :
                        _("Change signal handler %s"), 
@@ -1867,7 +1908,7 @@ glade_command_add_remove_change_signal (GladeWidget * glade_widget,
   glade_command_check_group (GLADE_COMMAND (me));
 
   if (glade_command_add_signal_execute (cmd))
-    glade_project_push_undo (cmd->project, cmd);
+    glade_project_push_undo (cmd->priv->project, cmd);
   else
     g_object_unref (G_OBJECT (me));
 }
@@ -2076,16 +2117,16 @@ glade_command_set_i18n (GladeProperty * property,
   me->old_context = g_strdup (glade_property_i18n_get_context (property));
   me->old_comment = g_strdup (glade_property_i18n_get_comment (property));
 
-  GLADE_COMMAND (me)->project = 
+  GLADE_COMMAND (me)->priv->project = 
     glade_widget_get_project (glade_property_get_widget (property));
-  GLADE_COMMAND (me)->description =
+  GLADE_COMMAND (me)->priv->description =
       g_strdup_printf (_("Setting i18n metadata"));;
 
   glade_command_check_group (GLADE_COMMAND (me));
 
   /* execute the command and push it on the stack if successful */
   if (glade_command_set_i18n_execute (GLADE_COMMAND (me)))
-    glade_project_push_undo (GLADE_COMMAND (me)->project, GLADE_COMMAND (me));
+    glade_project_push_undo (GLADE_COMMAND (me)->priv->project, GLADE_COMMAND (me));
   else
     g_object_unref (G_OBJECT (me));
 }
@@ -2121,7 +2162,7 @@ glade_command_set_policy_execute (GladeCommand * cmd)
   GladeNamingPolicy policy;
 
   /* set the new policy */
-  glade_project_set_naming_policy (cmd->project, me->policy);
+  glade_project_set_naming_policy (cmd->priv->project, me->policy);
 
   /* swap the current values with the old values to prepare for undo */
   policy = me->policy;
@@ -2202,8 +2243,8 @@ glade_command_set_project_naming_policy (GladeProject * project,
       me->policy = policy;
       me->old_policy = glade_project_get_naming_policy (project);
 
-      GLADE_COMMAND (me)->project = project;
-      GLADE_COMMAND (me)->description = g_strdup_printf ("dummy string");
+      GLADE_COMMAND (me)->priv->project = project;
+      GLADE_COMMAND (me)->priv->description = g_strdup_printf ("dummy string");
 
       glade_command_check_group (GLADE_COMMAND (me));
 
@@ -2328,8 +2369,8 @@ glade_command_lock_widget (GladeWidget * widget, GladeWidget * locked)
   me->locked = g_object_ref (locked);
   me->locking = TRUE;
 
-  GLADE_COMMAND (me)->project = glade_widget_get_project (widget);
-  GLADE_COMMAND (me)->description =
+  GLADE_COMMAND (me)->priv->project = glade_widget_get_project (widget);
+  GLADE_COMMAND (me)->priv->description =
     g_strdup_printf (_("Locking %s by widget %s"), 
 		     glade_widget_get_name (locked),
 		     glade_widget_get_name (widget));
@@ -2340,7 +2381,7 @@ glade_command_lock_widget (GladeWidget * widget, GladeWidget * locked)
    * this sets the actual policy
    */
   if (glade_command_lock_execute (GLADE_COMMAND (me)))
-    glade_project_push_undo (GLADE_COMMAND (me)->project, GLADE_COMMAND (me));
+    glade_project_push_undo (GLADE_COMMAND (me)->priv->project, GLADE_COMMAND (me));
   else
     g_object_unref (G_OBJECT (me));
 
@@ -2369,8 +2410,8 @@ glade_command_unlock_widget (GladeWidget * widget)
   me->locked = g_object_ref (widget);
   me->locking = FALSE;
 
-  GLADE_COMMAND (me)->project = glade_widget_get_project (widget);
-  GLADE_COMMAND (me)->description =
+  GLADE_COMMAND (me)->priv->project = glade_widget_get_project (widget);
+  GLADE_COMMAND (me)->priv->description =
     g_strdup_printf (_("Unlocking %s"), glade_widget_get_name (widget));
 
   glade_command_check_group (GLADE_COMMAND (me));
@@ -2379,7 +2420,7 @@ glade_command_unlock_widget (GladeWidget * widget)
    * this sets the actual policy
    */
   if (glade_command_lock_execute (GLADE_COMMAND (me)))
-    glade_project_push_undo (GLADE_COMMAND (me)->project, GLADE_COMMAND (me));
+    glade_project_push_undo (GLADE_COMMAND (me)->priv->project, GLADE_COMMAND (me));
   else
     g_object_unref (G_OBJECT (me));
 

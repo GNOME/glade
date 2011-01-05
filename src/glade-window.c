@@ -2868,11 +2868,11 @@ refresh_undo_redo (GladeWindow *window, GladeProject *project)
 
   change_menu_label
       (window, "/MenuBar/EditMenu/Undo", _("_Undo"),
-       undo ? undo->description : NULL);
+       undo ? glade_command_description (undo) : NULL);
 
   tooltip =
       g_strdup_printf (_("Undo: %s"),
-                       undo ? undo->description : _("the last action"));
+                       undo ? glade_command_description (undo) : _("the last action"));
   g_object_set (action, "tooltip", tooltip, NULL);
   g_free (tooltip);
 
@@ -2882,11 +2882,11 @@ refresh_undo_redo (GladeWindow *window, GladeProject *project)
 
   change_menu_label
       (window, "/MenuBar/EditMenu/Redo", _("_Redo"),
-       redo ? redo->description : NULL);
+       redo ? glade_command_description (redo) : NULL);
 
   tooltip =
       g_strdup_printf (_("Redo: %s"),
-                       redo ? redo->description : _("the last action"));
+                       redo ? glade_command_description (redo) : _("the last action"));
   g_object_set (action, "tooltip", tooltip, NULL);
   g_free (tooltip);
 
