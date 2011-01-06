@@ -132,6 +132,7 @@ libgladeuiinclude_HEADERS = \
 	glade-base-editor.h \
 	glade-xml-utils.h \
 	glade-signal.h \
+	glade-signal-class.h \
 	glade-cursor.h \
 	glade-catalog.h \
 	glade-widget-action.h \
