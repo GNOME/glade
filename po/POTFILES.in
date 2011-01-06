@@ -23,7 +23,6 @@ gladeui/glade-debug.c
 gladeui/glade-editor-property.c
 gladeui/glade-editor-table.c
 gladeui/glade-editor.c
-gladeui/glade-fixed.c
 gladeui/glade-palette.c
 gladeui/glade-placeholder.c
 gladeui/glade-popup.c
@@ -32,6 +31,7 @@ gladeui/glade-property-class.c
 gladeui/glade-property.c
 gladeui/glade-signal-editor.c
 gladeui/glade-signal.c
+gladeui/glade-signal-class.c
 gladeui/glade-utils.c
 gladeui/glade-widget.c
 gladeui/glade-widget-adaptor.c
@@ -42,11 +42,12 @@ gladeui/glade-named-icon-chooser-dialog.c
 gladeui/icon-naming-spec.c
 
 # gtk plugin backend
-plugins/gtk+/glade-attributes.c
-plugins/gtk+/glade-gtk.c
-plugins/gtk+/glade-accels.c
 plugins/gtk+/gtk+.xml.in
 plugins/gtk+/gtkunixprint.xml.in
+plugins/gtk+/glade-attributes.c
+plugins/gtk+/glade-gtk.c
+plugins/gtk+/glade-fixed.c
+plugins/gtk+/glade-accels.c
 plugins/gtk+/glade-column-types.c
 plugins/gtk+/glade-model-data.c
 plugins/gtk+/glade-text-button.c
