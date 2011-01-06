@@ -365,7 +365,7 @@ GladeSignal *
 glade_signal_read (GladeXmlNode * node)
 {
   GladeSignal *signal;
-  gchar *name, *handler;
+  gchar *name, *handler, *userdata;
 
   g_return_val_if_fail (glade_xml_node_verify_silent
                         (node, GLADE_XML_TAG_SIGNAL), NULL);
@@ -384,16 +384,18 @@ glade_signal_read (GladeXmlNode * node)
       return NULL;
     }
 
-  signal = g_new0 (GladeSignal, 1);
-  signal->priv->name = name;
-  signal->priv->handler = handler;
-  signal->priv->after =
-      glade_xml_get_property_boolean (node, GLADE_XML_TAG_AFTER, FALSE);
-  signal->priv->userdata = glade_xml_get_property_string (node, GLADE_XML_TAG_OBJECT);
-  signal->priv->swapped = glade_xml_get_property_boolean (node, GLADE_XML_TAG_SWAPPED,
-                                                    /* If a signal specifies an object, its swapped
-                                                     * by default behaviour in GtkBuilder */
-                                                    signal->priv->userdata != NULL);
+
+  userdata = glade_xml_get_property_string (node, GLADE_XML_TAG_OBJECT);
+
+  signal = 
+    glade_signal_new (name, handler, userdata,
+		      glade_xml_get_property_boolean (node, GLADE_XML_TAG_AFTER, FALSE),
+		      glade_xml_get_property_boolean (node, GLADE_XML_TAG_SWAPPED,
+						      userdata != NULL));
+
+  g_free (name);
+  g_free (handler);
+  g_free (userdata);
 
   return signal;
 }
