@@ -74,7 +74,6 @@ enum
   PROP_HAS_SELECTION,
   PROP_PATH,
   PROP_READ_ONLY,
-  PROP_PREVIEWABLE,
   PROP_ADD_ITEM,
   PROP_POINTER_MODE
 };
@@ -153,7 +152,6 @@ struct _GladeProjectPrivate
   guint load_cancel : 1;
   guint first_modification_is_na : 1;  /* indicates that the first_modification item has been lost */
   guint has_selection : 1;       /* Whether the project has a selection */
-  guint previewable : 1;
   guint readonly : 1;            /* A flag that is set if the project is readonly */
   guint loading : 1;             /* A flags that is set when the project is loading */
   guint modified : 1;            /* A flag that is set when a project has unsaved modifications
@@ -391,9 +389,6 @@ glade_project_get_property (GObject * object,
       break;
     case PROP_READ_ONLY:
       g_value_set_boolean (value, project->priv->readonly);
-      break;
-    case PROP_PREVIEWABLE:
-      g_value_set_boolean (value, project->priv->previewable);
       break;
     case PROP_ADD_ITEM:
       g_value_set_object (value, project->priv->add_item);
@@ -778,7 +773,6 @@ glade_project_init (GladeProject * project)
 
   priv->preview_channels =
       g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
-  priv->previewable = FALSE;
   priv->toplevel_names = glade_name_context_new ();
   priv->naming_policy = GLADE_POLICY_PROJECT_WIDE;
 
@@ -1026,15 +1020,6 @@ glade_project_class_init (GladeProjectClass * klass)
                                                          _("Read Only"),
                                                          _
                                                          ("Whether project is read-only"),
-                                                         FALSE,
-                                                         G_PARAM_READABLE));
-
-  g_object_class_install_property (object_class,
-                                   PROP_PREVIEWABLE,
-                                   g_param_spec_boolean ("previewable",
-                                                         _("Previewable"),
-                                                         _
-                                                         ("Wether the project can be previewed"),
                                                          FALSE,
                                                          G_PARAM_READABLE));
 
@@ -2892,34 +2877,6 @@ glade_project_set_widget_name (GladeProject * project,
   gtk_tree_path_free (path);
 }
 
-static gboolean
-glade_project_has_widget (GladeProject * project)
-{
-  GtkWidget *widget = NULL;
-  const GList *objects;
-
-  objects = glade_project_get_objects (project);
-
-  while (objects != NULL)
-    {
-      if (GTK_IS_WIDGET (objects->data))
-        {
-          widget = GTK_WIDGET (objects->data);
-          break;
-        }
-      objects = objects->next;
-    }
-
-  return widget != NULL;
-}
-
-static void
-glade_project_update_previewable (GladeProject * project)
-{
-  project->priv->previewable = glade_project_has_widget (project);
-  g_object_notify (G_OBJECT (project), "previewable");
-}
-
 static void
 glade_project_notify_row_has_child (GladeProject *project,
 				    GladeWidget  *gwidget,
@@ -3048,7 +3005,6 @@ glade_project_add_object (GladeProject * project, GObject * object)
 
   /* Update user visible compatibility info */
   glade_project_verify_properties (gwidget);
-  glade_project_update_previewable (project);
 
   g_signal_emit (G_OBJECT (project),
                  glade_project_signals[ADD_WIDGET], 0, gwidget);
@@ -3133,8 +3089,6 @@ glade_project_remove_object (GladeProject * project, GObject * object)
   glade_widget_set_project (gwidget, NULL);
   glade_widget_set_in_project (gwidget, FALSE);
   g_object_unref (gwidget);
-
-  glade_project_update_previewable (project);
 }
 
 static void
@@ -3922,12 +3876,6 @@ glade_project_set_naming_policy (GladeProject * project,
     }
 
 
-}
-
-gboolean
-glade_project_get_previewable (GladeProject * project)
-{
-  return project->priv->previewable;
 }
 
 GladeNamingPolicy

@@ -27,6 +27,9 @@
 	* gladeui/glade-app.c: Changed session file glade-3.conf -> glade.conf so that session
 	  files dont overlap with parallel installed 3.8.x
 
+	* gladeui/glade-project.[ch]: Removed "previewable" flag/property, now as a GladeWidgetAction
+	  of the GtkWidget adaptor this is unneeded and unused.
+
 2011-01-05  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/Makefile.am, gladeui/glade-signal-class.[ch], gladeui/glade-widget-adaptor.c,
