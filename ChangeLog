@@ -1,3 +1,17 @@
+2011-01-06  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-command.c: Immediately select newly added widgets.
+
+	* gladeui/glade-editor.c: Optimized GladeEditor
+	Now GladeEditor instead of removing/adding the cached page for
+	a said widget class will simply show/hide it (except for packing
+	pages which are generated always on the fly), keeping them all
+	in a vbox widget and using show/hide improves time to selection
+	change.
+
+	Also release all cached pages in ->dispose() (which was leeking) and
+	ensure the class field always gets the same height.
+
 2011-01-05  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/Makefile.am, gladeui/glade-signal-class.[ch], gladeui/glade-widget-adaptor.c,
