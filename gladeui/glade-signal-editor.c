@@ -111,7 +111,7 @@ on_handler_edited (GtkCellRendererText* renderer,
 
 				glade_command_change_signal (self->priv->widget, old_signal, new_signal);
 
-				glade_signal_free (new_signal);
+				g_object_unref (new_signal);
 			}
 			else
 			{
@@ -148,7 +148,7 @@ on_handler_edited (GtkCellRendererText* renderer,
 			                          tree_path,
 			                          self->priv->column_userdata,
 			                          TRUE);
-			glade_signal_free (signal);
+			g_object_unref (signal);
 			g_free (name);
 		}
 	}
@@ -195,7 +195,7 @@ on_userdata_edited (GtkCellRendererText* renderer,
 
 		glade_command_change_signal (self->priv->widget, old_signal, new_signal);
 
-		glade_signal_free (new_signal);
+		g_object_unref (new_signal);
 	}
 	g_free (old_userdata);
 	gtk_tree_path_free (tree_path);
@@ -231,7 +231,7 @@ on_swap_toggled (GtkCellRendererToggle* renderer,
 
 	glade_command_change_signal (self->priv->widget, old_signal, new_signal);
 
-	glade_signal_free (new_signal);
+	g_object_unref (new_signal);
 	
 	gtk_tree_path_free (tree_path);		
 }
@@ -266,7 +266,7 @@ on_after_toggled (GtkCellRendererToggle* renderer,
 
 	glade_command_change_signal (self->priv->widget, old_signal, new_signal);
 
-	glade_signal_free (new_signal);
+	g_object_unref (new_signal);
 	
 	gtk_tree_path_free (tree_path);	
 }

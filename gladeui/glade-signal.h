@@ -39,6 +39,7 @@ GladeSignal          *glade_signal_new                 (const gchar        *name
 							const gchar        *userdata,
 							gboolean            after,
 							gboolean            swapped);
+GladeSignal          *glade_signal_clone               (const GladeSignal  *signal);
 gboolean              glade_signal_equal               (const GladeSignal        *sig1, 
 							const GladeSignal        *sig2);
 GladeSignal          *glade_signal_read                (GladeXmlNode       *node);

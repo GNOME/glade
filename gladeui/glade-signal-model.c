@@ -70,7 +70,7 @@ glade_signal_model_init (GladeSignalModel *object)
 	object->priv = G_TYPE_INSTANCE_GET_PRIVATE (object, GLADE_TYPE_SIGNAL_MODEL, GladeSignalModelPrivate);
 
 	object->priv->dummy_signals = 
-		g_hash_table_new_full (g_str_hash, g_str_equal, NULL, (GDestroyNotify) glade_signal_free);
+		g_hash_table_new_full (g_str_hash, g_str_equal, NULL, (GDestroyNotify) g_object_unref);
 }
 
 static void
