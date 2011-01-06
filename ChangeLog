@@ -15,6 +15,12 @@
 	* gladeui/glade-project.c: Show selected widget when selection changes and
 	Cancel any queued selection from glade_project_selection_changed.
 
+	* src/glade-window.c: Added one palette per project, setting the palette's project
+	requires that every item update itself for the support for the project target version,
+	this was causing notebook page switches between projects to be very slow (actually
+	costing an entire second), with one palette for each project the project switch
+	is drastically improved.
+
 2011-01-05  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/Makefile.am, gladeui/glade-signal-class.[ch], gladeui/glade-widget-adaptor.c,
