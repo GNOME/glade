@@ -50,7 +50,7 @@
 #  include <ige-mac-integration.h>
 #endif
 
-#define GLADE_CONFIG_FILENAME "glade-3.conf"
+#define GLADE_CONFIG_FILENAME "glade.conf"
 
 enum
 {
