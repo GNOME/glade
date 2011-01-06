@@ -57,6 +57,7 @@ libgladeui_2_la_SOURCES = \
 	glade-property.c \
 	glade-signal-class.c \
 	glade-signal.c \
+	glade-widget-action.c \
 	glade-editable.c \
 	glade-editor-table.c \
 	glade-editor-property.c \
@@ -85,7 +86,6 @@ libgladeui_2_la_SOURCES = \
 	glade-popup.h \
 	glade-marshallers.h \
 	glade-accumulators.h \
-	glade-widget-action.c \
 	glade-name-context.c \
 	glade-displayable-values.c \
 	glade-signal-model.c
@@ -133,6 +133,7 @@ libgladeuiinclude_HEADERS = \
 	glade-base-editor.h \
 	glade-xml-utils.h \
 	glade-signal.h \
+	glade-signal-class.h \
 	glade-cursor.h \
 	glade-catalog.h \
 	glade-widget-action.h \

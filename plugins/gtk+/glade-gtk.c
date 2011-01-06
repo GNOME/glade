@@ -1742,7 +1742,6 @@ fix_response_id_on_child (GladeWidget * gbox, GObject * child, gboolean add)
     }
 }
 
-
 void
 glade_gtk_box_add_child (GladeWidgetAdaptor * adaptor,
                          GObject * object, GObject * child)
@@ -1795,7 +1794,7 @@ glade_gtk_box_add_child (GladeWidgetAdaptor * adaptor,
    * otherwise its a "Delete" operation on the child widget.
    */
   if (gchild)
-    glade_widget_remove_pack_action (gchild, "remove_slot");
+    glade_widget_set_pack_action_visible (gchild, "remove_slot", FALSE);
 
   /* Packing props arent around when parenting during a glade_widget_dup() */
   if (gchild && glade_widget_get_packing_properties (gchild))
@@ -1846,7 +1845,7 @@ glade_gtk_box_replace_child (GladeWidgetAdaptor * adaptor,
     /* The "Remove Slot" operation only makes sence on placeholders,
      * otherwise its a "Delete" operation on the child widget.
      */
-    glade_widget_remove_pack_action (gchild, "remove_slot");
+    glade_widget_set_pack_action_visible (gchild, "remove_slot", FALSE);
 
   gbox = glade_widget_get_from_gobject (container);
   fix_response_id_on_child (gbox, current, FALSE);

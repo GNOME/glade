@@ -52,7 +52,14 @@ struct _GladeApp
 
 struct _GladeAppClass
 {
-	GObjectClass parent_class;
+  GObjectClass parent_class;
+
+  void   (* glade_reserved1)   (void);
+  void   (* glade_reserved2)   (void);
+  void   (* glade_reserved3)   (void);
+  void   (* glade_reserved4)   (void);
+  void   (* glade_reserved5)   (void);
+  void   (* glade_reserved6)   (void);
 };
 
 GType              glade_app_get_type             (void) G_GNUC_CONST;

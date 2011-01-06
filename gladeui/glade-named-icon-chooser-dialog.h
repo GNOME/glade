@@ -40,18 +40,23 @@ typedef struct _GladeNamedIconChooserDialogClass   GladeNamedIconChooserDialogCl
 
 struct _GladeNamedIconChooserDialog
 {
-	GtkDialog parent_instance;
+  GtkDialog parent_instance;
   
-	GladeNamedIconChooserDialogPrivate *priv;
+  GladeNamedIconChooserDialogPrivate *priv;
 };
 
 struct _GladeNamedIconChooserDialogClass
 {
-	GtkDialogClass parent_class;
+  GtkDialogClass parent_class;
 	
-	void  (* icon_activated)      (GladeNamedIconChooserDialog *dialog);
+  void  (* icon_activated)      (GladeNamedIconChooserDialog *dialog);
 	
-	void  (* selection_changed)   (GladeNamedIconChooserDialog *dialog);
+  void  (* selection_changed)   (GladeNamedIconChooserDialog *dialog);
+
+  void   (* glade_reserved1)   (void);
+  void   (* glade_reserved2)   (void);
+  void   (* glade_reserved3)   (void);
+  void   (* glade_reserved4)   (void);
 };
 
 GType       glade_named_icon_chooser_dialog_get_type       (void) G_GNUC_CONST;

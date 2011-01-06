@@ -18,24 +18,23 @@ typedef struct _GladeEditableIface GladeEditableIface;
 
 typedef enum
 {
-	GLADE_PAGE_GENERAL,
-	GLADE_PAGE_COMMON,
-	GLADE_PAGE_PACKING,
-	GLADE_PAGE_ATK,
-	GLADE_PAGE_QUERY
+  GLADE_PAGE_GENERAL,
+  GLADE_PAGE_COMMON,
+  GLADE_PAGE_PACKING,
+  GLADE_PAGE_ATK,
+  GLADE_PAGE_QUERY
 } GladeEditorPageType;
 
 
 struct _GladeEditableIface
 {
-	GTypeInterface g_iface;
+  GTypeInterface g_iface;
 
-	/* virtual table */
-	void          (* load)          (GladeEditable  *editable,
-				         GladeWidget    *widget);
-	void          (* set_show_name) (GladeEditable  *editable,
-					 gboolean        show_name);
-
+  /* virtual table */
+  void          (* load)          (GladeEditable  *editable,
+				   GladeWidget    *widget);
+  void          (* set_show_name) (GladeEditable  *editable,
+				   gboolean        show_name);
 };
 
 GType     glade_editable_get_type       (void) G_GNUC_CONST;

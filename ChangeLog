@@ -1,3 +1,43 @@
+2011-01-06  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* NEWS: Rolling Glade 3.9.0
+
+	* gladeui/glade-command.c: Immediately select newly added widgets.
+
+	* gladeui/glade-editor.c: Optimized GladeEditor
+	Now GladeEditor instead of removing/adding the cached page for
+	a said widget class will simply show/hide it (except for packing
+	pages which are generated always on the fly), keeping them all
+	in a vbox widget and using show/hide improves time to selection
+	change.
+
+	Also release all cached pages in ->dispose() (which was leeking) and
+	ensure the class field always gets the same height.
+
+	* gladeui/glade-project.c: Show selected widget when selection changes and
+	Cancel any queued selection from glade_project_selection_changed.
+
+	* src/glade-window.c: Added one palette per project, setting the palette's project
+	requires that every item update itself for the support for the project target version,
+	this was causing notebook page switches between projects to be very slow (actually
+	costing an entire second), with one palette for each project the project switch
+	is drastically improved.
+
+	* gladeui/glade-palette.c: Removing the "root" create button, thats now accounted for
+	  by the palette's context menu.
+
+	* gladeui/glade-app.c: Changed session file glade-3.conf -> glade.conf so that session
+	  files dont overlap with parallel installed 3.8.x
+
+	* gladeui/glade-project.[ch]: Removed "previewable" flag/property, now as a GladeWidgetAction
+	  of the GtkWidget adaptor this is unneeded and unused.
+
+	* docs/gladeui.types: Removed GladeFixed and added GladeSignal.
+
+	* gladeui/Makefile.am: Added glade-signal-class.h to installed headers.
+
+	* po/POTFILES.in: Updated for GladeFixed changing place and for addition of glade-signal-class.c
+
 2011-01-05  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/Makefile.am, gladeui/glade-signal-class.[ch], gladeui/glade-widget-adaptor.c,
@@ -14,6 +54,35 @@
 
 	* gladeui/glade-command.[ch], gladeui/glade-project.c, src/glade-window.c:
 	Privatized GladeCommand members.
+
+	* gladeui/glade-placeholder.[ch], gladeui/glade-popup.c:
+	Privatized GladePlaceholder members.
+
+	* gladeui/glade-widget-action.[ch], gladeui/glade-widget-adaptor.c, gladeui/glade-widget.[ch],
+	gladeui/glade-popup.c, plugins/gtk+/glade-gtk.c, src/glade-window.c:
+	- Privatized members of GladeWidgetAction
+	- Created glade_widget_action_class_new() and some accessors for better code in
+	  the adaptor
+	- GWActionClass is now on the slice allocator
+	- Added glade_widget_action_set/get_visible()
+	- Removed glade_widget_remove[_pack]_action()
+	- Plugin makes actions invisible instead of removing them
+	- Everything updated for new sealed api
+
+	* gladeui/Makefile.am: slight reordering in build
+
+	* gladeui/glade-app.h, gladeui/glade-base-editor.h, gladeui/glade-catalog.h,
+	gladeui/glade-design-layout.h, gladeui/glade-design-view.h, gladeui/glade-editable.h,
+	gladeui/glade-editor-property.h, gladeui/glade-named-icon-chooser-dialog.h,
+	gladeui/glade-project.h: Aligning some indentation in headers, adding padding
+	to core object classes for possible future expansion.
+
+	Glade core api now officially sealed and ABI stable.
+
+	* gladeui/glade-editor.c: Make the editor notebook scrollable.
+
+	* gladeui/glade-signal.[ch], gladeui/glade-signal-editor.c, gladeui/glade-command.c,
+	gladeui/glade-widget.c: Made GladeSignal a GObject.
 
 2011-01-04  Johannes Schmid <jhs@gnome.org>
 
@@ -547,7 +616,7 @@
 	* gladeui/glade-project.c:
 	project-model: Don't be picky about non-existing children
 	It is sometimes possible that children are added before their parents
-	in the tree. We simply ignore that for now as it doesn't 
+	in the tree. We simply ignore that for now as it doesn't
 	cause any harm in the tree model.
 
 2010-11-05  Matthias Clasen <mclasen@redhat.com>
@@ -600,7 +669,7 @@
 
 	* plugins/gtk+/glade-gtk.c: Enable GtkAssistant(child):complete property
 	  and override property name and tooltip for the Glade environment to say:
-	  "Initially Complete"/"Whether this page will initially be marked as complete 
+	  "Initially Complete"/"Whether this page will initially be marked as complete
 	  regardless of user input." (closes bug 529595).
 
 2010-08-29  Tristan Van Berkom <tristanvb@openismus.com>

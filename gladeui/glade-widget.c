@@ -361,24 +361,17 @@ glade_widget_remove_signal_handler (GladeWidget * widget,
   /* trying to remove an inexistent signal? */
   g_assert (signals);
 
-	for (i = 0; i < signals->len; i++)
-	{
-		tmp_signal_handler = g_ptr_array_index (signals, i);
-		if (glade_signal_equal (tmp_signal_handler, signal_handler))
-		{
-			g_signal_emit (widget, glade_widget_signals[REMOVE_SIGNAL_HANDLER], 0, tmp_signal_handler);
-			g_ptr_array_remove_index (signals, i);
-			if (signals->len == 0)
-			{
-				g_hash_table_remove (widget->priv->signals, glade_signal_get_name (tmp_signal_handler));
-			}
-			else
-			{
-				glade_signal_free (tmp_signal_handler);
-			}
-			break;
-		}
-	}
+  for (i = 0; i < signals->len; i++)
+    {
+      tmp_signal_handler = g_ptr_array_index (signals, i);
+      if (glade_signal_equal (tmp_signal_handler, signal_handler))
+        {
+		  g_signal_emit (widget, glade_widget_signals[REMOVE_SIGNAL_HANDLER], 0, tmp_signal_handler);
+          g_object_unref (tmp_signal_handler);
+          g_ptr_array_remove_index (signals, i);
+          break;
+        }
+    }
 }
 
 /**
@@ -1154,18 +1147,11 @@ static void
 free_signals (gpointer value)
 {
   GPtrArray *signals = (GPtrArray *) value;
-  guint i;
-  guint nb_signals;
 
   if (signals == NULL)
     return;
 
-  /* g_ptr_array_foreach (signals, (GFunc) glade_signal_free, NULL);
-   * only available in modern versions of Gtk+ */
-  nb_signals = signals->len;
-  for (i = 0; i < nb_signals; i++)
-    glade_signal_free (g_ptr_array_index (signals, i));
-
+  g_ptr_array_foreach (signals, (GFunc) g_object_unref, NULL);
   g_ptr_array_free (signals, TRUE);
 }
 
@@ -3353,10 +3339,11 @@ glade_widget_child_get_property (GladeWidget * widget,
 }
 
 static gboolean
-glade_widget_event_private (GtkWidget * widget,
-                            GdkEvent * event, GladeWidget * gwidget)
+glade_widget_event_private (GtkWidget   *widget,
+                            GdkEvent    *event, 
+			    GladeWidget *gwidget)
 {
-  GtkWidget *layout = widget;
+  GtkWidget *layout;
 
   /* Dont run heavy machienery for events we're not interested in 
    * marshalling */
@@ -3364,8 +3351,7 @@ glade_widget_event_private (GtkWidget * widget,
     return FALSE;
 
   /* Find the parenting layout container */
-  while (layout && !GLADE_IS_DESIGN_LAYOUT (layout))
-    layout = gtk_widget_get_parent (layout);
+  layout = gtk_widget_get_ancestor (widget, GLADE_TYPE_DESIGN_LAYOUT);
 
   /* Event outside the logical heirarchy, could be a menuitem
    * or other such popup window, we'll presume to send it directly
@@ -4117,30 +4103,22 @@ glade_widget_placeholder_relation (GladeWidget * parent, GladeWidget * widget)
 }
 
 static GladeWidgetAction *
-glade_widget_action_lookup (GList ** actions, const gchar * path,
-                            gboolean remove)
+glade_widget_action_lookup (GList *actions, const gchar * path)
 {
   GList *l;
 
-  for (l = *actions; l; l = g_list_next (l))
+  for (l = actions; l; l = g_list_next (l))
     {
-      GladeWidgetAction *action = l->data;
+      GladeWidgetAction *action   = l->data;
+      GWActionClass     *aclass   = glade_widget_action_get_class (action);
+      GList             *children = glade_widget_action_get_children (action);
 
-      if (strcmp (action->klass->path, path) == 0)
-        {
-          if (remove)
-            {
-              *actions = g_list_remove (*actions, action);
-              g_object_unref (action);
-              return NULL;
-            }
-          return action;
-        }
+      if (strcmp (aclass->path, path) == 0)
+	return action;
 
-      if (action->actions &&
-          g_str_has_prefix (path, action->klass->path) &&
-          (action =
-           glade_widget_action_lookup (&action->actions, path, remove)))
+      if (children &&
+          g_str_has_prefix (path, aclass->path) &&
+          (action = glade_widget_action_lookup (children, path)))
         return action;
     }
 
@@ -4162,7 +4140,7 @@ glade_widget_get_action (GladeWidget * widget, const gchar * action_path)
   g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
   g_return_val_if_fail (action_path != NULL, NULL);
 
-  return glade_widget_action_lookup (&widget->priv->actions, action_path, FALSE);
+  return glade_widget_action_lookup (widget->priv->actions, action_path);
 }
 
 /**
@@ -4180,8 +4158,7 @@ glade_widget_get_pack_action (GladeWidget * widget, const gchar * action_path)
   g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
   g_return_val_if_fail (action_path != NULL, NULL);
 
-  return glade_widget_action_lookup (&widget->priv->packing_actions, action_path,
-                                     FALSE);
+  return glade_widget_action_lookup (widget->priv->packing_actions, action_path);
 }
 
 
@@ -4258,37 +4235,59 @@ glade_widget_set_pack_action_sensitive (GladeWidget * widget,
 
 
 /**
- * glade_widget_remove_action:
+ * glade_widget_set_action_visible:
  * @widget: a #GladeWidget
  * @action_path: a full action path including groups
+ * @visible: setting visible or invisible
  *
- * Remove an action.
+ * Sets the visibility of @action_path in @widget
+ *
+ * Returns: whether @action_path was found or not.
  */
-void
-glade_widget_remove_action (GladeWidget * widget, const gchar * action_path)
+gboolean
+glade_widget_set_action_visible (GladeWidget *widget,
+				 const gchar *action_path,
+				 gboolean     visible)
 {
-  g_return_if_fail (GLADE_IS_WIDGET (widget));
-  g_return_if_fail (action_path != NULL);
+  GladeWidgetAction *action;
 
-  glade_widget_action_lookup (&widget->priv->actions, action_path, TRUE);
+  g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+
+  if ((action = glade_widget_get_action (widget, action_path)) != NULL)
+    {
+      glade_widget_action_set_visible (action, visible);
+      return TRUE;
+    }
+  return FALSE;
 }
 
 /**
- * glade_widget_remove_pack_action:
+ * glade_widget_set_pack_action_visible:
  * @widget: a #GladeWidget
  * @action_path: a full action path including groups
+ * @visible: setting visible or invisible
  *
- * Remove a packing action.
+ * Sets the visibility of @action_path in @widget
+ *
+ * Returns: whether @action_path was found or not.
  */
-void
-glade_widget_remove_pack_action (GladeWidget * widget,
-                                 const gchar * action_path)
+gboolean
+glade_widget_set_pack_action_visible (GladeWidget *widget,
+				      const gchar *action_path,
+				      gboolean     visible)
 {
-  g_return_if_fail (GLADE_IS_WIDGET (widget));
-  g_return_if_fail (action_path != NULL);
+  GladeWidgetAction *action;
 
-  glade_widget_action_lookup (&widget->priv->packing_actions, action_path, TRUE);
+  g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+
+  if ((action = glade_widget_get_pack_action (widget, action_path)) != NULL)
+    {
+      glade_widget_action_set_visible (action, visible);
+      return TRUE;
+    }
+  return FALSE;
 }
+
 
 /**
  * glade_widget_create_editor_property:

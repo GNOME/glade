@@ -55,6 +55,13 @@ struct _GladeBaseEditorClass
   GladeWidget * (*build_child)      (GladeBaseEditor *, GladeWidget *, GType);
   gboolean      (*delete_child)     (GladeBaseEditor *, GladeWidget *, GladeWidget *);
   gboolean      (*move_child)       (GladeBaseEditor *, GladeWidget *, GladeWidget *);
+
+  void   (* glade_reserved1)   (void);
+  void   (* glade_reserved2)   (void);
+  void   (* glade_reserved3)   (void);
+  void   (* glade_reserved4)   (void);
+  void   (* glade_reserved5)   (void);
+  void   (* glade_reserved6)   (void);
 };
 
 

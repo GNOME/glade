@@ -148,12 +148,12 @@ glade_inspector_class_init (GladeInspectorClass * klass)
   object_class->set_property = glade_inspector_set_property;
   object_class->get_property = glade_inspector_get_property;
 
-        /**
-	 * GladeInspector::selection-changed:
-	 * @inspector: the object which received the signal
-	 *
-	 * Emitted when the selection changes in the GladeInspector.
-	 */
+  /**
+   * GladeInspector::selection-changed:
+   * @inspector: the object which received the signal
+   *
+   * Emitted when the selection changes in the GladeInspector.
+   */
   glade_inspector_signals[SELECTION_CHANGED] =
       g_signal_new ("selection-changed",
                     G_TYPE_FROM_CLASS (object_class),
@@ -161,12 +161,12 @@ glade_inspector_class_init (GladeInspectorClass * klass)
                     G_STRUCT_OFFSET (GladeInspectorClass, selection_changed),
                     NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
-        /**
-	 * GladeInspector::item-activated:
-	 * @inspector: the object which received the signal
-	 *
-	 * Emitted when a item is activated in the GladeInspector.
-	 */
+  /**
+   * GladeInspector::item-activated:
+   * @inspector: the object which received the signal
+   *
+   * Emitted when a item is activated in the GladeInspector.
+   */
   glade_inspector_signals[ITEM_ACTIVATED] =
       g_signal_new ("item-activated",
                     G_TYPE_FROM_CLASS (object_class),

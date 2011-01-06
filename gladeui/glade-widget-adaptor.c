@@ -3426,10 +3426,11 @@ gwa_action_get_last_group (GList * actions, const gchar * action_path)
 }
 
 static gboolean
-glade_widget_adaptor_action_add_real (GList ** list,
-                                      const gchar * action_path,
-                                      const gchar * label,
-                                      const gchar * stock, gboolean important)
+glade_widget_adaptor_action_add_real (GList       **list,
+                                      const gchar  *action_path,
+                                      const gchar  *label,
+                                      const gchar  *stock, 
+				      gboolean      important)
 {
   GWActionClass *action, *group;
   const gchar *id;
@@ -3439,43 +3440,22 @@ glade_widget_adaptor_action_add_real (GList ** list,
   if ((group = gwa_action_get_last_group (*list, action_path)))
     list = &group->actions;
 
-  if ((action = gwa_action_lookup (*list, id)))
-    {
-      /* Update parent's label/stock */
-      if (label && action->label)
-        {
-          g_free (action->label);
-          if (strcmp (label, "") == 0)
-            label = NULL;
-          action->label = (label) ? g_strdup (label) : NULL;
-        }
-      if (stock && action->stock)
-        {
-          g_free (action->stock);
-          if (strcmp (stock, "") == 0)
-            stock = NULL;
-          action->stock = (stock) ? g_strdup (stock) : NULL;
-        }
-    }
-  else
+  if (strcmp (label, "") == 0)
+    label = NULL;
+  if (stock && strcmp (stock, "") == 0)
+    stock = NULL;
+
+  if ((action = gwa_action_lookup (*list, id)) == NULL)
     {
       /* New Action */
-      action = g_new0 (GWActionClass, 1);
-      action->path = g_strdup (action_path);
-      action->id = (gchar *) gwa_action_path_get_id (action->path);
+      action = glade_widget_action_class_new (action_path);
 
-      if (label && strcmp (label, "") == 0)
-        label = NULL;
-      if (stock && strcmp (stock, "") == 0)
-        stock = NULL;
-
-      action->label = (label) ? g_strdup (label) : NULL;
-      action->stock = (stock) ? g_strdup (stock) : NULL;
+      *list = g_list_append (*list, action);
     }
 
-  action->important = important;
-
-  *list = g_list_append (*list, action);
+  glade_widget_action_class_set_label (action, label);
+  glade_widget_action_class_set_stock (action, stock);
+  glade_widget_action_class_set_important (action, important);
 
   return TRUE;
 }

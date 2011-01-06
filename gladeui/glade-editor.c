@@ -182,6 +182,20 @@ glade_editor_get_property (GObject * object,
     }
 }
 
+static void
+glade_editor_dispose (GObject *object)
+{
+  GladeEditor *editor = GLADE_EDITOR (object);
+
+  glade_editor_load_widget (editor, NULL);
+
+  /* Unref all the cached pages */
+  g_list_foreach (editor->priv->editables, (GFunc) g_object_unref, NULL);
+  editor->priv->editables =
+    (g_list_free (editor->priv->editables), NULL);
+
+  G_OBJECT_CLASS (parent_class)->dispose (object);
+}
 
 static void
 glade_editor_class_init (GladeEditorClass * klass)
@@ -191,6 +205,7 @@ glade_editor_class_init (GladeEditorClass * klass)
   parent_class = g_type_class_peek_parent (klass);
   object_class = G_OBJECT_CLASS (klass);
 
+  object_class->dispose      = glade_editor_dispose;
   object_class->set_property = glade_editor_set_property;
   object_class->get_property = glade_editor_get_property;
 
@@ -220,6 +235,7 @@ glade_editor_notebook_page (GladeEditor * editor, const gchar * name)
   GtkWidget *sw;
   GtkWidget *label_widget;
   GtkWidget *image;
+  GtkWidget *vbox;
   static gchar *path;
   static gint page = 0;
 
@@ -268,6 +284,11 @@ glade_editor_notebook_page (GladeEditor * editor, const gchar * name)
       gtk_notebook_insert_page (GTK_NOTEBOOK (editor->priv->notebook), sw,
                                 label_widget, page++);
 
+      vbox = gtk_vbox_new (FALSE, 0);
+      gtk_widget_show (vbox);
+      gtk_container_add (GTK_CONTAINER (alignment), vbox);
+
+      alignment = vbox;
     }
 
   return alignment;
@@ -370,8 +391,7 @@ glade_editor_update_class_field (GladeEditor * editor)
       gtk_label_set_text (GTK_LABEL (editor->priv->class_label), text);
       g_free (text);
 
-      glade_editor_update_class_warning_cb (editor->priv->loaded_widget, NULL,
-                                            editor);
+      glade_editor_update_class_warning_cb (editor->priv->loaded_widget, NULL, editor);
     }
   else
     {
@@ -392,13 +412,14 @@ static GtkWidget *
 glade_editor_setup_class_field (GladeEditor * editor)
 {
   GtkWidget *hbox;
+  gint       icon_height;
 
   hbox = gtk_hbox_new (FALSE, 4);
 
   editor->priv->class_icon = gtk_image_new ();
   editor->priv->class_label = gtk_label_new (NULL);
   editor->priv->warning = gtk_image_new_from_stock (GTK_STOCK_DIALOG_WARNING,
-                                              GTK_ICON_SIZE_MENU);
+						    GTK_ICON_SIZE_MENU);
 
   gtk_widget_set_no_show_all (editor->priv->warning, TRUE);
   gtk_widget_set_no_show_all (editor->priv->class_icon, TRUE);
@@ -411,6 +432,9 @@ glade_editor_setup_class_field (GladeEditor * editor)
   gtk_box_pack_start (GTK_BOX (hbox), editor->priv->warning, FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (hbox), editor->priv->class_label, TRUE, TRUE, 0);
 
+  gtk_icon_size_lookup (GTK_ICON_SIZE_BUTTON, NULL, &icon_height);
+  gtk_widget_set_size_request (editor->priv->class_label, -1, icon_height + 2);
+
   glade_editor_update_class_field (editor);
   gtk_widget_show_all (hbox);
 
@@ -421,7 +445,7 @@ static void
 glade_editor_init (GladeEditor * editor)
 {
   GtkSizeGroup *size_group;
-  GtkWidget *hbox;
+  GtkWidget    *hbox;
 
   editor->priv = 
     G_TYPE_INSTANCE_GET_PRIVATE ((editor), GLADE_TYPE_EDITOR, GladeEditorPrivate);
@@ -438,6 +462,8 @@ glade_editor_init (GladeEditor * editor)
   editor->priv->class_field = glade_editor_setup_class_field (editor);
 
   gtk_container_set_border_width (GTK_CONTAINER (editor->priv->notebook), 0);
+
+  gtk_notebook_set_scrollable (GTK_NOTEBOOK (editor->priv->notebook), TRUE);
 
   gtk_box_pack_start (GTK_BOX (editor), editor->priv->class_field, FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (editor), editor->priv->notebook, TRUE, TRUE, 0);
@@ -467,6 +493,8 @@ glade_editor_init (GladeEditor * editor)
     gtk_widget_hide (editor->priv->info_button);
 
   gtk_widget_hide (GTK_WIDGET (editor));
+
+  gtk_widget_set_no_show_all (GTK_WIDGET (editor), TRUE);
 }
 
 GType
@@ -492,21 +520,6 @@ glade_editor_get_type (void)
     }
 
   return type;
-}
-
-/**
- * glade_editor_new:
- *
- * Returns: a new #GladeEditor
- */
-GladeEditor *
-glade_editor_new (void)
-{
-  GladeEditor *editor;
-
-  editor = g_object_new (GLADE_TYPE_EDITOR, "spacing", 6, NULL);
-
-  return editor;
 }
 
 static GtkWidget *
@@ -547,13 +560,37 @@ glade_editor_get_editable_by_adaptor (GladeEditor * editor,
   return editable;
 }
 
+static void
+hide_or_remove_visible_child (GtkContainer *container,
+			      gboolean      remove)
+{
+  GList *l, *children = gtk_container_get_children (container);
+  GtkWidget *widget;
+
+  for (l = children; l; l = l->next)
+    {
+      widget = l->data;
+
+      if (gtk_widget_get_visible (widget))
+	{
+	  gtk_widget_hide (widget);
+
+	  if (remove)
+	    gtk_container_remove (container, widget);
+
+	  break;
+	}
+    }
+  g_list_free (children);
+}
+
 static GtkWidget *
 glade_editor_load_editable_in_page (GladeEditor * editor,
                                     GladeWidgetAdaptor * adaptor,
                                     GladeEditorPageType type)
 {
   GtkContainer *container = NULL;
-  GtkWidget *scrolled_window, *editable, *child;
+  GtkWidget *scrolled_window, *editable;
   GtkAdjustment *adj;
 
   /* Remove the old table that was in this container */
@@ -577,13 +614,8 @@ glade_editor_load_editable_in_page (GladeEditor * editor,
         break;
     }
 
-  /* Remove the editable (this will destroy on packing pages) */
-  child = gtk_bin_get_child (GTK_BIN (container));
-  if (child)
-    {
-      gtk_widget_hide (child);
-      gtk_container_remove (container, child);
-    }
+  /* Hide the editable (this will destroy on packing pages) */
+  hide_or_remove_visible_child (container, type == GLADE_PAGE_PACKING);
 
   if (!adaptor)
     return NULL;
@@ -593,40 +625,22 @@ glade_editor_load_editable_in_page (GladeEditor * editor,
     return NULL;
 
   /* Attach the new page */
-  gtk_container_add (GTK_CONTAINER (container), editable);
+  if (!gtk_widget_get_parent (editable))
+    gtk_container_add (GTK_CONTAINER (container), editable);
   gtk_widget_show (editable);
 
-  /* Enable tabbed keynav in the editor */
-  scrolled_window = gtk_widget_get_parent (GTK_WIDGET (container));
-  scrolled_window = gtk_widget_get_parent (scrolled_window);
+  if ((scrolled_window = 
+       gtk_widget_get_ancestor (GTK_WIDGET (container), 
+				GTK_TYPE_SCROLLED_WINDOW)) != NULL)
+    {
+      adj = gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (scrolled_window));
+      gtk_container_set_focus_vadjustment (GTK_CONTAINER (editable), adj);
 
-  /* FIXME: Save pointer to the scrolled window (or just the
-     adjustments) before hand. */
-  g_assert (GTK_IS_SCROLLED_WINDOW (scrolled_window));
-
-  adj = gtk_scrolled_window_get_vadjustment
-      (GTK_SCROLLED_WINDOW (scrolled_window));
-  gtk_container_set_focus_vadjustment (GTK_CONTAINER (editable), adj);
-
-  adj = gtk_scrolled_window_get_hadjustment
-      (GTK_SCROLLED_WINDOW (scrolled_window));
-  gtk_container_set_focus_hadjustment (GTK_CONTAINER (editable), adj);
+      adj = gtk_scrolled_window_get_hadjustment (GTK_SCROLLED_WINDOW (scrolled_window));
+      gtk_container_set_focus_hadjustment (GTK_CONTAINER (editable), adj);
+    }
 
   return editable;
-}
-
-void
-glade_editor_set_signal_editor (GladeEditor * editor,
-                                GladeSignalEditor * signal_editor)
-{
-  if (editor->priv->signal_editor)
-    {
-      gtk_container_remove (GTK_CONTAINER (editor->priv->page_signals),
-                            GTK_WIDGET (editor->priv->signal_editor));
-    }
-  editor->priv->signal_editor = signal_editor;
-  gtk_container_add (GTK_CONTAINER (editor->priv->page_signals),
-                     GTK_WIDGET (editor->priv->signal_editor));
 }
 
 static void
@@ -648,7 +662,7 @@ glade_editor_load_widget_class (GladeEditor * editor,
   glade_editor_load_editable_in_page (editor, adaptor, GLADE_PAGE_GENERAL);
   glade_editor_load_editable_in_page (editor, adaptor, GLADE_PAGE_COMMON);
   glade_editor_load_editable_in_page (editor, adaptor, GLADE_PAGE_ATK);
-
+  glade_editor_load_editable_in_page (editor, NULL, GLADE_PAGE_PACKING);
   glade_editor_load_signal_page (editor);
 
   editor->priv->loaded_adaptor = adaptor;
@@ -768,6 +782,7 @@ glade_editor_load_widget_real (GladeEditor * editor, GladeWidget * widget)
       glade_editor_update_class_field (editor);
 
       g_object_notify (G_OBJECT (editor), "widget");
+
       return;
     }
   gtk_widget_set_sensitive (editor->priv->reset_button, TRUE);
@@ -807,9 +822,37 @@ glade_editor_load_widget_real (GladeEditor * editor, GladeWidget * widget)
                         G_CALLBACK (glade_editor_update_widget_name_cb),
                         editor);
 
-  gtk_container_check_resize (GTK_CONTAINER (editor));
-
   g_object_notify (G_OBJECT (editor), "widget");
+}
+
+
+/**
+ * glade_editor_new:
+ *
+ * Returns: a new #GladeEditor
+ */
+GladeEditor *
+glade_editor_new (void)
+{
+  GladeEditor *editor;
+
+  editor = g_object_new (GLADE_TYPE_EDITOR, "spacing", 6, NULL);
+
+  return editor;
+}
+
+void
+glade_editor_set_signal_editor (GladeEditor * editor,
+                                GladeSignalEditor * signal_editor)
+{
+  if (editor->priv->signal_editor)
+    {
+      gtk_container_remove (GTK_CONTAINER (editor->priv->page_signals),
+                            GTK_WIDGET (editor->priv->signal_editor));
+    }
+  editor->priv->signal_editor = signal_editor;
+  gtk_container_add (GTK_CONTAINER (editor->priv->page_signals),
+                     GTK_WIDGET (editor->priv->signal_editor));
 }
 
 /**
@@ -1370,7 +1413,6 @@ glade_editor_dialog_for_widget (GladeWidget * widget)
   g_free (title);
   g_free (prj_name);
 
-
   if (glade_app_get_accel_group ())
     {
       gtk_window_add_accel_group (GTK_WINDOW (window),
@@ -1379,19 +1421,18 @@ glade_editor_dialog_for_widget (GladeWidget * widget)
                         G_CALLBACK (glade_utils_hijack_key_press), NULL);
     }
 
-  editor = g_object_new (GLADE_TYPE_EDITOR, "spacing", 6, NULL);
+  editor = (GtkWidget *)glade_editor_new ();
   glade_editor_load_widget (GLADE_EDITOR (editor), widget);
-
 
   g_signal_connect_swapped (G_OBJECT (editor), "notify::widget",
                             G_CALLBACK (gtk_widget_destroy), window);
-
 
   gtk_container_set_border_width (GTK_CONTAINER (editor), 6);
   gtk_container_add (GTK_CONTAINER (window), GTK_WIDGET (editor));
 
   gtk_window_set_default_size (GTK_WINDOW (window), 400, 480);
 
-  gtk_widget_show_all (editor);
+  gtk_widget_show (editor);
+
   return window;
 }

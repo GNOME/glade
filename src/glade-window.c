@@ -101,16 +101,16 @@ struct _GladeWindowPrivate
   GladeDesignView *active_view;
   gint num_tabs;
 
-  GtkWidget *inspectors_notebook;
+  GtkWidget *palettes_notebook;         /* Cached per project palettes */
+  GtkWidget *inspectors_notebook;       /* Cached per project inspectors */
 
   GladeEditor  *editor;                 /* The editor */
-  GladePalette *palette;                /* The palette */
 
   GtkWidget *statusbar;                 /* A pointer to the status bar. */
   guint statusbar_menu_context_id;      /* The context id of the menu bar */
   guint statusbar_actions_context_id;   /* The context id of actions messages */
 
-  GtkUIManager *ui;             /* The UIManager */
+  GtkUIManager *ui;                     /* The UIManager */
   guint projects_list_menu_ui_id;       /* Merge id for projects list menu */
 
   GtkActionGroup *static_actions;       /* All the static actions */
@@ -363,19 +363,20 @@ create_recent_chooser_menu (GladeWindow * window, GtkRecentManager * manager)
 static void
 activate_action (GtkToolButton * toolbutton, GladeWidgetAction * action)
 {
-  GladeWidget *widget;
+  GladeWidget   *widget;
+  GWActionClass *aclass = glade_widget_action_get_class (action);
 
   if ((widget = g_object_get_data (G_OBJECT (toolbutton), "glade-widget")))
     glade_widget_adaptor_action_activate (glade_widget_get_adaptor (widget),
                                           glade_widget_get_object (widget), 
-					  action->klass->path);
+					  aclass->path);
 }
 
 static void
 action_notify_sensitive (GObject * gobject, GParamSpec * arg1, GtkWidget * item)
 {
   GladeWidgetAction *action = GLADE_WIDGET_ACTION (gobject);
-  gtk_widget_set_sensitive (item, action->sensitive);
+  gtk_widget_set_sensitive (item, glade_widget_action_get_sensitive (action));
 }
 
 static void
@@ -417,23 +418,23 @@ add_actions (GladeWindow * window, GladeWidget * widget, GList * actions)
 
   for (l = actions; l; l = g_list_next (l))
     {
-      GladeWidgetAction *a = l->data;
+      GladeWidgetAction *action = l->data;
+      GWActionClass     *aclass = glade_widget_action_get_class (action);
 
-      if (!a->klass->important)
+      if (!aclass->important || !glade_widget_action_get_visible (action))
         continue;
 
-      if (a->actions)
+      if (glade_widget_action_get_children (action))
         {
-          g_warning
-              ("Trying to add a group action to the toolbar is unsupported");
+          g_warning ("Trying to add a group action to the toolbar is unsupported");
           continue;
         }
 
-      item = gtk_tool_button_new_from_stock ((a->klass->stock) ? a->klass->stock : "gtk-execute");
-      if (a->klass->label)
+      item = gtk_tool_button_new_from_stock ((aclass->stock) ? aclass->stock : "gtk-execute");
+      if (aclass->label)
 	{
-	  gtk_tool_button_set_label (GTK_TOOL_BUTTON (item), a->klass->label);
-	  gtk_widget_set_tooltip_text (GTK_WIDGET (item), a->klass->label);
+	  gtk_tool_button_set_label (GTK_TOOL_BUTTON (item), aclass->label);
+	  gtk_widget_set_tooltip_text (GTK_WIDGET (item), aclass->label);
 	}
 
       g_object_set_data (G_OBJECT (item), "glade-widget", widget);
@@ -444,11 +445,12 @@ add_actions (GladeWindow * window, GladeWidget * widget, GList * actions)
        */
       g_signal_connect_data (item, "clicked",
                              G_CALLBACK (activate_action),
-                             a, action_disconnect, 0);
+                             action, action_disconnect, 0);
 
-      gtk_widget_set_sensitive (GTK_WIDGET (item), a->sensitive);
+      gtk_widget_set_sensitive (GTK_WIDGET (item), 
+				glade_widget_action_get_sensitive (action));
 
-      g_signal_connect (a, "notify::sensitive",
+      g_signal_connect (action, "notify::sensitive",
                         G_CALLBACK (activate_action), GTK_WIDGET (item));
 
       gtk_toolbar_insert (bar, item, -1);
@@ -496,8 +498,6 @@ project_selection_changed_cb (GladeProject * project, GladeWindow * window)
       if (num == 1 && !GLADE_IS_PLACEHOLDER (list->data))
         {
           glade_widget = glade_widget_get_from_gobject (G_OBJECT (list->data));
-
-          glade_widget_show (glade_widget);
 
           clean_actions (window);
           if (glade_widget_get_actions (glade_widget))
@@ -1673,14 +1673,16 @@ notebook_switch_page_cb (GtkNotebook * notebook,
 
   project = glade_design_view_get_project (view);
 
-  glade_palette_set_project (window->priv->palette, project);
-
   refresh_title (window);
+
   set_sensitivity_according_to_project (window, project);
 
-  /* switch to the project's inspector */
+  /* switch to the project's inspector/palette */
   gtk_notebook_set_current_page (GTK_NOTEBOOK
                                  (window->priv->inspectors_notebook), page_num);
+  gtk_notebook_set_current_page (GTK_NOTEBOOK
+                                 (window->priv->palettes_notebook), page_num);
+
 
   /* activate the corresponding item in the project menu */
   action_name = g_strdup_printf ("Tab_%d", page_num);
@@ -1717,7 +1719,8 @@ notebook_tab_added_cb (GtkNotebook * notebook,
                        guint page_num, GladeWindow * window)
 {
   GladeProject *project;
-  GtkWidget *inspector;
+  GtkWidget *inspector, *palette;
+  GtkAction *action;
 
   ++window->priv->num_tabs;
 
@@ -1746,17 +1749,36 @@ notebook_tab_added_cb (GtkNotebook * notebook,
   inspector = glade_inspector_new ();
   gtk_widget_show (inspector);
   glade_inspector_set_project (GLADE_INSPECTOR (inspector), project);
+  gtk_notebook_append_page (GTK_NOTEBOOK (window->priv->inspectors_notebook),
+                            inspector, NULL);
+
+  /* create palette */
+  palette = glade_palette_new ();
+  gtk_widget_show (palette);
+  glade_palette_set_show_selector_button (GLADE_PALETTE (palette), FALSE);
+  glade_palette_set_project (GLADE_PALETTE (palette), project);
+
+  action = gtk_action_group_get_action (window->priv->static_actions, "UseSmallIcons");
+  glade_palette_set_use_small_item_icons (GLADE_PALETTE (palette),
+					  gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action)));
+
+  action = gtk_action_group_get_action (window->priv->static_actions, "IconsAndLabels");
+  glade_palette_set_item_appearance (GLADE_PALETTE (palette),
+				     gtk_radio_action_get_current_value (GTK_RADIO_ACTION (action)));
+
+  gtk_notebook_append_page (GTK_NOTEBOOK (window->priv->palettes_notebook),
+                            palette, NULL);
 
   if (GPOINTER_TO_INT
       (g_object_get_data (G_OBJECT (view), "view-added-while-loading")))
     {
       gtk_widget_set_sensitive (inspector, FALSE);
+      gtk_widget_set_sensitive (palette, FALSE);
       g_signal_connect (project, "parse-finished",
                         G_CALLBACK (set_widget_sensitive_on_load), inspector);
+      g_signal_connect (project, "parse-finished",
+                        G_CALLBACK (set_widget_sensitive_on_load), palette);
     }
-
-  gtk_notebook_append_page (GTK_NOTEBOOK (window->priv->inspectors_notebook),
-                            inspector, NULL);
 
   set_sensitivity_according_to_project (window, project);
 
@@ -1782,10 +1804,6 @@ notebook_tab_removed_cb (GtkNotebook     *notebook,
   if (window->priv->num_tabs == 0)
     {
       gtk_widget_set_sensitive (GTK_WIDGET (window->priv->editor), FALSE);
-      gtk_widget_set_sensitive (GTK_WIDGET (window->priv->palette), FALSE);
-
-      glade_palette_set_project (window->priv->palette, NULL);
-
       window->priv->active_view = NULL;
     }
 
@@ -1807,8 +1825,8 @@ notebook_tab_removed_cb (GtkNotebook     *notebook,
                                         G_CALLBACK (on_pointer_mode_changed),
                                         window);
 
-  gtk_notebook_remove_page (GTK_NOTEBOOK (window->priv->inspectors_notebook),
-                            page_num);
+  gtk_notebook_remove_page (GTK_NOTEBOOK (window->priv->inspectors_notebook), page_num);
+  gtk_notebook_remove_page (GTK_NOTEBOOK (window->priv->palettes_notebook), page_num);
 
   clean_actions (window);
 
@@ -1858,23 +1876,38 @@ recent_chooser_item_activated_cb (GtkRecentChooser * chooser,
 }
 
 static void
-palette_appearance_change_cb (GtkRadioAction * action,
-                              GtkRadioAction * current, GladeWindow * window)
+palette_appearance_change_cb (GtkRadioAction *action,
+                              GtkRadioAction *current, 
+			      GladeWindow    *window)
 {
+  GList *children, *l;
   gint value;
 
   value = gtk_radio_action_get_current_value (action);
 
-  glade_palette_set_item_appearance (window->priv->palette, value);
-
+  children = gtk_container_get_children (GTK_CONTAINER (window->priv->palettes_notebook));
+  for (l = children; l; l = l->next)
+    {
+      if (GLADE_IS_PALETTE (l->data))
+	glade_palette_set_item_appearance (GLADE_PALETTE (l->data), value);
+    }
+  g_list_free (children);
 }
 
 static void
 palette_toggle_small_icons_cb (GtkAction * action, GladeWindow * window)
 {
-  glade_palette_set_use_small_item_icons (window->priv->palette,
-                                          gtk_toggle_action_get_active
-                                          (GTK_TOGGLE_ACTION (action)));
+  GList *children, *l;
+
+  children = gtk_container_get_children (GTK_CONTAINER (window->priv->palettes_notebook));
+  for (l = children; l; l = l->next)
+    {
+      if (GLADE_IS_PALETTE (l->data))
+	glade_palette_set_use_small_item_icons (GLADE_PALETTE (l->data),
+						gtk_toggle_action_get_active
+						(GTK_TOGGLE_ACTION (action)));
+    }
+  g_list_free (children);
 }
 
 static gboolean
@@ -3229,19 +3262,13 @@ glade_window_config_load (GladeWindow * window)
 
   gtk_notebook_set_show_tabs (GTK_NOTEBOOK (window->priv->notebook), show_tabs);
 
-  action =
-      gtk_action_group_get_action (window->priv->static_actions,
-                                   "ToolbarVisible");
+  action = gtk_action_group_get_action (window->priv->static_actions, "ToolbarVisible");
   gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action), show_toolbar);
 
-  action =
-      gtk_action_group_get_action (window->priv->static_actions,
-                                   "ProjectTabsVisible");
+  action = gtk_action_group_get_action (window->priv->static_actions, "ProjectTabsVisible");
   gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action), show_tabs);
 
-  action =
-      gtk_action_group_get_action (window->priv->static_actions,
-                                   "StatusbarVisible");
+  action = gtk_action_group_get_action (window->priv->static_actions, "StatusbarVisible");
   gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action), show_tabs);
 
   /* Paned positions */
@@ -3309,7 +3336,6 @@ glade_window_init (GladeWindow * window)
   GtkWidget *hpaned2;
   GtkWidget *vpaned;
   GtkWidget *menubar;
-  GtkWidget *palette;
   GtkWidget *dockitem;
   GtkWidget *widget;
   GtkWidget *sep;
@@ -3326,11 +3352,8 @@ glade_window_init (GladeWindow * window)
 
   /* editor */
   priv->editor = GLADE_EDITOR (glade_editor_new ());
+  gtk_widget_show (GTK_WIDGET (priv->editor));
   g_object_ref_sink (G_OBJECT (priv->editor));
-
-  /* palette */
-  priv->palette = GLADE_PALETTE (glade_palette_new ());
-  g_object_ref_sink (G_OBJECT (priv->palette));
 
   /* menubar */
   menubar = construct_menu (window);
@@ -3401,19 +3424,19 @@ glade_window_init (GladeWindow * window)
   gtk_paned_pack2 (GTK_PANED (hpaned2), priv->notebook, TRUE, FALSE);
   gtk_widget_show (priv->notebook);
 
-  /* palette */
-  palette = GTK_WIDGET (priv->palette);
-  glade_palette_set_show_selector_button (GLADE_PALETTE (palette), FALSE);
-  gtk_paned_pack1 (GTK_PANED (hpaned2), palette, FALSE, FALSE);
-  setup_dock (&priv->docks[DOCK_PALETTE], palette, 200, 540,
+  /* palettes */
+  priv->palettes_notebook = gtk_notebook_new ();
+  gtk_notebook_set_show_tabs (GTK_NOTEBOOK (priv->palettes_notebook), FALSE);
+  gtk_notebook_set_show_border (GTK_NOTEBOOK (priv->palettes_notebook), FALSE);
+  gtk_paned_pack1 (GTK_PANED (hpaned2), priv->palettes_notebook, FALSE, FALSE);
+  setup_dock (&priv->docks[DOCK_PALETTE], priv->palettes_notebook, 200, 540,
               _("Palette"), "palette", hpaned2, TRUE);
-  gtk_widget_show (palette);
+  gtk_widget_show (priv->palettes_notebook);
 
   /* inspectors */
   priv->inspectors_notebook = gtk_notebook_new ();
   gtk_notebook_set_show_tabs (GTK_NOTEBOOK (priv->inspectors_notebook), FALSE);
-  gtk_notebook_set_show_border (GTK_NOTEBOOK (priv->inspectors_notebook),
-                                FALSE);
+  gtk_notebook_set_show_border (GTK_NOTEBOOK (priv->inspectors_notebook), FALSE);
   gtk_widget_show (priv->inspectors_notebook);
   gtk_paned_pack1 (GTK_PANED (vpaned), priv->inspectors_notebook, FALSE, FALSE);
   setup_dock (&priv->docks[DOCK_INSPECTOR], priv->inspectors_notebook, 300, 540,

@@ -48,8 +48,8 @@ typedef void      (*GladeCatalogInitFunc)    (const gchar *name);
 
 
 typedef struct {
-	gint major;
-	gint minor;
+  gint major;
+  gint minor;
 } GladeTargetableVersion;
 
 

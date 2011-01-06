@@ -153,11 +153,13 @@ gboolean                glade_widget_set_pack_action_sensitive (GladeWidget *wid
 								const gchar *action_path,
 								gboolean     sensitive);
 
-void                    glade_widget_remove_action          (GladeWidget *widget,
-							     const gchar *action_path);
+gboolean                glade_widget_set_action_visible     (GladeWidget *widget,
+							     const gchar *action_path,
+							     gboolean     sensitive);
 
-void                    glade_widget_remove_pack_action     (GladeWidget *widget,
-							     const gchar *action_path);
+gboolean                glade_widget_set_pack_action_visible (GladeWidget *widget,
+							      const gchar *action_path,
+							      gboolean     sensitive);
 
 void                    glade_widget_write                  (GladeWidget     *widget,
 							     GladeXmlContext *context,

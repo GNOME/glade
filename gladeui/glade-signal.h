@@ -5,18 +5,40 @@
 
 G_BEGIN_DECLS
 
-#define GLADE_SIGNAL(s) ((GladeSignal *)s)
-#define GLADE_IS_SIGNAL(s) (s != NULL)
+#define GLADE_TYPE_SIGNAL            (glade_signal_get_type())
+#define GLADE_SIGNAL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_SIGNAL, GladeSignal))
+#define GLADE_SIGNAL_KLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_SIGNAL, GladeSignalKlass))
+#define GLADE_IS_SIGNAL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_SIGNAL))
+#define GLADE_IS_SIGNAL_KLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_SIGNAL))
+#define GLADE_SIGNAL_GET_KLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_SIGNAL, GladeSignalKlass))
 
-typedef struct _GladeSignal  GladeSignal;
+typedef struct _GladeSignal         GladeSignal;
+typedef struct _GladeSignalKlass    GladeSignalKlass;
+typedef struct _GladeSignalPrivate  GladeSignalPrivate;
+
+struct _GladeSignal {
+  GObject object;
+
+  GladeSignalPrivate *priv;
+};
+
+struct _GladeSignalKlass {
+  GObjectClass object_class;
+
+  void   (* glade_reserved1)   (void);
+  void   (* glade_reserved2)   (void);
+  void   (* glade_reserved3)   (void);
+  void   (* glade_reserved4)   (void);
+};
+
+
+GType                 glade_signal_get_type            (void) G_GNUC_CONST;
 
 GladeSignal          *glade_signal_new                 (const gchar        *name,
 							const gchar        *handler,
 							const gchar        *userdata,
 							gboolean            after,
 							gboolean            swapped);
-GladeSignal          *glade_signal_clone               (const GladeSignal  *signal);
-void                  glade_signal_free                (GladeSignal        *signal);
 gboolean              glade_signal_equal               (const GladeSignal        *sig1, 
 							const GladeSignal        *sig2);
 GladeSignal          *glade_signal_read                (GladeXmlNode       *node);

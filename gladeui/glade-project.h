@@ -99,6 +99,15 @@ struct _GladeProjectClass
   void          (*close)               (GladeProject *project);
 
   void          (*parse_finished)      (GladeProject *project);
+
+  void   (* glade_reserved1)   (void);
+  void   (* glade_reserved2)   (void);
+  void   (* glade_reserved3)   (void);
+  void   (* glade_reserved4)   (void);
+  void   (* glade_reserved5)   (void);
+  void   (* glade_reserved6)   (void);
+  void   (* glade_reserved7)   (void);
+  void   (* glade_reserved8)   (void);
 };
 
 
@@ -183,8 +192,6 @@ gboolean            glade_project_is_loading           (GladeProject       *proj
 time_t              glade_project_get_file_mtime       (GladeProject       *project);
 gboolean            glade_project_get_readonly         (GladeProject       *project);
 gboolean            glade_project_get_modified         (GladeProject       *project);
-gboolean            glade_project_get_previewable      (GladeProject       *project);
-gboolean            glade_project_get_previewable      (GladeProject       *project);
 void                glade_project_set_pointer_mode     (GladeProject       *project,
 							GladePointerMode    mode);
 GladePointerMode    glade_project_get_pointer_mode     (GladeProject       *project);
