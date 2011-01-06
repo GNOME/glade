@@ -61,7 +61,6 @@ struct _GladePalettePrivate
 
   GtkWidget *selector_hbox;
   GtkWidget *selector_button;
-  GtkWidget *create_root_button;
 
   GtkWidget *toolpalette;
 
@@ -192,27 +191,6 @@ project_add_item_changed_cb (GladeProject *project,
 /*******************************************************
  *                    Local Signals                    *
  *******************************************************/
-static void
-root_button_toggled_cb (GtkToggleButton * button,
-			GladePalette * palette)
-{
-  GladeWidgetAdaptor  *add_item;
-  GladePalettePrivate *priv = palette->priv;
-
-  if (!priv->project)
-    return;
-
-  add_item = glade_project_get_add_item (priv->project);
-  if (add_item)
-    {
-      glade_command_create (add_item, NULL, NULL, priv->project);
-
-      g_signal_handlers_block_by_func (priv->project, project_add_item_changed_cb, palette);
-      glade_project_set_add_item (priv->project, NULL);
-      g_signal_handlers_unblock_by_func (priv->project, project_add_item_changed_cb, palette);
-    }
-}
-
 static void
 selector_button_toggled_cb (GtkToggleButton *button,
 			    GladePalette    *palette)
@@ -466,23 +444,6 @@ glade_palette_create_selector_button (GladePalette * palette)
   return selector;
 }
 
-static GtkWidget *
-glade_palette_create_create_root_button (GladePalette * palette)
-{
-  GtkWidget *create_root_button;
-
-  create_root_button = gtk_toggle_button_new ();
-
-  gtk_container_set_border_width (GTK_CONTAINER (create_root_button), 0);
-  gtk_button_set_use_stock (GTK_BUTTON (create_root_button), TRUE);
-  gtk_button_set_label (GTK_BUTTON (create_root_button), "gtk-add");
-
-  g_signal_connect (G_OBJECT (create_root_button), "toggled",
-                    G_CALLBACK (root_button_toggled_cb), palette);
-
-  return create_root_button;
-}
-
 /*******************************************************
  *                    Class & methods                  *
  *******************************************************/
@@ -684,19 +645,13 @@ glade_palette_init (GladePalette * palette)
   /* create selector button */
   priv->selector_button = glade_palette_create_selector_button (palette);
   priv->selector_hbox = gtk_hbox_new (FALSE, 0);
-  priv->create_root_button = glade_palette_create_create_root_button (palette);
   gtk_box_pack_start (GTK_BOX (priv->selector_hbox), priv->selector_button,
-                      FALSE, FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (priv->selector_hbox), priv->create_root_button,
                       FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (palette), priv->selector_hbox, FALSE, FALSE, 0);
   gtk_widget_show (priv->selector_button);
-  gtk_widget_show (priv->create_root_button);
   gtk_widget_show (priv->selector_hbox);
 
   gtk_widget_set_tooltip_text (priv->selector_button, _("Widget selector"));
-  gtk_widget_set_tooltip_text (priv->create_root_button,
-                               _("Create root widget"));
 
   /* The GtkToolPalette */
   priv->toolpalette = gtk_tool_palette_new ();
