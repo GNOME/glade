@@ -1591,6 +1591,9 @@ glade_command_create (GladeWidgetAdaptor * adaptor, GladeWidget * parent,
 
   g_list_free (widgets);
 
+  /* Make selection change immediately when a widget is created */
+  glade_project_selection_changed (project);
+
   return widget;
 }
 
