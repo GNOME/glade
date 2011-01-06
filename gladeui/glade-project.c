@@ -3286,15 +3286,30 @@ void
 glade_project_selection_changed (GladeProject * project)
 {
   g_return_if_fail (GLADE_IS_PROJECT (project));
+
   g_signal_emit (G_OBJECT (project),
                  glade_project_signals[SELECTION_CHANGED], 0);
+
+  if (g_list_length (project->priv->selection) == 1 && 
+      !GLADE_IS_PLACEHOLDER (project->priv->selection->data))
+    {
+      GladeWidget *gwidget = 
+       glade_widget_get_from_gobject (G_OBJECT (project->priv->selection->data));
+
+      glade_widget_show (gwidget);
+    }
+
+  /* Cancel any idle we have */
+  if (project->priv->selection_changed_id > 0)
+    project->priv->selection_changed_id = 
+      (g_source_remove (project->priv->selection_changed_id), 0);
 }
 
 static gboolean
 selection_change_idle (GladeProject *project)
 {
-  glade_project_selection_changed (project);
   project->priv->selection_changed_id = 0;
+  glade_project_selection_changed (project);
   return FALSE;
 }
 

@@ -12,6 +12,9 @@
 	Also release all cached pages in ->dispose() (which was leeking) and
 	ensure the class field always gets the same height.
 
+	* gladeui/glade-project.c: Show selected widget when selection changes and
+	Cancel any queued selection from glade_project_selection_changed.
+
 2011-01-05  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/Makefile.am, gladeui/glade-signal-class.[ch], gladeui/glade-widget-adaptor.c,
