@@ -3366,10 +3366,11 @@ glade_widget_child_get_property (GladeWidget * widget,
 }
 
 static gboolean
-glade_widget_event_private (GtkWidget * widget,
-                            GdkEvent * event, GladeWidget * gwidget)
+glade_widget_event_private (GtkWidget   *widget,
+                            GdkEvent    *event, 
+			    GladeWidget *gwidget)
 {
-  GtkWidget *layout = widget;
+  GtkWidget *layout;
 
   /* Dont run heavy machienery for events we're not interested in 
    * marshalling */
@@ -3377,8 +3378,7 @@ glade_widget_event_private (GtkWidget * widget,
     return FALSE;
 
   /* Find the parenting layout container */
-  while (layout && !GLADE_IS_DESIGN_LAYOUT (layout))
-    layout = gtk_widget_get_parent (layout);
+  layout = gtk_widget_get_ancestor (widget, GLADE_TYPE_DESIGN_LAYOUT);
 
   /* Event outside the logical heirarchy, could be a menuitem
    * or other such popup window, we'll presume to send it directly
