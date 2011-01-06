@@ -1,5 +1,7 @@
 2011-01-06  Tristan Van Berkom <tristanvb@openismus.com>
 
+	* NEWS: Rolling Glade 3.9.0
+
 	* gladeui/glade-command.c: Immediately select newly added widgets.
 
 	* gladeui/glade-editor.c: Optimized GladeEditor
@@ -614,7 +616,7 @@
 	* gladeui/glade-project.c:
 	project-model: Don't be picky about non-existing children
 	It is sometimes possible that children are added before their parents
-	in the tree. We simply ignore that for now as it doesn't 
+	in the tree. We simply ignore that for now as it doesn't
 	cause any harm in the tree model.
 
 2010-11-05  Matthias Clasen <mclasen@redhat.com>
@@ -667,7 +669,7 @@
 
 	* plugins/gtk+/glade-gtk.c: Enable GtkAssistant(child):complete property
 	  and override property name and tooltip for the Glade environment to say:
-	  "Initially Complete"/"Whether this page will initially be marked as complete 
+	  "Initially Complete"/"Whether this page will initially be marked as complete
 	  regardless of user input." (closes bug 529595).
 
 2010-08-29  Tristan Van Berkom <tristanvb@openismus.com>

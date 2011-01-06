@@ -1,3 +1,51 @@
+===========
+Glade 3.9.0
+===========
+
+	- General build fixes for building with GTK+ 3.0, including patches from Johannes Schmid,
+	  Matthias Clasen, Javier Jardón and Juan Pablo Ugarte.
+	- Included the new Preview feature by Marco Diego Aurélio Mesquita.
+	- Various leaks and crashes fixed.
+	- GladeWidget becomes GInitiallyUnowned, refcounting improved for project dispose cycles.
+	- Handle combo-box entry child properly (bug 581580).
+	- Fixed crashes when textview's buffer is deleted, fix by Martin Schlemmer, bug 609748.
+	- Restored property order of project objects at save time (glade files no longer container
+	  irrelevant diffs).
+	- Hide editor properties when the property is not available on the widget, bug 585299, 
+	  fix by Marco Diego Aurélio Mesquita.
+	- Fixed makefiles as per bug 521713 (patch initially by Daniel Macks).
+	- Fixed mixups of properties vs packing properties (bug 637475).
+	- Fixed class header of GladeEditor to update when widgets unload (patch by 
+	  Marco Diego Aurélio Mesquita, bug 637541).
+	- Fixed particalarly nasty crasher bug when loading/saving treestore column definitions,
+	  special thanks goes to Benjamin Otte, bug 637563.
+	- Add progress bar to notebook tab of currently loading project (now the whole UI doesnt
+	  jam up while loading a big project).
+	- Fixed notebook tab style to use the new CSS stuff.
+	- Removed widgets that are not available in 3.0
+	- Completely removed Libglade support
+	- Removed GladeClipBoardView completely
+	- Removed GladeParameter obsolete code
+	- Fixed editor labels to use natural word wrapping
+	- Drop GtkTables in editors in favor of GtkGrid
+	- Added custom editor for editing GtkActionGroup and managing child actions
+	- Ran 'indent' on source base, new Glade coding style more similar to GTK+ style
+	- Removed boolean "fixed" catalog attribute, instead <create-widget-function> can
+	  be used to specify a derived GladeWidget to be used in the runtime.
+	- Use locale-independent strtod & dtostr. Fixes bug 616787, fix by Christian Persch.
+	- Applying patch to allow better builds on win32, patch by Dieter Verfaillie, bug 634978.
+	- Fixed loaded state of use-action-appearance so that it always
+	  loads as FALSE if there is no "related-action" at load time (closes bug 582882).
+	- Sealed entire core API, libgladeui-2 will be ABI stable after 3.10 release.
+	- Removed GladeApp::update-ui signal, active-project, selection handling and implied
+	  commands, everything now must be done in context of a GladeProject.
+	- Optimized GladeEditor to load a widget faster by keeping all the cached pages in internal
+	  vboxes and not remove/adding them but just hide/showing them (improves object selection
+	  time).
+	- Optimized frontend to load one palette per project, verifying the palette for version
+	  information when the related project is set costs around 1 second, this is now only
+	  experienced when the target version is changed in the project prefs dialog.
+
 
 ===========
 Glade 3.7.1
