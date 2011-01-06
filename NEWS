@@ -1,4 +1,29 @@
 ===========
+Glade 3.7.3
+===========
+	- Fixed 'controled' typo with updates to po files, patch
+	  by Matt Woelfel for bug 633957
+	- Added support for deprecated GtkOptionMenu.
+	- Restore proper order of glade file at save time.
+	- Hide editor properties when the property is not available
+	  on the widget, bug 585299, fix by Marco Diego Aurélio Mesquita.
+	- Fixed makefiles as per bug 521713 (patch initially by Daniel Macks)
+	- Fixed mixups of properties/packing properties bug 637475.
+	- Fixed class header of GladeEditor to update when
+	  widgets unload (patch by Marco Diego Aurélio Mesquita, bug 637541).
+	- Fixed nasty crasher with column types, bug 637563, fix by Benjamin Otte.
+	- Added progress bar to notebook tabs while loading projects.
+	- Removed GladeClipboradView completely.
+	- Added custom editor for editing GtkActionGroup and its child actions.
+	- Use locale-independent strtod & dtostr. bug 616787, fix by Christian Persch.
+	- Applying patch to allow better builds on win32, patch by Dieter Verfaillie,
+	  bug 634978.
+	- Fixed loaded state of use-action-appearance so that it always
+	  loads as FALSE if there is no "related-action" at load time (closes bug 582882).
+	- Fixed other misc bugs.
+
+
+===========
 Glade 3.7.2
 ===========
 	- Use gtk_show_uri() instead of previous custom code in place (Javier Jardón)
