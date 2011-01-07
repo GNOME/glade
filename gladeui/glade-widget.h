@@ -38,7 +38,7 @@ struct _GladeWidgetClass
 
   void         (*add_signal_handler)	(GladeWidget *, GladeSignal *);
   void         (*remove_signal_handler)	(GladeWidget *, GladeSignal *);
-  void         (*change_signal_handler)	(GladeWidget *, GladeSignal *, GladeSignal *);
+  void         (*change_signal_handler)	(GladeWidget *, GladeSignal *);
 
   gint         (*button_press_event)      (GladeWidget *, GdkEvent *);
   gint         (*button_release_event)    (GladeWidget *, GdkEvent *);

@@ -421,7 +421,11 @@ glade_widget_change_signal_handler (GladeWidget * widget,
 				  glade_signal_get_after (new_signal_handler));
 	  glade_signal_set_swapped (signal_handler_iter, 
 				    glade_signal_get_swapped (new_signal_handler));
-          break;
+
+	  g_signal_emit (widget, glade_widget_signals[CHANGE_SIGNAL_HANDLER], 0, 
+	                 signal_handler_iter);
+
+	  break;
         }
     }
 }
@@ -1319,23 +1323,22 @@ glade_widget_class_init (GladeWidgetClass * klass)
                     G_SIGNAL_RUN_LAST,
                     G_STRUCT_OFFSET (GladeWidgetClass, add_signal_handler),
                     NULL, NULL,
-                    g_cclosure_marshal_VOID__POINTER,
-                    G_TYPE_NONE, 1, G_TYPE_POINTER);
+                    g_cclosure_marshal_VOID__OBJECT,
+                    G_TYPE_NONE, 1, GLADE_TYPE_SIGNAL);
 
   /**
    * GladeWidget::remove-signal-handler:
    * @gladewidget: the #GladeWidget which received the signal.
    * @arg1: the #GladeSignal that was removed from @gladewidget.
-   */
+	 */
   glade_widget_signals[REMOVE_SIGNAL_HANDLER] =
       g_signal_new ("remove-signal-handler",
                     G_TYPE_FROM_CLASS (object_class),
                     G_SIGNAL_RUN_LAST,
                     G_STRUCT_OFFSET (GladeWidgetClass, remove_signal_handler),
-                    NULL, NULL,
-                    g_cclosure_marshal_VOID__POINTER,
-                    G_TYPE_NONE, 1, G_TYPE_POINTER);
-
+                     NULL, NULL,
+                    g_cclosure_marshal_VOID__OBJECT,
+                    G_TYPE_NONE, 1, GLADE_TYPE_SIGNAL);
 
   /**
    * GladeWidget::change-signal-handler:
@@ -1348,10 +1351,9 @@ glade_widget_class_init (GladeWidgetClass * klass)
                     G_TYPE_FROM_CLASS (object_class),
                     G_SIGNAL_RUN_LAST,
                     G_STRUCT_OFFSET (GladeWidgetClass, change_signal_handler),
-                    NULL, NULL,
-                    glade_marshal_VOID__POINTER_POINTER,
-                    G_TYPE_NONE, 2, G_TYPE_POINTER, G_TYPE_POINTER);
-
+                     NULL, NULL,
+                    glade_marshal_VOID__OBJECT,
+                    G_TYPE_NONE, 1, GLADE_TYPE_SIGNAL);
 
   /**
    * GladeWidget::button-press-event:
