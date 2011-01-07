@@ -55,10 +55,10 @@ void                  glade_signal_class_update_from_node         (GladeSignalCl
 								   GladeXmlNode       *node,
 								   const gchar        *domain);
 
-GladeWidgetAdaptor   *glade_signal_class_get_adaptor              (GladeSignalClass   *signal_class);
-G_CONST_RETURN gchar *glade_signal_class_get_name                 (GladeSignalClass   *signal_class);
-G_CONST_RETURN gchar *glade_signal_class_get_type                 (GladeSignalClass   *signal_class);
-GSignalFlags          glade_signal_class_get_flags                (GladeSignalClass   *signal_class);
+GladeWidgetAdaptor   *glade_signal_class_get_adaptor              (const GladeSignalClass   *signal_class);
+G_CONST_RETURN gchar *glade_signal_class_get_name                 (const GladeSignalClass   *signal_class);
+G_CONST_RETURN gchar *glade_signal_class_get_type                 (const GladeSignalClass   *signal_class);
+GSignalFlags          glade_signal_class_get_flags                (const GladeSignalClass   *signal_class);
 
 void                  glade_signal_class_set_since                (GladeSignalClass   *signal_class,
 								   guint16             since_major,

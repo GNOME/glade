@@ -93,7 +93,7 @@ glade_signal_class_update_from_node (GladeSignalClass   *signal_class,
 }
 
 GladeWidgetAdaptor *
-glade_signal_class_get_adaptor (GladeSignalClass *signal_class)
+glade_signal_class_get_adaptor (const GladeSignalClass *signal_class)
 {
   g_return_val_if_fail (signal_class != NULL, NULL);
 
@@ -101,7 +101,7 @@ glade_signal_class_get_adaptor (GladeSignalClass *signal_class)
 }
 
 G_CONST_RETURN gchar *
-glade_signal_class_get_name (GladeSignalClass  *signal_class)
+glade_signal_class_get_name (const GladeSignalClass  *signal_class)
 {
   g_return_val_if_fail (signal_class != NULL, NULL);
 
@@ -109,7 +109,7 @@ glade_signal_class_get_name (GladeSignalClass  *signal_class)
 }
 
 G_CONST_RETURN gchar *
-glade_signal_class_get_type (GladeSignalClass  *signal_class)
+glade_signal_class_get_type (const GladeSignalClass  *signal_class)
 {
   g_return_val_if_fail (signal_class != NULL, NULL);
 
@@ -117,7 +117,7 @@ glade_signal_class_get_type (GladeSignalClass  *signal_class)
 }
 
 GSignalFlags
-glade_signal_class_get_flags (GladeSignalClass *signal_class)
+glade_signal_class_get_flags (const GladeSignalClass *signal_class)
 {
   g_return_val_if_fail (signal_class != NULL, 0);
 

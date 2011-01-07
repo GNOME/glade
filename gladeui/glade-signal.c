@@ -425,7 +425,7 @@ glade_signal_set_handler (GladeSignal *signal,
 }
 
 G_CONST_RETURN gchar *
-glade_signal_get_handler (GladeSignal *signal)
+glade_signal_get_handler (const GladeSignal *signal)
 {
   g_return_val_if_fail (GLADE_IS_SIGNAL (signal), NULL);
 
@@ -449,7 +449,7 @@ glade_signal_set_userdata (GladeSignal *signal,
 }
 
 G_CONST_RETURN gchar *
-glade_signal_get_userdata (GladeSignal *signal)
+glade_signal_get_userdata (const GladeSignal *signal)
 {
   g_return_val_if_fail (GLADE_IS_SIGNAL (signal), NULL);
 
@@ -471,7 +471,7 @@ glade_signal_set_after (GladeSignal *signal,
 }
 
 gboolean
-glade_signal_get_after (GladeSignal *signal)
+glade_signal_get_after (const GladeSignal *signal)
 {
   g_return_val_if_fail (GLADE_IS_SIGNAL (signal), FALSE);
 
@@ -493,7 +493,7 @@ glade_signal_set_swapped (GladeSignal *signal,
 }
 
 gboolean
-glade_signal_get_swapped (GladeSignal *signal)
+glade_signal_get_swapped (const GladeSignal *signal)
 {
   g_return_val_if_fail (GLADE_IS_SIGNAL (signal), FALSE);
 
@@ -517,7 +517,7 @@ glade_signal_set_support_warning (GladeSignal *signal,
 }
 
 G_CONST_RETURN gchar *
-glade_signal_get_support_warning (GladeSignal *signal)
+glade_signal_get_support_warning (const GladeSignal *signal)
 {
   g_return_val_if_fail (GLADE_IS_SIGNAL (signal), NULL);
 

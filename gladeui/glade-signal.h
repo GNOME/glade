@@ -52,19 +52,19 @@ void                  glade_signal_set_name            (GladeSignal        *sign
 G_CONST_RETURN gchar *glade_signal_get_name            (const GladeSignal        *signal);
 void                  glade_signal_set_handler         (GladeSignal        *signal,
 							const gchar        *handler);
-G_CONST_RETURN gchar *glade_signal_get_handler         (GladeSignal        *signal);
+G_CONST_RETURN gchar *glade_signal_get_handler         (const GladeSignal        *signal);
 void                  glade_signal_set_userdata        (GladeSignal        *signal,
 							const gchar        *userdata);
-G_CONST_RETURN gchar *glade_signal_get_userdata        (GladeSignal        *signal);
+G_CONST_RETURN gchar *glade_signal_get_userdata        (const GladeSignal        *signal);
 void                  glade_signal_set_after           (GladeSignal        *signal,
 							gboolean            after);
-gboolean              glade_signal_get_after           (GladeSignal        *signal);
+gboolean              glade_signal_get_after           (const GladeSignal        *signal);
 void                  glade_signal_set_swapped         (GladeSignal        *signal,
 							gboolean            swapped);
-gboolean              glade_signal_get_swapped         (GladeSignal        *signal);
+gboolean              glade_signal_get_swapped         (const GladeSignal        *signal);
 void                  glade_signal_set_support_warning (GladeSignal        *signal,
 							const gchar        *support_warning);
-G_CONST_RETURN gchar *glade_signal_get_support_warning (GladeSignal        *signal);
+G_CONST_RETURN gchar *glade_signal_get_support_warning (const GladeSignal        *signal);
 
 G_END_DECLS
 
