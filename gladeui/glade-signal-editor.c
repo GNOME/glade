@@ -99,6 +99,8 @@ on_handler_edited (GtkCellRendererText* renderer,
 				GladeSignal* old_signal;
 				GladeSignal* new_signal;
 
+				g_message ("Changing handler!");
+				
 				gtk_tree_model_get (self->priv->model,
 				                    &iter,
 				                    GLADE_SIGNAL_COLUMN_SIGNAL,
@@ -129,13 +131,13 @@ on_handler_edited (GtkCellRendererText* renderer,
 		}
 		else
 		{
-			GtkTreeIter parent;
 			GladeSignal* signal;
 			gchar* name;
 
+			g_message ("Adding handler!");
+			
 			/* Get the signal name */
-			gtk_tree_model_iter_parent (self->priv->model, &parent, &iter);
-			gtk_tree_model_get (self->priv->model, &parent,
+			gtk_tree_model_get (self->priv->model, &iter,
 			                    GLADE_SIGNAL_COLUMN_NAME, &name, 
 			                    -1);
 			
@@ -373,13 +375,13 @@ name_cell_data_func (GtkTreeViewColumn* column,
 {
 	gchar* name;
 	gboolean bold;
-	gboolean handler;
 	PangoWeight weight = PANGO_WEIGHT_NORMAL;
+	gboolean visible;
 
 	gtk_tree_model_get (model, iter,
 	                    GLADE_SIGNAL_COLUMN_NAME, &name,
-	                    GLADE_SIGNAL_COLUMN_HAS_HANDLERS, &bold,
-	                    GLADE_SIGNAL_COLUMN_IS_HANDLER, &handler,
+	                    GLADE_SIGNAL_COLUMN_NOT_DUMMY, &bold,
+	                    GLADE_SIGNAL_COLUMN_SHOW_NAME, &visible,
 	                    -1);
 	
 	if (bold)
@@ -388,7 +390,7 @@ name_cell_data_func (GtkTreeViewColumn* column,
 	g_object_set (renderer, 
 	              "text", name,
 	              "weight", weight,
-	              "visible", !handler,
+	              "visible", visible,
 	              NULL);
 	
 	g_free (name);
