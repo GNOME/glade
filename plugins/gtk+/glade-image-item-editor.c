@@ -33,6 +33,7 @@ static void glade_image_item_editor_editable_init (GladeEditableIface * iface);
 
 static void glade_image_item_editor_grab_focus (GtkWidget * widget);
 
+static GladeEditableIface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladeImageItemEditor, glade_image_item_editor,
                          GTK_TYPE_VBOX,
@@ -55,30 +56,6 @@ glade_image_item_editor_init (GladeImageItemEditor * self)
 {
 }
 
-static void
-project_changed (GladeProject * project,
-                 GladeCommand * command,
-                 gboolean execute, GladeImageItemEditor * item_editor)
-{
-  if (item_editor->modifying ||
-      !gtk_widget_get_mapped (GTK_WIDGET (item_editor)))
-    return;
-
-  /* Reload on all commands */
-  glade_editable_load (GLADE_EDITABLE (item_editor),
-                       item_editor->loaded_widget);
-}
-
-
-static void
-project_finalized (GladeImageItemEditor * item_editor,
-                   GladeProject * where_project_was)
-{
-  item_editor->loaded_widget = NULL;
-
-  glade_editable_load (GLADE_EDITABLE (item_editor), NULL);
-}
-
 static GladeWidget *
 get_image_widget (GladeWidget * widget)
 {
@@ -95,33 +72,13 @@ glade_image_item_editor_load (GladeEditable * editable, GladeWidget * widget)
   GList *l;
   gboolean use_stock = FALSE;
 
+  /* Chain up to default implementation */
+  parent_editable_iface->load (editable, widget);
+
   item_editor->loading = TRUE;
-
-  /* Since we watch the project */
-  if (item_editor->loaded_widget)
-    {
-      g_signal_handlers_disconnect_by_func (glade_widget_get_project (item_editor->loaded_widget),
-                                            G_CALLBACK (project_changed),
-                                            item_editor);
-
-      /* The widget could die unexpectedly... */
-      g_object_weak_unref (G_OBJECT (glade_widget_get_project (item_editor->loaded_widget)),
-                           (GWeakNotify) project_finalized, item_editor);
-    }
 
   /* Mark our widget... */
   item_editor->loaded_widget = widget;
-
-  if (item_editor->loaded_widget)
-    {
-      /* This fires for undo/redo */
-      g_signal_connect (glade_widget_get_project (item_editor->loaded_widget),
-                        "changed", G_CALLBACK (project_changed), item_editor);
-
-      /* The widget/project could die unexpectedly... */
-      g_object_weak_ref (G_OBJECT (glade_widget_get_project (item_editor->loaded_widget)),
-                         (GWeakNotify) project_finalized, item_editor);
-    }
 
   /* load the embedded editable... */
   if (item_editor->embed)
@@ -169,6 +126,8 @@ glade_image_item_editor_set_show_name (GladeEditable * editable,
 static void
 glade_image_item_editor_editable_init (GladeEditableIface * iface)
 {
+  parent_editable_iface = g_type_default_interface_peek (GLADE_TYPE_EDITABLE);
+
   iface->load = glade_image_item_editor_load;
   iface->set_show_name = glade_image_item_editor_set_show_name;
 }
@@ -212,7 +171,7 @@ stock_toggled (GtkWidget * widget, GladeImageItemEditor * item_editor)
       (GTK_TOGGLE_BUTTON (item_editor->stock_radio)))
     return;
 
-  item_editor->modifying = TRUE;
+  glade_editable_block (GLADE_EDITABLE (item_editor));
   loaded = item_editor->loaded_widget;
 
   glade_command_push_group (_("Setting %s to use a stock item"), glade_widget_get_name (loaded));
@@ -238,7 +197,7 @@ stock_toggled (GtkWidget * widget, GladeImageItemEditor * item_editor)
 
   glade_command_pop_group ();
 
-  item_editor->modifying = FALSE;
+  glade_editable_unblock (GLADE_EDITABLE (item_editor));
 
   /* reload buttons and sensitivity and stuff... */
   glade_editable_load (GLADE_EDITABLE (item_editor),
@@ -258,7 +217,7 @@ custom_toggled (GtkWidget * widget, GladeImageItemEditor * item_editor)
       (GTK_TOGGLE_BUTTON (item_editor->custom_radio)))
     return;
 
-  item_editor->modifying = TRUE;
+  glade_editable_block (GLADE_EDITABLE (item_editor));
 
   adaptor = glade_widget_get_adaptor (item_editor->loaded_widget);
 
@@ -303,7 +262,7 @@ custom_toggled (GtkWidget * widget, GladeImageItemEditor * item_editor)
     }
   glade_command_pop_group ();
 
-  item_editor->modifying = FALSE;
+  glade_editable_unblock (GLADE_EDITABLE (item_editor));
 
   /* reload buttons and sensitivity and stuff... */
   glade_editable_load (GLADE_EDITABLE (item_editor),

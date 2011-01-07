@@ -64,7 +64,6 @@ struct _GladeToolButtonEditor
 	GList *properties;         /* A list of eprops to update at load() time */
 
 	gboolean loading;          /* Loading flag for loading widgets in the editor */
-	gboolean modifying;        /* Flag for monitoring project changes */
 };
 
 struct _GladeToolButtonEditorClass

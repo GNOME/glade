@@ -33,6 +33,7 @@ static void glade_activatable_editor_editable_init (GladeEditableIface * iface);
 
 static void glade_activatable_editor_grab_focus (GtkWidget * widget);
 
+static GladeEditableIface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladeActivatableEditor, glade_activatable_editor,
                          GTK_TYPE_VBOX,
@@ -56,66 +57,19 @@ glade_activatable_editor_init (GladeActivatableEditor * self)
 }
 
 static void
-project_changed (GladeProject * project,
-                 GladeCommand * command,
-                 gboolean execute, GladeActivatableEditor * activatable_editor)
-{
-  if (activatable_editor->modifying ||
-      !gtk_widget_get_mapped (GTK_WIDGET (activatable_editor)))
-    return;
-
-  /* Reload on all commands */
-  glade_editable_load (GLADE_EDITABLE (activatable_editor),
-                       activatable_editor->loaded_widget);
-}
-
-
-static void
-project_finalized (GladeActivatableEditor * activatable_editor,
-                   GladeProject * where_project_was)
-{
-  activatable_editor->loaded_widget = NULL;
-
-  glade_editable_load (GLADE_EDITABLE (activatable_editor), NULL);
-}
-
-static void
 glade_activatable_editor_load (GladeEditable * editable, GladeWidget * widget)
 {
   GladeActivatableEditor *activatable_editor =
       GLADE_ACTIVATABLE_EDITOR (editable);
   GList *l;
 
+  /* Chain up to default implementation */
+  parent_editable_iface->load (editable, widget);
+
   activatable_editor->loading = TRUE;
-
-  /* Since we watch the project */
-  if (activatable_editor->loaded_widget)
-    {
-      /* watch custom-child and use-stock properties here for reloads !!! */
-      g_signal_handlers_disconnect_by_func (glade_widget_get_project (activatable_editor->loaded_widget),
-                                            G_CALLBACK (project_changed),
-                                            activatable_editor);
-
-      /* The widget could die unexpectedly... */
-      g_object_weak_unref (G_OBJECT
-                           (glade_widget_get_project (activatable_editor->loaded_widget)),
-                           (GWeakNotify) project_finalized, activatable_editor);
-    }
 
   /* Mark our widget... */
   activatable_editor->loaded_widget = widget;
-
-  if (activatable_editor->loaded_widget)
-    {
-      /* This fires for undo/redo */
-      g_signal_connect (glade_widget_get_project (activatable_editor->loaded_widget),
-                        "changed", G_CALLBACK (project_changed),
-                        activatable_editor);
-
-      /* The widget/project could die unexpectedly... */
-      g_object_weak_ref (G_OBJECT (glade_widget_get_project (activatable_editor->loaded_widget)),
-                         (GWeakNotify) project_finalized, activatable_editor);
-    }
 
   /* load the embedded editable... */
   if (activatable_editor->embed)
@@ -125,9 +79,6 @@ glade_activatable_editor_load (GladeEditable * editable, GladeWidget * widget)
     glade_editor_property_load_by_widget (GLADE_EDITOR_PROPERTY (l->data),
                                           widget);
 
-  if (widget)
-    {
-    }
   activatable_editor->loading = FALSE;
 }
 
@@ -145,6 +96,8 @@ glade_activatable_editor_set_show_name (GladeEditable * editable,
 static void
 glade_activatable_editor_editable_init (GladeEditableIface * iface)
 {
+  parent_editable_iface = g_type_default_interface_peek (GLADE_TYPE_EDITABLE);
+
   iface->load = glade_activatable_editor_load;
   iface->set_show_name = glade_activatable_editor_set_show_name;
 }
@@ -357,6 +310,8 @@ use_appearance_pre_commit (GladeEditorProperty * property,
 
   glade_widget_property_get (gwidget, "related-action", &action);
 
+  glade_editable_block (GLADE_EDITABLE (activatable_editor));
+
   glade_command_push_group (use_appearance ?
                             _("Setting %s to use action appearance") :
                             _("Setting %s to not use action appearance"),
@@ -372,6 +327,8 @@ use_appearance_post_commit (GladeEditorProperty * property,
 {
 
   glade_command_pop_group ();
+
+  glade_editable_unblock (GLADE_EDITABLE (activatable_editor));
 }
 
 GtkWidget *

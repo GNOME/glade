@@ -34,6 +34,7 @@ static void glade_entry_editor_editable_init (GladeEditableIface * iface);
 
 static void glade_entry_editor_grab_focus (GtkWidget * widget);
 
+static GladeEditableIface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladeEntryEditor, glade_entry_editor, GTK_TYPE_VBOX,
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
@@ -56,30 +57,6 @@ glade_entry_editor_init (GladeEntryEditor * self)
 }
 
 static void
-project_changed (GladeProject * project,
-                 GladeCommand * command,
-                 gboolean execute, GladeEntryEditor * entry_editor)
-{
-  if (entry_editor->modifying ||
-      !gtk_widget_get_mapped (GTK_WIDGET (entry_editor)))
-    return;
-
-  /* Reload on all commands */
-  glade_editable_load (GLADE_EDITABLE (entry_editor),
-                       entry_editor->loaded_widget);
-}
-
-
-static void
-project_finalized (GladeEntryEditor * entry_editor,
-                   GladeProject * where_project_was)
-{
-  entry_editor->loaded_widget = NULL;
-
-  glade_editable_load (GLADE_EDITABLE (entry_editor), NULL);
-}
-
-static void
 glade_entry_editor_load (GladeEditable * editable, GladeWidget * widget)
 {
   GladeEntryEditor *entry_editor = GLADE_ENTRY_EDITOR (editable);
@@ -87,34 +64,13 @@ glade_entry_editor_load (GladeEditable * editable, GladeWidget * widget)
   gboolean use_buffer = FALSE;
   GList *l;
 
+  /* Chain up to default implementation */
+  parent_editable_iface->load (editable, widget);
+
   entry_editor->loading = TRUE;
-
-  /* Since we watch the project */
-  if (entry_editor->loaded_widget)
-    {
-      /* watch custom-child and use-stock properties here for reloads !!! */
-      g_signal_handlers_disconnect_by_func (glade_widget_get_project (entry_editor->loaded_widget),
-                                            G_CALLBACK (project_changed),
-                                            entry_editor);
-
-      /* The widget could die unexpectedly... */
-      g_object_weak_unref (G_OBJECT (glade_widget_get_project (entry_editor->loaded_widget)),
-                           (GWeakNotify) project_finalized, entry_editor);
-    }
 
   /* Mark our widget... */
   entry_editor->loaded_widget = widget;
-
-  if (entry_editor->loaded_widget)
-    {
-      /* This fires for undo/redo */
-      g_signal_connect (glade_widget_get_project (entry_editor->loaded_widget),
-                        "changed", G_CALLBACK (project_changed), entry_editor);
-
-      /* The widget/project could die unexpectedly... */
-      g_object_weak_ref (G_OBJECT (glade_widget_get_project (entry_editor->loaded_widget)),
-                         (GWeakNotify) project_finalized, entry_editor);
-    }
 
   /* load the embedded editable... */
   if (entry_editor->embed)
@@ -195,6 +151,8 @@ glade_entry_editor_set_show_name (GladeEditable * editable, gboolean show_name)
 static void
 glade_entry_editor_editable_init (GladeEditableIface * iface)
 {
+  parent_editable_iface = g_type_default_interface_peek (GLADE_TYPE_EDITABLE);
+
   iface->load = glade_entry_editor_load;
   iface->set_show_name = glade_entry_editor_set_show_name;
 }
@@ -235,7 +193,7 @@ text_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
       (GTK_TOGGLE_BUTTON (entry_editor->text_radio)))
     return;
 
-  entry_editor->modifying = TRUE;
+  glade_editable_block (GLADE_EDITABLE (entry_editor));
 
   glade_command_push_group (_("Setting %s to use static text"),
                             glade_widget_get_name (entry_editor->loaded_widget));
@@ -257,7 +215,7 @@ text_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
 
   glade_command_pop_group ();
 
-  entry_editor->modifying = FALSE;
+  glade_editable_unblock (GLADE_EDITABLE (entry_editor));
 
   /* reload buttons and sensitivity and stuff... */
   glade_editable_load (GLADE_EDITABLE (entry_editor),
@@ -276,7 +234,7 @@ buffer_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
       (GTK_TOGGLE_BUTTON (entry_editor->buffer_radio)))
     return;
 
-  entry_editor->modifying = TRUE;
+  glade_editable_block (GLADE_EDITABLE (entry_editor));
 
   glade_command_push_group (_("Setting %s to use an external buffer"),
                             glade_widget_get_name (entry_editor->loaded_widget));
@@ -292,7 +250,7 @@ buffer_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
 
   glade_command_pop_group ();
 
-  entry_editor->modifying = FALSE;
+  glade_editable_unblock (GLADE_EDITABLE (entry_editor));
 
   /* reload buttons and sensitivity and stuff... */
   glade_editable_load (GLADE_EDITABLE (entry_editor),
@@ -384,14 +342,14 @@ primary_stock_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
       (GTK_TOGGLE_BUTTON (entry_editor->primary_stock_radio)))
     return;
 
-  entry_editor->modifying = TRUE;
+  glade_editable_block (GLADE_EDITABLE (entry_editor));
 
   glade_command_push_group (_("Setting %s to use a primary icon from stock"),
                             glade_widget_get_name (entry_editor->loaded_widget));
   set_stock_mode (entry_editor, TRUE);
   glade_command_pop_group ();
 
-  entry_editor->modifying = FALSE;
+  glade_editable_unblock (GLADE_EDITABLE (entry_editor));
 
   /* reload buttons and sensitivity and stuff... */
   glade_editable_load (GLADE_EDITABLE (entry_editor),
@@ -409,14 +367,14 @@ primary_icon_name_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
       (GTK_TOGGLE_BUTTON (entry_editor->primary_icon_name_radio)))
     return;
 
-  entry_editor->modifying = TRUE;
+  glade_editable_block (GLADE_EDITABLE (entry_editor));
 
   glade_command_push_group (_("Setting %s to use a primary icon from the icon theme"),
                             glade_widget_get_name (entry_editor->loaded_widget));
   set_icon_name_mode (entry_editor, TRUE);
   glade_command_pop_group ();
 
-  entry_editor->modifying = FALSE;
+  glade_editable_unblock (GLADE_EDITABLE (entry_editor));
 
   /* reload buttons and sensitivity and stuff... */
   glade_editable_load (GLADE_EDITABLE (entry_editor),
@@ -433,14 +391,14 @@ primary_pixbuf_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
       (GTK_TOGGLE_BUTTON (entry_editor->primary_pixbuf_radio)))
     return;
 
-  entry_editor->modifying = TRUE;
+  glade_editable_block (GLADE_EDITABLE (entry_editor));
 
   glade_command_push_group (_("Setting %s to use a primary icon from filename"),
                             glade_widget_get_name (entry_editor->loaded_widget));
   set_pixbuf_mode (entry_editor, TRUE);
   glade_command_pop_group ();
 
-  entry_editor->modifying = FALSE;
+  glade_editable_unblock (GLADE_EDITABLE (entry_editor));
 
   /* reload buttons and sensitivity and stuff... */
   glade_editable_load (GLADE_EDITABLE (entry_editor),
@@ -459,14 +417,14 @@ secondary_stock_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
       (GTK_TOGGLE_BUTTON (entry_editor->secondary_stock_radio)))
     return;
 
-  entry_editor->modifying = TRUE;
+  glade_editable_block (GLADE_EDITABLE (entry_editor));
 
   glade_command_push_group (_("Setting %s to use a secondary icon from stock"),
                             glade_widget_get_name (entry_editor->loaded_widget));
   set_stock_mode (entry_editor, FALSE);
   glade_command_pop_group ();
 
-  entry_editor->modifying = FALSE;
+  glade_editable_unblock (GLADE_EDITABLE (entry_editor));
 
   /* reload buttons and sensitivity and stuff... */
   glade_editable_load (GLADE_EDITABLE (entry_editor),
@@ -485,14 +443,14 @@ secondary_icon_name_toggled (GtkWidget * widget,
       (GTK_TOGGLE_BUTTON (entry_editor->secondary_icon_name_radio)))
     return;
 
-  entry_editor->modifying = TRUE;
+  glade_editable_block (GLADE_EDITABLE (entry_editor));
 
   glade_command_push_group (_("Setting %s to use a secondary icon from the icon theme"),
                             glade_widget_get_name (entry_editor->loaded_widget));
   set_icon_name_mode (entry_editor, FALSE);
   glade_command_pop_group ();
 
-  entry_editor->modifying = FALSE;
+  glade_editable_unblock (GLADE_EDITABLE (entry_editor));
 
   /* reload buttons and sensitivity and stuff... */
   glade_editable_load (GLADE_EDITABLE (entry_editor),
@@ -509,14 +467,14 @@ secondary_pixbuf_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
       (GTK_TOGGLE_BUTTON (entry_editor->secondary_pixbuf_radio)))
     return;
 
-  entry_editor->modifying = TRUE;
+  glade_editable_block (GLADE_EDITABLE (entry_editor));
 
   glade_command_push_group (_("Setting %s to use a secondary icon from filename"),
                             glade_widget_get_name (entry_editor->loaded_widget));
   set_pixbuf_mode (entry_editor, FALSE);
   glade_command_pop_group ();
 
-  entry_editor->modifying = FALSE;
+  glade_editable_unblock (GLADE_EDITABLE (entry_editor));
 
   /* reload buttons and sensitivity and stuff... */
   glade_editable_load (GLADE_EDITABLE (entry_editor),

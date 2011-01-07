@@ -38,10 +38,14 @@ struct _GladeEditableIface
 };
 
 GType     glade_editable_get_type       (void) G_GNUC_CONST;
+
 void      glade_editable_load           (GladeEditable *editable,
 					 GladeWidget   *widget);
 void      glade_editable_set_show_name  (GladeEditable  *editable,
 					 gboolean        show_name);
+
+void      glade_editable_block          (GladeEditable *editable);
+void      glade_editable_unblock        (GladeEditable *editable);
 
 
 G_END_DECLS

@@ -57,7 +57,6 @@ struct _GladeEntryEditor
 	GList     *properties;
 
 	gboolean loading;
-	gboolean modifying;
 };
 
 struct _GladeEntryEditorClass

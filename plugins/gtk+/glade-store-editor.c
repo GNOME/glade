@@ -34,6 +34,8 @@ static void glade_store_editor_editable_init (GladeEditableIface * iface);
 static void glade_store_editor_grab_focus (GtkWidget * widget);
 
 
+static GladeEditableIface *parent_editable_iface;
+
 G_DEFINE_TYPE_WITH_CODE (GladeStoreEditor, glade_store_editor, GTK_TYPE_VBOX,
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
                                                 glade_store_editor_editable_init));
@@ -55,60 +57,16 @@ glade_store_editor_init (GladeStoreEditor * self)
 }
 
 static void
-project_changed (GladeProject * project,
-                 GladeCommand * command,
-                 gboolean execute, GladeStoreEditor * store_editor)
-{
-  if (!gtk_widget_get_mapped (GTK_WIDGET (store_editor)))
-    return;
-
-  /* Reload on all commands */
-  glade_editable_load (GLADE_EDITABLE (store_editor),
-                       store_editor->loaded_widget);
-}
-
-
-static void
-project_finalized (GladeStoreEditor * store_editor,
-                   GladeProject * where_project_was)
-{
-  store_editor->loaded_widget = NULL;
-
-  glade_editable_load (GLADE_EDITABLE (store_editor), NULL);
-}
-
-static void
 glade_store_editor_load (GladeEditable * editable, GladeWidget * widget)
 {
   GladeStoreEditor *store_editor = GLADE_STORE_EDITOR (editable);
   GList *l;
 
-  /* Since we watch the project */
-  if (store_editor->loaded_widget)
-    {
-      /* watch custom-child and use-stock properties here for reloads !!! */
-      g_signal_handlers_disconnect_by_func (glade_widget_get_project (store_editor->loaded_widget),
-                                            G_CALLBACK (project_changed),
-                                            store_editor);
-
-      /* The widget could die unexpectedly... */
-      g_object_weak_unref (G_OBJECT (glade_widget_get_project (store_editor->loaded_widget)),
-                           (GWeakNotify) project_finalized, store_editor);
-    }
+  /* Chain up to default implementation */
+  parent_editable_iface->load (editable, widget);
 
   /* Mark our widget... */
   store_editor->loaded_widget = widget;
-
-  if (store_editor->loaded_widget)
-    {
-      /* This fires for undo/redo */
-      g_signal_connect (glade_widget_get_project (store_editor->loaded_widget),
-                        "changed", G_CALLBACK (project_changed), store_editor);
-
-      /* The widget/project could die unexpectedly... */
-      g_object_weak_ref (G_OBJECT (glade_widget_get_project (store_editor->loaded_widget)),
-                         (GWeakNotify) project_finalized, store_editor);
-    }
 
   /* load the embedded editable... */
   if (store_editor->embed)
@@ -131,6 +89,8 @@ glade_store_editor_set_show_name (GladeEditable * editable, gboolean show_name)
 static void
 glade_store_editor_editable_init (GladeEditableIface * iface)
 {
+  parent_editable_iface = g_type_default_interface_peek (GLADE_TYPE_EDITABLE);
+
   iface->load = glade_store_editor_load;
   iface->set_show_name = glade_store_editor_set_show_name;
 }
