@@ -287,7 +287,6 @@ Configuration:
 
 	Source code location:	 ${srcdir}
 	Compiler:		 ${CC}
-	GTK+ version:            $with_gtk
 	GTK+ UNIX Print Widgets: ${have_unix_print}
 	PYTHON Widgets support:	 ${have_python}
 
