@@ -6320,6 +6320,10 @@ glade_gtk_toolbar_child_selected (GladeBaseEditor * editor,
   glade_base_editor_add_default_properties (editor, gchild);
 
   glade_base_editor_add_label (editor, _("Properties"));
+  glade_base_editor_add_properties (editor, gchild, FALSE, 
+				    "tooltip-text",
+				    "accelerator", 
+				    NULL);
   glade_base_editor_add_editable (editor, gchild, GLADE_PAGE_GENERAL);
 
   if (type == GTK_TYPE_SEPARATOR_TOOL_ITEM)
@@ -6354,18 +6358,29 @@ glade_gtk_menu_shell_tool_item_child_selected (GladeBaseEditor * editor,
   glade_base_editor_add_label (editor, _("Properties"));
 
   if (type != GTK_TYPE_IMAGE_MENU_ITEM)
-    glade_base_editor_add_properties (editor, gchild, FALSE, "label", "tooltip",
+    glade_base_editor_add_properties (editor, gchild, FALSE, 
+				      "label", 
+				      "tooltip-text",
+				      "accelerator", 
                                       NULL);
+  else
+    glade_base_editor_add_properties (editor, gchild, FALSE, 
+				      "tooltip-text",
+				      "accelerator", 
+				      NULL);
 
   if (type == GTK_TYPE_IMAGE_MENU_ITEM)
     glade_base_editor_add_editable (editor, gchild, GLADE_PAGE_GENERAL);
   else if (type == GTK_TYPE_CHECK_MENU_ITEM)
     glade_base_editor_add_properties (editor, gchild, FALSE,
-                                      "active", "draw-as-radio",
-                                      "inconsistent", NULL);
+                                      "active", 
+				      "draw-as-radio",
+                                      "inconsistent", 
+				      NULL);
   else if (type == GTK_TYPE_RADIO_MENU_ITEM)
     glade_base_editor_add_properties (editor, gchild, FALSE,
-                                      "active", "group", NULL);
+                                      "active", 
+				      "group", NULL);
 }
 
 static void
