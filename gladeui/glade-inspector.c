@@ -349,11 +349,12 @@ search_entry_key_press_event_cb (GtkEntry * entry,
 static void
 widget_font_desc_set_style (GtkWidget * widget, PangoStyle style)
 {
-  PangoFontDescription *font_desc =
-      pango_font_description_copy (gtk_widget_get_style (widget)->font_desc);
+  GtkStyleContext *context = gtk_widget_get_style_context (widget);
+  PangoFontDescription *font_desc = 
+    pango_font_description_copy (gtk_style_context_get_font (context, GTK_STATE_FLAG_NORMAL));
 
   pango_font_description_set_style (font_desc, style);
-  gtk_widget_modify_font (widget, font_desc);
+  gtk_widget_override_font (widget, font_desc);
   pango_font_description_free (font_desc);
 }
 
@@ -373,12 +374,16 @@ search_entry_update (GladeInspector * inspector)
 
   if (str[0] == '\0')
     {
+      GtkStyleContext *context;
+      GdkRGBA          color;
+
       priv->search_disabled = TRUE;
       widget_font_desc_set_style (priv->entry, PANGO_STYLE_ITALIC);
       gtk_entry_set_text (GTK_ENTRY (priv->entry), _("< search widgets >"));
-      gtk_widget_modify_text (priv->entry, GTK_STATE_NORMAL,
-                              &gtk_widget_get_style (priv->entry)->
-                              text[GTK_STATE_INSENSITIVE]);
+
+      context = gtk_widget_get_style_context (priv->entry);
+      gtk_style_context_get_color (context, GTK_STATE_FLAG_INSENSITIVE, &color);
+      gtk_widget_override_color (priv->entry, GTK_STATE_FLAG_NORMAL, &color);
     }
 }
 
@@ -391,8 +396,9 @@ search_entry_focus_in_cb (GtkWidget * entry,
   if (priv->search_disabled)
     {
       gtk_entry_set_text (GTK_ENTRY (priv->entry), "");
-      gtk_widget_modify_text (priv->entry, GTK_STATE_NORMAL, NULL);
-      gtk_widget_modify_font (priv->entry, NULL);
+      gtk_widget_override_color (priv->entry, GTK_STATE_NORMAL, NULL);
+      gtk_widget_override_font (priv->entry, NULL);
+
       priv->search_disabled = FALSE;
     }
 
