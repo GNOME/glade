@@ -98,8 +98,6 @@ on_handler_edited (GtkCellRendererText* renderer,
 				/* change an existing signal handler */
 				GladeSignal* old_signal;
 				GladeSignal* new_signal;
-
-				g_message ("Changing handler!");
 				
 				gtk_tree_model_get (self->priv->model,
 				                    &iter,
@@ -132,17 +130,18 @@ on_handler_edited (GtkCellRendererText* renderer,
 		else
 		{
 			GladeSignal* signal;
+			GladeSignal* dummy;
 			gchar* name;
-
-			g_message ("Adding handler!");
 			
 			/* Get the signal name */
 			gtk_tree_model_get (self->priv->model, &iter,
-			                    GLADE_SIGNAL_COLUMN_NAME, &name, 
+			                    GLADE_SIGNAL_COLUMN_NAME, &name,
+			                    GLADE_SIGNAL_COLUMN_SIGNAL, &dummy,
 			                    -1);
 			
 			/* Add a new signal handler */
-			signal = glade_signal_new (name, handler, NULL, FALSE, FALSE);
+			signal = glade_signal_new (glade_signal_get_class (dummy),
+			                           handler, NULL, FALSE, FALSE);
 			glade_command_add_signal (self->priv->widget, signal);
 
 			/* Select next column */

@@ -278,7 +278,7 @@ glade_signal_model_get_dummy_handler (GladeSignalModel* model, GladeSignalClass*
 
 	if (!signal)
 	{
-		signal = glade_signal_new (glade_signal_class_get_name (sig_class),
+		signal = glade_signal_new (sig_class,
 		                           HANDLER_DEFAULT,
 		                           USERDATA_DEFAULT,
 		                           FALSE,
