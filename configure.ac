@@ -122,7 +122,7 @@ GTK_DOC_CHECK([1.13],[--flavour no-tmpl])
 dnl ================================================================
 dnl Check for gtk+
 dnl ================================================================
-GTK_REQUIRED=2.91.2
+GTK_REQUIRED=2.99.0
 PKG_CHECK_MODULES([GTK],[
   gtk+-3.0 >= $GTK_REQUIRED
   libxml-2.0 >= 2.4.0
