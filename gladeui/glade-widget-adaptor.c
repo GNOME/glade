@@ -908,7 +908,7 @@ glade_widget_adaptor_object_read_widget (GladeWidgetAdaptor * adaptor,
       if (!glade_xml_node_verify_silent (iter_node, GLADE_XML_TAG_SIGNAL))
         continue;
 
-      if (!(signal = glade_signal_read (iter_node)))
+      if (!(signal = glade_signal_read (iter_node, adaptor)))
         continue;
 
       glade_widget_add_signal_handler (widget, signal);
