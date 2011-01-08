@@ -6,6 +6,11 @@
 
 	* gladeui/glade-utils.[ch]: Some cleanup in glade-utils, removed lots of obsolete stuff.
 
+	* gladeui/glade-utils.[ch], gladeui/glade-widget.c, gladeui/glade-project.c,
+	gladeui/glade-popup.c, gladeui/glade-placeholder.c: Removed global selection list
+	from glade-utils, selection can only be placed on widgets and only be controlled
+	by their owning project.
+
 2011-01-07  Emilio Pozuelo Monfort <pochu27@gmail.com>
 
 	* configure.ac: Bump the minimum GTK+ version to 2.99.0.

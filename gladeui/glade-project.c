@@ -887,7 +887,7 @@ glade_project_class_init (GladeProjectClass * klass)
                     G_TYPE_NONE, 1, GLADE_TYPE_WIDGET);
 
 
-  /** 
+  /**
    * GladeProject::selection-changed:
    * @gladeproject: the #GladeProject which received the signal.
    *
@@ -3329,11 +3329,18 @@ glade_project_is_selected (GladeProject * project, GObject * object)
 void
 glade_project_selection_clear (GladeProject * project, gboolean emit_signal)
 {
+  GList *l;
+
   g_return_if_fail (GLADE_IS_PROJECT (project));
+
   if (project->priv->selection == NULL)
     return;
 
-  glade_util_clear_selection ();
+  for (l = project->priv->selection; l; l = l->next)
+    {
+      if (GTK_IS_WIDGET (l->data))
+	gtk_widget_queue_draw (GTK_WIDGET (l->data));
+    }
 
   g_list_free (project->priv->selection);
   project->priv->selection = NULL;
@@ -3363,8 +3370,6 @@ glade_project_selection_remove (GladeProject * project,
 
   if (glade_project_is_selected (project, object))
     {
-      if (GTK_IS_WIDGET (object))
-        glade_util_remove_selection (GTK_WIDGET (object));
       project->priv->selection =
           g_list_remove (project->priv->selection, object);
       if (project->priv->selection == NULL)
@@ -3398,7 +3403,7 @@ glade_project_selection_add (GladeProject * project,
       gboolean toggle_has_selection = (project->priv->selection == NULL);
 
       if (GTK_IS_WIDGET (object))
-        glade_util_add_selection (GTK_WIDGET (object));
+	gtk_widget_queue_draw (GTK_WIDGET (object));
 
       project->priv->selection =
 	g_list_prepend (project->priv->selection, object);
@@ -3428,9 +3433,7 @@ glade_project_selection_set (GladeProject * project,
 {
   g_return_if_fail (GLADE_IS_PROJECT (project));
   g_return_if_fail (G_IS_OBJECT (object));
-
-  if (!glade_project_has_object (project, object))
-    return;
+  g_return_if_fail (glade_project_has_object (project, object));
 
   if (glade_project_is_selected (project, object) == FALSE ||
       g_list_length (project->priv->selection) != 1)

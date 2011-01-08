@@ -66,13 +66,6 @@ GValue           *glade_utils_value_from_string   (GType               type,
 						   GladeWidget        *widget);
 gchar            *glade_utils_string_from_value   (const GValue       *value);
 
-/* Selection (TODO, Move to GladeProject) */
-void              glade_util_add_selection    (GtkWidget *widget);
-void              glade_util_remove_selection (GtkWidget *widget);
-gboolean	  glade_util_has_selection    (GtkWidget *widget);
-void              glade_util_clear_selection  (void);
-GList            *glade_util_get_selection    (void);
-
 /* Devhelp */
 gboolean          glade_util_have_devhelp          (void);
 GtkWidget        *glade_util_get_devhelp_icon      (GtkIconSize size);

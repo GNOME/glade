@@ -57,10 +57,6 @@
 #define GLADE_UTIL_COPY_BUFFSIZE       1024
 
 
-/* List of widgets that have selection
- */
-static GList *glade_util_selection = NULL;
-
 /**
  * glade_util_compose_get_type_func:
  * @name:
@@ -613,114 +609,32 @@ glade_util_draw_nodes (cairo_t * cr, GdkColor * color,
 void
 glade_util_draw_selection_nodes (GtkWidget * widget, cairo_t * cr)
 {
+  GladeWidget *gwidget;
+  GladeProject *project;
   GdkColor *color;
+  GtkAllocation allocation;
 
   g_return_if_fail (GTK_IS_WIDGET (widget));
+  
+  gwidget = glade_widget_get_from_gobject (widget);
+  if (!gwidget)
+    return;
+
+  project = glade_widget_get_project (gwidget);
+  g_return_if_fail (GLADE_IS_PROJECT (project));
+
+  if (!glade_project_is_selected (project, G_OBJECT (widget)))
+    return;
 
   cairo_save (cr);
 
   color = &(gtk_widget_get_style (widget)->black);
 
-  if (g_list_find (glade_util_selection, widget))
-    {
-      GtkAllocation allocation;
-
-      gtk_widget_get_allocation (widget, &allocation);
-      glade_util_draw_nodes (cr, color,
-                             0, 0, allocation.width, allocation.height);
-    }
+  gtk_widget_get_allocation (widget, &allocation);
+  glade_util_draw_nodes (cr, color,
+			 0, 0, allocation.width, allocation.height);
 
   cairo_restore (cr);
-}
-
-/**
- * glade_util_add_selection:
- * @widget: a #GtkWidget
- *
- * Add visual selection to this GtkWidget
- */
-void
-glade_util_add_selection (GtkWidget * widget)
-{
-  g_return_if_fail (GTK_IS_WIDGET (widget));
-  if (glade_util_has_selection (widget))
-    return;
-
-  glade_util_selection = g_list_prepend (glade_util_selection, widget);
-  gtk_widget_queue_draw (widget);
-}
-
-/**
- * glade_util_remove_selection:
- * @widget: a #GtkWidget
- *
- * Remove visual selection from this GtkWidget
- */
-void
-glade_util_remove_selection (GtkWidget * widget)
-{
-  GtkWidget *parent;
-
-  g_return_if_fail (GTK_IS_WIDGET (widget));
-  if (!glade_util_has_selection (widget))
-    return;
-
-  glade_util_selection = g_list_remove (glade_util_selection, widget);
-
-  /* We redraw the parent, since the selection rectangle may not be
-     cleared if we just redraw the widget itself. */
-  parent = gtk_widget_get_parent (widget);
-  if (parent)
-    gtk_widget_queue_draw (parent);
-  gtk_widget_queue_draw (widget);
-}
-
-/**
- * glade_util_clear_selection:
- *
- * Clear all visual selections
- */
-void
-glade_util_clear_selection (void)
-{
-  GtkWidget *widget;
-  GtkWidget *parent;
-  GList *list;
-
-  for (list = glade_util_selection; list && list->data; list = list->next)
-    {
-      widget = list->data;
-      parent = gtk_widget_get_parent (widget);
-
-      if (parent)
-        gtk_widget_queue_draw (parent);
-      gtk_widget_queue_draw (widget);
-    }
-  glade_util_selection = (g_list_free (glade_util_selection), NULL);
-}
-
-/**
- * glade_util_has_selection:
- * @widget: a #GtkWidget
- *
- * Returns: %TRUE if @widget has visual selection, %FALSE otherwise
- */
-gboolean
-glade_util_has_selection (GtkWidget * widget)
-{
-  g_return_val_if_fail (GTK_IS_WIDGET (widget), FALSE);
-  return g_list_find (glade_util_selection, widget) != NULL;
-}
-
-/**
- * glade_util_get_selectoin:
- *
- * Returns: The list of selected #GtkWidgets
- */
-GList *
-glade_util_get_selection ()
-{
-  return glade_util_selection;
 }
 
 /*

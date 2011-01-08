@@ -428,7 +428,6 @@ glade_widget_button_press_event_impl (GladeWidget * gwidget,
       else if (glade_project_is_selected (gwidget->priv->project,
                                           gwidget->priv->object) == FALSE)
         {
-          glade_util_clear_selection ();
           glade_project_selection_set (gwidget->priv->project, 
 				       gwidget->priv->object, TRUE);
 
