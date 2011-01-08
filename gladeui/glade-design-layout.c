@@ -856,22 +856,22 @@ glade_design_layout_class_init (GladeDesignLayoutClass * klass)
   klass->widget_event = glade_design_layout_widget_event_impl;
 
 
-        /**
-	 * GladeDesignLayout::widget-event:
-	 * @glade_design_layout: the #GladeDesignLayout containing the #GladeWidget.
-	 * @signal_editor: the #GladeWidget which received the signal.
-	 * @event: the #GdkEvent
-	 *
-	 * Emitted when a widget event received.
-	 * Connect before the default handler to block glade logic,
-	 * such as selecting or resizing, by returning #GLADE_WIDGET_EVENT_STOP_EMISSION.
-	 * If you want to handle the event after it passed the glade logic,
-	 * but before it reaches the widget, you should connect after the default handler.
-	 *
-	 * Returns: #GLADE_WIDGET_EVENT_STOP_EMISSION flag to abort futher emission of the signal.
-	 * #GLADE_WIDGET_EVENT_RETURN_TRUE flag in the last handler
-	 * to stop propagating of the event to the appropriate widget.
-	 */
+  /**
+   * GladeDesignLayout::widget-event:
+   * @glade_design_layout: the #GladeDesignLayout containing the #GladeWidget.
+   * @signal_editor: the #GladeWidget which received the signal.
+   * @event: the #GdkEvent
+   *
+   * Emitted when a widget event received.
+   * Connect before the default handler to block glade logic,
+   * such as selecting or resizing, by returning #GLADE_WIDGET_EVENT_STOP_EMISSION.
+   * If you want to handle the event after it passed the glade logic,
+   * but before it reaches the widget, you should connect after the default handler.
+   *
+   * Returns: #GLADE_WIDGET_EVENT_STOP_EMISSION flag to abort futher emission of the signal.
+   * #GLADE_WIDGET_EVENT_RETURN_TRUE flag in the last handler
+   * to stop propagating of the event to the appropriate widget.
+   */
   glade_design_layout_signals[WIDGET_EVENT] =
       g_signal_new ("widget-event",
                     G_TYPE_FROM_CLASS (object_class),

@@ -309,7 +309,7 @@ static gboolean
 remove_message_timeout (FlashInfo * fi)
 {
   gtk_statusbar_remove (fi->statusbar, fi->context_id, fi->message_id);
-  g_free (fi);
+  g_slice_free (FlashInfo, fi);
 
   /* remove the timeout */
   return FALSE;
@@ -338,7 +338,7 @@ glade_util_flash_message (GtkWidget * statusbar, guint context_id,
   message = g_strdup_vprintf (format, args);
   va_end (args);
 
-  fi = g_new (FlashInfo, 1);
+  fi = g_slice_new0 (FlashInfo);
   fi->statusbar = GTK_STATUSBAR (statusbar);
   fi->context_id = context_id;
   fi->message_id = gtk_statusbar_push (fi->statusbar, fi->context_id, message);
@@ -427,29 +427,6 @@ glade_util_compare_stock_labels (gconstpointer a, gconstpointer b)
     }
 
   return retval;
-}
-
-/**
- * glade_util_hide_window:
- * @window: a #GtkWindow
- *
- * If you use this function to handle the delete_event of a window, when it
- * will be shown again it will appear in the position where it was before
- * beeing hidden.
- */
-void
-glade_util_hide_window (GtkWindow * window)
-{
-  gint x, y;
-
-  g_return_if_fail (GTK_IS_WINDOW (window));
-
-  /* remember position of window for when it is used again */
-  gtk_window_get_position (window, &x, &y);
-
-  gtk_widget_hide (GTK_WIDGET (window));
-
-  gtk_window_move (window, x, y);
 }
 
 /**
@@ -894,26 +871,6 @@ glade_util_find_iter_by_widget (GtkTreeModel * model,
   return NULL;
 }
 
-gboolean
-glade_util_basenames_match (const gchar * path1, const gchar * path2)
-{
-  gboolean match = FALSE;
-  gchar *bname1;
-  gchar *bname2;
-
-  if (path1 && path2)
-    {
-      bname1 = g_path_get_basename (path1);
-      bname2 = g_path_get_basename (path2);
-
-      match = !strcmp (bname1, bname2);
-
-      g_free (bname1);
-      g_free (bname2);
-    }
-  return match;
-}
-
 /**
  * glade_util_purify_list:
  * @list: A #GList
@@ -1035,148 +992,6 @@ glade_util_canonical_path (const gchar * path)
     g_free (basename);
 
   return direct_name;
-}
-
-static gboolean
-glade_util_canonical_match (const gchar * src_path, const gchar * dest_path)
-{
-  gchar *canonical_src, *canonical_dest;
-  gboolean match;
-  canonical_src = glade_util_canonical_path (src_path);
-  canonical_dest = glade_util_canonical_path (dest_path);
-
-  match = (strcmp (canonical_src, canonical_dest) == 0);
-
-  g_free (canonical_src);
-  g_free (canonical_dest);
-
-  return match;
-}
-
-/**
- * glade_util_copy_file:
- * @src_path:  the path to the source file
- * @dest_path: the path to the destination file to create or overwrite.
- *
- * Copies a file from @src to @dest, queries the user
- * if it involves overwriting the target and displays an
- * error message upon failure.
- *
- * Returns: True if the copy was successfull.
- */
-gboolean
-glade_util_copy_file (const gchar * src_path, const gchar * dest_path)
-{
-  GIOChannel *src, *dest;
-  GError *error = NULL;
-  GIOStatus read_status, write_status = G_IO_STATUS_ERROR;
-  gchar buffer[GLADE_UTIL_COPY_BUFFSIZE];
-  gsize bytes_read, bytes_written, written;
-  gboolean success = FALSE;
-
-  /* FIXME: This may break if src_path & dest_path are actually 
-   * the same file, right now the canonical comparison is the
-   * best check I have.
-   */
-  if (glade_util_canonical_match (src_path, dest_path))
-    return FALSE;
-
-  if (g_file_test (dest_path, G_FILE_TEST_IS_REGULAR) != FALSE)
-    if (glade_util_ui_message
-        (glade_app_get_window (), GLADE_UI_YES_OR_NO, NULL,
-         _("%s exists.\nDo you want to replace it?"), dest_path) == FALSE)
-      return FALSE;
-
-
-  if ((src = g_io_channel_new_file (src_path, "r", &error)) != NULL)
-    {
-      g_io_channel_set_encoding (src, NULL, NULL);
-
-      if ((dest = g_io_channel_new_file (dest_path, "w", &error)) != NULL)
-        {
-          g_io_channel_set_encoding (dest, NULL, NULL);
-
-          while ((read_status = g_io_channel_read_chars
-                  (src, buffer, GLADE_UTIL_COPY_BUFFSIZE,
-                   &bytes_read, &error)) != G_IO_STATUS_ERROR)
-            {
-              bytes_written = 0;
-              while ((write_status = g_io_channel_write_chars
-                      (dest, buffer + bytes_written,
-                       bytes_read - bytes_written,
-                       &written, &error)) != G_IO_STATUS_ERROR &&
-                     (bytes_written + written) < bytes_read)
-                bytes_written += written;
-
-              if (write_status == G_IO_STATUS_ERROR)
-                {
-                  glade_util_ui_message (glade_app_get_window (),
-                                         GLADE_UI_ERROR, NULL,
-                                         _("Error writing to %s: %s"),
-                                         dest_path, error->message);
-                  error = (g_error_free (error), NULL);
-                  break;
-                }
-
-              /* Break on EOF & ERROR but not AGAIN and not NORMAL */
-              if (read_status == G_IO_STATUS_EOF)
-                break;
-            }
-
-          if (read_status == G_IO_STATUS_ERROR)
-            {
-              glade_util_ui_message (glade_app_get_window (),
-                                     GLADE_UI_ERROR, NULL,
-                                     _("Error reading %s: %s"),
-                                     src_path, error->message);
-              error = (g_error_free (error), NULL);
-            }
-
-
-          /* From here on, unless we have problems shutting down, succuss ! */
-          success = (read_status == G_IO_STATUS_EOF &&
-                     write_status == G_IO_STATUS_NORMAL);
-
-          if (g_io_channel_shutdown (dest, TRUE, &error) != G_IO_STATUS_NORMAL)
-            {
-              glade_util_ui_message
-                  (glade_app_get_window (),
-                   GLADE_UI_ERROR, NULL,
-                   _("Error shutting down I/O channel %s: %s"),
-                   dest_path, error->message);
-              error = (g_error_free (error), NULL);
-              success = FALSE;
-            }
-        }
-      else
-        {
-          glade_util_ui_message (glade_app_get_window (),
-                                 GLADE_UI_ERROR, NULL,
-                                 _("Failed to open %s for writing: %s"),
-                                 dest_path, error->message);
-          error = (g_error_free (error), NULL);
-
-        }
-
-
-      if (g_io_channel_shutdown (src, TRUE, &error) != G_IO_STATUS_NORMAL)
-        {
-          glade_util_ui_message (glade_app_get_window (),
-                                 GLADE_UI_ERROR, NULL,
-                                 _("Error shutting down I/O channel %s: %s"),
-                                 src_path, error->message);
-          success = FALSE;
-        }
-    }
-  else
-    {
-      glade_util_ui_message (glade_app_get_window (),
-                             GLADE_UI_ERROR, NULL,
-                             _("Failed to open %s for reading: %s"),
-                             src_path, error->message);
-      error = (g_error_free (error), NULL);
-    }
-  return success;
 }
 
 static GModule *
