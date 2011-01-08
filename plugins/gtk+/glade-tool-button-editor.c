@@ -142,7 +142,6 @@ standard_label_toggled (GtkWidget * widget,
     return;
 
   glade_editable_block (GLADE_EDITABLE (button_editor));
-  glade_editable_block (GLADE_EDITABLE (button_editor));
 
   glade_command_push_group (_("Setting %s to use standard label text"),
                             glade_widget_get_name (button_editor->loaded_widget));
