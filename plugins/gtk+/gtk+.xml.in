@@ -1,6 +1,6 @@
 <glade-catalog name="gtk+"
-	       version="2.24"
-	       targetable="2.22,2.20,2.18,2.16,2.14,2.12,2.10,2.8"
+	       version="3.0"
+	       targetable="2.24,2.22,2.20"
                icon-prefix="gtk"
                library="gladegtk"
                domain="glade3"
@@ -25,6 +25,8 @@
 	<signal id="keynav-failed" since="2.12"/>
 	<signal id="query-tooltip" since="2.12"/>
 	<signal id="damage-event" since="2.14"/>
+	<signal id="state-flags-changed" since="3.0"/>
+	<signal id="style-updated" since="3.0"/>
       </signals>
 
       <actions>
@@ -58,8 +60,28 @@
 	<property id="width-request"  common="True" optional="True" optional-default="False" default="0"/>
 	<property id="height-request" common="True" optional="True" optional-default="False" default="0"/>
 	<property id="no-show-all" weight="4.6" ignore="True"/>
+	<property id="expand" disabled="True" since="3.0"/>
+	<property id="hexpand" common="True" since="3.0"/>
+	<property id="vexpand" common="True" since="3.0"/>
+	<property id="hexpand-set" disabled="True" since="3.0"/>
+	<property id="vexpand-set" disabled="True" since="3.0"/>
+	<property id="margin" disabled="True" since="3.0"/>
+	<property id="margin-left" common="True" since="3.0"/>
+	<property id="margin-right" common="True" since="3.0"/>
+	<property id="margin-top" common="True" since="3.0"/>
+	<property id="margin-bottom" common="True" since="3.0"/>
 
-	<property common="True" id="extension-events">
+	<property id="halign" common="True" since="3.0">
+  	  <displayable-values>
+	    <value id="GTK_ALIGN_FILL" _name="Fill"/>
+	    <value id="GTK_ALIGN_START" _name="Start"/>
+	    <value id="GTK_ALIGN_CENTER" _name="Center"/>
+	    <value id="GTK_ALIGN_END" _name="End"/>
+	  </displayable-values>
+	</property>
+	<property id="valign" common="True" since="3.0"/>
+
+	<property id="extension-events" common="True">
   	  <displayable-values>
 	    <value id="GDK_EXTENSION_EVENTS_NONE" _name="None"/>
 	    <value id="GDK_EXTENSION_EVENTS_ALL" _name="All"/>
@@ -67,7 +89,7 @@
 	  </displayable-values>
 	</property>
 
-	<property common="True" id="events" ignore="True">
+	<property id="events" ignore="True" common="True">
   	  <displayable-values>
 	    <value id="GDK_EXPOSURE_MASK" _name="Exposure"/>
 	    <value id="GDK_POINTER_MOTION_MASK" _name="Pointer Motion"/>
@@ -413,6 +435,9 @@ embedded in another object</_tooltip>
           </displayable-values>
 	</property>
 	<property id="accept-focus" ignore="True"/>
+	<property id="application" since="3.0" disabled="True"/>
+	<property id="has-resize-grip" since="3.0"/>
+	<property id="resize-grip-visible" since="3.0" disabled="True"/>
       </properties>
     </glade-widget-class>
 
@@ -1014,9 +1039,14 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkVolumeButton" generic-name="volumebutton" _title="Volume Button"/>
+    <glade-widget-class name="GtkVolumeButton" generic-name="volumebutton" _title="Volume Button">
+    </glade-widget-class>
+      <properties>
+        <property id="use-symbolic" since="3.0"/>
+      </properties>
 
-    <glade-widget-class name="GtkFileChooserWidget" generic-name="filechooserwidget" _title="File Chooser Widget">
+    <glade-widget-class name="GtkFileChooserWidget" generic-name="filechooserwidget" 
+			_title="File Chooser Widget">
       <post-create-function>glade_gtk_file_chooser_widget_post_create</post-create-function>
       <properties>
         <property id="size" default="1" query="False" />
@@ -1085,10 +1115,13 @@ embedded in another object</_tooltip>
         <property id="popup-shown" since="2.10"/>
         <property id="tearoff-title" since="2.10"/>
         <property id="active" ignore="True"/>
+        <property id="active-id" since="3.0"/>
+        <property id="id-column" since="3.0"/>
         <property id="column-span-column" ignore="True"/>
         <property id="row-span-column" ignore="True"/>
 	<property id="entry-text-column" since="2.24"/>
 	<property id="has-entry" since="2.24"/>
+	<property id="popup-fixed-width" since="3.0"/>
 	<property id="button-sensitivity">
   	  <displayable-values>
 	    <value id="GTK_SENSITIVITY_AUTO" _name="Automatic"/>
@@ -1111,17 +1144,10 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkProgressBar" generic-name="progressbar" _title="Progress Bar">
       <properties>
         <property id="text" translatable="True"/>
+        <property id="show-text" since="3.0"/>
         <property id="activity-blocks" disabled="True"/>
 	<property id="activity-step" disabled="True"/>
 	<property id="bar-style" disabled="True"/>
-       	<property id="orientation">
-  	  <displayable-values>
-	    <value id="GTK_PROGRESS_LEFT_TO_RIGHT" _name="Left to Right"/>
-	    <value id="GTK_PROGRESS_RIGHT_TO_LEFT" _name="Right to Left"/>
-	    <value id="GTK_PROGRESS_BOTTOM_TO_TOP" _name="Bottom to Top"/>
-	    <value id="GTK_PROGRESS_TOP_TO_BOTTOM" _name="Top to Bottom"/>
-	  </displayable-values>
-	</property>
        	<property id="bar-style">
   	  <displayable-values>
 	    <value id="GTK_PROGRESS_CONTINUOUS" _name="Continuous"/>
@@ -1516,6 +1542,8 @@ embedded in another object</_tooltip>
     
     <glade-widget-class name="GtkScrolledWindow" generic-name="scrolledwindow" _title="Scrolled Window">
       <properties>
+        <property id="min-content-width" since="3.0"/>
+        <property id="min-content-height" since="3.0"/>
         <property id="window-placement-set" since="2.10" ignore="True"/>
       	<property id="hscrollbar-policy" default="GTK_POLICY_AUTOMATIC">
   	  <displayable-values>
@@ -1548,6 +1576,20 @@ embedded in another object</_tooltip>
 	<property id="comments" translatable="True" multiline="True"/>
 	<property id="license" translatable="True" multiline="True"/>
 	<property id="website-label" translatable="True" multiline="True"/>
+
+       	<property id="license-type" since="3.0">
+  	  <displayable-values>
+	    <value id="GTK_LICENSE_UNKNOWN" _name="Unknown"/>
+	    <value id="GTK_LICENSE_CUSTOM" _name="Custom"/>
+	    <value id="GTK_LICENSE_GPL_2_0" _name="GPL 2.0"/>
+	    <value id="GTK_LICENSE_GPL_3_0" _name="GPL 3.0"/>
+	    <value id="GTK_LICENSE_LGPL_2_1" _name="LGPL 2.1"/>
+	    <value id="GTK_LICENSE_LGPL_3_0" _name="LGPL 3.0"/>
+	    <value id="GTK_LICENSE_BSD" _name="BSD"/>
+	    <value id="GTK_LICENSE_MIT_X11" _name="MIT X11"/>
+	    <value id="GTK_LICENSE_ARTISTIC" _name="Artistic"/>
+	  </displayable-values>
+	</property>
 	
 	<!-- It is disputable whether this should really be translatable -->
 	<property id="translator-credits" translatable="True" multiline="True">
@@ -1662,6 +1704,7 @@ embedded in another object</_tooltip>
 	    <value id="GTK_ASSISTANT_PAGE_CONFIRM" _name="Confirm"/>
 	    <value id="GTK_ASSISTANT_PAGE_SUMMARY" _name="Summary"/>
 	    <value id="GTK_ASSISTANT_PAGE_PROGRESS" _name="Progress"/>
+	    <value id="GTK_ASSISTANT_PAGE_CUSTOM" _name="Custom"/>
 	  </displayable-values>
 	</property>
         <property save="False" id="position" _name="Position">
@@ -1942,6 +1985,12 @@ embedded in another object</_tooltip>
 
       <properties>
         <property id="sort-column-id" since="2.18"/>
+        <property id="sort-order">
+  	  <displayable-values>
+	    <value id="GTK_SORT_ASCENDING" _name="Ascending"/>
+	    <value id="GTK_SORT_DESCENDING" _name="Descending"/>
+	  </displayable-values>
+	</property>
         <property id="title" default="column" translatable="True"/>
         <property id="sizing">
   	  <displayable-values>
@@ -1984,6 +2033,14 @@ embedded in another object</_tooltip>
         <property id="pixbuf-column" disabled="True"/>
         <property id="reorderable" ignore="True"/>
         <property id="model" create-type="GtkListStore" query="True" />
+        <property id="selection-mode" since="2.6">
+  	  <displayable-values>
+	    <value id="GTK_SELECTION_NONE" _name="None"/>
+	    <value id="GTK_SELECTION_SINGLE" _name="Single"/>
+	    <value id="GTK_SELECTION_BROWSE" _name="Browse"/>
+	    <value id="GTK_SELECTION_MULTIPLE" _name="Multiple"/>
+	  </displayable-values>
+	</property>
       </properties>
 
       <packing-properties>
