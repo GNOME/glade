@@ -276,8 +276,9 @@ glade_standard_stock_get_type (void)
           if (gtk_stock_lookup (enum_values[i].value_nick, &item))
             {
               gchar *clean_name = clean_stock_name (item.label);
-              glade_register_translated_value (etype, enum_values[i].value_nick,
-                                               clean_name);
+
+	      if (!glade_get_displayable_value (etype, enum_values[i].value_nick))
+		glade_register_translated_value (etype, enum_values[i].value_nick, clean_name);
               g_free (clean_name);
             }
         }
@@ -310,8 +311,8 @@ glade_standard_stock_image_get_type (void)
               gchar *clean_name = clean_stock_name (item.label);
 
               /* These are translated, we just cut out the mnemonic underscores */
-              glade_register_translated_value (etype, enum_values[i].value_nick,
-                                               clean_name);
+	      if (!glade_get_displayable_value (etype, enum_values[i].value_nick))
+		glade_register_translated_value (etype, enum_values[i].value_nick, clean_name);
               g_free (clean_name);
             }
         }
@@ -319,10 +320,11 @@ glade_standard_stock_image_get_type (void)
       for (i = 0; i < G_N_ELEMENTS (builtin_stock_images); i++)
         {
           /* these ones are translated from glade3 */
-          glade_register_displayable_value (etype,
-                                            builtin_stock_images[i],
-                                            GETTEXT_PACKAGE,
-                                            builtin_stock_displayables[i]);
+	  if (!glade_get_displayable_value (etype, builtin_stock_images[i]))
+	    glade_register_displayable_value (etype,
+					      builtin_stock_images[i],
+					      GETTEXT_PACKAGE,
+					      builtin_stock_displayables[i]);
         }
     }
   return etype;
