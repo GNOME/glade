@@ -615,6 +615,66 @@ embedded in another object</_tooltip>
       </packing-defaults>
     </glade-widget-class>
     
+    <glade-widget-class name="GtkToolPalette" generic-name="toolpalette" _title="Tool Palette" 
+			use-placeholders="False" since="2.20">
+      <post-create-function>glade_gtk_toolbar_post_create</post-create-function>
+      <add-child-function>glade_gtk_tool_palette_add_child</add-child-function>
+      <remove-child-function>glade_gtk_tool_palette_remove_child</remove-child-function>
+      <child-set-property-function>glade_gtk_tool_palette_set_child_property</child-set-property-function>
+      <child-get-property-function>glade_gtk_tool_palette_get_child_property</child-get-property-function>
+      <action-activate-function>glade_gtk_tool_palette_action_activate</action-activate-function>
+
+      <actions>
+        <action id="launch_editor" _name="Edit&#8230;" stock="gtk-edit" important="True"/>
+      </actions>
+      <properties>
+      	<property id="icon-size-set" disabled="True"/>
+      	<property id="toolbar-style" save-always="True" optional="True" optional-default="False" weight="0.4"/>
+      	<property id="icon-size" optional="True" optional-default="False" weight="0.5"/>
+      </properties>
+
+      <packing-properties>
+        <property id="position" _name="Position" default="-1" save="False">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The position of the tool item group in the palette</_tooltip>
+        </property>
+	<property id="expand" transfer-on-paste="True" save-always="True"/>
+        <property id="exclusive" transfer-on-paste="True"/>
+      </packing-properties>
+    </glade-widget-class>
+
+    <glade-widget-class name="GtkToolItemGroup" generic-name="toolitemgroup" _title="Tool Item Group" 
+			use-placeholders="False" since="2.20">
+      <post-create-function>empty</post-create-function>
+      <set-property-function>glade_gtk_tool_item_group_set_property</set-property-function>
+      <add-child-function>glade_gtk_tool_item_group_add_child</add-child-function>
+      <remove-child-function>glade_gtk_tool_item_group_remove_child</remove-child-function>
+      <create-editable-function>glade_gtk_tool_item_group_create_editable</create-editable-function>
+      <read-widget-function>glade_gtk_tool_item_group_read_widget</read-widget-function>
+
+      <properties>
+        <property id="label" translatable="True" default="toolitemgroup" custom-layout="True"/>
+	<property id="label-widget" parentless-widget="True" create-type="GtkLabel" custom-layout="True"/>
+
+	<!-- Virtual label type property -->
+        <property id="custom-label" visible="False" save="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+        </property>
+      </properties>
+
+      <packing-properties>
+	<property id="expand" transfer-on-paste="True"/>
+        <property id="fill" transfer-on-paste="True"/>
+        <property id="row-new" transfer-on-paste="True"/>
+        <property id="homogeneous" transfer-on-paste="True"/>
+      </packing-properties>
+    </glade-widget-class>
+
     <glade-widget-class name="GtkToolItem" generic-name="toolitem" title="GtkToolItem">
       <post-create-function>glade_gtk_tool_item_post_create</post-create-function>
       <constructor-function>glade_gtk_tool_item_constructor</constructor-function>
@@ -629,9 +689,9 @@ embedded in another object</_tooltip>
       </properties>
 
     </glade-widget-class>
-    
-    <glade-widget-class name="GtkSeparatorToolItem" generic-name="separatortoolitem" _title="Separator Tool Item"/>
-	
+
+    <glade-widget-class name="GtkSeparatorToolItem" generic-name="separatortoolitem" 
+			_title="Separator Tool Item"/>
 
     <glade-widget-class name="GtkToolButton" generic-name="toolbutton" _title="Tool Button">
       <create-editable-function>glade_gtk_tool_button_create_editable</create-editable-function>
@@ -675,7 +735,8 @@ embedded in another object</_tooltip>
     
     <glade-widget-class name="GtkRadioToolButton" generic-name="radiotoolbutton" _title="Radio Tool Button"/>
     
-    <glade-widget-class name="GtkMenuToolButton" generic-name="menutoolbutton" _title="Menu Tool Button">
+    <glade-widget-class name="GtkMenuToolButton" generic-name="menutoolbutton" use-placeholders="False"
+			_title="Menu Tool Button">
       <add-child-function>glade_gtk_menu_tool_button_add_child</add-child-function>
       <remove-child-function>glade_gtk_menu_tool_button_remove_child</remove-child-function>
       <get-children-function>glade_gtk_menu_tool_button_get_children</get-children-function>
@@ -3444,6 +3505,7 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkAspectFrame"/>
     <glade-widget-class-ref name="GtkMenuBar"/>
     <glade-widget-class-ref name="GtkToolbar"/>
+    <glade-widget-class-ref name="GtkToolPalette"/>
     <glade-widget-class-ref name="GtkHPaned"/>
     <glade-widget-class-ref name="GtkVPaned"/>
     <glade-widget-class-ref name="GtkHButtonBox"/>
