@@ -395,15 +395,9 @@ param_objects_validate (GParamSpec * pspec, GValue * value)
     {
       object = list->data;
 
-      if (G_TYPE_IS_INTERFACE (ospec->type) &&
-          glade_util_class_implements_interface
-          (G_OBJECT_TYPE (object), ospec->type) == FALSE)
+      if (!(G_OBJECT_TYPE (object) == ospec->type ||
+	    g_type_is_a (G_OBJECT_TYPE (object), ospec->type)))
         toremove = g_list_prepend (toremove, object);
-      else if (G_TYPE_IS_INTERFACE (ospec->type) == FALSE &&
-               g_type_is_a (G_OBJECT_TYPE (object), ospec->type) == FALSE)
-        toremove = g_list_prepend (toremove, object);
-
-
     }
 
   for (list = toremove; list; list = list->next)

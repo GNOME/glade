@@ -98,10 +98,6 @@ gchar            *glade_util_canonical_path        (const gchar  *path);
 gboolean          glade_util_copy_file             (const gchar  *src_path,
 						    const gchar  *dest_path);
 
-gboolean          glade_util_class_implements_interface (GType class_type, 
-							 GType iface_type);
-
-
 GModule          *glade_util_load_library          (const gchar  *library_name);
 
 

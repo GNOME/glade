@@ -1,3 +1,9 @@
+2011-01-08  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-utils.[ch], gladeui/glade-widget.c, gladeui/glade-builtins.c,
+	gladeui/glade-widget-adaptor.c, gladeui/glade-editor-property.c:
+	Removed glade_util_class_implements_interface() in favor of g_type_is_a() (closes bug 455734).
+
 2011-01-07  Emilio Pozuelo Monfort <pochu27@gmail.com>
 
 	* configure.ac: Bump the minimum GTK+ version to 2.99.0.
@@ -12,7 +18,7 @@
 	* data/glade.desktop.in.in: Execute 'glade' since that's the name
 	of the binary now.
 
-2011-01-06  Tristan Van Berkom <tristanvb@openismus.com>
+2011-01-07  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-inspector.c: Updated to use GtkStyleContext to set the italic &
 	insensitive color for the < search widgets > entry.

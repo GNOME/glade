@@ -1179,33 +1179,6 @@ glade_util_copy_file (const gchar * src_path, const gchar * dest_path)
   return success;
 }
 
-/**
- * glade_util_class_implements_interface:
- * @class_type: A #GType
- * @iface_type: A #GType
- *
- * Returns: whether @class_type implements the @iface_type interface
- */
-gboolean
-glade_util_class_implements_interface (GType class_type, GType iface_type)
-{
-  GType *ifaces;
-  guint n_ifaces, i;
-  gboolean implemented = FALSE;
-
-  if ((ifaces = g_type_interfaces (class_type, &n_ifaces)) != NULL)
-    {
-      for (i = 0; i < n_ifaces; i++)
-        if (ifaces[i] == iface_type)
-          {
-            implemented = TRUE;
-            break;
-          }
-      g_free (ifaces);
-    }
-  return implemented;
-}
-
 static GModule *
 try_load_library (const gchar * library_path, const gchar * library_name)
 {

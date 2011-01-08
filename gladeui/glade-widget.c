@@ -3680,12 +3680,8 @@ glade_widget_has_decendant (GladeWidget * widget, GType type)
   GList *children, *l;
   gboolean found = FALSE;
 
-  if (G_TYPE_IS_INTERFACE (type) &&
-      glade_util_class_implements_interface 
-      (glade_widget_adaptor_get_object_type (widget->priv->adaptor), type))
-    return TRUE;
-  else if (G_TYPE_IS_INTERFACE (type) == FALSE &&
-           g_type_is_a (glade_widget_adaptor_get_object_type (widget->priv->adaptor), type))
+  if (glade_widget_adaptor_get_object_type (widget->priv->adaptor) == type ||
+      g_type_is_a (glade_widget_adaptor_get_object_type (widget->priv->adaptor), type))
     return TRUE;
 
   if ((children = glade_widget_adaptor_get_children
