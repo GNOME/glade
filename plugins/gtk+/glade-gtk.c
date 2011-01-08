@@ -7026,20 +7026,55 @@ glade_gtk_menu_bar_post_create (GladeWidgetAdaptor * adaptor,
 
 /* ----------------------------- GtkToolBar ------------------------------ */
 
-/* need to unset/reset toolbar style when property is disabled/enabled */
+/* need to unset/reset toolbar-style/icon-size when property is disabled/enabled */
 static void
-property_toolbar_style_notify_enabled (GladeProperty * property,
-                                       GParamSpec * spec, GtkToolbar * toolbar)
+property_toolbar_style_notify_enabled (GladeProperty *property,
+                                       GParamSpec    *spec, 
+				       GtkWidget     *widget)
 {
   GtkToolbarStyle style;
 
   if (glade_property_get_enabled (property))
     {
       glade_property_get (property, &style);
-      gtk_toolbar_set_style (toolbar, style);
+
+      if (GTK_IS_TOOLBAR (widget))
+	gtk_toolbar_set_style (GTK_TOOLBAR (widget), style);
+      else if (GTK_IS_TOOL_PALETTE (widget))
+	gtk_tool_palette_set_style (GTK_TOOL_PALETTE (widget), style);
     }
   else
-    gtk_toolbar_unset_style (toolbar);
+    {
+      if (GTK_IS_TOOLBAR (widget))
+	gtk_toolbar_unset_style (GTK_TOOLBAR (widget));
+      else if (GTK_IS_TOOL_PALETTE (widget))
+	gtk_tool_palette_unset_style (GTK_TOOL_PALETTE (widget));
+    }
+}
+
+static void
+property_icon_size_notify_enabled (GladeProperty *property,
+				   GParamSpec    *spec, 
+				   GtkWidget     *widget)
+{
+  gint size;
+
+  if (glade_property_get_enabled (property))
+    {
+      glade_property_get (property, &size);
+
+      if (GTK_IS_TOOLBAR (widget))
+	gtk_toolbar_set_icon_size (GTK_TOOLBAR (widget), size);
+      else if (GTK_IS_TOOL_PALETTE (widget))
+	gtk_tool_palette_set_icon_size (GTK_TOOL_PALETTE (widget), size);
+    }
+  else
+    {
+      if (GTK_IS_TOOLBAR (widget))
+	gtk_toolbar_unset_icon_size (GTK_TOOLBAR (widget));
+      else if (GTK_IS_TOOL_PALETTE (widget))
+	gtk_tool_palette_unset_icon_size (GTK_TOOL_PALETTE (widget));
+    }
 }
 
 void
@@ -7047,13 +7082,17 @@ glade_gtk_toolbar_post_create (GladeWidgetAdaptor * adaptor,
                                GObject * object, GladeCreateReason reason)
 {
   GladeWidget *widget;
-  GladeProperty *toolbar_style_property;
+  GladeProperty *property;
 
-  widget = glade_widget_get_from_gobject (object);
-  toolbar_style_property = glade_widget_get_property (widget, "toolbar-style");
+  widget   = glade_widget_get_from_gobject (object);
 
-  g_signal_connect (toolbar_style_property, "notify::enabled",
+  property = glade_widget_get_property (widget, "toolbar-style");
+  g_signal_connect (property, "notify::enabled",
                     G_CALLBACK (property_toolbar_style_notify_enabled), object);
+
+  property = glade_widget_get_property (widget, "icon-size");
+  g_signal_connect (property, "notify::enabled",
+                    G_CALLBACK (property_icon_size_notify_enabled), object);
 }
 
 void
@@ -7220,6 +7259,10 @@ glade_gtk_toolbar_action_activate (GladeWidgetAdaptor * adaptor,
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor,
                                                          object, action_path);
 }
+
+
+/* ----------------------------- GtkToolPalette ------------------------------ */
+
 
 /* ----------------------------- GtkToolItem ------------------------------ */
 GObject *

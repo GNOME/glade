@@ -17,6 +17,10 @@
 	* plugins/gtk+/gtk+.xml.in: Made plugin target from 2.20, 2.22, 2.24 and 3.0, updated
 	new properties and signals introduced with 3.0.
 
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Made GtkToolBar:icon-size an
+	optional property to discourage its use and gave it similar treatment as the
+	toolbar-style property.
+
 2011-01-07  Emilio Pozuelo Monfort <pochu27@gmail.com>
 
 	* configure.ac: Bump the minimum GTK+ version to 2.99.0.

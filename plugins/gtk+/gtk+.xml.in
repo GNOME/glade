@@ -579,14 +579,14 @@ embedded in another object</_tooltip>
         <action id="launch_editor" _name="Edit&#8230;" stock="gtk-edit" important="True"/>
       </actions>
       <properties>
-      	<property id="icon-size-set" since="2.10"/>
+      	<property id="icon-size-set" since="2.10" disabled="True"/>
 	<property id="orientation">
   	  <displayable-values>
 	    <value id="GTK_ORIENTATION_HORIZONTAL" _name="Horizontal"/>
 	    <value id="GTK_ORIENTATION_VERTICAL" _name="Vertical"/>
 	  </displayable-values>
 	</property>
-      	<property id="toolbar-style" save-always="True" optional="True" optional-default="False">
+      	<property id="toolbar-style" save-always="True" optional="True" optional-default="False" weight="0.4">
   	  <displayable-values>
 	    <value id="GTK_TOOLBAR_ICONS" _name="Icons only"/>
 	    <value id="GTK_TOOLBAR_TEXT" _name="Text only"/>
@@ -594,7 +594,7 @@ embedded in another object</_tooltip>
 	    <value id="GTK_TOOLBAR_BOTH_HORIZ" _name="Text beside icons"/>
 	  </displayable-values>
 	</property>
-      	<property id="icon-size" since="2.10">
+      	<property id="icon-size" since="2.10" optional="True" optional-default="False" weight="0.5">
   	  <displayable-values>
 	    <value id="GTK_ICON_SIZE_INVALID" _name="Invalid"/>
 	    <value id="GTK_ICON_SIZE_MENU" _name="Menu"/>
