@@ -2984,6 +2984,8 @@ glade_eprop_object_show_dialog (GtkWidget * dialog_button,
 
                   if (new_object && old_object != new_object)
                     {
+		      glade_widget_hide (new_widget);
+
                       if ((old_ref =
                            glade_widget_get_parentless_widget_ref (new_widget)))
                         {
