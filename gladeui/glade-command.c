@@ -1066,11 +1066,11 @@ glade_command_add (GList            *widgets,
 
       /* Parent */
       if (parent == NULL)
-        cdata->parent = glade_widget_get_parent (widget);
+	cdata->parent = glade_widget_get_parent (widget);
       else if (placeholder && GWA_IS_TOPLEVEL (adaptor) == FALSE)
-        cdata->parent = glade_placeholder_get_parent (placeholder);
-      else if (GWA_IS_TOPLEVEL (adaptor) == FALSE)
-        cdata->parent = parent;
+	cdata->parent = glade_placeholder_get_parent (placeholder);
+      else
+	cdata->parent = parent;
 
       /* Placeholder */
       if (placeholder != NULL && g_list_length (widgets) == 1)
@@ -1352,17 +1352,13 @@ glade_command_add_execute (GladeCommandAddRemove * me)
                * there is only one widget.
                */
               if (cdata->placeholder)
-                {
-                  glade_widget_replace (cdata->parent,
-					G_OBJECT (cdata->placeholder), 
-					glade_widget_get_object (cdata->widget));
-                }
+		glade_widget_replace (cdata->parent,
+				      G_OBJECT (cdata->placeholder), 
+				      glade_widget_get_object (cdata->widget));
               else
-                {
-                  glade_widget_add_child (cdata->parent,
-                                          cdata->widget,
-                                          cdata->props_recorded == FALSE);
-                }
+		glade_widget_add_child (cdata->parent,
+					cdata->widget,
+					cdata->props_recorded == FALSE);
 
               glade_command_transfer_props (cdata->widget, saved_props);
 
@@ -1584,6 +1580,7 @@ glade_command_create (GladeWidgetAdaptor * adaptor, GladeWidget * parent,
     {
       return NULL;
     }
+
   widgets = g_list_prepend (widgets, widget);
   glade_command_push_group (_("Create %s"), glade_widget_get_name (widget));
   glade_command_add (widgets, parent, placeholder, project, FALSE);
