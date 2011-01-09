@@ -23,6 +23,10 @@
 	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Write GtkToolButton menu children
 	out as "menu" special child type.
 
+	* plugins/gtk+/gtk+.xml.in:
+	  - Made all GdkColor type properties optional, closes bug 457969
+	  - Disabled all the irrelevant "-set" properties of GtkTextTag.
+
 2011-01-08  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-utils.[ch], gladeui/glade-widget.c, gladeui/glade-builtins.c,

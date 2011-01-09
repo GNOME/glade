@@ -874,16 +874,24 @@ embedded in another object</_tooltip>
 	<property id="editing-canceled" disabled="True" since="2.20"/>
 	<property id="primary-icon-gicon" disabled="True"/>
 	<property id="secondary-icon-gicon" disabled="True"/>
-	<property id="primary-icon-stock" _name="Primary Stock Icon" since="2.16" custom-layout="True" stock-icon="True"/>
-	<property id="secondary-icon-stock" _name="Secondary Stock Icon" since="2.16" custom-layout="True" stock-icon="True"/>
+	<property id="primary-icon-stock" _name="Primary Stock Icon" since="2.16" custom-layout="True" 
+		  stock-icon="True"/>
+	<property id="secondary-icon-stock" _name="Secondary Stock Icon" since="2.16" custom-layout="True" 
+		  stock-icon="True"/>
 	<property id="primary-icon-pixbuf" _name="Primary Icon Pixbuf" since="2.16" custom-layout="True"/>
 	<property id="secondary-icon-pixbuf" _name="Secondary Icon Pixbuf" since="2.16" custom-layout="True"/>
-	<property id="primary-icon-name" _name="Primary Icon Name" since="2.16" custom-layout="True" themed-icon="True"/>
-	<property id="secondary-icon-name" _name="Secondary Icon Name" since="2.16" custom-layout="True" themed-icon="True"/>
-	<property id="primary-icon-activatable" _name="Primary Icon Activatable" since="2.16" custom-layout="True"/>
-	<property id="secondary-icon-activatable" _name="Secondary Icon Activatable" since="2.16" custom-layout="True"/>
-	<property id="primary-icon-sensitive" _name="Primary Icon Sensitive" since="2.16" custom-layout="True"/>
-	<property id="secondary-icon-sensitive" _name="Secondary Icon Sensitive" since="2.16" custom-layout="True"/>
+	<property id="primary-icon-name" _name="Primary Icon Name" since="2.16" custom-layout="True" 
+		  themed-icon="True"/>
+	<property id="secondary-icon-name" _name="Secondary Icon Name" since="2.16" custom-layout="True" 
+		  themed-icon="True"/>
+	<property id="primary-icon-activatable" _name="Primary Icon Activatable" since="2.16" 
+		  custom-layout="True"/>
+	<property id="secondary-icon-activatable" _name="Secondary Icon Activatable" since="2.16" 
+		  custom-layout="True"/>
+	<property id="primary-icon-sensitive" _name="Primary Icon Sensitive" since="2.16" 
+		  custom-layout="True"/>
+	<property id="secondary-icon-sensitive" _name="Secondary Icon Sensitive" since="2.16" 
+		  custom-layout="True"/>
 	<property id="progress-fraction" _name="Progress Fraction" since="2.16" custom-layout="True"/>
 	<property id="progress-pulse-step" _name="Progress Pulse Step" since="2.16" custom-layout="True"/>
 
@@ -1126,7 +1134,7 @@ embedded in another object</_tooltip>
       <set-property-function>glade_gtk_color_button_set_property</set-property-function>
       <properties>
 	<property id="title" translatable="True"/>
-	<property id="color" default="Black"/>
+	<property id="color" default="Black" optional="True" optional-default="False"/>
 
 	<!-- These props dont apply to color buttons -->
 	<property id="glade-type" disabled="True"/>
@@ -1728,7 +1736,11 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkColorSelection" generic-name="colorselection" _title="Color Selection"/>
+    <glade-widget-class name="GtkColorSelection" generic-name="colorselection" _title="Color Selection">
+      <properties>
+	<property id="current-color" default="Black" optional="True" optional-default="False"/>
+      </properties>
+    </glade-widget-class>
     
     <glade-widget-class name="GtkFontSelection" generic-name="fontselection" _title="Font Selection"/>
     
@@ -3281,6 +3293,38 @@ embedded in another object</_tooltip>
 
     <glade-widget-class name="GtkTextTag" generic-name="texttag" _title="Text Tag" toplevel="True">
       <properties>
+	<property id="background-gdk" default="White" optional="True" optional-default="False"/>
+	<property id="foreground-gdk" default="Black" optional="True" optional-default="False"/>
+	<property id="paragraph-background-gdk" default="White" optional="True" optional-default="False"/>
+
+	<!-- Disabled state parameters -->
+	<property id="background-set" disabled="True"/>
+	<property id="background-full-height-set" disabled="True"/>
+	<property id="foreground-set" disabled="True"/>
+	<property id="editable-set" disabled="True"/>
+	<property id="family-set" disabled="True"/>
+	<property id="style-set" disabled="True"/>
+	<property id="variant-set" disabled="True"/>
+	<property id="weight-set" disabled="True"/>
+	<property id="stretch-set" disabled="True"/>
+	<property id="size-set" disabled="True"/>
+	<property id="scale-set" disabled="True"/>
+	<property id="justification-set" disabled="True"/>
+	<property id="language-set" disabled="True"/>
+	<property id="left-margin-set" disabled="True"/>
+	<property id="indent-set" disabled="True"/>
+	<property id="rise-set" disabled="True"/>
+	<property id="pixels-above-lines-set" disabled="True"/>
+	<property id="pixels-below-lines-set" disabled="True"/>
+	<property id="pixels-inside-wrap-set" disabled="True"/>
+	<property id="strikethrough-set" disabled="True"/>
+	<property id="right-margin-set" disabled="True"/>
+	<property id="underline-set" disabled="True"/>
+	<property id="wrap-mode-set" disabled="True"/>
+	<property id="tabs-set" disabled="True"/>
+	<property id="invisible-set" disabled="True"/>
+	<property id="paragraph-background-set" disabled="True"/>
+
         <property id="direction">
   	  <displayable-values>
 	    <value id="GTK_TEXT_DIR_NONE" _name="None"/>
