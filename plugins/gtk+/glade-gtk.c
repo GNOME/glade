@@ -11414,7 +11414,7 @@ glade_gtk_action_group_add_child (GladeWidgetAdaptor * adaptor,
       GList *actions = g_object_get_data (G_OBJECT (ggroup), "glade-actions");
 
       actions = g_list_copy (actions);
-      actions = g_list_prepend (actions, child);
+      actions = g_list_append (actions, child);
 
       g_object_set_data_full (G_OBJECT (ggroup), "glade-actions", actions,
                               (GDestroyNotify) g_list_free);
@@ -11574,5 +11574,126 @@ glade_gtk_action_action_activate (GladeWidgetAdaptor *adaptor,
   if (strcmp (action_path, "launch_editor") == 0)
     {
       glade_gtk_action_launch_editor (object);
+    }
+}
+
+
+/*--------------------------- GtkTextTagTable ---------------------------------*/
+void
+glade_gtk_text_tag_table_add_child (GladeWidgetAdaptor * adaptor,
+				    GObject * container, GObject * child)
+{
+  if (GTK_IS_TEXT_TAG (child))
+    {
+      /* Dont really add/remove tags (because name conflicts inside tables)
+       */
+      GladeWidget *gtable = glade_widget_get_from_gobject (container);
+      GList *tags = g_object_get_data (G_OBJECT (gtable), "glade-tags");
+
+      tags = g_list_copy (tags);
+      tags = g_list_append (tags, child);
+
+      g_object_set_data (child, "special-child-type", "tag");
+
+      g_object_set_data_full (G_OBJECT (gtable), "glade-tags", tags,
+                              (GDestroyNotify) g_list_free);
+    }
+}
+
+void
+glade_gtk_text_tag_table_remove_child (GladeWidgetAdaptor * adaptor,
+				       GObject * container, GObject * child)
+{
+  if (GTK_IS_TEXT_TAG (child))
+    {
+      /* Dont really add/remove actions (because name conflicts inside groups)
+       */
+      GladeWidget *gtable = glade_widget_get_from_gobject (container);
+      GList *tags = g_object_get_data (G_OBJECT (gtable), "glade-tags");
+
+      tags = g_list_copy (tags);
+      tags = g_list_remove (tags, child);
+
+      g_object_set_data (child, "special-child-type", NULL);
+
+      g_object_set_data_full (G_OBJECT (gtable), "glade-tags", tags,
+                              (GDestroyNotify) g_list_free);
+    }
+}
+
+void
+glade_gtk_text_tag_table_replace_child (GladeWidgetAdaptor * adaptor,
+					GObject * container,
+					GObject * current, GObject * new_tag)
+{
+  glade_gtk_text_tag_table_remove_child (adaptor, container, current);
+  glade_gtk_text_tag_table_add_child (adaptor, container, new_tag);
+}
+
+GList *
+glade_gtk_text_tag_table_get_children (GladeWidgetAdaptor * adaptor,
+				       GObject * container)
+{
+  GladeWidget *gtable = glade_widget_get_from_gobject (container);
+  GList *tags = g_object_get_data (G_OBJECT (gtable), "glade-tags");
+
+  return g_list_copy (tags);
+}
+
+static void
+glade_gtk_text_tag_table_child_selected (GladeBaseEditor *editor,
+					 GladeWidget *gchild,
+					 gpointer data)
+{
+  glade_base_editor_add_label (editor, _("Tag"));
+	
+  glade_base_editor_add_default_properties (editor, gchild);
+	
+  glade_base_editor_add_label (editor, _("Properties"));
+  glade_base_editor_add_editable (editor, gchild, GLADE_PAGE_GENERAL);
+}
+
+static gboolean
+glade_gtk_text_tag_table_move_child (GladeBaseEditor *editor,
+				     GladeWidget *gparent,
+				     GladeWidget *gchild,
+				     gpointer data)
+{	
+  return FALSE;
+}
+
+static void
+glade_gtk_text_tag_table_launch_editor (GObject  *table)
+{
+  GladeWidget        *widget  = glade_widget_get_from_gobject (table);
+  GladeWidgetAdaptor *adaptor = glade_widget_get_adaptor (widget);
+  GladeBaseEditor    *editor;
+  GladeEditable      *action_editor;
+  GtkWidget          *window;
+
+  action_editor = glade_widget_adaptor_create_editable (adaptor, GLADE_PAGE_GENERAL);
+
+  /* Editor */
+  editor = glade_base_editor_new (glade_widget_get_object (widget), action_editor,
+				  _("Tag"), GTK_TYPE_TEXT_TAG,
+				  NULL);
+
+  g_signal_connect (editor, "child-selected", G_CALLBACK (glade_gtk_text_tag_table_child_selected), NULL);
+  g_signal_connect (editor, "move-child", G_CALLBACK (glade_gtk_text_tag_table_move_child), NULL);
+
+  gtk_widget_show (GTK_WIDGET (editor));
+	
+  window = glade_base_editor_pack_new_window (editor, _("Text Tag Table Editor"), NULL);
+  gtk_widget_show (window);
+}
+
+void
+glade_gtk_text_tag_table_action_activate (GladeWidgetAdaptor *adaptor,
+					  GObject *object,
+					  const gchar *action_path)
+{
+  if (strcmp (action_path, "launch_editor") == 0)
+    {
+      glade_gtk_text_tag_table_launch_editor (object);
     }
 }
