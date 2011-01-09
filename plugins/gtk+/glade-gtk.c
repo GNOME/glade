@@ -7906,6 +7906,15 @@ glade_gtk_menu_tool_button_remove_child (GladeWidgetAdaptor * adaptor,
     GWA_GET_CLASS (GTK_TYPE_TOOL_BUTTON)->remove (adaptor, object, child);
 }
 
+void
+glade_gtk_menu_tool_button_replace_child (GladeWidgetAdaptor * adaptor,
+					  GObject * container,
+					  GObject * current, GObject * new_object)
+{
+  glade_gtk_menu_tool_button_remove_child (adaptor, container, current);
+  glade_gtk_menu_tool_button_add_child (adaptor, container, new_object);
+}
+
 /* ----------------------------- GtkLabel ------------------------------ */
 void
 glade_gtk_label_post_create (GladeWidgetAdaptor * adaptor,

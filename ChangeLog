@@ -27,6 +27,9 @@
 	  - Made all GdkColor type properties optional, closes bug 457969
 	  - Disabled all the irrelevant "-set" properties of GtkTextTag.
 
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Added replace-child-function to
+	gtkmenutoolbutton code (incase the child is rebuilt for construct-only purposes).
+
 2011-01-08  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-utils.[ch], gladeui/glade-widget.c, gladeui/glade-builtins.c,
