@@ -89,9 +89,6 @@ GladeProject*      glade_app_get_project_by_path  (const gchar   *project_path);
 void               glade_app_set_window           (GtkWidget     *window);
 GtkWidget*         glade_app_get_window           (void);
  
-void               glade_app_set_transient_parent (GtkWindow     *parent);
-GtkWindow         *glade_app_get_transient_parent (void);
- 
 void               glade_app_set_accel_group      (GtkAccelGroup *accel_group);
 GtkAccelGroup     *glade_app_get_accel_group      (void);
 
