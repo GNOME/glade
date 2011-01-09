@@ -893,6 +893,7 @@ glade_editor_query_dialog (GladeWidget * widget)
 {
   GladeWidgetAdaptor *adaptor;
   GtkWidget *dialog, *editable, *content_area;
+  GtkWidget *create;
   gchar *title;
   gint answer;
   gboolean retval = TRUE;
@@ -906,8 +907,13 @@ glade_editor_query_dialog (GladeWidget * widget)
                                         GTK_DIALOG_MODAL |
                                         GTK_DIALOG_DESTROY_WITH_PARENT,
                                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                        GTK_STOCK_OK, GTK_RESPONSE_OK, NULL);
+                                        NULL);
   g_free (title);
+
+  create = gtk_button_new_with_mnemonic (_("Crea_te"));
+  gtk_widget_show (create);
+  gtk_widget_set_can_default (create, TRUE);
+  gtk_dialog_add_action_widget (GTK_DIALOG (dialog), create, GTK_RESPONSE_OK);
 
   gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
                                            GTK_RESPONSE_OK,
