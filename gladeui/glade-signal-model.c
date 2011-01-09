@@ -26,7 +26,7 @@
 #include <string.h>
 
 #define HANDLER_DEFAULT  _("<Type here>")
-#define USERDATA_DEFAULT _("<Object>")
+#define USERDATA_DEFAULT _("<Click here>")
 
 struct _GladeSignalModelPrivate
 {
@@ -255,7 +255,7 @@ glade_signal_model_get_column_type (GtkTreeModel* model,
 		case GLADE_SIGNAL_COLUMN_TOOLTIP:
 			return G_TYPE_STRING;
 		case GLADE_SIGNAL_COLUMN_SIGNAL:
-			return G_TYPE_POINTER;
+			return G_TYPE_OBJECT;
 		default:
 			g_assert_not_reached();
 			return G_TYPE_NONE;
@@ -640,7 +640,7 @@ glade_signal_model_get_value (GtkTreeModel* model,
 				g_value_set_static_string (value, NULL);
 			break;
 		case GLADE_SIGNAL_COLUMN_SIGNAL:
-			g_value_set_pointer (value, handler);
+			g_value_set_object (value, handler);
 			break;
 		default:
 			g_assert_not_reached();
