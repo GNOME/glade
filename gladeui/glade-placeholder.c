@@ -392,8 +392,6 @@ glade_placeholder_draw (GtkWidget * widget, cairo_t * cr)
   glade_utils_cairo_draw_line (cr, dark, 0, h - 1, w - 1, h - 1);
   glade_utils_cairo_draw_line (cr, dark, w - 1, 0, w - 1, h - 1);
 
-  glade_util_draw_selection_nodes (widget, cr);
-
   return FALSE;
 }
 

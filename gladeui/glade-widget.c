@@ -457,7 +457,6 @@ glade_widget_button_press_event_impl (GladeWidget * gwidget,
       else if (glade_project_is_selected (gwidget->priv->project,
                                           gwidget->priv->object) == FALSE)
         {
-          glade_util_clear_selection ();
           glade_project_selection_set (gwidget->priv->project, 
 				       gwidget->priv->object, TRUE);
 
@@ -3655,12 +3654,8 @@ glade_widget_has_decendant (GladeWidget * widget, GType type)
   GList *children, *l;
   gboolean found = FALSE;
 
-  if (G_TYPE_IS_INTERFACE (type) &&
-      glade_util_class_implements_interface 
-      (glade_widget_adaptor_get_object_type (widget->priv->adaptor), type))
-    return TRUE;
-  else if (G_TYPE_IS_INTERFACE (type) == FALSE &&
-           g_type_is_a (glade_widget_adaptor_get_object_type (widget->priv->adaptor), type))
+  if (glade_widget_adaptor_get_object_type (widget->priv->adaptor) == type ||
+      g_type_is_a (glade_widget_adaptor_get_object_type (widget->priv->adaptor), type))
     return TRUE;
 
   if ((children = glade_widget_adaptor_get_children

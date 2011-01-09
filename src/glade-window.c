@@ -877,8 +877,7 @@ recent_add (GladeWindow * window, const gchar * path)
   uri = g_filename_to_uri (path, NULL, &error);
   if (error)
     {
-      g_warning ("Could not convert uri \"%s\" to a local path: %s", uri,
-                 error->message);
+      g_warning ("Could not convert local path \"%s\" to a uri: %s", path, error->message);
       g_error_free (error);
       return;
     }
@@ -910,8 +909,7 @@ recent_remove (GladeWindow * window, const gchar * path)
   uri = g_filename_to_uri (path, NULL, &error);
   if (error)
     {
-      g_warning ("Could not convert uri \"%s\" to a local path: %s", uri,
-                 error->message);
+      g_warning ("Could not convert local path \"%s\" to a uri: %s", path, error->message);
       g_error_free (error);
       return;
     }

@@ -30,15 +30,76 @@
 #include <string.h>
 #include <stdlib.h>
 
-
+#include "glade-project.h"
 #include "glade-widget.h"
 #include "glade-editable.h"
 
+static GQuark glade_editable_project_quark = 0;
+static GQuark glade_editable_widget_quark = 0;
 
 static void
-glade_editable_class_init (gpointer g_iface)
+project_changed (GladeProject  *project,
+                 GladeCommand  *command,
+                 gboolean       execute, 
+		 GladeEditable *editable)
 {
-  /* */
+  GladeWidget *widget;
+
+  widget = g_object_get_qdata (G_OBJECT (editable), glade_editable_widget_quark);
+
+  glade_editable_load (editable, widget);
+}
+
+static void
+project_closed (GladeProject  *project,
+		GladeEditable *editable)
+{
+  glade_editable_load (editable, NULL);
+}
+
+static void
+glade_editable_load_default (GladeEditable  *editable,
+			     GladeWidget    *widget)
+{
+  GladeWidget  *old_widget;
+  GladeProject *old_project;
+
+  old_widget  = g_object_get_qdata (G_OBJECT (editable), glade_editable_widget_quark);
+  old_project = g_object_get_qdata (G_OBJECT (editable), glade_editable_project_quark);
+
+  if (old_widget != widget)
+    {
+      if (old_widget)
+	{
+	  g_signal_handlers_disconnect_by_func (old_project, G_CALLBACK (project_changed), editable);
+	  g_signal_handlers_disconnect_by_func (old_project, G_CALLBACK (project_closed), editable);
+
+	  g_object_set_qdata (G_OBJECT (editable), glade_editable_widget_quark, NULL);
+	  g_object_set_qdata (G_OBJECT (editable), glade_editable_project_quark, NULL);
+	}
+
+      if (widget)
+	{
+	  GladeProject *project = glade_widget_get_project (widget);
+
+	  g_object_set_qdata (G_OBJECT (editable), glade_editable_widget_quark, widget);
+	  g_object_set_qdata (G_OBJECT (editable), glade_editable_project_quark, project);
+
+	  g_signal_connect (project, "changed", 
+			    G_CALLBACK (project_changed), editable);
+	  g_signal_connect (project, "close", 
+			    G_CALLBACK (project_closed), editable);
+	}
+    }
+}
+
+static void
+glade_editable_class_init (GladeEditableIface *iface)
+{
+  glade_editable_project_quark = g_quark_from_static_string ("glade-editable-project-quark");
+  glade_editable_widget_quark  = g_quark_from_static_string ("glade-editable-widget-quark");
+
+  iface->load = glade_editable_load_default;
 }
 
 GType
@@ -47,12 +108,15 @@ glade_editable_get_type (void)
   static GType editable_type = 0;
 
   if (!editable_type)
-    editable_type =
+    {
+      editable_type =
         g_type_register_static_simple (G_TYPE_INTERFACE, "GladeEditable",
                                        sizeof (GladeEditableIface),
                                        (GClassInitFunc)
                                        glade_editable_class_init, 0, NULL,
                                        (GTypeFlags) 0);
+      g_type_interface_add_prerequisite (editable_type, GTK_TYPE_WIDGET);
+    }
 
   return editable_type;
 }
@@ -103,4 +167,33 @@ glade_editable_set_show_name (GladeEditable * editable, gboolean show_name)
 
   if (iface->set_show_name)
     iface->set_show_name (editable, show_name);
+}
+
+
+void
+glade_editable_block (GladeEditable *editable)
+{
+  GladeProject *project;
+
+  g_return_if_fail (GLADE_IS_EDITABLE (editable));
+
+  project = g_object_get_qdata (G_OBJECT (editable), glade_editable_project_quark);
+
+  g_return_if_fail (GLADE_IS_PROJECT (project));
+
+  g_signal_handlers_block_by_func (project, G_CALLBACK (project_changed), editable);
+}
+
+void
+glade_editable_unblock (GladeEditable *editable)
+{
+  GladeProject *project;
+
+  g_return_if_fail (GLADE_IS_EDITABLE (editable));
+
+  project = g_object_get_qdata (G_OBJECT (editable), glade_editable_project_quark);
+
+  g_return_if_fail (GLADE_IS_PROJECT (project));
+
+  g_signal_handlers_unblock_by_func (project, G_CALLBACK (project_changed), editable);
 }

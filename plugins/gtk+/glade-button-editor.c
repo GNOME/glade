@@ -34,6 +34,8 @@ static void glade_button_editor_editable_init (GladeEditableIface * iface);
 static void glade_button_editor_grab_focus (GtkWidget * widget);
 
 
+static GladeEditableIface *parent_editable_iface;
+
 G_DEFINE_TYPE_WITH_CODE (GladeButtonEditor, glade_button_editor, GTK_TYPE_VBOX,
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
                                                 glade_button_editor_editable_init));
@@ -55,30 +57,6 @@ glade_button_editor_init (GladeButtonEditor * self)
 }
 
 static void
-project_changed (GladeProject * project,
-                 GladeCommand * command,
-                 gboolean execute, GladeButtonEditor * button_editor)
-{
-  if (button_editor->modifying ||
-      !gtk_widget_get_mapped (GTK_WIDGET (button_editor)))
-    return;
-
-  /* Reload on all commands */
-  glade_editable_load (GLADE_EDITABLE (button_editor),
-                       button_editor->loaded_widget);
-}
-
-
-static void
-project_finalized (GladeButtonEditor * button_editor,
-                   GladeProject * where_project_was)
-{
-  button_editor->loaded_widget = NULL;
-
-  glade_editable_load (GLADE_EDITABLE (button_editor), NULL);
-}
-
-static void
 glade_button_editor_load (GladeEditable * editable, GladeWidget * widget)
 {
   GladeButtonEditor *button_editor = GLADE_BUTTON_EDITOR (editable);
@@ -87,35 +65,13 @@ glade_button_editor_load (GladeEditable * editable, GladeWidget * widget)
   gboolean use_stock = FALSE, use_appearance = FALSE;
   GList *l;
 
+  /* Chain up to default implementation */
+  parent_editable_iface->load (editable, widget);
+
   button_editor->loading = TRUE;
-
-  /* Since we watch the project */
-  if (button_editor->loaded_widget)
-    {
-      /* watch custom-child and use-stock properties here for reloads !!! */
-
-      g_signal_handlers_disconnect_by_func (glade_widget_get_project (button_editor->loaded_widget),
-                                            G_CALLBACK (project_changed),
-                                            button_editor);
-
-      /* The widget could die unexpectedly... */
-      g_object_weak_unref (G_OBJECT (glade_widget_get_project (button_editor->loaded_widget)),
-                           (GWeakNotify) project_finalized, button_editor);
-    }
 
   /* Mark our widget... */
   button_editor->loaded_widget = widget;
-
-  if (button_editor->loaded_widget)
-    {
-      /* This fires for undo/redo */
-      g_signal_connect (glade_widget_get_project (button_editor->loaded_widget),
-                        "changed", G_CALLBACK (project_changed), button_editor);
-
-      /* The widget/project could die unexpectedly... */
-      g_object_weak_ref (G_OBJECT (glade_widget_get_project (button_editor->loaded_widget)),
-                         (GWeakNotify) project_finalized, button_editor);
-    }
 
   /* load the embedded editable... */
   if (button_editor->embed)
@@ -191,6 +147,8 @@ glade_button_editor_set_show_name (GladeEditable * editable, gboolean show_name)
 static void
 glade_button_editor_editable_init (GladeEditableIface * iface)
 {
+  parent_editable_iface = g_type_default_interface_peek (GLADE_TYPE_EDITABLE);
+
   iface->load = glade_button_editor_load;
   iface->set_show_name = glade_button_editor_set_show_name;
 }
@@ -235,7 +193,7 @@ standard_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
       (GTK_TOGGLE_BUTTON (button_editor->standard_radio)))
     return;
 
-  button_editor->modifying = TRUE;
+  glade_editable_block (GLADE_EDITABLE (button_editor));
 
   glade_command_push_group (_("Setting %s to use standard configuration"),
                             glade_widget_get_name (button_editor->loaded_widget));
@@ -278,7 +236,7 @@ standard_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
 
   glade_command_pop_group ();
 
-  button_editor->modifying = FALSE;
+  glade_editable_unblock (GLADE_EDITABLE (button_editor));
 
   /* reload buttons and sensitivity and stuff... */
   glade_editable_load (GLADE_EDITABLE (button_editor),
@@ -297,7 +255,7 @@ custom_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
       (GTK_TOGGLE_BUTTON (button_editor->custom_radio)))
     return;
 
-  button_editor->modifying = TRUE;
+  glade_editable_block (GLADE_EDITABLE (button_editor));
 
   glade_command_push_group (_("Setting %s to use a custom child"),
                             glade_widget_get_name (button_editor->loaded_widget));
@@ -323,7 +281,7 @@ custom_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
 
   glade_command_pop_group ();
 
-  button_editor->modifying = FALSE;
+  glade_editable_unblock (GLADE_EDITABLE (button_editor));
 
   /* reload buttons and sensitivity and stuff... */
   glade_editable_load (GLADE_EDITABLE (button_editor),
@@ -343,7 +301,7 @@ stock_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
       (GTK_TOGGLE_BUTTON (button_editor->stock_radio)))
     return;
 
-  button_editor->modifying = TRUE;
+  glade_editable_block (GLADE_EDITABLE (button_editor));
 
   glade_command_push_group (_("Setting %s to use a stock button"),
                             glade_widget_get_name (button_editor->loaded_widget));
@@ -370,7 +328,7 @@ stock_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
 
   glade_command_pop_group ();
 
-  button_editor->modifying = FALSE;
+  glade_editable_unblock (GLADE_EDITABLE (button_editor));
 
   /* reload buttons and sensitivity and stuff... */
   glade_editable_load (GLADE_EDITABLE (button_editor),
@@ -391,7 +349,7 @@ label_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
       (GTK_TOGGLE_BUTTON (button_editor->label_radio)))
     return;
 
-  button_editor->modifying = TRUE;
+  glade_editable_block (GLADE_EDITABLE (button_editor));
 
   glade_command_push_group (_("Setting %s to use a label and image"),
                             glade_widget_get_name (button_editor->loaded_widget));
@@ -416,7 +374,7 @@ label_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
 
   glade_command_pop_group ();
 
-  button_editor->modifying = FALSE;
+  glade_editable_unblock (GLADE_EDITABLE (button_editor));
 
   /* reload buttons and sensitivity and stuff... */
   glade_editable_load (GLADE_EDITABLE (button_editor),

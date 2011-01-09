@@ -54,7 +54,6 @@ glade_popup_docs_cb (GtkMenuItem * item, GladeWidgetAdaptor * adaptor)
 static void
 glade_popup_select_cb (GtkMenuItem * item, GladeWidget * widget)
 {
-  glade_util_clear_selection ();
   glade_project_selection_set (glade_widget_get_project (widget),
 			       glade_widget_get_object (widget), TRUE);
 }
@@ -132,8 +131,6 @@ glade_popup_cut_cb (GtkMenuItem * item, GladeWidget * widget)
 {
   GladeProject *project = glade_widget_get_project (widget);
 
-  glade_util_clear_selection ();
-
   /* Assign selection first only if its not already assigned (it may be a delete
    * of multiple widgets) */
   if (!glade_project_is_selected (project, glade_widget_get_object (widget)))
@@ -147,10 +144,8 @@ glade_popup_copy_cb (GtkMenuItem * item, GladeWidget * widget)
 {
   GladeProject *project = glade_widget_get_project (widget);
 
-  glade_util_clear_selection ();
-
   /* Assign selection first */
-  if (glade_project_is_selected (project, glade_widget_get_object (widget)) == FALSE)
+  if (!glade_project_is_selected (project, glade_widget_get_object (widget)))
     glade_project_selection_set (project, glade_widget_get_object (widget), FALSE);
 
   glade_project_copy_selection (project);
@@ -171,8 +166,6 @@ glade_popup_paste_cb (GtkMenuItem * item, gpointer data)
     project = GLADE_PROJECT (data);
   else
     g_return_if_reached ();
-
-  glade_util_clear_selection ();
 
   /* The selected widget is the paste destination */
   if (widget)
@@ -207,7 +200,6 @@ glade_popup_placeholder_paste_cb (GtkMenuItem * item,
 
   project = glade_placeholder_get_project (placeholder);
 
-  glade_util_clear_selection ();
   glade_project_selection_clear (project, FALSE);
 
   glade_project_command_paste (project, placeholder);

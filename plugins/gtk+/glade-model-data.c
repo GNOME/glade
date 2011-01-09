@@ -239,13 +239,6 @@ enum
   NUM_COLUMNS
 };
 
-typedef enum
-{
-  SEQ_NONE,
-  SEQ_HORIZONTAL,
-  SEQ_VERTICAL
-} EditSequence;
-
 typedef struct
 {
   GladeEditorProperty parent_instance;
@@ -255,17 +248,12 @@ typedef struct
   GtkTreeSelection *selection;
   GNode *pending_data_tree;
 
-  EditSequence sequence;
-
   /* Used for setting focus on newly added rows */
   gboolean adding_row;
   gboolean want_focus;
-  gboolean want_next_focus;
   gboolean setting_focus;
   gint editing_row;
   gint editing_column;
-
-  guint next_focus_idle;
 } GladeEPropModelData;
 
 GLADE_MAKE_EPROP (GladeEPropModelData, glade_eprop_model_data)
@@ -274,10 +262,10 @@ GLADE_MAKE_EPROP (GladeEPropModelData, glade_eprop_model_data)
 #define GLADE_IS_EPROP_MODEL_DATA(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_MODEL_DATA))
 #define GLADE_IS_EPROP_MODEL_DATA_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_MODEL_DATA))
 #define GLADE_EPROP_MODEL_DATA_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_MODEL_DATA, GladeEPropModelDataClass))
-     static void eprop_data_focus_editing_cell (GladeEPropModelData *
-                                                eprop_data);
 
-     static void append_row (GNode * node, GList * columns)
+static void eprop_data_focus_editing_cell (GladeEPropModelData *eprop_data);
+
+static void append_row (GNode * node, GList * columns)
 {
   GladeModelData *data;
   GladeColumnType *column;
@@ -336,34 +324,13 @@ update_and_focus_data_tree_idle (GladeEditorProperty * eprop)
   GladeProperty       *property = glade_editor_property_get_property (eprop);
 
   eprop_data->want_focus = TRUE;
-  eprop_data->want_next_focus = TRUE;
 
   update_data_tree_idle (eprop);
 
   /* XXX Have to load it regardless if it changed, this is a slow and redundant way... */
   glade_editor_property_load (eprop, property);
 
-  eprop_data->want_next_focus = FALSE;
   eprop_data->want_focus = FALSE;
-
-  return FALSE;
-}
-
-
-static gboolean
-focus_next_data_tree_idle (GladeEditorProperty * eprop)
-{
-  GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
-
-  eprop_data->want_focus = TRUE;
-  eprop_data->want_next_focus = TRUE;
-
-  eprop_data_focus_editing_cell (eprop_data);
-
-  eprop_data->want_next_focus = FALSE;
-  eprop_data->want_focus = FALSE;
-
-  eprop_data->next_focus_idle = 0;
 
   return FALSE;
 }
@@ -460,15 +427,6 @@ glade_eprop_model_data_delete_clicked (GtkWidget * button,
                                        GladeEditorProperty * eprop)
 {
   glade_eprop_model_data_delete_selected (eprop);
-}
-
-static void
-glade_eprop_model_sequence_changed (GtkWidget * combo,
-                                    GladeEditorProperty * eprop)
-{
-  GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
-
-  eprop_data->sequence = gtk_combo_box_get_active (GTK_COMBO_BOX (combo));
 }
 
 static gboolean
@@ -1036,19 +994,14 @@ eprop_data_focus_new (GladeEPropModelData * eprop_data)
                                          &iter, NULL, n_children - 1))
 
         {
-          GType *column_type =
-              g_object_get_data (G_OBJECT (column), "column-type");
-
           new_item_path =
-              gtk_tree_model_get_path (GTK_TREE_MODEL (eprop_data->store),
-                                       &iter);
+              gtk_tree_model_get_path (GTK_TREE_MODEL (eprop_data->store), &iter);
 
           eprop_data->setting_focus = TRUE;
 
           gtk_widget_grab_focus (GTK_WIDGET (eprop_data->view));
           gtk_tree_view_expand_to_path (eprop_data->view, new_item_path);
-          gtk_tree_view_set_cursor (eprop_data->view, new_item_path,
-                                    column, *column_type != G_TYPE_BOOLEAN);
+          gtk_tree_view_set_cursor (eprop_data->view, new_item_path, column, FALSE);
 
           eprop_data->setting_focus = FALSE;
 
@@ -1081,39 +1034,10 @@ eprop_data_focus_editing_cell (GladeEPropModelData * eprop_data)
       col = eprop_data->editing_column;
       row = eprop_data->editing_row;
 
-      if (eprop_data->want_next_focus)
-        {
-          switch (eprop_data->sequence)
-            {
-              case SEQ_HORIZONTAL:
-                if (++col >= cols)
-                  {
-                    col = 0;
-                    if (++row >= rows)
-                      row = 0;
-                  }
-                break;
-              case SEQ_VERTICAL:
-                if (++row >= rows)
-                  {
-                    row = 0;
-                    if (++col >= cols)
-                      col = 0;
-                  }
-                break;
-              case SEQ_NONE:
-              default:
-                break;
-            }
-        }
-
       if ((column = gtk_tree_view_get_column (eprop_data->view, col)) != NULL &&
           gtk_tree_model_iter_nth_child (GTK_TREE_MODEL (eprop_data->store),
                                          &iter, NULL, row))
         {
-          GType *column_type =
-              g_object_get_data (G_OBJECT (column), "column-type");
-
           item_path =
               gtk_tree_model_get_path (GTK_TREE_MODEL (eprop_data->store),
                                        &iter);
@@ -1122,10 +1046,7 @@ eprop_data_focus_editing_cell (GladeEPropModelData * eprop_data)
 
           gtk_widget_grab_focus (GTK_WIDGET (eprop_data->view));
           gtk_tree_view_expand_to_path (eprop_data->view, item_path);
-          gtk_tree_view_set_cursor (eprop_data->view, item_path, column,
-                                    eprop_data->want_next_focus &&
-                                    eprop_data->sequence != SEQ_NONE &&
-                                    *column_type != G_TYPE_BOOLEAN);
+          gtk_tree_view_set_cursor (eprop_data->view, item_path, column, FALSE);
 
           gtk_tree_path_free (item_path);
 
@@ -1174,13 +1095,7 @@ glade_eprop_model_data_load (GladeEditorProperty * eprop,
         eprop_data_focus_new (eprop_data);
       else if (eprop_data->want_focus &&
                eprop_data->editing_row >= 0 && eprop_data->editing_column >= 0)
-        {
-          if (eprop_data->want_next_focus && eprop_data->next_focus_idle == 0)
-            eprop_data->next_focus_idle =
-                g_idle_add ((GSourceFunc) focus_next_data_tree_idle, eprop);
-          else
-            eprop_data_focus_editing_cell (eprop_data);
-        }
+	eprop_data_focus_editing_cell (eprop_data);
     }
 }
 
@@ -1188,14 +1103,12 @@ static GtkWidget *
 glade_eprop_model_data_create_input (GladeEditorProperty * eprop)
 {
   GladeEPropModelData *eprop_data = GLADE_EPROP_MODEL_DATA (eprop);
-  GtkWidget *vbox, *hbox, *button, *swin, *label, *combo;
+  GtkWidget *vbox, *hbox, *button, *swin, *label;
   gchar *string;
 
   vbox = gtk_vbox_new (FALSE, 2);
 
   hbox = gtk_hbox_new (FALSE, 4);
-
-  eprop_data->sequence = SEQ_NONE;
 
   /* hbox with add/remove row buttons on the right... */
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
@@ -1227,33 +1140,6 @@ glade_eprop_model_data_create_input (GladeEditorProperty * eprop)
   g_signal_connect (G_OBJECT (button), "clicked",
                     G_CALLBACK (glade_eprop_model_data_delete_clicked),
                     eprop_data);
-
-  /* separator... */
-  label = gtk_label_new ("");
-  gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 0);
-
-  string = g_strdup_printf ("<b>%s</b>", _("Sequential editing:"));
-  label = gtk_label_new (string);
-  g_free (string);
-  gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
-  gtk_misc_set_padding (GTK_MISC (label), 2, 0);
-  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
-
-  combo = gtk_combo_box_text_new ();
-  gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), _("Off"));
-  gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), _("Horizontal"));
-  gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), _("Vertical"));
-
-
-  gtk_combo_box_set_active (GTK_COMBO_BOX (combo), eprop_data->sequence);
-
-  gtk_box_pack_start (GTK_BOX (hbox), combo, FALSE, FALSE, 0);
-
-  g_signal_connect (G_OBJECT (combo), "changed",
-                    G_CALLBACK (glade_eprop_model_sequence_changed),
-                    eprop_data);
-
 
   /* Pack treeview/swindow on the left... */
   swin = gtk_scrolled_window_new (NULL, NULL);

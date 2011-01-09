@@ -34,6 +34,7 @@ static void glade_icon_factory_editor_editable_init (GladeEditableIface *
 
 static void glade_icon_factory_editor_grab_focus (GtkWidget * widget);
 
+static GladeEditableIface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladeIconFactoryEditor, glade_icon_factory_editor,
                          GTK_TYPE_VBOX,
@@ -57,60 +58,16 @@ glade_icon_factory_editor_init (GladeIconFactoryEditor * self)
 }
 
 static void
-project_changed (GladeProject * project,
-                 GladeCommand * command,
-                 gboolean execute, GladeIconFactoryEditor * factory_editor)
-{
-  if (!gtk_widget_get_mapped (GTK_WIDGET (factory_editor)))
-    return;
-
-  /* Reload on all commands */
-  glade_editable_load (GLADE_EDITABLE (factory_editor),
-                       factory_editor->loaded_widget);
-}
-
-
-static void
-project_finalized (GladeIconFactoryEditor * factory_editor,
-                   GladeProject * where_project_was)
-{
-  factory_editor->loaded_widget = NULL;
-
-  glade_editable_load (GLADE_EDITABLE (factory_editor), NULL);
-}
-
-static void
 glade_icon_factory_editor_load (GladeEditable * editable, GladeWidget * widget)
 {
   GladeIconFactoryEditor *factory_editor = GLADE_ICON_FACTORY_EDITOR (editable);
   GList *l;
 
-  /* Since we watch the project */
-  if (factory_editor->loaded_widget)
-    {
-      g_signal_handlers_disconnect_by_func (glade_widget_get_project (factory_editor->loaded_widget),
-                                            G_CALLBACK (project_changed),
-                                            factory_editor);
-
-      /* The widget could die unexpectedly... */
-      g_object_weak_unref (G_OBJECT (glade_widget_get_project (factory_editor->loaded_widget)),
-                           (GWeakNotify) project_finalized, factory_editor);
-    }
+  /* Chain up to default implementation */
+  parent_editable_iface->load (editable, widget);
 
   /* Mark our widget... */
   factory_editor->loaded_widget = widget;
-
-  if (factory_editor->loaded_widget)
-    {
-      /* This fires for undo/redo */
-      g_signal_connect (glade_widget_get_project (factory_editor->loaded_widget),
-                        "changed", G_CALLBACK (project_changed),
-                        factory_editor);
-
-      /* The widget/project could die unexpectedly... */
-      g_object_weak_ref (G_OBJECT (glade_widget_get_project (factory_editor->loaded_widget)),
-                         (GWeakNotify) project_finalized, factory_editor);
-    }
 
   /* load the embedded editable... */
   if (factory_editor->embed)
@@ -134,6 +91,8 @@ glade_icon_factory_editor_set_show_name (GladeEditable * editable,
 static void
 glade_icon_factory_editor_editable_init (GladeEditableIface * iface)
 {
+  parent_editable_iface = g_type_default_interface_peek (GLADE_TYPE_EDITABLE);
+
   iface->load = glade_icon_factory_editor_load;
   iface->set_show_name = glade_icon_factory_editor_set_show_name;
 }

@@ -34,6 +34,8 @@ static void glade_label_editor_editable_init (GladeEditableIface * iface);
 static void glade_label_editor_grab_focus (GtkWidget * widget);
 
 
+static GladeEditableIface *parent_editable_iface;
+
 G_DEFINE_TYPE_WITH_CODE (GladeLabelEditor, glade_label_editor, GTK_TYPE_VBOX,
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
                                                 glade_label_editor_editable_init));
@@ -55,63 +57,18 @@ glade_label_editor_init (GladeLabelEditor * self)
 }
 
 static void
-project_changed (GladeProject * project,
-                 GladeCommand * command,
-                 gboolean execute, GladeLabelEditor * label_editor)
-{
-  if (label_editor->modifying ||
-      !gtk_widget_get_mapped (GTK_WIDGET (label_editor)))
-    return;
-
-  /* Reload on all commands */
-  glade_editable_load (GLADE_EDITABLE (label_editor),
-                       label_editor->loaded_widget);
-}
-
-
-static void
-project_finalized (GladeLabelEditor * label_editor,
-                   GladeProject * where_project_was)
-{
-  label_editor->loaded_widget = NULL;
-
-  glade_editable_load (GLADE_EDITABLE (label_editor), NULL);
-}
-
-static void
 glade_label_editor_load (GladeEditable * editable, GladeWidget * widget)
 {
   GladeLabelEditor *label_editor = GLADE_LABEL_EDITOR (editable);
   GList *l;
 
+  /* Chain up to default implementation */
+  parent_editable_iface->load (editable, widget);
+
   label_editor->loading = TRUE;
-
-  /* Since we watch the project */
-  if (label_editor->loaded_widget)
-    {
-      /* watch custom-child and use-stock properties here for reloads !!! */
-      g_signal_handlers_disconnect_by_func (glade_widget_get_project (label_editor->loaded_widget),
-                                            G_CALLBACK (project_changed),
-                                            label_editor);
-
-      /* The widget could die unexpectedly... */
-      g_object_weak_unref (G_OBJECT (glade_widget_get_project (label_editor->loaded_widget)),
-                           (GWeakNotify) project_finalized, label_editor);
-    }
 
   /* Mark our widget... */
   label_editor->loaded_widget = widget;
-
-  if (label_editor->loaded_widget)
-    {
-      /* This fires for undo/redo */
-      g_signal_connect (glade_widget_get_project (label_editor->loaded_widget),
-                        "changed", G_CALLBACK (project_changed), label_editor);
-
-      /* The widget/project could die unexpectedly... */
-      g_object_weak_ref (G_OBJECT (glade_widget_get_project (label_editor->loaded_widget)),
-                         (GWeakNotify) project_finalized, label_editor);
-    }
 
   /* load the embedded editable... */
   if (label_editor->embed)
@@ -209,6 +166,8 @@ glade_label_editor_set_show_name (GladeEditable * editable, gboolean show_name)
 static void
 glade_label_editor_editable_init (GladeEditableIface * iface)
 {
+  parent_editable_iface = g_type_default_interface_peek (GLADE_TYPE_EDITABLE);
+
   iface->load = glade_label_editor_load;
   iface->set_show_name = glade_label_editor_set_show_name;
 }
@@ -252,7 +211,7 @@ attributes_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
       (GTK_TOGGLE_BUTTON (label_editor->attributes_radio)))
     return;
 
-  label_editor->modifying = TRUE;
+  glade_editable_block (GLADE_EDITABLE (label_editor));
 
   glade_command_push_group (_("Setting %s to use an attribute list"),
                             glade_widget_get_name (label_editor->loaded_widget));
@@ -269,7 +228,7 @@ attributes_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 
   glade_command_pop_group ();
 
-  label_editor->modifying = FALSE;
+  glade_editable_unblock (GLADE_EDITABLE (label_editor));
 
   /* reload buttons and sensitivity and stuff... */
   glade_editable_load (GLADE_EDITABLE (label_editor),
@@ -288,7 +247,7 @@ markup_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
       (GTK_TOGGLE_BUTTON (label_editor->markup_radio)))
     return;
 
-  label_editor->modifying = TRUE;
+  glade_editable_block (GLADE_EDITABLE (label_editor));
 
   glade_command_push_group (_("Setting %s to use a Pango markup string"),
                             glade_widget_get_name (label_editor->loaded_widget));
@@ -310,7 +269,7 @@ markup_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 
   glade_command_pop_group ();
 
-  label_editor->modifying = FALSE;
+  glade_editable_unblock (GLADE_EDITABLE (label_editor));
 
   /* reload buttons and sensitivity and stuff... */
   glade_editable_load (GLADE_EDITABLE (label_editor),
@@ -329,7 +288,7 @@ pattern_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
       (GTK_TOGGLE_BUTTON (label_editor->pattern_radio)))
     return;
 
-  label_editor->modifying = TRUE;
+  glade_editable_block (GLADE_EDITABLE (label_editor));
 
   glade_command_push_group (_("Setting %s to use a pattern string"),
                             glade_widget_get_name (label_editor->loaded_widget));
@@ -348,7 +307,7 @@ pattern_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 
   glade_command_pop_group ();
 
-  label_editor->modifying = FALSE;
+  glade_editable_unblock (GLADE_EDITABLE (label_editor));
 
   /* reload buttons and sensitivity and stuff... */
   glade_editable_load (GLADE_EDITABLE (label_editor),
@@ -371,7 +330,7 @@ width_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
       (GTK_TOGGLE_BUTTON (label_editor->width_radio)))
     return;
 
-  label_editor->modifying = TRUE;
+  glade_editable_block (GLADE_EDITABLE (label_editor));
 
   glade_command_push_group (_("Setting %s to set desired width in characters"),
                             glade_widget_get_name (label_editor->loaded_widget));
@@ -386,7 +345,7 @@ width_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 
   glade_command_pop_group ();
 
-  label_editor->modifying = FALSE;
+  glade_editable_unblock (GLADE_EDITABLE (label_editor));
 
   /* reload buttons and sensitivity and stuff... */
   glade_editable_load (GLADE_EDITABLE (label_editor),
@@ -405,7 +364,7 @@ max_width_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
       (GTK_TOGGLE_BUTTON (label_editor->max_width_radio)))
     return;
 
-  label_editor->modifying = TRUE;
+  glade_editable_block (GLADE_EDITABLE (label_editor));
 
   glade_command_push_group (_("Setting %s to set maximum width in characters"),
                             glade_widget_get_name (label_editor->loaded_widget));
@@ -419,7 +378,7 @@ max_width_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 
   glade_command_pop_group ();
 
-  label_editor->modifying = FALSE;
+  glade_editable_unblock (GLADE_EDITABLE (label_editor));
 
   /* reload buttons and sensitivity and stuff... */
   glade_editable_load (GLADE_EDITABLE (label_editor),
@@ -441,7 +400,7 @@ wrap_free_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
       (GTK_TOGGLE_BUTTON (label_editor->wrap_free_radio)))
     return;
 
-  label_editor->modifying = TRUE;
+  glade_editable_block (GLADE_EDITABLE (label_editor));
 
   glade_command_push_group (_("Setting %s to use normal line wrapping"),
                             glade_widget_get_name (label_editor->loaded_widget));
@@ -463,7 +422,7 @@ wrap_free_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 
   glade_command_pop_group ();
 
-  label_editor->modifying = FALSE;
+  glade_editable_unblock (GLADE_EDITABLE (label_editor));
 
   /* reload buttons and sensitivity and stuff... */
   glade_editable_load (GLADE_EDITABLE (label_editor),
@@ -482,7 +441,7 @@ single_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
       (GTK_TOGGLE_BUTTON (label_editor->single_radio)))
     return;
 
-  label_editor->modifying = TRUE;
+  glade_editable_block (GLADE_EDITABLE (label_editor));
 
   glade_command_push_group (_("Setting %s to use a single line"),
                             glade_widget_get_name (label_editor->loaded_widget));
@@ -504,7 +463,7 @@ single_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 
   glade_command_pop_group ();
 
-  label_editor->modifying = FALSE;
+  glade_editable_unblock (GLADE_EDITABLE (label_editor));
 
   /* reload buttons and sensitivity and stuff... */
   glade_editable_load (GLADE_EDITABLE (label_editor),
@@ -523,7 +482,7 @@ wrap_mode_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
       (GTK_TOGGLE_BUTTON (label_editor->wrap_mode_radio)))
     return;
 
-  label_editor->modifying = TRUE;
+  glade_editable_block (GLADE_EDITABLE (label_editor));
 
   glade_command_push_group (_("Setting %s to use specific Pango word wrapping"),
                             glade_widget_get_name (label_editor->loaded_widget));
@@ -542,7 +501,7 @@ wrap_mode_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 
   glade_command_pop_group ();
 
-  label_editor->modifying = FALSE;
+  glade_editable_unblock (GLADE_EDITABLE (label_editor));
 
   /* reload buttons and sensitivity and stuff... */
   glade_editable_load (GLADE_EDITABLE (label_editor),

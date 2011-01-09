@@ -2480,13 +2480,11 @@ glade_eprop_object_populate_view_real (GtkTreeStore * model,
         {
 	  adaptor = glade_widget_get_adaptor (widget);
 
-          has_decendant = !parentless && glade_widget_has_decendant
-              (widget, object_type);
+          has_decendant = 
+	    !parentless && glade_widget_has_decendant (widget, object_type);
 
           good_type = (glade_widget_adaptor_get_object_type (adaptor) == object_type ||
-                       g_type_is_a (glade_widget_adaptor_get_object_type (adaptor), object_type) ||
-                       glade_util_class_implements_interface (glade_widget_adaptor_get_object_type (adaptor),
-                                                              object_type));
+                       g_type_is_a (glade_widget_adaptor_get_object_type (adaptor), object_type));
 
           if (parentless)
             good_type = good_type && !GWA_IS_TOPLEVEL (adaptor);
@@ -2986,6 +2984,8 @@ glade_eprop_object_show_dialog (GtkWidget * dialog_button,
 
                   if (new_object && old_object != new_object)
                     {
+		      glade_widget_hide (new_widget);
+
                       if ((old_ref =
                            glade_widget_get_parentless_widget_ref (new_widget)))
                         {

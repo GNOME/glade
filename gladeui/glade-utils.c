@@ -57,10 +57,6 @@
 #define GLADE_UTIL_COPY_BUFFSIZE       1024
 
 
-/* List of widgets that have selection
- */
-static GList *glade_util_selection = NULL;
-
 /**
  * glade_util_compose_get_type_func:
  * @name:
@@ -309,7 +305,7 @@ static gboolean
 remove_message_timeout (FlashInfo * fi)
 {
   gtk_statusbar_remove (fi->statusbar, fi->context_id, fi->message_id);
-  g_free (fi);
+  g_slice_free (FlashInfo, fi);
 
   /* remove the timeout */
   return FALSE;
@@ -338,7 +334,7 @@ glade_util_flash_message (GtkWidget * statusbar, guint context_id,
   message = g_strdup_vprintf (format, args);
   va_end (args);
 
-  fi = g_new (FlashInfo, 1);
+  fi = g_slice_new0 (FlashInfo);
   fi->statusbar = GTK_STATUSBAR (statusbar);
   fi->context_id = context_id;
   fi->message_id = gtk_statusbar_push (fi->statusbar, fi->context_id, message);
@@ -427,29 +423,6 @@ glade_util_compare_stock_labels (gconstpointer a, gconstpointer b)
     }
 
   return retval;
-}
-
-/**
- * glade_util_hide_window:
- * @window: a #GtkWindow
- *
- * If you use this function to handle the delete_event of a window, when it
- * will be shown again it will appear in the position where it was before
- * beeing hidden.
- */
-void
-glade_util_hide_window (GtkWindow * window)
-{
-  gint x, y;
-
-  g_return_if_fail (GTK_IS_WINDOW (window));
-
-  /* remember position of window for when it is used again */
-  gtk_window_get_position (window, &x, &y);
-
-  gtk_widget_hide (GTK_WIDGET (window));
-
-  gtk_window_move (window, x, y);
 }
 
 /**
@@ -636,114 +609,32 @@ glade_util_draw_nodes (cairo_t * cr, GdkColor * color,
 void
 glade_util_draw_selection_nodes (GtkWidget * widget, cairo_t * cr)
 {
+  GladeWidget *gwidget;
+  GladeProject *project;
   GdkColor *color;
+  GtkAllocation allocation;
 
   g_return_if_fail (GTK_IS_WIDGET (widget));
+  
+  gwidget = glade_widget_get_from_gobject (widget);
+  if (!gwidget)
+    return;
+
+  project = glade_widget_get_project (gwidget);
+  g_return_if_fail (GLADE_IS_PROJECT (project));
+
+  if (!glade_project_is_selected (project, G_OBJECT (widget)))
+    return;
 
   cairo_save (cr);
 
   color = &(gtk_widget_get_style (widget)->black);
 
-  if (g_list_find (glade_util_selection, widget))
-    {
-      GtkAllocation allocation;
-
-      gtk_widget_get_allocation (widget, &allocation);
-      glade_util_draw_nodes (cr, color,
-                             0, 0, allocation.width, allocation.height);
-    }
+  gtk_widget_get_allocation (widget, &allocation);
+  glade_util_draw_nodes (cr, color,
+			 0, 0, allocation.width, allocation.height);
 
   cairo_restore (cr);
-}
-
-/**
- * glade_util_add_selection:
- * @widget: a #GtkWidget
- *
- * Add visual selection to this GtkWidget
- */
-void
-glade_util_add_selection (GtkWidget * widget)
-{
-  g_return_if_fail (GTK_IS_WIDGET (widget));
-  if (glade_util_has_selection (widget))
-    return;
-
-  glade_util_selection = g_list_prepend (glade_util_selection, widget);
-  gtk_widget_queue_draw (widget);
-}
-
-/**
- * glade_util_remove_selection:
- * @widget: a #GtkWidget
- *
- * Remove visual selection from this GtkWidget
- */
-void
-glade_util_remove_selection (GtkWidget * widget)
-{
-  GtkWidget *parent;
-
-  g_return_if_fail (GTK_IS_WIDGET (widget));
-  if (!glade_util_has_selection (widget))
-    return;
-
-  glade_util_selection = g_list_remove (glade_util_selection, widget);
-
-  /* We redraw the parent, since the selection rectangle may not be
-     cleared if we just redraw the widget itself. */
-  parent = gtk_widget_get_parent (widget);
-  if (parent)
-    gtk_widget_queue_draw (parent);
-  gtk_widget_queue_draw (widget);
-}
-
-/**
- * glade_util_clear_selection:
- *
- * Clear all visual selections
- */
-void
-glade_util_clear_selection (void)
-{
-  GtkWidget *widget;
-  GtkWidget *parent;
-  GList *list;
-
-  for (list = glade_util_selection; list && list->data; list = list->next)
-    {
-      widget = list->data;
-      parent = gtk_widget_get_parent (widget);
-
-      if (parent)
-        gtk_widget_queue_draw (parent);
-      gtk_widget_queue_draw (widget);
-    }
-  glade_util_selection = (g_list_free (glade_util_selection), NULL);
-}
-
-/**
- * glade_util_has_selection:
- * @widget: a #GtkWidget
- *
- * Returns: %TRUE if @widget has visual selection, %FALSE otherwise
- */
-gboolean
-glade_util_has_selection (GtkWidget * widget)
-{
-  g_return_val_if_fail (GTK_IS_WIDGET (widget), FALSE);
-  return g_list_find (glade_util_selection, widget) != NULL;
-}
-
-/**
- * glade_util_get_selectoin:
- *
- * Returns: The list of selected #GtkWidgets
- */
-GList *
-glade_util_get_selection ()
-{
-  return glade_util_selection;
 }
 
 /*
@@ -894,26 +785,6 @@ glade_util_find_iter_by_widget (GtkTreeModel * model,
   return NULL;
 }
 
-gboolean
-glade_util_basenames_match (const gchar * path1, const gchar * path2)
-{
-  gboolean match = FALSE;
-  gchar *bname1;
-  gchar *bname2;
-
-  if (path1 && path2)
-    {
-      bname1 = g_path_get_basename (path1);
-      bname2 = g_path_get_basename (path2);
-
-      match = !strcmp (bname1, bname2);
-
-      g_free (bname1);
-      g_free (bname2);
-    }
-  return match;
-}
-
 /**
  * glade_util_purify_list:
  * @list: A #GList
@@ -1035,175 +906,6 @@ glade_util_canonical_path (const gchar * path)
     g_free (basename);
 
   return direct_name;
-}
-
-static gboolean
-glade_util_canonical_match (const gchar * src_path, const gchar * dest_path)
-{
-  gchar *canonical_src, *canonical_dest;
-  gboolean match;
-  canonical_src = glade_util_canonical_path (src_path);
-  canonical_dest = glade_util_canonical_path (dest_path);
-
-  match = (strcmp (canonical_src, canonical_dest) == 0);
-
-  g_free (canonical_src);
-  g_free (canonical_dest);
-
-  return match;
-}
-
-/**
- * glade_util_copy_file:
- * @src_path:  the path to the source file
- * @dest_path: the path to the destination file to create or overwrite.
- *
- * Copies a file from @src to @dest, queries the user
- * if it involves overwriting the target and displays an
- * error message upon failure.
- *
- * Returns: True if the copy was successfull.
- */
-gboolean
-glade_util_copy_file (const gchar * src_path, const gchar * dest_path)
-{
-  GIOChannel *src, *dest;
-  GError *error = NULL;
-  GIOStatus read_status, write_status = G_IO_STATUS_ERROR;
-  gchar buffer[GLADE_UTIL_COPY_BUFFSIZE];
-  gsize bytes_read, bytes_written, written;
-  gboolean success = FALSE;
-
-  /* FIXME: This may break if src_path & dest_path are actually 
-   * the same file, right now the canonical comparison is the
-   * best check I have.
-   */
-  if (glade_util_canonical_match (src_path, dest_path))
-    return FALSE;
-
-  if (g_file_test (dest_path, G_FILE_TEST_IS_REGULAR) != FALSE)
-    if (glade_util_ui_message
-        (glade_app_get_window (), GLADE_UI_YES_OR_NO, NULL,
-         _("%s exists.\nDo you want to replace it?"), dest_path) == FALSE)
-      return FALSE;
-
-
-  if ((src = g_io_channel_new_file (src_path, "r", &error)) != NULL)
-    {
-      g_io_channel_set_encoding (src, NULL, NULL);
-
-      if ((dest = g_io_channel_new_file (dest_path, "w", &error)) != NULL)
-        {
-          g_io_channel_set_encoding (dest, NULL, NULL);
-
-          while ((read_status = g_io_channel_read_chars
-                  (src, buffer, GLADE_UTIL_COPY_BUFFSIZE,
-                   &bytes_read, &error)) != G_IO_STATUS_ERROR)
-            {
-              bytes_written = 0;
-              while ((write_status = g_io_channel_write_chars
-                      (dest, buffer + bytes_written,
-                       bytes_read - bytes_written,
-                       &written, &error)) != G_IO_STATUS_ERROR &&
-                     (bytes_written + written) < bytes_read)
-                bytes_written += written;
-
-              if (write_status == G_IO_STATUS_ERROR)
-                {
-                  glade_util_ui_message (glade_app_get_window (),
-                                         GLADE_UI_ERROR, NULL,
-                                         _("Error writing to %s: %s"),
-                                         dest_path, error->message);
-                  error = (g_error_free (error), NULL);
-                  break;
-                }
-
-              /* Break on EOF & ERROR but not AGAIN and not NORMAL */
-              if (read_status == G_IO_STATUS_EOF)
-                break;
-            }
-
-          if (read_status == G_IO_STATUS_ERROR)
-            {
-              glade_util_ui_message (glade_app_get_window (),
-                                     GLADE_UI_ERROR, NULL,
-                                     _("Error reading %s: %s"),
-                                     src_path, error->message);
-              error = (g_error_free (error), NULL);
-            }
-
-
-          /* From here on, unless we have problems shutting down, succuss ! */
-          success = (read_status == G_IO_STATUS_EOF &&
-                     write_status == G_IO_STATUS_NORMAL);
-
-          if (g_io_channel_shutdown (dest, TRUE, &error) != G_IO_STATUS_NORMAL)
-            {
-              glade_util_ui_message
-                  (glade_app_get_window (),
-                   GLADE_UI_ERROR, NULL,
-                   _("Error shutting down I/O channel %s: %s"),
-                   dest_path, error->message);
-              error = (g_error_free (error), NULL);
-              success = FALSE;
-            }
-        }
-      else
-        {
-          glade_util_ui_message (glade_app_get_window (),
-                                 GLADE_UI_ERROR, NULL,
-                                 _("Failed to open %s for writing: %s"),
-                                 dest_path, error->message);
-          error = (g_error_free (error), NULL);
-
-        }
-
-
-      if (g_io_channel_shutdown (src, TRUE, &error) != G_IO_STATUS_NORMAL)
-        {
-          glade_util_ui_message (glade_app_get_window (),
-                                 GLADE_UI_ERROR, NULL,
-                                 _("Error shutting down I/O channel %s: %s"),
-                                 src_path, error->message);
-          success = FALSE;
-        }
-    }
-  else
-    {
-      glade_util_ui_message (glade_app_get_window (),
-                             GLADE_UI_ERROR, NULL,
-                             _("Failed to open %s for reading: %s"),
-                             src_path, error->message);
-      error = (g_error_free (error), NULL);
-    }
-  return success;
-}
-
-/**
- * glade_util_class_implements_interface:
- * @class_type: A #GType
- * @iface_type: A #GType
- *
- * Returns: whether @class_type implements the @iface_type interface
- */
-gboolean
-glade_util_class_implements_interface (GType class_type, GType iface_type)
-{
-  GType *ifaces;
-  guint n_ifaces, i;
-  gboolean implemented = FALSE;
-
-  if ((ifaces = g_type_interfaces (class_type, &n_ifaces)) != NULL)
-    {
-      for (i = 0; i < n_ifaces; i++)
-        if (ifaces[i] == iface_type)
-          {
-            implemented = TRUE;
-            break;
-          }
-      g_free (ifaces);
-    }
-  return implemented;
 }
 
 static GModule *

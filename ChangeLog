@@ -1,3 +1,111 @@
+2011-01-09  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-design-layout.c: Fixed to not hide widgets when removing
+	them from the layout (no longer needed trickery for the toplevel, makes parentless
+	widget property references work properly).
+
+	* gladeui/glade-project.c: Fixed the project to maintain the loading flag until
+	parse-finished is fired (so that it can be checked when setting the final object
+	properties).
+
+	* plugins/gtk+/glade-gtk.c: Fixed loaded state of toolitemgroup custom label widget.
+
+	* plugins/gtk+/gtk+.xml.in: Added translatable/multiline to entry tooltip properties
+
+	* gladeui/glade-command.[ch]: Exposed glade_command_add() internal command so that
+	plugins can create command groups that play with adding/removing widgets inline without
+	creating copies of them.
+
+	* plugins/gtk+/glade-gtk.c: Fixed add/remove parent commands so that they work with
+	parentless widget references (i.e. you can add a parent to a GtkToolItemGroup's label widget
+	or a GtkButton's image widget, or remove the parent of a child of a label-widget, etc).
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Write GtkToolButton menu children
+	out as "menu" special child type.
+
+	* plugins/gtk+/gtk+.xml.in:
+	  - Made all GdkColor type properties optional, closes bug 457969
+	  - Disabled all the irrelevant "-set" properties of GtkTextTag.
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Added replace-child-function to
+	gtkmenutoolbutton code (incase the child is rebuilt for construct-only purposes).
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Add support for adding texttags to
+	texttagtable.
+
+	* plugins/gtk+/gtk+.xml.in: Disable the GtkToolButton:menu property.
+
+	* gladeui/glade-editor.c: Make query dialog come with a "Create" button instead
+	of an "OK" button, closes bug 503621.
+
+	* plugins/gtk+/gtk+.xml.in: Setting some default HIG values for widgets as per bug 349447.
+
+	* src/glade-window.c: Fixed use of uninitialized variables in warning messages,
+	bug 634325, fix by Alex Merry.
+
+	* plugins/gtk+/glade-column-types.c: Fixed crash when user performs Drag'n'Drop of
+	< enter column here > and no columns are yet added (fixes bug 633943).
+
+2011-01-08  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-utils.[ch], gladeui/glade-widget.c, gladeui/glade-builtins.c,
+	gladeui/glade-widget-adaptor.c, gladeui/glade-editor-property.c:
+	Removed glade_util_class_implements_interface() in favor of g_type_is_a() (closes bug 455734).
+
+	* gladeui/glade-utils.[ch]: Some cleanup in glade-utils, removed lots of obsolete stuff.
+
+	* gladeui/glade-utils.[ch], gladeui/glade-widget.c, gladeui/glade-project.c,
+	gladeui/glade-popup.c, gladeui/glade-placeholder.c: Removed global selection list
+	from glade-utils, selection can only be placed on widgets and only be controlled
+	by their owning project.
+
+	* gladeui/glade-builtins.c: Fixed redundant registering of displayable values for
+	stock items.
+
+	* plugins/gtk+/gtk+.xml.in: Made plugin target from 2.20, 2.22, 2.24 and 3.0, updated
+	new properties and signals introduced with 3.0.
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Made GtkToolBar:icon-size an
+	optional property to discourage its use and gave it similar treatment as the
+	toolbar-style property.
+
+	* gladeui/glade-command.c: Ensure that menus can be added to menutoolbuttons.
+
+	* plugins/Makefile.am, plugins/glade-tool-item-group-editor.[ch], plugins/gtk+.xml.in,
+	plugins/glade-gtk.c: Added support for editing GtkToolPalette.
+
+2011-01-07  Emilio Pozuelo Monfort <pochu27@gmail.com>
+
+	* configure.ac: Bump the minimum GTK+ version to 2.99.0.
+
+2011-01-07  Emilio Pozuelo Monfort <pochu27@gmail.com>
+
+	* configure.ac: Remove "GTK+ version" from the summary, we always
+	build against GTK+ 3 now.
+
+2011-01-07  Emilio Pozuelo Monfort <pochu27@gmail.com>
+
+	* data/glade.desktop.in.in: Execute 'glade' since that's the name
+	of the binary now.
+
+2011-01-07  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-inspector.c: Updated to use GtkStyleContext to set the italic &
+	insensitive color for the < search widgets > entry.
+
+	* plugins/gtk+/glade-model-data.c: Removed sequential editing mode, avoid
+	crashers when focus/start-editing next cell.
+
+	* plugins/gtk+/glade-gtk.c: Added accelerator and tooltip-text properties
+	  to menu items and toolitems in the menu editor (fixes bug 510083).
+
+	* gladeui/glade-editable.[ch], plugins/gtk+/.. [ All GladeEditable editors ].
+	GladeEditable now watches the project for changes and updates itself by way
+	of the base class implementation (and is fixed for removed widgets that no
+	longer have a project pointer available), also glade_editable_block/unblock()
+	is added for implementations to avoid firing implicit loads while executing
+	commands... all custom editors updated to lose much code.
+
 2011-01-06  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-signal.c: Fixed glade_signal_load() careless mistake after GObjectifying.

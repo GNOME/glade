@@ -337,7 +337,7 @@ gwa_list_signals (GladeWidgetAdaptor * adaptor, GType real_type)
 
       /* Add class interfaces signals */
       for (i = p = g_type_interfaces (type, NULL); *i; i++)
-        if (!glade_util_class_implements_interface (parent, *i))
+        if (!g_type_is_a (parent, *i))
           gwa_add_signals (adaptor, &signals, *i);
 
       g_free (p);
