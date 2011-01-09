@@ -1122,48 +1122,50 @@ save (GladeWindow * window, GladeProject * project, const gchar * path)
     return;
 
   /* check for external modification to the project file */
-  mtime = glade_util_get_file_mtime (glade_project_get_path (project), NULL);
-
-  if (mtime > glade_project_get_file_mtime (project))
+  if (glade_project_get_path (project))
     {
+      mtime = glade_util_get_file_mtime (glade_project_get_path (project), NULL);
 
-      dialog = gtk_message_dialog_new (GTK_WINDOW (window),
-                                       GTK_DIALOG_MODAL,
-                                       GTK_MESSAGE_WARNING,
-                                       GTK_BUTTONS_NONE,
-                                       _
-                                       ("The file %s has been modified since reading it"),
-                                       glade_project_get_path (project));
+      if (mtime > glade_project_get_file_mtime (project))
+	{
 
-      gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog),
-                                                _
-                                                ("If you save it, all the external changes could be lost. Save it anyway?"));
+	  dialog = gtk_message_dialog_new (GTK_WINDOW (window),
+					   GTK_DIALOG_MODAL,
+					   GTK_MESSAGE_WARNING,
+					   GTK_BUTTONS_NONE,
+					   _("The file %s has been modified since reading it"),
+					   glade_project_get_path (project));
 
-      gtk_window_set_title (GTK_WINDOW (dialog), "");
+	  gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog),
+						    _("If you save it, all the external changes could be lost. "
+						      "Save it anyway?"));
 
-      button = gtk_button_new_with_mnemonic (_("_Save Anyway"));
-      gtk_button_set_image (GTK_BUTTON (button),
-                            gtk_image_new_from_stock (GTK_STOCK_SAVE,
-                                                      GTK_ICON_SIZE_BUTTON));
-      gtk_widget_show (button);
+	  gtk_window_set_title (GTK_WINDOW (dialog), "");
 
-      gtk_dialog_add_action_widget (GTK_DIALOG (dialog), button,
-                                    GTK_RESPONSE_ACCEPT);
-      gtk_dialog_add_button (GTK_DIALOG (dialog), _("_Don't Save"),
-                             GTK_RESPONSE_REJECT);
+	  button = gtk_button_new_with_mnemonic (_("_Save Anyway"));
+	  gtk_button_set_image (GTK_BUTTON (button),
+				gtk_image_new_from_stock (GTK_STOCK_SAVE,
+							  GTK_ICON_SIZE_BUTTON));
+	  gtk_widget_show (button);
 
-      gtk_dialog_set_default_response (GTK_DIALOG (dialog),
-                                       GTK_RESPONSE_REJECT);
+	  gtk_dialog_add_action_widget (GTK_DIALOG (dialog), button,
+					GTK_RESPONSE_ACCEPT);
+	  gtk_dialog_add_button (GTK_DIALOG (dialog), _("_Don't Save"),
+				 GTK_RESPONSE_REJECT);
 
-      response = gtk_dialog_run (GTK_DIALOG (dialog));
+	  gtk_dialog_set_default_response (GTK_DIALOG (dialog),
+					   GTK_RESPONSE_REJECT);
 
-      gtk_widget_destroy (dialog);
+	  response = gtk_dialog_run (GTK_DIALOG (dialog));
 
-      if (response == GTK_RESPONSE_REJECT)
-        {
-          g_free (display_path);
-          return;
-        }
+	  gtk_widget_destroy (dialog);
+
+	  if (response == GTK_RESPONSE_REJECT)
+	    {
+	      g_free (display_path);
+	      return;
+	    }
+	}
     }
 
   /* Interestingly; we cannot use `path' after glade_project_reset_path
