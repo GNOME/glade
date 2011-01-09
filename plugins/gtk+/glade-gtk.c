@@ -7550,11 +7550,25 @@ glade_gtk_tool_item_group_set_property (GladeWidgetAdaptor * adaptor,
 {
   if (!strcmp (id, "custom-label"))
     glade_gtk_tool_item_group_set_custom_label (object, value);
-  else if (!strcmp (id, "label-widget"))
+  else if (!strcmp (id, "label"))
     {
-      if (g_value_get_object (value) != NULL)
-	gtk_tool_item_group_set_label_widget (GTK_TOOL_ITEM_GROUP (object),
-					      (GtkWidget *)g_value_get_object (value));
+      GladeWidget *widget = glade_widget_get_from_gobject (object);
+      gboolean custom = FALSE;
+
+      glade_widget_property_get (widget, "custom-label", &custom);
+      if (!custom)
+	gtk_tool_item_group_set_label (GTK_TOOL_ITEM_GROUP (object),
+				       g_value_get_string (value));
+    } 
+  else if (!strcmp (id, "label-widget")) 
+    {
+      GladeWidget *widget = glade_widget_get_from_gobject (object);
+      GtkWidget *label = g_value_get_object (value);
+      gboolean custom = FALSE;
+
+      glade_widget_property_get (widget, "custom-label", &custom);
+      if (custom || (glade_util_object_is_loading (object) && label != NULL))
+	gtk_tool_item_group_set_label_widget (GTK_TOOL_ITEM_GROUP (object), label);
     }
   else
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
