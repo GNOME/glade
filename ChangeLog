@@ -51,6 +51,9 @@
 
 	* gladeui/glade-app.[ch], gladeui/glade-base-editor.c: Removed glade_app_set/get_transient_parent()
 
+	* src/glade-window.c: Added idle function to raise the undocked windows at startup time,
+	closes bug 475421.
+
 2011-01-08  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-utils.[ch], gladeui/glade-widget.c, gladeui/glade-builtins.c,

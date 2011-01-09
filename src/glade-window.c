@@ -2546,8 +2546,7 @@ create_drag_resize_tool_button (GtkToolbar * toolbar)
   gtk_tool_button_set_label (GTK_TOOL_BUTTON (button), _("Drag Resize"));
 
   gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (button),
-                                  _
-                                  ("Drag and resize widgets in the workspace"));
+                                  _("Drag and resize widgets in the workspace"));
 
   gtk_widget_show (GTK_WIDGET (button));
   gtk_widget_show (image);
@@ -3277,6 +3276,12 @@ glade_window_config_load (GladeWindow * window)
   load_paned_position (config, window->priv->right_pane, "right_pane", 220);
 }
 
+static gboolean
+raise_window_idle (GtkWindow *window)
+{
+  gtk_window_present (window);
+  return FALSE;
+}
 
 static void
 show_dock_first_time (GladeWindow * window,
@@ -3300,7 +3305,11 @@ show_dock_first_time (GladeWindow * window,
                                 &maximized);
 
   if (detached == 1)
-    gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action), FALSE);
+    {
+      gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action), FALSE);
+
+      g_idle_add ((GSourceFunc)raise_window_idle, gtk_widget_get_toplevel (dock->widget));
+    }
 
   if (maximized)
     gtk_window_maximize (GTK_WINDOW (gtk_widget_get_toplevel (dock->widget)));
