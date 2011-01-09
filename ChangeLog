@@ -20,6 +20,9 @@
 	parentless widget references (i.e. you can add a parent to a GtkToolItemGroup's label widget
 	or a GtkButton's image widget, or remove the parent of a child of a label-widget, etc).
 
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Write GtkToolButton menu children
+	out as "menu" special child type.
+
 2011-01-08  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-utils.[ch], gladeui/glade-widget.c, gladeui/glade-builtins.c,

@@ -6658,6 +6658,8 @@ glade_gtk_menu_item_remove_child (GladeWidgetAdaptor * adaptor,
   g_return_if_fail (GTK_IS_MENU_ITEM (object));
   g_return_if_fail (GTK_IS_MENU (child));
 
+  g_object_set_data (child, "special-child-type", NULL);
+
   gtk_menu_item_set_submenu (GTK_MENU_ITEM (object), NULL);
 }
 
@@ -7880,8 +7882,12 @@ glade_gtk_menu_tool_button_add_child (GladeWidgetAdaptor * adaptor,
                                       GObject * object, GObject * child)
 {
   if (GTK_IS_MENU (child))
-    gtk_menu_tool_button_set_menu (GTK_MENU_TOOL_BUTTON (object),
-				   GTK_WIDGET (child));
+    {
+      g_object_set_data (child, "special-child-type", "menu");
+
+      gtk_menu_tool_button_set_menu (GTK_MENU_TOOL_BUTTON (object),
+				     GTK_WIDGET (child));
+    }
   else
     GWA_GET_CLASS (GTK_TYPE_TOOL_BUTTON)->add (adaptor, object, child);
 }
@@ -7893,6 +7899,8 @@ glade_gtk_menu_tool_button_remove_child (GladeWidgetAdaptor * adaptor,
   if (GTK_IS_MENU (child))
     {
       gtk_menu_tool_button_set_menu (GTK_MENU_TOOL_BUTTON (object), NULL);
+
+      g_object_set_data (child, "special-child-type", NULL);
     }
   else
     GWA_GET_CLASS (GTK_TYPE_TOOL_BUTTON)->remove (adaptor, object, child);
