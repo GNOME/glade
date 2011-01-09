@@ -2318,7 +2318,7 @@ static guint n_view_entries = G_N_ELEMENTS (view_entries);
 
 static GtkRadioActionEntry radio_entries[] = {
 
-  {"IconsAndLabels", NULL, N_("Text beside icons"), NULL,
+  {"IconsAndLabels", NULL, N_("Text _beside icons"), NULL,
    N_("Display items as text beside icons"), GLADE_ITEM_ICON_AND_LABEL},
 
   {"IconsOnly", NULL, N_("_Icons only"), NULL,
