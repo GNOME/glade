@@ -1008,7 +1008,7 @@ get_all_parentless_reffed_widgets (GList * reffed, GladeWidget * widget)
  * while newly added widgets will prefer packing defaults.
  *
  */
-static void
+void
 glade_command_add (GList            *widgets,
                    GladeWidget      *parent,
                    GladePlaceholder *placeholder, 

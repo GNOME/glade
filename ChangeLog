@@ -12,6 +12,10 @@
 
 	* plugins/gtk+/gtk+.xml.in: Added translatable/multiline to entry tooltip properties
 
+	* gladeui/glade-command.[ch]: Exposed glade_command_add() internal command so that
+	plugins can create command groups that play with adding/removing widgets inline without
+	creating copies of them.
+
 2011-01-08  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-utils.[ch], gladeui/glade-widget.c, gladeui/glade-builtins.c,
