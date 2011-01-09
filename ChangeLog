@@ -6,6 +6,10 @@
 	* gladeui/glade-widget-adaptor.c: Implemented a generic ->depends() routine
 	to ensure that liststores are serialized before treemodelfilters which refer to them (bug 657164).
 
+	* gladeui/glade-command.[ch]: Exposed glade_command_add() internal command so that
+	plugins can create command groups that play with adding/removing widgets inline without
+	creating copies of them.
+
 2011-04-29  Javier Jardón <jjardon@gnome.org>
 
 	* gladeui/glade-utils.c: Correctly detect the required devhelp version

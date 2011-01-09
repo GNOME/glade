@@ -973,10 +973,11 @@ get_all_parentless_reffed_widgets (GList *reffed, GladeWidget *widget)
  * while newly added widgets will prefer packing defaults.
  *
  */
-static void
-glade_command_add (GList            *widgets, 
-		   GladeWidget      *parent, 
-		   GladePlaceholder *placeholder,
+void
+glade_command_add (GList            *widgets,
+                   GladeWidget      *parent,
+                   GladePlaceholder *placeholder, 
+		   GladeProject     *project,
 		   gboolean          pasting)
 {
 	GladeCommandAddRemove	*me;
@@ -1709,7 +1710,7 @@ glade_command_clipboard_add_remove_collapse (GladeCommand *this_cmd, GladeComman
  * @adaptor:		A #GladeWidgetAdaptor
  * @parent:             the parent #GladeWidget to add the new widget to.
  * @placeholder:	the placeholder which will be substituted by the widget
- * @project:            the project his widget belongs to.
+ * @project:            the project this widget belongs to.
  *
  * Creates a new widget using @adaptor and put in place of the @placeholder
  * in the @project
@@ -1736,7 +1737,7 @@ glade_command_create(GladeWidgetAdaptor *adaptor, GladeWidget *parent, GladePlac
 	}
 	widgets = g_list_prepend(widgets, widget);
 	glade_command_push_group(_("Create %s"), widget->name);
-	glade_command_add(widgets, parent, placeholder, FALSE);
+	glade_command_add(widgets, parent, placeholder, project, FALSE);
 	glade_command_pop_group();
 
 	g_list_free(widgets);
@@ -1890,17 +1891,20 @@ glade_command_paste(GList *widgets, GladeWidget *parent, GladePlaceholder *place
 {
 	GList *list, *copied_widgets = NULL;
 	GladeWidget *copied_widget = NULL;
-/* 	GladeProject  *target_project; */
+	GladeProject  *target_project;
+	GladeWidget  *placeholder_parent = NULL;
 	gboolean exact;
 	
 	g_return_if_fail (widgets != NULL);
+
+	placeholder_parent = placeholder ? glade_placeholder_get_parent (placeholder) : NULL;
 	
-/* 	if (placeholder && GTK_IS_WINDOW (widget->object) == FALSE) */
-/* 		target_project = glade_placeholder_get_project (placeholder); */
-/* 	else if (parent && GTK_IS_WINDOW (widget->object) == FALSE) */
-/* 		target_project = glade_widget_get_project (parent); */
-/* 	else  */
-/* 		target_project = glade_app_get_project(); */
+	if (placeholder_parent && GTK_IS_WINDOW (placeholder_parent->object) == FALSE)
+		target_project = glade_placeholder_get_project (placeholder);
+	else if (parent && GTK_IS_WINDOW (parent->object) == FALSE)
+		target_project = glade_widget_get_project (parent);
+	else
+		target_project = glade_app_get_project();
 
 	for (list = widgets; list && list->data; list = list->next)
 	{
@@ -1916,8 +1920,7 @@ glade_command_paste(GList *widgets, GladeWidget *parent, GladePlaceholder *place
 	 * are not satisfied by the paste list.
 	 */
 
-
-	glade_command_add(copied_widgets, parent, placeholder, TRUE);
+	glade_command_add(copied_widgets, parent, placeholder, target_project, TRUE);
 	glade_command_pop_group();
 	
 	if (copied_widgets)
@@ -1937,15 +1940,26 @@ glade_command_paste(GList *widgets, GladeWidget *parent, GladePlaceholder *place
 void
 glade_command_dnd(GList *widgets, GladeWidget *parent, GladePlaceholder *placeholder)
 {
-	GladeWidget *widget;
+	GladeWidget  *widget;
+	GladeWidget  *placeholder_parent;
+	GladeProject *target_project;
 	
 	g_return_if_fail (widgets != NULL);
+
+	placeholder_parent = placeholder ? glade_placeholder_get_parent (placeholder) : NULL;
+	
+	if (placeholder_parent && GTK_IS_WINDOW (placeholder_parent->object) == FALSE)
+		target_project = glade_placeholder_get_project (placeholder);
+	else if (parent && GTK_IS_WINDOW (parent->object) == FALSE)
+		target_project = glade_widget_get_project (parent);
+	else
+		target_project = glade_app_get_project();
 	
 	widget = widgets->data;
 	glade_command_push_group(_("Drag-n-Drop from %s to %s"),
 				 parent->name, g_list_length (widgets) == 1 ? widget->name : _("multiple"));
 	glade_command_remove(widgets);
-	glade_command_add(widgets, parent, placeholder, TRUE);
+	glade_command_add(widgets, parent, placeholder, target_project, TRUE);
 	glade_command_pop_group();
 }
 

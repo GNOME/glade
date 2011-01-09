@@ -121,7 +121,14 @@ void           glade_command_lock_widget   (GladeWidget   *widget,
 
 void           glade_command_unlock_widget (GladeWidget   *widget);
 
-/************************ create/delete ******************************/
+
+/************************ create/add/delete ******************************/
+
+void           glade_command_add           (GList              *widgets,
+					    GladeWidget        *parent,
+					    GladePlaceholder   *placeholder, 
+					    GladeProject       *project,
+					    gboolean            pasting);
 
 void           glade_command_delete        (GList              *widgets);
 
