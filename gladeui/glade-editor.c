@@ -822,41 +822,44 @@ query_dialog_style_set_cb (GtkWidget *dialog,
 gboolean
 glade_editor_query_dialog (GladeEditor *editor, GladeWidget *widget)
 {
-	GtkWidget           *dialog, *editable, *content_area;
-	gchar               *title;
-	gint		     answer;
-	gboolean	     retval = TRUE;
+	GladeWidgetAdaptor *adaptor;
+	GtkWidget *dialog, *editable, *content_area;
+	GtkWidget *create;
+	gchar *title;
+	gint answer;
+	gboolean retval = TRUE;
 
-	title = g_strdup_printf (_("Create a %s"), widget->adaptor->name);
+	g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+  
+	adaptor = glade_widget_get_adaptor (widget);
 
+	title = g_strdup_printf (_("Create a %s"), adaptor->name);
 	dialog = gtk_dialog_new_with_buttons (title, NULL,
-		 			      GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT |
-					      GTK_DIALOG_NO_SEPARATOR,
+					      GTK_DIALOG_MODAL |
+					      GTK_DIALOG_DESTROY_WITH_PARENT,
 					      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-					      GTK_STOCK_OK, GTK_RESPONSE_OK,
 					      NULL);
-
 	g_free (title);
+
+	create = gtk_button_new_with_mnemonic (_("Crea_te"));
+	gtk_widget_show (create);
+	gtk_widget_set_can_default (create, TRUE);
+	gtk_dialog_add_action_widget (GTK_DIALOG (dialog), create, GTK_RESPONSE_OK);
 
 	gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
 						 GTK_RESPONSE_OK,
-						 GTK_RESPONSE_CANCEL,
-						 -1);
+						 GTK_RESPONSE_CANCEL, -1);
 	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
-	editable = glade_editor_get_editable_by_adaptor (editor,
-							 widget->adaptor,
-							 GLADE_PAGE_QUERY);
+	editable = (GtkWidget *) glade_widget_adaptor_create_editable (adaptor, GLADE_PAGE_QUERY);
 
 	content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
-	gtk_box_pack_start (GTK_BOX (content_area),
-			    editable, FALSE, FALSE, 6);
+	gtk_box_pack_start (GTK_BOX (content_area), editable, FALSE, FALSE, 6);
 
 	glade_editable_load (GLADE_EDITABLE (editable), widget);
 
-	g_signal_connect (dialog, "style-set", 
-			  G_CALLBACK (query_dialog_style_set_cb),
-			  NULL);
+	g_signal_connect (dialog, "style-set",
+			  G_CALLBACK (query_dialog_style_set_cb), NULL);
 
 	answer = gtk_dialog_run (GTK_DIALOG (dialog));
 
@@ -868,8 +871,6 @@ glade_editor_query_dialog (GladeEditor *editor, GladeWidget *widget)
 	if (answer == GTK_RESPONSE_CANCEL)
 		retval = FALSE;
 
-	gtk_container_remove (GTK_CONTAINER (content_area), editable);
-	
 	gtk_widget_destroy (dialog);
 	return retval;
 }
