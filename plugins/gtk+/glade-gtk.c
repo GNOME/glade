@@ -797,28 +797,40 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
   else if (strcmp (action_path, "remove_parent") == 0)
     {
       GladeWidget *new_gparent;
+      GladeProperty *property;
 
       g_return_if_fail (gparent);
+
+      property = glade_widget_get_parentless_widget_ref (gparent);
       new_gparent = glade_widget_get_parent (gparent);
 
       glade_command_push_group (_("Removing parent of %s"), glade_widget_get_name (gwidget));
 
-      /* Remove "this" widget */
+      /* Remove "this" widget, If the parent we're removing is a parentless 
+       * widget reference, the reference will be implicitly broken by the 'cut' command */
       this_widget.data = gwidget;
-      glade_command_cut (&this_widget);
+      glade_command_delete (&this_widget);
 
       /* Delete the parent */
       that_widget.data = gparent;
       glade_command_delete (&that_widget);
 
-      /* Add "this" widget to the new parent */
-      glade_command_paste (&this_widget, new_gparent, NULL, project);
+      /* Add "this" widget to the new parent, if there is no new parent this will re-add
+       * the widget to the project at the toplevel without a parent
+       */
+      glade_command_add (&this_widget, new_gparent, NULL, project, FALSE);
+
+      /* If the parent had a parentless widget reference, undoably add the child
+       * as the new parentless widget reference here */
+      if (property)
+	glade_command_set_property (property, glade_widget_get_object (gwidget));
 
       glade_command_pop_group ();
     }
   else if (strncmp (action_path, "add_parent/", 11) == 0)
     {
       GType new_type = 0;
+      GladeProperty *property;
 
       if (strcmp (action_path + 11, "alignment") == 0)
         new_type = GTK_TYPE_ALIGNMENT;
@@ -851,6 +863,7 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
           GladeWidgetAdaptor *adaptor =
               glade_widget_adaptor_get_by_type (new_type);
           GList *saved_props, *prop_cmds;
+	  GladeWidget *gnew_parent;
 
           /* Dont add non-scrollable widgets to scrolled windows... */
           if (gparent &&
@@ -867,22 +880,29 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
 	    glade_widget_dup_properties (gwidget, glade_widget_get_packing_properties (gwidget),
 					 FALSE, FALSE, FALSE);
 
-          /* Remove "this" widget */
+
+	  property = glade_widget_get_parentless_widget_ref (gwidget);
+
+	  /* Remove "this" widget, If the parent we're removing is a parentless 
+	   * widget reference, the reference will be implicitly broken by the 'cut' command */
           this_widget.data = gwidget;
-          glade_command_cut (&this_widget);
+          glade_command_delete (&this_widget);
 
           /* Create new widget and put it where the placeholder was */
-          if ((that_widget.data =
+          if ((gnew_parent =
                glade_command_create (adaptor, gparent, NULL, project)) != NULL)
             {
+	      /* Now we created the new parent, if gwidget had a parentless widget reference...
+	       * set that reference to the new parent instead */
+	      if (property)
+		glade_command_set_property (property, glade_widget_get_object (gnew_parent));
 
               /* Remove the alignment that we added in the frame's post_create... */
               if (new_type == GTK_TYPE_FRAME)
                 {
-                  GObject *frame = glade_widget_get_object (that_widget.data);
+                  GObject *frame = glade_widget_get_object (gnew_parent);
                   GladeWidget *galign =
-                      glade_widget_get_from_gobject (gtk_bin_get_child
-                                                     (GTK_BIN (frame)));
+                      glade_widget_get_from_gobject (gtk_bin_get_child (GTK_BIN (frame)));
                   GList to_delete = { 0, };
 
                   to_delete.data = galign;
@@ -891,7 +911,7 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
 
               /* Create heavy-duty glade-command properties stuff */
               prop_cmds =
-                  create_command_property_list (that_widget.data, saved_props);
+                  create_command_property_list (gnew_parent, saved_props);
               g_list_foreach (saved_props, (GFunc) g_object_unref, NULL);
               g_list_free (saved_props);
 
@@ -901,12 +921,17 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
 		  (glade_widget_get_project (gparent), prop_cmds);
 
               /* Add "this" widget to the new parent */
-              glade_command_paste (&this_widget,
-                                   GLADE_WIDGET (that_widget.data), NULL, project);
+              glade_command_add (&this_widget, gnew_parent, NULL, project, FALSE);
             }
           else
-            /* Create parent was cancelled, paste back to parent */
-            glade_command_paste (&this_widget, gparent, NULL, project);
+	    {
+	      /* Create parent was cancelled, paste back to parent */
+	      glade_command_add (&this_widget, gparent, NULL, project, FALSE);
+
+	      /* Restore any parentless widget reference if there was one */
+	      if (property)
+		glade_command_set_property (property, glade_widget_get_object (gwidget));
+	    }
 
           glade_command_pop_group ();
         }
