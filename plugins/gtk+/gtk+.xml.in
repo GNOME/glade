@@ -55,7 +55,7 @@
         <property id="can-focus" common="True" save-always="True"/>
 	<property id="has-default" common="True" ignore="True"/>
 	<property id="can-default" common="True" />
-	<property id="tooltip-markup" since="2.12" weight="4.1"/>
+	<property id="tooltip-markup" since="2.12" weight="4.1" translatable="True" multiline="True"/>
 	<property id="visible" default="True" common="True" ignore="True"/>
 	<property id="width-request"  common="True" optional="True" optional-default="False" default="0"/>
 	<property id="height-request" common="True" optional="True" optional-default="False" default="0"/>
@@ -667,11 +667,11 @@ embedded in another object</_tooltip>
       <read-widget-function>glade_gtk_tool_item_group_read_widget</read-widget-function>
 
       <properties>
-        <property id="label" translatable="True" default="toolitemgroup" custom-layout="True"/>
+        <property id="label" translatable="True" multiline="True" default="toolitemgroup" custom-layout="True"/>
 	<property id="label-widget" parentless-widget="True" create-type="GtkLabel" custom-layout="True"/>
 
 	<!-- Virtual label type property -->
-        <property id="custom-label" visible="False" save="False">
+        <property id="custom-label" default="False" visible="False" save="False">
 	  <parameter-spec>
 	    <type>GParamBoolean</type>
 	  </parameter-spec>
@@ -888,14 +888,14 @@ embedded in another object</_tooltip>
 	<property id="progress-pulse-step" _name="Progress Pulse Step" since="2.16" custom-layout="True"/>
 
 	<property id="invisible-char-set" _name="Invisible Char Set" since="2.16"/>
-	<property id="primary-icon-tooltip-text" translatable="True" _name="Primary Icon Tooltip Text" 
-		  custom-layout="True" since="2.16"/>
-	<property id="secondary-icon-tooltip-text" translatable="True" _name="Secondary Icon Tooltip Text" 
-		  custom-layout="True" since="2.16"/>
-	<property id="primary-icon-tooltip-markup" translatable="True" _name="Primary Icon Tooltip Markup" 
-		  custom-layout="True" since="2.16"/>
-	<property id="secondary-icon-tooltip-markup" translatable="True" _name="Secondary Icon Tooltip Markup" 
-		  custom-layout="True" since="2.16"/>
+	<property id="primary-icon-tooltip-text" translatable="True" multiline="True" 
+		  _name="Primary Icon Tooltip Text" custom-layout="True" since="2.16"/>
+	<property id="secondary-icon-tooltip-text" translatable="True" multiline="True"
+		  _name="Secondary Icon Tooltip Text" custom-layout="True" since="2.16"/>
+	<property id="primary-icon-tooltip-markup" translatable="True" multiline="True"
+		  _name="Primary Icon Tooltip Markup" custom-layout="True" since="2.16"/>
+	<property id="secondary-icon-tooltip-markup" translatable="True" multiline="True"
+		  _name="Secondary Icon Tooltip Markup" custom-layout="True" since="2.16"/>
 
 	<property id="im-module" disabled="True"/>
 
