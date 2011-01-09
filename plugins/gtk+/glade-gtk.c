@@ -8468,8 +8468,12 @@ glade_gtk_menu_tool_button_add_child (GladeWidgetAdaptor *adaptor,
 				      GObject *child)
 {
 	if (GTK_IS_MENU (child))
+	{
+		g_object_set_data (child, "special-child-type", "menu");
+
 		gtk_menu_tool_button_set_menu (GTK_MENU_TOOL_BUTTON (object),
 					       GTK_WIDGET (child));
+	}
 	else
 		GWA_GET_CLASS (GTK_TYPE_TOOL_BUTTON)->add (adaptor, object, child);
 }
@@ -8481,6 +8485,8 @@ glade_gtk_menu_tool_button_remove_child (GladeWidgetAdaptor *adaptor,
 {
 	if (GTK_IS_MENU (child))
 	{
+		g_object_set_data (child, "special-child-type", NULL);
+
 		gtk_menu_tool_button_set_menu (GTK_MENU_TOOL_BUTTON (object), NULL);
 	}
 	else

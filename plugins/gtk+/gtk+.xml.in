@@ -740,6 +740,12 @@ embedded in another object</_tooltip>
       <add-child-function>glade_gtk_menu_tool_button_add_child</add-child-function>
       <remove-child-function>glade_gtk_menu_tool_button_remove_child</remove-child-function>
       <get-children-function>glade_gtk_menu_tool_button_get_children</get-children-function>
+      <special-child-type>menu</special-child-type>
+
+      <properties>
+      	<property id="menu" disabled="True"/>
+      </properties>
+
     </glade-widget-class>
 
 
