@@ -10,6 +10,10 @@
 	plugins can create command groups that play with adding/removing widgets inline without
 	creating copies of them.
 
+	* plugins/gtk+/glade-gtk.c: Fixed add/remove parent commands so that they work with
+	parentless widget references (i.e. you can add a parent to a GtkToolItemGroup's label widget
+	or a GtkButton's image widget, or remove the parent of a child of a label-widget, etc).
+
 2011-04-29  Javier Jardón <jjardon@gnome.org>
 
 	* gladeui/glade-utils.c: Correctly detect the required devhelp version
