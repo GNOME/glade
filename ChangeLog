@@ -40,6 +40,9 @@
 
 	* plugins/gtk+/gtk+.xml.in: Setting some default HIG values for widgets as per bug 349447.
 
+	* src/glade-window.c: Fixed use of uninitialized variables in warning messages,
+	bug 634325, fix by Alex Merry.
+
 2011-01-08  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-utils.[ch], gladeui/glade-widget.c, gladeui/glade-builtins.c,
