@@ -1500,7 +1500,7 @@ embedded in another object</_tooltip>
 
     <glade-widget-class name="GtkButtonBox" generic-name="buttonbox" _title="Button Box">
       <properties>
-      	<property id="layout-style">
+      	<property id="layout-style" default="GTK_BUTTONBOX_START">
   	  <displayable-values>
 	    <value id="GTK_BUTTONBOX_DEFAULT_STYLE" _name="Default"/>
 	    <value id="GTK_BUTTONBOX_SPREAD" _name="Spread"/>
@@ -1617,6 +1617,7 @@ embedded in another object</_tooltip>
     
     <glade-widget-class name="GtkScrolledWindow" generic-name="scrolledwindow" _title="Scrolled Window">
       <properties>
+        <property id="shadow-type" default="GTK_SHADOW_IN"/>
         <property id="min-content-width" since="3.0"/>
         <property id="min-content-height" since="3.0"/>
         <property id="window-placement-set" since="2.10" ignore="True"/>
