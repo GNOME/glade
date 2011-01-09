@@ -28,6 +28,8 @@
 #define HANDLER_DEFAULT  _("<Type here>")
 #define USERDATA_DEFAULT _("<Click here>")
 
+#define DUMMY_DATA "__dummy"
+
 struct _GladeSignalModelPrivate
 {
 	GladeWidget *widget;
@@ -246,16 +248,8 @@ glade_signal_model_get_column_type (GtkTreeModel* model,
 			return G_TYPE_BOOLEAN;
 		case GLADE_SIGNAL_COLUMN_AFTER:
 			return G_TYPE_BOOLEAN;
-		case GLADE_SIGNAL_COLUMN_IS_HANDLER:
-			return G_TYPE_BOOLEAN;
-		case GLADE_SIGNAL_COLUMN_NOT_DUMMY:
-			return G_TYPE_BOOLEAN;
-		case GLADE_SIGNAL_COLUMN_VERSION_WARNING:
-			return G_TYPE_BOOLEAN;
 		case GLADE_SIGNAL_COLUMN_TOOLTIP:
 			return G_TYPE_STRING;
-		case GLADE_SIGNAL_COLUMN_SHOW_DEVHELP:
-			return G_TYPE_BOOLEAN;
 		case GLADE_SIGNAL_COLUMN_SIGNAL:
 			return G_TYPE_OBJECT;
 		default:
@@ -274,15 +268,11 @@ static gboolean
 glade_signal_model_is_dummy_handler (GladeSignalModel* model,
                                      GladeSignal* signal)
 {
-	GladeSignal* dummy;
+	gboolean dummy;
+	dummy = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (signal),
+	                                            DUMMY_DATA));
 
-	dummy = g_hash_table_lookup (model->priv->dummy_signals, 
-	                             glade_signal_get_name (signal));
-
-	if (dummy && (signal == dummy))
-		return TRUE;
-
-	return FALSE;
+	return dummy;
 }
 
 static GladeSignal*
@@ -301,6 +291,7 @@ glade_signal_model_get_dummy_handler (GladeSignalModel* model,
 		                           USERDATA_DEFAULT,
 		                           FALSE,
 		                           FALSE);
+		g_object_set_data (G_OBJECT (signal), DUMMY_DATA, GINT_TO_POINTER (TRUE)); 
 		g_hash_table_insert (model->priv->dummy_signals, 
 		                     (gpointer) glade_signal_class_get_name (sig_class), 
 		                     signal);
@@ -577,7 +568,7 @@ glade_signal_model_get_value (GtkTreeModel* model,
 			else if (widget)
 				g_value_set_boolean (value,
 				                     TRUE);
-			break;
+			break;	
 		case GLADE_SIGNAL_COLUMN_HANDLER:
 			if (handler)
 				g_value_set_static_string (value,
@@ -618,51 +609,12 @@ glade_signal_model_get_value (GtkTreeModel* model,
 				g_value_set_boolean (value,
 				                     FALSE);
 			break;
-		case GLADE_SIGNAL_COLUMN_IS_HANDLER:
-			g_value_set_boolean (value,
-			                     handler != NULL);
-			break;
-		case GLADE_SIGNAL_COLUMN_NOT_DUMMY:
-		{
-			gboolean is_dummy = handler ? 
-				glade_signal_model_is_dummy_handler (sig_model,
-				                                     handler) :
-				TRUE;
-			g_value_set_boolean (value,
-			                     !is_dummy);
-			break;
-		}
-		case GLADE_SIGNAL_COLUMN_VERSION_WARNING:
-		{
-			gboolean warn = FALSE;
-			if (handler)
-			{
-				const gchar* warning = glade_signal_get_support_warning (handler);
-				warn = warning && strlen (warning);
-			}
-			g_value_set_boolean (value, warn);
-			break;
-		}
 		case GLADE_SIGNAL_COLUMN_TOOLTIP:
 			if (handler)
 				g_value_set_string (value,
 				                    glade_signal_get_support_warning (handler));
 			else
 				g_value_set_static_string (value, NULL);
-			break;
-		case GLADE_SIGNAL_COLUMN_SHOW_DEVHELP:
-			if (handler)
-			{
-				const GladeSignalClass* class = glade_signal_get_class (handler);
-				GladeWidgetAdaptor* adaptor = glade_signal_class_get_adaptor (class);
-				gchar* book;
-
-				g_object_get (adaptor, "book", &book, NULL);
-				g_value_set_boolean (value, book != NULL);
-				g_free (book);
-				break;
-			}
-			g_value_set_boolean (value, FALSE);
 			break;
 		case GLADE_SIGNAL_COLUMN_SIGNAL:
 			g_value_set_object (value, handler);
@@ -968,16 +920,19 @@ glade_signal_model_row_draggable (GtkTreeDragSource* model,
                                   GtkTreePath* path)
 {
 	GtkTreeIter iter;
-	gboolean is_handler;
-	gboolean not_dummy;
+	GladeSignal* signal;
+	gboolean retval;
 	gtk_tree_model_get_iter (GTK_TREE_MODEL (model), &iter, path);
 
 	gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-	                    GLADE_SIGNAL_COLUMN_IS_HANDLER, &is_handler,
-	                    GLADE_SIGNAL_COLUMN_NOT_DUMMY, &not_dummy,
+	                    GLADE_SIGNAL_COLUMN_SIGNAL, &signal,
 	                    -1);
 
-	return (is_handler && not_dummy);
+	retval = signal && !glade_signal_model_is_dummy_handler (GLADE_SIGNAL_MODEL (model),
+	                                                         signal);
+
+	g_object_unref (signal);
+	return retval;
 }
 
 static gboolean
