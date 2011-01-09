@@ -1,3 +1,9 @@
+2011-01-09  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-design-layout.c: Fixed to not hide widgets when removing
+	them from the layout (no longer needed trickery for the toplevel, makes parentless
+	widget property references work properly).
+
 2011-01-08  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-utils.[ch], gladeui/glade-widget.c, gladeui/glade-builtins.c,

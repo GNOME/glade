@@ -495,10 +495,7 @@ glade_design_layout_add (GtkContainer * container, GtkWidget * widget)
 static void
 glade_design_layout_remove (GtkContainer * container, GtkWidget * widget)
 {
-  /* Make sure toplevels dont "pop out" of the workspace */
-  gtk_widget_hide (widget);
-  GTK_CONTAINER_CLASS (glade_design_layout_parent_class)->remove (container,
-                                                                  widget);
+  GTK_CONTAINER_CLASS (glade_design_layout_parent_class)->remove (container, widget);
 
   gtk_widget_queue_draw (GTK_WIDGET (container));
 }
