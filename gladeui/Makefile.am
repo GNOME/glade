@@ -88,7 +88,7 @@ libgladeui_2_la_SOURCES = \
 	glade-accumulators.h \
 	glade-name-context.c \
 	glade-displayable-values.c \
-	glade-signal-model.c
+	glade-signal-model.c \
 	glade-cell-renderer-icon.c
 
 libgladeui_2_la_CPPFLAGS =  \
