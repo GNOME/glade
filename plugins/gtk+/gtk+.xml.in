@@ -2012,10 +2012,11 @@ embedded in another object</_tooltip>
 
 
     <glade-widget-class name="GtkTreeView" generic-name="treeview" _title="Tree View">
-      <post-create-function>empty</post-create-function>
+      <post-create-function>glade_gtk_treeview_post_create</post-create-function>
       <child-set-property-function>glade_gtk_treeview_set_child_property</child-set-property-function>
       <child-get-property-function>glade_gtk_treeview_get_child_property</child-get-property-function>
       <get-children-function>glade_gtk_treeview_get_children</get-children-function>
+      <get-internal-child-function>glade_gtk_treeview_get_internal_child</get-internal-child-function>
       <add-child-function>glade_gtk_treeview_add_child</add-child-function>
       <replace-child-function>glade_gtk_treeview_replace_child</replace-child-function>
       <remove-child-function>glade_gtk_treeview_remove_child</remove-child-function>

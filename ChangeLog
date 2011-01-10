@@ -2,6 +2,9 @@
 
 	* gladeui/glade-widget.c: Dont set packing properties onto internal widgets.
 
+	* plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-gtk.c: Expose internal GtkTreeSelection
+	child of GtkTreeView so that "changed" signal can be connected to. Fixes bug 383766.
+
 2011-01-09  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-design-layout.c: Fixed to not hide widgets when removing
