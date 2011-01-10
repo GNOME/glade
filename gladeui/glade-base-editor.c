@@ -2175,7 +2175,7 @@ glade_base_editor_help (GtkButton * button, gchar * markup)
 {
   GtkWidget *dialog;
 
-  dialog = gtk_message_dialog_new (glade_app_get_transient_parent (),
+  dialog = gtk_message_dialog_new (glade_app_get_window (),
                                    GTK_DIALOG_DESTROY_WITH_PARENT,
                                    GTK_MESSAGE_INFO, GTK_BUTTONS_CLOSE, " ");
 

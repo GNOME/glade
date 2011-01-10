@@ -11,6 +11,11 @@
 	    the first signal of a type is added with a NULL handler
 	  - Fixed devhelp icon visibility to not show when !glade_util_have_devhelp()
 
+	* gladeui/glade-widget.c: Dont set packing properties onto internal widgets.
+
+	* plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-gtk.c: Expose internal GtkTreeSelection
+	child of GtkTreeView so that "changed" signal can be connected to. Fixes bug 383766.
+
 2011-01-09  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-design-layout.c: Fixed to not hide widgets when removing
@@ -58,6 +63,17 @@
 
 	* plugins/gtk+/glade-column-types.c: Fixed crash when user performs Drag'n'Drop of
 	< enter column here > and no columns are yet added (fixes bug 633943).
+
+	* src/glade-window.c: Fix possible crash when saving new project. bug 622635, fix
+	by Martin Schlemmer.
+
+	* gladeui/glade-app.[ch], gladeui/glade-base-editor.c: Removed glade_app_set/get_transient_parent()
+
+	* src/glade-window.c: Added idle function to raise the undocked windows at startup time,
+	closes bug 475421.
+
+	* src/glade-window.c: Applied patch by Sergio García Lobo to fix bug 487656 and provide
+	mnemonic key access to "Text beside icons" palette option.
 
 2011-01-08  Tristan Van Berkom <tristanvb@openismus.com>
 

@@ -921,7 +921,8 @@ glade_widget_constructor (GType type,
   if (gwidget->priv->construct_reason == GLADE_CREATE_USER)
     glade_widget_sync_custom_props (gwidget);
 
-  if (gwidget->priv->parent && gwidget->priv->packing_properties == NULL)
+  if (!gwidget->priv->internal && gwidget->priv->parent && 
+      gwidget->priv->packing_properties == NULL)
     glade_widget_set_packing_properties (gwidget, gwidget->priv->parent);
 
   if (GTK_IS_WIDGET (gwidget->priv->object) &&

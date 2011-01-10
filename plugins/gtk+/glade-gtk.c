@@ -1866,6 +1866,7 @@ glade_gtk_box_replace_child (GladeWidgetAdaptor * adaptor,
   GWA_GET_CLASS (GTK_TYPE_CONTAINER)->replace_child (adaptor,
                                                      container,
                                                      current, new_widget);
+  gbox = glade_widget_get_from_gobject (container);
 
   if ((gchild = glade_widget_get_from_gobject (new_widget)) != NULL)
     /* The "Remove Slot" operation only makes sence on placeholders,
@@ -1873,7 +1874,6 @@ glade_gtk_box_replace_child (GladeWidgetAdaptor * adaptor,
      */
     glade_widget_set_pack_action_visible (gchild, "remove_slot", FALSE);
 
-  gbox = glade_widget_get_from_gobject (container);
   fix_response_id_on_child (gbox, current, FALSE);
   fix_response_id_on_child (gbox, new_widget, TRUE);
 
@@ -11142,6 +11142,18 @@ glade_gtk_cell_layout_action_activate_as_widget (GladeWidgetAdaptor * adaptor,
 
 
 /*--------------------------- GtkTreeView ---------------------------------*/
+void
+glade_gtk_treeview_post_create (GladeWidgetAdaptor *adaptor,
+				GObject            *object, 
+				GladeCreateReason   reason)
+{
+  GladeWidget *widget = glade_widget_get_from_gobject (object);
+
+  glade_widget_adaptor_create_internal
+    (widget, G_OBJECT (gtk_tree_view_get_selection (GTK_TREE_VIEW (object))),
+     "selection", "treeview", FALSE, reason);
+}
+
 static void
 glade_gtk_treeview_launch_editor (GObject * treeview)
 {
@@ -11259,7 +11271,22 @@ GList *
 glade_gtk_treeview_get_children (GladeWidgetAdaptor * adaptor,
                                  GtkTreeView * view)
 {
-  return gtk_tree_view_get_columns (view);
+  GList *children;
+
+  children = gtk_tree_view_get_columns (view);
+  children = g_list_prepend (children, gtk_tree_view_get_selection (view));
+
+  return children;
+}
+
+GObject *
+glade_gtk_treeview_get_internal_child (GladeWidgetAdaptor * adaptor,
+				       GtkTreeView *view, const gchar * name)
+{
+  if (strcmp (name, "selection") == 0)
+    return (GObject *)gtk_tree_view_get_selection (view);
+
+  return NULL;
 }
 
 /* XXX FIXME: We should hide the actual "fixed-height-mode" setting from

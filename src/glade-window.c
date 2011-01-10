@@ -1122,48 +1122,50 @@ save (GladeWindow * window, GladeProject * project, const gchar * path)
     return;
 
   /* check for external modification to the project file */
-  mtime = glade_util_get_file_mtime (glade_project_get_path (project), NULL);
-
-  if (mtime > glade_project_get_file_mtime (project))
+  if (glade_project_get_path (project))
     {
+      mtime = glade_util_get_file_mtime (glade_project_get_path (project), NULL);
 
-      dialog = gtk_message_dialog_new (GTK_WINDOW (window),
-                                       GTK_DIALOG_MODAL,
-                                       GTK_MESSAGE_WARNING,
-                                       GTK_BUTTONS_NONE,
-                                       _
-                                       ("The file %s has been modified since reading it"),
-                                       glade_project_get_path (project));
+      if (mtime > glade_project_get_file_mtime (project))
+	{
 
-      gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog),
-                                                _
-                                                ("If you save it, all the external changes could be lost. Save it anyway?"));
+	  dialog = gtk_message_dialog_new (GTK_WINDOW (window),
+					   GTK_DIALOG_MODAL,
+					   GTK_MESSAGE_WARNING,
+					   GTK_BUTTONS_NONE,
+					   _("The file %s has been modified since reading it"),
+					   glade_project_get_path (project));
 
-      gtk_window_set_title (GTK_WINDOW (dialog), "");
+	  gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog),
+						    _("If you save it, all the external changes could be lost. "
+						      "Save it anyway?"));
 
-      button = gtk_button_new_with_mnemonic (_("_Save Anyway"));
-      gtk_button_set_image (GTK_BUTTON (button),
-                            gtk_image_new_from_stock (GTK_STOCK_SAVE,
-                                                      GTK_ICON_SIZE_BUTTON));
-      gtk_widget_show (button);
+	  gtk_window_set_title (GTK_WINDOW (dialog), "");
 
-      gtk_dialog_add_action_widget (GTK_DIALOG (dialog), button,
-                                    GTK_RESPONSE_ACCEPT);
-      gtk_dialog_add_button (GTK_DIALOG (dialog), _("_Don't Save"),
-                             GTK_RESPONSE_REJECT);
+	  button = gtk_button_new_with_mnemonic (_("_Save Anyway"));
+	  gtk_button_set_image (GTK_BUTTON (button),
+				gtk_image_new_from_stock (GTK_STOCK_SAVE,
+							  GTK_ICON_SIZE_BUTTON));
+	  gtk_widget_show (button);
 
-      gtk_dialog_set_default_response (GTK_DIALOG (dialog),
-                                       GTK_RESPONSE_REJECT);
+	  gtk_dialog_add_action_widget (GTK_DIALOG (dialog), button,
+					GTK_RESPONSE_ACCEPT);
+	  gtk_dialog_add_button (GTK_DIALOG (dialog), _("_Don't Save"),
+				 GTK_RESPONSE_REJECT);
 
-      response = gtk_dialog_run (GTK_DIALOG (dialog));
+	  gtk_dialog_set_default_response (GTK_DIALOG (dialog),
+					   GTK_RESPONSE_REJECT);
 
-      gtk_widget_destroy (dialog);
+	  response = gtk_dialog_run (GTK_DIALOG (dialog));
 
-      if (response == GTK_RESPONSE_REJECT)
-        {
-          g_free (display_path);
-          return;
-        }
+	  gtk_widget_destroy (dialog);
+
+	  if (response == GTK_RESPONSE_REJECT)
+	    {
+	      g_free (display_path);
+	      return;
+	    }
+	}
     }
 
   /* Interestingly; we cannot use `path' after glade_project_reset_path
@@ -2316,7 +2318,7 @@ static guint n_view_entries = G_N_ELEMENTS (view_entries);
 
 static GtkRadioActionEntry radio_entries[] = {
 
-  {"IconsAndLabels", NULL, N_("Text beside icons"), NULL,
+  {"IconsAndLabels", NULL, N_("Text _beside icons"), NULL,
    N_("Display items as text beside icons"), GLADE_ITEM_ICON_AND_LABEL},
 
   {"IconsOnly", NULL, N_("_Icons only"), NULL,
@@ -2544,8 +2546,7 @@ create_drag_resize_tool_button (GtkToolbar * toolbar)
   gtk_tool_button_set_label (GTK_TOOL_BUTTON (button), _("Drag Resize"));
 
   gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (button),
-                                  _
-                                  ("Drag and resize widgets in the workspace"));
+                                  _("Drag and resize widgets in the workspace"));
 
   gtk_widget_show (GTK_WIDGET (button));
   gtk_widget_show (image);
@@ -3275,6 +3276,12 @@ glade_window_config_load (GladeWindow * window)
   load_paned_position (config, window->priv->right_pane, "right_pane", 220);
 }
 
+static gboolean
+raise_window_idle (GtkWindow *window)
+{
+  gtk_window_present (window);
+  return FALSE;
+}
 
 static void
 show_dock_first_time (GladeWindow * window,
@@ -3298,7 +3305,11 @@ show_dock_first_time (GladeWindow * window,
                                 &maximized);
 
   if (detached == 1)
-    gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action), FALSE);
+    {
+      gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action), FALSE);
+
+      g_idle_add ((GSourceFunc)raise_window_idle, gtk_widget_get_toplevel (dock->widget));
+    }
 
   if (maximized)
     gtk_window_maximize (GTK_WINDOW (gtk_widget_get_toplevel (dock->widget)));

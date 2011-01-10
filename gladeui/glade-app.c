@@ -69,10 +69,6 @@ struct _GladeAppPrivate
 
   GKeyFile *config;             /* The configuration file */
 
-  GtkWindow *transient_parent;  /* If set by glade_app_set_transient_parent(); this
-                                 * will be used as the transient parent of all toplevel
-                                 * GladeWidgets.
-                                 */
   GtkAccelGroup *accel_group;   /* Default acceleration group for this app */
 };
 
@@ -454,28 +450,6 @@ glade_app_config_save ()
       return -1;
     }
   return 0;
-}
-
-void
-glade_app_set_transient_parent (GtkWindow * parent)
-{
-  GladeApp *app;
-
-  g_return_if_fail (GTK_IS_WINDOW (parent));
-
-  app = glade_app_get ();
-  app->priv->transient_parent = parent;
-}
-
-GtkWindow *
-glade_app_get_transient_parent (void)
-{
-  GtkWindow *parent;
-  GladeApp *app = glade_app_get ();
-
-  parent = app->priv->transient_parent;
-
-  return parent;
 }
 
 GladeApp *
