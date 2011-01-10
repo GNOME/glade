@@ -710,7 +710,7 @@ glade_signal_editor_devhelp_cell_data_func (GtkTreeViewColumn *column,
   gtk_tree_model_get (model, iter,
 		      GLADE_SIGNAL_COLUMN_SIGNAL, &signal,
 		      -1);
-  if (signal && glade_util_have_devhelp ())
+  if (signal)
     {
       const GladeSignalClass* class = glade_signal_get_class (signal);
       GladeWidgetAdaptor* adaptor = glade_signal_class_get_adaptor (class);
@@ -848,17 +848,21 @@ glade_signal_editor_init (GladeSignalEditor *self)
 					   NULL);
 	
   /* After */
+  cell_area = gtk_cell_area_box_new ();
   renderer = gtk_cell_renderer_toggle_new ();
+  g_object_set (G_OBJECT (renderer), "xalign", 0.0, NULL);
   g_signal_connect (renderer, "toggled", G_CALLBACK (on_after_toggled), self);
-  priv->column_after = gtk_tree_view_column_new_with_attributes (_("After"),
-								 renderer,
-								 "active", GLADE_SIGNAL_COLUMN_AFTER,
-								 NULL);
+
+  priv->column_after = gtk_tree_view_column_new_with_area (cell_area);
+  gtk_tree_view_column_set_title (priv->column_after, _("After"));
   gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->signal_tree), priv->column_after);
+
+  gtk_cell_area_box_pack_start  (GTK_CELL_AREA_BOX (cell_area),
+				 renderer, FALSE, TRUE, FALSE);
+  gtk_cell_area_attribute_connect (cell_area, renderer, "active", GLADE_SIGNAL_COLUMN_AFTER);
   gtk_tree_view_column_set_cell_data_func (priv->column_after, renderer,
 					   glade_signal_editor_data_cell_data_func,
-					   self,
-					   NULL);
+					   self, NULL);
 	
   /* Devhelp */
   if (glade_util_have_devhelp ())
@@ -877,7 +881,9 @@ glade_signal_editor_init (GladeSignalEditor *self)
       g_signal_connect (G_OBJECT (renderer), "activate",
 			G_CALLBACK (glade_signal_editor_devhelp), self);
 
-      gtk_tree_view_column_pack_end (priv->column_after, renderer, FALSE);
+      gtk_cell_area_box_pack_start  (GTK_CELL_AREA_BOX (cell_area),
+				     renderer, FALSE, TRUE, FALSE);
+
       gtk_tree_view_column_set_cell_data_func (priv->column_after, renderer,
 					       glade_signal_editor_devhelp_cell_data_func,
 					       self,
