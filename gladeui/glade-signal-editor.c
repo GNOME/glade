@@ -53,29 +53,29 @@ G_DEFINE_TYPE (GladeSignalEditor, glade_signal_editor, GTK_TYPE_VBOX)
 
 struct _GladeSignalEditorPrivate
 {
-	GtkTreeModel *model;
+  GtkTreeModel *model;
 	
-	GladeWidget *widget;
-	GladeWidgetAdaptor* adaptor;
+  GladeWidget *widget;
+  GladeWidgetAdaptor* adaptor;
 
-	GtkWidget* signal_tree;
-	GtkTreeViewColumn* column_name;	
-	GtkTreeViewColumn* column_handler;
-	GtkTreeViewColumn* column_userdata;
-	GtkTreeViewColumn* column_swap;
-	GtkTreeViewColumn* column_after;
+  GtkWidget* signal_tree;
+  GtkTreeViewColumn* column_name;	
+  GtkTreeViewColumn* column_handler;
+  GtkTreeViewColumn* column_userdata;
+  GtkTreeViewColumn* column_swap;
+  GtkTreeViewColumn* column_after;
 
-	GtkCellRenderer* renderer_userdata;
+  GtkCellRenderer* renderer_userdata;
 };
 
 /* Utils */
 static gboolean
 glade_signal_is_dummy (GladeSignal *signal)
 {
-	gboolean dummy;
-	dummy = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (signal),
-	                                             DUMMY_DATA));
-	return dummy;
+  gboolean dummy;
+  dummy = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (signal),
+					      DUMMY_DATA));
+  return dummy;
 }
 
 /* Signal handlers */
@@ -85,89 +85,89 @@ on_handler_edited (GtkCellRendererText* renderer,
                    gchar* handler,
                    gpointer user_data)
 {
-	GladeSignalEditor* self = GLADE_SIGNAL_EDITOR(user_data);
-	GtkTreePath* tree_path = gtk_tree_path_new_from_string (path);
-	GtkTreeIter iter;
-	gchar* old_handler;
-	GladeSignal* signal;
-	gboolean dummy;
+  GladeSignalEditor* self = GLADE_SIGNAL_EDITOR(user_data);
+  GtkTreePath* tree_path = gtk_tree_path_new_from_string (path);
+  GtkTreeIter iter;
+  gchar* old_handler;
+  GladeSignal* signal;
+  gboolean dummy;
 
-	g_return_if_fail (self->priv->widget != NULL);
+  g_return_if_fail (self->priv->widget != NULL);
 	
-	gtk_tree_model_get_iter (self->priv->model,
-	                         &iter,
-	                         tree_path);
+  gtk_tree_model_get_iter (self->priv->model,
+			   &iter,
+			   tree_path);
 
-	gtk_tree_model_get (self->priv->model, &iter,
-	                    GLADE_SIGNAL_COLUMN_HANDLER, &old_handler, 
-	                    GLADE_SIGNAL_COLUMN_SIGNAL, &signal, -1);
+  gtk_tree_model_get (self->priv->model, &iter,
+		      GLADE_SIGNAL_COLUMN_HANDLER, &old_handler, 
+		      GLADE_SIGNAL_COLUMN_SIGNAL, &signal, -1);
 
-	dummy = glade_signal_is_dummy (signal);
-	g_object_unref (signal);
+  dummy = glade_signal_is_dummy (signal);
+  g_object_unref (signal);
 	
-	/* False alarm ? */
-	if (handler && !g_str_equal (old_handler, handler))
+  /* False alarm ? */
+  if (handler && !g_str_equal (old_handler, handler))
+    {
+      if (!dummy)
 	{
-		if (!dummy)
-		{
-			if (strlen (handler))
-			{
-				/* change an existing signal handler */
-				GladeSignal* old_signal;
-				GladeSignal* new_signal;
+	  if (strlen (handler))
+	    {
+	      /* change an existing signal handler */
+	      GladeSignal* old_signal;
+	      GladeSignal* new_signal;
 				
-				gtk_tree_model_get (self->priv->model,
-				                    &iter,
-				                    GLADE_SIGNAL_COLUMN_SIGNAL,
-				                    &old_signal, -1);
+	      gtk_tree_model_get (self->priv->model,
+				  &iter,
+				  GLADE_SIGNAL_COLUMN_SIGNAL,
+				  &old_signal, -1);
 
-				new_signal = glade_signal_clone (old_signal);
+	      new_signal = glade_signal_clone (old_signal);
 
-				/* Change the new signal handler */
-				glade_signal_set_handler (new_signal, handler);
+	      /* Change the new signal handler */
+	      glade_signal_set_handler (new_signal, handler);
 
-				glade_command_change_signal (self->priv->widget, old_signal, new_signal);
+	      glade_command_change_signal (self->priv->widget, old_signal, new_signal);
 
-				g_object_unref (new_signal);
-			}
-			else
-			{
-				GladeSignal* deleted_signal;
-				gtk_tree_model_get (self->priv->model,
-				                    &iter,
-				                    GLADE_SIGNAL_COLUMN_SIGNAL,
-				                    &deleted_signal, -1);
+	      g_object_unref (new_signal);
+	    }
+	  else
+	    {
+	      GladeSignal* deleted_signal;
+	      gtk_tree_model_get (self->priv->model,
+				  &iter,
+				  GLADE_SIGNAL_COLUMN_SIGNAL,
+				  &deleted_signal, -1);
 				
 				
-				/* Delete signal */
-				glade_command_remove_signal (self->priv->widget,
-				                             deleted_signal);
-			}
-		}
-		else
-		{
-			GladeSignal* signal;
-			GladeSignal* dummy;
-			gchar* name;
-			
-			/* Get the signal name */
-			gtk_tree_model_get (self->priv->model, &iter,
-			                    GLADE_SIGNAL_COLUMN_NAME, &name,
-			                    GLADE_SIGNAL_COLUMN_SIGNAL, &dummy,
-			                    -1);
-			
-			/* Add a new signal handler */
-			signal = glade_signal_new (glade_signal_get_class (dummy),
-			                           handler, NULL, FALSE, FALSE);
-			glade_command_add_signal (self->priv->widget, signal);
-			
-			g_object_unref (signal);
-			g_object_unref (dummy);
-			g_free (name);
-		}
+	      /* Delete signal */
+	      glade_command_remove_signal (self->priv->widget,
+					   deleted_signal);
+	    }
 	}
-	g_free (old_handler);
-	gtk_tree_path_free (tree_path);
+      else if (strlen (handler))
+	{
+	  GladeSignal* signal;
+	  GladeSignal* dummy;
+	  gchar* name;
+			
+	  /* Get the signal name */
+	  gtk_tree_model_get (self->priv->model, &iter,
+			      GLADE_SIGNAL_COLUMN_NAME, &name,
+			      GLADE_SIGNAL_COLUMN_SIGNAL, &dummy,
+			      -1);
+			
+	  /* Add a new signal handler */
+	  signal = glade_signal_new (glade_signal_get_class (dummy),
+				     handler, NULL, FALSE, FALSE);
+	  glade_command_add_signal (self->priv->widget, signal);
+			
+	  g_object_unref (signal);
+	  g_object_unref (dummy);
+	  g_free (name);
+	}
+    }
+  g_free (old_handler);
+  gtk_tree_path_free (tree_path);
 }
 
 static void
@@ -176,30 +176,30 @@ on_handler_editing_started (GtkCellRenderer* renderer,
                             gchar* path,
                             gpointer user_data)
 {
-	GladeSignalEditor* self = GLADE_SIGNAL_EDITOR(user_data);
-	GtkTreePath* tree_path = gtk_tree_path_new_from_string (path);
+  GladeSignalEditor* self = GLADE_SIGNAL_EDITOR(user_data);
+  GtkTreePath* tree_path = gtk_tree_path_new_from_string (path);
 
-	/* Remove the <Type here> */
-	if (GTK_IS_ENTRY (editable))
+  /* Remove the <Type here> */
+  if (GTK_IS_ENTRY (editable))
+    {
+      GtkTreeIter iter;
+      GladeSignal* signal;
+      gboolean dummy;
+      gtk_tree_model_get_iter (self->priv->model,
+			       &iter,
+			       tree_path);
+      gtk_tree_model_get (self->priv->model,
+			  &iter,
+			  GLADE_SIGNAL_COLUMN_SIGNAL, &signal,
+			  -1);
+      dummy = glade_signal_is_dummy (signal);
+      if (dummy)
 	{
-		GtkTreeIter iter;
-		GladeSignal* signal;
-		gboolean dummy;
-		gtk_tree_model_get_iter (self->priv->model,
-		                         &iter,
-		                         tree_path);
-		gtk_tree_model_get (self->priv->model,
-		                    &iter,
-		                    GLADE_SIGNAL_COLUMN_SIGNAL, &signal,
-		                    -1);
-		dummy = glade_signal_is_dummy (signal);
-		if (dummy)
-		{
-			gtk_entry_set_text (GTK_ENTRY (editable), "");
-		}
-		g_object_unref (signal);
+	  gtk_entry_set_text (GTK_ENTRY (editable), "");
 	}
-	gtk_tree_path_free (tree_path);
+      g_object_unref (signal);
+    }
+  gtk_tree_path_free (tree_path);
 }
 
 static void
@@ -207,57 +207,57 @@ glade_signal_editor_user_data_activate (GtkCellRenderer * icon_renderer,
                                         const gchar * path_str,
                                         GladeSignalEditor * editor)
 {
-	GladeSignalEditorPrivate *priv = editor->priv;
-	GtkTreePath *path = gtk_tree_path_new_from_string (path_str);
-	GtkTreeModel *model = priv->model;
-	GtkTreeIter iter;
-	GladeWidget *project_object = NULL;
-	GladeProject *project;
+  GladeSignalEditorPrivate *priv = editor->priv;
+  GtkTreePath *path = gtk_tree_path_new_from_string (path_str);
+  GtkTreeModel *model = priv->model;
+  GtkTreeIter iter;
+  GladeWidget *project_object = NULL;
+  GladeProject *project;
 
-	GladeSignal *signal;
+  GladeSignal *signal;
 	
-	GList *selected = NULL; 
-	GList *exception = NULL;
+  GList *selected = NULL; 
+  GList *exception = NULL;
 
-	gboolean dummy;
+  gboolean dummy;
 	
-	gtk_tree_model_get_iter (model, &iter, path);
-	gtk_tree_model_get (model, &iter,
-	                    GLADE_SIGNAL_COLUMN_SIGNAL, &signal, -1);
-	dummy = glade_signal_is_dummy (signal);
+  gtk_tree_model_get_iter (model, &iter, path);
+  gtk_tree_model_get (model, &iter,
+		      GLADE_SIGNAL_COLUMN_SIGNAL, &signal, -1);
+  dummy = glade_signal_is_dummy (signal);
 
-	if (!dummy)
+  if (!dummy)
+    {
+      project = glade_widget_get_project (priv->widget);
+
+      if (glade_signal_get_userdata (signal))
 	{
-		project = glade_widget_get_project (priv->widget);
-
-		if (glade_signal_get_userdata (signal))
-		{
-			project_object =
-				glade_project_get_widget_by_name (project, NULL,
-				                                  glade_signal_get_userdata (signal));
-			selected = g_list_prepend (selected, project_object);
-		}
-
-		exception = g_list_prepend (exception, priv->widget);
-
-		if (glade_editor_property_show_object_dialog (project,
-		                                              _("Select an object to pass to the handler"),
-		                                              gtk_widget_get_toplevel (GTK_WIDGET (editor)),
-		                                              G_TYPE_OBJECT, priv->widget,
-		                                              &project_object))
-		{
-			GladeSignal *old_signal = signal;
-			GladeSignal *new_signal = glade_signal_clone (signal);
-
-			glade_signal_set_userdata (new_signal, 
-			                           project_object ? glade_widget_get_name (project_object) : NULL);
-
-			glade_command_change_signal (priv->widget, old_signal, new_signal);
-			g_object_unref (new_signal);
-		}
+	  project_object =
+	    glade_project_get_widget_by_name (project, NULL,
+					      glade_signal_get_userdata (signal));
+	  selected = g_list_prepend (selected, project_object);
 	}
-	g_object_unref (signal);
-	gtk_tree_path_free (path);
+
+      exception = g_list_prepend (exception, priv->widget);
+
+      if (glade_editor_property_show_object_dialog (project,
+						    _("Select an object to pass to the handler"),
+						    gtk_widget_get_toplevel (GTK_WIDGET (editor)),
+						    G_TYPE_OBJECT, priv->widget,
+						    &project_object))
+	{
+	  GladeSignal *old_signal = signal;
+	  GladeSignal *new_signal = glade_signal_clone (signal);
+
+	  glade_signal_set_userdata (new_signal, 
+				     project_object ? glade_widget_get_name (project_object) : NULL);
+
+	  glade_command_change_signal (priv->widget, old_signal, new_signal);
+	  g_object_unref (new_signal);
+	}
+    }
+  g_object_unref (signal);
+  gtk_tree_path_free (path);
 }
 
 static void
@@ -265,35 +265,35 @@ on_swap_toggled (GtkCellRendererToggle* renderer,
                  gchar* path,
                  gpointer user_data)
 {
-	GladeSignalEditor* self = GLADE_SIGNAL_EDITOR(user_data);
-	GtkTreePath* tree_path = gtk_tree_path_new_from_string (path);
-	GtkTreeIter iter;
-	GladeSignal* old_signal;
-	GladeSignal* new_signal;
+  GladeSignalEditor* self = GLADE_SIGNAL_EDITOR(user_data);
+  GtkTreePath* tree_path = gtk_tree_path_new_from_string (path);
+  GtkTreeIter iter;
+  GladeSignal* old_signal;
+  GladeSignal* new_signal;
 
-	g_return_if_fail (self->priv->widget != NULL);
+  g_return_if_fail (self->priv->widget != NULL);
 	
-	gtk_tree_model_get_iter (self->priv->model,
-	                         &iter,
-	                         tree_path);
+  gtk_tree_model_get_iter (self->priv->model,
+			   &iter,
+			   tree_path);
 
-	gtk_tree_model_get (self->priv->model,
-		                    &iter,
-		                    GLADE_SIGNAL_COLUMN_SIGNAL,
-		                    &old_signal, -1);
+  gtk_tree_model_get (self->priv->model,
+		      &iter,
+		      GLADE_SIGNAL_COLUMN_SIGNAL,
+		      &old_signal, -1);
 
-	new_signal = glade_signal_clone (old_signal);
+  new_signal = glade_signal_clone (old_signal);
 
-	/* Change the new signal handler */
-	glade_signal_set_swapped (new_signal,
-	                          !gtk_cell_renderer_toggle_get_active (renderer));
+  /* Change the new signal handler */
+  glade_signal_set_swapped (new_signal,
+			    !gtk_cell_renderer_toggle_get_active (renderer));
 
-	glade_command_change_signal (self->priv->widget, old_signal, new_signal);
+  glade_command_change_signal (self->priv->widget, old_signal, new_signal);
 
-	g_object_unref (new_signal);
-	g_object_unref (old_signal);
+  g_object_unref (new_signal);
+  g_object_unref (old_signal);
 
-	gtk_tree_path_free (tree_path);		
+  gtk_tree_path_free (tree_path);		
 }
 
 static void
@@ -301,35 +301,35 @@ on_after_toggled (GtkCellRendererToggle* renderer,
                   gchar* path,
                   gpointer user_data)
 {
-	GladeSignalEditor* self = GLADE_SIGNAL_EDITOR(user_data);
-	GtkTreePath* tree_path = gtk_tree_path_new_from_string (path);
-	GtkTreeIter iter;
-	GladeSignal* old_signal;
-	GladeSignal* new_signal;
+  GladeSignalEditor* self = GLADE_SIGNAL_EDITOR(user_data);
+  GtkTreePath* tree_path = gtk_tree_path_new_from_string (path);
+  GtkTreeIter iter;
+  GladeSignal* old_signal;
+  GladeSignal* new_signal;
 
-	g_return_if_fail (self->priv->widget != NULL);
+  g_return_if_fail (self->priv->widget != NULL);
 	
-	gtk_tree_model_get_iter (self->priv->model,
-	                         &iter,
-	                         tree_path);
+  gtk_tree_model_get_iter (self->priv->model,
+			   &iter,
+			   tree_path);
 
-	gtk_tree_model_get (self->priv->model,
-		                    &iter,
-		                    GLADE_SIGNAL_COLUMN_SIGNAL,
-		                    &old_signal, -1);
+  gtk_tree_model_get (self->priv->model,
+		      &iter,
+		      GLADE_SIGNAL_COLUMN_SIGNAL,
+		      &old_signal, -1);
 
-	new_signal = glade_signal_clone (old_signal);
+  new_signal = glade_signal_clone (old_signal);
 
-	/* Change the new signal handler */
-	glade_signal_set_after (new_signal, 
-	                        !gtk_cell_renderer_toggle_get_active (renderer));
+  /* Change the new signal handler */
+  glade_signal_set_after (new_signal, 
+			  !gtk_cell_renderer_toggle_get_active (renderer));
 
-	glade_command_change_signal (self->priv->widget, old_signal, new_signal);
+  glade_command_change_signal (self->priv->widget, old_signal, new_signal);
 
-	g_object_unref (new_signal);
-	g_object_unref (old_signal);
+  g_object_unref (new_signal);
+  g_object_unref (old_signal);
 	
-	gtk_tree_path_free (tree_path);	
+  gtk_tree_path_free (tree_path);	
 }
 
 static void
@@ -337,33 +337,33 @@ glade_signal_editor_devhelp (GtkCellRenderer * cell,
                              const gchar * path_str,
                              GladeSignalEditor * editor)
 {
-	GladeSignalEditorPrivate *priv = editor->priv;
-	GtkTreePath              *path = gtk_tree_path_new_from_string (path_str);
-	GtkTreeModel             *model = priv->model;
-	GtkTreeIter               iter;
-	GladeWidgetAdaptor       *adaptor;
-	const GladeSignalClass   *signal_class;
-	GladeSignal              *signal;
-	gchar                    *book;
-	gchar                    *search;	
+  GladeSignalEditorPrivate *priv = editor->priv;
+  GtkTreePath              *path = gtk_tree_path_new_from_string (path_str);
+  GtkTreeModel             *model = priv->model;
+  GtkTreeIter               iter;
+  GladeWidgetAdaptor       *adaptor;
+  const GladeSignalClass   *signal_class;
+  GladeSignal              *signal;
+  gchar                    *book;
+  gchar                    *search;	
 
-	g_return_if_fail (gtk_tree_model_get_iter (model, &iter, path));
-	gtk_tree_path_free (path);
+  g_return_if_fail (gtk_tree_model_get_iter (model, &iter, path));
+  gtk_tree_path_free (path);
 
-	gtk_tree_model_get (model, &iter,
-	                    GLADE_SIGNAL_COLUMN_SIGNAL, &signal,
-	                    -1);
-	signal_class = glade_signal_get_class (signal);
-	adaptor = glade_signal_class_get_adaptor (signal_class);
-	g_object_get (adaptor, "book", &book, NULL);
+  gtk_tree_model_get (model, &iter,
+		      GLADE_SIGNAL_COLUMN_SIGNAL, &signal,
+		      -1);
+  signal_class = glade_signal_get_class (signal);
+  adaptor = glade_signal_class_get_adaptor (signal_class);
+  g_object_get (adaptor, "book", &book, NULL);
 
-	search = g_strdup_printf ("The %s signal", glade_signal_get_name (signal));
+  search = g_strdup_printf ("The %s signal", glade_signal_get_name (signal));
 
-	glade_app_search_docs (book, glade_widget_adaptor_get_name (adaptor), search);
+  glade_app_search_docs (book, glade_widget_adaptor_get_name (adaptor), search);
 
-	g_free (search);
-	g_free (book);
-	g_object_unref (signal);
+  g_free (search);
+  g_free (book);
+  g_object_unref (signal);
 }
 
 /**
@@ -374,12 +374,12 @@ glade_signal_editor_devhelp (GtkCellRenderer * cell,
 GladeSignalEditor *
 glade_signal_editor_new ()
 {
-	GladeSignalEditor *signal_editor;
+  GladeSignalEditor *signal_editor;
 
-	signal_editor = GLADE_SIGNAL_EDITOR (g_object_new (GLADE_TYPE_SIGNAL_EDITOR,
-	                                                   NULL, NULL));
+  signal_editor = GLADE_SIGNAL_EDITOR (g_object_new (GLADE_TYPE_SIGNAL_EDITOR,
+						     NULL, NULL));
 
-	return signal_editor;
+  return signal_editor;
 }
 
 /**
@@ -394,28 +394,28 @@ void
 glade_signal_editor_load_widget (GladeSignalEditor *editor,
 				 GladeWidget *widget)
 {
-	GladeSignalEditorPrivate *priv = editor->priv;
+  GladeSignalEditorPrivate *priv = editor->priv;
 	
-	if (priv->widget != widget)
-	{	
-		priv->widget = widget;
-		priv->adaptor = widget ? glade_widget_get_adaptor (widget) : NULL;
+  if (priv->widget != widget)
+    {	
+      priv->widget = widget;
+      priv->adaptor = widget ? glade_widget_get_adaptor (widget) : NULL;
 		
-		if (priv->widget)
-		{
-			g_object_ref (priv->widget);
-		}
+      if (priv->widget)
+	{
+	  g_object_ref (priv->widget);
 	}
+    }
 
-	gtk_tree_view_set_model (GTK_TREE_VIEW (priv->signal_tree), NULL);
-	priv->model = NULL;
+  gtk_tree_view_set_model (GTK_TREE_VIEW (priv->signal_tree), NULL);
+  priv->model = NULL;
 
 	
-	if (!widget)
-		return;
+  if (!widget)
+    return;
 
-	priv->model = glade_widget_get_signal_model (widget);
-	gtk_tree_view_set_model (GTK_TREE_VIEW (priv->signal_tree), priv->model);
+  priv->model = glade_widget_get_signal_model (widget);
+  gtk_tree_view_set_model (GTK_TREE_VIEW (priv->signal_tree), priv->model);
 }
 
 /**
@@ -431,57 +431,57 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 void 
 glade_signal_editor_enable_dnd (GladeSignalEditor *editor, gboolean enabled)
 {
-	GladeSignalEditorPrivate *priv = editor->priv;
-	if (enabled)
-	{
-		const GtkTargetEntry entry = {
-			"application/x-glade-signal",
-			GTK_TARGET_OTHER_WIDGET,
-			1
-		};
-		/* DND */
-		gtk_tree_view_enable_model_drag_source (GTK_TREE_VIEW(priv->signal_tree),
-		                                        GDK_BUTTON1_MASK,
-		                                        &entry,
-		                                        1,
-		                                        GDK_ACTION_COPY);
-	}
-	else
-	{
-		gtk_tree_view_unset_rows_drag_source (GTK_TREE_VIEW (priv->signal_tree));
-	}
+  GladeSignalEditorPrivate *priv = editor->priv;
+  if (enabled)
+    {
+      const GtkTargetEntry entry = {
+	"application/x-glade-signal",
+	GTK_TARGET_OTHER_WIDGET,
+	1
+      };
+      /* DND */
+      gtk_tree_view_enable_model_drag_source (GTK_TREE_VIEW(priv->signal_tree),
+					      GDK_BUTTON1_MASK,
+					      &entry,
+					      1,
+					      GDK_ACTION_COPY);
+    }
+  else
+    {
+      gtk_tree_view_unset_rows_drag_source (GTK_TREE_VIEW (priv->signal_tree));
+    }
 }
 
 static void
 glade_signal_editor_dispose (GObject *object)
 {
-	G_OBJECT_CLASS (glade_signal_editor_parent_class)->dispose (object);
+  G_OBJECT_CLASS (glade_signal_editor_parent_class)->dispose (object);
 }
 
 static cairo_surface_t*
 create_rich_drag_surface (GtkWidget* widget, const gchar* text)
 {
-	PangoLayout* layout = pango_layout_new (gtk_widget_get_pango_context (widget));
-	cairo_t* cr;
-	cairo_surface_t* s;
-	gint width, height;
+  PangoLayout* layout = pango_layout_new (gtk_widget_get_pango_context (widget));
+  cairo_t* cr;
+  cairo_surface_t* s;
+  gint width, height;
 	
-	pango_layout_set_text (layout, text, -1);
-	pango_layout_get_size (layout, &width, &height);
-	width = PANGO_PIXELS(width) + 10;
-	height = PANGO_PIXELS(height) + 10;
+  pango_layout_set_text (layout, text, -1);
+  pango_layout_get_size (layout, &width, &height);
+  width = PANGO_PIXELS(width) + 10;
+  height = PANGO_PIXELS(height) + 10;
 	
-	s = cairo_image_surface_create (CAIRO_FORMAT_A1, width, height);
-	cr = cairo_create (s);
+  s = cairo_image_surface_create (CAIRO_FORMAT_A1, width, height);
+  cr = cairo_create (s);
 	
-	cairo_rectangle (cr, 0, 0, 1, 1);
+  cairo_rectangle (cr, 0, 0, 1, 1);
 
-	cairo_show_text (cr, text);
-	cairo_stroke (cr);	
+  cairo_show_text (cr, text);
+  cairo_stroke (cr);	
 
-	g_object_unref (layout);
+  g_object_unref (layout);
 	
-	return s;;
+  return s;;
 }
 
 static void
@@ -489,30 +489,30 @@ glade_signal_editor_drag_begin (GtkWidget* widget,
                                 GdkDragContext* context,
                                 gpointer user_data)
 {
-	cairo_surface_t *s = NULL;
-	GtkTreeModel *model;
-	GtkTreeIter iter;
-	GtkTreeSelection* selection;
+  cairo_surface_t *s = NULL;
+  GtkTreeModel *model;
+  GtkTreeIter iter;
+  GtkTreeSelection* selection;
 
-	selection =  gtk_tree_view_get_selection (GTK_TREE_VIEW (widget));
+  selection =  gtk_tree_view_get_selection (GTK_TREE_VIEW (widget));
 
-	if (gtk_tree_selection_get_selected (selection, &model, &iter))
-	{
-		gchar* handler;
-		gtk_tree_model_get (model, &iter,
-		                    GLADE_SIGNAL_COLUMN_HANDLER, &handler, -1);
-		s = create_rich_drag_surface (widget, handler);
-	}
+  if (gtk_tree_selection_get_selected (selection, &model, &iter))
+    {
+      gchar* handler;
+      gtk_tree_model_get (model, &iter,
+			  GLADE_SIGNAL_COLUMN_HANDLER, &handler, -1);
+      s = create_rich_drag_surface (widget, handler);
+    }
 	
-	if (s)
-	{
-		gtk_drag_set_icon_surface (context, s);
-		g_object_unref (s);
-	}
-	else
-	{
-		gtk_drag_set_icon_default (context);
-	}
+  if (s)
+    {
+      gtk_drag_set_icon_surface (context, s);
+      g_object_unref (s);
+    }
+  else
+    {
+      gtk_drag_set_icon_default (context);
+    }
 }
 
 static void
@@ -522,40 +522,40 @@ glade_signal_editor_name_cell_data_func (GtkTreeViewColumn *column,
                                          GtkTreeIter *iter,
                                          gpointer data)
 {
-	GladeSignal* signal;
-	gboolean show_name;
+  GladeSignal* signal;
+  gboolean show_name;
 
-	gtk_tree_model_get (model, iter,
-	                    GLADE_SIGNAL_COLUMN_SIGNAL, &signal,
-	                    GLADE_SIGNAL_COLUMN_SHOW_NAME, &show_name,
-	                    -1);
-	if (signal)
-	{
-		gboolean dummy;
+  gtk_tree_model_get (model, iter,
+		      GLADE_SIGNAL_COLUMN_SIGNAL, &signal,
+		      GLADE_SIGNAL_COLUMN_SHOW_NAME, &show_name,
+		      -1);
+  if (signal)
+    {
+      gboolean dummy;
 		
-		dummy = glade_signal_is_dummy (signal);
-		if (!dummy && show_name)
-		{
-			g_object_set (renderer, 
-			              "weight", PANGO_WEIGHT_BOLD,
-			              NULL);
-		}
-		else
-		{
-			g_object_set (renderer, 
-			              "weight", PANGO_WEIGHT_NORMAL,
-			              NULL);
-		}
-		g_object_unref (signal);
+      dummy = glade_signal_is_dummy (signal);
+      if (!dummy && show_name)
+	{
+	  g_object_set (renderer, 
+			"weight", PANGO_WEIGHT_BOLD,
+			NULL);
 	}
-	else
-		g_object_set (renderer, 
-		              "weight", PANGO_WEIGHT_NORMAL,
-		              NULL);
+      else
+	{
+	  g_object_set (renderer, 
+			"weight", PANGO_WEIGHT_NORMAL,
+			NULL);
+	}
+      g_object_unref (signal);
+    }
+  else
+    g_object_set (renderer, 
+		  "weight", PANGO_WEIGHT_NORMAL,
+		  NULL);
 	
-	g_object_set (renderer, 
-	              "visible", show_name,
-	              NULL);
+  g_object_set (renderer, 
+		"visible", show_name,
+		NULL);
 }
 
 static void
@@ -565,57 +565,53 @@ glade_signal_editor_handler_cell_data_func (GtkTreeViewColumn *column,
                                             GtkTreeIter *iter,
                                             gpointer data)
 {
-	GladeSignalEditor* editor = GLADE_SIGNAL_EDITOR (data);
-	GladeSignal* signal;
+  GladeSignalEditor* editor = GLADE_SIGNAL_EDITOR (data);
+  GladeSignal* signal;
+  GdkRGBA color;
 
-	gtk_tree_model_get (model, iter,
-	                    GLADE_SIGNAL_COLUMN_SIGNAL, &signal,
-	                    -1);
-	if (signal)
-	{
-		gboolean dummy;
-		GtkStyleContext* context = gtk_widget_get_style_context (editor->priv->signal_tree);
+  gtk_tree_model_get (model, iter,
+		      GLADE_SIGNAL_COLUMN_SIGNAL, &signal,
+		      -1);
+  if (signal)
+    {
+      gboolean dummy;
+      GtkStyleContext* context = gtk_widget_get_style_context (editor->priv->signal_tree);
 		
-		dummy = glade_signal_is_dummy (signal);
-		if (dummy)
-		{
-			/* FIXME: That's invisible... 
-			GdkRGBA color;
-			gtk_style_context_get_color (context, 
-			                             GTK_STATE_INSENSITIVE,
-			                             &color);
-			*/
-			g_object_set (renderer, 
-			              "style", PANGO_STYLE_ITALIC,
-			              "foreground", "grey",
-			              NULL);
-		}
-		else
-		{
-			GdkRGBA fg_color;
-			gtk_style_context_get_color (context, 
-			                             GTK_STATE_NORMAL,
-			                             &fg_color);
-			g_object_set (renderer, 
-			              "style", PANGO_STYLE_NORMAL,
-			              "foreground-rgba", &fg_color,
-			              NULL);
-		}
-		g_object_set (renderer,
-		              "visible", TRUE,
-		              "sensitive", TRUE,
-		              "editable", TRUE,
-		              NULL);
-
-		g_object_unref (signal);
-	}
-	else
+      dummy = glade_signal_is_dummy (signal);
+      if (dummy)
 	{
-		g_object_set (renderer, 
-		              "visible", FALSE,
-		              "editable", FALSE,
-		              NULL);
+	  gtk_style_context_get_color (context, 
+				       GTK_STATE_FLAG_INSENSITIVE, &color);
+	  g_object_set (renderer, 
+			"style", PANGO_STYLE_ITALIC,
+			"foreground-rgba", &color,
+			NULL);
 	}
+      else
+	{
+	  gtk_style_context_get_color (context, 
+				       GTK_STATE_FLAG_NORMAL,
+				       &color);
+	  g_object_set (renderer,
+			"style", PANGO_STYLE_NORMAL,
+			"foreground-rgba", &color,
+			NULL);
+	}
+      g_object_set (renderer,
+		    "visible", TRUE,
+		    "sensitive", TRUE,
+		    "editable", TRUE,
+		    NULL);
+
+      g_object_unref (signal);
+    }
+  else
+    {
+      g_object_set (renderer, 
+		    "visible", FALSE,
+		    "editable", FALSE,
+		    NULL);
+    }
 }
 
 static void
@@ -625,29 +621,56 @@ glade_signal_editor_data_cell_data_func (GtkTreeViewColumn *column,
                                          GtkTreeIter *iter,
                                          gpointer data)
 {
-	GladeSignal* signal;
+  GladeSignalEditor* editor = GLADE_SIGNAL_EDITOR (data);
+  GladeSignal* signal;
+  GdkRGBA color;
 
-	gtk_tree_model_get (model, iter,
-	                    GLADE_SIGNAL_COLUMN_SIGNAL, &signal,
-	                    -1);
-	if (signal)
-	{
-		gboolean dummy;
+  gtk_tree_model_get (model, iter,
+		      GLADE_SIGNAL_COLUMN_SIGNAL, &signal,
+		      -1);
+  if (signal)
+    {
+      gboolean dummy;
 		
-		dummy = glade_signal_is_dummy (signal);
-		g_object_set (renderer, 
-		              "sensitive", !dummy,
-		              "visible", TRUE,
-		              NULL);
-		g_object_unref (signal);
-	}
-	else
+      dummy = glade_signal_is_dummy (signal);
+      g_object_set (renderer, 
+		    "sensitive", !dummy,
+		    "visible", TRUE,
+		    NULL);
+
+      if (GTK_IS_CELL_RENDERER_TEXT (renderer))
 	{
-		g_object_set (renderer, 
-		              "sensitive", FALSE,		              
-		              "visible", FALSE,
-		              NULL);
+	  GtkStyleContext* context = gtk_widget_get_style_context (editor->priv->signal_tree);
+
+	  if (dummy || !glade_signal_get_userdata (signal))
+	    {
+	      gtk_style_context_get_color (context, GTK_STATE_FLAG_INSENSITIVE, &color);
+	      g_object_set (renderer, 
+			    "style", PANGO_STYLE_ITALIC,
+			    "foreground-rgba", &color,
+			    NULL);
+	    }
+	  else
+	    {
+	      gtk_style_context_get_color (context, 
+					   GTK_STATE_FLAG_NORMAL,
+					   &color);
+	      g_object_set (renderer,
+			    "style", PANGO_STYLE_NORMAL,
+			    "foreground-rgba", &color,
+			    NULL);
+	    }
 	}
+
+      g_object_unref (signal);
+    }
+  else
+    {
+      g_object_set (renderer, 
+		    "sensitive", FALSE,		              
+		    "visible", FALSE,
+		    NULL);
+    }
 }
 
 static void
@@ -657,22 +680,22 @@ glade_signal_editor_warning_cell_data_func (GtkTreeViewColumn *column,
                                             GtkTreeIter *iter,
                                             gpointer data)
 {
-	GladeSignal* signal;
-	gboolean visible = FALSE;
+  GladeSignal* signal;
+  gboolean visible = FALSE;
 
-	gtk_tree_model_get (model, iter,
-	                    GLADE_SIGNAL_COLUMN_SIGNAL, &signal,
-	                    -1);
-	if (signal)
-	{
-		const gchar* warning = glade_signal_get_support_warning (signal);
-		visible = warning && strlen (warning);
-		g_object_unref (signal);
-	}
+  gtk_tree_model_get (model, iter,
+		      GLADE_SIGNAL_COLUMN_SIGNAL, &signal,
+		      -1);
+  if (signal)
+    {
+      const gchar* warning = glade_signal_get_support_warning (signal);
+      visible = warning && strlen (warning);
+      g_object_unref (signal);
+    }
 		
-	g_object_set (renderer, 
-	              "visible", visible,
-	              NULL);
+  g_object_set (renderer, 
+		"visible", visible,
+		NULL);
 }
 
 static void
@@ -682,225 +705,220 @@ glade_signal_editor_devhelp_cell_data_func (GtkTreeViewColumn *column,
                                             GtkTreeIter *iter,
                                             gpointer data)
 {
-	GladeSignal* signal;
+  GladeSignal* signal;
 
-	gtk_tree_model_get (model, iter,
-	                    GLADE_SIGNAL_COLUMN_SIGNAL, &signal,
-	                    -1);
-	if (signal)
-	{
-		const GladeSignalClass* class = glade_signal_get_class (signal);
-		GladeWidgetAdaptor* adaptor = glade_signal_class_get_adaptor (class);
-		gchar* book;
+  gtk_tree_model_get (model, iter,
+		      GLADE_SIGNAL_COLUMN_SIGNAL, &signal,
+		      -1);
+  if (signal && glade_util_have_devhelp ())
+    {
+      const GladeSignalClass* class = glade_signal_get_class (signal);
+      GladeWidgetAdaptor* adaptor = glade_signal_class_get_adaptor (class);
+      gchar* book;
 
-		g_object_get (adaptor, "book", &book, NULL);
-		
-		g_object_set (renderer, 
-		              "visible", book != NULL,
-		              NULL);
-		g_free (book);
-		g_object_unref (signal);
-	}
-	else
-	{
-		g_object_set (renderer, 
-		              "visible", FALSE,
-		              NULL);
-	}
+      g_object_get (adaptor, "book", &book, NULL);
+      g_object_set (renderer, 
+		    "visible", book != NULL,
+		    NULL);
+      g_free (book);
+      g_object_unref (signal);
+    }
+  else
+    {
+      g_object_set (renderer, 
+		    "visible", FALSE,
+		    NULL);
+    }
 }
 
 static void
 glade_signal_editor_init (GladeSignalEditor *self)
 {
-	GtkWidget *scroll;
-	GtkCellRenderer* renderer;
-	GtkCellArea* cell_area;
-	GladeSignalEditorPrivate* priv;
+  GtkWidget *scroll;
+  GtkCellRenderer* renderer;
+  GtkCellArea* cell_area;
+  GladeSignalEditorPrivate* priv;
 	
-	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GLADE_TYPE_SIGNAL_EDITOR, GladeSignalEditorPrivate);
-	priv = self->priv;
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GLADE_TYPE_SIGNAL_EDITOR, GladeSignalEditorPrivate);
+  priv = self->priv;
 	
-	/* Create signal tree */
-	priv->signal_tree = gtk_tree_view_new ();
+  /* Create signal tree */
+  priv->signal_tree = gtk_tree_view_new ();
 
-	/* Create columns */
-	/* Signal name */
-	priv->column_name = gtk_tree_view_column_new ();
+  /* Create columns */
+  /* Signal name */
+  priv->column_name = gtk_tree_view_column_new ();
 	
-	/* version warning */
-	renderer = gtk_cell_renderer_pixbuf_new ();
-	g_object_set (G_OBJECT (renderer), "icon-name", GTK_STOCK_DIALOG_WARNING,
+  /* version warning */
+  renderer = gtk_cell_renderer_pixbuf_new ();
+  g_object_set (G_OBJECT (renderer), "icon-name", GTK_STOCK_DIALOG_WARNING,
                 NULL);
-	gtk_tree_view_column_set_cell_data_func (priv->column_name, renderer,
-	                                         glade_signal_editor_warning_cell_data_func,
-	                                         self,
-	                                         NULL);
-	gtk_tree_view_column_pack_start (priv->column_name, renderer, FALSE);
+  gtk_tree_view_column_set_cell_data_func (priv->column_name, renderer,
+					   glade_signal_editor_warning_cell_data_func,
+					   self,
+					   NULL);
+  gtk_tree_view_column_pack_start (priv->column_name, renderer, FALSE);
 
-	/* signal name */
-	renderer = gtk_cell_renderer_text_new ();
-	g_object_set (G_OBJECT (renderer),
-	              "ellipsize", PANGO_ELLIPSIZE_END,
-	              "width-chars", 20,
-	              NULL);
-	gtk_tree_view_column_pack_end (priv->column_name, renderer, TRUE);
-	gtk_tree_view_column_set_attributes (priv->column_name, renderer,
-	                                     "text", GLADE_SIGNAL_COLUMN_NAME,
-	                                     NULL);
-	gtk_tree_view_column_set_cell_data_func (priv->column_name, renderer,
-	                                         glade_signal_editor_name_cell_data_func,
-	                                         self,
-	                                         NULL);
+  /* signal name */
+  renderer = gtk_cell_renderer_text_new ();
+  g_object_set (G_OBJECT (renderer),
+		"ellipsize", PANGO_ELLIPSIZE_END,
+		"width-chars", 20,
+		NULL);
+  gtk_tree_view_column_pack_end (priv->column_name, renderer, TRUE);
+  gtk_tree_view_column_set_attributes (priv->column_name, renderer,
+				       "text", GLADE_SIGNAL_COLUMN_NAME,
+				       NULL);
+  gtk_tree_view_column_set_cell_data_func (priv->column_name, renderer,
+					   glade_signal_editor_name_cell_data_func,
+					   self,
+					   NULL);
   
-	gtk_tree_view_column_set_resizable (priv->column_name, TRUE);
-	gtk_tree_view_column_set_expand (priv->column_name, TRUE);
+  gtk_tree_view_column_set_resizable (priv->column_name, TRUE);
+  gtk_tree_view_column_set_expand (priv->column_name, TRUE);
   
-	gtk_tree_view_column_set_title (priv->column_name, _("Signal")),
-	gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->signal_tree), priv->column_name);
+  gtk_tree_view_column_set_title (priv->column_name, _("Signal"));
+  gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->signal_tree), priv->column_name);
 
-	/* Signal handler */
-	renderer = gtk_cell_renderer_text_new ();
-	g_signal_connect (renderer, "edited", G_CALLBACK(on_handler_edited), self);
-	g_signal_connect (renderer, "editing-started", G_CALLBACK (on_handler_editing_started), self);
-	priv->column_handler = gtk_tree_view_column_new_with_attributes (_("Handler"),
-	                                                                  renderer,
-	                                                                  "text", GLADE_SIGNAL_COLUMN_HANDLER,
-	                                                                  NULL);
-	gtk_tree_view_column_set_cell_data_func (priv->column_handler, renderer,
-	                                         glade_signal_editor_handler_cell_data_func,
-	                                         self,
-	                                         NULL);
-	gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->signal_tree), priv->column_handler);
+  /* Signal handler */
+  renderer = gtk_cell_renderer_text_new ();
+  g_signal_connect (renderer, "edited", G_CALLBACK(on_handler_edited), self);
+  g_signal_connect (renderer, "editing-started", G_CALLBACK (on_handler_editing_started), self);
+  priv->column_handler = gtk_tree_view_column_new_with_attributes (_("Handler"),
+								   renderer,
+								   "text", GLADE_SIGNAL_COLUMN_HANDLER,
+								   NULL);
+  gtk_tree_view_column_set_cell_data_func (priv->column_handler, renderer,
+					   glade_signal_editor_handler_cell_data_func,
+					   self,
+					   NULL);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->signal_tree), priv->column_handler);
 
-	/* Signal user_data */
-	priv->renderer_userdata = gtk_cell_renderer_text_new ();
-	g_object_set (G_OBJECT (priv->renderer_userdata),
-	              "editable", FALSE,
-	              "ellipsize", PANGO_ELLIPSIZE_END, 
-	              "width-chars", 10, NULL);
+  /* Signal user_data */
+  priv->renderer_userdata = gtk_cell_renderer_text_new ();
+  g_object_set (G_OBJECT (priv->renderer_userdata),
+		"editable", FALSE,
+		"ellipsize", PANGO_ELLIPSIZE_END, 
+		"width-chars", 10, NULL);
 
-	cell_area = gtk_cell_area_box_new ();
-	gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (cell_area),
-	                            priv->renderer_userdata,
-	                            TRUE);
-	gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (cell_area),
-	                                priv->renderer_userdata,
-	                                "text", GLADE_SIGNAL_COLUMN_OBJECT,
-	                                NULL);
-
-	gtk_tree_view_column_set_cell_data_func (priv->column_handler, priv->renderer_userdata,
-	                                         glade_signal_editor_data_cell_data_func,
-	                                         self,
-	                                         NULL);
+  cell_area = gtk_cell_area_box_new ();
+  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (cell_area),
+			      priv->renderer_userdata,
+			      TRUE);
+  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (cell_area),
+				  priv->renderer_userdata,
+				  "text", GLADE_SIGNAL_COLUMN_OBJECT,
+				  NULL);
 	
-	renderer = glade_cell_renderer_icon_new ();
-	g_object_set (G_OBJECT (renderer), "icon-name", GTK_STOCK_EDIT, NULL);
+  renderer = glade_cell_renderer_icon_new ();
+  g_object_set (G_OBJECT (renderer), "icon-name", GTK_STOCK_EDIT, NULL);
 
-	g_signal_connect (G_OBJECT (renderer), "activate",
-	                  G_CALLBACK (glade_signal_editor_user_data_activate),
-	                  self);
-	gtk_cell_layout_pack_end (GTK_CELL_LAYOUT (cell_area), renderer, FALSE);
-	gtk_cell_area_add_focus_sibling (cell_area,
-	                                 renderer,
-	                                 priv->renderer_userdata);
+  g_signal_connect (G_OBJECT (renderer), "activate",
+		    G_CALLBACK (glade_signal_editor_user_data_activate),
+		    self);
+  gtk_cell_layout_pack_end (GTK_CELL_LAYOUT (cell_area), renderer, FALSE);
+  gtk_cell_area_add_focus_sibling (cell_area,
+				   renderer,
+				   priv->renderer_userdata);
 	
-	priv->column_userdata = gtk_tree_view_column_new_with_area (cell_area);
-	gtk_tree_view_column_set_title (priv->column_userdata,
-	                                _("User data"));
-	gtk_tree_view_column_set_cell_data_func (priv->column_handler, renderer,
-	                                         glade_signal_editor_data_cell_data_func,
-	                                         self,
-	                                         NULL);
+  priv->column_userdata = gtk_tree_view_column_new_with_area (cell_area);
+  gtk_tree_view_column_set_title (priv->column_userdata, _("User data"));
+  gtk_tree_view_column_set_cell_data_func (priv->column_userdata, priv->renderer_userdata,
+					   glade_signal_editor_data_cell_data_func,
+					   self, NULL);
+  gtk_tree_view_column_set_cell_data_func (priv->column_userdata, renderer,
+					   glade_signal_editor_data_cell_data_func,
+					   self, NULL);
 
-	gtk_tree_view_column_set_resizable (priv->column_userdata, TRUE);
-	gtk_tree_view_column_set_expand (priv->column_userdata, TRUE);
-	gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->signal_tree), priv->column_userdata);
+  gtk_tree_view_column_set_resizable (priv->column_userdata, TRUE);
+  gtk_tree_view_column_set_expand (priv->column_userdata, TRUE);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->signal_tree), priv->column_userdata);
 
-	/* Swap signal */
-	renderer = gtk_cell_renderer_toggle_new ();
-	g_signal_connect (renderer, "toggled", G_CALLBACK (on_swap_toggled), self);
-	priv->column_swap = gtk_tree_view_column_new_with_attributes (_("Swap"),
-	                                                              renderer,
-	                                                              "active", GLADE_SIGNAL_COLUMN_SWAP,
-	                                                              NULL);
-	gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->signal_tree), priv->column_swap);
-	gtk_tree_view_column_set_cell_data_func (priv->column_swap, renderer,
-	                                         glade_signal_editor_data_cell_data_func,
-	                                         self,
-	                                         NULL);
+  /* Swap signal */
+  renderer = gtk_cell_renderer_toggle_new ();
+  g_signal_connect (renderer, "toggled", G_CALLBACK (on_swap_toggled), self);
+  priv->column_swap = gtk_tree_view_column_new_with_attributes (_("Swap"),
+								renderer,
+								"active", GLADE_SIGNAL_COLUMN_SWAP,
+								NULL);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->signal_tree), priv->column_swap);
+  gtk_tree_view_column_set_cell_data_func (priv->column_swap, renderer,
+					   glade_signal_editor_data_cell_data_func,
+					   self,
+					   NULL);
 	
-	/* After */
-	renderer = gtk_cell_renderer_toggle_new ();
-	g_signal_connect (renderer, "toggled", G_CALLBACK (on_after_toggled), self);
-	priv->column_after = gtk_tree_view_column_new_with_attributes (_("After"),
-	                                                               renderer,
-	                                                               "active", GLADE_SIGNAL_COLUMN_AFTER,
-	                                                               NULL);
-	gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->signal_tree), priv->column_after);
-	gtk_tree_view_column_set_cell_data_func (priv->column_after, renderer,
-	                                         glade_signal_editor_data_cell_data_func,
-	                                         self,
-	                                         NULL);
+  /* After */
+  renderer = gtk_cell_renderer_toggle_new ();
+  g_signal_connect (renderer, "toggled", G_CALLBACK (on_after_toggled), self);
+  priv->column_after = gtk_tree_view_column_new_with_attributes (_("After"),
+								 renderer,
+								 "active", GLADE_SIGNAL_COLUMN_AFTER,
+								 NULL);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->signal_tree), priv->column_after);
+  gtk_tree_view_column_set_cell_data_func (priv->column_after, renderer,
+					   glade_signal_editor_data_cell_data_func,
+					   self,
+					   NULL);
 	
-	/* Devhelp */
-	if (glade_util_have_devhelp ())
-	{
-		renderer = glade_cell_renderer_icon_new ();
+  /* Devhelp */
+  if (glade_util_have_devhelp ())
+    {
+      renderer = glade_cell_renderer_icon_new ();
 
-		g_object_set (G_OBJECT (renderer), "activatable", TRUE, NULL);
+      g_object_set (G_OBJECT (renderer), "activatable", TRUE, NULL);
 
-		if (gtk_icon_theme_has_icon
-		    (gtk_icon_theme_get_default (), GLADE_DEVHELP_ICON_NAME))
-			g_object_set (G_OBJECT (renderer), "icon-name", GLADE_DEVHELP_ICON_NAME,
-			              NULL);
-		else
-			g_object_set (G_OBJECT (renderer), "icon-name", GTK_STOCK_INFO, NULL);
+      if (gtk_icon_theme_has_icon
+	  (gtk_icon_theme_get_default (), GLADE_DEVHELP_ICON_NAME))
+	g_object_set (G_OBJECT (renderer), "icon-name", GLADE_DEVHELP_ICON_NAME,
+		      NULL);
+      else
+	g_object_set (G_OBJECT (renderer), "icon-name", GTK_STOCK_INFO, NULL);
 
-		g_signal_connect (G_OBJECT (renderer), "activate",
-		                  G_CALLBACK (glade_signal_editor_devhelp), self);
+      g_signal_connect (G_OBJECT (renderer), "activate",
+			G_CALLBACK (glade_signal_editor_devhelp), self);
 
-		gtk_tree_view_column_pack_end (priv->column_after, renderer, FALSE);
-		gtk_tree_view_column_set_cell_data_func (priv->column_after, renderer,
-	                                         glade_signal_editor_devhelp_cell_data_func,
-	                                         self,
-	                                         NULL);
+      gtk_tree_view_column_pack_end (priv->column_after, renderer, FALSE);
+      gtk_tree_view_column_set_cell_data_func (priv->column_after, renderer,
+					       glade_signal_editor_devhelp_cell_data_func,
+					       self,
+					       NULL);
 
-	}
+    }
 	
-	/* Tooltips */
-	gtk_tree_view_set_tooltip_column (GTK_TREE_VIEW (self->priv->signal_tree),
-	                                  GLADE_SIGNAL_COLUMN_TOOLTIP);
+  /* Tooltips */
+  gtk_tree_view_set_tooltip_column (GTK_TREE_VIEW (self->priv->signal_tree),
+				    GLADE_SIGNAL_COLUMN_TOOLTIP);
   
-	/* Create scrolled window */
-	scroll = gtk_scrolled_window_new (NULL, NULL);
-	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll),
-					GTK_POLICY_AUTOMATIC,
-					GTK_POLICY_AUTOMATIC);
-	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scroll),
-					     GTK_SHADOW_IN);
+  /* Create scrolled window */
+  scroll = gtk_scrolled_window_new (NULL, NULL);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll),
+				  GTK_POLICY_AUTOMATIC,
+				  GTK_POLICY_AUTOMATIC);
+  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scroll),
+				       GTK_SHADOW_IN);
 	
-	gtk_container_add (GTK_CONTAINER (scroll), self->priv->signal_tree);
+  gtk_container_add (GTK_CONTAINER (scroll), self->priv->signal_tree);
 	
-	gtk_box_pack_start (GTK_BOX (self), scroll, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (self), scroll, TRUE, TRUE, 0);
 
-	/* Dnd */
-	g_signal_connect_after (self->priv->signal_tree,
-	                        "drag-begin",
-	                        G_CALLBACK(glade_signal_editor_drag_begin),
-	                        self);
+  /* Dnd */
+  g_signal_connect_after (self->priv->signal_tree,
+			  "drag-begin",
+			  G_CALLBACK(glade_signal_editor_drag_begin),
+			  self);
 	
-	gtk_widget_show_all (GTK_WIDGET(self));
+  gtk_widget_show_all (GTK_WIDGET(self));
 }
 
 static void
 glade_signal_editor_class_init (GladeSignalEditorClass *klass)
 {
-	GObjectClass *object_class;
+  GObjectClass *object_class;
 
-	glade_signal_editor_parent_class = g_type_class_peek_parent (klass);
+  glade_signal_editor_parent_class = g_type_class_peek_parent (klass);
 
-	object_class = G_OBJECT_CLASS (klass);
-	object_class->dispose = glade_signal_editor_dispose;
+  object_class = G_OBJECT_CLASS (klass);
+  object_class->dispose = glade_signal_editor_dispose;
 
-	g_type_class_add_private (klass, sizeof (GladeSignalEditorPrivate));
+  g_type_class_add_private (klass, sizeof (GladeSignalEditorPrivate));
 }

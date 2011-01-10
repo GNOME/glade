@@ -4,6 +4,13 @@
 	  - Fixed indentation
 	  - Relicense as LGPL as Johannes Schmid said that was ok.
 
+	* gladeui/glade-signal-editor.c:
+	  - Fixed <click here> column to always show up italic insensitive when
+	    no object is selected.
+	  - Fixed the <type here> text to come back and not add any signal when
+	    the first signal of a type is added with a NULL handler
+	  - Fixed devhelp icon visibility to not show when !glade_util_have_devhelp()
+
 2011-01-09  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-design-layout.c: Fixed to not hide widgets when removing
