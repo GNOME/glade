@@ -68,8 +68,8 @@ glade_signal_finalize (GObject *object)
 
 static void
 glade_signal_get_property (GObject * object,
-                                  guint prop_id,
-                                  GValue * value, GParamSpec * pspec)
+			   guint prop_id,
+			   GValue * value, GParamSpec * pspec)
 {
   GladeSignal *signal = GLADE_SIGNAL (object);
 
@@ -101,8 +101,8 @@ glade_signal_get_property (GObject * object,
 
 static void
 glade_signal_set_property (GObject * object,
-                                  guint prop_id,
-                                  const GValue * value, GParamSpec * pspec)
+			   guint prop_id,
+			   const GValue * value, GParamSpec * pspec)
 {
   GladeSignal *signal = GLADE_SIGNAL (object);
 
