@@ -213,6 +213,8 @@ static void glade_project_set_readonly (GladeProject * project,
 
 
 static gboolean glade_project_verify (GladeProject * project, gboolean saving);
+static void     glade_project_verify_properties    (GladeWidget        *widget);
+static void     glade_project_verify_project_for_ui(GladeProject       *project);
 
 static void glade_project_verify_adaptor (GladeProject * project,
                                           GladeWidgetAdaptor * adaptor,
@@ -2334,7 +2336,7 @@ glade_project_verify_signals (GladeWidget * widget,
  * about version compatability and notifies the UI
  * it should update.
  */
-void
+static void
 glade_project_verify_properties (GladeWidget * widget)
 {
   GladeProject *project;
@@ -2549,7 +2551,7 @@ glade_project_verify_widget_adaptor (GladeProject * project,
  * 
  * Checks the project and updates warning strings in the UI
  */
-void
+static void
 glade_project_verify_project_for_ui (GladeProject * project)
 {
   GList *list;

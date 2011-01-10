@@ -209,11 +209,9 @@ GList              *glade_project_required_libs        (GladeProject       *proj
 gchar              *glade_project_display_dependencies (GladeProject       *project);
 
 /* Verifications */
-void                glade_project_verify_properties    (GladeWidget        *widget);
 gchar              *glade_project_verify_widget_adaptor(GladeProject       *project,
 							GladeWidgetAdaptor *adaptor,
 							GladeSupportMask   *mask);
-void                glade_project_verify_project_for_ui(GladeProject       *project);
 void                glade_project_verify_property      (GladeProperty      *property);
 void                glade_project_verify_signal        (GladeWidget        *widget,
 							GladeSignal        *signal);
