@@ -1,24 +1,24 @@
 # Glade 3 eesti keele tõlge.
 # Estonian translation of Glade 3.
 #
-# Copyright (C) 2007-2010 The GNOME Project.
+# Copyright (C) 2007–2011 The GNOME Project.
 # This file is distributed under the same license as the glade package.
 #
-# Ivar Smolin <okul@linux.ee>, 2007-2010.
+# Ivar Smolin <okul@linux.ee>, 2007–2011.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Glade3 HEAD\n"
+"Project-Id-Version: Glade3 MASTER\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade3&component=general\n"
-"POT-Creation-Date: 2010-12-18 14:44+0000\n"
-"PO-Revision-Date: 2010-10-30 11:45+0300\n"
+"POT-Creation-Date: 2011-01-10 09:03+0000\n"
+"PO-Revision-Date: 2011-01-11 08:49+0200\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
-"Language: et\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: et\n"
 
 msgid "Create or open user interface designs for GTK+ applications"
 msgstr "GTK+ rakenduste kasutajaliideste projektide avamine või loomine"
@@ -29,7 +29,6 @@ msgstr "Glade"
 msgid "Glade Interface Designer"
 msgstr "Glade - liideseprojekteerija"
 
-#, fuzzy
 msgid "Interface Designer"
 msgstr "Kasutajaliidese projekteerija"
 
@@ -89,15 +88,15 @@ msgstr ""
 msgid "Name:"
 msgstr "Nimi:"
 
-#, fuzzy
-msgid "Format:"
-msgstr "Vorming"
-
 msgid "Requires:"
 msgstr ""
 
 msgid "Open…"
 msgstr "Ava…"
+
+#, c-format
+msgid "Project %s is still loading."
+msgstr "Projekti \"%s\" alles laaditakse."
 
 #, c-format
 msgid "The file %s has been modified since reading it"
@@ -147,7 +146,6 @@ msgstr "Kas salvestada enne sulgemist projekti \"%s\" muudatused?"
 msgid "Your changes will be lost if you don't save them."
 msgstr "Kui sa muudatusi ei salvesta, siis lähevad need kaotsi."
 
-#, fuzzy
 msgid "Close _without Saving"
 msgstr "Sulge _ilma salvestamata"
 
@@ -188,27 +186,23 @@ msgstr ""
 "Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
 msgid "translator-credits"
-msgstr "Ivar Smolin <okul@linux.ee>, 2007-2010."
+msgstr "Ivar Smolin <okul@linux.ee>, 2007–2011."
 
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr "Kasutajaliidese projekteerija GTK+ ja GNOME jaoks."
 
-#. File
 msgid "_File"
 msgstr "_Fail"
 
-#. Edit
 msgid "_Edit"
 msgstr "_Redaktor"
 
-#. View
 msgid "_View"
 msgstr "_Vaade"
 
 msgid "_Projects"
 msgstr "_Projektid"
 
-#. Help
 msgid "_Help"
 msgstr "A_bi"
 
@@ -316,31 +310,26 @@ msgstr ""
 msgid "Dock the editor into the main window"
 msgstr "Redaktori dokkimine peaaknasse"
 
-#, fuzzy
 msgid "Tool_bar"
-msgstr "Tööriistariba"
+msgstr "_Tööriistariba"
 
-#, fuzzy
 msgid "Show the toolbar"
-msgstr "Lõikelaua näitamine"
+msgstr "Tööriistariba näitamine"
 
-#, fuzzy
 msgid "_Statusbar"
-msgstr "Olekuriba"
+msgstr "_Olekuriba"
 
-#, fuzzy
 msgid "Show the statusbar"
-msgstr "Lõikelaua näitamine"
+msgstr "Olekuriba näitamine"
 
-#, fuzzy
 msgid "Project _Tabs"
-msgstr "_Projektid"
+msgstr ""
 
 msgid "Show notebook tabs for loaded projects"
 msgstr ""
 
-msgid "Text beside icons"
-msgstr "Teksti ikoonide kõrval"
+msgid "Text _beside icons"
+msgstr "Teksti ikoonide _kõrval"
 
 msgid "Display items as text beside icons"
 msgstr "Kirjeid näidatakse ikoonidena ja ikoonide kõrval asuva tekstina"
@@ -363,28 +352,21 @@ msgstr "Vali"
 msgid "Select widgets in the workspace"
 msgstr "Tööalalt vidinate valimine"
 
-msgid "Preview snapshot"
-msgstr ""
-
-msgid "Previews snapshot of project"
-msgstr ""
-
 msgid "Drag Resize"
 msgstr ""
 
 msgid "Drag and resize widgets in the workspace"
 msgstr ""
 
-#, fuzzy
 msgid "Close document"
-msgstr "Vaata _dokumentatsiooni"
+msgstr "Sulge dokument"
 
 msgid "Could not create a new project."
 msgstr "Uut projekti pole võimalik luua."
 
 #, c-format
 msgid "The project %s has unsaved changes"
-msgstr "Projektil %s on salvestamata andmeid"
+msgstr "Projektis %s on salvestamata andmeid"
 
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr ""
@@ -404,13 +386,12 @@ msgstr "_Laadi uuesti"
 msgid "_Undo"
 msgstr "_Unusta"
 
-#. Change tooltips
 #, c-format
 msgid "Undo: %s"
 msgstr "Unustamine: %s"
 
 msgid "the last action"
-msgstr ""
+msgstr "viimane tegevus"
 
 msgid "_Redo"
 msgstr "_Taasta"
@@ -433,21 +414,6 @@ msgstr "Inspektor"
 
 msgid "Properties"
 msgstr "Omadused"
-
-msgid "Clipboard"
-msgstr "Lõikelaud"
-
-msgid "Active Project"
-msgstr "Aktiivne projekt"
-
-msgid "The active project"
-msgstr "Aktiivne projekt"
-
-msgid "Pointer Mode"
-msgstr "Kursorirežiim"
-
-msgid "Current mode for the pointer in the workspace"
-msgstr "Tööala praegune kursorirežiim"
 
 #, c-format
 msgid ""
@@ -477,24 +443,6 @@ msgstr ""
 msgid ""
 "Error opening %s to write private data (%s).\n"
 "No private data will be saved in this session"
-msgstr ""
-
-msgid "No widget selected."
-msgstr "Ühtegi vidinat pole valitud"
-
-msgid "Unable to paste to the selected parent"
-msgstr ""
-
-msgid "Unable to paste to multiple widgets"
-msgstr "Mitmele vidinale pole korraga võimalik asetada"
-
-msgid "No widget selected on the clipboard"
-msgstr ""
-
-msgid "Only one widget can be pasted at a time to this container"
-msgstr ""
-
-msgid "Insufficient amount of placeholders in target container"
 msgstr ""
 
 msgid "Authentication"
@@ -551,9 +499,8 @@ msgstr ""
 msgid "GdkColor"
 msgstr "GdkColor"
 
-#, fuzzy
 msgid "A GDK color value"
-msgstr "gdk värvuse väärtus"
+msgstr "GDK värvuse väärtus"
 
 msgid "Integer"
 msgstr "Täisarv"
@@ -590,6 +537,66 @@ msgstr "Tõeväärtus"
 
 msgid "A boolean value"
 msgstr "Tõeväärtus"
+
+#, c-format
+msgid "Loading %s: loaded %d of %d objects"
+msgstr ""
+
+msgid "- previews a glade UI definition"
+msgstr ""
+
+msgid "Name of the file to preview"
+msgstr ""
+
+msgid "Name of the toplevel to preview"
+msgstr ""
+
+msgid "Listen standard input"
+msgstr ""
+
+msgid "Display previewer version"
+msgstr ""
+
+#, c-format
+msgid ""
+"%s\n"
+"Run '%s --help' to see a full list of available command lineoptions.\n"
+msgstr ""
+
+#, c-format
+msgid "--listen and --filename must not be simultaneously specified.\n"
+msgstr ""
+
+#, c-format
+msgid "Either --listen or --filename must be specified.\n"
+msgstr ""
+
+#, c-format
+msgid "Couldn't load builder definition: %s"
+msgstr ""
+
+#, c-format
+msgid "UI definition has no previewable widgets.\n"
+msgstr ""
+
+#, c-format
+msgid "Object %s not found in UI definition.\n"
+msgstr ""
+
+#, c-format
+msgid "Object is not previewable.\n"
+msgstr ""
+
+msgid "Preview"
+msgstr ""
+
+#, c-format
+msgid "Error: %s.\n"
+msgstr "Viga: %s.\n"
+
+#, c-format
+msgid "Broken pipe!\n"
+msgstr ""
 
 #, c-format
 msgid "Setting object type on %s to %s"
@@ -634,9 +641,8 @@ msgid "Type"
 msgstr "Liik"
 
 #. Type
-#, fuzzy
 msgid "Type:"
-msgstr "Liik :"
+msgstr "Liik:"
 
 msgid ""
 "<big><b>Tips:</b></big>\n"
@@ -645,9 +651,6 @@ msgid ""
 "  * Drag &amp; Drop to reorder.\n"
 "  * Type column is editable."
 msgstr ""
-
-msgid "Widget"
-msgstr "Vidin"
 
 #, c-format
 msgid "Setting multiple properties"
@@ -687,20 +690,6 @@ msgid "Remove multiple"
 msgstr ""
 
 #, c-format
-msgid "Clipboard add %s"
-msgstr ""
-
-msgid "Clipboard add multiple"
-msgstr ""
-
-#, c-format
-msgid "Clipboard remove %s"
-msgstr ""
-
-msgid "Clipboard remove multiple"
-msgstr ""
-
-#, c-format
 msgid "Create %s"
 msgstr ""
 
@@ -710,10 +699,6 @@ msgstr ""
 
 #, c-format
 msgid "Cut %s"
-msgstr ""
-
-#, c-format
-msgid "Copy %s"
 msgstr ""
 
 #, c-format
@@ -738,10 +723,6 @@ msgstr ""
 
 #, c-format
 msgid "Setting i18n metadata"
-msgstr ""
-
-#, c-format
-msgid "Converting %s to %s format"
 msgstr ""
 
 #, c-format
@@ -778,9 +759,8 @@ msgstr "Väljade valimine"
 msgid "_Select individual fields:"
 msgstr "Üksikute väljade _valimine:"
 
-#, fuzzy
 msgid "Select Named Icon"
-msgstr "Vali värvus"
+msgstr "Vali nimeline ikoon"
 
 msgid "Edit Text"
 msgstr "Teksti redigeerimine"
@@ -793,17 +773,8 @@ msgstr "_Tekst:"
 msgid "T_ranslatable"
 msgstr "Tõl_gitav"
 
-#, fuzzy
 msgid "Whether this property is translatable"
 msgstr "Kas see omadus on tõlgitav või mitte"
-
-#. Has Context
-msgid "_Has context prefix"
-msgstr "_Omab kontekstipreefiksit"
-
-#, fuzzy
-msgid "Whether the translatable string has a context prefix"
-msgstr "Kas tõlgitav string omab kontekstipreefiksit või mitte"
 
 msgid "Conte_xt for translation:"
 msgstr "_Tõlke kontekst:"
@@ -826,17 +797,17 @@ msgstr "Nimi"
 msgid "Class"
 msgstr "Klass"
 
-#, fuzzy, c-format
+#, c-format
 msgid "Choose parentless %s type objects in this project"
-msgstr "Vali sellest projektist %s"
+msgstr ""
 
 #, c-format
 msgid "Choose a parentless %s in this project"
 msgstr ""
 
-#, fuzzy, c-format
+#, c-format
 msgid "Choose %s type objects in this project"
-msgstr "Vali sellest projektist %s"
+msgstr ""
 
 #, c-format
 msgid "Choose a %s in this project"
@@ -858,45 +829,6 @@ msgstr ""
 msgid "Objects:"
 msgstr "Objektid:"
 
-msgid "Value:"
-msgstr "Väärtus:"
-
-msgid "The current value"
-msgstr "Hetkeväärtus"
-
-msgid "Lower:"
-msgstr "Väikseim:"
-
-msgid "The minimum value"
-msgstr "Väikseim võimalik väärtus"
-
-msgid "Upper:"
-msgstr "Suurim:"
-
-msgid "The maximum value"
-msgstr "Suurim võimalik väärtus"
-
-msgid "Step inc:"
-msgstr "Sammu suurus:"
-
-msgid "The increment to use to make minor changes to the value"
-msgstr "Väärtuse väikese sammuga muutmisel kasutatav sammu suurus"
-
-msgid "Page inc:"
-msgstr "Hüppe suurus:"
-
-msgid "The increment to use to make major changes to the value"
-msgstr "Väärtuse suure sammuga muutmisel kasutatav sammu suurus"
-
-msgid "Page size:"
-msgstr "Lehe suurus:"
-
-msgid ""
-"The page size (in a GtkScrollbar this is the size of the area which is "
-"currently visible)"
-msgstr ""
-"Lehe suurus (GtkScrollbar'i korral on selleks hetkel nähtava ala suurus)"
-
 msgid "The Object's name"
 msgstr "Objekti nimi"
 
@@ -905,6 +837,9 @@ msgstr "Andmete näitamine"
 
 msgid "Whether to show an informational button for the loaded widget"
 msgstr "Kas laaditud vidina jaoks peab teabenuppu näitama või mitte"
+
+msgid "Widget"
+msgstr "Vidin"
 
 msgid "The currently loaded widget in this editor"
 msgstr ""
@@ -941,6 +876,9 @@ msgstr "Ü_hine"
 msgid "Create a %s"
 msgstr "Vidina \"%s\" loomine"
 
+msgid "Crea_te"
+msgstr ""
+
 msgid "Reset"
 msgstr ""
 
@@ -974,49 +912,12 @@ msgid "Property _Description:"
 msgstr "Omaduse _kirjeldus:"
 
 #. Translators: first %s is the project name, second is a widget name
-#, fuzzy, c-format
-msgid "%s - %s Properties"
-msgstr "Omadused"
-
 #, c-format
-msgid "Placing %s inside %s"
-msgstr ""
-
-msgid "X position property"
-msgstr "X-asukoha omadus"
-
-msgid "The property used to set the X position of a child object"
-msgstr "Alamobjekti x-asukoha määramiseks kasutatav omadus"
-
-msgid "Y position property"
-msgstr "Y-asukoha omadus"
-
-msgid "The property used to set the Y position of a child object"
-msgstr "Alamobjekti y-asukoha määramiseks kasutatav omadus"
-
-msgid "Width property"
-msgstr "Laiuse omadus"
-
-msgid "The property used to set the width of a child object"
-msgstr "Alamobjekti laiuse määramiseks kasutatav omadus"
-
-msgid "Height property"
-msgstr "Kõrguse omadus"
-
-msgid "The property used to set the height of a child object"
-msgstr "Alamobjekti kõrguse määramiseks kasutatav omadus"
-
-msgid "Can resize"
-msgstr ""
-
-msgid "Whether this container supports resizes of child widgets"
-msgstr ""
+msgid "%s - %s Properties"
+msgstr "%s - %s Omadused"
 
 msgid "Widget selector"
 msgstr "Vidinavalija"
-
-msgid "Create root widget"
-msgstr ""
 
 msgid "_Add widget here"
 msgstr ""
@@ -1051,20 +952,19 @@ msgstr "Projekti rada failisüsteemis"
 msgid "Read Only"
 msgstr "Kirjutuskaitsega"
 
-#, fuzzy
 msgid "Whether project is read-only"
 msgstr "Kas projekt on kirjutuskaitsega või mitte"
 
-msgid "Format"
-msgstr "Vorming"
+msgid "Add Item"
+msgstr "Lisa kirje"
 
-msgid "The project file format"
-msgstr "Projektifaili vorming"
-
-msgid "Previewable"
+msgid "The current item to add to the project"
 msgstr ""
 
-msgid "Wether the project can be previewed"
+msgid "Pointer Mode"
+msgstr "Kursorirežiim"
+
+msgid "The currently effective GladePointerMode"
 msgstr ""
 
 #, c-format
@@ -1077,13 +977,13 @@ msgstr ""
 msgid "%s preferences"
 msgstr "Projekti \"%s\" eelistused"
 
-#, fuzzy, c-format
+#, c-format
 msgid "Error launching previewer: %s\n"
-msgstr "Viga %s lugemisel: %s"
+msgstr "Viga eelvaaleja käivitamisel: %s\n"
 
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to launch preview: %s.\n"
-msgstr "Tõrge %s salvestamisel: %s"
+msgstr "Viga eelvaate käivitamisel: %s.\n"
 
 #. ******************************************************************
 #. Verify code here (versioning, incompatability checks)
@@ -1098,37 +998,6 @@ msgstr ""
 msgid "[%s] Object class '%s' was introduced in %s %d.%d\n"
 msgstr "[%s] Objektiklass '%s' on toetatud alates %s versioonist %d.%d\n"
 
-#. translators: reffers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
-#, c-format
-msgid ""
-"This widget was made available in GtkBuilder format in %s %d.%d while "
-"project targets %s %d.%d"
-msgstr ""
-
-#. translators: reffers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
-#, c-format
-msgid ""
-"[%s] Object class '%s' was made available in GtkBuilder format in %s %d.%d\n"
-msgstr ""
-
-msgid "This widget is only supported in libglade format"
-msgstr "See vidin on toetatud ainult libglade vormingus"
-
-#. translators: reffers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
-#, c-format
-msgid ""
-"[%s] Object class '%s' from %s %d.%d is only supported in libglade format\n"
-msgstr ""
-
-msgid "This widget is not supported in libglade format"
-msgstr "See vidin ei ole libglade vormingu poolt toetatud"
-
-#. translators: reffers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
-#, c-format
-msgid ""
-"[%s] Object class '%s' from %s %d.%d is not supported in libglade format\n"
-msgstr ""
-
 msgid "This widget is deprecated"
 msgstr "See vidin on aegunud"
 
@@ -1141,41 +1010,6 @@ msgstr ""
 #. * you can only comment about the line directly following, forcing you to write
 #. * ugly messy code with comments in line breaks inside function calls).
 #.
-msgid "This property is not supported in libglade format"
-msgstr "See omadus ei ole libglade vormingu poolt toetatud"
-
-#. translators: reffers to a property '%s' of widget '[%s]'
-#, c-format
-msgid ""
-"[%s] Property '%s' of object class '%s' is not supported in libglade format\n"
-msgstr ""
-"[%1$s] Objektiklassi '%3$s' omadus '%2$s' ei ole libglade vormingu poolt "
-"toetatud\n"
-
-#. translators: reffers to a property '%s' of widget '[%s]'
-#, c-format
-msgid ""
-"[%s] Packing property '%s' of object class '%s' is not supported in libglade "
-"format\n"
-msgstr ""
-
-msgid "This property is only supported in libglade format"
-msgstr "See omadus on toetatud ainult libglade vormingus"
-
-#. translators: reffers to a property '%s' of widget '[%s]'
-#, c-format
-msgid ""
-"[%s] Property '%s' of object class '%s' is only supported in libglade "
-"format\n"
-msgstr ""
-
-#. translators: reffers to a property '%s' of widget '[%s]'
-#, c-format
-msgid ""
-"[%s] Packing property '%s' of object class '%s' is only supported in "
-"libglade format\n"
-msgstr ""
-
 #. translators: reffers to a property in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
 #, c-format
@@ -1193,27 +1027,6 @@ msgid ""
 "[%s] Packing property '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr ""
 
-#. translators: reffers to a property in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
-#, c-format
-msgid ""
-"This property was made available in GtkBuilder format in %s %d.%d while "
-"project targets %s %d.%d"
-msgstr ""
-
-#. translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#, c-format
-msgid ""
-"[%s] Property '%s' of object class '%s' was made available in GtkBuilder "
-"format in %s %d.%d\n"
-msgstr ""
-
-#. translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#, c-format
-msgid ""
-"[%s] Packing property '%s' of object class '%s' was made available in "
-"GtkBuilder format in %s %d.%d\n"
-msgstr ""
-
 #. translators: reffers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d'
 #, c-format
 msgid "[%s] Signal '%s' of object class '%s' was introduced in %s %d.%d\n"
@@ -1228,13 +1041,13 @@ msgstr ""
 msgid "Details"
 msgstr "Üksikasjad"
 
-#, fuzzy, c-format
+#, c-format
 msgid "Project \"%s\" has errors. Save anyway?"
-msgstr "Projektis %s on vead, kas salvestada ikkagi?"
+msgstr "Projektis \"%s\" on vead. Kas salvestada ikkagi?"
 
-#, fuzzy, c-format
+#, c-format
 msgid "Project \"%s\" has deprecated widgets and/or version mismatches."
-msgstr "Projektil \"%s\" pole aegunud vidinaid ja/või versiooni vastuolusid."
+msgstr "Projektis \"%s\" on aegunud vidinaid ja/või versiooni vastuolusid."
 
 #, c-format
 msgid "Unsaved %i"
@@ -1242,11 +1055,7 @@ msgstr "Salvestamata %i"
 
 #, c-format
 msgid "Project %s has no deprecated widgets or version mismatches."
-msgstr "Projektil \"%s\" pole aegunud vidinaid ega versiooni vastuolusid."
-
-#. Project format
-msgid "Project file format:"
-msgstr "Projektifaili vorming:"
+msgstr "Projektis \"%s\" pole aegunud vidinaid ega versiooni vastuolusid."
 
 #. Naming policy format
 msgid "Object names are unique:"
@@ -1258,11 +1067,9 @@ msgstr "projekti ulatuses"
 msgid "inside toplevels"
 msgstr "ülemiste tasemete ulatuses"
 
-#. Resource path
 msgid "Image resources are loaded locally:"
 msgstr "Pildiressursid kohalik laadimine toimub:"
 
-#. Project directory...
 msgid "From the project directory"
 msgstr "Projektikataloogist"
 
@@ -1276,7 +1083,6 @@ msgid "Choose a path to load image resources"
 msgstr "Pildiressursside laadimise raja valimine"
 
 #. Target versions
-#, fuzzy
 msgid "Toolkit versions required:"
 msgstr "Vajalikud tööriistakomplektide versioonid:"
 
@@ -1289,6 +1095,24 @@ msgstr "(sisemine %s)"
 
 #, c-format
 msgid "(%s child)"
+msgstr ""
+
+msgid "No widget selected."
+msgstr "Ühtegi vidinat pole valitud"
+
+msgid "Unable to paste to the selected parent"
+msgstr ""
+
+msgid "Unable to paste to multiple widgets"
+msgstr "Mitmele vidinale pole korraga võimalik asetada"
+
+msgid "No widget on the clipboard"
+msgstr ""
+
+msgid "Only one widget can be pasted at a time to this container"
+msgstr ""
+
+msgid "Insufficient amount of placeholders in target container"
 msgstr ""
 
 msgid "The GladePropertyClass for this property"
@@ -1321,21 +1145,11 @@ msgstr "Kommentaar tõlkijatele"
 msgid "Translatable"
 msgstr "Tõlgitav"
 
-msgid "Has Context"
-msgstr "Omab konteksti"
-
 msgid "Visual State"
 msgstr "Visuaalne olek"
 
 msgid "Priority information for the property editor to act on"
 msgstr ""
-
-msgid "<Type here>"
-msgstr "<Sisesta siia>"
-
-#, fuzzy
-msgid "<Object>"
-msgstr "Objekt"
 
 msgid "Select an object to pass to the handler"
 msgstr ""
@@ -1343,35 +1157,46 @@ msgstr ""
 msgid "Signal"
 msgstr "Signaal"
 
-#, fuzzy
-msgid "The name of the signal to connect to"
-msgstr "Vidina nimi"
-
 msgid "Handler"
 msgstr "Käsitleja"
 
-msgid "Enter the handler to run for this signal"
-msgstr ""
-
-msgid "Object"
-msgstr "Objekt"
-
-msgid "An object to pass to the handler"
-msgstr ""
+msgid "User data"
+msgstr "Kasutaja andmed"
 
 msgid "Swap"
-msgstr ""
-
-msgid ""
-"Whether the instance and object should be swapped when calling the handler"
 msgstr ""
 
 msgid "After"
 msgstr "Pärast"
 
-msgid ""
-"Whether the handler should be called before or after the default handler of "
-"the signal"
+msgid "SignalClass"
+msgstr ""
+
+msgid "The signal class of this signal"
+msgstr "Signaali klass"
+
+msgid "The handler for this signal"
+msgstr "Signaali käsitleja"
+
+msgid "User Data"
+msgstr "Kasutaja andmed"
+
+msgid "The user data for this signal"
+msgstr ""
+
+msgid "Support Warning"
+msgstr ""
+
+msgid "The versioning support warning for this signal"
+msgstr ""
+
+msgid "Whether this signal is run after default handlers"
+msgstr ""
+
+msgid "Swapped"
+msgstr ""
+
+msgid "Whether the user data is swapped with the instance for the handler"
 msgstr ""
 
 #, c-format
@@ -1388,9 +1213,6 @@ msgid ""
 "Add a %s first."
 msgstr ""
 
-msgid "File format"
-msgstr "Failivorming"
-
 msgid "All Files"
 msgstr "Kõik failid"
 
@@ -1403,40 +1225,11 @@ msgstr "GtkBuilderi failid"
 msgid "All Glade Files"
 msgstr "Kõik Glade'i failid"
 
-#, c-format
-msgid ""
-"%s exists.\n"
-"Do you want to replace it?"
-msgstr ""
-"%s on juba olemas.\n"
-"Kas soovid seda asendada?"
-
-#, c-format
-msgid "Error writing to %s: %s"
-msgstr "Viga %s kirjutamisel: %s"
-
-#, c-format
-msgid "Error reading %s: %s"
-msgstr "Viga %s lugemisel: %s"
-
-#, c-format
-msgid "Error shutting down I/O channel %s: %s"
-msgstr ""
-
-#, c-format
-msgid "Failed to open %s for writing: %s"
-msgstr "Tõrge %s avamisel kirjutamiseks: %s"
-
-#, c-format
-msgid "Failed to open %s for reading: %s"
-msgstr "Tõrge %s avamisel lugemiseks: %s"
-
-#, fuzzy
 msgid "Could not show link:"
-msgstr "Faili %s pole võimalik salvestada"
+msgstr "Viita pole võimalik näidata:"
 
-#. Reset the column
 #. Objects
+#. Reset the column
 msgid "None"
 msgstr "Puudub"
 
@@ -1455,6 +1248,9 @@ msgstr ""
 msgid ""
 "Whether this composite child is an ancestral child or an anarchist child"
 msgstr ""
+
+msgid "Object"
+msgstr "Objekt"
 
 msgid "The object associated"
 msgstr ""
@@ -1514,9 +1310,6 @@ msgid "Toplevel Height"
 msgstr ""
 
 msgid "The height of the widget when toplevel in the GladeDesignLayout"
-msgstr ""
-
-msgid "Support Warning"
 msgstr ""
 
 msgid "A warning string about version mismatches"
@@ -1591,6 +1384,12 @@ msgstr ""
 msgid "Whether this action is sensitive"
 msgstr ""
 
+msgid "Visible"
+msgstr ""
+
+msgid "Whether this action is visible"
+msgstr "Kas see tegevus on nähtav või mitte"
+
 msgid "All Contexts"
 msgstr "Kõik kontekstid"
 
@@ -1600,13 +1399,11 @@ msgstr "Nimelise ikooni valija"
 msgid "Icon _Name:"
 msgstr "Ikooni _nimi:"
 
-#, fuzzy
 msgid "C_ontexts:"
-msgstr "Konteksti"
+msgstr "K_ontekstid:"
 
-#, fuzzy
 msgid "Icon Na_mes:"
-msgstr "Ikooni _nimi:"
+msgstr "Ikooni _nimed:"
 
 msgid "_List standard icons only"
 msgstr ""
@@ -1645,389 +1442,6 @@ msgstr "Kohad"
 msgid "Status"
 msgstr "Olek"
 
-msgctxt "textattr"
-msgid "Style"
-msgstr "Laad"
-
-msgctxt "textattr"
-msgid "Weight"
-msgstr "Paremal"
-
-msgctxt "textattr"
-msgid "Variant"
-msgstr ""
-
-msgctxt "textattr"
-msgid "Stretch"
-msgstr ""
-
-msgctxt "textattr"
-msgid "Underline"
-msgstr "Allajoonitud"
-
-msgctxt "textattr"
-msgid "Strikethrough"
-msgstr "Läbijoonitud"
-
-msgctxt "textattr"
-msgid "Gravity"
-msgstr ""
-
-msgctxt "textattr"
-msgid "Gravity Hint"
-msgstr ""
-
-msgctxt "textattr"
-msgid "Size"
-msgstr "Suurus"
-
-msgctxt "textattr"
-msgid "Absolute Size"
-msgstr "Absoluutne suurus"
-
-msgctxt "textattr"
-msgid "Foreground Color"
-msgstr "Teksti värvus"
-
-msgctxt "textattr"
-msgid "Background Color"
-msgstr "Taustavärvus"
-
-msgctxt "textattr"
-msgid "Underline Color"
-msgstr "Allajoonimise värvus"
-
-msgctxt "textattr"
-msgid "Strikethrough Color"
-msgstr "Läbijoonimise värvus"
-
-msgctxt "textattr"
-msgid "Scale"
-msgstr ""
-
-#. XXX Interesting... can we get the defaults ? what can we do to let the user
-#. * unset the value ??
-#.
-msgid "<Enter Value>"
-msgstr "<Sisesta väärtus>"
-
-msgid "Unset"
-msgstr ""
-
-msgid "Select a color"
-msgstr "Vali värvus"
-
-msgid "Attribute"
-msgstr "Rekvisiit"
-
-msgid "Value"
-msgstr "Väärtus"
-
-msgid "Setup Text Attributes"
-msgstr ""
-
-msgid "This property does not apply unless Use Underline is set."
-msgstr ""
-
-msgid "Property not selected"
-msgstr "Omadus on valimata"
-
-msgid "This property is only for use in dialog action buttons"
-msgstr "See omadus on kasutamiseks ainult dialoogi tegevusnuppudes"
-
-msgid "This property is set to be controlled by an Action"
-msgstr ""
-
-msgid "GnomeUIInfo"
-msgstr "GnomeUIInfo"
-
-msgid "Choose the GnomeUIInfo stock item"
-msgstr ""
-
-#. We have to save/load icon-size as int, and fake the enum
-msgid "Icon Size"
-msgstr "Ikooni suurus"
-
-msgid "Symbolic size to use for stock icon, icon set or named icon"
-msgstr ""
-
-#, c-format
-msgid "Removing parent of %s"
-msgstr ""
-
-#, c-format
-msgid "Adding parent %s for %s"
-msgstr ""
-
-#, c-format
-msgid "Adding %s to Size Group %s"
-msgstr ""
-
-#, c-format
-msgid "Adding %s to a new Size Group"
-msgstr ""
-
-#. Add trailing new... item
-msgid "New Size Group"
-msgstr ""
-
-#, c-format
-msgid "Ordering children of %s"
-msgstr ""
-
-#, c-format
-msgid "Insert placeholder to %s"
-msgstr ""
-
-#, c-format
-msgid "Remove placeholder from %s"
-msgstr ""
-
-#, c-format
-msgid "Insert Row on %s"
-msgstr ""
-
-#, c-format
-msgid "Insert Column on %s"
-msgstr ""
-
-#, c-format
-msgid "Remove Column on %s"
-msgstr ""
-
-#, c-format
-msgid "Remove Row on %s"
-msgstr ""
-
-#, c-format
-msgid "Insert page on %s"
-msgstr ""
-
-#, c-format
-msgid "Remove page from %s"
-msgstr ""
-
-msgid "This property only applies to stock images"
-msgstr ""
-
-msgid "This property only applies to named icons"
-msgstr ""
-
-msgid "<separator>"
-msgstr "<eraldaja>"
-
-msgid "<custom>"
-msgstr "<kohandatud>"
-
-msgid "Tool Item"
-msgstr ""
-
-msgid "Packing"
-msgstr ""
-
-msgid "Menu Item"
-msgstr "Menüükirje"
-
-msgid "Normal item"
-msgstr "Tavaline kirje"
-
-msgid "Image item"
-msgstr "Pildiga kirje"
-
-msgid "Check item"
-msgstr "Märkeruuduga kirje"
-
-msgid "Radio item"
-msgstr "Raadionupuga kirje"
-
-msgid "Separator item"
-msgstr "Eraldav kirje"
-
-msgid "Edit Menu Bar"
-msgstr ""
-
-msgid "Edit Menu"
-msgstr ""
-
-msgid "Print S_etup"
-msgstr ""
-
-msgid "Find Ne_xt"
-msgstr ""
-
-msgid "_Undo Move"
-msgstr ""
-
-msgid "_Redo Move"
-msgstr ""
-
-msgid "Select _All"
-msgstr ""
-
-msgid "_New Game"
-msgstr "_Uus mäng"
-
-msgid "_Pause game"
-msgstr ""
-
-msgid "_Restart Game"
-msgstr ""
-
-msgid "_Hint"
-msgstr "_Vihje"
-
-msgid "_Scores..."
-msgstr "_Tulemused..."
-
-msgid "_End Game"
-msgstr ""
-
-msgid "Create New _Window"
-msgstr ""
-
-msgid "_Close This Window"
-msgstr "_Sulge see aken"
-
-msgid "_Settings"
-msgstr "_Sätted"
-
-msgid "Fi_les"
-msgstr "_Failid"
-
-msgid "_Windows"
-msgstr "_Aknad"
-
-msgid "_Game"
-msgstr "_Mäng"
-
-msgid "Button"
-msgstr "Nupp"
-
-msgid "Toggle"
-msgstr ""
-
-msgid "Radio"
-msgstr ""
-
-msgid "Menu"
-msgstr "Menüü"
-
-msgid "Custom"
-msgstr "Kohandatud"
-
-msgid "Separator"
-msgstr "Eraldaja"
-
-msgid "Normal"
-msgstr "Tavaline"
-
-msgid "Image"
-msgstr "Pilt"
-
-msgid "Check"
-msgstr ""
-
-msgid "Tool Bar Editor"
-msgstr ""
-
-msgid "This property does not apply when Ellipsize is set."
-msgstr ""
-
-msgid "This property does not apply when Angle is set."
-msgstr ""
-
-msgid "Introduction page"
-msgstr "Sissejuhatav leht"
-
-msgid "Content page"
-msgstr "Sisuleht"
-
-msgid "Confirmation page"
-msgstr "Kinnituse küsimise leht"
-
-#, c-format
-msgid "%s is set to load %s from the model"
-msgstr ""
-
-#, c-format
-msgid "%s is set to manipulate %s directly"
-msgstr ""
-
-msgid "Tree View Column"
-msgstr ""
-
-msgid "Cell Renderer"
-msgstr ""
-
-msgid "Properties and Attributes"
-msgstr "Omadused ja rekvisiidid"
-
-msgid "Common Properties and Attributes"
-msgstr "Üldised omadused ja rekvisiidid"
-
-#. Text of the textview
-#. Text...
-msgid "Text"
-msgstr "Tekst"
-
-#. Accelerator
-msgid "Accelerator"
-msgstr ""
-
-msgid "Combo"
-msgstr ""
-
-msgid "Spin"
-msgstr ""
-
-msgid "Pixbuf"
-msgstr ""
-
-#. Progress...
-msgid "Progress"
-msgstr "Edenemine"
-
-msgid "Spinner"
-msgstr ""
-
-msgid "Icon View Editor"
-msgstr "Ikoonivaate redaktor"
-
-#  ../plugins/gtk+/glade-gtk.c:10982
-msgid "Combo Editor"
-msgstr ""
-
-msgid "Column"
-msgstr "Veerg"
-
-msgid "Tree View Editor"
-msgstr "Puuvaate redaktor"
-
-#. XXX FIXME: We should hide the actual "fixed-height-mode" setting from
-#. * treeview editors and provide a custom control that sets all its columns
-#. * to fixed size and then control the column's sensitivity accordingly.
-#.
-msgid ""
-"Columns must have a fixed size inside a treeview with fixed height mode set"
-msgstr ""
-
-#. Dont really add/remove actions (because name conflicts inside groups)
-#.
-msgid "The accelerator can only be set when inside an Action Group."
-msgstr ""
-
-msgid "<choose a key>"
-msgstr "<vali klahv>"
-
-msgid "Accelerator Key"
-msgstr "Kiirklahv"
-
-msgid "Choose accelerator keys..."
-msgstr "Kiirklahvide valimine..."
-
-msgid "A file name, full or relative path to load an icon for this toolbutton"
-msgstr ""
-
 msgid "A list of accelerator keys"
 msgstr "Kiirklahvide loetelu"
 
@@ -2036,9 +1450,6 @@ msgstr ""
 
 msgid "A symbolic icon size for the stock icon"
 msgstr ""
-
-msgid "A tooltip text for this widget"
-msgstr "Selle vidina kohta käiva vihje tekst"
 
 #. NOT AVAILABLES ON WIN32
 #. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
@@ -2051,6 +1462,10 @@ msgid "Accel Group"
 msgstr ""
 
 msgid "Accel Label"
+msgstr ""
+
+#. Accelerator
+msgid "Accelerator"
 msgstr ""
 
 msgid "Accelerator Mode column"
@@ -2077,7 +1492,7 @@ msgid "Action"
 msgstr "Tegevus"
 
 msgid "Action Group"
-msgstr "Tegevute grupp"
+msgstr "Tegevuste grupp"
 
 msgid "Activatable column"
 msgstr ""
@@ -2125,12 +1540,21 @@ msgstr "Alati"
 msgid "Always Center"
 msgstr "Alati keskel"
 
-#, fuzzy
 msgid "An accelerator key for this action"
-msgstr "Kiirklahvide loetelu"
+msgstr "Selle tegevuse kiirklahv"
 
 msgid "Arrow"
 msgstr "Nool"
+
+#. NOT AVAILABLES ON WIN32
+#. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
+#. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
+#.
+msgid "Artistic"
+msgstr ""
+
+msgid "Ascending"
+msgstr ""
 
 msgid "Aspect Frame"
 msgstr ""
@@ -2146,6 +1570,13 @@ msgstr "Rekvisiitide veerg"
 
 msgid "Automatic"
 msgstr "Automaatne"
+
+#. NOT AVAILABLES ON WIN32
+#. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
+#. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
+#.
+msgid "BSD"
+msgstr ""
 
 msgid "Background Color Name column"
 msgstr "Taustavärvuse nime veerg"
@@ -2174,6 +1605,12 @@ msgstr "Alt üles"
 
 msgid "Box"
 msgstr ""
+
+msgid "Browse"
+msgstr ""
+
+msgid "Button"
+msgstr "Nupp"
 
 msgid "Button 1 Motion"
 msgstr ""
@@ -2208,14 +1645,14 @@ msgstr "Lahtri taustavärvuse veerg"
 msgid "Cell Background Color name column"
 msgstr "Lahtri taustavärvuse nime veerg"
 
+msgid "Cell Renderer"
+msgstr ""
+
 msgid "Center"
 msgstr "Keskel"
 
 msgid "Center on Parent"
 msgstr "Vanema keskel"
-
-msgid "Centimeters"
-msgstr ""
 
 msgid "Character"
 msgstr "Märk"
@@ -2248,11 +1685,11 @@ msgstr "Värvuse valimise dialoog"
 msgid "Columns"
 msgstr "Veerud"
 
+msgid "Combo"
+msgstr ""
+
 msgid "Combo Box"
 msgstr "Valikukast"
-
-msgid "Combo Box Entry"
-msgstr "Kirjutatav valikukast"
 
 msgid "Combo Renderer"
 msgstr ""
@@ -2291,6 +1728,13 @@ msgstr ""
 msgid "Create Folder"
 msgstr "Kataloogi loomine"
 
+#. NOT AVAILABLES ON WIN32
+#. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
+#. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
+#.
+msgid "Custom"
+msgstr "Kohandatud"
+
 msgid "Data"
 msgstr ""
 
@@ -2303,6 +1747,9 @@ msgstr "Vaikimisi"
 msgid "Delayed"
 msgstr ""
 
+msgid "Descending"
+msgstr ""
+
 msgid "Described By"
 msgstr ""
 
@@ -2310,7 +1757,7 @@ msgid "Description For"
 msgstr ""
 
 msgid "Description of an object, formatted for assistive technology access"
-msgstr "Objekti kirjeldus, vormindatd abistava tehnikaga ligipääsuks"
+msgstr "Objekti kirjeldus, vormindatud abistava tehnikaga ligipääsuks"
 
 msgid "Desktop"
 msgstr "Töölaud"
@@ -2390,9 +1837,8 @@ msgstr ""
 msgid "Enter a list of values to be applied on each row"
 msgstr ""
 
-#, fuzzy
 msgid "Entry Buffer"
-msgstr "Tekstipuhver"
+msgstr ""
 
 msgid "Entry Completion"
 msgstr ""
@@ -2499,6 +1945,20 @@ msgstr "Hiire neljas nupp"
 msgid "Frame"
 msgstr "Raam"
 
+#. NOT AVAILABLES ON WIN32
+#. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
+#. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
+#.
+msgid "GPL 2.0"
+msgstr ""
+
+#. NOT AVAILABLES ON WIN32
+#. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
+#. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
+#.
+msgid "GPL 3.0"
+msgstr ""
+
 msgid "Grow Only"
 msgstr ""
 
@@ -2542,9 +2002,6 @@ msgstr ""
 msgid "Horizontal Panes"
 msgstr "Rõhtpaanid"
 
-msgid "Horizontal Ruler"
-msgstr "Rõhtjoonlaud"
-
 msgid "Horizontal Scale"
 msgstr "Rõhtliugur"
 
@@ -2560,14 +2017,15 @@ msgstr ""
 msgid "Hyper Modifier"
 msgstr ""
 
-msgid "Icon"
-msgstr "Ikoon"
-
 msgid "Icon Factory"
 msgstr ""
 
 msgid "Icon Name column"
 msgstr ""
+
+#. We have to save/load icon-size as int, and fake the enum
+msgid "Icon Size"
+msgstr "Ikooni suurus"
 
 msgid "Icon Sources"
 msgstr ""
@@ -2581,6 +2039,9 @@ msgstr "Ainult ikoonid"
 msgid "If Valid"
 msgstr ""
 
+msgid "Image"
+msgstr "Pilt"
+
 msgid "Image Menu Item"
 msgstr "Pildiga menüükirje"
 
@@ -2589,9 +2050,6 @@ msgstr ""
 
 msgid "In"
 msgstr "Sees"
-
-msgid "Inches"
-msgstr ""
 
 msgid "Inconsistent column"
 msgstr ""
@@ -2697,9 +2155,6 @@ msgstr ""
 msgid "Italic"
 msgstr "Kursiiv"
 
-msgid "Items"
-msgstr "Kirjed"
-
 msgid "Key Press"
 msgstr "Klahvivajutus"
 
@@ -2707,6 +2162,20 @@ msgid "Key Release"
 msgstr "Klahvivajutuse lõpp"
 
 msgid "Keycode column"
+msgstr ""
+
+#. NOT AVAILABLES ON WIN32
+#. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
+#. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
+#.
+msgid "LGPL 2.1"
+msgstr ""
+
+#. NOT AVAILABLES ON WIN32
+#. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
+#. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
+#.
+msgid "LGPL 3.0"
 msgstr ""
 
 msgid "Label For"
@@ -2751,14 +2220,27 @@ msgstr ""
 msgid "Low"
 msgstr ""
 
+#. NOT AVAILABLES ON WIN32
+#. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
+#. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
+#.
+msgid "MIT X11"
+msgstr ""
+
 msgid "Markup column"
 msgstr ""
 
 msgid "Member Of"
 msgstr ""
 
+msgid "Menu"
+msgstr "Menüü"
+
 msgid "Menu Bar"
 msgstr "Menüüriba"
+
+msgid "Menu Item"
+msgstr "Menüükirje"
 
 msgid "Menu Shell"
 msgstr ""
@@ -2787,11 +2269,17 @@ msgstr "Kõige hiljutisem kõige esimesena"
 msgid "Mouse"
 msgstr "Hiire järgi"
 
+msgid "Multiple"
+msgstr ""
+
 msgid "Never"
 msgstr "Mitte kunagi"
 
 msgid "Node Child Of"
 msgstr ""
+
+msgid "Normal"
+msgstr "Tavaline"
 
 msgid "North"
 msgstr "Põhjas"
@@ -2827,6 +2315,9 @@ msgid "Oblique"
 msgstr ""
 
 msgid "Off"
+msgstr ""
+
+msgid "Offscreen"
 msgstr ""
 
 msgid "Ok"
@@ -2868,9 +2359,6 @@ msgstr ""
 msgid "Pixbuf column"
 msgstr ""
 
-msgid "Pixels"
-msgstr ""
-
 msgid "Pointer Motion"
 msgstr "Kursori liikumine"
 
@@ -2893,6 +2381,9 @@ msgstr "Asukoht"
 msgid "Press"
 msgstr ""
 
+msgid "Preview snapshot"
+msgstr ""
+
 msgid "Primary Icon Activatable"
 msgstr ""
 
@@ -2913,6 +2404,10 @@ msgstr ""
 
 msgid "Primary Stock Icon"
 msgstr ""
+
+#. Progress...
+msgid "Progress"
+msgstr "Edenemine"
 
 msgid "Progress Bar"
 msgstr "Edenemisriba"
@@ -3009,9 +2504,6 @@ msgstr "Paremalt vasakule"
 msgid "Rise column"
 msgstr ""
 
-msgid "Ruler"
-msgstr "Joonlaud"
-
 msgid "Save"
 msgstr "Salvestamine"
 
@@ -3084,9 +2576,6 @@ msgstr ""
 msgid "Set the description of the Release atk action"
 msgstr ""
 
-msgid "Set the text in the view's text buffer"
-msgstr ""
-
 msgid "Seventh Key"
 msgstr ""
 
@@ -3127,13 +2616,13 @@ msgstr "Kagus"
 msgid "South West"
 msgstr "Edelas"
 
-msgid "Specialized Widgets"
-msgstr ""
-
 msgid "Spin Button"
 msgstr ""
 
 msgid "Spin Renderer"
+msgstr ""
+
+msgid "Spinner"
 msgstr ""
 
 msgid "Spinner Renderer"
@@ -3232,6 +2721,9 @@ msgstr "Tekstivaade"
 msgid "Text below icons"
 msgstr "Tekst ikoonide all"
 
+msgid "Text beside icons"
+msgstr "Teksti ikoonide kõrval"
+
 msgid "Text column"
 msgstr ""
 
@@ -3239,9 +2731,6 @@ msgid "Text only"
 msgstr "Ainult tekst"
 
 msgid "The column in the model to load the value from"
-msgstr ""
-
-msgid "The items in this combo box"
 msgstr ""
 
 msgid "The number of items in the box"
@@ -3257,6 +2746,9 @@ msgid "The pango attributes for this label"
 msgstr ""
 
 msgid "The position of the menu item in the menu shell"
+msgstr ""
+
+msgid "The position of the tool item group in the palette"
 msgstr ""
 
 msgid "The position of the tool item in the toolbar"
@@ -3296,6 +2788,12 @@ msgstr "Tööriistariba"
 
 msgid "Tool Button"
 msgstr ""
+
+msgid "Tool Item Group"
+msgstr ""
+
+msgid "Tool Palette"
+msgstr "Tööriistapalett"
 
 msgid "Toolbar"
 msgstr "Tööriistariba"
@@ -3339,6 +2837,9 @@ msgstr ""
 msgid "Tree View"
 msgstr "Puuvaade"
 
+msgid "Tree View Column"
+msgstr ""
+
 msgid "Ultra Condensed"
 msgstr ""
 
@@ -3347,6 +2848,13 @@ msgstr ""
 
 msgid "Underline column"
 msgstr ""
+
+#. NOT AVAILABLES ON WIN32
+#. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
+#. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
+#.
+msgid "Unknown"
+msgstr "Tundmatu"
 
 msgid "Up"
 msgstr "Üleval"
@@ -3391,9 +2899,6 @@ msgstr ""
 msgid "Vertical Panes"
 msgstr "Püstpaanid"
 
-msgid "Vertical Ruler"
-msgstr "Püstjoonlaud"
-
 msgid "Vertical Scale"
 msgstr "Püstliugur"
 
@@ -3407,9 +2912,6 @@ msgid "Viewport"
 msgstr ""
 
 msgid "Visibility Notify"
-msgstr ""
-
-msgid "Visible"
 msgstr ""
 
 msgid "Visible column"
@@ -3478,40 +2980,360 @@ msgstr ""
 msgid "GTK+ Unix Print Toplevels"
 msgstr ""
 
-#, fuzzy
 msgid "Generate PDF"
-msgstr "Üldine"
+msgstr "Genereeri PDF"
 
-#, fuzzy
 msgid "Generate PS"
-msgstr "Üldine"
+msgstr "Genereeri PS"
 
-#, fuzzy
 msgid "Number Up"
-msgstr "Kaartide arv"
+msgstr ""
 
 msgid "Number Up Layout"
 msgstr ""
 
-#, fuzzy
 msgid "Page Set"
-msgstr "Lehe suurus:"
+msgstr ""
 
 msgid "Page Setup Dialog"
 msgstr "Lehekülje sätete dialoog"
 
-msgid "Preview"
-msgstr ""
-
 msgid "Print Dialog"
 msgstr "Printimisdialoog"
 
-#, fuzzy
 msgid "Reverse"
-msgstr "Mitte kunagi"
+msgstr ""
 
 msgid "Scale"
 msgstr ""
+
+msgctxt "textattr"
+msgid "Style"
+msgstr "Laad"
+
+msgctxt "textattr"
+msgid "Weight"
+msgstr "Paremal"
+
+msgctxt "textattr"
+msgid "Variant"
+msgstr ""
+
+msgctxt "textattr"
+msgid "Stretch"
+msgstr ""
+
+msgctxt "textattr"
+msgid "Underline"
+msgstr "Allajoonitud"
+
+msgctxt "textattr"
+msgid "Strikethrough"
+msgstr "Läbijoonitud"
+
+msgctxt "textattr"
+msgid "Gravity"
+msgstr ""
+
+msgctxt "textattr"
+msgid "Gravity Hint"
+msgstr ""
+
+msgctxt "textattr"
+msgid "Size"
+msgstr "Suurus"
+
+msgctxt "textattr"
+msgid "Absolute Size"
+msgstr "Absoluutne suurus"
+
+msgctxt "textattr"
+msgid "Foreground Color"
+msgstr "Teksti värvus"
+
+msgctxt "textattr"
+msgid "Background Color"
+msgstr "Taustavärvus"
+
+msgctxt "textattr"
+msgid "Underline Color"
+msgstr "Allajoonimise värvus"
+
+msgctxt "textattr"
+msgid "Strikethrough Color"
+msgstr "Läbijoonimise värvus"
+
+msgctxt "textattr"
+msgid "Scale"
+msgstr ""
+
+msgid "<Enter Value>"
+msgstr "<Sisesta väärtus>"
+
+msgid "Unset"
+msgstr ""
+
+msgid "Select a color"
+msgstr "Vali värvus"
+
+msgid "Attribute"
+msgstr "Rekvisiit"
+
+msgid "Value"
+msgstr "Väärtus"
+
+msgid "Setup Text Attributes"
+msgstr ""
+
+msgid "This property does not apply unless Use Underline is set."
+msgstr ""
+
+msgid "Property not selected"
+msgstr "Omadus on valimata"
+
+msgid "This property is only for use in dialog action buttons"
+msgstr "See omadus on kasutamiseks ainult dialoogi tegevusnuppudes"
+
+msgid "This property is set to be controlled by an Action"
+msgstr ""
+
+msgid "Symbolic size to use for stock icon, icon set or named icon"
+msgstr ""
+
+#, c-format
+msgid "Removing parent of %s"
+msgstr ""
+
+#, c-format
+msgid "Adding parent %s for %s"
+msgstr ""
+
+#, c-format
+msgid "Adding %s to Size Group %s"
+msgstr ""
+
+#, c-format
+msgid "Adding %s to a new Size Group"
+msgstr ""
+
+#. Add trailing new... item
+msgid "New Size Group"
+msgstr ""
+
+#, c-format
+msgid "Ordering children of %s"
+msgstr ""
+
+#, c-format
+msgid "Insert placeholder to %s"
+msgstr ""
+
+#, c-format
+msgid "Remove placeholder from %s"
+msgstr ""
+
+#, c-format
+msgid "Placing %s inside %s"
+msgstr ""
+
+#, c-format
+msgid "Insert Row on %s"
+msgstr ""
+
+#, c-format
+msgid "Insert Column on %s"
+msgstr ""
+
+#, c-format
+msgid "Remove Column on %s"
+msgstr ""
+
+#, c-format
+msgid "Remove Row on %s"
+msgstr ""
+
+#, c-format
+msgid "Insert page on %s"
+msgstr ""
+
+#, c-format
+msgid "Remove page from %s"
+msgstr ""
+
+msgid "This property only applies to stock images"
+msgstr ""
+
+msgid "This property only applies to named icons"
+msgstr ""
+
+msgid "<separator>"
+msgstr "<eraldaja>"
+
+msgid "<custom>"
+msgstr "<kohandatud>"
+
+msgid "Tool Item"
+msgstr ""
+
+msgid "Packing"
+msgstr ""
+
+msgid "Normal item"
+msgstr "Tavaline kirje"
+
+msgid "Image item"
+msgstr "Pildiga kirje"
+
+msgid "Check item"
+msgstr "Märkeruuduga kirje"
+
+msgid "Radio item"
+msgstr "Raadionupuga kirje"
+
+msgid "Separator item"
+msgstr "Eraldav kirje"
+
+msgid "Edit Menu Bar"
+msgstr ""
+
+msgid "Edit Menu"
+msgstr ""
+
+msgid "Toggle"
+msgstr ""
+
+msgid "Radio"
+msgstr ""
+
+msgid "Separator"
+msgstr "Eraldaja"
+
+msgid "Check"
+msgstr ""
+
+msgid "Tool Bar Editor"
+msgstr ""
+
+msgid "Group"
+msgstr "Grupp"
+
+msgid "Tool Palette Editor"
+msgstr ""
+
+msgid "This property does not apply when Ellipsize is set."
+msgstr ""
+
+msgid "This property does not apply when Angle is set."
+msgstr ""
+
+msgid "Introduction page"
+msgstr "Sissejuhatav leht"
+
+msgid "Content page"
+msgstr "Sisuleht"
+
+msgid "Confirmation page"
+msgstr "Kinnituse küsimise leht"
+
+#, c-format
+msgid "%s is set to load %s from the model"
+msgstr ""
+
+#, c-format
+msgid "%s is set to manipulate %s directly"
+msgstr ""
+
+msgid "Properties and Attributes"
+msgstr "Omadused ja rekvisiidid"
+
+msgid "Common Properties and Attributes"
+msgstr "Üldised omadused ja rekvisiidid"
+
+#. Text...
+msgid "Text"
+msgstr "Tekst"
+
+msgid "Spin"
+msgstr ""
+
+msgid "Pixbuf"
+msgstr ""
+
+msgid "Icon View Editor"
+msgstr "Ikoonivaate redaktor"
+
+#  ../plugins/gtk+/glade-gtk.c:10982
+msgid "Combo Editor"
+msgstr ""
+
+msgid "Column"
+msgstr "Veerg"
+
+msgid "Tree View Editor"
+msgstr "Puuvaate redaktor"
+
+#. XXX FIXME: We should hide the actual "fixed-height-mode" setting from
+#. * treeview editors and provide a custom control that sets all its columns
+#. * to fixed size and then control the column's sensitivity accordingly.
+#.
+msgid ""
+"Columns must have a fixed size inside a treeview with fixed height mode set"
+msgstr ""
+
+#. --------------------------- GtkAction ---------------------------------
+msgid "The accelerator can only be set when inside an Action Group."
+msgstr ""
+
+msgid "Recent"
+msgstr "Hiljutine"
+
+msgid "Action Group Editor"
+msgstr "Tegevusgrupi redaktor"
+
+msgid "Tag"
+msgstr ""
+
+msgid "Text Tag Table Editor"
+msgstr ""
+
+msgid "X position property"
+msgstr "X-asukoha omadus"
+
+msgid "The property used to set the X position of a child object"
+msgstr "Alamobjekti x-asukoha määramiseks kasutatav omadus"
+
+msgid "Y position property"
+msgstr "Y-asukoha omadus"
+
+msgid "The property used to set the Y position of a child object"
+msgstr "Alamobjekti y-asukoha määramiseks kasutatav omadus"
+
+msgid "Width property"
+msgstr "Laiuse omadus"
+
+msgid "The property used to set the width of a child object"
+msgstr "Alamobjekti laiuse määramiseks kasutatav omadus"
+
+msgid "Height property"
+msgstr "Kõrguse omadus"
+
+msgid "The property used to set the height of a child object"
+msgstr "Alamobjekti kõrguse määramiseks kasutatav omadus"
+
+msgid "Can resize"
+msgstr ""
+
+msgid "Whether this container supports resizes of child widgets"
+msgstr ""
+
+msgid "<choose a key>"
+msgstr "<vali klahv>"
+
+msgid "Accelerator Key"
+msgstr "Kiirklahv"
+
+msgid "Choose accelerator keys..."
+msgstr "Kiirklahvide valimine..."
 
 #, c-format
 msgid "Setting columns on %s"
@@ -3523,18 +3345,13 @@ msgstr ""
 msgid "Add and remove columns:"
 msgstr ""
 
-#, fuzzy
 msgid "Column type"
-msgstr "Veerg"
+msgstr "Veeru liik"
 
-#, fuzzy
 msgid "Column name"
-msgstr "Veerg"
+msgstr "Veeru nimi"
 
 msgid "Add and remove rows:"
-msgstr ""
-
-msgid "Sequential editing:"
 msgstr ""
 
 #, c-format
@@ -3653,7 +3470,6 @@ msgid ""
 "key to remove the selected column)"
 msgstr ""
 
-#. Add descriptive label
 msgid ""
 "Add remove and edit rows of data (you can optionally use Ctrl+N to add new "
 "rows and the Delete key to remove the selected row)"
@@ -3782,6 +3598,177 @@ msgstr ""
 msgid "Setting %s to not use action appearance"
 msgstr ""
 
+#, fuzzy
+#~ msgid "Format:"
+#~ msgstr "Vorming"
+
+#~ msgid "Clipboard"
+#~ msgstr "Lõikelaud"
+
+#~ msgid "Active Project"
+#~ msgstr "Aktiivne projekt"
+
+#~ msgid "The active project"
+#~ msgstr "Aktiivne projekt"
+
+#~ msgid "Current mode for the pointer in the workspace"
+#~ msgstr "Tööala praegune kursorirežiim"
+
+#~ msgid "_Has context prefix"
+#~ msgstr "_Omab kontekstipreefiksit"
+
+#, fuzzy
+#~ msgid "Whether the translatable string has a context prefix"
+#~ msgstr "Kas tõlgitav string omab kontekstipreefiksit või mitte"
+
+#~ msgid "Value:"
+#~ msgstr "Väärtus:"
+
+#~ msgid "The current value"
+#~ msgstr "Hetkeväärtus"
+
+#~ msgid "Lower:"
+#~ msgstr "Väikseim:"
+
+#~ msgid "The minimum value"
+#~ msgstr "Väikseim võimalik väärtus"
+
+#~ msgid "Upper:"
+#~ msgstr "Suurim:"
+
+#~ msgid "The maximum value"
+#~ msgstr "Suurim võimalik väärtus"
+
+#~ msgid "Step inc:"
+#~ msgstr "Sammu suurus:"
+
+#~ msgid "The increment to use to make minor changes to the value"
+#~ msgstr "Väärtuse väikese sammuga muutmisel kasutatav sammu suurus"
+
+#~ msgid "Page inc:"
+#~ msgstr "Hüppe suurus:"
+
+#~ msgid "The increment to use to make major changes to the value"
+#~ msgstr "Väärtuse suure sammuga muutmisel kasutatav sammu suurus"
+
+#~ msgid "Page size:"
+#~ msgstr "Lehe suurus:"
+
+#~ msgid ""
+#~ "The page size (in a GtkScrollbar this is the size of the area which is "
+#~ "currently visible)"
+#~ msgstr ""
+#~ "Lehe suurus (GtkScrollbar'i korral on selleks hetkel nähtava ala suurus)"
+
+#~ msgid "Format"
+#~ msgstr "Vorming"
+
+#~ msgid "The project file format"
+#~ msgstr "Projektifaili vorming"
+
+#~ msgid "This widget is only supported in libglade format"
+#~ msgstr "See vidin on toetatud ainult libglade vormingus"
+
+#~ msgid "This widget is not supported in libglade format"
+#~ msgstr "See vidin ei ole libglade vormingu poolt toetatud"
+
+#~ msgid "This property is not supported in libglade format"
+#~ msgstr "See omadus ei ole libglade vormingu poolt toetatud"
+
+#~ msgid ""
+#~ "[%s] Property '%s' of object class '%s' is not supported in libglade "
+#~ "format\n"
+#~ msgstr ""
+#~ "[%1$s] Objektiklassi '%3$s' omadus '%2$s' ei ole libglade vormingu poolt "
+#~ "toetatud\n"
+
+#~ msgid "This property is only supported in libglade format"
+#~ msgstr "See omadus on toetatud ainult libglade vormingus"
+
+#~ msgid "Project file format:"
+#~ msgstr "Projektifaili vorming:"
+
+#~ msgid "Has Context"
+#~ msgstr "Omab konteksti"
+
+#~ msgid "<Type here>"
+#~ msgstr "<Sisesta siia>"
+
+#, fuzzy
+#~ msgid "<Object>"
+#~ msgstr "Objekt"
+
+#, fuzzy
+#~ msgid "The name of the signal to connect to"
+#~ msgstr "Vidina nimi"
+
+#~ msgid "File format"
+#~ msgstr "Failivorming"
+
+#~ msgid ""
+#~ "%s exists.\n"
+#~ "Do you want to replace it?"
+#~ msgstr ""
+#~ "%s on juba olemas.\n"
+#~ "Kas soovid seda asendada?"
+
+#~ msgid "Error writing to %s: %s"
+#~ msgstr "Viga %s kirjutamisel: %s"
+
+#~ msgid "Error reading %s: %s"
+#~ msgstr "Viga %s lugemisel: %s"
+
+#~ msgid "Failed to open %s for writing: %s"
+#~ msgstr "Tõrge %s avamisel kirjutamiseks: %s"
+
+#~ msgid "Failed to open %s for reading: %s"
+#~ msgstr "Tõrge %s avamisel lugemiseks: %s"
+
+#~ msgid "GnomeUIInfo"
+#~ msgstr "GnomeUIInfo"
+
+#~ msgid "_New Game"
+#~ msgstr "_Uus mäng"
+
+#~ msgid "_Hint"
+#~ msgstr "_Vihje"
+
+#~ msgid "_Scores..."
+#~ msgstr "_Tulemused..."
+
+#~ msgid "_Close This Window"
+#~ msgstr "_Sulge see aken"
+
+#~ msgid "_Settings"
+#~ msgstr "_Sätted"
+
+#~ msgid "Fi_les"
+#~ msgstr "_Failid"
+
+#~ msgid "_Windows"
+#~ msgstr "_Aknad"
+
+#~ msgid "_Game"
+#~ msgstr "_Mäng"
+
+#~ msgid "A tooltip text for this widget"
+#~ msgstr "Selle vidina kohta käiva vihje tekst"
+
+#~ msgid "Combo Box Entry"
+#~ msgstr "Kirjutatav valikukast"
+
+#~ msgid "Horizontal Ruler"
+#~ msgstr "Rõhtjoonlaud"
+
+#~ msgid "Icon"
+#~ msgstr "Ikoon"
+
+#~ msgid "Ruler"
+#~ msgstr "Joonlaud"
+
+#~ msgid "Vertical Ruler"
+#~ msgstr "Püstjoonlaud"
+
 #~ msgid "Could not display the URL '%s'"
 #~ msgstr "URL-i '%s' pole võimalik kuvada"
 
@@ -3796,9 +3783,6 @@ msgstr ""
 
 #~ msgid "%s catalog"
 #~ msgstr "%s kataloog"
-
-#~ msgid "User data"
-#~ msgstr "Kasutaja andmed"
 
 #~ msgid "Creation Function"
 #~ msgstr "Loomisfunktsioon"
@@ -3937,9 +3921,6 @@ msgstr ""
 
 #~ msgid "Title Foreground Color"
 #~ msgstr "Pealkirja teksti värvus"
-
-#~ msgid "Unknown"
-#~ msgstr "Tundmatu"
 
 #~ msgid "Watermark"
 #~ msgstr "Vesimärk"
