@@ -64,18 +64,20 @@ typedef enum
 
 enum
 {
-  WIDGET_EVENT,
+  DUMMY_SIGNAL,
   LAST_SIGNAL
 };
 
 struct _GladeDesignLayoutPrivate
 {
-  GdkWindow *event_window;
+  GdkWindow *window, *offscreen_window;
 
   GdkCursor *cursor_resize_bottom;
   GdkCursor *cursor_resize_right;
   GdkCursor *cursor_resize_bottom_right;
 
+  GladeProject *project;
+    
   /* state machine */
   Activity activity;            /* the current activity */
   GtkRequisition *current_size_request;
@@ -88,9 +90,28 @@ struct _GladeDesignLayoutPrivate
 static guint glade_design_layout_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (GladeDesignLayout, glade_design_layout, GTK_TYPE_BIN)
-     static PointerRegion
-         glade_design_layout_get_pointer_region (GladeDesignLayout * layout,
-                                                 gint x, gint y)
+
+static void
+ensure_project (GtkWidget * layout)
+{
+  GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (layout);
+  GtkWidget *parent = layout;
+    
+  if (priv->project) return;
+
+  while ((parent = gtk_widget_get_parent (parent)))
+    {
+        if (GLADE_IS_DESIGN_VIEW (parent))
+        {
+            priv->project = glade_design_view_get_project (GLADE_DESIGN_VIEW (parent));
+            g_message ("jajajaja");
+            return;
+        }
+    }
+}
+
+static PointerRegion
+glade_design_layout_get_pointer_region (GladeDesignLayout * layout, gint x, gint y)
 {
   GladeDesignLayoutPrivate *priv;
   GtkAllocation child_allocation;
@@ -101,6 +122,10 @@ G_DEFINE_TYPE (GladeDesignLayout, glade_design_layout, GTK_TYPE_BIN)
   gtk_widget_get_allocation (gtk_bin_get_child (GTK_BIN (layout)),
                              &child_allocation);
 
+  gint offset = gtk_container_get_border_width (GTK_CONTAINER (layout)) + PADDING + OUTLINE_WIDTH;
+  child_allocation.x += offset;
+  child_allocation.y += offset;
+    
   if ((x >= (child_allocation.x + child_allocation.width)) &&
       (x < (child_allocation.x + child_allocation.width + OUTLINE_WIDTH)))
     {
@@ -157,7 +182,7 @@ glade_design_layout_leave_notify_event (GtkWidget * widget,
   priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
 
   if (priv->activity == ACTIVITY_NONE)
-    gdk_window_set_cursor (priv->event_window, NULL);
+    gdk_window_set_cursor (priv->window, NULL);
 
   return FALSE;
 }
@@ -194,16 +219,22 @@ glade_design_layout_motion_notify_event (GtkWidget * widget,
   gint x, y;
   gint new_width, new_height;
 
-  if ((child = gtk_bin_get_child (GTK_BIN (widget))) == NULL)
+  if ((child = gtk_bin_get_child (GTK_BIN (widget))) == NULL ||
+      ev->window != gtk_widget_get_window (widget))
     return FALSE;
 
   priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
 
-  gdk_window_get_pointer (priv->event_window, &x, &y, NULL);
+  gint offset = gtk_container_get_border_width (GTK_CONTAINER (widget)) + PADDING + OUTLINE_WIDTH;
+  x = ev->x;
+  y = ev->y;
 
   child_glade_widget = glade_widget_get_from_gobject (child);
   gtk_widget_get_allocation (child, &allocation);
 
+  allocation.x += offset;
+  allocation.y += offset;
+    
   if (priv->activity == ACTIVITY_RESIZE_WIDTH)
     {
       new_width = x - priv->dx - PADDING - OUTLINE_WIDTH;
@@ -252,22 +283,64 @@ glade_design_layout_motion_notify_event (GtkWidget * widget,
                                                   x, y);
 
       if (region == REGION_EAST)
-        gdk_window_set_cursor (priv->event_window, priv->cursor_resize_right);
+        gdk_window_set_cursor (priv->window, priv->cursor_resize_right);
 
       else if (region == REGION_SOUTH)
-        gdk_window_set_cursor (priv->event_window, priv->cursor_resize_bottom);
+        gdk_window_set_cursor (priv->window, priv->cursor_resize_bottom);
 
       else if (region == REGION_SOUTH_EAST ||
                region == REGION_WEST_OF_SOUTH_EAST ||
                region == REGION_NORTH_OF_SOUTH_EAST)
-        gdk_window_set_cursor (priv->event_window,
+        gdk_window_set_cursor (priv->window,
                                priv->cursor_resize_bottom_right);
 
       else if (region == REGION_OUTSIDE)
-        gdk_window_set_cursor (priv->event_window, NULL);
+        gdk_window_set_cursor (priv->window, NULL);
     }
 
   return FALSE;
+}
+
+typedef struct
+{
+  GtkWidget *toplevel;
+  gint x;
+  gint y;
+  GtkWidget *placeholder;
+  GladeWidget *gwidget;
+} GladeFindInContainerData;
+
+static void
+glade_design_layout_find_inside_container (GtkWidget * widget,
+                                           GladeFindInContainerData * data)
+{
+  GtkAllocation allocation;
+  gint x;
+  gint y;
+
+  if (data->gwidget || !gtk_widget_get_mapped (widget))
+    return;
+
+//  gtk_widget_translate_coordinates (data->toplevel, widget, data->x, data->y, &x, &y);
+  x = data->x;
+  y = data->y;
+  gtk_widget_get_allocation (widget, &allocation);
+
+  if (x >= 0 && x < allocation.width && y >= 0 && y < allocation.height)
+    {
+      if (GLADE_IS_PLACEHOLDER (widget))
+        data->placeholder = widget;
+      else
+        {
+          if (GTK_IS_CONTAINER (widget))
+            gtk_container_forall (GTK_CONTAINER (widget), (GtkCallback)
+                                  glade_design_layout_find_inside_container,
+                                  data);
+
+          if (!data->gwidget)
+            data->gwidget = glade_widget_get_from_gobject (widget);
+        }
+    }
 }
 
 static gboolean
@@ -284,10 +357,11 @@ glade_design_layout_button_press_event (GtkWidget * widget, GdkEventButton * ev)
 
   priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
 
-  gdk_window_get_pointer (priv->event_window, &x, &y, NULL);
+  x = ev->x;
+  y = ev->y;
+
   region =
-      glade_design_layout_get_pointer_region (GLADE_DESIGN_LAYOUT (widget), x,
-                                              y);
+      glade_design_layout_get_pointer_region (GLADE_DESIGN_LAYOUT (widget), x, y);
 
   if (((GdkEventButton *) ev)->button == 1)
     {
@@ -298,30 +372,30 @@ glade_design_layout_button_press_event (GtkWidget * widget, GdkEventButton * ev)
       if (region == REGION_EAST)
         {
           priv->activity = ACTIVITY_RESIZE_WIDTH;
-          gdk_window_set_cursor (priv->event_window, priv->cursor_resize_right);
+          gdk_window_set_cursor (priv->window, priv->cursor_resize_right);
         }
       if (region == REGION_SOUTH)
         {
           priv->activity = ACTIVITY_RESIZE_HEIGHT;
-          gdk_window_set_cursor (priv->event_window,
+          gdk_window_set_cursor (priv->window,
                                  priv->cursor_resize_bottom);
         }
       if (region == REGION_SOUTH_EAST)
         {
           priv->activity = ACTIVITY_RESIZE_WIDTH_AND_HEIGHT;
-          gdk_window_set_cursor (priv->event_window,
+          gdk_window_set_cursor (priv->window,
                                  priv->cursor_resize_bottom_right);
         }
       if (region == REGION_WEST_OF_SOUTH_EAST)
         {
           priv->activity = ACTIVITY_RESIZE_WIDTH_AND_HEIGHT;
-          gdk_window_set_cursor (priv->event_window,
+          gdk_window_set_cursor (priv->window,
                                  priv->cursor_resize_bottom_right);
         }
       if (region == REGION_NORTH_OF_SOUTH_EAST)
         {
           priv->activity = ACTIVITY_RESIZE_WIDTH_AND_HEIGHT;
-          gdk_window_set_cursor (priv->event_window,
+          gdk_window_set_cursor (priv->window,
                                  priv->cursor_resize_bottom_right);
         }
     }
@@ -342,7 +416,7 @@ glade_design_layout_button_release_event (GtkWidget * widget,
   priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
 
   priv->activity = ACTIVITY_NONE;
-  gdk_window_set_cursor (priv->event_window, NULL);
+  gdk_window_set_cursor (priv->window, NULL);
 
   return FALSE;
 }
@@ -426,47 +500,51 @@ static void
 glade_design_layout_size_allocate (GtkWidget * widget,
                                    GtkAllocation * allocation)
 {
-  GladeDesignLayoutPrivate *priv;
-  GladeWidget *gchild;
-  GtkAllocation child_allocation;
   GtkWidget *child;
-  gint border_width;
-  gint child_width = 0;
-  gint child_height = 0;
-
-  priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
-
+        
   gtk_widget_set_allocation (widget, allocation);
-  border_width = gtk_container_get_border_width (GTK_CONTAINER (widget));
-
+    
   if (gtk_widget_get_realized (widget))
-    gdk_window_move_resize (priv->event_window,
-                            allocation->x, allocation->y,
-                            allocation->width, allocation->height);
-
+    gdk_window_move_resize (gtk_widget_get_window (widget),
+                            allocation->x,
+                            allocation->y,
+                            allocation->width,
+                            allocation->height);
+    
   child = gtk_bin_get_child (GTK_BIN (widget));
 
   if (child && gtk_widget_get_visible (child))
     {
+      gint border_width, child_width = 0, child_height = 0;
+      GladeDesignLayoutPrivate *priv;
+      GtkAllocation child_allocation;
       GtkRequisition requisition;
-
-      gchild = glade_widget_get_from_gobject (child);
+      GladeWidget *gchild;
+        
+      gchild = glade_widget_get_from_gobject (child);        
       g_assert (gchild);
 
       g_object_get (gchild,
                     "toplevel-width", &child_width,
                     "toplevel-height", &child_height, NULL);
 
+      priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
+      border_width = gtk_container_get_border_width (GTK_CONTAINER (widget));
       gtk_widget_get_preferred_size (child, &requisition, NULL);
 
-      child_allocation.x =
-          allocation->x + border_width + PADDING + OUTLINE_WIDTH;
-      child_allocation.y =
-          allocation->y + border_width + PADDING + OUTLINE_WIDTH;
-
+      child_allocation.x = allocation->x + border_width + PADDING + OUTLINE_WIDTH;
+      child_allocation.y = allocation->y +border_width + PADDING + OUTLINE_WIDTH;
       child_allocation.width = MAX (requisition.width, child_width);
       child_allocation.height = MAX (requisition.height, child_height);
 
+      /* FIXME: here we make the offscreen bigger because otherwise it gets clipped, need to investigate further */
+      if (gtk_widget_get_realized (widget))
+        gdk_window_move_resize (priv->offscreen_window,
+                                child_allocation.x,
+                                child_allocation.y,
+                                child_allocation.width,
+                                child_allocation.height);
+      child_allocation.x = child_allocation.y = 0;
       gtk_widget_size_allocate (child, &child_allocation);
     }
 }
@@ -474,17 +552,14 @@ glade_design_layout_size_allocate (GtkWidget * widget,
 static void
 glade_design_layout_add (GtkContainer * container, GtkWidget * widget)
 {
-  GladeDesignLayout *layout;
-  GtkWidget *parent;
-
-  layout = GLADE_DESIGN_LAYOUT (container);
-  parent = GTK_WIDGET (container);
+  GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (container);
+  GladeDesignLayout *layout = GLADE_DESIGN_LAYOUT (container);
 
   layout->priv->current_size_request->width = 0;
   layout->priv->current_size_request->height = 0;
 
   /* XXX I guess we need to queue these up until the design-layout actually gets an allocation */
-  gtk_widget_set_parent_window (widget, gtk_widget_get_window (parent));
+  gtk_widget_set_parent_window (widget, priv->offscreen_window);
 
   GTK_CONTAINER_CLASS (glade_design_layout_parent_class)->add (container,
                                                                widget);
@@ -534,9 +609,18 @@ glade_design_layout_finalize (GObject * object)
   G_OBJECT_CLASS (glade_design_layout_parent_class)->finalize (object);
 }
 
+
+static gboolean
+glade_design_layout_damage (GtkWidget *widget, GdkEventExpose *event)
+{
+  gdk_window_invalidate_rect (gtk_widget_get_window (widget), NULL, TRUE);
+  return TRUE;
+}
+
 static inline void
 draw_frame (GtkWidget * widget, cairo_t * cr, int x, int y, int w, int h)
 {
+  cairo_save (cr);
   cairo_set_line_width (cr, OUTLINE_WIDTH);
   cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);
   cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
@@ -546,13 +630,9 @@ draw_frame (GtkWidget * widget, cairo_t * cr, int x, int y, int w, int h)
                               bg[GTK_STATE_SELECTED]);
 
   /* rectangle */
-  cairo_move_to (cr, x, y);
-  cairo_rel_line_to (cr, 0, h);
-  cairo_rel_line_to (cr, w, 0);
-  cairo_rel_line_to (cr, 0, -h);
-  cairo_close_path (cr);
+  cairo_rectangle (cr, x, y, w, h);
   cairo_stroke (cr);
-
+  cairo_restore (cr);
 #if 0
   /* shadow effect */
   cairo_set_source_rgba (cr, 0, 0, 0, 0.04);
@@ -567,6 +647,8 @@ draw_frame (GtkWidget * widget, cairo_t * cr, int x, int y, int w, int h)
 static gboolean
 glade_design_layout_draw (GtkWidget * widget, cairo_t * cr)
 {
+  GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
+
   if (gtk_cairo_should_draw_window (cr, gtk_widget_get_window (widget)))
     {
       GtkStyle *style;
@@ -595,120 +677,141 @@ glade_design_layout_draw (GtkWidget * widget, cairo_t * cr)
       if (child && gtk_widget_get_visible (child))
         {
           GtkAllocation child_allocation;
+          gint offset = border_width + PADDING + OUTLINE_WIDTH;
 
           gtk_widget_get_allocation (child, &child_allocation);
 
           /* draw frame */
           draw_frame (widget, cr,
-                      child_allocation.x - OUTLINE_WIDTH,
-                      child_allocation.y - OUTLINE_WIDTH,
+                      border_width + PADDING,
+                      border_width + PADDING,
                       child_allocation.width + 2 * OUTLINE_WIDTH,
                       child_allocation.height + 2 * OUTLINE_WIDTH);
+
+          gdk_cairo_set_source_window (cr, priv->offscreen_window, offset, offset);
+          cairo_rectangle (cr,
+                           offset, offset,
+                           child_allocation.width,
+                           child_allocation.height);
+          cairo_fill (cr);
+
+          /* Fixme: this is just a hack to have selection working */
+          ensure_project (widget);
+          /* Draw selection */
+          if (priv->project)
+            {
+                GList *widgets = glade_project_selection_get (priv->project);
+
+                if (widgets)
+                {
+                    child = widgets->data;
+                    gtk_widget_get_allocation (child, &child_allocation);
+                    gdk_cairo_set_source_color (cr,
+                                                &gtk_widget_get_style (widget)->bg[GTK_STATE_SELECTED]);
+                    cairo_rectangle (cr,
+                                     child_allocation.x + offset,
+                                     child_allocation.y + offset,
+                                     child_allocation.width,
+                                     child_allocation.height);
+                    cairo_clip (cr);
+                    cairo_paint_with_alpha (cr, .32);
+                }
+            }
         }
     }
-
-  return GTK_WIDGET_CLASS (glade_design_layout_parent_class)->draw (widget, cr);
-}
-
-
-
-typedef struct
-{
-  GtkWidget *toplevel;
-  gint x;
-  gint y;
-  GtkWidget *placeholder;
-  GladeWidget *gwidget;
-} GladeFindInContainerData;
-
-static void
-glade_design_layout_find_inside_container (GtkWidget * widget,
-                                           GladeFindInContainerData * data)
-{
-  GtkAllocation allocation;
-  gint x;
-  gint y;
-
-  if (data->gwidget || !gtk_widget_get_mapped (widget))
-    return;
-
-  gtk_widget_translate_coordinates (data->toplevel, widget, data->x, data->y,
-                                    &x, &y);
-  gtk_widget_get_allocation (widget, &allocation);
-
-  if (x >= 0 && x < allocation.width && y >= 0 && y < allocation.height)
+  else if (gtk_cairo_should_draw_window (cr, priv->offscreen_window))
     {
-      if (GLADE_IS_PLACEHOLDER (widget))
-        data->placeholder = widget;
-      else
-        {
-          if (GTK_IS_CONTAINER (widget))
-            gtk_container_forall (GTK_CONTAINER (widget), (GtkCallback)
-                                  glade_design_layout_find_inside_container,
-                                  data);
+      GtkWidget *child = gtk_bin_get_child (GTK_BIN (widget));
 
-          if (!data->gwidget)
-            data->gwidget = glade_widget_get_from_gobject (widget);
-        }
-    }
-}
+      gtk_render_background (gtk_widget_get_style_context (widget),
+                             cr,
+                             0, 0,
+                             gdk_window_get_width (priv->offscreen_window),
+                             gdk_window_get_height (priv->offscreen_window));
 
-/**
- * glade_design_layout_widget_event:
- * @layout:        A #GladeDesignLayout
- * @event_gwidget: the #GladeWidget that recieved event notification
- * @event:         the #GdkEvent
- *
- * This is called internally by a #GladeWidget recieving an event,
- * it will marshall the event to the proper #GladeWidget according
- * to its position in @layout.
- *
- * Returns: Whether or not the event was handled by the retrieved #GladeWidget
- */
-gboolean
-glade_design_layout_widget_event (GladeDesignLayout * layout,
-                                  GladeWidget * event_gwidget, GdkEvent * event)
-{
-  GladeFindInContainerData data = { 0, };
-  gboolean retval;
-
-  data.toplevel = GTK_WIDGET (layout);
-  gtk_widget_get_pointer (GTK_WIDGET (layout), &data.x, &data.y);
-
-  glade_design_layout_find_inside_container (gtk_bin_get_child
-                                             (GTK_BIN (layout)), &data);
-
-  /* First try a placeholder */
-  if (data.placeholder && event->type != GDK_EXPOSE)
-    {
-      retval = gtk_widget_event (data.placeholder, event);
-
-      if (retval)
-        return retval;
-    }
-
-  /* Then we try a GladeWidget */
-  if (data.gwidget)
-    {
-      g_signal_emit_by_name (layout, "widget-event",
-                             data.gwidget, event, &retval);
-
-      if (retval)
-        return retval;
+      if (child)
+          gtk_container_propagate_draw (GTK_CONTAINER (widget), child, cr);
     }
 
   return FALSE;
 }
 
-static gboolean
-glade_design_layout_widget_event_impl (GladeProject * project,
-                                       GladeWidget * gwidget, GdkEvent * event)
+static void
+to_child (GladeDesignLayout *bin,
+          double         widget_x,
+          double         widget_y,
+          double        *x_out,
+          double        *y_out)
 {
+  gint offset = gtk_container_get_border_width (GTK_CONTAINER (bin)) + PADDING + OUTLINE_WIDTH;
+  *x_out = widget_x - offset;
+  *y_out = widget_y - offset;
+}
 
-  if (glade_widget_event (gwidget, event))
-    return GLADE_WIDGET_EVENT_STOP_EMISSION | GLADE_WIDGET_EVENT_RETURN_TRUE;
-  else
-    return 0;
+static void
+to_parent (GladeDesignLayout *bin,
+           double         offscreen_x,
+           double         offscreen_y,
+           double        *x_out,
+           double        *y_out)
+{
+  gint offset = gtk_container_get_border_width (GTK_CONTAINER (bin)) + PADDING + OUTLINE_WIDTH;
+  *x_out = offscreen_x + offset;
+  *y_out = offscreen_y + offset;
+}
+
+static GdkWindow *
+pick_offscreen_child (GdkWindow     *offscreen_window,
+                      double         widget_x,
+                      double         widget_y,
+                      GladeDesignLayout *bin)
+{
+  GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (bin);
+  GtkWidget *child = gtk_bin_get_child (GTK_BIN (bin));
+/*
+  if (priv->project)
+    {
+      GList *widgets = glade_project_selection_get (priv->project);
+      if (widgets && GTK_IS_WIDGET (widgets->data))
+            child = GTK_WIDGET (widgets->data);
+    }
+*/
+  if (child && gtk_widget_get_visible (child))
+    {
+      GtkAllocation child_area;
+      double x, y;
+
+      to_child (bin, widget_x, widget_y, &x, &y);
+        
+      gtk_widget_get_allocation (child, &child_area);
+
+      if (x >= 0 && x < child_area.width && y >= 0 && y < child_area.height)
+        return priv->offscreen_window;
+    }
+
+  return NULL;
+}
+
+static void
+offscreen_window_to_parent (GdkWindow     *offscreen_window,
+                            double         offscreen_x,
+                            double         offscreen_y,
+                            double        *parent_x,
+                            double        *parent_y,
+                            GladeDesignLayout *bin)
+{
+  to_parent (bin, offscreen_x, offscreen_y, parent_x, parent_y);
+}
+
+static void
+offscreen_window_from_parent (GdkWindow     *window,
+                              double         parent_x,
+                              double         parent_y,
+                              double        *offscreen_x,
+                              double        *offscreen_y,
+                              GladeDesignLayout *bin)
+{
+  to_child (bin, parent_x, parent_y, offscreen_x, offscreen_y);
 }
 
 
@@ -716,42 +819,76 @@ static void
 glade_design_layout_realize (GtkWidget * widget)
 {
   GladeDesignLayoutPrivate *priv;
-  GtkAllocation allocation;
-  GtkStyle *style;
-  GdkWindow *window;
+  GtkStyleContext *context;
   GdkWindowAttr attributes;
-  gint attributes_mask;
-
+  GtkWidget *child;
+  gint attributes_mask, border_width;
+  GtkAllocation allocation;
+    
   priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
 
   gtk_widget_set_realized (widget, TRUE);
-
+    
   gtk_widget_get_allocation (widget, &allocation);
-  attributes.x = allocation.x;
-  attributes.y = allocation.y;
-  attributes.width = allocation.width;
-  attributes.height = allocation.height;
+  border_width = gtk_container_get_border_width (GTK_CONTAINER (widget));
 
+  attributes.x = allocation.x + border_width;
+  attributes.y = allocation.y + border_width;
+  attributes.width = allocation.width - 2 * border_width;
+  attributes.height = allocation.height - 2 * border_width;
   attributes.window_type = GDK_WINDOW_CHILD;
-  attributes.wclass = GDK_INPUT_ONLY;
-  attributes.event_mask =
-      gtk_widget_get_events (widget) |
-      GDK_POINTER_MOTION_MASK |
-      GDK_POINTER_MOTION_HINT_MASK |
-      GDK_BUTTON_PRESS_MASK |
-      GDK_BUTTON_RELEASE_MASK | GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK;
-  attributes_mask = GDK_WA_X | GDK_WA_Y;
+  attributes.event_mask = gtk_widget_get_events (widget)
+                        | GDK_EXPOSURE_MASK
+                        | GDK_POINTER_MOTION_MASK
+                        | GDK_BUTTON_PRESS_MASK
+                        | GDK_BUTTON_RELEASE_MASK
+                        | GDK_SCROLL_MASK
+                        | GDK_ENTER_NOTIFY_MASK
+                        | GDK_LEAVE_NOTIFY_MASK;
 
-  window = gtk_widget_get_parent_window (widget);
-  gtk_widget_set_window (widget, g_object_ref (window));
+  attributes.visual = gtk_widget_get_visual (widget);
+  attributes.wclass = GDK_INPUT_OUTPUT;
 
-  priv->event_window = gdk_window_new (gtk_widget_get_parent_window (widget),
-                                       &attributes, attributes_mask);
-  gdk_window_set_user_data (priv->event_window, widget);
+  attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL;
 
-  gtk_widget_style_attach (widget);
-  style = gtk_widget_get_style (widget);
-  gtk_style_set_background (style, window, GTK_STATE_NORMAL);
+  priv->window = gdk_window_new (gtk_widget_get_parent_window (widget),
+                                                &attributes, attributes_mask);
+  gtk_widget_set_window (widget, priv->window);
+  gdk_window_set_user_data (priv->window, widget);
+  g_signal_connect (priv->window, "pick-embedded-child",
+                    G_CALLBACK (pick_offscreen_child), widget);
+    
+  /* Offscreen window */
+  child = gtk_bin_get_child (GTK_BIN (widget));
+  attributes.window_type = GDK_WINDOW_OFFSCREEN;
+    
+  if (child && gtk_widget_get_visible (child))
+    {
+      GtkAllocation alloc;
+
+      gtk_widget_get_allocation (child, &alloc);
+      attributes.width = alloc.width;
+      attributes.height = alloc.height;
+    }
+    else
+      attributes.width = attributes.height = 0;
+
+  priv->offscreen_window = gdk_window_new (gtk_widget_get_root_window (widget),
+                                           &attributes, attributes_mask);
+  gdk_window_set_user_data (priv->offscreen_window, widget);
+  
+  if (child) gtk_widget_set_parent_window (child, priv->offscreen_window);
+  gdk_offscreen_window_set_embedder (priv->offscreen_window, priv->window);
+
+  g_signal_connect (priv->offscreen_window, "to-embedder",
+                    G_CALLBACK (offscreen_window_to_parent), widget);
+  g_signal_connect (priv->offscreen_window, "from-embedder",
+                    G_CALLBACK (offscreen_window_from_parent), widget);
+
+  context = gtk_widget_get_style_context (widget);
+  gtk_style_context_set_background (context, priv->window);
+  gtk_style_context_set_background (context, priv->offscreen_window);
+  gdk_window_show (priv->offscreen_window);
 }
 
 static void
@@ -761,42 +898,15 @@ glade_design_layout_unrealize (GtkWidget * widget)
 
   priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
 
-  if (priv->event_window)
+  if (priv->offscreen_window)
     {
-      gdk_window_set_user_data (priv->event_window, NULL);
-      gdk_window_destroy (priv->event_window);
-      priv->event_window = NULL;
+      gdk_window_set_user_data (priv->offscreen_window, NULL);
+      gdk_window_destroy (priv->offscreen_window);
+      priv->offscreen_window = NULL;
     }
-
+    
   GTK_WIDGET_CLASS (glade_design_layout_parent_class)->unrealize (widget);
 
-}
-
-static void
-glade_design_layout_map (GtkWidget * widget)
-{
-  GladeDesignLayoutPrivate *priv;
-
-  priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
-
-  if (priv->event_window)
-    gdk_window_show (priv->event_window);
-
-  GTK_WIDGET_CLASS (glade_design_layout_parent_class)->map (widget);
-
-}
-
-static void
-glade_design_layout_unmap (GtkWidget * widget)
-{
-  GladeDesignLayoutPrivate *priv;
-
-  priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
-
-  GTK_WIDGET_CLASS (glade_design_layout_parent_class)->unmap (widget);
-
-  if (priv->event_window)
-    gdk_window_hide (priv->event_window);
 }
 
 static void
@@ -817,7 +927,9 @@ glade_design_layout_init (GladeDesignLayout * layout)
   priv->new_width = -1;
   priv->new_height = -1;
 
-  gtk_widget_set_has_window (GTK_WIDGET (layout), FALSE);
+  priv->project = NULL;
+    
+  gtk_widget_set_has_window (GTK_WIDGET (layout), TRUE);
 }
 
 static void
@@ -837,8 +949,6 @@ glade_design_layout_class_init (GladeDesignLayoutClass * klass)
   container_class->add = glade_design_layout_add;
   container_class->remove = glade_design_layout_remove;
 
-  widget_class->map = glade_design_layout_map;
-  widget_class->unmap = glade_design_layout_unmap;
   widget_class->realize = glade_design_layout_realize;
   widget_class->unrealize = glade_design_layout_unrealize;
   widget_class->motion_notify_event = glade_design_layout_motion_notify_event;
@@ -850,36 +960,10 @@ glade_design_layout_class_init (GladeDesignLayoutClass * klass)
   widget_class->get_preferred_width = glade_design_layout_get_preferred_width;
   widget_class->size_allocate = glade_design_layout_size_allocate;
 
-  klass->widget_event = glade_design_layout_widget_event_impl;
-
-
-  /**
-   * GladeDesignLayout::widget-event:
-   * @glade_design_layout: the #GladeDesignLayout containing the #GladeWidget.
-   * @signal_editor: the #GladeWidget which received the signal.
-   * @event: the #GdkEvent
-   *
-   * Emitted when a widget event received.
-   * Connect before the default handler to block glade logic,
-   * such as selecting or resizing, by returning #GLADE_WIDGET_EVENT_STOP_EMISSION.
-   * If you want to handle the event after it passed the glade logic,
-   * but before it reaches the widget, you should connect after the default handler.
-   *
-   * Returns: #GLADE_WIDGET_EVENT_STOP_EMISSION flag to abort futher emission of the signal.
-   * #GLADE_WIDGET_EVENT_RETURN_TRUE flag in the last handler
-   * to stop propagating of the event to the appropriate widget.
-   */
-  glade_design_layout_signals[WIDGET_EVENT] =
-      g_signal_new ("widget-event",
-                    G_TYPE_FROM_CLASS (object_class),
-                    G_SIGNAL_RUN_LAST,
-                    G_STRUCT_OFFSET (GladeDesignLayoutClass, widget_event),
-                    glade_integer_handled_accumulator, NULL,
-                    glade_marshal_INT__OBJECT_BOXED,
-                    G_TYPE_INT,
-                    2,
-                    GLADE_TYPE_WIDGET,
-                    GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
+  g_signal_override_class_closure (g_signal_lookup ("damage-event", GTK_TYPE_WIDGET),
+                                   GLADE_TYPE_DESIGN_LAYOUT,
+                                   g_cclosure_new (G_CALLBACK (glade_design_layout_damage),
+                                                   NULL, NULL));
 
   g_type_class_add_private (object_class, sizeof (GladeDesignLayoutPrivate));
 }

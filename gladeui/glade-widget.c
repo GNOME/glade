@@ -1909,62 +1909,6 @@ glade_widget_set_adaptor (GladeWidget * widget, GladeWidgetAdaptor * adaptor)
   widget->priv->actions = glade_widget_adaptor_actions_new (adaptor);
 }
 
-static gboolean
-draw_selection (GtkWidget * widget_gtk, cairo_t * cr, GladeWidget * gwidget)
-{
-  glade_util_draw_selection_nodes (widget_gtk, cr);
-  return FALSE;
-}
-
-
-/* Connects a signal handler to the 'event' signal for a widget and
-   all its children recursively. We need this to draw the selection
-   rectangles and to get button press/release events reliably. */
-static void
-glade_widget_connect_signal_handlers (GtkWidget * widget_gtk,
-                                      GCallback callback, GladeWidget * gwidget)
-{
-  GList *children, *list;
-
-  /* Check if we've already connected an event handler. */
-  if (!g_object_get_data (G_OBJECT (widget_gtk),
-                          GLADE_TAG_EVENT_HANDLER_CONNECTED))
-    {
-      /* Make sure we can recieve the kind of events we're
-       * connecting for 
-       */
-      gtk_widget_add_events (widget_gtk, GDK_POINTER_MOTION_MASK |      /* Handle pointer events */
-                             GDK_POINTER_MOTION_HINT_MASK |     /* for drag/resize and   */
-                             GDK_BUTTON_PRESS_MASK |    /* managing selection.   */
-                             GDK_BUTTON_RELEASE_MASK);
-
-      g_signal_connect (G_OBJECT (widget_gtk), "event", callback, gwidget);
-
-      g_signal_connect_after (G_OBJECT (widget_gtk), "draw",
-                              G_CALLBACK (draw_selection), gwidget);
-
-
-      g_object_set_data (G_OBJECT (widget_gtk),
-                         GLADE_TAG_EVENT_HANDLER_CONNECTED,
-                         GINT_TO_POINTER (1));
-    }
-
-  /* We also need to get expose events for any children.
-   */
-  if (GTK_IS_CONTAINER (widget_gtk))
-    {
-      if ((children =
-           glade_util_container_get_all_children (GTK_CONTAINER
-                                                  (widget_gtk))) != NULL)
-        {
-          for (list = children; list; list = list->next)
-            glade_widget_connect_signal_handlers
-                (GTK_WIDGET (list->data), callback, gwidget);
-          g_list_free (children);
-        }
-    }
-}
-
 /*
  * Returns a list of GladeProperties from a list for the correct
  * child type for this widget of this container.
@@ -3357,38 +3301,6 @@ glade_widget_child_get_property (GladeWidget * widget,
 
 }
 
-static gboolean
-glade_widget_event_private (GtkWidget   *widget,
-                            GdkEvent    *event, 
-			    GladeWidget *gwidget)
-{
-  GtkWidget *layout;
-
-  /* Dont run heavy machienery for events we're not interested in 
-   * marshalling */
-  if (!IS_GLADE_WIDGET_EVENT (event->type))
-    return FALSE;
-
-  /* Find the parenting layout container */
-  layout = gtk_widget_get_ancestor (widget, GLADE_TYPE_DESIGN_LAYOUT);
-
-  /* Event outside the logical heirarchy, could be a menuitem
-   * or other such popup window, we'll presume to send it directly
-   * to the GladeWidget that connected here.
-   */
-  if (!layout)
-    return glade_widget_event (gwidget, event);
-
-  /* Let the parenting GladeDesignLayout decide which GladeWidget to
-   * marshall this event to.
-   */
-  if (GLADE_IS_DESIGN_LAYOUT (layout))
-    return glade_design_layout_widget_event (GLADE_DESIGN_LAYOUT (layout),
-                                             gwidget, event);
-  else
-    return FALSE;
-}
-
 static void
 glade_widget_set_object (GladeWidget * gwidget, GObject * new_object,
                          gboolean destroy)
@@ -3427,13 +3339,6 @@ glade_widget_set_object (GladeWidget * gwidget, GObject * new_object,
            */
           gtk_drag_dest_unset (GTK_WIDGET (new_object));
           gtk_drag_source_unset (GTK_WIDGET (new_object));
-
-          /* Take care of drawing selection directly on widgets
-           * for the time being
-           */
-          glade_widget_connect_signal_handlers
-              (GTK_WIDGET (new_object),
-               G_CALLBACK (glade_widget_event_private), gwidget);
         }
     }
 
