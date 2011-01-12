@@ -363,7 +363,8 @@ glade_signal_write (GladeSignal * signal,
 GladeSignal *
 glade_signal_read (GladeXmlNode * node, GladeWidgetAdaptor* adaptor)
 {
-  GladeSignal *signal;
+  GladeSignal *signal = NULL;
+  GladeSignalClass *signal_class;
   gchar *name, *handler, *userdata;
 
   g_return_val_if_fail (glade_xml_node_verify_silent
@@ -383,15 +384,22 @@ glade_signal_read (GladeXmlNode * node, GladeWidgetAdaptor* adaptor)
       return NULL;
     }
 
+  userdata     = glade_xml_get_property_string (node, GLADE_XML_TAG_OBJECT);
+  signal_class = glade_widget_adaptor_get_signal_class (adaptor, name);
 
-  userdata = glade_xml_get_property_string (node, GLADE_XML_TAG_OBJECT);
-
-  signal = 
-    glade_signal_new (glade_widget_adaptor_get_signal_class (adaptor, name),
-                      handler, userdata,
-                      glade_xml_get_property_boolean (node, GLADE_XML_TAG_AFTER, FALSE),
-                      glade_xml_get_property_boolean (node, GLADE_XML_TAG_SWAPPED,
-                                                      userdata != NULL));
+  if (signal_class)
+    signal = 
+      glade_signal_new (signal_class,
+			handler, userdata,
+			glade_xml_get_property_boolean (node, GLADE_XML_TAG_AFTER, FALSE),
+			glade_xml_get_property_boolean (node, GLADE_XML_TAG_SWAPPED,
+							userdata != NULL));
+  else
+    {
+      /* XXX These errors should be collected and reported to the user */
+      g_warning ("No signal %s was found for class %s, skipping\n", 
+		 name, glade_widget_adaptor_get_name (adaptor));
+    }
 	
   g_free (name);
   g_free (handler);

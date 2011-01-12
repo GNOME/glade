@@ -5,6 +5,10 @@
 
 	* gladeui/glade-widget.c: Fixed access of NULL project at glade_widget_show/hide time.
 
+	* gladeui/glade-signal.c: Fire a warning when signal class is not found for signal
+	  read in by glade_signal_read from the xml (this happens because GTK+-3 removes some
+	  signals).
+
 2011-01-10  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-signal-model.[ch]:
