@@ -523,6 +523,8 @@ glade_palette_dispose (GObject * object)
 
   priv->catalogs = NULL;
 
+  glade_palette_set_project (GLADE_PALETTE (object), NULL);
+
   G_OBJECT_CLASS (glade_palette_parent_class)->dispose (object);
 }
 

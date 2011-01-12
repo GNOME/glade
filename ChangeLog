@@ -1,3 +1,8 @@
+2011-01-12  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-palette.c: Fixed leaking project (set_project NULL when
+	  palette is disposed fixes it).
+
 2011-01-10  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-signal-model.[ch]:
