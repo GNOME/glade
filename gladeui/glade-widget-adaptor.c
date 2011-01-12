@@ -394,10 +394,10 @@ gwa_clone_parent_properties (GladeWidgetAdaptor *adaptor, gboolean is_packing)
 				    parent_adaptor->priv->catalog))
 			{
 				pclass->version_since_major =
-					pclass->version_since_major = 0;
+					pclass->version_since_minor = 0;
 
 				pclass->builder_since_major =
-					pclass->builder_since_major = 0;
+					pclass->builder_since_minor = 0;
 
 			}
 			properties = g_list_prepend (properties, pclass);
@@ -548,11 +548,11 @@ gwa_inherit_signals (GladeWidgetAdaptor *adaptor)
 				if (strcmp (adaptor->priv->catalog, 
 					    parent_adaptor->priv->catalog))
 					signal->version_since_major =
-						signal->version_since_major = 0;
+						signal->version_since_minor = 0;
 				else
 				{
 					signal->version_since_major = 
-						parent_signal->version_since_major;
+						parent_signal->version_since_minor;
 					signal->version_since_minor = 
 						parent_signal->version_since_minor;
 				}
