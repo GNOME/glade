@@ -9,6 +9,10 @@
 	  read in by glade_signal_read from the xml (this happens because GTK+-3 removes some
 	  signals).
 
+	* plugins/gtk+/glade-gtk.c, data/icons/Makefile.am, data/icons/fixed-bg.png,
+	plugins/gtk+/fixed-bg.xpm: Now draw the GtkFixed/GtkLayout pattern in a "draw"
+	signal callback.
+
 2011-01-10  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-signal-model.[ch]:

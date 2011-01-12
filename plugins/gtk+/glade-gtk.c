@@ -25,7 +25,6 @@
 #include <config.h>
 
 #include "glade-gtk.h"
-#include "fixed-bg.xpm"
 #include "glade-accels.h"
 #include "glade-attributes.h"
 #include "glade-column-types.h"
@@ -4645,36 +4644,6 @@ glade_gtk_entry_read_widget (GladeWidgetAdaptor * adaptor,
 }
 
 /* ----------------------------- GtkFixed/GtkLayout ------------------------------ */
-#if 0
-static void
-glade_gtk_fixed_layout_finalize (GdkPixmap * backing)
-{
-  g_object_unref (backing);
-}
-#endif
-
-static void
-glade_gtk_fixed_layout_realize (GtkWidget * widget)
-{
-#if _FIXME_FIXME_CAIRO_
-  GdkPixbuf *pixbuf = gdk_pixbuf_new_from_xpm_data (fixed_bg_xpm);
-  GdkPixmap *backing;
-
-  gdk_pixbuf_render_pixmap_and_mask (pixbuf, &backing, NULL, 1);
-
-  if (GTK_IS_LAYOUT (widget))
-    gdk_window_set_back_pixmap (gtk_layout_get_bin_window (GTK_LAYOUT (widget)),
-                                backing, FALSE);
-  else
-    gdk_window_set_back_pixmap (gtk_widget_get_window (widget), backing, FALSE);
-
-  /* For cleanup later
-   */
-  g_object_weak_ref (G_OBJECT (widget),
-                     (GWeakNotify) glade_gtk_fixed_layout_finalize, backing);
-#endif
-}
-
 static void
 glade_gtk_fixed_layout_sync_size_requests (GtkWidget * widget)
 {
@@ -4701,25 +4670,58 @@ glade_gtk_fixed_layout_sync_size_requests (GtkWidget * widget)
     }
 }
 
+static cairo_pattern_t *
+get_fixed_layout_pattern (void)
+{
+  static cairo_pattern_t *static_pattern = NULL;
+
+  if (!static_pattern)
+    {
+      gchar *path = g_build_filename (glade_app_get_pixmaps_dir (), "fixed-bg.png", NULL);
+      cairo_surface_t *surface = 
+	cairo_image_surface_create_from_png (path);
+
+      if (surface)
+	{
+	  static_pattern = cairo_pattern_create_for_surface (surface);
+	  cairo_pattern_set_extend (static_pattern, CAIRO_EXTEND_REPEAT);
+	}
+      else 
+	g_warning ("Failed to create surface for %s\n", path);
+
+      g_free (path);
+    }
+  return static_pattern;
+}
+
+static void
+glade_gtk_fixed_layout_draw (GtkWidget *widget, cairo_t *cr)
+{
+  GtkAllocation allocation;
+
+  gtk_widget_get_allocation (widget, &allocation);
+
+  cairo_save (cr);
+
+  cairo_rectangle (cr, 0, 0, allocation.width, allocation.height);
+  cairo_set_source (cr, get_fixed_layout_pattern ());
+  cairo_fill (cr);
+
+  cairo_restore (cr);
+}
+
 void
 glade_gtk_fixed_layout_post_create (GladeWidgetAdaptor * adaptor,
                                     GObject * object, GladeCreateReason reason)
 {
-  /* This is needed at least to set a backing pixmap. */
-  gtk_widget_set_has_window (GTK_WIDGET (object), FALSE);
-
-  /* For backing pixmap
-   */
-  g_signal_connect_after (object, "realize",
-                          G_CALLBACK (glade_gtk_fixed_layout_realize), NULL);
-
-
   /* Sync up size request at project load time */
   if (reason == GLADE_CREATE_LOAD)
     g_signal_connect_after (object, "realize",
                             G_CALLBACK
                             (glade_gtk_fixed_layout_sync_size_requests), NULL);
 
+  g_signal_connect (object, "draw",
+		    G_CALLBACK (glade_gtk_fixed_layout_draw), NULL);
 }
 
 void
