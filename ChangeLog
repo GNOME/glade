@@ -3,6 +3,8 @@
 	* gladeui/glade-palette.c: Fixed leaking project (set_project NULL when
 	  palette is disposed fixes it).
 
+	* gladeui/glade-widget.c: Fixed access of NULL project at glade_widget_show/hide time.
+
 2011-01-10  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-signal-model.[ch]:

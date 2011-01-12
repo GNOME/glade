@@ -2032,9 +2032,10 @@ glade_widget_add_to_layout (GladeWidget * widget, GtkWidget * layout)
 void
 glade_widget_show (GladeWidget * widget)
 {
-  GladeDesignView *view;
+  GladeDesignView *view = NULL;
   GtkWidget *layout;
   GladeProperty *property;
+  GladeProject *project;
 
   g_return_if_fail (GLADE_IS_WIDGET (widget));
 
@@ -2050,8 +2051,9 @@ glade_widget_show (GladeWidget * widget)
           return;
         }
 
-      view =
-	glade_design_view_get_from_project (glade_widget_get_project (widget));
+      project = glade_widget_get_project (widget);
+      if (project)
+	view = glade_design_view_get_from_project (project);
 
       if (!view)
         return;
@@ -2089,14 +2091,17 @@ void
 glade_widget_hide (GladeWidget * widget)
 {
   g_return_if_fail (GLADE_IS_WIDGET (widget));
+
   if (GTK_IS_WIDGET (widget->priv->object))
     {
       GladeDesignView *view;
-      GtkWidget *layout;
+      GladeProject    *project;
+      GtkWidget       *layout;
 
-      if ((view =
-           glade_design_view_get_from_project (glade_widget_get_project
-                                               (widget))) != NULL)
+      project = glade_widget_get_project (widget);
+
+      if (project && 
+	  (view = glade_design_view_get_from_project (project)) != NULL)
         {
           GtkWidget *child;
 
