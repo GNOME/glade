@@ -59,12 +59,15 @@ struct _GladeDesignLayoutClass
 };
 
 
-GType        glade_design_layout_get_type     (void) G_GNUC_CONST;
+GType        glade_design_layout_get_type       (void) G_GNUC_CONST;
 
-GtkWidget   *glade_design_layout_new          (void);
+GtkWidget   *glade_design_layout_new            (void);
 
-gboolean     glade_design_layout_do_event     (GladeDesignLayout * layout,
-                                               GdkEvent * event);
+void         glade_design_layout_selection_set  (GladeDesignLayout * layout,
+                                                 GList * selection);
+
+gboolean     glade_design_layout_do_event       (GladeDesignLayout * layout,
+                                                 GdkEvent * event);
 
 G_END_DECLS
 
