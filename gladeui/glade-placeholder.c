@@ -77,6 +77,8 @@ static gboolean glade_placeholder_button_press (GtkWidget * widget,
 static gboolean glade_placeholder_popup_menu (GtkWidget * widget);
 
 
+static cairo_pattern_t *placeholder_pattern = NULL;
+
 struct _GladePlaceholderPrivate
 {
   GList *packing_actions;
@@ -100,6 +102,8 @@ static void glade_placeholder_class_init (GladePlaceholderClass * klass)
 {
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  gchar *path;
+  cairo_surface_t *surface;
 
   object_class->finalize = glade_placeholder_finalize;
   object_class->set_property = glade_placeholder_set_property;
@@ -115,7 +119,6 @@ static void glade_placeholder_class_init (GladePlaceholderClass * klass)
   widget_class->button_press_event = glade_placeholder_button_press;
   widget_class->popup_menu = glade_placeholder_popup_menu;
 
-
   /* GtkScrollable implementation */
   g_object_class_override_property (object_class, PROP_HADJUSTMENT,
                                     "hadjustment");
@@ -125,6 +128,19 @@ static void glade_placeholder_class_init (GladePlaceholderClass * klass)
                                     "hscroll-policy");
   g_object_class_override_property (object_class, PROP_VSCROLL_POLICY,
                                     "vscroll-policy");
+
+  /* Create our tiled background pattern */
+  path = g_build_filename (glade_app_get_pixmaps_dir (), "placeholder.png", NULL);
+  surface = cairo_image_surface_create_from_png (path);
+
+  if (!surface)
+    g_warning ("Failed to create surface for %s\n", path);
+  else
+    {
+      placeholder_pattern = cairo_pattern_create_for_surface (surface);
+      cairo_pattern_set_extend (placeholder_pattern, CAIRO_EXTEND_REPEAT);
+    }
+  g_free (path);
 
   g_type_class_add_private (klass, sizeof (GladePlaceholderPrivate));
 }
@@ -336,38 +352,6 @@ glade_placeholder_size_allocate (GtkWidget * widget, GtkAllocation * allocation)
     }
 }
 
-static void
-glade_placeholder_draw_background (GtkWidget * widget, cairo_t * cr)
-{
-  cairo_surface_t *surface;
-  cairo_t *cr2;
-  const gint width = 10;
-  const gint height = 10;
-
-  surface = cairo_image_surface_create (CAIRO_FORMAT_RGB24, width, height);
-  cr2 = cairo_create (surface);
-  cairo_surface_destroy (surface);
-
-  cairo_set_source_rgb (cr2, 0.75, 0.75, 0.75); /* light gray */
-  cairo_paint (cr2);
-
-  cairo_set_source_rgb (cr2, 0.5, 0.5, 0.5);    /* dark gray */
-  cairo_rectangle (cr2, width / 2, 0, width / 2, height / 2);
-  cairo_rectangle (cr2, 0, height / 2, width / 2, height / 2);
-  cairo_fill (cr2);
-
-  surface = cairo_surface_reference (cairo_get_target (cr2));
-  cairo_destroy (cr2);
-
-  cairo_save (cr);
-  cairo_set_source_surface (cr, surface, 0, 0);
-  cairo_surface_destroy (surface);
-  cairo_pattern_set_filter (cairo_get_source (cr), CAIRO_FILTER_NEAREST);
-  cairo_pattern_set_extend (cairo_get_source (cr), CAIRO_EXTEND_REPEAT);
-  cairo_paint (cr);
-  cairo_restore (cr);
-}
-
 static gboolean
 glade_placeholder_draw (GtkWidget * widget, cairo_t * cr)
 {
@@ -383,7 +367,14 @@ glade_placeholder_draw (GtkWidget * widget, cairo_t * cr)
   h = gtk_widget_get_allocated_height (widget);
   w = gtk_widget_get_allocated_width (widget);
 
-  glade_placeholder_draw_background (widget, cr);
+  if (placeholder_pattern)
+    {
+      cairo_save (cr);
+      cairo_rectangle (cr, 0, 0, w, h);
+      cairo_set_source (cr, placeholder_pattern);
+      cairo_fill (cr);
+      cairo_restore (cr);
+    }
 
   cairo_set_line_width (cr, 1.0);
 
