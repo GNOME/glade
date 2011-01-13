@@ -8,7 +8,7 @@ m4_define(glade_micro_version, 1)
 m4_define(glade_version, glade_major_version.glade_minor_version.glade_micro_version)
 
 AC_INIT([glade], [glade_version],
-	[http://bugzilla.gnome.org/enter_bug.cgi?product=glade3],
+	[http://bugzilla.gnome.org/enter_bug.cgi?product=glade],
 	[glade],
 	[http://glade.gnome.org/])
 
