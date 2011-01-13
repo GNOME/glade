@@ -238,7 +238,7 @@ glade_signal_new (const GladeSignalClass* sig_class,
 		  gboolean after, 
 		  gboolean swapped)
 {
-  g_return_if_fail (sig_class != NULL);
+  g_return_val_if_fail (sig_class != NULL, NULL);
 
   return (GladeSignal *)g_object_new (GLADE_TYPE_SIGNAL,
 				      "class", sig_class,
