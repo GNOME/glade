@@ -510,25 +510,6 @@ glade_gtk_string_from_attr (GladeAttribute *gattr)
 	return ret;
 }
 
-static gint
-enum_value_from_string (PangoAttrType type, const gchar *strval)
-{
-	GEnumClass *enum_class;
-	GEnumValue *enum_value;
-	gint        value = 0;
-
-	enum_class = g_type_class_ref (type_from_attr_type (type));
-	if ((enum_value = g_enum_get_value_by_nick (enum_class, strval)) != NULL)
-		value = enum_value->value;
-	else
-		g_critical ("Couldnt find enum value for %s, type %s", 
-			    strval, g_type_name (type_from_attr_type (type)));
-	
-	g_type_class_unref (enum_class);
-	
-	return value;
-}
-
 GladeAttribute *
 glade_gtk_attribute_from_string (PangoAttrType  type,
 				 const gchar   *strval)
@@ -559,9 +540,9 @@ glade_gtk_attribute_from_string (PangoAttrType  type,
 
 		/* Enums ... */
 		g_value_init (&(gattr->value), type_from_attr_type (type));
-		g_value_set_enum (&(gattr->value), enum_value_from_string (type, strval));
+		g_value_set_enum (&(gattr->value),
+				  glade_utils_enum_value_from_string (type_from_attr_type (type), strval));
 		break;
-
 
 	case PANGO_ATTR_UNDERLINE:
 	case PANGO_ATTR_STRIKETHROUGH:	
