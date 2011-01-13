@@ -6,6 +6,9 @@
 	* gladeui/glade-signal-editor.c: Left align the warning icon and expand the first
 	  row of the signal tree when loading a widget.
 
+	* plugins/gtk+/glade-attributes.c: Fixed mismatching PangoAttributeType with GType,
+	closes bug 597045.
+
 2011-01-12  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-palette.c: Fixed leaking project (set_project NULL when
