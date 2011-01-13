@@ -56,6 +56,7 @@ static void on_glade_signal_model_removed (GladeWidget* widget, const GladeSigna
 					   GladeSignalModel* model);
 static void on_glade_signal_model_changed (GladeWidget* widget, const GladeSignal* signal,
 					   GladeSignalModel* model);	
+static void on_glade_widget_support_changed (GladeWidget *widget, GladeSignalModel* model);
 
 G_DEFINE_TYPE_WITH_CODE (GladeSignalModel, glade_signal_model, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (GTK_TYPE_TREE_MODEL,
@@ -133,12 +134,12 @@ glade_signal_model_set_property (GObject *object, guint prop_id, const GValue *v
       g_signal_connect (sig_model->priv->widget,
 			"add-signal-handler",
 			G_CALLBACK (on_glade_signal_model_added), sig_model);
-      g_signal_connect (sig_model->priv->widget,
-			"remove-signal-handler",
+      g_signal_connect (sig_model->priv->widget, "remove-signal-handler",
 			G_CALLBACK (on_glade_signal_model_removed), sig_model);
-      g_signal_connect (sig_model->priv->widget,
-			"change-signal-handler",
-			G_CALLBACK (on_glade_signal_model_changed), sig_model);			
+      g_signal_connect (sig_model->priv->widget, "change-signal-handler",
+			G_CALLBACK (on_glade_signal_model_changed), sig_model);
+      g_signal_connect (sig_model->priv->widget, "support-changed",
+			G_CALLBACK (on_glade_widget_support_changed), sig_model);
       break;
     case PROP_SIGNALS:
       sig_model->priv->signals = g_value_get_pointer (value);
@@ -294,6 +295,8 @@ glade_signal_model_get_dummy_handler (GladeSignalModel* model,
       g_hash_table_insert (model->priv->dummy_signals, 
 			   (gpointer) glade_signal_class_get_name (sig_class), 
 			   signal);
+
+      glade_project_verify_signal (model->priv->widget, signal);
     }
   return signal;
 }
@@ -389,19 +392,53 @@ on_glade_signal_model_changed (GladeWidget* widget, const GladeSignal* signal,
 {
   GtkTreeIter iter;
   GtkTreePath* path;
-  const GladeSignalClass* sig_class =
-    glade_signal_get_class (signal);
+  const GladeSignalClass* sig_class = glade_signal_get_class (signal);
   glade_signal_model_create_signal_iter (model,
 					 glade_signal_class_get_type (sig_class),
 					 signal, 
 					 &iter);
-  path = gtk_tree_model_get_path (GTK_TREE_MODEL (model),
-				  &iter);
+  path = gtk_tree_model_get_path (GTK_TREE_MODEL (model), &iter);
   gtk_tree_model_row_changed (GTK_TREE_MODEL (model),
 			      path,
 			      &iter);
   gtk_tree_path_free (path);
   model->priv->stamp++;
+}
+
+static void
+verify_dummies (const gchar      *signal_name,
+		GladeSignal      *signal,
+		GladeSignalModel *model)
+{
+  glade_project_verify_signal (model->priv->widget, signal);
+
+  on_glade_signal_model_changed (model->priv->widget, signal, model);
+}
+
+static void
+emit_changed (const gchar      *signal_name,
+	      GPtrArray        *signals,
+	      GladeSignalModel *model)
+{
+  gint i;
+  GladeSignal *signal;
+
+  for (i = 0; i < signals->len; i++)
+    {
+      signal = (GladeSignal *)signals->pdata[i];
+      on_glade_signal_model_changed (model->priv->widget, signal, model);
+    }
+}
+
+static void
+on_glade_widget_support_changed (GladeWidget      *widget, 
+				 GladeSignalModel *model)
+{
+  /* Update support warning on dummy signals */
+  g_hash_table_foreach (model->priv->dummy_signals, (GHFunc)verify_dummies, model);
+
+  /* row changed on every row */
+  g_hash_table_foreach (model->priv->signals, (GHFunc)emit_changed, model);
 }
 
 static gboolean

@@ -395,6 +395,8 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 				 GladeWidget *widget)
 {
   GladeSignalEditorPrivate *priv = editor->priv;
+  GtkTreePath *path;
+  GtkTreeIter  iter;
 	
   if (priv->widget != widget)
     {	
@@ -416,6 +418,13 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 
   priv->model = glade_widget_get_signal_model (widget);
   gtk_tree_view_set_model (GTK_TREE_VIEW (priv->signal_tree), priv->model);
+
+  if (gtk_tree_model_iter_children (priv->model, &iter, NULL))
+    {
+      path = gtk_tree_model_get_path (priv->model, &iter);
+      gtk_tree_view_expand_row (GTK_TREE_VIEW (priv->signal_tree), path, FALSE);
+      gtk_tree_path_free (path);
+    }
 }
 
 /**
@@ -751,7 +760,9 @@ glade_signal_editor_init (GladeSignalEditor *self)
 	
   /* version warning */
   renderer = gtk_cell_renderer_pixbuf_new ();
-  g_object_set (G_OBJECT (renderer), "icon-name", GTK_STOCK_DIALOG_WARNING,
+  g_object_set (G_OBJECT (renderer), 
+		"icon-name", GTK_STOCK_DIALOG_WARNING,
+		"xalign", 0.0,
                 NULL);
   gtk_tree_view_column_set_cell_data_func (priv->column_name, renderer,
 					   glade_signal_editor_warning_cell_data_func,
