@@ -306,7 +306,6 @@ typedef struct
   GtkWidget *toplevel;
   gint x;
   gint y;
-  GtkWidget *placeholder;
   GladeWidget *gwidget;
 } GladeFindInContainerData;
 
@@ -321,25 +320,19 @@ glade_design_layout_find_inside_container (GtkWidget * widget,
   if (data->gwidget || !gtk_widget_get_mapped (widget))
     return;
 
-//  gtk_widget_translate_coordinates (data->toplevel, widget, data->x, data->y, &x, &y);
-  x = data->x;
-  y = data->y;
+  gtk_widget_translate_coordinates (data->toplevel, widget, data->x, data->y, &x, &y);
+
   gtk_widget_get_allocation (widget, &allocation);
 
   if (x >= 0 && x < allocation.width && y >= 0 && y < allocation.height)
     {
-      if (GLADE_IS_PLACEHOLDER (widget))
-        data->placeholder = widget;
-      else
-        {
-          if (GTK_IS_CONTAINER (widget))
-            gtk_container_forall (GTK_CONTAINER (widget), (GtkCallback)
-                                  glade_design_layout_find_inside_container,
-                                  data);
+      if (GTK_IS_CONTAINER (widget))
+        gtk_container_forall (GTK_CONTAINER (widget), (GtkCallback)
+                              glade_design_layout_find_inside_container,
+                              data);
 
-          if (!data->gwidget)
-            data->gwidget = glade_widget_get_from_gobject (widget);
-        }
+      if (!data->gwidget)
+        data->gwidget = glade_widget_get_from_gobject (widget);
     }
 }
 
@@ -537,7 +530,6 @@ glade_design_layout_size_allocate (GtkWidget * widget,
       child_allocation.width = MAX (requisition.width, child_width);
       child_allocation.height = MAX (requisition.height, child_height);
 
-      /* FIXME: here we make the offscreen bigger because otherwise it gets clipped, need to investigate further */
       if (gtk_widget_get_realized (widget))
         gdk_window_move_resize (priv->offscreen_window,
                                 child_allocation.x,
@@ -700,21 +692,21 @@ glade_design_layout_draw (GtkWidget * widget, cairo_t * cr)
           /* Draw selection */
           if (priv->project)
             {
-                GList *widgets = glade_project_selection_get (priv->project);
+              GList *widgets = glade_project_selection_get (priv->project);
 
-                if (widgets)
+              if (widgets)
                 {
-                    child = widgets->data;
-                    gtk_widget_get_allocation (child, &child_allocation);
-                    gdk_cairo_set_source_color (cr,
-                                                &gtk_widget_get_style (widget)->bg[GTK_STATE_SELECTED]);
-                    cairo_rectangle (cr,
-                                     child_allocation.x + offset,
-                                     child_allocation.y + offset,
-                                     child_allocation.width,
-                                     child_allocation.height);
-                    cairo_clip (cr);
-                    cairo_paint_with_alpha (cr, .32);
+                  gtk_widget_get_allocation (widgets->data, &child_allocation);
+
+                  gdk_cairo_set_source_color (cr,
+                                              &gtk_widget_get_style (widget)->bg[GTK_STATE_SELECTED]);
+                  cairo_rectangle (cr,
+                                   child_allocation.x + offset,
+                                   child_allocation.y + offset,
+                                   child_allocation.width,
+                                   child_allocation.height);
+                  cairo_clip (cr);
+                  cairo_paint_with_alpha (cr, .32);
                 }
             }
         }
@@ -968,8 +960,42 @@ glade_design_layout_class_init (GladeDesignLayoutClass * klass)
   g_type_class_add_private (object_class, sizeof (GladeDesignLayoutPrivate));
 }
 
+/* Public API */
+
 GtkWidget *
 glade_design_layout_new (void)
 {
   return g_object_new (GLADE_TYPE_DESIGN_LAYOUT, NULL);
+}
+
+/**
+ * glade_design_layout_do_event:
+ * @layout:        A #GladeDesignLayout
+ * @event:         the #GdkEvent
+ *
+ * This is called internally by a #GladeWidget recieving an event,
+ * it will marshall the event to the proper #GladeWidget according
+ * to its position in @layout.
+ *
+ * Returns: Whether or not the event was handled by the retrieved #GladeWidget
+ */
+gboolean
+glade_design_layout_do_event (GladeDesignLayout * layout, GdkEvent * event)
+{
+  GladeFindInContainerData data = { 0, };
+  GtkWidget *child;
+
+  if ((child = gtk_bin_get_child (GTK_BIN (layout))) == NULL)
+    return FALSE;
+
+  data.toplevel = GTK_WIDGET (layout);
+  gtk_widget_get_pointer (GTK_WIDGET (layout), &data.x, &data.y);
+
+  glade_design_layout_find_inside_container (child, &data);
+
+  /* Then we try a GladeWidget */
+  if (data.gwidget)
+      return glade_widget_event (data.gwidget, event);
+
+  return FALSE;
 }

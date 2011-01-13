@@ -63,6 +63,9 @@ GType        glade_design_layout_get_type     (void) G_GNUC_CONST;
 
 GtkWidget   *glade_design_layout_new          (void);
 
+gboolean     glade_design_layout_do_event     (GladeDesignLayout * layout,
+                                               GdkEvent * event);
+
 G_END_DECLS
 
 #endif /* __GLADE_DESIGN_LAYOUT_H__ */

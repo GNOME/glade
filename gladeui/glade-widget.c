@@ -197,12 +197,6 @@ static guint glade_widget_signals[LAST_SIGNAL] = { 0 };
 
 static GQuark glade_widget_name_quark = 0;
 
-
-#define IS_GLADE_WIDGET_EVENT(event)		 \
-	((event) == GDK_BUTTON_PRESS ||		 \
-	 (event) == GDK_BUTTON_RELEASE ||	 \
-	 (event) == GDK_MOTION_NOTIFY)
-
 G_DEFINE_TYPE (GladeWidget, glade_widget, G_TYPE_INITIALLY_UNOWNED)
 /*******************************************************************************
                            GladeWidget class methods

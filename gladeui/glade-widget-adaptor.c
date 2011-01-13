@@ -1668,6 +1668,33 @@ glade_widget_adaptor_list_adaptors (void)
   return adaptors;
 }
 
+static gboolean 
+on_widget_event (GtkWidget *widget, GdkEvent *event)
+{
+  gboolean retval;
+
+  /* We are only interested in button press and release events */
+  if (IS_GLADE_WIDGET_EVENT(event->type) && !GLADE_IS_PLACEHOLDER (widget))
+    {
+      GtkWidget *parent = widget;
+      do
+        {
+
+          if (GLADE_IS_DESIGN_LAYOUT (parent))
+            {
+              if (glade_design_layout_do_event (GLADE_DESIGN_LAYOUT (parent), event))
+                return TRUE;
+              break;
+            }
+        }
+      while ((parent = gtk_widget_get_parent (parent)));
+    }
+
+  /* Chain up */
+  g_signal_chain_from_overridden_handler (widget, event, &retval);
+  return retval;
+}
+
 /**
  * glade_widget_adaptor_register:
  * @adaptor: A #GladeWidgetAdaptor
@@ -1693,6 +1720,10 @@ glade_widget_adaptor_register (GladeWidgetAdaptor * adaptor)
 
   g_hash_table_insert (adaptor_hash,
                        g_memdup (&adaptor->priv->type, sizeof (GType)), adaptor);
+
+  if (g_type_is_a (adaptor->priv->type, GTK_TYPE_WIDGET))
+    g_signal_override_class_handler ("event", adaptor->priv->type,
+                                     G_CALLBACK (on_widget_event));
 }
 
 static GladePackingDefault *
