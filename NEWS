@@ -1,4 +1,44 @@
 ===========
+Glade 3.9.1
+===========
+	- Added accelerator and tooltip-text properties to menu items and toolitems 
+	  in the menu editor (fixes bug 510083).
+	- Fixed crashes in liststore editor.
+	- Restored italic insensitive state for the < search widgets > text in the
+	  inspector search box.
+	- Fixed glade.desktop.in.in file to refer to the new 'glade' exec name
+	  (fix by Emilio Pozuelo Monfort)
+	- Added support for editing GtkToolPalette along with a special tool palette editor.
+	- Make GtkToolBar:icon-size an optional property generally set by the theme/settings
+	  (like GtkToolBar:toolbar-style property).
+	- Removed global selection list from glade-utils.[ch], now all selection is controlled
+	  by the relevant project
+	- Removed glade_util_class_implements_interface() in favor of g_type_is_a() (closes bug 455734,
+	  based on original patch from Juan Pablo Ugarte).
+	- Applied patch by Sergio García Lobo to fix bug 487656 and provide mnemonic key access to
+	  "Text beside icons" palette option.
+	- Added idle function to raise the undocked windows at startup time, closes bug 475421.
+	- Fix possible crash when saving new project. bug 622635, fix by Martin Schlemmer.
+	- Fixed crash when user performs Drag'n'Drop of < enter column here > and no columns are 
+	  yet added (bug 633943).
+	- Fixed use of uninitialized variables in warning messages, bug 634325, fix by Alex Merry.
+	- Set some default HIG values for widgets as per bug 349447.
+	- Make query dialog come with a "Create" button instead of an "OK" button, closes hig bug 503621.
+	- Added GtkTextTagTable editor, now GtkTextTag can be added to GtkTextTagTable.
+	- Made all GdkColor type properties optional, closes bug 457969.
+	- Fixed add/remove parent context menu actions so that they work with parentless widget 
+	  references (i.e. you can add a parent to a GtkToolItemGroup's label widget
+	  or a GtkButton's image widget, or remove the parent of a child of a label-widget, etc).
+	- Expose internal GtkTreeSelection child of GtkTreeView so that "changed" signal 
+	  can be connected to. Fixes bug 383766.
+	- Included Johannes Schmid's new signal editor work, the GladeSignals are now available
+	  via a GtkTreeModel implementation, this does not effect the UI much but allows signals
+	  to be Drag'n'Dropped from Glade's signal editor to Anjuta somewhere.
+	- Restored GtkFixed/GtkLayout background pattern.
+	- Restored old GladePlaceholder background pattern.
+	- Fixed mismatching PangoAttributeType with GType, closes bug 597045.
+
+===========
 Glade 3.9.0
 ===========
 
