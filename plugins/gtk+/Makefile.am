@@ -47,10 +47,10 @@ endif
 
 catalogsdir = $(pkgdatadir)/catalogs
 
-catalogs_DATA = gtk+.xml gtk+.xml.in
+catalogs_DATA = gtk+.xml
 
 if HAVE_GTK_UNIX_PRINT
-catalogs_DATA += gtkunixprint.xml gtkunixprint.xml.in
+catalogs_DATA += gtkunixprint.xml
 endif
 
 @INTLTOOL_XML_NOMERGE_RULE@
