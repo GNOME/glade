@@ -1,3 +1,10 @@
+2011-01-15  Johannes Schmid <jhs@gnome.org>
+
+	* gladeui/glade-app.c: glade_app_get() should always return
+	the single instance and create it if necessary
+
+	* gladeui/glade-editor.[ch]: Add glade_editor_get_signal_editor()
+
 2011-01-13  Javier Jardón <jjardon@gnome.org>
 
 	* glade3.doap: Update doap file to glade.doap instead glade3.doap
