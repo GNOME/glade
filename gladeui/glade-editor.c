@@ -841,20 +841,6 @@ glade_editor_new (void)
   return editor;
 }
 
-void
-glade_editor_set_signal_editor (GladeEditor * editor,
-                                GladeSignalEditor * signal_editor)
-{
-  if (editor->priv->signal_editor)
-    {
-      gtk_container_remove (GTK_CONTAINER (editor->priv->page_signals),
-                            GTK_WIDGET (editor->priv->signal_editor));
-    }
-  editor->priv->signal_editor = signal_editor;
-  gtk_container_add (GTK_CONTAINER (editor->priv->page_signals),
-                     GTK_WIDGET (editor->priv->signal_editor));
-}
-
 /**
  * glade_editor_load_widget:
  * @editor: a #GladeEditor

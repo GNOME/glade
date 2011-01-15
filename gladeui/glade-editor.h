@@ -47,8 +47,6 @@ void         glade_editor_load_widget        (GladeEditor       *editor,
 					      GladeWidget       *widget);
 void         glade_editor_show_info          (GladeEditor       *editor);
 void         glade_editor_hide_info          (GladeEditor       *editor);
-void         glade_editor_set_signal_editor  (GladeEditor       *editor, 
-					      GladeSignalEditor *signal_editor);
 
 gboolean     glade_editor_query_dialog       (GladeWidget       *widget);
 GtkWidget   *glade_editor_dialog_for_widget  (GladeWidget       *widget);
