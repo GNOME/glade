@@ -456,10 +456,7 @@ GladeApp *
 glade_app_get (void)
 {
   if (!singleton_app)
-    {
-      singleton_app = glade_app_new ();
-    }
-
+    g_critical ("No available GladeApp");
   return singleton_app;
 }
 

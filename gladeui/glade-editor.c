@@ -855,18 +855,6 @@ glade_editor_set_signal_editor (GladeEditor * editor,
                      GTK_WIDGET (editor->priv->signal_editor));
 }
 
-/*
- * glade_editor_get_signal_editor:
- * @editor: a #GladeEditor
- * 
- * Returns: The #GladeSignalEditor associated with the editor
- */
-GladeSignalEditor*
-glade_editor_get_signal_editor (GladeEditor * editor)
-{
-  return editor->priv->signal_editor;
-}
-
 /**
  * glade_editor_load_widget:
  * @editor: a #GladeEditor
