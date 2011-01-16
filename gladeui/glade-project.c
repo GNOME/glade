@@ -345,7 +345,6 @@ glade_project_finalize (GObject * object)
   GList *list;
   TopLevelInfo *tinfo;
 
-  /* XXX FIXME: Destroy dialog related sizegroups here... */
   gtk_widget_destroy (project->priv->prefs_dialog);
 
   g_free (project->priv->path);
@@ -4244,6 +4243,11 @@ glade_project_build_prefs_box (GladeProject * project)
                       TRUE, 2);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   gtk_size_group_add_widget (sizegroup3, hbox);
+
+  /* Pass ownership to the widgets in the groups */
+  g_object_unref (sizegroup1);
+  g_object_unref (sizegroup2);
+  g_object_unref (sizegroup3);
 
   update_prefs_for_resource_path (project);
 

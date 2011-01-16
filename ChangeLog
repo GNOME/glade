@@ -18,6 +18,10 @@
 	* gladeui/glade-builtins.c: Removed _() annotations for strings that dont need to be
 	translated.
 
+	* gladeui/glade-project.c, gladeui/glade-property-class.c, gladeui/glade-widget-adaptor.c,
+	gladeui/glade-widget.c, plugins/gtk+/glade-gtk.c, plugins/gtk+/glade-model-data.c:
+	Plugged more leaks found with valgrind.
+
 2011-01-15  Emilio Pozuelo Monfort <pochu27@gmail.com>
 
 	* plugins/gtk+/Makefile.am: Don't install .in files.

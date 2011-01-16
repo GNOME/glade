@@ -810,7 +810,7 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *
           g_value_set_static_string (&str_value, strv[i]);
           value_array = g_value_array_append (value_array, &str_value);
         }
-      g_value_set_boxed (value, value_array);
+      g_value_take_boxed (value, value_array);
       g_strfreev (strv);
     }
   else if (G_IS_PARAM_SPEC_BOXED (property_class->pspec))
@@ -869,7 +869,7 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *
     {
       GList *objects = glade_property_class_make_objects_from_string
           (property_class, string, project, widget);
-      g_value_set_boxed (value, objects);
+      g_value_take_boxed (value, objects);
     }
   else
     g_critical ("Unsupported pspec type %s (string -> value)",

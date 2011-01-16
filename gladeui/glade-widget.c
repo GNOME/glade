@@ -324,7 +324,7 @@ glade_widget_add_signal_handler (GladeWidget *widget, const GladeSignal *signal_
   signals = glade_widget_list_signal_handlers (widget, glade_signal_get_name (signal_handler));
   if (!signals)
     {
-      signals = g_ptr_array_new ();
+      signals = g_ptr_array_new_with_free_func ((GDestroyNotify) g_object_unref);
       g_hash_table_insert (widget->priv->signals, 
 			   g_strdup (glade_signal_get_name (signal_handler)),
                            signals);
@@ -1149,14 +1149,9 @@ glade_widget_get_real_property (GObject * object,
 }
 
 static void
-free_signals (gpointer value)
+free_signals (GPtrArray *signals)
 {
-  GPtrArray *signals = (GPtrArray *) value;
-
-  if (signals == NULL)
-    return;
-
-  g_ptr_array_foreach (signals, (GFunc) g_object_unref, NULL);
+  g_assert (signals);
   g_ptr_array_free (signals, TRUE);
 }
 

@@ -33,7 +33,7 @@
 GladeModelData *
 glade_model_data_new (GType type, const gchar * column_name)
 {
-  GladeModelData *data = g_new0 (GladeModelData, 1);
+  GladeModelData *data = g_slice_new0 (GladeModelData);
 
   if (type != 0)
     g_value_init (&data->value, type);
@@ -49,10 +49,12 @@ glade_model_data_new (GType type, const gchar * column_name)
 GladeModelData *
 glade_model_data_copy (GladeModelData * data)
 {
+  GladeModelData *dup;
+
   if (!data)
     return NULL;
 
-  GladeModelData *dup = g_new0 (GladeModelData, 1);
+  dup = g_slice_new0 (GladeModelData);
 
   if (G_VALUE_TYPE (&data->value) != 0)
     {
@@ -80,7 +82,7 @@ glade_model_data_free (GladeModelData * data)
       g_free (data->name);
       g_free (data->i18n_context);
       g_free (data->i18n_comment);
-      g_free (data);
+      g_slice_free (GladeModelData, data);
     }
 }
 
@@ -90,10 +92,12 @@ glade_model_data_tree_copy (GNode * node)
   return g_node_copy_deep (node, (GCopyFunc) glade_model_data_copy, NULL);
 }
 
-static void
+static gboolean
 model_data_traverse_free (GNode * node, gpointer data)
 {
   glade_model_data_free ((GladeModelData *) node->data);
+
+  return FALSE;
 }
 
 void

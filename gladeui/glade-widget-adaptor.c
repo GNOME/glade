@@ -911,7 +911,10 @@ glade_widget_adaptor_object_read_widget (GladeWidgetAdaptor * adaptor,
       if (!(signal = glade_signal_read (iter_node, adaptor)))
         continue;
 
+      /* The widget doesnt use the signal handler directly but rather
+       * creates it's own copy */
       glade_widget_add_signal_handler (widget, signal);
+      g_object_unref (signal);
     }
 
   /* Read in children */

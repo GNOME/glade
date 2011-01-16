@@ -2477,6 +2477,9 @@ glade_gtk_table_widget_exceeds_bounds (GtkTable * table, gint n_rows,
           break;
         }
     }
+
+  g_list_free (children);
+
   return ret;
 }
 
@@ -10266,10 +10269,16 @@ glade_gtk_store_read_columns (GladeWidget * widget, GladeXmlNode * node)
       type =
           glade_xml_get_property_string_required (prop, GLADE_TAG_TYPE, NULL);
 
-      data = glade_column_type_new (type, NULL);
-      data->type_name = g_strdup (type);
-      data->column_name =
-          column_name[0] ? g_strdup (column_name) : g_ascii_strdown (type, -1);
+      if (!column_name[0])
+	{
+	  gchar *cname = g_ascii_strdown (type, -1);
+
+	  data = glade_column_type_new (type, cname);
+
+	  g_free (cname);
+	}
+      else
+	data = glade_column_type_new (type, column_name);
 
       if (glade_name_context_has_name (context, data->column_name))
         {
@@ -10285,6 +10294,8 @@ glade_gtk_store_read_columns (GladeWidget * widget, GladeXmlNode * node)
 
       column_name[0] = '\0';
     }
+
+  glade_name_context_destroy (context);
 
   property = glade_widget_get_property (widget, "columns");
   g_value_init (&value, GLADE_TYPE_COLUMN_TYPE_LIST);
@@ -10368,15 +10379,12 @@ glade_gtk_store_read_data (GladeWidget * widget, GladeXmlNode * node)
                * should we be doing this part in "finished" ? ... todo thinkso...
                */
               value_str = glade_xml_get_content (col_node);
-              value = glade_utils_value_from_string
-		(g_type_from_name (column_type->type_name), value_str,
-                   glade_widget_get_project (widget), widget);
+              value = glade_utils_value_from_string (g_type_from_name (column_type->type_name), value_str,
+						     glade_widget_get_project (widget), widget);
               g_free (value_str);
 
-              data =
-                  glade_model_data_new (g_type_from_name
-                                        (column_type->type_name),
-                                        column_type->column_name);
+              data = glade_model_data_new (g_type_from_name (column_type->type_name),
+					   column_type->column_name);
 
               g_value_copy (value, &data->value);
               g_value_unset (value);
