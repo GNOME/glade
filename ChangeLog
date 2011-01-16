@@ -10,6 +10,11 @@
 	* gladeui/glade-widget.c: Notify widget row changes when parentless widget references
 	  are added/removed from a widget.
 
+	* gladeui/glade-catalog.c, gladeui/glade-inspector.c, gladeui/glade-property-class.c,
+	gladeui/glade-utils.c, gladeui/glade-widget-adaptor.c, gladeui/glade-widget.c,
+	gladeui/glade-xml-utils.c, plugins/gtk+/glade-gtk.c:
+	Plugging leaks found with valgrind.
+
 2011-01-15  Emilio Pozuelo Monfort <pochu27@gmail.com>
 
 	* plugins/gtk+/Makefile.am: Don't install .in files.

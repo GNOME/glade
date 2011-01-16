@@ -481,6 +481,8 @@ catalogs_from_path (GList * catalogs, const gchar * path)
           else
             g_warning ("Unable to open the catalog file %s.\n", filename);
         }
+
+      g_dir_close (dir);
     }
   else
     g_warning ("Failed to open catalog directory '%s': %s", path,

@@ -1527,9 +1527,8 @@ gpc_read_displayable_values_from_node (GladeXmlNode * node,
       GFlagsValue *flags_val;
 
 
-      id = glade_xml_get_property_string_required (child, GLADE_TAG_ID, NULL);
-      name =
-          glade_xml_get_property_string_required (child, GLADE_TAG_NAME, NULL);
+      id   = glade_xml_get_property_string_required (child, GLADE_TAG_ID, NULL);
+      name = glade_xml_get_property_string_required (child, GLADE_TAG_NAME, NULL);
 
       if (!id || !name)
         continue;
@@ -1566,6 +1565,7 @@ gpc_read_displayable_values_from_node (GladeXmlNode * node,
         }
 
       g_free (id);
+      g_free (name);
 
       child = glade_xml_node_next (child);
     }
@@ -1837,6 +1837,9 @@ glade_property_class_parse_specifications (GladePropertyClass * klass,
       else
         g_critical ("Unsupported pspec type %s (value -> string)",
                     g_type_name (spec_type));
+
+      g_free (minstr);
+      g_free (maxstr);
     }
   return pspec;
 }

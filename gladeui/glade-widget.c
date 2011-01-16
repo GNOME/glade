@@ -146,7 +146,7 @@ struct _GladeWidgetPrivate {
   GList          *locked_widgets; /* A list of widgets this widget has locked down.
 				   */
 
-	GtkTreeModel   *signal_model; /* Signal model (or NULL if not yet requested) */
+  GtkTreeModel   *signal_model; /* Signal model (or NULL if not yet requested) */
     
   /* Construct parameters: */
   GladeWidget       *construct_template;
@@ -951,6 +951,7 @@ glade_widget_finalize (GObject * object)
 
   g_free (widget->priv->name);
   g_free (widget->priv->internal);
+  g_free (widget->priv->construct_internal);
   g_free (widget->priv->support_warning);
   g_hash_table_destroy (widget->priv->signals);
 

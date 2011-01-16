@@ -509,6 +509,9 @@ glade_xml_get_property_version (GladeXmlNode * node_in,
 
       g_strfreev (split);
     }
+
+  g_free (value);
+
   return TRUE;
 }
 
@@ -550,6 +553,9 @@ glade_xml_get_property_targetable_versions (GladeXmlNode * node_in,
 
       g_strfreev (split);
     }
+
+  g_free (value);
+
   return targetable;
 }
 

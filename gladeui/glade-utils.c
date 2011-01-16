@@ -882,7 +882,10 @@ glade_util_canonical_path (const gchar * path)
           if (g_chdir (dirname) == 0)
             {
               if ((direct_dir = g_get_current_dir ()) != NULL)
-                direct_name = g_build_filename (direct_dir, basename, NULL);
+		{
+		  direct_name = g_build_filename (direct_dir, basename, NULL);
+		  g_free (direct_dir);
+		}
               else
                 g_warning ("g_path");
 

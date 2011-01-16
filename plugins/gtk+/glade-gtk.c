@@ -350,7 +350,8 @@ glade_gtk_parse_atk_relation (GladeProperty * property, GladeXmlNode * node)
   if (string)
     {
       g_object_set_data_full (G_OBJECT (property), "glade-loaded-object",
-                              g_strdup (string), g_free);
+			      /* 'string' here is already allocated on the heap */
+                              string, g_free);
     }
 }
 
@@ -1446,6 +1447,9 @@ sort_box_children (GtkWidget * widget_a, GtkWidget * widget_b)
   gwidget_b = glade_widget_get_from_gobject (widget_b);
 
   box = gtk_widget_get_parent (widget_a);
+
+  /* XXX Sometimes the packing "position" property doesnt exist here, why ?
+   */
 
   if (gwidget_a)
     glade_widget_pack_property_get (gwidget_a, "position", &position_a);

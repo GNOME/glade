@@ -493,12 +493,22 @@ glade_inspector_dispose (GObject * object)
 
   glade_inspector_set_project (inspector, NULL);
 
+  if (inspector->priv->idle_complete)
+    {
+      g_source_remove (inspector->priv->idle_complete);
+      inspector->priv->idle_complete = 0;
+    }
+
   G_OBJECT_CLASS (glade_inspector_parent_class)->dispose (object);
 }
 
 static void
 glade_inspector_finalize (GObject * object)
 {
+  GladeInspector *inspector = GLADE_INSPECTOR (object);
+
+  g_completion_free (inspector->priv->completion);
+
   G_OBJECT_CLASS (glade_inspector_parent_class)->finalize (object);
 }
 

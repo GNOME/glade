@@ -1558,6 +1558,7 @@ gwa_derive_adaptor_for_type (GType object_type, GWADerivedClassData * data)
   type_name = g_strdup_printf ("Glade%sAdaptor", g_type_name (object_type));
   derived_type = g_type_register_static (parent_type, type_name,
                                          &adaptor_info, 0);
+  g_free (type_name);
 
   return derived_type;
 }
@@ -2539,6 +2540,8 @@ glade_widget_adaptor_from_catalog (GladeCatalog * catalog,
 
   glade_widget_adaptor_register (adaptor);
 
+  g_free (name);
+
   return adaptor;
 }
 
@@ -3181,6 +3184,9 @@ glade_widget_adaptor_child_set_property (GladeWidgetAdaptor * adaptor,
   g_return_if_fail (G_IS_OBJECT (child));
   g_return_if_fail (property_name != NULL && value != NULL);
   g_return_if_fail (g_type_is_a (G_OBJECT_TYPE (container), adaptor->priv->type));
+
+  /* XXX Valgrind says that the above 'g_type_is_a' line allocates uninitialized stack memory
+   * that is later used in glade_gtk_box_child_set_property, why ? */
 
   if (GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->child_set_property)
     GLADE_WIDGET_ADAPTOR_GET_CLASS
