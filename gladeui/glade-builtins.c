@@ -496,9 +496,8 @@ GParamSpec *
 glade_standard_pixbuf_spec (void)
 {
   return g_param_spec_object ("pixbuf", _("Image File Name"),
-                              _
-                              ("Enter a filename, relative path or full path to "
-                               "load the image"), GDK_TYPE_PIXBUF,
+                              _("Enter a filename, relative path or full path to "
+				"load the image"), GDK_TYPE_PIXBUF,
                               G_PARAM_READWRITE);
 }
 
@@ -506,7 +505,7 @@ glade_standard_pixbuf_spec (void)
 GParamSpec *
 glade_standard_gdkcolor_spec (void)
 {
-  return g_param_spec_boxed ("gdkcolor", _("GdkColor"),
+  return g_param_spec_boxed ("gdkcolor", _("Color"),
                              _("A GDK color value"), GDK_TYPE_COLOR,
                              G_PARAM_READWRITE);
 }
@@ -517,16 +516,16 @@ glade_standard_gdkcolor_spec (void)
 GParamSpec *
 glade_standard_int_spec (void)
 {
-  return g_param_spec_int ("int", _("Integer"),
-                           _("An integer value"),
+  return g_param_spec_int ("int", "Integer",
+                           "An integer value",
                            G_MININT, G_MAXINT, 0, G_PARAM_READWRITE);
 }
 
 GParamSpec *
 glade_standard_uint_spec (void)
 {
-  return g_param_spec_uint ("uint", _("Unsigned Integer"),
-                            _("An unsigned integer value"),
+  return g_param_spec_uint ("uint", "Unsigned Integer",
+                            "An unsigned integer value",
                             0, G_MAXUINT, 0, G_PARAM_READWRITE);
 }
 
@@ -540,23 +539,23 @@ glade_standard_string_spec (void)
 GParamSpec *
 glade_standard_strv_spec (void)
 {
-  return g_param_spec_boxed ("strv", _("Strv"),
-                             _("String array"), G_TYPE_STRV, G_PARAM_READWRITE);
+  return g_param_spec_boxed ("strv", "Strv",
+                             "String array", G_TYPE_STRV, G_PARAM_READWRITE);
 }
 
 GParamSpec *
 glade_standard_float_spec (void)
 {
-  return g_param_spec_float ("float", _("Float"),
-                             _("A floating point entry"),
+  return g_param_spec_float ("float", "Float",
+                             "A floating point entry",
                              0.0F, G_MAXFLOAT, 0.0F, G_PARAM_READWRITE);
 }
 
 GParamSpec *
 glade_standard_boolean_spec (void)
 {
-  return g_param_spec_boolean ("boolean", _("Boolean"),
-                               _("A boolean value"), FALSE, G_PARAM_READWRITE);
+  return g_param_spec_boolean ("boolean", "Boolean",
+                               "A boolean value"), FALSE, G_PARAM_READWRITE);
 }
 
 GType

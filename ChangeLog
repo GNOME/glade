@@ -15,6 +15,9 @@
 	gladeui/glade-xml-utils.c, plugins/gtk+/glade-gtk.c:
 	Plugging leaks found with valgrind.
 
+	* gladeui/glade-builtins.c: Removed _() annotations for strings that dont need to be
+	translated.
+
 2011-01-15  Emilio Pozuelo Monfort <pochu27@gmail.com>
 
 	* plugins/gtk+/Makefile.am: Don't install .in files.
