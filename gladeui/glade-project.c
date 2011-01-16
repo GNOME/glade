@@ -3035,6 +3035,26 @@ glade_project_has_object (GladeProject * project, GObject * object)
 	  glade_widget_in_project (gwidget));
 }
 
+void
+glade_project_widget_changed (GladeProject       *project,
+			      GladeWidget        *gwidget)
+{
+  GObject     *object;
+  GtkTreeIter  iter;
+  GtkTreePath *path;
+
+  g_return_if_fail (GLADE_IS_PROJECT (project));
+  g_return_if_fail (GLADE_IS_WIDGET (gwidget));
+
+  object = glade_widget_get_object (gwidget);
+  g_return_if_fail (glade_project_has_object (project, object));
+
+  glade_project_model_get_iter_for_object (project, object, &iter);
+  path = gtk_tree_model_get_path (GTK_TREE_MODEL (project), &iter);
+  gtk_tree_model_row_changed (GTK_TREE_MODEL (project), path, &iter);
+  gtk_tree_path_free (path);
+}
+
 /**
  * glade_project_remove_object:
  * @project: a #GladeProject
@@ -4678,6 +4698,7 @@ glade_project_model_get_value (GtkTreeModel * model,
 {
   GObject *object;
   GladeWidget *widget;
+  GladeProperty *ref_prop;
   gchar *str = NULL, *child_type;
 
   g_return_if_fail (VALID_ITER (model, iter));
@@ -4712,6 +4733,17 @@ glade_project_model_get_value (GtkTreeModel * model,
                   g_object_get_data (glade_widget_get_object (widget),
                                      "special-child-type")) != NULL)
           str = g_strdup_printf (_("(%s child)"), child_type);
+	else if ((ref_prop = 
+		  glade_widget_get_parentless_widget_ref (widget)) != NULL)
+	  {
+	    GladePropertyClass *pclass     = glade_property_get_class (ref_prop);
+	    GladeWidget        *ref_widget = glade_property_get_widget (ref_prop);
+
+	    /* translators: reffers to a property named '%s' of widget '%s' */
+	    str = g_strdup_printf (_("(%s of %s)"), 
+				   glade_property_class_get_name (pclass),
+				   glade_widget_get_name (ref_widget));
+	  }
 
         g_value_take_string (value, str);
         break;

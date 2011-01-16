@@ -2141,7 +2141,14 @@ glade_widget_add_prop_ref (GladeWidget * widget, GladeProperty * property)
    */
   pclass = glade_property_get_class (property);
   if (glade_property_class_parentless_widget (pclass))
-    glade_widget_hide (widget);
+    {
+      GladeProject *project = glade_widget_get_project (widget);
+
+      if (project)
+	glade_project_widget_changed (project, widget);
+
+      glade_widget_hide (widget);
+    }
 }
 
 /**
@@ -2157,10 +2164,21 @@ glade_widget_add_prop_ref (GladeWidget * widget, GladeProperty * property)
 void
 glade_widget_remove_prop_ref (GladeWidget * widget, GladeProperty * property)
 {
+  GladePropertyClass *pclass;
+
   g_return_if_fail (GLADE_IS_WIDGET (widget));
   g_return_if_fail (GLADE_IS_PROPERTY (property));
 
   widget->priv->prop_refs = g_list_remove (widget->priv->prop_refs, property);
+
+  pclass = glade_property_get_class (property);
+  if (glade_property_class_parentless_widget (pclass))
+    {
+      GladeProject *project = glade_widget_get_project (widget);
+
+      if (project)
+	glade_project_widget_changed (project, widget);
+    }
 }
 
 GList *

@@ -128,6 +128,8 @@ void                glade_project_cancel_load          (GladeProject       *proj
 void                glade_project_preview              (GladeProject       *project, 
 							GladeWidget        *gwidget);
 void                glade_project_preferences          (GladeProject       *project);
+gchar              *glade_project_resource_fullpath    (GladeProject       *project,
+							const gchar        *resource);
 
 /* Commands */
 void                glade_project_undo                 (GladeProject       *project);
@@ -147,8 +149,8 @@ void                glade_project_remove_object        (GladeProject       *proj
 							GObject            *object);
 gboolean            glade_project_has_object           (GladeProject       *project, 
 							GObject            *object);
-gchar              *glade_project_resource_fullpath    (GladeProject       *project,
-							const gchar        *resource);
+void                glade_project_widget_changed       (GladeProject       *project,
+							GladeWidget        *gwidget);
 
 /* Widget names */
 GladeWidget        *glade_project_get_widget_by_name   (GladeProject       *project, 
@@ -163,7 +165,6 @@ gchar              *glade_project_new_widget_name      (GladeProject       *proj
 gboolean            glade_project_available_widget_name(GladeProject       *project, 
 							GladeWidget        *widget,
 							const gchar        *name);
-
 
 /* Selection */
 gboolean            glade_project_is_selected          (GladeProject       *project,
