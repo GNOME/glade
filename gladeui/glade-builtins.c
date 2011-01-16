@@ -555,7 +555,7 @@ GParamSpec *
 glade_standard_boolean_spec (void)
 {
   return g_param_spec_boolean ("boolean", "Boolean",
-                               "A boolean value"), FALSE, G_PARAM_READWRITE);
+                               "A boolean value", FALSE, G_PARAM_READWRITE);
 }
 
 GType
