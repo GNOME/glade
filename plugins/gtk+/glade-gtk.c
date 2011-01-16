@@ -1606,10 +1606,13 @@ glade_gtk_box_get_first_blank (GtkBox * box)
 
       if ((gwidget = glade_widget_get_from_gobject (widget)) != NULL)
         {
-          gint gwidget_position;
+          gint gwidget_position = 0;
           GladeProperty *property =
               glade_widget_get_pack_property (gwidget, "position");
-          gwidget_position = g_value_get_int (glade_property_inline_value (property));
+
+	  /* property can be NULL here when project is closing */
+	  if (property)
+	    gwidget_position = g_value_get_int (glade_property_inline_value (property));
 
           if (gwidget_position > position)
             break;
