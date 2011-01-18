@@ -344,6 +344,8 @@ glade_editor_property_constructor (GType type,
   eprop->priv->label = gtk_label_new (NULL);
   gtk_event_box_set_visible_window (GTK_EVENT_BOX (eprop->priv->item_label), FALSE);
 
+  g_object_ref_sink (eprop->priv->item_label);
+
   hbox = gtk_hbox_new (FALSE, 4);
 
   gtk_label_set_line_wrap (GTK_LABEL (eprop->priv->label), TRUE);
@@ -378,6 +380,20 @@ glade_editor_property_finalize (GObject * object)
   glade_editor_property_load_common (eprop, NULL);
 
   G_OBJECT_CLASS (table_class)->finalize (object);
+}
+
+static void
+glade_editor_property_dispose (GObject * object)
+{
+  GladeEditorProperty *eprop = GLADE_EDITOR_PROPERTY (object);
+
+  if (eprop->priv->item_label)
+    {
+      g_object_unref (eprop->priv->item_label);
+      eprop->priv->item_label = NULL;
+    }
+
+  G_OBJECT_CLASS (table_class)->dispose (object);
 }
 
 static void
@@ -563,6 +579,7 @@ glade_editor_property_class_init (GladeEditorPropertyClass * eprop_class)
   /* GObjectClass */
   object_class->constructor = glade_editor_property_constructor;
   object_class->finalize = glade_editor_property_finalize;
+  object_class->dispose = glade_editor_property_dispose;
   object_class->get_property = glade_editor_property_real_get_property;
   object_class->set_property = glade_editor_property_set_property;
 

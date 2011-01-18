@@ -728,15 +728,18 @@ glade_widget_adaptor_real_set_property (GObject * object,
         break;
       case PROP_CATALOG:
         /* assume once (construct-only) */
+	g_free (adaptor->priv->catalog);
         adaptor->priv->catalog = g_value_dup_string (value);
         break;
       case PROP_BOOK:
         /* assume once (construct-only) */
+	g_free (adaptor->priv->book);
         adaptor->priv->book = g_value_dup_string (value);
         break;
       case PROP_SPECIAL_TYPE:
-        /* assume once (construct-only) */
-        adaptor->priv->special_child_type = g_value_dup_string (value);
+        /* assume once (construct-only) */ 
+	g_free (adaptor->priv->special_child_type);
+	adaptor->priv->special_child_type = g_value_dup_string (value);
         break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
