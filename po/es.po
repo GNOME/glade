@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: glade3.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade3&component=general\n"
-"POT-Creation-Date: 2011-01-16 13:47+0000\n"
-"PO-Revision-Date: 2011-01-16 19:34+0100\n"
+"POT-Creation-Date: 2011-01-16 18:37+0000\n"
+"PO-Revision-Date: 2011-01-19 20:28+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -233,6 +233,7 @@ msgstr ""
 #: ../src/glade-window.c:2129
 msgid "translator-credits"
 msgstr ""
+"Daniel Mustieles, <daniel.mustieles@gmail.com>, 2011\n"
 "Jorge González <jorgegonz@svn.gnome.org>, 2007-2010\n"
 "Claudio Saavedra <csaavedra@alumnos.utalca.cl>, 2007\n"
 "Francisco Javier F. Serrador <serrador@cvs.gnome.org>, 2005, 2006\n"
@@ -426,10 +427,9 @@ msgid "Show notebook tabs for loaded projects"
 msgstr "Mostrar las solapas del libro de notas para los proyectos cargados"
 
 #: ../src/glade-window.c:2321
-#, fuzzy
 #| msgid "Text beside icons"
 msgid "Text _beside icons"
-msgstr "Texto junto a los iconos"
+msgstr "Texto j_unto a los iconos"
 
 #: ../src/glade-window.c:2322
 msgid "Display items as text beside icons"
@@ -661,7 +661,6 @@ msgstr ""
 "imagen"
 
 #: ../gladeui/glade-builtins.c:508
-#| msgid "GdkColor"
 msgid "Color"
 msgstr "Color"
 
@@ -1130,10 +1129,9 @@ msgid "Create a %s"
 msgstr "Crear un %s"
 
 #: ../gladeui/glade-editor.c:899
-#, fuzzy
 #| msgid "Create %s"
 msgid "Crea_te"
-msgstr "Crear %s"
+msgstr "C_rear"
 
 #: ../gladeui/glade-editor.c:1002
 msgid "Reset"
@@ -1433,7 +1431,6 @@ msgstr "(hijo de %s)"
 #. translators: reffers to a property named '%s' of widget '%s'
 #: ../gladeui/glade-project.c:4747
 #, c-format
-#| msgid "Setting %s of %s"
 msgid "(%s of %s)"
 msgstr "(%s de %s)"
 
@@ -1546,23 +1543,19 @@ msgid "SignalClass"
 msgstr "_Señales"
 
 #: ../gladeui/glade-signal.c:159
-#, fuzzy
 #| msgid "The internal name of the widget"
 msgid "The signal class of this signal"
-msgstr "El nombre interno del widget"
+msgstr "La clase de señal de esta señal"
 
 #: ../gladeui/glade-signal.c:165
-#| msgid "Enter the handler to run for this signal"
 msgid "The handler for this signal"
 msgstr "El manejador para esta señal"
 
 #: ../gladeui/glade-signal.c:170
-#| msgid "User data"
 msgid "User Data"
 msgstr "Datos de usuario"
 
 #: ../gladeui/glade-signal.c:171
-#| msgid "Enter the handler to run for this signal"
 msgid "The user data for this signal"
 msgstr "Los datos de usuario para esta señal"
 
@@ -1579,19 +1572,19 @@ msgstr "Introducir el manejador que ejecutar para esta señal"
 #: ../gladeui/glade-signal.c:183
 msgid "Whether this signal is run after default handlers"
 msgstr ""
+"Indica si esta señal se ejecuta después de los manejadores predeterminados"
 
 #: ../gladeui/glade-signal.c:188
-#| msgid "Swap"
 msgid "Swapped"
 msgstr "Intercambiado"
 
 #: ../gladeui/glade-signal.c:189
-#, fuzzy
 #| msgid ""
 #| "Whether the instance and object should be swapped when calling the handler"
 msgid "Whether the user data is swapped with the instance for the handler"
 msgstr ""
-"Indica si la instancia del objeto se debería cambiar al llamar al manejador"
+"Indica si los datos del usuario se intercambian con la instancia del "
+"manejador"
 
 #: ../gladeui/glade-utils.c:136 ../gladeui/glade-utils.c:166
 #, c-format
@@ -1851,7 +1844,6 @@ msgid "Visible"
 msgstr "Visible"
 
 #: ../gladeui/glade-widget-action.c:200
-#| msgid "Whether this action is sensitive"
 msgid "Whether this action is visible"
 msgstr "Indica si esta acción es visible"
 
@@ -3679,10 +3671,9 @@ msgid "The position of the menu item in the menu shell"
 msgstr "La posición del elemento de menú en la shell del menú"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:472
-#, fuzzy
 #| msgid "The position of the tool item in the toolbar"
 msgid "The position of the tool item group in the palette"
-msgstr "La posición del elemento de menú en la barra de herramientas del menú"
+msgstr "La posición del grupo de elementos de herramienta en la paleta"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:473
 msgid "The position of the tool item in the toolbar"
@@ -3737,16 +3728,14 @@ msgid "Tool Button"
 msgstr "Botón de herramienta"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:485 ../plugins/gtk+/glade-gtk.c:6403
-#, fuzzy
 #| msgid "Tool Item"
 msgid "Tool Item Group"
-msgstr "Elemento de herramienta"
+msgstr "Grupo de elementos de herramienta"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:486
-#, fuzzy
 #| msgid "Palette"
 msgid "Tool Palette"
-msgstr "Paleta"
+msgstr "Paleta de herramientas"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:487
 msgid "Toolbar"
@@ -4313,16 +4302,14 @@ msgid "Tool Bar Editor"
 msgstr "Editor de barras de herramientas"
 
 #: ../plugins/gtk+/glade-gtk.c:7460
-#, fuzzy
 #| msgid "Size Group"
 msgid "Group"
-msgstr "Grupo de tamaño"
+msgstr "Grupo"
 
 #: ../plugins/gtk+/glade-gtk.c:7505
-#, fuzzy
 #| msgid "Tool Bar Editor"
 msgid "Tool Palette Editor"
-msgstr "Editor de barras de herramientas"
+msgstr "Editor de la paleta de herramientas"
 
 #: ../plugins/gtk+/glade-gtk.c:8190
 msgid "This property does not apply when Ellipsize is set."
@@ -4421,10 +4408,9 @@ msgid "Tag"
 msgstr "Etiqueta"
 
 #: ../plugins/gtk+/glade-gtk.c:11730
-#, fuzzy
 #| msgid "Text Tag Table"
 msgid "Text Tag Table Editor"
-msgstr "Tabla de etiquetas de texto"
+msgstr "Editor de la tabla de etiquetas de texto"
 
 #: ../plugins/gtk+/glade-fixed.c:994
 msgid "X position property"
@@ -4837,7 +4823,7 @@ msgstr "Ajustando %s para que no use apariencia de acción"
 
 #: ../plugins/gtk+/glade-tool-item-group-editor.c:238
 msgid "Group Header"
-msgstr ""
+msgstr "Cabecera de grupo"
 
 #~ msgid "Integer"
 #~ msgstr "Entero"
