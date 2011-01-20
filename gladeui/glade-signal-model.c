@@ -979,13 +979,19 @@ glade_signal_model_drag_data_get (GtkTreeDragSource* model,
       GladeSignal* signal;
       const gchar* widget = iter.user_data;
       gchar* dnd_text;
+      const gchar* user_data;
 
       gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
 			  GLADE_SIGNAL_COLUMN_SIGNAL, &signal, -1);
 
-      dnd_text = g_strdup_printf ("%s:%s:%s", widget, glade_signal_get_name (signal),
-				  glade_signal_get_handler (signal));
-      g_message ("Sent: %s", dnd_text);
+      user_data = glade_signal_get_userdata (signal);
+      
+      dnd_text = g_strdup_printf ("%s:%s:%s:%s:%d:%d", widget, 
+                                  glade_signal_get_name (signal),
+                                  glade_signal_get_handler (signal),
+                                  user_data && strlen (user_data) ? user_data : "(none)",
+                                  glade_signal_get_swapped (signal),
+                                  glade_signal_get_after (signal));
       gtk_selection_data_set (data,
 			      gdk_atom_intern_static_string ("application/x-glade-signal"),
 			      8,

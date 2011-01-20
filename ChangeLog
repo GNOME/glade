@@ -3,6 +3,17 @@
 	* gladeui/glade-palette.c: Dont strdup the adaptor names in the local hash table (those
 	  strings are constant data, no need to dup them).
 
+2011-01-20  Johannes Schmid <jhs@gnome.org>
+
+	* gladeui/glade-signal-model.c:
+	Add the "swapped" property of the signal to the dnd string
+
+	* gladeui/glade-signal-editor.c:
+	Fix creating of the rich dnd icon with proper cairo drawing
+	(thanks to Benjamin Otte)
+
+	* gladeui/glade-app.c: Bring back "signal-editor-created" signal
+
 2011-01-19  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* plugins/gtk+/gtk+.xml.in: Remove GtkTreeSelection from the palette, it's only available
@@ -44,6 +55,10 @@
 	the single instance and create it if necessary
 
 	* gladeui/glade-editor.[ch]: Remove glade_editor_set_signal_editor()
+
+	* gladeui/glade-app.c:
+	* gladeui/glade-signal-editor.c:
+	Added "signal-editor-created" signal
 
 2011-01-13  Javier Jardón <jjardon@gnome.org>
 

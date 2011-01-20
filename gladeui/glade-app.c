@@ -55,6 +55,7 @@
 enum
 {
   DOC_SEARCH,
+  SIGNAL_EDITOR_CREATED,
   LAST_SIGNAL
 };
 
@@ -329,6 +330,24 @@ glade_app_class_init (GladeAppClass * klass)
                     glade_marshal_VOID__STRING_STRING_STRING,
                     G_TYPE_NONE, 3,
                     G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
+
+  /**
+   * GladeApp::signal-editor-created:
+   * @gladeapp: the #GladeApp which received the signal.
+   * @signal_editor: the new #GladeSignalEditor.
+   *
+   * Emitted when a new signal editor created.
+   * A tree view is created in the default handler.
+   * Connect your handler before the default handler for setting a custom column or renderer
+   * and after it for connecting to the tree view signals
+   */
+  glade_app_signals[SIGNAL_EDITOR_CREATED] =
+    g_signal_new ("signal-editor-created",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL,
+                  glade_marshal_VOID__OBJECT,
+                  G_TYPE_NONE, 1, G_TYPE_OBJECT);  
 
   g_type_class_add_private (klass, sizeof (GladeAppPrivate));
 }

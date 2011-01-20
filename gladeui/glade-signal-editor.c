@@ -467,30 +467,46 @@ glade_signal_editor_dispose (GObject *object)
   G_OBJECT_CLASS (glade_signal_editor_parent_class)->dispose (object);
 }
 
+#define BORDER 10
+
 static cairo_surface_t*
 create_rich_drag_surface (GtkWidget* widget, const gchar* text)
 {
+  GtkStyleContext* context = gtk_widget_get_style_context (widget);
+  GtkStateFlags state = gtk_widget_get_state_flags (widget);
   PangoLayout* layout = pango_layout_new (gtk_widget_get_pango_context (widget));
   cairo_t* cr;
   cairo_surface_t* s;
   gint width, height;
+  GdkRGBA rgba;
 	
   pango_layout_set_text (layout, text, -1);
   pango_layout_get_size (layout, &width, &height);
-  width = PANGO_PIXELS(width) + 10;
-  height = PANGO_PIXELS(height) + 10;
-	
-  s = cairo_image_surface_create (CAIRO_FORMAT_A1, width, height);
-  cr = cairo_create (s);
-	
-  cairo_rectangle (cr, 0, 0, 1, 1);
+  width = PANGO_PIXELS(width) + BORDER;
+  height = PANGO_PIXELS(height) + BORDER;
 
-  cairo_show_text (cr, text);
-  cairo_stroke (cr);	
+  s = gdk_window_create_similar_surface (gtk_widget_get_window (widget),
+                                        CAIRO_CONTENT_COLOR,
+                                        width,
+                                        height);
+  cr = cairo_create (s);
+
+  gtk_style_context_get_background_color (context, state, &rgba);
+  gdk_cairo_set_source_rgba (cr, &rgba);
+  cairo_paint (cr);
+  
+  cairo_set_source_rgb (cr, 0, 0, 0);
+  cairo_move_to (cr, BORDER/2, BORDER/2);
+  pango_cairo_show_layout (cr, layout);
+
+  cairo_rectangle (cr, 0, 0, width, height);
+  cairo_stroke (cr);
+
+  cairo_destroy (cr);
 
   g_object_unref (layout);
 	
-  return s;;
+  return s;
 }
 
 static void
@@ -508,21 +524,28 @@ glade_signal_editor_drag_begin (GtkWidget* widget,
   if (gtk_tree_selection_get_selected (selection, &model, &iter))
     {
       gchar* handler;
+      gchar* text;
       gtk_tree_model_get (model, &iter,
 			  GLADE_SIGNAL_COLUMN_HANDLER, &handler, -1);
-      s = create_rich_drag_surface (widget, handler);
+
+      text = g_strdup_printf ("%s ()", handler);
+      g_free (handler);
+      
+      s = create_rich_drag_surface (widget, text);
+      g_free (text);
     }
 	
   if (s)
     {
       gtk_drag_set_icon_surface (context, s);
-      g_object_unref (s);
+      cairo_surface_destroy (s);
     }
   else
     {
       gtk_drag_set_icon_default (context);
     }
 }
+
 
 static void
 glade_signal_editor_name_cell_data_func (GtkTreeViewColumn *column,
@@ -923,6 +946,9 @@ glade_signal_editor_init (GladeSignalEditor *self)
 			  "drag-begin",
 			  G_CALLBACK(glade_signal_editor_drag_begin),
 			  self);
+
+  /* Emit created signal */
+  g_signal_emit_by_name (glade_app_get(), "signal-editor-created", self);
 	
   gtk_widget_show_all (GTK_WIDGET(self));
 }
