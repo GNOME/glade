@@ -1,3 +1,8 @@
+2011-01-21  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-palette.c: Dont strdup the adaptor names in the local hash table (those
+	  strings are constant data, no need to dup them).
+
 2011-01-19  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* plugins/gtk+/gtk+.xml.in: Remove GtkTreeSelection from the palette, it's only available

@@ -331,7 +331,7 @@ glade_palette_new_item (GladePalette * palette, GladeWidgetAdaptor * adaptor)
   gtk_widget_show (item);
 
   g_hash_table_insert (palette->priv->button_table, 
-		       g_strdup (glade_widget_adaptor_get_name (adaptor)), 
+		       (gchar *)glade_widget_adaptor_get_name (adaptor),
 		       item);
 
   return item;
@@ -638,8 +638,7 @@ glade_palette_init (GladePalette * palette)
 
   priv = palette->priv = GLADE_PALETTE_GET_PRIVATE (palette);
 
-  priv->button_table = g_hash_table_new_full (g_str_hash, g_str_equal,
-					      (GDestroyNotify)g_free, NULL);
+  priv->button_table = g_hash_table_new (g_str_hash, g_str_equal);
 
   priv->item_appearance      = GLADE_ITEM_ICON_ONLY;
   priv->use_small_item_icons = FALSE;
