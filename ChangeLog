@@ -3,6 +3,10 @@
 	* gladeui/glade-palette.c: Dont strdup the adaptor names in the local hash table (those
 	  strings are constant data, no need to dup them).
 
+	* gladeui/glade-base-editor.c: Fixed many memory leaks in this rusty code, fixed nasty
+	  bug where type_edited() was using the wrong enum to fetch the current type name, fixed
+	  to make "Add Item" button always add items to the root.
+
 2011-01-20  Johannes Schmid <jhs@gnome.org>
 
 	* gladeui/glade-signal-model.c:
