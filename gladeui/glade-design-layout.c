@@ -47,17 +47,6 @@ typedef enum
   ACTIVITY_RESIZE_WIDTH_AND_HEIGHT
 } Activity;
 
-#define ACTIVITY_STR(act)						\
-	((act) == ACTIVITY_NONE ? "none" :				\
-	 (act) == ACTIVITY_RESIZE_WIDTH ? "resize width" :		\
-	 (act) == ACTIVITY_RESIZE_HEIGHT ? "resize height" : "resize width & height")
-
-enum
-{
-  DUMMY_SIGNAL,
-  LAST_SIGNAL
-};
-
 struct _GladeDesignLayoutPrivate
 {
   GdkWindow *window, *offscreen_window;
