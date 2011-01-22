@@ -45,7 +45,7 @@ static const struct
   {
   "Emblems", N_("Emblems")},
   {
-  "Emotes", N_("Emotes")},
+  "Emotes", N_("Emoticons")},
   {
   "International", N_("International")},
   {
