@@ -1593,7 +1593,7 @@ delete_cb (GtkAction * action, GladeWindow * window)
 }
 
 static void
-preferences_cb (GtkAction * action, GladeWindow * window)
+properties_cb (GtkAction * action, GladeWindow * window)
 {
   GladeProject *project;
 
@@ -1602,7 +1602,7 @@ preferences_cb (GtkAction * action, GladeWindow * window)
 
   project = glade_design_view_get_project (window->priv->active_view);
 
-  glade_project_preferences (project);
+  glade_project_properties (project);
 }
 
 static void
@@ -2147,6 +2147,8 @@ static const gchar ui_info[] =
     "      <separator/>"
     "      <menuitem action='Close'/>"
     "      <menuitem action='Quit'/>"
+    "      <separator/>"
+    "      <menuitem action='Properties'/>"
     "    </menu>"
     "    <menu action='EditMenu'>"
     "      <menuitem action='Undo'/>"
@@ -2156,8 +2158,6 @@ static const gchar ui_info[] =
     "      <menuitem action='Copy'/>"
     "      <menuitem action='Paste'/>"
     "      <menuitem action='Delete'/>"
-    "      <separator/>"
-    "      <menuitem action='Preferences'/>"
     "    </menu>"
     "    <menu action='ViewMenu'>"
     "      <menuitem action='ToolbarVisible'/>"
@@ -2267,8 +2267,8 @@ static GtkActionEntry project_entries[] = {
   {"Delete", GTK_STOCK_DELETE, NULL, "Delete",
    N_("Delete the selection"), G_CALLBACK (delete_cb)},
 
-  {"Preferences", GTK_STOCK_PREFERENCES, NULL, "<control>P",
-   N_("Modify project preferences"), G_CALLBACK (preferences_cb)},
+  {"Properties", GTK_STOCK_PROPERTIES, NULL, "<control>P",
+   N_("Edit project properties"), G_CALLBACK (properties_cb)},
 
   /* ProjectsMenu */
   {"PreviousProject", NULL, N_("_Previous Project"), "<control>Page_Up",

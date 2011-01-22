@@ -11,6 +11,9 @@
 	glade_property_class_make_gvalue_from_string() and from glade_utils_value_from_string() since
 	you never need a common ancestor to search a widget by name anymore.
 
+	* gladeui/glade-project.[ch], src/glade-window.c: Edit->Preferences becomes File->Properties
+	along with some internal renames (closes bug 609485).
+
 2011-01-21  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-palette.c: Dont strdup the adaptor names in the local hash table (those

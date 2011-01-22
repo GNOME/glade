@@ -127,7 +127,7 @@ void                glade_project_cancel_load          (GladeProject       *proj
 
 void                glade_project_preview              (GladeProject       *project, 
 							GladeWidget        *gwidget);
-void                glade_project_preferences          (GladeProject       *project);
+void                glade_project_properties           (GladeProject       *project);
 gchar              *glade_project_resource_fullpath    (GladeProject       *project,
 							const gchar        *resource);
 

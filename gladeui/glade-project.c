@@ -126,7 +126,7 @@ struct _GladeProjectPrivate
                                  * (full or relative path, null means project directory).
                                  */
 
-  /* Control on the preferences dialog to update buttons etc when properties change */
+  /* Control on the properties dialog to update buttons etc when properties change */
   GtkWidget *prefs_dialog;
   GtkWidget *project_wide_radio;
   GtkWidget *toplevel_contextual_radio;
@@ -1095,8 +1095,7 @@ glade_project_read_requires_from_comment (GladeXmlNode * comment,
   if (value &&
       !strncmp (" interface-requires", value, strlen (" interface-requires")))
     {
-      if (sscanf (value, " interface-requires %s %d.%d", buffer, &maj, &min) ==
-          3)
+      if (sscanf (value, " interface-requires %s %d.%d", buffer, &maj, &min) == 3)
         {
           if (major)
             *major = maj;
@@ -1579,7 +1578,7 @@ glade_project_load_from_file (GladeProject * project, const gchar * path)
 
       /* Update prefs dialogs here... */
       name = glade_project_get_name (project);
-      title = g_strdup_printf (_("%s preferences"), name);
+      title = g_strdup_printf (_("%s document properties"), name);
       gtk_window_set_title (GTK_WINDOW (project->priv->prefs_dialog), title);
       g_free (title);
       g_free (name);
@@ -1616,7 +1615,7 @@ glade_project_load (const gchar * path)
 
       /* Update prefs dialogs here... */
       name = glade_project_get_name (project);
-      title = g_strdup_printf (_("%s preferences"), name);
+      title = g_strdup_printf (_("%s document properties"), name);
       gtk_window_set_title (GTK_WINDOW (project->priv->prefs_dialog), title);
       g_free (title);
       g_free (name);
@@ -1852,7 +1851,7 @@ glade_project_save (GladeProject * project, const gchar * path, GError ** error)
 
       /* Update prefs dialogs here... */
       name = glade_project_get_name (project);
-      title = g_strdup_printf (_("%s preferences"), name);
+      title = g_strdup_printf (_("%s document properties"), name);
       gtk_window_set_title (GTK_WINDOW (project->priv->prefs_dialog), title);
       g_free (title);
       g_free (name);
@@ -3750,8 +3749,7 @@ glade_project_build_prefs_box (GladeProject * project)
       gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON
                                                    (project->priv->
                                                     resource_default_radio),
-                                                   _
-                                                   ("From a project relative directory"));
+                                                   _("From a project relative directory"));
 
   gtk_box_pack_start (GTK_BOX (hbox), project->priv->resource_relative_radio,
                       TRUE, TRUE, 0);
@@ -3766,8 +3764,7 @@ glade_project_build_prefs_box (GladeProject * project)
   hbox = gtk_hbox_new (FALSE, 0);
   project->priv->resource_fullpath_radio =
       gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON
-                                                   (project->priv->
-                                                    resource_default_radio),
+                                                   (project->priv->resource_default_radio),
                                                    _("From this directory"));
   gtk_box_pack_start (GTK_BOX (hbox), project->priv->resource_fullpath_radio,
                       TRUE, TRUE, 0);
@@ -3913,7 +3910,7 @@ glade_project_build_prefs_dialog (GladeProject * project)
   gchar *title, *name;
 
   name = glade_project_get_name (project);
-  title = g_strdup_printf (_("%s preferences"), name);
+  title = g_strdup_printf (_("%s document properties"), name);
 
   dialog = gtk_dialog_new_with_buttons (title,
                                         GTK_WINDOW (glade_app_get_window ()),
@@ -3953,13 +3950,13 @@ glade_project_build_prefs_dialog (GladeProject * project)
 }
 
 /**
- * glade_project_preferences:
+ * glade_project_properties:
  * @project: A #GladeProject
  *
- * Runs a preferences dialog for @project.
+ * Runs a document properties dialog for @project.
  */
 void
-glade_project_preferences (GladeProject * project)
+glade_project_properties (GladeProject * project)
 {
   g_return_if_fail (GLADE_IS_PROJECT (project));
 
