@@ -1099,8 +1099,8 @@ glade_property_read (GladeProperty * property,
     }
   else
     {
-      gvalue = glade_property_class_make_gvalue_from_string
-          (property->priv->klass, value, project, property->priv->widget);
+      gvalue = 
+	glade_property_class_make_gvalue_from_string (property->priv->klass, value, project);
 
       GLADE_PROPERTY_GET_KLASS (property)->set_value (property, gvalue);
 

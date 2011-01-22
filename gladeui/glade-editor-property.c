@@ -1636,10 +1636,11 @@ glade_eprop_text_changed_common (GladeEditorProperty * eprop,
       pspec->value_type == G_TYPE_VALUE_ARRAY ||
       pspec->value_type == GDK_TYPE_PIXBUF)
     {
-      val = glade_property_class_make_gvalue_from_string
-          (eprop->priv->klass, text,
-           glade_widget_get_project (glade_property_get_widget (eprop->priv->property)), 
-	   glade_property_get_widget (eprop->priv->property));
+      GladeWidget *gwidget = glade_property_get_widget (eprop->priv->property);
+
+      val = glade_property_class_make_gvalue_from_string (eprop->priv->klass, 
+							  text, 
+							  glade_widget_get_project (gwidget));
     }
   else
     {
@@ -2981,7 +2982,7 @@ glade_eprop_object_show_dialog (GtkWidget * dialog_button,
                                        TRUE);
 
           value = glade_property_class_make_gvalue_from_string
-	    (eprop->priv->klass, glade_widget_get_name (selected), project, widget);
+	    (eprop->priv->klass, glade_widget_get_name (selected), project);
 
           /* Unparent the widget so we can reuse it for this property */
           if (glade_property_class_parentless_widget (eprop->priv->klass))
@@ -3044,7 +3045,7 @@ glade_eprop_object_show_dialog (GtkWidget * dialog_button,
           glade_project_selection_set (project, glade_widget_get_object (widget), TRUE);
 
           value = glade_property_class_make_gvalue_from_string
-	    (eprop->priv->klass, glade_widget_get_name (new_widget), project, NULL);
+	    (eprop->priv->klass, glade_widget_get_name (new_widget), project);
 
           glade_editor_property_commit (eprop, value);
 
@@ -3056,8 +3057,8 @@ glade_eprop_object_show_dialog (GtkWidget * dialog_button,
     }
   else if (res == GLADE_RESPONSE_CLEAR)
     {
-      GValue *value = glade_property_class_make_gvalue_from_string
-	(eprop->priv->klass, NULL, project, glade_property_get_widget (eprop->priv->property));
+      GValue *value = 
+	glade_property_class_make_gvalue_from_string (eprop->priv->klass, NULL, project);
 
       glade_editor_property_commit (eprop, value);
 

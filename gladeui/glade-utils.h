@@ -62,8 +62,7 @@ gchar            *glade_utils_flags_string_from_value_displayable (GType flags_t
 gchar            *glade_utils_enum_string_from_value_displayable (GType flags_type, gint value);
 GValue           *glade_utils_value_from_string   (GType               type,
 						   const gchar        *string,
-						   GladeProject       *project,
-						   GladeWidget        *widget);
+						   GladeProject       *project);
 gchar            *glade_utils_string_from_value   (const GValue       *value);
 
 /* Devhelp */

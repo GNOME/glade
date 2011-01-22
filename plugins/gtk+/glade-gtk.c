@@ -244,7 +244,7 @@ glade_gtk_parse_atk_props (GladeWidget * widget, GladeXmlNode * node)
 
           /* Set the parsed value on the property ... */
           gvalue = glade_property_class_make_gvalue_from_string
-	    (glade_property_get_class (property), value, glade_widget_get_project (widget), widget);
+	    (glade_property_get_class (property), value, glade_widget_get_project (widget));
           glade_property_set_value (property, gvalue);
           g_value_unset (gvalue);
           g_free (gvalue);
@@ -5209,7 +5209,7 @@ glade_gtk_dialog_read_responses (GladeWidget * widget,
 
       if ((action_widget =
            glade_project_get_widget_by_name (glade_widget_get_project (widget), 
-					     widget, widget_name)) != NULL)
+					     widget_name)) != NULL)
         {
           glade_widget_property_set (action_widget, "response-id",
                                      g_ascii_strtoll (response, NULL, 10));
@@ -9344,8 +9344,7 @@ glade_gtk_icon_factory_read_sources (GladeWidget * widget, GladeXmlNode * node)
       source = gtk_icon_source_new ();
 
       /* Deal with the filename... */
-      value = glade_utils_value_from_string (GDK_TYPE_PIXBUF, str,
-                                             glade_widget_get_project (widget), widget);
+      value = glade_utils_value_from_string (GDK_TYPE_PIXBUF, str, glade_widget_get_project (widget));
       pixbuf = g_value_dup_object (value);
       g_value_unset (value);
       g_free (value);
@@ -10380,7 +10379,7 @@ glade_gtk_store_read_data (GladeWidget * widget, GladeXmlNode * node)
                */
               value_str = glade_xml_get_content (col_node);
               value = glade_utils_value_from_string (g_type_from_name (column_type->type_name), value_str,
-						     glade_widget_get_project (widget), widget);
+						     glade_widget_get_project (widget));
               g_free (value_str);
 
               data = glade_model_data_new (g_type_from_name (column_type->type_name),

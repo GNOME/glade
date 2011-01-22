@@ -1357,10 +1357,9 @@ glade_utils_enum_value_from_string (GType enum_type, const gchar * strval)
   if (((displayable =
         glade_get_value_from_displayable (enum_type, strval)) != NULL &&
        (gvalue =
-        glade_utils_value_from_string (enum_type, displayable, NULL,
-                                       NULL)) != NULL) ||
+        glade_utils_value_from_string (enum_type, displayable, NULL)) != NULL) ||
       (gvalue =
-       glade_utils_value_from_string (enum_type, strval, NULL, NULL)) != NULL)
+       glade_utils_value_from_string (enum_type, strval, NULL)) != NULL)
     {
       value = g_value_get_enum (gvalue);
       g_value_unset (gvalue);
@@ -1420,10 +1419,9 @@ glade_utils_flags_value_from_string (GType flags_type, const gchar * strval)
   if (((displayable =
         glade_get_value_from_displayable (flags_type, strval)) != NULL &&
        (gvalue =
-        glade_utils_value_from_string (flags_type, displayable, NULL,
-                                       NULL)) != NULL) ||
+        glade_utils_value_from_string (flags_type, displayable, NULL)) != NULL) ||
       (gvalue =
-       glade_utils_value_from_string (flags_type, strval, NULL, NULL)) != NULL)
+       glade_utils_value_from_string (flags_type, strval, NULL)) != NULL)
     {
       value = g_value_get_flags (gvalue);
       g_value_unset (gvalue);
@@ -1612,7 +1610,7 @@ pclass_from_gtype (GType type)
 GValue *
 glade_utils_value_from_string (GType type,
                                const gchar * string,
-                               GladeProject * project, GladeWidget * widget)
+                               GladeProject * project)
 {
   GladePropertyClass *pclass;
 
@@ -1620,8 +1618,7 @@ glade_utils_value_from_string (GType type,
   g_return_val_if_fail (string != NULL, NULL);
 
   if ((pclass = pclass_from_gtype (type)) != NULL)
-    return glade_property_class_make_gvalue_from_string (pclass, string,
-                                                         project, widget);
+    return glade_property_class_make_gvalue_from_string (pclass, string, project);
 
   return NULL;
 }

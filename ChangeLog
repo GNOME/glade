@@ -1,3 +1,16 @@
+2011-01-22  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-command.[ch]: Removed glade_command_set_naming_policy().
+
+	* gladeui/glade-project.[ch]: Removed naming policy, object ids are always unique.
+
+	* gladeui/glade-editor-property.c, glade-property-class.[ch], gladeui/glade-property.c,
+	gladeui/glade-signal-editor.c, gladeui/glade-utils.[ch], gladeui/glade-widget.c,
+	gladeui/glade-xml-utils.h, plugins/gtk+/glade-gtk.c, plugins/gtk+/glade-icon-sources.c,
+	plugins/gtk+/glade-model-data.c: Removed 'widget' argument from
+	glade_property_class_make_gvalue_from_string() and from glade_utils_value_from_string() since
+	you never need a common ancestor to search a widget by name anymore.
+
 2011-01-21  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-palette.c: Dont strdup the adaptor names in the local hash table (those

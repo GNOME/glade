@@ -25,11 +25,6 @@ typedef struct _GladeWidgetAdaptor  GladeWidgetAdaptor;
 typedef struct _GladeProperty       GladeProperty;
 typedef struct _GladeProject        GladeProject;
 
-typedef enum {
-	GLADE_POLICY_PROJECT_WIDE = 0,    /* widget names are unique throughout the project */
-	GLADE_POLICY_TOPLEVEL_CONTEXTUAL  /* toplevel names are unique, and widgets inside a toplevel */
-} GladeNamingPolicy;
-
 
 #define GLADE_GTKBUILDER_VERSIONING_BASE_MAJOR    2
 #define GLADE_GTKBUILDER_VERSIONING_BASE_MINOR    14

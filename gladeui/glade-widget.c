@@ -1463,9 +1463,7 @@ glade_widget_set_default_packing_properties (GladeWidget * container,
         continue;
 
       value = glade_property_class_make_gvalue_from_string (property_class,
-                                                            def,
-                                                            child->priv->project,
-                                                            child);
+                                                            def, child->priv->project);
 
       glade_widget_child_set_property (container, child,
                                        glade_property_class_id (property_class), value);

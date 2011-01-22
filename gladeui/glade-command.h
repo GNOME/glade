@@ -79,11 +79,6 @@ gboolean              glade_command_unifies              (GladeCommand      *com
 void                  glade_command_collapse             (GladeCommand      *command,
 							  GladeCommand      *other);
 
-/************************** project *********************************/
-
-void           glade_command_set_project_naming_policy  (GladeProject       *project,
-							 GladeNamingPolicy   policy);
-
 /************************** properties *********************************/
 
 void           glade_command_set_property        (GladeProperty *property,     

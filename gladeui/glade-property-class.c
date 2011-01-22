@@ -683,8 +683,7 @@ static GObject *
 glade_property_class_make_object_from_string (GladePropertyClass *
                                               property_class,
                                               const gchar * string,
-                                              GladeProject * project,
-                                              GladeWidget * widget)
+                                              GladeProject * project)
 {
   GObject *object = NULL;
   gchar *fullpath;
@@ -729,8 +728,7 @@ glade_property_class_make_object_from_string (GladePropertyClass *
   else if (project)
     {
       GladeWidget *gwidget;
-      if ((gwidget = glade_project_get_widget_by_name
-           (project, widget, string)) != NULL)
+      if ((gwidget = glade_project_get_widget_by_name (project, string)) != NULL)
         object = glade_widget_get_object (gwidget);
     }
 
@@ -741,8 +739,7 @@ static GList *
 glade_property_class_make_objects_from_string (GladePropertyClass *
                                                property_class,
                                                const gchar * string,
-                                               GladeProject * project,
-                                               GladeWidget * widget)
+                                               GladeProject * project)
 {
   GList *objects = NULL;
   GObject *object;
@@ -753,8 +750,10 @@ glade_property_class_make_objects_from_string (GladePropertyClass *
     {
       for (i = 0; split[i]; i++)
         {
-          if ((object = glade_property_class_make_object_from_string
-               (property_class, split[i], project, widget)) != NULL)
+          if ((object = 
+	       glade_property_class_make_object_from_string (property_class, 
+							     split[i], 
+							     project)) != NULL)
             objects = g_list_prepend (objects, object);
         }
       g_strfreev (split);
@@ -766,17 +765,15 @@ glade_property_class_make_objects_from_string (GladePropertyClass *
  * glade_property_class_make_gvalue_from_string:
  * @property_class: A #GladePropertyClass
  * @string: a string representation of this property
- * @widget: the #GladeWidget that the associated property belongs to.
+ * @project: the #GladeProject that the property should be resolved for
  *
  * Returns: A #GValue created based on the @property_class
  *          and @string criteria.
  */
 GValue *
-glade_property_class_make_gvalue_from_string (GladePropertyClass *
-                                              property_class,
-                                              const gchar * string,
-                                              GladeProject * project,
-                                              GladeWidget * widget)
+glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class,
+                                              const gchar        *string,
+                                              GladeProject       *project)
 {
   GValue *value = g_new0 (GValue, 1);
   gchar **strv;
@@ -861,14 +858,14 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *
     }
   else if (G_IS_PARAM_SPEC_OBJECT (property_class->pspec))
     {
-      GObject *object = glade_property_class_make_object_from_string
-          (property_class, string, project, widget);
+      GObject *object = 
+	glade_property_class_make_object_from_string (property_class, string, project);
       g_value_set_object (value, object);
     }
   else if (GLADE_IS_PARAM_SPEC_OBJECTS (property_class->pspec))
     {
-      GList *objects = glade_property_class_make_objects_from_string
-          (property_class, string, project, widget);
+      GList *objects = 
+	glade_property_class_make_objects_from_string (property_class, string, project);
       g_value_take_boxed (value, objects);
     }
   else
@@ -1967,15 +1964,14 @@ glade_property_class_update_from_node (GladeXmlNode * node,
           g_free (klass->def);
         }
       klass->def =
-          glade_property_class_make_gvalue_from_string (klass, buf, NULL, NULL);
+          glade_property_class_make_gvalue_from_string (klass, buf, NULL);
 
       if (klass->virt)
         {
           g_value_unset (klass->orig_def);
           g_free (klass->orig_def);
           klass->orig_def =
-              glade_property_class_make_gvalue_from_string (klass, buf, NULL,
-                                                            NULL);
+	    glade_property_class_make_gvalue_from_string (klass, buf, NULL);
         }
 
       g_free (buf);

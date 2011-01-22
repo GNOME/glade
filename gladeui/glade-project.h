@@ -154,7 +154,6 @@ void                glade_project_widget_changed       (GladeProject       *proj
 
 /* Widget names */
 GladeWidget        *glade_project_get_widget_by_name   (GladeProject       *project, 
-							GladeWidget        *ancestor,
 							const gchar        *name);
 void                glade_project_set_widget_name      (GladeProject       *project, 
 							GladeWidget        *widget, 
@@ -199,9 +198,6 @@ GladePointerMode    glade_project_get_pointer_mode     (GladeProject       *proj
 void                glade_project_set_add_item         (GladeProject       *project,
 							GladeWidgetAdaptor *adaptor);
 GladeWidgetAdaptor *glade_project_get_add_item         (GladeProject       *project);
-void                glade_project_set_naming_policy    (GladeProject       *project,
-							GladeNamingPolicy   policy);
-GladeNamingPolicy   glade_project_get_naming_policy    (GladeProject       *project);
 void                glade_project_get_target_version   (GladeProject       *project,
 							const gchar        *catalog,
 							gint               *major,

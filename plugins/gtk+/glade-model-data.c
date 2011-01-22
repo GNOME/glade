@@ -715,14 +715,11 @@ value_text_edited (GtkCellRendererText * cell,
                                            glade_get_value_from_displayable
                                            (G_VALUE_TYPE (&data->value),
                                             new_text),
-                                           glade_widget_get_project
-					   (glade_property_get_widget (property)),
-                                           glade_property_get_widget (property));
+                                           glade_widget_get_project (glade_property_get_widget (property)));
   else
     value =
         glade_utils_value_from_string (G_VALUE_TYPE (&data->value), new_text,
-                                       glade_widget_get_project (glade_property_get_widget (property)),
-                                       glade_property_get_widget (property));
+                                       glade_widget_get_project (glade_property_get_widget (property)));
 
 
   g_value_copy (value, &data->value);

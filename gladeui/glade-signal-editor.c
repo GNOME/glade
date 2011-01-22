@@ -233,8 +233,7 @@ glade_signal_editor_user_data_activate (GtkCellRenderer * icon_renderer,
       if (glade_signal_get_userdata (signal))
 	{
 	  project_object =
-	    glade_project_get_widget_by_name (project, NULL,
-					      glade_signal_get_userdata (signal));
+	    glade_project_get_widget_by_name (project, glade_signal_get_userdata (signal));
 	  selected = g_list_prepend (selected, project_object);
 	}
 

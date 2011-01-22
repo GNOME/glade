@@ -121,8 +121,7 @@ guint16               glade_property_class_since_minor             (GladePropert
 
 GValue             *glade_property_class_make_gvalue_from_string (GladePropertyClass  *property_class,
 								  const gchar         *string,
-								  GladeProject        *project,
-								  GladeWidget         *widget);
+								  GladeProject        *project);
 
 gchar              *glade_property_class_make_string_from_gvalue (GladePropertyClass  *property_class,
 								  const GValue        *value);
