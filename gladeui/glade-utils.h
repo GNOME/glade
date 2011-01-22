@@ -97,8 +97,6 @@ void              glade_utils_cairo_draw_rectangle (cairo_t *cr,
 						    gint width,
 						    gint height);
 
-void              glade_util_draw_selection_nodes (GtkWidget* expose_widget, cairo_t *cr);
-
 /* Lists */
 GList            *glade_util_purify_list           (GList        *list);
 GList            *glade_util_added_in_list         (GList        *old_list,
