@@ -420,7 +420,13 @@ columns_changed_idle (GladeEditorProperty *eprop)
 	gchar                 *column_name;
 
 	glade_property_get (eprop->property, &columns);
-	g_assert (columns);
+
+
+	/* This can happen when the user performs DnD and there
+	 * are no columns yet */
+	if (!columns)
+		return FALSE;
+
 	columns = glade_column_list_copy (columns);
 
 	if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (eprop_types->store), &iter))

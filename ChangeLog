@@ -17,6 +17,9 @@
 
 	* plugins/gtk+/glade-gtk.c: Fixed GtkMenuToolButton to save the "menu" child properly
 
+	* plugins/gtk+/glade-column-types.c: Fixed crash when user performs Drag'n'Drop of
+	< enter column here > and no columns are yet added (fixes bug 633943).
+
 2011-01-08  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* plugins/Makefile.am, plugins/glade-tool-item-group-editor.[ch], plugins/gtk+.xml.in,
