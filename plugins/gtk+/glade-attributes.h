@@ -14,12 +14,12 @@ G_BEGIN_DECLS
 typedef struct _GladeAttribute             GladeAttribute;
 
 struct _GladeAttribute {
-	PangoAttrType   type;   /* The type of pango attribute */
+  PangoAttrType   type;   /* The type of pango attribute */
 
-	GValue          value;  /* The coresponding value */
+  GValue          value;  /* The coresponding value */
 
-	guint           start;  /* The text offsets where the attributes should apply to */
-	guint           end;
+  guint           start;  /* The text offsets where the attributes should apply to */
+  guint           end;
 };
 
 

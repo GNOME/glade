@@ -6,20 +6,19 @@
  * Author(s):
  *      Tristan Van Berkom <tvb@gnome.org>
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307,
- * USA.
+ * You should have received a copy of the GNU Lesser General Public 
+ * License along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
 #include <config.h>
@@ -103,45 +102,45 @@ GLADE_MAKE_EPROP (GladeEPropAttrs, glade_eprop_attrs)
 #define GLADE_IS_EPROP_ATTRS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_ATTRS))
 #define GLADE_IS_EPROP_ATTRS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_ATTRS))
 #define GLADE_EPROP_ATTRS_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_ATTRS, GladeEPropAttrsClass))
-     enum
-     {
+enum
+{
 
-       /* Main Data */
-       COLUMN_NAME,             /* The title string for PangoAttrType */
-       COLUMN_NAME_WEIGHT,      /* For bold names */
-       COLUMN_TYPE,             /* The PangoAttrType */
-       COLUMN_EDIT_TYPE,        /* The AttrEditType (below) */
-       COLUMN_VALUE,            /* The value */
-       COLUMN_START,            /* attribute start value */
-       COLUMN_END,              /* attribute end value */
+  /* Main Data */
+  COLUMN_NAME,             /* The title string for PangoAttrType */
+  COLUMN_NAME_WEIGHT,      /* For bold names */
+  COLUMN_TYPE,             /* The PangoAttrType */
+  COLUMN_EDIT_TYPE,        /* The AttrEditType (below) */
+  COLUMN_VALUE,            /* The value */
+  COLUMN_START,            /* attribute start value */
+  COLUMN_END,              /* attribute end value */
 
-       /* Editor renderer related */
-       COLUMN_TOGGLE_ACTIVE,    /* whether the toggle renderer is being used */
-       COLUMN_TOGGLE_DOWN,      /* whether the toggle should be displayed in "downstate" */
+  /* Editor renderer related */
+  COLUMN_TOGGLE_ACTIVE,    /* whether the toggle renderer is being used */
+  COLUMN_TOGGLE_DOWN,      /* whether the toggle should be displayed in "downstate" */
 
-       COLUMN_BUTTON_ACTIVE,    /* whether the GladeCellRendererButton is to be used (to launch dialogs) */
-       COLUMN_TEXT,             /* text attribute value for all text derived renderers */
-       COLUMN_TEXT_STYLE,       /* whether to make italic */
-       COLUMN_TEXT_FG,          /* forground colour of the text */
+  COLUMN_BUTTON_ACTIVE,    /* whether the GladeCellRendererButton is to be used (to launch dialogs) */
+  COLUMN_TEXT,             /* text attribute value for all text derived renderers */
+  COLUMN_TEXT_STYLE,       /* whether to make italic */
+  COLUMN_TEXT_FG,          /* forground colour of the text */
+  
+  COLUMN_COMBO_ACTIVE,     /* whether the combobox renderer is being used */
+  COLUMN_COMBO_MODEL,      /* the model for the dropdown list */
+  
+  COLUMN_SPIN_ACTIVE,      /* whether the spin renderer is being used */
+  COLUMN_SPIN_DIGITS,      /* How many decimal points to show (used to edit float values) */
 
-       COLUMN_COMBO_ACTIVE,     /* whether the combobox renderer is being used */
-       COLUMN_COMBO_MODEL,      /* the model for the dropdown list */
-
-       COLUMN_SPIN_ACTIVE,      /* whether the spin renderer is being used */
-       COLUMN_SPIN_DIGITS,      /* How many decimal points to show (used to edit float values) */
-
-       NUM_COLUMNS
-     };
+  NUM_COLUMNS
+};
 
 
-     typedef enum
-     {
-       EDIT_TOGGLE = 0,
-       EDIT_COMBO,
-       EDIT_SPIN,
-       EDIT_COLOR,
-       EDIT_INVALID
-     } AttrEditType;
+typedef enum
+{
+  EDIT_TOGGLE = 0,
+  EDIT_COMBO,
+  EDIT_SPIN,
+  EDIT_COLOR,
+  EDIT_INVALID
+} AttrEditType;
 
 #define ACTIVATE_COLUMN_FROM_TYPE(type)                 \
 	((type) == EDIT_TOGGLE ? COLUMN_TOGGLE_ACTIVE : \
