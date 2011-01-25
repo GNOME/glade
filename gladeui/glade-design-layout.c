@@ -492,27 +492,22 @@ draw_selection (cairo_t *cr, GtkWidget *parent, GtkWidget *widget,
 {
   cairo_pattern_t *gradient;
   GtkAllocation alloc;
+  gdouble cx, cy;
   gint x, y;
 
   gtk_widget_get_allocation (widget, &alloc);
-  gtk_widget_translate_coordinates (widget, parent, 0, 0, &x, &y);
+  gtk_widget_translate_coordinates (widget, parent, offset, offset, &x, &y);
 
-  x += offset;
-  y += offset;
+  cx = x + alloc.width/2;
+  cy = y + alloc.height/2;
+  gradient = cairo_pattern_create_radial (cx, cy, MIN (alloc.width, alloc.height)/6,
+                                          cx, cy, MAX (alloc.width, alloc.height)/2);
+  cairo_pattern_add_color_stop_rgba (gradient, 0, r+.24, g+.24, b+.24, .16);
+  cairo_pattern_add_color_stop_rgba (gradient, 1, r, g, b, .28);
+  cairo_set_source (cr, gradient);
 
   cairo_rectangle (cr, x, y, alloc.width, alloc.height);
-#ifdef USE_LINEAR_GRADIENT
-  gradient = cairo_pattern_create_linear (x, y, x+alloc.width, y+alloc.height);
-#else
-  gradient = cairo_pattern_create_radial (x+alloc.width/2, y+alloc.height/2, MIN (alloc.width, alloc.height)/6,
-                                          x+alloc.width/2, y+alloc.height/2, MAX (alloc.width, alloc.height)/2);
-#endif
-  cairo_pattern_add_color_stop_rgb (gradient, 0, r+.16, g+.16, b+.16);
-  cairo_pattern_add_color_stop_rgb (gradient, 1, r, g, b);
-  cairo_set_source (cr, gradient);
-  cairo_clip (cr);
-  cairo_paint_with_alpha (cr, .32);
-  cairo_reset_clip (cr);
+  cairo_fill (cr);
 
   cairo_rectangle (cr, x, y, alloc.width, alloc.height);
   cairo_set_source_rgba (cr, r, g, b, .75);
