@@ -3296,6 +3296,31 @@ glade_widget_child_get_property (GladeWidget * widget,
 }
 
 static void
+glade_widget_add_events (GtkWidget * widget)
+{
+  GList *children, *list;
+
+  gtk_widget_add_events (widget,
+                         GDK_POINTER_MOTION_MASK |      /* Handle pointer events */
+                         GDK_POINTER_MOTION_HINT_MASK | /* for drag/resize and   */
+                         GDK_BUTTON_PRESS_MASK |        /* managing selection.   */
+                         GDK_BUTTON_RELEASE_MASK);
+
+  /* We also need to get events for any children. */
+  if (GTK_IS_CONTAINER (widget))
+    {
+      if ((children =
+           glade_util_container_get_all_children (GTK_CONTAINER
+                                                  (widget))) != NULL)
+        {
+          for (list = children; list; list = list->next)
+            glade_widget_add_events (GTK_WIDGET (list->data));
+          g_list_free (children);
+        }
+    }
+}
+
+static void
 glade_widget_set_object (GladeWidget * gwidget, GObject * new_object,
                          gboolean destroy)
 {
@@ -3329,10 +3354,11 @@ glade_widget_set_object (GladeWidget * gwidget, GObject * new_object,
 
       if (g_type_is_a (glade_widget_adaptor_get_object_type (gwidget->priv->adaptor), GTK_TYPE_WIDGET))
         {
-          /* Disable any built-in DnD
-           */
+          /* Disable any built-in DnD */
           gtk_drag_dest_unset (GTK_WIDGET (new_object));
           gtk_drag_source_unset (GTK_WIDGET (new_object));
+          /* We nee to make sure all widgets set the event glade core needs */
+          glade_widget_add_events (GTK_WIDGET (new_object));
         }
     }
 
