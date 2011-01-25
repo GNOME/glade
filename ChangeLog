@@ -1,3 +1,29 @@
+2011-01-25  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+  * gladeui/glade-design-layout.[ch]:
+    o Made GladeDesignLayout an offscreen container, all its children are redirected offscreen
+      and composited later on. This allow us drawing "pretty" selections over widgets.
+    o added new function derived from glade_design_layout_widget_event(),
+      glade_design_layout_do_event() to marshal events from the override class handler
+    o added glade_design_layout_selection_set()
+    o reworked cursors pointer in an array to ease setting them.
+    o replaced glade_design_layout_get_pointer_region () with gdl_get_activity_from_pointer()
+    o removed call to gtk_widget_size_allocate() in glade_design_layout_update_child()
+      fixes rendering glith while resizing
+
+  * gladeui/glade-design-view.c: set layout selection on project's selection-changed signal
+    
+  * gladeui/glade-app.[ch]:
+    o added glade_app_do_event()
+    o set custom gdk event handler to marshal event to GladeDesignLayouts using
+      glade_design_layout_do_event()
+    
+  * gladeui/glade-utils.[ch]: removed unused function glade_util_draw_selection_nodes()
+
+  * gladeui/glade-widget.[ch]:
+    o moved IS_GLADE_WIDGET_EVENT macro to header.
+    o replaced glade_widget_connect_signal_handlers() with glade_widget_add_events()
+
 2011-01-24  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* 41 files: Fixed typo in LGPL License file headers.

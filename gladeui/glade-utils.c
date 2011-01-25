@@ -53,7 +53,6 @@
 #include <shellapi.h>
 #endif
 
-#define GLADE_UTIL_SELECTION_NODE_SIZE 7
 #define GLADE_UTIL_COPY_BUFFSIZE       1024
 
 
@@ -562,79 +561,6 @@ glade_util_duplicate_underscores (const gchar * name)
   memcpy (tmp_underscored, last_tmp, tmp - last_tmp + 1);
 
   return underscored_name;
-}
-
-static void
-glade_util_draw_nodes (cairo_t * cr, GdkColor * color,
-                       gint x, gint y, gint width, gint height)
-{
-  if (width > GLADE_UTIL_SELECTION_NODE_SIZE &&
-      height > GLADE_UTIL_SELECTION_NODE_SIZE)
-    {
-      glade_utils_cairo_draw_rectangle (cr, color, TRUE,
-                                        x, y,
-                                        GLADE_UTIL_SELECTION_NODE_SIZE,
-                                        GLADE_UTIL_SELECTION_NODE_SIZE);
-      glade_utils_cairo_draw_rectangle (cr, color, TRUE,
-                                        x,
-                                        y + height -
-                                        GLADE_UTIL_SELECTION_NODE_SIZE,
-                                        GLADE_UTIL_SELECTION_NODE_SIZE,
-                                        GLADE_UTIL_SELECTION_NODE_SIZE);
-      glade_utils_cairo_draw_rectangle (cr, color, TRUE,
-                                        x + width -
-                                        GLADE_UTIL_SELECTION_NODE_SIZE, y,
-                                        GLADE_UTIL_SELECTION_NODE_SIZE,
-                                        GLADE_UTIL_SELECTION_NODE_SIZE);
-      glade_utils_cairo_draw_rectangle (cr, color, TRUE,
-                                        x + width -
-                                        GLADE_UTIL_SELECTION_NODE_SIZE,
-                                        y + height -
-                                        GLADE_UTIL_SELECTION_NODE_SIZE,
-                                        GLADE_UTIL_SELECTION_NODE_SIZE,
-                                        GLADE_UTIL_SELECTION_NODE_SIZE);
-    }
-
-  glade_utils_cairo_draw_rectangle (cr, color, FALSE, x, y, width - 1,
-                                    height - 1);
-}
-
-/**
- * glade_util_draw_selection_nodes:
- * @widget: a #GtkWidget
- * @cr: the #cairo_t to draw with
- *
- * Draws selection on @widget if @widget is selected.
- */
-void
-glade_util_draw_selection_nodes (GtkWidget * widget, cairo_t * cr)
-{
-  GladeWidget *gwidget;
-  GladeProject *project;
-  GdkColor *color;
-  GtkAllocation allocation;
-
-  g_return_if_fail (GTK_IS_WIDGET (widget));
-  
-  gwidget = glade_widget_get_from_gobject (widget);
-  if (!gwidget)
-    return;
-
-  project = glade_widget_get_project (gwidget);
-  g_return_if_fail (GLADE_IS_PROJECT (project));
-
-  if (!glade_project_is_selected (project, G_OBJECT (widget)))
-    return;
-
-  cairo_save (cr);
-
-  color = &(gtk_widget_get_style (widget)->black);
-
-  gtk_widget_get_allocation (widget, &allocation);
-  glade_util_draw_nodes (cr, color,
-			 0, 0, allocation.width, allocation.height);
-
-  cairo_restore (cr);
 }
 
 /*

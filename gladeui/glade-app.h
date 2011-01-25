@@ -69,6 +69,8 @@ GladeApp*          glade_app_get                  (void);
 GKeyFile*          glade_app_get_config           (void);
 gint               glade_app_config_save          (void);
 
+gboolean           glade_app_do_event             (GdkEvent *event);
+
 gboolean           glade_app_get_catalog_version  (const gchar   *name, 
 						   gint          *major, 
 						   gint          *minor);

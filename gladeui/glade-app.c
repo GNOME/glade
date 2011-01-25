@@ -300,6 +300,14 @@ glade_app_init (GladeApp * app)
 }
 
 static void
+glade_app_event_handler (GdkEvent *event, gpointer data)
+{
+  if (glade_app_do_event (event)) return;
+
+  gtk_main_do_event (event);
+}
+
+static void
 glade_app_class_init (GladeAppClass * klass)
 {
 	GObjectClass *object_class;
@@ -350,11 +358,43 @@ glade_app_class_init (GladeAppClass * klass)
                   G_TYPE_NONE, 1, G_TYPE_OBJECT);  
 
   g_type_class_add_private (klass, sizeof (GladeAppPrivate));
+
+  gdk_event_handler_set (glade_app_event_handler, NULL, NULL);
 }
 
 /*****************************************************************
  *                       Public API                              *
  *****************************************************************/
+
+/**
+ * glade_app_do_event:
+ * @event: the event to process.
+ *
+ * This function has to be called in an event handler for widget selection to work.
+ * See gdk_event_handler_set()
+ *
+ * Returns: true if the event was handled.
+ */ 
+gboolean
+glade_app_do_event (GdkEvent *event)
+{
+  GdkWindow *window = event->any.window;
+  GtkWidget *layout;
+  gpointer widget;
+
+  if (window == NULL) return FALSE;
+    
+  gdk_window_get_user_data (window, &widget);
+
+  /* As a slight optimization we could replace gtk_widget_get_ancestor()
+   * with a custom function that only iterates trought parents with windows.
+   */
+  if (widget && IS_GLADE_WIDGET_EVENT (event->type) &&
+      (layout = gtk_widget_get_ancestor (widget, GLADE_TYPE_DESIGN_LAYOUT)))
+    return glade_design_layout_do_event (GLADE_DESIGN_LAYOUT (layout), event);
+
+  return FALSE;
+}
 
 /**
  * glade_app_config_save

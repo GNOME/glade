@@ -106,6 +106,13 @@ glade_design_view_load_progress (GladeProject * project,
 }
 
 static void
+glade_design_view_selection_changed (GladeProject * project, GladeDesignView * view)
+{
+  GladeDesignLayout *layout = glade_design_view_get_layout (view);
+  glade_design_layout_selection_set (layout, glade_project_selection_get (project));
+}
+
+static void
 glade_design_view_set_project (GladeDesignView * view, GladeProject * project)
 {
   g_return_if_fail (GLADE_IS_PROJECT (project));
@@ -118,6 +125,8 @@ glade_design_view_set_project (GladeDesignView * view, GladeProject * project)
                     G_CALLBACK (glade_design_view_parse_finished), view);
   g_signal_connect (project, "load-progress",
                     G_CALLBACK (glade_design_view_load_progress), view);
+  g_signal_connect (project, "selection-changed",
+                    G_CALLBACK (glade_design_view_selection_changed), view);
 
   g_object_set_data (G_OBJECT (view->priv->project), GLADE_DESIGN_VIEW_KEY,
                      view);

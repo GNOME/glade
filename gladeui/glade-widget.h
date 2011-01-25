@@ -56,6 +56,11 @@ struct _GladeWidgetClass
   void   (* glade_reserved8)   (void);
 };
 
+#define IS_GLADE_WIDGET_EVENT(event)		 \
+	((event) == GDK_BUTTON_PRESS ||		 \
+	 (event) == GDK_BUTTON_RELEASE ||	 \
+	 (event) == GDK_MOTION_NOTIFY)
+
 /*******************************************************************************
                                   General api
  *******************************************************************************/

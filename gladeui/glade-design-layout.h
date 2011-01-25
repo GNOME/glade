@@ -40,12 +40,6 @@ typedef struct _GladeDesignLayout         GladeDesignLayout;
 typedef struct _GladeDesignLayoutPrivate  GladeDesignLayoutPrivate;
 typedef struct _GladeDesignLayoutClass    GladeDesignLayoutClass;
 
-enum
-{
-	GLADE_WIDGET_EVENT_STOP_EMISSION   = 1 << 0,
-	GLADE_WIDGET_EVENT_RETURN_TRUE     = 1 << 1
-};
-
 struct _GladeDesignLayout
 {
   GtkBin     parent_instance;
@@ -57,10 +51,7 @@ struct _GladeDesignLayoutClass
 {
   GtkBinClass parent_class;
 
-  gboolean      (* widget_event)        (GladeProject *project,
-					 GladeWidget  *gwidget,
-					 GdkEvent     *event);
-
+  void   (* glade_reserved0)   (void);
   void   (* glade_reserved1)   (void);
   void   (* glade_reserved2)   (void);
   void   (* glade_reserved3)   (void);
@@ -68,14 +59,15 @@ struct _GladeDesignLayoutClass
 };
 
 
-GType        glade_design_layout_get_type     (void) G_GNUC_CONST;
+GType        glade_design_layout_get_type       (void) G_GNUC_CONST;
 
-GtkWidget   *glade_design_layout_new          (void);
+GtkWidget   *glade_design_layout_new            (void);
 
-gboolean     glade_design_layout_widget_event (GladeDesignLayout *layout,
-                                               GladeWidget       *event_gwidget,
-                                               GdkEvent          *event);
+void         glade_design_layout_selection_set  (GladeDesignLayout * layout,
+                                                 GList * selection);
 
+gboolean     glade_design_layout_do_event       (GladeDesignLayout * layout,
+                                                 GdkEvent * event);
 
 G_END_DECLS
 
