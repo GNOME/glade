@@ -53,7 +53,7 @@ enum
 
 struct _GladeDesignViewPrivate
 {
-  GtkWidget *layout;
+  GtkWidget *layout_box;
 
   GladeProject *project;
 
@@ -105,11 +105,91 @@ glade_design_view_load_progress (GladeProject * project,
                                  step * 1.0 / total);
 }
 
+static void 
+layout_box_foreach (GtkWidget *widget, gpointer data)
+{
+  if (GLADE_IS_DESIGN_LAYOUT (widget))
+    glade_design_layout_selection_set (GLADE_DESIGN_LAYOUT (widget), data);
+}
+
 static void
 glade_design_view_selection_changed (GladeProject * project, GladeDesignView * view)
 {
-  GladeDesignLayout *layout = glade_design_view_get_layout (view);
-  glade_design_layout_selection_set (layout, glade_project_selection_get (project));
+  GList *selection = glade_project_selection_get (project);
+  GladeWidget *gwidget, *gtoplevel;
+
+  /* FIXME: this does not fell right, perhaps DesignLayout should support more than one child */
+  gtk_container_foreach (GTK_CONTAINER (view->priv->layout_box), 
+                         layout_box_foreach,
+                         selection);
+
+  if (selection && g_list_next (selection) == NULL &&
+      GTK_IS_WIDGET (selection->data) &&
+      !GLADE_IS_PLACEHOLDER (selection->data) &&
+      (gwidget = glade_widget_get_from_gobject (G_OBJECT (selection->data))) &&
+      (gtoplevel = glade_widget_get_toplevel (gwidget)))
+    {
+      GObject *toplevel = glade_widget_get_object (gtoplevel);
+      GtkWidget *layout;
+
+      if (GTK_IS_WIDGET (toplevel) &&
+          (layout = gtk_widget_get_parent (GTK_WIDGET (toplevel))) &&
+          GLADE_IS_DESIGN_LAYOUT (layout))
+        {
+          GtkAdjustment *vadj, *hadj;
+          GtkAllocation alloc;
+
+          vadj = gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (view->priv->scrolled_window));
+          hadj = gtk_scrolled_window_get_hadjustment (GTK_SCROLLED_WINDOW (view->priv->scrolled_window));
+
+          gtk_widget_get_allocation (layout, &alloc);
+/*
+          g_message ("%s %dx%d page=%lf upper=%lf, lower=%lf", __func__, alloc.x, alloc.y, 
+                       gtk_adjustment_get_page_size (vadj),
+                       gtk_adjustment_get_upper (vadj),
+                       gtk_adjustment_get_lower (vadj));
+*/
+          /* TODO: we could set this value in increments in a timeout callback to make it look like its scrolling instead of jumping */
+          gtk_adjustment_set_value (hadj, alloc.x);
+          gtk_adjustment_set_value (vadj, alloc.y);
+        }
+    }
+}
+
+static void 
+on_project_add_widget (GladeProject *project, GladeWidget *widget, GladeDesignView * view)
+{
+  GtkWidget *layout;
+  GObject *object;
+
+  if (widget == NULL || glade_widget_get_parent (widget) ||
+      (object = glade_widget_get_object (widget)) == NULL ||
+      !GTK_IS_WIDGET (object)) return;
+
+  layout = glade_design_layout_new ();
+  gtk_box_pack_start (GTK_BOX (view->priv->layout_box), layout, FALSE, TRUE, 0);
+  gtk_widget_show (layout);
+
+  gtk_container_add (GTK_CONTAINER (layout), GTK_WIDGET (object));
+  gtk_widget_show_all (view->priv->layout_box);
+}
+
+static void
+on_project_remove_widget (GladeProject *project, GladeWidget *widget, GladeDesignView * view)
+{
+  GtkWidget *layout;
+  GObject *object;
+
+  if (widget == NULL || glade_widget_get_parent (widget) ||
+      (object = glade_widget_get_object (widget)) == NULL ||
+      !GTK_IS_WIDGET (object)) return;
+
+  layout = gtk_widget_get_parent (GTK_WIDGET (object));
+  if (layout)
+    {
+        gtk_container_remove (GTK_CONTAINER (layout), GTK_WIDGET (object));
+        gtk_container_remove (GTK_CONTAINER (view->priv->layout_box), layout);
+    }
 }
 
 static void
@@ -119,6 +199,10 @@ glade_design_view_set_project (GladeDesignView * view, GladeProject * project)
 
   view->priv->project = project;
 
+  g_signal_connect (project, "add-widget",
+                    G_CALLBACK (on_project_add_widget), view);
+  g_signal_connect (project, "remove-widget",
+                    G_CALLBACK (on_project_remove_widget), view);
   g_signal_connect (project, "parse-began",
                     G_CALLBACK (glade_design_view_parse_began), view);
   g_signal_connect (project, "parse-finished",
@@ -175,7 +259,7 @@ glade_design_view_init (GladeDesignView * view)
   gtk_widget_set_no_show_all (GTK_WIDGET (view), TRUE);
 
   view->priv->project = NULL;
-  view->priv->layout = glade_design_layout_new ();
+  view->priv->layout_box = gtk_vbox_new (FALSE, 0);
 
   view->priv->scrolled_window = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW
@@ -187,12 +271,12 @@ glade_design_view_init (GladeDesignView * view)
 
   viewport = gtk_viewport_new (NULL, NULL);
   gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport), GTK_SHADOW_NONE);
-  gtk_container_add (GTK_CONTAINER (viewport), view->priv->layout);
+  gtk_container_add (GTK_CONTAINER (viewport), view->priv->layout_box);
   gtk_container_add (GTK_CONTAINER (view->priv->scrolled_window), viewport);
 
   gtk_widget_show (view->priv->scrolled_window);
   gtk_widget_show (viewport);
-  gtk_widget_show (view->priv->layout);
+  gtk_widget_show (view->priv->layout_box);
 
   gtk_box_pack_start (GTK_BOX (view), view->priv->scrolled_window, TRUE, TRUE,
                       0);
@@ -289,5 +373,5 @@ glade_design_view_get_from_project (GladeProject * project)
 GladeDesignLayout *
 glade_design_view_get_layout (GladeDesignView * view)
 {
-  return GLADE_DESIGN_LAYOUT (view->priv->layout);
+  return NULL;
 }

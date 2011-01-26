@@ -2035,6 +2035,7 @@ glade_widget_hide (GladeWidget * widget)
       if (project && 
 	  (view = glade_design_view_get_from_project (project)) != NULL)
         {
+/*
           GtkWidget *child;
 
           layout = GTK_WIDGET (glade_design_view_get_layout (view));
@@ -2042,6 +2043,7 @@ glade_widget_hide (GladeWidget * widget)
 
           if (child == GTK_WIDGET (widget->priv->object))
             gtk_container_remove (GTK_CONTAINER (layout), child);
+*/
         }
     }
   widget->priv->visible = FALSE;

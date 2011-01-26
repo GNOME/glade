@@ -471,18 +471,49 @@ glade_design_layout_damage (GtkWidget *widget, GdkEventExpose *event)
 static inline void
 draw_frame (GtkWidget * widget, cairo_t * cr, int x, int y, int w, int h)
 {
+  GladeWidget *gchild = glade_widget_get_from_gobject (G_OBJECT (widget));
+  GtkStyle *style = gtk_widget_get_style (widget);
+  const gchar *name;
+
   cairo_save (cr);
+
   cairo_set_line_width (cr, OUTLINE_WIDTH);
   cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);
   cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
 
-  gdk_cairo_set_source_color (cr,
-                              &gtk_widget_get_style (widget)->
-                              bg[GTK_STATE_SELECTED]);
+  gdk_cairo_set_source_color (cr, &style->bg[GTK_STATE_SELECTED]);
 
   /* rectangle */
   cairo_rectangle (cr, x, y, w, h);
   cairo_stroke (cr);
+
+  if (gchild && (name = glade_widget_get_name (gchild)))
+    {
+      cairo_text_extents_t extents;
+
+      cairo_select_font_face (cr, "Sans",
+                              CAIRO_FONT_SLANT_NORMAL,
+                              CAIRO_FONT_WEIGHT_NORMAL);
+      cairo_set_font_size (cr, 14);
+        
+      cairo_text_extents (cr, name, &extents);
+      cairo_rectangle (cr, x+w, y, 
+                       extents.height + (OUTLINE_WIDTH*2),
+                       extents.width + (OUTLINE_WIDTH*2));
+      cairo_stroke (cr);
+      cairo_rectangle (cr, x+w, y, 
+                       extents.height + (OUTLINE_WIDTH*2),
+                       extents.width + (OUTLINE_WIDTH*2));
+      cairo_fill (cr);
+
+      gdk_cairo_set_source_color (cr, &style->text[GTK_STATE_SELECTED]);
+      cairo_move_to (cr, x+w+OUTLINE_WIDTH, y+OUTLINE_WIDTH);
+      cairo_rotate (cr, G_PI/2);
+      cairo_show_text (cr, name);
+
+      cairo_identity_matrix (cr);
+    }
+
   cairo_restore (cr);
 }
 
@@ -556,7 +587,7 @@ glade_design_layout_draw (GtkWidget * widget, cairo_t * cr)
           gtk_widget_get_allocation (child, &child_allocation);
 
           /* draw frame */
-          draw_frame (widget, cr,
+          draw_frame (child, cr,
                       border_width + PADDING,
                       border_width + PADDING,
                       child_allocation.width + 2 * OUTLINE_WIDTH,
