@@ -710,7 +710,8 @@ glade_popup_property_pop (GladeProperty * property, GdkEventButton * event)
                            NULL, TRUE, glade_popup_clear_property_cb, property);
 
   g_object_get (adaptor, "book", &book, NULL);
-  if (book && glade_util_have_devhelp ())
+  if (!glade_property_class_get_virtual (pclass) &&
+      book && glade_util_have_devhelp ())
     {
       GtkWidget *icon = glade_util_get_devhelp_icon (GTK_ICON_SIZE_MENU);
       glade_popup_append_item (popup_menu, NULL, _("Read _documentation"), icon,
