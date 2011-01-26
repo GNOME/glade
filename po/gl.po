@@ -10,16 +10,17 @@
 # Mancomún - Centro de Referencia e Servizos de Software Libre <g11n@mancomun.org>, 2009.
 # Antón Méixome <meixome@mancomun.org>, 2009.
 # Fran Dieguez <frandieguez@ubuntu.com>, 2010.
-# Fran Diéguez <frandieguez@ubuntu.com>, 2009, 2010, 2011.
 # Leandro Regueiro <leandro.regueiro@gmail.com>, 2011.
+# Fran Diéguez <frandieguez@ubuntu.com>, 2009, 2010, 2011.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: glade3-master-po-gl-27110\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-19 15:43+0100\n"
-"PO-Revision-Date: 2011-01-19 15:08+0100\n"
-"Last-Translator: Leandro Regueiro <leandro.regueiro@gmail.com>\n"
-"Language-Team: Galego <proxecto@trasno.net>\n"
+"POT-Creation-Date: 2011-01-27 00:34+0100\n"
+"PO-Revision-Date: 2011-01-26 14:52+0100\n"
+"Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
+"Language-Team: Galician <gnome-gl-list@gnome.org>\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -53,7 +54,7 @@ msgstr "Desactivar a integración co Devhelp"
 
 #: ../src/main.c:56
 msgid "[FILE...]"
-msgstr "[FICHEIRO...]"
+msgstr "[FICHEIRO…]"
 
 #: ../src/main.c:65
 msgid "be verbose"
@@ -81,8 +82,8 @@ msgstr "Mostrar as opcións de depuración de Glade"
 msgid ""
 "gmodule support not found. gmodule support is required for glade to work"
 msgstr ""
-"Non se localizou o asistencia para o gmodule. O gmodule é necesario para que "
-"o Glade funcione"
+"Non se atopou a compatibilidade para o gmodule. O gmodule é necesario para "
+"que o Glade funcione"
 
 #: ../src/main.c:178
 #, c-format
@@ -177,8 +178,8 @@ msgstr "Non ten os permisos necesarios para gardar o ficheiro."
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr ""
-"Non foi posíbel gardar o ficheiro %s. Está aberto outro proxecto con ese "
-"camiño."
+"Non foi posíbel gardar o ficheiro %s. Está aberto outro proxecto con esa "
+"ruta."
 
 #: ../src/glade-window.c:1325
 msgid "No open projects to save"
@@ -357,6 +358,7 @@ msgid "Delete the selection"
 msgstr "Eliminar a selección"
 
 #: ../src/glade-window.c:2271
+#, fuzzy
 msgid "Modify project preferences"
 msgstr "Modificar as preferencias do proxecto"
 
@@ -427,11 +429,11 @@ msgstr "Mostrar a barra de estado"
 
 #: ../src/glade-window.c:2311
 msgid "Project _Tabs"
-msgstr "Separadores de _proxectos"
+msgstr "Lapelas de _proxectos"
 
 #: ../src/glade-window.c:2312
 msgid "Show notebook tabs for loaded projects"
-msgstr "Mostrar os separadores do libro de notas para os proxectos cargados"
+msgstr "Mostrar as lapelas do libro de notas para os proxectos cargados"
 
 #: ../src/glade-window.c:2321
 msgid "Text _beside icons"
@@ -567,7 +569,7 @@ msgid ""
 "Failed to create directory %s to save private data.\n"
 "No private data will be saved in this session"
 msgstr ""
-"Fallo ao crear o directorio %s para datos privados.\n"
+"Produciuse un fallo ao crear o directorio %s para datos privados.\n"
 "Non se gardará ningún dato privado nesta sesión"
 
 #: ../gladeui/glade-app.c:415
@@ -662,7 +664,7 @@ msgstr "Nome do ficheiro de imaxe"
 #: ../gladeui/glade-builtins.c:499
 msgid "Enter a filename, relative path or full path to load the image"
 msgstr ""
-"Introduza un nome de ficheiro, co camiño relativo ou absoluto para cargar a "
+"Introduza un nome de ficheiro, coa ruta relativa ou absoluta para cargar a "
 "imaxe"
 
 #: ../gladeui/glade-builtins.c:508
@@ -739,7 +741,7 @@ msgstr "A definición da UI non ten vista previda de ningún widget.\n"
 #: ../gladeui/glade-previewer.c:157
 #, c-format
 msgid "Object %s not found in UI definition.\n"
-msgstr "Non se encontrou o obxecto %s na definición da UI.\n"
+msgstr "Non se atopou o obxecto %s na definición da UI.\n"
 
 #: ../gladeui/glade-previewer.c:163
 #, c-format
@@ -1107,7 +1109,7 @@ msgstr "Ver a documentación do widget seleccionado"
 
 #: ../gladeui/glade-editor.c:352
 msgid "Reset widget properties to their defaults"
-msgstr "Restabelecer as propiedades do widget aos seus valores predefinidos"
+msgstr "Restabelecer as propiedades do widget aos seus valores predeterminados"
 
 #. translators: referring to the properties of a widget named '%s [%s]'
 #: ../gladeui/glade-editor.c:387
@@ -1150,13 +1152,13 @@ msgstr "Común"
 
 #: ../gladeui/glade-editor.c:1093
 msgid "(default)"
-msgstr "(predefinido)"
+msgstr "(predeterminado)"
 
 #: ../gladeui/glade-editor.c:1108
 msgid "Select the properties that you want to reset to their default values"
 msgstr ""
 "Seleccione as propiedades que quere restabelecer aos seus valores "
-"predefinidos"
+"predeterminados"
 
 #: ../gladeui/glade-editor.c:1242
 msgid "Reset Widget Properties"
@@ -1209,7 +1211,7 @@ msgstr "Ler a _documentación"
 
 #: ../gladeui/glade-popup.c:709
 msgid "Set default value"
-msgstr "Estabelecer o valor predefinido"
+msgstr "Estabelecer o valor predeterminado"
 
 #: ../gladeui/glade-project.c:996
 msgid "Whether project has been modified since it was last saved"
@@ -1225,11 +1227,11 @@ msgstr "Indica se o proxecto ten unha selección"
 
 #: ../gladeui/glade-project.c:1012
 msgid "Path"
-msgstr "Camiño"
+msgstr "Ruta"
 
 #: ../gladeui/glade-project.c:1014
 msgid "The filesystem path of the project"
-msgstr "O camiño do proxecto no sistema de ficheiros"
+msgstr "A ruta do proxecto no sistema de ficheiros"
 
 #: ../gladeui/glade-project.c:1021
 msgid "Read Only"
@@ -1261,7 +1263,7 @@ msgid ""
 "Failed to load %s.\n"
 "The following required catalogs are unavailable: %s"
 msgstr ""
-"Fallo ao cargar %s.\n"
+"Produciuse un fallo ao cargar %s.\n"
 "Os seguintes catálogos requiridos non están dispoñíbeis: %s"
 
 #: ../gladeui/glade-project.c:1667 ../gladeui/glade-project.c:1704
@@ -1411,7 +1413,7 @@ msgstr "Desde este directorio"
 
 #: ../gladeui/glade-project.c:4240
 msgid "Choose a path to load image resources"
-msgstr "Escolla o camiño para cargar os recursos de imaxe"
+msgstr "Escolla a ruta para cargar os recursos de imaxe"
 
 #. Target versions
 #: ../gladeui/glade-project.c:4267
@@ -1585,7 +1587,7 @@ msgstr ""
 #: ../gladeui/glade-utils.c:136 ../gladeui/glade-utils.c:166
 #, c-format
 msgid "We could not find the symbol \"%s\""
-msgstr "Non se encontrou o símbolo «%s»"
+msgstr "Non se atopou o símbolo «%s»"
 
 #: ../gladeui/glade-utils.c:142
 #, c-format
@@ -1889,6 +1891,7 @@ msgid "Emblems"
 msgstr "Emblemas"
 
 #: ../gladeui/icon-naming-spec.c:48
+#, fuzzy
 msgid "Emotes"
 msgstr "Cariñas"
 
@@ -2307,7 +2310,7 @@ msgstr "Columna de datos"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:120
 msgid "Default"
-msgstr "Predefinido"
+msgstr "Predeterminado"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:121
 msgid "Delayed"
@@ -4451,7 +4454,7 @@ msgstr "Tecla rápida"
 
 #: ../plugins/gtk+/glade-accels.c:519
 msgid "Choose accelerator keys..."
-msgstr "Seleccionar as teclas rápidas..."
+msgstr "Seleccionar as teclas rápidas…"
 
 #: ../plugins/gtk+/glade-column-types.c:350
 #: ../plugins/gtk+/glade-column-types.c:402
@@ -4488,7 +4491,7 @@ msgid ""
 "Enter a filename or a relative or full path for this source of '%s' (Glade "
 "will only ever load them in the runtime from your project directory)."
 msgstr ""
-"Introduza un nome de ficheiro ou un camiño absoluto ou relativo para esta "
+"Introduza un nome de ficheiro ou unha ruta absoluta ou relativa para esta "
 "orixe de '%s' (Glade só os cargará na execución desde o seu cartafol de "
 "proxecto)."
 
@@ -4813,6 +4816,10 @@ msgstr "Configurando %s para non usar a aparencia de acción"
 #: ../plugins/gtk+/glade-tool-item-group-editor.c:238
 msgid "Group Header"
 msgstr "Cabeceira de grupo"
+
+#~| msgid "Reset Widget Properties"
+#~ msgid "%s document properties"
+#~ msgstr "Propiedades do documento %s"
 
 #~ msgid "Integer"
 #~ msgstr "Enteiro"
