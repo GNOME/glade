@@ -37,7 +37,7 @@
 						 GladeDesignLayoutPrivate))
 
 #define OUTLINE_WIDTH     4
-#define PADDING          12
+#define PADDING           2
 
 typedef enum
 {
@@ -56,6 +56,8 @@ struct _GladeDesignLayoutPrivate
   gint child_offset;
   GdkRectangle east, south, south_east;
   GdkCursor *cursors[sizeof (Activity)];
+
+  PangoLayout *widget_name;
 
   /* state machine */
   Activity activity;            /* the current activity */
@@ -246,7 +248,6 @@ glade_design_layout_button_press_event (GtkWidget * widget, GdkEventButton * ev)
   x = ev->x;
   y = ev->y;
 
-
   if (ev->button == 1)
     {
       gtk_widget_get_allocation (child, &child_allocation);
@@ -297,6 +298,8 @@ glade_design_layout_get_preferred_height (GtkWidget * widget,
 
   if (child && gtk_widget_get_visible (child))
     {
+      gint height;
+
       gchild = glade_widget_get_from_gobject (child);
       g_assert (gchild);
 
@@ -306,8 +309,13 @@ glade_design_layout_get_preferred_height (GtkWidget * widget,
 
       child_height = MAX (child_height, *minimum);
 
-      *minimum = MAX (*minimum, 2 * PADDING + child_height + 2 * OUTLINE_WIDTH);
-      *natural = MAX (*natural, 2 * PADDING + child_height + 2 * OUTLINE_WIDTH);
+      if (priv->widget_name)
+        pango_layout_get_pixel_size (priv->widget_name, NULL, &height);
+      else
+        height = PADDING;
+      
+      *minimum = MAX (*minimum, PADDING + height + child_height + 3 * OUTLINE_WIDTH);
+      *natural = MAX (*natural, PADDING + height + child_height + 3 * OUTLINE_WIDTH);
     }
 
   *minimum += border_width * 2;
@@ -393,6 +401,14 @@ glade_design_layout_size_allocate (GtkWidget * widget,
       child_allocation.width = MAX (requisition.width, child_width);
       child_allocation.height = MAX (requisition.height, child_height);
 
+      if (priv->widget_name)
+        {
+          gint width;
+          pango_layout_get_pixel_size (priv->widget_name, &width, NULL);
+
+          child_allocation.width = MAX (width, child_allocation.width);
+        }
+      
       if (gtk_widget_get_realized (widget))
         gdk_window_move_resize (priv->offscreen_window,
                                 0, 0,
@@ -401,6 +417,41 @@ glade_design_layout_size_allocate (GtkWidget * widget,
 
       gtk_widget_size_allocate (child, &child_allocation);
     }
+}
+
+static void
+update_south_east_rectangle (GladeDesignLayoutPrivate *priv, GtkAllocation *alloc)
+{
+  GdkRectangle *rect = &priv->south_east;
+  gint width, height;
+  
+  pango_layout_get_pixel_size (priv->widget_name, &width, &height);
+
+  rect->x = alloc->x + priv->child_offset + alloc->width - width - OUTLINE_WIDTH/2;
+  rect->y = alloc->y + priv->child_offset + alloc->height + OUTLINE_WIDTH/2;
+  rect->width = width + (OUTLINE_WIDTH*2);
+  rect->height = height + OUTLINE_WIDTH;
+
+  /* Update south rectangle width */
+  priv->south.width = rect->x - priv->south.x;
+}
+
+static void
+on_glade_widget_name_notify (GObject *gobject, GParamSpec *pspec, GladeDesignLayout *layout) 
+{
+  GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (layout);
+  GtkWidget *child = gtk_bin_get_child (GTK_BIN (layout));
+  GtkAllocation alloc;
+
+  if (child == NULL) return;
+
+  pango_layout_set_text (priv->widget_name, glade_widget_get_name (GLADE_WIDGET (gobject)), -1);
+
+  gtk_widget_get_allocation (child, &alloc);
+
+  update_south_east_rectangle (priv, &alloc);
+
+  gtk_widget_queue_resize (GTK_WIDGET (layout));
 }
 
 static void
@@ -417,9 +468,7 @@ on_child_size_allocate (GtkWidget *widget, GtkAllocation *allocation, GladeDesig
   priv->south.y = allocation->height + priv->child_offset;
   priv->south.width = allocation->width;
 
-  priv->south_east.x = allocation->width;
-  priv->south_east.y = allocation->height;
-  priv->south_east.width = priv->south_east.height = priv->child_offset * 2;
+  update_south_east_rectangle (priv, allocation);
 }
 
 static void
@@ -427,6 +476,7 @@ glade_design_layout_add (GtkContainer * container, GtkWidget * widget)
 {
   GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (container);
   GladeDesignLayout *layout = GLADE_DESIGN_LAYOUT (container);
+  GladeWidget *gchild;
 
   layout->priv->current_width = 0;
   layout->priv->current_height = 0;
@@ -440,14 +490,27 @@ glade_design_layout_add (GtkContainer * container, GtkWidget * widget)
                     G_CALLBACK (on_child_size_allocate),
                     GLADE_DESIGN_LAYOUT (container));
 
-  gtk_widget_queue_draw (GTK_WIDGET (container));
+  if ((gchild = glade_widget_get_from_gobject (G_OBJECT (widget))))
+    {
+      on_glade_widget_name_notify (G_OBJECT (gchild), NULL, layout);
+      g_signal_connect (gchild, "notify::name", G_CALLBACK (on_glade_widget_name_notify), layout);
+    }
+    
+  gtk_widget_queue_draw (GTK_WIDGET (container)); 
 }
 
 static void
 glade_design_layout_remove (GtkContainer * container, GtkWidget * widget)
 {
+  GladeWidget *gchild;
+
   g_signal_handlers_disconnect_by_func (widget, on_child_size_allocate,
                                         GLADE_DESIGN_LAYOUT (container));
+
+  if ((gchild = glade_widget_get_from_gobject (G_OBJECT (widget))))
+    g_signal_handlers_disconnect_by_func (gchild, on_glade_widget_name_notify,
+                                          GLADE_DESIGN_LAYOUT (container));
+
   GTK_CONTAINER_CLASS (glade_design_layout_parent_class)->remove (container, widget);
   gtk_widget_queue_draw (GTK_WIDGET (container));
 }
@@ -469,49 +532,46 @@ glade_design_layout_damage (GtkWidget *widget, GdkEventExpose *event)
 }
 
 static inline void
-draw_frame (GtkWidget * widget, cairo_t * cr, int x, int y, int w, int h)
+draw_frame (GladeDesignLayoutPrivate *priv, GtkStyle *style, cairo_t * cr, int x, int y, int w, int h)
 {
-  GladeWidget *gchild = glade_widget_get_from_gobject (G_OBJECT (widget));
-  GtkStyle *style = gtk_widget_get_style (widget);
-  const gchar *name;
+  GtkStateType state = (priv->selection) ? GTK_STATE_SELECTED : GTK_STATE_NORMAL;
 
   cairo_save (cr);
 
   cairo_set_line_width (cr, OUTLINE_WIDTH);
+
   cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);
   cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
 
-  gdk_cairo_set_source_color (cr, &style->bg[GTK_STATE_SELECTED]);
+  gdk_cairo_set_source_color (cr, &style->bg[state]);
 
   /* rectangle */
   cairo_rectangle (cr, x, y, w, h);
   cairo_stroke (cr);
 
-  if (gchild && (name = glade_widget_get_name (gchild)))
+  if (priv->widget_name)
     {
-      cairo_text_extents_t extents;
+      GdkRectangle *rect = &priv->south_east;
+      gint xx, yy;
+      
+      xx = rect->x + rect->width;
+      yy = rect->y + rect->height;
 
-      cairo_select_font_face (cr, "Sans",
-                              CAIRO_FONT_SLANT_NORMAL,
-                              CAIRO_FONT_WEIGHT_NORMAL);
-      cairo_set_font_size (cr, 14);
-        
-      cairo_text_extents (cr, name, &extents);
-      cairo_rectangle (cr, x+w, y, 
-                       extents.height + (OUTLINE_WIDTH*2),
-                       extents.width + (OUTLINE_WIDTH*2));
-      cairo_stroke (cr);
-      cairo_rectangle (cr, x+w, y, 
-                       extents.height + (OUTLINE_WIDTH*2),
-                       extents.width + (OUTLINE_WIDTH*2));
+      /* Draw tab */
+      cairo_move_to (cr, rect->x, rect->y);
+      cairo_line_to (cr, xx, rect->y);
+      cairo_line_to (cr, xx, yy-8);
+      cairo_curve_to (cr, xx, yy, xx, yy, xx-8, yy);
+      cairo_line_to (cr, rect->x+8, yy);
+      cairo_curve_to (cr, rect->x, yy, rect->x, yy, rect->x, yy-8);
+      cairo_close_path (cr);
       cairo_fill (cr);
 
-      gdk_cairo_set_source_color (cr, &style->text[GTK_STATE_SELECTED]);
-      cairo_move_to (cr, x+w+OUTLINE_WIDTH, y+OUTLINE_WIDTH);
-      cairo_rotate (cr, G_PI/2);
-      cairo_show_text (cr, name);
-
-      cairo_identity_matrix (cr);
+      /* Draw widget name */ 
+      gdk_cairo_set_source_color (cr, &style->text[state]);
+      cairo_move_to (cr, priv->south_east.x + OUTLINE_WIDTH,
+                     priv->south_east.y + OUTLINE_WIDTH);
+      pango_cairo_show_layout (cr, priv->widget_name);
     }
 
   cairo_restore (cr);
@@ -587,7 +647,7 @@ glade_design_layout_draw (GtkWidget * widget, cairo_t * cr)
           gtk_widget_get_allocation (child, &child_allocation);
 
           /* draw frame */
-          draw_frame (child, cr,
+          draw_frame (priv, style, cr,
                       border_width + PADDING,
                       border_width + PADDING,
                       child_allocation.width + 2 * OUTLINE_WIDTH,
@@ -785,6 +845,8 @@ glade_design_layout_realize (GtkWidget * widget)
   priv->cursors[ACTIVITY_RESIZE_HEIGHT] = gdk_cursor_new_for_display (display, GDK_BOTTOM_SIDE);
   priv->cursors[ACTIVITY_RESIZE_WIDTH] = gdk_cursor_new_for_display (display, GDK_RIGHT_SIDE);
   priv->cursors[ACTIVITY_RESIZE_WIDTH_AND_HEIGHT] = gdk_cursor_new_for_display (display, GDK_BOTTOM_RIGHT_CORNER);
+
+  priv->widget_name = pango_layout_new (gtk_widget_get_pango_context (widget));
 }
 
 static void
@@ -817,6 +879,8 @@ glade_design_layout_unrealize (GtkWidget * widget)
       priv->cursors[ACTIVITY_RESIZE_WIDTH_AND_HEIGHT] = NULL;
     }
 
+  if (priv->widget_name) g_object_unref (priv->widget_name);
+  
   GTK_WIDGET_CLASS (glade_design_layout_parent_class)->unrealize (widget);
 }
 
@@ -842,7 +906,7 @@ glade_design_layout_init (GladeDesignLayout * layout)
   /* setup static member of rectangles */
   priv->east.width = PADDING + OUTLINE_WIDTH;
   priv->south.height = PADDING + OUTLINE_WIDTH;
-    
+
   gtk_widget_set_has_window (GTK_WIDGET (layout), TRUE);
 }
 

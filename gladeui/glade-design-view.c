@@ -187,8 +187,8 @@ on_project_remove_widget (GladeProject *project, GladeWidget *widget, GladeDesig
   layout = gtk_widget_get_parent (GTK_WIDGET (object));
   if (layout)
     {
-        gtk_container_remove (GTK_CONTAINER (layout), GTK_WIDGET (object));
-        gtk_container_remove (GTK_CONTAINER (view->priv->layout_box), layout);
+      gtk_container_remove (GTK_CONTAINER (layout), GTK_WIDGET (object));
+      gtk_container_remove (GTK_CONTAINER (view->priv->layout_box), layout);
     }
 }
 
@@ -249,6 +249,17 @@ glade_design_view_get_property (GObject * object,
     }
 }
 
+static gboolean
+on_viewport_draw (GtkWidget * widget, cairo_t * cr)
+{
+  GtkStyle *style = gtk_widget_get_style (widget);
+
+  gdk_cairo_set_source_color (cr, &style->base[gtk_widget_get_state (widget)]);
+  cairo_paint (cr);
+
+  return TRUE;
+}
+
 static void
 glade_design_view_init (GladeDesignView * view)
 {
@@ -259,7 +270,8 @@ glade_design_view_init (GladeDesignView * view)
   gtk_widget_set_no_show_all (GTK_WIDGET (view), TRUE);
 
   view->priv->project = NULL;
-  view->priv->layout_box = gtk_vbox_new (FALSE, 0);
+  view->priv->layout_box = gtk_vbox_new (FALSE, 8);
+  gtk_container_set_border_width (GTK_CONTAINER (view->priv->layout_box), 8);
 
   view->priv->scrolled_window = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW
@@ -270,6 +282,8 @@ glade_design_view_init (GladeDesignView * view)
                                        GTK_SHADOW_IN);
 
   viewport = gtk_viewport_new (NULL, NULL);
+  gtk_widget_set_app_paintable (viewport, TRUE);
+  g_signal_connect (viewport, "draw", G_CALLBACK (on_viewport_draw), NULL);
   gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport), GTK_SHADOW_NONE);
   gtk_container_add (GTK_CONTAINER (viewport), view->priv->layout_box);
   gtk_container_add (GTK_CONTAINER (view->priv->scrolled_window), viewport);
