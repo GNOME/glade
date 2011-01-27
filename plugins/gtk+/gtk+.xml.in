@@ -1221,7 +1221,7 @@ embedded in another object</_tooltip>
 	    <type>GParamBoxed</type>
 	    <value-type>GladeStringList</value-type>
 	  </parameter-spec>
-	  <_tooltip>The items to show in the combo box</_tooltip>
+	  <_tooltip>The list of items to show in the combo box</_tooltip>
 	</property>
       </properties>
     </glade-widget-class>
@@ -1846,7 +1846,6 @@ embedded in another object</_tooltip>
     
     <glade-widget-class name="GtkRecentChooserDialog" generic-name="recentchooserdialog" _title="Recent Chooser Dialog"/>
     
-    <!-- Objects -->
     <glade-widget-class name="GtkSizeGroup" generic-name="sizegroup" _title="Size Group" toplevel="True">
       <depends-function>glade_gtk_size_group_depends</depends-function>
       <read-widget-function>glade_gtk_size_group_read_widget</read-widget-function>
@@ -3369,6 +3368,37 @@ embedded in another object</_tooltip>
 
     <glade-widget-class name="GtkFileFilter" generic-name="filefilter" _title="File Filter" 
 			toplevel="True"/>
+
+    <glade-widget-class name="GtkRecentFilter" generic-name="recentfilter" _title="Recent Filter" 
+			toplevel="True">
+      <create-editor-property-function>glade_gtk_recent_filter_create_eprop</create-editor-property-function>
+      <string-from-value-function>glade_gtk_recent_filter_string_from_value</string-from-value-function>
+      <read-widget-function>glade_gtk_recent_filter_read_widget</read-widget-function>
+      <write-widget-function>glade_gtk_recent_filter_write_widget</write-widget-function>
+      <properties>
+	<property id="glade-mime-types" _name="Mime Types" save="False" ignore="True" since="3.0">
+	  <parameter-spec>
+	    <type>GParamBoxed</type>
+	    <value-type>GladeStringList</value-type>
+	  </parameter-spec>
+	  <_tooltip>The list of mime types to add to the filter</_tooltip>
+	</property>
+	<property id="glade-patterns" _name="Patterns" save="False" ignore="True" since="3.0">
+	  <parameter-spec>
+	    <type>GParamBoxed</type>
+	    <value-type>GladeStringList</value-type>
+	  </parameter-spec>
+	  <_tooltip>The list of file name patterns to add to the filter</_tooltip>
+	</property>
+	<property id="glade-applications" _name="Applications" save="False" ignore="True" since="3.0">
+	  <parameter-spec>
+	    <type>GParamBoxed</type>
+	    <value-type>GladeStringList</value-type>
+	  </parameter-spec>
+	  <_tooltip>The list of application names to add to the filter</_tooltip>
+	</property>
+      </properties>
+    </glade-widget-class>
   </glade-widget-classes>
   
 
@@ -3507,6 +3537,7 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkIconFactory"/>
     <glade-widget-class-ref name="GtkStatusIcon"/>
     <glade-widget-class-ref name="GtkFileFilter"/>
+    <glade-widget-class-ref name="GtkRecentFilter"/>
   </glade-widget-group>
 
 </glade-catalog>
