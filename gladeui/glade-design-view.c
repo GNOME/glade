@@ -168,10 +168,10 @@ on_project_add_widget (GladeProject *project, GladeWidget *widget, GladeDesignVi
 
   layout = glade_design_layout_new ();
   gtk_box_pack_start (GTK_BOX (view->priv->layout_box), layout, FALSE, TRUE, 0);
-  gtk_widget_show (layout);
 
   gtk_container_add (GTK_CONTAINER (layout), GTK_WIDGET (object));
-  gtk_widget_show_all (view->priv->layout_box);
+  gtk_widget_show (GTK_WIDGET (object));
+  gtk_widget_show (layout);
 }
 
 static void
@@ -272,6 +272,7 @@ glade_design_view_init (GladeDesignView * view)
   view->priv->project = NULL;
   view->priv->layout_box = gtk_vbox_new (FALSE, 8);
   gtk_container_set_border_width (GTK_CONTAINER (view->priv->layout_box), 8);
+  gtk_box_pack_end (GTK_BOX (view->priv->layout_box), gtk_label_new (""), FALSE, FALSE, 0);
 
   view->priv->scrolled_window = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW
@@ -290,7 +291,7 @@ glade_design_view_init (GladeDesignView * view)
 
   gtk_widget_show (view->priv->scrolled_window);
   gtk_widget_show (viewport);
-  gtk_widget_show (view->priv->layout_box);
+  gtk_widget_show_all (view->priv->layout_box);
 
   gtk_box_pack_start (GTK_BOX (view), view->priv->scrolled_window, TRUE, TRUE,
                       0);
