@@ -11963,7 +11963,7 @@ glade_gtk_text_tag_table_action_activate (GladeWidgetAdaptor *adaptor,
 #define GLADE_TAG_MIME_TYPES   "mime-types"
 #define GLADE_TAG_MIME_TYPE    "mime-type"
 #define GLADE_TAG_APPLICATIONS "applications"
-#define GLADE_TAG_APPLICATION  "applciation"
+#define GLADE_TAG_APPLICATION  "application"
 
 typedef enum {
   FILTER_PATTERN,
