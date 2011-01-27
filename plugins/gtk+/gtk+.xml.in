@@ -3420,9 +3420,12 @@ embedded in another object</_tooltip>
 	</property>
       </properties>
     </glade-widget-class>
+
+    <glade-widget-class name="GtkRecentManager" generic-name="recentmanager" _title="Recent Manager" 
+			toplevel="True"/>
+
   </glade-widget-classes>
   
-
   <glade-widget-group name="gtk-actions" _title="Actions">
 
     <glade-widget-class-ref name="GtkActionGroup"/>
@@ -3559,6 +3562,7 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkStatusIcon"/>
     <glade-widget-class-ref name="GtkFileFilter"/>
     <glade-widget-class-ref name="GtkRecentFilter"/>
+    <glade-widget-class-ref name="GtkRecentManager"/>
   </glade-widget-group>
 
 </glade-catalog>
