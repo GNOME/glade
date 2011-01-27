@@ -11971,46 +11971,6 @@ typedef enum {
   FILTER_APPLICATION
 } FilterType;
 
-GladeEditorProperty *
-glade_gtk_recent_filter_create_eprop (GladeWidgetAdaptor * adaptor,
-				      GladePropertyClass * klass, 
-				      gboolean use_command)
-{
-  GladeEditorProperty *eprop;
-  GParamSpec          *pspec;
-
-  pspec = glade_property_class_get_pspec (klass);
-
-  if (pspec->value_type == GLADE_TYPE_STRING_LIST)
-    {
-      eprop = glade_eprop_string_list_new (klass, use_command, FALSE);
-    }
-  else
-    eprop = GWA_GET_CLASS
-        (G_TYPE_OBJECT)->create_eprop (adaptor, klass, use_command);
-
-  return eprop;
-}
-
-gchar *
-glade_gtk_recent_filter_string_from_value (GladeWidgetAdaptor * adaptor,
-					   GladePropertyClass * klass,
-					   const GValue * value)
-{
-  GParamSpec *pspec;
-
-  pspec = glade_property_class_get_pspec (klass);
-
-  if (pspec->value_type == GLADE_TYPE_STRING_LIST)
-    {
-      GList *list = g_value_get_boxed (value);
-
-      return glade_string_list_to_string (list);
-    }
-  else
-    return GWA_GET_CLASS
-        (G_TYPE_OBJECT)->string_from_value (adaptor, klass, value);
-}
 
 static void
 glade_gtk_filter_read_strings (GladeWidget  *widget,
@@ -12103,6 +12063,47 @@ glade_gtk_filter_write_strings (GladeWidget     *widget,
     }
 }
 
+GladeEditorProperty *
+glade_gtk_recent_file_filter_create_eprop (GladeWidgetAdaptor * adaptor,
+					   GladePropertyClass * klass, 
+					   gboolean use_command)
+{
+  GladeEditorProperty *eprop;
+  GParamSpec          *pspec;
+
+  pspec = glade_property_class_get_pspec (klass);
+
+  if (pspec->value_type == GLADE_TYPE_STRING_LIST)
+    {
+      eprop = glade_eprop_string_list_new (klass, use_command, FALSE);
+    }
+  else
+    eprop = GWA_GET_CLASS
+        (G_TYPE_OBJECT)->create_eprop (adaptor, klass, use_command);
+
+  return eprop;
+}
+
+gchar *
+glade_gtk_recent_file_filter_string_from_value (GladeWidgetAdaptor * adaptor,
+						GladePropertyClass * klass,
+						const GValue * value)
+{
+  GParamSpec *pspec;
+
+  pspec = glade_property_class_get_pspec (klass);
+
+  if (pspec->value_type == GLADE_TYPE_STRING_LIST)
+    {
+      GList *list = g_value_get_boxed (value);
+
+      return glade_string_list_to_string (list);
+    }
+  else
+    return GWA_GET_CLASS
+        (G_TYPE_OBJECT)->string_from_value (adaptor, klass, value);
+}
+
 void
 glade_gtk_recent_filter_read_widget (GladeWidgetAdaptor *adaptor,
 				     GladeWidget        *widget, 
@@ -12153,6 +12154,54 @@ glade_gtk_recent_filter_write_widget (GladeWidgetAdaptor *adaptor,
   strings_node = glade_xml_node_new (context, GLADE_TAG_APPLICATIONS);
   glade_gtk_filter_write_strings (widget, context, strings_node, 
 				  FILTER_APPLICATION, "glade-applications");
+
+  if (!glade_xml_node_get_children (strings_node))
+    glade_xml_node_delete (strings_node);
+  else
+    glade_xml_node_append_child (node, strings_node);
+}
+
+/*--------------------------- GtkFileFilter ---------------------------------*/
+void
+glade_gtk_file_filter_read_widget (GladeWidgetAdaptor *adaptor,
+				   GladeWidget        *widget, 
+				   GladeXmlNode       *node)
+{
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
+
+  /* First chain up and read in all the normal properties.. */
+  GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
+
+  glade_gtk_filter_read_strings (widget, node, FILTER_MIME, "glade-mime-types");
+  glade_gtk_filter_read_strings (widget, node, FILTER_PATTERN, "glade-patterns");
+}
+
+void
+glade_gtk_file_filter_write_widget (GladeWidgetAdaptor *adaptor,
+				    GladeWidget        *widget,
+				    GladeXmlContext    *context, 
+				    GladeXmlNode       *node)
+{
+  GladeXmlNode *strings_node;
+
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
+
+  /* First chain up and read in all the normal properties.. */
+  GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
+
+  strings_node = glade_xml_node_new (context, GLADE_TAG_MIME_TYPES);
+  glade_gtk_filter_write_strings (widget, context, strings_node, FILTER_MIME, "glade-mime-types");
+
+  if (!glade_xml_node_get_children (strings_node))
+    glade_xml_node_delete (strings_node);
+  else
+    glade_xml_node_append_child (node, strings_node);
+
+
+  strings_node = glade_xml_node_new (context, GLADE_TAG_PATTERNS);
+  glade_gtk_filter_write_strings (widget, context, strings_node, FILTER_PATTERN, "glade-patterns");
 
   if (!glade_xml_node_get_children (strings_node))
     glade_xml_node_delete (strings_node);
