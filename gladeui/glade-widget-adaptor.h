@@ -295,9 +295,30 @@ typedef gboolean (* GladeChildVerifyPropertyFunc) (GladeWidgetAdaptor *adaptor,
 						   const gchar        *property_name,
 						   const GValue       *value);
 
+/**
+ * GladeAddChildVerifyFunc:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @parent: A #GObject container
+ * @child: A #GObject child
+ * @user_feedback: whether a notification dialog should be
+ * presented in the case that the child cannot not be added.
+ *
+ * Checks whether @child can be added to @parent.
+ *
+ * If @user_feedback is %TRUE and @child cannot be
+ * added then this shows a notification dialog to the user 
+ * explaining why.
+ *
+ * Returns: whether @child can be added to @parent.
+ */
+typedef gboolean (* GladeAddChildVerifyFunc)      (GladeWidgetAdaptor *adaptor,
+						   GObject            *parent,
+						   GObject            *child,
+						   gboolean            user_feedback);
 
 /**
  * GladeGetChildrenFunc:
+ * @adaptor: A #GladeWidgetAdaptor
  * @container: A #GObject container
  *
  * A function called to get @containers children.
@@ -309,6 +330,7 @@ typedef GList   *(* GladeGetChildrenFunc)         (GladeWidgetAdaptor *adaptor,
 
 /**
  * GladeAddChildFunc:
+ * @adaptor: A #GladeWidgetAdaptor
  * @parent: A #GObject container
  * @child: A #GObject child
  *
@@ -317,8 +339,10 @@ typedef GList   *(* GladeGetChildrenFunc)         (GladeWidgetAdaptor *adaptor,
 typedef void     (* GladeAddChildFunc)            (GladeWidgetAdaptor *adaptor,
 						   GObject            *parent,
 						   GObject            *child);
+
 /**
  * GladeRemoveChildFunc:
+ * @adaptor: A #GladeWidgetAdaptor
  * @parent: A #GObject container
  * @child: A #GObject child
  *
@@ -330,6 +354,7 @@ typedef void     (* GladeRemoveChildFunc)         (GladeWidgetAdaptor *adaptor,
 
 /**
  * GladeReplaceChildFunc:
+ * @adaptor: A #GladeWidgetAdaptor
  * @container: A #GObject container
  * @old_obj: The old #GObject child
  * @new_obj: The new #GObject child to take its place
@@ -364,6 +389,7 @@ typedef GObject *(* GladeConstructObjectFunc)     (GladeWidgetAdaptor *adaptor,
 
 /**
  * GladePostCreateFunc:
+ * @adaptor: A #GladeWidgetAdaptor
  * @object: a #GObject
  * @reason: a #GladeCreateReason
  *
@@ -376,6 +402,7 @@ typedef void     (* GladePostCreateFunc)          (GladeWidgetAdaptor *adaptor,
 
 /**
  * GladeGetInternalFunc:
+ * @adaptor: A #GladeWidgetAdaptor
  * @parent: A #GObject composite object
  * @name: A string identifier
  *
@@ -601,6 +628,7 @@ struct _GladeWidgetAdaptorClass
    */
   GladeGetPropertyFunc get_property;
 
+  GladeAddChildVerifyFunc    add_verify;       /* Checks if a child can be added */
   GladeAddChildFunc          add;              /* Adds a new child of this type */
   GladeRemoveChildFunc       remove;           /* Removes a child from the container */
   GladeGetChildrenFunc       get_children;     /* Returns a list of direct children for
@@ -713,6 +741,10 @@ gboolean              glade_widget_adaptor_verify_property    (GladeWidgetAdapto
 							       GObject            *object,
 							       const gchar        *property_name,
 							       const GValue       *value);
+gboolean              glade_widget_adaptor_add_verify         (GladeWidgetAdaptor *adaptor,
+							       GObject            *container,
+							       GObject            *child,
+							       gboolean            user_feedback);
 void                  glade_widget_adaptor_add                (GladeWidgetAdaptor *adaptor,
 							       GObject            *container,
 							       GObject            *child);

@@ -281,7 +281,7 @@ embedded in another object</_tooltip>
 
     <glade-widget-class name="GtkContainer" _title="Container" use-placeholders="True">
       <post-create-function>glade_gtk_container_post_create</post-create-function>
-
+      <add-child-verify-function>glade_gtk_container_add_verify</add-child-verify-function>
       <add-child-function>glade_gtk_container_add_child</add-child-function>
       <remove-child-function>glade_gtk_container_remove_child</remove-child-function> 
       <replace-child-function>glade_gtk_container_replace_child</replace-child-function>
@@ -443,6 +443,7 @@ embedded in another object</_tooltip>
 
     <glade-widget-class name="GtkMenuShell" _title="Menu Shell" use-placeholders="False" since="2.16">
       <post-create-function>empty</post-create-function>
+      <add-child-verify-function>glade_gtk_menu_shell_add_verify</add-child-verify-function>
       <add-child-function>glade_gtk_menu_shell_add_child</add-child-function>
       <remove-child-function>glade_gtk_menu_shell_remove_child</remove-child-function>
       <child-set-property-function>glade_gtk_menu_shell_set_child_property</child-set-property-function>
@@ -470,6 +471,7 @@ embedded in another object</_tooltip>
       <post-create-function>glade_gtk_menu_item_post_create</post-create-function>
       <get-children-function>glade_gtk_menu_item_get_children</get-children-function>
       <set-property-function>glade_gtk_menu_item_set_property</set-property-function>
+      <add-child-verify-function>glade_gtk_menu_item_add_verify</add-child-verify-function>
       <add-child-function>glade_gtk_menu_item_add_child</add-child-function>
       <remove-child-function>glade_gtk_menu_item_remove_child</remove-child-function>
       <action-activate-function>glade_gtk_menu_item_action_activate</action-activate-function>
@@ -507,9 +509,6 @@ embedded in another object</_tooltip>
       <read-widget-function>glade_gtk_image_menu_item_read_widget</read-widget-function>
       <write-widget-function>glade_gtk_image_menu_item_write_widget</write-widget-function>
       <set-property-function>glade_gtk_image_menu_item_set_property</set-property-function>
-      <get-children-function>glade_gtk_image_menu_item_get_children</get-children-function>
-      <add-child-function>glade_gtk_image_menu_item_add_child</add-child-function>
-      <remove-child-function>glade_gtk_image_menu_item_remove_child</remove-child-function>
       <create-editable-function>glade_gtk_image_menu_item_create_editable</create-editable-function>
       <properties>
         <property id="use-stock" default="True" visible="False" save-always="True" since="2.16"/>
@@ -569,6 +568,7 @@ embedded in another object</_tooltip>
       
     <glade-widget-class name="GtkToolbar" generic-name="toolbar" _title="Tool Bar" use-placeholders="False">
       <post-create-function>glade_gtk_toolbar_post_create</post-create-function>
+      <add-child-verify-function>glade_gtk_toolbar_add_verify</add-child-verify-function>
       <add-child-function>glade_gtk_toolbar_add_child</add-child-function>
       <remove-child-function>glade_gtk_toolbar_remove_child</remove-child-function>
       <child-set-property-function>glade_gtk_toolbar_set_child_property</child-set-property-function>
@@ -619,6 +619,7 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkToolPalette" generic-name="toolpalette" _title="Tool Palette" 
 			use-placeholders="False" since="2.20">
       <post-create-function>glade_gtk_toolbar_post_create</post-create-function>
+      <add-child-verify-function>glade_gtk_tool_palette_add_verify</add-child-verify-function>
       <add-child-function>glade_gtk_tool_palette_add_child</add-child-function>
       <remove-child-function>glade_gtk_tool_palette_remove_child</remove-child-function>
       <child-set-property-function>glade_gtk_tool_palette_set_child_property</child-set-property-function>
@@ -661,6 +662,7 @@ embedded in another object</_tooltip>
 			use-placeholders="False" since="2.20">
       <post-create-function>empty</post-create-function>
       <set-property-function>glade_gtk_tool_item_group_set_property</set-property-function>
+      <add-child-verify-function>glade_gtk_tool_item_group_add_verify</add-child-verify-function>
       <add-child-function>glade_gtk_tool_item_group_add_child</add-child-function>
       <remove-child-function>glade_gtk_tool_item_group_remove_child</remove-child-function>
       <create-editable-function>glade_gtk_tool_item_group_create_editable</create-editable-function>
@@ -754,6 +756,7 @@ embedded in another object</_tooltip>
     
     <glade-widget-class name="GtkMenuToolButton" generic-name="menutoolbutton" use-placeholders="False"
 			_title="Menu Tool Button">
+      <add-child-verify-function>glade_gtk_menu_tool_button_add_verify</add-child-verify-function>
       <add-child-function>glade_gtk_menu_tool_button_add_child</add-child-function>
       <remove-child-function>glade_gtk_menu_tool_button_remove_child</remove-child-function>
       <replace-child-function>glade_gtk_menu_tool_button_replace_child</replace-child-function>
@@ -1155,6 +1158,7 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkComboBox" generic-name="combobox" _title="Combo Box">
       <post-create-function>glade_gtk_combo_box_post_create</post-create-function>
       <set-property-function>glade_gtk_combo_box_set_property</set-property-function>
+      <add-child-verify-function>glade_gtk_cell_layout_add_verify</add-child-verify-function>
       <add-child-function>glade_gtk_cell_layout_add_child</add-child-function>
       <remove-child-function>glade_gtk_cell_layout_remove_child</remove-child-function> 
       <get-children-function>glade_gtk_combo_box_get_children</get-children-function>
@@ -1925,6 +1929,7 @@ embedded in another object</_tooltip>
 
     <glade-widget-class name="GtkActionGroup" generic-name="actiongroup" _title="Action Group" 
 			toplevel="True" use-placeholders="False">
+      <add-child-verify-function>glade_gtk_action_group_add_verify</add-child-verify-function>
       <add-child-function>glade_gtk_action_group_add_child</add-child-function>
       <remove-child-function>glade_gtk_action_group_remove_child</remove-child-function>
       <get-children-function>glade_gtk_action_group_get_children</get-children-function>
@@ -2060,6 +2065,7 @@ embedded in another object</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkTreeViewColumn" generic-name="treeviewcolumn" _title="Tree View Column">
+      <add-child-verify-function>glade_gtk_cell_layout_add_verify</add-child-verify-function>
       <add-child-function>glade_gtk_cell_layout_add_child</add-child-function>
       <remove-child-function>glade_gtk_cell_layout_remove_child</remove-child-function> 
       <get-children-function>glade_gtk_cell_layout_get_children</get-children-function>
@@ -2102,6 +2108,7 @@ embedded in another object</_tooltip>
 
     <glade-widget-class name="GtkIconView" generic-name="iconview" _title="Icon View">
       <post-create-function>empty</post-create-function>
+      <add-child-verify-function>glade_gtk_cell_layout_add_verify</add-child-verify-function>
       <add-child-function>glade_gtk_cell_layout_add_child</add-child-function>
       <remove-child-function>glade_gtk_cell_layout_remove_child</remove-child-function> 
       <get-children-function>glade_gtk_cell_layout_get_children</get-children-function>
@@ -3355,6 +3362,7 @@ embedded in another object</_tooltip>
 
     <glade-widget-class name="GtkTextTagTable" generic-name="texttagtable" _title="Text Tag Table" 
 			toplevel="True">
+      <add-child-verify-function>glade_gtk_text_tag_table_add_verify</add-child-verify-function>
       <add-child-function>glade_gtk_text_tag_table_add_child</add-child-function>
       <remove-child-function>glade_gtk_text_tag_table_remove_child</remove-child-function> 
       <get-children-function>glade_gtk_text_tag_table_get_children</get-children-function>

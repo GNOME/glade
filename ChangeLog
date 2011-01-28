@@ -1,3 +1,21 @@
+2011-01-28  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-xml-utils.h, gladeui/glade-widget-adaptor.[ch], gladeui/glade-widget.[ch]:
+	  Added <add-child-verify-function> semantics to query the plugin if it's ok to add
+	  a said "child" to an adaptors widget "parent" and warn the user about it in context.
+
+	* gladeui/glade-project.c: Check glade_widget_add_verify() when pasting widgets
+
+	* gladeui/glade-command.c: Check glade_widget_add_verify() from glade_command_create()
+
+	* gladeui/glade-popup.c: Allow "Add widget here" action to appear for any project object
+	  and rely on glade_command_create() to warn the user via glade_widget_add_verify() if
+	  adding the widget fails.
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Added <add-child-verify-function> support to
+	GtkContainer, GtkMenuShell, GtkMenuItem, GtkToolBar, GtkToolItem, GtkToolPalette, GtkToolItemGroup,
+	GtkActionGroup, GtkTextTagTable adaptors.
+
 2011-01-27  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-gtk.c: Added support for GtkRecentFilter

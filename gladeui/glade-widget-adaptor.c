@@ -812,6 +812,20 @@ glade_widget_adaptor_object_construct_object (GladeWidgetAdaptor * adaptor,
   return g_object_newv (adaptor->priv->type, n_parameters, parameters);
 }
 
+static gboolean
+glade_widget_adaptor_object_add_verify (GladeWidgetAdaptor *adaptor,
+					GObject            *parent,
+					GObject            *child,
+					gboolean            user_feedback)
+{
+  if (user_feedback)
+    glade_util_ui_message (glade_app_get_window (),
+			   GLADE_UI_INFO, NULL,
+			   _("%s does not support adding any children."), 
+			   adaptor->priv->title);
+
+  return FALSE;
+}
 
 static void
 glade_widget_adaptor_object_set_property (GladeWidgetAdaptor * adaptor,
@@ -1208,6 +1222,7 @@ glade_widget_adaptor_class_init (GladeWidgetAdaptorClass * adaptor_class)
   adaptor_class->verify_property = NULL;
   adaptor_class->set_property = glade_widget_adaptor_object_set_property;
   adaptor_class->get_property = glade_widget_adaptor_object_get_property;
+  adaptor_class->add_verify = glade_widget_adaptor_object_add_verify;
   adaptor_class->add = NULL;
   adaptor_class->remove = NULL;
   adaptor_class->replace_child = NULL;
@@ -1408,6 +1423,10 @@ gwa_extend_with_node_load_sym (GladeWidgetAdaptorClass * klass,
   if (glade_xml_load_sym_from_node (node, module,
                                     GLADE_TAG_VERIFY_FUNCTION, &symbol))
     klass->verify_property = symbol;
+
+  if (glade_xml_load_sym_from_node (node, module,
+                                    GLADE_TAG_ADD_CHILD_VERIFY_FUNCTION, &symbol))
+    klass->add_verify = symbol;
 
   if (glade_xml_load_sym_from_node (node, module,
                                     GLADE_TAG_ADD_CHILD_FUNCTION, &symbol))
@@ -3061,6 +3080,36 @@ glade_widget_adaptor_verify_property (GladeWidgetAdaptor * adaptor,
         (adaptor)->verify_property (adaptor, object, property_name, value);
 
   return TRUE;
+}
+
+/**
+ * glade_widget_adaptor_add_verify:
+ * @adaptor:   A #GladeWidgetAdaptor
+ * @parent: A #GObject container
+ * @child: A #GObject child
+ * @user_feedback: whether a notification dialog should be
+ * presented in the case that the child cannot not be added.
+ *
+ * Checks whether @child can be added to @parent.
+ *
+ * If @user_feedback is %TRUE and @child cannot be
+ * added then this shows a notification dialog to the user 
+ * explaining why.
+ *
+ * Returns: whether @child can be added to @parent.
+ */
+gboolean
+glade_widget_adaptor_add_verify (GladeWidgetAdaptor *adaptor,
+				 GObject            *container,
+				 GObject            *child,
+				 gboolean            user_feedback)
+{
+  g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), FALSE);
+  g_return_val_if_fail (G_IS_OBJECT (container), FALSE);
+  g_return_val_if_fail (G_IS_OBJECT (child), FALSE);
+  g_return_val_if_fail (g_type_is_a (G_OBJECT_TYPE (container), adaptor->priv->type), FALSE);
+
+  return GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->add_verify (adaptor, container, child, user_feedback);
 }
 
 /**
