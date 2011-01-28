@@ -58,57 +58,23 @@ glade_popup_select_cb (GtkMenuItem * item, GladeWidget * widget)
 			       glade_widget_get_object (widget), TRUE);
 }
 
-static GladePlaceholder *
-find_placeholder (GObject * object)
-{
-  GtkContainer *container;
-  GladePlaceholder *retval = NULL;
-  GtkWidget *child;
-  GList *c, *l;
-
-  if (!GTK_IS_CONTAINER (object))
-    return NULL;
-
-  container = GTK_CONTAINER (object);
-
-  for (c = l = glade_util_container_get_all_children (container);
-       l; l = g_list_next (l))
-    {
-      child = l->data;
-
-      if (GLADE_IS_PLACEHOLDER (child))
-        {
-          retval = GLADE_PLACEHOLDER (child);
-          break;
-        }
-    }
-
-  g_list_free (c);
-
-  return retval;
-}
-
 static void
-glade_popup_placeholder_add_cb (GtkMenuItem * item,
-                                GladePlaceholder * placeholder)
+glade_popup_widget_add_cb (GtkMenuItem * item,
+			   GladeWidget * widget)
 {
+  GladeProject *project;
   GladeWidgetAdaptor *adaptor;
-  GladeWidget        *parent;
-  GladeProject       *project;
 
-
-  parent  = glade_placeholder_get_parent (placeholder);
-  project = glade_placeholder_get_project (placeholder);
+  project = glade_widget_get_project (widget);
   adaptor = glade_project_get_add_item (project);
 
   g_return_if_fail (adaptor != NULL);
 
   if (!glade_util_check_and_warn_scrollable
-      (parent, adaptor, glade_app_get_window ()))
+      (widget, adaptor, glade_app_get_window ()))
     {
-      glade_command_create (adaptor, parent,
-                            placeholder,
-                            project);
+      if (glade_command_create (adaptor, widget,
+				NULL, project))
 
       glade_project_set_add_item (project, NULL);
     }
@@ -423,7 +389,6 @@ glade_popup_create_menu (GladeWidget      *widget,
   GtkWidget          *popup_menu;
   GtkWidget          *separator;
   gboolean            sensitive;
-  GladePlaceholder   *tmp_placeholder;
   GladeWidgetAdaptor *adaptor;
   gchar              *book;
 
@@ -433,21 +398,20 @@ glade_popup_create_menu (GladeWidget      *widget,
 
   if (adaptor)
     {
+      GladeWidget *parent;
       RootAddData *data = g_new (RootAddData, 1);
+
+      parent = placeholder ? glade_placeholder_get_parent (placeholder) : widget;
 
       data->adaptor = adaptor;
       data->project = project;
       g_object_set_data_full (G_OBJECT (popup_menu), "root-data-destroy-me", 
 			      data, (GDestroyNotify)g_free);
 
-      tmp_placeholder = placeholder;
-      if (!tmp_placeholder && widget)
-	tmp_placeholder = find_placeholder (glade_widget_get_object (widget));
-
       glade_popup_append_item (popup_menu, NULL, _("_Add widget here"),
-			       NULL, tmp_placeholder != NULL,
-			       glade_popup_placeholder_add_cb,
-			       tmp_placeholder);
+			       NULL, parent != NULL,
+			       glade_popup_widget_add_cb,
+			       parent);
 
       glade_popup_append_item (popup_menu, NULL, _("Add widget as _toplevel"),
                                NULL, TRUE, glade_popup_root_add_cb, data);

@@ -1581,6 +1581,13 @@ glade_command_create (GladeWidgetAdaptor * adaptor, GladeWidget * parent,
       return NULL;
     }
 
+  if (parent && !glade_widget_add_verify (parent, widget, TRUE))
+    {
+      g_object_ref_sink (widget);
+      g_object_unref (widget);
+      return NULL;
+    }
+
   widgets = g_list_prepend (widgets, widget);
   glade_command_push_group (_("Create %s"), glade_widget_get_name (widget));
   glade_command_add (widgets, parent, placeholder, project, FALSE);

@@ -69,6 +69,10 @@ GType                   glade_widget_get_type		    (void);
 
 GladeWidget            *glade_widget_get_from_gobject       (gpointer          object);
 
+gboolean                glade_widget_add_verify             (GladeWidget      *parent,
+							     GladeWidget      *child,
+							     gboolean          user_feedback);
+
 void                    glade_widget_add_child              (GladeWidget      *parent,
 							     GladeWidget      *child,
 							     gboolean          at_mouse);

@@ -2304,6 +2304,36 @@ glade_widget_copy_properties (GladeWidget * widget,
     }
 }
 
+
+/**
+ * glade_widget_add_verify:
+ * @widget: A #GladeWidget
+ * @child: The child #GladeWidget to add
+ * @user_feedback: whether a notification dialog should be
+ * presented in the case that the child cannot not be added.
+ *
+ * Checks whether @child can be added to @parent.
+ *
+ * If @user_feedback is %TRUE and @child cannot be
+ * added then this shows a notification dialog to the user 
+ * explaining why.
+ *
+ * Returns: whether @child can be added to @widget.
+ */
+gboolean
+glade_widget_add_verify (GladeWidget      *widget,
+			 GladeWidget      *child,
+			 gboolean          user_feedback)
+{
+  g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+  g_return_val_if_fail (GLADE_IS_WIDGET (child), FALSE);
+
+  return glade_widget_adaptor_add_verify (widget->priv->adaptor,
+					  widget->priv->object,
+					  child->priv->object,
+					  user_feedback);
+}
+
 /**
  * glade_widget_add_child:
  * @parent: A #GladeWidget

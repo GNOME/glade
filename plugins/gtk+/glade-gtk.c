@@ -1071,6 +1071,50 @@ glade_gtk_container_post_create (GladeWidgetAdaptor * adaptor,
     }
 }
 
+gboolean
+glade_gtk_container_add_verify (GladeWidgetAdaptor *adaptor,
+				GtkWidget          *container,
+				GtkWidget          *child,
+				gboolean            user_feedback)
+{
+  GladeWidget *gwidget = glade_widget_get_from_gobject (container);
+
+  if (GTK_IS_WINDOW (child))
+    {
+      if (user_feedback)
+	glade_util_ui_message (glade_app_get_window (),
+			       GLADE_UI_INFO, NULL,
+			       _("Cannot add a toplevel window to a containter."));
+
+      return FALSE;
+    }
+  else if (!GTK_IS_WIDGET (child) ||
+	   GTK_IS_TOOL_ITEM (child) ||
+	   GTK_IS_MENU_ITEM (child))
+    {
+      if (user_feedback)
+	glade_util_ui_message (glade_app_get_window (),
+			       GLADE_UI_INFO, NULL,
+			       _("Only widgets can be added to a %s."),
+			       glade_widget_adaptor_get_title (adaptor));
+
+      return FALSE;
+    }
+  else if (GWA_USE_PLACEHOLDERS (adaptor) &&
+	   glade_util_count_placeholders (gwidget) == 0)
+    {
+      if (user_feedback)
+	glade_util_ui_message (glade_app_get_window (),
+			       GLADE_UI_INFO, NULL,
+			       _("This %s has no placeholders available to add children."),
+			       glade_widget_adaptor_get_title (adaptor));
+
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 void
 glade_gtk_container_replace_child (GladeWidgetAdaptor * adaptor,
                                    GtkWidget * container,
@@ -6045,6 +6089,32 @@ glade_gtk_menu_constructor (GType type,
 }
 
 /* ----------------------------- GtkMenuShell ------------------------------ */
+gboolean
+glade_gtk_menu_shell_add_verify (GladeWidgetAdaptor *adaptor,
+				 GtkWidget          *container,
+				 GtkWidget          *child,
+				 gboolean            user_feedback)
+{
+  if (!GTK_IS_MENU_ITEM (child))
+    {
+      if (user_feedback)
+	{
+	  GladeWidgetAdaptor *menu_item_adaptor = 
+	    glade_widget_adaptor_get_by_type (GTK_TYPE_MENU_ITEM);
+
+	  glade_util_ui_message (glade_app_get_window (),
+				 GLADE_UI_INFO, NULL,
+				 _("Only a %s can be added to a %s."),
+				 glade_widget_adaptor_get_title (menu_item_adaptor),
+				 glade_widget_adaptor_get_title (adaptor));
+	}
+
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 void
 glade_gtk_menu_shell_add_child (GladeWidgetAdaptor * adaptor,
                                 GObject * object, GObject * child)
@@ -6645,6 +6715,44 @@ glade_gtk_menu_item_get_children (GladeWidgetAdaptor * adaptor,
   return list;
 }
 
+gboolean
+glade_gtk_menu_item_add_verify (GladeWidgetAdaptor *adaptor,
+				GtkWidget          *container,
+				GtkWidget          *child,
+				gboolean            user_feedback)
+{
+  if (!GTK_IS_MENU (child))
+    {
+      if (user_feedback)
+	{
+	  GladeWidgetAdaptor *menu_adaptor = 
+	    glade_widget_adaptor_get_by_type (GTK_TYPE_MENU);
+
+	  glade_util_ui_message (glade_app_get_window (),
+				 GLADE_UI_INFO, NULL,
+				 _("Only a %s can be added to a %s."),
+				 glade_widget_adaptor_get_title (menu_adaptor),
+				 glade_widget_adaptor_get_title (adaptor));
+	}
+
+      return FALSE;
+    }
+  else if (GTK_IS_SEPARATOR_MENU_ITEM (container))
+    {
+      if (user_feedback)
+	{
+	  glade_util_ui_message (glade_app_get_window (),
+				 GLADE_UI_INFO, NULL,
+				 _("A %s cannot have any children."),
+				 glade_widget_adaptor_get_title (adaptor));
+	}
+
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 void
 glade_gtk_menu_item_add_child (GladeWidgetAdaptor * adaptor,
                                GObject * object, GObject * child)
@@ -6724,48 +6832,6 @@ glade_gtk_menu_item_set_property (GladeWidgetAdaptor * adaptor,
 }
 
 /* ----------------------------- GtkImageMenuItem ------------------------------ */
-
-GList *
-glade_gtk_image_menu_item_get_children (GladeWidgetAdaptor * adaptor,
-                                        GObject * object)
-{
-  GList *list = NULL;
-  GtkWidget *child;
-  GladeWidget *gitem;
-
-  gitem = glade_widget_get_from_gobject (object);
-
-  if ((child = gtk_menu_item_get_submenu (GTK_MENU_ITEM (object))))
-    list = g_list_append (list, child);
-
-  return list;
-}
-
-void
-glade_gtk_image_menu_item_add_child (GladeWidgetAdaptor * adaptor,
-                                     GObject * object, GObject * child)
-{
-  g_return_if_fail (GTK_IS_MENU_ITEM (object));
-
-  if (GTK_IS_IMAGE (child))
-    gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (object),
-                                   GTK_WIDGET (child));
-  else
-    GWA_GET_CLASS (GTK_TYPE_MENU_ITEM)->add (adaptor, object, child);
-}
-
-void
-glade_gtk_image_menu_item_remove_child (GladeWidgetAdaptor * adaptor,
-                                        GObject * object, GObject * child)
-{
-  g_return_if_fail (GTK_IS_MENU_ITEM (object));
-
-  if (GTK_IS_IMAGE (child))
-    gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (object), NULL);
-  else
-    GWA_GET_CLASS (GTK_TYPE_MENU_ITEM)->remove (adaptor, object, child);
-}
-
 static void
 glade_gtk_image_menu_item_set_use_stock (GObject * object, const GValue * value)
 {
@@ -7248,6 +7314,32 @@ glade_gtk_toolbar_set_child_property (GladeWidgetAdaptor * adaptor,
                                                   property_name, value);
 }
 
+gboolean
+glade_gtk_toolbar_add_verify (GladeWidgetAdaptor *adaptor,
+			      GtkWidget          *container,
+			      GtkWidget          *child,
+			      gboolean            user_feedback)
+{
+  if (!GTK_IS_TOOL_ITEM (child))
+    {
+      if (user_feedback)
+	{
+	  GladeWidgetAdaptor *tool_item_adaptor = 
+	    glade_widget_adaptor_get_by_type (GTK_TYPE_TOOL_ITEM);
+
+	  glade_util_ui_message (glade_app_get_window (),
+				 GLADE_UI_INFO, NULL,
+				 _("Only a %s can be added to a %s."),
+				 glade_widget_adaptor_get_title (tool_item_adaptor),
+				 glade_widget_adaptor_get_title (adaptor));
+	}
+
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 void
 glade_gtk_toolbar_add_child (GladeWidgetAdaptor * adaptor,
                              GObject * object, GObject * child)
@@ -7416,6 +7508,32 @@ glade_gtk_tool_palette_set_child_property (GladeWidgetAdaptor * adaptor,
                                                   property_name, value);
 }
 
+gboolean
+glade_gtk_tool_palette_add_verify (GladeWidgetAdaptor *adaptor,
+				   GtkWidget          *container,
+				   GtkWidget          *child,
+				   gboolean            user_feedback)
+{
+  if (!GTK_IS_TOOL_ITEM_GROUP (child))
+    {
+      if (user_feedback)
+	{
+	  GladeWidgetAdaptor *tool_item_group_adaptor = 
+	    glade_widget_adaptor_get_by_type (GTK_TYPE_TOOL_ITEM_GROUP);
+
+	  glade_util_ui_message (glade_app_get_window (),
+				 GLADE_UI_INFO, NULL,
+				 _("Only a %s can be added to a %s."),
+				 glade_widget_adaptor_get_title (tool_item_group_adaptor),
+				 glade_widget_adaptor_get_title (adaptor));
+	}
+
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 void
 glade_gtk_tool_palette_add_child (GladeWidgetAdaptor * adaptor,
 				  GObject * object, GObject * child)
@@ -7521,6 +7639,32 @@ glade_gtk_tool_palette_action_activate (GladeWidgetAdaptor * adaptor,
 }
 
 /* ----------------------------- GtkToolItemGroup ------------------------------ */
+gboolean
+glade_gtk_tool_item_group_add_verify (GladeWidgetAdaptor *adaptor,
+				      GtkWidget          *container,
+				      GtkWidget          *child,
+				      gboolean            user_feedback)
+{
+  if (!GTK_IS_TOOL_ITEM (child))
+    {
+      if (user_feedback)
+	{
+	  GladeWidgetAdaptor *tool_item_adaptor = 
+	    glade_widget_adaptor_get_by_type (GTK_TYPE_TOOL_ITEM);
+
+	  glade_util_ui_message (glade_app_get_window (),
+				 GLADE_UI_INFO, NULL,
+				 _("Only a %s can be added to a %s."),
+				 glade_widget_adaptor_get_title (tool_item_adaptor),
+				 glade_widget_adaptor_get_title (adaptor));
+	}
+
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 void
 glade_gtk_tool_item_group_add_child (GladeWidgetAdaptor * adaptor,
 				     GObject * object, GObject * child)
@@ -7890,6 +8034,32 @@ glade_gtk_menu_tool_button_get_children (GladeWidgetAdaptor * adaptor,
   return list;
 }
 
+gboolean
+glade_gtk_menu_tool_button_add_verify (GladeWidgetAdaptor *adaptor,
+				       GtkWidget          *container,
+				       GtkWidget          *child,
+				       gboolean            user_feedback)
+{
+  if (!GTK_IS_MENU (child))
+    {
+      if (user_feedback)
+	{
+	  GladeWidgetAdaptor *menu_adaptor = 
+	    glade_widget_adaptor_get_by_type (GTK_TYPE_MENU);
+
+	  glade_util_ui_message (glade_app_get_window (),
+				 GLADE_UI_INFO, NULL,
+				 _("Only a %s can be added to a %s."),
+				 glade_widget_adaptor_get_title (menu_adaptor),
+				 glade_widget_adaptor_get_title (adaptor));
+	}
+
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 void
 glade_gtk_menu_tool_button_add_child (GladeWidgetAdaptor * adaptor,
                                       GObject * object, GObject * child)
@@ -7901,8 +8071,6 @@ glade_gtk_menu_tool_button_add_child (GladeWidgetAdaptor * adaptor,
       gtk_menu_tool_button_set_menu (GTK_MENU_TOOL_BUTTON (object),
 				     GTK_WIDGET (child));
     }
-  else
-    GWA_GET_CLASS (GTK_TYPE_TOOL_BUTTON)->add (adaptor, object, child);
 }
 
 void
@@ -7915,8 +8083,6 @@ glade_gtk_menu_tool_button_remove_child (GladeWidgetAdaptor * adaptor,
 
       g_object_set_data (child, "special-child-type", NULL);
     }
-  else
-    GWA_GET_CLASS (GTK_TYPE_TOOL_BUTTON)->remove (adaptor, object, child);
 }
 
 void
@@ -10939,6 +11105,32 @@ glade_gtk_cell_renderer_read_widget (GladeWidgetAdaptor * adaptor,
 }
 
 /*--------------------------- GtkCellLayout ---------------------------------*/
+gboolean
+glade_gtk_cell_layout_add_verify (GladeWidgetAdaptor *adaptor,
+				  GtkWidget          *container,
+				  GtkWidget          *child,
+				  gboolean            user_feedback)
+{
+  if (!GTK_IS_CELL_RENDERER (child))
+    {
+      if (user_feedback)
+	{
+	  GladeWidgetAdaptor *cell_adaptor = 
+	    glade_widget_adaptor_get_by_type (GTK_TYPE_CELL_RENDERER);
+
+	  glade_util_ui_message (glade_app_get_window (),
+				 GLADE_UI_INFO, NULL,
+				 _("Only a %s can be added to a %s."),
+				 glade_widget_adaptor_get_title (cell_adaptor),
+				 glade_widget_adaptor_get_title (adaptor));
+	}
+
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 void
 glade_gtk_cell_layout_add_child (GladeWidgetAdaptor * adaptor,
                                  GObject * container, GObject * child)
@@ -11659,6 +11851,32 @@ glade_gtk_action_post_create (GladeWidgetAdaptor * adaptor,
 }
 
 /*--------------------------- GtkActionGroup ---------------------------------*/
+gboolean
+glade_gtk_action_group_add_verify (GladeWidgetAdaptor *adaptor,
+				   GtkWidget          *container,
+				   GtkWidget          *child,
+				   gboolean            user_feedback)
+{
+  if (!GTK_IS_ACTION (child))
+    {
+      if (user_feedback)
+	{
+	  GladeWidgetAdaptor *action_adaptor = 
+	    glade_widget_adaptor_get_by_type (GTK_TYPE_ACTION);
+
+	  glade_util_ui_message (glade_app_get_window (),
+				 GLADE_UI_INFO, NULL,
+				 _("Only a %s can be added to a %s."),
+				 glade_widget_adaptor_get_title (action_adaptor),
+				 glade_widget_adaptor_get_title (adaptor));
+	}
+
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 void
 glade_gtk_action_group_add_child (GladeWidgetAdaptor * adaptor,
                                   GObject * container, GObject * child)
@@ -11837,6 +12055,32 @@ glade_gtk_action_action_activate (GladeWidgetAdaptor *adaptor,
 
 
 /*--------------------------- GtkTextTagTable ---------------------------------*/
+gboolean
+glade_gtk_text_tag_table_add_verify (GladeWidgetAdaptor *adaptor,
+				     GtkWidget          *container,
+				     GtkWidget          *child,
+				     gboolean            user_feedback)
+{
+  if (!GTK_IS_TEXT_TAG (child))
+    {
+      if (user_feedback)
+	{
+	  GladeWidgetAdaptor *tag_adaptor = 
+	    glade_widget_adaptor_get_by_type (GTK_TYPE_TEXT_TAG);
+
+	  glade_util_ui_message (glade_app_get_window (),
+				 GLADE_UI_INFO, NULL,
+				 _("Only a %s can be added to a %s."),
+				 glade_widget_adaptor_get_title (tag_adaptor),
+				 glade_widget_adaptor_get_title (adaptor));
+	}
+
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 void
 glade_gtk_text_tag_table_add_child (GladeWidgetAdaptor * adaptor,
 				    GObject * container, GObject * child)

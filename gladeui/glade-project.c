@@ -4619,6 +4619,19 @@ glade_project_command_paste (GladeProject     *project,
       return;
     }
 
+  /* Check that the underlying adaptor allows the paste */
+  if (parent)
+    {
+      for (list = glade_clipboard_widgets (clipboard); list && list->data; list = list->next)
+	{
+	  widget = list->data;
+
+	  if (!glade_widget_add_verify (parent, widget, TRUE))
+	    return;
+	}
+    }
+
+
   /* Check that we have compatible heirarchies */
   for (list = glade_clipboard_widgets (clipboard); list && list->data; list = list->next)
     {
@@ -4637,6 +4650,8 @@ glade_project_command_paste (GladeProject     *project,
 
   /* A GladeWidget that doesnt use placeholders can only paste one
    * at a time
+   *
+   * XXX: Not sure if this has to be true.
    */
   if (GTK_IS_WIDGET (glade_widget_get_object (widget)) &&
       parent && !GWA_USE_PLACEHOLDERS (glade_widget_get_adaptor (parent)) &&
