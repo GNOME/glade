@@ -138,15 +138,12 @@ glade_startup (GApplication *application)
 
   g_idle_add ((GSourceFunc)open_new_project, glade);
 
-  g_print ("Glade starting up\n");
-
   G_APPLICATION_CLASS (glade_parent_class)->startup (application);
 }
 
 static void
 glade_activate (GApplication *application)
 {
-  g_print ("Who knows what the GApplication:activate is for anyway\n");
 }
 
 
