@@ -1,3 +1,9 @@
+2011-01-29  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* plugins/gtk+/glade-model-data.c: Avoid committing the data if the data did not
+	  change... committing the data when there is no change can cause the editor to
+	  load itself, this editor does not deal with that well. Fixes crasher bug 622839.
+
 2011-01-24  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* 41 files: Fixed typo in LGPL License file headers.

@@ -328,7 +328,14 @@ update_data_tree_idle (GladeEditorProperty *eprop)
 	
 	g_value_init (&value, GLADE_TYPE_MODEL_DATA_TREE);
 	g_value_take_boxed (&value, eprop_data->pending_data_tree);
-	glade_editor_property_commit (eprop, &value);
+
+	/* Only commit the value if it changed, otherwise this
+	 * can trigger a load.. which we dont handle well in this
+	 * editor 
+	 */
+	if (!glade_property_equals_value (eprop->property, &value))
+		glade_editor_property_commit (eprop, &value);
+
 	g_value_unset (&value);
 
 	eprop_data->pending_data_tree = NULL;
