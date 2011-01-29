@@ -4,6 +4,10 @@
 	  change... committing the data when there is no change can cause the editor to
 	  load itself, this editor does not deal with that well. Fixes crasher bug 622839.
 
+	* plugins/gtk+/gtk+.xml.in: Add support for editing GtkOffscreenWindow, tricked
+	  this out by just using the "parent" xml attribute and deriving GtkWindow and
+	  disabling all the irrelevant GtkWindow properties.
+
 2011-01-28  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-xml-utils.h, gladeui/glade-widget-adaptor.[ch], gladeui/glade-widget.[ch]:
