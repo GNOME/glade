@@ -56,7 +56,7 @@ void        glade_window_new_project   (GladeWindow *window);
 gboolean    glade_window_open_project  (GladeWindow *window,
 					const gchar *path);
 
-void        glade_window_check_devhelp (GladeWindow *window);
+
 
 G_END_DECLS
 
