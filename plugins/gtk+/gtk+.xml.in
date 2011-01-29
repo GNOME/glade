@@ -442,8 +442,8 @@ embedded in another object</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkOffscreenWindow" generic-name="offscreenwindow" _title="Offscreen Window" 
-			parent="GtkWindow" toplevel="True" default-width="440" default-height="250">
-
+			parent="GtkWindow" toplevel="True" default-width="440" default-height="250" 
+			since="2.20">
       <properties> 
 	<!-- Disable a handfull of properties that dont make sense for GtkOffScreenWindow
 	     (all window properties actually)
