@@ -8,6 +8,11 @@
 	  this out by just using the "parent" xml attribute and deriving GtkWindow and
 	  disabling all the irrelevant GtkWindow properties.
 
+	* src/main.c, src/glade-window.c: Make Glade use GtkApplication, now Glade is
+	  a single instance app.
+
+	* data/icons/Makefile.am, data/desktop.in.in: Rename the 'glade-3' icon to 'glade'
+
 2011-01-28  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-xml-utils.h, gladeui/glade-widget-adaptor.[ch], gladeui/glade-widget.[ch]:
