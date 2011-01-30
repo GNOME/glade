@@ -119,7 +119,6 @@ libgladeuiinclude_HEADERS = \
 	glade-editor-property.h \
 	glade-signal-editor.h \
 	glade-palette.h \
-	glade-design-layout.h \
 	glade-design-view.h \
 	glade-widget.h \
 	glade-widget-adaptor.h \
@@ -144,7 +143,8 @@ libgladeuiinclude_HEADERS = \
 	glade-cell-renderer-icon.h \
 	glade-signal-model.h
 
-
+noinst_HEADERS = \
+	glade-design-layout.h
 
 if PLATFORM_WIN32
 libgladeui_2_la_LDFLAGS += -no-undefined

@@ -30,8 +30,7 @@ libgladegtk_la_SOURCES     = glade-gtk.c glade-fixed.c glade-accels.c glade-attr
 libgladegtk_la_LDFLAGS     = -module -avoid-version $(AM_LDFLAGS)
 libgladegtk_la_LIBADD      = $(libgladeui) $(GTK_LIBS)
 
-libgladegtkincludedir= $(includedir)/libgladeui-2.0/gladeui
-libgladegtkinclude_HEADERS = glade-gtk.h glade-accels.h glade-attributes.h glade-column-types.h glade-model-data.h \
+noinst_HEADERS = glade-gtk.h glade-accels.h glade-attributes.h glade-column-types.h glade-model-data.h \
 	glade-text-button.h glade-icon-sources.h glade-button-editor.h \
 	glade-tool-button-editor.h glade-image-editor.h glade-image-item-editor.h glade-icon-factory-editor.h \
 	glade-store-editor.h glade-label-editor.h glade-cell-renderer-editor.h glade-treeview-editor.h \

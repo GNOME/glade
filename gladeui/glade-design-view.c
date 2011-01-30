@@ -2,9 +2,11 @@
  * glade-design-view.c
  *
  * Copyright (C) 2006 Vincent Geddes
+ *               2011 Juan Pablo Ugarte
  *
  * Authors:
  *   Vincent Geddes <vincent.geddes@gmail.com>
+ *   Juan Pablo Ugarte <juanpablougarte@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,8 +29,7 @@
  * @Title: GladeDesignView
  * @Short_Description: A widget to embed the workspace.
  *
- * Use this widget to embed the currently active #GtkWindow
- * in a given #GladeProject.
+ * Use this widget to embed toplevel widgets in a given #GladeProject.
  */
 
 #include "config.h"
@@ -105,25 +106,16 @@ glade_design_view_load_progress (GladeProject * project,
                                  step * 1.0 / total);
 }
 
-static void 
-layout_box_foreach (GtkWidget *widget, gpointer data)
-{
-  if (GLADE_IS_DESIGN_LAYOUT (widget))
-    glade_design_layout_selection_set (GLADE_DESIGN_LAYOUT (widget), data);
-}
 
 static void
 glade_design_view_selection_changed (GladeProject * project, GladeDesignView * view)
 {
-  GList *selection = glade_project_selection_get (project);
   GladeWidget *gwidget, *gtoplevel;
+  GList *selection;
 
-  /* FIXME: this does not fell right, perhaps DesignLayout should support more than one child */
-  gtk_container_foreach (GTK_CONTAINER (view->priv->layout_box), 
-                         layout_box_foreach,
-                         selection);
-
-  if (selection && g_list_next (selection) == NULL &&
+  /* Check if its only one widget selected and scroll viewport to show toplevel */
+  if ((selection = glade_project_selection_get (project)) &&
+      g_list_next (selection) == NULL &&
       GTK_IS_WIDGET (selection->data) &&
       !GLADE_IS_PLACEHOLDER (selection->data) &&
       (gwidget = glade_widget_get_from_gobject (G_OBJECT (selection->data))) &&
@@ -134,61 +126,68 @@ glade_design_view_selection_changed (GladeProject * project, GladeDesignView * v
 
       if (GTK_IS_WIDGET (toplevel) &&
           (layout = gtk_widget_get_parent (GTK_WIDGET (toplevel))) &&
-          GLADE_IS_DESIGN_LAYOUT (layout))
+          GLADE_IS_DESIGN_LAYOUT (layout) &&
+          _glade_design_layout_should_scroll (GLADE_DESIGN_LAYOUT (layout)))
         {
+          gdouble vadj_val, hadj_val, vpage_end, hpage_end;
           GtkAdjustment *vadj, *hadj;
           GtkAllocation alloc;
 
           vadj = gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (view->priv->scrolled_window));
           hadj = gtk_scrolled_window_get_hadjustment (GTK_SCROLLED_WINDOW (view->priv->scrolled_window));
 
+          vadj_val = gtk_adjustment_get_value (vadj);
+          hadj_val = gtk_adjustment_get_value (hadj);
+          vpage_end = gtk_adjustment_get_page_size (vadj) + vadj_val;
+          hpage_end = gtk_adjustment_get_page_size (hadj) + hadj_val;
+
           gtk_widget_get_allocation (layout, &alloc);
-/*
-          g_message ("%s %dx%d page=%lf upper=%lf, lower=%lf", __func__, alloc.x, alloc.y, 
-                       gtk_adjustment_get_page_size (vadj),
-                       gtk_adjustment_get_upper (vadj),
-                       gtk_adjustment_get_lower (vadj));
-*/
-          /* TODO: we could set this value in increments in a timeout callback to make it look like its scrolling instead of jumping */
-          gtk_adjustment_set_value (hadj, alloc.x);
-          gtk_adjustment_set_value (vadj, alloc.y);
+
+          /* TODO: we could set this value in increments in a timeout callback 
+           * to make it look like its scrolling instead of jumping.
+           */
+          if (alloc.y < vadj_val || alloc.y > vpage_end || (alloc.y + alloc.height) > vpage_end)
+            gtk_adjustment_set_value (vadj, alloc.y);
+
+          if (alloc.x < hadj_val || alloc.x > hpage_end || (alloc.x + alloc.width) > hpage_end)
+            gtk_adjustment_set_value (hadj, alloc.x);
         }
     }
 }
 
-static void 
-on_project_add_widget (GladeProject *project, GladeWidget *widget, GladeDesignView * view)
-{
-  GtkWidget *layout;
-  GObject *object;
-
-  if (widget == NULL || glade_widget_get_parent (widget) ||
-      (object = glade_widget_get_object (widget)) == NULL ||
-      !GTK_IS_WIDGET (object)) return;
-
-  layout = glade_design_layout_new ();
-  gtk_box_pack_start (GTK_BOX (view->priv->layout_box), layout, FALSE, TRUE, 0);
-
-  gtk_container_add (GTK_CONTAINER (layout), GTK_WIDGET (object));
-  gtk_widget_show (GTK_WIDGET (object));
-  gtk_widget_show (layout);
-}
-
 static void
-on_project_remove_widget (GladeProject *project, GladeWidget *widget, GladeDesignView * view)
+glade_design_view_widget_visibility_changed (GladeProject    *project,
+                                             GladeWidget     *widget,
+                                             gboolean         visible,
+                                             GladeDesignView *view)
 {
   GtkWidget *layout;
   GObject *object;
 
-  if (widget == NULL || glade_widget_get_parent (widget) ||
+  /* Ignore non toplevel widgets */
+  if (glade_widget_get_parent (widget) ||
       (object = glade_widget_get_object (widget)) == NULL ||
       !GTK_IS_WIDGET (object)) return;
 
-  layout = gtk_widget_get_parent (GTK_WIDGET (object));
-  if (layout)
+  if (visible)
     {
-      gtk_container_remove (GTK_CONTAINER (layout), GTK_WIDGET (object));
-      gtk_container_remove (GTK_CONTAINER (view->priv->layout_box), layout);
+      /* Create a GladeDesignLayout and add the toplevel widget to the view */
+      layout = _glade_design_layout_new ();
+      gtk_box_pack_start (GTK_BOX (view->priv->layout_box), layout, FALSE, TRUE, 0);
+
+      gtk_container_add (GTK_CONTAINER (layout), GTK_WIDGET (object));
+      gtk_widget_show (GTK_WIDGET (object));
+      gtk_widget_show (layout);
+    }
+  else
+    {
+      /* Remove toplevel widget from the view */
+      layout = gtk_widget_get_parent (GTK_WIDGET (object));
+      if (layout)
+        {
+          gtk_container_remove (GTK_CONTAINER (layout), GTK_WIDGET (object));
+          gtk_container_remove (GTK_CONTAINER (view->priv->layout_box), layout);
+        }
     }
 }
 
@@ -199,10 +198,6 @@ glade_design_view_set_project (GladeDesignView * view, GladeProject * project)
 
   view->priv->project = project;
 
-  g_signal_connect (project, "add-widget",
-                    G_CALLBACK (on_project_add_widget), view);
-  g_signal_connect (project, "remove-widget",
-                    G_CALLBACK (on_project_remove_widget), view);
   g_signal_connect (project, "parse-began",
                     G_CALLBACK (glade_design_view_parse_began), view);
   g_signal_connect (project, "parse-finished",
@@ -211,9 +206,10 @@ glade_design_view_set_project (GladeDesignView * view, GladeProject * project)
                     G_CALLBACK (glade_design_view_load_progress), view);
   g_signal_connect (project, "selection-changed",
                     G_CALLBACK (glade_design_view_selection_changed), view);
+  g_signal_connect (project, "widget-visibility-changed",
+                    G_CALLBACK (glade_design_view_widget_visibility_changed), view);
 
-  g_object_set_data (G_OBJECT (view->priv->project), GLADE_DESIGN_VIEW_KEY,
-                     view);
+  g_object_set_data (G_OBJECT (project), GLADE_DESIGN_VIEW_KEY, view);
 }
 
 static void
@@ -270,9 +266,9 @@ glade_design_view_init (GladeDesignView * view)
   gtk_widget_set_no_show_all (GTK_WIDGET (view), TRUE);
 
   view->priv->project = NULL;
-  view->priv->layout_box = gtk_vbox_new (FALSE, 8);
-  gtk_container_set_border_width (GTK_CONTAINER (view->priv->layout_box), 8);
-  gtk_box_pack_end (GTK_BOX (view->priv->layout_box), gtk_label_new (""), FALSE, FALSE, 0);
+  view->priv->layout_box = gtk_vbox_new (FALSE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (view->priv->layout_box), 0);
+  gtk_box_pack_end (GTK_BOX (view->priv->layout_box), gtk_fixed_new (), FALSE, FALSE, 0);
 
   view->priv->scrolled_window = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW
@@ -383,10 +379,4 @@ glade_design_view_get_from_project (GladeProject * project)
 
   return (p != NULL) ? GLADE_DESIGN_VIEW (p) : NULL;
 
-}
-
-GladeDesignLayout *
-glade_design_view_get_layout (GladeDesignView * view)
-{
-  return NULL;
 }

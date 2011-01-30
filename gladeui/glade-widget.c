@@ -190,7 +190,8 @@ enum
   PROP_REASON,
   PROP_TOPLEVEL_WIDTH,
   PROP_TOPLEVEL_HEIGHT,
-  PROP_SUPPORT_WARNING
+  PROP_SUPPORT_WARNING,
+  PROP_VISIBLE
 };
 
 static guint glade_widget_signals[LAST_SIGNAL] = { 0 };
@@ -1136,6 +1137,9 @@ glade_widget_get_real_property (GObject * object,
       case PROP_SUPPORT_WARNING:
         g_value_set_string (value, widget->priv->support_warning);
         break;
+      case PROP_VISIBLE:
+        g_value_set_boolean (value, widget->priv->visible);
+        break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
@@ -1301,6 +1305,12 @@ glade_widget_class_init (GladeWidgetClass * klass)
        g_param_spec_string ("support warning", _("Support Warning"),
                             _("A warning string about version mismatches"),
                             NULL, G_PARAM_READABLE));
+
+  g_object_class_install_property
+      (object_class, PROP_VISIBLE,
+       g_param_spec_boolean ("visible", _("Visible"),
+                            _("Wether the widget is visible or not"),
+                             FALSE, G_PARAM_READABLE));
 
   /**
    * GladeWidget::add-signal-handler:
@@ -1941,20 +1951,6 @@ glade_widget_get_from_gobject (gpointer object)
   return g_object_get_qdata (G_OBJECT (object), glade_widget_name_quark);
 }
 
-static void
-glade_widget_add_to_layout (GladeWidget * widget, GtkWidget * layout)
-{
-  if (gtk_bin_get_child (GTK_BIN (layout)) != GTK_WIDGET (widget->priv->object))
-    {
-      if (gtk_bin_get_child (GTK_BIN (layout)) != NULL)
-        gtk_container_remove (GTK_CONTAINER (layout),
-                              gtk_bin_get_child (GTK_BIN (layout)));
-
-      gtk_container_add (GTK_CONTAINER (layout), GTK_WIDGET (widget->priv->object));
-      gtk_widget_show_all (GTK_WIDGET (widget->priv->object));
-    }
-}
-
 /**
  * glade_widget_show:
  * @widget: A #GladeWidget
@@ -1962,10 +1958,8 @@ glade_widget_add_to_layout (GladeWidget * widget, GtkWidget * layout)
  * Display @widget in it's project's GladeDesignView
  */
 void
-glade_widget_show (GladeWidget * widget)
+glade_widget_show (GladeWidget *widget)
 {
-  GladeDesignView *view = NULL;
-  GtkWidget *layout;
   GladeProperty *property;
   GladeProject *project;
 
@@ -1982,27 +1976,6 @@ glade_widget_show (GladeWidget * widget)
             glade_widget_show (glade_property_get_widget (property));
           return;
         }
-
-      project = glade_widget_get_project (widget);
-      if (project)
-	view = glade_design_view_get_from_project (project);
-
-      if (!view)
-        return;
-
-      layout = GTK_WIDGET (glade_design_view_get_layout (view));
-
-      if (!layout)
-        return;
-
-      if (gtk_widget_get_realized (layout))
-        glade_widget_add_to_layout (widget, layout);
-      else
-        g_signal_connect_data (G_OBJECT (layout), "map",
-                               G_CALLBACK (glade_widget_add_to_layout),
-                               widget, NULL,
-                               G_CONNECT_AFTER | G_CONNECT_SWAPPED);
-
     }
   else if (GTK_IS_WIDGET (widget->priv->object))
     {
@@ -2010,7 +1983,12 @@ glade_widget_show (GladeWidget * widget)
       if (toplevel != widget)
         glade_widget_show (toplevel);
     }
+
+  if (widget->priv->visible) return;
+  
   widget->priv->visible = TRUE;
+  if ((project = glade_widget_get_project (widget)))
+    glade_project_widget_visibility_changed (project, widget, TRUE);
 }
 
 /**
@@ -2020,33 +1998,17 @@ glade_widget_show (GladeWidget * widget)
  * Hide @widget
  */
 void
-glade_widget_hide (GladeWidget * widget)
+glade_widget_hide (GladeWidget *widget)
 {
+  GladeProject *project;
+
   g_return_if_fail (GLADE_IS_WIDGET (widget));
 
-  if (GTK_IS_WIDGET (widget->priv->object))
-    {
-      GladeDesignView *view;
-      GladeProject    *project;
-      GtkWidget       *layout;
-
-      project = glade_widget_get_project (widget);
-
-      if (project && 
-	  (view = glade_design_view_get_from_project (project)) != NULL)
-        {
-/*
-          GtkWidget *child;
-
-          layout = GTK_WIDGET (glade_design_view_get_layout (view));
-          child = gtk_bin_get_child (GTK_BIN (layout));
-
-          if (child == GTK_WIDGET (widget->priv->object))
-            gtk_container_remove (GTK_CONTAINER (layout), child);
-*/
-        }
-    }
+  if (!widget->priv->visible) return;
+  
   widget->priv->visible = FALSE;
+  if ((project = glade_widget_get_project (widget)))
+    glade_project_widget_visibility_changed (project, widget, FALSE);
 }
 
 /**
