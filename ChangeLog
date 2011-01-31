@@ -1,3 +1,50 @@
+2011-01-31  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+      * gladeui/glade-design-layout.[ch]:
+        o added widget maximization on label double click
+        o fixed size allocation to be able to maximize widget without making the viewport
+          scrollbars appear
+        o removed glade_design_layout_selection_set()
+        o added design-view construct only property
+        o use _glade_design_view_freeze/thaw() to avoid scrolling to selection from
+          the layout.
+        o implemented get_preferred_width_for_height() and get_preferred_width_for_height()
+          to fix allocation problem
+        o check if toplevel has a child selected before selecting it itself on button press
+        o dont draw selection if widget has no allocation
+        o added PangoLayout to draw widget name
+        o added space needed for widget name in glade_design_layout_get_preferred_height ()
+        o glade_design_layout_size_allocate() allocate enough space for widget name
+        o moved widget name to south east and used as resize grip
+        o update widget name on GladeWidget::notify:name
+    
+      * gladeui/glade-design-view.[ch]:
+        o improved viewport scrolling to selected toplevel, now we only scroll if
+          the selection was not triggered by the layout.
+        o implemented _glade_design_view_freeze/thaw()
+        o removed glade_design_view_get_layout() declaration
+        o removed gladeui/glade-design-layout.h include
+        o handle widget adding and removal on project's add-widget and remove-widget signals
+        o added widget-visibility-changed handler to add/remove toplevels on visibility change
+    
+      * gladeui/glade-design-private.h: added new file to declare private API.
+      
+      * gladeui/glade-app.c: replaced GladeDesignLayout API with the new private one
+    
+      * gladeui/glade-project.[ch]:
+        o added GladeProject::widget-visibility-changed signal
+        o added glade_project_widget_visibility_changed() function
+    
+      * gladeui/glade-widget.c:
+        o added visible property.
+        o use glade_project_widget_visibility_changed() to emit signal on widget visibility change
+    
+      * gladeui/glade.h: removed glade-design-layout.h since now its private
+    
+      * gladeui/Makefile.am: do not install private header glade-design-layout.h
+    
+      * plugins/gtk+/Makefile.am: do not install headers
+
 2011-01-29  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* plugins/gtk+/glade-model-data.c: Avoid committing the data if the data did not
