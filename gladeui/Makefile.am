@@ -144,7 +144,8 @@ libgladeuiinclude_HEADERS = \
 	glade-signal-model.h
 
 noinst_HEADERS = \
-	glade-design-layout.h
+	glade-design-layout.h \
+	glade-design-private.h
 
 if PLATFORM_WIN32
 libgladeui_2_la_LDFLAGS += -no-undefined

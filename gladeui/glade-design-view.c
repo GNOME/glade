@@ -38,6 +38,7 @@
 #include "glade-utils.h"
 #include "glade-design-view.h"
 #include "glade-design-layout.h"
+#include "glade-design-private.h"
 
 #include <glib.h>
 #include <glib/gi18n.h>
@@ -126,8 +127,7 @@ glade_design_view_selection_changed (GladeProject * project, GladeDesignView * v
 
       if (GTK_IS_WIDGET (toplevel) &&
           (layout = gtk_widget_get_parent (GTK_WIDGET (toplevel))) &&
-          GLADE_IS_DESIGN_LAYOUT (layout) &&
-          _glade_design_layout_should_scroll (GLADE_DESIGN_LAYOUT (layout)))
+          GLADE_IS_DESIGN_LAYOUT (layout))
         {
           gdouble vadj_val, hadj_val, vpage_end, hpage_end;
           GtkAdjustment *vadj, *hadj;
@@ -156,39 +156,57 @@ glade_design_view_selection_changed (GladeProject * project, GladeDesignView * v
 }
 
 static void
+glade_design_view_remove_toplevel (GladeDesignView *view, GladeWidget *widget)
+{
+  GtkWidget *layout;
+  GObject *object;
+
+  if (glade_widget_get_parent (widget) ||
+      (object = glade_widget_get_object (widget)) == NULL ||
+      !GTK_IS_WIDGET (object)) return;
+  
+  /* Remove toplevel widget from the view */
+  layout = gtk_widget_get_parent (GTK_WIDGET (object));
+  if (layout)
+    {
+      gtk_container_remove (GTK_CONTAINER (layout), GTK_WIDGET (object));
+      gtk_container_remove (GTK_CONTAINER (view->priv->layout_box), layout);
+    }
+}
+
+static void
 glade_design_view_widget_visibility_changed (GladeProject    *project,
                                              GladeWidget     *widget,
                                              gboolean         visible,
                                              GladeDesignView *view)
 {
+  if (visible) return;
+  glade_design_view_remove_toplevel (view, widget);
+}
+
+static void
+on_project_add_widget (GladeProject *project, GladeWidget *widget, GladeDesignView *view)
+{
   GtkWidget *layout;
   GObject *object;
 
-  /* Ignore non toplevel widgets */
   if (glade_widget_get_parent (widget) ||
       (object = glade_widget_get_object (widget)) == NULL ||
       !GTK_IS_WIDGET (object)) return;
 
-  if (visible)
-    {
-      /* Create a GladeDesignLayout and add the toplevel widget to the view */
-      layout = _glade_design_layout_new ();
-      gtk_box_pack_start (GTK_BOX (view->priv->layout_box), layout, FALSE, TRUE, 0);
+  /* Create a GladeDesignLayout and add the toplevel widget to the view */
+  layout = _glade_design_layout_new (view);
+  gtk_box_pack_start (GTK_BOX (view->priv->layout_box), layout, FALSE, TRUE, 0);
 
-      gtk_container_add (GTK_CONTAINER (layout), GTK_WIDGET (object));
-      gtk_widget_show (GTK_WIDGET (object));
-      gtk_widget_show (layout);
-    }
-  else
-    {
-      /* Remove toplevel widget from the view */
-      layout = gtk_widget_get_parent (GTK_WIDGET (object));
-      if (layout)
-        {
-          gtk_container_remove (GTK_CONTAINER (layout), GTK_WIDGET (object));
-          gtk_container_remove (GTK_CONTAINER (view->priv->layout_box), layout);
-        }
-    }
+  gtk_container_add (GTK_CONTAINER (layout), GTK_WIDGET (object));
+  gtk_widget_show (GTK_WIDGET (object));
+  gtk_widget_show (layout);
+}
+
+static void
+on_project_remove_widget (GladeProject *project, GladeWidget *widget, GladeDesignView *view)
+{
+  glade_design_view_remove_toplevel (view, widget);
 }
 
 static void
@@ -198,6 +216,10 @@ glade_design_view_set_project (GladeDesignView * view, GladeProject * project)
 
   view->priv->project = project;
 
+  g_signal_connect (project, "add-widget",
+                    G_CALLBACK (on_project_add_widget), view);
+  g_signal_connect (project, "remove-widget",
+                    G_CALLBACK (on_project_remove_widget), view);
   g_signal_connect (project, "parse-began",
                     G_CALLBACK (glade_design_view_parse_began), view);
   g_signal_connect (project, "parse-finished",
@@ -346,6 +368,30 @@ glade_design_view_class_init (GladeDesignViewClass * klass)
 
   g_type_class_add_private (object_class, sizeof (GladeDesignViewPrivate));
 }
+
+/* Private API */
+
+void
+_glade_design_view_freeze (GladeDesignView *view)
+{
+  g_return_if_fail (GLADE_IS_DESIGN_VIEW (view));
+  
+  g_signal_handlers_block_by_func (view->priv->project,
+                                   glade_design_view_selection_changed,
+                                   view);
+}
+
+void
+_glade_design_view_thaw   (GladeDesignView *view)
+{
+  g_return_if_fail (GLADE_IS_DESIGN_VIEW (view));
+  
+  g_signal_handlers_unblock_by_func (view->priv->project,
+                                     glade_design_view_selection_changed,
+                                     view);
+}
+
+/* Public API */
 
 GladeProject *
 glade_design_view_get_project (GladeDesignView * view)

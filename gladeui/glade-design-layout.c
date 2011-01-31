@@ -28,9 +28,11 @@
 
 #include "glade.h"
 #include "glade-design-layout.h"
+#include "glade-design-private.h"
 #include "glade-accumulators.h"
 #include "glade-marshallers.h"
 
+#include <glib/gi18n-lib.h>
 #include <gtk/gtk.h>
 
 #define GLADE_DESIGN_LAYOUT_GET_PRIVATE(object) (G_TYPE_INSTANCE_GET_PRIVATE ((object),  \
@@ -55,8 +57,6 @@ struct _GladeDesignLayoutPrivate
   gint child_offset;
   GdkRectangle east, south, south_east;
   GdkCursor *cursors[sizeof (Activity)];
-
-  gboolean should_scroll;
   
   PangoLayout *widget_name;
 
@@ -68,6 +68,15 @@ struct _GladeDesignLayoutPrivate
   gint dy;                      /* child.height - event.pointer.y  */
   gint new_width;               /* user's new requested width */
   gint new_height;              /* user's new requested height */
+
+  /* Properties */
+  GladeDesignView *view;
+};
+
+enum
+{
+  PROP_0,
+  PROP_DESIGN_VIEW
 };
 
 G_DEFINE_TYPE (GladeDesignLayout, glade_design_layout, GTK_TYPE_BIN)
@@ -263,10 +272,13 @@ glade_design_layout_button_press_event (GtkWidget *widget, GdkEventButton *ev)
           (gchild = glade_widget_get_from_gobject (G_OBJECT (child))))
         {
           GladeProject *project = glade_widget_get_project (gchild);
-          priv->should_scroll = FALSE;
+
           if (project)
-            glade_project_selection_set (project, G_OBJECT (gtk_bin_get_child (GTK_BIN (widget))), TRUE);
-          priv->should_scroll = TRUE;
+            {
+              _glade_design_view_freeze (priv->view);
+              glade_project_selection_set (project, G_OBJECT (gtk_bin_get_child (GTK_BIN (widget))), TRUE);
+              _glade_design_view_thaw (priv->view);
+            }
         }
     }
   else if (ev->type == GDK_2BUTTON_PRESS)
@@ -945,13 +957,47 @@ glade_design_layout_init (GladeDesignLayout * layout)
   priv->new_width = -1;
   priv->new_height = -1;
 
-  priv->should_scroll = TRUE;
-  
   /* setup static member of rectangles */
   priv->east.width = PADDING + OUTLINE_WIDTH;
   priv->south.height = PADDING + OUTLINE_WIDTH;
 
   gtk_widget_set_has_window (GTK_WIDGET (layout), TRUE);
+}
+
+static void
+glade_design_layout_set_property (GObject *object,
+                                  guint prop_id,
+                                  const GValue *value,
+                                  GParamSpec *pspec)
+{
+  switch (prop_id)
+    {
+      case PROP_DESIGN_VIEW:
+        GLADE_DESIGN_LAYOUT_GET_PRIVATE (object)->view = GLADE_DESIGN_VIEW (g_value_get_object (value));
+        break;
+
+      default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        break;
+    }
+}
+
+static void
+glade_design_layout_get_property (GObject * object,
+                                  guint prop_id,
+                                  GValue * value,
+                                  GParamSpec * pspec)
+{
+  switch (prop_id)
+    {
+      case PROP_DESIGN_VIEW:
+        g_value_set_object (value, GLADE_DESIGN_LAYOUT_GET_PRIVATE (object)->view);
+        break;
+
+      default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        break;
+    }
 }
 
 static void
@@ -966,7 +1012,9 @@ glade_design_layout_class_init (GladeDesignLayoutClass * klass)
   container_class = GTK_CONTAINER_CLASS (klass);
 
   object_class->finalize = glade_design_layout_finalize;
-
+  object_class->set_property = glade_design_layout_set_property;
+  object_class->get_property = glade_design_layout_get_property;
+  
   container_class->add = glade_design_layout_add;
   container_class->remove = glade_design_layout_remove;
 
@@ -981,6 +1029,12 @@ glade_design_layout_class_init (GladeDesignLayoutClass * klass)
   widget_class->get_preferred_width = glade_design_layout_get_preferred_width;
   widget_class->size_allocate = glade_design_layout_size_allocate;
 
+  g_object_class_install_property (object_class, PROP_DESIGN_VIEW,
+                                   g_param_spec_object ("design-view", _("Design View"),
+                                                        _("The GladeDesignView that contains this layout"),
+                                                        GLADE_TYPE_DESIGN_VIEW,
+                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+  
   g_signal_override_class_closure (g_signal_lookup ("damage-event", GTK_TYPE_WIDGET),
                                    GLADE_TYPE_DESIGN_LAYOUT,
                                    g_cclosure_new (G_CALLBACK (glade_design_layout_damage),
@@ -992,9 +1046,9 @@ glade_design_layout_class_init (GladeDesignLayoutClass * klass)
 /* Internal API */
 
 GtkWidget *
-_glade_design_layout_new (void)
+_glade_design_layout_new (GladeDesignView *view)
 {
-  return g_object_new (GLADE_TYPE_DESIGN_LAYOUT, NULL);
+  return g_object_new (GLADE_TYPE_DESIGN_LAYOUT, "design-view", view, NULL);
 }
 
 /*
@@ -1025,7 +1079,7 @@ _glade_design_layout_do_event (GladeDesignLayout * layout, GdkEvent * event)
 
   glade_design_layout_find_inside_container (child, &data);
 
-  priv->should_scroll = FALSE;
+  _glade_design_view_freeze (priv->view);
 
   /* Try the placeholder first */
   if (data.placeholder && gtk_widget_event (data.placeholder, event))
@@ -1035,22 +1089,7 @@ _glade_design_layout_do_event (GladeDesignLayout * layout, GdkEvent * event)
   else
     retval = FALSE;
 
-  priv->should_scroll = TRUE;
+  _glade_design_view_thaw (priv->view);
 
   return retval;
-}
-
-/*
- * _glade_design_layout_should_scroll:
- * @layout: A #GladeDesignLayout
- *
- * 
- *
- * Returns: true if it is ok to scroll or not.
- */
-gboolean
-_glade_design_layout_should_scroll (GladeDesignLayout *layout)
-{
-  GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (layout);
-  return priv->should_scroll;
 }
