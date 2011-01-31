@@ -93,12 +93,10 @@ glade_design_view_load_progress (GladeProject * project,
   gchar *path;
   gchar *str;
 
-  path =
-      glade_utils_replace_home_dir_with_tilde (glade_project_get_path
-                                               (project));
-  str =
-      g_strdup_printf (_("Loading %s: loaded %d of %d objects"), path, step,
-                       total);
+  path = glade_utils_replace_home_dir_with_tilde (glade_project_get_path (project));
+  str = g_strdup_printf (_("Loading %s: loaded %d of %d objects"),
+                         path, step, total);
+
   gtk_progress_bar_set_text (GTK_PROGRESS_BAR (view->priv->progress), str);
   g_free (str);
   g_free (path);
@@ -107,9 +105,39 @@ glade_design_view_load_progress (GladeProject * project,
                                  step * 1.0 / total);
 }
 
+static void
+glade_design_layout_scroll (GladeDesignView *view, gint x, gint y, gint w, gint h)
+{
+  gdouble vadj_val, hadj_val, vpage_end, hpage_end;
+  GtkAdjustment *vadj, *hadj;
+
+  vadj = gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (view->priv->scrolled_window));
+  hadj = gtk_scrolled_window_get_hadjustment (GTK_SCROLLED_WINDOW (view->priv->scrolled_window));
+
+  vadj_val = gtk_adjustment_get_value (vadj);
+  hadj_val = gtk_adjustment_get_value (hadj);
+  vpage_end = gtk_adjustment_get_page_size (vadj) + vadj_val;
+  hpage_end = gtk_adjustment_get_page_size (hadj) + hadj_val;
+
+  /* TODO: we could set this value in increments in a timeout callback 
+   * to make it look like its scrolling instead of jumping.
+   */
+  if (y < vadj_val || y > vpage_end || (y + h) > vpage_end)
+    gtk_adjustment_set_value (vadj, y);
+
+  if (x < hadj_val || x > hpage_end || (x + w) > hpage_end)
+    gtk_adjustment_set_value (hadj, x);
+}
+
+static void 
+on_layout_size_allocate (GtkWidget *widget, GtkAllocation *alloc, GladeDesignView *view)
+{
+  glade_design_layout_scroll (view, alloc->x, alloc->y, alloc->width, alloc->height);
+  g_signal_handlers_disconnect_by_func (widget, on_layout_size_allocate, view);
+}
 
 static void
-glade_design_view_selection_changed (GladeProject * project, GladeDesignView * view)
+glade_design_view_selection_changed (GladeProject *project, GladeDesignView *view)
 {
   GladeWidget *gwidget, *gtoplevel;
   GList *selection;
@@ -129,30 +157,36 @@ glade_design_view_selection_changed (GladeProject * project, GladeDesignView * v
           (layout = gtk_widget_get_parent (GTK_WIDGET (toplevel))) &&
           GLADE_IS_DESIGN_LAYOUT (layout))
         {
-          gdouble vadj_val, hadj_val, vpage_end, hpage_end;
-          GtkAdjustment *vadj, *hadj;
           GtkAllocation alloc;
-
-          vadj = gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (view->priv->scrolled_window));
-          hadj = gtk_scrolled_window_get_hadjustment (GTK_SCROLLED_WINDOW (view->priv->scrolled_window));
-
-          vadj_val = gtk_adjustment_get_value (vadj);
-          hadj_val = gtk_adjustment_get_value (hadj);
-          vpage_end = gtk_adjustment_get_page_size (vadj) + vadj_val;
-          hpage_end = gtk_adjustment_get_page_size (hadj) + hadj_val;
-
           gtk_widget_get_allocation (layout, &alloc);
-
-          /* TODO: we could set this value in increments in a timeout callback 
-           * to make it look like its scrolling instead of jumping.
-           */
-          if (alloc.y < vadj_val || alloc.y > vpage_end || (alloc.y + alloc.height) > vpage_end)
-            gtk_adjustment_set_value (vadj, alloc.y);
-
-          if (alloc.x < hadj_val || alloc.x > hpage_end || (alloc.x + alloc.width) > hpage_end)
-            gtk_adjustment_set_value (hadj, alloc.x);
+          
+          if (alloc.x < 0)
+            g_signal_connect (layout, "size-allocate", G_CALLBACK (on_layout_size_allocate), view);
+          else
+            glade_design_layout_scroll (view, alloc.x, alloc.y, alloc.width, alloc.height);
         }
     }
+}
+
+static void
+glade_design_view_add_toplevel (GladeDesignView *view, GladeWidget *widget)
+{
+  GtkWidget *layout;
+  GObject *object;
+
+  if (glade_widget_get_parent (widget) ||
+      (object = glade_widget_get_object (widget)) == NULL ||
+      !GTK_IS_WIDGET (object) ||
+      gtk_widget_get_parent (GTK_WIDGET (object)))
+    return;
+
+  /* Create a GladeDesignLayout and add the toplevel widget to the view */
+  layout = _glade_design_layout_new (view);
+  gtk_box_pack_start (GTK_BOX (view->priv->layout_box), layout, FALSE, TRUE, 0);
+
+  gtk_container_add (GTK_CONTAINER (layout), GTK_WIDGET (object));
+  gtk_widget_show (GTK_WIDGET (object));
+  gtk_widget_show (layout);
 }
 
 static void
@@ -166,8 +200,8 @@ glade_design_view_remove_toplevel (GladeDesignView *view, GladeWidget *widget)
       !GTK_IS_WIDGET (object)) return;
   
   /* Remove toplevel widget from the view */
-  layout = gtk_widget_get_parent (GTK_WIDGET (object));
-  if (layout)
+  if ((layout = gtk_widget_get_parent (GTK_WIDGET (object))) &&
+      gtk_widget_is_ancestor (layout, GTK_WIDGET (view)))
     {
       gtk_container_remove (GTK_CONTAINER (layout), GTK_WIDGET (object));
       gtk_container_remove (GTK_CONTAINER (view->priv->layout_box), layout);
@@ -180,27 +214,16 @@ glade_design_view_widget_visibility_changed (GladeProject    *project,
                                              gboolean         visible,
                                              GladeDesignView *view)
 {
-  if (visible) return;
-  glade_design_view_remove_toplevel (view, widget);
+  if (visible)
+    glade_design_view_add_toplevel (view, widget);
+  else
+    glade_design_view_remove_toplevel (view, widget);
 }
 
 static void
 on_project_add_widget (GladeProject *project, GladeWidget *widget, GladeDesignView *view)
 {
-  GtkWidget *layout;
-  GObject *object;
-
-  if (glade_widget_get_parent (widget) ||
-      (object = glade_widget_get_object (widget)) == NULL ||
-      !GTK_IS_WIDGET (object)) return;
-
-  /* Create a GladeDesignLayout and add the toplevel widget to the view */
-  layout = _glade_design_layout_new (view);
-  gtk_box_pack_start (GTK_BOX (view->priv->layout_box), layout, FALSE, TRUE, 0);
-
-  gtk_container_add (GTK_CONTAINER (layout), GTK_WIDGET (object));
-  gtk_widget_show (GTK_WIDGET (object));
-  gtk_widget_show (layout);
+  glade_design_view_add_toplevel (view, widget);
 }
 
 static void

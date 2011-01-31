@@ -241,6 +241,19 @@ glade_design_layout_find_inside_container (GtkWidget                *widget,
 }
 
 static gboolean
+glade_project_is_toplevel_active (GladeProject *project, GtkWidget *toplevel)
+{
+  GList *l;
+
+  for (l = glade_project_selection_get (project); l; l = g_list_next (l))
+    {
+      if (gtk_widget_is_ancestor (l->data, toplevel)) return TRUE;
+    }
+
+  return FALSE;
+}
+
+static gboolean
 glade_design_layout_button_press_event (GtkWidget *widget, GdkEventButton *ev)
 {
   GtkWidget *child;
@@ -273,7 +286,7 @@ glade_design_layout_button_press_event (GtkWidget *widget, GdkEventButton *ev)
         {
           GladeProject *project = glade_widget_get_project (gchild);
 
-          if (project)
+          if (project && !glade_project_is_toplevel_active (project, child))
             {
               _glade_design_view_freeze (priv->view);
               glade_project_selection_set (project, G_OBJECT (gtk_bin_get_child (GTK_BIN (widget))), TRUE);
@@ -412,6 +425,24 @@ glade_design_layout_get_preferred_width (GtkWidget * widget,
   border_width = gtk_container_get_border_width (GTK_CONTAINER (widget));
   *minimum += border_width * 2;
   *natural += border_width * 2;
+}
+
+static void
+glade_design_layout_get_preferred_width_for_height (GtkWidget       *widget,
+                                                    gint             height,
+                                                    gint            *minimum_width,
+                                                    gint            *natural_width)
+{
+  glade_design_layout_get_preferred_width (widget, minimum_width, natural_width);
+}
+
+static void
+glade_design_layout_get_preferred_height_for_width (GtkWidget       *widget,
+                                                    gint             width,
+                                                    gint            *minimum_height,
+                                                    gint            *natural_height)
+{
+  glade_design_layout_get_preferred_height (widget, minimum_height, natural_height);
 }
 
 static void
@@ -637,6 +668,9 @@ draw_selection (cairo_t *cr, GtkWidget *parent, GtkWidget *widget,
   gint x, y;
 
   gtk_widget_get_allocation (widget, &alloc);
+
+  if (alloc.x < 0 || alloc.y < 0) return;
+  
   gtk_widget_translate_coordinates (widget, parent, offset, offset, &x, &y);
 
   cx = x + alloc.width/2;
@@ -683,7 +717,7 @@ glade_design_layout_draw (GtkWidget * widget, cairo_t * cr)
           const GdkColor *color = &gtk_widget_get_style (widget)->bg[GTK_STATE_SELECTED];
           gint border_width = gtk_container_get_border_width (GTK_CONTAINER (widget));
           GtkAllocation child_allocation;
-          gboolean selection = FALSE;
+          gboolean selected = FALSE;
           gfloat r, g, b;
           GList *l;
 
@@ -700,26 +734,29 @@ glade_design_layout_draw (GtkWidget * widget, cairo_t * cr)
           r = color->red/65535.;
           g = color->green/65535.;
           b = color->blue/65535.;
+          cairo_set_line_width (cr, OUTLINE_WIDTH/2);
           cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);
           cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
           for (l = glade_project_selection_get (project); l; l = g_list_next (l))
             {
+              GtkWidget *selection = l->data;
+              
               /* Dont draw selection on toplevels */
-              if (child != l->data)
+              if (child != selection)
                 {
-                  if (gtk_widget_is_ancestor (l->data, child))
+                  if (gtk_widget_is_ancestor (selection, child))
                   {
-                    draw_selection (cr, child, l->data, priv->child_offset, r, g, b);
-                    selection = TRUE;
+                    draw_selection (cr, child, selection, priv->child_offset, r, g, b);
+                    selected = TRUE;
                   }
                 }
               else
-                selection = TRUE;
+                selected = TRUE;
             }
 
           /* draw frame */
           draw_frame (cr, priv, style,
-                      (selection) ? GTK_STATE_SELECTED : GTK_STATE_NORMAL,
+                      (selected) ? GTK_STATE_SELECTED : GTK_STATE_NORMAL,
                       border_width + PADDING,
                       border_width + PADDING,
                       child_allocation.width + 2 * OUTLINE_WIDTH,
@@ -1027,6 +1064,8 @@ glade_design_layout_class_init (GladeDesignLayoutClass * klass)
   widget_class->draw = glade_design_layout_draw;
   widget_class->get_preferred_height = glade_design_layout_get_preferred_height;
   widget_class->get_preferred_width = glade_design_layout_get_preferred_width;
+  widget_class->get_preferred_width_for_height = glade_design_layout_get_preferred_width_for_height;
+  widget_class->get_preferred_height_for_width = glade_design_layout_get_preferred_height_for_width;
   widget_class->size_allocate = glade_design_layout_size_allocate;
 
   g_object_class_install_property (object_class, PROP_DESIGN_VIEW,
