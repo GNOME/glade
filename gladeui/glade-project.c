@@ -64,6 +64,7 @@ enum
   PARSE_FINISHED,
   TARGETS_CHANGED,
   LOAD_PROGRESS,
+  WIDGET_VISIBILITY_CHANGED,
   LAST_SIGNAL
 };
 
@@ -960,6 +961,22 @@ glade_project_class_init (GladeProjectClass * klass)
                     glade_marshal_VOID__INT_INT,
                     G_TYPE_NONE, 2, G_TYPE_INT, G_TYPE_INT);
 
+  /**
+   * GladeProject::widget-visibility-changed:
+   * @gladeproject: the #GladeProject which received the signal.
+   * @widget: the widget that its visibity changed
+   * @visible: the current visiblity of the widget
+   *
+   * Emitted when the visivility of a widget changed
+   */
+  glade_project_signals[WIDGET_VISIBILITY_CHANGED] =
+      g_signal_new ("widget-visibility-changed",
+                    G_TYPE_FROM_CLASS (object_class),
+                    G_SIGNAL_RUN_FIRST,
+                    0, NULL, NULL,
+                    glade_marshal_VOID__OBJECT_BOOLEAN,
+                    G_TYPE_NONE, 2, GLADE_TYPE_WIDGET, G_TYPE_BOOLEAN);
+    
   g_object_class_install_property (object_class,
                                    PROP_MODIFIED,
                                    g_param_spec_boolean ("modified",
@@ -2972,15 +2989,6 @@ glade_project_selection_changed (GladeProject * project)
   g_signal_emit (G_OBJECT (project),
                  glade_project_signals[SELECTION_CHANGED], 0);
 
-  if (g_list_length (project->priv->selection) == 1 && 
-      !GLADE_IS_PLACEHOLDER (project->priv->selection->data))
-    {
-      GladeWidget *gwidget = 
-       glade_widget_get_from_gobject (G_OBJECT (project->priv->selection->data));
-
-      glade_widget_show (gwidget);
-    }
-
   /* Cancel any idle we have */
   if (project->priv->selection_changed_id > 0)
     project->priv->selection_changed_id = 
@@ -3506,6 +3514,27 @@ glade_project_resource_fullpath (GladeProject * project, const gchar * resource)
   g_free (basename);
 
   return fullpath;
+}
+
+/**
+ * glade_project_widget_visibility_changed:
+ * @project: The #GladeProject.
+ * @widget: The widget which visibility changed
+ * @visible: widget visibility value
+ *
+ * Emmits  GladeProject::widget-visibility-changed signal
+ *
+ */
+void
+glade_project_widget_visibility_changed (GladeProject  *project,
+                                         GladeWidget   *widget,
+                                         gboolean       visible)
+{
+  g_return_if_fail (GLADE_IS_PROJECT (project));
+  g_return_if_fail (project == glade_widget_get_project (widget));
+
+  g_signal_emit (project, glade_project_signals[WIDGET_VISIBILITY_CHANGED], 0,
+                 widget, visible);
 }
 
 const gchar *

@@ -2,9 +2,11 @@
  * glade-design-view.c
  *
  * Copyright (C) 2006 Vincent Geddes
+ *               2011 Juan Pablo Ugarte
  *
  * Authors:
  *   Vincent Geddes <vincent.geddes@gmail.com>
+ *   Juan Pablo Ugarte <juanpablougarte@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,8 +29,7 @@
  * @Title: GladeDesignView
  * @Short_Description: A widget to embed the workspace.
  *
- * Use this widget to embed the currently active #GtkWindow
- * in a given #GladeProject.
+ * Use this widget to embed toplevel widgets in a given #GladeProject.
  */
 
 #include "config.h"
@@ -37,6 +38,7 @@
 #include "glade-utils.h"
 #include "glade-design-view.h"
 #include "glade-design-layout.h"
+#include "glade-design-private.h"
 
 #include <glib.h>
 #include <glib/gi18n.h>
@@ -53,7 +55,7 @@ enum
 
 struct _GladeDesignViewPrivate
 {
-  GtkWidget *layout;
+  GtkWidget *layout_box;
 
   GladeProject *project;
 
@@ -91,12 +93,10 @@ glade_design_view_load_progress (GladeProject * project,
   gchar *path;
   gchar *str;
 
-  path =
-      glade_utils_replace_home_dir_with_tilde (glade_project_get_path
-                                               (project));
-  str =
-      g_strdup_printf (_("Loading %s: loaded %d of %d objects"), path, step,
-                       total);
+  path = glade_utils_replace_home_dir_with_tilde (glade_project_get_path (project));
+  str = g_strdup_printf (_("Loading %s: loaded %d of %d objects"),
+                         path, step, total);
+
   gtk_progress_bar_set_text (GTK_PROGRESS_BAR (view->priv->progress), str);
   g_free (str);
   g_free (path);
@@ -106,10 +106,128 @@ glade_design_view_load_progress (GladeProject * project,
 }
 
 static void
-glade_design_view_selection_changed (GladeProject * project, GladeDesignView * view)
+glade_design_layout_scroll (GladeDesignView *view, gint x, gint y, gint w, gint h)
 {
-  GladeDesignLayout *layout = glade_design_view_get_layout (view);
-  glade_design_layout_selection_set (layout, glade_project_selection_get (project));
+  gdouble vadj_val, hadj_val, vpage_end, hpage_end;
+  GtkAdjustment *vadj, *hadj;
+
+  vadj = gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (view->priv->scrolled_window));
+  hadj = gtk_scrolled_window_get_hadjustment (GTK_SCROLLED_WINDOW (view->priv->scrolled_window));
+
+  vadj_val = gtk_adjustment_get_value (vadj);
+  hadj_val = gtk_adjustment_get_value (hadj);
+  vpage_end = gtk_adjustment_get_page_size (vadj) + vadj_val;
+  hpage_end = gtk_adjustment_get_page_size (hadj) + hadj_val;
+
+  /* TODO: we could set this value in increments in a timeout callback 
+   * to make it look like its scrolling instead of jumping.
+   */
+  if (y < vadj_val || y > vpage_end || (y + h) > vpage_end)
+    gtk_adjustment_set_value (vadj, y);
+
+  if (x < hadj_val || x > hpage_end || (x + w) > hpage_end)
+    gtk_adjustment_set_value (hadj, x);
+}
+
+static void 
+on_layout_size_allocate (GtkWidget *widget, GtkAllocation *alloc, GladeDesignView *view)
+{
+  glade_design_layout_scroll (view, alloc->x, alloc->y, alloc->width, alloc->height);
+  g_signal_handlers_disconnect_by_func (widget, on_layout_size_allocate, view);
+}
+
+static void
+glade_design_view_selection_changed (GladeProject *project, GladeDesignView *view)
+{
+  GladeWidget *gwidget, *gtoplevel;
+  GObject *toplevel;
+  GtkWidget *layout;
+  GList *selection;
+
+  /* Check if its only one widget selected and scroll viewport to show toplevel */
+  if ((selection = glade_project_selection_get (project)) &&
+      g_list_next (selection) == NULL &&
+      GTK_IS_WIDGET (selection->data) &&
+      !GLADE_IS_PLACEHOLDER (selection->data) &&
+      (gwidget = glade_widget_get_from_gobject (G_OBJECT (selection->data))) &&
+      (gtoplevel = glade_widget_get_toplevel (gwidget)) &&
+      (toplevel = glade_widget_get_object (gtoplevel)) &&
+      GTK_IS_WIDGET (toplevel) &&
+      (layout = gtk_widget_get_parent (GTK_WIDGET (toplevel))) &&
+      GLADE_IS_DESIGN_LAYOUT (layout))
+    {
+      GtkAllocation alloc;
+      gtk_widget_get_allocation (layout, &alloc);
+          
+      if (alloc.x < 0)
+        g_signal_connect (layout, "size-allocate", G_CALLBACK (on_layout_size_allocate), view);
+      else
+        glade_design_layout_scroll (view, alloc.x, alloc.y, alloc.width, alloc.height);
+    }
+}
+
+static void
+glade_design_view_add_toplevel (GladeDesignView *view, GladeWidget *widget)
+{
+  GtkWidget *layout;
+  GObject *object;
+
+  if (glade_widget_get_parent (widget) ||
+      (object = glade_widget_get_object (widget)) == NULL ||
+      !GTK_IS_WIDGET (object) ||
+      gtk_widget_get_parent (GTK_WIDGET (object)))
+    return;
+
+  /* Create a GladeDesignLayout and add the toplevel widget to the view */
+  layout = _glade_design_layout_new (view);
+  gtk_box_pack_start (GTK_BOX (view->priv->layout_box), layout, FALSE, TRUE, 0);
+
+  gtk_container_add (GTK_CONTAINER (layout), GTK_WIDGET (object));
+  gtk_widget_show (GTK_WIDGET (object));
+  gtk_widget_show (layout);
+}
+
+static void
+glade_design_view_remove_toplevel (GladeDesignView *view, GladeWidget *widget)
+{
+  GtkWidget *layout;
+  GObject *object;
+
+  if (glade_widget_get_parent (widget) ||
+      (object = glade_widget_get_object (widget)) == NULL ||
+      !GTK_IS_WIDGET (object)) return;
+  
+  /* Remove toplevel widget from the view */
+  if ((layout = gtk_widget_get_parent (GTK_WIDGET (object))) &&
+      gtk_widget_is_ancestor (layout, GTK_WIDGET (view)))
+    {
+      gtk_container_remove (GTK_CONTAINER (layout), GTK_WIDGET (object));
+      gtk_container_remove (GTK_CONTAINER (view->priv->layout_box), layout);
+    }
+}
+
+static void
+glade_design_view_widget_visibility_changed (GladeProject    *project,
+                                             GladeWidget     *widget,
+                                             gboolean         visible,
+                                             GladeDesignView *view)
+{
+  if (visible)
+    glade_design_view_add_toplevel (view, widget);
+  else
+    glade_design_view_remove_toplevel (view, widget);
+}
+
+static void
+on_project_add_widget (GladeProject *project, GladeWidget *widget, GladeDesignView *view)
+{
+  glade_design_view_add_toplevel (view, widget);
+}
+
+static void
+on_project_remove_widget (GladeProject *project, GladeWidget *widget, GladeDesignView *view)
+{
+  glade_design_view_remove_toplevel (view, widget);
 }
 
 static void
@@ -119,6 +237,10 @@ glade_design_view_set_project (GladeDesignView * view, GladeProject * project)
 
   view->priv->project = project;
 
+  g_signal_connect (project, "add-widget",
+                    G_CALLBACK (on_project_add_widget), view);
+  g_signal_connect (project, "remove-widget",
+                    G_CALLBACK (on_project_remove_widget), view);
   g_signal_connect (project, "parse-began",
                     G_CALLBACK (glade_design_view_parse_began), view);
   g_signal_connect (project, "parse-finished",
@@ -127,9 +249,10 @@ glade_design_view_set_project (GladeDesignView * view, GladeProject * project)
                     G_CALLBACK (glade_design_view_load_progress), view);
   g_signal_connect (project, "selection-changed",
                     G_CALLBACK (glade_design_view_selection_changed), view);
+  g_signal_connect (project, "widget-visibility-changed",
+                    G_CALLBACK (glade_design_view_widget_visibility_changed), view);
 
-  g_object_set_data (G_OBJECT (view->priv->project), GLADE_DESIGN_VIEW_KEY,
-                     view);
+  g_object_set_data (G_OBJECT (project), GLADE_DESIGN_VIEW_KEY, view);
 }
 
 static void
@@ -165,6 +288,17 @@ glade_design_view_get_property (GObject * object,
     }
 }
 
+static gboolean
+on_viewport_draw (GtkWidget * widget, cairo_t * cr)
+{
+  GtkStyle *style = gtk_widget_get_style (widget);
+
+  gdk_cairo_set_source_color (cr, &style->base[gtk_widget_get_state (widget)]);
+  cairo_paint (cr);
+
+  return TRUE;
+}
+
 static void
 glade_design_view_init (GladeDesignView * view)
 {
@@ -175,7 +309,9 @@ glade_design_view_init (GladeDesignView * view)
   gtk_widget_set_no_show_all (GTK_WIDGET (view), TRUE);
 
   view->priv->project = NULL;
-  view->priv->layout = glade_design_layout_new ();
+  view->priv->layout_box = gtk_vbox_new (FALSE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (view->priv->layout_box), 0);
+  gtk_box_pack_end (GTK_BOX (view->priv->layout_box), gtk_fixed_new (), FALSE, FALSE, 0);
 
   view->priv->scrolled_window = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW
@@ -186,13 +322,15 @@ glade_design_view_init (GladeDesignView * view)
                                        GTK_SHADOW_IN);
 
   viewport = gtk_viewport_new (NULL, NULL);
+  gtk_widget_set_app_paintable (viewport, TRUE);
+  g_signal_connect (viewport, "draw", G_CALLBACK (on_viewport_draw), NULL);
   gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport), GTK_SHADOW_NONE);
-  gtk_container_add (GTK_CONTAINER (viewport), view->priv->layout);
+  gtk_container_add (GTK_CONTAINER (viewport), view->priv->layout_box);
   gtk_container_add (GTK_CONTAINER (view->priv->scrolled_window), viewport);
 
   gtk_widget_show (view->priv->scrolled_window);
   gtk_widget_show (viewport);
-  gtk_widget_show (view->priv->layout);
+  gtk_widget_show_all (view->priv->layout_box);
 
   gtk_box_pack_start (GTK_BOX (view), view->priv->scrolled_window, TRUE, TRUE,
                       0);
@@ -252,6 +390,30 @@ glade_design_view_class_init (GladeDesignViewClass * klass)
   g_type_class_add_private (object_class, sizeof (GladeDesignViewPrivate));
 }
 
+/* Private API */
+
+void
+_glade_design_view_freeze (GladeDesignView *view)
+{
+  g_return_if_fail (GLADE_IS_DESIGN_VIEW (view));
+  
+  g_signal_handlers_block_by_func (view->priv->project,
+                                   glade_design_view_selection_changed,
+                                   view);
+}
+
+void
+_glade_design_view_thaw   (GladeDesignView *view)
+{
+  g_return_if_fail (GLADE_IS_DESIGN_VIEW (view));
+  
+  g_signal_handlers_unblock_by_func (view->priv->project,
+                                     glade_design_view_selection_changed,
+                                     view);
+}
+
+/* Public API */
+
 GladeProject *
 glade_design_view_get_project (GladeDesignView * view)
 {
@@ -284,10 +446,4 @@ glade_design_view_get_from_project (GladeProject * project)
 
   return (p != NULL) ? GLADE_DESIGN_VIEW (p) : NULL;
 
-}
-
-GladeDesignLayout *
-glade_design_view_get_layout (GladeDesignView * view)
-{
-  return GLADE_DESIGN_LAYOUT (view->priv->layout);
 }

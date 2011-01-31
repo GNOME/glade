@@ -27,7 +27,6 @@
 
 #include <gladeui/glade.h>
 #include <gladeui/glade-project.h>
-#include <gladeui/glade-design-layout.h>
 
 #include <gtk/gtk.h>
 
@@ -69,9 +68,6 @@ GtkWidget         *glade_design_view_new              (GladeProject *project);
 GladeProject      *glade_design_view_get_project      (GladeDesignView *view);
 
 GladeDesignView   *glade_design_view_get_from_project (GladeProject *project);
-
-GladeDesignLayout *glade_design_view_get_layout       (GladeDesignView *view);
-
 
 G_END_DECLS
 

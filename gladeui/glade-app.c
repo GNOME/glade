@@ -36,6 +36,7 @@
 #include "glade-cursor.h"
 #include "glade-catalog.h"
 #include "glade-design-view.h"
+#include "glade-design-layout.h"
 #include "glade-marshallers.h"
 #include "glade-accumulators.h"
 
@@ -391,7 +392,7 @@ glade_app_do_event (GdkEvent *event)
    */
   if (widget && IS_GLADE_WIDGET_EVENT (event->type) &&
       (layout = gtk_widget_get_ancestor (widget, GLADE_TYPE_DESIGN_LAYOUT)))
-    return glade_design_layout_do_event (GLADE_DESIGN_LAYOUT (layout), event);
+    return _glade_design_layout_do_event (GLADE_DESIGN_LAYOUT (layout), event);
 
   return FALSE;
 }
