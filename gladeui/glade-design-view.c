@@ -140,6 +140,8 @@ static void
 glade_design_view_selection_changed (GladeProject *project, GladeDesignView *view)
 {
   GladeWidget *gwidget, *gtoplevel;
+  GObject *toplevel;
+  GtkWidget *layout;
   GList *selection;
 
   /* Check if its only one widget selected and scroll viewport to show toplevel */
@@ -148,23 +150,19 @@ glade_design_view_selection_changed (GladeProject *project, GladeDesignView *vie
       GTK_IS_WIDGET (selection->data) &&
       !GLADE_IS_PLACEHOLDER (selection->data) &&
       (gwidget = glade_widget_get_from_gobject (G_OBJECT (selection->data))) &&
-      (gtoplevel = glade_widget_get_toplevel (gwidget)))
+      (gtoplevel = glade_widget_get_toplevel (gwidget)) &&
+      (toplevel = glade_widget_get_object (gtoplevel)) &&
+      GTK_IS_WIDGET (toplevel) &&
+      (layout = gtk_widget_get_parent (GTK_WIDGET (toplevel))) &&
+      GLADE_IS_DESIGN_LAYOUT (layout))
     {
-      GObject *toplevel = glade_widget_get_object (gtoplevel);
-      GtkWidget *layout;
-
-      if (GTK_IS_WIDGET (toplevel) &&
-          (layout = gtk_widget_get_parent (GTK_WIDGET (toplevel))) &&
-          GLADE_IS_DESIGN_LAYOUT (layout))
-        {
-          GtkAllocation alloc;
-          gtk_widget_get_allocation (layout, &alloc);
+      GtkAllocation alloc;
+      gtk_widget_get_allocation (layout, &alloc);
           
-          if (alloc.x < 0)
-            g_signal_connect (layout, "size-allocate", G_CALLBACK (on_layout_size_allocate), view);
-          else
-            glade_design_layout_scroll (view, alloc.x, alloc.y, alloc.width, alloc.height);
-        }
+      if (alloc.x < 0)
+        g_signal_connect (layout, "size-allocate", G_CALLBACK (on_layout_size_allocate), view);
+      else
+        glade_design_layout_scroll (view, alloc.x, alloc.y, alloc.width, alloc.height);
     }
 }
 
