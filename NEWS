@@ -1,4 +1,37 @@
 ===========
+Glade 3.9.2
+===========
+	- Added signal for IDEs to track created signal editors, Johannes Schmid.
+	- Stop installing catalog .xml.in files, Emilio Pozuelo Monfort.
+	- Fixed various memory leaks.
+	- Removed GtkTreeSelection from the palette, it's only available as the internal
+	  child of a GtkTreeView
+	- Fixed Drag'n'Drop image drawing with cairo for signal editor, Johannes Schmid with
+	  help from Benjamin Otte.
+	- Fixed crashes and memory leaks in the GladeBaseEditor (the editor used for menu editing
+	  and treeview editing and the like).
+	- Edit->Preferences is now File->Properties
+	- Removed option for project naming policies, object ids in GtkBuilder are always unique
+	  across the whole file.
+	- Render project widgets in the workspace offscreen, this gives us more power over the
+	  widgets (combo boxes can now be selected, seletion drawing is now enhanced),
+	  Juan Pablo Ugarte.
+	- Added support for GtkComboBoxText with a customized editor to edit the combo box items.
+	- Added GtkRecentFilter and GtkRecentManager to the palette, GtkRecentFilter can specify
+	  patterns, mime-types and applications for the filtering.
+	- Added support to edit patterns and mime-types for GtkFileFilter
+	- Added <add-child-verify-function> to the plugin backend, we now use this to better police
+	  user activities in Glade (notably, you cannot paste a widget that is not a GtkToolItem
+	  to a GtkToolBar or the like).
+	- Renamed various things from glade-3/glade3 to 'glade' (the Glade icon, the bugzilla database,
+	  the git repository etc, help from Javier Jardón).
+	- Glade now uses GtkApplication and is a single instance application.
+	- Added support for editing a GtkOffscreenWindow
+	- Changed the workspace to now include all toplevel project objects, selecting an
+	  object from the inspector causes the workspace to scroll to the selected widget,
+	  Juan Pablo Ugarte.
+
+===========
 Glade 3.9.1
 ===========
 	- Added accelerator and tooltip-text properties to menu items and toolitems 

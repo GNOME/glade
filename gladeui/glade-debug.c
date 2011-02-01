@@ -39,7 +39,10 @@ glade_log_handler (const char *domain,
 {
   static volatile int want_breakpoint = 0;
 
-  g_log_default_handler (domain, level, message, data);
+  /* Ignore this message */
+  if (g_strcmp0 ("gdk_window_set_composited called but compositing is not supported", message) != 0)
+    g_log_default_handler (domain, level, message, data);
+
   if (want_breakpoint &&
       ((level & (G_LOG_LEVEL_CRITICAL /* | G_LOG_LEVEL_WARNING */ )) != 0))
     G_BREAKPOINT ();
