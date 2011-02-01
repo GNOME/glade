@@ -1,49 +1,52 @@
 2011-01-31  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
-      * gladeui/glade-design-layout.[ch]:
-        o added widget maximization on label double click
-        o fixed size allocation to be able to maximize widget without making the viewport
-          scrollbars appear
-        o removed glade_design_layout_selection_set()
-        o added design-view construct only property
-        o use _glade_design_view_freeze/thaw() to avoid scrolling to selection from
-          the layout.
-        o implemented get_preferred_width_for_height() and get_preferred_width_for_height()
-          to fix allocation problem
-        o check if toplevel has a child selected before selecting it itself on button press
-        o dont draw selection if widget has no allocation
-        o added PangoLayout to draw widget name
-        o added space needed for widget name in glade_design_layout_get_preferred_height ()
-        o glade_design_layout_size_allocate() allocate enough space for widget name
-        o moved widget name to south east and used as resize grip
-        o update widget name on GladeWidget::notify:name
-    
+	* gladeui/glade-design-layout.[ch]:
+	o added widget maximization on label double click
+	o fixed size allocation to be able to maximize widget without making the viewport
+	scrollbars appear
+
+	o removed glade_design_layout_selection_set()
+
+	o added design-view construct only property
+
+	o use _glade_design_view_freeze/thaw() to avoid scrolling to selection from
+	  the layout.
+	o implemented get_preferred_width_for_height() and get_preferred_width_for_height()
+	  to fix allocation problem
+	o check if toplevel has a child selected before selecting it itself on button press
+	o dont draw selection if widget has no allocation
+	o added PangoLayout to draw widget name
+	o added space needed for widget name in glade_design_layout_get_preferred_height ()
+	o glade_design_layout_size_allocate() allocate enough space for widget name
+	o moved widget name to south east and used as resize grip
+	o update widget name on GladeWidget::notify:name
+
       * gladeui/glade-design-view.[ch]:
-        o improved viewport scrolling to selected toplevel, now we only scroll if
-          the selection was not triggered by the layout.
-        o implemented _glade_design_view_freeze/thaw()
-        o removed glade_design_view_get_layout() declaration
-        o removed gladeui/glade-design-layout.h include
-        o handle widget adding and removal on project's add-widget and remove-widget signals
-        o added widget-visibility-changed handler to add/remove toplevels on visibility change
-    
-      * gladeui/glade-design-private.h: added new file to declare private API.
-      
-      * gladeui/glade-app.c: replaced GladeDesignLayout API with the new private one
-    
-      * gladeui/glade-project.[ch]:
-        o added GladeProject::widget-visibility-changed signal
-        o added glade_project_widget_visibility_changed() function
-    
-      * gladeui/glade-widget.c:
-        o added visible property.
-        o use glade_project_widget_visibility_changed() to emit signal on widget visibility change
-    
-      * gladeui/glade.h: removed glade-design-layout.h since now its private
-    
-      * gladeui/Makefile.am: do not install private header glade-design-layout.h
-    
-      * plugins/gtk+/Makefile.am: do not install headers
+	o improved viewport scrolling to selected toplevel, now we only scroll if
+	  the selection was not triggered by the layout.
+	o implemented _glade_design_view_freeze/thaw()
+	o removed glade_design_view_get_layout() declaration
+	o removed gladeui/glade-design-layout.h include
+	o handle widget adding and removal on project's add-widget and remove-widget signals
+	o added widget-visibility-changed handler to add/remove toplevels on visibility change
+
+	* gladeui/glade-design-private.h: added new file to declare private API.
+
+	* gladeui/glade-app.c: replaced GladeDesignLayout API with the new private one
+
+	* gladeui/glade-project.[ch]:
+	o added GladeProject::widget-visibility-changed signal
+	o added glade_project_widget_visibility_changed() function
+
+	* gladeui/glade-widget.c:
+	o added visible property.
+	o use glade_project_widget_visibility_changed() to emit signal on widget visibility change
+
+	* gladeui/glade.h: removed glade-design-layout.h since now its private
+
+	* gladeui/Makefile.am: do not install private header glade-design-layout.h
+
+	* plugins/gtk+/Makefile.am: do not install headers
 
 2011-01-29  Tristan Van Berkom <tristanvb@openismus.com>
 
@@ -2797,109 +2800,109 @@
 	carefully properties that reffer to parentless gtkwidgets (bug 532636).
 	(also fixes GtkMessageDialog ...)
 	
-        * gladeui/glade-app.c:
-          Creating toplevel widget through unified glade-palette interface.
-          Removed error message when pasting non-toplevel widgets without
-          a parent.
+	* gladeui/glade-app.c:
+	  Creating toplevel widget through unified glade-palette interface.
+	  Removed error message when pasting non-toplevel widgets without
+	  a parent.
 
-        * gladeui/glade-command.h: A new function for getting depth of command recursion
+	* gladeui/glade-command.h: A new function for getting depth of command recursion
 
-        * gladeui/glade-command.c:
-          A new function for getting depth of command recursion.
-          A return value of glade_command_set_property_execute function is valid
-          and is respected by glade_command_set_properties_list.
-          indicate success/failure of their execution.
-          Glade-command can be unified to null.
-          Setting property command is always executed as a group, so if there is
-          any recursive command, they will be added to that group.
-          Removed parentless widget message level lowered from critical to
-          message.
-          Widget is treated as toplevel only if it has no parent.
-          Removed an assertion from glade_command_create that doesn't allow
-          creation of non-GtkWindow parentless widgets
+	* gladeui/glade-command.c:
+	  A new function for getting depth of command recursion.
+	  A return value of glade_command_set_property_execute function is valid
+	  and is respected by glade_command_set_properties_list.
+	  indicate success/failure of their execution.
+	  Glade-command can be unified to null.
+	  Setting property command is always executed as a group, so if there is
+	  any recursive command, they will be added to that group.
+	  Removed parentless widget message level lowered from critical to
+	  message.
+	  Widget is treated as toplevel only if it has no parent.
+	  Removed an assertion from glade_command_create that doesn't allow
+	  creation of non-GtkWindow parentless widgets
 
-        * gladeui/glade-editor-property.c:
-          Object selection dialog will be optionally filled by parentless
-          non-GtkWindow widgets only
-          Unparenting root widgets before setting another property to them
+	* gladeui/glade-editor-property.c:
+	  Object selection dialog will be optionally filled by parentless
+	  non-GtkWindow widgets only
+	  Unparenting root widgets before setting another property to them
 
-        * gladeui/glade-inspector.c:
-          Popup for clicking even on empty part of widget list
+	* gladeui/glade-inspector.c:
+	  Popup for clicking even on empty part of widget list
 
-        * gladeui/glade-palette.h:
-          A unified function for creating root widgets
+	* gladeui/glade-palette.h:
+	  A unified function for creating root widgets
 
-        * gladeui/glade-palette.c:
-          A unified function for creating root widgets
-          A new button for creating root widgets
+	* gladeui/glade-palette.c:
+	  A unified function for creating root widgets
+	  A new button for creating root widgets
 
-        * gladeui/glade-placeholder.[ch]:
-          glade_placeholder_get_project has been made public for using in
-          glade-popup
+	* gladeui/glade-placeholder.[ch]:
+	  glade_placeholder_get_project has been made public for using in
+	  glade-popup
 
-        * gladeui/glade-popup.c:
-          A new function glade_popup_simple_pop for creating a context menu on
-          an empty space of glade-inspector
-          New context menu items for adding widgets
+	* gladeui/glade-popup.c:
+	  A new function glade_popup_simple_pop for creating a context menu on
+	  an empty space of glade-inspector
+	  New context menu items for adding widgets
 
-        * gladeui/glade-popup.h:
-          A new function glade_popup_simple_pop for creating a context menu on
-          an empty space of glade-inspector
+	* gladeui/glade-popup.h:
+	  A new function glade_popup_simple_pop for creating a context menu on
+	  an empty space of glade-inspector
 
-        * gladeui/glade-project.c:
-          Unifying command even if there's redo items.
-          Unifying atomic commands only.
-          Unifying to null
+	* gladeui/glade-project.c:
+	  Unifying command even if there's redo items.
+	  Unifying atomic commands only.
+	  Unifying to null
 
-        * gladeui/glade-property-class.[ch]:
-          A new field for making properties that points to parentless widgets
+	* gladeui/glade-property-class.[ch]:
+	  A new field for making properties that points to parentless widgets
 
-        * gladeui/glade-property.h:
-          Added a return value to glade_property_set* functions to indicate
-          success/failure that is used in glade-command
+	* gladeui/glade-property.h:
+	  Added a return value to glade_property_set* functions to indicate
+	  success/failure that is used in glade-command
 
-        * gladeui/glade-property.c:
-          Ignoring parentless_widget properties while duplicating properties.
-          Additional check while adding/removing property reference
-          Added a return value to glade_property_set* functions to indicate
-          success/failure that is used in glade-command.
-          Determining that property is changed using glade-proproperty method
-          instead of direct comparing GValue.
-          Loading properties through glade-widget-adaptor interface instead of
-          getting them directly.
-          remove_object method now unsets referencing property instead of
-          setting it.
-          Removed dummy duplicated setting of property while unsetting
-          referencing property.
+	* gladeui/glade-property.c:
+	  Ignoring parentless_widget properties while duplicating properties.
+	  Additional check while adding/removing property reference
+	  Added a return value to glade_property_set* functions to indicate
+	  success/failure that is used in glade-command.
+	  Determining that property is changed using glade-proproperty method
+	  instead of direct comparing GValue.
+	  Loading properties through glade-widget-adaptor interface instead of
+	  getting them directly.
+	  remove_object method now unsets referencing property instead of
+	  setting it.
+	  Removed dummy duplicated setting of property while unsetting
+	  referencing property.
 
-        * gladeui/glade-property.h:
-          Added a return value to glade_property_set* functions to indicate
-          success/failure that is used in glade-command.
+	* gladeui/glade-property.h:
+	  Added a return value to glade_property_set* functions to indicate
+	  success/failure that is used in glade-command.
 
-        * gladeui/glade-widget.c:
-          Removed setting widget properties to template/default values while
-          building a new object, because they will be set later in constructor.
-          Reloading properties after duplicating a widget.
-          A new function for removing parent reference, that was made by setting
-          parentless_widget property to the widget.
-          Saving and loading parentless_widget properties while rebuilding,
-          because they cannot be duplicated.
-          Corrected destroying of an old widget while rebuilding. Seems like
-          it's not fully correct still.
+	* gladeui/glade-widget.c:
+	  Removed setting widget properties to template/default values while
+	  building a new object, because they will be set later in constructor.
+	  Reloading properties after duplicating a widget.
+	  A new function for removing parent reference, that was made by setting
+	  parentless_widget property to the widget.
+	  Saving and loading parentless_widget properties while rebuilding,
+	  because they cannot be duplicated.
+	  Corrected destroying of an old widget while rebuilding. Seems like
+	  it's not fully correct still.
 
-        * gladeui/glade-widget.h:
-          A new function for removing parent reference, that was made by setting
-          parentless_widget property to the widget.
+	* gladeui/glade-widget.h:
+	  A new function for removing parent reference, that was made by setting
+	  parentless_widget property to the widget.
 
-        * gladeui/glade-xml-utils.h:
-          A new tag "parentless-widget" as a property attribute
+	* gladeui/glade-xml-utils.h:
+	  A new tag "parentless-widget" as a property attribute
 
-        * plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in:
-          Removed an old hack for "image" property of GtkMessageDialog.
-          A new implementation of "image" property using parentless_widget
-          kind of property.
-          Added an ability of working with parentless widgets using
-          "remove parent" and "add parent" items of context menu
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in:
+	  Removed an old hack for "image" property of GtkMessageDialog.
+	  A new implementation of "image" property using parentless_widget
+	  kind of property.
+	  Added an ability of working with parentless widgets using
+	  "remove parent" and "add parent" items of context menu
 
 2008-09-16  Tristan Van Berkom <tvb@gnome.org>
 
@@ -2944,7 +2947,7 @@
 
 	* gladeui/glade-base-editor.h: Don't include the
 	  private header file `glade-marshallers.h'. Rather
-          include it in `glade-base-editor.c'.
+	  include it in `glade-base-editor.c'.
 
 2008-08-09  Tristan Van Berkom <tvb@gnome.org>
 
@@ -3755,7 +3758,7 @@
 
 	* gladeui/glade-widget.c 
 	gladeui/glade-design-layout.c
-        gladeui/glade-placeholder.c
+	gladeui/glade-placeholder.c
 	gladeui/glade-placeholder.h: Update to use G_DEFINE_TYPE macros. Removed
 	the manual peeks to get the parent class.
 
@@ -8534,7 +8537,7 @@
 2005-08-18  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-project-view.c: Use glade_widget_show/hide for toplevels.
-	
+
 	* src/glade-project-window.c: Place the "Close without saving" dialog in the center of 
 	  the screen.
 
@@ -8544,14 +8547,14 @@
 
 	* src/glade-widget.[ch]: Added glade_widget_show/hide, shows & hides toplevels
 	  and saves there position.
-	
+
 2005-08-18  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-gtk.c: Fixed dumb G_IS_OBJECT() assertion failure.
 
 	* src/glade-command.c: Fixed glade_command_create() to use glade_default_app_selection_clear()
 	  instead of glade_util_selection_clear() (Fixing bug 312634).
-	
+
 2005-08-17  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-editor.c: Fixed use of uninitialized variable
@@ -8571,13 +8574,13 @@
 	* src/glade-property.c: As properties can only be created with a pspec (regardless
 	  if they are custom or not) they *always* have a default (change code accordingly
 	  to avoid confusion).
-	
+
 2005-08-11  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-command.c: Now when pasting widgets into a container, after the 
 	  actual paste, the newly initialized packing properties are saved on the command
 	  (I had already done this for CUT, but now realized the need in PASTE).
-	
+
 2005-08-11  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-app.[ch]: added glade_app_set/get_transient_parent &
@@ -8591,16 +8594,16 @@
 
 	* src/glade-project.c: Set newly added toplevels transient for the transient
 	  parent window of the glade-app.
-	
+
 2005-08-09  Tristan Van Berkom <tvb@gnome.org>
 
 	 * src/glade-widget.c: Dont present top-levels upon load.
-	
+
 2005-08-09  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-utils.c: Fixed a forgotten piece of code that had to change for
 	  fixed-manager to work properly with paste.
-	
+
 2005-08-09  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/Makefile.am, src/glade-accumulators.[ch], glade-fixed-manager.[ch]:
@@ -8654,16 +8657,16 @@
 	    - Added glade_widget[_pack]_property_set_enabled()
 	    - Added some doc.
 	    - Made glade_widget_retrieve_from_position() public.
-	
+
 	* src/glade.h: Added headers.
 
 	* widgets/gtk+.xml: GladeFixedManager on GtkFixed & GtkLayout.
-	
+
 2005-08-01  Naba Kumar  <naba@gnome.org>
 
 	* src/Makefile.am: Fixed a typo where it should be glade-builtins.h instead
 	of glade-builtins.c in _HEADERS macro.
-	
+
 2005-07-31  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-types.h, src/glade-plugin.h: Removed
@@ -8700,9 +8703,9 @@
 	* src/glade-gtk.c:
 	    - Added special enum type & pspec for GtkImage
 	    - Now GtkImage uses one of three methods to save
-	        o Filename
-	        o Stock
-	        o Icon Theme
+		o Filename
+		o Stock
+		o Icon Theme
 	      the appropriate controls are disabled & enabled
 	      accordingly and survive a save/load with no custom
 	      property help.
@@ -8717,7 +8720,7 @@
 	    - Fiddled with g_critical outputs
 	    - Added glade_property_class_make_adjustment
 	    - Added LIBGLADEUI_API to func headers.
-	
+
 	* src/glade-property.[ch]: Added glade_property_reset()/glade_property_default()
 	* src/glade-widget.[ch]: Added glade_widget_property_reset(),
 	  glade_widget_pack_property_reset(), glade_widget_property_default(),
@@ -8726,7 +8729,7 @@
 	* src/glade.h: Added definitions for defaults in editor adjustments.
 
 	* widgets/gtk+.xml: Added information for GtkImage properties.
-	
+
 2005-07-30  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-gtk.c, widgets/gtk+.xml:
@@ -8734,7 +8737,7 @@
 	    when making it stock (tried to fixed that, and realized the complexity).
 	  - Fixed GtkBox loading mechinism, now we dont save "size" property to the
 	    glade file are are backwards compatible with glade-2.
-	
+
 2005-07-30  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-builtins.c: stock spec name fixed and removed construct only.
@@ -8749,7 +8752,7 @@
 	* widgets/gtk+.xml: Ignore selectable changes & implement ignore property
 
 	* src/glade-property-class.c, src/glade-property.[ch]: implement ignore
-	
+
 2005-07-29  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/Makefile.am, src/glade-plugin.h, src/glade-buildtins.[ch], widgets/gtk+.xml: 
@@ -8765,7 +8768,7 @@
 	  if it is visible or not in the editor (visible properties now will also be written
 	  in the editor if they are not default, custom or disable with the "save" xml tag).
 
-	
+
 2005-07-29  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-gtk.c: Simplified code with convenience functions
@@ -8780,7 +8783,7 @@
 	    - glade_widget_pack_property_get/set
 	    - glade_widget_property_set_sensitive
 	    - glade_widget_pack_property_set_sensitive
-	
+
 2005-07-29  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-property.[ch]:
@@ -8802,14 +8805,14 @@
 
 	* src/glade-app.c: Fixed a few compile warnings and fixed signal emmission to
 	  use g_signal_emit().
-	
+
 	* src/glade-property.[ch]: glade_property_set to use a va_list for convenience,
 	  added glade_property_set_value for setting properties with GValues.
 	  Also added emission of value-changed signal.
-	
+
 	* src/glade-command.c, src/glade-editor.c, src/glade-gtk.c, src/glade-widget.c:
 	  Changed callers.
-	
+
 2005-07-28  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-catalog.c: Fixed bug in catalog_find_by_name (Luc Simard)
@@ -8825,7 +8828,7 @@
 
 	* src/glade-widget.c: Now g_object_unref the properties instead of 
 	  glade_property_free, also adjusted arguments for glade_property_write.
-	
+
 2005-07-28  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-gtk.c: 
@@ -8838,7 +8841,7 @@
 	* src/glade-widget.c: Made "parent" property pspec spec_object.
 
 	* widgets/gtk+.xml: Added hooks for GtkFrame & GtkButton creation.
-	
+
 2005-07-26  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-transform.[ch], src/Makefile.am, src/glade_plugin.def:
@@ -8852,7 +8855,7 @@
 	  Implemented catalog dependancies, i.e. if a catalog declares a widget
 	  that derives from a widget in another catalog; they need to be loaded
 	  in the right order for the inheritence of metadata to work properly.
-	
+
 2005-07-24  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-app.[ch]: Added show_properties method to app_class, this way
@@ -8862,17 +8865,17 @@
 	    - Implemented show_properties method 
 	    - Linked the update_ui_cb directly to app_class->update_ui_signal
 	    - Removed ugly reference to editor->project_window
-	
+
 	* src/glade-popup.c: Call show_properties upon "properties" popup click.
 
 	* src/glade-editor.h: Removed project_window from instance struct (useless and a PITA
 	  to set).
-	
+
 2005-07-24  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-project-window.c: Applied (and slightly adapted) Andy Somerville's
 	  patch for bug 303681 (Dock widget tree in project window).
-	
+
 2005-07-24  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-widget-class.c: Fixed bug in glade_widget_class_merge_properties(),
@@ -8881,7 +8884,7 @@
 
 	* widgets/gtk+.xml: Disabled widget name property (since glade-3 handles this 
 	  implicitly for all objects).
-	
+
 2005-07-24  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-app.c: Fixed compiler warning
@@ -8913,7 +8916,7 @@
 	  adjusted callers.
 
 	* src/glade-app.c: Made glade_app_config_save() more robust.
-	
+
 2005-07-12  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* src/glade-project-window.c: RECENT_PROJECTS_MAX_ENTRIES replaced with
@@ -8944,7 +8947,7 @@
 	  Now uses GtkUIManager instead of GtkItemFactory, Also added recent projects submenu.
 
 	* widgets/gtk+.xml: Fixed a few cosmetic strings in regards to displayable values.
-	
+
 2005-06-08  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade.h, widgets/gtk+.xml: Changed tag "displayable_values" to 
@@ -8969,10 +8972,10 @@
 	  property tag in the catalog. ("displayable_values")
 	  Added a new function glade_property_class_get_displayable_value().
 	  rewrite of glade_property_class_make_string_from_flags()
-	  
+
 	* src/glade-property-class.h: new GladePropertyClass member, 
 	  displayable_values.
-	
+
 	* src/glade.h: new tags, GLADE_TAG_DISPLAYABLE_VALUES & GLADE_TAG_NICK.
 
 2005-05-31  Tristan Van Berkom <tvb@gnome.org>
@@ -8989,13 +8992,13 @@
 	* src/libgladeui-1.0.pc.in: Fixed this file. The directory isn't
 	${libdir}/glade but rather ${libdir}. The name of the library isn't
 	gladeui but gladeui-1.
-	
+
 2005-05-02  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-popup.c:
 	  glade_command_create () now asserts "project" argument, fixed
 	  this in the add-child popup selection.
-	
+
 2005-04-20  Tristan Van Berkom <tvb@gnome.org>
 
 	* Cleaned up i18n/gettext stuff, Now glade-3 uses <glib/gi18n.h> and
@@ -9063,7 +9066,7 @@
 
 	* src/glade-utils.[ch]: glade_util_count_placeholders added
 	  paste code now considers multiple paste on gtkwidget containers.
-	
+
 2005-04-02  Ivan, Wong Yat Cheung  <email@ivanwong.info>
 
 	* configure.in:
@@ -9094,7 +9097,7 @@
 	* src/glade-project.[ch]: Added glade_project_has_object ()
 
 	* src/glade-project-window.c: Made project menu items radio.
-	
+
 2005-03-31  Tristan Van Berkom <tvb@gnome.org>
 
 	* src/glade-project-view.c: fixed dialog behavior in list mode.
@@ -9104,11 +9107,11 @@
 	  Support for paste without selection (for toplevels only).
 
 	* src/glade-clipboard-view.c: Added context menu with Delete & Paste
-	
+
 2005-03-31  Tristan Van Berkom <tvb@gnome.org>
 
 	* Added MAINTAINERS file.
-	
+
 	* AUTHORS: Added me to authors list
 
 	* src/glade-popup.c: Fixed selection bug (placeholders 
@@ -9147,13 +9150,13 @@
 	  header list (for `make dist' purposes)
 
 	* src/glade-gtk.c: includes fixed_bg.xpm from new location
-          (moved fixed_bg.xpm from pixmaps --> src)
+	  (moved fixed_bg.xpm from pixmaps --> src)
 
 	* src/glade-plugin.h: include glade-palette.h for compiler
 	  warnings.
 
 2005-02-28  Naba Kumar  <naba@gnome.org>
-	
+
 	* configure.in, src/Makefile.am, src/glade-types.h,
 	src/libgladeui-1.0.pc.in: Removed libglade dependency.
 
@@ -9258,7 +9261,7 @@
 
 	* widgets/adding-widgets.txt: Add first cut at documentation for
 	adding widgets.
-	
+
 	* widgets/glade-catalog.dtd: Add translatable property.
 
 	* widgets/gtk+.xml: Change name from tooltip to Tooltip.
@@ -9275,7 +9278,7 @@
 	(glade_editor_property_load_text),
 	(glade_editor_property_load): Merge the translatable and
 	non-translatable input widgets.
-	
+
 	* src/glade-property.c: (glade_property_write),
 	(glade_property_i18n_set_comment): Remove debug spew.
 
@@ -9316,15 +9319,15 @@
 
 2005-01-06  Richard Hult  <richard@imendio.com>
 
-        * src/glade-property-class.h (struct _GladePropertyClass): Add
-        translatable value.
+	* src/glade-property-class.h (struct _GladePropertyClass): Add
+	translatable value.
 
 	* src/glade-property-class.c (glade_property_class_new): Init
 	translatable value.
-        (glade_property_class_update_from_node): Use defines for visible
-        and optional tags and parse translatable.
+	(glade_property_class_update_from_node): Use defines for visible
+	and optional tags and parse translatable.
 
-        * src/glade.h: Add tags for visible and translatable.
+	* src/glade.h: Add tags for visible and translatable.
 
 2005-01-06  Mikael Hallendal  <micke@imendio.com>
 
@@ -9351,7 +9354,7 @@
 	* widgets/Makefile.am:
 	* widgets/gtk+.xml:
 	- Update the catalog format to be more .glade like.
-	
+
 2005-01-05  Mikael Hallendal  <micke@imendio.com>
 
 	* src/glade-catalog.c: (catalog_load_widgets),
@@ -9415,7 +9418,7 @@
 	* src/glade-placeholder.c, src/glade-utils.c:
 	  Fixed flicker on button-click (No need to clear the project and the 
 	  selection and then reselect if you are already selected).
-	
+
 2005-01-01  Tristan Van Berkom  <tvb@cvs.gnome.org>
 
 	* src/glade-command.c: g_list_prepend in loops and 
@@ -9434,7 +9437,7 @@
 
 	* src/glade-project.[ch]: Adaptation to upgraded glade-utils selection 
 	  scheme plus some modifications pertaining to bug 162102.
-	
+
 	* src/glade-utils.[ch]: Upgraded selection scheme, fixed some bugs in the
 	  "cut/copy/paste/delete"-"selection/clipboard" helpers.
 
@@ -9446,7 +9449,7 @@
 	  unnoticed (segfaults on child properties).
 
 	* src/glade-project-view.[ch]: Fixed sorting for toplevels.
-	
+
 2004-12-31  Tristan Van Berkom  <tvb@cvs.gnome.org>
 
 	* src/glade-project-view.c: Now treestore items are inserted sorted
@@ -9458,14 +9461,14 @@
 	* src/glade-clipboard-view.c, src/glade-clipboard.[ch]:
 	  - Added emacs c-basic-offset: 8.
 	  - Implemented multiple selection on the clipboard
-	
+
 	* src/glade-command.c: Adjusted to multiple selection on clipboard,
 	  allow glade_command_paste with multiple widgets if
 	    a.) They are not being pasted to a placeholder (i.e. widget tree)
 	    b.) They are not parented through the GtkContainer --> GtkWidget 
 		parenting pipeline (see glade-widget-class.[ch] for the container 
 		abstraction interface and see glade_util_gtkcontainer_relation).
-	
+
 	* src/glade-popup.c: Added comment and removed unused variables.
 
 	* src/glade-project-view.c: Moved glade_project_view_find_iter_by_widget 
@@ -9474,7 +9477,7 @@
 
 	* src/glade-utils.[ch]: Added glade_util_find_iter_by_widget () and 
 	  glade_util_any_gtkcontainer_relation ().
-	
+
 2004-12-29  Tristan Van Berkom  <tvb@cvs.gnome.org>
 
 	* src/glade-command.[ch]: Multiple widgets in Cut/Copy/Paste/Delete commands
@@ -9493,7 +9496,7 @@
 	  glade_util_delete_selection ().
 
 	* src/glade-widget.c: Implemented multiple selection.
-	
+
 2004-12-29  Tristan Van Berkom  <tvb@cvs.gnome.org>
 
 	* src/glade-project-view.c: Selection on treeview now follows
@@ -9521,7 +9524,7 @@
 
 	* src/glade-debug.h, src/glade-menu-editor.c, src/glade-command.c
 	  Removed g_debug() macro and all references (gtk+-2.6 now offers this).
-	
+
 2004-12-24  Tristan Van Berkom  <tvb@cvs.gnome.org>
 
 	* src/glade-widget.c: 
@@ -9529,14 +9532,14 @@
 	  - Fixed leak where widget creation is canceled by the query popup
 	   (Verified that widget is not in a container or in the project at
 	    unref time, safe).
-	
+
 2004-12-22  Gustavo Noronha Silva <kov@debian.org>
 
 	* src/glade-palette.c, src/glade-project-window.c
 	  Allow palette to get smaller.
 
 2004-12-22  Archit Baweja  <bighead@users.sourceforge.net>
-	
+
 	* src/glade-palette.c (glade_palette_widget_table_create): cleanup
 	  and use glade_palette_create_widget_class_button.
 	  (glade_palette_create_widget_class_button): new function
@@ -9619,7 +9622,7 @@
 	    and now has a "parent" argument for the case of (!toplevel && non-widget)
 	    (surrounding code adjusted to work with non-widgets, glade_command_delete 
 	     stuff included).
-	
+
 	* src/glade-editor.c: 
 	    - Widget page is now called General page
 	    - Name field not appended to non-widgets
@@ -9631,24 +9634,24 @@
 	* src/glade-signal-editor.c: Implemented "object" and "lookup" fields.
 
 	* src/glade-signal.c: Implemented "object" and "lookup" fields.
-	
+
 	* src/glade-gtk.c: GtkFixed code fixed to not needlessly create placeholders
 	  at child create time (go directly to glade_command_create() without passing
 	  go or collecting 200 dollars).
 	    (Also fixed name of enum type glade_gtk_stock_get_type)
-	
+
 	* src/glade-placeholder.c: Use new glade_command_create ()
 
 	* src/glade-popup.c: 
 	    - Added code needed for addition of non-widgets.
 	    - Added "add_children" arg to glade_popup_widget_pop ()
-	
+
 	* src/glade-project-view.c:
 	    - fixed bug 145299.
 	    - Added popup code to treeview.
 	    - Sort widgets in treeview alphabeticly
 	    - Window is now scrollable.
-	
+
 	* src/glade-project-window.c: Fixed some error messages, used new 
 	  glade_command_create()
 
@@ -9658,12 +9661,12 @@
 
 	* src/glade-property-class.c: Made custom props load tooltips from pspec
 	  blurbs as well as the xml file.
-	
+
 	* src/glade-utils.c: 
 	    - glade_utils_draw_nodes_idle(), dont try to draw nodes on non-widgets.
 	    - added glade_util_widget_pastable()
 	    - added glade_util_gtkcontainer_relation()
-	
+
 	* src/glade-widget-class.[ch]: 
 	    - added glade_widget_class_get_by_type ()
 	    - added glade_widget_class_get_derived_types ()
@@ -9691,7 +9694,7 @@
 	  handled implicitly).
 
 	* Straightened out a few crooked header files.
-	
+
 	* Reworked loading a bit so that GladeProperties are loaded with the 
 	  values found in the xml file and that g_object_newv is called with 
 	  those values as well.
@@ -9748,10 +9751,10 @@
 
 	* src/glade-property.[ch]: glade_property_write() now fills
 	  libglade's GladePropInfo
-	
+
 	* src/glade-signal.[ch]: glade_signal_write()/glade_signal_new_from_signal_info()
 	  now fills/parses GladeSignalInfo of libglade.
-	
+
 	* src/glade-types.h: include header of libglade-parser.
 
 	* src/glade-widget.[ch]:
@@ -9763,7 +9766,7 @@
 
 	* src/glade-xml-utils.h: dups of alloc_string() and alloc_propname()
 	  from libglade, will be removed.
-	
+
 	* widgets/gtkwidget.xml: set "Tooltip" default to empty string.
 
 2004-11-13  Ivan Wong  <email@ivanwong.info>
@@ -9775,7 +9778,7 @@
 
 	* src/glade-editor.c: Some compilers don't know __FUNCTION__,
 	  G_GNUC_FUNCTION is better.
-	
+
 	* src/glade-gtk.c:
 	  - GLADEGTK_API should precede return type.
 	  - glade_gtk_button_set_stock() now checks "use-underline" when "stock"
@@ -9802,20 +9805,20 @@
 
 2004-11-08 Shane Butler <shane_b@users.sourceforge.net>
 
-	* src/glade-gtk.c (glade_gtk_notebook_get_tab_label_text, 
-	  glade_gtk_notebook_set_tab_label_text): New functions to handle setting the tab 
-	  label text on the GtkNotebook child widget. (glade_gtk_notebook_replace_child): 
-	  Make it so the label is handled correctly and the correct notebook page is 
+	* src/glade-gtk.c (glade_gtk_notebook_get_tab_label_text,
+	  glade_gtk_notebook_set_tab_label_text): New functions to handle setting the tab
+	  label text on the GtkNotebook child widget. (glade_gtk_notebook_replace_child):
+	  Make it so the label is handled correctly and the correct notebook page is
 	  still selected.
 	* widgets/gtknotebook.xml: Updated with tab label hook functions.
-	* src/glade-widget.c: Choose the mapped widget rather than just the last child 
+	* src/glade-widget.c: Choose the mapped widget rather than just the last child
 	  widget in the list.
 	* src/main.c (glade_init): Spelling mistake reported by Andrew Burton <adb@iinet.net.au>.
-	
+
 2004-11-05  David Hoover <karma@deadmoose.com>
 
-	* src/glade-project-view.c: when double-clicking on a window in the 
-	  project view, hide if if it's show, show it if it's hidden. 
+	* src/glade-project-view.c: when double-clicking on a window in the
+	  project view, hide if if it's show, show it if it's hidden.
 	  Fixes 156736
 
 2004-11-03  Tristan Van Berkom  <tristan.van.berkom@gmail.com>
@@ -9843,23 +9846,23 @@
 
 2004-11-02  Tristan Van Berkom  <tristan.van.berkom@gmail.com>
 
-	* Removed GladePropertyType completely from the source in favor of 
+	* Removed GladePropertyType completely from the source in favor of
 	  GParamSpec.
 	* Removed GladeChoice code, and replaced all references thereof
-	* Custom types must now provide a function to retrieve a GParamSpec for 
+	* Custom types must now provide a function to retrieve a GParamSpec for
 	  that type (xml files and glade-gtk backend updated accordingly).
-	* Removed "child" member from GladePropertyType in order to avoid 
-	  confusion (Note, I will add support for non-widget types + all types 
-	  allowed to have children, in a more flexable way, for now I got rid 
-	  of all mention of "child" since it wasn't implemented and mostly 
+	* Removed "child" member from GladePropertyType in order to avoid
+	  confusion (Note, I will add support for non-widget types + all types
+	  allowed to have children, in a more flexable way, for now I got rid
+	  of all mention of "child" since it wasn't implemented and mostly
 	  `#if 0'd out anyway)
-	* Implemented <VerifyFunction> in xml files and in the glade-gtk 
+	* Implemented <VerifyFunction> in xml files and in the glade-gtk
 	  backend.
-	* Added support for numerical types long/ulong/int64/uint64 to the 
+	* Added support for numerical types long/ulong/int64/uint64 to the
 	  editor.
-	* src/glade-project.c: glade_project_remove_widget() Now removes nodes 
+	* src/glade-project.c: glade_project_remove_widget() Now removes nodes
 	  on widget to remove, this fixes bug 156515.
-	* src/glade-editor.c: Fixed popup name to 
+	* src/glade-editor.c: Fixed popup name to
 	  g_strdup_printf(_("Create a %s"), type);
 
 2004-11-02  David Hoover <karma@deadmoose.com>
@@ -9878,7 +9881,7 @@
 	* src/glade-editor.[ch]: Implemented glade_editor_query_popup(), also obsoleted
 	  common & packing booleans for a more convenient GladeEditorTableType field.
 
-	* src/glade-gtk.c: 
+	* src/glade-gtk.c:
 	  - Refitted and integrated Mickael Cornet's patch to bug 153823
 	  - glade_gtk_table_set_n_common() now refuses to shrink when it involves
 	    orhpaning widgets, Its also been improved to fill in all the blanks.
@@ -9886,7 +9889,7 @@
 	  - Fixed children are now born with size-request properties enabled.
 	  - Removed some `#if 0' code that I trust we dont need.
 	  - glade_gtk_box_set_size() Adjusted to match gtk_table behaviour
-	
+
 	* src/glade-plugin.h:
 	  - Added a header to the batch.
 
@@ -9909,14 +9912,14 @@
 	  - glade_widget_new() now calls new function glade_widget_sync_query_props() in
 	    popup cases (If properties dont change from there default, a synchronization is
 	    needed at this point).
-	
+
 	* widgets/gtkbox.xml:
 	  - Removed reference to obsoleted post_create function.
 	  - Changed `ignore' to `empty' for the fill_empty funciton.
 	  - Tagged "Size" property as type "Query".
 	  - Added Default size 3
 	  - Changed Minimum size to 2
-	
+
 	* widgets/gtknotebook.xml:
 	  - Tagged "pages" property as type "Query".
 	  - Removed obsolete (or never implemented) Query section.
@@ -9927,7 +9930,7 @@
 
 	* widgets/gtklabel.xml: Added default "" value for pattern property, this
 	  works around gtk+ bug 156720 which was causing us segfaults.
-	
+
 2004-10-27  David Hoover <karma@deadmoose.com>
 
 	* src/Makefile.am: Fix up dependency issues with automatically generated
@@ -9935,38 +9938,38 @@
 
 2004-10-26  Tristan Van Berkom  <tristan.van.berkom@gmail.com>
 
-	* src/Makefile.am: CFLAGS was `-O2 -g', for now just `-g'. (Mixing 
-	  these two compiler options can cause really bad indigestion, i.e. 
+	* src/Makefile.am: CFLAGS was `-O2 -g', for now just `-g'. (Mixing
+	  these two compiler options can cause really bad indigestion, i.e.
 	  untracable bugs).
 
-	* src/glade-gtk.c: 
-	    - empty(): now serves as a standard noop for fill-empty functions 
+	* src/glade-gtk.c:
+	    - empty(): now serves as a standard noop for fill-empty functions
 	      (as ignore() noop serves for get/set property).
-	    - glade_gtk_fixed_post_create(): Removed useless 
+	    - glade_gtk_fixed_post_create(): Removed useless
 	      gtk_widget_add_events() line.
-	    - glade_gtk_message_dialog_post_create: Fixed 155849, Message 
+	    - glade_gtk_message_dialog_post_create: Fixed 155849, Message
 	      dialog children
 	      are now selectable usable through the UI.
 	    - glade_gtk_fixed_fill_empty(): Obsoleted by `empty()'
 
 	* src/glade-project.c: glade_project_selection_add()/
 	  glade_project_selection_set():
-	  Functions no longer prematurly returns if the editor has no widget 
+	  Functions no longer prematurly returns if the editor has no widget
 	  loaded. (This is bug 155892)
 
-	* src/glade-property.c: glade_property_set() Function now takes care of 
-	  removing widgets from and adding widgets to the project if that 
-	  widget belongs to a project in the case of construct_only, also, if 
-	  that widget is in the selection list, the selection list is handled 
+	* src/glade-property.c: glade_property_set() Function now takes care of
+	  removing widgets from and adding widgets to the project if that
+	  widget belongs to a project in the case of construct_only, also, if
+	  that widget is in the selection list, the selection list is handled
 	  here too.
 
-	* src/glade-widget.c: 
-	    - glade_widget_rebuild() Removed logic that handles 
+	* src/glade-widget.c:
+	    - glade_widget_rebuild() Removed logic that handles
 	      project/selection lists in favor of code in glade-property.c
 	    - Added roboustness around glade_widget_set_widget() and
 	      glade_widget_transport_children().
 
-	* widgets/gtkfixed.xml: Replaced fill-empty reference in favor of 
+	* widgets/gtkfixed.xml: Replaced fill-empty reference in favor of
 	  `empty()'.
 
 2004-10-26  David Hoover <karma@deadmoose.com>
@@ -9977,7 +9980,7 @@
 
 2004-10-25  David Hoover <karma@deadmoose.com>
 
-	* configure.in, src/.cvsignore, src/Makefile.am, 
+	* configure.in, src/.cvsignore, src/Makefile.am,
 	  src/glade-marshallers.list: Add support to automatically generate
 	  the marshallers files rather than checking in generated versions.
 
@@ -9986,47 +9989,47 @@
 
 2004-10-22  Tristan Van Berkom  <tristan.van.berkom@gmail.com>
 
-	* src/glade-gtk.c: Added functionality for GtkFixed (also replaced some 
+	* src/glade-gtk.c: Added functionality for GtkFixed (also replaced some
 	  ints with gints and chopped down some lines).
 
 	* src/glade-plugin.h: Added some headers for the plugin (needed for
 	  GtkFixed)
 
-	* src/glade-popup.c,src/glade-project.c: Replaced reference to 
-	  GLADE_WIDGET_IS_TOPLEVEL (support for deprication of flags on 
+	* src/glade-popup.c,src/glade-project.c: Replaced reference to
+	  GLADE_WIDGET_IS_TOPLEVEL (support for deprication of flags on
 	  GladeWidgetClass).
 
-	* src/glade-project-view.c: Replaced reference to 
-	  GLADE_WIDGET_IS_TOPLEVEL (support for deprication of flags on 
+	* src/glade-project-view.c: Replaced reference to
+	  GLADE_WIDGET_IS_TOPLEVEL (support for deprication of flags on
 	  GladeWidgetClass).
 
-	* src/glade-project-window.[ch]: Replace gpw->project with 
-	  gpw->active_project and added 
+	* src/glade-project-window.[ch]: Replace gpw->project with
+	  gpw->active_project and added
 	  glade_project_window_get_active_project() for clarity's sake.
 
-	* src/glade-property-class.h: Added construct_only as a quick reference 
+	* src/glade-property-class.h: Added construct_only as a quick reference
 	  (to G_PARAM_CONSTRUCT_ONLY).
 
-	* src/glade-property.c: glade_property_set() will now check for 
+	* src/glade-property.c: glade_property_set() will now check for
 	  construct_only and call glade_widget_rebuild_instance() if needed.
 
-	* src/glade-utils.c: fixed the queue_nodes code to add a reference on 
-	  the GladeWidget pertaining to the expose event, since the code 
-	  depends on the existance of the GladeWidget, the GtkWidget and the 
-	  GdkWindow as opposed to only the GdkWindow 
+	* src/glade-utils.c: fixed the queue_nodes code to add a reference on
+	  the GladeWidget pertaining to the expose event, since the code
+	  depends on the existance of the GladeWidget, the GtkWidget and the
+	  GdkWindow as opposed to only the GdkWindow
 
-	* src/glade-widget-class.c: Update construct_only tab upon construction 
-	  of GladePropertyClass structs. Removed set of depricated flags on 
+	* src/glade-widget-class.c: Update construct_only tab upon construction
+	  of GladePropertyClass structs. Removed set of depricated flags on
 	  GladeWidgetClass.
 
-	* src/glade-widget-class.h: Removed depricated flag macro definitions 
+	* src/glade-widget-class.h: Removed depricated flag macro definitions
 	  (and removed the flags)
 
 	* src/glade-widget.c:
 	- Fixed Segfaults (Removed glade_widget_class_free() in finalize)
-	- Objects are now built with thier properties as paramaters of 
+	- Objects are now built with thier properties as paramaters of
 	  g_object_newv
-	- Added glade_widget_rebuild_instance for the purpose of changing 
+	- Added glade_widget_rebuild_instance for the purpose of changing
 	  properties that are flagged as G_PARAM_CONSTRUCT_ONLY.
 
 	* pixmaps/fixed_bg.xpm: New picture for background of GtkFixed.
@@ -10113,10 +10116,10 @@
 2004-09-23  David Hoover <karma@deadmoose.com>
 
 	* src/*.c: mass addition of new gtk-doc-style comments for functions,
-	some cleanup of language & formatting in existing comments, minor 
+	some cleanup of language & formatting in existing comments, minor
 	whitespace fixes, etc.
 
-	Slightly revised and committed by terra@gnome.org (Morten Welinder) 
+	Slightly revised and committed by terra@gnome.org (Morten Welinder)
 
 2004-07-26  Shane Butler  <shane_b@users.sourceforge.net>
 
@@ -10131,7 +10134,7 @@
 
 2004-06-16  Paolo Borelli  <pborelli@katamail.com>
 
-	* configure.in: minor updates, as suggested on glade-devel by 
+	* configure.in: minor updates, as suggested on glade-devel by
 	Cristian Adam <drac@gmx.net>
 	* po/POTFILES.in: ditto
 
@@ -10183,7 +10186,7 @@
 	(gpw_create_widget_tree, gpw_create_editor): don't set type hint to
 	GDK_WINDOW_TYPE_HINT_UTILITY, since that makes them stay on top all
 	the time, but they are too big and get in the way.
-	(gpw_create_palette, gpw_create_editor) 
+	(gpw_create_palette, gpw_create_editor)
 	(glade_project_window_create): set initial positions of windows to
 	something reasonable. Hopefully we will save window positions between
 	sessions in future.
@@ -10263,10 +10266,10 @@
 	accept placeholders. They are handled separately, using their own
 	signal handlers. This avoids a crash, though there is still an odd
 	bug when trying to select the top-left placeholder in a table.
-	
+
 2004-05-05  Damon Chaplin  <damon@gnome.org>
 
-	* src/glade-widget.c (glade_widget_find_deepest_child_at_position): 
+	* src/glade-widget.c (glade_widget_find_deepest_child_at_position):
 	if we found a widget (data.found), but it isn't a container, just
 	return it. It was ignoring it and returning its parent before.
 	(glade_widget_event): renamed from glade_widget_expose(). It is now
@@ -10289,7 +10292,7 @@
 	signal. (The old method didn't work on win32 as gdk_gc_set_subwindow()
 	doesn't work there.)
 
-	* src/glade-placeholder.c (glade_placeholder_expose): 
+	* src/glade-placeholder.c (glade_placeholder_expose):
 	* src/glade-widget.c (glade_widget_expose): just call
 	glade_util_queue_draw_nodes() to queue a draw of the selection nodes.
 
@@ -10355,7 +10358,7 @@
 	needed. I think this works OK for normal widgets with/without their
 	own window, and for widgets inside a GtkViewport. We may need to
 	tweak it for widgets inside a GtkLayout.
-	(glade_util_add_nodes, glade_util_remove_nodes) 
+	(glade_util_add_nodes, glade_util_remove_nodes)
 	(glade_util_has_nodes): we don't need to connect/disconnect signal
 	handlers here any more, so we just save a binary value indicating
 	if the widget has nodes or not.
@@ -10390,7 +10393,7 @@
 
 2004-04-26  Damon Chaplin  <damon@gnome.org>
 
-	* src/glade-editor.c (flag_toggled) 
+	* src/glade-editor.c (flag_toggled)
 	(glade_editor_property_show_flags_dialog): new functions to show a
 	modal dialog for modifying flags properties.
 	(glade_editor_create_input_flags): finished, using an uneditable entry
@@ -10494,7 +10497,7 @@
 	implement dispose and finalize methods for GladeProject.
 	* src/glade-id-allocator.[ch]: code to manage the ids availables for
 	widgets. Code from Owen Taylor.
-	
+
 2004-02-29  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* pixmaps/dialog.png: fix some pixels in the shadow that didn't have
@@ -10632,7 +10635,7 @@
 2004-01-18  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-signal.[ch]: add a glade_signal_copy function.
-	* src/glade-widget.[ch]: put the signals with a handler on a hash 
+	* src/glade-widget.[ch]: put the signals with a handler on a hash
 	indexed by the name of the signal.
 	* src/glade-signal-editor.[ch]: rework the UI of the signal editor.
 
@@ -10848,7 +10851,7 @@
 	internal-child attribute to the glade file; reading still needs work.
 	* src/glade-gtk.c: create the GladeWidgets for the internal children
 	in dialog_fill_empty
-	* src/glade-placeholder.c: don't walk up the widget hierarchy when 
+	* src/glade-placeholder.c: don't walk up the widget hierarchy when
 	getting the parent.
 	* src/glade-widget-class.h: add comment about internal children.
 	* src/glade-command.c: prevent internal children from being deleted.
@@ -10925,7 +10928,7 @@
 	to replace_child and get it from the xml. add_virtual_methods() is no
 	more.
 	* src/glade-placholder.[ch]: rename the replace_placeholder* functions
-	and move them to glade-gtk.c where they belong. add_method_to_class is 
+	and move them to glade-gtk.c where they belong. add_method_to_class is
 	gone.
 	* src/glade-gtk.c: see above.
 	* src/glade-widget.c: fixup for the above changes.
@@ -10943,7 +10946,7 @@
 
 	* src/glade.h: define GLADE_TAG_FILL_EMPTY_FUNCTION
 	* src/glade-widget-class.[ch]: add the fill_empty method.
-	* src/glade-widget.c: substitute glade_widget_fill_empty with the 
+	* src/glade-widget.c: substitute glade_widget_fill_empty with the
 	class->fill_empty method.
 	* src/glade-gtk.c: implement the fill_empty method for GtkContainer,
 	GtkDialog and GtkPaned.
@@ -11002,9 +11005,9 @@
 
 	* src/glade.h: add the <requires> tag.
 	* src/glade-widget.c (glade_widget_write),
-	(glade_widget_new_from_node_real): don't abort on error, warn and 
+	(glade_widget_new_from_node_real): don't abort on error, warn and
 	continue.
-	* src/glade-project.c (glade_project_new_from_node): handle the 
+	* src/glade-project.c (glade_project_new_from_node): handle the
 	<requires> tag more gracefully, even if it's not supported yet.
 	* src/glade-widget-class.c: rename get_from_name to get_by_name and
 	comment out the old get_by_name.
@@ -11023,7 +11026,7 @@
 
 2003-08-24  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
-	* src/glade-widget-class.c (glade_widget_class_remove_duplicated_properties): 
+	* src/glade-widget-class.c (glade_widget_class_remove_duplicated_properties):
 	when we had a specialized property on a base widget class, if this property
 	was the first one on the list of properties, the whole list was removed.
 
@@ -11044,7 +11047,7 @@
 
 2003-08-20  Paolo Borelli  <pborelli@katamail.com>
 
-	* src/glade-project-view.c (glade_project_view_add_columns): new 
+	* src/glade-project-view.c (glade_project_view_add_columns): new
 	function which adds a pixbuf renderer to display an icon next to the
 	widget name.
 	(glade_project_view_init): use the above.
@@ -11061,7 +11064,7 @@
 
 	* src/glade-project-view.c (glade_project_view_populate_model_real):
 	do not use GladeWidget->children to populate the model.
-	
+
 2003-08-15  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-parameter.c: set 0.01 as the step for float and double parameters.
@@ -11077,8 +11080,9 @@
 
 	* src/glade-widget-class.[ch]: reapply minor cleanups after Joaquin's
 	merge.
-	* src/glade-project.c (glade_project_remove_widget_real):the 
+	* src/glade-project.c (glade_project_remove_widget_real):the
 	remove_widget signal should pass a GladeWidget as data, not a GtkWidget.
+
 2003-08-08  Archit Baweja  <bighead@users.sourceforge.net>
 
 	* src/glade-project.c (glade_project_open): set project->changed=FALSE.
@@ -11101,7 +11105,7 @@
 	  glade-widget.c, glade-xml-utils.h: Inherit properties specified on a
 	  xml file from a base class to an inherited class.  It makes possible
 	  to specify something special for (for instance) GtkWidget, and
-	  make it inherit for each GtkWidget.  
+	  make it inherit for each GtkWidget.
 	* widgets/glade-palette.xml: specify the order of the catalogs.
 	* widgets/gtkwidget.xml, gtkbox.xml: specify common properties for
 	  gtkwidgets and gtkboxes.  Coupled with the above changes, it
@@ -11120,7 +11124,7 @@
 
 2003-08-05  Archit Baweja  <bighead@users.sourceforge.net>
 
-	* src/glade-property.c (glade_property_set): when using custom 
+	* src/glade-property.c (glade_property_set): when using custom
 	set_function, copy the GValue for the property. Fixes a couple of bugs.
 
 	* src/glade-widget.c (glade_widget_new_from_node_real): set properties
@@ -11207,12 +11211,12 @@
 
 2003-07-17  Paolo Borelli  <pborelli@katamail.com>
 
-	* src/glade-widget.c: fix widget_free, it 
+	* src/glade-widget.c: fix widget_free, it
 	should not recurse. Fix logic of property
 	query.
 	* src/glade-project-window.c: fix close
 	properly (hopefully).
-	* src/glade-command.c: fix segfault on 
+	* src/glade-command.c: fix segfault on
 	widget creation.
 
 2003-07-11  Paolo Borelli  <pborelli@katamail.com>
@@ -11221,7 +11225,7 @@
 
 2003-07-08  Paolo Borelli  <pborelli@katamail.com>
 
-	* src/glade-project-window.c: add the 
+	* src/glade-project-window.c: add the
 	WINDOW_TYPE_HINT_UTILITY to the palette, the
 	editor and the widget tree.
 	* src/glade-clipboard-view.c: ditto for
@@ -11254,7 +11258,7 @@
 	property_refresh. Move widget property list
 	creation to widget.c.
 	* src/glade-widget.c: see above.
-	* src/glade-property-class.[ch]: factor out 
+	* src/glade-property-class.[ch]: factor out
 	property_class_new_from_spec and move
 	list_properties to widget-class.c.
 	* src/glade-widget-class.c: see above.
@@ -11289,7 +11293,7 @@
 
 2003-06-21  Paolo Borelli  <pborelli@katamail.com>
 
-	* src/glade-placeholder.c: fix return values for mouse 
+	* src/glade-placeholder.c: fix return values for mouse
 	events callbacks.
 	* src/glade-project-window.[ch]: when selecting a widget
 	of another project the current project change.
@@ -11420,7 +11424,7 @@
 	* src/glade-project-window.c: escape the underscores on the project
 	name, to prevent gtk+ from using them as accelerators in the menu.
 	(Bug signaled by Bas Driessen.)
-	
+
 	* src/glade-util.[ch]: create a function to duplicate the underscores
 	on a string.
 
@@ -11459,7 +11463,7 @@
 
 2003-05-17  Paolo Borelli  <pborelli@katamail.com>
 
-	* src/glade-clipboard-view.[ch]: do not include 
+	* src/glade-clipboard-view.[ch]: do not include
 	glade-project-window.h and some minor cleanups
 
 2003-05-17  Paolo Borelli  <pborelli@katamail.com>
@@ -11523,8 +11527,8 @@
 
 2003-05-09  Paolo Borelli  <pborelli@katamail.com>
 
-	* src/glade-popup.c: hoverhowl the popup menu so that code is 
-	saner and follows the same codepaths of Cut/Copy etc in main 
+	* src/glade-popup.c: hoverhowl the popup menu so that code is
+	saner and follows the same codepaths of Cut/Copy etc in main
 	menu. As a nice side effect item now have icon and mnemonics.
 	* src/glade-widget.[ch]: remove remnant of the above work
 	* src/glade-placeholder.[ch]: ditto
@@ -11533,7 +11537,7 @@
 
 2003-05-08  Paolo Borelli  <pborelli@katamail.com>
 
-	* src/glade-project.c: fix glade_project_new_from_node so that it 
+	* src/glade-project.c: fix glade_project_new_from_node so that it
 	actually loads widgets from xml files.
 
 2003-05-08  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
@@ -11626,7 +11630,7 @@
 2003-04-21  Paolo Borelli <pborelli@katamail.com>
 
 	* src/glade-widget.c: move here the query_property functions
-	* src/glade-project-window.[ch]: removed the above, those functione 
+	* src/glade-project-window.[ch]: removed the above, those functione
 	belong to glade-widget.c
 
 2003-04-21  Paolo Borelli <pborelli@katamail.com>
@@ -11647,7 +11651,7 @@
 
 	* src/glade-placeholder.c: fix an assertion.
 	* src/glade-editor.c: Add scrollbars to the properties editor.
-	* src/glade-project.[ch]: properly clear the changed flag on save; make 
+	* src/glade-project.[ch]: properly clear the changed flag on save; make
 	open/save functions return TRUE on success.
 	* src/glade-project-window.c: implement a confirmation dialog to be
 	displayed on quit if any open project need saving.
@@ -11685,16 +11689,16 @@
 	* src/glade-utils.[ch]: implement glade_util_flash_message()
 	* src/glade-project.[ch]: use the above to display "Project Saved"
 	in the statusbar.
-	
+
 2003-04-02  Paolo Borelli <pborelli@katamail.com>
- 
+
  	* src/glade-utils.[ch]: iplement glade_util_file_selection_new()
  	* src/glade-project-window.[ch]: use the above Open, Save, Save as.
  	* src/glade-project.[ch]: file selection moved to glade-project-window,
  	clean-ups and fixes.
  	* src/glade-project-ui.[ch]: is no more.
  	* src/glade-menu-editor.[ch]: adapt the icon file selector.
-	
+
 2003-04-02  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
 
 	* src/glade-menu-editor.c: Several changes to the menu editor.  Now it
@@ -11710,7 +11714,7 @@
 2003-03-27  Paolo Borelli <pborelli@katamail.com>
 
 	* src/glade-project.[ch]: make glade_project_open_from_file() static
-	and fix the callers. This fixes the (unlikely) case of passing the 
+	and fix the callers. This fixes the (unlikely) case of passing the
 	same file more than once on the command line.
 
 2003-03-25  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
@@ -11733,7 +11737,7 @@
 	* src/glade-menu-editor.[ch]: Menu editor copied from glade-2.
 	Big chunks are #if 0'ed.  That's just a first version.  I don't even
 	know if it will show on the screen without crashing.
-	
+
 2003-03-15 Paolo Borelli <pborelli@katamail.com>
 
 	* src/glade-project.c: don't warn on save file selector "cancel"
@@ -11748,7 +11752,7 @@
 	* src/glade-project-window.c: turn also the "Show Clipboard" menu item
 	into a toggle item.
 	* src/glade-clipboard.[ch]: removed glade_clipboard_create() and
-	glade_clipboard_show_view(), replaced by equivalent static functions 
+	glade_clipboard_show_view(), replaced by equivalent static functions
 	in glade-project-window.c where they belong.
 
 2003-03-12  Joaquin Cuenca Abela  <e98cuenc@yahoo.com>
@@ -11832,10 +11836,10 @@
 	* src/glade-clipboard.c (glade_clipboard_paste): support pasting of
 	toplevel widgets.
 
-	* src/glade-placeholder.c (glade_placeholder_on_button_press_event): 
+	* src/glade-placeholder.c (glade_placeholder_on_button_press_event):
 	set active placeholder.
 	(glade_placeholder_draw_selection_nodes): new function.
-	
+
 2002-04-27  Carlos Perello Marin <carlos@gnome-db.org>
 
 	* configure.in: Fixed the pixmap location.
@@ -11850,7 +11854,7 @@
 	* configure.in: Changed all references from glade2 to glade3 and added
 	version number to the directory where all data is stored.
 	Updated the version to 2.1.90
-	
+
 2002-04-16  Archit Baweja  <bighead@users.sourceforge.net>
 
 	* src/glade-project.c (glade_project_check_previously_loaded): new.
@@ -11884,7 +11888,7 @@
 
 2002-04-11  Archit Baweja  <bighead@users.sourceforge.net>
 
-	* src/glade-clipboard-view.c (glade_clipboard_view_populate_model): 
+	* src/glade-clipboard-view.c (glade_clipboard_view_populate_model):
 	don't add children.
 
 2002-04-11  JoaquÁn Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
@@ -11895,9 +11899,9 @@
 
 2002-04-08  Archit Baweja  <bighead@users.sourceforge.net>
 
-	* src/glade-clipboard-view.c (glade_clipboard_view_populate_model): 
+	* src/glade-clipboard-view.c (glade_clipboard_view_populate_model):
 	changed GtkTreeStore to hold pointers, not strings, as earlier.
-	
+
 2002-04-06  Archit Baweja  <bighead@users.sourceforge.net>
 
 	* src/glade-widget.c (glade_widget_clone): new function.
@@ -11908,16 +11912,16 @@
 	the created Placeholder, for callers to use. Toned it down a bit too.
 	Changed all callers.
 
-	* src/glade-clipboard.c (glade_clipboard_paste): changed call to 
+	* src/glade-clipboard.c (glade_clipboard_paste): changed call to
 	gtk_widget_show to gtk_widget_show_all to show all the children too.
 	Also load the "Paste"d widget in the editor.
-	
+
 	* src/glade-project.c (glade_project_remove_widget_real): unset pointer
 	to project in the GladeWidget.
 	(glade_project_add_widget_real): new function.
 	(glade_project_add_widget): call above.
 
-	
+
 2002-04-01  JoaquÁn Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
 
 	* src/glade-editor.c, glade-command.[ch],
@@ -11927,16 +11931,16 @@
 	bugfixes.
 
 2002-03-28  JoaquÁn Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
- 
+
  	* src/glade-command.[ch]: Now the undo/redo system also takes in
  	account creation and destruction of widgets.  Also undo of
  	setting a text property now works.
  	* src/glade-widget.[ch]: ditto.
  	* src/glade-project-window.c: The undo/redo menu items are
  	inactive and showing the text "Undo: Nothing" at startup.
- 
+
 2002-03-27  JoaquÁn Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
- 
+
  	* src/glade-command.[ch]: if you push several undo items, and they
  	can "unify", they will "unify" (or "collapse").  For instance, if
  	you change the value of a number with a spinbutton from 0.1 to 0.5
@@ -11946,9 +11950,9 @@
  	* src/glade-project-window.[ch]: The undo/redo menu item are
  	enabled only if there is something to undo/redo, and the menu
 	items will show a description about the action.
- 
+
 2002-03-27  JoaquÁn Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
- 
+
  	* src/glade-command.[ch]: infinite undo-redo system.
  	* src/glade-editor.c: ditto.
  	* src/glade-project-window.c: ditto.
@@ -11957,17 +11961,17 @@
  	* src/glade-types.h: prevent multiple includes of this file.
  	* src/glade-debug.h: little macro g_debug to print debug messages
  	only if DEBUG is defined.
-	
+
 2002-03-25  JoaquÁn Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
- 
+
  	* src/glade-xml-utils.c: use xmlDocGetRootElement(doc) instead of
  	just doc->children to get the root of the document.  This way, the
  	files will be read right event if it has comments or pi before the
  	root element itself.
- 
+
  	* src/glade-project-window.c: Added "Delete" keybinding to delete
  	action.
- 	
+
 2002-03-22  Archit Baweja  <bighead@users.sourceforge.net>
 
 	* src/glade-widget.c (glade_widget_replace_with_placeholder): new
@@ -11996,7 +12000,7 @@
 	defined to void otherwise.  I was tracking the "can not select GtkLabels"
 	bug when I did this change, and now I'm not able to reproduce anymore
 	the bug.  Dunno what's going on...
-	
+
 2002-03-02  JoaquÁn Cuenca Abela  <cuenca@pacaterie.u-psud.fr>
 
 	* glade-choice.c (glade_choice_list_new_from_node): Now you don't need
@@ -12028,11 +12032,11 @@
 	* glade-project-view.c (glade_project_view_selection_changed_cb):
 	Fixed segfault when deleting a window that was also selected in
 	the glade-project-view.
-	
+
 2002-01-29  Carlos PerellÁ MarÁn <carlos@gnome-db.org>
 
 	* Makefile.am: Install .desktop file into the proper location for
-	GNOME2 (PREFIX/share/applications).	
+	GNOME2 (PREFIX/share/applications).
 	* glade-2.desktop.in: Renamed from glade2.desktop.in to use the same
 	standar as glade1 port.
 	Added a Categories field for GNOME 2 panel.
@@ -12042,11 +12046,11 @@
 
 2002-01-13  Hasbullah Bin Pit  <sebol@ikhlas.com>
 
-        * configure.in Added ms (Malay/B.Melayu) to ALL_LINGUAS.
+	* configure.in Added ms (Malay/B.Melayu) to ALL_LINGUAS.
 
 2001-12-24  Archit Baweja  <bighead@users.sourceforge.net>
 
-	* src/glade-placeholder.c (glade_placeholder_on_button_press_event): 
+	* src/glade-placeholder.c (glade_placeholder_on_button_press_event):
 	on right-click, do PASTE.
 
 	* src/glade-widget.c (glade_widget_cut): implemented.
@@ -12062,7 +12066,7 @@
 
 2001-12-27  Duarte Loreto <happyguy_pt@hotmail.com>
 
-        * configure.in: Added portuguese to ALL_LINGUAS
+	* configure.in: Added portuguese to ALL_LINGUAS
 
 2001-12-07  James Willcox <jwillcox@cs.indiana.edu>
 	* src/glade-project-view.c (glade_project_view_widget_name_changed):
@@ -12079,7 +12083,7 @@
 	* src/glade.h: Added GLADE_TAG_DISABLED.
 	* src/glade-property-class.c (glade_property_class_update_from_node):
 	Added a check for properties that are disabled at .xml files.
-	
+
 2001-12-03  Carlos PerellÁ MarÁn <carlos@gnome-db.org>
 
 	* configure.in: Reverted my change about GETTEXT_PACKAGE. We should
@@ -12087,7 +12091,7 @@
 	* acconfig.h, configure.in, src/glade-catalog.c, widgets/Makefile.am:
 	/s/catalog/catalogs/ && /s/CATALOG/CATALOGS/ when we are talking about
 	the dir name where we store all catalogs files.
-	
+
 2001-12-02  Chema Celorio  <chema@celorio.com>
 
 	* src/glade-catalog.c (glade_catalog_load): keep a list of all the
@@ -12110,7 +12114,7 @@
 	several catalogs from $prefix/share/glade/catalog/*.xml. It calls
 	the old glade_catalog_load with a new arg which is the catalog
 	file name.
-	* src/glade-catalog.h: Added the title gchar* to store the title 
+	* src/glade-catalog.h: Added the title gchar* to store the title
 	for this catalog.
 	* src/glade-palette.h: Added a notebook at GladePalette object.
 	* src/glade-palette.c (glade_palette_init): We create a notebook
@@ -12134,12 +12138,12 @@
 	* widgets/gtkinputdialog.xml: It does not need placeholder.
 
 2001-12-02  Shane Butler <shane_b@users.sourceforge.net>
- 
- 	* src/glade-signal-editor.c (glade_signal_editor_list_select_cb): 
+
+ 	* src/glade-signal-editor.c (glade_signal_editor_list_select_cb):
  	Updated to reflect GTK+ api changes.
  	* src/glade-signal-editor.c (glade_signal_editor_dialog_list_select_cb):
  	Updated to reflect GTK+ api changes.
- 
+
 2001-12-01  Carlos PerellÁ MarÁn <carlos@gnome-db.org>
 
 	* src/glade-gtk.c (glade_gtk_message_dialog_post_create): Added to
@@ -12176,7 +12180,7 @@
 2001-11-26  Carlos PerellÁ MarÁn <carlos@gnome-db.org>
 
 	* src/glade-widget-class.c (glade_widget_class_create_pixmap): Fixed
-	the warning about floating references. We free the GtkButton with 
+	the warning about floating references. We free the GtkButton with
 	gtk_object_sink and not with gtk_widget_unref because this widget
 	is never inserted into a container widget.
 
@@ -12201,8 +12205,8 @@
 
 2001-11-21  Carlos PerellÁ MarÁn <carlos@gnome-db.org>
 
-        * configure.in: Changed GETTEXT_PACKAGE from glade-2.0 to glade-2
-	
+	* configure.in: Changed GETTEXT_PACKAGE from glade-2.0 to glade-2
+
 2001-11-21  Carlos PerellÁ MarÁn <carlos@gnome-db.org>
 
 	* src/glade-property-class.c (glade_property_class_get_type_from_spec):
