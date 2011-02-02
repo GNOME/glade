@@ -209,6 +209,8 @@ void                glade_project_get_target_version   (GladeProject       *proj
 GList              *glade_project_required_libs        (GladeProject       *project);
 gchar              *glade_project_display_dependencies (GladeProject       *project);
 
+GList              *glade_project_toplevels            (GladeProject       *project);
+
 /* Verifications */
 gchar              *glade_project_verify_widget_adaptor(GladeProject       *project,
                                                         GladeWidgetAdaptor *adaptor,

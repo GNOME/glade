@@ -5,7 +5,17 @@
     on widget where gtk_widget_get_preferred_height() value is different than
     the one returned by gtk_widget_get_preferred_size()
 
-  * gladeui/glade-design-view.c: set layout halign property to GTK_ALIGN_START
+  * gladeui/glade-design-view.c:
+    o set layout halign property to GTK_ALIGN_START
+    o pack toplevel widgets in GladeProject toplevels list order.
+  
+  * gladeui/glade-project.[ch]: added accessor for toplevel list
+
+  * gladeui/glade-property.c: added special case for parentless widget properties
+    on glade_property_set_value_impl() to show and hide new and old values.
+
+  * gladeui/glade-editor-property.c: removed glade_widget_hide() call on
+    glade_eprop_object_show_dialog() since now its handled on GladeProperty
 
 2011-02-01  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 

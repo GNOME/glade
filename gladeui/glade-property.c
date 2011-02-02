@@ -367,6 +367,21 @@ glade_property_set_value_impl (GladeProperty * property, const GValue * value)
       glade_project_verify_property (property);
     }
 
+  /* Special case parentless widget properties */
+  if (glade_property_class_parentless_widget (property->priv->klass))
+    {
+      GladeWidget *gobj;
+      GObject *obj;
+      
+      if ((obj = g_value_get_object (&old_value)) &&
+          (gobj = glade_widget_get_from_gobject (obj)))
+        glade_widget_show (gobj);
+
+      if ((obj = g_value_get_object (value)) &&
+          (gobj = glade_widget_get_from_gobject (obj)))
+        glade_widget_hide (gobj);  
+    }
+
   g_value_unset (&old_value);
   return TRUE;
 }

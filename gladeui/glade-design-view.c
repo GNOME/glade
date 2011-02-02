@@ -170,6 +170,7 @@ static void
 glade_design_view_add_toplevel (GladeDesignView *view, GladeWidget *widget)
 {
   GtkWidget *layout;
+  GList *toplevels;
   GObject *object;
 
   if (glade_widget_get_parent (widget) ||
@@ -183,6 +184,10 @@ glade_design_view_add_toplevel (GladeDesignView *view, GladeWidget *widget)
   gtk_widget_set_halign (layout, GTK_ALIGN_START);
   gtk_box_pack_start (GTK_BOX (view->priv->layout_box), layout, FALSE, FALSE, 0);
 
+  if ((toplevels = glade_project_toplevels (view->priv->project)))
+    gtk_box_reorder_child (GTK_BOX (view->priv->layout_box), layout, 
+                           g_list_index (toplevels, GTK_WIDGET (object)));
+  
   gtk_container_add (GTK_CONTAINER (layout), GTK_WIDGET (object));
   gtk_widget_show (GTK_WIDGET (object));
   gtk_widget_show (layout);

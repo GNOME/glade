@@ -4029,6 +4029,20 @@ glade_project_display_dependencies (GladeProject * project)
   return g_string_free (string, FALSE);
 }
 
+/**
+ * glade_project_toplevels:
+ * @project: a #GladeProject
+ *
+ * Returns: a #GList containing the #GtkWidget toplevel items in @project
+ */
+GList *
+glade_project_toplevels (GladeProject * project)
+{
+  g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
+
+  return project->priv->tree;
+}
+
 /* GtkTreeModel implementation */
 
 static GObject *
