@@ -361,7 +361,6 @@ glade_design_layout_get_preferred_height (GtkWidget *widget,
   priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
 
   *minimum = 0;
-  *natural = 0;
 
   child = gtk_bin_get_child (GTK_BIN (widget));
 
@@ -372,7 +371,7 @@ glade_design_layout_get_preferred_height (GtkWidget *widget,
       gchild = glade_widget_get_from_gobject (child);
       g_assert (gchild);
 
-      gtk_widget_get_preferred_height (child, minimum, natural);
+      gtk_widget_get_preferred_height (child, minimum, NULL);
 
       g_object_get (gchild, "toplevel-height", &child_height, NULL);
 
@@ -382,13 +381,13 @@ glade_design_layout_get_preferred_height (GtkWidget *widget,
         pango_layout_get_pixel_size (priv->widget_name, NULL, &height);
       else
         height = PADDING;
-      
-      *minimum = MAX (*minimum, PADDING + 2.5 * OUTLINE_WIDTH + child_height + height);
-      *natural = MAX (*natural, PADDING + 2.5 * OUTLINE_WIDTH + child_height + height);
+
+      *minimum = MAX (*minimum, PADDING + 2.5*OUTLINE_WIDTH + height + child_height);
     }
 
+  border_width = gtk_container_get_border_width (GTK_CONTAINER (widget));
   *minimum += border_width * 2;
-  *natural += border_width * 2;
+  *natural = *minimum;
 }
 
 static void
@@ -404,7 +403,6 @@ glade_design_layout_get_preferred_width (GtkWidget *widget,
   priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
 
   *minimum = 0;
-  *natural = 0;
 
   child = gtk_bin_get_child (GTK_BIN (widget));
 
@@ -413,19 +411,18 @@ glade_design_layout_get_preferred_width (GtkWidget *widget,
       gchild = glade_widget_get_from_gobject (child);
       g_assert (gchild);
 
-      gtk_widget_get_preferred_width (child, minimum, natural);
+      gtk_widget_get_preferred_width (child, minimum, NULL);
 
       g_object_get (gchild, "toplevel-width", &child_width, NULL);
 
       child_width = MAX (child_width, *minimum);
 
-      *minimum = MAX (*minimum, PADDING + child_width + 3 * OUTLINE_WIDTH);
-      *natural = MAX (*natural, PADDING + child_width + 3 * OUTLINE_WIDTH);
+      *minimum = MAX (*minimum, 2*PADDING + 2*OUTLINE_WIDTH + child_width);
     }
 
   border_width = gtk_container_get_border_width (GTK_CONTAINER (widget));
   *minimum += border_width * 2;
-  *natural += border_width * 2;
+  *natural = *minimum;
 }
 
 static void
@@ -465,36 +462,27 @@ glade_design_layout_size_allocate (GtkWidget *widget,
 
   if (child && gtk_widget_get_visible (child))
     {
-      gint child_width = 0, child_height = 0;
-      GladeDesignLayoutPrivate *priv;
-      GtkAllocation child_allocation;
-      GtkRequisition requisition;
-      GladeWidget *gchild;
-        
-      gchild = glade_widget_get_from_gobject (child);        
-      g_assert (gchild);
+      GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
+      GtkAllocation alloc;
+      gint height, offset;
 
-      g_object_get (gchild,
-                    "toplevel-width", &child_width,
-                    "toplevel-height", &child_height, NULL);
+      offset = gtk_container_get_border_width (GTK_CONTAINER (widget)) + PADDING + OUTLINE_WIDTH;
+      priv->child_offset = offset;
 
-      priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
-
-      gtk_widget_get_preferred_size (child, &requisition, NULL);
-
-      priv->child_offset = gtk_container_get_border_width (GTK_CONTAINER (widget)) + PADDING + OUTLINE_WIDTH;
-
-      child_allocation.x = child_allocation.y = 0;
-      child_allocation.width = MAX (requisition.width, child_width);
-      child_allocation.height = MAX (requisition.height, child_height);
+      if (priv->widget_name)
+        pango_layout_get_pixel_size (priv->widget_name, NULL, &height);
+      else
+        height = PADDING;
+      
+      alloc.x = alloc.y = 0;
+      alloc.width = allocation->width - (offset * 2);
+      alloc.height = allocation->height - (offset + OUTLINE_WIDTH * 1.5 + height);
       
       if (gtk_widget_get_realized (widget))
         gdk_window_move_resize (priv->offscreen_window,
-                                0, 0,
-                                child_allocation.width,
-                                child_allocation.height);
+                                0, 0, alloc.width, alloc.height);
 
-      gtk_widget_size_allocate (child, &child_allocation);
+      gtk_widget_size_allocate (child, &alloc);
     }
 }
 

@@ -71,24 +71,24 @@ static GtkVBoxClass *parent_class = NULL;
 G_DEFINE_TYPE (GladeDesignView, glade_design_view, GTK_TYPE_VBOX)
 
 static void
-glade_design_view_parse_began (GladeProject * project,
-			       GladeDesignView * view)
+glade_design_view_parse_began (GladeProject *project,
+			       GladeDesignView *view)
 {
   gtk_widget_hide (view->priv->scrolled_window);
   gtk_widget_show (view->priv->progress_window);
 }
 
 static void
-glade_design_view_parse_finished (GladeProject * project,
-                                  GladeDesignView * view)
+glade_design_view_parse_finished (GladeProject *project,
+                                  GladeDesignView *view)
 {
   gtk_widget_hide (view->priv->progress_window);
   gtk_widget_show (view->priv->scrolled_window);
 }
 
 static void
-glade_design_view_load_progress (GladeProject * project,
-                                 gint total, gint step, GladeDesignView * view)
+glade_design_view_load_progress (GladeProject *project,
+                                 gint total, gint step, GladeDesignView *view)
 {
   gchar *path;
   gchar *str;
@@ -180,7 +180,8 @@ glade_design_view_add_toplevel (GladeDesignView *view, GladeWidget *widget)
 
   /* Create a GladeDesignLayout and add the toplevel widget to the view */
   layout = _glade_design_layout_new (view);
-  gtk_box_pack_start (GTK_BOX (view->priv->layout_box), layout, FALSE, TRUE, 0);
+  gtk_widget_set_halign (layout, GTK_ALIGN_START);
+  gtk_box_pack_start (GTK_BOX (view->priv->layout_box), layout, FALSE, FALSE, 0);
 
   gtk_container_add (GTK_CONTAINER (layout), GTK_WIDGET (object));
   gtk_widget_show (GTK_WIDGET (object));
@@ -231,7 +232,7 @@ on_project_remove_widget (GladeProject *project, GladeWidget *widget, GladeDesig
 }
 
 static void
-glade_design_view_set_project (GladeDesignView * view, GladeProject * project)
+glade_design_view_set_project (GladeDesignView *view, GladeProject *project)
 {
   g_return_if_fail (GLADE_IS_PROJECT (project));
 
@@ -256,9 +257,9 @@ glade_design_view_set_project (GladeDesignView * view, GladeProject * project)
 }
 
 static void
-glade_design_view_set_property (GObject * object,
+glade_design_view_set_property (GObject *object,
                                 guint prop_id,
-                                const GValue * value, GParamSpec * pspec)
+                                const GValue *value, GParamSpec *pspec)
 {
   switch (prop_id)
     {
@@ -273,9 +274,9 @@ glade_design_view_set_property (GObject * object,
 }
 
 static void
-glade_design_view_get_property (GObject * object,
+glade_design_view_get_property (GObject *object,
                                 guint prop_id,
-                                GValue * value, GParamSpec * pspec)
+                                GValue *value, GParamSpec *pspec)
 {
   switch (prop_id)
     {
@@ -289,7 +290,7 @@ glade_design_view_get_property (GObject * object,
 }
 
 static gboolean
-on_viewport_draw (GtkWidget * widget, cairo_t * cr)
+on_viewport_draw (GtkWidget *widget, cairo_t *cr)
 {
   GtkStyle *style = gtk_widget_get_style (widget);
 
@@ -300,7 +301,7 @@ on_viewport_draw (GtkWidget * widget, cairo_t * cr)
 }
 
 static void
-glade_design_view_init (GladeDesignView * view)
+glade_design_view_init (GladeDesignView *view)
 {
   GtkWidget *viewport, *filler, *align;
 
@@ -366,7 +367,7 @@ glade_design_view_init (GladeDesignView * view)
 }
 
 static void
-glade_design_view_class_init (GladeDesignViewClass * klass)
+glade_design_view_class_init (GladeDesignViewClass *klass)
 {
   GObjectClass *object_class;
   GtkWidgetClass *widget_class;
@@ -415,7 +416,7 @@ _glade_design_view_thaw   (GladeDesignView *view)
 /* Public API */
 
 GladeProject *
-glade_design_view_get_project (GladeDesignView * view)
+glade_design_view_get_project (GladeDesignView *view)
 {
   g_return_val_if_fail (GLADE_IS_DESIGN_VIEW (view), NULL);
 
@@ -424,7 +425,7 @@ glade_design_view_get_project (GladeDesignView * view)
 }
 
 GtkWidget *
-glade_design_view_new (GladeProject * project)
+glade_design_view_new (GladeProject *project)
 {
   GladeDesignView *view;
 
@@ -436,7 +437,7 @@ glade_design_view_new (GladeProject * project)
 }
 
 GladeDesignView *
-glade_design_view_get_from_project (GladeProject * project)
+glade_design_view_get_from_project (GladeProject *project)
 {
   gpointer p;
 

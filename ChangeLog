@@ -1,3 +1,12 @@
+2011-02-02  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+  * gladeui/glade-design-layout.c: 
+    allocate all the remaining space to child, this fixes some allocation issues
+    on widget where gtk_widget_get_preferred_height() value is different than
+    the one returned by gtk_widget_get_preferred_size()
+
+  * gladeui/glade-design-view.c: set layout halign property to GTK_ALIGN_START
+
 2011-02-01  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
   * gladeui/glade-design-layout.c: 
