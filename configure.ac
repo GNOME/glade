@@ -122,7 +122,7 @@ GTK_DOC_CHECK([1.13],[--flavour no-tmpl])
 dnl ================================================================
 dnl Check for introspection
 dnl ================================================================
-GOBJECT_INTROSPECTION_CHECK([0.6.7])
+GOBJECT_INTROSPECTION_CHECK([0.10.1])
 
 dnl ================================================================
 dnl Check for gtk+
