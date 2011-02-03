@@ -8132,6 +8132,7 @@ glade_gtk_label_set_attributes (GObject * object, const GValue * value)
   GladeAttribute *gattr;
   PangoAttribute *attribute;
   PangoLanguage *language;
+  PangoFontDescription *font_desc;
   PangoAttrList *attrs = NULL;
   GdkColor *color;
   GList *list;
@@ -8144,12 +8145,21 @@ glade_gtk_label_set_attributes (GObject * object, const GValue * value)
 
       switch (gattr->type)
         {
+            /* PangoFontDescription */
+          case PANGO_ATTR_FONT_DESC:
+	    if ((font_desc = 
+		 pango_font_description_from_string (g_value_get_string (&gattr->value))))
+	      {
+		attribute = pango_attr_font_desc_new (font_desc);
+		pango_font_description_free (font_desc);
+	      }
+	    break;
+
             /* PangoAttrLanguage */
           case PANGO_ATTR_LANGUAGE:
             if ((language =
-                 pango_language_from_string (g_value_get_string
-                                             (&gattr->value))))
-              attribute = pango_attr_language_new (language);
+                 pango_language_from_string (g_value_get_string (&gattr->value))))
+	      attribute = pango_attr_language_new (language);
             break;
             /* PangoAttrInt */
           case PANGO_ATTR_STYLE:
@@ -8244,7 +8254,6 @@ glade_gtk_label_set_attributes (GObject * object, const GValue * value)
           case PANGO_ATTR_LETTER_SPACING:
           case PANGO_ATTR_RISE:
           case PANGO_ATTR_FALLBACK:
-          case PANGO_ATTR_FONT_DESC:
           default:
             break;
         }
@@ -8259,6 +8268,8 @@ glade_gtk_label_set_attributes (GObject * object, const GValue * value)
     }
 
   gtk_label_set_attributes (GTK_LABEL (object), attrs);
+
+  pango_attr_list_unref (attrs);
 }
 
 

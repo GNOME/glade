@@ -139,6 +139,7 @@ typedef enum
   EDIT_COMBO,
   EDIT_SPIN,
   EDIT_COLOR,
+  EDIT_FONT,
   EDIT_INVALID
 } AttrEditType;
 
@@ -293,11 +294,15 @@ append_empty_row (GtkListStore * store, PangoAttrType type)
         name = C_ ("textattr", "Scale");
         break;
 
+      case PANGO_ATTR_FONT_DESC:
+        edit_type = EDIT_FONT;
+        name = C_ ("textattr", "Font Description");
+	break;
+
       case PANGO_ATTR_INVALID:
       case PANGO_ATTR_LETTER_SPACING:
       case PANGO_ATTR_RISE:
       case PANGO_ATTR_FALLBACK:
-      case PANGO_ATTR_FONT_DESC:
       default:
         break;
     }
@@ -364,6 +369,7 @@ is_empty_row (GtkTreeModel * model, GtkTreeIter * iter)
           empty_row = TRUE;
         break;
       case EDIT_COLOR:
+      case EDIT_FONT:
         if (!strval || strval[0] == '\0' ||
             !strcmp (strval, _("<Enter Value>")))
           empty_row = TRUE;
@@ -386,6 +392,7 @@ type_from_attr_type (PangoAttrType type)
     {
       case PANGO_ATTR_LANGUAGE:
       case PANGO_ATTR_FAMILY:
+      case PANGO_ATTR_FONT_DESC:
         return G_TYPE_STRING;
 
       case PANGO_ATTR_STYLE:
@@ -429,7 +436,6 @@ type_from_attr_type (PangoAttrType type)
       case PANGO_ATTR_LETTER_SPACING:
       case PANGO_ATTR_RISE:
       case PANGO_ATTR_FALLBACK:
-      case PANGO_ATTR_FONT_DESC:
       default:
         break;
     }
@@ -450,6 +456,7 @@ glade_gtk_string_from_attr (GladeAttribute * gattr)
     {
       case PANGO_ATTR_LANGUAGE:
       case PANGO_ATTR_FAMILY:
+      case PANGO_ATTR_FONT_DESC:
         ret = g_value_dup_string (&(gattr->value));
         break;
 
@@ -513,7 +520,6 @@ glade_gtk_string_from_attr (GladeAttribute * gattr)
       case PANGO_ATTR_LETTER_SPACING:
       case PANGO_ATTR_RISE:
       case PANGO_ATTR_FALLBACK:
-      case PANGO_ATTR_FONT_DESC:
       default:
         break;
     }
@@ -623,7 +629,6 @@ sync_object (GladeEPropAttrs * eprop_attrs, gboolean use_command)
 
   while (valid)
     {
-
       if (!is_empty_row (eprop_attrs->model, &iter))
         {
           gtk_tree_model_get (eprop_attrs->model, &iter,
@@ -693,7 +698,7 @@ value_icon_activate (GtkCellRendererToggle * cell_renderer,
                      gchar * path, GladeEPropAttrs * eprop_attrs)
 {
   GtkWidget *dialog;
-  GtkWidget *colorsel;
+  GtkWidget *colorsel, *fontsel;
   GtkTreeIter iter;
   PangoAttrType type;
   AttrEditType edit_type;
@@ -706,7 +711,8 @@ value_icon_activate (GtkCellRendererToggle * cell_renderer,
 
   gtk_tree_model_get (eprop_attrs->model, &iter,
                       COLUMN_TEXT, &text,
-                      COLUMN_TYPE, &type, COLUMN_EDIT_TYPE, &edit_type, -1);
+                      COLUMN_TYPE, &type, 
+		      COLUMN_EDIT_TYPE, &edit_type, -1);
 
   /* Launch dialog etc. */
   switch (edit_type)
@@ -739,12 +745,36 @@ value_icon_activate (GtkCellRendererToggle * cell_renderer,
 
         gtk_widget_destroy (dialog);
         break;
+
+      case EDIT_FONT:
+        dialog = gtk_font_selection_dialog_new (_("Select a font"));
+
+        fontsel =
+	  gtk_font_selection_dialog_get_font_selection (GTK_FONT_SELECTION_DIALOG (dialog));
+
+        /* Get response etc... */
+        if (text)
+          gtk_font_selection_set_font_name (GTK_FONT_SELECTION (fontsel), text);
+
+        gtk_dialog_run (GTK_DIALOG (dialog));
+
+        new_text = gtk_font_selection_get_font_name (GTK_FONT_SELECTION (fontsel));
+
+        gtk_list_store_set (GTK_LIST_STORE (eprop_attrs->model), &iter,
+                            COLUMN_TEXT, new_text,
+                            COLUMN_NAME_WEIGHT, PANGO_WEIGHT_BOLD,
+                            COLUMN_TEXT_STYLE, PANGO_STYLE_NORMAL,
+                            COLUMN_TEXT_FG, "Black", -1);
+        g_free (new_text);
+
+        gtk_widget_destroy (dialog);
+        break;
+
       default:
         break;
     }
 
   sync_object (eprop_attrs, FALSE);
-
 
   g_free (text);
 }
@@ -938,24 +968,24 @@ glade_eprop_attrs_populate_view (GladeEditorProperty * eprop,
   property   = glade_editor_property_get_property (eprop);
   attributes = g_value_get_boxed (glade_property_inline_value (property));
 
-  append_empty_row (model, PANGO_ATTR_LANGUAGE);
+  append_empty_row (model, PANGO_ATTR_FONT_DESC);
   append_empty_row (model, PANGO_ATTR_STYLE);
   append_empty_row (model, PANGO_ATTR_WEIGHT);
   append_empty_row (model, PANGO_ATTR_VARIANT);
+  append_empty_row (model, PANGO_ATTR_LANGUAGE);
   append_empty_row (model, PANGO_ATTR_STRETCH);
+  append_empty_row (model, PANGO_ATTR_SCALE);
   append_empty_row (model, PANGO_ATTR_UNDERLINE);
   append_empty_row (model, PANGO_ATTR_STRIKETHROUGH);
-  append_empty_row (model, PANGO_ATTR_GRAVITY);
-  append_empty_row (model, PANGO_ATTR_GRAVITY_HINT);
-  append_empty_row (model, PANGO_ATTR_FAMILY);
-  append_empty_row (model, PANGO_ATTR_SIZE);
-  append_empty_row (model, PANGO_ATTR_ABSOLUTE_SIZE);
   append_empty_row (model, PANGO_ATTR_FOREGROUND);
   append_empty_row (model, PANGO_ATTR_BACKGROUND);
   append_empty_row (model, PANGO_ATTR_UNDERLINE_COLOR);
   append_empty_row (model, PANGO_ATTR_STRIKETHROUGH_COLOR);
+  append_empty_row (model, PANGO_ATTR_GRAVITY);
+  append_empty_row (model, PANGO_ATTR_GRAVITY_HINT);
+  append_empty_row (model, PANGO_ATTR_SIZE);
+  append_empty_row (model, PANGO_ATTR_ABSOLUTE_SIZE);
   append_empty_row (model, PANGO_ATTR_SHAPE);
-  append_empty_row (model, PANGO_ATTR_SCALE);
 
   /* XXX Populate here ...
    */
