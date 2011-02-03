@@ -48,11 +48,6 @@ struct _GladeWidget
 			  * Internal children cannot be deleted.
 			  */
 	
-	gboolean anarchist; /* Some composite widgets have internal children
-			     * that are not part of the same hierarchy; hence 'anarchists',
-			     * typicly a popup window or its child (we need to mark
-			     * them so we can avoid bookkeeping packing props on them etc.).
-			     */
 
 	GObject *object; /* A pointer to the object that was created.
 			  * if it is a GtkWidget; it is shown as a "view"
@@ -84,10 +79,6 @@ struct _GladeWidget
 	GHashTable *signals; /* A table with a GPtrArray of GladeSignals (signal handlers),
 			      * indexed by its name */
 
-	gboolean   visible; /* Local copy of widget visibility, we need to keep track of this
-			     * since the objects copy may be invalid due to a rebuild.
-			     */
-
 	GList     *prop_refs; /* List of properties in the project who's value are `this object'
 			       * (this is used to set/unset those properties when the object is
 			       * added/removed from the project).
@@ -112,7 +103,19 @@ struct _GladeWidget
 	GladeWidget       *construct_template;
 	GladeCreateReason  construct_reason;
 	gchar             *construct_internal;
-	gboolean           construct_exact;
+	guint              construct_exact : 1;
+
+
+	guint visible : 1; /* Local copy of widget visibility, we need to keep track of this
+			    * since the objects copy may be invalid due to a rebuild.
+			    */
+	guint anarchist : 1; /* Some composite widgets have internal children
+			      * that are not part of the same hierarchy; hence 'anarchists',
+			      * typicly a popup window or its child (we need to mark
+			      * them so we can avoid bookkeeping packing props on them etc.).
+			      */
+
+	guint in_project : 1; /* Whether the widget is currently actually in the project */
 };
 
 struct _GladeWidgetClass

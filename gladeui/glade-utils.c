@@ -1796,7 +1796,7 @@ glade_util_object_is_loading (GObject *object)
 	
 	project = glade_widget_get_project (widget);
 	
-	return glade_project_is_loading (project);
+	return project && glade_project_is_loading (project);
 }
 
 /**
