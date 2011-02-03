@@ -190,5 +190,37 @@ glade-marshallers.c: glade-marshallers.list $(GLIB_GENMARSHAL)
 	&& mv glade-marshallers-c.tmp glade-marshallers.c \
 	|| ( rm -f glade-marshallers-c.tmp && exit 1 )
 
-
 CLEANFILES = $(BUILT_SOURCES) gladeui.def
+
+#
+# Introspection generation
+#
+
+-include $(INTROSPECTION_MAKEFILE)
+INTROSPECTION_GIRS =
+INTROSPECTION_SCANNER_ARGS = \
+	--add-include-path=$(srcdir) \
+	--identifier-prefix=Glade \
+	--symbol-prefix=glade \
+	--pkg=gtk+-3.0 -I../
+
+INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
+
+if HAVE_INTROSPECTION
+introspection_sources = $(libgladeui_2_la_SOURCES) $(libgladeuiinclude_HEADERS)
+
+Gladeui-2.0.gir: libgladeui-2.la
+Gladeui_2_0_gir_INCLUDES = Gtk-3.0
+Gladeui_2_0_gir_CFLAGS = $(INCLUDES)
+Gladeui_2_0_gir_LIBS = libgladeui-2.la
+Gladeui_2_0_gir_FILES = $(introspection_sources)
+INTROSPECTION_GIRS += Gladeui-2.0.gir
+
+girdir = $(datadir)/gir-1.0
+gir_DATA = $(INTROSPECTION_GIRS)
+
+typelibdir = $(libdir)/girepository-1.0
+typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
+
+CLEANFILES += $(gir_DATA) $(typelib_DATA)
+endif

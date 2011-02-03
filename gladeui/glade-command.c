@@ -653,7 +653,11 @@ glade_command_set_property_description (GladeCommandSetProperty * me)
   return description;
 }
 
-
+/**
+ * glade_command_set_properties_list:
+ *
+ * @props (element-type GladeProperty): List of #GladeProperty
+ */
 void
 glade_command_set_properties_list (GladeProject * project, GList * props)
 {
@@ -971,7 +975,12 @@ glade_command_placeholder_connect (CommandData * cdata,
        G_CALLBACK (glade_command_placeholder_destroyed), cdata);
 }
 
-
+/**
+ * get_all_parentless_reffed_widgetst:
+ *
+ * @props (element-type GladeWidget) : List of #GladeWidget
+ * @return (element-type GladeWidget) : List of #GladeWidget
+ */
 static GList *
 get_all_parentless_reffed_widgets (GList * reffed, GladeWidget * widget)
 {
@@ -996,7 +1005,7 @@ get_all_parentless_reffed_widgets (GList * reffed, GladeWidget * widget)
 
 /**
  * glade_command_add:
- * @widgets: a #Glist
+ * @widgets (element-type GladeWidget): a #Glist
  * @parent: a #GladeWidget
  * @placeholder: a #GladePlaceholder
  * @pasting: whether we are pasting an existing widget or creating a new one.
@@ -1171,7 +1180,7 @@ glade_command_remove_locked (GladeWidget * widget, GList * reffed)
 
 /**
  * glade_command_remove:
- * @widgets: a #GList of #GladeWidgets
+ * @widgets (element-type GladeWidget): a #GList of #GladeWidgets
  * @return_placeholders: whether or not to return a list of placehodlers
  *
  * Performs a remove command on all widgets in @widgets from @parent.
@@ -1553,8 +1562,8 @@ glade_command_add_remove_collapse (GladeCommand * this_cmd,
 /**
  * glade_command_create:
  * @adaptor:		A #GladeWidgetAdaptor
- * @parent:             the parent #GladeWidget to add the new widget to.
- * @placeholder:	the placeholder which will be substituted by the widget
+ * @parent (allow-none):             the parent #GladeWidget to add the new widget to.
+ * @placeholder (allow-none):	the placeholder which will be substituted by the widget
  * @project:            the project his widget belongs to.
  *
  * Creates a new widget using @adaptor and put in place of the @placeholder
@@ -1603,7 +1612,7 @@ glade_command_create (GladeWidgetAdaptor * adaptor, GladeWidget * parent,
 
 /**
  * glade_command_delete:
- * @widgets: a #GList of #GladeWidgets
+ * @widgets (element-type GladeWidget): a #GList of #GladeWidgets
  *
  * Performs a delete command on the list of widgets.
  */
@@ -1624,7 +1633,7 @@ glade_command_delete (GList * widgets)
 
 /**
  * glade_command_cut:
- * @widgets: a #GList of #GladeWidgets
+ * @widgets (element-type GladeWidget): a #GList of #GladeWidgets
  *
  * Removes the list of widgets and adds them to the clipboard.
  */
@@ -1714,9 +1723,9 @@ glade_command_break_references (GladeProject * project, GList * widgets)
 
 /**
  * glade_command_paste:
- * @widgets: a #GList of #GladeWidget
- * @parent: a #GladeWidget
- * @placeholder: a #GladePlaceholder
+ * @widgets (element-type GladeWidget): a #GList of #GladeWidget
+ * @parent (allow-none): a #GladeWidget
+ * @placeholder (allow-none): a #GladePlaceholder
  *
  * Performs a paste command on all widgets in @widgets to @parent, possibly
  * replacing @placeholder (note toplevels dont need a parent; the active project
@@ -1756,9 +1765,9 @@ glade_command_paste (GList * widgets, GladeWidget * parent,
 
 /**
  * glade_command_dnd:
- * @widgets: a #GList of #GladeWidget
- * @parent: a #GladeWidget
- * @placeholder: a #GladePlaceholder
+ * @widgets (element-type GladeWidget): a #GList of #GladeWidget
+ * @parent (allow-none): a #GladeWidget
+ * @placeholder (allow-none): a #GladePlaceholder
  *
  * Performs a drag-n-drop command, i.e. removes the list of widgets and adds them 
  * to the new parent, possibly replacing @placeholder (note toplevels dont need a 

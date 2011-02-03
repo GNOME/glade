@@ -1,3 +1,15 @@
+2011-02-03  Pablo Castellano <pablog@gnome.org>
+
+	Make libgladeui-2 library come with introspection data, patch based on original
+	patch by Alan Knowles.
+
+	* configure.ac: Added gobject-introspection m4 stuff
+
+	* gladeui/Makefile.am: Added rules to build Gladeui-2.0 gir and typelib
+
+	* gladeui/glade-app.c, gladeui/glade-command.c, gladeui/glade-project.c: Some changes
+	  made to pass the introspection build.
+
 2011-02-03  Frederic Peters <fpeters@0d.be>
 
 	* src/glade-window.c: Put File->Properties before Quit in the File menu

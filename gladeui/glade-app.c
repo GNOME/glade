@@ -586,7 +586,11 @@ glade_app_get_clipboard (void)
   GladeApp *app = glade_app_get ();
   return app->priv->clipboard;
 }
-
+/**
+ * glade_app_get_catalogs:
+ *
+ * Return value: (element-type GladeCatalog): catalogs
+ */
 GList *
 glade_app_get_projects (void)
 {

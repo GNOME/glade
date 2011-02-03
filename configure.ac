@@ -120,6 +120,11 @@ dnl ================================================================
 GTK_DOC_CHECK([1.13],[--flavour no-tmpl])
 
 dnl ================================================================
+dnl Check for introspection
+dnl ================================================================
+GOBJECT_INTROSPECTION_CHECK([0.6.7])
+
+dnl ================================================================
 dnl Check for gtk+
 dnl ================================================================
 GTK_REQUIRED=2.99.0
@@ -289,6 +294,7 @@ Configuration:
 	Compiler:		 ${CC}
 	GTK+ UNIX Print Widgets: ${have_unix_print}
 	PYTHON Widgets support:	 ${have_python}
+	Introspection Data:      ${found_introspection}
 
 	Build Reference Manual:  ${enable_gtk_doc}
 	Build User Manual:       ${gdu_cv_have_gdu}

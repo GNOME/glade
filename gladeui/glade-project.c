@@ -181,9 +181,9 @@ glade_pointer_mode_get_type (void)
   if (etype == 0)
     {
       static const GEnumValue values[] = {
-        {GLADE_POINTER_SELECT, "select", "Select widgets"},
-        {GLADE_POINTER_ADD_WIDGET, "add", "Add widgets"},
-        {GLADE_POINTER_DRAG_RESIZE, "drag-resize", "Drag and resize widgets"},
+        {GLADE_POINTER_SELECT, "select", "Select-widgets"},
+        {GLADE_POINTER_ADD_WIDGET, "add", "Add-widgets"},
+        {GLADE_POINTER_DRAG_RESIZE, "drag-resize", "Drag-and-resize-widgets"},
         {0, NULL, NULL}
       };
       etype = g_enum_register_static ("GladePointerMode", values);
@@ -3181,8 +3181,7 @@ glade_project_selection_set (GladeProject * project,
  * glade_project_selection_get:
  * @project: a #GladeProject
  *
- * Returns: a #GList containing the #GtkWidget items currently selected in 
- *          @project
+ * Returns: a #GList containing the #GtkWidget items currently selected in @project
  */
 GList *
 glade_project_selection_get (GladeProject * project)

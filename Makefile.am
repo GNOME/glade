@@ -20,4 +20,4 @@ DISTCLEANFILES = intltool-extract \
                  intltool-update \
                  gnome-doc-utils.make
 
-DISTCHECK_CONFIGURE_FLAGS = --disable-scrollkeeper --enable-gtk-doc
+DISTCHECK_CONFIGURE_FLAGS = --disable-scrollkeeper --enable-gtk-doc --enable-introspection
