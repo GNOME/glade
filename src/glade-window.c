@@ -717,8 +717,15 @@ project_notify_handler_cb (GladeProject * project, GParamSpec * spec,
   GladeProject *active_project = get_active_project (window);
   GtkAction    *action;
 
-  if (strcmp (spec->name, "path") == 0 || strcmp (spec->name, "format") == 0)
-    refresh_notebook_tab_for_project (window, project);
+  if (strcmp (spec->name, "path") == 0)
+    {
+      refresh_title (window);
+      refresh_notebook_tab_for_project (window, project);
+    }
+  else if (strcmp (spec->name, "format") == 0)
+    {
+      refresh_notebook_tab_for_project (window, project);
+    }
   else if (strcmp (spec->name, "modified") == 0)
     {
       refresh_title (window);

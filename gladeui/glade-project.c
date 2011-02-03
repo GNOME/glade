@@ -981,8 +981,7 @@ glade_project_class_init (GladeProjectClass * klass)
                                    PROP_MODIFIED,
                                    g_param_spec_boolean ("modified",
                                                          "Modified",
-                                                         _
-                                                         ("Whether project has been modified since it was last saved"),
+                                                         _("Whether project has been modified since it was last saved"),
                                                          FALSE,
                                                          G_PARAM_READABLE));
 
@@ -990,8 +989,7 @@ glade_project_class_init (GladeProjectClass * klass)
                                    PROP_HAS_SELECTION,
                                    g_param_spec_boolean ("has-selection",
                                                          _("Has Selection"),
-                                                         _
-                                                         ("Whether project has a selection"),
+                                                         _("Whether project has a selection"),
                                                          FALSE,
                                                          G_PARAM_READABLE));
 
@@ -999,8 +997,7 @@ glade_project_class_init (GladeProjectClass * klass)
                                    PROP_PATH,
                                    g_param_spec_string ("path",
                                                         _("Path"),
-                                                        _
-                                                        ("The filesystem path of the project"),
+                                                        _("The filesystem path of the project"),
                                                         NULL,
                                                         G_PARAM_READABLE));
 
@@ -1008,8 +1005,7 @@ glade_project_class_init (GladeProjectClass * klass)
                                    PROP_READ_ONLY,
                                    g_param_spec_boolean ("read-only",
                                                          _("Read Only"),
-                                                         _
-                                                         ("Whether project is read-only"),
+                                                         _("Whether project is read-only"),
                                                          FALSE,
                                                          G_PARAM_READABLE));
 
@@ -1586,6 +1582,7 @@ glade_project_load_from_file (GladeProject * project, const gchar * path)
   g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
 
   project->priv->path = glade_util_canonical_path (path);
+  g_object_notify (G_OBJECT (project), "path");
 
   retval = glade_project_load_internal (project);
 
@@ -1865,6 +1862,7 @@ glade_project_save (GladeProject * project, const gchar * path, GError ** error)
 
       project->priv->path = (g_free (project->priv->path),
                              g_strdup (canonical_path));
+      g_object_notify (G_OBJECT (project), "path");
 
       /* Update prefs dialogs here... */
       name = glade_project_get_name (project);
