@@ -1,5 +1,8 @@
 2011-02-03  Tristan Van Berkom <tristanvb@openismus.com>
 
+	* gladeui/glade-project.c: Fixed GladeProject to only ever report widgets that are
+	  actually in the project from the GtkTreeModel interface.
+
 	* gladeui/glade-widget.[ch], gladeui/glade-project.c, gladeui/glade-utils.c: Now update
 	  the GladeWidget's project pointer when going in and out of a project.
 

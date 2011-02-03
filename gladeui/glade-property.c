@@ -130,7 +130,8 @@ glade_property_equals_value_impl (GladeProperty *property,
 	if (property->widget)
 	{
 		project = glade_widget_get_project (property->widget);
-		fmt     = glade_project_get_format (project);
+		if (project)
+			fmt = glade_project_get_format (project);
 	}
 
 	return !glade_property_class_compare (property->klass, property->value, value, fmt);
@@ -290,10 +291,11 @@ glade_property_set_value_impl (GladeProperty *property, const GValue *value)
 	/* Add/Remove references from widget ref stacks here
 	 * (before assigning the value)
 	 */
-	if (property->widget && changed && glade_property_class_is_object 
-	    (property->klass, glade_project_get_format (project)))
+	if (property->widget && changed && 
+	    glade_property_class_is_object (property->klass, 
+					    project ? glade_project_get_format (project) : 
+					    GLADE_PROJECT_FORMAT_GTKBUILDER))
 		glade_property_update_prop_refs (property, property->value, value);
-
 
 	/* Make a copy of the old value */
 	g_value_init (&old_value, G_VALUE_TYPE (property->value));

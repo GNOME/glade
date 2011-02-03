@@ -842,7 +842,8 @@ reset_object_property (GladeProperty *property,
 		       GladeProject  *project)
 {
 	if (glade_property_class_is_object (property->klass, 
-					    glade_project_get_format (project)))
+					    project ? glade_project_get_format (project) :
+					    GLADE_PROJECT_FORMAT_LIBGLADE))
 		glade_property_reset (property);
 }
 
