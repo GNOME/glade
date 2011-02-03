@@ -21,6 +21,9 @@
 
 	* src/glade-window.c: Refresh window title when project path changes.
 
+	* plugins/gtk+/gtk+.xml.in: Dont sync transient-for property on GtkWindow, this
+	  can cause crashes at project destroy time.
+
 2011-02-02  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* gladeui/glade-design-layout.c:
