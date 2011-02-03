@@ -52,7 +52,6 @@
 
 #define READONLY_INDICATOR (_("[Read Only]"))
 
-#define URL_USER_MANUAL      "http://library.gnome.org/devel/glade/"
 #define URL_DEVELOPER_MANUAL "http://library.gnome.org/devel/gladeui/"
 
 #define CONFIG_GROUP_WINDOWS        "Glade Windows"
@@ -1928,19 +1927,6 @@ toggle_tabs_cb (GtkAction *action, GladeWindow *window)
 		gtk_notebook_set_show_tabs (GTK_NOTEBOOK (window->priv->notebook), FALSE);
 }
 
-static void
-show_help_cb (GtkAction *action, GladeWindow *window)
-{
-	gboolean retval;
-
-	retval = glade_util_url_show ("ghelp:glade");
-	if (retval)
-		return;
-
-	/* fallback to displaying online user manual */
-	glade_util_url_show (URL_USER_MANUAL);
-}
-
 static void 
 show_developer_manual_cb (GtkAction *action, GladeWindow *window)
 {
@@ -2064,7 +2050,6 @@ static const gchar ui_info[] =
 "      <placeholder name='ProjectsListPlaceholder'/>"
 "    </menu>"
 "    <menu action='HelpMenu'>"
-"      <menuitem action='HelpContents'/>"
 "      <menuitem action='DeveloperReference'/>"
 "      <separator/>"
 "      <menuitem action='About'/>"
@@ -2108,9 +2093,6 @@ static GtkActionEntry static_entries[] = {
 	/* HelpMenu */
 	{ "About", GTK_STOCK_ABOUT, NULL, NULL,
 	  N_("About this application"), G_CALLBACK (about_cb) },
-
-	{ "HelpContents", GTK_STOCK_HELP, N_("_Contents"), "F1",
-	  N_("Display the user manual"), G_CALLBACK (show_help_cb) },
 
 	{ "DeveloperReference", NULL, N_("_Developer Reference"), NULL,
 	  N_("Display the developer reference manual"), G_CALLBACK (show_developer_manual_cb) }
