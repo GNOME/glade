@@ -494,6 +494,10 @@ glade_editor_init (GladeEditor * editor)
 
   gtk_widget_hide (GTK_WIDGET (editor));
 
+  /* Initially there is no widget loaded so these need to be insensitive */
+  gtk_widget_set_sensitive (editor->priv->reset_button, FALSE);
+  gtk_widget_set_sensitive (editor->priv->info_button, FALSE);
+
   gtk_widget_set_no_show_all (GTK_WIDGET (editor), TRUE);
 }
 

@@ -5,7 +5,7 @@
 	has supported this ever since supporting <attributes>, only just adding a GtkFontSelectionDialog
 	to do this from Glade now.
 
-	* gladeui/glade-editor-property.c, gladeui/glade-property-class.c, 
+	* gladeui/glade-editor-property.c, gladeui/glade-property-class.c,
 	gladeui/glade-widget-adaptor.c: Added support for GdkRGBA properties
 
 	* gladeui/glade-property.c: When loading properties, set the enabled flag at load time before
@@ -14,6 +14,8 @@
 	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Add notion of GdkRGBA properties to
 	GtkColorButton adaptor (so that the workspace driven dialog can also set rgba properties), and
 	make rgba properties optional and disabled by default.
+
+	* gladeui/glade-editor.c: Make reset/docs buttons insensitive by default.
 
 2011-02-02  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
