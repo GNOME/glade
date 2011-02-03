@@ -1226,7 +1226,7 @@ GLADE_MAKE_EPROP (GladeEPropColor, glade_eprop_color)
 #define GLADE_IS_EPROP_COLOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_COLOR))
 #define GLADE_IS_EPROP_COLOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_COLOR))
 #define GLADE_EPROP_COLOR_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_COLOR, GladeEPropColorClass))
-     static void glade_eprop_color_finalize (GObject * object)
+static void glade_eprop_color_finalize (GObject * object)
 {
   /* Chain up */
   G_OBJECT_CLASS (editor_property_class)->finalize (object);
@@ -1236,11 +1236,15 @@ static void
 glade_eprop_color_load (GladeEditorProperty * eprop, GladeProperty * property)
 {
   GladeEPropColor *eprop_color = GLADE_EPROP_COLOR (eprop);
+  GParamSpec *pspec;
   GdkColor *color;
+  GdkRGBA *rgba;
   gchar *text;
 
   /* Chain up first */
   editor_property_class->load (eprop, property);
+
+  pspec = glade_property_class_get_pspec (eprop->priv->klass);
 
   if (property)
     {
@@ -1252,18 +1256,34 @@ glade_eprop_color_load (GladeEditorProperty * eprop, GladeProperty * property)
       else
         gtk_entry_set_text (GTK_ENTRY (eprop_color->entry), "");
 
-      if ((color = g_value_get_boxed (glade_property_inline_value (property))) != NULL)
-        gtk_color_button_set_color (GTK_COLOR_BUTTON (eprop_color->cbutton), color);
-      else
-        {
-          GdkColor black = { 0, };
+      if (pspec->value_type == GDK_TYPE_COLOR)
+	{
+	  if ((color = g_value_get_boxed (glade_property_inline_value (property))) != NULL)
+	    gtk_color_button_set_color (GTK_COLOR_BUTTON (eprop_color->cbutton), color);
+	  else
+	    {
+	      GdkColor black = { 0, };
 
-          /* Manually fill it with black for an NULL value.
-           */
-          if (gdk_color_parse ("Black", &black))
-            gtk_color_button_set_color
-                (GTK_COLOR_BUTTON (eprop_color->cbutton), &black);
-        }
+	      /* Manually fill it with black for an NULL value.
+	       */
+	      if (gdk_color_parse ("Black", &black))
+		gtk_color_button_set_color (GTK_COLOR_BUTTON (eprop_color->cbutton), &black);
+	    }
+	}
+      else if (pspec->value_type == GDK_TYPE_RGBA)
+	{
+	  if ((rgba = g_value_get_boxed (glade_property_inline_value (property))) != NULL)
+	    gtk_color_button_set_rgba (GTK_COLOR_BUTTON (eprop_color->cbutton), rgba);
+	  else
+	    {
+	      GdkRGBA black = { 0, };
+
+	      /* Manually fill it with black for an NULL value.
+	       */
+	      if (gdk_rgba_parse (&black, "Black"))
+		gtk_color_button_set_rgba (GTK_COLOR_BUTTON (eprop_color->cbutton), &black);
+	    }
+	}
     }
 }
 
@@ -1271,15 +1291,28 @@ static void
 glade_eprop_color_changed (GtkWidget * button, GladeEditorProperty * eprop)
 {
   GdkColor color = { 0, };
+  GdkRGBA rgba = { 0, };
   GValue value = { 0, };
+  GParamSpec *pspec;
 
   if (eprop->priv->loading)
     return;
 
-  gtk_color_button_get_color (GTK_COLOR_BUTTON (button), &color);
+  pspec = glade_property_class_get_pspec (eprop->priv->klass);
+  g_value_init (&value, pspec->value_type);
 
-  g_value_init (&value, GDK_TYPE_COLOR);
-  g_value_set_boxed (&value, &color);
+  if (pspec->value_type == GDK_TYPE_COLOR)
+    {
+      gtk_color_button_get_color (GTK_COLOR_BUTTON (button), &color);
+
+      g_value_set_boxed (&value, &color);
+    }
+  else if (pspec->value_type == GDK_TYPE_RGBA)
+    {
+      gtk_color_button_get_rgba (GTK_COLOR_BUTTON (button), &rgba);
+
+      g_value_set_boxed (&value, &rgba);
+    }
 
   glade_editor_property_commit_no_callback (eprop, &value);
   g_value_unset (&value);
@@ -1290,6 +1323,9 @@ glade_eprop_color_create_input (GladeEditorProperty * eprop)
 {
   GladeEPropColor *eprop_color = GLADE_EPROP_COLOR (eprop);
   GtkWidget *hbox;
+  GParamSpec *pspec;
+
+  pspec  = glade_property_class_get_pspec (eprop->priv->klass);
 
   hbox = gtk_hbox_new (FALSE, 0);
 
@@ -1301,6 +1337,9 @@ glade_eprop_color_create_input (GladeEditorProperty * eprop)
   eprop_color->cbutton = gtk_color_button_new ();
   gtk_widget_show (eprop_color->cbutton);
   gtk_box_pack_start (GTK_BOX (hbox), eprop_color->cbutton, FALSE, FALSE, 0);
+
+  if (pspec->value_type == GDK_TYPE_RGBA)
+    gtk_color_button_set_use_alpha (GTK_COLOR_BUTTON (eprop_color->cbutton), TRUE);
 
   g_signal_connect (G_OBJECT (eprop_color->cbutton), "color-set",
                     G_CALLBACK (glade_eprop_color_changed), eprop);

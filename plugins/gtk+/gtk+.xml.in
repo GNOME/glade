@@ -1170,6 +1170,8 @@ embedded in another object</_tooltip>
       <properties>
 	<property id="title" translatable="True"/>
 	<property id="color" default="Black" optional="True" optional-default="False"/>
+	<property id="alpha" optional="True" optional-default="False"/>
+	<property id="rgba" default="Black" optional="True" optional-default="False" since="3.0"/>
 
 	<!-- These props dont apply to color buttons -->
 	<property id="glade-type" disabled="True"/>
@@ -1798,6 +1800,8 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkColorSelection" generic-name="colorselection" _title="Color Selection">
       <properties>
 	<property id="current-color" default="Black" optional="True" optional-default="False"/>
+	<property id="current-alpha" optional="True" optional-default="False"/>
+	<property id="current-rgba" default="Black" optional="True" optional-default="False" since="3.0"/>
       </properties>
     </glade-widget-class>
     

@@ -5581,23 +5581,49 @@ glade_gtk_color_button_refresh_color (GtkColorButton * button,
                                       GladeWidget * gbutton)
 {
   GladeProperty *property;
-  GdkColor color = { 0, };
 
   if ((property = glade_widget_get_property (gbutton, "color")) != NULL)
-    glade_command_set_property (property, &color);
-}
+    {
+      if (glade_property_get_enabled (property))
+	{
+	  GdkColor color = { 0, };
+	  gtk_color_button_get_color (button, &color);
+	  glade_command_set_property (property, &color);
+	}
+    }
 
+  if ((property = glade_widget_get_property (gbutton, "rgba")) != NULL)
+    {
+      if (glade_property_get_enabled (property))
+	{
+	  GdkRGBA rgba = { 0, };
+	  gtk_color_button_get_rgba (button, &rgba);
+	  glade_command_set_property (property, &rgba);
+	}
+    }
+}
 
 void
 glade_gtk_color_button_set_property (GladeWidgetAdaptor * adaptor,
                                      GObject * object,
                                      const gchar * id, const GValue * value)
 {
+  GladeProperty *property;
+  GladeWidget *gwidget = glade_widget_get_from_gobject (object);
+
   if (!strcmp (id, "color"))
     {
-      if (g_value_get_boxed (value))
-        gtk_color_button_set_color (GTK_COLOR_BUTTON (object),
-                                    (GdkColor *) g_value_get_boxed (value));
+      if ((property = glade_widget_get_property (gwidget, "color")) != NULL &&
+	  glade_property_get_enabled (property) && g_value_get_boxed (value))
+	gtk_color_button_set_color (GTK_COLOR_BUTTON (object),
+				    (GdkColor *) g_value_get_boxed (value));
+    }
+  else if (!strcmp (id, "rgba"))
+    {
+      if ((property = glade_widget_get_property (gwidget, "rgba")) != NULL &&
+	  glade_property_get_enabled (property) && g_value_get_boxed (value))
+	gtk_color_button_set_rgba (GTK_COLOR_BUTTON (object),
+				   (GdkRGBA *) g_value_get_boxed (value));
     }
   else
     GWA_GET_CLASS (GTK_TYPE_BUTTON)->set_property (adaptor, object, id, value);

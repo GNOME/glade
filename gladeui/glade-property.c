@@ -1114,6 +1114,11 @@ glade_property_read (GladeProperty * property,
     }
   else
     {
+      /* If an optional property is specified in the
+       * glade file, its enabled
+       */
+      property->priv->enabled = TRUE;
+
       gvalue = 
 	glade_property_class_make_gvalue_from_string (property->priv->klass, value, project);
 
@@ -1121,11 +1126,6 @@ glade_property_read (GladeProperty * property,
 
       g_value_unset (gvalue);
       g_free (gvalue);
-
-      /* If an optional property is specified in the
-       * glade file, its enabled
-       */
-      property->priv->enabled = TRUE;
     }
 
   translatable =

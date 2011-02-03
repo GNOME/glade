@@ -1110,7 +1110,8 @@ glade_widget_adaptor_get_eprop_type (GParamSpec * pspec)
     }
   else if (G_IS_PARAM_SPEC_BOXED (pspec))
     {
-      if (pspec->value_type == GDK_TYPE_COLOR)
+      if (pspec->value_type == GDK_TYPE_COLOR ||
+	  pspec->value_type == GDK_TYPE_RGBA)
         type = GLADE_TYPE_EPROP_COLOR;
       else if (pspec->value_type == G_TYPE_STRV)
         type = GLADE_TYPE_EPROP_TEXT;

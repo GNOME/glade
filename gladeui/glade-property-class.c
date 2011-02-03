@@ -460,6 +460,7 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *
   gchar *string = NULL, **strv, str[G_ASCII_DTOSTR_BUF_SIZE];
   GObject *object;
   GdkColor *color;
+  GdkRGBA *rgba;
   GList *objects;
 
   if (G_IS_PARAM_SPEC_ENUM (property_class->pspec))
@@ -502,6 +503,12 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *
           if (color)
             string = g_strdup_printf ("#%04x%04x%04x",
                                       color->red, color->green, color->blue);
+        }
+      else if (property_class->pspec->value_type == GDK_TYPE_RGBA)
+        {
+          rgba = g_value_get_boxed (value);
+          if (rgba)
+	    string = gdk_rgba_to_string (rgba);
         }
       else if (property_class->pspec->value_type == G_TYPE_STRV)
         {
@@ -778,6 +785,7 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
   GValue *value = g_new0 (GValue, 1);
   gchar **strv;
   GdkColor color = { 0, };
+  GdkRGBA rgba = { 0, };
 
   g_value_init (value, property_class->pspec->value_type);
 
@@ -818,6 +826,13 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
             g_value_set_boxed (value, &color);
           else
             g_warning ("could not parse colour name `%s'", string);
+        }
+      else if (property_class->pspec->value_type == GDK_TYPE_RGBA)
+        {
+          if (gdk_rgba_parse (&rgba, string))
+            g_value_set_boxed (value, &rgba);
+          else
+            g_warning ("could not parse rgba colour name `%s'", string);
         }
       else if (property_class->pspec->value_type == G_TYPE_STRV)
         {
