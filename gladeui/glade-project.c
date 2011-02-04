@@ -221,16 +221,18 @@ static GtkWidget *glade_project_build_prefs_dialog (GladeProject * project);
 static void target_button_clicked (GtkWidget * widget, GladeProject * project);
 static void update_prefs_for_resource_path (GladeProject * project);
 
-static guint glade_project_signals[LAST_SIGNAL] = { 0 };
-
-static GladeIDAllocator *unsaved_number_allocator = NULL;
-
 static void gtk_tree_model_iface_init (GtkTreeModelIface * iface);
 
 static void glade_project_model_get_iter_for_object (GladeProject * project,
                                                      GObject * object,
                                                      GtkTreeIter * iter);
 
+static gint glade_project_count_children (GladeProject *project, 
+					  GladeWidget  *parent);
+
+static guint glade_project_signals[LAST_SIGNAL] = { 0 };
+
+static GladeIDAllocator *unsaved_number_allocator = NULL;
 
 #define GLADE_PROJECT_LARGE_PROJECT 40
 
@@ -2640,15 +2642,33 @@ glade_project_set_widget_name (GladeProject * project,
 
 static void
 glade_project_notify_row_has_child (GladeProject *project,
-				    GladeWidget  *gwidget,
-				    gboolean      adding)
+				    GladeWidget  *gwidget)
 {
+  GladeWidget *parent;
+  gint         siblings;
+
+  parent = glade_widget_get_parent (gwidget);
+
+  if (parent)
+    {
+      siblings = glade_project_count_children (project, parent);
+
+      if (siblings == 1)
+	{
+	  GtkTreePath *path;
+	  GtkTreeIter  iter;
+
+	  glade_project_model_get_iter_for_object (project, glade_widget_get_object (parent), &iter);
+	  path = gtk_tree_model_get_path (GTK_TREE_MODEL (project), &iter);
+	  gtk_tree_model_row_has_child_toggled (GTK_TREE_MODEL (project), path, &iter);
+	  gtk_tree_path_free (path);
+	}
+    }
 }
 
-
 static void
-glade_project_notify_row_inserted (GladeProject * project,
-                                   GladeWidget * gwidget)
+glade_project_notify_row_inserted (GladeProject *project,
+                                   GladeWidget  *gwidget)
 {
   GtkTreeIter iter;
   GtkTreePath *path;
@@ -2662,11 +2682,12 @@ glade_project_notify_row_inserted (GladeProject * project,
   gtk_tree_model_row_inserted (GTK_TREE_MODEL (project), path, &iter);
   gtk_tree_path_free (path);
 
-  glade_project_notify_row_has_child (project, gwidget, TRUE);
+  glade_project_notify_row_has_child (project, gwidget);
 }
 
 static void
-glade_project_notify_row_deleted (GladeProject * project, GladeWidget * gwidget)
+glade_project_notify_row_deleted (GladeProject *project, 
+				  GladeWidget  *gwidget)
 {
   GtkTreeIter iter;
   GtkTreePath *path;
@@ -2676,10 +2697,70 @@ glade_project_notify_row_deleted (GladeProject * project, GladeWidget * gwidget)
   gtk_tree_model_row_deleted (GTK_TREE_MODEL (project), path);
   gtk_tree_path_free (path);
 
-  glade_project_notify_row_has_child (project, gwidget, FALSE);
+  glade_project_notify_row_has_child (project, gwidget);
 
   project->priv->stamp++;
 }
+
+void
+glade_project_check_reordered (GladeProject       *project,
+			       GladeWidget        *parent,
+			       GList              *old_order)
+{
+  GList       *new_order, *l, *ll;
+  gint        *order, n_children, i;
+  GtkTreeIter  iter;
+  GtkTreePath *path;
+
+  g_return_if_fail (GLADE_IS_PROJECT (project));
+  g_return_if_fail (GLADE_IS_WIDGET (parent));
+  g_return_if_fail (glade_project_has_object (project,
+					      glade_widget_get_object (parent)));
+
+  new_order = glade_widget_get_children (parent);
+
+  /* Check if the list changed */
+  for (l = old_order, ll = new_order; 
+       l && ll; 
+       l = l->next, ll = ll->next)
+    {
+      if (l->data != ll->data)
+	break;
+    }
+
+  if (l || ll)
+    {
+      n_children = glade_project_count_children (project, parent);
+      order = g_new (gint, n_children);
+
+      for (i = 0, l = new_order; l; l = l->next)
+	{
+	  GObject *obj = l->data;
+
+	  if (glade_project_has_object (project, obj))
+	    {
+	      GList *node = g_list_find (old_order, obj);
+
+	      g_assert (node);
+
+	      order[i] = g_list_position (old_order, node);
+
+	      i++;
+	    }
+	}
+
+      /* Signal that the rows were reordered */
+      glade_project_model_get_iter_for_object (project, glade_widget_get_object (parent), &iter);
+      path = gtk_tree_model_get_path (GTK_TREE_MODEL (project), &iter);
+      gtk_tree_model_rows_reordered (GTK_TREE_MODEL (project), path, &iter, order);
+      gtk_tree_path_free (path);
+
+      g_free (order);
+    }
+
+  g_list_free (new_order);
+}
+
 
 /**
  * glade_project_add_object:
@@ -4170,6 +4251,8 @@ glade_project_model_get_column_type (GtkTreeModel * model, gint column)
     }
 }
 
+GladeWidget *debug_widget;
+
 static gboolean
 glade_project_model_get_iter (GtkTreeModel * model,
                               GtkTreeIter * iter, GtkTreePath * path)
@@ -4194,6 +4277,7 @@ glade_project_model_get_iter (GtkTreeModel * model,
       return FALSE;
     }
 
+  debug_widget = widget;
   for (i = 1; i < depth; i++)
     {
       object = glade_project_nth_child (project, widget, indices[i]);
@@ -4206,6 +4290,7 @@ glade_project_model_get_iter (GtkTreeModel * model,
         }
 
       widget = glade_widget_get_from_gobject (object);
+      debug_widget = widget;
     }
 
   if (object)
@@ -4464,7 +4549,7 @@ glade_project_model_iter_children (GtkTreeModel * model,
       object = glade_project_nth_child (project, widget, 0);
     }
   else if (project->priv->tree)
-      object = project->priv->tree->data;
+    object = project->priv->tree->data;
 
   if (object)
     {

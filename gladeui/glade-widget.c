@@ -3251,18 +3251,37 @@ glade_widget_object_get_property (GladeWidget * widget,
  * Sets @child's packing property identified by @property_name to @value.
  */
 void
-glade_widget_child_set_property (GladeWidget * widget,
-                                 GladeWidget * child,
-                                 const gchar * property_name,
-                                 const GValue * value)
+glade_widget_child_set_property (GladeWidget  *widget,
+                                 GladeWidget  *child,
+                                 const gchar  *property_name,
+                                 const GValue *value)
 {
+  GList *old_order = NULL;
+
   g_return_if_fail (GLADE_IS_WIDGET (widget));
   g_return_if_fail (GLADE_IS_WIDGET (child));
   g_return_if_fail (property_name != NULL && value != NULL);
 
+  if (widget->priv->project &&
+      widget->priv->in_project)
+    old_order = glade_widget_get_children (widget);
+
   glade_widget_adaptor_child_set_property (widget->priv->adaptor,
                                            widget->priv->object,
                                            child->priv->object, property_name, value);
+
+  /* After setting a child property... it's possible the order of children
+   * in the parent has been effected.
+   *
+   * If this is the case then we need to signal the GladeProject that
+   * it's rows have been reordered so that any connected views update
+   * themselves properly.
+   */
+  if (widget->priv->project &&
+      widget->priv->in_project)
+    glade_project_check_reordered (widget->priv->project, widget, old_order);
+
+  g_list_free (old_order);
 }
 
 /**

@@ -1,3 +1,20 @@
+2011-02-04  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-project.c:
+	  o Added notification of row-has-child-toggled when first
+	    child is added to a parent or last child removed
+	  o Added glade_project_check_reordered() to be called after setting
+	    a child property on a widget since this may effect the order of children,
+	    if the order changes, then emit the "rows-reordered" treemodel signal.
+
+	* gladeui/glade-widget.c: call glade_project_check_reordered() after applying
+	  child properties.
+
+	* gladeui/glade-base-editor.c: Delete child first before adding a replacement
+	  when changing a child's type (we cant assume the parent can hold more than
+	  one child).
+
+	
 2011-02-03  Pablo Castellano <pablog@gnome.org>
 
 	Make libgladeui-2 library come with introspection data, patch based on original

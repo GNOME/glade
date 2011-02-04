@@ -796,7 +796,7 @@ glade_base_editor_popup (GladeBaseEditor * editor, GladeWidget * widget)
                             GLADE_BASE_EDITOR_GTYPE, &iter_type,
                             GLADE_BASE_EDITOR_CLASS_NAME, &class_name, -1);
 
-        label = g_strdup_printf (_("Add %s item"), class_name);
+        label = g_strdup_printf (_("Add %s"), class_name);
 
         item = gtk_menu_item_new_with_label (label);
         gtk_widget_show (item);
@@ -828,7 +828,7 @@ glade_base_editor_popup (GladeBaseEditor * editor, GladeWidget * widget)
                             GLADE_BASE_EDITOR_GTYPE, &iter_type,
                             GLADE_BASE_EDITOR_CLASS_NAME, &class_name, -1);
 
-        label = g_strdup_printf (_("Add child %s item"), class_name);
+        label = g_strdup_printf (_("Add child %s"), class_name);
 
         item = gtk_menu_item_new_with_label (label);
         gtk_widget_show (item);
@@ -1343,6 +1343,10 @@ glade_base_editor_change_type (GladeBaseEditor * editor,
   name = g_strdup (glade_widget_get_name (gchild));
   glade_base_editor_find_child (editor, gchild, &iter);
 
+  /* Delete old widget first, we cant assume the old and new widget can live in 
+   * the same parent simultaniously */
+  glade_base_editor_delegate_delete_child (editor, parent, gchild);
+
   /* Create new widget */
   gchild_new = glade_base_editor_delegate_build_child (editor, parent, type);
 
@@ -1376,9 +1380,6 @@ glade_base_editor_change_type (GladeBaseEditor * editor,
   /* Copy properties */
   glade_widget_copy_properties (gchild_new, gchild, TRUE, TRUE);
 
-  /* Delete old widget */
-  glade_base_editor_delegate_delete_child (editor, parent, gchild);
-
   /* Apply packing properties to the new object 
    * 
    * No need to use GladeCommand here on the newly created widget,
@@ -1400,6 +1401,7 @@ glade_base_editor_change_type (GladeBaseEditor * editor,
   if (GTK_IS_WIDGET (child_new))
     gtk_widget_show_all (GTK_WIDGET (child_new));
 
+  /* XXX We should update the widget name in the visible tree here too */
   gtk_tree_store_set (GTK_TREE_STORE (editor->priv->model), &iter,
                       GLADE_BASE_EDITOR_GWIDGET, gchild_new,
                       GLADE_BASE_EDITOR_OBJECT, child_new,

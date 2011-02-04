@@ -134,6 +134,9 @@ gchar              *glade_project_resource_fullpath    (GladeProject       *proj
 void                glade_project_widget_visibility_changed (GladeProject  *project,
                                                              GladeWidget   *widget,
                                                              gboolean       visible);
+void                glade_project_check_reordered      (GladeProject       *project,
+							GladeWidget        *parent,
+							GList              *old_order);
 
 /* Commands */
 void                glade_project_undo                 (GladeProject       *project);
