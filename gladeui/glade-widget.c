@@ -3357,8 +3357,8 @@ glade_widget_set_object (GladeWidget * gwidget, GObject * new_object,
       /* Add internal reference to new widget if its not internal */
       if (gwidget->priv->internal == NULL)
         {
-          /* Assume ownership of floating objects */
-          if (g_object_is_floating (new_object))
+          /* Assume initial ref count of all objects */
+          if (G_IS_INITIALLY_UNOWNED (new_object))
             g_object_ref_sink (new_object);
         }
 
@@ -3386,7 +3386,7 @@ glade_widget_set_object (GladeWidget * gwidget, GObject * new_object,
         {
 #if _YOU_WANT_TO_LOOK_AT_PROJECT_REFCOUNT_BALANCING_
           g_print ("Killing '%s::%s' widget's object with reference count %d\n",
-                   gwidget->priv->adaptor->name,
+                   glade_widget_adaptor_get_name (gwidget->priv->adaptor),
                    gwidget->priv->name ? gwidget->priv->name : "(unknown)",
                    old_object->ref_count);
 #endif

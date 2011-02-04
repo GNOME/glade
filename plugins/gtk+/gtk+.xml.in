@@ -1540,6 +1540,14 @@ embedded in another object</_tooltip>
       </properties>
 
     </glade-widget-class>
+
+    <glade-widget-class name="GtkRecentChooserMenu" generic-name="recentchoosermenu" 
+			_title="Recent Chooser Menu" toplevel="True">
+
+      <create-editable-function>glade_gtk_recent_chooser_menu_create_editable</create-editable-function>
+      <set-property-function>glade_gtk_recent_chooser_menu_set_property</set-property-function>
+
+    </glade-widget-class>
     
     <glade-widget-class name="GtkHScrollbar" generic-name="hscrollbar" _title="Horizontal Scrollbar">
       <properties>
