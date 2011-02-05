@@ -905,7 +905,7 @@ glade_project_class_init (GladeProjectClass * klass)
                     G_SIGNAL_RUN_FIRST,
                     G_STRUCT_OFFSET (GladeProjectClass, changed),
                     NULL, NULL,
-                    glade_marshal_VOID__OBJECT_BOOLEAN,
+                    _glade_marshal_VOID__OBJECT_BOOLEAN,
                     G_TYPE_NONE, 2, GLADE_TYPE_COMMAND, G_TYPE_BOOLEAN);
 
   /**
@@ -960,7 +960,7 @@ glade_project_class_init (GladeProjectClass * klass)
                     G_TYPE_FROM_CLASS (object_class),
                     G_SIGNAL_RUN_FIRST,
                     0, NULL, NULL,
-                    glade_marshal_VOID__INT_INT,
+                    _glade_marshal_VOID__INT_INT,
                     G_TYPE_NONE, 2, G_TYPE_INT, G_TYPE_INT);
 
   /**
@@ -976,7 +976,7 @@ glade_project_class_init (GladeProjectClass * klass)
                     G_TYPE_FROM_CLASS (object_class),
                     G_SIGNAL_RUN_FIRST,
                     0, NULL, NULL,
-                    glade_marshal_VOID__OBJECT_BOOLEAN,
+                    _glade_marshal_VOID__OBJECT_BOOLEAN,
                     G_TYPE_NONE, 2, GLADE_TYPE_WIDGET, G_TYPE_BOOLEAN);
     
   g_object_class_install_property (object_class,

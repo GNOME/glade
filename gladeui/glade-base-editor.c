@@ -1498,7 +1498,7 @@ glade_base_editor_class_init (GladeBaseEditorClass * klass)
                     G_SIGNAL_RUN_LAST,
                     G_STRUCT_OFFSET (GladeBaseEditorClass, child_selected),
                     NULL, NULL,
-                    glade_marshal_VOID__OBJECT, G_TYPE_NONE, 1, G_TYPE_OBJECT);
+                    _glade_marshal_VOID__OBJECT, G_TYPE_NONE, 1, G_TYPE_OBJECT);
 
   /**
    * GladeBaseEditor::child-change-type:
@@ -1513,8 +1513,8 @@ glade_base_editor_class_init (GladeBaseEditorClass * klass)
                     G_TYPE_FROM_CLASS (object_class),
                     G_SIGNAL_RUN_LAST,
                     G_STRUCT_OFFSET (GladeBaseEditorClass, change_type),
-                    glade_boolean_handled_accumulator, NULL,
-                    glade_marshal_BOOLEAN__OBJECT_UINT,
+                    _glade_boolean_handled_accumulator, NULL,
+                    _glade_marshal_BOOLEAN__OBJECT_UINT,
                     G_TYPE_BOOLEAN, 2, G_TYPE_OBJECT, G_TYPE_UINT);
 
   /**
@@ -1530,8 +1530,8 @@ glade_base_editor_class_init (GladeBaseEditorClass * klass)
                     G_TYPE_FROM_CLASS (object_class),
                     G_SIGNAL_RUN_LAST,
                     G_STRUCT_OFFSET (GladeBaseEditorClass, get_display_name),
-                    glade_string_accumulator, NULL,
-                    glade_marshal_STRING__OBJECT,
+                    _glade_string_accumulator, NULL,
+                    _glade_marshal_STRING__OBJECT,
                     G_TYPE_STRING, 1, G_TYPE_OBJECT);
 
   /**
@@ -1550,8 +1550,8 @@ glade_base_editor_class_init (GladeBaseEditorClass * klass)
                     G_TYPE_FROM_CLASS (object_class),
                     G_SIGNAL_RUN_LAST,
                     G_STRUCT_OFFSET (GladeBaseEditorClass, build_child),
-                    glade_stop_emission_accumulator, NULL,
-                    glade_marshal_OBJECT__OBJECT_UINT,
+                    _glade_stop_emission_accumulator, NULL,
+                    _glade_marshal_OBJECT__OBJECT_UINT,
                     G_TYPE_OBJECT, 2, G_TYPE_OBJECT, G_TYPE_UINT);
 
   /**
@@ -1565,8 +1565,8 @@ glade_base_editor_class_init (GladeBaseEditorClass * klass)
                     G_TYPE_FROM_CLASS (object_class),
                     G_SIGNAL_RUN_LAST,
                     G_STRUCT_OFFSET (GladeBaseEditorClass, delete_child),
-                    glade_boolean_handled_accumulator, NULL,
-                    glade_marshal_BOOLEAN__OBJECT_OBJECT,
+                    _glade_boolean_handled_accumulator, NULL,
+                    _glade_marshal_BOOLEAN__OBJECT_OBJECT,
                     G_TYPE_BOOLEAN, 2, G_TYPE_OBJECT, G_TYPE_OBJECT);
 
   /**
@@ -1584,8 +1584,8 @@ glade_base_editor_class_init (GladeBaseEditorClass * klass)
                     G_TYPE_FROM_CLASS (object_class),
                     G_SIGNAL_RUN_LAST,
                     G_STRUCT_OFFSET (GladeBaseEditorClass, move_child),
-                    glade_stop_emission_accumulator, NULL,
-                    glade_marshal_BOOLEAN__OBJECT_OBJECT,
+                    _glade_stop_emission_accumulator, NULL,
+                    _glade_marshal_BOOLEAN__OBJECT_OBJECT,
                     G_TYPE_BOOLEAN, 2, G_TYPE_OBJECT, G_TYPE_OBJECT);
 }
 

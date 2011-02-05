@@ -53,9 +53,9 @@
 #include <gdk/gdkkeysyms.h>
 
 #include <gladeui/glade.h>
-#include <gladeui/glade-accumulators.h>
 #include <gladeui/glade-marshallers.h>
 #include <gladeui/glade-popup.h>
+#include "glade-gtk-marshallers.h"
 #include "glade-fixed.h"
 
 /* properties */
@@ -95,6 +95,23 @@ typedef struct
 
 static GObjectClass *parent_class;
 static guint glade_fixed_signals[FIXED_SIGNALS];
+
+/* From gtkmain.c */
+static gboolean
+glade_fixed_boolean_handled_accumulator (GSignalInvocationHint * ihint,
+					 GValue * return_accu,
+					 const GValue * handler_return,
+					 gpointer dummy)
+{
+  gboolean continue_emission;
+  gboolean signal_handled;
+
+  signal_handled = g_value_get_boolean (handler_return);
+  g_value_set_boolean (return_accu, signal_handled);
+  continue_emission = !signal_handled;
+
+  return continue_emission;
+}
 
 /*******************************************************************************
                              Static helper routines
@@ -1040,8 +1057,8 @@ glade_fixed_class_init (GladeFixedClass * fixed_class)
                     G_SIGNAL_RUN_LAST,
                     G_STRUCT_OFFSET
                     (GladeFixedClass, configure_child),
-                    glade_boolean_handled_accumulator, NULL,
-                    glade_marshal_BOOLEAN__OBJECT_POINTER,
+                    glade_fixed_boolean_handled_accumulator, NULL,
+                    glade_gtk_marshal_BOOLEAN__OBJECT_POINTER,
                     G_TYPE_BOOLEAN, 2, G_TYPE_OBJECT, G_TYPE_POINTER);
 
         /**
@@ -1060,8 +1077,8 @@ glade_fixed_class_init (GladeFixedClass * fixed_class)
                     G_SIGNAL_RUN_LAST,
                     G_STRUCT_OFFSET
                     (GladeFixedClass, configure_begin),
-                    glade_boolean_handled_accumulator, NULL,
-                    glade_marshal_BOOLEAN__OBJECT,
+                    glade_fixed_boolean_handled_accumulator, NULL,
+                    glade_gtk_marshal_BOOLEAN__OBJECT,
                     G_TYPE_BOOLEAN, 1, G_TYPE_OBJECT);
 
         /**
@@ -1080,8 +1097,8 @@ glade_fixed_class_init (GladeFixedClass * fixed_class)
                     G_SIGNAL_RUN_LAST,
                     G_STRUCT_OFFSET
                     (GladeFixedClass, configure_end),
-                    glade_boolean_handled_accumulator, NULL,
-                    glade_marshal_BOOLEAN__OBJECT,
+                    glade_fixed_boolean_handled_accumulator, NULL,
+                    glade_gtk_marshal_BOOLEAN__OBJECT,
                     G_TYPE_BOOLEAN, 1, G_TYPE_OBJECT);
 }
 

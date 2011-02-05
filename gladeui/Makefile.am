@@ -83,9 +83,6 @@ libgladeui_2_la_SOURCES = \
 	glade-builtins.c \
 	glade-app.c \
 	glade-clipboard.c \
-	glade-popup.h \
-	glade-marshallers.h \
-	glade-accumulators.h \
 	glade-name-context.c \
 	glade-displayable-values.c \
 	glade-signal-model.c \
@@ -133,7 +130,6 @@ libgladeuiinclude_HEADERS = \
 	glade-xml-utils.h \
 	glade-signal.h \
 	glade-signal-class.h \
-	glade-cursor.h \
 	glade-catalog.h \
 	glade-widget-action.h \
 	glade-name-context.h \
@@ -144,7 +140,11 @@ libgladeuiinclude_HEADERS = \
 	glade-signal-model.h
 
 noinst_HEADERS = \
+	glade-marshallers.h \
 	glade-design-layout.h \
+	glade-popup.h \
+	glade-cursor.h \
+	glade-accumulators.h \
 	glade-design-private.h
 
 if PLATFORM_WIN32
@@ -182,11 +182,11 @@ gladeui.def: $(libgladeuiinclude_HEADERS)
 # Marshaller generation
 #
 glade-marshallers.h: glade-marshallers.list $(GLIB_GENMARSHAL)
-	$(GLIB_GENMARSHAL) --prefix=glade_marshal $(srcdir)/glade-marshallers.list --header > glade-marshallers-h.tmp \
+	$(GLIB_GENMARSHAL) --prefix=_glade_marshal $(srcdir)/glade-marshallers.list --header > glade-marshallers-h.tmp \
 	&& mv glade-marshallers-h.tmp glade-marshallers.h \
 	|| ( rm -f glade-marshallers-h.tmp && exit 1)
 glade-marshallers.c: glade-marshallers.list $(GLIB_GENMARSHAL)
-	$(GLIB_GENMARSHAL) --prefix=glade_marshal $(srcdir)/glade-marshallers.list --body --header > glade-marshallers-c.tmp     \
+	$(GLIB_GENMARSHAL) --prefix=_glade_marshal $(srcdir)/glade-marshallers.list --body --header > glade-marshallers-c.tmp     \
 	&& mv glade-marshallers-c.tmp glade-marshallers.c \
 	|| ( rm -f glade-marshallers-c.tmp && exit 1 )
 

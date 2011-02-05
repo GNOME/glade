@@ -674,7 +674,7 @@ glade_property_klass_init (GladePropertyKlass * prop_class)
                     G_STRUCT_OFFSET (GladePropertyKlass,
                                      value_changed),
                     NULL, NULL,
-                    glade_marshal_VOID__POINTER_POINTER,
+                    _glade_marshal_VOID__POINTER_POINTER,
                     G_TYPE_NONE, 2, G_TYPE_POINTER, G_TYPE_POINTER);
 
   glade_property_signals[TOOLTIP_CHANGED] =
@@ -684,7 +684,7 @@ glade_property_klass_init (GladePropertyKlass * prop_class)
                     G_STRUCT_OFFSET (GladePropertyKlass,
                                      tooltip_changed),
                     NULL, NULL,
-                    glade_marshal_VOID__STRING_STRING_STRING,
+                    _glade_marshal_VOID__STRING_STRING_STRING,
                     G_TYPE_NONE, 3, G_TYPE_STRING, G_TYPE_STRING,
                     G_TYPE_STRING);
 

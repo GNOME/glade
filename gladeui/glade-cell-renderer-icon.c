@@ -114,7 +114,7 @@ glade_cell_renderer_icon_class_init (GladeCellRendererIconClass * class)
                     G_SIGNAL_RUN_LAST,
                     G_STRUCT_OFFSET (GladeCellRendererIconClass, activate),
                     NULL, NULL,
-                    glade_marshal_VOID__STRING, G_TYPE_NONE, 1, G_TYPE_STRING);
+                    _glade_marshal_VOID__STRING, G_TYPE_NONE, 1, G_TYPE_STRING);
 
   g_type_class_add_private (class, sizeof (GladeCellRendererIconPrivate));
 }

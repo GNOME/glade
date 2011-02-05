@@ -25,7 +25,7 @@ libgladegtk_la_SOURCES     = glade-gtk.c glade-fixed.c glade-accels.c glade-attr
 	glade-icon-sources.c glade-button-editor.c glade-tool-button-editor.c glade-image-editor.c \
 	glade-image-item-editor.c glade-icon-factory-editor.c glade-store-editor.c glade-label-editor.c \
 	glade-cell-renderer-editor.c glade-treeview-editor.c glade-entry-editor.c glade-activatable-editor.c \
-	glade-tool-item-group-editor.c glade-string-list.c
+	glade-tool-item-group-editor.c glade-string-list.c glade-gtk-marshallers.c
 
 libgladegtk_la_LDFLAGS     = -module -avoid-version $(AM_LDFLAGS)
 libgladegtk_la_LIBADD      = $(libgladeui) $(GTK_LIBS)
@@ -35,7 +35,7 @@ noinst_HEADERS = glade-gtk.h glade-accels.h glade-attributes.h glade-column-type
 	glade-tool-button-editor.h glade-image-editor.h glade-image-item-editor.h glade-icon-factory-editor.h \
 	glade-store-editor.h glade-label-editor.h glade-cell-renderer-editor.h glade-treeview-editor.h \
 	glade-entry-editor.h glade-activatable-editor.h glade-fixed.h glade-tool-item-group-editor.h \
-	glade-string-list.h
+	glade-string-list.h glade-gtk-marshallers.h
 
 
 if PLATFORM_WIN32
@@ -58,4 +58,18 @@ endif
 
 CLEANFILES = gtk+.xml gtkunixprint.xml
 
+BUILT_SOURCES = glade-gtk-marshallers.c glade-gtk-marshallers.h
+
 EXTRA_DIST = gtk+.xml gtk+.xml.in gtkunixprint.xml gtkunixprint.xml.in
+
+#
+# Marshaller generation
+#
+glade-gtk-marshallers.h: glade-gtk-marshallers.list $(GLIB_GENMARSHAL)
+	$(GLIB_GENMARSHAL) --prefix=glade_gtk_marshal $(srcdir)/glade-gtk-marshallers.list --header > glade-gtk-marshallers-h.tmp \
+	&& mv glade-gtk-marshallers-h.tmp glade-gtk-marshallers.h \
+	|| ( rm -f glade-gtk-marshallers-h.tmp && exit 1)
+glade-gtk-marshallers.c: glade-gtk-marshallers.list $(GLIB_GENMARSHAL)
+	$(GLIB_GENMARSHAL) --prefix=glade_gtk_marshal $(srcdir)/glade-gtk-marshallers.list --body --header > glade-gtk-marshallers-c.tmp     \
+	&& mv glade-gtk-marshallers-c.tmp glade-gtk-marshallers.c \
+	|| ( rm -f glade-gtk-marshallers-c.tmp && exit 1 )

@@ -1352,7 +1352,7 @@ glade_widget_class_init (GladeWidgetClass * klass)
                     G_SIGNAL_RUN_LAST,
                     G_STRUCT_OFFSET (GladeWidgetClass, change_signal_handler),
                      NULL, NULL,
-                    glade_marshal_VOID__OBJECT,
+                    _glade_marshal_VOID__OBJECT,
                     G_TYPE_NONE, 1, GLADE_TYPE_SIGNAL);
 
   /**
@@ -1365,8 +1365,8 @@ glade_widget_class_init (GladeWidgetClass * klass)
                     G_TYPE_FROM_CLASS (object_class),
                     G_SIGNAL_RUN_LAST,
                     G_STRUCT_OFFSET (GladeWidgetClass, button_press_event),
-                    glade_boolean_handled_accumulator, NULL,
-                    glade_marshal_BOOLEAN__BOXED,
+                    _glade_boolean_handled_accumulator, NULL,
+                    _glade_marshal_BOOLEAN__BOXED,
                     G_TYPE_BOOLEAN, 1,
                     GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 
@@ -1380,8 +1380,8 @@ glade_widget_class_init (GladeWidgetClass * klass)
                     G_TYPE_FROM_CLASS (object_class),
                     G_SIGNAL_RUN_LAST,
                     G_STRUCT_OFFSET (GladeWidgetClass, button_release_event),
-                    glade_boolean_handled_accumulator, NULL,
-                    glade_marshal_BOOLEAN__BOXED,
+                    _glade_boolean_handled_accumulator, NULL,
+                    _glade_marshal_BOOLEAN__BOXED,
                     G_TYPE_BOOLEAN, 1,
                     GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 
@@ -1396,8 +1396,8 @@ glade_widget_class_init (GladeWidgetClass * klass)
                     G_TYPE_FROM_CLASS (object_class),
                     G_SIGNAL_RUN_LAST,
                     G_STRUCT_OFFSET (GladeWidgetClass, motion_notify_event),
-                    glade_boolean_handled_accumulator, NULL,
-                    glade_marshal_BOOLEAN__BOXED,
+                    _glade_boolean_handled_accumulator, NULL,
+                    _glade_marshal_BOOLEAN__BOXED,
                     G_TYPE_BOOLEAN, 1,
                     GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 

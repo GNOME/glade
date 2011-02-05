@@ -336,7 +336,7 @@ glade_app_class_init (GladeAppClass * klass)
       g_signal_new ("doc-search",
                     G_TYPE_FROM_CLASS (object_class),
                     G_SIGNAL_RUN_LAST, 0, NULL, NULL,
-                    glade_marshal_VOID__STRING_STRING_STRING,
+                    _glade_marshal_VOID__STRING_STRING_STRING,
                     G_TYPE_NONE, 3,
                     G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
 
@@ -355,7 +355,7 @@ glade_app_class_init (GladeAppClass * klass)
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
                   0, NULL, NULL,
-                  glade_marshal_VOID__OBJECT,
+                  _glade_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1, G_TYPE_OBJECT);  
 
   g_type_class_add_private (klass, sizeof (GladeAppPrivate));

@@ -619,7 +619,7 @@ glade_editor_property_class_init (GladeEditorPropertyClass * eprop_class)
                     G_SIGNAL_RUN_LAST,
                     G_STRUCT_OFFSET (GladeEditorPropertyClass, commit),
                     NULL, NULL,
-                    glade_marshal_VOID__POINTER,
+                    _glade_marshal_VOID__POINTER,
                     G_TYPE_NONE, 1, G_TYPE_POINTER);
 
   /* Properties */

@@ -5,6 +5,12 @@
 	* gladeui/glade-widget.c: Make glade_widget_rebuild() use glade_widget_add/remove
 	  instead of glade_widget_replace().
 
+	* gladeui/Makefile.am, gladeui/glade-accumulators.[ch], gladeui/glade-app.c,
+	gladeui/glade-base-editor.c, gladeui/glade-cell-renderer-icon.c,
+	gladeui/glade-editor-property.c, gladeui/glade-project.c, gladeui/glade-property.c,
+        gladeui/glade-widget.c, plugins/gtk+/Makefile.am, plugins/gtk+/glade-fixed.c
+	Made glade-marshallers.[ch] and glade-accumulators.[ch] private to libgladeui-2.
+
 2011-02-04  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-project.c:
