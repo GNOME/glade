@@ -1949,6 +1949,7 @@ glade_widget_show (GladeWidget *widget)
 	GladeDesignView *view;
 	GtkWidget *layout;
 	GladeProperty *property;
+	GladeProject *project;
 
 	g_return_if_fail (GLADE_IS_WIDGET (widget));
 	
@@ -1970,16 +1971,14 @@ glade_widget_show (GladeWidget *widget)
 			return;
 		}
 
+		project = glade_widget_get_project (widget);
+		if (!project) return;
 
-		view = glade_design_view_get_from_project (glade_widget_get_project (widget));
-
-		if (!view)
-			return;
+		view = glade_design_view_get_from_project (project);
+		if (!view) return;
 
 		layout = GTK_WIDGET (glade_design_view_get_layout (view));
-
-		if (!layout)
-			return;
+		if (!layout) return;
 		
 		if (gtk_widget_get_realized (layout))
 			glade_widget_add_to_layout (widget, layout);
@@ -2339,8 +2338,10 @@ glade_widget_rebuild (GladeWidget *gwidget)
 	GList              *children;
 	gboolean            reselect = FALSE, inproject;
 	GList              *restore_properties = NULL;
-	GList              *save_properties, *l;
-	
+	GList              *save_properties, *l;	
+	GladeWidget        *parent = NULL;
+
+
 	g_return_if_fail (GLADE_IS_WIDGET (gwidget));
 
 	adaptor = gwidget->adaptor;
@@ -2348,6 +2349,12 @@ glade_widget_rebuild (GladeWidget *gwidget)
 	if (gwidget->project && 
 	    glade_project_has_object (gwidget->project, gwidget->object))
 		project = gwidget->project;
+
+	if (gwidget->parent && 
+	    glade_widget_adaptor_has_child (gwidget->parent->adaptor,
+					    gwidget->parent->object,
+					    gwidget->object))
+		parent  = gwidget->parent;
 
 	g_object_ref (gwidget);
 
@@ -2403,6 +2410,11 @@ glade_widget_rebuild (GladeWidget *gwidget)
 	}
 	g_list_free (save_properties);
 
+	/* Remove old object from parent
+	 */
+	if (parent)
+		glade_widget_remove_child (parent, gwidget);
+
 	/* Hold a reference to the old widget while we transport properties
 	 * and children from it
 	 */
@@ -2411,12 +2423,6 @@ glade_widget_rebuild (GladeWidget *gwidget)
 
 	/* Only call this once the object has a proper GladeWidget */
 	glade_widget_adaptor_post_create (adaptor, new_object, GLADE_CREATE_REBUILD);
-
-	/* Replace old object with new object in parent
-	 */
-	if (gwidget->parent)
-		glade_widget_replace (gwidget->parent,
-				      old_object, new_object);
 
 	/* Must call dispose for cases like dialogs and toplevels */
 	if (GTK_IS_WINDOW (old_object))
@@ -2430,7 +2436,12 @@ glade_widget_rebuild (GladeWidget *gwidget)
 	glade_widget_push_superuser ();
 	glade_widget_insert_children (gwidget, children);
 	glade_widget_pop_superuser ();
-		
+
+	/* Add new object to parent
+	 */
+	if (parent)
+		glade_widget_add_child (parent, gwidget, FALSE);
+
 	/* Custom properties aren't transfered in build_object, since build_object
 	 * is only concerned with object creation.
 	 */
