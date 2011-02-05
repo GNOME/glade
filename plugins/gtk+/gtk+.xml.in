@@ -1119,6 +1119,12 @@ embedded in another object</_tooltip>
 	    <value id="GTK_ICON_SIZE_DIALOG" _name="Dialog"/>
 	  </displayable-values>
 	</property>
+
+	<!-- These props dont apply to scale buttons -->
+	<property id="glade-type" disabled="True"/>
+	<property id="label" disabled="True"/>
+	<property id="use-underline" disabled="True"/>
+	<property id="stock" disabled="True"/>
       </properties>
     </glade-widget-class>
 
