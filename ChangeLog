@@ -2,6 +2,9 @@
 
 	* plugins/gtk+/gtk+.xml.in: Disabling irrelevant properties for GtkScaleButton
 
+	* gladeui/glade-widget.c: Make glade_widget_rebuild() use glade_widget_add/remove
+	  instead of glade_widget_replace().
+
 2011-02-04  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* gladeui/glade-project.c:

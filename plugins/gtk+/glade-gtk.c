@@ -5870,9 +5870,10 @@ glade_gtk_button_write_widget (GladeWidgetAdaptor * adaptor,
   if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
     return;
 
-  /* Do not save GtkColorButton and GtkFontButton label property */
+  /* Do not save GtkColorButton GtkFontButton and GtkScaleButton label property */
   if (!(GTK_IS_COLOR_BUTTON (glade_widget_get_object (widget)) ||
-	GTK_IS_FONT_BUTTON (glade_widget_get_object (widget))))
+	GTK_IS_FONT_BUTTON (glade_widget_get_object (widget)) ||
+	GTK_IS_SCALE_BUTTON (glade_widget_get_object (widget))))
     {
       /* Make a copy of the GladeProperty, 
        * override its value and ensure non-translatable if use-stock is TRUE

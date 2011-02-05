@@ -361,7 +361,7 @@ glade_widget_remove_signal_handler (GladeWidget * widget,
       tmp_signal_handler = g_ptr_array_index (signals, i);
       if (glade_signal_equal (tmp_signal_handler, signal_handler))
         {
-		  g_signal_emit (widget, glade_widget_signals[REMOVE_SIGNAL_HANDLER], 0, tmp_signal_handler);
+	  g_signal_emit (widget, glade_widget_signals[REMOVE_SIGNAL_HANDLER], 0, tmp_signal_handler);
           g_object_unref (tmp_signal_handler);
           g_ptr_array_remove_index (signals, i);
           break;
@@ -2381,14 +2381,21 @@ glade_widget_rebuild (GladeWidget * gwidget)
   GObject *new_object, *old_object;
   GladeWidgetAdaptor *adaptor;
   GladeProject *project = NULL;
+  GladeWidget  *parent = NULL;
   GList *children;
-  gboolean reselect = FALSE, inparent;
+  gboolean reselect = FALSE;
   GList *restore_properties = NULL;
   GList *save_properties, *l;
 
   g_return_if_fail (GLADE_IS_WIDGET (gwidget));
 
   adaptor = gwidget->priv->adaptor;
+
+  if (gwidget->priv->parent &&
+      glade_widget_adaptor_has_child (gwidget->priv->parent->priv->adaptor,
+				      gwidget->priv->parent->priv->object,
+				      gwidget->priv->object))
+    parent = gwidget->priv->parent;
 
   g_object_ref (gwidget);
 
@@ -2442,6 +2449,11 @@ glade_widget_rebuild (GladeWidget * gwidget)
     }
   g_list_free (save_properties);
 
+  /* Remove old object from parent
+   */
+  if (parent)
+    glade_widget_remove_child (parent, gwidget);
+
   /* Hold a reference to the old widget while we transport properties
    * and children from it
    */
@@ -2450,18 +2462,6 @@ glade_widget_rebuild (GladeWidget * gwidget)
 
   /* Only call this once the object has a proper GladeWidget */
   glade_widget_adaptor_post_create (adaptor, new_object, GLADE_CREATE_REBUILD);
-
-  /* Replace old object with new object in parent
-   * (this can happen during construction before the object is actually
-   * added to the parent but the parent pointer is set).
-   */
-
-  inparent = (gwidget->priv->parent &&
-              glade_widget_adaptor_has_child (gwidget->priv->parent->priv->adaptor,
-                                              gwidget->priv->parent->priv->object,
-                                              old_object));
-  if (inparent)
-    glade_widget_replace (gwidget->priv->parent, old_object, new_object);
 
   /* Must call dispose for cases like dialogs and toplevels */
   if (GTK_IS_WINDOW (old_object))
@@ -2475,6 +2475,11 @@ glade_widget_rebuild (GladeWidget * gwidget)
   glade_widget_push_superuser ();
   glade_widget_insert_children (gwidget, children);
   glade_widget_pop_superuser ();
+
+  /* Add new object to parent
+   */
+  if (parent)
+    glade_widget_add_child (parent, gwidget, FALSE);
 
   /* Custom properties aren't transfered in build_object, since build_object
    * is only concerned with object creation.
@@ -2503,7 +2508,7 @@ glade_widget_rebuild (GladeWidget * gwidget)
 
   /* Sync packing.
    */
-  if (inparent)
+  if (parent)
     glade_widget_sync_packing_props (gwidget);
 
   /* If the widget was in a project (and maybe the selection), then
