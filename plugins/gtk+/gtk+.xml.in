@@ -1140,6 +1140,12 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkScaleButton" generic-name="scalebutton" _title="Scale Button" since="2.12">
       <properties>
         <property id="orientation" since="2.14"/>
+
+	<!-- These props dont apply to scale buttons -->
+	<property id="glade-type" disabled="True"/>
+	<property id="label" disabled="True"/>
+	<property id="use-underline" disabled="True"/>
+	<property id="stock" disabled="True"/>
       </properties>
     </glade-widget-class>
 
