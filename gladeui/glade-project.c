@@ -45,6 +45,8 @@
 #include "glade-marshallers.h"
 #include "glade-catalog.h"
 
+#include "glade-preview.h"
+
 #include "glade-project.h"
 #include "glade-command.h"
 #include "glade-name-context.h"
@@ -139,8 +141,8 @@ struct _GladeProjectPrivate
   GtkWidget *relative_path_entry;
   GtkWidget *full_path_button;
 
-  /* Store preview processes, so we can kill them on close */
-  GHashTable *preview_channels;
+  /* Store previews, so we can kill them on close */
+  GHashTable *previews;
 
   /* For the loading progress bars ("load-progress" signal) */
   gint progress_step;
@@ -165,13 +167,6 @@ typedef struct
   gchar *stock;
   gchar *filename;
 } StockFilePair;
-
-typedef struct
-{
-  GIOChannel *channel;
-  guint watch;
-} ChannelWatchPair;
-
 
 GType
 glade_pointer_mode_get_type (void)
@@ -293,6 +288,13 @@ glade_project_dispose (GObject * object)
 
   /* Emit close signal */
   g_signal_emit (object, glade_project_signals[CLOSE], 0);
+
+  /* Destroy running previews */
+  if (project->priv->previews)
+    {
+      g_hash_table_destroy (project->priv->previews);
+      project->priv->previews = NULL;
+    }
 
   if (project->priv->selection_changed_id > 0)
     project->priv->selection_changed_id = 
@@ -645,66 +647,32 @@ glade_project_push_undo_impl (GladeProject * project, GladeCommand * cmd)
 }
 
 static void
-glade_project_preview_exits (GPid pid, gint status, gpointer data)
+glade_project_preview_exits (GladePreview *preview, GladeProject *project)
 {
-  GladeProject *project = (GladeProject *) data;
-  ChannelWatchPair *channel_watch;
-  GIOChannel *channel;
-  gchar *pidstr = g_strdup_printf ("%d", pid);
+  gchar       *pidstr;
 
-  channel_watch = g_hash_table_lookup (project->priv->preview_channels, pidstr);
-  channel = channel_watch->channel;
-  g_io_channel_unref (channel);
-  g_hash_table_remove (project->priv->preview_channels, pidstr);
+  pidstr  = g_strdup_printf ("%d", glade_preview_get_pid (preview));
+  preview = g_hash_table_lookup (project->priv->previews, pidstr);
+
+  if (preview)
+    g_hash_table_remove (project->priv->previews, pidstr);
 
   g_free (pidstr);
-  g_free (channel_watch);
 }
 
 static void
-glade_project_kill_previews (gpointer key, gpointer value, gpointer user_data)
+glade_project_destroy_preview (gpointer data)
 {
-  const gchar *quit = "<quit>";
-  GIOChannel *channel;
-  ChannelWatchPair *channel_watch = (ChannelWatchPair *) value;
-  GError *error = NULL;
-  gsize size;
+  GladePreview *preview = GLADE_PREVIEW (data);
+  GladeWidget  *gwidget;
 
-  channel = channel_watch->channel;
-  /* Removing watch, since the child will commit suicide */
-  g_source_remove (channel_watch->watch);
-  g_io_channel_write_chars (channel, quit, strlen (quit), &size, &error);
+  gwidget = glade_preview_get_widget (preview);
+  g_object_set_data (G_OBJECT (gwidget), "preview", NULL);
 
-  if (size != strlen (quit) && error != NULL)
-    {
-      g_printerr ("Error passing quit signal trough pipe: %s", error->message);
-      g_error_free (error);
-    }
-
-  g_io_channel_flush (channel, &error);
-  if (error != NULL)
-    {
-      g_printerr ("Error flushing channel: %s", error->message);
-      g_error_free (error);
-    }
-
-  g_io_channel_shutdown (channel, TRUE, &error);
-  if (error != NULL)
-    {
-      g_printerr ("Error shutting down channel: %s", error->message);
-      g_error_free (error);
-    }
-
-  g_io_channel_unref (channel);
-  g_free (channel_watch);
-}
-
-static void
-glade_project_close_impl (GladeProject * project)
-{
-  g_hash_table_foreach (project->priv->preview_channels,
-                        glade_project_kill_previews, project);
-  g_hash_table_unref (project->priv->preview_channels);
+  g_signal_handlers_disconnect_by_func (preview,
+                                        G_CALLBACK (glade_project_preview_exits),
+                                        g_object_get_data (G_OBJECT (preview), "project"));
+  g_object_unref (preview);
 }
 
 static void
@@ -748,8 +716,11 @@ glade_project_init (GladeProject * project)
   priv->first_modification = NULL;
   priv->first_modification_is_na = FALSE;
 
-  priv->preview_channels =
-      g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+  priv->previews = g_hash_table_new_full (g_str_hash, 
+					  g_str_equal,
+                                          g_free, 
+					  glade_project_destroy_preview);
+
   priv->widget_names = glade_name_context_new ();
 
   priv->accel_group = NULL;
@@ -810,7 +781,7 @@ glade_project_class_init (GladeProjectClass * klass)
 
   klass->widget_name_changed = NULL;
   klass->selection_changed = NULL;
-  klass->close = glade_project_close_impl;
+  klass->close = NULL;
   klass->changed = glade_project_changed_impl;
 
   /**
@@ -1894,95 +1865,6 @@ glade_project_save (GladeProject * project, const gchar * path, GError ** error)
   return ret > 0;
 }
 
-static GPid
-glade_project_launch_preview (GladeProject * project, gchar * buffer,
-                              GtkWidget * widget)
-{
-  GPid pid;
-  GError *error = NULL;
-  gchar *argv[4];
-  gint child_stdin;
-  GIOChannel *output;
-  guint watch;
-  ChannelWatchPair *channel_watch;
-  GladeWidget *glade_widget;
-
-
-#ifdef WINDOWS
-  argv[0] =
-      g_build_filename (glade_app_get_bin_dir (), "glade-previewer.exe", NULL);
-#else
-  argv[0] =
-      g_build_filename (glade_app_get_bin_dir (), "glade-previewer", NULL);
-#endif
-
-
-  argv[1] = "--listen";
-
-  if (widget != NULL)
-    {
-      glade_widget = glade_widget_get_from_gobject (G_OBJECT (widget));
-      argv[2] = g_strdup_printf ("--toplevel=%s", glade_widget_get_name (glade_widget));
-      argv[3] = NULL;
-    }
-
-  if (g_spawn_async_with_pipes (NULL,
-                                argv,
-                                NULL, G_SPAWN_DO_NOT_REAP_CHILD, NULL, NULL,
-                                &pid, &child_stdin, NULL, NULL,
-                                &error) == FALSE)
-    {
-      g_printerr (_("Error launching previewer: %s\n"), error->message);
-      glade_util_ui_message (glade_app_get_window (),
-                             GLADE_UI_ERROR, NULL,
-                             _("Failed to launch preview: %s.\n"),
-                             error->message);
-      g_error_free (error);
-      pid = 0;
-      goto end;
-    }
-
-  /* Store watch so we can remove it later */
-  watch = g_child_watch_add (pid, glade_project_preview_exits, project);
-
-#ifdef WINDOWS
-  output = g_io_channel_win32_new_fd (child_stdin);
-#else
-  output = g_io_channel_unix_new (child_stdin);
-#endif
-
-  gsize bytes_written;
-  g_io_channel_write_chars (output, buffer, strlen (buffer), &bytes_written,
-                            &error);
-
-  if (bytes_written != strlen (buffer) && error != NULL)
-    {
-      g_printerr ("Error passing UI trough pipe: %s", error->message);
-      g_error_free (error);
-    }
-
-  g_io_channel_flush (output, &error);
-  if (error != NULL)
-    {
-      g_printerr ("Error flushing UI trough pipe: %s", error->message);
-      g_error_free (error);
-    }
-
-  if (widget != NULL)
-    g_free (argv[2]);
-
-  /* Adding channel to list of channels */
-  channel_watch = g_new (ChannelWatchPair, 1);
-  channel_watch->channel = output;
-  channel_watch->watch = watch;
-  g_hash_table_insert (project->priv->preview_channels,
-                       g_strdup_printf ("%d", pid), channel_watch);
-
-end:
-  g_free (argv[0]);
-  return pid;
-}
-
 /**
  * glade_project_preview:
  * @project: a #GladeProject
@@ -1997,8 +1879,8 @@ void
 glade_project_preview (GladeProject * project, GladeWidget * gwidget)
 {
   GladeXmlContext *context;
-  gchar *text;
-  GtkWidget *widget;
+  gchar *text, *pidstr;
+  GladePreview *preview = NULL;
 
   g_return_if_fail (GLADE_IS_PROJECT (project));
 
@@ -2009,9 +1891,36 @@ glade_project_preview (GladeProject * project, GladeWidget * gwidget)
   gwidget = glade_widget_get_toplevel (gwidget);
   if (!GTK_IS_WIDGET (glade_widget_get_object (gwidget)))
     return;
-  widget = GTK_WIDGET (glade_widget_get_object (gwidget));
 
-  glade_project_launch_preview (project, text, widget);
+  if ((pidstr = g_object_get_data (G_OBJECT (gwidget), "preview")) != NULL)
+    preview = g_hash_table_lookup (project->priv->previews, pidstr);
+
+  if (!preview)
+    {
+      preview = glade_preview_launch (gwidget, text);
+
+      /* Leave project data on the preview */
+      g_object_set_data (G_OBJECT (preview), "project", project);
+
+      /* Leave preview data on the widget */
+      g_object_set_data_full (G_OBJECT (gwidget),
+			      "preview", 
+			      g_strdup_printf ("%d", glade_preview_get_pid (preview)),
+			      g_free);
+
+      g_signal_connect (preview, "exits",
+			G_CALLBACK (glade_project_preview_exits),
+			project);
+
+      /* Add preview to list of previews */
+      g_hash_table_insert (project->priv->previews,
+			   g_strdup_printf("%d", glade_preview_get_pid (preview)),
+			   preview);
+    }
+  else
+    {
+      glade_preview_update (preview, text);
+    }
 
   g_free (text);
 }
@@ -2021,15 +1930,16 @@ glade_project_preview (GladeProject * project, GladeWidget * gwidget)
  *******************************************************************/
 
 /* translators: reffers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d' */
-#define WIDGET_VERSION_CONFLICT_MSGFMT         _("This widget was introduced in %s %d.%d while project targets %s %d.%d")
+#define WIDGET_VERSION_CONFLICT_MSGFMT _("This widget was introduced in %s %d.%d " \
+					 "while project targets %s %d.%d")
 
 /* translators: reffers to a widget '[%s]' introduced in toolkit version '%s %d.%d' */
-#define WIDGET_VERSION_CONFLICT_FMT            _("[%s] Object class '%s' was introduced in %s %d.%d\n")
+#define WIDGET_VERSION_CONFLICT_FMT    _("[%s] Object class '%s' was introduced in %s %d.%d\n")
 
-#define WIDGET_DEPRECATED_MSG                  _("This widget is deprecated")
+#define WIDGET_DEPRECATED_MSG          _("This widget is deprecated")
 
 /* translators: reffers to a widget '[%s]' loaded from toolkit version '%s %d.%d' */
-#define WIDGET_DEPRECATED_FMT                  _("[%s] Object class '%s' from %s %d.%d is deprecated\n")
+#define WIDGET_DEPRECATED_FMT          _("[%s] Object class '%s' from %s %d.%d is deprecated\n")
 
 
 /* Defined here for pretty translator comments (bug in intl tools, for some reason
@@ -2039,22 +1949,25 @@ glade_project_preview (GladeProject * project, GladeWidget * gwidget)
 
 /* translators: reffers to a property in toolkit version '%s %d.%d' 
  * and a project targeting toolkit version '%s %d.%d' */
-#define PROP_VERSION_CONFLICT_MSGFMT           _("This property was introduced in %s %d.%d while project targets %s %d.%d")
+#define PROP_VERSION_CONFLICT_MSGFMT   _("This property was introduced in %s %d.%d " \
+					 "while project targets %s %d.%d")
 
 /* translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d' */
-#define PROP_VERSION_CONFLICT_FMT              _("[%s] Property '%s' of object class '%s' was introduced in %s %d.%d\n")
+#define PROP_VERSION_CONFLICT_FMT      _("[%s] Property '%s' of object class '%s' " \
+					 "was introduced in %s %d.%d\n")
 
 /* translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d' */
-#define PACK_PROP_VERSION_CONFLICT_FMT         _("[%s] Packing property '%s' of object class '%s' " \
-						 "was introduced in %s %d.%d\n")
+#define PACK_PROP_VERSION_CONFLICT_FMT _("[%s] Packing property '%s' of object class '%s' " \
+					 "was introduced in %s %d.%d\n")
 
 /* translators: reffers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d' */
-#define SIGNAL_VERSION_CONFLICT_FMT            _("[%s] Signal '%s' of object class '%s' was introduced in %s %d.%d\n")
+#define SIGNAL_VERSION_CONFLICT_FMT    _("[%s] Signal '%s' of object class '%s' " \
+					 "was introduced in %s %d.%d\n")
 
 /* translators: reffers to a signal in toolkit version '%s %d.%d' 
  * and a project targeting toolkit version '%s %d.%d' */
-#define SIGNAL_VERSION_CONFLICT_MSGFMT         _("This signal was introduced in %s %d.%d while project targets %s %d.%d")
-
+#define SIGNAL_VERSION_CONFLICT_MSGFMT _("This signal was introduced in %s %d.%d " \
+					 "while project targets %s %d.%d")
 
 
 static void
@@ -2906,6 +2819,7 @@ glade_project_remove_object (GladeProject * project, GObject * object)
 {
   GladeWidget *gwidget;
   GList *list, *children;
+  gchar *preview_pid;
 
   g_return_if_fail (GLADE_IS_PROJECT (project));
   g_return_if_fail (G_IS_OBJECT (object));
@@ -2942,6 +2856,9 @@ glade_project_remove_object (GladeProject * project, GObject * object)
   project->priv->tree = g_list_remove (project->priv->tree, object);
   project->priv->objects = g_list_remove (project->priv->objects, object);
 
+  if ((preview_pid = g_object_get_data (G_OBJECT (gwidget), "preview")))
+    g_hash_table_remove (project->priv->previews, preview_pid);
+
   /* Unset the project pointer on the GladeWidget */
   glade_widget_set_project (gwidget, NULL);
   glade_widget_set_in_project (gwidget, FALSE);
@@ -2964,7 +2881,6 @@ glade_project_set_target_version (GladeProject * project,
                        g_strdup (catalog), GINT_TO_POINTER ((int) major));
   g_hash_table_insert (project->priv->target_versions_minor,
                        g_strdup (catalog), GINT_TO_POINTER ((int) minor));
-
 
   /* Update prefs dialog from here... */
   if (project->priv->target_radios &&
@@ -3744,7 +3660,6 @@ resource_full_path_set (GtkFileChooserButton * button, GladeProject * project)
 
   glade_project_set_resource_path (project, text);
 }
-
 
 static void
 update_prefs_for_resource_path (GladeProject * project)

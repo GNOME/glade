@@ -2,7 +2,7 @@
  * Copyright (C) 2010 Marco Diego Aurélio Mesquita
  *
  * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as
+ * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
  *
@@ -11,14 +11,13 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU Lesser General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  * Authors:
  *   Marco Diego Aurélio Mesquita <marcodiegomesquita@gmail.com>
  */
-
 
 #include <config.h>
 
@@ -31,6 +30,8 @@
 #include <stdlib.h>
 #include <locale.h>
 #include <glib/gi18n-lib.h>
+
+#include "glade-preview-tokens.h"
 
 static void
 display_help_and_quit (const GOptionEntry * entries)
@@ -168,10 +169,11 @@ get_toplevel (gchar * name, gchar * string, gsize length)
     }
 
   g_object_unref (builder);
+
   return toplevel;
 }
 
-static void
+static GtkWidget *
 preview_widget (gchar * name, gchar * buffer, gsize length)
 {
   GtkWidget *widget;
@@ -200,6 +202,8 @@ preview_widget (gchar * name, gchar * buffer, gsize length)
 
   g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
   gtk_widget_show_all (window);
+
+  return widget;
 }
 
 static GIOChannel *
@@ -259,7 +263,7 @@ read_buffer (GIOChannel * source)
     }
 
   /* Check for quit token */
-  if (g_strcmp0 ("<quit>", token) == 0)
+  if (g_strcmp0 (QUIT_TOKEN, token) == 0)
     {
       g_free (token);
       return NULL;
@@ -287,11 +291,115 @@ read_buffer (GIOChannel * source)
   return buffer;
 }
 
+static void
+copy_window_properties (GtkWindow *old_window, GtkWindow *new_window)
+{
+	GParamSpec **properties_list;
+	guint i, n_properties;
+	gint width, height;
+	GValue copy_value = { 0,};
+
+	if (!old_window || !new_window) return;
+
+	properties_list = g_object_class_list_properties
+			  (G_OBJECT_GET_CLASS (G_OBJECT (new_window)),
+			  &n_properties);
+
+	for (i = 0; i < n_properties; i++)
+	{
+		if (!((properties_list[i]->flags & G_PARAM_READABLE) &&
+		      (properties_list[i]->flags & G_PARAM_WRITABLE) &&
+		      (!(properties_list[i]->flags & G_PARAM_CONSTRUCT_ONLY))
+		    )) continue;
+
+		/* We won't set some properties */
+		if (g_strcmp0 ("parent", properties_list[i]->name) == 0) continue;
+		if (g_strcmp0 ("visible", properties_list[i]->name) == 0) continue;
+
+		g_value_init (&copy_value, properties_list[i]->value_type);
+		g_object_get_property (G_OBJECT (new_window),
+				       properties_list[i]->name,
+				       &copy_value);
+
+		g_object_set_property (G_OBJECT (old_window),
+				       properties_list[i]->name,
+				       &copy_value);
+
+		g_value_unset (&copy_value);
+	}
+
+	/* Special code to copy default size */
+	if (gtk_window_get_resizable (old_window))
+	{
+		gtk_window_get_default_size (new_window, &width, &height);
+		if ((width > 0) && (height > 0))
+			gtk_window_resize (old_window, width, height);
+	}
+
+	if (properties_list) g_free (properties_list);
+}
+
+static void
+update_window (GtkWindow *old_window, GtkWindow *new_window)
+{
+	GtkWidget *window_child;
+	GtkWidget *old_window_child;
+
+	if (!old_window || !new_window) return;
+
+	/* ref the new window child */
+	window_child = gtk_bin_get_child (GTK_BIN (new_window));
+	if (window_child)
+	{
+		g_object_ref (window_child);
+
+		/* remove window child */
+		gtk_container_remove (GTK_CONTAINER (new_window), window_child);
+	}
+
+	/* gtk_widget_destroy the *running preview's* window child */
+	old_window_child = gtk_bin_get_child (GTK_BIN (old_window));
+	if (old_window_child)
+		gtk_widget_destroy (old_window_child);
+
+	/* apply properties from the new window to the
+	 * old window (using GObjectapis)*/
+	copy_window_properties (old_window, new_window);
+
+	/* add new preview's window child to the old preview's window */
+	if (window_child)
+	{
+		gtk_container_add (GTK_CONTAINER (old_window), window_child);
+		/* unref the newly added child (which we added a ref to before) */
+		g_object_unref (window_child);
+	}
+}
+
+static void
+update_window_child (GtkWindow *old_window, GtkWidget *new_widget)
+{
+	GtkWidget *old_window_child;
+
+	if (!old_window) return;
+
+	/* gtk_widget_destroy the *running preview's* window child */
+	old_window_child = gtk_bin_get_child (GTK_BIN (old_window));
+	if (old_window_child)
+		gtk_widget_destroy (old_window_child);
+
+	/* add new widget as child to the old preview's window */
+	if (new_widget)
+		gtk_container_add (GTK_CONTAINER (old_window), new_widget);
+}
+
 static gboolean
 on_data_incoming (GIOChannel * source, GIOCondition condition, gpointer data)
 {
   gchar *buffer;
   gsize length;
+  static GtkWidget *preview_window = NULL;
+  GtkWidget *new_widget;
+  gchar **split_buffer = NULL;
 
   gchar *toplevel_name = (gchar *) data;
 
@@ -310,8 +418,43 @@ on_data_incoming (GIOChannel * source, GIOCondition condition, gpointer data)
 
   length = strlen (buffer);
 
-  preview_widget (toplevel_name, buffer, length);
-  g_free (buffer);
+  /* if it is the first time this is called */
+  if (!preview_window)
+  {
+    preview_window = preview_widget (toplevel_name, buffer, length);
+  }
+  else
+  {
+    /* We have an update */
+    split_buffer = g_strsplit_set (buffer + UPDATE_TOKEN_SIZE, "\n", 2);
+
+    g_free (buffer);
+    if (!split_buffer) return FALSE;
+
+    toplevel_name = split_buffer[0];
+    buffer = split_buffer[1];
+    length = strlen (buffer);
+
+    new_widget = get_toplevel (toplevel_name, buffer, length);
+
+		if (GTK_IS_WINDOW (new_widget))
+			update_window (GTK_WINDOW (preview_window),
+				       GTK_WINDOW (new_widget));
+		else update_window_child (GTK_WINDOW (preview_window), new_widget);
+  }
+
+  if (!split_buffer)
+  {
+    /* This means we're not in an update, we should free the buffer. */
+    g_free (buffer);
+  }
+  else
+  {
+    /* This means we've had an update, buffer was already freed. */
+    g_free (split_buffer[0]);
+    g_free (split_buffer[1]);
+    g_free (split_buffer);
+  }
 
   return TRUE;
 }

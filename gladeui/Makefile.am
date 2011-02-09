@@ -40,7 +40,7 @@ common_defines = \
 	-DGLADE_MODULESDIR="\"$(pkglibdir)/modules\""	\
 	-DGLADE_PIXMAPSDIR="\"$(pkgdatadir)/pixmaps\""	\
 	-DGLADE_LOCALEDIR="\"$(datadir)/locale\""\
-  -DGLADE_BINDIR="\"$(bindir)\""
+	-DGLADE_BINDIR="\"$(bindir)\""
 
 BUILT_SOURCES = glade-marshallers.c glade-marshallers.h
 
@@ -86,7 +86,8 @@ libgladeui_2_la_SOURCES = \
 	glade-name-context.c \
 	glade-displayable-values.c \
 	glade-signal-model.c \
-	glade-cell-renderer-icon.c
+	glade-cell-renderer-icon.c \
+	glade-preview.c
 
 libgladeui_2_la_CPPFLAGS =  \
 	$(common_defines)   \
@@ -145,7 +146,8 @@ noinst_HEADERS = \
 	glade-popup.h \
 	glade-cursor.h \
 	glade-accumulators.h \
-	glade-design-private.h
+	glade-design-private.h \
+	glade-preview-tokens.h
 
 if PLATFORM_WIN32
 libgladeui_2_la_LDFLAGS += -no-undefined
