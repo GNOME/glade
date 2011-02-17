@@ -2,10 +2,9 @@
 #define __GLADE_FIXED_H__
 
 #include <glib-object.h>
-#include <gdk/gdk.h>
+#include <gtk/gtk.h>
 
-#include <gladeui/glade-widget.h>
-#include <gladeui/glade-cursor.h>
+#include <gladeui/glade.h>
 
 G_BEGIN_DECLS
 

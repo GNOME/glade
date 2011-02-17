@@ -138,13 +138,13 @@ libgladeuiinclude_HEADERS = \
 	glade-editable.h \
 	glade-editor-table.h \
 	glade-cell-renderer-icon.h \
+	glade-cursor.h \
 	glade-signal-model.h
 
 noinst_HEADERS = \
 	glade-marshallers.h \
 	glade-design-layout.h \
 	glade-popup.h \
-	glade-cursor.h \
 	glade-accumulators.h \
 	glade-design-private.h \
 	glade-preview-tokens.h
