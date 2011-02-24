@@ -188,6 +188,8 @@ glade_placeholder_init (GladePlaceholder * placeholder)
   g_signal_connect (placeholder, "notify::parent",
                     G_CALLBACK (glade_placeholder_notify_parent), NULL);
 
+  gtk_widget_set_hexpand (GTK_WIDGET (placeholder), TRUE);
+  gtk_widget_set_vexpand (GTK_WIDGET (placeholder), TRUE);
   gtk_widget_show (GTK_WIDGET (placeholder));
 }
 
