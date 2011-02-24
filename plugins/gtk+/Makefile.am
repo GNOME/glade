@@ -43,6 +43,7 @@ libgladegtk_la_SOURCES = \
 	glade-tool-item-group-editor.c \
 	glade-string-list.c \
 	glade-gtk-table.c \
+	glade-gtk-grid.c \
 	glade-gtk-marshallers.c
 
 libgladegtk_la_LDFLAGS     = -module -avoid-version $(AM_LDFLAGS)

@@ -1392,6 +1392,61 @@ embedded in another object</_tooltip>
       </packing-properties>
     </glade-widget-class>
 
+    <glade-widget-class name="GtkGrid" generic-name="grid" _title="Grid">
+      <create-widget-function>glade_gtk_create_fixed_widget</create-widget-function>
+      <post-create-function>glade_gtk_grid_post_create</post-create-function>
+      <child-set-property-function>glade_gtk_grid_set_child_property</child-set-property-function>
+      <child-verify-function>glade_gtk_grid_child_verify_property</child-verify-function>
+      <get-children-function>glade_gtk_grid_get_children</get-children-function>
+      <add-child-function>glade_gtk_grid_add_child</add-child-function>
+      <remove-child-function>glade_gtk_grid_remove_child</remove-child-function>
+      <replace-child-function>glade_gtk_grid_replace_child</replace-child-function>
+      <set-property-function>glade_gtk_grid_set_property</set-property-function>
+      <verify-function>glade_gtk_grid_verify_property</verify-function>
+      <child-action-activate-function>glade_gtk_grid_child_action_activate</child-action-activate-function>
+
+      <packing-actions>
+        <action id="insert_row" _name="Insert Row" stock="gtk-add">
+          <action id="before" _name="Before"/>
+          <action id="after" _name="After"/>
+        </action>
+        <action id="insert_column" _name="Insert Column" stock="gtk-add">
+          <action id="before" _name="Before"/>
+          <action id="after" _name="After"/>
+        </action>
+        <action id="remove_row" _name="Remove Row" stock="gtk-remove"/>
+        <action id="remove_column" _name="Remove Column" stock="gtk-remove"/>
+      </packing-actions>
+
+      <properties>
+	<property id="n-rows" _name="Rows" default="3" query="True" needs-sync="True">
+	  <parameter-spec>
+	    <type>GParamUInt</type>
+	  </parameter-spec>
+	  <_tooltip>The number of rows for this grid</_tooltip>
+	</property>
+	<property id="n-columns" _name="Columns" default="3" query="True" needs-sync="True">
+	  <parameter-spec>
+	    <type>GParamUInt</type>
+	  </parameter-spec>
+	  <_tooltip>The number of columns for this grid</_tooltip>
+	</property>
+      </properties>
+      
+      <packing-properties>
+        <property id="x-options" transfer-on-paste="True">
+          <displayable-values>
+            <value id="GTK_EXPAND" _name="Expand"/>
+            <value id="GTK_SHRINK" _name="Shrink"/>
+            <value id="GTK_FILL" _name="Fill"/>
+          </displayable-values>
+        </property>
+        <property id="y-options" transfer-on-paste="True"/>
+        <property id="x-padding" transfer-on-paste="True"/>
+        <property id="y-padding" transfer-on-paste="True"/>
+      </packing-properties>
+    </glade-widget-class>
+
     <glade-widget-class name="GtkPaned" generic-name="paned" _title="Paned">
       <post-create-function>glade_gtk_paned_post_create</post-create-function>
       <add-child-function>glade_gtk_paned_add_child</add-child-function>
@@ -3516,6 +3571,7 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkHBox"/>
     <glade-widget-class-ref name="GtkVBox"/>
     <glade-widget-class-ref name="GtkTable"/>
+    <glade-widget-class-ref name="GtkGrid"/>
     <glade-widget-class-ref name="GtkNotebook"/>
     <glade-widget-class-ref name="GtkFrame"/>
     <glade-widget-class-ref name="GtkAspectFrame"/>
