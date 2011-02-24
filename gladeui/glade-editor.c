@@ -441,6 +441,35 @@ glade_editor_setup_class_field (GladeEditor * editor)
   return hbox;
 }
 
+
+static void
+glade_editor_switch_page (GtkNotebook     *notebook,
+			  GtkWidget       *page,
+			  guint            page_num,
+			  GladeEditor     *editor)
+{
+  gtk_widget_hide (editor->priv->page_widget);
+  gtk_widget_hide (editor->priv->page_packing);
+  gtk_widget_hide (editor->priv->page_common);
+  gtk_widget_hide (editor->priv->page_atk);
+
+  switch (page_num)
+    {
+    case 0:
+      gtk_widget_show (editor->priv->page_widget);
+      break;
+    case 1:
+      gtk_widget_show (editor->priv->page_packing);
+      break;
+    case 2:
+      gtk_widget_show (editor->priv->page_common);
+      break;
+    case 4:
+      gtk_widget_show (editor->priv->page_atk);
+      break;
+    }
+}
+
 static void
 glade_editor_init (GladeEditor * editor)
 {
@@ -458,6 +487,9 @@ glade_editor_init (GladeEditor * editor)
   editor->priv->page_atk = glade_editor_notebook_page (editor, _("Accessibility"));
   editor->priv->editables = NULL;
   editor->priv->loading = FALSE;
+
+  g_signal_connect (G_OBJECT (editor->priv->notebook), "switch-page",
+		    G_CALLBACK (glade_editor_switch_page), editor);
 
   editor->priv->class_field = glade_editor_setup_class_field (editor);
 
