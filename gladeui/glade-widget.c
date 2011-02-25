@@ -2521,6 +2521,11 @@ glade_widget_rebuild (GladeWidget * gwidget)
         glade_project_selection_add (project, gwidget->priv->object, TRUE);
     }
 
+  /* Ensure rebuilt widget visibility */
+  if (GTK_IS_WIDGET (gwidget->priv->object) && 
+      !GTK_IS_WINDOW (gwidget->priv->object))
+    gtk_widget_show_all (gwidget->priv->object);
+
   /* We shouldnt show if its not already visible */
   if (gwidget->priv->visible)
     glade_widget_show (gwidget);
