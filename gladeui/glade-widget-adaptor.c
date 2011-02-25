@@ -552,7 +552,7 @@ gwa_inherit_signals (GladeWidgetAdaptor *adaptor)
 				else
 				{
 					signal->version_since_major = 
-						parent_signal->version_since_minor;
+						parent_signal->version_since_major;
 					signal->version_since_minor = 
 						parent_signal->version_since_minor;
 				}
