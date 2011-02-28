@@ -323,6 +323,7 @@ embedded in another object</_tooltip>
       </packing-actions>
 
       <properties>
+	<property id="orientation" default="GTK_ORIENTATION_VERTICAL"/>
 	<property id="size" _name="Number of items" query="True" default="3" save="False">
 	  <parameter-spec>
 	    <type>GParamInt</type>
@@ -1564,6 +1565,12 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
     
+    <glade-widget-class name="GtkScale" generic-name="scale" _title="Scale">
+      <properties>
+	<property id="orientation" default="GTK_ORIENTATION_VERTICAL"/>
+      </properties>
+    </glade-widget-class>
+
     <glade-widget-class name="GtkHScale" generic-name="hscale" _title="Horizontal Scale">
       <properties>
 	<property id="orientation" disabled="True"/>
@@ -1610,6 +1617,12 @@ embedded in another object</_tooltip>
 
     </glade-widget-class>
     
+    <glade-widget-class name="GtkScrollbar" generic-name="scrollbar" _title="Scrollbar">
+      <properties>
+	<property id="orientation" default="GTK_ORIENTATION_VERTICAL"/>
+      </properties>
+    </glade-widget-class>
+
     <glade-widget-class name="GtkHScrollbar" generic-name="hscrollbar" _title="Horizontal Scrollbar">
       <properties>
 	<property id="orientation" disabled="True"/>
@@ -1647,6 +1660,13 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
 
+    <glade-widget-class name="GtkSeparator" generic-name="separator" _title="Separator">
+      <packing-defaults>
+	<parent-class name="GtkBox">
+	  <child-property id="expand" default="false"/>
+	</parent-class>
+      </packing-defaults>
+    </glade-widget-class>
     <glade-widget-class name="GtkHSeparator" generic-name="hseparator" _title="Horizontal Separator">
       <properties>
 	<property id="orientation" disabled="True"/>
@@ -3568,9 +3588,6 @@ embedded in another object</_tooltip>
 
   <glade-widget-group name="gtk-containers" _title="Containers">
     <glade-widget-class-ref name="GtkBox"/>
-    <glade-widget-class-ref name="GtkHBox"/>
-    <glade-widget-class-ref name="GtkVBox"/>
-    <glade-widget-class-ref name="GtkTable"/>
     <glade-widget-class-ref name="GtkGrid"/>
     <glade-widget-class-ref name="GtkNotebook"/>
     <glade-widget-class-ref name="GtkFrame"/>
@@ -3579,11 +3596,7 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkToolbar"/>
     <glade-widget-class-ref name="GtkToolPalette"/>
     <glade-widget-class-ref name="GtkPaned"/>
-    <glade-widget-class-ref name="GtkHPaned"/>
-    <glade-widget-class-ref name="GtkVPaned"/>
     <glade-widget-class-ref name="GtkButtonBox"/>
-    <glade-widget-class-ref name="GtkHButtonBox"/>
-    <glade-widget-class-ref name="GtkVButtonBox"/>
     <glade-widget-class-ref name="GtkLayout"/>
     <glade-widget-class-ref name="GtkFixed"/>
     <glade-widget-class-ref name="GtkEventBox"/>
@@ -3612,10 +3625,8 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkAccelLabel"/>
     <glade-widget-class-ref name="GtkEntry"/>
 
-    <glade-widget-class-ref name="GtkHScale"/>
-    <glade-widget-class-ref name="GtkVScale"/>
-    <glade-widget-class-ref name="GtkHScrollbar"/>
-    <glade-widget-class-ref name="GtkVScrollbar"/>
+    <glade-widget-class-ref name="GtkScale"/>
+    <glade-widget-class-ref name="GtkScrollbar"/>
 
     <glade-widget-class-ref name="GtkComboBox"/>
     <glade-widget-class-ref name="GtkComboBoxText"/>
@@ -3632,8 +3643,7 @@ embedded in another object</_tooltip>
 
     <glade-widget-class-ref name="GtkCalendar"/>
     <glade-widget-class-ref name="GtkMenu"/>
-    <glade-widget-class-ref name="GtkHSeparator"/>
-    <glade-widget-class-ref name="GtkVSeparator"/>
+    <glade-widget-class-ref name="GtkSeparator"/>
     <glade-widget-class-ref name="GtkArrow"/>
     <glade-widget-class-ref name="GtkDrawingArea"/>
   </glade-widget-group>

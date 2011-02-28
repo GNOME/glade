@@ -10,6 +10,8 @@ icons_DATA = \
         widget-gtk-aspectframe.png \
         widget-gtk-assistant.png \
         widget-gtk-button.png \
+        widget-gtk-buttonbox.png \
+        widget-gtk-box.png \
         widget-gtk-calendar.png \
         widget-gtk-checkbutton.png \
         widget-gtk-checkmenuitem.png \
@@ -37,6 +39,7 @@ icons_DATA = \
         widget-gtk-fontselection.png \
         widget-gtk-fontselectiondialog.png \
         widget-gtk-frame.png \
+        widget-gtk-grid.png \
         widget-gtk-gammacurve.png \
         widget-gtk-handlebox.png \
         widget-gtk-hbox.png \
@@ -62,6 +65,7 @@ icons_DATA = \
         widget-gtk-messagedialog.png \
         widget-gtk-notebook.png \
         widget-gtk-optionmenu.png \
+        widget-gtk-paned.png \
         widget-gtk-pagesetupdialog.png \
         widget-gtk-printdialog.png \
         widget-gtk-progressbar.png \
@@ -71,7 +75,10 @@ icons_DATA = \
         widget-gtk-recentchooser.png \
         widget-gtk-recentchooserdialog.png \
         widget-gtk-ruler.png \
+        widget-gtk-scale.png \
+        widget-gtk-scrollbar.png \
         widget-gtk-scrolledwindow.png \
+        widget-gtk-separator.png \
         widget-gtk-separatormenuitem.png \
         widget-gtk-separatortoolitem.png \
         widget-gtk-spinbutton.png \
