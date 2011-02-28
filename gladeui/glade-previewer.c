@@ -177,31 +177,8 @@ static GtkWidget *
 preview_widget (gchar * name, gchar * buffer, gsize length)
 {
   GtkWidget *widget;
-  GtkWidget *widget_parent;
-  GtkWidget *window;
 
   widget = get_toplevel (name, buffer, length);
-
-  if (GTK_IS_WINDOW (widget))
-    {
-      window = widget;
-    }
-  else
-    {
-      window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-      gtk_window_set_title (GTK_WINDOW (window), _("Preview"));
-
-      /* Reparenting snippet */
-      g_object_ref (widget);
-      widget_parent = gtk_widget_get_parent (widget);
-      if (widget_parent != NULL)
-        gtk_container_remove (GTK_CONTAINER (widget_parent), widget);
-      gtk_container_add (GTK_CONTAINER (window), widget);
-      g_object_unref (widget);
-    }
-
-  g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
-  gtk_widget_show_all (window);
 
   return widget;
 }
@@ -220,6 +197,37 @@ channel_from_stream (gint stream)
   return channel;
 }
 
+static GtkWidget*
+show_widget (GtkWidget *widget)
+{
+  GtkWidget *window;
+  GtkWidget *widget_parent;
+
+  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+
+  if (!GTK_IS_WINDOW (widget))
+    {
+      gtk_window_set_title (GTK_WINDOW (window), _("Preview"));
+
+      /* Reparenting snippet */
+      g_object_ref (widget);
+      widget_parent = gtk_widget_get_parent (widget);
+      if (widget_parent != NULL)
+        gtk_container_remove (GTK_CONTAINER (widget_parent), widget);
+      gtk_container_add (GTK_CONTAINER (window), widget);
+      g_object_unref (widget);
+    }
+  else
+    {
+      gtk_widget_realize (window);
+      gtk_widget_set_parent_window (widget, gtk_widget_get_window (window));
+      gtk_container_add (GTK_CONTAINER (window), widget);
+    }
+
+  g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
+  return window;
+}
+
 static void
 preview_file (gchar * toplevel_name, gchar * file_name)
 {
@@ -228,6 +236,7 @@ preview_file (gchar * toplevel_name, gchar * file_name)
   GError *error = NULL;
   GIOChannel *input;
   gint stream;
+  GtkWidget *widget;
 
   stream = fileno (fopen (file_name, "r"));
   input = channel_from_stream (stream);
@@ -240,7 +249,8 @@ preview_file (gchar * toplevel_name, gchar * file_name)
       exit (1);
     }
 
-  preview_widget (toplevel_name, buffer, length);
+  widget = preview_widget (toplevel_name, buffer, length);
+  gtk_widget_show_all (show_widget (widget));
 
   g_free (buffer);
   g_io_channel_unref (input);
@@ -292,91 +302,7 @@ read_buffer (GIOChannel * source)
 }
 
 static void
-copy_window_properties (GtkWindow *old_window, GtkWindow *new_window)
-{
-	GParamSpec **properties_list;
-	guint i, n_properties;
-	gint width, height;
-	GValue copy_value = { 0,};
-
-	if (!old_window || !new_window) return;
-
-	properties_list = g_object_class_list_properties
-			  (G_OBJECT_GET_CLASS (G_OBJECT (new_window)),
-			  &n_properties);
-
-	for (i = 0; i < n_properties; i++)
-	{
-		if (!((properties_list[i]->flags & G_PARAM_READABLE) &&
-		      (properties_list[i]->flags & G_PARAM_WRITABLE) &&
-		      (!(properties_list[i]->flags & G_PARAM_CONSTRUCT_ONLY))
-		    )) continue;
-
-		/* We won't set some properties */
-		if (g_strcmp0 ("parent", properties_list[i]->name) == 0) continue;
-		if (g_strcmp0 ("visible", properties_list[i]->name) == 0) continue;
-
-		g_value_init (&copy_value, properties_list[i]->value_type);
-		g_object_get_property (G_OBJECT (new_window),
-				       properties_list[i]->name,
-				       &copy_value);
-
-		g_object_set_property (G_OBJECT (old_window),
-				       properties_list[i]->name,
-				       &copy_value);
-
-		g_value_unset (&copy_value);
-	}
-
-	/* Special code to copy default size */
-	if (gtk_window_get_resizable (old_window))
-	{
-		gtk_window_get_default_size (new_window, &width, &height);
-		if ((width > 0) && (height > 0))
-			gtk_window_resize (old_window, width, height);
-	}
-
-	if (properties_list) g_free (properties_list);
-}
-
-static void
-update_window (GtkWindow *old_window, GtkWindow *new_window)
-{
-	GtkWidget *window_child;
-	GtkWidget *old_window_child;
-
-	if (!old_window || !new_window) return;
-
-	/* ref the new window child */
-	window_child = gtk_bin_get_child (GTK_BIN (new_window));
-	if (window_child)
-	{
-		g_object_ref (window_child);
-
-		/* remove window child */
-		gtk_container_remove (GTK_CONTAINER (new_window), window_child);
-	}
-
-	/* gtk_widget_destroy the *running preview's* window child */
-	old_window_child = gtk_bin_get_child (GTK_BIN (old_window));
-	if (old_window_child)
-		gtk_widget_destroy (old_window_child);
-
-	/* apply properties from the new window to the
-	 * old window (using GObjectapis)*/
-	copy_window_properties (old_window, new_window);
-
-	/* add new preview's window child to the old preview's window */
-	if (window_child)
-	{
-		gtk_container_add (GTK_CONTAINER (old_window), window_child);
-		/* unref the newly added child (which we added a ref to before) */
-		g_object_unref (window_child);
-	}
-}
-
-static void
-update_window_child (GtkWindow *old_window, GtkWidget *new_widget)
+update_window (GtkWindow *old_window, GtkWidget *new_widget)
 {
 	GtkWidget *old_window_child;
 
@@ -389,7 +315,13 @@ update_window_child (GtkWindow *old_window, GtkWidget *new_widget)
 
 	/* add new widget as child to the old preview's window */
 	if (new_widget)
-		gtk_container_add (GTK_CONTAINER (old_window), new_widget);
+    {
+      gtk_widget_set_parent_window (new_widget, gtk_widget_get_window (
+                                                            GTK_WIDGET (old_window)));
+  		gtk_container_add (GTK_CONTAINER (old_window), new_widget);
+    }
+
+  gtk_widget_show_all (GTK_WIDGET (old_window));
 }
 
 static gboolean
@@ -421,7 +353,9 @@ on_data_incoming (GIOChannel * source, GIOCondition condition, gpointer data)
   /* if it is the first time this is called */
   if (!preview_window)
   {
-    preview_window = preview_widget (toplevel_name, buffer, length);
+    new_widget = preview_widget (toplevel_name, buffer, length);
+    preview_window = show_widget (new_widget);
+    gtk_widget_show_all (preview_window);
   }
   else
   {
@@ -437,10 +371,7 @@ on_data_incoming (GIOChannel * source, GIOCondition condition, gpointer data)
 
     new_widget = get_toplevel (toplevel_name, buffer, length);
 
-		if (GTK_IS_WINDOW (new_widget))
-			update_window (GTK_WINDOW (preview_window),
-				       GTK_WINDOW (new_widget));
-		else update_window_child (GTK_WINDOW (preview_window), new_widget);
+    update_window (GTK_WINDOW (preview_window), new_widget);
   }
 
   if (!split_buffer)
