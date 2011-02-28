@@ -82,6 +82,7 @@ icons_DATA = \
         widget-gtk-separatormenuitem.png \
         widget-gtk-separatortoolitem.png \
         widget-gtk-spinbutton.png \
+        widget-gtk-spinner.png \
         widget-gtk-statusbar.png \
         widget-gtk-table.png \
         widget-gtk-textview.png \
