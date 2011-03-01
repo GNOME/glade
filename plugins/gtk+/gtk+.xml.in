@@ -1171,6 +1171,16 @@ embedded in another object</_tooltip>
       </signals>
     </glade-widget-class>
 
+    <glade-widget-class name="GtkAppChooserWidget" generic-name="appchooserwidget" 
+			_title="Application Chooser Widget" since="3.0">
+      <properties>
+	<property id="size" disabled="True"/>
+	<property id="spacing" disabled="True"/>
+	<property id="homogeneous" disabled="True"/>
+	<property id="orientation" disabled="True"/>
+      </properties>
+    </glade-widget-class>
+
     <glade-widget-class name="GtkColorButton" generic-name="colorbutton" _title="Color Button">
       <create-editable-function>glade_gtk_container_create_editable</create-editable-function>
       <set-property-function>glade_gtk_color_button_set_property</set-property-function>
@@ -1276,6 +1286,25 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
 
+    <glade-widget-class name="GtkAppChooserButton" generic-name="appchooserbutton" 
+			_title="Application Chooser Button" since="3.0">
+      <properties>
+	<property id="model" disabled="True"/>
+	<property id="wrap-width" disabled="True"/>
+	<property id="row-span-column" disabled="True"/>
+	<property id="column-span-column" disabled="True"/>
+	<property id="active" disabled="True"/>
+	<property id="add-tearoffs" disabled="True"/>
+	<property id="has-frame" disabled="True"/>
+	<property id="tearoff-title" disabled="True"/>
+	<property id="has-entry" disabled="True"/>
+	<property id="button-sensitivity" disabled="True"/>
+	<property id="entry-text-column" disabled="True"/>
+	<property id="id-column" disabled="True"/>
+	<property id="active-id" disabled="True"/>
+	<property id="cell-area" disabled="True"/>
+      </properties>
+    </glade-widget-class>
 
     <glade-widget-class name="GtkProgressBar" generic-name="progressbar" _title="Progress Bar">
       <properties>
@@ -1845,6 +1874,10 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
     
+    <glade-widget-class name="GtkAppChooserDialog" generic-name="appchooserdialog" 
+			_title="Application Chooser Dialog" since="3.0">
+    </glade-widget-class>
+
     <glade-widget-class name="GtkMessageDialog" generic-name="messagedialog" _title="Message Dialog" default-width="400" default-height="115">
       <set-property-function>glade_gtk_message_dialog_set_property</set-property-function>
       <get-property-function>glade_gtk_message_dialog_get_property</get-property-function>
@@ -3584,6 +3617,7 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkMessageDialog"/>
     <glade-widget-class-ref name="GtkRecentChooserDialog"/>
     <glade-widget-class-ref name="GtkAssistant"/>
+    <glade-widget-class-ref name="GtkAppChooserDialog"/>
   </glade-widget-group>
 
   <glade-widget-group name="gtk-containers" _title="Containers">
@@ -3619,6 +3653,7 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkLinkButton"/>
     <glade-widget-class-ref name="GtkScaleButton"/>
     <glade-widget-class-ref name="GtkVolumeButton"/>\
+    <glade-widget-class-ref name="GtkAppChooserButton"/>
 
     <glade-widget-class-ref name="GtkImage"/>
     <glade-widget-class-ref name="GtkLabel"/>
@@ -3656,6 +3691,7 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkFontSelection"/>
     <glade-widget-class-ref name="GtkRecentChooserWidget"/>
     <glade-widget-class-ref name="GtkFileChooserWidget"/>
+    <glade-widget-class-ref name="GtkAppChooserWidget"/>
   </glade-widget-group>
 
   <glade-widget-group name="gtk-model" _title="Tree Model">
