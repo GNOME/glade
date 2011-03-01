@@ -1900,6 +1900,7 @@ glade_property_class_update_from_node (GladeXmlNode * node,
     {
       /* Its easier for us to keep disabled properties around and
        * only virtually disable them */
+      klass->query = FALSE;
       klass->ignore = TRUE;
       klass->save = FALSE;
       klass->visible = FALSE;
