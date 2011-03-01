@@ -417,6 +417,9 @@ main (int argc, char **argv)
 
   parse_arguments (argc, argv, &toplevel_name, &file_name);
 
+  gtk_init (&argc, &argv);
+  glade_app_get ();
+
   if (file_name != NULL)
     {
       preview_file (toplevel_name, file_name);
