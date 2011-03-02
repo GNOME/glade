@@ -283,64 +283,6 @@ glade_design_layout_button_press_event (GtkWidget *widget, GdkEventButton *ev)
             }
         }
     }
-  else if (ev->type == GDK_2BUTTON_PRESS &&
-           priv->activity == ACTIVITY_RESIZE_WIDTH_AND_HEIGHT)
-    {
-      GtkAdjustment *vadj, *hadj;
-      GtkWidget *win, *parent, *sb;
-      GtkScrolledWindow *swin;
-      gint height, width, spacing, sb_width = 0, sb_height = 0;
-      GtkAllocation alloc;
-      GtkRequisition req;
-
-      gtk_widget_get_allocation (widget, &alloc);
-      parent = gtk_widget_get_parent (widget);
-      win = gtk_widget_get_ancestor (widget, GTK_TYPE_SCROLLED_WINDOW);
-      gtk_widget_style_get (win, "scrollbar-spacing", &spacing, NULL);
-      swin = GTK_SCROLLED_WINDOW (win);
-      vadj = gtk_scrolled_window_get_vadjustment (swin);
-      hadj = gtk_scrolled_window_get_hadjustment (swin);
-
-      /* Check if verticall scrollbar will show up */
-      sb = gtk_scrolled_window_get_vscrollbar (swin);
-      gtk_widget_get_preferred_size (parent, &req, NULL);
-      if (!gtk_widget_get_visible (sb) && req.height > gtk_widget_get_allocated_height (widget))
-        {
-          gtk_widget_get_preferred_width (sb, &sb_width, NULL);
-          sb_width += spacing;
-        }
-
-      alloc.width = gtk_adjustment_get_page_size (hadj) - priv->child_offset * 2 - sb_width;
-
-      /* Check if horizontal scrollbar will show up */
-      sb = gtk_scrolled_window_get_hscrollbar (swin);
-      gtk_widget_get_preferred_width (parent, &width, NULL);
-      if (!gtk_widget_get_visible (sb) &&
-          req.width > MAX (gtk_widget_get_allocated_width (widget), alloc.width))
-        {
-          gtk_widget_get_preferred_height (sb, &sb_height, NULL);
-          sb_height += spacing;
-        }
-
-      /* get widget name height */
-      if (priv->widget_name)
-        pango_layout_get_pixel_size (priv->widget_name, NULL, &height);
-      else
-        height = PADDING;
-
-      alloc.height = gtk_adjustment_get_page_size (vadj) - (PADDING + height + 2.5 * OUTLINE_WIDTH) - sb_height;
-
-      /* Maximize */
-      glade_design_layout_update_child (GLADE_DESIGN_LAYOUT (widget),
-                                        child, &alloc);
-      
-      /* give a chance for widget to realocate */
-      while (gtk_events_pending ()) gtk_main_iteration_do (FALSE);
-      
-      /* Position layout */
-      gtk_adjustment_set_value (hadj, 0);
-      gtk_adjustment_set_value (vadj, alloc.y);
-    }
 
   return FALSE;
 }
@@ -929,7 +871,7 @@ glade_design_layout_realize (GtkWidget * widget)
   display = gtk_widget_get_display (widget);
   priv->cursors[ACTIVITY_RESIZE_HEIGHT] = gdk_cursor_new_for_display (display, GDK_BOTTOM_SIDE);
   priv->cursors[ACTIVITY_RESIZE_WIDTH] = gdk_cursor_new_for_display (display, GDK_RIGHT_SIDE);
-  priv->cursors[ACTIVITY_RESIZE_WIDTH_AND_HEIGHT] = gdk_cursor_new_for_display (display, GDK_FLEUR);
+  priv->cursors[ACTIVITY_RESIZE_WIDTH_AND_HEIGHT] = gdk_cursor_new_for_display (display, GDK_BOTTOM_RIGHT_CORNER);
 
   priv->widget_name = pango_layout_new (gtk_widget_get_pango_context (widget));
 }

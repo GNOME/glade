@@ -316,6 +316,7 @@ glade_design_view_init (GladeDesignView *view)
 
   view->priv->project = NULL;
   view->priv->layout_box = gtk_vbox_new (FALSE, 0);
+  gtk_widget_set_valign (view->priv->layout_box, GTK_ALIGN_START);
   gtk_container_set_border_width (GTK_CONTAINER (view->priv->layout_box), 0);
   gtk_box_pack_end (GTK_BOX (view->priv->layout_box), gtk_fixed_new (), FALSE, FALSE, 0);
 
