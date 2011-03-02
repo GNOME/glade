@@ -144,18 +144,26 @@ AM_CONDITIONAL(HAVE_GTK_UNIX_PRINT, test x"$have_unix_print" = "xyes")
 dnl ================================================================
 dnl Python for optional python dev libs
 dnl ================================================================
+PYGOBJECT_REQS=2.27.0
+PYGOBJECT_REQUIRED_MAJOR=2
+PYGOBJECT_REQUIRED_MINOR=27
+PYGOBJECT_REQUIRED_MICRO=0
+
 AC_ARG_ENABLE(python,
     AS_HELP_STRING([--disable-python], [disable python catalog]),
     check_python=$enableval, check_python=yes)
 
 if test x"$check_python" = x"yes"; then
-  PYGTK_REQUIRED_MAJOR=2
-  PYGTK_REQUIRED_MINOR=10
-  PYGTK_REQUIRED_MICRO=0
-  PKG_CHECK_MODULES(PYGTK, [pygtk-2.0 >= 2.10.0], [have_python=yes],[have_python=no])
+  have_python=yes
+
+  PKG_CHECK_MODULES([PYGOBJECT],[pygobject-2.0 >= ${PYGOBJECT_REQUIRED_MAJOR}.${PYGOBJECT_REQUIRED_MINOR}.${PYGOBJECT_REQUIRED_MICRO}],[have_pygobject=yes],[have_pygobject=no])
 
   AM_CHECK_PYTHON_HEADERS(, [have_python_headers=no])
   AM_CHECK_PYTHON_LIBS(, [have_python_lib=no])
+
+  if test x"$have_pygobject" = x"no"; then
+    have_python=no
+  fi
 
   if test x"$have_python_headers" = x"no"; then
     have_python=no
@@ -165,13 +173,10 @@ if test x"$check_python" = x"yes"; then
     have_python=no
   fi
 
+  AC_DEFINE_UNQUOTED(PYGOBJECT_REQUIRED_MAJOR, $PYGOBJECT_REQUIRED_MAJOR, pygobject major version required)
+  AC_DEFINE_UNQUOTED(PYGOBJECT_REQUIRED_MINOR, $PYGOBJECT_REQUIRED_MINOR, pygobject minor version required)
+  AC_DEFINE_UNQUOTED(PYGOBJECT_REQUIRED_MICRO, $PYGOBJECT_REQUIRED_MICRO, pygobject micro version required)
 
-  AC_DEFINE_UNQUOTED(PYGTK_REQUIRED_MAJOR, $PYGTK_REQUIRED_MAJOR, Pygtk mayor version required)
-  AC_DEFINE_UNQUOTED(PYGTK_REQUIRED_MINOR, $PYGTK_REQUIRED_MINOR, Pygtk minor version required)
-  AC_DEFINE_UNQUOTED(PYGTK_REQUIRED_MICRO, $PYGTK_REQUIRED_MICRO, Pygtk micro version required)
-
-  AC_SUBST(PYGTK_LIBS)
-  AC_SUBST(PYGTK_CFLAGS)
 else
   have_python=no
 fi

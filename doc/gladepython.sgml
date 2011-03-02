@@ -1,4 +1,4 @@
-<refentry id="pythonsupport" revision="7 Nov 2008">
+<refentry id="pythonsupport" revision="26 Feb 2011">
  <refmeta>
    <refentrytitle>Python Gtk widgets support</refentrytitle>
    <refmiscinfo>Glade UI</refmiscinfo>
@@ -12,10 +12,9 @@ How to write and install a catalog for a python widget library
 
  <refsect1>
    <title>Introduction</title>
+   <para>
 Glade supports loading widgets coded in python by linking and running the python
 interpreter from the gladepython catalog plugin.
-   <para>
-
    </para>
 
    <para>
@@ -55,9 +54,9 @@ domain="glade-3" depends="gtk+">
    <para>
 Glade's python interpreter will look up for your widgets in the same
 places it looks
-for regular catalogs plugins, that is $GLADE_ENV_CATALOG_PATH
+for regular catalogs plugins, that is $GLADE_ENV_MODULE_PATH
 enviroment variable
-and `pkg-config --variable=catalogdir gladeui-1.0`
+and `pkg-config --variable=moduledir gladeui-2.0`
 
 So the easiest thing would be to make a symlink in one of those directory, just
 do not forget that the name should be the one specified in your catalog name.
@@ -67,14 +66,13 @@ do not forget that the name should be the one specified in your catalog name.
 pythonplugin.py
      <programlisting>
 <![CDATA[
-import gobject
-import gtk
+from gi.repository import Gtk
 
-class MyBox(gtk.HBox):
+class MyBox(Gtk.HBox):
        __gtype_name__ = 'MyBox'
 
        def __init__(self):
-               gtk.HBox.__init__(self)
+               Gtk.HBox.__init__(self)
 ]]>
      </programlisting>
    </para>

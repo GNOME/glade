@@ -30,7 +30,7 @@ static void
 python_init (void)
 {
   char *argv[1];
-
+  
   if (Py_IsInitialized ())
     return;
 
@@ -42,7 +42,7 @@ python_init (void)
 }
 
 static void
-glade_python_init_pygtk_check (gint req_major, gint req_minor, gint req_micro)
+glade_python_init_pygobject_check (gint req_major, gint req_minor, gint req_micro)
 {
   PyObject *gobject, *mdict, *version;
   int found_major, found_minor, found_micro;
@@ -51,7 +51,7 @@ glade_python_init_pygtk_check (gint req_major, gint req_minor, gint req_micro)
 
   gobject = PyImport_ImportModule ("gobject");
   mdict = PyModule_GetDict (gobject);
-  version = PyDict_GetItemString (mdict, "pygtk_version");
+  version = PyDict_GetItemString (mdict, "pygobject_version");
   if (!version)
     {
       PyErr_SetString (PyExc_ImportError, "PyGObject version too old");
@@ -75,16 +75,19 @@ static void
 glade_python_setup ()
 {
   gchar *command;
+  const gchar *module_path;
 
   Py_SetProgramName (PACKAGE_NAME);
 
   /* Initialize the Python interpreter */
   python_init ();
 
-  /* Check and init pygobject >= 2.12.0 */
+  /* Check and init pygobject */
+
   PyErr_Clear ();
-  glade_python_init_pygtk_check (PYGTK_REQUIRED_MAJOR, PYGTK_REQUIRED_MINOR,
-                                 PYGTK_REQUIRED_MICRO);
+  glade_python_init_pygobject_check (PYGOBJECT_REQUIRED_MAJOR,
+                                     PYGOBJECT_REQUIRED_MINOR,
+                                     PYGOBJECT_REQUIRED_MICRO);
   if (PyErr_Occurred ())
     {
       PyObject *ptype, *pvalue, *ptraceback;
@@ -92,8 +95,8 @@ glade_python_setup ()
       g_warning ("Unable to load pygobject module >= %d.%d.%d, "
                  "please make sure it is in python's path (sys.path). "
                  "(use PYTHONPATH env variable to specify non default paths)\n%s",
-                 PYGTK_REQUIRED_MAJOR, PYGTK_REQUIRED_MINOR,
-                 PYGTK_REQUIRED_MICRO, PyString_AsString (pvalue));
+                 PYGOBJECT_REQUIRED_MAJOR, PYGOBJECT_REQUIRED_MINOR,
+                 PYGOBJECT_REQUIRED_MICRO, PyString_AsString (pvalue));
       PyErr_Clear ();
       Py_Finalize ();
       return;
@@ -102,9 +105,15 @@ glade_python_setup ()
   pyg_disable_warning_redirections ();
 
   /* Set path */
-  command = g_strdup_printf ("import sys; sys.path+=['.', '%s', '%s'];\n",
-                             g_getenv (GLADE_ENV_CATALOG_PATH),
-                             glade_app_get_modules_dir ());
+  module_path = g_getenv (GLADE_ENV_MODULE_PATH);
+  if (module_path == NULL)
+    command = g_strdup_printf ("import sys; sys.path+=['%s'];\n",
+                               glade_app_get_modules_dir ());
+  else
+    command = g_strdup_printf ("import sys; sys.path+=['%s', '%s'];\n",
+                               module_path,
+                               glade_app_get_modules_dir ());
+
   PyRun_SimpleString (command);
   g_free (command);
 }
