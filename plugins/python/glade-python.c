@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2008 Juan Pablo Ugarte.
+ * Copyright (C) 2006-2011 Juan Pablo Ugarte.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -21,10 +21,10 @@
 
 #include <config.h>
 
-#include <gladeui/glade.h>
-
 #include <Python.h>
 #include <pygobject.h>
+
+#include <gladeui/glade.h>
 
 static void
 python_init (void)
@@ -133,6 +133,9 @@ glade_python_init (const gchar * name)
 
   /* Yeah, we use the catalog name as the library */
   import_sentence = g_strdup_printf ("import %s;", name);
+
+  /* Importing the module will create all the GTypes so that glade can use them at runtime */
   PyRun_SimpleString (import_sentence);
+  
   g_free (import_sentence);
 }
