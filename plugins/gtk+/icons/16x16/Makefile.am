@@ -6,6 +6,7 @@ icons_DATA = \
         widget-gtk-aboutdialog.png \
         widget-gtk-accellabel.png \
         widget-gtk-alignment.png \
+	widget-gtk-appchooserdialog.png \
         widget-gtk-arrow.png \
         widget-gtk-aspectframe.png \
         widget-gtk-assistant.png \
@@ -15,15 +16,11 @@ icons_DATA = \
         widget-gtk-calendar.png \
         widget-gtk-checkbutton.png \
         widget-gtk-checkmenuitem.png \
-        widget-gtk-clist.png \
         widget-gtk-colorbutton.png \
         widget-gtk-colorselection.png \
         widget-gtk-colorselectiondialog.png \
-        widget-gtk-combo.png \
         widget-gtk-combobox.png \
-        widget-gtk-comboboxentry.png \
-        widget-gtk-curve.png \
-        widget-gtk-custom.png \
+	widget-gtk-comboboxtext.png \
         widget-gtk-default.png \
         widget-gtk-dialog.png \
         widget-gtk-drawingarea.png \
@@ -33,19 +30,16 @@ icons_DATA = \
         widget-gtk-filechooserbutton.png \
         widget-gtk-filechooserdialog.png \
         widget-gtk-filechooserwidget.png \
-        widget-gtk-fileselection.png \
         widget-gtk-fixed.png \
         widget-gtk-fontbutton.png \
         widget-gtk-fontselection.png \
         widget-gtk-fontselectiondialog.png \
         widget-gtk-frame.png \
         widget-gtk-grid.png \
-        widget-gtk-gammacurve.png \
         widget-gtk-handlebox.png \
         widget-gtk-hbox.png \
         widget-gtk-hbuttonbox.png \
         widget-gtk-hpaned.png \
-        widget-gtk-hruler.png \
         widget-gtk-hscale.png \
         widget-gtk-hscrollbar.png \
         widget-gtk-hseparator.png \
@@ -56,15 +50,12 @@ icons_DATA = \
         widget-gtk-label.png \
         widget-gtk-layout.png \
         widget-gtk-linkbutton.png \
-        widget-gtk-list.png \
-        widget-gtk-listitem.png \
         widget-gtk-menu.png \
         widget-gtk-menubar.png \
         widget-gtk-menuitem.png \
         widget-gtk-menutoolbutton.png \
         widget-gtk-messagedialog.png \
         widget-gtk-notebook.png \
-        widget-gtk-optionmenu.png \
         widget-gtk-paned.png \
         widget-gtk-pagesetupdialog.png \
         widget-gtk-printdialog.png \
@@ -74,11 +65,10 @@ icons_DATA = \
         widget-gtk-radiotoolbutton.png \
         widget-gtk-recentchooser.png \
         widget-gtk-recentchooserdialog.png \
-        widget-gtk-ruler.png \
-        widget-gtk-separator.png \
         widget-gtk-scale.png \
         widget-gtk-scrollbar.png \
         widget-gtk-scrolledwindow.png \
+        widget-gtk-separator.png \
         widget-gtk-separatormenuitem.png \
         widget-gtk-separatortoolitem.png \
         widget-gtk-spinbutton.png \
@@ -96,7 +86,6 @@ icons_DATA = \
         widget-gtk-vbuttonbox.png \
         widget-gtk-viewport.png \
         widget-gtk-vpaned.png \
-        widget-gtk-vruler.png \
         widget-gtk-vscale.png \
         widget-gtk-vscrollbar.png \
         widget-gtk-vseparator.png \
@@ -113,14 +102,14 @@ icons_DATA = \
 	widget-gtk-liststore.png \
 	widget-gtk-scalebutton.png \
 	widget-gtk-iconfactory.png \
-	widget-gtk-treeviewcolumn.png \
 	widget-gtk-cellrenderertext.png \
 	widget-gtk-cellrendereraccel.png \
 	widget-gtk-cellrenderercombo.png \
 	widget-gtk-cellrendererspin.png \
+	widget-gtk-cellrendererspinner.png \
 	widget-gtk-cellrendererpixbuf.png \
 	widget-gtk-cellrendererprogress.png \
-	widget-gtk-cellrenderertoggle.png 
+	widget-gtk-cellrenderertoggle.png
 
 
 EXTRA_DIST = $(icons_DATA)
