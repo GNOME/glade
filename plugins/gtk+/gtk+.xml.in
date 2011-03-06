@@ -1464,16 +1464,10 @@ embedded in another object</_tooltip>
       </properties>
       
       <packing-properties>
-        <property id="x-options" transfer-on-paste="True">
-          <displayable-values>
-            <value id="GTK_EXPAND" _name="Expand"/>
-            <value id="GTK_SHRINK" _name="Shrink"/>
-            <value id="GTK_FILL" _name="Fill"/>
-          </displayable-values>
-        </property>
-        <property id="y-options" transfer-on-paste="True"/>
-        <property id="x-padding" transfer-on-paste="True"/>
-        <property id="y-padding" transfer-on-paste="True"/>
+        <property id="left-attach" save-always="True" needs-sync="True"/>
+        <property id="top-attach" save-always="True" needs-sync="True"/>
+        <property id="width" save-always="True"/>
+        <property id="height" save-always="True"/>
       </packing-properties>
     </glade-widget-class>
 

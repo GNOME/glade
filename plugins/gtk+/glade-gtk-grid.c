@@ -385,25 +385,25 @@ glade_gtk_grid_configure_end (GladeFixed * fixed,
       glade_property_get_value (top_attach_prop, &new_top_attach_value);
       glade_property_get_value (height_attach_prop, &new_height_attach_value);
 
-      g_value_init (&left_attach_value, G_TYPE_UINT);
-      g_value_init (&width_attach_value, G_TYPE_UINT);
-      g_value_init (&top_attach_value, G_TYPE_UINT);
-      g_value_init (&height_attach_value, G_TYPE_UINT);
+      g_value_init (&left_attach_value, G_TYPE_INT);
+      g_value_init (&width_attach_value, G_TYPE_INT);
+      g_value_init (&top_attach_value, G_TYPE_INT);
+      g_value_init (&height_attach_value, G_TYPE_INT);
 
-      g_value_set_uint (&left_attach_value, grid_edit.left_attach);
-      g_value_set_uint (&width_attach_value, grid_edit.width);
-      g_value_set_uint (&top_attach_value, grid_edit.top_attach);
-      g_value_set_uint (&height_attach_value, grid_edit.height);
+      g_value_set_int (&left_attach_value, grid_edit.left_attach);
+      g_value_set_int (&width_attach_value, grid_edit.width);
+      g_value_set_int (&top_attach_value, grid_edit.top_attach);
+      g_value_set_int (&height_attach_value, grid_edit.height);
 
       glade_command_push_group (_("Placing %s inside %s"),
                                 glade_widget_get_name (child), 
 				glade_widget_get_name (GLADE_WIDGET (fixed)));
       glade_command_set_properties
-          (left_attach_prop, &left_attach_value, &new_left_attach_value,
-           width_attach_prop, &width_attach_value, &new_width_attach_value,
-           top_attach_prop, &top_attach_value, &new_top_attach_value,
-           height_attach_prop, &height_attach_value, &new_height_attach_value,
-           NULL);
+	(left_attach_prop,   &left_attach_value,   &new_left_attach_value,
+	 width_attach_prop,  &width_attach_value,  &new_width_attach_value,
+	 top_attach_prop,    &top_attach_value,    &new_top_attach_value,
+	 height_attach_prop, &height_attach_value, &new_height_attach_value,
+	 NULL);
       glade_command_pop_group ();
 
       g_value_unset (&left_attach_value);
