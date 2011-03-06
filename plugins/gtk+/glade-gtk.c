@@ -62,6 +62,9 @@
 #define NOT_SELECTED_MSG           _("Property not selected")
 #define RESPID_INSENSITIVE_MSG     _("This property is only for use in dialog action buttons")
 #define ACTION_APPEARANCE_MSG      _("This property is set to be controlled by an Action")
+
+#define ONLY_THIS_GOES_IN_THAT_MSG _("Only objects of type %s can be added to objects of type %s.")
+
 /* -------------------------------- ParamSpecs ------------------------------ */
 
 /* Fake GtkImage::icon-size since its an int pspec in the image */
@@ -69,8 +72,7 @@ GParamSpec *
 gladegtk_icon_size_spec (void)
 {
   return g_param_spec_enum ("icon-size", _("Icon Size"),
-                            _
-                            ("Symbolic size to use for stock icon, icon set or named icon"),
+                            _("Symbolic size to use for stock icon, icon set or named icon"),
                             GTK_TYPE_ICON_SIZE, GTK_ICON_SIZE_BUTTON,
                             G_PARAM_READWRITE);
 }
@@ -1094,7 +1096,7 @@ glade_gtk_container_add_verify (GladeWidgetAdaptor *adaptor,
       if (user_feedback)
 	glade_util_ui_message (glade_app_get_window (),
 			       GLADE_UI_INFO, NULL,
-			       _("Only widgets can be added to a %s."),
+			       _("Widgets of type %s can only have widgets as children."),
 			       glade_widget_adaptor_get_title (adaptor));
 
       return FALSE;
@@ -1105,7 +1107,7 @@ glade_gtk_container_add_verify (GladeWidgetAdaptor *adaptor,
       if (user_feedback)
 	glade_util_ui_message (glade_app_get_window (),
 			       GLADE_UI_INFO, NULL,
-			       _("This %s has no placeholders available to add children."),
+			       _("Widgets of type %s need placeholders to add children."),
 			       glade_widget_adaptor_get_title (adaptor));
 
       return FALSE;
@@ -5101,7 +5103,7 @@ glade_gtk_menu_shell_add_verify (GladeWidgetAdaptor *adaptor,
 
 	  glade_util_ui_message (glade_app_get_window (),
 				 GLADE_UI_INFO, NULL,
-				 _("Only a %s can be added to a %s."),
+				 ONLY_THIS_GOES_IN_THAT_MSG,
 				 glade_widget_adaptor_get_title (menu_item_adaptor),
 				 glade_widget_adaptor_get_title (adaptor));
 	}
@@ -5803,7 +5805,7 @@ glade_gtk_menu_item_add_verify (GladeWidgetAdaptor *adaptor,
 
 	  glade_util_ui_message (glade_app_get_window (),
 				 GLADE_UI_INFO, NULL,
-				 _("Only a %s can be added to a %s."),
+				 ONLY_THIS_GOES_IN_THAT_MSG,
 				 glade_widget_adaptor_get_title (menu_adaptor),
 				 glade_widget_adaptor_get_title (adaptor));
 	}
@@ -5816,7 +5818,7 @@ glade_gtk_menu_item_add_verify (GladeWidgetAdaptor *adaptor,
 	{
 	  glade_util_ui_message (glade_app_get_window (),
 				 GLADE_UI_INFO, NULL,
-				 _("A %s cannot have any children."),
+				 _("A object of type %s cannot have any children."),
 				 glade_widget_adaptor_get_title (adaptor));
 	}
 
@@ -6402,7 +6404,7 @@ glade_gtk_toolbar_add_verify (GladeWidgetAdaptor *adaptor,
 
 	  glade_util_ui_message (glade_app_get_window (),
 				 GLADE_UI_INFO, NULL,
-				 _("Only a %s can be added to a %s."),
+				 ONLY_THIS_GOES_IN_THAT_MSG,
 				 glade_widget_adaptor_get_title (tool_item_adaptor),
 				 glade_widget_adaptor_get_title (adaptor));
 	}
@@ -6597,7 +6599,7 @@ glade_gtk_tool_palette_add_verify (GladeWidgetAdaptor *adaptor,
 
 	  glade_util_ui_message (glade_app_get_window (),
 				 GLADE_UI_INFO, NULL,
-				 _("Only a %s can be added to a %s."),
+				 ONLY_THIS_GOES_IN_THAT_MSG,
 				 glade_widget_adaptor_get_title (tool_item_group_adaptor),
 				 glade_widget_adaptor_get_title (adaptor));
 	}
@@ -6730,7 +6732,7 @@ glade_gtk_tool_item_group_add_verify (GladeWidgetAdaptor *adaptor,
 
 	  glade_util_ui_message (glade_app_get_window (),
 				 GLADE_UI_INFO, NULL,
-				 _("Only a %s can be added to a %s."),
+				 ONLY_THIS_GOES_IN_THAT_MSG,
 				 glade_widget_adaptor_get_title (tool_item_adaptor),
 				 glade_widget_adaptor_get_title (adaptor));
 	}
@@ -7125,7 +7127,7 @@ glade_gtk_menu_tool_button_add_verify (GladeWidgetAdaptor *adaptor,
 
 	  glade_util_ui_message (glade_app_get_window (),
 				 GLADE_UI_INFO, NULL,
-				 _("Only a %s can be added to a %s."),
+				 ONLY_THIS_GOES_IN_THAT_MSG,
 				 glade_widget_adaptor_get_title (menu_adaptor),
 				 glade_widget_adaptor_get_title (adaptor));
 	}
@@ -10207,7 +10209,7 @@ glade_gtk_cell_layout_add_verify (GladeWidgetAdaptor *adaptor,
 
 	  glade_util_ui_message (glade_app_get_window (),
 				 GLADE_UI_INFO, NULL,
-				 _("Only a %s can be added to a %s."),
+				 ONLY_THIS_GOES_IN_THAT_MSG,
 				 glade_widget_adaptor_get_title (cell_adaptor),
 				 glade_widget_adaptor_get_title (adaptor));
 	}
@@ -10679,7 +10681,7 @@ glade_gtk_treeview_add_verify (GladeWidgetAdaptor *adaptor,
 
 	  glade_util_ui_message (glade_app_get_window (),
 				 GLADE_UI_INFO, NULL,
-				 _("Only a %s can be added to a %s."),
+				 ONLY_THIS_GOES_IN_THAT_MSG,
 				 glade_widget_adaptor_get_title (cell_adaptor),
 				 glade_widget_adaptor_get_title (adaptor));
 	}
@@ -10979,7 +10981,7 @@ glade_gtk_action_group_add_verify (GladeWidgetAdaptor *adaptor,
 
 	  glade_util_ui_message (glade_app_get_window (),
 				 GLADE_UI_INFO, NULL,
-				 _("Only a %s can be added to a %s."),
+				 ONLY_THIS_GOES_IN_THAT_MSG,
 				 glade_widget_adaptor_get_title (action_adaptor),
 				 glade_widget_adaptor_get_title (adaptor));
 	}
@@ -11183,7 +11185,7 @@ glade_gtk_text_tag_table_add_verify (GladeWidgetAdaptor *adaptor,
 
 	  glade_util_ui_message (glade_app_get_window (),
 				 GLADE_UI_INFO, NULL,
-				 _("Only a %s can be added to a %s."),
+				 ONLY_THIS_GOES_IN_THAT_MSG,
 				 glade_widget_adaptor_get_title (tag_adaptor),
 				 glade_widget_adaptor_get_title (adaptor));
 	}
