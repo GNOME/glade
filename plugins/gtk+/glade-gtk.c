@@ -10664,6 +10664,32 @@ glade_gtk_treeview_post_create (GladeWidgetAdaptor *adaptor,
      "selection", "treeview", FALSE, reason);
 }
 
+gboolean
+glade_gtk_treeview_add_verify (GladeWidgetAdaptor *adaptor,
+			       GtkWidget          *container,
+			       GtkWidget          *child,
+			       gboolean            user_feedback)
+{
+  if (!GTK_IS_TREE_VIEW_COLUMN (child))
+    {
+      if (user_feedback)
+	{
+	  GladeWidgetAdaptor *cell_adaptor = 
+	    glade_widget_adaptor_get_by_type (GTK_TYPE_TREE_VIEW_COLUMN);
+
+	  glade_util_ui_message (glade_app_get_window (),
+				 GLADE_UI_INFO, NULL,
+				 _("Only a %s can be added to a %s."),
+				 glade_widget_adaptor_get_title (cell_adaptor),
+				 glade_widget_adaptor_get_title (adaptor));
+	}
+
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 static void
 glade_gtk_treeview_launch_editor (GObject * treeview)
 {

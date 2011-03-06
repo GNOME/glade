@@ -1,16 +1,21 @@
+2011-03-06  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-gtk.c: Added add-verify-function
+	  to allow treeview columns to be added to treeviews again.
+
 2011-03-02  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
-  * gladeui/glade-design-layout.c:
-    o removed double click toplevel maximize feature
-    o replaced GDK_FLEUR cursor with GDK_BOTTOM_RIGHT_CORNER for resize action
+	* gladeui/glade-design-layout.c:
+	  o removed double click toplevel maximize feature
+	  o replaced GDK_FLEUR cursor with GDK_BOTTOM_RIGHT_CORNER for resize action
 
-  * gladeui/glade-design-view.c: make layout_box GTK_ALIGN_START to fix toplevel alignment
+	* gladeui/glade-design-view.c: make layout_box GTK_ALIGN_START to fix toplevel alignment
 
-  * configure.ac, doc/gladepython.sgml, plugins/python/Makefile.am, plugins/python/glade-python.c:
-    Applied patch by Craig Keogh to fix bug #626225
-    "Migrate from PyGTK to PyGObject introspection-based bindings"
+	* configure.ac, doc/gladepython.sgml, plugins/python/Makefile.am, plugins/python/glade-python.c:
+	  Applied patch by Craig Keogh to fix bug #626225
+	  "Migrate from PyGTK to PyGObject introspection-based bindings"
 
-2011-02-01 Marco Diego Aurélio Mesquita <marcodiegomesquita@gmail.com>
+2010-02-01 Marco Diego Aurélio Mesquita <marcodiegomesquita@gmail.com>
 
 	* gladeui/glade-previewer.c: Initialize core library so that plugin types can be previewed.
 
