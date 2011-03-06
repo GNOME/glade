@@ -1853,7 +1853,9 @@ glade_editor_property_show_i18n_dialog (GtkWidget * parent,
   gtk_container_add (GTK_CONTAINER (alignment), label);
   gtk_box_pack_start (GTK_BOX (vbox), alignment, FALSE, FALSE, 0);
   gtk_widget_set_tooltip_text (alignment,
-                               "XXX Some explanation about translation context please ???");
+                               _("For short and ambiguous strings: type a word here to differentiate "
+				 "the meaning of this string from the meaning of other occurrences of "
+				 "the same string"));
 
   sw = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_show (sw);
