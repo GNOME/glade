@@ -169,6 +169,11 @@ glade_editable_set_show_name (GladeEditable * editable, gboolean show_name)
     iface->set_show_name (editable, show_name);
 }
 
+GladeWidget *
+glade_editable_loaded_widget (GladeEditable  *editable)
+{
+  return g_object_get_qdata (G_OBJECT (editable), glade_editable_widget_quark);
+}
 
 void
 glade_editable_block (GladeEditable *editable)
