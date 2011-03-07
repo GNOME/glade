@@ -44,6 +44,7 @@ void         glade_editable_load           (GladeEditable *editable,
 void         glade_editable_set_show_name  (GladeEditable  *editable,
 					    gboolean        show_name);
 GladeWidget *glade_editable_loaded_widget  (GladeEditable  *editable);
+gboolean     glade_editable_loading        (GladeEditable  *editable);
 
 void         glade_editable_block          (GladeEditable *editable);
 void         glade_editable_unblock        (GladeEditable *editable);

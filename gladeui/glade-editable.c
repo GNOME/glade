@@ -36,6 +36,7 @@
 
 static GQuark glade_editable_project_quark = 0;
 static GQuark glade_editable_widget_quark = 0;
+static GQuark glade_editable_loading_quark = 0;
 
 static void
 project_changed (GladeProject  *project,
@@ -98,6 +99,7 @@ glade_editable_class_init (GladeEditableIface *iface)
 {
   glade_editable_project_quark = g_quark_from_static_string ("glade-editable-project-quark");
   glade_editable_widget_quark  = g_quark_from_static_string ("glade-editable-widget-quark");
+  glade_editable_loading_quark = g_quark_from_static_string ("glade-editable-loading-quark");
 
   iface->load = glade_editable_load_default;
 }
@@ -139,11 +141,15 @@ glade_editable_load (GladeEditable * editable, GladeWidget * widget)
 
   iface = GLADE_EDITABLE_GET_IFACE (editable);
 
+  g_object_set_qdata (G_OBJECT (editable), glade_editable_loading_quark, GINT_TO_POINTER (TRUE));
+
   if (iface->load)
     iface->load (editable, widget);
   else
     g_critical ("No GladeEditable::load() support on type %s",
                 G_OBJECT_TYPE_NAME (editable));
+
+  g_object_set_qdata (G_OBJECT (editable), glade_editable_loading_quark, GINT_TO_POINTER (FALSE));
 }
 
 
@@ -173,6 +179,12 @@ GladeWidget *
 glade_editable_loaded_widget (GladeEditable  *editable)
 {
   return g_object_get_qdata (G_OBJECT (editable), glade_editable_widget_quark);
+}
+
+gboolean
+glade_editable_loading (GladeEditable  *editable)
+{
+  return GPOINTER_TO_INT (g_object_get_qdata (G_OBJECT (editable), glade_editable_loading_quark));
 }
 
 void
