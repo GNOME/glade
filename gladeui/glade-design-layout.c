@@ -236,7 +236,8 @@ glade_project_is_toplevel_active (GladeProject *project, GtkWidget *toplevel)
 
   for (l = glade_project_selection_get (project); l; l = g_list_next (l))
     {
-      if (gtk_widget_is_ancestor (l->data, toplevel)) return TRUE;
+      if (GTK_IS_WIDGET (l->data) && 
+	  gtk_widget_is_ancestor (l->data, toplevel)) return TRUE;
     }
 
   return FALSE;
@@ -682,7 +683,8 @@ glade_design_layout_draw (GtkWidget * widget, cairo_t * cr)
               /* Dont draw selection on toplevels */
               if (child != selection)
                 {
-                  if (gtk_widget_is_ancestor (selection, child))
+                  if (GTK_IS_WIDGET (selection) && 
+		      gtk_widget_is_ancestor (selection, child))
                   {
                     draw_selection (cr, widget, selection, r, g, b);
                     selected = TRUE;
