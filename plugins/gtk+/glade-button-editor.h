@@ -39,8 +39,6 @@ struct _GladeButtonEditor
 {
 	GtkVBox  parent;
 
-	GladeWidget *loaded_widget; /* A handy pointer to the loaded widget ... */
-
 	GtkWidget *embed;
 
 	GtkWidget *standard_radio; /* Use standard properties to layout a button */
@@ -59,8 +57,6 @@ struct _GladeButtonEditor
 				    */
 
 	GList *properties;         /* A list of eprops to update at load() time */
-
-	gboolean loading;          /* Loading flag for loading widgets in the editor */
 };
 
 struct _GladeButtonEditorClass

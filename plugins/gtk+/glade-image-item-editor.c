@@ -75,11 +75,6 @@ glade_image_item_editor_load (GladeEditable * editable, GladeWidget * widget)
   /* Chain up to default implementation */
   parent_editable_iface->load (editable, widget);
 
-  item_editor->loading = TRUE;
-
-  /* Mark our widget... */
-  item_editor->loaded_widget = widget;
-
   /* load the embedded editable... */
   if (item_editor->embed)
     glade_editable_load (GLADE_EDITABLE (item_editor->embed), widget);
@@ -111,7 +106,6 @@ glade_image_item_editor_load (GladeEditable * editable, GladeWidget * widget)
         gtk_toggle_button_set_active
             (GTK_TOGGLE_BUTTON (item_editor->custom_radio), TRUE);
     }
-  item_editor->loading = FALSE;
 }
 
 static void
@@ -164,7 +158,9 @@ stock_toggled (GtkWidget * widget, GladeImageItemEditor * item_editor)
   GladeProperty *property;
   GladeWidget *image, *loaded;
 
-  if (item_editor->loading || !item_editor->loaded_widget)
+  loaded = glade_editable_loaded_widget (GLADE_EDITABLE (item_editor));
+
+  if (glade_editable_loading (GLADE_EDITABLE (item_editor)) || !loaded)
     return;
 
   if (!gtk_toggle_button_get_active
@@ -172,7 +168,6 @@ stock_toggled (GtkWidget * widget, GladeImageItemEditor * item_editor)
     return;
 
   glade_editable_block (GLADE_EDITABLE (item_editor));
-  loaded = item_editor->loaded_widget;
 
   glade_command_push_group (_("Setting %s to use a stock item"), glade_widget_get_name (loaded));
 
@@ -200,8 +195,7 @@ stock_toggled (GtkWidget * widget, GladeImageItemEditor * item_editor)
   glade_editable_unblock (GLADE_EDITABLE (item_editor));
 
   /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (item_editor),
-                       item_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (item_editor), loaded);
 }
 
 static void
@@ -209,8 +203,9 @@ custom_toggled (GtkWidget * widget, GladeImageItemEditor * item_editor)
 {
   GladeProperty *property;
   GladeWidgetAdaptor *adaptor;
+  GladeWidget *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (item_editor));
 
-  if (item_editor->loading || !item_editor->loaded_widget)
+  if (glade_editable_loading (GLADE_EDITABLE (item_editor)) || !gwidget)
     return;
 
   if (!gtk_toggle_button_get_active
@@ -219,29 +214,28 @@ custom_toggled (GtkWidget * widget, GladeImageItemEditor * item_editor)
 
   glade_editable_block (GLADE_EDITABLE (item_editor));
 
-  adaptor = glade_widget_get_adaptor (item_editor->loaded_widget);
+  adaptor = glade_widget_get_adaptor (gwidget);
 
   glade_command_push_group (_("Setting %s to use a label and image"),
-                            glade_widget_get_name (item_editor->loaded_widget));
+                            glade_widget_get_name (gwidget));
 
   /* First clear stock...  */
-  property = glade_widget_get_property (item_editor->loaded_widget, "stock");
+  property = glade_widget_get_property (gwidget, "stock");
   glade_command_set_property (property, NULL);
-  property =
-      glade_widget_get_property (item_editor->loaded_widget, "use-stock");
+  property = glade_widget_get_property (gwidget, "use-stock");
   glade_command_set_property (property, FALSE);
 
   /* Now setup default label and create image... */
-  property = glade_widget_get_property (item_editor->loaded_widget, "label");
+  property = glade_widget_get_property (gwidget, "label");
   glade_command_set_property (property, glade_widget_adaptor_get_generic_name (adaptor));
-  property = glade_widget_get_property (item_editor->loaded_widget, "use-underline");
+  property = glade_widget_get_property (gwidget, "use-underline");
   glade_command_set_property (property, FALSE);
 
   /* There shouldnt be an image widget here... */
-  if (!get_image_widget (item_editor->loaded_widget))
+  if (!get_image_widget (gwidget))
     {
       /* item_editor->loaded_widget may be set to NULL after the create_command. */
-      GladeWidget *loaded = item_editor->loaded_widget;
+      GladeWidget *loaded = gwidget;
       GladeWidget *image;
 
       property = glade_widget_get_property (loaded, "image");
@@ -265,8 +259,7 @@ custom_toggled (GtkWidget * widget, GladeImageItemEditor * item_editor)
   glade_editable_unblock (GLADE_EDITABLE (item_editor));
 
   /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (item_editor),
-                       item_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (item_editor), gwidget);
 }
 
 static void

@@ -48,8 +48,6 @@ struct _GladeCellRendererEditor
 	GList *checks;             /* A list of radio buttons for each property/attribute pair */
 
 	GList *properties;         /* A list of eprops to update at load() time */
-
-	gboolean loading;          /* Loading flag for loading widgets in the editor */
 };
 
 struct _GladeCellRendererEditorClass

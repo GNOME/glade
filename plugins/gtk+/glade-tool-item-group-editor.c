@@ -66,11 +66,6 @@ glade_tool_item_group_editor_load (GladeEditable * editable, GladeWidget * widge
   /* Chain up to default implementation */
   parent_editable_iface->load (editable, widget);
 
-  group_editor->loading = TRUE;
-
-  /* Mark our widget... */
-  group_editor->loaded_widget = widget;
-
   /* load the embedded editable... */
   if (group_editor->embed)
     glade_editable_load (GLADE_EDITABLE (group_editor->embed), widget);
@@ -91,8 +86,6 @@ glade_tool_item_group_editor_load (GladeEditable * editable, GladeWidget * widge
         gtk_toggle_button_set_active
             (GTK_TOGGLE_BUTTON (group_editor->label_radio), TRUE);
     }
-
-  group_editor->loading = FALSE;
 }
 
 static void
@@ -142,9 +135,10 @@ label_toggled (GtkWidget * widget,
 	       GladeToolItemGroupEditor *group_editor)
 {
   GladeProperty *property;
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (group_editor));
   GValue value = { 0, };
 
-  if (group_editor->loading || !group_editor->loaded_widget)
+  if (glade_editable_loading (GLADE_EDITABLE (group_editor)) || !gwidget)
     return;
 
   if (!gtk_toggle_button_get_active
@@ -154,18 +148,16 @@ label_toggled (GtkWidget * widget,
   glade_editable_block (GLADE_EDITABLE (group_editor));
 
   glade_command_push_group (_("Setting %s to use standard label text"),
-                            glade_widget_get_name (group_editor->loaded_widget));
+                            glade_widget_get_name (gwidget));
 
-  property =
-      glade_widget_get_property (group_editor->loaded_widget, "label-widget");
+  property = glade_widget_get_property (gwidget, "label-widget");
   glade_command_set_property (property, NULL);
 
-  property = glade_widget_get_property (group_editor->loaded_widget, "label");
+  property = glade_widget_get_property (gwidget, "label");
   glade_property_get_default (property, &value);
   glade_command_set_property_value (property, &value);
   g_value_unset (&value);
-  property =
-      glade_widget_get_property (group_editor->loaded_widget, "custom-label");
+  property = glade_widget_get_property (gwidget, "custom-label");
   glade_command_set_property (property, FALSE);
 
   glade_command_pop_group ();
@@ -173,15 +165,16 @@ label_toggled (GtkWidget * widget,
   glade_editable_unblock (GLADE_EDITABLE (group_editor));
 
   /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (group_editor), group_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (group_editor), gwidget);
 }
 
 static void
 label_widget_toggled (GtkWidget * widget, GladeToolItemGroupEditor * group_editor)
 {
   GladeProperty *property;
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (group_editor));
 
-  if (group_editor->loading || !group_editor->loaded_widget)
+  if (glade_editable_loading (GLADE_EDITABLE (group_editor)) || !gwidget)
     return;
 
   if (!gtk_toggle_button_get_active
@@ -191,12 +184,11 @@ label_widget_toggled (GtkWidget * widget, GladeToolItemGroupEditor * group_edito
   glade_editable_block (GLADE_EDITABLE (group_editor));
 
   glade_command_push_group (_("Setting %s to use a custom label widget"),
-                            glade_widget_get_name (group_editor->loaded_widget));
+                            glade_widget_get_name (gwidget));
 
-  property = glade_widget_get_property (group_editor->loaded_widget, "label");
+  property = glade_widget_get_property (gwidget, "label");
   glade_command_set_property (property, NULL);
-  property =
-      glade_widget_get_property (group_editor->loaded_widget, "custom-label");
+  property = glade_widget_get_property (gwidget, "custom-label");
   glade_command_set_property (property, TRUE);
 
   glade_command_pop_group ();
@@ -204,7 +196,7 @@ label_widget_toggled (GtkWidget * widget, GladeToolItemGroupEditor * group_edito
   glade_editable_unblock (GLADE_EDITABLE (group_editor));
 
   /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (group_editor), group_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (group_editor), gwidget);
 }
 
 static void

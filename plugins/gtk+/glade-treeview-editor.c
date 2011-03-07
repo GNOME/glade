@@ -88,9 +88,6 @@ glade_tree_view_editor_load (GladeEditable * editable, GladeWidget * widget)
   /* Chain up to default implementation */
   parent_editable_iface->load (editable, widget);
 
-  /* Mark our widget... */
-  view_editor->loaded_widget = widget;
-
   /* load the embedded editable... */
   if (view_editor->embed)
     glade_editable_load (GLADE_EDITABLE (view_editor->embed), widget);
@@ -167,11 +164,11 @@ static void
 glade_tree_view_editor_realize (GtkWidget * widget)
 {
   GladeTreeViewEditor *view_editor = GLADE_TREE_VIEW_EDITOR (widget);
+  GladeWidget         *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (view_editor));
 
   GTK_WIDGET_CLASS (glade_tree_view_editor_parent_class)->realize (widget);
 
-  glade_editable_load (GLADE_EDITABLE (view_editor),
-                       view_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (view_editor), gwidget);
 }
 
 static void

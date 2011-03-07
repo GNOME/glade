@@ -66,11 +66,6 @@ glade_activatable_editor_load (GladeEditable * editable, GladeWidget * widget)
   /* Chain up to default implementation */
   parent_editable_iface->load (editable, widget);
 
-  activatable_editor->loading = TRUE;
-
-  /* Mark our widget... */
-  activatable_editor->loaded_widget = widget;
-
   /* load the embedded editable... */
   if (activatable_editor->embed)
     glade_editable_load (GLADE_EDITABLE (activatable_editor->embed), widget);
@@ -78,8 +73,6 @@ glade_activatable_editor_load (GladeEditable * editable, GladeWidget * widget)
   for (l = activatable_editor->properties; l; l = l->next)
     glade_editor_property_load_by_widget (GLADE_EDITOR_PROPERTY (l->data),
                                           widget);
-
-  activatable_editor->loading = FALSE;
 }
 
 static void
@@ -277,7 +270,7 @@ related_action_pre_commit (GladeEditorProperty * property,
                            GValue * value,
                            GladeActivatableEditor * activatable_editor)
 {
-  GladeWidget *gwidget = activatable_editor->loaded_widget;
+  GladeWidget *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (activatable_editor));
   GtkAction *action = g_value_get_object (value);
   gboolean use_appearance = FALSE;
 
@@ -304,7 +297,7 @@ use_appearance_pre_commit (GladeEditorProperty * property,
                            GValue * value,
                            GladeActivatableEditor * activatable_editor)
 {
-  GladeWidget *gwidget = activatable_editor->loaded_widget;
+  GladeWidget *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (activatable_editor));
   GtkAction *action = NULL;
   gboolean use_appearance = g_value_get_boolean (value);
 

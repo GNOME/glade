@@ -39,16 +39,12 @@ struct _GladeToolItemGroupEditor
 {
 	GtkVBox  parent;
 
-	GladeWidget *loaded_widget; /* A handy pointer to the loaded widget ... */
-
 	GtkWidget *embed;
 
 	GtkWidget *label_radio;         /* Set the label directly */
 	GtkWidget *label_widget_radio;  /* Use the custom label widget */
 
 	GList *properties;         /* A list of eprops to update at load() time */
-
-	gboolean loading;          /* Loading flag for loading widgets in the editor */
 };
 
 struct _GladeToolItemGroupEditorClass

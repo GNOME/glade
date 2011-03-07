@@ -39,8 +39,6 @@ struct _GladeEntryEditor
 {
 	GtkVBox  parent;
 
-	GladeWidget *loaded_widget; /* A handy pointer to the loaded widget ... */
-
 	GtkWidget *embed;
 
 	GtkWidget *text_radio;
@@ -55,8 +53,6 @@ struct _GladeEntryEditor
 	GtkWidget *secondary_icon_name_radio;
 
 	GList     *properties;
-
-	gboolean loading;
 };
 
 struct _GladeEntryEditorClass

@@ -37,26 +37,22 @@ typedef struct _GladeImageItemEditorClass   GladeImageItemEditorClass;
 
 struct _GladeImageItemEditor
 {
-	GtkVBox  parent;
+  GtkVBox  parent;
 
-	GladeWidget *loaded_widget; /* A handy pointer to the loaded widget ... */
+  GtkWidget *embed;           /* Embedded parent class editor */
+  GtkWidget *embed_image;     /* Embedded GladeEditable for the image */
 
-	GtkWidget *embed;           /* Embedded parent class editor */
-	GtkWidget *embed_image;     /* Embedded GladeEditable for the image */
+  GtkWidget *stock_radio;     /* Use a stock-item for the menu */
+  GtkWidget *custom_radio;    /* Set a widget to be placed as the image item's label */
+  GtkWidget *embed_frame;     /* Use to set the whole image area insensitive */
+  GtkWidget *label_frame;     /* Use to set the whole custom label area insensitive */
 
-	GtkWidget *stock_radio;     /* Use a stock-item for the menu */
-	GtkWidget *custom_radio;    /* Set a widget to be placed as the image item's label */
-	GtkWidget *embed_frame;     /* Use to set the whole image area insensitive */
-	GtkWidget *label_frame;     /* Use to set the whole custom label area insensitive */
-
-	GList *properties;         /* A list of eprops to update at load() time */
-
-	gboolean loading;          /* Loading flag for loading widgets in the editor */
+  GList *properties;         /* A list of eprops to update at load() time */
 };
 
 struct _GladeImageItemEditorClass
 {
-	GtkVBoxClass parent;
+  GtkVBoxClass parent;
 };
 
 GType            glade_image_item_editor_get_type (void) G_GNUC_CONST;

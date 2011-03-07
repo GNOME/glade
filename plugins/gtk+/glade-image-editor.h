@@ -45,8 +45,6 @@ struct _GladeImageEditor
 {
 	GtkVBox  parent;
 
-	GladeWidget *loaded_widget; /* A handy pointer to the loaded widget ... */
-
 	GtkWidget *embed;
 
 	GtkWidget *stock_radio;    /* Create the image from stock-id */
@@ -57,8 +55,6 @@ struct _GladeImageEditor
 	GtkWidget *pixels_radio;   /* Set size in Pixel value */
 
 	GList *properties;         /* A list of eprops to update at load() time */
-
-	gboolean loading;          /* Loading flag for loading widgets in the editor */
 };
 
 struct _GladeImageEditorClass

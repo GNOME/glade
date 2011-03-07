@@ -65,11 +65,6 @@ glade_label_editor_load (GladeEditable * editable, GladeWidget * widget)
   /* Chain up to default implementation */
   parent_editable_iface->load (editable, widget);
 
-  label_editor->loading = TRUE;
-
-  /* Mark our widget... */
-  label_editor->loaded_widget = widget;
-
   /* load the embedded editable... */
   if (label_editor->embed)
     glade_editable_load (GLADE_EDITABLE (label_editor->embed), widget);
@@ -151,7 +146,6 @@ glade_label_editor_load (GladeEditable * editable, GladeWidget * widget)
                                       (label_editor->width_radio), TRUE);
 
     }
-  label_editor->loading = FALSE;
 }
 
 static void
@@ -203,8 +197,9 @@ static void
 attributes_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 {
   GladeProperty *property;
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (label_editor));
 
-  if (label_editor->loading || !label_editor->loaded_widget)
+  if (glade_editable_loading (GLADE_EDITABLE (label_editor)) || !gwidget)
     return;
 
   if (!gtk_toggle_button_get_active
@@ -214,16 +209,13 @@ attributes_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
   glade_editable_block (GLADE_EDITABLE (label_editor));
 
   glade_command_push_group (_("Setting %s to use an attribute list"),
-                            glade_widget_get_name (label_editor->loaded_widget));
+                            glade_widget_get_name (gwidget));
 
-  property =
-      glade_widget_get_property (label_editor->loaded_widget, "use-markup");
+  property = glade_widget_get_property (gwidget, "use-markup");
   glade_command_set_property (property, FALSE);
-  property = glade_widget_get_property (label_editor->loaded_widget, "pattern");
+  property = glade_widget_get_property (gwidget, "pattern");
   glade_command_set_property (property, NULL);
-  property =
-      glade_widget_get_property (label_editor->loaded_widget,
-                                 "label-content-mode");
+  property = glade_widget_get_property (gwidget, "label-content-mode");
   glade_command_set_property (property, GLADE_LABEL_MODE_ATTRIBUTES);
 
   glade_command_pop_group ();
@@ -231,16 +223,16 @@ attributes_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
   glade_editable_unblock (GLADE_EDITABLE (label_editor));
 
   /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (label_editor),
-                       label_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (label_editor), gwidget);
 }
 
 static void
 markup_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 {
   GladeProperty *property;
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (label_editor));
 
-  if (label_editor->loading || !label_editor->loaded_widget)
+  if (glade_editable_loading (GLADE_EDITABLE (label_editor)) || !gwidget)
     return;
 
   if (!gtk_toggle_button_get_active
@@ -250,21 +242,16 @@ markup_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
   glade_editable_block (GLADE_EDITABLE (label_editor));
 
   glade_command_push_group (_("Setting %s to use a Pango markup string"),
-                            glade_widget_get_name (label_editor->loaded_widget));
+                            glade_widget_get_name (gwidget));
 
-  property = glade_widget_get_property (label_editor->loaded_widget, "pattern");
+  property = glade_widget_get_property (gwidget, "pattern");
   glade_command_set_property (property, NULL);
-  property =
-      glade_widget_get_property (label_editor->loaded_widget,
-                                 "glade-attributes");
+  property = glade_widget_get_property (gwidget, "glade-attributes");
   glade_command_set_property (property, NULL);
 
-  property =
-      glade_widget_get_property (label_editor->loaded_widget, "use-markup");
+  property = glade_widget_get_property (gwidget, "use-markup");
   glade_command_set_property (property, TRUE);
-  property =
-      glade_widget_get_property (label_editor->loaded_widget,
-                                 "label-content-mode");
+  property = glade_widget_get_property (gwidget, "label-content-mode");
   glade_command_set_property (property, GLADE_LABEL_MODE_MARKUP);
 
   glade_command_pop_group ();
@@ -272,16 +259,16 @@ markup_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
   glade_editable_unblock (GLADE_EDITABLE (label_editor));
 
   /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (label_editor),
-                       label_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (label_editor), gwidget);
 }
 
 static void
 pattern_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 {
   GladeProperty *property;
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (label_editor));
 
-  if (label_editor->loading || !label_editor->loaded_widget)
+  if (glade_editable_loading (GLADE_EDITABLE (label_editor)) || !gwidget)
     return;
 
   if (!gtk_toggle_button_get_active
@@ -291,18 +278,13 @@ pattern_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
   glade_editable_block (GLADE_EDITABLE (label_editor));
 
   glade_command_push_group (_("Setting %s to use a pattern string"),
-                            glade_widget_get_name (label_editor->loaded_widget));
+                            glade_widget_get_name (gwidget));
 
-  property =
-      glade_widget_get_property (label_editor->loaded_widget,
-                                 "glade-attributes");
+  property = glade_widget_get_property (gwidget, "glade-attributes");
   glade_command_set_property (property, NULL);
-  property =
-      glade_widget_get_property (label_editor->loaded_widget, "use-markup");
+  property = glade_widget_get_property (gwidget, "use-markup");
   glade_command_set_property (property, FALSE);
-  property =
-      glade_widget_get_property (label_editor->loaded_widget,
-                                 "label-content-mode");
+  property = glade_widget_get_property (gwidget, "label-content-mode");
   glade_command_set_property (property, GLADE_LABEL_MODE_PATTERN);
 
   glade_command_pop_group ();
@@ -310,8 +292,7 @@ pattern_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
   glade_editable_unblock (GLADE_EDITABLE (label_editor));
 
   /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (label_editor),
-                       label_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (label_editor), gwidget);
 }
 
 /**********************************************************************
@@ -322,8 +303,9 @@ static void
 width_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 {
   GladeProperty *property;
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (label_editor));
 
-  if (label_editor->loading || !label_editor->loaded_widget)
+  if (glade_editable_loading (GLADE_EDITABLE (label_editor)) || !gwidget)
     return;
 
   if (!gtk_toggle_button_get_active
@@ -333,14 +315,11 @@ width_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
   glade_editable_block (GLADE_EDITABLE (label_editor));
 
   glade_command_push_group (_("Setting %s to set desired width in characters"),
-                            glade_widget_get_name (label_editor->loaded_widget));
+                            glade_widget_get_name (gwidget));
 
-  property =
-      glade_widget_get_property (label_editor->loaded_widget,
-                                 "max-width-chars");
+  property = glade_widget_get_property (gwidget, "max-width-chars");
   glade_command_set_property (property, -1);
-  property =
-      glade_widget_get_property (label_editor->loaded_widget, "use-max-width");
+  property = glade_widget_get_property (gwidget, "use-max-width");
   glade_command_set_property (property, FALSE);
 
   glade_command_pop_group ();
@@ -348,16 +327,16 @@ width_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
   glade_editable_unblock (GLADE_EDITABLE (label_editor));
 
   /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (label_editor),
-                       label_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (label_editor), gwidget);
 }
 
 static void
 max_width_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 {
   GladeProperty *property;
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (label_editor));
 
-  if (label_editor->loading || !label_editor->loaded_widget)
+  if (glade_editable_loading (GLADE_EDITABLE (label_editor)) || !gwidget)
     return;
 
   if (!gtk_toggle_button_get_active
@@ -367,13 +346,11 @@ max_width_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
   glade_editable_block (GLADE_EDITABLE (label_editor));
 
   glade_command_push_group (_("Setting %s to set maximum width in characters"),
-                            glade_widget_get_name (label_editor->loaded_widget));
+                            glade_widget_get_name (gwidget));
 
-  property =
-      glade_widget_get_property (label_editor->loaded_widget, "width-chars");
+  property = glade_widget_get_property (gwidget, "width-chars");
   glade_command_set_property (property, -1);
-  property =
-      glade_widget_get_property (label_editor->loaded_widget, "use-max-width");
+  property = glade_widget_get_property (gwidget, "use-max-width");
   glade_command_set_property (property, TRUE);
 
   glade_command_pop_group ();
@@ -381,8 +358,7 @@ max_width_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
   glade_editable_unblock (GLADE_EDITABLE (label_editor));
 
   /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (label_editor),
-                       label_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (label_editor), gwidget);
 }
 
 /**********************************************************************
@@ -392,8 +368,9 @@ static void
 wrap_free_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 {
   GladeProperty *property;
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (label_editor));
 
-  if (label_editor->loading || !label_editor->loaded_widget)
+  if (glade_editable_loading (GLADE_EDITABLE (label_editor)) || !gwidget)
     return;
 
   if (!gtk_toggle_button_get_active
@@ -403,21 +380,16 @@ wrap_free_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
   glade_editable_block (GLADE_EDITABLE (label_editor));
 
   glade_command_push_group (_("Setting %s to use normal line wrapping"),
-                            glade_widget_get_name (label_editor->loaded_widget));
+                            glade_widget_get_name (gwidget));
 
-  property =
-      glade_widget_get_property (label_editor->loaded_widget,
-                                 "single-line-mode");
+  property = glade_widget_get_property (gwidget, "single-line-mode");
   glade_command_set_property (property, FALSE);
-  property =
-      glade_widget_get_property (label_editor->loaded_widget, "wrap-mode");
+  property = glade_widget_get_property (gwidget, "wrap-mode");
   glade_command_set_property (property, PANGO_WRAP_WORD);
-  property = glade_widget_get_property (label_editor->loaded_widget, "wrap");
+  property = glade_widget_get_property (gwidget, "wrap");
   glade_command_set_property (property, FALSE);
 
-  property =
-      glade_widget_get_property (label_editor->loaded_widget,
-                                 "label-wrap-mode");
+  property = glade_widget_get_property (gwidget, "label-wrap-mode");
   glade_command_set_property (property, GLADE_LABEL_WRAP_FREE);
 
   glade_command_pop_group ();
@@ -425,16 +397,16 @@ wrap_free_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
   glade_editable_unblock (GLADE_EDITABLE (label_editor));
 
   /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (label_editor),
-                       label_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (label_editor), gwidget);
 }
 
 static void
 single_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 {
   GladeProperty *property;
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (label_editor));
 
-  if (label_editor->loading || !label_editor->loaded_widget)
+  if (glade_editable_loading (GLADE_EDITABLE (label_editor)) || !gwidget)
     return;
 
   if (!gtk_toggle_button_get_active
@@ -444,21 +416,16 @@ single_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
   glade_editable_block (GLADE_EDITABLE (label_editor));
 
   glade_command_push_group (_("Setting %s to use a single line"),
-                            glade_widget_get_name (label_editor->loaded_widget));
+                            glade_widget_get_name (gwidget));
 
-  property =
-      glade_widget_get_property (label_editor->loaded_widget, "wrap-mode");
+  property = glade_widget_get_property (gwidget, "wrap-mode");
   glade_command_set_property (property, PANGO_WRAP_WORD);
-  property = glade_widget_get_property (label_editor->loaded_widget, "wrap");
+  property = glade_widget_get_property (gwidget, "wrap");
   glade_command_set_property (property, FALSE);
 
-  property =
-      glade_widget_get_property (label_editor->loaded_widget,
-                                 "single-line-mode");
+  property = glade_widget_get_property (gwidget, "single-line-mode");
   glade_command_set_property (property, TRUE);
-  property =
-      glade_widget_get_property (label_editor->loaded_widget,
-                                 "label-wrap-mode");
+  property = glade_widget_get_property (gwidget, "label-wrap-mode");
   glade_command_set_property (property, GLADE_LABEL_SINGLE_LINE);
 
   glade_command_pop_group ();
@@ -466,16 +433,16 @@ single_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
   glade_editable_unblock (GLADE_EDITABLE (label_editor));
 
   /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (label_editor),
-                       label_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (label_editor), gwidget);
 }
 
 static void
 wrap_mode_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 {
   GladeProperty *property;
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (label_editor));
 
-  if (label_editor->loading || !label_editor->loaded_widget)
+  if (glade_editable_loading (GLADE_EDITABLE (label_editor)) || !gwidget)
     return;
 
   if (!gtk_toggle_button_get_active
@@ -485,18 +452,14 @@ wrap_mode_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
   glade_editable_block (GLADE_EDITABLE (label_editor));
 
   glade_command_push_group (_("Setting %s to use specific Pango word wrapping"),
-                            glade_widget_get_name (label_editor->loaded_widget));
+                            glade_widget_get_name (gwidget));
 
-  property =
-      glade_widget_get_property (label_editor->loaded_widget,
-                                 "single-line-mode");
+  property = glade_widget_get_property (gwidget, "single-line-mode");
   glade_command_set_property (property, FALSE);
-  property = glade_widget_get_property (label_editor->loaded_widget, "wrap");
+  property = glade_widget_get_property (gwidget, "wrap");
   glade_command_set_property (property, TRUE);
 
-  property =
-      glade_widget_get_property (label_editor->loaded_widget,
-                                 "label-wrap-mode");
+  property = glade_widget_get_property (gwidget, "label-wrap-mode");
   glade_command_set_property (property, GLADE_LABEL_WRAP_MODE);
 
   glade_command_pop_group ();
@@ -504,8 +467,7 @@ wrap_mode_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
   glade_editable_unblock (GLADE_EDITABLE (label_editor));
 
   /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (label_editor),
-                       label_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (label_editor), gwidget);
 }
 
 static void

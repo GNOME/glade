@@ -51,8 +51,6 @@ struct _GladeLabelEditor
 {
 	GtkVBox  parent;
 
-	GladeWidget *loaded_widget; /* A handy pointer to the loaded widget ... */
-
 	GtkWidget *embed;
 
 	GtkWidget *attributes_radio;    /* Set pango attributes manually (attributes eprop embedded) */
@@ -71,8 +69,6 @@ struct _GladeLabelEditor
 	GtkWidget *wrap_mode_radio;
 
 	GList *properties;         /* A list of eprops to update at load() time */
-
-	gboolean loading;          /* Loading flag for loading widgets in the editor */
 };
 
 struct _GladeLabelEditorClass

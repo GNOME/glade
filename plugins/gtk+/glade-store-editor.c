@@ -65,9 +65,6 @@ glade_store_editor_load (GladeEditable * editable, GladeWidget * widget)
   /* Chain up to default implementation */
   parent_editable_iface->load (editable, widget);
 
-  /* Mark our widget... */
-  store_editor->loaded_widget = widget;
-
   /* load the embedded editable... */
   if (store_editor->embed)
     glade_editable_load (GLADE_EDITABLE (store_editor->embed), widget);

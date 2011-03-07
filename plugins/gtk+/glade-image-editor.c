@@ -65,11 +65,6 @@ glade_image_editor_load (GladeEditable * editable, GladeWidget * widget)
   /* Chain up to default implementation */
   parent_editable_iface->load (editable, widget);
 
-  image_editor->loading = TRUE;
-
-  /* Mark our widget... */
-  image_editor->loaded_widget = widget;
-
   /* load the embedded editable... */
   if (image_editor->embed)
     glade_editable_load (GLADE_EDITABLE (image_editor->embed), widget);
@@ -100,7 +95,6 @@ glade_image_editor_load (GladeEditable * editable, GladeWidget * widget)
             break;
         }
     }
-  image_editor->loading = FALSE;
 }
 
 static void
@@ -157,21 +151,20 @@ static void
 set_stock_mode (GladeImageEditor * image_editor)
 {
   GladeProperty *property;
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (image_editor));
   GValue value = { 0, };
 
-  property =
-      glade_widget_get_property (image_editor->loaded_widget, "icon-name");
+  property = glade_widget_get_property (gwidget, "icon-name");
   glade_command_set_property (property, NULL);
-  property = glade_widget_get_property (image_editor->loaded_widget, "pixbuf");
+  property = glade_widget_get_property (gwidget, "pixbuf");
   glade_command_set_property (property, NULL);
 
-  property = glade_widget_get_property (image_editor->loaded_widget, "stock");
+  property = glade_widget_get_property (gwidget, "stock");
   glade_property_get_default (property, &value);
   glade_command_set_property_value (property, &value);
   g_value_unset (&value);
 
-  property =
-      glade_widget_get_property (image_editor->loaded_widget, "image-mode");
+  property = glade_widget_get_property (gwidget, "image-mode");
   glade_command_set_property (property, GLADE_IMAGE_MODE_STOCK);
 }
 
@@ -179,13 +172,13 @@ static void
 set_icon_mode (GladeImageEditor * image_editor)
 {
   GladeProperty *property;
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (image_editor));
 
-  property = glade_widget_get_property (image_editor->loaded_widget, "stock");
+  property = glade_widget_get_property (gwidget, "stock");
   glade_command_set_property (property, NULL);
-  property = glade_widget_get_property (image_editor->loaded_widget, "pixbuf");
+  property = glade_widget_get_property (gwidget, "pixbuf");
   glade_command_set_property (property, NULL);
-  property =
-      glade_widget_get_property (image_editor->loaded_widget, "image-mode");
+  property = glade_widget_get_property (gwidget, "image-mode");
   glade_command_set_property (property, GLADE_IMAGE_MODE_ICON);
 }
 
@@ -195,47 +188,47 @@ static void
 set_file_mode (GladeImageEditor * image_editor)
 {
   GladeProperty *property;
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (image_editor));
 
-  property = glade_widget_get_property (image_editor->loaded_widget, "stock");
+  property = glade_widget_get_property (gwidget, "stock");
   glade_command_set_property (property, NULL);
-  property =
-      glade_widget_get_property (image_editor->loaded_widget, "icon-name");
+  property = glade_widget_get_property (gwidget, "icon-name");
   glade_command_set_property (property, NULL);
-  property =
-      glade_widget_get_property (image_editor->loaded_widget, "image-mode");
+  property = glade_widget_get_property (gwidget, "image-mode");
   glade_command_set_property (property, GLADE_IMAGE_MODE_FILENAME);
 }
 
 static void
 stock_toggled (GtkWidget * widget, GladeImageEditor * image_editor)
 {
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (image_editor));
 
-  if (image_editor->loading || !image_editor->loaded_widget)
+  if (glade_editable_loading (GLADE_EDITABLE (image_editor)) || !gwidget)
     return;
 
-  if (!gtk_toggle_button_get_active
-      (GTK_TOGGLE_BUTTON (image_editor->stock_radio)))
+  if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (image_editor->stock_radio)))
     return;
 
   glade_editable_block (GLADE_EDITABLE (image_editor));
 
   glade_command_push_group (_("Setting %s to use an image from stock"),
-                            glade_widget_get_name (image_editor->loaded_widget));
+                            glade_widget_get_name (gwidget));
   set_stock_mode (image_editor);
   glade_command_pop_group ();
 
   glade_editable_unblock (GLADE_EDITABLE (image_editor));
 
   /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (image_editor),
-                       image_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (image_editor), gwidget);
 }
 
 
 static void
 icon_toggled (GtkWidget * widget, GladeImageEditor * image_editor)
 {
-  if (image_editor->loading || !image_editor->loaded_widget)
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (image_editor));
+
+  if (glade_editable_loading (GLADE_EDITABLE (image_editor)) || !gwidget)
     return;
 
   if (!gtk_toggle_button_get_active
@@ -245,21 +238,22 @@ icon_toggled (GtkWidget * widget, GladeImageEditor * image_editor)
   glade_editable_block (GLADE_EDITABLE (image_editor));
 
   glade_command_push_group (_("Setting %s to use an image from the icon theme"),
-                            glade_widget_get_name (image_editor->loaded_widget));
+                            glade_widget_get_name (gwidget));
   set_icon_mode (image_editor);
   glade_command_pop_group ();
 
   glade_editable_unblock (GLADE_EDITABLE (image_editor));
 
   /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (image_editor),
-                       image_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (image_editor), gwidget);
 }
 
 static void
 file_toggled (GtkWidget * widget, GladeImageEditor * image_editor)
-{
-  if (image_editor->loading || !image_editor->loaded_widget)
+{ 
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (image_editor));
+
+  if (glade_editable_loading (GLADE_EDITABLE (image_editor)) || !gwidget)
     return;
 
   if (!gtk_toggle_button_get_active
@@ -269,15 +263,14 @@ file_toggled (GtkWidget * widget, GladeImageEditor * image_editor)
   glade_editable_block (GLADE_EDITABLE (image_editor));
 
   glade_command_push_group (_("Setting %s to use an image from filename"),
-                            glade_widget_get_name (image_editor->loaded_widget));
+                            glade_widget_get_name (gwidget));
   set_file_mode (image_editor);
   glade_command_pop_group ();
 
   glade_editable_unblock (GLADE_EDITABLE (image_editor));
 
   /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (image_editor),
-                       image_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (image_editor), gwidget);
 }
 
 

@@ -66,9 +66,6 @@ glade_icon_factory_editor_load (GladeEditable * editable, GladeWidget * widget)
   /* Chain up to default implementation */
   parent_editable_iface->load (editable, widget);
 
-  /* Mark our widget... */
-  factory_editor->loaded_widget = widget;
-
   /* load the embedded editable... */
   if (factory_editor->embed)
     glade_editable_load (GLADE_EDITABLE (factory_editor->embed), widget);

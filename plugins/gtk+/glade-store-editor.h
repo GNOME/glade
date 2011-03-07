@@ -39,8 +39,6 @@ struct _GladeStoreEditor
 {
 	GtkVBox  parent;
 
-	GladeWidget *loaded_widget; /* A handy pointer to the loaded widget ... */
-
 	GtkWidget *embed;
 
 	GList *properties;         /* A list of eprops to update at load() time */

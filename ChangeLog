@@ -9,6 +9,10 @@
 
 	* gladeui/glade-cell-renderer-editor.c: Fixed to properly use GladeEditable iface.
 
+	* gladeui/glade-*-editor.c: Fixed all GladeEditable implementations to use
+	  the new glade_editable_loading() and glade_editable_loaded_widget() instead
+	  of manually bookkeeping those states in each implementation.
+
 2011-03-06  Christopher Aillon <caillon@redhat.com>
 
 	* data/icons/hicolor/*/apps/glade-3.{png,svg,xcf}:

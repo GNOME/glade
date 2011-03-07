@@ -84,8 +84,6 @@ glade_cell_renderer_editor_load (GladeEditable * editable, GladeWidget * widget)
   /* Chain up to default implementation */
   parent_editable_iface->load (editable, widget);
 
-  renderer_editor->loading = TRUE;
-
   /* load the embedded editable... */
   if (renderer_editor->embed)
     glade_editable_load (GLADE_EDITABLE (renderer_editor->embed), widget);
@@ -120,7 +118,6 @@ glade_cell_renderer_editor_load (GladeEditable * editable, GladeWidget * widget)
             }
         }
     }
-  renderer_editor->loading = FALSE;
 }
 
 static void
@@ -181,7 +178,7 @@ attributes_toggled (GtkWidget * widget, CheckTab * tab)
 
   gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (renderer_editor));
 
-  if (renderer_editor->loading || !gwidget)
+  if (glade_editable_loading (GLADE_EDITABLE (renderer_editor)) || !gwidget)
     return;
 
   glade_editable_block (GLADE_EDITABLE (renderer_editor));

@@ -67,11 +67,6 @@ glade_tool_button_editor_load (GladeEditable * editable, GladeWidget * widget)
   /* Chain up to default implementation */
   parent_editable_iface->load (editable, widget);
 
-  button_editor->loading = TRUE;
-
-  /* Mark our widget... */
-  button_editor->loaded_widget = widget;
-
   /* load the embedded editable... */
   if (button_editor->embed)
     glade_editable_load (GLADE_EDITABLE (button_editor->embed), widget);
@@ -123,7 +118,6 @@ glade_tool_button_editor_load (GladeEditable * editable, GladeWidget * widget)
           gtk_widget_set_sensitive (button_editor->image_table, TRUE);
         }
     }
-  button_editor->loading = FALSE;
 }
 
 
@@ -132,9 +126,10 @@ standard_label_toggled (GtkWidget * widget,
                         GladeToolButtonEditor * button_editor)
 {
   GladeProperty *property;
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (button_editor));
   GValue value = { 0, };
 
-  if (button_editor->loading || !button_editor->loaded_widget)
+  if (glade_editable_loading (GLADE_EDITABLE (button_editor)) || !gwidget)
     return;
 
   if (!gtk_toggle_button_get_active
@@ -144,18 +139,16 @@ standard_label_toggled (GtkWidget * widget,
   glade_editable_block (GLADE_EDITABLE (button_editor));
 
   glade_command_push_group (_("Setting %s to use standard label text"),
-                            glade_widget_get_name (button_editor->loaded_widget));
+                            glade_widget_get_name (gwidget));
 
-  property =
-      glade_widget_get_property (button_editor->loaded_widget, "label-widget");
+  property = glade_widget_get_property (gwidget, "label-widget");
   glade_command_set_property (property, NULL);
 
-  property = glade_widget_get_property (button_editor->loaded_widget, "label");
+  property = glade_widget_get_property (gwidget, "label");
   glade_property_get_default (property, &value);
   glade_command_set_property_value (property, &value);
   g_value_unset (&value);
-  property =
-      glade_widget_get_property (button_editor->loaded_widget, "custom-label");
+  property = glade_widget_get_property (gwidget, "custom-label");
   glade_command_set_property (property, FALSE);
 
   glade_command_pop_group ();
@@ -163,16 +156,16 @@ standard_label_toggled (GtkWidget * widget,
   glade_editable_unblock (GLADE_EDITABLE (button_editor));
 
   /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (button_editor),
-                       button_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (button_editor), gwidget);
 }
 
 static void
 custom_label_toggled (GtkWidget * widget, GladeToolButtonEditor * button_editor)
 {
   GladeProperty *property;
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (button_editor));
 
-  if (button_editor->loading || !button_editor->loaded_widget)
+  if (glade_editable_loading (GLADE_EDITABLE (button_editor)) || !gwidget)
     return;
 
   if (!gtk_toggle_button_get_active
@@ -182,12 +175,11 @@ custom_label_toggled (GtkWidget * widget, GladeToolButtonEditor * button_editor)
   glade_editable_block (GLADE_EDITABLE (button_editor));
 
   glade_command_push_group (_("Setting %s to use a custom label widget"),
-                            glade_widget_get_name (button_editor->loaded_widget));
+                            glade_widget_get_name (gwidget));
 
-  property = glade_widget_get_property (button_editor->loaded_widget, "label");
+  property = glade_widget_get_property (gwidget, "label");
   glade_command_set_property (property, NULL);
-  property =
-      glade_widget_get_property (button_editor->loaded_widget, "custom-label");
+  property = glade_widget_get_property (gwidget, "custom-label");
   glade_command_set_property (property, TRUE);
 
   glade_command_pop_group ();
@@ -195,16 +187,16 @@ custom_label_toggled (GtkWidget * widget, GladeToolButtonEditor * button_editor)
   glade_editable_unblock (GLADE_EDITABLE (button_editor));
 
   /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (button_editor),
-                       button_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (button_editor), gwidget);
 }
 
 static void
 stock_toggled (GtkWidget * widget, GladeToolButtonEditor * button_editor)
 {
   GladeProperty *property;
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (button_editor));
 
-  if (button_editor->loading || !button_editor->loaded_widget)
+  if (glade_editable_loading (GLADE_EDITABLE (button_editor)) || !gwidget)
     return;
 
   if (!gtk_toggle_button_get_active
@@ -214,18 +206,15 @@ stock_toggled (GtkWidget * widget, GladeToolButtonEditor * button_editor)
   glade_editable_block (GLADE_EDITABLE (button_editor));
 
   glade_command_push_group (_("Setting %s to use an image from stock"),
-                            glade_widget_get_name (button_editor->loaded_widget));
+                            glade_widget_get_name (gwidget));
 
-  property =
-      glade_widget_get_property (button_editor->loaded_widget, "icon-name");
+  property = glade_widget_get_property (gwidget, "icon-name");
   glade_command_set_property (property, NULL);
-  property = glade_widget_get_property (button_editor->loaded_widget, "icon");
+  property = glade_widget_get_property (gwidget, "icon");
   glade_command_set_property (property, NULL);
-  property =
-      glade_widget_get_property (button_editor->loaded_widget, "icon-widget");
+  property = glade_widget_get_property (gwidget, "icon-widget");
   glade_command_set_property (property, NULL);
-  property =
-      glade_widget_get_property (button_editor->loaded_widget, "image-mode");
+  property = glade_widget_get_property (gwidget, "image-mode");
   glade_command_set_property (property, GLADE_TB_MODE_STOCK);
 
   glade_command_pop_group ();
@@ -233,8 +222,7 @@ stock_toggled (GtkWidget * widget, GladeToolButtonEditor * button_editor)
   glade_editable_unblock (GLADE_EDITABLE (button_editor));
 
   /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (button_editor),
-                       button_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (button_editor), gwidget);
 }
 
 
@@ -242,8 +230,9 @@ static void
 icon_toggled (GtkWidget * widget, GladeToolButtonEditor * button_editor)
 {
   GladeProperty *property;
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (button_editor));
 
-  if (button_editor->loading || !button_editor->loaded_widget)
+  if (glade_editable_loading (GLADE_EDITABLE (button_editor)) || !gwidget)
     return;
 
   if (!gtk_toggle_button_get_active
@@ -253,18 +242,15 @@ icon_toggled (GtkWidget * widget, GladeToolButtonEditor * button_editor)
   glade_editable_block (GLADE_EDITABLE (button_editor));
 
   glade_command_push_group (_("Setting %s to use an image from the icon theme"),
-                            glade_widget_get_name (button_editor->loaded_widget));
+                            glade_widget_get_name (gwidget));
 
-  property =
-      glade_widget_get_property (button_editor->loaded_widget, "stock-id");
+  property = glade_widget_get_property (gwidget, "stock-id");
   glade_command_set_property (property, NULL);
-  property = glade_widget_get_property (button_editor->loaded_widget, "icon");
+  property = glade_widget_get_property (gwidget, "icon");
   glade_command_set_property (property, NULL);
-  property =
-      glade_widget_get_property (button_editor->loaded_widget, "icon-widget");
+  property = glade_widget_get_property (gwidget, "icon-widget");
   glade_command_set_property (property, NULL);
-  property =
-      glade_widget_get_property (button_editor->loaded_widget, "image-mode");
+  property = glade_widget_get_property (gwidget, "image-mode");
   glade_command_set_property (property, GLADE_TB_MODE_ICON);
 
   glade_command_pop_group ();
@@ -272,16 +258,16 @@ icon_toggled (GtkWidget * widget, GladeToolButtonEditor * button_editor)
   glade_editable_unblock (GLADE_EDITABLE (button_editor));
 
   /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (button_editor),
-                       button_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (button_editor), gwidget);
 }
 
 static void
 custom_toggled (GtkWidget * widget, GladeToolButtonEditor * button_editor)
 {
   GladeProperty *property;
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (button_editor));
 
-  if (button_editor->loading || !button_editor->loaded_widget)
+  if (glade_editable_loading (GLADE_EDITABLE (button_editor)) || !gwidget)
     return;
 
   if (!gtk_toggle_button_get_active
@@ -291,18 +277,15 @@ custom_toggled (GtkWidget * widget, GladeToolButtonEditor * button_editor)
   glade_editable_block (GLADE_EDITABLE (button_editor));
 
   glade_command_push_group (_("Setting %s to use an image from the icon theme"),
-                            glade_widget_get_name (button_editor->loaded_widget));
+                            glade_widget_get_name (gwidget));
 
-  property =
-      glade_widget_get_property (button_editor->loaded_widget, "stock-id");
+  property = glade_widget_get_property (gwidget, "stock-id");
   glade_command_set_property (property, NULL);
-  property =
-      glade_widget_get_property (button_editor->loaded_widget, "icon-name");
+  property = glade_widget_get_property (gwidget, "icon-name");
   glade_command_set_property (property, NULL);
-  property = glade_widget_get_property (button_editor->loaded_widget, "icon");
+  property = glade_widget_get_property (gwidget, "icon");
   glade_command_set_property (property, NULL);
-  property =
-      glade_widget_get_property (button_editor->loaded_widget, "image-mode");
+  property = glade_widget_get_property (gwidget, "image-mode");
   glade_command_set_property (property, GLADE_TB_MODE_CUSTOM);
 
   glade_command_pop_group ();
@@ -310,8 +293,7 @@ custom_toggled (GtkWidget * widget, GladeToolButtonEditor * button_editor)
   glade_editable_unblock (GLADE_EDITABLE (button_editor));
 
   /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (button_editor),
-                       button_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (button_editor), gwidget);
 }
 
 static void

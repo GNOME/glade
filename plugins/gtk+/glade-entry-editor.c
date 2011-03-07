@@ -67,11 +67,6 @@ glade_entry_editor_load (GladeEditable * editable, GladeWidget * widget)
   /* Chain up to default implementation */
   parent_editable_iface->load (editable, widget);
 
-  entry_editor->loading = TRUE;
-
-  /* Mark our widget... */
-  entry_editor->loaded_widget = widget;
-
   /* load the embedded editable... */
   if (entry_editor->embed)
     glade_editable_load (GLADE_EDITABLE (entry_editor->embed), widget);
@@ -136,7 +131,6 @@ glade_entry_editor_load (GladeEditable * editable, GladeWidget * widget)
             break;
         }
     }
-  entry_editor->loading = FALSE;
 }
 
 static void
@@ -185,8 +179,9 @@ static void
 text_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
 {
   GladeProperty *property;
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (entry_editor));
 
-  if (entry_editor->loading || !entry_editor->loaded_widget)
+  if (glade_editable_loading (GLADE_EDITABLE (entry_editor)) || !gwidget)
     return;
 
   if (!gtk_toggle_button_get_active
@@ -196,18 +191,18 @@ text_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
   glade_editable_block (GLADE_EDITABLE (entry_editor));
 
   glade_command_push_group (_("Setting %s to use static text"),
-                            glade_widget_get_name (entry_editor->loaded_widget));
+                            glade_widget_get_name (gwidget));
 
-  property = glade_widget_get_property (entry_editor->loaded_widget, "buffer");
+  property = glade_widget_get_property (gwidget, "buffer");
   glade_command_set_property (property, NULL);
 
   property =
-      glade_widget_get_property (entry_editor->loaded_widget,
+      glade_widget_get_property (gwidget,
                                  "use-entry-buffer");
   glade_command_set_property (property, FALSE);
 
   /* Text will only take effect after setting the property under the hood */
-  property = glade_widget_get_property (entry_editor->loaded_widget, "text");
+  property = glade_widget_get_property (gwidget, "text");
   glade_command_set_property (property, NULL);
 
   /* Incase the NULL text didnt change */
@@ -218,16 +213,16 @@ text_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
   glade_editable_unblock (GLADE_EDITABLE (entry_editor));
 
   /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (entry_editor),
-                       entry_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (entry_editor), gwidget);
 }
 
 static void
 buffer_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
 {
   GladeProperty *property;
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (entry_editor));
 
-  if (entry_editor->loading || !entry_editor->loaded_widget)
+  if (glade_editable_loading (GLADE_EDITABLE (entry_editor)) || !gwidget)
     return;
 
   if (!gtk_toggle_button_get_active
@@ -237,15 +232,14 @@ buffer_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
   glade_editable_block (GLADE_EDITABLE (entry_editor));
 
   glade_command_push_group (_("Setting %s to use an external buffer"),
-                            glade_widget_get_name (entry_editor->loaded_widget));
+                            glade_widget_get_name (gwidget));
 
   /* Reset the text while still in static text mode */
-  property = glade_widget_get_property (entry_editor->loaded_widget, "text");
+  property = glade_widget_get_property (gwidget, "text");
   glade_command_set_property (property, NULL);
 
   property =
-      glade_widget_get_property (entry_editor->loaded_widget,
-                                 "use-entry-buffer");
+      glade_widget_get_property (gwidget, "use-entry-buffer");
   glade_command_set_property (property, TRUE);
 
   glade_command_pop_group ();
@@ -253,8 +247,7 @@ buffer_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
   glade_editable_unblock (GLADE_EDITABLE (entry_editor));
 
   /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (entry_editor),
-                       entry_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (entry_editor), gwidget);
 }
 
 
@@ -267,27 +260,20 @@ static void
 set_stock_mode (GladeEntryEditor * entry_editor, gboolean primary)
 {
   GladeProperty *property;
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (entry_editor));
   GValue value = { 0, };
 
-  property =
-      glade_widget_get_property (entry_editor->loaded_widget,
-                                 ICON_NAME_NAME (primary));
+  property = glade_widget_get_property (gwidget, ICON_NAME_NAME (primary));
   glade_command_set_property (property, NULL);
-  property =
-      glade_widget_get_property (entry_editor->loaded_widget,
-                                 PIXBUF_NAME (primary));
+  property = glade_widget_get_property (gwidget, PIXBUF_NAME (primary));
   glade_command_set_property (property, NULL);
 
-  property =
-      glade_widget_get_property (entry_editor->loaded_widget,
-                                 STOCK_NAME (primary));
+  property = glade_widget_get_property (gwidget, STOCK_NAME (primary));
   glade_property_get_default (property, &value);
   glade_command_set_property_value (property, &value);
   g_value_unset (&value);
 
-  property =
-      glade_widget_get_property (entry_editor->loaded_widget,
-                                 ICON_MODE_NAME (primary));
+  property = glade_widget_get_property (gwidget, ICON_MODE_NAME (primary));
   glade_command_set_property (property, GLADE_IMAGE_MODE_STOCK);
 }
 
@@ -295,18 +281,13 @@ static void
 set_icon_name_mode (GladeEntryEditor * entry_editor, gboolean primary)
 {
   GladeProperty *property;
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (entry_editor));
 
-  property =
-      glade_widget_get_property (entry_editor->loaded_widget,
-                                 STOCK_NAME (primary));
+  property = glade_widget_get_property (gwidget, STOCK_NAME (primary));
   glade_command_set_property (property, NULL);
-  property =
-      glade_widget_get_property (entry_editor->loaded_widget,
-                                 PIXBUF_NAME (primary));
+  property = glade_widget_get_property (gwidget, PIXBUF_NAME (primary));
   glade_command_set_property (property, NULL);
-  property =
-      glade_widget_get_property (entry_editor->loaded_widget,
-                                 ICON_MODE_NAME (primary));
+  property = glade_widget_get_property (gwidget, ICON_MODE_NAME (primary));
   glade_command_set_property (property, GLADE_IMAGE_MODE_ICON);
 }
 
@@ -314,28 +295,24 @@ static void
 set_pixbuf_mode (GladeEntryEditor * entry_editor, gboolean primary)
 {
   GladeProperty *property;
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (entry_editor));
 
-  property =
-      glade_widget_get_property (entry_editor->loaded_widget,
-                                 STOCK_NAME (primary));
+  property = glade_widget_get_property (gwidget, STOCK_NAME (primary));
   glade_command_set_property (property, NULL);
 
-  property =
-      glade_widget_get_property (entry_editor->loaded_widget,
-                                 ICON_NAME_NAME (primary));
+  property = glade_widget_get_property (gwidget, ICON_NAME_NAME (primary));
   glade_command_set_property (property, NULL);
 
-  property =
-      glade_widget_get_property (entry_editor->loaded_widget,
-                                 ICON_MODE_NAME (primary));
+  property = glade_widget_get_property (gwidget, ICON_MODE_NAME (primary));
   glade_command_set_property (property, GLADE_IMAGE_MODE_FILENAME);
 }
 
 static void
 primary_stock_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
 {
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (entry_editor));
 
-  if (entry_editor->loading || !entry_editor->loaded_widget)
+  if (glade_editable_loading (GLADE_EDITABLE (entry_editor)) || !gwidget)
     return;
 
   if (!gtk_toggle_button_get_active
@@ -345,22 +322,23 @@ primary_stock_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
   glade_editable_block (GLADE_EDITABLE (entry_editor));
 
   glade_command_push_group (_("Setting %s to use a primary icon from stock"),
-                            glade_widget_get_name (entry_editor->loaded_widget));
+                            glade_widget_get_name (gwidget));
   set_stock_mode (entry_editor, TRUE);
   glade_command_pop_group ();
 
   glade_editable_unblock (GLADE_EDITABLE (entry_editor));
 
   /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (entry_editor),
-                       entry_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (entry_editor), gwidget);
 }
 
 
 static void
 primary_icon_name_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
 {
-  if (entry_editor->loading || !entry_editor->loaded_widget)
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (entry_editor));
+
+  if (glade_editable_loading (GLADE_EDITABLE (entry_editor)) || !gwidget)
     return;
 
   if (!gtk_toggle_button_get_active
@@ -370,21 +348,22 @@ primary_icon_name_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
   glade_editable_block (GLADE_EDITABLE (entry_editor));
 
   glade_command_push_group (_("Setting %s to use a primary icon from the icon theme"),
-                            glade_widget_get_name (entry_editor->loaded_widget));
+                            glade_widget_get_name (gwidget));
   set_icon_name_mode (entry_editor, TRUE);
   glade_command_pop_group ();
 
   glade_editable_unblock (GLADE_EDITABLE (entry_editor));
 
   /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (entry_editor),
-                       entry_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (entry_editor), gwidget);
 }
 
 static void
 primary_pixbuf_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
 {
-  if (entry_editor->loading || !entry_editor->loaded_widget)
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (entry_editor));
+
+  if (glade_editable_loading (GLADE_EDITABLE (entry_editor)) || !gwidget)
     return;
 
   if (!gtk_toggle_button_get_active
@@ -394,23 +373,23 @@ primary_pixbuf_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
   glade_editable_block (GLADE_EDITABLE (entry_editor));
 
   glade_command_push_group (_("Setting %s to use a primary icon from filename"),
-                            glade_widget_get_name (entry_editor->loaded_widget));
+                            glade_widget_get_name (gwidget));
   set_pixbuf_mode (entry_editor, TRUE);
   glade_command_pop_group ();
 
   glade_editable_unblock (GLADE_EDITABLE (entry_editor));
 
   /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (entry_editor),
-                       entry_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (entry_editor), gwidget);
 }
 
 
 static void
 secondary_stock_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
 {
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (entry_editor));
 
-  if (entry_editor->loading || !entry_editor->loaded_widget)
+  if (glade_editable_loading (GLADE_EDITABLE (entry_editor)) || !gwidget)
     return;
 
   if (!gtk_toggle_button_get_active
@@ -420,15 +399,14 @@ secondary_stock_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
   glade_editable_block (GLADE_EDITABLE (entry_editor));
 
   glade_command_push_group (_("Setting %s to use a secondary icon from stock"),
-                            glade_widget_get_name (entry_editor->loaded_widget));
+                            glade_widget_get_name (gwidget));
   set_stock_mode (entry_editor, FALSE);
   glade_command_pop_group ();
 
   glade_editable_unblock (GLADE_EDITABLE (entry_editor));
 
   /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (entry_editor),
-                       entry_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (entry_editor), gwidget);
 }
 
 
@@ -436,7 +414,9 @@ static void
 secondary_icon_name_toggled (GtkWidget * widget,
                              GladeEntryEditor * entry_editor)
 {
-  if (entry_editor->loading || !entry_editor->loaded_widget)
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (entry_editor));
+
+  if (glade_editable_loading (GLADE_EDITABLE (entry_editor)) || !gwidget)
     return;
 
   if (!gtk_toggle_button_get_active
@@ -446,21 +426,22 @@ secondary_icon_name_toggled (GtkWidget * widget,
   glade_editable_block (GLADE_EDITABLE (entry_editor));
 
   glade_command_push_group (_("Setting %s to use a secondary icon from the icon theme"),
-                            glade_widget_get_name (entry_editor->loaded_widget));
+                            glade_widget_get_name (gwidget));
   set_icon_name_mode (entry_editor, FALSE);
   glade_command_pop_group ();
 
   glade_editable_unblock (GLADE_EDITABLE (entry_editor));
 
   /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (entry_editor),
-                       entry_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (entry_editor), gwidget);
 }
 
 static void
 secondary_pixbuf_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
 {
-  if (entry_editor->loading || !entry_editor->loaded_widget)
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (entry_editor));
+
+  if (glade_editable_loading (GLADE_EDITABLE (entry_editor)) || !gwidget)
     return;
 
   if (!gtk_toggle_button_get_active
@@ -470,15 +451,14 @@ secondary_pixbuf_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
   glade_editable_block (GLADE_EDITABLE (entry_editor));
 
   glade_command_push_group (_("Setting %s to use a secondary icon from filename"),
-                            glade_widget_get_name (entry_editor->loaded_widget));
+                            glade_widget_get_name (gwidget));
   set_pixbuf_mode (entry_editor, FALSE);
   glade_command_pop_group ();
 
   glade_editable_unblock (GLADE_EDITABLE (entry_editor));
 
   /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (entry_editor),
-                       entry_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (entry_editor), gwidget);
 }
 
 

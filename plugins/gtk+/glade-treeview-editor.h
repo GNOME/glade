@@ -39,8 +39,6 @@ struct _GladeTreeViewEditor
 {
 	GtkHBox  parent;
 
-	GladeWidget *loaded_widget; /* A handy pointer to the loaded widget ... */
-
 	GtkWidget *embed;
 	GtkWidget *embed_list_store;
 	GtkWidget *embed_tree_store;
