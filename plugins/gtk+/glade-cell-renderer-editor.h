@@ -43,8 +43,6 @@ struct _GladeCellRendererEditor
 {
 	GtkVBox  parent;
 
-	GladeWidget *loaded_widget; /* A handy pointer to the loaded widget ... */
-
 	GtkWidget *embed;           /* Embedded parent class editor */
 
 	GList *checks;             /* A list of radio buttons for each property/attribute pair */
@@ -52,7 +50,6 @@ struct _GladeCellRendererEditor
 	GList *properties;         /* A list of eprops to update at load() time */
 
 	gboolean loading;          /* Loading flag for loading widgets in the editor */
-	gboolean modifying;        /* Flag for monitoring project changes */
 };
 
 struct _GladeCellRendererEditorClass

@@ -51,6 +51,8 @@ typedef struct
   GtkWidget *use_attr_eprop;
 } CheckTab;
 
+static GladeEditableIface *parent_editable_iface;
+
 G_DEFINE_TYPE_WITH_CODE (GladeCellRendererEditor, glade_cell_renderer_editor,
                          GTK_TYPE_VBOX,
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
@@ -73,64 +75,16 @@ glade_cell_renderer_editor_init (GladeCellRendererEditor * self)
 }
 
 static void
-project_changed (GladeProject * project,
-                 GladeCommand * command,
-                 gboolean execute, GladeCellRendererEditor * renderer_editor)
-{
-  if (renderer_editor->modifying ||
-      !gtk_widget_get_mapped (GTK_WIDGET (renderer_editor)))
-    return;
-
-  /* Reload on all commands */
-  glade_editable_load (GLADE_EDITABLE (renderer_editor),
-                       renderer_editor->loaded_widget);
-}
-
-
-static void
-project_finalized (GladeCellRendererEditor * renderer_editor,
-                   GladeProject * where_project_was)
-{
-  renderer_editor->loaded_widget = NULL;
-
-  glade_editable_load (GLADE_EDITABLE (renderer_editor), NULL);
-}
-
-static void
 glade_cell_renderer_editor_load (GladeEditable * editable, GladeWidget * widget)
 {
   GladeCellRendererEditor *renderer_editor =
       GLADE_CELL_RENDERER_EDITOR (editable);
   GList *l;
 
+  /* Chain up to default implementation */
+  parent_editable_iface->load (editable, widget);
+
   renderer_editor->loading = TRUE;
-
-  /* Since we watch the project */
-  if (renderer_editor->loaded_widget)
-    {
-      g_signal_handlers_disconnect_by_func (glade_widget_get_project (renderer_editor->loaded_widget),
-                                            G_CALLBACK (project_changed),
-                                            renderer_editor);
-
-      /* The widget could die unexpectedly... */
-      g_object_weak_unref (G_OBJECT (glade_widget_get_project (renderer_editor->loaded_widget)),
-                           (GWeakNotify) project_finalized, renderer_editor);
-    }
-
-  /* Mark our widget... */
-  renderer_editor->loaded_widget = widget;
-
-  if (renderer_editor->loaded_widget)
-    {
-      /* This fires for undo/redo */
-      g_signal_connect (glade_widget_get_project (renderer_editor->loaded_widget),
-                        "changed", G_CALLBACK (project_changed),
-                        renderer_editor);
-
-      /* The widget/project could die unexpectedly... */
-      g_object_weak_ref (G_OBJECT (glade_widget_get_project (renderer_editor->loaded_widget)),
-                         (GWeakNotify) project_finalized, renderer_editor);
-    }
 
   /* load the embedded editable... */
   if (renderer_editor->embed)
@@ -183,6 +137,8 @@ glade_cell_renderer_editor_set_show_name (GladeEditable * editable,
 static void
 glade_cell_renderer_editor_editable_init (GladeEditableIface * iface)
 {
+  parent_editable_iface = g_type_default_interface_peek (GLADE_TYPE_EDITABLE);
+
   iface->load = glade_cell_renderer_editor_load;
   iface->set_show_name = glade_cell_renderer_editor_set_show_name;
 }
@@ -220,31 +176,32 @@ attributes_toggled (GtkWidget * widget, CheckTab * tab)
 {
   GladeCellRendererEditor *renderer_editor = tab->editor;
   GladeProperty *property;
+  GladeWidget   *gwidget;
   GValue value = { 0, };
 
-  if (renderer_editor->loading || !renderer_editor->loaded_widget)
+  gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (renderer_editor));
+
+  if (renderer_editor->loading || !gwidget)
     return;
 
-  renderer_editor->modifying = TRUE;
+  glade_editable_block (GLADE_EDITABLE (renderer_editor));
 
   if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (tab->attributes_check)))
     {
 
       glade_command_push_group (_("Setting %s to use the %s property as an attribute"),
-                                glade_widget_get_name (renderer_editor->loaded_widget),
+                                glade_widget_get_name (gwidget),
                                 glade_property_class_id (tab->pclass));
 
 
       property =
-          glade_widget_get_property (renderer_editor->loaded_widget,
-                                     glade_property_class_id (tab->pclass));
+          glade_widget_get_property (gwidget, glade_property_class_id (tab->pclass));
       glade_property_get_default (property, &value);
       glade_command_set_property_value (property, &value);
       g_value_unset (&value);
 
       property =
-          glade_widget_get_property (renderer_editor->loaded_widget,
-                                     glade_property_class_id (tab->use_attr_pclass));
+          glade_widget_get_property (gwidget, glade_property_class_id (tab->use_attr_pclass));
       glade_command_set_property (property, TRUE);
 
       glade_command_pop_group ();
@@ -254,28 +211,26 @@ attributes_toggled (GtkWidget * widget, CheckTab * tab)
   else
     {
       glade_command_push_group (_("Setting %s to use the %s property directly"),
-                                glade_widget_get_name (renderer_editor->loaded_widget),
+                                glade_widget_get_name (gwidget),
                                 glade_property_class_id (tab->pclass));
 
       property =
-          glade_widget_get_property (renderer_editor->loaded_widget,
-                                     glade_property_class_id (tab->attr_pclass));
+          glade_widget_get_property (gwidget, glade_property_class_id (tab->attr_pclass));
       glade_property_get_default (property, &value);
       glade_command_set_property_value (property, &value);
       g_value_unset (&value);
 
       property =
-          glade_widget_get_property (renderer_editor->loaded_widget,
-                                     glade_property_class_id (tab->use_attr_pclass));
+          glade_widget_get_property (gwidget, glade_property_class_id (tab->use_attr_pclass));
       glade_command_set_property (property, FALSE);
 
       glade_command_pop_group ();
     }
-  renderer_editor->modifying = FALSE;
+
+  glade_editable_unblock (GLADE_EDITABLE (renderer_editor));
 
   /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (renderer_editor),
-                       renderer_editor->loaded_widget);
+  glade_editable_load (GLADE_EDITABLE (renderer_editor), gwidget);
 }
 
 static gint
