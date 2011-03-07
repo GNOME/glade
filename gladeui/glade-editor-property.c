@@ -124,7 +124,7 @@ glade_editor_property_commit_common (GladeEditorProperty * eprop,
    * reload the real value.
    */
   if (glade_property_equals_value (eprop->priv->property, value))
-    GLADE_EDITOR_PROPERTY_GET_CLASS (eprop)->load (eprop, eprop->priv->property);
+    glade_editor_property_load (eprop, eprop->priv->property);
   else
     /* publish a value change to those interested */
     g_signal_emit (G_OBJECT (eprop), glade_eprop_signals[CHANGED], 0,
