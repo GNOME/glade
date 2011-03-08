@@ -2355,6 +2355,21 @@ embedded in another object</_tooltip>
 	  </parameter-spec>
 	</property>
 
+        <property id="cell-background-rgba" common="True" save="False" custom-layout="True" since="3.0"/>
+        <property id="attr-cell-background-rgba" _name="Cell Background RGBA column" save="False" 
+		  default="-1" custom-layout="True" since="3.0">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-cell-background-rgba" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
         <property id="width" common="True" save="False" custom-layout="True"/>
         <property id="attr-width" _name="Width column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
@@ -2922,10 +2937,56 @@ embedded in another object</_tooltip>
 	    <type>GParamBoolean</type>
 	  </parameter-spec>
 	</property>
+
+        <property id="background-rgba" save="False" custom-layout="True" since="3.0"/>
+        <property id="attr-background-rgba" _name="Background RGBA column" save="False" 
+		  default="-1" custom-layout="True" since="3.0">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-background-rgba" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="foreground-rgba" save="False" custom-layout="True" since="3.0"/>
+        <property id="attr-foreground-rgba" _name="Foreground RGBA column" save="False" 
+		  default="-1" custom-layout="True" since="3.0">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-foreground-rgba" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="max-width-chars" save="False" custom-layout="True" since="3.0"/>
+        <property id="attr-max-width-chars" _name="Maximum width in charachters column" 
+		  save="False" default="-1" custom-layout="True" since="3.0">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-max-width-chars" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkCellRendererAccel" generic-name="cellrendereraccel" _title="Accelerator Renderer" >
+    <glade-widget-class name="GtkCellRendererAccel" 
+			generic-name="cellrendereraccel" _title="Accelerator Renderer">
       <properties>
         <property id="accel-key" save="False" custom-layout="True"/>
         <property id="attr-accel-key" _name="Data column" save="False" default="-1" custom-layout="True">
@@ -3317,6 +3378,21 @@ embedded in another object</_tooltip>
 	    <type>GParamBoolean</type>
 	  </parameter-spec>
 	</property>
+
+        <property id="inverted" save="False" custom-layout="True"/>
+        <property id="attr-inverted" _name="Inverted column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-inverted" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
       </properties>
     </glade-widget-class>
 
