@@ -46,6 +46,7 @@ icons_DATA = \
         widget-gtk-iconview.png \
         widget-gtk-image.png \
         widget-gtk-imagemenuitem.png \
+	widget-gtk-infobar.png \
         widget-gtk-inputdialog.png \
         widget-gtk-label.png \
         widget-gtk-layout.png \
@@ -75,12 +76,17 @@ icons_DATA = \
         widget-gtk-spinner.png \
         widget-gtk-statusbar.png \
         widget-gtk-table.png \
+	widget-gtk-tearoffmenuitem.png \
+	widget-gtk-texttag.png \
+	widget-gtk-texttagtable.png \
         widget-gtk-textview.png \
         widget-gtk-togglebutton.png \
         widget-gtk-toggletoolbutton.png \
         widget-gtk-toolbar.png \
         widget-gtk-toolbutton.png \
         widget-gtk-toolitem.png \
+	widget-gtk-toolitemgroup.png \
+	widget-gtk-toolpalette.png \
         widget-gtk-treeview.png \
         widget-gtk-vbox.png \
         widget-gtk-vbuttonbox.png \
