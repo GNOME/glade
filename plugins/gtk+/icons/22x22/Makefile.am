@@ -6,7 +6,9 @@ icons_DATA = \
         widget-gtk-aboutdialog.png \
         widget-gtk-accellabel.png \
         widget-gtk-alignment.png \
+	widget-gtk-appchooserbutton.png \
 	widget-gtk-appchooserdialog.png \
+	widget-gtk-appchooserwidget.png \
         widget-gtk-arrow.png \
         widget-gtk-aspectframe.png \
         widget-gtk-assistant.png \
@@ -14,6 +16,15 @@ icons_DATA = \
         widget-gtk-buttonbox.png \
         widget-gtk-box.png \
         widget-gtk-calendar.png \
+	widget-gtk-cellareabox.png \
+	widget-gtk-cellrenderertext.png \
+	widget-gtk-cellrendereraccel.png \
+	widget-gtk-cellrenderercombo.png \
+	widget-gtk-cellrendererspin.png \
+	widget-gtk-cellrendererspinner.png \
+	widget-gtk-cellrendererpixbuf.png \
+	widget-gtk-cellrendererprogress.png \
+	widget-gtk-cellrenderertoggle.png \
         widget-gtk-checkbutton.png \
         widget-gtk-checkmenuitem.png \
         widget-gtk-colorbutton.png \
@@ -107,15 +118,7 @@ icons_DATA = \
 	widget-gtk-treestore.png \
 	widget-gtk-liststore.png \
 	widget-gtk-scalebutton.png \
-	widget-gtk-iconfactory.png \
-	widget-gtk-cellrenderertext.png \
-	widget-gtk-cellrendereraccel.png \
-	widget-gtk-cellrenderercombo.png \
-	widget-gtk-cellrendererspin.png \
-	widget-gtk-cellrendererspinner.png \
-	widget-gtk-cellrendererpixbuf.png \
-	widget-gtk-cellrendererprogress.png \
-	widget-gtk-cellrenderertoggle.png
+	widget-gtk-iconfactory.png
 
 
 EXTRA_DIST = $(icons_DATA)
