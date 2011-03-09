@@ -4,6 +4,7 @@ iconsdir = $(pkgdatadir)/pixmaps/hicolor/22x22/actions
 
 icons_DATA = \
         widget-gtk-aboutdialog.png \
+        widget-gtk-accelgroup.png \
         widget-gtk-accellabel.png \
         widget-gtk-alignment.png \
 	widget-gtk-appchooserbutton.png \
@@ -36,11 +37,13 @@ icons_DATA = \
         widget-gtk-dialog.png \
         widget-gtk-drawingarea.png \
         widget-gtk-entry.png \
+        widget-gtk-entrybuffer.png \
         widget-gtk-eventbox.png \
         widget-gtk-expander.png \
         widget-gtk-filechooserbutton.png \
         widget-gtk-filechooserdialog.png \
         widget-gtk-filechooserwidget.png \
+        widget-gtk-filefilter.png \
         widget-gtk-fixed.png \
         widget-gtk-fontbutton.png \
         widget-gtk-fontselection.png \
@@ -68,6 +71,7 @@ icons_DATA = \
         widget-gtk-menutoolbutton.png \
         widget-gtk-messagedialog.png \
         widget-gtk-notebook.png \
+	widget-gtk-offscreenwindow.png \
         widget-gtk-paned.png \
         widget-gtk-pagesetupdialog.png \
         widget-gtk-printdialog.png \
@@ -75,8 +79,10 @@ icons_DATA = \
         widget-gtk-radiobutton.png \
         widget-gtk-radiomenuitem.png \
         widget-gtk-radiotoolbutton.png \
+	widget-gtk-recentaction.png \
         widget-gtk-recentchooser.png \
         widget-gtk-recentchooserdialog.png \
+        widget-gtk-recentfilter.png \
         widget-gtk-scale.png \
         widget-gtk-scrollbar.png \
         widget-gtk-scrolledwindow.png \
@@ -88,6 +94,7 @@ icons_DATA = \
         widget-gtk-statusbar.png \
         widget-gtk-table.png \
 	widget-gtk-tearoffmenuitem.png \
+	widget-gtk-textbuffer.png \
 	widget-gtk-texttag.png \
 	widget-gtk-texttagtable.png \
         widget-gtk-textview.png \
@@ -98,7 +105,10 @@ icons_DATA = \
         widget-gtk-toolitem.png \
 	widget-gtk-toolitemgroup.png \
 	widget-gtk-toolpalette.png \
+        widget-gtk-treemodelfilter.png \
+        widget-gtk-treeselection.png \
         widget-gtk-treeview.png \
+        widget-gtk-treeviewcolumn.png \
         widget-gtk-vbox.png \
         widget-gtk-vbuttonbox.png \
         widget-gtk-viewport.png \
@@ -112,7 +122,6 @@ icons_DATA = \
 	widget-gtk-actiongroup.png \
 	widget-gtk-radioaction.png \
 	widget-gtk-toggleaction.png \
-	widget-gtk-recentaction.png \
 	widget-gtk-volumebutton.png \
 	widget-gtk-windowgroup.png \
 	widget-gtk-treestore.png \
