@@ -2327,6 +2327,97 @@ generate_type (const char *name, const char *parent_name)
   return retval;
 }
 
+static gchar *
+generate_deprecated_icon (const gchar *icon_name)
+{
+  static GdkPixbuf *deprecated_pixbuf[2] = { NULL, NULL };
+  GError        *error = NULL;
+  GdkPixbuf     *orig_pixbuf[2];
+  gchar         *deprecated;
+
+  if (strncmp (icon_name, "deprecated-", strlen ("deprecated-")) == 0)
+    return g_strdup (icon_name);
+
+  /* Get deprecated graphics */
+  if (!deprecated_pixbuf[0])
+    {
+      gchar *filename;
+
+      filename = g_build_filename (glade_app_get_pixmaps_dir (), "deprecated-16x16.png", NULL);
+
+      if ((deprecated_pixbuf[0] = gdk_pixbuf_new_from_file (filename, &error)) == NULL)
+	{
+	  g_warning ("Unable to render deprecated icon: %s", error->message);
+	  error = (g_error_free (error), NULL);
+	}
+      g_free (filename);
+
+      filename = g_build_filename (glade_app_get_pixmaps_dir (), "deprecated-22x22.png", NULL);
+
+      if ((deprecated_pixbuf[1] = gdk_pixbuf_new_from_file (filename, &error)) == NULL)
+	{
+	  g_warning ("Unable to render deprecated icon: %s", error->message);
+	  error = (g_error_free (error), NULL);
+	}
+      g_free (filename);
+    }
+
+  if (!deprecated_pixbuf[0] || !deprecated_pixbuf[1])
+      return NULL;
+
+  /* Load pixbuf's for the current icons */
+  if ((orig_pixbuf[0] = 
+       gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
+				 icon_name, 16, 0, &error)) == NULL)
+    {
+      g_warning ("Unable to render icon %s at size 16: %s", icon_name, error->message);
+      error = (g_error_free (error), NULL);
+    }
+  else
+    {
+      GdkPixbuf *tmp = gdk_pixbuf_copy (orig_pixbuf[0]);
+      g_object_unref (orig_pixbuf[0]);
+      orig_pixbuf[0] = tmp;
+    }
+
+  if ((orig_pixbuf[1] = 
+       gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
+				 icon_name, 22, 0, &error)) == NULL)
+    {
+      g_warning ("Unable to render icon %s at size 22: %s", icon_name, error->message);
+      error = (g_error_free (error), NULL);
+    }
+  else
+    {
+      GdkPixbuf *tmp = gdk_pixbuf_copy (orig_pixbuf[1]);
+      g_object_unref (orig_pixbuf[1]);
+      orig_pixbuf[1] = tmp;
+    }
+
+  deprecated = g_strdup_printf ("deprecated-%s", icon_name);
+
+  if (!gtk_icon_theme_has_icon (gtk_icon_theme_get_default (), deprecated))
+    {
+      if (orig_pixbuf[0])
+	gdk_pixbuf_composite (deprecated_pixbuf[0], orig_pixbuf[0],
+				0, 0, 16, 16, 0, 0, 1, 1, GDK_INTERP_NEAREST, 255);
+
+      if (orig_pixbuf[1])
+	gdk_pixbuf_composite (deprecated_pixbuf[1], orig_pixbuf[1],
+				0, 0, 22, 22, 0, 0, 1, 1, GDK_INTERP_NEAREST, 255);
+
+      gtk_icon_theme_add_builtin_icon (deprecated, 16, orig_pixbuf[0]);
+      gtk_icon_theme_add_builtin_icon (deprecated, 22, orig_pixbuf[1]);
+    }
+
+  if (orig_pixbuf[0])
+    g_object_unref (orig_pixbuf[0]);
+
+  if (orig_pixbuf[1])
+    g_object_unref (orig_pixbuf[1]);
+
+  return deprecated;
+}
 
 /**
  * glade_widget_adaptor_from_catalog:
@@ -2552,6 +2643,15 @@ glade_widget_adaptor_from_catalog (GladeCatalog * catalog,
 
   gwa_extend_with_node (adaptor, class_node, module,
                         glade_catalog_get_domain (catalog));
+
+
+  if (GWA_DEPRECATED (adaptor))
+    {
+      gchar *deprecated_icon = generate_deprecated_icon (adaptor->priv->icon_name);
+
+      g_free (adaptor->priv->icon_name);
+      adaptor->priv->icon_name = deprecated_icon;
+    }
 
   /* Set default weight on properties */
   for (parent_type = adaptor->priv->type;

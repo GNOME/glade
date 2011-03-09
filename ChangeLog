@@ -1,9 +1,17 @@
+2011-03-09  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* gladeui/glade-widget-adaptor.c: Added logic to re-composite the widget icon
+	  with a deprecation overlay pixbuf if a widget is deprecated.
+
+	* data/icons/Makefile.am, icons: Added deprecation overlay graphics
+	  contributed by Florent Thévenet.
+
 2011-03-09  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
-  * gladeui/glade-project.[ch]
-    o Fixed function declaration and indentation
-    o Call glade_project_notify_row_has_child() after deleting the object from the model
-      otherwise the GladeProject views do not update properly.
+	* gladeui/glade-project.[ch]
+	  o Fixed function declaration and indentation
+	  o Call glade_project_notify_row_has_child() after deleting the object from the model
+	    otherwise the GladeProject views do not update properly.
 
 2011-03-09  Tristan Van Berkom <tristanvb@openismus.com>
 

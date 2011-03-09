@@ -121,13 +121,8 @@ palette_item_refresh_cb (GladePalette *palette,
       gtk_widget_set_sensitive (GTK_WIDGET (item),
                                 !(support & GLADE_SUPPORT_MISMATCH));
 
-      if (support & GLADE_SUPPORT_DEPRECATED)
-        /* XXX Todo, draw a cross overlaying the widget icon */
-        gtk_tool_button_set_stock_id (GTK_TOOL_BUTTON (item),
-                                      GTK_STOCK_DIALOG_WARNING);
-      else
-        gtk_tool_button_set_icon_name (GTK_TOOL_BUTTON (item),
-                                       glade_widget_adaptor_get_icon_name (adaptor));
+      gtk_tool_button_set_icon_name (GTK_TOOL_BUTTON (item),
+				     glade_widget_adaptor_get_icon_name (adaptor));
 
       /* prepend widget title */
       text = g_strdup_printf ("%s: %s", glade_widget_adaptor_get_title (adaptor), warning);

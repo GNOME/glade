@@ -17,7 +17,11 @@ update-icon-cache:
 
 
 pixmapsdir = $(pkgdatadir)/pixmaps
-pixmaps_DATA = selector.png devhelp.png plus.png atk.png drag-resize.png fixed-bg.png placeholder.png
+pixmaps_DATA = selector.png devhelp.png \
+	plus.png atk.png drag-resize.png \
+	fixed-bg.png placeholder.png \
+	deprecated-16x16.png \
+	deprecated-22x22.png
 
 
 EXTRA_DIST = $(pixmaps_DATA) glade.ico
