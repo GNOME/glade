@@ -135,8 +135,8 @@ void                glade_project_widget_visibility_changed (GladeProject  *proj
                                                              GladeWidget   *widget,
                                                              gboolean       visible);
 void                glade_project_check_reordered      (GladeProject       *project,
-							GladeWidget        *parent,
-							GList              *old_order);
+                                                        GladeWidget        *parent,
+                                                        GList              *old_order);
 
 /* Commands */
 void                glade_project_undo                 (GladeProject       *project);
