@@ -549,10 +549,7 @@ glade_widget_adaptor_constructor (GType type,
 
   /* Build decorations */
   if (!adaptor->priv->icon_name)
-    {
-      adaptor->priv->icon_name = g_strdup ("gtk-missing-image");
-    }
-  gwa_create_cursor (adaptor);
+    adaptor->priv->icon_name = g_strdup ("gtk-missing-image");
 
   /* Let it leek */
   if ((object_class = g_type_class_ref (adaptor->priv->type)))
@@ -2644,7 +2641,7 @@ glade_widget_adaptor_from_catalog (GladeCatalog * catalog,
   gwa_extend_with_node (adaptor, class_node, module,
                         glade_catalog_get_domain (catalog));
 
-
+  /* Finalize the icon and overlay it if it's deprecated */
   if (GWA_DEPRECATED (adaptor))
     {
       gchar *deprecated_icon = generate_deprecated_icon (adaptor->priv->icon_name);
@@ -2652,6 +2649,9 @@ glade_widget_adaptor_from_catalog (GladeCatalog * catalog,
       g_free (adaptor->priv->icon_name);
       adaptor->priv->icon_name = deprecated_icon;
     }
+
+  /* Postpone creating the cursor until we have the right graphic for it */
+  gwa_create_cursor (adaptor);
 
   /* Set default weight on properties */
   for (parent_type = adaptor->priv->type;
