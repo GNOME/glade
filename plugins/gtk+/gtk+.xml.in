@@ -3716,8 +3716,18 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkButton"/>
     <glade-widget-class-ref name="GtkToggleButton"/>
     <glade-widget-class-ref name="GtkCheckButton"/>
-    <glade-widget-class-ref name="GtkSpinButton"/>
     <glade-widget-class-ref name="GtkRadioButton"/>
+
+    <glade-widget-class-ref name="GtkEntry"/>
+    <glade-widget-class-ref name="GtkSpinButton"/>
+
+    <glade-widget-class-ref name="GtkComboBox"/>
+    <glade-widget-class-ref name="GtkComboBoxText"/>
+
+    <glade-widget-class-ref name="GtkImage"/>
+    <glade-widget-class-ref name="GtkLabel"/>
+    <glade-widget-class-ref name="GtkAccelLabel"/>
+
     <glade-widget-class-ref name="GtkFileChooserButton"/>
     <glade-widget-class-ref name="GtkColorButton"/>
     <glade-widget-class-ref name="GtkFontButton"/>
@@ -3726,16 +3736,9 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkVolumeButton"/>\
     <glade-widget-class-ref name="GtkAppChooserButton"/>
 
-    <glade-widget-class-ref name="GtkImage"/>
-    <glade-widget-class-ref name="GtkLabel"/>
-    <glade-widget-class-ref name="GtkAccelLabel"/>
-    <glade-widget-class-ref name="GtkEntry"/>
-
     <glade-widget-class-ref name="GtkScale"/>
     <glade-widget-class-ref name="GtkScrollbar"/>
 
-    <glade-widget-class-ref name="GtkComboBox"/>
-    <glade-widget-class-ref name="GtkComboBoxText"/>
     <glade-widget-class-ref name="GtkProgressBar"/>
     <glade-widget-class-ref name="GtkSpinner"/>
 
@@ -3765,7 +3768,7 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkAppChooserWidget"/>
   </glade-widget-group>
 
-  <glade-widget-group name="gtk-model" _title="Tree Model">
+  <glade-widget-group name="gtk-objects" _title="Miscellaneous">
 
     <default-palette-state expanded="False"/>
 
@@ -3773,23 +3776,11 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkTreeStore"/>
     <glade-widget-class-ref name="GtkTreeModelFilter"/>
     <glade-widget-class-ref name="GtkTreeModelSort"/>
-  </glade-widget-group>
 
-  <glade-widget-group name="gtk-text" _title="Text Buffers">
-
-    <default-palette-state expanded="False"/>
- 
     <glade-widget-class-ref name="GtkEntryBuffer"/>
-
     <glade-widget-class-ref name="GtkTextBuffer"/>
     <glade-widget-class-ref name="GtkTextTag"/>
     <glade-widget-class-ref name="GtkTextTagTable"/>
-  </glade-widget-group>
-
-
-  <glade-widget-group name="gtk-objects" _title="Miscellaneous">
-
-    <default-palette-state expanded="False"/>
 
     <glade-widget-class-ref name="GtkSizeGroup"/>
     <glade-widget-class-ref name="GtkWindowGroup"/>
