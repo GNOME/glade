@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-09 20:11+0100\n"
-"PO-Revision-Date: 2011-03-09 20:12+0100\n"
+"POT-Creation-Date: 2011-03-10 12:37+0100\n"
+"PO-Revision-Date: 2011-03-10 12:38+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -775,7 +775,7 @@ msgstr "Hierarchia"
 msgid "Label"
 msgstr "Etykieta"
 
-#: ../gladeui/glade-base-editor.c:1768 ../gladeui/glade-widget-adaptor.c:1264
+#: ../gladeui/glade-base-editor.c:1768 ../gladeui/glade-widget-adaptor.c:1261
 msgid "Type"
 msgstr "Typ"
 
@@ -981,7 +981,7 @@ msgid "No"
 msgstr "Nie"
 
 #: ../gladeui/glade-editor-property.c:2725 ../gladeui/glade-widget.c:1207
-#: ../gladeui/glade-widget-adaptor.c:1257
+#: ../gladeui/glade-widget-adaptor.c:1254
 msgid "Name"
 msgstr "Nazwa"
 
@@ -1144,7 +1144,7 @@ msgstr "_Opis właściwości:"
 msgid "%s - %s Properties"
 msgstr "Właściwości %s - %s"
 
-#: ../gladeui/glade-palette.c:655
+#: ../gladeui/glade-palette.c:650
 msgid "Widget selector"
 msgstr "Wybór widżetów"
 
@@ -1698,64 +1698,64 @@ msgstr "Określa, czy widżet jest widoczny"
 msgid "A derived adaptor (%s) of %s already exist!"
 msgstr "Adapter wyprowadzony (%s) z %s już istnieje."
 
-#: ../gladeui/glade-widget-adaptor.c:824
+#: ../gladeui/glade-widget-adaptor.c:821
 #, c-format
 msgid "%s does not support adding any children."
 msgstr "%s nie obsługuje dodawania elementów potomnych."
 
-#: ../gladeui/glade-widget-adaptor.c:1258
+#: ../gladeui/glade-widget-adaptor.c:1255
 msgid "Name of the class"
 msgstr "Nazwa klasy"
 
-#: ../gladeui/glade-widget-adaptor.c:1265
+#: ../gladeui/glade-widget-adaptor.c:1262
 msgid "GType of the class"
 msgstr "Typ GType klasy"
 
-#: ../gladeui/glade-widget-adaptor.c:1271
+#: ../gladeui/glade-widget-adaptor.c:1268
 msgid "Title"
 msgstr "Tytuł"
 
-#: ../gladeui/glade-widget-adaptor.c:1272
+#: ../gladeui/glade-widget-adaptor.c:1269
 msgid "Translated title for the class used in the glade UI"
 msgstr "Przetłumaczony tytuł klasy używanej w interfejsie Glade"
 
-#: ../gladeui/glade-widget-adaptor.c:1278
+#: ../gladeui/glade-widget-adaptor.c:1275
 msgid "Generic Name"
 msgstr "Nazwa ogólna"
 
-#: ../gladeui/glade-widget-adaptor.c:1279
+#: ../gladeui/glade-widget-adaptor.c:1276
 msgid "Used to generate names of new widgets"
 msgstr "Używane do tworzenia nazw nowych widżetów"
 
-#: ../gladeui/glade-widget-adaptor.c:1285 ../plugins/gtk+/gtk+.xml.in.h:226
+#: ../gladeui/glade-widget-adaptor.c:1282 ../plugins/gtk+/gtk+.xml.in.h:226
 msgid "Icon Name"
 msgstr "Nazwa ikony"
 
-#: ../gladeui/glade-widget-adaptor.c:1286
+#: ../gladeui/glade-widget-adaptor.c:1283
 msgid "The icon name"
 msgstr "Nazwa ikony"
 
-#: ../gladeui/glade-widget-adaptor.c:1292
+#: ../gladeui/glade-widget-adaptor.c:1289
 msgid "Catalog"
 msgstr "Katalog"
 
-#: ../gladeui/glade-widget-adaptor.c:1293
+#: ../gladeui/glade-widget-adaptor.c:1290
 msgid "The name of the widget catalog this class was declared by"
 msgstr "Nazwa katalogu widżetów deklarująca tę klasę"
 
-#: ../gladeui/glade-widget-adaptor.c:1299
+#: ../gladeui/glade-widget-adaptor.c:1296
 msgid "Book"
 msgstr "Książka"
 
-#: ../gladeui/glade-widget-adaptor.c:1300
+#: ../gladeui/glade-widget-adaptor.c:1297
 msgid "DevHelp search namespace for this widget class"
 msgstr "Przestrzeń nazw Devhelp dla tej klasy widżetów"
 
-#: ../gladeui/glade-widget-adaptor.c:1306
+#: ../gladeui/glade-widget-adaptor.c:1303
 msgid "Special Child Type"
 msgstr "Specjalny typ potomka"
 
-#: ../gladeui/glade-widget-adaptor.c:1307
+#: ../gladeui/glade-widget-adaptor.c:1304
 msgid ""
 "Holds the name of the packing property to depict special children for this "
 "container class"
@@ -1763,11 +1763,11 @@ msgstr ""
 "Przechowuje nazwę właściwości pakującej, w celu zobrazowania specjalnego "
 "potomka dla tej klasy kontenerów"
 
-#: ../gladeui/glade-widget-adaptor.c:1314 ../plugins/gtk+/gtk+.xml.in.h:118
+#: ../gladeui/glade-widget-adaptor.c:1311 ../plugins/gtk+/gtk+.xml.in.h:118
 msgid "Cursor"
 msgstr "Kursor"
 
-#: ../gladeui/glade-widget-adaptor.c:1315
+#: ../gladeui/glade-widget-adaptor.c:1312
 msgid "A cursor for inserting widgets in the UI"
 msgstr "Kursor do wstawiania widżetów do interfejsu użytkownika"
 
@@ -4486,7 +4486,8 @@ msgstr "Znacznik"
 msgid "Text Tag Table Editor"
 msgstr "Edytor tabeli znaczników tekstu"
 
-#: ../plugins/gtk+/glade-fixed.c:523
+#: ../plugins/gtk+/glade-fixed.c:523 ../plugins/gtk+/glade-gtk-grid.c:398
+#: ../plugins/gtk+/glade-gtk-table.c:452
 #, c-format
 msgid "Placing %s inside %s"
 msgstr "Umieszczanie %s wewnątrz %s"
@@ -4906,3 +4907,27 @@ msgstr "Nagłówek grupy"
 #: ../plugins/gtk+/glade-string-list.c:369
 msgid "<Type Here>"
 msgstr "<Tutaj można pisać>"
+
+#: ../plugins/gtk+/glade-gtk-grid.c:938 ../plugins/gtk+/glade-gtk-grid.c:945
+#: ../plugins/gtk+/glade-gtk-table.c:1047
+#: ../plugins/gtk+/glade-gtk-table.c:1054
+#, c-format
+msgid "Insert Row on %s"
+msgstr "Wstawienie rzędu w %s"
+
+#: ../plugins/gtk+/glade-gtk-grid.c:953 ../plugins/gtk+/glade-gtk-grid.c:960
+#: ../plugins/gtk+/glade-gtk-table.c:1062
+#: ../plugins/gtk+/glade-gtk-table.c:1069
+#, c-format
+msgid "Insert Column on %s"
+msgstr "Wstawienie kolumny w %s"
+
+#: ../plugins/gtk+/glade-gtk-grid.c:967 ../plugins/gtk+/glade-gtk-table.c:1076
+#, c-format
+msgid "Remove Column on %s"
+msgstr "Usunięcie kolumny w %s"
+
+#: ../plugins/gtk+/glade-gtk-grid.c:974 ../plugins/gtk+/glade-gtk-table.c:1083
+#, c-format
+msgid "Remove Row on %s"
+msgstr "Usunięcie wiersza w %s"
