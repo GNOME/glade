@@ -843,6 +843,9 @@ GladeSignalClass     *glade_widget_adaptor_get_signal_class   (GladeWidgetAdapto
 							       const gchar        *name);
 GladeWidgetAdaptor   *glade_widget_adaptor_get_parent_adaptor (GladeWidgetAdaptor *adaptor);
 
+gboolean              glade_widget_adaptor_has_internal_children (GladeWidgetAdaptor *adaptor);
+GList                *glade_widget_adaptor_get_internal_children (GladeWidgetAdaptor *adaptor,
+                                                                  GObject            *container);
 G_END_DECLS
 
 #endif /* _GLADE_WIDGET_ADAPTOR_H_ */

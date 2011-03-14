@@ -1142,6 +1142,9 @@ glade_widget_get_real_property (GObject * object,
       case PROP_VISIBLE:
         g_value_set_boolean (value, widget->priv->visible);
         break;
+      case PROP_REASON:
+        g_value_set_int (value, widget->priv->construct_reason);
+        break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
@@ -1274,7 +1277,7 @@ glade_widget_class_init (GladeWidgetClass * klass)
                          GLADE_CREATE_USER,
                          GLADE_CREATE_REASONS - 1,
                          GLADE_CREATE_USER,
-                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE);
+                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE);
 
   properties[PROP_TOPLEVEL_WIDTH] =
        g_param_spec_int ("toplevel-width", _("Toplevel Width"),
@@ -1473,10 +1476,7 @@ glade_widget_get_internal_child (GladeWidget * parent, const gchar * internal)
 {
   while (parent)
     {
-      GladeWidgetAdaptorClass *adaptor_class =
-          GLADE_WIDGET_ADAPTOR_GET_CLASS (parent->priv->adaptor);
-
-      if (adaptor_class->get_internal_child)
+      if (glade_widget_adaptor_has_internal_children (parent->priv->adaptor))
         return glade_widget_adaptor_get_internal_child
             (parent->priv->adaptor, parent->priv->object, internal);
 
@@ -3460,6 +3460,45 @@ glade_widget_set_parent (GladeWidget * widget, GladeWidget * parent)
     glade_widget_set_packing_actions (widget, parent);
 
   g_object_notify_by_pspec (G_OBJECT (widget), properties[PROP_PARENT]);
+}
+
+/**
+ * glade_widget_find_child:
+ * @widget: A #GladeWidget
+ * @name: child name
+ *
+ * Finds a child widget named @name.
+ *
+ * Returns: The child of widget or NULL if it was not found.
+ */
+GladeWidget *
+glade_widget_find_child (GladeWidget *widget, gchar *name)
+{
+  GList *adapter_children;
+  GladeWidget *real_child = NULL;
+  GList *node;
+
+  g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
+
+  adapter_children =
+      glade_widget_adaptor_get_children (glade_widget_get_adaptor (widget),
+                                         widget->priv->object);
+
+  for (node = adapter_children; node && !real_child; node = g_list_next (node))
+    {
+      GladeWidget *child = glade_widget_get_from_gobject (node->data);
+
+      if (child)
+        {
+          if (strcmp (child->priv->name, name) == 0)
+            real_child = child;
+          else
+            real_child = glade_widget_find_child (child, name);
+        }
+    }
+  g_list_free (adapter_children);
+
+  return real_child;
 }
 
 /**
