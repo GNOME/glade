@@ -1,15 +1,58 @@
-#define GLADE_TAG_ACTION_WIDGETS "action-widgets"
-#define GLADE_TAG_ACTION_WIDGET  "action-widget"
-#define GLADE_TAG_RESPONSE       "response"
+/*
+ * glade-gtk-action-widgets.c
+ *
+ * Copyright (C) 2008 - 2010 Tristan Van Berkom
+ *                      2011 Juan Pablo Ugarte
+ *
+ * Authors:
+ *   Tristan Van Berkom <tvb@gnome.org>
+ *   Juan Pablo Ugarte <juanpablougarte@gmail.com>
+ *
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public 
+ * License along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
+ */
 
+#include "glade-gtk-action-widgets.h"
+
+static GladeWidget *
+glade_gtk_action_widgets_get_area (GladeWidget *widget, gchar *action_area)
+{
+  GladeWidgetAdaptor *adaptor = glade_widget_get_adaptor (widget);
+  GObject *object;
+
+  object = glade_widget_adaptor_get_internal_child (adaptor, 
+                                                    glade_widget_get_object (widget),
+                                                    action_area);
+  
+  return (object) ? glade_widget_get_from_gobject (object) : NULL;
+}
 
 static void
-glade_gtk_dialog_read_responses (GladeWidget * widget,
-                                 GladeXmlNode * widgets_node)
+glade_gtk_action_widgets_read_responses (GladeWidget *widget,
+                                         GladeXmlNode *widgets_node,
+                                         gchar *action_container)
 {
+  GladeWidget *action_widget, *action_area;
   GladeXmlNode *node;
-  GladeWidget *action_widget;
 
+  if ((action_area = glade_gtk_action_widgets_get_area (widget, action_container)) == NULL)
+    {
+      g_warning ("%s: Could not find action widgets container [%s]", __func__, action_container);
+      return;
+    }
+  
   for (node = glade_xml_node_get_children (widgets_node);
        node; node = glade_xml_node_next (node))
     {
@@ -23,13 +66,9 @@ glade_gtk_dialog_read_responses (GladeWidget * widget,
                                                   NULL);
       widget_name = glade_xml_get_content (node);
 
-      if ((action_widget =
-           glade_project_get_widget_by_name (glade_widget_get_project (widget), 
-					     widget_name)) != NULL)
-        {
+      if ((action_widget = glade_widget_find_child (action_area, widget_name)))
           glade_widget_property_set (action_widget, "response-id",
                                      g_ascii_strtoll (response, NULL, 10));
-        }
 
       g_free (response);
       g_free (widget_name);
@@ -37,32 +76,35 @@ glade_gtk_dialog_read_responses (GladeWidget * widget,
 }
 
 void
-glade_gtk_dialog_read_child (GladeWidgetAdaptor * adaptor,
-                             GladeWidget * widget, GladeXmlNode * node)
+glade_gtk_action_widgets_read_child (GladeWidget *widget,
+                                     GladeXmlNode *node,
+                                     gchar *action_container)
 {
   GladeXmlNode *widgets_node;
 
-  GWA_GET_CLASS (GTK_TYPE_CONTAINER)->read_child (adaptor, widget, node);
-
-  node = glade_xml_node_get_parent (node);
-
   if ((widgets_node =
        glade_xml_search_child (node, GLADE_TAG_ACTION_WIDGETS)) != NULL)
-    glade_gtk_dialog_read_responses (widget, widgets_node);
+    glade_gtk_action_widgets_read_responses (widget, widgets_node, action_container);
 }
 
-
 static void
-glade_gtk_dialog_write_responses (GladeWidget * widget,
-                                  GladeXmlContext * context,
-                                  GladeXmlNode * node)
+glade_gtk_action_widgets_write_responses (GladeWidget *widget,
+                                          GladeXmlContext *context,
+                                          GladeXmlNode *node,
+                                          gchar *action_container)
 {
   GladeXmlNode *widget_node;
-  GtkDialog *dialog = GTK_DIALOG (glade_widget_get_object (widget));
-  GList *l, *action_widgets =
-      gtk_container_get_children (GTK_CONTAINER
-                                  (gtk_dialog_get_action_area (dialog)));
+  GList *l, *action_widgets;
+  GladeWidget *action_area;
 
+  if ((action_area = glade_gtk_action_widgets_get_area (widget, action_container)) == NULL)
+   {
+     g_warning ("%s: Could not find action widgets container [%s]", __func__, action_container);
+     return;
+   }
+  
+  action_widgets = glade_widget_get_children (action_area);
+    
   for (l = action_widgets; l; l = l->next)
     {
       GladeWidget *action_widget;
@@ -93,29 +135,19 @@ glade_gtk_dialog_write_responses (GladeWidget * widget,
 }
 
 void
-glade_gtk_dialog_write_child (GladeWidgetAdaptor * adaptor,
-                              GladeWidget * widget,
-                              GladeXmlContext * context, GladeXmlNode * node)
+glade_gtk_action_widgets_write_child (GladeWidget *widget,
+                                      GladeXmlContext *context,
+                                      GladeXmlNode *node,
+                                      gchar *action_container)
 {
   GladeXmlNode *widgets_node;
-  GladeWidget *parent;
-  GladeProject *project;
 
-  GWA_GET_CLASS (GTK_TYPE_CONTAINER)->write_child (adaptor, widget, context,
-                                                   node);
+  widgets_node = glade_xml_node_new (context, GLADE_TAG_ACTION_WIDGETS);
 
-  parent  = glade_widget_get_parent (widget);
-  project = glade_widget_get_project (widget);
+  glade_gtk_action_widgets_write_responses (widget, context, widgets_node, action_container);
 
-  if (parent && GTK_IS_DIALOG (glade_widget_get_object (parent)))
-    {
-      widgets_node = glade_xml_node_new (context, GLADE_TAG_ACTION_WIDGETS);
-
-      glade_gtk_dialog_write_responses (parent, context, widgets_node);
-
-      if (!glade_xml_node_get_children (widgets_node))
-        glade_xml_node_delete (widgets_node);
-      else
-        glade_xml_node_append_child (node, widgets_node);
-    }
+  if (!glade_xml_node_get_children (widgets_node))
+    glade_xml_node_delete (widgets_node);
+  else
+    glade_xml_node_append_child (node, widgets_node);
 }

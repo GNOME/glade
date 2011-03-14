@@ -43,6 +43,7 @@
 #include "glade-tool-item-group-editor.h"
 #include "glade-string-list.h"
 #include "glade-fixed.h"
+#include "glade-gtk-action-widgets.h"
 
 #include <gladeui/glade-editor-property.h>
 #include <gladeui/glade-base-editor.h>
@@ -1052,8 +1053,6 @@ glade_gtk_widget_action_submenu (GladeWidgetAdaptor * adaptor,
   return NULL;
 }
 
-
-
 /* ----------------------------- GtkContainer ------------------------------ */
 void
 glade_gtk_container_post_create (GladeWidgetAdaptor * adaptor,
@@ -1234,10 +1233,15 @@ glade_gtk_container_get_child_property (GladeWidgetAdaptor * adaptor,
 }
 
 GList *
-glade_gtk_container_get_children (GladeWidgetAdaptor * adaptor,
-                                  GtkContainer * container)
+glade_gtk_container_get_children (GladeWidgetAdaptor *adaptor,
+                                  GtkContainer *container)
 {
-  return glade_util_container_get_all_children (container);
+  GList *children, *internal_children;
+
+  children = glade_util_container_get_all_children (container);
+  internal_children = glade_widget_adaptor_get_internal_children (adaptor, G_OBJECT (container));
+
+  return g_list_concat (children, internal_children);
 }
 
 GladeEditable *
@@ -1930,36 +1934,6 @@ glade_gtk_box_replace_child (GladeWidgetAdaptor * adaptor,
   fix_response_id_on_child (gbox, new_widget, TRUE);
 
   g_object_unref (G_OBJECT (current));
-}
-
-
-GObject *
-glade_gtk_box_get_internal_child (GladeWidgetAdaptor * adaptor,
-                                  GObject * object, const gchar * name)
-{
-  GList *children, *l;
-  GObject *child = NULL;
-
-  g_return_val_if_fail (GTK_IS_BOX (object), NULL);
-
-  children = l = gtk_container_get_children (GTK_CONTAINER (object));
-
-  while (l)
-    {
-      GladeWidget *gw = glade_widget_get_from_gobject (l->data);
-
-      if (gw && glade_widget_get_internal (gw) && 
-	  strcmp (glade_widget_get_internal (gw), name) == 0)
-        {
-          child = G_OBJECT (l->data);
-          break;
-        }
-
-      l = l->next;
-    }
-  g_list_free (children);
-
-  return child;
 }
 
 static void
@@ -3900,21 +3874,20 @@ glade_gtk_file_chooser_forall (GtkWidget * widget, gpointer data)
 }
 
 void
-glade_gtk_dialog_post_create (GladeWidgetAdaptor * adaptor,
-                              GObject * object, GladeCreateReason reason)
+glade_gtk_dialog_post_create (GladeWidgetAdaptor *adaptor,
+                              GObject *object, GladeCreateReason reason)
 {
-  GtkDialog *dialog = GTK_DIALOG (object);
   GladeWidget *widget;
-  GladeWidget *vbox_widget, *actionarea_widget, *colorsel, *fontsel;
-  GladeWidget *ok_button = NULL, *cancel_button = NULL,
-      *help_button = NULL, *apply_button = NULL;
+  GtkDialog *dialog;
 
-  g_return_if_fail (GTK_IS_DIALOG (dialog));
+  g_return_if_fail (GTK_IS_DIALOG (object));
 
-  widget = glade_widget_get_from_gobject (GTK_WIDGET (dialog));
+  widget = glade_widget_get_from_gobject (GTK_WIDGET (object));
   if (!widget)
     return;
-
+  
+  dialog = GTK_DIALOG (object);
+  
   if (reason == GLADE_CREATE_USER)
     {
       /* HIG complient border-width defaults on dialogs */
@@ -3923,28 +3896,8 @@ glade_gtk_dialog_post_create (GladeWidgetAdaptor * adaptor,
 
   if (GTK_IS_COLOR_SELECTION_DIALOG (object))
     {
-      GtkWidget *child;
-
-      child = gtk_dialog_get_widget_for_response (dialog, GTK_RESPONSE_OK);
-      ok_button = glade_widget_adaptor_create_internal
-          (widget, G_OBJECT (child), "ok_button", "colorsel", FALSE, reason);
-
-      child = gtk_dialog_get_widget_for_response (dialog, GTK_RESPONSE_CANCEL);
-      cancel_button = glade_widget_adaptor_create_internal
-          (widget, G_OBJECT (child),
-           "cancel_button", "colorsel", FALSE, reason);
-
-      child = gtk_dialog_get_widget_for_response (dialog, GTK_RESPONSE_HELP);
-      help_button = glade_widget_adaptor_create_internal
-          (widget, G_OBJECT (child), "help_button", "colorsel", FALSE, reason);
-
-      child =
-          gtk_color_selection_dialog_get_color_selection
-          (GTK_COLOR_SELECTION_DIALOG (dialog));
-      colorsel =
-          glade_widget_adaptor_create_internal (widget, G_OBJECT (child),
-                                                "color_selection", "colorsel",
-                                                FALSE, reason);
+      GtkWidget *child = gtk_color_selection_dialog_get_color_selection (GTK_COLOR_SELECTION_DIALOG (dialog));
+      GladeWidget *colorsel = glade_widget_get_from_gobject (child);
 
       /* Set this to 1 at load time, if there are any children then
        * size will adjust appropriately (otherwise the default "3" gets
@@ -3956,37 +3909,8 @@ glade_gtk_dialog_post_create (GladeWidgetAdaptor * adaptor,
     }
   else if (GTK_IS_FONT_SELECTION_DIALOG (object))
     {
-      GtkWidget *child;
-
-      child =
-          gtk_font_selection_dialog_get_ok_button (GTK_FONT_SELECTION_DIALOG
-                                                   (dialog));
-      ok_button =
-          glade_widget_adaptor_create_internal (widget, G_OBJECT (child),
-                                                "ok_button", "fontsel", FALSE,
-                                                reason);
-
-      child = gtk_dialog_get_widget_for_response (dialog, GTK_RESPONSE_APPLY);
-      apply_button = glade_widget_adaptor_create_internal
-          (widget, G_OBJECT (child), "apply_button", "fontsel", FALSE, reason);
-
-      child =
-          gtk_font_selection_dialog_get_cancel_button (GTK_FONT_SELECTION_DIALOG
-                                                       (dialog));
-      cancel_button =
-          glade_widget_adaptor_create_internal (widget, G_OBJECT (child),
-                                                "cancel_button", "fontsel",
-                                                FALSE, reason);
-
-#if GTK_CHECK_VERSION (2, 24, 0)
-      child = gtk_font_selection_dialog_get_font_selection
-          (GTK_FONT_SELECTION_DIALOG (dialog));
-#else
-      child = GTK_FONT_SELECTION_DIALOG (dialog)->fontsel;
-#endif
-      fontsel = glade_widget_adaptor_create_internal
-          (widget, G_OBJECT (child),
-           "font_selection", "fontsel", FALSE, reason);
+      GtkWidget *child = gtk_font_selection_dialog_get_cancel_button (GTK_FONT_SELECTION_DIALOG (dialog));
+      GladeWidget *fontsel = glade_widget_get_from_gobject (child);
 
       /* Set this to 1 at load time, if there are any children then
        * size will adjust appropriately (otherwise the default "3" gets
@@ -3997,6 +3921,11 @@ glade_gtk_dialog_post_create (GladeWidgetAdaptor * adaptor,
     }
   else
     {
+      GladeWidget *vbox_widget, *actionarea_widget;
+
+      vbox_widget = glade_widget_get_from_gobject (gtk_dialog_get_content_area (dialog));
+      actionarea_widget = glade_widget_get_from_gobject (gtk_dialog_get_action_area (dialog));
+
       /* We need to stop default emissions of "hierarchy-changed" and 
        * "screen-changed" of GtkFileChooserDefault to avoid an abort()
        * when doing a reparent.
@@ -4007,14 +3936,6 @@ glade_gtk_dialog_post_create (GladeWidgetAdaptor * adaptor,
         gtk_container_forall (GTK_CONTAINER
                               (gtk_dialog_get_content_area (dialog)),
                               glade_gtk_file_chooser_forall, NULL);
-
-      vbox_widget = glade_widget_adaptor_create_internal
-          (widget, G_OBJECT (gtk_dialog_get_content_area (dialog)),
-           "vbox", "dialog", FALSE, reason);
-
-      actionarea_widget = glade_widget_adaptor_create_internal
-          (vbox_widget, G_OBJECT (gtk_dialog_get_action_area (dialog)),
-           "action_area", "dialog", FALSE, reason);
 
       /* These properties are controlled by the GtkDialog style properties:
        * "content-area-border", "button-spacing" and "action-area-border",
@@ -4047,220 +3968,15 @@ glade_gtk_dialog_post_create (GladeWidgetAdaptor * adaptor,
     }
 }
 
-GtkWidget *
-glade_gtk_dialog_get_internal_child (GladeWidgetAdaptor * adaptor,
-                                     GtkDialog * dialog, const gchar * name)
-{
-  GtkWidget *child = NULL;
-
-  g_return_val_if_fail (GTK_IS_DIALOG (dialog), NULL);
-
-  if (GTK_IS_COLOR_SELECTION_DIALOG (dialog))
-    {
-      if (strcmp ("ok_button", name) == 0)
-        child = gtk_dialog_get_widget_for_response (dialog, GTK_RESPONSE_OK);
-      else if (strcmp ("cancel_button", name) == 0)
-        child =
-            gtk_dialog_get_widget_for_response (dialog, GTK_RESPONSE_CANCEL);
-      else if (strcmp ("help_button", name) == 0)
-        child = gtk_dialog_get_widget_for_response (dialog, GTK_RESPONSE_HELP);
-      else if (strcmp ("color_selection", name) == 0)
-        child = gtk_color_selection_dialog_get_color_selection
-            (GTK_COLOR_SELECTION_DIALOG (dialog));
-    }
-  else if (GTK_IS_FONT_SELECTION_DIALOG (dialog))
-    {
-
-      if (strcmp ("ok_button", name) == 0)
-        child =
-            gtk_font_selection_dialog_get_ok_button (GTK_FONT_SELECTION_DIALOG
-                                                     (dialog));
-      else if (strcmp ("apply_button", name) == 0)
-        child = gtk_dialog_get_widget_for_response (dialog, GTK_RESPONSE_APPLY);
-      else if (strcmp ("cancel_button", name) == 0)
-        child = gtk_font_selection_dialog_get_cancel_button
-            (GTK_FONT_SELECTION_DIALOG (dialog));
-      else if (strcmp ("font_selection", name) == 0)
-        {
-#if GTK_CHECK_VERSION (2, 24, 0)
-          child = gtk_font_selection_dialog_get_font_selection
-              (GTK_FONT_SELECTION_DIALOG (dialog));
-#else
-          child = GTK_FONT_SELECTION_DIALOG (dialog)->fontsel;
-#endif
-        }
-    }
-  else
-    {
-      /* Default generic dialog handling
-       */
-      if (strcmp ("vbox", name) == 0)
-        child = gtk_dialog_get_content_area (dialog);
-      else if (strcmp ("action_area", name) == 0)
-        child = gtk_dialog_get_action_area (dialog);
-    }
-
-  return child;
-}
-
-GList *
-glade_gtk_dialog_get_children (GladeWidgetAdaptor * adaptor, GtkDialog * dialog)
-{
-  GList *list = NULL;
-
-  g_return_val_if_fail (GTK_IS_DIALOG (dialog), NULL);
-
-  list = glade_util_container_get_all_children (GTK_CONTAINER (dialog));
-
-  if (GTK_IS_COLOR_SELECTION_DIALOG (dialog))
-    {
-      GtkWidget *widget;
-
-      widget = gtk_dialog_get_widget_for_response (dialog, GTK_RESPONSE_OK);
-      if (widget)
-        list = g_list_prepend (list, widget);
-
-      widget = gtk_dialog_get_widget_for_response (dialog, GTK_RESPONSE_CANCEL);
-      if (widget)
-        list = g_list_prepend (list, widget);
-
-      widget = gtk_dialog_get_widget_for_response (dialog, GTK_RESPONSE_HELP);
-      if (widget)
-        list = g_list_prepend (list, widget);
-
-      widget =
-          gtk_color_selection_dialog_get_color_selection
-          (GTK_COLOR_SELECTION_DIALOG (dialog));
-      if (widget)
-        list = g_list_prepend (list, widget);
-    }
-  else if (GTK_IS_FONT_SELECTION_DIALOG (dialog))
-    {
-      GtkWidget *widget;
-
-      widget =
-          gtk_font_selection_dialog_get_ok_button (GTK_FONT_SELECTION_DIALOG
-                                                   (dialog));
-      if (widget)
-        list = g_list_prepend (list, widget);
-
-      widget = gtk_dialog_get_widget_for_response (dialog, GTK_RESPONSE_APPLY);
-      if (widget)
-        list = g_list_prepend (list, widget);
-
-      widget =
-          gtk_font_selection_dialog_get_cancel_button (GTK_FONT_SELECTION_DIALOG
-                                                       (dialog));
-      if (widget)
-        list = g_list_prepend (list, widget);
-
-#if GTK_CHECK_VERSION (2, 24, 0)
-      widget =
-          gtk_font_selection_dialog_get_font_selection
-          (GTK_FONT_SELECTION_DIALOG (dialog));
-#else
-      widget = GTK_FONT_SELECTION_DIALOG (dialog)->fontsel;
-#endif
-
-      if (widget)
-        list = g_list_prepend (list, widget);
-    }
-  return list;
-}
-
-
-#define GLADE_TAG_ACTION_WIDGETS "action-widgets"
-#define GLADE_TAG_ACTION_WIDGET  "action-widget"
-#define GLADE_TAG_RESPONSE       "response"
-
-
-static void
-glade_gtk_dialog_read_responses (GladeWidget * widget,
-                                 GladeXmlNode * widgets_node)
-{
-  GladeXmlNode *node;
-  GladeWidget *action_widget;
-
-  for (node = glade_xml_node_get_children (widgets_node);
-       node; node = glade_xml_node_next (node))
-    {
-      gchar *widget_name, *response;
-
-      if (!glade_xml_node_verify (node, GLADE_TAG_ACTION_WIDGET))
-        continue;
-
-      response =
-          glade_xml_get_property_string_required (node, GLADE_TAG_RESPONSE,
-                                                  NULL);
-      widget_name = glade_xml_get_content (node);
-
-      if ((action_widget =
-           glade_project_get_widget_by_name (glade_widget_get_project (widget), 
-					     widget_name)) != NULL)
-        {
-          glade_widget_property_set (action_widget, "response-id",
-                                     g_ascii_strtoll (response, NULL, 10));
-        }
-
-      g_free (response);
-      g_free (widget_name);
-    }
-}
-
 void
 glade_gtk_dialog_read_child (GladeWidgetAdaptor * adaptor,
                              GladeWidget * widget, GladeXmlNode * node)
 {
-  GladeXmlNode *widgets_node;
-
   GWA_GET_CLASS (GTK_TYPE_CONTAINER)->read_child (adaptor, widget, node);
 
   node = glade_xml_node_get_parent (node);
 
-  if ((widgets_node =
-       glade_xml_search_child (node, GLADE_TAG_ACTION_WIDGETS)) != NULL)
-    glade_gtk_dialog_read_responses (widget, widgets_node);
-}
-
-
-static void
-glade_gtk_dialog_write_responses (GladeWidget * widget,
-                                  GladeXmlContext * context,
-                                  GladeXmlNode * node)
-{
-  GladeXmlNode *widget_node;
-  GtkDialog *dialog = GTK_DIALOG (glade_widget_get_object (widget));
-  GList *l, *action_widgets =
-      gtk_container_get_children (GTK_CONTAINER
-                                  (gtk_dialog_get_action_area (dialog)));
-
-  for (l = action_widgets; l; l = l->next)
-    {
-      GladeWidget *action_widget;
-      GladeProperty *property;
-      gchar *str;
-
-      if ((action_widget = glade_widget_get_from_gobject (l->data)) == NULL)
-        continue;
-
-      if ((property =
-           glade_widget_get_property (action_widget, "response-id")) == NULL)
-        continue;
-
-      widget_node = glade_xml_node_new (context, GLADE_TAG_ACTION_WIDGET);
-      glade_xml_node_append_child (node, widget_node);
-
-      str =
-          glade_property_class_make_string_from_gvalue (glade_property_get_class (property),
-                                                        glade_property_inline_value (property));
-
-      glade_xml_node_set_property_string (widget_node, GLADE_TAG_RESPONSE, str);
-      glade_xml_set_content (widget_node, glade_widget_get_name (action_widget));
-
-      g_free (str);
-    }
-
-  g_list_free (action_widgets);
+  glade_gtk_action_widgets_read_child (widget, node, "action_area");
 }
 
 void
@@ -4268,27 +3984,12 @@ glade_gtk_dialog_write_child (GladeWidgetAdaptor * adaptor,
                               GladeWidget * widget,
                               GladeXmlContext * context, GladeXmlNode * node)
 {
-  GladeXmlNode *widgets_node;
-  GladeWidget *parent;
-  GladeProject *project;
+  GladeWidget *parent = glade_widget_get_parent (widget);
 
-  GWA_GET_CLASS (GTK_TYPE_CONTAINER)->write_child (adaptor, widget, context,
-                                                   node);
-
-  parent  = glade_widget_get_parent (widget);
-  project = glade_widget_get_project (widget);
+  GWA_GET_CLASS (GTK_TYPE_CONTAINER)->write_child (adaptor, widget, context, node);
 
   if (parent && GTK_IS_DIALOG (glade_widget_get_object (parent)))
-    {
-      widgets_node = glade_xml_node_new (context, GLADE_TAG_ACTION_WIDGETS);
-
-      glade_gtk_dialog_write_responses (parent, context, widgets_node);
-
-      if (!glade_xml_node_get_children (widgets_node))
-        glade_xml_node_delete (widgets_node);
-      else
-        glade_xml_node_append_child (node, widgets_node);
-    }
+    glade_gtk_action_widgets_write_child (parent, context, node, "action_area");
 }
 
 /*--------------------------- GtkMessageDialog ---------------------------------*/
@@ -7919,23 +7620,6 @@ glade_gtk_text_view_set_property (GladeWidgetAdaptor * adaptor,
 
 /* ----------------------------- GtkComboBox ------------------------------ */
 void
-glade_gtk_combo_box_post_create (GladeWidgetAdaptor * adaptor,
-                                 GObject * object, GladeCreateReason reason)
-{
-  GladeWidget *widget = glade_widget_get_from_gobject (object);
-
-  if (gtk_combo_box_get_has_entry (GTK_COMBO_BOX (object)))
-    glade_widget_adaptor_create_internal
-        (widget, G_OBJECT (gtk_bin_get_child (GTK_BIN (object))),
-         "entry", "comboboxentry", FALSE, reason);
-
-  /* For some reason combos need a kick in the but in order to show
-   * up properly after loading. */
-  gtk_widget_hide (GTK_WIDGET (object));
-  gtk_widget_show (GTK_WIDGET (object));
-}
-
-void
 glade_gtk_combo_box_set_property (GladeWidgetAdaptor * adaptor,
                                   GObject * object,
                                   const gchar * id, const GValue * value)
@@ -7978,20 +7662,6 @@ glade_gtk_combo_box_get_children (GladeWidgetAdaptor * adaptor,
     list = g_list_append (list, gtk_bin_get_child (GTK_BIN (combo)));
 
   return list;
-}
-
-GObject *
-glade_gtk_combo_box_get_internal_child (GladeWidgetAdaptor * adaptor,
-                                        GObject * object, const gchar * name)
-{
-  GObject *child = NULL;
-  g_return_val_if_fail (GTK_IS_COMBO_BOX (object), NULL);
-
-  if (gtk_combo_box_get_has_entry (GTK_COMBO_BOX (object)) &&
-      strcmp ("entry", name) == 0)
-    child = G_OBJECT (gtk_bin_get_child (GTK_BIN (object)));
-
-  return child;
 }
 
 /* ----------------------------- GtkComboBoxText ------------------------------ */
@@ -10654,17 +10324,6 @@ glade_gtk_cell_layout_action_activate_as_widget (GladeWidgetAdaptor * adaptor,
 
 
 /*--------------------------- GtkTreeView ---------------------------------*/
-void
-glade_gtk_treeview_post_create (GladeWidgetAdaptor *adaptor,
-				GObject            *object, 
-				GladeCreateReason   reason)
-{
-  GladeWidget *widget = glade_widget_get_from_gobject (object);
-
-  glade_widget_adaptor_create_internal
-    (widget, G_OBJECT (gtk_tree_view_get_selection (GTK_TREE_VIEW (object))),
-     "selection", "treeview", FALSE, reason);
-}
 
 gboolean
 glade_gtk_treeview_add_verify (GladeWidgetAdaptor *adaptor,
@@ -10815,16 +10474,6 @@ glade_gtk_treeview_get_children (GladeWidgetAdaptor * adaptor,
   children = g_list_prepend (children, gtk_tree_view_get_selection (view));
 
   return children;
-}
-
-GObject *
-glade_gtk_treeview_get_internal_child (GladeWidgetAdaptor * adaptor,
-				       GtkTreeView *view, const gchar * name)
-{
-  if (strcmp (name, "selection") == 0)
-    return (GObject *)gtk_tree_view_get_selection (view);
-
-  return NULL;
 }
 
 /* XXX FIXME: We should hide the actual "fixed-height-mode" setting from

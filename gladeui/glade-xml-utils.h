@@ -80,6 +80,8 @@ typedef struct _GladeProject        GladeProject;
 #define GLADE_TAG_BOOK                            "book"
 #define GLADE_TAG_SIGNALS                         "signals"
 #define GLADE_TAG_SIGNAL                          "signal"
+#define GLADE_TAG_INTERNAL_CHILDREN               "internal-children"
+#define GLADE_TAG_ANARCHIST                       "anarchist"
 #define GLADE_TAG_DEFAULT                         "default"
 #define GLADE_TAG_PARENTLESS_WIDGET               "parentless-widget"
 #define GLADE_TAG_DISABLED                        "disabled"
