@@ -376,7 +376,7 @@ glade_design_layout_get_preferred_width (GtkWidget *widget,
 
       g_object_get (gchild, "toplevel-width", &child_width, NULL);
 
-      child_width = MAX (child_width, req.height);
+      child_width = MAX (child_width, req.width);
 
       *minimum = MAX (*minimum, 2*PADDING + 2*OUTLINE_WIDTH + child_width);
     }
