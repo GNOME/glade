@@ -89,7 +89,7 @@ struct _GladeWidgetAdaptorPrivate
   GList       *child_packings;       /* Default packing property values */
   GList       *actions;              /* A list of GWActionClass */
   GList       *packing_actions;      /* A list of GWActionClass for child objects */
-  GList       *internal_children;   /* A list of GladeInternalChild */
+  GList       *internal_children;    /* A list of GladeInternalChild */
   gchar       *catalog;              /* The name of the widget catalog this class
 				      * was declared by.
 				      */

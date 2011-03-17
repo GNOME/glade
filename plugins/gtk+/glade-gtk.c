@@ -1718,7 +1718,7 @@ glade_gtk_box_set_size (GObject * object, const GValue * value)
 
   /* The box has shrunk. Remove the widgets that are on those slots */
   for (child = g_list_last (children);
-       child && old_size > new_size; child = g_list_last (children), old_size--)
+       child && old_size > new_size; child = g_list_previous (child))
     {
       GtkWidget *child_widget = child->data;
 
@@ -1728,11 +1728,12 @@ glade_gtk_box_set_size (GObject * object, const GValue * value)
        */
       if (glade_widget_get_from_gobject (child_widget) ||
           GLADE_IS_PLACEHOLDER (child_widget) == FALSE)
-        break;
+        continue;
 
       g_object_ref (G_OBJECT (child_widget));
       gtk_container_remove (GTK_CONTAINER (box), child_widget);
       gtk_widget_destroy (child_widget);
+      old_size--;
     }
   g_list_free (children);
 
@@ -1751,33 +1752,29 @@ glade_gtk_box_set_property (GladeWidgetAdaptor * adaptor,
 }
 
 static gboolean
-glade_gtk_box_verify_size (GObject * object, const GValue * value)
+glade_gtk_box_verify_size (GObject *object, const GValue *value)
 {
-  GtkBox *box = GTK_BOX (object);
   GList *child, *children;
-  gboolean will_orphan = FALSE;
-  gint old_size;
+  gint old_size, count = 0;
   gint new_size = g_value_get_int (value);
-
-  children = gtk_container_get_children (GTK_CONTAINER (box));
+  
+  children = gtk_container_get_children (GTK_CONTAINER (object));
   old_size = g_list_length (children);
 
   for (child = g_list_last (children);
        child && old_size > new_size;
-       child = g_list_previous (child), old_size--)
+       child = g_list_previous (child))
     {
       GtkWidget *widget = child->data;
       if (glade_widget_get_from_gobject (widget) != NULL)
-        {
-          /* In this case, refuse to shrink */
-          will_orphan = TRUE;
-          break;
-        }
+        count++;
+      else
+        old_size--;
     }
 
   g_list_free (children);
 
-  return will_orphan ? FALSE : new_size >= 0;
+  return count > new_size ? FALSE : new_size >= 0;
 }
 
 
@@ -3877,7 +3874,7 @@ void
 glade_gtk_dialog_post_create (GladeWidgetAdaptor *adaptor,
                               GObject *object, GladeCreateReason reason)
 {
-  GladeWidget *widget;
+  GladeWidget *widget, *vbox_widget, *actionarea_widget;
   GtkDialog *dialog;
 
   g_return_if_fail (GTK_IS_DIALOG (object));
@@ -3894,77 +3891,70 @@ glade_gtk_dialog_post_create (GladeWidgetAdaptor *adaptor,
       glade_widget_property_set (widget, "border-width", 5);
     }
 
-  if (GTK_IS_COLOR_SELECTION_DIALOG (object))
+  vbox_widget = glade_widget_get_from_gobject (gtk_dialog_get_content_area (dialog));
+  actionarea_widget = glade_widget_get_from_gobject (gtk_dialog_get_action_area (dialog));
+
+  /* We need to stop default emissions of "hierarchy-changed" and 
+   * "screen-changed" of GtkFileChooserDefault to avoid an abort()
+   * when doing a reparent.
+   * GtkFileChooserDialog packs a GtkFileChooserWidget in 
+   * his internal vbox.
+   */
+  if (GTK_IS_FILE_CHOOSER_DIALOG (object))
+    gtk_container_forall (GTK_CONTAINER
+                          (gtk_dialog_get_content_area (dialog)),
+                          glade_gtk_file_chooser_forall, NULL);
+
+  /* These properties are controlled by the GtkDialog style properties:
+   * "content-area-border", "button-spacing" and "action-area-border",
+   * so we must disable thier use.
+   */
+  glade_widget_remove_property (vbox_widget, "border-width");
+  glade_widget_remove_property (actionarea_widget, "border-width");
+  glade_widget_remove_property (actionarea_widget, "spacing");
+
+  if (reason == GLADE_CREATE_LOAD || reason == GLADE_CREATE_USER)
     {
-      GtkWidget *child = gtk_color_selection_dialog_get_color_selection (GTK_COLOR_SELECTION_DIALOG (dialog));
-      GladeWidget *colorsel = glade_widget_get_from_gobject (child);
+      GObject *child;
+      gint size;
 
-      /* Set this to 1 at load time, if there are any children then
-       * size will adjust appropriately (otherwise the default "3" gets
-       * set and we end up with extra placeholders).
-       */
-      if (reason == GLADE_CREATE_LOAD)
-        glade_widget_property_set (colorsel, "size", 1);
-
-    }
-  else if (GTK_IS_FONT_SELECTION_DIALOG (object))
-    {
-      GtkWidget *child = gtk_font_selection_dialog_get_cancel_button (GTK_FONT_SELECTION_DIALOG (dialog));
-      GladeWidget *fontsel = glade_widget_get_from_gobject (child);
-
-      /* Set this to 1 at load time, if there are any children then
-       * size will adjust appropriately (otherwise the default "3" gets
-       * set and we end up with extra placeholders).
-       */
-      if (reason == GLADE_CREATE_LOAD)
-        glade_widget_property_set (fontsel, "size", 2);
-    }
-  else
-    {
-      GladeWidget *vbox_widget, *actionarea_widget;
-
-      vbox_widget = glade_widget_get_from_gobject (gtk_dialog_get_content_area (dialog));
-      actionarea_widget = glade_widget_get_from_gobject (gtk_dialog_get_action_area (dialog));
-
-      /* We need to stop default emissions of "hierarchy-changed" and 
-       * "screen-changed" of GtkFileChooserDefault to avoid an abort()
-       * when doing a reparent.
-       * GtkFileChooserDialog packs a GtkFileChooserWidget in 
-       * his internal vbox.
-       */
-      if (GTK_IS_FILE_CHOOSER_DIALOG (object))
-        gtk_container_forall (GTK_CONTAINER
-                              (gtk_dialog_get_content_area (dialog)),
-                              glade_gtk_file_chooser_forall, NULL);
-
-      /* These properties are controlled by the GtkDialog style properties:
-       * "content-area-border", "button-spacing" and "action-area-border",
-       * so we must disable thier use.
-       */
-      glade_widget_remove_property (vbox_widget, "border-width");
-      glade_widget_remove_property (actionarea_widget, "border-width");
-      glade_widget_remove_property (actionarea_widget, "spacing");
-
-      /* Only set these on the original create. */
-      if (reason == GLADE_CREATE_USER)
+      if (GTK_IS_COLOR_SELECTION_DIALOG (object))
         {
-
-          /* HIG complient spacing defaults on dialogs */
-          glade_widget_property_set (vbox_widget, "spacing", 2);
-
-          if (GTK_IS_MESSAGE_DIALOG (object))
-            glade_widget_property_set (vbox_widget, "size", 2);
-          else if (GTK_IS_ABOUT_DIALOG (object))
-            glade_widget_property_set (vbox_widget, "size", 3);
-          else if (GTK_IS_FILE_CHOOSER_DIALOG (object))
-            glade_widget_property_set (vbox_widget, "size", 3);
-          else
-            glade_widget_property_set (vbox_widget, "size", 2);
-
-          glade_widget_property_set (actionarea_widget, "size", 2);
-          glade_widget_property_set (actionarea_widget, "layout-style",
-                                     GTK_BUTTONBOX_END);
+          child = glade_widget_adaptor_get_internal_child (adaptor, object, "color_selection");
+          size = 1;
         }
+      else if (GTK_IS_FONT_SELECTION_DIALOG (object))
+        {
+          child = glade_widget_adaptor_get_internal_child (adaptor, object, "font_selection");
+          size = 2;
+        }
+      else
+        size = -1;
+
+      /* Set this to a sane value. At load time, if there are any children then
+       * size will adjust appropriately (otherwise the default "3" gets
+       * set and we end up with extra placeholders).
+       */
+      if (size > -1)
+        glade_widget_property_set (glade_widget_get_from_gobject (child),
+                                   "size", size);
+    }
+
+  /* Only set these on the original create. */
+  if (reason == GLADE_CREATE_USER)
+    {
+      /* HIG complient spacing defaults on dialogs */
+      glade_widget_property_set (vbox_widget, "spacing", 2);
+
+      if (GTK_IS_ABOUT_DIALOG (object) ||
+          GTK_IS_FILE_CHOOSER_DIALOG (object))
+        glade_widget_property_set (vbox_widget, "size", 3);
+      else
+        glade_widget_property_set (vbox_widget, "size", 2);
+
+      glade_widget_property_set (actionarea_widget, "size", 2);
+      glade_widget_property_set (actionarea_widget, "layout-style",
+                                 GTK_BUTTONBOX_END);
     }
 }
 
@@ -4372,13 +4362,16 @@ evaluate_activatable_property_sensitivity (GObject * object,
 static void 
 sync_use_appearance (GladeWidget *gwidget)
 {
-  GladeProperty *prop = glade_widget_get_property (gwidget, "use-action-appearance");
-  gboolean       use_appearance = FALSE;
+  GladeProperty *prop;
+  gboolean       use_appearance;
 
   /* This is the kind of thing we avoid doing at project load time ;-) */
   if (glade_widget_superuser ())
     return;
 
+  prop = glade_widget_get_property (gwidget, "use-action-appearance");
+  use_appearance = FALSE;
+  
   glade_property_get (prop, &use_appearance);
   if (use_appearance)
     {
@@ -4463,8 +4456,17 @@ glade_gtk_button_set_property (GladeWidgetAdaptor * adaptor,
     {
       gboolean use_stock = FALSE;
       glade_widget_property_get (widget, "use-stock", &use_stock);
+
       if (use_stock)
         gtk_button_set_label (GTK_BUTTON (object), g_value_get_string (value));
+    }
+  else if (strcmp (id, "label") == 0)
+    {
+      gboolean use_stock = FALSE;
+      glade_widget_property_get (widget, "use-stock", &use_stock);
+      
+      if (use_stock)
+        glade_widget_property_set (widget, "stock", g_value_get_string (value));
     }
   else if (strcmp (id, "use-stock") == 0)
     {

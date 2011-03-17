@@ -903,8 +903,11 @@ glade_widget_constructor (GType type,
     for (list = gwidget->priv->properties; list; list = list->next)
       glade_property_load (GLADE_PROPERTY (list->data));
 
-  /* We only use catalog defaults when the widget was created by the user! */
-  if (gwidget->priv->construct_reason == GLADE_CREATE_USER)
+  /* We only use catalog defaults when the widget was created by the user!
+   * and or is not an internal widget.
+   */
+  if (gwidget->priv->construct_reason == GLADE_CREATE_USER &&
+      gwidget->priv->internal == NULL)
     glade_widget_set_catalog_defaults (gwidget->priv->properties);
 
   /* Only call this once the GladeWidget is completely built
