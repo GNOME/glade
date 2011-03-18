@@ -4399,6 +4399,21 @@ glade_gtk_button_create_editable (GladeWidgetAdaptor * adaptor,
   return editable;
 }
 
+static void
+glade_gtk_button_update_stock (GladeWidget *widget)
+{
+  gboolean use_stock;
+  gchar *label = NULL;
+  
+  /* Update the stock property */
+  glade_widget_property_get (widget, "use-stock", &use_stock);
+  if (use_stock)
+    {
+      glade_widget_property_get (widget, "label", &label);
+      glade_widget_property_set (widget, "stock", label);
+    }
+}
+
 void
 glade_gtk_button_post_create (GladeWidgetAdaptor * adaptor,
                               GObject * button, GladeCreateReason reason)
@@ -4426,6 +4441,8 @@ glade_gtk_button_post_create (GladeWidgetAdaptor * adaptor,
     g_signal_connect (glade_widget_get_project (gbutton), "parse-finished",
 		      G_CALLBACK (activatable_parse_finished),
 		      gbutton);
+  else if (reason == GLADE_CREATE_USER)
+    glade_gtk_button_update_stock (gbutton);
 }
 
 void
@@ -4460,14 +4477,6 @@ glade_gtk_button_set_property (GladeWidgetAdaptor * adaptor,
       if (use_stock)
         gtk_button_set_label (GTK_BUTTON (object), g_value_get_string (value));
     }
-  else if (strcmp (id, "label") == 0)
-    {
-      gboolean use_stock = FALSE;
-      glade_widget_property_get (widget, "use-stock", &use_stock);
-      
-      if (use_stock)
-        glade_widget_property_set (widget, "stock", g_value_get_string (value));
-    }
   else if (strcmp (id, "use-stock") == 0)
     {
       /* I guess its my bug in GTK+, we need to resync the appearance property
@@ -4485,22 +4494,13 @@ void
 glade_gtk_button_read_widget (GladeWidgetAdaptor * adaptor,
                               GladeWidget * widget, GladeXmlNode * node)
 {
-  gboolean use_stock;
-  gchar *label = NULL;
-
   if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
     return;
 
   /* First chain up and read in all the normal properties.. */
   GWA_GET_CLASS (GTK_TYPE_CONTAINER)->read_widget (adaptor, widget, node);
 
-  /* Update the stock property */
-  glade_widget_property_get (widget, "use-stock", &use_stock);
-  if (use_stock)
-    {
-      glade_widget_property_get (widget, "label", &label);
-      glade_widget_property_set (widget, "stock", label);
-    }
+  glade_gtk_button_update_stock (widget);
 }
 
 void
