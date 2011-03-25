@@ -3362,6 +3362,8 @@ glade_window_init (GladeWindow * window)
 
   /* toolbar */
   priv->toolbar = gtk_ui_manager_get_widget (priv->ui, "/ToolBar");
+  gtk_style_context_add_class (gtk_widget_get_style_context (priv->toolbar),
+                               GTK_STYLE_CLASS_PRIMARY_TOOLBAR);
   gtk_box_pack_start (GTK_BOX (vbox), priv->toolbar, FALSE, TRUE, 0);
   gtk_widget_show (priv->toolbar);
 
