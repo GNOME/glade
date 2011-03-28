@@ -23,26 +23,28 @@
  */
 
 #include <config.h>
-#include <gladeui/glade.h>
+#include "glade-gtk-activatable.h"
 
 /* ----------------------------- GtkActivatable ------------------------------ */
 void
 glade_gtk_activatable_parse_finished (GladeProject *project, 
                                       GladeWidget  *widget)
 {
-	GObject *related_action = NULL;
+  GObject *related_action = NULL;
 
-	glade_widget_property_get (widget, "related-action", &related_action);
-	if (related_action == NULL)
-		glade_widget_property_set (widget, "use-action-appearance", FALSE);
+  glade_widget_property_get (widget, "related-action", &related_action);
+  if (related_action == NULL)
+    glade_widget_property_set (widget, "use-action-appearance", FALSE);
 }
 
 void
-glade_gtk_evaluate_activatable_property_sensitivity (GObject *object,
+glade_gtk_activatable_evaluate_property_sensitivity (GObject *object,
                                                      const gchar *id,
                                                      const GValue *value)
 {
   GladeWidget *gwidget = glade_widget_get_from_gobject (object);
+  gboolean sensitivity;
+  gchar *msg;
 
   if (!strcmp (id, "related-action"))
     {
@@ -50,72 +52,42 @@ glade_gtk_evaluate_activatable_property_sensitivity (GObject *object,
       
       if (action)
         {
-          glade_widget_property_set_sensitive (gwidget, "visible", FALSE,
-                                               ACTION_APPEARANCE_MSG);
-          glade_widget_property_set_sensitive (gwidget, "sensitive", FALSE,
-                                               ACTION_APPEARANCE_MSG);
-
-          glade_widget_property_set_sensitive (gwidget, "accel-group", FALSE,
-                                               ACTION_APPEARANCE_MSG);
+          sensitivity = FALSE;
+          msg = ACTION_APPEARANCE_MSG;
         }
       else
         {
-          glade_widget_property_set_sensitive (gwidget, "visible", TRUE, NULL);
-          glade_widget_property_set_sensitive (gwidget, "sensitive", TRUE,
-                                               NULL);
-
-          glade_widget_property_set_sensitive (gwidget, "accel-group", TRUE,
-                                               NULL);
+          sensitivity = TRUE;
+          msg = NULL;
         }
 
+      glade_widget_property_set_sensitive (gwidget, "visible", sensitivity, msg);
+      glade_widget_property_set_sensitive (gwidget, "sensitive", sensitivity, msg);
+      glade_widget_property_set_sensitive (gwidget, "accel-group", sensitivity, msg);
     }
   else if (!strcmp (id, "use-action-appearance"))
     {
-      gboolean use_appearance = g_value_get_boolean (value);
-
-
-      if (use_appearance)
+      if (g_value_get_boolean (value))
         {
-          glade_widget_property_set_sensitive (gwidget, "label", FALSE,
-                                               ACTION_APPEARANCE_MSG);
-          glade_widget_property_set_sensitive (gwidget, "use-underline", FALSE,
-                                               ACTION_APPEARANCE_MSG);
-          glade_widget_property_set_sensitive (gwidget, "stock", FALSE,
-                                               ACTION_APPEARANCE_MSG);
-          //glade_widget_property_set_sensitive (gwidget, "use-stock", FALSE, ACTION_APPEARANCE_MSG);
-          glade_widget_property_set_sensitive (gwidget, "image", FALSE,
-                                               ACTION_APPEARANCE_MSG);
-          glade_widget_property_set_sensitive (gwidget, "custom-child", FALSE,
-                                               ACTION_APPEARANCE_MSG);
-          glade_widget_property_set_sensitive (gwidget, "stock-id", FALSE,
-                                               ACTION_APPEARANCE_MSG);
-          glade_widget_property_set_sensitive (gwidget, "label-widget", FALSE,
-                                               ACTION_APPEARANCE_MSG);
-          glade_widget_property_set_sensitive (gwidget, "icon-name", FALSE,
-                                               ACTION_APPEARANCE_MSG);
-          glade_widget_property_set_sensitive (gwidget, "icon-widget", FALSE,
-                                               ACTION_APPEARANCE_MSG);
-          glade_widget_property_set_sensitive (gwidget, "icon", FALSE,
-                                               ACTION_APPEARANCE_MSG);
+          sensitivity = FALSE;
+          msg = ACTION_APPEARANCE_MSG;
         }
       else
         {
-          glade_widget_property_set_sensitive (gwidget, "label", TRUE, NULL);
-          glade_widget_property_set_sensitive (gwidget, "use-underline", TRUE,
-                                               NULL);
-          glade_widget_property_set_sensitive (gwidget, "stock", TRUE, NULL);
-          //glade_widget_property_set_sensitive (gwidget, "use-stock", TRUE, NULL);
-          glade_widget_property_set_sensitive (gwidget, "image", TRUE, NULL);
-          glade_widget_property_set_sensitive (gwidget, "custom-child", TRUE,
-                                               NULL);
-          glade_widget_property_set_sensitive (gwidget, "stock-id", TRUE, NULL);
-          glade_widget_property_set_sensitive (gwidget, "label-widget", TRUE,
-                                               NULL);
-          glade_widget_property_set_sensitive (gwidget, "icon-name", TRUE,
-                                               NULL);
-          glade_widget_property_set_sensitive (gwidget, "icon-widget", TRUE,
-                                               NULL);
-          glade_widget_property_set_sensitive (gwidget, "icon", TRUE, NULL);
+          sensitivity = TRUE;
+          msg = NULL;
         }
+      
+      glade_widget_property_set_sensitive (gwidget, "label", sensitivity, msg);
+      glade_widget_property_set_sensitive (gwidget, "use-underline", sensitivity, msg);
+      glade_widget_property_set_sensitive (gwidget, "stock", sensitivity, msg);
+      //glade_widget_property_set_sensitive (gwidget, "use-stock", sensitivity, msg);
+      glade_widget_property_set_sensitive (gwidget, "image", sensitivity, msg);
+      glade_widget_property_set_sensitive (gwidget, "custom-child", sensitivity, msg);
+      glade_widget_property_set_sensitive (gwidget, "stock-id", sensitivity, msg);
+      glade_widget_property_set_sensitive (gwidget, "label-widget", sensitivity, msg);
+      glade_widget_property_set_sensitive (gwidget, "icon-name", sensitivity, msg);
+      glade_widget_property_set_sensitive (gwidget, "icon-widget", sensitivity, msg);
+      glade_widget_property_set_sensitive (gwidget, "icon", sensitivity, msg);
     }
 }

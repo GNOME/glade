@@ -26,6 +26,7 @@
 #define __GLADE_GTK_ACTIVATABLE_H__
 
 #include <gladeui/glade.h>
+#include "glade-gtk.h"
 
 G_BEGIN_DECLS
 
@@ -40,4 +41,4 @@ glade_gtk_activatable_evaluate_property_sensitivity (GObject *object,
 
 G_END_DECLS
 
-#endif __GLADE_GTK_ACTIVATABLE_H__
+#endif /* __GLADE_GTK_ACTIVATABLE_H__ */
