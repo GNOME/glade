@@ -104,6 +104,7 @@ icons_DATA = \
 	widget-gtk-texttagtable.png \
         widget-gtk-textview.png \
         widget-gtk-togglebutton.png \
+        widget-gtk-switch.png \
         widget-gtk-toggletoolbutton.png \
         widget-gtk-toolbar.png \
         widget-gtk-toolbutton.png \

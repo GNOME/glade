@@ -25,6 +25,8 @@
 #ifndef __GLADE_GTK_H__
 #define __GLADE_GTK_H__
 
+#include <glib/gi18n-lib.h>
+
 G_BEGIN_DECLS
 
 /* --------------------------------- Constants ------------------------------ */
@@ -41,4 +43,4 @@ G_BEGIN_DECLS
 
 G_END_DECLS
 
-#endif __GLADE_GTK_H__
+#endif /* __GLADE_GTK_H__ */
