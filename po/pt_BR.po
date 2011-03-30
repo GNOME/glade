@@ -9,20 +9,22 @@
 # Igor Pires Soares <igor@projetofedora>, 2007,2008,2009.
 # Antonio Fernandes C. Neto <fernandes@pelivre.org>, 2010.
 # Krix Apolinário <krixapolinario@gmail.com>, 2011
-#
+# Djavan Fagundes <djavan@comum.org>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: glade3\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glade3&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-27 17:37+0000\n"
-"PO-Revision-Date: 2011-03-28 14:57-0300\n"
-"Last-Translator: Krix Apolinário <krixapolinario@gmail.com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glade3"
+"&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-03-29 13:00+0000\n"
+"PO-Revision-Date: 2011-03-30 16:27-0200\n"
+"Last-Translator: Djavan Fagundes <djavan@comum.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
+"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Virtaal 0.6.1\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-Country: BRAZIL\n"
 
@@ -220,7 +222,8 @@ msgstr ""
 "Igor Pires Soares <igor@projetofedora.org>\n"
 "Jonh Wendell <wendell@bani.com.br>\n"
 "Antonio Fernandes C. Neto <fernandes@pelivre.org>\n"
-"Krix Apolinário <krixapolinario@gmail.com>"
+"Krix Apolinário <krixapolinario@gmail.com>\n"
+"Djavan Fagundes <djavan@comum.org>"
 
 #: ../src/glade-window.c:2125
 msgid "A user interface designer for GTK+ and GNOME."
@@ -648,14 +651,13 @@ msgid "An entry"
 msgstr "Uma entrada de texto"
 
 #: ../gladeui/glade-design-layout.c:1012
-#, fuzzy
 #| msgid "Icon View"
 msgid "Design View"
-msgstr "Visualizar ícone"
+msgstr "Visão de design"
 
 #: ../gladeui/glade-design-layout.c:1013
 msgid "The GladeDesignView that contains this layout"
-msgstr ""
+msgstr "O GladeDesignView que contém este layout"
 
 #: ../gladeui/glade-design-view.c:97
 #, c-format
@@ -664,7 +666,7 @@ msgstr "Carregando %s: carregado %d de %d objetos"
 
 #: ../gladeui/glade-previewer.c:40 ../gladeui/glade-previewer.c:75
 msgid "- previews a glade UI definition"
-msgstr ""
+msgstr "- pré-visualiza uma definição UI do glade"
 
 #: ../gladeui/glade-previewer.c:62
 msgid "Name of the file to preview"
@@ -688,16 +690,19 @@ msgid ""
 "%s\n"
 "Run '%s --help' to see a full list of available command lineoptions.\n"
 msgstr ""
+"%s\n"
+"Execute '%s --help' para ver uma lista completa de opções de comandos para "
+"linha de comando.\n"
 
 #: ../gladeui/glade-previewer.c:94
 #, c-format
 msgid "--listen and --filename must not be simultaneously specified.\n"
-msgstr ""
+msgstr "--listen e --filename não devem ser especificados simultaneamente.\n"
 
 #: ../gladeui/glade-previewer.c:100
 #, c-format
 msgid "Either --listen or --filename must be specified.\n"
-msgstr ""
+msgstr "--listen ou --filename devem ser especificados.\n"
 
 #: ../gladeui/glade-previewer.c:118
 #, c-format
@@ -968,6 +973,9 @@ msgid ""
 "meaning of this string from the meaning of other occurrences of the same "
 "string"
 msgstr ""
+"De expressões pequenas e ambíguas: digite uma palavra aqui para diferenciar "
+"o significado desta expressão do sentido de outras ocorrências da mesma "
+"existente"
 
 #: ../gladeui/glade-editor-property.c:1887
 msgid "Co_mments for translators:"
@@ -1231,7 +1239,7 @@ msgstr "Modo de ponteiro"
 
 #: ../gladeui/glade-project.c:994
 msgid "The currently effective GladePointerMode"
-msgstr ""
+msgstr "A atualmente efetiva GladePointerMode"
 
 #: ../gladeui/glade-project.c:1155
 #, c-format
@@ -1491,10 +1499,9 @@ msgid "After"
 msgstr "Depois"
 
 #: ../gladeui/glade-signal.c:158
-#, fuzzy
 #| msgid "_Signals"
 msgid "SignalClass"
-msgstr "_Sinais"
+msgstr "SignalClass"
 
 #: ../gladeui/glade-signal.c:159
 msgid "The signal class of this signal"
@@ -1525,14 +1532,13 @@ msgid "Whether this signal is run after default handlers"
 msgstr "Se este sinal é executado depois de manipuladores padrão"
 
 #: ../gladeui/glade-signal.c:188
-#, fuzzy
 #| msgid "Spread"
 msgid "Swapped"
-msgstr "Planilha"
+msgstr "Swapped"
 
 #: ../gladeui/glade-signal.c:189
 msgid "Whether the user data is swapped with the instance for the handler"
-msgstr ""
+msgstr "Se os dados do usuário são trocados com a instância para o manipulador"
 
 #: ../gladeui/glade-utils.c:135 ../gladeui/glade-utils.c:165
 #, c-format
@@ -1550,6 +1556,8 @@ msgid ""
 "Cannot add non scrollable %s widget to a %s directly.\n"
 "Add a %s first."
 msgstr ""
+"Não é possível adicionar um widget rolável %s para um %s diretamente.\n"
+"Adicione um %s primeiro."
 
 #: ../gladeui/glade-utils.c:461
 msgid "All Files"
@@ -2548,10 +2556,9 @@ msgid "Foreground Color column"
 msgstr "Coluna do primeiro plano"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:192
-#, fuzzy
 #| msgid "Foreground Color column"
 msgid "Foreground RGBA column"
-msgstr "Coluna do primeiro plano"
+msgstr "Coluna do primeiro plano RGBA"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:193
 msgid "Forth Mouse Button"
@@ -3089,13 +3096,12 @@ msgstr "Desligado"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:335
 msgid "Offscreen"
-msgstr ""
+msgstr "Offscreen"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:336
-#, fuzzy
 #| msgid "Scrolled Window"
 msgid "Offscreen Window"
-msgstr "Janela de rolagem"
+msgstr "Janela Offscreen"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:337
 msgid "Ok"
@@ -3723,10 +3729,9 @@ msgid "The position of the menu item in the menu shell"
 msgstr "A posição do item do menu no menu shell"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:495
-#, fuzzy
 #| msgid "The position of the tool item in the toolbar"
 msgid "The position of the tool item group in the palette"
-msgstr "A posição do item de ferramenta na barra de ferramentas"
+msgstr "A posição do grupo de item de ferramenta na paleta"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:496
 msgid "The position of the tool item in the toolbar"
@@ -3781,10 +3786,9 @@ msgid "Tool Button"
 msgstr "Botão de ferramenta"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:508 ../plugins/gtk+/glade-gtk.c:5530
-#, fuzzy
 #| msgid "Tool Item"
 msgid "Tool Item Group"
-msgstr "Item de ferramenta"
+msgstr "Grupo de item de ferramenta"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:509
 msgid "Tool Palette"
@@ -4046,7 +4050,7 @@ msgstr "Número acima"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:7
 msgid "Number Up Layout"
-msgstr ""
+msgstr "Layout de número acima "
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:8
 msgid "Page Set"
@@ -4456,6 +4460,8 @@ msgstr "Editor de visão em árvore"
 msgid ""
 "Columns must have a fixed size inside a treeview with fixed height mode set"
 msgstr ""
+"Colunas devem possui um tamanho fixo dentro de uma treeview com definção de "
+"modo de altura fixa"
 
 #. --------------------------- GtkAction ---------------------------------
 #: ../plugins/gtk+/glade-gtk.c:10949
@@ -4898,7 +4904,7 @@ msgstr "Definindo %s para não usar aspecto de ação"
 
 #: ../plugins/gtk+/glade-tool-item-group-editor.c:230
 msgid "Group Header"
-msgstr ""
+msgstr "Grupo cabeçalho"
 
 #: ../plugins/gtk+/glade-string-list.c:325
 #: ../plugins/gtk+/glade-string-list.c:369
