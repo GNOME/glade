@@ -21,14 +21,14 @@ msgstr ""
 "Project-Id-Version: glade3 master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade3&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-20 10:10+0000\n"
-"PO-Revision-Date: 2011-03-23 20:02+0100\n"
-"Last-Translator: Mario Blättermann <mariobl@gnome.org>\n"
+"POT-Creation-Date: 2011-03-31 15:53+0000\n"
+"PO-Revision-Date: 2011-03-31 20:05+0200\n"
+"Last-Translator: Christian Kirbach <Christian.Kirbach@googlemail.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
 
@@ -510,23 +510,23 @@ msgstr "_Rückgängig"
 msgid "Redo: %s"
 msgstr "Wiederholen: %s"
 
-#: ../src/glade-window.c:3375
+#: ../src/glade-window.c:3377
 msgid "Go back in undo history"
 msgstr "In der Rückgängig-Chronik einen Schritt zurück gehen"
 
-#: ../src/glade-window.c:3378
+#: ../src/glade-window.c:3380
 msgid "Go forward in undo history"
 msgstr "In der Rückgängig-Chronik einen Schritt vor gehen"
 
-#: ../src/glade-window.c:3433
+#: ../src/glade-window.c:3435
 msgid "Palette"
 msgstr "Palette"
 
-#: ../src/glade-window.c:3443
+#: ../src/glade-window.c:3445
 msgid "Inspector"
 msgstr "Inspekteur"
 
-#: ../src/glade-window.c:3450 ../gladeui/glade-editor.c:400
+#: ../src/glade-window.c:3452 ../gladeui/glade-editor.c:400
 #: ../gladeui/glade-widget.c:1249 ../plugins/gtk+/glade-gtk.c:5507
 #: ../plugins/gtk+/glade-gtk.c:5534 ../plugins/gtk+/glade-gtk.c:5553
 #: ../plugins/gtk+/glade-gtk.c:5591 ../plugins/gtk+/glade-gtk.c:10524
@@ -590,14 +590,12 @@ msgstr "Legitimation"
 #. GTK_STOCK_DIALOG_AUTHENTICATION
 #: ../gladeui/glade-builtins.c:71 ../plugins/gtk+/gtk+.xml.in.h:142
 msgid "Drag and Drop"
-msgstr "Anklicken und Ziehen"
+msgstr "Anklicken und ziehen"
 
 #. GTK_STOCK_DND
 #: ../gladeui/glade-builtins.c:72
-#, fuzzy
-#| msgid "Drag and Drop"
 msgid "Drag and Drop Multiple"
-msgstr "Anklicken und Ziehen"
+msgstr "Mehrere anklicken und ziehen"
 
 #. GTK_STOCK_DND_MULTIPLE
 #: ../gladeui/glade-builtins.c:73
@@ -676,7 +674,7 @@ msgstr "Design-Ansicht"
 
 #: ../gladeui/glade-design-layout.c:1013
 msgid "The GladeDesignView that contains this layout"
-msgstr ""
+msgstr "Das GladeDesignView mit diesem Layout"
 
 #: ../gladeui/glade-design-view.c:97
 #, c-format
@@ -685,7 +683,7 @@ msgstr "%s wird geladen: %d von %d Objekten geladen"
 
 #: ../gladeui/glade-previewer.c:40 ../gladeui/glade-previewer.c:75
 msgid "- previews a glade UI definition"
-msgstr ""
+msgstr "- Vorschau einer glade-Oberflächendefinition zeigen"
 
 #: ../gladeui/glade-previewer.c:62
 msgid "Name of the file to preview"
@@ -759,7 +757,7 @@ msgstr "Fehler: %s.\n"
 #: ../gladeui/glade-previewer.c:347
 #, c-format
 msgid "Broken pipe!\n"
-msgstr ""
+msgstr "Unterbrochene Weiterleitung!\n"
 
 #: ../gladeui/glade-base-editor.c:545
 #, c-format
@@ -1000,6 +998,9 @@ msgid ""
 "meaning of this string from the meaning of other occurrences of the same "
 "string"
 msgstr ""
+"Für kurze und mehrdeutige Zeichenketten: Geben Sie hier ein Wort ein, um "
+"zwischen der Bedeutung dieser Zeichenkette und anderen Auftreten derselben "
+"unterscheiden zu können"
 
 #: ../gladeui/glade-editor-property.c:1887
 msgid "Co_mments for translators:"
@@ -1555,24 +1556,23 @@ msgstr "Warnung zur Unterstützung"
 #, fuzzy
 #| msgid "Enter the handler to run for this signal"
 msgid "The versioning support warning for this signal"
-msgstr "Den auszuführenden Handler für dieses Signal eingeben"
+msgstr "Die Unterstützungswarnung für dieses Signal"
 
 #: ../gladeui/glade-signal.c:183
 msgid "Whether this signal is run after default handlers"
 msgstr ""
+"Legt fest, ob dieses Signal nach den voreingestellten Handlern ausgeführt "
+"wird"
 
 #: ../gladeui/glade-signal.c:188
 msgid "Swapped"
 msgstr "Vertauscht"
 
 #: ../gladeui/glade-signal.c:189
-#, fuzzy
-#| msgid ""
-#| "Whether the instance and object should be swapped when calling the handler"
 msgid "Whether the user data is swapped with the instance for the handler"
 msgstr ""
-"Legt fest, ob Instanz und Objekt beim Aufruf des Handlers vertauscht werden "
-"sollen"
+"Legt fest, ob die Benutzerdaten mit der Instanz des Handlers vertauscht "
+"werden sollen"
 
 #: ../gladeui/glade-utils.c:135 ../gladeui/glade-utils.c:165
 #, c-format
@@ -3013,10 +3013,8 @@ msgid "Markup column"
 msgstr "Markup-Spalte"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:303
-#, fuzzy
-#| msgid "Width in Characters column"
 msgid "Maximum width in charachters column"
-msgstr "Spalte für Breite in Zeichen"
+msgstr "Maximale Spaltenbreite in Zeichen"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:304
 msgid "Member Of"
@@ -3145,13 +3143,11 @@ msgstr "Aus"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:335
 msgid "Offscreen"
-msgstr ""
+msgstr "Abseits des Bildschirms"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:336
-#, fuzzy
-#| msgid "Scrolled Window"
 msgid "Offscreen Window"
-msgstr "Scrollbares Fenster"
+msgstr "Fenster abseits des Bildschirms"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:337
 msgid "Ok"
@@ -3239,10 +3235,8 @@ msgid "Press"
 msgstr "Drücken"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:360
-#, fuzzy
-#| msgid "Preview"
 msgid "Preview snapshot"
-msgstr "Vorschau"
+msgstr "Vorschaubild"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:361
 msgid "Primary Icon Activatable"
@@ -3355,22 +3349,16 @@ msgid "Recent Chooser Dialog"
 msgstr "Auswahldialog für zuletzt genutzte"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:388 ../plugins/gtk+/glade-gtk.c:5549
-#, fuzzy
-#| msgid "Recent Chooser"
 msgid "Recent Chooser Menu"
-msgstr "Auswahl zuletzt genutzter"
+msgstr "Auswahlmenü zuletzt genutzter"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:389
-#, fuzzy
-#| msgid "File Filter"
 msgid "Recent Filter"
-msgstr "Dateifilter"
+msgstr "Filter zuletzt genutzter"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:390
-#, fuzzy
-#| msgid "UI Manager"
 msgid "Recent Manager"
-msgstr "UI-Manager"
+msgstr "Verwaltung zuletzt genutzter"
 
 #. GtkActivatable
 #: ../plugins/gtk+/gtk+.xml.in.h:392
@@ -3795,10 +3783,8 @@ msgid "The position of the menu item in the menu shell"
 msgstr "Die Position der Menüeinträge in der Menü-Shell"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:495
-#, fuzzy
-#| msgid "The position of the tool item in the toolbar"
 msgid "The position of the tool item group in the palette"
-msgstr "Die Position des Eintrags in der Werkzeugleiste"
+msgstr "Die Position der Werkzeuggruppe in der Werkzeugpalette"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:496
 msgid "The position of the tool item in the toolbar"
@@ -3853,10 +3839,8 @@ msgid "Tool Button"
 msgstr "Werkzeugleisteneintrag"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:508 ../plugins/gtk+/glade-gtk.c:5530
-#, fuzzy
-#| msgid "Tool Item"
 msgid "Tool Item Group"
-msgstr "Werkzeugelement"
+msgstr "Werkzeuggruppe"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:509
 msgid "Tool Palette"
@@ -4371,6 +4355,8 @@ msgstr "Kindelemente können nicht zu einem Trenner hinzugefügt werden."
 #: ../plugins/gtk+/glade-gtk.c:5294
 msgid "Children cannot be added to a Recent Chooser Menu."
 msgstr ""
+"Kindelemente dürfen nicht zum Auswahlmenü zuletzt genutzter hinzugefügt "
+"werden."
 
 #: ../plugins/gtk+/glade-gtk.c:5303
 #, c-format
@@ -4413,10 +4399,8 @@ msgstr "Menütrennlinie"
 
 #: ../plugins/gtk+/glade-gtk.c:5640 ../plugins/gtk+/glade-gtk.c:6484
 #: ../plugins/gtk+/glade-gtk.c:6673 ../plugins/gtk+/glade-gtk.c:6682
-#, fuzzy
-#| msgid "Recent Action"
 msgid "Recent Menu"
-msgstr "Letzte Aktion"
+msgstr "Menü letzter Aktionen"
 
 #: ../plugins/gtk+/glade-gtk.c:5672 ../plugins/gtk+/glade-gtk.c:5723
 msgid "Edit Menu Bar"
@@ -4537,6 +4521,8 @@ msgstr "Editor für Baumansicht"
 msgid ""
 "Columns must have a fixed size inside a treeview with fixed height mode set"
 msgstr ""
+"Spalten müssen im Modus fester Höhe eine fixe Größe innerhalb einer "
+"Baumansicht haben"
 
 #. --------------------------- GtkAction ---------------------------------
 #: ../plugins/gtk+/glade-gtk.c:10949
@@ -4545,10 +4531,8 @@ msgstr ""
 "Eine Zugriffstaste kann nur innerhalb einer Aktionsgruppe gesetzt werden."
 
 #: ../plugins/gtk+/glade-gtk.c:11147
-#, fuzzy
-#| msgid "Reset"
 msgid "Recent"
-msgstr "Zurücksetzen"
+msgstr "Zuletzt verwendet"
 
 #: ../plugins/gtk+/glade-gtk.c:11155
 msgid "Action Group Editor"
