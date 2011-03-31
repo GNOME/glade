@@ -191,9 +191,11 @@ enum
   PROP_TOPLEVEL_WIDTH,
   PROP_TOPLEVEL_HEIGHT,
   PROP_SUPPORT_WARNING,
-  PROP_VISIBLE
+  PROP_VISIBLE,
+  N_PROPERTIES
 };
 
+static GParamSpec *properties[N_PROPERTIES];
 static guint glade_widget_signals[LAST_SIGNAL] = { 0 };
 
 static GQuark glade_widget_name_quark = 0;
@@ -1202,115 +1204,102 @@ glade_widget_class_init (GladeWidgetClass * klass)
   klass->button_release_event = NULL;
   klass->motion_notify_event = NULL;
 
-  g_object_class_install_property
-      (object_class, PROP_NAME,
+  properties[PROP_NAME] =
        g_param_spec_string ("name", _("Name"),
                             _("The name of the widget"),
-                            NULL, G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                            NULL, G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
 
-  g_object_class_install_property
-      (object_class, PROP_INTERNAL,
+  properties[PROP_INTERNAL] =
        g_param_spec_string ("internal", _("Internal name"),
                             _("The internal name of the widget"),
-                            NULL, G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                            NULL, G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
 
-  g_object_class_install_property
-      (object_class, PROP_ANARCHIST,
+  properties[PROP_ANARCHIST] =
        g_param_spec_boolean ("anarchist", _("Anarchist"),
                              _("Whether this composite child is "
                                "an ancestral child or an anarchist child"),
                              FALSE, G_PARAM_READWRITE |
-                             G_PARAM_CONSTRUCT_ONLY));
+                             G_PARAM_CONSTRUCT_ONLY);
 
-  g_object_class_install_property
-      (object_class, PROP_OBJECT,
+  properties[PROP_OBJECT] =
        g_param_spec_object ("object", _("Object"),
                             _("The object associated"),
                             G_TYPE_OBJECT,
-                            G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                            G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
 
-  g_object_class_install_property
-      (object_class, PROP_ADAPTOR,
+  properties[PROP_ADAPTOR] =
        g_param_spec_object ("adaptor", _("Adaptor"),
                             _("The class adaptor for the associated widget"),
                             GLADE_TYPE_WIDGET_ADAPTOR,
-                            G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+                            G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
 
-  g_object_class_install_property
-      (object_class, PROP_PROJECT,
+  properties[PROP_PROJECT] =
        g_param_spec_object ("project", _("Project"),
                             _("The glade project that "
                               "this widget belongs to"),
                             GLADE_TYPE_PROJECT,
-                            G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                            G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
 
-  g_object_class_install_property
-      (object_class, PROP_PROPERTIES,
+  properties[PROP_PROPERTIES] =
        g_param_spec_pointer ("properties", _("Properties"),
                              _("A list of GladeProperties"),
-                             G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+                             G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
 
-  g_object_class_install_property
-      (object_class, PROP_PARENT,
+  properties[PROP_PARENT] =
        g_param_spec_object ("parent", _("Parent"),
                             _("A pointer to the parenting GladeWidget"),
                             GLADE_TYPE_WIDGET,
-                            G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                            G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
 
-  g_object_class_install_property
-      (object_class, PROP_INTERNAL_NAME,
+  properties[PROP_INTERNAL_NAME] =
        g_param_spec_string ("internal-name", _("Internal Name"),
                             _("A generic name prefix for internal widgets"),
-                            NULL, G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE));
+                            NULL, G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE);
 
-  g_object_class_install_property
-      (object_class, PROP_TEMPLATE,
+  properties[PROP_TEMPLATE] =
        g_param_spec_object ("template", _("Template"),
                             _("A GladeWidget template to base a new widget on"),
                             GLADE_TYPE_WIDGET,
-                            G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE));
+                            G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE);
 
-  g_object_class_install_property
-      (object_class, PROP_TEMPLATE_EXACT,
+  properties[PROP_TEMPLATE_EXACT] =
        g_param_spec_boolean ("template-exact", _("Exact Template"),
                              _
                              ("Whether we are creating an exact duplicate when using a template"),
-                             FALSE, G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
+                             FALSE, G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY);
 
-  g_object_class_install_property
-      (object_class, PROP_REASON,
+  properties[PROP_REASON] =
        g_param_spec_int ("reason", _("Reason"),
                          _("A GladeCreateReason for this creation"),
                          GLADE_CREATE_USER,
                          GLADE_CREATE_REASONS - 1,
                          GLADE_CREATE_USER,
-                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE));
+                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE);
 
-  g_object_class_install_property
-      (object_class, PROP_TOPLEVEL_WIDTH,
+  properties[PROP_TOPLEVEL_WIDTH] =
        g_param_spec_int ("toplevel-width", _("Toplevel Width"),
                          _("The width of the widget when toplevel in "
                            "the GladeDesignLayout"),
-                         -1, G_MAXINT, -1, G_PARAM_READWRITE));
+                         -1, G_MAXINT, -1, G_PARAM_READWRITE);
 
-  g_object_class_install_property
-      (object_class, PROP_TOPLEVEL_HEIGHT,
+  properties[PROP_TOPLEVEL_HEIGHT] =
        g_param_spec_int ("toplevel-height", _("Toplevel Height"),
                          _("The height of the widget when toplevel in "
                            "the GladeDesignLayout"),
-                         -1, G_MAXINT, -1, G_PARAM_READWRITE));
+                         -1, G_MAXINT, -1, G_PARAM_READWRITE);
 
-  g_object_class_install_property
-      (object_class, PROP_SUPPORT_WARNING,
+  properties[PROP_SUPPORT_WARNING] =
        g_param_spec_string ("support warning", _("Support Warning"),
                             _("A warning string about version mismatches"),
-                            NULL, G_PARAM_READABLE));
+                            NULL, G_PARAM_READABLE);
 
-  g_object_class_install_property
-      (object_class, PROP_VISIBLE,
+  properties[PROP_VISIBLE] =
        g_param_spec_boolean ("visible", _("Visible"),
                             _("Wether the widget is visible or not"),
-                             FALSE, G_PARAM_READABLE));
+                             FALSE, G_PARAM_READABLE);
+
+  /* Install all properties */
+  g_object_class_install_properties (object_class, N_PROPERTIES, properties);
 
   /**
    * GladeWidget::add-signal-handler:
@@ -2564,7 +2553,7 @@ glade_widget_set_name (GladeWidget * widget, const gchar * name)
         g_free (widget->priv->name);
 
       widget->priv->name = g_strdup (name);
-      g_object_notify (G_OBJECT (widget), "name");
+      g_object_notify_by_pspec (G_OBJECT (widget), properties[PROP_NAME]);
     }
 }
 
@@ -2596,7 +2585,7 @@ glade_widget_set_internal (GladeWidget * widget, const gchar * internal)
     {
       g_free (widget->priv->internal);
       widget->priv->internal = g_strdup (internal);
-      g_object_notify (G_OBJECT (widget), "internal");
+      g_object_notify_by_pspec (G_OBJECT (widget), properties[PROP_INTERNAL]);
     }
 }
 
@@ -2639,7 +2628,7 @@ glade_widget_set_project (GladeWidget * widget, GladeProject * project)
   if (widget->priv->project != project)
     {
       widget->priv->project = project;
-      g_object_notify (G_OBJECT (widget), "project");
+      g_object_notify_by_pspec (G_OBJECT (widget), properties[PROP_PROJECT]);
     }
 }
 
@@ -3407,7 +3396,7 @@ glade_widget_set_object (GladeWidget * gwidget, GObject * new_object,
 
         }
     }
-  g_object_notify (G_OBJECT (gwidget), "object");
+  g_object_notify_by_pspec (G_OBJECT (gwidget), properties[PROP_OBJECT]);
 }
 
 /**
@@ -3470,7 +3459,7 @@ glade_widget_set_parent (GladeWidget * widget, GladeWidget * parent)
   if (parent)
     glade_widget_set_packing_actions (widget, parent);
 
-  g_object_notify (G_OBJECT (widget), "parent");
+  g_object_notify_by_pspec (G_OBJECT (widget), properties[PROP_PARENT]);
 }
 
 /**
@@ -4325,7 +4314,7 @@ glade_widget_set_support_warning (GladeWidget * widget, const gchar * warning)
     g_free (widget->priv->support_warning);
   widget->priv->support_warning = g_strdup (warning);
 
-  g_object_notify (G_OBJECT (widget), "support-warning");
+  g_object_notify_by_pspec (G_OBJECT (widget), properties[PROP_SUPPORT_WARNING]);
 }
 
 G_CONST_RETURN gchar *

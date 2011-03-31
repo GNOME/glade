@@ -56,7 +56,8 @@ enum
 {
   PROP_0,
   PROP_SHOW_INFO,
-  PROP_WIDGET
+  PROP_WIDGET,
+  N_PROPERTIES
 };
 
 static GtkVBoxClass *parent_class = NULL;
@@ -134,6 +135,7 @@ struct _GladeEditorPrivate
   gboolean show_info; /* Whether or not to show an informational button  */
 };
 
+static GParamSpec *properties[N_PROPERTIES];
 
 static void glade_editor_reset_dialog (GladeEditor * editor);
 
@@ -210,20 +212,23 @@ glade_editor_class_init (GladeEditorClass * klass)
   object_class->get_property = glade_editor_get_property;
 
   /* Properties */
-  g_object_class_install_property
-      (object_class, PROP_SHOW_INFO,
-       g_param_spec_boolean ("show-info",
-                             _("Show info"),
-                             _("Whether to show an informational "
-                               "button for the loaded widget"),
-                             FALSE, G_PARAM_READABLE));
+  properties[PROP_SHOW_INFO] =
+    g_param_spec_boolean ("show-info",
+                          _("Show info"),
+                          _("Whether to show an informational "
+                            "button for the loaded widget"),
+                          FALSE,
+                          G_PARAM_READABLE);
 
-  g_object_class_install_property
-      (object_class, PROP_WIDGET,
-       g_param_spec_object ("widget",
-                            _("Widget"),
-                            _("The currently loaded widget in this editor"),
-                            GLADE_TYPE_WIDGET, G_PARAM_READWRITE));
+  properties[PROP_WIDGET] =
+    g_param_spec_object ("widget",
+                         _("Widget"),
+                         _("The currently loaded widget in this editor"),
+                         GLADE_TYPE_WIDGET,
+                         G_PARAM_READWRITE);
+  
+  /* Install all properties */
+  g_object_class_install_properties (object_class, N_PROPERTIES, properties);
 
   g_type_class_add_private (klass, sizeof (GladeEditorPrivate));
 }
@@ -817,7 +822,7 @@ glade_editor_load_widget_real (GladeEditor * editor, GladeWidget * widget)
       /* Clear class header */
       glade_editor_update_class_field (editor);
 
-      g_object_notify (G_OBJECT (editor), "widget");
+      g_object_notify_by_pspec (G_OBJECT (editor), properties[PROP_WIDGET]);
 
       return;
     }
@@ -858,7 +863,7 @@ glade_editor_load_widget_real (GladeEditor * editor, GladeWidget * widget)
                         G_CALLBACK (glade_editor_update_widget_name_cb),
                         editor);
 
-  g_object_notify (G_OBJECT (editor), "widget");
+  g_object_notify_by_pspec (G_OBJECT (editor), properties[PROP_WIDGET]);
 }
 
 
@@ -1394,7 +1399,7 @@ glade_editor_show_info (GladeEditor * editor)
       editor->priv->show_info = TRUE;
       gtk_widget_show (editor->priv->info_button);
 
-      g_object_notify (G_OBJECT (editor), "show-info");
+      g_object_notify_by_pspec (G_OBJECT (editor), properties[PROP_SHOW_INFO]);
     }
 }
 
@@ -1408,7 +1413,7 @@ glade_editor_hide_info (GladeEditor * editor)
       editor->priv->show_info = FALSE;
       gtk_widget_hide (editor->priv->info_button);
 
-      g_object_notify (G_OBJECT (editor), "show-info");
+      g_object_notify_by_pspec (G_OBJECT (editor), properties[PROP_SHOW_INFO]);
     }
 }
 

@@ -59,7 +59,8 @@
 enum
 {
   PROP_0,
-  PROP_PROJECT
+  PROP_PROJECT,
+  N_PROPERTIES
 };
 
 enum
@@ -82,7 +83,7 @@ struct _GladeInspectorPrivate
   gboolean search_disabled;
 };
 
-
+static GParamSpec *properties[N_PROPERTIES];
 static guint glade_inspector_signals[LAST_SIGNAL] = { 0 };
 
 
@@ -174,15 +175,15 @@ glade_inspector_class_init (GladeInspectorClass * klass)
                     G_STRUCT_OFFSET (GladeInspectorClass, item_activated),
                     NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
-  g_object_class_install_property (object_class,
-                                   PROP_PROJECT,
-                                   g_param_spec_object ("project",
-                                                        _("Project"),
-                                                        _
-                                                        ("The project being inspected"),
-                                                        GLADE_TYPE_PROJECT,
-                                                        G_PARAM_READABLE |
-                                                        G_PARAM_WRITABLE));
+  properties[PROP_PROJECT] =
+    g_param_spec_object ("project",
+                         _("Project"),
+                         _("The project being inspected"),
+                         GLADE_TYPE_PROJECT,
+                         G_PARAM_READABLE | G_PARAM_WRITABLE);
+  
+  /* Install all properties */
+  g_object_class_install_properties (object_class, N_PROPERTIES, properties);
 
   g_type_class_add_private (klass, sizeof (GladeInspectorPrivate));
 }
@@ -832,7 +833,7 @@ glade_inspector_set_project (GladeInspector * inspector, GladeProject * project)
 
   update_project_completion (project, NULL, inspector);
 
-  g_object_notify (G_OBJECT (inspector), "project");
+  g_object_notify_by_pspec (G_OBJECT (inspector), properties[PROP_PROJECT]);
 }
 
 /**

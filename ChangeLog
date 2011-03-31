@@ -1,3 +1,18 @@
+2011-03-31  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-base-editor.c,
+	  gladeui/glade-cell-renderer-icon.c,
+	  gladeui/glade-clipboard.c,
+	  gladeui/glade-editor.c,
+	  gladeui/glade-inspector.c,
+	  gladeui/glade-palette.c,
+	  gladeui/glade-project.c,
+	  gladeui/glade-property.c,
+	  gladeui/glade-signal.c,
+	  gladeui/glade-widget-action.c,
+	  gladeui/glade-widget.c:
+	    Replaced g_object_notify() with g_object_notify_by_spec()
+
 2011-03-24  Cosimo Cecchi <cosimoc@gnome.org>
 
 	* src/glade-window.c: add a primary-toolbar style class to the toolbar

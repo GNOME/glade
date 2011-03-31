@@ -49,8 +49,11 @@ struct _GladeClipboardPrivate
 enum
 {
   PROP_0,
-  PROP_HAS_SELECTION
+  PROP_HAS_SELECTION,
+  N_PROPERTIES
 };
+
+static GParamSpec *properties[N_PROPERTIES];
 
 G_DEFINE_TYPE (GladeClipboard, glade_clipboard, G_TYPE_OBJECT);
 
@@ -80,13 +83,15 @@ glade_clipboard_class_init (GladeClipboardClass * klass)
 
   object_class->get_property = glade_project_get_property;
 
-  g_object_class_install_property (object_class,
-                                   PROP_HAS_SELECTION,
-                                   g_param_spec_boolean ("has-selection",
-                                                         "Has Selection",
-                                                         "Whether clipboard has a selection of items to paste",
-                                                         FALSE,
-                                                         G_PARAM_READABLE));
+  properties[PROP_HAS_SELECTION] =
+    g_param_spec_boolean ("has-selection",
+                          "Has Selection",
+                          "Whether clipboard has a selection of items to paste",
+                          FALSE,
+                          G_PARAM_READABLE);
+  
+  /* Install all properties */
+  g_object_class_install_properties (object_class, N_PROPERTIES, properties);
 
   g_type_class_add_private  (klass, sizeof (GladeClipboardPrivate));
 }
@@ -110,7 +115,7 @@ glade_clipboard_set_has_selection (GladeClipboard * clipboard,
   if (clipboard->priv->has_selection != has_selection)
     {
       clipboard->priv->has_selection = has_selection;
-      g_object_notify (G_OBJECT (clipboard), "has-selection");
+      g_object_notify_by_pspec (G_OBJECT (clipboard), properties[PROP_HAS_SELECTION]);
     }
 
 }

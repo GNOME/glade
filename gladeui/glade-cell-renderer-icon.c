@@ -58,8 +58,10 @@ enum
   PROP_0,
   PROP_ACTIVATABLE,
   PROP_ACTIVE,
+  N_PROPERTIES
 };
 
+static GParamSpec *properties[N_PROPERTIES];
 static guint icon_cell_signals[LAST_SIGNAL] = { 0 };
 
 
@@ -91,22 +93,21 @@ glade_cell_renderer_icon_class_init (GladeCellRendererIconClass * class)
 
   cell_class->activate = glade_cell_renderer_icon_activate;
 
-  g_object_class_install_property (object_class,
-                                   PROP_ACTIVE,
-                                   g_param_spec_boolean ("active", "Icon state",
-                                                         "The icon state of the button",
-                                                         FALSE,
-                                                         G_PARAM_READABLE |
-                                                         G_PARAM_WRITABLE));
+  properties[PROP_ACTIVE] =
+    g_param_spec_boolean ("active", "Icon state",
+                          "The icon state of the button",
+                          FALSE,
+                          G_PARAM_READABLE | G_PARAM_WRITABLE);
 
-  g_object_class_install_property (object_class,
-                                   PROP_ACTIVATABLE,
-                                   g_param_spec_boolean ("activatable",
-                                                         "Activatable",
-                                                         "The icon button can be activated",
-                                                         TRUE,
-                                                         G_PARAM_READABLE |
-                                                         G_PARAM_WRITABLE));
+  properties[PROP_ACTIVATABLE] =
+    g_param_spec_boolean ("activatable",
+                          "Activatable",
+                          "The icon button can be activated",
+                          TRUE,
+                          G_PARAM_READABLE | G_PARAM_WRITABLE);
+
+  /* Install all properties */
+  g_object_class_install_properties (object_class, N_PROPERTIES, properties);
 
   icon_cell_signals[ACTIVATE] =
       g_signal_new ("activate",
@@ -206,7 +207,7 @@ glade_cell_renderer_icon_set_active (GladeCellRendererIcon * icon,
   if (icon->priv->active != setting)
     {
       icon->priv->active = setting ? TRUE : FALSE;
-      g_object_notify (G_OBJECT (icon), "active");
+      g_object_notify_by_pspec (G_OBJECT (icon), properties[PROP_ACTIVE]);
     }
 }
 
@@ -227,6 +228,6 @@ glade_cell_renderer_icon_set_activatable (GladeCellRendererIcon * icon,
   if (icon->priv->activatable != setting)
     {
       icon->priv->activatable = setting ? TRUE : FALSE;
-      g_object_notify (G_OBJECT (icon), "activatable");
+      g_object_notify_by_pspec (G_OBJECT (icon), properties[PROP_ACTIVATABLE]);
     }
 }

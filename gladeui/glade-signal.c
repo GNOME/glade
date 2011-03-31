@@ -47,10 +47,13 @@ enum {
   PROP_CLASS,
   PROP_HANDLER,
   PROP_USERDATA,
-  PROP_SUPPORT,
+  PROP_SUPPORT_WARNING,
   PROP_AFTER,
-  PROP_SWAPPED
+  PROP_SWAPPED,
+  N_PROPERTIES
 };
+
+static GParamSpec *properties[N_PROPERTIES];
 
 static GObjectClass *parent_class;
 
@@ -84,7 +87,7 @@ glade_signal_get_property (GObject * object,
       case PROP_USERDATA:
         g_value_set_string (value, signal->priv->userdata);
         break; 
-      case PROP_SUPPORT:
+      case PROP_SUPPORT_WARNING:
         g_value_set_string (value, signal->priv->support_warning);
         break; 
       case PROP_AFTER:
@@ -117,7 +120,7 @@ glade_signal_set_property (GObject * object,
       case PROP_USERDATA:
 	glade_signal_set_userdata (signal, g_value_get_string (value));
         break; 
-      case PROP_SUPPORT:
+      case PROP_SUPPORT_WARNING:
 	glade_signal_set_support_warning (signal, g_value_get_string (value));
         break; 
       case PROP_AFTER:
@@ -153,41 +156,44 @@ glade_signal_klass_init (GladeSignalKlass *klass)
   object_class->finalize     = glade_signal_finalize;
 
   /* Properties */
-  g_object_class_install_property (object_class, PROP_CLASS,
-				   g_param_spec_pointer
-				   ("class", _("SignalClass"),
-				    _("The signal class of this signal"),
-				    G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE));
+  properties[PROP_CLASS] =
+    g_param_spec_pointer ("class",
+                          _("SignalClass"),
+                          _("The signal class of this signal"),
+                          G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE);
 
-  g_object_class_install_property (object_class, PROP_HANDLER,
-				   g_param_spec_string
-				   ("handler", _("Handler"),
-				    _("The handler for this signal"),
-				    NULL, G_PARAM_READWRITE));
+  properties[PROP_HANDLER] =
+    g_param_spec_string ("handler",
+                         _("Handler"),
+                         _("The handler for this signal"),
+                         NULL, G_PARAM_READWRITE);
 
-  g_object_class_install_property (object_class, PROP_USERDATA,
-				   g_param_spec_string
-				   ("userdata", _("User Data"),
-				    _("The user data for this signal"),
-				    NULL, G_PARAM_READWRITE));
+  properties[PROP_USERDATA] =
+    g_param_spec_string ("userdata",
+                         _("User Data"),
+                         _("The user data for this signal"),
+                         NULL, G_PARAM_READWRITE);
 
-  g_object_class_install_property (object_class, PROP_SUPPORT,
-				   g_param_spec_string
-				   ("support-warning", _("Support Warning"),
-				    _("The versioning support warning for this signal"),
-				    NULL, G_PARAM_READWRITE));
+  properties[PROP_SUPPORT_WARNING] =
+    g_param_spec_string ("support-warning",
+                         _("Support Warning"),
+                         _("The versioning support warning for this signal"),
+                         NULL, G_PARAM_READWRITE);
 
-  g_object_class_install_property (object_class, PROP_AFTER,
-				   g_param_spec_boolean
-				   ("after", _("After"),
-				    _("Whether this signal is run after default handlers"),
-				    FALSE, G_PARAM_READWRITE));
+  properties[PROP_AFTER] =
+    g_param_spec_boolean ("after",
+                          _("After"),
+                          _("Whether this signal is run after default handlers"),
+                          FALSE, G_PARAM_READWRITE);
 
-  g_object_class_install_property (object_class, PROP_SWAPPED,
-				   g_param_spec_boolean
-				   ("swapped", _("Swapped"),
-				    _("Whether the user data is swapped with the instance for the handler"),
-				    FALSE, G_PARAM_READWRITE));
+  properties[PROP_SWAPPED] =
+    g_param_spec_boolean ("swapped",
+                          _("Swapped"),
+                          _("Whether the user data is swapped with the instance for the handler"),
+                          FALSE, G_PARAM_READWRITE);
+  
+  /* Install all properties */
+  g_object_class_install_properties (object_class, N_PROPERTIES, properties);
 
   g_type_class_add_private (klass, sizeof (GladeSignalPrivate));
 }
@@ -436,7 +442,7 @@ glade_signal_set_handler (GladeSignal *signal,
       signal->priv->handler =
           handler ? g_strdup (handler) : NULL;
 
-      g_object_notify (G_OBJECT (signal), "handler");
+      g_object_notify_by_pspec (G_OBJECT (signal), properties[PROP_HANDLER]);
     }
 }
 
@@ -460,7 +466,7 @@ glade_signal_set_userdata (GladeSignal *signal,
       signal->priv->userdata =
           userdata ? g_strdup (userdata) : NULL;
 
-      g_object_notify (G_OBJECT (signal), "userdata");
+      g_object_notify_by_pspec (G_OBJECT (signal), properties[PROP_USERDATA]);
     }
 }
 
@@ -482,7 +488,7 @@ glade_signal_set_after (GladeSignal *signal,
     {
       signal->priv->after = after;
 
-      g_object_notify (G_OBJECT (signal), "after");
+      g_object_notify_by_pspec (G_OBJECT (signal), properties[PROP_AFTER]);
     }
 }
 
@@ -504,7 +510,7 @@ glade_signal_set_swapped (GladeSignal *signal,
     {
       signal->priv->swapped = swapped;
 
-      g_object_notify (G_OBJECT (signal), "swapped");
+      g_object_notify_by_pspec (G_OBJECT (signal), properties[PROP_SWAPPED]);
     }
 }
 
@@ -528,7 +534,7 @@ glade_signal_set_support_warning (GladeSignal *signal,
       signal->priv->support_warning =
           support_warning ? g_strdup (support_warning) : NULL;
 
-      g_object_notify (G_OBJECT (signal), "support-warning");
+      g_object_notify_by_pspec (G_OBJECT (signal), properties[PROP_SUPPORT_WARNING]);
     }
 }
 

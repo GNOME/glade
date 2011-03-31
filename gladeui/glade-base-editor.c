@@ -110,9 +110,10 @@ enum
 {
   PROP_0,
   PROP_CONTAINER,
+  N_PROPERTIES
 };
 
-
+static GParamSpec *properties[N_PROPERTIES];
 static guint glade_base_editor_signals[LAST_SIGNAL] = { 0 };
 
 static GtkVBoxClass *parent_class = NULL;
@@ -1230,7 +1231,7 @@ glade_base_editor_set_container (GladeBaseEditor * editor, GObject * container)
 
       glade_signal_editor_load_widget (e->signal_editor, NULL);
 
-      g_object_notify (G_OBJECT (editor), "container");
+      g_object_notify_by_pspec (G_OBJECT (editor), properties[PROP_CONTAINER]);
       return;
     }
 
@@ -1257,7 +1258,7 @@ glade_base_editor_set_container (GladeBaseEditor * editor, GObject * container)
   g_signal_connect (e->project, "changed",
                     G_CALLBACK (glade_base_editor_project_changed), editor);
 
-  g_object_notify (G_OBJECT (editor), "container");
+  g_object_notify_by_pspec (G_OBJECT (editor), properties[PROP_CONTAINER]);
 }
 
 /*************************** GladeBaseEditor Class ****************************/
@@ -1474,12 +1475,15 @@ glade_base_editor_class_init (GladeBaseEditorClass * klass)
   klass->delete_child = glade_base_editor_delete_child_impl;
   klass->move_child = glade_base_editor_move_child;
 
-  g_object_class_install_property (object_class, PROP_CONTAINER,
-                                   g_param_spec_object
-                                   ("container", _("Container"),
-                                    _
-                                    ("The container object this editor is currently editing"),
-                                    G_TYPE_OBJECT, G_PARAM_READWRITE));
+  properties[PROP_CONTAINER] =
+    g_param_spec_object ("container",
+                         _("Container"),
+                         _("The container object this editor is currently editing"),
+                         G_TYPE_OBJECT,
+                         G_PARAM_READWRITE);
+  
+  /* Install all properties */
+  g_object_class_install_properties (object_class, N_PROPERTIES, properties);
 
   /**
    * GladeBaseEditor::child-selected:

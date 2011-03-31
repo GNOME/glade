@@ -78,8 +78,11 @@ enum
   PROP_PATH,
   PROP_READ_ONLY,
   PROP_ADD_ITEM,
-  PROP_POINTER_MODE
+  PROP_POINTER_MODE,
+  N_PROPERTIES
 };
+
+static GParamSpec *properties[N_PROPERTIES];
 
 struct _GladeProjectPrivate
 {
@@ -416,7 +419,7 @@ glade_project_set_modified (GladeProject *project, gboolean modified)
           priv->first_modification_is_na = FALSE;
         }
 
-      g_object_notify (G_OBJECT (project), "modified");
+      g_object_notify_by_pspec (G_OBJECT (project), properties[PROP_MODIFIED]);
     }
 }
 
@@ -445,7 +448,7 @@ glade_project_set_pointer_mode (GladeProject *project, GladePointerMode mode)
     {
       project->priv->pointer_mode = mode;
 
-      g_object_notify (G_OBJECT (project), "pointer-mode");
+      g_object_notify_by_pspec (G_OBJECT (project), properties[PROP_POINTER_MODE]);
     }
 }
 
@@ -471,7 +474,7 @@ glade_project_set_add_item (GladeProject *project, GladeWidgetAdaptor *adaptor)
     {
       priv->add_item = adaptor;
 
-      g_object_notify (G_OBJECT (project), "add-item");
+      g_object_notify_by_pspec (G_OBJECT (project), properties[PROP_ADD_ITEM]);
     }
 }
 
@@ -946,55 +949,52 @@ glade_project_class_init (GladeProjectClass *klass)
                     0, NULL, NULL,
                     _glade_marshal_VOID__OBJECT_BOOLEAN,
                     G_TYPE_NONE, 2, GLADE_TYPE_WIDGET, G_TYPE_BOOLEAN);
-    
-  g_object_class_install_property (object_class,
-                                   PROP_MODIFIED,
-                                   g_param_spec_boolean ("modified",
-                                                         "Modified",
-                                                         _("Whether project has been modified since it was last saved"),
-                                                         FALSE,
-                                                         G_PARAM_READABLE));
 
-  g_object_class_install_property (object_class,
-                                   PROP_HAS_SELECTION,
-                                   g_param_spec_boolean ("has-selection",
-                                                         _("Has Selection"),
-                                                         _("Whether project has a selection"),
-                                                         FALSE,
-                                                         G_PARAM_READABLE));
+  properties[PROP_MODIFIED] =
+    g_param_spec_boolean ("modified",
+                          "Modified",
+                          _("Whether project has been modified since it was last saved"),
+                          FALSE,
+                          G_PARAM_READABLE);
 
-  g_object_class_install_property (object_class,
-                                   PROP_PATH,
-                                   g_param_spec_string ("path",
-                                                        _("Path"),
-                                                        _("The filesystem path of the project"),
-                                                        NULL,
-                                                        G_PARAM_READABLE));
+  properties[PROP_HAS_SELECTION] =
+    g_param_spec_boolean ("has-selection",
+                          _("Has Selection"),
+                          _("Whether project has a selection"),
+                          FALSE,
+                          G_PARAM_READABLE);
 
-  g_object_class_install_property (object_class,
-                                   PROP_READ_ONLY,
-                                   g_param_spec_boolean ("read-only",
-                                                         _("Read Only"),
-                                                         _("Whether project is read-only"),
-                                                         FALSE,
-                                                         G_PARAM_READABLE));
+  properties[PROP_PATH] =
+    g_param_spec_string ("path",
+                         _("Path"),
+                         _("The filesystem path of the project"),
+                         NULL,
+                         G_PARAM_READABLE);
 
-  g_object_class_install_property (object_class,
-                                   PROP_ADD_ITEM,
-                                   g_param_spec_object ("add-item",
-                                                        _("Add Item"),
-                                                        _("The current item to add to the project"),
-                                                        GLADE_TYPE_WIDGET_ADAPTOR,
-                                                        G_PARAM_READABLE));
+  properties[PROP_READ_ONLY] =
+    g_param_spec_boolean ("read-only",
+                          _("Read Only"),
+                          _("Whether project is read-only"),
+                          FALSE,
+                          G_PARAM_READABLE);
 
-  g_object_class_install_property (object_class,
-                                   PROP_POINTER_MODE,
-                                   g_param_spec_enum ("pointer-mode",
-                                                      _("Pointer Mode"),
-                                                      _("The currently effective GladePointerMode"),
-                                                      GLADE_TYPE_POINTER_MODE,
-                                                      GLADE_POINTER_SELECT,
-                                                      G_PARAM_READABLE));
+  properties[PROP_ADD_ITEM] = 
+    g_param_spec_object ("add-item",
+                         _("Add Item"),
+                         _("The current item to add to the project"),
+                         GLADE_TYPE_WIDGET_ADAPTOR,
+                         G_PARAM_READABLE);
+
+  properties[PROP_POINTER_MODE] =
+    g_param_spec_enum ("pointer-mode",
+                       _("Pointer Mode"),
+                       _("The currently effective GladePointerMode"),
+                       GLADE_TYPE_POINTER_MODE,
+                       GLADE_POINTER_SELECT,
+                       G_PARAM_READABLE);
+  
+  /* Install all properties */
+  g_object_class_install_properties (object_class, N_PROPERTIES, properties);
 
   g_type_class_add_private (klass, sizeof (GladeProjectPrivate));
 }
@@ -1553,7 +1553,7 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
   g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
 
   project->priv->path = glade_util_canonical_path (path);
-  g_object_notify (G_OBJECT (project), "path");
+  g_object_notify_by_pspec (G_OBJECT (project), properties[PROP_PATH]);
 
   retval = glade_project_load_internal (project);
 
@@ -1833,7 +1833,7 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
 
       project->priv->path = (g_free (project->priv->path),
                              g_strdup (canonical_path));
-      g_object_notify (G_OBJECT (project), "path");
+      g_object_notify_by_pspec (G_OBJECT (project), properties[PROP_PATH]);
 
       /* Update prefs dialogs here... */
       name = glade_project_get_name (project);
@@ -2929,7 +2929,7 @@ glade_project_set_readonly (GladeProject *project, gboolean readonly)
   if (project->priv->readonly != readonly)
     {
       project->priv->readonly = readonly;
-      g_object_notify (G_OBJECT (project), "read-only");
+      g_object_notify_by_pspec (G_OBJECT (project), properties[PROP_READ_ONLY]);
     }
 }
 
@@ -3023,7 +3023,7 @@ glade_project_set_has_selection (GladeProject *project, gboolean has_selection)
   if (project->priv->has_selection != has_selection)
     {
       project->priv->has_selection = has_selection;
-      g_object_notify (G_OBJECT (project), "has-selection");
+      g_object_notify_by_pspec (G_OBJECT (project), properties[PROP_HAS_SELECTION]);
     }
 }
 

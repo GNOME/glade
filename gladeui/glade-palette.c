@@ -83,9 +83,11 @@ enum
   PROP_ITEM_APPEARANCE,
   PROP_USE_SMALL_ITEM_ICONS,
   PROP_SHOW_SELECTOR_BUTTON,
-  PROP_PROJECT
+  PROP_PROJECT,
+  N_PROPERTIES
 };
 
+static GParamSpec *properties[N_PROPERTIES];
 static guint glade_palette_signals[LAST_SIGNAL] = { 0 };
 
 static void glade_palette_append_item_group (GladePalette        *palette,
@@ -589,38 +591,37 @@ glade_palette_class_init (GladePaletteClass * klass)
                     G_STRUCT_OFFSET (GladePaletteClass, refresh),
                     NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
-  g_object_class_install_property (object_class,
-                                   PROP_PROJECT,
-                                   g_param_spec_object ("project",
-							"Project",
-							"This palette's current project",
-							GLADE_TYPE_PROJECT,
-							G_PARAM_READWRITE));
+  properties[PROP_PROJECT] =
+    g_param_spec_object ("project",
+                         "Project",
+                         "This palette's current project",
+                         GLADE_TYPE_PROJECT,
+                         G_PARAM_READWRITE);
 
-  g_object_class_install_property (object_class,
-                                   PROP_ITEM_APPEARANCE,
-                                   g_param_spec_enum ("item-appearance",
-                                                      "Item Appearance",
-                                                      "The appearance of the palette items",
-                                                      GLADE_TYPE_ITEM_APPEARANCE,
-                                                      GLADE_ITEM_ICON_ONLY,
-                                                      G_PARAM_READWRITE));
+  properties[PROP_ITEM_APPEARANCE] =
+    g_param_spec_enum ("item-appearance",
+                       "Item Appearance",
+                       "The appearance of the palette items",
+                       GLADE_TYPE_ITEM_APPEARANCE,
+                       GLADE_ITEM_ICON_ONLY,
+                       G_PARAM_READWRITE);
 
-  g_object_class_install_property (object_class,
-                                   PROP_ITEM_APPEARANCE,
-                                   g_param_spec_boolean ("use-small-item-icons",
-                                                         "Use Small Item Icons",
-                                                         "Whether to use small icons to represent items",
-                                                         FALSE,
-                                                         G_PARAM_READWRITE));
+  properties[PROP_USE_SMALL_ITEM_ICONS] =
+    g_param_spec_boolean ("use-small-item-icons",
+                          "Use Small Item Icons",
+                          "Whether to use small icons to represent items",
+                          FALSE,
+                          G_PARAM_READWRITE);
 
-  g_object_class_install_property (object_class,
-                                   PROP_ITEM_APPEARANCE,
-                                   g_param_spec_boolean ("show-selector-button",
-                                                         "Show Selector Button",
-                                                         "Whether to show the internal selector button",
-                                                         TRUE,
-                                                         G_PARAM_READWRITE));
+  properties[PROP_SHOW_SELECTOR_BUTTON] =
+    g_param_spec_boolean ("show-selector-button",
+                          "Show Selector Button",
+                          "Whether to show the internal selector button",
+                          TRUE,
+                          G_PARAM_READWRITE);
+
+  /* Install all properties */
+  g_object_class_install_properties (object_class, N_PROPERTIES, properties);
 
   g_type_class_add_private (object_class, sizeof (GladePalettePrivate));
 }
@@ -745,7 +746,7 @@ glade_palette_set_project (GladePalette *palette,
 
       glade_palette_refresh (palette);
 
-      g_object_notify (G_OBJECT (palette), "project");
+      g_object_notify_by_pspec (G_OBJECT (palette), properties[PROP_PROJECT]);
     }
 }
 
@@ -772,7 +773,7 @@ glade_palette_set_item_appearance (GladePalette * palette,
 
       glade_palette_update_appearance (palette);
 
-      g_object_notify (G_OBJECT (palette), "item-appearance");
+      g_object_notify_by_pspec (G_OBJECT (palette), properties[PROP_ITEM_APPEARANCE]);
     }
 }
 
@@ -797,7 +798,7 @@ glade_palette_set_use_small_item_icons (GladePalette * palette,
 
       glade_palette_update_appearance (palette);
 
-      g_object_notify (G_OBJECT (palette), "use-small-item-icons");
+      g_object_notify_by_pspec (G_OBJECT (palette), properties[PROP_USE_SMALL_ITEM_ICONS]);
 
     }
 
@@ -825,7 +826,7 @@ glade_palette_set_show_selector_button (GladePalette * palette,
       else
         gtk_widget_hide (priv->selector_hbox);
 
-      g_object_notify (G_OBJECT (palette), "show-selector-button");
+      g_object_notify_by_pspec (G_OBJECT (palette), properties[PROP_SHOW_SELECTOR_BUTTON]);
 
     }
 

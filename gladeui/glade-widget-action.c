@@ -39,7 +39,8 @@ enum
 
   PROP_CLASS,
   PROP_SENSITIVE,
-  PROP_VISIBLE
+  PROP_VISIBLE,
+  N_PROPERTIES
 };
 
 struct _GladeWidgetActionPrivate
@@ -49,6 +50,8 @@ struct _GladeWidgetActionPrivate
   guint          sensitive : 1; /* If this action is sensitive or not */
   guint          visible   : 1; /* If this action is visible or not */
 };
+
+static GParamSpec *properties[N_PROPERTIES];
 
 G_DEFINE_TYPE (GladeWidgetAction, glade_widget_action, G_TYPE_OBJECT);
 
@@ -176,30 +179,28 @@ glade_widget_action_class_init (GladeWidgetActionClass * klass)
   object_class->set_property = glade_widget_action_set_property;
   object_class->get_property = glade_widget_action_get_property;
 
-  g_object_class_install_property (object_class,
-                                   PROP_CLASS,
-                                   g_param_spec_pointer ("class",
-                                                         _("class"),
-                                                         _
-                                                         ("GladeWidgetActionClass structure pointer"),
-                                                         G_PARAM_CONSTRUCT_ONLY
-                                                         | G_PARAM_WRITABLE));
+  properties[PROP_CLASS] =
+    g_param_spec_pointer ("class",
+                          _("class"),
+                          _("GladeWidgetActionClass structure pointer"),
+                          G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE);
 
-  g_object_class_install_property (object_class,
-                                   PROP_SENSITIVE,
-                                   g_param_spec_boolean ("sensitive",
-                                                         _("Sensitive"),
-                                                         _("Whether this action is sensitive"),
-                                                         TRUE,
-                                                         G_PARAM_READWRITE));
+  properties[PROP_SENSITIVE] =
+    g_param_spec_boolean ("sensitive",
+                          _("Sensitive"),
+                          _("Whether this action is sensitive"),
+                          TRUE,
+                          G_PARAM_READWRITE);
 
-  g_object_class_install_property (object_class,
-                                   PROP_VISIBLE,
-                                   g_param_spec_boolean ("visible",
-                                                         _("Visible"),
-                                                         _("Whether this action is visible"),
-                                                         TRUE,
-                                                         G_PARAM_READWRITE));
+  properties[PROP_VISIBLE] =
+    g_param_spec_boolean ("visible",
+                          _("Visible"),
+                          _("Whether this action is visible"),
+                          TRUE,
+                          G_PARAM_READWRITE);
+
+  /* Install all properties */
+  g_object_class_install_properties (object_class, N_PROPERTIES, properties);
 
   g_type_class_add_private (klass, sizeof (GladeWidgetActionPrivate));
 }
@@ -219,7 +220,7 @@ glade_widget_action_set_sensitive (GladeWidgetAction * action,
   g_return_if_fail (GLADE_IS_WIDGET_ACTION (action));
 
   action->priv->sensitive = sensitive;
-  g_object_notify (G_OBJECT (action), "sensitive");
+  g_object_notify_by_pspec (G_OBJECT (action), properties[PROP_SENSITIVE]);
 }
 
 gboolean
@@ -237,7 +238,7 @@ glade_widget_action_set_visible (GladeWidgetAction *action,
   g_return_if_fail (GLADE_IS_WIDGET_ACTION (action));
 
   action->priv->visible = visible;
-  g_object_notify (G_OBJECT (action), "visible");
+  g_object_notify_by_pspec (G_OBJECT (action), properties[PROP_VISIBLE]);
 }
 
 gboolean

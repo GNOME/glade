@@ -129,9 +129,11 @@ enum
   PROP_I18N_TRANSLATABLE,
   PROP_I18N_CONTEXT,
   PROP_I18N_COMMENT,
-  PROP_STATE
+  PROP_STATE,
+  N_PROPERTIES
 };
 
+static GParamSpec *properties[N_PROPERTIES];
 static guint glade_property_signals[LAST_SIGNAL] = { 0 };
 
 static GObjectClass *parent_class = NULL;
@@ -281,7 +283,7 @@ glade_property_fix_state (GladeProperty * property)
   if (property->priv->support_disabled)
     property->priv->state |= GLADE_STATE_SUPPORT_DISABLED;
 
-  g_object_notify (G_OBJECT (property), "state");
+  g_object_notify_by_pspec (G_OBJECT (property), properties[PROP_STATE]);
 }
 
 
@@ -620,51 +622,56 @@ glade_property_klass_init (GladePropertyKlass * prop_class)
   prop_class->tooltip_changed = NULL;
 
   /* Properties */
-  g_object_class_install_property
-      (object_class, PROP_CLASS,
-       g_param_spec_pointer
-       ("class", _("Class"),
-        _("The GladePropertyClass for this property"),
-        G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE));
+  properties[PROP_CLASS] =
+    g_param_spec_pointer ("class",
+                          _("Class"),
+                          _("The GladePropertyClass for this property"),
+                          G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE);
 
-  g_object_class_install_property
-      (object_class, PROP_ENABLED,
-       g_param_spec_boolean
-       ("enabled", _("Enabled"),
-        _("If the property is optional, this is its enabled state"),
-        TRUE, G_PARAM_READWRITE));
+  properties[PROP_ENABLED] =
+    g_param_spec_boolean ("enabled",
+                          _("Enabled"),
+                          _("If the property is optional, this is its enabled state"),
+                          TRUE, G_PARAM_READWRITE);
 
-  g_object_class_install_property
-      (object_class, PROP_SENSITIVE,
-       g_param_spec_boolean
-       ("sensitive", _("Sensitive"),
-        _("This gives backends control to set property sensitivity"),
-        TRUE, G_PARAM_READWRITE));
+  properties[PROP_SENSITIVE] =
+    g_param_spec_boolean ("sensitive",
+                          _("Sensitive"),
+                          _("This gives backends control to set property sensitivity"),
+                          TRUE, G_PARAM_READWRITE);
 
-  g_object_class_install_property
-      (object_class, PROP_I18N_CONTEXT,
-       g_param_spec_string
-       ("i18n-context", _("Context"),
-        _("Context for translation"), NULL, G_PARAM_READWRITE));
+  properties[PROP_I18N_CONTEXT] =
+    g_param_spec_string ("i18n-context",
+                         _("Context"),
+                         _("Context for translation"),
+                         NULL,
+                         G_PARAM_READWRITE);
 
-  g_object_class_install_property
-      (object_class, PROP_I18N_COMMENT,
-       g_param_spec_string
-       ("i18n-comment", _("Comment"),
-        _("Comment for translators"), NULL, G_PARAM_READWRITE));
+  properties[PROP_I18N_COMMENT] =
+    g_param_spec_string ("i18n-comment",
+                         _("Comment"),
+                         _("Comment for translators"),
+                         NULL,
+                         G_PARAM_READWRITE);
 
-  g_object_class_install_property
-      (object_class, PROP_I18N_TRANSLATABLE,
-       g_param_spec_boolean
-       ("i18n-translatable", _("Translatable"),
-        _("Whether this property is translatable"), TRUE, G_PARAM_READWRITE));
+  properties[PROP_I18N_TRANSLATABLE] =
+    g_param_spec_boolean ("i18n-translatable",
+                          _("Translatable"),
+                          _("Whether this property is translatable"),
+                          TRUE,
+                          G_PARAM_READWRITE);
 
-  g_object_class_install_property
-      (object_class, PROP_STATE,
-       g_param_spec_int
-       ("state", _("Visual State"),
-        _("Priority information for the property editor to act on"),
-        GLADE_STATE_NORMAL, G_MAXINT, GLADE_STATE_NORMAL, G_PARAM_READABLE));
+  properties[PROP_STATE] =
+    g_param_spec_int ("state",
+                      _("Visual State"),
+                      _("Priority information for the property editor to act on"),
+                      GLADE_STATE_NORMAL,
+                      G_MAXINT,
+                      GLADE_STATE_NORMAL,
+                      G_PARAM_READABLE);
+  
+  /* Install all properties */
+  g_object_class_install_properties (object_class, N_PROPERTIES, properties);
 
   /* Signal */
   glade_property_signals[VALUE_CHANGED] =
@@ -1333,7 +1340,7 @@ glade_property_i18n_set_comment (GladeProperty * property, const gchar * str)
     g_free (property->priv->i18n_comment);
 
   property->priv->i18n_comment = g_strdup (str);
-  g_object_notify (G_OBJECT (property), "i18n-comment");
+  g_object_notify_by_pspec (G_OBJECT (property), properties[PROP_I18N_COMMENT]);
 }
 
 G_CONST_RETURN gchar *
@@ -1351,7 +1358,7 @@ glade_property_i18n_set_context (GladeProperty * property, const gchar * str)
     g_free (property->priv->i18n_context);
 
   property->priv->i18n_context = g_strdup (str);
-  g_object_notify (G_OBJECT (property), "i18n-context");
+  g_object_notify_by_pspec (G_OBJECT (property), properties[PROP_I18N_CONTEXT]);
 }
 
 G_CONST_RETURN gchar *
@@ -1367,7 +1374,7 @@ glade_property_i18n_set_translatable (GladeProperty * property,
 {
   g_return_if_fail (GLADE_IS_PROPERTY (property));
   property->priv->i18n_translatable = translatable;
-  g_object_notify (G_OBJECT (property), "i18n-translatable");
+  g_object_notify_by_pspec (G_OBJECT (property), properties[PROP_I18N_TRANSLATABLE]);
 }
 
 gboolean
@@ -1407,7 +1414,7 @@ glade_property_set_sensitive (GladeProperty * property,
                      property->priv->insensitive_tooltip, 
 		     property->priv->support_warning);
     }
-  g_object_notify (G_OBJECT (property), "sensitive");
+  g_object_notify_by_pspec (G_OBJECT (property), properties[PROP_SENSITIVE]);
 }
 
 G_CONST_RETURN gchar *
@@ -1501,7 +1508,7 @@ glade_property_set_enabled (GladeProperty * property, gboolean enabled)
 
   glade_property_fix_state (property);
 
-  g_object_notify (G_OBJECT (property), "enabled");
+  g_object_notify_by_pspec (G_OBJECT (property), properties[PROP_ENABLED]);
 }
 
 gboolean
