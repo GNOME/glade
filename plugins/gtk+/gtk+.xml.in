@@ -961,6 +961,8 @@ embedded in another object</_tooltip>
 
 	<property id="im-module" disabled="True"/>
 
+        <property id="completion" since="3.2"/>
+
 	<!-- Virtual edit mode properties -->
         <property id="use-entry-buffer" visible="False" save="False" default="False">
 	  <parameter-spec>
@@ -2099,8 +2101,21 @@ embedded in another object</_tooltip>
       </actions>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkEntryCompletion" generic-name="entrycompletion" _title="Entry Completion" 
-			toplevel="True"/>
+    <glade-widget-class name="GtkEntryCompletion" generic-name="entrycompletion" _title="Entry Completion" toplevel="True">
+      <add-child-verify-function>glade_gtk_cell_layout_add_verify</add-child-verify-function>
+      <add-child-function>glade_gtk_cell_layout_add_child</add-child-function>
+      <remove-child-function>glade_gtk_cell_layout_remove_child</remove-child-function> 
+      <get-children-function>glade_gtk_cell_layout_get_children</get-children-function>
+      <read-child-function>glade_gtk_cell_layout_read_child</read-child-function>
+      <write-child-function>glade_gtk_cell_layout_write_child</write-child-function>
+      <action-activate-function>glade_gtk_cell_layout_action_activate</action-activate-function>
+      <child-set-property-function>glade_gtk_cell_layout_set_child_property</child-set-property-function>
+      <child-get-property-function>glade_gtk_cell_layout_get_child_property</child-get-property-function>
+      
+      <actions>
+        <action id="launch_editor" _name="Edit&#8230;" stock="gtk-edit" important="True"/>
+      </actions>
+    </glade-widget-class>
 
     <glade-widget-class name="GtkIconFactory" generic-name="iconfactory" _title="Icon Factory" 
 			toplevel="True">

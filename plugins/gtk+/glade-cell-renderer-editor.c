@@ -429,45 +429,43 @@ GLADE_MAKE_EPROP (GladeEPropCellAttribute, glade_eprop_cell_attribute)
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
+static GladeWidget *
+glade_cell_renderer_parent_get_model (GladeWidget *widget)
+{
+  GtkTreeModel *real_model = NULL;
+  
+  glade_widget_property_get (widget, "model", &real_model);
+  
+  if (real_model)
+    return glade_widget_get_from_gobject (real_model);
+
+  return NULL;
+}
+
 GladeWidget *
 glade_cell_renderer_get_model (GladeWidget * renderer)
 {
-  GladeWidget *model = NULL;
-  GladeWidget *parent = glade_widget_get_parent (renderer);
+  GladeWidget *gparent;
+  GObject *parent;
 
+  if ((gparent = glade_widget_get_parent (renderer)) == NULL)
+    return NULL;
+
+  parent = glade_widget_get_object (gparent);
+  
   /* Keep inline with all new cell layouts !!! */
-  if (parent && GTK_IS_TREE_VIEW_COLUMN (glade_widget_get_object (parent)))
+  if (GTK_IS_TREE_VIEW_COLUMN (parent))
     {
-      GladeWidget *column = parent;
-      GladeWidget *column_parent = glade_widget_get_parent (column);
+      GladeWidget *treeview = glade_widget_get_parent (gparent);
 
-      if (column_parent && GTK_IS_TREE_VIEW (glade_widget_get_object (column_parent)))
-        {
-          GladeWidget *view = column_parent;
-          GtkTreeModel *real_model = NULL;
-          glade_widget_property_get (view, "model", &real_model);
-          if (real_model)
-            model = glade_widget_get_from_gobject (real_model);
-        }
+      if (treeview && GTK_IS_TREE_VIEW (glade_widget_get_object (treeview)))
+        return glade_cell_renderer_parent_get_model (treeview);
     }
-  else if (parent && GTK_IS_ICON_VIEW (glade_widget_get_object (parent)))
-    {
-      GladeWidget *view = parent;
-      GtkTreeModel *real_model = NULL;
-      glade_widget_property_get (view, "model", &real_model);
-      if (real_model)
-        model = glade_widget_get_from_gobject (real_model);
-    }
-  else if (parent && GTK_IS_COMBO_BOX (glade_widget_get_object (parent)))
-    {
-      GladeWidget *combo = parent;
-      GtkTreeModel *real_model = NULL;
-      glade_widget_property_get (combo, "model", &real_model);
-      if (real_model)
-        model = glade_widget_get_from_gobject (real_model);
-    }
+  else if (GTK_IS_ICON_VIEW (parent) || GTK_IS_COMBO_BOX (parent) ||
+           GTK_IS_ENTRY_COMPLETION (parent))
+    return glade_cell_renderer_parent_get_model (gparent);
 
-  return model;
+  return NULL;
 }
 
 static void
