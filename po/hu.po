@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Glade master\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-03-13 10:33+0100\n"
-"PO-Revision-Date: 2011-03-13 10:32+0100\n"
+"PO-Revision-Date: 2011-04-01 22:10+0200\n"
 "Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
 "Language-Team: Hungarian <gnome at fsf dot hu>\n"
 "Language: \n"
@@ -49,8 +49,7 @@ msgid "Glade options"
 msgstr "A Glade kapcsolói"
 
 #: ../src/main.c:236
-msgid ""
-"gmodule support not found. gmodule support is required for glade to work"
+msgid "gmodule support not found. gmodule support is required for glade to work"
 msgstr ""
 "A gmodule támogatás nem található. A gmodule támogatás szükséges a Glade "
 "működéséhez."
@@ -140,8 +139,7 @@ msgstr "Nem rendelkezik a fájl mentéséhez szükséges jogosultságokkal."
 #: ../src/glade-window.c:1307
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
-msgstr ""
-"A(z) %s fájl nem menthető. Meg van nyitva egy projekt ezzel az elérési úttal."
+msgstr "A(z) %s fájl nem menthető. Meg van nyitva egy projekt ezzel az elérési úttal."
 
 #: ../src/glade-window.c:1332
 msgid "No open projects to save"
@@ -285,7 +283,7 @@ msgstr "Az utolsó művelet visszavonása"
 
 #: ../src/glade-window.c:2247
 msgid "Redo the last action"
-msgstr "Az utolsó művelet ismételt végrehajtása"
+msgstr "Az utolsó művelet végrehajtása mégis"
 
 #: ../src/glade-window.c:2250
 msgid "Cut the selection"
@@ -435,8 +433,7 @@ msgstr "A(z) %s projektben mentetlen módosítások vannak"
 
 #: ../src/glade-window.c:2757
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
-msgstr ""
-"Ha most újratölti, minden mentetlen módosítás elveszhet. Mindenképp menti?"
+msgstr "Ha most újratölti, minden mentetlen módosítás elveszhet. Mindenképp menti?"
 
 #: ../src/glade-window.c:2767
 #, c-format
@@ -466,12 +463,12 @@ msgstr "az utolsó művelet"
 
 #: ../src/glade-window.c:2907
 msgid "_Redo"
-msgstr "Új_ra"
+msgstr "Mé_gis"
 
 #: ../src/glade-window.c:2911
 #, c-format
 msgid "Redo: %s"
-msgstr "Újra: %s"
+msgstr "Mégis: %s"
 
 #: ../src/glade-window.c:3375
 msgid "Go back in undo history"
@@ -607,8 +604,7 @@ msgstr "Képfájl neve"
 
 #: ../gladeui/glade-builtins.c:499
 msgid "Enter a filename, relative path or full path to load the image"
-msgstr ""
-"A kép betöltéséhez relatív vagy teljes elérési úttal adjon meg egy fájlnevet"
+msgstr "A kép betöltéséhez relatív vagy teljes elérési úttal adjon meg egy fájlnevet"
 
 #: ../gladeui/glade-builtins.c:508
 msgid "Color"
@@ -906,7 +902,7 @@ msgstr "Parancs használata"
 
 #: ../gladeui/glade-editor-property.c:637
 msgid "Whether we should use the command API for the undo/redo stack"
-msgstr "Használja-e a parancs API-ját a vissza/újra veremhez"
+msgstr "Használja-e a parancs API-ját a vissza/mégis veremhez"
 
 #: ../gladeui/glade-editor-property.c:1143
 msgid "Select Fields"
@@ -1284,8 +1280,7 @@ msgstr ""
 #. translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:1958
 #, c-format
-msgid ""
-"[%s] Packing property '%s' of object class '%s' was introduced in %s %d.%d\n"
+msgid "[%s] Packing property '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr ""
 "[%1$s] A(z) %3$s objektumosztály %2$s csomagolási tulajdonsága a(z) %4$s "
 "%5$d.%6$d verzióban jelent meg\n"
@@ -1319,8 +1314,7 @@ msgstr "A projektben („%s”) hibák vannak. Mindenképp menti?"
 #: ../gladeui/glade-project.c:2214
 #, c-format
 msgid "Project \"%s\" has deprecated widgets and/or version mismatches."
-msgstr ""
-"A projektben („%s”) elavult felületi elemek és/vagy verzióeltérések vannak."
+msgstr "A projektben („%s”) elavult felületi elemek és/vagy verzióeltérések vannak."
 
 #: ../gladeui/glade-project.c:3560
 #, c-format
@@ -1330,8 +1324,7 @@ msgstr "Mentetlen %i"
 #: ../gladeui/glade-project.c:3619
 #, c-format
 msgid "Project %s has no deprecated widgets or version mismatches."
-msgstr ""
-"A projektben (%s) nincsenek elavult felületi elemek vagy verzióeltérések."
+msgstr "A projektben (%s) nincsenek elavult felületi elemek vagy verzióeltérések."
 
 #: ../gladeui/glade-project.c:3756
 msgid "Image resources are loaded locally:"
@@ -1580,8 +1573,7 @@ msgid "Anarchist"
 msgstr "Anarchista"
 
 #: ../gladeui/glade-widget.c:1220
-msgid ""
-"Whether this composite child is an ancestral child or an anarchist child"
+msgid "Whether this composite child is an ancestral child or an anarchist child"
 msgstr "Az összetett gyermek ősi vagy anarchista gyermek"
 
 #: ../gladeui/glade-widget.c:1227
@@ -2723,8 +2715,7 @@ msgid "Indicates an object is a label for one or more target objects"
 msgstr "Jelzi, hogy egy objektum néhány célobjektum címkéje"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:244
-msgid ""
-"Indicates an object is a member of a group of one or more target objects"
+msgid "Indicates an object is a member of a group of one or more target objects"
 msgstr "Jelzi, hogy az objektum egy néhány célobjektumból álló csoport tagja"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:245
@@ -4156,8 +4147,7 @@ msgstr "Szövegattribútumok beállítása"
 
 #: ../plugins/gtk+/glade-gtk.c:61
 msgid "This property does not apply unless Use Underline is set."
-msgstr ""
-"Ez a tulajdonság nem alkalmazható, ha az Aláhúzás használata nincs beállítva."
+msgstr "Ez a tulajdonság nem alkalmazható, ha az Aláhúzás használata nincs beállítva."
 
 #: ../plugins/gtk+/glade-gtk.c:62
 msgid "Property not selected"
@@ -4214,8 +4204,7 @@ msgstr "Nem adható felső szintű ablak tárolóhoz."
 #: ../plugins/gtk+/glade-gtk.c:1099
 #, c-format
 msgid "Widgets of type %s can only have widgets as children."
-msgstr ""
-"Egy %s típusú felületi elem csak gyermekként tartalmazhat felületi elemeket."
+msgstr "Egy %s típusú felületi elem csak gyermekként tartalmazhat felületi elemeket."
 
 #: ../plugins/gtk+/glade-gtk.c:1110
 #, c-format
@@ -4432,8 +4421,7 @@ msgstr "Fanézet-szerkesztő"
 #. * to fixed size and then control the column's sensitivity accordingly.
 #.
 #: ../plugins/gtk+/glade-gtk.c:10835
-msgid ""
-"Columns must have a fixed size inside a treeview with fixed height mode set"
+msgid "Columns must have a fixed size inside a treeview with fixed height mode set"
 msgstr ""
 "Az oszlopoknak rögzített mérettel kell kell rendelkezniük a rögzített "
 "magasságú fanézetekben"
@@ -4557,8 +4545,7 @@ msgstr ""
 
 #: ../plugins/gtk+/glade-icon-sources.c:721
 #, c-format
-msgid ""
-"Set whether you want to specify a text direction for this source of '%s'"
+msgid "Set whether you want to specify a text direction for this source of '%s'"
 msgstr "Állítsa be, hogy meg akarja-e adni a szövegirányt ezen „%s” forráshoz"
 
 #: ../plugins/gtk+/glade-icon-sources.c:728
@@ -4903,3 +4890,4 @@ msgstr "Oszlop eltávolítása a következőből: %s"
 #, c-format
 msgid "Remove Row on %s"
 msgstr "Sor eltávolítása a következőből: %s"
+
