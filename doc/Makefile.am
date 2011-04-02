@@ -98,7 +98,7 @@ GTKDOC_CFLAGS= \
 	-I$(top_builddir)/gladeui \
 	-I$(top_srcdir)           \
 	-I$(top_builddir)         \
-	`pkg-config --cflags gtk+-2.0`
+	`pkg-config --cflags gtk+-3.0`
 
 GTKDOC_LIBS=${top_builddir}/gladeui/libgladeui-2.la
 
