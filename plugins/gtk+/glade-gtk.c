@@ -3934,7 +3934,7 @@ glade_gtk_dialog_post_create (GladeWidgetAdaptor *adaptor,
   if (reason == GLADE_CREATE_USER)
     {
       /* HIG complient spacing defaults on dialogs */
-      glade_widget_property_set (vbox_widget, "spacing", 2);
+      glade_widget_property_set (vbox_widget, _("spacing"), 2);
 
       if (GTK_IS_ABOUT_DIALOG (object) ||
           GTK_IS_FILE_CHOOSER_DIALOG (object))
