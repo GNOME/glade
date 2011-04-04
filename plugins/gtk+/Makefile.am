@@ -52,6 +52,7 @@ libgladegtk_la_LDFLAGS     = -module -avoid-version $(AM_LDFLAGS)
 libgladegtk_la_LIBADD      = $(libgladeui) $(GTK_LIBS)
 
 noinst_HEADERS = \
+	glade-gtk.h \
 	glade-accels.h \
 	glade-attributes.h \
 	glade-column-types.h \
@@ -72,7 +73,9 @@ noinst_HEADERS = \
 	glade-fixed.h \
 	glade-tool-item-group-editor.h \
 	glade-string-list.h \
-	glade-gtk-marshallers.h
+	glade-gtk-marshallers.h \
+	glade-gtk-activatable.h \
+	glade-gtk-action-widgets.h
 
 
 if PLATFORM_WIN32
@@ -97,7 +100,7 @@ CLEANFILES = gtk+.xml gtkunixprint.xml
 
 BUILT_SOURCES = glade-gtk-marshallers.c glade-gtk-marshallers.h
 
-EXTRA_DIST = gtk+.xml gtk+.xml.in gtkunixprint.xml gtkunixprint.xml.in
+EXTRA_DIST = glade-gtk-marshallers.list gtk+.xml gtk+.xml.in gtkunixprint.xml gtkunixprint.xml.in
 
 #
 # Marshaller generation

@@ -205,7 +205,7 @@ INTROSPECTION_SCANNER_ARGS = \
 	--add-include-path=$(srcdir) \
 	--identifier-prefix=Glade \
 	--symbol-prefix=glade \
-	--pkg=gtk+-3.0 -I../
+	--pkg=gtk+-3.0 -I../ -I$(srcdir)/..
 
 INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 
