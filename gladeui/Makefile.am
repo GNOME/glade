@@ -147,7 +147,8 @@ noinst_HEADERS = \
 	glade-popup.h \
 	glade-accumulators.h \
 	glade-design-private.h \
-	glade-preview-tokens.h
+	glade-preview-tokens.h \
+	glade-preview.h
 
 if PLATFORM_WIN32
 libgladeui_2_la_LDFLAGS += -no-undefined
