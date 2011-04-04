@@ -61,7 +61,6 @@ icons_DATA = \
         widget-gtk-iconview.png \
         widget-gtk-image.png \
         widget-gtk-imagemenuitem.png \
-	widget-gtk-infobar.png \
         widget-gtk-inputdialog.png \
         widget-gtk-label.png \
         widget-gtk-layout.png \
@@ -104,7 +103,6 @@ icons_DATA = \
 	widget-gtk-texttagtable.png \
         widget-gtk-textview.png \
         widget-gtk-togglebutton.png \
-        widget-gtk-switch.png \
         widget-gtk-toggletoolbutton.png \
         widget-gtk-toolbar.png \
         widget-gtk-toolbutton.png \

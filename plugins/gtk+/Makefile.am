@@ -45,9 +45,7 @@ libgladegtk_la_SOURCES = \
 	glade-gtk-table.c \
 	glade-gtk-grid.c \
 	glade-gtk-action-widgets.c \
-	glade-gtk-info-bar.c \
 	glade-gtk-activatable.c \
-	glade-gtk-switch.c \
 	glade-gtk-marshallers.c
 
 libgladegtk_la_LDFLAGS     = -module -avoid-version $(AM_LDFLAGS)
