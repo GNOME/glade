@@ -1037,14 +1037,7 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor *adaptor,
 	else
 		gparent = NULL;
 
-	if (strcmp (action_path, "preview") == 0)
-	{
-		project = glade_widget_get_project (gwidget);
-		glade_project_preview (project,
-				       glade_widget_get_from_gobject((gpointer)object)
-				      );
-	}
-	else if (strcmp (action_path, "edit_separate") == 0)
+	if (strcmp (action_path, "edit_separate") == 0)
 	{
 		GtkWidget *dialog = 
 			glade_editor_dialog_for_widget (gwidget);

@@ -1,38 +1,5 @@
-## Previewer
 
-bin_PROGRAMS = glade-3-previewer
 lib_LTLIBRARIES = libgladeui-1.la
-
-glade_3_previewer_CPPFLAGS = \
-	-I$(top_srcdir)    \
-	-I$(top_builddir)  \
-	-DGLADE_GNOMEHELPDIR="\"$(HELP_DIR)\"" \
-	$(GTK_CFLAGS)      \
-	$(IGE_MAC_CFLAGS)  \
-	$(WARN_CFLAGS)     \
-	$(AM_CPPFLAGS)
-
-glade_3_previewer_CFLAGS =   \
-	$(AM_CFLAGS)
-
-glade_3_previewer_LDFLAGS = $(AM_LDFLAGS)
-
-glade_3_previewer_LDADD = libgladeui-1.la $(IGE_MAC_LIBS)
-
-glade_3_previewer_SOURCES = \
-	glade-previewer.c
-
-if NATIVE_WIN32
-glade_3_previewer_LDADD += glade-win32-res.o
-if !GLADE_UNSTABLE
-glade_3_previewer_LDFLAGS += -mwindows
-endif
-endif
-
-glade-win32-res.o: glade-previewer.rc
-	$(WINDRES) $< $@
-
-## Rest of the UI ;)
 
 common_defines = \
 	-DG_LOG_DOMAIN=\"GladeUI\"                      \
@@ -47,7 +14,7 @@ common_defines = \
 
 BUILT_SOURCES = glade-marshallers.c glade-marshallers.h
 
-EXTRA_DIST = glade-marshallers.list gladeui.rc.in icon-naming-spec.c glade-previewer.rc.in
+EXTRA_DIST = glade-marshallers.list gladeui.rc.in icon-naming-spec.c
 
 # The glade-3 core library
 libgladeui_1_la_SOURCES = \
