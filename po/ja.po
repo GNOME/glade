@@ -1,10 +1,12 @@
-# glade3 ja.po.
-# Copyright (C) 1999-2004,2005-2009 Free Software Foundation, Inc.
+# glade ja.po.
+# Copyright (C) 1999-2004,2005-2009,2011 glade's COPYRIGHT HOLDER
 # 大河 雄一 <kuri@makino.cc.tohoku.ac.jp>, 1999-2001.
 # 竹田 寛郁 <takepin@turbolinux.co.jp>, 2000.
 # 栗原 守 <storm@din.or.jp>, 1999.
 # Yukihiro Nakai <nakai@gnome.gr.jp>, 2003.
 # Takeshi AIHANA <takeshi.aihana@gmail.com>, 2004-2010.
+# Takayoshi OKANO <kano@na.rim.or.jp>, 2011.
+# Jiro Matsuzawa <matsuzawa.jr@gmail.com>, 2011.
 #
 # GLOSSARIES:
 # * "Column と Row" (翻訳が難しい単語の一つで、ウィジェットの種類によって訳語が異なる)
@@ -13,193 +15,170 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glade3 master\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-06 00:02+0900\n"
-"PO-Revision-Date: 2010-11-05 23:57+0900\n"
-"Last-Translator: Takeshi AIHANA <takeshi.aihana@gmail.com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=glade3&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-04-04 10:42+0000\n"
+"PO-Revision-Date: 2011-04-04 21:09+0900\n"
+"Last-Translator: Jiro Matsuzawa <matsuzawa.jr@gmail.com>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../data/glade-3.desktop.in.in.h:1
+#: ../data/glade.desktop.in.in.h:1
 msgid "Create or open user interface designs for GTK+ applications"
 msgstr "GTK+ アプリの UI ファイルを作成したり編集します"
 
-#: ../data/glade-3.desktop.in.in.h:2 ../src/main.c:42
+#: ../data/glade.desktop.in.in.h:2 ../src/main.c:41
 msgid "Glade"
 msgstr "Glade"
 
-#: ../data/glade-3.desktop.in.in.h:3
+#: ../data/glade.desktop.in.in.h:3
 msgid "Glade Interface Designer"
 msgstr "Glade3 インタフェース・デザイナ"
 
-#: ../data/glade-3.desktop.in.in.h:4
+#: ../data/glade.desktop.in.in.h:4
 msgid "Interface Designer"
 msgstr "インタフェース・デザイナ"
 
-#: ../src/main.c:52
+#: ../src/main.c:167
 msgid "Output version information and exit"
 msgstr "バージョン情報を表示して終了する"
 
-#: ../src/main.c:55
-msgid "Disable Devhelp integration"
-msgstr "Devhelp との連携を無効にする"
-
-#: ../src/main.c:58
-msgid "[FILE...]"
-msgstr "[ファイル...]"
-
-#: ../src/main.c:68
-msgid "be verbose"
-msgstr "詳細なログを表示する"
-
-#: ../src/main.c:93
+#: ../src/main.c:197
 msgid "Create or edit user interface designs for GTK+ or GNOME applications."
 msgstr "GTK+/GNOME アプリのユーザ・インタフェースを設計したり編集します"
 
-#: ../src/main.c:97 ../src/main.c:98
+#: ../src/main.c:201 ../src/main.c:202
 msgid "Glade options"
 msgstr "Glade のオプション"
 
-#: ../src/main.c:105
-msgid "Glade debug options"
-msgstr "Glade のデバッグ・オプション"
-
-#: ../src/main.c:106
-msgid "Show Glade debug options"
-msgstr "Glade のデバッグ・オプションを表示する"
-
-#: ../src/main.c:149
+#: ../src/main.c:236
 msgid ""
 "gmodule support not found. gmodule support is required for glade to work"
 msgstr ""
 "gmodule をサポートしていません (Glade を実行するには gmodule のサポートが必要"
 "です)"
 
-#: ../src/main.c:176
-#, c-format
-msgid "Unable to open '%s', the file does not exist.\n"
-msgstr "'%s' を開けません (ファイルが見つかりません)\n"
-
-#: ../src/glade-window.c:53
+#: ../src/glade-window.c:52
 msgid "[Read Only]"
 msgstr "[読み込み専用]"
 
-#: ../src/glade-window.c:358
+#: ../src/glade-window.c:312
 msgid "User Interface Designer"
 msgstr "ユーザ・インタフェース・デザイナ"
 
 #. translators: referring to the action of activating a file named '%s'.
 #. *              we also indicate to users that the file may be read-only with
 #. *              the second '%s'
-#: ../src/glade-window.c:565
+#: ../src/glade-window.c:535
 #, c-format
 msgid "Activate '%s' %s"
 msgstr "'%s' (%s) をアクティブにする"
 
 #. translators: referring to the action of activating a file named '%s'
 #. FIXME add hint for translators
-#: ../src/glade-window.c:572 ../src/glade-window.c:580
+#: ../src/glade-window.c:541 ../src/glade-window.c:549
 #, c-format
 msgid "Activate '%s'"
 msgstr "'%s' を開きます"
 
 #. Name
-#: ../src/glade-window.c:625 ../gladeui/glade-base-editor.c:1991
-#: ../gladeui/glade-editor-table.c:359
+#: ../src/glade-window.c:597 ../gladeui/glade-base-editor.c:2032
+#: ../gladeui/glade-editor-table.c:411
 msgid "Name:"
 msgstr "名前:"
 
-#: ../src/glade-window.c:627
-msgid "Format:"
-msgstr "形式:"
-
-#: ../src/glade-window.c:629
+#: ../src/glade-window.c:600
 msgid "Requires:"
 msgstr "依存関係:"
 
-#: ../src/glade-window.c:1099
+#: ../src/glade-window.c:1077
 msgid "Open…"
 msgstr "開く..."
 
-#: ../src/glade-window.c:1142
+#: ../src/glade-window.c:1111
+#, fuzzy, c-format
+msgid "Project %s is still loading."
+msgstr "プロジェクト '%s' を保存しました"
+
+#: ../src/glade-window.c:1143
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr "そのファイル (%s) は Glade 以外のアプリで変更されています"
 
-#: ../src/glade-window.c:1146
+#: ../src/glade-window.c:1147
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr ""
 "ここで保存してしまうと、外部で変更した内容を全て失うことになります。それでも"
 "保存しますか？"
 
-#: ../src/glade-window.c:1150
+#: ../src/glade-window.c:1152
 msgid "_Save Anyway"
 msgstr "とにかく保存する(_S)"
 
-#: ../src/glade-window.c:1157
+#: ../src/glade-window.c:1160
 msgid "_Don't Save"
 msgstr "保存しない(_D)"
 
-#: ../src/glade-window.c:1183
+#: ../src/glade-window.c:1189
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "%s の保存に失敗しました: %s"
 
-#: ../src/glade-window.c:1206
+#: ../src/glade-window.c:1210
 #, c-format
 msgid "Project '%s' saved"
 msgstr "プロジェクト '%s' を保存しました"
 
-#: ../src/glade-window.c:1226
+#: ../src/glade-window.c:1233
 msgid "Save As…"
 msgstr "別名で保存..."
 
-#: ../src/glade-window.c:1271
+#: ../src/glade-window.c:1281
 #, c-format
 msgid "Could not save the file %s"
 msgstr "ファイル %s を保存できませんでした"
 
-#: ../src/glade-window.c:1275
+#: ../src/glade-window.c:1285
 msgid "You do not have the permissions necessary to save the file."
 msgstr "ファイルの保存に必要な権限をお持ちではないようです。"
 
-#: ../src/glade-window.c:1296
+#: ../src/glade-window.c:1307
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr ""
 "ファイル %s を保存できませんでした (そのパスを他のプロジェクトが使用していま"
 "す)"
 
-#: ../src/glade-window.c:1321
+#: ../src/glade-window.c:1332
 msgid "No open projects to save"
 msgstr "保存するプロジェクトがありません"
 
-#: ../src/glade-window.c:1351
+#: ../src/glade-window.c:1363
 #, c-format
 msgid "Save changes to project \"%s\" before closing?"
 msgstr "閉じる前に \"%s\" を保存しますか？"
 
-#: ../src/glade-window.c:1362
+#: ../src/glade-window.c:1371
 msgid "Your changes will be lost if you don't save them."
 msgstr "保存しないと変更点を失うことになります。"
 
-#: ../src/glade-window.c:1366
+#: ../src/glade-window.c:1375
 msgid "Close _without Saving"
 msgstr "保存せずに閉じる(_W)"
 
-#: ../src/glade-window.c:1393
+#: ../src/glade-window.c:1402
 #, c-format
 msgid "Failed to save %s to %s: %s"
 msgstr "%s を %s へ保存できませんでした: %s"
 
-#: ../src/glade-window.c:1405
+#: ../src/glade-window.c:1415
 msgid "Save…"
 msgstr "保存..."
 
-#: ../src/glade-window.c:1982
+#: ../src/glade-window.c:2097
 msgid ""
 "Glade is free software; you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -227,7 +206,7 @@ msgstr ""
 "はずです。そうでない場合は、Free Software Foundation, Inc., 51 Franklin "
 "Street, Fifth Floor, Boston, MA 02110-1301, USA まで連絡して下さい。"
 
-#: ../src/glade-window.c:2008
+#: ../src/glade-window.c:2123
 msgid "translator-credits"
 msgstr ""
 "相花 毅 <takeshi.aihana@gmail.com>\n"
@@ -235,351 +214,311 @@ msgstr ""
 "竹田 寛郁 <takepin@turbolinux.co.jp>\n"
 "大河 雄一 <kuri@makino.cc.tohoku.ac.jp>\n"
 "栗原 守 <storm@din.or.jp>\n"
-"日本GNOMEユーザー会 http:/www.gnome.gr.jp"
+"Takayoshi OKANO <kano@na.rim.or.jp>\n"
+"Jiro Matsuzawa <matsuzawa.jr@gmail.com>\n"
+"日本GNOMEユーザー会 <http:/www.gnome.gr.jp/>"
 
-#: ../src/glade-window.c:2009
+#: ../src/glade-window.c:2125
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr "GTK+/GNOME 向けのユーザ・インタフェース・デザイナです。"
 
-#. File
-#: ../src/glade-window.c:2084 ../plugins/gtk+/glade-gtk.c:7142
-#: ../plugins/gtk+/glade-gtk.c:7465
+#: ../src/glade-window.c:2195 ../plugins/gtk+/glade-gtk.c:6230
 msgid "_File"
 msgstr "ファイル(_F)"
 
-#. Edit
-#: ../src/glade-window.c:2085 ../plugins/gtk+/glade-gtk.c:7145
-#: ../plugins/gtk+/glade-gtk.c:7475
+#: ../src/glade-window.c:2196 ../plugins/gtk+/glade-gtk.c:6241
 msgid "_Edit"
 msgstr "編集(_E)"
 
-#. View
-#: ../src/glade-window.c:2086 ../plugins/gtk+/glade-gtk.c:7148
-#: ../plugins/gtk+/glade-gtk.c:7483
+#: ../src/glade-window.c:2197 ../plugins/gtk+/glade-gtk.c:6250
 msgid "_View"
 msgstr "表示(_V)"
 
-#: ../src/glade-window.c:2087
+#: ../src/glade-window.c:2198
 msgid "_Projects"
 msgstr "プロジェクト(_P)"
 
-#. Help
-#: ../src/glade-window.c:2088 ../plugins/gtk+/glade-gtk.c:7160
-#: ../plugins/gtk+/glade-gtk.c:7486
+#: ../src/glade-window.c:2199 ../plugins/gtk+/glade-gtk.c:6254
 msgid "_Help"
 msgstr "ヘルプ(_H)"
 
-#: ../src/glade-window.c:2094
+#: ../src/glade-window.c:2205
 msgid "Create a new project"
 msgstr "新しいプロジェクトを生成します"
 
-#: ../src/glade-window.c:2096
+#: ../src/glade-window.c:2207
 msgid "_Open…"
 msgstr "開く(_O)..."
 
-#: ../src/glade-window.c:2097
+#: ../src/glade-window.c:2208
 msgid "Open a project"
 msgstr "既存のプロジェクトを開きます"
 
-#: ../src/glade-window.c:2099
+#: ../src/glade-window.c:2210
 msgid "Open _Recent"
 msgstr "最近開いたプロジェクト(_R)"
 
-#: ../src/glade-window.c:2102
+#: ../src/glade-window.c:2213
 msgid "Quit the program"
 msgstr "プログラムを終了します"
 
 #. ViewMenu
-#: ../src/glade-window.c:2105
+#: ../src/glade-window.c:2216
 msgid "Palette _Appearance"
 msgstr "パレットの外観(_A)"
 
-#: ../src/glade-window.c:2109
+#: ../src/glade-window.c:2220
 msgid "About this application"
 msgstr "このアプリケーションの情報を表示します"
 
-#: ../src/glade-window.c:2111
-msgid "_Contents"
-msgstr "目次(_C)"
-
-#: ../src/glade-window.c:2112
-msgid "Display the user manual"
-msgstr "ユーザ・マニュアルを表示します"
-
-#: ../src/glade-window.c:2114
+#: ../src/glade-window.c:2222
 msgid "_Developer Reference"
 msgstr "開発者向けのマニュアル(_D)"
 
-#: ../src/glade-window.c:2115
+#: ../src/glade-window.c:2223
 msgid "Display the developer reference manual"
 msgstr "開発者向けのリファレンス・マニュアルを表示します"
 
-#: ../src/glade-window.c:2124
+#: ../src/glade-window.c:2233
 msgid "Save the current project"
 msgstr "このプロジェクトを保存します"
 
-#: ../src/glade-window.c:2126
+#: ../src/glade-window.c:2235
 msgid "Save _As…"
 msgstr "別名で保存(_A)..."
 
-#: ../src/glade-window.c:2127
+#: ../src/glade-window.c:2236
 msgid "Save the current project with a different name"
 msgstr "このプロジェクトに別の名前を付けて保存します"
 
-#: ../src/glade-window.c:2130
+#: ../src/glade-window.c:2240
 msgid "Close the current project"
 msgstr "このプロジェクトを閉じます"
 
-#: ../src/glade-window.c:2134
+#: ../src/glade-window.c:2244
 msgid "Undo the last action"
 msgstr "最後の操作に戻します"
 
-#: ../src/glade-window.c:2137
+#: ../src/glade-window.c:2247
 msgid "Redo the last action"
 msgstr "最後の操作をやり直します"
 
-#: ../src/glade-window.c:2140
+#: ../src/glade-window.c:2250
 msgid "Cut the selection"
 msgstr "選択範囲を切り取ります"
 
-#: ../src/glade-window.c:2143
+#: ../src/glade-window.c:2253
 msgid "Copy the selection"
 msgstr "選択範囲をコピーします"
 
-#: ../src/glade-window.c:2146
+#: ../src/glade-window.c:2256
 msgid "Paste the clipboard"
 msgstr "クリップボードから貼り付けます"
 
-#: ../src/glade-window.c:2149
+#: ../src/glade-window.c:2259
 msgid "Delete the selection"
 msgstr "選択範囲を削除します"
 
-#: ../src/glade-window.c:2152
-msgid "Modify project preferences"
+#: ../src/glade-window.c:2262
+#, fuzzy
+msgid "Edit project properties"
 msgstr "プロジェクトの設定を変更します"
 
 #. ProjectsMenu
-#: ../src/glade-window.c:2155
+#: ../src/glade-window.c:2265
 msgid "_Previous Project"
 msgstr "前のプロジェクト(_P)"
 
-#: ../src/glade-window.c:2156
+#: ../src/glade-window.c:2266
 msgid "Activate previous project"
 msgstr "前のプロジェクトを開きます"
 
-#: ../src/glade-window.c:2158
+#: ../src/glade-window.c:2268
 msgid "_Next Project"
 msgstr "次のプロジェクト(_N)"
 
-#: ../src/glade-window.c:2159
+#: ../src/glade-window.c:2269
 msgid "Activate next project"
 msgstr "次のプロジェクトを開きます"
 
-#: ../src/glade-window.c:2167
+#: ../src/glade-window.c:2278
 msgid "_Use Small Icons"
 msgstr "小さなアイコンにする(_U)"
 
-#: ../src/glade-window.c:2168
+#: ../src/glade-window.c:2279
 msgid "Show items using small icons"
 msgstr "小さなアイコンを使ってアイテムを表示します"
 
-#: ../src/glade-window.c:2171
+#: ../src/glade-window.c:2282
 msgid "Dock _Palette"
 msgstr "パレットの収納(_P)"
 
-#: ../src/glade-window.c:2172
+#: ../src/glade-window.c:2283
 msgid "Dock the palette into the main window"
 msgstr "パレットをメイン・ウィンドウに収納します"
 
-#: ../src/glade-window.c:2175
+#: ../src/glade-window.c:2286
 msgid "Dock _Inspector"
 msgstr "インスペクタの収納(_I)"
 
-#: ../src/glade-window.c:2176
+#: ../src/glade-window.c:2287
 msgid "Dock the inspector into the main window"
 msgstr "インスペクタをメイン・ウィンドウに収納します"
 
-#: ../src/glade-window.c:2179
+#: ../src/glade-window.c:2290
 msgid "Dock Prop_erties"
 msgstr "プロパティの収納(_E)"
 
-#: ../src/glade-window.c:2180
+#: ../src/glade-window.c:2291
 msgid "Dock the editor into the main window"
 msgstr "プロパティ・エディタをメイン・ウィンドウに収納します"
 
-#: ../src/glade-window.c:2183
+#: ../src/glade-window.c:2294
 msgid "Tool_bar"
 msgstr "ツールバー(_B)"
 
-#: ../src/glade-window.c:2184
+#: ../src/glade-window.c:2295
 msgid "Show the toolbar"
 msgstr "ツールバーを表示します"
 
-#: ../src/glade-window.c:2187
+#: ../src/glade-window.c:2298
 msgid "_Statusbar"
 msgstr "ステータスバー(_S)"
 
-#: ../src/glade-window.c:2188
+#: ../src/glade-window.c:2299
 msgid "Show the statusbar"
 msgstr "ステータスバーを表示します"
 
-#: ../src/glade-window.c:2191
+#: ../src/glade-window.c:2302
 msgid "Project _Tabs"
 msgstr "プロジェクトのタブ(_T)"
 
-#: ../src/glade-window.c:2192
+#: ../src/glade-window.c:2303
 msgid "Show notebook tabs for loaded projects"
 msgstr "読み込んだプロジェクトのタブを表示します"
 
-#: ../src/glade-window.c:2200 ../plugins/gtk+/gtk+.xml.in.h:433
-msgid "Text beside icons"
+#: ../src/glade-window.c:2312
+#, fuzzy
+msgid "Text _beside icons"
 msgstr "アイコンの横にラベル"
 
-#: ../src/glade-window.c:2201
+#: ../src/glade-window.c:2313
 msgid "Display items as text beside icons"
 msgstr "アイコンの横にラベルを付与してアイテムを表示します"
 
-#: ../src/glade-window.c:2203
+#: ../src/glade-window.c:2315
 msgid "_Icons only"
 msgstr "アイコンのみ(_I)"
 
-#: ../src/glade-window.c:2204
+#: ../src/glade-window.c:2316
 msgid "Display items as icons only"
 msgstr "アイコンだけでアイテムを表示します"
 
-#: ../src/glade-window.c:2206
+#: ../src/glade-window.c:2318
 msgid "_Text only"
 msgstr "ラベルのみ(_T)"
 
-#: ../src/glade-window.c:2207
+#: ../src/glade-window.c:2319
 msgid "Display items as text only"
 msgstr "ラベルだけでアイテムを表示します"
 
-#: ../src/glade-window.c:2393
+#: ../src/glade-window.c:2510
 msgid "Select"
 msgstr "選択"
 
-#: ../src/glade-window.c:2396
+#: ../src/glade-window.c:2513
 msgid "Select widgets in the workspace"
 msgstr "ワークスペースの中にあるウィジェットを選択します"
 
-#: ../src/glade-window.c:2409 ../plugins/gtk+/gtk+.xml.in.h:313
-msgid "Preview snapshot"
-msgstr "プレビュー"
-
-#: ../src/glade-window.c:2413
-msgid "Previews snapshot of project"
-msgstr "プロジェクトのスナップショットをプレビューします"
-
-#: ../src/glade-window.c:2437
+#: ../src/glade-window.c:2537
 msgid "Drag Resize"
 msgstr "サイズ変更"
 
-#: ../src/glade-window.c:2440
+#: ../src/glade-window.c:2540
 msgid "Drag and resize widgets in the workspace"
 msgstr ""
 "ワークスペースの中にあるウィジェットをドラッグして移動したり大きさを変更しま"
 "す"
 
-#: ../src/glade-window.c:2482
+#: ../src/glade-window.c:2611
 msgid "Close document"
 msgstr "ドキュメントを閉じます"
 
-#: ../src/glade-window.c:2552
+#: ../src/glade-window.c:2698
 msgid "Could not create a new project."
 msgstr "新しいプロジェクトを生成できませんでした"
 
-#: ../src/glade-window.c:2606
+#: ../src/glade-window.c:2752
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr "次のプロジェクトには保存していない変更点があります: %s"
 
-#: ../src/glade-window.c:2610
+#: ../src/glade-window.c:2757
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr ""
 "ここで再読込みをしてしまうと変更した内容を全て失うことになります。それでも再"
 "読込みしますか？"
 
-#: ../src/glade-window.c:2619
+#: ../src/glade-window.c:2767
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr "次のプロジェクト・ファイルは Glade 以外で変更されています: %s"
 
-#: ../src/glade-window.c:2623
+#: ../src/glade-window.c:2772
 msgid "Do you want to reload the project?"
 msgstr "プロジェクトを再読込みしますか？"
 
-#: ../src/glade-window.c:2629
+#: ../src/glade-window.c:2778
 msgid "_Reload"
 msgstr "再読込みする(_R)"
 
-#: ../src/glade-window.c:2751
+#: ../src/glade-window.c:2893
 msgid "_Undo"
 msgstr "元に戻す(_U)"
 
-#. Change tooltips
-#: ../src/glade-window.c:2753 ../gladeui/glade-app.c:276
+#: ../src/glade-window.c:2897
 #, c-format
 msgid "Undo: %s"
 msgstr "'%s' という操作を元に戻します"
 
-#: ../src/glade-window.c:2753 ../src/glade-window.c:2764
-#: ../gladeui/glade-app.c:277
+#: ../src/glade-window.c:2898 ../src/glade-window.c:2912
 msgid "the last action"
 msgstr "最後の操作"
 
-#: ../src/glade-window.c:2762
+#: ../src/glade-window.c:2907
 msgid "_Redo"
 msgstr "やり直す(_R)"
 
-#: ../src/glade-window.c:2764 ../gladeui/glade-app.c:276
+#: ../src/glade-window.c:2911
 #, c-format
 msgid "Redo: %s"
 msgstr "'%s' という操作をやり直します"
 
-#: ../src/glade-window.c:3240
+#: ../src/glade-window.c:3377
 msgid "Go back in undo history"
 msgstr "古い履歴をさかのぼります"
 
-#: ../src/glade-window.c:3242
+#: ../src/glade-window.c:3380
 msgid "Go forward in undo history"
 msgstr "新しい履歴に進めます"
 
-#: ../src/glade-window.c:3291
+#: ../src/glade-window.c:3435
 msgid "Palette"
 msgstr "パレット"
 
-#: ../src/glade-window.c:3301
+#: ../src/glade-window.c:3445
 msgid "Inspector"
 msgstr "インスペクタ"
 
-#: ../src/glade-window.c:3308 ../gladeui/glade-editor.c:350
-#: ../gladeui/glade-widget.c:1100 ../plugins/gtk+/glade-gtk.c:6574
-#: ../plugins/gtk+/glade-gtk.c:6604 ../plugins/gtk+/glade-gtk.c:11132
+#: ../src/glade-window.c:3452 ../gladeui/glade-editor.c:405
+#: ../gladeui/glade-widget.c:1244 ../plugins/gtk+/glade-gtk.c:5507
+#: ../plugins/gtk+/glade-gtk.c:5534 ../plugins/gtk+/glade-gtk.c:5553
+#: ../plugins/gtk+/glade-gtk.c:5591 ../plugins/gtk+/glade-gtk.c:10524
+#: ../plugins/gtk+/glade-gtk.c:11115 ../plugins/gtk+/glade-gtk.c:11269
 msgid "Properties"
 msgstr "プロパティ"
 
-#: ../gladeui/glade-app.c:457
-msgid "Clipboard"
-msgstr "クリップボード"
-
-#: ../gladeui/glade-app.c:526
-msgid "Active Project"
-msgstr "現在のプロジェクト"
-
-#: ../gladeui/glade-app.c:527
-msgid "The active project"
-msgstr "現在のプロジェクト"
-
-#: ../gladeui/glade-app.c:533
-msgid "Pointer Mode"
-msgstr "ポインタのモード"
-
-#: ../gladeui/glade-app.c:534
-msgid "Current mode for the pointer in the workspace"
-msgstr "ワークスペースの中にあるポインタのモードです"
-
-#: ../gladeui/glade-app.c:604
+#: ../gladeui/glade-app.c:435
 #, c-format
 msgid ""
 "Trying to save private data to %s directory but it is a regular file.\n"
@@ -589,7 +528,7 @@ msgstr ""
 "のファイルです。\n"
 "このセッションで保存するプライベートなデータは存在しません。"
 
-#: ../gladeui/glade-app.c:617
+#: ../gladeui/glade-app.c:447
 #, c-format
 msgid ""
 "Failed to create directory %s to save private data.\n"
@@ -598,7 +537,7 @@ msgstr ""
 "プライベートなデータを保存するためのフォルダ (%s) の生成に失敗しました。\n"
 "このセッションで保存するプライベートなデータは存在しません。"
 
-#: ../gladeui/glade-app.c:645
+#: ../gladeui/glade-app.c:475
 #, c-format
 msgid ""
 "Error writing private data to %s (%s).\n"
@@ -607,7 +546,7 @@ msgstr ""
 "プライベートなデータを %s に保存する際にエラーが発生しました: %s\n"
 "このセッションで保存するプライベートなデータは存在しません。"
 
-#: ../gladeui/glade-app.c:657
+#: ../gladeui/glade-app.c:487
 #, c-format
 msgid ""
 "Error serializing configuration data to save (%s).\n"
@@ -616,7 +555,7 @@ msgstr ""
 "設定データを書き込む際にエラーが発生しました: %s\n"
 "このセッションで保存するプライベートなデータは存在しません。"
 
-#: ../gladeui/glade-app.c:670
+#: ../gladeui/glade-app.c:500
 #, c-format
 msgid ""
 "Error opening %s to write private data (%s).\n"
@@ -625,86 +564,62 @@ msgstr ""
 "プライベートなデータを書き込む %s を開く際にエラーが発生しました: %s\n"
 "このセッションで保存するプライベートなデータは存在しません。"
 
-#: ../gladeui/glade-app.c:1183 ../gladeui/glade-app.c:1224
-#: ../gladeui/glade-app.c:1389
-msgid "No widget selected."
-msgstr "ウィジェットを選択して下さい"
-
-#: ../gladeui/glade-app.c:1276
-msgid "Unable to paste to the selected parent"
-msgstr "選択した親ウィジェットに貼り付けできません"
-
-#: ../gladeui/glade-app.c:1287
-msgid "Unable to paste to multiple widgets"
-msgstr "複数のウィジェットに貼り付けできません"
-
-#: ../gladeui/glade-app.c:1303 ../gladeui/glade-app.c:1409
-msgid "No widget selected on the clipboard"
-msgstr "クリップボードからウィジェットが選択されていません"
-
-#: ../gladeui/glade-app.c:1335
-msgid "Only one widget can be pasted at a time to this container"
-msgstr "このコンテナには一度に一個のウィジェットだけ貼り付けることが可能です"
-
-#: ../gladeui/glade-app.c:1347
-msgid "Insufficient amount of placeholders in target container"
-msgstr "操作対象となるコンテナのプレイスフォルダの大きさが十分ではありません"
-
-#: ../gladeui/glade-builtins.c:71
+#: ../gladeui/glade-builtins.c:70
 msgid "Authentication"
 msgstr "認証"
 
 #. GTK_STOCK_DIALOG_AUTHENTICATION
-#: ../gladeui/glade-builtins.c:72
-msgid "DnD"
+#: ../gladeui/glade-builtins.c:71 ../plugins/gtk+/gtk+.xml.in.h:142
+msgid "Drag and Drop"
 msgstr "ドラッグ＆ドロップ"
 
 #. GTK_STOCK_DND
-#: ../gladeui/glade-builtins.c:73
-msgid "DnD Multiple"
-msgstr "複数個のドラッグ＆ドロップ"
+#: ../gladeui/glade-builtins.c:72
+#, fuzzy
+msgid "Drag and Drop Multiple"
+msgstr "ドラッグ＆ドロップ"
 
 #. GTK_STOCK_DND_MULTIPLE
-#: ../gladeui/glade-builtins.c:74
+#: ../gladeui/glade-builtins.c:73
 msgid "Color Picker"
 msgstr "色の取得"
 
 #. GTK_STOCK_COLOR_PICKER
-#: ../gladeui/glade-builtins.c:75
+#: ../gladeui/glade-builtins.c:74
 msgid "Directory"
 msgstr "フォルダ"
 
 #. GTK_STOCK_DIRECTORY
-#: ../gladeui/glade-builtins.c:76
+#: ../gladeui/glade-builtins.c:75
 msgid "File"
 msgstr "ファイル"
 
 #. GTK_STOCK_FILE
-#: ../gladeui/glade-builtins.c:77
+#: ../gladeui/glade-builtins.c:76
 msgid "Missing Image"
 msgstr "画像なし"
 
-#: ../gladeui/glade-builtins.c:321
+#: ../gladeui/glade-builtins.c:336
 msgid "Stock"
 msgstr "ストック"
 
-#: ../gladeui/glade-builtins.c:322
+#: ../gladeui/glade-builtins.c:337
 msgid "A builtin stock item"
 msgstr "デフォルトで提供されているストック・アイテムです"
 
-#: ../gladeui/glade-builtins.c:330
+#: ../gladeui/glade-builtins.c:344
 msgid "Stock Image"
 msgstr "ストック画像"
 
-#: ../gladeui/glade-builtins.c:331
+#: ../gladeui/glade-builtins.c:345
 msgid "A builtin stock image"
 msgstr "埋め込み式のストック画像です"
 
-#: ../gladeui/glade-builtins.c:488
+#: ../gladeui/glade-builtins.c:489
 msgid "Objects"
 msgstr "オブジェクト"
 
-#: ../gladeui/glade-builtins.c:489
+#: ../gladeui/glade-builtins.c:490
 msgid "A list of objects"
 msgstr "オブジェクトの並びです"
 
@@ -717,121 +632,169 @@ msgid "Enter a filename, relative path or full path to load the image"
 msgstr "読み込む画像のファイル名 (相対パスまたは絶対パス) を入力して下さい"
 
 #: ../gladeui/glade-builtins.c:508
-msgid "GdkColor"
+#, fuzzy
+msgid "Color"
 msgstr "GdkColor"
 
 #: ../gladeui/glade-builtins.c:509
 msgid "A GDK color value"
 msgstr "GDK で使用する色の値です"
 
-#: ../gladeui/glade-builtins.c:519
-msgid "Integer"
-msgstr "整数値"
-
-#: ../gladeui/glade-builtins.c:520
-msgid "An integer value"
-msgstr "int 型の値です"
-
-#: ../gladeui/glade-builtins.c:528
-msgid "Unsigned Integer"
-msgstr "符号無し整数値"
-
-#: ../gladeui/glade-builtins.c:529
-msgid "An unsigned integer value"
-msgstr "unsigned int 型の値です"
-
-#: ../gladeui/glade-builtins.c:536
+#: ../gladeui/glade-builtins.c:535
 msgid "String"
 msgstr "文字列"
 
-#: ../gladeui/glade-builtins.c:537
+#: ../gladeui/glade-builtins.c:536
 msgid "An entry"
 msgstr "１個のエントリです"
 
-#: ../gladeui/glade-builtins.c:544
-msgid "Strv"
-msgstr "文字列の配列"
+#: ../gladeui/glade-design-layout.c:1012
+#, fuzzy
+msgid "Design View"
+msgstr "アイコン・ビュー"
 
-#: ../gladeui/glade-builtins.c:545
-msgid "String array"
-msgstr "文字列を要素とする配列です"
+#: ../gladeui/glade-design-layout.c:1013
+msgid "The GladeDesignView that contains this layout"
+msgstr ""
 
-#: ../gladeui/glade-builtins.c:553
-msgid "Float"
-msgstr "実数値"
+#: ../gladeui/glade-design-view.c:97
+#, c-format
+msgid "Loading %s: loaded %d of %d objects"
+msgstr ""
 
-#: ../gladeui/glade-builtins.c:554
-msgid "A floating point entry"
-msgstr "浮動小数点型実数の値です"
+#: ../gladeui/glade-previewer.c:40 ../gladeui/glade-previewer.c:75
+msgid "- previews a glade UI definition"
+msgstr ""
 
-#: ../gladeui/glade-builtins.c:562
-msgid "Boolean"
-msgstr "論理値"
+#: ../gladeui/glade-previewer.c:62
+msgid "Name of the file to preview"
+msgstr ""
 
-#: ../gladeui/glade-builtins.c:563
-msgid "A boolean value"
-msgstr "論理型の値です"
+#: ../gladeui/glade-previewer.c:65
+msgid "Name of the toplevel to preview"
+msgstr ""
 
-#: ../gladeui/glade-base-editor.c:536
+#: ../gladeui/glade-previewer.c:67
+#, fuzzy
+msgid "Listen standard input"
+msgstr "標準のアイコンだけ表示する(_L)"
+
+#: ../gladeui/glade-previewer.c:70
+msgid "Display previewer version"
+msgstr ""
+
+#: ../gladeui/glade-previewer.c:79
+#, c-format
+msgid ""
+"%s\n"
+"Run '%s --help' to see a full list of available command lineoptions.\n"
+msgstr ""
+
+#: ../gladeui/glade-previewer.c:94
+#, c-format
+msgid "--listen and --filename must not be simultaneously specified.\n"
+msgstr ""
+
+#: ../gladeui/glade-previewer.c:100
+#, c-format
+msgid "Either --listen or --filename must be specified.\n"
+msgstr ""
+
+#: ../gladeui/glade-previewer.c:118
+#, c-format
+msgid "Couldn't load builder definition: %s"
+msgstr ""
+
+#: ../gladeui/glade-previewer.c:148
+#, c-format
+msgid "UI definition has no previewable widgets.\n"
+msgstr ""
+
+#: ../gladeui/glade-previewer.c:158
+#, c-format
+msgid "Object %s not found in UI definition.\n"
+msgstr ""
+
+#: ../gladeui/glade-previewer.c:164
+#, c-format
+msgid "Object is not previewable.\n"
+msgstr ""
+
+#: ../gladeui/glade-previewer.c:210 ../plugins/gtk+/gtkunixprint.xml.in.h:10
+msgid "Preview"
+msgstr "プレビュー"
+
+#: ../gladeui/glade-previewer.c:247 ../gladeui/glade-previewer.c:270
+#: ../gladeui/glade-previewer.c:290
+#, fuzzy, c-format
+msgid "Error: %s.\n"
+msgstr "エラー"
+
+#: ../gladeui/glade-previewer.c:347
+#, c-format
+msgid "Broken pipe!\n"
+msgstr ""
+
+#: ../gladeui/glade-base-editor.c:546
 #, c-format
 msgid "Setting object type on %s to %s"
 msgstr "%s のオブジェクトの型を %s にセット"
 
-#: ../gladeui/glade-base-editor.c:677
+#: ../gladeui/glade-base-editor.c:708
 #, c-format
 msgid "Add a %s to %s"
 msgstr "%s を %s に追加"
 
-#: ../gladeui/glade-base-editor.c:762
+#: ../gladeui/glade-base-editor.c:800 ../gladeui/glade-command.c:1056
 #, c-format
-msgid "Add %s item"
-msgstr "アイテム (%s) の追加"
+msgid "Add %s"
+msgstr "%s の追加"
 
-#: ../gladeui/glade-base-editor.c:792
-#, c-format
-msgid "Add child %s item"
+#: ../gladeui/glade-base-editor.c:832
+#, fuzzy, c-format
+msgid "Add child %s"
 msgstr "子アイテム (%s) の追加"
 
-#: ../gladeui/glade-base-editor.c:879
+#: ../gladeui/glade-base-editor.c:920
 #, c-format
 msgid "Delete %s child from %s"
 msgstr "子アイテム (%s) を %s から削除"
 
-#: ../gladeui/glade-base-editor.c:1007
+#: ../gladeui/glade-base-editor.c:1045
 #, c-format
 msgid "Reorder %s's children"
 msgstr "%s の子ウィジェットの並びの変更"
 
-#: ../gladeui/glade-base-editor.c:1456 ../plugins/gtk+/gtk+.xml.in.h:94
+#: ../gladeui/glade-base-editor.c:1480 ../plugins/gtk+/gtk+.xml.in.h:108
 msgid "Container"
 msgstr "コンテナ"
 
-#: ../gladeui/glade-base-editor.c:1457
+#: ../gladeui/glade-base-editor.c:1481
 msgid "The container object this editor is currently editing"
 msgstr "このエディタで現在編集しているコンテナ・オブジェクトです"
 
-#: ../gladeui/glade-base-editor.c:1682 ../gladeui/glade-editor.c:997
+#: ../gladeui/glade-base-editor.c:1711 ../gladeui/glade-editor.c:1085
 msgid "General"
 msgstr "全般"
 
-#: ../gladeui/glade-base-editor.c:1690
+#: ../gladeui/glade-base-editor.c:1719
 msgid "Hierarchy"
 msgstr "階層"
 
-#: ../gladeui/glade-base-editor.c:1724 ../plugins/gtk+/gtk+.xml.in.h:244
+#: ../gladeui/glade-base-editor.c:1757 ../plugins/gtk+/gtk+.xml.in.h:282
 msgid "Label"
 msgstr "ラベル"
 
-#: ../gladeui/glade-base-editor.c:1738 ../gladeui/glade-widget-adaptor.c:1244
+#: ../gladeui/glade-base-editor.c:1772 ../gladeui/glade-widget-adaptor.c:1261
 msgid "Type"
 msgstr "型"
 
 #. Type
-#: ../gladeui/glade-base-editor.c:2004
+#: ../gladeui/glade-base-editor.c:2047
 msgid "Type:"
 msgstr "型:"
 
-#: ../gladeui/glade-base-editor.c:2217
+#: ../gladeui/glade-base-editor.c:2261
 msgid ""
 "<big><b>Tips:</b></big>\n"
 "  * Right-click over the treeview to add items.\n"
@@ -845,558 +808,434 @@ msgstr ""
 "  * ドラッグ &amp; ドロップすると順番を変更できます。\n"
 "  * 種類の列は編集可能です。"
 
-#: ../gladeui/glade-clipboard-view.c:209 ../gladeui/glade-editor.c:162
-#: ../plugins/gtk+/gtk+.xml.in.h:501
-msgid "Widget"
-msgstr "ウィジェット"
-
-#: ../gladeui/glade-command.c:598
+#: ../gladeui/glade-command.c:627
 #, c-format
 msgid "Setting multiple properties"
-msgstr "複数子のプロパティの指定"
+msgstr "複数個のプロパティの指定"
 
-#: ../gladeui/glade-command.c:611
+#: ../gladeui/glade-command.c:639
 #, c-format
 msgid "Setting %s of %s"
 msgstr "%2$s で%1$sを設定する"
 
-#: ../gladeui/glade-command.c:615 ../gladeui/glade-editor-property.c:3010
+#: ../gladeui/glade-command.c:645 ../gladeui/glade-editor-property.c:3049
 #, c-format
 msgid "Setting %s of %s to %s"
 msgstr "%2$s の%1$sを %3$s に指定する"
 
-#: ../gladeui/glade-command.c:850 ../gladeui/glade-command.c:877
+#: ../gladeui/glade-command.c:892 ../gladeui/glade-command.c:919
 #, c-format
 msgid "Renaming %s to %s"
 msgstr "%s から %s へ名前の変更"
 
-#: ../gladeui/glade-command.c:1006
-#, c-format
-msgid "Add %s"
-msgstr "%s の追加"
-
-#: ../gladeui/glade-command.c:1007 ../gladeui/glade-command.c:1738
-#: ../gladeui/glade-command.c:1762 ../gladeui/glade-command.c:1785
-#: ../gladeui/glade-command.c:1810 ../gladeui/glade-command.c:1914
-#: ../gladeui/glade-command.c:1947
+#: ../gladeui/glade-command.c:1057 ../gladeui/glade-command.c:1629
+#: ../gladeui/glade-command.c:1655 ../gladeui/glade-command.c:1757
+#: ../gladeui/glade-command.c:1795
 msgid "multiple"
 msgstr "複数個"
 
-#: ../gladeui/glade-command.c:1163
+#: ../gladeui/glade-command.c:1215
 msgid "You cannot remove a widget internal to a composite widget."
 msgstr "結合ウィジェットの中に埋め込まれたウィジェットは削除できません。"
 
-#: ../gladeui/glade-command.c:1170
+#: ../gladeui/glade-command.c:1222
 #, c-format
 msgid "%s is locked by %s, edit %s first."
 msgstr "%s は %s によってロックされているので、まず %s を編集して下さい。"
 
-#: ../gladeui/glade-command.c:1180
+#: ../gladeui/glade-command.c:1234
 #, c-format
 msgid "Remove %s"
 msgstr "%s の削除"
 
-#: ../gladeui/glade-command.c:1183
+#: ../gladeui/glade-command.c:1237
 msgid "Remove multiple"
 msgstr "複数個の同時に削除"
 
-#: ../gladeui/glade-command.c:1557
-#, c-format
-msgid "Clipboard add %s"
-msgstr "%s をクリップボードに追加"
-
-#: ../gladeui/glade-command.c:1560
-msgid "Clipboard add multiple"
-msgstr "クリップボードに複数回追加"
-
-#: ../gladeui/glade-command.c:1565
-#, c-format
-msgid "Clipboard remove %s"
-msgstr "%s をクリップボードから削除"
-
-#: ../gladeui/glade-command.c:1568
-msgid "Clipboard remove multiple"
-msgstr "クリップボードから複数回削除"
-
-#: ../gladeui/glade-command.c:1738
+#: ../gladeui/glade-command.c:1601
 #, c-format
 msgid "Create %s"
 msgstr "%s を生成する"
 
-#: ../gladeui/glade-command.c:1762
+#: ../gladeui/glade-command.c:1627
 #, c-format
 msgid "Delete %s"
 msgstr "%s の削除"
 
-#: ../gladeui/glade-command.c:1785
+#: ../gladeui/glade-command.c:1653
 #, c-format
 msgid "Cut %s"
 msgstr "%s の切り取り"
 
-#: ../gladeui/glade-command.c:1810
-#, c-format
-msgid "Copy %s"
-msgstr "%s のコピー"
-
-#: ../gladeui/glade-command.c:1914
+#: ../gladeui/glade-command.c:1755
 #, c-format
 msgid "Paste %s"
 msgstr "%s の貼り付け"
 
-#: ../gladeui/glade-command.c:1946
+#: ../gladeui/glade-command.c:1792
 #, c-format
 msgid "Drag-n-Drop from %s to %s"
 msgstr "%s から %s へドラッグ＆ドロップ"
 
-#: ../gladeui/glade-command.c:2068
+#: ../gladeui/glade-command.c:1919
 #, c-format
 msgid "Add signal handler %s"
 msgstr "シグナル・ハンドラ %s の追加"
 
-#: ../gladeui/glade-command.c:2069
+#: ../gladeui/glade-command.c:1920
 #, c-format
 msgid "Remove signal handler %s"
 msgstr "シグナル・ハンドラ %s の削除"
 
-#: ../gladeui/glade-command.c:2070
+#: ../gladeui/glade-command.c:1921
 #, c-format
 msgid "Change signal handler %s"
 msgstr "シグナル・ハンドラ %s の変更"
 
-#: ../gladeui/glade-command.c:2295
+#: ../gladeui/glade-command.c:2139
 #, c-format
 msgid "Setting i18n metadata"
 msgstr "i18n のメタデータを設定する"
 
-#: ../gladeui/glade-command.c:2499
-#, c-format
-msgid "Converting %s to %s format"
-msgstr "%s を %s に変換する"
-
-#: ../gladeui/glade-command.c:2657 ../gladeui/glade-project.c:3947
-#, c-format
-msgid "Setting %s to use a %s naming policy"
-msgstr "%s を %s の名前空間を使用するために設定する"
-
-#: ../gladeui/glade-command.c:2797
+#: ../gladeui/glade-command.c:2256
 #, c-format
 msgid "Locking %s by widget %s"
 msgstr "%s を %s でロックする"
 
-#: ../gladeui/glade-command.c:2836
+#: ../gladeui/glade-command.c:2297
 #, c-format
 msgid "Unlocking %s"
 msgstr "%s のロックを解除する"
 
-#: ../gladeui/glade-cursor.c:186
+#: ../gladeui/glade-cursor.c:181
 #, c-format
 msgid "Unable to load image (%s)"
 msgstr "画像を読み込めません: %s"
 
-#: ../gladeui/glade-editor-property.c:598
+#: ../gladeui/glade-editor-property.c:629
 msgid "Property Class"
 msgstr "プロパティのクラス"
 
-#: ../gladeui/glade-editor-property.c:599
+#: ../gladeui/glade-editor-property.c:630
 msgid "The GladePropertyClass this GladeEditorProperty was created for"
 msgstr "GladeEditorProperty 型を生成した GladePropertyClass 型です"
 
-#: ../gladeui/glade-editor-property.c:605
+#: ../gladeui/glade-editor-property.c:636
 msgid "Use Command"
 msgstr "コマンドを使う"
 
-#: ../gladeui/glade-editor-property.c:606
+#: ../gladeui/glade-editor-property.c:637
 msgid "Whether we should use the command API for the undo/redo stack"
 msgstr "Undo/Redo のスタックに対してコマンド API を使うかどうかです"
 
-#: ../gladeui/glade-editor-property.c:1103
+#: ../gladeui/glade-editor-property.c:1143
 msgid "Select Fields"
 msgstr "項目の選択"
 
-#: ../gladeui/glade-editor-property.c:1127
+#: ../gladeui/glade-editor-property.c:1165
 msgid "_Select individual fields:"
 msgstr "おのおの選択して下さい(_S):"
 
-#: ../gladeui/glade-editor-property.c:1437
+#: ../gladeui/glade-editor-property.c:1497
 msgid "Select Named Icon"
 msgstr "名前付きアイコンの選択"
 
-#: ../gladeui/glade-editor-property.c:1701
+#: ../gladeui/glade-editor-property.c:1772
 msgid "Edit Text"
 msgstr "文字列の編集"
 
 #. Text
-#: ../gladeui/glade-editor-property.c:1732
+#: ../gladeui/glade-editor-property.c:1802
 msgid "_Text:"
 msgstr "文字列(_T):"
 
 #. Translatable
-#: ../gladeui/glade-editor-property.c:1768
+#: ../gladeui/glade-editor-property.c:1836
 msgid "T_ranslatable"
 msgstr "翻訳可能な文字列である(_R)"
 
-#: ../gladeui/glade-editor-property.c:1773 ../gladeui/glade-property.c:589
+#: ../gladeui/glade-editor-property.c:1842 ../gladeui/glade-property.c:660
 msgid "Whether this property is translatable"
 msgstr "翻訳が可能なプロパティであるかどうかです"
 
-#. Has Context
-#: ../gladeui/glade-editor-property.c:1776
-msgid "_Has context prefix"
-msgstr "コンテキストを持つ(_H)"
-
-#: ../gladeui/glade-editor-property.c:1780 ../gladeui/glade-property.c:596
-msgid "Whether the translatable string has a context prefix"
-msgstr "コンテキスト (識別子) を持つ翻訳可能な文字列かどうかです"
-
-#: ../gladeui/glade-editor-property.c:1791
+#: ../gladeui/glade-editor-property.c:1850
 msgid "Conte_xt for translation:"
 msgstr "翻訳用のコンテキスト(_X):"
 
-#: ../gladeui/glade-editor-property.c:1829
+#: ../gladeui/glade-editor-property.c:1856
+msgid ""
+"For short and ambiguous strings: type a word here to differentiate the "
+"meaning of this string from the meaning of other occurrences of the same "
+"string"
+msgstr ""
+
+#: ../gladeui/glade-editor-property.c:1887
 msgid "Co_mments for translators:"
 msgstr "翻訳者へのコメント(_M):"
 
-#: ../gladeui/glade-editor-property.c:1948
+#: ../gladeui/glade-editor-property.c:2002
 msgid "Select a file from the project resource directory"
 msgstr "プロジェクトのリソース・ディレクトリからのファイルの選択"
 
-#: ../gladeui/glade-editor-property.c:2229
-#: ../gladeui/glade-editor-property.c:2245
+#: ../gladeui/glade-editor-property.c:2286
+#: ../gladeui/glade-editor-property.c:2302
 msgid "Yes"
 msgstr "はい"
 
-#: ../gladeui/glade-editor-property.c:2229
-#: ../gladeui/glade-editor-property.c:2245
-#: ../gladeui/glade-editor-property.c:2260
+#: ../gladeui/glade-editor-property.c:2286
+#: ../gladeui/glade-editor-property.c:2302
+#: ../gladeui/glade-editor-property.c:2317
 msgid "No"
 msgstr "いいえ"
 
-#: ../gladeui/glade-editor-property.c:2686 ../gladeui/glade-widget.c:1052
-#: ../gladeui/glade-widget-adaptor.c:1236
+#: ../gladeui/glade-editor-property.c:2725 ../gladeui/glade-widget.c:1208
+#: ../gladeui/glade-widget-adaptor.c:1254
 msgid "Name"
 msgstr "名前"
 
-#: ../gladeui/glade-editor-property.c:2698 ../gladeui/glade-property.c:553
+#: ../gladeui/glade-editor-property.c:2734 ../gladeui/glade-property.c:627
 msgid "Class"
 msgstr "クラス"
 
-#: ../gladeui/glade-editor-property.c:2714
+#: ../gladeui/glade-editor-property.c:2751
 #, c-format
 msgid "Choose parentless %s type objects in this project"
 msgstr "このプロジェクトにある親を持たない %s 型の選択"
 
-#: ../gladeui/glade-editor-property.c:2714
+#: ../gladeui/glade-editor-property.c:2752
 #, c-format
 msgid "Choose a parentless %s in this project"
 msgstr "このプロジェクトにある親を持たない %s の選択"
 
 # UI を見れば分かるので、特に複数個であることを強調する必要なし
-#: ../gladeui/glade-editor-property.c:2717
+#: ../gladeui/glade-editor-property.c:2755
 #, c-format
 msgid "Choose %s type objects in this project"
 msgstr "このプロジェクトで利用する %s 型のオブジェクトの選択"
 
-#: ../gladeui/glade-editor-property.c:2717
+#: ../gladeui/glade-editor-property.c:2756
 #, c-format
 msgid "Choose a %s in this project"
 msgstr "このプロジェクトで利用する%sの選択"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:2792
-#: ../gladeui/glade-editor-property.c:2934
+#: ../gladeui/glade-editor-property.c:2826
+#: ../gladeui/glade-editor-property.c:2968
 msgid "O_bjects:"
 msgstr "オブジェクト(_B):"
 
-#: ../gladeui/glade-editor-property.c:2884
+#: ../gladeui/glade-editor-property.c:2920
 msgid "_New"
 msgstr "新規(_N)"
 
 #. translators: Creating 'a widget' for 'a property' of 'a widget'
-#: ../gladeui/glade-editor-property.c:3036
+#: ../gladeui/glade-editor-property.c:3075
 #, c-format
 msgid "Creating %s for %s of %s"
 msgstr "%3$s の %2$s に対する %1$s の生成"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:3230
+#: ../gladeui/glade-editor-property.c:3268
 msgid "Objects:"
 msgstr "オブジェクト:"
 
-#: ../gladeui/glade-editor-property.c:3627
-msgid "Value:"
-msgstr "値:"
-
-#: ../gladeui/glade-editor-property.c:3628
-msgid "The current value"
-msgstr "現在の値です"
-
-#: ../gladeui/glade-editor-property.c:3630
-msgid "Lower:"
-msgstr "最小値:"
-
-#: ../gladeui/glade-editor-property.c:3631
-msgid "The minimum value"
-msgstr "最小値です"
-
-#: ../gladeui/glade-editor-property.c:3633
-msgid "Upper:"
-msgstr "最大値:"
-
-#: ../gladeui/glade-editor-property.c:3634
-msgid "The maximum value"
-msgstr "最大値です"
-
-#: ../gladeui/glade-editor-property.c:3636
-msgid "Step inc:"
-msgstr "ステップ幅:"
-
-#: ../gladeui/glade-editor-property.c:3637
-msgid "The increment to use to make minor changes to the value"
-msgstr "値を小さく変更する際に使用する増分値です"
-
-#: ../gladeui/glade-editor-property.c:3639
-msgid "Page inc:"
-msgstr "ページ幅:"
-
-#: ../gladeui/glade-editor-property.c:3640
-msgid "The increment to use to make major changes to the value"
-msgstr "値を大きく変更する際に使用する増分値です"
-
-#: ../gladeui/glade-editor-property.c:3642
-msgid "Page size:"
-msgstr "ページ・サイズ:"
-
-#: ../gladeui/glade-editor-property.c:3643
-msgid ""
-"The page size (in a GtkScrollbar this is the size of the area which is "
-"currently visible)"
-msgstr "ページ・サイズ (GtkScrollbar 型オブジェクトでは表示可能な大きさを表す)"
-
-#: ../gladeui/glade-editor-table.c:356
+#: ../gladeui/glade-editor-table.c:408
 msgid "The Object's name"
 msgstr "このオブジェクトの名前です"
 
-#: ../gladeui/glade-editor.c:154
+#: ../gladeui/glade-editor.c:217
 msgid "Show info"
 msgstr "情報の表示"
 
-#: ../gladeui/glade-editor.c:155
+#: ../gladeui/glade-editor.c:218
 msgid "Whether to show an informational button for the loaded widget"
 msgstr "読み込んだウィジェットの情報ボタンを表示するかどうかです"
 
-#: ../gladeui/glade-editor.c:163
+#: ../gladeui/glade-editor.c:225 ../plugins/gtk+/gtk+.xml.in.h:558
+msgid "Widget"
+msgstr "ウィジェット"
+
+#: ../gladeui/glade-editor.c:226
 msgid "The currently loaded widget in this editor"
 msgstr "現在、エディタの中に読み込んだウィジェットです"
 
 #. construct tab label widget
-#: ../gladeui/glade-editor.c:203 ../gladeui/glade-editor.c:402
-#: ../gladeui/glade-editor.c:1017
+#: ../gladeui/glade-editor.c:252 ../gladeui/glade-editor.c:492
+#: ../gladeui/glade-editor.c:1101
 msgid "Accessibility"
 msgstr "アクセシビリティ"
 
 #. configure page container
-#: ../gladeui/glade-editor.c:220 ../gladeui/glade-editor.c:401
+#: ../gladeui/glade-editor.c:269 ../gladeui/glade-editor.c:491
 msgid "_Signals"
 msgstr "シグナル(_S)"
 
-#: ../gladeui/glade-editor.c:283
+#: ../gladeui/glade-editor.c:337
 msgid "View documentation for the selected widget"
 msgstr "選択したウィジェットのリファレンス・マニュアルを表示します"
 
-#: ../gladeui/glade-editor.c:302
+#: ../gladeui/glade-editor.c:357
 msgid "Reset widget properties to their defaults"
 msgstr "選択したウィジェットのプロパティをデフォルト値に戻します"
 
 #. translators: referring to the properties of a widget named '%s [%s]'
-#: ../gladeui/glade-editor.c:338
+#: ../gladeui/glade-editor.c:392
 #, c-format
 msgid "%s Properties - %s [%s]"
 msgstr "%sのプロパティ - %s [%s]"
 
-#: ../gladeui/glade-editor.c:398
+#: ../gladeui/glade-editor.c:488
 msgid "_General"
 msgstr "全般(_G)"
 
-#: ../gladeui/glade-editor.c:399
+#: ../gladeui/glade-editor.c:489
 msgid "_Packing"
 msgstr "パッキング(_P)"
 
-#: ../gladeui/glade-editor.c:400
+#: ../gladeui/glade-editor.c:490
 msgid "_Common"
 msgstr "共通(_C)"
 
-#: ../gladeui/glade-editor.c:826
+#: ../gladeui/glade-editor.c:932
 #, c-format
 msgid "Create a %s"
 msgstr "%s の生成"
 
-#: ../gladeui/glade-editor.c:946
+#: ../gladeui/glade-editor.c:940
+#, fuzzy
+msgid "Crea_te"
+msgstr "%s を生成する"
+
+#: ../gladeui/glade-editor.c:1043
 msgid "Reset"
 msgstr "リセット"
 
-#: ../gladeui/glade-editor.c:961
+#: ../gladeui/glade-editor.c:1054
 msgid "Property"
 msgstr "プロパティ"
 
-#: ../gladeui/glade-editor.c:1007
+#: ../gladeui/glade-editor.c:1093
 msgid "Common"
 msgstr "共通"
 
-#: ../gladeui/glade-editor.c:1051
+#: ../gladeui/glade-editor.c:1134
 msgid "(default)"
 msgstr "(デフォルト)"
 
-#: ../gladeui/glade-editor.c:1066
+#: ../gladeui/glade-editor.c:1149
 msgid "Select the properties that you want to reset to their default values"
 msgstr "デフォルト値にリセットするプロパティを選択して下さい"
 
-#: ../gladeui/glade-editor.c:1198
+#: ../gladeui/glade-editor.c:1283
 msgid "Reset Widget Properties"
 msgstr "ウィジェットのプロパティのリセット"
 
 #. Checklist
-#: ../gladeui/glade-editor.c:1215
+#: ../gladeui/glade-editor.c:1300
 msgid "_Properties:"
 msgstr "プロパティ(_P):"
 
-#: ../gladeui/glade-editor.c:1244
+#: ../gladeui/glade-editor.c:1329
 msgid "_Select All"
 msgstr "全て選択(_S)"
 
-#: ../gladeui/glade-editor.c:1251
+#: ../gladeui/glade-editor.c:1337
 msgid "_Unselect All"
 msgstr "全て選択解除(_U)"
 
 #. Description
-#: ../gladeui/glade-editor.c:1260
+#: ../gladeui/glade-editor.c:1347
 msgid "Property _Description:"
 msgstr "プロパティの説明(_D):"
 
 #. Translators: first %s is the project name, second is a widget name
-#: ../gladeui/glade-editor.c:1356
+#: ../gladeui/glade-editor.c:1443
 #, c-format
 msgid "%s - %s Properties"
 msgstr "%s - %s のプロパティ"
 
-#: ../gladeui/glade-fixed.c:491 ../plugins/gtk+/glade-gtk.c:2636
-#, c-format
-msgid "Placing %s inside %s"
-msgstr "%2$s の内側に %1$s を配置"
-
-#: ../gladeui/glade-fixed.c:982
-msgid "X position property"
-msgstr "Ｘ位置のプロパティ"
-
-#: ../gladeui/glade-fixed.c:983
-msgid "The property used to set the X position of a child object"
-msgstr "子オブジェクトのＸ方向の位置を指定する際に使用するプロパティです"
-
-#: ../gladeui/glade-fixed.c:989
-msgid "Y position property"
-msgstr "Ｙ位置のプロパティ"
-
-#: ../gladeui/glade-fixed.c:990
-msgid "The property used to set the Y position of a child object"
-msgstr "子オブジェクトのＹ方向の位置を指定する際に使用するプロパティです"
-
-#: ../gladeui/glade-fixed.c:996
-msgid "Width property"
-msgstr "幅のプロパティ"
-
-#: ../gladeui/glade-fixed.c:997
-msgid "The property used to set the width of a child object"
-msgstr "子オブジェクトの幅を指定する際に使用するプロパティです"
-
-#: ../gladeui/glade-fixed.c:1003
-msgid "Height property"
-msgstr "高さのプロパティ"
-
-#: ../gladeui/glade-fixed.c:1004
-msgid "The property used to set the height of a child object"
-msgstr "子オブジェクトの高さを指定する際に使用するプロパティです"
-
-#: ../gladeui/glade-fixed.c:1010
-msgid "Can resize"
-msgstr "サイズ変更の可否"
-
-#: ../gladeui/glade-fixed.c:1011
-msgid "Whether this container supports resizes of child widgets"
-msgstr "子オブジェクトがサイズの変更をサポートしているかどうかです"
-
-#: ../gladeui/glade-palette.c:745
+#: ../gladeui/glade-palette.c:651
 msgid "Widget selector"
 msgstr "ウィジェット・セレクタ"
 
-#: ../gladeui/glade-palette.c:746
-msgid "Create root widget"
-msgstr "ルート・ウィジェットの生成"
-
-#: ../gladeui/glade-popup.c:467 ../gladeui/glade-popup.c:476
+#: ../gladeui/glade-popup.c:411
 msgid "_Add widget here"
 msgstr "ここにウィジェットを追加する(_A)"
 
-#: ../gladeui/glade-popup.c:480 ../gladeui/glade-popup.c:704
+#: ../gladeui/glade-popup.c:416 ../gladeui/glade-popup.c:592
 msgid "Add widget as _toplevel"
-msgstr "トップレベルを追加する(_A)"
+msgstr "トップレベルを追加する(_T)"
 
-#: ../gladeui/glade-popup.c:491
+#: ../gladeui/glade-popup.c:426
 msgid "_Select"
 msgstr "選択(_S)"
 
-#: ../gladeui/glade-popup.c:573 ../gladeui/glade-popup.c:712
-#: ../gladeui/glade-popup.c:789
+#: ../gladeui/glade-popup.c:501 ../gladeui/glade-popup.c:599
+#: ../gladeui/glade-popup.c:681
 msgid "Read _documentation"
 msgstr "マニュアルの参照(_D)"
 
-#: ../gladeui/glade-popup.c:782
+#: ../gladeui/glade-popup.c:673
 msgid "Set default value"
 msgstr "デフォルト値の指定"
 
-#: ../gladeui/glade-project.c:924
+#: ../gladeui/glade-preview.c:225
+#, c-format
+msgid "Error launching previewer: %s\n"
+msgstr "プレビューアの読み込みエラー: %s\n"
+
+#: ../gladeui/glade-preview.c:228
+#, c-format
+msgid "Failed to launch preview: %s.\n"
+msgstr "プレビューの起動に失敗しました: %s\n"
+
+#: ../gladeui/glade-project.c:956
 msgid "Whether project has been modified since it was last saved"
 msgstr "プロジェクトが最後に保存されてから何か変更が加えられたかどうかです"
 
-#: ../gladeui/glade-project.c:931
+#: ../gladeui/glade-project.c:962
 msgid "Has Selection"
 msgstr "セレクションあり"
 
-#: ../gladeui/glade-project.c:932
+#: ../gladeui/glade-project.c:963
 msgid "Whether project has a selection"
 msgstr "プロジェクトにセレクションがあるかどうかです"
 
-#: ../gladeui/glade-project.c:939
+#: ../gladeui/glade-project.c:969
 msgid "Path"
 msgstr "パス"
 
-#: ../gladeui/glade-project.c:940
+#: ../gladeui/glade-project.c:970
 msgid "The filesystem path of the project"
 msgstr "プロジェクトを格納するパス名です"
 
-#: ../gladeui/glade-project.c:947
+#: ../gladeui/glade-project.c:976
 msgid "Read Only"
 msgstr "読み込み専用"
 
-#: ../gladeui/glade-project.c:948
+#: ../gladeui/glade-project.c:977
 msgid "Whether project is read-only"
 msgstr "プロジェクトが編集不可かどうかです"
 
-#: ../gladeui/glade-project.c:955
-msgid "Format"
-msgstr "形式"
+#: ../gladeui/glade-project.c:983
+#, fuzzy
+msgid "Add Item"
+msgstr "アイテム (%s) の追加"
 
-#: ../gladeui/glade-project.c:956
-msgid "The project file format"
-msgstr "プロジェクト・ファイルの形式です"
+#: ../gladeui/glade-project.c:984
+#, fuzzy
+msgid "The current item to add to the project"
+msgstr "プロジェクトを格納するパス名です"
 
-#: ../gladeui/glade-project.c:965
-msgid "Previewable"
-msgstr "プレビューの可否"
+#: ../gladeui/glade-project.c:990
+msgid "Pointer Mode"
+msgstr "ポインタのモード"
 
-#: ../gladeui/glade-project.c:966
-msgid "Wether the project can be previewed"
-msgstr "プロジェクトをプレビューできるかどうかです"
+#: ../gladeui/glade-project.c:991
+msgid "The currently effective GladePointerMode"
+msgstr ""
 
-#: ../gladeui/glade-project.c:1123
+#: ../gladeui/glade-project.c:1155
 #, c-format
 msgid ""
 "Failed to load %s.\n"
@@ -1405,21 +1244,11 @@ msgstr ""
 "%s の読み込みに失敗しました。\n"
 "次に示す必要なカタログは利用できません: %s"
 
-#: ../gladeui/glade-project.c:1542 ../gladeui/glade-project.c:1790
-#: ../gladeui/glade-project.c:4406
-#, c-format
-msgid "%s preferences"
-msgstr "%s の設定"
-
-#: ../gladeui/glade-project.c:1848
-#, c-format
-msgid "Error launching previewer: %s\n"
-msgstr "プレビューアの読み込みエラー: %s\n"
-
-#: ../gladeui/glade-project.c:1851
-#, c-format
-msgid "Failed to launch preview: %s.\n"
-msgstr "プレビューの起動に失敗しました: %s\n"
+#: ../gladeui/glade-project.c:1566 ../gladeui/glade-project.c:1603
+#: ../gladeui/glade-project.c:1840 ../gladeui/glade-project.c:3945
+#, fuzzy, c-format
+msgid "%s document properties"
+msgstr "ウィジェットのプロパティのリセット"
 
 #. ******************************************************************
 #. Verify code here (versioning, incompatability checks)
@@ -1433,118 +1262,28 @@ msgstr ""
 "象としている %s はバージョン %d.%d です"
 
 #. translators: reffers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1934
+#: ../gladeui/glade-project.c:1935
 #, c-format
 msgid "[%s] Object class '%s' was introduced in %s %d.%d\n"
 msgstr "[%s] '%s' というクラスは %s のバージョン %d.%d で導入されました\n"
 
-#. translators: reffers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:1937
-#, c-format
-msgid ""
-"This widget was made available in GtkBuilder format in %s %d.%d while "
-"project targets %s %d.%d"
-msgstr ""
-"このウィジェットは %s のバージョン %d.%d から GtkBuilder 形式で利用できるよう"
-"になりましたが、 プロジェクトが対象としている %s のバージョンは %d.%d です"
-
-#. translators: reffers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1941
-#, c-format
-msgid ""
-"[%s] Object class '%s' was made available in GtkBuilder format in %s %d.%d\n"
-msgstr ""
-"[%s] '%s' というクラスは %s のバージョン %d.%d から GtkBuilder 形式で利用でき"
-"るようになりました\n"
-
-#: ../gladeui/glade-project.c:1944
-msgid "This widget is only supported in libglade format"
-msgstr "このウィジェットは libglade でしか利用できません"
-
-#. translators: reffers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1947
-#, c-format
-msgid ""
-"[%s] Object class '%s' from %s %d.%d is only supported in libglade format\n"
-msgstr ""
-"[%s] '%s' というクラスは %s のバージョン %d.%d から libglade 形式でのみのサ"
-"ポートになりました\n"
-
-#: ../gladeui/glade-project.c:1950
-msgid "This widget is not supported in libglade format"
-msgstr "このウィジェットは libglade 形式では利用できません"
-
-#. translators: reffers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1953
-#, c-format
-msgid ""
-"[%s] Object class '%s' from %s %d.%d is not supported in libglade format\n"
-msgstr ""
-"[%s] '%s' というクラスは %s のバージョン %d.%d から libglade 形式をサポートし"
-"なくなりました\n"
-
-#: ../gladeui/glade-project.c:1956
 msgid "This widget is deprecated"
 msgstr "このウィジェットは廃止になりました"
 
 #. translators: reffers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1959
+#: ../gladeui/glade-project.c:1940
 #, c-format
 msgid "[%s] Object class '%s' from %s %d.%d is deprecated\n"
-msgstr "[%s] '%s' というクラスは %s のバージョン %d.%d から廃止なりました\n"
+msgstr "[%s] '%s' というクラスは %s のバージョン %d.%d から廃止になりました\n"
 
 #. Defined here for pretty translator comments (bug in intl tools, for some reason
 #. * you can only comment about the line directly following, forcing you to write
 #. * ugly messy code with comments in line breaks inside function calls).
 #.
-#: ../gladeui/glade-project.c:1966
-msgid "This property is not supported in libglade format"
-msgstr "このプロパティは libglade 形式では利用できません"
-
-#. translators: reffers to a property '%s' of widget '[%s]'
-#: ../gladeui/glade-project.c:1969
-#, c-format
-msgid ""
-"[%s] Property '%s' of object class '%s' is not supported in libglade format\n"
-msgstr ""
-"[%s] '%s' という '%s' クラスのプロパティは libglade 形式では利用できません\n"
-
-#. translators: reffers to a property '%s' of widget '[%s]'
-#: ../gladeui/glade-project.c:1972
-#, c-format
-msgid ""
-"[%s] Packing property '%s' of object class '%s' is not supported in libglade "
-"format\n"
-msgstr ""
-"[%s] '%s' という '%s' クラスのパッキング用プロパティは libglade 形式では利用"
-"できません\n"
-
-#: ../gladeui/glade-project.c:1975
-msgid "This property is only supported in libglade format"
-msgstr "このプロパティは libglade 形式でのみ利用できます"
-
-#. translators: reffers to a property '%s' of widget '[%s]'
-#: ../gladeui/glade-project.c:1978
-#, c-format
-msgid ""
-"[%s] Property '%s' of object class '%s' is only supported in libglade "
-"format\n"
-msgstr ""
-"[%s] '%s' という '%s' クラスのプロパティは libglade 形式でのみ利用できます\n"
-
-#. translators: reffers to a property '%s' of widget '[%s]'
-#: ../gladeui/glade-project.c:1982
-#, c-format
-msgid ""
-"[%s] Packing property '%s' of object class '%s' is only supported in "
-"libglade format\n"
-msgstr ""
-"[%s] '%s' という '%s' クラスのパッキング用プロパティは libglade 形式でのみ利"
-"用できます\n"
-
 #. translators: reffers to a property in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1987
+#: ../gladeui/glade-project.c:1950
 #, c-format
 msgid "This property was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
@@ -1552,7 +1291,7 @@ msgstr ""
 "している %s はバージョン %d.%d です"
 
 #. translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1990
+#: ../gladeui/glade-project.c:1954
 #, c-format
 msgid "[%s] Property '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr ""
@@ -1560,7 +1299,7 @@ msgstr ""
 "した\n"
 
 #. translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1993
+#: ../gladeui/glade-project.c:1958
 #, c-format
 msgid ""
 "[%s] Packing property '%s' of object class '%s' was introduced in %s %d.%d\n"
@@ -1568,38 +1307,8 @@ msgstr ""
 "[%s] '%s' という '%s' クラスのパッキング用プロパティは %s のバージョン %d.%d "
 "で導入されました\n"
 
-#. translators: reffers to a property in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:1997
-#, c-format
-msgid ""
-"This property was made available in GtkBuilder format in %s %d.%d while "
-"project targets %s %d.%d"
-msgstr ""
-"このプロパティは %s のバージョン %d.%d から GtkBuilder 形式で利用できるように"
-"なりましたが、 プロジェクトが対象としている %s のバージョンは %d.%d です"
-
-#. translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2001
-#, c-format
-msgid ""
-"[%s] Property '%s' of object class '%s' was made available in GtkBuilder "
-"format in %s %d.%d\n"
-msgstr ""
-"[%s] '%s' という '%s' クラスのプロパティは %s のバージョン %d.%d から "
-"GtkBuild 形式で利用できるようになりました\n"
-
-#. translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2005
-#, c-format
-msgid ""
-"[%s] Packing property '%s' of object class '%s' was made available in "
-"GtkBuilder format in %s %d.%d\n"
-msgstr ""
-"[%s] '%s' という '%s' クラスのパッキング用プロパティは %s のバージョン %d.%d "
-"から GtkBuilder 形式で利用できるようになりました\n"
-
 #. translators: reffers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2009
+#: ../gladeui/glade-project.c:1962
 #, c-format
 msgid "[%s] Signal '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr ""
@@ -1608,222 +1317,242 @@ msgstr ""
 
 #. translators: reffers to a signal in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2013
+#: ../gladeui/glade-project.c:1967
 #, c-format
 msgid "This signal was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
 "このシグナルは %s のバージョン %d.%d で導入されましたが、プロジェクトが対象と"
 "している %s はバージョン %d.%d です"
 
-#: ../gladeui/glade-project.c:2266
+#: ../gladeui/glade-project.c:2197
 msgid "Details"
 msgstr "詳細"
 
-#: ../gladeui/glade-project.c:2282
+#: ../gladeui/glade-project.c:2213
 #, c-format
 msgid "Project \"%s\" has errors. Save anyway?"
 msgstr "プロジェクト (\"%s\") でエラーが発生しましたが、保存を続行しますか？"
 
-#: ../gladeui/glade-project.c:2283
+#: ../gladeui/glade-project.c:2214
 #, c-format
 msgid "Project \"%s\" has deprecated widgets and/or version mismatches."
 msgstr ""
 "プロジェクト (\"%s\") には廃止になったウィジェットとバージョンの不整合 (また"
 "はそのいずれか) があります。"
 
-#: ../gladeui/glade-project.c:3742
+#: ../gladeui/glade-project.c:3560
 #, c-format
 msgid "Unsaved %i"
 msgstr "編集中のプロジェクト %i"
 
-#: ../gladeui/glade-project.c:4010
+#: ../gladeui/glade-project.c:3619
 #, c-format
 msgid "Project %s has no deprecated widgets or version mismatches."
 msgstr "%s には廃止になったウィジェットやバージョンの不整合はありません。"
 
-#: ../gladeui/glade-project.c:4129
-msgid "Set options in your project"
-msgstr "プロジェクトのオプション"
-
-#. Project format
-#: ../gladeui/glade-project.c:4146
-msgid "Project file format:"
-msgstr "プロジェクト・ファイルの形式:"
-
-#. Naming policy format
-#: ../gladeui/glade-project.c:4189
-msgid "Object names are unique:"
-msgstr "オブジェクトの名前空間:"
-
-#: ../gladeui/glade-project.c:4202
-msgid "within the project"
-msgstr "このプロジェクトの中だけ"
-
-#: ../gladeui/glade-project.c:4204
-msgid "inside toplevels"
-msgstr "トップレベルまで"
-
-#. Resource path
-#: ../gladeui/glade-project.c:4231
+#: ../gladeui/glade-project.c:3756
 msgid "Image resources are loaded locally:"
 msgstr "画像等のリソースを格納する場所:"
 
-#. Project directory...
-#: ../gladeui/glade-project.c:4247
+#: ../gladeui/glade-project.c:3773
 msgid "From the project directory"
 msgstr "プロジェクトのディレクトリ"
 
-#: ../gladeui/glade-project.c:4254
+#: ../gladeui/glade-project.c:3784
 msgid "From a project relative directory"
 msgstr "次の相対ディレクトリ:"
 
-#: ../gladeui/glade-project.c:4266
+#: ../gladeui/glade-project.c:3800
 msgid "From this directory"
 msgstr "指定する"
 
-#: ../gladeui/glade-project.c:4269
+#: ../gladeui/glade-project.c:3805
 msgid "Choose a path to load image resources"
 msgstr "画像等のリソースを格納するディレクトリの選択"
 
 #. Target versions
-#: ../gladeui/glade-project.c:4290
+#: ../gladeui/glade-project.c:3830
 msgid "Toolkit versions required:"
 msgstr "依存するツールキットのバージョン:"
 
-#: ../gladeui/glade-project.c:4387
+#: ../gladeui/glade-project.c:3926
 msgid "Verify versions and deprecations:"
 msgstr "バージョンと依存関係をチェックする:"
 
-#: ../gladeui/glade-project.c:4696
+#: ../gladeui/glade-project.c:4317
 #, c-format
 msgid "(internal %s)"
 msgstr "(埋め込まれた %s)"
 
-#: ../gladeui/glade-project.c:4700
+#: ../gladeui/glade-project.c:4322
 #, c-format
 msgid "(%s child)"
 msgstr "(%s の子)"
 
-#: ../gladeui/glade-property.c:554
+#. translators: reffers to a property named '%s' of widget '%s'
+#: ../gladeui/glade-project.c:4330
+#, fuzzy, c-format
+msgid "(%s of %s)"
+msgstr "%2$s で%1$sを設定する"
+
+#: ../gladeui/glade-project.c:4557 ../gladeui/glade-project.c:4595
+#: ../gladeui/glade-project.c:4758
+msgid "No widget selected."
+msgstr "ウィジェットを選択して下さい"
+
+#: ../gladeui/glade-project.c:4644
+msgid "Unable to paste to the selected parent"
+msgstr "選択した親ウィジェットに貼り付けできません"
+
+#: ../gladeui/glade-project.c:4655
+msgid "Unable to paste to multiple widgets"
+msgstr "複数のウィジェットに貼り付けできません"
+
+#: ../gladeui/glade-project.c:4671
+#, fuzzy
+msgid "No widget on the clipboard"
+msgstr "クリップボードからウィジェットが選択されていません"
+
+#: ../gladeui/glade-project.c:4716
+msgid "Only one widget can be pasted at a time to this container"
+msgstr "このコンテナには一度に一個のウィジェットだけ貼り付けることが可能です"
+
+#: ../gladeui/glade-project.c:4728
+msgid "Insufficient amount of placeholders in target container"
+msgstr "操作対象となるコンテナのプレイスフォルダの大きさが十分ではありません"
+
+#: ../gladeui/glade-property.c:628
 msgid "The GladePropertyClass for this property"
 msgstr "このプロパティの GladePropertyClass 型"
 
-#: ../gladeui/glade-property.c:560
+#: ../gladeui/glade-property.c:633
 msgid "Enabled"
 msgstr "有効な状態"
 
-#: ../gladeui/glade-property.c:561
+#: ../gladeui/glade-property.c:634
 msgid "If the property is optional, this is its enabled state"
 msgstr "プロパティがオプションの場合、それが有効な状態であることを表します"
 
-#: ../gladeui/glade-property.c:567 ../gladeui/glade-widget-action.c:168
+#: ../gladeui/glade-property.c:639 ../gladeui/glade-widget-action.c:190
 msgid "Sensitive"
 msgstr "反応する"
 
-#: ../gladeui/glade-property.c:568
+#: ../gladeui/glade-property.c:640
 msgid "This gives backends control to set property sensitivity"
 msgstr "プロパティが反応するようにバックエンドで制御を与えるかどうかです"
 
-#: ../gladeui/glade-property.c:574
+#: ../gladeui/glade-property.c:645
 msgid "Context"
 msgstr "コンテキスト"
 
-#: ../gladeui/glade-property.c:575
+#: ../gladeui/glade-property.c:646
 msgid "Context for translation"
 msgstr "翻訳用のコンテキストです"
 
-#: ../gladeui/glade-property.c:581
+#: ../gladeui/glade-property.c:652
 msgid "Comment"
 msgstr "コメント"
 
-#: ../gladeui/glade-property.c:582
+#: ../gladeui/glade-property.c:653
 msgid "Comment for translators"
 msgstr "翻訳者へのコメントです"
 
-#: ../gladeui/glade-property.c:588
+#: ../gladeui/glade-property.c:659
 msgid "Translatable"
 msgstr "翻訳可能な文字列"
 
-#: ../gladeui/glade-property.c:595
-msgid "Has Context"
-msgstr "コンテキストを持つ"
-
-#: ../gladeui/glade-property.c:602
+#: ../gladeui/glade-property.c:666
 msgid "Visual State"
 msgstr "表示の状態"
 
-#: ../gladeui/glade-property.c:603
+#: ../gladeui/glade-property.c:667
 msgid "Priority information for the property editor to act on"
 msgstr "プロパティ・エディタの動きに影響する優先情報です"
 
-#: ../gladeui/glade-signal-editor.c:117
-msgid "<Type here>"
-msgstr "<ここに入力して下さい>"
-
-#: ../gladeui/glade-signal-editor.c:118
-msgid "<Object>"
-msgstr "<オブジェクト>"
-
-#: ../gladeui/glade-signal-editor.c:830
+#: ../gladeui/glade-signal-editor.c:243
 msgid "Select an object to pass to the handler"
 msgstr "ハンドラに引き渡すオブジェクトの選択"
 
-#: ../gladeui/glade-signal-editor.c:913 ../plugins/gtk+/glade-accels.c:454
+#: ../gladeui/glade-signal-editor.c:813 ../plugins/gtk+/glade-accels.c:445
 msgid "Signal"
 msgstr "シグナル"
 
-#: ../gladeui/glade-signal-editor.c:913
-msgid "The name of the signal to connect to"
-msgstr "接続する先のシグナルです"
-
-#: ../gladeui/glade-signal-editor.c:971
+#: ../gladeui/glade-signal-editor.c:820 ../gladeui/glade-signal.c:167
 msgid "Handler"
 msgstr "ハンドラの名前"
 
-#: ../gladeui/glade-signal-editor.c:972
-msgid "Enter the handler to run for this signal"
-msgstr "このシグナルを受け取った際に実行するハンドラの名前です"
+#: ../gladeui/glade-signal-editor.c:858
+msgid "User data"
+msgstr ""
 
-#: ../gladeui/glade-signal-editor.c:1006 ../gladeui/glade-widget.c:1075
-msgid "Object"
-msgstr "オブジェクト"
-
-#: ../gladeui/glade-signal-editor.c:1007
-msgid "An object to pass to the handler"
-msgstr "ハンドラに引き渡すオブジェクトです"
-
-#: ../gladeui/glade-signal-editor.c:1047
+#: ../gladeui/glade-signal-editor.c:873
 msgid "Swap"
 msgstr "交換"
 
-#: ../gladeui/glade-signal-editor.c:1048
-msgid ""
-"Whether the instance and object should be swapped when calling the handler"
-msgstr "ハンドラを呼び出す際にインスタンスとオブジェクトを交換するかどうかです"
-
-#: ../gladeui/glade-signal-editor.c:1074 ../plugins/gtk+/gtk+.xml.in.h:34
+#: ../gladeui/glade-signal-editor.c:890 ../gladeui/glade-signal.c:185
+#: ../plugins/gtk+/gtk+.xml.in.h:32
 msgid "After"
 msgstr "後で"
 
-#: ../gladeui/glade-signal-editor.c:1075
-msgid ""
-"Whether the handler should be called before or after the default handler of "
-"the signal"
-msgstr ""
-"シグナルのデフォルト・ハンドラを呼び出す前または後にこのハンドラを呼び出すか"
-"どうかです"
+#: ../gladeui/glade-signal.c:161
+#, fuzzy
+msgid "SignalClass"
+msgstr "シグナル(_S)"
 
-#: ../gladeui/glade-utils.c:142 ../gladeui/glade-utils.c:173
+#: ../gladeui/glade-signal.c:162
+#, fuzzy
+msgid "The signal class of this signal"
+msgstr "内部で使用するウィジェットの名前です"
+
+#: ../gladeui/glade-signal.c:168
+#, fuzzy
+msgid "The handler for this signal"
+msgstr "このシグナルを受け取った際に実行するハンドラの名前です"
+
+#: ../gladeui/glade-signal.c:173
+#, fuzzy
+msgid "User Data"
+msgstr "ノード"
+
+#: ../gladeui/glade-signal.c:174
+#, fuzzy
+msgid "The user data for this signal"
+msgstr "このシグナルを受け取った際に実行するハンドラの名前です"
+
+#: ../gladeui/glade-signal.c:179 ../gladeui/glade-widget.c:1292
+msgid "Support Warning"
+msgstr "警告のサポート"
+
+#: ../gladeui/glade-signal.c:180
+#, fuzzy
+msgid "The versioning support warning for this signal"
+msgstr "このシグナルを受け取った際に実行するハンドラの名前です"
+
+#: ../gladeui/glade-signal.c:186
+msgid "Whether this signal is run after default handlers"
+msgstr ""
+
+#: ../gladeui/glade-signal.c:191
+#, fuzzy
+msgid "Swapped"
+msgstr "交換"
+
+#: ../gladeui/glade-signal.c:192
+#, fuzzy
+msgid "Whether the user data is swapped with the instance for the handler"
+msgstr "ハンドラを呼び出す際にインスタンスとオブジェクトを交換するかどうかです"
+
+#: ../gladeui/glade-utils.c:135 ../gladeui/glade-utils.c:165
 #, c-format
 msgid "We could not find the symbol \"%s\""
 msgstr "\"%s\" というシンボルが見つかりませんでした"
 
-#: ../gladeui/glade-utils.c:149
+#: ../gladeui/glade-utils.c:141
 #, c-format
 msgid "Could not get the type from \"%s\""
 msgstr "\"%s\" から型を取得できませんでした"
 
-#: ../gladeui/glade-utils.c:286
+#: ../gladeui/glade-utils.c:284
 #, c-format
 msgid ""
 "Cannot add non scrollable %s widget to a %s directly.\n"
@@ -1832,239 +1561,214 @@ msgstr ""
 "スクロール可能な%sを直接%sに追加することはできません。\n"
 "まず%sを追加して下さい。"
 
-#: ../gladeui/glade-utils.c:468
-msgid "File format"
-msgstr "ファイルの形式"
-
-#: ../gladeui/glade-utils.c:549
+#: ../gladeui/glade-utils.c:461
 msgid "All Files"
 msgstr "全てのファイル"
 
-#: ../gladeui/glade-utils.c:554
+#: ../gladeui/glade-utils.c:466
 msgid "Libglade Files"
 msgstr "Libglade のファイル"
 
-#: ../gladeui/glade-utils.c:559
+#: ../gladeui/glade-utils.c:471
 msgid "GtkBuilder Files"
 msgstr "GtkBuilder のファイル"
 
-#: ../gladeui/glade-utils.c:565
+#: ../gladeui/glade-utils.c:477
 msgid "All Glade Files"
 msgstr "全ての Glade ファイル"
 
-#: ../gladeui/glade-utils.c:1279
-#, c-format
-msgid ""
-"%s exists.\n"
-"Do you want to replace it?"
-msgstr ""
-"既に %s が存在しています。\n"
-"置き換えてもよろしいですか？"
-
-#: ../gladeui/glade-utils.c:1307
-#, c-format
-msgid "Error writing to %s: %s"
-msgstr "%s に書き込む際にエラー: %s"
-
-#: ../gladeui/glade-utils.c:1321
-#, c-format
-msgid "Error reading %s: %s"
-msgstr "%s を読み込む際にエラー: %s"
-
-#: ../gladeui/glade-utils.c:1336 ../gladeui/glade-utils.c:1357
-#, c-format
-msgid "Error shutting down I/O channel %s: %s"
-msgstr "I/O チャンネル %s を終了する際にエラー: %s"
-
-#: ../gladeui/glade-utils.c:1346
-#, c-format
-msgid "Failed to open %s for writing: %s"
-msgstr "%s を書き込みモードで開く際にエラー: %s"
-
-#: ../gladeui/glade-utils.c:1366
-#, c-format
-msgid "Failed to open %s for reading: %s"
-msgstr "%s を読み込みモードで開く際にエラー: %s"
-
-#: ../gladeui/glade-utils.c:1748
+#: ../gladeui/glade-utils.c:1194
 msgid "Could not show link:"
 msgstr "次のリンクを表示できませんでした:"
 
 #. Reset the column
-#. Objects
-#: ../gladeui/glade-utils.c:2130 ../plugins/gtk+/glade-attributes.c:799
-#: ../plugins/gtk+/gtk+.xml.in.h:276
+#: ../gladeui/glade-utils.c:1601 ../plugins/gtk+/gtk+.xml.in.h:321
+#: ../plugins/gtk+/glade-attributes.c:817
 msgid "None"
 msgstr "なし"
 
-#: ../gladeui/glade-widget.c:1053
+#: ../gladeui/glade-widget.c:1209
 msgid "The name of the widget"
 msgstr "ウィジェットの名前です"
 
-#: ../gladeui/glade-widget.c:1060
+#: ../gladeui/glade-widget.c:1213
 msgid "Internal name"
 msgstr "内部の名前"
 
-#: ../gladeui/glade-widget.c:1061
+#: ../gladeui/glade-widget.c:1214
 msgid "The internal name of the widget"
 msgstr "内部で使用するウィジェットの名前です"
 
-#: ../gladeui/glade-widget.c:1067
+#: ../gladeui/glade-widget.c:1218
 msgid "Anarchist"
 msgstr "Anarchist"
 
-#: ../gladeui/glade-widget.c:1068
+#: ../gladeui/glade-widget.c:1219
 msgid ""
 "Whether this composite child is an ancestral child or an anarchist child"
 msgstr ""
 "Whether this composite child is an ancestral child or an anarchist child"
 
-#: ../gladeui/glade-widget.c:1076
+#: ../gladeui/glade-widget.c:1225
+msgid "Object"
+msgstr "オブジェクト"
+
+#: ../gladeui/glade-widget.c:1226
 msgid "The object associated"
 msgstr "対応するオブジェクトです"
 
-#: ../gladeui/glade-widget.c:1083
+#: ../gladeui/glade-widget.c:1231
 msgid "Adaptor"
 msgstr "アダプタ"
 
-#: ../gladeui/glade-widget.c:1084
+#: ../gladeui/glade-widget.c:1232
 msgid "The class adaptor for the associated widget"
 msgstr "関連するウィジェットに対するクラス・アダプタです"
 
-#: ../gladeui/glade-widget.c:1091 ../gladeui/glade-inspector.c:191
+#: ../gladeui/glade-widget.c:1237 ../gladeui/glade-inspector.c:180
 msgid "Project"
 msgstr "プロジェクト"
 
-#: ../gladeui/glade-widget.c:1092
+#: ../gladeui/glade-widget.c:1238
 msgid "The glade project that this widget belongs to"
 msgstr "ウィジェットが所属する Glade プロジェクトです"
 
-#: ../gladeui/glade-widget.c:1101
+#: ../gladeui/glade-widget.c:1245
 msgid "A list of GladeProperties"
 msgstr "Glade プロパティの一覧"
 
-#: ../gladeui/glade-widget.c:1107 ../plugins/gtk+/gtk+.xml.in.h:298
+#: ../gladeui/glade-widget.c:1249 ../plugins/gtk+/gtk+.xml.in.h:345
 msgid "Parent"
 msgstr "親クラス"
 
-#: ../gladeui/glade-widget.c:1108
+#: ../gladeui/glade-widget.c:1250
 msgid "A pointer to the parenting GladeWidget"
-msgstr "親ウィジェットの GladeWideget へのポインタです"
+msgstr "親ウィジェットの GladeWidget へのポインタです"
 
-#: ../gladeui/glade-widget.c:1115
+#: ../gladeui/glade-widget.c:1255
 msgid "Internal Name"
 msgstr "内部で使用する名前"
 
-#: ../gladeui/glade-widget.c:1116
+#: ../gladeui/glade-widget.c:1256
 msgid "A generic name prefix for internal widgets"
 msgstr "内部で使用するウィジェットに対して付与する汎用的な名前の接頭子です"
 
-#: ../gladeui/glade-widget.c:1121
+#: ../gladeui/glade-widget.c:1260
 msgid "Template"
 msgstr "テンプレート"
 
-#: ../gladeui/glade-widget.c:1122
+#: ../gladeui/glade-widget.c:1261
 msgid "A GladeWidget template to base a new widget on"
 msgstr "新しいウィジェットの基本となる GladeWidget 型テンプレートです"
 
-#: ../gladeui/glade-widget.c:1128
+#: ../gladeui/glade-widget.c:1266
 msgid "Exact Template"
 msgstr "テンプレートの複製"
 
-#: ../gladeui/glade-widget.c:1129
+#: ../gladeui/glade-widget.c:1268
 msgid "Whether we are creating an exact duplicate when using a template"
 msgstr "テンプレートを使用する際にその複製を生成するかどうかです"
 
-#: ../gladeui/glade-widget.c:1134
+#: ../gladeui/glade-widget.c:1272
 msgid "Reason"
 msgstr "理由"
 
-#: ../gladeui/glade-widget.c:1135
+#: ../gladeui/glade-widget.c:1273
 msgid "A GladeCreateReason for this creation"
 msgstr "ウィジェット生成の理由を表す GladeCreateReason 型のデータです"
 
-#: ../gladeui/glade-widget.c:1143
+#: ../gladeui/glade-widget.c:1280
 msgid "Toplevel Width"
 msgstr "トップレベルの幅"
 
-#: ../gladeui/glade-widget.c:1144
+#: ../gladeui/glade-widget.c:1281
 msgid "The width of the widget when toplevel in the GladeDesignLayout"
 msgstr "GladeDesignLayout の中にトップレベルがあるウィジェットの幅です"
 
-#: ../gladeui/glade-widget.c:1153
+#: ../gladeui/glade-widget.c:1286
 msgid "Toplevel Height"
 msgstr "トップレベルの高さ"
 
-#: ../gladeui/glade-widget.c:1154
+#: ../gladeui/glade-widget.c:1287
 msgid "The height of the widget when toplevel in the GladeDesignLayout"
 msgstr "GladeDesignLayout の中にトップレベルがあるウィジェットの高さです"
 
-#: ../gladeui/glade-widget.c:1163
-msgid "Support Warning"
-msgstr "警告のサポート"
-
-#: ../gladeui/glade-widget.c:1164
+#: ../gladeui/glade-widget.c:1293
 msgid "A warning string about version mismatches"
 msgstr "バージョンの不整合を表す警告メッセージです"
 
-#: ../gladeui/glade-widget-adaptor.c:250
+#: ../gladeui/glade-widget.c:1297 ../gladeui/glade-widget-action.c:197
+#: ../plugins/gtk+/gtk+.xml.in.h:551
+msgid "Visible"
+msgstr "Visible"
+
+#: ../gladeui/glade-widget.c:1298
+msgid "Wether the widget is visible or not"
+msgstr ""
+
+#: ../gladeui/glade-widget-adaptor.c:243
 #, c-format
 msgid "A derived adaptor (%s) of %s already exist!"
 msgstr "%2$s から派生したアダプタ (%1$s) が既に存在します！"
 
-#: ../gladeui/glade-widget-adaptor.c:1237
+#: ../gladeui/glade-widget-adaptor.c:821
+#, c-format
+msgid "%s does not support adding any children."
+msgstr ""
+
+#: ../gladeui/glade-widget-adaptor.c:1255
 msgid "Name of the class"
 msgstr "クラスの名前"
 
-#: ../gladeui/glade-widget-adaptor.c:1245
+#: ../gladeui/glade-widget-adaptor.c:1262
 msgid "GType of the class"
 msgstr "クラスを表す GType 型です"
 
-#: ../gladeui/glade-widget-adaptor.c:1252
+#: ../gladeui/glade-widget-adaptor.c:1268
 msgid "Title"
 msgstr "タイトル"
 
-#: ../gladeui/glade-widget-adaptor.c:1253
+#: ../gladeui/glade-widget-adaptor.c:1269
 msgid "Translated title for the class used in the glade UI"
 msgstr ".glade UI で使用するクラスのタイトル (翻訳済) です"
 
-#: ../gladeui/glade-widget-adaptor.c:1260
+#: ../gladeui/glade-widget-adaptor.c:1275
 msgid "Generic Name"
 msgstr "一般名"
 
-#: ../gladeui/glade-widget-adaptor.c:1261
+#: ../gladeui/glade-widget-adaptor.c:1276
 msgid "Used to generate names of new widgets"
 msgstr "新しいウィジェットの名前を生成する際に使用します"
 
-#: ../gladeui/glade-widget-adaptor.c:1268 ../plugins/gtk+/gtk+.xml.in.h:198
+#: ../gladeui/glade-widget-adaptor.c:1282 ../plugins/gtk+/gtk+.xml.in.h:226
 msgid "Icon Name"
 msgstr "アイコン名"
 
-#: ../gladeui/glade-widget-adaptor.c:1269
+#: ../gladeui/glade-widget-adaptor.c:1283
 msgid "The icon name"
 msgstr "アイコンの名前です"
 
-#: ../gladeui/glade-widget-adaptor.c:1276
+#: ../gladeui/glade-widget-adaptor.c:1289
 msgid "Catalog"
 msgstr "カタログ"
 
-#: ../gladeui/glade-widget-adaptor.c:1277
+#: ../gladeui/glade-widget-adaptor.c:1290
 msgid "The name of the widget catalog this class was declared by"
 msgstr "このクラスを宣言したウィジェット・カタログの名前です"
 
-#: ../gladeui/glade-widget-adaptor.c:1284
+#: ../gladeui/glade-widget-adaptor.c:1296
 msgid "Book"
 msgstr "ブック"
 
-#: ../gladeui/glade-widget-adaptor.c:1285
+#: ../gladeui/glade-widget-adaptor.c:1297
 msgid "DevHelp search namespace for this widget class"
 msgstr "このウィジェット・クラスに対する DevHelp の検索空間の名前です"
 
-#: ../gladeui/glade-widget-adaptor.c:1292
+#: ../gladeui/glade-widget-adaptor.c:1303
 msgid "Special Child Type"
 msgstr "特別な子の種類"
 
-#: ../gladeui/glade-widget-adaptor.c:1293
+#: ../gladeui/glade-widget-adaptor.c:1304
 msgid ""
 "Holds the name of the packing property to depict special children for this "
 "container class"
@@ -2072,1358 +1776,956 @@ msgstr ""
 "このコンテナ・クラスの中にある特別な子のオブジェクトを描画するためのプロパ"
 "ティを格納した名前です"
 
-#: ../gladeui/glade-widget-adaptor.c:1301 ../plugins/gtk+/gtk+.xml.in.h:104
+#: ../gladeui/glade-widget-adaptor.c:1311 ../plugins/gtk+/gtk+.xml.in.h:118
 msgid "Cursor"
 msgstr "カーソル"
 
-#: ../gladeui/glade-widget-adaptor.c:1302
+#: ../gladeui/glade-widget-adaptor.c:1312
 msgid "A cursor for inserting widgets in the UI"
 msgstr "UI の中にウィジェットを挿入するためのカーソルです"
 
-#: ../gladeui/glade-inspector.c:192
+#: ../gladeui/glade-inspector.c:181
 msgid "The project being inspected"
 msgstr "調査しているプロジェクトです"
 
-#: ../gladeui/glade-inspector.c:389
+#: ../gladeui/glade-inspector.c:383
 msgid "< search widgets >"
 msgstr "< ここでウィジェットを検索できます >"
 
-#: ../gladeui/glade-widget-action.c:161
+#: ../gladeui/glade-widget-action.c:184
 msgid "class"
 msgstr "クラス"
 
-#: ../gladeui/glade-widget-action.c:162
+#: ../gladeui/glade-widget-action.c:185
 msgid "GladeWidgetActionClass structure pointer"
 msgstr "GladeWidgetActionClass 構造体へのポインタです"
 
-#: ../gladeui/glade-widget-action.c:169
+#: ../gladeui/glade-widget-action.c:191
 msgid "Whether this action is sensitive"
 msgstr "このアクションを利用可能な状態にするかどうかです"
 
-#: ../gladeui/glade-named-icon-chooser-dialog.c:479
+#: ../gladeui/glade-widget-action.c:198
+#, fuzzy
+msgid "Whether this action is visible"
+msgstr "このアクションを利用可能な状態にするかどうかです"
+
+#: ../gladeui/glade-named-icon-chooser-dialog.c:484
 msgid "All Contexts"
 msgstr "全てのコンテキスト"
 
-#: ../gladeui/glade-named-icon-chooser-dialog.c:1365
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1380
 msgid "Named Icon Chooser"
 msgstr "名前付きアイコンの選択"
 
-#: ../gladeui/glade-named-icon-chooser-dialog.c:1405
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1417
 msgid "Icon _Name:"
 msgstr "アイコン名(_N):"
 
-#: ../gladeui/glade-named-icon-chooser-dialog.c:1445
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1461
 msgid "C_ontexts:"
 msgstr "コンテキスト(_O):"
 
-#: ../gladeui/glade-named-icon-chooser-dialog.c:1466
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1484
 msgid "Icon Na_mes:"
 msgstr "アイコン名(_M):"
 
-#: ../gladeui/glade-named-icon-chooser-dialog.c:1488
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1508
 msgid "_List standard icons only"
 msgstr "標準のアイコンだけ表示する(_L)"
 
-#: ../gladeui/glade-named-icon-chooser-dialog.c:1704
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1717
 #, c-format
 msgid "Could not create directory: %s"
 msgstr "フォルダを生成できませんでした: %s"
 
-#: ../gladeui/icon-naming-spec.c:35 ../plugins/gtk+/gtk+.xml.in.h:25
+#: ../gladeui/icon-naming-spec.c:38 ../plugins/gtk+/gtk+.xml.in.h:23
 msgid "Actions"
 msgstr "アクション"
 
-#: ../gladeui/icon-naming-spec.c:36
+#: ../gladeui/icon-naming-spec.c:40 ../plugins/gtk+/gtk+.xml.in.h:45
 msgid "Applications"
 msgstr "アプリケーション"
 
-#: ../gladeui/icon-naming-spec.c:37
+#: ../gladeui/icon-naming-spec.c:42
 msgid "Categories"
 msgstr "カテゴリ"
 
-#: ../gladeui/icon-naming-spec.c:38
+#: ../gladeui/icon-naming-spec.c:44
 msgid "Devices"
 msgstr "デバイス"
 
-#: ../gladeui/icon-naming-spec.c:39
+#: ../gladeui/icon-naming-spec.c:46
 msgid "Emblems"
 msgstr "エンブレム"
 
-#: ../gladeui/icon-naming-spec.c:40
-msgid "Emotes"
+#: ../gladeui/icon-naming-spec.c:48
+#, fuzzy
+msgid "Emoticons"
 msgstr "スマイリー"
 
-#: ../gladeui/icon-naming-spec.c:41
+#: ../gladeui/icon-naming-spec.c:50
 msgid "International"
 msgstr "国旗"
 
-#: ../gladeui/icon-naming-spec.c:42
+#: ../gladeui/icon-naming-spec.c:52
 msgid "MIME Types"
 msgstr "MIME 型"
 
-#: ../gladeui/icon-naming-spec.c:43
+#: ../gladeui/icon-naming-spec.c:54
 msgid "Places"
 msgstr "場所"
 
-#: ../gladeui/icon-naming-spec.c:44
+#: ../gladeui/icon-naming-spec.c:56
 msgid "Status"
 msgstr "ステータス"
 
-#: ../plugins/gtk+/glade-attributes.c:215
-msgctxt "textattr"
-msgid "Style"
-msgstr "スタイル"
-
-#: ../plugins/gtk+/glade-attributes.c:219
-msgctxt "textattr"
-msgid "Weight"
-msgstr "太さ"
-
-#: ../plugins/gtk+/glade-attributes.c:223
-msgctxt "textattr"
-msgid "Variant"
-msgstr "スモールキャピタル"
-
-#: ../plugins/gtk+/glade-attributes.c:227
-msgctxt "textattr"
-msgid "Stretch"
-msgstr "ストレッチ"
-
-#: ../plugins/gtk+/glade-attributes.c:231
-msgctxt "textattr"
-msgid "Underline"
-msgstr "下線"
-
-#: ../plugins/gtk+/glade-attributes.c:235
-msgctxt "textattr"
-msgid "Strikethrough"
-msgstr "打ち消し線"
-
-#: ../plugins/gtk+/glade-attributes.c:239
-msgctxt "textattr"
-msgid "Gravity"
-msgstr "グラビティ"
-
-#: ../plugins/gtk+/glade-attributes.c:243
-msgctxt "textattr"
-msgid "Gravity Hint"
-msgstr "グラビティのヒント"
-
-#: ../plugins/gtk+/glade-attributes.c:254
-msgctxt "textattr"
-msgid "Size"
-msgstr "サイズ"
-
-#: ../plugins/gtk+/glade-attributes.c:258
-msgctxt "textattr"
-msgid "Absolute Size"
-msgstr "絶対サイズ"
-
-#: ../plugins/gtk+/glade-attributes.c:265
-msgctxt "textattr"
-msgid "Foreground Color"
-msgstr "前景色"
-
-#: ../plugins/gtk+/glade-attributes.c:269
-msgctxt "textattr"
-msgid "Background Color"
-msgstr "背景色"
-
-#: ../plugins/gtk+/glade-attributes.c:273
-msgctxt "textattr"
-msgid "Underline Color"
-msgstr "下線の色"
-
-#: ../plugins/gtk+/glade-attributes.c:277
-msgctxt "textattr"
-msgid "Strikethrough Color"
-msgstr "打ち消し線の色"
-
-#: ../plugins/gtk+/glade-attributes.c:287
-msgctxt "textattr"
-msgid "Scale"
-msgstr "スケール"
-
-#. XXX Interesting... can we get the defaults ? what can we do to let the user
-#. * unset the value ??
-#.
-#: ../plugins/gtk+/glade-attributes.c:315
-#: ../plugins/gtk+/glade-attributes.c:353
-#: ../plugins/gtk+/glade-attributes.c:360
-#: ../plugins/gtk+/glade-attributes.c:364
-#: ../plugins/gtk+/glade-attributes.c:802
-msgid "<Enter Value>"
-msgstr "<値を選択または指定して下さい>"
-
-#: ../plugins/gtk+/glade-attributes.c:353
-msgid "Unset"
-msgstr "解除"
-
-#: ../plugins/gtk+/glade-attributes.c:723
-msgid "Select a color"
-msgstr "色の選択"
-
-#: ../plugins/gtk+/glade-attributes.c:859
-msgid "Attribute"
-msgstr "属性"
-
-#: ../plugins/gtk+/glade-attributes.c:869
-msgid "Value"
-msgstr "値"
-
-#: ../plugins/gtk+/glade-attributes.c:1026
-msgid "Setup Text Attributes"
-msgstr "文字の属性に関する設定"
-
-#: ../plugins/gtk+/glade-gtk.c:61
-msgid "This property does not apply unless Use Underline is set."
-msgstr "このプロパティは下線を使用する場合にのみ適用されます"
-
-#: ../plugins/gtk+/glade-gtk.c:62
-msgid "Property not selected"
-msgstr "プロパティが選択されていません"
-
-#: ../plugins/gtk+/glade-gtk.c:63
-msgid "This property is only for use in dialog action buttons"
-msgstr "このプロパティはダイアログのアクション・ボタンでのみ使用します"
-
-#: ../plugins/gtk+/glade-gtk.c:64
-msgid "This property is set to be controlled by an Action"
-msgstr "これはアクションによって制御されるプロパティです"
-
-#: ../plugins/gtk+/glade-gtk.c:191
-msgid "GnomeUIInfo"
-msgstr "GnomeUIInfo"
-
-#: ../plugins/gtk+/glade-gtk.c:192
-msgid "Choose the GnomeUIInfo stock item"
-msgstr "GnomeUIInfo 型のストック・アイテムを選択して下さい"
-
-#. We have to save/load icon-size as int, and fake the enum
-#: ../plugins/gtk+/glade-gtk.c:201 ../plugins/gtk+/gtk+.xml.in.h:201
-msgid "Icon Size"
-msgstr "アイコンの大きさ"
-
-#: ../plugins/gtk+/glade-gtk.c:202
-msgid "Symbolic size to use for stock icon, icon set or named icon"
-msgstr ""
-"ストック・アイコンやアイコン・セット、または名前付きアイコンに適用される大き"
-"さです"
-
-#: ../plugins/gtk+/glade-gtk.c:1059
-#, c-format
-msgid "Removing parent of %s"
-msgstr "%s の親を削除する"
-
-#: ../plugins/gtk+/glade-gtk.c:1116
-#, c-format
-msgid "Adding parent %s for %s"
-msgstr "%2$s に対する親の %1$s を追加する"
-
-#: ../plugins/gtk+/glade-gtk.c:1200
-#, c-format
-msgid "Adding %s to Size Group %s"
-msgstr "%s をサイズ・グループの %s に追加する"
-
-#: ../plugins/gtk+/glade-gtk.c:1202
-#, c-format
-msgid "Adding %s to a new Size Group"
-msgstr "%s を新しいサイズ・グループに追加する"
-
-#. Add trailing new... item
-#: ../plugins/gtk+/glade-gtk.c:1257
-msgid "New Size Group"
-msgstr "新しいサイズ・グループ"
-
-#: ../plugins/gtk+/glade-gtk.c:1626
-#, c-format
-msgid "Ordering children of %s"
-msgstr "%s の子を並べ替える"
-
-#: ../plugins/gtk+/glade-gtk.c:2183 ../plugins/gtk+/glade-gtk.c:2190
-#, c-format
-msgid "Insert placeholder to %s"
-msgstr "プレースフォルダを %s に挿入する"
-
-#: ../plugins/gtk+/glade-gtk.c:2197
-#, c-format
-msgid "Remove placeholder from %s"
-msgstr "%s からプレースフォルダを削除する"
-
-#: ../plugins/gtk+/glade-gtk.c:3255 ../plugins/gtk+/glade-gtk.c:3263
-#, c-format
-msgid "Insert Row on %s"
-msgstr "%s に行を挿入する"
-
-#: ../plugins/gtk+/glade-gtk.c:3271 ../plugins/gtk+/glade-gtk.c:3279
-#, c-format
-msgid "Insert Column on %s"
-msgstr "%s に列を挿入する"
-
-#: ../plugins/gtk+/glade-gtk.c:3287
-#, c-format
-msgid "Remove Column on %s"
-msgstr "%s から列を削除する"
-
-#: ../plugins/gtk+/glade-gtk.c:3295
-#, c-format
-msgid "Remove Row on %s"
-msgstr "%s の行を削除する"
-
-#: ../plugins/gtk+/glade-gtk.c:4389 ../plugins/gtk+/glade-gtk.c:4396
-#, c-format
-msgid "Insert page on %s"
-msgstr "%s にページを挿入する"
-
-#: ../plugins/gtk+/glade-gtk.c:4403
-#, c-format
-msgid "Remove page from %s"
-msgstr "%s からページを削除する"
-
-#: ../plugins/gtk+/glade-gtk.c:6113
-msgid "This property only applies to stock images"
-msgstr "このプロパティはストック画像にのみ適用されます"
-
-#: ../plugins/gtk+/glade-gtk.c:6115
-msgid "This property only applies to named icons"
-msgstr "このプロパティは名前付きアイコンにのみ適用されます"
-
-#: ../plugins/gtk+/glade-gtk.c:6381
-msgid "<separator>"
-msgstr "<セパレータ>"
-
-#: ../plugins/gtk+/glade-gtk.c:6391
-msgid "<custom>"
-msgstr "<カスタム>"
-
-#: ../plugins/gtk+/glade-gtk.c:6570
-msgid "Tool Item"
-msgstr "ツールバーのアイテム"
-
-#: ../plugins/gtk+/glade-gtk.c:6579
-msgid "Packing"
-msgstr "パッキング"
-
-#: ../plugins/gtk+/glade-gtk.c:6598 ../plugins/gtk+/gtk+.xml.in.h:263
-msgid "Menu Item"
-msgstr "メニュー項目"
-
-#: ../plugins/gtk+/glade-gtk.c:6634 ../plugins/gtk+/glade-gtk.c:6642
-msgid "Normal item"
-msgstr "標準"
-
-#: ../plugins/gtk+/glade-gtk.c:6635 ../plugins/gtk+/glade-gtk.c:6643
-msgid "Image item"
-msgstr "画像付き"
-
-#: ../plugins/gtk+/glade-gtk.c:6636 ../plugins/gtk+/glade-gtk.c:6644
-msgid "Check item"
-msgstr "チェックボタン付き"
-
-#: ../plugins/gtk+/glade-gtk.c:6637 ../plugins/gtk+/glade-gtk.c:6645
-msgid "Radio item"
-msgstr "ラジオボタン付き"
-
-#: ../plugins/gtk+/glade-gtk.c:6638 ../plugins/gtk+/glade-gtk.c:6646
-msgid "Separator item"
-msgstr "セパレータ"
-
-#: ../plugins/gtk+/glade-gtk.c:6670 ../plugins/gtk+/glade-gtk.c:6714
-msgid "Edit Menu Bar"
-msgstr "メニュー・バーの編集"
-
-#: ../plugins/gtk+/glade-gtk.c:6672 ../plugins/gtk+/glade-gtk.c:6716
-msgid "Edit Menu"
-msgstr "メニューの編集"
-
-#: ../plugins/gtk+/glade-gtk.c:7100
-msgid "Print S_etup"
-msgstr "印刷の設定(_E)"
-
-#: ../plugins/gtk+/glade-gtk.c:7104
-msgid "Find Ne_xt"
-msgstr "次の検索(_X)"
-
-#: ../plugins/gtk+/glade-gtk.c:7108
-msgid "_Undo Move"
-msgstr "移動を元に戻す(_U)"
-
-#: ../plugins/gtk+/glade-gtk.c:7112
-msgid "_Redo Move"
-msgstr "移動をやり直す(_R)"
-
-#: ../plugins/gtk+/glade-gtk.c:7115
-msgid "Select _All"
-msgstr "全て選択(_A)"
-
-#: ../plugins/gtk+/glade-gtk.c:7118
-msgid "_New Game"
-msgstr "新ゲーム(_N)"
-
-#: ../plugins/gtk+/glade-gtk.c:7121
-msgid "_Pause game"
-msgstr "一時停止(_P)"
-
-#: ../plugins/gtk+/glade-gtk.c:7124
-msgid "_Restart Game"
-msgstr "再開(_R)"
-
-#: ../plugins/gtk+/glade-gtk.c:7127
-msgid "_Hint"
-msgstr "ヒント(_H)"
-
-#: ../plugins/gtk+/glade-gtk.c:7130
-msgid "_Scores..."
-msgstr "得点(_S)..."
-
-#: ../plugins/gtk+/glade-gtk.c:7133
-msgid "_End Game"
-msgstr "終了(_E)"
-
-#: ../plugins/gtk+/glade-gtk.c:7136
-msgid "Create New _Window"
-msgstr "新規ウィンドウの生成(_W)"
-
-#: ../plugins/gtk+/glade-gtk.c:7139
-msgid "_Close This Window"
-msgstr "このウィンドウを閉じる(_C)"
-
-#: ../plugins/gtk+/glade-gtk.c:7151
-msgid "_Settings"
-msgstr "設定(_S)"
-
-#: ../plugins/gtk+/glade-gtk.c:7154
-msgid "Fi_les"
-msgstr "ファイル(_L)"
-
-#: ../plugins/gtk+/glade-gtk.c:7157
-msgid "_Windows"
-msgstr "ウィンドウ(_W)"
-
-#: ../plugins/gtk+/glade-gtk.c:7163
-msgid "_Game"
-msgstr "ゲーム(_G)"
-
-#: ../plugins/gtk+/glade-gtk.c:7628 ../plugins/gtk+/gtk+.xml.in.h:60
-msgid "Button"
-msgstr "標準のボタン"
-
-#: ../plugins/gtk+/glade-gtk.c:7629 ../plugins/gtk+/glade-gtk.c:11187
-#: ../plugins/gtk+/glade-gtk.c:11284
-msgid "Toggle"
-msgstr "トグル・ボタン"
-
-#: ../plugins/gtk+/glade-gtk.c:7630 ../plugins/gtk+/glade-gtk.c:7641
-#: ../plugins/gtk+/glade-gtk.c:7649
-msgid "Radio"
-msgstr "ラジオ・ボタン"
-
-#: ../plugins/gtk+/glade-gtk.c:7631 ../plugins/gtk+/gtk+.xml.in.h:261
-msgid "Menu"
-msgstr "メニュー"
-
-#: ../plugins/gtk+/glade-gtk.c:7632 ../plugins/gtk+/gtk+.xml.in.h:105
-msgid "Custom"
-msgstr "カスタム"
-
-#: ../plugins/gtk+/glade-gtk.c:7633 ../plugins/gtk+/glade-gtk.c:7642
-#: ../plugins/gtk+/glade-gtk.c:7650
-msgid "Separator"
-msgstr "セパレータ"
-
-#: ../plugins/gtk+/glade-gtk.c:7638 ../plugins/gtk+/glade-gtk.c:7646
-#: ../plugins/gtk+/gtk+.xml.in.h:277
-msgid "Normal"
-msgstr "標準"
-
-#: ../plugins/gtk+/glade-gtk.c:7639 ../plugins/gtk+/glade-gtk.c:7647
-#: ../plugins/gtk+/gtk+.xml.in.h:206
-msgid "Image"
-msgstr "画像"
-
-#: ../plugins/gtk+/glade-gtk.c:7640 ../plugins/gtk+/glade-gtk.c:7648
-msgid "Check"
-msgstr "チェック"
-
-#: ../plugins/gtk+/glade-gtk.c:7662
-msgid "Tool Bar Editor"
-msgstr "ツール・バー・エディタ"
-
-#: ../plugins/gtk+/glade-gtk.c:8208
-msgid "This property does not apply when Ellipsize is set."
-msgstr "このプロパティは省略記号が指定されている場合は適用されません"
-
-#: ../plugins/gtk+/glade-gtk.c:8225
-msgid "This property does not apply when Angle is set."
-msgstr "このプロパティは角度が指定されている場合は適用されません"
-
-#: ../plugins/gtk+/glade-gtk.c:9029
-msgid "Introduction page"
-msgstr "(アシスタントを紹介するページ)"
-
-#: ../plugins/gtk+/glade-gtk.c:9033
-msgid "Content page"
-msgstr "(アシスタントの内容を表示するページ)"
-
-#: ../plugins/gtk+/glade-gtk.c:9037
-msgid "Confirmation page"
-msgstr "(確認のメッセージを表示するページ)"
-
-#: ../plugins/gtk+/glade-gtk.c:10671
-#, c-format
-msgid "%s is set to load %s from the model"
-msgstr "%s を指定するとモデルから %s を読み込みます"
-
-#: ../plugins/gtk+/glade-gtk.c:10673
-#, c-format
-msgid "%s is set to manipulate %s directly"
-msgstr "%s を指定すると %s を直接操作します"
-
-#: ../plugins/gtk+/glade-gtk.c:11127 ../plugins/gtk+/gtk+.xml.in.h:469
-msgid "Tree View Column"
-msgstr "ツリー・ビューの項目"
-
-#: ../plugins/gtk+/glade-gtk.c:11127 ../plugins/gtk+/gtk+.xml.in.h:72
-msgid "Cell Renderer"
-msgstr "セル・レンダラ"
-
-#: ../plugins/gtk+/glade-gtk.c:11132
-msgid "Properties and Attributes"
-msgstr "プロパティと属性値"
-
-#: ../plugins/gtk+/glade-gtk.c:11137
-msgid "Common Properties and Attributes"
-msgstr "共通のプロパティと属性値"
-
-#. Text of the textview
-#. Text...
-#: ../plugins/gtk+/glade-gtk.c:11181 ../plugins/gtk+/glade-gtk.c:11278
-#: ../plugins/gtk+/gtk+.xml.in.h:421 ../plugins/gtk+/glade-entry-editor.c:520
-msgid "Text"
-msgstr "文字列"
-
-#. Accelerator
-#: ../plugins/gtk+/glade-gtk.c:11182 ../plugins/gtk+/glade-gtk.c:11279
-#: ../plugins/gtk+/gtk+.xml.in.h:14
-msgid "Accelerator"
-msgstr "アクセラレータ"
-
-#: ../plugins/gtk+/glade-gtk.c:11183 ../plugins/gtk+/glade-gtk.c:11280
-#: ../plugins/gtk+/gtk+.xml.in.h:87
-msgid "Combo"
-msgstr "コンボ"
-
-#: ../plugins/gtk+/glade-gtk.c:11184 ../plugins/gtk+/glade-gtk.c:11281
-msgid "Spin"
-msgstr "スピン"
-
-#: ../plugins/gtk+/glade-gtk.c:11185 ../plugins/gtk+/glade-gtk.c:11282
-msgid "Pixbuf"
-msgstr "Pixbuf"
-
-#. Progress...
-#: ../plugins/gtk+/glade-gtk.c:11186 ../plugins/gtk+/glade-gtk.c:11283
-#: ../plugins/gtk+/gtk+.xml.in.h:321 ../plugins/gtk+/glade-entry-editor.c:563
-msgid "Progress"
-msgstr "プログレス"
-
-#: ../plugins/gtk+/glade-gtk.c:11188 ../plugins/gtk+/glade-gtk.c:11285
-#: ../plugins/gtk+/gtk+.xml.in.h:398
-msgid "Spinner"
-msgstr "スピナー"
-
-#: ../plugins/gtk+/glade-gtk.c:11199
-msgid "Icon View Editor"
-msgstr "アイコン・ビューのエディタ"
-
-#: ../plugins/gtk+/glade-gtk.c:11199
-msgid "Combo Editor"
-msgstr "コンボのエディタ"
-
-#: ../plugins/gtk+/glade-gtk.c:11274
-msgid "Column"
-msgstr "項目"
-
-#: ../plugins/gtk+/glade-gtk.c:11294
-msgid "Tree View Editor"
-msgstr "ツリー・ビューの編集"
-
-#. Dont really add/remove actions (because name conflicts inside groups)
-#.
-#: ../plugins/gtk+/glade-gtk.c:11496
-msgid "The accelerator can only be set when inside an Action Group."
-msgstr "アクション・グループの中でのみアクセラレータを指定できます"
-
-#: ../plugins/gtk+/glade-accels.c:320 ../plugins/gtk+/glade-accels.c:394
-msgid "<choose a key>"
-msgstr "<キーを選択して下さい>"
-
-#: ../plugins/gtk+/glade-accels.c:475
-msgid "Accelerator Key"
-msgstr "アクセラレータ・キー"
-
-#: ../plugins/gtk+/glade-accels.c:534
-msgid "Choose accelerator keys..."
-msgstr "アクセラレータ・キーの選択..."
-
 #: ../plugins/gtk+/gtk+.xml.in.h:1
-msgid "A file name, full or relative path to load an icon for this toolbutton"
-msgstr ""
-"このツールボタンのアイコンを表すファイル名 (相対パスまたは絶対パス) です"
-
-#: ../plugins/gtk+/gtk+.xml.in.h:2
 msgid "A list of accelerator keys"
 msgstr "アクセラレータ・キーの並びです"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:3
+#: ../plugins/gtk+/gtk+.xml.in.h:2
 msgid "A list of sources for this icon factory"
 msgstr "このアイコン・ファクトリに対するソースのリストです"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:4
+#: ../plugins/gtk+/gtk+.xml.in.h:3
 msgid "A symbolic icon size for the stock icon"
 msgstr "ストック・アイコンの大きさです (記号サイズ)"
-
-#: ../plugins/gtk+/gtk+.xml.in.h:5
-msgid "A tooltip text for this widget"
-msgstr "このウィジェットのツールチップに表示する文章です"
 
 #. NOT AVAILABLES ON WIN32
 #. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
 #. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
 #.
-#: ../plugins/gtk+/gtk+.xml.in.h:10
+#: ../plugins/gtk+/gtk+.xml.in.h:8
 msgid "About Dialog"
 msgstr "情報ダイアログ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:11
+#: ../plugins/gtk+/gtk+.xml.in.h:9
 msgid "Accel Group"
 msgstr "アクセラレータのグループ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:12
+#: ../plugins/gtk+/gtk+.xml.in.h:10
 msgid "Accel Label"
 msgstr "アクセラレータ付きのラベル"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:15
+#. Accelerator
+#: ../plugins/gtk+/gtk+.xml.in.h:12 ../plugins/gtk+/glade-gtk.c:10576
+#: ../plugins/gtk+/glade-gtk.c:10713
+msgid "Accelerator"
+msgstr "アクセラレータ"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:13
 msgid "Accelerator Mode column"
 msgstr "アクセラレータ・モードの項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:16
+#: ../plugins/gtk+/gtk+.xml.in.h:14
 msgid "Accelerator Modifiers column"
 msgstr "アクセラレータの修飾子の項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:17
+#: ../plugins/gtk+/gtk+.xml.in.h:15
 msgid "Accelerator Renderer"
 msgstr "アクセラレータのレンダラ"
 
 #. Accelerators
-#: ../plugins/gtk+/gtk+.xml.in.h:19
+#: ../plugins/gtk+/gtk+.xml.in.h:17
 msgid "Accelerators"
 msgstr "アクセラレータ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:20
+#: ../plugins/gtk+/gtk+.xml.in.h:18
 msgid "Accessible Description"
 msgstr "アクセシビリティ機能の説明"
 
 #. Atk name and description properties
-#: ../plugins/gtk+/gtk+.xml.in.h:22
+#: ../plugins/gtk+/gtk+.xml.in.h:20
 msgid "Accessible Name"
 msgstr "アクセシビリティ機能の名前"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:23
-#: ../plugins/gtk+/glade-activatable-editor.c:395
+#: ../plugins/gtk+/gtk+.xml.in.h:21 ../plugins/gtk+/glade-gtk.c:11111
+#: ../plugins/gtk+/glade-gtk.c:11144
+#: ../plugins/gtk+/glade-activatable-editor.c:347
 msgid "Action"
 msgstr "アクション"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:24
+#: ../plugins/gtk+/gtk+.xml.in.h:22
 msgid "Action Group"
 msgstr "アクション・グループ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:26
+#: ../plugins/gtk+/gtk+.xml.in.h:24
 msgid "Activatable column"
 msgstr "アクティブ化できる項目"
 
 #. Atk activate property
-#: ../plugins/gtk+/gtk+.xml.in.h:28
+#: ../plugins/gtk+/gtk+.xml.in.h:26
 msgid "Activate"
 msgstr "アクティブ化"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:29
+#: ../plugins/gtk+/gtk+.xml.in.h:27
 msgid "Active column"
 msgstr "項目をアクティブにする"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:30
+#: ../plugins/gtk+/gtk+.xml.in.h:28
 msgid "Add Parent"
 msgstr "親の追加"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:31
+#: ../plugins/gtk+/gtk+.xml.in.h:29
 msgid "Add to Size Group"
 msgstr "サイズ・グループに追加する"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:32
+#: ../plugins/gtk+/gtk+.xml.in.h:30
 msgid "Adjustment"
 msgstr "アジャストメント"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:33
+#: ../plugins/gtk+/gtk+.xml.in.h:31
 msgid "Adjustment column"
 msgstr "アジャストメントの項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:35
+#: ../plugins/gtk+/gtk+.xml.in.h:33
 msgid "Alignment"
 msgstr "アラインメント"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:36
+#: ../plugins/gtk+/gtk+.xml.in.h:34
 msgid "Alignment column"
 msgstr "アラインメントの項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:37
+#: ../plugins/gtk+/gtk+.xml.in.h:35
 msgid "All"
 msgstr "全て"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:38
+#: ../plugins/gtk+/gtk+.xml.in.h:36
 msgid "All Events"
 msgstr "上記の全てのイベント"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:39
+#: ../plugins/gtk+/gtk+.xml.in.h:37
 msgid "All Modifiers"
 msgstr "全ての修飾キー"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:40
+#: ../plugins/gtk+/gtk+.xml.in.h:38
 msgid "Alt Key"
 msgstr "Alt キー"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:41
+#: ../plugins/gtk+/gtk+.xml.in.h:39
 msgid "Always"
 msgstr "常に"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:42
+#: ../plugins/gtk+/gtk+.xml.in.h:40
 msgid "Always Center"
 msgstr "常に中央"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:43
+#: ../plugins/gtk+/gtk+.xml.in.h:41
 msgid "An accelerator key for this action"
 msgstr "このアクションに対応するアクセラレータのキーです"
 
+#: ../plugins/gtk+/gtk+.xml.in.h:42
+#, fuzzy
+msgid "Application Chooser Button"
+msgstr "ファイルの選択ボタン"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:43
+#, fuzzy
+msgid "Application Chooser Dialog"
+msgstr "最近開いたオブジェクトの選択ダイアログ"
+
 #: ../plugins/gtk+/gtk+.xml.in.h:44
+#, fuzzy
+msgid "Application Chooser Widget"
+msgstr "ファイルの選択"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:46
 msgid "Arrow"
 msgstr "アロー"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:45
+#. NOT AVAILABLES ON WIN32
+#. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
+#. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
+#.
+#: ../plugins/gtk+/gtk+.xml.in.h:51
+msgid "Artistic"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:52
+msgid "Ascending"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:53
 msgid "Aspect Frame"
 msgstr "アスペクト・フレーム"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:46
+#: ../plugins/gtk+/gtk+.xml.in.h:54
 msgid "Assistant"
 msgstr "アシスタント"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:47
+#: ../plugins/gtk+/gtk+.xml.in.h:55
 msgid "Attributes"
 msgstr "属性値"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:48
+#: ../plugins/gtk+/gtk+.xml.in.h:56
 msgid "Attributes column"
 msgstr "属性値の項目です"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:49
+#: ../plugins/gtk+/gtk+.xml.in.h:57
 msgid "Automatic"
 msgstr "自動"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:50
+#. NOT AVAILABLES ON WIN32
+#. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
+#. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
+#.
+#: ../plugins/gtk+/gtk+.xml.in.h:62
+msgid "BSD"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:63
 msgid "Background Color Name column"
 msgstr "背景色の名前の項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:51
+#: ../plugins/gtk+/gtk+.xml.in.h:64
 msgid "Background Color column"
 msgstr "背景色の項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:52
+#: ../plugins/gtk+/gtk+.xml.in.h:65
+#, fuzzy
+msgid "Background RGBA column"
+msgstr "背景色の項目"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:66
 msgid "Before"
 msgstr "前"
 
-#. Objects
-#: ../plugins/gtk+/gtk+.xml.in.h:54
+#: ../plugins/gtk+/gtk+.xml.in.h:67
 msgid "Both"
 msgstr "両方"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:55
+#: ../plugins/gtk+/gtk+.xml.in.h:68
 msgid "Bottom"
 msgstr "下"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:56
+#: ../plugins/gtk+/gtk+.xml.in.h:69
 msgid "Bottom Left"
 msgstr "左下"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:57
+#: ../plugins/gtk+/gtk+.xml.in.h:70
 msgid "Bottom Right"
 msgstr "右下"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:58
+#: ../plugins/gtk+/gtk+.xml.in.h:71
 msgid "Bottom to Top"
 msgstr "下から上"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:59
+#: ../plugins/gtk+/gtk+.xml.in.h:72
 msgid "Box"
 msgstr "ボックス"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:61
+#: ../plugins/gtk+/gtk+.xml.in.h:73
+msgid "Browse"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:74 ../plugins/gtk+/glade-gtk.c:6461
+#: ../plugins/gtk+/glade-gtk.c:6659
+msgid "Button"
+msgstr "標準のボタン"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:75
 msgid "Button 1 Motion"
 msgstr "ボタン１を動かした"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:62
+#: ../plugins/gtk+/gtk+.xml.in.h:76
 msgid "Button 2 Motion"
 msgstr "ボタン２を動かした"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:63
+#: ../plugins/gtk+/gtk+.xml.in.h:77
 msgid "Button 3 Motion"
 msgstr "ボタン３を動かした"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:64
+#: ../plugins/gtk+/gtk+.xml.in.h:78
 msgid "Button Box"
 msgstr "ボタン・ボックス"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:65
+#: ../plugins/gtk+/gtk+.xml.in.h:79
 msgid "Button Motion"
 msgstr "ボタンを動かした"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:66
+#: ../plugins/gtk+/gtk+.xml.in.h:80
 msgid "Button Press"
 msgstr "ボタンを押下した"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:67
+#: ../plugins/gtk+/gtk+.xml.in.h:81
 msgid "Button Release"
 msgstr "ボタン押下を解放した"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:68
+#: ../plugins/gtk+/gtk+.xml.in.h:82
 msgid "Calendar"
 msgstr "カレンダ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:69
+#: ../plugins/gtk+/gtk+.xml.in.h:83
 msgid "Cancel"
 msgstr "キャンセル"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:70
+#: ../plugins/gtk+/gtk+.xml.in.h:84
 msgid "Cell Background Color column"
 msgstr "セルの背景色の項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:71
+#: ../plugins/gtk+/gtk+.xml.in.h:85
 msgid "Cell Background Color name column"
 msgstr "セルの背景色の名前の項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:73
+#: ../plugins/gtk+/gtk+.xml.in.h:86
+#, fuzzy
+msgid "Cell Background RGBA column"
+msgstr "セルの背景色の項目"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:87 ../plugins/gtk+/glade-gtk.c:10519
+msgid "Cell Renderer"
+msgstr "セル・レンダラ"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:88
 msgid "Center"
 msgstr "中央"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:74
+#: ../plugins/gtk+/gtk+.xml.in.h:89
 msgid "Center on Parent"
 msgstr "親オブジェクトの中央"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:75
-msgid "Centimeters"
-msgstr "センチ"
-
-#: ../plugins/gtk+/gtk+.xml.in.h:76
+#: ../plugins/gtk+/gtk+.xml.in.h:90
 msgid "Character"
 msgstr "文字"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:77
+#: ../plugins/gtk+/gtk+.xml.in.h:91
 msgid "Check Button"
 msgstr "チェック・ボタン"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:78
+#: ../plugins/gtk+/gtk+.xml.in.h:92
 msgid "Check Menu Item"
 msgstr "チェック式のメニュー・アイテム"
 
 #. Atk click property
-#: ../plugins/gtk+/gtk+.xml.in.h:80
+#: ../plugins/gtk+/gtk+.xml.in.h:94
 msgid "Click"
 msgstr "クリック"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:81
+#: ../plugins/gtk+/gtk+.xml.in.h:95
 msgid "Climb Rate column"
 msgstr "Climb Rate の項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:82
+#: ../plugins/gtk+/gtk+.xml.in.h:96
 msgid "Close"
 msgstr "閉じる"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:83
+#: ../plugins/gtk+/gtk+.xml.in.h:97
 msgid "Color Button"
 msgstr "色の選択ボタン"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:84
+#: ../plugins/gtk+/gtk+.xml.in.h:98
 msgid "Color Selection"
 msgstr "色の選択"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:85
+#: ../plugins/gtk+/gtk+.xml.in.h:99
 msgid "Color Selection Dialog"
 msgstr "色の選択ダイアログ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:86
+#: ../plugins/gtk+/gtk+.xml.in.h:100
 msgid "Columns"
 msgstr "項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:88
+#: ../plugins/gtk+/gtk+.xml.in.h:101 ../plugins/gtk+/glade-gtk.c:10577
+#: ../plugins/gtk+/glade-gtk.c:10714
+msgid "Combo"
+msgstr "コンボ"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:102
 msgid "Combo Box"
 msgstr "コンボ・ボックス"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:89
-msgid "Combo Box Entry"
-msgstr "コンボ・ボックスのエントリ"
+#: ../plugins/gtk+/gtk+.xml.in.h:103
+#, fuzzy
+msgid "Combo Box Text"
+msgstr "コンボ・ボックス"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:90
+#: ../plugins/gtk+/gtk+.xml.in.h:104
 msgid "Combo Renderer"
 msgstr "コンボのレンダラ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:91
+#: ../plugins/gtk+/gtk+.xml.in.h:105
 msgid "Composite Widgets"
 msgstr "結合ウィジェット"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:92
+#: ../plugins/gtk+/gtk+.xml.in.h:106
 msgid "Condensed"
 msgstr "Condensed"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:93
+#: ../plugins/gtk+/gtk+.xml.in.h:107
 msgid "Confirm"
 msgstr "確認"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:95
+#: ../plugins/gtk+/gtk+.xml.in.h:109
 msgid "Containers"
 msgstr "コンテナ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:96
+#: ../plugins/gtk+/gtk+.xml.in.h:110
 msgid "Content"
 msgstr "目次"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:97
+#: ../plugins/gtk+/gtk+.xml.in.h:111
 msgid "Continuous"
 msgstr "連続的"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:98
+#: ../plugins/gtk+/gtk+.xml.in.h:112
 msgid "Control Key"
 msgstr "Control キー"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:99
+#: ../plugins/gtk+/gtk+.xml.in.h:113
 msgid "Control and Display"
 msgstr "コントロールと表示"
 
 #. Atk relationset properties
-#: ../plugins/gtk+/gtk+.xml.in.h:101
+#: ../plugins/gtk+/gtk+.xml.in.h:115
 msgid "Controlled By"
 msgstr "制御される側"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:102
+#: ../plugins/gtk+/gtk+.xml.in.h:116
 msgid "Controller For"
 msgstr "制御する側"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:103
+#: ../plugins/gtk+/gtk+.xml.in.h:117
 msgid "Create Folder"
 msgstr "フォルダの生成"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:106
+#. NOT AVAILABLES ON WIN32
+#. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
+#. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
+#.
+#: ../plugins/gtk+/gtk+.xml.in.h:123 ../plugins/gtk+/glade-gtk.c:6465
+#: ../plugins/gtk+/glade-gtk.c:6663
+msgid "Custom"
+msgstr "カスタム"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:124
 msgid "Data"
 msgstr "ノード"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:107
+#: ../plugins/gtk+/gtk+.xml.in.h:125
 msgid "Data column"
 msgstr "データの項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:108
+#: ../plugins/gtk+/gtk+.xml.in.h:126
 msgid "Default"
 msgstr "デフォルト"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:109
+#: ../plugins/gtk+/gtk+.xml.in.h:127
 msgid "Delayed"
 msgstr "遅延する"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:110
+#: ../plugins/gtk+/gtk+.xml.in.h:128
+msgid "Descending"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:129
 msgid "Described By"
 msgstr "説明される側"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:111
+#: ../plugins/gtk+/gtk+.xml.in.h:130
 msgid "Description For"
 msgstr "説明する側"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:112
+#: ../plugins/gtk+/gtk+.xml.in.h:131
 msgid "Description of an object, formatted for assistive technology access"
 msgstr "オブジェクトの説明です"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:113
+#: ../plugins/gtk+/gtk+.xml.in.h:132
 msgid "Desktop"
 msgstr "デスクトップ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:114
+#: ../plugins/gtk+/gtk+.xml.in.h:133
 msgid "Dialog"
 msgstr "ダイアログ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:115
+#: ../plugins/gtk+/gtk+.xml.in.h:134
 msgid "Dialog Box"
 msgstr "ダイアログ・ボックス"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:116
+#: ../plugins/gtk+/gtk+.xml.in.h:135
 msgid "Digits column"
 msgstr "数値の項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:117
+#: ../plugins/gtk+/gtk+.xml.in.h:136
 msgid "Discontinuous"
 msgstr "間隔を空ける"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:118
+#: ../plugins/gtk+/gtk+.xml.in.h:137
 msgid "Discrete"
 msgstr "別々"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:119
+#: ../plugins/gtk+/gtk+.xml.in.h:138
 msgid "Dock"
 msgstr "ドック"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:120
+#: ../plugins/gtk+/gtk+.xml.in.h:139
 msgid "Double"
 msgstr "２倍"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:121
+#: ../plugins/gtk+/gtk+.xml.in.h:140
 msgid "Down"
 msgstr "下"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:122
+#: ../plugins/gtk+/gtk+.xml.in.h:141
 msgid "Drag & Drop"
 msgstr "ドラッグ＆ドロップ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:123
-msgid "Drag and Drop"
-msgstr "ドラッグ＆ドロップ"
-
-#: ../plugins/gtk+/gtk+.xml.in.h:124
+#: ../plugins/gtk+/gtk+.xml.in.h:143
 msgid "Drawing Area"
 msgstr "描画領域"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:125
+#: ../plugins/gtk+/gtk+.xml.in.h:144
 msgid "Drop Down Menu"
 msgstr "ドロップ・ダウン式のメニュー"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:126
+#: ../plugins/gtk+/gtk+.xml.in.h:145
 msgid "East"
 msgstr "東"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:127
+#: ../plugins/gtk+/gtk+.xml.in.h:146
 msgid "Edge"
 msgstr "端"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:128
+#: ../plugins/gtk+/gtk+.xml.in.h:147
 msgid "Edit Separately"
 msgstr "プロパティの編集"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:129
+#: ../plugins/gtk+/gtk+.xml.in.h:148
 msgid "Edit&#8230;"
 msgstr "編集&#8230;"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:130
+#: ../plugins/gtk+/gtk+.xml.in.h:149
 msgid "Editable column"
 msgstr "編集可能な項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:131
+#: ../plugins/gtk+/gtk+.xml.in.h:150
 msgid "Eighth Key"
 msgstr "Eighth Key"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:132
+#: ../plugins/gtk+/gtk+.xml.in.h:151
 msgid "Ellipsize column"
 msgstr "省略記号の項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:133
+#: ../plugins/gtk+/gtk+.xml.in.h:152
 msgid "Embedded By"
 msgstr "埋め込まれる側"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:134
+#: ../plugins/gtk+/gtk+.xml.in.h:153
 msgid "Embeds"
 msgstr "埋め込む側"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:135
+#: ../plugins/gtk+/gtk+.xml.in.h:154
 msgid "End"
 msgstr "最後"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:136
+#: ../plugins/gtk+/gtk+.xml.in.h:155
 msgid "Enter Notify"
 msgstr "特定の領域に入った"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:137
+#: ../plugins/gtk+/gtk+.xml.in.h:156
 msgid "Enter a list of column types for this data store"
 msgstr "このデータ・ストアの項目リストの型を選択して下さい"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:138
+#: ../plugins/gtk+/gtk+.xml.in.h:157
 msgid "Enter a list of values to be applied on each row"
 msgstr "上で指定した項目毎に縦方向に並べるノードの一覧を作成します"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:139
+#: ../plugins/gtk+/gtk+.xml.in.h:158
 msgid "Entry Buffer"
 msgstr "入力バッファ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:140
+#: ../plugins/gtk+/gtk+.xml.in.h:159
 msgid "Entry Completion"
 msgstr "エントリの補完"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:141
+#: ../plugins/gtk+/gtk+.xml.in.h:160
 msgid "Error"
 msgstr "エラー"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:142
+#: ../plugins/gtk+/gtk+.xml.in.h:161
 msgid "Etched In"
 msgstr "凹"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:143
+#: ../plugins/gtk+/gtk+.xml.in.h:162
 msgid "Etched Out"
 msgstr "凸"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:144
+#: ../plugins/gtk+/gtk+.xml.in.h:163
 msgid "Event Box"
 msgstr "イベント・ボックス"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:145
+#: ../plugins/gtk+/gtk+.xml.in.h:164
 msgid "Expand"
 msgstr "広げる"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:146
+#: ../plugins/gtk+/gtk+.xml.in.h:165
 msgid "Expanded"
 msgstr "広げた"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:147
+#: ../plugins/gtk+/gtk+.xml.in.h:166
 msgid "Expander"
 msgstr "エキスパンダ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:148
+#: ../plugins/gtk+/gtk+.xml.in.h:167
 msgid "Exposure"
 msgstr "エキスポーズ (露出) した"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:149
+#: ../plugins/gtk+/gtk+.xml.in.h:168
 msgid "Extra Condensed"
 msgstr "Extra Condensed"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:150
+#: ../plugins/gtk+/gtk+.xml.in.h:169
 msgid "Extra Expanded"
 msgstr "Extra Expanded"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:151
+#: ../plugins/gtk+/gtk+.xml.in.h:170
 msgid "Family column"
 msgstr "Family column"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:152
+#: ../plugins/gtk+/gtk+.xml.in.h:171
 msgid "Fifth Key"
 msgstr "Fifth Key"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:153
+#: ../plugins/gtk+/gtk+.xml.in.h:172
 msgid "Fifth Mouse Button"
 msgstr "マウスの第５ボタン"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:154
+#: ../plugins/gtk+/gtk+.xml.in.h:173
 msgid "File Chooser Button"
 msgstr "ファイルの選択ボタン"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:155
+#: ../plugins/gtk+/gtk+.xml.in.h:174
 msgid "File Chooser Dialog"
 msgstr "ファイルの選択ダイアログ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:156
+#: ../plugins/gtk+/gtk+.xml.in.h:175
 msgid "File Chooser Widget"
 msgstr "ファイルの選択"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:157
+#: ../plugins/gtk+/gtk+.xml.in.h:176
 msgid "File Filter"
 msgstr "ファイル・フィルタ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:158 ../plugins/gtk+/glade-icon-sources.c:772
+#: ../plugins/gtk+/gtk+.xml.in.h:177 ../plugins/gtk+/glade-icon-sources.c:804
 msgid "File Name"
 msgstr "ファイル名"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:159
+#: ../plugins/gtk+/gtk+.xml.in.h:178
 msgid "Fill"
 msgstr "埋める"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:160
+#: ../plugins/gtk+/gtk+.xml.in.h:179
 msgid "First Mouse Button"
 msgstr "マウスの第１ボタン"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:161
+#: ../plugins/gtk+/gtk+.xml.in.h:180
 msgid "Fixed"
 msgstr "位置指定"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:162
+#: ../plugins/gtk+/gtk+.xml.in.h:181
 msgid "Flows From"
 msgstr "提供される側"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:163
+#: ../plugins/gtk+/gtk+.xml.in.h:182
 msgid "Flows To"
 msgstr "提供する側"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:164
+#: ../plugins/gtk+/gtk+.xml.in.h:183
 msgid "Focus Change"
 msgstr "フォーカスが移った"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:165
+#: ../plugins/gtk+/gtk+.xml.in.h:184
 msgid "Follow State column"
 msgstr "Follow State column"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:166
+#: ../plugins/gtk+/gtk+.xml.in.h:185
 msgid "Font Button"
 msgstr "フォント選択ボタン"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:167
+#: ../plugins/gtk+/gtk+.xml.in.h:186
 msgid "Font Description column"
 msgstr "フォント名の項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:168
+#: ../plugins/gtk+/gtk+.xml.in.h:187
 msgid "Font Selection"
 msgstr "フォントの選択"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:169
+#: ../plugins/gtk+/gtk+.xml.in.h:188
 msgid "Font Selection Dialog"
 msgstr "フォントの選択ダイアログ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:170
+#: ../plugins/gtk+/gtk+.xml.in.h:189
 msgid "Font column"
 msgstr "フォントの項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:171
+#: ../plugins/gtk+/gtk+.xml.in.h:190
 msgid "Foreground Color Name column"
 msgstr "前景色の名前の項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:172
+#: ../plugins/gtk+/gtk+.xml.in.h:191
 msgid "Foreground Color column"
 msgstr "前景色の項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:173
+#: ../plugins/gtk+/gtk+.xml.in.h:192
+#, fuzzy
+msgid "Foreground RGBA column"
+msgstr "前景色の項目"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:193
 msgid "Forth Mouse Button"
 msgstr "マウスの第４ボタン"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:174
+#: ../plugins/gtk+/gtk+.xml.in.h:194
 msgid "Frame"
 msgstr "フレーム"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:175
+#. NOT AVAILABLES ON WIN32
+#. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
+#. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
+#.
+#: ../plugins/gtk+/gtk+.xml.in.h:199
+msgid "GPL 2.0"
+msgstr ""
+
+#. NOT AVAILABLES ON WIN32
+#. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
+#. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
+#.
+#: ../plugins/gtk+/gtk+.xml.in.h:204
+msgid "GPL 3.0"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:205
+msgid "Grid"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:206
 msgid "Grow Only"
 msgstr "Grow Only"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:176
+#: ../plugins/gtk+/gtk+.xml.in.h:207
 msgid "Gtk"
 msgstr "GTK+"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:177
+#: ../plugins/gtk+/gtk+.xml.in.h:208
 msgid "Half"
 msgstr "半分"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:178
+#: ../plugins/gtk+/gtk+.xml.in.h:209
 msgid "Handle Box"
 msgstr "ハンドル・ボックス"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:179
+#: ../plugins/gtk+/gtk+.xml.in.h:210
 msgid "Has Entry column"
 msgstr "エントリありの項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:180
+#: ../plugins/gtk+/gtk+.xml.in.h:211
 msgid "Height column"
 msgstr "高さの項目"
 
-#. Objects
-#: ../plugins/gtk+/gtk+.xml.in.h:182 ../plugins/gtk+/glade-model-data.c:1244
+#: ../plugins/gtk+/gtk+.xml.in.h:212
 msgid "Horizontal"
 msgstr "水平"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:183
+#: ../plugins/gtk+/gtk+.xml.in.h:213
 msgid "Horizontal Alignment"
 msgstr "水平方向のアライメント"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:184
+#: ../plugins/gtk+/gtk+.xml.in.h:214
 msgid "Horizontal Alignment column"
 msgstr "水平方向のアライメントの項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:185
+#: ../plugins/gtk+/gtk+.xml.in.h:215
 msgid "Horizontal Box"
 msgstr "水平ボックス"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:186
+#: ../plugins/gtk+/gtk+.xml.in.h:216
 msgid "Horizontal Button Box"
 msgstr "水平方向のボタン・ボックス"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:187
+#: ../plugins/gtk+/gtk+.xml.in.h:217
 msgid "Horizontal Padding"
 msgstr "水平方向のパディング"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:188
+#: ../plugins/gtk+/gtk+.xml.in.h:218
 msgid "Horizontal Padding column"
 msgstr "水平方向のパディングの項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:189
+#: ../plugins/gtk+/gtk+.xml.in.h:219
 msgid "Horizontal Panes"
 msgstr "水平方向のペイン"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:190
-msgid "Horizontal Ruler"
-msgstr "水平方向のルーラ"
-
-#: ../plugins/gtk+/gtk+.xml.in.h:191
+#: ../plugins/gtk+/gtk+.xml.in.h:220
 msgid "Horizontal Scale"
 msgstr "水平方向のスケール"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:192
+#: ../plugins/gtk+/gtk+.xml.in.h:221
 msgid "Horizontal Scrollbar"
 msgstr "水平方向のスクロールバー"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:193
+#: ../plugins/gtk+/gtk+.xml.in.h:222
 msgid "Horizontal Separator"
 msgstr "水平方向のセパレータ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:194
+#: ../plugins/gtk+/gtk+.xml.in.h:223
 msgid "Horizontal and Vertical"
 msgstr "タテとヨコ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:195
+#: ../plugins/gtk+/gtk+.xml.in.h:224
 msgid "Hyper Modifier"
 msgstr "Hyper の修飾キー"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:196
-msgid "Icon"
-msgstr "アイコン"
-
-#: ../plugins/gtk+/gtk+.xml.in.h:197
+#: ../plugins/gtk+/gtk+.xml.in.h:225
 msgid "Icon Factory"
 msgstr "アイコン・ファクトリ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:199
+#: ../plugins/gtk+/gtk+.xml.in.h:227
 msgid "Icon Name column"
 msgstr "アイコン名の項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:202
+#. We have to save/load icon-size as int, and fake the enum
+#: ../plugins/gtk+/gtk+.xml.in.h:229 ../plugins/gtk+/glade-gtk.c:74
+msgid "Icon Size"
+msgstr "アイコンの大きさ"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:230
 msgid "Icon Sources"
 msgstr "アイコンのソース"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:203
+#: ../plugins/gtk+/gtk+.xml.in.h:231
 msgid "Icon View"
 msgstr "アイコン・ビュー"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:204
+#: ../plugins/gtk+/gtk+.xml.in.h:232
 msgid "Icons only"
 msgstr "アイコンのみ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:205
+#: ../plugins/gtk+/gtk+.xml.in.h:233
 msgid "If Valid"
 msgstr "妥当ならば"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:207
+#: ../plugins/gtk+/gtk+.xml.in.h:234 ../plugins/gtk+/glade-gtk.c:6472
+#: ../plugins/gtk+/glade-gtk.c:6480 ../plugins/gtk+/glade-gtk.c:6669
+#: ../plugins/gtk+/glade-gtk.c:6678
+msgid "Image"
+msgstr "画像"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:235
 msgid "Image Menu Item"
 msgstr "画像付きのメニュー・アイテム"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:208
+#: ../plugins/gtk+/gtk+.xml.in.h:236
 msgid "Immediate"
 msgstr "すぐに"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:209
+#: ../plugins/gtk+/gtk+.xml.in.h:237
 msgid "In"
 msgstr "内側"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:210
-msgid "Inches"
-msgstr "インチ"
-
-#: ../plugins/gtk+/gtk+.xml.in.h:211
+#: ../plugins/gtk+/gtk+.xml.in.h:238
 msgid "Inconsistent column"
 msgstr "Inconsistent column"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:212
+#: ../plugins/gtk+/gtk+.xml.in.h:239
 msgid ""
 "Indicates a subwindow attached to a component but otherwise has no "
 "connection in the UI hierarchy to that component"
@@ -3431,64 +2733,64 @@ msgstr ""
 "コンポーネントに取り付けられるサブウィンドウであるものの、UI の階層の中にはコ"
 "ンポーネントに接続していないことを表します"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:213
+#: ../plugins/gtk+/gtk+.xml.in.h:240
 msgid "Indicates an object controlled by one or more target objects"
 msgstr ""
 "１つ以上のターゲット・オブジェクトから制御されるオブジェクトであることを表し"
 "ます"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:214
+#: ../plugins/gtk+/gtk+.xml.in.h:241
 msgid ""
 "Indicates an object is a cell in a treetable which is displayed because a "
 "cell in the same column is expanded and identifies that cell"
 msgstr "表示しているツリーの一部 (セル) であることを表します"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:215
+#: ../plugins/gtk+/gtk+.xml.in.h:242
 msgid "Indicates an object is a controller for one or more target objects"
 msgstr ""
 "１つ以上のターゲット・オブジェクトを制御するオブジェクトであることを表します"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:216
+#: ../plugins/gtk+/gtk+.xml.in.h:243
 msgid "Indicates an object is a label for one or more target objects"
 msgstr ""
 "１つ以上のターゲット・オブジェクトにラベルを付与するオブジェクトであることを"
 "表します"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:217
+#: ../plugins/gtk+/gtk+.xml.in.h:244
 msgid ""
 "Indicates an object is a member of a group of one or more target objects"
 msgstr ""
 "１つ以上のターゲット・オブジェクトのグループに所属するオブジェクトであること"
 "を表します"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:218
+#: ../plugins/gtk+/gtk+.xml.in.h:245
 msgid "Indicates an object is labelled by one or more target objects"
 msgstr ""
 "１つ以上のターゲット・オブジェクトからラベルを付与されるオブジェクトであるこ"
 "とを表します"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:219
+#: ../plugins/gtk+/gtk+.xml.in.h:246
 msgid "Indicates that an object is a parent window of another object"
 msgstr "別のオブジェクトの親ウィンドウとなるオブジェクトであることを表します"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:220
+#: ../plugins/gtk+/gtk+.xml.in.h:247
 msgid "Indicates that an object is a popup for another object"
 msgstr ""
 "別のオブジェクトに対してポップアップされるオブジェクトであることを表します"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:221
+#: ../plugins/gtk+/gtk+.xml.in.h:248
 msgid ""
 "Indicates that an object provides descriptive information about another "
 "object; more verbose than 'Label For'"
 msgstr "別のオブジェクトの説明を提供するオブジェクトです"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:222
+#: ../plugins/gtk+/gtk+.xml.in.h:249
 msgid ""
 "Indicates that another object provides descriptive information about this "
 "object; more verbose than 'Labelled By'"
 msgstr "このオブジェクトの説明を提供する別のオブジェクトです"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:223
+#: ../plugins/gtk+/gtk+.xml.in.h:250
 msgid ""
 "Indicates that the object has content that flows logically from another "
 "AtkObject in a sequential way, (for instance text-flow)"
@@ -3496,7 +2798,7 @@ msgstr ""
 "別の ATK オブジェクトから論理的に提供されるデータを持つオブジェクトであること"
 "を表します (例: text-flow)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:224
+#: ../plugins/gtk+/gtk+.xml.in.h:251
 msgid ""
 "Indicates that the object has content that flows logically to another "
 "AtkObject in a sequential way, (for instance text-flow)"
@@ -3504,828 +2806,962 @@ msgstr ""
 "論理的に別の ATK オブジェクトに提供するデータを持つオブジェクトであることを表"
 "します (例: text-flow)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:225
+#: ../plugins/gtk+/gtk+.xml.in.h:252
 msgid ""
 "Indicates that the object visually embeds another object's content, i.e. "
 "this object's content flows around another's content"
 msgstr ""
 "別のオブジェクトのデータを視覚的に埋め込むオブジェクトであることを表します"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:226
+#: ../plugins/gtk+/gtk+.xml.in.h:253
 msgid "Indicator Size column"
 msgstr "Indicator Size column"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:227
+#: ../plugins/gtk+/gtk+.xml.in.h:254
 msgid "Info"
 msgstr "情報"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:228
+#: ../plugins/gtk+/gtk+.xml.in.h:255
 msgid "Initially Complete"
 msgstr "最初から完了にする"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:229
+#: ../plugins/gtk+/gtk+.xml.in.h:256
 msgid "Insert After"
 msgstr "後ろに挿入する"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:230
+#: ../plugins/gtk+/gtk+.xml.in.h:257
 msgid "Insert Before"
 msgstr "前に挿入する"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:231
+#: ../plugins/gtk+/gtk+.xml.in.h:258
 msgid "Insert Column"
 msgstr "列の挿入"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:232
+#: ../plugins/gtk+/gtk+.xml.in.h:259
 msgid "Insert Page After"
 msgstr "後ろにページを挿入する"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:233
+#: ../plugins/gtk+/gtk+.xml.in.h:260
 msgid "Insert Page Before"
 msgstr "前にページを挿入する"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:234
+#: ../plugins/gtk+/gtk+.xml.in.h:261
 msgid "Insert Row"
 msgstr "行の挿入"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:235
+#: ../plugins/gtk+/gtk+.xml.in.h:262
 msgid "Intro"
 msgstr "紹介"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:236
+#: ../plugins/gtk+/gtk+.xml.in.h:263
 msgid "Invalid"
 msgstr "不正"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:237
+#: ../plugins/gtk+/gtk+.xml.in.h:264
 msgid ""
 "Inverse of 'Embeds', indicates that this object's content is visually "
 "embedded in another object"
 msgstr "別のオブジェクトの中に視覚的に埋め込まれるオブジェクトのデータです"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:238
+#: ../plugins/gtk+/gtk+.xml.in.h:265
+#, fuzzy
+msgid "Inverted column"
+msgstr "列の挿入"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:266
 msgid "Invisible Char Set"
 msgstr "文字の不可視"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:239
+#: ../plugins/gtk+/gtk+.xml.in.h:267
 msgid "Italic"
 msgstr "イタリック体"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:240
+#: ../plugins/gtk+/gtk+.xml.in.h:268
 msgid "Items"
 msgstr "アイテム"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:241
+#: ../plugins/gtk+/gtk+.xml.in.h:269
 msgid "Key Press"
 msgstr "キーを押下した"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:242
+#: ../plugins/gtk+/gtk+.xml.in.h:270
 msgid "Key Release"
 msgstr "キー押下を解放した"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:243
+#: ../plugins/gtk+/gtk+.xml.in.h:271
 msgid "Keycode column"
 msgstr "キーコードの項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:245
+#. NOT AVAILABLES ON WIN32
+#. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
+#. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
+#.
+#: ../plugins/gtk+/gtk+.xml.in.h:276
+msgid "LGPL 2.1"
+msgstr ""
+
+#. NOT AVAILABLES ON WIN32
+#. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
+#. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
+#.
+#: ../plugins/gtk+/gtk+.xml.in.h:281
+msgid "LGPL 3.0"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:283
 msgid "Label For"
 msgstr "ラベルを付与する側"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:246
+#: ../plugins/gtk+/gtk+.xml.in.h:284
 msgid "Labelled By"
 msgstr "ラベルが付与される側"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:247
+#: ../plugins/gtk+/gtk+.xml.in.h:285
 msgid "Language column"
 msgstr "Language column"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:248
+#: ../plugins/gtk+/gtk+.xml.in.h:286
 msgid "Large Toolbar"
 msgstr "大きなツールバー"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:249
+#: ../plugins/gtk+/gtk+.xml.in.h:287
 msgid "Layout"
 msgstr "レイアウト"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:250
+#: ../plugins/gtk+/gtk+.xml.in.h:288
 msgid "Least Recently Used first"
 msgstr "少しだけ最近のものを先頭にする"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:251
+#: ../plugins/gtk+/gtk+.xml.in.h:289
 msgid "Leave Notify"
 msgstr "特定の領域から出た"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:252
+#: ../plugins/gtk+/gtk+.xml.in.h:290
 msgid "Left"
 msgstr "左"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:253
+#: ../plugins/gtk+/gtk+.xml.in.h:291
 msgid "Left to Right"
 msgstr "左から右"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:254
+#: ../plugins/gtk+/gtk+.xml.in.h:292
 msgid "Link Button"
 msgstr "リンク・ボタン"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:255
+#: ../plugins/gtk+/gtk+.xml.in.h:293
 msgid "List Store"
 msgstr "リスト・ストア"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:256
+#: ../plugins/gtk+/gtk+.xml.in.h:294
 msgid "List of widgets in this group"
 msgstr "このグループに属すウィジェットのリストです"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:257
+#: ../plugins/gtk+/gtk+.xml.in.h:295
 msgid "Lock Key"
 msgstr "キーをロックする"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:258
+#: ../plugins/gtk+/gtk+.xml.in.h:296
 msgid "Low"
 msgstr "低い"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:259
+#. NOT AVAILABLES ON WIN32
+#. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
+#. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
+#.
+#: ../plugins/gtk+/gtk+.xml.in.h:301
+msgid "MIT X11"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:302
 msgid "Markup column"
 msgstr "マークアップの項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:260
+#: ../plugins/gtk+/gtk+.xml.in.h:303
+#, fuzzy
+msgid "Maximum width in charachters column"
+msgstr "文字数の項目"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:304
 msgid "Member Of"
 msgstr "グループに所属する"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:262
+#: ../plugins/gtk+/gtk+.xml.in.h:305 ../plugins/gtk+/glade-gtk.c:6464
+#: ../plugins/gtk+/glade-gtk.c:6662
+msgid "Menu"
+msgstr "メニュー"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:306
 msgid "Menu Bar"
 msgstr "メニュー・バー"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:264
+#: ../plugins/gtk+/gtk+.xml.in.h:307 ../plugins/gtk+/glade-gtk.c:5584
+msgid "Menu Item"
+msgstr "メニュー項目"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:308
 msgid "Menu Shell"
 msgstr "メニュー・シェル"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:265
+#: ../plugins/gtk+/gtk+.xml.in.h:309
 msgid "Menu Tool Button"
 msgstr "メニュー式のツール・ボタン"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:266
+#: ../plugins/gtk+/gtk+.xml.in.h:310
 msgid "Message Dialog"
 msgstr "メッセージ・ダイアログ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:267
+#: ../plugins/gtk+/gtk+.xml.in.h:311
 msgid "Meta Modifier"
 msgstr "Meta Modifier"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:268
+#: ../plugins/gtk+/gtk+.xml.in.h:312
 msgid "Middle"
 msgstr "真ん中"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:269
+#: ../plugins/gtk+/gtk+.xml.in.h:313
+#, fuzzy
+msgid "Mime Types"
+msgstr "MIME 型"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:314
 msgid "Miscellaneous"
 msgstr "その他"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:270
+#: ../plugins/gtk+/gtk+.xml.in.h:315
 msgid "Model column"
 msgstr "モデルの項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:271
+#: ../plugins/gtk+/gtk+.xml.in.h:316
 msgid "Most Recently Used first"
 msgstr "直近で使用したものを先頭にする"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:272
+#: ../plugins/gtk+/gtk+.xml.in.h:317
 msgid "Mouse"
 msgstr "マウスに従う"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:273
+#: ../plugins/gtk+/gtk+.xml.in.h:318
+#, fuzzy
+msgid "Multiple"
+msgstr "複数個"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:319
 msgid "Never"
 msgstr "しない"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:274
+#: ../plugins/gtk+/gtk+.xml.in.h:320
 msgid "Node Child Of"
 msgstr "子ノードである"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:278
+#: ../plugins/gtk+/gtk+.xml.in.h:322 ../plugins/gtk+/glade-gtk.c:6471
+#: ../plugins/gtk+/glade-gtk.c:6479 ../plugins/gtk+/glade-gtk.c:6668
+#: ../plugins/gtk+/glade-gtk.c:6677
+msgid "Normal"
+msgstr "標準"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:323
 msgid "North"
 msgstr "北"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:279
+#: ../plugins/gtk+/gtk+.xml.in.h:324
 msgid "North East"
 msgstr "北東"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:280
+#: ../plugins/gtk+/gtk+.xml.in.h:325
 msgid "North West"
 msgstr "北西"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:281
+#: ../plugins/gtk+/gtk+.xml.in.h:326
 msgid "Notebook"
 msgstr "ノートブック"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:282
+#: ../plugins/gtk+/gtk+.xml.in.h:327
 msgid "Notification"
 msgstr "通知"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:283
+#: ../plugins/gtk+/gtk+.xml.in.h:328
 msgid "Number of Pages"
 msgstr "ページの数"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:284
+#: ../plugins/gtk+/gtk+.xml.in.h:329
 msgid "Number of items"
 msgstr "アイテムの数"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:285
+#: ../plugins/gtk+/gtk+.xml.in.h:330
 msgid "Number of pages"
 msgstr "ページ数"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:286
+#: ../plugins/gtk+/gtk+.xml.in.h:331
 msgid "Number of pages in this assistant"
 msgstr "このアシスタントのページ数です"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:287
+#: ../plugins/gtk+/gtk+.xml.in.h:332
 msgid "Object instance's name formatted for assistive technology access"
 msgstr "オブジェクトのインスタンス名です"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:288
+#: ../plugins/gtk+/gtk+.xml.in.h:333
 msgid "Oblique"
 msgstr "斜体"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:289 ../plugins/gtk+/glade-model-data.c:1243
+#: ../plugins/gtk+/gtk+.xml.in.h:334
 msgid "Off"
 msgstr "オフ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:290
+#: ../plugins/gtk+/gtk+.xml.in.h:335
+msgid "Offscreen"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:336
+#, fuzzy
+msgid "Offscreen Window"
+msgstr "スクロール・ウィンドウ"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:337
 msgid "Ok"
 msgstr "OK"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:291
+#: ../plugins/gtk+/gtk+.xml.in.h:338
 msgid "Ok, Cancel"
 msgstr "OK、キャンセル"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:292
+#: ../plugins/gtk+/gtk+.xml.in.h:339
 msgid "On"
 msgstr "オン"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:293
+#: ../plugins/gtk+/gtk+.xml.in.h:340
 msgid "Open"
 msgstr "開く"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:294
+#: ../plugins/gtk+/gtk+.xml.in.h:341
 msgid "Orientation column"
 msgstr "向きの項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:295
+#: ../plugins/gtk+/gtk+.xml.in.h:342
 msgid "Other"
 msgstr "その他"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:296
+#: ../plugins/gtk+/gtk+.xml.in.h:343
 msgid "Out"
 msgstr "外側"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:297
+#: ../plugins/gtk+/gtk+.xml.in.h:344
 msgid "Paned"
 msgstr "ペイン"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:299
+#: ../plugins/gtk+/gtk+.xml.in.h:346
 msgid "Parent Window Of"
 msgstr "親ウィンドウ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:300
+#: ../plugins/gtk+/gtk+.xml.in.h:347
+#, fuzzy
+msgid "Patterns"
+msgstr "パレット"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:348
 msgid "Pixbuf Expander Closed column"
 msgstr "Pixbuf Expander Closed column"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:301
+#: ../plugins/gtk+/gtk+.xml.in.h:349
 msgid "Pixbuf Expander Open column"
 msgstr "Pixbuf Expander Open column"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:302
+#: ../plugins/gtk+/gtk+.xml.in.h:350
 msgid "Pixbuf Renderer"
 msgstr "Pixbuf のレンダラ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:303
+#: ../plugins/gtk+/gtk+.xml.in.h:351
 msgid "Pixbuf column"
 msgstr "Pixbuf 型の項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:304
-msgid "Pixels"
-msgstr "ピクセル"
-
-#: ../plugins/gtk+/gtk+.xml.in.h:305
+#: ../plugins/gtk+/gtk+.xml.in.h:352
 msgid "Pointer Motion"
 msgstr "ポインタが移動した"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:306
+#: ../plugins/gtk+/gtk+.xml.in.h:353
 msgid "Pointer Motion Hint"
 msgstr "ポインタ移動のヒント"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:307
+#: ../plugins/gtk+/gtk+.xml.in.h:354
 msgid "Popup"
 msgstr "ポップアップ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:308
+#: ../plugins/gtk+/gtk+.xml.in.h:355
 msgid "Popup For"
 msgstr "ポップアップされる側"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:309
+#: ../plugins/gtk+/gtk+.xml.in.h:356
 msgid "Popup Menu"
 msgstr "ポップアップ・メニュー"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:310
+#: ../plugins/gtk+/gtk+.xml.in.h:357
 msgid "Position"
 msgstr "位置"
 
 #. Atk press property
-#: ../plugins/gtk+/gtk+.xml.in.h:312
+#: ../plugins/gtk+/gtk+.xml.in.h:359
 msgid "Press"
 msgstr "押下"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:314
+#: ../plugins/gtk+/gtk+.xml.in.h:360
+msgid "Preview snapshot"
+msgstr "プレビュー"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:361
 msgid "Primary Icon Activatable"
 msgstr "有効可否"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:315
+#: ../plugins/gtk+/gtk+.xml.in.h:362
 msgid "Primary Icon Name"
 msgstr "アイコン名"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:316
+#: ../plugins/gtk+/gtk+.xml.in.h:363
 msgid "Primary Icon Pixbuf"
 msgstr "Pixbuf 画像"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:317
+#: ../plugins/gtk+/gtk+.xml.in.h:364
 msgid "Primary Icon Sensitive"
 msgstr "反応可否"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:318
+#: ../plugins/gtk+/gtk+.xml.in.h:365
 msgid "Primary Icon Tooltip Markup"
 msgstr "一番目のアイコンのツールチップのマークアップ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:319
+#: ../plugins/gtk+/gtk+.xml.in.h:366
 msgid "Primary Icon Tooltip Text"
 msgstr "一番目のアイコンのツールチップの文字列"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:320
+#: ../plugins/gtk+/gtk+.xml.in.h:367
 msgid "Primary Stock Icon"
 msgstr "ストック・アイコン"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:322
+#. Progress...
+#: ../plugins/gtk+/gtk+.xml.in.h:368 ../plugins/gtk+/glade-gtk.c:10580
+#: ../plugins/gtk+/glade-gtk.c:10717 ../plugins/gtk+/glade-entry-editor.c:540
+msgid "Progress"
+msgstr "プログレス"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:369
 msgid "Progress Bar"
 msgstr "プログレス・バー"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:323
+#: ../plugins/gtk+/gtk+.xml.in.h:370
 msgid "Progress Fraction"
 msgstr "進捗率"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:324
+#: ../plugins/gtk+/gtk+.xml.in.h:371
 msgid "Progress Pulse Step"
 msgstr "更新ステップ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:325
+#: ../plugins/gtk+/gtk+.xml.in.h:372
 msgid "Progress Renderer"
 msgstr "プログレスバーのレンダラ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:326
+#: ../plugins/gtk+/gtk+.xml.in.h:373
 msgid "Property Change"
 msgstr "プロパティが変わった"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:327
+#: ../plugins/gtk+/gtk+.xml.in.h:374
 msgid "Proximity  Out"
 msgstr "遠ざかった"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:328
+#: ../plugins/gtk+/gtk+.xml.in.h:375
 msgid "Proximity In"
 msgstr "接近した"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:329
+#: ../plugins/gtk+/gtk+.xml.in.h:376
 msgid "Pulse column"
 msgstr "パルス型の項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:330
+#: ../plugins/gtk+/gtk+.xml.in.h:377
 msgid "Question"
 msgstr "質問"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:331
+#: ../plugins/gtk+/gtk+.xml.in.h:378
 msgid "Queue"
 msgstr "キュー"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:332
+#: ../plugins/gtk+/gtk+.xml.in.h:379
 msgid "Radio Action"
 msgstr "ラジオ・ボタンのアクション"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:333
+#: ../plugins/gtk+/gtk+.xml.in.h:380
 msgid "Radio Button"
 msgstr "ラジオ・ボタン"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:334
+#: ../plugins/gtk+/gtk+.xml.in.h:381
 msgid "Radio Menu Item"
 msgstr "ラジオ式のメニュー・アイテム"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:335
+#: ../plugins/gtk+/gtk+.xml.in.h:382
 msgid "Radio Tool Button"
 msgstr "ラジオ式のツール・ボタン"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:336
+#: ../plugins/gtk+/gtk+.xml.in.h:383
 msgid "Radio column"
 msgstr "ラジオ式の項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:337
+#: ../plugins/gtk+/gtk+.xml.in.h:384
 msgid "Range"
 msgstr "範囲"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:338
+#: ../plugins/gtk+/gtk+.xml.in.h:385
 msgid "Recent Action"
 msgstr "最後の操作のアクション"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:339
+#: ../plugins/gtk+/gtk+.xml.in.h:386
 msgid "Recent Chooser"
 msgstr "最近開いたオブジェクトの選択"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:340
+#: ../plugins/gtk+/gtk+.xml.in.h:387
 msgid "Recent Chooser Dialog"
 msgstr "最近開いたオブジェクトの選択ダイアログ"
 
+#: ../plugins/gtk+/gtk+.xml.in.h:388 ../plugins/gtk+/glade-gtk.c:5549
+#, fuzzy
+msgid "Recent Chooser Menu"
+msgstr "最近開いたオブジェクトの選択"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:389
+#, fuzzy
+msgid "Recent Filter"
+msgstr "ファイル・フィルタ"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:390
+#, fuzzy
+msgid "Recent Manager"
+msgstr "最近開いたオブジェクトの選択"
+
 #. GtkActivatable
-#: ../plugins/gtk+/gtk+.xml.in.h:342
+#: ../plugins/gtk+/gtk+.xml.in.h:392
 msgid "Related Action"
 msgstr "関連づけるアクション"
 
 #. Atk release property
-#: ../plugins/gtk+/gtk+.xml.in.h:344
+#: ../plugins/gtk+/gtk+.xml.in.h:394
 msgid "Release"
 msgstr "解放"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:345
+#: ../plugins/gtk+/gtk+.xml.in.h:395
 msgid "Release Modifier"
 msgstr "修飾キーの解放"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:346
+#: ../plugins/gtk+/gtk+.xml.in.h:396
 msgid "Remove Column"
 msgstr "列の削除"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:347
+#: ../plugins/gtk+/gtk+.xml.in.h:397
 msgid "Remove Page"
 msgstr "ページの削除"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:348
+#: ../plugins/gtk+/gtk+.xml.in.h:398
 msgid "Remove Parent"
 msgstr "親の削除"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:349
+#: ../plugins/gtk+/gtk+.xml.in.h:399
 msgid "Remove Row"
 msgstr "行の削除"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:350
+#: ../plugins/gtk+/gtk+.xml.in.h:400
 msgid "Remove Slot"
 msgstr "スロットの削除"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:351
+#: ../plugins/gtk+/gtk+.xml.in.h:401
 msgid "Response ID"
 msgstr "応答 ID"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:352
+#: ../plugins/gtk+/gtk+.xml.in.h:402
 msgid "Right"
 msgstr "右"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:353
+#: ../plugins/gtk+/gtk+.xml.in.h:403
 msgid "Right to Left"
 msgstr "右から左"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:354
+#: ../plugins/gtk+/gtk+.xml.in.h:404
 msgid "Rise column"
 msgstr "Rise の項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:355
-msgid "Ruler"
-msgstr "ルーラ"
+#: ../plugins/gtk+/gtk+.xml.in.h:405
+msgid "Rows"
+msgstr ""
 
-#: ../plugins/gtk+/gtk+.xml.in.h:356
+#: ../plugins/gtk+/gtk+.xml.in.h:406
 msgid "Save"
 msgstr "保存"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:357
+#: ../plugins/gtk+/gtk+.xml.in.h:407 ../plugins/gtk+/gtkunixprint.xml.in.h:13
+msgid "Scale"
+msgstr "拡大・縮小"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:408
 msgid "Scale Button"
 msgstr "スケール・ボタン"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:358
+#: ../plugins/gtk+/gtk+.xml.in.h:409
 msgid "Scale column"
 msgstr "スケールの項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:359
+#: ../plugins/gtk+/gtk+.xml.in.h:410
 msgid "Scroll"
 msgstr "スクロールした"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:360
+#: ../plugins/gtk+/gtk+.xml.in.h:411
+#, fuzzy
+msgid "Scrollbar"
+msgstr "スクロールした"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:412
 msgid "Scrolled Window"
 msgstr "スクロール・ウィンドウ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:361
+#: ../plugins/gtk+/gtk+.xml.in.h:413
 msgid "Second Mouse Button"
 msgstr "マウスの第２ボタン"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:362
+#: ../plugins/gtk+/gtk+.xml.in.h:414
 msgid "Secondary Icon Activatable"
 msgstr "有効可否"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:363
+#: ../plugins/gtk+/gtk+.xml.in.h:415
 msgid "Secondary Icon Name"
 msgstr "アイコン名"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:364
+#: ../plugins/gtk+/gtk+.xml.in.h:416
 msgid "Secondary Icon Pixbuf"
 msgstr "Pixbuf 画像"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:365
+#: ../plugins/gtk+/gtk+.xml.in.h:417
 msgid "Secondary Icon Sensitive"
 msgstr "反応可否"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:366
+#: ../plugins/gtk+/gtk+.xml.in.h:418
 msgid "Secondary Icon Tooltip Markup"
 msgstr "二番目のアイコンのツールチップのマークアップ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:367
+#: ../plugins/gtk+/gtk+.xml.in.h:419
 msgid "Secondary Icon Tooltip Text"
 msgstr "二番目のアイコンのツールチップの文字列"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:368
+#: ../plugins/gtk+/gtk+.xml.in.h:420
 msgid "Secondary Stock Icon"
 msgstr "ストック・アイコン"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:369
+#: ../plugins/gtk+/gtk+.xml.in.h:421
 msgid "Select Folder"
 msgstr "フォルダの選択"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:370
+#: ../plugins/gtk+/gtk+.xml.in.h:422
 msgid "Semi Condensed"
 msgstr "Semi Condensed"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:371
+#: ../plugins/gtk+/gtk+.xml.in.h:423
 msgid "Semi Expanded"
 msgstr "Semi Expanded"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:372
+#: ../plugins/gtk+/gtk+.xml.in.h:424
 msgid "Sensitive column"
 msgstr "反応可能な項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:373
+#: ../plugins/gtk+/gtk+.xml.in.h:425 ../plugins/gtk+/glade-gtk.c:6466
+#: ../plugins/gtk+/glade-gtk.c:6475 ../plugins/gtk+/glade-gtk.c:6483
+#: ../plugins/gtk+/glade-gtk.c:6664 ../plugins/gtk+/glade-gtk.c:6672
+#: ../plugins/gtk+/glade-gtk.c:6681
+msgid "Separator"
+msgstr "セパレータ"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:426
 msgid "Separator Menu Item"
 msgstr "セパレータのメニュー・アイテム"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:374
+#: ../plugins/gtk+/gtk+.xml.in.h:427
 msgid "Separator Tool Item"
 msgstr "セパレータのツール・アイテム"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:375
+#: ../plugins/gtk+/gtk+.xml.in.h:428
 msgid "Set the current page (strictly for editing purposes)"
 msgstr "現在のページを指定する"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:376
+#: ../plugins/gtk+/gtk+.xml.in.h:429
 msgid "Set the description of the Activate atk action"
 msgstr "ATK におけるアクティブ化の説明を指定して下さい"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:377
+#: ../plugins/gtk+/gtk+.xml.in.h:430
 msgid "Set the description of the Click atk action"
 msgstr "ATK におけるクリック操作の説明を指定して下さい"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:378
+#: ../plugins/gtk+/gtk+.xml.in.h:431
 msgid "Set the description of the Press atk action"
 msgstr "ATK における押下操作の説明を指定して下さい"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:379
+#: ../plugins/gtk+/gtk+.xml.in.h:432
 msgid "Set the description of the Release atk action"
 msgstr "ATK における解放操作の説明を指定して下さい"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:380
-msgid "Set the text in the view's text buffer"
-msgstr "ビューのテキスト・バッファに表示する文章を指定します"
-
-#: ../plugins/gtk+/gtk+.xml.in.h:381
+#: ../plugins/gtk+/gtk+.xml.in.h:433
 msgid "Seventh Key"
 msgstr "Seventh Key"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:382
+#: ../plugins/gtk+/gtk+.xml.in.h:434
 msgid "Shift Key"
 msgstr "Shift キー"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:383
+#: ../plugins/gtk+/gtk+.xml.in.h:435
 msgid "Shrink"
 msgstr "縮める"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:384
+#: ../plugins/gtk+/gtk+.xml.in.h:436
 msgid "Single"
 msgstr "１個だけ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:385
+#: ../plugins/gtk+/gtk+.xml.in.h:437
 msgid "Single Paragraph Mode column"
 msgstr "Single Paragraph Mode column"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:386
+#: ../plugins/gtk+/gtk+.xml.in.h:438
 msgid "Sixth Key"
 msgstr "Sixth Key"
 
-#. Objects
-#: ../plugins/gtk+/gtk+.xml.in.h:388
+#: ../plugins/gtk+/gtk+.xml.in.h:439
 msgid "Size Group"
 msgstr "サイズ・グループ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:389
+#: ../plugins/gtk+/gtk+.xml.in.h:440
 msgid "Size column"
 msgstr "Size column"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:390
+#: ../plugins/gtk+/gtk+.xml.in.h:441
 msgid "Small Capitals"
 msgstr "Small Capitals"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:391
+#: ../plugins/gtk+/gtk+.xml.in.h:442
 msgid "Small Toolbar"
 msgstr "小さなツールバー"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:392
+#: ../plugins/gtk+/gtk+.xml.in.h:443
 msgid "South"
 msgstr "南"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:393
+#: ../plugins/gtk+/gtk+.xml.in.h:444
 msgid "South East"
 msgstr "南東"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:394
+#: ../plugins/gtk+/gtk+.xml.in.h:445
 msgid "South West"
 msgstr "南西"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:395
-msgid "Specialized Widgets"
-msgstr "特別なウィジェット"
-
-#: ../plugins/gtk+/gtk+.xml.in.h:396
+#: ../plugins/gtk+/gtk+.xml.in.h:446
 msgid "Spin Button"
 msgstr "スピン・ボタン"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:397
+#: ../plugins/gtk+/gtk+.xml.in.h:447
 msgid "Spin Renderer"
 msgstr "スピン・ボタンのレンダラ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:399
+#: ../plugins/gtk+/gtk+.xml.in.h:448 ../plugins/gtk+/glade-gtk.c:10582
+#: ../plugins/gtk+/glade-gtk.c:10719
+msgid "Spinner"
+msgstr "スピナー"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:449
 msgid "Spinner Renderer"
 msgstr "スピナーのレンダラ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:400
+#: ../plugins/gtk+/gtk+.xml.in.h:450
 msgid "Splash Screen"
 msgstr "スプラッシュ・スクリーン"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:401
+#: ../plugins/gtk+/gtk+.xml.in.h:451
 msgid "Spread"
 msgstr "スプレッド"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:402
+#: ../plugins/gtk+/gtk+.xml.in.h:452
 msgid "Start"
 msgstr "先頭"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:403
+#: ../plugins/gtk+/gtk+.xml.in.h:453
 msgid "Static"
 msgstr "スタティック"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:404
+#: ../plugins/gtk+/gtk+.xml.in.h:454
 msgid "Status Bar"
 msgstr "ステータス・バー"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:405
+#: ../plugins/gtk+/gtk+.xml.in.h:455
 msgid "Status Icon"
 msgstr "ステータス・アイコン"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:406
+#: ../plugins/gtk+/gtk+.xml.in.h:456
 msgid "Stock Button"
 msgstr "ストック・ボタン"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:407
+#: ../plugins/gtk+/gtk+.xml.in.h:457
 msgid "Stock Detail column"
 msgstr "Stock Detail column"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:408
+#: ../plugins/gtk+/gtk+.xml.in.h:458
 msgid "Stock Item"
 msgstr "ストック・アイテム"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:409
+#: ../plugins/gtk+/gtk+.xml.in.h:459
 msgid "Stock Size column"
 msgstr "Stock Size column"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:410
+#: ../plugins/gtk+/gtk+.xml.in.h:460
 msgid "Stock column"
 msgstr "ストックの項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:411
+#: ../plugins/gtk+/gtk+.xml.in.h:461
 msgid "Stretch column"
 msgstr "Stretch column"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:412
+#: ../plugins/gtk+/gtk+.xml.in.h:462
 msgid "Strikethrough column"
 msgstr "Strikethrough column"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:413
+#: ../plugins/gtk+/gtk+.xml.in.h:463
 msgid "Structure"
 msgstr "構成が変わった"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:414
+#: ../plugins/gtk+/gtk+.xml.in.h:464
 msgid "Style column"
 msgstr "Style column"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:415
+#: ../plugins/gtk+/gtk+.xml.in.h:465
 msgid "Substructure"
 msgstr "子の構成が変わった"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:416
+#: ../plugins/gtk+/gtk+.xml.in.h:466
 msgid "Subwindow Of"
 msgstr "サブウィンドウ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:417
+#: ../plugins/gtk+/gtk+.xml.in.h:467
 msgid "Summary"
 msgstr "概要"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:418
+#: ../plugins/gtk+/gtk+.xml.in.h:468
 msgid "Super Modifier"
 msgstr "Super Modifier"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:419
+#: ../plugins/gtk+/gtk+.xml.in.h:469
 msgid "Table"
 msgstr "テーブル"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:422
+#: ../plugins/gtk+/gtk+.xml.in.h:470
 msgid "Text Buffer"
 msgstr "テキスト・バッファ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:423
-msgid "Text Buffers"
-msgstr "テキスト・バッファ"
-
-#: ../plugins/gtk+/gtk+.xml.in.h:424
+#: ../plugins/gtk+/gtk+.xml.in.h:471
 msgid "Text Column column"
 msgstr "Text Column column"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:425
+#: ../plugins/gtk+/gtk+.xml.in.h:472
 msgid "Text Entry"
 msgstr "テキスト・エントリ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:426
+#: ../plugins/gtk+/gtk+.xml.in.h:473
 msgid "Text Horizontal Alignment column"
 msgstr "Text Horizontal Alignment column"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:427
+#: ../plugins/gtk+/gtk+.xml.in.h:474
 msgid "Text Renderer"
 msgstr "Text Renderer"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:428
+#: ../plugins/gtk+/gtk+.xml.in.h:475
 msgid "Text Tag"
 msgstr "テキストのタグ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:429
+#: ../plugins/gtk+/gtk+.xml.in.h:476
 msgid "Text Tag Table"
 msgstr "テキストのタグ・テーブル"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:430
+#: ../plugins/gtk+/gtk+.xml.in.h:477
 msgid "Text Vertical Alignment column"
 msgstr "Text Vertical Alignment column"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:431
+#: ../plugins/gtk+/gtk+.xml.in.h:478
 msgid "Text View"
 msgstr "テキスト・ビュー"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:432
+#: ../plugins/gtk+/gtk+.xml.in.h:479
 msgid "Text below icons"
 msgstr "アイコンの横にラベル"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:434
+#: ../plugins/gtk+/gtk+.xml.in.h:480
+msgid "Text beside icons"
+msgstr "アイコンの横にラベル"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:481
 msgid "Text column"
 msgstr "文字列の項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:435
+#: ../plugins/gtk+/gtk+.xml.in.h:482
 msgid "Text only"
 msgstr "ラベルのみ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:436
+#: ../plugins/gtk+/gtk+.xml.in.h:483
 msgid "The column in the model to load the value from"
 msgstr "The column in the model to load the value from"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:437
-msgid "The items in this combo box"
+#: ../plugins/gtk+/gtk+.xml.in.h:484
+msgid "The list of application names to add to the filter"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:485
+msgid "The list of file name patterns to add to the filter"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:486
+#, fuzzy
+msgid "The list of items to show in the combo box"
 msgstr "コンボ・ボックスの中にあるアイテムです"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:438
+#: ../plugins/gtk+/gtk+.xml.in.h:487
+msgid "The list of mime types to add to the filter"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:488
+#, fuzzy
+msgid "The number of columns for this grid"
+msgstr "ボックスの中にあるアイテムの総数です"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:489
 msgid "The number of items in the box"
 msgstr "ボックスの中にあるアイテムの総数です"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:439
+#: ../plugins/gtk+/gtk+.xml.in.h:490
 msgid "The number of pages in the notebook"
 msgstr "ノートブックのページ数です"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:440
+#: ../plugins/gtk+/gtk+.xml.in.h:491
+#, fuzzy
+msgid "The number of rows for this grid"
+msgstr "ボックスの中にあるアイテムの総数です"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:492
 msgid "The page position in the Assistant"
 msgstr "アシスタントの中での位置です"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:441
+#: ../plugins/gtk+/gtk+.xml.in.h:493
 msgid "The pango attributes for this label"
 msgstr "このラベルに対する Pango の属性です"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:442
+#: ../plugins/gtk+/gtk+.xml.in.h:494
 msgid "The position of the menu item in the menu shell"
 msgstr "メニュー・シェルの中でのメニュー・アイテムの位置です"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:443
+#: ../plugins/gtk+/gtk+.xml.in.h:495
+#, fuzzy
+msgid "The position of the tool item group in the palette"
+msgstr "ツールバーの中でのツールバー・アイテムの位置です"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:496
 msgid "The position of the tool item in the toolbar"
 msgstr "ツールバーの中でのツールバー・アイテムの位置です"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:444
+#: ../plugins/gtk+/gtk+.xml.in.h:497
 msgid "The response ID of this button in a dialog"
 msgstr "このボタンに対するダイアログ内での応答 ID です"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:445
+#: ../plugins/gtk+/gtk+.xml.in.h:498
 msgid ""
 "The stock icon displayed on the item (choose an item from GTK+ stock or from "
 "an icon factory)"
@@ -4333,216 +3769,225 @@ msgstr ""
 "アイテムに表示するストック・アイコンです (GTK+ のストック・アイコンかアイコ"
 "ン・ファクトリから選択して下さい)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:446
+#: ../plugins/gtk+/gtk+.xml.in.h:499
 msgid "The stock item for this button"
 msgstr "このボタンのストック・アイテムです"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:447
+#: ../plugins/gtk+/gtk+.xml.in.h:500
 msgid "The stock item for this menu item"
 msgstr "このメニュー項目に対するストック・アイテムです"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:448
+#: ../plugins/gtk+/gtk+.xml.in.h:501
 msgid "Third Mouse Button"
 msgstr "マウスの第３ボタン"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:449
+#: ../plugins/gtk+/gtk+.xml.in.h:502
 msgid "Toggle Action"
 msgstr "トグルのアクション"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:450
+#: ../plugins/gtk+/gtk+.xml.in.h:503
 msgid "Toggle Button"
 msgstr "トグル・ボタン"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:451
+#: ../plugins/gtk+/gtk+.xml.in.h:504
 msgid "Toggle Renderer"
 msgstr "Toggle Renderer"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:452
+#: ../plugins/gtk+/gtk+.xml.in.h:505
 msgid "Toggle Tool Button"
 msgstr "トグル式のツール・ボタン"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:453
+#: ../plugins/gtk+/gtk+.xml.in.h:506
 msgid "Tool Bar"
 msgstr "ツール・バー"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:454
+#: ../plugins/gtk+/gtk+.xml.in.h:507
 msgid "Tool Button"
 msgstr "ツール・ボタン"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:455
+#: ../plugins/gtk+/gtk+.xml.in.h:508 ../plugins/gtk+/glade-gtk.c:5530
+#, fuzzy
+msgid "Tool Item Group"
+msgstr "ツールバーのアイテム"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:509
+#, fuzzy
+msgid "Tool Palette"
+msgstr "パレット"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:510
 msgid "Toolbar"
 msgstr "ツールバー"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:456
+#: ../plugins/gtk+/gtk+.xml.in.h:511
 msgid "Tooltip"
 msgstr "ツールチップ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:457
+#: ../plugins/gtk+/gtk+.xml.in.h:512
 msgid "Top"
 msgstr "上"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:458
+#: ../plugins/gtk+/gtk+.xml.in.h:513
 msgid "Top Left"
 msgstr "左上"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:459
+#: ../plugins/gtk+/gtk+.xml.in.h:514
 msgid "Top Level"
 msgstr "トップレベル"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:460
+#: ../plugins/gtk+/gtk+.xml.in.h:515
 msgid "Top Right"
 msgstr "右上"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:461
+#: ../plugins/gtk+/gtk+.xml.in.h:516
 msgid "Top to Bottom"
 msgstr "上から下"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:462
+#: ../plugins/gtk+/gtk+.xml.in.h:517
 msgid "Toplevels"
 msgstr "トップレベル"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:463
-msgid "Tree Model"
-msgstr "ツリー・モデル"
-
-#: ../plugins/gtk+/gtk+.xml.in.h:464
+#: ../plugins/gtk+/gtk+.xml.in.h:518
 msgid "Tree Model Filter"
 msgstr "ツリー・モデル・フィルタ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:465
+#: ../plugins/gtk+/gtk+.xml.in.h:519
 msgid "Tree Model Sort"
 msgstr "ツリー・モデル・ソート"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:466
+#: ../plugins/gtk+/gtk+.xml.in.h:520
 msgid "Tree Selection"
 msgstr "ツリーのセレクション"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:467
+#: ../plugins/gtk+/gtk+.xml.in.h:521
 msgid "Tree Store"
 msgstr "ツリー・ストア"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:468
+#: ../plugins/gtk+/gtk+.xml.in.h:522
 msgid "Tree View"
 msgstr "ツリー・ビュー"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:470
+#: ../plugins/gtk+/gtk+.xml.in.h:523 ../plugins/gtk+/glade-gtk.c:10519
+msgid "Tree View Column"
+msgstr "ツリー・ビューの項目"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:524
 msgid "Ultra Condensed"
 msgstr "Ultra Condensed"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:471
+#: ../plugins/gtk+/gtk+.xml.in.h:525
 msgid "Ultra Expanded"
 msgstr "Ultra Expanded"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:472
+#: ../plugins/gtk+/gtk+.xml.in.h:526
 msgid "Underline column"
 msgstr "下線の項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:473
+#. NOT AVAILABLES ON WIN32
+#. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
+#. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
+#.
+#: ../plugins/gtk+/gtk+.xml.in.h:531
+msgid "Unknown"
+msgstr ""
+
+#: ../plugins/gtk+/gtk+.xml.in.h:532
 msgid "Up"
 msgstr "上"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:474
+#: ../plugins/gtk+/gtk+.xml.in.h:533
 msgid "Use Action Appearance"
 msgstr "アクションのアピアランスの使用"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:475
+#: ../plugins/gtk+/gtk+.xml.in.h:534
 msgid "Use Underline"
 msgstr "下線を使用する"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:476
+#: ../plugins/gtk+/gtk+.xml.in.h:535
 msgid "Utility"
 msgstr "ユーティリティ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:477
+#: ../plugins/gtk+/gtk+.xml.in.h:536
 msgid "Value column"
 msgstr "Value column"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:478
+#: ../plugins/gtk+/gtk+.xml.in.h:537
 msgid "Variant column"
 msgstr "Variant column"
 
-#. Objects
-#: ../plugins/gtk+/gtk+.xml.in.h:480 ../plugins/gtk+/glade-model-data.c:1245
+#: ../plugins/gtk+/gtk+.xml.in.h:538
 msgid "Vertical"
 msgstr "垂直"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:481
+#: ../plugins/gtk+/gtk+.xml.in.h:539
 msgid "Vertical Alignment"
 msgstr "垂直方向のアライメント"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:482
+#: ../plugins/gtk+/gtk+.xml.in.h:540
 msgid "Vertical Alignment column"
 msgstr "Vertical Alignment column"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:483
+#: ../plugins/gtk+/gtk+.xml.in.h:541
 msgid "Vertical Box"
 msgstr "垂直ボックス"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:484
+#: ../plugins/gtk+/gtk+.xml.in.h:542
 msgid "Vertical Button Box"
 msgstr "垂直方向のボタン・ボックス"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:485
+#: ../plugins/gtk+/gtk+.xml.in.h:543
 msgid "Vertical Padding"
 msgstr "垂直方向のパディング"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:486
+#: ../plugins/gtk+/gtk+.xml.in.h:544
 msgid "Vertical Padding column"
 msgstr "垂直方向のパディングの項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:487
+#: ../plugins/gtk+/gtk+.xml.in.h:545
 msgid "Vertical Panes"
 msgstr "垂直方向のペイン"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:488
-msgid "Vertical Ruler"
-msgstr "垂直方向のルーラ"
-
-#: ../plugins/gtk+/gtk+.xml.in.h:489
+#: ../plugins/gtk+/gtk+.xml.in.h:546
 msgid "Vertical Scale"
 msgstr "垂直方向のスケール"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:490
+#: ../plugins/gtk+/gtk+.xml.in.h:547
 msgid "Vertical Scrollbar"
 msgstr "垂直方向のスクロールバー"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:491
+#: ../plugins/gtk+/gtk+.xml.in.h:548
 msgid "Vertical Separator"
 msgstr "垂直方向のセパレータ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:492
+#: ../plugins/gtk+/gtk+.xml.in.h:549
 msgid "Viewport"
 msgstr "ビューポート"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:493
+#: ../plugins/gtk+/gtk+.xml.in.h:550
 msgid "Visibility Notify"
 msgstr "表示可否を通知した"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:494
-msgid "Visible"
-msgstr "Visible"
-
-#: ../plugins/gtk+/gtk+.xml.in.h:495
+#: ../plugins/gtk+/gtk+.xml.in.h:552
 msgid "Visible column"
 msgstr "Visible column"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:496
+#: ../plugins/gtk+/gtk+.xml.in.h:553
 msgid "Volume Button"
 msgstr "音量ボタン"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:497
+#: ../plugins/gtk+/gtk+.xml.in.h:554
 msgid "Warning"
 msgstr "警告"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:498
+#: ../plugins/gtk+/gtk+.xml.in.h:555
 msgid "Weight column"
 msgstr "太さの項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:499
+#: ../plugins/gtk+/gtk+.xml.in.h:556
 msgid "West"
 msgstr "西"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:500
+#: ../plugins/gtk+/gtk+.xml.in.h:557
 msgid ""
 "Whether this page will initially be marked as complete regardless of user "
 "input."
@@ -4550,48 +3995,47 @@ msgstr ""
 "ユーザの入力にかかわらず、このページを最初から完了としてマークしておくかどう"
 "かです"
 
-#. Objects
-#: ../plugins/gtk+/gtk+.xml.in.h:503
+#: ../plugins/gtk+/gtk+.xml.in.h:559
 msgid "Widgets"
 msgstr "ウィジェット"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:504
+#: ../plugins/gtk+/gtk+.xml.in.h:560
 msgid "Width column"
 msgstr "Width column"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:505
+#: ../plugins/gtk+/gtk+.xml.in.h:561
 msgid "Width in Characters column"
 msgstr "文字数の項目"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:506
+#: ../plugins/gtk+/gtk+.xml.in.h:562
 msgid "Window"
 msgstr "ウィンドウ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:507
+#: ../plugins/gtk+/gtk+.xml.in.h:563
 msgid "Window Group"
 msgstr "ウィンドウ・グループ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:508
+#: ../plugins/gtk+/gtk+.xml.in.h:564
 msgid "Word"
 msgstr "単語"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:509
+#: ../plugins/gtk+/gtk+.xml.in.h:565
 msgid "Word Character"
 msgstr "単語の中の文字"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:510
+#: ../plugins/gtk+/gtk+.xml.in.h:566
 msgid "Wrap Mode column"
 msgstr "Wrap Mode column"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:511
+#: ../plugins/gtk+/gtk+.xml.in.h:567
 msgid "Wrap Width column"
 msgstr "Wrap Width column"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:512
+#: ../plugins/gtk+/gtk+.xml.in.h:568
 msgid "Yes, No"
 msgstr "はい、いいえ"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:513
+#: ../plugins/gtk+/gtk+.xml.in.h:569
 msgid ""
 "You can mark this as translatable and set one name/address if you want to "
 "show a translation specific translator, otherwise you should list all "
@@ -4636,10 +4080,6 @@ msgstr "ページのセット"
 msgid "Page Setup Dialog"
 msgstr "ページ設定のダイアログ"
 
-#: ../plugins/gtk+/gtkunixprint.xml.in.h:10
-msgid "Preview"
-msgstr "プレビュー"
-
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:11
 msgid "Print Dialog"
 msgstr "印刷ダイアログ"
@@ -4648,43 +4088,512 @@ msgstr "印刷ダイアログ"
 msgid "Reverse"
 msgstr "逆順"
 
-#: ../plugins/gtk+/gtkunixprint.xml.in.h:13
-msgid "Scale"
-msgstr "拡大・縮小"
+#: ../plugins/gtk+/glade-attributes.c:222
+msgctxt "textattr"
+msgid "Style"
+msgstr "スタイル"
 
-#: ../plugins/gtk+/glade-column-types.c:333
-#: ../plugins/gtk+/glade-column-types.c:382
-#: ../plugins/gtk+/glade-column-types.c:445
-#: ../plugins/gtk+/glade-column-types.c:657
+#: ../plugins/gtk+/glade-attributes.c:226
+msgctxt "textattr"
+msgid "Weight"
+msgstr "太さ"
+
+#: ../plugins/gtk+/glade-attributes.c:230
+msgctxt "textattr"
+msgid "Variant"
+msgstr "スモールキャピタル"
+
+#: ../plugins/gtk+/glade-attributes.c:234
+msgctxt "textattr"
+msgid "Stretch"
+msgstr "ストレッチ"
+
+#: ../plugins/gtk+/glade-attributes.c:238
+msgctxt "textattr"
+msgid "Underline"
+msgstr "下線"
+
+#: ../plugins/gtk+/glade-attributes.c:242
+msgctxt "textattr"
+msgid "Strikethrough"
+msgstr "打ち消し線"
+
+#: ../plugins/gtk+/glade-attributes.c:246
+msgctxt "textattr"
+msgid "Gravity"
+msgstr "グラビティ"
+
+#: ../plugins/gtk+/glade-attributes.c:250
+msgctxt "textattr"
+msgid "Gravity Hint"
+msgstr "グラビティのヒント"
+
+#: ../plugins/gtk+/glade-attributes.c:261
+msgctxt "textattr"
+msgid "Size"
+msgstr "サイズ"
+
+#: ../plugins/gtk+/glade-attributes.c:265
+msgctxt "textattr"
+msgid "Absolute Size"
+msgstr "絶対サイズ"
+
+#: ../plugins/gtk+/glade-attributes.c:272
+msgctxt "textattr"
+msgid "Foreground Color"
+msgstr "前景色"
+
+#: ../plugins/gtk+/glade-attributes.c:276
+msgctxt "textattr"
+msgid "Background Color"
+msgstr "背景色"
+
+#: ../plugins/gtk+/glade-attributes.c:280
+msgctxt "textattr"
+msgid "Underline Color"
+msgstr "下線の色"
+
+#: ../plugins/gtk+/glade-attributes.c:284
+msgctxt "textattr"
+msgid "Strikethrough Color"
+msgstr "打ち消し線の色"
+
+#: ../plugins/gtk+/glade-attributes.c:294
+msgctxt "textattr"
+msgid "Scale"
+msgstr "スケール"
+
+#: ../plugins/gtk+/glade-attributes.c:299
+#, fuzzy
+msgctxt "textattr"
+msgid "Font Description"
+msgstr "フォント名の項目"
+
+#: ../plugins/gtk+/glade-attributes.c:325
+#: ../plugins/gtk+/glade-attributes.c:360
+#: ../plugins/gtk+/glade-attributes.c:368
+#: ../plugins/gtk+/glade-attributes.c:374
+#: ../plugins/gtk+/glade-attributes.c:820
+msgid "<Enter Value>"
+msgstr "<値を選択または指定して下さい>"
+
+#: ../plugins/gtk+/glade-attributes.c:359
+msgid "Unset"
+msgstr "解除"
+
+#: ../plugins/gtk+/glade-attributes.c:721
+msgid "Select a color"
+msgstr "色の選択"
+
+#: ../plugins/gtk+/glade-attributes.c:750
+#, fuzzy
+msgid "Select a font"
+msgstr "色の選択"
+
+#: ../plugins/gtk+/glade-attributes.c:875
+msgid "Attribute"
+msgstr "属性"
+
+#: ../plugins/gtk+/glade-attributes.c:883
+msgid "Value"
+msgstr "値"
+
+#: ../plugins/gtk+/glade-attributes.c:1039
+msgid "Setup Text Attributes"
+msgstr "文字の属性に関する設定"
+
+#: ../plugins/gtk+/glade-gtk.c:61
+msgid "This property does not apply unless Use Underline is set."
+msgstr "このプロパティは下線を使用する場合にのみ適用されます"
+
+#: ../plugins/gtk+/glade-gtk.c:62
+msgid "Property not selected"
+msgstr "プロパティが選択されていません"
+
+#: ../plugins/gtk+/glade-gtk.c:63
+msgid "This property is only for use in dialog action buttons"
+msgstr "このプロパティはダイアログのアクション・ボタンでのみ使用します"
+
+#: ../plugins/gtk+/glade-gtk.c:64
+msgid "This property is set to be controlled by an Action"
+msgstr "これはアクションによって制御されるプロパティです"
+
+#: ../plugins/gtk+/glade-gtk.c:66
+#, c-format
+msgid "Only objects of type %s can be added to objects of type %s."
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:75
+msgid "Symbolic size to use for stock icon, icon set or named icon"
+msgstr ""
+"ストック・アイコンやアイコン・セット、または名前付きアイコンに適用される大き"
+"さです"
+
+#: ../plugins/gtk+/glade-gtk.c:809
+#, c-format
+msgid "Removing parent of %s"
+msgstr "%s の親を削除する"
+
+#: ../plugins/gtk+/glade-gtk.c:876
+#, c-format
+msgid "Adding parent %s for %s"
+msgstr "%2$s に対する親の %1$s を追加する"
+
+#: ../plugins/gtk+/glade-gtk.c:977
+#, c-format
+msgid "Adding %s to Size Group %s"
+msgstr "%s をサイズ・グループの %s に追加する"
+
+#: ../plugins/gtk+/glade-gtk.c:981
+#, c-format
+msgid "Adding %s to a new Size Group"
+msgstr "%s を新しいサイズ・グループに追加する"
+
+#. Add trailing new... item
+#: ../plugins/gtk+/glade-gtk.c:1039
+msgid "New Size Group"
+msgstr "新しいサイズ・グループ"
+
+#: ../plugins/gtk+/glade-gtk.c:1088
+msgid "Cannot add a toplevel window to a containter."
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:1099
+#, c-format
+msgid "Widgets of type %s can only have widgets as children."
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:1110
+#, c-format
+msgid "Widgets of type %s need placeholders to add children."
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:1445
+#, c-format
+msgid "Ordering children of %s"
+msgstr "%s の子を並べ替える"
+
+#: ../plugins/gtk+/glade-gtk.c:1985 ../plugins/gtk+/glade-gtk.c:1993
+#, c-format
+msgid "Insert placeholder to %s"
+msgstr "プレースフォルダを %s に挿入する"
+
+#: ../plugins/gtk+/glade-gtk.c:2001
+#, c-format
+msgid "Remove placeholder from %s"
+msgstr "%s からプレースフォルダを削除する"
+
+#: ../plugins/gtk+/glade-gtk.c:3090 ../plugins/gtk+/glade-gtk.c:3097
+#, c-format
+msgid "Insert page on %s"
+msgstr "%s にページを挿入する"
+
+#: ../plugins/gtk+/glade-gtk.c:3105
+#, c-format
+msgid "Remove page from %s"
+msgstr "%s からページを削除する"
+
+#: ../plugins/gtk+/glade-gtk.c:4934
+msgid "This property only applies to stock images"
+msgstr "このプロパティはストック画像にのみ適用されます"
+
+#: ../plugins/gtk+/glade-gtk.c:4937
+msgid "This property only applies to named icons"
+msgstr "このプロパティは名前付きアイコンにのみ適用されます"
+
+#: ../plugins/gtk+/glade-gtk.c:5234
+msgid "<separator>"
+msgstr "<セパレータ>"
+
+#: ../plugins/gtk+/glade-gtk.c:5248
+msgid "<custom>"
+msgstr "<カスタム>"
+
+#: ../plugins/gtk+/glade-gtk.c:5286
+msgid "Children cannot be added to a separator."
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:5294
+msgid "Children cannot be added to a Recent Chooser Menu."
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:5303
+#, c-format
+msgid "%s already has a menu."
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:5313
+#, c-format
+msgid "%s item already has a submenu."
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:5503
+msgid "Tool Item"
+msgstr "ツールバーのアイテム"
+
+#: ../plugins/gtk+/glade-gtk.c:5517 ../plugins/gtk+/glade-gtk.c:5540
+msgid "Packing"
+msgstr "パッキング"
+
+#: ../plugins/gtk+/glade-gtk.c:5627 ../plugins/gtk+/glade-gtk.c:5635
+msgid "Normal item"
+msgstr "標準"
+
+#: ../plugins/gtk+/glade-gtk.c:5628 ../plugins/gtk+/glade-gtk.c:5636
+msgid "Image item"
+msgstr "画像付き"
+
+#: ../plugins/gtk+/glade-gtk.c:5629 ../plugins/gtk+/glade-gtk.c:5637
+msgid "Check item"
+msgstr "チェックボタン付き"
+
+#: ../plugins/gtk+/glade-gtk.c:5630 ../plugins/gtk+/glade-gtk.c:5638
+msgid "Radio item"
+msgstr "ラジオボタン付き"
+
+#: ../plugins/gtk+/glade-gtk.c:5631 ../plugins/gtk+/glade-gtk.c:5639
+msgid "Separator item"
+msgstr "セパレータ"
+
+#: ../plugins/gtk+/glade-gtk.c:5640 ../plugins/gtk+/glade-gtk.c:6484
+#: ../plugins/gtk+/glade-gtk.c:6673 ../plugins/gtk+/glade-gtk.c:6682
+#, fuzzy
+msgid "Recent Menu"
+msgstr "最後の操作のアクション"
+
+#: ../plugins/gtk+/glade-gtk.c:5672 ../plugins/gtk+/glade-gtk.c:5723
+msgid "Edit Menu Bar"
+msgstr "メニュー・バーの編集"
+
+#: ../plugins/gtk+/glade-gtk.c:5674 ../plugins/gtk+/glade-gtk.c:5725
+msgid "Edit Menu"
+msgstr "メニューの編集"
+
+#: ../plugins/gtk+/glade-gtk.c:5821
+#, c-format
+msgid "A object of type %s cannot have any children."
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:6462 ../plugins/gtk+/glade-gtk.c:6660
+#: ../plugins/gtk+/glade-gtk.c:10581 ../plugins/gtk+/glade-gtk.c:10718
+#: ../plugins/gtk+/glade-gtk.c:11145
+msgid "Toggle"
+msgstr "トグル・ボタン"
+
+#: ../plugins/gtk+/glade-gtk.c:6463 ../plugins/gtk+/glade-gtk.c:6474
+#: ../plugins/gtk+/glade-gtk.c:6482 ../plugins/gtk+/glade-gtk.c:6661
+#: ../plugins/gtk+/glade-gtk.c:6671 ../plugins/gtk+/glade-gtk.c:6680
+#: ../plugins/gtk+/glade-gtk.c:11146
+msgid "Radio"
+msgstr "ラジオ・ボタン"
+
+#: ../plugins/gtk+/glade-gtk.c:6473 ../plugins/gtk+/glade-gtk.c:6481
+#: ../plugins/gtk+/glade-gtk.c:6670 ../plugins/gtk+/glade-gtk.c:6679
+msgid "Check"
+msgstr "チェック"
+
+#: ../plugins/gtk+/glade-gtk.c:6505
+msgid "Tool Bar Editor"
+msgstr "ツール・バー・エディタ"
+
+#: ../plugins/gtk+/glade-gtk.c:6655
+#, fuzzy
+msgid "Group"
+msgstr "サイズ・グループ"
+
+#: ../plugins/gtk+/glade-gtk.c:6702
+#, fuzzy
+msgid "Tool Palette Editor"
+msgstr "ツール・バー・エディタ"
+
+#: ../plugins/gtk+/glade-gtk.c:7446
+msgid "This property does not apply when Ellipsize is set."
+msgstr "このプロパティは省略記号が指定されている場合は適用されません"
+
+#: ../plugins/gtk+/glade-gtk.c:7465
+msgid "This property does not apply when Angle is set."
+msgstr "このプロパティは角度が指定されている場合は適用されません"
+
+#: ../plugins/gtk+/glade-gtk.c:8378
+msgid "Introduction page"
+msgstr "(アシスタントを紹介するページ)"
+
+#: ../plugins/gtk+/glade-gtk.c:8382
+msgid "Content page"
+msgstr "(アシスタントの内容を表示するページ)"
+
+#: ../plugins/gtk+/glade-gtk.c:8386
+msgid "Confirmation page"
+msgstr "(確認のメッセージを表示するページ)"
+
+#: ../plugins/gtk+/glade-gtk.c:10004
+#, c-format
+msgid "%s is set to load %s from the model"
+msgstr "%s を指定するとモデルから %s を読み込みます"
+
+#: ../plugins/gtk+/glade-gtk.c:10006
+#, c-format
+msgid "%s is set to manipulate %s directly"
+msgstr "%s を指定すると %s を直接操作します"
+
+#: ../plugins/gtk+/glade-gtk.c:10525
+msgid "Properties and Attributes"
+msgstr "プロパティと属性値"
+
+#: ../plugins/gtk+/glade-gtk.c:10531
+msgid "Common Properties and Attributes"
+msgstr "共通のプロパティと属性値"
+
+#. Text...
+#: ../plugins/gtk+/glade-gtk.c:10575 ../plugins/gtk+/glade-gtk.c:10712
+#: ../plugins/gtk+/glade-entry-editor.c:494
+msgid "Text"
+msgstr "文字列"
+
+#: ../plugins/gtk+/glade-gtk.c:10578 ../plugins/gtk+/glade-gtk.c:10715
+msgid "Spin"
+msgstr "スピン"
+
+#: ../plugins/gtk+/glade-gtk.c:10579 ../plugins/gtk+/glade-gtk.c:10716
+msgid "Pixbuf"
+msgstr "Pixbuf"
+
+#: ../plugins/gtk+/glade-gtk.c:10596
+msgid "Icon View Editor"
+msgstr "アイコン・ビューのエディタ"
+
+#: ../plugins/gtk+/glade-gtk.c:10597
+msgid "Combo Editor"
+msgstr "コンボのエディタ"
+
+#: ../plugins/gtk+/glade-gtk.c:10709
+msgid "Column"
+msgstr "項目"
+
+#: ../plugins/gtk+/glade-gtk.c:10732
+msgid "Tree View Editor"
+msgstr "ツリー・ビューの編集"
+
+#. XXX FIXME: We should hide the actual "fixed-height-mode" setting from
+#. * treeview editors and provide a custom control that sets all its columns
+#. * to fixed size and then control the column's sensitivity accordingly.
+#.
+#: ../plugins/gtk+/glade-gtk.c:10835
+msgid ""
+"Columns must have a fixed size inside a treeview with fixed height mode set"
+msgstr ""
+
+#. --------------------------- GtkAction ---------------------------------
+#: ../plugins/gtk+/glade-gtk.c:10949
+msgid "The accelerator can only be set when inside an Action Group."
+msgstr "アクション・グループの中でのみアクセラレータを指定できます"
+
+#: ../plugins/gtk+/glade-gtk.c:11147
+#, fuzzy
+msgid "Recent"
+msgstr "リセット"
+
+#: ../plugins/gtk+/glade-gtk.c:11155
+#, fuzzy
+msgid "Action Group Editor"
+msgstr "アクション・グループ"
+
+#: ../plugins/gtk+/glade-gtk.c:11265 ../plugins/gtk+/glade-gtk.c:11295
+msgid "Tag"
+msgstr ""
+
+#: ../plugins/gtk+/glade-gtk.c:11303
+#, fuzzy
+msgid "Text Tag Table Editor"
+msgstr "テキストのタグ・テーブル"
+
+#: ../plugins/gtk+/glade-fixed.c:523 ../plugins/gtk+/glade-gtk-grid.c:398
+#: ../plugins/gtk+/glade-gtk-table.c:452
+#, c-format
+msgid "Placing %s inside %s"
+msgstr "%2$s の内側に %1$s を配置"
+
+#: ../plugins/gtk+/glade-fixed.c:1011
+msgid "X position property"
+msgstr "Ｘ位置のプロパティ"
+
+#: ../plugins/gtk+/glade-fixed.c:1012
+msgid "The property used to set the X position of a child object"
+msgstr "子オブジェクトのＸ方向の位置を指定する際に使用するプロパティです"
+
+#: ../plugins/gtk+/glade-fixed.c:1018
+msgid "Y position property"
+msgstr "Ｙ位置のプロパティ"
+
+#: ../plugins/gtk+/glade-fixed.c:1019
+msgid "The property used to set the Y position of a child object"
+msgstr "子オブジェクトのＹ方向の位置を指定する際に使用するプロパティです"
+
+#: ../plugins/gtk+/glade-fixed.c:1025
+msgid "Width property"
+msgstr "幅のプロパティ"
+
+#: ../plugins/gtk+/glade-fixed.c:1026
+msgid "The property used to set the width of a child object"
+msgstr "子オブジェクトの幅を指定する際に使用するプロパティです"
+
+#: ../plugins/gtk+/glade-fixed.c:1032
+msgid "Height property"
+msgstr "高さのプロパティ"
+
+#: ../plugins/gtk+/glade-fixed.c:1033
+msgid "The property used to set the height of a child object"
+msgstr "子オブジェクトの高さを指定する際に使用するプロパティです"
+
+#: ../plugins/gtk+/glade-fixed.c:1039
+msgid "Can resize"
+msgstr "サイズ変更の可否"
+
+#: ../plugins/gtk+/glade-fixed.c:1040
+msgid "Whether this container supports resizes of child widgets"
+msgstr "子オブジェクトがサイズの変更をサポートしているかどうかです"
+
+#: ../plugins/gtk+/glade-accels.c:320 ../plugins/gtk+/glade-accels.c:389
+msgid "<choose a key>"
+msgstr "<キーを選択して下さい>"
+
+#: ../plugins/gtk+/glade-accels.c:461
+msgid "Accelerator Key"
+msgstr "アクセラレータ・キー"
+
+#: ../plugins/gtk+/glade-accels.c:519
+msgid "Choose accelerator keys..."
+msgstr "アクセラレータ・キーの選択..."
+
+#: ../plugins/gtk+/glade-column-types.c:350
+#: ../plugins/gtk+/glade-column-types.c:402
+#: ../plugins/gtk+/glade-column-types.c:475
+#: ../plugins/gtk+/glade-column-types.c:696
 #, c-format
 msgid "Setting columns on %s"
 msgstr "%s の項目を設定する"
 
-#: ../plugins/gtk+/glade-column-types.c:473
+#: ../plugins/gtk+/glade-column-types.c:503
 msgid "< define a new column >"
 msgstr "< 新しい項目 >"
 
-#: ../plugins/gtk+/glade-column-types.c:783
+#: ../plugins/gtk+/glade-column-types.c:826
 msgid "Add and remove columns:"
 msgstr "項目 (横方向のデータ) の追加と削除:"
 
-#: ../plugins/gtk+/glade-column-types.c:837
+#: ../plugins/gtk+/glade-column-types.c:879
 msgid "Column type"
 msgstr "列の種類"
 
-#: ../plugins/gtk+/glade-column-types.c:859
+#: ../plugins/gtk+/glade-column-types.c:901
 msgid "Column name"
 msgstr "列の名前"
 
-#: ../plugins/gtk+/glade-model-data.c:1204
+#: ../plugins/gtk+/glade-model-data.c:1125
 msgid "Add and remove rows:"
 msgstr "ノード (縦方向のデータ) の追加と削除:"
 
-#: ../plugins/gtk+/glade-model-data.c:1234
-msgid "Sequential editing:"
-msgstr "連続編集を行う向き:"
-
-#: ../plugins/gtk+/glade-icon-sources.c:694
+#: ../plugins/gtk+/glade-icon-sources.c:713
 #, c-format
 msgid ""
 "Enter a filename or a relative or full path for this source of '%s' (Glade "
@@ -4693,138 +4602,139 @@ msgstr ""
 "'%s' のソースに対するファイル名または相対/絶対パスを入力して下さい (Glade は"
 "実行時にプロジェクトのフォルダからこれらを読み込みます)"
 
-#: ../plugins/gtk+/glade-icon-sources.c:701
+#: ../plugins/gtk+/glade-icon-sources.c:721
 #, c-format
 msgid ""
 "Set whether you want to specify a text direction for this source of '%s'"
 msgstr "'%s' のソースの文字列の向きを指定するかを設定する"
 
-#: ../plugins/gtk+/glade-icon-sources.c:706
+#: ../plugins/gtk+/glade-icon-sources.c:728
 #, c-format
 msgid "Set the text direction for this source of '%s'"
 msgstr "'%s' のソースの文字列の向きを指定する"
 
-#: ../plugins/gtk+/glade-icon-sources.c:711
+#: ../plugins/gtk+/glade-icon-sources.c:734
 #, c-format
 msgid "Set whether you want to specify an icon size for this source of '%s'"
 msgstr "'%s' のソースのアイコンの大きさを指定するかを設定する"
 
-#: ../plugins/gtk+/glade-icon-sources.c:716
+#: ../plugins/gtk+/glade-icon-sources.c:741
 #, c-format
 msgid "Set the icon size for this source of '%s'"
 msgstr "'%s' のソースに対するアイコンの大きさを指定する"
 
-#: ../plugins/gtk+/glade-icon-sources.c:721
+#: ../plugins/gtk+/glade-icon-sources.c:747
 #, c-format
 msgid "Set whether you want to specify a state for this source of '%s'"
 msgstr "'%s' のソースの状態を指定するかを設定する"
 
-#: ../plugins/gtk+/glade-icon-sources.c:726
+#: ../plugins/gtk+/glade-icon-sources.c:754
 #, c-format
 msgid "Set the state for this source of '%s'"
 msgstr "'%s' のソースの状態を指定する"
 
-#: ../plugins/gtk+/glade-button-editor.c:237
+#: ../plugins/gtk+/glade-button-editor.c:194
 #, c-format
 msgid "Setting %s to use standard configuration"
 msgstr "%s を標準的な設定にする"
 
-#: ../plugins/gtk+/glade-button-editor.c:295
+#: ../plugins/gtk+/glade-button-editor.c:256
 #, c-format
 msgid "Setting %s to use a custom child"
 msgstr "%s でカスタマイズした子を使用する"
 
-#: ../plugins/gtk+/glade-button-editor.c:339
+#: ../plugins/gtk+/glade-button-editor.c:302
 #, c-format
 msgid "Setting %s to use a stock button"
 msgstr "%s でストック・ボタンを使用する"
 
-#: ../plugins/gtk+/glade-button-editor.c:383
-#: ../plugins/gtk+/glade-image-item-editor.c:260
+#: ../plugins/gtk+/glade-button-editor.c:349
+#: ../plugins/gtk+/glade-image-item-editor.c:219
 #, c-format
 msgid "Setting %s to use a label and image"
 msgstr "%s でラベルとアイコンを使用する"
 
-#: ../plugins/gtk+/glade-button-editor.c:442
+#: ../plugins/gtk+/glade-button-editor.c:399
 msgid "Configure button content"
 msgstr "ボタンの中身を設定する"
 
-#: ../plugins/gtk+/glade-button-editor.c:444
+#: ../plugins/gtk+/glade-button-editor.c:405
 msgid "Add custom button content"
 msgstr "ボタンの中身を独自に追加する"
 
-#: ../plugins/gtk+/glade-button-editor.c:446
+#: ../plugins/gtk+/glade-button-editor.c:408
 msgid "Stock button"
 msgstr "ストック・ボタン"
 
-#: ../plugins/gtk+/glade-button-editor.c:448
+#: ../plugins/gtk+/glade-button-editor.c:413
 msgid "Label with optional image"
 msgstr "画像が付いたラベル"
 
-#: ../plugins/gtk+/glade-tool-button-editor.c:188
+#: ../plugins/gtk+/glade-tool-button-editor.c:141
+#: ../plugins/gtk+/glade-tool-item-group-editor.c:150
 #, c-format
 msgid "Setting %s to use standard label text"
 msgstr "%s で標準的なラベルを使用する"
 
-#: ../plugins/gtk+/glade-tool-button-editor.c:223
+#: ../plugins/gtk+/glade-tool-button-editor.c:177
+#: ../plugins/gtk+/glade-tool-item-group-editor.c:186
 #, c-format
 msgid "Setting %s to use a custom label widget"
 msgstr "%s で独自のラベルを使用する"
 
-#: ../plugins/gtk+/glade-tool-button-editor.c:253
-#: ../plugins/gtk+/glade-image-editor.c:266
+#: ../plugins/gtk+/glade-tool-button-editor.c:208
+#: ../plugins/gtk+/glade-image-editor.c:214
 #, c-format
 msgid "Setting %s to use an image from stock"
 msgstr "%s でストック・アイコンを使用する"
 
-#: ../plugins/gtk+/glade-tool-button-editor.c:288
-#: ../plugins/gtk+/glade-tool-button-editor.c:322
-#: ../plugins/gtk+/glade-tool-button-editor.c:356
-#: ../plugins/gtk+/glade-image-editor.c:290
+#: ../plugins/gtk+/glade-tool-button-editor.c:244
+#: ../plugins/gtk+/glade-tool-button-editor.c:279
+#: ../plugins/gtk+/glade-image-editor.c:240
 #, c-format
 msgid "Setting %s to use an image from the icon theme"
 msgstr "%s でアイコン・テーマの画像を使用する"
 
 #. Label area frame...
-#: ../plugins/gtk+/glade-tool-button-editor.c:452
-#: ../plugins/gtk+/glade-image-item-editor.c:395
+#: ../plugins/gtk+/glade-tool-button-editor.c:370
+#: ../plugins/gtk+/glade-image-item-editor.c:340
 msgid "Edit Label"
 msgstr "ラベルの編集"
 
 #. Image area frame...
 #. Image content frame...
 #. Internal Image area...
-#: ../plugins/gtk+/glade-tool-button-editor.c:494
-#: ../plugins/gtk+/glade-image-editor.c:345
-#: ../plugins/gtk+/glade-image-item-editor.c:429
+#: ../plugins/gtk+/glade-tool-button-editor.c:417
+#: ../plugins/gtk+/glade-image-editor.c:296
+#: ../plugins/gtk+/glade-image-item-editor.c:376
 msgid "Edit Image"
 msgstr "画像の種類"
 
-#: ../plugins/gtk+/glade-image-editor.c:313
+#: ../plugins/gtk+/glade-image-editor.c:265
 #, c-format
 msgid "Setting %s to use an image from filename"
 msgstr "%s で画像ファイルを使用する"
 
 #. Image size frame...
-#: ../plugins/gtk+/glade-image-editor.c:398
+#: ../plugins/gtk+/glade-image-editor.c:356
 msgid "Set Image Size"
 msgstr "画像の大きさ"
 
-#: ../plugins/gtk+/glade-image-item-editor.c:218
+#: ../plugins/gtk+/glade-image-item-editor.c:172
 #, c-format
 msgid "Setting %s to use a stock item"
 msgstr "%s でストック・アイテムを使用する"
 
-#: ../plugins/gtk+/glade-image-item-editor.c:350
+#: ../plugins/gtk+/glade-image-item-editor.c:301
 msgid "Stock Item:"
 msgstr "ストック・アイテム:"
 
-#: ../plugins/gtk+/glade-image-item-editor.c:384
+#: ../plugins/gtk+/glade-image-item-editor.c:333
 msgid "Custom label and image:"
 msgstr "独自のラベルと画像:"
 
 #. Add descriptive label
-#: ../plugins/gtk+/glade-icon-factory-editor.c:196
+#: ../plugins/gtk+/glade-icon-factory-editor.c:158
 msgid ""
 "First add a stock name in the entry below, then add and define sources for "
 "that icon in the treeview."
@@ -4833,7 +4743,7 @@ msgstr ""
 "の中に格納するアイコンを追加し定義して下さい。"
 
 #. Add descriptive label
-#: ../plugins/gtk+/glade-store-editor.c:197
+#: ../plugins/gtk+/glade-store-editor.c:153
 msgid ""
 "Define columns for your liststore; giving them meaningful names will help "
 "you to retrieve them when setting cell renderer attributes (press the Delete "
@@ -4843,8 +4753,7 @@ msgstr ""
 "ておけば、プログラムの中からセル・レンダラの属性値をセットする際にそれらを取"
 "得しやすくなるでしょう。Delete キーを押下すると選択している列を削除できます。"
 
-#. Add descriptive label
-#: ../plugins/gtk+/glade-store-editor.c:227
+#: ../plugins/gtk+/glade-store-editor.c:188
 msgid ""
 "Add remove and edit rows of data (you can optionally use Ctrl+N to add new "
 "rows and the Delete key to remove the selected row)"
@@ -4852,90 +4761,90 @@ msgstr ""
 "データの削除と編集行を追加して下さい。Ctrl-N キーを押下すると新しい行が追加さ"
 "れ、Delete キーを押下すると選択している行を削除できます。"
 
-#: ../plugins/gtk+/glade-label-editor.c:254
+#: ../plugins/gtk+/glade-label-editor.c:211
 #, c-format
 msgid "Setting %s to use an attribute list"
 msgstr "%s で属性リストを使用する"
 
-#: ../plugins/gtk+/glade-label-editor.c:286
+#: ../plugins/gtk+/glade-label-editor.c:244
 #, c-format
 msgid "Setting %s to use a Pango markup string"
 msgstr "%s で Pango マークアップの文字列を使用する"
 
-#: ../plugins/gtk+/glade-label-editor.c:321
+#: ../plugins/gtk+/glade-label-editor.c:280
 #, c-format
 msgid "Setting %s to use a pattern string"
 msgstr "%s でパターンの文字列を使用する"
 
-#: ../plugins/gtk+/glade-label-editor.c:357
+#: ../plugins/gtk+/glade-label-editor.c:317
 #, c-format
 msgid "Setting %s to set desired width in characters"
 msgstr "%s で幅を文字数単位で任意に指定する"
 
-#: ../plugins/gtk+/glade-label-editor.c:388
+#: ../plugins/gtk+/glade-label-editor.c:348
 #, c-format
 msgid "Setting %s to set maximum width in characters"
 msgstr "%s で最大幅を文字数単位で指定する"
 
-#: ../plugins/gtk+/glade-label-editor.c:422
+#: ../plugins/gtk+/glade-label-editor.c:382
 #, c-format
 msgid "Setting %s to use normal line wrapping"
 msgstr "%s で通常のラッピングを使用する"
 
-#: ../plugins/gtk+/glade-label-editor.c:457
+#: ../plugins/gtk+/glade-label-editor.c:418
 #, c-format
 msgid "Setting %s to use a single line"
 msgstr "%s を１行モードにする"
 
-#: ../plugins/gtk+/glade-label-editor.c:492
+#: ../plugins/gtk+/glade-label-editor.c:454
 #, c-format
 msgid "Setting %s to use specific Pango word wrapping"
 msgstr "%s で Pango による単語のラッピングを使用する"
 
 #. Label appearance...
-#: ../plugins/gtk+/glade-label-editor.c:538
+#: ../plugins/gtk+/glade-label-editor.c:491
 msgid "Edit label appearance"
 msgstr "ラベルの外観の編集"
 
 #. Label formatting...
-#: ../plugins/gtk+/glade-label-editor.c:609
+#: ../plugins/gtk+/glade-label-editor.c:574
 msgid "Format label"
 msgstr "ラベルの書式"
 
 #. Line Wrapping...
-#: ../plugins/gtk+/glade-label-editor.c:675
+#: ../plugins/gtk+/glade-label-editor.c:654
 msgid "Text line wrapping"
 msgstr "文字列のラッピング"
 
-#: ../plugins/gtk+/glade-label-editor.c:694
+#: ../plugins/gtk+/glade-label-editor.c:676
 msgid "Text wraps normally"
 msgstr "通常のラッピング"
 
-#: ../plugins/gtk+/glade-cell-renderer-editor.c:228
+#: ../plugins/gtk+/glade-cell-renderer-editor.c:189
 #, c-format
 msgid "Setting %s to use the %s property as an attribute"
 msgstr "%s で %s を属性として使用する"
 
-#: ../plugins/gtk+/glade-cell-renderer-editor.c:246
+#: ../plugins/gtk+/glade-cell-renderer-editor.c:210
 #, c-format
 msgid "Setting %s to use the %s property directly"
 msgstr "%s で %s をプロパティとしてそのまま使用する"
 
-#: ../plugins/gtk+/glade-cell-renderer-editor.c:369
+#: ../plugins/gtk+/glade-cell-renderer-editor.c:352
 #, c-format
 msgid "Retrieve %s from model (type %s)"
 msgstr "モデルから %s を %s 型として取得する "
 
 #. translators: the adjective not the verb
-#: ../plugins/gtk+/glade-cell-renderer-editor.c:509
+#: ../plugins/gtk+/glade-cell-renderer-editor.c:501
 msgid "unset"
 msgstr "解除"
 
-#: ../plugins/gtk+/glade-cell-renderer-editor.c:532
+#: ../plugins/gtk+/glade-cell-renderer-editor.c:524
 msgid "no model"
 msgstr "モデルなし"
 
-#: ../plugins/gtk+/glade-treeview-editor.c:241
+#: ../plugins/gtk+/glade-treeview-editor.c:205
 msgid ""
 "Choose a Data Model and define some\n"
 "columns in the data store first"
@@ -4943,48 +4852,48 @@ msgstr ""
 "データ・モデルを選択し\n"
 "その中の最初の項目を定義して下さい"
 
-#: ../plugins/gtk+/glade-entry-editor.c:229
+#: ../plugins/gtk+/glade-entry-editor.c:193
 #, c-format
 msgid "Setting %s to use static text"
 msgstr "%s で静的な文字列を使用する"
 
-#: ../plugins/gtk+/glade-entry-editor.c:267
+#: ../plugins/gtk+/glade-entry-editor.c:234
 #, c-format
 msgid "Setting %s to use an external buffer"
 msgstr "%s で外部バッファを使用する"
 
-#: ../plugins/gtk+/glade-entry-editor.c:352
+#: ../plugins/gtk+/glade-entry-editor.c:324
 #, c-format
 msgid "Setting %s to use a primary icon from stock"
 msgstr "%s でストック・アイコンを一番目のアイコンにする"
 
-#: ../plugins/gtk+/glade-entry-editor.c:376
+#: ../plugins/gtk+/glade-entry-editor.c:350
 #, c-format
 msgid "Setting %s to use a primary icon from the icon theme"
 msgstr "%s でアイコン・テーマを一番目のアイコンにする"
 
-#: ../plugins/gtk+/glade-entry-editor.c:399
+#: ../plugins/gtk+/glade-entry-editor.c:375
 #, c-format
 msgid "Setting %s to use a primary icon from filename"
 msgstr "%s でファイル名を指定して一番目のアイコンにする"
 
-#: ../plugins/gtk+/glade-entry-editor.c:424
+#: ../plugins/gtk+/glade-entry-editor.c:401
 #, c-format
 msgid "Setting %s to use a secondary icon from stock"
 msgstr "%s でストック・アイコンを二番目のアイコンにする"
 
-#: ../plugins/gtk+/glade-entry-editor.c:448
+#: ../plugins/gtk+/glade-entry-editor.c:428
 #, c-format
 msgid "Setting %s to use a secondary icon from the icon theme"
 msgstr "%s でアイコン・テーマを二番目のアイコンにする"
 
-#: ../plugins/gtk+/glade-entry-editor.c:471
+#: ../plugins/gtk+/glade-entry-editor.c:453
 #, c-format
 msgid "Setting %s to use a secondary icon from filename"
 msgstr "%s でファイル名を指定して二番目のアイコンにする"
 
 #. Primary icon...
-#: ../plugins/gtk+/glade-entry-editor.c:596
+#: ../plugins/gtk+/glade-entry-editor.c:576
 msgid "Primary icon"
 msgstr "一番目のアイコン"
 
@@ -4993,17 +4902,471 @@ msgstr "一番目のアイコン"
 msgid "Secondary icon"
 msgstr "二番目のアイコン"
 
-#: ../plugins/gtk+/glade-activatable-editor.c:331
+#: ../plugins/gtk+/glade-activatable-editor.c:279
 #, c-format
 msgid "Setting %s action"
 msgstr "%s のアクションを設定する"
 
-#: ../plugins/gtk+/glade-activatable-editor.c:359
+#: ../plugins/gtk+/glade-activatable-editor.c:309
 #, c-format
 msgid "Setting %s to use action appearance"
 msgstr "%s でアクションのアピアランスを使用する"
 
-#: ../plugins/gtk+/glade-activatable-editor.c:360
+#: ../plugins/gtk+/glade-activatable-editor.c:310
 #, c-format
 msgid "Setting %s to not use action appearance"
 msgstr "%s でアクションのアピアランスを使用しない"
+
+#: ../plugins/gtk+/glade-tool-item-group-editor.c:230
+msgid "Group Header"
+msgstr ""
+
+#: ../plugins/gtk+/glade-string-list.c:325
+#: ../plugins/gtk+/glade-string-list.c:369
+#, fuzzy
+msgid "<Type Here>"
+msgstr "<ここに入力して下さい>"
+
+#: ../plugins/gtk+/glade-gtk-grid.c:938 ../plugins/gtk+/glade-gtk-grid.c:945
+#: ../plugins/gtk+/glade-gtk-table.c:1047
+#: ../plugins/gtk+/glade-gtk-table.c:1054
+#, c-format
+msgid "Insert Row on %s"
+msgstr "%s に行を挿入する"
+
+#: ../plugins/gtk+/glade-gtk-grid.c:953 ../plugins/gtk+/glade-gtk-grid.c:960
+#: ../plugins/gtk+/glade-gtk-table.c:1062
+#: ../plugins/gtk+/glade-gtk-table.c:1069
+#, c-format
+msgid "Insert Column on %s"
+msgstr "%s に列を挿入する"
+
+#: ../plugins/gtk+/glade-gtk-grid.c:967 ../plugins/gtk+/glade-gtk-table.c:1076
+#, c-format
+msgid "Remove Column on %s"
+msgstr "%s から列を削除する"
+
+#: ../plugins/gtk+/glade-gtk-grid.c:974 ../plugins/gtk+/glade-gtk-table.c:1083
+#, c-format
+msgid "Remove Row on %s"
+msgstr "%s の行を削除する"
+
+#, fuzzy
+#~| msgid "Entry Completion"
+#~ msgid "Entry Completion Editor"
+#~ msgstr "エントリの補完"
+
+#~ msgid "Disable Devhelp integration"
+#~ msgstr "Devhelp との連携を無効にする"
+
+#~ msgid "[FILE...]"
+#~ msgstr "[ファイル...]"
+
+#~ msgid "be verbose"
+#~ msgstr "詳細なログを表示する"
+
+#~ msgid "Glade debug options"
+#~ msgstr "Glade のデバッグ・オプション"
+
+#~ msgid "Show Glade debug options"
+#~ msgstr "Glade のデバッグ・オプションを表示する"
+
+#~ msgid "Unable to open '%s', the file does not exist.\n"
+#~ msgstr "'%s' を開けません (ファイルが見つかりません)\n"
+
+#~ msgid "Format:"
+#~ msgstr "形式:"
+
+#~ msgid "_Contents"
+#~ msgstr "目次(_C)"
+
+#~ msgid "Display the user manual"
+#~ msgstr "ユーザ・マニュアルを表示します"
+
+#~ msgid "Previews snapshot of project"
+#~ msgstr "プロジェクトのスナップショットをプレビューします"
+
+#~ msgid "Clipboard"
+#~ msgstr "クリップボード"
+
+#~ msgid "Active Project"
+#~ msgstr "現在のプロジェクト"
+
+#~ msgid "The active project"
+#~ msgstr "現在のプロジェクト"
+
+#~ msgid "Current mode for the pointer in the workspace"
+#~ msgstr "ワークスペースの中にあるポインタのモードです"
+
+#~ msgid "DnD"
+#~ msgstr "ドラッグ＆ドロップ"
+
+#~ msgid "DnD Multiple"
+#~ msgstr "複数個のドラッグ＆ドロップ"
+
+#~ msgid "Integer"
+#~ msgstr "整数値"
+
+#~ msgid "An integer value"
+#~ msgstr "int 型の値です"
+
+#~ msgid "Unsigned Integer"
+#~ msgstr "符号無し整数値"
+
+#~ msgid "An unsigned integer value"
+#~ msgstr "unsigned int 型の値です"
+
+#~ msgid "Strv"
+#~ msgstr "文字列の配列"
+
+#~ msgid "String array"
+#~ msgstr "文字列を要素とする配列です"
+
+#~ msgid "Float"
+#~ msgstr "実数値"
+
+#~ msgid "A floating point entry"
+#~ msgstr "浮動小数点型実数の値です"
+
+#~ msgid "Boolean"
+#~ msgstr "論理値"
+
+#~ msgid "A boolean value"
+#~ msgstr "論理型の値です"
+
+#~ msgid "Clipboard add %s"
+#~ msgstr "%s をクリップボードに追加"
+
+#~ msgid "Clipboard add multiple"
+#~ msgstr "クリップボードに複数回追加"
+
+#~ msgid "Clipboard remove %s"
+#~ msgstr "%s をクリップボードから削除"
+
+#~ msgid "Clipboard remove multiple"
+#~ msgstr "クリップボードから複数回削除"
+
+#~ msgid "Copy %s"
+#~ msgstr "%s のコピー"
+
+#~ msgid "Converting %s to %s format"
+#~ msgstr "%s を %s に変換する"
+
+#~ msgid "Setting %s to use a %s naming policy"
+#~ msgstr "%s を %s の名前空間を使用するために設定する"
+
+#~ msgid "_Has context prefix"
+#~ msgstr "コンテキストを持つ(_H)"
+
+#~ msgid "Whether the translatable string has a context prefix"
+#~ msgstr "コンテキスト (識別子) を持つ翻訳可能な文字列かどうかです"
+
+#~ msgid "Value:"
+#~ msgstr "値:"
+
+#~ msgid "The current value"
+#~ msgstr "現在の値です"
+
+#~ msgid "Lower:"
+#~ msgstr "最小値:"
+
+#~ msgid "The minimum value"
+#~ msgstr "最小値です"
+
+#~ msgid "Upper:"
+#~ msgstr "最大値:"
+
+#~ msgid "The maximum value"
+#~ msgstr "最大値です"
+
+#~ msgid "Step inc:"
+#~ msgstr "ステップ幅:"
+
+#~ msgid "The increment to use to make minor changes to the value"
+#~ msgstr "値を小さく変更する際に使用する増分値です"
+
+#~ msgid "Page inc:"
+#~ msgstr "ページ幅:"
+
+#~ msgid "The increment to use to make major changes to the value"
+#~ msgstr "値を大きく変更する際に使用する増分値です"
+
+#~ msgid "Page size:"
+#~ msgstr "ページ・サイズ:"
+
+#~ msgid ""
+#~ "The page size (in a GtkScrollbar this is the size of the area which is "
+#~ "currently visible)"
+#~ msgstr ""
+#~ "ページ・サイズ (GtkScrollbar 型オブジェクトでは表示可能な大きさを表す)"
+
+#~ msgid "Create root widget"
+#~ msgstr "ルート・ウィジェットの生成"
+
+#~ msgid "Format"
+#~ msgstr "形式"
+
+#~ msgid "The project file format"
+#~ msgstr "プロジェクト・ファイルの形式です"
+
+#~ msgid "Previewable"
+#~ msgstr "プレビューの可否"
+
+#~ msgid "Wether the project can be previewed"
+#~ msgstr "プロジェクトをプレビューできるかどうかです"
+
+#~ msgid "%s preferences"
+#~ msgstr "%s の設定"
+
+#~ msgid ""
+#~ "This widget was made available in GtkBuilder format in %s %d.%d while "
+#~ "project targets %s %d.%d"
+#~ msgstr ""
+#~ "このウィジェットは %s のバージョン %d.%d から GtkBuilder 形式で利用できる"
+#~ "ようになりましたが、 プロジェクトが対象としている %s のバージョンは %d.%d "
+#~ "です"
+
+#~ msgid ""
+#~ "[%s] Object class '%s' was made available in GtkBuilder format in %s %d."
+#~ "%d\n"
+#~ msgstr ""
+#~ "[%s] '%s' というクラスは %s のバージョン %d.%d から GtkBuilder 形式で利用"
+#~ "できるようになりました\n"
+
+#~ msgid "This widget is only supported in libglade format"
+#~ msgstr "このウィジェットは libglade でしか利用できません"
+
+#~ msgid ""
+#~ "[%s] Object class '%s' from %s %d.%d is only supported in libglade "
+#~ "format\n"
+#~ msgstr ""
+#~ "[%s] '%s' というクラスは %s のバージョン %d.%d から libglade 形式でのみの"
+#~ "サポートになりました\n"
+
+#~ msgid "This widget is not supported in libglade format"
+#~ msgstr "このウィジェットは libglade 形式では利用できません"
+
+#~ msgid ""
+#~ "[%s] Object class '%s' from %s %d.%d is not supported in libglade format\n"
+#~ msgstr ""
+#~ "[%s] '%s' というクラスは %s のバージョン %d.%d から libglade 形式をサポー"
+#~ "トしなくなりました\n"
+
+#~ msgid "This property is not supported in libglade format"
+#~ msgstr "このプロパティは libglade 形式では利用できません"
+
+#~ msgid ""
+#~ "[%s] Property '%s' of object class '%s' is not supported in libglade "
+#~ "format\n"
+#~ msgstr ""
+#~ "[%s] '%s' という '%s' クラスのプロパティは libglade 形式では利用できませ"
+#~ "ん\n"
+
+#~ msgid ""
+#~ "[%s] Packing property '%s' of object class '%s' is not supported in "
+#~ "libglade format\n"
+#~ msgstr ""
+#~ "[%s] '%s' という '%s' クラスのパッキング用プロパティは libglade 形式では利"
+#~ "用できません\n"
+
+#~ msgid "This property is only supported in libglade format"
+#~ msgstr "このプロパティは libglade 形式でのみ利用できます"
+
+#~ msgid ""
+#~ "[%s] Property '%s' of object class '%s' is only supported in libglade "
+#~ "format\n"
+#~ msgstr ""
+#~ "[%s] '%s' という '%s' クラスのプロパティは libglade 形式でのみ利用できま"
+#~ "す\n"
+
+#~ msgid ""
+#~ "[%s] Packing property '%s' of object class '%s' is only supported in "
+#~ "libglade format\n"
+#~ msgstr ""
+#~ "[%s] '%s' という '%s' クラスのパッキング用プロパティは libglade 形式でのみ"
+#~ "利用できます\n"
+
+#~ msgid ""
+#~ "This property was made available in GtkBuilder format in %s %d.%d while "
+#~ "project targets %s %d.%d"
+#~ msgstr ""
+#~ "このプロパティは %s のバージョン %d.%d から GtkBuilder 形式で利用できるよ"
+#~ "うになりましたが、 プロジェクトが対象としている %s のバージョンは %d.%d で"
+#~ "す"
+
+#~ msgid ""
+#~ "[%s] Property '%s' of object class '%s' was made available in GtkBuilder "
+#~ "format in %s %d.%d\n"
+#~ msgstr ""
+#~ "[%s] '%s' という '%s' クラスのプロパティは %s のバージョン %d.%d から "
+#~ "GtkBuild 形式で利用できるようになりました\n"
+
+#~ msgid ""
+#~ "[%s] Packing property '%s' of object class '%s' was made available in "
+#~ "GtkBuilder format in %s %d.%d\n"
+#~ msgstr ""
+#~ "[%s] '%s' という '%s' クラスのパッキング用プロパティは %s のバージョン %d."
+#~ "%d から GtkBuilder 形式で利用できるようになりました\n"
+
+#~ msgid "Set options in your project"
+#~ msgstr "プロジェクトのオプション"
+
+#~ msgid "Project file format:"
+#~ msgstr "プロジェクト・ファイルの形式:"
+
+#~ msgid "Object names are unique:"
+#~ msgstr "オブジェクトの名前空間:"
+
+#~ msgid "within the project"
+#~ msgstr "このプロジェクトの中だけ"
+
+#~ msgid "inside toplevels"
+#~ msgstr "トップレベルまで"
+
+#~ msgid "Has Context"
+#~ msgstr "コンテキストを持つ"
+
+#~ msgid "<Object>"
+#~ msgstr "<オブジェクト>"
+
+#~ msgid "The name of the signal to connect to"
+#~ msgstr "接続する先のシグナルです"
+
+#~ msgid "An object to pass to the handler"
+#~ msgstr "ハンドラに引き渡すオブジェクトです"
+
+#~ msgid ""
+#~ "Whether the handler should be called before or after the default handler "
+#~ "of the signal"
+#~ msgstr ""
+#~ "シグナルのデフォルト・ハンドラを呼び出す前または後にこのハンドラを呼び出す"
+#~ "かどうかです"
+
+#~ msgid "File format"
+#~ msgstr "ファイルの形式"
+
+#~ msgid ""
+#~ "%s exists.\n"
+#~ "Do you want to replace it?"
+#~ msgstr ""
+#~ "既に %s が存在しています。\n"
+#~ "置き換えてもよろしいですか？"
+
+#~ msgid "Error writing to %s: %s"
+#~ msgstr "%s に書き込む際にエラー: %s"
+
+#~ msgid "Error reading %s: %s"
+#~ msgstr "%s を読み込む際にエラー: %s"
+
+#~ msgid "Error shutting down I/O channel %s: %s"
+#~ msgstr "I/O チャンネル %s を終了する際にエラー: %s"
+
+#~ msgid "Failed to open %s for writing: %s"
+#~ msgstr "%s を書き込みモードで開く際にエラー: %s"
+
+#~ msgid "Failed to open %s for reading: %s"
+#~ msgstr "%s を読み込みモードで開く際にエラー: %s"
+
+#~ msgid "GnomeUIInfo"
+#~ msgstr "GnomeUIInfo"
+
+#~ msgid "Choose the GnomeUIInfo stock item"
+#~ msgstr "GnomeUIInfo 型のストック・アイテムを選択して下さい"
+
+#~ msgid "Print S_etup"
+#~ msgstr "印刷の設定(_E)"
+
+#~ msgid "Find Ne_xt"
+#~ msgstr "次の検索(_X)"
+
+#~ msgid "_Undo Move"
+#~ msgstr "移動を元に戻す(_U)"
+
+#~ msgid "_Redo Move"
+#~ msgstr "移動をやり直す(_R)"
+
+#~ msgid "Select _All"
+#~ msgstr "全て選択(_A)"
+
+#~ msgid "_New Game"
+#~ msgstr "新ゲーム(_N)"
+
+#~ msgid "_Pause game"
+#~ msgstr "一時停止(_P)"
+
+#~ msgid "_Restart Game"
+#~ msgstr "再開(_R)"
+
+#~ msgid "_Hint"
+#~ msgstr "ヒント(_H)"
+
+#~ msgid "_Scores..."
+#~ msgstr "得点(_S)..."
+
+#~ msgid "_End Game"
+#~ msgstr "終了(_E)"
+
+#~ msgid "Create New _Window"
+#~ msgstr "新規ウィンドウの生成(_W)"
+
+#~ msgid "_Close This Window"
+#~ msgstr "このウィンドウを閉じる(_C)"
+
+#~ msgid "_Settings"
+#~ msgstr "設定(_S)"
+
+#~ msgid "Fi_les"
+#~ msgstr "ファイル(_L)"
+
+#~ msgid "_Windows"
+#~ msgstr "ウィンドウ(_W)"
+
+#~ msgid "_Game"
+#~ msgstr "ゲーム(_G)"
+
+#~ msgid ""
+#~ "A file name, full or relative path to load an icon for this toolbutton"
+#~ msgstr ""
+#~ "このツールボタンのアイコンを表すファイル名 (相対パスまたは絶対パス) です"
+
+#~ msgid "A tooltip text for this widget"
+#~ msgstr "このウィジェットのツールチップに表示する文章です"
+
+#~ msgid "Centimeters"
+#~ msgstr "センチ"
+
+#~ msgid "Combo Box Entry"
+#~ msgstr "コンボ・ボックスのエントリ"
+
+#~ msgid "Horizontal Ruler"
+#~ msgstr "水平方向のルーラ"
+
+#~ msgid "Icon"
+#~ msgstr "アイコン"
+
+#~ msgid "Inches"
+#~ msgstr "インチ"
+
+#~ msgid "Pixels"
+#~ msgstr "ピクセル"
+
+#~ msgid "Ruler"
+#~ msgstr "ルーラ"
+
+#~ msgid "Set the text in the view's text buffer"
+#~ msgstr "ビューのテキスト・バッファに表示する文章を指定します"
+
+#~ msgid "Specialized Widgets"
+#~ msgstr "特別なウィジェット"
+
+#~ msgid "Text Buffers"
+#~ msgstr "テキスト・バッファ"
+
+#~ msgid "Tree Model"
+#~ msgstr "ツリー・モデル"
+
+#~ msgid "Vertical Ruler"
+#~ msgstr "垂直方向のルーラ"
+
+#~ msgid "Sequential editing:"
+#~ msgstr "連続編集を行う向き:"
