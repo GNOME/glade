@@ -1,3 +1,7 @@
+2011-04-05  Tristan Van Berkom <tristanvb@openismus.com>
+
+	* configure.ac, NEWS: Rolling 3.10.0
+
 2011-04-05  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* gladeui/glade-widget-adaptor.[ch]:
@@ -11,7 +15,7 @@
 	  o Added new API glade_widget_find_child()
 	  o glade_widget_constructor() do not set catalog defaults for internal widgets.
 	    (Fixes GtkDialog action area orientation)
-    
+
 	* plugins/gtk+/glade-gtk-action-widgets.[ch]:
 	  o reworked code from GtkDialog support to read and write widget actions special tags
 	    found in GtkDialog and GtkInfoBar widgets
@@ -25,7 +29,7 @@
 	  o Fixed GtkDialog derived classes placeholders creation.
 	  o Set GtkButton::stock on post_create when reason is user.
 	    (Fixes bug in internal buttons with stock icons)
-	  o Made glade_gtk_container_get_children() chain up to parent implementation to get 
+	  o Made glade_gtk_container_get_children() chain up to parent implementation to get
 	    internal widget and purify the list to remove posible duplicates
 
 	* plugins/gtk+/gtk+.xml.in:

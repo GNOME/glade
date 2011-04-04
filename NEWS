@@ -1,3 +1,29 @@
+============
+Glade 3.10.0
+============
+	- Fixed some glitches in the new workspace - Juan Pablo Ugarte
+	- Removed the unwritten user manual from the menus.
+	- Added support for GdkRGBA properties
+	- Add support for editing the PangoFontDesctiption in GtkLabel attributes
+	- Put File->Properties before Quit in the File menu - Frederic Peters
+	- Added GObject introspection generation to the build - Pablo Castellano & Alan Knowles
+	- Added support for GtkRecentChooserMenu
+	- More last minute sealing of the api (privatized some more files).
+	- Created the GladePreview object to handle previews and fixed 
+	  preview related bugs - Marco Diego Aurélio Mesquita
+	- Added support for editing GtkGrid
+	- Icons now available for all widget classes - Florent Thévenet and some by Dolean Samuel.
+	- Cleaned up the palette by removing H/V subclasses.
+	- Added support for GtkAppChooser* classes.
+	- Migrate from PyGTK to PyGObject introspection-based bindings - Craig Keogh
+	- Some refactoring of GladeEditable and custom editors in the backend
+	- Added a special "deprecation" graphic to overlay on 
+	  top of deprecated widget icons.
+	- Added high-resolution applicaiton icon - Jakub Steiner / William Jon McCann
+	- Refactored the core to automate the management of internal children - Juan Pablo Ugarte
+	- Fixed loads of bugs, some fixes by Christopher Aillon, 
+	  Craig Keogh, Cosimo Cecchi, Juan Pablo Ugarte
+
 ===========
 Glade 3.9.2
 ===========
