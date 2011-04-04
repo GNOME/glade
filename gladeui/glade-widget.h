@@ -385,7 +385,7 @@ void                    glade_widget_support_changed        (GladeWidget      *w
 GtkTreeModel           *glade_widget_get_signal_model       (GladeWidget      *widget);
 
 GladeWidget            *glade_widget_find_child             (GladeWidget *widget,
-                                                             gchar *name);
+                                                             const gchar *name);
 
 G_END_DECLS
 

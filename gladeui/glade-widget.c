@@ -1475,7 +1475,9 @@ glade_widget_set_default_packing_properties (GladeWidget * container,
  * When looking for an internal child we have to walk up the hierarchy...
  */
 static GObject *
-glade_widget_get_internal_child (GladeWidget * parent, const gchar * internal)
+glade_widget_get_internal_child (GladeWidget *main_target, 
+				 GladeWidget *parent, 
+				 const gchar *internal)
 {
   while (parent)
     {
@@ -1483,47 +1485,21 @@ glade_widget_get_internal_child (GladeWidget * parent, const gchar * internal)
         return glade_widget_adaptor_get_internal_child
             (parent->priv->adaptor, parent->priv->object, internal);
 
+      /* Limit the itterations into where the copy routine stared */
+      if (parent == main_target)
+        break;
+
       parent = glade_widget_get_parent (parent);
     }
   return NULL;
 }
-
-static GladeGetInternalFunc
-glade_widget_get_internal_func (GladeWidget * main_target,
-                                GladeWidget * parent, GladeWidget ** parent_ret)
-{
-  GladeWidget *gwidget;
-
-  g_return_val_if_fail (GLADE_IS_WIDGET (parent), NULL);
-
-  for (gwidget = parent; gwidget; gwidget = gwidget->priv->parent)
-    {
-      GladeWidgetAdaptorClass *adaptor_class =
-          GLADE_WIDGET_ADAPTOR_GET_CLASS (gwidget->priv->adaptor);
-
-      if (adaptor_class->get_internal_child)
-        {
-          if (parent_ret)
-            *parent_ret = gwidget;
-          return adaptor_class->get_internal_child;
-        }
-
-      /* Limit the itterations into where the copy routine stared */
-      if (gwidget == main_target)
-        break;
-    }
-
-  return NULL;
-}
-
 
 static GladeWidget *
 glade_widget_dup_internal (GladeWidget * main_target,
                            GladeWidget * parent,
                            GladeWidget * template_widget, gboolean exact)
 {
-  GladeGetInternalFunc get_internal;
-  GladeWidget *gwidget = NULL, *internal_parent;
+  GladeWidget *gwidget = NULL;
   GList *children;
   GtkWidget *placeholder;
   gchar *child_type;
@@ -1537,22 +1513,13 @@ glade_widget_dup_internal (GladeWidget * main_target,
     {
       GObject *internal_object = NULL;
 
-      if ((get_internal =
-           glade_widget_get_internal_func (main_target, parent,
-                                           &internal_parent)) != NULL)
-        {
-          /* We cant use "parent" here, we have to recurse up the hierarchy to find
-           * the "parent" that has `get_internal_child' support (i.e. internal children
-           * may have depth).
-           */
-          if ((internal_object = 
-	       get_internal (internal_parent->priv->adaptor,
-			     internal_parent->priv->object,
-			     template_widget->priv->internal)) != NULL)
-            {
-              gwidget = glade_widget_get_from_gobject (internal_object);
-              g_assert (gwidget);
-            }
+      if ((internal_object = 
+	   glade_widget_get_internal_child (main_target,
+					    parent,
+					    template_widget->priv->internal)) != NULL)
+	{
+	  gwidget = glade_widget_get_from_gobject (internal_object);
+	  g_assert (gwidget);
         }
     }
 
@@ -1754,19 +1721,13 @@ glade_widget_insert_children (GladeWidget * gwidget, GList * children)
 
       if (extract->internal_name)
         {
-          GladeGetInternalFunc get_internal;
-          GladeWidget *internal_parent;
-
 
           /* Recurse and add deep widget hierarchies to internal
            * widgets.
            */
-          get_internal = glade_widget_get_internal_func
-              (NULL, gwidget, &internal_parent);
-
-          internal_object = get_internal (internal_parent->priv->adaptor,
-                                          internal_parent->priv->object,
-                                          extract->internal_name);
+          internal_object = glade_widget_get_internal_child (NULL,
+							     gwidget,
+							     extract->internal_name);
 
           gchild = glade_widget_get_from_gobject (internal_object);
 
@@ -3475,7 +3436,8 @@ glade_widget_set_parent (GladeWidget * widget, GladeWidget * parent)
  * Returns: The child of widget or NULL if it was not found.
  */
 GladeWidget *
-glade_widget_find_child (GladeWidget *widget, gchar *name)
+glade_widget_find_child (GladeWidget *widget, 
+			 const gchar *name)
 {
   GList *adapter_children;
   GladeWidget *real_child = NULL;
@@ -3798,7 +3760,7 @@ glade_widget_read (GladeProject * project,
               if (internal)
                 {
                   GObject *child_object =
-                      glade_widget_get_internal_child (parent, internal);
+		    glade_widget_get_internal_child (NULL, parent, internal);
 
                   if (!child_object)
                     {
