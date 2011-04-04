@@ -3491,13 +3491,7 @@ glade_widget_adaptor_get_children (GladeWidgetAdaptor * adaptor,
   g_return_val_if_fail (g_type_is_a (G_OBJECT_TYPE (container), adaptor->priv->type),
                         NULL);
 
-  if (GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->get_children)
-    return GLADE_WIDGET_ADAPTOR_GET_CLASS
-        (adaptor)->get_children (adaptor, container);
-
-  /* Dont complain here if no implementation is found */
-
-  return NULL;
+  return GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->get_children (adaptor, container);
 }
 
 /**
