@@ -6,6 +6,7 @@ icons_DATA = \
         widget-gtk-aboutdialog.png \
         widget-gtk-accelgroup.png \
         widget-gtk-accellabel.png \
+        widget-gtk-adjustment.png \
         widget-gtk-alignment.png \
 	widget-gtk-appchooserbutton.png \
 	widget-gtk-appchooserdialog.png \
@@ -82,7 +83,9 @@ icons_DATA = \
 	widget-gtk-recentaction.png \
         widget-gtk-recentchooser.png \
         widget-gtk-recentchooserdialog.png \
+        widget-gtk-recentchoosermenu.png \
         widget-gtk-recentfilter.png \
+        widget-gtk-recentmanager.png \
         widget-gtk-scale.png \
         widget-gtk-scrollbar.png \
         widget-gtk-scrolledwindow.png \
@@ -108,6 +111,7 @@ icons_DATA = \
 	widget-gtk-toolitemgroup.png \
 	widget-gtk-toolpalette.png \
         widget-gtk-treemodelfilter.png \
+        widget-gtk-treemodelsort.png \
         widget-gtk-treeselection.png \
         widget-gtk-treeview.png \
         widget-gtk-treeviewcolumn.png \
