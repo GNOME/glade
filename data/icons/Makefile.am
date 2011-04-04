@@ -24,4 +24,4 @@ pixmaps_DATA = selector.png devhelp.png \
 	deprecated-22x22.png
 
 
-EXTRA_DIST = $(pixmaps_DATA) glade.ico
+EXTRA_DIST = $(pixmaps_DATA) glade-3.ico

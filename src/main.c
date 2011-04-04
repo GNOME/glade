@@ -41,144 +41,39 @@
 #define APPLICATION_NAME (_("Glade"))
 
 
-#define TYPE_GLADE            (glade_get_type())
-#define GLADE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_GLADE, Glade))
-
-typedef struct _Glade      Glade;
-typedef struct _GladeClass GladeClass;
-
-struct _Glade {
-  GtkApplication application;
-
-  GladeWindow *window;
-};
-
-struct _GladeClass {
-  GtkApplicationClass application_class;
-};
-
-
-static GType  glade_get_type        (void) G_GNUC_CONST;
-static void   glade_finalize        (GObject       *object);
-static void   glade_open            (GApplication  *application,
-				     GFile        **files,
-				     gint           n_files,
-				     const gchar   *hint);
-static void   glade_startup         (GApplication  *application);
-static void   glade_activate        (GApplication  *application);
-
-G_DEFINE_TYPE (Glade, glade, GTK_TYPE_APPLICATION)
-
-static gboolean
-open_new_project (Glade *glade)
-{
-  if (!glade_app_get_projects ())
-    glade_window_new_project (glade->window);
-
-  return FALSE;
-}
-
-static void
-glade_init (Glade *glade)
-{
-
-}
-
-static void
-glade_class_init (GladeClass *glade_class)
-{
-  GObjectClass      *object_class      = G_OBJECT_CLASS (glade_class);
-  GApplicationClass *application_class = G_APPLICATION_CLASS (glade_class);
-
-  object_class->finalize      = glade_finalize;
-
-  application_class->open     = glade_open;
-  application_class->startup  = glade_startup;
-  application_class->activate = glade_activate;
-}
-
-static void
-glade_finalize (GObject *object)
-{
-  G_OBJECT_CLASS (glade_parent_class)->finalize (object);
-}
-
-static void
-glade_open (GApplication  *application,
-	    GFile        **files,
-	    gint           n_files,
-	    const gchar   *hint)
-{
-  Glade *glade = GLADE (application);
-  gint i;
-  gchar *path;
-
-  for (i = 0; i < n_files; i++)
-    {
-      if ((path = g_file_get_path (files[i])) != NULL)
-	{
-	  glade_window_open_project (glade->window, path);
-
-	  g_free (path);
-	}
-    }
-}
-
-static void
-glade_startup (GApplication *application)
-{
-  Glade *glade = GLADE (application);
-
-  glade_setup_log_handlers ();
-
-  glade->window = GLADE_WINDOW (glade_window_new ());
-  gtk_window_set_application (GTK_WINDOW (glade->window), GTK_APPLICATION (application));
-
-  gtk_widget_show (GTK_WIDGET (glade->window));
-
-  g_idle_add ((GSourceFunc)open_new_project, glade);
-
-  G_APPLICATION_CLASS (glade_parent_class)->startup (application);
-}
-
-static void
-glade_activate (GApplication *application)
-{
-}
-
-
-static Glade *
-glade_new (void)
-{
-  Glade *glade =
-    g_object_new (TYPE_GLADE, 
-		  "application-id", "org.gnome.Glade",
-		  "flags", G_APPLICATION_HANDLES_OPEN,
-		  NULL);
-
-  return glade;
-}
-
-/* Version argument parsing */
-static gboolean version = FALSE;
+/* Application arguments */
+static gboolean version = FALSE, without_devhelp = FALSE;
+static gchar **files = NULL;
 
 static GOptionEntry option_entries[] = {
   {"version", '\0', 0, G_OPTION_ARG_NONE, &version,
    N_("Output version information and exit"), NULL},
 
+  {"without-devhelp", '\0', 0, G_OPTION_ARG_NONE, &without_devhelp,
+   N_("Disable Devhelp integration"), NULL},
+
+  {G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_FILENAME_ARRAY, &files,
+   NULL, N_("[FILE...]")},
+
+  {NULL}
+};
+
+/* Debugging arguments */
+static gboolean verbose = FALSE;
+
+static GOptionEntry debug_option_entries[] = {
+  {"verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose, N_("be verbose"), NULL},
   {NULL}
 };
 
 int
 main (int argc, char *argv[])
 {
+  GladeWindow *window;
   GOptionContext *option_context;
   GOptionGroup *option_group;
   GError *error = NULL;
-  Glade *glade;
-  gint status;
-
-  g_type_init ();
+  gboolean opened_project = FALSE;
 
   if (!g_thread_supported ())
     g_thread_init (NULL);
@@ -203,6 +98,17 @@ main (int argc, char *argv[])
   g_option_group_add_entries (option_group, option_entries);
   g_option_context_set_main_group (option_context, option_group);
   g_option_group_set_translation_domain (option_group, GETTEXT_PACKAGE);
+
+  option_group = g_option_group_new ("debug",
+                                     N_("Glade debug options"),
+                                     N_("Show Glade debug options"),
+                                     NULL, NULL);
+  g_option_group_add_entries (option_group, debug_option_entries);
+  g_option_group_set_translation_domain (option_group, GETTEXT_PACKAGE);
+  g_option_context_add_group (option_context, option_group);
+
+  /* Add Gtk option group */
+  g_option_context_add_group (option_context, gtk_get_option_group (FALSE));
 
   /* Parse command line */
   if (!g_option_context_parse (option_context, &argc, &argv, &error))
@@ -230,6 +136,11 @@ main (int argc, char *argv[])
       return 0;
     }
 
+  /* Pass NULL here since we parsed the gtk+ args already...
+   * from this point on we need a DISPLAY variable to be set.
+   */
+  gtk_init (NULL, NULL);
+
   /* Check for gmodule support */
   if (!g_module_supported ())
     {
@@ -238,17 +149,44 @@ main (int argc, char *argv[])
       return -1;
     }
 
-  gtk_init (&argc, &argv);
-
   g_set_application_name (APPLICATION_NAME);
-  gtk_window_set_default_icon_name ("glade");
+  gtk_window_set_default_icon_name ("glade-3");
 
-  /* Fire it up */
-  glade = glade_new ();
-  status = g_application_run (G_APPLICATION (glade), argc, argv);
-  g_object_unref (glade);
+  glade_setup_log_handlers ();
 
-  return status;
+
+  window = GLADE_WINDOW (glade_window_new ());
+
+  if (without_devhelp == FALSE)
+    glade_window_check_devhelp (window);
+
+  gtk_widget_show (GTK_WIDGET (window));
+
+  /* load files specified on commandline */
+  if (files != NULL)
+    {
+      guint i;
+
+      for (i = 0; files[i]; ++i)
+        {
+          if (g_file_test (files[i], G_FILE_TEST_EXISTS) != FALSE)
+	    {
+	      if (glade_window_open_project (window, files[i]))
+		opened_project = TRUE;
+	    }
+          else
+            g_warning (_("Unable to open '%s', the file does not exist.\n"),
+                       files[i]);
+        }
+      g_strfreev (files);
+    }
+
+  if (!opened_project)
+    glade_window_new_project (window);
+
+  gtk_main ();
+
+  return 0;
 }
 
 #ifdef G_OS_WIN32

@@ -148,7 +148,6 @@ static void check_reload_project (GladeWindow * window, GladeProject * project);
 
 static void glade_window_config_save (GladeWindow * window);
 
-static void glade_window_check_devhelp (GladeWindow * window);
 
 G_DEFINE_TYPE (GladeWindow, glade_window, GTK_TYPE_WINDOW)
 
@@ -3552,7 +3551,7 @@ glade_window_init (GladeWindow * window)
   }
 #endif
 
-  glade_window_check_devhelp (window);
+
 }
 
 static void
@@ -3594,7 +3593,7 @@ glade_window_new (void)
   return g_object_new (GLADE_TYPE_WINDOW, NULL);
 }
 
-static void
+void
 glade_window_check_devhelp (GladeWindow * window)
 {
   g_return_if_fail (GLADE_IS_WINDOW (window));
