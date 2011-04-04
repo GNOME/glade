@@ -2335,7 +2335,7 @@ gwa_internal_children_update_from_node (GList *internal_children, GladeXmlNode *
 
       if ((data = gwa_internal_child_find (retval, name)) == NULL)
         {
-          gboolean anarchist = glade_xml_get_boolean (child, GLADE_TAG_ANARCHIST, FALSE);
+          gboolean anarchist = glade_xml_get_property_boolean (child, GLADE_TAG_ANARCHIST, FALSE);
           data = gwa_internal_children_new (name, anarchist);
           retval = g_list_prepend (retval, data);
         }
