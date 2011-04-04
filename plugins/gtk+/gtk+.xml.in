@@ -900,35 +900,47 @@ embedded in another object</_tooltip>
       </signals>
 
       <properties>
-	<property id="text" translatable="True" custom-layout="True"></property>
-        <property id="buffer" create-type="GtkEntryBuffer" since="2.18" custom-layout="True"></property>
+	<property id="text" translatable="True" custom-layout="True"/>
+        <property id="buffer" create-type="GtkEntryBuffer" since="2.18" custom-layout="True"/>
 
-        <property id="inner-border" since="2.10"></property>
-        <property id="truncate-multiline" since="2.10"></property>
-	<property id="shadow-type" since="2.12"></property>
-	<property id="editing-canceled" disabled="True" since="2.20"></property>
-	<property id="primary-icon-gicon" disabled="True"></property>
-	<property id="secondary-icon-gicon" disabled="True"></property>
-	<property id="primary-icon-stock" _name="Primary Stock Icon" since="2.16" custom-layout="True" stock-icon="True"></property>
-	<property id="secondary-icon-stock" _name="Secondary Stock Icon" since="2.16" custom-layout="True" stock-icon="True"></property>
-	<property id="primary-icon-pixbuf" _name="Primary Icon Pixbuf" since="2.16" custom-layout="True"></property>
-	<property id="secondary-icon-pixbuf" _name="Secondary Icon Pixbuf" since="2.16" custom-layout="True"></property>
-	<property id="primary-icon-name" _name="Primary Icon Name" since="2.16" custom-layout="True" themed-icon="True"></property>
-	<property id="secondary-icon-name" _name="Secondary Icon Name" since="2.16" custom-layout="True" themed-icon="True"></property>
-	<property id="primary-icon-activatable" _name="Primary Icon Activatable" since="2.16" custom-layout="True"></property>
-	<property id="secondary-icon-activatable" _name="Secondary Icon Activatable" since="2.16" custom-layout="True"></property>
-	<property id="primary-icon-sensitive" _name="Primary Icon Sensitive" since="2.16" custom-layout="True"></property>
-	<property id="secondary-icon-sensitive" _name="Secondary Icon Sensitive" since="2.16" custom-layout="True"></property>
-	<property id="progress-fraction" _name="Progress Fraction" since="2.16" custom-layout="True"></property>
-	<property id="progress-pulse-step" _name="Progress Pulse Step" since="2.16" custom-layout="True"></property>
+        <property id="inner-border" since="2.10"/>
+        <property id="truncate-multiline" since="2.10"/>
+	<property id="shadow-type" since="2.12"/>
+	<property id="editing-canceled" disabled="True" since="2.20"/>
+	<property id="primary-icon-gicon" disabled="True"/>
+	<property id="secondary-icon-gicon" disabled="True"/>
+	<property id="primary-icon-stock" _name="Primary Stock Icon" since="2.16" custom-layout="True" 
+		  stock-icon="True"/>
+	<property id="secondary-icon-stock" _name="Secondary Stock Icon" since="2.16" custom-layout="True" 
+		  stock-icon="True"/>
+	<property id="primary-icon-pixbuf" _name="Primary Icon Pixbuf" since="2.16" custom-layout="True"/>
+	<property id="secondary-icon-pixbuf" _name="Secondary Icon Pixbuf" since="2.16" custom-layout="True"/>
+	<property id="primary-icon-name" _name="Primary Icon Name" since="2.16" custom-layout="True" 
+		  themed-icon="True"/>
+	<property id="secondary-icon-name" _name="Secondary Icon Name" since="2.16" custom-layout="True" 
+		  themed-icon="True"/>
+	<property id="primary-icon-activatable" _name="Primary Icon Activatable" since="2.16" 
+		  custom-layout="True"/>
+	<property id="secondary-icon-activatable" _name="Secondary Icon Activatable" since="2.16" 
+		  custom-layout="True"/>
+	<property id="primary-icon-sensitive" _name="Primary Icon Sensitive" since="2.16" 
+		  custom-layout="True"/>
+	<property id="secondary-icon-sensitive" _name="Secondary Icon Sensitive" since="2.16" 
+		  custom-layout="True"/>
+	<property id="progress-fraction" _name="Progress Fraction" since="2.16" custom-layout="True"/>
+	<property id="progress-pulse-step" _name="Progress Pulse Step" since="2.16" custom-layout="True"/>
 
-	<property id="invisible-char-set" _name="Invisible Char Set" since="2.16"></property>
-	<property id="primary-icon-tooltip-text" translatable="True" multiline="True" _name="Primary Icon Tooltip Text" custom-layout="True" since="2.16"></property>
-	<property id="secondary-icon-tooltip-text" translatable="True" multiline="True" _name="Secondary Icon Tooltip Text" custom-layout="True" since="2.16"></property>
-	<property id="primary-icon-tooltip-markup" translatable="True" multiline="True" _name="Primary Icon Tooltip Markup" custom-layout="True" since="2.16"></property>
-	<property id="secondary-icon-tooltip-markup" translatable="True" multiline="True" _name="Secondary Icon Tooltip Markup" custom-layout="True" since="2.16"></property>
+	<property id="invisible-char-set" _name="Invisible Char Set" since="2.16"/>
+	<property id="primary-icon-tooltip-text" translatable="True" multiline="True" 
+		  _name="Primary Icon Tooltip Text" custom-layout="True" since="2.16"/>
+	<property id="secondary-icon-tooltip-text" translatable="True" multiline="True"
+		  _name="Secondary Icon Tooltip Text" custom-layout="True" since="2.16"/>
+	<property id="primary-icon-tooltip-markup" translatable="True" multiline="True"
+		  _name="Primary Icon Tooltip Markup" custom-layout="True" since="2.16"/>
+	<property id="secondary-icon-tooltip-markup" translatable="True" multiline="True"
+		  _name="Secondary Icon Tooltip Markup" custom-layout="True" since="2.16"/>
 
-	<property id="im-module" disabled="True"></property>
+	<property id="im-module" disabled="True"/>
 
 	<!-- Virtual edit mode properties -->
         <property id="use-entry-buffer" visible="False" save="False" default="False">
@@ -2116,7 +2128,8 @@ embedded in another object</_tooltip>
       </actions>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkEntryCompletion" generic-name="entrycompletion" _title="Entry Completion" toplevel="True"></glade-widget-class>
+    <glade-widget-class name="GtkEntryCompletion" generic-name="entrycompletion" _title="Entry Completion" 
+			toplevel="True"/>
 
     <glade-widget-class name="GtkIconFactory" generic-name="iconfactory" _title="Icon Factory" toplevel="True">
       <post-create-function>glade_gtk_icon_factory_post_create</post-create-function>
