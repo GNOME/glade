@@ -3,7 +3,23 @@
 iconsdir = $(pkgdatadir)/pixmaps/hicolor/22x22/actions
 
 icons_DATA = \
-        widget-gtk-aboutdialog.png \
+	widget-gtk-entrybuffer.png \
+	widget-gtk-texttagtable.png \
+	widget-gtk-spinner.png \
+	widget-gtk-textbuffer.png \
+	widget-gtk-statusicon.png \
+	widget-gtk-toolpalette.png \
+	widget-gtk-filefilter.png \
+	widget-gtk-texttag.png \
+	widget-gtk-accelgroup.png \
+	widget-gtk-adjustment.png \
+	widget-gtk-treeselection.png \
+	widget-gtk-toolitemgroup.png \
+	widget-gtk-treemodelfilter.png \
+	widget-gtk-sizegroup.png \
+	widget-gtk-cellrendererspinner.png \
+	widget-gtk-treemodelsort.png \
+	widget-gtk-aboutdialog.png \
         widget-gtk-accellabel.png \
         widget-gtk-alignment.png \
         widget-gtk-arrow.png \
@@ -105,13 +121,14 @@ icons_DATA = \
 	widget-gtk-liststore.png \
 	widget-gtk-scalebutton.png \
 	widget-gtk-iconfactory.png \
+	widget-gtk-treeviewcolumn.png \
 	widget-gtk-cellrenderertext.png \
 	widget-gtk-cellrendereraccel.png \
 	widget-gtk-cellrenderercombo.png \
 	widget-gtk-cellrendererspin.png \
 	widget-gtk-cellrendererpixbuf.png \
 	widget-gtk-cellrendererprogress.png \
-	widget-gtk-cellrenderertoggle.png
+	widget-gtk-cellrenderertoggle.png 
 
 
 EXTRA_DIST = $(icons_DATA)
