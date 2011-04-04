@@ -4,6 +4,10 @@
 
 	* doc/gladeui.types: Fixed inclusion of private type in doc generation (bug 645125).
 
+	* glade-widget.[ch]:
+	  - Make glade_widget_find_child() have a const gchar argument
+	  - Use glade_widget_get_internal_child() instead of glade_widget_get_internal_func().
+
 2011-04-03  Cosimo Cecchi <cosimoc@gnome.org>
 	* doc/Makefile.am: don't use gtk+-2.0 for scanning the docs
 
