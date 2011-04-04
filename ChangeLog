@@ -9,6 +9,9 @@
 	  - Use glade_widget_get_internal_child() instead of glade_widget_get_internal_func().
 	  - Revert my long ago fix to never set packing properties onto GladeWidgets
 
+	* plugins/gtk+/glade-gtk.c: Make h/vexpand properties 'needs-sync', fixes GtkDialog's
+	  showing up with expanding action area (due to placeholders needing to expand).
+
 2011-04-03  Cosimo Cecchi <cosimoc@gnome.org>
 	* doc/Makefile.am: don't use gtk+-2.0 for scanning the docs
 
