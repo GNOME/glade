@@ -215,6 +215,10 @@ void          glade_project_update_signal_support_warning (GladeWidget  *widget,
 
 gchar        *glade_project_display_dependencies (GladeProject *project);
 
+void          glade_project_check_reordered (GladeProject       *project,
+					     GladeWidget        *parent,
+					     GList              *old_order);
+
 void          glade_project_push_progress (GladeProject *project);
 gboolean      glade_project_load_cancelled (GladeProject *project);
 void          glade_project_cancel_load (GladeProject *project);

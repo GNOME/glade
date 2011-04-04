@@ -1030,7 +1030,6 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor *adaptor,
 	GladeWidget *gwidget = glade_widget_get_from_gobject (object), *gparent;
 	GList       this_widget = { 0, }, that_widget = { 0, };
 	GtkWidget   *parent = gtk_widget_get_parent (GTK_WIDGET (object));
-	GladeProject *project;
 
 	if (parent)
 		gparent = glade_widget_get_from_gobject (parent);
