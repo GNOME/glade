@@ -1714,15 +1714,24 @@ notebook_switch_page_cb (GtkNotebook * notebook,
 }
 
 static void
-set_widget_sensitive_on_load (GladeProject * project, GtkWidget * widget)
+project_parse_finished_cb (GladeProject *project, GtkWidget *inspector)
+{
+  gtk_widget_set_sensitive (inspector, TRUE);
+
+  glade_inspector_set_project (GLADE_INSPECTOR (inspector), project);
+}
+
+static void
+set_widget_sensitive_on_load (GladeProject *project, GtkWidget *widget)
 {
   gtk_widget_set_sensitive (widget, TRUE);
 }
 
 static void
-notebook_tab_added_cb (GtkNotebook * notebook,
-                       GladeDesignView * view,
-                       guint page_num, GladeWindow * window)
+notebook_tab_added_cb (GtkNotebook *notebook,
+                       GladeDesignView *view,
+                       guint page_num,
+                       GladeWindow *window)
 {
   GladeProject *project;
   GtkWidget *inspector, *palette;
@@ -1754,7 +1763,6 @@ notebook_tab_added_cb (GtkNotebook * notebook,
   /* create inspector */
   inspector = glade_inspector_new ();
   gtk_widget_show (inspector);
-  glade_inspector_set_project (GLADE_INSPECTOR (inspector), project);
   gtk_notebook_append_page (GTK_NOTEBOOK (window->priv->inspectors_notebook),
                             inspector, NULL);
 
@@ -1781,10 +1789,12 @@ notebook_tab_added_cb (GtkNotebook * notebook,
       gtk_widget_set_sensitive (inspector, FALSE);
       gtk_widget_set_sensitive (palette, FALSE);
       g_signal_connect (project, "parse-finished",
-                        G_CALLBACK (set_widget_sensitive_on_load), inspector);
+                        G_CALLBACK (project_parse_finished_cb), inspector);
       g_signal_connect (project, "parse-finished",
                         G_CALLBACK (set_widget_sensitive_on_load), palette);
     }
+  else
+    glade_inspector_set_project (GLADE_INSPECTOR (inspector), project);
 
   set_sensitivity_according_to_project (window, project);
 
