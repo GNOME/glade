@@ -1,3 +1,50 @@
+2011-04-05  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-widget-adaptor.[ch]:
+	  o Added support for reading internal children declaration in the catalog
+	  o Create internal children as specified in catalog in glade_widget_adaptor_post_create()
+	    before calling deep_post_create() and post_create() methods
+	  o new API glade_widget_adaptor_has_internal_children()
+
+	* gladeui/glade-widget.[ch]:
+	  o Made GladeWidget::reason property readable
+	  o Added new API glade_widget_find_child()
+	  o glade_widget_constructor() do not set catalog defaults for internal widgets.
+	    (Fixes GtkDialog action area orientation)
+    
+	* plugins/gtk+/glade-gtk-action-widgets.[ch]:
+	  o reworked code from GtkDialog support to read and write widget actions special tags
+	    found in GtkDialog and GtkInfoBar widgets
+
+	* plugins/gtk+/glade-gtk.c:
+	  o Removed GtkBox, GtkDialog, GtkComboBox and GtkTreeView unused get_internal_child functions
+	  o Removed creation of internal children of GtkDialog, GtkColorSelectionDialog,
+	    GtkFontSelectionDialog, GtkComboBox and GtkTreeView.
+	  o Implemented GtkDialog action-widgets tag support using common code.
+	  o Fixed GtkBox virtual property size ()
+	  o Fixed GtkDialog derived classes placeholders creation.
+	  o Set GtkButton::stock on post_create when reason is user.
+	    (Fixes bug in internal buttons with stock icons)
+	  o Made glade_gtk_container_get_children() chain up to parent implementation to get 
+	    internal widget and purify the list to remove posible duplicates
+
+	* plugins/gtk+/gtk+.xml.in:
+	  o Defined internal children of GtkDialog, GtkColorSelectionDialog,
+	    GtkFontSelectionDialog, GtkComboBox, GtkInfoBar and GtkTreeView.
+	  o Added <internal-children> tag new format
+	    <internal-children>
+	      <object/>
+	        <object>
+	        <object/>
+	      </object>
+	    </internal-children>
+	  o make GtkTreeViewColumn:widget property parentless-widget
+
+	* gladeui/glade-xml-utils.h: Added GLADE_TAG_INTERNAL_CHILDREN and GLADE_TAG_ANARCHIST tags
+
+	* src/glade-window.c: set project in inspector after finishing loading
+	  (25% improvment in loading time)
+
 2011-04-04  Tristan Van Berkom <tristanvb@openismus.com>
 
 	* plugins/gtk+/icons/*: Added remaining icons contributed by Florent Thévenet.
