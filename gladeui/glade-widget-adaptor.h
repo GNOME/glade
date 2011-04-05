@@ -329,18 +329,6 @@ typedef GList   *(* GladeGetChildrenFunc)         (GladeWidgetAdaptor *adaptor,
 						   GObject            *container);
 
 /**
- * GladeGetInternalChildrenFunc:
- * @adaptor: A #GladeWidgetAdaptor
- * @object: A #GObject container
- *
- * A function called to get @object internal children.
- *
- * Returns: A #GList of #GObject internal children.
- */
-typedef GList   *(* GladeGetInternalChildrenFunc) (GladeWidgetAdaptor *adaptor,
-						   GObject            *container);
-
-/**
  * GladeAddChildFunc:
  * @adaptor: A #GladeWidgetAdaptor
  * @parent: A #GObject container
@@ -671,9 +659,7 @@ struct _GladeWidgetAdaptorClass
   GladeCreateEPropFunc         create_eprop;      /* Creates a GladeEditorProperty */
   GladeStringFromValueFunc     string_from_value; /* Creates a string for a value */
   GladeCreateEditableFunc      create_editable;   /* Creates a page for the editor */
-
-  GladeGetInternalChildrenFunc get_internal_children; /* Return the list of internal children */
-
+    
   void   (* glade_reserved1)   (void);
   void   (* glade_reserved2)   (void);
   void   (* glade_reserved3)   (void);
