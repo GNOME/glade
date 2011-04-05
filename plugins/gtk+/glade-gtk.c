@@ -1224,22 +1224,19 @@ glade_gtk_container_get_child_property (GladeWidgetAdaptor * adaptor,
 
 GList *
 glade_gtk_container_get_children (GladeWidgetAdaptor *adaptor,
-                                  GtkContainer *container)
+                                  GObject *container)
 {
-  GList *children;
+  GList *parent_children, *children;
 
-  children = glade_util_container_get_all_children (container);
-
-  if (GWA_GET_CLASS (GTK_TYPE_CONTAINER)->get_internal_children)
-    {
-      GList *internal;
-      
-      internal = GWA_GET_CLASS (GTK_TYPE_CONTAINER)->get_internal_children (adaptor, G_OBJECT (container));
-      
-      return glade_util_purify_list (g_list_concat (children, internal));
-    }
+  children = glade_util_container_get_all_children (GTK_CONTAINER (container));
+  
+  /* Chain up */
+  if (GWA_GET_CLASS (GTK_TYPE_WIDGET)->get_children)
+    parent_children = GWA_GET_CLASS (GTK_TYPE_WIDGET)->get_children (adaptor, container);
   else
-    return children;
+    parent_children = NULL;
+  
+  return glade_util_purify_list (g_list_concat (children, parent_children));
 }
 
 GladeEditable *

@@ -1277,13 +1277,12 @@ glade_widget_adaptor_object_create_editable (GladeWidgetAdaptor * adaptor,
   return (GladeEditable *) glade_editor_table_new (adaptor, type);
 }
 
-static void
-gwa_get_internal_children (GladeWidgetAdaptor *adaptor,
-                           GObject *object,
-                           GList **children,
-                           GList *list)
+static GList *
+glade_widget_adaptor_object_get_children (GladeWidgetAdaptor *adaptor,
+                                          GObject *object)
 {
-  GList *l;
+  GList *list = adaptor->priv->internal_children;
+  GList *l, *children = NULL;
   
   for (l = list; l; l = g_list_next (l))
     {
@@ -1294,20 +1293,8 @@ gwa_get_internal_children (GladeWidgetAdaptor *adaptor,
                                                        object,
                                                        internal->name);
       if (child)
-        *children = g_list_prepend (*children, child);
-
-      if (internal->children)
-        gwa_get_internal_children (adaptor, object, children, internal->children);
+        children = g_list_prepend (children, child);
     }
-}
-
-static GList *
-glade_widget_adaptor_object_get_internal_children (GladeWidgetAdaptor *adaptor,
-                                                   GObject *object)
-{
-  GList *children = NULL;
-
-  gwa_get_internal_children (adaptor, object, &children, adaptor->priv->internal_children);
 
   return children;
 }
@@ -1351,7 +1338,7 @@ glade_widget_adaptor_class_init (GladeWidgetAdaptorClass * adaptor_class)
   adaptor_class->add = NULL;
   adaptor_class->remove = NULL;
   adaptor_class->replace_child = NULL;
-  adaptor_class->get_children = NULL;
+  adaptor_class->get_children = glade_widget_adaptor_object_get_children;
   adaptor_class->child_set_property = NULL;
   adaptor_class->child_get_property = NULL;
   adaptor_class->action_activate = glade_widget_adaptor_object_action_activate;
@@ -1365,7 +1352,6 @@ glade_widget_adaptor_class_init (GladeWidgetAdaptorClass * adaptor_class)
   adaptor_class->create_eprop = glade_widget_adaptor_object_create_eprop;
   adaptor_class->string_from_value = glade_widget_adaptor_object_string_from_value;
   adaptor_class->create_editable = glade_widget_adaptor_object_create_editable;
-  adaptor_class->get_internal_children = glade_widget_adaptor_object_get_internal_children;
 
   /* Base defaults here */
   adaptor_class->toplevel = FALSE;
