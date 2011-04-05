@@ -292,54 +292,6 @@ glade_widget_adaptor_has_internal_children (GladeWidgetAdaptor *adaptor)
   return adaptor->priv->internal_children != NULL;
 }
 
-static void
-gwa_get_internal_children (GladeWidgetAdaptor *adaptor,
-                           GObject *container,
-                           GList **children,
-                           GList *list)
-{
-  GList *l;
-  
-  for (l = list; l; l = g_list_next (l))
-    {
-      GladeInternalChild *internal = l->data;
-      GObject *child;
-
-      child = glade_widget_adaptor_get_internal_child (adaptor,
-                                                       container,
-                                                       internal->name);
-
-      if (child)
-        {
-          GtkWidget *parent;
-
-          /* Only return a widget if is not packed into a wrapped object */
-          if (GTK_IS_WIDGET (child) == FALSE ||
-              ((parent = gtk_widget_get_parent (GTK_WIDGET (child))) && 
-              glade_widget_get_from_gobject (parent) == NULL))
-            *children = g_list_prepend (*children, child);
-
-          if (internal->children)
-            gwa_get_internal_children (adaptor, container, children, internal->children);
-        }
-    }
-}
-
-GList *
-glade_widget_adaptor_get_internal_children (GladeWidgetAdaptor *adaptor,
-                                            GObject            *container)
-{
-  GList *children;
-  
-  g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
-
-  children = NULL;
-
-  gwa_get_internal_children (adaptor, container, &children, adaptor->priv->internal_children);
-
-  return children;
-}
-
 static gint
 gwa_signal_comp (gpointer a, gpointer b)
 {
@@ -1325,6 +1277,41 @@ glade_widget_adaptor_object_create_editable (GladeWidgetAdaptor * adaptor,
   return (GladeEditable *) glade_editor_table_new (adaptor, type);
 }
 
+static void
+gwa_get_internal_children (GladeWidgetAdaptor *adaptor,
+                           GObject *object,
+                           GList **children,
+                           GList *list)
+{
+  GList *l;
+  
+  for (l = list; l; l = g_list_next (l))
+    {
+      GladeInternalChild *internal = l->data;
+      GObject *child;
+        
+      child = glade_widget_adaptor_get_internal_child (adaptor,
+                                                       object,
+                                                       internal->name);
+      if (child)
+        *children = g_list_prepend (*children, child);
+
+      if (internal->children)
+        gwa_get_internal_children (adaptor, object, children, internal->children);
+    }
+}
+
+static GList *
+glade_widget_adaptor_object_get_internal_children (GladeWidgetAdaptor *adaptor,
+                                                   GObject *object)
+{
+  GList *children = NULL;
+
+  gwa_get_internal_children (adaptor, object, &children, adaptor->priv->internal_children);
+
+  return children;
+}
+
 
 /*******************************************************************************
             GladeWidgetAdaptor type registration and class initializer
@@ -1353,8 +1340,7 @@ glade_widget_adaptor_class_init (GladeWidgetAdaptorClass * adaptor_class)
 
   /* Class methods */
   adaptor_class->create_widget = glade_widget_adaptor_object_create_widget;
-  adaptor_class->construct_object =
-      glade_widget_adaptor_object_construct_object;
+  adaptor_class->construct_object = glade_widget_adaptor_object_construct_object;
   adaptor_class->deep_post_create = NULL;
   adaptor_class->post_create = NULL;
   adaptor_class->get_internal_child = glade_widget_adaptor_object_get_internal_child;
@@ -1369,8 +1355,7 @@ glade_widget_adaptor_class_init (GladeWidgetAdaptorClass * adaptor_class)
   adaptor_class->child_set_property = NULL;
   adaptor_class->child_get_property = NULL;
   adaptor_class->action_activate = glade_widget_adaptor_object_action_activate;
-  adaptor_class->child_action_activate =
-      glade_widget_adaptor_object_child_action_activate;
+  adaptor_class->child_action_activate = glade_widget_adaptor_object_child_action_activate;
   adaptor_class->action_submenu = NULL;
   adaptor_class->depends = glade_widget_adaptor_object_depends;
   adaptor_class->read_widget = glade_widget_adaptor_object_read_widget;
@@ -1378,9 +1363,9 @@ glade_widget_adaptor_class_init (GladeWidgetAdaptorClass * adaptor_class)
   adaptor_class->read_child = glade_widget_adaptor_object_read_child;
   adaptor_class->write_child = glade_widget_adaptor_object_write_child;
   adaptor_class->create_eprop = glade_widget_adaptor_object_create_eprop;
-  adaptor_class->string_from_value =
-      glade_widget_adaptor_object_string_from_value;
+  adaptor_class->string_from_value = glade_widget_adaptor_object_string_from_value;
   adaptor_class->create_editable = glade_widget_adaptor_object_create_editable;
+  adaptor_class->get_internal_children = glade_widget_adaptor_object_get_internal_children;
 
   /* Base defaults here */
   adaptor_class->toplevel = FALSE;
@@ -2322,21 +2307,36 @@ gwa_set_signals_from_node (GladeWidgetAdaptor *adaptor,
     }
 }
 
-static gint
-gwa_internal_child_cmp (gconstpointer a, gconstpointer b)
+static GladeInternalChild *
+gwa_internal_child_find (GList *list, gchar *name)
 {
-  const GladeInternalChild *da = a;
-  return strcmp (da->name, b);
+  GList *l;
+
+  for (l = list; l; l = g_list_next (l))
+    {
+      GladeInternalChild *data = l->data;
+
+      if (strcmp (data->name, name) == 0)
+        return data;
+      
+      if (data->children)
+        {
+          GladeInternalChild *child;
+          if ((child = gwa_internal_child_find (data->children, name)))
+            return child;
+        }
+    }
+  
+  return NULL;
 }
 
 static GList *
 gwa_internal_children_update_from_node (GList *internal_children, GladeXmlNode *node)
 {
-  GList *link, *retval = internal_children;
+  GList *retval = internal_children;
   GladeXmlNode *child, *children;
   
-  for (child = glade_xml_node_get_children (node);
-       child; child = glade_xml_node_next (child))
+  for (child = node; child; child = glade_xml_node_next (child))
     {
       GladeInternalChild *data;
       gchar *name;
@@ -2347,18 +2347,14 @@ gwa_internal_children_update_from_node (GList *internal_children, GladeXmlNode *
       if (!(name = glade_xml_get_property_string_required (child, GLADE_TAG_NAME, NULL)))
         continue;
 
-      if ((link = g_list_find_custom (retval, name, gwa_internal_child_cmp)))
-        {
-          data = link->data;
-        }
-      else
+      if ((data = gwa_internal_child_find (retval, name)) == NULL)
         {
           gboolean anarchist = glade_xml_get_boolean (child, GLADE_TAG_ANARCHIST, FALSE);
           data = gwa_internal_children_new (name, anarchist);
           retval = g_list_prepend (retval, data);
         }
       
-      if ((children = glade_xml_search_child (child, GLADE_TAG_INTERNAL_CHILDREN)))
+      if ((children = glade_xml_search_child (child, GLADE_XML_TAG_WIDGET)))
         data->children = gwa_internal_children_update_from_node (data->children, children);
 
       g_free (name);
@@ -2405,7 +2401,9 @@ gwa_extend_with_node (GladeWidgetAdaptor * adaptor,
     gwa_action_update_from_node (adaptor, TRUE, child, domain, NULL);
 
   if ((child = glade_xml_search_child (node, GLADE_TAG_INTERNAL_CHILDREN)))
-    adaptor->priv->internal_children = gwa_internal_children_update_from_node (adaptor->priv->internal_children, child);
+    adaptor->priv->internal_children = 
+      gwa_internal_children_update_from_node (adaptor->priv->internal_children,
+                                              glade_xml_node_get_children (child));
 
   return TRUE;
 }

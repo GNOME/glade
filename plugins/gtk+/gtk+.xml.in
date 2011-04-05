@@ -1369,9 +1369,7 @@ embedded in another object</_tooltip>
 
       <internal-children>
         <object name="vbox">
-          <internal-children>
-            <object name="action_area"/>
-          </internal-children>
+          <object name="action_area"/>
         </object>
       </internal-children>
 
@@ -1853,16 +1851,12 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkColorSelectionDialog" generic-name="colorselectiondialog" _title="Color Selection Dialog">
       <internal-children>
         <object name="vbox">
-          <internal-children>
             <object name="color_selection"/>
-            <object name="action_area">
-              <internal-children>
-                <object name="ok_button"/>
-                <object name="cancel_button"/>
-                <object name="help_button"/>
-              </internal-children>
-            </object>
-          </internal-children>
+        </object>
+        <object name="action_area">
+            <object name="ok_button"/>
+            <object name="cancel_button"/>
+            <object name="help_button"/>
         </object>
       </internal-children>
       <properties>
@@ -1886,16 +1880,12 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkFontSelectionDialog" generic-name="fontselectiondialog" _title="Font Selection Dialog">
       <internal-children>
         <object name="vbox">
-          <internal-children>
             <object name="font_selection"/>
-            <object name="action_area">
-              <internal-children>
-                <object name="ok_button"/>
-                <object name="cancel_button"/>
-                <object name="apply_button"/>
-              </internal-children>
-            </object>
-          </internal-children>
+        </object>
+        <object name="action_area">
+            <object name="ok_button"/>
+            <object name="cancel_button"/>
+            <object name="apply_button"/>
         </object>
       </internal-children>
       <properties>
@@ -2266,6 +2256,7 @@ embedded in another object</_tooltip>
       </actions>
 
       <properties>
+        <property id="widget" parentless-widget="True"/>
         <property id="sort-column-id" since="2.18"/>
         <property id="sort-order">
   	  <displayable-values>
