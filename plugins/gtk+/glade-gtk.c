@@ -10130,7 +10130,7 @@ glade_gtk_cell_layout_move_child (GladeBaseEditor * editor,
 }
 
 static void
-glade_gtk_cell_layout_launch_editor (GObject * layout)
+glade_gtk_cell_layout_launch_editor (GObject *layout, gchar *window_name)
 {
   GladeWidget        *widget  = glade_widget_get_from_gobject (layout);
   GladeWidgetAdaptor *adaptor = glade_widget_get_adaptor (widget);
@@ -10144,14 +10144,14 @@ glade_gtk_cell_layout_launch_editor (GObject * layout)
   /* Editor */
   editor = glade_base_editor_new (layout, layout_editor,
                                   _("Text"), GTK_TYPE_CELL_RENDERER_TEXT,
-                                  _("Accelerator"),
-                                  GTK_TYPE_CELL_RENDERER_ACCEL, _("Combo"),
-                                  GTK_TYPE_CELL_RENDERER_COMBO, _("Spin"),
-                                  GTK_TYPE_CELL_RENDERER_SPIN, _("Pixbuf"),
-                                  GTK_TYPE_CELL_RENDERER_PIXBUF, _("Progress"),
-                                  GTK_TYPE_CELL_RENDERER_PROGRESS, _("Toggle"),
-                                  GTK_TYPE_CELL_RENDERER_TOGGLE, _("Spinner"),
-                                  GTK_TYPE_CELL_RENDERER_SPINNER, NULL);
+                                  _("Accelerator"), GTK_TYPE_CELL_RENDERER_ACCEL,
+                                  _("Combo"), GTK_TYPE_CELL_RENDERER_COMBO,
+                                  _("Spin"), GTK_TYPE_CELL_RENDERER_SPIN,
+                                  _("Pixbuf"), GTK_TYPE_CELL_RENDERER_PIXBUF,
+                                  _("Progress"), GTK_TYPE_CELL_RENDERER_PROGRESS,
+                                  _("Toggle"), GTK_TYPE_CELL_RENDERER_TOGGLE,
+                                  _("Spinner"), GTK_TYPE_CELL_RENDERER_SPINNER,
+                                  NULL);
 
   g_signal_connect (editor, "get-display-name",
                     G_CALLBACK (glade_gtk_cell_layout_get_display_name), NULL);
@@ -10162,10 +10162,7 @@ glade_gtk_cell_layout_launch_editor (GObject * layout)
 
   gtk_widget_show (GTK_WIDGET (editor));
 
-  window = glade_base_editor_pack_new_window (editor,
-                                              GTK_IS_ICON_VIEW (layout) ?
-                                              _("Icon View Editor") :
-                                              _("Combo Editor"), NULL);
+  window = glade_base_editor_pack_new_window (editor, window_name, NULL);
   gtk_widget_show (window);
 }
 
@@ -10186,12 +10183,17 @@ glade_gtk_cell_layout_launch_editor_action (GObject * object)
         }
       else if (GTK_IS_ICON_VIEW (obj))
         {
-          glade_gtk_cell_layout_launch_editor (obj);
+          glade_gtk_cell_layout_launch_editor (obj, _("Icon View Editor"));
           break;
         }
       else if (GTK_IS_COMBO_BOX (obj))
         {
-          glade_gtk_cell_layout_launch_editor (obj);
+          glade_gtk_cell_layout_launch_editor (obj, _("Combo Editor"));
+          break;
+        }
+      else if (GTK_IS_ENTRY_COMPLETION (obj))
+        {
+          glade_gtk_cell_layout_launch_editor (obj, _("Entry Completion Editor"));
           break;
         }
     }
