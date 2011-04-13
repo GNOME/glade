@@ -2678,6 +2678,12 @@ glade_project_check_reordered (GladeProject *project,
   g_list_free (new_order);
 }
 
+static inline gboolean
+glade_project_has_gwidget (GladeProject *project, GladeWidget *gwidget)
+{
+  return (glade_widget_get_project (gwidget) == project && 
+           glade_widget_in_project (gwidget));
+}
 
 /**
  * glade_project_add_object:
@@ -2689,9 +2695,10 @@ glade_project_check_reordered (GladeProject *project,
 void
 glade_project_add_object (GladeProject *project, GObject *object)
 {
+  GladeProjectPrivate *priv;
   GladeWidget *gwidget;
   GList *list, *children;
-  gchar *name;
+  const gchar *name;
 
   g_return_if_fail (GLADE_IS_PROJECT (project));
   g_return_if_fail (G_IS_OBJECT (object));
@@ -2707,7 +2714,7 @@ glade_project_add_object (GladeProject *project, GObject *object)
   if ((gwidget = glade_widget_get_from_gobject (object)) == NULL)
     return;
 
-  if (glade_project_has_object (project, object))
+  if (glade_project_has_gwidget (project, gwidget))
     {
       /* FIXME: It's possible we need to notify the model iface if this 
        * happens to make sure the hierarchy is the same, I dont know, this 
@@ -2716,22 +2723,26 @@ glade_project_add_object (GladeProject *project, GObject *object)
       return;
     }
 
+  priv = project->priv;
+  
+  name = glade_widget_get_name (gwidget);
   /* Make sure we have an exclusive name first... */
-  if (!glade_project_available_widget_name (project, gwidget, glade_widget_get_name (gwidget)))
+  if (!glade_project_available_widget_name (project, gwidget, name))
     {
-      name = glade_project_new_widget_name (project, gwidget, glade_widget_get_name (gwidget));
+      gchar *new_name = glade_project_new_widget_name (project, gwidget, name);
 
       /* XXX Collect these errors and make a report at startup time */
-      if (project->priv->loading)
+      if (priv->loading)
         g_warning ("Loading object '%s' with name conflict, renaming to '%s'",
-                   glade_widget_get_name (gwidget), name);
+                   name, new_name);
 
-      glade_widget_set_name (gwidget, name);
-
-      g_free (name);
+      glade_widget_set_name (gwidget, new_name);
+      name = glade_widget_get_name (gwidget);
+      
+      g_free (new_name);
     }
 
-  glade_project_reserve_widget_name (project, gwidget, glade_widget_get_name (gwidget));
+  glade_project_reserve_widget_name (project, gwidget, name);
 
   glade_widget_set_project (gwidget, (gpointer) project);
   glade_widget_set_in_project (gwidget, TRUE);
@@ -2739,9 +2750,9 @@ glade_project_add_object (GladeProject *project, GObject *object)
 
   /* Be sure to update the lists before emitting signals */
   if (glade_widget_get_parent (gwidget) == NULL)
-    project->priv->tree = g_list_append (project->priv->tree, object);
+    priv->tree = g_list_append (priv->tree, object);
 
-  project->priv->objects = g_list_prepend (project->priv->objects, object);
+  priv->objects = g_list_prepend (priv->objects, object);
 
   glade_project_notify_row_inserted (project, gwidget);
 
@@ -2783,8 +2794,7 @@ glade_project_has_object (GladeProject *project, GObject *object)
 
   g_return_val_if_fail (GLADE_IS_WIDGET (gwidget), FALSE);
 
-  return (glade_widget_get_project (gwidget) == project && 
-           glade_widget_in_project (gwidget));
+  return glade_project_has_gwidget (project, gwidget);
 }
 
 void

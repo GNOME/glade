@@ -61,7 +61,11 @@ struct _GladeDesignLayoutPrivate
   gint current_width, current_height;
   PangoLayout *widget_name;
   gint layout_width;
-  
+
+  /* Colors */
+  GdkRGBA frame_color[2];
+  GdkRGBA frame_color_active[2];
+
   /* state machine */
   Activity activity;            /* the current activity */
   gint dx;                      /* child.width - event.pointer.x   */
@@ -537,7 +541,8 @@ glade_design_layout_damage (GtkWidget *widget, GdkEventExpose *event)
 }
 
 static inline void
-draw_frame (cairo_t * cr, GladeDesignLayoutPrivate *priv, GtkStyle *style, GtkStateType state, int x, int y, int w, int h)
+draw_frame (cairo_t *cr, GladeDesignLayoutPrivate *priv, gboolean selected,
+            int x, int y, int w, int h)
 {
   cairo_save (cr);
 
@@ -546,7 +551,8 @@ draw_frame (cairo_t * cr, GladeDesignLayoutPrivate *priv, GtkStyle *style, GtkSt
   cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);
   cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
 
-  gdk_cairo_set_source_color (cr, &style->bg[state]);
+  gdk_cairo_set_source_rgba (cr, (selected) ? &priv->frame_color_active[0] :
+                             &priv->frame_color[0]);
 
   /* rectangle */
   cairo_rectangle (cr, x, y, w, h);
@@ -554,10 +560,10 @@ draw_frame (cairo_t * cr, GladeDesignLayoutPrivate *priv, GtkStyle *style, GtkSt
 
   if (priv->widget_name)
     {
+      GdkRGBA *color = (selected) ? &priv->frame_color_active[1] : &priv->frame_color[1];
       GdkRectangle *rect = &priv->south_east;
-      GdkColor *color = &style->text[state];
       cairo_pattern_t *pattern;
-      gdouble xx, yy, r, g, b;
+      gdouble xx, yy;
       
       xx = rect->x + rect->width;
       yy = rect->y + rect->height;
@@ -572,13 +578,11 @@ draw_frame (cairo_t * cr, GladeDesignLayoutPrivate *priv, GtkStyle *style, GtkSt
       cairo_close_path (cr);
       cairo_fill (cr);
 
-      r = color->red/65535.;
-      g = color->green/65535.;
-      b = color->blue/65535.;
-
       /* Draw widget name */
       if (rect->width < priv->layout_width)
         {
+          gdouble r = color->red, g = color->green, b = color->blue;
+          
           pattern = cairo_pattern_create_linear (xx-16-OUTLINE_WIDTH, 0,
                                                  xx-OUTLINE_WIDTH, 0);
           cairo_pattern_add_color_stop_rgba (pattern, 0, r, g, b, 1);
@@ -588,7 +592,7 @@ draw_frame (cairo_t * cr, GladeDesignLayoutPrivate *priv, GtkStyle *style, GtkSt
       else
         {
           pattern = NULL;
-          cairo_set_source_rgb (cr, r, g, b);
+          gdk_cairo_set_source_rgba (cr, color);
         }
 
       cairo_move_to (cr, rect->x + OUTLINE_WIDTH, rect->y + OUTLINE_WIDTH);
@@ -601,18 +605,18 @@ draw_frame (cairo_t * cr, GladeDesignLayoutPrivate *priv, GtkStyle *style, GtkSt
 }
 
 static inline void
-draw_selection (cairo_t *cr, GtkWidget *parent, GtkWidget *widget,
-                gfloat r, gfloat g, gfloat b)
+draw_selection (cairo_t *cr, GtkWidget *parent, GtkWidget *widget, GdkRGBA *color)
 {
   cairo_pattern_t *gradient;
+  gdouble r, g, b, cx, cy;
   GtkAllocation alloc;
-  gdouble cx, cy;
   gint x, y;
 
   gtk_widget_get_allocation (widget, &alloc);
 
   if (alloc.x < 0 || alloc.y < 0) return;
   
+  r = color->red; g = color->green; b = color->blue;
   gtk_widget_translate_coordinates (widget, parent, 0, 0, &x, &y);
 
   cx = x + alloc.width/2;
@@ -637,31 +641,23 @@ static gboolean
 glade_design_layout_draw (GtkWidget * widget, cairo_t * cr)
 {
   GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
+  GdkWindow *window = gtk_widget_get_window (widget);
 
-  if (gtk_cairo_should_draw_window (cr, gtk_widget_get_window (widget)))
+  if (gtk_cairo_should_draw_window (cr, window))
     {
       GladeProject *project;
       GladeWidget *gchild;
-      GtkStyle *style;
       GtkWidget *child;
-      
-      style = gtk_widget_get_style (widget);
-
-      /* draw a white widget background */
-      gdk_cairo_set_source_color (cr, &style->base[gtk_widget_get_state (widget)]);
-      cairo_paint (cr);
 
       if ((child = gtk_bin_get_child (GTK_BIN (widget))) &&
           gtk_widget_get_visible (child) &&
           (gchild = glade_widget_get_from_gobject (G_OBJECT (child))) &&
           (project = glade_widget_get_project (gchild)))
         {
-          const GdkColor *color = &gtk_widget_get_style (widget)->bg[GTK_STATE_SELECTED];
           gint border_width = gtk_container_get_border_width (GTK_CONTAINER (widget));
           gboolean selected = FALSE;
-          gfloat r, g, b;
           GList *l;
-          
+
           /* draw offscreen widgets */
           gdk_cairo_set_source_window (cr, priv->offscreen_window,
                                        priv->child_offset, priv->child_offset);
@@ -670,9 +666,6 @@ glade_design_layout_draw (GtkWidget * widget, cairo_t * cr)
           cairo_fill (cr);
 
           /* Draw selection */
-          r = color->red/65535.;
-          g = color->green/65535.;
-          b = color->blue/65535.;
           cairo_set_line_width (cr, OUTLINE_WIDTH/2);
           cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);
           cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
@@ -686,7 +679,7 @@ glade_design_layout_draw (GtkWidget * widget, cairo_t * cr)
                   if (GTK_IS_WIDGET (selection) && 
 		      gtk_widget_is_ancestor (selection, child))
                   {
-                    draw_selection (cr, widget, selection, r, g, b);
+                    draw_selection (cr, widget, selection, &priv->frame_color_active[0]);
                     selected = TRUE;
                   }
                 }
@@ -695,8 +688,7 @@ glade_design_layout_draw (GtkWidget * widget, cairo_t * cr)
             }
 
           /* draw frame */
-          draw_frame (cr, priv, style,
-                      (selected) ? GTK_STATE_SELECTED : GTK_STATE_NORMAL,
+          draw_frame (cr, priv, selected,
                       border_width + PADDING,
                       border_width + PADDING,
                       priv->current_width + 2 * OUTLINE_WIDTH,
@@ -918,7 +910,41 @@ glade_design_layout_unrealize (GtkWidget * widget)
 }
 
 static void
-glade_design_layout_init (GladeDesignLayout * layout)
+glade_design_layout_style_updated (GtkWidget *widget)
+{
+  GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
+  GtkStyleContext *context = gtk_widget_get_style_context (widget);
+  GdkRGBA bg_color;
+
+  gtk_style_context_save (context);
+  
+  gtk_style_context_add_class (context, GTK_STYLE_CLASS_VIEW);
+
+  gtk_style_context_get_background_color (context,
+                                          GTK_STATE_FLAG_NORMAL,
+                                          &bg_color);
+
+  gtk_style_context_get_background_color (context, GTK_STATE_FLAG_SELECTED,
+                                          &priv->frame_color[0]);
+  gtk_style_context_get_color (context, GTK_STATE_FLAG_SELECTED,
+                               &priv->frame_color[1]);
+  
+  gtk_style_context_get_background_color (context,
+                                          GTK_STATE_FLAG_SELECTED |
+                                          GTK_STATE_FLAG_FOCUSED,
+                                          &priv->frame_color_active[0]);
+  gtk_style_context_get_color (context,
+                               GTK_STATE_FLAG_SELECTED |
+                               GTK_STATE_FLAG_FOCUSED,
+                               &priv->frame_color_active[1]);
+
+  gtk_style_context_restore (context);
+  
+  gtk_widget_override_background_color (widget, GTK_STATE_FLAG_NORMAL, &bg_color);
+}
+
+static void
+glade_design_layout_init (GladeDesignLayout *layout)
 {
   GladeDesignLayoutPrivate *priv;
 
@@ -1007,6 +1033,7 @@ glade_design_layout_class_init (GladeDesignLayoutClass * klass)
   widget_class->get_preferred_width_for_height = glade_design_layout_get_preferred_width_for_height;
   widget_class->get_preferred_height_for_width = glade_design_layout_get_preferred_height_for_width;
   widget_class->size_allocate = glade_design_layout_size_allocate;
+  widget_class->style_updated = glade_design_layout_style_updated;
 
   g_object_class_install_property (object_class, PROP_DESIGN_VIEW,
                                    g_param_spec_object ("design-view", _("Design View"),

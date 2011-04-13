@@ -39,6 +39,7 @@
 #include "glade-design-view.h"
 #include "glade-design-layout.h"
 #include "glade-design-private.h"
+#include "glade-path.h"
 
 #include <glib.h>
 #include <glib/gi18n.h>
@@ -55,55 +56,14 @@ enum
 
 struct _GladeDesignViewPrivate
 {
-  GtkWidget *layout_box;
-
   GladeProject *project;
-
-  GtkWidget *scrolled_window;
-
-  GtkWidget *progress;
-  GtkWidget *progress_window;
+  GtkWidget *scrolled_window;  /* Main scrolled window */
+  GtkWidget *layout_box;       /* Box to pack a GladeDesignLayout for each toplevel in project */
 };
 
 static GtkVBoxClass *parent_class = NULL;
 
-
 G_DEFINE_TYPE (GladeDesignView, glade_design_view, GTK_TYPE_VBOX)
-
-static void
-glade_design_view_parse_began (GladeProject *project,
-			       GladeDesignView *view)
-{
-  gtk_widget_hide (view->priv->scrolled_window);
-  gtk_widget_show (view->priv->progress_window);
-}
-
-static void
-glade_design_view_parse_finished (GladeProject *project,
-                                  GladeDesignView *view)
-{
-  gtk_widget_hide (view->priv->progress_window);
-  gtk_widget_show (view->priv->scrolled_window);
-}
-
-static void
-glade_design_view_load_progress (GladeProject *project,
-                                 gint total, gint step, GladeDesignView *view)
-{
-  gchar *path;
-  gchar *str;
-
-  path = glade_utils_replace_home_dir_with_tilde (glade_project_get_path (project));
-  str = g_strdup_printf (_("Loading %s: loaded %d of %d objects"),
-                         path, step, total);
-
-  gtk_progress_bar_set_text (GTK_PROGRESS_BAR (view->priv->progress), str);
-  g_free (str);
-  g_free (path);
-
-  gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (view->priv->progress),
-                                 step * 1.0 / total);
-}
 
 static void
 glade_design_layout_scroll (GladeDesignView *view, gint x, gint y, gint w, gint h)
@@ -247,12 +207,12 @@ glade_design_view_set_project (GladeDesignView *view, GladeProject *project)
                     G_CALLBACK (on_project_add_widget), view);
   g_signal_connect (project, "remove-widget",
                     G_CALLBACK (on_project_remove_widget), view);
-  g_signal_connect (project, "parse-began",
-                    G_CALLBACK (glade_design_view_parse_began), view);
-  g_signal_connect (project, "parse-finished",
-                    G_CALLBACK (glade_design_view_parse_finished), view);
-  g_signal_connect (project, "load-progress",
-                    G_CALLBACK (glade_design_view_load_progress), view);
+  g_signal_connect_swapped (project, "parse-began",
+                            G_CALLBACK (gtk_widget_hide),
+                            view->priv->scrolled_window);
+  g_signal_connect_swapped (project, "parse-finished",
+                            G_CALLBACK (gtk_widget_show),
+                            view->priv->scrolled_window);
   g_signal_connect (project, "selection-changed",
                     G_CALLBACK (glade_design_view_selection_changed), view);
   g_signal_connect (project, "widget-visibility-changed",
@@ -294,21 +254,64 @@ glade_design_view_get_property (GObject *object,
     }
 }
 
-static gboolean
-on_viewport_draw (GtkWidget *widget, cairo_t *cr)
+static void
+logo_draw (GtkWidget *widget, cairo_t *cr)
 {
-  GtkStyle *style = gtk_widget_get_style (widget);
+  GtkAllocation alloc;
+  gdouble scale;
 
-  gdk_cairo_set_source_color (cr, &style->base[gtk_widget_get_state (widget)]);
-  cairo_paint (cr);
+  gtk_widget_get_allocation (widget, &alloc);
 
-  return TRUE;
+  cairo_save (cr);
+  
+  cairo_set_source_rgba (cr, 0, 0, 0, .08);
+
+  scale = MIN ((alloc.width/1.5)/(glade_path_WIDTH), (alloc.height/1.5)/(glade_path_HEIGHT));
+
+  cairo_scale (cr, scale, scale);
+  
+  cairo_translate (cr, (alloc.width / scale) - glade_path_WIDTH,
+                   (alloc.height / scale) - glade_path_HEIGHT);
+  cairo_append_path (cr, &glade_path);
+  cairo_fill (cr);
+
+  cairo_restore (cr);
+}
+
+static gboolean
+glade_design_view_draw (GtkWidget *widget, cairo_t *cr)
+{
+  GladeDesignViewPrivate *priv = GLADE_DESIGN_VIEW_GET_PRIVATE (widget);
+  
+  GTK_WIDGET_CLASS (glade_design_view_parent_class)->draw (widget, cr);
+
+  if (gtk_widget_get_visible (priv->scrolled_window) == FALSE)
+    logo_draw (widget, cr);
+  
+  return FALSE;
+}
+
+static void
+glade_design_view_style_updated (GtkWidget *widget)
+{
+  GladeDesignViewPrivate *priv = GLADE_DESIGN_VIEW_GET_PRIVATE (widget);
+  GtkWidget *viewport = gtk_bin_get_child (GTK_BIN (priv->scrolled_window));
+  GtkStyleContext *context = gtk_widget_get_style_context (viewport);
+  GdkRGBA bg_color;
+
+  gtk_style_context_save (context);
+  
+  gtk_style_context_add_class (context, GTK_STYLE_CLASS_VIEW);
+  gtk_style_context_get_background_color (context, GTK_STATE_FLAG_NORMAL, &bg_color);
+  gtk_widget_override_background_color (viewport, GTK_STATE_FLAG_NORMAL, &bg_color);
+  
+  gtk_style_context_restore (context);
 }
 
 static void
 glade_design_view_init (GladeDesignView *view)
 {
-  GtkWidget *viewport, *filler, *align;
+  GtkWidget *viewport;
 
   view->priv = GLADE_DESIGN_VIEW_GET_PRIVATE (view);
 
@@ -329,8 +332,6 @@ glade_design_view_init (GladeDesignView *view)
                                        GTK_SHADOW_IN);
 
   viewport = gtk_viewport_new (NULL, NULL);
-  gtk_widget_set_app_paintable (viewport, TRUE);
-  g_signal_connect (viewport, "draw", G_CALLBACK (on_viewport_draw), NULL);
   gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport), GTK_SHADOW_NONE);
   gtk_container_add (GTK_CONTAINER (viewport), view->priv->layout_box);
   gtk_container_add (GTK_CONTAINER (view->priv->scrolled_window), viewport);
@@ -338,37 +339,9 @@ glade_design_view_init (GladeDesignView *view)
   gtk_widget_show (view->priv->scrolled_window);
   gtk_widget_show (viewport);
   gtk_widget_show_all (view->priv->layout_box);
-
-  gtk_box_pack_start (GTK_BOX (view), view->priv->scrolled_window, TRUE, TRUE,
-                      0);
-
-  /* The progress window */
-  view->priv->progress_window = gtk_vbox_new (FALSE, 0);
-  filler = gtk_label_new (NULL);
-  gtk_widget_show (filler);
-  gtk_box_pack_start (GTK_BOX (view->priv->progress_window), filler, TRUE, TRUE,
-                      0);
-
-  align = gtk_alignment_new (0.5, 0.5, 0.75, 1.0);
-  gtk_widget_show (align);
-  gtk_box_pack_start (GTK_BOX (view->priv->progress_window), align, FALSE, TRUE,
-                      0);
-
-  view->priv->progress = gtk_progress_bar_new ();
-  gtk_progress_bar_set_show_text (GTK_PROGRESS_BAR (view->priv->progress),
-                                  TRUE);
-  gtk_progress_bar_set_ellipsize (GTK_PROGRESS_BAR (view->priv->progress),
-                                  PANGO_ELLIPSIZE_END);
-  gtk_widget_show (view->priv->progress);
-  gtk_container_add (GTK_CONTAINER (align), view->priv->progress);
-
-  filler = gtk_label_new (NULL);
-  gtk_widget_show (filler);
-  gtk_box_pack_start (GTK_BOX (view->priv->progress_window), filler, TRUE, TRUE,
-                      0);
-  gtk_box_pack_start (GTK_BOX (view), view->priv->progress_window, TRUE, TRUE,
-                      0);
-
+  
+  gtk_box_pack_start (GTK_BOX (view), view->priv->scrolled_window, TRUE, TRUE, 0);
+  
   gtk_container_set_border_width (GTK_CONTAINER (view), 0);
 }
 
@@ -385,6 +358,9 @@ glade_design_view_class_init (GladeDesignViewClass *klass)
   object_class->get_property = glade_design_view_get_property;
   object_class->set_property = glade_design_view_set_property;
 
+  widget_class->draw = glade_design_view_draw;
+  widget_class->style_updated = glade_design_view_style_updated;
+  
   g_object_class_install_property (object_class,
                                    PROP_PROJECT,
                                    g_param_spec_object ("project",
