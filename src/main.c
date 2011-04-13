@@ -74,6 +74,7 @@ main (int argc, char *argv[])
   GOptionGroup *option_group;
   GError *error = NULL;
   gboolean opened_project = FALSE;
+  GTimer *timer = NULL;
 
   if (!g_thread_supported ())
     g_thread_init (NULL);
@@ -162,6 +163,11 @@ main (int argc, char *argv[])
 
   gtk_widget_show (GTK_WIDGET (window));
 
+  /* Update UI before loading files */
+  while (gtk_events_pending ()) gtk_main_iteration ();
+
+  if (verbose) timer = g_timer_new ();
+  
   /* load files specified on commandline */
   if (files != NULL)
     {
@@ -169,6 +175,8 @@ main (int argc, char *argv[])
 
       for (i = 0; files[i]; ++i)
         {
+          if (verbose) g_timer_start (timer);
+          
           if (g_file_test (files[i], G_FILE_TEST_EXISTS) != FALSE)
 	    {
 	      if (glade_window_open_project (window, files[i]))
@@ -177,10 +185,19 @@ main (int argc, char *argv[])
           else
             g_warning (_("Unable to open '%s', the file does not exist.\n"),
                        files[i]);
+
+          if (verbose)
+            {
+              g_timer_stop (timer);
+              g_message ("Loading '%s' took %lf seconds", files[i],
+                         g_timer_elapsed (timer, NULL));
+            }
         }
       g_strfreev (files);
     }
 
+  if (verbose) g_timer_destroy (timer);
+  
   if (!opened_project)
     glade_window_new_project (window);
 

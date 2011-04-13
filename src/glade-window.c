@@ -2570,22 +2570,26 @@ tab_close_button_clicked_cb (GtkWidget * close_button, GladeProject * project)
 }
 
 static void
-project_load_progress_cb (GladeProject * project,
-                          gint total, gint step, GtkProgressBar * progress)
+project_load_progress_cb (GladeProject *project,
+                          gint total, gint step,
+                          GtkProgressBar *progress)
 {
-  gchar *name;
+  gint fraction = (step * 1.0 / total) * 100;
+  gchar *str, *name;
 
+  if (fraction/100.0 == gtk_progress_bar_get_fraction (progress))
+    return;
+  
   name = glade_project_get_name (project);
+  str = g_strdup_printf ("%s (%d%%)", name, fraction);
 
-  /* translators: "project name (objects loaded in total objects)" */
-  gtk_progress_bar_set_text (GTK_PROGRESS_BAR (progress), name);
+  gtk_progress_bar_set_text (progress, str);
   g_free (name);
+  g_free (str);
 
-  gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (progress),
-                                 step * 1.0 / total);
+  gtk_progress_bar_set_fraction (progress, fraction/100.0);
 
-  while (gtk_events_pending ())
-    gtk_main_iteration ();
+  while (gtk_events_pending ()) gtk_main_iteration ();
 }
 
 static void
