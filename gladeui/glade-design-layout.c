@@ -265,8 +265,8 @@ glade_design_layout_button_press_event (GtkWidget *widget, GdkEventButton *ev)
       GladeWidget *gchild;
       
       gtk_widget_get_allocation (child, &child_allocation);
-      priv->dx = x - (child_allocation.x + child_allocation.width);
-      priv->dy = y - (child_allocation.y + child_allocation.height);
+      priv->dx = x - (child_allocation.x + child_allocation.width + priv->child_offset);
+      priv->dy = y - (child_allocation.y + child_allocation.height + priv->child_offset);
 
       priv->activity = gdl_get_activity_from_pointer (GLADE_DESIGN_LAYOUT (widget), x, y);
       gdk_window_set_cursor (priv->window, priv->cursors[priv->activity]);
