@@ -1,3 +1,8 @@
+2011-04-22  Tristan Van Berkom <tvb@gnome.org>
+
+	* src/main.c: Fixed loading correct application icon (bug 648487
+	  fix by Stéphane Maniaci).
+
 2011-04-21  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* gladeui/glade-design-layout.c: fixed bug while grabbing resize grip
@@ -15,13 +20,13 @@
 	  o removed deprecated GtkStyle use and replaced with GtkStyleContext
 
 	* src/main.c: added loading time output if --verbose is set
-        
+
 	* src/glade-window.c:
 	  o added % to progress bar string
 	  o only update progressbar if percentage changed
 
 	* gladeui/glade-project.c: slightly optimized glade_project_add_object()
-	
+
 	* gladeui/glade-path.h: new file containing a cairo_path_t of GLADE's old
           logo remake by Franco Dodorico.
 
@@ -10102,24 +10107,24 @@
 
 	* Replaced `GtkWidget *' with `GObject *' throughout the code
 
-	* Removed glade_util_get_parent and replaced with 
-	  glade_placeholder_get_parent or glade_widget_get_parent where 
+	* Removed glade_util_get_parent and replaced with
+	  glade_placeholder_get_parent or glade_widget_get_parent where
 	  appropriate.
 
-	* Implemented a container abstraction layer which allows any object to 
-	  be a container through the xml catalog interface (GtkContainer is 
+	* Implemented a container abstraction layer which allows any object to
+	  be a container through the xml catalog interface (GtkContainer is
 	  handled implicitly).
 
 	* Straightened out a few crooked header files.
 
-	* Reworked loading a bit so that GladeProperties are loaded with the 
-	  values found in the xml file and that g_object_newv is called with 
+	* Reworked loading a bit so that GladeProperties are loaded with the
+	  values found in the xml file and that g_object_newv is called with
 	  those values as well.
 
-	* Deprecated / Removed useless pre_create functions, anything that was 
+	* Deprecated / Removed useless pre_create functions, anything that was
 	  a pre_create is now done in post create without any regression.
 
-	* glade_gtk_container_fill_empty now checks if there are existing 
+	* glade_gtk_container_fill_empty now checks if there are existing
 	  children before adding one.
 
 	* Added comment on how to fix glade-project-view
@@ -10127,12 +10132,12 @@
 	* Half implemented addition of non-widget children in glade-popup.c
 
 	* glade-utils "nodes" code now also serves as a selection marker for
-	  any non-widget objects (widgets are still handled by drawing 
-	  selections). Also reverted my change to queue_draw_nodes... seems to 
+	  any non-widget objects (widgets are still handled by drawing
+	  selections). Also reverted my change to queue_draw_nodes... seems to
 	  work for now.
 
-	* For now I removed the unused notion of "grand-child" packing 
-	  properties (that will have to be inspected and implemented properly 
+	* For now I removed the unused notion of "grand-child" packing
+	  properties (that will have to be inspected and implemented properly
 	  if need be).
 
 	* updated XML files accordingly.

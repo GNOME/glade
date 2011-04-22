@@ -151,7 +151,7 @@ main (int argc, char *argv[])
     }
 
   g_set_application_name (APPLICATION_NAME);
-  gtk_window_set_default_icon_name ("glade-3");
+  gtk_window_set_default_icon_name ("glade");
 
   glade_setup_log_handlers ();
 
