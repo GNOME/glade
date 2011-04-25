@@ -139,8 +139,11 @@ glade_cursor_set (GladeProject    *project,
         break;
     }
 
-  set_cursor (project, cursor->selector);
-  gdk_window_set_cursor (window, the_cursor);
+  if (the_cursor != gdk_window_get_cursor (window))
+    {
+      set_cursor (project, cursor->selector);
+      gdk_window_set_cursor (window, the_cursor);
+    }
 }
 
 /**
@@ -156,7 +159,7 @@ glade_cursor_init (void)
 
   cursor = g_new0 (GladeCursor, 1);
 
-  cursor->selector = gdk_cursor_new (GDK_TOP_LEFT_ARROW);
+  cursor->selector = NULL;
   cursor->add_widget = gdk_cursor_new (GDK_PLUS);
   cursor->resize_top_left = gdk_cursor_new (GDK_TOP_LEFT_CORNER);
   cursor->resize_top_right = gdk_cursor_new (GDK_TOP_RIGHT_CORNER);

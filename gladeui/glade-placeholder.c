@@ -50,31 +50,32 @@
 #define WIDTH_REQUISITION    20
 #define HEIGHT_REQUISITION   20
 
-static void glade_placeholder_finalize (GObject * object);
-static void glade_placeholder_set_property (GObject * object,
+static void glade_placeholder_finalize (GObject *object);
+static void glade_placeholder_set_property (GObject *object,
                                             guint prop_id,
-                                            const GValue * value,
-                                            GParamSpec * pspec);
-static void glade_placeholder_get_property (GObject * object,
+                                            const GValue *value,
+                                            GParamSpec *pspec);
+static void glade_placeholder_get_property (GObject *object,
                                             guint prop_id,
-                                            GValue * value, GParamSpec * pspec);
-static void glade_placeholder_realize (GtkWidget * widget);
-static void glade_placeholder_unrealize (GtkWidget * widget);
-static void glade_placeholder_map (GtkWidget * widget);
-static void glade_placeholder_unmap (GtkWidget * widget);
+                                            GValue *value,
+                                            GParamSpec *pspec);
+static void glade_placeholder_realize (GtkWidget *widget);
+static void glade_placeholder_unrealize (GtkWidget *widget);
+static void glade_placeholder_map (GtkWidget *widget);
+static void glade_placeholder_unmap (GtkWidget *widget);
 
-static void glade_placeholder_size_allocate (GtkWidget * widget,
-                                             GtkAllocation * allocation);
+static void glade_placeholder_size_allocate (GtkWidget *widget,
+                                             GtkAllocation *allocation);
 
-static gboolean glade_placeholder_draw (GtkWidget * widget, cairo_t * cr);
+static gboolean glade_placeholder_draw (GtkWidget *widget, cairo_t *cr);
 
-static gboolean glade_placeholder_motion_notify_event (GtkWidget * widget,
-                                                       GdkEventMotion * event);
+static gboolean glade_placeholder_motion_notify_event (GtkWidget *widget,
+                                                       GdkEventMotion *event);
 
-static gboolean glade_placeholder_button_press (GtkWidget * widget,
-                                                GdkEventButton * event);
+static gboolean glade_placeholder_button_press (GtkWidget *widget,
+                                                GdkEventButton *event);
 
-static gboolean glade_placeholder_popup_menu (GtkWidget * widget);
+static gboolean glade_placeholder_popup_menu (GtkWidget *widget);
 
 
 static cairo_pattern_t *placeholder_pattern = NULL;
@@ -95,10 +96,14 @@ enum
   PROP_VSCROLL_POLICY
 };
 
+#define GLADE_PLACEHOLDER_GET_PRIVATE(object) (G_TYPE_INSTANCE_GET_PRIVATE ((object), \
+                                               GLADE_TYPE_PLACEHOLDER,                \
+                                               GladePlaceholderPrivate))
+
 G_DEFINE_TYPE_WITH_CODE (GladePlaceholder, glade_placeholder, GTK_TYPE_WIDGET,
                          G_IMPLEMENT_INTERFACE (GTK_TYPE_SCROLLABLE, NULL))
 
-static void glade_placeholder_class_init (GladePlaceholderClass * klass)
+static void glade_placeholder_class_init (GladePlaceholderClass *klass)
 {
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -146,8 +151,9 @@ static void glade_placeholder_class_init (GladePlaceholderClass * klass)
 }
 
 static void
-glade_placeholder_notify_parent (GObject * gobject,
-                                 GParamSpec * arg1, gpointer user_data)
+glade_placeholder_notify_parent (GObject *gobject,
+                                 GParamSpec *arg1,
+                                 gpointer user_data)
 {
   GladePlaceholder *placeholder = GLADE_PLACEHOLDER (gobject);
   GladeWidgetAdaptor *parent_adaptor = NULL;
@@ -170,12 +176,9 @@ glade_placeholder_notify_parent (GObject * gobject,
 }
 
 static void
-glade_placeholder_init (GladePlaceholder * placeholder)
+glade_placeholder_init (GladePlaceholder *placeholder)
 {
-  placeholder->priv = 
-    G_TYPE_INSTANCE_GET_PRIVATE (placeholder,
-				 GLADE_TYPE_PLACEHOLDER,
-				 GladePlaceholderPrivate);
+  placeholder->priv =  GLADE_PLACEHOLDER_GET_PRIVATE (placeholder);
 
   placeholder->priv->packing_actions = NULL;
 
@@ -194,7 +197,7 @@ glade_placeholder_init (GladePlaceholder * placeholder)
 }
 
 static void
-glade_placeholder_finalize (GObject * object)
+glade_placeholder_finalize (GObject *object)
 {
   GladePlaceholder *placeholder;
 
@@ -211,9 +214,10 @@ glade_placeholder_finalize (GObject * object)
 }
 
 static void
-glade_placeholder_set_property (GObject * object,
+glade_placeholder_set_property (GObject *object,
                                 guint prop_id,
-                                const GValue * value, GParamSpec * pspec)
+                                const GValue *value,
+                                GParamSpec *pspec)
 {
 
   switch (prop_id)
@@ -230,9 +234,10 @@ glade_placeholder_set_property (GObject * object,
 }
 
 static void
-glade_placeholder_get_property (GObject * object,
+glade_placeholder_get_property (GObject *object,
                                 guint prop_id,
-                                GValue * value, GParamSpec * pspec)
+                                GValue *value,
+                                GParamSpec *pspec)
 {
   switch (prop_id)
     {
@@ -251,7 +256,7 @@ glade_placeholder_get_property (GObject * object,
 }
 
 static void
-glade_placeholder_realize (GtkWidget * widget)
+glade_placeholder_realize (GtkWidget *widget)
 {
   GladePlaceholder *placeholder;
   GtkAllocation allocation;
@@ -291,7 +296,7 @@ glade_placeholder_realize (GtkWidget * widget)
 }
 
 static void
-glade_placeholder_unrealize (GtkWidget * widget)
+glade_placeholder_unrealize (GtkWidget *widget)
 {
   GladePlaceholder *placeholder;
 
@@ -308,7 +313,7 @@ glade_placeholder_unrealize (GtkWidget * widget)
 }
 
 static void
-glade_placeholder_map (GtkWidget * widget)
+glade_placeholder_map (GtkWidget *widget)
 {
   GladePlaceholder *placeholder;
 
@@ -323,7 +328,7 @@ glade_placeholder_map (GtkWidget * widget)
 }
 
 static void
-glade_placeholder_unmap (GtkWidget * widget)
+glade_placeholder_unmap (GtkWidget *widget)
 {
   GladePlaceholder *placeholder;
 
@@ -338,7 +343,7 @@ glade_placeholder_unmap (GtkWidget * widget)
 }
 
 static void
-glade_placeholder_size_allocate (GtkWidget * widget, GtkAllocation * allocation)
+glade_placeholder_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 {
   GladePlaceholder *placeholder;
 
@@ -355,7 +360,7 @@ glade_placeholder_size_allocate (GtkWidget * widget, GtkAllocation * allocation)
 }
 
 static gboolean
-glade_placeholder_draw (GtkWidget * widget, cairo_t * cr)
+glade_placeholder_draw (GtkWidget *widget, cairo_t *cr)
 {
   GtkStyle *style;
   GdkColor *light;
@@ -389,9 +394,9 @@ glade_placeholder_draw (GtkWidget * widget, cairo_t * cr)
 }
 
 static gboolean
-glade_placeholder_motion_notify_event (GtkWidget * widget,
-                                       GdkEventMotion * event)
+glade_placeholder_motion_notify_event (GtkWidget *widget, GdkEventMotion *event)
 {
+  GladePlaceholder *placeholder = GLADE_PLACEHOLDER (widget);
   GladePointerMode pointer_mode;
   GladeProject *project;
 
@@ -409,7 +414,7 @@ glade_placeholder_motion_notify_event (GtkWidget * widget,
 }
 
 static gboolean
-glade_placeholder_button_press (GtkWidget * widget, GdkEventButton * event)
+glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
 {
   GladePlaceholder   *placeholder;
   GladeProject       *project;
@@ -458,7 +463,7 @@ glade_placeholder_button_press (GtkWidget * widget, GdkEventButton * event)
 }
 
 static gboolean
-glade_placeholder_popup_menu (GtkWidget * widget)
+glade_placeholder_popup_menu (GtkWidget *widget)
 {
   g_return_val_if_fail (GLADE_IS_PLACEHOLDER (widget), FALSE);
 
@@ -480,7 +485,7 @@ glade_placeholder_new (void)
 }
 
 GladeProject *
-glade_placeholder_get_project (GladePlaceholder * placeholder)
+glade_placeholder_get_project (GladePlaceholder *placeholder)
 {
   GladeWidget *parent;
   parent = glade_placeholder_get_parent (placeholder);
@@ -488,7 +493,7 @@ glade_placeholder_get_project (GladePlaceholder * placeholder)
 }
 
 GladeWidget *
-glade_placeholder_get_parent (GladePlaceholder * placeholder)
+glade_placeholder_get_parent (GladePlaceholder *placeholder)
 {
   GtkWidget *widget;
   GladeWidget *parent = NULL;
