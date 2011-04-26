@@ -86,6 +86,7 @@ struct _GladeDesignLayoutPrivate
 
   /* Margin edit mode */
   GtkWidget *selection;
+  gint top, bottom, left, right;
   gint m_dy, m_dx;
   Margins margin;
 
@@ -411,18 +412,19 @@ glade_design_layout_button_press_event (GtkWidget *widget, GdkEventButton *ev)
               return FALSE;
             }
           else if (priv->activity == ACTIVITY_MARGINS)
-            gdl_set_cursor (priv, priv->cursors[gdl_margin_get_activity (priv->margin)]);
+            {
+              priv->m_dx = x + ((priv->margin & MARGIN_LEFT) ? 
+                                gtk_widget_get_margin_left (priv->selection) :
+                                  gtk_widget_get_margin_right (priv->selection) * -1);
+              priv->m_dy = y + ((priv->margin & MARGIN_TOP) ?
+                                gtk_widget_get_margin_top (priv->selection) :
+                                  gtk_widget_get_margin_bottom (priv->selection) * -1);
+              
+              gdl_set_cursor (priv, priv->cursors[gdl_margin_get_activity (priv->margin)]);
+              return FALSE;
+            }
           else
             gdl_set_cursor (priv, priv->cursors[priv->activity]);
-
-          priv->m_dx = x + ((priv->margin & MARGIN_LEFT) ? 
-                            gtk_widget_get_margin_left (priv->selection) :
-                              gtk_widget_get_margin_right (priv->selection) * -1);
-          priv->m_dy = y + ((priv->margin & MARGIN_TOP) ?
-                            gtk_widget_get_margin_top (priv->selection) :
-                              gtk_widget_get_margin_bottom (priv->selection) * -1);
-
-          return FALSE;
         }
 
       gtk_widget_get_allocation (child, &child_allocation);
@@ -454,6 +456,43 @@ glade_design_layout_button_release_event (GtkWidget *widget,
 
   priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
 
+  /* Check if margins where edited and execute corresponding glade command */
+  if (priv->selection && priv->activity == ACTIVITY_MARGINS)
+    {
+      GladeWidget *gwidget = glade_widget_get_from_gobject (priv->selection);
+      gint top, bottom, left, right;
+      GladeProperty *property;
+
+      top = gtk_widget_get_margin_top (priv->selection);
+      bottom = gtk_widget_get_margin_bottom (priv->selection);
+      left = gtk_widget_get_margin_left (priv->selection);
+      right = gtk_widget_get_margin_right (priv->selection);
+
+      glade_command_push_group (_("Editing margins of %s"),
+                                glade_widget_get_name (gwidget));
+      if (priv->top != top)
+        {
+          if ((property = glade_widget_get_property (gwidget, "margin-top")))
+            glade_command_set_property (property, top);
+        }
+      if (priv->bottom != bottom)
+        {
+          if ((property = glade_widget_get_property (gwidget, "margin-bottom")))
+            glade_command_set_property (property, bottom);
+        }
+      if (priv->left != left)
+        {
+          if ((property = glade_widget_get_property (gwidget, "margin-left")))
+            glade_command_set_property (property, left);
+        }
+      if (priv->right != right)
+        {
+          if ((property = glade_widget_get_property (gwidget, "margin-right")))
+            glade_command_set_property (property, right);
+        }
+      glade_command_pop_group ();
+    }
+  
   priv->activity = ACTIVITY_NONE;
   gdl_set_cursor (priv, NULL);
 
@@ -855,21 +894,14 @@ draw_selection (cairo_t *cr,
 }
 
 static void 
-draw_nodes (cairo_t *cr,
-            gint x1, gint x2, gint x3,
-            gint y1, gint y2, gint y3,
-            gint radius,
-            GdkRGBA *color)
+draw_node (cairo_t *cr, gint x, gint y, gint radius, GdkRGBA *c1, GdkRGBA *c2)
 {
-  gdk_cairo_set_source_rgba (cr, color);
+  gdk_cairo_set_source_rgba (cr, c2);
+  cairo_new_sub_path (cr);
+  cairo_arc (cr, x, y, radius, 0, 2*G_PI);
+  cairo_stroke_preserve (cr);
 
-  cairo_arc (cr, x2, y1, radius, 0, 2*G_PI);
-  cairo_fill (cr);
-  cairo_arc (cr, x2, y3, radius, 0, 2*G_PI);
-  cairo_fill (cr);
-  cairo_arc (cr, x1, y2, radius, 0, 2*G_PI);
-  cairo_fill (cr);
-  cairo_arc (cr, x3, y2, radius, 0, 2*G_PI);
+  gdk_cairo_set_source_rgba (cr, c1);
   cairo_fill (cr);
 }
 
@@ -877,8 +909,8 @@ static inline void
 draw_selection_nodes (cairo_t *cr,
                       GtkWidget *parent,
                       GtkWidget *widget,
-                      GdkRGBA *color,
-                      GdkRGBA *bg_color)
+                      GdkRGBA *color1,
+                      GdkRGBA *color2)
 {
   gint x1, x2, x3, y1, y2, y3;
   GtkAllocation alloc;
@@ -899,13 +931,16 @@ draw_selection_nodes (cairo_t *cr,
   y1 = y - gtk_widget_get_margin_top (widget);
   y2 = y + h/2;
   y3 = y + h + gtk_widget_get_margin_bottom (widget);
-      
-  draw_nodes (cr, x1, x2, x3, y1, y2, y3, OUTLINE_WIDTH + 2, bg_color);
-  draw_nodes (cr, x1, x2, x3, y1, y2, y3, OUTLINE_WIDTH, color);
+
+  cairo_set_line_width (cr, OUTLINE_WIDTH);
+  draw_node (cr, x2, y1, OUTLINE_WIDTH, color1, color2);
+  draw_node (cr, x2, y3, OUTLINE_WIDTH, color1, color2);
+  draw_node (cr, x1, y2, OUTLINE_WIDTH, color1, color2);
+  draw_node (cr, x3, y2, OUTLINE_WIDTH, color1, color2);
 }
 
 static gboolean
-glade_design_layout_draw (GtkWidget * widget, cairo_t * cr)
+glade_design_layout_draw (GtkWidget *widget, cairo_t *cr)
 {
   GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
   GdkWindow *window = gtk_widget_get_window (widget);
@@ -1416,6 +1451,13 @@ _glade_design_layout_do_event (GladeDesignLayout *layout, GdkEvent *event)
           if (priv->selection == NULL)
             {
               priv->selection = l->data;
+
+              /* Save initital margins to know which one where edited */
+              priv->top = gtk_widget_get_margin_top (priv->selection);
+              priv->bottom = gtk_widget_get_margin_bottom (priv->selection);
+              priv->left = gtk_widget_get_margin_left (priv->selection);
+              priv->right = gtk_widget_get_margin_right (priv->selection);
+              
               glade_project_set_pointer_mode (priv->project, GLADE_POINTER_MARGIN_MODE);
               gtk_widget_queue_draw (GTK_WIDGET (layout));
               return TRUE;
