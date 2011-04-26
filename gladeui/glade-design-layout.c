@@ -42,6 +42,8 @@
 #define OUTLINE_WIDTH     4
 #define PADDING           10
 
+#define MARGIN_STEP       8
+
 typedef enum
 {
   ACTIVITY_NONE,
@@ -276,18 +278,21 @@ glade_design_layout_motion_notify_event (GtkWidget *widget, GdkEventMotion *ev)
     case ACTIVITY_MARGINS:
         {
           gboolean shift = ev->state & GDK_SHIFT_MASK;
+          gboolean snap = ev->state & GDK_MOD1_MASK;
           GtkWidget *selection = priv->selection;
           Margins margin = priv->margin;
 
           if (margin & MARGIN_TOP)
             {
               gint val = MAX (0, priv->m_dy - y);
+              if (snap) val = (val/MARGIN_STEP)*MARGIN_STEP;
               gtk_widget_set_margin_top (selection, val);
               if (shift) gtk_widget_set_margin_bottom (selection, val);
             }
           else if (margin & MARGIN_BOTTOM)
             {
               gint val = MAX (0, y - priv->m_dy);
+              if (snap) val = (val/MARGIN_STEP)*MARGIN_STEP;
               gtk_widget_set_margin_bottom (selection, val);
               if (shift) gtk_widget_set_margin_top (selection, val);
             }
@@ -295,12 +300,14 @@ glade_design_layout_motion_notify_event (GtkWidget *widget, GdkEventMotion *ev)
           if (margin & MARGIN_LEFT)
             {
               gint val = MAX (0, priv->m_dx - x);
+              if (snap) val = (val/MARGIN_STEP)*MARGIN_STEP;
               gtk_widget_set_margin_left (selection, val);
               if (shift) gtk_widget_set_margin_right (selection, val);
             }
           else if (margin & MARGIN_RIGHT)
             {
               gint val = MAX (0, x - priv->m_dx);
+              if (snap) val = (val/MARGIN_STEP)*MARGIN_STEP;
               gtk_widget_set_margin_right (selection, val);
               if (shift) gtk_widget_set_margin_left (selection, val);
             }
