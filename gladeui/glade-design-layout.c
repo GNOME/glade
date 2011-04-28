@@ -228,12 +228,15 @@ glade_design_layout_leave_notify_event (GtkWidget *widget, GdkEventCrossing *ev)
 }
 
 static void
-gdl_update_max_margins (GladeDesignLayoutPrivate *priv,
+gdl_update_max_margins (GladeDesignLayout *layout,
                         GtkWidget *child,
                         gint width, gint height)
 {
+  GladeDesignLayoutPrivate *priv = layout->priv;
+  gint parent_w, parent_h, layout_w, layout_h;
   gint top, bottom, left, right;
   GtkRequisition req;
+  GtkWidget *parent;
   
   gtk_widget_get_preferred_size (child, &req, NULL);
 
@@ -242,8 +245,22 @@ gdl_update_max_margins (GladeDesignLayoutPrivate *priv,
   left = gtk_widget_get_margin_left (priv->selection);
   right = gtk_widget_get_margin_right (priv->selection);
 
+  parent = gtk_widget_get_parent (GTK_WIDGET (priv->view));
+  
   priv->max_width = width - (req.width - left - right);
-  priv->max_height = height - (req.height - top - bottom);
+
+  parent_w = gtk_widget_get_allocated_width (parent);
+  layout_w = gtk_widget_get_allocated_width (GTK_WIDGET (layout));
+
+  if (parent_w > layout_w)
+    priv->max_width += parent_w - layout_w - PADDING;
+  
+  priv->max_height = height - (req.height - top - bottom) ;
+
+  parent_h = gtk_widget_get_allocated_height (parent);
+  layout_h = gtk_widget_get_allocated_height (GTK_WIDGET (layout));
+  if (parent_h > layout_h)
+    priv->max_height += parent_h - layout_h - priv->south_east.height - OUTLINE_WIDTH - priv->child_offset;
 }
 
 static void
@@ -260,7 +277,7 @@ glade_design_layout_update_child (GladeDesignLayout *layout,
                 "toplevel-height", allocation->height, NULL);
 
   if (priv->selection)
-    gdl_update_max_margins (priv, child, allocation->width, allocation->height);
+    gdl_update_max_margins (layout, child, allocation->width, allocation->height);
 
   gtk_widget_queue_resize (GTK_WIDGET (layout));
 }
@@ -1500,7 +1517,7 @@ _glade_design_layout_do_event (GladeDesignLayout *layout, GdkEvent *event)
               priv->left = gtk_widget_get_margin_left (priv->selection);
               priv->right = gtk_widget_get_margin_right (priv->selection);
 
-              gdl_update_max_margins (priv, child,
+              gdl_update_max_margins (layout, child,
                                       gtk_widget_get_allocated_width (child),
                                       gtk_widget_get_allocated_height (child));
 
