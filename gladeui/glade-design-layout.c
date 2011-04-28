@@ -90,6 +90,7 @@ struct _GladeDesignLayoutPrivate
   GtkWidget *selection;
   gint top, bottom, left, right;
   gint m_dy, m_dx;
+  gint max_width, max_height;
   Margins margin;
 
   /* state machine */
@@ -227,6 +228,25 @@ glade_design_layout_leave_notify_event (GtkWidget *widget, GdkEventCrossing *ev)
 }
 
 static void
+gdl_update_max_margins (GladeDesignLayoutPrivate *priv,
+                        GtkWidget *child,
+                        gint width, gint height)
+{
+  gint top, bottom, left, right;
+  GtkRequisition req;
+  
+  gtk_widget_get_preferred_size (child, &req, NULL);
+
+  top = gtk_widget_get_margin_top (priv->selection);
+  bottom = gtk_widget_get_margin_bottom (priv->selection);
+  left = gtk_widget_get_margin_left (priv->selection);
+  right = gtk_widget_get_margin_right (priv->selection);
+
+  priv->max_width = width - (req.width - left - right);
+  priv->max_height = height - (req.height - top - bottom);
+}
+
+static void
 glade_design_layout_update_child (GladeDesignLayout *layout,
                                   GtkWidget         *child,
                                   GtkAllocation     *allocation)
@@ -238,6 +258,9 @@ glade_design_layout_update_child (GladeDesignLayout *layout,
   g_object_set (gchild,
                 "toplevel-width", allocation->width,
                 "toplevel-height", allocation->height, NULL);
+
+  if (priv->selection)
+    gdl_update_max_margins (priv, child, allocation->width, allocation->height);
 
   gtk_widget_queue_resize (GTK_WIDGET (layout));
 }
@@ -284,14 +307,20 @@ glade_design_layout_motion_notify_event (GtkWidget *widget, GdkEventMotion *ev)
 
           if (margin & MARGIN_TOP)
             {
-              gint val = MAX (0, priv->m_dy - y);
+              gint max_height = (shift) ? priv->max_height/2 : priv->max_height -
+                gtk_widget_get_margin_bottom (selection);
+              gint val = MAX (0, MIN (priv->m_dy - y, max_height));
+              
               if (snap) val = (val/MARGIN_STEP)*MARGIN_STEP;
               gtk_widget_set_margin_top (selection, val);
               if (shift) gtk_widget_set_margin_bottom (selection, val);
             }
           else if (margin & MARGIN_BOTTOM)
             {
-              gint val = MAX (0, y - priv->m_dy);
+              gint max_height = (shift) ? priv->max_height/2 : priv->max_height -
+                gtk_widget_get_margin_top (selection);
+              gint val = MAX (0, MIN (y - priv->m_dy, max_height));
+              
               if (snap) val = (val/MARGIN_STEP)*MARGIN_STEP;
               gtk_widget_set_margin_bottom (selection, val);
               if (shift) gtk_widget_set_margin_top (selection, val);
@@ -299,14 +328,20 @@ glade_design_layout_motion_notify_event (GtkWidget *widget, GdkEventMotion *ev)
 
           if (margin & MARGIN_LEFT)
             {
-              gint val = MAX (0, priv->m_dx - x);
+              gint max_width = (shift) ? priv->max_width/2 : priv->max_width -
+                gtk_widget_get_margin_right (selection);
+              gint val = MAX (0, MIN (priv->m_dx - x, max_width));
+              
               if (snap) val = (val/MARGIN_STEP)*MARGIN_STEP;
               gtk_widget_set_margin_left (selection, val);
               if (shift) gtk_widget_set_margin_right (selection, val);
             }
           else if (margin & MARGIN_RIGHT)
             {
-              gint val = MAX (0, x - priv->m_dx);
+              gint max_width = (shift) ? priv->max_width/2 : priv->max_width -
+                gtk_widget_get_margin_left (selection);
+              gint val = MAX (0, MIN (x - priv->m_dx, max_width));
+              
               if (snap) val = (val/MARGIN_STEP)*MARGIN_STEP;
               gtk_widget_set_margin_right (selection, val);
               if (shift) gtk_widget_set_margin_left (selection, val);
@@ -1464,7 +1499,11 @@ _glade_design_layout_do_event (GladeDesignLayout *layout, GdkEvent *event)
               priv->bottom = gtk_widget_get_margin_bottom (priv->selection);
               priv->left = gtk_widget_get_margin_left (priv->selection);
               priv->right = gtk_widget_get_margin_right (priv->selection);
-              
+
+              gdl_update_max_margins (priv, child,
+                                      gtk_widget_get_allocated_width (child),
+                                      gtk_widget_get_allocated_height (child));
+
               glade_project_set_pointer_mode (priv->project, GLADE_POINTER_MARGIN_MODE);
               gtk_widget_queue_draw (GTK_WIDGET (layout));
               return TRUE;
