@@ -983,7 +983,7 @@ glade_util_have_devhelp (void)
                 {
                   /* Devhelp 0.12 required.
                    */
-                  if (major >= 0 && minor >= 12)
+                  if (major >= 2 || (major >= 0 && minor >= 12))
                     have_devhelp = 1;
                   else
                     g_message (DEVHELP_OLD_MESSAGE);
