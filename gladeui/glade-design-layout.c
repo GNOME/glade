@@ -42,7 +42,7 @@
 #define OUTLINE_WIDTH     4
 #define PADDING           10
 
-#define MARGIN_STEP       8
+#define MARGIN_STEP       6
 
 typedef enum
 {
@@ -236,7 +236,6 @@ gdl_update_max_margins (GladeDesignLayout *layout,
   gint parent_w, parent_h, layout_w, layout_h;
   gint top, bottom, left, right;
   GtkRequisition req;
-  GtkWidget *parent;
   
   gtk_widget_get_preferred_size (child, &req, NULL);
 
@@ -244,23 +243,21 @@ gdl_update_max_margins (GladeDesignLayout *layout,
   bottom = gtk_widget_get_margin_bottom (priv->selection);
   left = gtk_widget_get_margin_left (priv->selection);
   right = gtk_widget_get_margin_right (priv->selection);
-
-  parent = gtk_widget_get_parent (GTK_WIDGET (priv->view));
   
   priv->max_width = width - (req.width - left - right);
 
-  parent_w = gtk_widget_get_allocated_width (parent);
+  parent_w = gtk_widget_get_allocated_width (GTK_WIDGET (priv->view));
   layout_w = gtk_widget_get_allocated_width (GTK_WIDGET (layout));
 
   if (parent_w > layout_w)
-    priv->max_width += parent_w - layout_w - PADDING;
+    priv->max_width += parent_w - layout_w - (PADDING - OUTLINE_WIDTH);
   
   priv->max_height = height - (req.height - top - bottom) ;
 
-  parent_h = gtk_widget_get_allocated_height (parent);
+  parent_h = gtk_widget_get_allocated_height (GTK_WIDGET (priv->view));
   layout_h = gtk_widget_get_allocated_height (GTK_WIDGET (layout));
   if (parent_h > layout_h)
-    priv->max_height += parent_h - layout_h - priv->south_east.height - OUTLINE_WIDTH - priv->child_offset;
+    priv->max_height += parent_h - layout_h - (PADDING - OUTLINE_WIDTH);
 }
 
 static void
