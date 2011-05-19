@@ -83,6 +83,7 @@ struct _GladeDesignLayoutPrivate
   gint layout_width;
 
   /* Colors */
+  GdkRGBA fg_color;
   GdkRGBA frame_color[2];
   GdkRGBA frame_color_active[2];
 
@@ -982,6 +983,7 @@ draw_hguide (cairo_t *cr, gdouble x, gdouble y, gint len)
 
 static void
 draw_pixel_value (cairo_t *cr, 
+                  GdkRGBA *bg, GdkRGBA *fg,
                   gdouble x, gdouble y,
                   gboolean rotate,
                   gboolean draw_border,
@@ -1010,7 +1012,7 @@ draw_pixel_value (cairo_t *cr,
 
   if (draw_border || extents.width + 4 >= val)
     {
-      cairo_set_source_rgb (cr, 1, 1, 1);
+      cairo_set_source_rgba (cr, bg->red, bg->green, bg->blue, .9);
 
       cairo_move_to (cr, xx, yy);
       cairo_text_path (cr, pixel_str);
@@ -1018,7 +1020,7 @@ draw_pixel_value (cairo_t *cr,
       cairo_stroke (cr);
 
       cairo_set_line_width (cr, 1);
-      cairo_set_source_rgb (cr, 0, 0, 0);
+      gdk_cairo_set_source_rgba (cr, fg);
     }
 
   cairo_move_to (cr, xx, yy);
@@ -1028,22 +1030,23 @@ draw_pixel_value (cairo_t *cr,
 }
 
 static void
-draw_stroke_lines (cairo_t *cr ,gdouble color, gboolean remark)
+draw_stroke_lines (cairo_t *cr, GdkRGBA *bg, GdkRGBA *fg, gboolean remark)
 {
   if (remark)
     {
-      cairo_set_source_rgba (cr, 1, 1, 1, .8);
+      cairo_set_source_rgba (cr, bg->red, bg->green, bg->blue, .9);
       cairo_set_line_width (cr, 3);
       cairo_stroke_preserve (cr);
       cairo_set_line_width (cr, 1);
     }
-  
-  cairo_set_source_rgb (cr, color, color, color);
+
+  gdk_cairo_set_source_rgba (cr, fg);
   cairo_stroke (cr);
 }
 
 static void
 draw_dimensions (cairo_t *cr,
+                 GdkRGBA *bg, GdkRGBA *fg,
                  gdouble x, gdouble y,
                  gint w, gint h,
                  gint top, gint bottom,
@@ -1051,13 +1054,20 @@ draw_dimensions (cairo_t *cr,
 {
   gboolean h_clutter, v_clutter;
   gdouble xx, yy;
+  GdkRGBA color;
 
   w--; h--;
   xx = x + w + DIMENSION_OFFSET;
   yy = y - DIMENSION_OFFSET;
   h_clutter = top < DIMENSION_OFFSET*2;
   v_clutter = right < (DIMENSION_OFFSET + OUTLINE_WIDTH);
-  
+
+  /* Color half way betwen fg and bg */
+  color.red = ABS (bg->red - fg->red)/2;
+  color.green = ABS (bg->green - fg->green)/2;
+  color.blue = ABS (bg->blue - fg->blue)/2;
+  color.alpha = fg->alpha;
+
   /* Draw dimension lines and guides */
   cairo_move_to (cr, x - left - DIMENSION_LINE_OFFSET, yy);
   cairo_line_to (cr, x + w + right + DIMENSION_LINE_OFFSET, yy);
@@ -1072,7 +1082,7 @@ draw_dimensions (cairo_t *cr,
   draw_vguide (cr, x + w, yy, DIMENSION_OFFSET);
 
   /* Draw horizontal lines */
-  draw_stroke_lines (cr, .5, top < DIMENSION_OFFSET+OUTLINE_WIDTH);
+  draw_stroke_lines (cr, bg, &color, top < DIMENSION_OFFSET+OUTLINE_WIDTH);
   
   cairo_move_to (cr, xx, y - top - DIMENSION_LINE_OFFSET);
   cairo_line_to (cr, xx, y + h + bottom + DIMENSION_LINE_OFFSET);
@@ -1087,7 +1097,7 @@ draw_dimensions (cairo_t *cr,
   draw_hguide (cr, xx, y + h, DIMENSION_OFFSET);
 
   /* Draw vertical lines */
-  draw_stroke_lines (cr, .5, v_clutter);
+  draw_stroke_lines (cr, bg, &color, v_clutter);
   
   /* Draw dimension line marks */
   if (left) draw_hmark (cr, x - left, yy);
@@ -1095,25 +1105,25 @@ draw_dimensions (cairo_t *cr,
   draw_hmark (cr, x + w, yy);
   if (right) draw_hmark (cr, x + w + right, yy);
 
-  draw_stroke_lines (cr, 0, top < DIMENSION_OFFSET+OUTLINE_WIDTH);
+  draw_stroke_lines (cr, bg, fg, top < DIMENSION_OFFSET+OUTLINE_WIDTH);
   
   if (top) draw_vmark (cr, xx, y - top);
   draw_vmark (cr, xx, y);
   draw_vmark (cr, xx, y + h);
   if (bottom) draw_vmark (cr, xx, y + h + bottom);
 
-  draw_stroke_lines (cr, 0, v_clutter);
+  draw_stroke_lines (cr, bg, fg, v_clutter);
 
   /* Draw pixel values */
   cairo_set_font_size (cr, 8.0);
 
-  draw_pixel_value (cr, x + w/2, yy, FALSE, h_clutter, w+1);
-  draw_pixel_value (cr, xx, y + h/2, TRUE, v_clutter, h+1);
+  draw_pixel_value (cr, bg, fg, x + w/2, yy, FALSE, h_clutter, w+1);
+  draw_pixel_value (cr,bg, fg, xx, y + h/2, TRUE, v_clutter, h+1);
   
-  if (left) draw_pixel_value (cr, x - left/2, yy, FALSE, h_clutter, left);
-  if (right) draw_pixel_value (cr, x + w + right/2, yy, FALSE, h_clutter, right);
-  if (top) draw_pixel_value (cr, xx, y - top/2, TRUE, v_clutter, top);
-  if (bottom) draw_pixel_value (cr, xx, y + h + bottom/2, TRUE, v_clutter, bottom);
+  if (left) draw_pixel_value (cr,bg, fg, x - left/2, yy, FALSE, h_clutter, left);
+  if (right) draw_pixel_value (cr,bg, fg, x + w + right/2, yy, FALSE, h_clutter, right);
+  if (top) draw_pixel_value (cr,bg, fg, xx, y - top/2, TRUE, v_clutter, top);
+  if (bottom) draw_pixel_value (cr,bg, fg, xx, y + h + bottom/2, TRUE, v_clutter, bottom);
 }
 
 static void 
@@ -1133,7 +1143,8 @@ draw_selection_nodes (cairo_t *cr,
                       GtkWidget *parent,
                       GtkWidget *widget,
                       GdkRGBA *color1,
-                      GdkRGBA *color2)
+                      GdkRGBA *color2,
+                      GdkRGBA *fg_color)
 {
   gint top, bottom, left, right;
   gint x1, x2, x3, y1, y2, y3;
@@ -1169,7 +1180,7 @@ draw_selection_nodes (cairo_t *cr,
   draw_node (cr, x3, y2, OUTLINE_WIDTH, color1, color2);
 
   cairo_set_line_width (cr, 1);
-  draw_dimensions (cr, x+.5, y+.5, w, h, top, bottom, left, right);
+  draw_dimensions (cr, color2, fg_color, x+.5, y+.5, w, h, top, bottom, left, right);
 }
 
 static gboolean
@@ -1229,7 +1240,8 @@ glade_design_layout_draw (GtkWidget *widget, cairo_t *cr)
           if (priv->selection)
             draw_selection_nodes (cr, widget, priv->selection,
                                   &priv->frame_color_active[0],
-                                  &priv->frame_color_active[1]);
+                                  &priv->frame_color_active[1],
+                                  &priv->fg_color);
         }
     }
   else if (gtk_cairo_should_draw_window (cr, priv->offscreen_window))
@@ -1467,7 +1479,10 @@ glade_design_layout_style_updated (GtkWidget *widget)
   gtk_style_context_get_background_color (context,
                                           GTK_STATE_FLAG_NORMAL,
                                           &bg_color);
-
+  gtk_style_context_get_color (context,
+                               GTK_STATE_FLAG_NORMAL,
+                               &priv->fg_color);
+  
   gtk_style_context_get_background_color (context, GTK_STATE_FLAG_SELECTED,
                                           &priv->frame_color[0]);
   gtk_style_context_get_color (context, GTK_STATE_FLAG_SELECTED,
