@@ -1023,13 +1023,11 @@ glade_eprop_attrs_show_dialog (GtkWidget * dialog_button,
 {
   GladeEPropAttrs *eprop_attrs = GLADE_EPROP_ATTRS (eprop);
   GtkWidget *dialog, *parent, *vbox, *sw, *tree_view;
-  GladeProject *project;
   GladeProperty *property;
   GList *old_attributes;
   gint res;
 
   property = glade_editor_property_get_property (eprop);
-  project  = glade_widget_get_project (glade_property_get_widget (property));
   parent   = gtk_widget_get_toplevel (GTK_WIDGET (eprop));
 
 

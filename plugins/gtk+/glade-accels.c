@@ -506,14 +506,10 @@ glade_eprop_accel_show_dialog (GtkWidget * dialog_button,
 {
   GladeEPropAccel *eprop_accel = GLADE_EPROP_ACCEL (eprop);
   GtkWidget *dialog, *parent, *vbox, *sw, *tree_view;
-  GladeProject *project;
-  GladeProperty *property;
   GValue value = { 0, };
   GList *accelerators = NULL;
   gint res;
 
-  property = glade_editor_property_get_property (eprop);
-  project = glade_widget_get_project (glade_property_get_widget (property));
   parent = gtk_widget_get_toplevel (GTK_WIDGET (eprop));
 
   dialog = gtk_dialog_new_with_buttons (_("Choose accelerator keys..."),

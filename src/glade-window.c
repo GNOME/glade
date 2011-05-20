@@ -2742,7 +2742,6 @@ static void
 check_reload_project (GladeWindow * window, GladeProject * project)
 {
   gchar *path;
-  gint ret;
   GtkWidget *dialog;
   GtkWidget *button;
   gint response;
@@ -2818,7 +2817,7 @@ check_reload_project (GladeWindow * window, GladeProject * project)
   path = g_strdup (glade_project_get_path (project));
 
   do_close (window, project);
-  ret = open_project (window, path);
+  open_project (window, path);
   g_free (path);
 }
 

@@ -1262,10 +1262,6 @@ glade_named_icon_chooser_dialog_draw (GtkWidget * widget, cairo_t * cr)
 static void
 response_cb (GtkDialog * dialog, gint response_id)
 {
-  GladeNamedIconChooserDialogPrivate *priv;
-
-  priv = GLADE_NAMED_ICON_CHOOSER_DIALOG_GET_PRIVATE (dialog);
-
   /* Act only on response IDs we recognize */
   if (!(response_id == GTK_RESPONSE_ACCEPT
         || response_id == GTK_RESPONSE_OK
@@ -1663,15 +1659,14 @@ static GKeyFile *
 settings_to_keyfile (GladeNamedIconChooserDialog * dialog)
 {
   GKeyFile *keyfile;
-  gboolean retval;
   gchar *filename;
 
   keyfile = g_key_file_new ();
 
   filename = get_config_filename ();
-  retval = g_key_file_load_from_file (keyfile,
-                                      get_config_filename (),
-                                      G_KEY_FILE_NONE, NULL);
+  g_key_file_load_from_file (keyfile,
+                             get_config_filename (),
+                             G_KEY_FILE_NONE, NULL);
   g_free (filename);
 
   g_key_file_set_boolean (keyfile,
