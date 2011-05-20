@@ -341,14 +341,12 @@ catalog_load_classes (GladeCatalog * catalog, GladeXmlNode * widgets_node)
   node = glade_xml_node_get_children (widgets_node);
   for (; node; node = glade_xml_node_next (node))
     {
-      const gchar *node_name, *domain;
+      const gchar *node_name;
       GladeWidgetAdaptor *adaptor;
 
       node_name = glade_xml_node_get_name (node);
       if (strcmp (node_name, GLADE_TAG_GLADE_WIDGET_CLASS) != 0)
         continue;
-
-      domain = catalog->domain ? catalog->domain : catalog->library;
 
       adaptor = glade_widget_adaptor_from_catalog (catalog, node, module);
 

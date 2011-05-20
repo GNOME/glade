@@ -266,12 +266,11 @@ search_complete_idle (GladeInspector * inspector)
   GladeInspectorPrivate *priv = inspector->priv;
   const gchar *str;
   gchar *completed = NULL;
-  GList *list;
   gsize length;
 
   str = gtk_entry_get_text (GTK_ENTRY (priv->entry));
 
-  list = g_completion_complete (priv->completion, str, &completed);
+  g_completion_complete (priv->completion, str, &completed);
   if (completed)
     {
       length = strlen (str);

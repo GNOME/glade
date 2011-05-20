@@ -849,7 +849,6 @@ glade_eprop_enum_changed (GtkWidget * combo_box, GladeEditorProperty * eprop)
   gint ival;
   GValue val = { 0, };
   GParamSpec *pspec;
-  GladeProperty *property;
   GtkTreeModel *tree_model;
   GtkTreeIter iter;
 
@@ -860,7 +859,6 @@ glade_eprop_enum_changed (GtkWidget * combo_box, GladeEditorProperty * eprop)
   gtk_combo_box_get_active_iter (GTK_COMBO_BOX (combo_box), &iter);
   gtk_tree_model_get (tree_model, &iter, 1, &ival, -1);
 
-  property = eprop->priv->property;
   pspec    = glade_property_class_get_pspec (eprop->priv->klass);
 
   g_value_init (&val, pspec->value_type);

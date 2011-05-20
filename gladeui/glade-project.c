@@ -1976,7 +1976,6 @@ glade_project_verify_property_internal (GladeProject *project,
                                         gboolean forwidget)
 {
   GladeWidgetAdaptor *adaptor, *prop_adaptor;
-  GladeWidget        *widget;
   GladePropertyClass *pclass;
   GParamSpec         *pspec;
   gint target_major, target_minor;
@@ -1989,7 +1988,6 @@ glade_project_verify_property_internal (GladeProject *project,
   pspec        = glade_property_class_get_pspec (pclass);
   prop_adaptor = glade_property_class_get_adaptor (pclass);
   adaptor      = glade_widget_adaptor_from_pspec (prop_adaptor, pspec);
-  widget       = glade_property_get_widget (property);
 
   g_object_get (adaptor, "catalog", &catalog, NULL);
   glade_project_target_version_for_adaptor (project, adaptor,

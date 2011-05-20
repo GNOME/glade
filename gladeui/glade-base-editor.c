@@ -512,7 +512,7 @@ static void
 glade_base_editor_child_change_type (GladeBaseEditor * editor,
                                      GtkTreeIter * iter, GType type)
 {
-  GladeWidget *gchild, *gparent;
+  GladeWidget *gchild;
   GObject *child;
   gchar *class_name;
   gboolean retval;
@@ -533,8 +533,6 @@ glade_base_editor_child_change_type (GladeBaseEditor * editor,
       glade_base_editor_block_callbacks (editor, FALSE);
       return;
     }
-
-  gparent = glade_widget_get_parent (gchild);
 
   /* Start of glade-command */
 
@@ -1329,7 +1327,7 @@ glade_base_editor_change_type (GladeBaseEditor * editor,
 {
   GladeWidget *parent, *gchild_new;
   GList *children, *l;
-  GObject *child, *child_new;
+  GObject *child_new;
   GtkTreeIter iter;
   gchar *name, *class_name;
 
@@ -1340,7 +1338,6 @@ glade_base_editor_change_type (GladeBaseEditor * editor,
                                        &class_name, -1) == FALSE)
     return TRUE;
 
-  child = glade_widget_get_object (gchild);
   name = g_strdup (glade_widget_get_name (gchild));
   glade_base_editor_find_child (editor, gchild, &iter);
 

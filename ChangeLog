@@ -1,3 +1,23 @@
+2011-05-20  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-base-editor.c,
+	  gladeui/glade-catalog.c
+	  gladeui/glade-design-layout.c
+	  gladeui/glade-editor-property.c
+	  gladeui/glade-inspector.c
+	  gladeui/glade-named-icon-chooser-dialog.c
+	  gladeui/glade-palette.c
+	  gladeui/glade-placeholder.c
+	  gladeui/glade-project.c
+	  gladeui/glade-property.c
+	  gladeui/glade-widget.c
+	  plugins/gtk+/glade-accels.c
+	  plugins/gtk+/glade-attributes.c
+	  plugins/gtk+/glade-gtk.c
+	  plugins/gtk+/glade-model-data.c
+	  src/glade-window.c:
+	    Fixed "variable set but not used" warnings (-Wunused-but-set-variable)
+
 2011-04-29  Javier Jardón <jjardon@gnome.org>
 
 	* gladeui/glade-utils.c: Correctly detect the required devhelp version

@@ -825,7 +825,7 @@ glade_widget_constructor (GType type,
                           GObjectConstructParam * construct_properties)
 {
   GladeWidget *gwidget;
-  GObject *ret_obj, *object;
+  GObject *ret_obj;
   GList *properties = NULL, *list;
 
   ret_obj = G_OBJECT_CLASS (glade_widget_parent_class)->constructor
@@ -871,11 +871,9 @@ glade_widget_constructor (GType type,
     }
 
   if (gwidget->priv->object == NULL)
-    {
-      object = glade_widget_build_object (gwidget,
-                                          gwidget->priv->construct_template,
-                                          gwidget->priv->construct_reason);
-    }
+    glade_widget_build_object (gwidget,
+                               gwidget->priv->construct_template,
+                               gwidget->priv->construct_reason);
 
   /* Copy sync parentless widget props here after a dup
    */
@@ -3299,7 +3297,6 @@ static void
 glade_widget_set_object (GladeWidget * gwidget, GObject * new_object,
                          gboolean destroy)
 {
-  GladeWidgetAdaptor *adaptor;
   GObject *old_object;
 
   g_return_if_fail (GLADE_IS_WIDGET (gwidget));
@@ -3310,7 +3307,6 @@ glade_widget_set_object (GladeWidget * gwidget, GObject * new_object,
   if (gwidget->priv->object == new_object)
     return;
 
-  adaptor = gwidget->priv->adaptor;
   old_object = gwidget->priv->object;
   gwidget->priv->object = new_object;
 
@@ -3659,14 +3655,11 @@ glade_widget_write_special_child_prop (GladeWidget * parent,
                                        GladeXmlContext * context,
                                        GladeXmlNode * node)
 {
-  GladeXmlNode *packing_node;
   gchar *buff, *special_child_type;
 
   buff = g_object_get_data (object, "special-child-type");
   g_object_get (parent->priv->adaptor, "special-child-type", &special_child_type,
                 NULL);
-
-  packing_node = glade_xml_search_child (node, GLADE_XML_TAG_PACKING);
 
   if (special_child_type && buff)
     {

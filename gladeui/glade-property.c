@@ -1163,13 +1163,10 @@ glade_property_write (GladeProperty * property,
                       GladeXmlContext * context, GladeXmlNode * node)
 {
   GladeXmlNode *prop_node;
-  GladeProject *project;
   gchar *name, *value, *tmp;
 
   g_return_if_fail (GLADE_IS_PROPERTY (property));
   g_return_if_fail (node != NULL);
-
-  project = glade_widget_get_project (property->priv->widget);
 
   /* This code should work the same for <packing> and <widget> */
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_PACKING) ||

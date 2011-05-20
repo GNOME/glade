@@ -1821,7 +1821,6 @@ glade_gtk_box_add_child (GladeWidgetAdaptor * adaptor,
                          GObject * object, GObject * child)
 {
   GladeWidget *gbox, *gchild;
-  GladeProject *project;
   GList *children;
   gint num_children;
 
@@ -1829,7 +1828,6 @@ glade_gtk_box_add_child (GladeWidgetAdaptor * adaptor,
   g_return_if_fail (GTK_IS_WIDGET (child));
 
   gbox = glade_widget_get_from_gobject (object);
-  project = glade_widget_get_project (gbox);
 
   /*
      Try to remove the last placeholder if any, this way GtkBox`s size 
@@ -2431,7 +2429,6 @@ static void
 glade_gtk_notebook_selection_changed (GladeProject * project,
                                       GladeWidget * gwidget)
 {
-  GladeWidget *selected;
   GList *list;
   gint i;
   GtkWidget *page, *sel_widget;
@@ -2440,7 +2437,6 @@ glade_gtk_notebook_selection_changed (GladeProject * project,
   if ((list = glade_project_selection_get (project)) != NULL &&
       g_list_length (list) == 1)
     {
-      selected   = glade_widget_get_from_gobject (list->data);
       sel_widget = list->data;
 
       /* Check if selected widget is inside the notebook */
@@ -2559,7 +2555,7 @@ glade_gtk_notebook_set_n_pages (GObject * object, const GValue * value)
 {
   GladeWidget *widget;
   GtkNotebook *notebook;
-  GtkWidget *child_widget, *tab_widget;
+  GtkWidget *child_widget;
   gint new_size, i;
   gint old_size;
 
@@ -2619,7 +2615,6 @@ glade_gtk_notebook_set_n_pages (GObject * object, const GValue * value)
       /* Get the last page and remove it (project objects have been cleared by
        * the action code already). */
       child_widget = gtk_notebook_get_nth_page (notebook, old_size - 1);
-      tab_widget = gtk_notebook_get_tab_label (notebook, child_widget);
 
       /* Ok there shouldnt be widget in the content area, that's
        * the placeholder, we should clean up the project widget that
@@ -7490,10 +7485,6 @@ void
 glade_gtk_text_view_post_create (GladeWidgetAdaptor * adaptor,
                                  GObject * object, GladeCreateReason reason)
 {
-  GladeWidget *gtext;
-
-  gtext = glade_widget_get_from_gobject (object);
-
   /* This makes gtk_text_view_set_buffer() stop complaing */
   gtk_drag_dest_set (GTK_WIDGET (object), 0, NULL, 0, 0);
 
@@ -8076,7 +8067,7 @@ glade_gtk_assistant_set_child_property (GladeWidgetAdaptor * adaptor,
     {
       GtkAssistant *assistant = GTK_ASSISTANT (container);
       GtkWidget *widget = GTK_WIDGET (child);
-      gint pos, size;
+      gint pos;
       gboolean set_current;
 
       if ((pos = g_value_get_int (value)) < 0)
@@ -8084,9 +8075,7 @@ glade_gtk_assistant_set_child_property (GladeWidgetAdaptor * adaptor,
       if (pos == glade_gtk_assistant_get_page (assistant, widget))
         return;
       set_current = gtk_assistant_get_current_page (assistant) ==
-          glade_gtk_assistant_get_page (assistant, widget);
-
-      size = gtk_assistant_get_n_pages (assistant);
+          glade_gtk_assistant_get_page (assistant, widget);   
 
       g_object_ref (child);
       gtk_container_remove (GTK_CONTAINER (container), widget);
@@ -8814,11 +8803,9 @@ glade_gtk_cell_renderer_sync_attributes (GObject * object)
 
       if (strncmp (glade_property_class_id (pclass), "attr-", attr_len) == 0)
         {
-          GladeProperty *attr_prop;
           gint column = g_value_get_int (glade_property_inline_value (property));
 
           attr_prop_name = (gchar *)&glade_property_class_id (pclass)[attr_len];
-          attr_prop = glade_widget_get_property (widget, attr_prop_name);
 
           if (column >= 0 && column < columns)
             {

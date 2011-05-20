@@ -528,7 +528,7 @@ static GtkListStore *
 eprop_model_data_generate_store (GladeEditorProperty * eprop)
 {
   GtkListStore *store = NULL;
-  GladeModelData *iter_data, *row_data;
+  GladeModelData *iter_data;
   GNode *data_tree = NULL, *iter_node, *row_node;
   GArray *gtypes = g_array_new (FALSE, TRUE, sizeof (GType));
   GtkTreeIter iter;
@@ -561,8 +561,6 @@ eprop_model_data_generate_store (GladeEditorProperty * eprop)
   for (row_num = 0, row_node = data_tree->children; row_node;
        row_num++, row_node = row_node->next)
     {
-      row_data = row_node->data;
-
       gtk_list_store_append (store, &iter);
       gtk_list_store_set (store, &iter, COLUMN_ROW, row_num, -1);
 
@@ -1029,16 +1027,11 @@ eprop_data_focus_editing_cell (GladeEPropModelData * eprop_data)
       GtkTreePath *item_path;
       GtkTreeIter iter;
       GtkTreeViewColumn *column;
-      gint row, col, rows, cols;
+      gint row, col;
       GList *column_list;
 
       column_list = gtk_tree_view_get_columns (eprop_data->view);
-      cols = g_list_length (column_list);
       g_list_free (column_list);
-
-      rows =
-          gtk_tree_model_iter_n_children (GTK_TREE_MODEL (eprop_data->store),
-                                          NULL);
 
       col = eprop_data->editing_column;
       row = eprop_data->editing_row;

@@ -124,10 +124,7 @@ glade_design_layout_update_child (GladeDesignLayout *layout,
                                   GtkWidget         *child,
                                   GtkAllocation     *allocation)
 {
-  GladeDesignLayoutPrivate *priv;
   GladeWidget *gchild;
-
-  priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (layout);
 
   /* Update GladeWidget metadata */
   gchild = glade_widget_get_from_gobject (child);
@@ -143,7 +140,6 @@ glade_design_layout_motion_notify_event (GtkWidget *widget, GdkEventMotion *ev)
 {
   GtkWidget *child;
   GladeDesignLayoutPrivate *priv;
-  GladeWidget *child_glade_widget;
   GtkAllocation allocation;
   gint x, y, new_width, new_height;
 
@@ -155,7 +151,6 @@ glade_design_layout_motion_notify_event (GtkWidget *widget, GdkEventMotion *ev)
   x = ev->x;
   y = ev->y;
 
-  child_glade_widget = glade_widget_get_from_gobject (child);
   gtk_widget_get_allocation (child, &allocation);
 
   allocation.x += priv->child_offset;
@@ -357,13 +352,10 @@ static void
 glade_design_layout_get_preferred_width (GtkWidget *widget,
                                          gint *minimum, gint *natural)
 {
-  GladeDesignLayoutPrivate *priv;
   GtkWidget *child;
   GladeWidget *gchild;
   gint child_width = 0;
   guint border_width = 0;
-
-  priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
 
   *minimum = 0;
 

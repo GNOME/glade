@@ -337,11 +337,8 @@ glade_palette_new_item (GladePalette * palette, GladeWidgetAdaptor * adaptor)
 static GtkWidget *
 glade_palette_new_item_group (GladePalette * palette, GladeWidgetGroup * group)
 {
-  GladePalettePrivate *priv;
   GtkWidget *item_group, *item, *label;
   GList *l;
-
-  priv = palette->priv;
 
   /* Give the item group a left aligned label */
   label = gtk_label_new (glade_widget_group_get_title (group));
@@ -393,11 +390,9 @@ glade_palette_append_item_group (GladePalette * palette,
 static void
 glade_palette_populate (GladePalette * palette)
 {
-  GladePalettePrivate *priv;
   GList *l;
 
   g_return_if_fail (GLADE_IS_PALETTE (palette));
-  priv = palette->priv;
 
   for (l = (GList *) glade_app_get_catalogs (); l; l = l->next)
     {

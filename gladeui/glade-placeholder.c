@@ -393,14 +393,9 @@ glade_placeholder_motion_notify_event (GtkWidget * widget,
                                        GdkEventMotion * event)
 {
   GladePointerMode pointer_mode;
-  GladeWidget *gparent, *gparent_parent = NULL;
   GladeProject *project;
 
   g_return_val_if_fail (GLADE_IS_PLACEHOLDER (widget), FALSE);
-
-  gparent = glade_placeholder_get_parent (GLADE_PLACEHOLDER (widget));
-  if (gparent)
-    gparent_parent = glade_widget_get_parent (gparent);
 
   project      = glade_placeholder_get_project (GLADE_PLACEHOLDER (widget));
   pointer_mode = glade_project_get_pointer_mode (project);
