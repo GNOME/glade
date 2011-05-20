@@ -274,7 +274,7 @@ glade_design_layout_update_child (GladeDesignLayout *layout,
                 "toplevel-width", allocation->width,
                 "toplevel-height", allocation->height, NULL);
 
-  if (priv->selection)
+  if (layout->priv->selection)
     gdl_update_max_margins (layout, child, allocation->width, allocation->height);
 
   gtk_widget_queue_resize (GTK_WIDGET (layout));
@@ -1068,62 +1068,70 @@ draw_dimensions (cairo_t *cr,
   color.blue = ABS (bg->blue - fg->blue)/2;
   color.alpha = fg->alpha;
 
-  /* Draw dimension lines and guides */
-  cairo_move_to (cr, x - left - DIMENSION_LINE_OFFSET, yy);
-  cairo_line_to (cr, x + w + right + DIMENSION_LINE_OFFSET, yy);
-
-  if (top < DIMENSION_OFFSET)
-    {
-      draw_vguide (cr, x - left, yy, DIMENSION_OFFSET - top);
-      draw_vguide (cr, x + w + right, yy, DIMENSION_OFFSET - top);
-    }
-  
-  draw_vguide (cr, x, yy, DIMENSION_OFFSET);
-  draw_vguide (cr, x + w, yy, DIMENSION_OFFSET);
-
-  /* Draw horizontal lines */
-  draw_stroke_lines (cr, bg, &color, top < DIMENSION_OFFSET+OUTLINE_WIDTH);
-  
-  cairo_move_to (cr, xx, y - top - DIMENSION_LINE_OFFSET);
-  cairo_line_to (cr, xx, y + h + bottom + DIMENSION_LINE_OFFSET);
-
-  if (right < DIMENSION_OFFSET)
-    {
-      draw_hguide (cr, xx, y - top, DIMENSION_OFFSET - right);
-      draw_hguide (cr, xx, y + h + bottom, DIMENSION_OFFSET - right);
-    }
-  
-  draw_hguide (cr, xx, y, DIMENSION_OFFSET);
-  draw_hguide (cr, xx, y + h, DIMENSION_OFFSET);
-
-  /* Draw vertical lines */
-  draw_stroke_lines (cr, bg, &color, v_clutter);
-  
-  /* Draw dimension line marks */
-  if (left) draw_hmark (cr, x - left, yy);
-  draw_hmark (cr, x, yy);
-  draw_hmark (cr, x + w, yy);
-  if (right) draw_hmark (cr, x + w + right, yy);
-
-  draw_stroke_lines (cr, bg, fg, top < DIMENSION_OFFSET+OUTLINE_WIDTH);
-  
-  if (top) draw_vmark (cr, xx, y - top);
-  draw_vmark (cr, xx, y);
-  draw_vmark (cr, xx, y + h);
-  if (bottom) draw_vmark (cr, xx, y + h + bottom);
-
-  draw_stroke_lines (cr, bg, fg, v_clutter);
-
-  /* Draw pixel values */
   cairo_set_font_size (cr, 8.0);
-
-  draw_pixel_value (cr, bg, fg, x + w/2, yy, FALSE, h_clutter, w+1);
-  draw_pixel_value (cr,bg, fg, xx, y + h/2, TRUE, v_clutter, h+1);
   
-  if (left) draw_pixel_value (cr,bg, fg, x - left/2, yy, FALSE, h_clutter, left);
-  if (right) draw_pixel_value (cr,bg, fg, x + w + right/2, yy, FALSE, h_clutter, right);
-  if (top) draw_pixel_value (cr,bg, fg, xx, y - top/2, TRUE, v_clutter, top);
-  if (bottom) draw_pixel_value (cr,bg, fg, xx, y + h + bottom/2, TRUE, v_clutter, bottom);
+  /* Draw dimension lines and guides */
+  if (left || right)
+    {
+      /* Draw horizontal lines */
+      cairo_move_to (cr, x - left - DIMENSION_LINE_OFFSET, yy);
+      cairo_line_to (cr, x + w + right + DIMENSION_LINE_OFFSET, yy);
+
+      if (top < DIMENSION_OFFSET)
+        {
+          draw_vguide (cr, x - left, yy, DIMENSION_OFFSET - top);
+          draw_vguide (cr, x + w + right, yy, DIMENSION_OFFSET - top);
+        }
+
+      draw_vguide (cr, x, yy, DIMENSION_OFFSET);
+      draw_vguide (cr, x + w, yy, DIMENSION_OFFSET);
+      
+      draw_stroke_lines (cr, bg, &color, top < DIMENSION_OFFSET+OUTLINE_WIDTH);
+
+      /* Draw dimension line marks */
+      if (left) draw_hmark (cr, x - left, yy);
+      draw_hmark (cr, x, yy);
+      draw_hmark (cr, x + w, yy);
+      if (right) draw_hmark (cr, x + w + right, yy);
+
+      draw_stroke_lines (cr, bg, fg, top < DIMENSION_OFFSET+OUTLINE_WIDTH);
+
+      /* Draw pixel values */
+      draw_pixel_value (cr, bg, fg, x + w/2, yy, FALSE, h_clutter, w+1);
+      if (left) draw_pixel_value (cr,bg, fg, x - left/2, yy, FALSE, h_clutter, left);
+      if (right) draw_pixel_value (cr,bg, fg, x + w + right/2, yy, FALSE, h_clutter, right);
+    }
+  
+  if (top || bottom)
+    {
+      /* Draw vertical lines */
+      cairo_move_to (cr, xx, y - top - DIMENSION_LINE_OFFSET);
+      cairo_line_to (cr, xx, y + h + bottom + DIMENSION_LINE_OFFSET);
+
+      if (right < DIMENSION_OFFSET)
+        {
+          draw_hguide (cr, xx, y - top, DIMENSION_OFFSET - right);
+          draw_hguide (cr, xx, y + h + bottom, DIMENSION_OFFSET - right);
+        }
+
+      draw_hguide (cr, xx, y, DIMENSION_OFFSET);
+      draw_hguide (cr, xx, y + h, DIMENSION_OFFSET);
+
+      draw_stroke_lines (cr, bg, &color, v_clutter);
+
+      /* Draw marks */
+      if (top) draw_vmark (cr, xx, y - top);
+      draw_vmark (cr, xx, y);
+      draw_vmark (cr, xx, y + h);
+      if (bottom) draw_vmark (cr, xx, y + h + bottom);
+
+      draw_stroke_lines (cr, bg, fg, v_clutter);
+
+      /* Draw pixel values */
+      draw_pixel_value (cr,bg, fg, xx, y + h/2, TRUE, v_clutter, h+1);
+      if (top) draw_pixel_value (cr,bg, fg, xx, y - top/2, TRUE, v_clutter, top);
+      if (bottom) draw_pixel_value (cr,bg, fg, xx, y + h + bottom/2, TRUE, v_clutter, bottom);
+    }
 }
 
 static void 
@@ -1180,7 +1188,9 @@ draw_selection_nodes (cairo_t *cr,
   draw_node (cr, x3, y2, OUTLINE_WIDTH, color1, color2);
 
   cairo_set_line_width (cr, 1);
-  draw_dimensions (cr, color2, fg_color, x+.5, y+.5, w, h, top, bottom, left, right);
+
+  if (top || bottom || left || right)
+    draw_dimensions (cr, color2, fg_color, x+.5, y+.5, w, h, top, bottom, left, right);
 }
 
 static gboolean
