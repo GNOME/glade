@@ -596,14 +596,6 @@ gdl_margins_set_selection (GladeDesignLayoutPrivate *priv, GtkWidget *selection)
     }
 }
 
-static inline void
-window_invalidate_rect (GdkWindow *window, GdkRectangle *rect, gint x, gint y)
-{
-  rect->x = x;
-  rect->y = y;
-  gdk_window_invalidate_rect (window, rect, FALSE);
-}
-
 static gboolean
 on_edit_alignment_timeout (gpointer data)
 {
@@ -613,8 +605,7 @@ on_edit_alignment_timeout (gpointer data)
   if (priv->activity == ACTIVITY_EDIT_ALIGNMENT)
     {
       GtkWidget *selection = priv->selection;
-      GdkWindow *window = priv->window;
-      gdouble x1, x2, x3, y1, y2, y3;
+      gdouble x1, x3, y1, y3;
       GtkAllocation alloc;
       GdkRectangle rect;
       gint x, y, w, h;
@@ -628,24 +619,27 @@ on_edit_alignment_timeout (gpointer data)
       gtk_widget_translate_coordinates (selection, widget, 0, 0, &x, &y);
 
       x1 = x - gtk_widget_get_margin_left (selection) - 7;
-      x2 = x + w/2 - 7;
       x3 = x + w + gtk_widget_get_margin_right (selection) - 7;
       y1 = y - gtk_widget_get_margin_top (selection) - 7;
-      y2 = y + h/2 - 7;
       y3 = y + h + gtk_widget_get_margin_bottom (selection) - 7;
 
       rect.width = rect.height = 14;
 
-      window_invalidate_rect (window, &rect, x1, y1);
-      window_invalidate_rect (window, &rect, x1, y2);
-      window_invalidate_rect (window, &rect, x1, y3);
-      window_invalidate_rect (window, &rect, x2, y1);
-      window_invalidate_rect (window, &rect, x2, y2);
-      window_invalidate_rect (window, &rect, x2, y3);
-      window_invalidate_rect (window, &rect, x3, y1);
-      window_invalidate_rect (window, &rect, x3, y2);
-      window_invalidate_rect (window, &rect, x3, y3);
+      rect.x = x1; rect.y = y1;
+      gdk_window_invalidate_rect (priv->window, &rect, FALSE);
 
+      rect.x = x3; rect.y = y1;
+      gdk_window_invalidate_rect (priv->window, &rect, FALSE);
+
+      rect.x = x1; rect.y = y3;          
+      gdk_window_invalidate_rect (priv->window, &rect, FALSE);
+
+      rect.x = x3; rect.y = y3;
+      gdk_window_invalidate_rect (priv->window, &rect, FALSE);
+
+      rect.x = x + w/2 - 7; rect.y = y + h/2 - 7;
+      gdk_window_invalidate_rect (priv->window, &rect, FALSE);
+      
       priv->align_dash_start++;
       if (priv->align_dash_start > 4) priv->align_dash_start = 0;
       
@@ -1467,7 +1461,7 @@ draw_selection_nodes (cairo_t *cr,
     {
       gdouble dashes[] = { 3, 2 };
 
-      cairo_translate (cr, -5.5, -5.5);
+      cairo_translate (cr, -6.5, -6.5);
       
       if (!(align & MARGIN_TOP && align & MARGIN_LEFT))
         cairo_rectangle (cr, x1, y1, 12, 12);
@@ -1484,27 +1478,6 @@ draw_selection_nodes (cairo_t *cr,
       if (align) cairo_rectangle (cr, x2, y2, 12, 12);
 
       cairo_translate (cr, 5.5, 5.5);
-      
-      if (align != MARGIN_TOP)
-        {
-          cairo_new_sub_path (cr);
-          cairo_arc (cr, x2, y1, 7, 0, 2*G_PI);
-        }
-      if (align != MARGIN_BOTTOM)
-        {
-          cairo_new_sub_path (cr);
-          cairo_arc (cr, x2, y3, 7, 0, 2*G_PI);
-        }
-      if (align != MARGIN_LEFT)
-        {
-          cairo_new_sub_path (cr);
-          cairo_arc (cr, x1, y2, 7, 0, 2*G_PI);
-        }
-      if (align != MARGIN_RIGHT)
-        {
-          cairo_new_sub_path (cr);
-          cairo_arc (cr, x3, y2, 7, 0, 2*G_PI);
-        }
       
       cairo_set_line_join (cr, CAIRO_LINE_JOIN_MITER);
       cairo_set_line_cap (cr, CAIRO_LINE_CAP_BUTT);
