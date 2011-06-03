@@ -2,6 +2,8 @@
 #define __GLADE_PROPERTY_H__
 
 #include <glib-object.h>
+#include "glade-binding.h"
+#include "glade-property-class.h"
 
 G_BEGIN_DECLS
 
@@ -157,6 +159,11 @@ void                    glade_property_set_widget            (GladeProperty     
 GValue                 *glade_property_inline_value          (GladeProperty      *property);
 
 GladePropertyState      glade_property_get_state             (GladeProperty      *property);
+
+GladeBinding *          glade_property_get_binding           (GladeProperty      *property);
+
+void                    glade_property_set_binding           (GladeProperty      *property,
+                                                              GladeBinding       *binding);
 
 void                    glade_property_i18n_set_comment      (GladeProperty      *property, 
 							      const gchar        *str);
