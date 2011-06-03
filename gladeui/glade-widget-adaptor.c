@@ -42,6 +42,7 @@
 #include "glade-displayable-values.h"
 #include "glade-editor-table.h"
 #include "glade-cursor.h"
+#include "glade-binding.h"
 
 /* For g_file_exists */
 #include <sys/types.h>
@@ -970,6 +971,7 @@ glade_widget_adaptor_object_read_widget (GladeWidgetAdaptor * adaptor,
   GladeXmlNode *iter_node;
   GladeSignal *signal;
   GladeProperty *property;
+  GladeBinding *binding;
   gchar *name, *prop_name;
   GList *read_properties = NULL, *l;
 
@@ -1007,6 +1009,17 @@ glade_widget_adaptor_object_read_widget (GladeWidgetAdaptor * adaptor,
         glade_property_sync (property);
     }
   g_list_free (read_properties);
+
+  /* Read in property bindings */
+  for (iter_node = glade_xml_node_get_children (node);
+       iter_node; iter_node = glade_xml_node_next (iter_node))
+    {
+      if (!glade_xml_node_verify_silent (iter_node, GLADE_XML_TAG_BINDING))
+        continue;
+
+      if (!(binding = glade_binding_read (iter_node, widget)))
+        continue;
+    }
 
   /* Read in the signals */
   for (iter_node = glade_xml_node_get_children (node);
@@ -1049,10 +1062,14 @@ glade_widget_adaptor_object_write_widget (GladeWidgetAdaptor * adaptor,
     {
       GladeProperty      *property = props->data;
       GladePropertyClass *klass = glade_property_get_class (property);
-
+      GladeBinding       *binding = glade_property_get_binding (property);
+      
       if (glade_property_class_save (klass) && 
 	  glade_property_get_enabled (property))
         glade_property_write (GLADE_PROPERTY (props->data), context, node);
+
+      if (binding)
+        glade_binding_write (binding, context, node);
     }
 }
 

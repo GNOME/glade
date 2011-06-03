@@ -104,11 +104,14 @@ struct _GladePropertyPrivate {
 					* or derived widget code).
 					*/
 
+  /* Non-NULL if the property is the target of a binding */
+  GladeBinding       *binding;
+
   /* Used only for translatable strings. */
   guint     i18n_translatable : 1;
   gchar    *i18n_context;
   gchar    *i18n_comment;
-  
+
   gint      syncing;  /* Avoid recursion while synchronizing object with value */
   gint      sync_tolerance;
 };
@@ -1164,7 +1167,8 @@ glade_property_write (GladeProperty * property,
 {
   GladeXmlNode *prop_node;
   gchar *name, *value, *tmp;
-
+  GladeBinding *binding;
+  
   g_return_if_fail (GLADE_IS_PROPERTY (property));
   g_return_if_fail (node != NULL);
 
@@ -1226,6 +1230,11 @@ glade_property_write (GladeProperty * property,
                                             GLADE_TAG_COMMENT,
                                             property->priv->i18n_comment);
     }
+
+  /* Write property's binding if existent */
+  if ((binding = glade_property_get_binding (property)) != NULL)
+    glade_binding_write (binding, context, node);
+
   g_free (name);
   g_free (value);
 }
@@ -1557,6 +1566,24 @@ glade_property_get_state (GladeProperty      *property)
   return property->priv->state;
 }
 
+GladeBinding *
+glade_property_get_binding (GladeProperty    *property)
+{
+  g_return_val_if_fail (GLADE_IS_PROPERTY (property), NULL);
+  
+  return property->priv->binding;
+}
+
+void
+glade_property_set_binding (GladeProperty    *property,
+                            GladeBinding     *binding)
+{
+  g_return_if_fail (GLADE_IS_PROPERTY (property));
+  g_return_if_fail (GLADE_IS_BINDING (binding));
+  g_return_if_fail (glade_binding_get_target (binding) == property);
+  
+  property->priv->binding = binding;
+}
 
 static gint glade_property_su_stack = 0;
 

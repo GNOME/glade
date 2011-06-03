@@ -1027,7 +1027,8 @@ glade_project_fix_object_props (GladeProject *project)
   GladeWidget *gwidget;
   GladeProperty *property;
   gchar *txt;
-
+  GladeBinding *binding;
+  
   objects = g_list_copy (project->priv->objects);
   for (l = objects; l; l = l->next)
     {
@@ -1057,6 +1058,9 @@ glade_project_fix_object_props (GladeProject *project)
               g_object_set_data (G_OBJECT (property),
                                  "glade-loaded-object", NULL);
             }
+
+          if ((binding = glade_property_get_binding (property)) != NULL)
+            glade_binding_complete (binding, project);
         }
     }
   g_list_free (objects);
