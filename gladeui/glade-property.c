@@ -574,6 +574,8 @@ glade_property_finalize (GObject * object)
       g_value_unset (property->priv->value);
       g_free (property->priv->value);
     }
+  if (property->priv->binding)
+    g_object_unref (property->priv->binding);
   if (property->priv->i18n_comment)
     g_free (property->priv->i18n_comment);
   if (property->priv->i18n_context)
