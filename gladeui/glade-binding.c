@@ -81,6 +81,13 @@ glade_binding_init (GladeBinding *binding)
 static void
 glade_binding_finalize (GObject *object)
 {
+  GladeBindingPrivate *priv = GLADE_BINDING_GET_PRIVATE (GLADE_BINDING (object));
+
+  if (priv->source_object_name)
+    g_free (priv->source_object_name);
+
+  if (priv->source_property_name)
+    g_free (priv->source_property_name);
 }
 
 static void
@@ -259,6 +266,8 @@ glade_binding_read (GladeXmlNode *node,
   priv->source_object_name = source;
   priv->source_property_name = from;
 
+  g_free (to);
+  
   return binding;
 }
 
@@ -302,6 +311,11 @@ glade_binding_complete (GladeBinding *binding,
       if (source)
         priv->source = source;
     }
+
+  g_free (source_obj);
+  g_free (source_prop);
+  priv->source_object_name = NULL;
+  priv->source_property_name = NULL;  
 }
 
 /**
