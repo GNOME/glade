@@ -39,24 +39,24 @@ struct _GladeBindingClass
 
 GType                  glade_binding_get_type   (void) G_GNUC_CONST;
 
-GladeBinding          *glade_binding_new        (GladeProperty    * source,
-                                                 GladeProperty    * widget);
+GladeBinding          *glade_binding_new        (GladeProperty *source,
+                                                 GladeProperty *widget);
 
-GladeProperty         *glade_binding_get_target (GladeBinding     * binding);
+GladeProperty         *glade_binding_get_target (GladeBinding *binding);
 
-GladeProperty         *glade_binding_get_source (GladeBinding     * binding);
+GladeProperty         *glade_binding_get_source (GladeBinding *binding);
 
-GladeBinding          *glade_binding_read       (GladeXmlNode     * node,
-                                                 GladeWidget      * widget);
+GladeBinding          *glade_binding_read       (GladeXmlNode *node,
+                                                 GladeWidget *widget);
 
-void                   glade_binding_complete   (GladeBinding     * binding,
-                                                 GladeProject     * project);
+void                   glade_binding_complete   (GladeBinding *binding,
+                                                 GladeProject *project);
 
-void                   glade_binding_write       (GladeBinding    * binding,
-                                                  GladeXmlContext * context,
-                                                  GladeXmlNode    * node);
+void                   glade_binding_write       (GladeBinding *binding,
+                                                  GladeXmlContext *context,
+                                                  GladeXmlNode *node);
 
-void                   glade_binding_free       (GladeBinding     * binding);
+void                   glade_binding_free       (GladeBinding *binding);
 
 G_END_DECLS
 
