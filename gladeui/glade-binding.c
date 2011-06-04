@@ -30,6 +30,10 @@
 #include "glade-property.h"
 #include "glade-project.h"
 
+#define GLADE_BINDING_GET_PRIVATE(object) (G_TYPE_INSTANCE_GET_PRIVATE ((object),  \
+					   GLADE_TYPE_BINDING,                     \
+					   GladeBindingPrivate))
+
 struct _GladeBindingPrivate {
 
   GladeProperty *target;     /* A pointer to the the binding's target
@@ -40,6 +44,9 @@ struct _GladeBindingPrivate {
                               * GladeProperty
                               */
 
+  /* Set by glade_binding_read() for lade_binding_complete() */
+  gchar *source_object_name;
+  gchar *source_property_name;
 };
 
 enum {
@@ -61,36 +68,36 @@ G_DEFINE_TYPE (GladeBinding, glade_binding, G_TYPE_OBJECT)
                       GObjectClass & Object Construction
  *******************************************************************************/
 static void
-glade_binding_init (GladeBinding * binding)
+glade_binding_init (GladeBinding *binding)
 {
-  binding->priv = G_TYPE_INSTANCE_GET_PRIVATE (binding,
-                                               GLADE_TYPE_BINDING,
-                                               GladeBindingPrivate);
+  GladeBindingPrivate *priv;
 
-  binding->priv->source = NULL;
-  binding->priv->target = NULL;
+  priv = GLADE_BINDING_GET_PRIVATE (GLADE_BINDING (binding));
+  priv->source = NULL;
+  priv->target = NULL;
+  binding->priv = priv;
 }
 
 static void
-glade_binding_finalize (GObject * object)
+glade_binding_finalize (GObject *object)
 {
 }
 
 static void
-glade_binding_get_property (GObject * object,
-                            guint prop_id,
-                            GValue * value,
-                            GParamSpec * pspec)
+glade_binding_get_property (GObject    *object,
+                            guint       prop_id,
+                            GValue     *value,
+                            GParamSpec *pspec)
 {
-  GladeBinding *binding = GLADE_BINDING (object);
+  GladeBindingPrivate *priv = GLADE_BINDING_GET_PRIVATE (object);
 
   switch (prop_id)
     {
     case PROP_SOURCE:
-      g_value_set_object (value, binding->priv->source);
+      g_value_set_object (value, priv->source);
       break;
     case PROP_TARGET:
-      g_value_set_object (value, binding->priv->target);
+      g_value_set_object (value, priv->target);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -99,22 +106,22 @@ glade_binding_get_property (GObject * object,
 }
 
 static void
-glade_binding_set_property (GObject * object,
-                            guint prop_id,
-                            const GValue * value,
-                            GParamSpec * pspec)
+glade_binding_set_property (GObject      *object,
+                            guint         prop_id,
+                            const GValue *value,
+                            GParamSpec   *pspec)
 {
-  GladeBinding *binding = GLADE_BINDING (object);
+  GladeBindingPrivate *priv = GLADE_BINDING_GET_PRIVATE (object);
 
   switch (prop_id)
     {
       case PROP_SOURCE:
-        binding->priv->source = g_value_get_object (value);
+        priv->source = g_value_get_object (value);
         break;
       case PROP_TARGET:
-        binding->priv->target = g_value_get_object (value);
-        if (binding->priv->target)
-          glade_property_set_binding (binding->priv->target, binding);
+        priv->target = g_value_get_object (value);
+        if (priv->target)
+          glade_property_set_binding (priv->target, GLADE_BINDING (object));
         break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -123,7 +130,7 @@ glade_binding_set_property (GObject * object,
 }
 
 static void
-glade_binding_class_init (GladeBindingClass * klass)
+glade_binding_class_init (GladeBindingClass *klass)
 {
   GObjectClass *object_class;
   g_return_if_fail (klass != NULL);
@@ -170,8 +177,8 @@ glade_binding_class_init (GladeBindingClass * klass)
  * Returns: The newly created #GladeBinding
  */
 GladeBinding *
-glade_binding_new (GladeProperty * source,
-                   GladeProperty * target)
+glade_binding_new (GladeProperty *source,
+                   GladeProperty *target)
 {
   return g_object_new (GLADE_TYPE_BINDING,
                        "source", source,
@@ -186,11 +193,10 @@ glade_binding_new (GladeProperty * source,
  * Returns: The binding's target property
  */
 GladeProperty *
-glade_binding_get_target (GladeBinding * binding)
+glade_binding_get_target (GladeBinding *binding)
 {
   g_return_val_if_fail (GLADE_IS_BINDING (binding), NULL);
-
-  return binding->priv->target;
+  return GLADE_BINDING_GET_PRIVATE (binding)->target;
 }
 
 /**
@@ -200,11 +206,10 @@ glade_binding_get_target (GladeBinding * binding)
  * Returns: The binding's source property
  */
 GladeProperty *
-glade_binding_get_source (GladeBinding * binding)
+glade_binding_get_source (GladeBinding *binding)
 {
   g_return_val_if_fail (GLADE_IS_BINDING (binding), NULL);
-
-  return binding->priv->source;
+  return GLADE_BINDING_GET_PRIVATE (binding)->target;
 }
 
 /**
@@ -222,12 +227,13 @@ glade_binding_get_source (GladeBinding * binding)
  * Returns: The read #GladeBinding
  */
 GladeBinding *
-glade_binding_read (GladeXmlNode * node,
-                    GladeWidget  * widget)
+glade_binding_read (GladeXmlNode *node,
+                    GladeWidget  *widget)
 {
   gchar *to, *from, *source;
   GladeProperty *target;
   GladeBinding *binding;
+  GladeBindingPrivate *priv;
   
   g_return_val_if_fail (node != NULL, NULL);
   g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
@@ -235,9 +241,11 @@ glade_binding_read (GladeXmlNode * node,
   if (!glade_xml_node_verify (node, GLADE_XML_TAG_BINDING))
     return NULL;
 
-  if (!(to = glade_xml_get_property_string_required (node, "to", NULL))
-      || !(from = glade_xml_get_property_string_required (node, "from", NULL))
-      || !(source = glade_xml_get_property_string_required (node, "source", NULL)))
+  to = glade_xml_get_property_string_required (node, GLADE_XML_TAG_TO, NULL);
+  from = glade_xml_get_property_string_required (node, GLADE_XML_TAG_FROM, NULL);
+  source = glade_xml_get_property_string_required (node, GLADE_XML_TAG_SOURCE, NULL);
+  
+  if (!to || !from || !source)
     return NULL;
 
   target = glade_widget_get_property (widget, to);
@@ -247,12 +255,9 @@ glade_binding_read (GladeXmlNode * node,
    * project is loaded, as the object referred to might not have been read
    * in yet.
    */
-  g_object_set_data_full (G_OBJECT (binding),
-                          "glade-source-property-name", from,
-                          g_free);
-  g_object_set_data_full (G_OBJECT (binding),
-                          "glade-source-object-name", source,
-                          g_free);
+  priv = GLADE_BINDING_GET_PRIVATE (binding);
+  priv->source_object_name = source;
+  priv->source_property_name = from;
 
   return binding;
 }
@@ -267,26 +272,26 @@ glade_binding_read (GladeXmlNode * node,
  * passed #GladeProject (which must be completely loaded).
  */
 void
-glade_binding_complete (GladeBinding * binding,
-                        GladeProject * project)
+glade_binding_complete (GladeBinding *binding,
+                        GladeProject *project)
 {
+  GladeBindingPrivate *priv;
   gchar *source_obj, *source_prop;
   GladeWidget *widget;
   
   g_return_if_fail (GLADE_IS_BINDING (binding));
   g_return_if_fail (GLADE_IS_PROJECT (project));
 
-  source_obj = g_object_get_data (G_OBJECT (binding),
-                                  "glade-source-object-name");
-  source_prop = g_object_get_data (G_OBJECT (binding),
-                                   "glade-source-property-name");
+  priv = GLADE_BINDING_GET_PRIVATE (binding);
+  source_obj = priv->source_object_name; 
+  source_prop = priv->source_property_name;
 
-  /* If the binding has no attached source property data,
-   * there is nothing to do
+  /* If the binding has no unresolved source property name attached,
+   * there is nothing to do.
    */
   if (!source_obj)
     {
-      g_assert (source_prop != NULL);
+      g_assert (source_prop == NULL);
       return;
     }
 
@@ -295,7 +300,7 @@ glade_binding_complete (GladeBinding * binding,
     {
       GladeProperty *source = glade_widget_get_property (widget, source_prop);
       if (source)
-        binding->priv->source = source;
+        priv->source = source;
     }
 }
 
@@ -308,9 +313,9 @@ glade_binding_complete (GladeBinding * binding,
  * Write @binding to @node.
  */
 void
-glade_binding_write (GladeBinding    * binding,
-                     GladeXmlContext * context,
-                     GladeXmlNode    * node)
+glade_binding_write (GladeBinding    *binding,
+                     GladeXmlContext *context,
+                     GladeXmlNode    *node)
 {
   GladeXmlNode *binding_node;
   GladeProperty *target_prop, *source_prop;
@@ -333,7 +338,7 @@ glade_binding_write (GladeBinding    * binding,
   to = glade_property_class_id (glade_property_get_class (target_prop));
   from = glade_property_class_id (glade_property_get_class (source_prop));
 
-  widget = glade_property_get_widget (glade_binding_get_source (binding));
+  widget = glade_property_get_widget (source_prop);
   source = glade_widget_get_name (widget);
   
   glade_xml_node_set_property_string (binding_node,
