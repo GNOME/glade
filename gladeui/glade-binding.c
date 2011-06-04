@@ -216,7 +216,7 @@ GladeProperty *
 glade_binding_get_source (GladeBinding *binding)
 {
   g_return_val_if_fail (GLADE_IS_BINDING (binding), NULL);
-  return GLADE_BINDING_GET_PRIVATE (binding)->target;
+  return GLADE_BINDING_GET_PRIVATE (binding)->source;
 }
 
 /**
