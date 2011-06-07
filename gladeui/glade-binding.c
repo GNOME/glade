@@ -96,15 +96,15 @@ glade_binding_get_property (GObject    *object,
                             GValue     *value,
                             GParamSpec *pspec)
 {
-  GladeBindingPrivate *priv = GLADE_BINDING_GET_PRIVATE (object);
+  GladeBinding *binding = GLADE_BINDING (object);
 
   switch (prop_id)
     {
     case PROP_SOURCE:
-      g_value_set_object (value, priv->source);
+      g_value_set_object (value, glade_binding_get_source (binding));
       break;
     case PROP_TARGET:
-      g_value_set_object (value, priv->target);
+      g_value_set_object (value, glade_binding_get_target (binding));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
