@@ -127,8 +127,8 @@ glade_binding_set_property (GObject      *object,
         break;
       case PROP_TARGET:
         priv->target = g_value_get_object (value);
-        if (priv->target)
-          glade_property_set_binding (priv->target, GLADE_BINDING (object));
+        g_assert (priv->target != NULL);
+        glade_property_set_binding (priv->target, GLADE_BINDING (object));
         break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
