@@ -189,13 +189,32 @@ glade_editor_property_tooltip_cb (GladeProperty * property,
   const gchar *choice_tooltip;
 
   if (glade_property_get_sensitive (property))
-    choice_tooltip = tooltip;
+    {
+      if (glade_property_get_binding (property))
+        {
+          const gchar *src_obj, *src_prop;
+
+          src_prop = glade_property_class_id (eprop->priv->klass);
+          src_obj = glade_widget_get_name (glade_property_get_widget (property));
+          
+          choice_tooltip = g_strdup_printf ("%s\n"
+                                            "<span size=\"smaller\">"
+                                            "(Bound to property <b>%s</b> of <b>%s</b>)"
+                                            "</span>",
+                                            tooltip, src_prop, src_obj);
+        }
+      else
+        choice_tooltip = tooltip;
+    }
   else
     choice_tooltip = insensitive;
 
-  gtk_widget_set_tooltip_text (eprop->priv->input, choice_tooltip);
-  gtk_widget_set_tooltip_text (eprop->priv->label, choice_tooltip);
+  gtk_widget_set_tooltip_markup (eprop->priv->input, choice_tooltip);
+  gtk_widget_set_tooltip_markup (eprop->priv->label, choice_tooltip);
   gtk_widget_set_tooltip_text (eprop->priv->warning, support);
+
+  if (glade_property_get_binding (property))
+    g_free ((gchar *) choice_tooltip);
 }
 
 static void
@@ -208,7 +227,8 @@ glade_editor_property_sensitivity_cb (GladeProperty * property,
     (glade_property_get_state (eprop->priv->property) & GLADE_STATE_SUPPORT_DISABLED) == 0;
 
   gtk_widget_set_sensitive (eprop->priv->input, sensitive && support_sensitive &&
-                            glade_property_get_enabled (property));
+                            glade_property_get_enabled (property) &&
+                            !glade_property_get_binding (property));
   if (eprop->priv->check)
     gtk_widget_set_sensitive (eprop->priv->check, sensitive && support_sensitive);
 }
@@ -234,6 +254,8 @@ glade_editor_property_fix_label (GladeEditorProperty * eprop)
   /* refresh label */
   if ((glade_property_get_state (eprop->priv->property) & GLADE_STATE_CHANGED) != 0)
     text = g_strdup_printf ("<b>%s:</b>", glade_property_class_get_name (eprop->priv->klass));
+  else if (glade_property_get_binding (eprop->priv->property))
+    text = g_strdup_printf ("<i>%s:</i>", glade_property_class_get_name (eprop->priv->klass));
   else
     text = g_strdup_printf ("%s:", glade_property_class_get_name (eprop->priv->klass));
   gtk_label_set_markup (GTK_LABEL (eprop->priv->label), text);
