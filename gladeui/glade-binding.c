@@ -276,7 +276,15 @@ glade_binding_read (GladeXmlNode *node,
   source = glade_xml_get_property_string_required (node, GLADE_XML_TAG_SOURCE, NULL);
   
   if (!to || !from || !source)
-    return NULL;
+    {
+      if (to)
+        g_free (to);
+      if (from)
+        g_free (from);
+      if (source)
+        g_free (source);
+      return NULL;
+    }
 
   target = glade_widget_get_property (widget, to);
   binding = glade_binding_new (NULL, target);
