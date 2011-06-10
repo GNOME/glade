@@ -242,11 +242,11 @@ glade_binding_set_source (GladeBinding  *binding,
   if (priv->source)
     g_object_remove_weak_pointer (G_OBJECT (priv->source),
                                   (gpointer *) &priv->source);
+  if (source)
+    g_object_add_weak_pointer (G_OBJECT (source),
+                               (gpointer *) &priv->source);
 
   priv->source = source;
-  g_object_add_weak_pointer (G_OBJECT (priv->source),
-                             (gpointer *) &priv->source);
-  
   glade_binding_update (binding);
 }
 
