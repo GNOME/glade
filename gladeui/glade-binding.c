@@ -88,11 +88,8 @@ glade_binding_finalize (GObject *object)
 {
   GladeBindingPrivate *priv = GLADE_BINDING_GET_PRIVATE (GLADE_BINDING (object));
 
-  if (priv->source_object_name)
-    g_free (priv->source_object_name);
-
-  if (priv->source_property_name)
-    g_free (priv->source_property_name);
+  g_free (priv->source_object_name);
+  g_free (priv->source_property_name);
 }
 
 static void
@@ -288,12 +285,9 @@ glade_binding_read (GladeXmlNode *node,
   
   if (!to || !from || !source)
     {
-      if (to)
-        g_free (to);
-      if (from)
-        g_free (from);
-      if (source)
-        g_free (source);
+      g_free (to);
+      g_free (from);
+      g_free (source);
       return NULL;
     }
 
