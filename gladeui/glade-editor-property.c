@@ -252,10 +252,10 @@ glade_editor_property_fix_label (GladeEditorProperty * eprop)
     return;
 
   /* refresh label */
-  if ((glade_property_get_state (eprop->priv->property) & GLADE_STATE_CHANGED) != 0)
+  if (glade_property_get_binding (eprop->priv->property))
+    text = g_strdup_printf ("<b><i>%s:</i></b>", glade_property_class_get_name (eprop->priv->klass));
+  else if ((glade_property_get_state (eprop->priv->property) & GLADE_STATE_CHANGED) != 0)
     text = g_strdup_printf ("<b>%s:</b>", glade_property_class_get_name (eprop->priv->klass));
-  else if (glade_property_get_binding (eprop->priv->property))
-    text = g_strdup_printf ("<i>%s:</i>", glade_property_class_get_name (eprop->priv->klass));
   else
     text = g_strdup_printf ("%s:", glade_property_class_get_name (eprop->priv->klass));
   gtk_label_set_markup (GTK_LABEL (eprop->priv->label), text);
