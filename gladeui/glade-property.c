@@ -1579,6 +1579,7 @@ glade_property_set_binding (GladeProperty    *property,
   g_return_if_fail (glade_binding_get_target (binding) == property);
   
   property->priv->binding = binding;
+  g_object_ref (binding);
 }
 
 static gint glade_property_su_stack = 0;
