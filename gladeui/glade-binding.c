@@ -44,7 +44,7 @@ struct _GladeBindingPrivate {
                               * GladeProperty
                               */
 
-  /* Set by glade_binding_read() for lade_binding_complete() */
+  /* Set by glade_binding_read() for glade_binding_complete() */
   gchar *source_object_name;
   gchar *source_property_name;
 };
