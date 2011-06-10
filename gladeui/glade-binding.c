@@ -207,7 +207,7 @@ glade_binding_get_target (GladeBinding *binding)
 }
 
 /**
- * glade_binding_get_target:
+ * glade_binding_get_source:
  * @binding: The #GladeBinding
  *
  * Returns: The binding's source property
