@@ -27,6 +27,7 @@
 #include <glib/gi18n-lib.h>
 
 #include "glade-binding.h"
+#include "glade-property-class.h"
 #include "glade-property.h"
 #include "glade-project.h"
 

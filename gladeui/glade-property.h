@@ -3,7 +3,6 @@
 
 #include <glib-object.h>
 #include "glade-binding.h"
-#include "glade-property-class.h"
 
 G_BEGIN_DECLS
 
