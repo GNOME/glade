@@ -1169,7 +1169,6 @@ glade_property_write (GladeProperty * property,
 {
   GladeXmlNode *prop_node;
   gchar *name, *value, *tmp;
-  GladeBinding *binding;
   
   g_return_if_fail (GLADE_IS_PROPERTY (property));
   g_return_if_fail (node != NULL);
@@ -1232,10 +1231,6 @@ glade_property_write (GladeProperty * property,
                                             GLADE_TAG_COMMENT,
                                             property->priv->i18n_comment);
     }
-
-  /* Write property's binding if existent */
-  if ((binding = glade_property_get_binding (property)) != NULL)
-    glade_binding_write (binding, context, node);
 
   g_free (name);
   g_free (value);
