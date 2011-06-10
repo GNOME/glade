@@ -77,11 +77,10 @@ glade_binding_init (GladeBinding *binding)
 {
   GladeBindingPrivate *priv;
 
-  priv = GLADE_BINDING_GET_PRIVATE (GLADE_BINDING (binding));
+  priv = binding->priv = GLADE_BINDING_GET_PRIVATE (binding);
   priv->source = NULL;
   priv->target = NULL;
   priv->change_handler = 0;
-  binding->priv = priv;
 }
 
 static void
