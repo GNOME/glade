@@ -1082,7 +1082,8 @@ glade_widget_adaptor_object_write_widget (GladeWidgetAdaptor * adaptor,
                                           GladeXmlNode * node)
 {
   GList *props;
-
+  GSList *bindings = NULL, *b;
+  
   /* Write the properties */
   for (props = glade_widget_get_properties (widget); props; props = props->next)
     {
@@ -1095,8 +1096,14 @@ glade_widget_adaptor_object_write_widget (GladeWidgetAdaptor * adaptor,
         glade_property_write (GLADE_PROPERTY (props->data), context, node);
 
       if (binding)
-        glade_binding_write (binding, context, node);
+        bindings = g_slist_prepend (bindings, binding);
     }
+
+  /* Write the bindings */
+  for (b = bindings; b; b = b->next)
+    glade_binding_write (b->data, context, node);
+
+  g_slist_free (bindings);
 }
 
 static void
