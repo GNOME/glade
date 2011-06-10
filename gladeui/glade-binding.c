@@ -236,7 +236,7 @@ glade_binding_set_source (GladeBinding  *binding,
 {
   GladeBindingPrivate *priv;
   
-  g_assert (GLADE_IS_BINDING (binding));
+  g_return_if_fail (GLADE_IS_BINDING (binding));
 
   priv = GLADE_BINDING_GET_PRIVATE (binding);
   
@@ -285,14 +285,12 @@ glade_binding_read (GladeXmlNode *node,
   source = glade_xml_get_property_string_required (node, GLADE_XML_TAG_SOURCE, NULL);
   
   if (!to || !from || !source)
-    {
-      g_free (to);
-      g_free (from);
-      g_free (source);
-      return NULL;
-    }
+    goto error;
 
   target = glade_widget_get_property (widget, to);
+  if (!target)
+    goto error;
+
   binding = glade_binding_new (NULL, target);
 
   /* We need to wait with resolving the source property until the complete
@@ -303,9 +301,14 @@ glade_binding_read (GladeXmlNode *node,
   priv->source_object_name = source;
   priv->source_property_name = from;
 
-  g_free (to);
-  
+  g_free (to);  
   return binding;
+
+ error:
+  g_free (to);
+  g_free (from);
+  g_free (source);
+  return NULL;
 }
 
 /**
