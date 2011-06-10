@@ -190,12 +190,16 @@ glade_editor_property_tooltip_cb (GladeProperty * property,
 
   if (glade_property_get_sensitive (property))
     {
-      if (glade_property_get_binding (property))
+      GladeBinding *binding;
+      
+      if ((binding = glade_property_get_binding (property)) != NULL)
         {
+          GladeProperty *source;
           const gchar *src_obj, *src_prop;
 
-          src_prop = glade_property_class_id (eprop->priv->klass);
-          src_obj = glade_widget_get_name (glade_property_get_widget (property));
+          source = glade_binding_get_source (binding);
+          src_prop = glade_property_class_id (glade_property_get_class (source));
+          src_obj = glade_widget_get_name (glade_property_get_widget (source));
           
           choice_tooltip = g_strdup_printf ("%s\n"
                                             "<span size=\"smaller\">"
