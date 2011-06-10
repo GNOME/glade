@@ -186,7 +186,9 @@ glade_editor_property_tooltip_cb (GladeProperty * property,
                                   const gchar * support,
                                   GladeEditorProperty * eprop)
 {
-  const gchar *choice_tooltip;
+  GladeEditorPropertyPrivate *priv = eprop->priv;
+  gchar *markup = NULL;
+  const gchar *tip;
 
   if (glade_property_get_sensitive (property))
     {
@@ -195,30 +197,30 @@ glade_editor_property_tooltip_cb (GladeProperty * property,
       if ((binding = glade_property_get_binding (property)) != NULL)
         {
           GladeProperty *source;
-          const gchar *src_obj, *src_prop;
+          const gchar *source_obj, *source_prop;
 
           source = glade_binding_get_source (binding);
-          src_prop = glade_property_class_id (glade_property_get_class (source));
-          src_obj = glade_widget_get_name (glade_property_get_widget (source));
+          source_prop = glade_property_class_id (glade_property_get_class (source));
+          source_obj = glade_widget_get_name (glade_property_get_widget (source));
           
-          choice_tooltip = g_strdup_printf ("%s\n"
-                                            "<span size=\"smaller\">"
-                                            "(Bound to property <b>%s</b> of <b>%s</b>)"
-                                            "</span>",
-                                            tooltip, src_prop, src_obj);
+          tip = markup = g_strdup_printf ("%s\n"
+                                          "<span size=\"smaller\">"
+                                          "(Bound to property <b>%s</b>"
+                                          " of <b>%s</b>)"
+                                          "</span>",
+                                          tooltip, source_prop, source_obj);
         }
       else
-        choice_tooltip = tooltip;
+        tip = tooltip;
     }
   else
-    choice_tooltip = insensitive;
+    tip = insensitive;
 
-  gtk_widget_set_tooltip_markup (eprop->priv->input, choice_tooltip);
-  gtk_widget_set_tooltip_markup (eprop->priv->label, choice_tooltip);
-  gtk_widget_set_tooltip_text (eprop->priv->warning, support);
+  gtk_widget_set_tooltip_markup (priv->input, tip);
+  gtk_widget_set_tooltip_markup (priv->label, tip);
+  gtk_widget_set_tooltip_text (priv->warning, support);
 
-  if (glade_property_get_binding (property))
-    g_free ((gchar *) choice_tooltip);
+  g_free (markup);
 }
 
 static void
