@@ -46,6 +46,9 @@ GladeProperty         *glade_binding_get_target (GladeBinding *binding);
 
 GladeProperty         *glade_binding_get_source (GladeBinding *binding);
 
+void                   glade_binding_set_source (GladeBinding *binding,
+                                                 GladeProperty *source);
+
 GladeBinding          *glade_binding_read       (GladeXmlNode *node,
                                                  GladeWidget *widget);
 
