@@ -19,8 +19,6 @@ G_BEGIN_DECLS
 
 typedef struct _GladeProjectPrivate  GladeProjectPrivate;
 typedef struct _GladeProjectClass    GladeProjectClass;
-typedef enum   _GladePointerMode     GladePointerMode;
-typedef enum   _GladeSupportMask     GladeSupportMask;
 
 /**
  * GladePointerMode:
@@ -31,19 +29,19 @@ typedef enum   _GladeSupportMask     GladeSupportMask;
  *
  * Indicates what the pointer is used for in the workspace.
  */
-enum _GladePointerMode
+typedef enum
 {
   GLADE_POINTER_SELECT = 0,
   GLADE_POINTER_ADD_WIDGET,
   GLADE_POINTER_DRAG_RESIZE
-};
+} GladePointerMode;
 
-enum _GladeSupportMask
+typedef enum
 {
   GLADE_SUPPORT_OK                   = 0,
   GLADE_SUPPORT_DEPRECATED           = (0x01 << 0),
   GLADE_SUPPORT_MISMATCH             = (0x01 << 1)
-};
+} GladeSupportMask;
 
 /**
  * GladeProjectModelColumns:

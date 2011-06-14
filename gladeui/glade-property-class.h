@@ -80,7 +80,7 @@ gboolean              glade_property_class_save_always             (GladePropert
 gboolean              glade_property_class_is_visible              (GladePropertyClass  *property_class);
 gboolean              glade_property_class_is_object               (GladePropertyClass  *property_class);
 void                  glade_property_class_set_virtual             (GladePropertyClass  *property_class,
-								    gboolean             virtual);
+								    gboolean             value);
 gboolean              glade_property_class_get_virtual             (GladePropertyClass  *property_class);
 void                  glade_property_class_set_ignore              (GladePropertyClass  *property_class,
 								    gboolean             ignore);
