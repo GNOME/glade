@@ -1224,11 +1224,11 @@ glade_property_class_save_always (GladePropertyClass  *property_class)
 
 void
 glade_property_class_set_virtual (GladePropertyClass  *property_class,
-				  gboolean             virtual)
+				  gboolean             value)
 {
   g_return_if_fail (GLADE_IS_PROPERTY_CLASS (property_class));
 
-  property_class->virt = virtual;
+  property_class->virt = value;
 }
 
 gboolean

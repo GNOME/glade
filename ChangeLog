@@ -1,3 +1,10 @@
+2011-06-14  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-project.h:
+	  glade_property_class_set_virtual() renamed virtual paramenter to value to prevent C++ clash
+
+	* gladeui/glade-property-class.[ch]: fixed _GladePointerMode and _GladeSupportMask enum declaration C++ error
+
 2011-05-20  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* gladeui/glade-base-editor.c,
