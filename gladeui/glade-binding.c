@@ -89,6 +89,9 @@ glade_binding_finalize (GObject *object)
 {
   GladeBindingPrivate *priv = GLADE_BINDING_GET_PRIVATE (GLADE_BINDING (object));
 
+  if (priv->change_handler)
+    g_signal_handler_disconnect (object, priv->change_handler);
+
   g_free (priv->source_object_name);
   g_free (priv->source_property_name);
 }
