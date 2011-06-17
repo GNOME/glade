@@ -1575,11 +1575,16 @@ glade_property_set_binding (GladeProperty    *property,
                             GladeBinding     *binding)
 {
   g_return_if_fail (GLADE_IS_PROPERTY (property));
-  g_return_if_fail (GLADE_IS_BINDING (binding));
-  g_return_if_fail (glade_binding_get_target (binding) == property);
+  g_return_if_fail ((GLADE_IS_BINDING (binding)
+                     && glade_binding_get_target (binding) == property)
+                    || !binding);
+
+  if (property->priv->binding)
+    g_object_unref (property->priv->binding);
   
   property->priv->binding = binding;
-  g_object_ref (binding);
+  if (binding)
+    g_object_ref (binding);
 }
 
 static gint glade_property_su_stack = 0;
