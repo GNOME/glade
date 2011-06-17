@@ -40,7 +40,7 @@ struct _GladeBindingClass
 GType                  glade_binding_get_type   (void) G_GNUC_CONST;
 
 GladeBinding          *glade_binding_new        (GladeProperty *source,
-                                                 GladeProperty *widget);
+                                                 GladeProperty *target);
 
 GladeProperty         *glade_binding_get_target (GladeBinding *binding);
 
