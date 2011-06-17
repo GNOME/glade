@@ -618,6 +618,29 @@ glade_popup_palette_pop (GladePalette       *palette,
 }
 
 static void
+glade_popup_bind_property_cb (GtkMenuItem * item, GladeProperty * property)
+{
+  gchar *source_obj, *source_prop;
+
+  if (glade_editor_property_show_bind_dialog (NULL, &source_obj, &source_prop))
+    {
+      GladeWidget *widget = glade_property_get_widget (property);
+      GladeProject *project = glade_widget_get_project (widget);
+      GladeWidget *source_w;
+      GladeProperty *source;
+
+      source_w = glade_project_get_widget_by_name (project, source_obj);
+      g_assert (source_w != NULL);
+      source = glade_widget_get_property (source_w, source_prop);
+      g_assert (source != NULL);
+      
+      glade_command_bind_property (property, source);
+      g_free (source_obj);
+      g_free (source_prop);
+    }
+}
+
+static void
 glade_popup_clear_property_cb (GtkMenuItem * item, GladeProperty * property)
 {
   GValue value = { 0, };
@@ -669,6 +692,9 @@ glade_popup_property_pop (GladeProperty * property, GdkEventButton * event)
   g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
 
   popup_menu = gtk_menu_new ();
+
+  glade_popup_append_item (popup_menu, 0, _("Bind to source..."),
+                           NULL, TRUE, glade_popup_bind_property_cb, property);
 
   glade_popup_append_item (popup_menu, GTK_STOCK_CLEAR, _("Set default value"),
                            NULL, TRUE, glade_popup_clear_property_cb, property);

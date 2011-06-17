@@ -179,6 +179,80 @@ glade_editor_property_loading (GladeEditorProperty *eprop)
   return eprop->priv->loading;
 }
 
+/**
+ * glade_editor_property_show_bind_dialog:
+ * @parent: The parent widget for the dialog.
+ *
+ * Runs a dialog and updates the provided values.
+ *
+ * Returns: %TRUE if OK was selected.
+ */
+gboolean
+glade_editor_property_show_bind_dialog (GtkWidget * parent,
+                                        gchar ** source_obj,
+                                        gchar ** source_prop)
+{
+  GtkWidget *dialog;
+  GtkWidget *content_area, *action_area;
+  GtkWidget *grid;
+  GtkWidget *obj_label, *prop_label;
+  GtkWidget *obj_entry, *prop_entry;
+  gint res;
+
+  g_return_val_if_fail (source_obj && source_prop, FALSE);
+
+  dialog = gtk_dialog_new_with_buttons (_("Bind Property"),
+                                        parent ?
+                                        GTK_WINDOW (gtk_widget_get_toplevel
+                                                    (parent)) : NULL,
+                                        GTK_DIALOG_MODAL,
+                                        GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                        GTK_STOCK_OK, GTK_RESPONSE_OK, NULL);
+
+  gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL, -1);
+
+  /* HIG spacings */
+  gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);
+  content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
+  gtk_box_set_spacing (GTK_BOX (content_area), 2);      /* 2 * 5 + 2 = 12 */
+  action_area = gtk_dialog_get_action_area (GTK_DIALOG (dialog));
+  gtk_container_set_border_width (GTK_CONTAINER (action_area), 5);
+  gtk_box_set_spacing (GTK_BOX (action_area), 6);
+
+  grid = gtk_grid_new ();
+  gtk_grid_set_row_spacing (GTK_GRID (grid), 6);
+
+  obj_entry = gtk_entry_new ();
+  prop_entry = gtk_entry_new ();
+  
+  obj_label = gtk_label_new_with_mnemonic (_("Object:"));
+  prop_label = gtk_label_new_with_mnemonic (_("Property:"));
+  gtk_label_set_mnemonic_widget (GTK_LABEL (obj_label), obj_entry);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (prop_label), prop_entry);  
+
+  gtk_grid_attach (GTK_GRID (grid), obj_label, 0, 0, 1, 1);
+  gtk_grid_attach (GTK_GRID (grid), prop_label, 0, 1, 1, 1);
+  gtk_grid_attach (GTK_GRID (grid), obj_entry, 1, 0, 1, 1);
+  gtk_grid_attach (GTK_GRID (grid), prop_entry, 1, 1, 1, 1);
+
+  gtk_box_pack_start (GTK_BOX (content_area), grid, TRUE, TRUE, 0);
+  gtk_widget_show_all (grid);
+  
+  res = gtk_dialog_run (GTK_DIALOG (dialog));
+  if (res == GTK_RESPONSE_OK)
+    {
+      *source_obj = g_strdup (gtk_entry_get_text (GTK_ENTRY (obj_entry)));
+      *source_prop = g_strdup (gtk_entry_get_text (GTK_ENTRY (prop_entry)));
+    }
+
+  gtk_widget_destroy (dialog);
+  return res;
+}
+
 static void
 glade_editor_property_tooltip_cb (GladeProperty * property,
                                   const gchar * tooltip,
