@@ -787,6 +787,153 @@ glade_command_set_property (GladeProperty * property, ...)
 }
 
 /**************************************************/
+/*******     GLADE_COMMAND_BIND_PROPERTY     ******/
+/**************************************************/
+
+/* create a new GladeCommandBindProperty class.  Objects of this class will
+ * encapsulate a "bind property" operation */
+
+typedef struct
+{
+  GladeCommand parent;
+  GladeProperty *target;
+  GladeProperty *new_source;
+  GladeProperty *old_source;
+  GValue old_value;
+  gboolean undo;
+} GladeCommandBindProperty;
+
+/* standard macros */
+GLADE_MAKE_COMMAND (GladeCommandBindProperty, glade_command_bind_property);
+#define GLADE_COMMAND_BIND_PROPERTY_TYPE	(glade_command_bind_property_get_type ())
+#define GLADE_COMMAND_BIND_PROPERTY(o)	  	(G_TYPE_CHECK_INSTANCE_CAST ((o), GLADE_COMMAND_BIND_PROPERTY_TYPE, GladeCommandBindProperty))
+#define GLADE_COMMAND_BIND_PROPERTY_CLASS(k)	(G_TYPE_CHECK_CLASS_CAST ((k), GLADE_COMMAND_BIND_PROPERTY_TYPE, GladeCommandBindPropertyClass))
+#define GLADE_IS_COMMAND_BIND_PROPERTY(o)	(G_TYPE_CHECK_INSTANCE_TYPE ((o), GLADE_COMMAND_BIND_PROPERTY_TYPE))
+#define GLADE_IS_COMMAND_BIND_PROPERTY_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), GLADE_COMMAND_BIND_PROPERTY_TYPE))
+
+/* Undo the last "bind property command" */
+static gboolean
+glade_command_bind_property_undo (GladeCommand * cmd)
+{
+  return glade_command_bind_property_execute (cmd);
+}
+
+/*
+ * Execute the set property command and revert it. IE, after the execution of 
+ * this function cmd will point to the undo action
+ */
+static gboolean
+glade_command_bind_property_execute (GladeCommand * cmd)
+{
+  GladeCommandBindProperty *bcmd; 
+  GladeProperty *target, *source;
+  GladeBinding *binding;
+
+  g_return_val_if_fail (GLADE_IS_COMMAND_BIND_PROPERTY (cmd), TRUE);
+  
+  bcmd = GLADE_COMMAND_BIND_PROPERTY (cmd);
+  target = bcmd->target;
+  source = bcmd->undo ? bcmd->old_source : bcmd->new_source;
+  binding = glade_property_get_binding (bcmd->target);
+  
+  if (!binding && source)
+    {
+      glade_property_set_binding (target,
+                                  glade_binding_new (source, target));
+      bcmd->old_source = NULL;
+    }
+  else if (binding)
+    {
+      bcmd->old_source = glade_binding_get_source (binding);
+
+      if (!source)
+        {
+          glade_property_set_binding (target, NULL);
+          glade_property_set_value (target, &bcmd->old_value);
+        }
+      else
+        glade_binding_set_source (binding, source);
+    }
+
+  bcmd->undo = !bcmd->undo;
+  return TRUE;
+}
+
+static void
+glade_command_bind_property_finalize (GObject * obj)
+{
+  glade_command_finalize (obj);
+}
+
+static gboolean
+glade_command_bind_property_unifies (GladeCommand * this_cmd,
+                                     GladeCommand * other_cmd)
+{
+  GladeCommandBindProperty *cmd1, *cmd2;
+
+  if (GLADE_IS_COMMAND_BIND_PROPERTY (this_cmd) &&
+      GLADE_IS_COMMAND_BIND_PROPERTY (other_cmd))
+    {
+      cmd1 = GLADE_COMMAND_BIND_PROPERTY (this_cmd);
+      cmd2 = GLADE_COMMAND_BIND_PROPERTY (other_cmd);
+
+      return (cmd1->target == cmd2->target
+              && cmd1->new_source == cmd2->new_source);
+    }
+
+  return FALSE;
+}
+
+static void
+glade_command_bind_property_collapse (GladeCommand * this_cmd,
+                                      GladeCommand * other_cmd)
+{
+  g_return_if_fail (GLADE_IS_COMMAND_BIND_PROPERTY (this_cmd));
+  g_return_if_fail (GLADE_IS_COMMAND_BIND_PROPERTY (other_cmd));
+
+  /* Nothing to do */
+}
+
+void
+glade_command_bind_property (GladeProperty * target, GladeProperty * source)
+{
+  GladeCommandBindProperty *me;
+  GladeBinding *binding;
+  GladeCommand *cmd;
+  
+  g_return_if_fail (GLADE_IS_PROPERTY (target));
+  g_return_if_fail (GLADE_IS_PROPERTY (source));
+
+  me = g_object_new (GLADE_COMMAND_BIND_PROPERTY_TYPE, NULL);
+  me->target = target;
+  me->new_source = source;
+  me->undo = FALSE;
+  
+  if ((binding = glade_property_get_binding (target)) != NULL)
+    me->old_source = glade_binding_get_source (binding);
+  else
+    {
+      me->old_source = NULL;
+      glade_property_get_value (target, &me->old_value);
+    }
+
+  cmd = GLADE_COMMAND (me);
+  cmd->priv->project =
+    glade_widget_get_project (glade_property_get_widget (me->target));
+  cmd->priv->description =
+      g_strdup_printf (_("Binding property \"%s\" of %s"),
+                       glade_property_class_id (glade_property_get_class (target)),
+                       glade_widget_get_name (glade_property_get_widget (target)));
+
+  glade_command_check_group (GLADE_COMMAND (me));
+
+  if (glade_command_bind_property_execute (GLADE_COMMAND (me)))
+      glade_project_push_undo (cmd->priv->project, cmd);
+  else
+    g_object_unref (G_OBJECT (me));
+}
+
+/**************************************************/
 /*******       GLADE_COMMAND_SET_NAME       *******/
 /**************************************************/
 
