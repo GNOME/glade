@@ -62,6 +62,8 @@ struct _GladeDesignLayoutClass
 
 GType        glade_design_layout_get_type   (void) G_GNUC_CONST;
 
+GtkWidget   *glade_design_layout_pointer_mode_image_new (GladePointerMode mode);
+
 GtkWidget   *_glade_design_layout_new       (GladeDesignView *view);
 
 gboolean     _glade_design_layout_do_event  (GladeDesignLayout *layout,

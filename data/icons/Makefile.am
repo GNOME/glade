@@ -17,8 +17,8 @@ update-icon-cache:
 
 
 pixmapsdir = $(pkgdatadir)/pixmaps
-pixmaps_DATA = selector.png devhelp.png \
-	plus.png atk.png drag-resize.png \
+pixmaps_DATA = devhelp.png \
+	plus.png atk.png \
 	fixed-bg.png placeholder.png \
 	deprecated-16x16.png \
 	deprecated-22x22.png

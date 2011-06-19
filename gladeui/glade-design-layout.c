@@ -50,6 +50,7 @@ typedef enum
   ACTIVITY_RESIZE_WIDTH,
   ACTIVITY_RESIZE_HEIGHT,
   ACTIVITY_RESIZE_WIDTH_AND_HEIGHT,
+  ACTIVITY_ALIGNMENTS,
   ACTIVITY_MARGINS,
   ACTIVITY_MARGINS_VERTICAL, /* These activities are only used to set the cursor */
   ACTIVITY_MARGINS_HORIZONTAL,
@@ -94,7 +95,7 @@ struct _GladeDesignLayoutPrivate
   gint max_width, max_height;
   Margins margin;
   GtkAlign valign, halign;
-  GtkPositionType node_over;
+  Margins node_over;
 
   /* state machine */
   Activity activity;            /* the current activity */
@@ -158,12 +159,16 @@ gdl_get_activity_from_pointer (GladeDesignLayout *layout, gint x, gint y)
   GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (layout);
   
   if (priv->selection)
-    {      
+    {
       priv->margin = gdl_get_margins_from_pointer (priv->selection,
                                                    x - priv->child_offset,
                                                    y - priv->child_offset);
       
-      if (priv->margin) return ACTIVITY_MARGINS;
+      if (priv->margin)
+        {
+          GladePointerMode mode = glade_project_get_pointer_mode (priv->project);
+          return (mode == GLADE_POINTER_ALIGN_EDIT) ? ACTIVITY_ALIGNMENTS : ACTIVITY_MARGINS;
+        }
     }
   
   if (RECTANGLE_POINT_IN (priv->south_east, x, y)) return ACTIVITY_RESIZE_WIDTH_AND_HEIGHT;
@@ -282,45 +287,61 @@ glade_design_layout_update_child (GladeDesignLayout *layout,
   gtk_widget_queue_resize (GTK_WIDGET (layout));
 }
 
-static GtkPositionType
-gdl_get_node_from_pointer (GtkWidget *widget, gint x, gint y)
+static inline void
+gdl_alignments_invalidate (GdkWindow *window,
+                           GtkWidget *parent,
+                           GtkWidget *selection,
+                           Margins nodes)
 {
+  cairo_region_t *region = cairo_region_create ();
+  cairo_rectangle_int_t rect = {0, 0, 16, 16};
+  gint x1, x2, x3, y1, y2, y3;
   GtkAllocation alloc;
-  gint xx, yy;
+  gint x, y, w, h;
 
-  if (widget == NULL) return -1;
-  
-  gtk_widget_get_allocation (widget, &alloc);
+  gtk_widget_get_allocation (selection, &alloc);
 
-  xx = alloc.x + alloc.width/2;
-  yy = alloc.y + alloc.height/2;
+  w = alloc.width;
+  h = alloc.height;
 
-  if (ABS (xx - x) < 6)
+  gtk_widget_translate_coordinates (selection, parent, 0, 0, &x, &y);
+
+  x1 = x - gtk_widget_get_margin_left (selection);
+  x2 = x + w/2;
+  x3 = x + w + gtk_widget_get_margin_right (selection);
+  y1 = y - gtk_widget_get_margin_top (selection);
+  y2 = y + h/2;
+  y3 = y + h + gtk_widget_get_margin_bottom (selection);
+
+  /* Only invalidate node area */
+
+  rect.x = x2 - 5;
+  if (nodes & MARGIN_TOP)
     {
-      gint y1, y2;
-
-      y1 = alloc.y - gtk_widget_get_margin_top (widget);
-      y2 = alloc.y + alloc.height + gtk_widget_get_margin_bottom (widget);
-
-      if (ABS (y1 - y) < 6)
-        return GTK_POS_TOP;
-      else if (ABS (y2 - y) < 6)
-        return GTK_POS_BOTTOM;
+      rect.y = y1 - 10;
+      cairo_region_union_rectangle (region, &rect);
     }
-  else if (ABS (yy - y) < 6)
+  if (nodes & MARGIN_BOTTOM)
     {
-      gint x1, x2;
-
-      x1 = alloc.x - gtk_widget_get_margin_left (widget);
-      x2 = alloc.x + alloc.width + gtk_widget_get_margin_right (widget);
-
-      if (ABS (x1 - x) < 6)
-        return GTK_POS_LEFT;
-      else if (ABS (x2 - x) < 6)
-        return GTK_POS_RIGHT;
+      rect.y = y3 - 13;
+      cairo_region_union_rectangle (region, &rect);
     }
 
-  return -1;
+  rect.y = y2 - 10;
+  if (nodes & MARGIN_LEFT)
+    {
+      rect.x = x1 - 8;
+      cairo_region_union_rectangle (region, &rect);
+    }
+  if (nodes & MARGIN_RIGHT)
+    {
+      rect.x = x3 - 5;
+      cairo_region_union_rectangle (region, &rect);
+    }
+
+  gdk_window_invalidate_region (window, region, FALSE);
+
+  cairo_region_destroy (region);
 }
 
 static gboolean
@@ -410,18 +431,18 @@ glade_design_layout_motion_notify_event (GtkWidget *widget, GdkEventMotion *ev)
         {
           Activity activity = gdl_get_activity_from_pointer (GLADE_DESIGN_LAYOUT (widget), x, y);
 
-          if (priv->selection)
+          if (priv->node_over != priv->margin && (activity == ACTIVITY_ALIGNMENTS ||
+              glade_project_get_pointer_mode (priv->project) == GLADE_POINTER_ALIGN_EDIT))
             {
-              GtkPositionType node = gdl_get_node_from_pointer (priv->selection, x - priv->child_offset, y - priv->child_offset);
+              if (priv->selection)
+                gdl_alignments_invalidate (priv->window, widget, priv->selection,
+                                           priv->node_over | priv->margin);
+              else
+                gdk_window_invalidate_rect (priv->window, NULL, FALSE);
 
-              if (priv->node_over != node)
-                {
-                  /* TODO: only invalidate node area */
-                  gdk_window_invalidate_rect (priv->window, NULL, FALSE);
-                  priv->node_over = node;
-                }
+              priv->node_over = priv->margin;
             }
-          
+           
           if (activity == ACTIVITY_MARGINS)
             activity = gdl_margin_get_activity (priv->margin);
 
@@ -491,42 +512,61 @@ glade_project_is_toplevel_active (GladeProject *project, GtkWidget *toplevel)
 }
 
 static void
-gdl_margins_set_selection (GladeDesignLayoutPrivate *priv, GtkWidget *selection)
+gdl_edit_mode_set_selection (GladeDesignLayout *layout,
+                             GladePointerMode mode,
+                             GtkWidget *selection)
 {
+  GladeDesignLayoutPrivate *priv = layout->priv;
+
+  if ((selection && GTK_IS_WIDGET (selection) == FALSE) ||
+      gtk_bin_get_child (GTK_BIN (layout)) == selection) selection = NULL;
+  
   if (priv->selection == selection) return;
 
   priv->selection = selection;
 
   if (selection)
     {
-      /* Save initital margins to know which one where edited */
-      priv->top = gtk_widget_get_margin_top (selection);
-      priv->bottom = gtk_widget_get_margin_bottom (selection);
-      priv->left = gtk_widget_get_margin_left (selection);
-      priv->right = gtk_widget_get_margin_right (selection);
+      if (mode == GLADE_POINTER_MARGIN_EDIT)
+        {
+          GtkWidget *child = gtk_bin_get_child (GTK_BIN (layout));
 
-      priv->valign = gtk_widget_get_valign (selection);
-      priv->halign = gtk_widget_get_halign (selection);
+          /* Save initital margins to know which one where edited */
+          priv->top = gtk_widget_get_margin_top (selection);
+          priv->bottom = gtk_widget_get_margin_bottom (selection);
+          priv->left = gtk_widget_get_margin_left (selection);
+          priv->right = gtk_widget_get_margin_right (selection);
 
-      glade_project_set_pointer_mode (priv->project, GLADE_POINTER_MARGIN_MODE);
-      
-      gtk_widget_queue_draw (selection);
+          gdl_update_max_margins (layout, child,
+                                  gtk_widget_get_allocated_width (child),
+                                  gtk_widget_get_allocated_height (child));
+        }
+      else if (mode == GLADE_POINTER_ALIGN_EDIT)
+        {
+          priv->valign = gtk_widget_get_valign (selection);
+          priv->halign = gtk_widget_get_halign (selection);
+        }
+
+      gdk_window_invalidate_rect (priv->window, NULL, FALSE);
     }
   else
     {
       gdl_set_cursor (priv, NULL);
-      glade_project_set_pointer_mode (priv->project, GLADE_POINTER_SELECT);
     }
+
+  glade_project_set_pointer_mode (priv->project, mode);
 }
 
 static gboolean
 glade_design_layout_button_press_event (GtkWidget *widget, GdkEventButton *ev)
 {
   GladeDesignLayoutPrivate *priv;
+  GtkAllocation child_allocation;
+  Activity activity;
   GtkWidget *child;
   gint x, y;
 
-  if (ev->button != 1 ||
+  if (ev->button != 1 || ev->type != GDK_BUTTON_PRESS ||
       (child = gtk_bin_get_child (GTK_BIN (widget))) == NULL)
     return FALSE;
 
@@ -535,121 +575,108 @@ glade_design_layout_button_press_event (GtkWidget *widget, GdkEventButton *ev)
   x = ev->x;
   y = ev->y;
 
-  if (ev->type == GDK_BUTTON_PRESS)
-    {
-      GtkAllocation child_allocation;
+  priv->activity = activity = gdl_get_activity_from_pointer (GLADE_DESIGN_LAYOUT (widget), x, y);
 
-      priv->activity = gdl_get_activity_from_pointer (GLADE_DESIGN_LAYOUT (widget), x, y);
-      
-      /* Check if we are in margin edit mode */
-      if (priv->selection)
-        {
-          GtkWidget *selection = priv->selection;
-
-          switch (priv->activity)
-            {
-              case ACTIVITY_NONE:
-                gdl_margins_set_selection (priv, NULL);
-                return FALSE;
-              break;
-              case ACTIVITY_MARGINS:
-                priv->m_dx = x + ((priv->margin & MARGIN_LEFT) ? 
-                                  gtk_widget_get_margin_left (selection) :
-                                    gtk_widget_get_margin_right (selection) * -1);
-                priv->m_dy = y + ((priv->margin & MARGIN_TOP) ?
-                                  gtk_widget_get_margin_top (selection) :
-                                    gtk_widget_get_margin_bottom (selection) * -1);
-
-                gdl_set_cursor (priv, priv->cursors[gdl_margin_get_activity (priv->margin)]);
-                return FALSE;
-              break;
-              default:
-                gdl_set_cursor (priv, priv->cursors[priv->activity]);
-              break;
-            }
-        }
-
-      gtk_widget_get_allocation (child, &child_allocation);
-
-      priv->dx = x - (child_allocation.x + child_allocation.width + priv->child_offset);
-      priv->dy = y - (child_allocation.y + child_allocation.height + priv->child_offset);
-      
-      if (priv->activity != ACTIVITY_NONE &&
-          !glade_project_is_toplevel_active (priv->project, child))
-        {
-          _glade_design_view_freeze (priv->view);
-          glade_project_selection_set (priv->project, G_OBJECT (child), TRUE);
-          _glade_design_view_thaw (priv->view);
-        }
-    }
-  else if (ev->type == GDK_2BUTTON_PRESS && priv->activity == ACTIVITY_MARGINS)
+  /* Check if we are in margin edit mode */
+  if (priv->selection)
     {
       GtkWidget *selection = priv->selection;
-      gboolean top, bottom, left, right;
-      GtkAlign valign, halign;
-      GladeWidget *gwidget;
 
-      valign = gtk_widget_get_valign (selection);
-      halign = gtk_widget_get_halign (selection);
-
-      if (valign == GTK_ALIGN_FILL)
-        top = bottom = TRUE;
-      else
+      switch (activity)
         {
-          top = (valign == GTK_ALIGN_START);
-          bottom = (valign == GTK_ALIGN_END);
-        }
-
-      if (halign == GTK_ALIGN_FILL)
-        left = right = TRUE;
-      else
-        {
-          left = (halign == GTK_ALIGN_START);
-          right = (halign == GTK_ALIGN_END);
-        }
-
-      switch (gdl_get_node_from_pointer (selection, x - priv->child_offset, y - priv->child_offset))
-        {   
-          case GTK_POS_TOP:
-            valign = (top) ? ((bottom) ? GTK_ALIGN_END : GTK_ALIGN_CENTER) : 
-                             ((bottom) ? GTK_ALIGN_FILL : GTK_ALIGN_START);
-          break;
-          case GTK_POS_BOTTOM:
-            valign = (bottom) ? ((top) ? GTK_ALIGN_START : GTK_ALIGN_CENTER) :
-                                ((top) ? GTK_ALIGN_FILL : GTK_ALIGN_END);
-          break;
-          case GTK_POS_LEFT:
-            halign = (left) ? ((right) ? GTK_ALIGN_END : GTK_ALIGN_CENTER) :
-                              ((right) ? GTK_ALIGN_FILL : GTK_ALIGN_START);
-          break;
-          case GTK_POS_RIGHT:
-            halign = (right) ? ((left) ? GTK_ALIGN_START : GTK_ALIGN_CENTER) :
-                               ((left) ? GTK_ALIGN_FILL : GTK_ALIGN_END);
-          break;
-          default:
+          case ACTIVITY_NONE:
+            gdl_edit_mode_set_selection (GLADE_DESIGN_LAYOUT (widget), GLADE_POINTER_SELECT, NULL);
             return FALSE;
           break;
-        }
-
-      if ((gwidget = glade_widget_get_from_gobject (selection)))
-        {
-          GladeProperty *property;
-
-          glade_command_push_group (_("Editing alignments of %s"),
-                                    glade_widget_get_name (gwidget));
-
-          if (gtk_widget_get_valign (selection) != valign)
+          case ACTIVITY_ALIGNMENTS:
             {
-              if ((property = glade_widget_get_property (gwidget, "valign")))
-                glade_command_set_property (property, valign);
+              gboolean top, bottom, left, right;
+              Margins node = priv->margin;
+              GtkAlign valign, halign;
+              GladeWidget *gwidget;
+
+              valign = gtk_widget_get_valign (selection);
+              halign = gtk_widget_get_halign (selection);
+
+              if (valign == GTK_ALIGN_FILL)
+                top = bottom = TRUE;
+              else
+                {
+                  top = (valign == GTK_ALIGN_START);
+                  bottom = (valign == GTK_ALIGN_END);
+                }
+
+              if (halign == GTK_ALIGN_FILL)
+                left = right = TRUE;
+              else
+                {
+                  left = (halign == GTK_ALIGN_START);
+                  right = (halign == GTK_ALIGN_END);
+                }
+
+              if (node & MARGIN_TOP)
+                valign = (top) ? ((bottom) ? GTK_ALIGN_END : GTK_ALIGN_CENTER) : 
+                                 ((bottom) ? GTK_ALIGN_FILL : GTK_ALIGN_START);
+              else if (node & MARGIN_BOTTOM)
+                valign = (bottom) ? ((top) ? GTK_ALIGN_START : GTK_ALIGN_CENTER) :
+                                    ((top) ? GTK_ALIGN_FILL : GTK_ALIGN_END);
+
+              if (node & MARGIN_LEFT)
+                halign = (left) ? ((right) ? GTK_ALIGN_END : GTK_ALIGN_CENTER) :
+                                  ((right) ? GTK_ALIGN_FILL : GTK_ALIGN_START);
+              else if (node & MARGIN_RIGHT)
+                halign = (right) ? ((left) ? GTK_ALIGN_START : GTK_ALIGN_CENTER) :
+                                   ((left) ? GTK_ALIGN_FILL : GTK_ALIGN_END);
+
+              if ((gwidget = glade_widget_get_from_gobject (selection)))
+                {
+                  GladeProperty *property;
+
+                  glade_command_push_group (_("Editing alignments of %s"),
+                                            glade_widget_get_name (gwidget));
+
+                  if (gtk_widget_get_valign (selection) != valign)
+                    {
+                      if ((property = glade_widget_get_property (gwidget, "valign")))
+                        glade_command_set_property (property, valign);
+                    }
+                  if (gtk_widget_get_halign (selection) != halign)
+                    {
+                      if ((property = glade_widget_get_property (gwidget, "halign")))
+                        glade_command_set_property (property, halign);
+                    }
+                  glade_command_pop_group ();
+                }
             }
-          if (gtk_widget_get_halign (selection) != halign)
-            {
-              if ((property = glade_widget_get_property (gwidget, "halign")))
-                glade_command_set_property (property, halign);
-            }
-          glade_command_pop_group ();
+          break;
+          case ACTIVITY_MARGINS:
+            priv->m_dx = x + ((priv->margin & MARGIN_LEFT) ? 
+                              gtk_widget_get_margin_left (selection) :
+                                gtk_widget_get_margin_right (selection) * -1);
+            priv->m_dy = y + ((priv->margin & MARGIN_TOP) ?
+                              gtk_widget_get_margin_top (selection) :
+                                gtk_widget_get_margin_bottom (selection) * -1);
+
+            gdl_set_cursor (priv, priv->cursors[gdl_margin_get_activity (priv->margin)]);
+            return FALSE;
+          break;
+          default:
+            gdl_set_cursor (priv, priv->cursors[priv->activity]);
+          break;
         }
+    }
+
+  gtk_widget_get_allocation (child, &child_allocation);
+
+  priv->dx = x - (child_allocation.x + child_allocation.width + priv->child_offset);
+  priv->dy = y - (child_allocation.y + child_allocation.height + priv->child_offset);
+
+  if (activity != ACTIVITY_NONE &&
+      !glade_project_is_toplevel_active (priv->project, child))
+    {
+      _glade_design_view_freeze (priv->view);
+      glade_project_selection_set (priv->project, G_OBJECT (child), TRUE);
+      _glade_design_view_thaw (priv->view);
     }
 
   return FALSE;
@@ -704,10 +731,14 @@ glade_design_layout_button_release_event (GtkWidget *widget,
 
       glade_command_pop_group ();
     }
+  else if (priv->activity == ACTIVITY_ALIGNMENTS)
+    {
+      priv->node_over = 0;
+      gdk_window_invalidate_rect (priv->window, NULL, FALSE);
+    }
   
   priv->activity = ACTIVITY_NONE;
   gdl_set_cursor (priv, NULL);
-  priv->node_over = -1;
 
   return FALSE;
 }
@@ -1276,27 +1307,90 @@ draw_dimensions (cairo_t *cr,
 }
 
 static void 
-draw_node (cairo_t *cr, gint x, gint y, GdkRGBA *c1, GdkRGBA *c2, gboolean over)
+draw_node (cairo_t *cr, gint x, gint y, GdkRGBA *fg, GdkRGBA *bg)
 {
   cairo_new_sub_path (cr);
   cairo_arc (cr, x, y, OUTLINE_WIDTH, 0, 2*G_PI);
 
-  gdk_cairo_set_source_rgba (cr, c2);
+  gdk_cairo_set_source_rgba (cr, bg);
   cairo_stroke_preserve (cr);
 
-  gdk_cairo_set_source_rgba (cr, c1);
+  gdk_cairo_set_source_rgba (cr, fg);
+  cairo_fill (cr);
+}
 
+static void 
+draw_pushpin (cairo_t *cr, gdouble x, gdouble y, gint angle,
+              GdkRGBA *outline, GdkRGBA *fill, GdkRGBA *outline2, GdkRGBA *fg,
+              gboolean over, gboolean active)
+{
+  cairo_save (cr);
+
+  if (active)
+    {
+      outline = outline2;
+      x += .5;
+      cairo_rotate (cr, angle*(G_PI/180));
+      cairo_device_to_user (cr, &x, &y);
+    }
+  else
+    x += 1.5;
+
+  cairo_translate (cr, x, y);
+
+  /* Swap colors if mouse is over */
   if (over)
     {
-      cairo_pattern_t *pattern = cairo_pattern_create_linear (x-OUTLINE_WIDTH, y-OUTLINE_WIDTH, x+OUTLINE_WIDTH, y+OUTLINE_WIDTH);
-      cairo_fill_preserve (cr);
-      cairo_pattern_add_color_stop_rgba (pattern, 0, 1, 1, 1, .1);
-      cairo_pattern_add_color_stop_rgba (pattern, 1, 1, 1, 1, .4);
-      cairo_set_source (cr, pattern);
-      cairo_fill (cr);
+      GdkRGBA *tmp = outline;
+      outline = fill;
+      fill = tmp;
     }
 
+  /* Draw needle */
+  cairo_set_line_cap (cr, CAIRO_LINE_CAP_BUTT);
+  gdk_cairo_set_source_rgba (cr, fg);
+  cairo_move_to (cr, 0, 2);
+  cairo_line_to (cr, 0, (active) ? 4.5 : 6);
+  draw_stroke_lines (cr, (over) ? outline : fill, fg, TRUE);
+
+  /* Draw top and bottom fat lines */
+  cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
+
+  cairo_move_to (cr, -4, 0);
+  cairo_line_to (cr, 4, 0);
+  
+  cairo_move_to (cr, -2.5, -7);
+  cairo_line_to (cr, 2.5, -7);
+
+  gdk_cairo_set_source_rgba (cr, outline);
+  cairo_set_line_width (cr, 4);
+  cairo_stroke_preserve (cr);
+
+  gdk_cairo_set_source_rgba (cr, fill);
+  cairo_set_line_width (cr, 2);
+  cairo_stroke (cr);
+
+  /* Draw middle section */
+  cairo_move_to (cr, -2, -5);
+  cairo_line_to (cr, 2, -5);
+  cairo_line_to (cr, 3, -2);
+  cairo_line_to (cr, -3, -2);
+  cairo_close_path (cr);
+
+  gdk_cairo_set_source_rgba (cr, outline);
+  cairo_set_line_width (cr, 2);
+  cairo_stroke_preserve (cr);
+  gdk_cairo_set_source_rgba (cr, fill);
   cairo_fill (cr);
+
+  /* Draw middle section shadow */
+  cairo_set_source_rgb (cr, fill->red-.16, fill->green-.16, fill->blue-.16);
+  cairo_set_line_width (cr, 1);
+  cairo_move_to (cr, 1, -5);
+  cairo_line_to (cr, 1.5, -2);
+  cairo_stroke (cr);
+  
+  cairo_restore (cr);
 }
 
 static inline void
@@ -1304,13 +1398,13 @@ draw_selection_nodes (cairo_t *cr,
                       GladeDesignLayoutPrivate *priv,
                       GtkWidget *parent)
 {
-  GtkPositionType node = priv->node_over;
+  GladePointerMode mode = glade_project_get_pointer_mode (priv->project);
+  Margins node = priv->node_over;
   GtkWidget *widget = priv->selection;
   gint top, bottom, left, right;
   gint x1, x2, x3, y1, y2, y3;
   GtkAllocation alloc, palloc;
   GdkRGBA *c1, *c2, *c3, *fg;
-  GtkAlign valign, halign;
   gint x, y, w, h;
 
   gtk_widget_get_allocation (widget, &alloc);
@@ -1328,8 +1422,6 @@ draw_selection_nodes (cairo_t *cr,
   
   gtk_widget_translate_coordinates (widget, parent, 0, 0, &x, &y);
 
-  valign = gtk_widget_get_valign (widget);
-  halign = gtk_widget_get_halign (widget);
   top = gtk_widget_get_margin_top (widget);
   bottom = gtk_widget_get_margin_bottom (widget);
   left = gtk_widget_get_margin_left (widget);
@@ -1345,33 +1437,49 @@ draw_selection_nodes (cairo_t *cr,
 
   /* Draw nodes */
   cairo_set_line_width (cr, OUTLINE_WIDTH);
-  if (valign == GTK_ALIGN_FILL)
-    {
-      draw_node (cr, x2, y1, c1, c2, node == GTK_POS_TOP);
-      draw_node (cr, x2, y3, c1, c2, node == GTK_POS_BOTTOM);
-    }
-  else
-    {
-      draw_node (cr, x2, y1, (valign == GTK_ALIGN_START) ? c1 : c3, c2, node == GTK_POS_TOP);
-      draw_node (cr, x2, y3, (valign == GTK_ALIGN_END) ? c1 : c3, c2, node == GTK_POS_BOTTOM);
-    }
 
-  if (halign == GTK_ALIGN_FILL)
+  if (mode == GLADE_POINTER_MARGIN_EDIT)
     {
-      draw_node (cr, x1, y2, c1, c2, node == GTK_POS_LEFT);
-      draw_node (cr, x3, y2, c1, c2, node == GTK_POS_RIGHT);
-    }
-  else
-    {
-      draw_node (cr, x1, y2, (halign == GTK_ALIGN_START) ? c1 : c3, c2, node == GTK_POS_LEFT);
-      draw_node (cr, x3, y2, (halign == GTK_ALIGN_END) ? c1 : c3, c2, node == GTK_POS_RIGHT);
-    }
+      draw_node (cr, x2, y1, c1, c2);
+      draw_node (cr, x2, y3, c1, c2);
+      draw_node (cr, x1, y2, c1, c2);
+      draw_node (cr, x3, y2, c1, c2);
 
-  /* Draw dimensions */
-  if (top || bottom || left || right)
+      /* Draw dimensions */
+      if (top || bottom || left || right)
+        {
+          cairo_set_line_width (cr, 1);
+          draw_dimensions (cr, c2, fg, x+.5, y+.5, w, h, top, bottom, left, right);
+        }
+    }
+  else if (mode == GLADE_POINTER_ALIGN_EDIT)
     {
-      cairo_set_line_width (cr, 1);
-      draw_dimensions (cr, c2, fg, x+.5, y+.5, w, h, top, bottom, left, right);
+      GtkAlign valign, halign;
+      
+      valign = gtk_widget_get_valign (widget);
+      halign = gtk_widget_get_halign (widget);
+      
+      if (valign == GTK_ALIGN_FILL)
+        {
+          draw_pushpin (cr, x2, y1, 45, c3, c2, c1, fg, node & MARGIN_TOP, TRUE);
+          draw_pushpin (cr, x2, y3-4, 45, c3, c2, c1, fg, node & MARGIN_BOTTOM, TRUE);
+        }
+      else
+        {
+          draw_pushpin (cr, x2, y1, 45, c3, c2, c1, fg, node & MARGIN_TOP, valign == GTK_ALIGN_START);
+          draw_pushpin (cr, x2, y3-4, 45, c3, c2, c1, fg, node & MARGIN_BOTTOM, valign == GTK_ALIGN_END);
+        }
+
+      if (halign == GTK_ALIGN_FILL)
+        {
+          draw_pushpin (cr, x1, y2, -45, c3, c2, c1, fg, node & MARGIN_LEFT, TRUE);
+          draw_pushpin (cr, x3, y2, 45, c3, c2, c1, fg, node & MARGIN_RIGHT, TRUE);
+        }
+      else
+        {
+          draw_pushpin (cr, x1, y2, -45, c3, c2, c1, fg, node & MARGIN_LEFT, halign == GTK_ALIGN_START);
+          draw_pushpin (cr, x3, y2, 45, c3, c2, c1, fg, node & MARGIN_RIGHT, halign == GTK_ALIGN_END);
+        }
     }
 }
 
@@ -1658,12 +1766,15 @@ static void
 glade_design_layout_style_updated (GtkWidget *widget)
 {
   GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
-  GtkStyleContext *context = gtk_widget_get_style_context (widget);
+  GtkStyleContext *context = gtk_style_context_new ();
+  GtkWidgetPath *path = gtk_widget_path_new ();
   GdkRGBA bg_color;
 
-  gtk_style_context_save (context);
-  
+  g_type_class_ref (GTK_TYPE_TREE_VIEW);
+  gtk_widget_path_append_type (path, GTK_TYPE_WIDGET);
+  gtk_style_context_set_path (context, path);
   gtk_style_context_add_class (context, GTK_STYLE_CLASS_VIEW);
+  gtk_widget_path_free (path);
 
   gtk_style_context_get_background_color (context,
                                           GTK_STATE_FLAG_NORMAL,
@@ -1685,8 +1796,6 @@ glade_design_layout_style_updated (GtkWidget *widget)
                                GTK_STATE_FLAG_SELECTED |
                                GTK_STATE_FLAG_FOCUSED,
                                &priv->frame_color_active[1]);
-
-  gtk_style_context_restore (context);
   
   gtk_widget_override_background_color (widget, GTK_STATE_FLAG_NORMAL, &bg_color);
 }
@@ -1705,13 +1814,38 @@ glade_design_layout_init (GladeDesignLayout *layout)
 
   priv->new_width = -1;
   priv->new_height = -1;
-  priv->node_over = -1;
+  priv->node_over = 0;
 
   /* setup static member of rectangles */
   priv->east.width = PADDING + OUTLINE_WIDTH;
   priv->south.height = PADDING + OUTLINE_WIDTH;
 
   gtk_widget_set_has_window (GTK_WIDGET (layout), TRUE);
+}
+
+static void
+on_pointer_mode_notify (GladeProject *project,
+                        GParamSpec *pspec, 
+                        GladeDesignLayout *layout)
+{
+  GladeDesignLayoutPrivate *priv = layout->priv;
+  GladePointerMode mode;
+  GtkWidget *selection;
+ 
+  g_return_if_fail (priv->window);
+
+  mode = glade_project_get_pointer_mode (priv->project);
+  if (mode == GLADE_POINTER_MARGIN_EDIT || mode == GLADE_POINTER_ALIGN_EDIT)
+    {
+      GList *l = glade_project_selection_get (project);
+      selection = (l && g_list_next (l) == NULL && GTK_IS_WIDGET (l->data)) ? l->data : NULL;
+      gdl_edit_mode_set_selection (layout, mode, NULL);
+    }
+  else
+    selection = NULL;
+
+  gdl_edit_mode_set_selection (layout, mode, selection);
+  gdk_window_invalidate_rect (priv->window, NULL, FALSE);
 }
 
 static void
@@ -1727,6 +1861,9 @@ glade_design_layout_set_property (GObject *object,
           GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (object);
           priv->view = GLADE_DESIGN_VIEW (g_value_get_object (value));
           priv->project = glade_design_view_get_project (priv->view);
+          g_signal_connect (priv->project, "notify::pointer-mode",
+                            G_CALLBACK (on_pointer_mode_notify),
+                            GLADE_DESIGN_LAYOUT (object));
         }
         break;
 
@@ -1737,10 +1874,10 @@ glade_design_layout_set_property (GObject *object,
 }
 
 static void
-glade_design_layout_get_property (GObject * object,
+glade_design_layout_get_property (GObject *object,
                                   guint prop_id,
-                                  GValue * value,
-                                  GParamSpec * pspec)
+                                  GValue *value,
+                                  GParamSpec *pspec)
 {
   switch (prop_id)
     {
@@ -1757,7 +1894,16 @@ glade_design_layout_get_property (GObject * object,
 static void
 on_project_selection_changed (GladeProject *project, GladeDesignLayout *layout)
 {
-  gdl_margins_set_selection (layout->priv, NULL);
+  GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (layout);
+  GladePointerMode mode = glade_project_get_pointer_mode (project);
+
+  if (priv->selection)
+    gdl_edit_mode_set_selection (layout, GLADE_POINTER_SELECT, NULL);
+  else if (mode == GLADE_POINTER_ALIGN_EDIT || mode == GLADE_POINTER_MARGIN_EDIT)
+    {
+      GList *l = glade_project_selection_get (project);
+      gdl_edit_mode_set_selection (layout, mode, (l) ? l->data : NULL);
+    }
 }
 
 static GObject *
@@ -1790,7 +1936,10 @@ glade_design_layout_finalize (GObject *object)
   g_signal_handlers_disconnect_by_func (priv->project,
                                         on_project_selection_changed,
                                         GLADE_DESIGN_LAYOUT (object));
-  
+  g_signal_handlers_disconnect_by_func (priv->project,
+                                        on_pointer_mode_notify,
+                                        GLADE_DESIGN_LAYOUT (object));
+
   G_OBJECT_CLASS (glade_design_layout_parent_class)->finalize (object);
 }
 
@@ -1841,6 +1990,183 @@ glade_design_layout_class_init (GladeDesignLayoutClass * klass)
   g_type_class_add_private (object_class, sizeof (GladeDesignLayoutPrivate));
 }
 
+/* Public API */
+
+static void
+draw_tip (cairo_t *cr)
+{
+  cairo_line_to (cr, 2, 8);
+  cairo_line_to (cr, 2, 4);
+  cairo_line_to (cr, 0, 4);
+  cairo_line_to (cr, 0, 3);
+  cairo_line_to (cr, 3, 0);
+  cairo_line_to (cr, 6, 3);
+  cairo_line_to (cr, 6, 4);
+  cairo_line_to (cr, 4, 4);
+  cairo_line_to (cr, 4, 8);
+
+  cairo_translate (cr, 12, 6);
+  cairo_rotate (cr, G_PI_2);
+}
+
+static void
+draw_tips (cairo_t *cr)
+{
+  cairo_move_to (cr, 2, 8);
+  draw_tip (cr); draw_tip (cr); draw_tip (cr); draw_tip (cr);
+  cairo_line_to (cr, 2, 8);
+}
+
+static void
+draw_pointer (cairo_t *cr)
+{
+  cairo_line_to (cr, 8, 3);
+  cairo_line_to (cr, 19, 14);
+  cairo_line_to (cr, 13.75, 14);
+  cairo_line_to (cr, 16.5, 19);
+  cairo_line_to (cr, 14, 21);
+  cairo_line_to (cr, 11, 16);
+  cairo_line_to (cr, 7, 19);
+  cairo_line_to (cr, 7, 3);
+  cairo_line_to (cr, 8, 3);
+}
+
+GtkWidget *
+glade_design_layout_pointer_mode_image_new (GladePointerMode mode)
+{
+  cairo_surface_t *surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 24, 24);
+  GtkStyleContext *ctx = gtk_style_context_new ();;
+  cairo_t *cr = cairo_create (surface);
+  GdkRGBA c1, c2, c3, fg, bg;
+  GtkWidgetPath *path;
+  GtkWidget *retval;
+  GdkPixbuf *pix;
+
+  /* Get Style context */
+  path = gtk_widget_path_new ();
+  gtk_widget_path_append_type (path, GTK_TYPE_WIDGET);
+  gtk_style_context_set_path (ctx, path);
+  gtk_widget_path_free (path);
+
+  /* Now get colors */
+  gtk_style_context_get_color (ctx, GTK_STATE_FLAG_NORMAL, &fg);
+  gtk_style_context_get_background_color (ctx, GTK_STATE_FLAG_NORMAL, &bg);
+  
+  gtk_style_context_add_class (ctx, GTK_STYLE_CLASS_VIEW);
+  gtk_style_context_get_background_color (ctx, GTK_STATE_FLAG_SELECTED | GTK_STATE_FLAG_FOCUSED, &c1);
+  gtk_style_context_get_color (ctx, GTK_STATE_FLAG_SELECTED | GTK_STATE_FLAG_FOCUSED, &c2);
+  gtk_style_context_get_background_color (ctx, GTK_STATE_FLAG_SELECTED, &c3);
+
+  g_object_unref (ctx);
+
+  /* Clear surface */
+  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+  cairo_fill(cr);
+  cairo_identity_matrix (cr);
+  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+
+  switch (mode)
+    {
+      case GLADE_POINTER_SELECT:
+      case GLADE_POINTER_ADD_WIDGET:
+        cairo_set_line_width (cr, 1);
+        cairo_translate (cr, 1.5, 1.5);
+        draw_pointer (cr);
+        fg.alpha = .16;
+        gdk_cairo_set_source_rgba (cr, &fg);
+        cairo_stroke (cr);
+
+        cairo_translate (cr, -1, -1);
+        draw_pointer (cr);
+        gdk_cairo_set_source_rgba (cr, &c2);
+        cairo_fill_preserve (cr);
+      
+        fg.alpha = .64;
+        gdk_cairo_set_source_rgba (cr, &fg);
+        cairo_stroke (cr);
+      break;
+      case GLADE_POINTER_DRAG_RESIZE:
+        cairo_set_line_width (cr, 1);
+        cairo_translate (cr, 10.5, 3.5);
+        
+        draw_tips (cr);
+
+        fg.alpha = .16;
+        gdk_cairo_set_source_rgba (cr, &fg);
+        cairo_stroke (cr);
+
+        cairo_identity_matrix (cr);
+        cairo_translate (cr, 9.5, 2.5);
+        draw_tips (cr);
+        
+        gdk_cairo_set_source_rgba (cr, &c2);
+        cairo_fill_preserve (cr);
+        
+        c1.red = MAX (0, c1.red - .16);
+        c1.green = MAX (0, c1.green - .16);
+        c1.blue = MAX (0, c1.blue - .16);
+        gdk_cairo_set_source_rgba (cr, &c1);
+        cairo_stroke (cr);
+      break;
+      case GLADE_POINTER_MARGIN_EDIT:
+        {
+          gdouble r, g, b;
+          r = c1.red; g = c1.green; b = c1.blue;
+
+          gdk_cairo_set_source_rgba (cr, &bg);
+          cairo_rectangle (cr, 4, 4, 18, 18);
+          cairo_fill (cr);
+          
+          draw_margin_selection (cr, 6, 22, 22, 16,
+                                 6, 6, 16, 16,
+                                 r, g, b, 6, 16);
+
+          draw_margin_selection (cr, 6, 16, 16, 6,
+                                 6, 16, 22, 22,
+                                 r, g, b, 16, 6);
+
+          cairo_set_line_width (cr, 1);
+          fg.alpha = .32;
+          gdk_cairo_set_source_rgba (cr, &fg);
+          cairo_move_to (cr, 16.5, 22);
+          cairo_line_to (cr, 16.5, 16.5);
+          cairo_line_to (cr, 22, 16.5);
+          cairo_stroke (cr);
+          
+          cairo_set_source_rgba (cr, r, g, b, .16);
+          cairo_rectangle (cr, 16, 16, 6, 6);
+          cairo_fill (cr);
+
+          cairo_set_line_width (cr, 2);
+          cairo_set_source_rgba (cr, r, g, b, .75);
+          cairo_move_to (cr, 6, 22);
+          cairo_line_to (cr, 6, 6);
+          cairo_line_to (cr, 22, 6);
+          cairo_stroke (cr);
+
+          cairo_scale (cr, .75, .75);
+          cairo_set_line_width (cr, OUTLINE_WIDTH);
+          draw_node (cr, 16*1.25, 6*1.25, &c1, &c2);
+          draw_node (cr, 6*1.25, 16*1.25, &c1, &c2);
+        }
+      break;
+      case GLADE_POINTER_ALIGN_EDIT:
+        cairo_scale (cr, 1.5,1.5);
+        draw_pushpin (cr, 10, 14, 45, &c3, &c2, &c1, &fg, FALSE, TRUE);
+      break;
+      default:
+      break;
+    }
+
+  pix = gdk_pixbuf_get_from_surface (surface, 0, 0, 24, 24);
+  retval = gtk_image_new_from_pixbuf (pix);
+
+  g_object_unref (pix);
+  cairo_destroy (cr);
+  
+  return retval;
+}
+
 /* Internal API */
 
 GtkWidget *
@@ -1886,11 +2212,10 @@ _glade_design_layout_do_event (GladeDesignLayout *layout, GdkEvent *event)
         {
           if (priv->selection == NULL)
             {
-              gdl_margins_set_selection (priv, l->data);
-              gdl_update_max_margins (layout, child,
-                                      gtk_widget_get_allocated_width (child),
-                                      gtk_widget_get_allocated_height (child));
-              
+              gdl_edit_mode_set_selection (layout,
+                                           (event->button.state & GDK_SHIFT_MASK) ? 
+                                           GLADE_POINTER_ALIGN_EDIT : GLADE_POINTER_MARGIN_EDIT,
+                                           l->data);
               return TRUE;
             }
           return FALSE;

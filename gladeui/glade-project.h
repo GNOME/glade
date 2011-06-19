@@ -26,6 +26,8 @@ typedef struct _GladeProjectClass    GladeProjectClass;
  * @GLADE_POINTER_ADD_WIDGET:  Mouse pointer used for adding widgets
  * @GLADE_POINTER_DRAG_RESIZE: Mouse pointer used for dragging and 
  *                             resizing widgets in containers
+ * @GLADE_POINTER_MARGIN_EDIT: Mouse pointer used to edit widget margins
+ * @GLADE_POINTER_ALIGN_EDIT:  Mouse pointer used to edit widget alignment
  *
  * Indicates what the pointer is used for in the workspace.
  */
@@ -33,8 +35,9 @@ typedef enum
 {
   GLADE_POINTER_SELECT = 0,
   GLADE_POINTER_ADD_WIDGET,
-  GLADE_POINTER_DRAG_RESIZE
-  GLADE_POINTER_MARGIN_MODE
+  GLADE_POINTER_DRAG_RESIZE,
+  GLADE_POINTER_MARGIN_EDIT,
+  GLADE_POINTER_ALIGN_EDIT
 } GladePointerMode;
 
 typedef enum

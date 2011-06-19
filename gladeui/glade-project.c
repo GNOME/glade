@@ -163,7 +163,7 @@ struct _GladeProjectPrivate
                                   * for confirmation after a close or exit is
                                   * requested
                                   */
-  guint pointer_mode : 2;        /* The currently effective GladePointerMode */
+  guint pointer_mode : 3;        /* The currently effective GladePointerMode */
 };
 
 typedef struct 
@@ -183,6 +183,8 @@ glade_pointer_mode_get_type (void)
         {GLADE_POINTER_SELECT, "select", "Select-widgets"},
         {GLADE_POINTER_ADD_WIDGET, "add", "Add-widgets"},
         {GLADE_POINTER_DRAG_RESIZE, "drag-resize", "Drag-and-resize-widgets"},
+        {GLADE_POINTER_MARGIN_EDIT, "margin-edit", "Edit-widget-margins"},
+        {GLADE_POINTER_ALIGN_EDIT, "align-edit", "Edit-widget-alignment"},
         {0, NULL, NULL}
       };
       etype = g_enum_register_static ("GladePointerMode", values);
