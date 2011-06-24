@@ -42,7 +42,6 @@
 #include "glade-displayable-values.h"
 #include "glade-editor-table.h"
 #include "glade-cursor.h"
-#include "glade-binding.h"
 
 /* For g_file_exists */
 #include <sys/types.h>
@@ -997,7 +996,6 @@ glade_widget_adaptor_object_read_widget (GladeWidgetAdaptor * adaptor,
   GladeXmlNode *iter_node;
   GladeSignal *signal;
   GladeProperty *property;
-  GladeBinding *binding;
   gchar *name, *prop_name;
   GList *read_properties = NULL, *l;
 
@@ -1043,8 +1041,7 @@ glade_widget_adaptor_object_read_widget (GladeWidgetAdaptor * adaptor,
       if (!glade_xml_node_verify_silent (iter_node, GLADE_XML_TAG_BINDING))
         continue;
 
-      if (!(binding = glade_binding_read (iter_node, widget)))
-        continue;
+      glade_property_binding_read (iter_node, widget);
     }
 
   /* Read in the signals */
@@ -1082,28 +1079,26 @@ glade_widget_adaptor_object_write_widget (GladeWidgetAdaptor * adaptor,
                                           GladeXmlNode * node)
 {
   GList *props;
-  GSList *bindings = NULL, *b;
   
   /* Write the properties */
   for (props = glade_widget_get_properties (widget); props; props = props->next)
     {
       GladeProperty      *property = props->data;
       GladePropertyClass *klass = glade_property_get_class (property);
-      GladeBinding       *binding = glade_property_get_binding (property);
       
       if (glade_property_class_save (klass) && 
 	  glade_property_get_enabled (property))
         glade_property_write (GLADE_PROPERTY (props->data), context, node);
-
-      if (binding)
-        bindings = g_slist_prepend (bindings, binding);
     }
 
-  /* Write the bindings */
-  for (b = bindings; b; b = b->next)
-    glade_binding_write (b->data, context, node);
-
-  g_slist_free (bindings);
+  /* Write the properties' bindings */
+  for (props = glade_widget_get_properties (widget); props; props = props->next)
+    {
+      GladeProperty *property = props->data;
+      
+      if (glade_property_get_binding_source (property))
+        glade_property_binding_write (property, context, node);
+    }
 }
 
 static void

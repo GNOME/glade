@@ -2,7 +2,6 @@
 #define __GLADE_PROPERTY_H__
 
 #include <glib-object.h>
-#include "glade-binding.h"
 
 G_BEGIN_DECLS
 
@@ -122,6 +121,14 @@ void                    glade_property_write                 (GladeProperty     
 							      GladeXmlContext    *context,
 							      GladeXmlNode       *node);
 
+void                    glade_property_binding_read          (GladeXmlNode       *node,
+                                                              GladeWidget        *widget);
+
+void                    glade_property_binding_write         (GladeProperty      *property,
+                                                              GladeXmlContext    *context,
+                                                              GladeXmlNode       *node);
+
+
 GladePropertyClass     *glade_property_get_class             (GladeProperty      *property);
 
 void                    glade_property_set_sensitive         (GladeProperty      *property,
@@ -159,10 +166,10 @@ GValue                 *glade_property_inline_value          (GladeProperty     
 
 GladePropertyState      glade_property_get_state             (GladeProperty      *property);
 
-GladeBinding *          glade_property_get_binding           (GladeProperty      *property);
+GladeProperty          *glade_property_get_binding_source    (GladeProperty      *property);
 
-void                    glade_property_set_binding           (GladeProperty      *property,
-                                                              GladeBinding       *binding);
+void                    glade_property_set_binding_source    (GladeProperty      *property,
+                                                              GladeProperty      *binding_source);
 
 void                    glade_property_i18n_set_comment      (GladeProperty      *property, 
 							      const gchar        *str);

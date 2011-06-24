@@ -1038,7 +1038,8 @@ glade_project_new (void)
   return project;
 }
 
-/* Called when finishing loading a glade file to resolve object type properties
+/* Called when finishing loading a glade file to resolve bound and object type
+ * properties
  */
 static void
 glade_project_fix_object_props (GladeProject *project)
@@ -1047,8 +1048,7 @@ glade_project_fix_object_props (GladeProject *project)
   GValue *value;
   GladeWidget *gwidget;
   GladeProperty *property;
-  gchar *txt;
-  GladeBinding *binding;
+  gchar *txt, *txt2;
   
   objects = g_list_copy (project->priv->objects);
   for (l = objects; l; l = l->next)
@@ -1080,8 +1080,24 @@ glade_project_fix_object_props (GladeProject *project)
                                  "glade-loaded-object", NULL);
             }
 
-          if ((binding = glade_property_get_binding (property)) != NULL)
-            glade_binding_complete (binding, project);
+          if ((txt = g_object_get_data (G_OBJECT (property),
+                                        "glade-source-object")) != NULL &&
+              (txt2 = g_object_get_data (G_OBJECT (property),
+                                         "glade-source-property")) != NULL)
+            {
+              GladeWidget *source_obj;
+              GladeProperty *source_prop;
+
+              source_obj = glade_project_get_widget_by_name (project, txt);
+              if (!source_obj)
+                continue;
+
+              source_prop = glade_widget_get_property (source_obj, txt2);
+              if (!source_prop)
+                continue;
+              
+              glade_property_set_binding_source (property, source_prop);
+            }
         }
     }
   g_list_free (objects);

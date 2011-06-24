@@ -827,33 +827,17 @@ glade_command_bind_property_execute (GladeCommand * cmd)
 {
   GladeCommandBindProperty *bcmd; 
   GladeProperty *target, *source;
-  GladeBinding *binding;
 
   g_return_val_if_fail (GLADE_IS_COMMAND_BIND_PROPERTY (cmd), TRUE);
   
   bcmd = GLADE_COMMAND_BIND_PROPERTY (cmd);
   target = bcmd->target;
   source = bcmd->undo ? bcmd->old_source : bcmd->new_source;
-  binding = glade_property_get_binding (bcmd->target);
-  
-  if (!binding && source)
-    {
-      glade_property_set_binding (target,
-                                  glade_binding_new (source, target));
-      bcmd->old_source = NULL;
-    }
-  else if (binding)
-    {
-      bcmd->old_source = glade_binding_get_source (binding);
 
-      if (!source)
-        {
-          glade_property_set_binding (target, NULL);
-          glade_property_set_value (target, &bcmd->old_value);
-        }
-      else
-        glade_binding_set_source (binding, source);
-    }
+  glade_property_set_binding_source (target, source);
+
+  if (!source && G_IS_VALUE (&bcmd->old_value))
+      glade_property_set_value (target, &bcmd->old_value);
 
   bcmd->undo = !bcmd->undo;
   return TRUE;
@@ -898,24 +882,19 @@ void
 glade_command_bind_property (GladeProperty * target, GladeProperty * source)
 {
   GladeCommandBindProperty *me;
-  GladeBinding *binding;
   GladeCommand *cmd;
   
   g_return_if_fail (GLADE_IS_PROPERTY (target));
-  g_return_if_fail (GLADE_IS_PROPERTY (source));
+  g_return_if_fail (!source || GLADE_IS_PROPERTY (source));
 
   me = g_object_new (GLADE_COMMAND_BIND_PROPERTY_TYPE, NULL);
-  me->target = target;
-  me->new_source = source;
   me->undo = FALSE;
-  
-  if ((binding = glade_property_get_binding (target)) != NULL)
-    me->old_source = glade_binding_get_source (binding);
-  else
-    {
-      me->old_source = NULL;
-      glade_property_get_value (target, &me->old_value);
-    }
+  me->target = target;
+  me->old_source = glade_property_get_binding_source (target);
+  me->new_source = source;
+
+  if (!me->old_source)
+    glade_property_get_value (target, &me->old_value);
 
   cmd = GLADE_COMMAND (me);
   cmd->priv->project =

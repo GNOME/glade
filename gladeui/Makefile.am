@@ -88,9 +88,7 @@ libgladeui_2_la_SOURCES = \
 	glade-displayable-values.c \
 	glade-signal-model.c \
 	glade-cell-renderer-icon.c \
-	glade-preview.c \
-	glade-binding.c \
-	glade-binding.h
+	glade-preview.c
 
 libgladeui_2_la_CPPFLAGS =  \
 	$(common_defines)   \
