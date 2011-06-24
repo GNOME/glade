@@ -28,7 +28,7 @@
 #include "glade-close-button.h"
 
 #include <gladeui/glade.h>
-#include <gladeui/glade-design-layout.h>
+#include <gladeui/glade-design-view.h>
 #include <gladeui/glade-popup.h>
 #include <gladeui/glade-inspector.h>
 
@@ -2487,22 +2487,28 @@ create_tool_button (GtkToolbar *toolbar,
                     const gchar *tooltip,
                     GladePointerMode pointer_mode)
 {
-  GtkWidget *image = glade_design_layout_pointer_mode_image_new (pointer_mode);
   GtkToolItem *button;
+  GdkPixbuf *pixbuf;
 
   if (group)
     button = gtk_radio_tool_button_new_from_widget (GTK_RADIO_TOOL_BUTTON (group));
   else
     button = gtk_radio_tool_button_new (NULL);
+  
+  pixbuf = glade_project_pointer_mode_render_icon (pointer_mode, GTK_ICON_SIZE_LARGE_TOOLBAR);
+  if (pixbuf)
+    {
+      GtkWidget *image = gtk_image_new_from_pixbuf (pixbuf);
+      g_object_unref (pixbuf);
+      gtk_tool_button_set_icon_widget (GTK_TOOL_BUTTON (button), image);
+      gtk_widget_show (image);
+    }
 
-  gtk_tool_button_set_icon_widget (GTK_TOOL_BUTTON (button), image);
   gtk_tool_button_set_label (GTK_TOOL_BUTTON (button), label);
-
   gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (button), tooltip);
 
   gtk_toolbar_insert (toolbar, button, -1);
   gtk_widget_show (GTK_WIDGET (button));
-  gtk_widget_show (image);
 
   g_signal_connect (button, "toggled",
                     G_CALLBACK (on_tool_button_toggled),

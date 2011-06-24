@@ -2805,6 +2805,195 @@ glade_project_check_reordered (GladeProject *project,
   g_list_free (new_order);
 }
 
+static void
+draw_tip (cairo_t *cr)
+{
+  cairo_line_to (cr, 2, 8);
+  cairo_line_to (cr, 2, 4);
+  cairo_line_to (cr, 0, 4);
+  cairo_line_to (cr, 0, 3);
+  cairo_line_to (cr, 3, 0);
+  cairo_line_to (cr, 6, 3);
+  cairo_line_to (cr, 6, 4);
+  cairo_line_to (cr, 4, 4);
+
+  cairo_translate (cr, 12, 6);
+  cairo_rotate (cr, G_PI_2);
+}
+
+static void
+draw_tips (cairo_t *cr)
+{
+  cairo_move_to (cr, 2, 8);
+  draw_tip (cr); draw_tip (cr); draw_tip (cr); draw_tip (cr);
+  cairo_close_path (cr);
+}
+
+static void
+draw_pointer (cairo_t *cr)
+{
+  cairo_line_to (cr, 8, 3);
+  cairo_line_to (cr, 19, 14);
+  cairo_line_to (cr, 13.75, 14);
+  cairo_line_to (cr, 16.5, 19);
+  cairo_line_to (cr, 14, 21);
+  cairo_line_to (cr, 11, 16);
+  cairo_line_to (cr, 7, 19);
+  cairo_line_to (cr, 7, 3);
+  cairo_line_to (cr, 8, 3);
+}
+
+/* Needed for private draw functions! */
+#include "glade-design-private.h"
+
+/**
+ * glade_project_pointer_mode_render_icon:
+ * @mode: the #GladePointerMode to render as icon
+ * @size: icon size
+ *
+ * Render an icon representing the pointer mode.
+ * Best view with sizes bigger than GTK_ICON_SIZE_LARGE_TOOLBAR.
+ */ 
+GdkPixbuf *
+glade_project_pointer_mode_render_icon (GladePointerMode mode, GtkIconSize size)
+{
+  GtkStyleContext *ctx = gtk_style_context_new ();
+  GdkRGBA c1, c2, c3, fg, bg;
+  cairo_surface_t *surface;
+  GtkWidgetPath *path;
+  gint width, height;
+  GdkPixbuf *pix;
+  cairo_t *cr;
+
+  if (gtk_icon_size_lookup (size, &width, &height) == FALSE) return NULL;
+
+  surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width, height);
+  cr = cairo_create (surface);
+  cairo_scale (cr, width/24.0, height/24.0);
+
+  /* Get Style context */
+  path = gtk_widget_path_new ();
+  gtk_widget_path_append_type (path, GTK_TYPE_WIDGET);
+  gtk_style_context_set_path (ctx, path);
+  gtk_widget_path_free (path);
+
+  /* Now get colors */
+  gtk_style_context_get_color (ctx, GTK_STATE_FLAG_NORMAL, &fg);
+  gtk_style_context_get_background_color (ctx, GTK_STATE_FLAG_NORMAL, &bg);
+  
+  gtk_style_context_add_class (ctx, GTK_STYLE_CLASS_VIEW);
+  gtk_style_context_get_background_color (ctx, GTK_STATE_FLAG_SELECTED | GTK_STATE_FLAG_FOCUSED, &c1);
+  gtk_style_context_get_color (ctx, GTK_STATE_FLAG_SELECTED | GTK_STATE_FLAG_FOCUSED, &c2);
+  gtk_style_context_get_background_color (ctx, GTK_STATE_FLAG_SELECTED, &c3);
+
+  g_object_unref (ctx);
+
+  /* Clear surface */
+  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+  cairo_fill(cr);
+  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+
+  switch (mode)
+    {
+      case GLADE_POINTER_SELECT:
+      case GLADE_POINTER_ADD_WIDGET:
+        cairo_set_line_width (cr, 1);
+        cairo_translate (cr, 1.5, 1.5);
+        draw_pointer (cr);
+        fg.alpha = .16;
+        gdk_cairo_set_source_rgba (cr, &fg);
+        cairo_stroke (cr);
+
+        cairo_translate (cr, -1, -1);
+        draw_pointer (cr);
+        gdk_cairo_set_source_rgba (cr, &c2);
+        cairo_fill_preserve (cr);
+      
+        fg.alpha = .64;
+        gdk_cairo_set_source_rgba (cr, &fg);
+        cairo_stroke (cr);
+      break;
+      case GLADE_POINTER_DRAG_RESIZE:
+        cairo_set_line_width (cr, 1);
+        cairo_translate (cr, 10.5, 3.5);
+        
+        draw_tips (cr);
+
+        fg.alpha = .16;
+        gdk_cairo_set_source_rgba (cr, &fg);
+        cairo_stroke (cr);
+
+        cairo_translate (cr, -1, -1);
+        draw_tips (cr);
+        
+        gdk_cairo_set_source_rgba (cr, &c2);
+        cairo_fill_preserve (cr);
+        
+        c1.red = MAX (0, c1.red - .1);
+        c1.green = MAX (0, c1.green - .1);
+        c1.blue = MAX (0, c1.blue - .1);
+        gdk_cairo_set_source_rgba (cr, &c1);
+        cairo_stroke (cr);
+      break;
+      case GLADE_POINTER_MARGIN_EDIT:
+        {
+          gdk_cairo_set_source_rgba (cr, &bg);
+          cairo_rectangle (cr, 4, 4, 18, 18);
+          cairo_fill (cr);
+
+          c1.alpha = .1;
+          gdk_cairo_set_source_rgba (cr, &c1);
+          cairo_rectangle (cr, 6, 6, 16, 16);
+          cairo_fill (cr);
+
+          cairo_set_line_width (cr, 1);
+          fg.alpha = .32;
+          gdk_cairo_set_source_rgba (cr, &fg);
+          cairo_move_to (cr, 16.5, 22);
+          cairo_line_to (cr, 16.5, 16.5);
+          cairo_line_to (cr, 22, 16.5);
+          cairo_stroke (cr);
+
+          c1.alpha = .16;
+          gdk_cairo_set_source_rgba (cr, &c1);
+          cairo_rectangle (cr, 16, 16, 6, 6);
+          cairo_fill (cr);
+
+          cairo_set_line_width (cr, 2);
+          c1.alpha = .75;
+          gdk_cairo_set_source_rgba (cr, &c1);
+          cairo_move_to (cr, 6, 22);
+          cairo_line_to (cr, 6, 6);
+          cairo_line_to (cr, 22, 6);
+          cairo_stroke (cr);
+
+          c1.alpha = 1;
+          cairo_scale (cr, .75, .75);
+          cairo_set_line_width (cr, 4);
+          _glade_design_layout_draw_node (cr, 16*1.25, 6*1.25, &c1, &c2);
+          _glade_design_layout_draw_node (cr, 6*1.25, 16*1.25, &c1, &c2);
+        }
+      break;
+      case GLADE_POINTER_ALIGN_EDIT:
+        cairo_scale (cr, 1.5, 1.5);
+        cairo_rotate (cr, 45*(G_PI/180));
+        cairo_translate (cr, 11, 2);
+        _glade_design_layout_draw_pushpin (cr, 2.5, &c1, &c2, &c2, &fg);
+      break;
+      default:
+      break;
+    }
+
+  pix = gdk_pixbuf_get_from_surface (surface, 0, 0,
+                                     cairo_image_surface_get_width (surface),
+                                     cairo_image_surface_get_height (surface));
+
+  cairo_surface_destroy (surface);
+  cairo_destroy (cr);
+
+  return pix;
+}
+
 static inline gboolean
 glade_project_has_gwidget (GladeProject *project, GladeWidget *gwidget)
 {

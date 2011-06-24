@@ -314,15 +314,15 @@ gdl_alignments_invalidate (GdkWindow *window,
   y3 = y + h + gtk_widget_get_margin_bottom (selection);
 
   /* Only invalidate node area */
-
-  rect.x = x2 - 5;
   if (nodes & MARGIN_TOP)
     {
+      rect.x = x2 - 5;
       rect.y = y1 - 10;
       cairo_region_union_rectangle (region, &rect);
     }
   if (nodes & MARGIN_BOTTOM)
     {
+      rect.x = x2 - 8;
       rect.y = y3 - 13;
       cairo_region_union_rectangle (region, &rect);
     }
@@ -1307,19 +1307,6 @@ draw_dimensions (cairo_t *cr,
 }
 
 static void 
-draw_node (cairo_t *cr, gint x, gint y, GdkRGBA *fg, GdkRGBA *bg)
-{
-  cairo_new_sub_path (cr);
-  cairo_arc (cr, x, y, OUTLINE_WIDTH, 0, 2*G_PI);
-
-  gdk_cairo_set_source_rgba (cr, bg);
-  cairo_stroke_preserve (cr);
-
-  gdk_cairo_set_source_rgba (cr, fg);
-  cairo_fill (cr);
-}
-
-static void 
 draw_pushpin (cairo_t *cr, gdouble x, gdouble y, gint angle,
               GdkRGBA *outline, GdkRGBA *fill, GdkRGBA *outline2, GdkRGBA *fg,
               gboolean over, gboolean active)
@@ -1336,8 +1323,6 @@ draw_pushpin (cairo_t *cr, gdouble x, gdouble y, gint angle,
   else
     x += 1.5;
 
-  cairo_translate (cr, x, y);
-
   /* Swap colors if mouse is over */
   if (over)
     {
@@ -1345,50 +1330,11 @@ draw_pushpin (cairo_t *cr, gdouble x, gdouble y, gint angle,
       outline = fill;
       fill = tmp;
     }
-
-  /* Draw needle */
-  cairo_set_line_cap (cr, CAIRO_LINE_CAP_BUTT);
-  gdk_cairo_set_source_rgba (cr, fg);
-  cairo_move_to (cr, 0, 2);
-  cairo_line_to (cr, 0, (active) ? 4.5 : 6);
-  draw_stroke_lines (cr, (over) ? outline : fill, fg, TRUE);
-
-  /* Draw top and bottom fat lines */
-  cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
-
-  cairo_move_to (cr, -4, 0);
-  cairo_line_to (cr, 4, 0);
   
-  cairo_move_to (cr, -2.5, -7);
-  cairo_line_to (cr, 2.5, -7);
+  cairo_translate (cr, x, y);
 
-  gdk_cairo_set_source_rgba (cr, outline);
-  cairo_set_line_width (cr, 4);
-  cairo_stroke_preserve (cr);
-
-  gdk_cairo_set_source_rgba (cr, fill);
-  cairo_set_line_width (cr, 2);
-  cairo_stroke (cr);
-
-  /* Draw middle section */
-  cairo_move_to (cr, -2, -5);
-  cairo_line_to (cr, 2, -5);
-  cairo_line_to (cr, 3, -2);
-  cairo_line_to (cr, -3, -2);
-  cairo_close_path (cr);
-
-  gdk_cairo_set_source_rgba (cr, outline);
-  cairo_set_line_width (cr, 2);
-  cairo_stroke_preserve (cr);
-  gdk_cairo_set_source_rgba (cr, fill);
-  cairo_fill (cr);
-
-  /* Draw middle section shadow */
-  cairo_set_source_rgb (cr, fill->red-.16, fill->green-.16, fill->blue-.16);
-  cairo_set_line_width (cr, 1);
-  cairo_move_to (cr, 1, -5);
-  cairo_line_to (cr, 1.5, -2);
-  cairo_stroke (cr);
+  _glade_design_layout_draw_pushpin (cr, (active) ? 2.5 : 4, outline, fill,
+                                     (over) ? outline : fill, fg);
   
   cairo_restore (cr);
 }
@@ -1440,10 +1386,10 @@ draw_selection_nodes (cairo_t *cr,
 
   if (mode == GLADE_POINTER_MARGIN_EDIT)
     {
-      draw_node (cr, x2, y1, c1, c2);
-      draw_node (cr, x2, y3, c1, c2);
-      draw_node (cr, x1, y2, c1, c2);
-      draw_node (cr, x3, y2, c1, c2);
+      _glade_design_layout_draw_node (cr, x2, y1, c1, c2);
+      _glade_design_layout_draw_node (cr, x2, y3, c1, c2);
+      _glade_design_layout_draw_node (cr, x1, y2, c1, c2);
+      _glade_design_layout_draw_node (cr, x3, y2, c1, c2);
 
       /* Draw dimensions */
       if (top || bottom || left || right)
@@ -1462,12 +1408,12 @@ draw_selection_nodes (cairo_t *cr,
       if (valign == GTK_ALIGN_FILL)
         {
           draw_pushpin (cr, x2, y1, 45, c3, c2, c1, fg, node & MARGIN_TOP, TRUE);
-          draw_pushpin (cr, x2, y3-4, 45, c3, c2, c1, fg, node & MARGIN_BOTTOM, TRUE);
+          draw_pushpin (cr, x2, y3-4, -45, c3, c2, c1, fg, node & MARGIN_BOTTOM, TRUE);
         }
       else
         {
           draw_pushpin (cr, x2, y1, 45, c3, c2, c1, fg, node & MARGIN_TOP, valign == GTK_ALIGN_START);
-          draw_pushpin (cr, x2, y3-4, 45, c3, c2, c1, fg, node & MARGIN_BOTTOM, valign == GTK_ALIGN_END);
+          draw_pushpin (cr, x2, y3-4, -45, c3, c2, c1, fg, node & MARGIN_BOTTOM, valign == GTK_ALIGN_END);
         }
 
       if (halign == GTK_ALIGN_FILL)
@@ -1990,189 +1936,93 @@ glade_design_layout_class_init (GladeDesignLayoutClass * klass)
   g_type_class_add_private (object_class, sizeof (GladeDesignLayoutPrivate));
 }
 
-/* Public API */
-
-static void
-draw_tip (cairo_t *cr)
-{
-  cairo_line_to (cr, 2, 8);
-  cairo_line_to (cr, 2, 4);
-  cairo_line_to (cr, 0, 4);
-  cairo_line_to (cr, 0, 3);
-  cairo_line_to (cr, 3, 0);
-  cairo_line_to (cr, 6, 3);
-  cairo_line_to (cr, 6, 4);
-  cairo_line_to (cr, 4, 4);
-  cairo_line_to (cr, 4, 8);
-
-  cairo_translate (cr, 12, 6);
-  cairo_rotate (cr, G_PI_2);
-}
-
-static void
-draw_tips (cairo_t *cr)
-{
-  cairo_move_to (cr, 2, 8);
-  draw_tip (cr); draw_tip (cr); draw_tip (cr); draw_tip (cr);
-  cairo_line_to (cr, 2, 8);
-}
-
-static void
-draw_pointer (cairo_t *cr)
-{
-  cairo_line_to (cr, 8, 3);
-  cairo_line_to (cr, 19, 14);
-  cairo_line_to (cr, 13.75, 14);
-  cairo_line_to (cr, 16.5, 19);
-  cairo_line_to (cr, 14, 21);
-  cairo_line_to (cr, 11, 16);
-  cairo_line_to (cr, 7, 19);
-  cairo_line_to (cr, 7, 3);
-  cairo_line_to (cr, 8, 3);
-}
-
-GtkWidget *
-glade_design_layout_pointer_mode_image_new (GladePointerMode mode)
-{
-  cairo_surface_t *surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 24, 24);
-  GtkStyleContext *ctx = gtk_style_context_new ();;
-  cairo_t *cr = cairo_create (surface);
-  GdkRGBA c1, c2, c3, fg, bg;
-  GtkWidgetPath *path;
-  GtkWidget *retval;
-  GdkPixbuf *pix;
-
-  /* Get Style context */
-  path = gtk_widget_path_new ();
-  gtk_widget_path_append_type (path, GTK_TYPE_WIDGET);
-  gtk_style_context_set_path (ctx, path);
-  gtk_widget_path_free (path);
-
-  /* Now get colors */
-  gtk_style_context_get_color (ctx, GTK_STATE_FLAG_NORMAL, &fg);
-  gtk_style_context_get_background_color (ctx, GTK_STATE_FLAG_NORMAL, &bg);
-  
-  gtk_style_context_add_class (ctx, GTK_STYLE_CLASS_VIEW);
-  gtk_style_context_get_background_color (ctx, GTK_STATE_FLAG_SELECTED | GTK_STATE_FLAG_FOCUSED, &c1);
-  gtk_style_context_get_color (ctx, GTK_STATE_FLAG_SELECTED | GTK_STATE_FLAG_FOCUSED, &c2);
-  gtk_style_context_get_background_color (ctx, GTK_STATE_FLAG_SELECTED, &c3);
-
-  g_object_unref (ctx);
-
-  /* Clear surface */
-  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
-  cairo_fill(cr);
-  cairo_identity_matrix (cr);
-  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-
-  switch (mode)
-    {
-      case GLADE_POINTER_SELECT:
-      case GLADE_POINTER_ADD_WIDGET:
-        cairo_set_line_width (cr, 1);
-        cairo_translate (cr, 1.5, 1.5);
-        draw_pointer (cr);
-        fg.alpha = .16;
-        gdk_cairo_set_source_rgba (cr, &fg);
-        cairo_stroke (cr);
-
-        cairo_translate (cr, -1, -1);
-        draw_pointer (cr);
-        gdk_cairo_set_source_rgba (cr, &c2);
-        cairo_fill_preserve (cr);
-      
-        fg.alpha = .64;
-        gdk_cairo_set_source_rgba (cr, &fg);
-        cairo_stroke (cr);
-      break;
-      case GLADE_POINTER_DRAG_RESIZE:
-        cairo_set_line_width (cr, 1);
-        cairo_translate (cr, 10.5, 3.5);
-        
-        draw_tips (cr);
-
-        fg.alpha = .16;
-        gdk_cairo_set_source_rgba (cr, &fg);
-        cairo_stroke (cr);
-
-        cairo_identity_matrix (cr);
-        cairo_translate (cr, 9.5, 2.5);
-        draw_tips (cr);
-        
-        gdk_cairo_set_source_rgba (cr, &c2);
-        cairo_fill_preserve (cr);
-        
-        c1.red = MAX (0, c1.red - .16);
-        c1.green = MAX (0, c1.green - .16);
-        c1.blue = MAX (0, c1.blue - .16);
-        gdk_cairo_set_source_rgba (cr, &c1);
-        cairo_stroke (cr);
-      break;
-      case GLADE_POINTER_MARGIN_EDIT:
-        {
-          gdouble r, g, b;
-          r = c1.red; g = c1.green; b = c1.blue;
-
-          gdk_cairo_set_source_rgba (cr, &bg);
-          cairo_rectangle (cr, 4, 4, 18, 18);
-          cairo_fill (cr);
-          
-          draw_margin_selection (cr, 6, 22, 22, 16,
-                                 6, 6, 16, 16,
-                                 r, g, b, 6, 16);
-
-          draw_margin_selection (cr, 6, 16, 16, 6,
-                                 6, 16, 22, 22,
-                                 r, g, b, 16, 6);
-
-          cairo_set_line_width (cr, 1);
-          fg.alpha = .32;
-          gdk_cairo_set_source_rgba (cr, &fg);
-          cairo_move_to (cr, 16.5, 22);
-          cairo_line_to (cr, 16.5, 16.5);
-          cairo_line_to (cr, 22, 16.5);
-          cairo_stroke (cr);
-          
-          cairo_set_source_rgba (cr, r, g, b, .16);
-          cairo_rectangle (cr, 16, 16, 6, 6);
-          cairo_fill (cr);
-
-          cairo_set_line_width (cr, 2);
-          cairo_set_source_rgba (cr, r, g, b, .75);
-          cairo_move_to (cr, 6, 22);
-          cairo_line_to (cr, 6, 6);
-          cairo_line_to (cr, 22, 6);
-          cairo_stroke (cr);
-
-          cairo_scale (cr, .75, .75);
-          cairo_set_line_width (cr, OUTLINE_WIDTH);
-          draw_node (cr, 16*1.25, 6*1.25, &c1, &c2);
-          draw_node (cr, 6*1.25, 16*1.25, &c1, &c2);
-        }
-      break;
-      case GLADE_POINTER_ALIGN_EDIT:
-        cairo_scale (cr, 1.5,1.5);
-        draw_pushpin (cr, 10, 14, 45, &c3, &c2, &c1, &fg, FALSE, TRUE);
-      break;
-      default:
-      break;
-    }
-
-  pix = gdk_pixbuf_get_from_surface (surface, 0, 0, 24, 24);
-  retval = gtk_image_new_from_pixbuf (pix);
-
-  g_object_unref (pix);
-  cairo_destroy (cr);
-  
-  return retval;
-}
-
 /* Internal API */
 
 GtkWidget *
 _glade_design_layout_new (GladeDesignView *view)
 {
   return g_object_new (GLADE_TYPE_DESIGN_LAYOUT, "design-view", view, NULL);
+}
+
+void 
+_glade_design_layout_draw_node (cairo_t *cr,
+                                gdouble x,
+                                gdouble y,
+                                GdkRGBA *fg,
+                                GdkRGBA *bg)
+{
+  cairo_new_sub_path (cr);
+  cairo_arc (cr, x, y, OUTLINE_WIDTH, 0, 2*G_PI);
+
+  gdk_cairo_set_source_rgba (cr, bg);
+  cairo_stroke_preserve (cr);
+
+  gdk_cairo_set_source_rgba (cr, fg);
+  cairo_fill (cr);
+}
+
+void 
+_glade_design_layout_draw_pushpin (cairo_t *cr,
+                                   gdouble needle_length,
+                                   GdkRGBA *outline,
+                                   GdkRGBA *fill,
+                                   GdkRGBA *bg,
+                                   GdkRGBA *fg)
+{
+  cairo_save (cr);
+
+  /* Draw needle */
+  cairo_set_line_cap (cr, CAIRO_LINE_CAP_BUTT);
+  cairo_set_line_width (cr, 1);
+  
+  cairo_move_to (cr, 1, 2);
+  cairo_line_to (cr, 1, 2+needle_length);
+  cairo_set_source_rgba (cr, bg->red, bg->green, bg->blue, .9);
+  cairo_stroke(cr);
+  
+  cairo_move_to (cr, 0, 2);
+  cairo_line_to (cr, 0, 2+needle_length);
+  gdk_cairo_set_source_rgba (cr, fg);
+  cairo_stroke (cr);
+
+  /* Draw top and bottom fat lines */
+  cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
+
+  cairo_move_to (cr, -4, 0);
+  cairo_line_to (cr, 4, 0);
+  
+  cairo_move_to (cr, -2.5, -7);
+  cairo_line_to (cr, 2.5, -7);
+
+  gdk_cairo_set_source_rgba (cr, outline);
+  cairo_set_line_width (cr, 4);
+  cairo_stroke_preserve (cr);
+
+  gdk_cairo_set_source_rgba (cr, fill);
+  cairo_set_line_width (cr, 2);
+  cairo_stroke (cr);
+
+  /* Draw middle section */
+  cairo_move_to (cr, -2, -5);
+  cairo_line_to (cr, 2, -5);
+  cairo_line_to (cr, 3, -2);
+  cairo_line_to (cr, -3, -2);
+  cairo_close_path (cr);
+
+  gdk_cairo_set_source_rgba (cr, outline);
+  cairo_set_line_width (cr, 2);
+  cairo_stroke_preserve (cr);
+  gdk_cairo_set_source_rgba (cr, fill);
+  cairo_fill (cr);
+
+  /* Draw middle section shadow */
+  cairo_set_source_rgb (cr, fill->red-.16, fill->green-.16, fill->blue-.16);
+  cairo_set_line_width (cr, 1);
+  cairo_move_to (cr, 1, -5);
+  cairo_line_to (cr, 1.5, -2);
+  cairo_stroke (cr);
+  
+  cairo_restore (cr);
 }
 
 /*

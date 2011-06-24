@@ -140,6 +140,8 @@ void                glade_project_check_reordered      (GladeProject       *proj
                                                         GladeWidget        *parent,
                                                         GList              *old_order);
 
+GdkPixbuf          *glade_project_pointer_mode_render_icon (GladePointerMode mode,
+                                                            GtkIconSize size);
 /* Commands */
 void                glade_project_undo                 (GladeProject       *project);
 void                glade_project_redo                 (GladeProject       *project);
