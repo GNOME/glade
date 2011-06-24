@@ -266,14 +266,12 @@ glade_editor_property_tooltip_cb (GladeProperty * property,
 
   if (glade_property_get_sensitive (property))
     {
-      GladeBinding *binding;
+      GladeProperty *source;
       
-      if ((binding = glade_property_get_binding (property)) != NULL)
+      if ((source = glade_property_get_binding_source (property)) != NULL)
         {
-          GladeProperty *source;
           const gchar *source_obj, *source_prop;
 
-          source = glade_binding_get_source (binding);
           source_prop = glade_property_class_id (glade_property_get_class (source));
           source_obj = glade_widget_get_name (glade_property_get_widget (source));
           
@@ -308,7 +306,7 @@ glade_editor_property_sensitivity_cb (GladeProperty * property,
 
   gtk_widget_set_sensitive (eprop->priv->input, sensitive && support_sensitive &&
                             glade_property_get_enabled (property) &&
-                            !glade_property_get_binding (property));
+                            !glade_property_get_binding_source (property));
   if (eprop->priv->check)
     gtk_widget_set_sensitive (eprop->priv->check, sensitive && support_sensitive);
 }
@@ -332,7 +330,7 @@ glade_editor_property_fix_label (GladeEditorProperty * eprop)
     return;
 
   /* refresh label */
-  if (glade_property_get_binding (eprop->priv->property))
+  if (glade_property_get_binding_source (eprop->priv->property))
     text = g_strdup_printf ("<b><i>%s:</i></b>", glade_property_class_get_name (eprop->priv->klass));
   else if ((glade_property_get_state (eprop->priv->property) & GLADE_STATE_CHANGED) != 0)
     text = g_strdup_printf ("<b>%s:</b>", glade_property_class_get_name (eprop->priv->klass));
@@ -388,6 +386,27 @@ glade_editor_property_enabled_toggled_cb (GtkWidget * check,
   glade_property_set_enabled (eprop->priv->property,
                               gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON
                                                             (check)));
+}
+
+static void
+glade_editor_property_binding_source_cb (GladeProperty *property,
+                                         GParamSpec *pspec,
+                                         GladeEditorProperty *eprop)
+{
+  GladePropertyClass *pclass = glade_property_get_class (property);
+  
+  /* disable value input for bound properties */
+  if (glade_property_get_binding_source (property))
+    gtk_widget_set_sensitive (eprop->priv->input, FALSE);
+
+  /* refresh label formatting*/
+  glade_editor_property_fix_label (eprop);
+
+  /* update tooltip to describe the binding */
+  glade_editor_property_tooltip_cb
+    (property, glade_property_class_get_tooltip (pclass),
+     glade_propert_get_insensitive_tooltip (property),
+     glade_property_get_support_warning (property), eprop);
 }
 
 static gboolean
@@ -627,6 +646,10 @@ glade_editor_property_load_common (GladeEditorProperty * eprop,
           g_signal_connect (G_OBJECT (eprop->priv->property),
                             "notify::state",
                             G_CALLBACK (glade_editor_property_state_cb), eprop);
+      eprop->priv->state_id =
+          g_signal_connect (G_OBJECT (eprop->priv->property),
+                            "notify::binding-source",
+                            G_CALLBACK (glade_editor_property_binding_source_cb), eprop);
 
 
       /* In query dialogs when the user hits cancel, 

@@ -34,7 +34,7 @@
  * a #GladeProperty to interface with, #GladeProperty provides a means
  * to handle properties in the runtime environment.
  * 
- * A #GladeProperty can be seen as an instance of a #GladePropertyClass, 
+ * A #GladeProperty can be seen as an instance of a #GladePropertyClass,
  * the #GladePropertyClass describes how a #GladeProperty will function.
  */
 
@@ -104,8 +104,14 @@ struct _GladePropertyPrivate {
 					* or derived widget code).
 					*/
 
-  /* Non-NULL if the property is the target of a binding */
-  GladeBinding       *binding;
+  GladeProperty      *binding_source;  /* If non-NULL, the property that this
+                                        * GladeProperty's value is bound to
+                                        */
+
+  gulong              binding_handler; /* Signal handler to synchronize
+                                        * the GladeProperty with its binding
+                                        * source (if it is bound)
+                                        */
 
   /* Used only for translatable strings. */
   guint     i18n_translatable : 1;
@@ -129,6 +135,7 @@ enum
   PROP_CLASS,
   PROP_ENABLED,
   PROP_SENSITIVE,
+  PROP_BINDING_SOURCE,
   PROP_I18N_TRANSLATABLE,
   PROP_I18N_CONTEXT,
   PROP_I18N_COMMENT,
@@ -511,6 +518,10 @@ glade_property_set_real_property (GObject * object,
       case PROP_SENSITIVE:
         property->priv->sensitive = g_value_get_boolean (value);
         break;
+      case PROP_BINDING_SOURCE:
+        glade_property_set_binding_source (property,
+                                           g_value_get_pointer (value));
+        break;
       case PROP_I18N_TRANSLATABLE:
         glade_property_i18n_set_translatable (property,
                                               g_value_get_boolean (value));
@@ -545,6 +556,10 @@ glade_property_get_real_property (GObject * object,
       case PROP_SENSITIVE:
         g_value_set_boolean (value, glade_property_get_sensitive (property));
         break;
+      case PROP_BINDING_SOURCE:
+        g_value_set_pointer (value,
+                             glade_property_get_binding_source (property));
+        break;        
       case PROP_I18N_TRANSLATABLE:
         g_value_set_boolean (value,
                              glade_property_i18n_get_translatable (property));
@@ -574,8 +589,9 @@ glade_property_finalize (GObject * object)
       g_value_unset (property->priv->value);
       g_free (property->priv->value);
     }
-  if (property->priv->binding)
-    g_object_unref (property->priv->binding);
+  if (property->priv->binding_source)
+    g_signal_handler_disconnect (property->priv->binding_source,
+                                 property->priv->binding_handler);
   if (property->priv->i18n_comment)
     g_free (property->priv->i18n_comment);
   if (property->priv->i18n_context)
@@ -597,6 +613,8 @@ glade_property_init (GladeProperty * property)
 
   property->priv->enabled = TRUE;
   property->priv->sensitive = TRUE;
+  property->priv->binding_source = NULL;
+  property->priv->binding_handler = 0;
   property->priv->i18n_translatable = TRUE;
   property->priv->i18n_comment = NULL;
   property->priv->sync_tolerance = 1;
@@ -644,6 +662,13 @@ glade_property_klass_init (GladePropertyKlass * prop_class)
                           _("Sensitive"),
                           _("This gives backends control to set property sensitivity"),
                           TRUE, G_PARAM_READWRITE);
+
+    properties[PROP_BINDING_SOURCE] =
+      g_param_spec_pointer ("binding-source",
+                          _("Binding Source Property"),
+                          _("If the property is the target of a property "
+                            "binding, this is the property it is bound to"),
+                          G_PARAM_READWRITE);
 
   properties[PROP_I18N_CONTEXT] =
     g_param_spec_string ("i18n-context",
@@ -1237,6 +1262,103 @@ glade_property_write (GladeProperty * property,
 }
 
 /**
+ * glade_property_binding_read:
+ * @node: The #GladeXmlNode to read from
+ * @widget: The widget to which the target property belongs
+ *
+ * Read the binding information from @node and save it in
+ * the target #GladeProperty of @widget.
+ *
+ * Note that the actual binding source property will only be
+ * resolved after the project is completely loaded.
+ */
+void
+glade_property_binding_read (GladeXmlNode *node,
+                             GladeWidget  *widget)
+{
+  gchar *to, *from, *source;
+  GladeProperty *target;
+  
+  g_return_if_fail (node && glade_xml_node_verify (node, GLADE_XML_TAG_BINDING));
+  g_return_if_fail (GLADE_IS_WIDGET (widget));
+
+  to = glade_xml_get_property_string_required (node, GLADE_XML_TAG_TO, NULL);
+  if (!to)
+    return;
+
+  target = glade_widget_get_property (widget, to);
+  g_free (to);
+
+  if (!target)
+    return;
+
+  from = glade_xml_get_property_string_required (node, GLADE_XML_TAG_FROM, NULL);
+  source = glade_xml_get_property_string_required (node, GLADE_XML_TAG_SOURCE, NULL);
+
+  if (from && source)
+    {
+      g_object_set_data_full (G_OBJECT (target),
+                              "glade-source-property",
+                              g_strdup (from), g_free);
+      g_object_set_data_full (G_OBJECT (target),
+                              "glade-source-object",
+                              g_strdup (source), g_free);
+    }
+
+  g_free (from);
+  g_free (source);
+}
+
+/**
+ * glade_property_binding_write:
+ * @property: A #GladeProperty
+ * @context: A #GladeXmlContext
+ * @node: A #GladeXmlNode
+ *
+ * Write the binding information of @property to @node.
+ */
+void
+glade_property_binding_write (GladeProperty   *property,
+                              GladeXmlContext *context,
+                              GladeXmlNode    *node)
+{
+  GladeXmlNode *binding_node;
+  GladeProperty *source_prop;
+  const gchar *to, *from, *source;
+  GladeWidget *widget;
+
+  g_return_if_fail (GLADE_IS_PROPERTY (property));
+  g_return_if_fail (node != NULL);
+
+  if (!glade_property_get_binding_source (property))
+    return;
+  
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET)))
+    return;
+
+  binding_node = glade_xml_node_new (context, GLADE_XML_TAG_BINDING);
+  glade_xml_node_append_child (node, binding_node);
+
+  to = glade_property_class_id (glade_property_get_class (property));
+
+  source_prop = glade_property_get_binding_source (property);  
+  from = glade_property_class_id (glade_property_get_class (source_prop));
+
+  widget = glade_property_get_widget (source_prop);
+  source = glade_widget_get_name (widget);
+  
+  glade_xml_node_set_property_string (binding_node,
+                                      GLADE_XML_TAG_TO,
+                                      to);
+  glade_xml_node_set_property_string (binding_node,
+                                      GLADE_XML_TAG_FROM,
+                                      from);
+  glade_xml_node_set_property_string (binding_node,
+                                      GLADE_XML_TAG_SOURCE,
+                                      source);
+}
+
+/**
  * glade_property_add_object:
  * @property: a #GladeProperty
  * @object: The #GObject to add
@@ -1563,29 +1685,82 @@ glade_property_get_state (GladeProperty      *property)
   return property->priv->state;
 }
 
-GladeBinding *
-glade_property_get_binding (GladeProperty    *property)
+GladeProperty *
+glade_property_get_binding_source (GladeProperty *property)
 {
   g_return_val_if_fail (GLADE_IS_PROPERTY (property), NULL);
   
-  return property->priv->binding;
+  return property->priv->binding_source;
+}
+
+static void
+glade_property_binding_source_weak_notify_cb (GladeProperty *property,
+                                              GObject       *binding_source)
+{
+  property->priv->binding_handler = 0;
+  g_object_notify_by_pspec (G_OBJECT (property), properties[PROP_BINDING_SOURCE]);  
+}
+
+static void
+glade_property_binding_source_value_changed_cb (GladeProperty *prop,
+                                                GValue        *old_value,
+                                                GValue        *new_value,
+                                                GladeProperty *property)
+{
+  glade_property_set_value (property, new_value);
+}
+
+static void
+glade_property_update_binding (GladeProperty *property,
+                               GladeProperty *old_source)
+{
+  GladeProperty *source;
+  GValue source_val = {0};
+
+  if (property->priv->binding_handler)
+    g_signal_handler_disconnect (old_source, property->priv->binding_handler);
+
+  source = glade_property_get_binding_source (property);
+
+  if (source)
+    {
+      property->priv->binding_handler =
+        g_signal_connect (source, "value-changed",
+                          G_CALLBACK (glade_property_binding_source_value_changed_cb),
+                          property);
+
+      /* Synchronize the source and target property values once */
+      glade_property_get_value (source, &source_val);
+      glade_property_set_value (property, &source_val);
+    }
+  else
+    property->priv->binding_handler = 0;
+
 }
 
 void
-glade_property_set_binding (GladeProperty    *property,
-                            GladeBinding     *binding)
+glade_property_set_binding_source (GladeProperty *property,
+                                   GladeProperty *binding_source)
 {
-  g_return_if_fail (GLADE_IS_PROPERTY (property));
-  g_return_if_fail ((GLADE_IS_BINDING (binding)
-                     && glade_binding_get_target (binding) == property)
-                    || !binding);
-
-  if (property->priv->binding)
-    g_object_unref (property->priv->binding);
+  GladeProperty *old_source;
   
-  property->priv->binding = binding;
-  if (binding)
-    g_object_ref (binding);
+  g_return_if_fail (GLADE_IS_PROPERTY (property));
+  g_return_if_fail (!binding_source || GLADE_IS_PROPERTY (binding_source));
+
+  old_source = property->priv->binding_source;
+  property->priv->binding_source = binding_source;
+
+  if (old_source)
+    g_object_weak_unref (G_OBJECT (old_source),
+                         (GWeakNotify) glade_property_binding_source_weak_notify_cb,
+                         property);
+  if (binding_source)
+    g_object_weak_ref (G_OBJECT (binding_source),
+                       (GWeakNotify) glade_property_binding_source_weak_notify_cb,
+                       property);
+
+  glade_property_update_binding (property, old_source);
+  g_object_notify_by_pspec (G_OBJECT (property), properties[PROP_BINDING_SOURCE]);
 }
 
 static gint glade_property_su_stack = 0;
