@@ -641,6 +641,12 @@ glade_popup_bind_property_cb (GtkMenuItem * item, GladeProperty * property)
 }
 
 static void
+glade_popup_unbind_property_cb (GtkMenuItem * item, GladeProperty * property)
+{
+  glade_command_bind_property (property, NULL);
+}
+
+static void
 glade_popup_clear_property_cb (GtkMenuItem * item, GladeProperty * property)
 {
   GValue value = { 0, };
@@ -693,11 +699,16 @@ glade_popup_property_pop (GladeProperty * property, GdkEventButton * event)
 
   popup_menu = gtk_menu_new ();
 
-  glade_popup_append_item (popup_menu, 0, _("Bind to source..."),
-                           NULL, TRUE, glade_popup_bind_property_cb, property);
+  if (glade_property_get_binding_source (property))
+      glade_popup_append_item (popup_menu, 0, _("Unbind"),
+                               NULL, TRUE, glade_popup_unbind_property_cb, property);
+  else
+      glade_popup_append_item (popup_menu, 0, _("Bind to source..."),
+                               NULL, TRUE, glade_popup_bind_property_cb, property);
 
   glade_popup_append_item (popup_menu, GTK_STOCK_CLEAR, _("Set default value"),
-                           NULL, TRUE, glade_popup_clear_property_cb, property);
+                           NULL, glade_property_get_binding_source (property) == NULL,
+                           glade_popup_clear_property_cb, property);
 
   g_object_get (adaptor, "book", &book, NULL);
   if (!glade_property_class_get_virtual (pclass) &&
