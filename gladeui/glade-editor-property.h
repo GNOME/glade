@@ -132,9 +132,10 @@ gboolean             glade_editor_property_show_object_dialog (GladeProject     
 							       GladeWidget        *exception,
 							       GladeWidget       **object);
 
-gboolean             glade_editor_property_show_bind_dialog (GtkWidget            *parent,
-                                                             gchar               **source_obj,
-                                                             gchar               **source_prop);
+gboolean             glade_editor_property_show_bind_dialog (GladeProject         *project,
+                                                             GtkWidget            *parent,
+                                                             GladeProperty        *target,
+                                                             GladeProperty       **source);
 
 /* Generic eprops */
 #define GLADE_TYPE_EPROP_NUMERIC         (glade_eprop_numeric_get_type())
