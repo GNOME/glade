@@ -620,24 +620,14 @@ glade_popup_palette_pop (GladePalette       *palette,
 static void
 glade_popup_bind_property_cb (GtkMenuItem * item, GladeProperty * property)
 {
-  gchar *source_obj, *source_prop;
-
-  if (glade_editor_property_show_bind_dialog (NULL, &source_obj, &source_prop))
-    {
-      GladeWidget *widget = glade_property_get_widget (property);
-      GladeProject *project = glade_widget_get_project (widget);
-      GladeWidget *source_w;
-      GladeProperty *source;
-
-      source_w = glade_project_get_widget_by_name (project, source_obj);
-      g_assert (source_w != NULL);
-      source = glade_widget_get_property (source_w, source_prop);
-      g_assert (source != NULL);
-      
-      glade_command_bind_property (property, source);
-      g_free (source_obj);
-      g_free (source_prop);
-    }
+  GladeWidget *widget = glade_property_get_widget (property);
+  GladeProject *project = glade_widget_get_project (widget);
+  GladeProperty *source;
+  GtkWidget *parent =
+    gtk_widget_get_toplevel (GTK_WIDGET (glade_widget_get_object (widget)));
+  
+  if (glade_editor_property_show_bind_dialog (project, parent, property, &source))
+    glade_command_bind_property (property, source);
 }
 
 static void
