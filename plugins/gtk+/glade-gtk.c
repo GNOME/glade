@@ -822,41 +822,37 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
     }
   else if (strncmp (action_path, "add_parent/", 11) == 0)
     {
+      const gchar *action = action_path + 11;
       GType new_type = 0;
-      GladeProperty *property;
 
-      if (strcmp (action_path + 11, "alignment") == 0)
+      if (strcmp (action, "alignment") == 0)
         new_type = GTK_TYPE_ALIGNMENT;
-      else if (strcmp (action_path + 11, "viewport") == 0)
+      else if (strcmp (action, "viewport") == 0)
         new_type = GTK_TYPE_VIEWPORT;
-      else if (strcmp (action_path + 11, "eventbox") == 0)
+      else if (strcmp (action, "eventbox") == 0)
         new_type = GTK_TYPE_EVENT_BOX;
-      else if (strcmp (action_path + 11, "frame") == 0)
+      else if (strcmp (action, "frame") == 0)
         new_type = GTK_TYPE_FRAME;
-      else if (strcmp (action_path + 11, "aspect_frame") == 0)
+      else if (strcmp (action, "aspect_frame") == 0)
         new_type = GTK_TYPE_ASPECT_FRAME;
-      else if (strcmp (action_path + 11, "scrolled_window") == 0)
+      else if (strcmp (action, "scrolled_window") == 0)
         new_type = GTK_TYPE_SCROLLED_WINDOW;
-      else if (strcmp (action_path + 11, "expander") == 0)
+      else if (strcmp (action, "expander") == 0)
         new_type = GTK_TYPE_EXPANDER;
-      else if (strcmp (action_path + 11, "table") == 0)
+      else if (strcmp (action, "table") == 0)
         new_type = GTK_TYPE_TABLE;
-      else if (strcmp (action_path + 11, "hbox") == 0)
-        new_type = GTK_TYPE_HBOX;
-      else if (strcmp (action_path + 11, "vbox") == 0)
-        new_type = GTK_TYPE_VBOX;
-      else if (strcmp (action_path + 11, "hpaned") == 0)
-        new_type = GTK_TYPE_HPANED;
-      else if (strcmp (action_path + 11, "vpaned") == 0)
-        new_type = GTK_TYPE_VPANED;
-
+      else if (strcmp (action, "box") == 0)
+        new_type = GTK_TYPE_BOX;
+      else if (strcmp (action, "paned") == 0)
+        new_type = GTK_TYPE_PANED;
 
       if (new_type)
         {
           GladeWidgetAdaptor *adaptor =
-              glade_widget_adaptor_get_by_type (new_type);
+            glade_widget_adaptor_get_by_type (new_type);
           GList *saved_props, *prop_cmds;
 	  GladeWidget *gnew_parent;
+          GladeProperty *property;
 
           /* Dont add non-scrollable widgets to scrolled windows... */
           if (gparent &&
