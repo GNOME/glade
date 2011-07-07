@@ -190,10 +190,36 @@ glade_editor_property_loading (GladeEditorProperty *eprop)
 
 enum {
   BSOURCE_COLUMN_PROP_NAME,
-  BSOURCE_COLUMN_SELECTABLE,
+  BSOURCE_COLUMN_PROP_SELECTABLE,
   BSOURCE_COLUMN_PROP,
   BSOURCE_NUM_COLUMNS
 };
+
+static int
+property_sort_func (GtkTreeModel *model,
+                    GtkTreeIter  *a,
+                    GtkTreeIter  *b,
+                    gpointer      user_data)
+{
+  char *a_name, *b_name;
+  gboolean a_selectable, b_selectable;
+
+  gtk_tree_model_get (model, a,
+                      BSOURCE_COLUMN_PROP_NAME, &a_name,
+                      BSOURCE_COLUMN_PROP_SELECTABLE, &a_selectable,
+                      -1);
+  gtk_tree_model_get (model, b,
+                      BSOURCE_COLUMN_PROP_NAME, &b_name,
+                      BSOURCE_COLUMN_PROP_SELECTABLE, &b_selectable,
+                      -1);
+
+  if (a_selectable && !b_selectable)
+    return -1;
+  else if (b_selectable && !a_selectable)
+    return 1;
+  else
+    return strcmp (a_name, b_name);
+}
 
 static GtkWidget *
 glade_editor_property_binding_source_view (GladeProperty *target)
@@ -223,11 +249,18 @@ glade_editor_property_binding_source_view (GladeProperty *target)
   g_object_set (G_OBJECT (renderer), "editable", FALSE, NULL);
   gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view_widget),
                                                1, _("Name"), renderer,
-                                               "text", BSOURCE_COLUMN_PROP_NAME,
+                                               "text",
+                                               BSOURCE_COLUMN_PROP_NAME,
+                                               "sensitive",
+                                               BSOURCE_COLUMN_PROP_SELECTABLE,
                                                NULL);
 
+  gtk_tree_sortable_set_default_sort_func (GTK_TREE_SORTABLE (model),
+                                           property_sort_func,
+                                           NULL, NULL);
+
   gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (model),
-                                        BSOURCE_COLUMN_PROP_NAME,
+                                        GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID,
                                         GTK_SORT_ASCENDING);
 
   /* Remember the target property for filtering the list by type */
@@ -271,8 +304,7 @@ glade_editor_property_update_binding_source_view (GtkWidget        *bsrc_view,
       GtkTreeIter iter;
 
       if (!glade_property_get_sensitive (prop)
-          || !glade_property_get_enabled (prop)
-          || !g_type_is_a (type, target_type))
+          || !glade_property_get_enabled (prop))
         continue;
       
       gtk_list_store_append (model, &iter);
@@ -280,7 +312,9 @@ glade_editor_property_update_binding_source_view (GtkWidget        *bsrc_view,
                           BSOURCE_COLUMN_PROP, prop,
                           BSOURCE_COLUMN_PROP_NAME,
                           glade_property_class_get_name (pclass),
-                          -1);
+                          BSOURCE_COLUMN_PROP_SELECTABLE,
+                          g_type_is_a (type, target_type),
+                          -1);      
     }
 }
 
