@@ -318,6 +318,29 @@ glade_editor_property_update_binding_source_view (GtkWidget        *bsrc_view,
     }
 }
 
+static void
+glade_editor_property_update_bind_dialog (GtkWidget        *dialog,
+                                          GtkTreeSelection *prop_selection)
+{
+  GtkTreeModel *model;
+  GtkTreeIter iter;
+  
+  if (gtk_tree_selection_get_selected (prop_selection, &model, &iter))
+    {
+      gboolean selectable;
+
+      gtk_tree_model_get (model, &iter,
+                          BSOURCE_COLUMN_PROP_SELECTABLE, &selectable,
+                          -1);
+      
+      gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog),
+                                         GTK_RESPONSE_OK, selectable);
+    }
+  else
+    gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog),
+                                       GTK_RESPONSE_OK, FALSE);
+}
+
 /**
  * glade_editor_property_show_bind_dialog:
  * @parent: The parent widget for the dialog.
@@ -349,9 +372,10 @@ glade_editor_property_show_bind_dialog (GladeProject * project,
                                                     (parent)) : NULL,
                                         GTK_DIALOG_MODAL,
                                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                        GTK_STOCK_OK, GTK_RESPONSE_OK, NULL);
+                                        "Bind", GTK_RESPONSE_OK, NULL);
 
   gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
+  gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog), GTK_RESPONSE_OK, FALSE);
 
   gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
                                            GTK_RESPONSE_OK,
@@ -410,6 +434,11 @@ glade_editor_property_show_bind_dialog (GladeProject * project,
                             "changed",
                             G_CALLBACK (glade_editor_property_update_binding_source_view),
                             prop_view);
+  
+  g_signal_connect_swapped (gtk_tree_view_get_selection (GTK_TREE_VIEW (prop_view)),
+                            "changed",
+                            G_CALLBACK (glade_editor_property_update_bind_dialog),
+                            dialog);
 
   gtk_widget_show_all (hbox);
   
