@@ -899,10 +899,13 @@ glade_command_bind_property (GladeProperty * target, GladeProperty * source)
   cmd = GLADE_COMMAND (me);
   cmd->priv->project =
     glade_widget_get_project (glade_property_get_widget (me->target));
+
   cmd->priv->description =
-      g_strdup_printf (_("Binding property \"%s\" of %s"),
-                       glade_property_class_id (glade_property_get_class (target)),
-                       glade_widget_get_name (glade_property_get_widget (target)));
+    g_strdup_printf ((source != NULL)
+                     ? _("Binding property \"%s\" of %s")
+                     : _("Unbinding property \"%s\" of %s"),
+                     glade_property_class_id (glade_property_get_class (target)),
+                     glade_widget_get_name (glade_property_get_widget (target)));
 
   glade_command_check_group (GLADE_COMMAND (me));
 
