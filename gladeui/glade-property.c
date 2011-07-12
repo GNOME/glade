@@ -108,10 +108,27 @@ struct _GladePropertyPrivate {
                                         * GladeProperty's value is bound to
                                         */
 
-  gulong              binding_handler; /* Signal handler to synchronize
-                                        * the GladeProperty with its binding
-                                        * source (if it is bound)
-                                        */
+  gboolean            binding_source_valid;  /* TRUE if the property's binding source is
+                                              * valid, that is, if the binding source widget
+                                              * is part of the project (we cannot just
+                                              * set binding_source to NULL if the source widget
+                                              * is removed as we want to support undo)
+                                              */
+
+  gulong              binding_handler;  /* Signal handler to synchronize
+                                         * the GladeProperty with its binding
+                                         * source (if it is bound)
+                                         */
+
+  gulong              binding_widget_remove_handler;  /* Signal handler to update
+                                                       * binding_source_valid when the
+                                                       * binding source widget is removed
+                                                       */
+                                                    
+  gulong              binding_widget_add_handler;     /* Signal handler to update
+                                                       * binding_source_valid when the
+                                                       * binding source widget is added back
+                                                       */
 
   /* Used only for translatable strings. */
   guint     i18n_translatable : 1;
@@ -620,7 +637,10 @@ glade_property_init (GladeProperty * property)
   property->priv->enabled = TRUE;
   property->priv->sensitive = TRUE;
   property->priv->binding_source = NULL;
+  property->priv->binding_source_valid = TRUE;  
   property->priv->binding_handler = 0;
+  property->priv->binding_widget_remove_handler = 0;
+  property->priv->binding_widget_add_handler = 0;  
   property->priv->i18n_translatable = TRUE;
   property->priv->i18n_comment = NULL;
   property->priv->sync_tolerance = 1;
@@ -1688,8 +1708,11 @@ GladeProperty *
 glade_property_get_binding_source (GladeProperty *property)
 {
   g_return_val_if_fail (GLADE_IS_PROPERTY (property), NULL);
-  
-  return property->priv->binding_source;
+
+  if (property->priv->binding_source_valid)
+    return property->priv->binding_source;
+  else
+    return NULL;
 }
 
 static void
@@ -1697,6 +1720,8 @@ glade_property_binding_source_weak_notify_cb (GladeProperty *property,
                                               GObject       *binding_source)
 {
   property->priv->binding_handler = 0;
+  property->priv->binding_widget_remove_handler = 0;
+  property->priv->binding_widget_add_handler = 0;
   g_object_notify_by_pspec (G_OBJECT (property), properties[PROP_BINDING_SOURCE]);  
 }
 
@@ -1710,31 +1735,78 @@ glade_property_binding_source_value_changed_cb (GladeProperty *prop,
 }
 
 static void
+glade_property_binding_source_widget_cb (GladeProject *project,
+                                         GladeWidget *widget,
+                                         GladeProperty *property)
+{
+  GladePropertyPrivate *priv = property->priv;
+
+  if (widget == glade_property_get_widget (priv->binding_source))
+    {
+      priv->binding_source_valid = !priv->binding_source_valid;
+      g_object_notify_by_pspec (G_OBJECT (property),
+                                properties[PROP_BINDING_SOURCE]);
+    }
+}
+
+static void
 glade_property_update_binding (GladeProperty *property,
                                GladeProperty *old_source)
 {
   GladeProperty *source;
   GValue source_val = {0};
 
-  if (property->priv->binding_handler)
-    g_signal_handler_disconnect (old_source, property->priv->binding_handler);
+  if (old_source)
+    {
+      GladeWidget *widget = glade_property_get_widget (old_source);
+      GladeProject *project = glade_widget_get_project (widget);
 
+      if (property->priv->binding_handler)
+        g_signal_handler_disconnect (old_source, property->priv->binding_handler);
+
+      if (property->priv->binding_widget_remove_handler)
+        g_signal_handler_disconnect (project,
+                                     property->priv->binding_widget_remove_handler);
+
+      if (property->priv->binding_widget_add_handler)
+        g_signal_handler_disconnect (project,
+                                     property->priv->binding_widget_add_handler);
+    }
+  
   source = glade_property_get_binding_source (property);
 
   if (source)
     {
+      GladeWidget *widget = glade_property_get_widget (source);
+      GladeProject *project = glade_widget_get_project (widget);
+
       property->priv->binding_handler =
         g_signal_connect (source, "value-changed",
                           G_CALLBACK (glade_property_binding_source_value_changed_cb),
                           property);
+
+      property->priv->binding_widget_remove_handler =
+        g_signal_connect (project, "remove-widget",
+                          G_CALLBACK (glade_property_binding_source_widget_cb),
+                          property);
+
+      property->priv->binding_widget_add_handler =
+        g_signal_connect (project, "add-widget",
+                          G_CALLBACK (glade_property_binding_source_widget_cb),
+                          property);
+
+      property->priv->binding_source_valid = TRUE;
 
       /* Synchronize the source and target property values once */
       glade_property_get_value (source, &source_val);
       glade_property_set_value (property, &source_val);
     }
   else
-    property->priv->binding_handler = 0;
-
+    {
+      property->priv->binding_handler = 0;
+      property->priv->binding_widget_remove_handler = 0;
+      property->priv->binding_widget_add_handler = 0;
+    }
 }
 
 void
