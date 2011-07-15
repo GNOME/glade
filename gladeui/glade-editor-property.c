@@ -89,6 +89,7 @@ struct _GladeEditorPropertyPrivate
   gulong              changed_id;     /* signal connection id for value changes          */
   gulong              enabled_id;     /* signal connection id for enable/disable changes */
   gulong              state_id;       /* signal connection id for state changes          */
+  gulong              binding_id;     /* signal connection id for binding source changes */
 	
   gboolean            loading;        /* True during glade_editor_property_load calls, this
 				       * is used to avoid feedback from input widgets.
@@ -796,6 +797,8 @@ glade_editor_property_load_common (GladeEditorProperty * eprop,
         g_signal_handler_disconnect (eprop->priv->property, eprop->priv->changed_id);
       if (eprop->priv->state_id > 0)
         g_signal_handler_disconnect (eprop->priv->property, eprop->priv->state_id);
+      if (eprop->priv->binding_id > 0)
+        g_signal_handler_disconnect (eprop->priv->property, eprop->priv->binding_id);
       if (eprop->priv->enabled_id > 0)
         g_signal_handler_disconnect (eprop->priv->property, eprop->priv->enabled_id);
 
@@ -804,7 +807,8 @@ glade_editor_property_load_common (GladeEditorProperty * eprop,
       eprop->priv->changed_id = 0;
       eprop->priv->enabled_id = 0;
       eprop->priv->state_id = 0;
-
+      eprop->priv->binding_id = 0;
+      
       /* Unref it here */
       g_object_weak_unref (G_OBJECT (eprop->priv->property),
                            (GWeakNotify) glade_eprop_property_finalized, eprop);
@@ -852,7 +856,7 @@ glade_editor_property_load_common (GladeEditorProperty * eprop,
           g_signal_connect (G_OBJECT (eprop->priv->property),
                             "notify::state",
                             G_CALLBACK (glade_editor_property_state_cb), eprop);
-      eprop->priv->state_id =
+      eprop->priv->binding_id =
           g_signal_connect (G_OBJECT (eprop->priv->property),
                             "notify::binding-source",
                             G_CALLBACK (glade_editor_property_binding_source_cb), eprop);
