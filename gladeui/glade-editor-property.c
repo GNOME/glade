@@ -103,11 +103,17 @@ struct _GladeEditorPropertyPrivate
 					*/
 };
 
+typedef enum {
+  OBJECT_VIEW_CHECK,
+  OBJECT_VIEW_RADIO,
+  OBJECT_VIEW_BROWSE
+} ObjectViewKind;
 
-static GtkWidget *glade_eprop_object_view (gboolean radio);
+static GtkWidget *glade_eprop_object_view (ObjectViewKind kind);
 
 static void glade_eprop_object_populate_view (GladeProject *project,
                                               GtkTreeView *view,
+                                              ObjectViewKind kind,
                                               GList *selected,
                                               GList *exceptions,
                                               GType object_type,
@@ -422,8 +428,9 @@ glade_editor_property_show_bind_dialog (GladeProject * project,
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (prop_sw), GTK_SHADOW_IN);
   gtk_box_pack_start (GTK_BOX (prop_vbox), prop_sw, TRUE, TRUE, 0);
 
-  obj_view = glade_eprop_object_view (TRUE);
+  obj_view = glade_eprop_object_view (OBJECT_VIEW_BROWSE);
   glade_eprop_object_populate_view (project, GTK_TREE_VIEW (obj_view),
+                                    OBJECT_VIEW_BROWSE,
                                     NULL, NULL, G_TYPE_OBJECT, FALSE);
   gtk_tree_view_expand_all (GTK_TREE_VIEW (obj_view));
   gtk_container_add (GTK_CONTAINER (obj_sw), obj_view);
@@ -2852,7 +2859,9 @@ search_list (GList * list, gpointer data)
  * in the model are the associated GladeWidgets.
  */
 static void
-glade_eprop_object_populate_view_real (GtkTreeStore * model,
+glade_eprop_object_populate_view_real (ObjectViewKind kind,
+                                       GtkTreeStore * model,
+                                       GtkTreeSelection * selection,
                                        GtkTreeIter * parent_iter,
                                        GList * widgets,
                                        GList * selected_widgets,
@@ -2883,7 +2892,14 @@ glade_eprop_object_populate_view_real (GtkTreeStore * model,
 
           if (good_type || has_decendant)
             {
+              gboolean selected;
+              
               gtk_tree_store_append (model, &iter, parent_iter);
+
+              selected =  good_type && search_list (selected_widgets, widget);
+              if (selected && kind == OBJECT_VIEW_BROWSE)
+                gtk_tree_selection_select_iter (selection, &iter);
+              
               gtk_tree_store_set
                   (model, &iter,
                    OBJ_COLUMN_WIDGET, widget,
@@ -2906,7 +2922,8 @@ glade_eprop_object_populate_view_real (GtkTreeStore * model,
               GtkTreeIter *copy = NULL;
 
               copy = gtk_tree_iter_copy (&iter);
-              glade_eprop_object_populate_view_real (model, copy, children,
+              glade_eprop_object_populate_view_real (kind, model, selection,
+                                                     copy, children,
                                                      selected_widgets,
                                                      exception_widgets,
                                                      object_type, parentless);
@@ -2921,11 +2938,13 @@ glade_eprop_object_populate_view_real (GtkTreeStore * model,
 static void
 glade_eprop_object_populate_view (GladeProject * project,
                                   GtkTreeView * view,
+                                  ObjectViewKind kind,
                                   GList * selected,
                                   GList * exceptions,
                                   GType object_type, gboolean parentless)
 {
   GtkTreeStore *model = (GtkTreeStore *) gtk_tree_view_get_model (view);
+  GtkTreeSelection *selection = gtk_tree_view_get_selection (view);
   GList *list, *toplevels = NULL;
 
   /* Make a list of only the toplevel widgets */
@@ -2941,8 +2960,10 @@ glade_eprop_object_populate_view (GladeProject * project,
     }
 
   /* add the widgets and recurse */
-  glade_eprop_object_populate_view_real (model, NULL, toplevels, selected,
-                                         exceptions, object_type, parentless);
+  glade_eprop_object_populate_view_real (kind, model, selection,
+                                         NULL, toplevels, selected,
+                                         exceptions, object_type,
+                                         parentless);
   g_list_free (toplevels);
 }
 
@@ -2982,9 +3003,10 @@ glade_eprop_object_selected (GtkCellRendererToggle * cell,
 {
   GtkTreePath *path = gtk_tree_path_new_from_string (path_str);
   GtkTreeIter iter;
-  gboolean enabled, radio;
+  gboolean enabled;
+  ObjectViewKind kind;
 
-  radio = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (model), "radio-list"));
+  kind = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (model), "kind"));
 
 
   gtk_tree_model_get_iter (model, &iter, path);
@@ -2992,17 +3014,18 @@ glade_eprop_object_selected (GtkCellRendererToggle * cell,
 
   /* Clear the rest of the view first
    */
-  if (radio)
+  if (kind == OBJECT_VIEW_RADIO)
     gtk_tree_model_foreach (model, glade_eprop_object_clear_iter, NULL);
 
   gtk_tree_store_set (GTK_TREE_STORE (model), &iter,
-                      OBJ_COLUMN_SELECTED, radio ? TRUE : !enabled, -1);
+                      OBJ_COLUMN_SELECTED,
+                      (kind == OBJECT_VIEW_RADIO) ? TRUE : !enabled, -1);
 
   gtk_tree_path_free (path);
 }
 
 static GtkWidget *
-glade_eprop_object_view (gboolean radio)
+glade_eprop_object_view (ObjectViewKind kind)
 {
   GtkWidget *view_widget;
   GtkTreeModel *model;
@@ -3018,7 +3041,7 @@ glade_eprop_object_view (gboolean radio)
                                                                  * therefore can be selected.
                                                                  */
 
-  g_object_set_data (G_OBJECT (model), "radio-list", GINT_TO_POINTER (radio));
+  g_object_set_data (G_OBJECT (model), "kind", GINT_TO_POINTER (kind));
 
   view_widget = gtk_tree_view_new_with_model (model);
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (view_widget), FALSE);
@@ -3038,17 +3061,21 @@ glade_eprop_object_view (gboolean radio)
   gtk_tree_view_set_expander_column (GTK_TREE_VIEW (view_widget), column);
 
         /************************ selected column ************************/
-  renderer = gtk_cell_renderer_toggle_new ();
-  g_object_set (G_OBJECT (renderer),
-                "mode", GTK_CELL_RENDERER_MODE_ACTIVATABLE,
-                "activatable", TRUE, "radio", radio, NULL);
-  g_signal_connect (renderer, "toggled",
-                    G_CALLBACK (glade_eprop_object_selected), model);
-  gtk_tree_view_insert_column_with_attributes
-      (GTK_TREE_VIEW (view_widget), 0,
-       NULL, renderer,
-       "visible", OBJ_COLUMN_SELECTABLE,
-       "sensitive", OBJ_COLUMN_SELECTABLE, "active", OBJ_COLUMN_SELECTED, NULL);
+  if (kind != OBJECT_VIEW_BROWSE)
+    {
+      renderer = gtk_cell_renderer_toggle_new ();
+      g_object_set (G_OBJECT (renderer),
+                    "mode", GTK_CELL_RENDERER_MODE_ACTIVATABLE,
+                    "activatable", TRUE,
+                    "radio", kind == OBJECT_VIEW_RADIO, NULL);
+      g_signal_connect (renderer, "toggled",
+                        G_CALLBACK (glade_eprop_object_selected), model);
+      gtk_tree_view_insert_column_with_attributes
+        (GTK_TREE_VIEW (view_widget), 0,
+         NULL, renderer,
+         "visible", OBJ_COLUMN_SELECTABLE,
+         "sensitive", OBJ_COLUMN_SELECTABLE, "active", OBJ_COLUMN_SELECTED, NULL);
+    }
 
         /********************* widget name column *********************/
   renderer = gtk_cell_renderer_text_new ();
@@ -3176,9 +3203,10 @@ glade_editor_property_show_object_dialog (GladeProject * project,
   if (exception)
     exception_list = g_list_prepend (exception_list, exception);
 
-  tree_view = glade_eprop_object_view (TRUE);
-  glade_eprop_object_populate_view (project,
+  tree_view = glade_eprop_object_view (OBJECT_VIEW_RADIO);
+  glade_eprop_object_populate_view (project, 
                                     GTK_TREE_VIEW (tree_view),
+                                    OBJECT_VIEW_RADIO,
                                     selected_list, exception_list,
                                     object_type, FALSE);
   g_list_free (selected_list);
@@ -3319,8 +3347,9 @@ glade_eprop_object_show_dialog (GtkWidget * dialog_button,
                                     (g_value_get_object
                                      (glade_property_inline_value (eprop->priv->property))));
 
-  tree_view = glade_eprop_object_view (TRUE);
+  tree_view = glade_eprop_object_view (OBJECT_VIEW_RADIO);
   glade_eprop_object_populate_view (project, GTK_TREE_VIEW (tree_view),
+                                    OBJECT_VIEW_RADIO,
                                     selected_list, exception_list,
                                     pspec->value_type,
                                     glade_property_class_parentless_widget (eprop->priv->klass));
@@ -3611,7 +3640,7 @@ glade_eprop_objects_show_dialog (GtkWidget * dialog_button,
                                   GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), GTK_SHADOW_IN);
 
-  tree_view = glade_eprop_object_view (FALSE);
+  tree_view = glade_eprop_object_view (OBJECT_VIEW_CHECK);
 
 
   exception_list = g_list_prepend (exception_list, widget);
@@ -3626,6 +3655,7 @@ glade_eprop_objects_show_dialog (GtkWidget * dialog_button,
                                         glade_widget_get_from_gobject (l->data));
     }
   glade_eprop_object_populate_view (project, GTK_TREE_VIEW (tree_view),
+                                    OBJECT_VIEW_CHECK,
                                     selected_list, exception_list,
                                     pspec->value_type,
                                     glade_property_class_parentless_widget (eprop->priv->klass));
