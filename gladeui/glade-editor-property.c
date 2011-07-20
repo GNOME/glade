@@ -311,7 +311,8 @@ glade_editor_property_update_binding_source_view (GtkWidget        *bsrc_view,
       GtkTreeIter iter;
 
       if (!glade_property_get_sensitive (prop)
-          || !glade_property_get_enabled (prop))
+          || !glade_property_get_enabled (prop)
+          || prop == target)
         continue;
       
       gtk_list_store_append (model, &iter);
