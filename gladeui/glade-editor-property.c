@@ -783,6 +783,7 @@ glade_eprop_property_finalized (GladeEditorProperty * eprop,
   eprop->priv->changed_id = 0;
   eprop->priv->enabled_id = 0;
   eprop->priv->state_id = 0;
+  eprop->priv->binding_id = 0;  
   eprop->priv->property = NULL;
 
   glade_editor_property_load (eprop, NULL);
