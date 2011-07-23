@@ -202,6 +202,68 @@ enum {
   BSOURCE_NUM_COLUMNS
 };
 
+static void
+glade_editor_property_update_binding_source_view (GtkWidget        *bsrc_view,
+                                                  GtkTreeSelection *obj_selection)
+{
+  GtkListStore *model;
+  GtkTreeModel *obj_model;
+  GtkTreeIter iter;
+  GladeWidget *widget = NULL;
+  GladeProperty *target;
+  GladePropertyClass *target_pclass;
+  GType target_type;
+  GList *p;
+
+  if (!gtk_tree_selection_get_selected (obj_selection,
+                                        (GtkTreeModel **) &obj_model,
+                                        &iter))
+      return;
+  
+  gtk_tree_model_get (GTK_TREE_MODEL (obj_model), &iter, 0, &widget, -1);
+
+  /* Do nothing if the selected widget hasn't really changed */
+  model = (GtkListStore *) gtk_tree_view_get_model (GTK_TREE_VIEW (bsrc_view));
+  if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter))
+    {
+      GladeProperty *prop;
+      
+      gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+                          BSOURCE_COLUMN_PROP, &prop, -1);
+
+      if (glade_property_get_widget (prop) == widget)
+        return;
+    }
+
+  target = g_object_get_data (G_OBJECT (bsrc_view), "target-property");
+  target_pclass = glade_property_get_class (target);
+  target_type = G_PARAM_SPEC_TYPE (glade_property_class_get_pspec (target_pclass));
+
+  gtk_list_store_clear (model);
+
+  for (p = glade_widget_get_properties (widget); p; p = p->next)
+    {
+      GladeProperty *prop = (GladeProperty *) p->data;
+      GladePropertyClass *pclass = glade_property_get_class (prop);
+      GType type = G_PARAM_SPEC_TYPE (glade_property_class_get_pspec (pclass));
+      GtkTreeIter iter;
+
+      if (!glade_property_get_sensitive (prop)
+          || !glade_property_get_enabled (prop)
+          || prop == target)
+        continue;
+      
+      gtk_list_store_append (model, &iter);
+      gtk_list_store_set (model, &iter,
+                          BSOURCE_COLUMN_PROP, prop,
+                          BSOURCE_COLUMN_PROP_NAME,
+                          glade_property_class_get_name (pclass),
+                          BSOURCE_COLUMN_PROP_SELECTABLE,
+                          g_type_is_a (type, target_type),
+                          -1);      
+    }
+}
+
 static int
 property_sort_func (GtkTreeModel *model,
                     GtkTreeIter  *a,
@@ -229,13 +291,15 @@ property_sort_func (GtkTreeModel *model,
 }
 
 static GtkWidget *
-glade_editor_property_binding_source_view (GladeProperty *target)
+glade_editor_property_binding_source_view (GladeProperty *target,
+                                           GtkTreeView   *object_view)
 {
   GtkWidget *view_widget;
   GtkTreeModel *model;
   GtkTreeSelection *selection;
   GtkCellRenderer *renderer;
-
+  GladeProperty *source;
+  
   model = (GtkTreeModel *) gtk_list_store_new (BSOURCE_NUM_COLUMNS,
                                                G_TYPE_STRING,   /* The property name */
                                                G_TYPE_BOOLEAN,  /* Whether this GladeProperty's
@@ -273,57 +337,38 @@ glade_editor_property_binding_source_view (GladeProperty *target)
   /* Remember the target property for filtering the list by type */
   g_object_set_data (G_OBJECT (view_widget), "target-property", target);
 
-  return view_widget;
-}
+  /* Load the properties of the selected object */
+  glade_editor_property_update_binding_source_view (view_widget,
+                                                    gtk_tree_view_get_selection (object_view));
 
-static void
-glade_editor_property_update_binding_source_view (GtkWidget        *bsrc_view,
-                                                  GtkTreeSelection *obj_selection)
-{
-  GtkListStore *model;
-  GtkTreeModel *obj_model;
-  GtkTreeIter iter;
-  GladeWidget *widget = NULL;
-  GladeProperty *target;
-  GladePropertyClass *target_pclass;
-  GType target_type;
-  GList *p;
-
-  model = (GtkListStore *) gtk_tree_view_get_model (GTK_TREE_VIEW (bsrc_view));
-  gtk_list_store_clear (model);
-
-  if (!gtk_tree_selection_get_selected (obj_selection,
-                                        (GtkTreeModel **) &obj_model,
-                                        &iter))
-      return;
-  else
-    gtk_tree_model_get (GTK_TREE_MODEL (obj_model), &iter, 0, &widget, -1);
-
-  target = g_object_get_data (G_OBJECT (bsrc_view), "target-property");
-  target_pclass = glade_property_get_class (target);
-  target_type = G_PARAM_SPEC_TYPE (glade_property_class_get_pspec (target_pclass));
-  
-  for (p = glade_widget_get_properties (widget); p; p = p->next)
+  /* Select the current binding source property (if there is one) */
+  source = glade_property_get_binding_source (target);
+  if (source)
     {
-      GladeProperty *prop = (GladeProperty *) p->data;
-      GladePropertyClass *pclass = glade_property_get_class (prop);
-      GType type = G_PARAM_SPEC_TYPE (glade_property_class_get_pspec (pclass));
       GtkTreeIter iter;
 
-      if (!glade_property_get_sensitive (prop)
-          || !glade_property_get_enabled (prop)
-          || prop == target)
-        continue;
-      
-      gtk_list_store_append (model, &iter);
-      gtk_list_store_set (model, &iter,
-                          BSOURCE_COLUMN_PROP, prop,
-                          BSOURCE_COLUMN_PROP_NAME,
-                          glade_property_class_get_name (pclass),
-                          BSOURCE_COLUMN_PROP_SELECTABLE,
-                          g_type_is_a (type, target_type),
-                          -1);      
+      gtk_tree_model_get_iter_first (model, &iter);
+      do
+        {
+          GladeProperty *prop;
+
+          gtk_tree_model_get (model, &iter,
+                              BSOURCE_COLUMN_PROP, &prop, -1);
+
+          if (prop == source)
+            {
+              gtk_tree_selection_select_iter (selection, &iter);
+              gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (view_widget),
+                                            gtk_tree_model_get_path (model,
+                                                                     &iter),
+                                            NULL, FALSE, 0, 0);
+              break;
+            }
+        }
+      while (gtk_tree_model_iter_next (model, &iter));
     }
+
+  return view_widget;
 }
 
 static void
@@ -368,7 +413,9 @@ glade_editor_property_show_bind_dialog (GladeProject * project,
   GtkWidget *hbox, *obj_vbox, *prop_vbox;
   GtkWidget *obj_label, *prop_label;
   GtkWidget *obj_sw, *prop_sw;
-  GtkWidget *obj_view, *prop_view;  
+  GtkWidget *obj_view, *prop_view;
+  GladeProperty *current_source;
+  GList *selected = NULL;
   gint res;
 
   g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
@@ -429,21 +476,27 @@ glade_editor_property_show_bind_dialog (GladeProject * project,
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (prop_sw), GTK_SHADOW_IN);
   gtk_box_pack_start (GTK_BOX (prop_vbox), prop_sw, TRUE, TRUE, 0);
 
+  /* Select the existing binding source if existent */
+  current_source = glade_property_get_binding_source (target);
+  if (current_source) 
+    selected = g_list_append (NULL, glade_property_get_widget (current_source));
+
   obj_view = glade_eprop_object_view (OBJECT_VIEW_BROWSE);
   glade_eprop_object_populate_view (project, GTK_TREE_VIEW (obj_view),
                                     OBJECT_VIEW_BROWSE,
-                                    NULL, NULL, G_TYPE_OBJECT, FALSE);
+                                    selected, NULL, G_TYPE_OBJECT, FALSE);
   gtk_tree_view_expand_all (GTK_TREE_VIEW (obj_view));
   gtk_container_add (GTK_CONTAINER (obj_sw), obj_view);
+  g_list_free (selected);
 
-  prop_view = glade_editor_property_binding_source_view (target);
+  prop_view =
+    glade_editor_property_binding_source_view (target, GTK_TREE_VIEW (obj_view));
   gtk_container_add (GTK_CONTAINER (prop_sw), prop_view);
 
   g_signal_connect_swapped (gtk_tree_view_get_selection (GTK_TREE_VIEW (obj_view)),
                             "changed",
                             G_CALLBACK (glade_editor_property_update_binding_source_view),
                             prop_view);
-  
   g_signal_connect_swapped (gtk_tree_view_get_selection (GTK_TREE_VIEW (prop_view)),
                             "changed",
                             G_CALLBACK (glade_editor_property_update_bind_dialog),
@@ -2898,10 +2951,19 @@ glade_eprop_object_populate_view_real (ObjectViewKind kind,
               
               gtk_tree_store_append (model, &iter, parent_iter);
 
-              selected =  good_type && search_list (selected_widgets, widget);
+              /* Literally select a selected widget when in browse mode */
+              selected = good_type && search_list (selected_widgets, widget);
               if (selected && kind == OBJECT_VIEW_BROWSE)
-                gtk_tree_selection_select_iter (selection, &iter);
-              
+                {
+                  GtkTreePath *path = gtk_tree_model_get_path (GTK_TREE_MODEL (model), &iter);
+                  
+                  /* Wee need to expand all parents of the row so that it is
+                   * visible, otherwise we can't select it */
+                  gtk_tree_view_expand_to_path (gtk_tree_selection_get_tree_view (selection),
+                                                 path);
+                  gtk_tree_selection_select_path (selection, path);
+                }
+
               gtk_tree_store_set
                   (model, &iter,
                    OBJ_COLUMN_WIDGET, widget,
@@ -2913,8 +2975,7 @@ glade_eprop_object_populate_view_real (ObjectViewKind kind,
                     */
                    OBJ_COLUMN_SELECTABLE,
                    good_type && !search_list (exception_widgets, widget),
-                   OBJ_COLUMN_SELECTED,
-                   good_type && search_list (selected_widgets, widget), -1);
+                   OBJ_COLUMN_SELECTED, selected, -1);
             }
 
           if (has_decendant &&
@@ -3047,6 +3108,14 @@ glade_eprop_object_view (ObjectViewKind kind)
 
   view_widget = gtk_tree_view_new_with_model (model);
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (view_widget), FALSE);
+
+  if (kind == OBJECT_VIEW_BROWSE)
+    {
+      GtkTreeSelection *selection;
+      
+      selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (view_widget));
+      gtk_tree_selection_set_mode (selection, GTK_SELECTION_BROWSE);
+    }
 
   /* Pass ownership to the view */
   g_object_unref (G_OBJECT (model));
