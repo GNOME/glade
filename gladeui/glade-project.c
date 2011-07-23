@@ -1042,7 +1042,7 @@ glade_project_new (void)
  * properties
  */
 static void
-glade_project_fix_object_props (GladeProject *project)
+glade_project_fix_props (GladeProject *project)
 {
   GList *l, *ll, *objects;
   GValue *value;
@@ -1658,10 +1658,11 @@ glade_project_load_internal (GladeProject *project)
   if (glade_util_file_is_writeable (priv->path) == FALSE)
     glade_project_set_readonly (project, TRUE);
 
-  /* Now we have to loop over all the object properties
-   * and fix'em all ('cause they probably weren't found)
+  /* Now we have to loop over all the object and bound properties
+   * and fix'em all ('cause the object they referred to  probably
+   * weren't found)
    */
-  glade_project_fix_object_props (project);
+  glade_project_fix_props (project);
 
   /* Emit "parse-finished" signal */
   g_signal_emit (project, glade_project_signals[PARSE_FINISHED], 0);
