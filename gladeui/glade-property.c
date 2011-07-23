@@ -115,6 +115,10 @@ struct _GladePropertyPrivate {
                                               * is removed as we want to support undo)
                                               */
 
+  gchar              *binding_transform_func;  /* the transformation function for
+                                                * the property's binding
+                                                */
+
   gulong              binding_handler;  /* Signal handler to synchronize
                                          * the GladeProperty with its binding
                                          * source (if it is bound)
@@ -153,6 +157,7 @@ enum
   PROP_ENABLED,
   PROP_SENSITIVE,
   PROP_BINDING_SOURCE,
+  PROP_BINDING_TRANSFORM_FUNC,
   PROP_I18N_TRANSLATABLE,
   PROP_I18N_CONTEXT,
   PROP_I18N_COMMENT,
@@ -545,6 +550,10 @@ glade_property_set_real_property (GObject * object,
         glade_property_set_binding_source (property,
                                            g_value_get_pointer (value));
         break;
+      case PROP_BINDING_TRANSFORM_FUNC:
+        glade_property_set_binding_transform_func (property,
+                                                   g_value_get_string (value));
+        break;
       case PROP_I18N_TRANSLATABLE:
         glade_property_i18n_set_translatable (property,
                                               g_value_get_boolean (value));
@@ -583,6 +592,10 @@ glade_property_get_real_property (GObject * object,
         g_value_set_pointer (value,
                              glade_property_get_binding_source (property));
         break;        
+      case PROP_BINDING_TRANSFORM_FUNC:
+        g_value_set_string (value,
+                            glade_property_get_binding_transform_func (property));
+        break;        
       case PROP_I18N_TRANSLATABLE:
         g_value_set_boolean (value,
                              glade_property_i18n_get_translatable (property));
@@ -615,6 +628,8 @@ glade_property_finalize (GObject * object)
   if (property->priv->binding_source)
     g_signal_handler_disconnect (property->priv->binding_source,
                                  property->priv->binding_handler);
+  if (property->priv->binding_transform_func)
+    g_free (property->priv->binding_transform_func);
   if (property->priv->i18n_comment)
     g_free (property->priv->i18n_comment);
   if (property->priv->i18n_context)
@@ -638,6 +653,7 @@ glade_property_init (GladeProperty * property)
   property->priv->sensitive = TRUE;
   property->priv->binding_source = NULL;
   property->priv->binding_source_valid = TRUE;  
+  property->priv->binding_transform_func = NULL;
   property->priv->binding_handler = 0;
   property->priv->binding_widget_remove_handler = 0;
   property->priv->binding_widget_add_handler = 0;  
@@ -695,6 +711,15 @@ glade_property_klass_init (GladePropertyKlass * prop_class)
                           _("If the property is the target of a property "
                             "binding, this is the property it is bound to"),
                           G_PARAM_READWRITE);
+
+    properties[PROP_BINDING_TRANSFORM_FUNC] =
+    g_param_spec_string ("binding-transform-func",
+                         _("Binding Transform Function"),
+                         _("The name of a function that transforms the value "
+                           "of the property's binding source before it is "
+                           "adopted"),
+                         NULL,
+                         G_PARAM_READWRITE);
 
   properties[PROP_I18N_CONTEXT] =
     g_param_spec_string ("i18n-context",
@@ -1316,6 +1341,17 @@ glade_property_binding_read (GladeXmlNode *node,
 
   if (from && source)
     {
+      gchar *transform_func;
+
+      transform_func =
+        glade_xml_get_property_string (node, GLADE_XML_TAG_TRANSFORM_FUNC);
+
+      if (transform_func)
+        {
+          glade_property_set_binding_transform_func (target, transform_func);
+          g_free (transform_func);
+        }
+
       g_object_set_data_full (G_OBJECT (target),
                               "glade-source-property",
                               g_strdup (from), g_free);
@@ -1343,7 +1379,7 @@ glade_property_binding_write (GladeProperty   *property,
 {
   GladeXmlNode *binding_node;
   GladeProperty *source_prop;
-  const gchar *to, *from, *source;
+  const gchar *to, *from, *source, *transform_func;
   GladeWidget *widget;
 
   g_return_if_fail (GLADE_IS_PROPERTY (property));
@@ -1375,6 +1411,12 @@ glade_property_binding_write (GladeProperty   *property,
   glade_xml_node_set_property_string (binding_node,
                                       GLADE_XML_TAG_SOURCE,
                                       source);
+
+  transform_func = glade_property_get_binding_transform_func (property);
+  if (transform_func)
+    glade_xml_node_set_property_string (binding_node,
+                                        GLADE_XML_TAG_TRANSFORM_FUNC,
+                                        transform_func);
 }
 
 /**
@@ -1832,6 +1874,25 @@ glade_property_set_binding_source (GladeProperty *property,
 
   glade_property_update_binding (property, old_source);
   g_object_notify_by_pspec (G_OBJECT (property), properties[PROP_BINDING_SOURCE]);
+}
+
+const gchar *
+glade_property_get_binding_transform_func (GladeProperty *property)
+{
+  g_return_val_if_fail (GLADE_IS_PROPERTY (property), NULL);
+
+  return property->priv->binding_transform_func;
+}
+
+void
+glade_property_set_binding_transform_func (GladeProperty *property,
+                                           const gchar   *transform_func)
+{
+  g_return_if_fail (GLADE_IS_PROPERTY (property));
+
+  property->priv->binding_transform_func = g_strdup (transform_func);
+  g_object_notify_by_pspec (G_OBJECT (property),
+                            properties[PROP_BINDING_TRANSFORM_FUNC]);  
 }
 
 static gint glade_property_su_stack = 0;

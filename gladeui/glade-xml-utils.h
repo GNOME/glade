@@ -46,6 +46,7 @@ typedef struct _GladeProject        GladeProject;
 #define GLADE_XML_TAG_BINDING                     "binding"
 #define GLADE_XML_TAG_TO                          "to"
 #define GLADE_XML_TAG_FROM                        "from"
+#define GLADE_XML_TAG_TRANSFORM_FUNC              "transform-func"
 #define GLADE_XML_TAG_SIGNAL                      "signal"
 #define GLADE_XML_TAG_HANDLER                     "handler"
 #define GLADE_XML_TAG_AFTER                       "after"
