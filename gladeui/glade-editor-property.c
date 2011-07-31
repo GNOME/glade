@@ -195,20 +195,29 @@ glade_editor_property_loading (GladeEditorProperty *eprop)
   return eprop->priv->loading;
 }
 
+typedef struct {
+  GladeProperty *target;
+  GtkWidget *widget;
+  GtkWidget *object_view;
+  GtkWidget *property_view;
+  gboolean transform_func_enabled;
+} GladeBindDialog;
+
 enum {
-  BSOURCE_COLUMN_PROP_NAME,
-  BSOURCE_COLUMN_PROP_SELECTABLE,
-  BSOURCE_COLUMN_PROP,
-  BSOURCE_NUM_COLUMNS
+  PROPERTY_COLUMN_PROP_NAME,
+  PROPERTY_COLUMN_PROP_SELECTABLE,
+  PROPERTY_COLUMN_PROP,
+  PROPERTY_NUM_COLUMNS
 };
 
 static void
-glade_editor_property_update_binding_source_view (GtkWidget        *bsrc_view,
-                                                  GtkTreeSelection *obj_selection)
+glade_bind_dialog_update_property_view (GladeBindDialog  *dialog,
+                                        GtkTreeSelection *obj_selection)
 {
-  GtkListStore *model;
   GtkTreeModel *obj_model;
   GtkTreeIter iter;
+  GtkWidget *view;
+  GtkListStore *model;
   GladeWidget *widget = NULL;
   GladeProperty *target;
   GladePropertyClass *target_pclass;
@@ -223,19 +232,20 @@ glade_editor_property_update_binding_source_view (GtkWidget        *bsrc_view,
   gtk_tree_model_get (GTK_TREE_MODEL (obj_model), &iter, 0, &widget, -1);
 
   /* Do nothing if the selected widget hasn't really changed */
-  model = (GtkListStore *) gtk_tree_view_get_model (GTK_TREE_VIEW (bsrc_view));
+  view = dialog->property_view;
+  model = (GtkListStore *) gtk_tree_view_get_model (GTK_TREE_VIEW (view));
   if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter))
     {
       GladeProperty *prop;
       
       gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-                          BSOURCE_COLUMN_PROP, &prop, -1);
+                          PROPERTY_COLUMN_PROP, &prop, -1);
 
       if (glade_property_get_widget (prop) == widget)
         return;
     }
 
-  target = g_object_get_data (G_OBJECT (bsrc_view), "target-property");
+  target = dialog->target;
   target_pclass = glade_property_get_class (target);
   target_type = G_PARAM_SPEC_TYPE (glade_property_class_get_pspec (target_pclass));
 
@@ -255,10 +265,10 @@ glade_editor_property_update_binding_source_view (GtkWidget        *bsrc_view,
       
       gtk_list_store_append (model, &iter);
       gtk_list_store_set (model, &iter,
-                          BSOURCE_COLUMN_PROP, prop,
-                          BSOURCE_COLUMN_PROP_NAME,
+                          PROPERTY_COLUMN_PROP, prop,
+                          PROPERTY_COLUMN_PROP_NAME,
                           glade_property_class_get_name (pclass),
-                          BSOURCE_COLUMN_PROP_SELECTABLE,
+                          PROPERTY_COLUMN_PROP_SELECTABLE,
                           g_type_is_a (type, target_type),
                           -1);      
     }
@@ -274,12 +284,12 @@ property_sort_func (GtkTreeModel *model,
   gboolean a_selectable, b_selectable;
 
   gtk_tree_model_get (model, a,
-                      BSOURCE_COLUMN_PROP_NAME, &a_name,
-                      BSOURCE_COLUMN_PROP_SELECTABLE, &a_selectable,
+                      PROPERTY_COLUMN_PROP_NAME, &a_name,
+                      PROPERTY_COLUMN_PROP_SELECTABLE, &a_selectable,
                       -1);
   gtk_tree_model_get (model, b,
-                      BSOURCE_COLUMN_PROP_NAME, &b_name,
-                      BSOURCE_COLUMN_PROP_SELECTABLE, &b_selectable,
+                      PROPERTY_COLUMN_PROP_NAME, &b_name,
+                      PROPERTY_COLUMN_PROP_SELECTABLE, &b_selectable,
                       -1);
 
   if (a_selectable && !b_selectable)
@@ -291,8 +301,7 @@ property_sort_func (GtkTreeModel *model,
 }
 
 static GtkWidget *
-glade_editor_property_binding_source_view (GladeProperty *target,
-                                           GtkTreeView   *object_view)
+glade_bind_dialog_setup_property_view (GladeBindDialog *dialog)
 {
   GtkWidget *view_widget;
   GtkTreeModel *model;
@@ -300,7 +309,7 @@ glade_editor_property_binding_source_view (GladeProperty *target,
   GtkCellRenderer *renderer;
   GladeProperty *source;
   
-  model = (GtkTreeModel *) gtk_list_store_new (BSOURCE_NUM_COLUMNS,
+  model = (GtkTreeModel *) gtk_list_store_new (PROPERTY_NUM_COLUMNS,
                                                G_TYPE_STRING,   /* The property name */
                                                G_TYPE_BOOLEAN,  /* Whether this GladeProperty's
                                                                  * type is acceptable */
@@ -321,9 +330,9 @@ glade_editor_property_binding_source_view (GladeProperty *target,
   gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view_widget),
                                                1, _("Name"), renderer,
                                                "text",
-                                               BSOURCE_COLUMN_PROP_NAME,
+                                               PROPERTY_COLUMN_PROP_NAME,
                                                "sensitive",
-                                               BSOURCE_COLUMN_PROP_SELECTABLE,
+                                               PROPERTY_COLUMN_PROP_SELECTABLE,
                                                NULL);
 
   gtk_tree_sortable_set_default_sort_func (GTK_TREE_SORTABLE (model),
@@ -334,15 +343,13 @@ glade_editor_property_binding_source_view (GladeProperty *target,
                                         GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID,
                                         GTK_SORT_ASCENDING);
 
-  /* Remember the target property for filtering the list by type */
-  g_object_set_data (G_OBJECT (view_widget), "target-property", target);
-
   /* Load the properties of the selected object */
-  glade_editor_property_update_binding_source_view (view_widget,
-                                                    gtk_tree_view_get_selection (object_view));
+  dialog->property_view = view_widget;
+  glade_bind_dialog_update_property_view (dialog,
+                                          gtk_tree_view_get_selection (GTK_TREE_VIEW (dialog->object_view)));
 
   /* Select the current binding source property (if there is one) */
-  source = glade_property_get_binding_source (target);
+  source = glade_property_get_binding_source (dialog->target);
   if (source)
     {
       GtkTreeIter iter;
@@ -353,7 +360,7 @@ glade_editor_property_binding_source_view (GladeProperty *target,
           GladeProperty *prop;
 
           gtk_tree_model_get (model, &iter,
-                              BSOURCE_COLUMN_PROP, &prop, -1);
+                              PROPERTY_COLUMN_PROP, &prop, -1);
 
           if (prop == source)
             {
@@ -372,8 +379,8 @@ glade_editor_property_binding_source_view (GladeProperty *target,
 }
 
 static void
-glade_editor_property_update_bind_dialog (GtkWidget        *dialog,
-                                          GtkTreeSelection *prop_selection)
+glade_bind_dialog_update_buttons (GladeBindDialog  *dialog,
+                                  GtkTreeSelection *prop_selection)
 {
   GtkTreeModel *model;
   GtkTreeIter iter;
@@ -383,14 +390,14 @@ glade_editor_property_update_bind_dialog (GtkWidget        *dialog,
       gboolean selectable;
 
       gtk_tree_model_get (model, &iter,
-                          BSOURCE_COLUMN_PROP_SELECTABLE, &selectable,
+                          PROPERTY_COLUMN_PROP_SELECTABLE, &selectable,
                           -1);
       
-      gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog),
+      gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog->widget),
                                          GTK_RESPONSE_OK, selectable);
     }
   else
-    gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog),
+    gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog->widget),
                                        GTK_RESPONSE_OK, FALSE);
 }
 
@@ -408,7 +415,7 @@ glade_editor_property_show_bind_dialog (GladeProject * project,
                                         GladeProperty *target,
                                         GladeProperty ** source)
 {
-  GtkWidget *dialog;
+  GladeBindDialog *dialog;
   GtkWidget *content_area, *action_area;
   GtkWidget *hbox, *obj_vbox, *prop_vbox;
   GtkWidget *obj_label, *prop_label;
@@ -421,26 +428,29 @@ glade_editor_property_show_bind_dialog (GladeProject * project,
   g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
   g_return_val_if_fail (source != NULL, FALSE);
 
-  dialog = gtk_dialog_new_with_buttons (_("Bind Property"),
-                                        parent ?
-                                        GTK_WINDOW (gtk_widget_get_toplevel
-                                                    (parent)) : NULL,
-                                        GTK_DIALOG_MODAL,
-                                        GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                        "Bind", GTK_RESPONSE_OK, NULL);
+  dialog = g_new0 (GladeBindDialog, 1);
+  dialog->target = target;
 
-  gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
-  gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog), GTK_RESPONSE_OK, FALSE);
+  dialog->widget = gtk_dialog_new_with_buttons (_("Bind Property"),
+                                                parent ?
+                                                GTK_WINDOW (gtk_widget_get_toplevel
+                                                            (parent)) : NULL,
+                                                GTK_DIALOG_MODAL,
+                                                GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                                "Bind", GTK_RESPONSE_OK, NULL);
 
-  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+  gtk_dialog_set_default_response (GTK_DIALOG (dialog->widget), GTK_RESPONSE_OK);
+  gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog->widget), GTK_RESPONSE_OK, FALSE);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog->widget),
                                            GTK_RESPONSE_OK,
                                            GTK_RESPONSE_CANCEL, -1);
 
   /* HIG spacings */
-  gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);
-  content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
+  gtk_container_set_border_width (GTK_CONTAINER (dialog->widget), 5);
+  content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog->widget));
   gtk_box_set_spacing (GTK_BOX (content_area), 2);      /* 2 * 5 + 2 = 12 */
-  action_area = gtk_dialog_get_action_area (GTK_DIALOG (dialog));
+  action_area = gtk_dialog_get_action_area (GTK_DIALOG (dialog->widget));
   gtk_container_set_border_width (GTK_CONTAINER (action_area), 5);
   gtk_box_set_spacing (GTK_BOX (action_area), 6);
 
@@ -476,12 +486,12 @@ glade_editor_property_show_bind_dialog (GladeProject * project,
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (prop_sw), GTK_SHADOW_IN);
   gtk_box_pack_start (GTK_BOX (prop_vbox), prop_sw, TRUE, TRUE, 0);
 
-  /* Select the existing binding source if existent */
+  /* Select the existing binding source object if existent */
   current_source = glade_property_get_binding_source (target);
   if (current_source) 
     selected = g_list_append (NULL, glade_property_get_widget (current_source));
 
-  obj_view = glade_eprop_object_view (OBJECT_VIEW_BROWSE);
+  obj_view = dialog->object_view = glade_eprop_object_view (OBJECT_VIEW_BROWSE);
   glade_eprop_object_populate_view (project, GTK_TREE_VIEW (obj_view),
                                     OBJECT_VIEW_BROWSE,
                                     selected, NULL, G_TYPE_OBJECT, FALSE);
@@ -489,22 +499,21 @@ glade_editor_property_show_bind_dialog (GladeProject * project,
   gtk_container_add (GTK_CONTAINER (obj_sw), obj_view);
   g_list_free (selected);
 
-  prop_view =
-    glade_editor_property_binding_source_view (target, GTK_TREE_VIEW (obj_view));
+  glade_bind_dialog_setup_property_view (dialog);
+  prop_view = dialog->property_view;
   gtk_container_add (GTK_CONTAINER (prop_sw), prop_view);
 
   g_signal_connect_swapped (gtk_tree_view_get_selection (GTK_TREE_VIEW (obj_view)),
                             "changed",
-                            G_CALLBACK (glade_editor_property_update_binding_source_view),
-                            prop_view);
+                            G_CALLBACK (glade_bind_dialog_update_property_view),
+                            dialog);
   g_signal_connect_swapped (gtk_tree_view_get_selection (GTK_TREE_VIEW (prop_view)),
                             "changed",
-                            G_CALLBACK (glade_editor_property_update_bind_dialog),
+                            G_CALLBACK (glade_bind_dialog_update_buttons),
                             dialog);
 
-  gtk_widget_show_all (hbox);
-  
-  res = gtk_dialog_run (GTK_DIALOG (dialog));
+  gtk_widget_show_all (content_area);
+  res = gtk_dialog_run (GTK_DIALOG (dialog->widget));
   if (res == GTK_RESPONSE_OK)
     {
       GtkTreeSelection *selection;
@@ -514,10 +523,12 @@ glade_editor_property_show_bind_dialog (GladeProject * project,
       selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (prop_view));
       gtk_tree_selection_get_selected (selection, &model, &iter);
 
-      gtk_tree_model_get (model, &iter, BSOURCE_COLUMN_PROP, source, -1);
+      gtk_tree_model_get (model, &iter, PROPERTY_COLUMN_PROP, source, -1);
     }
 
-  gtk_widget_destroy (dialog);
+  gtk_widget_destroy (dialog->widget);
+  g_free (dialog);
+
   return (res == GTK_RESPONSE_OK);
 }
 
