@@ -799,6 +799,8 @@ typedef struct
   GladeProperty *target;
   GladeProperty *new_source;
   GladeProperty *old_source;
+  gchar *old_transform;
+  gchar *new_transform;
   GValue old_value;
   gboolean undo;
 } GladeCommandBindProperty;
@@ -827,14 +829,17 @@ glade_command_bind_property_execute (GladeCommand * cmd)
 {
   GladeCommandBindProperty *bcmd; 
   GladeProperty *target, *source;
+  gchar *transform_func;
 
   g_return_val_if_fail (GLADE_IS_COMMAND_BIND_PROPERTY (cmd), TRUE);
   
   bcmd = GLADE_COMMAND_BIND_PROPERTY (cmd);
   target = bcmd->target;
   source = bcmd->undo ? bcmd->old_source : bcmd->new_source;
+  transform_func = bcmd->undo ? bcmd->old_transform : bcmd->new_transform;
 
   glade_property_set_binding_source (target, source);
+  glade_property_set_binding_transform_func (target, transform_func);
 
   if (!source && G_IS_VALUE (&bcmd->old_value))
       glade_property_set_value (target, &bcmd->old_value);
@@ -846,6 +851,11 @@ glade_command_bind_property_execute (GladeCommand * cmd)
 static void
 glade_command_bind_property_finalize (GObject * obj)
 {
+  GladeCommandBindProperty *cmd = GLADE_COMMAND_BIND_PROPERTY (obj);
+
+  g_free (cmd->old_transform);
+  g_free (cmd->new_transform);
+
   glade_command_finalize (obj);
 }
 
@@ -879,7 +889,9 @@ glade_command_bind_property_collapse (GladeCommand * this_cmd,
 }
 
 void
-glade_command_bind_property (GladeProperty * target, GladeProperty * source)
+glade_command_bind_property (GladeProperty * target,
+                             GladeProperty * source,
+                             const gchar   * transform_func)
 {
   GladeCommandBindProperty *me;
   GladeCommand *cmd;
@@ -892,6 +904,8 @@ glade_command_bind_property (GladeProperty * target, GladeProperty * source)
   me->target = target;
   me->old_source = glade_property_get_binding_source (target);
   me->new_source = source;
+  me->old_transform = g_strdup (glade_property_get_binding_transform_func (target));
+  me->new_transform = g_strdup (transform_func);
 
   if (!me->old_source)
     glade_property_get_value (target, &me->old_value);
