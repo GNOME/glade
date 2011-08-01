@@ -1910,7 +1910,9 @@ glade_property_set_binding_transform_func (GladeProperty *property,
 {
   g_return_if_fail (GLADE_IS_PROPERTY (property));
 
+  g_free (property->priv->binding_transform_func);
   property->priv->binding_transform_func = g_strdup (transform_func);
+
   g_object_notify_by_pspec (G_OBJECT (property),
                             properties[PROP_BINDING_TRANSFORM_FUNC]);  
 }
