@@ -135,7 +135,8 @@ gboolean             glade_editor_property_show_object_dialog (GladeProject     
 gboolean             glade_editor_property_show_bind_dialog (GladeProject         *project,
                                                              GtkWidget            *parent,
                                                              GladeProperty        *target,
-                                                             GladeProperty       **source);
+                                                             GladeProperty       **source,
+                                                             gchar               **transform_func);
 
 /* Generic eprops */
 #define GLADE_TYPE_EPROP_NUMERIC         (glade_eprop_numeric_get_type())

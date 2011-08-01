@@ -1841,11 +1841,13 @@ void
 glade_property_set_binding_source (GladeProperty *property,
                                    GladeProperty *binding_source)
 {
+  GladeProperty *old_source;
   GValue source_val = {0};
 
   g_return_if_fail (GLADE_IS_PROPERTY (property));
   g_return_if_fail (!binding_source || GLADE_IS_PROPERTY (binding_source));
 
+  old_source = glade_property_get_binding_source (property);
   glade_property_remove_binding_source (property);
   property->priv->binding_source = binding_source;
 
@@ -1859,11 +1861,7 @@ glade_property_set_binding_source (GladeProperty *property,
                          (GWeakNotify) glade_property_binding_source_weak_notify_cb,
                          property);
 
-      property->priv->binding_handler =
-        g_signal_connect (binding_source, "value-changed",
-                          G_CALLBACK (glade_property_binding_source_value_changed_cb),
-                          property);
-
+      /* To be called when the binding source widget is deleted */
       closure =
         g_cclosure_new (G_CALLBACK (glade_property_binding_source_widget_cb),
                         G_OBJECT (property), NULL);
@@ -1882,9 +1880,23 @@ glade_property_set_binding_source (GladeProperty *property,
 
       property->priv->binding_source_valid = TRUE;
 
-      /* Synchronize the source and target property values once */
-      glade_property_get_value (binding_source, &source_val);
-      glade_property_set_value (property, &source_val);
+      /* Synchronize the source and target property values if there
+       * is no transformation function; if there is, the best thing we
+       * can do is to reset the target property to the default value
+       * (the source and target property types might not be compatible)
+       */
+      if (glade_property_get_binding_transform_func (property))
+        glade_property_reset (property);
+      else
+        {
+          property->priv->binding_handler =
+            g_signal_connect (binding_source, "value-changed",
+                              G_CALLBACK (glade_property_binding_source_value_changed_cb),
+                              property);
+
+          glade_property_get_value (binding_source, &source_val);
+          glade_property_set_value (property, &source_val);
+        }
     }
   else
     {
@@ -1893,7 +1905,9 @@ glade_property_set_binding_source (GladeProperty *property,
       property->priv->binding_widget_add_handler = 0;
     }
 
-  g_object_notify_by_pspec (G_OBJECT (property), properties[PROP_BINDING_SOURCE]);
+  if (binding_source != old_source)
+    g_object_notify_by_pspec (G_OBJECT (property),
+                              properties[PROP_BINDING_SOURCE]);
 }
 
 const gchar *
@@ -1901,7 +1915,10 @@ glade_property_get_binding_transform_func (GladeProperty *property)
 {
   g_return_val_if_fail (GLADE_IS_PROPERTY (property), NULL);
 
-  return property->priv->binding_transform_func;
+  if (property->priv->binding_source_valid)
+    return property->priv->binding_transform_func;
+  else
+    return NULL;
 }
 
 void
@@ -1911,8 +1928,16 @@ glade_property_set_binding_transform_func (GladeProperty *property,
   g_return_if_fail (GLADE_IS_PROPERTY (property));
 
   g_free (property->priv->binding_transform_func);
-  property->priv->binding_transform_func = g_strdup (transform_func);
+  if (transform_func)
+    property->priv->binding_transform_func = g_strdup (transform_func);
+  else
+    property->priv->binding_transform_func = NULL;
 
+  /* Call glade_property_set_binding_source() to adjust to the new
+   * transformation function setting */
+  glade_property_set_binding_source (property,
+                                     glade_property_get_binding_source (property));
+  
   g_object_notify_by_pspec (G_OBJECT (property),
                             properties[PROP_BINDING_TRANSFORM_FUNC]);  
 }

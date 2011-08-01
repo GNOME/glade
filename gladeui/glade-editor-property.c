@@ -175,8 +175,7 @@ GladePropertyClass *
 glade_editor_property_get_pclass (GladeEditorProperty *eprop)
 {
   g_return_val_if_fail (GLADE_IS_EDITOR_PROPERTY (eprop), NULL);
-
-  return eprop->priv->klass;
+  return eprop->priv->klass;  
 }
 
 GladeProperty *
@@ -201,6 +200,7 @@ typedef struct {
   GtkWidget *object_view;
   GtkWidget *property_view;
   gboolean transform_func_enabled;
+  gboolean transform_func_valid;
 } GladeBindDialog;
 
 enum {
@@ -269,9 +269,35 @@ glade_bind_dialog_update_property_view (GladeBindDialog  *dialog,
                           PROPERTY_COLUMN_PROP_NAME,
                           glade_property_class_get_name (pclass),
                           PROPERTY_COLUMN_PROP_SELECTABLE,
+                          dialog->transform_func_enabled ||
                           g_type_is_a (type, target_type),
                           -1);      
     }
+}
+
+static void
+glade_bind_dialog_update_buttons (GladeBindDialog  *dialog,
+                                  GtkTreeSelection *prop_selection)
+{  
+  GtkTreeModel *model;
+  GtkTreeIter iter;
+
+  if ((!dialog->transform_func_enabled || dialog->transform_func_valid) &&
+      gtk_tree_selection_get_selected (prop_selection, &model, &iter))
+    {
+      gboolean selectable;
+
+      gtk_tree_model_get (model, &iter,
+                          PROPERTY_COLUMN_PROP_SELECTABLE, &selectable,
+                          -1);
+      
+      gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog->widget),
+                                         GTK_RESPONSE_OK, selectable);
+    }
+  else
+    gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog->widget),
+                                       GTK_RESPONSE_OK, FALSE);
+  
 }
 
 static int
@@ -375,30 +401,76 @@ glade_bind_dialog_setup_property_view (GladeBindDialog *dialog)
       while (gtk_tree_model_iter_next (model, &iter));
     }
 
+  glade_bind_dialog_update_buttons (dialog, selection);
   return view_widget;
 }
 
 static void
-glade_bind_dialog_update_buttons (GladeBindDialog  *dialog,
-                                  GtkTreeSelection *prop_selection)
+glade_bind_dialog_update_property_selectability (GladeBindDialog *dialog,
+                                                 GtkWidget       *checkbutton)
 {
-  GtkTreeModel *model;
+  gboolean active;
+  GtkTreeView *prop_view;
+  GtkTreeModel *prop_model;
+  GtkTreeSelection *prop_selection;
   GtkTreeIter iter;
-  
-  if (gtk_tree_selection_get_selected (prop_selection, &model, &iter))
-    {
-      gboolean selectable;
+  GladePropertyClass *target_pclass ;
+  GType target_type;
 
-      gtk_tree_model_get (model, &iter,
-                          PROPERTY_COLUMN_PROP_SELECTABLE, &selectable,
-                          -1);
-      
-      gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog->widget),
-                                         GTK_RESPONSE_OK, selectable);
+  active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (checkbutton));
+  dialog->transform_func_enabled = active;
+
+  prop_view = GTK_TREE_VIEW (dialog->property_view);
+  prop_model = gtk_tree_view_get_model (prop_view);
+
+  target_pclass = glade_property_get_class (dialog->target);
+  target_type = G_PARAM_SPEC_TYPE (glade_property_class_get_pspec (target_pclass));
+
+  /* Temporarily disable sorting, otherwise the tree model iteration
+   * code below might get confused */
+  gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (prop_model),
+                                        GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID,
+                                        GTK_SORT_ASCENDING);
+
+  gtk_tree_model_get_iter_first (prop_model, &iter);
+  do
+    {
+      GladeProperty *prop;
+      GladePropertyClass *pclass;
+      GType type;
+
+      gtk_tree_model_get (prop_model, &iter,
+                          PROPERTY_COLUMN_PROP, &prop, -1);
+
+      pclass = glade_property_get_class (prop);
+      type = G_PARAM_SPEC_TYPE (glade_property_class_get_pspec (pclass));
+
+      gtk_list_store_set (GTK_LIST_STORE (prop_model), &iter,
+                          PROPERTY_COLUMN_PROP_SELECTABLE,
+                          dialog->transform_func_enabled ||
+                          g_type_is_a (type, target_type), -1);
     }
-  else
-    gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog->widget),
-                                       GTK_RESPONSE_OK, FALSE);
+  while (gtk_tree_model_iter_next (prop_model, &iter));      
+
+  gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (prop_model),
+                                        GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID,
+                                        GTK_SORT_ASCENDING);
+
+  prop_selection = gtk_tree_view_get_selection (prop_view);
+  glade_bind_dialog_update_buttons (dialog, prop_selection);
+}
+
+static void
+glade_bind_dialog_transform_func_changed (GladeBindDialog *dialog,
+                                          GParamSpec      *pspec,
+                                          GtkEntry        *entry)
+{
+  GtkTreeSelection *selection;
+
+  dialog->transform_func_valid = (strlen (gtk_entry_get_text (entry)) > 0);
+
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (dialog->property_view));
+  glade_bind_dialog_update_buttons (dialog, selection);
 }
 
 /**
@@ -413,7 +485,8 @@ gboolean
 glade_editor_property_show_bind_dialog (GladeProject * project,
                                         GtkWidget * parent,
                                         GladeProperty *target,
-                                        GladeProperty ** source)
+                                        GladeProperty **source,
+                                        gchar **transform_func)
 {
   GladeBindDialog *dialog;
   GtkWidget *content_area, *action_area;
@@ -423,6 +496,10 @@ glade_editor_property_show_bind_dialog (GladeProject * project,
   GtkWidget *obj_view, *prop_view;
   GladeProperty *current_source;
   GList *selected = NULL;
+  GtkWidget *frame, *frame_label;
+  GtkWidget *trans_vbox, *trans_hbox;
+  GtkWidget *trans_check, *trans_label, *trans_entry;
+  const gchar *current_transform;
   gint res;
 
   g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
@@ -503,6 +580,32 @@ glade_editor_property_show_bind_dialog (GladeProject * project,
   prop_view = dialog->property_view;
   gtk_container_add (GTK_CONTAINER (prop_sw), prop_view);
 
+  frame = gtk_frame_new (_("<b>Transformation Function</b>"));
+  frame_label = GTK_WIDGET (gtk_frame_get_label_widget (GTK_FRAME (frame)));
+  gtk_label_set_use_markup (GTK_LABEL (frame_label), TRUE);
+  gtk_box_pack_start (GTK_BOX (content_area), frame, FALSE, FALSE, 0);
+
+  trans_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+  gtk_widget_set_margin_top (trans_vbox, 6);
+  gtk_widget_set_margin_left (trans_vbox, 12);
+  gtk_container_add (GTK_CONTAINER (frame), trans_vbox);
+
+  trans_check = gtk_check_button_new_with_mnemonic (_("_Connect a function for "
+                                                      "source-to-target value "
+                                                      "transformation"));
+  gtk_box_pack_start (GTK_BOX (trans_vbox), trans_check, FALSE, FALSE, 0);
+
+  trans_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+  gtk_widget_set_margin_left (trans_hbox, 12);
+  gtk_box_pack_start (GTK_BOX (trans_vbox), trans_hbox, FALSE, FALSE, 0);
+
+  trans_label = gtk_label_new_with_mnemonic (_("_Transformation function:"));
+  gtk_box_pack_start (GTK_BOX (trans_hbox), trans_label, FALSE, FALSE, 0);
+
+  trans_entry = gtk_entry_new ();
+  gtk_label_set_mnemonic_widget (GTK_LABEL (trans_label), trans_entry);
+  gtk_box_pack_start (GTK_BOX (trans_hbox), trans_entry, TRUE, TRUE, 0);
+
   g_signal_connect_swapped (gtk_tree_view_get_selection (GTK_TREE_VIEW (obj_view)),
                             "changed",
                             G_CALLBACK (glade_bind_dialog_update_property_view),
@@ -511,6 +614,23 @@ glade_editor_property_show_bind_dialog (GladeProject * project,
                             "changed",
                             G_CALLBACK (glade_bind_dialog_update_buttons),
                             dialog);
+  
+  g_object_bind_property (trans_check, "active",
+                          trans_hbox, "sensitive",
+                          G_BINDING_SYNC_CREATE);
+  g_signal_connect_swapped (trans_check, "toggled",
+                            G_CALLBACK (glade_bind_dialog_update_property_selectability),
+                            dialog);
+  g_signal_connect_swapped (trans_entry, "notify::text",
+                            G_CALLBACK (glade_bind_dialog_transform_func_changed),
+                            dialog);
+
+  current_transform = glade_property_get_binding_transform_func (target);
+  if (current_transform)
+    {
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (trans_check), TRUE);
+      gtk_entry_set_text (GTK_ENTRY (trans_entry), current_transform);
+    }
 
   gtk_widget_show_all (content_area);
   res = gtk_dialog_run (GTK_DIALOG (dialog->widget));
@@ -519,11 +639,25 @@ glade_editor_property_show_bind_dialog (GladeProject * project,
       GtkTreeSelection *selection;
       GtkTreeModel *model;
       GtkTreeIter iter;
-      
+      gchar *trans_text;
+
       selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (prop_view));
       gtk_tree_selection_get_selected (selection, &model, &iter);
-
       gtk_tree_model_get (model, &iter, PROPERTY_COLUMN_PROP, source, -1);
+
+      if (dialog->transform_func_enabled)
+        {
+          trans_text = g_strdup (gtk_entry_get_text (GTK_ENTRY (trans_entry)));
+          if (strlen (g_strstrip (trans_text)) == 0)
+            {
+              g_free (trans_text);
+              *transform_func = NULL;
+            }
+          else
+            *transform_func = g_strdup (trans_text);
+        }
+      else
+        *transform_func = NULL;
     }
 
   gtk_widget_destroy (dialog->widget);
