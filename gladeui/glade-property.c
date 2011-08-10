@@ -109,18 +109,20 @@ struct _GladePropertyPrivate {
                                         */
 
   /* Binding source validility flags */
-  gboolean            binding_source_alive;
-  gboolean            binding_source_enabled;
-  gboolean            binding_source_sensitive;
+  gboolean            binding_source_valid; /* Indicates whether the binding source
+                                             * is belongs to a widget that is currently
+                                             * part of the project (becomes FALSE if
+                                             * the binding source widget is removed)
+                                             */
 
   gchar              *binding_transform_func;  /* the transformation function for
                                                 * the property's binding
                                                 */
 
-  gulong              binding_handler;  /* Signal handler to synchronize
-                                         * the GladeProperty with its binding
-                                         * source (if it is bound)
-                                         */
+  gulong              binding_value_handler;  /* Signal handler to synchronize
+                                               * the GladeProperty with its
+                                               * binding source (if it is bound)
+                                               */
 
   gulong              binding_enabled_handler;  /* Signal handler to keeep
                                                  * binding_source_enabled
@@ -663,7 +665,7 @@ glade_property_init (GladeProperty * property)
   property->priv->sensitive = TRUE;
   property->priv->binding_source = NULL;
   property->priv->binding_transform_func = NULL;
-  property->priv->binding_handler = 0;
+  property->priv->binding_value_handler = 0;
   property->priv->binding_enabled_handler = 0;
   property->priv->binding_sensitive_handler = 0;
   property->priv->binding_widget_remove_handler = 0;
@@ -1757,17 +1759,33 @@ glade_property_get_state (GladeProperty      *property)
   return property->priv->state;
 }
 
+static gboolean
+glade_property_binding_source_valid (GladeProperty *binding_source)
+{
+  GladeWidget *source_widget;
+
+  if (!binding_source)
+    return FALSE;
+
+  source_widget = glade_property_get_widget (binding_source);
+
+  if (!glade_property_get_enabled (binding_source) ||
+      !glade_property_get_sensitive (binding_source) ||
+      !glade_widget_in_project (source_widget))
+    return FALSE;
+
+  return TRUE;
+}
+
 GladeProperty *
 glade_property_get_binding_source (GladeProperty *property)
 {
+  GladeProperty *source;
+
   g_return_val_if_fail (GLADE_IS_PROPERTY (property), NULL);
 
-  if (property->priv->binding_source_alive &&
-      property->priv->binding_source_enabled &&
-      property->priv->binding_source_sensitive)
-    return property->priv->binding_source;
-  else
-    return NULL;
+  source = property->priv->binding_source;
+  return (glade_property_binding_source_valid (source)) ? source : NULL;
 }
 
 static void
@@ -1775,23 +1793,8 @@ glade_property_binding_source_weak_notify_cb (GladeProperty *property,
                                               GObject       *binding_source)
 {
   property->priv->binding_source = NULL;  
-  property->priv->binding_handler = 0;
+  property->priv->binding_value_handler = 0;
   glade_property_remove_binding_source (property);
-}
-
-static void
-glade_property_binding_source_widget_cb (GladeProject *project,
-                                         GladeWidget *widget,
-                                         GladeProperty *property)
-{
-  GladePropertyPrivate *priv = property->priv;
-
-  if (widget == glade_property_get_widget (priv->binding_source))
-    {
-      priv->binding_source_alive = !priv->binding_source_alive;
-      g_object_notify_by_pspec (G_OBJECT (property),
-                                properties[PROP_BINDING_SOURCE]);
-    }
 }
 
 static void
@@ -1804,14 +1807,18 @@ glade_property_remove_binding_source (GladeProperty *property)
   if ((old_source = property->priv->binding_source) != NULL)
       g_object_weak_unref (G_OBJECT (old_source),
                            (GWeakNotify) glade_property_binding_source_weak_notify_cb,
-                           property);  
+                           property);
 
-  if (property->priv->binding_handler > 0)
-    g_signal_handler_disconnect (old_source, property->priv->binding_handler);
+  if (property->priv->binding_value_handler > 0)
+    g_signal_handler_disconnect (old_source, property->priv->binding_value_handler);
   if (property->priv->binding_enabled_handler > 0)
     g_signal_handler_disconnect (old_source, property->priv->binding_enabled_handler);
   if (property->priv->binding_sensitive_handler > 0)
     g_signal_handler_disconnect (old_source, property->priv->binding_sensitive_handler);
+
+  property->priv->binding_value_handler = 0;
+  property->priv->binding_enabled_handler = 0;
+  property->priv->binding_sensitive_handler = 0;
 
   /* The property's widget might be currently finalized and have
    * its project set to NULL, so prefer to query the binding source
@@ -1837,24 +1844,16 @@ glade_property_remove_binding_source (GladeProperty *property)
   if (property->priv->binding_widget_remove_handler > 0)
     g_signal_handler_disconnect (project,
                                  property->priv->binding_widget_remove_handler);
-
   if (property->priv->binding_widget_add_handler > 0)
     g_signal_handler_disconnect (project,
                                  property->priv->binding_widget_add_handler);
+
+  property->priv->binding_widget_remove_handler = 0;
+  property->priv->binding_widget_add_handler = 0;
 }
 
 static void
-glade_property_binding_source_valid_notify_cb (GladeProperty *source,
-                                               GParamSpec    *pspec,
-                                               GladeProperty *property)
-{
-  /* Rebind if the source property's "enabled" or
-     "sensitive" state changes */
-  glade_property_set_binding_source (property, source);
-}
-
-static void
-glade_property_binding_source_value_changed_cb (GladeProperty *prop,
+glade_property_binding_source_value_changed_cb (GladeProperty *source,
                                                 GValue        *old_value,
                                                 GValue        *new_value,
                                                 GladeProperty *property)
@@ -1862,17 +1861,62 @@ glade_property_binding_source_value_changed_cb (GladeProperty *prop,
   glade_property_set_value (property, new_value);
 }
 
+static void
+glade_property_binding_source_notify_enabled_sensitive_cb (GladeProperty *source,
+                                                           GParamSpec    *pspec,
+                                                           GladeProperty *property)
+{
+  if (glade_property_binding_source_valid (source))
+    {
+      GValue source_val = {0};
+
+      glade_property_get_value (source, &source_val);
+      glade_property_set_value (property, &source_val);
+    }
+  else
+    glade_property_reset (property);
+
+  g_object_notify_by_pspec (G_OBJECT (property),
+                            properties[PROP_BINDING_SOURCE]);
+}
+
+static void
+glade_property_binding_source_widget_cb (GladeProject  *project,
+                                         GladeWidget   *widget,
+                                         GladeProperty *property)
+{
+  if (widget == glade_property_get_widget (property->priv->binding_source))
+    g_object_notify_by_pspec (G_OBJECT (property),
+                              properties[PROP_BINDING_SOURCE]);
+}
+
 void
 glade_property_set_binding_source (GladeProperty *property,
                                    GladeProperty *binding_source)
 {
   GladeProperty *old_source;
-  GValue source_val = {0};
-
+  
   g_return_if_fail (GLADE_IS_PROPERTY (property));
   g_return_if_fail (!binding_source || GLADE_IS_PROPERTY (binding_source));
 
+  if (binding_source)
+    {
+      GladePropertyClass *prop_pclass = glade_property_get_class (property);
+      GladePropertyClass *source_pclass = glade_property_get_class (binding_source);
+      GParamSpec *prop_pspec = glade_property_class_get_pspec (prop_pclass);
+      GParamSpec *source_pspec = glade_property_class_get_pspec (source_pclass);
+
+      g_return_if_fail (source_pspec->flags | G_PARAM_READABLE);
+      g_return_if_fail (prop_pspec->flags | G_PARAM_WRITABLE);      
+      g_return_if_fail (glade_property_binding_source_valid (binding_source));
+
+      if (property->priv->binding_transform_func)
+        g_return_if_fail (g_type_is_a (G_PARAM_SPEC_TYPE (source_pspec),
+                                       G_PARAM_SPEC_TYPE (prop_pspec)));
+    }
+
   old_source = glade_property_get_binding_source (property);
+
   glade_property_remove_binding_source (property);
   property->priv->binding_source = binding_source;
 
@@ -1881,28 +1925,48 @@ glade_property_set_binding_source (GladeProperty *property,
       GladeWidget *widget = glade_property_get_widget (binding_source);
       GladeProject *project = glade_widget_get_project (widget);
       GClosure *closure;
-      
+
       g_object_weak_ref (G_OBJECT (binding_source),
                          (GWeakNotify) glade_property_binding_source_weak_notify_cb,
                          property);
 
+      /* Synchronize the source and target property values if there
+       * is no transformation function; if there is, the best thing we
+       * can do is to reset the target property to the default value
+       * (the source and target property types might not be compatible)
+       */
+      if (glade_property_get_binding_transform_func (property))
+        glade_property_reset (property);
+      else
+        {
+          GValue source_val = {0};
+
+          property->priv->binding_value_handler =
+            g_signal_connect (binding_source, "value-changed",
+                              G_CALLBACK (glade_property_binding_source_value_changed_cb),
+                              property);
+
+          glade_property_get_value (binding_source, &source_val);
+          glade_property_set_value (property, &source_val);
+        }
+
       property->priv->binding_enabled_handler =
         g_signal_connect (binding_source, "notify::enabled",
-                          G_CALLBACK (glade_property_binding_source_valid_notify_cb),
+                          G_CALLBACK (glade_property_binding_source_notify_enabled_sensitive_cb),
                           property);
 
       property->priv->binding_sensitive_handler =
         g_signal_connect (binding_source, "notify::sensitive",
-                          G_CALLBACK (glade_property_binding_source_valid_notify_cb),
+                          G_CALLBACK (glade_property_binding_source_notify_enabled_sensitive_cb),
                           property);
 
-      /* To be called when the binding source widget is deleted */
+      /* To be called when the binding source widget is deleted / re-added */
       closure =
         g_cclosure_new (G_CALLBACK (glade_property_binding_source_widget_cb),
                         G_OBJECT (property), NULL);
 
-      /* Don't call when binding source is freed (see FIXME in
-       * glade_property_remove_binding_source() for why this is
+      /* Don't call after the binding source has been freed (see FIXME
+       * in glade_property_remove_binding_source() for why this is
        * needed)
        */
       g_object_watch_closure (G_OBJECT (binding_source), closure);
@@ -1912,38 +1976,6 @@ glade_property_set_binding_source (GladeProperty *property,
 
       property->priv->binding_widget_add_handler =
         g_signal_connect_closure (project, "add-widget", closure, FALSE);
-
-      property->priv->binding_source_alive = TRUE;
-      property->priv->binding_source_enabled = glade_property_get_enabled (binding_source);
-      property->priv->binding_source_sensitive = glade_property_get_sensitive (binding_source);
-
-      /* Synchronize the source and target property values if there
-       * is no transformation function; if there is, the best thing we
-       * can do is to reset the target property to the default value
-       * (the source and target property types might not be compatible)
-       */
-      if (glade_property_get_binding_transform_func (property) ||
-          !property->priv->binding_source_enabled ||
-          !property->priv->binding_source_sensitive)
-        glade_property_reset (property);
-      else
-        {
-          property->priv->binding_handler =
-            g_signal_connect (binding_source, "value-changed",
-                              G_CALLBACK (glade_property_binding_source_value_changed_cb),
-                              property);
-
-          glade_property_get_value (binding_source, &source_val);
-          glade_property_set_value (property, &source_val);
-        }
-    }
-  else
-    {
-      property->priv->binding_handler = 0;
-      property->priv->binding_enabled_handler = 0;
-      property->priv->binding_sensitive_handler = 0;
-      property->priv->binding_widget_remove_handler = 0;
-      property->priv->binding_widget_add_handler = 0;
     }
 
   if (binding_source != old_source)
@@ -1956,9 +1988,7 @@ glade_property_get_binding_transform_func (GladeProperty *property)
 {
   g_return_val_if_fail (GLADE_IS_PROPERTY (property), NULL);
 
-  if (property->priv->binding_source_alive &&
-      property->priv->binding_source_enabled &&
-      property->priv->binding_source_sensitive)
+  if (glade_property_get_binding_source (property))
     return property->priv->binding_transform_func;
   else
     return NULL;
@@ -1971,16 +2001,14 @@ glade_property_set_binding_transform_func (GladeProperty *property,
   g_return_if_fail (GLADE_IS_PROPERTY (property));
 
   g_free (property->priv->binding_transform_func);
-  if (transform_func)
-    property->priv->binding_transform_func = g_strdup (transform_func);
-  else
-    property->priv->binding_transform_func = NULL;
+  property->priv->binding_transform_func = (transform_func)
+    ? g_strdup (transform_func)
+    : NULL;
 
   /* Call glade_property_set_binding_source() to adjust to the new
    * transformation function setting */
-  glade_property_set_binding_source (property,
-                                     glade_property_get_binding_source (property));
-  
+  glade_property_set_binding_source (property, property->priv->binding_source);
+
   g_object_notify_by_pspec (G_OBJECT (property),
                             properties[PROP_BINDING_TRANSFORM_FUNC]);  
 }
