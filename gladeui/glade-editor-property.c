@@ -258,9 +258,11 @@ glade_bind_dialog_update_property_view (GladeBindDialog  *dialog,
       GType type = G_PARAM_SPEC_TYPE (glade_property_class_get_pspec (pclass));
       GtkTreeIter iter;
 
-      if (!glade_property_get_sensitive (prop)
-          || !glade_property_get_enabled (prop)
-          || prop == target)
+      if (prop == target ||
+          !glade_property_get_sensitive (prop) ||
+          !glade_property_get_enabled (prop) ||
+          glade_property_class_get_virtual (pclass) ||
+          glade_property_class_get_ignore (pclass))
         continue;
       
       gtk_list_store_append (model, &iter);
