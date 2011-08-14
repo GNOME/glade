@@ -103,22 +103,6 @@ struct _GladeEditorPropertyPrivate
 					*/
 };
 
-typedef enum {
-  OBJECT_VIEW_CHECK,
-  OBJECT_VIEW_RADIO,
-  OBJECT_VIEW_BROWSE
-} ObjectViewKind;
-
-static GtkWidget *glade_eprop_object_view (ObjectViewKind kind);
-
-static void glade_eprop_object_populate_view (GladeProject *project,
-                                              GtkTreeView *view,
-                                              ObjectViewKind kind,
-                                              GList *selected,
-                                              GList *exceptions,
-                                              GType object_type,
-                                              gboolean parentless);
-
 /*******************************************************************************
                                GladeEditorPropertyClass
  *******************************************************************************/
@@ -284,8 +268,8 @@ glade_bind_dialog_update_buttons (GladeBindDialog  *dialog,
   GtkTreeModel *model;
   GtkTreeIter iter;
 
-  if ((!dialog->transform_func_enabled || dialog->transform_func_valid) &&
-      gtk_tree_selection_get_selected (prop_selection, &model, &iter))
+  if (gtk_tree_selection_get_selected (prop_selection, &model, &iter) &&
+      (!dialog->transform_func_enabled || dialog->transform_func_valid))
     {
       gboolean selectable;
 
@@ -345,10 +329,10 @@ glade_bind_dialog_setup_property_view (GladeBindDialog *dialog)
 
   view_widget = gtk_tree_view_new_with_model (model);
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (view_widget), FALSE);
-  
+
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (view_widget));
   gtk_tree_selection_set_mode (selection, GTK_SELECTION_BROWSE);
-  
+
   /* Pass ownership to the view */
   g_object_unref (G_OBJECT (model));  
 
@@ -474,6 +458,27 @@ glade_bind_dialog_transform_func_changed (GladeBindDialog *dialog,
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (dialog->property_view));
   glade_bind_dialog_update_buttons (dialog, selection);
 }
+
+/*
+ * Forward-declared GladeEditorPropertyObjectClass functions needed
+ * by glade_editor_property_show_bind_dialog()
+ */
+
+typedef enum {
+  OBJECT_VIEW_CHECK,
+  OBJECT_VIEW_RADIO,
+  OBJECT_VIEW_BROWSE
+} ObjectViewKind;
+
+static GtkWidget *glade_eprop_object_view (ObjectViewKind kind);
+
+static void glade_eprop_object_populate_view (GladeProject *project,
+                                              GtkTreeView *view,
+                                              ObjectViewKind kind,
+                                              GList *selected,
+                                              GList *exceptions,
+                                              GType object_type,
+                                              gboolean parentless);
 
 /**
  * glade_editor_property_show_bind_dialog:
