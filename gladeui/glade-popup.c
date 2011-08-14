@@ -695,11 +695,11 @@ glade_popup_property_pop (GladeProperty * property, GdkEventButton * event)
   popup_menu = gtk_menu_new ();
 
   if (glade_property_get_binding_source (property))
-    glade_popup_append_item (popup_menu, 0, _("Unbind"),
+    glade_popup_append_item (popup_menu, 0, _("_Unbind"),
                              NULL, TRUE, glade_popup_unbind_property_cb,
                              property);
 
-  glade_popup_append_item (popup_menu, 0, _("Bind to source..."),
+  glade_popup_append_item (popup_menu, 0, _("_Bind to source..."),
                            NULL, TRUE, glade_popup_bind_property_cb, property);
 
   glade_popup_append_item (popup_menu, GTK_STOCK_CLEAR, _("Set default value"),
