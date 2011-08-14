@@ -521,7 +521,7 @@ glade_editor_property_show_bind_dialog (GladeProject * project,
                                                             (parent)) : NULL,
                                                 GTK_DIALOG_MODAL,
                                                 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                                "Bind", GTK_RESPONSE_OK, NULL);
+                                                "_Bind", GTK_RESPONSE_OK, NULL);
 
   gtk_dialog_set_default_response (GTK_DIALOG (dialog->widget), GTK_RESPONSE_OK);
   gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog->widget), GTK_RESPONSE_OK, FALSE);
@@ -547,10 +547,10 @@ glade_editor_property_show_bind_dialog (GladeProject * project,
   prop_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_box_pack_start (GTK_BOX (hbox), prop_vbox, TRUE, TRUE, 0);
 
-  obj_label = gtk_label_new (_("Object:"));
+  obj_label = gtk_label_new_with_mnemonic (_("_Object:"));
   gtk_misc_set_alignment (GTK_MISC (obj_label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (obj_vbox), obj_label, FALSE, FALSE, 0);
-  prop_label = gtk_label_new (_("Property:"));
+  prop_label = gtk_label_new_with_mnemonic (_("_Property:"));
   gtk_misc_set_alignment (GTK_MISC (prop_label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (prop_vbox), prop_label, FALSE, FALSE, 0);
 
@@ -580,11 +580,13 @@ glade_editor_property_show_bind_dialog (GladeProject * project,
                                     OBJECT_VIEW_BROWSE,
                                     selected, NULL, G_TYPE_OBJECT, FALSE);
   gtk_tree_view_expand_all (GTK_TREE_VIEW (obj_view));
+  gtk_label_set_mnemonic_widget (GTK_LABEL (obj_label), obj_view);
   gtk_container_add (GTK_CONTAINER (obj_sw), obj_view);
   g_list_free (selected);
 
   glade_bind_dialog_setup_property_view (dialog);
   prop_view = dialog->property_view;
+  gtk_label_set_mnemonic_widget (GTK_LABEL (prop_label), prop_view);
   gtk_container_add (GTK_CONTAINER (prop_sw), prop_view);
 
   frame = gtk_frame_new (_("<b>Transformation Function</b>"));
