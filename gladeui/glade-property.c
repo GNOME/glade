@@ -1805,16 +1805,18 @@ glade_property_remove_binding_source (GladeProperty *property)
   GladeProject *project;
 
   if ((old_source = property->priv->binding_source) != NULL)
+    {
       g_object_weak_unref (G_OBJECT (old_source),
                            (GWeakNotify) glade_property_binding_source_weak_notify_cb,
                            property);
 
-  if (property->priv->binding_value_handler > 0)
-    g_signal_handler_disconnect (old_source, property->priv->binding_value_handler);
-  if (property->priv->binding_enabled_handler > 0)
-    g_signal_handler_disconnect (old_source, property->priv->binding_enabled_handler);
-  if (property->priv->binding_sensitive_handler > 0)
-    g_signal_handler_disconnect (old_source, property->priv->binding_sensitive_handler);
+      if (property->priv->binding_value_handler > 0)
+        g_signal_handler_disconnect (old_source, property->priv->binding_value_handler);
+      if (property->priv->binding_enabled_handler > 0)
+        g_signal_handler_disconnect (old_source, property->priv->binding_enabled_handler);
+      if (property->priv->binding_sensitive_handler > 0)
+        g_signal_handler_disconnect (old_source, property->priv->binding_sensitive_handler);
+    }
 
   property->priv->binding_value_handler = 0;
   property->priv->binding_enabled_handler = 0;
@@ -1838,15 +1840,15 @@ glade_property_remove_binding_source (GladeProperty *property)
    * finalization almost always means that the project is being
    * finalized too, this isn't a big problem.)
    */
-  if (!project)
-    return;
-
-  if (property->priv->binding_widget_remove_handler > 0)
-    g_signal_handler_disconnect (project,
-                                 property->priv->binding_widget_remove_handler);
-  if (property->priv->binding_widget_add_handler > 0)
-    g_signal_handler_disconnect (project,
-                                 property->priv->binding_widget_add_handler);
+  if (project)
+    {
+      if (property->priv->binding_widget_remove_handler > 0)
+        g_signal_handler_disconnect (project,
+                                     property->priv->binding_widget_remove_handler);
+      if (property->priv->binding_widget_add_handler > 0)
+        g_signal_handler_disconnect (project,
+                                     property->priv->binding_widget_add_handler);
+    }
 
   property->priv->binding_widget_remove_handler = 0;
   property->priv->binding_widget_add_handler = 0;
