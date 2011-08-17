@@ -872,7 +872,8 @@ glade_command_bind_property_unifies (GladeCommand * this_cmd,
       cmd2 = GLADE_COMMAND_BIND_PROPERTY (other_cmd);
 
       return (cmd1->target == cmd2->target
-              && cmd1->new_source == cmd2->new_source);
+              && cmd1->new_source == cmd2->new_source
+              && cmd1->new_transform == cmd2->new_transform);
     }
 
   return FALSE;
