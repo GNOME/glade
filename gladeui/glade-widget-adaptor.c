@@ -1079,13 +1079,13 @@ glade_widget_adaptor_object_write_widget (GladeWidgetAdaptor * adaptor,
                                           GladeXmlNode * node)
 {
   GList *props;
-  
+
   /* Write the properties */
   for (props = glade_widget_get_properties (widget); props; props = props->next)
     {
       GladeProperty      *property = props->data;
       GladePropertyClass *klass = glade_property_get_class (property);
-      
+
       if (glade_property_class_save (klass) && 
 	  glade_property_get_enabled (property))
         glade_property_write (GLADE_PROPERTY (props->data), context, node);
@@ -1095,7 +1095,7 @@ glade_widget_adaptor_object_write_widget (GladeWidgetAdaptor * adaptor,
   for (props = glade_widget_get_properties (widget); props; props = props->next)
     {
       GladeProperty *property = props->data;
-      
+
       if (glade_property_get_binding_source (property))
         glade_property_binding_write (property, context, node);
     }

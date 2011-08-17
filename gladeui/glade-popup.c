@@ -626,7 +626,7 @@ glade_popup_bind_property_cb (GtkMenuItem * item, GladeProperty * property)
   gchar *transform_func;
   GtkWidget *parent =
     gtk_widget_get_toplevel (GTK_WIDGET (glade_widget_get_object (widget)));
-  
+
   if (glade_editor_property_show_bind_dialog (project, parent, property,
                                               &source, &transform_func))
     {

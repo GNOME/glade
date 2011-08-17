@@ -821,18 +821,18 @@ glade_command_bind_property_undo (GladeCommand * cmd)
 }
 
 /*
- * Execute the set property command and revert it. IE, after the execution of 
+ * Execute the set property command and revert it. IE, after the execution of
  * this function cmd will point to the undo action
  */
 static gboolean
 glade_command_bind_property_execute (GladeCommand * cmd)
 {
-  GladeCommandBindProperty *bcmd; 
+  GladeCommandBindProperty *bcmd;
   GladeProperty *target, *source;
   gchar *transform_func;
 
   g_return_val_if_fail (GLADE_IS_COMMAND_BIND_PROPERTY (cmd), TRUE);
-  
+
   bcmd = GLADE_COMMAND_BIND_PROPERTY (cmd);
   target = bcmd->target;
   source = bcmd->undo ? bcmd->old_source : bcmd->new_source;
@@ -896,7 +896,7 @@ glade_command_bind_property (GladeProperty * target,
 {
   GladeCommandBindProperty *me;
   GladeCommand *cmd;
-  
+
   g_return_if_fail (GLADE_IS_PROPERTY (target));
   g_return_if_fail (!source || GLADE_IS_PROPERTY (source));
 

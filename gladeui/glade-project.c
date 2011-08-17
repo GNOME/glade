@@ -1049,7 +1049,7 @@ glade_project_fix_props (GladeProject *project)
   GladeWidget *gwidget;
   GladeProperty *property;
   gchar *txt, *txt2;
-  
+
   objects = g_list_copy (project->priv->objects);
   for (l = objects; l; l = l->next)
     {
@@ -1095,7 +1095,7 @@ glade_project_fix_props (GladeProject *project)
               source_prop = glade_widget_get_property (source_obj, txt2);
               if (!source_prop)
                 continue;
-              
+
               glade_property_set_binding_source (property, source_prop);
             }
         }

@@ -34,7 +34,7 @@
  * a #GladeProperty to interface with, #GladeProperty provides a means
  * to handle properties in the runtime environment.
  * 
- * A #GladeProperty can be seen as an instance of a #GladePropertyClass,
+ * A #GladeProperty can be seen as an instance of a #GladePropertyClass, 
  * the #GladePropertyClass describes how a #GladeProperty will function.
  */
 
@@ -138,7 +138,7 @@ struct _GladePropertyPrivate {
                                                        * binding_source_valid when the
                                                        * binding source widget is removed
                                                        */
-                                                    
+
   gulong              binding_widget_add_handler;     /* Signal handler to update
                                                        * binding_source_valid when the
                                                        * binding source widget is added back
@@ -148,7 +148,7 @@ struct _GladePropertyPrivate {
   guint     i18n_translatable : 1;
   gchar    *i18n_context;
   gchar    *i18n_comment;
-
+  
   gint      syncing;  /* Avoid recursion while synchronizing object with value */
   gint      sync_tolerance;
 };
@@ -601,11 +601,11 @@ glade_property_get_real_property (GObject * object,
       case PROP_BINDING_SOURCE:
         g_value_set_pointer (value,
                              glade_property_get_binding_source (property));
-        break;        
+        break;
       case PROP_BINDING_TRANSFORM_FUNC:
         g_value_set_string (value,
                             glade_property_get_binding_transform_func (property));
-        break;        
+        break;
       case PROP_I18N_TRANSLATABLE:
         g_value_set_boolean (value,
                              glade_property_i18n_get_translatable (property));
@@ -669,7 +669,7 @@ glade_property_init (GladeProperty * property)
   property->priv->binding_enabled_handler = 0;
   property->priv->binding_sensitive_handler = 0;
   property->priv->binding_widget_remove_handler = 0;
-  property->priv->binding_widget_add_handler = 0;  
+  property->priv->binding_widget_add_handler = 0;
   property->priv->i18n_translatable = TRUE;
   property->priv->i18n_comment = NULL;
   property->priv->sync_tolerance = 1;
@@ -1257,7 +1257,7 @@ glade_property_write (GladeProperty * property,
                       GladeXmlContext * context, GladeXmlNode * node)
 {
   GladeXmlNode *prop_node;
-  gchar *name, *value;
+  gchar *name, *value, *tmp;
 
   g_return_if_fail (GLADE_IS_PROPERTY (property));
   g_return_if_fail (node != NULL);
@@ -1313,7 +1313,6 @@ glade_property_write (GladeProperty * property,
                                             GLADE_TAG_COMMENT,
                                             property->priv->i18n_comment);
     }
-
   g_free (name);
   g_free (value);
 }
@@ -1335,7 +1334,7 @@ glade_property_binding_read (GladeXmlNode *node,
 {
   gchar *to, *from, *source;
   GladeProperty *target;
-  
+
   g_return_if_fail (node && glade_xml_node_verify (node, GLADE_XML_TAG_BINDING));
   g_return_if_fail (GLADE_IS_WIDGET (widget));
 
@@ -1400,7 +1399,7 @@ glade_property_binding_write (GladeProperty   *property,
 
   if (!glade_property_get_binding_source (property))
     return;
-  
+
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET)))
     return;
 
@@ -1409,12 +1408,12 @@ glade_property_binding_write (GladeProperty   *property,
 
   to = glade_property_class_id (glade_property_get_class (property));
 
-  source_prop = glade_property_get_binding_source (property);  
+  source_prop = glade_property_get_binding_source (property);
   from = glade_property_class_id (glade_property_get_class (source_prop));
 
   widget = glade_property_get_widget (source_prop);
   source = glade_widget_get_name (widget);
-  
+
   glade_xml_node_set_property_string (binding_node,
                                       GLADE_XML_TAG_TO,
                                       to);
@@ -1792,7 +1791,7 @@ static void
 glade_property_binding_source_weak_notify_cb (GladeProperty *property,
                                               GObject       *binding_source)
 {
-  property->priv->binding_source = NULL;  
+  property->priv->binding_source = NULL;
   property->priv->binding_value_handler = 0;
   glade_property_remove_binding_source (property);
 }
@@ -1897,7 +1896,7 @@ glade_property_set_binding_source (GladeProperty *property,
                                    GladeProperty *binding_source)
 {
   GladeProperty *old_source;
-  
+
   g_return_if_fail (GLADE_IS_PROPERTY (property));
   g_return_if_fail (!binding_source || GLADE_IS_PROPERTY (binding_source));
 
@@ -1909,7 +1908,7 @@ glade_property_set_binding_source (GladeProperty *property,
       GParamSpec *source_pspec = glade_property_class_get_pspec (source_pclass);
 
       g_return_if_fail (source_pspec->flags | G_PARAM_READABLE);
-      g_return_if_fail (prop_pspec->flags | G_PARAM_WRITABLE);      
+      g_return_if_fail (prop_pspec->flags | G_PARAM_WRITABLE);
       g_return_if_fail (glade_property_binding_source_valid (binding_source));
 
       if (property->priv->binding_transform_func)
@@ -2012,7 +2011,7 @@ glade_property_set_binding_transform_func (GladeProperty *property,
   glade_property_set_binding_source (property, property->priv->binding_source);
 
   g_object_notify_by_pspec (G_OBJECT (property),
-                            properties[PROP_BINDING_TRANSFORM_FUNC]);  
+                            properties[PROP_BINDING_TRANSFORM_FUNC]);
 }
 
 static gint glade_property_su_stack = 0;
