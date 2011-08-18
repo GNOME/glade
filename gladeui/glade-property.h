@@ -128,6 +128,7 @@ void                    glade_property_binding_write         (GladeProperty     
                                                               GladeXmlContext    *context,
                                                               GladeXmlNode       *node);
 
+void                    glade_property_resolve_binding       (GladeProperty      *property);
 
 GladePropertyClass     *glade_property_get_class             (GladeProperty      *property);
 

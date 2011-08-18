@@ -115,6 +115,10 @@ struct _GladePropertyPrivate {
                                                 * the property's binding
                                                 */
 
+  /* For resolving a binding source read from a project file */
+  gchar    *binding_source_object_name;
+  gchar    *binding_source_property_name;
+
   /* Used only for translatable strings. */
   guint     i18n_translatable : 1;
   gchar    *i18n_context;
@@ -600,6 +604,10 @@ glade_property_finalize (GObject * object)
       g_value_unset (property->priv->value);
       g_free (property->priv->value);
     }
+  if (property->priv->binding_source_object_name)
+    g_free (property->priv->binding_source_object_name);
+  if (property->priv->binding_source_property_name)
+    g_free (property->priv->binding_source_property_name);
   if (property->priv->binding_targets)
     g_list_free (property->priv->binding_targets);
   if (property->priv->binding_transform_func)
@@ -626,6 +634,8 @@ glade_property_init (GladeProperty * property)
   property->priv->enabled = TRUE;
   property->priv->sensitive = TRUE;
   property->priv->binding_source = NULL;
+  property->priv->binding_source_object_name = NULL;
+  property->priv->binding_source_property_name = NULL;
   property->priv->binding_targets = NULL;
   property->priv->binding_transform_func = NULL;
   property->priv->i18n_translatable = TRUE;
@@ -1290,8 +1300,9 @@ glade_property_write (GladeProperty * property,
  * Read the binding information from @node and save it in
  * the target #GladeProperty of @widget.
  *
- * Note that the actual binding source property will only be
- * resolved after the project is completely loaded.
+ * Note that the actual binding source property will be
+ * resolved by glade_property_resolve_binding() after the
+ * project is completely loaded.
  */
 void
 glade_property_binding_read (GladeXmlNode *node,
@@ -1329,12 +1340,8 @@ glade_property_binding_read (GladeXmlNode *node,
           g_free (transform_func);
         }
 
-      g_object_set_data_full (G_OBJECT (target),
-                              "glade-source-property",
-                              g_strdup (from), g_free);
-      g_object_set_data_full (G_OBJECT (target),
-                              "glade-source-object",
-                              g_strdup (source), g_free);
+      target->priv->binding_source_object_name = g_strdup (source);
+      target->priv->binding_source_property_name = g_strdup (from);
     }
 
   g_free (from);
@@ -1394,6 +1401,48 @@ glade_property_binding_write (GladeProperty   *property,
     glade_xml_node_set_property_string (binding_node,
                                         GLADE_XML_TAG_TRANSFORM_FUNC,
                                         transform_func);
+}
+
+/**
+ * glade_property_resolve_binding:
+ * @property: a #GladeProperty
+ *
+ * Resolves the binding source of @property if a binding with
+ * @property as target was read by glade_property_binding_read()
+ * during project loading.
+ */
+void
+glade_property_resolve_binding (GladeProperty *property)
+{
+  gchar *source_obj_name, *source_prop_name;
+  GladeWidget *widget;
+  GladeProject *project;
+  GladeWidget *source_obj;
+  GladeProperty *source_prop;
+
+  source_obj_name = property->priv->binding_source_object_name;
+  source_prop_name = property->priv->binding_source_property_name;
+
+  if (!source_obj_name || !source_prop_name)
+    return;
+
+  widget = glade_property_get_widget (property);
+  project = glade_widget_get_project (widget);
+
+  source_obj = glade_project_get_widget_by_name (project, source_obj_name);
+  if (!source_obj)
+    return;
+
+  source_prop = glade_widget_get_property (source_obj, source_prop_name);
+  if (!source_prop)
+    return;
+
+  glade_property_set_binding_source (property, source_prop);
+
+  property->priv->binding_source_object_name = NULL;
+  property->priv->binding_source_property_name = NULL;
+  g_free (source_obj_name);
+  g_free (source_prop_name);
 }
 
 /**
