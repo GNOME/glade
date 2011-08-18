@@ -705,22 +705,14 @@ glade_command_set_properties_list (GladeProject * project, GList * props)
 }
 
 
-void
-glade_command_set_properties (GladeProperty * property,
-                              const GValue * old_value,
-                              const GValue * new_value, ...)
+static GList *
+glade_command_add_to_set_properties_list (GList * list,
+                                          GladeProperty * property,
+                                          const GValue * old_value,
+                                          const GValue * new_value)
 {
   GCSetPropData *sdata;
-  GladeProperty *prop;
-  GladeWidget   *widget;
-  GladeProject  *project;
-  GValue *ovalue, *nvalue;
-  GList *list = NULL;
-  va_list vl;
 
-  g_return_if_fail (GLADE_IS_PROPERTY (property));
-
-  /* Add first set */
   sdata = g_new (GCSetPropData, 1);
   sdata->property = property;
   sdata->old_value = g_new0 (GValue, 1);
@@ -729,7 +721,36 @@ glade_command_set_properties (GladeProperty * property,
   g_value_init (sdata->new_value, G_VALUE_TYPE (new_value));
   g_value_copy (old_value, sdata->old_value);
   g_value_copy (new_value, sdata->new_value);
-  list = g_list_prepend (list, sdata);
+
+  return g_list_prepend (list, sdata);
+}
+
+void
+glade_command_set_properties (GladeProperty * property,
+                              const GValue * old_value,
+                              const GValue * new_value, ...)
+{
+  GladeProperty *prop, *target;
+  GladeWidget   *widget;
+  GladeProject  *project;
+  GValue *ovalue, *nvalue;
+  GList *list = NULL, *t;
+  va_list vl;
+
+  g_return_if_fail (GLADE_IS_PROPERTY (property));
+
+  /* Add first set */
+  list = glade_command_add_to_set_properties_list (list, property,
+                                                   old_value, new_value);
+
+  /* Also set values of binding targets */
+  for (t = glade_property_get_binding_targets (property); t; t = t->next)
+    {
+      target = t->data;
+      if (!glade_property_get_binding_transform_func (target))
+          list = glade_command_add_to_set_properties_list (list, target,
+                                                           old_value, new_value);
+    }
 
   va_start (vl, new_value);
   while ((prop = va_arg (vl, GladeProperty *)) != NULL)
@@ -741,15 +762,18 @@ glade_command_set_properties (GladeProperty * property,
       g_assert (G_IS_VALUE (ovalue));
       g_assert (G_IS_VALUE (nvalue));
 
-      sdata = g_new (GCSetPropData, 1);
-      sdata->property = g_object_ref (G_OBJECT (prop));
-      sdata->old_value = g_new0 (GValue, 1);
-      sdata->new_value = g_new0 (GValue, 1);
-      g_value_init (sdata->old_value, G_VALUE_TYPE (ovalue));
-      g_value_init (sdata->new_value, G_VALUE_TYPE (nvalue));
-      g_value_copy (ovalue, sdata->old_value);
-      g_value_copy (nvalue, sdata->new_value);
-      list = g_list_prepend (list, sdata);
+      list = glade_command_add_to_set_properties_list (list, property,
+                                                       ovalue, nvalue);
+
+      for (t = glade_property_get_binding_targets (prop); t; t = t->next)
+        {
+          printf ("set target\n");
+          target = t->data;
+          if (!glade_property_get_binding_transform_func (target))
+            list = glade_command_add_to_set_properties_list (list, target,
+                                                             ovalue, nvalue);
+        }
+
     }
   va_end (vl);
 
@@ -841,9 +865,6 @@ glade_command_bind_property_execute (GladeCommand * cmd)
   glade_property_set_binding_source (target, source);
   glade_property_set_binding_transform_func (target, transform_func);
 
-  if (!source && G_IS_VALUE (&bcmd->old_value))
-      glade_property_set_value (target, &bcmd->old_value);
-
   bcmd->undo = !bcmd->undo;
   return TRUE;
 }
@@ -914,20 +935,44 @@ glade_command_bind_property (GladeProperty * target,
   cmd = GLADE_COMMAND (me);
   cmd->priv->project =
     glade_widget_get_project (glade_property_get_widget (me->target));
+  cmd->priv->description = g_strdup ("dummy");
 
-  cmd->priv->description =
-    g_strdup_printf ((source != NULL)
-                     ? _("Binding property \"%s\" of %s")
-                     : _("Unbinding property \"%s\" of %s"),
-                     glade_property_class_id (glade_property_get_class (target)),
-                     glade_widget_get_name (glade_property_get_widget (target)));
+  glade_command_push_group ((source != NULL)
+                            ? _("Binding property \"%s\" of %s")
+                            : _("Unbinding property \"%s\" of %s"),
+                            glade_property_class_id (glade_property_get_class (target)),
+                            glade_widget_get_name (glade_property_get_widget (target)));
+
+
+  /* Adjust the target's value to match the source (or reset it if a
+   * transformation function is involved, in which case we cannot know
+   * how the target value looks like)
+   */
+  if (source)
+    {
+      const GValue *value;
+
+      if (transform_func)
+        {
+          GladePropertyClass *pclass;
+
+          pclass = glade_property_get_class (source);
+          value = glade_property_class_get_default (pclass);
+        }
+      else
+        value = glade_property_inline_value (source);
+
+      glade_command_set_property_value (target, value);
+    }
 
   glade_command_check_group (GLADE_COMMAND (me));
 
   if (glade_command_bind_property_execute (GLADE_COMMAND (me)))
-      glade_project_push_undo (cmd->priv->project, cmd);
+    glade_project_push_undo (cmd->priv->project, cmd);
   else
     g_object_unref (G_OBJECT (me));
+
+  glade_command_pop_group ();
 }
 
 /**************************************************/
@@ -1297,6 +1342,32 @@ glade_command_delete_prop_refs (GladeWidget * widget)
   g_list_free (refs);
 }
 
+static void
+glade_command_delete_binding_refs (GladeWidget * widget)
+{
+  GList *props, *p;
+
+  props = glade_widget_get_properties (widget);
+  for (p = props; p; p = p->next)
+    {
+      GladeProperty *property = p->data;
+      GList *targets, *t;
+
+      /* We need to iterate over a copy of the binding target list
+       * because its items are removed during the loop
+       */
+      targets = g_list_copy (glade_property_get_binding_targets (property));
+
+      for (t = targets; t; t = t->next)
+        {
+          GladeProperty *target = t->data;
+          glade_command_bind_property (target, NULL, NULL);
+        }
+
+      g_list_free (targets);
+    }
+}
+
 static void glade_command_remove (GList * widgets);
 
 static void
@@ -1394,6 +1465,11 @@ glade_command_remove (GList * widgets)
 
       /* Undoably unset any object properties that may point to the removed object */
       glade_command_delete_prop_refs (widget);
+
+      /* Undoably delete any property bindings whose source property belongs to the
+       * removed widget
+       */
+      glade_command_delete_binding_refs (widget);
 
       /* Undoably unlock and remove any widgets locked by this widget */
       glade_command_remove_locked (widget, cdata->reffed);

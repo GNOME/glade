@@ -171,6 +171,8 @@ GladeProperty          *glade_property_get_binding_source    (GladeProperty     
 void                    glade_property_set_binding_source    (GladeProperty      *property,
                                                               GladeProperty      *binding_source);
 
+GList                  *glade_property_get_binding_targets   (GladeProperty      *property);
+
 const gchar            *glade_property_get_binding_transform_func (GladeProperty *property);
 
 void                    glade_property_set_binding_transform_func (GladeProperty *property,
