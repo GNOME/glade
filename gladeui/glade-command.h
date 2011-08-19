@@ -95,8 +95,9 @@ void           glade_command_set_properties      (GladeProperty *property,
 void           glade_command_set_properties_list (GladeProject  *project, 
 						  GList         *props); /* list of GCSetPropData */
 
-void           glade_command_bind_property        (GladeProperty *target,
-					           GladeProperty *source);
+void           glade_command_bind_property        (GladeProperty *target,     
+					           GladeProperty *source,
+					           const gchar   *transform_func);
 
 /************************** name ******************************/
 

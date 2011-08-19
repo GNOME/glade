@@ -174,6 +174,11 @@ void                    glade_property_set_binding_source    (GladeProperty     
 
 GList                  *glade_property_get_binding_targets   (GladeProperty      *property);
 
+const gchar            *glade_property_get_binding_transform_func (GladeProperty *property);
+
+void                    glade_property_set_binding_transform_func (GladeProperty *property,
+                                                                   const gchar   *transform_func);
+
 void                    glade_property_i18n_set_comment      (GladeProperty      *property, 
 							      const gchar        *str);
 
