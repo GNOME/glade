@@ -747,9 +747,8 @@ glade_command_set_properties (GladeProperty * property,
   for (t = glade_property_get_binding_targets (property); t; t = t->next)
     {
       target = t->data;
-      if (!glade_property_get_binding_transform_func (target))
-          list = glade_command_add_to_set_properties_list (list, target,
-                                                           old_value, new_value);
+      list = glade_command_add_to_set_properties_list (list, target,
+                                                       old_value, new_value);
     }
 
   va_start (vl, new_value);
@@ -767,11 +766,9 @@ glade_command_set_properties (GladeProperty * property,
 
       for (t = glade_property_get_binding_targets (prop); t; t = t->next)
         {
-          printf ("set target\n");
           target = t->data;
-          if (!glade_property_get_binding_transform_func (target))
-            list = glade_command_add_to_set_properties_list (list, target,
-                                                             ovalue, nvalue);
+          list = glade_command_add_to_set_properties_list (list, target,
+                                                           ovalue, nvalue);
         }
 
     }
@@ -823,8 +820,6 @@ typedef struct
   GladeProperty *target;
   GladeProperty *new_source;
   GladeProperty *old_source;
-  gchar *old_transform;
-  gchar *new_transform;
   GValue old_value;
   gboolean undo;
 } GladeCommandBindProperty;
@@ -853,17 +848,14 @@ glade_command_bind_property_execute (GladeCommand * cmd)
 {
   GladeCommandBindProperty *bcmd;
   GladeProperty *target, *source;
-  gchar *transform_func;
 
   g_return_val_if_fail (GLADE_IS_COMMAND_BIND_PROPERTY (cmd), TRUE);
 
   bcmd = GLADE_COMMAND_BIND_PROPERTY (cmd);
   target = bcmd->target;
   source = bcmd->undo ? bcmd->old_source : bcmd->new_source;
-  transform_func = bcmd->undo ? bcmd->old_transform : bcmd->new_transform;
 
   glade_property_set_binding_source (target, source);
-  glade_property_set_binding_transform_func (target, transform_func);
 
   bcmd->undo = !bcmd->undo;
   return TRUE;
@@ -872,11 +864,6 @@ glade_command_bind_property_execute (GladeCommand * cmd)
 static void
 glade_command_bind_property_finalize (GObject * obj)
 {
-  GladeCommandBindProperty *cmd = GLADE_COMMAND_BIND_PROPERTY (obj);
-
-  g_free (cmd->old_transform);
-  g_free (cmd->new_transform);
-
   glade_command_finalize (obj);
 }
 
@@ -892,9 +879,8 @@ glade_command_bind_property_unifies (GladeCommand * this_cmd,
       cmd1 = GLADE_COMMAND_BIND_PROPERTY (this_cmd);
       cmd2 = GLADE_COMMAND_BIND_PROPERTY (other_cmd);
 
-      return (cmd1->target == cmd2->target
-              && cmd1->new_source == cmd2->new_source
-              && cmd1->new_transform == cmd2->new_transform);
+      return (cmd1->target == cmd2->target &&
+              cmd1->new_source == cmd2->new_source);
     }
 
   return FALSE;
@@ -912,8 +898,7 @@ glade_command_bind_property_collapse (GladeCommand * this_cmd,
 
 void
 glade_command_bind_property (GladeProperty * target,
-                             GladeProperty * source,
-                             const gchar   * transform_func)
+                             GladeProperty * source)
 {
   GladeCommandBindProperty *me;
   GladeCommand *cmd;
@@ -926,8 +911,6 @@ glade_command_bind_property (GladeProperty * target,
   me->target = target;
   me->old_source = glade_property_get_binding_source (target);
   me->new_source = source;
-  me->old_transform = g_strdup (glade_property_get_binding_transform_func (target));
-  me->new_transform = g_strdup (transform_func);
 
   if (!me->old_source)
     glade_property_get_value (target, &me->old_value);
@@ -944,26 +927,9 @@ glade_command_bind_property (GladeProperty * target,
                             glade_widget_get_name (glade_property_get_widget (target)));
 
 
-  /* Adjust the target's value to match the source (or reset it if a
-   * transformation function is involved, in which case we cannot know
-   * how the target value looks like)
-   */
+  /* Adjust the target's value to match the source */
   if (source)
-    {
-      const GValue *value;
-
-      if (transform_func)
-        {
-          GladePropertyClass *pclass;
-
-          pclass = glade_property_get_class (source);
-          value = glade_property_class_get_default (pclass);
-        }
-      else
-        value = glade_property_inline_value (source);
-
-      glade_command_set_property_value (target, value);
-    }
+    glade_command_set_property_value (target, glade_property_inline_value (source));
 
   glade_command_check_group (GLADE_COMMAND (me));
 
@@ -1361,7 +1327,7 @@ glade_command_delete_binding_refs (GladeWidget * widget)
       for (t = targets; t; t = t->next)
         {
           GladeProperty *target = t->data;
-          glade_command_bind_property (target, NULL, NULL);
+          glade_command_bind_property (target, NULL);
         }
 
       g_list_free (targets);
