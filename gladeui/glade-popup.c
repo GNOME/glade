@@ -623,22 +623,17 @@ glade_popup_bind_property_cb (GtkMenuItem * item, GladeProperty * property)
   GladeWidget *widget = glade_property_get_widget (property);
   GladeProject *project = glade_widget_get_project (widget);
   GladeProperty *source;
-  gchar *transform_func;
   GtkWidget *parent =
     gtk_widget_get_toplevel (GTK_WIDGET (glade_widget_get_object (widget)));
 
-  if (glade_editor_property_show_bind_dialog (project, parent, property,
-                                              &source, &transform_func))
-    {
-      glade_command_bind_property (property, source, transform_func);
-      g_free (transform_func);
-    }
+  if (glade_editor_property_show_bind_dialog (project, parent, property, &source))
+    glade_command_bind_property (property, source);
 }
 
 static void
 glade_popup_unbind_property_cb (GtkMenuItem * item, GladeProperty * property)
 {
-  glade_command_bind_property (property, NULL, NULL);
+  glade_command_bind_property (property, NULL);
 }
 
 static void
