@@ -1645,7 +1645,7 @@ glade_project_load_internal (GladeProject *project)
    * and fix'em all ('cause the object they referred to  probably
    * weren't found)
    */
-  glade_project_fix_props (project);
+  glade_project_fix_object_props (project);
 
   /* Emit "parse-finished" signal */
   g_signal_emit (project, glade_project_signals[PARSE_FINISHED], 0);
