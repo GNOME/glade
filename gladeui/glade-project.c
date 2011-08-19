@@ -1529,7 +1529,7 @@ glade_project_load_internal (GladeProject *project)
    * and fix'em all ('cause the object they referred to  probably
    * weren't found)
    */
-  glade_project_fix_props (project);
+  glade_project_fix_object_props (project);
 
   /* Reset project status here too so that you get a clean
    * slate after calling glade_project_open().
