@@ -1275,8 +1275,8 @@ glade_property_write (GladeProperty * property,
  * the target #GladeProperty of @widget.
  *
  * Note that the actual binding source property will be
- * resolved by glade_property_resolve_binding() after the
- * project is completely loaded.
+ * resolved by glade_property_resolve() after the project
+ * is completely loaded.
  */
 void
 glade_property_binding_read (GladeXmlNode *node,
@@ -1361,7 +1361,7 @@ glade_property_binding_write (GladeProperty   *property,
 }
 
 /**
- * glade_property_resolve_binding:
+ * glade_property_resolve:
  * @property: a #GladeProperty
  *
  * Resolves the binding source of @property if a binding with
@@ -1369,7 +1369,7 @@ glade_property_binding_write (GladeProperty   *property,
  * during project loading.
  */
 void
-glade_property_resolve_binding (GladeProperty *property)
+glade_property_resolve (GladeProperty *property)
 {
   gchar *source_obj_name, *source_prop_name;
   GladeWidget *widget;
