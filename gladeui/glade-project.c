@@ -1059,7 +1059,7 @@ glade_project_fix_object_props (GladeProject *project)
                                  "glade-loaded-object", NULL);
             }
 
-          glade_property_resolve_binding (property);
+          glade_property_resolve (property);
         }
     }
   g_list_free (objects);
