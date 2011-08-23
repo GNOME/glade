@@ -1378,6 +1378,8 @@ glade_property_resolve_binding (GladeProperty *property)
   GladeWidget *source_obj;
   GladeProperty *source_prop;
 
+  g_return_if_fail (GLADE_IS_PROPERTY (property));
+
   source_obj_name = property->priv->binding_source_object_name;
   source_prop_name = property->priv->binding_source_property_name;
 
