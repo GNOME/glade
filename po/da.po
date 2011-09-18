@@ -5,6 +5,7 @@
 # Keld Simonsen <keld@dkuug.dk>, 2000.
 # Ole Laursen <olau@hardworking.dk>, 2002, 03, 07.
 # Ask Hjorth Larsen <asklarsen@gmail.com>, 2007, 08, 09, 10, 11.
+# Kenneth Nielsen <k.nielsen81@gmail.com>, 2011.
 #
 # Konventioner:
 #
@@ -31,19 +32,19 @@
 # "Recent chooser" osv.: Menuer hvor man kan vælge de seneste dokumenter man har haft åbne.  Den type menuer er åbenbart noget som gtk understøtter "internt".  Så det er en Recent Chooser Menu.  Et Recent Filter er, tror jeg, hvis man vil have programmet til at vise f.eks. de senest åbnede billeder (kun).  Heraf "Seneste"-filter.
 #
 # Søg på google efter icon-naming-spec , hvis der er problemer med noget i denne fil.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: glade 0.6.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-25 22:40+0200\n"
-"PO-Revision-Date: 2011-04-25 16:55+0200\n"
-"Last-Translator: Ask Hjorth Larsen <asklarsen@gmail.com>\n"
-"Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
+"POT-Creation-Date: 2011-09-18 17:04+0200\n"
+"PO-Revision-Date: 2011-09-18 17:04+0200\n"
+"Last-Translator: Kenneth Nielsen <k.nielsen81@gmail.com>\n"
+"Language-Team: Dansk <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../data/glade.desktop.in.in.h:1
 msgid "Create or open user interface designs for GTK+ applications"
@@ -129,7 +130,7 @@ msgid "Activate '%s'"
 msgstr "Aktivér \"%s\""
 
 #. Name
-#: ../src/glade-window.c:596 ../gladeui/glade-base-editor.c:2032
+#: ../src/glade-window.c:596 ../gladeui/glade-base-editor.c:2029
 #: ../gladeui/glade-editor-table.c:411
 msgid "Name:"
 msgstr "Navn:"
@@ -267,15 +268,15 @@ msgstr ""
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr "En brugergrænseflade-designer til GTK+ og Gnome."
 
-#: ../src/glade-window.c:2204 ../plugins/gtk+/glade-gtk.c:5832
+#: ../src/glade-window.c:2204 ../plugins/gtk+/glade-gtk.c:5823
 msgid "_File"
 msgstr "_Fil"
 
-#: ../src/glade-window.c:2205 ../plugins/gtk+/glade-gtk.c:5843
+#: ../src/glade-window.c:2205 ../plugins/gtk+/glade-gtk.c:5834
 msgid "_Edit"
 msgstr "_Redigér"
 
-#: ../src/glade-window.c:2206 ../plugins/gtk+/glade-gtk.c:5852
+#: ../src/glade-window.c:2206 ../plugins/gtk+/glade-gtk.c:5843
 msgid "_View"
 msgstr "_Vis"
 
@@ -283,7 +284,7 @@ msgstr "_Vis"
 msgid "_Projects"
 msgstr "_Projekter"
 
-#: ../src/glade-window.c:2208 ../plugins/gtk+/glade-gtk.c:5856
+#: ../src/glade-window.c:2208 ../plugins/gtk+/glade-gtk.c:5847
 msgid "_Help"
 msgstr "_Hjælp"
 
@@ -489,72 +490,72 @@ msgstr "Luk dokument"
 msgid "Could not create a new project."
 msgstr "Kunne ikke opret et nyt projekt."
 
-#: ../src/glade-window.c:2765
+#: ../src/glade-window.c:2764
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr "Projektet %s indeholder ugemte ændringer"
 
-#: ../src/glade-window.c:2770
+#: ../src/glade-window.c:2769
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr ""
 "Hvis du genindlæser, vil alle ugemte ændringer gå tabt. Genindlæs alligevel?"
 
-#: ../src/glade-window.c:2780
+#: ../src/glade-window.c:2779
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr "Projektfilen %s er blevet modificeret udefra"
 
-#: ../src/glade-window.c:2785
+#: ../src/glade-window.c:2784
 msgid "Do you want to reload the project?"
 msgstr "Vil du genindlæse projektet?"
 
-#: ../src/glade-window.c:2791
+#: ../src/glade-window.c:2790
 msgid "_Reload"
 msgstr "_Genindlæs"
 
-#: ../src/glade-window.c:2906
+#: ../src/glade-window.c:2905
 msgid "_Undo"
 msgstr "_Fortryd"
 
-#: ../src/glade-window.c:2910
+#: ../src/glade-window.c:2909
 #, c-format
 msgid "Undo: %s"
 msgstr "Fortryd: %s"
 
-#: ../src/glade-window.c:2911 ../src/glade-window.c:2925
+#: ../src/glade-window.c:2910 ../src/glade-window.c:2924
 msgid "the last action"
 msgstr "den sidste handling"
 
-#: ../src/glade-window.c:2920
+#: ../src/glade-window.c:2919
 msgid "_Redo"
 msgstr "_Omgør"
 
-#: ../src/glade-window.c:2924
+#: ../src/glade-window.c:2923
 #, c-format
 msgid "Redo: %s"
 msgstr "Omgør: %s"
 
-#: ../src/glade-window.c:3390
+#: ../src/glade-window.c:3389
 msgid "Go back in undo history"
 msgstr "Gå baglæns i genskab-historikken"
 
-#: ../src/glade-window.c:3393
+#: ../src/glade-window.c:3392
 msgid "Go forward in undo history"
 msgstr "Gå forlæns i fortrydehistorikken"
 
-#: ../src/glade-window.c:3448
+#: ../src/glade-window.c:3447
 msgid "Palette"
 msgstr "Palet"
 
-#: ../src/glade-window.c:3458
+#: ../src/glade-window.c:3457
 msgid "Inspector"
 msgstr "Inspektør"
 
-#: ../src/glade-window.c:3465 ../gladeui/glade-editor.c:405
-#: ../gladeui/glade-widget.c:1249 ../plugins/gtk+/glade-gtk.c:5109
-#: ../plugins/gtk+/glade-gtk.c:5136 ../plugins/gtk+/glade-gtk.c:5155
-#: ../plugins/gtk+/glade-gtk.c:5193 ../plugins/gtk+/glade-gtk.c:10095
-#: ../plugins/gtk+/glade-gtk.c:10667 ../plugins/gtk+/glade-gtk.c:10821
+#: ../src/glade-window.c:3464 ../gladeui/glade-editor.c:405
+#: ../gladeui/glade-widget.c:1247 ../plugins/gtk+/glade-gtk.c:5100
+#: ../plugins/gtk+/glade-gtk.c:5127 ../plugins/gtk+/glade-gtk.c:5146
+#: ../plugins/gtk+/glade-gtk.c:5184 ../plugins/gtk+/glade-gtk.c:10078
+#: ../plugins/gtk+/glade-gtk.c:10650 ../plugins/gtk+/glade-gtk.c:10804
 msgid "Properties"
 msgstr "Egenskaber"
 
@@ -688,11 +689,11 @@ msgstr "Streng"
 msgid "An entry"
 msgstr "En post"
 
-#: ../gladeui/glade-design-layout.c:1039
+#: ../gladeui/glade-design-layout.c:1031
 msgid "Design View"
 msgstr "Designvisning"
 
-#: ../gladeui/glade-design-layout.c:1040
+#: ../gladeui/glade-design-layout.c:1032
 msgid "The GladeDesignView that contains this layout"
 msgstr "GladeDesignView'et, som indeholder dette layout"
 
@@ -772,66 +773,66 @@ msgstr "Fejl: %s.\n"
 msgid "Broken pipe!\n"
 msgstr "Rørledning brudt!\n"
 
-#: ../gladeui/glade-base-editor.c:546
+#: ../gladeui/glade-base-editor.c:544
 #, c-format
 msgid "Setting object type on %s to %s"
 msgstr "Sætter objekttype på %s til %s"
 
-#: ../gladeui/glade-base-editor.c:708
+#: ../gladeui/glade-base-editor.c:706
 #, c-format
 msgid "Add a %s to %s"
 msgstr "Føj en %s til %s"
 
-#: ../gladeui/glade-base-editor.c:800 ../gladeui/glade-command.c:1056
+#: ../gladeui/glade-base-editor.c:798 ../gladeui/glade-command.c:1056
 #, c-format
 msgid "Add %s"
 msgstr "Tilføj %s"
 
-#: ../gladeui/glade-base-editor.c:832
+#: ../gladeui/glade-base-editor.c:830
 #, c-format
 msgid "Add child %s"
 msgstr "Tilføj underelementet %s"
 
-#: ../gladeui/glade-base-editor.c:920
+#: ../gladeui/glade-base-editor.c:918
 #, c-format
 msgid "Delete %s child from %s"
 msgstr "Slet underkomponent %s fra %s"
 
-#: ../gladeui/glade-base-editor.c:1045
+#: ../gladeui/glade-base-editor.c:1043
 #, c-format
 msgid "Reorder %s's children"
 msgstr "Gensortér underkomponenter for %s"
 
-#: ../gladeui/glade-base-editor.c:1480 ../plugins/gtk+/gtk+.xml.in.h:108
+#: ../gladeui/glade-base-editor.c:1477 ../plugins/gtk+/gtk+.xml.in.h:108
 msgid "Container"
 msgstr "Beholder"
 
-#: ../gladeui/glade-base-editor.c:1481
+#: ../gladeui/glade-base-editor.c:1478
 msgid "The container object this editor is currently editing"
 msgstr "Beholderobjektet som denne redigering p.t. redigerer"
 
-#: ../gladeui/glade-base-editor.c:1711 ../gladeui/glade-editor.c:1085
+#: ../gladeui/glade-base-editor.c:1708 ../gladeui/glade-editor.c:1085
 msgid "General"
 msgstr "Generelt"
 
-#: ../gladeui/glade-base-editor.c:1719
+#: ../gladeui/glade-base-editor.c:1716
 msgid "Hierarchy"
 msgstr "Hierarki"
 
-#: ../gladeui/glade-base-editor.c:1757 ../plugins/gtk+/gtk+.xml.in.h:283
+#: ../gladeui/glade-base-editor.c:1754 ../plugins/gtk+/gtk+.xml.in.h:283
 msgid "Label"
 msgstr "Mærkat"
 
-#: ../gladeui/glade-base-editor.c:1772 ../gladeui/glade-widget-adaptor.c:1373
+#: ../gladeui/glade-base-editor.c:1769 ../gladeui/glade-widget-adaptor.c:1373
 msgid "Type"
 msgstr "Type"
 
 #. Type
-#: ../gladeui/glade-base-editor.c:2047
+#: ../gladeui/glade-base-editor.c:2044
 msgid "Type:"
 msgstr "Type:"
 
-#: ../gladeui/glade-base-editor.c:2261
+#: ../gladeui/glade-base-editor.c:2258
 msgid ""
 "<big><b>Tips:</b></big>\n"
 "  * Right-click over the treeview to add items.\n"
@@ -855,7 +856,7 @@ msgstr "Indstiller flere egenskaber"
 msgid "Setting %s of %s"
 msgstr "Sætter %s af %s"
 
-#: ../gladeui/glade-command.c:645 ../gladeui/glade-editor-property.c:3049
+#: ../gladeui/glade-command.c:645 ../gladeui/glade-editor-property.c:3047
 #, c-format
 msgid "Setting %s of %s to %s"
 msgstr "Sætter %s af %s til %s"
@@ -967,41 +968,41 @@ msgid "Whether we should use the command API for the undo/redo stack"
 msgstr "Om kommando-API'en skal bruges til fortryd/omgør-stakken"
 
 # Velsagtens sådan noget som text fields
-#: ../gladeui/glade-editor-property.c:1143
+#: ../gladeui/glade-editor-property.c:1141
 msgid "Select Fields"
 msgstr "Markér felter"
 
-#: ../gladeui/glade-editor-property.c:1165
+#: ../gladeui/glade-editor-property.c:1163
 msgid "_Select individual fields:"
 msgstr "_Markér enkelte felter:"
 
-#: ../gladeui/glade-editor-property.c:1497
+#: ../gladeui/glade-editor-property.c:1495
 msgid "Select Named Icon"
 msgstr "Vælg navngivet ikon"
 
-#: ../gladeui/glade-editor-property.c:1772
+#: ../gladeui/glade-editor-property.c:1770
 msgid "Edit Text"
 msgstr "Redigér tekst"
 
 #. Text
-#: ../gladeui/glade-editor-property.c:1802
+#: ../gladeui/glade-editor-property.c:1800
 msgid "_Text:"
 msgstr "_Tekst:"
 
 #. Translatable
-#: ../gladeui/glade-editor-property.c:1836
+#: ../gladeui/glade-editor-property.c:1834
 msgid "T_ranslatable"
 msgstr "_Oversættelig"
 
-#: ../gladeui/glade-editor-property.c:1842 ../gladeui/glade-property.c:660
+#: ../gladeui/glade-editor-property.c:1840 ../gladeui/glade-property.c:660
 msgid "Whether this property is translatable"
 msgstr "Om denne egenskab kan oversættes"
 
-#: ../gladeui/glade-editor-property.c:1850
+#: ../gladeui/glade-editor-property.c:1848
 msgid "Conte_xt for translation:"
 msgstr "Konte_kst til oversættelse:"
 
-#: ../gladeui/glade-editor-property.c:1856
+#: ../gladeui/glade-editor-property.c:1854
 msgid ""
 "For short and ambiguous strings: type a word here to differentiate the "
 "meaning of this string from the meaning of other occurrences of the same "
@@ -1010,72 +1011,72 @@ msgstr ""
 "For korte og flertydige strenge: Skriv et ord her for at kunne skelne denne "
 "strengs betydning fra andre forekomster af samme streng"
 
-#: ../gladeui/glade-editor-property.c:1887
+#: ../gladeui/glade-editor-property.c:1885
 msgid "Co_mments for translators:"
 msgstr "Ko_mmentarer til oversættere:"
 
-#: ../gladeui/glade-editor-property.c:2002
+#: ../gladeui/glade-editor-property.c:2000
 msgid "Select a file from the project resource directory"
 msgstr "Vælg en fil fra projektets ressourcemappe"
 
-#: ../gladeui/glade-editor-property.c:2286
-#: ../gladeui/glade-editor-property.c:2302
+#: ../gladeui/glade-editor-property.c:2284
+#: ../gladeui/glade-editor-property.c:2300
 msgid "Yes"
 msgstr "Ja"
 
-#: ../gladeui/glade-editor-property.c:2286
-#: ../gladeui/glade-editor-property.c:2302
-#: ../gladeui/glade-editor-property.c:2317
+#: ../gladeui/glade-editor-property.c:2284
+#: ../gladeui/glade-editor-property.c:2300
+#: ../gladeui/glade-editor-property.c:2315
 msgid "No"
 msgstr "Nej"
 
-#: ../gladeui/glade-editor-property.c:2725 ../gladeui/glade-widget.c:1213
+#: ../gladeui/glade-editor-property.c:2723 ../gladeui/glade-widget.c:1211
 #: ../gladeui/glade-widget-adaptor.c:1366
 msgid "Name"
 msgstr "Navn"
 
-#: ../gladeui/glade-editor-property.c:2734 ../gladeui/glade-property.c:627
+#: ../gladeui/glade-editor-property.c:2732 ../gladeui/glade-property.c:627
 msgid "Class"
 msgstr "Klasse"
 
-#: ../gladeui/glade-editor-property.c:2751
+#: ../gladeui/glade-editor-property.c:2749
 #, c-format
 msgid "Choose parentless %s type objects in this project"
 msgstr "Vælg ophavsfri objekter af type %s i dette projekt"
 
-#: ../gladeui/glade-editor-property.c:2752
+#: ../gladeui/glade-editor-property.c:2750
 #, c-format
 msgid "Choose a parentless %s in this project"
 msgstr "Vælg ophavsfri %s i dette projekt"
 
-#: ../gladeui/glade-editor-property.c:2755
+#: ../gladeui/glade-editor-property.c:2753
 #, c-format
 msgid "Choose %s type objects in this project"
 msgstr "Vælg objekter af type %s i dette projekt"
 
-#: ../gladeui/glade-editor-property.c:2756
+#: ../gladeui/glade-editor-property.c:2754
 #, c-format
 msgid "Choose a %s in this project"
 msgstr "Vælg %s i dette projekt"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:2826
-#: ../gladeui/glade-editor-property.c:2968
+#: ../gladeui/glade-editor-property.c:2824
+#: ../gladeui/glade-editor-property.c:2966
 msgid "O_bjects:"
 msgstr "O_bjekter:"
 
-#: ../gladeui/glade-editor-property.c:2920
+#: ../gladeui/glade-editor-property.c:2918
 msgid "_New"
 msgstr "_Ny"
 
 #. translators: Creating 'a widget' for 'a property' of 'a widget'
-#: ../gladeui/glade-editor-property.c:3075
+#: ../gladeui/glade-editor-property.c:3073
 #, c-format
 msgid "Creating %s for %s of %s"
 msgstr "Opretter %s til %s af %s"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:3268
+#: ../gladeui/glade-editor-property.c:3266
 msgid "Objects:"
 msgstr "Objekter:"
 
@@ -1196,7 +1197,7 @@ msgstr "Egenskabs_beskrivelse:"
 msgid "%s - %s Properties"
 msgstr "%s - Egenskaber for %s"
 
-#: ../gladeui/glade-palette.c:651
+#: ../gladeui/glade-palette.c:646
 msgid "Widget selector"
 msgstr "Kontrolmarkør"
 
@@ -1285,7 +1286,7 @@ msgstr ""
 "De følgende påkrævede kataloger er utilgængelige: %s"
 
 #: ../gladeui/glade-project.c:1566 ../gladeui/glade-project.c:1603
-#: ../gladeui/glade-project.c:1840 ../gladeui/glade-project.c:3955
+#: ../gladeui/glade-project.c:1840 ../gladeui/glade-project.c:3953
 #, c-format
 msgid "%s document properties"
 msgstr "Dokumentegenskaber for %s"
@@ -1361,99 +1362,99 @@ msgstr ""
 "Dette signal blev introduceret i %s %d.%d, mens projektets målversion er %s "
 "%d.%d"
 
-#: ../gladeui/glade-project.c:2197
+#: ../gladeui/glade-project.c:2195
 msgid "Details"
 msgstr "Detaljer"
 
-#: ../gladeui/glade-project.c:2213
+#: ../gladeui/glade-project.c:2211
 #, c-format
 msgid "Project \"%s\" has errors. Save anyway?"
 msgstr "Projektet %s indeholder fejl. Gem alligevel?"
 
-#: ../gladeui/glade-project.c:2214
+#: ../gladeui/glade-project.c:2212
 #, c-format
 msgid "Project \"%s\" has deprecated widgets and/or version mismatches."
 msgstr ""
 "Projektet \"%s\" har deprecierede kontroller og/eller versionskonflikter."
 
-#: ../gladeui/glade-project.c:3570
+#: ../gladeui/glade-project.c:3568
 #, c-format
 msgid "Unsaved %i"
 msgstr "Ugemt %i"
 
-#: ../gladeui/glade-project.c:3629
+#: ../gladeui/glade-project.c:3627
 #, c-format
 msgid "Project %s has no deprecated widgets or version mismatches."
 msgstr "Projektet %s har ingen udfasede kontroller eller versionskonflikter."
 
-#: ../gladeui/glade-project.c:3766
+#: ../gladeui/glade-project.c:3764
 msgid "Image resources are loaded locally:"
 msgstr "Billedressourcer indlæses lokalt:"
 
-#: ../gladeui/glade-project.c:3783
+#: ../gladeui/glade-project.c:3781
 msgid "From the project directory"
 msgstr "Fra projektmappen"
 
-#: ../gladeui/glade-project.c:3794
+#: ../gladeui/glade-project.c:3792
 msgid "From a project relative directory"
 msgstr "Fra en relativ projektmappe"
 
-#: ../gladeui/glade-project.c:3810
+#: ../gladeui/glade-project.c:3808
 msgid "From this directory"
 msgstr "Fra denne mappe"
 
-#: ../gladeui/glade-project.c:3815
+#: ../gladeui/glade-project.c:3813
 msgid "Choose a path to load image resources"
 msgstr "Vælg en sti at åbne billedressourcer fra"
 
 #. Target versions
-#: ../gladeui/glade-project.c:3840
+#: ../gladeui/glade-project.c:3838
 msgid "Toolkit versions required:"
 msgstr "Værktøjskasseversioner påkrævet:"
 
-#: ../gladeui/glade-project.c:3936
+#: ../gladeui/glade-project.c:3934
 msgid "Verify versions and deprecations:"
 msgstr "Kontrollér versioner og udfasede elementer:"
 
-#: ../gladeui/glade-project.c:4327
+#: ../gladeui/glade-project.c:4325
 #, c-format
 msgid "(internal %s)"
 msgstr "(intern %s)"
 
-#: ../gladeui/glade-project.c:4332
+#: ../gladeui/glade-project.c:4330
 #, c-format
 msgid "(%s child)"
 msgstr "(%s underkomponent)"
 
 #. translators: reffers to a property named '%s' of widget '%s'
-#: ../gladeui/glade-project.c:4340
+#: ../gladeui/glade-project.c:4338
 #, c-format
 msgid "(%s of %s)"
 msgstr "(%s af %s)"
 
-#: ../gladeui/glade-project.c:4567 ../gladeui/glade-project.c:4605
-#: ../gladeui/glade-project.c:4768
+#: ../gladeui/glade-project.c:4565 ../gladeui/glade-project.c:4603
+#: ../gladeui/glade-project.c:4766
 msgid "No widget selected."
 msgstr "Ingen kontrol markeret."
 
-#: ../gladeui/glade-project.c:4654
+#: ../gladeui/glade-project.c:4652
 msgid "Unable to paste to the selected parent"
 msgstr "Kan ikke indsætte i ophavskontrollen"
 
-#: ../gladeui/glade-project.c:4665
+#: ../gladeui/glade-project.c:4663
 msgid "Unable to paste to multiple widgets"
 msgstr "Kan ikke indsætte i flere kontroller"
 
-#: ../gladeui/glade-project.c:4681
+#: ../gladeui/glade-project.c:4679
 msgid "No widget on the clipboard"
 msgstr "Ingen kontrol i udklipsholderen"
 
-#: ../gladeui/glade-project.c:4726
+#: ../gladeui/glade-project.c:4724
 msgid "Only one widget can be pasted at a time to this container"
 msgstr "Kun én kontrol kan indsættes ad gangen i denne beholder"
 
 # Hvad det så end betyder må dette bibeholde betydningen med tilstrækkelig sikkerhed
-#: ../gladeui/glade-project.c:4738
+#: ../gladeui/glade-project.c:4736
 msgid "Insufficient amount of placeholders in target container"
 msgstr "Utilstrækkeligt antal pladsholdere i målbeholderen"
 
@@ -1553,7 +1554,7 @@ msgstr "Brugerdata"
 msgid "The user data for this signal"
 msgstr "Brugerdataene for dette signal"
 
-#: ../gladeui/glade-signal.c:179 ../gladeui/glade-widget.c:1297
+#: ../gladeui/glade-signal.c:179 ../gladeui/glade-widget.c:1295
 msgid "Support Warning"
 msgstr "Understøttelsesadvarsel"
 
@@ -1618,121 +1619,121 @@ msgstr "Kunne ikke vise henvisning:"
 msgid "None"
 msgstr "Intet"
 
-#: ../gladeui/glade-widget.c:1214
+#: ../gladeui/glade-widget.c:1212
 msgid "The name of the widget"
 msgstr "Navn på kontrollen"
 
-#: ../gladeui/glade-widget.c:1218
+#: ../gladeui/glade-widget.c:1216
 msgid "Internal name"
 msgstr "Internt navn"
 
-#: ../gladeui/glade-widget.c:1219
+#: ../gladeui/glade-widget.c:1217
 msgid "The internal name of the widget"
 msgstr "Kontrollens interne navn"
 
-#: ../gladeui/glade-widget.c:1223
+#: ../gladeui/glade-widget.c:1221
 msgid "Anarchist"
 msgstr "Anarkist"
 
-#: ../gladeui/glade-widget.c:1224
+#: ../gladeui/glade-widget.c:1222
 msgid ""
 "Whether this composite child is an ancestral child or an anarchist child"
 msgstr "Om denne sammensatte underkomponent er hierarkisk eller anarkistisk"
 
-#: ../gladeui/glade-widget.c:1230
+#: ../gladeui/glade-widget.c:1228
 msgid "Object"
 msgstr "Objekt"
 
-#: ../gladeui/glade-widget.c:1231
+#: ../gladeui/glade-widget.c:1229
 msgid "The object associated"
 msgstr "Objektet associeret"
 
-#: ../gladeui/glade-widget.c:1236
+#: ../gladeui/glade-widget.c:1234
 msgid "Adaptor"
 msgstr "Adapter"
 
-#: ../gladeui/glade-widget.c:1237
+#: ../gladeui/glade-widget.c:1235
 msgid "The class adaptor for the associated widget"
 msgstr "Klasseadapteren for den associerede kontrol"
 
-#: ../gladeui/glade-widget.c:1242 ../gladeui/glade-inspector.c:180
+#: ../gladeui/glade-widget.c:1240 ../gladeui/glade-inspector.c:180
 msgid "Project"
 msgstr "Projekt"
 
-#: ../gladeui/glade-widget.c:1243
+#: ../gladeui/glade-widget.c:1241
 msgid "The glade project that this widget belongs to"
 msgstr "Glade-projektet hvortil denne kontrol hører"
 
-#: ../gladeui/glade-widget.c:1250
+#: ../gladeui/glade-widget.c:1248
 msgid "A list of GladeProperties"
 msgstr "En liste af GladeProperties"
 
-#: ../gladeui/glade-widget.c:1254 ../plugins/gtk+/gtk+.xml.in.h:346
+#: ../gladeui/glade-widget.c:1252 ../plugins/gtk+/gtk+.xml.in.h:346
 msgid "Parent"
 msgstr "Ophav"
 
-#: ../gladeui/glade-widget.c:1255
+#: ../gladeui/glade-widget.c:1253
 msgid "A pointer to the parenting GladeWidget"
 msgstr "En pointer til GladeWidget-ophavskontrollen"
 
-#: ../gladeui/glade-widget.c:1260
+#: ../gladeui/glade-widget.c:1258
 msgid "Internal Name"
 msgstr "Internt navn"
 
-#: ../gladeui/glade-widget.c:1261
+#: ../gladeui/glade-widget.c:1259
 msgid "A generic name prefix for internal widgets"
 msgstr "Et generisk navnepræfix til interne kontroller"
 
-#: ../gladeui/glade-widget.c:1265
+#: ../gladeui/glade-widget.c:1263
 msgid "Template"
 msgstr "Skabelon"
 
-#: ../gladeui/glade-widget.c:1266
+#: ../gladeui/glade-widget.c:1264
 msgid "A GladeWidget template to base a new widget on"
 msgstr "En GladeWidget-skabelon som en ny kontrol baseres på"
 
-#: ../gladeui/glade-widget.c:1271
+#: ../gladeui/glade-widget.c:1269
 msgid "Exact Template"
 msgstr "Eksakt skabelon"
 
-#: ../gladeui/glade-widget.c:1273
+#: ../gladeui/glade-widget.c:1271
 msgid "Whether we are creating an exact duplicate when using a template"
 msgstr "Hvorvidt vi opretter en eksakt kopi, når vi anvender en skabelon"
 
-#: ../gladeui/glade-widget.c:1277
+#: ../gladeui/glade-widget.c:1275
 msgid "Reason"
 msgstr "Årsag"
 
-#: ../gladeui/glade-widget.c:1278
+#: ../gladeui/glade-widget.c:1276
 msgid "A GladeCreateReason for this creation"
 msgstr "En GladeCreateReason til denne oprettelse"
 
-#: ../gladeui/glade-widget.c:1285
+#: ../gladeui/glade-widget.c:1283
 msgid "Toplevel Width"
 msgstr "Bredde på øverste niveau"
 
-#: ../gladeui/glade-widget.c:1286
+#: ../gladeui/glade-widget.c:1284
 msgid "The width of the widget when toplevel in the GladeDesignLayout"
 msgstr "Bredden af kontrollen når den er øverst i GladeDesignLayout"
 
-#: ../gladeui/glade-widget.c:1291
+#: ../gladeui/glade-widget.c:1289
 msgid "Toplevel Height"
 msgstr "Højde på øverste niveau"
 
-#: ../gladeui/glade-widget.c:1292
+#: ../gladeui/glade-widget.c:1290
 msgid "The height of the widget when toplevel in the GladeDesignLayout"
 msgstr "Højden af kontrollen når den er øverst i GladeDesignLayout"
 
-#: ../gladeui/glade-widget.c:1298
+#: ../gladeui/glade-widget.c:1296
 msgid "A warning string about version mismatches"
 msgstr "En advarselsstreng om versionskonflikter"
 
-#: ../gladeui/glade-widget.c:1302 ../gladeui/glade-widget-action.c:197
+#: ../gladeui/glade-widget.c:1300 ../gladeui/glade-widget-action.c:197
 #: ../plugins/gtk+/gtk+.xml.in.h:553
 msgid "Visible"
 msgstr "Synlig"
 
-#: ../gladeui/glade-widget.c:1303
+#: ../gladeui/glade-widget.c:1301
 msgid "Wether the widget is visible or not"
 msgstr "Om kontrollen er synlig"
 
@@ -1819,7 +1820,7 @@ msgstr "En markør til at indsætte kontroller i brugergrænsefladen"
 msgid "The project being inspected"
 msgstr "Projektet der inspiceres"
 
-#: ../gladeui/glade-inspector.c:383
+#: ../gladeui/glade-inspector.c:382
 msgid "< search widgets >"
 msgstr "< søgekontroller >"
 
@@ -1843,27 +1844,27 @@ msgstr "Om denne handling er synlig"
 msgid "All Contexts"
 msgstr "Alle kontekster"
 
-#: ../gladeui/glade-named-icon-chooser-dialog.c:1380
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1376
 msgid "Named Icon Chooser"
 msgstr "Navngiven ikonvælger"
 
-#: ../gladeui/glade-named-icon-chooser-dialog.c:1417
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1413
 msgid "Icon _Name:"
 msgstr "Ikon_navn:"
 
-#: ../gladeui/glade-named-icon-chooser-dialog.c:1461
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1457
 msgid "C_ontexts:"
 msgstr "K_ontekster:"
 
-#: ../gladeui/glade-named-icon-chooser-dialog.c:1484
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1480
 msgid "Icon Na_mes:"
 msgstr "Ikon_navne:"
 
-#: ../gladeui/glade-named-icon-chooser-dialog.c:1508
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1504
 msgid "_List standard icons only"
 msgstr "_Opskriv kun standardikoner"
 
-#: ../gladeui/glade-named-icon-chooser-dialog.c:1717
+#: ../gladeui/glade-named-icon-chooser-dialog.c:1712
 #, c-format
 msgid "Could not create directory: %s"
 msgstr "Kunne ikke oprette mappen: %s"
@@ -1940,8 +1941,8 @@ msgid "Accel Label"
 msgstr "Genvejs-mærkat"
 
 #. Accelerator
-#: ../plugins/gtk+/gtk+.xml.in.h:12 ../plugins/gtk+/glade-gtk.c:10147
-#: ../plugins/gtk+/glade-gtk.c:10275
+#: ../plugins/gtk+/gtk+.xml.in.h:12 ../plugins/gtk+/glade-gtk.c:10130
+#: ../plugins/gtk+/glade-gtk.c:10258
 msgid "Accelerator"
 msgstr "Tastegenvej"
 
@@ -1971,8 +1972,8 @@ msgstr "Tilgængelig beskrivelse"
 msgid "Accessible Name"
 msgstr "Tilgængeligt navn"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:21 ../plugins/gtk+/glade-gtk.c:10663
-#: ../plugins/gtk+/glade-gtk.c:10696
+#: ../plugins/gtk+/gtk+.xml.in.h:21 ../plugins/gtk+/glade-gtk.c:10646
+#: ../plugins/gtk+/glade-gtk.c:10679
 #: ../plugins/gtk+/glade-activatable-editor.c:347
 msgid "Action"
 msgstr "Handling"
@@ -2148,8 +2149,8 @@ msgstr "Boks"
 msgid "Browse"
 msgstr "Gennemse"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:74 ../plugins/gtk+/glade-gtk.c:6063
-#: ../plugins/gtk+/glade-gtk.c:6261
+#: ../plugins/gtk+/gtk+.xml.in.h:74 ../plugins/gtk+/glade-gtk.c:6054
+#: ../plugins/gtk+/glade-gtk.c:6252
 msgid "Button"
 msgstr "Knap"
 
@@ -2201,7 +2202,7 @@ msgstr "Kolonne for cellebaggrundens farvenavn"
 msgid "Cell Background RGBA column"
 msgstr "Kolonne for cellebaggrundsfarve, RGBA"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:87 ../plugins/gtk+/glade-gtk.c:10090
+#: ../plugins/gtk+/gtk+.xml.in.h:87 ../plugins/gtk+/glade-gtk.c:10073
 msgid "Cell Renderer"
 msgstr "Celleoptegner"
 
@@ -2254,8 +2255,8 @@ msgstr "Farvevælgervindue"
 msgid "Columns"
 msgstr "Kolonner"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:101 ../plugins/gtk+/glade-gtk.c:10148
-#: ../plugins/gtk+/glade-gtk.c:10276
+#: ../plugins/gtk+/gtk+.xml.in.h:101 ../plugins/gtk+/glade-gtk.c:10131
+#: ../plugins/gtk+/glade-gtk.c:10259
 msgid "Combo"
 msgstr "Kombination"
 
@@ -2321,8 +2322,8 @@ msgstr "Opret mappe"
 #. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
 #. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
 #.
-#: ../plugins/gtk+/gtk+.xml.in.h:123 ../plugins/gtk+/glade-gtk.c:6067
-#: ../plugins/gtk+/glade-gtk.c:6265
+#: ../plugins/gtk+/gtk+.xml.in.h:123 ../plugins/gtk+/glade-gtk.c:6058
+#: ../plugins/gtk+/glade-gtk.c:6256
 msgid "Custom"
 msgstr "Brugertilpasset"
 
@@ -2739,9 +2740,9 @@ msgstr "Kun ikoner"
 msgid "If Valid"
 msgstr "Hvis gyldig"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:234 ../plugins/gtk+/glade-gtk.c:6074
-#: ../plugins/gtk+/glade-gtk.c:6082 ../plugins/gtk+/glade-gtk.c:6271
-#: ../plugins/gtk+/glade-gtk.c:6280
+#: ../plugins/gtk+/gtk+.xml.in.h:234 ../plugins/gtk+/glade-gtk.c:6065
+#: ../plugins/gtk+/glade-gtk.c:6073 ../plugins/gtk+/glade-gtk.c:6262
+#: ../plugins/gtk+/glade-gtk.c:6271
 msgid "Image"
 msgstr "Billede"
 
@@ -2857,9 +2858,8 @@ msgid "Info"
 msgstr "Information"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:255
-#, fuzzy
 msgid "Info Bar"
-msgstr "Information"
+msgstr "Informationslinje"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:256
 msgid "Initially Complete"
@@ -3028,8 +3028,8 @@ msgstr "Maksimal kolonnebredde i tegn"
 msgid "Member Of"
 msgstr "Medlem af"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:306 ../plugins/gtk+/glade-gtk.c:6066
-#: ../plugins/gtk+/glade-gtk.c:6264
+#: ../plugins/gtk+/gtk+.xml.in.h:306 ../plugins/gtk+/glade-gtk.c:6057
+#: ../plugins/gtk+/glade-gtk.c:6255
 msgid "Menu"
 msgstr "Menu"
 
@@ -3037,7 +3037,7 @@ msgstr "Menu"
 msgid "Menu Bar"
 msgstr "Menulinje"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:308 ../plugins/gtk+/glade-gtk.c:5186
+#: ../plugins/gtk+/gtk+.xml.in.h:308 ../plugins/gtk+/glade-gtk.c:5177
 msgid "Menu Item"
 msgstr "Menuelement"
 
@@ -3094,9 +3094,9 @@ msgstr "Aldrig"
 msgid "Node Child Of"
 msgstr "Underelement af"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:323 ../plugins/gtk+/glade-gtk.c:6073
-#: ../plugins/gtk+/glade-gtk.c:6081 ../plugins/gtk+/glade-gtk.c:6270
-#: ../plugins/gtk+/glade-gtk.c:6279
+#: ../plugins/gtk+/gtk+.xml.in.h:323 ../plugins/gtk+/glade-gtk.c:6064
+#: ../plugins/gtk+/glade-gtk.c:6072 ../plugins/gtk+/glade-gtk.c:6261
+#: ../plugins/gtk+/glade-gtk.c:6270
 msgid "Normal"
 msgstr "Normal"
 
@@ -3278,8 +3278,8 @@ msgid "Primary Stock Icon"
 msgstr "Primær indbygget ikon"
 
 #. Progress...
-#: ../plugins/gtk+/gtk+.xml.in.h:369 ../plugins/gtk+/glade-gtk.c:10151
-#: ../plugins/gtk+/glade-gtk.c:10279 ../plugins/gtk+/glade-entry-editor.c:540
+#: ../plugins/gtk+/gtk+.xml.in.h:369 ../plugins/gtk+/glade-gtk.c:10134
+#: ../plugins/gtk+/glade-gtk.c:10262 ../plugins/gtk+/glade-entry-editor.c:540
 msgid "Progress"
 msgstr "Fremgang"
 
@@ -3367,7 +3367,7 @@ msgstr "Seneste-vælger"
 msgid "Recent Chooser Dialog"
 msgstr "Seneste vælgervindue"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:389 ../plugins/gtk+/glade-gtk.c:5151
+#: ../plugins/gtk+/gtk+.xml.in.h:389 ../plugins/gtk+/glade-gtk.c:5142
 msgid "Recent Chooser Menu"
 msgstr "Menu for seneste valg"
 
@@ -3511,10 +3511,10 @@ msgstr "Halvudvidet"
 msgid "Sensitive column"
 msgstr "Følsom-kolonne"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:426 ../plugins/gtk+/glade-gtk.c:6068
-#: ../plugins/gtk+/glade-gtk.c:6077 ../plugins/gtk+/glade-gtk.c:6085
-#: ../plugins/gtk+/glade-gtk.c:6266 ../plugins/gtk+/glade-gtk.c:6274
-#: ../plugins/gtk+/glade-gtk.c:6283
+#: ../plugins/gtk+/gtk+.xml.in.h:426 ../plugins/gtk+/glade-gtk.c:6059
+#: ../plugins/gtk+/glade-gtk.c:6068 ../plugins/gtk+/glade-gtk.c:6076
+#: ../plugins/gtk+/glade-gtk.c:6257 ../plugins/gtk+/glade-gtk.c:6265
+#: ../plugins/gtk+/glade-gtk.c:6274
 msgid "Separator"
 msgstr "Skillelinje"
 
@@ -3606,8 +3606,8 @@ msgstr "Talindtastning"
 msgid "Spin Renderer"
 msgstr "Drejeknap-optegner"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:449 ../plugins/gtk+/glade-gtk.c:10153
-#: ../plugins/gtk+/glade-gtk.c:10281
+#: ../plugins/gtk+/gtk+.xml.in.h:449 ../plugins/gtk+/glade-gtk.c:10136
+#: ../plugins/gtk+/glade-gtk.c:10264
 msgid "Spinner"
 msgstr "Venteanimation"
 
@@ -3675,7 +3675,7 @@ msgstr "Struktur"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:465
 msgid "Style column"
-msgstr "Vælg ikon"
+msgstr "Stilkolonne"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:466
 msgid "Substructure"
@@ -3695,7 +3695,7 @@ msgstr "Supermodifikator"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:470
 msgid "Switch"
-msgstr ""
+msgstr "Kontakt"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:471
 msgid "Table"
@@ -3858,7 +3858,7 @@ msgstr "Værktøjslinje"
 msgid "Tool Button"
 msgstr "Værktøjsknap"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:510 ../plugins/gtk+/glade-gtk.c:5132
+#: ../plugins/gtk+/gtk+.xml.in.h:510 ../plugins/gtk+/glade-gtk.c:5123
 msgid "Tool Item Group"
 msgstr "Værktøjselementgruppe"
 
@@ -3920,7 +3920,7 @@ msgstr "Trælager"
 msgid "Tree View"
 msgstr "Trævisning"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:525 ../plugins/gtk+/glade-gtk.c:10090
+#: ../plugins/gtk+/gtk+.xml.in.h:525 ../plugins/gtk+/glade-gtk.c:10073
 msgid "Tree View Column"
 msgstr "Trævisningskolonne"
 
@@ -4252,7 +4252,7 @@ msgstr "Attribut"
 msgid "Value"
 msgstr "Værdi"
 
-#: ../plugins/gtk+/glade-attributes.c:1039
+#: ../plugins/gtk+/glade-attributes.c:1037
 msgid "Setup Text Attributes"
 msgstr "Indstil tekstattributter"
 
@@ -4266,192 +4266,192 @@ msgstr ""
 msgid "Removing parent of %s"
 msgstr "Fjerner ophavskomponent til %s"
 
-#: ../plugins/gtk+/glade-gtk.c:867
+#: ../plugins/gtk+/glade-gtk.c:863
 #, c-format
 msgid "Adding parent %s for %s"
 msgstr "Føjer ophavskomponent %s til %s"
 
-#: ../plugins/gtk+/glade-gtk.c:968
+#: ../plugins/gtk+/glade-gtk.c:964
 #, c-format
 msgid "Adding %s to Size Group %s"
 msgstr "Føjer %s til størrelsesgruppen %s"
 
-#: ../plugins/gtk+/glade-gtk.c:972
+#: ../plugins/gtk+/glade-gtk.c:968
 #, c-format
 msgid "Adding %s to a new Size Group"
 msgstr "Føjer %s til en ny størrelsesgruppe"
 
 #. Add trailing new... item
-#: ../plugins/gtk+/glade-gtk.c:1030
+#: ../plugins/gtk+/glade-gtk.c:1026
 msgid "New Size Group"
 msgstr "Ny størrelsesgruppe"
 
-#: ../plugins/gtk+/glade-gtk.c:1077
+#: ../plugins/gtk+/glade-gtk.c:1073
 msgid "Cannot add a toplevel window to a containter."
 msgstr "Kan ikke føje et topniveauvindue til en beholder."
 
-#: ../plugins/gtk+/glade-gtk.c:1088
+#: ../plugins/gtk+/glade-gtk.c:1084
 #, c-format
 msgid "Widgets of type %s can only have widgets as children."
 msgstr "Kontroller af typen %s kan kun have kontroller som underelementer."
 
-#: ../plugins/gtk+/glade-gtk.c:1099
+#: ../plugins/gtk+/glade-gtk.c:1095
 #, c-format
 msgid "Widgets of type %s need placeholders to add children."
 msgstr ""
 "Kontroller af typen %s kræver pladsholdere for at underelementer kan "
 "tilføjes."
 
-#: ../plugins/gtk+/glade-gtk.c:1444
+#: ../plugins/gtk+/glade-gtk.c:1440
 #, c-format
 msgid "Ordering children of %s"
 msgstr "Omrokerer underkomponenter til %s"
 
 # Det giver ikke megen mening, men til gengæld ligger det så tæt på den engelske streng at der forhåbentlig ikke kan skabes forvirring
-#: ../plugins/gtk+/glade-gtk.c:1951 ../plugins/gtk+/glade-gtk.c:1959
+#: ../plugins/gtk+/glade-gtk.c:1945 ../plugins/gtk+/glade-gtk.c:1953
 #, c-format
 msgid "Insert placeholder to %s"
 msgstr "Indsæt pladsholder til %s"
 
-#: ../plugins/gtk+/glade-gtk.c:1967
+#: ../plugins/gtk+/glade-gtk.c:1961
 #, c-format
 msgid "Remove placeholder from %s"
 msgstr "Fjern pladsholder fra %s"
 
-#: ../plugins/gtk+/glade-gtk.c:3056 ../plugins/gtk+/glade-gtk.c:3063
+#: ../plugins/gtk+/glade-gtk.c:3047 ../plugins/gtk+/glade-gtk.c:3054
 #, c-format
 msgid "Insert page on %s"
 msgstr "Indsæt side på %s"
 
-#: ../plugins/gtk+/glade-gtk.c:3071
+#: ../plugins/gtk+/glade-gtk.c:3062
 #, c-format
 msgid "Remove page from %s"
 msgstr "Fjern side fra %s"
 
-#: ../plugins/gtk+/glade-gtk.c:4536
+#: ../plugins/gtk+/glade-gtk.c:4527
 msgid "This property only applies to stock images"
 msgstr "Denne egenskab gælder kun for indbyggede billeder"
 
-#: ../plugins/gtk+/glade-gtk.c:4539
+#: ../plugins/gtk+/glade-gtk.c:4530
 msgid "This property only applies to named icons"
 msgstr "Denne egenskab gælder kun for navngivne ikoner"
 
-#: ../plugins/gtk+/glade-gtk.c:4836
+#: ../plugins/gtk+/glade-gtk.c:4827
 msgid "<separator>"
 msgstr "<skillelinje>"
 
-#: ../plugins/gtk+/glade-gtk.c:4850
+#: ../plugins/gtk+/glade-gtk.c:4841
 msgid "<custom>"
 msgstr "<brugertilpasset>"
 
-#: ../plugins/gtk+/glade-gtk.c:4888
+#: ../plugins/gtk+/glade-gtk.c:4879
 msgid "Children cannot be added to a separator."
 msgstr "Der kan ikke føjes underelementer til en separator."
 
-#: ../plugins/gtk+/glade-gtk.c:4896
+#: ../plugins/gtk+/glade-gtk.c:4887
 msgid "Children cannot be added to a Recent Chooser Menu."
 msgstr "Der kan ikke føjes underelementer til en Seneste-vælger."
 
-#: ../plugins/gtk+/glade-gtk.c:4905
+#: ../plugins/gtk+/glade-gtk.c:4896
 #, c-format
 msgid "%s already has a menu."
 msgstr "%s har allerede en menu."
 
-#: ../plugins/gtk+/glade-gtk.c:4915
+#: ../plugins/gtk+/glade-gtk.c:4906
 #, c-format
 msgid "%s item already has a submenu."
 msgstr "Elementet %s har allerede en undermenu."
 
-#: ../plugins/gtk+/glade-gtk.c:5105
+#: ../plugins/gtk+/glade-gtk.c:5096
 msgid "Tool Item"
 msgstr "Værktøjspunkt"
 
-#: ../plugins/gtk+/glade-gtk.c:5119 ../plugins/gtk+/glade-gtk.c:5142
+#: ../plugins/gtk+/glade-gtk.c:5110 ../plugins/gtk+/glade-gtk.c:5133
 msgid "Packing"
 msgstr "Pakning"
 
-#: ../plugins/gtk+/glade-gtk.c:5229 ../plugins/gtk+/glade-gtk.c:5237
+#: ../plugins/gtk+/glade-gtk.c:5220 ../plugins/gtk+/glade-gtk.c:5228
 msgid "Normal item"
 msgstr "Normalt element"
 
-#: ../plugins/gtk+/glade-gtk.c:5230 ../plugins/gtk+/glade-gtk.c:5238
+#: ../plugins/gtk+/glade-gtk.c:5221 ../plugins/gtk+/glade-gtk.c:5229
 msgid "Image item"
 msgstr "Billedelement"
 
-#: ../plugins/gtk+/glade-gtk.c:5231 ../plugins/gtk+/glade-gtk.c:5239
+#: ../plugins/gtk+/glade-gtk.c:5222 ../plugins/gtk+/glade-gtk.c:5230
 msgid "Check item"
 msgstr "Afkrydsningselement"
 
-#: ../plugins/gtk+/glade-gtk.c:5232 ../plugins/gtk+/glade-gtk.c:5240
+#: ../plugins/gtk+/glade-gtk.c:5223 ../plugins/gtk+/glade-gtk.c:5231
 msgid "Radio item"
 msgstr "Radioelement"
 
-#: ../plugins/gtk+/glade-gtk.c:5233 ../plugins/gtk+/glade-gtk.c:5241
+#: ../plugins/gtk+/glade-gtk.c:5224 ../plugins/gtk+/glade-gtk.c:5232
 msgid "Separator item"
 msgstr "Skilleelement"
 
-#: ../plugins/gtk+/glade-gtk.c:5242 ../plugins/gtk+/glade-gtk.c:6086
-#: ../plugins/gtk+/glade-gtk.c:6275 ../plugins/gtk+/glade-gtk.c:6284
+#: ../plugins/gtk+/glade-gtk.c:5233 ../plugins/gtk+/glade-gtk.c:6077
+#: ../plugins/gtk+/glade-gtk.c:6266 ../plugins/gtk+/glade-gtk.c:6275
 msgid "Recent Menu"
 msgstr "Seneste-menu"
 
-#: ../plugins/gtk+/glade-gtk.c:5274 ../plugins/gtk+/glade-gtk.c:5325
+#: ../plugins/gtk+/glade-gtk.c:5265 ../plugins/gtk+/glade-gtk.c:5316
 msgid "Edit Menu Bar"
 msgstr "Redigér menulinje"
 
-#: ../plugins/gtk+/glade-gtk.c:5276 ../plugins/gtk+/glade-gtk.c:5327
+#: ../plugins/gtk+/glade-gtk.c:5267 ../plugins/gtk+/glade-gtk.c:5318
 msgid "Edit Menu"
 msgstr "Redigér menu"
 
-#: ../plugins/gtk+/glade-gtk.c:5423
+#: ../plugins/gtk+/glade-gtk.c:5414
 #, c-format
 msgid "A object of type %s cannot have any children."
 msgstr "Et objekt af typen %s kan ikke have underelementer."
 
-#: ../plugins/gtk+/glade-gtk.c:6064 ../plugins/gtk+/glade-gtk.c:6262
-#: ../plugins/gtk+/glade-gtk.c:10152 ../plugins/gtk+/glade-gtk.c:10280
-#: ../plugins/gtk+/glade-gtk.c:10697
+#: ../plugins/gtk+/glade-gtk.c:6055 ../plugins/gtk+/glade-gtk.c:6253
+#: ../plugins/gtk+/glade-gtk.c:10135 ../plugins/gtk+/glade-gtk.c:10263
+#: ../plugins/gtk+/glade-gtk.c:10680
 msgid "Toggle"
 msgstr "Skifteknap"
 
-#: ../plugins/gtk+/glade-gtk.c:6065 ../plugins/gtk+/glade-gtk.c:6076
-#: ../plugins/gtk+/glade-gtk.c:6084 ../plugins/gtk+/glade-gtk.c:6263
-#: ../plugins/gtk+/glade-gtk.c:6273 ../plugins/gtk+/glade-gtk.c:6282
-#: ../plugins/gtk+/glade-gtk.c:10698
+#: ../plugins/gtk+/glade-gtk.c:6056 ../plugins/gtk+/glade-gtk.c:6067
+#: ../plugins/gtk+/glade-gtk.c:6075 ../plugins/gtk+/glade-gtk.c:6254
+#: ../plugins/gtk+/glade-gtk.c:6264 ../plugins/gtk+/glade-gtk.c:6273
+#: ../plugins/gtk+/glade-gtk.c:10681
 msgid "Radio"
 msgstr "Radio"
 
-#: ../plugins/gtk+/glade-gtk.c:6075 ../plugins/gtk+/glade-gtk.c:6083
-#: ../plugins/gtk+/glade-gtk.c:6272 ../plugins/gtk+/glade-gtk.c:6281
+#: ../plugins/gtk+/glade-gtk.c:6066 ../plugins/gtk+/glade-gtk.c:6074
+#: ../plugins/gtk+/glade-gtk.c:6263 ../plugins/gtk+/glade-gtk.c:6272
 msgid "Check"
 msgstr "Afkryds"
 
-#: ../plugins/gtk+/glade-gtk.c:6107
+#: ../plugins/gtk+/glade-gtk.c:6098
 msgid "Tool Bar Editor"
 msgstr "Værktøjslinjeredigering"
 
-#: ../plugins/gtk+/glade-gtk.c:6257
+#: ../plugins/gtk+/glade-gtk.c:6248
 msgid "Group"
 msgstr "Gruppe"
 
-#: ../plugins/gtk+/glade-gtk.c:6304
+#: ../plugins/gtk+/glade-gtk.c:6295
 msgid "Tool Palette Editor"
 msgstr "Værktøjspaletredigering"
 
-#: ../plugins/gtk+/glade-gtk.c:7048
+#: ../plugins/gtk+/glade-gtk.c:7039
 msgid "This property does not apply when Ellipsize is set."
 msgstr "Denne egenskab gælder ikke når ellipsegør er slået til."
 
 # ??? ingen andre steder optræder ordet Angle.  Fejlrapport
-#: ../plugins/gtk+/glade-gtk.c:7067
+#: ../plugins/gtk+/glade-gtk.c:7058
 msgid "This property does not apply when Angle is set."
 msgstr "Denne egenskab gælder ikke når Vinkel er angivet."
 
-#: ../plugins/gtk+/glade-gtk.c:7949
+#: ../plugins/gtk+/glade-gtk.c:7936
 msgid "Introduction page"
 msgstr "Introduktionsside"
 
-#: ../plugins/gtk+/glade-gtk.c:7953
+#: ../plugins/gtk+/glade-gtk.c:7940
 msgid "Content page"
 msgstr "Indholdsside"
 
@@ -4460,63 +4460,63 @@ msgstr "Indholdsside"
 # When a GtkAssistant is created its created with an _("Introduction Page"),
 #  _("Content page") and a  _("Confirm page"), those are used as labels
 # shown in the assistant pages and are just used as eye candy basically.
-#: ../plugins/gtk+/glade-gtk.c:7957
+#: ../plugins/gtk+/glade-gtk.c:7944
 msgid "Confirmation page"
 msgstr "Bekræftelsesside"
 
-#: ../plugins/gtk+/glade-gtk.c:9575
+#: ../plugins/gtk+/glade-gtk.c:9558
 #, c-format
 msgid "%s is set to load %s from the model"
 msgstr "%s er indstillet til at indlæse %s fra modellen"
 
-#: ../plugins/gtk+/glade-gtk.c:9577
+#: ../plugins/gtk+/glade-gtk.c:9560
 #, c-format
 msgid "%s is set to manipulate %s directly"
 msgstr "%s er indstillet til at manupulere %s direkte"
 
 # Dobbeltkonfekt?
-#: ../plugins/gtk+/glade-gtk.c:10096
+#: ../plugins/gtk+/glade-gtk.c:10079
 msgid "Properties and Attributes"
 msgstr "Egenskaber og attributter"
 
 # Dobbeltkonfekt?
-#: ../plugins/gtk+/glade-gtk.c:10102
+#: ../plugins/gtk+/glade-gtk.c:10085
 msgid "Common Properties and Attributes"
 msgstr "Almindelige egenskaber og attributter"
 
 #. Text...
-#: ../plugins/gtk+/glade-gtk.c:10146 ../plugins/gtk+/glade-gtk.c:10274
+#: ../plugins/gtk+/glade-gtk.c:10129 ../plugins/gtk+/glade-gtk.c:10257
 #: ../plugins/gtk+/glade-entry-editor.c:494
 msgid "Text"
 msgstr "Tekst"
 
 # ??? imperativ?  fejlrapport
-#: ../plugins/gtk+/glade-gtk.c:10149 ../plugins/gtk+/glade-gtk.c:10277
+#: ../plugins/gtk+/glade-gtk.c:10132 ../plugins/gtk+/glade-gtk.c:10260
 msgid "Spin"
 msgstr "Drej"
 
-#: ../plugins/gtk+/glade-gtk.c:10150 ../plugins/gtk+/glade-gtk.c:10278
+#: ../plugins/gtk+/glade-gtk.c:10133 ../plugins/gtk+/glade-gtk.c:10261
 msgid "Pixbuf"
 msgstr "Pixbuf"
 
-#: ../plugins/gtk+/glade-gtk.c:10186
+#: ../plugins/gtk+/glade-gtk.c:10169
 msgid "Icon View Editor"
 msgstr "Redigering for ikonvisning"
 
-#: ../plugins/gtk+/glade-gtk.c:10191
+#: ../plugins/gtk+/glade-gtk.c:10174
 msgid "Combo Editor"
 msgstr "Kombinationsredigering"
 
 # yuck
-#: ../plugins/gtk+/glade-gtk.c:10196
+#: ../plugins/gtk+/glade-gtk.c:10179
 msgid "Entry Completion Editor"
 msgstr "Redigering til indtastningsfuldførelse"
 
-#: ../plugins/gtk+/glade-gtk.c:10271
+#: ../plugins/gtk+/glade-gtk.c:10254
 msgid "Column"
 msgstr "Kolonne"
 
-#: ../plugins/gtk+/glade-gtk.c:10294
+#: ../plugins/gtk+/glade-gtk.c:10277
 msgid "Tree View Editor"
 msgstr "Trævisningsredigering"
 
@@ -4524,31 +4524,31 @@ msgstr "Trævisningsredigering"
 #. * treeview editors and provide a custom control that sets all its columns
 #. * to fixed size and then control the column's sensitivity accordingly.
 #.
-#: ../plugins/gtk+/glade-gtk.c:10387
+#: ../plugins/gtk+/glade-gtk.c:10370
 msgid ""
 "Columns must have a fixed size inside a treeview with fixed height mode set"
 msgstr ""
 "Kolonner skal have fast bredde inden for en trævisning i fasthøjdetilstand"
 
 #. --------------------------- GtkAction ---------------------------------
-#: ../plugins/gtk+/glade-gtk.c:10501
+#: ../plugins/gtk+/glade-gtk.c:10484
 msgid "The accelerator can only be set when inside an Action Group."
 msgstr ""
 "Genvejstasten kan kun angives inden for en handlingsgruppe (Action Group)."
 
-#: ../plugins/gtk+/glade-gtk.c:10699
+#: ../plugins/gtk+/glade-gtk.c:10682
 msgid "Recent"
 msgstr "Seneste"
 
-#: ../plugins/gtk+/glade-gtk.c:10707
+#: ../plugins/gtk+/glade-gtk.c:10690
 msgid "Action Group Editor"
 msgstr "Handlingsgrupperedigering"
 
-#: ../plugins/gtk+/glade-gtk.c:10817 ../plugins/gtk+/glade-gtk.c:10847
+#: ../plugins/gtk+/glade-gtk.c:10800 ../plugins/gtk+/glade-gtk.c:10830
 msgid "Tag"
 msgstr "Mærke"
 
-#: ../plugins/gtk+/glade-gtk.c:10855
+#: ../plugins/gtk+/glade-gtk.c:10838
 msgid "Text Tag Table Editor"
 msgstr "Redigering til tekstmærketabel"
 
@@ -4606,7 +4606,7 @@ msgstr "<vælg en tast>"
 msgid "Accelerator Key"
 msgstr "Genvejstast"
 
-#: ../plugins/gtk+/glade-accels.c:519
+#: ../plugins/gtk+/glade-accels.c:515
 msgid "Choose accelerator keys..."
 msgstr "Vælg genvejstaster..."
 
@@ -4634,7 +4634,7 @@ msgstr "Kolonnetype"
 msgid "Column name"
 msgstr "Kolonnenavn"
 
-#: ../plugins/gtk+/glade-model-data.c:1125
+#: ../plugins/gtk+/glade-model-data.c:1118
 msgid "Add and remove rows:"
 msgstr "Tilføj og fjern rækker:"
 
