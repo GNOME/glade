@@ -249,15 +249,18 @@ glade_util_ui_message (GtkWidget * parent,
 
   dialog = gtk_message_dialog_new (GTK_WINDOW (parent),
                                    GTK_DIALOG_DESTROY_WITH_PARENT,
-                                   message_type, buttons_type, "%s", string);
-
-  gtk_window_set_resizable (GTK_WINDOW (dialog), TRUE);
+                                   message_type, buttons_type, NULL);
+  
+  gtk_message_dialog_set_markup (GTK_MESSAGE_DIALOG (dialog), string);
 
   if (widget)
-    gtk_box_pack_end (GTK_BOX
-                      (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
-                      widget, TRUE, TRUE, 2);
-
+    {
+      gtk_box_pack_end (GTK_BOX
+                        (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                        widget, TRUE, TRUE, 2);
+      gtk_widget_show (widget);
+    }
+  
   response = gtk_dialog_run (GTK_DIALOG (dialog));
 
   gtk_widget_destroy (dialog);
