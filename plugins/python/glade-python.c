@@ -44,29 +44,33 @@ python_init (void)
 static void
 glade_python_init_pygobject_check (gint req_major, gint req_minor, gint req_micro)
 {
-  PyObject *gobject, *mdict, *version;
-  int found_major, found_minor, found_micro;
+  PyObject *gi, *gobject;
 
-  init_pygobject ();
-
-  gobject = PyImport_ImportModule ("gobject");
-  mdict = PyModule_GetDict (gobject);
-  version = PyDict_GetItemString (mdict, "pygobject_version");
-  if (!version)
+  /* import gobject */
+  pygobject_init (req_major, req_minor, req_micro);
+  if (PyErr_Occurred ())
     {
-      PyErr_SetString (PyExc_ImportError, "PyGObject version too old");
+      g_warning ("Error initializing Python interpreter: could not "
+                 "import pygobject");
+
       return;
     }
-  if (!PyArg_ParseTuple
-      (version, "iii", &found_major, &found_minor, &found_micro))
-    return;
-  if (req_major != found_major || req_minor > found_minor ||
-      (req_minor == found_minor && req_micro > found_micro))
+
+  gi = PyImport_ImportModule ("gi");
+  if (gi == NULL)
     {
-      PyErr_Format (PyExc_ImportError,
-                    "PyGObject version mismatch, %d.%d.%d is required, "
-                    "found %d.%d.%d.", req_major, req_minor, req_micro,
-                    found_major, found_minor, found_micro);
+      g_warning ("Error initializing Python interpreter: could not "
+                 "import gi");
+
+      return;
+    }
+
+  gobject = PyImport_ImportModule ("gi.repository.GObject");
+  if (gobject == NULL)
+    {
+      g_warning ("Error initializing Python interpreter: could not "
+                 "import gobject");
+
       return;
     }
 }
