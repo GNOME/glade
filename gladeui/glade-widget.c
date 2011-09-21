@@ -56,7 +56,7 @@
 #include "glade-design-view.h"
 #include "glade-widget-action.h"
 #include "glade-signal-model.h"
-#include "glade-object-stub.h"
+
 
 static void glade_widget_set_adaptor (GladeWidget * widget,
                                       GladeWidgetAdaptor * adaptor);
@@ -3779,22 +3779,7 @@ glade_widget_read (GladeProject * project,
                 }
 
               glade_widget_adaptor_read_widget (adaptor, widget, node);
-            }
-          else
-            {
-              GObject *stub = g_object_new (GLADE_TYPE_OBJECT_STUB,
-                                            "object-type", klass,
-                                            "xml-node", node,
-                                            NULL);
-              
-              widget = glade_widget_adaptor_create_widget (glade_widget_adaptor_get_by_type (GTK_TYPE_WIDGET),
-                                                           FALSE,
-                                                           "parent", parent,
-                                                           "project", project,
-                                                           "reason", GLADE_CREATE_LOAD,
-                                                           "object", stub,
-                                                           "name", id,
-                                                           NULL);
+
             }
           g_free (id);
         }
@@ -3918,17 +3903,8 @@ void
 glade_widget_write (GladeWidget * widget,
                     GladeXmlContext * context, GladeXmlNode * node)
 {
-  GObject *object = glade_widget_get_object (widget);
   GladeXmlNode *widget_node;
   GList *l, *list;
-
-  /* Check if its an unknown object, and use saved xml if so */
-  if (GLADE_IS_OBJECT_STUB (object))
-    {
-      g_object_get (object, "xml-node", &widget_node, NULL);
-      glade_xml_node_append_child (node, widget_node);
-      return;
-    }
 
   widget_node = glade_xml_node_new (context, GLADE_XML_TAG_WIDGET);
   glade_xml_node_append_child (node, widget_node);
