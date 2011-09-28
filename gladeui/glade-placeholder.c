@@ -396,7 +396,6 @@ glade_placeholder_draw (GtkWidget *widget, cairo_t *cr)
 static gboolean
 glade_placeholder_motion_notify_event (GtkWidget *widget, GdkEventMotion *event)
 {
-  GladePlaceholder *placeholder = GLADE_PLACEHOLDER (widget);
   GladePointerMode pointer_mode;
   GladeProject *project;
 
