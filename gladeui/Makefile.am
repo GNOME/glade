@@ -49,6 +49,7 @@ EXTRA_DIST = glade-marshallers.list gladeui.rc.in icon-naming-spec.c glade-previ
 # The glade core library
 libgladeui_2_la_SOURCES = \
 	glade-debug.c \
+	glade-object-stub.c \
 	glade-xml-utils.c \
 	glade-catalog.c \
 	glade-widget-adaptor.c \
@@ -144,6 +145,7 @@ libgladeuiinclude_HEADERS = \
 noinst_HEADERS = \
 	glade-marshallers.h \
 	glade-design-layout.h \
+	glade-object-stub.h \
 	glade-popup.h \
 	glade-accumulators.h \
 	glade-design-private.h \
