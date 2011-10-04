@@ -184,20 +184,6 @@ preview_widget (gchar * name, gchar * buffer, gsize length)
   return widget;
 }
 
-static GIOChannel *
-channel_from_stream (gint stream)
-{
-  GIOChannel *channel;
-
-#ifdef WINDOWS
-  channel = g_io_channel_win32_new_fd (stream);
-#else
-  channel = g_io_channel_unix_new (stream);
-#endif
-
-  return channel;
-}
-
 static GtkWidget*
 show_widget (GtkWidget *widget)
 {
@@ -232,29 +218,22 @@ show_widget (GtkWidget *widget)
 static void
 preview_file (gchar * toplevel_name, gchar * file_name)
 {
+  GError *error = NULL;
   gchar *buffer;
   gsize length;
-  GError *error = NULL;
-  GIOChannel *input;
-  gint stream;
-  GtkWidget *widget;
 
-  stream = fileno (fopen (file_name, "r"));
-  input = channel_from_stream (stream);
-
-  if (g_io_channel_read_to_end (input, &buffer, &length, &error) !=
-      G_IO_STATUS_NORMAL)
+  if (g_file_get_contents (file_name, &buffer, &length, &error))
+    {
+      GtkWidget *widget = preview_widget (toplevel_name, buffer, length);
+      gtk_widget_show_all (show_widget (widget));
+      g_free (buffer);
+    }
+  else
     {
       g_printerr (_("Error: %s.\n"), error->message);
       g_error_free (error);
       exit (1);
     }
-
-  widget = preview_widget (toplevel_name, buffer, length);
-  gtk_widget_show_all (show_widget (widget));
-
-  g_free (buffer);
-  g_io_channel_unref (input);
 }
 
 static gchar *
@@ -395,10 +374,12 @@ static void
 start_listener (gchar * toplevel_name)
 {
   GIOChannel *input;
-  gint stream;
 
-  stream = fileno (stdin);
-  input = channel_from_stream (stream);
+#ifdef WINDOWS
+  input = g_io_channel_win32_new_fd (fileno (stdin));
+#else
+  input = g_io_channel_unix_new (fileno (stdin));
+#endif
 
   g_io_add_watch (input, G_IO_IN | G_IO_HUP, on_data_incoming, toplevel_name);
 }
