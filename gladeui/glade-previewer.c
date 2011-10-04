@@ -58,10 +58,10 @@ parse_arguments (int argc, char **argv, gchar ** toplevel_name,
   GError *error = NULL;
 
   GOptionEntry entries[] = {
-    {"filename", 'f', G_OPTION_FLAG_FILENAME | G_OPTION_FLAG_OPTIONAL_ARG,
+    {"filename", 'f', G_OPTION_ARG_NONE,
      G_OPTION_ARG_FILENAME, file_name, _("Name of the file to preview"),
      "FILENAME"},
-    {"toplevel", 't', G_OPTION_FLAG_OPTIONAL_ARG,
+    {"toplevel", 't', G_OPTION_ARG_NONE,
      G_OPTION_ARG_STRING, toplevel_name, _("Name of the toplevel to preview"),
      "TOPLEVELNAME"},
     {"listen", 'l', 0, G_OPTION_ARG_NONE, &listen, _("Listen standard input"),
@@ -130,6 +130,7 @@ get_toplevel (gchar * name, gchar * string, gsize length)
           if (GTK_IS_WIDGET (objects->data) && toplevel == NULL)
             {
               toplevel = GTK_WIDGET (objects->data);
+              g_object_ref (toplevel);
             }
           if (GTK_IS_WINDOW (objects->data))
             {
