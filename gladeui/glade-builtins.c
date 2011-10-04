@@ -67,13 +67,20 @@ static const gchar *builtin_stock_images[] = {
 };
 
 static const gchar *builtin_stock_displayables[] = {
-  N_("Authentication"),         /* GTK_STOCK_DIALOG_AUTHENTICATION */
-  N_("Drag and Drop"),          /* GTK_STOCK_DND */
-  N_("Drag and Drop Multiple"), /* GTK_STOCK_DND_MULTIPLE */
-  N_("Color Picker"),           /* GTK_STOCK_COLOR_PICKER */
-  N_("Directory"),              /* GTK_STOCK_DIRECTORY */
-  N_("File"),                   /* GTK_STOCK_FILE */
-  N_("Missing Image")           /* GTK_STOCK_MISSING_IMAGE */
+  /* GTK_STOCK_DIALOG_AUTHENTICATION */
+  N_("Authentication"),
+  /* GTK_STOCK_DND */
+  N_("Drag and Drop"),
+  /* GTK_STOCK_DND_MULTIPLE */
+  N_("Drag and Drop Multiple"),
+  /* GTK_STOCK_COLOR_PICKER */
+  N_("Color Picker"),
+  /* GTK_STOCK_DIRECTORY */
+  N_("Directory"),
+  /* GTK_STOCK_FILE */
+  N_("File"),
+  /* GTK_STOCK_MISSING_IMAGE */
+  N_("Missing Image")
 };
 
 static GSList *stock_prefixs = NULL;

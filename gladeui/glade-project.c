@@ -1466,7 +1466,7 @@ glade_project_push_progress (GladeProject *project)
 }
 
 
-/* translators: reffers to project name '%s' that targets gtk version '%d.%d' */
+/* translators: refers to project name '%s' that targets gtk version '%d.%d' */
 #define PROJECT_TARGET_DIALOG_TITLE_FMT _("%s targets Gtk+ %d.%d")
 
 static void
@@ -2043,16 +2043,16 @@ glade_project_preview (GladeProject *project, GladeWidget *gwidget)
      Verify code here (versioning, incompatability checks)
  *******************************************************************/
 
-/* translators: reffers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d' */
+/* translators: refers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d' */
 #define WIDGET_VERSION_CONFLICT_MSGFMT _("This widget was introduced in %s %d.%d " \
                                          "while project targets %s %d.%d")
 
-/* translators: reffers to a widget '[%s]' introduced in toolkit version '%s %d.%d' */
+/* translators: refers to a widget '[%s]' introduced in toolkit version '%s %d.%d' */
 #define WIDGET_VERSION_CONFLICT_FMT    _("[%s] Object class '%s' was introduced in %s %d.%d\n")
 
 #define WIDGET_DEPRECATED_MSG          _("This widget is deprecated")
 
-/* translators: reffers to a widget '[%s]' loaded from toolkit version '%s %d.%d' */
+/* translators: refers to a widget '[%s]' loaded from toolkit version '%s %d.%d' */
 #define WIDGET_DEPRECATED_FMT          _("[%s] Object class '%s' from %s %d.%d is deprecated\n")
 
 
@@ -2061,24 +2061,24 @@ glade_project_preview (GladeProject *project, GladeWidget *gwidget)
  * ugly messy code with comments in line breaks inside function calls).
  */
 
-/* translators: reffers to a property in toolkit version '%s %d.%d' 
+/* translators: refers to a property in toolkit version '%s %d.%d' 
  * and a project targeting toolkit version '%s %d.%d' */
 #define PROP_VERSION_CONFLICT_MSGFMT   _("This property was introduced in %s %d.%d " \
                                          "while project targets %s %d.%d")
 
-/* translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d' */
+/* translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d' */
 #define PROP_VERSION_CONFLICT_FMT      _("[%s] Property '%s' of object class '%s' " \
                                          "was introduced in %s %d.%d\n")
 
-/* translators: reffers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d' */
+/* translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d' */
 #define PACK_PROP_VERSION_CONFLICT_FMT _("[%s] Packing property '%s' of object class '%s' " \
                                          "was introduced in %s %d.%d\n")
 
-/* translators: reffers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d' */
+/* translators: refers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d' */
 #define SIGNAL_VERSION_CONFLICT_FMT    _("[%s] Signal '%s' of object class '%s' " \
                                          "was introduced in %s %d.%d\n")
 
-/* translators: reffers to a signal in toolkit version '%s %d.%d' 
+/* translators: refers to a signal in toolkit version '%s %d.%d' 
  * and a project targeting toolkit version '%s %d.%d' */
 #define SIGNAL_VERSION_CONFLICT_MSGFMT _("This signal was introduced in %s %d.%d " \
                                          "while project targets %s %d.%d")
@@ -2349,8 +2349,8 @@ glade_project_verify (GladeProject *project, gboolean saving)
           gchar *type;
           g_object_get (list->data, "object-type", &type, NULL);
           
-          /* translators: reffers to an unknow object named '%s' of type '%s' */
-          g_string_append_printf (string, _("Unknow object %s with type %s\n"), 
+          /* translators: refers to an unknown object named '%s' of type '%s' */
+          g_string_append_printf (string, _("Unknown object %s with type %s\n"), 
                                   glade_widget_get_name (widget), type);
           g_free (type);
         }
@@ -4470,7 +4470,7 @@ glade_project_model_get_value (GtkTreeModel *model,
           GladePropertyClass *pclass     = glade_property_get_class (ref_prop);
           GladeWidget        *ref_widget = glade_property_get_widget (ref_prop);
 
-          /* translators: reffers to a property named '%s' of widget '%s' */
+          /* translators: refers to a property named '%s' of widget '%s' */
           str = g_strdup_printf (_("(%s of %s)"), 
                                  glade_property_class_get_name (pclass),
                                  glade_widget_get_name (ref_widget));

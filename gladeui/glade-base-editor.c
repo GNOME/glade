@@ -1705,6 +1705,7 @@ glade_base_editor_init (GladeBaseEditor * editor)
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (e->main_scroll),
                                   GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
+  /* translators: refers to a tab name used to group all the relevant widget's properties */
   label = gtk_label_new (_("General"));
   gtk_widget_show (label);
   gtk_notebook_append_page (GTK_NOTEBOOK (e->notebook), e->main_scroll, label);
@@ -1713,6 +1714,7 @@ glade_base_editor_init (GladeBaseEditor * editor)
   hbox = gtk_hbox_new (FALSE, 8);
   gtk_widget_show (hbox);
 
+  /* translators: refers to a tab name used to show the widget hierarchy */
   label = gtk_label_new (_("Hierarchy"));
   gtk_widget_show (label);
   gtk_notebook_append_page (GTK_NOTEBOOK (e->notebook), hbox, label);
