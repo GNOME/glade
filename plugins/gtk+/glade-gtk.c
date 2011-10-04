@@ -618,13 +618,27 @@ glade_gtk_widget_write_widget (GladeWidgetAdaptor * adaptor,
                                GladeWidget * widget,
                                GladeXmlContext * context, GladeXmlNode * node)
 {
+  GladeProperty *prop;
+
   if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
     return;
+
+  /* Make sure use-action-appearance and related-action properties are
+   * ordered in a sane way */
+  if (GTK_IS_ACTIVATABLE (glade_widget_get_object (widget)))
+    {
+      prop = glade_widget_get_property (widget, "use-action-appearance");
+      if (prop)
+	glade_property_write (prop, context, node);
+
+      prop = glade_widget_get_property (widget, "related-action");
+      if (prop)
+	glade_property_write (prop, context, node);
+    }
 
   /* First chain up and read in all the normal properties.. */
   GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
 
-  /* The core takes care of signals */
   glade_gtk_write_accels (widget, context, node, TRUE);
   glade_gtk_widget_write_atk_props (widget, context, node);
 }
