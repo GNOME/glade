@@ -693,15 +693,14 @@ glade_gtk_grid_set_child_property (GladeWidgetAdaptor * adaptor,
                                                 container, child,
                                                 property_name, value);
 
-  if (strcmp (property_name, "bottom-attach") == 0 ||
-      strcmp (property_name, "left-attach") == 0 ||
-      strcmp (property_name, "right-attach") == 0 ||
-      strcmp (property_name, "top-attach") == 0)
+  if (strcmp (property_name, "left-attach") == 0 ||
+      strcmp (property_name, "top-attach")  == 0 ||
+      strcmp (property_name, "width")       == 0 ||
+      strcmp (property_name, "height")      == 0)
     {
       /* Refresh placeholders */
       glade_gtk_grid_refresh_placeholders (GTK_GRID (container));
     }
-
 }
 
 static gboolean
