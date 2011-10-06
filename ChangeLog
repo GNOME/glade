@@ -1,3 +1,14 @@
+2011-10-06  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* plugins/gtk+/gtk+.xml.in: Make n-row and n-column save false.
+	  Fixes bug #660607 "Warnings when using GtkGrid created in Glade 3.10"
+
+	* gladeui/glade-project.c:
+	  Emit parse-finished signal before setting loading state to false.
+
+	* plugins/gtk+/glade-gtk-grid.c: infer n-row and n-column virtual
+	  properties value from children packing props. 
+
 2011-10-05  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/glade-gtk-grid.c: Update placeholders when a grid child's
@@ -11,27 +22,27 @@
 2011-10-04  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
         * gladeui/glade-previewer.c:
-          o Fixed bug #660874 "glade-previewer fails to open UI files without top windows"
-          o Fixed bug 660872 "glade-previewer crashes on non-existent files"
-          o Fixed runtime warnings in option parsing.
+	  o Fixed bug #660874 "glade-previewer fails to open UI files without top windows"
+	  o Fixed bug #660872 "glade-previewer crashes on non-existent files"
+	  o Fixed runtime warnings in option parsing.
 
-        * gladeui/glade-base-editor.c, gladeui/glade-project.c: fixed spelling errors
+	* gladeui/glade-base-editor.c, gladeui/glade-project.c: fixed spelling errors
 
 2011-09-19  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
-        * gladeui/glade-object-stub.[ch]: Added new object type used to remember
-          unknown objects in xml files.
+	* gladeui/glade-object-stub.[ch]: Added new object type used to remember
+	  unknown objects in xml files.
 
-        * gladeui/glade-utils.c: made glade_util_ui_message () accept markup strings.
+	* gladeui/glade-utils.c: made glade_util_ui_message () accept markup strings.
         
-        * gladeui/glade-xml-utils.[ch]: added new function glade_xml_node_copy()
+	* gladeui/glade-xml-utils.[ch]: added new function glade_xml_node_copy()
 
-        * gladeui/glade-widget.c:
-          o glade_widget_read() create object stub if class is unknown.
-          o glade_widget_write() used saved xml to dump stub objects.
+	* gladeui/glade-widget.c:
+	  o glade_widget_read() create object stub if class is unknown.
+	  o glade_widget_write() used saved xml to dump stub objects.
         
-        * glade/gladeui/glade-project.c: make GladeProject remember unknown catalogs
-          to avoid loosing requirements when loading/saving a file with unknown objects. 
+	* glade/gladeui/glade-project.c: make GladeProject remember unknown catalogs
+	  to avoid loosing requirements when loading/saving a file with unknown objects. 
 
 2011-09-19 Ignacio Casal Quinteiro <icq@gnome.org>
 
