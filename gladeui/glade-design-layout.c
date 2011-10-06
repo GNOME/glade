@@ -1744,6 +1744,8 @@ glade_design_layout_style_updated (GtkWidget *widget)
                                &priv->frame_color_active[1]);
   
   gtk_widget_override_background_color (widget, GTK_STATE_FLAG_NORMAL, &bg_color);
+
+  g_object_unref (context);
 }
 
 static void
