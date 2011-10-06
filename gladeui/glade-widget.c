@@ -3946,7 +3946,7 @@ glade_widget_write (GladeWidget * widget,
 
 
 /**
- * gtk_widget_is_ancestor:
+ * glade_widget_is_ancestor:
  * @widget: a #GladeWidget
  * @ancestor: another #GladeWidget
  *
