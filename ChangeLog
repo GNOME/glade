@@ -1,3 +1,8 @@
+2011-10-06  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-widget-adaptor.c: Implemented a generic ->depends() routine
+	to ensure that liststores are serialized before treemodelfilters which refer to them (bug 657164).
+
 2011-10-04  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
         * gladeui/glade-previewer.c:
