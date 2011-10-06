@@ -959,7 +959,33 @@ glade_widget_adaptor_object_depends (GladeWidgetAdaptor * adaptor,
                                      GladeWidget * widget,
                                      GladeWidget * another)
 {
-  return FALSE;
+  GList   *prop_refs, *l;
+  gboolean depends = FALSE;
+
+  prop_refs = glade_widget_list_prop_refs (another);
+
+  for (l = prop_refs; !depends && l; l = l->next)
+    {
+      GladeProperty *property = l->data;
+      GladeWidget   *prop_widget = glade_property_get_widget (property);
+
+      /* If one of the properties that reference @another is
+       * owned by @widget then @widget depends on @another
+       */
+      if (prop_widget == widget)
+	depends = TRUE;
+
+      /* Or if the widget that owns a property which references
+       * @another is somewhere inside @widget... then @widget
+       * also depends on @another.
+       */
+      else if (glade_widget_is_ancestor (prop_widget, widget))
+	depends = TRUE;
+    }
+
+  g_list_free (prop_refs);
+
+  return depends;
 }
 
 static void

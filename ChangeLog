@@ -1,3 +1,8 @@
+2011-10-06  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-widget-adaptor.c: Implemented a generic ->depends() routine
+	to ensure that liststores are serialized before treemodelfilters which refer to them (bug 657164).
+
 2011-10-06  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* plugins/gtk+/gtk+.xml.in: Make n-row and n-column save false.
@@ -7,7 +12,7 @@
 	  Emit parse-finished signal before setting loading state to false.
 
 	* plugins/gtk+/glade-gtk-grid.c: infer n-row and n-column virtual
-	  properties value from children packing props. 
+	  properties value from children packing props.
 
 2011-10-05  Tristan Van Berkom <tvb@gnome.org>
 
