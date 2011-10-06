@@ -419,6 +419,35 @@ glade_gtk_grid_configure_end (GladeFixed * fixed,
   return TRUE;
 }
 
+static void
+glade_gtk_grid_parse_finished (GladeProject *project, GObject *container)
+{
+  GladeWidget *gwidget = glade_widget_get_from_gobject (container);
+  GladeGridAttachments attach;
+  GList *list, *children;
+  gint row = 0, column = 0, n_row = 0, n_column = 0;
+
+  children = gtk_container_get_children (GTK_CONTAINER (container));
+
+  for (list = children; list; list = list->next)
+    {
+      GtkWidget *widget = list->data;
+
+      glade_gtk_grid_get_child_attachments (GTK_WIDGET (container), widget, &attach);
+
+      n_row = attach.top_attach + attach.height;
+      n_column = attach.left_attach + attach.width;
+      
+      if (row < n_row) row = n_row;
+      if (column < n_column) column = n_column;
+    }
+
+  if (n_column) glade_widget_property_set (gwidget, "n-columns", n_column);
+  if (n_row) glade_widget_property_set (gwidget, "n-rows", n_row);
+
+  g_list_free (children);
+}
+
 void
 glade_gtk_grid_post_create (GladeWidgetAdaptor * adaptor,
                              GObject * container, GladeCreateReason reason)
@@ -433,6 +462,11 @@ glade_gtk_grid_post_create (GladeWidgetAdaptor * adaptor,
 
   g_signal_connect (G_OBJECT (gwidget), "configure-end",
                     G_CALLBACK (glade_gtk_grid_configure_end), container);
+
+  if (reason == GLADE_CREATE_LOAD)
+    g_signal_connect (glade_widget_get_project (gwidget), "parse-finished",
+		      G_CALLBACK (glade_gtk_grid_parse_finished),
+		      container);
 }
 
 static gboolean

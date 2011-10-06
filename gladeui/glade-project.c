@@ -1527,14 +1527,14 @@ glade_project_load_internal (GladeProject *project)
    */
   glade_project_fix_object_props (project);
 
+  /* Emit "parse-finished" signal */
+  g_signal_emit (project, glade_project_signals[PARSE_FINISHED], 0);
+
   /* Reset project status here too so that you get a clean
    * slate after calling glade_project_open().
    */
   project->priv->modified = FALSE;
   project->priv->loading = FALSE;
-
-  /* Emit "parse-finished" signal */
-  g_signal_emit (project, glade_project_signals[PARSE_FINISHED], 0);
 
   /* Update ui with versioning info
    */

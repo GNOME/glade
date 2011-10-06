@@ -1,3 +1,14 @@
+2011-10-06  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* plugins/gtk+/gtk+.xml.in: Make n-row and n-column save false.
+	  Fixes bug #660607 "Warnings when using GtkGrid created in Glade 3.10"
+
+	* gladeui/glade-project.c:
+	  Emit parse-finished signal before setting loading state to false.
+
+	* plugins/gtk+/glade-gtk-grid.c: infer n-row and n-column virtual
+	  properties value from children packing props. 
+
 2011-10-06  Tristan Van Berkom <tvb@gnome.org>
 
 	* gladeui/glade-widget-adaptor.c: Implemented a generic ->depends() routine
