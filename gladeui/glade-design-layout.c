@@ -905,17 +905,20 @@ static void
 glade_design_layout_style_updated (GtkWidget *widget)
 {
   GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
-  GtkStyleContext *context = gtk_widget_get_style_context (widget);
+  GtkStyleContext *context = gtk_style_context_new ();
+  GtkWidgetPath *path = gtk_widget_path_new ();
   GdkRGBA bg_color;
 
-  gtk_style_context_save (context);
-  
+  g_type_class_ref (GTK_TYPE_TREE_VIEW);
+  gtk_widget_path_append_type (path, GTK_TYPE_WIDGET);
+  gtk_style_context_set_path (context, path);
   gtk_style_context_add_class (context, GTK_STYLE_CLASS_VIEW);
+  gtk_widget_path_free (path);
 
   gtk_style_context_get_background_color (context,
                                           GTK_STATE_FLAG_NORMAL,
                                           &bg_color);
-
+  
   gtk_style_context_get_background_color (context, GTK_STATE_FLAG_SELECTED,
                                           &priv->frame_color[0]);
   gtk_style_context_get_color (context, GTK_STATE_FLAG_SELECTED,
@@ -929,10 +932,10 @@ glade_design_layout_style_updated (GtkWidget *widget)
                                GTK_STATE_FLAG_SELECTED |
                                GTK_STATE_FLAG_FOCUSED,
                                &priv->frame_color_active[1]);
-
-  gtk_style_context_restore (context);
   
   gtk_widget_override_background_color (widget, GTK_STATE_FLAG_NORMAL, &bg_color);
+
+  g_object_unref (context);
 }
 
 static void
