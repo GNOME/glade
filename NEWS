@@ -1,4 +1,27 @@
 ============
+Glade 3.10.1
+============
+	- Optimized loading time by not updating progressbar on every loaded object.
+	- Update placeholders when a grid child's width or height child properties change.
+	- Ensure 'related-action' and 'use-action-appearance' are serialized in the right order.
+	- Correctly detect the required devhelp version - Javier Jardón
+	- Fixed TreeModelFilter bug #657164
+	- Fixed bug #660607 "Warnings when using GtkGrid created in Glade 3.10"
+	- Fixed glade-previewer bugs
+	  #660874 "glade-previewer fails to open UI files without top windows"
+	  #660872 "glade-previewer crashes on non-existent files"
+	- Fixed loading correct application icon (bug 648487 fix by Stéphane Maniaci).
+	- Fixed "variable set but not used" warnings (-Wunused-but-set-variable)
+
+New and updated translations
+============================
+
+	- Updated French, Czech, Swedish, Brazilian Portuguese, Polish, Spanish,
+	  German, Russian, Catalan, Galician, Bulgarian, British English, 
+	  Hungarian, Asturian, Danish, Serbian and Esperanto translation.
+	- Added Slovenian and UG translation.
+
+============
 Glade 3.10.0
 ============
 	- Fixed some glitches in the new workspace - Juan Pablo Ugarte
