@@ -1192,13 +1192,6 @@ glade_property_write (GladeProperty * property,
      * funcs that may not like NULL.
      */
     value = g_strdup ("");
-  else
-    {
-      /* Escape the string so that it will be parsed as it should. */
-      tmp = value;
-      value = g_markup_escape_text (value, -1);
-      g_free (tmp);
-    }
 
   /* Now dump the node values... */
   prop_node = glade_xml_node_new (context, GLADE_XML_TAG_PROPERTY);
