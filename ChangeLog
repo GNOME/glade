@@ -1,3 +1,13 @@
+2011-10-09  Fabien Parent <parent.f@gmail.com>
+
+	* gladeui/glade-property.c, gladeui/glade-xml-utils.c:
+
+	Fix a bug on the GtkComboBoxText (and probably others) when adding
+	a special char (like '&') in an item's name: every characters following
+	the special char disappeared while writting the xml file.
+
+	Bug 654609.
+
 2011-10-04  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-gtk.c: Ensure 'related-action'

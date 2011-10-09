@@ -121,9 +121,15 @@ glade_xml_get_content (GladeXmlNode *node_in)
 void
 glade_xml_set_content (GladeXmlNode *node_in, const gchar *content)
 {
-	xmlNodePtr node = (xmlNodePtr) node_in;
+  xmlNodePtr node = (xmlNodePtr) node_in;
+  xmlChar   *content_encoded;
 
-	xmlNodeSetContent(node, BAD_CAST(content));
+  g_return_if_fail (node != NULL);
+  g_return_if_fail (node->doc != NULL);
+  
+  content_encoded = xmlEncodeSpecialChars (node->doc, BAD_CAST (content));
+  xmlNodeSetContent (node, BAD_CAST (content_encoded));
+  xmlFree (content_encoded);
 }
 
 /*
