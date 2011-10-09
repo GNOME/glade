@@ -1,3 +1,10 @@
+2011-10-09  Tristan Van Berkom <tvb@gnome.org>
+
+	* gladeui/glade-project.c: Fix glade_project_notify_has_child() to notify
+	that the children are gone only when the last item on that level disappears.
+
+	Fixes bug 651673
+
 2011-10-09  Fabien Parent <parent.f@gmail.com>
 
 	* gladeui/glade-property.c, gladeui/glade-xml-utils.c:

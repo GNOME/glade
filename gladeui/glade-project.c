@@ -2688,28 +2688,30 @@ glade_project_set_widget_name (GladeProject *project,
 }
 
 static void
-glade_project_notify_row_has_child (GladeProject *project, GladeWidget *gwidget)
+glade_project_notify_row_has_child (GladeProject *project,
+				    GladeWidget  *gwidget,
+				    gboolean      adding)
 {
   GladeWidget *parent;
   gint         siblings;
-
+	
   parent = glade_widget_get_parent (gwidget);
 
   if (parent)
     {
       siblings = glade_project_count_children (project, parent);
 
-      if (siblings == 1)
-        {
-          GtkTreePath *path;
-          GtkTreeIter  iter;
+      if (siblings == (adding ? 1 : 0))
+	{
+	  GtkTreePath *path;
+	  GtkTreeIter  iter;
 
-          glade_project_model_get_iter_for_object (project, glade_widget_get_object (parent), &iter);
-
-          path = gtk_tree_model_get_path (GTK_TREE_MODEL (project), &iter);
-          gtk_tree_model_row_has_child_toggled (GTK_TREE_MODEL (project), path, &iter);
-          gtk_tree_path_free (path);
-        }
+	  glade_project_model_get_iter_for_object (project, 
+						   glade_widget_get_object (parent), &iter);
+	  path = gtk_tree_model_get_path (GTK_TREE_MODEL (project), &iter);
+	  gtk_tree_model_row_has_child_toggled (GTK_TREE_MODEL (project), path, &iter);
+	  gtk_tree_path_free (path);
+	}
     }
 }
 
@@ -2728,7 +2730,7 @@ glade_project_notify_row_inserted (GladeProject *project, GladeWidget *gwidget)
   gtk_tree_model_row_inserted (GTK_TREE_MODEL (project), path, &iter);
   gtk_tree_path_free (path);
 
-  glade_project_notify_row_has_child (project, gwidget);
+  glade_project_notify_row_has_child (project, gwidget, TRUE);
 }
 
 static void
@@ -3192,7 +3194,7 @@ glade_project_remove_object (GladeProject *project, GObject *object)
   glade_widget_set_project (gwidget, NULL);
   glade_widget_set_in_project (gwidget, FALSE);
 
-  glade_project_notify_row_has_child (project, gwidget);
+  glade_project_notify_row_has_child (project, gwidget, FALSE);
   g_object_unref (gwidget);
 }
 
@@ -4511,8 +4513,6 @@ glade_project_model_get_column_type (GtkTreeModel *model, gint column)
     }
 }
 
-GladeWidget *debug_widget;
-
 static gboolean
 glade_project_model_get_iter (GtkTreeModel *model,
                               GtkTreeIter *iter,
@@ -4538,7 +4538,6 @@ glade_project_model_get_iter (GtkTreeModel *model,
       return FALSE;
     }
 
-  debug_widget = widget;
   for (i = 1; i < depth; i++)
     {
       object = glade_project_nth_child (project, widget, indices[i]);
@@ -4551,7 +4550,6 @@ glade_project_model_get_iter (GtkTreeModel *model,
         }
 
       widget = glade_widget_get_from_gobject (object);
-      debug_widget = widget;
     }
 
   if (object)
