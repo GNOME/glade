@@ -2818,7 +2818,8 @@ glade_project_set_widget_name (GladeProject *project,
 
 static void
 glade_project_notify_row_has_child (GladeProject *project,
-				    GladeWidget  *gwidget)
+				    GladeWidget  *gwidget,
+				    gboolean      adding)
 {
 	GladeWidget *parent;
 	gint         siblings;
@@ -2829,7 +2830,7 @@ glade_project_notify_row_has_child (GladeProject *project,
 	{
 		siblings = glade_project_count_children (project, parent);
 
-		if (siblings == 1)
+		if (siblings == (adding ? 1 : 0))
 		{
 			GtkTreePath *path;
 			GtkTreeIter  iter;
@@ -2860,7 +2861,7 @@ glade_project_notify_row_inserted (GladeProject *project,
 	gtk_tree_model_row_inserted (GTK_TREE_MODEL (project), path, &iter);
 	gtk_tree_path_free (path);
 
-	glade_project_notify_row_has_child (project, gwidget);
+	glade_project_notify_row_has_child (project, gwidget, TRUE);
 }
 
 static void 
@@ -3113,7 +3114,7 @@ glade_project_remove_object (GladeProject *project, GObject *object)
 	gwidget->in_project = FALSE;
 
 
-	glade_project_notify_row_has_child (project, gwidget);
+	glade_project_notify_row_has_child (project, gwidget, FALSE);
 	g_object_unref (gwidget);
 
 }
@@ -4648,8 +4649,9 @@ glade_project_model_get_column_type (GtkTreeModel* model,
 }
 
 static gboolean
-glade_project_model_get_iter (GtkTreeModel * model,
-                              GtkTreeIter * iter, GtkTreePath * path)
+glade_project_model_get_iter (GtkTreeModel *model,
+                              GtkTreeIter  *iter, 
+			      GtkTreePath  *path)
 {
   GladeProject *project = GLADE_PROJECT (model);
   gint         *indices = gtk_tree_path_get_indices (path);
