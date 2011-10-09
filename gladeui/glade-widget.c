@@ -2011,8 +2011,12 @@ glade_widget_hide (GladeWidget *widget)
 	{
 		GladeDesignView *view;
 		GtkWidget *layout;
-		
-		if ((view = glade_design_view_get_from_project (glade_widget_get_project (widget))) != NULL)
+		GladeProject *project;
+
+		project = glade_widget_get_project (widget);
+
+		if (project &&
+		    (view = glade_design_view_get_from_project (project)) != NULL)
 		{
 			GtkWidget *child;
 

@@ -1238,7 +1238,7 @@ glade_command_remove (GList *widgets)
 	glade_command_check_group (GLADE_COMMAND (me));
 
 	if (glade_command_add_remove_execute (GLADE_COMMAND (me)))
-		glade_project_push_undo (GLADE_PROJECT (widget->project), GLADE_COMMAND (me));
+		glade_project_push_undo (me->project, GLADE_COMMAND (me));
 	else
 		g_object_unref (G_OBJECT (me));
 
