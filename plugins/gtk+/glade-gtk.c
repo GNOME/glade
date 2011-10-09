@@ -830,9 +830,23 @@ glade_gtk_widget_write_widget (GladeWidgetAdaptor *adaptor,
 	if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET (fmt)))
 		return;
 
+	/* Make sure use-action-appearance and related-action properties are
+	 * ordered in a sane way */
+	if (fmt == GLADE_PROJECT_FORMAT_GTKBUILDER &&
+	    GTK_IS_ACTIVATABLE (glade_widget_get_object (widget)))
+	{
+		GladeProperty *prop =
+			glade_widget_get_property (widget, "use-action-appearance");
+		if (prop)
+			glade_property_write (prop, context, node);
+
+		prop = glade_widget_get_property (widget, "related-action");
+		if (prop)
+			glade_property_write (prop, context, node);
+	}
+
 	/* First chain up and read in all the normal properties.. */
         GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
-
 
 	/* in Libglade the order must be Properties, Atk, Signals, Accels. 
 	 * in builder it doesnt matter so long as signals are after properties

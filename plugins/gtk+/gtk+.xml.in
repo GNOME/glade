@@ -465,8 +465,8 @@ embedded in another object</_tooltip>
         <property id="use-underline" _name="Use Underline" gtkbuilder-since="2.16"/>
 
 	<!-- GtkActivatable -->
-      	<property id="related-action" _name="Related Action" custom-layout="True" since="2.16"/>
-      	<property id="use-action-appearance" _name="Use Action Appearance" 
+      	<property id="related-action" _name="Related Action" custom-layout="True" since="2.16" save="False"/>
+      	<property id="use-action-appearance" _name="Use Action Appearance" save="False"
 		  custom-layout="True" needs-sync="True" default="False" since="2.16"/>
 
 	<!-- Atk click property -->
@@ -682,9 +682,9 @@ embedded in another object</_tooltip>
 
       <properties>
 	<!-- GtkActivatable -->
-      	<property id="related-action" _name="Related Action" custom-layout="True" since="2.16"/>
+      	<property id="related-action" _name="Related Action" custom-layout="True" since="2.16" save="False"/>
       	<property id="use-action-appearance" _name="Use Action Appearance" custom-layout="True" 
-		  default="False" since="2.16"/>
+		  default="False" since="2.16" save="False"/>
       </properties>
 
     </glade-widget-class>
@@ -1001,8 +1001,8 @@ embedded in another object</_tooltip>
 	</property>
 
 	<!-- GtkActivatable -->
-      	<property id="related-action" _name="Related Action" custom-layout="True" since="2.16"/>
-      	<property id="use-action-appearance" _name="Use Action Appearance" custom-layout="True" default="False" since="2.16"/>
+      	<property id="related-action" _name="Related Action" custom-layout="True" since="2.16" save="False"/>
+      	<property id="use-action-appearance" _name="Use Action Appearance" custom-layout="True" default="False" since="2.16" save="False"/>
 
 	<!-- Atk click property -->
 	<property id="atk-click" _name="Click" ignore="True" atk-property="True" save="False">

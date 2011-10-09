@@ -1,4 +1,7 @@
-2011-10-06  Tristan Van Berkom <tvb@gnome.org>
+2011-10-04  Tristan Van Berkom <tvb@gnome.org>
+
+	* plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-gtk.c: Ensure 'related-action'
+	and 'use-action-appearance' are serialized in the right order.
 
 	* gladeui/glade-widget-adaptor.c: Implemented a generic ->depends() routine
 	to ensure that liststores are serialized before treemodelfilters which refer to them (bug 657164).
