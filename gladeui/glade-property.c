@@ -1108,7 +1108,7 @@ glade_property_write (GladeProperty   *property,
 	GladeProjectFormat fmt;
 	GladeXmlNode *prop_node;
 	GladeProject *project;
-	gchar *name, *value, *tmp;
+	gchar *name, *value;
 
 	g_return_if_fail (GLADE_IS_PROPERTY (property));
 	g_return_if_fail (node != NULL);
