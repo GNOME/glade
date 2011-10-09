@@ -1134,12 +1134,12 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor *adaptor,
             return;
 
           glade_command_push_group (_("Adding parent %s for %s"),
-                                    glade_widget_adaptor_get_title (adaptor), 
+                                    adaptor->title, 
 				    glade_widget_get_name (gwidget));
 
           /* Record packing properties */
           saved_props =
-	    glade_widget_dup_properties (gwidget, glade_widget_get_packing_properties (gwidget),
+	    glade_widget_dup_properties (gwidget, gwidget->packing_properties,
 					 FALSE, FALSE, FALSE);
 
 
