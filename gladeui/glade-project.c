@@ -1895,7 +1895,9 @@ glade_project_preview (GladeProject *project, GladeWidget *gwidget)
 
   if (!preview)
     {
+      /* If the previewer program is somehow missing, this can return NULL */
       preview = glade_preview_launch (gwidget, text);
+      g_return_if_fail (GLADE_IS_PREVIEW (preview));
 
       /* Leave project data on the preview */
       g_object_set_data (G_OBJECT (preview), "project", project);
