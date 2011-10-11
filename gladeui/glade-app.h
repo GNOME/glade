@@ -36,8 +36,8 @@ G_BEGIN_DECLS
 #define GLADE_IS_APP_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_APP))
 #define GLADE_APP_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_APP, GladeAppClass))
 
-#define GLADE_ENV_CATALOG_PATH    "GLADE_CATALOG_PATH"
-#define GLADE_ENV_MODULE_PATH     "GLADE_MODULE_PATH"
+#define GLADE_ENV_CATALOG_PATH    "GLADE_CATALOG_SEARCH_PATH"
+#define GLADE_ENV_MODULE_PATH     "GLADE_MODULE_SEARCH_PATH"
 
 typedef struct _GladeApp         GladeApp;
 typedef struct _GladeAppPrivate  GladeAppPrivate;
