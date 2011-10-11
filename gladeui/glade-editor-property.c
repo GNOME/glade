@@ -3201,7 +3201,7 @@ glade_eprop_objects_show_dialog (GtkWidget           *dialog_button,
 	GladeProject  *project;
 	gchar         *title = glade_eprop_object_dialog_title (eprop);
 	gint           res;
-	GList         *selected_list = NULL, *exception_list = NULL, *selected_objects = NULL;
+	GList         *selected_list = NULL, *exception_list = NULL, *selected_objects = NULL, *l;
 	
 	project = glade_widget_get_project (eprop->property->widget);
 	parent = gtk_widget_get_toplevel (GTK_WIDGET (eprop));
@@ -3245,14 +3245,11 @@ glade_eprop_objects_show_dialog (GtkWidget           *dialog_button,
 
 	exception_list = g_list_prepend (exception_list, eprop->property->widget);
 
-	if (g_value_get_object (eprop->property->value))
-	{
-		GList *l;
-		glade_property_get (eprop->property, &selected_objects);
-		for (l = selected_objects; l; l = l->next)
-			selected_list = g_list_prepend (selected_list, 
-							glade_widget_get_from_gobject (l->data));
-	}
+	glade_property_get (eprop->property, &selected_objects);
+	for (l = selected_objects; l; l = l->next)
+		selected_list = g_list_prepend (selected_list, 
+						glade_widget_get_from_gobject (l->data));
+
 	glade_eprop_object_populate_view (project, GTK_TREE_VIEW (tree_view),
 					  selected_list, exception_list,
 					  eprop->klass->pspec->value_type,
