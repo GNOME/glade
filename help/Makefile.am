@@ -2,7 +2,7 @@
 include $(top_srcdir)/gnome-doc-utils.make
 dist-hook: doc-dist-hook
 
-DOC_MODULE = glade
+DOC_MODULE = glade3
 DOC_INCLUDES = legal.xml
 DOC_FIGURES = figures/main-window.png
 
