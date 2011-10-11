@@ -1,4 +1,17 @@
 ===========
+Glade 3.8.1
+===========
+	- Correctly detect the required devhelp version (Javier Jardón)
+	- Sort objects in output by property reference, ensures a
+	  GtkTreeModelFilter gets serialized after its 'child-model' (fixes bug 657164)
+	- Fixed crashers when performing "Remove Parent" (bug 657338)
+	- Ensure 'use-action-appearance' is serialized 
+	  before 'related-action' (bug 658497)
+	- Properly escape special characters while serializing 
+	  property values (bug 654609 - Fabien Parent) 
+	- Fix GladeProject to notify "row-has-child-toggled", (fixes bug 651673).
+
+===========
 Glade 3.8.0
 ===========
 	- Added support for GtkToolPalette and GtkToolItemGroup
