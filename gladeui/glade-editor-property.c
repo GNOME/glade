@@ -3235,7 +3235,12 @@ glade_eprop_objects_show_dialog (GtkWidget * dialog_button,
   GParamSpec   *pspec;
   gchar *title = glade_eprop_object_dialog_title (eprop);
   gint res;
-  GList *selected_list = NULL, *exception_list = NULL, *selected_objects = NULL;
+  GList *selected_list = NULL, *exception_list = NULL, *selected_objects = NULL, *l;
+
+  /* It's improbable but possible the editor is visible with no
+   * property selected, in this case avoid crashes */
+  if (!eprop->priv->property)
+    return;
 
   widget  = glade_property_get_widget (eprop->priv->property);
   project = glade_widget_get_project (widget);
@@ -3278,21 +3283,17 @@ glade_eprop_objects_show_dialog (GtkWidget * dialog_button,
 
   tree_view = glade_eprop_object_view (FALSE);
 
-
+  /* Dont allow selecting the widget owning this property (perhaps this is wrong) */
   exception_list = g_list_prepend (exception_list, widget);
 
-  /* XXX This looks broken, do "object list" properties hold an object ? I doubt it... */
-  if (g_value_get_object (glade_property_inline_value (eprop->priv->property)))
-    {
-      GList *l;
-      glade_property_get (eprop->priv->property, &selected_objects);
-      for (l = selected_objects; l; l = l->next)
-        selected_list = g_list_prepend (selected_list,
-                                        glade_widget_get_from_gobject (l->data));
-    }
+  /* Build the list of already selected objects */
+  glade_property_get (eprop->priv->property, &selected_objects);
+  for (l = selected_objects; l; l = l->next)
+    selected_list = g_list_prepend (selected_list, glade_widget_get_from_gobject (l->data));
+
   glade_eprop_object_populate_view (project, GTK_TREE_VIEW (tree_view),
                                     selected_list, exception_list,
-                                    pspec->value_type,
+                                    glade_param_spec_objects_get_type (GLADE_PARAM_SPEC_OBJECTS (pspec)),
                                     glade_property_class_parentless_widget (eprop->priv->klass));
   g_list_free (selected_list);
   g_list_free (exception_list);
