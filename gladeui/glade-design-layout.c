@@ -120,17 +120,17 @@ G_DEFINE_TYPE (GladeDesignLayout, glade_design_layout, GTK_TYPE_BIN)
 #define RECTANGLE_POINT_IN(rect,x,y) (x >= rect.x && x <= (rect.x + rect.width) && y >= rect.y && y <= (rect.y + rect.height))
 
 static Margins
-gdl_get_margins_from_pointer (GtkWidget *widget, gint x, gint y)
+gdl_get_margins_from_pointer (GtkWidget *child, GtkWidget *widget, gint x, gint y)
 {
-  gint xx, yy, top, bottom, left, right;
-  GtkAllocation alloc;
+  gint width, height, xx, yy, top, bottom, left, right;
   Margins margin = 0;
   GdkRectangle rec;
+  
+  width = gtk_widget_get_allocated_width (widget);
+  height = gtk_widget_get_allocated_height (widget);
 
-  gtk_widget_get_allocation (widget, &alloc);
-  xx = alloc.x;
-  yy = alloc.y;
-
+  gtk_widget_translate_coordinates (widget, child, 0, 0, &xx, &yy);
+  
   top = gtk_widget_get_margin_top (widget);
   bottom = gtk_widget_get_margin_bottom (widget);
   left = gtk_widget_get_margin_left (widget);
@@ -138,16 +138,16 @@ gdl_get_margins_from_pointer (GtkWidget *widget, gint x, gint y)
 
   rec.x = xx - left - OUTLINE_WIDTH;
   rec.y = yy - top - OUTLINE_WIDTH;
-  rec.width = alloc.width + left + right + (OUTLINE_WIDTH * 2);
-  rec.height = alloc.height + top + bottom + (OUTLINE_WIDTH * 2);
+  rec.width = width + left + right + (OUTLINE_WIDTH * 2);
+  rec.height = height + top + bottom + (OUTLINE_WIDTH * 2);
 
   if (RECTANGLE_POINT_IN (rec, x, y))
     {      
       if (y <= yy + OUTLINE_WIDTH) margin |= MARGIN_TOP;
-      else if (y >= yy + alloc.height - OUTLINE_WIDTH) margin |= MARGIN_BOTTOM;
+      else if (y >= yy + height - OUTLINE_WIDTH) margin |= MARGIN_BOTTOM;
       
       if (x <= xx + OUTLINE_WIDTH) margin |= MARGIN_LEFT;
-      else if (x >= xx + alloc.width - OUTLINE_WIDTH) margin |= MARGIN_RIGHT;
+      else if (x >= xx + width - OUTLINE_WIDTH) margin |= MARGIN_RIGHT;
     }
 
   return margin;
@@ -160,7 +160,8 @@ gdl_get_activity_from_pointer (GladeDesignLayout *layout, gint x, gint y)
   
   if (priv->selection)
     {
-      priv->margin = gdl_get_margins_from_pointer (priv->selection,
+      priv->margin = gdl_get_margins_from_pointer (gtk_bin_get_child (GTK_BIN (layout)),
+                                                   priv->selection,
                                                    x - priv->child_offset,
                                                    y - priv->child_offset);
       
@@ -471,7 +472,7 @@ glade_design_layout_find_inside_container (GtkWidget                *widget,
                                            GladeFindInContainerData *data)
 {
   GtkAllocation allocation;
-  gint x, y;
+  gint x, y, l, t;
 
   if (data->gwidget || !gtk_widget_get_mapped (widget))
     return;
@@ -480,7 +481,15 @@ glade_design_layout_find_inside_container (GtkWidget                *widget,
                                     &x, &y);
   gtk_widget_get_allocation (widget, &allocation);
 
-  if (x >= 0 && x < allocation.width && y >= 0 && y < allocation.height)
+  /* Margins are not part of the widget allocation */
+  l = gtk_widget_get_margin_left (widget);
+  t = gtk_widget_get_margin_top (widget);
+
+  allocation.width += gtk_widget_get_margin_right (widget) + l;
+  allocation.height += gtk_widget_get_margin_bottom (widget) + t;
+
+  if (x >= (0-l) && x < allocation.width &&
+      y >= (0-t) && y < allocation.height)
     {
       if (GLADE_IS_PLACEHOLDER (widget))
         data->placeholder = widget;
@@ -2055,12 +2064,12 @@ _glade_design_layout_do_event (GladeDesignLayout *layout, GdkEvent *event)
   gtk_widget_get_pointer (GTK_WIDGET (child), &data.x, &data.y);
 
   /* Check if we want to enter in margin edit mode */
-  if (event->type == GDK_BUTTON_PRESS &&
+  if (event->type == GDK_BUTTON_PRESS && ((GdkEventButton *) event)->button == 1 &&
       (l = glade_project_selection_get (priv->project)) &&
       g_list_next (l) == NULL && GTK_IS_WIDGET (l->data) && 
       gtk_widget_is_ancestor (l->data, child))
     {
-      if (gdl_get_margins_from_pointer (l->data, data.x, data.y))
+      if (gdl_get_margins_from_pointer (child, l->data, data.x, data.y))
         {
           if (priv->selection == NULL)
             {
