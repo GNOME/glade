@@ -296,16 +296,20 @@ glade_design_view_style_updated (GtkWidget *widget)
 {
   GladeDesignViewPrivate *priv = GLADE_DESIGN_VIEW_GET_PRIVATE (widget);
   GtkWidget *viewport = gtk_bin_get_child (GTK_BIN (priv->scrolled_window));
-  GtkStyleContext *context = gtk_widget_get_style_context (viewport);
+  GtkStyleContext *context = gtk_style_context_new ();
+  GtkWidgetPath *path = gtk_widget_path_new ();
   GdkRGBA bg_color;
 
-  gtk_style_context_save (context);
-  
+  g_type_class_ref (GTK_TYPE_TREE_VIEW);
+  gtk_widget_path_append_type (path, GTK_TYPE_WIDGET);
+  gtk_style_context_set_path (context, path);
   gtk_style_context_add_class (context, GTK_STYLE_CLASS_VIEW);
+  gtk_widget_path_free (path);
+
   gtk_style_context_get_background_color (context, GTK_STATE_FLAG_NORMAL, &bg_color);
   gtk_widget_override_background_color (viewport, GTK_STATE_FLAG_NORMAL, &bg_color);
-  
-  gtk_style_context_restore (context);
+
+  g_object_unref (context);
 }
 
 static void

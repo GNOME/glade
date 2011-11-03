@@ -930,6 +930,24 @@ on_glade_widget_name_notify (GObject *gobject, GParamSpec *pspec, GladeDesignLay
 }
 
 static void
+widget_reset_bg_color (GtkWidget *widget)
+{
+  GtkStyleContext *context = gtk_style_context_new ();
+  GtkWidgetPath *path = gtk_widget_path_new ();
+  GdkRGBA bg_color;
+  
+  gtk_widget_path_append_type (path, G_OBJECT_TYPE (widget));
+  gtk_style_context_set_path (context, path);
+  gtk_widget_path_free (path);
+
+  gtk_style_context_get_background_color (context, GTK_STATE_FLAG_NORMAL, &bg_color);
+  gtk_widget_override_background_color (widget, GTK_STATE_FLAG_NORMAL, &bg_color);  
+
+  g_object_unref (context);
+}
+
+
+static void
 glade_design_layout_add (GtkContainer *container, GtkWidget *widget)
 {
   GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (container);
@@ -939,6 +957,11 @@ glade_design_layout_add (GtkContainer *container, GtkWidget *widget)
   layout->priv->current_width = 0;
   layout->priv->current_height = 0;
 
+  /*FIXME: Adwaita theme, for some unknown reason, overwrites the window default bg.
+   *  This is a workaround to reset it to the default value.
+   */
+  widget_reset_bg_color (widget);
+  
   gtk_widget_set_parent_window (widget, priv->offscreen_window);
 
   GTK_CONTAINER_CLASS (glade_design_layout_parent_class)->add (container,
