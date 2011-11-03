@@ -1,6 +1,8 @@
 2011-11-03  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
-	* gladeui/glade-design-layout.c: Added workaround for child bg bug on Adwaita theme.
+	* gladeui/glade-design-layout.c:
+	  o Added workaround for child bg bug on Adwaita theme.
+	  o Fixed bug detecting widget including margins
 	
 	* gladeui/glade-design-view.c: cleaned up glade_design_view_style_updated()
 	  to make it use new style context instead of modifying its own. 

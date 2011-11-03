@@ -381,7 +381,7 @@ glade_design_layout_motion_notify_event (GtkWidget *widget, GdkEventMotion *ev)
       case ACTIVITY_MARGINS:
         {
           gboolean shift = ev->state & GDK_SHIFT_MASK;
-          gboolean snap = ev->state & GDK_MOD1_MASK;
+          gboolean snap = ev->state & GDK_CONTROL_MASK;
           GtkWidget *selection = priv->selection;
           Margins margin = priv->margin;
 
@@ -471,25 +471,20 @@ static void
 glade_design_layout_find_inside_container (GtkWidget                *widget,
                                            GladeFindInContainerData *data)
 {
-  GtkAllocation allocation;
-  gint x, y, l, t;
+  gint x, y, w, h;
 
   if (data->gwidget || !gtk_widget_get_mapped (widget))
     return;
 
   gtk_widget_translate_coordinates (data->toplevel, widget, data->x, data->y,
                                     &x, &y);
-  gtk_widget_get_allocation (widget, &allocation);
-
+  
   /* Margins are not part of the widget allocation */
-  l = gtk_widget_get_margin_left (widget);
-  t = gtk_widget_get_margin_top (widget);
+  w = gtk_widget_get_allocated_width (widget) + gtk_widget_get_margin_right (widget);
+  h = gtk_widget_get_allocated_height (widget) + gtk_widget_get_margin_bottom (widget);
 
-  allocation.width += gtk_widget_get_margin_right (widget) + l;
-  allocation.height += gtk_widget_get_margin_bottom (widget) + t;
-
-  if (x >= (0-l) && x < allocation.width &&
-      y >= (0-t) && y < allocation.height)
+  if (x >= (0 - gtk_widget_get_margin_left (widget)) && x < w &&
+      y >= (0 - gtk_widget_get_margin_top (widget)) && y < h)
     {
       if (GLADE_IS_PLACEHOLDER (widget))
         data->placeholder = widget;
