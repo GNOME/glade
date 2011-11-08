@@ -222,12 +222,12 @@ fi
 dnl ================================================================
 dnl Check for GDK Quartz and MacOSX integration package 
 dnl ================================================================
-_gdk_tgt=`$PKG_CONFIG --variable=target gdk-3.0`
+_gdk_tgt=`$PKG_CONFIG --variable=targets gdk-3.0`
 AM_CONDITIONAL([GDK_TARGET_QUARTZ], [test x$_gdk_tgt = xquartz])
 if test "x$_gdk_tgt" = xquartz; then 
-   PKG_CHECK_MODULES(IGE_MAC, ige-mac-integration)
+   PKG_CHECK_MODULES(GTK_MAC, gtk-mac-integration)
 
-   IGE_MAC_BUNDLE_FLAG=
+   GTK_MAC_BUNDLE_FLAG=
 
    AC_ARG_ENABLE(mac-bundle,
       AS_HELP_STRING([--enable-mac-bundle], [enable mac bundling]),
@@ -236,12 +236,12 @@ if test "x$_gdk_tgt" = xquartz; then
    if test "x$build_bundle" = xyes; then
       AC_MSG_NOTICE([enableing mac bundle..])
 
-      IGE_MAC_BUNDLE_FLAG=-DMAC_BUNDLE
+      GTK_MAC_BUNDLE_FLAG=-DMAC_BUNDLE
    fi      
 
-   AC_SUBST(IGE_MAC_BUNDLE_FLAG)
-   AC_SUBST(IGE_MAC_LIBS)
-   AC_SUBST(IGE_MAC_CFLAGS)
+   AC_SUBST(GTK_MAC_BUNDLE_FLAG)
+   AC_SUBST(GTK_MAC_LIBS)
+   AC_SUBST(GTK_MAC_CFLAGS)
 fi
 
 

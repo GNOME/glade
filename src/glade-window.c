@@ -41,7 +41,7 @@
 #include <gtk/gtk.h>
 
 #ifdef MAC_INTEGRATION
-#  include <ige-mac-integration.h>
+#  include <gtkosxapplication.h>
 #endif
 
 
@@ -2453,7 +2453,7 @@ drag_data_received (GtkWidget * widget,
           g_warning ("Could not convert uri to local path: %s", error->message);
 
           g_error_free (error);
-        }
+	}
       g_free (path);
     }
   g_strfreev (uris);
@@ -3519,12 +3519,35 @@ glade_window_init (GladeWindow * window)
 #ifdef MAC_INTEGRATION
   {
     /* Fix up the menubar for MacOSX Quartz builds */
+    GtkWidget *sep;
+    GtkOSXApplication *theApp = g_object_new(GTK_TYPE_OSX_APPLICATION, NULL);
     gtk_widget_hide (menubar);
-    ige_mac_menu_set_menu_bar (GTK_MENU_SHELL (menubar));
-
+    gtk_osxapplication_set_menu_bar(theApp, GTK_MENU_SHELL(menubar));
     widget =
         gtk_ui_manager_get_widget (window->priv->ui, "/MenuBar/FileMenu/Quit");
-    ige_mac_menu_set_quit_menu_item (GTK_MENU_ITEM (widget));
+    gtk_widget_hide (widget);
+    widget =
+        gtk_ui_manager_get_widget (window->priv->ui, "/MenuBar/HelpMenu/About");
+    gtk_osxapplication_insert_app_menu_item (theApp, widget, 0);
+    sep = gtk_separator_menu_item_new();
+    g_object_ref(sep);
+    gtk_osxapplication_insert_app_menu_item (theApp, sep, 1);
+
+    widget =
+        gtk_ui_manager_get_widget (window->priv->ui, "/MenuBar/FileMenu/Properties");
+    gtk_osxapplication_insert_app_menu_item  (theApp, widget, 2);
+    sep = gtk_separator_menu_item_new();
+    g_object_ref(sep);
+    gtk_osxapplication_insert_app_menu_item (theApp, sep, 3);
+
+    widget =
+        gtk_ui_manager_get_widget (window->priv->ui, "/MenuBar/HelpMenu");
+    gtk_osxapplication_set_help_menu(theApp, GTK_MENU_ITEM(widget));
+
+    g_signal_connect(theApp, "NSApplicationWillTerminate",
+		     G_CALLBACK(quit_cb), window);
+
+    gtk_osxapplication_ready(theApp);
   }
 #endif
 

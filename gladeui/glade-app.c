@@ -48,7 +48,7 @@
 #include <gtk/gtk.h>
 
 #ifdef MAC_INTEGRATION
-#  include <ige-mac-integration.h>
+#  include <gtkosxapplication.h>
 #endif
 
 #define GLADE_CONFIG_FILENAME "glade.conf"
@@ -225,11 +225,8 @@ build_package_paths (void)
   prefix = g_win32_get_package_installation_directory_of_module (NULL);
 
 # else // defined (MAC_INTEGRATION) && defined (MAC_BUNDLE)
-  IgeMacBundle *bundle = ige_mac_bundle_get_default ();
+  prefix = quartz_application_get_resource_path ();
 
-  prefix =
-      g_build_filename (ige_mac_bundle_get_path (bundle), "Contents",
-                        "Resources", NULL);
 # endif
 
   pixmaps_dir = g_build_filename (prefix, "share", PACKAGE, "pixmaps", NULL);

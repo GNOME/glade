@@ -8,7 +8,7 @@ glade_previewer_CPPFLAGS = \
 	-I$(top_builddir)  \
 	-DGLADE_GNOMEHELPDIR="\"$(HELP_DIR)\"" \
 	$(GTK_CFLAGS)      \
-	$(IGE_MAC_CFLAGS)  \
+	$(GTK_MAC_CFLAGS)  \
 	$(WARN_CFLAGS)     \
 	$(AM_CPPFLAGS)
 
@@ -17,7 +17,7 @@ glade_previewer_CFLAGS =   \
 
 glade_previewer_LDFLAGS = $(AM_LDFLAGS)
 
-glade_previewer_LDADD = libgladeui-2.la $(IGE_MAC_LIBS)
+glade_previewer_LDADD = libgladeui-2.la $(GTK_MAC_LIBS)
 
 glade_previewer_SOURCES = \
 	glade-previewer.c
@@ -95,8 +95,8 @@ libgladeui_2_la_CPPFLAGS =  \
 	-I$(top_srcdir)     \
 	-I$(top_builddir)   \
 	$(GTK_CFLAGS)       \
-	$(IGE_MAC_BUNDLE_FLAG) \
-	$(IGE_MAC_CFLAGS)  \
+	$(GTK_MAC_BUNDLE_FLAG) \
+	$(GTK_MAC_CFLAGS)  \
 	$(WARN_CFLAGS)      \
 	$(AM_CPPFLAGS)
 
@@ -104,7 +104,7 @@ libgladeui_2_la_CFLAGS =    \
 	$(AM_CFLAGS)
 
 libgladeui_2_la_LDFLAGS = -version-info $(GLADE_CURRENT):$(GLADE_REVISION):$(GLADE_AGE) $(AM_LDFLAGS)
-libgladeui_2_la_LIBADD = $(GTK_LIBS) $(IGE_MAC_LIBS)
+libgladeui_2_la_LIBADD = $(GTK_LIBS) $(GTK_MAC_LIBS)
 
 
 libgladeuiincludedir=$(includedir)/libgladeui-2.0/gladeui
