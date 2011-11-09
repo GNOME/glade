@@ -67,8 +67,8 @@ libgladeui_1_la_CPPFLAGS =  \
 	-I$(top_srcdir)     \
 	-I$(top_builddir)   \
 	$(GTK_CFLAGS)       \
-	$(IGE_MAC_BUNDLE_FLAG) \
-	$(IGE_MAC_CFLAGS)  \
+	$(GTK_MAC_BUNDLE_FLAG) \
+	$(GTK_MAC_CFLAGS)  \
 	$(WARN_CFLAGS)      \
 	$(AM_CPPFLAGS)
 
@@ -76,7 +76,7 @@ libgladeui_1_la_CFLAGS =    \
 	$(AM_CFLAGS)
 
 libgladeui_1_la_LDFLAGS = -version-info $(GLADE_CURRENT):$(GLADE_REVISION):$(GLADE_AGE) $(AM_LDFLAGS)
-libgladeui_1_la_LIBADD = $(GTK_LIBS) $(IGE_MAC_LIBS)
+libgladeui_1_la_LIBADD = $(GTK_LIBS) $(GTK_MAC_LIBS)
 
 
 libgladeuiincludedir=$(includedir)/libgladeui-1.0/gladeui
