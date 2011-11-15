@@ -1325,6 +1325,13 @@ glade_widget_adaptor_object_get_children (GladeWidgetAdaptor *adaptor,
   return children;
 }
 
+static void
+glade_widget_adaptor_object_adjust_property_flags (GladeWidgetAdaptor * adaptor,
+                                                   GladeWidget * widget,
+                                                   gboolean use_command)
+{
+  /* Nothing to do */
+}
 
 /*******************************************************************************
             GladeWidgetAdaptor type registration and class initializer
@@ -1378,6 +1385,7 @@ glade_widget_adaptor_class_init (GladeWidgetAdaptorClass * adaptor_class)
   adaptor_class->create_eprop = glade_widget_adaptor_object_create_eprop;
   adaptor_class->string_from_value = glade_widget_adaptor_object_string_from_value;
   adaptor_class->create_editable = glade_widget_adaptor_object_create_editable;
+  adaptor_class->adjust_property_flags = glade_widget_adaptor_object_adjust_property_flags;
 
   /* Base defaults here */
   adaptor_class->toplevel = FALSE;
@@ -1645,6 +1653,10 @@ gwa_extend_with_node_load_sym (GladeWidgetAdaptorClass * klass,
                                     &symbol))
     klass->create_editable = symbol;
 
+  if (glade_xml_load_sym_from_node (node, module,
+                                    GLADE_TAG_ADJUST_PROPERTY_FLAGS_FUNCTION,
+                                    &symbol))
+    klass->adjust_property_flags = symbol;
 }
 
 static void
@@ -4357,4 +4369,26 @@ glade_widget_adaptor_create_editable (GladeWidgetAdaptor * adaptor,
 
   return GLADE_WIDGET_ADAPTOR_GET_CLASS
       (adaptor)->create_editable (adaptor, type);
+}
+
+/**
+ * glade_widget_adaptor_adjust_property_flags:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @widget: The #GladeWidget
+ * @use_command: whether to use the GladeCommand interface
+ *
+ * This is called after a widget is loaded or a widget's
+ * property value has changed. It allows the backend to keep the
+ * sensitive/enabled flags of all properties consistent with the
+ * property values.
+ */
+void
+glade_widget_adaptor_adjust_property_flags (GladeWidgetAdaptor * adaptor,
+                                            GladeWidget * widget,
+                                            gboolean use_command)
+{
+  g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
+
+  GLADE_WIDGET_ADAPTOR_GET_CLASS
+      (adaptor)->adjust_property_flags (adaptor, widget, use_command);
 }

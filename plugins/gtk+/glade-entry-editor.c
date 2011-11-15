@@ -24,9 +24,11 @@
 #include <glib/gi18n-lib.h>
 #include <gdk/gdkkeysyms.h>
 
+#include "glade-gtk.h"
 #include "glade-entry-editor.h"
 #include "glade-image-editor.h" // For GladeImageEditMode
 
+#include <gladeui/glade-widget-adaptor.h>
 
 static void glade_entry_editor_finalize (GObject * object);
 
@@ -208,6 +210,7 @@ text_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
   /* Incase the NULL text didnt change */
   glade_property_sync (property);
 
+  glade_widget_adjust_property_flags (gwidget, TRUE);
   glade_command_pop_group ();
 
   glade_editable_unblock (GLADE_EDITABLE (entry_editor));
@@ -242,6 +245,7 @@ buffer_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
       glade_widget_get_property (gwidget, "use-entry-buffer");
   glade_command_set_property (property, TRUE);
 
+  glade_widget_adjust_property_flags (gwidget, TRUE);
   glade_command_pop_group ();
 
   glade_editable_unblock (GLADE_EDITABLE (entry_editor));
@@ -324,6 +328,7 @@ primary_stock_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
   glade_command_push_group (_("Setting %s to use a primary icon from stock"),
                             glade_widget_get_name (gwidget));
   set_stock_mode (entry_editor, TRUE);
+  glade_widget_adjust_property_flags (gwidget, TRUE);
   glade_command_pop_group ();
 
   glade_editable_unblock (GLADE_EDITABLE (entry_editor));
@@ -350,6 +355,7 @@ primary_icon_name_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
   glade_command_push_group (_("Setting %s to use a primary icon from the icon theme"),
                             glade_widget_get_name (gwidget));
   set_icon_name_mode (entry_editor, TRUE);
+  glade_widget_adjust_property_flags (gwidget, TRUE);
   glade_command_pop_group ();
 
   glade_editable_unblock (GLADE_EDITABLE (entry_editor));
@@ -375,6 +381,7 @@ primary_pixbuf_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
   glade_command_push_group (_("Setting %s to use a primary icon from filename"),
                             glade_widget_get_name (gwidget));
   set_pixbuf_mode (entry_editor, TRUE);
+  glade_widget_adjust_property_flags (gwidget, TRUE);
   glade_command_pop_group ();
 
   glade_editable_unblock (GLADE_EDITABLE (entry_editor));
@@ -401,6 +408,7 @@ secondary_stock_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
   glade_command_push_group (_("Setting %s to use a secondary icon from stock"),
                             glade_widget_get_name (gwidget));
   set_stock_mode (entry_editor, FALSE);
+  glade_widget_adjust_property_flags (gwidget, TRUE);
   glade_command_pop_group ();
 
   glade_editable_unblock (GLADE_EDITABLE (entry_editor));
@@ -428,6 +436,7 @@ secondary_icon_name_toggled (GtkWidget * widget,
   glade_command_push_group (_("Setting %s to use a secondary icon from the icon theme"),
                             glade_widget_get_name (gwidget));
   set_icon_name_mode (entry_editor, FALSE);
+  glade_widget_adjust_property_flags (gwidget, TRUE);
   glade_command_pop_group ();
 
   glade_editable_unblock (GLADE_EDITABLE (entry_editor));
@@ -453,6 +462,7 @@ secondary_pixbuf_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
   glade_command_push_group (_("Setting %s to use a secondary icon from filename"),
                             glade_widget_get_name (gwidget));
   set_pixbuf_mode (entry_editor, FALSE);
+  glade_widget_adjust_property_flags (gwidget, TRUE);
   glade_command_pop_group ();
 
   glade_editable_unblock (GLADE_EDITABLE (entry_editor));

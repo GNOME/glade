@@ -553,6 +553,21 @@ typedef GladeEditable *(* GladeCreateEditableFunc) (GladeWidgetAdaptor   *adapto
 						    GladeEditorPageType   type);
 
 
+/**
+ * GladeAdjustPropertyFlagsFunc:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @widget: The #GladeWidget
+ * @use_command: whether to use the GladeCommand interface
+ *
+ * This is called after a widget is loaded or a widget's
+ * property value has changed. It allows the backend to keep the
+ * sensitive/enabled flags of all properties consistent with the
+ * property values.
+ */
+typedef void (* GladeAdjustPropertyFlagsFunc) (GladeWidgetAdaptor *adaptor,
+					       GladeWidget        *widget,
+					       gboolean            use_command);
+
 /* Note that everything that must be processed at the creation of
  * every instance is managed on the instance structure, and everywhere
  * that we want to take advantage of inheritance is handled in the class
@@ -659,7 +674,8 @@ struct _GladeWidgetAdaptorClass
   GladeCreateEPropFunc         create_eprop;      /* Creates a GladeEditorProperty */
   GladeStringFromValueFunc     string_from_value; /* Creates a string for a value */
   GladeCreateEditableFunc      create_editable;   /* Creates a page for the editor */
-    
+  GladeAdjustPropertyFlagsFunc adjust_property_flags; /* Appropiately sets all properties' sensitive/enabled flags */
+  
   void   (* glade_reserved1)   (void);
   void   (* glade_reserved2)   (void);
   void   (* glade_reserved3)   (void);
@@ -667,7 +683,6 @@ struct _GladeWidgetAdaptorClass
   void   (* glade_reserved5)   (void);
   void   (* glade_reserved6)   (void);
   void   (* glade_reserved7)   (void);
-  void   (* glade_reserved8)   (void);
 };
 
 #define glade_widget_adaptor_create_widget(adaptor, query, ...) \
@@ -844,6 +859,10 @@ GladeSignalClass     *glade_widget_adaptor_get_signal_class   (GladeWidgetAdapto
 GladeWidgetAdaptor   *glade_widget_adaptor_get_parent_adaptor (GladeWidgetAdaptor *adaptor);
 
 gboolean              glade_widget_adaptor_has_internal_children (GladeWidgetAdaptor *adaptor);
+
+void                  glade_widget_adaptor_adjust_property_flags (GladeWidgetAdaptor *adaptor,
+								  GladeWidget        *widget,
+								  gboolean            use_command);
 
 G_END_DECLS
 

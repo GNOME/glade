@@ -95,6 +95,11 @@ void           glade_command_set_properties      (GladeProperty *property,
 void           glade_command_set_properties_list (GladeProject  *project, 
 						  GList         *props); /* list of GCSetPropData */
 
+void           glade_command_widget_set_property_sensitive (GladeWidget *widget,
+							    const gchar *property_id,
+							    gboolean     sensitive,
+							    const gchar *reason);
+
 /************************** name ******************************/
 
 void           glade_command_set_name      (GladeWidget       *glade_widget, const gchar  *name);
