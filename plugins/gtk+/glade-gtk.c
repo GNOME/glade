@@ -1053,6 +1053,23 @@ glade_gtk_widget_action_submenu (GladeWidgetAdaptor * adaptor,
   return NULL;
 }
 
+static void
+glade_gtk_widget_property_set_sensitive (GladeWidget * gwidget,
+                                         const gchar * id, gboolean sensitive,
+                                         const gchar * reason,
+                                         gboolean use_command)
+{
+  if (use_command)
+    {
+      GladeProperty *property;
+
+      if ((property = glade_widget_get_property (gwidget, id)) != NULL)
+        glade_command_set_property_sensitive (property, sensitive, reason);
+    }
+  else
+    glade_widget_property_set_sensitive (gwidget, id, sensitive, reason);
+}
+
 /* ----------------------------- GtkContainer ------------------------------ */
 void
 glade_gtk_container_post_create (GladeWidgetAdaptor * adaptor,
@@ -3415,80 +3432,11 @@ glade_gtk_entry_set_property (GladeWidgetAdaptor * adaptor,
                               GObject * object,
                               const gchar * id, const GValue * value)
 {
-  GladeImageEditMode mode;
   GladeWidget *gwidget = glade_widget_get_from_gobject (object);
   GladeProperty *property = glade_widget_get_property (gwidget, id);
 
-  if (!strcmp (id, "use-entry-buffer"))
-    {
-      glade_widget_property_set_sensitive (gwidget, "text", FALSE,
-                                           NOT_SELECTED_MSG);
-      glade_widget_property_set_sensitive (gwidget, "buffer", FALSE,
-                                           NOT_SELECTED_MSG);
-
-      if (g_value_get_boolean (value))
-        glade_widget_property_set_sensitive (gwidget, "buffer", TRUE, NULL);
-      else
-        glade_widget_property_set_sensitive (gwidget, "text", TRUE, NULL);
-    }
-  else if (!strcmp (id, "primary-icon-mode"))
-    {
-      mode = g_value_get_int (value);
-
-      glade_widget_property_set_sensitive (gwidget, "primary-icon-stock", FALSE,
-                                           NOT_SELECTED_MSG);
-      glade_widget_property_set_sensitive (gwidget, "primary-icon-name", FALSE,
-                                           NOT_SELECTED_MSG);
-      glade_widget_property_set_sensitive (gwidget, "primary-icon-pixbuf",
-                                           FALSE, NOT_SELECTED_MSG);
-
-      switch (mode)
-        {
-          case GLADE_IMAGE_MODE_STOCK:
-            glade_widget_property_set_sensitive (gwidget, "primary-icon-stock",
-                                                 TRUE, NULL);
-            break;
-          case GLADE_IMAGE_MODE_ICON:
-            glade_widget_property_set_sensitive (gwidget, "primary-icon-name",
-                                                 TRUE, NULL);
-            break;
-          case GLADE_IMAGE_MODE_FILENAME:
-            glade_widget_property_set_sensitive (gwidget, "primary-icon-pixbuf",
-                                                 TRUE, NULL);
-            break;
-        }
-    }
-  else if (!strcmp (id, "secondary-icon-mode"))
-    {
-      mode = g_value_get_int (value);
-
-      glade_widget_property_set_sensitive (gwidget, "secondary-icon-stock",
-                                           FALSE, NOT_SELECTED_MSG);
-      glade_widget_property_set_sensitive (gwidget, "secondary-icon-name",
-                                           FALSE, NOT_SELECTED_MSG);
-      glade_widget_property_set_sensitive (gwidget, "secondary-icon-pixbuf",
-                                           FALSE, NOT_SELECTED_MSG);
-
-      switch (mode)
-        {
-          case GLADE_IMAGE_MODE_STOCK:
-            glade_widget_property_set_sensitive (gwidget,
-                                                 "secondary-icon-stock", TRUE,
-                                                 NULL);
-            break;
-          case GLADE_IMAGE_MODE_ICON:
-            glade_widget_property_set_sensitive (gwidget, "secondary-icon-name",
-                                                 TRUE, NULL);
-            break;
-          case GLADE_IMAGE_MODE_FILENAME:
-            glade_widget_property_set_sensitive (gwidget,
-                                                 "secondary-icon-pixbuf", TRUE,
-                                                 NULL);
-            break;
-        }
-    }
-  else if (!strcmp (id, "primary-icon-tooltip-text") ||
-           !strcmp (id, "primary-icon-tooltip-markup"))
+  if (!strcmp (id, "primary-icon-tooltip-text") ||
+      !strcmp (id, "primary-icon-tooltip-markup"))
     {
       /* Avoid a silly crash in GTK+ */
       if (gtk_entry_get_icon_storage_type (GTK_ENTRY (object),
@@ -3519,11 +3467,97 @@ glade_gtk_entry_set_property (GladeWidgetAdaptor * adaptor,
 
       g_signal_handlers_unblock_by_func (object, glade_gtk_entry_changed,
                                          gwidget);
-
     }
-  else if (GPC_VERSION_CHECK
+  else if (strcmp (id, "use-entry-buffer") != 0 && /* virtual */
+           strcmp (id, "primary-icon-mode") != 0 && /* virtual */
+           strcmp (id, "secondary-icon-mode") != 0 && /* virtual */
+           GPC_VERSION_CHECK
            (glade_property_get_class (property), gtk_major_version, gtk_minor_version + 1))
     GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
+}
+
+void
+glade_gtk_entry_adjust_property_flags (GladeWidgetAdaptor * adaptor,
+                                       GladeWidget * widget, gboolean use_command)
+{
+  gboolean use_buffer;
+  GladeImageEditMode mode;
+
+  GWA_GET_CLASS (GTK_TYPE_WIDGET)->adjust_property_flags (adaptor, widget, use_command);
+
+  glade_widget_property_get (widget, "use-entry-buffer", &use_buffer);
+  if (use_buffer)
+    {
+      glade_gtk_widget_property_set_sensitive (widget, "buffer", TRUE,
+                                               NULL, use_command);
+      glade_gtk_widget_property_set_sensitive (widget, "text", FALSE,
+                                               NOT_SELECTED_MSG, use_command);
+    }
+  else
+    {
+      glade_gtk_widget_property_set_sensitive (widget, "text", TRUE,
+                                               NULL, use_command);
+      glade_gtk_widget_property_set_sensitive (widget, "buffer", FALSE,
+                                               NOT_SELECTED_MSG, use_command);
+    }
+
+  glade_widget_property_get (widget, "primary-icon-mode", &mode);
+  switch (mode)
+    {
+    case GLADE_IMAGE_MODE_STOCK:
+      glade_gtk_widget_property_set_sensitive (widget, "primary-icon-stock", TRUE,
+                                               NULL, use_command);
+      glade_gtk_widget_property_set_sensitive (widget, "primary-icon-name", FALSE,
+                                               NULL, use_command);
+      glade_gtk_widget_property_set_sensitive (widget, "primary-icon-pixbuf", FALSE,
+                                               NULL, use_command);
+      break;
+    case GLADE_IMAGE_MODE_ICON:
+      glade_gtk_widget_property_set_sensitive (widget, "primary-icon-name", TRUE,
+                                               NULL, use_command);
+      glade_gtk_widget_property_set_sensitive (widget, "primary-icon-stock", FALSE,
+                                               NULL, use_command);
+      glade_gtk_widget_property_set_sensitive (widget, "primary-icon-pixbuf", FALSE,
+                                               NULL, use_command);
+      break;
+    case GLADE_IMAGE_MODE_FILENAME:
+      glade_gtk_widget_property_set_sensitive (widget, "primary-icon-pixbuf", TRUE,
+                                               NULL, use_command);
+      glade_gtk_widget_property_set_sensitive (widget, "primary-icon-stock", FALSE,
+                                               NULL, use_command);
+      glade_gtk_widget_property_set_sensitive (widget, "primary-icon-name", FALSE,
+                                               NULL, use_command);
+      break;
+    }
+
+  glade_widget_property_get (widget, "secondary-icon-mode", &mode);
+  switch (mode)
+    {
+    case GLADE_IMAGE_MODE_STOCK:
+      glade_gtk_widget_property_set_sensitive (widget, "secondary-icon-stock", TRUE,
+                                               NULL, use_command);
+      glade_gtk_widget_property_set_sensitive (widget, "secondary-icon-name", FALSE,
+                                               NULL, use_command);
+      glade_gtk_widget_property_set_sensitive (widget, "secondary-icon-pixbuf", FALSE,
+                                               NULL, use_command);
+      break;
+    case GLADE_IMAGE_MODE_ICON:
+      glade_gtk_widget_property_set_sensitive (widget, "secondary-icon-name", TRUE,
+                                               NULL, use_command);
+      glade_gtk_widget_property_set_sensitive (widget, "secondary-icon-stock", FALSE,
+                                               NULL, use_command);
+      glade_gtk_widget_property_set_sensitive (widget, "secondary-icon-pixbuf", FALSE,
+                                               NULL, use_command);
+      break;
+    case GLADE_IMAGE_MODE_FILENAME:
+      glade_gtk_widget_property_set_sensitive (widget, "secondary-icon-pixbuf", TRUE,
+                                               NULL, use_command);
+      glade_gtk_widget_property_set_sensitive (widget, "secondary-icon-stock", FALSE,
+                                               NULL, use_command);
+      glade_gtk_widget_property_set_sensitive (widget, "secondary-icon-name", FALSE,
+                                               NULL, use_command);
+      break;
+    }
 }
 
 void

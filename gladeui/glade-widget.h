@@ -216,6 +216,9 @@ gchar                  *glade_widget_generate_path_name     (GladeWidget      *w
 gboolean                glade_widget_is_ancestor            (GladeWidget      *widget,
 							     GladeWidget      *ancestor);
 
+void                    glade_widget_adjust_property_flags  (GladeWidget      *widget,
+                                                             gboolean          use_command);
+
 /*******************************************************************************
                       Project, object property references
  *******************************************************************************/
