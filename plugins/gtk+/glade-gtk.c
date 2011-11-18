@@ -2384,9 +2384,9 @@ glade_gtk_notebook_insert_children (GtkWidget * notebook,
 {
   gint i;
 
-        /*********************************************************
-                                INSERT PAGES
-	 *********************************************************/
+  /*********************************************************
+   *                     INSERT PAGES                      *
+   *********************************************************/
   for (i = 0; i < nchildren->pages; i++)
     {
       GtkWidget *page = notebook_get_page (nchildren, i);
