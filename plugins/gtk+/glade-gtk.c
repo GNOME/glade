@@ -2779,36 +2779,87 @@ glade_gtk_table_widget_exceeds_bounds (GtkTable *table, gint n_rows, gint n_cols
 	return ret;
 }
 
+#define TABLE_OCCUPIED(occmap, n_columns, col, row) \
+    (occmap)[row * n_columns + col]
+
+static void
+glade_gtk_table_build_occupation_maps(GtkTable *table, guint n_columns, guint n_rows,
+				      gchar **child_map, gpointer **placeholder_map)
+{
+    guint i, j;
+    GList *list, *children = gtk_container_get_children (GTK_CONTAINER (table));
+
+    *child_map = g_malloc0(n_columns * n_rows * sizeof(gchar));  /* gchar is smaller than gboolean */
+    *placeholder_map = g_malloc0(n_columns * n_rows * sizeof(gpointer));
+
+    for (list = children; list && list->data; list = list->next)
+    {
+	GtkTableChild child;
+
+	glade_gtk_table_get_child_attachments (GTK_WIDGET (table),
+					       GTK_WIDGET (list->data), &child);
+
+	if (GLADE_IS_PLACEHOLDER(list->data))
+	{
+	    /* assumption: placeholders are always attached to exactly 1 cell */
+	    TABLE_OCCUPIED(*placeholder_map, n_columns, child.left_attach, child.top_attach) = list->data;
+	}
+	else
+	{
+	    for (i = child.left_attach; i < child.right_attach && i < n_columns; i++)
+	    {
+		for (j = child.top_attach; j < child.bottom_attach && j < n_rows; j++)
+		{
+		    TABLE_OCCUPIED(*child_map, n_columns, i, j) = 1;
+		}
+	    }
+	}
+    }
+    g_list_free (children);
+}
+
 static void
 glade_gtk_table_refresh_placeholders (GtkTable *table)
 {
-	GList *list, *children;
-	guint n_columns, n_rows;
-	gint i, j;
+	guint n_columns, n_rows, i, j;
+	gchar *child_map;
+	gpointer *placeholder_map;
 
 	g_object_get (table,
 		      "n-columns", &n_columns,
 		      "n-rows", &n_rows,
 		      NULL);
 
-	children = gtk_container_get_children (GTK_CONTAINER (table));
-
-	for (list = children; list && list->data; list = list->next)
-	{
-		if (GLADE_IS_PLACEHOLDER (list->data))
-			gtk_container_remove (GTK_CONTAINER (table),
-					      GTK_WIDGET (list->data));
-	}
-	g_list_free (children);
+	glade_gtk_table_build_occupation_maps(table, n_columns, n_rows,
+					     &child_map, &placeholder_map);
 
 	for (i = 0; i < n_columns; i++)
-		for (j = 0; j < n_rows; j++)
-			if (glade_gtk_table_has_child (table, i, j) == FALSE)
-       			{
-				gtk_table_attach_defaults (table,
-							   glade_placeholder_new (),
-							   i, i + 1, j, j + 1);
-			}
+	{
+	    for (j = 0; j < n_rows; j++)
+	    {
+		gpointer placeholder = TABLE_OCCUPIED(placeholder_map, n_columns, i, j);
+
+		if (TABLE_OCCUPIED(child_map, n_columns, i, j))
+		{
+		    if (placeholder)
+		    {
+			gtk_container_remove (GTK_CONTAINER (table), 
+					      GTK_WIDGET (placeholder));
+		    }
+		}
+		else
+		{
+		    if (!placeholder)
+		    {
+			gtk_table_attach_defaults (table, 
+						   glade_placeholder_new (), 
+						   i, i + 1, j, j + 1);
+		    }
+		}
+	    }
+	}
+	g_free(child_map);
+	g_free(placeholder_map);
 	gtk_container_check_resize (GTK_CONTAINER (table));
 }
 
