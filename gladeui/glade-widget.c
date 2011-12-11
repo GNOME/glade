@@ -3779,9 +3779,6 @@ glade_widget_read (GladeProject * project,
                 }
 
               glade_widget_adaptor_read_widget (adaptor, widget, node);
-
-              /* Set initial property sensitivity */
-              glade_widget_adaptor_adjust_property_flags (adaptor, widget, FALSE);
             }
           else
             {
@@ -3999,22 +3996,6 @@ glade_widget_is_ancestor (GladeWidget * widget, GladeWidget * ancestor)
   return FALSE;
 }
 
-/**
- * glade_widget_adjust_property_flags:
- * @widget: A #GladeWidget
- * @use_command: whether to use the GladeCommand interface
- *
- * Adjusts the sensitive/enabled flags of all widget properties to match
- * the widget's property values.
- */
-void
-glade_widget_adjust_property_flags (GladeWidget * widget, gboolean use_command)
-{
-  g_return_if_fail (GLADE_IS_WIDGET (widget));
-
-  glade_widget_adaptor_adjust_property_flags (widget->priv->adaptor,
-                                              widget, use_command);
-}
 
 static gint glade_widget_su_stack = 0;
 

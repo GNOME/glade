@@ -113,7 +113,7 @@ typedef struct _GladeProject        GladeProject;
 #define GLADE_TAG_CREATE_EPROP_FUNCTION           "create-editor-property-function"
 #define GLADE_TAG_STRING_FROM_VALUE_FUNCTION      "string-from-value-function"
 #define GLADE_TAG_CREATE_EDITABLE_FUNCTION        "create-editable-function"
-#define GLADE_TAG_ADJUST_PROPERTY_FLAGS_FUNCTION  "adjust-property-flags-function"
+#define GLADE_TAG_EVALUATE_PROPERTY_SENSITIVITY_FUNCTION "evaluate-property-sensitivity-function"
 #define GLADE_TAG_PROPERTIES                      "properties"
 #define GLADE_TAG_PACKING_PROPERTIES              "packing-properties"
 #define GLADE_TAG_PROPERTY                        "property"

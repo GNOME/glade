@@ -908,6 +908,7 @@ embedded in another object</_tooltip>
       <set-property-function>glade_gtk_entry_set_property</set-property-function>
       <read-widget-function>glade_gtk_entry_read_widget</read-widget-function>
       <depends-function>glade_gtk_entry_depends</depends-function>
+      <evaluate-property-sensitivity-function>glade_gtk_entry_evaluate_property_sensitivity</evaluate-property-sensitivity-function>
 
       <signals>
 	<signal id="icon-press" since="2.16"/>

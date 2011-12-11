@@ -362,9 +362,15 @@ glade_property_set_value_impl (GladeProperty * property, const GValue * value)
 
   if (changed && property->priv->widget)
     {
+      GladeWidgetAdaptor *adaptor;
+
       g_signal_emit (G_OBJECT (property),
                      glade_property_signals[VALUE_CHANGED],
                      0, &old_value, property->priv->value);
+
+      /* Make sure that property sensitivity is right after the change */
+      adaptor = glade_widget_get_adaptor (property->priv->widget);
+      glade_widget_adaptor_evaluate_property_sensitivity (adaptor, property->priv->widget);
 
       glade_project_verify_property (property);
     }
