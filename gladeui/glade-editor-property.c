@@ -123,12 +123,8 @@ glade_editor_property_commit_common (GladeEditorProperty * eprop,
   /* If the value was denied by a verify function, we'll have to
    * reload the real value.
    */
-  if (glade_property_equals_value (eprop->priv->property, value))
+  if (!glade_property_equals_value (eprop->priv->property, value))
     glade_editor_property_load (eprop, eprop->priv->property);
-  else
-    /* publish a value change to those interested */
-    g_signal_emit (G_OBJECT (eprop), glade_eprop_signals[CHANGED], 0,
-                   eprop->priv->property);
 }
 
 void
@@ -3391,9 +3387,6 @@ glade_editor_property_load (GladeEditorProperty * eprop,
 {
   g_return_if_fail (GLADE_IS_EDITOR_PROPERTY (eprop));
   g_return_if_fail (property == NULL || GLADE_IS_PROPERTY (property));
-
-  if (eprop->priv->committing)
-    return;
 
   eprop->priv->loading = TRUE;
   GLADE_EDITOR_PROPERTY_GET_CLASS (eprop)->load (eprop, property);
