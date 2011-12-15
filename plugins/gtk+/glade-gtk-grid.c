@@ -442,8 +442,8 @@ glade_gtk_grid_parse_finished (GladeProject *project, GObject *container)
       if (column < n_column) column = n_column;
     }
 
-  if (n_column) glade_widget_property_set (gwidget, "n-columns", n_column);
-  if (n_row) glade_widget_property_set (gwidget, "n-rows", n_row);
+  if (column) glade_widget_property_set (gwidget, "n-columns", column);
+  if (row) glade_widget_property_set (gwidget, "n-rows", row);
 
   g_list_free (children);
 }
@@ -499,24 +499,24 @@ glade_gtk_grid_has_child (GtkGrid * grid, guint left_attach,
 }
 
 static gboolean
-glade_gtk_grid_widget_exceeds_bounds (GtkGrid * grid, gint n_rows,
-                                       gint n_cols)
+glade_gtk_grid_widget_exceeds_bounds (GtkGrid *grid, gint n_rows, gint n_cols)
 {
   GList *list, *children;
   gboolean ret = FALSE;
 
   children = gtk_container_get_children (GTK_CONTAINER (grid));
 
-  for (list = children; list && list->data; list = list->next)
+  for (list = children; list && list->data; list = g_list_next (list))
     {
       GladeGridAttachments attach;
       GtkWidget *widget = list->data;
 
+      if (GLADE_IS_PLACEHOLDER (widget)) continue;
+          
       glade_gtk_grid_get_child_attachments (GTK_WIDGET (grid), widget, &attach);
 
-      if (GLADE_IS_PLACEHOLDER (widget) == FALSE &&
-          (attach.left_attach + attach.width  > n_cols || 
-	   attach.top_attach  + attach.height > n_rows))
+      if (attach.left_attach + attach.width  > n_cols || 
+	  attach.top_attach  + attach.height > n_rows)
         {
           ret = TRUE;
           break;
@@ -740,89 +740,43 @@ glade_gtk_grid_set_child_property (GladeWidgetAdaptor * adaptor,
 static gboolean
 glade_gtk_grid_verify_attach_common (GObject     *object,
 				     GValue      *value,
-				     gint        *val,
 				     const gchar *prop,
-				     gint        *prop_val,
-				     const gchar *parent_prop,
-				     guint       *parent_val)
+				     const gchar *parent_prop)
 {
   GladeWidget *widget, *parent;
-
+  guint parent_val;
+  gint val, prop_val;
+  
   widget = glade_widget_get_from_gobject (object);
   g_return_val_if_fail (GLADE_IS_WIDGET (widget), TRUE);
   parent = glade_widget_get_parent (widget);
   g_return_val_if_fail (GLADE_IS_WIDGET (parent), TRUE);
 
-  *val = g_value_get_int (value);
-  glade_widget_property_get (widget, prop, prop_val);
-  glade_widget_property_get (parent, parent_prop, parent_val);
+  val = g_value_get_int (value);
+  glade_widget_property_get (widget, prop, &prop_val);
+  glade_widget_property_get (parent, parent_prop, &parent_val);
 
-  return FALSE;
-}
-
-static gboolean
-glade_gtk_grid_verify_left_top_attach (GObject * object,
-                                        GValue * value,
-                                        const gchar * prop,
-                                        const gchar * parent_prop)
-{
-  guint parent_val;
-  gint val, prop_val;
-
-  if (glade_gtk_grid_verify_attach_common (object, value, &val,
-                                            prop, &prop_val,
-                                            parent_prop, &parent_val))
+  if (val < 0 || (val+prop_val) > parent_val)
     return FALSE;
-
-  if (val >= parent_val || val >= prop_val)
-    return FALSE;
-
-  return TRUE;
-}
-
-static gboolean
-glade_gtk_grid_verify_right_bottom_attach (GObject * object,
-                                            GValue * value,
-                                            const gchar * prop,
-                                            const gchar * parent_prop)
-{
-  guint parent_val;
-  gint val, prop_val;
-
-  if (glade_gtk_grid_verify_attach_common (object, value, &val,
-                                            prop, &prop_val,
-                                            parent_prop, &parent_val))
-    return FALSE;
-
-  if (val <= prop_val || val > parent_val)
-    return FALSE;
-
+  
   return TRUE;
 }
 
 gboolean
-glade_gtk_grid_child_verify_property (GladeWidgetAdaptor * adaptor,
-                                       GObject * container,
-                                       GObject * child,
-                                       const gchar * id, GValue * value)
+glade_gtk_grid_child_verify_property (GladeWidgetAdaptor *adaptor,
+                                      GObject *container,
+                                      GObject *child,
+                                      const gchar *id,
+                                      GValue *value)
 {
   if (!strcmp (id, "left-attach"))
-    return glade_gtk_grid_verify_left_top_attach (child,
-                                                   value,
-                                                   "right-attach", "n-columns");
-  else if (!strcmp (id, "right-attach"))
-    return glade_gtk_grid_verify_right_bottom_attach (child,
-                                                       value,
-                                                       "left-attach",
-                                                       "n-columns");
+    return glade_gtk_grid_verify_attach_common (child, value, "width", "n-columns");
+  else if (!strcmp (id, "width"))
+    return glade_gtk_grid_verify_attach_common (child, value, "left-attach", "n-columns");
   else if (!strcmp (id, "top-attach"))
-    return glade_gtk_grid_verify_left_top_attach (child,
-                                                   value,
-                                                   "bottom-attach", "n-rows");
-  else if (!strcmp (id, "bottom-attach"))
-    return glade_gtk_grid_verify_right_bottom_attach (child,
-                                                       value,
-                                                       "top-attach", "n-rows");
+    return glade_gtk_grid_verify_attach_common (child, value, "height", "n-rows");
+  else if (!strcmp (id, "height"))
+    return glade_gtk_grid_verify_attach_common (child, value, "top-attach", "n-rows");
   else if (GWA_GET_CLASS (GTK_TYPE_CONTAINER)->child_verify_property)
     GWA_GET_CLASS
         (GTK_TYPE_CONTAINER)->child_verify_property (adaptor,
@@ -849,7 +803,7 @@ glade_gtk_grid_child_insert_remove_action (GladeWidgetAdaptor *adaptor,
 
   gtk_container_child_get (GTK_CONTAINER (container),
                            GTK_WIDGET (object),
-                           after ? attach2 : attach1, &child_pos, NULL);
+                           attach1, &child_pos, NULL);
 
   parent = glade_widget_get_from_gobject (container);
   glade_command_push_group (group_format, glade_widget_get_name (parent));
@@ -875,6 +829,7 @@ glade_gtk_grid_child_insert_remove_action (GladeWidgetAdaptor *adaptor,
 
           glade_widget_pack_property_get (gchild, attach1, &pos1);
           glade_widget_pack_property_get (gchild, attach2, &pos2);
+          pos2 += pos1;
           if ((pos1 + 1 == pos2) && ((after ? pos2 : pos1) == child_pos))
             {
               del = g_list_prepend (del, gchild);
@@ -915,30 +870,14 @@ glade_gtk_grid_child_insert_remove_action (GladeWidgetAdaptor *adaptor,
               glade_command_set_property (glade_widget_get_pack_property
                                           (gchild, attach1), pos + offset);
             }
-
-          /* adjust bottom-right attachment */
-          glade_widget_pack_property_get (gchild, attach2, &pos);
-          if (pos > child_pos || (after && pos == child_pos))
-            {
-              glade_command_set_property (glade_widget_get_pack_property
-                                          (gchild, attach2), pos + offset);
-            }
-
         }
       /* if inserting, do bot/right before top/left */
       else
         {
-          /* adjust bottom-right attachment */
-          glade_widget_pack_property_get (gchild, attach2, &pos);
-          if (pos > child_pos)
-            {
-              glade_command_set_property (glade_widget_get_pack_property
-                                          (gchild, attach2), pos + offset);
-            }
-
           /* adjust top-left attachment */
           glade_widget_pack_property_get (gchild, attach1, &pos);
-          if (pos >= child_pos)
+
+          if ((after && pos > child_pos) || (!after && pos >= child_pos))
             {
               glade_command_set_property (glade_widget_get_pack_property
                                           (gchild, attach1), pos + offset);
@@ -970,14 +909,14 @@ glade_gtk_grid_child_action_activate (GladeWidgetAdaptor * adaptor,
       glade_gtk_grid_child_insert_remove_action (adaptor, container, object,
                                                   _("Insert Row on %s"),
                                                   "n-rows", "top-attach",
-                                                  "bottom-attach", FALSE, TRUE);
+                                                  "height", FALSE, TRUE);
     }
   else if (strcmp (action_path, "insert_row/before") == 0)
     {
       glade_gtk_grid_child_insert_remove_action (adaptor, container, object,
                                                   _("Insert Row on %s"),
                                                   "n-rows", "top-attach",
-                                                  "bottom-attach",
+                                                  "height",
                                                   FALSE, FALSE);
     }
   else if (strcmp (action_path, "insert_column/after") == 0)
@@ -985,28 +924,28 @@ glade_gtk_grid_child_action_activate (GladeWidgetAdaptor * adaptor,
       glade_gtk_grid_child_insert_remove_action (adaptor, container, object,
                                                   _("Insert Column on %s"),
                                                   "n-columns", "left-attach",
-                                                  "right-attach", FALSE, TRUE);
+                                                  "width", FALSE, TRUE);
     }
   else if (strcmp (action_path, "insert_column/before") == 0)
     {
       glade_gtk_grid_child_insert_remove_action (adaptor, container, object,
                                                   _("Insert Column on %s"),
                                                   "n-columns", "left-attach",
-                                                  "right-attach", FALSE, FALSE);
+                                                  "width", FALSE, FALSE);
     }
   else if (strcmp (action_path, "remove_column") == 0)
     {
       glade_gtk_grid_child_insert_remove_action (adaptor, container, object,
                                                   _("Remove Column on %s"),
                                                   "n-columns", "left-attach",
-                                                  "right-attach", TRUE, FALSE);
+                                                  "width", TRUE, FALSE);
     }
   else if (strcmp (action_path, "remove_row") == 0)
     {
       glade_gtk_grid_child_insert_remove_action (adaptor, container, object,
 						 _("Remove Row on %s"),
 						 "n-rows", "top-attach",
-						 "bottom-attach", TRUE, FALSE);
+						 "height", TRUE, FALSE);
     }
   else
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->child_action_activate (adaptor,
