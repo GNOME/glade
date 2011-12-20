@@ -194,6 +194,7 @@ text_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
                             glade_widget_get_name (gwidget));
 
   property = glade_widget_get_property (gwidget, "buffer");
+  glade_property_invalidate (property);
   glade_command_set_property (property, NULL);
 
   property =
@@ -236,6 +237,7 @@ buffer_toggled (GtkWidget * widget, GladeEntryEditor * entry_editor)
 
   /* Reset the text while still in static text mode */
   property = glade_widget_get_property (gwidget, "text");
+  glade_property_invalidate (property);
   glade_command_set_property (property, NULL);
 
   property =
@@ -264,8 +266,10 @@ set_stock_mode (GladeEntryEditor * entry_editor, gboolean primary)
   GValue value = { 0, };
 
   property = glade_widget_get_property (gwidget, ICON_NAME_NAME (primary));
+  glade_property_invalidate (property);
   glade_command_set_property (property, NULL);
   property = glade_widget_get_property (gwidget, PIXBUF_NAME (primary));
+  glade_property_invalidate (property);
   glade_command_set_property (property, NULL);
 
   property = glade_widget_get_property (gwidget, STOCK_NAME (primary));
@@ -284,8 +288,10 @@ set_icon_name_mode (GladeEntryEditor * entry_editor, gboolean primary)
   GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (entry_editor));
 
   property = glade_widget_get_property (gwidget, STOCK_NAME (primary));
+  glade_property_invalidate (property);
   glade_command_set_property (property, NULL);
   property = glade_widget_get_property (gwidget, PIXBUF_NAME (primary));
+  glade_property_invalidate (property);
   glade_command_set_property (property, NULL);
   property = glade_widget_get_property (gwidget, ICON_MODE_NAME (primary));
   glade_command_set_property (property, GLADE_IMAGE_MODE_ICON);
@@ -298,9 +304,11 @@ set_pixbuf_mode (GladeEntryEditor * entry_editor, gboolean primary)
   GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (entry_editor));
 
   property = glade_widget_get_property (gwidget, STOCK_NAME (primary));
+  glade_property_invalidate (property);
   glade_command_set_property (property, NULL);
 
   property = glade_widget_get_property (gwidget, ICON_NAME_NAME (primary));
+  glade_property_invalidate (property);
   glade_command_set_property (property, NULL);
 
   property = glade_widget_get_property (gwidget, ICON_MODE_NAME (primary));

@@ -111,6 +111,10 @@ struct _GladePropertyPrivate {
   GList              *binding_targets; /* The properties that this property is the binding
                                           source of */
 
+    gulong            binding_invalidated_id; /* Signal handler that removes invalidated
+                                               * property bindings
+                                               */
+
   /* For resolving a binding source read from a project file */
   gchar    *binding_source_object_name;
   gchar    *binding_source_property_name;
@@ -128,6 +132,7 @@ enum
 {
   VALUE_CHANGED,
   TOOLTIP_CHANGED,
+  INVALIDATED,
   LAST_SIGNAL
 };
 
@@ -737,6 +742,16 @@ glade_property_klass_init (GladePropertyKlass * prop_class)
                     _glade_marshal_VOID__STRING_STRING_STRING,
                     G_TYPE_NONE, 3, G_TYPE_STRING, G_TYPE_STRING,
                     G_TYPE_STRING);
+
+  glade_property_signals[INVALIDATED] =
+      g_signal_new ("invalidated",
+                    G_TYPE_FROM_CLASS (object_class),
+                    G_SIGNAL_RUN_LAST,
+                    G_STRUCT_OFFSET (GladePropertyKlass,
+                                     invalidated),
+                    NULL, NULL,
+                    _glade_marshal_VOID__VOID,
+                    G_TYPE_NONE, 0);
 
   g_type_class_add_private (prop_class, sizeof (GladePropertyPrivate));
 }
@@ -1731,12 +1746,46 @@ glade_property_get_state (GladeProperty      *property)
   return property->priv->state;
 }
 
+void
+glade_property_invalidate (GladeProperty *property)
+{
+  g_return_if_fail (GLADE_IS_PROPERTY (property));
+
+  g_signal_emit (G_OBJECT (property),
+                 glade_property_signals[INVALIDATED],
+                 0);
+}
+
 GladeProperty *
 glade_property_get_binding_source (GladeProperty *property)
 {
   g_return_val_if_fail (GLADE_IS_PROPERTY (property), NULL);
 
   return property->priv->binding_source;
+}
+
+static void
+glade_property_add_binding_target (GladeProperty *property,
+                                   GladeProperty *target)
+{
+  if (!g_list_find (property->priv->binding_targets, property))
+    property->priv->binding_targets =
+        g_list_prepend (property->priv->binding_targets, target);
+}
+
+static void
+glade_property_remove_binding_target (GladeProperty *property,
+                                      GladeProperty *target)
+{
+  property->priv->binding_targets =
+      g_list_remove (property->priv->binding_targets, target);
+}
+
+static void
+glade_property_binding_invalidated (GladeProperty *binding_source,
+                                    GladeProperty *property)
+{
+  glade_command_bind_property (property, NULL);
 }
 
 void
@@ -1763,15 +1812,22 @@ glade_property_set_binding_source (GladeProperty *property,
       g_return_if_fail (glade_widget_in_project (source_widget));
       g_return_if_fail (g_type_is_a (G_PARAM_SPEC_TYPE (source_pspec),
                                      G_PARAM_SPEC_TYPE (prop_pspec)));
-
-      if (!g_list_find (binding_source->priv->binding_targets, property))
-        binding_source->priv->binding_targets =
-            g_list_prepend (binding_source->priv->binding_targets, property);
     }
 
   if ((old_source = property->priv->binding_source) != NULL)
-    old_source->priv->binding_targets =
-        g_list_remove (old_source->priv->binding_targets, property);
+    {
+      glade_property_remove_binding_target (old_source, property);
+      g_signal_handler_disconnect (old_source,
+                                   property->priv->binding_invalidated_id);
+    }
+  if (binding_source)
+    {
+      glade_property_add_binding_target (binding_source, property);
+      property->priv->binding_invalidated_id =
+          g_signal_connect (binding_source, "invalidated",
+                            G_CALLBACK (glade_property_binding_invalidated),
+                            property);
+    }
 
   property->priv->binding_source = binding_source;
   g_object_notify_by_pspec (G_OBJECT (property), properties[PROP_BINDING_SOURCE]);
