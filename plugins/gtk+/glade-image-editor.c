@@ -155,8 +155,10 @@ set_stock_mode (GladeImageEditor * image_editor)
   GValue value = { 0, };
 
   property = glade_widget_get_property (gwidget, "icon-name");
+  glade_property_invalidate (property);
   glade_command_set_property (property, NULL);
   property = glade_widget_get_property (gwidget, "pixbuf");
+  glade_property_invalidate (property);
   glade_command_set_property (property, NULL);
 
   property = glade_widget_get_property (gwidget, "stock");
@@ -175,8 +177,10 @@ set_icon_mode (GladeImageEditor * image_editor)
   GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (image_editor));
 
   property = glade_widget_get_property (gwidget, "stock");
+  glade_property_invalidate (property);
   glade_command_set_property (property, NULL);
   property = glade_widget_get_property (gwidget, "pixbuf");
+  glade_property_invalidate (property);
   glade_command_set_property (property, NULL);
   property = glade_widget_get_property (gwidget, "image-mode");
   glade_command_set_property (property, GLADE_IMAGE_MODE_ICON);
@@ -191,8 +195,10 @@ set_file_mode (GladeImageEditor * image_editor)
   GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (image_editor));
 
   property = glade_widget_get_property (gwidget, "stock");
+  glade_property_invalidate (property);
   glade_command_set_property (property, NULL);
   property = glade_widget_get_property (gwidget, "icon-name");
+  glade_property_invalidate (property);
   glade_command_set_property (property, NULL);
   property = glade_widget_get_property (gwidget, "image-mode");
   glade_command_set_property (property, GLADE_IMAGE_MODE_FILENAME);

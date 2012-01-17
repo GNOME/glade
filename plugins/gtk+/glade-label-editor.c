@@ -214,6 +214,7 @@ attributes_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
   property = glade_widget_get_property (gwidget, "use-markup");
   glade_command_set_property (property, FALSE);
   property = glade_widget_get_property (gwidget, "pattern");
+  glade_command_invalidate (property);
   glade_command_set_property (property, NULL);
   property = glade_widget_get_property (gwidget, "label-content-mode");
   glade_command_set_property (property, GLADE_LABEL_MODE_ATTRIBUTES);
@@ -245,8 +246,10 @@ markup_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
                             glade_widget_get_name (gwidget));
 
   property = glade_widget_get_property (gwidget, "pattern");
+  glade_property_invalidate (property);
   glade_command_set_property (property, NULL);
   property = glade_widget_get_property (gwidget, "glade-attributes");
+  glade_property_invalidate (property);
   glade_command_set_property (property, NULL);
 
   property = glade_widget_get_property (gwidget, "use-markup");
@@ -281,6 +284,7 @@ pattern_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
                             glade_widget_get_name (gwidget));
 
   property = glade_widget_get_property (gwidget, "glade-attributes");
+  glade_command_invalidate (property);
   glade_command_set_property (property, NULL);
   property = glade_widget_get_property (gwidget, "use-markup");
   glade_command_set_property (property, FALSE);
@@ -318,6 +322,7 @@ width_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
                             glade_widget_get_name (gwidget));
 
   property = glade_widget_get_property (gwidget, "max-width-chars");
+  glade_command_invalidate (property);
   glade_command_set_property (property, -1);
   property = glade_widget_get_property (gwidget, "use-max-width");
   glade_command_set_property (property, FALSE);
@@ -349,6 +354,7 @@ max_width_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
                             glade_widget_get_name (gwidget));
 
   property = glade_widget_get_property (gwidget, "width-chars");
+  glade_command_invalidate (property);
   glade_command_set_property (property, -1);
   property = glade_widget_get_property (gwidget, "use-max-width");
   glade_command_set_property (property, TRUE);
@@ -385,6 +391,7 @@ wrap_free_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
   property = glade_widget_get_property (gwidget, "single-line-mode");
   glade_command_set_property (property, FALSE);
   property = glade_widget_get_property (gwidget, "wrap-mode");
+  glade_command_invalidate (property);
   glade_command_set_property (property, PANGO_WRAP_WORD);
   property = glade_widget_get_property (gwidget, "wrap");
   glade_command_set_property (property, FALSE);
@@ -421,6 +428,7 @@ single_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
   property = glade_widget_get_property (gwidget, "wrap-mode");
   glade_command_set_property (property, PANGO_WRAP_WORD);
   property = glade_widget_get_property (gwidget, "wrap");
+  glade_command_invalidate (property);
   glade_command_set_property (property, FALSE);
 
   property = glade_widget_get_property (gwidget, "single-line-mode");

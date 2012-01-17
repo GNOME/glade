@@ -213,6 +213,7 @@ standard_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
 
   /* Setup reasonable defaults for button label. */
   property = glade_widget_get_property (gwidget, "stock");
+  glade_property_invalidate (property);
   glade_command_set_property (property, NULL);
 
   property =
@@ -258,6 +259,7 @@ custom_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
 
   /* clear out some things... */
   property = glade_widget_get_property (gwidget, "image");
+  glade_property_invalidate (property);
   glade_command_set_property (property, NULL);
 
   property =
@@ -265,9 +267,11 @@ custom_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
   glade_command_set_property (property, FALSE);
 
   property = glade_widget_get_property (gwidget, "stock");
+  glade_property_invalidate (property);
   glade_command_set_property (property, NULL);
 
   property = glade_widget_get_property (gwidget, "label");
+  glade_property_invalidate (property);
   glade_command_set_property (property, NULL);
 
   /* Add a placeholder via the custom-child property... */
@@ -304,6 +308,7 @@ stock_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
 
   /* clear out stuff... */
   property = glade_widget_get_property (gwidget, "image");
+  glade_property_invalidate (property);
   glade_command_set_property (property, NULL);
 
   glade_widget_property_get (gwidget, "use-action-appearance", &use_appearance);
@@ -311,6 +316,7 @@ stock_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
     {
       property =
           glade_widget_get_property (gwidget, "label");
+      glade_property_invalidate (property);
       glade_command_set_property (property, "");
     }
 
@@ -350,6 +356,7 @@ label_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
                             glade_widget_get_name (gwidget));
 
   property = glade_widget_get_property (gwidget, "stock");
+  glade_property_invalidate (property);
   glade_command_set_property (property, NULL);
 
   property = glade_widget_get_property (gwidget, "use-stock");

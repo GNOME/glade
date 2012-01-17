@@ -142,6 +142,7 @@ standard_label_toggled (GtkWidget * widget,
                             glade_widget_get_name (gwidget));
 
   property = glade_widget_get_property (gwidget, "label-widget");
+  glade_command_invalidate (property);
   glade_command_set_property (property, NULL);
 
   property = glade_widget_get_property (gwidget, "label");
@@ -178,6 +179,7 @@ custom_label_toggled (GtkWidget * widget, GladeToolButtonEditor * button_editor)
                             glade_widget_get_name (gwidget));
 
   property = glade_widget_get_property (gwidget, "label");
+  glade_command_invalidate (property);
   glade_command_set_property (property, NULL);
   property = glade_widget_get_property (gwidget, "custom-label");
   glade_command_set_property (property, TRUE);
@@ -209,10 +211,13 @@ stock_toggled (GtkWidget * widget, GladeToolButtonEditor * button_editor)
                             glade_widget_get_name (gwidget));
 
   property = glade_widget_get_property (gwidget, "icon-name");
+  glade_command_invalidate (property);
   glade_command_set_property (property, NULL);
   property = glade_widget_get_property (gwidget, "icon");
+  glade_command_invalidate (property);
   glade_command_set_property (property, NULL);
   property = glade_widget_get_property (gwidget, "icon-widget");
+  glade_command_invalidate (property);
   glade_command_set_property (property, NULL);
   property = glade_widget_get_property (gwidget, "image-mode");
   glade_command_set_property (property, GLADE_TB_MODE_STOCK);
@@ -245,10 +250,12 @@ icon_toggled (GtkWidget * widget, GladeToolButtonEditor * button_editor)
                             glade_widget_get_name (gwidget));
 
   property = glade_widget_get_property (gwidget, "stock-id");
+  glade_command_invalidate (property);
   glade_command_set_property (property, NULL);
   property = glade_widget_get_property (gwidget, "icon");
   glade_command_set_property (property, NULL);
   property = glade_widget_get_property (gwidget, "icon-widget");
+  glade_command_invalidate (property);
   glade_command_set_property (property, NULL);
   property = glade_widget_get_property (gwidget, "image-mode");
   glade_command_set_property (property, GLADE_TB_MODE_ICON);
@@ -280,8 +287,10 @@ custom_toggled (GtkWidget * widget, GladeToolButtonEditor * button_editor)
                             glade_widget_get_name (gwidget));
 
   property = glade_widget_get_property (gwidget, "stock-id");
+  glade_command_invalidate (property);
   glade_command_set_property (property, NULL);
   property = glade_widget_get_property (gwidget, "icon-name");
+  glade_command_invalidate (property);
   glade_command_set_property (property, NULL);
   property = glade_widget_get_property (gwidget, "icon");
   glade_command_set_property (property, NULL);

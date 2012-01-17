@@ -137,6 +137,7 @@ reset_property (GladeWidget * gwidget, const gchar * property_name)
 
   if ((property = glade_widget_get_property (gwidget, property_name)) != NULL)
     {
+      glade_property_invalidate (property);
       glade_property_get_default (property, &value);
       glade_command_set_property_value (property, &value);
       g_value_unset (&value);

@@ -172,6 +172,7 @@ stock_toggled (GtkWidget * widget, GladeImageItemEditor * item_editor)
   glade_command_push_group (_("Setting %s to use a stock item"), glade_widget_get_name (loaded));
 
   property = glade_widget_get_property (loaded, "label");
+  glade_command_invalidate (property);
   glade_command_set_property (property, NULL);
   property = glade_widget_get_property (loaded, "use-underline");
   glade_command_set_property (property, FALSE);
@@ -221,6 +222,7 @@ custom_toggled (GtkWidget * widget, GladeImageItemEditor * item_editor)
 
   /* First clear stock...  */
   property = glade_widget_get_property (gwidget, "stock");
+  glade_command_invalidate (property);
   glade_command_set_property (property, NULL);
   property = glade_widget_get_property (gwidget, "use-stock");
   glade_command_set_property (property, FALSE);

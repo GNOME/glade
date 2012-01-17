@@ -151,6 +151,7 @@ label_toggled (GtkWidget * widget,
                             glade_widget_get_name (gwidget));
 
   property = glade_widget_get_property (gwidget, "label-widget");
+  glade_command_invalidate (property);
   glade_command_set_property (property, NULL);
 
   property = glade_widget_get_property (gwidget, "label");
@@ -187,6 +188,7 @@ label_widget_toggled (GtkWidget * widget, GladeToolItemGroupEditor * group_edito
                             glade_widget_get_name (gwidget));
 
   property = glade_widget_get_property (gwidget, "label");
+  glade_command_invalidate (property);
   glade_command_set_property (property, NULL);
   property = glade_widget_get_property (gwidget, "custom-label");
   glade_command_set_property (property, TRUE);
