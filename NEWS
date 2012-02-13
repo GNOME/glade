@@ -1,4 +1,39 @@
 ============
+Glade 3.11.0
+============
+
+	- Added GtkSwitch, GtkInfoBar and GtkEntryCompletion support.
+	- Implemented inline margins and alignment edit mode.
+	  Now it is posible to change widget's margins and alignment using the mouse.
+
+	- Ignore GtkWindow:icon property. Fixes bug #654121 
+          "workaround gtk segfault: icon on gtkwindow segfault in offscreen"
+	- Bump pygobject requisite to pygobject 3. Fixes bug #658667. Ignacio Casal Quinteiro
+	- Make GladeProject change gtk target to 3.0 and warn the user if there are
+	  any unknown (deprecated) objects.
+	  Fixes bug 652673 "Project versions are ignored" and 376628 "Deletes unknown widget nodes."
+        
+	- Make documentation parallel installable (bug 646997).
+	- Renamed catalog and module environment variables.
+	- Properly escape special characters while serializing property values (bug 654609 - Fabien Parent) 
+	- Fix GladeProject to notify "row-has-child-toggled" (fixes bug 651673).
+	- Fixed size groups widget selection (bug 647984 - Benjamin Otte)
+	- Avoid crashing if glade-previewer is not installed
+	  (bug 650899 - Johannes Schmid)
+        - Optimized loading time by not updating progressbar on every loaded object.
+        - Update placeholders when a grid child's width or height child
+	  properties change.
+        - Ensure 'related-action' and 'use-action-appearance' are serialized in the right order.
+        - Correctly detect the required devhelp version - Javier Jardón
+        - Fixed TreeModelFilter bug #657164
+        - Fixed bug #660607 "Warnings when using GtkGrid created in Glade 3.10"
+        - Fixed glade-previewer bugs
+          #660874 "glade-previewer fails to open UI files without top windows"
+          #660872 "glade-previewer crashes on non-existent files"
+        - Fixed loading correct application icon (bug 648487 fix by Stéphane Maniaci).
+        - Fixed "variable set but not used" warnings (-Wunused-but-set-variable)
+
+============
 Glade 3.10.0
 ============
 	- Fixed some glitches in the new workspace - Juan Pablo Ugarte
