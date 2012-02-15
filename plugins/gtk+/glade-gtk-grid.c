@@ -433,6 +433,8 @@ glade_gtk_grid_parse_finished (GladeProject *project, GObject *container)
     {
       GtkWidget *widget = list->data;
 
+      if (GLADE_IS_PLACEHOLDER (widget)) continue;
+
       glade_gtk_grid_get_child_attachments (GTK_WIDGET (container), widget, &attach);
 
       n_row = attach.top_attach + attach.height;
