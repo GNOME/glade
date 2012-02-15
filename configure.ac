@@ -121,7 +121,7 @@ GTK_DOC_CHECK(1.9)
 dnl ================================================================
 dnl Check for gtk+
 dnl ================================================================
-PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.24 gthread-2.0 libxml-2.0 >= 2.4.0])
+PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.24 gmodule-2.0 gthread-2.0 libxml-2.0 >= 2.4.0])
 AC_SUBST(GTK_LIBS)
 AC_SUBST(GTK_CFLAGS)
 
