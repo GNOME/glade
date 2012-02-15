@@ -5425,7 +5425,7 @@ glade_gtk_menu_item_add_verify (GladeWidgetAdaptor *adaptor,
 	{
 	  glade_util_ui_message (glade_app_get_window (),
 				 GLADE_UI_INFO, NULL,
-				 _("A object of type %s cannot have any children."),
+				 _("An object of type %s cannot have any children."),
 				 glade_widget_adaptor_get_title (adaptor));
 	}
 
