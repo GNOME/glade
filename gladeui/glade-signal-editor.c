@@ -68,6 +68,14 @@ struct _GladeSignalEditorPrivate
   GtkCellRenderer* renderer_userdata;
 };
 
+enum
+{
+  SIGNAL_ACTIVATED,
+  LAST_SIGNAL
+};
+
+static guint glade_signal_editor_signals[LAST_SIGNAL] = { 0 };
+
 /* Utils */
 static gboolean
 glade_signal_is_dummy (GladeSignal *signal)
@@ -762,6 +770,43 @@ glade_signal_editor_devhelp_cell_data_func (GtkTreeViewColumn *column,
     }
 }
 
+GladeWidget*
+glade_signal_editor_get_widget (GladeSignalEditor *editor)
+{
+    g_return_val_if_fail (GLADE_IS_SIGNAL_EDITOR(editor), NULL);
+    return editor->priv->widget;
+}
+
+static void
+glade_signal_editor_signal_activate (GtkTreeView       *tree_view,
+                                     GtkTreePath       *path,
+                                     GtkTreeViewColumn *column,
+                                     GladeSignalEditor *editor)
+
+{
+  GladeSignalEditor* self = GLADE_SIGNAL_EDITOR(editor);
+  if (self->priv->widget == NULL || column != self->priv->column_name)
+    return;
+
+  GladeSignal *signal = NULL;
+  GtkTreeIter iter;
+  gtk_tree_model_get_iter (self->priv->model,
+                           &iter,
+                           path);
+  gtk_tree_model_get (self->priv->model, &iter,
+                      GLADE_SIGNAL_COLUMN_SIGNAL, &signal,
+                      -1);
+
+  if(glade_signal_is_dummy (signal))
+    return;
+
+  g_signal_emit (editor, glade_signal_editor_signals[SIGNAL_ACTIVATED],
+                 0, signal, NULL);
+
+  g_object_unref (signal);
+  return;
+}
+
 static void
 glade_signal_editor_init (GladeSignalEditor *self)
 {
@@ -775,6 +820,10 @@ glade_signal_editor_init (GladeSignalEditor *self)
 	
   /* Create signal tree */
   priv->signal_tree = gtk_tree_view_new ();
+
+  g_signal_connect (G_OBJECT (priv->signal_tree), "row-activated",
+		    G_CALLBACK (glade_signal_editor_signal_activate),
+		    self);
 
   /* Create columns */
   /* Signal name */
@@ -963,4 +1012,20 @@ glade_signal_editor_class_init (GladeSignalEditorClass *klass)
   object_class->dispose = glade_signal_editor_dispose;
 
   g_type_class_add_private (klass, sizeof (GladeSignalEditorPrivate));
+
+  /**
+   * GladeSignalEditor::signal-activated:
+   * @signal_editor: the object which received the signal
+   *
+   * Emitted when a item is activated in the GladeInspector.
+   */
+  glade_signal_editor_signals[SIGNAL_ACTIVATED] =
+      g_signal_new ("signal-activated",
+                    G_TYPE_FROM_CLASS (object_class),
+                    G_SIGNAL_RUN_LAST,
+                    0,
+                    NULL, NULL, g_cclosure_marshal_VOID__OBJECT,
+                    G_TYPE_NONE, 1,
+				    GLADE_TYPE_SIGNAL /* Signal data formatted string */
+				    );
 }
