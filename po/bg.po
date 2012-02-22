@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-08 08:25+0200\n"
-"PO-Revision-Date: 2012-01-08 08:24+0200\n"
+"POT-Creation-Date: 2012-02-22 19:42+0200\n"
+"PO-Revision-Date: 2012-02-22 19:41+0200\n"
 "Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
@@ -1600,7 +1600,7 @@ msgstr "Клас на сигнала"
 msgid "The signal class of this signal"
 msgstr "Класът на този сигнал"
 
-#: ../gladeui/glade-signal.c:167 ../gladeui/glade-signal-editor.c:820
+#: ../gladeui/glade-signal.c:167 ../gladeui/glade-signal-editor.c:869
 msgid "Handler"
 msgstr "Обработка"
 
@@ -1624,7 +1624,7 @@ msgstr "Предупреждение за версия"
 msgid "The versioning support warning for this signal"
 msgstr "Предупреждение за поддържаната версия на този сигнал"
 
-#: ../gladeui/glade-signal.c:185 ../gladeui/glade-signal-editor.c:890
+#: ../gladeui/glade-signal.c:185 ../gladeui/glade-signal-editor.c:939
 #: ../plugins/gtk+/gtk+.xml.in.h:32
 msgid "After"
 msgstr "След"
@@ -1642,19 +1642,19 @@ msgid "Whether the user data is swapped with the instance for the handler"
 msgstr ""
 "Дали потребителските данни се разменят с обекта за функцията за обработка"
 
-#: ../gladeui/glade-signal-editor.c:243
+#: ../gladeui/glade-signal-editor.c:251
 msgid "Select an object to pass to the handler"
 msgstr "Изберете обект, който да се подаде на функцията за обработка"
 
-#: ../gladeui/glade-signal-editor.c:813 ../plugins/gtk+/glade-accels.c:445
+#: ../gladeui/glade-signal-editor.c:862 ../plugins/gtk+/glade-accels.c:445
 msgid "Signal"
 msgstr "Сигнал"
 
-#: ../gladeui/glade-signal-editor.c:858
+#: ../gladeui/glade-signal-editor.c:907
 msgid "User data"
 msgstr "Потребителски данни"
 
-#: ../gladeui/glade-signal-editor.c:873
+#: ../gladeui/glade-signal-editor.c:922
 msgid "Swap"
 msgstr "Размяна"
 
@@ -2464,7 +2464,7 @@ msgstr "Редактиране на менюто"
 
 #: ../plugins/gtk+/glade-gtk.c:5428
 #, c-format
-msgid "A object of type %s cannot have any children."
+msgid "An object of type %s cannot have any children."
 msgstr "Обект от вида %s не може да съдържа дъщерни елементи."
 
 #: ../plugins/gtk+/glade-gtk.c:6068 ../plugins/gtk+/glade-gtk.c:6266
@@ -2661,26 +2661,26 @@ msgstr "Етикет"
 msgid "Text Tag Table Editor"
 msgstr "Редактор на таблица с текстови етикети"
 
-#: ../plugins/gtk+/glade-gtk-grid.c:910 ../plugins/gtk+/glade-gtk-grid.c:917
+#: ../plugins/gtk+/glade-gtk-grid.c:912 ../plugins/gtk+/glade-gtk-grid.c:919
 #: ../plugins/gtk+/glade-gtk-table.c:1098
 #: ../plugins/gtk+/glade-gtk-table.c:1105
 #, c-format
 msgid "Insert Row on %s"
 msgstr "Вмъкване на ред в %s"
 
-#: ../plugins/gtk+/glade-gtk-grid.c:925 ../plugins/gtk+/glade-gtk-grid.c:932
+#: ../plugins/gtk+/glade-gtk-grid.c:927 ../plugins/gtk+/glade-gtk-grid.c:934
 #: ../plugins/gtk+/glade-gtk-table.c:1113
 #: ../plugins/gtk+/glade-gtk-table.c:1120
 #, c-format
 msgid "Insert Column on %s"
 msgstr "Вмъкване на колона в %s"
 
-#: ../plugins/gtk+/glade-gtk-grid.c:939 ../plugins/gtk+/glade-gtk-table.c:1127
+#: ../plugins/gtk+/glade-gtk-grid.c:941 ../plugins/gtk+/glade-gtk-table.c:1127
 #, c-format
 msgid "Remove Column on %s"
 msgstr "Премахване на колона от %s"
 
-#: ../plugins/gtk+/glade-gtk-grid.c:946 ../plugins/gtk+/glade-gtk-table.c:1134
+#: ../plugins/gtk+/glade-gtk-grid.c:948 ../plugins/gtk+/glade-gtk-table.c:1134
 #, c-format
 msgid "Remove Row on %s"
 msgstr "Премахване на ред от %s"
@@ -4001,8 +4001,8 @@ msgid "Markup column"
 msgstr "Колона с маркиране"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:304
-msgid "Maximum width in charachters column"
-msgstr "Колона за максималната широчина в знаци"
+msgid "Maximum width in characters"
+msgstr "Максимална широчина в знаци"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:305
 msgid "Member Of"
