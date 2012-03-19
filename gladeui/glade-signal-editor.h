@@ -37,7 +37,6 @@ struct _GladeSignalEditorClass
   void   (* glade_reserved3)   (void);
   void   (* glade_reserved4)   (void);
   void   (* glade_reserved5)   (void);
-  void   (* glade_reserved6)   (void);
 };
 
 GType              glade_signal_editor_get_type (void) G_GNUC_CONST;
