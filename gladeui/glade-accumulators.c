@@ -30,9 +30,9 @@
 
 
 gboolean
-_glade_single_object_accumulator (GSignalInvocationHint * ihint,
-				  GValue * return_accu,
-				  const GValue * handler_return, gpointer dummy)
+_glade_single_object_accumulator (GSignalInvocationHint *ihint,
+				  GValue *return_accu,
+				  const GValue *handler_return, gpointer dummy)
 {
   GObject *object = g_value_get_object (handler_return);
   g_value_set_object (return_accu, object);
@@ -41,9 +41,9 @@ _glade_single_object_accumulator (GSignalInvocationHint * ihint,
 }
 
 gboolean
-_glade_integer_handled_accumulator (GSignalInvocationHint * ihint,
-				    GValue * return_accu,
-				    const GValue * handler_return,
+_glade_integer_handled_accumulator (GSignalInvocationHint *ihint,
+				    GValue *return_accu,
+				    const GValue *handler_return,
 				    gpointer dummy)
 {
   gboolean continue_emission;
@@ -58,9 +58,9 @@ _glade_integer_handled_accumulator (GSignalInvocationHint * ihint,
 
 /* From gtkmain.c */
 gboolean
-_glade_boolean_handled_accumulator (GSignalInvocationHint * ihint,
-				    GValue * return_accu,
-				    const GValue * handler_return,
+_glade_boolean_handled_accumulator (GSignalInvocationHint *ihint,
+				    GValue *return_accu,
+				    const GValue *handler_return,
 				    gpointer dummy)
 {
   gboolean continue_emission;
@@ -74,9 +74,9 @@ _glade_boolean_handled_accumulator (GSignalInvocationHint * ihint,
 }
 
 gboolean
-_glade_string_accumulator (GSignalInvocationHint * ihint,
-			   GValue * return_accu,
-			   const GValue * handler_return, gpointer dummy)
+_glade_string_accumulator (GSignalInvocationHint *ihint,
+			   GValue *return_accu,
+			   const GValue *handler_return, gpointer dummy)
 {
   const gchar *handler_str;
 
@@ -89,9 +89,22 @@ _glade_string_accumulator (GSignalInvocationHint * ihint,
 }
 
 gboolean
-_glade_stop_emission_accumulator (GSignalInvocationHint * ihint,
-				  GValue * return_accu,
-				  const GValue * handler_return, gpointer dummy)
+_glade_strv_handled_accumulator (GSignalInvocationHint *ihint,
+                                 GValue *return_accu,
+                                 const GValue *handler_return, gpointer dummy)
+{
+  const gchar **handler_strv;
+
+  handler_strv = g_value_get_boxed (handler_return);
+  g_value_set_boxed (return_accu, handler_strv);
+
+  return (handler_strv == NULL);
+}
+
+gboolean
+_glade_stop_emission_accumulator (GSignalInvocationHint *ihint,
+				  GValue *return_accu,
+				  const GValue *handler_return, gpointer dummy)
 {
   g_value_copy (handler_return, return_accu);
 
