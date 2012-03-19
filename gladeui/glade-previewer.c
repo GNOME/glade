@@ -76,7 +76,7 @@ parse_arguments (int argc, char **argv, gchar ** toplevel_name,
                            entries, NULL, &error))
     {
       g_printerr (_
-                  ("%s\nRun '%s --help' to see a full list of available command line"
+                  ("%s\nRun '%s --help' to see a full list of available command line "
                    "options.\n"), error->message, argv[0]);
       g_error_free (error);
       exit (1);
