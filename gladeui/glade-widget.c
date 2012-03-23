@@ -405,6 +405,10 @@ glade_widget_change_signal_handler (GladeWidget * widget,
       signal_handler_iter = g_ptr_array_index (signals, i);
       if (glade_signal_equal (signal_handler_iter, old_signal_handler))
         {
+          /* Detail */
+	  glade_signal_set_detail (signal_handler_iter, 
+				   glade_signal_get_detail (new_signal_handler));
+          
           /* Handler */
 	  glade_signal_set_handler (signal_handler_iter, 
 				    glade_signal_get_handler (new_signal_handler));

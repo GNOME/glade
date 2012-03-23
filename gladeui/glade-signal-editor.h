@@ -24,7 +24,7 @@ struct _GladeSignalEditor
 {
   GtkVBox parent;
 
-  GladeSignalEditorPrivate* priv;
+  GladeSignalEditorPrivate *priv;
 };
 
 struct _GladeSignalEditorClass

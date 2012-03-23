@@ -32,7 +32,8 @@
 
 struct _GladeSignalPrivate
 {
-  const GladeSignalClass* class;   /* Pointer to the signal class */
+  const GladeSignalClass *class;   /* Pointer to the signal class */
+  gchar    *detail;       /* Signal detail */
   gchar    *handler;      /* Handler function eg "gtk_main_quit" */
   gchar    *userdata;     /* User data signal handler argument   */
 
@@ -45,6 +46,7 @@ struct _GladeSignalPrivate
 enum {
   PROP_0,
   PROP_CLASS,
+  PROP_DETAIL,
   PROP_HANDLER,
   PROP_USERDATA,
   PROP_SUPPORT_WARNING,
@@ -53,26 +55,36 @@ enum {
   N_PROPERTIES
 };
 
-static GParamSpec *properties[N_PROPERTIES];
+/* We need these defines because GladeSignalClass is another object type!
+ * So we use GladeSignalKlass as the class name for GladeSignal
+ */
+#define GladeSignalClass GladeSignalKlass
+#define glade_signal_class_init glade_signal_klass_init
 
-static GObjectClass *parent_class;
+G_DEFINE_TYPE (GladeSignal, glade_signal, G_TYPE_OBJECT)
+
+#undef GladeSignalClass
+#undef glade_signal_class_init
+
+static GParamSpec *properties[N_PROPERTIES];
 
 static void
 glade_signal_finalize (GObject *object)
 {
   GladeSignal *signal = GLADE_SIGNAL (object);
 
+  g_free (signal->priv->detail);
   g_free (signal->priv->handler);
   g_free (signal->priv->userdata);
   g_free (signal->priv->support_warning);
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  G_OBJECT_CLASS (glade_signal_parent_class)->finalize (object);
 }
 
 static void
-glade_signal_get_property (GObject * object,
+glade_signal_get_property (GObject *object,
 			   guint prop_id,
-			   GValue * value, GParamSpec * pspec)
+			   GValue *value, GParamSpec *pspec)
 {
   GladeSignal *signal = GLADE_SIGNAL (object);
 
@@ -80,6 +92,9 @@ glade_signal_get_property (GObject * object,
     {
       case PROP_CLASS:
         g_value_set_pointer (value, (gpointer) signal->priv->class);
+        break;
+      case PROP_DETAIL:
+        g_value_set_string (value, signal->priv->detail);
         break;
       case PROP_HANDLER:
         g_value_set_string (value, signal->priv->handler);
@@ -103,9 +118,9 @@ glade_signal_get_property (GObject * object,
 }
 
 static void
-glade_signal_set_property (GObject * object,
+glade_signal_set_property (GObject *object,
 			   guint prop_id,
-			   const GValue * value, GParamSpec * pspec)
+			   const GValue *value, GParamSpec *pspec)
 {
   GladeSignal *signal = GLADE_SIGNAL (object);
 
@@ -113,6 +128,9 @@ glade_signal_set_property (GObject * object,
     {
       case PROP_CLASS:
 	signal->priv->class = g_value_get_pointer (value);
+        break;
+      case PROP_DETAIL:
+	glade_signal_set_detail (signal, g_value_get_string (value));
         break;
       case PROP_HANDLER:
 	glade_signal_set_handler (signal, g_value_get_string (value));
@@ -149,7 +167,7 @@ glade_signal_klass_init (GladeSignalKlass *klass)
   GObjectClass *object_class;
 
   object_class = G_OBJECT_CLASS (klass);
-  parent_class = g_type_class_peek_parent (klass);
+  glade_signal_parent_class = g_type_class_peek_parent (klass);
 
   object_class->set_property = glade_signal_set_property;
   object_class->get_property = glade_signal_get_property;
@@ -162,6 +180,12 @@ glade_signal_klass_init (GladeSignalKlass *klass)
                           _("The signal class of this signal"),
                           G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE);
 
+  properties[PROP_DETAIL] =
+    g_param_spec_string ("detail",
+                         _("Detail"),
+                         _("The detail for this signal"),
+                         NULL, G_PARAM_READWRITE);
+  
   properties[PROP_HANDLER] =
     g_param_spec_string ("handler",
                          _("Handler"),
@@ -198,33 +222,6 @@ glade_signal_klass_init (GladeSignalKlass *klass)
   g_type_class_add_private (klass, sizeof (GladeSignalPrivate));
 }
 
-
-GType
-glade_signal_get_type (void)
-{
-  static GType signal_type = 0;
-
-  if (!signal_type)
-    {
-      static const GTypeInfo signal_info = {
-        sizeof (GladeSignalKlass),    /* Klass is our class */
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) glade_signal_klass_init,
-        (GClassFinalizeFunc) NULL,
-        NULL,                   /* class_data */
-        sizeof (GladeSignal),
-        0,                      /* n_preallocs */
-        (GInstanceInitFunc) glade_signal_init,
-      };
-      signal_type =
-          g_type_register_static (G_TYPE_OBJECT,
-                                  "GladeSignal", &signal_info, 0);
-    }
-  return signal_type;
-}
-
-
 /**
  * glade_signal_new:
  * @name: a name for the signal
@@ -238,21 +235,21 @@ glade_signal_get_type (void)
  * Returns: the new #GladeSignal
  */
 GladeSignal *
-glade_signal_new (const GladeSignalClass* sig_class,
-                  const gchar * handler,
-                  const gchar * userdata, 
+glade_signal_new (const GladeSignalClass *sig_class,
+                  const gchar *handler,
+                  const gchar *userdata, 
 		  gboolean after, 
 		  gboolean swapped)
 {
   g_return_val_if_fail (sig_class != NULL, NULL);
 
-  return (GladeSignal *)g_object_new (GLADE_TYPE_SIGNAL,
-				      "class", sig_class,
-				      "handler", handler,
-				      "userdata", userdata,
-				      "after", after,
-				      "swapped", swapped,
-				      NULL);
+  return GLADE_SIGNAL (g_object_new (GLADE_TYPE_SIGNAL,
+                                     "class", sig_class,
+                                     "handler", handler,
+                                     "userdata", userdata,
+                                     "after", after,
+                                     "swapped", swapped,
+                                     NULL));
 }
 
 /**
@@ -271,13 +268,14 @@ glade_signal_equal (const GladeSignal *sig1, const GladeSignal *sig2)
   g_return_val_if_fail (GLADE_IS_SIGNAL (sig2), FALSE);
 
   /* Intentionally ignore support_warning */
-  if (!strcmp (glade_signal_get_name (sig1), glade_signal_get_name (sig2)) &&
-      !strcmp (sig1->priv->handler, sig2->priv->handler) &&
+  if (!g_strcmp0 (glade_signal_get_name (sig1), glade_signal_get_name (sig2)) &&
+      !g_strcmp0 (sig1->priv->handler, sig2->priv->handler) &&
+      !g_strcmp0 (sig1->priv->detail, sig2->priv->detail) &&
       sig1->priv->after == sig2->priv->after && sig1->priv->swapped == sig2->priv->swapped)
     {
       if ((sig1->priv->userdata == NULL && sig2->priv->userdata == NULL) ||
           (sig1->priv->userdata != NULL && sig2->priv->userdata != NULL &&
-           !strcmp (sig1->priv->userdata, sig2->priv->userdata)))
+           !g_strcmp0 (sig1->priv->userdata, sig2->priv->userdata)))
         ret = TRUE;
     }
 
@@ -291,7 +289,7 @@ glade_signal_equal (const GladeSignal *sig1, const GladeSignal *sig2)
  * Returns: a new #GladeSignal with the same attributes as @signal
  */
 GladeSignal *
-glade_signal_clone (const GladeSignal * signal)
+glade_signal_clone (const GladeSignal *signal)
 {
   GladeSignal *dup;
 
@@ -303,6 +301,7 @@ glade_signal_clone (const GladeSignal * signal)
 			  signal->priv->after, 
 			  signal->priv->swapped);
 
+  glade_signal_set_detail (dup, signal->priv->detail);
   glade_signal_set_support_warning (dup, signal->priv->support_warning);
 
   return dup;
@@ -317,8 +316,9 @@ glade_signal_clone (const GladeSignal * signal)
  * Writes @signal to @node
  */
 void
-glade_signal_write (GladeSignal * signal,
-                    GladeXmlContext * context, GladeXmlNode * node)
+glade_signal_write (GladeSignal *signal,
+                    GladeXmlContext *context,
+                    GladeXmlNode *node)
 {
   GladeXmlNode *signal_node;
   gchar *name;
@@ -327,7 +327,12 @@ glade_signal_write (GladeSignal * signal,
    * access to project, so not really seriosly needed 
    */
 
-  name = g_strdup (glade_signal_get_name (signal));
+  if (signal->priv->detail)
+    name = g_strdup_printf ("%s::%s",
+                            glade_signal_get_name (signal),
+                            signal->priv->detail);
+  else
+    name = g_strdup (glade_signal_get_name (signal));
 
   /* Now dump the node values... */
   signal_node = glade_xml_node_new (context, GLADE_XML_TAG_SIGNAL);
@@ -369,11 +374,11 @@ glade_signal_write (GladeSignal * signal,
  * Returns: A newly created #GladeSignal
  */
 GladeSignal *
-glade_signal_read (GladeXmlNode * node, GladeWidgetAdaptor* adaptor)
+glade_signal_read (GladeXmlNode *node, GladeWidgetAdaptor *adaptor)
 {
   GladeSignal *signal = NULL;
   GladeSignalClass *signal_class;
-  gchar *name, *handler, *userdata;
+  gchar *name, *handler, *userdata, *detail;
 
   g_return_val_if_fail (glade_xml_node_verify_silent
                         (node, GLADE_XML_TAG_SIGNAL), NULL);
@@ -384,6 +389,9 @@ glade_signal_read (GladeXmlNode * node, GladeWidgetAdaptor* adaptor)
     return NULL;
   glade_util_replace (name, '_', '-');
 
+  /* Search for a detail, and strip it from the signal name */
+  if ((detail = g_strstr_len (name, -1, "::"))) *detail = '\0';
+  
   if (!(handler =
         glade_xml_get_property_string_required (node, GLADE_XML_TAG_HANDLER,
                                                 NULL)))
@@ -396,12 +404,15 @@ glade_signal_read (GladeXmlNode * node, GladeWidgetAdaptor* adaptor)
   signal_class = glade_widget_adaptor_get_signal_class (adaptor, name);
 
   if (signal_class)
-    signal = 
-      glade_signal_new (signal_class,
-			handler, userdata,
-			glade_xml_get_property_boolean (node, GLADE_XML_TAG_AFTER, FALSE),
-			glade_xml_get_property_boolean (node, GLADE_XML_TAG_SWAPPED,
-							userdata != NULL));
+    {
+      signal = glade_signal_new (signal_class,
+                                 handler, userdata,
+                                 glade_xml_get_property_boolean (node, GLADE_XML_TAG_AFTER, FALSE),
+                                 glade_xml_get_property_boolean (node, GLADE_XML_TAG_SWAPPED,
+                                                                 userdata != NULL));
+
+      if (detail && detail[2]) glade_signal_set_detail (signal, &detail[2]);
+    }
   else
     {
       /* XXX These errors should be collected and reported to the user */
@@ -425,14 +436,35 @@ glade_signal_get_name (const GladeSignal *signal)
 }
 
 G_CONST_RETURN GladeSignalClass *
-glade_signal_get_class (const GladeSignal * signal)
+glade_signal_get_class (const GladeSignal *signal)
 {
 	return signal->priv->class;
 }
 
 void
-glade_signal_set_handler (GladeSignal *signal,
-			  const gchar *handler)
+glade_signal_set_detail (GladeSignal *signal, const gchar *detail)
+{
+  g_return_if_fail (GLADE_IS_SIGNAL (signal));
+  
+  if (glade_signal_class_get_flags (signal->priv->class) & G_SIGNAL_DETAILED &&
+      g_strcmp0 (signal->priv->detail, detail))
+    {
+      g_free (signal->priv->detail);
+      signal->priv->detail = (detail || g_utf8_strlen (detail, -1)) ? g_strdup (detail) : NULL;
+      g_object_notify_by_pspec (G_OBJECT (signal), properties[PROP_DETAIL]);
+    }
+}
+
+G_CONST_RETURN gchar *
+glade_signal_get_detail (const GladeSignal *signal)
+{
+  g_return_val_if_fail (GLADE_IS_SIGNAL (signal), NULL);
+
+  return signal->priv->detail;
+}
+
+void
+glade_signal_set_handler (GladeSignal *signal, const gchar *handler)
 {
   g_return_if_fail (GLADE_IS_SIGNAL (signal));
 
@@ -455,8 +487,7 @@ glade_signal_get_handler (const GladeSignal *signal)
 }
 
 void
-glade_signal_set_userdata (GladeSignal *signal,
-			   const gchar *userdata)
+glade_signal_set_userdata (GladeSignal *signal, const gchar *userdata)
 {
   g_return_if_fail (GLADE_IS_SIGNAL (signal));
 
@@ -479,8 +510,7 @@ glade_signal_get_userdata (const GladeSignal *signal)
 }
 
 void
-glade_signal_set_after (GladeSignal *signal,
-			gboolean     after)
+glade_signal_set_after (GladeSignal *signal, gboolean after)
 {
   g_return_if_fail (GLADE_IS_SIGNAL (signal));
 
@@ -501,8 +531,7 @@ glade_signal_get_after (const GladeSignal *signal)
 }
 
 void
-glade_signal_set_swapped (GladeSignal *signal,
-			  gboolean     swapped)
+glade_signal_set_swapped (GladeSignal *signal, gboolean swapped)
 {
   g_return_if_fail (GLADE_IS_SIGNAL (signal));
 
