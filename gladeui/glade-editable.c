@@ -34,6 +34,8 @@
 #include "glade-widget.h"
 #include "glade-editable.h"
 
+G_DEFINE_INTERFACE (GladeEditable, glade_editable, GTK_TYPE_WIDGET);
+
 static GQuark glade_editable_project_quark = 0;
 static GQuark glade_editable_widget_quark = 0;
 static GQuark glade_editable_loading_quark = 0;
@@ -95,32 +97,13 @@ glade_editable_load_default (GladeEditable  *editable,
 }
 
 static void
-glade_editable_class_init (GladeEditableIface *iface)
+glade_editable_default_init (GladeEditableIface *iface)
 {
   glade_editable_project_quark = g_quark_from_static_string ("glade-editable-project-quark");
   glade_editable_widget_quark  = g_quark_from_static_string ("glade-editable-widget-quark");
   glade_editable_loading_quark = g_quark_from_static_string ("glade-editable-loading-quark");
 
   iface->load = glade_editable_load_default;
-}
-
-GType
-glade_editable_get_type (void)
-{
-  static GType editable_type = 0;
-
-  if (!editable_type)
-    {
-      editable_type =
-        g_type_register_static_simple (G_TYPE_INTERFACE, "GladeEditable",
-                                       sizeof (GladeEditableIface),
-                                       (GClassInitFunc)
-                                       glade_editable_class_init, 0, NULL,
-                                       (GTypeFlags) 0);
-      g_type_interface_add_prerequisite (editable_type, GTK_TYPE_WIDGET);
-    }
-
-  return editable_type;
 }
 
 /**
@@ -133,7 +116,7 @@ glade_editable_get_type (void)
  * until its loaded with another widget or %NULL)
  */
 void
-glade_editable_load (GladeEditable * editable, GladeWidget * widget)
+glade_editable_load (GladeEditable *editable, GladeWidget *widget)
 {
   GladeEditableIface *iface;
   g_return_if_fail (GLADE_IS_EDITABLE (editable));
@@ -164,7 +147,7 @@ glade_editable_load (GladeEditable * editable, GladeWidget * widget)
  * to its embedded editable.
  */
 void
-glade_editable_set_show_name (GladeEditable * editable, gboolean show_name)
+glade_editable_set_show_name (GladeEditable *editable, gboolean show_name)
 {
   GladeEditableIface *iface;
   g_return_if_fail (GLADE_IS_EDITABLE (editable));
@@ -176,13 +159,13 @@ glade_editable_set_show_name (GladeEditable * editable, gboolean show_name)
 }
 
 GladeWidget *
-glade_editable_loaded_widget (GladeEditable  *editable)
+glade_editable_loaded_widget (GladeEditable *editable)
 {
   return g_object_get_qdata (G_OBJECT (editable), glade_editable_widget_quark);
 }
 
 gboolean
-glade_editable_loading (GladeEditable  *editable)
+glade_editable_loading (GladeEditable *editable)
 {
   return GPOINTER_TO_INT (g_object_get_qdata (G_OBJECT (editable), glade_editable_loading_quark));
 }

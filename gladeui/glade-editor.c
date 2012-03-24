@@ -60,8 +60,6 @@ enum
   N_PROPERTIES
 };
 
-static GtkVBoxClass *parent_class = NULL;
-
 struct _GladeEditorPrivate
 {
 
@@ -135,14 +133,17 @@ struct _GladeEditorPrivate
   gboolean show_info; /* Whether or not to show an informational button  */
 };
 
+G_DEFINE_TYPE (GladeEditor, glade_editor, GTK_TYPE_VBOX);
+
 static GParamSpec *properties[N_PROPERTIES];
 
-static void glade_editor_reset_dialog (GladeEditor * editor);
+static void glade_editor_reset_dialog (GladeEditor *editor);
 
 static void
-glade_editor_set_property (GObject * object,
+glade_editor_set_property (GObject *object,
                            guint prop_id,
-                           const GValue * value, GParamSpec * pspec)
+                           const GValue *value,
+                           GParamSpec *pspec)
 {
   GladeEditor *editor = GLADE_EDITOR (object);
 
@@ -156,7 +157,7 @@ glade_editor_set_property (GObject * object,
         break;
       case PROP_WIDGET:
         glade_editor_load_widget (editor,
-                                  (GladeWidget *) g_value_get_object (value));
+                                  GLADE_WIDGET (g_value_get_object (value)));
         break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -165,8 +166,10 @@ glade_editor_set_property (GObject * object,
 }
 
 static void
-glade_editor_get_property (GObject * object,
-                           guint prop_id, GValue * value, GParamSpec * pspec)
+glade_editor_get_property (GObject *object,
+                           guint prop_id,
+                           GValue *value,
+                           GParamSpec *pspec)
 {
   GladeEditor *editor = GLADE_EDITOR (object);
 
@@ -196,15 +199,15 @@ glade_editor_dispose (GObject *object)
   editor->priv->editables =
     (g_list_free (editor->priv->editables), NULL);
 
-  G_OBJECT_CLASS (parent_class)->dispose (object);
+  G_OBJECT_CLASS (glade_editor_parent_class)->dispose (object);
 }
 
 static void
-glade_editor_class_init (GladeEditorClass * klass)
+glade_editor_class_init (GladeEditorClass *klass)
 {
   GObjectClass *object_class;
 
-  parent_class = g_type_class_peek_parent (klass);
+  glade_editor_parent_class = g_type_class_peek_parent (klass);
   object_class = G_OBJECT_CLASS (klass);
 
   object_class->dispose      = glade_editor_dispose;
@@ -234,7 +237,7 @@ glade_editor_class_init (GladeEditorClass * klass)
 }
 
 static GtkWidget *
-glade_editor_notebook_page (GladeEditor * editor, const gchar * name)
+glade_editor_notebook_page (GladeEditor *editor, const gchar *name)
 {
   GtkWidget *alignment;
   GtkWidget *sw;
@@ -300,13 +303,13 @@ glade_editor_notebook_page (GladeEditor * editor, const gchar * name)
 }
 
 static void
-glade_editor_on_reset_click (GtkButton * button, GladeEditor * editor)
+glade_editor_on_reset_click (GtkButton * button, GladeEditor *editor)
 {
   glade_editor_reset_dialog (editor);
 }
 
 static void
-glade_editor_on_docs_click (GtkButton * button, GladeEditor * editor)
+glade_editor_on_docs_click (GtkButton *button, GladeEditor *editor)
 {
   gchar *book;
 
@@ -321,7 +324,7 @@ glade_editor_on_docs_click (GtkButton * button, GladeEditor * editor)
 }
 
 static GtkWidget *
-glade_editor_create_info_button (GladeEditor * editor)
+glade_editor_create_info_button (GladeEditor *editor)
 {
   GtkWidget *button;
   GtkWidget *image;
@@ -342,7 +345,7 @@ glade_editor_create_info_button (GladeEditor * editor)
 }
 
 static GtkWidget *
-glade_editor_create_reset_button (GladeEditor * editor)
+glade_editor_create_reset_button (GladeEditor *editor)
 {
   GtkWidget *image;
   GtkWidget *button;
@@ -363,8 +366,9 @@ glade_editor_create_reset_button (GladeEditor * editor)
 
 
 static void
-glade_editor_update_class_warning_cb (GladeWidget * widget,
-                                      GParamSpec * pspec, GladeEditor * editor)
+glade_editor_update_class_warning_cb (GladeWidget *widget,
+                                      GParamSpec *pspec,
+                                      GladeEditor *editor)
 {
   if (glade_widget_support_warning (widget))
     gtk_widget_show (editor->priv->warning);
@@ -376,7 +380,7 @@ glade_editor_update_class_warning_cb (GladeWidget * widget,
 
 
 static void
-glade_editor_update_class_field (GladeEditor * editor)
+glade_editor_update_class_field (GladeEditor *editor)
 {
   if (editor->priv->loaded_widget)
     {
@@ -407,14 +411,15 @@ glade_editor_update_class_field (GladeEditor * editor)
 }
 
 static void
-glade_editor_update_widget_name_cb (GladeWidget * widget,
-                                    GParamSpec * pspec, GladeEditor * editor)
+glade_editor_update_widget_name_cb (GladeWidget *widget,
+                                    GParamSpec *pspec,
+                                    GladeEditor *editor)
 {
   glade_editor_update_class_field (editor);
 }
 
 static GtkWidget *
-glade_editor_setup_class_field (GladeEditor * editor)
+glade_editor_setup_class_field (GladeEditor *editor)
 {
   GtkWidget *hbox;
   gint       icon_height;
@@ -476,7 +481,7 @@ glade_editor_switch_page (GtkNotebook     *notebook,
 }
 
 static void
-glade_editor_init (GladeEditor * editor)
+glade_editor_init (GladeEditor *editor)
 {
   GtkSizeGroup *size_group;
   GtkWidget    *hbox;
@@ -538,34 +543,9 @@ glade_editor_init (GladeEditor * editor)
   gtk_widget_set_no_show_all (GTK_WIDGET (editor), TRUE);
 }
 
-GType
-glade_editor_get_type (void)
-{
-  static GType type = 0;
-
-  if (!type)
-    {
-      static const GTypeInfo info = {
-        sizeof (GladeEditorClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) glade_editor_class_init,
-        (GClassFinalizeFunc) NULL,
-        NULL,
-        sizeof (GladeEditor),
-        0,
-        (GInstanceInitFunc) glade_editor_init
-      };
-
-      type = g_type_register_static (GTK_TYPE_VBOX, "GladeEditor", &info, 0);
-    }
-
-  return type;
-}
-
 static GtkWidget *
-glade_editor_get_editable_by_adaptor (GladeEditor * editor,
-                                      GladeWidgetAdaptor * adaptor,
+glade_editor_get_editable_by_adaptor (GladeEditor *editor,
+                                      GladeWidgetAdaptor *adaptor,
                                       GladeEditorPageType type)
 {
   GtkWidget *editable;
@@ -602,8 +582,7 @@ glade_editor_get_editable_by_adaptor (GladeEditor * editor,
 }
 
 static void
-hide_or_remove_visible_child (GtkContainer *container,
-			      gboolean      remove)
+hide_or_remove_visible_child (GtkContainer *container, gboolean remove)
 {
   GList *l, *children = gtk_container_get_children (container);
   GtkWidget *widget;
@@ -626,8 +605,8 @@ hide_or_remove_visible_child (GtkContainer *container,
 }
 
 static GtkWidget *
-glade_editor_load_editable_in_page (GladeEditor * editor,
-                                    GladeWidgetAdaptor * adaptor,
+glade_editor_load_editable_in_page (GladeEditor *editor,
+                                    GladeWidgetAdaptor *adaptor,
                                     GladeEditorPageType type)
 {
   GtkContainer *container = NULL;
@@ -685,7 +664,7 @@ glade_editor_load_editable_in_page (GladeEditor * editor,
 }
 
 static void
-glade_editor_load_signal_page (GladeEditor * editor)
+glade_editor_load_signal_page (GladeEditor *editor)
 {
   if (editor->priv->signal_editor == NULL)
     {
@@ -696,8 +675,8 @@ glade_editor_load_signal_page (GladeEditor * editor)
 }
 
 static void
-glade_editor_load_widget_class (GladeEditor * editor,
-                                GladeWidgetAdaptor * adaptor)
+glade_editor_load_widget_class (GladeEditor *editor,
+                                GladeWidgetAdaptor *adaptor)
 {
 
   glade_editor_load_editable_in_page (editor, adaptor, GLADE_PAGE_GENERAL);
@@ -719,8 +698,9 @@ glade_editor_close_cb (GladeProject * project, GladeEditor * editor)
 }
 
 static void
-glade_editor_removed_cb (GladeProject * project,
-                         GladeWidget * widget, GladeEditor * editor)
+glade_editor_removed_cb (GladeProject *project,
+                         GladeWidget *widget,
+                         GladeEditor *editor)
 {
   /* Widget we were viewing was removed from project,
    * detatch from editor.
@@ -732,8 +712,9 @@ glade_editor_removed_cb (GladeProject * project,
 
 
 static void
-glade_editor_load_editable (GladeEditor * editor,
-                            GladeWidget * widget, GladeEditorPageType type)
+glade_editor_load_editable (GladeEditor *editor,
+                            GladeWidget *widget,
+                            GladeEditorPageType type)
 {
   GtkWidget   *editable;
   GladeWidget *parent = glade_widget_get_parent (widget);
@@ -766,7 +747,7 @@ glade_editor_load_editable (GladeEditor * editor,
 }
 
 static void
-clear_editables (GladeEditor * editor)
+clear_editables (GladeEditor *editor)
 {
   GladeEditable *editable;
   GList *l;
@@ -779,7 +760,7 @@ clear_editables (GladeEditor * editor)
 }
 
 static void
-glade_editor_load_widget_real (GladeEditor * editor, GladeWidget * widget)
+glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 {
   GladeWidgetAdaptor *adaptor;
   GladeProject *project;
@@ -890,7 +871,7 @@ glade_editor_new (void)
  * Load @widget into @editor. If @widget is %NULL, clear the editor.
  */
 void
-glade_editor_load_widget (GladeEditor * editor, GladeWidget * widget)
+glade_editor_load_widget (GladeEditor *editor, GladeWidget *widget)
 {
   g_return_if_fail (GLADE_IS_EDITOR (editor));
   g_return_if_fail (widget == NULL || GLADE_IS_WIDGET (widget));
@@ -902,8 +883,9 @@ glade_editor_load_widget (GladeEditor * editor, GladeWidget * widget)
 }
 
 static void
-query_dialog_style_set_cb (GtkWidget * dialog,
-                           GtkStyle * previous_style, gpointer user_data)
+query_dialog_style_set_cb (GtkWidget *dialog,
+                           GtkStyle *previous_style,
+                           gpointer user_data)
 {
   GtkWidget *content_area, *action_area;
 
@@ -916,7 +898,7 @@ query_dialog_style_set_cb (GtkWidget * dialog,
 }
 
 gboolean
-glade_editor_query_dialog (GladeWidget * widget)
+glade_editor_query_dialog (GladeWidget *widget)
 {
   GladeWidgetAdaptor *adaptor;
   GtkWidget *dialog, *editable, *content_area;
@@ -986,8 +968,9 @@ enum
 
 
 static void
-glade_editor_reset_toggled (GtkCellRendererToggle * cell,
-                            gchar * path_str, GtkTreeModel * model)
+glade_editor_reset_toggled (GtkCellRendererToggle *cell,
+                            gchar *path_str,
+                            GtkTreeModel *model)
 {
   GtkTreePath *path = gtk_tree_path_new_from_string (path_str);
   GtkTreeIter iter;
@@ -1002,7 +985,7 @@ glade_editor_reset_toggled (GtkCellRendererToggle * cell,
 }
 
 static GtkWidget *
-glade_editor_reset_view (GladeEditor * editor)
+glade_editor_reset_view (GladeEditor *editor)
 {
   GtkWidget *view_widget;
   GtkTreeModel *model;
@@ -1069,9 +1052,9 @@ glade_editor_reset_view (GladeEditor * editor)
 }
 
 static void
-glade_editor_populate_reset_view (GladeEditor * editor, GtkTreeView * tree_view)
+glade_editor_populate_reset_view (GladeEditor *editor, GtkTreeView *tree_view)
 {
-  GtkTreeStore *model = (GtkTreeStore *) gtk_tree_view_get_model (tree_view);
+  GtkTreeStore *model = GTK_TREE_STORE (gtk_tree_view_get_model (tree_view));
   GtkTreeIter property_iter, general_iter, common_iter, atk_iter, *iter;
   GList *list;
   GladeProperty *property;
@@ -1136,8 +1119,8 @@ glade_editor_populate_reset_view (GladeEditor * editor, GtkTreeView * tree_view)
 }
 
 static gboolean
-glade_editor_reset_selection_changed_cb (GtkTreeSelection * selection,
-                                         GtkTextView * desc_view)
+glade_editor_reset_selection_changed_cb (GtkTreeSelection *selection,
+                                         GtkTextView *desc_view)
 {
   GtkTreeIter iter;
   GladeProperty *property = NULL;
@@ -1167,9 +1150,10 @@ glade_editor_reset_selection_changed_cb (GtkTreeSelection * selection,
 }
 
 static gboolean
-glade_editor_reset_foreach_selection (GtkTreeModel * model,
-                                      GtkTreePath * path,
-                                      GtkTreeIter * iter, gboolean select)
+glade_editor_reset_foreach_selection (GtkTreeModel *model,
+                                      GtkTreePath *path,
+                                      GtkTreeIter *iter,
+                                      gboolean select)
 {
   gboolean def;
 
@@ -1183,8 +1167,8 @@ glade_editor_reset_foreach_selection (GtkTreeModel * model,
 
 
 static void
-glade_editor_reset_select_all_clicked (GtkButton * button,
-                                       GtkTreeView * tree_view)
+glade_editor_reset_select_all_clicked (GtkButton *button,
+                                       GtkTreeView *tree_view)
 {
   GtkTreeModel *model = gtk_tree_view_get_model (tree_view);
   gtk_tree_model_foreach (model, (GtkTreeModelForeachFunc)
@@ -1193,8 +1177,8 @@ glade_editor_reset_select_all_clicked (GtkButton * button,
 }
 
 static void
-glade_editor_reset_unselect_all_clicked (GtkButton * button,
-                                         GtkTreeView * tree_view)
+glade_editor_reset_unselect_all_clicked (GtkButton *button,
+                                         GtkTreeView *tree_view)
 {
   GtkTreeModel *model = gtk_tree_view_get_model (tree_view);
   gtk_tree_model_foreach (model, (GtkTreeModelForeachFunc)
@@ -1203,10 +1187,10 @@ glade_editor_reset_unselect_all_clicked (GtkButton * button,
 }
 
 static gboolean
-glade_editor_reset_accumulate_selected_props (GtkTreeModel * model,
-                                              GtkTreePath * path,
-                                              GtkTreeIter * iter,
-                                              GList ** accum)
+glade_editor_reset_accumulate_selected_props (GtkTreeModel *model,
+                                              GtkTreePath *path,
+                                              GtkTreeIter *iter,
+                                              GList **accum)
 {
   GladeProperty *property;
   gboolean enabled, def;
@@ -1226,7 +1210,7 @@ glade_editor_reset_accumulate_selected_props (GtkTreeModel * model,
 }
 
 static GList *
-glade_editor_reset_get_selected_props (GtkTreeModel * model)
+glade_editor_reset_get_selected_props (GtkTreeModel *model)
 {
   GList *ret = NULL;
 
@@ -1237,7 +1221,7 @@ glade_editor_reset_get_selected_props (GtkTreeModel * model)
 }
 
 static void
-glade_editor_reset_properties (GList * props)
+glade_editor_reset_properties (GList *props)
 {
   GList *list, *sdata_list = NULL;
   GCSetPropData *sdata;
@@ -1390,7 +1374,7 @@ glade_editor_reset_dialog (GladeEditor *editor)
 }
 
 void
-glade_editor_show_info (GladeEditor * editor)
+glade_editor_show_info (GladeEditor *editor)
 {
   g_return_if_fail (GLADE_IS_EDITOR (editor));
 
@@ -1404,7 +1388,7 @@ glade_editor_show_info (GladeEditor * editor)
 }
 
 void
-glade_editor_hide_info (GladeEditor * editor)
+glade_editor_hide_info (GladeEditor *editor)
 {
   g_return_if_fail (GLADE_IS_EDITOR (editor));
 
@@ -1427,7 +1411,7 @@ glade_editor_hide_info (GladeEditor * editor)
  * Returns: the newly created dialog window
  */
 GtkWidget *
-glade_editor_dialog_for_widget (GladeWidget * widget)
+glade_editor_dialog_for_widget (GladeWidget *widget)
 {
   GtkWidget *window, *editor;
   gchar *title, *prj_name;

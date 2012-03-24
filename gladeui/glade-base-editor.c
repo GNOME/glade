@@ -113,19 +113,19 @@ enum
   N_PROPERTIES
 };
 
+G_DEFINE_TYPE (GladeBaseEditor, glade_base_editor, GTK_TYPE_VBOX)
+
 static GParamSpec *properties[N_PROPERTIES];
 static guint glade_base_editor_signals[LAST_SIGNAL] = { 0 };
 
-static GtkVBoxClass *parent_class = NULL;
-
-static void glade_base_editor_set_container (GladeBaseEditor * editor,
-                                             GObject * container);
-static void glade_base_editor_block_callbacks (GladeBaseEditor * editor,
+static void glade_base_editor_set_container (GladeBaseEditor *editor,
+                                             GObject *container);
+static void glade_base_editor_block_callbacks (GladeBaseEditor *editor,
                                                gboolean block);
 
 
 static void
-reset_child_types (GladeBaseEditor * editor)
+reset_child_types (GladeBaseEditor *editor)
 {
   GList *l;
   ChildTypeTab *tab;
@@ -142,7 +142,7 @@ reset_child_types (GladeBaseEditor * editor)
 
 
 static gint
-sort_type_by_hierarchy (ChildTypeTab * a, ChildTypeTab * b)
+sort_type_by_hierarchy (ChildTypeTab *a, ChildTypeTab *b)
 {
   if (g_type_is_a (a->parent_type, b->parent_type))
     return -1;
@@ -151,7 +151,7 @@ sort_type_by_hierarchy (ChildTypeTab * a, ChildTypeTab * b)
 }
 
 static GtkTreeModel *
-get_children_model_for_type (GladeBaseEditor * editor, GType type)
+get_children_model_for_type (GladeBaseEditor *editor, GType type)
 {
   GList *l;
   for (l = editor->priv->child_types; l; l = l->next)
@@ -164,7 +164,7 @@ get_children_model_for_type (GladeBaseEditor * editor, GType type)
 }
 
 static GtkTreeModel *
-get_children_model_for_child_type (GladeBaseEditor * editor, GType type)
+get_children_model_for_child_type (GladeBaseEditor *editor, GType type)
 {
   GList *l;
   GtkTreeModel *model = NULL;
@@ -197,8 +197,9 @@ get_children_model_for_child_type (GladeBaseEditor * editor, GType type)
 }
 
 static gboolean
-glade_base_editor_get_type_info (GladeBaseEditor * e,
-                                 GtkTreeIter * retiter, GType child_type, ...)
+glade_base_editor_get_type_info (GladeBaseEditor *e,
+                                 GtkTreeIter *retiter,
+                                 GType child_type, ...)
 {
   GtkTreeModel *model;
   GtkTreeIter iter;
@@ -231,8 +232,8 @@ glade_base_editor_get_type_info (GladeBaseEditor * e,
 
 
 static gchar *
-glade_base_editor_get_display_name (GladeBaseEditor * editor,
-                                    GladeWidget * gchild)
+glade_base_editor_get_display_name (GladeBaseEditor *editor,
+                                    GladeWidget *gchild)
 {
   gchar *retval;
   g_signal_emit (editor,
@@ -242,8 +243,9 @@ glade_base_editor_get_display_name (GladeBaseEditor * editor,
 }
 
 static void
-glade_base_editor_fill_store_real (GladeBaseEditor * e,
-                                   GladeWidget * gwidget, GtkTreeIter * parent)
+glade_base_editor_fill_store_real (GladeBaseEditor *e,
+                                   GladeWidget *gwidget,
+                                   GtkTreeIter *parent)
 {
   GList *children, *l;
   GtkTreeIter iter;
@@ -253,7 +255,7 @@ glade_base_editor_fill_store_real (GladeBaseEditor * e,
   for (l = children; l; l = l->next)
     {
       GladeWidget *gchild;
-      GObject     *child = (GObject *) l->data;
+      GObject     *child = l->data;
       gchar       *type_name = NULL, *name;
 
       gchild = glade_widget_get_from_gobject (child);
@@ -291,7 +293,7 @@ glade_base_editor_fill_store_real (GladeBaseEditor * e,
 }
 
 static void
-glade_base_editor_fill_store (GladeBaseEditor * e)
+glade_base_editor_fill_store (GladeBaseEditor *e)
 {
   gtk_tree_store_clear (GTK_TREE_STORE (e->priv->model));
   gtk_tree_view_set_model (GTK_TREE_VIEW (e->priv->treeview), NULL);
@@ -303,7 +305,7 @@ glade_base_editor_fill_store (GladeBaseEditor * e)
 }
 
 static gboolean
-glade_base_editor_get_child_selected (GladeBaseEditor * e, GtkTreeIter * iter)
+glade_base_editor_get_child_selected (GladeBaseEditor *e, GtkTreeIter *iter)
 {
   GtkTreeSelection *sel =
       gtk_tree_view_get_selection (GTK_TREE_VIEW (e->priv->treeview));
@@ -312,14 +314,15 @@ glade_base_editor_get_child_selected (GladeBaseEditor * e, GtkTreeIter * iter)
 
 /* Forward declaration for glade_base_editor_project_widget_name_changed */
 static void
-glade_base_editor_project_widget_name_changed (GladeProject * project,
-                                               GladeWidget * widget,
-                                               GladeBaseEditor * editor);
+glade_base_editor_project_widget_name_changed (GladeProject *project,
+                                               GladeWidget *widget,
+                                               GladeBaseEditor *editor);
 
 
 static GladeWidget *
-glade_base_editor_delegate_build_child (GladeBaseEditor * editor,
-                                        GladeWidget * parent, GType type)
+glade_base_editor_delegate_build_child (GladeBaseEditor *editor,
+                                        GladeWidget *parent,
+                                        GType type)
 {
   GladeWidget *child = NULL;
   g_signal_emit (editor, glade_base_editor_signals[SIGNAL_BUILD_CHILD],
@@ -328,9 +331,9 @@ glade_base_editor_delegate_build_child (GladeBaseEditor * editor,
 }
 
 static gboolean
-glade_base_editor_delegate_delete_child (GladeBaseEditor * editor,
-                                         GladeWidget * parent,
-                                         GladeWidget * child)
+glade_base_editor_delegate_delete_child (GladeBaseEditor *editor,
+                                         GladeWidget *parent,
+                                         GladeWidget *child)
 {
   gboolean retval;
 
@@ -341,7 +344,7 @@ glade_base_editor_delegate_delete_child (GladeBaseEditor * editor,
 }
 
 static void
-glade_base_editor_name_activate (GtkEntry * entry, GladeWidget * gchild)
+glade_base_editor_name_activate (GtkEntry *entry, GladeWidget *gchild)
 {
   const gchar *text = gtk_entry_get_text (GTK_ENTRY (entry));
   GladeBaseEditor *editor = g_object_get_data (G_OBJECT (entry), "editor");
@@ -357,8 +360,9 @@ glade_base_editor_name_activate (GtkEntry * entry, GladeWidget * gchild)
 }
 
 static void
-glade_base_editor_table_attach (GladeBaseEditor * e,
-                                GtkWidget * child1, GtkWidget * child2)
+glade_base_editor_table_attach (GladeBaseEditor *e,
+                                GtkWidget *child1,
+                                GtkWidget *child2)
 {
   GtkGrid *table = GTK_GRID (e->priv->table);
   gint row = e->priv->row;
@@ -380,7 +384,7 @@ glade_base_editor_table_attach (GladeBaseEditor * e,
 }
 
 static void
-glade_base_editor_clear (GladeBaseEditor * editor)
+glade_base_editor_clear (GladeBaseEditor *editor)
 {
   GladeBaseEditorPrivate *e = editor->priv;
 
@@ -392,8 +396,8 @@ glade_base_editor_clear (GladeBaseEditor * editor)
 }
 
 static void
-glade_base_editor_treeview_cursor_changed (GtkTreeView * treeview,
-                                           GladeBaseEditor * editor)
+glade_base_editor_treeview_cursor_changed (GtkTreeView *treeview,
+                                           GladeBaseEditor *editor)
 {
   GladeBaseEditorPrivate *e = editor->priv;
   GtkTreeIter iter;
@@ -435,7 +439,7 @@ glade_base_editor_update_properties_idle (gpointer data)
 
 /* XXX Can we make it crisper by removing this idle ?? */
 static void
-glade_base_editor_update_properties (GladeBaseEditor * editor)
+glade_base_editor_update_properties (GladeBaseEditor *editor)
 {
   g_return_if_fail (GLADE_IS_BASE_EDITOR (editor));
 
@@ -445,7 +449,7 @@ glade_base_editor_update_properties (GladeBaseEditor * editor)
 }
 
 static void
-glade_base_editor_set_cursor (GladeBaseEditor * e, GtkTreeIter * iter)
+glade_base_editor_set_cursor (GladeBaseEditor *e, GtkTreeIter *iter)
 {
   GtkTreePath *path;
   GtkTreeIter real_iter;
@@ -462,8 +466,9 @@ glade_base_editor_set_cursor (GladeBaseEditor * e, GtkTreeIter * iter)
 }
 
 static gboolean
-glade_base_editor_find_child_real (GladeBaseEditor * e,
-                                   GladeWidget * gchild, GtkTreeIter * iter)
+glade_base_editor_find_child_real (GladeBaseEditor *e,
+                                   GladeWidget *gchild,
+                                   GtkTreeIter *iter)
 {
   GtkTreeModel *model = e->priv->model;
   GtkTreeIter child_iter;
@@ -490,8 +495,9 @@ glade_base_editor_find_child_real (GladeBaseEditor * e,
 }
 
 static gboolean
-glade_base_editor_find_child (GladeBaseEditor * e,
-                              GladeWidget * child, GtkTreeIter * iter)
+glade_base_editor_find_child (GladeBaseEditor *e,
+                              GladeWidget *child,
+                              GtkTreeIter *iter)
 {
   if (gtk_tree_model_get_iter_first (e->priv->model, iter))
     return glade_base_editor_find_child_real (e, child, iter);
@@ -500,7 +506,7 @@ glade_base_editor_find_child (GladeBaseEditor * e,
 }
 
 static void
-glade_base_editor_select_child (GladeBaseEditor * e, GladeWidget * child)
+glade_base_editor_select_child (GladeBaseEditor *e, GladeWidget *child)
 {
   GtkTreeIter iter;
 
@@ -509,8 +515,9 @@ glade_base_editor_select_child (GladeBaseEditor * e, GladeWidget * child)
 }
 
 static void
-glade_base_editor_child_change_type (GladeBaseEditor * editor,
-                                     GtkTreeIter * iter, GType type)
+glade_base_editor_child_change_type (GladeBaseEditor *editor,
+                                     GtkTreeIter *iter,
+                                     GType type)
 {
   GladeWidget *gchild;
   GObject *child;
@@ -565,7 +572,7 @@ glade_base_editor_child_change_type (GladeBaseEditor * editor,
 }
 
 static void
-glade_base_editor_type_changed (GtkComboBox * widget, GladeBaseEditor * e)
+glade_base_editor_type_changed (GtkComboBox *widget, GladeBaseEditor *e)
 {
   GtkTreeIter iter, combo_iter;
   GType type;
@@ -582,10 +589,10 @@ glade_base_editor_type_changed (GtkComboBox * widget, GladeBaseEditor * e)
 }
 
 static void
-glade_base_editor_child_type_edited (GtkCellRendererText * cell,
-                                     const gchar * path_string,
-                                     const gchar * new_text,
-                                     GladeBaseEditor * editor)
+glade_base_editor_child_type_edited (GtkCellRendererText *cell,
+                                     const gchar *path_string,
+                                     const gchar *new_text,
+                                     GladeBaseEditor *editor)
 {
   GladeBaseEditorPrivate *e = editor->priv;
   GtkTreeModel *child_class;
@@ -639,8 +646,8 @@ glade_base_editor_child_type_edited (GtkCellRendererText * cell,
 }
 
 static void
-glade_base_editor_reorder_children (GladeBaseEditor * editor,
-                                    GtkTreeIter * child)
+glade_base_editor_reorder_children (GladeBaseEditor *editor,
+                                    GtkTreeIter *child)
 {
   GtkTreeModel *model = editor->priv->model;
   GladeWidget *gchild;
@@ -756,8 +763,8 @@ glade_base_editor_add_child (GladeBaseEditor       *editor,
 
 
 static void
-glade_base_editor_add_item_activate (GtkMenuItem * menuitem,
-                                     GladeBaseEditor * e)
+glade_base_editor_add_item_activate (GtkMenuItem *menuitem,
+                                     GladeBaseEditor *e)
 {
   GObject *item = G_OBJECT (menuitem);
   GType type = GPOINTER_TO_INT (g_object_get_data (item, "object_type"));
@@ -768,7 +775,7 @@ glade_base_editor_add_item_activate (GtkMenuItem * menuitem,
 }
 
 static GtkWidget *
-glade_base_editor_popup (GladeBaseEditor * editor, GladeWidget * widget)
+glade_base_editor_popup (GladeBaseEditor *editor, GladeWidget *widget)
 {
   GtkWidget *popup, *item;
   GtkTreeModel *model;
@@ -853,8 +860,9 @@ glade_base_editor_popup (GladeBaseEditor * editor, GladeWidget * widget)
 }
 
 static gint
-glade_base_editor_popup_handler (GtkWidget * treeview,
-                                 GdkEventButton * event, GladeBaseEditor * e)
+glade_base_editor_popup_handler (GtkWidget *treeview,
+                                 GdkEventButton *event,
+                                 GladeBaseEditor *e)
 {
   GtkTreePath *path;
   GtkWidget *popup;
@@ -891,14 +899,14 @@ glade_base_editor_popup_handler (GtkWidget * treeview,
 
 
 static void
-glade_base_editor_add_activate (GtkButton * button, GladeBaseEditor * e)
+glade_base_editor_add_activate (GtkButton *button, GladeBaseEditor *e)
 {
   if (e->priv->add_type)
     glade_base_editor_add_child (e, e->priv->add_type, ADD_ROOT);
 }
 
 static void
-glade_base_editor_delete_child (GladeBaseEditor * e)
+glade_base_editor_delete_child (GladeBaseEditor *e)
 {
   GladeWidget *child, *gparent;
   GtkTreeIter iter, parent;
@@ -927,9 +935,9 @@ glade_base_editor_delete_child (GladeBaseEditor * e)
 
 
 static gboolean
-glade_base_editor_treeview_key_press_event (GtkWidget * widget,
-                                            GdkEventKey * event,
-                                            GladeBaseEditor * e)
+glade_base_editor_treeview_key_press_event (GtkWidget *widget,
+                                            GdkEventKey *event,
+                                            GladeBaseEditor *e)
 {
   if (event->keyval == GDK_KEY_Delete)
     glade_base_editor_delete_child (e);
@@ -938,14 +946,15 @@ glade_base_editor_treeview_key_press_event (GtkWidget * widget,
 }
 
 static void
-glade_base_editor_delete_activate (GtkButton * button, GladeBaseEditor * e)
+glade_base_editor_delete_activate (GtkButton *button, GladeBaseEditor *e)
 {
   glade_base_editor_delete_child (e);
 }
 
 static gboolean
-glade_base_editor_is_child (GladeBaseEditor * e,
-                            GladeWidget * gchild, gboolean valid_type)
+glade_base_editor_is_child (GladeBaseEditor *e,
+                            GladeWidget *gchild,
+                            gboolean valid_type)
 {
   GladeWidget *gcontainer = glade_widget_get_parent (gchild);
 
@@ -983,7 +992,7 @@ glade_base_editor_is_child (GladeBaseEditor * e,
 static gboolean
 glade_base_editor_update_treeview_idle (gpointer data)
 {
-  GladeBaseEditor *e = ((GladeBaseEditor *) data);
+  GladeBaseEditor *e = data;
   GList *selection = glade_project_selection_get (e->priv->project);
 
   glade_base_editor_block_callbacks (e, TRUE);
@@ -1008,9 +1017,9 @@ glade_base_editor_update_treeview_idle (gpointer data)
 }
 
 static void
-glade_base_editor_project_widget_name_changed (GladeProject * project,
-                                               GladeWidget * widget,
-                                               GladeBaseEditor * editor)
+glade_base_editor_project_widget_name_changed (GladeProject *project,
+                                               GladeWidget *widget,
+                                               GladeBaseEditor *editor)
 {
   GladeWidget *selected_child;
   GtkTreeIter iter;
@@ -1027,13 +1036,13 @@ glade_base_editor_project_widget_name_changed (GladeProject * project,
 }
 
 static void
-glade_base_editor_project_closed (GladeProject * project, GladeBaseEditor * e)
+glade_base_editor_project_closed (GladeProject *project, GladeBaseEditor *e)
 {
   glade_base_editor_set_container (e, NULL);
 }
 
 static void
-glade_base_editor_reorder (GladeBaseEditor * editor, GtkTreeIter * iter)
+glade_base_editor_reorder (GladeBaseEditor *editor, GtkTreeIter *iter)
 {
   GladeBaseEditorPrivate *e = editor->priv;
   GladeWidget *gchild, *gparent;
@@ -1073,7 +1082,7 @@ glade_base_editor_reorder (GladeBaseEditor * editor, GtkTreeIter * iter)
 static gboolean
 glade_base_editor_drag_and_drop_idle (gpointer data)
 {
-  GladeBaseEditor *e = (GladeBaseEditor *) data;
+  GladeBaseEditor *e = data;
 
   glade_base_editor_reorder (e, &e->priv->iter);
   gtk_tree_view_expand_all (GTK_TREE_VIEW (e->priv->treeview));
@@ -1084,9 +1093,10 @@ glade_base_editor_drag_and_drop_idle (gpointer data)
 }
 
 static void
-glade_base_editor_row_inserted (GtkTreeModel * model,
-                                GtkTreePath * path,
-                                GtkTreeIter * iter, GladeBaseEditor * e)
+glade_base_editor_row_inserted (GtkTreeModel *model,
+                                GtkTreePath *path,
+                                GtkTreeIter *iter,
+                                GladeBaseEditor *e)
 {
   e->priv->iter = *iter;
   glade_base_editor_block_callbacks (e, TRUE);
@@ -1094,9 +1104,9 @@ glade_base_editor_row_inserted (GtkTreeModel * model,
 }
 
 static void
-glade_base_editor_project_remove_widget (GladeProject * project,
-                                         GladeWidget * widget,
-                                         GladeBaseEditor * e)
+glade_base_editor_project_remove_widget (GladeProject *project,
+                                         GladeWidget *widget,
+                                         GladeBaseEditor *e)
 {
   if (widget == e->priv->gcontainer)
     {
@@ -1120,8 +1130,9 @@ glade_base_editor_project_remove_widget (GladeProject * project,
 }
 
 static void
-glade_base_editor_project_add_widget (GladeProject * project,
-                                      GladeWidget * widget, GladeBaseEditor * e)
+glade_base_editor_project_add_widget (GladeProject *project,
+                                      GladeWidget *widget,
+                                      GladeBaseEditor *e)
 {
   if (e->priv->updating_treeview)
     return;
@@ -1138,11 +1149,12 @@ glade_base_editor_project_add_widget (GladeProject * project,
 }
 
 static gboolean
-glade_base_editor_update_display_name (GtkTreeModel * model,
-                                       GtkTreePath * path,
-                                       GtkTreeIter * iter, gpointer data)
+glade_base_editor_update_display_name (GtkTreeModel *model,
+                                       GtkTreePath *path,
+                                       GtkTreeIter *iter,
+                                       gpointer data)
 {
-  GladeBaseEditor *editor = (GladeBaseEditor *) data;
+  GladeBaseEditor *editor = data;
   GladeWidget *gchild;
   gchar *name;
 
@@ -1159,9 +1171,10 @@ glade_base_editor_update_display_name (GtkTreeModel * model,
 }
 
 static void
-glade_base_editor_project_changed (GladeProject * project,
-                                   GladeCommand * command,
-                                   gboolean forward, GladeBaseEditor * editor)
+glade_base_editor_project_changed (GladeProject *project,
+                                   GladeCommand *command,
+                                   gboolean forward,
+                                   GladeBaseEditor *editor)
 {
   gtk_tree_model_foreach (editor->priv->model,
                           glade_base_editor_update_display_name, editor);
@@ -1204,7 +1217,7 @@ glade_base_editor_project_disconnect (GladeBaseEditor * editor)
 }
 
 static void
-glade_base_editor_set_container (GladeBaseEditor * editor, GObject * container)
+glade_base_editor_set_container (GladeBaseEditor *editor, GObject *container)
 {
   GladeBaseEditorPrivate *e = editor->priv;
 
@@ -1261,17 +1274,17 @@ glade_base_editor_set_container (GladeBaseEditor * editor, GObject * container)
 
 /*************************** GladeBaseEditor Class ****************************/
 static void
-glade_base_editor_finalize (GObject * object)
+glade_base_editor_finalize (GObject *object)
 {
   GladeBaseEditor *cobj = GLADE_BASE_EDITOR (object);
 
   g_free (cobj->priv);
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  G_OBJECT_CLASS (glade_base_editor_parent_class)->finalize (object);
 }
 
 static void
-glade_base_editor_dispose (GObject * object)
+glade_base_editor_dispose (GObject *object)
 {
   GladeBaseEditor *cobj = GLADE_BASE_EDITOR (object);
 
@@ -1280,13 +1293,14 @@ glade_base_editor_dispose (GObject * object)
   glade_base_editor_project_disconnect (cobj);
   cobj->priv->project = NULL;
 
-  G_OBJECT_CLASS (parent_class)->dispose (object);
+  G_OBJECT_CLASS (glade_base_editor_parent_class)->dispose (object);
 }
 
 static void
-glade_base_editor_set_property (GObject * object,
+glade_base_editor_set_property (GObject *object,
                                 guint prop_id,
-                                const GValue * value, GParamSpec * pspec)
+                                const GValue *value,
+                                GParamSpec *pspec)
 {
   GladeBaseEditor *editor = GLADE_BASE_EDITOR (object);
 
@@ -1302,9 +1316,10 @@ glade_base_editor_set_property (GObject * object,
 }
 
 static void
-glade_base_editor_get_property (GObject * object,
+glade_base_editor_get_property (GObject *object,
                                 guint prop_id,
-                                GValue * value, GParamSpec * pspec)
+                                GValue *value,
+                                GParamSpec *pspec)
 {
   GladeBaseEditor *editor = GLADE_BASE_EDITOR (object);
 
@@ -1322,8 +1337,9 @@ glade_base_editor_get_property (GObject * object,
 
 /* Default handlers */
 static gboolean
-glade_base_editor_change_type (GladeBaseEditor * editor,
-                               GladeWidget * gchild, GType type)
+glade_base_editor_change_type (GladeBaseEditor *editor,
+                               GladeWidget *gchild,
+                               GType type)
 {
   GladeWidget *parent, *gchild_new;
   GList *children, *l;
@@ -1411,15 +1427,16 @@ glade_base_editor_change_type (GladeBaseEditor * editor,
 }
 
 static gchar *
-glade_base_editor_get_display_name_impl (GladeBaseEditor * editor,
-                                         GladeWidget * gchild)
+glade_base_editor_get_display_name_impl (GladeBaseEditor *editor,
+                                         GladeWidget *gchild)
 {
   return g_strdup (glade_widget_get_name (gchild));
 }
 
 static GladeWidget *
-glade_base_editor_build_child (GladeBaseEditor * editor,
-                               GladeWidget * gparent, GType type)
+glade_base_editor_build_child (GladeBaseEditor *editor,
+                               GladeWidget *gparent,
+                               GType type)
 {
   return glade_command_create (glade_widget_adaptor_get_by_type (type),
                                gparent, NULL,
@@ -1427,8 +1444,9 @@ glade_base_editor_build_child (GladeBaseEditor * editor,
 }
 
 static gboolean
-glade_base_editor_move_child (GladeBaseEditor * editor,
-                              GladeWidget * gparent, GladeWidget * gchild)
+glade_base_editor_move_child (GladeBaseEditor *editor,
+                              GladeWidget *gparent,
+                              GladeWidget *gchild)
 {
   GList list = { 0, };
 
@@ -1442,9 +1460,9 @@ glade_base_editor_move_child (GladeBaseEditor * editor,
 }
 
 static gboolean
-glade_base_editor_delete_child_impl (GladeBaseEditor * editor,
-                                     GladeWidget * gparent,
-                                     GladeWidget * gchild)
+glade_base_editor_delete_child_impl (GladeBaseEditor *editor,
+                                     GladeWidget *gparent,
+                                     GladeWidget *gchild)
 {
   GList list = { 0, };
 
@@ -1455,11 +1473,11 @@ glade_base_editor_delete_child_impl (GladeBaseEditor * editor,
 }
 
 static void
-glade_base_editor_class_init (GladeBaseEditorClass * klass)
+glade_base_editor_class_init (GladeBaseEditorClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  parent_class = g_type_class_peek_parent (klass);
+  glade_base_editor_parent_class = g_type_class_peek_parent (klass);
 
   object_class->finalize = glade_base_editor_finalize;
   object_class->dispose = glade_base_editor_dispose;
@@ -1591,7 +1609,7 @@ glade_base_editor_class_init (GladeBaseEditorClass * klass)
 }
 
 static void
-glade_base_editor_block_callbacks (GladeBaseEditor * editor, gboolean block)
+glade_base_editor_block_callbacks (GladeBaseEditor *editor, gboolean block)
 {
   GladeBaseEditorPrivate *e = editor->priv;
   if (block)
@@ -1632,7 +1650,7 @@ glade_base_editor_block_callbacks (GladeBaseEditor * editor, gboolean block)
 }
 
 static void
-glade_base_editor_realize_callback (GtkWidget * widget, gpointer user_data)
+glade_base_editor_realize_callback (GtkWidget *widget, gpointer user_data)
 {
   GladeBaseEditor *editor = GLADE_BASE_EDITOR (widget);
 
@@ -1646,9 +1664,10 @@ glade_base_editor_realize_callback (GtkWidget * widget, gpointer user_data)
 
 
 static void
-glade_base_editor_switch_page (GtkNotebook * notebook,
-                               GtkWidget * page,
-                               guint page_num, GladeBaseEditor * editor)
+glade_base_editor_switch_page (GtkNotebook *notebook,
+                               GtkWidget *page,
+                               guint page_num,
+                               GladeBaseEditor *editor)
 {
   GladeBaseEditorPrivate *e = editor->priv;
 
@@ -1675,7 +1694,7 @@ glade_base_editor_switch_page (GtkNotebook * notebook,
 
 
 static void
-glade_base_editor_init (GladeBaseEditor * editor)
+glade_base_editor_init (GladeBaseEditor *editor)
 {
   GladeBaseEditorPrivate *e;
   GtkCellRenderer *renderer;
@@ -1838,32 +1857,6 @@ glade_base_editor_init (GladeBaseEditor * editor)
 }
 
 /********************************* Public API *********************************/
-GType
-glade_base_editor_get_type ()
-{
-  static GType type = 0;
-
-  if (type == 0)
-    {
-      static const GTypeInfo our_info = {
-        sizeof (GladeBaseEditorClass),
-        NULL,
-        NULL,
-        (GClassInitFunc) glade_base_editor_class_init,
-        NULL,
-        NULL,
-        sizeof (GladeBaseEditor),
-        0,
-        (GInstanceInitFunc) glade_base_editor_init,
-      };
-
-      type = g_type_register_static (GTK_TYPE_VBOX, "GladeBaseEditor",
-                                     &our_info, 0);
-    }
-
-  return type;
-}
-
 /**
  * glade_base_editor_new:
  * @container: a container this new editor will edit.
@@ -1879,7 +1872,7 @@ glade_base_editor_get_type ()
  * Returns: a new GladeBaseEditor.
  */
 GladeBaseEditor *
-glade_base_editor_new (GObject * container, GladeEditable * main_editable, ...)
+glade_base_editor_new (GObject *container, GladeEditable *main_editable, ...)
 {
   ChildTypeTab *child_type;
   GladeWidget *gcontainer;
@@ -1966,8 +1959,7 @@ glade_base_editor_new (GObject * container, GladeEditable * main_editable, ...)
  *
  */
 void
-glade_base_editor_append_types (GladeBaseEditor * editor, GType parent_type,
-                                ...)
+glade_base_editor_append_types (GladeBaseEditor *editor, GType parent_type, ...)
 {
   ChildTypeTab *child_type;
   GtkTreeIter iter;
@@ -2009,8 +2001,8 @@ glade_base_editor_append_types (GladeBaseEditor * editor, GType parent_type,
  * NOTE: This function is intended to be used in "child-selected" callbacks
  */
 void
-glade_base_editor_add_default_properties (GladeBaseEditor * editor,
-                                          GladeWidget * gchild)
+glade_base_editor_add_default_properties (GladeBaseEditor *editor,
+                                          GladeWidget *gchild)
 {
   GtkTreeIter combo_iter;
   GtkWidget *label, *entry;
@@ -2076,8 +2068,9 @@ glade_base_editor_add_default_properties (GladeBaseEditor * editor,
  * NOTE: This function is intended to be used in "child-selected" callbacks
  */
 void
-glade_base_editor_add_properties (GladeBaseEditor * editor,
-                                  GladeWidget * gchild, gboolean packing, ...)
+glade_base_editor_add_properties (GladeBaseEditor *editor,
+                                  GladeWidget *gchild,
+                                  gboolean packing, ...)
 {
   GladeEditorProperty *eprop;
   va_list args;
@@ -2114,8 +2107,9 @@ glade_base_editor_add_properties (GladeBaseEditor * editor,
  * NOTE: This function is intended to be used in "child-selected" callbacks
  */
 void
-glade_base_editor_add_editable (GladeBaseEditor * editor,
-                                GladeWidget * gchild, GladeEditorPageType page)
+glade_base_editor_add_editable (GladeBaseEditor *editor,
+                                GladeWidget *gchild,
+                                GladeEditorPageType page)
 {
   GladeEditable *editable;
   gint row;
@@ -2150,7 +2144,7 @@ glade_base_editor_add_editable (GladeBaseEditor * editor,
  * NOTE: This function is intended to be used in "child-selected" callbacks
  */
 void
-glade_base_editor_add_label (GladeBaseEditor * editor, gchar * str)
+glade_base_editor_add_label (GladeBaseEditor *editor, gchar *str)
 {
   GtkWidget *label;
   gchar *markup;
@@ -2182,7 +2176,7 @@ glade_base_editor_add_label (GladeBaseEditor * editor, gchar * str)
  * Shows/hide @editor 's signal editor
  */
 void
-glade_base_editor_set_show_signal_editor (GladeBaseEditor * editor,
+glade_base_editor_set_show_signal_editor (GladeBaseEditor *editor,
                                           gboolean val)
 {
   g_return_if_fail (GLADE_IS_BASE_EDITOR (editor));
@@ -2196,7 +2190,7 @@ glade_base_editor_set_show_signal_editor (GladeBaseEditor * editor,
 /* Convenience functions */
 
 static void
-glade_base_editor_help (GtkButton * button, gchar * markup)
+glade_base_editor_help (GtkButton *button, gchar *markup)
 {
   GtkWidget *dialog;
 
@@ -2221,8 +2215,9 @@ glade_base_editor_help (GtkButton * button, gchar * markup)
  * Returns: the newly created window
  */
 GtkWidget *
-glade_base_editor_pack_new_window (GladeBaseEditor * editor,
-                                   gchar * title, gchar * help_markup)
+glade_base_editor_pack_new_window (GladeBaseEditor *editor,
+                                   gchar *title,
+                                   gchar *help_markup)
 {
   GtkWidget *window, *buttonbox, *button;
   gchar *real_title;

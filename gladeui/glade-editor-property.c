@@ -102,18 +102,19 @@ struct _GladeEditorPropertyPrivate
 					*/
 };
 
+G_DEFINE_TYPE (GladeEditorProperty, glade_editor_property, GTK_TYPE_HBOX);
 
 /*******************************************************************************
                                GladeEditorPropertyClass
  *******************************************************************************/
 
 /* declare this forwardly for the finalize routine */
-static void glade_editor_property_load_common (GladeEditorProperty * eprop,
-                                               GladeProperty * property);
+static void glade_editor_property_load_common (GladeEditorProperty *eprop,
+                                               GladeProperty *property);
 
 static void
-glade_editor_property_commit_common (GladeEditorProperty * eprop,
-                                     GValue * value)
+glade_editor_property_commit_common (GladeEditorProperty *eprop,
+                                     GValue *value)
 {
   if (eprop->priv->use_command == FALSE)
     glade_property_set_value (eprop->priv->property, value);
@@ -128,8 +129,8 @@ glade_editor_property_commit_common (GladeEditorProperty * eprop,
 }
 
 void
-glade_editor_property_commit_no_callback (GladeEditorProperty * eprop,
-                                          GValue * value)
+glade_editor_property_commit_no_callback (GladeEditorProperty *eprop,
+                                          GValue *value)
 {
   g_return_if_fail (GLADE_IS_EDITOR_PROPERTY (eprop));
 
@@ -176,11 +177,11 @@ glade_editor_property_loading (GladeEditorProperty *eprop)
 }
 
 static void
-glade_editor_property_tooltip_cb (GladeProperty * property,
-                                  const gchar * tooltip,
-                                  const gchar * insensitive,
-                                  const gchar * support,
-                                  GladeEditorProperty * eprop)
+glade_editor_property_tooltip_cb (GladeProperty *property,
+                                  const gchar *tooltip,
+                                  const gchar *insensitive,
+                                  const gchar *support,
+                                  GladeEditorProperty *eprop)
 {
   const gchar *choice_tooltip;
 
@@ -195,9 +196,9 @@ glade_editor_property_tooltip_cb (GladeProperty * property,
 }
 
 static void
-glade_editor_property_sensitivity_cb (GladeProperty * property,
-                                      GParamSpec * pspec,
-                                      GladeEditorProperty * eprop)
+glade_editor_property_sensitivity_cb (GladeProperty *property,
+                                      GParamSpec *pspec,
+                                      GladeEditorProperty *eprop)
 {
   gboolean sensitive = glade_property_get_sensitive (eprop->priv->property);
   gboolean support_sensitive =
@@ -210,17 +211,17 @@ glade_editor_property_sensitivity_cb (GladeProperty * property,
 }
 
 static void
-glade_editor_property_value_changed_cb (GladeProperty * property,
-                                        GValue * old_value,
-                                        GValue * value,
-                                        GladeEditorProperty * eprop)
+glade_editor_property_value_changed_cb (GladeProperty *property,
+                                        GValue *old_value,
+                                        GValue *value,
+                                        GladeEditorProperty *eprop)
 {
   g_assert (eprop->priv->property == property);
   glade_editor_property_load (eprop, eprop->priv->property);
 }
 
 static void
-glade_editor_property_fix_label (GladeEditorProperty * eprop)
+glade_editor_property_fix_label (GladeEditorProperty *eprop)
 {
   gchar *text = NULL;
 
@@ -246,16 +247,17 @@ glade_editor_property_fix_label (GladeEditorProperty * eprop)
 }
 
 static void
-glade_editor_property_state_cb (GladeProperty * property,
-                                GParamSpec * pspec, GladeEditorProperty * eprop)
+glade_editor_property_state_cb (GladeProperty *property,
+                                GParamSpec *pspec,
+                                GladeEditorProperty *eprop)
 {
   glade_editor_property_fix_label (eprop);
 }
 
 static void
-glade_editor_property_enabled_cb (GladeProperty * property,
-                                  GParamSpec * pspec,
-                                  GladeEditorProperty * eprop)
+glade_editor_property_enabled_cb (GladeProperty *property,
+                                  GParamSpec *pspec,
+                                  GladeEditorProperty *eprop)
 {
   gboolean enabled;
   g_assert (eprop->priv->property == property);
@@ -276,8 +278,8 @@ glade_editor_property_enabled_cb (GladeProperty * property,
 }
 
 static void
-glade_editor_property_enabled_toggled_cb (GtkWidget * check,
-                                          GladeEditorProperty * eprop)
+glade_editor_property_enabled_toggled_cb (GtkWidget *check,
+                                          GladeEditorProperty *eprop)
 {
   glade_property_set_enabled (eprop->priv->property,
                               gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON
@@ -285,9 +287,9 @@ glade_editor_property_enabled_toggled_cb (GtkWidget * check,
 }
 
 static gboolean
-glade_editor_property_button_pressed (GtkWidget * widget,
-                                      GdkEventButton * event,
-                                      GladeEditorProperty * eprop)
+glade_editor_property_button_pressed (GtkWidget *widget,
+                                      GdkEventButton *event,
+                                      GladeEditorProperty *eprop)
 {
   if (glade_popup_is_popup_event (event))
     {
@@ -301,7 +303,7 @@ glade_editor_property_button_pressed (GtkWidget * widget,
 static GObject *
 glade_editor_property_constructor (GType type,
                                    guint n_construct_properties,
-                                   GObjectConstructParam * construct_properties)
+                                   GObjectConstructParam *construct_properties)
 {
   GObject *obj;
   GladeEditorProperty *eprop;
@@ -368,7 +370,7 @@ glade_editor_property_constructor (GType type,
 }
 
 static void
-glade_editor_property_finalize (GObject * object)
+glade_editor_property_finalize (GObject *object)
 {
   GladeEditorProperty *eprop = GLADE_EDITOR_PROPERTY (object);
 
@@ -379,7 +381,7 @@ glade_editor_property_finalize (GObject * object)
 }
 
 static void
-glade_editor_property_dispose (GObject * object)
+glade_editor_property_dispose (GObject *object)
 {
   GladeEditorProperty *eprop = GLADE_EDITOR_PROPERTY (object);
 
@@ -393,9 +395,10 @@ glade_editor_property_dispose (GObject * object)
 }
 
 static void
-glade_editor_property_set_property (GObject * object,
+glade_editor_property_set_property (GObject *object,
                                     guint prop_id,
-                                    const GValue * value, GParamSpec * pspec)
+                                    const GValue *value,
+                                    GParamSpec *pspec)
 {
   GladeEditorProperty *eprop = GLADE_EDITOR_PROPERTY (object);
 
@@ -414,9 +417,10 @@ glade_editor_property_set_property (GObject * object,
 }
 
 static void
-glade_editor_property_real_get_property (GObject * object,
+glade_editor_property_real_get_property (GObject *object,
 					 guint prop_id,
-					 GValue * value, GParamSpec * pspec)
+					 GValue *value,
+                                         GParamSpec *pspec)
 {
   GladeEditorProperty *eprop = GLADE_EDITOR_PROPERTY (object);
 
@@ -435,8 +439,8 @@ glade_editor_property_real_get_property (GObject * object,
 }
 
 static void
-glade_eprop_property_finalized (GladeEditorProperty * eprop,
-                                GladeProperty * where_property_was)
+glade_eprop_property_finalized (GladeEditorProperty *eprop,
+                                GladeProperty *where_property_was)
 {
   eprop->priv->tooltip_id = 0;
   eprop->priv->sensitive_id = 0;
@@ -449,8 +453,8 @@ glade_eprop_property_finalized (GladeEditorProperty * eprop,
 }
 
 static void
-glade_editor_property_load_common (GladeEditorProperty * eprop,
-                                   GladeProperty * property)
+glade_editor_property_load_common (GladeEditorProperty *eprop,
+                                   GladeProperty *property)
 {
   /* NOTE THIS CODE IS FINALIZE SAFE */
 
@@ -551,7 +555,7 @@ glade_editor_property_load_common (GladeEditorProperty * eprop,
 }
 
 static void
-glade_editor_property_init (GladeEditorProperty * eprop)
+glade_editor_property_init (GladeEditorProperty *eprop)
 {
   eprop->priv =
     G_TYPE_INSTANCE_GET_PRIVATE ((eprop),
@@ -561,7 +565,7 @@ glade_editor_property_init (GladeEditorProperty * eprop)
 }
 
 static void
-glade_editor_property_class_init (GladeEditorPropertyClass * eprop_class)
+glade_editor_property_class_init (GladeEditorPropertyClass *eprop_class)
 {
   GObjectClass *object_class;
   g_return_if_fail (eprop_class != NULL);
@@ -636,32 +640,6 @@ glade_editor_property_class_init (GladeEditorPropertyClass * eprop_class)
   g_type_class_add_private (eprop_class, sizeof (GladeEditorPropertyPrivate));
 }
 
-
-GType
-glade_editor_property_get_type (void)
-{
-  static GType property_type = 0;
-
-  if (!property_type)
-    {
-      static const GTypeInfo property_info = {
-        sizeof (GladeEditorPropertyClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) glade_editor_property_class_init,
-        (GClassFinalizeFunc) NULL,
-        NULL,                   /* class_data */
-        sizeof (GladeEditorProperty),
-        0,                      /* n_preallocs */
-        (GInstanceInitFunc) glade_editor_property_init,
-      };
-      property_type =
-          g_type_register_static (GTK_TYPE_HBOX,
-                                  "GladeEditorProperty", &property_info, 0);
-    }
-  return property_type;
-}
-
 /*******************************************************************************
                         GladeEditorPropertyNumericClass
  *******************************************************************************/
@@ -678,14 +656,14 @@ GLADE_MAKE_EPROP (GladeEPropNumeric, glade_eprop_numeric)
 #define GLADE_IS_EPROP_NUMERIC(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_NUMERIC))
 #define GLADE_IS_EPROP_NUMERIC_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_NUMERIC))
 #define GLADE_EPROP_NUMERIC_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_NUMERIC, GladeEPropNumericClass))
-     static void glade_eprop_numeric_finalize (GObject * object)
+     static void glade_eprop_numeric_finalize (GObject *object)
 {
   /* Chain up */
   G_OBJECT_CLASS (editor_property_class)->finalize (object);
 }
 
 static void
-glade_eprop_numeric_load (GladeEditorProperty * eprop, GladeProperty * property)
+glade_eprop_numeric_load (GladeEditorProperty *eprop, GladeProperty *property)
 {
   gfloat val = 0.0F;
   GladeEPropNumeric *eprop_numeric = GLADE_EPROP_NUMERIC (eprop);
@@ -725,7 +703,7 @@ glade_eprop_numeric_load (GladeEditorProperty * eprop, GladeProperty * property)
 
 
 static void
-glade_eprop_numeric_changed (GtkWidget * spin, GladeEditorProperty * eprop)
+glade_eprop_numeric_changed (GtkWidget *spin, GladeEditorProperty *eprop)
 {
   GValue val = { 0, };
   GParamSpec *pspec;
@@ -769,7 +747,7 @@ glade_eprop_numeric_changed (GtkWidget * spin, GladeEditorProperty * eprop)
 }
 
 static GtkWidget *
-glade_eprop_numeric_create_input (GladeEditorProperty * eprop)
+glade_eprop_numeric_create_input (GladeEditorProperty *eprop)
 {
   GladeEPropNumeric *eprop_numeric = GLADE_EPROP_NUMERIC (eprop);
   GtkAdjustment *adjustment;
@@ -805,14 +783,14 @@ GLADE_MAKE_EPROP (GladeEPropEnum, glade_eprop_enum)
 #define GLADE_IS_EPROP_ENUM(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_ENUM))
 #define GLADE_IS_EPROP_ENUM_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_ENUM))
 #define GLADE_EPROP_ENUM_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_ENUM, GladeEPropEnumClass))
-     static void glade_eprop_enum_finalize (GObject * object)
+     static void glade_eprop_enum_finalize (GObject *object)
 {
   /* Chain up */
   G_OBJECT_CLASS (editor_property_class)->finalize (object);
 }
 
 static void
-glade_eprop_enum_load (GladeEditorProperty * eprop, GladeProperty * property)
+glade_eprop_enum_load (GladeEditorProperty *eprop, GladeProperty *property)
 {
   GladeEPropEnum *eprop_enum = GLADE_EPROP_ENUM (eprop);
   GParamSpec *pspec;
@@ -840,7 +818,7 @@ glade_eprop_enum_load (GladeEditorProperty * eprop, GladeProperty * property)
 }
 
 static void
-glade_eprop_enum_changed (GtkWidget * combo_box, GladeEditorProperty * eprop)
+glade_eprop_enum_changed (GtkWidget *combo_box, GladeEditorProperty *eprop)
 {
   gint ival;
   GValue val = { 0, };
@@ -865,7 +843,7 @@ glade_eprop_enum_changed (GtkWidget * combo_box, GladeEditorProperty * eprop)
 }
 
 static GtkWidget *
-glade_eprop_enum_create_input (GladeEditorProperty * eprop)
+glade_eprop_enum_create_input (GladeEditorProperty *eprop)
 {
   GladeEPropEnum *eprop_enum = GLADE_EPROP_ENUM (eprop);
   GladePropertyClass *klass;
@@ -933,7 +911,7 @@ GLADE_MAKE_EPROP (GladeEPropFlags, glade_eprop_flags)
 #define GLADE_IS_EPROP_FLAGS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_FLAGS))
 #define GLADE_IS_EPROP_FLAGS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_FLAGS))
 #define GLADE_EPROP_FLAGS_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_FLAGS, GladeEPropFlagsClass))
-     static void glade_eprop_flags_finalize (GObject * object)
+     static void glade_eprop_flags_finalize (GObject *object)
 {
   GladeEPropFlags *eprop_flags = GLADE_EPROP_FLAGS (object);
 
@@ -944,7 +922,7 @@ GLADE_MAKE_EPROP (GladeEPropFlags, glade_eprop_flags)
 }
 
 static void
-glade_eprop_flags_load (GladeEditorProperty * eprop, GladeProperty * property)
+glade_eprop_flags_load (GladeEditorProperty *eprop, GladeProperty *property)
 {
   GladeEPropFlags *eprop_flags = GLADE_EPROP_FLAGS (eprop);
   GFlagsClass *klass;
@@ -1006,8 +984,9 @@ glade_eprop_flags_load (GladeEditorProperty * eprop, GladeProperty * property)
 
 
 static void
-flag_toggled_direct (GtkCellRendererToggle * cell,
-                     gchar * path_string, GladeEditorProperty * eprop)
+flag_toggled_direct (GtkCellRendererToggle *cell,
+                     gchar *path_string,
+                     GladeEditorProperty *eprop)
 {
   GtkTreeIter iter;
   guint new_value = 0;
@@ -1074,7 +1053,7 @@ flag_toggled_direct (GtkCellRendererToggle * cell,
 }
 
 static GtkWidget *
-glade_eprop_flags_create_treeview (GladeEditorProperty * eprop)
+glade_eprop_flags_create_treeview (GladeEditorProperty *eprop)
 {
   GtkWidget *scrolled_window;
   GtkWidget *tree_view;
@@ -1125,7 +1104,7 @@ glade_eprop_flags_create_treeview (GladeEditorProperty * eprop)
 }
 
 static void
-glade_eprop_flags_show_dialog (GtkWidget * button, GladeEditorProperty * eprop)
+glade_eprop_flags_show_dialog (GtkWidget *button, GladeEditorProperty *eprop)
 {
   GtkWidget *dialog;
   GtkWidget *view;
@@ -1175,7 +1154,7 @@ glade_eprop_flags_show_dialog (GtkWidget * button, GladeEditorProperty * eprop)
 
 
 static GtkWidget *
-glade_eprop_flags_create_input (GladeEditorProperty * eprop)
+glade_eprop_flags_create_input (GladeEditorProperty *eprop)
 {
   GtkWidget *vbox, *hbox, *button, *widget;
   GladeEPropFlags *eprop_flags = GLADE_EPROP_FLAGS (eprop);
@@ -1220,14 +1199,14 @@ GLADE_MAKE_EPROP (GladeEPropColor, glade_eprop_color)
 #define GLADE_IS_EPROP_COLOR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_COLOR))
 #define GLADE_IS_EPROP_COLOR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_COLOR))
 #define GLADE_EPROP_COLOR_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_COLOR, GladeEPropColorClass))
-static void glade_eprop_color_finalize (GObject * object)
+static void glade_eprop_color_finalize (GObject *object)
 {
   /* Chain up */
   G_OBJECT_CLASS (editor_property_class)->finalize (object);
 }
 
 static void
-glade_eprop_color_load (GladeEditorProperty * eprop, GladeProperty * property)
+glade_eprop_color_load (GladeEditorProperty *eprop, GladeProperty *property)
 {
   GladeEPropColor *eprop_color = GLADE_EPROP_COLOR (eprop);
   GParamSpec *pspec;
@@ -1282,7 +1261,7 @@ glade_eprop_color_load (GladeEditorProperty * eprop, GladeProperty * property)
 }
 
 static void
-glade_eprop_color_changed (GtkWidget * button, GladeEditorProperty * eprop)
+glade_eprop_color_changed (GtkWidget *button, GladeEditorProperty *eprop)
 {
   GdkColor color = { 0, };
   GdkRGBA rgba = { 0, };
@@ -1313,7 +1292,7 @@ glade_eprop_color_changed (GtkWidget * button, GladeEditorProperty * eprop)
 }
 
 static GtkWidget *
-glade_eprop_color_create_input (GladeEditorProperty * eprop)
+glade_eprop_color_create_input (GladeEditorProperty *eprop)
 {
   GladeEPropColor *eprop_color = GLADE_EPROP_COLOR (eprop);
   GtkWidget *hbox;
@@ -1358,15 +1337,15 @@ GLADE_MAKE_EPROP (GladeEPropNamedIcon, glade_eprop_named_icon)
 #define GLADE_IS_EPROP_NAMED_ICON(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_NAMED_ICON))
 #define GLADE_IS_EPROP_NAMED_ICON_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_NAMED_ICON))
 #define GLADE_EPROP_NAMED_ICON_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_NAMED_ICON, GladeEPropNamedIconClass))
-     static void glade_eprop_named_icon_finalize (GObject * object)
+     static void glade_eprop_named_icon_finalize (GObject *object)
 {
   /* Chain up */
   G_OBJECT_CLASS (editor_property_class)->finalize (object);
 }
 
 static void
-glade_eprop_named_icon_load (GladeEditorProperty * eprop,
-                             GladeProperty * property)
+glade_eprop_named_icon_load (GladeEditorProperty *eprop,
+                             GladeProperty *property)
 {
   GladeEPropNamedIcon *eprop_named_icon = GLADE_EPROP_NAMED_ICON (eprop);
   GtkEntry *entry;
@@ -1385,8 +1364,9 @@ glade_eprop_named_icon_load (GladeEditorProperty * eprop,
 }
 
 static void
-glade_eprop_named_icon_changed_common (GladeEditorProperty * eprop,
-                                       const gchar * text, gboolean use_command)
+glade_eprop_named_icon_changed_common (GladeEditorProperty *eprop,
+                                       const gchar *text,
+                                       gboolean use_command)
 {
   GValue *val;
   gchar *prop_text;
@@ -1413,7 +1393,7 @@ glade_eprop_named_icon_changed_common (GladeEditorProperty * eprop,
 }
 
 static void
-glade_eprop_named_icon_changed (GtkWidget * entry, GladeEditorProperty * eprop)
+glade_eprop_named_icon_changed (GtkWidget *entry, GladeEditorProperty *eprop)
 {
   gchar *text;
 
@@ -1427,24 +1407,25 @@ glade_eprop_named_icon_changed (GtkWidget * entry, GladeEditorProperty * eprop)
 }
 
 static gboolean
-glade_eprop_named_icon_focus_out (GtkWidget * entry,
-                                  GdkEventFocus * event,
-                                  GladeEditorProperty * eprop)
+glade_eprop_named_icon_focus_out (GtkWidget *entry,
+                                  GdkEventFocus *event,
+                                  GladeEditorProperty *eprop)
 {
   glade_eprop_named_icon_changed (entry, eprop);
   return FALSE;
 }
 
 static void
-glade_eprop_named_icon_activate (GtkEntry * entry, GladeEPropNamedIcon * eprop)
+glade_eprop_named_icon_activate (GtkEntry *entry, GladeEPropNamedIcon *eprop)
 {
   glade_eprop_named_icon_changed (GTK_WIDGET (entry),
                                   GLADE_EDITOR_PROPERTY (eprop));
 }
 
 static void
-chooser_response (GladeNamedIconChooserDialog * dialog,
-                  gint response_id, GladeEPropNamedIcon * eprop)
+chooser_response (GladeNamedIconChooserDialog *dialog,
+                  gint response_id,
+                  GladeEPropNamedIcon *eprop)
 {
   gchar *icon_name;
 
@@ -1483,8 +1464,8 @@ chooser_response (GladeNamedIconChooserDialog * dialog,
 }
 
 static void
-glade_eprop_named_icon_show_chooser_dialog (GtkWidget * button,
-                                            GladeEditorProperty * eprop)
+glade_eprop_named_icon_show_chooser_dialog (GtkWidget *button,
+                                            GladeEditorProperty *eprop)
 {
   GtkWidget *dialog;
 
@@ -1519,7 +1500,7 @@ glade_eprop_named_icon_show_chooser_dialog (GtkWidget * button,
 }
 
 static GtkWidget *
-glade_eprop_named_icon_create_input (GladeEditorProperty * eprop)
+glade_eprop_named_icon_create_input (GladeEditorProperty *eprop)
 {
   GladeEPropNamedIcon *eprop_named_icon = GLADE_EPROP_NAMED_ICON (eprop);
   GtkWidget *hbox;
@@ -1569,14 +1550,14 @@ GLADE_MAKE_EPROP (GladeEPropText, glade_eprop_text)
 #define GLADE_IS_EPROP_TEXT(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_TEXT))
 #define GLADE_IS_EPROP_TEXT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_TEXT))
 #define GLADE_EPROP_TEXT_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_TEXT, GladeEPropTextClass))
-     static void glade_eprop_text_finalize (GObject * object)
+     static void glade_eprop_text_finalize (GObject *object)
 {
   /* Chain up */
   G_OBJECT_CLASS (editor_property_class)->finalize (object);
 }
 
 static void
-glade_eprop_text_load (GladeEditorProperty * eprop, GladeProperty * property)
+glade_eprop_text_load (GladeEditorProperty *eprop, GladeProperty *property)
 {
   GladeEPropText *eprop_text = GLADE_EPROP_TEXT (eprop);
   GParamSpec *pspec;
@@ -1656,8 +1637,9 @@ glade_eprop_text_load (GladeEditorProperty * eprop, GladeProperty * property)
 }
 
 static void
-glade_eprop_text_changed_common (GladeEditorProperty * eprop,
-                                 const gchar * text, gboolean use_command)
+glade_eprop_text_changed_common (GladeEditorProperty *eprop,
+                                 const gchar *text,
+                                 gboolean use_command)
 {
   GValue *val;
   GParamSpec *pspec;
@@ -1700,7 +1682,7 @@ glade_eprop_text_changed_common (GladeEditorProperty * eprop,
 }
 
 static void
-glade_eprop_text_changed (GtkWidget * entry, GladeEditorProperty * eprop)
+glade_eprop_text_changed (GtkWidget *entry, GladeEditorProperty *eprop)
 {
   gchar *text;
 
@@ -1714,8 +1696,8 @@ glade_eprop_text_changed (GtkWidget * entry, GladeEditorProperty * eprop)
 }
 
 static void
-glade_eprop_text_buffer_changed (GtkTextBuffer * buffer,
-                                 GladeEditorProperty * eprop)
+glade_eprop_text_buffer_changed (GtkTextBuffer *buffer,
+                                 GladeEditorProperty *eprop)
 {
   gchar *text;
   GtkTextIter start, end;
@@ -1744,11 +1726,11 @@ glade_eprop_text_buffer_changed (GtkTextBuffer * buffer,
  * Returns: %TRUE if OK was selected.
  */
 gboolean
-glade_editor_property_show_i18n_dialog (GtkWidget * parent,
-                                        gchar ** text,
-                                        gchar ** context,
-                                        gchar ** comment,
-                                        gboolean * translatable)
+glade_editor_property_show_i18n_dialog (GtkWidget *parent,
+                                        gchar **text,
+                                        gchar **context,
+                                        gchar **comment,
+                                        gboolean *translatable)
 {
   GtkWidget *dialog;
   GtkWidget *vbox, *hbox;
@@ -1956,8 +1938,8 @@ glade_editor_property_show_i18n_dialog (GtkWidget * parent,
 }
 
 static void
-glade_eprop_text_show_i18n_dialog (GtkWidget * entry,
-                                   GladeEditorProperty * eprop)
+glade_eprop_text_show_i18n_dialog (GtkWidget *entry,
+                                   GladeEditorProperty *eprop)
 {
   gchar *text = glade_property_make_string (eprop->priv->property);
   gchar *context = g_strdup (glade_property_i18n_get_context (eprop->priv->property));
@@ -1980,9 +1962,9 @@ glade_eprop_text_show_i18n_dialog (GtkWidget * entry,
 }
 
 gboolean
-glade_editor_property_show_resource_dialog (GladeProject * project,
-                                            GtkWidget * parent,
-                                            gchar ** filename)
+glade_editor_property_show_resource_dialog (GladeProject *project,
+                                            GtkWidget *parent,
+                                            gchar **filename)
 {
 
   GtkWidget *dialog;
@@ -2036,8 +2018,8 @@ glade_editor_property_show_resource_dialog (GladeProject * project,
 }
 
 static void
-glade_eprop_text_show_resource_dialog (GtkWidget * entry,
-                                       GladeEditorProperty * eprop)
+glade_eprop_text_show_resource_dialog (GtkWidget *entry,
+                                       GladeEditorProperty *eprop)
 {
   GladeWidget  *widget  = glade_property_get_widget (eprop->priv->property);
   GladeProject *project = glade_widget_get_project (widget);
@@ -2092,7 +2074,7 @@ glade_eprop_text_create_store (GType enum_type)
 }
 
 static void
-eprop_text_stock_changed (GtkComboBox * combo, GladeEditorProperty * eprop)
+eprop_text_stock_changed (GtkComboBox *combo, GladeEditorProperty *eprop)
 {
   GladeEPropText *eprop_text = GLADE_EPROP_TEXT (eprop);
   GtkTreeIter iter;
@@ -2118,7 +2100,7 @@ eprop_text_stock_changed (GtkComboBox * combo, GladeEditorProperty * eprop)
 }
 
 static GtkWidget *
-glade_eprop_text_create_input (GladeEditorProperty * eprop)
+glade_eprop_text_create_input (GladeEditorProperty *eprop)
 {
   GladeEPropText *eprop_text = GLADE_EPROP_TEXT (eprop);
   GladePropertyClass *klass;
@@ -2253,14 +2235,14 @@ GLADE_MAKE_EPROP (GladeEPropBool, glade_eprop_bool)
 #define GLADE_IS_EPROP_BOOL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_BOOL))
 #define GLADE_IS_EPROP_BOOL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_BOOL))
 #define GLADE_EPROP_BOOL_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_BOOL, GladeEPropBoolClass))
-     static void glade_eprop_bool_finalize (GObject * object)
+     static void glade_eprop_bool_finalize (GObject *object)
 {
   /* Chain up */
   G_OBJECT_CLASS (editor_property_class)->finalize (object);
 }
 
 static void
-glade_eprop_bool_load (GladeEditorProperty * eprop, GladeProperty * property)
+glade_eprop_bool_load (GladeEditorProperty *eprop, GladeProperty *property)
 {
   GladeEPropBool *eprop_bool = GLADE_EPROP_BOOL (eprop);
   GtkWidget *label;
@@ -2282,7 +2264,7 @@ glade_eprop_bool_load (GladeEditorProperty * eprop, GladeProperty * property)
 }
 
 static void
-glade_eprop_bool_changed (GtkWidget * button, GladeEditorProperty * eprop)
+glade_eprop_bool_changed (GtkWidget *button, GladeEditorProperty *eprop)
 {
   GtkWidget *label;
   gboolean state;
@@ -2304,7 +2286,7 @@ glade_eprop_bool_changed (GtkWidget * button, GladeEditorProperty * eprop)
 }
 
 static GtkWidget *
-glade_eprop_bool_create_input (GladeEditorProperty * eprop)
+glade_eprop_bool_create_input (GladeEditorProperty *eprop)
 {
   GladeEPropBool *eprop_bool = GLADE_EPROP_BOOL (eprop);
 
@@ -2333,14 +2315,14 @@ GLADE_MAKE_EPROP (GladeEPropUnichar, glade_eprop_unichar)
 #define GLADE_IS_EPROP_UNICHAR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_UNICHAR))
 #define GLADE_IS_EPROP_UNICHAR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_UNICHAR))
 #define GLADE_EPROP_UNICHAR_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_UNICHAR, GladeEPropUnicharClass))
-     static void glade_eprop_unichar_finalize (GObject * object)
+     static void glade_eprop_unichar_finalize (GObject *object)
 {
   /* Chain up */
   G_OBJECT_CLASS (editor_property_class)->finalize (object);
 }
 
 static void
-glade_eprop_unichar_load (GladeEditorProperty * eprop, GladeProperty * property)
+glade_eprop_unichar_load (GladeEditorProperty *eprop, GladeProperty *property)
 {
   GladeEPropUnichar *eprop_unichar = GLADE_EPROP_UNICHAR (eprop);
 
@@ -2363,7 +2345,7 @@ glade_eprop_unichar_load (GladeEditorProperty * eprop, GladeProperty * property)
 
 
 static void
-glade_eprop_unichar_changed (GtkWidget * entry, GladeEditorProperty * eprop)
+glade_eprop_unichar_changed (GtkWidget *entry, GladeEditorProperty *eprop)
 {
   const gchar *text;
 
@@ -2385,9 +2367,10 @@ glade_eprop_unichar_changed (GtkWidget * entry, GladeEditorProperty * eprop)
 }
 
 static void
-glade_eprop_unichar_delete (GtkEditable * editable,
+glade_eprop_unichar_delete (GtkEditable *editable,
                             gint start_pos,
-                            gint end_pos, GladeEditorProperty * eprop)
+                            gint end_pos,
+                            GladeEditorProperty *eprop)
 {
   if (eprop->priv->loading)
     return;
@@ -2396,10 +2379,11 @@ glade_eprop_unichar_delete (GtkEditable * editable,
 }
 
 static void
-glade_eprop_unichar_insert (GtkWidget * entry,
-                            const gchar * text,
+glade_eprop_unichar_insert (GtkWidget *entry,
+                            const gchar *text,
                             gint length,
-                            gint * position, GladeEditorProperty * eprop)
+                            gint *position,
+                            GladeEditorProperty *eprop)
 {
   if (eprop->priv->loading)
     return;
@@ -2427,7 +2411,7 @@ glade_eprop_unichar_insert (GtkWidget * entry,
 }
 
 static GtkWidget *
-glade_eprop_unichar_create_input (GladeEditorProperty * eprop)
+glade_eprop_unichar_create_input (GladeEditorProperty *eprop)
 {
   GladeEPropUnichar *eprop_unichar = GLADE_EPROP_UNICHAR (eprop);
 
@@ -2474,7 +2458,7 @@ GLADE_MAKE_EPROP (GladeEPropObject, glade_eprop_object)
 #define GLADE_IS_EPROP_OBJECT(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_OBJECT))
 #define GLADE_IS_EPROP_OBJECT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_OBJECT))
 #define GLADE_EPROP_OBJECT_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_OBJECT, GladeEPropObjectClass))
-     static void glade_eprop_object_finalize (GObject * object)
+     static void glade_eprop_object_finalize (GObject *object)
 {
   /* Chain up */
   G_OBJECT_CLASS (editor_property_class)->finalize (object);
@@ -2482,8 +2466,8 @@ GLADE_MAKE_EPROP (GladeEPropObject, glade_eprop_object)
 
 
 static gchar *
-glade_eprop_object_name (const gchar * name,
-                         GtkTreeStore * model, GtkTreeIter * parent_iter)
+glade_eprop_object_name (const gchar *name,
+                         GtkTreeStore *model, GtkTreeIter *parent_iter)
 {
   GtkTreePath *path;
   GString *string;
@@ -2513,12 +2497,13 @@ search_list (GList * list, gpointer data)
  * in the model are the associated GladeWidgets.
  */
 static void
-glade_eprop_object_populate_view_real (GtkTreeStore * model,
-                                       GtkTreeIter * parent_iter,
-                                       GList * widgets,
-                                       GList * selected_widgets,
-                                       GList * exception_widgets,
-                                       GType object_type, gboolean parentless)
+glade_eprop_object_populate_view_real (GtkTreeStore *model,
+                                       GtkTreeIter *parent_iter,
+                                       GList *widgets,
+                                       GList *selected_widgets,
+                                       GList *exception_widgets,
+                                       GType object_type,
+                                       gboolean parentless)
 {
   GList *children, *list;
   GtkTreeIter iter;
@@ -2580,11 +2565,12 @@ glade_eprop_object_populate_view_real (GtkTreeStore * model,
 }
 
 static void
-glade_eprop_object_populate_view (GladeProject * project,
-                                  GtkTreeView * view,
-                                  GList * selected,
-                                  GList * exceptions,
-                                  GType object_type, gboolean parentless)
+glade_eprop_object_populate_view (GladeProject *project,
+                                  GtkTreeView *view,
+                                  GList *selected,
+                                  GList *exceptions,
+                                  GType object_type,
+                                  gboolean parentless)
 {
   GtkTreeStore *model = (GtkTreeStore *) gtk_tree_view_get_model (view);
   GList *list, *toplevels = NULL;
@@ -2608,9 +2594,10 @@ glade_eprop_object_populate_view (GladeProject * project,
 }
 
 static gboolean
-glade_eprop_object_clear_iter (GtkTreeModel * model,
-                               GtkTreePath * path,
-                               GtkTreeIter * iter, gpointer data)
+glade_eprop_object_clear_iter (GtkTreeModel *model,
+                               GtkTreePath *path,
+                               GtkTreeIter *iter,
+                               gpointer data)
 {
   gtk_tree_store_set (GTK_TREE_STORE (model), iter,
                       OBJ_COLUMN_SELECTED, FALSE, -1);
@@ -2618,9 +2605,10 @@ glade_eprop_object_clear_iter (GtkTreeModel * model,
 }
 
 static gboolean
-glade_eprop_object_selected_widget (GtkTreeModel * model,
-                                    GtkTreePath * path,
-                                    GtkTreeIter * iter, GladeWidget ** ret)
+glade_eprop_object_selected_widget (GtkTreeModel *model,
+                                    GtkTreePath *path,
+                                    GtkTreeIter *iter,
+                                    GladeWidget **ret)
 {
   gboolean selected;
   GladeWidget *widget;
@@ -2638,8 +2626,9 @@ glade_eprop_object_selected_widget (GtkTreeModel * model,
 }
 
 static void
-glade_eprop_object_selected (GtkCellRendererToggle * cell,
-                             gchar * path_str, GtkTreeModel * model)
+glade_eprop_object_selected (GtkCellRendererToggle *cell,
+                             gchar *path_str,
+                             GtkTreeModel *model)
 {
   GtkTreePath *path = gtk_tree_path_new_from_string (path_str);
   GtkTreeIter iter;
@@ -2732,7 +2721,7 @@ glade_eprop_object_view (gboolean radio)
 
 
 static gchar *
-glade_eprop_object_dialog_title (GladeEditorProperty * eprop)
+glade_eprop_object_dialog_title (GladeEditorProperty *eprop)
 {
   GladeWidgetAdaptor *adaptor;
   GParamSpec *pspec;
@@ -2765,12 +2754,12 @@ glade_eprop_object_dialog_title (GladeEditorProperty * eprop)
 
 
 gboolean
-glade_editor_property_show_object_dialog (GladeProject * project,
-                                          const gchar * title,
-                                          GtkWidget * parent,
+glade_editor_property_show_object_dialog (GladeProject *project,
+                                          const gchar *title,
+                                          GtkWidget *parent,
                                           GType object_type,
-                                          GladeWidget * exception,
-                                          GladeWidget ** object)
+                                          GladeWidget *exception,
+                                          GladeWidget **object)
 {
   GtkWidget *dialog;
   GtkWidget *vbox, *label, *sw;
@@ -2875,8 +2864,8 @@ glade_editor_property_show_object_dialog (GladeProject * project,
 
 
 static void
-glade_eprop_object_show_dialog (GtkWidget * dialog_button,
-                                GladeEditorProperty * eprop)
+glade_eprop_object_show_dialog (GtkWidget *dialog_button,
+                                GladeEditorProperty *eprop)
 {
   GtkWidget *dialog, *parent;
   GtkWidget *vbox, *label, *sw;
@@ -3104,7 +3093,7 @@ glade_eprop_object_show_dialog (GtkWidget * dialog_button,
 
 
 static void
-glade_eprop_object_load (GladeEditorProperty * eprop, GladeProperty * property)
+glade_eprop_object_load (GladeEditorProperty *eprop, GladeProperty *property)
 {
   GladeEPropObject *eprop_object = GLADE_EPROP_OBJECT (eprop);
   gchar *obj_name;
@@ -3128,7 +3117,7 @@ glade_eprop_object_load (GladeEditorProperty * eprop, GladeProperty * property)
 }
 
 static GtkWidget *
-glade_eprop_object_create_input (GladeEditorProperty * eprop)
+glade_eprop_object_create_input (GladeEditorProperty *eprop)
 {
   GladeEPropObject *eprop_object = GLADE_EPROP_OBJECT (eprop);
   GtkWidget *hbox;
@@ -3167,14 +3156,14 @@ GLADE_MAKE_EPROP (GladeEPropObjects, glade_eprop_objects)
 #define GLADE_IS_EPROP_OBJECTS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_OBJECTS))
 #define GLADE_IS_EPROP_OBJECTS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_OBJECTS))
 #define GLADE_EPROP_OBJECTS_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_OBJECTS, GladeEPropObjectsClass))
-     static void glade_eprop_objects_finalize (GObject * object)
+     static void glade_eprop_objects_finalize (GObject *object)
 {
   /* Chain up */
   G_OBJECT_CLASS (editor_property_class)->finalize (object);
 }
 
 static void
-glade_eprop_objects_load (GladeEditorProperty * eprop, GladeProperty * property)
+glade_eprop_objects_load (GladeEditorProperty *eprop, GladeProperty *property)
 {
   GladeEPropObjects *eprop_objects = GLADE_EPROP_OBJECTS (eprop);
   gchar *obj_name;
@@ -3198,9 +3187,10 @@ glade_eprop_objects_load (GladeEditorProperty * eprop, GladeProperty * property)
 }
 
 static gboolean
-glade_eprop_objects_selected_widget (GtkTreeModel * model,
-                                     GtkTreePath * path,
-                                     GtkTreeIter * iter, GList ** ret)
+glade_eprop_objects_selected_widget (GtkTreeModel *model,
+                                     GtkTreePath *path,
+                                     GtkTreeIter *iter,
+                                     GList **ret)
 {
   gboolean selected;
   GladeWidget *widget;
@@ -3220,8 +3210,8 @@ glade_eprop_objects_selected_widget (GtkTreeModel * model,
 }
 
 static void
-glade_eprop_objects_show_dialog (GtkWidget * dialog_button,
-                                 GladeEditorProperty * eprop)
+glade_eprop_objects_show_dialog (GtkWidget *dialog_button,
+                                 GladeEditorProperty *eprop)
 {
   GtkWidget *dialog, *parent;
   GtkWidget *vbox, *label, *sw;
@@ -3331,7 +3321,7 @@ glade_eprop_objects_show_dialog (GtkWidget * dialog_button,
 }
 
 static GtkWidget *
-glade_eprop_objects_create_input (GladeEditorProperty * eprop)
+glade_eprop_objects_create_input (GladeEditorProperty *eprop)
 {
   GladeEPropObjects *eprop_objects = GLADE_EPROP_OBJECTS (eprop);
   GtkWidget *hbox;
@@ -3364,7 +3354,7 @@ glade_eprop_objects_create_input (GladeEditorProperty * eprop)
  *
  */
 void
-glade_editor_property_commit (GladeEditorProperty * eprop, GValue * value)
+glade_editor_property_commit (GladeEditorProperty *eprop, GValue *value)
 {
   g_return_if_fail (GLADE_IS_EDITOR_PROPERTY (eprop));
   g_return_if_fail (G_IS_VALUE (value));
@@ -3382,8 +3372,8 @@ glade_editor_property_commit (GladeEditorProperty * eprop, GValue * value)
  * until its loaded with another property or %NULL)
  */
 void
-glade_editor_property_load (GladeEditorProperty * eprop,
-                            GladeProperty * property)
+glade_editor_property_load (GladeEditorProperty *eprop,
+                            GladeProperty *property)
 {
   g_return_if_fail (GLADE_IS_EDITOR_PROPERTY (eprop));
   g_return_if_fail (property == NULL || GLADE_IS_PROPERTY (property));
@@ -3403,8 +3393,8 @@ glade_editor_property_load (GladeEditorProperty * eprop,
  * @eprop from @widget
  */
 void
-glade_editor_property_load_by_widget (GladeEditorProperty * eprop,
-                                      GladeWidget * widget)
+glade_editor_property_load_by_widget (GladeEditorProperty *eprop,
+                                      GladeWidget *widget)
 {
   GladeProperty *property = NULL;
 
