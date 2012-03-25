@@ -1,3 +1,31 @@
+2012-03-19  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+        * gladeui/glade-accumulators.[ch]: Added new accumulator _glade_strv_handled_accumulator()
+
+        * gladeui/glade-marshallers.list: Added new marshall BOXED:OBJECT
+
+        * gladeui/glade-signal-editor.[ch]:
+          o Implemented GladeSignalEditor::callback-suggestions signal
+            (based on patch by Marco Diego Aurélio Mesquita <marcodiegomesquita@gmail.com >)
+            Closes bug #667570 "Implement callback name suggestion on glade-signal-editor"
+          o Added GladeSignalEditor:widget object property
+
+        * gladeui/glade-signal-model.c: Fixed bogus runtime warning in 
+          glade_signal_model_iter_n_children() when it is called with a NULL iter
+          Fixed space identation (we use * next to the variable name)
+    
+2012-02-17  Marco Diego Aurélio Mesquita <marcodiegomesquita@gmail.com>
+
+        * Fixed bug 669272 "Emit a signal to notify signal activation"
+
+2012-02-15  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+        * plugins/gtk+/glade-gtk-grid.c: Fix bug 664912 "GtkGrid assumes 3x3 (edit)"
+
+        * plugins/gtk+/glade-gtk.c: Fixed bug 645340 "Minor string typo"
+
+        * plugins/gtk+/gtk+.xml.in: Fixed bug 646366 "non-sense UI string"
+
 2012-02-13  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* configure.ac, NEWS: Rolling 3.11.0
