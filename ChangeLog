@@ -1,3 +1,26 @@
+2012-03-24  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+        * gladeui/glade-base-editor.c, gladeui/glade-editable.[ch],
+          gladeui/glade-editor-property.c, gladeui/glade-editor.c,
+          gladeui/glade-widget-adaptor.c:
+        Migrated hand coded _get_type() function to G_DEFINE_TYPE() macro plus identation fixes.
+
+2012-03-23  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+        * gladeui/glade-signal-editor.[ch]: Added support for signal detail.
+          Fixes bug #670792 "Unable to connect to specific notify signals."
+
+        * gladeui/glade-signal-model.[ch]: added GLADE_SIGNAL_COLUMN_DETAIL to 
+          GladeSignalModelColumns.
+
+        * gladeui/glade-signal.[ch]: added GladeSignal:detail property
+
+        * gladeui/glade-widget.c: set detail on glade_widget_change_signal_handler()
+
+2012-03-19  Daniel Mustieles <daniel.mustieles@gmail.com>
+
+        * gladeui/glade-previewer.c: Fixed bug #662046
+
 2012-03-19  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
         * gladeui/glade-accumulators.[ch]: Added new accumulator _glade_strv_handled_accumulator()
