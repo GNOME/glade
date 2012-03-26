@@ -3,7 +3,7 @@ dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.52)
 
 m4_define(glade_major_version, 3)
-m4_define(glade_minor_version, 11)
+m4_define(glade_minor_version, 12)
 m4_define(glade_micro_version, 0)
 m4_define(glade_version, glade_major_version.glade_minor_version.glade_micro_version)
 
@@ -127,7 +127,7 @@ GOBJECT_INTROSPECTION_CHECK([0.10.1])
 dnl ================================================================
 dnl Check for gtk+
 dnl ================================================================
-GTK_REQUIRED=3.2.3
+GTK_REQUIRED=3.4.0
 PKG_CHECK_MODULES([GTK],[
   gtk+-3.0 >= $GTK_REQUIRED
   gmodule-2.0
