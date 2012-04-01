@@ -228,7 +228,6 @@ on_handler_editing_started (GtkCellRenderer *renderer,
       GladeSignalEditorPrivate *priv = self->priv;
       GtkEntry *entry = GTK_ENTRY (editable);
       GtkEntryCompletion *completion;
-      const gchar *signal_name = NULL;
       GtkTreePath *tree_path;
       GtkTreeIter iter;
       GladeSignal *signal;
@@ -242,7 +241,6 @@ on_handler_editing_started (GtkCellRenderer *renderer,
       gtk_tree_model_get (priv->model, &iter,
 			  GLADE_SIGNAL_COLUMN_SIGNAL, &signal,
 			  -1);
-      signal_name = glade_signal_get_name (signal);
       
       if (glade_signal_is_dummy (signal))
 	  gtk_entry_set_text (entry, "");
@@ -250,9 +248,6 @@ on_handler_editing_started (GtkCellRenderer *renderer,
       g_signal_emit (self, glade_signal_editor_signals [CALLBACK_SUGGESTIONS], 0, signal, &suggestions);
 
       g_object_unref (signal);
-
-      if (!signal_name)
-        return;
 
       completion = gtk_entry_completion_new ();
       gtk_entry_completion_set_text_column (completion, 0);
@@ -264,14 +259,18 @@ on_handler_editing_started (GtkCellRenderer *renderer,
 
       gtk_list_store_clear (priv->handler_completion_store);
 
-      for (i = 0; suggestions[i]; i++)
+      if (suggestions)
         {
-          gtk_list_store_append (priv->handler_completion_store, &iter);
-          gtk_list_store_set (priv->handler_completion_store, &iter, 0, suggestions[i], -1);
-        }
+          for (i = 0; suggestions[i]; i++)
+            {
+              gtk_list_store_append (priv->handler_completion_store, &iter);
+              gtk_list_store_set (priv->handler_completion_store, &iter, 0, suggestions[i], -1);
+            }
 
-      gtk_entry_completion_set_model (completion, GTK_TREE_MODEL (priv->handler_completion_store));
-      gtk_entry_set_completion (entry, completion);
+          gtk_entry_completion_set_model (completion, GTK_TREE_MODEL (priv->handler_completion_store));
+          gtk_entry_set_completion (entry, completion);
+          g_strfreev (suggestions);
+        }
     }
 }
 
