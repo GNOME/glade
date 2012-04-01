@@ -450,7 +450,7 @@ glade_signal_set_detail (GladeSignal *signal, const gchar *detail)
       g_strcmp0 (signal->priv->detail, detail))
     {
       g_free (signal->priv->detail);
-      signal->priv->detail = (detail || g_utf8_strlen (detail, -1)) ? g_strdup (detail) : NULL;
+      signal->priv->detail = (detail && g_utf8_strlen (detail, -1)) ? g_strdup (detail) : NULL;
       g_object_notify_by_pspec (G_OBJECT (signal), properties[PROP_DETAIL]);
     }
 }

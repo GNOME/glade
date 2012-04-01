@@ -30,8 +30,6 @@
 #define HANDLER_DEFAULT  _("<Type here>")
 #define USERDATA_DEFAULT _("<Click here>")
 
-#define DUMMY_DATA "__dummy"
-
 struct _GladeSignalModelPrivate
 {
   GladeWidget *widget;
@@ -274,7 +272,7 @@ static inline gboolean
 glade_signal_model_is_dummy_handler (GladeSignalModel *model,
                                      GladeSignal *signal)
 {
-  return GPOINTER_TO_INT (g_object_get_data (G_OBJECT (signal), DUMMY_DATA));
+  return glade_signal_get_handler (signal) == NULL;
 }
 
 static GladeSignal *
@@ -289,12 +287,10 @@ glade_signal_model_get_dummy_handler (GladeSignalModel *model,
   if (!signal)
     {
       signal = glade_signal_new (sig_class,
-				 HANDLER_DEFAULT,
-				 USERDATA_DEFAULT,
+				 NULL,
+				 NULL,
 				 FALSE,
 				 FALSE);
-      glade_signal_set_detail (signal, DETAIL_DEFAULT);
-      g_object_set_data (G_OBJECT (signal), DUMMY_DATA, GINT_TO_POINTER (TRUE)); 
       g_hash_table_insert (model->priv->dummy_signals, 
 			   (gpointer) glade_signal_class_get_name (sig_class), 
 			   signal);
@@ -558,14 +554,14 @@ glade_signal_model_get_value (GtkTreeModel *model,
                               GValue *value)
 {	
   const gchar *widget;
-  GladeSignal *handler;
+  GladeSignal *signal;
   GladeSignalModel *sig_model;
 
   g_return_if_fail (iter != NULL);
   g_return_if_fail (GLADE_IS_SIGNAL_MODEL(model));
 
   widget = iter->user_data;
-  handler = iter->user_data2;
+  signal = iter->user_data2;
   sig_model = GLADE_SIGNAL_MODEL (model);
 
   value = g_value_init (value, 
@@ -574,39 +570,41 @@ glade_signal_model_get_value (GtkTreeModel *model,
   switch (column)
     {
       case GLADE_SIGNAL_COLUMN_NAME:
-        if (handler)
+        if (signal)
         {
-          g_value_set_static_string (value, glade_signal_get_name (handler));
+          g_value_set_static_string (value, glade_signal_get_name (signal));
           break;
         }
         else
           g_value_set_static_string (value, widget);
       break;
       case GLADE_SIGNAL_COLUMN_SHOW_NAME:
-        if (handler)
+        if (signal)
         {
           GPtrArray *handlers = g_hash_table_lookup (sig_model->priv->signals,
-                                                     glade_signal_get_name (handler));
-          if (!handlers || !handlers->len || g_ptr_array_find (handlers, handler) == 0)
+                                                     glade_signal_get_name (signal));
+          if (!handlers || !handlers->len || g_ptr_array_find (handlers, signal) == 0)
             g_value_set_boolean (value, TRUE);
           else
-            g_value_set_boolean (value,
-                                 FALSE);
+            g_value_set_boolean (value, FALSE);
           break;
         }
         else if (widget)
           g_value_set_boolean (value, TRUE);
       break;	
       case GLADE_SIGNAL_COLUMN_HANDLER:
-        if (handler)
-          g_value_set_static_string (value, glade_signal_get_handler (handler));
+        if (signal)
+          {
+            const gchar *handler = glade_signal_get_handler (signal);
+            g_value_set_static_string (value, handler ? handler : HANDLER_DEFAULT);
+          }
         else 
           g_value_set_static_string (value, "");
       break;
       case GLADE_SIGNAL_COLUMN_OBJECT:
-        if (handler)
+        if (signal)
         {
-          const gchar *userdata = glade_signal_get_userdata (handler);
+          const gchar *userdata = glade_signal_get_userdata (signal);
           if (userdata && strlen (userdata))
             g_value_set_static_string (value, userdata);
           else
@@ -617,29 +615,32 @@ glade_signal_model_get_value (GtkTreeModel *model,
           g_value_set_static_string (value, "");
       break;
       case GLADE_SIGNAL_COLUMN_SWAP:
-        if (handler)
-          g_value_set_boolean (value, glade_signal_get_swapped (handler));
+        if (signal)
+          g_value_set_boolean (value, glade_signal_get_swapped (signal));
         else 
           g_value_set_boolean (value, FALSE);
       break;
       case GLADE_SIGNAL_COLUMN_AFTER:
-        if (handler)
-          g_value_set_boolean (value, glade_signal_get_after (handler));
+        if (signal)
+          g_value_set_boolean (value, glade_signal_get_after (signal));
         else 
           g_value_set_boolean (value, FALSE);
         break;
       case GLADE_SIGNAL_COLUMN_TOOLTIP:
-        if (handler)
-          g_value_set_string (value, glade_signal_get_support_warning (handler));
+        if (signal)
+          g_value_set_string (value, glade_signal_get_support_warning (signal));
         else
           g_value_set_static_string (value, NULL);
       break;
       case GLADE_SIGNAL_COLUMN_SIGNAL:
-        g_value_set_object (value, handler);
+        g_value_set_object (value, signal);
       break;
       case GLADE_SIGNAL_COLUMN_DETAIL:
-        if (handler)
-          g_value_set_static_string (value, glade_signal_get_detail (handler));
+        if (signal)
+          {
+            const gchar *detail = glade_signal_get_detail (signal);
+            g_value_set_static_string (value, detail ? detail : DETAIL_DEFAULT);
+          }
         else 
           g_value_set_static_string (value, "");
       break;

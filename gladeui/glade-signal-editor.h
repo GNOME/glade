@@ -32,11 +32,11 @@ struct _GladeSignalEditorClass
   GtkVBoxClass parent_class;
 
   gchar ** (* callback_suggestions) (GladeSignalEditor *editor, GladeSignal *signal);
+  gchar ** (* detail_suggestions) (GladeSignalEditor *editor, GladeSignal *signal);
   void   (* glade_reserved1)   (void);
   void   (* glade_reserved2)   (void);
   void   (* glade_reserved3)   (void);
   void   (* glade_reserved4)   (void);
-  void   (* glade_reserved5)   (void);
 };
 
 GType              glade_signal_editor_get_type (void) G_GNUC_CONST;
