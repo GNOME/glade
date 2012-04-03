@@ -544,7 +544,7 @@ glade_property_class_make_string_from_gvalue (GladePropertyClass *
       string = g_value_dup_string (value);
     }
   else if (G_IS_PARAM_SPEC_CHAR (property_class->pspec))
-    string = g_strdup_printf ("%c", g_value_get_char (value));
+    string = g_strdup_printf ("%c", g_value_get_schar (value));
   else if (G_IS_PARAM_SPEC_UCHAR (property_class->pspec))
     string = g_strdup_printf ("%c", g_value_get_uchar (value));
   else if (G_IS_PARAM_SPEC_UNICHAR (property_class->pspec))
@@ -859,7 +859,7 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
   else if (G_IS_PARAM_SPEC_STRING (property_class->pspec))
     g_value_set_string (value, string);
   else if (G_IS_PARAM_SPEC_CHAR (property_class->pspec))
-    g_value_set_char (value, string[0]);
+    g_value_set_schar (value, string[0]);
   else if (G_IS_PARAM_SPEC_UCHAR (property_class->pspec))
     g_value_set_uchar (value, string[0]);
   else if (G_IS_PARAM_SPEC_UNICHAR (property_class->pspec))
@@ -933,7 +933,7 @@ glade_property_class_make_gvalue_from_vl (GladePropertyClass * klass,
   else if (G_IS_PARAM_SPEC_STRING (klass->pspec))
     g_value_set_string (value, va_arg (vl, gchar *));
   else if (G_IS_PARAM_SPEC_CHAR (klass->pspec))
-    g_value_set_char (value, (gchar) va_arg (vl, gint));
+    g_value_set_schar (value, (gchar) va_arg (vl, gint));
   else if (G_IS_PARAM_SPEC_UCHAR (klass->pspec))
     g_value_set_uchar (value, (guchar) va_arg (vl, guint));
   else if (G_IS_PARAM_SPEC_UNICHAR (klass->pspec))
@@ -1018,7 +1018,7 @@ glade_property_class_set_vl_from_gvalue (GladePropertyClass * klass,
   else if (G_IS_PARAM_SPEC_STRING (klass->pspec))
     *(gchar **) (va_arg (vl, gchar *)) = (gchar *) g_value_get_string (value);
   else if (G_IS_PARAM_SPEC_CHAR (klass->pspec))
-    *(gchar *) (va_arg (vl, gint *)) = g_value_get_char (value);
+    *(gchar *) (va_arg (vl, gint *)) = g_value_get_schar (value);
   else if (G_IS_PARAM_SPEC_UCHAR (klass->pspec))
     *(guchar *) (va_arg (vl, guint *)) = g_value_get_uchar (value);
   else if (G_IS_PARAM_SPEC_UNICHAR (klass->pspec))
