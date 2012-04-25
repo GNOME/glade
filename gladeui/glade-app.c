@@ -264,6 +264,45 @@ glade_init_check (void)
 }
 
 static void
+pointer_mode_register_icon (GtkIconFactory *factory,
+                            const gchar *icon_name,
+                            GladePointerMode mode,
+                            GtkIconSize size)
+{
+  GdkPixbuf *pixbuf;
+  GtkIconSet *icon_set;
+
+  pixbuf = glade_utils_pointer_mode_render_icon (mode, size);
+  if (pixbuf)
+    {
+      GtkIconSet *icon_set = gtk_icon_set_new_from_pixbuf (pixbuf);
+      gtk_icon_factory_add (factory, icon_name, icon_set);
+      g_object_unref (pixbuf);
+    }
+}
+
+/*
+ * glade_app_register_stock_icons:
+ * @size: icon size
+ *
+ * Register a new stock icon for most of GladePointerMode.
+ * After calling this function "glade-selector", "glade-drag-resize",
+ * "glade-margin-edit" and "glade-align-edit" stock icons will be available.
+ */ 
+static void
+glade_app_register_stock_icons (GtkIconSize size)
+{
+  GtkIconFactory *factory = gtk_icon_factory_new ();
+
+  pointer_mode_register_icon (factory, "glade-selector", GLADE_POINTER_SELECT, size);
+  pointer_mode_register_icon (factory, "glade-drag-resize", GLADE_POINTER_DRAG_RESIZE, size);
+  pointer_mode_register_icon (factory, "glade-margin-edit", GLADE_POINTER_MARGIN_EDIT, size);
+  pointer_mode_register_icon (factory, "glade-align-edit", GLADE_POINTER_ALIGN_EDIT, size);
+
+  gtk_icon_factory_add_default (factory);
+}
+
+static void
 glade_app_init (GladeApp * app)
 {
   static gboolean initialized = FALSE;
@@ -281,6 +320,9 @@ glade_app_init (GladeApp * app)
                                          pixmaps_dir);
 
       glade_cursor_init ();
+
+      /* Register icons needed by the UI */
+      glade_app_register_stock_icons (GTK_ICON_SIZE_LARGE_TOOLBAR);
 
       initialized = TRUE;
     }
