@@ -283,7 +283,7 @@ glade_eprop_accel_populate_view (GladeEditorProperty * eprop,
             {
               info = l->data;
 
-              if (strcmp (info->signal, glade_signal_class_get_name (sclass)))
+              if (g_strcmp0 (info->signal, glade_signal_class_get_name (sclass)))
                 continue;
 
               accel_text = gtk_accelerator_name (info->key, info->modifiers);
