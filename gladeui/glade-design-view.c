@@ -241,7 +241,8 @@ glade_design_view_set_property (GObject *object,
 static void
 glade_design_view_get_property (GObject *object,
                                 guint prop_id,
-                                GValue *value, GParamSpec *pspec)
+                                GValue *value,
+                                GParamSpec *pspec)
 {
   switch (prop_id)
     {
@@ -292,29 +293,9 @@ glade_design_view_draw (GtkWidget *widget, cairo_t *cr)
 }
 
 static void
-glade_design_view_style_updated (GtkWidget *widget)
-{
-  GladeDesignViewPrivate *priv = GLADE_DESIGN_VIEW_GET_PRIVATE (widget);
-  GtkWidget *viewport = gtk_bin_get_child (GTK_BIN (priv->scrolled_window));
-  GtkStyleContext *context = gtk_style_context_new ();
-  GtkWidgetPath *path = gtk_widget_path_new ();
-  GdkRGBA bg_color;
-
-  g_type_class_ref (GTK_TYPE_TREE_VIEW);
-  gtk_widget_path_append_type (path, GTK_TYPE_WIDGET);
-  gtk_style_context_set_path (context, path);
-  gtk_style_context_add_class (context, GTK_STYLE_CLASS_VIEW);
-  gtk_widget_path_free (path);
-
-  gtk_style_context_get_background_color (context, GTK_STATE_FLAG_NORMAL, &bg_color);
-  gtk_widget_override_background_color (viewport, GTK_STATE_FLAG_NORMAL, &bg_color);
-
-  g_object_unref (context);
-}
-
-static void
 glade_design_view_init (GladeDesignView *view)
 {
+  GtkCssProvider *provider;
   GtkWidget *viewport;
 
   view->priv = GLADE_DESIGN_VIEW_GET_PRIVATE (view);
@@ -347,6 +328,16 @@ glade_design_view_init (GladeDesignView *view)
   gtk_box_pack_start (GTK_BOX (view), view->priv->scrolled_window, TRUE, TRUE, 0);
   
   gtk_container_set_border_width (GTK_CONTAINER (view), 0);
+
+  provider = gtk_css_provider_new ();
+  gtk_css_provider_load_from_data (provider,
+                                   "GtkViewport {\n"
+                                   "  background-color : @base_color;\n"
+                                   "  }", -1, NULL);
+
+  gtk_style_context_add_provider (gtk_widget_get_style_context (GTK_WIDGET (viewport)),
+                                  GTK_STYLE_PROVIDER (provider),
+                                  GTK_STYLE_PROVIDER_PRIORITY_FALLBACK);
 }
 
 static void
@@ -363,7 +354,6 @@ glade_design_view_class_init (GladeDesignViewClass *klass)
   object_class->set_property = glade_design_view_set_property;
 
   widget_class->draw = glade_design_view_draw;
-  widget_class->style_updated = glade_design_view_style_updated;
   
   g_object_class_install_property (object_class,
                                    PROP_PROJECT,
