@@ -51,8 +51,7 @@ struct _GladeCatalog
                                  * defaults to the library name)
                                  */
 
-  gchar *book;                  /* Devhelp search domain
-                                 */
+  gchar *book;                  /* Devhelp search domain */
 
   gchar *icon_prefix;           /* the prefix for icons */
 
@@ -78,32 +77,16 @@ struct _GladeWidgetGroup
   GList *adaptors;              /* List of class adaptors in the palette    */
 };
 
-static void catalog_load (GladeCatalog * catalog);
-
-static GladeCatalog *catalog_open (const gchar * filename);
-
-static GList *catalog_sort (GList * catalogs);
-
-static gboolean catalog_load_classes (GladeCatalog * catalog,
-                                      GladeXmlNode * widgets_node);
-
-static gboolean catalog_load_group (GladeCatalog * catalog,
-                                    GladeXmlNode * group_node);
-
-static void widget_group_destroy (GladeWidgetGroup * group);
-
-static void catalog_destroy (GladeCatalog * catalog);
-
-static void module_close (GModule * module);
-
-
-/* List of catalogs successfully loaded.
- */
+/* List of catalogs successfully loaded. */
 static GList *loaded_catalogs = NULL;
 
+/* Extra paths to load catalogs from */
+static GList *catalog_paths = NULL;
+
 static gboolean
-catalog_get_function (GladeCatalog * catalog,
-                      const gchar * symbol_name, gpointer * symbol_ptr)
+catalog_get_function (GladeCatalog *catalog,
+                      const gchar *symbol_name,
+                      gpointer *symbol_ptr)
 {
   if (catalog->module == NULL)
     catalog->module = glade_util_load_library (catalog->library);
@@ -137,8 +120,51 @@ catalog_allocate (void)
   return catalog;
 }
 
+static void
+widget_group_destroy (GladeWidgetGroup *group)
+{
+  g_return_if_fail (GLADE_IS_WIDGET_GROUP (group));
+
+  g_free (group->name);
+  g_free (group->title);
+  g_list_free (group->adaptors);
+
+  g_slice_free (GladeWidgetGroup, group);
+}
+
+static void
+catalog_destroy (GladeCatalog *catalog)
+{
+  g_return_if_fail (GLADE_IS_CATALOG (catalog));
+
+  g_free (catalog->name);
+  g_free (catalog->library);
+  g_free (catalog->dep_catalog);
+  g_free (catalog->domain);
+  g_free (catalog->book);
+  g_free (catalog->icon_prefix);
+  g_free (catalog->init_function_name);
+
+  if (catalog->adaptors)
+    {
+      g_list_free (catalog->adaptors);
+    }
+
+  if (catalog->widget_groups)
+    {
+      g_list_foreach (catalog->widget_groups, (GFunc) widget_group_destroy,
+                      NULL);
+      g_list_free (catalog->widget_groups);
+    }
+
+  if (catalog->context)
+    glade_xml_context_free (catalog->context);
+
+  g_slice_free (GladeCatalog, catalog);
+}
+
 static GladeCatalog *
-catalog_open (const gchar * filename)
+catalog_open (const gchar *filename)
 {
   GladeTargetableVersion *version;
   GladeCatalog *catalog;
@@ -217,98 +243,10 @@ catalog_open (const gchar * filename)
   return catalog;
 }
 
-
-static void
-catalog_load (GladeCatalog * catalog)
-{
-  GladeXmlDoc *doc;
-  GladeXmlNode *root;
-  GladeXmlNode *node;
-
-  g_return_if_fail (catalog->context != NULL);
-
-  doc = glade_xml_context_get_doc (catalog->context);
-  root = glade_xml_doc_get_root (doc);
-  node = glade_xml_node_get_children (root);
-
-  for (; node; node = glade_xml_node_next (node))
-    {
-      const gchar *node_name;
-
-      node_name = glade_xml_node_get_name (node);
-      if (strcmp (node_name, GLADE_TAG_GLADE_WIDGET_CLASSES) == 0)
-        {
-          catalog_load_classes (catalog, node);
-        }
-      else if (strcmp (node_name, GLADE_TAG_GLADE_WIDGET_GROUP) == 0)
-        {
-          catalog_load_group (catalog, node);
-        }
-      else
-        continue;
-    }
-
-  catalog->widget_groups = g_list_reverse (catalog->widget_groups);
-  catalog->context = (glade_xml_context_free (catalog->context), NULL);
-
-  return;
-}
-
-static gint
-catalog_find_by_name (GladeCatalog * catalog, const gchar * name)
-{
-  return strcmp (catalog->name, name);
-}
-
-static GList *
-catalog_sort (GList * catalogs)
-{
-  GList *l, *node, *sorted = NULL, *sort;
-  GladeCatalog *catalog, *cat;
-
-  /* Add all dependant catalogs to the sorted list first */
-  for (l = catalogs; l; l = l->next)
-    {
-      catalog = l->data;
-      sort = NULL;
-
-      /* itterate ascending through dependancy hierarchy */
-      while (catalog->dep_catalog)
-        {
-          node = g_list_find_custom
-              (catalogs, catalog->dep_catalog,
-               (GCompareFunc) catalog_find_by_name);
-
-          if (!node || (cat = node->data) == NULL)
-            {
-              g_critical ("Catalog %s depends on catalog %s, not found",
-                          catalog->name, catalog->dep_catalog);
-              break;
-            }
-
-          /* Prepend to sort list */
-          if (g_list_find (sort, cat) == NULL &&
-              g_list_find (sorted, cat) == NULL)
-            sort = g_list_prepend (sort, cat);
-
-          catalog = cat;
-        }
-      sorted = g_list_concat (sorted, sort);
-    }
-
-  /* Append all independant catalogs after */
-  for (l = catalogs; l; l = l->next)
-    if (g_list_find (sorted, l->data) == NULL)
-      sorted = g_list_append (sorted, l->data);
-
-  g_list_free (catalogs);
-  return sorted;
-}
-
 static GHashTable *modules = NULL;
 
 static GModule *
-catalog_load_library (GladeCatalog * catalog)
+catalog_load_library (GladeCatalog *catalog)
 {
   GModule *module;
 
@@ -316,7 +254,7 @@ catalog_load_library (GladeCatalog * catalog)
     modules = g_hash_table_new_full (g_str_hash,
                                      g_str_equal,
                                      (GDestroyNotify) g_free,
-                                     (GDestroyNotify) module_close);
+                                     (GDestroyNotify) g_module_close);
 
   if (catalog->library == NULL)
     return NULL;
@@ -333,7 +271,7 @@ catalog_load_library (GladeCatalog * catalog)
 }
 
 static gboolean
-catalog_load_classes (GladeCatalog * catalog, GladeXmlNode * widgets_node)
+catalog_load_classes (GladeCatalog *catalog, GladeXmlNode *widgets_node)
 {
   GladeXmlNode *node;
   GModule *module = catalog_load_library (catalog);
@@ -357,7 +295,7 @@ catalog_load_classes (GladeCatalog * catalog, GladeXmlNode * widgets_node)
 }
 
 static gboolean
-catalog_load_group (GladeCatalog * catalog, GladeXmlNode * group_node)
+catalog_load_group (GladeCatalog *catalog, GladeXmlNode *group_node)
 {
   GladeWidgetGroup *group;
   GladeXmlNode *node;
@@ -445,8 +383,95 @@ catalog_load_group (GladeCatalog * catalog, GladeXmlNode * group_node)
   return TRUE;
 }
 
+static void
+catalog_load (GladeCatalog *catalog)
+{
+  GladeXmlDoc *doc;
+  GladeXmlNode *root;
+  GladeXmlNode *node;
+
+  g_return_if_fail (catalog->context != NULL);
+
+  doc = glade_xml_context_get_doc (catalog->context);
+  root = glade_xml_doc_get_root (doc);
+  node = glade_xml_node_get_children (root);
+
+  for (; node; node = glade_xml_node_next (node))
+    {
+      const gchar *node_name;
+
+      node_name = glade_xml_node_get_name (node);
+      if (strcmp (node_name, GLADE_TAG_GLADE_WIDGET_CLASSES) == 0)
+        {
+          catalog_load_classes (catalog, node);
+        }
+      else if (strcmp (node_name, GLADE_TAG_GLADE_WIDGET_GROUP) == 0)
+        {
+          catalog_load_group (catalog, node);
+        }
+      else
+        continue;
+    }
+
+  catalog->widget_groups = g_list_reverse (catalog->widget_groups);
+  catalog->context = (glade_xml_context_free (catalog->context), NULL);
+
+  return;
+}
+
+static gint
+catalog_find_by_name (GladeCatalog *catalog, const gchar *name)
+{
+  return strcmp (catalog->name, name);
+}
+
 static GList *
-catalogs_from_path (GList * catalogs, const gchar * path)
+catalog_sort (GList *catalogs)
+{
+  GList *l, *node, *sorted = NULL, *sort;
+  GladeCatalog *catalog, *cat;
+
+  /* Add all dependant catalogs to the sorted list first */
+  for (l = catalogs; l; l = l->next)
+    {
+      catalog = l->data;
+      sort = NULL;
+
+      /* itterate ascending through dependancy hierarchy */
+      while (catalog->dep_catalog)
+        {
+          node = g_list_find_custom
+              (catalogs, catalog->dep_catalog,
+               (GCompareFunc) catalog_find_by_name);
+
+          if (!node || (cat = node->data) == NULL)
+            {
+              g_critical ("Catalog %s depends on catalog %s, not found",
+                          catalog->name, catalog->dep_catalog);
+              break;
+            }
+
+          /* Prepend to sort list */
+          if (g_list_find (sort, cat) == NULL &&
+              g_list_find (sorted, cat) == NULL)
+            sort = g_list_prepend (sort, cat);
+
+          catalog = cat;
+        }
+      sorted = g_list_concat (sorted, sort);
+    }
+
+  /* Append all independant catalogs after */
+  for (l = catalogs; l; l = l->next)
+    if (g_list_find (sorted, l->data) == NULL)
+      sorted = g_list_append (sorted, l->data);
+
+  g_list_free (catalogs);
+  return sorted;
+}
+
+static GList *
+catalogs_from_path (GList *catalogs, const gchar *path)
 {
   GladeCatalog *catalog;
   GDir *dir;
@@ -490,6 +515,54 @@ catalogs_from_path (GList * catalogs, const gchar * path)
   return catalogs;
 }
 
+/**
+ * glade_catalog_add_path:
+ * @path:
+ * 
+ * Adds a new path to the list of path to look catalogs for.
+ */
+void
+glade_catalog_add_path (const gchar *path)
+{
+  g_return_if_fail (path != NULL);
+
+  if (g_list_find_custom (catalog_paths, path, (GCompareFunc) g_strcmp0) == NULL)
+	catalog_paths = g_list_append (catalog_paths, g_strdup (path));
+}
+
+/**
+ * glade_catalog_remove_path:
+ * @path:
+ * 
+ * Remove path from the list of path to look catalogs for.
+ * NULL to remove all paths.
+ */
+void
+glade_catalog_remove_path (const gchar *path)
+{
+  GList *l;
+  
+  if (path == NULL)
+	{
+	  g_list_free_full (catalog_paths, g_free);
+	  catalog_paths = NULL;
+	}
+  else if ((l = g_list_find_custom (catalog_paths, path, (GCompareFunc) g_strcmp0)))
+	{
+	  catalog_paths = g_list_remove_link (catalog_paths, l); 
+	}
+}
+
+/**
+ * glade_catalog_load_all:
+ * 
+ * Loads all available catalogs in the system.
+ * First loads catalogs from GLADE_ENV_CATALOG_PATH,
+ * then from glade_app_get_catalogs_dir() and finally from paths specified with
+ * glade_catalog_add_path()
+ *
+ * Returns: the list of loaded GladeCatalog *
+ */
 const GList *
 glade_catalog_load_all (void)
 {
@@ -520,6 +593,10 @@ glade_catalog_load_all (void)
   /* ... Then load catalogs from standard install directory */
   catalogs = catalogs_from_path (catalogs, glade_app_get_catalogs_dir ());
 
+  /* And then load catalogs from extra paths */
+  for (l = catalog_paths; l; l = g_list_next (l))
+    catalogs = catalogs_from_path (catalogs, l->data);
+  
   /* Catalogs need dependancies, most catalogs depend on
    * the gtk+ catalog, but some custom toolkits may depend
    * on the gnome catalog for instance.
@@ -527,14 +604,14 @@ glade_catalog_load_all (void)
   catalogs = catalog_sort (catalogs);
 
   /* After sorting, execute init function and then load */
-  for (l = catalogs; l; l = l->next)
+  for (l = catalogs; l; l = g_list_next (l))
     {
       catalog = l->data;
       if (catalog->init_function)
         catalog->init_function (catalog->name);
     }
 
-  for (l = catalogs; l; l = l->next)
+  for (l = catalogs; l; l = g_list_next (l))
     {
       catalog = l->data;
       catalog_load (catalog);
@@ -543,7 +620,7 @@ glade_catalog_load_all (void)
   /* Print a summery of widget adaptors missing icons.
    */
   adaptors = glade_widget_adaptor_list_adaptors ();
-  for (l = adaptors; l; l = l->next)
+  for (l = adaptors; l; l = g_list_next (l))
     {
       GladeWidgetAdaptor *adaptor = l->data;
 
@@ -574,81 +651,140 @@ glade_catalog_load_all (void)
   return loaded_catalogs;
 }
 
+/**
+ * glade_catalog_get_name:
+ * @catalog: a catalog object
+ * 
+ * Returns: The symbolic catalog name.
+ */
 G_CONST_RETURN gchar *
-glade_catalog_get_name (GladeCatalog * catalog)
+glade_catalog_get_name (GladeCatalog *catalog)
 {
   g_return_val_if_fail (GLADE_IS_CATALOG (catalog), NULL);
 
   return catalog->name;
 }
 
+/**
+ * glade_catalog_get_book:
+ * @catalog: a catalog object
+ * 
+ * Returns: The Devhelp search domain.
+ */
 G_CONST_RETURN gchar *
-glade_catalog_get_book (GladeCatalog * catalog)
+glade_catalog_get_book (GladeCatalog *catalog)
 {
   g_return_val_if_fail (GLADE_IS_CATALOG (catalog), NULL);
 
   return catalog->book;
 }
 
+/**
+ * glade_catalog_get_domain:
+ * @catalog: a catalog object
+ * 
+ * Returns: The domain to be used to translate strings from this catalog
+ */
 G_CONST_RETURN gchar *
-glade_catalog_get_domain (GladeCatalog * catalog)
+glade_catalog_get_domain (GladeCatalog *catalog)
 {
   g_return_val_if_fail (GLADE_IS_CATALOG (catalog), NULL);
 
   return catalog->domain;
 }
 
+/**
+ * glade_catalog_get_icon_prefix:
+ * @catalog: a catalog object
+ * 
+ * Returns: The prefix for icons.
+ */
 G_CONST_RETURN gchar *
-glade_catalog_get_icon_prefix (GladeCatalog * catalog)
+glade_catalog_get_icon_prefix (GladeCatalog *catalog)
 {
   g_return_val_if_fail (GLADE_IS_CATALOG (catalog), NULL);
 
   return catalog->icon_prefix;
 }
 
+/**
+ * glade_catalog_get_major_version:
+ * @catalog: a catalog object
+ * 
+ * Returns: The catalog version
+ */
 guint16
-glade_catalog_get_major_version (GladeCatalog * catalog)
+glade_catalog_get_major_version (GladeCatalog *catalog)
 {
   g_return_val_if_fail (GLADE_IS_CATALOG (catalog), 0);
 
   return catalog->major_version;
 }
 
+/**
+ * glade_catalog_get_minor_version:
+ * @catalog: a catalog object
+ * 
+ * Returns: The catalog minor version
+ */
 guint16
-glade_catalog_get_minor_version (GladeCatalog * catalog)
+glade_catalog_get_minor_version (GladeCatalog *catalog)
 {
   g_return_val_if_fail (GLADE_IS_CATALOG (catalog), 0);
 
   return catalog->minor_version;
 }
 
-
+/**
+ * glade_catalog_get_targets:
+ * @catalog: a catalog object
+ * 
+ * Returns: the list of suitable version targets.
+ */
 GList *
-glade_catalog_get_targets (GladeCatalog * catalog)
+glade_catalog_get_targets (GladeCatalog *catalog)
 {
   g_return_val_if_fail (GLADE_IS_CATALOG (catalog), NULL);
 
   return catalog->targetable_versions;
 }
 
+/**
+ * glade_catalog_get_widget_groups:
+ * @catalog: a catalog object
+ * 
+ * Returns: the list of widget groups (palette)
+ */
 GList *
-glade_catalog_get_widget_groups (GladeCatalog * catalog)
+glade_catalog_get_widget_groups (GladeCatalog *catalog)
 {
   g_return_val_if_fail (GLADE_IS_CATALOG (catalog), NULL);
 
   return catalog->widget_groups;
 }
 
+/**
+ * glade_catalog_get_adaptors:
+ * @catalog: a catalog object
+ * 
+ * Returns: the list of widget class adaptors
+ */
 GList *
-glade_catalog_get_adaptors (GladeCatalog * catalog)
+glade_catalog_get_adaptors (GladeCatalog *catalog)
 {
   g_return_val_if_fail (GLADE_IS_CATALOG (catalog), NULL);
 
   return catalog->adaptors;
 }
 
+/**
+ * glade_catalog_is_loaded:
+ * @name: a catalog object
+ * 
+ * Returns: Whether @name is loaded or not
+ */
 gboolean
-glade_catalog_is_loaded (const gchar * name)
+glade_catalog_is_loaded (const gchar *name)
 {
   GList *l;
 
@@ -665,43 +801,11 @@ glade_catalog_is_loaded (const gchar * name)
   return FALSE;
 }
 
-static void
-catalog_destroy (GladeCatalog * catalog)
-{
-  g_return_if_fail (GLADE_IS_CATALOG (catalog));
-
-  g_free (catalog->name);
-  g_free (catalog->library);
-  g_free (catalog->dep_catalog);
-  g_free (catalog->domain);
-  g_free (catalog->book);
-  g_free (catalog->icon_prefix);
-  g_free (catalog->init_function_name);
-
-  if (catalog->adaptors)
-    {
-      g_list_free (catalog->adaptors);
-    }
-
-  if (catalog->widget_groups)
-    {
-      g_list_foreach (catalog->widget_groups, (GFunc) widget_group_destroy,
-                      NULL);
-      g_list_free (catalog->widget_groups);
-    }
-
-  if (catalog->context)
-    glade_xml_context_free (catalog->context);
-
-  g_slice_free (GladeCatalog, catalog);
-}
-
-static void
-module_close (GModule * module)
-{
-  g_module_close (module);
-}
-
+/**
+ * glade_catalog_destroy_all:
+ * 
+ * Destroy and free all resources related with every loaded catalog.
+ */
 void
 glade_catalog_destroy_all (void)
 {
@@ -723,46 +827,58 @@ glade_catalog_destroy_all (void)
     }
 }
 
+/**
+ * glade_widget_group_get_name:
+ * @group: a widget group
+ * 
+ * Returns: the widget group name
+ */
 const gchar *
-glade_widget_group_get_name (GladeWidgetGroup * group)
+glade_widget_group_get_name (GladeWidgetGroup *group)
 {
   g_return_val_if_fail (group != NULL, NULL);
 
   return group->name;
 }
 
+/**
+ * glade_widget_group_get_title:
+ * @group: a widget group
+ * 
+ * Returns: the widget group name used in the palette
+ */
 const gchar *
-glade_widget_group_get_title (GladeWidgetGroup * group)
+glade_widget_group_get_title (GladeWidgetGroup *group)
 {
   g_return_val_if_fail (group != NULL, NULL);
 
   return group->title;
 }
 
+/**
+ * glade_widget_group_get_expanded:
+ * @group: a widget group
+ * 
+ * Returns: Whether group is expanded in the palette
+ */
 gboolean
-glade_widget_group_get_expanded (GladeWidgetGroup * group)
+glade_widget_group_get_expanded (GladeWidgetGroup *group)
 {
   g_return_val_if_fail (group != NULL, FALSE);
 
   return group->expanded;
 }
 
+/**
+ * glade_widget_group_get_adaptors:
+ * @group: a widget group
+ * 
+ * Returns: a list of class adaptors in the palette
+ */
 const GList *
-glade_widget_group_get_adaptors (GladeWidgetGroup * group)
+glade_widget_group_get_adaptors (GladeWidgetGroup *group)
 {
   g_return_val_if_fail (group != NULL, NULL);
 
   return group->adaptors;
-}
-
-static void
-widget_group_destroy (GladeWidgetGroup * group)
-{
-  g_return_if_fail (GLADE_IS_WIDGET_GROUP (group));
-
-  g_free (group->name);
-  g_free (group->title);
-  g_list_free (group->adaptors);
-
-  g_slice_free (GladeWidgetGroup, group);
 }
