@@ -926,38 +926,16 @@ on_glade_widget_name_notify (GObject *gobject, GParamSpec *pspec, GladeDesignLay
 }
 
 static void
-widget_reset_bg_color (GtkWidget *widget)
-{
-  GtkStyleContext *context = gtk_style_context_new ();
-  GtkWidgetPath *path = gtk_widget_path_new ();
-  GdkRGBA bg_color;
-  
-  gtk_widget_path_append_type (path, G_OBJECT_TYPE (widget));
-  gtk_style_context_set_path (context, path);
-  gtk_widget_path_free (path);
-
-  gtk_style_context_get_background_color (context, GTK_STATE_FLAG_NORMAL, &bg_color);
-  gtk_widget_override_background_color (widget, GTK_STATE_FLAG_NORMAL, &bg_color);  
-
-  g_object_unref (context);
-}
-
-
-static void
 glade_design_layout_add (GtkContainer *container, GtkWidget *widget)
 {
   GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (container);
   GladeDesignLayout *layout = GLADE_DESIGN_LAYOUT (container);
+  GtkStyleContext *context = gtk_widget_get_style_context (widget);
   GladeWidget *gchild;
 
   layout->priv->current_width = 0;
   layout->priv->current_height = 0;
 
-  /*FIXME: Adwaita theme, for some unknown reason, overwrites the window default bg.
-   *  This is a workaround to reset it to the default value.
-   */
-  widget_reset_bg_color (widget);
-  
   gtk_widget_set_parent_window (widget, priv->offscreen_window);
 
   GTK_CONTAINER_CLASS (glade_design_layout_parent_class)->add (container,
@@ -1474,15 +1452,6 @@ glade_design_layout_draw (GtkWidget *widget, cairo_t *cr)
           gboolean selected = FALSE;
           GList *l;
 
-		  /* Draw bg for windowless widgets */
-		  if (!gtk_widget_get_has_window (child))
-			{
-			  gdk_cairo_set_source_rgba (cr, &priv->bg_color);
-			  cairo_rectangle (cr, priv->child_offset, priv->child_offset,
-			                   priv->current_width, priv->current_height);
-			  cairo_fill (cr);
-			}
-		  
           /* draw offscreen widgets */
           gdk_cairo_set_source_window (cr, priv->offscreen_window,
                                        priv->child_offset, priv->child_offset);
@@ -1687,7 +1656,7 @@ glade_design_layout_realize (GtkWidget * widget)
 
   context = gtk_widget_get_style_context (widget);
   gtk_style_context_set_background (context, priv->window);
-  gtk_style_context_set_background (context, priv->offscreen_window);
+  gdk_window_set_background_rgba (priv->offscreen_window, &priv->bg_color);
   gdk_window_show (priv->offscreen_window);
 
   gdk_window_set_cursor (priv->window, NULL);
@@ -1758,6 +1727,8 @@ glade_design_layout_style_updated (GtkWidget *widget)
 
   priv->frame_color[1] = priv->fg_color;
   priv->bg_color = priv->frame_color[0];
+
+  if (priv->offscreen_window)  gdk_window_set_background_rgba (priv->offscreen_window, &priv->bg_color);
 }
 
 static void
