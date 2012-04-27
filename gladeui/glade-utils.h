@@ -2,6 +2,7 @@
 #define __GLADE_UTILS_H__
 
 #include <glib.h>
+#include "glade-project.h"
 
 G_BEGIN_DECLS
 
@@ -120,6 +121,7 @@ GtkTreeIter      *glade_util_find_iter_by_widget   (GtkTreeModel *model,
 GtkWidget        *glade_util_get_placeholder_from_pointer (GtkContainer *container);
 gboolean          glade_util_object_is_loading     (GObject *object);
 
+GdkPixbuf        *glade_utils_pointer_mode_render_icon (GladePointerMode mode, GtkIconSize size);
 G_END_DECLS
 
 #endif /* __GLADE_UTILS_H__ */

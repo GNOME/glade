@@ -3,9 +3,7 @@
 
 #include <gladeui/glade-widget.h>
 #include <gladeui/glade-command.h>
-#include <gladeui/glade-utils.h>
 #include <gladeui/glade-xml-utils.h>
-
 
 G_BEGIN_DECLS
 
