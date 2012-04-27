@@ -23,6 +23,7 @@
 #include <config.h>
 
 #include "glade-window.h"
+#include "glade-resources.h"
 
 #include <gladeui/glade.h>
 #include <gladeui/glade-app.h>
@@ -155,6 +156,8 @@ main (int argc, char *argv[])
 
   glade_setup_log_handlers ();
 
+  /* Load resources needed at initialization */
+  glade_resources_register_resource ();
 
   window = GLADE_WINDOW (glade_window_new ());
 
@@ -201,6 +204,9 @@ main (int argc, char *argv[])
   if (!opened_project)
     glade_window_new_project (window);
 
+  /* Free resources before entering the main loop */
+  glade_resources_unregister_resource ();
+  
   gtk_main ();
 
   return 0;

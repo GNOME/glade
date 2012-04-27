@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2001 Ximian, Inc.
  * Copyright (C) 2007 Vincent Geddes.
+ * Copyright (C) 2012 Juan Pablo Ugarte.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as

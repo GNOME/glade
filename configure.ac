@@ -3,7 +3,7 @@ dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.52)
 
 m4_define(glade_major_version, 3)
-m4_define(glade_minor_version, 11)
+m4_define(glade_minor_version, 13)
 m4_define(glade_micro_version, 0)
 m4_define(glade_version, glade_major_version.glade_minor_version.glade_micro_version)
 
@@ -42,6 +42,7 @@ AC_PROG_MAKE_SET
 LT_PREREQ([2.2.6])
 LT_INIT([dlopen win32-dll disable-static])
 
+AC_PATH_PROG(GLIB_COMPILE_RESOURCES, glib-compile-resources)
 AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal)
 AC_PATH_PROG(DLLTOOL, dlltool)
 
@@ -134,6 +135,9 @@ PKG_CHECK_MODULES([GTK],[
   libxml-2.0 >= 2.4.0
 ])
 
+PKG_CHECK_MODULES([GMODULE_EXPORT],[
+  gmodule-export-2.0
+])
 
 dnl ================================================================
 dnl Check for the unix print widgets in gtk+
@@ -244,6 +248,11 @@ if test "x$_gdk_tgt" = xquartz; then
    AC_SUBST(GTK_MAC_LIBS)
    AC_SUBST(GTK_MAC_CFLAGS)
 fi
+
+dnl ================================================================
+dnl Check for extra functions
+dnl ================================================================
+AC_CHECK_FUNCS(gtk_builder_add_from_resource)
 
 
 AC_SUBST([GLADE_PREFIX])
