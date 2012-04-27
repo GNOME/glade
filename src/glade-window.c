@@ -3098,31 +3098,27 @@ glade_window_constructed (GObject *object)
 #ifdef MAC_INTEGRATION
 	{
 	  /* Fix up the menubar for MacOSX Quartz builds */
-	  GtkWidget *menubar =GTK_WIDGET (gtk_builder_get_object (builder, "menubar"));
+	  GtkWidget *menubar = GET_OBJECT (builder, GTK_WIDGET, "menubar");
 
 	  GtkWidget *sep;
 	  GtkOSXApplication *theApp = g_object_new(GTK_TYPE_OSX_APPLICATION, NULL);
 	  gtk_widget_hide (menubar);
 	  gtk_osxapplication_set_menu_bar(theApp, GTK_MENU_SHELL(menubar));
-	  widget =
-		gtk_ui_manager_get_widget (window->priv->ui, "/MenuBar/FileMenu/Quit");
+	  widget = GET_OBJECT (builder, GTK_WIDGET, "quit_menuitem");
 	  gtk_widget_hide (widget);
-	  widget =
-		gtk_ui_manager_get_widget (window->priv->ui, "/MenuBar/HelpMenu/About");
+	  widget = GET_OBJECT (builder, GTK_WIDGET, "about_menuitem");
 	  gtk_osxapplication_insert_app_menu_item (theApp, widget, 0);
 	  sep = gtk_separator_menu_item_new();
 	  g_object_ref(sep);
 	  gtk_osxapplication_insert_app_menu_item (theApp, sep, 1);
 
-	  widget =
-		gtk_ui_manager_get_widget (window->priv->ui, "/MenuBar/FileMenu/Properties");
+	  widget = GET_OBJECT (builder, GTK_WIDGET, "properties_menuitem");
 	  gtk_osxapplication_insert_app_menu_item  (theApp, widget, 2);
 	  sep = gtk_separator_menu_item_new();
 	  g_object_ref(sep);
 	  gtk_osxapplication_insert_app_menu_item (theApp, sep, 3);
 
-	  widget =
-		gtk_ui_manager_get_widget (window->priv->ui, "/MenuBar/HelpMenu");
+	  widget = GET_OBJECT (builder, GTK_WIDGET, "help_menuitem");
 	  gtk_osxapplication_set_help_menu(theApp, GTK_MENU_ITEM(widget));
 
 	  g_signal_connect(theApp, "NSApplicationWillTerminate",

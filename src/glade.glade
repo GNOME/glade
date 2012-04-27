@@ -391,19 +391,19 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
-          <object class="GtkMenuItem" id="menuitem1">
+          <object class="GtkMenuItem" id="file_menuitem">
             <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">_File</property>
             <property name="use_underline">True</property>
             <child type="submenu">
-              <object class="GtkMenu" id="menu1">
+              <object class="GtkMenu" id="file_menu">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="accel_group">accelgroup</property>
                 <child>
-                  <object class="GtkImageMenuItem" id="imagemenuitem1">
+                  <object class="GtkImageMenuItem" id="new_menuitem">
                     <property name="related_action">new_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -412,7 +412,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkImageMenuItem" id="imagemenuitem2">
+                  <object class="GtkImageMenuItem" id="open_menuitem">
                     <property name="related_action">open_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -449,7 +449,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkImageMenuItem" id="imagemenuitem3">
+                  <object class="GtkImageMenuItem" id="save_menuitem">
                     <property name="related_action">save_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -458,7 +458,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkImageMenuItem" id="imagemenuitem4">
+                  <object class="GtkImageMenuItem" id="save_as_menuitem">
                     <property name="related_action">save_as_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -474,7 +474,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkImageMenuItem" id="imagemenuitem13">
+                  <object class="GtkImageMenuItem" id="properties_menuitem">
                     <property name="related_action">properties_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -490,7 +490,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkImageMenuItem" id="imagemenuitem15">
+                  <object class="GtkImageMenuItem" id="close_menuitem">
                     <property name="related_action">close_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -499,7 +499,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkImageMenuItem" id="imagemenuitem5">
+                  <object class="GtkImageMenuItem" id="quit_menuitem">
                     <property name="related_action">quit_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -512,19 +512,19 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
           </object>
         </child>
         <child>
-          <object class="GtkMenuItem" id="menuitem2">
+          <object class="GtkMenuItem" id="edit_menuitem">
             <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">_Edit</property>
             <property name="use_underline">True</property>
             <child type="submenu">
-              <object class="GtkMenu" id="menu2">
+              <object class="GtkMenu" id="edit_menu">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="accel_group">accelgroup</property>
                 <child>
-                  <object class="GtkImageMenuItem" id="imagemenuitem11">
+                  <object class="GtkImageMenuItem" id="undo_menuitem">
                     <property name="related_action">undo_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -533,7 +533,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkImageMenuItem" id="imagemenuitem12">
+                  <object class="GtkImageMenuItem" id="redo_menuitem">
                     <property name="related_action">redo_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -549,7 +549,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkImageMenuItem" id="imagemenuitem6">
+                  <object class="GtkImageMenuItem" id="cut_menuitem">
                     <property name="related_action">cut_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -558,7 +558,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkImageMenuItem" id="imagemenuitem7">
+                  <object class="GtkImageMenuItem" id="copy_menuitem">
                     <property name="related_action">copy_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -567,7 +567,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkImageMenuItem" id="imagemenuitem8">
+                  <object class="GtkImageMenuItem" id="paste_menuitem">
                     <property name="related_action">paste_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -576,7 +576,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkImageMenuItem" id="imagemenuitem9">
+                  <object class="GtkImageMenuItem" id="delete_menuitem">
                     <property name="related_action">delete_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -592,7 +592,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkImageMenuItem" id="imagemenuitem29">
+                  <object class="GtkImageMenuItem" id="preferences_menuitem">
                     <property name="related_action">preferences_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -605,19 +605,19 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
           </object>
         </child>
         <child>
-          <object class="GtkMenuItem" id="menuitem3">
+          <object class="GtkMenuItem" id="view_menuitem">
             <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">_View</property>
             <property name="use_underline">True</property>
             <child type="submenu">
-              <object class="GtkMenu" id="menu5">
+              <object class="GtkMenu" id="view_menu">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="accel_group">accelgroup</property>
                 <child>
-                  <object class="GtkImageMenuItem" id="imagemenuitem19">
+                  <object class="GtkImageMenuItem" id="toolbar_visible_menuitem">
                     <property name="related_action">toolbar_visible_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -626,7 +626,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkImageMenuItem" id="imagemenuitem20">
+                  <object class="GtkImageMenuItem" id="statusbar_visible_menuitem">
                     <property name="related_action">statusbar_visible_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -635,7 +635,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkImageMenuItem" id="imagemenuitem21">
+                  <object class="GtkImageMenuItem" id="project_tabs_visible_menuitem">
                     <property name="related_action">project_tabs_visible_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -655,21 +655,21 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <child>
-                          <object class="GtkCheckMenuItem" id="checkmenuitem1">
+                          <object class="GtkCheckMenuItem" id="icons_and_labels_checkmenuitem">
                             <property name="related_action">icons_and_labels_radioaction</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                           </object>
                         </child>
                         <child>
-                          <object class="GtkCheckMenuItem" id="checkmenuitem2">
+                          <object class="GtkCheckMenuItem" id="icons_only_checkmenuitem">
                             <property name="related_action">icons_only_radioaction</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                           </object>
                         </child>
                         <child>
-                          <object class="GtkCheckMenuItem" id="checkmenuitem3">
+                          <object class="GtkCheckMenuItem" id="labels_only_checkmenuitem">
                             <property name="related_action">labels_only_radioaction</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
@@ -683,7 +683,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                           </object>
                         </child>
                         <child>
-                          <object class="GtkImageMenuItem" id="imagemenuitem28">
+                          <object class="GtkImageMenuItem" id="use_small_icons_menuitem">
                             <property name="related_action">use_small_icons_action</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
@@ -703,7 +703,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkImageMenuItem" id="imagemenuitem22">
+                  <object class="GtkImageMenuItem" id="dock_palette_menuitem">
                     <property name="related_action">dock_palette_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -712,7 +712,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkImageMenuItem" id="imagemenuitem25">
+                  <object class="GtkImageMenuItem" id="dock_inspector_menuitem">
                     <property name="related_action">dock_inspector_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -721,7 +721,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkImageMenuItem" id="imagemenuitem26">
+                  <object class="GtkImageMenuItem" id="dock_editor_menuitem">
                     <property name="related_action">dock_editor_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -734,7 +734,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
           </object>
         </child>
         <child>
-          <object class="GtkMenuItem" id="menuitem5">
+          <object class="GtkMenuItem" id="projects_menuitem">
             <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
@@ -746,7 +746,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                 <property name="can_focus">False</property>
                 <property name="accel_group">accelgroup</property>
                 <child>
-                  <object class="GtkImageMenuItem" id="imagemenuitem17">
+                  <object class="GtkImageMenuItem" id="previous_project_menuitem">
                     <property name="related_action">previous_project_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -755,7 +755,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkImageMenuItem" id="imagemenuitem18">
+                  <object class="GtkImageMenuItem" id="next_project_menuitem">
                     <property name="related_action">next_project_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -775,19 +775,19 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
           </object>
         </child>
         <child>
-          <object class="GtkMenuItem" id="menuitem4">
+          <object class="GtkMenuItem" id="help_menuitem">
             <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">_Help</property>
             <property name="use_underline">True</property>
             <child type="submenu">
-              <object class="GtkMenu" id="menu3">
+              <object class="GtkMenu" id="help_menu">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="accel_group">accelgroup</property>
                 <child>
-                  <object class="GtkImageMenuItem" id="imagemenuitem16">
+                  <object class="GtkImageMenuItem" id="reference_menuitem">
                     <property name="related_action">reference_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -803,7 +803,7 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkImageMenuItem" id="imagemenuitem10">
+                  <object class="GtkImageMenuItem" id="about_menuitem">
                     <property name="related_action">about_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
