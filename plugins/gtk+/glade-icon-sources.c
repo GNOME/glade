@@ -948,8 +948,8 @@ glade_eprop_icon_sources_create_input (GladeEditorProperty * eprop)
   GladeEPropIconSources *eprop_sources = GLADE_EPROP_ICON_SOURCES (eprop);
   GtkWidget *vbox, *hbox, *button, *swin;
 
-  vbox = gtk_vbox_new (FALSE, 2);
-  hbox = gtk_hbox_new (FALSE, 4);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
 
   /* hbox with comboboxentry add/remove source buttons on the right... */
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);

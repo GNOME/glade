@@ -289,7 +289,7 @@ glade_editor_notebook_page (GladeEditor * editor, const gchar * name)
       gtk_notebook_insert_page (GTK_NOTEBOOK (editor->priv->notebook), sw,
                                 label_widget, page++);
 
-      vbox = gtk_vbox_new (FALSE, 0);
+      vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
       gtk_widget_show (vbox);
       gtk_container_add (GTK_CONTAINER (alignment), vbox);
 
@@ -419,7 +419,7 @@ glade_editor_setup_class_field (GladeEditor * editor)
   GtkWidget *hbox;
   gint       icon_height;
 
-  hbox = gtk_hbox_new (FALSE, 4);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
 
   editor->priv->class_icon = gtk_image_new ();
   editor->priv->class_label = gtk_label_new (NULL);
@@ -505,7 +505,7 @@ glade_editor_init (GladeEditor * editor)
   gtk_box_pack_start (GTK_BOX (editor), editor->priv->class_field, FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (editor), editor->priv->notebook, TRUE, TRUE, 0);
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 0);
   gtk_box_pack_start (GTK_BOX (editor), hbox, FALSE, FALSE, 0);
 
@@ -1287,7 +1287,7 @@ glade_editor_reset_dialog (GladeEditor *editor)
                                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                                         GTK_STOCK_OK, GTK_RESPONSE_OK, NULL);
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_widget_show (vbox);
 
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
@@ -1321,7 +1321,7 @@ glade_editor_reset_dialog (GladeEditor *editor)
   gtk_container_add (GTK_CONTAINER (sw), tree_view);
 
   /* Select all / Unselect all */
-  hbox = gtk_hbutton_box_new ();
+  hbox = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_button_box_set_layout (GTK_BUTTON_BOX (hbox), GTK_BUTTONBOX_END);
   gtk_widget_show (hbox);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, TRUE, TRUE, 0);

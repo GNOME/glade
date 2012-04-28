@@ -808,7 +808,7 @@ glade_eprop_column_types_create_input (GladeEditorProperty * eprop)
   GtkCellRenderer *cell;
   gchar *string;
 
-  vbox = gtk_vbox_new (FALSE, 2);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
 
 /* 	hbox = gtk_hbox_new (FALSE, 4); */
 

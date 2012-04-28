@@ -1688,7 +1688,7 @@ glade_base_editor_init (GladeBaseEditor * editor)
   e = editor->priv = g_new0 (GladeBaseEditorPrivate, 1);
 
   /* Paned */
-  e->paned = paned = gtk_vpaned_new ();
+  e->paned = paned = gtk_paned_new (GTK_ORIENTATION_VERTICAL);
   gtk_widget_show (paned);
   gtk_box_pack_start (GTK_BOX (editor), e->paned, TRUE, TRUE, 0);
 
@@ -1711,7 +1711,7 @@ glade_base_editor_init (GladeBaseEditor * editor)
   gtk_notebook_append_page (GTK_NOTEBOOK (e->notebook), e->main_scroll, label);
 
   /* Hbox */
-  hbox = gtk_hbox_new (FALSE, 8);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 8);
   gtk_widget_show (hbox);
 
   /* translators: refers to a tab name used to show the widget hierarchy */
@@ -1720,7 +1720,7 @@ glade_base_editor_init (GladeBaseEditor * editor)
   gtk_notebook_append_page (GTK_NOTEBOOK (e->notebook), hbox, label);
 
   /* TreeView Vbox */
-  tree_vbox = gtk_vbox_new (FALSE, 8);
+  tree_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 8);
   gtk_widget_show (tree_vbox);
   gtk_box_pack_start (GTK_BOX (hbox), tree_vbox, FALSE, TRUE, 0);
 
@@ -1798,7 +1798,7 @@ glade_base_editor_init (GladeBaseEditor * editor)
   gtk_table_attach_defaults (GTK_TABLE (button_table), button, 1, 2, 0, 1);
 
   /* Properties Vbox */
-  vbox = gtk_vbox_new (FALSE, 8);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 8);
   gtk_widget_show (vbox);
   gtk_box_pack_start (GTK_BOX (hbox), vbox, TRUE, TRUE, 0);
 
@@ -2245,7 +2245,7 @@ glade_base_editor_pack_new_window (GladeBaseEditor * editor,
                             G_CALLBACK (gtk_widget_destroy), window);
 
   /* Button Box */
-  buttonbox = gtk_hbutton_box_new ();
+  buttonbox = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_widget_show (buttonbox);
   gtk_button_box_set_layout (GTK_BUTTON_BOX (buttonbox), GTK_BUTTONBOX_END);
   gtk_box_set_spacing (GTK_BOX (buttonbox), 8);

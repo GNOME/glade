@@ -734,7 +734,7 @@ glade_widget_adaptor_finalize (GObject * object)
     g_free (adaptor->priv->special_child_type);
 
   if (adaptor->priv->cursor != NULL)
-    gdk_cursor_unref (adaptor->priv->cursor);
+    g_object_unref (adaptor->priv->cursor);
 
   if (adaptor->priv->name)
     g_free (adaptor->priv->name);
