@@ -65,7 +65,7 @@ glade_text_button_init (GladeTextButton * self)
 
   gtk_alignment_set_padding (GTK_ALIGNMENT (self), 1, 1, 2, 2);
 
-  self->hbox = gtk_hbox_new (FALSE, 2);
+  self->hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
 
   gtk_container_add (GTK_CONTAINER (self), self->hbox);
 

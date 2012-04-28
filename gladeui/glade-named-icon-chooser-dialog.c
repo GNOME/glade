@@ -463,7 +463,7 @@ set_busy_cursor (GladeNamedIconChooserDialog * dialog, gboolean busy)
   gdk_display_flush (display);
 
   if (cursor)
-    gdk_cursor_unref (cursor);
+    g_object_unref (cursor);
 }
 
 static GtkListStore *
@@ -1407,7 +1407,7 @@ glade_named_icon_chooser_dialog_init (GladeNamedIconChooserDialog * dialog)
 
   gtk_widget_push_composite_child ();
 
-  contents = gtk_vbox_new (FALSE, 6);
+  contents = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_widget_show (contents);
 
   label = gtk_label_new_with_mnemonic (_("Icon _Name:"));
@@ -1435,21 +1435,21 @@ glade_named_icon_chooser_dialog_init (GladeNamedIconChooserDialog * dialog)
 
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), dialog->priv->entry);
 
-  hbox = gtk_hbox_new (FALSE, 12);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_widget_show (hbox);
 
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (hbox), dialog->priv->entry, TRUE, TRUE, 0);
   gtk_box_pack_start (GTK_BOX (contents), hbox, FALSE, FALSE, 6);
 
-  hpaned = gtk_hpaned_new ();
+  hpaned = gtk_paned_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_paned_set_position (GTK_PANED (hpaned), 150);
   gtk_widget_show (hpaned);
 
   dialog->priv->contexts_view = create_contexts_view (dialog);
   dialog->priv->icons_view = create_icons_view (dialog);
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_widget_show (vbox);
 
   group = gtk_size_group_new (GTK_SIZE_GROUP_VERTICAL);
@@ -1474,7 +1474,7 @@ glade_named_icon_chooser_dialog_init (GladeNamedIconChooserDialog * dialog)
   gtk_paned_pack1 (GTK_PANED (hpaned), vbox, FALSE, FALSE);
 
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_widget_show (vbox);
 
   label = gtk_label_new_with_mnemonic (_("Icon Na_mes:"));

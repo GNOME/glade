@@ -390,7 +390,7 @@ glade_tool_button_editor_new (GladeWidgetAdaptor * adaptor,
   /* Standard label... */
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "label", FALSE, TRUE);
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   button_editor->standard_label_radio = gtk_radio_button_new (NULL);
   gtk_box_pack_start (GTK_BOX (hbox), button_editor->standard_label_radio,
                       FALSE, FALSE, 2);
@@ -403,7 +403,7 @@ glade_tool_button_editor_new (GladeWidgetAdaptor * adaptor,
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "label-widget", FALSE,
                                                  TRUE);
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   button_editor->custom_label_radio = gtk_radio_button_new_from_widget
       (GTK_RADIO_BUTTON (button_editor->standard_label_radio));
   gtk_box_pack_start (GTK_BOX (hbox), button_editor->custom_label_radio, FALSE,
@@ -438,7 +438,7 @@ glade_tool_button_editor_new (GladeWidgetAdaptor * adaptor,
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "stock-id", FALSE,
                                                  TRUE);
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   button_editor->stock_radio = gtk_radio_button_new (NULL);
   gtk_box_pack_start (GTK_BOX (hbox), button_editor->stock_radio, FALSE, FALSE,
                       2);
@@ -451,7 +451,7 @@ glade_tool_button_editor_new (GladeWidgetAdaptor * adaptor,
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "icon-name", FALSE,
                                                  TRUE);
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   button_editor->icon_radio = gtk_radio_button_new_from_widget
       (GTK_RADIO_BUTTON (button_editor->stock_radio));
   gtk_box_pack_start (GTK_BOX (hbox), button_editor->icon_radio, FALSE, FALSE,
@@ -465,7 +465,7 @@ glade_tool_button_editor_new (GladeWidgetAdaptor * adaptor,
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "icon-widget", FALSE,
                                                  TRUE);
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   button_editor->custom_radio = gtk_radio_button_new_from_widget
       (GTK_RADIO_BUTTON (button_editor->stock_radio));
   gtk_box_pack_start (GTK_BOX (hbox), button_editor->custom_radio, FALSE, FALSE,

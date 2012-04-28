@@ -1108,9 +1108,9 @@ glade_eprop_model_data_create_input (GladeEditorProperty * eprop)
   GtkWidget *vbox, *hbox, *button, *swin, *label;
   gchar *string;
 
-  vbox = gtk_vbox_new (FALSE, 2);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
 
-  hbox = gtk_hbox_new (FALSE, 4);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
 
   /* hbox with add/remove row buttons on the right... */
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);

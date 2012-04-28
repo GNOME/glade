@@ -304,7 +304,7 @@ glade_palette_new_item (GladePalette * palette, GladeWidgetAdaptor * adaptor)
   g_assert (GTK_IS_BUTTON (button));
 
   /* Add a box to avoid the ellipsize on the items */
-  box = gtk_hbox_new (FALSE, 0);
+  box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   label = gtk_label_new (glade_widget_adaptor_get_title (adaptor));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_widget_show (label);
@@ -636,7 +636,7 @@ glade_palette_init (GladePalette * palette)
 
   /* create selector button */
   priv->selector_button = glade_palette_create_selector_button (palette);
-  priv->selector_hbox = gtk_hbox_new (FALSE, 0);
+  priv->selector_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_box_pack_start (GTK_BOX (priv->selector_hbox), priv->selector_button,
                       FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (palette), priv->selector_hbox, FALSE, FALSE, 0);

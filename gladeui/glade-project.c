@@ -3894,7 +3894,7 @@ glade_project_build_prefs_box (GladeProject *project)
   main_frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (main_frame), GTK_SHADOW_NONE);
   main_alignment = gtk_alignment_new (0.5F, 0.5F, 0.8F, 0.8F);
-  main_box = gtk_vbox_new (FALSE, 0);
+  main_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
 
   gtk_alignment_set_padding (GTK_ALIGNMENT (main_alignment), 0, 0, 4, 0);
 
@@ -3905,7 +3905,7 @@ glade_project_build_prefs_box (GladeProject *project)
   string =
       g_strdup_printf ("<b>%s</b>", _("Image resources are loaded locally:"));
   frame = gtk_frame_new (NULL);
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   alignment = gtk_alignment_new (0.5F, 0.5F, 0.8F, 0.8F);
   gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 8, 0, 12, 0);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
@@ -3926,7 +3926,7 @@ glade_project_build_prefs_box (GladeProject *project)
   gtk_size_group_add_widget (sizegroup, project->priv->resource_default_radio);
 
   /* Project relative directory... */
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   project->priv->resource_relative_radio =
       gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON
                                                    (project->priv->
@@ -3943,7 +3943,7 @@ glade_project_build_prefs_box (GladeProject *project)
 
 
   /* fullpath directory... */
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   project->priv->resource_fullpath_radio =
       gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON
                                                    (project->priv->resource_default_radio),
@@ -3979,7 +3979,7 @@ glade_project_build_prefs_box (GladeProject *project)
   /* Target versions */
   string = g_strdup_printf ("<b>%s</b>", _("Toolkit versions required:"));
   frame = gtk_frame_new (NULL);
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   alignment = gtk_alignment_new (0.5F, 0.5F, 1.0F, 1.0F);
 
   gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 8, 0, 12, 0);
@@ -4018,7 +4018,7 @@ glade_project_build_prefs_box (GladeProject *project)
       gtk_misc_set_alignment (GTK_MISC (label), 0.0F, 0.5F);
 
       gtk_box_pack_start (GTK_BOX (vbox), label, TRUE, TRUE, 2);
-      hbox = gtk_hbox_new (FALSE, 0);
+      hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 
       active_radio = NULL;
       target_radio = NULL;
@@ -4068,7 +4068,7 @@ glade_project_build_prefs_box (GladeProject *project)
     }
 
   /* Run verify */
-  hbox = gtk_hbox_new (FALSE, 2);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
   button = gtk_button_new_from_stock (GTK_STOCK_EXECUTE);
   g_signal_connect (G_OBJECT (button), "clicked",
                     G_CALLBACK (verify_clicked), project);

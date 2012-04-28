@@ -332,7 +332,7 @@ glade_image_item_editor_new (GladeWidgetAdaptor * adaptor,
       (GTK_RADIO_BUTTON (item_editor->stock_radio),
        _("Custom label and image:"));
   table_attach (main_table, item_editor->custom_radio, 0, 2);
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_grid_attach (GTK_GRID (main_table), vbox, 0, 3, 2, 1);
   gtk_widget_set_hexpand (vbox, TRUE);
 

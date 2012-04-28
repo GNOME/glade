@@ -436,7 +436,7 @@ glade_button_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
                              0, 12, 0);
   gtk_container_add (GTK_CONTAINER (frame), button_editor->standard_frame);
 
-  vbox = gtk_vbox_new (FALSE, 8);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 8);
   gtk_container_add (GTK_CONTAINER (button_editor->standard_frame), vbox);
 
   /* Populate stock frame here... */

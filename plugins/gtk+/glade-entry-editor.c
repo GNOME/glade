@@ -513,7 +513,7 @@ glade_entry_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
   /* Text */
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "text", FALSE, TRUE);
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   entry_editor->text_radio = gtk_radio_button_new (NULL);
   gtk_box_pack_start (GTK_BOX (hbox), entry_editor->text_radio, FALSE, FALSE,
                       2);
@@ -526,7 +526,7 @@ glade_entry_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "buffer", FALSE,
                                                  TRUE);
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   entry_editor->buffer_radio = gtk_radio_button_new_from_widget
       (GTK_RADIO_BUTTON (entry_editor->text_radio));
   gtk_box_pack_start (GTK_BOX (hbox), entry_editor->buffer_radio, FALSE, FALSE,
@@ -596,7 +596,7 @@ glade_entry_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, PIXBUF_NAME (TRUE),
                                                  FALSE, TRUE);
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   entry_editor->primary_pixbuf_radio = gtk_radio_button_new (NULL);
   gtk_box_pack_start (GTK_BOX (hbox), entry_editor->primary_pixbuf_radio, FALSE,
                       FALSE, 2);
@@ -609,7 +609,7 @@ glade_entry_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, STOCK_NAME (TRUE),
                                                  FALSE, TRUE);
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   entry_editor->primary_stock_radio = gtk_radio_button_new_from_widget
       (GTK_RADIO_BUTTON (entry_editor->primary_pixbuf_radio));
   gtk_box_pack_start (GTK_BOX (hbox), entry_editor->primary_stock_radio, FALSE,
@@ -623,7 +623,7 @@ glade_entry_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, ICON_NAME_NAME (TRUE),
                                                  FALSE, TRUE);
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   entry_editor->primary_icon_name_radio = gtk_radio_button_new_from_widget
       (GTK_RADIO_BUTTON (entry_editor->primary_pixbuf_radio));
   gtk_box_pack_start (GTK_BOX (hbox), entry_editor->primary_icon_name_radio,
@@ -690,7 +690,7 @@ glade_entry_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, PIXBUF_NAME (FALSE),
                                                  FALSE, TRUE);
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   entry_editor->secondary_pixbuf_radio = gtk_radio_button_new (NULL);
   gtk_box_pack_start (GTK_BOX (hbox), entry_editor->secondary_pixbuf_radio,
                       FALSE, FALSE, 2);
@@ -703,7 +703,7 @@ glade_entry_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, STOCK_NAME (FALSE),
                                                  FALSE, TRUE);
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   entry_editor->secondary_stock_radio = gtk_radio_button_new_from_widget
       (GTK_RADIO_BUTTON (entry_editor->secondary_pixbuf_radio));
   gtk_box_pack_start (GTK_BOX (hbox), entry_editor->secondary_stock_radio,
@@ -718,7 +718,7 @@ glade_entry_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
       glade_widget_adaptor_create_eprop_by_name (adaptor,
                                                  ICON_NAME_NAME (FALSE), FALSE,
                                                  TRUE);
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   entry_editor->secondary_icon_name_radio = gtk_radio_button_new_from_widget
       (GTK_RADIO_BUTTON (entry_editor->secondary_pixbuf_radio));
   gtk_box_pack_start (GTK_BOX (hbox), entry_editor->secondary_icon_name_radio,

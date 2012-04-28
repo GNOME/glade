@@ -270,7 +270,6 @@ pointer_mode_register_icon (GtkIconFactory *factory,
                             GtkIconSize size)
 {
   GdkPixbuf *pixbuf;
-  GtkIconSet *icon_set;
 
   pixbuf = glade_utils_pointer_mode_render_icon (mode, size);
   if (pixbuf)

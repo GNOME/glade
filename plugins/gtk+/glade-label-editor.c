@@ -518,7 +518,7 @@ append_label_appearance (GladeLabelEditor * label_editor,
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "glade-attributes",
                                                  FALSE, TRUE);
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   label_editor->attributes_radio = gtk_radio_button_new (NULL);
   gtk_box_pack_start (GTK_BOX (hbox), label_editor->attributes_radio, FALSE,
                       FALSE, 2);
@@ -531,7 +531,7 @@ append_label_appearance (GladeLabelEditor * label_editor,
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "use-markup", FALSE,
                                                  TRUE);
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   label_editor->markup_radio = gtk_radio_button_new_from_widget
       (GTK_RADIO_BUTTON (label_editor->attributes_radio));
   gtk_box_pack_start (GTK_BOX (hbox), label_editor->markup_radio, FALSE, FALSE,
@@ -545,7 +545,7 @@ append_label_appearance (GladeLabelEditor * label_editor,
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "pattern", FALSE,
                                                  TRUE);
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   label_editor->pattern_radio = gtk_radio_button_new_from_widget
       (GTK_RADIO_BUTTON (label_editor->attributes_radio));
   gtk_box_pack_start (GTK_BOX (hbox), label_editor->pattern_radio, FALSE, FALSE,
@@ -617,7 +617,7 @@ append_label_formatting (GladeLabelEditor * label_editor,
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "width-chars", FALSE,
                                                  TRUE);
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   label_editor->width_radio = gtk_radio_button_new (NULL);
   gtk_box_pack_start (GTK_BOX (hbox), label_editor->width_radio, FALSE, FALSE,
                       2);
@@ -630,7 +630,7 @@ append_label_formatting (GladeLabelEditor * label_editor,
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "max-width-chars",
                                                  FALSE, TRUE);
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   label_editor->max_width_radio = gtk_radio_button_new_from_widget
       (GTK_RADIO_BUTTON (label_editor->width_radio));
   gtk_box_pack_start (GTK_BOX (hbox), label_editor->max_width_radio, FALSE,
@@ -671,7 +671,7 @@ append_label_wrapping (GladeLabelEditor * label_editor,
   gtk_container_add (GTK_CONTAINER (alignment), table);
 
   /* Append defaut epropless radio... */
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   label_editor->wrap_free_radio = gtk_radio_button_new (NULL);
   label_editor->wrap_free_label = gtk_label_new (_("Text wraps normally"));
   gtk_misc_set_alignment (GTK_MISC (label_editor->wrap_free_label), 0.0F, 0.5F);
@@ -685,7 +685,7 @@ append_label_wrapping (GladeLabelEditor * label_editor,
   single_line_eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "single-line-mode",
                                                  FALSE, TRUE);
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   label_editor->single_radio = gtk_radio_button_new_from_widget
       (GTK_RADIO_BUTTON (label_editor->wrap_free_radio));
   gtk_box_pack_start (GTK_BOX (hbox), label_editor->single_radio, FALSE, FALSE,
@@ -700,7 +700,7 @@ append_label_wrapping (GladeLabelEditor * label_editor,
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "wrap-mode", FALSE,
                                                  TRUE);
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   label_editor->wrap_mode_radio = gtk_radio_button_new_from_widget
       (GTK_RADIO_BUTTON (label_editor->wrap_free_radio));
   gtk_box_pack_start (GTK_BOX (hbox), label_editor->wrap_mode_radio, FALSE,

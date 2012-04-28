@@ -195,11 +195,11 @@ glade_tree_view_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
   /* Pack the parent on the left... */
   gtk_box_pack_start (GTK_BOX (view_editor), GTK_WIDGET (embed), TRUE, TRUE, 8);
 
-  separator = gtk_vseparator_new ();
+  separator = gtk_separator_new (GTK_ORIENTATION_VERTICAL);
   gtk_box_pack_start (GTK_BOX (view_editor), separator, FALSE, FALSE, 0);
 
   /* ...and the vbox with datastore/label on the right */
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_box_pack_start (GTK_BOX (view_editor), vbox, TRUE, TRUE, 8);
 
   str = g_strdup_printf ("<b>%s</b>", _("Choose a Data Model and define some\n"

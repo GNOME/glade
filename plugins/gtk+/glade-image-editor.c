@@ -315,7 +315,7 @@ glade_image_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
   /* Stock image... */
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "stock", FALSE, TRUE);
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   image_editor->stock_radio = gtk_radio_button_new (NULL);
   gtk_box_pack_start (GTK_BOX (hbox), image_editor->stock_radio, FALSE, FALSE,
                       2);
@@ -328,7 +328,7 @@ glade_image_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "icon-name", FALSE,
                                                  TRUE);
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   image_editor->icon_radio = gtk_radio_button_new_from_widget
       (GTK_RADIO_BUTTON (image_editor->stock_radio));
   gtk_box_pack_start (GTK_BOX (hbox), image_editor->icon_radio, FALSE, FALSE,
@@ -342,7 +342,7 @@ glade_image_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "pixbuf", FALSE,
                                                  TRUE);
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   image_editor->file_radio = gtk_radio_button_new_from_widget
       (GTK_RADIO_BUTTON (image_editor->stock_radio));
   gtk_box_pack_start (GTK_BOX (hbox), image_editor->file_radio, FALSE, FALSE,

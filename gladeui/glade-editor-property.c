@@ -344,7 +344,7 @@ glade_editor_property_constructor (GType type,
 
   g_object_ref_sink (eprop->priv->item_label);
 
-  hbox = gtk_hbox_new (FALSE, 4);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
 
   gtk_label_set_line_wrap (GTK_LABEL (eprop->priv->label), TRUE);
   gtk_label_set_width_chars (GTK_LABEL (eprop->priv->label), 10);
@@ -1130,7 +1130,7 @@ glade_eprop_flags_show_dialog (GtkWidget *button, GladeEditorProperty *eprop)
   gtk_container_set_border_width (GTK_CONTAINER (action_area), 5);
   gtk_box_set_spacing (GTK_BOX (action_area), 6);
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 5);
 
   view = glade_eprop_flags_create_treeview (eprop);
@@ -1159,8 +1159,8 @@ glade_eprop_flags_create_input (GladeEditorProperty *eprop)
   GtkWidget *vbox, *hbox, *button, *widget;
   GladeEPropFlags *eprop_flags = GLADE_EPROP_FLAGS (eprop);
 
-  hbox = gtk_hbox_new (FALSE, 0);
-  vbox = gtk_vbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
 
   widget = glade_eprop_flags_create_treeview (eprop);
 
@@ -1300,7 +1300,7 @@ glade_eprop_color_create_input (GladeEditorProperty *eprop)
 
   pspec  = glade_property_class_get_pspec (eprop->priv->klass);
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 
   eprop_color->entry = gtk_entry_new ();
   gtk_editable_set_editable (GTK_EDITABLE (eprop_color->entry), FALSE);
@@ -1506,7 +1506,7 @@ glade_eprop_named_icon_create_input (GladeEditorProperty *eprop)
   GtkWidget *hbox;
   GtkWidget *button;
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 
   eprop_named_icon->entry = gtk_entry_new ();
   gtk_widget_show (eprop_named_icon->entry);
@@ -1768,7 +1768,7 @@ glade_editor_property_show_i18n_dialog (GtkWidget *parent,
   gtk_box_set_spacing (GTK_BOX (action_area), 6);
 
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 5);
   gtk_widget_show (vbox);
 
@@ -1803,7 +1803,7 @@ glade_editor_property_show_i18n_dialog (GtkWidget *parent,
     }
 
   /* Translatable and context prefix. */
-  hbox = gtk_hbox_new (FALSE, 12);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 12);
   gtk_widget_show (hbox);
 
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
@@ -2110,7 +2110,7 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
   klass = eprop->priv->klass;
   pspec = glade_property_class_get_pspec (klass);
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 
   if (glade_property_class_stock (klass) || 
       glade_property_class_stock_icon (klass))
@@ -2798,7 +2798,7 @@ glade_editor_property_show_object_dialog (GladeProject *project,
   gtk_container_set_border_width (GTK_CONTAINER (action_area), 5);
   gtk_box_set_spacing (GTK_BOX (action_area), 6);
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_widget_show (vbox);
 
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 5);
@@ -2940,7 +2940,7 @@ glade_eprop_object_show_dialog (GtkWidget *dialog_button,
   gtk_container_set_border_width (GTK_CONTAINER (action_area), 5);
   gtk_box_set_spacing (GTK_BOX (action_area), 6);
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_widget_show (vbox);
 
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 5);
@@ -3123,7 +3123,7 @@ glade_eprop_object_create_input (GladeEditorProperty *eprop)
   GtkWidget *hbox;
   GtkWidget *button;
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   eprop_object->entry = gtk_entry_new ();
   gtk_editable_set_editable (GTK_EDITABLE (eprop_object->entry), FALSE);
   gtk_widget_show (eprop_object->entry);
@@ -3244,7 +3244,7 @@ glade_eprop_objects_show_dialog (GtkWidget *dialog_button,
 
   gtk_window_set_default_size (GTK_WINDOW (dialog), 600, 500);
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_widget_show (vbox);
 
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
@@ -3327,7 +3327,7 @@ glade_eprop_objects_create_input (GladeEditorProperty *eprop)
   GtkWidget *hbox;
   GtkWidget *button;
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   eprop_objects->entry = gtk_entry_new ();
   gtk_editable_set_editable (GTK_EDITABLE (eprop_objects->entry), FALSE);
   gtk_widget_show (eprop_objects->entry);

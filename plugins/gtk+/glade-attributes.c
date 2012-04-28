@@ -1042,7 +1042,7 @@ glade_eprop_attrs_show_dialog (GtkWidget * dialog_button,
                                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                                         GTK_STOCK_OK, GTK_RESPONSE_OK, NULL);
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_widget_show (vbox);
 
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
@@ -1124,7 +1124,7 @@ glade_eprop_attrs_create_input (GladeEditorProperty * eprop)
   GtkWidget *hbox;
   GtkWidget *button;
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 
   button = gtk_button_new_from_stock (GTK_STOCK_EDIT);
   gtk_widget_show (button);

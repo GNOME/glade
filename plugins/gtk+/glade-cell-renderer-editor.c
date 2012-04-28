@@ -344,8 +344,8 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor * adaptor,
           tab->use_attr_pclass = use_attr_pclass;
 
           /* Label appearance... */
-          hbox_left = gtk_hbox_new (FALSE, 0);
-          hbox_right = gtk_hbox_new (FALSE, 0);
+          hbox_left = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+          hbox_right = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
           gtk_widget_set_hexpand (hbox_right, TRUE);
 
           tab->attributes_check = gtk_check_button_new ();
@@ -567,7 +567,7 @@ glade_eprop_cell_attribute_create_input (GladeEditorProperty * eprop)
   GtkAdjustment *adjustment;
   GtkCellRenderer *cell;
 
-  hbox = gtk_hbox_new (FALSE, 2);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
 
   adjustment = glade_property_class_make_adjustment (glade_editor_property_get_pclass (eprop));
   eprop_attribute->spin = gtk_spin_button_new (adjustment, 1.0, 0);

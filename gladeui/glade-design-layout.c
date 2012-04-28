@@ -930,7 +930,6 @@ glade_design_layout_add (GtkContainer *container, GtkWidget *widget)
 {
   GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (container);
   GladeDesignLayout *layout = GLADE_DESIGN_LAYOUT (container);
-  GtkStyleContext *context = gtk_widget_get_style_context (widget);
   GladeWidget *gchild;
 
   layout->priv->current_width = 0;
@@ -1673,7 +1672,7 @@ glade_design_layout_realize (GtkWidget * widget)
   priv->cursors[ACTIVITY_MARGINS_TOP_LEFT] = gdk_cursor_new_for_display (display, GDK_TOP_LEFT_CORNER);
   priv->cursors[ACTIVITY_MARGINS_TOP_RIGHT] = gdk_cursor_new_for_display (display, GDK_TOP_RIGHT_CORNER);
   priv->cursors[ACTIVITY_MARGINS_BOTTOM_LEFT] = gdk_cursor_new_for_display (display, GDK_BOTTOM_LEFT_CORNER);
-  priv->cursors[ACTIVITY_MARGINS_BOTTOM_RIGHT] = gdk_cursor_ref (priv->cursors[ACTIVITY_RESIZE_WIDTH_AND_HEIGHT]);
+  priv->cursors[ACTIVITY_MARGINS_BOTTOM_RIGHT] = g_object_ref (priv->cursors[ACTIVITY_RESIZE_WIDTH_AND_HEIGHT]);
   
   priv->widget_name = pango_layout_new (gtk_widget_get_pango_context (widget));
 }
@@ -1698,7 +1697,7 @@ glade_design_layout_unrealize (GtkWidget * widget)
     {
       if (priv->cursors[i])
         {
-          gdk_cursor_unref (priv->cursors[i]);
+          g_object_unref (priv->cursors[i]);
           priv->cursors[i] = NULL;
         }
     }

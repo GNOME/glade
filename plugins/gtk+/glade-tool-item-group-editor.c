@@ -248,7 +248,7 @@ glade_tool_item_group_editor_new (GladeWidgetAdaptor *adaptor,
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "label", FALSE,
                                                  TRUE);
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   group_editor->label_radio = gtk_radio_button_new (NULL);
   gtk_box_pack_start (GTK_BOX (hbox), group_editor->label_radio, FALSE, FALSE,
                       2);
@@ -261,7 +261,7 @@ glade_tool_item_group_editor_new (GladeWidgetAdaptor *adaptor,
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "label-widget",
                                                  FALSE, TRUE);
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   group_editor->label_widget_radio = gtk_radio_button_new_from_widget
       (GTK_RADIO_BUTTON (group_editor->label_radio));
   gtk_box_pack_start (GTK_BOX (hbox), group_editor->label_widget_radio, FALSE,
