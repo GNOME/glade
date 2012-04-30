@@ -34,7 +34,7 @@
 #define GLADE_RESPONSE_CLEAR 42
 
 static GList *
-glade_attr_list_copy (GList * attrs)
+glade_attr_list_copy (GList *attrs)
 {
   GList *ret = NULL, *list;
   GladeAttribute *attr, *dup_attr;
@@ -57,7 +57,7 @@ glade_attr_list_copy (GList * attrs)
 }
 
 void
-glade_attr_list_free (GList * attrs)
+glade_attr_list_free (GList *attrs)
 {
   GList *list;
   GladeAttribute *attr;
@@ -149,7 +149,8 @@ typedef enum
 	 (type) == EDIT_COMBO ? COLUMN_COMBO_ACTIVE: COLUMN_BUTTON_ACTIVE)
 
 
-static GtkListStore *get_enum_model_for_combo (PangoAttrType type)
+static GtkListStore *
+get_enum_model_for_combo (PangoAttrType type)
 {
   static GtkListStore *style_store = NULL,
       *weight_store = NULL, *variant_store = NULL,
@@ -203,7 +204,7 @@ static GtkListStore *get_enum_model_for_combo (PangoAttrType type)
 }
 
 static gboolean
-append_empty_row (GtkListStore * store, PangoAttrType type)
+append_empty_row (GtkListStore *store, PangoAttrType type)
 {
   const gchar *name = NULL;
   GtkListStore *model = get_enum_model_for_combo (type);
@@ -333,7 +334,7 @@ append_empty_row (GtkListStore * store, PangoAttrType type)
 }
 
 static gboolean
-is_empty_row (GtkTreeModel * model, GtkTreeIter * iter)
+is_empty_row (GtkTreeModel *model, GtkTreeIter *iter)
 {
 
   PangoAttrType attr_type;
@@ -440,12 +441,11 @@ type_from_attr_type (PangoAttrType type)
         break;
     }
 
-
   return gtype;
 }
 
 gchar *
-glade_gtk_string_from_attr (GladeAttribute * gattr)
+glade_gtk_string_from_attr (GladeAttribute *gattr)
 {
   gchar *ret = NULL;
   gint ival;
@@ -528,7 +528,7 @@ glade_gtk_string_from_attr (GladeAttribute * gattr)
 }
 
 GladeAttribute *
-glade_gtk_attribute_from_string (PangoAttrType type, const gchar * strval)
+glade_gtk_attribute_from_string (PangoAttrType type, const gchar *strval)
 {
   GladeAttribute *gattr;
   GdkColor color;
@@ -615,7 +615,7 @@ glade_gtk_attribute_from_string (PangoAttrType type, const gchar * strval)
 }
 
 static void
-sync_object (GladeEPropAttrs * eprop_attrs, gboolean use_command)
+sync_object (GladeEPropAttrs *eprop_attrs, gboolean use_command)
 {
   GList *attributes = NULL;
   GladeAttribute *gattr;
@@ -670,7 +670,7 @@ sync_object (GladeEPropAttrs * eprop_attrs, gboolean use_command)
 
 
 static GtkTreeIter *
-get_row_by_type (GtkTreeModel * model, PangoAttrType type)
+get_row_by_type (GtkTreeModel *model, PangoAttrType type)
 {
   GtkTreeIter iter, *ret_iter = NULL;
   gboolean valid;
@@ -694,15 +694,15 @@ get_row_by_type (GtkTreeModel * model, PangoAttrType type)
 
 
 static void
-value_icon_activate (GtkCellRendererToggle * cell_renderer,
-                     gchar * path, GladeEPropAttrs * eprop_attrs)
+value_icon_activate (GtkCellRendererToggle *cell_renderer,
+                     gchar *path,
+                     GladeEPropAttrs *eprop_attrs)
 {
   GtkWidget *dialog;
-  GtkWidget *colorsel, *fontsel;
   GtkTreeIter iter;
   PangoAttrType type;
   AttrEditType edit_type;
-  GdkColor color;
+  GdkRGBA color = {0,};
   gchar *text = NULL, *new_text;
 
   /* Find type etc */
@@ -718,23 +718,29 @@ value_icon_activate (GtkCellRendererToggle * cell_renderer,
   switch (edit_type)
     {
       case EDIT_COLOR:
-        dialog = gtk_color_selection_dialog_new (_("Select a color"));
-
-        colorsel =
-            gtk_color_selection_dialog_get_color_selection
-            (GTK_COLOR_SELECTION_DIALOG (dialog));
-
+        dialog = gtk_color_chooser_dialog_new (_("Select a color"),
+                                               GTK_WINDOW (glade_app_get_window ()));
         /* Get response etc... */
-        if (text && gdk_color_parse (text, &color))
-          gtk_color_selection_set_current_color (GTK_COLOR_SELECTION (colorsel),
-                                                 &color);
+        if (text && gdk_rgba_parse (&color, text))
+          gtk_color_chooser_set_rgba (GTK_COLOR_CHOOSER (dialog), &color);
 
         gtk_dialog_run (GTK_DIALOG (dialog));
 
-        gtk_color_selection_get_current_color (GTK_COLOR_SELECTION (colorsel),
-                                               &color);
-
-        new_text = gdk_color_to_string (&color);
+        gtk_color_chooser_get_rgba (GTK_COLOR_CHOOSER (dialog), &color);
+        
+        /* Use GdkColor string format */
+        if (((guint8)(color.red * 0xFF)) * 0x101 == (guint16)(color.red * 0xFFFF) &&
+            ((guint8)(color.green * 0xFF)) * 0x101 == (guint16)(color.green * 0xFFFF) &&
+            ((guint8)(color.blue * 0xFF)) * 0x101 == (guint16)(color.blue * 0xFFFF))
+          new_text = g_strdup_printf ("#%02X%02X%02X",
+                                      (guint8)(color.red * 0xFF),
+                                      (guint8)(color.green * 0xFF),
+                                      (guint8)(color.blue * 0xFF));
+        else
+          new_text = g_strdup_printf ("#%04X%04X%04X",
+                                      (guint16)(color.red * 0xFFFF),
+                                      (guint16)(color.green * 0xFFFF),
+                                      (guint16)(color.blue * 0xFFFF));
 
         gtk_list_store_set (GTK_LIST_STORE (eprop_attrs->model), &iter,
                             COLUMN_TEXT, new_text,
@@ -747,18 +753,16 @@ value_icon_activate (GtkCellRendererToggle * cell_renderer,
         break;
 
       case EDIT_FONT:
-        dialog = gtk_font_selection_dialog_new (_("Select a font"));
-
-        fontsel =
-	  gtk_font_selection_dialog_get_font_selection (GTK_FONT_SELECTION_DIALOG (dialog));
+        dialog = gtk_font_chooser_dialog_new (_("Select a font"),
+                                              GTK_WINDOW (glade_app_get_window ()));
 
         /* Get response etc... */
         if (text)
-          gtk_font_selection_set_font_name (GTK_FONT_SELECTION (fontsel), text);
+          gtk_font_chooser_set_font (GTK_FONT_CHOOSER (dialog), text);
 
         gtk_dialog_run (GTK_DIALOG (dialog));
 
-        new_text = gtk_font_selection_get_font_name (GTK_FONT_SELECTION (fontsel));
+        new_text = gtk_font_chooser_get_font (GTK_FONT_CHOOSER (dialog));
 
         gtk_list_store_set (GTK_LIST_STORE (eprop_attrs->model), &iter,
                             COLUMN_TEXT, new_text,
@@ -780,8 +784,9 @@ value_icon_activate (GtkCellRendererToggle * cell_renderer,
 }
 
 static void
-value_toggled (GtkCellRendererToggle * cell_renderer,
-               gchar * path, GladeEPropAttrs * eprop_attrs)
+value_toggled (GtkCellRendererToggle *cell_renderer,
+               gchar *path,
+               GladeEPropAttrs *eprop_attrs)
 {
   gboolean active;
   GtkTreeIter iter;
@@ -801,9 +806,10 @@ value_toggled (GtkCellRendererToggle * cell_renderer,
 }
 
 static void
-value_combo_spin_edited (GtkCellRendererText * cell,
-                         const gchar * path,
-                         const gchar * new_text, GladeEPropAttrs * eprop_attrs)
+value_combo_spin_edited (GtkCellRendererText *cell,
+                         const gchar *path,
+                         const gchar *new_text,
+                         GladeEPropAttrs *eprop_attrs)
 {
   GtkTreeIter iter;
   PangoAttrType type;
@@ -834,7 +840,7 @@ value_combo_spin_edited (GtkCellRendererText * cell,
 }
 
 static GtkWidget *
-glade_eprop_attrs_view (GladeEditorProperty * eprop)
+glade_eprop_attrs_view (GladeEditorProperty *eprop)
 {
   GladeEPropAttrs *eprop_attrs = GLADE_EPROP_ATTRS (eprop);
   GtkWidget *view_widget;
@@ -955,8 +961,7 @@ glade_eprop_attrs_view (GladeEditorProperty * eprop)
 }
 
 static void
-glade_eprop_attrs_populate_view (GladeEditorProperty * eprop,
-                                 GtkTreeView * view)
+glade_eprop_attrs_populate_view (GladeEditorProperty *eprop, GtkTreeView *view)
 {
   GList *attributes, *list;
   GtkListStore *model = (GtkListStore *) gtk_tree_view_get_model (view);
@@ -1018,8 +1023,8 @@ glade_eprop_attrs_populate_view (GladeEditorProperty * eprop,
 }
 
 static void
-glade_eprop_attrs_show_dialog (GtkWidget * dialog_button,
-                               GladeEditorProperty * eprop)
+glade_eprop_attrs_show_dialog (GtkWidget *dialog_button,
+                               GladeEditorProperty *eprop)
 {
   GladeEPropAttrs *eprop_attrs = GLADE_EPROP_ATTRS (eprop);
   GtkWidget *dialog, *parent, *vbox, *sw, *tree_view;
@@ -1098,7 +1103,7 @@ glade_eprop_attrs_show_dialog (GtkWidget * dialog_button,
 
 
 static void
-glade_eprop_attrs_finalize (GObject * object)
+glade_eprop_attrs_finalize (GObject *object)
 {
   /* Chain up */
   GObjectClass *parent_class =
@@ -1108,7 +1113,7 @@ glade_eprop_attrs_finalize (GObject * object)
 }
 
 static void
-glade_eprop_attrs_load (GladeEditorProperty * eprop, GladeProperty * property)
+glade_eprop_attrs_load (GladeEditorProperty *eprop, GladeProperty *property)
 {
   GladeEditorPropertyClass *parent_class =
       g_type_class_peek_parent (G_OBJECT_GET_CLASS (eprop));
@@ -1119,7 +1124,7 @@ glade_eprop_attrs_load (GladeEditorProperty * eprop, GladeProperty * property)
 }
 
 static GtkWidget *
-glade_eprop_attrs_create_input (GladeEditorProperty * eprop)
+glade_eprop_attrs_create_input (GladeEditorProperty *eprop)
 {
   GtkWidget *hbox;
   GtkWidget *button;
