@@ -1502,7 +1502,11 @@ on_paste_action_activate (GtkAction *action, GladeWindow *window)
 
   project = glade_design_view_get_project (window->priv->active_view);
 
-  glade_project_command_paste (project, NULL);
+  /* If this action is activated with a key binging (ctrl-v) the widget will be 
+   * pasted over the placeholder below the default pointer.
+   */
+  glade_project_command_paste (project,
+                               glade_util_get_placeholder_from_pointer (GTK_CONTAINER (window)));
 }
 
 void

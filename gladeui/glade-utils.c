@@ -1114,40 +1114,24 @@ glade_util_search_devhelp (const gchar *book,
 GtkWidget *
 glade_util_get_placeholder_from_pointer (GtkContainer *container)
 {
-  GtkWidget *toplevel;
-  GtkWidget *retval = NULL, *child;
-  GtkAllocation allocation;
-  GList *c, *l;
-  gint x, y, x2, y2;
+  GdkDeviceManager *manager;
+  GdkDisplay *display;
+  GdkDevice *device;
+  GdkWindow *window;
 
-  g_return_val_if_fail (GTK_IS_CONTAINER (container), NULL);
-
-  toplevel = gtk_widget_get_toplevel (GTK_WIDGET (container));
-
-  gtk_widget_get_pointer (toplevel, &x, &y);
-
-  for (c = l = glade_util_container_get_all_children (container);
-       l; l = g_list_next (l))
+  if (((display = gtk_widget_get_display (GTK_WIDGET (container))) || 
+       (display = gdk_display_get_default ())) &&
+      (manager = gdk_display_get_device_manager (display)) &&
+      (device = gdk_device_manager_get_client_pointer (manager)) &&
+      (window = gdk_device_get_window_at_position (device, NULL, NULL)))
     {
-      child = l->data;
+      gpointer widget;
+      gdk_window_get_user_data (window, &widget);
 
-      if (GLADE_IS_PLACEHOLDER (child) && gtk_widget_get_mapped (child))
-        {
-          gtk_widget_translate_coordinates (toplevel, child, x, y, &x2, &y2);
-
-          gtk_widget_get_allocation (child, &allocation);
-          if (x2 >= 0 && y2 >= 0 &&
-              x2 <= allocation.width && y2 <= allocation.height)
-            {
-              retval = child;
-              break;
-            }
-        }
+      return GLADE_IS_PLACEHOLDER (widget) ? GTK_WIDGET (widget) : NULL;
     }
 
-  g_list_free (c);
-
-  return retval;
+  return NULL;
 }
 
 /**
