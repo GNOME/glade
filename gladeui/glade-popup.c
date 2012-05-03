@@ -37,7 +37,7 @@
 #include "glade-app.h"
 
 static void
-glade_popup_docs_cb (GtkMenuItem * item, GladeWidgetAdaptor * adaptor)
+glade_popup_docs_cb (GtkMenuItem *item, GladeWidgetAdaptor *adaptor)
 {
   gchar *book;
 
@@ -52,48 +52,42 @@ glade_popup_docs_cb (GtkMenuItem * item, GladeWidgetAdaptor * adaptor)
                       WIDGET POPUP
  *******************************************************/
 static void
-glade_popup_select_cb (GtkMenuItem * item, GladeWidget * widget)
+glade_popup_select_cb (GtkMenuItem *item, GladeWidget *widget)
 {
   glade_project_selection_set (glade_widget_get_project (widget),
 			       glade_widget_get_object (widget), TRUE);
 }
 
-static void
-glade_popup_widget_add_cb (GtkMenuItem * item,
-			   GladeWidget * widget)
-{
-  GladeProject *project;
-  GladeWidgetAdaptor *adaptor;
-
-  project = glade_widget_get_project (widget);
-  adaptor = glade_project_get_add_item (project);
-
-  g_return_if_fail (adaptor != NULL);
-
-  if (!glade_util_check_and_warn_scrollable
-      (widget, adaptor, glade_app_get_window ()))
-    {
-      if (glade_command_create (adaptor, widget,
-				NULL, project))
-
-      glade_project_set_add_item (project, NULL);
-    }
-}
-
 typedef struct {
   GladeWidgetAdaptor *adaptor;
   GladeProject       *project;
+  GladeWidget        *parent;
+  GladePlaceholder   *placeholder;
 } RootAddData;
 
 static void
-glade_popup_root_add_cb (GtkMenuItem *item, 
-			 RootAddData *data)
+glade_popup_widget_add_cb (GtkMenuItem *item, RootAddData *data)
+{
+  g_return_if_fail (data->adaptor != NULL);
+
+  if (!glade_util_check_and_warn_scrollable
+      (data->parent, data->adaptor, glade_app_get_window ()))
+    {
+      if (glade_command_create (data->adaptor, data->parent,
+				data->placeholder, data->project))
+
+      glade_project_set_add_item (data->project, NULL);
+    }
+}
+
+static void
+glade_popup_root_add_cb (GtkMenuItem *item, RootAddData *data)
 {
   glade_command_create (data->adaptor, NULL, NULL, data->project);
 }
 
 static void
-glade_popup_cut_cb (GtkMenuItem * item, GladeWidget * widget)
+glade_popup_cut_cb (GtkMenuItem *item, GladeWidget *widget)
 {
   GladeProject *project = glade_widget_get_project (widget);
 
@@ -106,7 +100,7 @@ glade_popup_cut_cb (GtkMenuItem * item, GladeWidget * widget)
 }
 
 static void
-glade_popup_copy_cb (GtkMenuItem * item, GladeWidget * widget)
+glade_popup_copy_cb (GtkMenuItem *item, GladeWidget *widget)
 {
   GladeProject *project = glade_widget_get_project (widget);
 
@@ -118,7 +112,7 @@ glade_popup_copy_cb (GtkMenuItem * item, GladeWidget * widget)
 }
 
 static void
-glade_popup_paste_cb (GtkMenuItem * item, gpointer data)
+glade_popup_paste_cb (GtkMenuItem *item, gpointer data)
 {
   GladeWidget  *widget = NULL;
   GladeProject *project;
@@ -143,7 +137,7 @@ glade_popup_paste_cb (GtkMenuItem * item, gpointer data)
 }
 
 static void
-glade_popup_delete_cb (GtkMenuItem * item, GladeWidget * widget)
+glade_popup_delete_cb (GtkMenuItem *item, GladeWidget *widget)
 {
   GladeProject *project = glade_widget_get_project (widget);
 
@@ -159,8 +153,8 @@ glade_popup_delete_cb (GtkMenuItem * item, GladeWidget * widget)
                   PLACEHOLDER POPUP
  *******************************************************/
 static void
-glade_popup_placeholder_paste_cb (GtkMenuItem * item,
-                                  GladePlaceholder * placeholder)
+glade_popup_placeholder_paste_cb (GtkMenuItem *item,
+                                  GladePlaceholder *placeholder)
 {
   GladeProject *project;
 
@@ -175,11 +169,13 @@ glade_popup_placeholder_paste_cb (GtkMenuItem * item,
                     POPUP BUILDING
  *******************************************************/
 static GtkWidget *
-glade_popup_append_item (GtkWidget * popup_menu,
-                         const gchar * stock_id,
-                         const gchar * label,
-                         GtkWidget * image,
-                         gboolean sensitive, gpointer callback, gpointer data)
+glade_popup_append_item (GtkWidget *popup_menu,
+                         const gchar *stock_id,
+                         const gchar *label,
+                         GtkWidget *image,
+                         gboolean sensitive,
+                         gpointer callback,
+                         gpointer data)
 {
   GtkWidget *menu_item;
 
@@ -213,7 +209,7 @@ glade_popup_append_item (GtkWidget * popup_menu,
 
 
 static void
-glade_popup_menuitem_activated (GtkMenuItem * item, const gchar * action_path)
+glade_popup_menuitem_activated (GtkMenuItem *item, const gchar *action_path)
 {
   GladeWidget *widget;
 
@@ -223,8 +219,8 @@ glade_popup_menuitem_activated (GtkMenuItem * item, const gchar * action_path)
 }
 
 static void
-glade_popup_menuitem_packing_activated (GtkMenuItem * item,
-                                        const gchar * action_path)
+glade_popup_menuitem_packing_activated (GtkMenuItem *item,
+                                        const gchar *action_path)
 {
   GladeWidget *widget, *parent;
 
@@ -238,8 +234,8 @@ glade_popup_menuitem_packing_activated (GtkMenuItem * item,
 }
 
 static void
-glade_popup_menuitem_ph_packing_activated (GtkMenuItem * item,
-                                           const gchar * action_path)
+glade_popup_menuitem_ph_packing_activated (GtkMenuItem *item,
+                                           const gchar *action_path)
 {
   GladePlaceholder *ph;
   GladeWidget *parent;
@@ -254,10 +250,11 @@ glade_popup_menuitem_ph_packing_activated (GtkMenuItem * item,
 }
 
 static gint
-glade_popup_action_populate_menu_real (GtkWidget * menu,
-                                       GladeWidget * gwidget,
-                                       GList * actions,
-                                       GCallback callback, gpointer data)
+glade_popup_action_populate_menu_real (GtkWidget *menu,
+                                       GladeWidget *gwidget,
+                                       GList *actions,
+                                       GCallback callback,
+                                       gpointer data)
 {
   GtkWidget *item;
   GList *list;
@@ -318,9 +315,10 @@ glade_popup_action_populate_menu_real (GtkWidget * menu,
  * Returns the number of action appended to the menu.
  */
 gint
-glade_popup_action_populate_menu (GtkWidget * menu,
-                                  GladeWidget * widget,
-                                  GladeWidgetAction * action, gboolean packing)
+glade_popup_action_populate_menu (GtkWidget *menu,
+                                  GladeWidget *widget,
+                                  GladeWidgetAction *action,
+                                  gboolean packing)
 {
   gint n;
 
@@ -398,20 +396,20 @@ glade_popup_create_menu (GladeWidget      *widget,
 
   if (adaptor)
     {
-      GladeWidget *parent;
       RootAddData *data = g_new (RootAddData, 1);
-
-      parent = placeholder ? glade_placeholder_get_parent (placeholder) : widget;
-
+      
       data->adaptor = adaptor;
       data->project = project;
+      data->parent = placeholder ? glade_placeholder_get_parent (placeholder) : widget;
+      data->placeholder = placeholder;
+      
       g_object_set_data_full (G_OBJECT (popup_menu), "root-data-destroy-me", 
 			      data, (GDestroyNotify)g_free);
 
       glade_popup_append_item (popup_menu, NULL, _("_Add widget here"),
-			       NULL, parent != NULL,
+			       NULL, data->parent != NULL,
 			       glade_popup_widget_add_cb,
-			       parent);
+			       data);
 
       glade_popup_append_item (popup_menu, NULL, _("Add widget as _toplevel"),
                                NULL, TRUE, glade_popup_root_add_cb, data);
@@ -509,8 +507,9 @@ glade_popup_create_menu (GladeWidget      *widget,
 }
 
 void
-glade_popup_widget_pop (GladeWidget * widget,
-                        GdkEventButton * event, gboolean packing)
+glade_popup_widget_pop (GladeWidget *widget,
+                        GdkEventButton *event,
+                        gboolean packing)
 {
   GtkWidget *popup_menu;
   gint button;
@@ -535,8 +534,8 @@ glade_popup_widget_pop (GladeWidget * widget,
 }
 
 void
-glade_popup_placeholder_pop (GladePlaceholder * placeholder,
-                             GdkEventButton * event)
+glade_popup_placeholder_pop (GladePlaceholder *placeholder,
+                             GdkEventButton *event)
 {
   GladeWidget *widget;
   GtkWidget *popup_menu;
@@ -618,7 +617,7 @@ glade_popup_palette_pop (GladePalette       *palette,
 }
 
 static void
-glade_popup_clear_property_cb (GtkMenuItem * item, GladeProperty * property)
+glade_popup_clear_property_cb (GtkMenuItem *item, GladeProperty *property)
 {
   GValue value = { 0, };
 
@@ -628,7 +627,7 @@ glade_popup_clear_property_cb (GtkMenuItem * item, GladeProperty * property)
 }
 
 static void
-glade_popup_property_docs_cb (GtkMenuItem * item, GladeProperty * property)
+glade_popup_property_docs_cb (GtkMenuItem *item, GladeProperty *property)
 {
   GladeWidgetAdaptor *adaptor, *prop_adaptor;
   GladePropertyClass *pclass;
@@ -650,7 +649,7 @@ glade_popup_property_docs_cb (GtkMenuItem * item, GladeProperty * property)
 }
 
 void
-glade_popup_property_pop (GladeProperty * property, GdkEventButton * event)
+glade_popup_property_pop (GladeProperty *property, GdkEventButton *event)
 {
 
   GladeWidgetAdaptor *adaptor, *prop_adaptor;
@@ -700,8 +699,7 @@ glade_popup_property_pop (GladeProperty * property, GdkEventButton * event)
 }
 
 void
-glade_popup_simple_pop (GladeProject   *project,
-			GdkEventButton *event)
+glade_popup_simple_pop (GladeProject *project, GdkEventButton *event)
 {
   GtkWidget *popup_menu;
   gint button;
@@ -726,7 +724,7 @@ glade_popup_simple_pop (GladeProject   *project,
 }
 
 gboolean
-glade_popup_is_popup_event (GdkEventButton * event)
+glade_popup_is_popup_event (GdkEventButton *event)
 {
   g_return_val_if_fail (event, FALSE);
 
