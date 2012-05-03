@@ -65,7 +65,7 @@
  * Returns:
  */
 static gchar *
-glade_util_compose_get_type_func (const gchar * name)
+glade_util_compose_get_type_func (const gchar *name)
 {
   gchar *retval;
   GString *tmp;
@@ -110,7 +110,7 @@ glade_util_compose_get_type_func (const gchar * name)
  * Returns: the new #GType
  */
 GType
-glade_util_get_type_from_name (const gchar * name, gboolean have_func)
+glade_util_get_type_from_name (const gchar *name, gboolean have_func)
 {
   static GModule *allsymbols = NULL;
   GType (*get_type) ();
@@ -151,7 +151,7 @@ glade_util_get_type_from_name (const gchar * name, gboolean have_func)
  *          specified by @funcname
  */
 GParamSpec *
-glade_utils_get_pspec_from_funcname (const gchar * funcname)
+glade_utils_get_pspec_from_funcname (const gchar *funcname)
 {
   static GModule *allsymbols = NULL;
   GParamSpec *pspec = NULL;
@@ -189,9 +189,11 @@ glade_utils_get_pspec_from_funcname (const gchar * funcname)
  *          the user selected "YES"; False otherwise.
  */
 gint
-glade_util_ui_message (GtkWidget * parent,
+glade_util_ui_message (GtkWidget *parent,
                        GladeUIMessageType type,
-                       GtkWidget * widget, const gchar * format, ...)
+                       GtkWidget *widget,
+                       const gchar *format,
+                       ...)
 {
   GtkWidget *dialog;
   GtkMessageType message_type = GTK_MESSAGE_INFO;
@@ -271,9 +273,9 @@ glade_util_ui_message (GtkWidget * parent,
 
 
 gboolean
-glade_util_check_and_warn_scrollable (GladeWidget * parent,
-                                      GladeWidgetAdaptor * child_adaptor,
-                                      GtkWidget * parent_widget)
+glade_util_check_and_warn_scrollable (GladeWidget *parent,
+                                      GladeWidgetAdaptor *child_adaptor,
+                                      GtkWidget *parent_widget)
 {
   if (GTK_IS_SCROLLED_WINDOW (glade_widget_get_object (parent)) &&
       GWA_SCROLLABLE_WIDGET (child_adaptor) == FALSE)
@@ -304,7 +306,7 @@ typedef struct
 static const guint flash_length = 3;
 
 static gboolean
-remove_message_timeout (FlashInfo * fi)
+remove_message_timeout (FlashInfo *fi)
 {
   gtk_statusbar_remove (fi->statusbar, fi->context_id, fi->message_id);
   g_slice_free (FlashInfo, fi);
@@ -322,8 +324,10 @@ remove_message_timeout (FlashInfo * fi)
  * Flash a temporary message on the statusbar.
  */
 void
-glade_util_flash_message (GtkWidget * statusbar, guint context_id,
-                          gchar * format, ...)
+glade_util_flash_message (GtkWidget *statusbar,
+                          guint context_id,
+                          gchar *format,
+                          ...)
 {
   va_list args;
   FlashInfo *fi;
@@ -348,7 +352,7 @@ glade_util_flash_message (GtkWidget * statusbar, guint context_id,
 }
 
 static gint
-glade_util_compare_uline_labels (const gchar * labela, const gchar * labelb)
+glade_util_compare_uline_labels (const gchar *labela, const gchar *labelb)
 {
   for (;;)
     {
@@ -438,9 +442,10 @@ glade_util_compare_stock_labels (gconstpointer a, gconstpointer b)
  *          for showing the dialog
  */
 GtkWidget *
-glade_util_file_dialog_new (const gchar * title,
-                            GladeProject * project,
-                            GtkWindow * parent, GladeUtilFileDialogType action)
+glade_util_file_dialog_new (const gchar *title,
+                            GladeProject *project,
+                            GtkWindow *parent,
+                            GladeUtilFileDialogType action)
 {
   GtkWidget *file_dialog;
   GtkFileFilter *file_filter;
@@ -498,7 +503,7 @@ glade_util_file_dialog_new (const gchar * title,
  * Replaces each occurance of the character @a in @str to @b.
  */
 void
-glade_util_replace (gchar * str, gchar a, gchar b)
+glade_util_replace (gchar *str, gchar a, gchar b)
 {
   g_return_if_fail (str != NULL);
 
@@ -519,7 +524,7 @@ glade_util_replace (gchar * str, gchar a, gchar b)
  * in a freshly parserd #GladeInterface
  */
 gchar *
-glade_util_read_prop_name (const gchar * str)
+glade_util_read_prop_name (const gchar *str)
 {
   gchar *id;
 
@@ -543,7 +548,7 @@ glade_util_read_prop_name (const gchar * str)
  * Returns: a newly allocated string
  */
 gchar *
-glade_util_duplicate_underscores (const gchar * name)
+glade_util_duplicate_underscores (const gchar *name)
 {
   const gchar *tmp;
   const gchar *last_tmp = name;
@@ -571,7 +576,7 @@ glade_util_duplicate_underscores (const gchar * name)
  * expose gtk_container_get_all_children
  */
 static void
-gtk_container_children_callback (GtkWidget * widget, gpointer client_data)
+gtk_container_children_callback (GtkWidget *widget, gpointer client_data)
 {
   GList **children;
 
@@ -593,7 +598,7 @@ gtk_container_children_callback (GtkWidget * widget, gpointer client_data)
  * Returns: a #GList giving the contents of @container
  */
 GList *
-glade_util_container_get_all_children (GtkContainer * container)
+glade_util_container_get_all_children (GtkContainer *container)
 {
   GList *children = NULL;
 
@@ -612,7 +617,7 @@ glade_util_container_get_all_children (GtkContainer * container)
  * Returns: the amount of #GladePlaceholders parented by @parent
  */
 gint
-glade_util_count_placeholders (GladeWidget * parent)
+glade_util_count_placeholders (GladeWidget *parent)
 {
   gint placeholders = 0;
   GList *list, *children;
@@ -634,8 +639,10 @@ glade_util_count_placeholders (GladeWidget * parent)
 }
 
 static GtkTreeIter *
-glade_util_find_iter (GtkTreeModel * model,
-                      GtkTreeIter * iter, GladeWidget * findme, gint column)
+glade_util_find_iter (GtkTreeModel *model,
+                      GtkTreeIter *iter,
+                      GladeWidget *findme,
+                      gint column)
 {
   GtkTreeIter *retval = NULL;
   GObject *object = NULL;
@@ -703,8 +710,9 @@ glade_util_find_iter (GtkTreeModel * model,
  * 
  */
 GtkTreeIter *
-glade_util_find_iter_by_widget (GtkTreeModel * model,
-                                GladeWidget * findme, gint column)
+glade_util_find_iter_by_widget (GtkTreeModel *model,
+                                GladeWidget *findme,
+                                gint column)
 {
   GtkTreeIter iter;
   if (gtk_tree_model_get_iter_first (model, &iter))
@@ -745,7 +753,7 @@ glade_util_purify_list (GList * list)
  *
  */
 GList *
-glade_util_added_in_list (GList * old_list, GList * new_list)
+glade_util_added_in_list (GList *old_list, GList *new_list)
 {
   GList *added = NULL, *list;
 
@@ -768,7 +776,7 @@ glade_util_added_in_list (GList * old_list, GList * new_list)
  *
  */
 GList *
-glade_util_removed_from_list (GList * old_list, GList * new_list)
+glade_util_removed_from_list (GList *old_list, GList *new_list)
 {
   GList *added = NULL, *list;
 
@@ -796,7 +804,7 @@ glade_util_removed_from_list (GList * old_list, GList * new_list)
  *       since libc's realpath() does exactly the same.
  */
 gchar *
-glade_util_canonical_path (const gchar * path)
+glade_util_canonical_path (const gchar *path)
 {
   gchar *orig_dir, *dirname, *basename, *direct_dir, *direct_name = NULL;
 
@@ -841,7 +849,7 @@ glade_util_canonical_path (const gchar * path)
 }
 
 static GModule *
-try_load_library (const gchar * library_path, const gchar * library_name)
+try_load_library (const gchar *library_path, const gchar *library_name)
 {
   GModule *module = NULL;
   gchar *path;
@@ -870,7 +878,7 @@ try_load_library (const gchar * library_path, const gchar * library_name)
  * Returns: a #GModule on success, or %NULL on failure.
  */
 GModule *
-glade_util_load_library (const gchar * library_name)
+glade_util_load_library (const gchar *library_name)
 {
   gchar *default_paths[] = { (gchar *) glade_app_get_modules_dir (),
     NULL,                       /* <-- dynamically allocated */
@@ -929,7 +937,7 @@ glade_util_load_library (const gchar * library_name)
  * Returns: TRUE if file is writeable
  */
 gboolean
-glade_util_file_is_writeable (const gchar * path)
+glade_util_file_is_writeable (const gchar *path)
 {
   GIOChannel *channel;
   g_return_val_if_fail (path != NULL, FALSE);
@@ -1066,8 +1074,9 @@ glade_util_get_devhelp_icon (GtkIconSize size)
  *
  */
 void
-glade_util_search_devhelp (const gchar * book,
-                           const gchar * page, const gchar * search)
+glade_util_search_devhelp (const gchar *book,
+                           const gchar *page,
+                           const gchar *search)
 {
   GError *error = NULL;
   gchar *book_comm = NULL, *page_comm = NULL, *search_comm = NULL;
@@ -1103,7 +1112,7 @@ glade_util_search_devhelp (const gchar * book,
 }
 
 GtkWidget *
-glade_util_get_placeholder_from_pointer (GtkContainer * container)
+glade_util_get_placeholder_from_pointer (GtkContainer *container)
 {
   GtkWidget *toplevel;
   GtkWidget *retval = NULL, *child;
@@ -1149,7 +1158,7 @@ glade_util_get_placeholder_from_pointer (GtkContainer * container)
  *       
  */
 gboolean
-glade_util_object_is_loading (GObject * object)
+glade_util_object_is_loading (GObject *object)
 {
   GladeProject *project;
   GladeWidget *widget;
@@ -1174,7 +1183,7 @@ glade_util_object_is_loading (GObject * object)
  *
  */
 gboolean
-glade_util_url_show (const gchar * url)
+glade_util_url_show (const gchar *url)
 {
   GtkWidget *widget;
   GError *error = NULL;
@@ -1220,7 +1229,7 @@ glade_util_url_show (const gchar * url)
  *          could not be read.
  */
 time_t
-glade_util_get_file_mtime (const gchar * filename, GError ** error)
+glade_util_get_file_mtime (const gchar *filename, GError **error)
 {
   struct stat info;
   gint retval;
@@ -1243,7 +1252,7 @@ glade_util_get_file_mtime (const gchar * filename, GError ** error)
 }
 
 gchar *
-glade_util_filename_to_icon_name (const gchar * value)
+glade_util_filename_to_icon_name (const gchar *value)
 {
   gchar *icon_name, *p;
   g_return_val_if_fail (value && value[0], NULL);
@@ -1257,7 +1266,7 @@ glade_util_filename_to_icon_name (const gchar * value)
 }
 
 gchar *
-glade_util_icon_name_to_filename (const gchar * value)
+glade_util_icon_name_to_filename (const gchar *value)
 {
   /* sscanf makes us allocate a buffer */
   gchar filename[FILENAME_MAX], *p;
@@ -1275,7 +1284,7 @@ glade_util_icon_name_to_filename (const gchar * value)
 }
 
 gint
-glade_utils_enum_value_from_string (GType enum_type, const gchar * strval)
+glade_utils_enum_value_from_string (GType enum_type, const gchar *strval)
 {
   gint value = 0;
   const gchar *displayable;
@@ -1298,7 +1307,8 @@ glade_utils_enum_value_from_string (GType enum_type, const gchar * strval)
 }
 
 static gchar *
-glade_utils_enum_string_from_value_real (GType enum_type, gint value,
+glade_utils_enum_string_from_value_real (GType enum_type,
+                                         gint value,
                                          gboolean displayable)
 {
   GValue gvalue = { 0, };
@@ -1337,7 +1347,7 @@ glade_utils_enum_string_from_value_displayable (GType enum_type, gint value)
 
 
 gint
-glade_utils_flags_value_from_string (GType flags_type, const gchar * strval)
+glade_utils_flags_value_from_string (GType flags_type, const gchar *strval)
 {
   gint value = 0;
   const gchar *displayable;
@@ -1360,7 +1370,8 @@ glade_utils_flags_value_from_string (GType flags_type, const gchar * strval)
 }
 
 static gchar *
-glade_utils_flags_string_from_value_real (GType flags_type, gint value,
+glade_utils_flags_string_from_value_real (GType flags_type,
+                                          gint value,
                                           gboolean displayable)
 {
   GValue gvalue = { 0, };
@@ -1538,8 +1549,8 @@ pclass_from_gtype (GType type)
  */
 GValue *
 glade_utils_value_from_string (GType type,
-                               const gchar * string,
-                               GladeProject * project)
+                               const gchar *string,
+                               GladeProject *project)
 {
   GladePropertyClass *pclass;
 
@@ -1563,7 +1574,7 @@ glade_utils_value_from_string (GType type,
  * Returns: A newly allocated string
  */
 gchar *
-glade_utils_string_from_value (const GValue * value)
+glade_utils_string_from_value (const GValue *value)
 {
   GladePropertyClass *pclass;
 
@@ -1639,8 +1650,9 @@ glade_utils_liststore_from_enum_type (GType enum_type, gboolean include_empty)
  * Returns: whether the event was handled
  */
 gint
-glade_utils_hijack_key_press (GtkWindow * win,
-                              GdkEventKey * event, gpointer user_data)
+glade_utils_hijack_key_press (GtkWindow *win,
+                              GdkEventKey *event,
+                              gpointer user_data)
 {
   GtkWidget *focus_widget;
 
@@ -1660,9 +1672,10 @@ glade_utils_hijack_key_press (GtkWindow * win,
 
 
 void
-glade_utils_cairo_draw_line (cairo_t * cr,
-                             GdkColor * color,
-                             gint x1, gint y1, gint x2, gint y2)
+glade_utils_cairo_draw_line (cairo_t *cr,
+                             GdkColor *color,
+                             gint x1, gint y1,
+                             gint x2, gint y2)
 {
   cairo_save (cr);
 
@@ -1678,10 +1691,11 @@ glade_utils_cairo_draw_line (cairo_t * cr,
 
 
 void
-glade_utils_cairo_draw_rectangle (cairo_t * cr,
-                                  GdkColor * color,
+glade_utils_cairo_draw_rectangle (cairo_t *cr,
+                                  GdkColor *color,
                                   gboolean filled,
-                                  gint x, gint y, gint width, gint height)
+                                  gint x, gint y,
+                                  gint width, gint height)
 {
   gdk_cairo_set_source_color (cr, color);
 
@@ -1700,7 +1714,7 @@ glade_utils_cairo_draw_rectangle (cairo_t * cr,
 
 /* copied from gedit */
 gchar *
-glade_utils_replace_home_dir_with_tilde (const gchar * path)
+glade_utils_replace_home_dir_with_tilde (const gchar *path)
 {
 #ifdef G_OS_UNIX
   gchar *tmp;
