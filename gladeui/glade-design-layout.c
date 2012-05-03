@@ -1727,6 +1727,11 @@ glade_design_layout_style_updated (GtkWidget *widget)
   priv->frame_color[1] = priv->fg_color;
   priv->bg_color = priv->frame_color[0];
 
+  /* Make border darker */
+  priv->frame_color[0].red -= .1;
+  priv->frame_color[0].green -= .1;
+  priv->frame_color[0].blue -= .1;
+  
   if (priv->offscreen_window)  gdk_window_set_background_rgba (priv->offscreen_window, &priv->bg_color);
 }
 
@@ -2037,6 +2042,7 @@ _glade_design_layout_do_event (GladeDesignLayout *layout, GdkEvent *event)
 {
   GladeFindInContainerData data = { 0, };
   GladeDesignLayoutPrivate *priv;
+  GdkDevice *device;
   GtkWidget *child;
   gboolean retval;
   GList *l;
@@ -2046,11 +2052,14 @@ _glade_design_layout_do_event (GladeDesignLayout *layout, GdkEvent *event)
 
   priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (layout);
 
+  if (!(device = glade_widget_get_device_from_event (event))) return FALSE;
+
   data.toplevel = GTK_WIDGET (child);
-  gtk_widget_get_pointer (GTK_WIDGET (child), &data.x, &data.y);
+  gdk_window_get_device_position (gtk_widget_get_window (child),
+                                  device, &data.x, &data.y, NULL);
 
   /* Check if we want to enter in margin edit mode */
-  if (event->type == GDK_BUTTON_PRESS && ((GdkEventButton *) event)->button == 1 &&
+  if (event->type == GDK_BUTTON_PRESS && event->button.button == 1 &&
       (l = glade_project_selection_get (priv->project)) &&
       g_list_next (l) == NULL && GTK_IS_WIDGET (l->data) && 
       gtk_widget_is_ancestor (l->data, child))
