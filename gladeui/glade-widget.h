@@ -216,6 +216,8 @@ gchar                  *glade_widget_generate_path_name     (GladeWidget      *w
 gboolean                glade_widget_is_ancestor            (GladeWidget      *widget,
 							     GladeWidget      *ancestor);
 
+GdkDevice              *glade_widget_get_device_from_event  (GdkEvent *event);
+
 /*******************************************************************************
                       Project, object property references
  *******************************************************************************/

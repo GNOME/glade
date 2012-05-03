@@ -4000,6 +4000,30 @@ glade_widget_is_ancestor (GladeWidget * widget, GladeWidget * ancestor)
   return FALSE;
 }
 
+/**
+ * glade_widget_get_device_from_event:
+ * @event: a GdkEvent
+ * 
+ * Currently only motion and button events are handled (see IS_GLADE_WIDGET_EVENT)
+ * 
+ * Returns: the asociated GdkDevice for this glade widget event.
+ */
+GdkDevice *
+glade_widget_get_device_from_event (GdkEvent *event)
+{
+  g_return_val_if_fail (event, NULL);
+
+  switch (event->type)
+    {
+      case GDK_BUTTON_PRESS:
+      case GDK_BUTTON_RELEASE:
+        return event->button.device;
+      case GDK_MOTION_NOTIFY:
+        return event->motion.device;
+      default:
+        return NULL;
+    }
+}
 
 static gint glade_widget_su_stack = 0;
 
