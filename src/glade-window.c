@@ -30,6 +30,7 @@
 #include "glade-close-button.h"
 #include "glade-resources.h"
 #include "glade-callbacks.h"
+#include "glade-preferences.h"
 
 #include <gladeui/glade.h>
 #include <gladeui/glade-popup.h>
@@ -104,7 +105,7 @@ struct _GladeWindowPrivate
   gint num_tabs;
 
   GtkWindow *about_dialog;
-  GtkWindow *preferences_dialog;
+  GladePreferences *preferences;
   
   GtkWidget *palettes_notebook;         /* Cached per project palettes */
   GtkWidget *inspectors_notebook;       /* Cached per project inspectors */
@@ -940,7 +941,7 @@ refresh_projects_list_menu (GladeWindow *window)
 
       /* Remove MenuItems */
       for (p = proxies; p; p = g_slist_next (p))
-        if (GTK_IS_MENU_ITEM (p->data)) gtk_widget_destroy (p->data);
+        if (GTK_IS_MENU_ITEM (p->data)) g_object_unref (p->data);
 
       g_signal_handlers_disconnect_by_func (action,
                                             G_CALLBACK (projects_list_menu_activate_cb),
@@ -2658,6 +2659,8 @@ glade_window_config_save (GladeWindow * window)
   save_paned_position (config, window->priv->left_pane, "left_pane");
   save_paned_position (config, window->priv->right_pane, "right_pane");
 
+  glade_preferences_config_save (window->priv->preferences, config);
+
   glade_app_config_save ();
 }
 
@@ -2840,6 +2843,8 @@ glade_window_config_load (GladeWindow *window)
   load_paned_position (config, window->priv->left_pane, "left_pane", 200);
   load_paned_position (config, window->priv->center_pane, "center_pane", 400);
   load_paned_position (config, window->priv->right_pane, "right_pane", 220);
+
+  glade_preferences_config_load (window->priv->preferences, config);
 }
 
 static gboolean
@@ -2944,8 +2949,8 @@ glade_window_init (GladeWindow *window)
 
   priv->default_path = NULL;
 
-  priv->app = glade_app_new ();
-
+  /* We need this for the icons to be available */
+  glade_init ();
 }
 
 #define GET_OBJECT(b,c,o) c(gtk_builder_get_object(b,o)) /*;g_warn_if_fail(gtk_builder_get_object(b,o))*/
@@ -2997,11 +3002,13 @@ glade_window_constructed (GObject *object)
       gtk_recent_chooser_set_filter (GET_OBJECT (builder, GTK_RECENT_CHOOSER, "open_recent_action"),
                                      filter);
     }
+
+  /* Init preferences */
+  priv->preferences = glade_preferences_new (builder);
   
   /* Fetch pointers */
   vbox = GET_OBJECT (builder, GTK_WIDGET, "main_box");
   priv->about_dialog   = GET_OBJECT (builder, GTK_WINDOW, "about_dialog");
-  priv->preferences_dialog = GET_OBJECT (builder, GTK_WINDOW, "preferences_dialog");
 
   priv->center_pane = GET_OBJECT (builder, GTK_WIDGET, "center_paned");
   priv->left_pane = GET_OBJECT (builder, GTK_WIDGET, "left_paned");
@@ -3089,17 +3096,22 @@ glade_window_constructed (GObject *object)
   g_signal_connect (G_OBJECT (window), "key-press-event",
                     G_CALLBACK (glade_utils_hijack_key_press), window);
 
+  gtk_builder_connect_signals (builder, window);
+
+  /* Load configuration, we need the list of extra catalog paths before creating
+   * the GladeApp
+   */
+  glade_window_config_load (window);
+  
+  /* Create GladeApp singleton, this will load all catalogs */
+  priv->app = glade_app_new ();
+  glade_app_set_window (GTK_WIDGET (window));
+
   /* Clipboard signals */
   g_signal_connect (G_OBJECT (glade_app_get_clipboard ()),
                     "notify::has-selection",
                     G_CALLBACK (clipboard_notify_handler_cb), window);
-
-  glade_app_set_window (GTK_WIDGET (window));
-
-  gtk_builder_connect_signals (builder, window);
-
-  glade_window_config_load (window);
-
+  
 #ifdef MAC_INTEGRATION
 	{
 	  /* Fix up the menubar for MacOSX Quartz builds */

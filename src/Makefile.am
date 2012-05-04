@@ -29,10 +29,15 @@ glade_SOURCES = \
 	glade-close-button.h \
 	glade-resources.c \
 	glade-callbacks.h \
+	glade-preferences.c \
+	glade-preferences.h \
 	main.c
 
 noinst_HEADERS = \
-	glade-resources.h
+	glade-window.h \
+	glade-close-button.h \
+	glade-resources.h \
+	glade-preferences.h
 
 # This could be split in two, but its better to rebuild both, sources and header
 # each time the xml or the actual resources files change, just in case. 
