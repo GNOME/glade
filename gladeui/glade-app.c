@@ -53,6 +53,9 @@
 
 #define GLADE_CONFIG_FILENAME "glade.conf"
 
+#define GLADE_APP_GET_PRIVATE(object) (G_TYPE_INSTANCE_GET_PRIVATE ((object), \
+                                       GLADE_TYPE_APP,                        \
+                                       GladeAppPrivate))
 enum
 {
   DOC_SEARCH,
@@ -85,8 +88,6 @@ static gchar *bin_dir = NULL;
 
 static GladeApp *singleton_app = NULL;
 static gboolean check_initialised = FALSE;
-
-static void glade_init_check (void);
 
 G_DEFINE_TYPE (GladeApp, glade_app, G_TYPE_OBJECT);
 
@@ -154,66 +155,6 @@ glade_app_finalize (GObject * app)
   G_OBJECT_CLASS (glade_app_parent_class)->finalize (app);
 }
 
-/*****************************************************************
- *                    GladeAppClass                              *
- *****************************************************************/
-static GKeyFile *
-glade_app_config_load (GladeApp * app)
-{
-  GKeyFile *config = g_key_file_new ();
-  gchar *filename;
-
-  filename =
-      g_build_filename (g_get_user_config_dir (), GLADE_CONFIG_FILENAME, NULL);
-
-  g_key_file_load_from_file (config, filename, G_KEY_FILE_NONE, NULL);
-
-  g_free (filename);
-
-  return config;
-}
-
-const gchar *
-glade_app_get_catalogs_dir (void)
-{
-  glade_init_check ();
-
-  return catalogs_dir;
-}
-
-const gchar *
-glade_app_get_modules_dir (void)
-{
-  glade_init_check ();
-
-  return modules_dir;
-}
-
-const gchar *
-glade_app_get_pixmaps_dir (void)
-{
-  glade_init_check ();
-
-  return pixmaps_dir;
-}
-
-const gchar *
-glade_app_get_locale_dir (void)
-{
-  glade_init_check ();
-
-  return locale_dir;
-}
-
-const gchar *
-glade_app_get_bin_dir (void)
-{
-  glade_init_check ();
-
-  return bin_dir;
-}
-
-
 /* build package paths at runtime */
 static void
 build_package_paths (void)
@@ -263,6 +204,49 @@ glade_init_check (void)
   check_initialised = TRUE;
 }
 
+/*****************************************************************
+ *                    GladeAppClass                              *
+ *****************************************************************/
+const gchar *
+glade_app_get_catalogs_dir (void)
+{
+  glade_init_check ();
+
+  return catalogs_dir;
+}
+
+const gchar *
+glade_app_get_modules_dir (void)
+{
+  glade_init_check ();
+
+  return modules_dir;
+}
+
+const gchar *
+glade_app_get_pixmaps_dir (void)
+{
+  glade_init_check ();
+
+  return pixmaps_dir;
+}
+
+const gchar *
+glade_app_get_locale_dir (void)
+{
+  glade_init_check ();
+
+  return locale_dir;
+}
+
+const gchar *
+glade_app_get_bin_dir (void)
+{
+  glade_init_check ();
+
+  return bin_dir;
+}
+
 static void
 pointer_mode_register_icon (GtkIconFactory *factory,
                             const gchar *icon_name,
@@ -301,17 +285,36 @@ glade_app_register_stock_icons (GtkIconSize size)
   gtk_icon_factory_add_default (factory);
 }
 
+/**
+ * glade_init:
+ * 
+ * Initialization function for libgladeui (not #GladeApp)
+ * It builds paths, bind text domain, and register icons
+ */
+void
+glade_init (void)
+{
+  static gboolean init = FALSE;
+
+  if (init) return;
+  
+  glade_init_check ();
+
+  /* Register icons needed by the UI */
+  glade_app_register_stock_icons (GTK_ICON_SIZE_LARGE_TOOLBAR);
+
+  init = TRUE;
+}
+
 static void
-glade_app_init (GladeApp * app)
+glade_app_init (GladeApp *app)
 {
   static gboolean initialized = FALSE;
-  GladeAppPrivate *priv =
-    GLADE_APP (app)->priv = 
-    G_TYPE_INSTANCE_GET_PRIVATE ((app), GLADE_TYPE_APP, GladeAppPrivate);
+  GladeAppPrivate *priv = app->priv = GLADE_APP_GET_PRIVATE (app);
 
   singleton_app = app;
 
-  glade_init_check ();
+  glade_init ();
 
   if (!initialized)
     {
@@ -319,9 +322,6 @@ glade_app_init (GladeApp * app)
                                          pixmaps_dir);
 
       glade_cursor_init ();
-
-      /* Register icons needed by the UI */
-      glade_app_register_stock_icons (GTK_ICON_SIZE_LARGE_TOOLBAR);
 
       initialized = TRUE;
     }
@@ -335,7 +335,7 @@ glade_app_init (GladeApp * app)
   priv->clipboard = glade_clipboard_new ();
 
   /* Load the configuration file */
-  priv->config = glade_app_config_load (app);
+  priv->config = g_key_file_ref (glade_app_get_config ());
 }
 
 static void
@@ -639,8 +639,18 @@ glade_app_get_projects (void)
 GKeyFile *
 glade_app_get_config (void)
 {
-  GladeApp *app = glade_app_get ();
-  return app->priv->config;
+  static GKeyFile *config = NULL;
+
+  if (config == NULL)
+    {
+      gchar *filename = g_build_filename (g_get_user_config_dir (),
+                                          GLADE_CONFIG_FILENAME, NULL);
+      config = g_key_file_new ();
+      g_key_file_load_from_file (config, filename, G_KEY_FILE_NONE, NULL);
+      g_free (filename);
+    }
+
+  return config;
 }
 
 gboolean

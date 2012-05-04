@@ -62,6 +62,7 @@ struct _GladeAppClass
   void   (* glade_reserved6)   (void);
 };
 
+void               glade_init                     (void);
 GType              glade_app_get_type             (void) G_GNUC_CONST;
 
 GladeApp*          glade_app_new                  (void);
