@@ -25,6 +25,8 @@
 #include "glade-window.h"
 #include <gladeui/glade-design-view.h>
 
+G_BEGIN_DECLS
+
 void on_open_action_activate             (GtkAction *action, GladeWindow *window);
 void on_save_action_activate             (GtkAction *action, GladeWindow *window);
 void on_save_as_action_activate          (GtkAction *action, GladeWindow *window);
@@ -86,4 +88,6 @@ void on_recent_menu_remove (GtkContainer *container,
                             GtkWidget *widget,
                             GladeWindow *window);
 
-#endif
+G_END_DECLS
+
+#endif /* __GLADE_CALLBACKS_H__ */
