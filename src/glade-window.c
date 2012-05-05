@@ -2579,13 +2579,13 @@ create_notebook_tab (GladeWindow * window, GladeProject * project,
   GtkWidget *tab_label, *ebox, *hbox, *close_button, *label, *dummy_label;
   GtkWidget *progress;
 
-  tab_label = gtk_hbox_new (FALSE, 4);
+  tab_label = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
 
   ebox = gtk_event_box_new ();
   gtk_event_box_set_visible_window (GTK_EVENT_BOX (ebox), FALSE);
   gtk_box_pack_start (GTK_BOX (tab_label), ebox, TRUE, TRUE, 0);
 
-  hbox = gtk_hbox_new (FALSE, 4);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
   gtk_container_add (GTK_CONTAINER (ebox), hbox);
 
   close_button = glade_close_button_new ();
@@ -3327,7 +3327,7 @@ glade_window_init (GladeWindow * window)
 
   priv->app = glade_app_new ();
 
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_add (GTK_CONTAINER (window), vbox);
 
   /* editor */
@@ -3376,9 +3376,9 @@ glade_window_init (GladeWindow * window)
                                       redo_action);
 
   /* main contents */
-  hpaned1 = gtk_hpaned_new ();
-  hpaned2 = gtk_hpaned_new ();
-  vpaned = gtk_vpaned_new ();
+  hpaned1 = gtk_paned_new (GTK_ORIENTATION_HORIZONTAL);
+  hpaned2 = gtk_paned_new (GTK_ORIENTATION_HORIZONTAL);
+  vpaned = gtk_paned_new (GTK_ORIENTATION_VERTICAL);
   priv->center_pane = hpaned1;
   priv->left_pane = hpaned2;
   priv->right_pane = vpaned;
