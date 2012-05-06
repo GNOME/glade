@@ -1,3 +1,70 @@
+2012-05-03  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+        * gladeui/glade-utils.c: Reworked glade_util_get_placeholder_from_pointer()
+          to use gdk_device_get_window_at_position() to get the placeholder window from the pointer.
+
+        * src/glade-window.c: Use glade_util_get_placeholder_from_pointer() in paste action activate
+
+        * gladeui/glade-popup.c: Fixed bug #675395
+          "Using right click to add a widget over a placeholder do not work as expected every time"
+
+2012-05-02  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+        * plugins/gtk+/gtk+.xml.in: Set GtkCheckButton:xalign save-always.
+          Fixes bug #675042 "plugins/gtk+.xml.in: always store GtkButton [x|y]align properties"
+
+2012-04-28  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+        * gladeui/glade-base-editor.c,
+          gladeui/glade-design-layout.c,
+          gladeui/glade-design-view.c,
+          gladeui/glade-editor-property.c,
+          gladeui/glade-editor.c,
+          gladeui/glade-named-icon-chooser-dialog.c,
+          gladeui/glade-palette.c,
+          gladeui/glade-project.c,
+          gladeui/glade-widget-adaptor.c,
+          plugins/gtk+/glade-accels.c,
+          plugins/gtk+/glade-attributes.c,
+          plugins/gtk+/glade-button-editor.c,
+          plugins/gtk+/glade-cell-renderer-editor.c,
+          plugins/gtk+/glade-column-types.c,
+          plugins/gtk+/glade-entry-editor.c,
+          plugins/gtk+/glade-icon-factory-editor.c,
+          plugins/gtk+/glade-icon-sources.c,
+          plugins/gtk+/glade-image-editor.c,
+          plugins/gtk+/glade-image-item-editor.c,
+          plugins/gtk+/glade-label-editor.c,
+          plugins/gtk+/glade-model-data.c,
+          plugins/gtk+/glade-store-editor.c,
+          plugins/gtk+/glade-text-button.c,
+          plugins/gtk+/glade-tool-button-editor.c,
+          plugins/gtk+/glade-tool-item-group-editor.c,
+          plugins/gtk+/glade-treeview-editor.c:
+            Removed use of deprecated GtkHBox, GtkVBox and others
+
+2012-04-25  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+        * gladeui/glade-design-view.c: Added custom style provider to setup 
+          viewport background color to @base_color
+
+        * gladeui/glade-design-layout.c:
+          o Added custom stype provider to setup bg color to @base_color.
+          o Simplyfied glade_design_layout_style_updated() using gtk_style_context_lookup_color()
+          o Removed old theme hack widget_reset_bg_color()
+
+        * plugins/gtk+/glade-accels.c: Replaced strcmp() with g_strcmp0 in glade_eprop_accel_populate_view()
+
+2012-04-03  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+        * gladeui/glade-inspector.c: Removed use of deprecated object GCompletion
+
+        * gladeui/glade-property-class.c: replaced deprecated function g_value_get_char with g_value_get_schar()
+
+2012-03-31  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+        * gladeui/glade-signal-editor.c: Fixed memory leak on handler-suggestion emison
+
 2012-03-26  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
         * configure.ac, NEWS: Rolling 3.12.0 (Bumped GTK dependency to 3.4)
