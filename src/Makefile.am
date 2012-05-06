@@ -54,4 +54,4 @@ endif
 glade-win32-res.o: glade.rc
 	$(WINDRES) $< $@
 
-EXTRA_DIST = glade.rc.in
+EXTRA_DIST = glade.rc.in glade-resources.gresource.xml glade.glade
