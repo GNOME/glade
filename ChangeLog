@@ -1,3 +1,13 @@
+2012-05-04  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+        * gladeui/glade-app.c: Added glade_init()
+          Made glade_app_get_config() return a  static pointer so that it can be
+          used before creating a GladeApp
+
+        * src/Makefile.am, src/glade-preferences.[ch], src/glade-window.c, src/glade.glade:
+          Implemented GladePreferences dialog.
+          Fixes bug 588981 "Catalog support in GUI preferences instead of using environment var"
+
 2012-05-03  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
         * gladeui/glade-utils.c: Reworked glade_util_get_placeholder_from_pointer()
@@ -8,10 +18,21 @@
         * gladeui/glade-popup.c: Fixed bug #675395
           "Using right click to add a widget over a placeholder do not work as expected every time"
 
+        * gladeui/glade-widget.c: Added glade_widget_get_device_from_event()
+
+        * gladeui/glade-design-layout.c:
+          o Made unselected border color darker
+          o Removed use of deprecated function gtk_widget_get_pointer()
+
 2012-05-02  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
         * plugins/gtk+/gtk+.xml.in: Set GtkCheckButton:xalign save-always.
           Fixes bug #675042 "plugins/gtk+.xml.in: always store GtkButton [x|y]align properties"
+
+2012-04-30  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+        * plugins/gtk+/glade-attributes.c: Replaced deprecated font and color 
+          selection dialogs with font and color chooser dialogs.
 
 2012-04-28  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
@@ -43,6 +64,27 @@
           plugins/gtk+/glade-treeview-editor.c:
             Removed use of deprecated GtkHBox, GtkVBox and others
 
+2012-04-26  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+        * src/glade-window.c:
+          o Use GtkBuilder and GResources to build GladeWindow contents
+          o Implemented menu with GtkActions
+          o Push tooltip for rencet manager and project actions
+
+        * src/main.c: Register glade GResources
+
+        * src/glade-resources.gresources.xml: Glade Gresource file
+
+        * src/glade.glade: Glade UI GladeWindow, about and preferences dialog
+
+        * src/glade-callbacks.h: callbacks declarations
+
+        * src/Makefile.am: added glade-resource.c to source list
+
+        * configure.ac: bumped version to 3.13 and added glib-compile-resources path program
+
+        * glade-rules.mk: added common rules for GResources files
+
 2012-04-25  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
         * gladeui/glade-design-view.c: Added custom style provider to setup 
@@ -55,6 +97,16 @@
 
         * plugins/gtk+/glade-accels.c: Replaced strcmp() with g_strcmp0 in glade_eprop_accel_populate_view()
 
+        * gladeui/glade-app.c: glade_app_register_stock_icons() added fuction to register glade icons
+
+        * gladeui/glade-project.[ch]: removed glade_project_pointer_mode_render_icon()
+
+        * gladeui/glade-utils.c: added glade_utils_pointer_mode_render_icon()
+
+        * gladeui/glade-catalog.[ch]:
+          o Added glade_catalog_add_path() and glade_catalog_remove_path()
+          o Added API documentation. Code cleanup.
+
 2012-04-03  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
         * gladeui/glade-inspector.c: Removed use of deprecated object GCompletion
@@ -63,7 +115,14 @@
 
 2012-03-31  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
-        * gladeui/glade-signal-editor.c: Fixed memory leak on handler-suggestion emison
+        * gladeui/glade-signal-editor.c:
+         o Fixed memory leak on handler-suggestion emison
+         o added GladeSignalEditor::detail-suggestions signal
+
+        * gladeui/glade-signal-model.c: Removed "__dummy" object data hack
+          Now only the data model returns user strings like <Type Here> when the GladeSignal value is null
+
+        * gladeui/glade-signal.c: fixed bug in glade_signal_set_detail() that allowed to set an empty string as a detail
 
 2012-03-24  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
