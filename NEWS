@@ -1,4 +1,15 @@
 ============
+Glade 3.12.1
+============
+
+        - Use glade_util_get_placeholder_from_pointer() in paste action activate
+        - Fixed bug #675395 "Using right click to add a widget over a placeholder do not work as expected every time"
+        - Fixed bug #675042 "plugins/gtk+.xml.in: always store GtkButton [x|y]align properties"
+        - Added custom style provider to setup GladeDesignView and GladeDesignLayout background color to @base_color
+        - Fixed memory leak on GladeSignalEditor::callback-suggestions emison
+        - Removed use of lots of deprecated functions
+
+============
 Glade 3.12.0
 ============
 
