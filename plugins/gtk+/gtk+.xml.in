@@ -746,7 +746,7 @@ embedded in another object</_tooltip>
 
       <properties>
 	<!-- GtkActivatable -->
-      	<property id="related-action" _name="Related Action" custom-layout="True" since="2.16"/>
+      	<property id="related-action" _name="Related Action" custom-layout="True" since="2.16" save="False"/>
       	<property id="use-action-appearance" _name="Use Action Appearance" custom-layout="True" 
 		  default="False" since="2.16"/>
       </properties>
@@ -1039,8 +1039,8 @@ embedded in another object</_tooltip>
 	</property>
 
 	<!-- GtkActivatable -->
-      	<property id="related-action" _name="Related Action" custom-layout="True" since="2.16"/>
-      	<property id="use-action-appearance" _name="Use Action Appearance" custom-layout="True" default="False" since="2.16"/>
+      	<property id="related-action" _name="Related Action" custom-layout="True" since="2.16" save="False"/>
+      	<property id="use-action-appearance" _name="Use Action Appearance" custom-layout="True" default="False" since="2.16" save="False"/>
 
 	<!-- Atk click property -->
 	<property id="atk-click" _name="Click" ignore="True" atk-property="True" save="False" multiline="True">
@@ -1120,13 +1120,13 @@ embedded in another object</_tooltip>
       <create-editable-function>glade_gtk_switch_create_editable</create-editable-function>
       <properties>
         <!-- GtkActivatable -->
-        <property id="related-action" _name="Related Action" custom-layout="True">
+        <property id="related-action" _name="Related Action" custom-layout="True" save="False">
       	  <parameter-spec>
 	    <type>GParamObject</type>
 	    <value-type>GtkToggleAction</value-type>
           </parameter-spec>
         </property>
-        <property id="use-action-appearance" _name="Use Action Appearance" custom-layout="True" default="False"/>
+        <property id="use-action-appearance" _name="Use Action Appearance" custom-layout="True" default="False" save="False"/>
       </properties>
     </glade-widget-class>
 
