@@ -2982,25 +2982,12 @@ glade_window_constructed (GObject *object)
   G_OBJECT_CLASS (glade_window_parent_class)->constructed (object);
   
   /* Build UI */
-#if HAVE_GTK_BUILDER_ADD_FROM_RESOURCE
   builder = gtk_builder_new ();
   if (gtk_builder_add_from_resource (builder, "/org/gnome/glade/glade.glade", &error) == 0)
-	{
-	  g_warning ("gtk_builder_add_from_resource() failed %s", (error) ? error->message : "");
-	  return;
-	}
-#else
-  {
-	/*TODO: remove this once we depend on gtk 3.4 */
-    GBytes *glade_ui = g_resources_lookup_data ("/org/gnome/glade/glade.glade",
-                                                G_RESOURCE_LOOKUP_FLAGS_NONE,
-                                                NULL);
-	if (glade_ui == NULL) return;
-
-	builder = gtk_builder_new ();
-	gtk_builder_add_from_string (builder, g_bytes_get_data (glade_ui, NULL), -1, NULL);
-  }
-#endif
+    {
+      g_warning ("gtk_builder_add_from_resource() failed %s", (error) ? error->message : "");
+      return;
+    }
   
   window = GLADE_WINDOW (object);
 
