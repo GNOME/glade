@@ -222,6 +222,7 @@
         <property name="tooltip" translatable="yes">Display the developer reference manual</property>
         <signal name="activate" handler="on_reference_action_activate" swapped="no"/>
       </object>
+      <accelerator key="F1"/>
     </child>
     <child>
       <object class="GtkAction" id="preferences_action">
@@ -831,7 +832,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
             <property name="related_action">new_action</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="related_action">new_action</property>
             <property name="label" translatable="yes">toolbutton1</property>
             <property name="use_underline">True</property>
           </object>
@@ -845,7 +845,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
             <property name="related_action">open_action</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="related_action">open_action</property>
             <property name="label" translatable="yes">toolbutton2</property>
             <property name="use_underline">True</property>
           </object>
@@ -859,7 +858,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
             <property name="related_action">save_action</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="related_action">save_action</property>
             <property name="label" translatable="yes">toolbutton3</property>
             <property name="use_underline">True</property>
           </object>
@@ -884,7 +882,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
             <property name="related_action">undo_action</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="related_action">undo_action</property>
             <property name="label" translatable="yes">toolbutton2</property>
             <property name="use_underline">True</property>
           </object>
@@ -897,7 +894,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
             <property name="related_action">redo_action</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="related_action">redo_action</property>
             <property name="label" translatable="yes">toolbutton3</property>
             <property name="use_underline">True</property>
           </object>
@@ -921,7 +917,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
             <property name="related_action">cut_action</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="related_action">cut_action</property>
             <property name="label" translatable="yes">toolbutton5</property>
             <property name="use_underline">True</property>
           </object>
@@ -935,7 +930,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
             <property name="related_action">copy_action</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="related_action">copy_action</property>
             <property name="label" translatable="yes">toolbutton6</property>
             <property name="use_underline">True</property>
           </object>
@@ -949,7 +943,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
             <property name="related_action">paste_action</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="related_action">paste_action</property>
             <property name="label" translatable="yes">toolbutton7</property>
             <property name="use_underline">True</property>
           </object>
@@ -975,7 +968,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
             <property name="related_action">selector_radioaction</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="related_action">selector_radioaction</property>
             <property name="label" translatable="yes">radiotoolbutton1</property>
             <property name="use_underline">True</property>
           </object>
@@ -989,7 +981,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
             <property name="related_action">drag_resize_radioaction</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="related_action">drag_resize_radioaction</property>
             <property name="label" translatable="yes">radiotoolbutton2</property>
             <property name="use_underline">True</property>
           </object>
@@ -1003,7 +994,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
             <property name="related_action">margin_edit_radioaction</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="related_action">margin_edit_radioaction</property>
             <property name="label" translatable="yes">radiotoolbutton3</property>
             <property name="use_underline">True</property>
           </object>
@@ -1017,7 +1007,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
             <property name="related_action">align_edit_radioaction</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="related_action">align_edit_radioaction</property>
             <property name="label" translatable="yes">radiotoolbutton4</property>
             <property name="use_underline">True</property>
           </object>
@@ -1159,7 +1148,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -1204,7 +1192,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="tooltip_text" translatable="yes">Removes the selected catalog path</property>
-                            <property name="use_action_appearance">False</property>
                             <signal name="clicked" handler="on_catalog_path_remove_button_clicked" object="catalog_path_comboboxtext" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image1">
@@ -1243,7 +1230,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="tooltip_text" translatable="yes">Add a new catalog path</property>
-                            <property name="use_action_appearance">False</property>
                             <signal name="clicked" handler="gtk_widget_show" object="preferences_filechooserdialog" swapped="yes"/>
                             <child>
                               <object class="GtkImage" id="image2">
@@ -1335,7 +1321,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -1353,7 +1338,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                 <property name="can_default">True</property>
                 <property name="has_default">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
