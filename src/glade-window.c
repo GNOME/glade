@@ -941,11 +941,13 @@ refresh_projects_list_menu (GladeWindow *window)
 
       /* Remove MenuItems */
       for (p = proxies; p; p = g_slist_next (p))
-        if (GTK_IS_MENU_ITEM (p->data)) g_object_unref (p->data);
+        if (GTK_IS_MENU_ITEM (p->data)) gtk_widget_destroy (p->data);
 
       g_signal_handlers_disconnect_by_func (action,
                                             G_CALLBACK (projects_list_menu_activate_cb),
                                             window);
+      gtk_accel_group_disconnect (priv->accelgroup,
+                                  gtk_action_get_accel_closure (action));
       gtk_action_group_remove_action (priv->projects_list_menu_actions, action);
     }
   g_list_free (actions);
@@ -961,7 +963,7 @@ refresh_projects_list_menu (GladeWindow *window)
       gchar action_name[32];
       gchar *project_name;
       gchar *tooltip;
-      gchar accel[7];
+      gchar *accel;
 
       view = gtk_notebook_get_nth_page (GTK_NOTEBOOK (priv->notebook), i);
       project = glade_design_view_get_project (GLADE_DESIGN_VIEW (view));
@@ -984,10 +986,7 @@ refresh_projects_list_menu (GladeWindow *window)
       tooltip = format_project_list_item_tooltip (project);
 
       /* alt + 1, 2, 3... 0 to switch to the first ten tabs */
-      if (i < 10)
-        g_snprintf (accel, sizeof (accel), "<alt>%d", (i + 1) % 10);
-      else
-        accel[0] = '\0';
+      accel = (i < 10) ? gtk_accelerator_name (GDK_KEY_0 + ((i + 1) % 10), GDK_MOD1_MASK) : NULL;
 
       action = gtk_radio_action_new (action_name,
                                      project_name, tooltip, NULL, i);
@@ -1002,12 +1001,15 @@ refresh_projects_list_menu (GladeWindow *window)
 
       gtk_action_group_add_action_with_accel (priv->projects_list_menu_actions,
                                               GTK_ACTION (action), accel);
+      gtk_accel_group_connect_by_path (priv->accelgroup,
+                                       gtk_action_get_accel_path (GTK_ACTION (action)),
+                                       gtk_action_get_accel_closure (GTK_ACTION (action)));
 
       /* Create Menu Item*/
       item = gtk_check_menu_item_new ();
       gtk_menu_shell_append (priv->project_menu, item);
-      gtk_activatable_set_use_action_appearance (GTK_ACTIVATABLE (item), TRUE);
       gtk_activatable_set_related_action (GTK_ACTIVATABLE (item), GTK_ACTION (action));
+      gtk_activatable_set_use_action_appearance (GTK_ACTIVATABLE (item), TRUE);
       gtk_widget_show (item);
 
       g_signal_connect (action, "activate",
@@ -1020,6 +1022,7 @@ refresh_projects_list_menu (GladeWindow *window)
 
       g_free (project_name);
       g_free (tooltip);
+      g_free (accel);
     }
 }
 
@@ -2104,7 +2107,9 @@ recent_menu_setup_callbacks (GtkWidget *menu, GladeWindow *window)
 }
 
 static void
-action_group_setup_callbacks (GtkActionGroup *action_group, GladeWindow *window)
+action_group_setup_callbacks (GtkActionGroup *action_group,
+                              GtkAccelGroup *accel_group,
+                              GladeWindow *window)
 {
   GList *l, *list = gtk_action_group_list_actions (action_group);
 
@@ -2114,9 +2119,17 @@ action_group_setup_callbacks (GtkActionGroup *action_group, GladeWindow *window)
       GSList *p, *proxies = gtk_action_get_proxies (action);
       gboolean is_recent = GTK_IS_RECENT_ACTION (action);
 
+      /* Workaround for gtk+ bug #671786 */
+      gtk_accel_group_connect_by_path (accel_group,
+                                       gtk_action_get_accel_path (action),
+                                       gtk_action_get_accel_closure (action));
+      
       for (p = proxies; p; p = g_slist_next (p))
         {
           GtkWidget *submenu, *proxy = p->data;
+
+          gtk_activatable_sync_action_properties (GTK_ACTIVATABLE (proxy),
+                                                  action);
 
           menu_item_connect (proxy, action, window);
 
@@ -3030,19 +3043,19 @@ glade_window_constructed (GObject *object)
 
   /* Action groups */
   priv->project_actions = GET_OBJECT (builder, GTK_ACTION_GROUP, "project_actiongroup");
-  action_group_setup_callbacks (priv->project_actions, window);
+  action_group_setup_callbacks (priv->project_actions, priv->accelgroup, window);
   g_object_ref_sink (priv->project_actions);
 
   priv->pointer_mode_actions = GET_OBJECT (builder, GTK_ACTION_GROUP, "pointer_mode_actiongroup");
-  action_group_setup_callbacks (priv->pointer_mode_actions, window);
+  action_group_setup_callbacks (priv->pointer_mode_actions, priv->accelgroup, window);
   g_object_ref_sink (priv->pointer_mode_actions);
   
   group = GET_OBJECT (builder, GTK_ACTION_GROUP, "static_actiongroup");
-  action_group_setup_callbacks (group, window);
+  action_group_setup_callbacks (group, priv->accelgroup, window);
   g_object_ref_sink (group);
   
   group = GET_OBJECT (builder, GTK_ACTION_GROUP, "view_actiongroup");
-  action_group_setup_callbacks (group, window);
+  action_group_setup_callbacks (group, priv->accelgroup, window);
   g_object_ref_sink (group);
 
   /* Actions */
