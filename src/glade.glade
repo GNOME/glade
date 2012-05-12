@@ -2,10 +2,6 @@
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
   <object class="GtkAccelGroup" id="accelgroup"/>
-  <object class="GtkActionGroup" id="project_list_actiongroup">
-    <signal name="connect-proxy" handler="on_actiongroup_connect_proxy" swapped="no"/>
-    <signal name="disconnect-proxy" handler="on_actiongroup_disconnect_proxy" swapped="no"/>
-  </object>
   <object class="GtkActionGroup" id="pointer_mode_actiongroup">
     <child>
       <object class="GtkRadioAction" id="selector_radioaction">
@@ -167,6 +163,10 @@
       </object>
       <accelerator key="Page_Down" modifiers="GDK_CONTROL_MASK"/>
     </child>
+  </object>
+  <object class="GtkActionGroup" id="project_list_actiongroup">
+    <signal name="connect-proxy" handler="on_actiongroup_connect_proxy" swapped="no"/>
+    <signal name="disconnect-proxy" handler="on_actiongroup_disconnect_proxy" swapped="no"/>
   </object>
   <object class="GtkActionGroup" id="static_actiongroup">
     <property name="name">static_actiongroup</property>
@@ -618,30 +618,27 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                 <property name="can_focus">False</property>
                 <property name="accel_group">accelgroup</property>
                 <child>
-                  <object class="GtkImageMenuItem" id="toolbar_visible_menuitem">
+                  <object class="GtkCheckMenuItem" id="toolbar_visible_menuitem">
                     <property name="related_action">toolbar_visible_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="use_underline">True</property>
-                    <property name="use_stock">True</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkImageMenuItem" id="statusbar_visible_menuitem">
+                  <object class="GtkCheckMenuItem" id="statusbar_visible_menuitem">
                     <property name="related_action">statusbar_visible_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="use_underline">True</property>
-                    <property name="use_stock">True</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkImageMenuItem" id="project_tabs_visible_menuitem">
+                  <object class="GtkCheckMenuItem" id="project_tabs_visible_menuitem">
                     <property name="related_action">project_tabs_visible_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="use_underline">True</property>
-                    <property name="use_stock">True</property>
                   </object>
                 </child>
                 <child>
@@ -704,30 +701,27 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkImageMenuItem" id="dock_palette_menuitem">
+                  <object class="GtkCheckMenuItem" id="dock_palette_menuitem">
                     <property name="related_action">dock_palette_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="use_underline">True</property>
-                    <property name="use_stock">True</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkImageMenuItem" id="dock_inspector_menuitem">
+                  <object class="GtkCheckMenuItem" id="dock_inspector_menuitem">
                     <property name="related_action">dock_inspector_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="use_underline">True</property>
-                    <property name="use_stock">True</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkImageMenuItem" id="dock_editor_menuitem">
+                  <object class="GtkCheckMenuItem" id="dock_editor_menuitem">
                     <property name="related_action">dock_editor_action</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="use_underline">True</property>
-                    <property name="use_stock">True</property>
                   </object>
                 </child>
               </object>
