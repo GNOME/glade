@@ -326,7 +326,7 @@ glade_standard_stock_image_get_type (void)
 
       for (i = 0; i < G_N_ELEMENTS (builtin_stock_images); i++)
         {
-          /* these ones are translated from glade3 */
+          /* these ones are translated from glade */
 	  if (!glade_get_displayable_value (etype, builtin_stock_images[i]))
 	    glade_register_displayable_value (etype,
 					      builtin_stock_images[i],

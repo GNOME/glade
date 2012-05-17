@@ -1,5 +1,5 @@
 /*
- * glade3
+ * glade-signal-model.h
  * Copyright (C) Johannes Schmid 2010 <jhs@gnome.org>
  * 
  * This library is free software; you can redistribute it and/or modify it
