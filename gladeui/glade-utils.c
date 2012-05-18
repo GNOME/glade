@@ -851,15 +851,15 @@ glade_util_canonical_path (const gchar *path)
 static GModule *
 try_load_library (const gchar *library_path, const gchar *library_name)
 {
+  gchar *path = g_module_build_path (library_path, library_name);
   GModule *module = NULL;
-  gchar *path;
 
-  path = g_module_build_path (library_path, library_name);
-  if (g_file_test (path, G_FILE_TEST_EXISTS))
+  if (!library_path || g_file_test (path, G_FILE_TEST_EXISTS))
     {
       if (!(module = g_module_open (path, G_MODULE_BIND_LAZY)))
         g_warning ("Failed to load %s: %s", path, g_module_error ());
     }
+
   g_free (path);
 
   return module;
@@ -880,15 +880,6 @@ try_load_library (const gchar *library_path, const gchar *library_name)
 GModule *
 glade_util_load_library (const gchar *library_name)
 {
-  const gchar *paths[] =
-    {
-      glade_app_get_modules_dir (),
-      glade_app_get_lib_dir (),
-#ifndef G_OS_WIN32
-      "/usr/local/lib", /* Try local lib dir on Unices */
-#endif
-      NULL /* Use default system paths */
-    };
   GModule *module = NULL;
   const gchar *search_path;
   gint i;
@@ -909,6 +900,14 @@ glade_util_load_library (const gchar *library_name)
 
   if (!module)
     {
+      const gchar *paths[] = { glade_app_get_modules_dir (),
+                               glade_app_get_lib_dir (),
+#ifndef G_OS_WIN32 /* Try local lib dir on Unices */
+                               "/usr/local/lib",
+#endif
+                               NULL}; /* Use default system paths */
+
+      
       for (i = 0; i < G_N_ELEMENTS (paths); i++)
         if ((module = try_load_library (paths[i], library_name)) != NULL)
           break;
