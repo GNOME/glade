@@ -40,7 +40,8 @@ common_defines = \
 	-DGLADE_MODULESDIR="\"$(pkglibdir)/modules\""	\
 	-DGLADE_PIXMAPSDIR="\"$(pkgdatadir)/pixmaps\""	\
 	-DGLADE_LOCALEDIR="\"$(datadir)/locale\""\
-	-DGLADE_BINDIR="\"$(bindir)\""
+	-DGLADE_BINDIR="\"$(bindir)\""\
+	-DGLADE_LIBDIR="\"$(libdir)\""
 
 BUILT_SOURCES = glade-marshallers.c glade-marshallers.h
 

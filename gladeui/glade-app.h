@@ -102,6 +102,7 @@ const gchar       *glade_app_get_plugins_dir      (void) G_GNUC_CONST;
 const gchar       *glade_app_get_pixmaps_dir      (void) G_GNUC_CONST;
 const gchar       *glade_app_get_locale_dir       (void) G_GNUC_CONST;
 const gchar       *glade_app_get_bin_dir          (void) G_GNUC_CONST;
+const gchar       *glade_app_get_lib_dir          (void) G_GNUC_CONST;
 
 G_END_DECLS
 

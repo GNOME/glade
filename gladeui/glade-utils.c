@@ -869,8 +869,8 @@ try_load_library (const gchar *library_path, const gchar *library_name)
  * glade_util_load_library:
  * @library_name: name of the library
  *
- * Loads the named library from the Glade modules directory, or failing that
- * from the standard platform specific directories.
+ * Loads the named library from the Glade modules and lib directory or failing that
+ * from the standard platform specific directories. (Including /usr/local/lib for unices)
  *
  * The @library_name should not include any platform specifix prefix or suffix,
  * those are automatically added, if needed, by g_module_build_path()
@@ -880,23 +880,23 @@ try_load_library (const gchar *library_path, const gchar *library_name)
 GModule *
 glade_util_load_library (const gchar *library_name)
 {
-  gchar *default_paths[] = { (gchar *) glade_app_get_modules_dir (),
-    NULL,                       /* <-- dynamically allocated */
-    "/lib",
-    "/usr/lib",
-    "/usr/local/lib",
-    NULL
-  };
-
+  const gchar *paths[] =
+    {
+      glade_app_get_modules_dir (),
+      glade_app_get_lib_dir (),
+#ifndef G_OS_WIN32
+      "/usr/local/lib", /* Try local lib dir on Unices */
+#endif
+      NULL /* Use default system paths */
+    };
   GModule *module = NULL;
   const gchar *search_path;
-  gchar **split;
   gint i;
-
-
 
   if ((search_path = g_getenv (GLADE_ENV_MODULE_PATH)) != NULL)
     {
+      gchar **split;
+
       if ((split = g_strsplit (search_path, ":", 0)) != NULL)
         {
           for (i = 0; split[i] != NULL; i++)
@@ -909,21 +909,10 @@ glade_util_load_library (const gchar *library_name)
 
   if (!module)
     {
-      /* Search ${prefix}/lib after searching ${prefix}/lib/glade3/modules... */
-      default_paths[1] =
-          g_build_filename (glade_app_get_modules_dir (), "..", "..", NULL);
-
-      for (i = 0; default_paths[i] != NULL; i++)
-        if ((module =
-             try_load_library (default_paths[i], library_name)) != NULL)
+      for (i = 0; i < G_N_ELEMENTS (paths); i++)
+        if ((module = try_load_library (paths[i], library_name)) != NULL)
           break;
-
-      g_free (default_paths[1]);
     }
-
-  if (!module)
-    g_critical ("Unable to load module '%s' from any search paths",
-                library_name);
 
   return module;
 }

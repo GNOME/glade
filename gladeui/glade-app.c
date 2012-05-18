@@ -85,6 +85,7 @@ static gchar *modules_dir = NULL;
 static gchar *pixmaps_dir = NULL;
 static gchar *locale_dir = NULL;
 static gchar *bin_dir = NULL;
+static gchar *lib_dir = NULL;
 
 static GladeApp *singleton_app = NULL;
 static gboolean check_initialised = FALSE;
@@ -148,6 +149,7 @@ glade_app_finalize (GObject * app)
   g_free (pixmaps_dir);
   g_free (locale_dir);
   g_free (bin_dir);
+  g_free (lib_dir);
 
   singleton_app = NULL;
   check_initialised = FALSE;
@@ -175,6 +177,7 @@ build_package_paths (void)
   modules_dir = g_build_filename (prefix, "lib", PACKAGE, "modules", NULL);
   locale_dir = g_build_filename (prefix, "share", "locale", NULL);
   bin_dir = g_build_filename (prefix, "bin", NULL);
+  lib_dir = g_build_filename (prefix, "lib", NULL);
 
   g_free (prefix);
 #else
@@ -183,6 +186,7 @@ build_package_paths (void)
   pixmaps_dir = g_strdup (GLADE_PIXMAPSDIR);
   locale_dir = g_strdup (GLADE_LOCALEDIR);
   bin_dir = g_strdup (GLADE_BINDIR);
+  lib_dir = g_strdup (GLADE_LIBDIR);
 #endif
 }
 
@@ -245,6 +249,14 @@ glade_app_get_bin_dir (void)
   glade_init_check ();
 
   return bin_dir;
+}
+
+const gchar *
+glade_app_get_lib_dir (void)
+{
+  glade_init_check ();
+
+  return lib_dir;
 }
 
 static void
