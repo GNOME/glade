@@ -237,8 +237,13 @@ catalog_open (const gchar *filename)
     catalog->icon_prefix = g_strdup (catalog->name);
 
   if (catalog->init_function_name)
-    catalog_get_function (catalog, catalog->init_function_name,
-                          (gpointer) & catalog->init_function);
+    {
+      if (!catalog_get_function (catalog, catalog->init_function_name,
+                                 (gpointer) & catalog->init_function))
+        g_warning ("Failed to find and execute catalog '%s' init function '%s'",
+                   glade_catalog_get_name (catalog),
+                   catalog->init_function_name);
+    }
 
   return catalog;
 }
@@ -265,7 +270,9 @@ catalog_load_library (GladeCatalog *catalog)
   if ((module = glade_util_load_library (catalog->library)))
     g_hash_table_insert (modules, g_strdup (catalog->library), module);
   else
-    g_warning ("Failed to load external library '%s'", catalog->library);
+    g_warning ("Failed to load external library '%s' for catalog '%s'",
+               catalog->library,
+               glade_catalog_get_name (catalog));
 
   return module;
 }
