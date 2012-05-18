@@ -855,7 +855,7 @@ try_load_library (const gchar *library_path, const gchar *library_name)
   gchar *path;
 
   path = g_module_build_path (library_path, library_name);
-  if (g_file_test (path, G_FILE_TEST_EXISTS))
+  if (!library_path || g_file_test (path, G_FILE_TEST_EXISTS))
     {
       if (!(module = g_module_open (path, G_MODULE_BIND_LAZY)))
         g_warning ("Failed to load %s: %s", path, g_module_error ());
@@ -882,18 +882,14 @@ glade_util_load_library (const gchar *library_name)
 {
   gchar *default_paths[] = { (gchar *) glade_app_get_modules_dir (),
     NULL,                       /* <-- dynamically allocated */
-    "/lib",
-    "/usr/lib",
     "/usr/local/lib",
     NULL
   };
-
+  
   GModule *module = NULL;
   const gchar *search_path;
   gchar **split;
   gint i;
-
-
 
   if ((search_path = g_getenv (GLADE_ENV_MODULE_PATH)) != NULL)
     {
@@ -913,7 +909,7 @@ glade_util_load_library (const gchar *library_name)
       default_paths[1] =
           g_build_filename (glade_app_get_modules_dir (), "..", "..", NULL);
 
-      for (i = 0; default_paths[i] != NULL; i++)
+      for (i = 0; i < G_N_ELEMENTS (default_paths); i++)
         if ((module =
              try_load_library (default_paths[i], library_name)) != NULL)
           break;
