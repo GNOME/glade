@@ -159,31 +159,15 @@ libgladeui_2_la_LDFLAGS += -no-undefined
 endif
 
 if NATIVE_WIN32
-libgladeui_2_la_LDFLAGS += -Wl,gladeui-win32-res.o -export-symbols gladeui.def
-libgladeui_2_la_DEPENDENCIES = gladeui-win32-res.o gladeui.def
+libgladeui_2_la_LDFLAGS += \
+	-Wl,gladeui-win32-res.o \
+	-export-dynamic \
+	-export-symbols-regex "^(glade).*"
+libgladeui_2_la_DEPENDENCIES = gladeui-win32-res.o
 endif
 
 gladeui-win32-res.o: gladeui.rc
 	$(WINDRES) $< $@
-
-# gladeui.def: auto-generated DEF file for linker input
-# The routines below will scan the header files and extracts symbol declarations.
-# The symbol 'custom_get_type' is added manually. It's naming deviates from
-# the pattern set by all other public symbols in the glade namespace.
-#
-gladeui.def: $(libgladeuiinclude_HEADERS)
-	@echo Generating $@
-	@(echo EXPORTS; \
-	echo 'custom_get_type'; \
-	(cd $(srcdir); cat $(libgladeuiinclude_HEADERS) || echo 'glade_ERROR ()' ) | \
-	grep -v -E '^# *include' | \
-	grep -v -E '^# *define' | \
-	grep -E '[^\(]glade_.*[[:space:]]+\(.*' | \
-	sed -e 's/[ 	]*(.*//' | \
-	sed -e 's/.*glade_/glade_/' | \
-	sort; \
-	) >$@
-	@ ! grep -q glade_ERROR $@ || ($(RM) $@; false)
 
 #
 # Marshaller generation
@@ -197,7 +181,7 @@ glade-marshallers.c: glade-marshallers.list $(GLIB_GENMARSHAL)
 	&& mv glade-marshallers-c.tmp glade-marshallers.c \
 	|| ( rm -f glade-marshallers-c.tmp && exit 1 )
 
-CLEANFILES = $(BUILT_SOURCES) gladeui.def
+CLEANFILES = $(BUILT_SOURCES)
 
 #
 # Introspection generation

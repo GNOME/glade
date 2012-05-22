@@ -98,7 +98,6 @@ void               glade_app_search_docs          (const gchar   *book,
 /* package paths */
 const gchar       *glade_app_get_catalogs_dir     (void) G_GNUC_CONST;
 const gchar       *glade_app_get_modules_dir      (void) G_GNUC_CONST;
-const gchar       *glade_app_get_plugins_dir      (void) G_GNUC_CONST;
 const gchar       *glade_app_get_pixmaps_dir      (void) G_GNUC_CONST;
 const gchar       *glade_app_get_locale_dir       (void) G_GNUC_CONST;
 const gchar       *glade_app_get_bin_dir          (void) G_GNUC_CONST;

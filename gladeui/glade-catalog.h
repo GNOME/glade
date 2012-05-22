@@ -84,9 +84,6 @@ gboolean      glade_widget_group_get_expanded       (GladeWidgetGroup *group);
 
 const GList  *glade_widget_group_get_adaptors       (GladeWidgetGroup *group);
 
-gboolean      glade_catalog_supports_libglade       (GladeCatalog     *catalog);
-gboolean      glade_catalog_supports_gtkbuilder     (GladeCatalog     *catalog);
-
 G_END_DECLS
 
 #endif /* __GLADE_CATALOG_H__ */
