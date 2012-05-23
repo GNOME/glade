@@ -159,10 +159,10 @@ libgladeui_2_la_LDFLAGS += -no-undefined
 endif
 
 if NATIVE_WIN32
+# gmodule-export-2.0 on windows does not include -export-dynamic flag
 libgladeui_2_la_LDFLAGS += \
 	-Wl,gladeui-win32-res.o \
-	-export-dynamic \
-	-export-symbols-regex "^(glade).*"
+	-export-dynamic
 libgladeui_2_la_DEPENDENCIES = gladeui-win32-res.o
 endif
 

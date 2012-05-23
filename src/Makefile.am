@@ -46,6 +46,9 @@ glade-resources.c glade-resources.h: glade-resources.gresource.xml \
 
 if NATIVE_WIN32
 glade_LDADD += glade-win32-res.o
+
+glade_LDFLAGS += -export-dynamic
+
 if !GLADE_UNSTABLE
 glade_LDFLAGS += -mwindows
 endif
