@@ -291,6 +291,7 @@ po/Makefile.in
 doc/Makefile
 doc/version.xml
 help/Makefile
+build/mingw-w64/glade.nsi
 ])
 
 AC_OUTPUT
