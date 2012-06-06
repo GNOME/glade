@@ -666,12 +666,22 @@ glade_project_push_undo_impl (GladeProject *project, GladeCommand *cmd)
                  glade_project_signals[CHANGED], 0, cmd, TRUE);
 }
 
+static inline gchar *
+glade_preview_get_pid_as_str (GladePreview *preview)
+{
+#ifdef G_OS_WIN32
+  return g_strdup_printf ("%p", glade_preview_get_pid (preview));
+#else
+  return g_strdup_printf ("%d", glade_preview_get_pid (preview));
+#endif
+}
+
 static void
 glade_project_preview_exits (GladePreview *preview, GladeProject *project)
 {
   gchar       *pidstr;
 
-  pidstr  = g_strdup_printf ("%d", glade_preview_get_pid (preview));
+  pidstr  = glade_preview_get_pid_as_str (preview);
   preview = g_hash_table_lookup (project->priv->previews, pidstr);
 
   if (preview)
@@ -2023,7 +2033,7 @@ glade_project_preview (GladeProject *project, GladeWidget *gwidget)
       /* Leave preview data on the widget */
       g_object_set_data_full (G_OBJECT (gwidget),
                               "preview", 
-                              g_strdup_printf ("%d", glade_preview_get_pid (preview)),
+                              glade_preview_get_pid_as_str (preview),
                               g_free);
 
       g_signal_connect (preview, "exits",
@@ -2032,7 +2042,7 @@ glade_project_preview (GladeProject *project, GladeWidget *gwidget)
 
       /* Add preview to list of previews */
       g_hash_table_insert (project->priv->previews,
-                           g_strdup_printf("%d", glade_preview_get_pid (preview)),
+                           glade_preview_get_pid_as_str (preview),
                            preview);
     }
   else
