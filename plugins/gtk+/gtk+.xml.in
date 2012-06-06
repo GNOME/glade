@@ -109,6 +109,8 @@
 	    <value id="GDK_PROXIMITY_OUT_MASK" _name="Proximity  Out"/>
 	    <value id="GDK_SUBSTRUCTURE_MASK" _name="Substructure"/>
 	    <value id="GDK_SCROLL_MASK" _name="Scroll"/>
+	    <value id="GDK_TOUCH_MASK" _name="Touch"/>
+	    <value id="GDK_SMOOTH_SCROLL_MASK" _name="Smooth scroll"/>
 	    <value id="GDK_ALL_EVENTS_MASK" _name="All Events"/>
 	  </displayable-values>
 	</property>
@@ -2247,8 +2249,18 @@ embedded in another object</_tooltip>
 			toplevel="True"/>
     <glade-widget-class name="GtkTreeModelSort" generic-name="treemodelsort" _title="Tree Model Sort" 
 			toplevel="True"/>
-    <glade-widget-class name="GtkTreeSelection" generic-name="treeselection" _title="Tree Selection"/>
-
+    <glade-widget-class name="GtkTreeSelection" generic-name="treeselection" _title="Tree Selection">
+      <properties>
+        <property id="mode">
+  	  <displayable-values>
+	    <value id="GTK_SELECTION_NONE" _name="None"/>
+	    <value id="GTK_SELECTION_SINGLE" _name="Single"/>
+	    <value id="GTK_SELECTION_BROWSE" _name="Browse"/>
+	    <value id="GTK_SELECTION_MULTIPLE" _name="Multiple"/>
+	  </displayable-values>
+	</property>
+      </properties>
+    </glade-widget-class>
 
     <glade-widget-class name="GtkTreeView" generic-name="treeview" _title="Tree View">
       <post-create-function>empty</post-create-function>
@@ -2360,14 +2372,7 @@ embedded in another object</_tooltip>
         <property id="pixbuf-column" disabled="True"/>
         <property id="reorderable" ignore="True"/>
         <property id="model" create-type="GtkListStore" query="True" />
-        <property id="selection-mode" since="2.6">
-  	  <displayable-values>
-	    <value id="GTK_SELECTION_NONE" _name="None"/>
-	    <value id="GTK_SELECTION_SINGLE" _name="Single"/>
-	    <value id="GTK_SELECTION_BROWSE" _name="Browse"/>
-	    <value id="GTK_SELECTION_MULTIPLE" _name="Multiple"/>
-	  </displayable-values>
-	</property>
+        <property id="selection-mode" since="2.6"/>
       </properties>
 
       <packing-properties>
@@ -3113,6 +3118,20 @@ embedded in another object</_tooltip>
 	    <value id="GDK_META_MASK" _name="Meta Modifier"/>
 	    <value id="GDK_RELEASE_MASK" _name="Release Modifier"/>
 	    <value id="GDK_MODIFIER_MASK" _name="All Modifiers"/>
+	    <value id="GDK_MODIFIER_RESERVED_13_MASK" disabled="True"/>
+	    <value id="GDK_MODIFIER_RESERVED_14_MASK" disabled="True"/>
+	    <value id="GDK_MODIFIER_RESERVED_15_MASK" disabled="True"/>
+	    <value id="GDK_MODIFIER_RESERVED_16_MASK" disabled="True"/>
+	    <value id="GDK_MODIFIER_RESERVED_17_MASK" disabled="True"/>
+	    <value id="GDK_MODIFIER_RESERVED_18_MASK" disabled="True"/>
+	    <value id="GDK_MODIFIER_RESERVED_19_MASK" disabled="True"/>
+	    <value id="GDK_MODIFIER_RESERVED_20_MASK" disabled="True"/>
+	    <value id="GDK_MODIFIER_RESERVED_21_MASK" disabled="True"/>
+	    <value id="GDK_MODIFIER_RESERVED_22_MASK" disabled="True"/>
+	    <value id="GDK_MODIFIER_RESERVED_23_MASK" disabled="True"/>
+	    <value id="GDK_MODIFIER_RESERVED_24_MASK" disabled="True"/>
+	    <value id="GDK_MODIFIER_RESERVED_25_MASK" disabled="True"/>
+	    <value id="GDK_MODIFIER_RESERVED_29_MASK" disabled="True"/>
 	  </displayable-values>
 	</property>
         <property id="attr-accel-mods" _name="Accelerator Modifiers column" save="False" default="-1" custom-layout="True">

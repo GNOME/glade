@@ -1530,20 +1530,26 @@ gpc_read_displayable_values_from_node (GladeXmlNode * node,
   if ((child = glade_xml_search_child (node, GLADE_TAG_VALUE)) == NULL)
     return;
 
-  child = glade_xml_node_get_children (node);
-  while (child != NULL)
+  for (child = glade_xml_node_get_children (node); child; child = glade_xml_node_next (child))
     {
       gint i;
       gchar *id, *name;
       GEnumValue *enum_val;
       GFlagsValue *flags_val;
+      gboolean disabled;
 
+      id = glade_xml_get_property_string_required (child, GLADE_TAG_ID, NULL);
+      if (!id) continue;
+      
+      disabled = glade_xml_get_property_boolean (child, GLADE_TAG_DISABLED, FALSE);
 
-      id   = glade_xml_get_property_string_required (child, GLADE_TAG_ID, NULL);
-      name = glade_xml_get_property_string_required (child, GLADE_TAG_NAME, NULL);
-
-      if (!id || !name)
-        continue;
+      if (!disabled)
+        {
+          name = glade_xml_get_property_string_required (child, GLADE_TAG_NAME, NULL);
+          if (!name) continue;
+        }
+      else
+        name = NULL;
 
       for (i = 0; i < n_values; i++)
         {
@@ -1563,6 +1569,10 @@ gpc_read_displayable_values_from_node (GladeXmlNode * node,
                   glade_register_displayable_value (klass->pspec->value_type,
                                                     enum_val->value_nick,
                                                     domain, name);
+                  if (disabled)
+                    glade_displayable_value_set_disabled (klass->pspec->value_type,
+                                                          enum_val->value_nick,
+                                                          TRUE);
                 }
               else
                 {
@@ -1570,7 +1580,10 @@ gpc_read_displayable_values_from_node (GladeXmlNode * node,
                   glade_register_displayable_value (klass->pspec->value_type,
                                                     flags_val->value_nick,
                                                     domain, name);
-
+                  if (disabled)
+                    glade_displayable_value_set_disabled (klass->pspec->value_type,
+                                                          flags_val->value_nick,
+                                                          TRUE);
                 }
               break;
             }
@@ -1578,8 +1591,6 @@ gpc_read_displayable_values_from_node (GladeXmlNode * node,
 
       g_free (id);
       g_free (name);
-
-      child = glade_xml_node_next (child);
     }
 
   if (n_values != registered_values)

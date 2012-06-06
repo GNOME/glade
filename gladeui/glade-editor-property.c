@@ -72,6 +72,7 @@ static guint glade_eprop_signals[LAST_SIGNAL] = { 0, };
 #define GLADE_PROPERTY_TABLE_ROW_SPACING 2
 #define FLAGS_COLUMN_SETTING             0
 #define FLAGS_COLUMN_SYMBOL              1
+#define FLAGS_COLUMN_VALUE               2
 
 struct _GladeEditorPropertyPrivate
 {
@@ -864,9 +865,14 @@ glade_eprop_enum_create_input (GladeEditorProperty *eprop)
 
   for (i = 0; i < eclass->n_values; i++)
     {
-      const gchar *value_name =
-          glade_get_displayable_value (pspec->value_type,
-                                       eclass->values[i].value_nick);
+      const gchar *value_name;
+
+      if (glade_displayable_value_is_disabled (pspec->value_type,
+                                               eclass->values[i].value_nick))
+        continue;
+
+      value_name = glade_get_displayable_value (pspec->value_type,
+                                                eclass->values[i].value_nick);
       if (value_name == NULL)
         value_name = eclass->values[i].value_nick;
 
@@ -950,6 +956,10 @@ glade_eprop_flags_load (GladeEditorProperty *eprop, GladeProperty *property)
           gboolean setting;
           const gchar *value_name;
 
+          if (glade_displayable_value_is_disabled (pspec->value_type,
+                                                   klass->values[flag_num].value_nick))
+            continue;
+          
           mask = klass->values[flag_num].value;
           setting = ((value & mask) == mask) ? TRUE : FALSE;
 
@@ -970,8 +980,9 @@ glade_eprop_flags_load (GladeEditorProperty *eprop, GladeProperty *property)
           /* Add a row to represent the flag. */
           gtk_list_store_append (GTK_LIST_STORE (eprop_flags->model), &iter);
           gtk_list_store_set (GTK_LIST_STORE (eprop_flags->model), &iter,
-                              FLAGS_COLUMN_SETTING,
-                              setting, FLAGS_COLUMN_SYMBOL, value_name, -1);
+                              FLAGS_COLUMN_SETTING, setting,
+                              FLAGS_COLUMN_SYMBOL, value_name,
+                              FLAGS_COLUMN_VALUE, mask, -1);
 
         }
       g_type_class_unref (klass);
@@ -991,10 +1002,8 @@ flag_toggled_direct (GtkCellRendererToggle *cell,
   GtkTreeIter iter;
   guint new_value = 0;
   gboolean selected;
-  guint value = 0;
-  gint flag_num = 0;
-  GFlagsClass *klass;
   GValue *gvalue;
+  gboolean valid;
 
   GladeEPropFlags *eprop_flags = GLADE_EPROP_FLAGS (eprop);
 
@@ -1002,9 +1011,6 @@ flag_toggled_direct (GtkCellRendererToggle *cell,
     return;
 
   gvalue = glade_property_inline_value (eprop->priv->property);
-
-  klass = g_type_class_ref (G_VALUE_TYPE (gvalue));
-  value = g_value_get_flags (gvalue);
 
   gtk_tree_model_get_iter_from_string (eprop_flags->model, &iter, path_string);
 
@@ -1016,28 +1022,28 @@ flag_toggled_direct (GtkCellRendererToggle *cell,
   gtk_list_store_set (GTK_LIST_STORE (eprop_flags->model), &iter,
                       FLAGS_COLUMN_SETTING, selected, -1);
 
-
-  gtk_tree_model_get_iter_first (GTK_TREE_MODEL (eprop_flags->model), &iter);
+  valid = gtk_tree_model_get_iter_first (GTK_TREE_MODEL (eprop_flags->model), &iter);
 
   /* Step through each of the flags in the class, checking if
      the corresponding toggle in the dialog is selected, If it
      is, OR the flags' mask with the new value. */
-  for (flag_num = 0; flag_num < klass->n_values; flag_num++)
+  while (valid)
     {
       gboolean setting;
+      guint value;
 
       gtk_tree_model_get (GTK_TREE_MODEL (eprop_flags->model), &iter,
-                          FLAGS_COLUMN_SETTING, &setting, -1);
+                          FLAGS_COLUMN_SETTING, &setting,
+                          FLAGS_COLUMN_VALUE, &value, -1);
 
-      if (setting)
-        new_value |= klass->values[flag_num].value;
+      if (setting) new_value |= value;
 
-      gtk_tree_model_iter_next (GTK_TREE_MODEL (eprop_flags->model), &iter);
+      valid = gtk_tree_model_iter_next (GTK_TREE_MODEL (eprop_flags->model), &iter);
     }
 
   /* If the new_value is different from the old value, we need
      to update the property. */
-  if (new_value != value)
+  if (new_value != g_value_get_flags (gvalue))
     {
       GValue val = { 0, };
 
@@ -1047,9 +1053,6 @@ flag_toggled_direct (GtkCellRendererToggle *cell,
       glade_editor_property_commit_no_callback (eprop, &val);
       g_value_unset (&val);
     }
-
-
-
 }
 
 static GtkWidget *
@@ -1061,8 +1064,9 @@ glade_eprop_flags_create_treeview (GladeEditorProperty *eprop)
   GtkCellRenderer *renderer;
   GladeEPropFlags *eprop_flags = GLADE_EPROP_FLAGS (eprop);
   if (!eprop_flags->model)
-    eprop_flags->model = GTK_TREE_MODEL (gtk_list_store_new (2, G_TYPE_BOOLEAN,
-                                                             G_TYPE_STRING));
+    eprop_flags->model = GTK_TREE_MODEL (gtk_list_store_new (3, G_TYPE_BOOLEAN,
+                                                             G_TYPE_STRING,
+                                                             G_TYPE_UINT));
 
 
   scrolled_window = gtk_scrolled_window_new (NULL, NULL);

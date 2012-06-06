@@ -37,46 +37,47 @@ typedef struct
 {
   gchar *value;
   gchar *string;
+  gboolean disabled:1;
 } ValueTab;
 
 static GHashTable *values_hash = NULL;
 
 
 static gint
-find_by_value (ValueTab * a, const gchar * b)
+find_by_value (ValueTab *a, const gchar *b)
 {
   return strcmp (a->value, b);
 }
 
 
 static gint
-find_by_displayable (ValueTab * a, const gchar * b)
+find_by_displayable (ValueTab *a, const gchar *b)
 {
   return strcmp (a->string, b);
 }
 
 void
 glade_register_displayable_value (GType type,
-                                  const gchar * value,
-                                  const gchar * domain, const gchar * string)
+                                  const gchar *value,
+                                  const gchar *domain,
+                                  const gchar *string)
 {
   g_return_if_fail (value && value[0]);
   g_return_if_fail (domain && domain[0]);
-  g_return_if_fail (string && string[0]);
 
   glade_register_translated_value (type, value, dgettext (domain, string));
 }
 
 void
 glade_register_translated_value (GType type,
-                                 const gchar * value, const gchar * string)
+                                 const gchar *value,
+                                 const gchar *string)
 {
   ValueTab *tab;
   gpointer klass;
   GList *values;
 
   g_return_if_fail (value && value[0]);
-  g_return_if_fail (string && string[0]);
   klass = g_type_class_ref (type);
   g_return_if_fail (klass != NULL);
 
@@ -86,6 +87,7 @@ glade_register_translated_value (GType type,
   tab = g_new0 (ValueTab, 1);
   tab->value = g_strdup (value);
   tab->string = g_strdup (string);
+  tab->disabled = FALSE;
 
   if ((values = g_hash_table_lookup (values_hash, klass)) != NULL)
     {
@@ -109,6 +111,28 @@ glade_register_translated_value (GType type,
   g_type_class_unref (klass);
 }
 
+static ValueTab *
+get_value_tab (GType type, const gchar *value, GCompareFunc cmpfunc)
+{
+  GList *values, *tab_iter;
+  gpointer klass;
+  ValueTab *tab;
+
+  if (!values_hash) return NULL;
+
+  klass = g_type_class_ref (type);
+
+  if ((values = g_hash_table_lookup (values_hash, klass)) != NULL &&
+      (tab_iter = g_list_find_custom (values, value, cmpfunc)) != NULL)
+    tab = tab_iter->data;
+  else
+    tab = NULL;
+
+  g_type_class_unref (klass);
+
+  return tab;
+}
+
 gboolean
 glade_type_has_displayable_values (GType type)
 {
@@ -123,62 +147,54 @@ glade_type_has_displayable_values (GType type)
 }
 
 G_CONST_RETURN gchar *
-glade_get_displayable_value (GType type, const gchar * value)
+glade_get_displayable_value (GType type, const gchar *value)
 {
   ValueTab *tab;
-  gpointer klass;
-  GList *values, *tab_iter;
-  gchar *displayable = NULL;
 
   g_return_val_if_fail (value && value[0], NULL);
 
-  if (!values_hash)
-    return NULL;
+  if ((tab = get_value_tab (type, value, (GCompareFunc) find_by_value)))
+    return tab->string;
 
-  klass = g_type_class_ref (type);
-
-  g_return_val_if_fail (klass != NULL, NULL);
-
-  if ((values = g_hash_table_lookup (values_hash, klass)) != NULL &&
-      (tab_iter =
-       g_list_find_custom (values, value,
-                           (GCompareFunc) find_by_value)) != NULL)
-    {
-      tab = tab_iter->data;
-      displayable = tab->string;
-    }
-  g_type_class_unref (klass);
-
-  return displayable;
+  return NULL;
 }
 
 
 G_CONST_RETURN gchar *
-glade_get_value_from_displayable (GType type, const gchar * displayable)
+glade_get_value_from_displayable (GType type, const gchar *displayable)
 {
   ValueTab *tab;
-  gpointer klass;
-  GList *values, *tab_iter;
-  gchar *value = NULL;
 
   g_return_val_if_fail (displayable && displayable[0], NULL);
 
-  if (!values_hash)
-    return NULL;
+  if ((tab = get_value_tab (type, displayable, (GCompareFunc) find_by_displayable)))
+    return tab->value;
 
-  klass = g_type_class_ref (type);
+  return NULL;
+}
 
-  g_return_val_if_fail (klass != NULL, NULL);
+gboolean
+glade_displayable_value_is_disabled (GType type, const gchar *value)
+{
+  ValueTab *tab;
 
-  if ((values = g_hash_table_lookup (values_hash, klass)) != NULL &&
-      (tab_iter =
-       g_list_find_custom (values, displayable,
-                           (GCompareFunc) find_by_displayable)) != NULL)
-    {
-      tab = tab_iter->data;
-      value = tab->value;
-    }
-  g_type_class_unref (klass);
+  g_return_val_if_fail (value && value[0], FALSE);
 
-  return value;
+  if ((tab = get_value_tab (type, value, (GCompareFunc) find_by_value)))
+    return tab->disabled;
+
+  return FALSE;
+}
+
+void
+glade_displayable_value_set_disabled (GType type,
+                                      const gchar *value,
+                                      gboolean disabled)
+{
+  ValueTab *tab;
+
+  g_return_if_fail (value && value[0]);
+
+  if ((tab = get_value_tab (type, value, (GCompareFunc) find_by_value)))
+    tab->disabled = disabled;
 }
