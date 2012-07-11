@@ -2307,12 +2307,13 @@ glade_gtk_notebook_extract_children (GtkWidget * notebook)
   GList *list, *children =
       glade_util_container_get_all_children (GTK_CONTAINER (notebook));
   GladeWidget *gchild;
-  GtkWidget *page;
   gint position = 0;
+  GtkNotebook *nb;
 
+  nb = GTK_NOTEBOOK (notebook);
   nchildren = g_new0 (NotebookChildren, 1);
-  nchildren->pages = gtk_notebook_get_n_pages (GTK_NOTEBOOK (notebook));
-  nchildren->page = gtk_notebook_get_current_page (GTK_NOTEBOOK (notebook));
+  nchildren->pages = gtk_notebook_get_n_pages (nb);
+  nchildren->page = gtk_notebook_get_current_page (nb);
 
   /* Ref all the project widgets and build returned list first */
   for (list = children; list; list = list->next)
@@ -2363,13 +2364,18 @@ glade_gtk_notebook_extract_children (GtkWidget * notebook)
 
   /* Remove all pages, resulting in the unparenting of all widgets including tab-labels.
    */
-  while (gtk_notebook_get_n_pages (GTK_NOTEBOOK (notebook)) > 0)
+  while (gtk_notebook_get_n_pages (nb) > 0)
     {
-      page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook), 0);
+      GtkWidget *page = gtk_notebook_get_nth_page (nb, 0);
+      GtkWidget *tab = gtk_notebook_get_tab_label (nb, page);
 
       /* Explicitly remove the tab label first */
-      gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook), page, NULL);
-      gtk_notebook_remove_page (GTK_NOTEBOOK (notebook), 0);
+      gtk_notebook_set_tab_label (nb, page, NULL);
+
+      /* FIXE: we need to unparent here to avoid anoying warning when reparenting */
+      if (tab) gtk_widget_unparent (tab);
+      
+      gtk_notebook_remove_page (nb, 0);
     }
 
   if (children)
@@ -2392,8 +2398,7 @@ glade_gtk_notebook_insert_children (GtkWidget * notebook,
       GtkWidget *page = notebook_get_page (nchildren, i);
       GtkWidget *tab = notebook_get_tab (nchildren, i);
 
-      gtk_notebook_insert_page (GTK_NOTEBOOK (notebook), page, NULL, i);
-      gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook), page, tab);
+      gtk_notebook_insert_page (GTK_NOTEBOOK (notebook), page, tab, i);
 
       g_object_unref (G_OBJECT (page));
       g_object_unref (G_OBJECT (tab));
