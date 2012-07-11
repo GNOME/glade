@@ -2756,9 +2756,6 @@ glade_project_check_reordered (GladeProject *project,
                                GList        *old_order)
 {
   GList       *new_order, *l, *ll;
-  gint        *order, n_children, i;
-  GtkTreeIter  iter;
-  GtkTreePath *path;
 
   g_return_if_fail (GLADE_IS_PROJECT (project));
   g_return_if_fail (GLADE_IS_WIDGET (parent));
@@ -2770,7 +2767,7 @@ glade_project_check_reordered (GladeProject *project,
   /* Check if the list changed */
   for (l = old_order, ll = new_order; 
        l && ll; 
-       l = l->next, ll = ll->next)
+       l = g_list_next (l), ll = g_list_next (ll))
     {
       if (l->data != ll->data)
         break;
@@ -2778,23 +2775,20 @@ glade_project_check_reordered (GladeProject *project,
 
   if (l || ll)
     {
-      n_children = glade_project_count_children (project, parent);
-      order = g_new (gint, n_children);
+      gint *order = g_new0 (gint, g_list_length (new_order));
+      GtkTreePath *path;
+      GtkTreeIter iter;
+      gint i;
 
-      for (i = 0, l = new_order; l; l = l->next)
+      for (i = 0, l = new_order; l; l = g_list_next (l))
         {
           GObject *obj = l->data;
+          GList *node = g_list_find (old_order, obj);
 
-          if (glade_project_has_object (project, obj))
-            {
-              GList *node = g_list_find (old_order, obj);
+          g_assert (node);
 
-              g_assert (node);
-
-              order[i] = g_list_position (old_order, node);
-
-              i++;
-            }
+          order[i] = g_list_position (old_order, node);
+          i++;
         }
 
       /* Signal that the rows were reordered */
