@@ -50,7 +50,8 @@ AC_PATH_PROG(DLLTOOL, dlltool)
 # If any interfaces have been added, removed, or changed, increment GLADE_CURRENT, and set GLADE_REVISION to 0.
 # If any interfaces have been added since the last public release, then increment GLADE_AGE.
 # If any interfaces have been removed since the last public release, then set GLADE_AGE to 0.
-# Reference: http://www.gnu.org/software/libtool/manual.html#Versioning
+# Reference: http://www.gnu.org/software/libtool/manual/libtool.html#Versioning
+
 GLADE_REVISION=0
 GLADE_CURRENT=0
 GLADE_AGE=0
