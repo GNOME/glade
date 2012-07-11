@@ -3116,9 +3116,9 @@ glade_window_constructed (GObject *object)
 	{
 	  /* Fix up the menubar for MacOSX Quartz builds */
 	  GtkWidget *menubar = GET_OBJECT (builder, GTK_WIDGET, "menubar");
-
-	  GtkWidget *sep;
 	  GtkOSXApplication *theApp = g_object_new(GTK_TYPE_OSX_APPLICATION, NULL);
+          GtkWidget *sep, *widget;
+
 	  gtk_widget_hide (menubar);
 	  gtk_osxapplication_set_menu_bar(theApp, GTK_MENU_SHELL(menubar));
 	  widget = GET_OBJECT (builder, GTK_WIDGET, "quit_menuitem");
