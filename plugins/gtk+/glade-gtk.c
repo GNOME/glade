@@ -618,15 +618,19 @@ glade_gtk_widget_write_widget (GladeWidgetAdaptor * adaptor,
                                GladeWidget * widget,
                                GladeXmlContext * context, GladeXmlNode * node)
 {
-  GladeProperty *prop;
+  GObject *obj;
 
   if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
     return;
 
   /* Make sure use-action-appearance and related-action properties are
-   * ordered in a sane way */
-  if (GTK_IS_ACTIVATABLE (glade_widget_get_object (widget)))
+   * ordered in a sane way and are only saved if there is an action */
+  if ((obj = glade_widget_get_object (widget)) &&
+      GTK_IS_ACTIVATABLE (obj) &&
+      gtk_activatable_get_related_action (GTK_ACTIVATABLE (obj)))
     {
+      GladeProperty *prop;
+
       prop = glade_widget_get_property (widget, "use-action-appearance");
       if (prop)
 	glade_property_write (prop, context, node);
