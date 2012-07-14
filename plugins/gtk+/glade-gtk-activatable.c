@@ -27,20 +27,6 @@
 
 /* ----------------------------- GtkActivatable ------------------------------ */
 void
-glade_gtk_activatable_parse_finished (GladeProject *project, 
-                                      GladeWidget  *widget)
-{
-  GObject *related_action = NULL;
-
-  glade_widget_property_get (widget, "related-action", &related_action);
-  if (related_action == NULL)
-    {
-      glade_widget_property_set_sensitive (widget, "use-action-appearance", FALSE, ACTION_APPEARANCE_MSG);
-      glade_widget_property_set (widget, "use-action-appearance", FALSE);
-    }
-}
-
-void
 glade_gtk_activatable_evaluate_property_sensitivity (GObject *object,
                                                      const gchar *id,
                                                      const GValue *value)

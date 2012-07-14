@@ -31,10 +31,6 @@
 G_BEGIN_DECLS
 
 void
-glade_gtk_activatable_parse_finished (GladeProject *project, 
-                                      GladeWidget  *widget);
-
-void
 glade_gtk_activatable_evaluate_property_sensitivity (GObject *object,
                                                      const gchar *id,
                                                      const GValue *value);
