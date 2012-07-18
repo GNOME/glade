@@ -1442,7 +1442,8 @@ glade_project_count_xml_objects (GladeProject *project,
   for (node = glade_xml_node_get_children (root);
        node; node = glade_xml_node_next (node))
     {
-      if (glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET))
+      if (glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+          glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE))
         count = glade_project_count_xml_objects (project, node, ++count);
       else if (glade_xml_node_verify_silent (node, GLADE_XML_TAG_CHILD))
         count = glade_project_count_xml_objects (project, node, count);
@@ -1623,7 +1624,8 @@ glade_project_load_internal (GladeProject *project)
        node; node = glade_xml_node_next (node))
     {
       /* Skip "requires" tags */
-      if (!glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET))
+      if (!glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) &&
+          !glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE))
         continue;
 
       if ((widget = glade_widget_read (project, NULL, node, NULL)) != NULL)

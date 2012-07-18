@@ -36,12 +36,14 @@ typedef struct _GladeProject        GladeProject;
 /* Used for catalog tags and attributes */
 #define GLADE_XML_TAG_PROJECT                     "interface"
 #define GLADE_XML_TAG_WIDGET                      "object"
+#define GLADE_XML_TAG_TEMPLATE                    "template"
 
 #define GLADE_XML_TAG_VERSION                     "version"
 #define GLADE_XML_TAG_REQUIRES                    "requires"
 #define GLADE_XML_TAG_LIB                         "lib"
 #define GLADE_XML_TAG_PROPERTY                    "property"
 #define GLADE_XML_TAG_CLASS                       "class"
+#define GLADE_XML_TAG_PARENT                      "parent"
 #define GLADE_XML_TAG_ID                          "id"
 #define GLADE_XML_TAG_SIGNAL                      "signal"
 #define GLADE_XML_TAG_HANDLER                     "handler"
