@@ -68,6 +68,14 @@
 	<property id="margin-top" common="True" since="3.0"/>
 	<property id="margin-bottom" common="True" since="3.0"/>
 
+	<property id="glade-style-classes" _name="Style Classes" weight="4.25" common="True" save="False" since="3.0">
+	  <parameter-spec>
+	    <type>GParamBoxed</type>
+	    <value-type>GladeStringList</value-type>
+	  </parameter-spec>
+	  <_tooltip>A list of style class names to apply to this widget</_tooltip>
+	</property>
+
 	<property id="halign" common="True" since="3.0">
   	  <displayable-values>
 	    <value id="GTK_ALIGN_FILL" _name="Fill"/>
