@@ -374,6 +374,38 @@ glade_gtk_widget_read_atk_props (GladeWidget * widget, GladeXmlNode * node)
     }
 }
 
+#define GLADE_TAG_STYLE  "style"
+#define GLADE_TAG_CLASS  "class"
+
+static void
+glade_gtk_widget_read_style_classes (GladeWidget * widget, GladeXmlNode * node)
+{
+  GladeXmlNode *style_node;
+  GladeXmlNode *class_node;
+  GList        *string_list = NULL;
+
+  if ((style_node = glade_xml_search_child (node, GLADE_TAG_STYLE)) != NULL)
+    {
+      for (class_node = glade_xml_node_get_children (style_node);
+	   class_node; class_node = glade_xml_node_next (class_node))
+	{
+	  gchar *name;
+
+	  if (!glade_xml_node_verify (class_node, GLADE_TAG_CLASS))
+	    continue;
+
+	  name = glade_xml_get_property_string (class_node, GLADE_TAG_NAME);
+
+	  string_list = glade_string_list_append (string_list, name, NULL, NULL, FALSE);
+
+	  g_free (name);
+	}
+
+      glade_widget_property_set (widget, "glade-style-classes", string_list);
+      glade_string_list_free (string_list);
+    }
+}
+
 void
 glade_gtk_widget_read_widget (GladeWidgetAdaptor * adaptor,
                               GladeWidget * widget, GladeXmlNode * node)
@@ -387,6 +419,8 @@ glade_gtk_widget_read_widget (GladeWidgetAdaptor * adaptor,
   /* Read in atk props */
   glade_gtk_widget_read_atk_props (widget, node);
 
+  /* Read in the style classes */
+  glade_gtk_widget_read_style_classes (widget, node);
 }
 
 static void
@@ -609,6 +643,38 @@ glade_gtk_write_accels (GladeWidget * widget,
     }
 }
 
+static void
+glade_gtk_widget_write_style_classes (GladeWidget * widget,
+				      GladeXmlContext * context,
+				      GladeXmlNode * node)
+{
+  GladeXmlNode *class_node, *style_node;
+  GList        *string_list = NULL, *l;
+  GladeString  *string;
+
+  if (!glade_widget_property_get (widget, "glade-style-classes", &string_list) || !string_list)
+    return;
+
+  style_node = glade_xml_node_new (context, GLADE_TAG_STYLE);
+
+  for (l = string_list; l; l = l->next)
+    {
+      string = l->data;
+
+      class_node = glade_xml_node_new (context, GLADE_TAG_CLASS);
+      glade_xml_node_append_child (style_node, class_node);
+
+      glade_xml_node_set_property_string (class_node,
+					  GLADE_TAG_NAME,
+					  string->string);
+    }
+
+  if (!glade_xml_node_get_children (style_node))
+    glade_xml_node_delete (style_node);
+  else
+    glade_xml_node_append_child (node, style_node);
+}
+
 void
 glade_gtk_widget_write_widget (GladeWidgetAdaptor * adaptor,
                                GladeWidget * widget,
@@ -638,6 +704,7 @@ glade_gtk_widget_write_widget (GladeWidgetAdaptor * adaptor,
 
   glade_gtk_write_accels (widget, context, node, TRUE);
   glade_gtk_widget_write_atk_props (widget, context, node);
+  glade_gtk_widget_write_style_classes (widget, context, node);
 }
 
 
@@ -655,9 +722,12 @@ glade_gtk_widget_create_eprop (GladeWidgetAdaptor * adaptor,
     eprop = g_object_new (GLADE_TYPE_EPROP_ACCEL,
                           "property-class", klass,
                           "use-command", use_command, NULL);
+  else if (pspec->value_type == GLADE_TYPE_STRING_LIST)
+    eprop = glade_eprop_string_list_new (klass, use_command, FALSE);
   else
     eprop = GWA_GET_CLASS
         (G_TYPE_OBJECT)->create_eprop (adaptor, klass, use_command);
+
   return eprop;
 }
 
@@ -672,6 +742,12 @@ glade_gtk_widget_string_from_value (GladeWidgetAdaptor * adaptor,
 
   if (pspec->value_type == GLADE_TYPE_ACCEL_GLIST)
     return glade_accels_make_string (g_value_get_boxed (value));
+  else if (pspec->value_type == GLADE_TYPE_STRING_LIST)
+    {
+      GList *list = g_value_get_boxed (value);
+
+      return glade_string_list_to_string (list);
+    }
   else
     return GWA_GET_CLASS
         (G_TYPE_OBJECT)->string_from_value (adaptor, klass, value);
