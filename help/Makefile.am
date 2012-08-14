@@ -1,9 +1,12 @@
+@YELP_HELP_RULES@
 
-include $(top_srcdir)/gnome-doc-utils.make
-dist-hook: doc-dist-hook
+HELP_ID = glade
 
-DOC_MODULE = glade
-DOC_INCLUDES = legal.xml
-DOC_FIGURES = figures/main-window.png
+HELP_FILES = \
+	index.docbook \
+	legal.xml
 
-DOC_LINGUAS = bg ca cs de el en_GB es eu fr gl hi it ja oc pt_BR ru sl sv uk zh_CN
+HELP_MEDIA = \
+	figures/main-window.png
+
+HELP_LINGUAS = bg ca cs de el en_GB es eu fr gl hi it ja oc pt_BR ru sl sv uk zh_CN
