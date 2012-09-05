@@ -37,7 +37,7 @@ G_BEGIN_DECLS
 
 typedef struct _GladeCloseButton	GladeCloseButton;
 typedef struct _GladeCloseButtonClass	GladeCloseButtonClass;
-typedef struct _GladeCloseButtonPrivate	GladeCloseButtonPrivate;
+typedef struct _GladeCloseButtonClassPrivate	GladeCloseButtonClassPrivate;
 
 struct _GladeCloseButton {
 	GtkButton parent;
@@ -45,6 +45,8 @@ struct _GladeCloseButton {
 
 struct _GladeCloseButtonClass {
 	GtkButtonClass parent_class;
+
+	GladeCloseButtonClassPrivate *priv;
 };
 
 GType		  glade_close_button_get_type (void) G_GNUC_CONST;
