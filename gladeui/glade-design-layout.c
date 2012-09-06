@@ -85,7 +85,6 @@ struct _GladeDesignLayoutPrivate
 
   /* Colors */
   GdkRGBA fg_color;
-  GdkRGBA bg_color;
   GdkRGBA frame_color[2];
   GdkRGBA frame_color_active[2];
 
@@ -1501,7 +1500,6 @@ glade_design_layout_draw (GtkWidget *widget, cairo_t *cr)
                              0, 0,
                              gdk_window_get_width (priv->offscreen_window),
                              gdk_window_get_height (priv->offscreen_window));
-
       if (child)
           gtk_container_propagate_draw (GTK_CONTAINER (widget), child, cr);
     }
@@ -1584,7 +1582,6 @@ static void
 glade_design_layout_realize (GtkWidget * widget)
 {
   GladeDesignLayoutPrivate *priv;
-  GtkStyleContext *context;
   GdkWindowAttr attributes;
   GtkWidget *child;
   gint attributes_mask, border_width;
@@ -1653,9 +1650,6 @@ glade_design_layout_realize (GtkWidget * widget)
   g_signal_connect (priv->offscreen_window, "from-embedder",
                     G_CALLBACK (offscreen_window_from_parent), widget);
 
-  context = gtk_widget_get_style_context (widget);
-  gtk_style_context_set_background (context, priv->window);
-  gdk_window_set_background_rgba (priv->offscreen_window, &priv->bg_color);
   gdk_window_show (priv->offscreen_window);
 
   gdk_window_set_cursor (priv->window, NULL);
@@ -1725,14 +1719,10 @@ glade_design_layout_style_updated (GtkWidget *widget)
   gtk_style_context_lookup_color (context, "selected_fg_color", &priv->frame_color_active[1]);
 
   priv->frame_color[1] = priv->fg_color;
-  priv->bg_color = priv->frame_color[0];
-
   /* Make border darker */
   priv->frame_color[0].red -= .1;
   priv->frame_color[0].green -= .1;
   priv->frame_color[0].blue -= .1;
-  
-  if (priv->offscreen_window)  gdk_window_set_background_rgba (priv->offscreen_window, &priv->bg_color);
 }
 
 static void
