@@ -714,8 +714,8 @@ glade_signal_editor_dispose (GObject *object)
 {
   GladeSignalEditorPrivate *priv = GLADE_SIGNAL_EDITOR_GET_PRIVATE (object);
 
-  g_object_unref (priv->detail_store);
-  g_object_unref (priv->handler_store);
+  g_clear_object (&priv->detail_store);
+  g_clear_object (&priv->handler_store);
   
   G_OBJECT_CLASS (glade_signal_editor_parent_class)->dispose (object);
 }
