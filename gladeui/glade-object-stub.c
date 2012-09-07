@@ -122,11 +122,17 @@ glade_object_stub_refresh_text (GladeObjectStub *stub)
 {
   GladeObjectStubPrivate *priv = stub->priv;
   gchar *markup;
+  GType type;
 
   if (priv->type == NULL) return;
 
-  markup = g_markup_printf_escaped ("<b>FIXME:</b> Unable to create object with type %s", priv->type);
+  type = g_type_from_name (priv->type);
 
+  if ((type != G_TYPE_INVALID && (!G_TYPE_IS_INSTANTIATABLE (type) || G_TYPE_IS_ABSTRACT (type))))
+    markup = g_markup_printf_escaped ("<b>FIXME:</b> Unable to create uninstantiable object with type %s", priv->type);
+  else
+    markup = g_markup_printf_escaped ("<b>FIXME:</b> Unable to create object with type %s", priv->type);
+  
   gtk_label_set_markup (priv->label, markup);
   gtk_info_bar_set_message_type (GTK_INFO_BAR (stub), GTK_MESSAGE_WARNING);
   g_free (markup);

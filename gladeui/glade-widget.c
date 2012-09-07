@@ -3748,13 +3748,16 @@ glade_widget_read (GladeProject * project,
            glade_xml_get_property_string_required
            (node, GLADE_XML_TAG_ID, NULL)) != NULL)
         {
+          GType type;
           /* 
            * Create GladeWidget instance based on type. 
            */
-          if ((adaptor = glade_widget_adaptor_get_by_name (klass)) != NULL)
+          if ((adaptor = glade_widget_adaptor_get_by_name (klass)) &&
+              (type = glade_widget_adaptor_get_object_type (adaptor)) &&
+              G_TYPE_IS_INSTANTIATABLE (type) &&
+              G_TYPE_IS_ABSTRACT (type) == FALSE)
             {
-
-              // Internal children !!!
+              /* Internal children !!! */
               if (internal)
                 {
                   GObject *child_object =
