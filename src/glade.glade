@@ -2,7 +2,13 @@
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
   <object class="GtkAccelGroup" id="accelgroup"/>
+  <object class="GtkActionGroup" id="project_list_actiongroup">
+    <property name="accel_group">accelgroup</property>
+    <signal name="connect-proxy" handler="on_actiongroup_connect_proxy" swapped="no"/>
+    <signal name="disconnect-proxy" handler="on_actiongroup_disconnect_proxy" swapped="no"/>
+  </object>
   <object class="GtkActionGroup" id="pointer_mode_actiongroup">
+    <property name="accel_group">accelgroup</property>
     <child>
       <object class="GtkRadioAction" id="selector_radioaction">
         <property name="label" translatable="yes">Select</property>
@@ -50,6 +56,7 @@
   </object>
   <object class="GtkActionGroup" id="project_actiongroup">
     <property name="name">project_actiongroup</property>
+    <property name="accel_group">accelgroup</property>
     <signal name="connect-proxy" handler="on_actiongroup_connect_proxy" swapped="no"/>
     <signal name="disconnect-proxy" handler="on_actiongroup_disconnect_proxy" swapped="no"/>
     <child>
@@ -164,12 +171,9 @@
       <accelerator key="Page_Down" modifiers="GDK_CONTROL_MASK"/>
     </child>
   </object>
-  <object class="GtkActionGroup" id="project_list_actiongroup">
-    <signal name="connect-proxy" handler="on_actiongroup_connect_proxy" swapped="no"/>
-    <signal name="disconnect-proxy" handler="on_actiongroup_disconnect_proxy" swapped="no"/>
-  </object>
   <object class="GtkActionGroup" id="static_actiongroup">
     <property name="name">static_actiongroup</property>
+    <property name="accel_group">accelgroup</property>
     <signal name="connect-proxy" handler="on_actiongroup_connect_proxy" swapped="no"/>
     <signal name="disconnect-proxy" handler="on_actiongroup_disconnect_proxy" swapped="no"/>
     <child>
@@ -235,6 +239,7 @@
   </object>
   <object class="GtkActionGroup" id="view_actiongroup">
     <property name="name">view_actiongroup</property>
+    <property name="accel_group">accelgroup</property>
     <signal name="connect-proxy" handler="on_actiongroup_connect_proxy" swapped="no"/>
     <signal name="disconnect-proxy" handler="on_actiongroup_disconnect_proxy" swapped="no"/>
     <child>
@@ -393,7 +398,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         <property name="can_focus">False</property>
         <child>
           <object class="GtkMenuItem" id="file_menuitem">
-            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">_File</property>
@@ -444,7 +448,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                 </child>
                 <child>
                   <object class="GtkSeparatorMenuItem" id="separatormenuitem4">
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                   </object>
@@ -469,7 +472,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                 </child>
                 <child>
                   <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                   </object>
@@ -485,7 +487,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                 </child>
                 <child>
                   <object class="GtkSeparatorMenuItem" id="separatormenuitem3">
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                   </object>
@@ -514,7 +515,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         </child>
         <child>
           <object class="GtkMenuItem" id="edit_menuitem">
-            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">_Edit</property>
@@ -544,7 +544,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                 </child>
                 <child>
                   <object class="GtkSeparatorMenuItem" id="separatormenuitem2">
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                   </object>
@@ -587,7 +586,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                 </child>
                 <child>
                   <object class="GtkSeparatorMenuItem" id="separatormenuitem8">
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                   </object>
@@ -607,7 +605,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         </child>
         <child>
           <object class="GtkMenuItem" id="view_menuitem">
-            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">_View</property>
@@ -643,7 +640,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                 </child>
                 <child>
                   <object class="GtkMenuItem" id="imagemenuitem23">
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">Palette _Appearance</property>
@@ -675,7 +671,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                         </child>
                         <child>
                           <object class="GtkSeparatorMenuItem" id="separatormenuitem7">
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                           </object>
@@ -695,7 +690,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                 </child>
                 <child>
                   <object class="GtkSeparatorMenuItem" id="imagemenuitem24">
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                   </object>
@@ -730,7 +724,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         </child>
         <child>
           <object class="GtkMenuItem" id="projects_menuitem">
-            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">_Projects</property>
@@ -760,7 +753,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                 </child>
                 <child>
                   <object class="GtkSeparatorMenuItem" id="separatormenuitem6">
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                   </object>
@@ -771,7 +763,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         </child>
         <child>
           <object class="GtkMenuItem" id="help_menuitem">
-            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">_Help</property>
@@ -792,7 +783,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                 </child>
                 <child>
                   <object class="GtkSeparatorMenuItem" id="separatormenuitem5">
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                   </object>
@@ -862,10 +852,8 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         </child>
         <child>
           <object class="GtkSeparatorToolItem" id="toolbutton1">
-            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="use_action_appearance">False</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -897,10 +885,8 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         </child>
         <child>
           <object class="GtkSeparatorToolItem" id="toolbutton4">
-            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="use_action_appearance">False</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -947,10 +933,8 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         </child>
         <child>
           <object class="GtkSeparatorToolItem" id="toolbutton2">
-            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="use_action_appearance">False</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -1138,7 +1122,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
             <child>
               <object class="GtkButton" id="preferences_close_button">
                 <property name="label">gtk-close</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -1181,7 +1164,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                         <property name="column_spacing">6</property>
                         <child>
                           <object class="GtkButton" id="catalog_path_remove_button">
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -1219,7 +1201,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                         </child>
                         <child>
                           <object class="GtkButton" id="catalog_path_add_button">
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -1311,7 +1292,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
             <child>
               <object class="GtkButton" id="button3">
                 <property name="label">gtk-cancel</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -1326,7 +1306,6 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
             <child>
               <object class="GtkButton" id="button4">
                 <property name="label">gtk-open</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
