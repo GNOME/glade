@@ -1984,6 +1984,10 @@ embedded in another object</_tooltip>
       <verify-function>glade_gtk_assistant_verify_property</verify-function>
       <child-set-property-function>glade_gtk_assistant_set_child_property</child-set-property-function>
       <child-get-property-function>glade_gtk_assistant_get_child_property</child-get-property-function>
+      <get-children-function>glade_gtk_assistant_get_children</get-children-function>
+      <internal-children>
+        <object name="action_area"/>
+      </internal-children>
       <properties>
         <property save="False" id="n-pages" _name="Number of Pages">
 	  <parameter-spec>
