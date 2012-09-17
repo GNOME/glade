@@ -7935,7 +7935,6 @@ glade_gtk_assistant_update_page_type (GtkAssistant * assistant)
     {
       page = gtk_assistant_get_nth_page (assistant, i);
       gtk_assistant_set_page_type (assistant, page, GTK_ASSISTANT_PAGE_CONTENT);
-
     }
 
   /* Now we have set page-type in every page, force button update */
@@ -7943,8 +7942,6 @@ glade_gtk_assistant_update_page_type (GtkAssistant * assistant)
     {
       page = gtk_assistant_get_nth_page (assistant, i);
       gtk_assistant_set_page_complete (assistant, page, TRUE);
-      gtk_assistant_set_current_page (assistant, i);
-      gtk_assistant_update_buttons_state (assistant);
     }
 
   if (current >= 0)
@@ -7994,6 +7991,48 @@ glade_gtk_assistant_parse_finished (GladeProject * project, GObject * object)
     }
 }
 
+GList *
+glade_gtk_assistant_get_children (GladeWidgetAdaptor *adaptor,
+                                  GObject *container)
+{
+  GtkAssistant *assist = GTK_ASSISTANT (container);
+  gint i, n_pages = gtk_assistant_get_n_pages (assist);
+  GList *children = NULL, *parent_children;
+
+  /* Chain up */
+  if (GWA_GET_CLASS (GTK_TYPE_WINDOW)->get_children)
+    parent_children = GWA_GET_CLASS (GTK_TYPE_WINDOW)->get_children (adaptor, container);
+  else
+    parent_children = NULL;
+  
+  for (i = 0; i < n_pages; i++)
+    children = g_list_prepend (children, gtk_assistant_get_nth_page (assist, i));
+
+  children = g_list_reverse (children);
+
+  return glade_util_purify_list (g_list_concat (children, parent_children));
+}
+
+static void
+on_assistant_project_selection_changed (GladeProject *project,
+                                        GladeWidget *gassist)
+{
+  GList *selection = glade_project_selection_get (project);
+
+  if (selection && g_list_next (selection) == NULL)
+    {
+      GladeWidget *selected = glade_widget_get_from_gobject (selection->data);
+      GtkAssistant *assist = GTK_ASSISTANT (glade_widget_get_object (gassist));
+      gint pos;
+
+      if (!selected) return;
+
+      if (glade_widget_get_parent (selected) == gassist &&
+          glade_widget_property_get (selected, "position", &pos, NULL))
+	gtk_assistant_set_current_page (assist, pos);
+    }
+}
+
 void
 glade_gtk_assistant_post_create (GladeWidgetAdaptor * adaptor,
                                  GObject * object, GladeCreateReason reason)
@@ -8027,6 +8066,10 @@ glade_gtk_assistant_post_create (GladeWidgetAdaptor * adaptor,
 
       glade_widget_property_set (parent, "n-pages", 3);
     }
+
+  g_signal_connect (project, "selection-changed",
+                    G_CALLBACK (on_assistant_project_selection_changed),
+                    parent);
 }
 
 void
@@ -8039,15 +8082,31 @@ glade_gtk_assistant_add_child (GladeWidgetAdaptor * adaptor,
   gtk_assistant_append_page (assistant, widget);
 }
 
+static void
+assistant_remove_child (GtkAssistant *assistant, GtkWidget *child)
+{
+  gint i, n = gtk_assistant_get_n_pages (assistant);
+
+  for (i = 0; i < n; i++)
+    {
+      if (child == gtk_assistant_get_nth_page (assistant, i))
+	{
+	  gtk_assistant_remove_page (assistant, i);
+	  return;
+	}
+    }
+}
+
 void
 glade_gtk_assistant_remove_child (GladeWidgetAdaptor * adaptor,
                                   GObject * container, GObject * child)
 {
-  GtkAssistant *assistant = GTK_ASSISTANT (container);
   GladeWidget *gassistant = glade_widget_get_from_gobject (container);
+  GtkAssistant *assistant = GTK_ASSISTANT (container);
 
-  gtk_container_remove (GTK_CONTAINER (container), GTK_WIDGET (child));
-  glade_widget_property_set (gassistant, "n-pages",
+  assistant_remove_child (assistant, GTK_WIDGET (child));
+
+  glade_widget_property_set (gassistant, "n-pages", 
                              gtk_assistant_get_n_pages (assistant));
 }
 
@@ -8061,7 +8120,7 @@ glade_gtk_assistant_replace_child (GladeWidgetAdaptor * adaptor,
   gint pos = glade_gtk_assistant_get_page (assistant, old_page);
   gboolean set_current = gtk_assistant_get_current_page (assistant) == pos;
 
-  gtk_container_remove (GTK_CONTAINER (container), old_page);
+  assistant_remove_child (assistant, old_page);
 
   gtk_assistant_insert_page (assistant, page, pos);
   glade_gtk_assistant_update_page_type (assistant);
@@ -8153,7 +8212,7 @@ glade_gtk_assistant_set_child_property (GladeWidgetAdaptor * adaptor,
           glade_gtk_assistant_get_page (assistant, widget);   
 
       g_object_ref (child);
-      gtk_container_remove (GTK_CONTAINER (container), widget);
+      assistant_remove_child (assistant, widget);
       gtk_assistant_insert_page (assistant, widget, pos);
       g_object_unref (child);
 
