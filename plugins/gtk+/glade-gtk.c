@@ -7969,10 +7969,8 @@ glade_gtk_assistant_post_create (GladeWidgetAdaptor * adaptor,
       g_signal_connect (project, "parse-finished",
                         G_CALLBACK (glade_gtk_assistant_parse_finished),
                         object);
-      return;
     }
-
-  if (reason == GLADE_CREATE_USER)
+  else if (reason == GLADE_CREATE_USER)
     {
       glade_gtk_assistant_append_new_page (parent, project,
                                            _("Introduction page"),
@@ -8085,7 +8083,10 @@ glade_gtk_assistant_set_property (GladeWidgetAdaptor * adaptor,
 
       for (i = gtk_assistant_get_n_pages (GTK_ASSISTANT (object)),
            size = g_value_get_int (value); i < size; i++)
+	{
+	  g_message ("aaaa %d %d", i,size);
         gtk_assistant_append_page (assistant, glade_placeholder_new ());
+	}
 
       glade_gtk_assistant_update_page_type (assistant);
 
