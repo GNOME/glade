@@ -914,15 +914,11 @@ is_standard_icon_name (const gchar * icon_name)
 static void
 cleanup_after_load (GladeNamedIconChooserDialog * dialog)
 {
-  GDK_THREADS_ENTER ();
-
   dialog->priv->load_id = 0;
 
   pending_select_name_process (dialog);
 
   set_busy_cursor (dialog, FALSE);
-
-  GDK_THREADS_LEAVE ();
 }
 
 static void
@@ -974,8 +970,6 @@ reload_icons (GladeNamedIconChooserDialog * dialog)
   guint i;
   GList *l, *icons = NULL;
 
-  GDK_THREADS_ENTER ();
-
   /* retrieve icon names from each context */
   for (i = 0; i < G_N_ELEMENTS (standard_contexts); i++)
     {
@@ -1021,8 +1015,6 @@ reload_icons (GladeNamedIconChooserDialog * dialog)
   g_list_free (icons);
 
   chooser_set_model (dialog);
-
-  GDK_THREADS_LEAVE ();
 
   return FALSE;
 }
