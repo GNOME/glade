@@ -1994,6 +1994,25 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
 }
 
 /**
+ * glade_project_dump_string:
+ * @project: a #GladeProject
+ * 
+ * Returns: @project as a newlly allocated string
+ */
+gchar *
+glade_project_dump_string (GladeProject *project)
+{
+  GladeXmlContext *context;
+  gchar *retval;
+
+  context = glade_project_write (project);
+  retval = glade_xml_dump_from_context (context);
+  glade_xml_context_destroy (context);
+
+  return retval;
+}
+
+/**
  * glade_project_preview:
  * @project: a #GladeProject
  * @gwidget: a #GladeWidget
@@ -2122,6 +2141,13 @@ glade_project_verify_property_internal (GladeProject *project,
   adaptor      = glade_widget_adaptor_from_pspec (prop_adaptor, pspec);
 
   g_object_get (adaptor, "catalog", &catalog, NULL);
+
+  /* no need to check if there is no catalog because its a composite widget
+   * automagically loaded by libgladeui
+   */
+  if (catalog == NULL && glade_widget_adaptor_get_template (adaptor))
+    return;
+  
   glade_project_target_version_for_adaptor (project, adaptor,
                                             &target_major, &target_minor);
 
@@ -2207,6 +2233,10 @@ glade_project_verify_signal_internal (GladeWidget *widget,
   adaptor = glade_signal_class_get_adaptor (signal_class);
 
   g_object_get (adaptor, "catalog", &catalog, NULL);
+
+  if (catalog == NULL && glade_widget_adaptor_get_template (adaptor))
+    return;
+
   glade_project_target_version_for_adaptor (glade_widget_get_project (widget),
                                             adaptor,
                                             &target_major, &target_minor);
@@ -2427,8 +2457,11 @@ glade_project_verify_adaptor (GladeProject *project,
   for (adaptor_iter = adaptor; adaptor_iter && support_mask == GLADE_SUPPORT_OK;
        adaptor_iter = glade_widget_adaptor_get_parent_adaptor (adaptor_iter))
     {
-
       g_object_get (adaptor_iter, "catalog", &catalog, NULL);
+
+      if (catalog == NULL && glade_widget_adaptor_get_template (adaptor))
+	continue;
+
       glade_project_target_version_for_adaptor (project, adaptor_iter,
                                                 &target_major, &target_minor);
 

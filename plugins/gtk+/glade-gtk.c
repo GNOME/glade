@@ -1367,6 +1367,75 @@ glade_gtk_container_get_property (GladeWidgetAdaptor *adaptor,
   else GWA_GET_CLASS (G_TYPE_OBJECT)->get_property (adaptor, object, id, value);
 }
 
+void
+glade_gtk_container_action_activate (GladeWidgetAdaptor *adaptor,
+                                     GObject *object,
+                                     const gchar *action_path)
+{
+  GladeWidget *gwidget = glade_widget_get_from_gobject (object);
+
+  if (strcmp (action_path, "template") == 0)
+    {
+      GtkFileFilter *filter = gtk_file_filter_new ();
+      gchar *template_class, *template_file;
+      GtkWidget *dialog, *help_label;
+      GtkFileChooser *chooser;
+
+      gtk_file_filter_add_pattern (filter, "*.ui");
+
+      dialog = gtk_file_chooser_dialog_new (_("Save Template"),
+                                            GTK_WINDOW (glade_app_get_window ()),
+                                            GTK_FILE_CHOOSER_ACTION_SAVE,
+                                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                            GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
+                                            NULL);
+      chooser = GTK_FILE_CHOOSER (dialog);
+      gtk_file_chooser_set_do_overwrite_confirmation (chooser, TRUE);
+      gtk_file_chooser_set_filter (chooser, filter);
+      help_label = gtk_label_new (_("NOTE: the base name of the file will be used"
+                                    " as the class name so it should be in CamelCase"));
+      gtk_file_chooser_set_extra_widget (chooser, help_label);
+      gtk_widget_show (help_label);
+
+      template_class = g_strconcat ("My", G_OBJECT_TYPE_NAME (object), NULL);
+      template_file = g_strconcat (template_class, ".ui", NULL);
+      
+      gtk_file_chooser_set_current_folder (chooser, g_get_user_special_dir (G_USER_DIRECTORY_TEMPLATES));
+      gtk_file_chooser_set_current_name (chooser, template_file);
+      
+      if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
+	{
+	  gchar *filename = gtk_file_chooser_get_filename (chooser);
+	  gchar *basename = g_path_get_basename (filename);
+	  gchar *dot = g_strrstr (basename, ".ui");
+
+	  /* Strip file extension to get the class name */
+	  if (dot)
+	    {
+	      *dot = '\0';
+	    }
+	  else
+	    {
+	      /* Or add it if it is not present */
+	      gchar *tmp = g_strconcat (filename, ".ui", NULL);
+	      g_free (filename);
+	      filename = tmp;
+	    }
+	  
+	  glade_composite_template_save_from_widget (gwidget, basename, filename);
+
+	  g_free (basename);
+	  g_free (filename);
+	}
+
+      g_free (template_class);
+      g_free (template_file);
+      gtk_widget_destroy (dialog);
+    }
+  else
+    GWA_GET_CLASS (GTK_TYPE_WIDGET)->action_activate (adaptor, object, action_path);
+}
+
 /* ----------------------------- GtkBox ------------------------------ */
 
 GladeWidget *

@@ -185,8 +185,8 @@ typedef enum
  * Returns: A newly created #GladeWidget for the said adaptor.
  */
 typedef GladeWidget * (* GladeCreateWidgetFunc) (GladeWidgetAdaptor *adaptor,
-						 const gchar        *first_property_name,
-						 va_list             var_args);
+                                                 const gchar        *first_property_name,
+                                                 va_list             var_args);
 
 /**
  * GladeSetPropertyFunc:
@@ -201,9 +201,9 @@ typedef GladeWidget * (* GladeCreateWidgetFunc) (GladeWidgetAdaptor *adaptor,
  * Sets @value on @object for a given #GladePropertyClass
  */
 typedef void     (* GladeSetPropertyFunc)    (GladeWidgetAdaptor *adaptor,
-					      GObject            *object,
-					      const gchar        *property_name,
-					      const GValue       *value);
+                                              GObject            *object,
+                                              const gchar        *property_name,
+                                              const GValue       *value);
 
 /**
  * GladeGetPropertyFunc:
@@ -215,7 +215,7 @@ typedef void     (* GladeSetPropertyFunc)    (GladeWidgetAdaptor *adaptor,
  * Gets @value on @object for a given #GladePropertyClass
  */
 typedef void     (* GladeGetPropertyFunc)    (GladeWidgetAdaptor *adaptor,
-					      GObject            *object,
+                                              GObject            *object,
 					      const gchar        *property_name,
 					      GValue             *value);
 
@@ -686,12 +686,18 @@ G_CONST_RETURN gchar *glade_widget_adaptor_get_missing_icon (GladeWidgetAdaptor 
 G_CONST_RETURN GList *glade_widget_adaptor_get_properties   (GladeWidgetAdaptor   *adaptor);
 G_CONST_RETURN GList *glade_widget_adaptor_get_packing_props(GladeWidgetAdaptor   *adaptor);
 G_CONST_RETURN GList *glade_widget_adaptor_get_signals      (GladeWidgetAdaptor   *adaptor);
+G_CONST_RETURN gchar *glade_widget_adaptor_get_template     (GladeWidgetAdaptor   *adaptor);
 
 GList                *glade_widget_adaptor_list_adaptors    (void);
 
 GladeWidgetAdaptor   *glade_widget_adaptor_from_catalog     (GladeCatalog         *catalog,
-							     GladeXmlNode         *class_node,
-							     GModule              *module);
+                                                             GladeXmlNode         *class_node,
+                                                             GModule              *module);
+
+GladeWidgetAdaptor   *glade_widget_adaptor_from_composite_template (GType template_type,
+                                                                    const gchar *template_xml,
+                                                                    const gchar *generic_name,
+                                                                    const gchar *icon_name);
 
 void                  glade_widget_adaptor_register         (GladeWidgetAdaptor   *adaptor);
  

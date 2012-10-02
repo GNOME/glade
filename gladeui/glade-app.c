@@ -39,6 +39,7 @@
 #include "glade-design-layout.h"
 #include "glade-marshallers.h"
 #include "glade-accumulators.h"
+#include "glade-composite-template.h"
 
 #include <string.h>
 #include <glib.h>
@@ -348,6 +349,8 @@ glade_app_init (GladeApp *app)
 
   /* Load the configuration file */
   priv->config = g_key_file_ref (glade_app_get_config ());
+
+  glade_composite_template_load_directory (g_get_user_special_dir (G_USER_DIRECTORY_TEMPLATES));
 }
 
 static void

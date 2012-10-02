@@ -297,7 +297,10 @@ embedded in another object</_tooltip>
       <get-children-function>glade_gtk_container_get_children</get-children-function>
       <set-property-function>glade_gtk_container_set_property</set-property-function>
       <get-property-function>glade_gtk_container_get_property</get-property-function>
-
+      <action-activate-function>glade_gtk_container_action_activate</action-activate-function>
+      <actions>
+	<action id="template" _name="Export as template" stock="gtk-convert" important="True"/>
+      </actions>
       <properties>
 	<property id="glade-template-class" _name="Template Class" save="False" custom-layout="True">
 	  <parameter-spec>
