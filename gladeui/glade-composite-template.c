@@ -199,7 +199,7 @@ glade_composite_template_load_directory (const gchar *directory)
   const gchar *name;
   GDir *dir;
 
-  g_return_if_fail (path != NULL);
+  g_return_if_fail (directory != NULL);
 
   if (!(dir = g_dir_open (directory, 0, &error)))
     {
