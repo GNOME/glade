@@ -1713,11 +1713,15 @@ glade_design_layout_style_updated (GtkWidget *widget)
   GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
   GtkStyleContext *context = gtk_widget_get_style_context (widget);
 
-  gtk_style_context_lookup_color (context, "fg_color", &priv->fg_color);
-  gtk_style_context_lookup_color (context, "bg_color", &priv->frame_color[0]);
-  gtk_style_context_lookup_color (context, "selected_bg_color", &priv->frame_color_active[0]);
-  gtk_style_context_lookup_color (context, "selected_fg_color", &priv->frame_color_active[1]);
-
+  gtk_style_context_get_color (context, GTK_STATE_FLAG_NORMAL,
+                               &priv->fg_color);
+  gtk_style_context_get_background_color (context, GTK_STATE_FLAG_NORMAL,
+                                          &priv->frame_color[0]);
+  gtk_style_context_get_background_color (context, GTK_STATE_FLAG_SELECTED,
+                                          &priv->frame_color_active[0]);
+  gtk_style_context_get_color (context, GTK_STATE_FLAG_SELECTED,
+                               &priv->frame_color_active[1]);
+  
   priv->frame_color[1] = priv->fg_color;
   /* Make border darker */
   priv->frame_color[0].red -= .1;
@@ -1729,7 +1733,6 @@ static void
 glade_design_layout_init (GladeDesignLayout *layout)
 {
   GladeDesignLayoutPrivate *priv;
-  GtkCssProvider *provider;
   gint i;
   
   layout->priv = priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (layout);
@@ -1748,15 +1751,8 @@ glade_design_layout_init (GladeDesignLayout *layout)
 
   gtk_widget_set_has_window (GTK_WIDGET (layout), TRUE);
 
-  provider = gtk_css_provider_new ();
-  gtk_css_provider_load_from_data (provider,
-                                   "GladeDesignLayout {\n"
-                                   "  background-color : @base_color;\n"
-                                   "  }", -1, NULL);
-
-  gtk_style_context_add_provider (gtk_widget_get_style_context (GTK_WIDGET (layout)),
-                                  GTK_STYLE_PROVIDER (provider),
-                                  GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+  gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (layout)),
+                               GTK_STYLE_CLASS_VIEW);
 }
 
 static void

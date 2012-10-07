@@ -295,7 +295,6 @@ glade_design_view_draw (GtkWidget *widget, cairo_t *cr)
 static void
 glade_design_view_init (GladeDesignView *view)
 {
-  GtkCssProvider *provider;
   GtkWidget *viewport;
 
   view->priv = GLADE_DESIGN_VIEW_GET_PRIVATE (view);
@@ -329,15 +328,8 @@ glade_design_view_init (GladeDesignView *view)
   
   gtk_container_set_border_width (GTK_CONTAINER (view), 0);
 
-  provider = gtk_css_provider_new ();
-  gtk_css_provider_load_from_data (provider,
-                                   "GtkViewport {\n"
-                                   "  background-color : @base_color;\n"
-                                   "  }", -1, NULL);
-
-  gtk_style_context_add_provider (gtk_widget_get_style_context (GTK_WIDGET (viewport)),
-                                  GTK_STYLE_PROVIDER (provider),
-                                  GTK_STYLE_PROVIDER_PRIORITY_FALLBACK);
+  gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (view)),
+                               GTK_STYLE_CLASS_VIEW);
 }
 
 static void

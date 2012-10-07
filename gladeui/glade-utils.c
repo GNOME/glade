@@ -1787,7 +1787,7 @@ GdkPixbuf *
 glade_utils_pointer_mode_render_icon (GladePointerMode mode, GtkIconSize size)
 {
   GtkStyleContext *ctx = gtk_style_context_new ();
-  GdkRGBA c1, c2, c3, fg, bg;
+  GdkRGBA c1, c2, fg, bg;
   cairo_surface_t *surface;
   GtkWidgetPath *path;
   gint width, height;
@@ -1804,15 +1804,15 @@ glade_utils_pointer_mode_render_icon (GladePointerMode mode, GtkIconSize size)
   path = gtk_widget_path_new ();
   gtk_widget_path_append_type (path, GTK_TYPE_WIDGET);
   gtk_style_context_set_path (ctx, path);
+  gtk_style_context_add_class (ctx, GTK_STYLE_CLASS_VIEW);
   gtk_widget_path_free (path);
 
   /* Now get colors */
-  gtk_style_context_lookup_color (ctx, "fg_color", &fg);
-  gtk_style_context_lookup_color (ctx, "bg_color", &bg);
-  gtk_style_context_lookup_color (ctx, "selected_bg_color", &c1);
-  gtk_style_context_lookup_color (ctx, "selected_fg_color", &c2);
-  gtk_style_context_lookup_color (ctx, "base_color", &c3);
-  
+  gtk_style_context_get_color (ctx, GTK_STATE_FLAG_NORMAL,&fg);
+  gtk_style_context_get_background_color (ctx, GTK_STATE_FLAG_NORMAL,&bg);
+  gtk_style_context_get_background_color (ctx, GTK_STATE_FLAG_SELECTED,&c1);
+  gtk_style_context_get_color (ctx, GTK_STATE_FLAG_SELECTED,&c2);
+
   g_object_unref (ctx);
 
   /* Clear surface */
