@@ -1448,7 +1448,21 @@ glade_design_layout_draw (GtkWidget *widget, cairo_t *cr)
         {
           gint border_width = gtk_container_get_border_width (GTK_CONTAINER (widget));
           gboolean selected = FALSE;
+          gint w, h;
           GList *l;
+
+          w = gdk_window_get_width (window);
+          h = gdk_window_get_height (window);
+
+          cairo_save (cr);
+          cairo_rectangle (cr, 0, 0, priv->child_offset, h);
+          cairo_rectangle (cr, 0, 0, w, priv->child_offset);
+          cairo_rectangle (cr, 0, priv->south_east.y, w, priv->south_east.height);
+          cairo_rectangle (cr, w-priv->child_offset, 0, priv->child_offset, h);
+          cairo_clip (cr);
+          gtk_render_background (gtk_widget_get_style_context (widget),
+                                 cr, 0, 0, w, h);
+          cairo_restore (cr);
 
           /* draw offscreen widgets */
           gdk_cairo_set_source_window (cr, priv->offscreen_window,
@@ -1707,26 +1721,39 @@ glade_design_layout_unrealize (GtkWidget * widget)
   GTK_WIDGET_CLASS (glade_design_layout_parent_class)->unrealize (widget);
 }
 
+void
+_glade_design_layout_get_colors (GtkStyleContext *context, 
+                                 GdkRGBA *c1, GdkRGBA *c2,
+                                 GdkRGBA *c3, GdkRGBA *c4)
+{
+  gfloat off;
+  
+  gtk_style_context_get_background_color (context, GTK_STATE_FLAG_NORMAL, c1);
+  gtk_style_context_get_color (context, GTK_STATE_FLAG_NORMAL, c2);
+
+  gtk_style_context_get_background_color (context, GTK_STATE_FLAG_SELECTED | GTK_STATE_FLAG_FOCUSED, c3);
+  gtk_style_context_get_color (context, GTK_STATE_FLAG_SELECTED | GTK_STATE_FLAG_FOCUSED, c4);
+
+  off = ((c1->red + c1->green + c1->blue)/3 < .5) ? .16 : -.16;
+   
+  c1->red += off;
+  c1->green += off;
+  c1->blue += off;
+}
+
 static void
 glade_design_layout_style_updated (GtkWidget *widget)
 {
   GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (widget);
   GtkStyleContext *context = gtk_widget_get_style_context (widget);
 
-  gtk_style_context_get_color (context, GTK_STATE_FLAG_NORMAL,
-                               &priv->fg_color);
-  gtk_style_context_get_background_color (context, GTK_STATE_FLAG_NORMAL,
-                                          &priv->frame_color[0]);
-  gtk_style_context_get_background_color (context, GTK_STATE_FLAG_SELECTED,
-                                          &priv->frame_color_active[0]);
-  gtk_style_context_get_color (context, GTK_STATE_FLAG_SELECTED,
-                               &priv->frame_color_active[1]);
-  
-  priv->frame_color[1] = priv->fg_color;
-  /* Make border darker */
-  priv->frame_color[0].red -= .1;
-  priv->frame_color[0].green -= .1;
-  priv->frame_color[0].blue -= .1;
+  _glade_design_layout_get_colors (context,
+                                   &priv->frame_color[0],
+                                   &priv->frame_color[1],
+                                   &priv->frame_color_active[0],
+                                   &priv->frame_color_active[1]);
+
+  priv->fg_color = priv->frame_color[1];
 }
 
 static void

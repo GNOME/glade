@@ -283,11 +283,21 @@ static gboolean
 glade_design_view_draw (GtkWidget *widget, cairo_t *cr)
 {
   GladeDesignViewPrivate *priv = GLADE_DESIGN_VIEW_GET_PRIVATE (widget);
-  
-  GTK_WIDGET_CLASS (glade_design_view_parent_class)->draw (widget, cr);
+  GdkWindow *window = gtk_widget_get_window (widget);
 
-  if (gtk_widget_get_visible (priv->scrolled_window) == FALSE)
-    logo_draw (widget, cr);
+  if (gtk_cairo_should_draw_window (cr, window))
+    {
+      if (gtk_widget_get_visible (priv->scrolled_window) == FALSE)
+        logo_draw (widget, cr);
+      else
+        gtk_render_background (gtk_widget_get_style_context (widget),
+                               cr,
+                               0, 0,
+                               gdk_window_get_width (window),
+                               gdk_window_get_height (window));
+    }
+
+  GTK_WIDGET_CLASS (glade_design_view_parent_class)->draw (widget, cr);
   
   return FALSE;
 }
