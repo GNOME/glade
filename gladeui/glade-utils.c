@@ -1808,11 +1808,7 @@ glade_utils_pointer_mode_render_icon (GladePointerMode mode, GtkIconSize size)
   gtk_widget_path_free (path);
 
   /* Now get colors */
-  gtk_style_context_get_color (ctx, GTK_STATE_FLAG_NORMAL,&fg);
-  gtk_style_context_get_background_color (ctx, GTK_STATE_FLAG_NORMAL,&bg);
-  gtk_style_context_get_background_color (ctx, GTK_STATE_FLAG_SELECTED,&c1);
-  gtk_style_context_get_color (ctx, GTK_STATE_FLAG_SELECTED,&c2);
-
+  _glade_design_layout_get_colors (ctx, &bg, &fg, &c1, &c2);
   g_object_unref (ctx);
 
   /* Clear surface */
