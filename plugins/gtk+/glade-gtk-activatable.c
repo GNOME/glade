@@ -77,10 +77,8 @@ glade_gtk_activatable_evaluate_property_sensitivity (GObject *object,
 
   if (!strcmp (id, "related-action"))
     {
-      gboolean use_appearance = gtk_activatable_get_use_action_appearance (GTK_ACTIVATABLE (object));
-      GtkAction *action = g_value_get_object (value);
-
-      update_use_action_appearance (gwidget, TRUE, action);
+      update_use_action_appearance (gwidget, TRUE, 
+                                    g_value_get_object (value) != NULL);
     }
   else if (!strcmp (id, "use-action-appearance"))
     {
