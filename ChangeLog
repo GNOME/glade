@@ -1,4 +1,24 @@
-2012-05-06  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+2012-10-14  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* configure.ac, NEWS: Rolling 3.14.1, bumped gtk dependency to 3.6.0
+
+2012-10-13  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* plugins/gtk+/glade-gtk-activatable.c:
+	  Fixed bug in GtkButton custom editor properties sensitivity
+	  bug #685816 "Widget attributes editing broken"
+
+2012-10-08  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-design-layout.c, gladeui/glade-design-view.c, gladeui/glade-utils.c:
+	  Render bg in GladeDesignLayout and GladeDesignView
+
+2012-10-07  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-design-layout.c, gladeui/glade-design-view.c, gladeui/glade-utils.c:
+	  Removed use of custon style providers. Fixes color problems in adwaita themes
+
+2012-09-19  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* configure.ac, NEWS: Rolling 3.14.0, bumped gtk dependency to 3.5.17
 

@@ -4,7 +4,7 @@ AC_PREREQ(2.52)
 
 m4_define(glade_major_version, 3)
 m4_define(glade_minor_version, 14)
-m4_define(glade_micro_version, 0)
+m4_define(glade_micro_version, 1)
 m4_define(glade_version, glade_major_version.glade_minor_version.glade_micro_version)
 
 AC_INIT([glade], [glade_version],
@@ -52,7 +52,7 @@ AC_PATH_PROG(DLLTOOL, dlltool)
 # If any interfaces have been removed since the last public release, then set GLADE_AGE to 0.
 # Reference: http://www.gnu.org/software/libtool/manual/libtool.html#Versioning
 
-GLADE_REVISION=0
+GLADE_REVISION=1
 GLADE_CURRENT=4
 GLADE_AGE=0
 GLADE_CURRENT_MINUS_AGE=`expr $GLADE_CURRENT - $GLADE_AGE`
@@ -129,7 +129,7 @@ GOBJECT_INTROSPECTION_CHECK([0.10.1])
 dnl ================================================================
 dnl Check for gtk+
 dnl ================================================================
-GTK_REQUIRED=3.5.17
+GTK_REQUIRED=3.6.0
 PKG_CHECK_MODULES([GTK],[
   gtk+-3.0 >= $GTK_REQUIRED
   gmodule-2.0
