@@ -201,14 +201,20 @@ glade_editor_property_sensitivity_cb (GladeProperty *property,
                                       GParamSpec *pspec,
                                       GladeEditorProperty *eprop)
 {
-  gboolean sensitive = glade_property_get_sensitive (eprop->priv->property);
+  GladeEditorPropertyPrivate *priv = eprop->priv;
+  gboolean property_enabled = glade_property_get_enabled (property);
+  gboolean sensitive = glade_property_get_sensitive (priv->property);
   gboolean support_sensitive =
-    (glade_property_get_state (eprop->priv->property) & GLADE_STATE_SUPPORT_DISABLED) == 0;
+    (glade_property_get_state (priv->property) & GLADE_STATE_SUPPORT_DISABLED) == 0;
 
-  gtk_widget_set_sensitive (eprop->priv->input, sensitive && support_sensitive &&
-                            glade_property_get_enabled (property));
-  if (eprop->priv->check)
-    gtk_widget_set_sensitive (eprop->priv->check, sensitive && support_sensitive);
+  gtk_widget_set_sensitive (priv->input,
+                            sensitive && support_sensitive && property_enabled);
+
+  if (priv->item_label)
+    gtk_widget_set_sensitive (priv->item_label,
+                              sensitive && support_sensitive && property_enabled);
+  if (priv->check)
+    gtk_widget_set_sensitive (priv->check, sensitive && support_sensitive);
 }
 
 static void
