@@ -61,6 +61,7 @@ enum
 {
   DOC_SEARCH,
   SIGNAL_EDITOR_CREATED,
+  WIDGET_ADAPTOR_REGISTERED,
   LAST_SIGNAL
 };
 
@@ -411,6 +412,21 @@ glade_app_class_init (GladeAppClass * klass)
                   _glade_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1, G_TYPE_OBJECT);  
 
+  /**
+   * GladeApp::widget-adaptor-registered:
+   * @gladeapp: the #GladeApp which received the signal.
+   * @adaptor: the newlly registered #GladeWidgetAdaptor.
+   *
+   * Emitted when a new widget adaptor is registered.
+   */
+  glade_app_signals[WIDGET_ADAPTOR_REGISTERED] =
+    g_signal_new ("widget-adaptor-registered",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL,
+                  _glade_marshal_VOID__OBJECT,
+                  G_TYPE_NONE, 1, G_TYPE_OBJECT);  
+  
   g_type_class_add_private (klass, sizeof (GladeAppPrivate));
 
   gdk_event_handler_set (glade_app_event_handler, NULL, NULL);
