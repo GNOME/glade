@@ -20,6 +20,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <config.h>
+
+#include <glib/gi18n-lib.h>
 #include "glade-composite-template.h"
 #include "glade-app.h"
 #include "glade-utils.h"
@@ -90,9 +93,36 @@ composite_template_derived_init (GTypeInstance *instance, gpointer g_class)
 {
 }
 
+#if !HAVE_GTK_CONTAINER_CLASS_SET_TEMPLATE_FROM_STRING
+static GObject *
+composite_template_constructor (GType type,
+                                guint n_construct_properties,
+                                GObjectConstructParam *construct_properties)
+{
+  GladeWidgetAdaptor *adaptor;
+  GObjectClass *parent_class;
+  GObject *obj;
+
+  parent_class = g_type_class_peek (g_type_parent (type));
+  obj = parent_class->constructor (type,
+                                   n_construct_properties,
+                                   construct_properties); 
+/*
+  adaptor = glade_widget_adaptor_get_by_type (type);
+
+
+  glade_widget_adaptor_get_*/
+  return obj;
+}
+#endif
+
 static void
 composite_template_derived_class_init (gpointer g_class, gpointer class_data)
 {
+#if !HAVE_GTK_CONTAINER_CLASS_SET_TEMPLATE_FROM_STRING
+  GObjectClass *object_class = g_class;
+  object_class->constructor = composite_template_constructor;
+#endif
 }
 
 static inline GType
@@ -226,6 +256,7 @@ glade_composite_template_load_directory (const gchar *directory)
  * @gwidget: a #GladeWidget
  * @template_class: the name of the new composite template class
  * @filename: a file name to save the template
+ * @replace: True if you want to replace @gwidget with a new widget of type @template_class
  * 
  * Saves a copy of @gwidget as a composite template in @filename with @template_class
  * as the class name
@@ -233,7 +264,8 @@ glade_composite_template_load_directory (const gchar *directory)
 void
 glade_composite_template_save_from_widget (GladeWidget *gwidget,
                                            const gchar *template_class,
-                                           const gchar *filename)
+                                           const gchar *filename,
+                                           gboolean replace)
 {
   GladeProject *project;
   gchar *template_xml;
@@ -255,6 +287,24 @@ glade_composite_template_save_from_widget (GladeWidget *gwidget,
 
   g_file_set_contents (filename, template_xml, -1, NULL);
 
+  if (replace)
+    {
+      GladeProject *project = glade_widget_get_project (gwidget);
+      GladeWidget *parent = glade_widget_get_parent (gwidget);
+      GladeWidgetAdaptor *new_adaptor;
+      GList widgets = {0, };
+      
+      /* Create it at run time */
+      if ((new_adaptor = glade_composite_template_load_from_string (template_xml)))
+        g_object_set (new_adaptor, "template-path", filename, NULL);
+
+      glade_command_push_group (_("Create new composite type %s"), template_class);
+      widgets.data = gwidget;
+      glade_command_cut (&widgets);
+      glade_command_create (new_adaptor, parent, NULL, project);
+      glade_command_pop_group ();
+    }
+  
   g_free (template_xml);
   g_object_unref (project);
 }

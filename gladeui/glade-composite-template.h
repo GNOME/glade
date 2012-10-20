@@ -35,7 +35,8 @@ void glade_composite_template_load_directory (const gchar *directory);
 
 void glade_composite_template_save_from_widget (GladeWidget *gwidget,
                                                 const gchar *template_class,
-                                                const gchar *filename);
+                                                const gchar *filename,
+                                                gboolean     replace);
 
 G_END_DECLS
 

@@ -1422,7 +1422,7 @@ glade_gtk_container_action_activate (GladeWidgetAdaptor *adaptor,
 	      filename = tmp;
 	    }
 	  
-	  glade_composite_template_save_from_widget (gwidget, basename, filename);
+	  glade_composite_template_save_from_widget (gwidget, basename, filename, TRUE);
 
 	  g_free (basename);
 	  g_free (filename);

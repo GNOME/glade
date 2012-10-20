@@ -1956,6 +1956,8 @@ glade_widget_adaptor_register (GladeWidgetAdaptor *adaptor)
 
   g_hash_table_insert (adaptor_hash,
                        g_memdup (&adaptor->priv->type, sizeof (GType)), adaptor);
+
+  g_signal_emit_by_name (glade_app_get (), "widget-adaptor-registered", adaptor);
 }
 
 static GladePackingDefault *
