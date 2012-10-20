@@ -2241,7 +2241,7 @@ typedef struct
 {
   GladeEditorProperty parent_instance;
 
-  GtkWidget *toggle;
+  GtkWidget *gswitch;
 } GladeEPropBool;
 
 GLADE_MAKE_EPROP (GladeEPropBool, glade_eprop_bool)
@@ -2250,7 +2250,9 @@ GLADE_MAKE_EPROP (GladeEPropBool, glade_eprop_bool)
 #define GLADE_IS_EPROP_BOOL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_BOOL))
 #define GLADE_IS_EPROP_BOOL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_BOOL))
 #define GLADE_EPROP_BOOL_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_BOOL, GladeEPropBoolClass))
-     static void glade_eprop_bool_finalize (GObject *object)
+
+static void
+glade_eprop_bool_finalize (GObject *object)
 {
   /* Chain up */
   G_OBJECT_CLASS (editor_property_class)->finalize (object);
@@ -2259,41 +2261,29 @@ GLADE_MAKE_EPROP (GladeEPropBool, glade_eprop_bool)
 static void
 glade_eprop_bool_load (GladeEditorProperty *eprop, GladeProperty *property)
 {
-  GladeEPropBool *eprop_bool = GLADE_EPROP_BOOL (eprop);
-  GtkWidget *label;
-  gboolean state;
-
   /* Chain up first */
   editor_property_class->load (eprop, property);
 
   if (property)
     {
-      state = g_value_get_boolean (glade_property_inline_value (property));
-
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (eprop_bool->toggle),
-                                    state);
-
-      label = gtk_bin_get_child (GTK_BIN (eprop_bool->toggle));
-      gtk_label_set_text (GTK_LABEL (label), state ? _("Yes") : _("No"));
+      GladeEPropBool *eprop_bool = GLADE_EPROP_BOOL (eprop);
+      gboolean state = g_value_get_boolean (glade_property_inline_value (property));
+      gtk_switch_set_active (GTK_SWITCH (eprop_bool->gswitch), state);
     }
 }
 
 static void
-glade_eprop_bool_changed (GtkWidget *button, GladeEditorProperty *eprop)
+glade_eprop_bool_active_notify (GObject             *gobject,
+                                GParamSpec          *pspec,
+                                GladeEditorProperty *eprop)
 {
-  GtkWidget *label;
-  gboolean state;
   GValue val = { 0, };
 
   if (eprop->priv->loading)
     return;
 
-  state = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button));
-  label = gtk_bin_get_child (GTK_BIN (button));
-  gtk_label_set_text (GTK_LABEL (label), state ? _("Yes") : _("No"));
-
   g_value_init (&val, G_TYPE_BOOLEAN);
-  g_value_set_boolean (&val, state);
+  g_value_set_boolean (&val, gtk_switch_get_active (GTK_SWITCH (gobject)));
 
   glade_editor_property_commit_no_callback (eprop, &val);
 
@@ -2305,12 +2295,12 @@ glade_eprop_bool_create_input (GladeEditorProperty *eprop)
 {
   GladeEPropBool *eprop_bool = GLADE_EPROP_BOOL (eprop);
 
-  eprop_bool->toggle = gtk_toggle_button_new_with_label (_("No"));
+  eprop_bool->gswitch = gtk_switch_new ();
 
-  g_signal_connect (G_OBJECT (eprop_bool->toggle), "toggled",
-                    G_CALLBACK (glade_eprop_bool_changed), eprop);
+  g_signal_connect (eprop_bool->gswitch, "notify::active",
+                    G_CALLBACK (glade_eprop_bool_active_notify), eprop);
 
-  return eprop_bool->toggle;
+  return eprop_bool->gswitch;
 }
 
 
