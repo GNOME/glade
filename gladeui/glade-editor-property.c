@@ -336,7 +336,6 @@ glade_editor_property_constructor (GType type,
 
   /* Create the class specific input widget and add it */
   eprop->priv->input = GLADE_EDITOR_PROPERTY_GET_CLASS (eprop)->create_input (eprop);
-  gtk_widget_set_hexpand (eprop->priv->input, TRUE);
   gtk_widget_show (eprop->priv->input);
 
   /* Create the warning icon */
@@ -366,13 +365,17 @@ glade_editor_property_constructor (GType type,
 
   glade_editor_property_fix_label (eprop);
 
-  gtk_box_pack_start (GTK_BOX (eprop), eprop->priv->input, TRUE, TRUE, 0);
-
   g_signal_connect (G_OBJECT (eprop->priv->item_label), "button-press-event",
                     G_CALLBACK (glade_editor_property_button_pressed), eprop);
   g_signal_connect (G_OBJECT (eprop->priv->input), "button-press-event",
                     G_CALLBACK (glade_editor_property_button_pressed), eprop);
 
+  if (gtk_widget_get_halign (eprop->priv->input) != GTK_ALIGN_FILL)
+    gtk_box_pack_start (GTK_BOX (eprop), eprop->priv->input, FALSE, TRUE, 0);
+  else
+    gtk_box_pack_start (GTK_BOX (eprop), eprop->priv->input, TRUE, TRUE, 0);
+
+  
   return obj;
 }
 
@@ -766,6 +769,9 @@ glade_eprop_numeric_create_input (GladeEditorProperty *eprop)
     gtk_spin_button_new (adjustment, 4,
 			 G_IS_PARAM_SPEC_FLOAT (pspec) ||
 			 G_IS_PARAM_SPEC_DOUBLE (pspec) ? 2 : 0);
+  gtk_widget_set_halign (eprop_numeric->spin, GTK_ALIGN_START);
+  gtk_widget_set_valign (eprop_numeric->spin, GTK_ALIGN_CENTER);
+
   gtk_widget_show (eprop_numeric->spin);
 
   /* Limit the size of the spin if max allowed value is too big */
@@ -891,9 +897,10 @@ glade_eprop_enum_create_input (GladeEditorProperty *eprop)
                           eclass->values[i].value, -1);
     }
 
-  eprop_enum->combo_box = gtk_combo_box_new_with_model
-      (GTK_TREE_MODEL (list_store));
-
+  eprop_enum->combo_box = gtk_combo_box_new_with_model (GTK_TREE_MODEL (list_store));
+  gtk_widget_set_halign (eprop_enum->combo_box, GTK_ALIGN_START);
+  gtk_widget_set_valign (eprop_enum->combo_box, GTK_ALIGN_CENTER);
+  
   cell_renderer = gtk_cell_renderer_text_new ();
   gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (eprop_enum->combo_box),
                               cell_renderer, TRUE);
@@ -1175,6 +1182,7 @@ glade_eprop_flags_create_input (GladeEditorProperty *eprop)
 
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+  gtk_widget_set_halign (hbox, GTK_ALIGN_START);
 
   widget = glade_eprop_flags_create_treeview (eprop);
 
@@ -1315,7 +1323,9 @@ glade_eprop_color_create_input (GladeEditorProperty *eprop)
   pspec  = glade_property_class_get_pspec (eprop->priv->klass);
 
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-
+  gtk_widget_set_halign (hbox, GTK_ALIGN_START);
+  gtk_widget_set_valign (hbox, GTK_ALIGN_CENTER);
+  
   eprop_color->entry = gtk_entry_new ();
   gtk_editable_set_editable (GTK_EDITABLE (eprop_color->entry), FALSE);
   gtk_widget_show (eprop_color->entry);
@@ -1523,7 +1533,8 @@ glade_eprop_named_icon_create_input (GladeEditorProperty *eprop)
   GtkWidget *button;
 
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-
+  gtk_widget_set_valign (hbox, GTK_ALIGN_CENTER);
+  
   eprop_named_icon->entry = gtk_entry_new ();
   gtk_widget_show (eprop_named_icon->entry);
 
@@ -2134,6 +2145,9 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
       GtkWidget *child;
       GtkWidget *combo = gtk_combo_box_new_with_entry ();
 
+      gtk_widget_set_halign (hbox, GTK_ALIGN_START);
+      gtk_widget_set_valign (hbox, GTK_ALIGN_CENTER);
+      
       eprop_text->store = (GtkTreeModel *)
           glade_eprop_text_create_store (glade_property_class_stock (klass) ? 
 					 GLADE_TYPE_STOCK : GLADE_TYPE_STOCK_IMAGE);
@@ -2294,8 +2308,10 @@ static GtkWidget *
 glade_eprop_bool_create_input (GladeEditorProperty *eprop)
 {
   GladeEPropBool *eprop_bool = GLADE_EPROP_BOOL (eprop);
-
+  
   eprop_bool->gswitch = gtk_switch_new ();
+  gtk_widget_set_halign (eprop_bool->gswitch, GTK_ALIGN_START);
+  gtk_widget_set_valign (eprop_bool->gswitch, GTK_ALIGN_CENTER);
 
   g_signal_connect (eprop_bool->gswitch, "notify::active",
                     G_CALLBACK (glade_eprop_bool_active_notify), eprop);
@@ -2421,6 +2437,8 @@ glade_eprop_unichar_create_input (GladeEditorProperty *eprop)
   GladeEPropUnichar *eprop_unichar = GLADE_EPROP_UNICHAR (eprop);
 
   eprop_unichar->entry = gtk_entry_new ();
+  gtk_widget_set_halign (eprop_unichar->entry, GTK_ALIGN_START);
+  gtk_widget_set_valign (eprop_unichar->entry, GTK_ALIGN_CENTER);
 
   /* it's 2 to prevent spirious beeps... */
   gtk_entry_set_max_length (GTK_ENTRY (eprop_unichar->entry), 2);
@@ -3129,6 +3147,8 @@ glade_eprop_object_create_input (GladeEditorProperty *eprop)
   GtkWidget *button;
 
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+  gtk_widget_set_valign (hbox, GTK_ALIGN_CENTER);
+
   eprop_object->entry = gtk_entry_new ();
   gtk_editable_set_editable (GTK_EDITABLE (eprop_object->entry), FALSE);
   gtk_widget_show (eprop_object->entry);
@@ -3333,6 +3353,8 @@ glade_eprop_objects_create_input (GladeEditorProperty *eprop)
   GtkWidget *button;
 
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+  gtk_widget_set_valign (hbox, GTK_ALIGN_CENTER);
+
   eprop_objects->entry = gtk_entry_new ();
   gtk_editable_set_editable (GTK_EDITABLE (eprop_objects->entry), FALSE);
   gtk_widget_show (eprop_objects->entry);
