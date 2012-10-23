@@ -1120,8 +1120,9 @@ glade_eprop_flags_create_treeview (GladeEditorProperty *eprop)
 }
 
 static void
-glade_eprop_flags_show_dialog (GtkWidget *button, GladeEditorProperty *eprop)
+glade_eprop_flags_show_dialog (GladeEditorProperty *eprop)
 {
+  GtkWidget *window = gtk_widget_get_toplevel (GTK_WIDGET (eprop));
   GtkWidget *dialog;
   GtkWidget *view;
   GtkWidget *label;
@@ -1130,9 +1131,10 @@ glade_eprop_flags_show_dialog (GtkWidget *button, GladeEditorProperty *eprop)
   GtkWidget *action_area;
 
   dialog = gtk_dialog_new_with_buttons (_("Select Fields"),
-                                        GTK_WINDOW (gtk_widget_get_toplevel
-                                                    (button)), GTK_DIALOG_MODAL,
-                                        GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE,
+                                        GTK_WINDOW (window),
+                                        GTK_DIALOG_MODAL,
+                                        GTK_STOCK_CLOSE,
+                                        GTK_RESPONSE_CLOSE,
                                         NULL);
 
   gtk_window_set_default_size (GTK_WINDOW (dialog), 300, 400);
@@ -1172,7 +1174,6 @@ glade_eprop_flags_show_dialog (GtkWidget *button, GladeEditorProperty *eprop)
 static GtkWidget *
 glade_eprop_flags_create_input (GladeEditorProperty *eprop)
 {
-  GtkWidget *hbox, *button;
   GladeEPropFlags *eprop_flags = GLADE_EPROP_FLAGS (eprop);
 
   if (!eprop_flags->model)
@@ -1180,24 +1181,17 @@ glade_eprop_flags_create_input (GladeEditorProperty *eprop)
                                                              G_TYPE_STRING,
                                                              G_TYPE_UINT));
 
-
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-
   eprop_flags->entry = gtk_entry_new ();
   gtk_editable_set_editable (GTK_EDITABLE (eprop_flags->entry), FALSE);
+  gtk_entry_set_icon_from_stock (GTK_ENTRY (eprop_flags->entry), 
+                                 GTK_ENTRY_ICON_SECONDARY,
+                                 GTK_STOCK_EDIT);
 
-  gtk_box_pack_start (GTK_BOX (hbox), eprop_flags->entry, TRUE, TRUE, 0);
+  g_signal_connect_swapped (eprop_flags->entry, "icon-release",
+                            G_CALLBACK (glade_eprop_flags_show_dialog),
+                            eprop);
 
-  button = gtk_button_new_with_label ("...");
-  gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
-
-  gtk_widget_show_all (eprop_flags->entry);
-  gtk_widget_show_all (button);
-
-  g_signal_connect (G_OBJECT (button), "clicked",
-                    G_CALLBACK (glade_eprop_flags_show_dialog), eprop);
-
-  return hbox;
+  return eprop_flags->entry;
 }
 
 /*******************************************************************************
@@ -1486,8 +1480,7 @@ chooser_response (GladeNamedIconChooserDialog *dialog,
 }
 
 static void
-glade_eprop_named_icon_show_chooser_dialog (GtkWidget *button,
-                                            GladeEditorProperty *eprop)
+glade_eprop_named_icon_show_chooser_dialog (GladeEditorProperty *eprop)
 {
   GtkWidget *dialog;
 
@@ -1525,18 +1518,14 @@ static GtkWidget *
 glade_eprop_named_icon_create_input (GladeEditorProperty *eprop)
 {
   GladeEPropNamedIcon *eprop_named_icon = GLADE_EPROP_NAMED_ICON (eprop);
-  GtkWidget *hbox;
-  GtkWidget *button;
-
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-  gtk_widget_set_valign (hbox, GTK_ALIGN_CENTER);
   
   eprop_named_icon->entry = gtk_entry_new ();
-  gtk_widget_show (eprop_named_icon->entry);
+  gtk_widget_set_valign (eprop_named_icon->entry, GTK_ALIGN_CENTER);
+  gtk_entry_set_icon_from_stock (GTK_ENTRY (eprop_named_icon->entry), 
+                                 GTK_ENTRY_ICON_SECONDARY,
+                                 GTK_STOCK_EDIT);
 
   eprop_named_icon->current_context = NULL;
-
-  gtk_box_pack_start (GTK_BOX (hbox), eprop_named_icon->entry, TRUE, TRUE, 0);
 
   g_signal_connect (G_OBJECT (eprop_named_icon->entry), "activate",
                     G_CALLBACK (glade_eprop_named_icon_activate), eprop);
@@ -1544,14 +1533,11 @@ glade_eprop_named_icon_create_input (GladeEditorProperty *eprop)
   g_signal_connect (G_OBJECT (eprop_named_icon->entry), "focus-out-event",
                     G_CALLBACK (glade_eprop_named_icon_focus_out), eprop);
 
-  button = gtk_button_new_with_label ("\342\200\246");
-  gtk_widget_show (button);
-  gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
-  g_signal_connect (button, "clicked",
-                    G_CALLBACK (glade_eprop_named_icon_show_chooser_dialog),
-                    eprop);
+  g_signal_connect_swapped (eprop_named_icon->entry, "icon-release",
+                            G_CALLBACK (glade_eprop_named_icon_show_chooser_dialog),
+                            eprop);
 
-  return hbox;
+  return eprop_named_icon->entry;
 }
 
 
@@ -1960,8 +1946,7 @@ glade_editor_property_show_i18n_dialog (GtkWidget *parent,
 }
 
 static void
-glade_eprop_text_show_i18n_dialog (GtkWidget *entry,
-                                   GladeEditorProperty *eprop)
+glade_eprop_text_show_i18n_dialog (GladeEditorProperty *eprop)
 {
   GladeEditorPropertyPrivate *priv = eprop->priv;
   gchar *text = glade_property_make_string (priv->property);
@@ -1970,7 +1955,7 @@ glade_eprop_text_show_i18n_dialog (GtkWidget *entry,
   gboolean translatable = glade_property_i18n_get_translatable (priv->property);
 
   if (glade_editor_property_show_i18n_dialog
-      (entry, &text, &context, &comment, &translatable))
+      (GTK_WIDGET (eprop), &text, &context, &comment, &translatable))
     {
       glade_command_set_i18n (priv->property, translatable, context, comment);
       glade_eprop_text_changed_common (eprop, text, priv->use_command);
@@ -2040,14 +2025,13 @@ glade_editor_property_show_resource_dialog (GladeProject *project,
 }
 
 static void
-glade_eprop_text_show_resource_dialog (GtkWidget *entry,
-                                       GladeEditorProperty *eprop)
+glade_eprop_text_show_resource_dialog (GladeEditorProperty *eprop)
 {
   GladeWidget  *widget  = glade_property_get_widget (eprop->priv->property);
   GladeProject *project = glade_widget_get_project (widget);
   gchar *text = NULL;
 
-  if (glade_editor_property_show_resource_dialog (project, entry, &text))
+  if (glade_editor_property_show_resource_dialog (project, GTK_WIDGET (eprop), &text))
     {
       glade_eprop_text_changed_common (eprop, text, eprop->priv->use_command);
 
@@ -2185,7 +2169,7 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
       GtkTextBuffer *buffer;
 
       swindow = gtk_scrolled_window_new (NULL, NULL);
-
+      gtk_scrolled_window_set_min_content_height (GTK_SCROLLED_WINDOW (swindow), 128);
       gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (swindow),
                                       GTK_POLICY_AUTOMATIC,
                                       GTK_POLICY_AUTOMATIC);
@@ -2210,36 +2194,46 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
       eprop_text->text_entry = gtk_entry_new ();
       gtk_widget_show (eprop_text->text_entry);
 
-      gtk_box_pack_start (GTK_BOX (hbox), eprop_text->text_entry, TRUE, TRUE,
-                          0);
+      gtk_box_pack_start (GTK_BOX (hbox), eprop_text->text_entry, TRUE, TRUE, 0);
 
       g_signal_connect (G_OBJECT (eprop_text->text_entry), "changed",
                         G_CALLBACK (glade_eprop_text_changed), eprop);
 
       if (pspec->value_type == GDK_TYPE_PIXBUF)
         {
-          GtkWidget *image =
-              gtk_image_new_from_stock (GTK_STOCK_OPEN, GTK_ICON_SIZE_MENU);
-          GtkWidget *button = gtk_button_new ();
-          gtk_container_add (GTK_CONTAINER (button), image);
+          gtk_entry_set_icon_from_stock (GTK_ENTRY (eprop_text->text_entry),
+                                         GTK_ENTRY_ICON_SECONDARY,
+                                         GTK_STOCK_OPEN);
 
-          g_signal_connect (button, "clicked",
-                            G_CALLBACK (glade_eprop_text_show_resource_dialog),
-                            eprop);
-
-          gtk_widget_show_all (button);
-
-          gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
+          g_signal_connect_swapped (eprop_text->text_entry, "icon-release",
+                                    G_CALLBACK (glade_eprop_text_show_resource_dialog),
+                                    eprop);
         }
     }
 
   if (glade_property_class_translatable (klass))
     {
-      GtkWidget *button = gtk_button_new_with_label ("\342\200\246");
-      gtk_widget_show (button);
-      gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
-      g_signal_connect (button, "clicked",
-                        G_CALLBACK (glade_eprop_text_show_i18n_dialog), eprop);
+      if (GTK_IS_ENTRY (eprop_text->text_entry))
+        {
+          gtk_entry_set_icon_from_stock (GTK_ENTRY (eprop_text->text_entry), 
+                                         GTK_ENTRY_ICON_SECONDARY,
+                                         GTK_STOCK_EDIT);
+          g_signal_connect_swapped (eprop_text->text_entry, "icon-release",
+                                    G_CALLBACK (glade_eprop_text_show_i18n_dialog),
+                                    eprop);
+        }
+      else
+        {
+          GtkWidget *button = gtk_button_new ();
+          gtk_button_set_image (GTK_BUTTON (button),
+                                gtk_image_new_from_stock (GTK_STOCK_EDIT,
+                                                          GTK_ICON_SIZE_MENU));
+          gtk_widget_show (button);
+          gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
+          g_signal_connect_swapped (button, "clicked",
+                                    G_CALLBACK (glade_eprop_text_show_i18n_dialog),
+                                    eprop);
+        }
     }
   return hbox;
 }
@@ -2883,8 +2877,7 @@ glade_editor_property_show_object_dialog (GladeProject *project,
 
 
 static void
-glade_eprop_object_show_dialog (GtkWidget *dialog_button,
-                                GladeEditorProperty *eprop)
+glade_eprop_object_show_dialog (GladeEditorProperty *eprop)
 {
   GtkWidget *dialog, *parent;
   GtkWidget *vbox, *label, *sw;
@@ -3139,24 +3132,17 @@ static GtkWidget *
 glade_eprop_object_create_input (GladeEditorProperty *eprop)
 {
   GladeEPropObject *eprop_object = GLADE_EPROP_OBJECT (eprop);
-  GtkWidget *hbox;
-  GtkWidget *button;
-
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-  gtk_widget_set_valign (hbox, GTK_ALIGN_CENTER);
 
   eprop_object->entry = gtk_entry_new ();
+  gtk_widget_set_valign (eprop_object->entry, GTK_ALIGN_CENTER);
   gtk_editable_set_editable (GTK_EDITABLE (eprop_object->entry), FALSE);
-  gtk_widget_show (eprop_object->entry);
-  gtk_box_pack_start (GTK_BOX (hbox), eprop_object->entry, TRUE, TRUE, 0);
-
-  button = gtk_button_new_with_label ("...");
-  gtk_widget_show (button);
-  gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
-
-  g_signal_connect (G_OBJECT (button), "clicked",
-                    G_CALLBACK (glade_eprop_object_show_dialog), eprop);
-  return hbox;
+  gtk_entry_set_icon_from_stock (GTK_ENTRY (eprop_object->entry), 
+                                 GTK_ENTRY_ICON_SECONDARY,
+                                 GTK_STOCK_EDIT);
+  g_signal_connect_swapped (eprop_object->entry, "icon-release",
+                            G_CALLBACK (glade_eprop_object_show_dialog), eprop);
+  
+  return eprop_object->entry;
 }
 
 
@@ -3231,8 +3217,7 @@ glade_eprop_objects_selected_widget (GtkTreeModel *model,
 }
 
 static void
-glade_eprop_objects_show_dialog (GtkWidget *dialog_button,
-                                 GladeEditorProperty *eprop)
+glade_eprop_objects_show_dialog (GladeEditorProperty *eprop)
 {
   GtkWidget *dialog, *parent;
   GtkWidget *vbox, *label, *sw;
@@ -3345,24 +3330,17 @@ static GtkWidget *
 glade_eprop_objects_create_input (GladeEditorProperty *eprop)
 {
   GladeEPropObjects *eprop_objects = GLADE_EPROP_OBJECTS (eprop);
-  GtkWidget *hbox;
-  GtkWidget *button;
-
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-  gtk_widget_set_valign (hbox, GTK_ALIGN_CENTER);
 
   eprop_objects->entry = gtk_entry_new ();
+  gtk_widget_set_valign (eprop_objects->entry, GTK_ALIGN_CENTER);
   gtk_editable_set_editable (GTK_EDITABLE (eprop_objects->entry), FALSE);
-  gtk_widget_show (eprop_objects->entry);
-  gtk_box_pack_start (GTK_BOX (hbox), eprop_objects->entry, TRUE, TRUE, 0);
-
-  button = gtk_button_new_with_label ("...");
-  gtk_widget_show (button);
-  gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
-
-  g_signal_connect (G_OBJECT (button), "clicked",
-                    G_CALLBACK (glade_eprop_objects_show_dialog), eprop);
-  return hbox;
+  gtk_entry_set_icon_from_stock (GTK_ENTRY (eprop_objects->entry), 
+                                 GTK_ENTRY_ICON_SECONDARY,
+                                 GTK_STOCK_EDIT);
+  g_signal_connect_swapped (eprop_objects->entry, "icon-release",
+                            G_CALLBACK (glade_eprop_objects_show_dialog), eprop);
+  
+  return eprop_objects->entry;
 }
 
 /*******************************************************************************
