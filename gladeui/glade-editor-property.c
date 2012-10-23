@@ -1080,11 +1080,6 @@ glade_eprop_flags_create_treeview (GladeEditorProperty *eprop)
   GtkTreeViewColumn *column;
   GtkCellRenderer *renderer;
   GladeEPropFlags *eprop_flags = GLADE_EPROP_FLAGS (eprop);
-  if (!eprop_flags->model)
-    eprop_flags->model = GTK_TREE_MODEL (gtk_list_store_new (3, G_TYPE_BOOLEAN,
-                                                             G_TYPE_STRING,
-                                                             G_TYPE_UINT));
-
 
   scrolled_window = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
@@ -1177,26 +1172,27 @@ glade_eprop_flags_show_dialog (GtkWidget *button, GladeEditorProperty *eprop)
 static GtkWidget *
 glade_eprop_flags_create_input (GladeEditorProperty *eprop)
 {
-  GtkWidget *vbox, *hbox, *button, *widget;
+  GtkWidget *hbox, *button;
   GladeEPropFlags *eprop_flags = GLADE_EPROP_FLAGS (eprop);
 
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-  gtk_widget_set_halign (hbox, GTK_ALIGN_START);
+  if (!eprop_flags->model)
+    eprop_flags->model = GTK_TREE_MODEL (gtk_list_store_new (3, G_TYPE_BOOLEAN,
+                                                             G_TYPE_STRING,
+                                                             G_TYPE_UINT));
 
-  widget = glade_eprop_flags_create_treeview (eprop);
+
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 
   eprop_flags->entry = gtk_entry_new ();
   gtk_editable_set_editable (GTK_EDITABLE (eprop_flags->entry), FALSE);
 
-  gtk_box_pack_start (GTK_BOX (vbox), eprop_flags->entry, FALSE, FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (vbox), widget, TRUE, TRUE, 0);
-  gtk_box_pack_start (GTK_BOX (hbox), vbox, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), eprop_flags->entry, TRUE, TRUE, 0);
 
   button = gtk_button_new_with_label ("...");
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
 
-  gtk_widget_show_all (hbox);
+  gtk_widget_show_all (eprop_flags->entry);
+  gtk_widget_show_all (button);
 
   g_signal_connect (G_OBJECT (button), "clicked",
                     G_CALLBACK (glade_eprop_flags_show_dialog), eprop);
