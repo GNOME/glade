@@ -1359,7 +1359,7 @@ glade_eprop_named_icon_load (GladeEditorProperty *eprop,
 {
   GladeEPropNamedIcon *eprop_named_icon = GLADE_EPROP_NAMED_ICON (eprop);
   GtkEntry *entry;
-  const gchar *text;
+  gchar *text;
 
   /* Chain up first */
   editor_property_class->load (eprop, property);
@@ -1371,6 +1371,8 @@ glade_eprop_named_icon_load (GladeEditorProperty *eprop,
   text = glade_property_make_string (property);
 
   gtk_entry_set_text (entry, text ? text : "");
+
+  g_free (text);
 }
 
 static void
@@ -1560,10 +1562,30 @@ GLADE_MAKE_EPROP (GladeEPropText, glade_eprop_text)
 #define GLADE_IS_EPROP_TEXT(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_TEXT))
 #define GLADE_IS_EPROP_TEXT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_TEXT))
 #define GLADE_EPROP_TEXT_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_TEXT, GladeEPropTextClass))
-     static void glade_eprop_text_finalize (GObject *object)
+
+static void
+glade_eprop_text_finalize (GObject *object)
 {
   /* Chain up */
   G_OBJECT_CLASS (editor_property_class)->finalize (object);
+}
+
+static gchar *
+text_buffer_get_text (GtkTextBuffer *buffer)
+{
+  GtkTextIter start, end;
+  gchar *retval;
+  
+  gtk_text_buffer_get_bounds (buffer, &start, &end);
+  retval = gtk_text_buffer_get_text (buffer, &start, &end, FALSE);
+
+  if (retval && retval[0] == '\0')
+    {
+      g_free (retval);
+      return NULL;
+    }
+
+  return retval;
 }
 
 static void
@@ -1584,38 +1606,31 @@ glade_eprop_text_load (GladeEditorProperty *eprop, GladeProperty *property)
     {
       if (gtk_combo_box_get_has_entry (GTK_COMBO_BOX (eprop_text->text_entry)))
         {
-          const gchar *text = glade_property_make_string (property);
-          if (!text)
-            text = "";
-          gtk_entry_set_text (GTK_ENTRY
-                              (gtk_bin_get_child
-                               (GTK_BIN (eprop_text->text_entry))), text);
+          GtkWidget *entry = gtk_bin_get_child (GTK_BIN (eprop_text->text_entry));
+          gchar *text = glade_property_make_string (property);
+
+          gtk_entry_set_text (GTK_ENTRY (entry), text ? text : "");
+          g_free (text);
         }
       else
         {
-          const gchar *text = glade_property_make_string (property);
+          gchar *text = glade_property_make_string (property);
           gint value = text ?
               glade_utils_enum_value_from_string (GLADE_TYPE_STOCK, text) : 0;
 
           /* Set active iter... */
           gtk_combo_box_set_active (GTK_COMBO_BOX (eprop_text->text_entry),
                                     value);
+          g_free (text);
         }
     }
   else if (GTK_IS_ENTRY (eprop_text->text_entry))
     {
       GtkEntry *entry = GTK_ENTRY (eprop_text->text_entry);
-      const gchar *text = NULL;
+      gchar *text = glade_property_make_string (property);
 
-      if (pspec->value_type == G_TYPE_STRING)
-        text = glade_property_make_string (property);
-      else if (pspec->value_type == GDK_TYPE_PIXBUF)
-        {
-          GObject *object = g_value_get_object (glade_property_inline_value (property));
-          if (object)
-            text = g_object_get_data (object, "GladeFileName");
-        }
       gtk_entry_set_text (entry, text ? text : "");
+      g_free (text);
     }
   else if (GTK_IS_TEXT_VIEW (eprop_text->text_entry))
     {
@@ -1631,13 +1646,28 @@ glade_eprop_text_load (GladeEditorProperty *eprop, GladeProperty *property)
           gchar *text = glade_widget_adaptor_string_from_value
 	    (glade_property_class_get_adaptor (pclass),
 	     pclass, glade_property_inline_value (property));
-          gtk_text_buffer_set_text (buffer, text ? text : "", -1);
+          gchar *old_text = text_buffer_get_text (buffer);
+
+          /* Only update it if necessary, see notes bellow */
+          if (g_strcmp0 (text, old_text))
+            gtk_text_buffer_set_text (buffer, text ? text : "", -1);
+
           g_free (text);
         }
       else
         {
-          const gchar *text = glade_property_make_string (property);
-          gtk_text_buffer_set_text (buffer, text ? text : "", -1);
+          gchar *text = glade_property_make_string (property);
+          gchar *old_text = text_buffer_get_text (buffer);
+
+          /* NOTE: GtkTextBuffer does not like to be updated from a "changed"
+           * signal callback. It prints a iterator warning and moves the cursor
+           * to the end.
+           */
+          if (g_strcmp0 (text, old_text))
+            gtk_text_buffer_set_text (buffer, text ? text : "", -1);
+
+          g_free (old_text);
+          g_free (text);
         }
     }
   else
@@ -1710,15 +1740,11 @@ glade_eprop_text_buffer_changed (GtkTextBuffer *buffer,
                                  GladeEditorProperty *eprop)
 {
   gchar *text;
-  GtkTextIter start, end;
 
   if (eprop->priv->loading)
     return;
 
-  gtk_text_buffer_get_start_iter (buffer, &start);
-  gtk_text_buffer_get_end_iter (buffer, &end);
-
-  text = gtk_text_buffer_get_text (buffer, &start, &end, FALSE);
+  text = text_buffer_get_text (buffer);
   glade_eprop_text_changed_common (eprop, text, eprop->priv->use_command);
   g_free (text);
 }
@@ -1901,43 +1927,18 @@ glade_editor_property_show_i18n_dialog (GtkWidget *parent,
   res = gtk_dialog_run (GTK_DIALOG (dialog));
   if (res == GTK_RESPONSE_OK)
     {
-      GtkTextIter start, end;
-
       g_free ((gpointer) * text);
       g_free ((gpointer) * context);
       g_free ((gpointer) * comment);
 
-      /* get the new values for translatable, has_context, and comment */
-      *translatable =
-          gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON
-                                        (translatable_button));
+      /* Get the new values for translatable */
+      *translatable = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON
+                                                    (translatable_button));
 
-      /* Comment */
-      gtk_text_buffer_get_bounds (comment_buffer, &start, &end);
-      *comment = gtk_text_buffer_get_text (comment_buffer, &start, &end, TRUE);
-      if (*comment[0] == '\0')
-        {
-          g_free (*comment);
-          *comment = NULL;
-        }
-
-      /* Text */
-      gtk_text_buffer_get_bounds (text_buffer, &start, &end);
-      *text = gtk_text_buffer_get_text (text_buffer, &start, &end, TRUE);
-      if (*text[0] == '\0')
-        {
-          g_free (*text);
-          *text = NULL;
-        }
-
-      /* Context */
-      gtk_text_buffer_get_bounds (context_buffer, &start, &end);
-      *context = gtk_text_buffer_get_text (context_buffer, &start, &end, TRUE);
-      if (*context[0] == '\0')
-        {
-          g_free (*context);
-          *context = NULL;
-        }
+      /* Comment, text and context */
+      *comment = text_buffer_get_text (comment_buffer);
+      *text = text_buffer_get_text (text_buffer);
+      *context = text_buffer_get_text (context_buffer);
 
       gtk_widget_destroy (dialog);
       return TRUE;
@@ -1951,24 +1952,24 @@ static void
 glade_eprop_text_show_i18n_dialog (GtkWidget *entry,
                                    GladeEditorProperty *eprop)
 {
-  gchar *text = glade_property_make_string (eprop->priv->property);
-  gchar *context = g_strdup (glade_property_i18n_get_context (eprop->priv->property));
-  gchar *comment = g_strdup (glade_property_i18n_get_comment (eprop->priv->property));
-  gboolean translatable =
-      glade_property_i18n_get_translatable (eprop->priv->property);
+  GladeEditorPropertyPrivate *priv = eprop->priv;
+  gchar *text = glade_property_make_string (priv->property);
+  gchar *context = g_strdup (glade_property_i18n_get_context (priv->property));
+  gchar *comment = g_strdup (glade_property_i18n_get_comment (priv->property));
+  gboolean translatable = glade_property_i18n_get_translatable (priv->property);
 
   if (glade_editor_property_show_i18n_dialog
       (entry, &text, &context, &comment, &translatable))
     {
-      glade_command_set_i18n (eprop->priv->property, translatable, context, comment);
-      glade_eprop_text_changed_common (eprop, text, eprop->priv->use_command);
+      glade_command_set_i18n (priv->property, translatable, context, comment);
+      glade_eprop_text_changed_common (eprop, text, priv->use_command);
 
-      glade_editor_property_load (eprop, eprop->priv->property);
-
-      g_free (text);
-      g_free (context);
-      g_free (comment);
+      glade_editor_property_load (eprop, priv->property);
     }
+
+  g_free (text);
+  g_free (context);
+  g_free (comment);
 }
 
 gboolean
