@@ -73,6 +73,7 @@ glade_gtk_activatable_evaluate_property_sensitivity (GObject *object,
       glade_widget_property_set_sensitive (gwidget, "stock", sensitivity, msg);
       //glade_widget_property_set_sensitive (gwidget, "use-stock", sensitivity, msg);
       glade_widget_property_set_sensitive (gwidget, "image", sensitivity, msg);
+      glade_widget_property_set_sensitive (gwidget, "image-position", sensitivity, msg);
       glade_widget_property_set_sensitive (gwidget, "custom-child", sensitivity, msg);
       glade_widget_property_set_sensitive (gwidget, "stock-id", sensitivity, msg);
       glade_widget_property_set_sensitive (gwidget, "label-widget", sensitivity, msg);
