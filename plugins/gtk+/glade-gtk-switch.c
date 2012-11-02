@@ -42,6 +42,24 @@ glade_gtk_switch_create_editable (GladeWidgetAdaptor *adaptor,
 }
 
 void
+glade_gtk_switch_post_create (GladeWidgetAdaptor *adaptor,
+                              GObject *widget,
+                              GladeCreateReason reason)
+{
+  GladeWidget *gwidget;
+  
+  if (reason != GLADE_CREATE_LOAD) return;
+
+  g_return_if_fail (GTK_IS_SWITCH (widget));
+  gwidget = glade_widget_get_from_gobject (widget);
+  g_return_if_fail (GLADE_IS_WIDGET (gwidget));
+
+  g_signal_connect (glade_widget_get_project (gwidget), "parse-finished",
+                    G_CALLBACK (glade_gtk_activatable_parse_finished),
+                    gwidget);
+}
+
+void
 glade_gtk_switch_set_property (GladeWidgetAdaptor *adaptor,
                                GObject *object,
                                const gchar *id,
