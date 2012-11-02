@@ -4426,7 +4426,11 @@ glade_gtk_button_post_create (GladeWidgetAdaptor * adaptor,
                                        RESPID_INSENSITIVE_MSG);
   glade_widget_property_set_enabled (gbutton, "response-id", FALSE);
 
-  if (reason == GLADE_CREATE_USER)
+  if (reason == GLADE_CREATE_LOAD)
+    g_signal_connect (glade_widget_get_project (gbutton), "parse-finished",
+		      G_CALLBACK (glade_gtk_activatable_parse_finished),
+		      gbutton);
+  else if (reason == GLADE_CREATE_USER)
     glade_gtk_button_update_stock (gbutton);
 }
 
@@ -5443,6 +5447,10 @@ void
 glade_gtk_menu_item_post_create (GladeWidgetAdaptor * adaptor,
                                  GObject * object, GladeCreateReason reason)
 {
+  GladeWidget *gitem;
+
+  gitem = glade_widget_get_from_gobject (object);
+
   if (GTK_IS_SEPARATOR_MENU_ITEM (object))
     return;
 
@@ -5452,6 +5460,11 @@ glade_gtk_menu_item_post_create (GladeWidgetAdaptor * adaptor,
       gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
       gtk_container_add (GTK_CONTAINER (object), label);
     }
+
+  if (reason == GLADE_CREATE_LOAD)
+    g_signal_connect (G_OBJECT (glade_widget_get_project (gitem)), "parse-finished",
+		      G_CALLBACK (glade_gtk_activatable_parse_finished),
+		      gitem);
 }
 
 GList *
@@ -6556,12 +6569,19 @@ glade_gtk_tool_item_post_create (GladeWidgetAdaptor *adaptor,
                                  GObject            *object, 
 				 GladeCreateReason   reason)
 {
+  GladeWidget *gitem = glade_widget_get_from_gobject (object);
+
   if (GTK_IS_SEPARATOR_TOOL_ITEM (object))
     return;
 
   if (reason == GLADE_CREATE_USER &&
       gtk_bin_get_child (GTK_BIN (object)) == NULL)
     gtk_container_add (GTK_CONTAINER (object), glade_placeholder_new ());
+
+  if (reason == GLADE_CREATE_LOAD)
+    g_signal_connect (G_OBJECT (glade_widget_get_project (gitem)), "parse-finished",
+		      G_CALLBACK (glade_gtk_activatable_parse_finished),
+		      gitem);
 }
 
 void
