@@ -810,7 +810,7 @@ glade_widget_adaptor_set_template (GladeWidgetAdaptor *adaptor,
   object_type = glade_widget_adaptor_get_object_type (adaptor);
   klass = g_type_class_peek (object_type);
 #if HAVE_GTK_CONTAINER_CLASS_SET_TEMPLATE_FROM_STRING
-  gtk_container_class_set_template_from_string (klass, priv->template_xml);
+  gtk_container_class_set_template_from_string (klass, priv->template_xml, "this");
 #endif
   gwa_template_rebuild_objects (adaptor, object_type);
 }
