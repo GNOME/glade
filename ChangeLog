@@ -1,3 +1,23 @@
+2012-11-26  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* configure.ac, NEWS: Rolling 3.14.2
+
+2012-11-01  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* plugins/gtk+/glade-gtk-activatable.c: Fixed Bug #685816 
+	  "Widget attributes editing broken" by reverting old fix and setting 
+	  use-action-appearance default back to false so the old sensitivity
+	  code can work as ussual.
+
+	* gladeui/glade-editor-property.c:
+	  o Fixed bug #678922 "When editing a label, the cursor is moved to the end after every change."
+	  o Fixed a few leak since glade_property_make_string() returns a newlly allocated string.
+
+2012-10-19  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-editor-property.c: Update GladeEditorProperty label 
+	  sensitivity on GladeProperty sensitivity notify.
+
 2012-10-14  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* configure.ac, NEWS: Rolling 3.14.1, bumped gtk dependency to 3.6.0

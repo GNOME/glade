@@ -1,4 +1,14 @@
 ============
+Glade 3.14.2
+============
+
+	- Fixed Bug #685816 "Widget attributes editing broken" by reverting old fix and setting 
+	  use-action-appearance default back to false so the old sensitivity
+	  code can work as ussual.
+	- Fixed bug #678922 "When editing a label, the cursor is moved to the end after every change."
+	- Fixed a few leak since glade_property_make_string() returns a newlly allocated string.
+
+============
 Glade 3.14.1
 ============
 
