@@ -81,6 +81,11 @@ if test ! -e /usr/bin/7z; then
 sudo apt-get install p7zip-full
 fi
 
+# Install python3 if nescesary
+if test ! -e /usr/bin/python3; then
+sudo apt-get install python3
+fi
+
 echo cd $WORK
 cd $WORK
 
