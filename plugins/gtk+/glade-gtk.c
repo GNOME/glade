@@ -2068,6 +2068,7 @@ glade_gtk_box_add_child (GladeWidgetAdaptor *adaptor,
 			 GObject            *child)
 {
 	GladeWidget  *gbox, *gchild;
+	GladeProject *project;
 	GList        *children;
 	gint          num_children;
 	
@@ -2075,6 +2076,8 @@ glade_gtk_box_add_child (GladeWidgetAdaptor *adaptor,
 	g_return_if_fail (GTK_IS_WIDGET (child));
 	
 	gbox = glade_widget_get_from_gobject (object);
+	project = glade_widget_get_project (gbox);
+
 	/*
 	  Try to remove the last placeholder if any, this way GtkBox`s size 
 	  will not be changed.
@@ -4007,7 +4010,7 @@ glade_gtk_notebook_set_n_pages (GObject *object, const GValue *value)
 {
 	GladeWidget *widget;
 	GtkNotebook *notebook;
-	GtkWidget   *child_widget;
+	GtkWidget   *child_widget, *tab_widget;
 	gint new_size, i;
 	gint old_size;
 
@@ -4065,6 +4068,7 @@ glade_gtk_notebook_set_n_pages (GObject *object, const GValue *value)
 		/* Get the last page and remove it (project objects have been cleared by
 		 * the action code already). */
 		child_widget = gtk_notebook_get_nth_page (notebook, old_size-1);
+		tab_widget   = gtk_notebook_get_tab_label (notebook, child_widget);
 
 		/* Ok there shouldnt be widget in the content area, that's
 		 * the placeholder, we should clean up the project widget that
@@ -6028,6 +6032,17 @@ glade_gtk_color_button_set_property (GladeWidgetAdaptor *adaptor,
 
 /* ----------------------------- GtkActivatable ------------------------------ */
 static void
+activatable_parse_finished (GladeProject *project, 
+			    GladeWidget  *widget)
+{
+	GObject *related_action = NULL;
+
+	glade_widget_property_get (widget, "related-action", &related_action);
+	if (related_action == NULL)
+		glade_widget_property_set (widget, "use-action-appearance", FALSE);
+}
+
+static void
 evaluate_activatable_property_sensitivity (GObject            *object, 
 					   const gchar        *id,
 					   const GValue       *value)
@@ -6142,6 +6157,11 @@ glade_gtk_button_post_create (GladeWidgetAdaptor  *adaptor,
 	glade_widget_property_set_sensitive (gbutton, "response-id", FALSE, 
 					     RESPID_INSENSITIVE_MSG);
 	glade_widget_property_set_enabled (gbutton, "response-id", FALSE);
+
+	if (reason == GLADE_CREATE_LOAD)
+		g_signal_connect (G_OBJECT (gbutton->project), "parse-finished",
+				  G_CALLBACK (activatable_parse_finished),
+				  gbutton);
 }
 
 void
@@ -7043,6 +7063,10 @@ glade_gtk_menu_item_post_create (GladeWidgetAdaptor *adaptor,
 				 GObject            *object, 
 				 GladeCreateReason   reason)
 {
+	GladeWidget  *gitem;
+
+	gitem = glade_widget_get_from_gobject (object);
+	
 	if (GTK_IS_SEPARATOR_MENU_ITEM (object)) return;
 	
 	if (gtk_bin_get_child (GTK_BIN (object)) == NULL)
@@ -7051,6 +7075,11 @@ glade_gtk_menu_item_post_create (GladeWidgetAdaptor *adaptor,
 		gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
 		gtk_container_add (GTK_CONTAINER (object), label);
 	}
+
+	if (reason == GLADE_CREATE_LOAD)
+		g_signal_connect (G_OBJECT (gitem->project), "parse-finished",
+				  G_CALLBACK (activatable_parse_finished),
+				  gitem);
 }
 
 GList *
@@ -8260,12 +8289,19 @@ glade_gtk_tool_item_post_create (GladeWidgetAdaptor *adaptor,
 				 GObject            *object, 
 				 GladeCreateReason   reason)
 {
+	GladeWidget *gitem = glade_widget_get_from_gobject (object);
+	
 	if (GTK_IS_SEPARATOR_TOOL_ITEM (object)) return;
 	
 	if (reason == GLADE_CREATE_USER &&
 	    gtk_bin_get_child (GTK_BIN (object)) == NULL)
 		gtk_container_add (GTK_CONTAINER (object),
 				   glade_placeholder_new ());
+
+	if (reason == GLADE_CREATE_LOAD)
+		g_signal_connect (G_OBJECT (gitem->project), "parse-finished",
+				  G_CALLBACK (activatable_parse_finished),
+				  gitem);
 }
 
 void
@@ -8383,10 +8419,12 @@ glade_gtk_tool_button_set_stock_id (GObject *object, const GValue *value)
 static void
 glade_gtk_tool_button_set_icon (GObject *object, const GValue *value)
 {
+	GladeWidget *gbutton;
 	GObject *pixbuf;
 	GtkWidget *image = NULL;
 	
 	g_return_if_fail (GTK_IS_TOOL_BUTTON (object));
+	gbutton = glade_widget_get_from_gobject (object);
 	
 	if ((pixbuf = g_value_get_object (value)))
 	{
@@ -9962,7 +10000,7 @@ glade_gtk_assistant_set_child_property (GladeWidgetAdaptor *adaptor,
 	{
 		GtkAssistant *assistant = GTK_ASSISTANT (container);
 		GtkWidget *widget = GTK_WIDGET (child);
-		gint pos;
+		gint pos, size;
 		gboolean set_current;
 		
 		if ((pos = g_value_get_int (value)) < 0) return;
@@ -9970,6 +10008,8 @@ glade_gtk_assistant_set_child_property (GladeWidgetAdaptor *adaptor,
 			return;
 		set_current = gtk_assistant_get_current_page (assistant) == 
 			      glade_gtk_assistant_get_page (assistant, widget);
+		
+		size = gtk_assistant_get_n_pages (assistant);
 
 		g_object_ref (child);
 		gtk_container_remove (GTK_CONTAINER (container), widget);
