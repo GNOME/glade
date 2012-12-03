@@ -54,7 +54,7 @@ case $1 in
     ;;
   make)
     DEVELOPER="false"
-    EXCLUDE_FILES="-o -name *.dll.a -o -name *.la"
+    EXCLUDE_FILES="( -path lib/pkgconfig -o -name *.dll.a -o -name *.la ) -prune"
     INCLUDE_DIR=
     ;;
   *)
@@ -90,28 +90,27 @@ if test ! -e download-mingw-rpm.py; then
 fi
 
 if test ! -d $MINGW_ROOT; then
-  python3 download-mingw-rpm.py --deps gtk3-devel libxml2-devel
+  python3 download-mingw-rpm.py --deps gtk2-devel libxml2-devel
   mv $MINGW_ROOT_BIN $MINGW_ROOT
 fi
 
-if test x"$DEVELOPER"=xfalse -a ! -d $MINGW_ROOT_BIN; then
-  python3 download-mingw-rpm.py --deps gtk3 hicolor-icon-theme
+if test $DEVELOPER = "false" -a ! -d $MINGW_ROOT_BIN; then
+  python3 download-mingw-rpm.py --deps gtk2 hicolor-icon-theme
 fi
 
-if test ! -e $MINGW_ROOT_BIN/bin/glade.exe; then
+if test ! -e $MINGW_ROOT_BIN/bin/glade-3.exe; then
 cd $ROOT && ./autogen.sh --prefix=$MINGW_ROOT_BIN $CONFIGURE_ARGS && make && make install
 
 # rename executables names
-if test -e $MINGW_ROOT_BIN/bin/i686-w64-mingw32-glade.exe; then
-  mv $MINGW_ROOT_BIN/bin/i686-w64-mingw32-glade.exe $MINGW_ROOT_BIN/bin/glade.exe
-  mv $MINGW_ROOT_BIN/bin/i686-w64-mingw32-glade-previewer.exe $MINGW_ROOT_BIN/bin/glade-previewer.exe
+if test -e $MINGW_ROOT_BIN/bin/i686-w64-mingw32-glade-3.exe; then
+  mv $MINGW_ROOT_BIN/bin/i686-w64-mingw32-glade-3.exe $MINGW_ROOT_BIN/bin/glade-3.exe
 fi
 
 fi
 
 #copy files to installer directory
 
-cp $ROOT/build/mingw-w64/glade.nsi $ROOT/data/icons/glade.ico $MINGW_ROOT_BIN
+cp $ROOT/build/mingw-w64/glade.nsi $ROOT/data/icons/glade-3.ico $MINGW_ROOT_BIN
 
 #change to installer directory
 cd $MINGW_ROOT_BIN
@@ -143,26 +142,24 @@ EOF
 cat $ROOT/COPYING.GPL >> COPYING
 fi
 
-# Update schemas just in case
-glib-compile-schemas $MINGW_ROOT_BIN/share/glib-2.0/schemas
+if test $DEVELOPER = "true"; then
 
-if test x"$DEVELOPER"=xtrue; then
 cat > install_files.nsh << EOF
-        file /r /x locale lib
-        file /r /x locale share
+        file /r lib
+        file /r share
         file /r include
 EOF
 else
 cat > install_files.nsh << EOF
-        file /r /x locale /x pkgconfig /x *.dll.a /x *.la lib
-        file /r /x locale share
+        file /r /x pkgconfig /x *.dll.a /x *.la lib
+        file /r share
 EOF
 fi
 
 # Create a list of files to delete in the uninstaller
 # Note that we have to reverse the list to remove the directories once they are empty
 find bin etc lib share $INCLUDE_DIR \
-        \( -path share/locale -o -path lib/locale -o -path lib/pkgconfig $EXCLUDE_FILES \) -prune \
+        $EXCLUDE_FILES \
         -o -type f -printf "delete \"\$INSTDIR\\\%p\"\n" -or -type d -printf "rmDir \"\$INSTDIR\\\%p\"\n" \
         | sed 'y/\//\\/' | tac > uninstall_files.nsh
 

@@ -3,7 +3,7 @@
 !include "FileFunc.nsh"
 
 ;General
-!define APPNAME "Glade Interface Designer"
+!define APPNAME "Glade Interface Designer Gtk+ 2"
 !define COMPANYNAME "GNOME Foundation"
 
 !define VERSIONMAJOR @GLADE_MAJOR_VERSION@
@@ -26,7 +26,7 @@ InstallDir "$LOCALAPPDATA\${COMPANYNAME}\${APPNAME}"
 RequestExecutionLevel user
 
 ;Interface Settings
-!define MUI_ICON "glade.ico"
+!define MUI_ICON "glade-3.ico"
 !define MUI_ABORTWARNING
 
 ;Pages
@@ -71,22 +71,21 @@ FunctionEnd
 Section "Install"
         SetOutPath "$INSTDIR"
         file /r bin
-        file /r etc
         !include install_files.nsh
-        file glade.ico
+        file glade-3.ico
   
         ;Create uninstaller
         WriteUninstaller "$INSTDIR\Uninstall.exe"
         ;Create shortcuts
         createDirectory "$SMPROGRAMS\${COMPANYNAME}"
-        createShortCut "$SMPROGRAMS\${COMPANYNAME}\${APPNAME}.lnk" "$INSTDIR\bin\glade.exe" "" "$INSTDIR\glade.ico"
+        createShortCut "$SMPROGRAMS\${COMPANYNAME}\${APPNAME}.lnk" "$INSTDIR\bin\glade-3.exe" "" "$INSTDIR\glade-3.ico"
  
 	; Registry information for add/remove programs
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "DisplayName" "${COMPANYNAME} - ${APPNAME}"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "UninstallString" "$INSTDIR\uninstall.exe"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "QuietUninstallString" "$INSTDIR\uninstall.exe /S"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "InstallLocation" "$INSTDIR"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "DisplayIcon" "$\"$INSTDIR\glade.ico$\""
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "DisplayIcon" "$\"$INSTDIR\glade-3.ico$\""
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "Publisher" "$\"${COMPANYNAME}$\""
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "HelpLink" "$\"${HELPURL}$\""
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "URLUpdateInfo" "$\"${UPDATEURL}$\""
@@ -107,7 +106,7 @@ Section "Uninstall"
 	rmDir "$SMPROGRAMS\${COMPANYNAME}"
  
 	; Remove files
-        delete "$INSTDIR\glade.ico"
+        delete "$INSTDIR\glade-3.ico"
         !include uninstall_files.nsh
 
 	; Always delete uninstaller as the last action
