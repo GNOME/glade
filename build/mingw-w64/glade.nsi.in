@@ -40,6 +40,9 @@ RequestExecutionLevel user
 !insertmacro MUI_LANGUAGE "English"
 
 Function .onInit
+
+  MessageBox MB_OK "This Glade build and installer are BETA SOFTWARE!$\nIt was cross compiled on Linux and tested with wine! (a Windows emulator)$\nand it is distributed with the hope it will be usefull as a starting point for a new Windows comunity$\nthat can support it and contribute back to make it better."
+
   ReadRegStr $R0 HKLM \
   "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "UninstallString"
   StrCmp $R0 "" done

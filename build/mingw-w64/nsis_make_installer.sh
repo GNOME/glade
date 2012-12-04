@@ -54,7 +54,7 @@ case $1 in
     ;;
   make)
     DEVELOPER="false"
-    EXCLUDE_FILES="-o -name *.dll.a -o -name *.la"
+    EXCLUDE_FILES="( -path lib/pkgconfig -o -name *.dll.a -o -name *.la ) -prune -o"
     INCLUDE_DIR=
     ;;
   *)
@@ -99,7 +99,7 @@ if test ! -d $MINGW_ROOT; then
   mv $MINGW_ROOT_BIN $MINGW_ROOT
 fi
 
-if test x"$DEVELOPER"=xfalse -a ! -d $MINGW_ROOT_BIN; then
+if test "$DEVELOPER" = "false" -a ! -d $MINGW_ROOT_BIN; then
   python3 download-mingw-rpm.py --deps gtk3 hicolor-icon-theme
 fi
 
@@ -151,24 +151,23 @@ fi
 # Update schemas just in case
 glib-compile-schemas $MINGW_ROOT_BIN/share/glib-2.0/schemas
 
-if test x"$DEVELOPER"=xtrue; then
+if test $DEVELOPER = "true"; then
 cat > install_files.nsh << EOF
-        file /r /x locale lib
-        file /r /x locale share
+        file /r lib
+        file /r share
         file /r include
 EOF
 else
 cat > install_files.nsh << EOF
-        file /r /x locale /x pkgconfig /x *.dll.a /x *.la lib
-        file /r /x locale share
+        file /r /x pkgconfig /x *.dll.a /x *.la lib
+        file /r share
 EOF
 fi
 
 # Create a list of files to delete in the uninstaller
 # Note that we have to reverse the list to remove the directories once they are empty
-find bin etc lib share $INCLUDE_DIR \
-        \( -path share/locale -o -path lib/locale -o -path lib/pkgconfig $EXCLUDE_FILES \) -prune \
-        -o -type f -printf "delete \"\$INSTDIR\\\%p\"\n" -or -type d -printf "rmDir \"\$INSTDIR\\\%p\"\n" \
+find bin etc lib share $INCLUDE_DIR $EXCLUDE_FILES \
+        ! -type d -printf "delete \"\$INSTDIR\\\%p\"\n" -or -type d -printf "rmDir \"\$INSTDIR\\\%p\"\n" \
         | sed 'y/\//\\/' | tac > uninstall_files.nsh
 
 # create installer
