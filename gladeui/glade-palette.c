@@ -275,16 +275,17 @@ palette_item_button_press_cb (GtkWidget      *button,
 			      GdkEventButton *event, 
 			      GtkToolItem    *item)
 {
+  GladePalette *palette = g_object_get_data (G_OBJECT (item), "glade-palette");
+  GladeWidgetAdaptor *adaptor = g_object_get_data (G_OBJECT (item), "glade-widget-adaptor");
+  
   if (glade_popup_is_popup_event (event))
     {
-      GladeWidgetAdaptor *adaptor;
-      GladePalette       *palette;
-
-      adaptor = g_object_get_data (G_OBJECT (item), "glade-widget-adaptor");
-      palette = g_object_get_data (G_OBJECT (item), "glade-palette");
-
       glade_popup_palette_pop (palette, adaptor, event);
       return TRUE;
+    }
+  else
+    {
+      gtk_drag_source_set_icon_name (button, glade_widget_adaptor_get_icon_name (adaptor));                                
     }
 
   return FALSE;
@@ -924,4 +925,18 @@ glade_palette_get_show_selector_button (GladePalette * palette)
   g_return_val_if_fail (GLADE_IS_PALETTE (palette), FALSE);
 
   return gtk_widget_get_visible (palette->priv->selector_hbox);
+}
+
+/**
+ * glade_palette_get_tool_palette:
+ * @palette: a #GladePalette
+ *
+ * Returns: the GtkToolPalette associated to this palette.
+ */
+GtkToolPalette *
+glade_palette_get_tool_palette (GladePalette *palette)
+{
+  g_return_val_if_fail (GLADE_IS_PALETTE (palette), FALSE);
+
+  return GTK_TOOL_PALETTE (palette->priv->toolpalette);
 }

@@ -1703,6 +1703,8 @@ on_notebook_tab_added (GtkNotebook *notebook,
   gtk_notebook_append_page (GTK_NOTEBOOK (window->priv->palettes_notebook),
                             palette, NULL);
 
+  glade_design_view_set_drag_source (view, glade_palette_get_tool_palette (GLADE_PALETTE (palette)));
+  
   if (GPOINTER_TO_INT
       (g_object_get_data (G_OBJECT (view), "view-added-while-loading")))
     {

@@ -52,6 +52,7 @@ enum
 {
   PROP_0,
   PROP_PROJECT,
+  PROP_DRAG_SOURCE
 };
 
 struct _GladeDesignViewPrivate
@@ -59,6 +60,9 @@ struct _GladeDesignViewPrivate
   GladeProject *project;
   GtkWidget *scrolled_window;  /* Main scrolled window */
   GtkWidget *layout_box;       /* Box to pack a GladeDesignLayout for each toplevel in project */
+
+  GtkToolPalette *palette;
+  GladeWidgetAdaptor *drag_adaptor;
 };
 
 static GtkVBoxClass *parent_class = NULL;
@@ -232,6 +236,10 @@ glade_design_view_set_property (GObject *object,
         glade_design_view_set_project (GLADE_DESIGN_VIEW (object),
                                        g_value_get_object (value));
         break;
+      case PROP_DRAG_SOURCE:
+        glade_design_view_set_drag_source (GLADE_DESIGN_VIEW (object),
+                                           GTK_TOOL_PALETTE (g_value_get_object (value)));
+        break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
@@ -248,6 +256,9 @@ glade_design_view_get_property (GObject *object,
     {
       case PROP_PROJECT:
         g_value_set_object (value, GLADE_DESIGN_VIEW (object)->priv->project);
+        break;
+      case PROP_DRAG_SOURCE:
+        g_value_set_object (value, GLADE_DESIGN_VIEW (object)->priv->palette);
         break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -365,6 +376,13 @@ glade_design_view_class_init (GladeDesignViewClass *klass)
                                                         GLADE_TYPE_PROJECT,
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY));
+  g_object_class_install_property (object_class,
+                                   PROP_DRAG_SOURCE,
+                                   g_param_spec_object ("drag-source",
+                                                        "Drag Source",
+                                                        "A palette to use as the source of drag events for this view",
+                                                        GTK_TYPE_TOOL_PALETTE,
+                                                        G_PARAM_READWRITE));
 
   g_type_class_add_private (object_class, sizeof (GladeDesignViewPrivate));
 }
@@ -425,4 +443,182 @@ glade_design_view_get_from_project (GladeProject *project)
 
   return (p != NULL) ? GLADE_DESIGN_VIEW (p) : NULL;
 
+}
+
+static GtkWidget *
+widget_get_child_from_position (GtkWidget *toplevel, GtkWidget *widget, gint x, gint y)
+{
+  GtkWidget *retval = NULL;
+  GList *children, *l;
+
+  if (!GTK_IS_CONTAINER (widget))
+    return NULL;
+
+  children = glade_util_container_get_all_children (GTK_CONTAINER (widget));
+  
+  for (l = children;l; l = g_list_next (l))
+    {
+      GtkWidget *child = l->data;
+
+      if (gtk_widget_get_mapped (child))
+        {
+          GtkAllocation alloc;
+          gint xx, yy;
+
+          gtk_widget_translate_coordinates (toplevel, child, x, y, &xx, &yy);
+          gtk_widget_get_allocation (child, &alloc);
+          
+          if (xx >= 0 && yy >= 0 && xx <= alloc.width && yy <= alloc.height)
+            {
+              if (GTK_IS_CONTAINER (child))
+                retval = widget_get_child_from_position (toplevel, child, x, y);
+
+              if (!retval)
+                retval = child;
+
+              break;
+            }
+        }
+    }
+  
+  g_list_free (children);
+
+  return retval;
+}
+
+static gboolean
+widget_is_outside_glade_ancestor (GtkWidget *widget)
+{
+  while (widget)
+    {
+      if (glade_widget_get_from_gobject (widget))
+        return TRUE;
+
+      widget = gtk_widget_get_parent (widget);
+    }
+
+  return FALSE;
+}
+
+static gboolean
+on_drag_motion (GtkWidget *widget,
+                GdkDragContext *context,
+                gint x, gint y,
+                guint time)
+{
+  GladeDesignViewPrivate *priv = GLADE_DESIGN_VIEW (widget)->priv;
+  GtkWidget *child;
+
+  child = widget_get_child_from_position (widget, widget, x, y);
+
+  if (!priv->drag_adaptor)
+    {
+      GdkAtom target = gtk_drag_dest_find_target (widget, context, NULL);
+
+      if (!target)
+        return FALSE;
+
+      gtk_drag_get_data (widget, context, target, time);
+    }
+  
+  if (child &&
+      ((priv->drag_adaptor && GLADE_IS_PLACEHOLDER (child) &&
+        GWA_IS_TOPLEVEL (priv->drag_adaptor)) ||
+       (!GLADE_IS_PLACEHOLDER (child) &&
+        widget_is_outside_glade_ancestor (child)) ))
+    {
+      gdk_drag_status (context, 0, time);
+      return FALSE;
+    }
+
+  gdk_drag_status (context, GDK_ACTION_COPY, time);
+  return TRUE;
+}
+
+static void
+on_drag_data_received (GtkWidget        *widget,
+                       GdkDragContext   *context,
+                       gint              x,
+                       gint              y,
+                       GtkSelectionData *selection,
+                       guint             info,
+                       guint             time)
+{
+  GladeDesignViewPrivate *priv = GLADE_DESIGN_VIEW (widget)->priv;
+  GtkWidget *item;
+
+  item = gtk_tool_palette_get_drag_item (priv->palette, selection);
+  g_return_if_fail (item);
+
+  priv->drag_adaptor = g_object_get_data (G_OBJECT (item), "glade-widget-adaptor");
+}
+
+static gboolean
+on_drag_drop (GtkWidget       *widget,
+              GdkDragContext  *context,
+              gint             x,
+              gint             y,
+              guint            time)  
+{
+  GladeDesignViewPrivate *priv = GLADE_DESIGN_VIEW (widget)->priv;
+  GtkWidget *child;
+
+  if (!priv->drag_adaptor)
+    return FALSE;
+  
+  child = widget_get_child_from_position (widget, widget, x, y);
+    
+  if (child && GLADE_IS_PLACEHOLDER (child))
+    {
+      GladePlaceholder *placeholder = GLADE_PLACEHOLDER (child);
+
+      glade_command_create (priv->drag_adaptor,
+                            glade_placeholder_get_parent (placeholder),
+                            placeholder, 
+                            priv->project);
+    }
+  else
+    {
+      glade_command_create (priv->drag_adaptor, NULL, NULL, priv->project);
+    }
+
+  gtk_drag_finish (context, TRUE, FALSE, time);
+  priv->drag_adaptor = NULL;
+  return TRUE;
+}
+
+void
+glade_design_view_set_drag_source (GladeDesignView *view, GtkToolPalette *source)
+{
+  GladeDesignViewPrivate *priv;
+  GtkWidget *target;
+
+  g_return_if_fail (GLADE_IS_DESIGN_VIEW (view));
+  priv = view->priv;
+
+  if (priv->palette == source)
+    return;
+
+  if (priv->palette)
+    gtk_drag_dest_unset (GTK_WIDGET (priv->palette));
+
+  target = GTK_WIDGET (view);
+  priv->palette = source;
+
+  if (priv->palette)
+    {
+      g_signal_connect (target, "drag-motion", G_CALLBACK (on_drag_motion), NULL);
+      g_signal_connect (target, "drag-data-received", G_CALLBACK (on_drag_data_received), NULL);
+      g_signal_connect (target, "drag-drop", G_CALLBACK (on_drag_drop), NULL);
+
+      gtk_tool_palette_add_drag_dest (priv->palette, target, 0,
+                                      GTK_TOOL_PALETTE_DRAG_ITEMS,
+                                      GDK_ACTION_COPY);
+    }
+  else
+    {
+      g_signal_handlers_disconnect_by_func (target, on_drag_motion, NULL);
+      g_signal_handlers_disconnect_by_func (target, on_drag_data_received, NULL);
+      g_signal_handlers_disconnect_by_func (target, on_drag_drop, NULL);
+    }
 }

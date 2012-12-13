@@ -95,6 +95,8 @@ void		     glade_palette_set_show_selector_button (GladePalette *palette,
 							     
 gboolean             glade_palette_get_show_selector_button (GladePalette *palette);
 
+GtkToolPalette      *glade_palette_get_tool_palette         (GladePalette *palette);
+
 G_END_DECLS
 
 #endif /* __GLADE_PALETTE_H__ */
