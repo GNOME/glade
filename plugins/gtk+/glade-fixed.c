@@ -280,21 +280,31 @@ glade_fixed_filter_event (GladeFixed *fixed,
 static void
 glade_fixed_handle_swindow (GladeFixed *fixed, GdkRectangle *area)
 {
-  GtkWidget *swindow = NULL, *swindow_child = NULL;
+  GtkWidget *swindow = NULL, *swindow_child = NULL, *widget;
   GtkAdjustment *hadj, *vadj;
   GtkAllocation child_allocation;
   GtkWidget *fixed_widget;
+  GladeWidget *gwidget;
   gint x, y;
 
-  fixed_widget = GTK_WIDGET (glade_widget_get_object (GLADE_WIDGET (fixed)));
+  widget = fixed_widget = GTK_WIDGET (glade_widget_get_object (GLADE_WIDGET (fixed)));
 
-  swindow_child = swindow = fixed_widget;
-  while (swindow && !GTK_IS_SCROLLED_WINDOW (swindow))
+  while (widget && !GTK_IS_SCROLLED_WINDOW (widget) &&
+         (
+          ((gwidget = glade_widget_get_from_gobject (widget)) &&
+           glade_widget_get_parent (gwidget)) ||
+          !gwidget))
     {
-      if (!GTK_IS_VIEWPORT (swindow))
-        swindow_child = swindow;
+      if (!GTK_IS_VIEWPORT (widget))
+        swindow_child = widget;
 
-      swindow = gtk_widget_get_parent (swindow);
+      if (GTK_IS_SCROLLED_WINDOW (widget))
+        {
+          swindow = widget;
+          break;
+        }
+
+      widget = gtk_widget_get_parent (widget);
     }
 
   if (swindow)

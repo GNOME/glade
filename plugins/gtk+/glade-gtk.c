@@ -3640,6 +3640,9 @@ void
 glade_gtk_fixed_layout_post_create (GladeWidgetAdaptor * adaptor,
                                     GObject * object, GladeCreateReason reason)
 {
+  /* Set a minimun size so you can actually see it if you added to a box */
+  gtk_widget_set_size_request (GTK_WIDGET (object), 32, 32);
+  
   /* Sync up size request at project load time */
   if (reason == GLADE_CREATE_LOAD)
     g_signal_connect_after (object, "realize",
