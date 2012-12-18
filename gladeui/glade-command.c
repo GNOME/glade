@@ -1773,18 +1773,22 @@ glade_command_dnd (GList *widgets,
   GladeProject *project;
 
   g_return_if_fail (widgets != NULL);
-  g_return_if_fail (parent || placeholder);
-
-  if (parent)
-    project = glade_widget_get_project (parent);
-  else
-    project = glade_placeholder_get_project (placeholder);
 
   widget = widgets->data;
-  glade_command_push_group (_("Drag-n-Drop from %s to %s"),
-                            glade_widget_get_name (parent),
+  
+  if (parent)
+    project = glade_widget_get_project (parent);
+  else if (placeholder)
+    project = glade_placeholder_get_project (placeholder);
+  else
+    project = glade_widget_get_project (widget);
+
+  g_return_if_fail (project);
+  
+  glade_command_push_group (_("Drag %s and Drop to %s"),
                             g_list_length (widgets) == 1 ? 
-			    glade_widget_get_name (widget) : _("multiple"));
+			    glade_widget_get_name (widget) : _("multiple"),
+                            parent ? glade_widget_get_name (parent) : _("root"));
   glade_command_remove (widgets);
   glade_command_add (widgets, parent, placeholder, project, TRUE);
   glade_command_pop_group ();
