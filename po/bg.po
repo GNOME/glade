@@ -1,15 +1,16 @@
 # Bulgarian translation of glade po-file.
-# Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012 Free Software Foundation, Inc.
+# Copyright (C) 2007, 2008, 2009, 2010, 2011 Free Software Foundation, Inc.
+# Copyright (C) 2012, 2013 Free Software Foundation, Inc.
 # This file is distributed under the same license as the glade package.
 # Yavor Doganov <yavor@gnu.org>, 2007, 2008, 2009, 2010.
-# Alexander Shopov <ash@kambanaria.org>, 2011, 2012.
+# Alexander Shopov <ash@kambanaria.org>, 2011, 2012, 2013.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glade master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-04 05:57+0300\n"
-"PO-Revision-Date: 2012-10-04 05:57+0300\n"
+"POT-Creation-Date: 2013-01-11 08:54+0200\n"
+"PO-Revision-Date: 2013-01-11 08:53+0200\n"
 "Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
@@ -34,6 +35,10 @@ msgstr "Проектиране на графични интерфейси (Glade
 msgid "Create or open user interface designs for GTK+ applications"
 msgstr ""
 "Създаване или редактиране на потребителски интерфейси за приложения на GTK+"
+
+#: ../data/glade.desktop.in.in.h:5
+msgid "GUI designer;user interface;ui builder;"
+msgstr "интерфейс;вид;GUI designer;user interface;ui builder;"
 
 #: ../src/glade.glade.h:1
 msgid "Select"
@@ -85,10 +90,10 @@ msgstr "Запазване на текущия проект под друго и
 
 #: ../src/glade.glade.h:13 ../src/glade-window.c:3074
 #: ../gladeui/glade-editor.c:409 ../gladeui/glade-widget.c:1259
-#: ../plugins/gtk+/glade-gtk.c:5274 ../plugins/gtk+/glade-gtk.c:5301
-#: ../plugins/gtk+/glade-gtk.c:5320 ../plugins/gtk+/glade-gtk.c:5358
-#: ../plugins/gtk+/glade-gtk.c:10250 ../plugins/gtk+/glade-gtk.c:10819
-#: ../plugins/gtk+/glade-gtk.c:10973
+#: ../plugins/gtk+/glade-gtk.c:5278 ../plugins/gtk+/glade-gtk.c:5305
+#: ../plugins/gtk+/glade-gtk.c:5324 ../plugins/gtk+/glade-gtk.c:5362
+#: ../plugins/gtk+/glade-gtk.c:10270 ../plugins/gtk+/glade-gtk.c:10839
+#: ../plugins/gtk+/glade-gtk.c:10993
 msgid "Properties"
 msgstr "Свойства"
 
@@ -360,15 +365,15 @@ msgstr ""
 "Докладвайте за грешки на <a href=\"http://gnome.cult.bg/bugs\">http://gnome."
 "cult.bg/bugs</a>"
 
-#: ../src/glade.glade.h:86 ../plugins/gtk+/glade-gtk.c:5982
+#: ../src/glade.glade.h:86 ../plugins/gtk+/glade-gtk.c:5995
 msgid "_File"
 msgstr "_Файл"
 
-#: ../src/glade.glade.h:87 ../plugins/gtk+/glade-gtk.c:5993
+#: ../src/glade.glade.h:87 ../plugins/gtk+/glade-gtk.c:6006
 msgid "_Edit"
 msgstr "_Редактиране"
 
-#: ../src/glade.glade.h:88 ../plugins/gtk+/glade-gtk.c:6002
+#: ../src/glade.glade.h:88 ../plugins/gtk+/glade-gtk.c:6015
 msgid "_View"
 msgstr "_Изглед"
 
@@ -380,73 +385,33 @@ msgstr "Изглед на _палитрата"
 msgid "_Projects"
 msgstr "_Проекти"
 
-#: ../src/glade.glade.h:91 ../plugins/gtk+/glade-gtk.c:6006
+#: ../src/glade.glade.h:91 ../plugins/gtk+/glade-gtk.c:6019
 msgid "_Help"
 msgstr "Помо_щ"
 
 #: ../src/glade.glade.h:92
-msgid "toolbutton1"
-msgstr "бутон за инструмент 1"
-
-#: ../src/glade.glade.h:93
-msgid "toolbutton2"
-msgstr "бутон за инструмент 2"
-
-#: ../src/glade.glade.h:94
-msgid "toolbutton3"
-msgstr "бутон за инструмент 3"
-
-#: ../src/glade.glade.h:95
-msgid "toolbutton5"
-msgstr "бутон за инструмент 5"
-
-#: ../src/glade.glade.h:96
-msgid "toolbutton6"
-msgstr "бутон за инструмент 6"
-
-#: ../src/glade.glade.h:97
-msgid "toolbutton7"
-msgstr "бутон за инструмент 7"
-
-#: ../src/glade.glade.h:98
-msgid "radiotoolbutton1"
-msgstr "радио бутон за инструмент 1"
-
-#: ../src/glade.glade.h:99
-msgid "radiotoolbutton2"
-msgstr "радио бутон за инструмент 2"
-
-#: ../src/glade.glade.h:100
-msgid "radiotoolbutton3"
-msgstr "радио бутон за инструмент 3"
-
-#: ../src/glade.glade.h:101
-msgid "radiotoolbutton4"
-msgstr "радио бутон за инструмент 4"
-
-#: ../src/glade.glade.h:102
 msgid "Glade Preferences"
 msgstr "Настройки на Glade"
 
-#: ../src/glade.glade.h:103
+#: ../src/glade.glade.h:93
 msgid "Removes the selected catalog path"
 msgstr "Изтриване на избрания път за търсене на каталози"
 
-#: ../src/glade.glade.h:104
+#: ../src/glade.glade.h:94
 msgid "Add a new catalog path"
 msgstr "Добавяне на нов път за търсене на каталози"
 
-#: ../src/glade.glade.h:105
+#: ../src/glade.glade.h:95
 msgid "Extra catalog paths"
 msgstr "Допълнителни пътища за търсене на каталози"
 
 #. translators: refers to a tab name used to group all the relevant widget's properties
-#: ../src/glade.glade.h:106 ../gladeui/glade-base-editor.c:1728
+#: ../src/glade.glade.h:96 ../gladeui/glade-base-editor.c:1728
 #: ../gladeui/glade-editor.c:1068
 msgid "General"
 msgstr "Основни"
 
-#: ../src/glade.glade.h:107
+#: ../src/glade.glade.h:97
 msgid "Select a catalog search path"
 msgstr "Избор на път за търсене на каталози"
 
@@ -674,7 +639,7 @@ msgstr ""
 msgid "Unable to open '%s', the file does not exist.\n"
 msgstr "Неуспешно отваряне на „%s“, файлът не съществува.\n"
 
-#: ../gladeui/glade-app.c:488
+#: ../gladeui/glade-app.c:504
 #, c-format
 msgid ""
 "Trying to save private data to %s directory but it is a regular file.\n"
@@ -684,7 +649,7 @@ msgstr ""
 "файл.\n"
 "В тази сесия потребителски данни няма да бъдат запазвани."
 
-#: ../gladeui/glade-app.c:500
+#: ../gladeui/glade-app.c:516
 #, c-format
 msgid ""
 "Failed to create directory %s to save private data.\n"
@@ -694,7 +659,7 @@ msgstr ""
 "данни.\n"
 "В тази сесия потребителски данни няма да бъдат запазвани."
 
-#: ../gladeui/glade-app.c:528
+#: ../gladeui/glade-app.c:544
 #, c-format
 msgid ""
 "Error writing private data to %s (%s).\n"
@@ -703,7 +668,7 @@ msgstr ""
 "Грешка при запазването на конфигурационни данни в %s (%s).\n"
 "В тази сесия потребителски данни няма да бъдат запазвани."
 
-#: ../gladeui/glade-app.c:540
+#: ../gladeui/glade-app.c:556
 #, c-format
 msgid ""
 "Error serializing configuration data to save (%s).\n"
@@ -712,7 +677,7 @@ msgstr ""
 "Грешка при сериализирането на конфигурационни данни за запазване (%s).\n"
 "В тази сесия потребителски данни няма да бъдат запазвани."
 
-#: ../gladeui/glade-app.c:553
+#: ../gladeui/glade-app.c:569
 #, c-format
 msgid ""
 "Error opening %s to write private data (%s).\n"
@@ -768,7 +733,7 @@ msgstr "Йерархия"
 msgid "Label"
 msgstr "Етикет"
 
-#: ../gladeui/glade-base-editor.c:1790 ../gladeui/glade-widget-adaptor.c:1504
+#: ../gladeui/glade-base-editor.c:1790 ../gladeui/glade-widget-adaptor.c:1506
 msgid "Type"
 msgstr "Вид"
 
@@ -887,7 +852,7 @@ msgstr "Задаване на множество свойства"
 msgid "Setting %s of %s"
 msgstr "Задаване на %s за %s"
 
-#: ../gladeui/glade-command.c:645 ../gladeui/glade-editor-property.c:3036
+#: ../gladeui/glade-command.c:645 ../gladeui/glade-editor-property.c:3043
 #, c-format
 msgid "Setting %s of %s to %s"
 msgstr "Задаване на %s за %s като %s"
@@ -976,6 +941,11 @@ msgstr "Заключване на %s от обект %s"
 msgid "Unlocking %s"
 msgstr "Отключване на %s"
 
+#: ../gladeui/glade-composite-template.c:301
+#, c-format
+msgid "Create new composite type %s"
+msgstr "Създаване на композитен вид %s"
+
 #: ../gladeui/glade-cursor.c:184
 #, c-format
 msgid "Unable to load image (%s)"
@@ -991,11 +961,11 @@ msgstr "Редактиране на подравняването на %s"
 msgid "Editing margins of %s"
 msgstr "Редактиране на полетата на %s"
 
-#: ../gladeui/glade-design-layout.c:1918
+#: ../gladeui/glade-design-layout.c:1941
 msgid "Design View"
 msgstr "Изглед за проектиране"
 
-#: ../gladeui/glade-design-layout.c:1919
+#: ../gladeui/glade-design-layout.c:1942
 msgid "The GladeDesignView that contains this layout"
 msgstr "Обектът GladeDesign който съдържа тази подредба"
 
@@ -1110,58 +1080,58 @@ msgstr "_Описание на свойството:"
 msgid "%s - %s Properties"
 msgstr "%s — свойства на %s"
 
-#: ../gladeui/glade-editor-property.c:630
+#: ../gladeui/glade-editor-property.c:636
 msgid "Property Class"
 msgstr "Клас на свойството"
 
-#: ../gladeui/glade-editor-property.c:631
+#: ../gladeui/glade-editor-property.c:637
 msgid "The GladePropertyClass this GladeEditorProperty was created for"
 msgstr ""
 "Класът GladePropertyClass, за който е създадено това GladeEditorProperty"
 
-#: ../gladeui/glade-editor-property.c:637
+#: ../gladeui/glade-editor-property.c:643
 msgid "Use Command"
 msgstr "Използване на команда"
 
-#: ../gladeui/glade-editor-property.c:638
+#: ../gladeui/glade-editor-property.c:644
 msgid "Whether we should use the command API for the undo/redo stack"
 msgstr "Дали да се използва командата на API за стека отмяна/възстановяване"
 
-#: ../gladeui/glade-editor-property.c:1120
+#: ../gladeui/glade-editor-property.c:1126
 msgid "Select Fields"
 msgstr "Избор на полета"
 
-#: ../gladeui/glade-editor-property.c:1142
+#: ../gladeui/glade-editor-property.c:1148
 msgid "_Select individual fields:"
 msgstr "_Избор на индивидуални полета:"
 
-#: ../gladeui/glade-editor-property.c:1476
+#: ../gladeui/glade-editor-property.c:1484
 msgid "Select Named Icon"
 msgstr "Избор на именувана икона"
 
-#: ../gladeui/glade-editor-property.c:1752
+#: ../gladeui/glade-editor-property.c:1784
 msgid "Edit Text"
 msgstr "Редактиране на текст"
 
 #. Text
-#: ../gladeui/glade-editor-property.c:1782
+#: ../gladeui/glade-editor-property.c:1814
 msgid "_Text:"
 msgstr "_Текст:"
 
 #. Translatable
-#: ../gladeui/glade-editor-property.c:1816
+#: ../gladeui/glade-editor-property.c:1848
 msgid "T_ranslatable"
 msgstr "_Преводим"
 
-#: ../gladeui/glade-editor-property.c:1822 ../gladeui/glade-property.c:660
+#: ../gladeui/glade-editor-property.c:1854 ../gladeui/glade-property.c:660
 msgid "Whether this property is translatable"
 msgstr "Дали това свойство може да се превежда"
 
-#: ../gladeui/glade-editor-property.c:1830
+#: ../gladeui/glade-editor-property.c:1862
 msgid "Conte_xt for translation:"
 msgstr "Ко_нтекст за превода:"
 
-#: ../gladeui/glade-editor-property.c:1836
+#: ../gladeui/glade-editor-property.c:1868
 msgid ""
 "For short and ambiguous strings: type a word here to differentiate the "
 "meaning of this string from the meaning of other occurrences of the same "
@@ -1170,72 +1140,72 @@ msgstr ""
 "За къси и двусмислени низове: въведете дума, която да отличи значението на "
 "този низ от другите появи на същия низ"
 
-#: ../gladeui/glade-editor-property.c:1867
+#: ../gladeui/glade-editor-property.c:1899
 msgid "Co_mments for translators:"
 msgstr "_Коментари за преводачите:"
 
-#: ../gladeui/glade-editor-property.c:1982
+#: ../gladeui/glade-editor-property.c:1989
 msgid "Select a file from the project resource directory"
 msgstr "Изберете файл от папката с ресурси на проекта"
 
-#: ../gladeui/glade-editor-property.c:2266
-#: ../gladeui/glade-editor-property.c:2282
+#: ../gladeui/glade-editor-property.c:2273
+#: ../gladeui/glade-editor-property.c:2289
 msgid "Yes"
 msgstr "Да"
 
-#: ../gladeui/glade-editor-property.c:2266
-#: ../gladeui/glade-editor-property.c:2282
-#: ../gladeui/glade-editor-property.c:2297
+#: ../gladeui/glade-editor-property.c:2273
+#: ../gladeui/glade-editor-property.c:2289
+#: ../gladeui/glade-editor-property.c:2304
 msgid "No"
 msgstr "Не"
 
-#: ../gladeui/glade-editor-property.c:2712
-#: ../gladeui/glade-widget-adaptor.c:1497 ../gladeui/glade-widget.c:1223
+#: ../gladeui/glade-editor-property.c:2719
+#: ../gladeui/glade-widget-adaptor.c:1499 ../gladeui/glade-widget.c:1223
 msgid "Name"
 msgstr "Име"
 
-#: ../gladeui/glade-editor-property.c:2721 ../gladeui/glade-property.c:627
+#: ../gladeui/glade-editor-property.c:2728 ../gladeui/glade-property.c:627
 msgid "Class"
 msgstr "Клас"
 
-#: ../gladeui/glade-editor-property.c:2738
+#: ../gladeui/glade-editor-property.c:2745
 #, c-format
 msgid "Choose parentless %s type objects in this project"
 msgstr "Избор на обекти от безконтейнерен вид %s в този проект"
 
-#: ../gladeui/glade-editor-property.c:2739
+#: ../gladeui/glade-editor-property.c:2746
 #, c-format
 msgid "Choose a parentless %s in this project"
 msgstr "Избор на безконтейнерен вид %s в този проект"
 
-#: ../gladeui/glade-editor-property.c:2742
+#: ../gladeui/glade-editor-property.c:2749
 #, c-format
 msgid "Choose %s type objects in this project"
 msgstr "Избор на обекти вид %s в този проект"
 
-#: ../gladeui/glade-editor-property.c:2743
+#: ../gladeui/glade-editor-property.c:2750
 #, c-format
 msgid "Choose a %s in this project"
 msgstr "Избор на %s в този проект"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:2813
-#: ../gladeui/glade-editor-property.c:2955
+#: ../gladeui/glade-editor-property.c:2820
+#: ../gladeui/glade-editor-property.c:2962
 msgid "O_bjects:"
 msgstr "_Обекти:"
 
-#: ../gladeui/glade-editor-property.c:2907
+#: ../gladeui/glade-editor-property.c:2914
 msgid "_New"
 msgstr "_Нов"
 
 #. translators: Creating 'a widget' for 'a property' of 'a widget'
-#: ../gladeui/glade-editor-property.c:3062
+#: ../gladeui/glade-editor-property.c:3069
 #, c-format
 msgid "Creating %s for %s of %s"
 msgstr "Създаване на %s за %s на %s"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:3261
+#: ../gladeui/glade-editor-property.c:3268
 msgid "Objects:"
 msgstr "Обекти:"
 
@@ -1308,7 +1278,11 @@ msgstr "Неуспешно създаване на папка: %s"
 msgid "Delete All"
 msgstr "Изтриване на всичко"
 
-#: ../gladeui/glade-palette.c:646
+#: ../gladeui/glade-palette.c:410
+msgid "Composite Templates"
+msgstr "Композитни шаблони"
+
+#: ../gladeui/glade-palette.c:699
 msgid "Widget selector"
 msgstr "Избор на графични обекти"
 
@@ -1882,65 +1856,65 @@ msgstr "Дали това действие е видимо"
 msgid "A derived adaptor (%s) of %s already exist!"
 msgstr "Вече съществува наследен адаптер (%s) за елемента %s!"
 
-#: ../gladeui/glade-widget-adaptor.c:1019
+#: ../gladeui/glade-widget-adaptor.c:1021
 #, c-format
 msgid "%s does not support adding any children."
 msgstr "%s не поддържа добавянето на дъщерни обекти."
 
-#: ../gladeui/glade-widget-adaptor.c:1498
+#: ../gladeui/glade-widget-adaptor.c:1500
 msgid "Name of the class"
 msgstr "Име на класа"
 
-#: ../gladeui/glade-widget-adaptor.c:1505
+#: ../gladeui/glade-widget-adaptor.c:1507
 msgid "GType of the class"
 msgstr "GType на класа"
 
-#: ../gladeui/glade-widget-adaptor.c:1511
+#: ../gladeui/glade-widget-adaptor.c:1513
 msgid "Title"
 msgstr "Заглавие"
 
-#: ../gladeui/glade-widget-adaptor.c:1512
+#: ../gladeui/glade-widget-adaptor.c:1514
 msgid "Translated title for the class used in the glade UI"
 msgstr "Преведено заглавие на класа, използван в ГПИ на Glade"
 
-#: ../gladeui/glade-widget-adaptor.c:1518
+#: ../gladeui/glade-widget-adaptor.c:1520
 msgid "Generic Name"
 msgstr "Общо име"
 
-#: ../gladeui/glade-widget-adaptor.c:1519
+#: ../gladeui/glade-widget-adaptor.c:1521
 msgid "Used to generate names of new widgets"
 msgstr "Използвано за генериране на имена на нови графични обекти"
 
-#: ../gladeui/glade-widget-adaptor.c:1525 ../plugins/gtk+/gtk+.xml.in.h:259
+#: ../gladeui/glade-widget-adaptor.c:1527 ../plugins/gtk+/gtk+.xml.in.h:259
 msgid "Icon Name"
 msgstr "Име на икона"
 
-#: ../gladeui/glade-widget-adaptor.c:1526
+#: ../gladeui/glade-widget-adaptor.c:1528
 msgid "The icon name"
 msgstr "Името на иконата"
 
-#: ../gladeui/glade-widget-adaptor.c:1532
+#: ../gladeui/glade-widget-adaptor.c:1534
 msgid "Catalog"
 msgstr "Каталог"
 
-#: ../gladeui/glade-widget-adaptor.c:1533
+#: ../gladeui/glade-widget-adaptor.c:1535
 msgid "The name of the widget catalog this class was declared by"
 msgstr "Име на каталога за графични обекти, където е деклариран този клас"
 
-#: ../gladeui/glade-widget-adaptor.c:1539
+#: ../gladeui/glade-widget-adaptor.c:1541
 msgid "Book"
 msgstr "Книга"
 
-#: ../gladeui/glade-widget-adaptor.c:1540
+#: ../gladeui/glade-widget-adaptor.c:1542
 msgid "DevHelp search namespace for this widget class"
 msgstr ""
 "Пространство от имена за търсене в DevHelp за този клас на графичен обект"
 
-#: ../gladeui/glade-widget-adaptor.c:1546
+#: ../gladeui/glade-widget-adaptor.c:1548
 msgid "Special Child Type"
 msgstr "Специален вид дъщерен обект"
 
-#: ../gladeui/glade-widget-adaptor.c:1547
+#: ../gladeui/glade-widget-adaptor.c:1549
 msgid ""
 "Holds the name of the packing property to depict special children for this "
 "container class"
@@ -1948,27 +1922,27 @@ msgstr ""
 "Съдържа името на свойството пакетиране за изобразяване на специални дъщерни "
 "обекти за този клас контейнер"
 
-#: ../gladeui/glade-widget-adaptor.c:1554 ../plugins/gtk+/gtk+.xml.in.h:24
+#: ../gladeui/glade-widget-adaptor.c:1556 ../plugins/gtk+/gtk+.xml.in.h:24
 msgid "Cursor"
 msgstr "Показалец"
 
-#: ../gladeui/glade-widget-adaptor.c:1555
+#: ../gladeui/glade-widget-adaptor.c:1557
 msgid "A cursor for inserting widgets in the UI"
 msgstr "Показалец за вмъкване на графични обекти в ГПИ"
 
-#: ../gladeui/glade-widget-adaptor.c:1560 ../gladeui/glade-widget.c:1275
+#: ../gladeui/glade-widget-adaptor.c:1562 ../gladeui/glade-widget.c:1275
 msgid "Template"
 msgstr "Шаблон"
 
-#: ../gladeui/glade-widget-adaptor.c:1561
+#: ../gladeui/glade-widget-adaptor.c:1563
 msgid "Builder template of the class"
 msgstr "Име на класа на шаблона"
 
-#: ../gladeui/glade-widget-adaptor.c:1567
+#: ../gladeui/glade-widget-adaptor.c:1569
 msgid "Template path"
 msgstr "Път до шаблоните"
 
-#: ../gladeui/glade-widget-adaptor.c:1568
+#: ../gladeui/glade-widget-adaptor.c:1570
 msgid ""
 "Builder template file path of the class, if set it will be used to monitor "
 "and update template property automatically"
@@ -2157,7 +2131,7 @@ msgid "Setting %s to not use action appearance"
 msgstr "Задаване на %s да не използва изглед според действието"
 
 #: ../plugins/gtk+/glade-activatable-editor.c:347
-#: ../plugins/gtk+/glade-gtk.c:10815 ../plugins/gtk+/glade-gtk.c:10848
+#: ../plugins/gtk+/glade-gtk.c:10835 ../plugins/gtk+/glade-gtk.c:10868
 #: ../plugins/gtk+/gtk+.xml.in.h:411
 msgid "Action"
 msgstr "Действие"
@@ -2404,14 +2378,14 @@ msgid "Setting %s to use a secondary icon from filename"
 msgstr "Задаване на %s да използва допълнителна икона от файл"
 
 #. Text...
-#: ../plugins/gtk+/glade-entry-editor.c:494 ../plugins/gtk+/glade-gtk.c:10301
-#: ../plugins/gtk+/glade-gtk.c:10429
+#: ../plugins/gtk+/glade-entry-editor.c:494 ../plugins/gtk+/glade-gtk.c:10321
+#: ../plugins/gtk+/glade-gtk.c:10449
 msgid "Text"
 msgstr "Текст"
 
 #. Progress...
-#: ../plugins/gtk+/glade-entry-editor.c:540 ../plugins/gtk+/glade-gtk.c:10306
-#: ../plugins/gtk+/glade-gtk.c:10434 ../plugins/gtk+/gtk+.xml.in.h:396
+#: ../plugins/gtk+/glade-entry-editor.c:540 ../plugins/gtk+/glade-gtk.c:10326
+#: ../plugins/gtk+/glade-gtk.c:10454 ../plugins/gtk+/gtk+.xml.in.h:396
 msgid "Progress"
 msgstr "Напредък"
 
@@ -2536,7 +2510,7 @@ msgid ""
 "NOTE: the base name of the file will be used as the class name so it should "
 "be in CamelCase"
 msgstr ""
-"Бележка: Името на файла ще се използа и за име на класа, така че трябва да "
+"Бележка: Името на файла ще се използва и за име на класа, така че трябва да "
 "ИзглеждаТака."
 
 #: ../plugins/gtk+/glade-gtk.c:1634
@@ -2564,117 +2538,117 @@ msgstr "Вмъкване на страница в %s"
 msgid "Remove page from %s"
 msgstr "Премахване на страница от %s"
 
-#: ../plugins/gtk+/glade-gtk.c:4701
+#: ../plugins/gtk+/glade-gtk.c:4705
 msgid "This property only applies to stock images"
 msgstr "Това свойство се отнася само до стандартен вид изображения"
 
-#: ../plugins/gtk+/glade-gtk.c:4704
+#: ../plugins/gtk+/glade-gtk.c:4708
 msgid "This property only applies to named icons"
 msgstr "Това свойство се отнася само до именувани икони"
 
-#: ../plugins/gtk+/glade-gtk.c:5001
+#: ../plugins/gtk+/glade-gtk.c:5005
 msgid "<separator>"
 msgstr "<разделител>"
 
-#: ../plugins/gtk+/glade-gtk.c:5015
+#: ../plugins/gtk+/glade-gtk.c:5019
 msgid "<custom>"
 msgstr "<нестандартен>"
 
-#: ../plugins/gtk+/glade-gtk.c:5053
+#: ../plugins/gtk+/glade-gtk.c:5057
 msgid "Children cannot be added to a separator."
 msgstr "Дъщерните обекти не могат да бъдат добавяни без разделител."
 
-#: ../plugins/gtk+/glade-gtk.c:5061
+#: ../plugins/gtk+/glade-gtk.c:5065
 msgid "Children cannot be added to a Recent Chooser Menu."
 msgstr "Дъщерните обекти не могат да бъдат добавяни към меню за скорошни."
 
-#: ../plugins/gtk+/glade-gtk.c:5070
+#: ../plugins/gtk+/glade-gtk.c:5074
 #, c-format
 msgid "%s already has a menu."
 msgstr "%s вече съдържа меню."
 
-#: ../plugins/gtk+/glade-gtk.c:5080
+#: ../plugins/gtk+/glade-gtk.c:5084
 #, c-format
 msgid "%s item already has a submenu."
 msgstr "Елементът %s вече съдържа подменю."
 
-#: ../plugins/gtk+/glade-gtk.c:5270
+#: ../plugins/gtk+/glade-gtk.c:5274
 msgid "Tool Item"
 msgstr "Елемент за инструмент"
 
-#: ../plugins/gtk+/glade-gtk.c:5284 ../plugins/gtk+/glade-gtk.c:5307
+#: ../plugins/gtk+/glade-gtk.c:5288 ../plugins/gtk+/glade-gtk.c:5311
 msgid "Packing"
 msgstr "Пакетиране"
 
-#: ../plugins/gtk+/glade-gtk.c:5297 ../plugins/gtk+/gtk+.xml.in.h:173
+#: ../plugins/gtk+/glade-gtk.c:5301 ../plugins/gtk+/gtk+.xml.in.h:173
 msgid "Tool Item Group"
 msgstr "Група с инструменти"
 
-#: ../plugins/gtk+/glade-gtk.c:5316 ../plugins/gtk+/gtk+.xml.in.h:294
+#: ../plugins/gtk+/glade-gtk.c:5320 ../plugins/gtk+/gtk+.xml.in.h:294
 msgid "Recent Chooser Menu"
 msgstr "Меню за избор на скорошни"
 
-#: ../plugins/gtk+/glade-gtk.c:5351 ../plugins/gtk+/gtk+.xml.in.h:136
+#: ../plugins/gtk+/glade-gtk.c:5355 ../plugins/gtk+/gtk+.xml.in.h:136
 msgid "Menu Item"
 msgstr "Елемент от меню"
 
-#: ../plugins/gtk+/glade-gtk.c:5394 ../plugins/gtk+/glade-gtk.c:5402
+#: ../plugins/gtk+/glade-gtk.c:5398 ../plugins/gtk+/glade-gtk.c:5406
 msgid "Normal item"
 msgstr "Нормален елемент"
 
-#: ../plugins/gtk+/glade-gtk.c:5395 ../plugins/gtk+/glade-gtk.c:5403
+#: ../plugins/gtk+/glade-gtk.c:5399 ../plugins/gtk+/glade-gtk.c:5407
 msgid "Image item"
 msgstr "Елемент на изображение"
 
-#: ../plugins/gtk+/glade-gtk.c:5396 ../plugins/gtk+/glade-gtk.c:5404
+#: ../plugins/gtk+/glade-gtk.c:5400 ../plugins/gtk+/glade-gtk.c:5408
 msgid "Check item"
 msgstr "Елемент за маркиране"
 
-#: ../plugins/gtk+/glade-gtk.c:5397 ../plugins/gtk+/glade-gtk.c:5405
+#: ../plugins/gtk+/glade-gtk.c:5401 ../plugins/gtk+/glade-gtk.c:5409
 msgid "Radio item"
 msgstr "Елемент от радио меню"
 
-#: ../plugins/gtk+/glade-gtk.c:5398 ../plugins/gtk+/glade-gtk.c:5406
+#: ../plugins/gtk+/glade-gtk.c:5402 ../plugins/gtk+/glade-gtk.c:5410
 msgid "Separator item"
 msgstr "Разделител"
 
-#: ../plugins/gtk+/glade-gtk.c:5407 ../plugins/gtk+/glade-gtk.c:6236
-#: ../plugins/gtk+/glade-gtk.c:6425 ../plugins/gtk+/glade-gtk.c:6434
+#: ../plugins/gtk+/glade-gtk.c:5411 ../plugins/gtk+/glade-gtk.c:6249
+#: ../plugins/gtk+/glade-gtk.c:6438 ../plugins/gtk+/glade-gtk.c:6447
 msgid "Recent Menu"
 msgstr "Меню със скорошни елементи"
 
-#: ../plugins/gtk+/glade-gtk.c:5439 ../plugins/gtk+/glade-gtk.c:5490
+#: ../plugins/gtk+/glade-gtk.c:5443 ../plugins/gtk+/glade-gtk.c:5494
 msgid "Edit Menu Bar"
 msgstr "Редактиране на лентата с менюта"
 
-#: ../plugins/gtk+/glade-gtk.c:5441 ../plugins/gtk+/glade-gtk.c:5492
+#: ../plugins/gtk+/glade-gtk.c:5445 ../plugins/gtk+/glade-gtk.c:5496
 msgid "Edit Menu"
 msgstr "Редактиране на менюто"
 
-#: ../plugins/gtk+/glade-gtk.c:5579
+#: ../plugins/gtk+/glade-gtk.c:5592
 #, c-format
 msgid "An object of type %s cannot have any children."
 msgstr "Обект от вида %s не може да съдържа дъщерни елементи."
 
-#: ../plugins/gtk+/glade-gtk.c:6213 ../plugins/gtk+/glade-gtk.c:6411
+#: ../plugins/gtk+/glade-gtk.c:6226 ../plugins/gtk+/glade-gtk.c:6424
 #: ../plugins/gtk+/gtk+.xml.in.h:170
 msgid "Button"
 msgstr "Бутон"
 
-#: ../plugins/gtk+/glade-gtk.c:6214 ../plugins/gtk+/glade-gtk.c:6412
-#: ../plugins/gtk+/glade-gtk.c:10307 ../plugins/gtk+/glade-gtk.c:10435
-#: ../plugins/gtk+/glade-gtk.c:10849
+#: ../plugins/gtk+/glade-gtk.c:6227 ../plugins/gtk+/glade-gtk.c:6425
+#: ../plugins/gtk+/glade-gtk.c:10327 ../plugins/gtk+/glade-gtk.c:10455
+#: ../plugins/gtk+/glade-gtk.c:10869
 msgid "Toggle"
 msgstr "Превключване"
 
-#: ../plugins/gtk+/glade-gtk.c:6215 ../plugins/gtk+/glade-gtk.c:6226
-#: ../plugins/gtk+/glade-gtk.c:6234 ../plugins/gtk+/glade-gtk.c:6413
-#: ../plugins/gtk+/glade-gtk.c:6423 ../plugins/gtk+/glade-gtk.c:6432
-#: ../plugins/gtk+/glade-gtk.c:10850
+#: ../plugins/gtk+/glade-gtk.c:6228 ../plugins/gtk+/glade-gtk.c:6239
+#: ../plugins/gtk+/glade-gtk.c:6247 ../plugins/gtk+/glade-gtk.c:6426
+#: ../plugins/gtk+/glade-gtk.c:6436 ../plugins/gtk+/glade-gtk.c:6445
+#: ../plugins/gtk+/glade-gtk.c:10870
 msgid "Radio"
 msgstr "Радио бутон"
 
-#: ../plugins/gtk+/glade-gtk.c:6216 ../plugins/gtk+/glade-gtk.c:6414
+#: ../plugins/gtk+/glade-gtk.c:6229 ../plugins/gtk+/glade-gtk.c:6427
 #: ../plugins/gtk+/gtk+.xml.in.h:114
 msgid "Menu"
 msgstr "Меню"
@@ -2683,138 +2657,138 @@ msgstr "Меню"
 #. <glade-widget-class name="GtkPlug" generic-name="plug" _title="Plug"/>
 #. <glade-widget-class name="GtkSocket" generic-name="socket" _title="Socket"/>
 #.
-#: ../plugins/gtk+/glade-gtk.c:6217 ../plugins/gtk+/glade-gtk.c:6415
+#: ../plugins/gtk+/glade-gtk.c:6230 ../plugins/gtk+/glade-gtk.c:6428
 #: ../plugins/gtk+/gtk+.xml.in.h:340
 msgid "Custom"
 msgstr "Нестандартен"
 
-#: ../plugins/gtk+/glade-gtk.c:6218 ../plugins/gtk+/glade-gtk.c:6227
-#: ../plugins/gtk+/glade-gtk.c:6235 ../plugins/gtk+/glade-gtk.c:6416
-#: ../plugins/gtk+/glade-gtk.c:6424 ../plugins/gtk+/glade-gtk.c:6433
+#: ../plugins/gtk+/glade-gtk.c:6231 ../plugins/gtk+/glade-gtk.c:6240
+#: ../plugins/gtk+/glade-gtk.c:6248 ../plugins/gtk+/glade-gtk.c:6429
+#: ../plugins/gtk+/glade-gtk.c:6437 ../plugins/gtk+/glade-gtk.c:6446
 #: ../plugins/gtk+/gtk+.xml.in.h:304
 msgid "Separator"
 msgstr "Разделител"
 
-#: ../plugins/gtk+/glade-gtk.c:6223 ../plugins/gtk+/glade-gtk.c:6231
-#: ../plugins/gtk+/glade-gtk.c:6420 ../plugins/gtk+/glade-gtk.c:6429
+#: ../plugins/gtk+/glade-gtk.c:6236 ../plugins/gtk+/glade-gtk.c:6244
+#: ../plugins/gtk+/glade-gtk.c:6433 ../plugins/gtk+/glade-gtk.c:6442
 #: ../plugins/gtk+/gtk+.xml.in.h:112
 msgid "Normal"
 msgstr "Нормален"
 
-#: ../plugins/gtk+/glade-gtk.c:6224 ../plugins/gtk+/glade-gtk.c:6232
-#: ../plugins/gtk+/glade-gtk.c:6421 ../plugins/gtk+/glade-gtk.c:6430
+#: ../plugins/gtk+/glade-gtk.c:6237 ../plugins/gtk+/glade-gtk.c:6245
+#: ../plugins/gtk+/glade-gtk.c:6434 ../plugins/gtk+/glade-gtk.c:6443
 #: ../plugins/gtk+/gtk+.xml.in.h:258
 msgid "Image"
 msgstr "Изображение"
 
-#: ../plugins/gtk+/glade-gtk.c:6225 ../plugins/gtk+/glade-gtk.c:6233
-#: ../plugins/gtk+/glade-gtk.c:6422 ../plugins/gtk+/glade-gtk.c:6431
+#: ../plugins/gtk+/glade-gtk.c:6238 ../plugins/gtk+/glade-gtk.c:6246
+#: ../plugins/gtk+/glade-gtk.c:6435 ../plugins/gtk+/glade-gtk.c:6444
 msgid "Check"
 msgstr "Маркиране"
 
-#: ../plugins/gtk+/glade-gtk.c:6257
+#: ../plugins/gtk+/glade-gtk.c:6270
 msgid "Tool Bar Editor"
 msgstr "Редактор на лентата с инструменти"
 
-#: ../plugins/gtk+/glade-gtk.c:6407
+#: ../plugins/gtk+/glade-gtk.c:6420
 msgid "Group"
 msgstr "Група"
 
-#: ../plugins/gtk+/glade-gtk.c:6454
+#: ../plugins/gtk+/glade-gtk.c:6467
 msgid "Tool Palette Editor"
 msgstr "Редактор на палитрата с инструменти"
 
 # Ellipsize -- съкращаване на низа с многоточие, когато няма място да се
 # изобрази целия.
-#: ../plugins/gtk+/glade-gtk.c:7186
+#: ../plugins/gtk+/glade-gtk.c:7206
 msgid "This property does not apply when Ellipsize is set."
 msgstr "Това свойство не е приложимо, когато е зададено съкращаване."
 
 # Angle -- свойство за ротация на етикет и т.н. спрямо основния обект.
-#: ../plugins/gtk+/glade-gtk.c:7205
+#: ../plugins/gtk+/glade-gtk.c:7225
 msgid "This property does not apply when Angle is set."
 msgstr "Това свойство не е приложимо, когато е зададен ъгъл."
 
-#: ../plugins/gtk+/glade-gtk.c:8109
+#: ../plugins/gtk+/glade-gtk.c:8129
 msgid "Introduction page"
 msgstr "Страница за въведение"
 
-#: ../plugins/gtk+/glade-gtk.c:8113
+#: ../plugins/gtk+/glade-gtk.c:8133
 msgid "Content page"
 msgstr "Страница за съдържание"
 
-#: ../plugins/gtk+/glade-gtk.c:8117
+#: ../plugins/gtk+/glade-gtk.c:8137
 msgid "Confirmation page"
 msgstr "Страница за потвърждение"
 
-#: ../plugins/gtk+/glade-gtk.c:9736
+#: ../plugins/gtk+/glade-gtk.c:9756
 #, c-format
 msgid "%s is set to load %s from the model"
 msgstr "Обектът %s е зададен да зарежда %s от модела"
 
-#: ../plugins/gtk+/glade-gtk.c:9738
+#: ../plugins/gtk+/glade-gtk.c:9758
 #, c-format
 msgid "%s is set to manipulate %s directly"
 msgstr "Обектът %s е зададен да манипулира %s директно"
 
-#: ../plugins/gtk+/glade-gtk.c:10245 ../plugins/gtk+/gtk+.xml.in.h:436
+#: ../plugins/gtk+/glade-gtk.c:10265 ../plugins/gtk+/gtk+.xml.in.h:436
 msgid "Tree View Column"
 msgstr "Дървовиден изглед"
 
-#: ../plugins/gtk+/glade-gtk.c:10245 ../plugins/gtk+/gtk+.xml.in.h:441
+#: ../plugins/gtk+/glade-gtk.c:10265 ../plugins/gtk+/gtk+.xml.in.h:441
 msgid "Cell Renderer"
 msgstr "Клетка"
 
-#: ../plugins/gtk+/glade-gtk.c:10251
+#: ../plugins/gtk+/glade-gtk.c:10271
 msgid "Properties and Attributes"
 msgstr "Свойства и атрибути"
 
-#: ../plugins/gtk+/glade-gtk.c:10257
+#: ../plugins/gtk+/glade-gtk.c:10277
 msgid "Common Properties and Attributes"
 msgstr "Общи свойства и атрибути"
 
 #. Accelerator
-#: ../plugins/gtk+/glade-gtk.c:10302 ../plugins/gtk+/glade-gtk.c:10430
+#: ../plugins/gtk+/glade-gtk.c:10322 ../plugins/gtk+/glade-gtk.c:10450
 #: ../plugins/gtk+/gtk+.xml.in.h:413
 msgid "Accelerator"
 msgstr "Ускорител"
 
-#: ../plugins/gtk+/glade-gtk.c:10303 ../plugins/gtk+/glade-gtk.c:10431
+#: ../plugins/gtk+/glade-gtk.c:10323 ../plugins/gtk+/glade-gtk.c:10451
 #: ../plugins/gtk+/gtk+.xml.in.h:124
 msgid "Combo"
 msgstr "Падащо меню"
 
-#: ../plugins/gtk+/glade-gtk.c:10304 ../plugins/gtk+/glade-gtk.c:10432
+#: ../plugins/gtk+/glade-gtk.c:10324 ../plugins/gtk+/glade-gtk.c:10452
 msgid "Spin"
 msgstr "Брояч"
 
-#: ../plugins/gtk+/glade-gtk.c:10305 ../plugins/gtk+/glade-gtk.c:10433
+#: ../plugins/gtk+/glade-gtk.c:10325 ../plugins/gtk+/glade-gtk.c:10453
 msgid "Pixbuf"
 msgstr "Буфер с пиксели"
 
-#: ../plugins/gtk+/glade-gtk.c:10308 ../plugins/gtk+/glade-gtk.c:10436
+#: ../plugins/gtk+/glade-gtk.c:10328 ../plugins/gtk+/glade-gtk.c:10456
 #: ../plugins/gtk+/gtk+.xml.in.h:191
 msgid "Spinner"
 msgstr "Брояч"
 
-#: ../plugins/gtk+/glade-gtk.c:10341
+#: ../plugins/gtk+/glade-gtk.c:10361
 msgid "Icon View Editor"
 msgstr "Редактор на изглед с икони"
 
-#: ../plugins/gtk+/glade-gtk.c:10346
+#: ../plugins/gtk+/glade-gtk.c:10366
 msgid "Combo Editor"
 msgstr "Редактор на падащо меню"
 
 # GtkEntryCompletion
-#: ../plugins/gtk+/glade-gtk.c:10351
+#: ../plugins/gtk+/glade-gtk.c:10371
 msgid "Entry Completion Editor"
 msgstr "Редактор на дописването"
 
-#: ../plugins/gtk+/glade-gtk.c:10426
+#: ../plugins/gtk+/glade-gtk.c:10446
 msgid "Column"
 msgstr "Колона"
 
-#: ../plugins/gtk+/glade-gtk.c:10449
+#: ../plugins/gtk+/glade-gtk.c:10469
 msgid "Tree View Editor"
 msgstr "Редактор на дървовиден изглед"
 
@@ -2822,7 +2796,7 @@ msgstr "Редактор на дървовиден изглед"
 #. * treeview editors and provide a custom control that sets all its columns
 #. * to fixed size and then control the column's sensitivity accordingly.
 #.
-#: ../plugins/gtk+/glade-gtk.c:10542
+#: ../plugins/gtk+/glade-gtk.c:10562
 msgid ""
 "Columns must have a fixed size inside a treeview with fixed height mode set"
 msgstr ""
@@ -2830,23 +2804,23 @@ msgstr ""
 "фиксирана височина."
 
 #. --------------------------- GtkAction ---------------------------------
-#: ../plugins/gtk+/glade-gtk.c:10653
+#: ../plugins/gtk+/glade-gtk.c:10673
 msgid "The accelerator can only be set when inside an Action Group."
 msgstr "Клавишната комбинация може да се зададе сама в група на действия."
 
-#: ../plugins/gtk+/glade-gtk.c:10851
+#: ../plugins/gtk+/glade-gtk.c:10871
 msgid "Recent"
 msgstr "Скорошни"
 
-#: ../plugins/gtk+/glade-gtk.c:10859
+#: ../plugins/gtk+/glade-gtk.c:10879
 msgid "Action Group Editor"
 msgstr "Редактор на група на действия"
 
-#: ../plugins/gtk+/glade-gtk.c:10969 ../plugins/gtk+/glade-gtk.c:10999
+#: ../plugins/gtk+/glade-gtk.c:10989 ../plugins/gtk+/glade-gtk.c:11019
 msgid "Tag"
 msgstr "Етикет"
 
-#: ../plugins/gtk+/glade-gtk.c:11007
+#: ../plugins/gtk+/glade-gtk.c:11027
 msgid "Text Tag Table Editor"
 msgstr "Редактор на таблица с текстови етикети"
 
