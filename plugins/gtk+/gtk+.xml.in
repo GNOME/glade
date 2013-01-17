@@ -1,5 +1,6 @@
 <glade-catalog name="gtk+"
-	       version="3.0"
+	       version="3.6"
+	       targetable="3.4,3.2,3.0"
                icon-prefix="gtk"
                library="gladegtk"
                domain="glade3"
@@ -1360,6 +1361,17 @@ embedded in another object</_tooltip>
         <property id="min-horizontal-bar-width" since="2.14"/>
         <property id="min-vertical-bar-height" since="2.14"/>
         <property id="min-vertical-bar-width" since="2.14"/>
+      </properties>
+    </glade-widget-class>
+
+    <glade-widget-class name="GtkLevelBar" generic-name="levelbar" _title="Level Bar" since="3.6">
+      <properties>
+	<property id="mode">
+  	  <displayable-values>
+	    <value id="GTK_LEVEL_BAR_MODE_CONTINUOUS" _name="Continuous"/>
+	    <value id="GTK_LEVEL_BAR_MODE_DISCRETE" _name="Discrete"/>
+	  </displayable-values>
+	</property>
       </properties>
     </glade-widget-class>
 
@@ -3852,6 +3864,7 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkScrollbar"/>
 
     <glade-widget-class-ref name="GtkProgressBar"/>
+    <glade-widget-class-ref name="GtkLevelBar"/>
     <glade-widget-class-ref name="GtkSpinner"/>
 
     <glade-widget-class-ref name="GtkTextView"/>

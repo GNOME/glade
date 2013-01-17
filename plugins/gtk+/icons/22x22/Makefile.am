@@ -77,6 +77,7 @@ icons_DATA = \
         widget-gtk-pagesetupdialog.png \
         widget-gtk-printdialog.png \
         widget-gtk-progressbar.png \
+        widget-gtk-levelbar.png \
         widget-gtk-radiobutton.png \
         widget-gtk-radiomenuitem.png \
         widget-gtk-radiotoolbutton.png \
