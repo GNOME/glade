@@ -160,10 +160,9 @@ gdl_get_activity_from_pointer (GladeDesignLayout *layout, gint x, gint y)
   
   if (priv->selection)
     {
-      priv->margin = gdl_get_margins_from_pointer (gtk_bin_get_child (GTK_BIN (layout)),
+      priv->margin = gdl_get_margins_from_pointer (GTK_WIDGET (layout),
                                                    priv->selection,
-                                                   x - priv->child_offset,
-                                                   y - priv->child_offset);
+                                                   x, y);
       
       if (priv->margin)
         {
@@ -2052,6 +2051,31 @@ _glade_design_layout_draw_pushpin (cairo_t *cr,
   cairo_restore (cr);
 }
 
+static inline void
+_glade_design_layout_coords_from_event (GdkWindow *parent,
+                                        GdkEvent *event,
+                                        gint *x, gint *y)
+{
+  GdkWindow *child = event->any.window;
+  gdouble xx, yy;
+
+  if (!gdk_event_get_coords (event, &xx, &yy))
+    {
+      *x = *y = 0;
+      g_warning ("wrong event type %d", event->type);
+      return;
+    }
+  
+  while (child && parent != child)
+    {
+      gdk_window_coords_to_parent (child, xx, yy, &xx, &yy);
+      child = gdk_window_get_parent (child);
+    }
+
+  *x = xx;
+  *y = yy;
+}
+
 /*
  * _glade_design_layout_do_event:
  * @layout: A #GladeDesignLayout
@@ -2065,31 +2089,23 @@ _glade_design_layout_draw_pushpin (cairo_t *cr,
 gboolean
 _glade_design_layout_do_event (GladeDesignLayout *layout, GdkEvent *event)
 {
-  GladeFindInContainerData data = { 0, };
+  GtkWidget *widget = GTK_WIDGET (layout);
+  GladeFindInContainerData data = { widget, 0, };
   GladeDesignLayoutPrivate *priv;
-  GdkDevice *device;
-  GtkWidget *child;
   gboolean retval;
   GList *l;
-  
-  if ((child = gtk_bin_get_child (GTK_BIN (layout))) == NULL)
-    return FALSE;
 
   priv = GLADE_DESIGN_LAYOUT_GET_PRIVATE (layout);
 
-  if (!(device = glade_widget_get_device_from_event (event))) return FALSE;
-
-  data.toplevel = GTK_WIDGET (child);
-  gdk_window_get_device_position (gtk_widget_get_window (child),
-                                  device, &data.x, &data.y, NULL);
+  _glade_design_layout_coords_from_event (priv->window, event, &data.x, &data.y);
 
   /* Check if we want to enter in margin edit mode */
   if (event->type == GDK_BUTTON_PRESS && event->button.button == 1 &&
       (l = glade_project_selection_get (priv->project)) &&
       g_list_next (l) == NULL && GTK_IS_WIDGET (l->data) && 
-      gtk_widget_is_ancestor (l->data, child))
+      gtk_widget_is_ancestor (l->data, widget))
     {
-      if (gdl_get_margins_from_pointer (child, l->data, data.x, data.y))
+      if (gdl_get_margins_from_pointer (widget, l->data, data.x, data.y))
         {
           if (priv->selection == NULL)
             {
@@ -2104,8 +2120,8 @@ _glade_design_layout_do_event (GladeDesignLayout *layout, GdkEvent *event)
     }
 
   _glade_design_view_freeze (priv->view);
-  
-  glade_design_layout_find_inside_container (child, &data);
+
+  glade_design_layout_find_inside_container (widget, &data);
   
   /* Try the placeholder first */
   if (data.placeholder && gtk_widget_event (data.placeholder, event)) 
