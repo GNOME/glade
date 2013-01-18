@@ -768,6 +768,10 @@ glade_eprop_numeric_create_input (GladeEditorProperty *eprop)
 			 G_IS_PARAM_SPEC_DOUBLE (pspec) ? 2 : 0);
   gtk_widget_show (eprop_numeric->spin);
 
+  /* Limit the size of the spin if max allowed value is too big */
+  if (gtk_adjustment_get_upper (adjustment) > 9999999999999999.0)
+    gtk_entry_set_width_chars (GTK_ENTRY (eprop_numeric->spin), 16);
+
   g_signal_connect (G_OBJECT (eprop_numeric->spin), "value_changed",
                     G_CALLBACK (glade_eprop_numeric_changed), eprop);
 
