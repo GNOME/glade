@@ -214,8 +214,6 @@ glade_design_view_set_project (GladeDesignView *view, GladeProject *project)
 {
   GladeDesignViewPrivate *priv;
 
-  g_return_if_fail (GLADE_IS_PROJECT (project));
-
   priv = view->priv;
 
   if (priv->project)
@@ -240,10 +238,13 @@ glade_design_view_set_project (GladeDesignView *view, GladeProject *project)
                                             view);
 
       g_object_set_data (G_OBJECT (priv->project), GLADE_DESIGN_VIEW_KEY, NULL);
-      g_object_unref (priv->project);
+      g_clear_object (&priv->project);
     }
 
-  view->priv->project = g_object_ref (project);
+  if (!project)
+    return;
+
+  priv->project = g_object_ref (project);
 
   g_signal_connect (project, "add-widget",
                     G_CALLBACK (on_project_add_widget), view);
