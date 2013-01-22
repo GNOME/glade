@@ -212,9 +212,38 @@ on_project_remove_widget (GladeProject *project, GladeWidget *widget, GladeDesig
 static void
 glade_design_view_set_project (GladeDesignView *view, GladeProject *project)
 {
+  GladeDesignViewPrivate *priv;
+
   g_return_if_fail (GLADE_IS_PROJECT (project));
 
-  view->priv->project = project;
+  priv = view->priv;
+
+  if (priv->project)
+    {
+      g_signal_handlers_disconnect_by_func (priv->project,
+                                            on_project_add_widget,
+                                            view);
+      g_signal_handlers_disconnect_by_func (priv->project,
+                                            on_project_remove_widget,
+                                            view);
+      g_signal_handlers_disconnect_by_func (priv->project,
+                                            gtk_widget_hide,
+                                            priv->scrolled_window);
+      g_signal_handlers_disconnect_by_func (priv->project,
+                                            gtk_widget_show,
+                                            priv->scrolled_window);
+      g_signal_handlers_disconnect_by_func (priv->project,
+                                            glade_design_view_selection_changed,
+                                            view);
+      g_signal_handlers_disconnect_by_func (priv->project,
+                                            glade_design_view_widget_visibility_changed,
+                                            view);
+
+      g_object_set_data (G_OBJECT (priv->project), GLADE_DESIGN_VIEW_KEY, NULL);
+      g_object_unref (priv->project);
+    }
+
+  view->priv->project = g_object_ref (project);
 
   g_signal_connect (project, "add-widget",
                     G_CALLBACK (on_project_add_widget), view);
@@ -222,10 +251,10 @@ glade_design_view_set_project (GladeDesignView *view, GladeProject *project)
                     G_CALLBACK (on_project_remove_widget), view);
   g_signal_connect_swapped (project, "parse-began",
                             G_CALLBACK (gtk_widget_hide),
-                            view->priv->scrolled_window);
+                            priv->scrolled_window);
   g_signal_connect_swapped (project, "parse-finished",
                             G_CALLBACK (gtk_widget_show),
-                            view->priv->scrolled_window);
+                            priv->scrolled_window);
   g_signal_connect (project, "selection-changed",
                     G_CALLBACK (glade_design_view_selection_changed), view);
   g_signal_connect (project, "widget-visibility-changed",
@@ -365,11 +394,8 @@ static void
 glade_design_view_finalize (GObject *object)
 {
   GladeDesignView *view = GLADE_DESIGN_VIEW (object);
-  GladeDesignViewPrivate *priv = view->priv;
 
-  /* Yup, disconnect every handler that reference this view */
-  g_signal_handlers_disconnect_by_data (priv->project, view);
-  g_signal_handlers_disconnect_by_data (priv->project, priv->scrolled_window);
+  glade_design_view_set_project (view, NULL);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
