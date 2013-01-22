@@ -84,6 +84,8 @@ struct _GladeDesignLayoutPrivate
   PangoLayout *widget_name;
   gint layout_width;
 
+  GtkStyleContext *default_context;
+
   /* Colors */
   GdkRGBA fg_color;
   GdkRGBA frame_color[2];
@@ -1512,13 +1514,12 @@ glade_design_layout_draw (GtkWidget *widget, cairo_t *cr)
     {
       GtkWidget *child = gtk_bin_get_child (GTK_BIN (widget));
 
-      gtk_render_background (gtk_widget_get_style_context (child),
-                             cr,
-                             0, 0,
+      gtk_render_background (priv->default_context, cr, 0, 0,
                              gdk_window_get_width (priv->offscreen_window),
                              gdk_window_get_height (priv->offscreen_window));
+
       if (child)
-          gtk_container_propagate_draw (GTK_CONTAINER (widget), child, cr);
+        gtk_container_propagate_draw (GTK_CONTAINER (widget), child, cr);
     }
 
   return FALSE;
@@ -1595,28 +1596,6 @@ offscreen_window_from_parent (GdkWindow     *window,
   to_child (bin, parent_x, parent_y, offscreen_x, offscreen_y);
 }
 
-static void
-glade_design_layout_offscreen_bg_update (GladeDesignLayoutPrivate *priv)
-{
-  GtkStyleContext *context;
-  GtkWidgetPath *path;
-  GdkRGBA color;
-
-  if (!priv->offscreen_window)
-    return;
-
-  context = gtk_style_context_new ();
-  path = gtk_widget_path_new ();
-
-  gtk_widget_path_append_type (path, GTK_TYPE_WINDOW);
-  gtk_style_context_set_path (context, path);
-  gtk_style_context_get_background_color (context, GTK_STATE_FLAG_NORMAL, &color);
-
-  gdk_window_set_background_rgba (priv->offscreen_window, &color);
-
-  gtk_widget_path_unref (path);
-  g_object_unref (context);
-}
 
 static void
 glade_design_layout_realize (GtkWidget * widget)
@@ -1696,8 +1675,6 @@ glade_design_layout_realize (GtkWidget * widget)
   priv->cursors[ACTIVITY_MARGINS_BOTTOM_RIGHT] = g_object_ref (priv->cursors[ACTIVITY_RESIZE_WIDTH_AND_HEIGHT]);
   
   priv->widget_name = pango_layout_new (gtk_widget_get_pango_context (widget));
-
-  glade_design_layout_offscreen_bg_update (priv);
 }
 
 static void
@@ -1748,13 +1725,12 @@ glade_design_layout_style_updated (GtkWidget *widget)
                                    &priv->frame_color_active[1]);
 
   priv->fg_color = priv->frame_color[1];
-
-  glade_design_layout_offscreen_bg_update (priv);
 }
 
 static void
 glade_design_layout_init (GladeDesignLayout *layout)
 {
+  GtkWidgetPath *path = gtk_widget_path_new ();
   GladeDesignLayoutPrivate *priv;
   gint i;
   
@@ -1768,6 +1744,10 @@ glade_design_layout_init (GladeDesignLayout *layout)
   priv->new_height = -1;
   priv->node_over = 0;
 
+  priv->default_context = gtk_style_context_new ();
+  gtk_widget_path_append_type (path, GTK_TYPE_WINDOW);
+  gtk_style_context_set_path (priv->default_context, path);
+
   /* setup static member of rectangles */
   priv->east.width = PADDING + OUTLINE_WIDTH;
   priv->south.height = PADDING + OUTLINE_WIDTH;
@@ -1776,6 +1756,8 @@ glade_design_layout_init (GladeDesignLayout *layout)
 
   gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (layout)),
                                GTK_STYLE_CLASS_VIEW);
+
+  gtk_widget_path_unref (path);
 }
 
 static void
@@ -1890,6 +1872,8 @@ glade_design_layout_finalize (GObject *object)
 {
   GladeDesignLayout *layout = GLADE_DESIGN_LAYOUT (object);
   GladeDesignLayoutPrivate *priv = layout->priv;
+
+  g_clear_object (&priv->default_context);
 
   g_signal_handlers_disconnect_by_func (priv->project,
                                         on_project_selection_changed,
