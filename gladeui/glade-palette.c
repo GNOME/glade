@@ -69,8 +69,6 @@ struct _GladePalettePrivate
 
   GladeWidgetAdaptor *local_selection;
   GHashTable         *button_table;
-
-  GtkWidget *composite_templates;
 };
 
 enum
@@ -338,12 +336,13 @@ glade_palette_new_item (GladePalette * palette, GladeWidgetAdaptor * adaptor)
 }
 
 static GtkWidget *
-tool_item_group_new (const gchar *name)
+glade_palette_new_item_group (GladePalette * palette, GladeWidgetGroup * group)
 {
-  GtkWidget *item_group, *label;
+  GtkWidget *item_group, *item, *label;
+  GList *l;
 
   /* Give the item group a left aligned label */
-  label = gtk_label_new (name);
+  label = gtk_label_new (glade_widget_group_get_title (group));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_widget_show (label);
 
@@ -354,17 +353,6 @@ tool_item_group_new (const gchar *name)
   /* Tell the item group to ellipsize our custom label for us */
   gtk_tool_item_group_set_ellipsize (GTK_TOOL_ITEM_GROUP (item_group),
                                      PANGO_ELLIPSIZE_END);
-
-  return item_group;
-}
-
-static GtkWidget *
-glade_palette_new_item_group (GladePalette * palette, GladeWidgetGroup * group)
-{
-  GtkWidget *item_group, *item;
-  GList *l;
-
-  item_group = tool_item_group_new (glade_widget_group_get_title (group));
 
   gtk_widget_set_tooltip_text (item_group,
                                glade_widget_group_get_title (group));
@@ -401,53 +389,12 @@ glade_palette_append_item_group (GladePalette * palette,
 }
 
 static void
-glade_palette_update_templates (GladePalette *palette)
-{
-  GList *l, *adaptors = glade_widget_adaptor_list_adaptors ();
-  GladePalettePrivate *priv = palette->priv;
-
-  if (priv->composite_templates == NULL)
-    {
-      priv->composite_templates = tool_item_group_new (_("Composite Templates"));
-      gtk_container_add (GTK_CONTAINER (priv->toolpalette), priv->composite_templates);
-      gtk_widget_show (priv->composite_templates);
-    }
-  else
-    {
-      GtkContainer *container = GTK_CONTAINER (priv->composite_templates);
-      GList *l, *children = gtk_container_get_children (container);
-      
-      for (l = children; l; l = g_list_next (l))
-        gtk_container_remove (container, l->data);
-
-      g_list_free (children);
-    }
-  
-  for (l = adaptors; l; l = g_list_next (l))
-    {
-      GladeWidgetAdaptor *adaptor = l->data;
-
-      /* Create/append new item */
-      if (glade_widget_adaptor_get_template (adaptor))
-        {
-          GtkWidget *item = glade_palette_new_item (palette, adaptor);
-          gtk_tool_item_group_insert (GTK_TOOL_ITEM_GROUP (priv->composite_templates),
-                                      GTK_TOOL_ITEM (item), -1);
-        }
-    }
-
-  g_list_free (adaptors);
-}
-
-static void
 glade_palette_populate (GladePalette * palette)
 {
   GList *l;
 
   g_return_if_fail (GLADE_IS_PALETTE (palette));
 
-  glade_palette_update_templates (palette);
-    
   for (l = (GList *) glade_app_get_catalogs (); l; l = l->next)
     {
       GList *groups = glade_catalog_get_widget_groups (GLADE_CATALOG (l->data));
@@ -719,10 +666,6 @@ glade_palette_init (GladePalette * palette)
   gtk_widget_set_no_show_all (GTK_WIDGET (palette), TRUE);
 
   glade_palette_populate (palette);
-
-  g_signal_connect_swapped (glade_app_get (), "widget-adaptor-registered",
-                            G_CALLBACK (glade_palette_update_templates),
-                            palette);
 }
 
 

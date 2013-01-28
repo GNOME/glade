@@ -254,7 +254,7 @@ dnl ================================================================
 dnl Check for extra functions
 dnl ================================================================
 AC_CHECK_FUNCS(gtk_builder_add_from_resource)
-AC_CHECK_FUNCS(gtk_container_class_set_template_from_string)
+
 
 AC_SUBST([GLADE_PREFIX])
 

@@ -102,8 +102,6 @@ struct _GladeWidgetAdaptorPrivate
 				       * are special children (like notebook tab 
 				       * widgets for example).
 				       */
-  gchar       *template_xml;          /* The GtkBuilder template if this is a composite template class */
-  GFileMonitor *template_monitor;
 };
 
 struct _GladeChildPacking
@@ -137,9 +135,7 @@ enum
   PROP_CATALOG,
   PROP_BOOK,
   PROP_SPECIAL_TYPE,
-  PROP_CURSOR,
-  PROP_TEMPLATE,
-  PROP_TEMPLATE_PATH
+  PROP_CURSOR
 };
 
 typedef struct _GladeChildPacking GladeChildPacking;
@@ -384,7 +380,7 @@ gwa_clone_parent_properties (GladeWidgetAdaptor *adaptor, gboolean is_packing)
           parent_adaptor->priv->packing_props : parent_adaptor->priv->properties;
 
       /* Reset versioning in derived catalogs just once */
-      reset_version = g_strcmp0 (adaptor->priv->catalog, parent_adaptor->priv->catalog) != 0;
+      reset_version = strcmp (adaptor->priv->catalog, parent_adaptor->priv->catalog) != 0;
 
       for (list = proplist; list; list = list->next)
         {
@@ -537,8 +533,8 @@ gwa_inherit_signals (GladeWidgetAdaptor *adaptor)
               parent_signal = node->data;
 
               /* Reset versioning in derived catalogs just once */
-              if (g_strcmp0 (adaptor->priv->catalog,
-                             parent_adaptor->priv->catalog))
+              if (strcmp (adaptor->priv->catalog,
+                          parent_adaptor->priv->catalog))
 		glade_signal_class_set_since (signal, 0, 0);
               else
 		glade_signal_class_set_since (signal, 
@@ -628,7 +624,7 @@ glade_widget_adaptor_constructor (GType type,
 
   /* Reset version numbering if we're in a new catalog just once */
   if (parent_adaptor &&
-      g_strcmp0 (adaptor->priv->catalog, parent_adaptor->priv->catalog))
+      strcmp (adaptor->priv->catalog, parent_adaptor->priv->catalog))
     {
       GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->version_since_major =
           GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->version_since_minor = 0;
@@ -715,152 +711,64 @@ static void
 glade_widget_adaptor_finalize (GObject *object)
 {
   GladeWidgetAdaptor *adaptor = GLADE_WIDGET_ADAPTOR (object);
-  GladeWidgetAdaptorPrivate *priv = adaptor->priv;
-    
-  /* Free properties and signals */
-  g_list_foreach (priv->properties, (GFunc) glade_property_class_free, NULL);
-  g_list_free (priv->properties);
 
-  g_list_foreach (priv->packing_props, (GFunc) glade_property_class_free,
+  /* Free properties and signals */
+  g_list_foreach (adaptor->priv->properties, (GFunc) glade_property_class_free, NULL);
+  g_list_free (adaptor->priv->properties);
+
+  g_list_foreach (adaptor->priv->packing_props, (GFunc) glade_property_class_free,
                   NULL);
-  g_list_free (priv->packing_props);
+  g_list_free (adaptor->priv->packing_props);
 
   /* Be careful, this list holds GladeSignalClass* not GladeSignal,
    * thus g_free is enough as all members are const */
-  g_list_foreach (priv->signals, (GFunc) g_free, NULL);
-  g_list_free (priv->signals);
+  g_list_foreach (adaptor->priv->signals, (GFunc) g_free, NULL);
+  g_list_free (adaptor->priv->signals);
+
 
   /* Free child packings */
-  g_list_foreach (priv->child_packings, (GFunc) gwa_child_packing_free, NULL);
-  g_list_free (priv->child_packings);
+  g_list_foreach (adaptor->priv->child_packings,
+                  (GFunc) gwa_child_packing_free, NULL);
+  g_list_free (adaptor->priv->child_packings);
 
-  g_free (priv->book);
-  g_free (priv->catalog);
-  g_free (priv->special_child_type);
-  g_clear_object (&priv->cursor);
-  g_free (priv->name);
-  g_free (priv->generic_name);
-  g_free (priv->title);
-  g_free (priv->icon_name);
-  g_free (priv->missing_icon);
-  g_free (priv->template_xml);
+  if (adaptor->priv->book)
+    g_free (adaptor->priv->book);
+  if (adaptor->priv->catalog)
+    g_free (adaptor->priv->catalog);
+  if (adaptor->priv->special_child_type)
+    g_free (adaptor->priv->special_child_type);
 
-  if (priv->actions)
+  if (adaptor->priv->cursor != NULL)
+    g_object_unref (adaptor->priv->cursor);
+
+  if (adaptor->priv->name)
+    g_free (adaptor->priv->name);
+  if (adaptor->priv->generic_name)
+    g_free (adaptor->priv->generic_name);
+  if (adaptor->priv->title)
+    g_free (adaptor->priv->title);
+  if (adaptor->priv->icon_name)
+    g_free (adaptor->priv->icon_name);
+  if (adaptor->priv->missing_icon)
+    g_free (adaptor->priv->missing_icon);
+
+  if (adaptor->priv->actions)
     {
-      g_list_foreach (priv->actions,
+      g_list_foreach (adaptor->priv->actions,
                       (GFunc) glade_widget_action_class_free, NULL);
-      g_list_free (priv->actions);
+      g_list_free (adaptor->priv->actions);
     }
 
-  if (priv->packing_actions)
+  if (adaptor->priv->packing_actions)
     {
-      g_list_foreach (priv->packing_actions,
+      g_list_foreach (adaptor->priv->packing_actions,
                       (GFunc) glade_widget_action_class_free, NULL);
-      g_list_free (priv->packing_actions);
+      g_list_free (adaptor->priv->packing_actions);
     }
 
   gwa_internal_children_free (adaptor);
 
   G_OBJECT_CLASS (glade_widget_adaptor_parent_class)->finalize (object);
-}
-
-static inline void
-gwa_template_rebuild_objects (GladeWidgetAdaptor *adaptor, GType object_type)
-{
-  GList *l, *rebuild = NULL;
-
-  /* Iterate all projects */
-  for (l = glade_app_get_projects (); l; l = g_list_next (l))
-    {
-      GladeProject *project = l->data;
-      const GList *o;
-
-      /* Iterate all objects in the project */
-      for (o = glade_project_get_objects (project); o; o = g_list_next (o))
-	{
-	  GObject *obj = o->data;
-
-	  /* And rebuild widget if its template just changed */
-	  if (g_type_is_a (G_OBJECT_TYPE (obj), object_type))
-	    rebuild = g_list_prepend (rebuild, glade_widget_get_from_gobject (obj));
-	}
-    }
-
-  for (l = rebuild; l; l = g_list_next (l))
-    glade_widget_rebuild (l->data);
-
-  g_list_free (rebuild);
-}
-
-static inline void
-glade_widget_adaptor_set_template (GladeWidgetAdaptor *adaptor,
-                                   const gchar *template_xml)
-{
-  GladeWidgetAdaptorPrivate *priv = adaptor->priv;
-  GtkContainerClass *klass;
-  GType object_type;
-  
-  if (g_strcmp0 (priv->template_xml, template_xml) == 0)
-    return;
-
-  g_free (priv->template_xml);
-  priv->template_xml = g_strdup (template_xml);
-
-  /* Update container class template */
-  object_type = glade_widget_adaptor_get_object_type (adaptor);
-  klass = g_type_class_peek (object_type);
-#if HAVE_GTK_CONTAINER_CLASS_SET_TEMPLATE_FROM_STRING
-  gtk_container_class_set_template_from_string (klass, priv->template_xml, "this");
-#endif
-  gwa_template_rebuild_objects (adaptor, object_type);
-}
-
-static void
-on_template_file_changed (GFileMonitor       *monitor,
-                          GFile              *file,
-                          GFile              *other_file,
-                          GFileMonitorEvent   event_type,
-                          GladeWidgetAdaptor *adaptor)
-{
-  gchar *contents = NULL;
-  gsize len;
-
-  if (event_type != G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT)
-    return;
-
-  if (g_file_load_contents (file, NULL, &contents, &len, NULL, NULL))
-    {
-      g_object_set (adaptor, "template", contents, NULL);
-      g_free (contents);
-    }
-}
-
-static inline void
-glade_widget_adaptor_set_template_path (GladeWidgetAdaptor *adaptor,
-                                        const gchar *path)
-{
-  GladeWidgetAdaptorPrivate *priv = adaptor->priv;
-  GFile *file = g_file_new_for_path (path);
-  GError *error = NULL;
-
-  g_clear_object (&priv->template_monitor);
-  
-  /* Add watch for file */
-  priv->template_monitor = g_file_monitor_file (file, G_FILE_MONITOR_NONE, NULL, &error);
-
-  if (priv->template_monitor)
-    {
-      g_signal_connect (priv->template_monitor, "changed",
-                        G_CALLBACK (on_template_file_changed),
-                        adaptor);
-    }
-  else
-    {
-      g_warning ("Unable to monitor path `%s` %s", path, error->message);
-      g_error_free (error);
-    }
-  
-  g_object_unref (file);
 }
 
 static void
@@ -912,12 +820,6 @@ glade_widget_adaptor_real_set_property (GObject *object,
 	g_free (adaptor->priv->special_child_type);
 	adaptor->priv->special_child_type = g_value_dup_string (value);
         break;
-      case PROP_TEMPLATE:
-	glade_widget_adaptor_set_template (adaptor, g_value_get_string (value));
-        break;
-      case PROP_TEMPLATE_PATH:
-	glade_widget_adaptor_set_template_path (adaptor, g_value_get_string (value));
-	break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
@@ -963,9 +865,6 @@ glade_widget_adaptor_real_get_property (GObject *object,
         break;
       case PROP_CURSOR:
         g_value_set_pointer (value, adaptor->priv->cursor);
-        break;
-      case PROP_TEMPLATE:
-        g_value_set_string (value, adaptor->priv->template_xml);
         break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -1556,20 +1455,6 @@ glade_widget_adaptor_class_init (GladeWidgetAdaptorClass *adaptor_class)
        ("cursor", _("Cursor"),
         _("A cursor for inserting widgets in the UI"), G_PARAM_READABLE));
 
-  g_object_class_install_property
-      (object_class, PROP_TEMPLATE,
-       g_param_spec_string
-       ("template", _("Template"),
-        _("Builder template of the class"),
-        NULL, G_PARAM_READWRITE));
-
-  g_object_class_install_property
-      (object_class, PROP_TEMPLATE_PATH,
-       g_param_spec_string
-       ("template-path", _("Template path"),
-        _("Builder template file path of the class, if set it will be used to monitor and update template property automatically"),
-        NULL, G_PARAM_WRITABLE));
-
   g_type_class_add_private (adaptor_class, sizeof (GladeWidgetAdaptorPrivate));
 }
 
@@ -1747,14 +1632,9 @@ static void
 gwa_derived_class_init (GladeWidgetAdaptorClass *adaptor_class,
                         GWADerivedClassData *data)
 {
-  GladeXmlNode *node;
-  GModule *module;
+  GladeXmlNode *node = data->node;
+  GModule *module = data->module;
 
-  if (data == NULL) return;
-
-  node = data->node;
-  module = data->module;
-  
   /* Load catalog symbols from module */
   if (module)
     gwa_extend_with_node_load_sym (adaptor_class, node, module);
@@ -1824,6 +1704,7 @@ gwa_derive_adaptor_for_type (GType object_type, GWADerivedClassData *data)
 
   return derived_type;
 }
+
 
 /*******************************************************************************
                                      API
@@ -1900,14 +1781,6 @@ glade_widget_adaptor_get_signals (GladeWidgetAdaptor *adaptor)
   return adaptor->priv->signals;
 }
 
-G_CONST_RETURN gchar *
-glade_widget_adaptor_get_template (GladeWidgetAdaptor *adaptor)
-{
-  g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
-
-  return adaptor->priv->template_xml;
-}
-
 static void
 accum_adaptor (GType *type, GladeWidgetAdaptor *adaptor, GList **list)
 {
@@ -1956,8 +1829,6 @@ glade_widget_adaptor_register (GladeWidgetAdaptor *adaptor)
 
   g_hash_table_insert (adaptor_hash,
                        g_memdup (&adaptor->priv->type, sizeof (GType)), adaptor);
-
-  g_signal_emit_by_name (glade_app_get (), "widget-adaptor-registered", adaptor);
 }
 
 static GladePackingDefault *
@@ -2727,54 +2598,6 @@ generate_deprecated_icon (const gchar *icon_name)
     g_object_unref (orig_pixbuf[1]);
 
   return deprecated;
-}
-
-/**
- * glade_widget_adaptor_from_composite_template:
- * @template_type: a #GType
- * @template_xml: composite template ui description
- * @generic_name: the genereic name of the adaptor
- * @icon_name: the icon name for the adaptor or NULL to fallback to the parent
- *
- * Dynamicaly creates the corresponding adaptor for the template type.
- */
-GladeWidgetAdaptor *
-glade_widget_adaptor_from_composite_template (GType template_type,
-                                              const gchar *template_xml,
-                                              const gchar *generic_name,
-                                              const gchar *icon_name)
-{
-  gchar *adaptor_icon_name = NULL;
-  GladeWidgetAdaptor *adaptor;
-  GType adaptor_type;
-  const gchar *name;
-
-  g_return_val_if_fail (g_type_is_a (template_type, GTK_TYPE_CONTAINER), NULL);  
-  
-  adaptor_type = gwa_derive_adaptor_for_type (template_type, NULL);
-  name = g_type_name (template_type);
-
-  /* Fallback to parent icon */
-  if (!icon_name)
-    {
-      GladeWidgetAdaptor *parent = glade_widget_adaptor_get_parent_adaptor_by_type (template_type);
-      adaptor_icon_name = g_strdup ((parent && parent->priv->icon_name) ?
-                                    parent->priv->icon_name : DEFAULT_ICON_NAME);
-    }
-
-  adaptor = g_object_new (adaptor_type,
-                          "type", template_type,
-                          "template", template_xml,
-                          "name", name,
-                          "catalog",  NULL, /* yup NULL, it does not have a catalog */
-                          "generic-name", generic_name,
-                          "icon-name", icon_name ? icon_name : adaptor_icon_name,
-                          "title", name,
-                          NULL);
-
-  g_free (adaptor_icon_name);
-  
-  return adaptor;
 }
 
 /**

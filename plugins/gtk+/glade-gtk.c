@@ -410,6 +410,9 @@ void
 glade_gtk_widget_read_widget (GladeWidgetAdaptor * adaptor,
                               GladeWidget * widget, GladeXmlNode * node)
 {
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
+
   /* First chain up and read in all the normal properties.. */
   GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
 
@@ -503,6 +506,7 @@ glade_gtk_widget_write_atk_properties (GladeWidget * widget,
 
       g_free (atkname);
     }
+
 }
 
 static void
@@ -682,6 +686,9 @@ glade_gtk_widget_write_widget (GladeWidgetAdaptor * adaptor,
 {
   GObject *obj;
 
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
+
   /* Make sure use-action-appearance and related-action properties are
    * ordered in a sane way and are only saved if there is an action */
   if ((obj = glade_widget_get_object (widget)) &&
@@ -805,6 +812,7 @@ glade_gtk_widget_set_property (GladeWidgetAdaptor * adaptor,
     {
       id = "tooltip-text";
     }
+
   GWA_GET_CLASS (G_TYPE_OBJECT)->set_property (adaptor, object, id, value);
 }
 
@@ -817,6 +825,7 @@ glade_gtk_widget_get_property (GladeWidgetAdaptor * adaptor,
     {
       id = "tooltip-text";
     }
+
   GWA_GET_CLASS (G_TYPE_OBJECT)->get_property (adaptor, object, id, value);
 }
 
@@ -1126,18 +1135,6 @@ glade_gtk_widget_action_submenu (GladeWidgetAdaptor * adaptor,
 
 /* ----------------------------- GtkContainer ------------------------------ */
 void
-glade_gtk_container_deep_post_create (GladeWidgetAdaptor *adaptor,
-                                      GObject *container,
-                                      GladeCreateReason reason)
-{
-  GladeWidget *widget = glade_widget_get_from_gobject (container);
-
-  if (!glade_widget_get_parent (widget) && glade_widget_get_template_class (widget))
-    glade_widget_property_set (widget, "glade-template-class", 
-                               glade_widget_get_template_class (widget));
-}
-
-void
 glade_gtk_container_post_create (GladeWidgetAdaptor * adaptor,
                                  GObject * container, GladeCreateReason reason)
 {
@@ -1337,103 +1334,6 @@ glade_gtk_container_create_editable (GladeWidgetAdaptor * adaptor,
                                      GladeEditorPageType type)
 {
   return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
-}
-
-void
-glade_gtk_container_set_property (GladeWidgetAdaptor *adaptor,
-                                  GObject *object,
-                                  const gchar *id,
-                                  const GValue *value)
-{
-  if (!strcmp (id, "glade-template-class"))
-    {
-      GladeWidget *gwidget = glade_widget_get_from_gobject (object);
-      glade_widget_set_template_class (gwidget, g_value_get_string (value));
-    }
-  else GWA_GET_CLASS (G_TYPE_OBJECT)->set_property (adaptor, object, id, value);
-}
-
-void
-glade_gtk_container_get_property (GladeWidgetAdaptor *adaptor,
-                                  GObject *object,
-                                  const gchar *id,
-                                  GValue *value)
-{
-  if (!strcmp (id, "glade-template-class"))
-    {
-      GladeWidget *gwidget = glade_widget_get_from_gobject (object);
-      g_value_set_string (value, glade_widget_get_template_class (gwidget));
-    }
-  else GWA_GET_CLASS (G_TYPE_OBJECT)->get_property (adaptor, object, id, value);
-}
-
-void
-glade_gtk_container_action_activate (GladeWidgetAdaptor *adaptor,
-                                     GObject *object,
-                                     const gchar *action_path)
-{
-  GladeWidget *gwidget = glade_widget_get_from_gobject (object);
-
-  if (strcmp (action_path, "template") == 0)
-    {
-      GtkFileFilter *filter = gtk_file_filter_new ();
-      gchar *template_class, *template_file;
-      GtkWidget *dialog, *help_label;
-      GtkFileChooser *chooser;
-
-      gtk_file_filter_add_pattern (filter, "*.ui");
-
-      dialog = gtk_file_chooser_dialog_new (_("Save Template"),
-                                            GTK_WINDOW (glade_app_get_window ()),
-                                            GTK_FILE_CHOOSER_ACTION_SAVE,
-                                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                            GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
-                                            NULL);
-      chooser = GTK_FILE_CHOOSER (dialog);
-      gtk_file_chooser_set_do_overwrite_confirmation (chooser, TRUE);
-      gtk_file_chooser_set_filter (chooser, filter);
-      help_label = gtk_label_new (_("NOTE: the base name of the file will be used"
-                                    " as the class name so it should be in CamelCase"));
-      gtk_file_chooser_set_extra_widget (chooser, help_label);
-      gtk_widget_show (help_label);
-
-      template_class = g_strconcat ("My", G_OBJECT_TYPE_NAME (object), NULL);
-      template_file = g_strconcat (template_class, ".ui", NULL);
-      
-      gtk_file_chooser_set_current_folder (chooser, g_get_user_special_dir (G_USER_DIRECTORY_TEMPLATES));
-      gtk_file_chooser_set_current_name (chooser, template_file);
-      
-      if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
-	{
-	  gchar *filename = gtk_file_chooser_get_filename (chooser);
-	  gchar *basename = g_path_get_basename (filename);
-	  gchar *dot = g_strrstr (basename, ".ui");
-
-	  /* Strip file extension to get the class name */
-	  if (dot)
-	    {
-	      *dot = '\0';
-	    }
-	  else
-	    {
-	      /* Or add it if it is not present */
-	      gchar *tmp = g_strconcat (filename, ".ui", NULL);
-	      g_free (filename);
-	      filename = tmp;
-	    }
-	  
-	  glade_composite_template_save_from_widget (gwidget, basename, filename, TRUE);
-
-	  g_free (basename);
-	  g_free (filename);
-	}
-
-      g_free (template_class);
-      g_free (template_file);
-      gtk_widget_destroy (dialog);
-    }
-  else
-    GWA_GET_CLASS (GTK_TYPE_WIDGET)->action_activate (adaptor, object, action_path);
 }
 
 /* ----------------------------- GtkBox ------------------------------ */
@@ -3493,6 +3393,9 @@ glade_gtk_entry_read_widget (GladeWidgetAdaptor * adaptor,
 {
   GladeProperty *property;
 
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
+
   /* First chain up and read in all the normal properties.. */
   GWA_GET_CLASS (GTK_TYPE_WIDGET)->read_widget (adaptor, widget, node);
 
@@ -3728,6 +3631,9 @@ void
 glade_gtk_window_read_widget (GladeWidgetAdaptor * adaptor,
                               GladeWidget * widget, GladeXmlNode * node)
 {
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
+
   /* First chain up and read in all the normal properties.. */
   GWA_GET_CLASS (GTK_TYPE_WIDGET)->read_widget (adaptor, widget, node);
 
@@ -3771,6 +3677,9 @@ glade_gtk_window_write_widget (GladeWidgetAdaptor * adaptor,
                                GladeWidget * widget,
                                GladeXmlContext * context, GladeXmlNode * node)
 {
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
+
   /* First chain up and read in all the normal properties.. */
   GWA_GET_CLASS (GTK_TYPE_WIDGET)->write_widget (adaptor, widget, context,
                                                  node);
@@ -4353,6 +4262,9 @@ void
 glade_gtk_button_read_widget (GladeWidgetAdaptor * adaptor,
                               GladeWidget * widget, GladeXmlNode * node)
 {
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
+
   /* First chain up and read in all the normal properties.. */
   GWA_GET_CLASS (GTK_TYPE_CONTAINER)->read_widget (adaptor, widget, node);
 
@@ -4367,6 +4279,9 @@ glade_gtk_button_write_widget (GladeWidgetAdaptor * adaptor,
   GladeProperty *prop;
   gboolean use_stock;
   gchar *stock = NULL;
+
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
 
   /* Do not save GtkColorButton GtkFontButton and GtkScaleButton label property */
   if (!(GTK_IS_COLOR_BUTTON (glade_widget_get_object (widget)) ||
@@ -4403,6 +4318,9 @@ glade_gtk_image_read_widget (GladeWidgetAdaptor * adaptor,
 {
   GladeProperty *property;
 
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
+
   /* First chain up and read in all the normal properties.. */
   GWA_GET_CLASS (GTK_TYPE_WIDGET)->read_widget (adaptor, widget, node);
 
@@ -4437,6 +4355,9 @@ glade_gtk_image_write_widget (GladeWidgetAdaptor * adaptor,
   GladePropertyClass *pclass;
   GtkIconSize icon_size;
   gchar *value;
+
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
 
   /* First chain up and write all the normal properties (including "use-stock")... */
   GWA_GET_CLASS (GTK_TYPE_WIDGET)->write_widget (adaptor, widget, context,
@@ -5581,6 +5502,9 @@ glade_gtk_image_menu_item_read_widget (GladeWidgetAdaptor * adaptor,
   gboolean use_stock;
   gchar *label = NULL;
 
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
+
   /* First chain up and read in all the normal properties.. */
   GWA_GET_CLASS (GTK_TYPE_MENU_ITEM)->read_widget (adaptor, widget, node);
 
@@ -5616,6 +5540,9 @@ glade_gtk_image_menu_item_write_widget (GladeWidgetAdaptor * adaptor,
   GladeProperty *label_prop;
   gboolean use_stock;
   gchar *stock;
+
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
 
   /* Make a copy of the GladeProperty, override its value if use-stock is TRUE */
   label_prop = glade_widget_get_property (widget, "label");
@@ -6319,6 +6246,8 @@ void
 glade_gtk_tool_item_group_read_widget (GladeWidgetAdaptor * adaptor,
 				       GladeWidget * widget, GladeXmlNode * node)
 {
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
 
   /* First chain up and read in all the normal properties.. */
   GWA_GET_CLASS (GTK_TYPE_TOOL_ITEM)->read_widget (adaptor, widget, node);
@@ -6625,6 +6554,9 @@ void
 glade_gtk_tool_button_read_widget (GladeWidgetAdaptor * adaptor,
                                    GladeWidget * widget, GladeXmlNode * node)
 {
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
+
   /* First chain up and read in all the normal properties.. */
   GWA_GET_CLASS (GTK_TYPE_TOOL_ITEM)->read_widget (adaptor, widget, node);
 
@@ -7108,6 +7040,8 @@ glade_gtk_label_read_widget (GladeWidgetAdaptor * adaptor,
                              GladeWidget * widget, GladeXmlNode * node)
 {
   GladeProperty *prop;
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
 
   /* First chain up and read in all the normal properties.. */
   GWA_GET_CLASS (GTK_TYPE_WIDGET)->read_widget (adaptor, widget, node);
@@ -7191,6 +7125,9 @@ glade_gtk_label_write_widget (GladeWidgetAdaptor * adaptor,
                               GladeXmlContext * context, GladeXmlNode * node)
 {
   GladeXmlNode *attrs_node;
+
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
 
   /* First chain up and read in all the normal properties.. */
   GWA_GET_CLASS (GTK_TYPE_WIDGET)->write_widget (adaptor, widget, context,
@@ -7630,6 +7567,9 @@ void
 glade_gtk_combo_box_text_read_widget (GladeWidgetAdaptor * adaptor,
 				      GladeWidget * widget, GladeXmlNode * node)
 {
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
+
   /* First chain up and read in all the normal properties.. */
   GWA_GET_CLASS (GTK_TYPE_COMBO_BOX)->read_widget (adaptor, widget, node);
 
@@ -7680,6 +7620,9 @@ glade_gtk_combo_box_text_write_widget (GladeWidgetAdaptor * adaptor,
 				       GladeXmlContext * context, GladeXmlNode * node)
 {
   GladeXmlNode *attrs_node;
+
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
 
   /* First chain up and read in all the normal properties.. */
   GWA_GET_CLASS (GTK_TYPE_COMBO_BOX)->write_widget (adaptor, widget, context, node);
@@ -8208,6 +8151,9 @@ void
 glade_gtk_size_group_read_widget (GladeWidgetAdaptor * adaptor,
                                   GladeWidget * widget, GladeXmlNode * node)
 {
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
+
   /* First chain up and read in all the normal properties.. */
   GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
 
@@ -8253,6 +8199,9 @@ glade_gtk_size_group_write_widget (GladeWidgetAdaptor * adaptor,
                                    GladeXmlContext * context,
                                    GladeXmlNode * node)
 {
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
+
   /* First chain up and read in all the normal properties.. */
   GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
 
@@ -8441,6 +8390,9 @@ void
 glade_gtk_icon_factory_read_widget (GladeWidgetAdaptor * adaptor,
                                     GladeWidget * widget, GladeXmlNode * node)
 {
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
+
   /* First chain up and read in any normal properties.. */
   GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
 
@@ -8546,6 +8498,9 @@ glade_gtk_icon_factory_write_widget (GladeWidgetAdaptor * adaptor,
                                      GladeXmlContext * context,
                                      GladeXmlNode * node)
 {
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
+
   /* First chain up and write all the normal properties.. */
   GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
 
@@ -9223,6 +9178,9 @@ glade_gtk_store_write_widget (GladeWidgetAdaptor * adaptor,
                               GladeWidget * widget,
                               GladeXmlContext * context, GladeXmlNode * node)
 {
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
+
   /* First chain up and write all the normal properties.. */
   GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
 
@@ -9426,6 +9384,9 @@ void
 glade_gtk_store_read_widget (GladeWidgetAdaptor * adaptor,
                              GladeWidget * widget, GladeXmlNode * node)
 {
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
+
   /* First chain up and read in all the normal properties.. */
   GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
 
@@ -9657,6 +9618,9 @@ glade_gtk_cell_renderer_write_widget (GladeWidgetAdaptor * adaptor,
                                       GladeXmlContext * context,
                                       GladeXmlNode * node)
 {
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
+
   /* Write our normal properties, then chain up to write any other normal properties,
    * then attributes 
    */
@@ -9710,6 +9674,9 @@ void
 glade_gtk_cell_renderer_read_widget (GladeWidgetAdaptor * adaptor,
                                      GladeWidget * widget, GladeXmlNode * node)
 {
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
+
   /* First chain up and read in all the properties... */
   GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
 
@@ -10434,6 +10401,9 @@ glade_gtk_adjustment_write_widget (GladeWidgetAdaptor * adaptor,
 {
   GladeProperty *prop;
 
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
+
   /* Ensure proper order of adjustment properties by writing them here. */
   prop = glade_widget_get_property (widget, "lower");
   glade_property_write (prop, context, node);
@@ -10971,6 +10941,9 @@ glade_gtk_recent_filter_read_widget (GladeWidgetAdaptor *adaptor,
 				     GladeWidget        *widget, 
 				     GladeXmlNode       *node)
 {
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
+
   /* First chain up and read in all the normal properties.. */
   GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
 
@@ -10986,6 +10959,9 @@ glade_gtk_recent_filter_write_widget (GladeWidgetAdaptor *adaptor,
 				      GladeXmlNode       *node)
 {
   GladeXmlNode *strings_node;
+
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
 
   /* First chain up and read in all the normal properties.. */
   GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
@@ -11023,6 +10999,9 @@ glade_gtk_file_filter_read_widget (GladeWidgetAdaptor *adaptor,
 				   GladeWidget        *widget, 
 				   GladeXmlNode       *node)
 {
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
+
   /* First chain up and read in all the normal properties.. */
   GWA_GET_CLASS (G_TYPE_OBJECT)->read_widget (adaptor, widget, node);
 
@@ -11037,6 +11016,9 @@ glade_gtk_file_filter_write_widget (GladeWidgetAdaptor *adaptor,
 				    GladeXmlNode       *node)
 {
   GladeXmlNode *strings_node;
+
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
 
   /* First chain up and read in all the normal properties.. */
   GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);

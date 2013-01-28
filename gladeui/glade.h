@@ -46,6 +46,5 @@
 #include <gladeui/glade-displayable-values.h>
 #include <gladeui/glade-cell-renderer-icon.h>
 #include <gladeui/glade-cursor.h>
-#include <gladeui/glade-composite-template.h>
 
 #endif /* __GLADE_H__ */

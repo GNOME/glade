@@ -6,6 +6,7 @@
                domain="glade3"
                book="gtk3">
   <glade-widget-classes>
+
     <glade-widget-class name="GtkWidget" _title="Widget" default-width="100" default-height="60">
 
       <deep-post-create-function>glade_gtk_widget_deep_post_create</deep-post-create-function>
@@ -288,7 +289,6 @@ embedded in another object</_tooltip>
 
     <glade-widget-class name="GtkContainer" _title="Container" use-placeholders="True">
       <post-create-function>glade_gtk_container_post_create</post-create-function>
-      <deep-post-create-function>glade_gtk_container_deep_post_create</deep-post-create-function>
       <add-child-verify-function>glade_gtk_container_add_verify</add-child-verify-function>
       <add-child-function>glade_gtk_container_add_child</add-child-function>
       <remove-child-function>glade_gtk_container_remove_child</remove-child-function> 
@@ -296,18 +296,8 @@ embedded in another object</_tooltip>
       <child-set-property-function>glade_gtk_container_set_child_property</child-set-property-function>
       <child-get-property-function>glade_gtk_container_get_child_property</child-get-property-function>
       <get-children-function>glade_gtk_container_get_children</get-children-function>
-      <set-property-function>glade_gtk_container_set_property</set-property-function>
-      <get-property-function>glade_gtk_container_get_property</get-property-function>
-      <action-activate-function>glade_gtk_container_action_activate</action-activate-function>
-      <actions>
-	<action id="template" _name="Export as template" stock="gtk-convert" important="True"/>
-      </actions>
+
       <properties>
-	<property id="glade-template-class" _name="Template Class" save="False" custom-layout="True">
-	  <parameter-spec>
-	    <type>GParamString</type>
-	  </parameter-spec>
-	</property>
         <property id="border-width" common="True" weight="2.5"/>
         <property id="resize-mode" ignore="True" common="True" weight="4.7">
   	  <displayable-values>

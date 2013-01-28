@@ -79,7 +79,6 @@ struct _GladeWidgetPrivate {
 		* button2. This is a unique name and is the one
 		* used when loading widget with libglade
 		*/
-  gchar *template_class; /* The name of the composite class this widget defines */
 
   gchar *support_warning; /* A warning message for version incompatabilities
 			   * in this widget
@@ -193,7 +192,6 @@ enum
   PROP_TOPLEVEL_HEIGHT,
   PROP_SUPPORT_WARNING,
   PROP_VISIBLE,
-  PROP_TEMPLATE_CLASS,
   N_PROPERTIES
 };
 
@@ -1095,9 +1093,6 @@ glade_widget_set_real_property (GObject * object,
       case PROP_TOPLEVEL_HEIGHT:
         widget->priv->height = g_value_get_int (value);
         break;
-      case PROP_TEMPLATE_CLASS:
-        glade_widget_set_template_class (widget, g_value_get_string (value));
-        break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
@@ -1153,9 +1148,6 @@ glade_widget_get_real_property (GObject * object,
         break;
       case PROP_REASON:
         g_value_set_int (value, widget->priv->construct_reason);
-        break;
-      case PROP_TEMPLATE_CLASS:
-        g_value_set_string (value, widget->priv->template_class);
         break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -1312,12 +1304,7 @@ glade_widget_class_init (GladeWidgetClass * klass)
        g_param_spec_boolean ("visible", _("Visible"),
                             _("Wether the widget is visible or not"),
                              FALSE, G_PARAM_READABLE);
-  
-  properties[PROP_TEMPLATE_CLASS] =
-       g_param_spec_string ("template-class", _("Template Class"),
-                            _("The class name this template defines"),
-                            NULL, G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
-  
+
   /* Install all properties */
   g_object_class_install_properties (object_class, N_PROPERTIES, properties);
 
@@ -2525,7 +2512,7 @@ void
 glade_widget_set_name (GladeWidget * widget, const gchar * name)
 {
   g_return_if_fail (GLADE_IS_WIDGET (widget));
-  if (g_strcmp0 (widget->priv->name, name))
+  if (widget->priv->name != name)
     {
       if (widget->priv->name)
         g_free (widget->priv->name);
@@ -2546,45 +2533,6 @@ glade_widget_get_name (GladeWidget * widget)
 {
   g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
   return widget->priv->name;
-}
-
-/**
- * glade_widget_set_template_class:
- * @widget: a #GladeWidget
- * @name: a string
- *
- * Sets the template class name this @widget defines.
- * @widget has to be toplevel.
- */
-void
-glade_widget_set_template_class (GladeWidget *widget, const gchar *name)
-{
-  g_return_if_fail (GLADE_IS_WIDGET (widget));
-
-  /* Check toplevelness */
-  if (glade_widget_get_parent (widget)) return;
-
-  if (g_strcmp0 (widget->priv->template_class, name))
-    {
-      if (widget->priv->template_class)
-        g_free (widget->priv->template_class);
-
-      widget->priv->template_class = g_strdup (name);
-      g_object_notify_by_pspec (G_OBJECT (widget), properties[PROP_TEMPLATE_CLASS]);
-    }
-}
-
-/**
- * glade_widget_get_template_class:
- * @widget: a #GladeWidget
- *
- * Returns: a pointer to @widget's template class name.
- */
-const gchar *
-glade_widget_get_template_class (GladeWidget *widget)
-{
-  g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
-  return widget->priv->template_class;
 }
 
 /**
@@ -3782,24 +3730,23 @@ glade_widget_read (GladeProject * project,
 {
   GladeWidgetAdaptor *adaptor;
   GladeWidget *widget = NULL;
-  gchar *klass, *id = NULL;
-  gboolean is_tmpl;
+  gchar *klass, *id;
 
   if (glade_project_load_cancelled (project))
     return NULL;
 
-  is_tmpl = (parent == NULL && glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE));
-
-  if (!is_tmpl && !glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET))
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
     return NULL;
 
   glade_widget_push_superuser ();
 
   if ((klass =
        glade_xml_get_property_string_required
-       (node, is_tmpl ? GLADE_XML_TAG_PARENT : GLADE_XML_TAG_CLASS, NULL)) != NULL)
+       (node, GLADE_XML_TAG_CLASS, NULL)) != NULL)
     {
-      if ((id = glade_xml_get_property_string_required (node, GLADE_XML_TAG_ID, NULL)))
+      if ((id =
+           glade_xml_get_property_string_required
+           (node, GLADE_XML_TAG_ID, NULL)) != NULL)
         {
           GType type;
           /* 
@@ -3833,15 +3780,11 @@ glade_widget_read (GladeProject * project,
                 }
               else
                 {
-                  gchar *tmpl = (is_tmpl) ? glade_xml_get_property_string (node, GLADE_XML_TAG_CLASS) : NULL;
                   widget = glade_widget_adaptor_create_widget
                       (adaptor, FALSE,
                        "name", id,
                        "parent", parent,
-                       "project", project,
-                       "reason", GLADE_CREATE_LOAD,
-                       "template-class", tmpl, NULL);
-                  g_free (tmpl);
+                       "project", project, "reason", GLADE_CREATE_LOAD, NULL);
                 }
 
               glade_widget_adaptor_read_widget (adaptor, widget, node);
@@ -3984,7 +3927,6 @@ void
 glade_widget_write (GladeWidget * widget,
                     GladeXmlContext * context, GladeXmlNode * node)
 {
-  const gchar *tmpl = glade_widget_get_template_class (widget);
   GObject *object = glade_widget_get_object (widget);
   GladeXmlNode *widget_node;
   GList *l, *list;
@@ -3997,16 +3939,13 @@ glade_widget_write (GladeWidget * widget,
       return;
     }
 
-  widget_node = glade_xml_node_new (context, (tmpl) ? GLADE_XML_TAG_TEMPLATE : GLADE_XML_TAG_WIDGET);
+  widget_node = glade_xml_node_new (context, GLADE_XML_TAG_WIDGET);
   glade_xml_node_append_child (node, widget_node);
 
   /* Set class and id */
   glade_xml_node_set_property_string (widget_node,
-                                      (tmpl) ? GLADE_XML_TAG_PARENT : GLADE_XML_TAG_CLASS,
+                                      GLADE_XML_TAG_CLASS,
                                       glade_widget_adaptor_get_name (widget->priv->adaptor));
-  if (tmpl)
-    glade_xml_node_set_property_string (widget_node, GLADE_XML_TAG_CLASS, tmpl);
-
   glade_xml_node_set_property_string (widget_node,
                                       GLADE_XML_TAG_ID, widget->priv->name);
 

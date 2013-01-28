@@ -53,7 +53,6 @@ libgladeui_2_la_SOURCES = \
 	glade-object-stub.c \
 	glade-xml-utils.c \
 	glade-catalog.c \
-	glade-composite-template.c \
 	glade-widget-adaptor.c \
 	glade-widget.c \
 	glade-property-class.c \
@@ -123,7 +122,6 @@ libgladeuiinclude_HEADERS = \
 	glade-design-view.h \
 	glade-widget.h \
 	glade-widget-adaptor.h \
-	glade-composite-template.h \
 	glade-property.h \
 	glade-property-class.h \
 	glade-utils.h \

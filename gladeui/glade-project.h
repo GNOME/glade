@@ -121,7 +121,6 @@ gboolean            glade_project_load_from_file      (GladeProject        *proj
 gboolean            glade_project_save                (GladeProject        *project, 
                                                        const gchar         *path, 
                                                        GError             **error);
-gchar              *glade_project_dump_string          (GladeProject       *project);
 void                glade_project_push_progress        (GladeProject       *project);
 gboolean            glade_project_load_cancelled       (GladeProject       *project);
 void                glade_project_cancel_load          (GladeProject       *project);

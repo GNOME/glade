@@ -337,11 +337,6 @@ void                    glade_widget_set_name		    (GladeWidget      *widget,
  
 G_CONST_RETURN gchar   *glade_widget_get_name               (GladeWidget      *widget);
 
-void                    glade_widget_set_template_class     (GladeWidget      *widget,
-							     const gchar      *name);
-
-G_CONST_RETURN gchar   *glade_widget_get_template_class     (GladeWidget      *widget);
-
 void                    glade_widget_set_internal	    (GladeWidget      *widget,
 							     const gchar      *internal);
  
