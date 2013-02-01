@@ -323,13 +323,46 @@ glade_editor_on_docs_click (GtkButton *button, GladeEditor *editor)
     }
 }
 
+ static GtkWidget *
+glade_editor_button_new ()
+{
+  static GtkCssProvider *provider = NULL;
+  GtkStyleContext *context;
+  GtkWidget *button;
+
+  if (provider == NULL)
+    {
+      provider = gtk_css_provider_new ();
+      gtk_css_provider_load_from_data (provider, 
+                                       "* {\n"
+                                       "-GtkButton-default-border : 0;\n"
+                                       "-GtkButton-default-outside-border : 0;\n"
+                                       "-GtkButton-inner-border: 0;\n"
+                                       "-GtkWidget-focus-line-width : 0;\n"
+                                       "-GtkWidget-focus-padding : 0;\n"
+                                       "padding: 0;\n"
+                                       "}", -1, NULL);
+    }
+
+  button = gtk_button_new ();
+  context = gtk_widget_get_style_context (button);
+  gtk_style_context_add_provider (context,
+                                  GTK_STYLE_PROVIDER (provider),
+                                  GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+  gtk_button_set_focus_on_click (GTK_BUTTON (button), FALSE);
+
+  return button;
+}
+
 static GtkWidget *
 glade_editor_create_info_button (GladeEditor *editor)
 {
   GtkWidget *button;
   GtkWidget *image;
 
-  button = gtk_button_new ();
+  button = glade_editor_button_new ();
 
   image = glade_util_get_devhelp_icon (GTK_ICON_SIZE_BUTTON);
   gtk_widget_show (image);
@@ -350,7 +383,7 @@ glade_editor_create_reset_button (GladeEditor *editor)
   GtkWidget *image;
   GtkWidget *button;
 
-  button = gtk_button_new ();
+  button = glade_editor_button_new ();
 
   image = gtk_image_new_from_stock ("gtk-clear", GTK_ICON_SIZE_BUTTON);
 
@@ -483,7 +516,6 @@ glade_editor_switch_page (GtkNotebook     *notebook,
 static void
 glade_editor_init (GladeEditor *editor)
 {
-  GtkSizeGroup *size_group;
   GtkWidget    *hbox;
 
   editor->priv = 
@@ -510,24 +542,23 @@ glade_editor_init (GladeEditor *editor)
   gtk_box_pack_start (GTK_BOX (editor), editor->priv->class_field, FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (editor), editor->priv->notebook, TRUE, TRUE, 0);
 
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-  gtk_container_set_border_width (GTK_CONTAINER (hbox), 0);
-  gtk_box_pack_start (GTK_BOX (editor), hbox, FALSE, FALSE, 0);
-
-  size_group = gtk_size_group_new (GTK_SIZE_GROUP_BOTH);
+  hbox = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
+  gtk_box_set_spacing (GTK_BOX (hbox), 6);
+  gtk_widget_set_hexpand (hbox, FALSE);
 
   /* Reset button */
   editor->priv->reset_button = glade_editor_create_reset_button (editor);
-  gtk_box_pack_end (GTK_BOX (hbox), editor->priv->reset_button, FALSE, FALSE, 0);
-  gtk_size_group_add_widget (size_group, editor->priv->reset_button);
+  gtk_box_pack_start (GTK_BOX (hbox), editor->priv->reset_button, FALSE, FALSE, 0);
+  gtk_button_box_set_child_non_homogeneous (GTK_BUTTON_BOX (hbox), editor->priv->reset_button, TRUE);
 
   /* Documentation button */
   editor->priv->info_button = glade_editor_create_info_button (editor);
-  gtk_box_pack_end (GTK_BOX (hbox), editor->priv->info_button, FALSE, FALSE, 0);
-  gtk_size_group_add_widget (size_group, editor->priv->info_button);
+  gtk_box_pack_start (GTK_BOX (hbox), editor->priv->info_button, FALSE, FALSE, 0);
+  gtk_button_box_set_child_non_homogeneous (GTK_BUTTON_BOX (hbox), editor->priv->info_button, TRUE);
 
-  g_object_unref (size_group);
-
+  gtk_notebook_set_action_widget (GTK_NOTEBOOK (editor->priv->notebook), hbox, GTK_PACK_END);
+  gtk_widget_show_all (hbox);
+  
   gtk_widget_show_all (GTK_WIDGET (editor));
   if (editor->priv->show_info)
     gtk_widget_show (editor->priv->info_button);
