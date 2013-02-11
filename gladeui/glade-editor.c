@@ -57,6 +57,7 @@ enum
   PROP_0,
   PROP_SHOW_INFO,
   PROP_WIDGET,
+  PROP_SHOW_CLASS_FIELD,
   N_PROPERTIES
 };
 
@@ -131,6 +132,7 @@ struct _GladeEditorPrivate
   GtkWidget *widget_label; /* A label with the current widget name. */
 
   gboolean show_info; /* Whether or not to show an informational button  */
+  gboolean show_class_field; /* Whether or not to show the class field at the top */
 };
 
 G_DEFINE_TYPE (GladeEditor, glade_editor, GTK_TYPE_VBOX);
@@ -159,6 +161,12 @@ glade_editor_set_property (GObject *object,
         glade_editor_load_widget (editor,
                                   GLADE_WIDGET (g_value_get_object (value)));
         break;
+      case PROP_SHOW_CLASS_FIELD:
+        if (g_value_get_boolean (value))
+          glade_editor_show_class_field (editor);
+        else
+          glade_editor_hide_class_field (editor);
+        break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
@@ -180,6 +188,9 @@ glade_editor_get_property (GObject *object,
         break;
       case PROP_WIDGET:
         g_value_set_object (value, editor->priv->loaded_widget);
+        break;
+      case PROP_SHOW_CLASS_FIELD:
+        g_value_set_boolean (value, editor->priv->show_class_field);
         break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -229,6 +240,13 @@ glade_editor_class_init (GladeEditorClass *klass)
                          _("The currently loaded widget in this editor"),
                          GLADE_TYPE_WIDGET,
                          G_PARAM_READWRITE);
+
+  properties[PROP_SHOW_CLASS_FIELD] =
+    g_param_spec_boolean ("show-class-field",
+                          _("Show Class Field"),
+                          _("Whether to show the class fiels at the top"),
+                          TRUE,
+                          G_PARAM_READWRITE);
   
   /* Install all properties */
   g_object_class_install_properties (object_class, N_PROPERTIES, properties);
@@ -386,7 +404,8 @@ glade_editor_create_reset_button (GladeEditor *editor)
   button = glade_editor_button_new ();
 
   image = gtk_image_new_from_stock ("gtk-clear", GTK_ICON_SIZE_BUTTON);
-
+  gtk_widget_show (image);
+  
   gtk_container_add (GTK_CONTAINER (button), image);
 
   gtk_widget_set_tooltip_text (button,
@@ -529,6 +548,7 @@ glade_editor_init (GladeEditor *editor)
   editor->priv->page_atk = glade_editor_notebook_page (editor, _("Accessibility"));
   editor->priv->editables = NULL;
   editor->priv->loading = FALSE;
+  editor->priv->show_class_field = TRUE;
 
   g_signal_connect (G_OBJECT (editor->priv->notebook), "switch-page",
 		    G_CALLBACK (glade_editor_switch_page), editor);
@@ -550,26 +570,20 @@ glade_editor_init (GladeEditor *editor)
   editor->priv->reset_button = glade_editor_create_reset_button (editor);
   gtk_box_pack_start (GTK_BOX (hbox), editor->priv->reset_button, FALSE, FALSE, 0);
   gtk_button_box_set_child_non_homogeneous (GTK_BUTTON_BOX (hbox), editor->priv->reset_button, TRUE);
-
+  gtk_widget_set_no_show_all (editor->priv->reset_button, TRUE);
+  
   /* Documentation button */
   editor->priv->info_button = glade_editor_create_info_button (editor);
   gtk_box_pack_start (GTK_BOX (hbox), editor->priv->info_button, FALSE, FALSE, 0);
   gtk_button_box_set_child_non_homogeneous (GTK_BUTTON_BOX (hbox), editor->priv->info_button, TRUE);
+  gtk_widget_set_no_show_all (editor->priv->info_button, TRUE);
 
   gtk_notebook_set_action_widget (GTK_NOTEBOOK (editor->priv->notebook), hbox, GTK_PACK_END);
   gtk_widget_show_all (hbox);
   
   gtk_widget_show_all (GTK_WIDGET (editor));
-  if (editor->priv->show_info)
-    gtk_widget_show (editor->priv->info_button);
-  else
-    gtk_widget_hide (editor->priv->info_button);
 
   gtk_widget_hide (GTK_WIDGET (editor));
-
-  /* Initially there is no widget loaded so these need to be insensitive */
-  gtk_widget_set_sensitive (editor->priv->reset_button, FALSE);
-  gtk_widget_set_sensitive (editor->priv->info_button, FALSE);
 
   gtk_widget_set_no_show_all (GTK_WIDGET (editor), TRUE);
 }
@@ -826,8 +840,8 @@ glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
   /* we are just clearing, we are done */
   if (widget == NULL)
     {
-      gtk_widget_set_sensitive (editor->priv->reset_button, FALSE);
-      gtk_widget_set_sensitive (editor->priv->info_button, FALSE);
+      gtk_widget_hide (editor->priv->reset_button);
+      gtk_widget_hide (editor->priv->info_button);
 
       editor->priv->loaded_widget = NULL;
 
@@ -838,10 +852,13 @@ glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 
       return;
     }
-  gtk_widget_set_sensitive (editor->priv->reset_button, TRUE);
+  gtk_widget_show (editor->priv->reset_button);
 
   g_object_get (editor->priv->loaded_adaptor, "book", &book, NULL);
-  gtk_widget_set_sensitive (editor->priv->info_button, book != NULL);
+
+  if (editor->priv->show_info)
+    gtk_widget_set_visible (editor->priv->info_button, book != NULL);
+
   g_free (book);
 
   editor->priv->loading = TRUE;
@@ -1429,6 +1446,34 @@ glade_editor_hide_info (GladeEditor *editor)
       gtk_widget_hide (editor->priv->info_button);
 
       g_object_notify_by_pspec (G_OBJECT (editor), properties[PROP_SHOW_INFO]);
+    }
+}
+
+void
+glade_editor_show_class_field (GladeEditor *editor)
+{
+  g_return_if_fail (GLADE_IS_EDITOR (editor));
+
+  if (editor->priv->show_class_field != TRUE)
+    {
+      editor->priv->show_class_field = TRUE;
+      gtk_widget_show (editor->priv->class_field);
+
+      g_object_notify_by_pspec (G_OBJECT (editor), properties[PROP_SHOW_CLASS_FIELD]);
+    }
+}
+
+void
+glade_editor_hide_class_field (GladeEditor *editor)
+{
+  g_return_if_fail (GLADE_IS_EDITOR (editor));
+
+  if (editor->priv->show_class_field != FALSE)
+    {
+      editor->priv->show_class_field = FALSE;
+      gtk_widget_hide (editor->priv->class_field);
+
+      g_object_notify_by_pspec (G_OBJECT (editor), properties[PROP_SHOW_CLASS_FIELD]);
     }
 }
 
