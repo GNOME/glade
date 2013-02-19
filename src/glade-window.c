@@ -1741,7 +1741,7 @@ on_notebook_tab_removed (GtkNotebook     *notebook,
 
   if (window->priv->num_tabs == 0)
     {
-      gtk_widget_set_sensitive (GTK_WIDGET (window->priv->editor), FALSE);
+      gtk_widget_hide (GTK_WIDGET (window->priv->editor));
       window->priv->active_view = NULL;
     }
 
@@ -2350,7 +2350,7 @@ add_project (GladeWindow *window, GladeProject *project, gboolean for_file)
 
   refresh_notebook_tab_for_project (window, project);
 
-  gtk_widget_set_sensitive (GTK_WIDGET (window->priv->editor), TRUE);
+  gtk_widget_show (GTK_WIDGET (window->priv->editor));
 }
 
 void
@@ -3020,6 +3020,7 @@ glade_window_constructed (GObject *object)
   priv->palettes_notebook = GET_OBJECT (builder, GTK_WIDGET, "palettes_notebook");
   priv->inspectors_notebook = GET_OBJECT (builder, GTK_WIDGET, "inspectors_notebook");
   priv->editor = GET_OBJECT (builder, GLADE_EDITOR, "editor");
+  glade_editor_hide_class_field (priv->editor);
   priv->statusbar = GET_OBJECT (builder, GTK_WIDGET, "statusbar");
   priv->toolbar = GET_OBJECT (builder, GTK_WIDGET, "toolbar");
   priv->project_menu = GET_OBJECT (builder, GTK_MENU_SHELL, "project_menu");
