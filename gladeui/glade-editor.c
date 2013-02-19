@@ -578,20 +578,17 @@ glade_editor_init (GladeEditor *editor)
   gtk_box_pack_start (GTK_BOX (editor), priv->class_field, FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (editor), priv->notebook, TRUE, TRUE, 0);
 
-  hbox = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
-  gtk_box_set_spacing (GTK_BOX (hbox), 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_widget_set_hexpand (hbox, FALSE);
 
   /* Reset button */
   priv->reset_button = glade_editor_create_reset_button (editor);
-  gtk_box_pack_start (GTK_BOX (hbox), editor->priv->reset_button, FALSE, FALSE, 0);
-  gtk_button_box_set_child_non_homogeneous (GTK_BUTTON_BOX (hbox), priv->reset_button, TRUE);
+  gtk_box_pack_start (GTK_BOX (hbox), priv->reset_button, FALSE, FALSE, 0);
   gtk_widget_set_no_show_all (editor->priv->reset_button, TRUE);
   
   /* Documentation button */
   priv->info_button = glade_editor_create_info_button (editor);
   gtk_box_pack_start (GTK_BOX (hbox), priv->info_button, FALSE, FALSE, 0);
-  gtk_button_box_set_child_non_homogeneous (GTK_BUTTON_BOX (hbox), priv->info_button, TRUE);
   gtk_widget_set_no_show_all (priv->info_button, TRUE);
 
   gtk_notebook_set_action_widget (GTK_NOTEBOOK (priv->notebook), hbox, GTK_PACK_END);
