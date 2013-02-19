@@ -255,14 +255,15 @@ glade_editor_class_init (GladeEditorClass *klass)
 }
 
 static GtkWidget *
-glade_editor_notebook_page (GladeEditor *editor, const gchar *name)
+glade_editor_notebook_page (GladeEditor *editor,
+                            GladeEditorPageType type,
+                            const gchar *name)
 {
   GtkWidget *alignment;
   GtkWidget *sw;
   GtkWidget *label_widget;
   GtkWidget *image;
   GtkWidget *vbox;
-  static gchar *path;
   static gint page = 0;
 
   /* alignment is needed to ensure property labels have some padding on the left */
@@ -270,9 +271,10 @@ glade_editor_notebook_page (GladeEditor *editor, const gchar *name)
   gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 0, 0, 6, 0);
 
   /* construct tab label widget */
-  if (strcmp (name, _("Accessibility")) == 0)
+  if (type == GLADE_PAGE_ATK)
     {
-      path = g_build_filename (glade_app_get_pixmaps_dir (), "atk.png", NULL);
+      gchar *path = g_build_filename (glade_app_get_pixmaps_dir (), "atk.png", NULL);
+
       image = gtk_image_new_from_file (path);
       label_widget = gtk_event_box_new ();
       gtk_container_add (GTK_CONTAINER (label_widget), image);
@@ -280,6 +282,7 @@ glade_editor_notebook_page (GladeEditor *editor, const gchar *name)
       gtk_widget_show (image);
 
       gtk_widget_set_tooltip_text (label_widget, name);
+      g_free (path);
     }
   else
     {
@@ -287,7 +290,7 @@ glade_editor_notebook_page (GladeEditor *editor, const gchar *name)
     }
 
   /* configure page container */
-  if (strcmp (name, _("_Signals")) == 0)
+  if (type == GLADE_PAGE_SIGNAL)
     {
       gtk_alignment_set (GTK_ALIGNMENT (alignment), 0.5, 0.5, 1, 1);
       gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 0, 0, 0, 0);
@@ -541,11 +544,11 @@ glade_editor_init (GladeEditor *editor)
     G_TYPE_INSTANCE_GET_PRIVATE ((editor), GLADE_TYPE_EDITOR, GladeEditorPrivate);
 
   editor->priv->notebook = gtk_notebook_new ();
-  editor->priv->page_widget = glade_editor_notebook_page (editor, _("_General"));
-  editor->priv->page_packing = glade_editor_notebook_page (editor, _("_Packing"));
-  editor->priv->page_common = glade_editor_notebook_page (editor, _("_Common"));
-  editor->priv->page_signals = glade_editor_notebook_page (editor, _("_Signals"));
-  editor->priv->page_atk = glade_editor_notebook_page (editor, _("Accessibility"));
+  editor->priv->page_widget = glade_editor_notebook_page (editor, GLADE_PAGE_GENERAL, _("_General"));
+  editor->priv->page_packing = glade_editor_notebook_page (editor, GLADE_PAGE_PACKING, _("_Packing"));
+  editor->priv->page_common = glade_editor_notebook_page (editor, GLADE_PAGE_COMMON, _("_Common"));
+  editor->priv->page_signals = glade_editor_notebook_page (editor, GLADE_PAGE_SIGNAL, _("_Signals"));
+  editor->priv->page_atk = glade_editor_notebook_page (editor, GLADE_PAGE_ATK, _("Accessibility"));
   editor->priv->editables = NULL;
   editor->priv->loading = FALSE;
   editor->priv->show_class_field = TRUE;
