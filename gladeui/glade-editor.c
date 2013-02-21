@@ -250,7 +250,7 @@ glade_editor_class_init (GladeEditorClass *klass)
   properties[PROP_SHOW_CLASS_FIELD] =
     g_param_spec_boolean ("show-class-field",
                           _("Show Class Field"),
-                          _("Whether to show the class fiels at the top"),
+                          _("Whether to show the class field at the top"),
                           TRUE,
                           G_PARAM_READWRITE);
   
