@@ -351,8 +351,8 @@ glade_editor_on_docs_click (GtkButton *button, GladeEditor *editor)
     }
 }
 
- static GtkWidget *
-glade_editor_button_new ()
+static GtkWidget *
+glade_editor_button_new (void)
 {
   static GtkCssProvider *provider = NULL;
   GtkStyleContext *context;

@@ -113,7 +113,7 @@ GType
 glade_util_get_type_from_name (const gchar *name, gboolean have_func)
 {
   static GModule *allsymbols = NULL;
-  GType (*get_type) ();
+  GType (*get_type) (void);
   GType type = 0;
   gchar *func_name = (gchar *) name;
 
@@ -155,7 +155,7 @@ glade_utils_get_pspec_from_funcname (const gchar *funcname)
 {
   static GModule *allsymbols = NULL;
   GParamSpec *pspec = NULL;
-  GParamSpec *(*get_pspec) () = NULL;
+  GParamSpec *(*get_pspec) (void) = NULL;
 
   if (!allsymbols)
     allsymbols = g_module_open (NULL, 0);

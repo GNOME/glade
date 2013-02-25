@@ -1133,7 +1133,7 @@ button_toggled (GtkToggleButton * button, GladeNamedIconChooserDialog * dialog)
 }
 
 static GHashTable *
-create_standard_icon_quarks ()
+create_standard_icon_quarks (void)
 {
   GHashTable *table;
   GQuark quark;

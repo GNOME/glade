@@ -1749,7 +1749,7 @@ glade_project_load (const gchar *path)
 #define GLADE_XML_COMMENT "Generated with "PACKAGE_NAME
 
 static gchar *
-glade_project_make_comment ()
+glade_project_make_comment (void)
 {
   time_t now = time (NULL);
   gchar *comment;
