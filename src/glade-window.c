@@ -2862,13 +2862,6 @@ glade_window_config_load (GladeWindow *window)
   glade_preferences_config_load (window->priv->preferences, config);
 }
 
-static gboolean
-raise_window_idle (GtkWindow *window)
-{
-  gtk_window_present (window);
-  return FALSE;
-}
-
 static void
 show_dock_first_time (GladeWindow *window, guint dock_type, GtkAction *action)
 {
@@ -2886,12 +2879,8 @@ show_dock_first_time (GladeWindow *window, guint dock_type, GtkAction *action)
   key_file_get_window_position (config, dock->id, &dock->window_pos, &detached,
                                 &maximized);
 
-  if (detached == 1)
-    {
-      gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action), FALSE);
-
-      g_idle_add ((GSourceFunc)raise_window_idle, gtk_widget_get_toplevel (dock->widget));
-    }
+  if (detached)
+    gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action), FALSE);
 
   if (maximized)
     gtk_window_maximize (GTK_WINDOW (gtk_widget_get_toplevel (dock->widget)));
@@ -3075,9 +3064,6 @@ glade_window_constructed (GObject *object)
               _("Inspector"), "inspector", priv->right_pane, TRUE);
   setup_dock (&priv->docks[DOCK_EDITOR], GTK_WIDGET (priv->editor), 500, 700,
               _("Properties"), "properties", priv->right_pane, FALSE);
-  show_dock_first_time (window, DOCK_PALETTE, GET_OBJECT (builder, GTK_ACTION, "dock_palette_action"));
-  show_dock_first_time (window, DOCK_INSPECTOR, GET_OBJECT (builder, GTK_ACTION, "dock_inspector_action"));
-  show_dock_first_time (window, DOCK_EDITOR, GET_OBJECT (builder, GTK_ACTION, "dock_editor_action"));
 
   /* status bar */
   priv->statusbar_menu_context_id = gtk_statusbar_get_context_id (GTK_STATUSBAR (priv->statusbar), "menu");
@@ -3147,6 +3133,11 @@ glade_window_constructed (GObject *object)
 	  gtk_osxapplication_ready(theApp);
 	}
 #endif
+
+  show_dock_first_time (window, DOCK_PALETTE, GET_OBJECT (builder, GTK_ACTION, "dock_palette_action"));
+  show_dock_first_time (window, DOCK_INSPECTOR, GET_OBJECT (builder, GTK_ACTION, "dock_inspector_action"));
+  show_dock_first_time (window, DOCK_EDITOR, GET_OBJECT (builder, GTK_ACTION, "dock_editor_action"));
+
   g_object_unref (builder);
 }
 
