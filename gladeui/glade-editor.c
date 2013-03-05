@@ -58,6 +58,7 @@ enum
   PROP_SHOW_INFO,
   PROP_WIDGET,
   PROP_SHOW_CLASS_FIELD,
+  PROP_CLASS_FIELD,
   N_PROPERTIES
 };
 
@@ -198,6 +199,9 @@ glade_editor_get_property (GObject *object,
       case PROP_SHOW_CLASS_FIELD:
         g_value_set_boolean (value, editor->priv->show_class_field);
         break;
+      case PROP_CLASS_FIELD:
+        g_value_set_static_string (value, gtk_label_get_label (GTK_LABEL (editor->priv->class_label)));
+        break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
@@ -253,6 +257,13 @@ glade_editor_class_init (GladeEditorClass *klass)
                           _("Whether to show the class field at the top"),
                           TRUE,
                           G_PARAM_READWRITE);
+
+  properties[PROP_CLASS_FIELD] =
+    g_param_spec_string ("class-field",
+                         _("Class Field"),
+                         _("The class field string"),
+                         NULL,
+                         G_PARAM_READABLE);
   
   /* Install all properties */
   g_object_class_install_properties (object_class, N_PROPERTIES, properties);
@@ -474,6 +485,8 @@ glade_editor_update_class_field (GladeEditor *editor)
       gtk_widget_hide (priv->warning);
       gtk_label_set_text (GTK_LABEL (priv->class_label), _("Properties"));
     }
+
+  g_object_notify_by_pspec (G_OBJECT (editor), properties[PROP_CLASS_FIELD]);
 }
 
 static void

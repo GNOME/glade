@@ -1876,9 +1876,34 @@ on_dock_resized (GtkWidget *window, GdkEventConfigure *event, ToolDock *dock)
   return FALSE;
 }
 
+static void
+properties_dock_update_title_from_editor (GtkWidget *toplevel, GladeEditor *editor)
+{
+  GladeWidgetAdaptor *adaptor;
+  GladeWidget *gwidget;
+  gchar *class_field;
+
+  g_object_get (editor,
+                "class-field", &class_field,
+                "widget", &gwidget,
+                NULL);
+
+  if (gwidget == NULL)
+    return;
+
+  gtk_window_set_title (GTK_WINDOW (toplevel), class_field);
+
+  if ((adaptor = glade_widget_get_adaptor (gwidget)))
+    gtk_window_set_icon_name (GTK_WINDOW (toplevel),
+                              glade_widget_adaptor_get_icon_name (adaptor));
+
+  g_free (class_field);
+}
+
 void
 on_dock_action_toggled (GtkAction *action, GladeWindow *window)
 {
+  GladeWindowPrivate *priv = window->priv;
   GtkWidget *toplevel, *alignment;
   ToolDock *dock;
   guint dock_type;
@@ -1888,7 +1913,7 @@ on_dock_action_toggled (GtkAction *action, GladeWindow *window)
                         (G_OBJECT (action), "glade-dock-type"));
   g_return_if_fail (dock_type < N_DOCKS);
 
-  dock = &window->priv->docks[dock_type];
+  dock = &priv->docks[dock_type];
 
   if (gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action)))
     {
@@ -1943,12 +1968,15 @@ on_dock_action_toggled (GtkAction *action, GladeWindow *window)
           !gtk_paned_get_child2 (GTK_PANED (dock->paned)))
         gtk_widget_hide (dock->paned);
 
-      gtk_window_add_accel_group (GTK_WINDOW (toplevel), window->priv->accelgroup);
+      gtk_window_add_accel_group (GTK_WINDOW (toplevel), priv->accelgroup);
 
       g_signal_connect (G_OBJECT (toplevel), "key-press-event",
                         G_CALLBACK (glade_utils_hijack_key_press), window);
 
       dock->detached = TRUE;
+
+      if (dock_type == DOCK_EDITOR)
+        properties_dock_update_title_from_editor (toplevel, priv->editor);
 
       gtk_window_present (GTK_WINDOW (toplevel));
     }
@@ -2957,6 +2985,19 @@ glade_window_init (GladeWindow *window)
   glade_init ();
 }
 
+static void
+on_editor_class_field_notify (GObject     *gobject,
+                              GParamSpec  *pspec,
+                              GladeWindow *window)
+{
+  GladeWindowPrivate *priv = window->priv;
+  ToolDock *editor = &priv->docks[DOCK_EDITOR];
+  
+  if (editor->detached)
+    properties_dock_update_title_from_editor (gtk_widget_get_toplevel (editor->widget),
+                                              GLADE_EDITOR (gobject));
+}
+
 #define GET_OBJECT(b,c,o) c(gtk_builder_get_object(b,o)) /*;g_warn_if_fail(gtk_builder_get_object(b,o))*/
 
 static void
@@ -3086,6 +3127,9 @@ glade_window_constructed (GObject *object)
                     G_CALLBACK (glade_utils_hijack_key_press), window);
 
   gtk_builder_connect_signals (builder, window);
+
+  g_signal_connect (priv->editor, "notify::class-field",
+                    G_CALLBACK (on_editor_class_field_notify), window);
 
   /* Load configuration, we need the list of extra catalog paths before creating
    * the GladeApp
