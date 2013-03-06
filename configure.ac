@@ -52,9 +52,9 @@ AC_PATH_PROG(DLLTOOL, dlltool)
 # If any interfaces have been removed since the last public release, then set GLADE_AGE to 0.
 # Reference: http://www.gnu.org/software/libtool/manual/libtool.html#Versioning
 
-GLADE_REVISION=1
-GLADE_CURRENT=4
-GLADE_AGE=0
+GLADE_REVISION=0
+GLADE_CURRENT=5
+GLADE_AGE=1
 GLADE_CURRENT_MINUS_AGE=`expr $GLADE_CURRENT - $GLADE_AGE`
 AC_SUBST(GLADE_REVISION)
 AC_SUBST(GLADE_CURRENT)

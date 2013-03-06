@@ -1,3 +1,22 @@
+2013-02-06  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* configure.ac, NEWS: Rolling 3.15.0
+
+2013-03-04  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/glade-window.c:
+	  o Fixed window docks regresion bug.
+	  o Update Properties Dock window title with GladeEditor:class-field value
+
+	* gladeui/glade-editor.c: Added GladeEditor:class-field read only property.
+
+2013-02-25  Jasper St. Pierre <jstpierre@mecheye.net>
+
+	* gladeui/glade-editor.c,
+	  gladeui/glade-named-icon-chooser-dialog.c
+	  gladeui/glade-project.c,
+	  gladeui/glade-utils.c: Fix prototype warning issues.
+
 2013-02-19  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
 	* gladeui/glade-editable.h:  Added GLADE_PAGE_SIGNAL to GladeEditorPageType enumeration.
@@ -20,7 +39,7 @@
 	* plugins/gtk+/icons/16x16/widget-gtk-levelbar.png,
 	  plugins/gtk+/icons/22x22/widget-gtk-levelbar.png:
 	  Added new GtkLevelBar icons by Máirín Duffy
-	  This closes bug #685432 "RFE: glade support for GtkLevelBar"
+	  This closes bug #685432 "RFE: glade support for GtkLevelBar" 
 
 2013-01-22  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
