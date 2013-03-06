@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-24 02:36+0100\n"
-"PO-Revision-Date: 2013-02-24 02:37+0100\n"
+"POT-Creation-Date: 2013-03-07 00:18+0100\n"
+"PO-Revision-Date: 2013-03-07 00:19+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -96,8 +96,8 @@ msgstr "Z_apisz jako"
 msgid "Save the current project with a different name"
 msgstr "Zapisuje bieżący projekt pod inną nazwą"
 
-#: ../src/glade.glade.h:13 ../src/glade-window.c:3077
-#: ../gladeui/glade-editor.c:475 ../gladeui/glade-widget.c:1251
+#: ../src/glade.glade.h:13 ../src/glade-window.c:3107
+#: ../gladeui/glade-editor.c:486 ../gladeui/glade-widget.c:1251
 #: ../plugins/gtk+/glade-gtk.c:4978 ../plugins/gtk+/glade-gtk.c:5005
 #: ../plugins/gtk+/glade-gtk.c:5024 ../plugins/gtk+/glade-gtk.c:5062
 #: ../plugins/gtk+/glade-gtk.c:10016 ../plugins/gtk+/glade-gtk.c:10588
@@ -416,7 +416,7 @@ msgstr "Dodatkowe ścieżki katalogów"
 
 #. translators: refers to a tab name used to group all the relevant widget's properties
 #: ../src/glade.glade.h:96 ../gladeui/glade-base-editor.c:1728
-#: ../gladeui/glade-editor.c:1135
+#: ../gladeui/glade-editor.c:1148
 msgid "General"
 msgstr "Ogólne"
 
@@ -562,43 +562,43 @@ msgstr "Zapisanie %s do %s się nie powiodło: %s"
 msgid "Save…"
 msgstr "Zapisz…"
 
-#: ../src/glade-window.c:2281
+#: ../src/glade-window.c:2309
 msgid "Close document"
 msgstr "Zamknij dokument"
 
-#: ../src/glade-window.c:2368
+#: ../src/glade-window.c:2396
 msgid "Could not create a new project."
 msgstr "Nie można utworzyć nowego projektu."
 
-#: ../src/glade-window.c:2421
+#: ../src/glade-window.c:2449
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr "Projekt %s ma niezapisane zmiany"
 
-#: ../src/glade-window.c:2426
+#: ../src/glade-window.c:2454
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr ""
 "Ponowne wczytanie spowoduje utratę wszystkich niezapisanych zmian. Wczytać "
 "ponownie mimo to?"
 
-#: ../src/glade-window.c:2436
+#: ../src/glade-window.c:2464
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr "Plik %s został zmodyfikowany w innym programie"
 
-#: ../src/glade-window.c:2441
+#: ../src/glade-window.c:2469
 msgid "Do you want to reload the project?"
 msgstr "Wczytać projekt ponownie?"
 
-#: ../src/glade-window.c:2447
+#: ../src/glade-window.c:2475
 msgid "_Reload"
 msgstr "_Wczytaj ponownie"
 
-#: ../src/glade-window.c:3073
+#: ../src/glade-window.c:3103
 msgid "Palette"
 msgstr "Paleta"
 
-#: ../src/glade-window.c:3075
+#: ../src/glade-window.c:3105
 msgid "Inspector"
 msgstr "Inspektor"
 
@@ -975,117 +975,125 @@ msgstr "Widok projektu"
 msgid "The GladeDesignView that contains this layout"
 msgstr "GladeDesignView zawierający ten układ"
 
-#: ../gladeui/glade-editor.c:237
+#: ../gladeui/glade-editor.c:241
 msgid "Show info"
 msgstr "Wyświetlanie informacji"
 
-#: ../gladeui/glade-editor.c:238
+#: ../gladeui/glade-editor.c:242
 msgid "Whether to show an informational button for the loaded widget"
 msgstr "Określa, czy wyświetlać przycisk informacyjny dla wczytanego widżetu"
 
-#: ../gladeui/glade-editor.c:245 ../plugins/gtk+/gtk+.xml.in.h:1
+#: ../gladeui/glade-editor.c:249 ../plugins/gtk+/gtk+.xml.in.h:1
 msgid "Widget"
 msgstr "Widżet"
 
-#: ../gladeui/glade-editor.c:246
+#: ../gladeui/glade-editor.c:250
 msgid "The currently loaded widget in this editor"
 msgstr "Obecnie wczytany widżet w tym edytorze"
 
-#: ../gladeui/glade-editor.c:252
+#: ../gladeui/glade-editor.c:256
 msgid "Show Class Field"
 msgstr "Wyświetlanie pola klasy"
 
-#: ../gladeui/glade-editor.c:253
+#: ../gladeui/glade-editor.c:257
 msgid "Whether to show the class field at the top"
 msgstr "Określa, czy wyświetlać pole klasy na wierzchu"
 
-#: ../gladeui/glade-editor.c:401
+#: ../gladeui/glade-editor.c:263
+msgid "Class Field"
+msgstr "Pole klasy"
+
+#: ../gladeui/glade-editor.c:264
+msgid "The class field string"
+msgstr "Ciąg pola klasy"
+
+#: ../gladeui/glade-editor.c:412
 msgid "View documentation for the selected widget"
 msgstr "Wyświetla dokumentację dla zaznaczonego widżetu"
 
-#: ../gladeui/glade-editor.c:422
+#: ../gladeui/glade-editor.c:433
 msgid "Reset widget properties to their defaults"
 msgstr "Przywraca domyślne właściwości widżetu"
 
 #. translators: referring to the properties of a widget named '%s [%s]'
-#: ../gladeui/glade-editor.c:462
+#: ../gladeui/glade-editor.c:473
 #, c-format
 msgid "%s Properties - %s [%s]"
 msgstr "Właściwości %s - %s [%s]"
 
-#: ../gladeui/glade-editor.c:560
+#: ../gladeui/glade-editor.c:573
 msgid "_General"
 msgstr "_Ogólne"
 
-#: ../gladeui/glade-editor.c:561
+#: ../gladeui/glade-editor.c:574
 msgid "_Packing"
 msgstr "_Pakowanie"
 
-#: ../gladeui/glade-editor.c:562
+#: ../gladeui/glade-editor.c:575
 msgid "_Common"
 msgstr "_Wspólne"
 
-#: ../gladeui/glade-editor.c:563
+#: ../gladeui/glade-editor.c:576
 msgid "_Signals"
 msgstr "_Sygnały"
 
-#: ../gladeui/glade-editor.c:564 ../gladeui/glade-editor.c:1151
+#: ../gladeui/glade-editor.c:577 ../gladeui/glade-editor.c:1164
 msgid "Accessibility"
 msgstr "Dostępność"
 
-#: ../gladeui/glade-editor.c:980
+#: ../gladeui/glade-editor.c:993
 #, c-format
 msgid "Create a %s"
 msgstr "Tworzenie %s"
 
-#: ../gladeui/glade-editor.c:988
+#: ../gladeui/glade-editor.c:1001
 msgid "Crea_te"
 msgstr "_Utwórz"
 
-#: ../gladeui/glade-editor.c:1092
+#: ../gladeui/glade-editor.c:1105
 msgid "Reset"
 msgstr "Przywróć"
 
-#: ../gladeui/glade-editor.c:1103
+#: ../gladeui/glade-editor.c:1116
 msgid "Property"
 msgstr "Właściwość"
 
-#: ../gladeui/glade-editor.c:1143
+#: ../gladeui/glade-editor.c:1156
 msgid "Common"
 msgstr "Wspólne"
 
-#: ../gladeui/glade-editor.c:1184
+#: ../gladeui/glade-editor.c:1197
 msgid "(default)"
 msgstr "(domyślne)"
 
-#: ../gladeui/glade-editor.c:1199
+#: ../gladeui/glade-editor.c:1212
 msgid "Select the properties that you want to reset to their default values"
 msgstr "Wybór właściwości, którym mają zostać przywrócone domyślne wartości"
 
-#: ../gladeui/glade-editor.c:1334
+#: ../gladeui/glade-editor.c:1347
 msgid "Reset Widget Properties"
 msgstr "Przywrócenie domyślnych właściwości widżetu"
 
 #. Checklist
-#: ../gladeui/glade-editor.c:1351
+#: ../gladeui/glade-editor.c:1364
 msgid "_Properties:"
 msgstr "_Właściwości:"
 
-#: ../gladeui/glade-editor.c:1380
+#: ../gladeui/glade-editor.c:1393
 msgid "_Select All"
 msgstr "Zaznacz _wszystko"
 
-#: ../gladeui/glade-editor.c:1388
+#: ../gladeui/glade-editor.c:1401
 msgid "_Unselect All"
 msgstr "Odznacz w_szystko"
 
 #. Description
-#: ../gladeui/glade-editor.c:1398
+#: ../gladeui/glade-editor.c:1411
 msgid "Property _Description:"
 msgstr "_Opis właściwości:"
 
 #. Translators: first %s is the project name, second is a widget name
-#: ../gladeui/glade-editor.c:1538
+#: ../gladeui/glade-editor.c:1551
 #, c-format
 msgid "%s - %s Properties"
 msgstr "Właściwości %s - %s"
