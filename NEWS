@@ -1,4 +1,44 @@
 ============
+Glade 3.15.0
+============
+
+	- Added Drag&Drop support from the palette and within the workspace.
+	- Added GtkLevelBar support
+	- Property editor UI cleanup
+	    Hide Property editor class title
+	    Moved clear and info buttom to the action widget of the notebook.
+	    Updated atk icon with gnome's accessibility icon.
+	    Text entry: Replaced buttons with 3 dots [...] for a secondary edit icon in the entry itself.
+	    Removed treeview from flags editor.
+	    Do not let every propery input expand if not nescesary.
+	    Boolean input: replaced toggle buttons with a switch.
+        - Fixed bug #685265 "Excessively Selected for Translation" Daniel Mustieles
+	- Fixed bug #688326 "pointer tracking is off" by using every coordinate relative to GladeDesignLayout.
+	- Fixed bug #678922 "When editing a label, the cursor is moved to the end after every change."
+
+============
+Glade 3.14.0
+============
+
+	- Updated GtkAssistant support. Fixed bug #664276
+	- Set new property accel-group on action groups to make menu item accel work properly. Fixes bug 684041
+	- Do not abort if a project has a uninstantiable or abstract class object instead load it
+	  as an object stub and let the user what to do. bug #646259
+	- Fixed runtime warning on GladeBaseEditor and GladeSignalEditor dispose methods
+	- Do not explicit set window bg as it should be handled by gtk.
+	- Sync close-button with the original gedit widget.
+	  This way the proper symbolic close icon is used for the button. (Paolo Borelli)
+	- Use new documentation infrastructure (Javier Jardón)
+	- Added load/save/edit support for <style> <class name="foo"/> </style>, Fixes bug 658035.
+	- Fixed Bug #679589 "Use Action Appearance not supported for GTK 2.12 but added to widgets in Glade 3.8.2"
+	- Fixed bug #679487 "Huge memory leaks"
+	- Fixed bug #679721 "mac-integration: missing 'widget' variable declaration"
+	- Added glade_displayable_value_set_disabled() functions to disable GdkModifierType reserved values
+	- Added build/mingw-w64 directory with script to cross compile and create windows installer using nsis
+	- Fixes bug #675977 "Don't hard-code library search paths"
+	- And many others cleanups and fixes
+
+============
 Glade 3.13.0
 ============
 

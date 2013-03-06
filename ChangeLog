@@ -1,7 +1,233 @@
+2013-02-19  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-editable.h:  Added GLADE_PAGE_SIGNAL to GladeEditorPageType enumeration.
+
+	* gladeui/glade-editor.c:
+	  o Fixed leak in glade_editor_notebook_page()
+	  o Cleaned up code replacing editor->priv with a temp priv variable.
+	  o Replaced GtkButtonBox with a regular GtkBox to pack clear and info buttons
+
+	* src/glade-window.c: Hide Property editor class title
+
+2013-02-11  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-editor.[ch]: Added glade_editor_show/hide_class_field()
+
+2013-02-01  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-editor.c: Moved clear and info buttom to the action widget of the notebook.
+
+	* plugins/gtk+/icons/16x16/widget-gtk-levelbar.png,
+	  plugins/gtk+/icons/22x22/widget-gtk-levelbar.png:
+	  Added new GtkLevelBar icons by Máirín Duffy
+	  This closes bug #685432 "RFE: glade support for GtkLevelBar"
+
+2013-01-22  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-design-view.c:
+	  o Removed project parameter check in glade_design_view_set_project()
+	  o glade_design_view_set_project(): keep a reference to project
+
+	* gladeui/glade-design-layout.c: Use a window style context to render background in the offscreen window.
+
+2012-12-17  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-design-layout.c,
+	  gladeui/glade-design-private.h,
+	  gladeui/glade-design-view.c,
+	  plugins/gtk+/glade-fixed.c,
+	  plugins/gtk+/glade-gtk.c: Implemented inline Drag and Drop
+
+	* gladeui/glade-command.c: Made glade_command_dnd() accept parent and placeholer NULL parameter to paste the widget as toplevel.
+
+	* plugins/gtk+/glade-gtk-grid.c, plugins/gtk+/glade-gtk-table.c,
+	  plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in:
+	  o Removed GladeFixed (DnD) support for GtkBox, GtkTable and GtkGrid.
+	  o Optimized glade_gtk_grid_refresh_placeholders() by passing the children list to
+	    glade_gtk_grid_has_child() instead of getting it each time from the container.
+
+2012-12-15  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* data/icons/atk.png: Updated atk icon with gnome's accessibility icon.
+
+2012-12-13  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-design-view.[ch],
+	  gladeui/glade-palette.[ch],
+	  src/glade-window.c: Added Drag&Drop support from the palette.
+
+2012-10-23  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-editor-property.c:
+	  o Replaced buttons with 3 dots [...] for a secondary edit icon in the entry itself.
+	  o Removed treeview from flags editor.
+
+2012-10-22  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-editor-property.c: Do not let every propery input expand if not nescesary
+
+2012-10-20  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-editor-property.c: GladeEditorPropertyBoolClass replaced toggle button with a switch.
+
+2013-01-18  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-editor-property.c: Limit the size of the spin button in
+	  GladeEPropNumeric when the max value is over 16 digits.
+	  Otherwise a property with a max value of G_MAXDOUBLE gets a minimum size over 2800 pixels.
+
+2013-01-17  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-design-layout.c: Fixed bug #688326 "pointer tracking is off" by using every coordinate
+	  relative to GladeDesignLayout.
+
+	* plugins/gtk+/gtk+.xml.in: Added GtkLevelBar.
+
+2013-01-16  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-design-layout.c: Set a background to the offscreen window,
+ 	  so that widgets without a window added as toplevels look right.
+
+2012-12-04  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* build/mingw-w64/glade.nsi.in, build/mingw-w64/nsis_make_installer.sh:
+	  Added message to win32 installer about it being beta software
+	  Updated installers script to include locale directories
+
+2012-11-01  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-editor-property.c: Fixed bug #678922 "When editing a label, the cursor is moved to the end after every change."
+	  Fixed a few leak since glade_property_make_string() returns a newlly allocated string.
+
+2012-10-20  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-app.c: Added GladeApp::widget-adaptor-registered signal
+
+2012-10-19  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-editor-property.c: Update GladeEditorProperty label sensitivity on GladeProperty sensitivity notify.
+
+2012-09-19  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* configure.ac, NEWS: Rolling 3.14.0, bumped gtk dependency to 3.5.17
+
+2012-09-17  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* plugins/gtk+/glade-gtk.c, plugins/gtk+/gtk+.xml.in: Updated GtkAssistant support
+	  Fixed bug #664276 "Can't add widgets to a GtkAssistant"
+	  Make assistant update current page when a child is selected in the project.
+
+2012-09-14  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/glade.glade: Set new property accel-group on action groups to make menu item accel work properly
+	  Fixes bug 684041 "assertion failed: `gtk_accel_group_from_accel_closure (accel_closure) != NULL"
+
+2012-09-13  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* plugins/gtk+/gtk+.xml.in:
+	  Set ignore=true on virtual property glade-style-classes to avoid bogus warnings
+
+2012-09-06  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-object-stub.c, gladeui/glade-widget.c:
+	  Do not abort if a project has a uninstantiable or abstract class object
+	  instead load is as an object stub and let the user what to do.
+	  Should be enough to close bug #646259
+	  "SIGSEGV in glade_widget_adaptor_object_construct_object loading ui file"
+
+	* gladeui/glade-base-editor.c, gladeui/glade-signal-editor.c :
+	  Fixed runtime warning on GladeBaseEditor and GladeSignalEditor dispose methods
+
+	* gladeui/glade-design-layout.c: Do not explicit set window bg as it should be handled by gtk.
+	  Fixes glitches when the widget is on a different state.
+
+2012-09-05  Paolo Borelli <pborelli@gnome.org> 
+
+	* src/glade-close-button.[ch]: Sync close-button with the original gedit widget.
+	  This way the proper symbolic close icon is used for the button.
+
+2012-08-13  Javier Jardón <jjardon@gnome.org>
+
+	* Makefile.am, configure.ac, help/: Use new documentation infrastructure
+
 2012-07-31  Tristan Van Berkom <tvb@gnome.org>
 
 	* plugins/gtk+/gtk+.xml.in, plugins/gtk+/glade-gtk.c: Added load/save/edit support
 	for <style> <class name="foo"/> </style>, Fixes bgo 658035.
+
+2012-07-14  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+	
+	* plugins/gtk+/glade-gtk-activatable.[ch], plugins/gtk+/glade-gtk-switch.c,plugins/gtk+/glade-gtk.c:
+	  Removed unneeded function glade_gtk_activatable_parse_finished()
+
+2012-07-13  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* plugins/gtk+/glade-gtk-activatable.c,plugins/gtk+/glade-gtk.c:
+	  Fixed Bug #679589 "Use Action Appearance not supported for GTK 2.12 but added to widgets in Glade 3.8.2"
+	  Made sure use-action-appearance is not saved if there is no action defined
+
+2012-07-11  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* plugins/gtk+/glade-gtk.c: Fixed runtime warning when adding a notebook
+
+	* gladeui/glade-project.c, gladeui/glade-widget.c: Fixed bug #679487 "Huge memory leaks"
+
+	* src/glade-window.c: Fixed bug #679721 "mac-integration: missing 'widget' variable declaration"
+
+2012-06-05  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-displayable-values.[ch]: Added glade_displayable_value_is_disabled/set_disabled() 
+
+	* gladeui/glade-editor-property.c, gladeui/glade-property-class.c: disable GdkModifierType reserved values
+
+	* gladeui/glade-project.c: Fixed warning on WIN32 (GPid on windows is not an integer)
+
+2012-05-29  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* build/mingw-w64: Added build/mingw-w64 directory with script tp cross compile
+	  and create windows installer using nsis
+
+2012-05-23  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/Makefile.am, src/Makefile.am: Export symbols in glade executable for windows build
+
+2012-05-22  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/Makefile.am: Replaced use of -export-symbols with -export-symbols-regex
+	* gladeui/glade-app.h, gladeui/glade-catalog.h, gladeui/glade-signal-editor.h:
+	  Removed old undefined symbols to fix build error on windows
+
+2012-05-18  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-catalog.c: Improved error messages on modules loading failure.
+
+	* gladeui/glade-utils.c: try_load_library () only check for file if library_path is not null
+
+2012-05-17  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* gladeui/glade-app.[ch], gladeui/glade-utils.c : Let g_module_open() be called
+	  with NULL so that it looks libraries in defaults directories.
+	  Fixes bug #675977 "Don't hard-code library search paths"
+
+	* gladeui/glade-builtins.c, gladeui/glade-signal-model.[ch]: Removed glade3 string
+
+2012-05-12  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/glade.glade: Made view items Check items
+
+2012-05-09  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+	
+	* src/glade-window.c:
+	  - Added workaround for gtk+ bug #671786 (Menu shows accelerators now)
+	  - removed g_resources_lookup_data() use, since now we depend on gtk 3.4 which has
+	    gtk_builder_add_from_resource()
+
+	* src/glade.glade: Added F1 accel for developer reference
+
+2012-05-08  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* plugins/gtk+/gtk+.xml.in: Set save=false to every GtkActivatable properties since they
+	  are always saved in glade_gtk_widget_write_widget()
 
 2012-05-06  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
