@@ -27,7 +27,6 @@
  * SECTION:glade-signal-editor
  * @Title: GladeSignalEditor
  * @Short_Description: An interface to edit signals for a #GladeWidget.
- *W
  */
 
 #include <string.h>
@@ -1302,8 +1301,6 @@ glade_signal_editor_init (GladeSignalEditor *self)
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll),
 				  GTK_POLICY_AUTOMATIC,
 				  GTK_POLICY_AUTOMATIC);
-  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scroll),
-				       GTK_SHADOW_IN);
 	
   gtk_container_add (GTK_CONTAINER (scroll), self->priv->signal_tree);
 	
