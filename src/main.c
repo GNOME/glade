@@ -77,9 +77,6 @@ main (int argc, char *argv[])
   gboolean opened_project = FALSE;
   GTimer *timer = NULL;
 
-  if (!g_thread_supported ())
-    g_thread_init (NULL);
-
 #ifdef ENABLE_NLS
   setlocale (LC_ALL, "");
   bindtextdomain (GETTEXT_PACKAGE, glade_app_get_locale_dir ());
