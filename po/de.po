@@ -22,8 +22,8 @@ msgstr ""
 "Project-Id-Version: glade3 master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-03 16:14+0000\n"
-"PO-Revision-Date: 2013-03-04 08:54+0100\n"
+"POT-Creation-Date: 2013-03-06 20:24+0000\n"
+"PO-Revision-Date: 2013-03-08 17:01+0100\n"
 "Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: \n"
@@ -102,8 +102,8 @@ msgstr "Speichern _unter"
 msgid "Save the current project with a different name"
 msgstr "Das aktuelle Projekt unter anderem Namen speichern"
 
-#: ../src/glade.glade.h:13 ../src/glade-window.c:3077
-#: ../gladeui/glade-editor.c:475 ../gladeui/glade-widget.c:1251
+#: ../src/glade.glade.h:13 ../src/glade-window.c:3107
+#: ../gladeui/glade-editor.c:486 ../gladeui/glade-widget.c:1251
 #: ../plugins/gtk+/glade-gtk.c:4978 ../plugins/gtk+/glade-gtk.c:5005
 #: ../plugins/gtk+/glade-gtk.c:5024 ../plugins/gtk+/glade-gtk.c:5062
 #: ../plugins/gtk+/glade-gtk.c:10016 ../plugins/gtk+/glade-gtk.c:10588
@@ -431,7 +431,7 @@ msgstr "Zusätzliche Katalogpfade"
 
 #. translators: refers to a tab name used to group all the relevant widget's properties
 #: ../src/glade.glade.h:96 ../gladeui/glade-base-editor.c:1728
-#: ../gladeui/glade-editor.c:1135
+#: ../gladeui/glade-editor.c:1148
 msgid "General"
 msgstr "Allgemein"
 
@@ -579,43 +579,43 @@ msgstr "»%s« konnte nicht in »%s« gespeichert werden: %s"
 msgid "Save…"
 msgstr "Speichern …"
 
-#: ../src/glade-window.c:2281
+#: ../src/glade-window.c:2309
 msgid "Close document"
 msgstr "Dokument schließen"
 
-#: ../src/glade-window.c:2368
+#: ../src/glade-window.c:2396
 msgid "Could not create a new project."
 msgstr "Es konnte kein neues Projekt angelegt werden."
 
-#: ../src/glade-window.c:2421
+#: ../src/glade-window.c:2449
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr "Das Projekt »%s« hat ungespeicherte Änderungen"
 
-#: ../src/glade-window.c:2426
+#: ../src/glade-window.c:2454
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr ""
 "Wenn Sie neu laden, gehen alle ungespeicherten Änderungen verloren.Möchten "
 "Sie trotzdem neu laden?"
 
-#: ../src/glade-window.c:2436
+#: ../src/glade-window.c:2464
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr "Die Projektdatei »%s« wurde extern verändert"
 
-#: ../src/glade-window.c:2441
+#: ../src/glade-window.c:2469
 msgid "Do you want to reload the project?"
 msgstr "Soll das Projekt erneut geladen werden?"
 
-#: ../src/glade-window.c:2447
+#: ../src/glade-window.c:2475
 msgid "_Reload"
 msgstr "_Neu laden"
 
-#: ../src/glade-window.c:3073
+#: ../src/glade-window.c:3103
 msgid "Palette"
 msgstr "Palette"
 
-#: ../src/glade-window.c:3075
+#: ../src/glade-window.c:3105
 msgid "Inspector"
 msgstr "Inspekteur"
 
@@ -654,8 +654,7 @@ msgid "Show Glade debug options"
 msgstr "Glade-Debug-Optionen anzeigen"
 
 #: ../src/main.c:149
-msgid ""
-"gmodule support not found. gmodule support is required for glade to work"
+msgid "gmodule support not found. gmodule support is required for glade to work"
 msgstr ""
 "Es wurde keine Unterstützung von gmodule gefunden. Für das Funktionieren von "
 "Glade wird gmodule benötigt."
@@ -671,8 +670,8 @@ msgid ""
 "Trying to save private data to %s directory but it is a regular file.\n"
 "No private data will be saved in this session"
 msgstr ""
-"Es wurde versucht, die persönlichen Daten in den Ordner »%s« zu speichern. "
-"Es handelt sich hierbei aber um eine gewöhnliche Datei.\n"
+"Es wurde versucht, die persönlichen Daten in den Ordner »%s« zu speichern. Es "
+"handelt sich hierbei aber um eine gewöhnliche Datei.\n"
 "In dieser Sitzung werden deshalb keine persönlichen Daten gespeichert."
 
 #: ../gladeui/glade-app.c:513
@@ -999,120 +998,128 @@ msgstr "Design-Ansicht"
 msgid "The GladeDesignView that contains this layout"
 msgstr "Das GladeDesignView mit diesem Layout"
 
-#: ../gladeui/glade-editor.c:237
+#: ../gladeui/glade-editor.c:241
 msgid "Show info"
 msgstr "Informationen anzeigen"
 
-#: ../gladeui/glade-editor.c:238
+#: ../gladeui/glade-editor.c:242
 msgid "Whether to show an informational button for the loaded widget"
 msgstr ""
 "Legt fest, ob der Informationsknopf für das geladene Widget angezeigt wird"
 
-#: ../gladeui/glade-editor.c:245 ../plugins/gtk+/gtk+.xml.in.h:1
+#: ../gladeui/glade-editor.c:249 ../plugins/gtk+/gtk+.xml.in.h:1
 msgid "Widget"
 msgstr "Widget"
 
-#: ../gladeui/glade-editor.c:246
+#: ../gladeui/glade-editor.c:250
 msgid "The currently loaded widget in this editor"
 msgstr "Das derzeit geladene Widget in diesem Editor"
 
-#: ../gladeui/glade-editor.c:252
+#: ../gladeui/glade-editor.c:256
 msgid "Show Class Field"
 msgstr "Klassenfeld anzeigen"
 
-#: ../gladeui/glade-editor.c:253
+#: ../gladeui/glade-editor.c:257
 msgid "Whether to show the class field at the top"
 msgstr "Legt fest, ob das Klassenfeld oben angezeigt werden soll"
 
-#: ../gladeui/glade-editor.c:401
+#: ../gladeui/glade-editor.c:263
+msgid "Class Field"
+msgstr "Klassenfeld"
+
+#: ../gladeui/glade-editor.c:264
+msgid "The class field string"
+msgstr "Die Klassenfeld-Zeichenkette"
+
+#: ../gladeui/glade-editor.c:412
 msgid "View documentation for the selected widget"
 msgstr "Dokumentation für das ausgewählte Widget anzeigen"
 
-#: ../gladeui/glade-editor.c:422
+#: ../gladeui/glade-editor.c:433
 msgid "Reset widget properties to their defaults"
 msgstr "Widget-Eigenschaften auf die Standardwerte zurücksetzen"
 
 #. translators: referring to the properties of a widget named '%s [%s]'
-#: ../gladeui/glade-editor.c:462
+#: ../gladeui/glade-editor.c:473
 #, c-format
 msgid "%s Properties - %s [%s]"
 msgstr "%s Eigenschaften - %s [%s]"
 
-#: ../gladeui/glade-editor.c:560
+#: ../gladeui/glade-editor.c:573
 msgid "_General"
 msgstr "All_gemein"
 
-#: ../gladeui/glade-editor.c:561
+#: ../gladeui/glade-editor.c:574
 msgid "_Packing"
 msgstr "_Packen"
 
-#: ../gladeui/glade-editor.c:562
+#: ../gladeui/glade-editor.c:575
 msgid "_Common"
 msgstr "_Gemeinsam"
 
-#: ../gladeui/glade-editor.c:563
+#: ../gladeui/glade-editor.c:576
 msgid "_Signals"
 msgstr "_Signale"
 
-#: ../gladeui/glade-editor.c:564 ../gladeui/glade-editor.c:1151
+#: ../gladeui/glade-editor.c:577 ../gladeui/glade-editor.c:1164
 msgid "Accessibility"
 msgstr "Barrierefreiheit"
 
-#: ../gladeui/glade-editor.c:980
+#: ../gladeui/glade-editor.c:993
 #, c-format
 msgid "Create a %s"
 msgstr "Ein %s anlegen"
 
-#: ../gladeui/glade-editor.c:988
+#: ../gladeui/glade-editor.c:1001
 msgid "Crea_te"
 msgstr "_Anlegen"
 
-#: ../gladeui/glade-editor.c:1092
+#: ../gladeui/glade-editor.c:1105
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: ../gladeui/glade-editor.c:1103
+#: ../gladeui/glade-editor.c:1116
 msgid "Property"
 msgstr "Eigenschaft"
 
-#: ../gladeui/glade-editor.c:1143
+#: ../gladeui/glade-editor.c:1156
 msgid "Common"
 msgstr "Gemeinsam"
 
-#: ../gladeui/glade-editor.c:1184
+#: ../gladeui/glade-editor.c:1197
 msgid "(default)"
 msgstr "(Standard)"
 
-#: ../gladeui/glade-editor.c:1199
+#: ../gladeui/glade-editor.c:1212
 msgid "Select the properties that you want to reset to their default values"
 msgstr ""
 "Wählen Sie die Eigenschaften aus, welche auf die Standardwerte zurückgesetzt "
 "werden sollen"
 
-#: ../gladeui/glade-editor.c:1334
+#: ../gladeui/glade-editor.c:1347
 msgid "Reset Widget Properties"
 msgstr "Widget-Eigenschaften zurücksetzen"
 
 #. Checklist
-#: ../gladeui/glade-editor.c:1351
+#: ../gladeui/glade-editor.c:1364
 msgid "_Properties:"
 msgstr "_Eigenschaften:"
 
-#: ../gladeui/glade-editor.c:1380
+#: ../gladeui/glade-editor.c:1393
 msgid "_Select All"
 msgstr "_Alle auswählen"
 
-#: ../gladeui/glade-editor.c:1388
+#: ../gladeui/glade-editor.c:1401
 msgid "_Unselect All"
 msgstr "Alle _abwählen"
 
 #. Description
-#: ../gladeui/glade-editor.c:1398
+#: ../gladeui/glade-editor.c:1411
 msgid "Property _Description:"
 msgstr "Ei_genschaftsbeschreibung:"
 
 #. Translators: first %s is the project name, second is a widget name
-#: ../gladeui/glade-editor.c:1538
+#: ../gladeui/glade-editor.c:1551
 #, c-format
 msgid "%s - %s Properties"
 msgstr "%s - %s Eigenschaften"
@@ -1133,8 +1140,8 @@ msgstr "Befehl verwenden"
 #: ../gladeui/glade-editor-property.c:647
 msgid "Whether we should use the command API for the undo/redo stack"
 msgstr ""
-"Legt fest, ob das Befehls-API für den Rückgängig/Wiederholen-Speicher "
-"genutzt wird"
+"Legt fest, ob das Befehls-API für den Rückgängig/Wiederholen-Speicher genutzt "
+"wird"
 
 #: ../gladeui/glade-editor-property.c:1133
 msgid "Select Fields"
@@ -1466,8 +1473,7 @@ msgstr ""
 
 #: ../gladeui/glade-project.c:1526
 #, c-format
-msgid ""
-"Specially because there are %d objects that can not be build with types "
+msgid "Specially because there are %d objects that can not be build with types "
 msgstr ""
 "Besonders, weil es %d Objekte gibt, die nicht mit einem Typ erstellt werden "
 "können"
@@ -1548,8 +1554,7 @@ msgstr ""
 msgid ""
 "[%s] Packing property '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr ""
-"[%s] Packeigenschaft »%s« der Objektklasse »%s« wurde eingeführt in %s %d."
-"%d\n"
+"[%s] Packeigenschaft »%s« der Objektklasse »%s« wurde eingeführt in %s %d.%d\n"
 
 #. translators: refers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d'
 #: ../gladeui/glade-project.c:2092
@@ -1774,8 +1779,7 @@ msgstr "Danach"
 #: ../gladeui/glade-signal.c:210
 msgid "Whether this signal is run after default handlers"
 msgstr ""
-"Legt fest, ob dieses Signal nach den voreingestellten Handlern ausgeführt "
-"wird"
+"Legt fest, ob dieses Signal nach den voreingestellten Handlern ausgeführt wird"
 
 #: ../gladeui/glade-signal.c:215
 msgid "Swapped"
@@ -1972,11 +1976,10 @@ msgid "Anarchist"
 msgstr "Unabhängig"
 
 #: ../gladeui/glade-widget.c:1226
-msgid ""
-"Whether this composite child is an ancestral child or an anarchist child"
+msgid "Whether this composite child is an ancestral child or an anarchist child"
 msgstr ""
-"Legt fest, ob dieses zusammengesetzte Kindelement ein nachfolgendes Kind "
-"oder ein unabhängiges Kind ist"
+"Legt fest, ob dieses zusammengesetzte Kindelement ein nachfolgendes Kind oder "
+"ein unabhängiges Kind ist"
 
 #: ../gladeui/glade-widget.c:1232
 msgid "Object"
@@ -2860,14 +2863,12 @@ msgid ""
 "Enter a filename or a relative or full path for this source of '%s' (Glade "
 "will only ever load them in the runtime from your project directory)."
 msgstr ""
-"Geben Sie einen Dateinamen bzw. relativen oder vollen Pfad für die Quelle "
-"von »%s« ein (Sie wird nur zur Laufzeit von Glade aus dem Projektordner "
-"geladen)."
+"Geben Sie einen Dateinamen bzw. relativen oder vollen Pfad für die Quelle von "
+"»%s« ein (Sie wird nur zur Laufzeit von Glade aus dem Projektordner geladen)."
 
 #: ../plugins/gtk+/glade-icon-sources.c:721
 #, c-format
-msgid ""
-"Set whether you want to specify a text direction for this source of '%s'"
+msgid "Set whether you want to specify a text direction for this source of '%s'"
 msgstr ""
 "Bestimmt, ob eine Textrichtung für diese Quelle auf »%s« festgelegt wird"
 
@@ -2879,8 +2880,7 @@ msgstr "Die Textrichtung für diese Quelle auf »%s« festlegen"
 #: ../plugins/gtk+/glade-icon-sources.c:734
 #, c-format
 msgid "Set whether you want to specify an icon size for this source of '%s'"
-msgstr ""
-"Bestimmt, ob eine Symbolgröße für diese Quelle auf »%s« festgelegt wird"
+msgstr "Bestimmt, ob eine Symbolgröße für diese Quelle auf »%s« festgelegt wird"
 
 #: ../plugins/gtk+/glade-icon-sources.c:741
 #, c-format
@@ -2913,8 +2913,7 @@ msgstr "%s wird auf die Verwendung eines Bildes aus dem Repertoire eingestellt"
 #: ../plugins/gtk+/glade-tool-button-editor.c:279
 #, c-format
 msgid "Setting %s to use an image from the icon theme"
-msgstr ""
-"%s wird auf die Verwendung eines Bildes aus dem Symbolthema eingestellt"
+msgstr "%s wird auf die Verwendung eines Bildes aus dem Symbolthema eingestellt"
 
 #: ../plugins/gtk+/glade-image-editor.c:265
 #, c-format
@@ -3021,9 +3020,9 @@ msgstr "Zeilen hinzufügen und entfernen:"
 #. Add descriptive label
 #: ../plugins/gtk+/glade-store-editor.c:153
 msgid ""
-"Define columns for your liststore; giving them meaningful names will help "
-"you to retrieve them when setting cell renderer attributes (press the Delete "
-"key to remove the selected column)"
+"Define columns for your liststore; giving them meaningful names will help you "
+"to retrieve them when setting cell renderer attributes (press the Delete key "
+"to remove the selected column)"
 msgstr ""
 "Legen Sie Spalten für den Listenspeicher fest; sinnvolle Namen helfen Ihnen "
 "diese wieder zu finden, wenn Sie Zellen-Renderer-Attribute festlegen. "
@@ -3035,8 +3034,7 @@ msgid ""
 "rows and the Delete key to remove the selected row)"
 msgstr ""
 "Hinzufügen, Löschen und Bearbeiten von Datenreihen (optional können Sie Strg-"
-"N zum Hinzufügen und die Entf-Taste zum Löschen der gewählten Zeile "
-"verwenden)"
+"N zum Hinzufügen und die Entf-Taste zum Löschen der gewählten Zeile verwenden)"
 
 #: ../plugins/gtk+/glade-string-list.c:325
 #: ../plugins/gtk+/glade-string-list.c:369
@@ -3375,8 +3373,7 @@ msgstr "Beschrieben für"
 #: ../plugins/gtk+/gtk+.xml.in.h:70
 msgid "A list of style class names to apply to this widget"
 msgstr ""
-"Die Liste der Stilklassennamen, die auf dieses Widget angewendet werden "
-"sollen"
+"Die Liste der Stilklassennamen, die auf dieses Widget angewendet werden sollen"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:71
 msgid "A list of accelerator keys"
@@ -3413,8 +3410,7 @@ msgstr ""
 "ist"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:78
-msgid ""
-"Indicates an object is a member of a group of one or more target objects"
+msgid "Indicates an object is a member of a group of one or more target objects"
 msgstr ""
 "Zeigt an, dass ein Objekt Mitglied einer Gruppe von einem oder mehrerer "
 "Zielobjekte ist"
@@ -3446,17 +3442,17 @@ msgstr ""
 
 #: ../plugins/gtk+/gtk+.xml.in.h:82
 msgid ""
-"Indicates a subwindow attached to a component but otherwise has no "
-"connection in the UI hierarchy to that component"
+"Indicates a subwindow attached to a component but otherwise has no connection "
+"in the UI hierarchy to that component"
 msgstr ""
 "Weist auf ein Unterfenster hin, welches an eine Komponente gebunden ist, "
-"andererseits aber keine Verbindung in der Interface-Hierarchie der "
-"Komponente hat"
+"andererseits aber keine Verbindung in der Interface-Hierarchie der Komponente "
+"hat"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:83
 msgid ""
-"Indicates that the object visually embeds another object's content, i.e. "
-"this object's content flows around another's content"
+"Indicates that the object visually embeds another object's content, i.e. this "
+"object's content flows around another's content"
 msgstr ""
 "Zeigt an, dass das Objekt den Inhalt eines anderen Objektes visuell "
 "einbettet, z.B. fließt der Inhalt dieses Objektes um den eines anderen"
@@ -3490,8 +3486,8 @@ msgid ""
 "Indicates that an object provides descriptive information about another "
 "object; more verbose than 'Label For'"
 msgstr ""
-"Zeigt an, dass ein Objekt beschreibende Informationen über ein anderes "
-"Objekt bereitstellt. Ausführlicher als »Beschrieben durch«"
+"Zeigt an, dass ein Objekt beschreibende Informationen über ein anderes Objekt "
+"bereitstellt. Ausführlicher als »Beschrieben durch«"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:91
 msgid "Queue"
@@ -4512,8 +4508,8 @@ msgid ""
 "Whether this page will initially be marked as complete regardless of user "
 "input."
 msgstr ""
-"Legt fest, ob die Seite anfangs als vollständig markiert wird, unabhängig "
-"von Benutzereingaben."
+"Legt fest, ob die Seite anfangs als vollständig markiert wird, unabhängig von "
+"Benutzereingaben."
 
 #: ../plugins/gtk+/gtk+.xml.in.h:398
 msgid "The page position in the Assistant"
