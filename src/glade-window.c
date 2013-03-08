@@ -100,7 +100,7 @@ struct _GladeWindowPrivate
 
   GtkWidget *main_vbox;
 
-  GtkWidget *notebook;
+  GtkWidget *notebook, *notebook_frame;
   GladeDesignView *active_view;
   gint num_tabs;
 
@@ -1424,6 +1424,27 @@ confirm_close_project (GladeWindow *window, GladeProject *project)
 }
 
 static void
+glade_window_notebook_set_show_tabs (GladeWindow *window, gboolean show)
+{
+  GladeWindowPrivate *priv = window->priv;
+  GList *projects = glade_app_get_projects ();
+    
+  if (projects == NULL || g_list_next (projects) == NULL)
+    show = FALSE;
+
+  gtk_notebook_set_show_tabs (GTK_NOTEBOOK (priv->notebook), show);
+  gtk_frame_set_shadow_type (GTK_FRAME (priv->notebook_frame),
+                             show ? GTK_SHADOW_NONE : GTK_SHADOW_IN);
+}
+
+static void
+glade_window_notebook_tabs_update (GladeWindow *window)
+{
+  GtkToggleAction *tabs = GTK_TOGGLE_ACTION (window->priv->action.project_tabs_visible);
+  glade_window_notebook_set_show_tabs (window, gtk_toggle_action_get_active (tabs));
+}
+
+static void
 do_close (GladeWindow *window, GladeProject *project)
 {
   GladeDesignView *view;
@@ -1445,6 +1466,8 @@ do_close (GladeWindow *window, GladeProject *project)
   gtk_notebook_remove_page (GTK_NOTEBOOK (window->priv->notebook), n);
 
   g_object_unref (view);
+
+  glade_window_notebook_tabs_update (window);
 }
 
 void
@@ -2004,9 +2027,9 @@ void
 on_project_tabs_visible_action_toggled (GtkAction *action, GladeWindow *window)
 {
   if (gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action)))
-    gtk_notebook_set_show_tabs (GTK_NOTEBOOK (window->priv->notebook), TRUE);
+    glade_window_notebook_set_show_tabs (window, TRUE);
   else
-    gtk_notebook_set_show_tabs (GTK_NOTEBOOK (window->priv->notebook), FALSE);
+    glade_window_notebook_set_show_tabs (window, FALSE);
 }
 
 void
@@ -2355,6 +2378,7 @@ create_notebook_tab (GladeWindow *window,
 static void
 add_project (GladeWindow *window, GladeProject *project, gboolean for_file)
 {
+  GladeWindowPrivate *priv = window->priv;
   GtkWidget *view, *label;
 
   g_return_if_fail (GLADE_IS_PROJECT (project));
@@ -2372,13 +2396,14 @@ add_project (GladeWindow *window, GladeProject *project, gboolean for_file)
   /* Custom notebook tab label (will be refreshed later) */
   label = create_notebook_tab (window, project, for_file);
 
-  gtk_notebook_append_page (GTK_NOTEBOOK (window->priv->notebook),
-                            GTK_WIDGET (view), label);
-  gtk_notebook_set_current_page (GTK_NOTEBOOK (window->priv->notebook), -1);
+  gtk_notebook_append_page (GTK_NOTEBOOK (priv->notebook), GTK_WIDGET (view), label);
+  gtk_notebook_set_current_page (GTK_NOTEBOOK (priv->notebook), -1);
 
   refresh_notebook_tab_for_project (window, project);
 
-  gtk_widget_show (GTK_WIDGET (window->priv->editor));
+  glade_window_notebook_tabs_update (window);
+
+  gtk_widget_show (GTK_WIDGET (priv->editor));
 }
 
 void
@@ -2874,13 +2899,13 @@ glade_window_config_load (GladeWindow *window)
   else
     gtk_widget_hide (priv->statusbar);
 
-  gtk_notebook_set_show_tabs (GTK_NOTEBOOK (priv->notebook), show_tabs);
+  glade_window_notebook_set_show_tabs (window, show_tabs);
 
   gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (priv->action.toolbar_visible), show_toolbar);
 
   gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (priv->action.project_tabs_visible), show_tabs);
 
-  gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (priv->action.statusbar_visible), show_tabs);
+  gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (priv->action.statusbar_visible), show_status);
 
   /* Paned positions */
   load_paned_position (config, window->priv->left_pane, "left_pane", 200);
@@ -3047,6 +3072,7 @@ glade_window_constructed (GObject *object)
   priv->right_pane = GET_OBJECT (builder, GTK_WIDGET, "right_paned");
 
   priv->notebook = GET_OBJECT (builder, GTK_WIDGET, "notebook");
+  priv->notebook_frame = GET_OBJECT (builder, GTK_WIDGET, "notebook_frame");
   priv->palettes_notebook = GET_OBJECT (builder, GTK_WIDGET, "palettes_notebook");
   priv->inspectors_notebook = GET_OBJECT (builder, GTK_WIDGET, "inspectors_notebook");
   priv->editor = GET_OBJECT (builder, GLADE_EDITOR, "editor");
