@@ -103,7 +103,7 @@ glade_editor_table_init (GladeEditorTable * self)
 
   gtk_orientable_set_orientation (GTK_ORIENTABLE (self),
                                   GTK_ORIENTATION_VERTICAL);
-  gtk_grid_set_row_spacing (GTK_GRID (self), 4);
+  gtk_grid_set_row_spacing (GTK_GRID (self), 2);
 }
 
 static void
