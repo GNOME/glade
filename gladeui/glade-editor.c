@@ -276,23 +276,16 @@ glade_editor_notebook_page (GladeEditor *editor,
                             GladeEditorPageType type,
                             const gchar *name)
 {
-  GtkWidget *alignment;
-  GtkWidget *sw;
   GtkWidget *label_widget;
-  GtkWidget *image;
-  GtkWidget *vbox;
+  GtkWidget *container;
   static gint page = 0;
-
-  /* alignment is needed to ensure property labels have some padding on the left */
-  alignment = gtk_alignment_new (0.5, 0, 1, 0);
-  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 0, 0, 6, 0);
 
   /* construct tab label widget */
   if (type == GLADE_PAGE_ATK)
     {
       gchar *path = g_build_filename (glade_app_get_pixmaps_dir (), "atk.png", NULL);
+      GtkWidget *image = gtk_image_new_from_file (path);
 
-      image = gtk_image_new_from_file (path);
       label_widget = gtk_event_box_new ();
       gtk_container_add (GTK_CONTAINER (label_widget), image);
       gtk_widget_show (label_widget);
@@ -309,35 +302,35 @@ glade_editor_notebook_page (GladeEditor *editor,
   /* configure page container */
   if (type == GLADE_PAGE_SIGNAL)
     {
-      gtk_alignment_set (GTK_ALIGNMENT (alignment), 0.5, 0.5, 1, 1);
-      gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 0, 0, 0, 0);
-
-      gtk_container_set_border_width (GTK_CONTAINER (alignment), 6);
-      gtk_notebook_insert_page (GTK_NOTEBOOK (editor->priv->notebook), alignment,
+      container = gtk_alignment_new (.5, .5, 1, 1);
+      gtk_notebook_insert_page (GTK_NOTEBOOK (editor->priv->notebook), container,
                                 label_widget, page++);
     }
   else
     {
+      GtkWidget *sw;
+      
+      container = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+      
+      gtk_widget_set_margin_top (container, 2);
+      gtk_widget_set_margin_left (container, 4);
+      gtk_widget_set_margin_right (container, 2);
+      
+      gtk_container_set_border_width (GTK_CONTAINER (container), 2);
       /* wrap the alignment in a scrolled window */
       sw = gtk_scrolled_window_new (NULL, NULL);
       gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
                                       GTK_POLICY_AUTOMATIC,
                                       GTK_POLICY_AUTOMATIC);
       gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (sw),
-                                             GTK_WIDGET (alignment));
-      gtk_container_set_border_width (GTK_CONTAINER (sw), 6);
+                                             container);
 
       gtk_notebook_insert_page (GTK_NOTEBOOK (editor->priv->notebook), sw,
                                 label_widget, page++);
-
-      vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-      gtk_widget_show (vbox);
-      gtk_container_add (GTK_CONTAINER (alignment), vbox);
-
-      alignment = vbox;
     }
 
-  return alignment;
+  gtk_widget_show (container);
+  return container;
 }
 
 static void
