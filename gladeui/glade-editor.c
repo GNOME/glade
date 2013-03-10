@@ -124,9 +124,6 @@ struct _GladeEditorPrivate
   gulong widget_warning_id; /* Update when widget changes warning messages. */
   gulong widget_name_id;    /* Update class field when widget name changes  */
 
-  GtkWidget *reset_button; /* The reset button  */
-  GtkWidget *info_button; /* The actual informational button */
-
   GtkWidget *class_field; /* The class header */
 
   GtkWidget *warning;   /* A pointer to an icon we can show in the class
@@ -138,7 +135,6 @@ struct _GladeEditorPrivate
   GtkWidget *class_label; /* A label with the current class label. */
   GtkWidget *widget_label; /* A label with the current widget name. */
 
-  gboolean show_info; /* Whether or not to show an informational button  */
   gboolean show_class_field; /* Whether or not to show the class field at the top */
 };
 
@@ -159,10 +155,6 @@ glade_editor_set_property (GObject *object,
   switch (prop_id)
     {
       case PROP_SHOW_INFO:
-        if (g_value_get_boolean (value))
-          glade_editor_show_info (editor);
-        else
-          glade_editor_hide_info (editor);
         break;
       case PROP_WIDGET:
         glade_editor_load_widget (editor,
@@ -191,7 +183,7 @@ glade_editor_get_property (GObject *object,
   switch (prop_id)
     {
       case PROP_SHOW_INFO:
-        g_value_set_boolean (value, editor->priv->show_info);
+        g_value_set_boolean (value, FALSE);
         break;
       case PROP_WIDGET:
         g_value_set_object (value, editor->priv->loaded_widget);
@@ -242,7 +234,7 @@ glade_editor_class_init (GladeEditorClass *klass)
                           _("Whether to show an informational "
                             "button for the loaded widget"),
                           FALSE,
-                          G_PARAM_READABLE);
+                          G_PARAM_READABLE | G_PARAM_DEPRECATED);
 
   properties[PROP_WIDGET] =
     g_param_spec_object ("widget",
@@ -332,104 +324,6 @@ glade_editor_notebook_page (GladeEditor *editor,
   gtk_widget_show (container);
   return container;
 }
-
-static void
-glade_editor_on_reset_click (GtkButton * button, GladeEditor *editor)
-{
-  glade_editor_reset_dialog (editor);
-}
-
-static void
-glade_editor_on_docs_click (GtkButton *button, GladeEditor *editor)
-{
-  GladeEditorPrivate *priv = GLADE_EDITOR_PRIVATE (editor);
-  gchar *book;
-
-  if (priv->loaded_widget)
-    {
-      g_object_get (priv->loaded_adaptor, "book", &book, NULL);
-      glade_app_search_docs (book, 
-			     glade_widget_adaptor_get_name (priv->loaded_adaptor),
-			     NULL);
-      g_free (book);
-    }
-}
-
-static GtkWidget *
-glade_editor_button_new (void)
-{
-  static GtkCssProvider *provider = NULL;
-  GtkStyleContext *context;
-  GtkWidget *button;
-
-  if (provider == NULL)
-    {
-      provider = gtk_css_provider_new ();
-      gtk_css_provider_load_from_data (provider, 
-                                       "* {\n"
-                                       "-GtkButton-default-border : 0;\n"
-                                       "-GtkButton-default-outside-border : 0;\n"
-                                       "-GtkButton-inner-border: 0;\n"
-                                       "-GtkWidget-focus-line-width : 0;\n"
-                                       "-GtkWidget-focus-padding : 0;\n"
-                                       "padding: 0;\n"
-                                       "}", -1, NULL);
-    }
-
-  button = gtk_button_new ();
-  context = gtk_widget_get_style_context (button);
-  gtk_style_context_add_provider (context,
-                                  GTK_STYLE_PROVIDER (provider),
-                                  GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-
-  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-  gtk_button_set_focus_on_click (GTK_BUTTON (button), FALSE);
-
-  return button;
-}
-
-static GtkWidget *
-glade_editor_create_info_button (GladeEditor *editor)
-{
-  GtkWidget *button;
-  GtkWidget *image;
-
-  button = glade_editor_button_new ();
-
-  image = glade_util_get_devhelp_icon (GTK_ICON_SIZE_BUTTON);
-  gtk_widget_show (image);
-
-  gtk_container_add (GTK_CONTAINER (button), image);
-
-  gtk_widget_set_tooltip_text (button,
-                               _("View documentation for the selected widget"));
-  g_signal_connect (G_OBJECT (button), "clicked",
-                    G_CALLBACK (glade_editor_on_docs_click), editor);
-
-  return button;
-}
-
-static GtkWidget *
-glade_editor_create_reset_button (GladeEditor *editor)
-{
-  GtkWidget *image;
-  GtkWidget *button;
-
-  button = glade_editor_button_new ();
-
-  image = gtk_image_new_from_stock ("gtk-clear", GTK_ICON_SIZE_BUTTON);
-  gtk_widget_show (image);
-  
-  gtk_container_add (GTK_CONTAINER (button), image);
-
-  gtk_widget_set_tooltip_text (button,
-                               _("Reset widget properties to their defaults"));
-  g_signal_connect (G_OBJECT (button), "clicked",
-                    G_CALLBACK (glade_editor_on_reset_click), editor);
-
-  return button;
-}
-
 
 static void
 glade_editor_update_class_warning_cb (GladeWidget *widget,
@@ -586,16 +480,6 @@ glade_editor_init (GladeEditor *editor)
 
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_widget_set_hexpand (hbox, FALSE);
-
-  /* Reset button */
-  priv->reset_button = glade_editor_create_reset_button (editor);
-  gtk_box_pack_start (GTK_BOX (hbox), priv->reset_button, FALSE, FALSE, 0);
-  gtk_widget_set_no_show_all (editor->priv->reset_button, TRUE);
-  
-  /* Documentation button */
-  priv->info_button = glade_editor_create_info_button (editor);
-  gtk_box_pack_start (GTK_BOX (hbox), priv->info_button, FALSE, FALSE, 0);
-  gtk_widget_set_no_show_all (priv->info_button, TRUE);
 
   gtk_notebook_set_action_widget (GTK_NOTEBOOK (priv->notebook), hbox, GTK_PACK_END);
   gtk_widget_show_all (hbox);
@@ -833,7 +717,6 @@ glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
   GladeEditorPrivate *priv = GLADE_EDITOR_PRIVATE (editor);
   GladeWidgetAdaptor *adaptor;
   GladeProject *project;
-  gchar *book;
 
   /* Disconnect from last widget */
   if (priv->loaded_widget != NULL)
@@ -864,9 +747,6 @@ glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
   /* we are just clearing, we are done */
   if (widget == NULL)
     {
-      gtk_widget_hide (priv->reset_button);
-      gtk_widget_hide (priv->info_button);
-
       priv->loaded_widget = NULL;
 
       /* Clear class header */
@@ -876,14 +756,6 @@ glade_editor_load_widget_real (GladeEditor *editor, GladeWidget *widget)
 
       return;
     }
-  gtk_widget_show (priv->reset_button);
-
-  g_object_get (priv->loaded_adaptor, "book", &book, NULL);
-
-  if (priv->show_info)
-    gtk_widget_set_visible (priv->info_button, book != NULL);
-
-  g_free (book);
 
   priv->loading = TRUE;
 
@@ -1057,7 +929,7 @@ glade_editor_reset_toggled (GtkCellRendererToggle *cell,
 }
 
 static GtkWidget *
-glade_editor_reset_view (GladeEditor *editor)
+glade_editor_reset_view ()
 {
   GtkWidget *view_widget;
   GtkTreeModel *model;
@@ -1124,9 +996,8 @@ glade_editor_reset_view (GladeEditor *editor)
 }
 
 static void
-glade_editor_populate_reset_view (GladeEditor *editor, GtkTreeView *tree_view)
+glade_editor_populate_reset_view (GladeWidget *widget, GtkTreeView *tree_view)
 {
-  GladeEditorPrivate *priv = GLADE_EDITOR_PRIVATE (editor);
   GtkTreeStore *model = GTK_TREE_STORE (gtk_tree_view_get_model (tree_view));
   GtkTreeIter property_iter, general_iter, common_iter, atk_iter, *iter;
   GList *list;
@@ -1134,7 +1005,7 @@ glade_editor_populate_reset_view (GladeEditor *editor, GtkTreeView *tree_view)
   GladePropertyClass *pclass;
   gboolean def;
 
-  g_return_if_fail (priv->loaded_widget != NULL);
+  g_return_if_fail (widget != NULL);
 
   gtk_tree_store_append (model, &general_iter, NULL);
   gtk_tree_store_set (model, &general_iter,
@@ -1161,7 +1032,7 @@ glade_editor_populate_reset_view (GladeEditor *editor, GtkTreeView *tree_view)
                       COLUMN_DEFAULT, FALSE, COLUMN_NDEFAULT, FALSE, -1);
 
   /* General & Common */
-  for (list = glade_widget_get_properties (priv->loaded_widget); list; list = list->next)
+  for (list = glade_widget_get_properties (widget); list; list = list->next)
     {
       property = list->data;
       pclass   = glade_property_get_class (property);
@@ -1326,19 +1197,18 @@ glade_editor_reset_properties (GList *props)
 
 }
 
-static void
-glade_editor_reset_dialog (GladeEditor *editor)
+void
+glade_editor_reset_dialog_run (GtkWidget *parent, GladeWidget *gwidget)
 {
   GtkTreeSelection *selection;
-  GtkWidget *dialog, *parent;
+  GtkWidget *dialog;
   GtkWidget *vbox, *hbox, *label, *sw, *button;
   GtkWidget *tree_view, *description_view;
   gint res;
   GList *list;
 
-  parent = gtk_widget_get_toplevel (GTK_WIDGET (editor));
   dialog = gtk_dialog_new_with_buttons (_("Reset Widget Properties"),
-                                        GTK_WINDOW (parent),
+                                        parent ? GTK_WINDOW (parent) : NULL,
                                         GTK_DIALOG_MODAL |
                                         GTK_DIALOG_DESTROY_WITH_PARENT,
                                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
@@ -1368,9 +1238,9 @@ glade_editor_reset_dialog (GladeEditor *editor)
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), GTK_SHADOW_IN);
 
 
-  tree_view = glade_editor_reset_view (editor);
-  if (editor->priv->loaded_widget)
-    glade_editor_populate_reset_view (editor, GTK_TREE_VIEW (tree_view));
+  tree_view = glade_editor_reset_view ();
+  if (gwidget)
+    glade_editor_populate_reset_view (gwidget, GTK_TREE_VIEW (tree_view));
   gtk_tree_view_expand_all (GTK_TREE_VIEW (tree_view));
 
   gtk_widget_show (tree_view);
@@ -1449,37 +1319,13 @@ glade_editor_reset_dialog (GladeEditor *editor)
 void
 glade_editor_show_info (GladeEditor *editor)
 {
-  GladeEditorPrivate *priv;
-
-  g_return_if_fail (GLADE_IS_EDITOR (editor));
-
-  priv = GLADE_EDITOR_PRIVATE (editor);
-  
-  if (priv->show_info != TRUE)
-    {
-      priv->show_info = TRUE;
-      gtk_widget_show (priv->info_button);
-
-      g_object_notify_by_pspec (G_OBJECT (editor), properties[PROP_SHOW_INFO]);
-    }
+  g_warning ("%s function is deprecated and does nothing", __func__);
 }
 
 void
 glade_editor_hide_info (GladeEditor *editor)
 {
-  GladeEditorPrivate *priv;
-
-  g_return_if_fail (GLADE_IS_EDITOR (editor));
-
-  priv = GLADE_EDITOR_PRIVATE (editor);
-
-  if (priv->show_info != FALSE)
-    {
-      priv->show_info = FALSE;
-      gtk_widget_hide (priv->info_button);
-
-      g_object_notify_by_pspec (G_OBJECT (editor), properties[PROP_SHOW_INFO]);
-    }
+  g_warning ("%s function is deprecated and does nothing", __func__);
 }
 
 void
