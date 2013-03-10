@@ -107,8 +107,8 @@ struct _GladeWindowPrivate
   GtkWindow *about_dialog;
   GladePreferences *preferences;
   
-  GtkWidget *palettes_notebook;         /* Cached per project palettes */
-  GtkWidget *inspectors_notebook;       /* Cached per project inspectors */
+  GtkNotebook *palettes_notebook;         /* Cached per project palettes */
+  GtkNotebook *inspectors_notebook;       /* Cached per project inspectors */
 
   GladeEditor  *editor;                 /* The editor */
 
@@ -117,16 +117,16 @@ struct _GladeWindowPrivate
   guint statusbar_actions_context_id;   /* The context id of actions messages */
 
   GtkAccelGroup *accelgroup;
-  
+
   struct
-	{
-	  GtkAction *save, *quit;
-	  GtkAction *undo, *redo, *cut, *copy, *paste, *delete;
-	  GtkAction *previous_project, *next_project;
-	  GtkAction *use_small_icons, *icons_and_labels;
-	  GtkAction *toolbar_visible, *project_tabs_visible, *statusbar_visible;
-	  GtkAction *selector;
-	} action;
+    {
+      GtkAction *save, *quit;
+      GtkAction *undo, *redo, *cut, *copy, *paste, *delete;
+      GtkAction *previous_project, *next_project;
+      GtkAction *use_small_icons, *icons_and_labels;
+      GtkAction *toolbar_visible, *project_tabs_visible, *statusbar_visible;
+      GtkAction *selector;
+    } action;
 
   GtkActionGroup *project_actions;      /* All the project actions */
   GtkActionGroup *pointer_mode_actions;
@@ -155,7 +155,7 @@ struct _GladeWindowPrivate
   ToolDock docks[N_DOCKS];
 };
 
-static void check_reload_project (GladeWindow * window, GladeProject * project);
+static void check_reload_project (GladeWindow *window, GladeProject *project);
 
 G_DEFINE_TYPE (GladeWindow, glade_window, GTK_TYPE_WINDOW)
 
@@ -1631,19 +1631,17 @@ on_notebook_switch_page (GtkNotebook *notebook,
   set_sensitivity_according_to_project (window, project);
 
   /* unset search entry */
-  inspector = gtk_notebook_get_nth_page (GTK_NOTEBOOK (priv->inspectors_notebook),
-                                         gtk_notebook_get_current_page (GTK_NOTEBOOK (priv->inspectors_notebook)));
+  inspector = gtk_notebook_get_nth_page (priv->inspectors_notebook,
+                                         gtk_notebook_get_current_page (priv->inspectors_notebook));
   glade_inspector_set_search_entry (GLADE_INSPECTOR (inspector), NULL);
   gtk_entry_set_text (priv->search_entry, "");
 
   /* switch to the project's inspector/palette */
-  gtk_notebook_set_current_page (GTK_NOTEBOOK
-                                 (priv->inspectors_notebook), page_num);
-  gtk_notebook_set_current_page (GTK_NOTEBOOK
-                                 (priv->palettes_notebook), page_num);
+  gtk_notebook_set_current_page (priv->inspectors_notebook, page_num);
+  gtk_notebook_set_current_page (priv->palettes_notebook, page_num);
 
   /* Set search entry */
-  inspector = gtk_notebook_get_nth_page (GTK_NOTEBOOK (priv->inspectors_notebook), page_num);
+  inspector = gtk_notebook_get_nth_page (priv->inspectors_notebook, page_num);
   glade_inspector_set_search_entry (GLADE_INSPECTOR (inspector), priv->search_entry);
 
   /* activate the corresponding item in the project menu */
@@ -1733,8 +1731,7 @@ on_notebook_tab_added (GtkNotebook *notebook,
   glade_palette_set_item_appearance (GLADE_PALETTE (palette),
 				     gtk_radio_action_get_current_value (GTK_RADIO_ACTION (priv->action.icons_and_labels)));
 
-  gtk_notebook_append_page (GTK_NOTEBOOK (window->priv->palettes_notebook),
-                            palette, NULL);
+  gtk_notebook_append_page (window->priv->palettes_notebook, palette, NULL);
 
   glade_design_view_set_drag_source (view, glade_palette_get_tool_palette (GLADE_PALETTE (palette)));
   
@@ -1768,36 +1765,27 @@ on_notebook_tab_removed (GtkNotebook     *notebook,
                          guint            page_num, 
                          GladeWindow     *window)
 {
+  GladeWindowPrivate *priv = window->priv;
   GladeProject *project;
 
-  --window->priv->num_tabs;
+  --priv->num_tabs;
 
-  if (window->priv->num_tabs == 0)
+  if (priv->num_tabs == 0)
     {
-      gtk_widget_hide (GTK_WIDGET (window->priv->editor));
-      window->priv->active_view = NULL;
+      gtk_widget_hide (GTK_WIDGET (priv->editor));
+      priv->active_view = NULL;
     }
 
   project = glade_design_view_get_project (view);
 
-  g_signal_handlers_disconnect_by_func (G_OBJECT (project),
-                                        G_CALLBACK (project_notify_handler_cb),
-                                        window);
-  g_signal_handlers_disconnect_by_func (G_OBJECT (project),
-                                        G_CALLBACK (project_selection_changed_cb), 
-                                        window);
-  g_signal_handlers_disconnect_by_func (G_OBJECT (project),
-                                        G_CALLBACK (project_targets_changed_cb),
-                                        window);
-  g_signal_handlers_disconnect_by_func (G_OBJECT (project),
-                                        G_CALLBACK (project_changed_cb),
-                                        window);
-  g_signal_handlers_disconnect_by_func (G_OBJECT (project),
-                                        G_CALLBACK (on_pointer_mode_changed),
-                                        window);
+  g_signal_handlers_disconnect_by_func (project, project_notify_handler_cb, window);
+  g_signal_handlers_disconnect_by_func (project, project_selection_changed_cb, window);
+  g_signal_handlers_disconnect_by_func (project, project_targets_changed_cb, window);
+  g_signal_handlers_disconnect_by_func (project, project_changed_cb, window);
+  g_signal_handlers_disconnect_by_func (project, on_pointer_mode_changed, window);
 
-  gtk_notebook_remove_page (GTK_NOTEBOOK (window->priv->inspectors_notebook), page_num);
-  gtk_notebook_remove_page (GTK_NOTEBOOK (window->priv->palettes_notebook), page_num);
+  gtk_notebook_remove_page (priv->inspectors_notebook, page_num);
+  gtk_notebook_remove_page (priv->palettes_notebook, page_num);
 
   clean_actions (window);
 
@@ -1813,12 +1801,12 @@ on_notebook_tab_removed (GtkNotebook     *notebook,
 
   refresh_title (window);
 
-  if (window->priv->active_view)
+  if (priv->active_view)
     set_sensitivity_according_to_project (window,
                                           glade_design_view_get_project
-                                          (window->priv->active_view));
+                                          (priv->active_view));
   else
-    gtk_action_group_set_sensitive (window->priv->project_actions, FALSE);
+    gtk_action_group_set_sensitive (priv->project_actions, FALSE);
 
 }
 
@@ -1860,7 +1848,7 @@ on_palette_appearance_radioaction_changed (GtkRadioAction *action,
   for (l = children; l; l = l->next)
     {
       if (GLADE_IS_PALETTE (l->data))
-		glade_palette_set_item_appearance (GLADE_PALETTE (l->data), value);
+        glade_palette_set_item_appearance (GLADE_PALETTE (l->data), value);
     }
   g_list_free (children);
 }
@@ -3083,8 +3071,8 @@ glade_window_constructed (GObject *object)
 
   priv->notebook = GET_OBJECT (builder, GTK_WIDGET, "notebook");
   priv->notebook_frame = GET_OBJECT (builder, GTK_WIDGET, "notebook_frame");
-  priv->palettes_notebook = GET_OBJECT (builder, GTK_WIDGET, "palettes_notebook");
-  priv->inspectors_notebook = GET_OBJECT (builder, GTK_WIDGET, "inspectors_notebook");
+  priv->palettes_notebook = GET_OBJECT (builder, GTK_NOTEBOOK, "palettes_notebook");
+  priv->inspectors_notebook = GET_OBJECT (builder, GTK_NOTEBOOK, "inspectors_notebook");
   priv->editor = GET_OBJECT (builder, GLADE_EDITOR, "editor");
   glade_editor_hide_class_field (priv->editor);
   priv->statusbar = GET_OBJECT (builder, GTK_WIDGET, "statusbar");
@@ -3136,9 +3124,9 @@ glade_window_constructed (GObject *object)
   gtk_container_add (GTK_CONTAINER (window), vbox);
   
   /* Setup Docks */
-  setup_dock (&priv->docks[DOCK_PALETTE], priv->palettes_notebook, 200, 540,
+  setup_dock (&priv->docks[DOCK_PALETTE], GTK_WIDGET (priv->palettes_notebook), 200, 540,
               _("Palette"), "palette", priv->left_pane, TRUE);
-  setup_dock (&priv->docks[DOCK_INSPECTOR], priv->inspectors_notebook, 300, 540,
+  setup_dock (&priv->docks[DOCK_INSPECTOR], GTK_WIDGET (priv->inspectors_notebook), 300, 540,
               _("Inspector"), "inspector", priv->right_pane, TRUE);
   setup_dock (&priv->docks[DOCK_EDITOR], GTK_WIDGET (priv->editor), 500, 700,
               _("Properties"), "properties", priv->right_pane, FALSE);
