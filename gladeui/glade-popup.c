@@ -39,13 +39,11 @@
 static void
 glade_popup_docs_cb (GtkMenuItem *item, GladeWidgetAdaptor *adaptor)
 {
-  gchar *book;
-
   g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
 
-  g_object_get (adaptor, "book", &book, NULL);
-  glade_app_search_docs (book, glade_widget_adaptor_get_name (adaptor), NULL);
-  g_free (book);
+  glade_app_search_docs (glade_widget_adaptor_get_book (adaptor),
+                         glade_widget_adaptor_get_name (adaptor),
+                         NULL);
 }
 
 /********************************************************
@@ -388,7 +386,6 @@ glade_popup_create_menu (GladeWidget      *widget,
   GtkWidget          *separator;
   gboolean            sensitive;
   GladeWidgetAdaptor *adaptor;
-  gchar              *book;
 
   popup_menu = gtk_menu_new ();
 
@@ -486,23 +483,6 @@ glade_popup_create_menu (GladeWidget      *widget,
       glade_popup_action_populate_menu (popup_menu, widget, NULL, packing);
     }
 
-  if (widget)
-    {
-      g_object_get (glade_widget_get_adaptor (widget), "book", &book, NULL);
-      if (book)
-        {
-          GtkWidget *icon = glade_util_get_devhelp_icon (GTK_ICON_SIZE_MENU);
-          GtkWidget *separator = gtk_menu_item_new ();
-          gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), separator);
-          gtk_widget_show (separator);
-
-          glade_popup_append_item (popup_menu, NULL, _("Read _documentation"),
-                                   icon, TRUE, glade_popup_docs_cb,
-                                   glade_widget_get_adaptor (widget));
-        }
-      g_free (book);
-    }
-
   return popup_menu;
 }
 
@@ -571,7 +551,6 @@ glade_popup_palette_pop (GladePalette       *palette,
 {
   GladeProject *project;
   GtkWidget *popup_menu;
-  gchar *book = NULL;
   gint button;
   gint event_time;
   RootAddData *data;
@@ -591,15 +570,12 @@ glade_popup_palette_pop (GladePalette       *palette,
   glade_popup_append_item (popup_menu, NULL, _("Add widget as _toplevel"), NULL,
                            TRUE, glade_popup_root_add_cb, data);
 
-  g_object_get (adaptor, "book", &book, NULL);
-  if (book && glade_util_have_devhelp ())
+  if (glade_widget_adaptor_get_book (adaptor) && glade_util_have_devhelp ())
     {
       GtkWidget *icon = glade_util_get_devhelp_icon (GTK_ICON_SIZE_MENU);
       glade_popup_append_item (popup_menu, NULL, _("Read _documentation"), icon,
                                TRUE, glade_popup_docs_cb, adaptor);
     }
-  g_free (book);
-
 
   if (event)
     {
@@ -632,7 +608,7 @@ glade_popup_property_docs_cb (GtkMenuItem *item, GladeProperty *property)
   GladeWidgetAdaptor *adaptor, *prop_adaptor;
   GladePropertyClass *pclass;
   GParamSpec         *pspec;
-  gchar              *search, *book;
+  gchar              *search;
 
   pclass       = glade_property_get_class (property);
   pspec        = glade_property_class_get_pspec (pclass);
@@ -640,11 +616,9 @@ glade_popup_property_docs_cb (GtkMenuItem *item, GladeProperty *property)
   adaptor      = glade_widget_adaptor_from_pspec (prop_adaptor, pspec);
   search       = g_strdup_printf ("The %s property", glade_property_class_id (pclass));
 
-  g_object_get (adaptor, "book", &book, NULL);
+  glade_app_search_docs (glade_widget_adaptor_get_book (adaptor),
+                         g_type_name (pspec->owner_type), search);
 
-  glade_app_search_docs (book, g_type_name (pspec->owner_type), search);
-
-  g_free (book);
   g_free (search);
 }
 
@@ -656,7 +630,6 @@ glade_popup_property_pop (GladeProperty *property, GdkEventButton *event)
   GladePropertyClass *pclass;
   GParamSpec         *pspec;
   GtkWidget *popup_menu;
-  gchar *book = NULL;
   gint button;
   gint event_time;
 
@@ -672,16 +645,14 @@ glade_popup_property_pop (GladeProperty *property, GdkEventButton *event)
   glade_popup_append_item (popup_menu, GTK_STOCK_CLEAR, _("Set default value"),
                            NULL, TRUE, glade_popup_clear_property_cb, property);
 
-  g_object_get (adaptor, "book", &book, NULL);
   if (!glade_property_class_get_virtual (pclass) &&
-      book && glade_util_have_devhelp ())
+      glade_widget_adaptor_get_book (adaptor) &&
+      glade_util_have_devhelp ())
     {
       GtkWidget *icon = glade_util_get_devhelp_icon (GTK_ICON_SIZE_MENU);
       glade_popup_append_item (popup_menu, NULL, _("Read _documentation"), icon,
                                TRUE, glade_popup_property_docs_cb, property);
     }
-  g_free (book);
-
 
   if (event)
     {
