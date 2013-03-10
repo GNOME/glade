@@ -2671,6 +2671,7 @@ key_file_set_window_position (GKeyFile *config,
 static void
 save_windows_config (GladeWindow *window, GKeyFile *config)
 {
+  GladeWindowPrivate *priv = window->priv;
   guint i;
   GdkWindow *gdk_window;
   gboolean maximized;
@@ -2685,25 +2686,21 @@ save_windows_config (GladeWindow *window, GKeyFile *config)
   gdk_window = gtk_widget_get_window (GTK_WIDGET (window));
   maximized = gdk_window_get_state (gdk_window) & GDK_WINDOW_STATE_MAXIMIZED;
 
-  key_file_set_window_position (config, &window->priv->position,
+  key_file_set_window_position (config, &priv->position,
                                 "main", FALSE, FALSE, maximized);
 
   g_key_file_set_boolean (config,
                           CONFIG_GROUP_WINDOWS,
                           CONFIG_KEY_SHOW_TOOLBAR,
-                          gtk_widget_get_visible (window->priv->toolbar));
+                          gtk_widget_get_visible (priv->toolbar));
 
   g_key_file_set_boolean (config,
                           CONFIG_GROUP_WINDOWS,
                           CONFIG_KEY_SHOW_STATUS,
-                          gtk_widget_get_visible (window->priv->statusbar));
+                          gtk_widget_get_visible (priv->statusbar));
 
-  g_key_file_set_boolean (config,
-                          CONFIG_GROUP_WINDOWS,
-                          CONFIG_KEY_SHOW_TABS,
-                          gtk_notebook_get_show_tabs (GTK_NOTEBOOK
-                                                      (window->priv->
-                                                       notebook)));
+  g_key_file_set_boolean (config, CONFIG_GROUP_WINDOWS, CONFIG_KEY_SHOW_TABS,
+                          gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (priv->action.project_tabs_visible)));
 }
 
 static void
@@ -2896,8 +2893,6 @@ glade_window_config_load (GladeWindow *window)
     gtk_widget_show (priv->statusbar);
   else
     gtk_widget_hide (priv->statusbar);
-
-  glade_window_notebook_set_show_tabs (window, show_tabs);
 
   gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (priv->action.toolbar_visible), show_toolbar);
 
