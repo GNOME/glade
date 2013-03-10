@@ -1757,6 +1757,14 @@ glade_widget_adaptor_get_missing_icon (GladeWidgetAdaptor *adaptor)
   return adaptor->priv->missing_icon;
 }
 
+G_CONST_RETURN gchar *
+glade_widget_adaptor_get_book (GladeWidgetAdaptor *adaptor)
+{
+  g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
+
+  return adaptor->priv->book;
+}
+
 G_CONST_RETURN GList *
 glade_widget_adaptor_get_properties (GladeWidgetAdaptor *adaptor)
 {
