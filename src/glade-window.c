@@ -3251,11 +3251,5 @@ glade_window_check_devhelp (GladeWindow *window)
   g_return_if_fail (GLADE_IS_WINDOW (window));
 
   if (glade_util_have_devhelp ())
-    {
-      glade_editor_show_info (window->priv->editor);
-
-      g_signal_connect (glade_app_get (), "doc-search",
-                        G_CALLBACK (doc_search_cb), window);
-
-    }
+    g_signal_connect (glade_app_get (), "doc-search", G_CALLBACK (doc_search_cb), window);
 }
