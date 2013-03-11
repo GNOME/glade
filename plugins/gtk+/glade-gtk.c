@@ -800,6 +800,9 @@ glade_gtk_widget_deep_post_create (GladeWidgetAdaptor * adaptor,
   if (!glade_widget_get_internal (gwidget))
     g_signal_connect (G_OBJECT (widget), "notify::parent",
                       G_CALLBACK (widget_parent_changed), adaptor);
+
+  if (!glade_widget_adaptor_get_book (adaptor) || !glade_util_have_devhelp ())
+    glade_widget_remove_action (gwidget, "read_documentation");
 }
 
 void
@@ -1022,6 +1025,16 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
   else if (strcmp (action_path, "sizegroup_add") == 0)
     {
       /* Ignore dummy */
+    }
+  else if (strcmp (action_path, "clear_properties") == 0)
+    {
+      glade_editor_reset_dialog_run (gtk_widget_get_toplevel (parent), gwidget);
+    }
+  else if (strcmp (action_path, "read_documentation") == 0)
+    {
+      glade_app_search_docs (glade_widget_adaptor_get_book (adaptor),
+                             glade_widget_adaptor_get_name (adaptor),
+                             NULL);
     }
   else
     GWA_GET_CLASS (G_TYPE_OBJECT)->action_activate (adaptor,
