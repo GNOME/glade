@@ -1868,6 +1868,21 @@ glade_design_layout_constructor (GType                  type,
 }
 
 static void
+glade_design_layout_dispose (GObject *object)
+{
+  GtkWidget *child;
+
+  /* NOTE: Remove child from hierarchy!
+   * This way we ensure gtk_widget_destroy() will not be called on it.
+   * Glade API like glade_widget_get_children() depends on children hierarchy. 
+   */
+  if ((child = gtk_bin_get_child (GTK_BIN (object))))
+    gtk_container_remove (GTK_CONTAINER (object), child);
+
+  G_OBJECT_CLASS (glade_design_layout_parent_class)->dispose (object);
+}
+
+static void
 glade_design_layout_finalize (GObject *object)
 {
   GladeDesignLayout *layout = GLADE_DESIGN_LAYOUT (object);
@@ -1977,6 +1992,7 @@ glade_design_layout_class_init (GladeDesignLayoutClass * klass)
   container_class = GTK_CONTAINER_CLASS (klass);
 
   object_class->constructor = glade_design_layout_constructor;
+  object_class->dispose = glade_design_layout_dispose;
   object_class->finalize = glade_design_layout_finalize;
   object_class->set_property = glade_design_layout_set_property;
   object_class->get_property = glade_design_layout_get_property;
