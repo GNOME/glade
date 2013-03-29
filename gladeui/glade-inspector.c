@@ -302,6 +302,7 @@ glade_inspector_dispose (GObject *object)
 {
   GladeInspector *inspector = GLADE_INSPECTOR (object);
 
+  glade_inspector_set_search_entry (inspector, NULL);
   glade_inspector_set_project (inspector, NULL);
 
   G_OBJECT_CLASS (glade_inspector_parent_class)->dispose (object);
