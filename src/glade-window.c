@@ -1469,6 +1469,12 @@ do_close (GladeWindow *window, GladeProject *project)
   g_object_unref (view);
 
   glade_window_notebook_tabs_update (window);
+
+  if (!glade_app_get_projects ())
+    {
+      gtk_widget_hide (window->priv->center_pane);
+      gtk_widget_set_sensitive (window->priv->search_entry, FALSE);
+    }
 }
 
 void
@@ -2401,7 +2407,9 @@ add_project (GladeWindow *window, GladeProject *project, gboolean for_file)
 
   glade_window_notebook_tabs_update (window);
 
+  gtk_widget_show (window->priv->center_pane);
   gtk_widget_show (GTK_WIDGET (priv->editor));
+  gtk_widget_set_sensitive (window->priv->search_entry, TRUE);
 }
 
 void
