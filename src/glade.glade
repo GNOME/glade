@@ -183,7 +183,7 @@
         <property name="stock_id">gtk-new</property>
         <signal name="activate" handler="glade_window_new_project" swapped="yes"/>
       </object>
-      <accelerator key="n" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
+      <accelerator key="n" modifiers="GDK_CONTROL_MASK"/>
     </child>
     <child>
       <object class="GtkAction" id="open_action">
@@ -192,7 +192,7 @@
         <property name="stock_id">gtk-open</property>
         <signal name="activate" handler="on_open_action_activate" swapped="no"/>
       </object>
-      <accelerator key="o" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
+      <accelerator key="o" modifiers="GDK_CONTROL_MASK"/>
     </child>
     <child>
       <object class="GtkAction" id="quit_action">
@@ -201,7 +201,7 @@
         <property name="stock_id">gtk-quit</property>
         <signal name="activate" handler="on_quit_action_activate" swapped="no"/>
       </object>
-      <accelerator key="q" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
+      <accelerator key="q" modifiers="GDK_CONTROL_MASK"/>
     </child>
     <child>
       <object class="GtkRecentAction" id="open_recent_action">
