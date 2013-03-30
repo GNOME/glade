@@ -1899,9 +1899,9 @@ sort_project_dependancies (GObject *a, GObject *b)
   ga = glade_widget_get_from_gobject (a);
   gb = glade_widget_get_from_gobject (b);
 
-  if (glade_widget_adaptor_depends (glade_widget_get_adaptor (ga), ga, gb))
+  if (glade_widget_depends (ga, gb))
     return 1;
-  else if (glade_widget_adaptor_depends (glade_widget_get_adaptor (gb), gb, ga))
+  else if (glade_widget_depends (gb, ga))
     return -1;
   else
     return strcmp (glade_widget_get_name (ga), glade_widget_get_name (gb));
@@ -1915,6 +1915,7 @@ glade_project_write (GladeProject *project)
   GladeXmlDoc *doc;
   GladeXmlNode *root;           /* *comment_node; */
   GList *list;
+  GList *toplevels;
 
   doc = glade_xml_doc_new ();
   context = glade_xml_context_new (doc, NULL);
@@ -1934,12 +1935,11 @@ glade_project_write (GladeProject *project)
 
   glade_project_write_resource_path (project, context, root);
 
-  /* Sort the whole thing */
-  project->priv->objects =
-      g_list_sort (project->priv->objects,
-                   (GCompareFunc) sort_project_dependancies);
+  /* Sort the toplevels */
+  toplevels = g_list_copy (project->priv->tree);
+  toplevels = g_list_sort (toplevels, (GCompareFunc)sort_project_dependancies);
 
-  for (list = project->priv->objects; list; list = list->next)
+  for (list = toplevels; list; list = list->next)
     {
       GladeWidget *widget;
 
@@ -1952,6 +1952,8 @@ glade_project_write (GladeProject *project)
       if (!glade_widget_get_parent (widget))
         glade_widget_write (widget, context, root);
     }
+
+  g_list_free (toplevels);
 
   return context;
 }

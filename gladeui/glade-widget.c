@@ -4023,6 +4023,67 @@ glade_widget_is_ancestor (GladeWidget * widget, GladeWidget * ancestor)
 }
 
 /**
+ * glade_widget_depends:
+ * @widget: a #GladeWidget
+ * @other: another #GladeWidget
+ *
+ * Determines whether @widget is somehow dependent on @other, in
+ * which case it should be serialized after @other.
+ *
+ * A widget is dependent on another widget if @widget or any
+ * of @widget's children depends on @other or any of @other's children.
+ *
+ * <note><para>This is a very recursive operation, it is used once when
+ * saving the project to ensure proper order at save time.</para></note>
+ *
+ * Return value: %TRUE if @widget depends on @other.
+ **/
+gboolean
+glade_widget_depends (GladeWidget      *widget,
+		      GladeWidget      *other)
+{
+  g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+  g_return_val_if_fail (GLADE_IS_WIDGET (other), FALSE);
+
+  if (!glade_widget_adaptor_depends (widget->priv->adaptor, widget, other))
+    {
+      gboolean depends;
+      GList *children, *l;
+
+      /* Recurse into 'other' */
+      children = glade_widget_get_children (other);
+      for (depends = FALSE, l = children;
+	   depends == FALSE && l != NULL;
+	   l = l->next)
+	{
+	  GladeWidget *child = glade_widget_get_from_gobject (l->data);
+
+	  depends = glade_widget_depends (widget, child);
+	}
+
+      g_list_free (children);
+      if (depends)
+	return TRUE;
+
+      /* Recurse into 'widget' */
+      children = glade_widget_get_children (widget);
+      for (depends = FALSE, l = children;
+	   depends == FALSE && l != NULL;
+	   l = l->next)
+	{
+	  GladeWidget *child = glade_widget_get_from_gobject (l->data);
+
+	  depends = glade_widget_depends (child, other);
+	}
+      g_list_free (children);
+
+      return depends;
+    }
+
+  return TRUE;
+}
+
+/**
  * glade_widget_get_device_from_event:
  * @event: a GdkEvent
  * 
