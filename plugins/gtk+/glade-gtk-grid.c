@@ -37,16 +37,6 @@ typedef struct
   gint height;
 } GladeGridAttachments;
 
-typedef struct
-{
-  /* comparable part: */
-  GladeWidget *widget;
-  gint left_attach;
-  gint top_attach;
-  gint width;
-  gint height;
-} GladeGridChild;
-
 typedef enum
 {
   DIR_UP,
@@ -60,12 +50,90 @@ glade_gtk_grid_get_child_attachments (GtkWidget            *grid,
 				      GtkWidget            *child,
 				      GladeGridAttachments *grid_child)
 {
-  gtk_container_child_get (GTK_CONTAINER (grid), child,
-                           "left-attach", &grid_child->left_attach,
-                           "width",       &grid_child->width,
-                           "top-attach",  &grid_child->top_attach,
-                           "height",      &grid_child->height,
-			   NULL);
+  GladeWidget *gwidget = glade_widget_get_from_gobject (child);
+
+  /* gtk_container_child_get (GTK_CONTAINER (grid), child, */
+  /*                          "left-attach", &grid_child->left_attach, */
+  /*                          "width",       &grid_child->width, */
+  /*                          "top-attach",  &grid_child->top_attach, */
+  /*                          "height",      &grid_child->height, */
+  /* 			   NULL); */
+
+  if (!glade_widget_pack_property_get (gwidget, "left-attach", &grid_child->left_attach) ||
+      !glade_widget_pack_property_get (gwidget, "top-attach", &grid_child->top_attach) ||
+      !glade_widget_pack_property_get (gwidget, "width", &grid_child->width) ||
+      !glade_widget_pack_property_get (gwidget, "height", &grid_child->height))
+    g_warning ("Failed to get grid child attachments");
+}
+
+static gboolean
+glade_gtk_grid_has_child (GtkGrid *grid,
+                          GList *children,
+                          guint left_attach,
+                          guint top_attach)
+{
+  gboolean ret = FALSE;
+  GList *list;
+
+  for (list = children; list && list->data; list = list->next)
+    {
+      GladeGridAttachments attach;
+      GtkWidget *widget = list->data;
+
+      glade_gtk_grid_get_child_attachments (GTK_WIDGET (grid), widget, &attach);
+
+      if (left_attach >= attach.left_attach && left_attach < attach.left_attach + attach.width && 
+	  top_attach  >= attach.top_attach  && top_attach  < attach.top_attach  + attach.height)
+        {
+          ret = TRUE;
+          break;
+        }
+    }
+
+  return ret;
+}
+
+static void
+glade_gtk_grid_refresh_placeholders (GtkGrid *grid,
+				     gboolean load_finished)
+{
+  GladeWidget *widget;
+  GladeProject *project;
+  GtkContainer *container;
+  GList *list, *children;
+  guint n_columns, n_rows;
+  gint i, j;
+
+  widget = glade_widget_get_from_gobject (grid);
+  project = glade_widget_get_project (widget);
+
+  /* Wait for project to finish loading */
+  if (glade_project_is_loading (project) && !load_finished)
+	return;
+
+  glade_widget_property_get (widget, "n-columns", &n_columns);
+  glade_widget_property_get (widget, "n-rows", &n_rows);
+
+  container = GTK_CONTAINER (grid);
+  children = gtk_container_get_children (container);
+
+  for (list = children; list && list->data; list = list->next)
+    {
+      GtkWidget *child = list->data;
+      if (GLADE_IS_PLACEHOLDER (child))
+        gtk_container_remove (container, child);
+    }
+  g_list_free (children);
+
+  children = gtk_container_get_children (container);
+
+  for (i = 0; i < n_columns; i++)
+    for (j = 0; j < n_rows; j++)
+      if (glade_gtk_grid_has_child (grid, children, i, j) == FALSE)
+        gtk_grid_attach (grid, glade_placeholder_new (), i, j, 1, 1);
+
+  gtk_container_check_resize (container);
+  g_list_free (children);
 }
 
 static void
@@ -97,6 +165,9 @@ glade_gtk_grid_parse_finished (GladeProject *project, GObject *container)
   if (row) glade_widget_property_set (gwidget, "n-rows", row);
 
   g_list_free (children);
+
+  /* Refresh placeholders only once after the project is finished parsing */
+  glade_gtk_grid_refresh_placeholders (GTK_GRID (container), TRUE);
 }
 
 void
@@ -109,33 +180,6 @@ glade_gtk_grid_post_create (GladeWidgetAdaptor * adaptor,
     g_signal_connect (glade_widget_get_project (gwidget), "parse-finished",
 		      G_CALLBACK (glade_gtk_grid_parse_finished),
 		      container);
-}
-
-static gboolean
-glade_gtk_grid_has_child (GtkGrid *grid,
-                          GList *children,
-                          guint left_attach,
-                          guint top_attach)
-{
-  gboolean ret = FALSE;
-  GList *list;
-
-  for (list = children; list && list->data; list = list->next)
-    {
-      GladeGridAttachments attach;
-      GtkWidget *widget = list->data;
-
-      glade_gtk_grid_get_child_attachments (GTK_WIDGET (grid), widget, &attach);
-
-      if (left_attach >= attach.left_attach && left_attach < attach.left_attach + attach.width && 
-	  top_attach  >= attach.top_attach  && top_attach  < attach.top_attach  + attach.height)
-        {
-          ret = TRUE;
-          break;
-        }
-    }
-
-  return ret;
 }
 
 static gboolean
@@ -166,41 +210,6 @@ glade_gtk_grid_widget_exceeds_bounds (GtkGrid *grid, gint n_rows, gint n_cols)
   g_list_free (children);
 
   return ret;
-}
-
-static void
-glade_gtk_grid_refresh_placeholders (GtkGrid *grid)
-{
-  GladeWidget *widget;
-  GtkContainer *container;
-  GList *list, *children;
-  guint n_columns, n_rows;
-  gint i, j;
-
-  widget = glade_widget_get_from_gobject (grid);
-  glade_widget_property_get (widget, "n-columns", &n_columns);
-  glade_widget_property_get (widget, "n-rows", &n_rows);
-
-  container = GTK_CONTAINER (grid);
-  children = gtk_container_get_children (container);
-
-  for (list = children; list && list->data; list = list->next)
-    {
-      GtkWidget *child = list->data;
-      if (GLADE_IS_PLACEHOLDER (child))
-        gtk_container_remove (container, child);
-    }
-  g_list_free (children);
-
-  children = gtk_container_get_children (container);
-
-  for (i = 0; i < n_columns; i++)
-    for (j = 0; j < n_rows; j++)
-      if (glade_gtk_grid_has_child (grid, children, i, j) == FALSE)
-        gtk_grid_attach (grid, glade_placeholder_new (), i, j, 1, 1);
-
-  gtk_container_check_resize (container);
-  g_list_free (children);
 }
 
 static void
@@ -235,7 +244,7 @@ glade_gtk_grid_add_child (GladeWidgetAdaptor * adaptor,
 
   gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
 
-  glade_gtk_grid_refresh_placeholders (GTK_GRID (object));
+  glade_gtk_grid_refresh_placeholders (GTK_GRID (object), FALSE);
 }
 
 void
@@ -247,7 +256,7 @@ glade_gtk_grid_remove_child (GladeWidgetAdaptor * adaptor,
 
   gtk_container_remove (GTK_CONTAINER (object), GTK_WIDGET (child));
 
-  glade_gtk_grid_refresh_placeholders (GTK_GRID (object));
+  glade_gtk_grid_refresh_placeholders (GTK_GRID (object), FALSE);
 }
 
 void
@@ -274,7 +283,7 @@ glade_gtk_grid_replace_child (GladeWidgetAdaptor *adaptor,
    * first pasted widget would have proper packing properties).
    */
   if (!GLADE_IS_PLACEHOLDER (new_widget))
-    glade_gtk_grid_refresh_placeholders (GTK_GRID (container));
+    glade_gtk_grid_refresh_placeholders (GTK_GRID (container), FALSE);
 }
 
 static void
@@ -302,7 +311,7 @@ glade_gtk_grid_set_n_common (GObject * object, const GValue * value,
     return;
 
   /* Fill grid with placeholders */
-  glade_gtk_grid_refresh_placeholders (grid);
+  glade_gtk_grid_refresh_placeholders (grid, FALSE);
 }
 
 void
@@ -376,7 +385,7 @@ glade_gtk_grid_set_child_property (GladeWidgetAdaptor * adaptor,
       strcmp (property_name, "height")      == 0)
     {
       /* Refresh placeholders */
-      glade_gtk_grid_refresh_placeholders (GTK_GRID (container));
+      glade_gtk_grid_refresh_placeholders (GTK_GRID (container), FALSE);
     }
 }
 
