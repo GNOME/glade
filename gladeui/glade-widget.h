@@ -339,6 +339,11 @@ void                    glade_widget_set_name		    (GladeWidget      *widget,
  
 G_CONST_RETURN gchar   *glade_widget_get_name               (GladeWidget      *widget);
 
+void                    glade_widget_set_is_composite       (GladeWidget      *widget,
+							     gboolean          composite);
+
+gboolean                glade_widget_get_is_composite       (GladeWidget      *widget);
+
 void                    glade_widget_set_internal	    (GladeWidget      *widget,
 							     const gchar      *internal);
  

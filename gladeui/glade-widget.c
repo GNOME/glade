@@ -160,6 +160,7 @@ struct _GladeWidgetPrivate {
 				   * since the objects copy may be invalid due to a rebuild.
 				   */
   guint              rebuilding : 1;
+  guint              composite : 1;
 };
 
 enum
@@ -193,6 +194,7 @@ enum
   PROP_TOPLEVEL_HEIGHT,
   PROP_SUPPORT_WARNING,
   PROP_VISIBLE,
+  PROP_COMPOSITE,
   N_PROPERTIES
 };
 
@@ -1105,6 +1107,9 @@ glade_widget_set_real_property (GObject * object,
       case PROP_TOPLEVEL_HEIGHT:
         widget->priv->height = g_value_get_int (value);
         break;
+    case PROP_COMPOSITE:
+        glade_widget_set_is_composite (widget, g_value_get_boolean (value));
+	break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
@@ -1161,6 +1166,9 @@ glade_widget_get_real_property (GObject * object,
       case PROP_REASON:
         g_value_set_int (value, widget->priv->construct_reason);
         break;
+      case PROP_COMPOSITE:
+        g_value_set_boolean (value, glade_widget_get_is_composite (widget));
+	break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
@@ -1316,6 +1324,11 @@ glade_widget_class_init (GladeWidgetClass * klass)
        g_param_spec_boolean ("visible", _("Visible"),
                             _("Wether the widget is visible or not"),
                              FALSE, G_PARAM_READABLE);
+
+  properties[PROP_COMPOSITE] =
+       g_param_spec_boolean ("composite", _("Compisite"),
+                            _("Whether this widget is the template for a composite widget"),
+                            FALSE, G_PARAM_READWRITE);
 
   /* Install all properties */
   g_object_class_install_properties (object_class, N_PROPERTIES, properties);
@@ -2558,6 +2571,57 @@ glade_widget_get_name (GladeWidget * widget)
 }
 
 /**
+ * glade_widget_set_is_composite:
+ * @widget: a #GladeWidget
+ * @composite: whether @widget should be a composite template
+ *
+ * Set's this widget to be toplevel composite object to be
+ * eventually used with gtk_widget_class_set_template()
+ *
+ * Only one widget in a project should be composite.
+ */
+void
+glade_widget_set_is_composite (GladeWidget      *widget,
+			       gboolean          composite)
+{
+  g_return_if_fail (GLADE_IS_WIDGET (widget));
+
+  composite = !!composite;
+
+  if (widget->priv->composite != composite)
+    {
+      GladeProject *project = glade_widget_get_project (widget);
+
+      widget->priv->composite = composite;
+
+      g_object_notify_by_pspec (G_OBJECT (widget), properties[PROP_COMPOSITE]);
+
+      /* Update the project model when this changes */
+      if (widget->priv->parent == NULL &&
+	  widget->priv->project != NULL &&
+	  glade_project_has_object (widget->priv->project, widget->priv->object))
+	glade_project_widget_changed (project, widget);
+    }
+}
+
+/**
+ * glade_widget_get_is_composite:
+ * @widget: a #GladeWidget
+ *
+ * Checks if @widget is a composite template to be used
+ * with gtk_widget_class_set_template().
+ *
+ * Returns: whether @widget is composite.
+ */
+gboolean
+glade_widget_get_is_composite (GladeWidget *widget)
+{
+  g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+
+  return widget->priv->composite;
+}
+
+/**
  * glade_widget_set_internal:
  * @widget: A #GladeWidget
  * @internal: The internal name
@@ -3757,13 +3821,18 @@ glade_widget_read (GladeProject * project,
 {
   GladeWidgetAdaptor *adaptor;
   GladeWidget *widget = NULL;
-  gchar *klass, *id;
+  gchar *klass, *id = NULL, *template_parent = NULL;
+  gboolean template = FALSE;
 
   if (glade_project_load_cancelled (project))
     return NULL;
 
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
-    return NULL;
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+      return NULL;
+
+  if (glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE))
+    template = TRUE;
 
   glade_widget_push_superuser ();
 
@@ -3771,15 +3840,25 @@ glade_widget_read (GladeProject * project,
        glade_xml_get_property_string_required
        (node, GLADE_XML_TAG_CLASS, NULL)) != NULL)
     {
-      if ((id =
-           glade_xml_get_property_string_required
-           (node, GLADE_XML_TAG_ID, NULL)) != NULL)
-        {
+      if (template)
+	{
+	  template_parent = glade_xml_get_property_string_required (node, GLADE_TAG_PARENT, NULL);
+
+	  if (template_parent)
+	    id = g_strdup (klass);
+	}
+      else
+	id = glade_xml_get_property_string_required (node, GLADE_XML_TAG_ID, NULL);
+	
+      if (id)
+	{
           GType type;
+	  const gchar *type_to_use = template_parent ? template_parent : klass;
+
           /* 
            * Create GladeWidget instance based on type. 
            */
-          if ((adaptor = glade_widget_adaptor_get_by_name (klass)) &&
+          if ((adaptor = glade_widget_adaptor_get_by_name (type_to_use)) &&
               (type = glade_widget_adaptor_get_object_type (adaptor)) &&
               G_TYPE_IS_INSTANTIATABLE (type) &&
               G_TYPE_IS_ABSTRACT (type) == FALSE)
@@ -3810,6 +3889,7 @@ glade_widget_read (GladeProject * project,
                   widget = glade_widget_adaptor_create_widget
                       (adaptor, FALSE,
                        "name", id,
+		       "composite", template,
                        "parent", parent,
                        "project", project, "reason", GLADE_CREATE_LOAD, NULL);
                 }
@@ -3826,6 +3906,7 @@ glade_widget_read (GladeProject * project,
               widget = glade_widget_adaptor_create_widget (glade_widget_adaptor_get_by_type (GTK_TYPE_WIDGET),
                                                            FALSE,
                                                            "parent", parent,
+                                                           "composite", template,
                                                            "project", project,
                                                            "reason", GLADE_CREATE_LOAD,
                                                            "object", stub,
@@ -3834,6 +3915,7 @@ glade_widget_read (GladeProject * project,
             }
           g_free (id);
         }
+      g_free (template_parent);
       g_free (klass);
     }
 
@@ -4030,15 +4112,28 @@ glade_widget_write (GladeWidget * widget,
       return;
     }
 
-  widget_node = glade_xml_node_new (context, GLADE_XML_TAG_WIDGET);
-  glade_xml_node_append_child (node, widget_node);
-
   /* Set class and id */
-  glade_xml_node_set_property_string (widget_node,
-                                      GLADE_XML_TAG_CLASS,
-                                      glade_widget_adaptor_get_name (widget->priv->adaptor));
-  glade_xml_node_set_property_string (widget_node,
-                                      GLADE_XML_TAG_ID, widget->priv->name);
+  if (widget->priv->composite)
+    {
+      widget_node = glade_xml_node_new (context, GLADE_XML_TAG_TEMPLATE);
+      glade_xml_node_set_property_string (widget_node,
+					  GLADE_XML_TAG_CLASS,
+					  widget->priv->name);
+      glade_xml_node_set_property_string (widget_node,
+					  GLADE_TAG_PARENT,
+					  glade_widget_adaptor_get_name (widget->priv->adaptor));
+    }
+  else
+    {
+      widget_node = glade_xml_node_new (context, GLADE_XML_TAG_WIDGET);
+      glade_xml_node_set_property_string (widget_node,
+					  GLADE_XML_TAG_CLASS,
+					  glade_widget_adaptor_get_name (widget->priv->adaptor));
+      glade_xml_node_set_property_string (widget_node,
+					  GLADE_XML_TAG_ID, widget->priv->name);
+    }
+
+  glade_xml_node_append_child (node, widget_node);
 
   /* Write out widget content (properties and signals) */
   glade_widget_adaptor_write_widget (widget->priv->adaptor, widget, context,

@@ -419,7 +419,8 @@ void
 glade_gtk_widget_read_widget (GladeWidgetAdaptor * adaptor,
                               GladeWidget * widget, GladeXmlNode * node)
 {
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -695,7 +696,8 @@ glade_gtk_widget_write_widget (GladeWidgetAdaptor * adaptor,
 {
   GObject *obj;
 
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* Make sure use-action-appearance and related-action properties are
@@ -2937,7 +2939,8 @@ glade_gtk_entry_read_widget (GladeWidgetAdaptor * adaptor,
 {
   GladeProperty *property;
 
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -3177,7 +3180,8 @@ void
 glade_gtk_window_read_widget (GladeWidgetAdaptor * adaptor,
                               GladeWidget * widget, GladeXmlNode * node)
 {
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -3223,7 +3227,8 @@ glade_gtk_window_write_widget (GladeWidgetAdaptor * adaptor,
                                GladeWidget * widget,
                                GladeXmlContext * context, GladeXmlNode * node)
 {
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -3819,7 +3824,8 @@ void
 glade_gtk_button_read_widget (GladeWidgetAdaptor * adaptor,
                               GladeWidget * widget, GladeXmlNode * node)
 {
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -3837,7 +3843,8 @@ glade_gtk_button_write_widget (GladeWidgetAdaptor * adaptor,
   gboolean use_stock;
   gchar *stock = NULL;
 
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* Do not save GtkColorButton GtkFontButton and GtkScaleButton label property */
@@ -3875,7 +3882,8 @@ glade_gtk_image_read_widget (GladeWidgetAdaptor * adaptor,
 {
   GladeProperty *property;
 
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -3946,7 +3954,9 @@ glade_gtk_image_write_widget (GladeWidgetAdaptor * adaptor,
                               GladeWidget * widget,
                               GladeXmlContext * context, GladeXmlNode * node)
 {
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and write all the normal properties (including "use-stock")... */
@@ -5080,7 +5090,8 @@ glade_gtk_image_menu_item_read_widget (GladeWidgetAdaptor * adaptor,
   gboolean use_stock;
   gchar *label = NULL;
 
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -5119,7 +5130,8 @@ glade_gtk_image_menu_item_write_widget (GladeWidgetAdaptor * adaptor,
   gboolean use_stock;
   gchar *stock;
 
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* Make a copy of the GladeProperty, override its value if use-stock is TRUE */
@@ -5574,7 +5586,8 @@ glade_gtk_toolbar_write_widget (GladeWidgetAdaptor * adaptor,
 				GladeWidget * widget,
 				GladeXmlContext * context, GladeXmlNode * node)
 {
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and write all the normal properties (including "use-stock")... */
@@ -5839,7 +5852,8 @@ void
 glade_gtk_tool_item_group_read_widget (GladeWidgetAdaptor * adaptor,
 				       GladeWidget * widget, GladeXmlNode * node)
 {
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -6147,7 +6161,8 @@ void
 glade_gtk_tool_button_read_widget (GladeWidgetAdaptor * adaptor,
                                    GladeWidget * widget, GladeXmlNode * node)
 {
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -6633,7 +6648,9 @@ glade_gtk_label_read_widget (GladeWidgetAdaptor * adaptor,
                              GladeWidget * widget, GladeXmlNode * node)
 {
   GladeProperty *prop;
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -6719,7 +6736,8 @@ glade_gtk_label_write_widget (GladeWidgetAdaptor * adaptor,
 {
   GladeXmlNode *attrs_node;
 
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -7160,7 +7178,8 @@ void
 glade_gtk_combo_box_text_read_widget (GladeWidgetAdaptor * adaptor,
 				      GladeWidget * widget, GladeXmlNode * node)
 {
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -7214,7 +7233,8 @@ glade_gtk_combo_box_text_write_widget (GladeWidgetAdaptor * adaptor,
 {
   GladeXmlNode *attrs_node;
 
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -7745,7 +7765,8 @@ void
 glade_gtk_size_group_read_widget (GladeWidgetAdaptor * adaptor,
                                   GladeWidget * widget, GladeXmlNode * node)
 {
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -7793,7 +7814,8 @@ glade_gtk_size_group_write_widget (GladeWidgetAdaptor * adaptor,
                                    GladeXmlContext * context,
                                    GladeXmlNode * node)
 {
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -7993,7 +8015,8 @@ void
 glade_gtk_icon_factory_read_widget (GladeWidgetAdaptor * adaptor,
                                     GladeWidget * widget, GladeXmlNode * node)
 {
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in any normal properties.. */
@@ -8101,7 +8124,8 @@ glade_gtk_icon_factory_write_widget (GladeWidgetAdaptor * adaptor,
                                      GladeXmlContext * context,
                                      GladeXmlNode * node)
 {
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and write all the normal properties.. */
@@ -8781,7 +8805,8 @@ glade_gtk_store_write_widget (GladeWidgetAdaptor * adaptor,
                               GladeWidget * widget,
                               GladeXmlContext * context, GladeXmlNode * node)
 {
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and write all the normal properties.. */
@@ -8987,7 +9012,8 @@ void
 glade_gtk_store_read_widget (GladeWidgetAdaptor * adaptor,
                              GladeWidget * widget, GladeXmlNode * node)
 {
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -9227,7 +9253,8 @@ glade_gtk_cell_renderer_write_widget (GladeWidgetAdaptor * adaptor,
                                       GladeXmlContext * context,
                                       GladeXmlNode * node)
 {
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* Write our normal properties, then chain up to write any other normal properties,
@@ -9283,7 +9310,8 @@ void
 glade_gtk_cell_renderer_read_widget (GladeWidgetAdaptor * adaptor,
                                      GladeWidget * widget, GladeXmlNode * node)
 {
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the properties... */
@@ -10010,7 +10038,8 @@ glade_gtk_adjustment_write_widget (GladeWidgetAdaptor * adaptor,
 {
   GladeProperty *prop;
 
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* Ensure proper order of adjustment properties by writing them here. */
@@ -10550,7 +10579,8 @@ glade_gtk_recent_filter_read_widget (GladeWidgetAdaptor *adaptor,
 				     GladeWidget        *widget, 
 				     GladeXmlNode       *node)
 {
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -10569,7 +10599,8 @@ glade_gtk_recent_filter_write_widget (GladeWidgetAdaptor *adaptor,
 {
   GladeXmlNode *strings_node;
 
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -10608,7 +10639,8 @@ glade_gtk_file_filter_read_widget (GladeWidgetAdaptor *adaptor,
 				   GladeWidget        *widget, 
 				   GladeXmlNode       *node)
 {
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
@@ -10626,7 +10658,8 @@ glade_gtk_file_filter_write_widget (GladeWidgetAdaptor *adaptor,
 {
   GladeXmlNode *strings_node;
 
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
 
   /* First chain up and read in all the normal properties.. */
