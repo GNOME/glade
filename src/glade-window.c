@@ -1448,6 +1448,7 @@ glade_window_notebook_tabs_update (GladeWindow *window)
 static void
 do_close (GladeWindow *window, GladeProject *project)
 {
+  GladeWindowPrivate *priv = window->priv;
   GladeDesignView *view;
   gint n;
 
@@ -1459,12 +1460,12 @@ do_close (GladeWindow *window, GladeProject *project)
       return;
     }
 
-  n = gtk_notebook_page_num (GTK_NOTEBOOK (window->priv->notebook),
+  n = gtk_notebook_page_num (GTK_NOTEBOOK (priv->notebook),
                              GTK_WIDGET (view));
 
   g_object_ref (view);
 
-  gtk_notebook_remove_page (GTK_NOTEBOOK (window->priv->notebook), n);
+  gtk_notebook_remove_page (GTK_NOTEBOOK (priv->notebook), n);
 
   g_object_unref (view);
 
@@ -1472,8 +1473,8 @@ do_close (GladeWindow *window, GladeProject *project)
 
   if (!glade_app_get_projects ())
     {
-      gtk_widget_hide (window->priv->center_pane);
-      gtk_widget_set_sensitive (window->priv->search_entry, FALSE);
+      gtk_widget_hide (priv->center_pane);
+      gtk_widget_set_sensitive (GTK_WIDGET (priv->search_entry), FALSE);
     }
 }
 
@@ -2407,9 +2408,9 @@ add_project (GladeWindow *window, GladeProject *project, gboolean for_file)
 
   glade_window_notebook_tabs_update (window);
 
-  gtk_widget_show (window->priv->center_pane);
+  gtk_widget_show (priv->center_pane);
   gtk_widget_show (GTK_WIDGET (priv->editor));
-  gtk_widget_set_sensitive (window->priv->search_entry, TRUE);
+  gtk_widget_set_sensitive (GTK_WIDGET (priv->search_entry), TRUE);
 }
 
 void
