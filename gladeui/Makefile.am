@@ -1,4 +1,5 @@
 ## Previewer
+include $(top_srcdir)/glade-rules.mk
 
 bin_PROGRAMS = glade-previewer
 lib_LTLIBRARIES = libgladeui-2.la
@@ -43,12 +44,22 @@ common_defines = \
 	-DGLADE_BINDIR="\"$(bindir)\""\
 	-DGLADE_LIBDIR="\"$(libdir)\""
 
-BUILT_SOURCES = glade-marshallers.c glade-marshallers.h
+BUILT_SOURCES = \
+	glade-marshallers.c \
+	glade-marshallers.h \
+	gladeui-resources.c \
+	gladeui-resources.h
 
-EXTRA_DIST = glade-marshallers.list gladeui.rc.in icon-naming-spec.c glade-previewer.rc.in
+EXTRA_DIST = \
+	glade-marshallers.list \
+	gladeui.rc.in \
+	icon-naming-spec.c \
+	glade-previewer.rc.in \
+	gladeui-resources.gresource.xml
 
 # The glade core library
 libgladeui_2_la_SOURCES = \
+	gladeui-resources.c \
 	glade-debug.c \
 	glade-object-stub.c \
 	glade-xml-utils.c \
@@ -145,6 +156,7 @@ libgladeuiinclude_HEADERS = \
 	glade-signal-model.h
 
 noinst_HEADERS = \
+	gladeui-resources.h \
 	glade-marshallers.h \
 	glade-design-layout.h \
 	glade-object-stub.h \
@@ -217,3 +229,9 @@ typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
 CLEANFILES += $(gir_DATA) $(typelib_DATA)
 endif
+
+# This could be split in two, but its better to rebuild both, sources and header
+# each time the xml or the actual resources files change, just in case. 
+gladeui-resources.c gladeui-resources.h: gladeui-resources.gresource.xml \
+	$(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies gladeui-resources.gresource.xml)
+

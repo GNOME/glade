@@ -79,6 +79,7 @@ enum
   PROP_READ_ONLY,
   PROP_ADD_ITEM,
   PROP_POINTER_MODE,
+  PROP_TRANSLATION_DOMAIN,
   N_PROPERTIES
 };
 
@@ -87,6 +88,8 @@ static GParamSpec *properties[N_PROPERTIES];
 struct _GladeProjectPrivate
 {
   gchar *path;                  /* The full canonical path of the glade file for this project */
+
+  gchar *translation_domain;    /* The project translation domain */
 
   gint unsaved_number;          /* A unique number for this project if it is untitled */
 
@@ -144,6 +147,7 @@ struct _GladeProjectPrivate
   GtkWidget *resource_fullpath_radio;
   GtkWidget *relative_path_entry;
   GtkWidget *full_path_button;
+  GtkWidget *domain_entry;
 
   /* Store previews, so we can kill them on close */
   GHashTable *previews;
@@ -374,7 +378,9 @@ glade_project_finalize (GObject *object)
 
 static void
 glade_project_get_property (GObject *object,
-                            guint prop_id, GValue *value, GParamSpec *pspec)
+                            guint prop_id,
+                            GValue *value,
+                            GParamSpec *pspec)
 {
   GladeProject *project = GLADE_PROJECT (object);
 
@@ -397,6 +403,28 @@ glade_project_get_property (GObject *object,
       break;
     case PROP_POINTER_MODE:
       g_value_set_enum (value, project->priv->pointer_mode);
+      break;
+    case PROP_TRANSLATION_DOMAIN:
+      g_value_set_string (value, project->priv->translation_domain);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+glade_project_set_property (GObject *object,
+                            guint prop_id,
+                            const GValue *value,
+                            GParamSpec *pspec)
+{
+
+  switch (prop_id)
+    {
+    case PROP_TRANSLATION_DOMAIN:
+      glade_project_set_translation_domain (GLADE_PROJECT (object),
+                                            g_value_get_string (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -799,6 +827,7 @@ glade_project_class_init (GladeProjectClass *klass)
   object_class = G_OBJECT_CLASS (klass);
 
   object_class->get_property = glade_project_get_property;
+  object_class->set_property = glade_project_set_property;
   object_class->finalize = glade_project_finalize;
   object_class->dispose = glade_project_dispose;
 
@@ -1023,6 +1052,13 @@ glade_project_class_init (GladeProjectClass *klass)
                        GLADE_TYPE_POINTER_MODE,
                        GLADE_POINTER_SELECT,
                        G_PARAM_READABLE);
+
+  properties[PROP_TRANSLATION_DOMAIN] =
+    g_param_spec_string ("translation-domain",
+                         _("Translation Domain"),
+                         _("The project translation domain"),
+                         NULL,
+                         G_PARAM_READWRITE);
   
   /* Install all properties */
   g_object_class_install_properties (object_class, N_PROPERTIES, properties);
@@ -1571,6 +1607,7 @@ glade_project_load_internal (GladeProject *project)
   GladeXmlNode *node;
   GladeWidget *widget;
   gboolean has_gtk_dep = FALSE;
+  gchar *domain;
   gint count;
 
   priv->selection = NULL;
@@ -1602,6 +1639,9 @@ glade_project_load_internal (GladeProject *project)
 
   /* Emit "parse-began" signal */
   g_signal_emit (project, glade_project_signals[PARSE_BEGAN], 0);
+
+  if ((domain = glade_xml_get_property_string (root, GLADE_TAG_DOMAIN)))
+    glade_project_set_translation_domain (project, domain);
 
   /* XXX Need to load project->priv->comment ! */
   glade_project_read_comment (project, doc);
@@ -1672,6 +1712,19 @@ glade_project_load_internal (GladeProject *project)
 
 }
 
+static void
+glade_project_update_properties_title (GladeProject *project)
+{
+  gchar *name, *title;
+
+  /* Update prefs dialogs here... */
+  name = glade_project_get_name (project);
+  title = g_strdup_printf (_("%s document properties"), name);
+  gtk_window_set_title (GTK_WINDOW (project->priv->prefs_dialog), title);
+  g_free (title);
+  g_free (name); 
+}
+
 gboolean
 glade_project_load_from_file (GladeProject *project, const gchar *path)
 {
@@ -1683,19 +1736,9 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
   project->priv->path = glade_util_canonical_path (path);
   g_object_notify_by_pspec (G_OBJECT (project), properties[PROP_PATH]);
 
-  retval = glade_project_load_internal (project);
+  if ((retval = glade_project_load_internal (project)))
+    glade_project_update_properties_title (project);
 
-  if (retval)
-    {
-      gchar *name, *title;
-
-      /* Update prefs dialogs here... */
-      name = glade_project_get_name (project);
-      title = g_strdup_printf (_("%s document properties"), name);
-      gtk_window_set_title (GTK_WINDOW (project->priv->prefs_dialog), title);
-      g_free (title);
-      g_free (name);
-    }
   return retval;
 }
 
@@ -1712,7 +1755,6 @@ GladeProject *
 glade_project_load (const gchar *path)
 {
   GladeProject *project;
-  gboolean retval;
 
   g_return_val_if_fail (path != NULL, NULL);
 
@@ -1720,19 +1762,9 @@ glade_project_load (const gchar *path)
 
   project->priv->path = glade_util_canonical_path (path);
 
-  retval = glade_project_load_internal (project);
-
-  if (retval)
+  if (glade_project_load_internal (project))
     {
-      gchar *name, *title;
-
-      /* Update prefs dialogs here... */
-      name = glade_project_get_name (project);
-      title = g_strdup_printf (_("%s document properties"), name);
-      gtk_window_set_title (GTK_WINDOW (project->priv->prefs_dialog), title);
-      g_free (title);
-      g_free (name);
-
+      glade_project_update_properties_title (project);
       return project;
     }
   else
@@ -1878,6 +1910,7 @@ sort_project_dependancies (GObject *a, GObject *b)
 static GladeXmlContext *
 glade_project_write (GladeProject *project)
 {
+  GladeProjectPrivate *priv = project->priv;
   GladeXmlContext *context;
   GladeXmlDoc *doc;
   GladeXmlNode *root;           /* *comment_node; */
@@ -1888,6 +1921,9 @@ glade_project_write (GladeProject *project)
   root = glade_xml_node_new (context, GLADE_XML_TAG_PROJECT);
   glade_xml_doc_set_root (doc, root);
 
+  if (priv->translation_domain)
+    glade_xml_node_set_property_string (root, GLADE_TAG_DOMAIN, priv->translation_domain);
+  
   glade_project_update_comment (project);
   /* comment_node = glade_xml_node_new_comment (context, project->priv->comment); */
 
@@ -1957,18 +1993,11 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
   if (project->priv->path == NULL ||
       strcmp (canonical_path, project->priv->path))
     {
-      gchar *name, *title;
-
       project->priv->path = (g_free (project->priv->path),
                              g_strdup (canonical_path));
       g_object_notify_by_pspec (G_OBJECT (project), properties[PROP_PATH]);
 
-      /* Update prefs dialogs here... */
-      name = glade_project_get_name (project);
-      title = g_strdup_printf (_("%s document properties"), name);
-      gtk_window_set_title (GTK_WINDOW (project->priv->prefs_dialog), title);
-      g_free (title);
-      g_free (name);
+      glade_project_update_properties_title (project);
     }
 
   glade_project_set_readonly (project,
@@ -3828,180 +3857,63 @@ resource_full_path_set (GtkFileChooserButton *button, GladeProject *project)
 static void
 update_prefs_for_resource_path (GladeProject *project)
 {
-  gtk_widget_set_sensitive (project->priv->full_path_button, FALSE);
-  gtk_widget_set_sensitive (project->priv->relative_path_entry, FALSE);
+  GladeProjectPrivate *priv = project->priv;
+  
+  gtk_widget_set_sensitive (priv->full_path_button, FALSE);
+  gtk_widget_set_sensitive (priv->relative_path_entry, FALSE);
 
 
-  g_signal_handlers_block_by_func (project->priv->resource_default_radio,
+  g_signal_handlers_block_by_func (priv->resource_default_radio,
                                    G_CALLBACK (resource_default_toggled),
                                    project);
-  g_signal_handlers_block_by_func (project->priv->resource_relative_radio,
+  g_signal_handlers_block_by_func (priv->resource_relative_radio,
                                    G_CALLBACK (resource_relative_toggled),
                                    project);
-  g_signal_handlers_block_by_func (project->priv->resource_fullpath_radio,
+  g_signal_handlers_block_by_func (priv->resource_fullpath_radio,
                                    G_CALLBACK (resource_fullpath_toggled),
                                    project);
-  g_signal_handlers_block_by_func (project->priv->relative_path_entry,
+  g_signal_handlers_block_by_func (priv->relative_path_entry,
                                    G_CALLBACK (resource_path_activated),
                                    project);
 
   if (project->priv->resource_path == NULL)
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON
-                                  (project->priv->resource_default_radio),
-                                  TRUE);
-  else if (g_path_is_absolute (project->priv->resource_path))
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->resource_default_radio), TRUE);
+  else if (g_path_is_absolute (priv->resource_path))
     {
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON
-                                    (project->priv->resource_fullpath_radio),
-                                    TRUE);
-      gtk_widget_set_sensitive (project->priv->full_path_button, TRUE);
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->resource_fullpath_radio), TRUE);
+      gtk_widget_set_sensitive (priv->full_path_button, TRUE);
     }
   else
     {
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON
-                                    (project->priv->resource_relative_radio),
-                                    TRUE);
-      gtk_widget_set_sensitive (project->priv->relative_path_entry, TRUE);
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->resource_relative_radio), TRUE);
+      gtk_widget_set_sensitive (priv->relative_path_entry, TRUE);
     }
 
-  gtk_entry_set_text (GTK_ENTRY (project->priv->relative_path_entry),
-                      project->priv->resource_path ? project->priv->
-                      resource_path : "");
+  gtk_entry_set_text (GTK_ENTRY (priv->relative_path_entry),
+                      priv->resource_path ? priv->resource_path : "");
 
-  g_signal_handlers_unblock_by_func (project->priv->resource_default_radio,
+  g_signal_handlers_unblock_by_func (priv->resource_default_radio,
                                      G_CALLBACK (resource_default_toggled),
                                      project);
-  g_signal_handlers_unblock_by_func (project->priv->resource_relative_radio,
+  g_signal_handlers_unblock_by_func (priv->resource_relative_radio,
                                      G_CALLBACK (resource_relative_toggled),
                                      project);
-  g_signal_handlers_unblock_by_func (project->priv->resource_fullpath_radio,
+  g_signal_handlers_unblock_by_func (priv->resource_fullpath_radio,
                                      G_CALLBACK (resource_fullpath_toggled),
                                      project);
-  g_signal_handlers_unblock_by_func (project->priv->relative_path_entry,
+  g_signal_handlers_unblock_by_func (priv->relative_path_entry,
                                      G_CALLBACK (resource_path_activated),
                                      project);
 }
 
-
-static GtkWidget *
-glade_project_build_prefs_box (GladeProject *project)
+static void
+glade_project_target_version_box_fill (GladeProject *project, GtkWidget *vbox)
 {
-  GtkWidget *main_box, *button;
-  GtkWidget *vbox, *hbox, *frame;
-  GtkWidget *target_radio, *active_radio;
-  GtkWidget *label, *alignment;
+  GtkWidget *label, *active_radio, *target_radio, *hbox;
   GList *list, *targets;
-  gchar *string;
-  GtkWidget *main_frame, *main_alignment;
-  GtkSizeGroup *sizegroup = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
-
-  main_frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (main_frame), GTK_SHADOW_NONE);
-  main_alignment = gtk_alignment_new (0.5F, 0.5F, 0.8F, 0.8F);
-  main_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-
-  gtk_alignment_set_padding (GTK_ALIGNMENT (main_alignment), 0, 0, 4, 0);
-
-  gtk_container_add (GTK_CONTAINER (main_alignment), main_box);
-  gtk_container_add (GTK_CONTAINER (main_frame), main_alignment);
-
-  /* Resource path */
-  string =
-      g_strdup_printf ("<b>%s</b>", _("Image resources are loaded locally:"));
-  frame = gtk_frame_new (NULL);
-  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-  alignment = gtk_alignment_new (0.5F, 0.5F, 0.8F, 0.8F);
-  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 8, 0, 12, 0);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
-  label = gtk_label_new (string);
-  g_free (string);
-  gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
-
-  gtk_box_pack_start (GTK_BOX (main_box), frame, TRUE, TRUE, 2);
-  gtk_frame_set_label_widget (GTK_FRAME (frame), label);
-  gtk_container_add (GTK_CONTAINER (frame), alignment);
-  gtk_container_add (GTK_CONTAINER (alignment), vbox);
-
-  /* Project directory... */
-  project->priv->resource_default_radio =
-      gtk_radio_button_new_with_label (NULL, _("From the project directory"));
-  gtk_box_pack_start (GTK_BOX (vbox), project->priv->resource_default_radio,
-                      FALSE, FALSE, 0);
-  gtk_size_group_add_widget (sizegroup, project->priv->resource_default_radio);
-
-  /* Project relative directory... */
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-  project->priv->resource_relative_radio =
-      gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON
-                                                   (project->priv->
-                                                    resource_default_radio),
-                                                   _("From a project relative directory"));
-
-  gtk_box_pack_start (GTK_BOX (hbox), project->priv->resource_relative_radio,
-                      TRUE, TRUE, 0);
-  project->priv->relative_path_entry = gtk_entry_new ();
-  gtk_box_pack_start (GTK_BOX (hbox), project->priv->relative_path_entry, FALSE,
-                      TRUE, 2);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
-  gtk_size_group_add_widget (sizegroup, hbox);
-
-
-  /* fullpath directory... */
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-  project->priv->resource_fullpath_radio =
-      gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON
-                                                   (project->priv->resource_default_radio),
-                                                   _("From this directory"));
-  gtk_box_pack_start (GTK_BOX (hbox), project->priv->resource_fullpath_radio,
-                      TRUE, TRUE, 0);
-
-  project->priv->full_path_button =
-      gtk_file_chooser_button_new (_("Choose a path to load image resources"),
-                                   GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
-  gtk_box_pack_start (GTK_BOX (hbox), project->priv->full_path_button, FALSE,
-                      TRUE, 2);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
-  gtk_size_group_add_widget (sizegroup, hbox);
-
-  /* Pass ownership to the widgets in the group */
-  g_object_unref (sizegroup);
-
-  update_prefs_for_resource_path (project);
-
-  g_signal_connect (G_OBJECT (project->priv->resource_default_radio), "toggled",
-                    G_CALLBACK (resource_default_toggled), project);
-  g_signal_connect (G_OBJECT (project->priv->resource_relative_radio),
-                    "toggled", G_CALLBACK (resource_relative_toggled), project);
-  g_signal_connect (G_OBJECT (project->priv->resource_fullpath_radio),
-                    "toggled", G_CALLBACK (resource_fullpath_toggled), project);
-
-  g_signal_connect (G_OBJECT (project->priv->relative_path_entry), "activate",
-                    G_CALLBACK (resource_path_activated), project);
-  g_signal_connect (G_OBJECT (project->priv->full_path_button), "file-set",
-                    G_CALLBACK (resource_full_path_set), project);
-
-  /* Target versions */
-  string = g_strdup_printf ("<b>%s</b>", _("Toolkit versions required:"));
-  frame = gtk_frame_new (NULL);
-  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-  alignment = gtk_alignment_new (0.5F, 0.5F, 1.0F, 1.0F);
-
-  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 8, 0, 12, 0);
-
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
-
-  label = gtk_label_new (string);
-  g_free (string);
-  gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
-
-  gtk_frame_set_label_widget (GTK_FRAME (frame), label);
-  gtk_container_add (GTK_CONTAINER (alignment), vbox);
-  gtk_container_add (GTK_CONTAINER (frame), alignment);
-
-  gtk_box_pack_start (GTK_BOX (main_box), frame, TRUE, TRUE, 6);
 
   /* Add stuff to vbox */
-  for (list = glade_app_get_catalogs (); list; list = list->next)
+  for (list = glade_app_get_catalogs (); list; list = g_list_next (list))
     {
       GladeCatalog *catalog = list->data;
       gint minor, major;
@@ -4021,11 +3933,11 @@ glade_project_build_prefs_box (GladeProject *project)
         label = gtk_label_new (glade_catalog_get_name (catalog));
       gtk_misc_set_alignment (GTK_MISC (label), 0.0F, 0.5F);
 
+      gtk_widget_show (label);
       gtk_box_pack_start (GTK_BOX (vbox), label, TRUE, TRUE, 2);
       hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 
-      active_radio = NULL;
-      target_radio = NULL;
+      active_radio = target_radio = NULL;
 
       for (targets = glade_catalog_get_targets (catalog);
            targets; targets = targets->next)
@@ -4050,6 +3962,7 @@ glade_project_build_prefs_box (GladeProject *project)
           g_object_set_data (G_OBJECT (target_radio), "catalog",
                              (gchar *) glade_catalog_get_name (catalog));
 
+          gtk_widget_show (target_radio);
           gtk_box_pack_end (GTK_BOX (hbox), target_radio, TRUE, TRUE, 2);
 
           if (major == version->major && minor == version->minor)
@@ -4068,69 +3981,72 @@ glade_project_build_prefs_box (GladeProject *project)
       else
         g_warning ("Corrupt catalog versions");
 
+      gtk_widget_show (hbox);
       gtk_box_pack_start (GTK_BOX (vbox), hbox, TRUE, TRUE, 2);
     }
-
-  /* Run verify */
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
-  button = gtk_button_new_from_stock (GTK_STOCK_EXECUTE);
-  g_signal_connect (G_OBJECT (button), "clicked",
-                    G_CALLBACK (verify_clicked), project);
-
-  label = gtk_label_new (_("Verify versions and deprecations:"));
-
-  gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 4);
-  gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, TRUE, 4);
-
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 4);
-
-  gtk_widget_show_all (main_frame);
-
-  return main_frame;
 }
+
+static void
+on_domain_entry_activate (GtkWidget *entry, GladeProject *project)
+{
+  glade_project_set_translation_domain (project, gtk_entry_get_text (GTK_ENTRY (entry)));
+}
+
+#define GET_OBJECT(b,c,o) c(gtk_builder_get_object(b,o));g_warn_if_fail(gtk_builder_get_object(b,o))
 
 static GtkWidget *
 glade_project_build_prefs_dialog (GladeProject *project)
 {
-  GtkWidget *widget, *dialog;
-  gchar *title, *name;
+  GladeProjectPrivate *priv = project->priv;  
+  GtkWidget *verify_button, *toolkit_box;
+  GError *error = NULL;
+  GtkBuilder *builder;
+  GtkWidget *dialog;
 
-  name = glade_project_get_name (project);
-  title = g_strdup_printf (_("%s document properties"), name);
+  /* Build UI */
+  builder = gtk_builder_new ();
+  if (gtk_builder_add_from_resource (builder, "/org/gnome/gladeui/glade-project-properties.ui", &error) == 0)
+    {
+      g_warning ("gtk_builder_add_from_resource() failed %s", (error) ? error->message : "");
+      return NULL;
+    }
 
-  dialog = gtk_dialog_new_with_buttons (title,
-                                        GTK_WINDOW (glade_app_get_window ()),
-                                        GTK_DIALOG_DESTROY_WITH_PARENT,
-                                        GTK_STOCK_CLOSE,
-                                        GTK_RESPONSE_ACCEPT, NULL);
-  g_free (title);
-  g_free (name);
+  /* Fetch Pointers */
+  dialog = GET_OBJECT (builder, GTK_WIDGET, "prefs_dialog");
+  g_object_ref_sink (dialog);
+  priv->resource_default_radio = GET_OBJECT (builder, GTK_WIDGET, "resource_default_radio");
+  priv->resource_relative_radio = GET_OBJECT (builder, GTK_WIDGET, "resource_relative_radio");
+  priv->resource_fullpath_radio = GET_OBJECT (builder, GTK_WIDGET, "resource_fullpath_radio");
+  priv->relative_path_entry = GET_OBJECT (builder, GTK_WIDGET, "relative_path_entry");
+  priv->full_path_button = GET_OBJECT (builder, GTK_WIDGET, "full_path_button");
+  priv->domain_entry = GET_OBJECT (builder, GTK_WIDGET, "domain_entry");
 
-  widget = glade_project_build_prefs_box (project);
-  gtk_box_pack_end (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
-                    widget, TRUE, TRUE, 2);
+  verify_button = GET_OBJECT (builder, GTK_WIDGET, "verify_button");
+  toolkit_box = GET_OBJECT (builder, GTK_WIDGET, "toolkit_box");
+  glade_project_target_version_box_fill (project, toolkit_box);
 
-  gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);
-  gtk_box_set_spacing (GTK_BOX
-                       (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), 2);
+  update_prefs_for_resource_path (project);
 
-  /* HIG spacings */
-  gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);
-  gtk_box_set_spacing (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), 2); /* 2 * 5 + 2 = 12 */
-  gtk_container_set_border_width (GTK_CONTAINER
-                                  (gtk_dialog_get_action_area
-                                   (GTK_DIALOG (dialog))), 5);
-  gtk_box_set_spacing (GTK_BOX
-                       (gtk_dialog_get_action_area (GTK_DIALOG (dialog))), 6);
+  g_signal_connect (priv->resource_default_radio, "toggled",
+                    G_CALLBACK (resource_default_toggled), project);
+  g_signal_connect (priv->resource_relative_radio, "toggled",
+                    G_CALLBACK (resource_relative_toggled), project);
+  g_signal_connect (priv->resource_fullpath_radio, "toggled",
+                    G_CALLBACK (resource_fullpath_toggled), project);
 
+  g_signal_connect (priv->relative_path_entry, "activate",
+                    G_CALLBACK (resource_path_activated), project);
+  g_signal_connect (priv->full_path_button, "file-set",
+                    G_CALLBACK (resource_full_path_set), project);
 
-  /* Were explicitly destroying it anyway */
-  g_signal_connect (G_OBJECT (dialog), "delete-event",
-                    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
+  g_signal_connect (verify_button, "clicked",
+                    G_CALLBACK (verify_clicked), project);
 
-  /* Only one action, used to "close" the dialog */
-  g_signal_connect (G_OBJECT (dialog), "response",
-                    G_CALLBACK (gtk_widget_hide), NULL);
+  g_signal_connect (priv->domain_entry, "activate",
+                    G_CALLBACK (on_domain_entry_activate), project);
+
+  gtk_builder_connect_signals (builder, NULL);
+  g_object_unref (builder);
 
   return dialog;
 }
@@ -4198,6 +4114,47 @@ glade_project_toplevels (GladeProject *project)
   g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
 
   return project->priv->tree;
+}
+
+/**
+ * glade_project_set_translation_domain:
+ * @project: a #GladeProject
+ * @domain: the translation domain
+ *
+ * Set the project translation domain.
+ */
+void
+glade_project_set_translation_domain (GladeProject *project, const gchar *domain)
+{
+  GladeProjectPrivate *priv;
+
+  g_return_if_fail (GLADE_IS_PROJECT (project));
+
+  priv = project->priv;
+
+  if (g_strcmp0 (priv->translation_domain, domain))
+    {
+      g_free (priv->translation_domain);
+      priv->translation_domain = g_strdup (domain);
+
+      gtk_entry_set_text (GTK_ENTRY (priv->domain_entry), domain);
+      g_object_notify_by_pspec (G_OBJECT (project),
+                                properties[PROP_TRANSLATION_DOMAIN]);
+    }
+}
+
+/**
+ * glade_project_get_translation_domain:
+ * @project: a #GladeProject
+ *
+ * Returns: the translation domain
+ */
+const gchar *
+glade_project_get_translation_domain (GladeProject *project)
+{
+  g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
+
+  return project->priv->translation_domain;
 }
 
 /* GtkTreeModel implementation */

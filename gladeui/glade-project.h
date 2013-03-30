@@ -214,6 +214,10 @@ gchar              *glade_project_display_dependencies (GladeProject       *proj
 
 GList              *glade_project_toplevels            (GladeProject       *project);
 
+void                glade_project_set_translation_domain (GladeProject *project,
+                                                          const gchar *domain);
+const gchar        *glade_project_get_translation_domain (GladeProject *project);
+
 /* Verifications */
 gchar              *glade_project_verify_widget_adaptor(GladeProject       *project,
                                                         GladeWidgetAdaptor *adaptor,
