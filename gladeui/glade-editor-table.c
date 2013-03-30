@@ -301,11 +301,21 @@ property_class_comp (gconstpointer a, gconstpointer b)
 {
   GladePropertyClass *ca = (GladePropertyClass *)a, *cb = (GladePropertyClass *)b;
   GParamSpec *pa, *pb;
+  const gchar *name_a, *name_b;
 
   pa = glade_property_class_get_pspec (ca);
   pb = glade_property_class_get_pspec (cb);
 
-  if (pa->owner_type == pb->owner_type)
+  name_a = glade_property_class_id (ca);
+  name_b = glade_property_class_id (cb);
+
+  /* Special case for the 'name' property, it *always* comes first. */
+  if (strcmp (name_a, "name") == 0)
+    return -1;
+  else if (strcmp (name_b, "name") == 0)
+    return 1;
+  /* Properties of the same class are sorted in the same level */
+  else if (pa->owner_type == pb->owner_type)
     {
       gdouble result = glade_property_class_weight (ca) - glade_property_class_weight (cb);
       /* Avoid cast to int */
@@ -316,6 +326,7 @@ property_class_comp (gconstpointer a, gconstpointer b)
       else
         return 0;
     }
+  /* Group properties by thier class hierarchy */
   else
     {
       if (g_type_is_a (pa->owner_type, pb->owner_type))
@@ -380,7 +391,6 @@ append_item (GladeEditorTable * table,
   return property;
 }
 
-
 static void
 append_items (GladeEditorTable * table,
               GladeWidgetAdaptor * adaptor, GladeEditorPageType type)
@@ -405,10 +415,10 @@ append_items (GladeEditorTable * table,
 static void
 append_name_field (GladeEditorTable * table)
 {
-  gchar *text = _("The Object's name");
+  gchar *text = _("The object's unique identifier");
 
-  /* Name */
-  table->priv->name_label = gtk_label_new (_("Name:"));
+  /* translators: The unique identifier of an object in the project */
+  table->priv->name_label = gtk_label_new (_("ID:"));
   gtk_misc_set_alignment (GTK_MISC (table->priv->name_label), 0.0, 0.5);
   gtk_widget_show (table->priv->name_label);
   gtk_widget_set_no_show_all (table->priv->name_label, TRUE);
