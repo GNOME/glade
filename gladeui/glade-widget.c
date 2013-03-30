@@ -159,6 +159,7 @@ struct _GladeWidgetPrivate {
   guint              visible : 1; /* Local copy of widget visibility, we need to keep track of this
 				   * since the objects copy may be invalid due to a rebuild.
 				   */
+  guint              rebuilding : 1;
 };
 
 enum
@@ -2343,6 +2344,13 @@ glade_widget_rebuild (GladeWidget * gwidget)
 
   g_return_if_fail (GLADE_IS_WIDGET (gwidget));
 
+  /* Mark the widget as currently rebuilding,
+   *
+   * We avoid rewriting and losing packing properties when
+   * reparenting in the process of rebuilding a widget instance
+   */
+  gwidget->priv->rebuilding = TRUE;
+
   adaptor = gwidget->priv->adaptor;
 
   if (gwidget->priv->parent &&
@@ -2485,6 +2493,9 @@ glade_widget_rebuild (GladeWidget * gwidget)
     glade_widget_show (gwidget);
 
   g_object_unref (gwidget);
+
+  gwidget->priv->rebuilding = FALSE;
+
 }
 
 /**
@@ -3542,6 +3553,12 @@ glade_widget_set_packing_properties (GladeWidget * widget,
 
   g_return_if_fail (GLADE_IS_WIDGET (widget));
   g_return_if_fail (GLADE_IS_WIDGET (container));
+
+  /* Avoid rewriting and losing packing properties when
+   * reparenting in the process of rebuilding a widget instance.
+   */
+  if (widget->priv->rebuilding)
+    return;
 
   g_list_foreach (widget->priv->packing_properties, (GFunc) g_object_unref, NULL);
   g_list_free (widget->priv->packing_properties);
