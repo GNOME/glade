@@ -1164,6 +1164,7 @@ glade_property_write (GladeProperty * property,
 {
   GladeXmlNode *prop_node;
   gchar *name, *value;
+  gboolean save_always;
 
   g_return_if_fail (GLADE_IS_PROPERTY (property));
   g_return_if_fail (node != NULL);
@@ -1173,11 +1174,14 @@ glade_property_write (GladeProperty * property,
         glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET)))
     return;
 
+  /* There can be a couple of reasons to forcefully save a property */
+  save_always = (glade_property_class_save_always (property->priv->klass) || property->priv->save_always);
+  save_always = save_always || (glade_property_class_optional (property->priv->klass) && property->priv->enabled);
+
   /* Skip properties that are default by original pspec default
    * (excepting those that specified otherwise).
    */
-  if (!(glade_property_class_save_always (property->priv->klass) || property->priv->save_always) &&
-      glade_property_original_default (property))
+  if (!save_always && glade_property_original_default (property))
     return;
 
   /* Escape our string and save with underscores */
