@@ -76,7 +76,6 @@ glade_button_editor_load (GladeEditable * editable, GladeWidget * widget)
     glade_editor_property_load_by_widget (GLADE_EDITOR_PROPERTY (l->data),
                                           widget);
 
-
   if (widget)
     {
       glade_widget_property_get (widget, "use-action-appearance",
@@ -515,6 +514,14 @@ glade_button_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
   /* Custom radio button on the bottom */
   gtk_box_pack_start (GTK_BOX (button_editor), button_editor->custom_radio,
                       FALSE, FALSE, 0);
+
+  /* Don't show the button customization for menu buttons */
+  if (g_type_is_a (glade_widget_adaptor_get_object_type (adaptor), GTK_TYPE_MENU_BUTTON))
+    {
+      gtk_widget_set_no_show_all (button_editor->standard_radio, TRUE);
+      gtk_widget_set_no_show_all (button_editor->custom_radio, TRUE);
+      gtk_widget_set_no_show_all (button_editor->standard_frame, TRUE);
+    }
 
   gtk_widget_show_all (GTK_WIDGET (button_editor));
 

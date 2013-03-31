@@ -27,6 +27,8 @@
 	<signal id="damage-event" since="2.14"/>
 	<signal id="state-flags-changed" since="3.0"/>
 	<signal id="style-updated" since="3.0"/>
+	<signal id="style-set" deprecated="True"/>
+	<signal id="state-changed" deprecated="True"/>
       </signals>
 
       <actions>
@@ -51,6 +53,7 @@
       </actions>
 
       <properties>
+	<property id="opacity" since="3.8" />
 	<property id="tooltip-text" since="2.12" weight="4.2" translatable="True" multiline="True" />
         <property id="can-focus" common="True" save-always="True"/>
 	<property id="has-default" common="True" ignore="True"/>
@@ -380,6 +383,7 @@ embedded in another object</_tooltip>
 	    <value-type>GtkAccelGroup</value-type>
 	  </parameter-spec>
 	</property>
+	<property id="attached-to" since="3.4" ignore="True"/>
 	<property id="opacity" since="2.12" ignore="True"/>
 	<property id="startup-id" since="2.12"/>
 	<property id="deletable" since="2.10"/>
@@ -500,6 +504,7 @@ embedded in another object</_tooltip>
 
       <signals>
 	<signal id="move-selected" since="2.10"/>
+	<signal id="insert" since="3.2"/>
       </signals>
 
       <packing-properties>
@@ -621,6 +626,7 @@ embedded in another object</_tooltip>
       <child-set-property-function>glade_gtk_toolbar_set_child_property</child-set-property-function>
       <child-get-property-function>glade_gtk_toolbar_get_child_property</child-get-property-function>
       <action-activate-function>glade_gtk_toolbar_action_activate</action-activate-function>
+      <write-widget-function>glade_gtk_toolbar_write_widget</write-widget-function>
 
       <actions>
         <action id="launch_editor" _name="Edit&#8230;" stock="gtk-edit" important="True"/>
@@ -641,7 +647,24 @@ embedded in another object</_tooltip>
 	    <value id="GTK_TOOLBAR_BOTH_HORIZ" _name="Text beside icons"/>
 	  </displayable-values>
 	</property>
-      	<property id="icon-size" since="2.10" optional="True" optional-default="False" weight="0.5"/>
+	<!-- We have to save/load icon-size as int, and fake the enum -->
+	<property id="icon-size" since="2.10" optional="True" optional-default="False" weight="0.5"
+		  default="GTK_ICON_SIZE_LARGE_TOOLBAR">
+	  <parameter-spec>
+	    <type>GParamEnum</type>
+	    <value-type>GtkIconSize</value-type>
+	  </parameter-spec>
+	  <_tooltip>A symbolic icon size for the stock icon</_tooltip>
+  	  <displayable-values>
+	    <value id="GTK_ICON_SIZE_INVALID" _name="Invalid"/>
+	    <value id="GTK_ICON_SIZE_MENU" _name="Menu"/>
+	    <value id="GTK_ICON_SIZE_SMALL_TOOLBAR" _name="Small Toolbar"/>
+	    <value id="GTK_ICON_SIZE_LARGE_TOOLBAR" _name="Large Toolbar"/>
+	    <value id="GTK_ICON_SIZE_BUTTON" _name="Button"/>
+	    <value id="GTK_ICON_SIZE_DND" _name="Drag &amp; Drop"/>
+	    <value id="GTK_ICON_SIZE_DIALOG" _name="Dialog"/>
+	  </displayable-values>
+	</property>
       </properties>
 
       <packing-properties>
@@ -679,17 +702,7 @@ embedded in another object</_tooltip>
       <properties>
       	<property id="icon-size-set" disabled="True"/>
       	<property id="toolbar-style" save-always="True" optional="True" optional-default="False" weight="0.4"/>
-      	<property id="icon-size" optional="True" optional-default="False" weight="0.5">
-  	  <displayable-values>
-	    <value id="GTK_ICON_SIZE_INVALID" _name="Invalid"/>
-	    <value id="GTK_ICON_SIZE_MENU" _name="Menu"/>
-	    <value id="GTK_ICON_SIZE_SMALL_TOOLBAR" _name="Small Toolbar"/>
-	    <value id="GTK_ICON_SIZE_LARGE_TOOLBAR" _name="Large Toolbar"/>
-	    <value id="GTK_ICON_SIZE_BUTTON" _name="Button"/>
-	    <value id="GTK_ICON_SIZE_DND" _name="Drag &amp; Drop"/>
-	    <value id="GTK_ICON_SIZE_DIALOG" _name="Dialog"/>
-	  </displayable-values>
-	</property>
+      	<property id="icon-size" optional="True" optional-default="False" weight="0.5"/>
       </properties>
 
       <packing-properties>
@@ -927,6 +940,37 @@ embedded in another object</_tooltip>
       </signals>
 
       <properties>
+	<property id="attributes" since="3.6" disabled="True"/>
+	<property id="input-purpose" since="3.6">
+  	  <displayable-values>
+	    <value id="GTK_INPUT_PURPOSE_FREE_FORM" _name="Free Form"/>
+	    <value id="GTK_INPUT_PURPOSE_ALPHA" _name="Alpha"/>
+	    <value id="GTK_INPUT_PURPOSE_DIGITS" _name="Digits"/>
+	    <value id="GTK_INPUT_PURPOSE_NUMBER" _name="Number"/>
+	    <value id="GTK_INPUT_PURPOSE_PHONE" _name="Phone"/>
+	    <value id="GTK_INPUT_PURPOSE_URL" _name="URL"/>
+	    <value id="GTK_INPUT_PURPOSE_EMAIL" _name="Email"/>
+	    <value id="GTK_INPUT_PURPOSE_NAME" _name="Name"/>
+	    <value id="GTK_INPUT_PURPOSE_PASSWORD" _name="Password"/>
+	    <value id="GTK_INPUT_PURPOSE_PIN" _name="Pin Code"/>
+  	  </displayable-values>
+	</property>
+	<property id="input-hints" since="3.6">
+  	  <displayable-values>
+	    <value id="GTK_INPUT_HINT_NONE" _name="None"/>
+	    <value id="GTK_INPUT_HINT_SPELLCHECK" _name="Spellcheck"/>
+	    <value id="GTK_INPUT_HINT_NO_SPELLCHECK" _name="No Spellcheck"/>
+	    <value id="GTK_INPUT_HINT_WORD_COMPLETION" _name="Word Completion"/>
+	    <value id="GTK_INPUT_HINT_LOWERCASE" _name="Lowercase"/>
+	    <value id="GTK_INPUT_HINT_UPPERCASE_CHARS" _name="Uppercase Chars"/>
+	    <value id="GTK_INPUT_HINT_UPPERCASE_WORDS" _name="Uppercase Words"/>
+	    <value id="GTK_INPUT_HINT_UPPERCASE_SENTENCES" _name="Uppercase Sentences"/>
+	    <value id="GTK_INPUT_HINT_INHIBIT_OSK" _name="Inhibit Onscreen Keyboard"/>
+  	  </displayable-values>
+	</property>
+
+	<property id="attributes" since="3.6" disabled="True"/>
+
 	<property id="text" translatable="True" custom-layout="True"/>
         <property id="buffer" create-type="GtkEntryBuffer" since="2.18" custom-layout="True"/>
 
@@ -1005,6 +1049,8 @@ embedded in another object</_tooltip>
 
       <properties>
       	<property id="im-module" disabled="True"/>
+	<property id="input-purpose" since="3.6"/>
+	<property id="input-hints" since="3.6"/>
       	<property id="wrap-mode">
   	  <displayable-values>
 	    <value id="GTK_WRAP_NONE" _name="None"/>
@@ -1024,6 +1070,7 @@ embedded in another object</_tooltip>
       <write-widget-function>glade_gtk_button_write_widget</write-widget-function>
 
       <properties>
+	<property id="always-show-image" since="3.6"/>
 	<property id="receives-default" save-always="True"/>
 	<property id="image" parentless-widget="True" create-type="GtkImage" custom-layout="True"/>
 	<property id="use-stock" visible="False" custom-layout="True"/>
@@ -1103,6 +1150,10 @@ embedded in another object</_tooltip>
       <signals>
 	<signal id="wrapped" since="2.10"/>
 	<signal id="preedit-changed" since="2.20"/>
+	<signal id="pressed" deprecated="True"/>
+	<signal id="released" deprecated="True"/>
+	<signal id="enter" deprecated="True"/>
+	<signal id="leave" deprecated="True"/>
       </signals>
 
       <properties>
@@ -1215,7 +1266,7 @@ embedded in another object</_tooltip>
       <set-property-function>glade_gtk_color_button_set_property</set-property-function>
       <properties>
 	<property id="title" translatable="True"/>
-	<property id="color" default="Black" optional="True" optional-default="False"/>
+	<property id="color" default="Black" deprecated="True" optional="True" optional-default="False"/>
 	<property id="alpha" optional="True" optional-default="False"/>
 	<property id="rgba" default="Black" optional="True" optional-default="False" since="3.0"/>
 
@@ -1261,6 +1312,7 @@ embedded in another object</_tooltip>
       </internal-children>
       
       <signals>
+	<signal id="format-entry-text" since="3.4"/>
 	<signal id="move-action" since="2.12"/>
 	<signal id="popdown" since="2.12"/>
 	<signal id="popup" since="2.12"/>
@@ -1268,6 +1320,7 @@ embedded in another object</_tooltip>
       <properties>
         <property id="model" create-type="GtkListStore"/>
         <property id="popup-shown" since="2.10"/>
+        <property id="arrow-scaling" since="3.2"/>
         <property id="tearoff-title" since="2.10"/>
         <property id="active" ignore="True"/>
         <property id="active-id" since="3.0"/>
@@ -1334,6 +1387,7 @@ embedded in another object</_tooltip>
 	<property id="id-column" disabled="True"/>
 	<property id="active-id" disabled="True"/>
 	<property id="cell-area" disabled="True"/>
+	<property id="show-default-item" since="3.2"/>
       </properties>
     </glade-widget-class>
 
@@ -1359,6 +1413,7 @@ embedded in another object</_tooltip>
 
     <glade-widget-class name="GtkLevelBar" generic-name="levelbar" _title="Level Bar" since="3.6">
       <properties>
+	<property id="inverted" since="3.8"/>
 	<property id="mode">
   	  <displayable-values>
 	    <value id="GTK_LEVEL_BAR_MODE_CONTINUOUS" _name="Continuous"/>
@@ -1383,6 +1438,7 @@ embedded in another object</_tooltip>
 	<property id="stock" stock-icon="True" custom-layout="True" default="gtk-missing-image"/>
 	<property id="icon-name" _name="Icon Name" themed-icon="True" custom-layout="True" />
 	<property id="pixbuf" _name="File Name" custom-layout="True"/>
+	<property id="resource" _name="Resource Name" custom-layout="True" ignore="True" since="3.8"/>
 	<property id="pixel-size" custom-layout="True"/>
 	<!-- We have to save/load icon-size as int, and fake the enum -->
 	<property id="icon-size" _name="Icon Size" custom-layout="True" 
@@ -1575,6 +1631,7 @@ embedded in another object</_tooltip>
       <properties>
 	<property id="group" since="2.12"/>
 	<property id="group-name" since="2.24"/>
+	<property id="initial-gap" since="3.2"/>
 	<property id="page" save="False">
 	  <_tooltip>Set the current page (strictly for editing purposes)</_tooltip>
 	</property>
@@ -1780,6 +1837,17 @@ embedded in another object</_tooltip>
 	</property>
       </properties>
     </glade-widget-class>
+
+    <!-- Declare menu button here because the arrow-type values already exist -->
+    <glade-widget-class name="GtkMenuButton" generic-name="menubutton" _title="Menu Button" since="3.6">
+      <properties>
+      	<property id="label" default=""/>
+        <property id="custom-child" default="True"/>
+        <property id="menu-model" disabled="True"/>
+        <property id="popup" ignore="True"/>
+        <property id="align-widget" ignore="True"/>
+      </properties>
+    </glade-widget-class>
     
     <glade-widget-class name="GtkLayout" generic-name="layout" _title="Layout" use-placeholders="False">
       <create-widget-function>glade_gtk_create_fixed_widget</create-widget-function>
@@ -1831,6 +1899,7 @@ embedded in another object</_tooltip>
       <properties>
 	<property id="label" disabled="True"/>
 	<property id="label-widget" disabled="True"/>
+        <property id="resize-toplevel" since="3.2"/>
 
 	<!-- Atk activate property -->
 	<property id="atk-activate" _name="Activate" ignore="True" atk-property="True" save="False" 
@@ -1847,6 +1916,7 @@ embedded in another object</_tooltip>
     
     <glade-widget-class name="GtkScrolledWindow" generic-name="scrolledwindow" _title="Scrolled Window">
       <properties>
+        <property id="kinetic-scrolling" since="3.4"/>
         <property id="shadow-type" default="GTK_SHADOW_IN"/>
         <property id="min-content-width" since="3.0"/>
         <property id="min-content-height" since="3.0"/>
@@ -2023,8 +2093,8 @@ embedded in another object</_tooltip>
       </properties>
       <packing-properties>
 	<property id="title" translatable="True" since="2.10"/>
-	<property id="header-image" since="2.10"/>
-	<property id="sidebar-image" since="2.10"/>
+	<property id="header-image" since="2.10" deprecated="True"/>
+	<property id="sidebar-image" since="2.10" deprecated="True"/>
         <property id="complete" ignore="True" _name="Initially Complete">
 	  <_tooltip>Whether this page will initially be marked as complete regardless of user input.</_tooltip>
 	</property>
@@ -2273,7 +2343,7 @@ embedded in another object</_tooltip>
 			toplevel="True"/>
     <glade-widget-class name="GtkTreeSelection" generic-name="treeselection" _title="Tree Selection">
       <properties>
-        <property id="mode">
+        <property id="mode" since="3.2">
   	  <displayable-values>
 	    <value id="GTK_SELECTION_NONE" _name="None"/>
 	    <value id="GTK_SELECTION_SINGLE" _name="Single"/>
@@ -2305,6 +2375,7 @@ embedded in another object</_tooltip>
       </internal-children>
 
       <properties>
+        <property id="activate-on-single-click" since="3.8"/>
         <property id="level-indentation" since="2.12"/>
         <property id="show-expanders" since="2.12"/>
         <property id="enable-grid-lines" ignore="True">
@@ -2387,6 +2458,7 @@ embedded in another object</_tooltip>
       </actions>
 
       <properties>
+        <property id="activate-on-single-click" since="3.8"/>
         <property id="item-orientation" since="2.22"/>
         <property id="item-padding" since="2.18"/>
         <property id="text-column" disabled="True"/>
@@ -2440,8 +2512,9 @@ embedded in another object</_tooltip>
 	  </parameter-spec>
 	</property>
 
-        <property id="cell-background-gdk" common="True" save="False" custom-layout="True"/>
-        <property id="attr-cell-background-gdk" _name="Cell Background Color column" save="False" default="-1" custom-layout="True">
+        <property id="cell-background-gdk" common="True" save="False" custom-layout="True" deprecated="True"/>
+        <property id="attr-cell-background-gdk" _name="Cell Background Color column" save="False" default="-1"
+		   deprecated="True" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2636,7 +2709,6 @@ embedded in another object</_tooltip>
 	  </parameter-spec>
 	</property>
 
-
         <property id="background" save="False" custom-layout="True"/>
         <property id="attr-background" _name="Background Color Name column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
@@ -2651,8 +2723,9 @@ embedded in another object</_tooltip>
 	  </parameter-spec>
 	</property>
 
-        <property id="background-gdk" save="False" custom-layout="True"/>
-        <property id="attr-background-gdk" _name="Background Color column" save="False" default="-1" custom-layout="True">
+        <property id="background-gdk" save="False" custom-layout="True" deprecated="True"/>
+        <property id="attr-background-gdk" _name="Background Color column" save="False" default="-1"
+		  deprecated="True" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -2751,9 +2824,9 @@ embedded in another object</_tooltip>
 	  </parameter-spec>
 	</property>
 
-        <property id="foreground-gdk" save="False" custom-layout="True"/>
+        <property id="foreground-gdk" save="False" custom-layout="True" deprecated="True"/>
         <property id="attr-foreground-gdk" _name="Foreground Color column" save="False" default="-1" 
-		  custom-layout="True">
+		   deprecated="True" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>-1</min>
@@ -3081,6 +3154,21 @@ embedded in another object</_tooltip>
 	    <type>GParamBoolean</type>
 	  </parameter-spec>
 	</property>
+
+        <property id="placeholder-text" save="False" custom-layout="True" since="3.6"/>
+        <property id="attr-placeholder-text" _name="Placeholder text" 
+		  save="False" default="-1" custom-layout="True" since="3.6">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-placeholder-text" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
       </properties>
     </glade-widget-class>
 
@@ -3388,7 +3476,13 @@ embedded in another object</_tooltip>
 	  </parameter-spec>
 	</property>
 
-        <property id="stock-size" save="False" custom-layout="True"/>
+	<!-- We have to save/load stock-size as int, and fake the enum -->
+        <property id="stock-size" save="False" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamEnum</type>
+	    <value-type>GtkIconSize</value-type>
+	  </parameter-spec>
+	</property>
         <property id="attr-stock-size" _name="Stock Size column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
@@ -3664,9 +3758,12 @@ embedded in another object</_tooltip>
 
     <glade-widget-class name="GtkTextTag" generic-name="texttag" _title="Text Tag" >
       <properties>
-	<property id="background-gdk" default="White" optional="True" optional-default="False"/>
-	<property id="foreground-gdk" default="Black" optional="True" optional-default="False"/>
-	<property id="paragraph-background-gdk" default="White" optional="True" optional-default="False"/>
+	<property id="background-gdk" default="White" deprecated="True" optional="True" optional-default="False"/>
+	<property id="foreground-gdk" default="Black" deprecated="True" optional="True" optional-default="False"/>
+	<property id="paragraph-background-gdk" default="White" deprecated="True" optional="True" optional-default="False"/>
+	<property id="background-rgba" default="White" since="3.2" optional="True" optional-default="False"/>
+	<property id="foreground-rgba" default="Black" since="3.2" optional="True" optional-default="False"/>
+	<property id="paragraph-background-rgba" default="White" since="3.2" optional="True" optional-default="False"/>
 	<property id="language" optional="True" optional-default="False"/>
 
 	<!-- Disabled state parameters -->
@@ -3830,6 +3927,7 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkToggleButton"/>
     <glade-widget-class-ref name="GtkCheckButton"/>
     <glade-widget-class-ref name="GtkRadioButton"/>
+    <glade-widget-class-ref name="GtkMenuButton"/>
     <glade-widget-class-ref name="GtkSwitch"/>
 
     <glade-widget-class-ref name="GtkEntry"/>

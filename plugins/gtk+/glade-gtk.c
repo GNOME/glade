@@ -3323,6 +3323,9 @@ glade_gtk_entry_set_property (GladeWidgetAdaptor * adaptor,
             glade_widget_property_set_sensitive (gwidget, "primary-icon-pixbuf",
                                                  TRUE, NULL);
             break;
+          case GLADE_IMAGE_MODE_RESOURCE:
+	    /* Doesnt apply for entry icons */
+	    break;
         }
     }
   else if (!strcmp (id, "secondary-icon-mode"))
@@ -3352,6 +3355,9 @@ glade_gtk_entry_set_property (GladeWidgetAdaptor * adaptor,
                                                  "secondary-icon-pixbuf", TRUE,
                                                  NULL);
             break;
+          case GLADE_IMAGE_MODE_RESOURCE:
+	    /* Doesnt apply for entry icons */
+	    break;
         }
     }
   else if (!strcmp (id, "primary-icon-tooltip-text") ||
@@ -4334,13 +4340,18 @@ glade_gtk_image_read_widget (GladeWidgetAdaptor * adaptor,
       property = glade_widget_get_property (widget, "icon-name");
       glade_widget_property_set (widget, "image-mode", GLADE_IMAGE_MODE_ICON);
     }
+  else if (glade_widget_property_original_default (widget, "resource") == FALSE)
+    {
+      property = glade_widget_get_property (widget, "resource");
+      glade_widget_property_set (widget, "image-mode", GLADE_IMAGE_MODE_RESOURCE);
+    }
   else if (glade_widget_property_original_default (widget, "pixbuf") == FALSE)
     {
       property = glade_widget_get_property (widget, "pixbuf");
       glade_widget_property_set (widget, "image-mode",
                                  GLADE_IMAGE_MODE_FILENAME);
     }
-  else                          /*  if (glade_widget_property_original_default (widget, "stock") == FALSE) */
+  else  /*  if (glade_widget_property_original_default (widget, "stock") == FALSE) */
     {
       property = glade_widget_get_property (widget, "stock");
       glade_widget_property_set (widget, "image-mode", GLADE_IMAGE_MODE_STOCK);
@@ -4349,11 +4360,11 @@ glade_gtk_image_read_widget (GladeWidgetAdaptor * adaptor,
   glade_property_sync (property);
 }
 
-
-void
-glade_gtk_image_write_widget (GladeWidgetAdaptor * adaptor,
-                              GladeWidget * widget,
-                              GladeXmlContext * context, GladeXmlNode * node)
+static void
+glade_gtk_write_icon_size (GladeWidget * widget,
+			   GladeXmlContext * context,
+			   GladeXmlNode * node,
+			   const gchar *prop_name)
 {
   GladeXmlNode *prop_node;
   GladeProperty *size_prop;
@@ -4361,18 +4372,12 @@ glade_gtk_image_write_widget (GladeWidgetAdaptor * adaptor,
   GtkIconSize icon_size;
   gchar *value;
 
-  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
-    return;
-
-  /* First chain up and write all the normal properties (including "use-stock")... */
-  GWA_GET_CLASS (GTK_TYPE_WIDGET)->write_widget (adaptor, widget, context,
-                                                 node);
-
   /* We have to save icon-size as an integer, the core will take care of 
    * loading the int value though.
    */
-  size_prop = glade_widget_get_property (widget, "icon-size");
-  if (!glade_property_original_default (size_prop))
+  size_prop = glade_widget_get_property (widget, prop_name);
+  if (glade_property_get_enabled (size_prop) &&
+      !glade_property_original_default (size_prop))
     {
       pclass = glade_property_get_class (size_prop);
       prop_node = glade_xml_node_new (context, GLADE_TAG_PROPERTY);
@@ -4386,6 +4391,20 @@ glade_gtk_image_write_widget (GladeWidgetAdaptor * adaptor,
       glade_xml_set_content (prop_node, value);
       g_free (value);
     }
+}
+
+void
+glade_gtk_image_write_widget (GladeWidgetAdaptor * adaptor,
+                              GladeWidget * widget,
+                              GladeXmlContext * context, GladeXmlNode * node)
+{
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
+
+  /* First chain up and write all the normal properties (including "use-stock")... */
+  GWA_GET_CLASS (GTK_TYPE_WIDGET)->write_widget (adaptor, widget, context, node);
+
+  glade_gtk_write_icon_size (widget, context, node, "icon-size");
 }
 
 
@@ -4405,12 +4424,12 @@ glade_gtk_image_set_image_mode (GObject * object, const GValue * value)
                                        NOT_SELECTED_MSG);
   glade_widget_property_set_sensitive (gwidget, "pixbuf", FALSE,
                                        NOT_SELECTED_MSG);
+  glade_widget_property_set_sensitive (gwidget, "resource", FALSE,
+                                       NOT_SELECTED_MSG);
   glade_widget_property_set_sensitive (gwidget, "icon-size", FALSE,
-                                       _
-                                       ("This property only applies to stock images"));
+                                       _("This property only applies to stock images"));
   glade_widget_property_set_sensitive (gwidget, "pixel-size", FALSE,
-                                       _
-                                       ("This property only applies to named icons"));
+                                       _("This property only applies to named icons"));
 
   switch ((type = g_value_get_int (value)))
     {
@@ -4422,6 +4441,10 @@ glade_gtk_image_set_image_mode (GObject * object, const GValue * value)
       case GLADE_IMAGE_MODE_ICON:
         glade_widget_property_set_sensitive (gwidget, "icon-name", TRUE, NULL);
         glade_widget_property_set_sensitive (gwidget, "pixel-size", TRUE, NULL);
+        break;
+
+      case GLADE_IMAGE_MODE_RESOURCE:
+        glade_widget_property_set_sensitive (gwidget, "resource", TRUE, NULL);
         break;
 
       case GLADE_IMAGE_MODE_FILENAME:
@@ -4488,6 +4511,8 @@ glade_gtk_image_set_property (GladeWidgetAdaptor * adaptor,
           case GLADE_IMAGE_MODE_FILENAME:
             if (!strcmp (id, "stock") || !strcmp (id, "icon-name"))
               return;
+          case GLADE_IMAGE_MODE_RESOURCE:
+	    /* Screw the resource mode here, we can't apply them at Glade's runtime anyway  */
           default:
             break;
         }
@@ -5993,6 +6018,21 @@ glade_gtk_toolbar_action_activate (GladeWidgetAdaptor * adaptor,
   else
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor,
                                                          object, action_path);
+}
+
+/* Write the GtkIconSize as an integer */
+void
+glade_gtk_toolbar_write_widget (GladeWidgetAdaptor * adaptor,
+				GladeWidget * widget,
+				GladeXmlContext * context, GladeXmlNode * node)
+{
+  if (!glade_xml_node_verify (node, GLADE_XML_TAG_WIDGET))
+    return;
+
+  /* First chain up and write all the normal properties (including "use-stock")... */
+  GWA_GET_CLASS (GTK_TYPE_CONTAINER)->write_widget (adaptor, widget, context, node);
+
+  glade_gtk_write_icon_size (widget, context, node, "icon-size");
 }
 
 
@@ -9610,7 +9650,13 @@ glade_gtk_cell_renderer_write_properties (GladeWidget * widget,
           prop = glade_widget_get_property (widget, attr_name);
 
           if (!use_attr && prop)
-            glade_property_write (prop, context, node);
+	    {
+	      /* Special case to write GtkCellRendererPixbuf:stock-size */
+	      if (strcmp (attr_name, "stock-size") == 0)
+		glade_gtk_write_icon_size (widget, context, node, "stock-size");
+	      else
+		glade_property_write (prop, context, node);
+	    }
 
           g_free (use_attr_str);
         }

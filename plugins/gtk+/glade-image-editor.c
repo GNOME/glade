@@ -87,6 +87,10 @@ glade_image_editor_load (GladeEditable * editable, GladeWidget * widget)
             gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON
                                           (image_editor->icon_radio), TRUE);
             break;
+          case GLADE_IMAGE_MODE_RESOURCE:
+            gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON
+                                          (image_editor->resource_radio), TRUE);
+            break;
           case GLADE_IMAGE_MODE_FILENAME:
             gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON
                                           (image_editor->file_radio), TRUE);
@@ -158,6 +162,8 @@ set_stock_mode (GladeImageEditor * image_editor)
   glade_command_set_property (property, NULL);
   property = glade_widget_get_property (gwidget, "pixbuf");
   glade_command_set_property (property, NULL);
+  property = glade_widget_get_property (gwidget, "resource");
+  glade_command_set_property (property, NULL);
 
   property = glade_widget_get_property (gwidget, "stock");
   glade_property_get_default (property, &value);
@@ -178,11 +184,27 @@ set_icon_mode (GladeImageEditor * image_editor)
   glade_command_set_property (property, NULL);
   property = glade_widget_get_property (gwidget, "pixbuf");
   glade_command_set_property (property, NULL);
+  property = glade_widget_get_property (gwidget, "resource");
+  glade_command_set_property (property, NULL);
   property = glade_widget_get_property (gwidget, "image-mode");
   glade_command_set_property (property, GLADE_IMAGE_MODE_ICON);
 }
 
+static void
+set_resource_mode (GladeImageEditor * image_editor)
+{
+  GladeProperty *property;
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (image_editor));
 
+  property = glade_widget_get_property (gwidget, "stock");
+  glade_command_set_property (property, NULL);
+  property = glade_widget_get_property (gwidget, "icon-name");
+  glade_command_set_property (property, NULL);
+  property = glade_widget_get_property (gwidget, "pixbuf");
+  glade_command_set_property (property, NULL);
+  property = glade_widget_get_property (gwidget, "image-mode");
+  glade_command_set_property (property, GLADE_IMAGE_MODE_RESOURCE);
+}
 
 static void
 set_file_mode (GladeImageEditor * image_editor)
@@ -193,6 +215,8 @@ set_file_mode (GladeImageEditor * image_editor)
   property = glade_widget_get_property (gwidget, "stock");
   glade_command_set_property (property, NULL);
   property = glade_widget_get_property (gwidget, "icon-name");
+  glade_command_set_property (property, NULL);
+  property = glade_widget_get_property (gwidget, "resource");
   glade_command_set_property (property, NULL);
   property = glade_widget_get_property (gwidget, "image-mode");
   glade_command_set_property (property, GLADE_IMAGE_MODE_FILENAME);
@@ -222,7 +246,6 @@ stock_toggled (GtkWidget * widget, GladeImageEditor * image_editor)
   glade_editable_load (GLADE_EDITABLE (image_editor), gwidget);
 }
 
-
 static void
 icon_toggled (GtkWidget * widget, GladeImageEditor * image_editor)
 {
@@ -240,6 +263,31 @@ icon_toggled (GtkWidget * widget, GladeImageEditor * image_editor)
   glade_command_push_group (_("Setting %s to use an image from the icon theme"),
                             glade_widget_get_name (gwidget));
   set_icon_mode (image_editor);
+  glade_command_pop_group ();
+
+  glade_editable_unblock (GLADE_EDITABLE (image_editor));
+
+  /* reload buttons and sensitivity and stuff... */
+  glade_editable_load (GLADE_EDITABLE (image_editor), gwidget);
+}
+
+static void
+resource_toggled (GtkWidget * widget, GladeImageEditor * image_editor)
+{
+  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (image_editor));
+
+  if (glade_editable_loading (GLADE_EDITABLE (image_editor)) || !gwidget)
+    return;
+
+  if (!gtk_toggle_button_get_active
+      (GTK_TOGGLE_BUTTON (image_editor->resource_radio)))
+    return;
+
+  glade_editable_block (GLADE_EDITABLE (image_editor));
+
+  glade_command_push_group (_("Setting %s to use a resource name"),
+                            glade_widget_get_name (gwidget));
+  set_resource_mode (image_editor);
   glade_command_pop_group ();
 
   glade_editable_unblock (GLADE_EDITABLE (image_editor));
@@ -338,6 +386,20 @@ glade_image_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
   table_attach (table, GTK_WIDGET (eprop), 1, 1);
   image_editor->properties = g_list_prepend (image_editor->properties, eprop);
 
+  /* Resource image... */
+  eprop =
+      glade_widget_adaptor_create_eprop_by_name (adaptor, "resource", FALSE,
+                                                 TRUE);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+  image_editor->resource_radio = gtk_radio_button_new_from_widget
+      (GTK_RADIO_BUTTON (image_editor->stock_radio));
+  gtk_box_pack_start (GTK_BOX (hbox), image_editor->resource_radio, FALSE, FALSE,
+                      2);
+  gtk_box_pack_start (GTK_BOX (hbox), glade_editor_property_get_item_label (eprop), TRUE, TRUE, 2);
+  table_attach (table, hbox, 0, 2);
+  table_attach (table, GTK_WIDGET (eprop), 1, 2);
+  image_editor->properties = g_list_prepend (image_editor->properties, eprop);
+
   /* Filename... */
   eprop =
       glade_widget_adaptor_create_eprop_by_name (adaptor, "pixbuf", FALSE,
@@ -348,8 +410,8 @@ glade_image_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
   gtk_box_pack_start (GTK_BOX (hbox), image_editor->file_radio, FALSE, FALSE,
                       2);
   gtk_box_pack_start (GTK_BOX (hbox), glade_editor_property_get_item_label (eprop), TRUE, TRUE, 2);
-  table_attach (table, hbox, 0, 2);
-  table_attach (table, GTK_WIDGET (eprop), 1, 2);
+  table_attach (table, hbox, 0, 3);
+  table_attach (table, GTK_WIDGET (eprop), 1, 3);
   image_editor->properties = g_list_prepend (image_editor->properties, eprop);
 
   /* Image size frame... */
@@ -393,6 +455,8 @@ glade_image_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
                     G_CALLBACK (stock_toggled), image_editor);
   g_signal_connect (G_OBJECT (image_editor->icon_radio), "toggled",
                     G_CALLBACK (icon_toggled), image_editor);
+  g_signal_connect (G_OBJECT (image_editor->resource_radio), "toggled",
+                    G_CALLBACK (resource_toggled), image_editor);
   g_signal_connect (G_OBJECT (image_editor->file_radio), "toggled",
                     G_CALLBACK (file_toggled), image_editor);
 

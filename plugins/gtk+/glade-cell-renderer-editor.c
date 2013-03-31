@@ -320,8 +320,10 @@ glade_cell_renderer_editor_new (GladeWidgetAdaptor * adaptor,
 
       pclass = list->data;
 
-      if (glade_property_class_get_virtual (pclass))
-        continue;
+      /* "stock-size" is a normal property, but we virtualize it to use the GtkIconSize enumeration */
+      if (glade_property_class_get_virtual (pclass) &&
+	  strcmp (glade_property_class_id (pclass), "stock-size") != 0)
+	continue;
 
       attr_name = g_strdup_printf ("attr-%s", glade_property_class_id (pclass));
       use_attr_name = g_strdup_printf ("use-attr-%s", glade_property_class_id (pclass));

@@ -38,6 +38,7 @@ typedef struct _GladeImageEditorClass   GladeImageEditorClass;
 typedef enum {
 	GLADE_IMAGE_MODE_STOCK = 0, /* default */
 	GLADE_IMAGE_MODE_ICON,
+	GLADE_IMAGE_MODE_RESOURCE,
 	GLADE_IMAGE_MODE_FILENAME
 } GladeImageEditMode;
 
@@ -49,6 +50,7 @@ struct _GladeImageEditor
 
 	GtkWidget *stock_radio;    /* Create the image from stock-id */
 	GtkWidget *icon_radio;     /* Create the image with the icon theme */
+	GtkWidget *resource_radio; /* Create the image from GResource data */
 	GtkWidget *file_radio;     /* Create the image from filename (libglade only) */
 
 	GtkWidget *size_radio;     /* Set size with GtkIconSize */
