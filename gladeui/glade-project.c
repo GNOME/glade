@@ -148,6 +148,8 @@ struct _GladeProjectPrivate
   GtkWidget *relative_path_entry;
   GtkWidget *full_path_button;
   GtkWidget *domain_entry;
+  GtkWidget *template_combobox;
+  GtkWidget *template_checkbutton;
 
   /* Store previews, so we can kill them on close */
   GHashTable *previews;
@@ -1618,6 +1620,57 @@ glade_project_autosave_name (const gchar *path)
 }
 
 static gboolean
+toplevel_visible_func (GtkTreeModel *model, GtkTreeIter *iter, gpointer data)
+{
+  GtkTreeIter parent;
+  return !gtk_tree_model_iter_parent (model, &parent, iter);
+}
+
+static GtkTreeModel *
+glade_project_toplevel_model_filter_new (GladeProject *project)
+{
+  GtkTreeModel *model = gtk_tree_model_filter_new (GTK_TREE_MODEL (project), NULL);
+  gtk_tree_model_filter_set_visible_func (GTK_TREE_MODEL_FILTER (model),
+                                          toplevel_visible_func, NULL, NULL);
+  return model;
+}
+
+static void
+glade_project_fix_template (GladeProject *project)
+{
+  GtkTreeModel *model = glade_project_toplevel_model_filter_new (project);
+  GladeProjectPrivate *priv = project->priv;
+  GtkTreeIter iter;
+  gboolean valid;
+
+  valid = gtk_tree_model_get_iter_first (model, &iter);
+  while (valid)
+    {
+      gboolean composite;
+      GladeWidget *gwidget;
+      GObject *obj;
+      
+      gtk_tree_model_get (model, &iter,
+                          GLADE_PROJECT_MODEL_COLUMN_OBJECT, &obj,
+                          -1);
+
+      gwidget = glade_widget_get_from_gobject (obj);
+      composite = glade_widget_get_is_composite (gwidget);
+
+      if (composite)
+        {
+          gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->template_checkbutton), TRUE);
+          gtk_combo_box_set_model (GTK_COMBO_BOX (priv->template_combobox), model);
+          gtk_combo_box_set_active_iter (GTK_COMBO_BOX (priv->template_combobox), &iter);
+        }
+
+      valid = gtk_tree_model_iter_next (model, &iter);
+    }
+
+  g_object_unref (model);
+}
+
+static gboolean
 glade_project_load_internal (GladeProject *project)
 {
   GladeProjectPrivate *priv = project->priv;
@@ -1744,6 +1797,8 @@ glade_project_load_internal (GladeProject *project)
    * and fix'em all ('cause they probably weren't found)
    */
   glade_project_fix_object_props (project);
+
+  glade_project_fix_template (project);
 
   /* Emit "parse-finished" signal */
   g_signal_emit (project, glade_project_signals[PARSE_FINISHED], 0);
@@ -4176,7 +4231,71 @@ on_domain_entry_activate (GtkWidget *entry, GladeProject *project)
   glade_project_set_translation_domain (project, gtk_entry_get_text (GTK_ENTRY (entry)));
 }
 
-#define GET_OBJECT(b,c,o) c(gtk_builder_get_object(b,o));g_warn_if_fail(gtk_builder_get_object(b,o))
+static void
+glade_project_clear_composite (GladeProject *project)
+{
+  GladeProjectPrivate *priv = project->priv;
+  GList *l;
+
+  for (l = priv->tree; l; l = g_list_next (l))
+    {
+      GladeWidget *gwidget = glade_widget_get_from_gobject (l->data);
+
+      /* XXX Need a glade_command_set_composite() */
+      glade_widget_set_is_composite (gwidget, FALSE);
+    }
+}
+
+static void
+on_template_combo_box_changed (GtkComboBox *combo, GladeProject *project)
+{
+  GtkTreeIter iter;
+
+  glade_project_clear_composite (project);
+
+  if (gtk_combo_box_get_active_iter (combo, &iter))
+    {
+      GladeWidget *gwidget;
+      GObject *object;
+
+      gtk_tree_model_get (gtk_combo_box_get_model (combo), &iter,
+                          GLADE_PROJECT_MODEL_COLUMN_OBJECT, &object, -1);
+      
+      gwidget = glade_widget_get_from_gobject (object);
+
+      /* XXX Need a glade_command_set_composite() */
+      glade_widget_set_is_composite (gwidget, TRUE);
+    }
+}
+
+static void
+on_template_checkbutton_toggled (GtkToggleButton *togglebutton,
+                                 GladeProject    *project)
+{
+  GtkComboBox *combobox = GTK_COMBO_BOX (project->priv->template_combobox);
+  gboolean active = gtk_toggle_button_get_active (togglebutton);
+
+  glade_project_clear_composite (project);
+
+  if (gtk_combo_box_get_model (combobox))
+    gtk_combo_box_set_active_iter (combobox, NULL);
+  
+  if (active)
+    {
+      GtkTreeModel *model = glade_project_toplevel_model_filter_new (project);
+      GladeProjectPrivate *priv = project->priv;
+
+      gtk_combo_box_set_model (combobox, model);
+
+      if (priv->tree && !g_list_next (priv->tree))
+        gtk_combo_box_set_active (combobox, 0);
+    }
+
+  gtk_widget_set_sensitive (GTK_WIDGET (combobox), active);
+}
+
+
+#define GET_OBJECT(b,c,o) c(gtk_builder_get_object(b,o));
 
 static GtkWidget *
 glade_project_build_prefs_dialog (GladeProject *project)
@@ -4204,6 +4323,12 @@ glade_project_build_prefs_dialog (GladeProject *project)
   priv->relative_path_entry = GET_OBJECT (builder, GTK_WIDGET, "relative_path_entry");
   priv->full_path_button = GET_OBJECT (builder, GTK_WIDGET, "full_path_button");
   priv->domain_entry = GET_OBJECT (builder, GTK_WIDGET, "domain_entry");
+  priv->template_checkbutton = GET_OBJECT (builder, GTK_WIDGET, "template_checkbutton");
+  priv->template_combobox = GET_OBJECT (builder, GTK_WIDGET, "template_combobox");
+  g_signal_connect (priv->template_combobox, "changed",
+                    G_CALLBACK (on_template_combo_box_changed), project);
+  g_signal_connect (priv->template_checkbutton, "toggled",
+                    G_CALLBACK (on_template_checkbutton_toggled), project);
 
   verify_button = GET_OBJECT (builder, GTK_WIDGET, "verify_button");
   toolkit_box = GET_OBJECT (builder, GTK_WIDGET, "toolkit_box");
