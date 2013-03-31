@@ -939,10 +939,14 @@ refresh_projects_list_menu (GladeWindow *window)
     {
       GtkAction *action = l->data;
       GSList *p, *proxies = gtk_action_get_proxies (action);
+      GSList *proxies_copy;
 
       /* Remove MenuItems */
-      for (p = proxies; p; p = g_slist_next (p))
-        if (GTK_IS_MENU_ITEM (p->data)) gtk_widget_destroy (p->data);
+      proxies_copy = g_slist_copy (proxies);
+      for (p = proxies_copy; p; p = g_slist_next (p))
+        if (GTK_IS_MENU_ITEM (p->data))
+	  gtk_widget_destroy (p->data);
+      g_slist_free (proxies_copy);
 
       g_signal_handlers_disconnect_by_func (action,
                                             G_CALLBACK (projects_list_menu_activate_cb),
