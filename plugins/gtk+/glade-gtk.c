@@ -1680,18 +1680,11 @@ fix_response_id_on_child (GladeWidget * gbox, GObject * child, gboolean add)
     {
       if (add && (internal_name = glade_widget_get_internal (gbox)) &&
           !strcmp (internal_name, "action_area"))
-        {
-          glade_widget_property_set_sensitive (gchild, "response-id", TRUE,
-                                               NULL);
-          glade_widget_property_set_enabled (gchild, "response-id", TRUE);
-        }
+	glade_widget_property_set_sensitive (gchild, "response-id", TRUE,
+					     NULL);
       else
-        {
-          glade_widget_property_set_sensitive (gchild, "response-id", FALSE,
-                                               RESPID_INSENSITIVE_MSG);
-          glade_widget_property_set_enabled (gchild, "response-id", FALSE);
-
-        }
+	glade_widget_property_set_sensitive (gchild, "response-id", FALSE,
+					     RESPID_INSENSITIVE_MSG);
     }
 }
 
@@ -4216,7 +4209,6 @@ glade_gtk_button_post_create (GladeWidgetAdaptor * adaptor,
   /* Disabled response-id until its in an action area */
   glade_widget_property_set_sensitive (gbutton, "response-id", FALSE,
                                        RESPID_INSENSITIVE_MSG);
-  glade_widget_property_set_enabled (gbutton, "response-id", FALSE);
 
   if (reason == GLADE_CREATE_LOAD)
     g_signal_connect (glade_widget_get_project (gbutton), "parse-finished",
