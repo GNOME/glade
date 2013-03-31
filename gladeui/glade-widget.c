@@ -3894,41 +3894,105 @@ glade_widget_write_placeholder (GladeWidget * parent,
     }
 }
 
-typedef struct
+static gint
+signal_compare (GladeSignal *signal_a,
+		GladeSignal *signal_b)
 {
-  GladeXmlContext *context;
-  GladeXmlNode *node;
-} WriteSignalsInfo;
+  const gchar *handler_a;
+  const gchar *handler_b;
+  const GladeSignalClass *class_a;
+  const GladeSignalClass *class_b;
+  const gchar *class_name_a;
+  const gchar *class_name_b;
+  const gchar *detail_a;
+  const gchar *detail_b;
+  const gchar *data_a;
+  const gchar *data_b;
+  gint comparison;
 
-static void
-glade_widget_adaptor_write_signals (gpointer key,
-                                    gpointer value, gpointer user_data)
-{
-  WriteSignalsInfo *info;
-  GPtrArray *signals;
-  guint i;
+  handler_a = glade_signal_get_handler (signal_a);
+  handler_b = glade_signal_get_handler (signal_b);
+  detail_a  = glade_signal_get_detail (signal_a);
+  detail_b  = glade_signal_get_detail (signal_b);
+  data_a    = glade_signal_get_userdata (signal_a);
+  data_b    = glade_signal_get_userdata (signal_b);
 
-  info = (WriteSignalsInfo *) user_data;
-  signals = (GPtrArray *) value;
-  for (i = 0; i < signals->len; i++)
-    {
-      GladeSignal *signal = g_ptr_array_index (signals, i);
-      glade_signal_write (signal, info->context, info->node);
-    }
+  class_a   = glade_signal_get_class (signal_a);
+  class_b   = glade_signal_get_class (signal_b);
+  class_name_a = glade_signal_class_get_name (class_a);
+  class_name_b = glade_signal_class_get_name (class_b);
+
+  /* By signal name ... */
+  comparison = g_strcmp0 (class_name_a, class_name_b);
+  if (comparison != 0)
+    return comparison;
+
+  /* By handler name ... */
+  comparison = g_strcmp0 (handler_a, handler_b);
+  if (comparison != 0)
+    return comparison;
+
+  /* By detail name ... */
+  comparison = g_strcmp0 (detail_a, detail_b);
+  if (comparison != 0)
+    return comparison;
+
+  /* By user data ... */
+  comparison = g_strcmp0 (data_a, data_b);
+  if (comparison != 0)
+    return comparison;
+
+  /* By 'after' flag ... */
+  comparison = glade_signal_get_after (signal_a) - glade_signal_get_after (signal_b);
+  if (comparison != 0)
+    return comparison;
+
+  /* By 'swapped' flag ... */
+  comparison = glade_signal_get_swapped (signal_a) - glade_signal_get_swapped (signal_b);
+  if (comparison != 0)
+    return comparison;
+
+  /* They are actually exactly the same ... return 0 */
+  return 0;
 }
 
 void
 glade_widget_write_signals (GladeWidget * widget,
                             GladeXmlContext * context, GladeXmlNode * node)
 {
-  WriteSignalsInfo info;
+  GHashTableIter iter;
+  gpointer key, value;
+  GladeSignal *signal;
+  GList *sorted_signals = NULL, *l;
 
-  info.context = context;
-  info.node = node;
+  /* Sort signals alphabetically by signal name (and then by handler name)
+   * before saving them.
+   *
+   * Ensure we don't introduce useless project diffs at save time.
+   */
+  g_hash_table_iter_init (&iter, widget->priv->signals);
+  while (g_hash_table_iter_next (&iter, &key, &value))
+    {
+      GPtrArray *signals = (GPtrArray *)value;
+      gint i;
 
-  g_hash_table_foreach (widget->priv->signals,
-                        glade_widget_adaptor_write_signals, &info);
+      for (i = 0; i < signals->len; i++)
+	{
+	  signal = g_ptr_array_index (signals, i);
 
+	  sorted_signals =
+	    g_list_insert_sorted (sorted_signals,
+				  signal, (GCompareFunc)signal_compare);
+	}
+    }
+
+  for (l = sorted_signals; l; l = l->next)
+    {
+	  signal = l->data;
+	  glade_signal_write (signal, context, node);
+    }
+
+  g_list_free (sorted_signals);
 }
 
 /**
