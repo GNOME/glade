@@ -50,20 +50,12 @@ glade_gtk_grid_get_child_attachments (GtkWidget            *grid,
 				      GtkWidget            *child,
 				      GladeGridAttachments *grid_child)
 {
-  GladeWidget *gwidget = glade_widget_get_from_gobject (child);
-
-  /* gtk_container_child_get (GTK_CONTAINER (grid), child, */
-  /*                          "left-attach", &grid_child->left_attach, */
-  /*                          "width",       &grid_child->width, */
-  /*                          "top-attach",  &grid_child->top_attach, */
-  /*                          "height",      &grid_child->height, */
-  /* 			   NULL); */
-
-  if (!glade_widget_pack_property_get (gwidget, "left-attach", &grid_child->left_attach) ||
-      !glade_widget_pack_property_get (gwidget, "top-attach", &grid_child->top_attach) ||
-      !glade_widget_pack_property_get (gwidget, "width", &grid_child->width) ||
-      !glade_widget_pack_property_get (gwidget, "height", &grid_child->height))
-    g_warning ("Failed to get grid child attachments");
+  gtk_container_child_get (GTK_CONTAINER (grid), child,
+                           "left-attach", &grid_child->left_attach,
+                           "width",       &grid_child->width,
+                           "top-attach",  &grid_child->top_attach,
+                           "height",      &grid_child->height,
+  			   NULL);
 }
 
 static gboolean
