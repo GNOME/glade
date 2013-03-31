@@ -164,6 +164,15 @@
 	  <_tooltip>Description of an object, formatted for assistive technology access</_tooltip>
 	</property>
 
+	<property id="AtkObject::accessible-role" _name="Role" ignore="True" 
+		  atk-property="True" save="False" default="invalid">
+	  <parameter-spec>
+	    <type>GParamEnum</type>
+	    <value-type>AtkRole</value-type>
+	  </parameter-spec>
+	  <_tooltip>The accessible role of this object</_tooltip>
+	</property>
+
 	<!-- Atk relationset properties -->
 	<property id="controlled-by" _name="Controlled By" ignore="True" atk-property="True" save="False">
 	  <parameter-spec>
@@ -360,12 +369,12 @@ embedded in another object</_tooltip>
       </packing-properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkHBox" generic-name="hbox" _title="Horizontal Box">
+    <glade-widget-class name="GtkHBox" deprecated="True" generic-name="hbox" _title="Horizontal Box">
       <properties>
 	<property id="orientation" disabled="True"/>
       </properties>
     </glade-widget-class>
-    <glade-widget-class name="GtkVBox" generic-name="vbox" _title="Vertical Box">
+    <glade-widget-class name="GtkVBox" deprecated="True" generic-name="vbox" _title="Vertical Box">
       <properties>
 	<property id="orientation" disabled="True"/>
       </properties>
@@ -492,6 +501,7 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
 
+    <glade-widget-class name="GtkOverlay" generic-name="overlay" _title="Overlay" since="3.2" icon-name="widget-gtk-frame"/>
 
     <glade-widget-class name="GtkMenuShell" _title="Menu Shell" use-placeholders="False" since="2.16">
       <post-create-function>empty</post-create-function>
@@ -828,7 +838,7 @@ embedded in another object</_tooltip>
 
     </glade-widget-class>
 
-    <glade-widget-class name="GtkHandleBox" generic-name="handlebox" _title="Handle Box">
+    <glade-widget-class name="GtkHandleBox" deprecated="True" generic-name="handlebox" _title="Handle Box">
       <properties>
       	<property id="handle-position">
   	  <displayable-values>
@@ -973,7 +983,7 @@ embedded in another object</_tooltip>
 
 	<property id="text" translatable="True" custom-layout="True"/>
         <property id="buffer" create-type="GtkEntryBuffer" since="2.18" custom-layout="True"/>
-
+	<property id="placeholder-text" translatable="True" since="3.2"/>
         <property id="inner-border" since="2.10"/>
         <property id="truncate-multiline" since="2.10"/>
 	<property id="shadow-type" since="2.12"/>
@@ -1042,6 +1052,8 @@ embedded in another object</_tooltip>
 	</property>
       </properties>
     </glade-widget-class>
+
+    <glade-widget-class name="GtkSearchEntry" generic-name="searchentry" _title="Search Entry" since="3.6"/>
 
     <glade-widget-class name="GtkTextView" generic-name="textview" _title="Text View">
       <post-create-function>glade_gtk_text_view_post_create</post-create-function>
@@ -1228,6 +1240,7 @@ embedded in another object</_tooltip>
 	<property id="use-underline" disabled="True"/>
 	<property id="stock" disabled="True"/>
       </properties>
+
     </glade-widget-class>
 
     <glade-widget-class name="GtkVolumeButton" generic-name="volumebutton" _title="Volume Button">
@@ -1479,7 +1492,7 @@ embedded in another object</_tooltip>
 
     </glade-widget-class>
 
-    <glade-widget-class name="GtkTable" generic-name="table" _title="Table">
+    <glade-widget-class name="GtkTable" deprecated="True" generic-name="table" _title="Table">
       <child-set-property-function>glade_gtk_table_set_child_property</child-set-property-function>
       <child-verify-function>glade_gtk_table_child_verify_property</child-verify-function>
       <get-children-function>glade_gtk_table_get_children</get-children-function>
@@ -1591,12 +1604,12 @@ embedded in another object</_tooltip>
       </packing-properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkHPaned" generic-name="hpaned" _title="Horizontal Panes">
+    <glade-widget-class name="GtkHPaned" deprecated="True" generic-name="hpaned" _title="Horizontal Panes">
       <properties>
 	<property id="orientation" disabled="True"/>
       </properties>
     </glade-widget-class>
-    <glade-widget-class name="GtkVPaned" generic-name="vpaned" _title="Vertical Panes">
+    <glade-widget-class name="GtkVPaned" deprecated="True" generic-name="vpaned" _title="Vertical Panes">
       <properties>
 	<property id="orientation" disabled="True"/>
       </properties>
@@ -1694,12 +1707,12 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkHScale" generic-name="hscale" _title="Horizontal Scale">
+    <glade-widget-class name="GtkHScale" deprecated="True" generic-name="hscale" _title="Horizontal Scale">
       <properties>
 	<property id="orientation" disabled="True"/>
       </properties>
     </glade-widget-class>
-    <glade-widget-class name="GtkVScale" generic-name="vscale" _title="Vertical Scale">
+    <glade-widget-class name="GtkVScale" deprecated="True" generic-name="vscale" _title="Vertical Scale">
       <properties>
 	<property id="orientation" disabled="True"/>
       </properties>
@@ -1746,12 +1759,12 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkHScrollbar" generic-name="hscrollbar" _title="Horizontal Scrollbar">
+    <glade-widget-class name="GtkHScrollbar" deprecated="True" generic-name="hscrollbar" _title="Horizontal Scrollbar">
       <properties>
 	<property id="orientation" disabled="True"/>
       </properties>
     </glade-widget-class>
-    <glade-widget-class name="GtkVScrollbar" generic-name="vscrollbar" _title="Vertical Scrollbar">
+    <glade-widget-class name="GtkVScrollbar" deprecated="True" generic-name="vscrollbar" _title="Vertical Scrollbar">
       <properties>
 	<property id="orientation" disabled="True"/>
       </properties>
@@ -1772,12 +1785,12 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
     
-    <glade-widget-class name="GtkHButtonBox" generic-name="hbuttonbox" _title="Horizontal Button Box">
+    <glade-widget-class name="GtkHButtonBox" deprecated="True" generic-name="hbuttonbox" _title="Horizontal Button Box">
       <properties>
 	<property id="orientation" disabled="True"/>
       </properties>
     </glade-widget-class>
-    <glade-widget-class name="GtkVButtonBox" generic-name="vbuttonbox" _title="Vertical Button Box">
+    <glade-widget-class name="GtkVButtonBox" deprecated="True" generic-name="vbuttonbox" _title="Vertical Button Box">
       <properties>
 	<property id="orientation" disabled="True"/>
       </properties>
@@ -1790,7 +1803,7 @@ embedded in another object</_tooltip>
 	</parent-class>
       </packing-defaults>
     </glade-widget-class>
-    <glade-widget-class name="GtkHSeparator" generic-name="hseparator" _title="Horizontal Separator">
+    <glade-widget-class name="GtkHSeparator" deprecated="True" generic-name="hseparator" _title="Horizontal Separator">
       <properties>
 	<property id="orientation" disabled="True"/>
       </properties>
@@ -1800,7 +1813,7 @@ embedded in another object</_tooltip>
 	</parent-class>
       </packing-defaults>
     </glade-widget-class>
-    <glade-widget-class name="GtkVSeparator" generic-name="vseparator" _title="Vertical Separator">
+    <glade-widget-class name="GtkVSeparator" deprecated="True" generic-name="vseparator" _title="Vertical Separator">
       <properties>
 	<property id="orientation" disabled="True"/>
       </properties>
@@ -1977,7 +1990,8 @@ embedded in another object</_tooltip>
       </signals>
    </glade-widget-class>
 
-    <glade-widget-class name="GtkColorSelectionDialog" generic-name="colorselectiondialog" _title="Color Selection Dialog">
+    <glade-widget-class name="GtkColorSelectionDialog" generic-name="colorselectiondialog"
+			deprecated="True" _title="Color Selection Dialog">
       <internal-children>
         <object name="vbox">
             <object name="color_selection"/>
@@ -2006,7 +2020,7 @@ embedded in another object</_tooltip>
       </signals>
     </glade-widget-class>
     
-    <glade-widget-class name="GtkFontSelectionDialog" generic-name="fontselectiondialog" _title="Font Selection Dialog">
+    <glade-widget-class name="GtkFontSelectionDialog" deprecated="True" generic-name="fontselectiondialog" _title="Font Selection Dialog">
       <internal-children>
         <object name="vbox">
             <object name="font_selection"/>
@@ -2058,15 +2072,24 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkColorSelection" generic-name="colorselection" _title="Color Selection">
+    <glade-widget-class name="GtkColorSelection" deprecated="True" generic-name="colorselection" _title="Color Selection">
       <properties>
 	<property id="current-color" default="Black" optional="True" optional-default="False"/>
 	<property id="current-alpha" optional="True" optional-default="False"/>
 	<property id="current-rgba" default="Black" optional="True" optional-default="False" since="3.0"/>
       </properties>
     </glade-widget-class>
+
+    <glade-widget-class name="GtkColorChooserWidget" generic-name="colorchooserwidget"
+			_title="Color Chooser Widget" icon-name="widget-gtk-colorselection" since="3.4"/>
+    <glade-widget-class name="GtkColorChooserDialog" generic-name="colorchooserdialog"
+			_title="Color Chooser Dialog" icon-name="widget-gtk-colorselectiondialog" since="3.4"/>
+    <glade-widget-class name="GtkFontChooserWidget" generic-name="fontchooserwidget"
+			_title="Font Chooser Widget" icon-name="widget-gtk-fontselection" since="3.2"/>
+    <glade-widget-class name="GtkFontChooserDialog" generic-name="fontchooserdialog"
+			_title="Font Chooser Dialog" icon-name="widget-gtk-fontselectiondialog" since="3.2"/>
     
-    <glade-widget-class name="GtkFontSelection" generic-name="fontselection" _title="Font Selection"/>
+    <glade-widget-class name="GtkFontSelection" deprecated="True" generic-name="fontselection" _title="Font Selection"/>
     
     <glade-widget-class name="GtkAssistant" generic-name="assistant" _title="Assistant" since="2.10">
       <post-create-function>glade_gtk_assistant_post_create</post-create-function>
@@ -3374,8 +3397,6 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkCellRendererPixbuf" generic-name="cellrendererpixbuf" _title="Pixbuf Renderer">
 
       <properties>
-        <property id="gicon" disabled="True"/>
-
         <property id="follow-state" save="False" custom-layout="True"/>
         <property id="attr-follow-state" _name="Follow State column" save="False" default="-1" custom-layout="True">
 	  <parameter-spec>
@@ -3413,6 +3434,20 @@ embedded in another object</_tooltip>
           <_tooltip>The column in the model to load the value from</_tooltip>
 	</property>
         <property id="use-attr-pixbuf" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
+
+        <property id="gicon" save="False" custom-layout="True"/>
+        <property id="attr-gicon" _name="GIcon column" save="False" default="-1" custom-layout="True">
+	  <parameter-spec>
+	    <type>GParamInt</type>
+	    <min>-1</min>
+	  </parameter-spec>
+          <_tooltip>The column in the model to load the value from</_tooltip>
+	</property>
+        <property id="use-attr-gicon" default="True" save="False" visible="False">
 	  <parameter-spec>
 	    <type>GParamBoolean</type>
 	  </parameter-spec>
@@ -3892,9 +3927,9 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkOffscreenWindow"/>
     <glade-widget-class-ref name="GtkDialog"/>
     <glade-widget-class-ref name="GtkAboutDialog"/>
-    <glade-widget-class-ref name="GtkColorSelectionDialog"/>
     <glade-widget-class-ref name="GtkFileChooserDialog"/>
-    <glade-widget-class-ref name="GtkFontSelectionDialog"/>
+    <glade-widget-class-ref name="GtkColorChooserDialog"/>
+    <glade-widget-class-ref name="GtkFontChooserDialog"/>
     <glade-widget-class-ref name="GtkMessageDialog"/>
     <glade-widget-class-ref name="GtkRecentChooserDialog"/>
     <glade-widget-class-ref name="GtkAssistant"/>
@@ -3907,6 +3942,7 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkNotebook"/>
     <glade-widget-class-ref name="GtkFrame"/>
     <glade-widget-class-ref name="GtkAspectFrame"/>
+    <glade-widget-class-ref name="GtkOverlay"/>
     <glade-widget-class-ref name="GtkMenuBar"/>
     <glade-widget-class-ref name="GtkToolbar"/>
     <glade-widget-class-ref name="GtkToolPalette"/>
@@ -3931,6 +3967,7 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkSwitch"/>
 
     <glade-widget-class-ref name="GtkEntry"/>
+    <glade-widget-class-ref name="GtkSearchEntry"/>
     <glade-widget-class-ref name="GtkSpinButton"/>
 
     <glade-widget-class-ref name="GtkComboBox"/>
@@ -3960,7 +3997,6 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkTreeView"/>
     <glade-widget-class-ref name="GtkIconView"/>
 
-    <glade-widget-class-ref name="GtkHandleBox"/>
     <glade-widget-class-ref name="GtkStatusbar"/>
 
     <glade-widget-class-ref name="GtkCalendar"/>
@@ -3975,9 +4011,8 @@ embedded in another object</_tooltip>
   <glade-widget-group name="gtk-composite" _title="Composite Widgets">
 
     <default-palette-state expanded="False"/>
-
-    <glade-widget-class-ref name="GtkColorSelection"/>
-    <glade-widget-class-ref name="GtkFontSelection"/>
+    <glade-widget-class-ref name="GtkColorChooserWidget"/>
+    <glade-widget-class-ref name="GtkFontChooserWidget"/>
     <glade-widget-class-ref name="GtkRecentChooserWidget"/>
     <glade-widget-class-ref name="GtkFileChooserWidget"/>
     <glade-widget-class-ref name="GtkAppChooserWidget"/>
@@ -4007,6 +4042,16 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkFileFilter"/>
     <glade-widget-class-ref name="GtkRecentFilter"/>
     <glade-widget-class-ref name="GtkRecentManager"/>
+  </glade-widget-group>
+
+  <glade-widget-group name="gtk-deprecated" _title="Deprecated">
+
+    <default-palette-state expanded="False"/>
+    <glade-widget-class-ref name="GtkColorSelectionDialog"/>
+    <glade-widget-class-ref name="GtkFontSelectionDialog"/>
+    <glade-widget-class-ref name="GtkColorSelection"/>
+    <glade-widget-class-ref name="GtkFontSelection"/>
+    <glade-widget-class-ref name="GtkHandleBox"/>
   </glade-widget-group>
 
 </glade-catalog>
