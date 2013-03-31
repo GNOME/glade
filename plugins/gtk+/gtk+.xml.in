@@ -659,7 +659,7 @@ embedded in another object</_tooltip>
 	</property>
 	<!-- We have to save/load icon-size as int, and fake the enum -->
 	<property id="icon-size" since="2.10" optional="True" optional-default="False" weight="0.5"
-		  default="GTK_ICON_SIZE_LARGE_TOOLBAR">
+		  default="GTK_ICON_SIZE_LARGE_TOOLBAR" save="False">
 	  <parameter-spec>
 	    <type>GParamEnum</type>
 	    <value-type>GtkIconSize</value-type>

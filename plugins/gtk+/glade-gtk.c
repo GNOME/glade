@@ -4379,17 +4379,21 @@ glade_gtk_write_icon_size (GladeWidget * widget,
   if (glade_property_get_enabled (size_prop) &&
       !glade_property_original_default (size_prop))
     {
+      gchar *write_prop_name = g_strdup (prop_name);
+
+      glade_util_replace (write_prop_name, '-', '_');
+
       pclass = glade_property_get_class (size_prop);
       prop_node = glade_xml_node_new (context, GLADE_TAG_PROPERTY);
       glade_xml_node_append_child (node, prop_node);
 
-      glade_xml_node_set_property_string (prop_node, GLADE_TAG_NAME,
-                                          glade_property_class_id (pclass));
+      glade_xml_node_set_property_string (prop_node, GLADE_TAG_NAME, write_prop_name);
 
       glade_property_get (size_prop, &icon_size);
       value = g_strdup_printf ("%d", icon_size);
       glade_xml_set_content (prop_node, value);
       g_free (value);
+      g_free (write_prop_name);
     }
 }
 
