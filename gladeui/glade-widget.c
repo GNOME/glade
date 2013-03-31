@@ -3980,11 +3980,11 @@ glade_widget_write_signals (GladeWidget * widget,
 	{
 	  signal = g_ptr_array_index (signals, i);
 
-	  sorted_signals =
-	    g_list_insert_sorted (sorted_signals,
-				  signal, (GCompareFunc)signal_compare);
+	  sorted_signals = g_list_prepend (sorted_signals, signal);
 	}
     }
+
+  sorted_signals = g_list_sort (sorted_signals, (GCompareFunc)signal_compare);
 
   for (l = sorted_signals; l; l = l->next)
     {
