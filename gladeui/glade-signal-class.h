@@ -66,6 +66,9 @@ void                  glade_signal_class_set_since                (GladeSignalCl
 guint16               glade_signal_class_since_major              (GladeSignalClass   *signal_class);
 guint16               glade_signal_class_since_minor              (GladeSignalClass   *signal_class);
 
+void                  glade_signal_class_set_deprecated           (GladeSignalClass   *signal_class,
+								   gboolean            deprecated);
+gboolean              glade_signal_class_deprecated               (GladeSignalClass   *signal_class);
 
 
 G_END_DECLS

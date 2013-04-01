@@ -176,6 +176,8 @@ struct _GladePropertyClass
 				 * in the project
 				 */
 
+  guint deprecated : 1; /* True if this property is deprecated */
+
   gdouble weight;	/* This will determine the position of this property in 
 			 * the editor.
 			 */
@@ -229,9 +231,10 @@ glade_property_class_new (GladeWidgetAdaptor *adaptor,
   property_class->weight = -1.0;
   property_class->parentless_widget = FALSE;
 
-  /* Initialize them to the base version */
+  /* Initialize property versions & deprecated to adaptor */
   property_class->version_since_major = GWA_VERSION_SINCE_MAJOR (adaptor);
   property_class->version_since_minor = GWA_VERSION_SINCE_MINOR (adaptor);
+  property_class->deprecated          = GWA_DEPRECATED (adaptor);
 
   return property_class;
 }
@@ -1478,6 +1481,13 @@ glade_property_class_since_minor (GladePropertyClass  *property_class)
   return property_class->version_since_minor;
 }
 
+gboolean
+glade_property_class_deprecated (GladePropertyClass  *property_class)
+{
+  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), FALSE);
+
+  return property_class->deprecated;
+}
 
 G_CONST_RETURN gchar *
 glade_property_class_id (GladePropertyClass  *property_class)
@@ -2087,6 +2097,16 @@ glade_property_class_update_from_node (GladeXmlNode * node,
   klass->parentless_widget =
       glade_xml_get_property_boolean (node, GLADE_TAG_PARENTLESS_WIDGET,
                                       klass->parentless_widget);
+
+
+  glade_xml_get_property_version (node, GLADE_TAG_VERSION_SINCE,
+				  &klass->version_since_major, 
+				  &klass->version_since_minor);
+
+  klass->deprecated =
+    glade_xml_get_property_boolean (node,
+				    GLADE_TAG_DEPRECATED,
+				    klass->deprecated);
 
 
   if ((buf = glade_xml_get_property_string

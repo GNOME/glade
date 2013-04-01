@@ -532,7 +532,11 @@ gwa_inherit_signals (GladeWidgetAdaptor *adaptor)
             {
               parent_signal = node->data;
 
-              /* Reset versioning in derived catalogs just once */
+              /* XXX FIXME: This is questionable, why should derived catalogs
+	       * reset the derived signal versions ???
+	       *
+	       * Reset versioning in derived catalogs just once
+	       */
               if (strcmp (adaptor->priv->catalog,
                           parent_adaptor->priv->catalog))
 		glade_signal_class_set_since (signal, 0, 0);
@@ -540,6 +544,8 @@ gwa_inherit_signals (GladeWidgetAdaptor *adaptor)
 		glade_signal_class_set_since (signal, 
 					      glade_signal_class_since_major (parent_signal),
 					      glade_signal_class_since_minor (parent_signal));
+
+	      glade_signal_class_set_deprecated (signal, glade_signal_class_deprecated (parent_signal));
             }
         }
     }

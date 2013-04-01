@@ -2088,6 +2088,11 @@ glade_project_preview (GladeProject *project, GladeWidget *gwidget)
      Verify code here (versioning, incompatability checks)
  *******************************************************************/
 
+/* Defined here for pretty translator comments (bug in intl tools, for some reason
+ * you can only comment about the line directly following, forcing you to write
+ * ugly messy code with comments in line breaks inside function calls).
+ */
+
 /* translators: refers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d' */
 #define WIDGET_VERSION_CONFLICT_MSGFMT _("This widget was introduced in %s %d.%d " \
                                          "while project targets %s %d.%d")
@@ -2100,11 +2105,6 @@ glade_project_preview (GladeProject *project, GladeWidget *gwidget)
 /* translators: refers to a widget '[%s]' loaded from toolkit version '%s %d.%d' */
 #define WIDGET_DEPRECATED_FMT          _("[%s] Object class '%s' from %s %d.%d is deprecated\n")
 
-
-/* Defined here for pretty translator comments (bug in intl tools, for some reason
- * you can only comment about the line directly following, forcing you to write
- * ugly messy code with comments in line breaks inside function calls).
- */
 
 /* translators: refers to a property in toolkit version '%s %d.%d' 
  * and a project targeting toolkit version '%s %d.%d' */
@@ -2119,14 +2119,24 @@ glade_project_preview (GladeProject *project, GladeWidget *gwidget)
 #define PACK_PROP_VERSION_CONFLICT_FMT _("[%s] Packing property '%s' of object class '%s' " \
                                          "was introduced in %s %d.%d\n")
 
-/* translators: refers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d' */
-#define SIGNAL_VERSION_CONFLICT_FMT    _("[%s] Signal '%s' of object class '%s' " \
-                                         "was introduced in %s %d.%d\n")
+#define PROP_DEPRECATED_MSG            _("This property is deprecated")
+
+/* translators: refers to a property '%s' of widget '[%s]' */
+#define PROP_DEPRECATED_FMT            _("[%s] Property '%s' of object class '%s' is deprecated")
 
 /* translators: refers to a signal in toolkit version '%s %d.%d' 
  * and a project targeting toolkit version '%s %d.%d' */
 #define SIGNAL_VERSION_CONFLICT_MSGFMT _("This signal was introduced in %s %d.%d " \
                                          "while project targets %s %d.%d")
+
+/* translators: refers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d' */
+#define SIGNAL_VERSION_CONFLICT_FMT    _("[%s] Signal '%s' of object class '%s' " \
+                                         "was introduced in %s %d.%d\n")
+
+#define SIGNAL_DEPRECATED_MSG          _("This signal is deprecated")
+
+/* translators: refers to a signal '%s' of widget '[%s]' */
+#define SIGNAL_DEPRECATED_FMT          _("[%s] Signal '%s' of object class '%s' is deprecated")
 
 
 static void
@@ -2134,7 +2144,8 @@ glade_project_verify_property_internal (GladeProject *project,
                                         GladeProperty *property,
                                         const gchar *path_name,
                                         GString *string,
-                                        gboolean forwidget)
+                                        gboolean forwidget,
+					gboolean saving)
 {
   GladeWidgetAdaptor *adaptor, *prop_adaptor;
   GladePropertyClass *pclass;
@@ -2179,6 +2190,17 @@ glade_project_verify_property_internal (GladeProject *project,
                                   glade_property_class_since_major (pclass),
                                   glade_property_class_since_minor (pclass));
     }
+  else if (!saving && glade_property_class_deprecated (pclass))
+    {
+      if (forwidget)
+	glade_property_set_support_warning (property, FALSE, PROP_DEPRECATED_MSG);
+      else
+        g_string_append_printf (string,
+                                PROP_DEPRECATED_FMT,
+                                path_name,
+				glade_property_class_get_name (pclass),
+                                glade_widget_adaptor_get_title (adaptor));
+    }
   else if (forwidget)
     glade_property_set_support_warning (property, FALSE, NULL);
 
@@ -2189,7 +2211,8 @@ static void
 glade_project_verify_properties_internal (GladeWidget *widget,
                                           const gchar *path_name,
                                           GString *string,
-                                          gboolean forwidget)
+                                          gboolean forwidget,
+					  gboolean saving)
 {
   GList *list;
   GladeProperty *property;
@@ -2199,7 +2222,7 @@ glade_project_verify_properties_internal (GladeWidget *widget,
       property = list->data;
       glade_project_verify_property_internal (glade_widget_get_project (widget), 
                                               property, path_name,
-                                              string, forwidget);
+                                              string, forwidget, saving);
     }
 
   /* Sometimes widgets on the clipboard have packing props with no parent */
@@ -2209,7 +2232,7 @@ glade_project_verify_properties_internal (GladeWidget *widget,
         {
           property = list->data;
           glade_project_verify_property_internal (glade_widget_get_project (widget), 
-                                                  property, path_name, string, forwidget);
+                                                  property, path_name, string, forwidget, saving);
         }
     }
 }
@@ -2219,7 +2242,8 @@ glade_project_verify_signal_internal (GladeWidget *widget,
                                       GladeSignal *signal,
                                       const gchar *path_name,
                                       GString *string,
-                                      gboolean forwidget)
+                                      gboolean forwidget,
+				      gboolean saving)
 {
   GladeSignalClass   *signal_class;
   GladeWidgetAdaptor *adaptor;
@@ -2264,6 +2288,17 @@ glade_project_verify_signal_internal (GladeWidget *widget,
                                 glade_signal_class_since_major (signal_class),
                                 glade_signal_class_since_minor (signal_class));
     }
+  else if (!saving && glade_signal_class_deprecated (signal_class))
+    {
+      if (forwidget)
+	glade_signal_set_support_warning (signal, SIGNAL_DEPRECATED_MSG);
+      else
+        g_string_append_printf (string,
+                                SIGNAL_DEPRECATED_FMT,
+                                path_name,
+                                glade_signal_get_name (signal),
+                                glade_widget_adaptor_get_title (adaptor));
+    }
   else if (forwidget)
     glade_signal_set_support_warning (signal, NULL);
 
@@ -2282,20 +2317,21 @@ glade_project_verify_property (GladeProperty *property)
   project = glade_widget_get_project (widget);
 
   if (project)
-    glade_project_verify_property_internal (project, property, NULL, NULL, TRUE);
+    glade_project_verify_property_internal (project, property, NULL, NULL, TRUE, FALSE);
 }
 
 void
 glade_project_verify_signal (GladeWidget *widget, GladeSignal *signal)
 {
-  glade_project_verify_signal_internal (widget, signal, NULL, NULL, TRUE);
+  glade_project_verify_signal_internal (widget, signal, NULL, NULL, TRUE, FALSE);
 }
 
 static void
 glade_project_verify_signals (GladeWidget *widget,
                               const gchar *path_name,
                               GString *string,
-                              gboolean forwidget)
+                              gboolean forwidget,
+			      gboolean saving)
 {
   GladeSignal *signal;
   GList *signals, *list;
@@ -2306,7 +2342,7 @@ glade_project_verify_signals (GladeWidget *widget,
         {
           signal = list->data;
           glade_project_verify_signal_internal (widget, signal, path_name,
-                                                string, forwidget);
+                                                string, forwidget, saving);
         }
       g_list_free (signals);
     }
@@ -2332,8 +2368,8 @@ glade_project_verify_properties (GladeWidget *widget)
   if (!project || project->priv->loading)
     return;
 
-  glade_project_verify_properties_internal (widget, NULL, NULL, TRUE);
-  glade_project_verify_signals (widget, NULL, NULL, TRUE);
+  glade_project_verify_properties_internal (widget, NULL, NULL, TRUE, FALSE);
+  glade_project_verify_signals (widget, NULL, NULL, TRUE, FALSE);
 
   glade_widget_support_changed (widget);
 }
@@ -2405,9 +2441,8 @@ glade_project_verify (GladeProject *project, gboolean saving)
 
           glade_project_verify_adaptor (project, glade_widget_get_adaptor (widget),
                                         path_name, string, saving, FALSE, NULL);
-          glade_project_verify_properties_internal (widget, path_name, string,
-                                                    FALSE);
-          glade_project_verify_signals (widget, path_name, string, FALSE);
+          glade_project_verify_properties_internal (widget, path_name, string, FALSE, saving);
+          glade_project_verify_signals (widget, path_name, string, FALSE, saving);
 
           g_free (path_name);
         }

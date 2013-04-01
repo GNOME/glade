@@ -118,6 +118,7 @@ G_CONST_RETURN gchar *glade_property_class_create_type             (GladePropert
 
 guint16               glade_property_class_since_major             (GladePropertyClass  *property_class);
 guint16               glade_property_class_since_minor             (GladePropertyClass  *property_class);
+gboolean              glade_property_class_deprecated              (GladePropertyClass  *property_class);
 
 GValue             *glade_property_class_make_gvalue_from_string (GladePropertyClass  *property_class,
 								  const gchar         *string,
