@@ -69,6 +69,7 @@
 #define CONFIG_KEY_SHOW_TOOLBAR     "show-toolbar"
 #define CONFIG_KEY_SHOW_TABS        "show-tabs"
 #define CONFIG_KEY_SHOW_STATUS      "show-statusbar"
+#define CONFIG_KEY_EDITOR_HEADER    "show-editor-header"
 
 #define GLADE_WINDOW_GET_PRIVATE(object) (G_TYPE_INSTANCE_GET_PRIVATE ((object),  \
 					  GLADE_TYPE_WINDOW,                      \
@@ -124,7 +125,7 @@ struct _GladeWindowPrivate
       GtkAction *undo, *redo, *cut, *copy, *paste, *delete;
       GtkAction *previous_project, *next_project;
       GtkAction *use_small_icons, *icons_and_labels;
-      GtkAction *toolbar_visible, *project_tabs_visible, *statusbar_visible;
+      GtkAction *toolbar_visible, *project_tabs_visible, *statusbar_visible, *editor_header_visible;
       GtkAction *selector;
     } action;
 
@@ -2042,6 +2043,15 @@ on_project_tabs_visible_action_toggled (GtkAction *action, GladeWindow *window)
 }
 
 void
+on_editor_header_action_toggled (GtkAction *action, GladeWindow *window)
+{
+  if (gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action)))
+    glade_editor_show_class_field (window->priv->editor);
+  else
+    glade_editor_hide_class_field (window->priv->editor);
+}
+
+void
 on_reference_action_activate (GtkAction *action, GladeWindow *window)
 {
   if (glade_util_have_devhelp ())
@@ -2714,6 +2724,9 @@ save_windows_config (GladeWindow *window, GKeyFile *config)
 
   g_key_file_set_boolean (config, CONFIG_GROUP_WINDOWS, CONFIG_KEY_SHOW_TABS,
                           gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (priv->action.project_tabs_visible)));
+
+  g_key_file_set_boolean (config, CONFIG_GROUP_WINDOWS, CONFIG_KEY_EDITOR_HEADER,
+                          gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (priv->action.editor_header_visible)));
 }
 
 static void
@@ -2862,7 +2875,7 @@ static void
 glade_window_config_load (GladeWindow *window)
 {
   GKeyFile *config = glade_app_get_config ();
-  gboolean show_toolbar, show_tabs, show_status;
+  gboolean show_toolbar, show_tabs, show_status, show_header;
   GladeWindowPrivate *priv = window->priv;
   GError *error = NULL;
 
@@ -2897,6 +2910,15 @@ glade_window_config_load (GladeWindow *window)
       error = (g_error_free (error), NULL);
     }
 
+  if ((show_header =
+       g_key_file_get_boolean (config, CONFIG_GROUP_WINDOWS,
+                               CONFIG_KEY_EDITOR_HEADER, &error)) == FALSE &&
+      error != NULL)
+    {
+      show_header = TRUE;
+      error = (g_error_free (error), NULL);
+    }
+
   if (show_toolbar)
     gtk_widget_show (priv->toolbar);
   else
@@ -2907,11 +2929,18 @@ glade_window_config_load (GladeWindow *window)
   else
     gtk_widget_hide (priv->statusbar);
 
+  if (show_header)
+    glade_editor_show_class_field (priv->editor);
+  else
+    glade_editor_hide_class_field (priv->editor);
+
   gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (priv->action.toolbar_visible), show_toolbar);
 
   gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (priv->action.project_tabs_visible), show_tabs);
 
   gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (priv->action.statusbar_visible), show_status);
+
+  gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (priv->action.editor_header_visible), show_header);
 
   /* Paned positions */
   load_paned_position (config, window->priv->left_pane, "left_pane", 200);
@@ -3082,7 +3111,6 @@ glade_window_constructed (GObject *object)
   priv->palettes_notebook = GET_OBJECT (builder, GTK_NOTEBOOK, "palettes_notebook");
   priv->inspectors_notebook = GET_OBJECT (builder, GTK_NOTEBOOK, "inspectors_notebook");
   priv->editor = GET_OBJECT (builder, GLADE_EDITOR, "editor");
-  glade_editor_hide_class_field (priv->editor);
   priv->statusbar = GET_OBJECT (builder, GTK_WIDGET, "statusbar");
   priv->toolbar = GET_OBJECT (builder, GTK_WIDGET, "toolbar");
   priv->search_entry = GET_OBJECT (builder, GTK_ENTRY, "search_entry");
@@ -3127,6 +3155,7 @@ glade_window_constructed (GObject *object)
   priv->action.toolbar_visible = GET_OBJECT (builder, GTK_ACTION, "toolbar_visible_action");
   priv->action.project_tabs_visible = GET_OBJECT (builder, GTK_ACTION, "project_tabs_visible_action");
   priv->action.statusbar_visible = GET_OBJECT (builder, GTK_ACTION, "statusbar_visible_action");
+  priv->action.editor_header_visible = GET_OBJECT (builder, GTK_ACTION, "editor_header_action");
   priv->action.selector = GET_OBJECT (builder, GTK_ACTION, "selector_radioaction");
   
   gtk_container_add (GTK_CONTAINER (window), vbox);

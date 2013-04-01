@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <!-- interface-requires gtk+ 3.0 -->
+  <!-- interface-requires gtk+ 3.8 -->
   <object class="GtkAccelGroup" id="accelgroup"/>
-  <object class="GtkActionGroup" id="project_list_actiongroup">
-    <property name="accel_group">accelgroup</property>
-    <signal name="connect-proxy" handler="on_actiongroup_connect_proxy" swapped="no"/>
-    <signal name="disconnect-proxy" handler="on_actiongroup_disconnect_proxy" swapped="no"/>
-  </object>
   <object class="GtkActionGroup" id="pointer_mode_actiongroup">
     <property name="accel_group">accelgroup</property>
     <child>
@@ -171,6 +166,11 @@
       <accelerator key="Page_Down" modifiers="GDK_CONTROL_MASK"/>
     </child>
   </object>
+  <object class="GtkActionGroup" id="project_list_actiongroup">
+    <property name="accel_group">accelgroup</property>
+    <signal name="connect-proxy" handler="on_actiongroup_connect_proxy" swapped="no"/>
+    <signal name="disconnect-proxy" handler="on_actiongroup_disconnect_proxy" swapped="no"/>
+  </object>
   <object class="GtkActionGroup" id="static_actiongroup">
     <property name="name">static_actiongroup</property>
     <property name="accel_group">accelgroup</property>
@@ -324,6 +324,14 @@
         <property name="group">icons_only_radioaction</property>
       </object>
     </child>
+    <child>
+      <object class="GtkToggleAction" id="editor_header_action">
+        <property name="label" translatable="yes">_Editor Header</property>
+        <property name="tooltip" translatable="yes">Show the header in the property editor</property>
+        <property name="active">True</property>
+        <signal name="toggled" handler="on_editor_header_action_toggled" swapped="no"/>
+      </object>
+    </child>
   </object>
   <object class="GtkAboutDialog" id="about_dialog">
     <property name="can_focus">False</property>
@@ -365,8 +373,8 @@ Sun GNOME Documentation Team &lt;gdocteam@sun.com&gt;</property>
     <property name="artists">Vincent Geddes &lt;vgeddes@gnome.org&gt;
 Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
     <property name="logo_icon_name">glade</property>
-    <signal name="delete-event" handler="gtk_widget_hide" swapped="no"/>
     <signal name="delete-event" handler="gtk_true" swapped="no"/>
+    <signal name="delete-event" handler="gtk_widget_hide" swapped="no"/>
     <signal name="response" handler="gtk_widget_hide" swapped="no"/>
     <child internal-child="vbox">
       <object class="GtkBox" id="aboutdialog-vbox1">
@@ -639,6 +647,13 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                   </object>
                 </child>
                 <child>
+                  <object class="GtkCheckMenuItem" id="editor_header_menuitem">
+                    <property name="related_action">editor_header_action</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                  </object>
+                </child>
+                <child>
                   <object class="GtkMenuItem" id="imagemenuitem23">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -676,12 +691,11 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                           </object>
                         </child>
                         <child>
-                          <object class="GtkImageMenuItem" id="use_small_icons_menuitem">
+                          <object class="GtkCheckMenuItem" id="use_small_icons_menuitem">
                             <property name="related_action">use_small_icons_action</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="use_underline">True</property>
-                            <property name="use_stock">True</property>
                           </object>
                         </child>
                       </object>
@@ -1065,8 +1079,8 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                     <property name="show_border">False</property>
                     <property name="scrollable">True</property>
                     <signal name="page-added" handler="on_notebook_tab_added" swapped="no"/>
-                    <signal name="switch-page" handler="on_notebook_switch_page" swapped="no"/>
                     <signal name="page-removed" handler="on_notebook_tab_removed" swapped="no"/>
+                    <signal name="switch-page" handler="on_notebook_switch_page" swapped="no"/>
                   </object>
                 </child>
               </object>
@@ -1144,8 +1158,8 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Glade Preferences</property>
     <property name="type_hint">dialog</property>
-    <signal name="delete-event" handler="gtk_widget_hide" swapped="no"/>
     <signal name="delete-event" handler="gtk_true" swapped="no"/>
+    <signal name="delete-event" handler="gtk_widget_hide" swapped="no"/>
     <signal name="response" handler="gtk_widget_hide" swapped="no"/>
     <child internal-child="vbox">
       <object class="GtkBox" id="dialog-vbox1">
@@ -1315,8 +1329,8 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
     <property name="type_hint">dialog</property>
     <property name="transient_for">preferences_dialog</property>
     <property name="action">select-folder</property>
-    <signal name="delete-event" handler="gtk_widget_hide" swapped="no"/>
     <signal name="delete-event" handler="gtk_true" swapped="no"/>
+    <signal name="delete-event" handler="gtk_widget_hide" swapped="no"/>
     <signal name="response" handler="on_preferences_filechooserdialog_response" object="catalog_path_comboboxtext" swapped="no"/>
     <child internal-child="vbox">
       <object class="GtkBox" id="filechooserdialog-vbox1">

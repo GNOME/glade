@@ -50,6 +50,7 @@ void on_dock_action_toggled                 (GtkAction *action, GladeWindow *win
 void on_toolbar_visible_action_toggled      (GtkAction *action, GladeWindow *window);
 void on_statusbar_visible_action_toggled    (GtkAction *action, GladeWindow *window);
 void on_project_tabs_visible_action_toggled (GtkAction *action, GladeWindow *window);
+void on_editor_header_action_toggled        (GtkAction *action, GladeWindow *window);
 
 void on_palette_appearance_radioaction_changed (GtkRadioAction *action,
                                                 GtkRadioAction *current,
