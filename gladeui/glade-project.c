@@ -4736,6 +4736,8 @@ glade_project_model_get_value (GtkTreeModel *model,
                   g_object_get_data (glade_widget_get_object (widget),
                                      "special-child-type")) != NULL)
           str = g_strdup_printf (_("(%s child)"), child_type);
+        else if (glade_widget_get_is_composite (widget))
+          str = g_strdup_printf (_("(template)"));
         else if ((ref_prop = 
                   glade_widget_get_parentless_widget_ref (widget)) != NULL)
         {
