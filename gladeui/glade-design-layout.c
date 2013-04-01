@@ -2180,19 +2180,6 @@ _glade_design_layout_get_hot_point (GladeDesignLayout *layout,
     *y = priv->drag_y;
 }
 
-static gboolean
-widget_is_inside_fixed (GladeWidget *widget)
-{
-  while (widget)
-    {
-      if (GTK_IS_FIXED (glade_widget_get_object (widget)))
-        return TRUE;
-      widget = glade_widget_get_parent (widget);
-    }
-
-  return FALSE;
-}
-
 /*
  * _glade_design_layout_do_event:
  * @layout: A #GladeDesignLayout
@@ -2219,43 +2206,52 @@ _glade_design_layout_do_event (GladeDesignLayout *layout, GdkEvent *event)
 
   mode = glade_project_get_pointer_mode (priv->project);
   glade_design_layout_find_inside_container (widget, &data);
-
-  if (event->type == GDK_BUTTON_PRESS && event->button.button == 1 &&
-      ((event->button.state & GDK_SHIFT_MASK && mode == GLADE_POINTER_SELECT) ||
-       mode == GLADE_POINTER_DRAG_RESIZE))
-    {
-      GObject *source;
-              
-      if (data.gwidget && (source = glade_widget_get_object (data.gwidget)) &&
-          (event->button.state & GDK_SHIFT_MASK || !widget_is_inside_fixed (data.gwidget)))
-        {
-          priv->drag_source = GTK_WIDGET (source);
-
-          gtk_widget_translate_coordinates (widget, priv->drag_source,
-                                            data.x, data.y,
-                                            &priv->drag_x, &priv->drag_y);
-          return TRUE;
-        }
-    }
-  
+ 
   /* Check if we want to enter in margin edit mode */
-  if (event->type == GDK_BUTTON_PRESS && event->button.button == 1 &&
-      mode != GLADE_POINTER_DRAG_RESIZE &&
+  if ((event->type == GDK_BUTTON_PRESS || event->type == GDK_2BUTTON_PRESS)  &&
+      !(event->button.state & GDK_SHIFT_MASK) && /* SHIFT is reserved for Drag&Resize */
+      mode != GLADE_POINTER_DRAG_RESIZE &&       /* This mode is for adaptors implementations */
       (l = glade_project_selection_get (priv->project)) &&
       g_list_next (l) == NULL && GTK_IS_WIDGET (l->data) && 
       gtk_widget_is_ancestor (l->data, widget))
     {
       if (gdl_get_margins_from_pointer (widget, l->data, data.x, data.y))
         {
-          if (priv->selection == NULL)
+          if (event->button.button == 2)
             {
-              gdl_edit_mode_set_selection (layout,
-                                           (event->button.state & GDK_SHIFT_MASK) ? 
-                                           GLADE_POINTER_ALIGN_EDIT : GLADE_POINTER_MARGIN_EDIT,
+              glade_project_set_pointer_mode (priv->project,
+                                              (mode == GLADE_POINTER_MARGIN_EDIT) ?
+                                               GLADE_POINTER_ALIGN_EDIT :
+                                               GLADE_POINTER_MARGIN_EDIT);
+              return TRUE;
+            }
+          else if (event->button.button == 1 && priv->selection == NULL)
+            {
+              gdl_edit_mode_set_selection (layout, GLADE_POINTER_MARGIN_EDIT,
                                            l->data);
               return TRUE;
             }
+
           return FALSE;
+        }
+    }
+
+  if (event->type == GDK_BUTTON_PRESS && event->button.button == 1 &&
+      mode == GLADE_POINTER_SELECT)
+    {
+      GObject *source;
+
+      if (event->button.state & GDK_SHIFT_MASK)
+        {
+          priv->drag_source = NULL;
+        }
+      else if (data.gwidget && (source = glade_widget_get_object (data.gwidget)))
+        {
+          priv->drag_source = GTK_WIDGET (source);
+
+          gtk_widget_translate_coordinates (widget, priv->drag_source,
+                                            data.x, data.y,
+                                            &priv->drag_x, &priv->drag_y);
         }
     }
 
