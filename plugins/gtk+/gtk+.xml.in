@@ -2256,7 +2256,10 @@ embedded in another object</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkToggleAction" generic-name="toggleaction" _title="Toggle Action" />
-    <glade-widget-class name="GtkRadioAction" generic-name="radioaction" _title="Radio Action" />
+    <glade-widget-class name="GtkRadioAction" generic-name="radioaction" _title="Radio Action">
+      <property id="current-value" disabled="True"/>
+    </glade-widget-class>
+
     <glade-widget-class name="GtkRecentAction" generic-name="recentaction" _title="Recent Action" since="2.12"/>
 
     <glade-widget-class name="GtkActionGroup" generic-name="actiongroup" _title="Action Group" 
