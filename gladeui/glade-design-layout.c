@@ -1900,54 +1900,48 @@ glade_design_layout_finalize (GObject *object)
   G_OBJECT_CLASS (glade_design_layout_parent_class)->finalize (object);
 }
 
+static gboolean
+on_drag_icon_draw (GtkWidget *widget, cairo_t *cr, GtkWidget *drag_source)
+{
+  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+  cairo_paint (cr);
+
+  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+  cairo_push_group (cr);
+  gtk_widget_draw (drag_source, cr);
+  cairo_pop_group_to_source (cr);
+  cairo_paint_with_alpha (cr, .5);
+
+  return FALSE;
+}
+
 static void
 glade_design_layout_drag_begin (GtkWidget *widget, GdkDragContext *context)
 {
   GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_PRIVATE (widget);
-  cairo_pattern_t *pattern;
-  cairo_surface_t *surface;
   GtkAllocation alloc;
-  GtkWidget *window;
   GdkScreen *screen;
-  cairo_t *cr;
-  gint x, y;
+  GdkVisual *visual;
+  GtkWidget *window;
 
   gtk_widget_get_allocation (priv->drag_source, &alloc);
 
-  gtk_widget_translate_coordinates (priv->drag_source, widget,
-                                    alloc.x, alloc.y,
-                                    &x, &y);
-
   screen = gdk_window_get_screen (gdk_drag_context_get_source_window (context));
+  visual = gdk_screen_get_rgba_visual (screen);
   window = gtk_window_new (GTK_WINDOW_POPUP);
+  
+  gtk_widget_set_size_request (window, alloc.width, alloc.height);
   gtk_window_set_type_hint (GTK_WINDOW (window), GDK_WINDOW_TYPE_HINT_DND);
   gtk_window_set_screen (GTK_WINDOW (window), screen);
-
-  gtk_widget_set_events (window, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);
+  gtk_widget_set_visual (window, visual);
   gtk_widget_set_app_paintable (window, TRUE);
 
-  gtk_widget_set_size_request (window, alloc.width, alloc.height);
-  gtk_widget_realize (window);
-
-  surface = cairo_image_surface_create (CAIRO_FORMAT_RGB24, alloc.width, alloc.height);
-  cr = cairo_create (surface);
-
-  gdk_cairo_set_source_window (cr, priv->window, alloc.x - x, alloc.y - y);
-  cairo_paint (cr);
-  cairo_surface_flush (surface);
-  
-  pattern = cairo_pattern_create_for_surface (surface);
-  
-  gdk_window_set_background_pattern (gtk_widget_get_window (window), pattern);
-
-  gtk_widget_set_opacity (window, .5);
-  gtk_drag_set_icon_widget (context, window, priv->drag_x, priv->drag_y);
-
-  cairo_destroy (cr);
-  cairo_pattern_destroy (pattern);
-  cairo_surface_destroy (surface);
+  g_signal_connect_object (window, "draw",
+                           G_CALLBACK (on_drag_icon_draw),
+                           priv->drag_source, 0);
 
   priv->drag_icon = g_object_ref_sink (window);
+  gtk_drag_set_icon_widget (context, window, priv->drag_x, priv->drag_y);
 }
 
 static void
