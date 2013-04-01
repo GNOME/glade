@@ -499,38 +499,63 @@ add_columns (GtkTreeView *view)
 {
   GtkTreeViewColumn *column;
   GtkCellRenderer *renderer;
+  GtkCellAreaBox *box;
 
-  column = gtk_tree_view_column_new ();
+  /* Use a GtkCellArea box to set the alignments manually */
+  box = (GtkCellAreaBox *)gtk_cell_area_box_new ();
 
+  column = gtk_tree_view_column_new_with_area (GTK_CELL_AREA (box));
+  gtk_tree_view_column_set_sizing (column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+  gtk_cell_area_box_set_spacing (GTK_CELL_AREA_BOX (box), 2);
+
+
+  /* First pixbuf sell needs some spacing after the expander */
   renderer = gtk_cell_renderer_pixbuf_new ();
-  gtk_tree_view_column_pack_start (column, renderer, FALSE);
+  gtk_cell_renderer_set_padding (renderer, 6, 0);
+  gtk_cell_renderer_set_alignment (renderer, 1.0, 0.5);
+
+  gtk_cell_area_box_pack_start (box, renderer, FALSE, FALSE, FALSE);
   gtk_tree_view_column_set_attributes (column,
                                        renderer,
                                        "icon_name",
                                        GLADE_PROJECT_MODEL_COLUMN_ICON_NAME,
                                        NULL);
 
+  /* Widget Name */
   renderer = gtk_cell_renderer_text_new ();
-  gtk_tree_view_column_pack_start (column, renderer, FALSE);
+  gtk_cell_area_box_pack_start (box, renderer, FALSE, FALSE, FALSE);
   gtk_tree_view_column_set_attributes (column,
                                        renderer,
                                        "text", GLADE_PROJECT_MODEL_COLUMN_NAME,
                                        NULL);
 
+  /* Padding */
   renderer = gtk_cell_renderer_text_new ();
-  g_object_set (renderer, "style", PANGO_STYLE_ITALIC, NULL);
-  gtk_tree_view_column_pack_start (column, renderer, FALSE);
+  g_object_set (G_OBJECT (renderer), "width", 8, NULL);
+  gtk_cell_area_box_pack_start (box, renderer, FALSE, FALSE, FALSE);
+
+  /* Class name */
+  renderer = gtk_cell_renderer_text_new ();
+  g_object_set (G_OBJECT (renderer),
+                "style", PANGO_STYLE_ITALIC,
+		"foreground", "Gray",
+		NULL);
+  gtk_cell_area_box_pack_start (box, renderer, FALSE, FALSE, FALSE);
   gtk_tree_view_column_set_attributes (column,
                                        renderer,
                                        "text",
                                        GLADE_PROJECT_MODEL_COLUMN_TYPE_NAME,
                                        NULL);
 
-
+  /* Misc detail */
   renderer = gtk_cell_renderer_text_new ();
   g_object_set (G_OBJECT (renderer),
-                "style", PANGO_STYLE_ITALIC, "foreground", "Gray", NULL);
-  gtk_tree_view_column_pack_start (column, renderer, FALSE);
+                "style", PANGO_STYLE_ITALIC,
+		"foreground", "Gray",
+		"scale", 0.8F,
+		"yalign", 0.8F,
+		NULL);
+  gtk_cell_area_box_pack_start (box, renderer, FALSE, FALSE, FALSE);
   gtk_tree_view_column_set_attributes (column,
                                        renderer,
                                        "text", GLADE_PROJECT_MODEL_COLUMN_MISC,
