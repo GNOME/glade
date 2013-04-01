@@ -35,8 +35,9 @@ G_BEGIN_DECLS
 #define GLADE_IS_BOOL_TOGGLE_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_BOOL_TOGGLE))
 #define GLADE_BOOL_TOGGLE_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_BOOL_TOGGLE, GladeBoolToggleClass))
 
-typedef struct _GladeBoolToggleClass GladeBoolToggleClass;
-typedef struct _GladeBoolToggle GladeBoolToggle;
+typedef struct _GladeBoolToggle        GladeBoolToggle;
+typedef struct _GladeBoolTogglePrivate GladeBoolTogglePrivate;
+typedef struct _GladeBoolToggleClass   GladeBoolToggleClass;
 
 struct _GladeBoolToggleClass
 {
@@ -46,7 +47,7 @@ struct _GladeBoolToggleClass
 struct _GladeBoolToggle
 {
   GtkToggleButton parent_instance;
-  gpointer priv;
+  GladeBoolTogglePrivate *priv;
 };
 
 GType glade_bool_toggle_get_type (void) G_GNUC_CONST;
