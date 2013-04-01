@@ -802,7 +802,7 @@ glade_gtk_widget_deep_post_create (GladeWidgetAdaptor * adaptor,
                       G_CALLBACK (widget_parent_changed), adaptor);
 
   if (!glade_widget_adaptor_get_book (adaptor) || !glade_util_have_devhelp ())
-    glade_widget_remove_action (gwidget, "read_documentation");
+    glade_widget_set_action_visible (gwidget, "read_documentation", FALSE);
 }
 
 void
