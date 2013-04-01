@@ -327,6 +327,8 @@ embedded in another object</_tooltip>
     </glade-widget-class>
     
     <glade-widget-class name="GtkBox" generic-name="box" _title="Box">
+      <create-widget-function>glade_gtk_create_fixed_widget</create-widget-function>
+      <post-create-function>glade_gtk_box_post_create</post-create-function>
       <get-children-function>glade_gtk_box_get_children</get-children-function>
       <set-property-function>glade_gtk_box_set_property</set-property-function>
       <get-property-function>glade_gtk_box_get_property</get-property-function>
@@ -1539,6 +1541,7 @@ embedded in another object</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkGrid" generic-name="grid" _title="Grid">
+      <create-widget-function>glade_gtk_create_fixed_widget</create-widget-function>
       <post-create-function>glade_gtk_grid_post_create</post-create-function>
       <child-set-property-function>glade_gtk_grid_set_child_property</child-set-property-function>
       <child-verify-function>glade_gtk_grid_child_verify_property</child-verify-function>
