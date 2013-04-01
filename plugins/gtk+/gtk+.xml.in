@@ -1,6 +1,6 @@
 <glade-catalog name="gtk+"
-	       version="3.6"
-	       targetable="3.4,3.2,3.0"
+	       version="3.8"
+	       targetable="3.6,3.4,3.2,3.0"
                icon-prefix="gtk"
                library="gladegtk"
                domain="glade3"
@@ -1139,6 +1139,13 @@ embedded in another object</_tooltip>
 	</property>
       </properties>
 
+      <signals>
+	<signal id="pressed" deprecated="True"/>
+	<signal id="released" deprecated="True"/>
+	<signal id="enter" deprecated="True"/>
+	<signal id="leave" deprecated="True"/>
+      </signals>
+
     </glade-widget-class>
   
     <glade-widget-class name="GtkToggleButton" generic-name="togglebutton" _title="Toggle Button">
@@ -1162,10 +1169,6 @@ embedded in another object</_tooltip>
       <signals>
 	<signal id="wrapped" since="2.10"/>
 	<signal id="preedit-changed" since="2.20"/>
-	<signal id="pressed" deprecated="True"/>
-	<signal id="released" deprecated="True"/>
-	<signal id="enter" deprecated="True"/>
-	<signal id="leave" deprecated="True"/>
       </signals>
 
       <properties>
