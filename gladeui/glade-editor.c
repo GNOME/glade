@@ -142,8 +142,6 @@ G_DEFINE_TYPE (GladeEditor, glade_editor, GTK_TYPE_VBOX);
 
 static GParamSpec *properties[N_PROPERTIES];
 
-static void glade_editor_reset_dialog (GladeEditor *editor);
-
 static void
 glade_editor_set_property (GObject *object,
                            guint prop_id,
@@ -314,8 +312,7 @@ glade_editor_notebook_page (GladeEditor *editor,
       gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
                                       GTK_POLICY_AUTOMATIC,
                                       GTK_POLICY_AUTOMATIC);
-      gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (sw),
-                                             container);
+      gtk_container_add (GTK_CONTAINER (sw), container);
 
       gtk_notebook_insert_page (GTK_NOTEBOOK (editor->priv->notebook), sw,
                                 label_widget, page++);
@@ -929,7 +926,7 @@ glade_editor_reset_toggled (GtkCellRendererToggle *cell,
 }
 
 static GtkWidget *
-glade_editor_reset_view ()
+glade_editor_reset_view (void)
 {
   GtkWidget *view_widget;
   GtkTreeModel *model;

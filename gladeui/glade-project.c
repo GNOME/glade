@@ -2393,8 +2393,7 @@ glade_project_verify_dialog (GladeProject *project,
 
   gtk_text_buffer_set_text (buffer, string->str, -1);
 
-  gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (swindow),
-                                         textview);
+  gtk_container_add (GTK_CONTAINER (swindow), textview);
   gtk_container_add (GTK_CONTAINER (expander), swindow);
   gtk_widget_show_all (expander);
 

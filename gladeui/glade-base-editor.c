@@ -1799,22 +1799,28 @@ glade_base_editor_init (GladeBaseEditor *editor)
   gtk_container_add (GTK_CONTAINER (scroll), e->treeview);
 
   /* Add/Remove buttons */
-  button_table = gtk_table_new (1, 2, TRUE);
+  button_table = gtk_grid_new ();
+  gtk_orientable_set_orientation (GTK_ORIENTABLE (button_table),
+                                  GTK_ORIENTATION_VERTICAL);
+  gtk_grid_set_column_homogeneous (GTK_GRID (button_table), TRUE);
+
   gtk_widget_show (button_table);
-  gtk_table_set_col_spacings (GTK_TABLE (button_table), 8);
+  gtk_grid_set_column_spacing (GTK_GRID (button_table), 8);
   gtk_box_pack_start (GTK_BOX (tree_vbox), button_table, FALSE, TRUE, 0);
 
   button = gtk_button_new_from_stock (GTK_STOCK_ADD);
+  gtk_widget_set_hexpand (button, TRUE);
   gtk_widget_show (button);
   g_signal_connect (button, "clicked",
                     G_CALLBACK (glade_base_editor_add_activate), editor);
-  gtk_table_attach_defaults (GTK_TABLE (button_table), button, 0, 1, 0, 1);
+  gtk_grid_attach (GTK_GRID (button_table), button, 0, 0, 1, 1);
 
   e->remove_button = button = gtk_button_new_from_stock (GTK_STOCK_REMOVE);
   gtk_widget_show (button);
+  gtk_widget_set_hexpand (button, TRUE);
   g_signal_connect (button, "clicked",
                     G_CALLBACK (glade_base_editor_delete_activate), editor);
-  gtk_table_attach_defaults (GTK_TABLE (button_table), button, 1, 2, 0, 1);
+  gtk_grid_attach (GTK_GRID (button_table), button, 1, 0, 1, 1);
 
   /* Properties Vbox */
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 8);
@@ -1837,8 +1843,7 @@ glade_base_editor_init (GladeBaseEditor *editor)
   gtk_grid_set_column_spacing (GTK_GRID (e->table), 4);
   gtk_grid_set_row_spacing (GTK_GRID (e->table), 4);
   gtk_widget_show (e->table);
-  gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scroll),
-                                         e->table);
+  gtk_container_add (GTK_CONTAINER (scroll), e->table);
 
   /* Signal Editor */
   e->signal_editor = glade_signal_editor_new ();
@@ -1911,8 +1916,7 @@ glade_base_editor_new (GObject *container, GladeEditable *main_editable, ...)
 
   glade_editable_load (main_editable, gcontainer);
   gtk_widget_show (GTK_WIDGET (main_editable));
-  gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (e->main_scroll),
-                                         GTK_WIDGET (main_editable));
+  gtk_container_add (GTK_CONTAINER (e->main_scroll), GTK_WIDGET (main_editable));
 
   child_type = g_new0 (ChildTypeTab, 1);
   child_type->parent_type = G_OBJECT_TYPE (container);

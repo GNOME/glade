@@ -261,6 +261,9 @@ glade_util_ui_message (GtkWidget *parent,
                         (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
                         widget, TRUE, TRUE, 2);
       gtk_widget_show (widget);
+
+      /* If theres additional content, make it resizable */
+      gtk_window_set_resizable (GTK_WINDOW (dialog), TRUE);
     }
   
   response = gtk_dialog_run (GTK_DIALOG (dialog));
@@ -1640,7 +1643,6 @@ glade_utils_hijack_key_press (GtkWindow *win,
     }
   return FALSE;
 }
-
 
 
 void

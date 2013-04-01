@@ -1233,8 +1233,11 @@ glade_widget_adaptor_get_eprop_type (GParamSpec *pspec)
     type = GLADE_TYPE_EPROP_FLAGS;
   else if (G_IS_PARAM_SPEC_VALUE_ARRAY (pspec))
     {
+      /* Require deprecated code */
+      G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
       if (pspec->value_type == G_TYPE_VALUE_ARRAY)
         type = GLADE_TYPE_EPROP_TEXT;
+      G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
     }
   else if (G_IS_PARAM_SPEC_BOXED (pspec))
     {

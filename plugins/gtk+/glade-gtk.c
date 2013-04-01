@@ -4090,13 +4090,20 @@ glade_gtk_color_button_refresh_color (GtkColorButton * button,
                                       GladeWidget * gbutton)
 {
   GladeProperty *property;
+  GdkRGBA rgba = { 0, };
+
+  gtk_color_chooser_get_rgba (GTK_COLOR_CHOOSER (button), &rgba);
 
   if ((property = glade_widget_get_property (gbutton, "color")) != NULL)
     {
       if (glade_property_get_enabled (property))
 	{
 	  GdkColor color = { 0, };
-	  gtk_color_button_get_color (button, &color);
+
+	  color.red   = (gint16) (rgba.red * 65535);
+	  color.green = (gint16) (rgba.green * 65535);
+	  color.blue  = (gint16) (rgba.blue * 65535);
+
 	  glade_command_set_property (property, &color);
 	}
     }
@@ -4104,11 +4111,7 @@ glade_gtk_color_button_refresh_color (GtkColorButton * button,
   if ((property = glade_widget_get_property (gbutton, "rgba")) != NULL)
     {
       if (glade_property_get_enabled (property))
-	{
-	  GdkRGBA rgba = { 0, };
-	  gtk_color_button_get_rgba (button, &rgba);
-	  glade_command_set_property (property, &rgba);
-	}
+	glade_command_set_property (property, &rgba);
     }
 }
 
@@ -4124,15 +4127,24 @@ glade_gtk_color_button_set_property (GladeWidgetAdaptor * adaptor,
     {
       if ((property = glade_widget_get_property (gwidget, "color")) != NULL &&
 	  glade_property_get_enabled (property) && g_value_get_boxed (value))
-	gtk_color_button_set_color (GTK_COLOR_BUTTON (object),
-				    (GdkColor *) g_value_get_boxed (value));
+	{
+	  GdkColor *color = g_value_get_boxed (value);
+	  GdkRGBA copy;
+
+	  copy.red   = color->red   / 65535.0;
+	  copy.green = color->green / 65535.0;
+	  copy.blue  = color->blue  / 65535.0;
+	  copy.alpha = 1.0;
+
+	  gtk_color_chooser_set_rgba (GTK_COLOR_CHOOSER (object), &copy);
+	}
     }
   else if (!strcmp (id, "rgba"))
     {
       if ((property = glade_widget_get_property (gwidget, "rgba")) != NULL &&
 	  glade_property_get_enabled (property) && g_value_get_boxed (value))
-	gtk_color_button_set_rgba (GTK_COLOR_BUTTON (object),
-				   (GdkRGBA *) g_value_get_boxed (value));
+	gtk_color_chooser_set_rgba (GTK_COLOR_CHOOSER (object),
+				    (GdkRGBA *) g_value_get_boxed (value));
     }
   else
     GWA_GET_CLASS (GTK_TYPE_BUTTON)->set_property (adaptor, object, id, value);
@@ -4368,7 +4380,6 @@ glade_gtk_write_icon_size (GladeWidget * widget,
 {
   GladeXmlNode *prop_node;
   GladeProperty *size_prop;
-  GladePropertyClass *pclass;
   GtkIconSize icon_size;
   gchar *value;
 
@@ -4383,7 +4394,6 @@ glade_gtk_write_icon_size (GladeWidget * widget,
 
       glade_util_replace (write_prop_name, '-', '_');
 
-      pclass = glade_property_get_class (size_prop);
       prop_node = glade_xml_node_new (context, GLADE_TAG_PROPERTY);
       glade_xml_node_append_child (node, prop_node);
 

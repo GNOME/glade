@@ -1245,21 +1245,16 @@ glade_eprop_color_load (GladeEditorProperty *eprop, GladeProperty *property)
       if (pspec->value_type == GDK_TYPE_COLOR)
 	{
 	  if ((color = g_value_get_boxed (glade_property_inline_value (property))) != NULL)
-	    gtk_color_button_set_color (GTK_COLOR_BUTTON (eprop_color->cbutton), color);
-	  else
 	    {
-	      GdkColor black = { 0, };
+	      GdkRGBA copy;
 
-	      /* Manually fill it with black for an NULL value.
-	       */
-	      if (gdk_color_parse ("Black", &black))
-		gtk_color_button_set_color (GTK_COLOR_BUTTON (eprop_color->cbutton), &black);
+	      copy.red   = color->red   / 65535.0;
+	      copy.green = color->green / 65535.0;
+	      copy.blue  = color->blue  / 65535.0;
+	      copy.alpha = 1.0;
+
+	      gtk_color_chooser_set_rgba (GTK_COLOR_CHOOSER (eprop_color->cbutton), &copy);
 	    }
-	}
-      else if (pspec->value_type == GDK_TYPE_RGBA)
-	{
-	  if ((rgba = g_value_get_boxed (glade_property_inline_value (property))) != NULL)
-	    gtk_color_button_set_rgba (GTK_COLOR_BUTTON (eprop_color->cbutton), rgba);
 	  else
 	    {
 	      GdkRGBA black = { 0, };
@@ -1267,7 +1262,21 @@ glade_eprop_color_load (GladeEditorProperty *eprop, GladeProperty *property)
 	      /* Manually fill it with black for an NULL value.
 	       */
 	      if (gdk_rgba_parse (&black, "Black"))
-		gtk_color_button_set_rgba (GTK_COLOR_BUTTON (eprop_color->cbutton), &black);
+		gtk_color_chooser_set_rgba (GTK_COLOR_CHOOSER (eprop_color->cbutton), &black);
+	    }
+	}
+      else if (pspec->value_type == GDK_TYPE_RGBA)
+	{
+	  if ((rgba = g_value_get_boxed (glade_property_inline_value (property))) != NULL)
+	      gtk_color_chooser_set_rgba (GTK_COLOR_CHOOSER (eprop_color->cbutton), rgba);
+	  else
+	    {
+	      GdkRGBA black = { 0, };
+
+	      /* Manually fill it with black for an NULL value.
+	       */
+	      if (gdk_rgba_parse (&black, "Black"))
+		gtk_color_chooser_set_rgba (GTK_COLOR_CHOOSER (eprop_color->cbutton), &black);
 	    }
 	}
     }
@@ -1276,7 +1285,6 @@ glade_eprop_color_load (GladeEditorProperty *eprop, GladeProperty *property)
 static void
 glade_eprop_color_changed (GtkWidget *button, GladeEditorProperty *eprop)
 {
-  GdkColor color = { 0, };
   GdkRGBA rgba = { 0, };
   GValue value = { 0, };
   GParamSpec *pspec;
@@ -1287,20 +1295,22 @@ glade_eprop_color_changed (GtkWidget *button, GladeEditorProperty *eprop)
   pspec = glade_property_class_get_pspec (eprop->priv->klass);
   g_value_init (&value, pspec->value_type);
 
+  gtk_color_chooser_get_rgba (GTK_COLOR_CHOOSER (button), &rgba);
+
   if (pspec->value_type == GDK_TYPE_COLOR)
     {
-      gtk_color_button_get_color (GTK_COLOR_BUTTON (button), &color);
+      GdkColor color = { 0, };
+
+      color.red   = (gint16) (rgba.red * 65535);
+      color.green = (gint16) (rgba.green * 65535);
+      color.blue  = (gint16) (rgba.blue * 65535);
 
       g_value_set_boxed (&value, &color);
     }
   else if (pspec->value_type == GDK_TYPE_RGBA)
-    {
-      gtk_color_button_get_rgba (GTK_COLOR_BUTTON (button), &rgba);
+    g_value_set_boxed (&value, &rgba);
 
-      g_value_set_boxed (&value, &rgba);
-    }
-
-  glade_editor_property_commit_no_callback (eprop, &value);
+  glade_editor_property_commit (eprop, &value);
   g_value_unset (&value);
 }
 
@@ -1327,7 +1337,9 @@ glade_eprop_color_create_input (GladeEditorProperty *eprop)
   gtk_box_pack_start (GTK_BOX (hbox), eprop_color->cbutton, FALSE, FALSE, 0);
 
   if (pspec->value_type == GDK_TYPE_RGBA)
-    gtk_color_button_set_use_alpha (GTK_COLOR_BUTTON (eprop_color->cbutton), TRUE);
+    gtk_color_chooser_set_use_alpha (GTK_COLOR_CHOOSER (eprop_color->cbutton), TRUE);
+  else
+    gtk_color_chooser_set_use_alpha (GTK_COLOR_CHOOSER (eprop_color->cbutton), FALSE);
 
   g_signal_connect (G_OBJECT (eprop_color->cbutton), "color-set",
                     G_CALLBACK (glade_eprop_color_changed), eprop);
@@ -1633,12 +1645,18 @@ glade_eprop_text_load (GladeEditorProperty *eprop, GladeProperty *property)
   else if (GTK_IS_TEXT_VIEW (eprop_text->text_entry))
     {
       GtkTextBuffer *buffer;
+      GType value_array_type;
+
+      /* Deprecated GValueArray */
+      G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
+      value_array_type = G_TYPE_VALUE_ARRAY;
+      G_GNUC_END_IGNORE_DEPRECATIONS;
 
       buffer =
           gtk_text_view_get_buffer (GTK_TEXT_VIEW (eprop_text->text_entry));
 
       if (pspec->value_type == G_TYPE_STRV ||
-          pspec->value_type == G_TYPE_VALUE_ARRAY)
+	  pspec->value_type == value_array_type)
         {
 	  GladePropertyClass *pclass = glade_property_get_class (property);
           gchar *text = glade_widget_adaptor_string_from_value
@@ -1682,11 +1700,17 @@ glade_eprop_text_changed_common (GladeEditorProperty *eprop,
   GValue *val;
   GParamSpec *pspec;
   gchar *prop_text;
+  GType value_array_type;
+
+  /* Deprecated GValueArray */
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
+  value_array_type = G_TYPE_VALUE_ARRAY;
+  G_GNUC_END_IGNORE_DEPRECATIONS;
 
   pspec = glade_property_class_get_pspec (eprop->priv->klass);
 
   if (pspec->value_type == G_TYPE_STRV ||
-      pspec->value_type == G_TYPE_VALUE_ARRAY ||
+      pspec->value_type == value_array_type ||
       pspec->value_type == GDK_TYPE_PIXBUF)
     {
       GladeWidget *gwidget = glade_property_get_widget (eprop->priv->property);
@@ -2113,6 +2137,12 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
   GladePropertyClass *klass;
   GParamSpec *pspec;
   GtkWidget *hbox;
+  GType value_array_type;
+
+  /* Deprecated GValueArray */
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
+  value_array_type = G_TYPE_VALUE_ARRAY;
+  G_GNUC_END_IGNORE_DEPRECATIONS;
 
   klass = eprop->priv->klass;
   pspec = glade_property_class_get_pspec (klass);
@@ -2164,7 +2194,7 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
     }
   else if (glade_property_class_multiline (klass) ||
            pspec->value_type == G_TYPE_STRV ||
-           pspec->value_type == G_TYPE_VALUE_ARRAY)
+           pspec->value_type == value_array_type)
     {
       GtkWidget *swindow;
       GtkTextBuffer *buffer;

@@ -264,8 +264,6 @@ glade_inspector_init (GladeInspector *inspector)
 
   inspector->priv = priv = GLADE_INSPECTOR_GET_PRIVATE (inspector);
 
-  gtk_widget_push_composite_child ();
-
   priv->project = NULL;
 
   priv->view = gtk_tree_view_new ();
@@ -293,8 +291,6 @@ glade_inspector_init (GladeInspector *inspector)
 
   gtk_widget_show (priv->view);
   gtk_widget_show (sw);
-
-  gtk_widget_pop_composite_child ();
 }
 
 static void

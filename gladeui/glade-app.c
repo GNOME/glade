@@ -202,8 +202,6 @@ glade_init_check (void)
     return;
 
   /* Make sure path accessors work on osx */
-  g_type_init ();
-
   build_package_paths ();
 
   bindtextdomain (GETTEXT_PACKAGE, locale_dir);

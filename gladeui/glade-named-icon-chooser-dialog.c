@@ -1396,9 +1396,6 @@ glade_named_icon_chooser_dialog_init (GladeNamedIconChooserDialog * dialog)
   if (standard_icon_quarks == NULL)
     standard_icon_quarks = create_standard_icon_quarks ();
 
-
-  gtk_widget_push_composite_child ();
-
   contents = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_widget_show (contents);
 
@@ -1502,8 +1499,6 @@ glade_named_icon_chooser_dialog_init (GladeNamedIconChooserDialog * dialog)
   gtk_box_pack_start (GTK_BOX (contents), dialog->priv->button, FALSE, FALSE,
                       0);
   gtk_box_pack_start (GTK_BOX (content_area), contents, TRUE, TRUE, 0);
-
-  gtk_widget_pop_composite_child ();
 
   /* underlying model */
   dialog->priv->icons_store = gtk_list_store_new (ICONS_N_COLUMNS,

@@ -164,9 +164,11 @@ glade_gtk_table_refresh_placeholders (GtkTable * table)
 	    {
 	      if (!placeholder)
 		{
+		  G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
 		  gtk_table_attach_defaults (table, 
 					     glade_placeholder_new (), 
 					     i, i + 1, j, j + 1);
+		  G_GNUC_END_IGNORE_DEPRECATIONS;
 		}
 	    }
 	}
@@ -278,10 +280,12 @@ glade_gtk_table_set_n_common (GObject * object, const GValue * value,
   widget = glade_widget_get_from_gobject (GTK_WIDGET (table));
   g_return_if_fail (widget != NULL);
 
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
   if (for_rows)
     gtk_table_resize (table, new_size, n_columns);
   else
     gtk_table_resize (table, n_rows, new_size);
+  G_GNUC_END_IGNORE_DEPRECATIONS;
 
   /* Fill table with placeholders */
   glade_gtk_table_refresh_placeholders (table);
@@ -336,9 +340,12 @@ glade_gtk_table_set_n_common (GObject * object, const GValue * value,
             }
           g_list_free (list_to_free);
         }
+
+      G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
       gtk_table_resize (table,
                         for_rows ? new_size : n_rows,
                         for_rows ? n_columns : new_size);
+      G_GNUC_END_IGNORE_DEPRECATIONS;
     }
 }
 

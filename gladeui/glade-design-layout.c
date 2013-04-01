@@ -1940,7 +1940,7 @@ glade_design_layout_drag_begin (GtkWidget *widget, GdkDragContext *context)
   
   gdk_window_set_background_pattern (gtk_widget_get_window (window), pattern);
 
-  gtk_window_set_opacity (GTK_WINDOW (window), .5);
+  gtk_widget_set_opacity (window, .5);
   gtk_drag_set_icon_widget (context, window, priv->drag_x, priv->drag_y);
 
   cairo_destroy (cr);

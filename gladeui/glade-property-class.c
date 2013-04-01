@@ -806,9 +806,14 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
     }
   else if (G_IS_PARAM_SPEC_VALUE_ARRAY (property_class->pspec))
     {
-      GValueArray *value_array = g_value_array_new (0);
+      GValueArray *value_array;
       GValue str_value = { 0, };
       gint i;
+
+      /* Require deprecated code */
+      G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
+      value_array = g_value_array_new (0);
+      G_GNUC_END_IGNORE_DEPRECATIONS;
 
       g_value_init (&str_value, G_TYPE_STRING);
       strv = g_strsplit (string, "\n", 0);
@@ -816,7 +821,10 @@ glade_property_class_make_gvalue_from_string (GladePropertyClass *property_class
       for (i = 0; strv[i]; i++)
         {
           g_value_set_static_string (&str_value, strv[i]);
+
+	  G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
           value_array = g_value_array_append (value_array, &str_value);
+	  G_GNUC_END_IGNORE_DEPRECATIONS;
         }
       g_value_take_boxed (value, value_array);
       g_strfreev (strv);
