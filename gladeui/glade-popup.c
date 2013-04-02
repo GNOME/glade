@@ -614,7 +614,7 @@ glade_popup_property_docs_cb (GtkMenuItem *item, GladeProperty *property)
   pspec        = glade_property_class_get_pspec (pclass);
   prop_adaptor = glade_property_class_get_adaptor (pclass);
   adaptor      = glade_widget_adaptor_from_pspec (prop_adaptor, pspec);
-  search       = g_strdup_printf ("The %s property", glade_property_class_id (pclass));
+  search       = g_strdup_printf ("The \"%s\" property", glade_property_class_id (pclass));
 
   glade_app_search_docs (glade_widget_adaptor_get_book (adaptor),
                          g_type_name (pspec->owner_type), search);
