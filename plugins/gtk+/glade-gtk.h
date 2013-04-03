@@ -27,7 +27,7 @@
 
 #include <glib/gi18n-lib.h>
 
-G_BEGIN_DECLS
+#include <gladeui/glade-widget-adaptor.h>
 
 /* --------------------------------- Constants ------------------------------ */
 
@@ -40,6 +40,19 @@ G_BEGIN_DECLS
 #define ACTION_APPEARANCE_MSG      _("This property is set to be controlled by an Action")
 
 #define ONLY_THIS_GOES_IN_THAT_MSG _("Only objects of type %s can be added to objects of type %s.")
+
+G_BEGIN_DECLS
+
+/* Shared functions */
+void
+glade_gtk_box_notebook_child_insert_remove_action (GladeWidgetAdaptor * adaptor,
+                                                   GObject * container,
+                                                   GObject * object,
+                                                   const gchar * size_prop,
+                                                   const gchar * group_format,
+                                                   gboolean remove,
+                                                   gboolean after);
+
 
 G_END_DECLS
 
