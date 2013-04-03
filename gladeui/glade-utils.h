@@ -122,6 +122,14 @@ GtkWidget        *glade_util_get_placeholder_from_pointer (GtkContainer *contain
 gboolean          glade_util_object_is_loading     (GObject *object);
 
 GdkPixbuf        *glade_utils_pointer_mode_render_icon (GladePointerMode mode, GtkIconSize size);
+
+void              glade_utils_get_pointer (GtkWidget *widget,
+					   GdkWindow *window,
+					   GdkDevice *device,
+					   gint      *x,
+					   gint      *y);
+
+
 G_END_DECLS
 
 #endif /* __GLADE_UTILS_H__ */

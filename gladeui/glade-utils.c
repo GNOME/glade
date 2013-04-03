@@ -1918,3 +1918,38 @@ glade_utils_pointer_mode_render_icon (GladePointerMode mode, GtkIconSize size)
 
   return pix;
 }
+
+void
+glade_utils_get_pointer (GtkWidget *widget,
+			 GdkWindow *window,
+			 GdkDevice *device,
+			 gint      *x,
+			 gint      *y)
+{
+  gint device_x = 0, device_y = 0;
+  gint final_x = 0, final_y = 0;
+  GtkWidget *event_widget = NULL;
+
+  g_return_if_fail (GTK_IS_WIDGET (widget));
+  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (GDK_IS_DEVICE (device));
+
+  gdk_window_get_device_position (window, device, &device_x, &device_y, NULL);
+
+  gdk_window_get_user_data (window, (gpointer)&event_widget);
+
+  if (event_widget != widget)
+      gtk_widget_translate_coordinates (event_widget,
+                                        widget,
+                                        device_x, device_y, &final_x, &final_y);
+  else
+    {
+      final_x = device_x;
+      final_y = device_y;
+    }
+
+  if (x)
+    *x = final_x;
+  if (y)
+    *y = final_y;
+}
