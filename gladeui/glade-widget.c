@@ -4154,22 +4154,13 @@ glade_widget_depends (GladeWidget      *widget,
  * Currently only motion and button events are handled (see IS_GLADE_WIDGET_EVENT)
  * 
  * Returns: the asociated GdkDevice for this glade widget event.
+ *
+ * Deprecated: use gdk_event_get_device() instead.
  */
 GdkDevice *
 glade_widget_get_device_from_event (GdkEvent *event)
 {
-  g_return_val_if_fail (event, NULL);
-
-  switch (event->type)
-    {
-      case GDK_BUTTON_PRESS:
-      case GDK_BUTTON_RELEASE:
-        return event->button.device;
-      case GDK_MOTION_NOTIFY:
-        return event->motion.device;
-      default:
-        return NULL;
-    }
+  return gdk_event_get_device (event);
 }
 
 static gint glade_widget_su_stack = 0;
