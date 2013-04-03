@@ -116,6 +116,87 @@ glade_fixed_boolean_handled_accumulator (GSignalInvocationHint * ihint,
 /*******************************************************************************
                              Static helper routines
  *******************************************************************************/
+typedef enum {
+  HEXPAND_SET_FLAG = (1 << 0),
+  VEXPAND_SET_FLAG = (1 << 1),
+  HEXPAND_FLAG = (1 << 2),
+  VEXPAND_FLAG = (1 << 3),
+} ExpandData;
+
+static void
+save_expand_data (GtkWidget *widget)
+{
+  guint    flags;
+  gboolean h_expand;
+  gboolean v_expand;
+  gboolean h_expand_set;
+  gboolean v_expand_set;
+
+  g_object_get (G_OBJECT (widget),
+		"hexpand-set", &h_expand_set,
+		"vexpand-set", &v_expand_set,
+		"hexpand", &h_expand,
+		"vexpand", &v_expand,
+		NULL);
+
+  flags = 
+    (h_expand_set ? HEXPAND_SET_FLAG : 0) |
+    (v_expand_set ? VEXPAND_SET_FLAG : 0) |
+    (h_expand ? HEXPAND_FLAG : 0) |
+    (v_expand ? VEXPAND_FLAG : 0);
+
+  g_object_set_data (G_OBJECT (widget), "glade-gtk-box-child-expand", GUINT_TO_POINTER (flags));
+}
+
+static void
+restore_expand_data (GtkWidget *widget)
+{
+  guint    flags;
+
+  flags = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (widget), "glade-gtk-box-child-expand"));
+
+  g_object_set (G_OBJECT (widget),
+		"hexpand",     ((flags & HEXPAND_FLAG) != 0),
+		"vexpand",     ((flags & VEXPAND_FLAG) != 0),
+		"hexpand-set", ((flags & HEXPAND_SET_FLAG) != 0),
+		"vexpand-set", ((flags & VEXPAND_SET_FLAG) != 0),
+		NULL);
+}
+
+static void
+expand_all_children (GladeWidget *widget)
+{
+  GList *children, *l;
+
+  children = glade_widget_get_children (widget);
+
+  for (l = children; l; l = l->next)
+    {
+      GtkWidget *child = l->data;
+
+      save_expand_data (child);
+
+      gtk_widget_set_hexpand (child, TRUE);
+      gtk_widget_set_vexpand (child, TRUE);
+    }
+}
+
+static void
+restore_all_children (GladeWidget *widget)
+{
+  GList *children, *l;
+
+  children = glade_widget_get_children (widget);
+
+  for (l = children; l; l = l->next)
+    {
+      GtkWidget *child = l->data;
+
+      restore_expand_data (child);
+    }
+}
+
+
 static GladeCursorType
 glade_fixed_get_operation (GtkWidget *widget, gint x, gint y)
 {
@@ -178,11 +259,9 @@ glade_fixed_save_state (GladeFixed *fixed, GladeWidget *child, GdkDevice *device
   widget       = GTK_WIDGET (glade_widget_get_object (GLADE_WIDGET (fixed)));
   child_widget = GTK_WIDGET (glade_widget_get_object (child));
 
-
-  gdk_window_get_device_position (gtk_widget_get_window (widget), device,
-                                  &(GLADE_FIXED (fixed)->pointer_x_origin),
-                                  &(GLADE_FIXED (fixed)->pointer_y_origin),
-                                  NULL);
+  glade_utils_get_pointer (widget, gtk_widget_get_window (widget), device,
+			   &(GLADE_FIXED (fixed)->pointer_x_origin),
+			   &(GLADE_FIXED (fixed)->pointer_y_origin));
 
   gtk_widget_translate_coordinates (child_widget, widget, 0, 0,
                                     &(fixed->child_x_origin),
@@ -348,7 +427,7 @@ glade_fixed_configure_widget (GladeFixed *fixed,
 
   widget = GTK_WIDGET (glade_widget_get_object (gwidget));
 
-  gdk_window_get_device_position (gtk_widget_get_window (widget), device, &x, &y, NULL);
+  glade_utils_get_pointer (widget, gtk_widget_get_window (widget), device, &x, &y);
 
   right = GLADE_FIXED_CURSOR_RIGHT (fixed->operation);
   left = GLADE_FIXED_CURSOR_LEFT (fixed->operation);
@@ -571,6 +650,8 @@ glade_fixed_cancel_operation (GladeFixed *fixed, GladeCursorType new_operation)
                  glade_fixed_signals[CONFIGURE_END],
                  0, fixed->configuring, &handled);
 
+  restore_all_children (GLADE_WIDGET (fixed));
+
   /* Leave the machine state intact untill after
    * the user handled signal. 
    */
@@ -590,26 +671,23 @@ glade_fixed_handle_child_event (GladeFixed *fixed,
   gboolean handled = FALSE, sig_handled;
   GladeProject *project = glade_widget_get_project (GLADE_WIDGET (fixed));
   GdkWindow *window = event->any.window;
+  GtkWidget *fixed_widget, *child_widget;
+
+  fixed_widget = GTK_WIDGET (glade_widget_get_object (GLADE_WIDGET (fixed)));
+  child_widget = GTK_WIDGET (glade_widget_get_object (child));
 
   pointer_mode = glade_project_get_pointer_mode (project);
 
   if (fixed->can_resize)
     {
       gint fixed_x, fixed_y, child_x, child_y;
-      GtkWidget *fixed_widget, *child_widget;
       GdkDevice *device;
-
-      fixed_widget = GTK_WIDGET (glade_widget_get_object (GLADE_WIDGET (fixed)));
-      child_widget = GTK_WIDGET (glade_widget_get_object (child));
 
       device = glade_widget_get_device_from_event (event);
       
-      /* when widget->window points to a parent window, these calculations
-       * would be wrong if we based them on the GTK_WIDGET (fixed)->window,
-       * so we must always consult the event widget's window
-       */
-      gdk_window_get_device_position (gtk_widget_get_window (fixed_widget),
-                                      device, &fixed_x, &fixed_y, NULL);
+      glade_utils_get_pointer (fixed_widget,
+			       window,
+			       device, &fixed_x, &fixed_y);
 
       /* Container widgets are trustable to have widget->window occupying
        * the entire widget allocation (gtk_widget_get_pointer broken on GtkEntry).
@@ -647,10 +725,9 @@ glade_fixed_handle_child_event (GladeFixed *fixed,
         else if (fixed->configuring)
           {
             /* Need to update mouse for configures. */
-            gdk_window_get_device_position (window,
-                                            event->motion.device,
-                                            &fixed->mouse_x, &fixed->mouse_y,
-                                            NULL);
+	    glade_utils_get_pointer (fixed_widget,
+				     window, glade_widget_get_device_from_event (event),
+				     &fixed->mouse_x, &fixed->mouse_y);
 
             glade_fixed_configure_widget (fixed, child, event->motion.device);
             glade_cursor_set (project, window, fixed->operation);
@@ -665,6 +742,20 @@ glade_fixed_handle_child_event (GladeFixed *fixed,
             ((event_state & GDK_SHIFT_MASK) ||
              pointer_mode == GLADE_POINTER_DRAG_RESIZE))
           {
+
+
+	    expand_all_children (GLADE_WIDGET (fixed));
+
+	    /* Spin the main loop so that the GladeFixed
+	     * widget gets reallocated before storing
+	     * the allocation sizes
+	     */
+	    while (gtk_events_pending ())
+	      gtk_main_iteration ();
+
+
+
+
             fixed->configuring = child;
             /* Save widget allocation and pointer pos */
             glade_fixed_save_state (fixed, child, event->button.device);
@@ -852,9 +943,10 @@ glade_fixed_event (GladeWidget *gwidget_fixed, GdkEvent *event)
 
   if ((device = glade_widget_get_device_from_event (event)))
     {
-      gdk_window_get_device_position (window, device,
-                                      &fixed->mouse_x, &fixed->mouse_y,
-                                      NULL);
+      /* Need to update mouse for configures. */
+      glade_utils_get_pointer (GTK_WIDGET (glade_widget_get_object (gwidget_fixed)),
+			       window, device, &fixed->mouse_x, &fixed->mouse_y);
+
       if (fixed->configuring)
         {
           return glade_fixed_handle_child_event
