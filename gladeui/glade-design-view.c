@@ -647,35 +647,6 @@ glade_design_view_drag_data_received (GtkWidget        *widget,
                     GLADE_DESIGN_VIEW (widget));
 }
 
-
-static void
-glade_design_view_fixed_move (GladeWidget *gsource,
-                              GtkWidget *widget,
-                              GdkDragContext *context,
-                              GtkWidget *child,
-                              gint x,
-                              gint y)
-{
-  GladeProperty *prop_x, *prop_y;
-  gint dx, dy, hx, hy;
-  GtkWidget *layout;
-
-  gtk_widget_translate_coordinates (widget, child, x, y, &dx, &dy);
-
-  prop_x = glade_widget_get_pack_property (gsource, "x");
-  prop_y = glade_widget_get_pack_property (gsource, "y");
-
-  layout = gtk_drag_get_source_widget (context);
-
-  if (layout && GLADE_IS_DESIGN_LAYOUT (layout))
-    _glade_design_layout_get_hot_point (GLADE_DESIGN_LAYOUT (layout), &hx, &hy);
-  else
-    hx = hy = 0;
-
-  glade_command_set_property (prop_x, dx - hx);
-  glade_command_set_property (prop_y, dy - hy);
-}
-
 static gboolean
 glade_design_view_drag_drop (GtkWidget       *widget,
                              GdkDragContext  *context,
@@ -705,13 +676,8 @@ glade_design_view_drag_drop (GtkWidget       *widget,
       else if (GTK_IS_FIXED (child) || GTK_IS_LAYOUT (child))
         {
           GladeWidget *parent = glade_widget_get_from_gobject (child);
-          
-          glade_command_push_group ("Drag and Drop");
-          if (parent != glade_widget_get_parent (gsource))
-            glade_command_dnd (&widgets, parent, NULL);
-          
-          glade_design_view_fixed_move (gsource, widget, context, child, x, y);
-          glade_command_pop_group ();
+
+	  glade_command_dnd (&widgets, parent, NULL);
         }
       else if (!glade_widget_get_from_gobject (child))
         glade_command_dnd (&widgets, NULL, NULL);
@@ -732,17 +698,9 @@ glade_design_view_drag_drop (GtkWidget       *widget,
           GladeWidget *parent = glade_widget_get_from_gobject (child);
 
           if (parent)
-            {
-              GladeWidget *gsource;
-              glade_command_push_group ("Drag and Drop");
-
-              gsource = glade_command_create (priv->drag_adaptor,
-                                              parent, NULL,
-                                              priv->project);
-
-              glade_design_view_fixed_move (gsource, widget, context, child, x, y);
-              glade_command_pop_group ();
-            }
+	    glade_command_create (priv->drag_adaptor,
+				  parent, NULL,
+				  priv->project);
         }
       else
         {
