@@ -541,7 +541,7 @@ glade_design_view_drag_motion (GtkWidget *widget,
       if (priv->drag_source &&
           (priv->drag_source == child || gtk_widget_is_ancestor (child, priv->drag_source) ||
            (!GLADE_IS_PLACEHOLDER (child) && 
-            !GTK_IS_FIXED (child) &&
+            !GTK_IS_FIXED (child) && !GTK_IS_LAYOUT (child) &&
             (glade_widget_get_from_gobject (child) ||
              ((gwidget = glade_widget_get_from_gobject (priv->drag_source)) &&
              !glade_widget_get_parent (gwidget)
@@ -551,7 +551,7 @@ glade_design_view_drag_motion (GtkWidget *widget,
 
       if (priv->drag_adaptor &&
           ((GLADE_IS_PLACEHOLDER (child) && GWA_IS_TOPLEVEL (priv->drag_adaptor)) ||
-           (!GLADE_IS_PLACEHOLDER (child) && !GTK_IS_FIXED (child) &&
+           (!GLADE_IS_PLACEHOLDER (child) && !GTK_IS_FIXED (child) && !GTK_IS_LAYOUT (child) &&
             glade_widget_get_from_gobject (child))))
         drag_action = 0;
     }
@@ -702,7 +702,7 @@ glade_design_view_drag_drop (GtkWidget       *widget,
           if (parent != gsource)
             glade_command_dnd (&widgets, parent, placeholder);
         }
-      else if (GTK_IS_FIXED (child))
+      else if (GTK_IS_FIXED (child) || GTK_IS_LAYOUT (child))
         {
           GladeWidget *parent = glade_widget_get_from_gobject (child);
           
@@ -727,7 +727,7 @@ glade_design_view_drag_drop (GtkWidget       *widget,
                                 placeholder, 
                                 priv->project);
         }
-      else if (GTK_IS_FIXED (child))
+      else if (GTK_IS_FIXED (child) || GTK_IS_LAYOUT (child))
         {
           GladeWidget *parent = glade_widget_get_from_gobject (child);
 
