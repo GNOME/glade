@@ -1919,6 +1919,18 @@ glade_utils_pointer_mode_render_icon (GladePointerMode mode, GtkIconSize size)
   return pix;
 }
 
+/**
+ * glade_utils_get_pointer:
+ * @widget: The widget to get the mouse position relative for
+ * @window: The window of the current event, or %NULL
+ * @device: The device, if not specified, the current event will be expected to have a @device.
+ * @x: The location to store the mouse pointer X position
+ * @y: The location to store the mouse pointer Y position
+ *
+ * Get's the pointer position relative to @widget, while @window and @device
+ * are not absolutely needed, they should be passed wherever possible.
+ *
+ */
 void
 glade_utils_get_pointer (GtkWidget *widget,
 			 GdkWindow *window,
@@ -1931,17 +1943,30 @@ glade_utils_get_pointer (GtkWidget *widget,
   GtkWidget *event_widget = NULL;
 
   g_return_if_fail (GTK_IS_WIDGET (widget));
-  g_return_if_fail (GDK_IS_WINDOW (window));
+
+  if (!device)
+    {
+      GdkEvent *event = gtk_get_current_event ();
+
+      device = gdk_event_get_device (event);
+      gdk_event_free (event);
+    }
+
   g_return_if_fail (GDK_IS_DEVICE (device));
 
-  gdk_window_get_device_position (window, device, &device_x, &device_y, NULL);
+  if (!window)
+    window = gtk_widget_get_window (widget);
 
+  gdk_window_get_device_position (window, device, &device_x, &device_y, NULL);
   gdk_window_get_user_data (window, (gpointer)&event_widget);
 
   if (event_widget != widget)
+    {
       gtk_widget_translate_coordinates (event_widget,
                                         widget,
-                                        device_x, device_y, &final_x, &final_y);
+                                        device_x, device_y,
+					&final_x, &final_y);
+    }
   else
     {
       final_x = device_x;

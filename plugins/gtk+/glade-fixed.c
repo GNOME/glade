@@ -839,20 +839,13 @@ glade_fixed_add_child_impl (GladeWidget *gwidget_fixed,
   GdkRectangle rect;
   gboolean handled;
   GtkWidget *widget;
-  GdkWindow *window;
-  GdkDevice *device;
-  GdkEvent *event;
 
   g_return_if_fail (GLADE_IS_FIXED (fixed));
   g_return_if_fail (GLADE_IS_WIDGET (child));
 
   /* Need to explicitly find the pointer location at drag_drop time */
   widget = GTK_WIDGET (glade_widget_get_object (gwidget_fixed));
-  window = gtk_widget_get_window (widget);
-  event = gtk_get_current_event ();
-  if ((device = gdk_event_get_device (event)))
-    glade_utils_get_pointer (widget, window, device, &fixed->mouse_x, &fixed->mouse_y);
-  gdk_event_free (event);
+  glade_utils_get_pointer (widget, NULL, NULL, &fixed->mouse_x, &fixed->mouse_y);
 
   /* Chain up for the basic parenting */
   GLADE_WIDGET_CLASS (parent_class)->add_child
