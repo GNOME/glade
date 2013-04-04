@@ -1957,6 +1957,8 @@ glade_utils_get_pointer (GtkWidget *widget,
   if (!window)
     window = gtk_widget_get_window (widget);
 
+  g_return_if_fail (GDK_IS_WINDOW (window));
+
   gdk_window_get_device_position (window, device, &device_x, &device_y, NULL);
   gdk_window_get_user_data (window, (gpointer)&event_widget);
 

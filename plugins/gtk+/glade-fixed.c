@@ -843,9 +843,13 @@ glade_fixed_add_child_impl (GladeWidget *gwidget_fixed,
   g_return_if_fail (GLADE_IS_FIXED (fixed));
   g_return_if_fail (GLADE_IS_WIDGET (child));
 
-  /* Need to explicitly find the pointer location at drag_drop time */
+  /* Need to explicitly find the pointer location at drag_drop time (but check if the widget has
+   * a window already first, if not it's because we're loading and widget's arent realized yet)
+   */
   widget = GTK_WIDGET (glade_widget_get_object (gwidget_fixed));
-  glade_utils_get_pointer (widget, NULL, NULL, &fixed->mouse_x, &fixed->mouse_y);
+  if (gtk_widget_get_window (widget))
+    glade_utils_get_pointer (widget, NULL, NULL,
+			     &fixed->mouse_x, &fixed->mouse_y);
 
   /* Chain up for the basic parenting */
   GLADE_WIDGET_CLASS (parent_class)->add_child
