@@ -165,6 +165,12 @@ glade_app_finalize (GObject * app)
 static void
 build_package_paths (void)
 {
+  const gchar *path;
+
+  path = g_getenv (GLADE_ENV_PIXMAP_DIR);
+  if (path)
+    pixmaps_dir = g_strdup (path);
+
 #if defined (G_OS_WIN32) || (defined (MAC_INTEGRATION) && defined (MAC_BUNDLE))
   gchar *prefix;
 
@@ -176,7 +182,9 @@ build_package_paths (void)
 
 # endif
 
-  pixmaps_dir = g_build_filename (prefix, "share", PACKAGE, "pixmaps", NULL);
+  if (!pixmaps_dir)
+    pixmaps_dir = g_build_filename (prefix, "share", PACKAGE, "pixmaps", NULL);
+
   catalogs_dir = g_build_filename (prefix, "share", PACKAGE, "catalogs", NULL);
   modules_dir = g_build_filename (prefix, "lib", PACKAGE, "modules", NULL);
   locale_dir = g_build_filename (prefix, "share", "locale", NULL);
@@ -187,7 +195,9 @@ build_package_paths (void)
 #else
   catalogs_dir = g_strdup (GLADE_CATALOGSDIR);
   modules_dir = g_strdup (GLADE_MODULESDIR);
-  pixmaps_dir = g_strdup (GLADE_PIXMAPSDIR);
+
+  if (!pixmaps_dir)
+    pixmaps_dir = g_strdup (GLADE_PIXMAPSDIR);
   locale_dir = g_strdup (GLADE_LOCALEDIR);
   bin_dir = g_strdup (GLADE_BINDIR);
   lib_dir = g_strdup (GLADE_LIBDIR);

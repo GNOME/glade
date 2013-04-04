@@ -103,7 +103,7 @@ glade_gtk_grid_refresh_placeholders (GtkGrid *grid,
   project = glade_widget_get_project (widget);
 
   /* Wait for project to finish loading */
-  if (glade_project_is_loading (project) && !load_finished)
+  if ((project && glade_project_is_loading (project)) && !load_finished)
     return;
 
   glade_widget_property_get (widget, "n-columns", &n_columns);
@@ -127,7 +127,8 @@ glade_gtk_grid_refresh_placeholders (GtkGrid *grid,
       if (glade_gtk_grid_has_child (grid, children, i, j) == FALSE)
         gtk_grid_attach (grid, glade_placeholder_new (), i, j, 1, 1);
 
-  gtk_container_check_resize (container);
+  if (gtk_widget_get_realized (GTK_WIDGET (grid)))
+    gtk_container_check_resize (container);
   g_list_free (children);
 }
 

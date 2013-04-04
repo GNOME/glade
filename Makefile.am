@@ -1,6 +1,6 @@
 ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 
-SUBDIRS = po data gladeui src plugins doc help
+SUBDIRS = po data gladeui src plugins tests doc help
 
 EXTRA_DIST = \
 	autogen.sh \

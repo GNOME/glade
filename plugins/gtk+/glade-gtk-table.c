@@ -175,7 +175,9 @@ glade_gtk_table_refresh_placeholders (GtkTable * table)
     }
   g_free(child_map);
   g_free(placeholder_map);
-  gtk_container_check_resize (GTK_CONTAINER (table));
+
+  if (gtk_widget_get_realized (GTK_WIDGET (table)))
+    gtk_container_check_resize (GTK_CONTAINER (table));
 }
 
 static void

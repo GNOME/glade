@@ -19,6 +19,7 @@
       <write-widget-function>glade_gtk_widget_write_widget</write-widget-function>
       <create-editor-property-function>glade_gtk_widget_create_eprop</create-editor-property-function>
       <string-from-value-function>glade_gtk_widget_string_from_value</string-from-value-function>
+      <destroy-object-function>glade_gtk_widget_destroy_widget</destroy-object-function>
 
       <signals>
 	<signal id="drag-failed" since="2.12"/>
@@ -3768,9 +3769,10 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
 
-
     <glade-widget-class name="GtkStatusIcon" generic-name="statusicon" _title="Status Icon" toplevel="True">
       <properties>
+	<property id="visible" default="False"/>
+	<property id="screen" disabled="True"/>
 	<property id="gicon" disabled="True" since="2.14"/>
 	<property id="title" since="2.18" translatable="True"/>
 	<property id="tooltip-text" since="2.16" translatable="True"/>

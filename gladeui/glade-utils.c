@@ -901,7 +901,7 @@ glade_util_load_library (const gchar *library_name)
         }
     }
 
-  if (!module)
+  if (g_getenv (GLADE_ENV_TESTING) == NULL && !module)
     {
       const gchar *paths[] = { glade_app_get_modules_dir (),
                                glade_app_get_lib_dir (),

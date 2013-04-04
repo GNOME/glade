@@ -2478,9 +2478,10 @@ gwa_displayable_values_check (GladeWidgetAdaptor *adaptor, gboolean packing)
           pspec->value_type != GLADE_TYPE_STOCK_IMAGE)
         {
           /* We do not need displayable values if the property is not visible */
-          g_message ("No displayable values for %sproperty %s::%s",
-                     (packing) ? "child " : "", adaptor->priv->name, 
-		     glade_property_class_id (klass));
+	  if (g_getenv (GLADE_ENV_TESTING) == NULL)
+	    g_message ("No displayable values for %sproperty %s::%s",
+		       (packing) ? "child " : "", adaptor->priv->name, 
+		       glade_property_class_id (klass));
         }
     }
 }

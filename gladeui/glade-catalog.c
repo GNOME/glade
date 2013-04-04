@@ -598,7 +598,8 @@ glade_catalog_load_all (void)
     }
 
   /* ... Then load catalogs from standard install directory */
-  catalogs = catalogs_from_path (catalogs, glade_app_get_catalogs_dir ());
+  if (g_getenv (GLADE_ENV_TESTING) == NULL)
+    catalogs = catalogs_from_path (catalogs, glade_app_get_catalogs_dir ());
 
   /* And then load catalogs from extra paths */
   for (l = catalog_paths; l; l = g_list_next (l))
@@ -631,20 +632,22 @@ glade_catalog_load_all (void)
     {
       GladeWidgetAdaptor *adaptor = l->data;
 
-      if (glade_widget_adaptor_get_missing_icon (adaptor))
+      /* Dont print missing icons in unit tests */
+      if (glade_widget_adaptor_get_missing_icon (adaptor) &&
+	  g_getenv (GLADE_ENV_TESTING) == NULL)
         {
           if (!icon_warning)
             icon_warning = g_string_new ("Glade needs artwork; "
                                          "a default icon will be used for "
                                          "the following classes:");
 
-          g_string_append_printf (icon_warning,
-                                  "\n\t%s\tneeds an icon named '%s'",
-                                  glade_widget_adaptor_get_name (adaptor), 
+	  g_string_append_printf (icon_warning,
+				  "\n\t%s\tneeds an icon named '%s'",
+				  glade_widget_adaptor_get_name (adaptor), 
 				  glade_widget_adaptor_get_missing_icon (adaptor));
         }
-
     }
+
   g_list_free (adaptors);
 
   if (icon_warning)

@@ -7441,9 +7441,10 @@ glade_gtk_assistant_post_create (GladeWidgetAdaptor * adaptor,
       glade_widget_property_set (parent, "n-pages", 3);
     }
 
-  g_signal_connect (project, "selection-changed",
-                    G_CALLBACK (on_assistant_project_selection_changed),
-                    parent);
+  if (project)
+    g_signal_connect (project, "selection-changed",
+		      G_CALLBACK (on_assistant_project_selection_changed),
+		      parent);
 }
 
 void
@@ -8270,7 +8271,7 @@ glade_gtk_cell_renderer_sync_attributes (GObject * object)
 
   GtkCellLayout *layout;
   GtkCellRenderer *cell;
-  GladeWidget *widget = glade_widget_get_from_gobject (object);
+  GladeWidget *widget;
   GladeWidget *parent;
   GladeWidget *gmodel;
   GladeProperty *property;
