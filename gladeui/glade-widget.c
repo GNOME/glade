@@ -978,8 +978,20 @@ static void
 glade_widget_dispose (GObject * object)
 {
   GladeWidget *widget = GLADE_WIDGET (object);
+  GList *children, *l;
 
   glade_widget_push_superuser ();
+
+  /* Remove all children at dispose */
+  children = glade_widget_get_children (widget);
+  for (l = children; l; l = l->next)
+    {
+      GladeWidget *child = glade_widget_get_from_gobject (l->data);
+
+      if (glade_widget_get_internal (child) == NULL)
+	glade_widget_remove_child (widget, child);
+    }
+  g_list_free (children);
 
   /* Release references by way of object properties... */
   while (widget->priv->prop_refs)
