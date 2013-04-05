@@ -57,7 +57,7 @@ test_create_widget (gconstpointer data)
   /* filechoosers hold a reference until an async operation is complete */
   if (GTK_IS_FILE_CHOOSER (object))
     {
-      g_timeout_add (500, main_loop_quit_cb, NULL);
+      g_timeout_add (2000, main_loop_quit_cb, NULL);
       gtk_main();
     }
   /* Our plugin code adds an idle when cell renderers are created */
@@ -103,12 +103,16 @@ main (int   argc,
 	  adaptor_type != GTK_TYPE_ICON_FACTORY &&
 	  /* FIXME: Combo box types dont finalize properly for some reason */
 	  !g_type_is_a (adaptor_type, GTK_TYPE_COMBO_BOX) &&
+	  /* FIXME: FileChooserButton leaks a GTask which will crash in the following test */
+	  adaptor_type != GTK_TYPE_FILE_CHOOSER_BUTTON &&
 	  /* FIXME: App choosers leak some async operations after finalization, causing subsequent tests to fail */
 	  !g_type_is_a (adaptor_type, GTK_TYPE_APP_CHOOSER))
 	{
 	  gchar *test_path = g_strdup_printf ("/CreateWidget/%s", glade_widget_adaptor_get_name (adaptor));
 
 	  g_test_add_data_func (test_path, adaptor, test_create_widget);
+
+	  g_free (test_path);
 	}
     }
   g_list_free (adaptors);
