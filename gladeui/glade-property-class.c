@@ -717,9 +717,9 @@ glade_property_class_make_object_from_string (GladePropertyClass *
           if (icon == NULL)
             {
               GtkWidget *widget = gtk_label_new ("");
-              icon = gtk_widget_render_icon (widget,
-                                             GTK_STOCK_MISSING_IMAGE,
-                                             GTK_ICON_SIZE_MENU, NULL);
+              icon = gtk_widget_render_icon_pixbuf (widget,
+						    GTK_STOCK_MISSING_IMAGE,
+						    GTK_ICON_SIZE_MENU);
               gtk_widget_destroy (widget);
             }
 
