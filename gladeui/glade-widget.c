@@ -3377,10 +3377,10 @@ glade_widget_set_object (GladeWidget * gwidget, GObject * new_object,
                    gwidget->priv->name ? gwidget->priv->name : "(unknown)",
                    old_object->ref_count);
 #endif
-          if (GTK_IS_WINDOW (old_object) && destroy)
+          if (GTK_IS_WIDGET (old_object) && destroy)
             gtk_widget_destroy (GTK_WIDGET (old_object));
-          else
-            g_object_unref (old_object);
+
+          g_object_unref (old_object);
 
         }
     }
