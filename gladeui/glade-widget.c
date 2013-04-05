@@ -63,7 +63,7 @@ static void glade_widget_set_adaptor (GladeWidget * widget,
 static void glade_widget_set_properties (GladeWidget * widget,
                                          GList * properties);
 static void glade_widget_set_object (GladeWidget * gwidget,
-                                     GObject * new_object, gboolean destroy);
+                                     GObject * new_object);
 
 
 struct _GladeWidgetPrivate {
@@ -652,7 +652,7 @@ glade_widget_build_object (GladeWidget * widget,
   if (reason == GLADE_CREATE_LOAD)
     {
       object = glade_widget_adaptor_construct_object (widget->priv->adaptor, 0, NULL);
-      glade_widget_set_object (widget, object, TRUE);
+      glade_widget_set_object (widget, object);
       return object;
     }
 
@@ -669,8 +669,7 @@ glade_widget_build_object (GladeWidget * widget,
 
   free_params (params, n_params);
 
-  /* Dont destroy toplevels when rebuilding, handle that separately */
-  glade_widget_set_object (widget, object, reason != GLADE_CREATE_REBUILD);
+  glade_widget_set_object (widget, object);
 
   if (template)
     params = glade_widget_template_params (widget, FALSE, &n_params);
@@ -1013,7 +1012,7 @@ glade_widget_dispose (GObject * object)
       widget->priv->properties = NULL;
     }
 
-  glade_widget_set_object (widget, NULL, TRUE);
+  glade_widget_set_object (widget, NULL);
 
   if (widget->priv->packing_properties)
     {
@@ -1069,7 +1068,7 @@ glade_widget_set_real_property (GObject * object,
         break;
       case PROP_OBJECT:
         if (g_value_get_object (value))
-          glade_widget_set_object (widget, g_value_get_object (value), TRUE);
+          glade_widget_set_object (widget, g_value_get_object (value));
         break;
       case PROP_PROJECT:
         glade_widget_set_project (widget,
@@ -3323,8 +3322,7 @@ glade_widget_add_events (GtkWidget * widget)
 }
 
 static void
-glade_widget_set_object (GladeWidget * gwidget, GObject * new_object,
-                         gboolean destroy)
+glade_widget_set_object (GladeWidget * gwidget, GObject * new_object)
 {
   GObject *old_object;
 
@@ -3377,7 +3375,7 @@ glade_widget_set_object (GladeWidget * gwidget, GObject * new_object,
                    gwidget->priv->name ? gwidget->priv->name : "(unknown)",
                    old_object->ref_count);
 #endif
-          if (GTK_IS_WIDGET (old_object) && destroy)
+          if (GTK_IS_WIDGET (old_object))
             gtk_widget_destroy (GTK_WIDGET (old_object));
 
           g_object_unref (old_object);
