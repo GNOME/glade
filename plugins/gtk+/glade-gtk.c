@@ -1746,12 +1746,19 @@ glade_gtk_notebook_extract_children (GtkWidget * notebook)
       GtkWidget *page = gtk_notebook_get_nth_page (nb, 0);
       GtkWidget *tab = gtk_notebook_get_tab_label (nb, page);
 
+      if (tab)
+	g_object_ref (tab);
+
       /* Explicitly remove the tab label first */
       gtk_notebook_set_tab_label (nb, page, NULL);
 
       /* FIXE: we need to unparent here to avoid anoying warning when reparenting */
-      if (tab) gtk_widget_unparent (tab);
-      
+      if (tab)
+	{
+	  gtk_widget_unparent (tab);
+	  g_object_unref (tab);
+	}
+
       gtk_notebook_remove_page (nb, 0);
     }
 
