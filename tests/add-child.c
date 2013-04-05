@@ -184,9 +184,8 @@ add_child_widgets (GType parent_type)
   add_test (parent_type, GTK_TYPE_LINK_BUTTON,         assert_widget_parented);
   add_test (parent_type, GTK_TYPE_MENU_BUTTON,         assert_widget_parented);
 
-  /* FIXME: Combo box types dont finalize properly for some reason */
-  /* add_test (parent_type, GTK_TYPE_COMBO_BOX,           assert_widget_parented); */
-  /* add_test (parent_type, GTK_TYPE_COMBO_BOX_TEXT,      assert_widget_parented); */
+  add_test (parent_type, GTK_TYPE_COMBO_BOX,           assert_widget_parented);
+  add_test (parent_type, GTK_TYPE_COMBO_BOX_TEXT,      assert_widget_parented);
   add_test (parent_type, GTK_TYPE_SCALE_BUTTON,        assert_widget_parented);
   add_test (parent_type, GTK_TYPE_VOLUME_BUTTON,       assert_widget_parented);
   add_test (parent_type, GTK_TYPE_FONT_BUTTON,         assert_widget_parented);
@@ -296,8 +295,7 @@ main (int   argc,
   add_test (GTK_TYPE_TREE_VIEW, GTK_TYPE_TREE_VIEW_COLUMN, assert_column_parented);
   add_child_cells (GTK_TYPE_TREE_VIEW_COLUMN);
   add_child_cells (GTK_TYPE_ICON_VIEW);
-  /* FIXME: Combo box types dont finalize properly for some reason */
-  /* add_child_cells (GTK_TYPE_COMBO_BOX); */
+  add_child_cells (GTK_TYPE_COMBO_BOX);
 
   /* TextTag */
   add_test (GTK_TYPE_TEXT_TAG_TABLE, GTK_TYPE_TEXT_TAG, NULL);

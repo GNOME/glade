@@ -101,8 +101,6 @@ main (int   argc,
 	  adaptor_type != GTK_TYPE_STATUS_ICON &&
 	  /* FIXME: Icon factory adds itself to the default but never removes itself */
 	  adaptor_type != GTK_TYPE_ICON_FACTORY &&
-	  /* FIXME: Combo box types dont finalize properly for some reason */
-	  !g_type_is_a (adaptor_type, GTK_TYPE_COMBO_BOX) &&
 	  /* FIXME: FileChooserButton leaks a GTask which will crash in the following test */
 	  adaptor_type != GTK_TYPE_FILE_CHOOSER_BUTTON &&
 	  /* FIXME: App choosers leak some async operations after finalization, causing subsequent tests to fail */
