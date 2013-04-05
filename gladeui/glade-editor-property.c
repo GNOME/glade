@@ -49,7 +49,6 @@
 #include "glade-marshallers.h"
 #include "glade-displayable-values.h"
 #include "glade-named-icon-chooser-dialog.h"
-#include "glade-bool-toggle.h"
 
 enum
 {
@@ -2303,7 +2302,7 @@ glade_eprop_bool_load (GladeEditorProperty *eprop, GladeProperty *property)
     {
       GladeEPropBool *eprop_bool = GLADE_EPROP_BOOL (eprop);
       gboolean state = g_value_get_boolean (glade_property_inline_value (property));
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (eprop_bool->button), state);
+      gtk_switch_set_active (GTK_SWITCH (eprop_bool->button), state);
     }
 }
 
@@ -2318,7 +2317,7 @@ glade_eprop_bool_active_notify (GObject             *gobject,
     return;
 
   g_value_init (&val, G_TYPE_BOOLEAN);
-  g_value_set_boolean (&val, gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (gobject)));
+  g_value_set_boolean (&val, gtk_switch_get_active (GTK_SWITCH (gobject)));
 
   glade_editor_property_commit_no_callback (eprop, &val);
 
@@ -2330,7 +2329,7 @@ glade_eprop_bool_create_input (GladeEditorProperty *eprop)
 {
   GladeEPropBool *eprop_bool = GLADE_EPROP_BOOL (eprop);
   
-  eprop_bool->button = _glade_bool_toggle_new ();
+  eprop_bool->button = gtk_switch_new ();
   gtk_widget_set_halign (eprop_bool->button, GTK_ALIGN_START);
   gtk_widget_set_valign (eprop_bool->button, GTK_ALIGN_CENTER);
 

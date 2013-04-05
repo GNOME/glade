@@ -100,8 +100,7 @@ libgladeui_2_la_SOURCES = \
 	glade-displayable-values.c \
 	glade-signal-model.c \
 	glade-cell-renderer-icon.c \
-	glade-preview.c \
-	glade-bool-toggle.c
+	glade-preview.c
 
 libgladeui_2_la_CPPFLAGS =  \
 	$(common_defines)   \
@@ -165,8 +164,7 @@ noinst_HEADERS = \
 	glade-design-private.h \
 	glade-preview-tokens.h \
 	glade-preview.h \
-	glade-path.h \
-	glade-bool-toggle.h
+	glade-path.h
 
 if PLATFORM_WIN32
 libgladeui_2_la_LDFLAGS += -no-undefined
