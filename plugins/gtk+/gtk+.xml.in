@@ -1757,7 +1757,9 @@ embedded in another object</_tooltip>
 
       <create-editable-function>glade_gtk_recent_chooser_menu_create_editable</create-editable-function>
       <set-property-function>glade_gtk_recent_chooser_menu_set_property</set-property-function>
-
+      <properties>
+	<property id="select-multiple" disabled="True"/>
+      </properties>
     </glade-widget-class>
     
     <glade-widget-class name="GtkScrollbar" generic-name="scrollbar" _title="Scrollbar">
@@ -2018,7 +2020,6 @@ embedded in another object</_tooltip>
       <properties>
 	<property id="extra-widget" parentless-widget="True" />
 	<property id="preview-widget" parentless-widget="True" />
-	<property id="filter"/>
 	<property id="create-folders" since="2.18"/>
       </properties>
 
@@ -2266,7 +2267,11 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkRecentAction" generic-name="recentaction" _title="Recent Action" since="2.12"/>
+    <glade-widget-class name="GtkRecentAction" generic-name="recentaction" _title="Recent Action" since="2.12">
+      <properties>
+	<property id="select-multiple" disabled="True"/>
+      </properties>
+    </glade-widget-class>
 
     <glade-widget-class name="GtkActionGroup" generic-name="actiongroup" _title="Action Group" 
 			toplevel="True" use-placeholders="False">
