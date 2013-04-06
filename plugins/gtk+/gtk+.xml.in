@@ -2300,6 +2300,7 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkIconFactory" generic-name="iconfactory" _title="Icon Factory" 
 			toplevel="True">
       <post-create-function>glade_gtk_icon_factory_post_create</post-create-function>
+      <destroy-object-function>glade_gtk_icon_factory_destroy_object</destroy-object-function>
       <read-widget-function>glade_gtk_icon_factory_read_widget</read-widget-function>
       <write-widget-function>glade_gtk_icon_factory_write_widget</write-widget-function>
       <set-property-function>glade_gtk_icon_factory_set_property</set-property-function>

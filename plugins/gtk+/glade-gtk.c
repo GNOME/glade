@@ -7856,6 +7856,15 @@ glade_gtk_icon_factory_post_create (GladeWidgetAdaptor * adaptor,
   gtk_icon_factory_add_default (GTK_ICON_FACTORY (object));
 }
 
+void
+glade_gtk_icon_factory_destroy_object (GladeWidgetAdaptor * adaptor,
+				       GObject *object)
+{
+  gtk_icon_factory_remove_default (GTK_ICON_FACTORY (object));
+
+  GWA_GET_CLASS (G_TYPE_OBJECT)->destroy_object (adaptor, object);
+}
+
 static void
 glade_gtk_icon_factory_read_sources (GladeWidget * widget, GladeXmlNode * node)
 {
