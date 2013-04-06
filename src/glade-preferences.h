@@ -34,6 +34,10 @@ void glade_preferences_config_save (GladePreferences *prefs,
 void glade_preferences_config_load (GladePreferences *prefs,
                                     GKeyFile *config);
 
+gboolean glade_preferences_backup   (GladePreferences *prefs);
+gboolean glade_preferences_autosave (GladePreferences *prefs);
+gint     glade_preferences_autosave_seconds (GladePreferences *prefs);
+
 /* Callbacks */
 
 void on_preferences_filechooserdialog_response (GtkDialog *dialog,
@@ -41,5 +45,6 @@ void on_preferences_filechooserdialog_response (GtkDialog *dialog,
                                                 GtkComboBoxText *combo);
 void on_catalog_path_remove_button_clicked     (GtkButton *button,
                                                 GtkComboBoxText *combo);
+
 
 #endif /* __GLADE_PREFERENCES_H__ */

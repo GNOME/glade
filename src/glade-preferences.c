@@ -26,10 +26,19 @@ struct _GladePreferences
 {
   GObject *toplevel;
   GtkComboBoxText *catalog_path_combo;
+
+  GtkWidget *create_backups_toggle;
+  GtkWidget *autosave_toggle;
+  GtkWidget *autosave_spin;
 };
 
 #define CONFIG_GROUP "Preferences"
 #define CONFIG_KEY_CATALOG_PATHS "catalog-paths"
+
+#define CONFIG_GROUP_LOAD_SAVE      "Load and Save"
+#define CONFIG_KEY_BACKUP           "backup"
+#define CONFIG_KEY_AUTOSAVE         "autosave"
+#define CONFIG_KEY_AUTOSAVE_SECONDS "autosave-seconds"
 
 static void
 combo_box_text_init_cell (GtkCellLayout *cell)
@@ -49,6 +58,14 @@ combo_box_text_init_cell (GtkCellLayout *cell)
   g_list_free (cels);
 }
 
+static void
+autosave_toggled (GtkToggleButton  *button,
+		  GladePreferences *prefs)
+{
+  gtk_widget_set_sensitive (prefs->autosave_spin,
+			    gtk_toggle_button_get_active (button));
+}
+
 GladePreferences *
 glade_preferences_new (GtkBuilder *builder)
 {
@@ -57,6 +74,13 @@ glade_preferences_new (GtkBuilder *builder)
   prefs->toplevel = gtk_builder_get_object (builder, "preferences_dialog");
   prefs->catalog_path_combo = GTK_COMBO_BOX_TEXT (gtk_builder_get_object (builder, "catalog_path_comboboxtext"));
   combo_box_text_init_cell (GTK_CELL_LAYOUT (prefs->catalog_path_combo));
+
+  prefs->create_backups_toggle = GTK_WIDGET (gtk_builder_get_object (builder, "create_backups_toggle"));
+  prefs->autosave_toggle = GTK_WIDGET (gtk_builder_get_object (builder, "autosave_toggle"));
+  prefs->autosave_spin = GTK_WIDGET (gtk_builder_get_object (builder, "autosave_spin"));
+
+  g_signal_connect (G_OBJECT (prefs->autosave_toggle), "toggled",
+		    G_CALLBACK (autosave_toggled), prefs);
   
   return prefs;
 }
@@ -93,6 +117,13 @@ glade_preferences_config_save (GladePreferences *prefs, GKeyFile *config)
   
   g_key_file_set_string (config, CONFIG_GROUP, CONFIG_KEY_CATALOG_PATHS, string->str);
 
+  g_key_file_set_boolean (config, CONFIG_GROUP_LOAD_SAVE, CONFIG_KEY_BACKUP,
+			  glade_preferences_backup (prefs));
+  g_key_file_set_boolean (config, CONFIG_GROUP_LOAD_SAVE, CONFIG_KEY_AUTOSAVE,
+			  glade_preferences_autosave (prefs));
+  g_key_file_set_integer (config, CONFIG_GROUP_LOAD_SAVE, CONFIG_KEY_AUTOSAVE_SECONDS,
+			  glade_preferences_autosave_seconds (prefs));
+
   g_string_free (string, TRUE);
 }
 
@@ -100,6 +131,9 @@ void
 glade_preferences_config_load (GladePreferences *prefs, GKeyFile *config)
 {
   gchar *string;
+  gboolean backups = TRUE;
+  gboolean autosave = TRUE;
+  gint autosave_seconds = 30;
   
   string = g_key_file_get_string (config, CONFIG_GROUP, CONFIG_KEY_CATALOG_PATHS, NULL);
 
@@ -124,7 +158,39 @@ glade_preferences_config_load (GladePreferences *prefs, GKeyFile *config)
       g_strfreev (paths);
     }
 
+  if (g_key_file_has_key (config, CONFIG_GROUP_LOAD_SAVE, CONFIG_KEY_BACKUP, NULL))
+    backups = g_key_file_get_boolean (config, CONFIG_GROUP_LOAD_SAVE, CONFIG_KEY_BACKUP, NULL);
+
+  if (g_key_file_has_key (config, CONFIG_GROUP_LOAD_SAVE, CONFIG_KEY_AUTOSAVE, NULL))
+    autosave = g_key_file_get_boolean (config, CONFIG_GROUP_LOAD_SAVE, CONFIG_KEY_AUTOSAVE, NULL);
+
+  if (g_key_file_has_key (config, CONFIG_GROUP_LOAD_SAVE, CONFIG_KEY_AUTOSAVE_SECONDS, NULL))
+    autosave_seconds = g_key_file_get_integer (config, CONFIG_GROUP_LOAD_SAVE, CONFIG_KEY_AUTOSAVE_SECONDS, NULL);
+
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (prefs->create_backups_toggle), backups);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (prefs->autosave_toggle), autosave);
+  gtk_spin_button_set_value (GTK_SPIN_BUTTON (prefs->autosave_spin), autosave_seconds);
+  gtk_widget_set_sensitive (prefs->autosave_spin, autosave);
+
   g_free (string);
+}
+
+gboolean
+glade_preferences_backup (GladePreferences *prefs)
+{
+  return gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (prefs->create_backups_toggle));
+}
+
+gboolean
+glade_preferences_autosave (GladePreferences *prefs)
+{
+  return gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (prefs->autosave_toggle));
+}
+
+gint
+glade_preferences_autosave_seconds (GladePreferences *prefs)
+{
+  return (gint)gtk_spin_button_get_value (GTK_SPIN_BUTTON (prefs->autosave_spin));
 }
 
 /* Callbacks */

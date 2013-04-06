@@ -71,6 +71,11 @@
 #define CONFIG_KEY_SHOW_STATUS      "show-statusbar"
 #define CONFIG_KEY_EDITOR_HEADER    "show-editor-header"
 
+#define CONFIG_GROUP_LOAD_SAVE      "Load and Save"
+#define CONFIG_KEY_BACKUP           "backup"
+#define CONFIG_KEY_AUTOSAVE         "autosave"
+#define CONFIG_KEY_AUTOSAVE_SECONDS "autosave-seconds"
+
 #define GLADE_WINDOW_GET_PRIVATE(object) (G_TYPE_INSTANCE_GET_PRIVATE ((object),  \
 					  GLADE_TYPE_WINDOW,                      \
 					  GladeWindowPrivate))
@@ -669,15 +674,76 @@ refresh_undo_redo (GladeWindow *window, GladeProject *project)
 }
 
 static void
+cancel_autosave (gpointer data)
+{
+  guint autosave_id = GPOINTER_TO_UINT (data);
+
+  g_source_remove (autosave_id);
+}
+
+static gboolean
+autosave_project (gpointer data)
+{
+  GladeProject *project = (GladeProject *)data;
+  GladeWindow *window = GLADE_WINDOW (glade_app_get_window ());
+  gchar *display_name;
+
+  display_name = glade_project_get_name (project);
+
+  if (glade_project_autosave (project, NULL))
+    glade_util_flash_message (window->priv->statusbar,
+			      window->priv->statusbar_actions_context_id,
+			      _("Autosaving '%s'"), display_name);
+  else
+    /* This is problematic, should we be more intrusive and popup a dialog ? */
+    glade_util_flash_message (window->priv->statusbar,
+			      window->priv->statusbar_actions_context_id,
+			      _("Error autosaving '%s'"), display_name);
+
+  g_free (display_name);
+
+  /* This will remove the source id */
+  g_object_set_data (G_OBJECT (project), "glade-autosave-id", NULL);
+  return FALSE;
+}
+
+static void
+project_queue_autosave (GladeWindow  *window,
+			GladeProject *project)
+{
+  if (glade_project_get_path (project) != NULL &&
+      glade_project_get_modified (project) &&
+      glade_preferences_autosave (window->priv->preferences))
+    {
+      guint autosave_id =
+	g_timeout_add_seconds (glade_preferences_autosave_seconds (window->priv->preferences),
+			       autosave_project, project);
+
+      g_object_set_data_full (G_OBJECT (project), "glade-autosave-id",
+			      GUINT_TO_POINTER (autosave_id), cancel_autosave);
+    }
+  else
+      g_object_set_data (G_OBJECT (project), "glade-autosave-id", NULL);
+}
+
+static void
+project_cancel_autosave (GladeProject *project)
+{
+  g_object_set_data (G_OBJECT (project), "glade-autosave-id", NULL);
+}
+
+static void
 project_changed_cb (GladeProject *project, 
                     GladeCommand *command,
                     gboolean      execute,
                     GladeWindow  *window)
 {
   GladeProject *active_project = get_active_project (window);
-  
+
   if (project == active_project)
     refresh_undo_redo (window, project);
+
+  project_queue_autosave (window, project);
 }
 
 static void
@@ -1079,11 +1145,48 @@ check_loading_project_for_save (GladeProject *project)
   return FALSE;
 }
 
+static gboolean
+do_save (GladeWindow *window, GladeProject *project, const gchar *path)
+{
+  GError *error = NULL;
+  gchar *display_path = g_strdup (path);
+
+  if (glade_preferences_backup (window->priv->preferences) &&
+      !glade_project_backup (project, path, NULL))
+    {
+      if (!glade_util_ui_message (GTK_WIDGET (window),
+				  GLADE_UI_ARE_YOU_SURE, NULL,
+				  _("Failed to backup existing file, continue saving ?")))
+	{
+	  g_free (display_path);
+	  return FALSE;
+	}
+    }
+
+  if (!glade_project_save (project, path, &error))
+    {
+      /* Reset path so future saves will prompt the file chooser */
+      glade_project_reset_path (project);
+
+      if (error)
+        {
+          glade_util_ui_message (GTK_WIDGET (window), GLADE_UI_ERROR, NULL,
+                                 _("Failed to save %s: %s"),
+                                 display_path, error->message);
+          g_error_free (error);
+        }
+      g_free (display_path);
+      return FALSE;
+    }
+
+  g_free (display_path);
+  return TRUE;
+}
+
 static void
 save (GladeWindow *window, GladeProject *project, const gchar *path)
 {
-  GError *error = NULL;
-  gchar *display_name, *display_path = g_strdup (path);
+  gchar *display_name;
   time_t mtime;
   GtkWidget *dialog;
   GtkWidget *button;
@@ -1132,31 +1235,15 @@ save (GladeWindow *window, GladeProject *project, const gchar *path)
 	  gtk_widget_destroy (dialog);
 
 	  if (response == GTK_RESPONSE_REJECT)
-	    {
-	      g_free (display_path);
-	      return;
-	    }
+	    return;
 	}
     }
 
   /* Interestingly; we cannot use `path' after glade_project_reset_path
    * because we are getting called with glade_project_get_path (project) as an argument.
    */
-  if (!glade_project_save (project, path, &error))
-    {
-      /* Reset path so future saves will prompt the file chooser */
-      glade_project_reset_path (project);
-
-      if (error)
-        {
-          glade_util_ui_message (GTK_WIDGET (window), GLADE_UI_ERROR, NULL,
-                                 _("Failed to save %s: %s"),
-                                 display_path, error->message);
-          g_error_free (error);
-        }
-      g_free (display_path);
-      return;
-    }
+  if (!do_save (window, project, path))
+    return;
 
   /* Get display_name here, it could have changed with "Save As..." */
   display_name = glade_project_get_name (project);
@@ -1173,7 +1260,6 @@ save (GladeWindow *window, GladeProject *project, const gchar *path)
                             window->priv->statusbar_actions_context_id,
                             _("Project '%s' saved"), display_name);
 
-  g_free (display_path);
   g_free (display_name);
 }
 
@@ -1320,7 +1406,6 @@ confirm_close_project (GladeWindow *window, GladeProject *project)
   gboolean close = FALSE;
   gchar *msg, *project_name = NULL;
   gint ret;
-  GError *error = NULL;
 
   project_name = glade_project_get_name (project);
 
@@ -1357,17 +1442,7 @@ confirm_close_project (GladeWindow *window, GladeProject *project)
          */
         if (glade_project_get_path (project) != NULL)
           {
-            if ((close = glade_project_save
-                 (project, glade_project_get_path (project), &error)) == FALSE)
-              {
-
-                glade_util_ui_message
-                    (GTK_WIDGET (window), GLADE_UI_ERROR, NULL,
-                     _("Failed to save %s to %s: %s"),
-                     project_name, glade_project_get_path (project),
-                     error->message);
-                g_error_free (error);
-              }
+            close = do_save (window, project, glade_project_get_path (project));
           }
         else
           {
@@ -1458,6 +1533,9 @@ do_close (GladeWindow *window, GladeProject *project)
   gint n;
 
   view = glade_design_view_get_from_project (project);
+
+  /* Cancel any queued autosave activity */
+  project_cancel_autosave (project);
 
   if (glade_project_is_loading (project))
     {
