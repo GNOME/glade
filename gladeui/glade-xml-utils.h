@@ -91,6 +91,7 @@ typedef struct _GladeProject        GladeProject;
 #define GLADE_TAG_REPLACE_CHILD_FUNCTION          "replace-child-function"
 #define GLADE_TAG_CREATE_WIDGET_FUNCTION          "create-widget-function"
 #define GLADE_TAG_CONSTRUCT_OBJECT_FUNCTION       "construct-object-function"
+#define GLADE_TAG_DESTROY_OBJECT_FUNCTION         "destroy-object-function"
 #define GLADE_TAG_DEEP_POST_CREATE_FUNCTION       "deep-post-create-function"
 #define GLADE_TAG_POST_CREATE_FUNCTION            "post-create-function"
 #define GLADE_TAG_GET_INTERNAL_CHILD_FUNCTION     "get-internal-child-function"

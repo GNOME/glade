@@ -898,6 +898,13 @@ glade_widget_adaptor_object_construct_object (GladeWidgetAdaptor *adaptor,
   return g_object_newv (adaptor->priv->type, n_parameters, parameters);
 }
 
+static void
+glade_widget_adaptor_object_destroy_object (GladeWidgetAdaptor *adaptor,
+					    GObject            *object)
+{
+  /* Do nothing, just have a method here incase classes chain up */
+}
+
 
 static GObject *
 glade_widget_adaptor_object_get_internal_child (GladeWidgetAdaptor *adaptor,
@@ -1369,6 +1376,7 @@ glade_widget_adaptor_class_init (GladeWidgetAdaptorClass *adaptor_class)
   /* Class methods */
   adaptor_class->create_widget = glade_widget_adaptor_object_create_widget;
   adaptor_class->construct_object = glade_widget_adaptor_object_construct_object;
+  adaptor_class->destroy_object = glade_widget_adaptor_object_destroy_object;
   adaptor_class->deep_post_create = NULL;
   adaptor_class->post_create = NULL;
   adaptor_class->get_internal_child = glade_widget_adaptor_object_get_internal_child;
@@ -1528,6 +1536,11 @@ gwa_extend_with_node_load_sym (GladeWidgetAdaptorClass *klass,
                                     GLADE_TAG_CONSTRUCT_OBJECT_FUNCTION,
                                     &symbol))
     klass->construct_object = symbol;
+
+  if (glade_xml_load_sym_from_node (node, module,
+                                    GLADE_TAG_DESTROY_OBJECT_FUNCTION,
+                                    &symbol))
+    klass->destroy_object = symbol;
 
   if (glade_xml_load_sym_from_node (node, module,
                                     GLADE_TAG_DEEP_POST_CREATE_FUNCTION,
@@ -3236,6 +3249,22 @@ glade_widget_adaptor_construct_object (GladeWidgetAdaptor *adaptor,
   return GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->construct_object (adaptor,
                                                                      n_parameters,
                                                                      parameters);
+}
+
+/**
+ * glade_widget_adaptor_destroy_object:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @object: The object to destroy
+ *
+ * This function is called to destroy a GObject instance.
+ */
+void
+glade_widget_adaptor_destroy_object (GladeWidgetAdaptor *adaptor,
+				     GObject *object)
+{
+  g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
+
+  GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->destroy_object (adaptor, object);
 }
 
 static void

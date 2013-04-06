@@ -94,6 +94,15 @@ glade_gtk_init (const gchar * name)
 }
 
 /* ----------------------------- GtkWidget ------------------------------ */
+void
+glade_gtk_widget_destroy_object (GladeWidgetAdaptor * adaptor,
+				 GObject *object)
+{
+  gtk_widget_destroy (GTK_WIDGET (object));
+
+  GWA_GET_CLASS (G_TYPE_OBJECT)->destroy_object (adaptor, object);
+}
+
 gboolean
 glade_gtk_widget_depends (GladeWidgetAdaptor * adaptor,
                           GladeWidget * widget, GladeWidget * another)

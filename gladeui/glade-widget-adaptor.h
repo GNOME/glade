@@ -385,6 +385,27 @@ typedef GObject *(* GladeConstructObjectFunc)     (GladeWidgetAdaptor *adaptor,
 						   guint               n_parameters,
 						   GParameter         *parameters);
 
+/**
+ * GladeDestroyObjectFunc:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @object: The #GObject to destroy
+ *
+ * This function is called to break any additional references to
+ * a GObject instance. Note that this function is not responsible
+ * for calling g_object_unref() on @object, the reference count
+ * of @object belongs to it's #GladeWidget wrapper.
+ *
+ * The #GtkWidget adaptor will call gtk_widget_destroy() before
+ * chaining up in this function.
+ *
+ * If your adaptor adds any references in any way at
+ * #GladePostCreateFunc time or #GladeConstructObjectFunc
+ * time, then this function must be implemented to also
+ * remove that reference.
+ *
+ */
+typedef void (* GladeDestroyObjectFunc) (GladeWidgetAdaptor *adaptor,
+					 GObject            *object);
 
 
 /**
@@ -590,6 +611,8 @@ struct _GladeWidgetAdaptorClass
   GladeConstructObjectFunc   construct_object;  /* Object constructor
 						 */
 
+  GladeDestroyObjectFunc     destroy_object; /* Object destructor */
+
   GladePostCreateFunc        deep_post_create;   /* Executed after widget creation: 
 						  * plugins use this to setup various
 						  * support codes (adaptors must always
@@ -667,7 +690,6 @@ struct _GladeWidgetAdaptorClass
   void   (* glade_reserved5)   (void);
   void   (* glade_reserved6)   (void);
   void   (* glade_reserved7)   (void);
-  void   (* glade_reserved8)   (void);
 };
 
 #define glade_widget_adaptor_create_widget(adaptor, query, ...) \
@@ -724,6 +746,8 @@ GParameter           *glade_widget_adaptor_default_params     (GladeWidgetAdapto
 GObject              *glade_widget_adaptor_construct_object   (GladeWidgetAdaptor *adaptor,
 							       guint               n_parameters,
 							       GParameter         *parameters);
+void                  glade_widget_adaptor_destroy_object     (GladeWidgetAdaptor *adaptor,
+							       GObject            *object);
 void                  glade_widget_adaptor_post_create        (GladeWidgetAdaptor *adaptor,
 							       GObject            *object,
 							       GladeCreateReason   reason);

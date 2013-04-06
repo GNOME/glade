@@ -3375,11 +3375,11 @@ glade_widget_set_object (GladeWidget * gwidget, GObject * new_object)
                    gwidget->priv->name ? gwidget->priv->name : "(unknown)",
                    old_object->ref_count);
 #endif
-          if (GTK_IS_WIDGET (old_object))
-            gtk_widget_destroy (GTK_WIDGET (old_object));
+
+	  /* Have the adaptor for this widget break any additional references */
+	  glade_widget_adaptor_destroy_object (gwidget->priv->adaptor, old_object);
 
           g_object_unref (old_object);
-
         }
     }
   g_object_notify_by_pspec (G_OBJECT (gwidget), properties[PROP_OBJECT]);
