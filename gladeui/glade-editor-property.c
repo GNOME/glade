@@ -101,6 +101,7 @@ struct _GladeEditorPropertyPrivate
 					* or skip directly to GladeProperty interface.
 					* (used for query dialogs).
 					*/
+  guint               changed_blocked : 1; /* Whether the GladeProperty changed signal is currently blocked */
 };
 
 G_DEFINE_TYPE (GladeEditorProperty, glade_editor_property, GTK_TYPE_HBOX);
@@ -139,10 +140,18 @@ glade_editor_property_commit_no_callback (GladeEditorProperty *eprop,
     return;
 
   g_signal_handler_block (G_OBJECT (eprop->priv->property), eprop->priv->changed_id);
+  eprop->priv->changed_blocked = TRUE;
+
   eprop->priv->committing = TRUE;
   glade_editor_property_commit (eprop, value);
   eprop->priv->committing = FALSE;
-  g_signal_handler_unblock (G_OBJECT (eprop->priv->property), eprop->priv->changed_id);
+
+  /* When construct-only properties are set, we are disconnected and re-connected
+   * to the GladeWidget while it's rebuilding it's instance, in this case the
+   * signal handler is no longer blocked at this point.
+   */
+  if (eprop->priv->changed_blocked)
+    g_signal_handler_unblock (G_OBJECT (eprop->priv->property), eprop->priv->changed_id);
 }
 
 GtkWidget *
@@ -487,6 +496,7 @@ glade_editor_property_load_common (GladeEditorProperty *eprop,
       eprop->priv->changed_id = 0;
       eprop->priv->enabled_id = 0;
       eprop->priv->state_id = 0;
+      eprop->priv->changed_blocked = FALSE;
 
       /* Unref it here */
       g_object_weak_unref (G_OBJECT (eprop->priv->property),
