@@ -671,12 +671,17 @@ glade_editor_load_editable (GladeEditor *editor,
   /* Use the parenting adaptor for packing pages... so deffer creating the widgets
    * until load time.
    */
-  if (type == GLADE_PAGE_PACKING && parent)
+  if (type == GLADE_PAGE_PACKING)
     {
-      GladeWidgetAdaptor *adaptor = glade_widget_get_adaptor (parent);
+      GladeWidgetAdaptor *adaptor;
+
+      if (!parent)
+	return;
+
+      adaptor = glade_widget_get_adaptor (parent);
       editable =
-          glade_editor_load_editable_in_page (editor, adaptor,
-                                              GLADE_PAGE_PACKING);
+	glade_editor_load_editable_in_page (editor, adaptor,
+					    GLADE_PAGE_PACKING);
     }
   else
     editable = 
