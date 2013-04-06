@@ -1597,6 +1597,25 @@ glade_project_check_target_version (GladeProject *project)
   if (text) g_string_free (text, TRUE);
 }
 
+static gchar *
+glade_project_autosave_name (const gchar *path)
+{
+  gchar *basename, *dirname, *autoname;
+  gchar *autosave_name;
+
+  basename = g_path_get_basename (path);
+  dirname = g_path_get_dirname (path);
+
+  autoname = g_strdup_printf ("#%s#", basename);
+  autosave_name = g_build_filename (dirname, autoname, NULL);
+
+  g_free (basename);
+  g_free (dirname);
+  g_free (autoname);
+
+  return autosave_name;
+}
+
 static gboolean
 glade_project_load_internal (GladeProject *project)
 {
@@ -1609,6 +1628,34 @@ glade_project_load_internal (GladeProject *project)
   gboolean has_gtk_dep = FALSE;
   gchar *domain;
   gint count;
+  gchar *autosave_path;
+  time_t mtime, autosave_mtime;
+  gchar *load_path = NULL;
+
+  /* Check if an autosave is more recent then the specified file */
+  autosave_path = glade_project_autosave_name (priv->path);
+  autosave_mtime = glade_util_get_file_mtime (autosave_path, NULL);
+  mtime = glade_util_get_file_mtime (priv->path, NULL);
+
+  if (autosave_mtime > mtime)
+    {
+      gchar *display_name;
+
+      display_name = glade_project_get_name (project);
+
+      if (glade_util_ui_message (glade_app_get_window (),
+				 GLADE_UI_YES_OR_NO, NULL,
+				 _("An automatically saved version of `%s' is more recent\n\n"
+				   "Would you like to load the autosave version instead ?"),
+				 display_name))
+	{
+	  mtime = autosave_mtime;
+	  load_path = g_strdup (autosave_path);
+	}
+      g_free (display_name);
+    }
+
+  g_free (autosave_path);
 
   priv->selection = NULL;
   priv->objects = NULL;
@@ -1616,14 +1663,15 @@ glade_project_load_internal (GladeProject *project)
 
   /* get the context & root node of the catalog file */
   if (!(context =
-        glade_xml_context_new_from_path (priv->path, NULL, NULL)))
+        glade_xml_context_new_from_path (load_path ? load_path : priv->path, NULL, NULL)))
     {
-      g_warning ("Couldn't open glade file [%s].", priv->path);
+      g_warning ("Couldn't open glade file [%s].", load_path ? load_path : priv->path);
+      g_free (load_path);
       priv->loading = FALSE;
       return FALSE;
     }
 
-  priv->mtime = glade_util_get_file_mtime (priv->path, NULL);
+  priv->mtime = mtime;
 
   doc = glade_xml_context_get_doc (context);
   root = glade_xml_doc_get_root (doc);
@@ -1631,8 +1679,9 @@ glade_project_load_internal (GladeProject *project)
   if (!glade_xml_node_verify_silent (root, GLADE_XML_TAG_PROJECT))
     {
       g_warning ("Couldnt recognize GtkBuilder xml, skipping %s",
-                 priv->path);
+                 load_path ? load_path : priv->path);
       glade_xml_context_free (context);
+      g_free (load_path);
       priv->loading = FALSE;
       return FALSE;
     }
@@ -1649,7 +1698,7 @@ glade_project_load_internal (GladeProject *project)
   /* Read requieres, and do not abort load if there are missing catalog since
    * GladeObjectStub is created to keep the original xml for unknown object classes
    */
-  glade_project_read_requires (project, root, priv->path, &has_gtk_dep);
+  glade_project_read_requires (project, root, load_path ? load_path : priv->path, &has_gtk_dep);
 
   glade_project_read_resource_path (project, root);
 
@@ -1679,6 +1728,7 @@ glade_project_load_internal (GladeProject *project)
   if (priv->load_cancel)
     {
       priv->loading = FALSE;
+      g_free (load_path);
       return FALSE;
     }
 
@@ -1959,6 +2009,92 @@ glade_project_write (GladeProject *project)
 }
 
 /**
+ * glade_project_backup:
+ * @project: a #GladeProject
+ * @path: location to save glade file
+ * @error: an error from the G_FILE_ERROR domain.
+ *
+ * Backup the last file which @project has saved to
+ * or was loaded from.
+ *
+ * If @path is not the same as the current project
+ * path, then the current project path will be
+ * backed up under the new location.
+ *
+ * If this the first save, and no persisted file
+ * exists, then %TRUE is returned and no backup is made.
+ *
+ * Returns: %TRUE on success, %FALSE on failure
+ */
+gboolean
+glade_project_backup (GladeProject        *project,
+		      const gchar         *path, 
+		      GError             **error)
+{
+  gchar *canonical_path;
+  gchar *destination_path;
+  gchar *content = NULL;
+  gsize  length = 0;
+  gboolean success;
+
+  g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+
+  if (project->priv->path == NULL)
+    return TRUE;
+
+  canonical_path = glade_util_canonical_path (path);
+  destination_path = g_strconcat (canonical_path, "~", NULL);
+  g_free (canonical_path);
+
+  success = g_file_get_contents (project->priv->path, &content, &length, error);
+  if (success)
+    success = g_file_set_contents (destination_path, content, length, error);
+
+  g_free (destination_path);
+
+  return success;
+}
+
+/**
+ * glade_project_autosave:
+ * @project: a #GladeProject
+ * @path: location to save glade file
+ * @error: an error from the G_FILE_ERROR domain.
+ * 
+ * Saves an autosave snapshot of @project to it's currently set path
+ *
+ * If the project was never saved, nothing is done and %TRUE is returned.
+ *
+ * Returns: %TRUE on success, %FALSE on failure
+ */
+gboolean
+glade_project_autosave (GladeProject        *project,
+			GError             **error)
+{
+
+  GladeXmlContext *context;
+  GladeXmlDoc *doc;
+  gchar *autosave_path;
+  gint ret;
+
+  g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+
+  if (project->priv->path == NULL)
+    return TRUE;
+
+  autosave_path = glade_project_autosave_name (project->priv->path);
+
+  context = glade_project_write (project);
+  doc = glade_xml_context_get_doc (context);
+  ret = glade_xml_doc_save (doc, autosave_path);
+  glade_xml_context_destroy (context);
+
+  g_free (autosave_path);
+
+  return ret > 0;
+}
+
+/**
  * glade_project_save:
  * @project: a #GladeProject
  * @path: location to save glade file
@@ -1975,6 +2111,7 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
   GladeXmlDoc *doc;
   gchar *canonical_path;
   gint ret;
+  gchar *autosave_path;
 
   g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
 
@@ -1984,6 +2121,15 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
   if (!glade_project_verify (project, TRUE))
     return FALSE;
 
+  /* Delete any autosaves at this point, if they exist */
+  if (project->priv->path)
+    {
+      autosave_path = glade_project_autosave_name (project->priv->path);
+      g_unlink (autosave_path);
+      g_free (autosave_path);
+    }
+
+  /* Save the project */
   context = glade_project_write (project);
   doc = glade_xml_context_get_doc (context);
   ret = glade_xml_doc_save (doc, path);

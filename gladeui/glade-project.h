@@ -118,7 +118,12 @@ GladeProject       *glade_project_new                 (void);
 GladeProject       *glade_project_load                (const gchar         *path);
 gboolean            glade_project_load_from_file      (GladeProject        *project, 
                                                        const gchar         *path);
-gboolean            glade_project_save                (GladeProject        *project, 
+gboolean            glade_project_save                (GladeProject        *project,
+                                                       const gchar         *path, 
+                                                       GError             **error);
+gboolean            glade_project_autosave            (GladeProject        *project,
+                                                       GError             **error);
+gboolean            glade_project_backup              (GladeProject        *project,
                                                        const gchar         *path, 
                                                        GError             **error);
 void                glade_project_push_progress        (GladeProject       *project);
