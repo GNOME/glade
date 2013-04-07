@@ -829,217 +829,189 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
       </packing>
     </child>
     <child>
-      <object class="GtkBox" id="toolbar_box">
+      <object class="GtkToolbar" id="toolbar">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
-          <object class="GtkToolbar" id="toolbar">
+          <object class="GtkToolButton" id="new_toolbutton">
+            <property name="related_action">new_action</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <child>
-              <object class="GtkToolButton" id="new_toolbutton">
-                <property name="related_action">new_action</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label">toolbutton1</property>
-                <property name="use_underline">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="open_toolbutton">
-                <property name="related_action">open_action</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label">toolbutton2</property>
-                <property name="use_underline">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="save_toolbutton">
-                <property name="related_action">save_action</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label">toolbutton3</property>
-                <property name="use_underline">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSeparatorToolItem" id="toolbutton1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkMenuToolButton" id="undo_toolbutton">
-                <property name="related_action">undo_action</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label">toolbutton2</property>
-                <property name="use_underline">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkMenuToolButton" id="redo_toolbutton">
-                <property name="related_action">redo_action</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label">toolbutton3</property>
-                <property name="use_underline">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSeparatorToolItem" id="toolbutton4">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="cut_toolbutton">
-                <property name="related_action">cut_action</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label">toolbutton5</property>
-                <property name="use_underline">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="copy_toolbutton">
-                <property name="related_action">copy_action</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label">toolbutton6</property>
-                <property name="use_underline">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="paste_toolbutton">
-                <property name="related_action">paste_action</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label">toolbutton7</property>
-                <property name="use_underline">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSeparatorToolItem" id="toolbutton2">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToggleToolButton" id="selector_button">
-                <property name="related_action">selector_radioaction</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label">radiotoolbutton1</property>
-                <property name="use_underline">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToggleToolButton" id="drag_resize_button">
-                <property name="related_action">drag_resize_radioaction</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label">radiotoolbutton2</property>
-                <property name="use_underline">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToggleToolButton" id="margin_edit_button">
-                <property name="related_action">margin_edit_radioaction</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label">radiotoolbutton3</property>
-                <property name="use_underline">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToggleToolButton" id="align_edit_button">
-                <property name="related_action">align_edit_radioaction</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label">radiotoolbutton4</property>
-                <property name="use_underline">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkEntry" id="search_entry">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="valign">end</property>
-            <property name="invisible_char">●</property>
-            <property name="width_chars">20</property>
-            <property name="placeholder_text">&lt; search widgets &gt;</property>
+            <property name="label">toolbutton1</property>
+            <property name="use_underline">True</property>
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="padding">2</property>
-            <property name="pack_type">end</property>
-            <property name="position">1</property>
+            <property name="homogeneous">True</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkToolButton" id="open_toolbutton">
+            <property name="related_action">open_action</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label">toolbutton2</property>
+            <property name="use_underline">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="homogeneous">True</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkToolButton" id="save_toolbutton">
+            <property name="related_action">save_action</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label">toolbutton3</property>
+            <property name="use_underline">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="homogeneous">True</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSeparatorToolItem" id="toolbutton1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkMenuToolButton" id="undo_toolbutton">
+            <property name="related_action">undo_action</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label">toolbutton2</property>
+            <property name="use_underline">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkMenuToolButton" id="redo_toolbutton">
+            <property name="related_action">redo_action</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label">toolbutton3</property>
+            <property name="use_underline">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSeparatorToolItem" id="toolbutton4">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkToolButton" id="cut_toolbutton">
+            <property name="related_action">cut_action</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label">toolbutton5</property>
+            <property name="use_underline">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="homogeneous">True</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkToolButton" id="copy_toolbutton">
+            <property name="related_action">copy_action</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label">toolbutton6</property>
+            <property name="use_underline">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="homogeneous">True</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkToolButton" id="paste_toolbutton">
+            <property name="related_action">paste_action</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label">toolbutton7</property>
+            <property name="use_underline">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="homogeneous">True</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSeparatorToolItem" id="toolbutton2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="homogeneous">True</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkToggleToolButton" id="selector_button">
+            <property name="related_action">selector_radioaction</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label">radiotoolbutton1</property>
+            <property name="use_underline">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="homogeneous">True</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkToggleToolButton" id="drag_resize_button">
+            <property name="related_action">drag_resize_radioaction</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label">radiotoolbutton2</property>
+            <property name="use_underline">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="homogeneous">True</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkToggleToolButton" id="margin_edit_button">
+            <property name="related_action">margin_edit_radioaction</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label">radiotoolbutton3</property>
+            <property name="use_underline">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="homogeneous">True</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkToggleToolButton" id="align_edit_button">
+            <property name="related_action">align_edit_radioaction</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label">radiotoolbutton4</property>
+            <property name="use_underline">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="homogeneous">True</property>
           </packing>
         </child>
       </object>

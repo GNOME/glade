@@ -150,7 +150,6 @@ struct _GladeWindowPrivate
 
   GtkWidget *toolbar;           /* Actions are added to the toolbar */
   gint actions_start;           /* start of action items */
-  GtkEntry *search_entry;
 
   GtkWidget *center_pane;
   /* paned windows that tools get docked into/out of */
@@ -1179,6 +1178,9 @@ do_save (GladeWindow *window, GladeProject *project, const gchar *path)
       return FALSE;
     }
 
+  /* Cancel any queued autosave when explicitly saving */
+  project_cancel_autosave (project);
+
   g_free (display_path);
   return TRUE;
 }
@@ -1555,10 +1557,7 @@ do_close (GladeWindow *window, GladeProject *project)
   glade_window_notebook_tabs_update (window);
 
   if (!glade_app_get_projects ())
-    {
-      gtk_widget_hide (priv->center_pane);
-      gtk_widget_set_sensitive (GTK_WIDGET (priv->search_entry), FALSE);
-    }
+    gtk_widget_hide (priv->center_pane);
 }
 
 void
@@ -1703,7 +1702,6 @@ on_notebook_switch_page (GtkNotebook *notebook,
   GladeProject *project;
   GtkAction *action;
   gchar *action_name;
-  GtkWidget *inspector;
 
   view = GLADE_DESIGN_VIEW (gtk_notebook_get_nth_page (notebook, page_num));
 
@@ -1720,19 +1718,9 @@ on_notebook_switch_page (GtkNotebook *notebook,
 
   set_sensitivity_according_to_project (window, project);
 
-  /* unset search entry */
-  inspector = gtk_notebook_get_nth_page (priv->inspectors_notebook,
-                                         gtk_notebook_get_current_page (priv->inspectors_notebook));
-  glade_inspector_set_search_entry (GLADE_INSPECTOR (inspector), NULL);
-  gtk_entry_set_text (priv->search_entry, "");
-
   /* switch to the project's inspector/palette */
   gtk_notebook_set_current_page (priv->inspectors_notebook, page_num);
   gtk_notebook_set_current_page (priv->palettes_notebook, page_num);
-
-  /* Set search entry */
-  inspector = gtk_notebook_get_nth_page (priv->inspectors_notebook, page_num);
-  glade_inspector_set_search_entry (GLADE_INSPECTOR (inspector), priv->search_entry);
 
   /* activate the corresponding item in the project menu */
   action_name = g_strdup_printf ("Tab_%d", page_num);
@@ -2502,7 +2490,6 @@ add_project (GladeWindow *window, GladeProject *project, gboolean for_file)
 
   gtk_widget_show (priv->center_pane);
   gtk_widget_show (GTK_WIDGET (priv->editor));
-  gtk_widget_set_sensitive (GTK_WIDGET (priv->search_entry), TRUE);
 }
 
 void
@@ -3191,7 +3178,6 @@ glade_window_constructed (GObject *object)
   priv->editor = GET_OBJECT (builder, GLADE_EDITOR, "editor");
   priv->statusbar = GET_OBJECT (builder, GTK_WIDGET, "statusbar");
   priv->toolbar = GET_OBJECT (builder, GTK_WIDGET, "toolbar");
-  priv->search_entry = GET_OBJECT (builder, GTK_ENTRY, "search_entry");
   priv->project_menu = GET_OBJECT (builder, GTK_MENU_SHELL, "project_menu");
 
   priv->undo = GET_OBJECT (builder, GTK_TOOL_ITEM, "undo_toolbutton");
