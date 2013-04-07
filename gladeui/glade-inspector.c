@@ -56,6 +56,17 @@
 					    GLADE_TYPE_INSPECTOR,                 \
 			 		    GladeInspectorPrivate))
 
+
+static void     search_entry_text_inserted_cb (GtkEntry *entry,
+					       const gchar *text,
+					       gint length,
+					       gint *position,
+					       GladeInspector *inspector);
+static void     search_entry_text_deleted_cb  (GtkEditable *editable,
+					       gint         start_pos,
+					       gint         end_pos,
+					       GladeInspector *inspector);
+
 enum
 {
   PROP_0,
@@ -80,6 +91,7 @@ struct _GladeInspectorPrivate
   GtkWidget *entry;
   guint idle_complete;
   gboolean search_disabled;
+  gchar *completion_text;
 };
 
 static GParamSpec *properties[N_PROPERTIES];
@@ -215,7 +227,7 @@ glade_inspector_visible_func (GtkTreeModel *model,
 
   gboolean retval = FALSE;
 
-  if (priv->search_disabled)
+  if (priv->search_disabled || priv->completion_text == NULL)
     return TRUE;
 
   if (gtk_tree_model_iter_children (model, &iter, parent))
@@ -226,15 +238,15 @@ glade_inspector_visible_func (GtkTreeModel *model,
         }
       while (gtk_tree_model_iter_next (model, &iter) && !retval);
     }
+
   if (!retval)
     {
-      const gchar *text = gtk_entry_get_text (GTK_ENTRY (priv->entry));
       gchar *widget_name;
 
       gtk_tree_model_get (model, parent, GLADE_PROJECT_MODEL_COLUMN_NAME,
                           &widget_name, -1);
 
-      retval = find_in_string_insensitive (widget_name, text);
+      retval = find_in_string_insensitive (widget_name, priv->completion_text);
 
       g_free (widget_name);
     }
@@ -243,7 +255,7 @@ glade_inspector_visible_func (GtkTreeModel *model,
 }
 
 static void
-glade_inspector_filter (GladeInspector *inspector)
+glade_inspector_refilter (GladeInspector *inspector)
 {
   GladeInspectorPrivate *priv = inspector->priv;
 
@@ -252,61 +264,115 @@ glade_inspector_filter (GladeInspector *inspector)
       gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (priv->filter));
       gtk_tree_view_expand_all (GTK_TREE_VIEW (priv->view));
     }
-
 }
 
 static void
 search_entry_changed_cb (GtkEntry *entry, GladeInspector *inspector)
 {
-  glade_inspector_filter (inspector);
+  glade_inspector_refilter (inspector);
 }
 
+typedef struct {
+  const gchar         *text;
+  gchar               *common_text;
+} CommonMatchData;
+
 static void
-selection_name_foreach_func (GtkTreeModel *model,
-                             GtkTreePath *path,
-                             GtkTreeIter *iter,
-                             gchar **selection)
+reduce_string (gchar *str1,
+	       gchar *str2)
 {
-  if (*selection == NULL)
+  gint str1len = strlen (str1);
+  gint i;
+
+  for (i = 0; str2[i] != '\0'; i++)
     {
-      gchar *name;
-      
-      gtk_tree_model_get (model, iter, GLADE_PROJECT_MODEL_COLUMN_NAME, &name, -1);
-      *selection = name;
+
+      if (str1[i] != str2[i] || i >= str1len)
+	{
+	  str1[i] = '\0';
+	  break;
+	}
     }
+
+  if (str2[i] == '\0')
+    str1[i] = '\0';
+}
+
+static gboolean
+search_common_matches (GtkTreeModel        *model,
+		       GtkTreePath         *path,
+		       GtkTreeIter         *iter,
+		       CommonMatchData     *data)
+{
+  gchar *row_text = NULL;
+  gboolean match;
+
+  gtk_tree_model_get (model, iter, GLADE_PROJECT_MODEL_COLUMN_NAME, &row_text, -1);
+
+  match = (strncmp (data->text, row_text, strlen (data->text)) == 0);
+
+  if (match)
+    {
+      if (data->common_text)
+	{
+	  reduce_string (data->common_text, row_text);
+
+	  g_free (row_text);
+	}
+      else
+	data->common_text = row_text;
+    }
+  else
+    g_free (row_text);
+
+  return FALSE;
 }
 
 static gchar *
-get_selected_name (GladeInspector *inspector)
+get_partial_match (GladeInspector *inspector,
+		   const gchar    *search)
 {
-  GtkTreeSelection *selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (inspector->priv->view));
-  gchar *name = NULL;
-  
-  gtk_tree_selection_selected_foreach (selection,
-                                       (GtkTreeSelectionForeachFunc)
-                                       selection_name_foreach_func, &name);
+  GtkTreeModel     *model = gtk_tree_view_get_model (GTK_TREE_VIEW (inspector->priv->view));
+  CommonMatchData   data;
 
-  return name;
+  data.text        = search;
+  data.common_text = NULL;
+  
+  gtk_tree_model_foreach (model, (GtkTreeModelForeachFunc)search_common_matches, &data);
+
+  return data.common_text;
 }
 
 static gboolean
 search_complete_idle (GladeInspector *inspector)
 {
   GladeInspectorPrivate *priv = inspector->priv;
-  gchar *completed = get_selected_name (inspector);
+  gchar *completed;
   const gchar *str;
   gsize length;
 
   str = gtk_entry_get_text (GTK_ENTRY (priv->entry));
 
+  completed = get_partial_match (inspector, str);
+  
+  g_free (priv->completion_text);
+  priv->completion_text = g_strdup (str);
+
   if (completed)
     {
       length = strlen (str);
+
+      g_signal_handlers_block_by_func (priv->entry, search_entry_text_inserted_cb, inspector);
+      g_signal_handlers_block_by_func (priv->entry, search_entry_text_deleted_cb, inspector);
 
       gtk_entry_set_text (GTK_ENTRY (priv->entry), completed);
       gtk_editable_set_position (GTK_EDITABLE (priv->entry), length);
       gtk_editable_select_region (GTK_EDITABLE (priv->entry), length, -1);
       g_free (completed);
+
+      g_signal_handlers_unblock_by_func (priv->entry, search_entry_text_inserted_cb, inspector);
+      g_signal_handlers_unblock_by_func (priv->entry, search_entry_text_deleted_cb, inspector);
+
     }
 
   priv->idle_complete = 0;
@@ -330,6 +396,27 @@ search_entry_text_inserted_cb (GtkEntry *entry,
     }
 }
 
+static void
+search_entry_text_deleted_cb (GtkEditable *editable,
+			      gint         start_pos,
+			      gint         end_pos,
+			      GladeInspector *inspector)
+{
+  GladeInspectorPrivate *priv = inspector->priv;
+
+  if (!priv->search_disabled)
+    {
+      const gchar *str;
+
+      str = gtk_entry_get_text (GTK_ENTRY (priv->entry));
+
+      g_free (priv->completion_text);
+      priv->completion_text = g_strdup (str);
+
+      glade_inspector_refilter (inspector);
+    }
+}
+
 static gboolean
 search_entry_key_press_event_cb (GtkEntry *entry,
                                  GdkEventKey *event,
@@ -337,6 +424,8 @@ search_entry_key_press_event_cb (GtkEntry *entry,
 {
   GladeInspectorPrivate *priv = inspector->priv;
   const gchar *str;
+
+  str = gtk_entry_get_text (GTK_ENTRY (priv->entry));
 
   if (event->keyval == GDK_KEY_Tab)
     {
@@ -346,8 +435,13 @@ search_entry_key_press_event_cb (GtkEntry *entry,
         }
       else
         {
+	  g_free (priv->completion_text);
+	  priv->completion_text = g_strdup (str);
+
           gtk_editable_set_position (GTK_EDITABLE (entry), -1);
           gtk_editable_select_region (GTK_EDITABLE (entry), -1, -1);
+
+	  glade_inspector_refilter (inspector);
         }
       return TRUE;
     }
@@ -356,52 +450,56 @@ search_entry_key_press_event_cb (GtkEntry *entry,
     {
       gchar *name;
 
-      str = gtk_entry_get_text (GTK_ENTRY (priv->entry));
-
-      if (str && (name = get_selected_name (inspector)))
+      if (str && (name = get_partial_match (inspector, str)))
         {
+	  g_free (priv->completion_text);
+	  priv->completion_text = name;
+
+	  g_signal_handlers_block_by_func (priv->entry, search_entry_text_inserted_cb, inspector);
+	  g_signal_handlers_block_by_func (priv->entry, search_entry_text_deleted_cb, inspector);
+
           gtk_entry_set_text (GTK_ENTRY (entry), name);
-          g_free (name);
+
+	  g_signal_handlers_unblock_by_func (priv->entry, search_entry_text_inserted_cb, inspector);
+	  g_signal_handlers_unblock_by_func (priv->entry, search_entry_text_deleted_cb, inspector);
+
           gtk_editable_set_position (GTK_EDITABLE (entry), -1);
           gtk_editable_select_region (GTK_EDITABLE (entry), -1, -1);
         }
       return TRUE;
     }
 
-  return FALSE;
-}
-
-static void
-widget_font_desc_set_style (GtkWidget *widget, PangoStyle style)
-{
-  GtkStyleContext *context = gtk_widget_get_style_context (widget);
-  PangoFontDescription *font_desc = 
-    pango_font_description_copy (gtk_style_context_get_font (context, GTK_STATE_FLAG_NORMAL));
-
-  pango_font_description_set_style (font_desc, style);
-  gtk_widget_override_font (widget, font_desc);
-  pango_font_description_free (font_desc);
-}
-
-static void
-search_entry_update (GladeInspector *inspector)
-{
-  GladeInspectorPrivate *priv = inspector->priv;
-  const gchar *str = gtk_entry_get_text (GTK_ENTRY (priv->entry));
-
-  if (str[0] == '\0')
+  if (event->keyval == GDK_KEY_BackSpace)
     {
-      GtkStyleContext *context;
-      GdkRGBA          color;
+      if (!priv->search_disabled && !priv->idle_complete && str && str[0])
+	{
+	  /* Now, set the text to the current completion text -1 char, and recomplete */
+	  if (priv->completion_text && priv->completion_text[0])
+	    {
+	      /* If we're not at the position of the length of the completion text, just carry on */
+	      if (!gtk_editable_get_selection_bounds (GTK_EDITABLE (priv->entry), NULL, NULL))
+		return FALSE;
 
-      priv->search_disabled = TRUE;
-      widget_font_desc_set_style (priv->entry, PANGO_STYLE_ITALIC);
-      gtk_entry_set_text (GTK_ENTRY (priv->entry), _("< search widgets >"));
+	      priv->completion_text[strlen (priv->completion_text) -1] = '\0';
 
-      context = gtk_widget_get_style_context (priv->entry);
-      gtk_style_context_get_color (context, GTK_STATE_FLAG_INSENSITIVE, &color);
-      gtk_widget_override_color (priv->entry, GTK_STATE_FLAG_NORMAL, &color);
+	      g_signal_handlers_block_by_func (priv->entry, search_entry_text_inserted_cb, inspector);
+	      g_signal_handlers_block_by_func (priv->entry, search_entry_text_deleted_cb, inspector);
+
+	      gtk_entry_set_text (GTK_ENTRY (priv->entry), priv->completion_text);
+	      gtk_editable_set_position (GTK_EDITABLE (priv->entry), -1);
+
+	      g_signal_handlers_unblock_by_func (priv->entry, search_entry_text_inserted_cb, inspector);
+	      g_signal_handlers_unblock_by_func (priv->entry, search_entry_text_deleted_cb, inspector);
+
+	      priv->idle_complete =
+		g_idle_add ((GSourceFunc) search_complete_idle, inspector);
+
+	      return TRUE;
+	    }
+	}
     }
+
+  return FALSE;
 }
 
 static gboolean
@@ -412,13 +510,7 @@ search_entry_focus_in_cb (GtkWidget *entry,
   GladeInspectorPrivate *priv = inspector->priv;
 
   if (priv->search_disabled)
-    {
-      gtk_entry_set_text (GTK_ENTRY (priv->entry), "");
-      gtk_widget_override_color (priv->entry, GTK_STATE_NORMAL, NULL);
-      gtk_widget_override_font (priv->entry, NULL);
-
-      priv->search_disabled = FALSE;
-    }
+    priv->search_disabled = FALSE;
 
   return FALSE;
 }
@@ -428,7 +520,14 @@ search_entry_focus_out_cb (GtkWidget *entry,
                            GdkEventFocus *event,
                            GladeInspector *inspector)
 {
-  search_entry_update (inspector);
+  GladeInspectorPrivate *priv = inspector->priv;
+
+  priv->search_disabled = TRUE;
+
+  g_free (priv->completion_text);
+  priv->completion_text = NULL;
+
+  gtk_entry_set_text (GTK_ENTRY (priv->entry), "");
 
   return FALSE;
 }
@@ -446,7 +545,7 @@ glade_inspector_init (GladeInspector *inspector)
 
   priv->entry = gtk_entry_new ();
 
-  search_entry_update (inspector);
+  gtk_entry_set_placeholder_text (GTK_ENTRY (priv->entry), _("< Search Widgets >"));
   gtk_widget_show (priv->entry);
   gtk_box_pack_start (GTK_BOX (inspector), priv->entry, FALSE, FALSE, 2);
 
@@ -456,6 +555,9 @@ glade_inspector_init (GladeInspector *inspector)
                     G_CALLBACK (search_entry_key_press_event_cb), inspector);
   g_signal_connect_after (priv->entry, "insert-text",
                           G_CALLBACK (search_entry_text_inserted_cb),
+                          inspector);
+  g_signal_connect_after (priv->entry, "delete-text",
+                          G_CALLBACK (search_entry_text_deleted_cb),
                           inspector);
   g_signal_connect (priv->entry, "focus-in-event",
                     G_CALLBACK (search_entry_focus_in_cb), inspector);
@@ -494,7 +596,6 @@ glade_inspector_dispose (GObject *object)
 {
   GladeInspector *inspector = GLADE_INSPECTOR (object);
 
-  glade_inspector_set_search_entry (inspector, NULL);
   glade_inspector_set_project (inspector, NULL);
 
   if (inspector->priv->idle_complete)
@@ -509,6 +610,10 @@ glade_inspector_dispose (GObject *object)
 static void
 glade_inspector_finalize (GObject *object)
 {
+  GladeInspector *inspector = GLADE_INSPECTOR (object);
+
+  g_free (inspector->priv->completion_text);
+
   G_OBJECT_CLASS (glade_inspector_parent_class)->finalize (object);
 }
 
@@ -823,14 +928,6 @@ glade_inspector_set_project (GladeInspector *inspector, GladeProject *project)
       g_object_unref (priv->filter);    /* pass ownership of the filter to the model */
 
       connect_project_signals (inspector, project);
-
-      gtk_tree_view_set_search_entry (GTK_TREE_VIEW (priv->view), GTK_ENTRY (priv->entry));
-      gtk_tree_view_set_enable_search (GTK_TREE_VIEW (priv->view), TRUE);
-    }
-  else
-    {
-      gtk_tree_view_set_search_entry (GTK_TREE_VIEW (priv->view), NULL);
-      gtk_tree_view_set_enable_search (GTK_TREE_VIEW (priv->view), FALSE);
     }
 
   g_object_notify_by_pspec (G_OBJECT (inspector), properties[PROP_PROJECT]);
