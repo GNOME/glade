@@ -273,8 +273,9 @@ search_entry_changed_cb (GtkEntry *entry, GladeInspector *inspector)
 }
 
 typedef struct {
-  const gchar         *text;
-  gchar               *common_text;
+  const gchar    *text;
+  gchar          *common_text;
+  gchar          *first_match;
 } CommonMatchData;
 
 static void
@@ -313,6 +314,9 @@ search_common_matches (GtkTreeModel        *model,
 
   if (match)
     {
+      if (!data->first_match)
+	data->first_match = g_strdup (row_text);
+
       if (data->common_text)
 	{
 	  reduce_string (data->common_text, row_text);
@@ -328,17 +332,30 @@ search_common_matches (GtkTreeModel        *model,
   return FALSE;
 }
 
+/* Returns the shortest common matching text from all
+ * project widget names.
+ *
+ * If shortest_match is specified, it is given the first
+ * full match for the 'search' text
+ */
 static gchar *
 get_partial_match (GladeInspector *inspector,
-		   const gchar    *search)
+		   const gchar    *search,
+		   gchar         **first_match)
 {
   GtkTreeModel     *model = gtk_tree_view_get_model (GTK_TREE_VIEW (inspector->priv->view));
   CommonMatchData   data;
 
   data.text        = search;
   data.common_text = NULL;
+  data.first_match = NULL;
   
   gtk_tree_model_foreach (model, (GtkTreeModelForeachFunc)search_common_matches, &data);
+
+  if (first_match)
+    *first_match = data.first_match;
+  else
+    g_free (data.first_match);
 
   return data.common_text;
 }
@@ -353,7 +370,7 @@ search_complete_idle (GladeInspector *inspector)
 
   str = gtk_entry_get_text (GTK_ENTRY (priv->entry));
 
-  completed = get_partial_match (inspector, str);
+  completed = get_partial_match (inspector, str, NULL);
   
   g_free (priv->completion_text);
   priv->completion_text = g_strdup (str);
@@ -429,11 +446,12 @@ search_entry_key_press_event_cb (GtkEntry *entry,
 
   if (event->keyval == GDK_KEY_Tab)
     {
+      /* CNTL-Tab: An escape route to move focus */
       if (event->state & GDK_CONTROL_MASK)
         {
           gtk_widget_grab_focus (priv->view);
         }
-      else
+      else /* Tab: Move cursor forward and refine the filter to include all text */
         {
 	  g_free (priv->completion_text);
 	  priv->completion_text = g_strdup (str);
@@ -446,29 +464,40 @@ search_entry_key_press_event_cb (GtkEntry *entry,
       return TRUE;
     }
 
+  /* Enter/Return: Find the first complete match, refine filter to the complete match, and select the match  */
   if (event->keyval == GDK_KEY_Return || event->keyval == GDK_KEY_KP_Enter)
     {
-      gchar *name;
+      gchar *name, *full_match = NULL;
 
-      if (str && (name = get_partial_match (inspector, str)))
+      if (str && (name = get_partial_match (inspector, str, &full_match)))
         {
+	  GladeWidget *widget;
+
 	  g_free (priv->completion_text);
-	  priv->completion_text = name;
+	  priv->completion_text = full_match;
+	  g_free (name);
 
 	  g_signal_handlers_block_by_func (priv->entry, search_entry_text_inserted_cb, inspector);
 	  g_signal_handlers_block_by_func (priv->entry, search_entry_text_deleted_cb, inspector);
 
-          gtk_entry_set_text (GTK_ENTRY (entry), name);
+          gtk_entry_set_text (GTK_ENTRY (entry), priv->completion_text);
 
 	  g_signal_handlers_unblock_by_func (priv->entry, search_entry_text_inserted_cb, inspector);
 	  g_signal_handlers_unblock_by_func (priv->entry, search_entry_text_deleted_cb, inspector);
 
           gtk_editable_set_position (GTK_EDITABLE (entry), -1);
           gtk_editable_select_region (GTK_EDITABLE (entry), -1, -1);
+
+	  glade_inspector_refilter (inspector);
+
+	  widget = glade_project_get_widget_by_name (priv->project, priv->completion_text);
+	  if (widget)
+	    glade_project_selection_set (priv->project, glade_widget_get_object (widget), TRUE);
         }
       return TRUE;
     }
 
+  /* Backspace: Attempt to move the cursor backwards and maintain the completed/selected portion */
   if (event->keyval == GDK_KEY_BackSpace)
     {
       if (!priv->search_disabled && !priv->idle_complete && str && str[0])
@@ -529,6 +558,8 @@ search_entry_focus_out_cb (GtkWidget *entry,
 
   gtk_entry_set_text (GTK_ENTRY (priv->entry), "");
 
+  gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (priv->filter));
+
   return FALSE;
 }
 
@@ -565,8 +596,8 @@ glade_inspector_init (GladeInspector *inspector)
                     G_CALLBACK (search_entry_focus_out_cb), inspector);
 
   priv->view = gtk_tree_view_new ();
+  gtk_tree_view_set_enable_search (GTK_TREE_VIEW (priv->view), FALSE);
   add_columns (GTK_TREE_VIEW (priv->view));
-  gtk_tree_view_set_search_column (GTK_TREE_VIEW (priv->view), GLADE_PROJECT_MODEL_COLUMN_NAME);
 
   g_signal_connect (G_OBJECT (priv->view), "row-activated",
                     G_CALLBACK (item_activated_cb), inspector);
