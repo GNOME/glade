@@ -259,7 +259,7 @@ AC_CHECK_FUNCS(gtk_builder_add_from_resource)
 dnl ================================================================
 dnl Testing environment
 dnl ================================================================
-GLADE_TEST_ENVIRONMENT='GLADE_TESTING=1 GLADE_PIXMAP_DIR=$(top_builddir)/data/icons GLADE_CATALOG_SEARCH_PATH=$(top_builddir)/plugins/gtk+ GLADE_MODULE_SEARCH_PATH=$(top_builddir)/plugins/gtk+/.libs'
+GLADE_TEST_ENVIRONMENT='GLADE_TESTING=1 GLADE_PIXMAP_DIR=$(top_srcdir)/data/icons GLADE_CATALOG_SEARCH_PATH=$(top_srcdir)/plugins/gtk+ GLADE_MODULE_SEARCH_PATH=$(top_builddir)/plugins/gtk+/.libs'
 AC_SUBST(GLADE_TEST_ENVIRONMENT)
 
 

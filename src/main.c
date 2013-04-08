@@ -153,9 +153,6 @@ main (int argc, char *argv[])
 
   glade_setup_log_handlers ();
 
-  /* Load resources needed at initialization */
-  glade_resources_register_resource ();
-
   window = GLADE_WINDOW (glade_window_new ());
 
   if (without_devhelp == FALSE)
@@ -200,9 +197,6 @@ main (int argc, char *argv[])
   
   if (!opened_project)
     glade_window_new_project (window);
-
-  /* Free resources before entering the main loop */
-  glade_resources_unregister_resource ();
   
   gtk_main ();
 

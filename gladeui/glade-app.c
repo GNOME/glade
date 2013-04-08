@@ -33,7 +33,6 @@
 
 #include "glade.h"
 #include "glade-debug.h"
-#include "gladeui-resources.h"
 #include "glade-cursor.h"
 #include "glade-catalog.h"
 #include "glade-design-view.h"
@@ -155,8 +154,6 @@ glade_app_finalize (GObject * app)
 
   singleton_app = NULL;
   check_initialised = FALSE;
-
-  gladeui_resources_unregister_resource ();
 
   G_OBJECT_CLASS (glade_app_parent_class)->finalize (app);
 }
@@ -363,8 +360,6 @@ glade_init (void)
 
   /* Register icons needed by the UI */
   glade_app_register_stock_icons (GTK_ICON_SIZE_LARGE_TOOLBAR);
-
-  gladeui_resources_register_resource ();
   
   init = TRUE;
 }

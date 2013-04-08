@@ -50,13 +50,16 @@ BUILT_SOURCES = \
 	gladeui-resources.c \
 	gladeui-resources.h
 
+UI_FILES = \
+	glade-project-properties.ui
+
 EXTRA_DIST = \
+	$(UI_FILES)	\
 	glade-marshallers.list \
 	gladeui.rc.in \
 	icon-naming-spec.c \
 	glade-previewer.rc.in \
-	gladeui-resources.gresource.xml \
-	glade-project-properties.ui
+	gladeui-resources.gresource.xml
 
 # The glade core library
 libgladeui_2_la_SOURCES = \
@@ -229,8 +232,10 @@ typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 CLEANFILES += $(gir_DATA) $(typelib_DATA)
 endif
 
-# This could be split in two, but its better to rebuild both, sources and header
-# each time the xml or the actual resources files change, just in case. 
-gladeui-resources.c gladeui-resources.h: gladeui-resources.gresource.xml \
-	$(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies gladeui-resources.gresource.xml)
-
+# Generate resources
+gladeui-resources.h: gladeui-resources.gresource.xml $(UI_FILES)
+	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) $(srcdir)/gladeui-resources.gresource.xml \
+		--target=$@ --sourcedir=$(srcdir) --c-name _gladeui --generate-header
+gladeui-resources.c: gladeui-resources.gresource.xml $(UI_FILES)
+	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) $(srcdir)/gladeui-resources.gresource.xml \
+		--target=$@ --sourcedir=$(srcdir) --c-name _gladeui --generate-source
