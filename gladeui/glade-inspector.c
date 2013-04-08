@@ -343,7 +343,7 @@ get_partial_match (GladeInspector *inspector,
 		   const gchar    *search,
 		   gchar         **first_match)
 {
-  GtkTreeModel     *model = gtk_tree_view_get_model (GTK_TREE_VIEW (inspector->priv->view));
+  GtkTreeModel     *model = GTK_TREE_MODEL (inspector->priv->project);
   CommonMatchData   data;
 
   data.text        = search;
