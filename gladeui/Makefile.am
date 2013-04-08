@@ -55,7 +55,8 @@ EXTRA_DIST = \
 	gladeui.rc.in \
 	icon-naming-spec.c \
 	glade-previewer.rc.in \
-	gladeui-resources.gresource.xml
+	gladeui-resources.gresource.xml \
+	glade-project-properties.ui
 
 # The glade core library
 libgladeui_2_la_SOURCES = \
