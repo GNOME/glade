@@ -1197,10 +1197,6 @@ glade_command_remove (GList *widgets)
 
   g_return_if_fail (widgets != NULL);
 
-  me = g_object_new (GLADE_COMMAND_ADD_REMOVE_TYPE, NULL);
-  me->add = FALSE;
-  me->from_clipboard = FALSE;
-
   /* internal children cannot be deleted. Notify the user. */
   for (list = widgets; list && list->data; list = list->next)
     {
@@ -1227,6 +1223,10 @@ glade_command_remove (GList *widgets)
         }
     }
 
+  me = g_object_new (GLADE_COMMAND_ADD_REMOVE_TYPE, NULL);
+  me->add = FALSE;
+  me->from_clipboard = FALSE;
+
   GLADE_COMMAND (me)->priv->project = glade_widget_get_project (widget);
   GLADE_COMMAND (me)->priv->description = g_strdup ("dummy");
 
@@ -1247,6 +1247,10 @@ glade_command_remove (GList *widgets)
       if ((cdata->reffed =
            get_all_parentless_reffed_widgets (cdata->reffed, widget)) != NULL)
         g_list_foreach (cdata->reffed, (GFunc) g_object_ref, NULL);
+
+      /* If we're removing the template widget, then we need to unset it as template */
+      if (glade_project_get_template (GLADE_COMMAND (me)->priv->project) == widget)
+	glade_command_set_template (GLADE_COMMAND (me)->priv->project, NULL);
 
       /* Undoably unset any object properties that may point to the removed object */
       glade_command_delete_prop_refs (widget);
