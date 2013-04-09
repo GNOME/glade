@@ -145,6 +145,10 @@ void                glade_project_check_reordered      (GladeProject       *proj
                                                         GladeWidget        *parent,
                                                         GList              *old_order);
 
+void                glade_project_set_template         (GladeProject       *project,
+							GladeWidget        *widget);
+GladeWidget        *glade_project_get_template         (GladeProject       *project);
+
 /* Commands */
 void                glade_project_undo                 (GladeProject       *project);
 void                glade_project_redo                 (GladeProject       *project);

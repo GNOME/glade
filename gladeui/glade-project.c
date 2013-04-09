@@ -80,6 +80,7 @@ enum
   PROP_ADD_ITEM,
   PROP_POINTER_MODE,
   PROP_TRANSLATION_DOMAIN,
+  PROP_TEMPLATE,
   N_PROPERTIES
 };
 
@@ -119,7 +120,7 @@ struct _GladeProjectPrivate
                                  * undo this modification
                                  */
 
-  GtkAccelGroup *accel_group;
+  GladeWidget *template;        /* The template widget */
 
   gchar *comment;               /* XML comment, Glade will preserve whatever comment was
                                  * in file, so users can delete or change it.
@@ -236,6 +237,9 @@ static void glade_project_model_get_iter_for_object (GladeProject *project,
 
 static gint glade_project_count_children (GladeProject *project, 
                                           GladeWidget  *parent);
+
+static void glade_project_fix_template (GladeProject *project);
+
 
 static guint glade_project_signals[LAST_SIGNAL] = { 0 };
 
@@ -409,6 +413,9 @@ glade_project_get_property (GObject *object,
     case PROP_TRANSLATION_DOMAIN:
       g_value_set_string (value, project->priv->translation_domain);
       break;
+    case PROP_TEMPLATE:
+      g_value_set_object (value, project->priv->template);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -421,12 +428,15 @@ glade_project_set_property (GObject *object,
                             const GValue *value,
                             GParamSpec *pspec)
 {
-
   switch (prop_id)
     {
     case PROP_TRANSLATION_DOMAIN:
       glade_project_set_translation_domain (GLADE_PROJECT (object),
                                             g_value_get_string (value));
+      break;
+    case PROP_TEMPLATE:
+      glade_project_set_template (GLADE_PROJECT (object),
+				  g_value_get_object (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -508,6 +518,47 @@ glade_project_get_pointer_mode (GladeProject *project)
   g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
 
   return project->priv->pointer_mode;
+}
+
+void
+glade_project_set_template (GladeProject       *project,
+			    GladeWidget        *widget)
+{
+  g_return_if_fail (GLADE_IS_PROJECT (project));
+  g_return_if_fail (widget == NULL || GLADE_IS_WIDGET (widget));
+
+  if (widget)
+    {
+      GObject *object = glade_widget_get_object (widget);
+
+      g_return_if_fail (GTK_IS_WIDGET (object));
+      g_return_if_fail (glade_widget_get_parent (widget) == NULL);
+      g_return_if_fail (glade_widget_get_project (widget) == project);
+    }
+
+  /* Let's not add any strong reference here, we already own the widget */
+  if (project->priv->template != widget)
+    {
+      if (project->priv->template)
+	glade_widget_set_is_composite (project->priv->template, FALSE);
+
+      project->priv->template = widget;
+
+      if (project->priv->template)
+	glade_widget_set_is_composite (project->priv->template, TRUE);
+
+      glade_project_fix_template (project);
+
+      g_object_notify_by_pspec (G_OBJECT (project), properties[PROP_TEMPLATE]);
+    }
+}
+
+GladeWidget *
+glade_project_get_template (GladeProject       *project)
+{
+  g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+
+  return project->priv->template;
 }
 
 
@@ -783,8 +834,6 @@ glade_project_init (GladeProject *project)
                                           glade_project_destroy_preview);
 
   priv->widget_names = glade_name_context_new ();
-
-  priv->accel_group = NULL;
 
   priv->unsaved_number =
       glade_id_allocator_allocate (get_unsaved_number_allocator ());
@@ -1062,6 +1111,13 @@ glade_project_class_init (GladeProjectClass *klass)
                          NULL,
                          G_PARAM_READWRITE);
   
+  properties[PROP_TEMPLATE] = 
+    g_param_spec_object ("template",
+                         _("Template"),
+                         _("The project's template widget, if any"),
+                         GLADE_TYPE_WIDGET,
+                         G_PARAM_READWRITE);
+
   /* Install all properties */
   g_object_class_install_properties (object_class, N_PROPERTIES, properties);
 
@@ -1617,57 +1673,6 @@ glade_project_autosave_name (const gchar *path)
   g_free (autoname);
 
   return autosave_name;
-}
-
-static gboolean
-toplevel_visible_func (GtkTreeModel *model, GtkTreeIter *iter, gpointer data)
-{
-  GtkTreeIter parent;
-  return !gtk_tree_model_iter_parent (model, &parent, iter);
-}
-
-static GtkTreeModel *
-glade_project_toplevel_model_filter_new (GladeProject *project)
-{
-  GtkTreeModel *model = gtk_tree_model_filter_new (GTK_TREE_MODEL (project), NULL);
-  gtk_tree_model_filter_set_visible_func (GTK_TREE_MODEL_FILTER (model),
-                                          toplevel_visible_func, NULL, NULL);
-  return model;
-}
-
-static void
-glade_project_fix_template (GladeProject *project)
-{
-  GtkTreeModel *model = glade_project_toplevel_model_filter_new (project);
-  GladeProjectPrivate *priv = project->priv;
-  GtkTreeIter iter;
-  gboolean valid;
-
-  valid = gtk_tree_model_get_iter_first (model, &iter);
-  while (valid)
-    {
-      gboolean composite;
-      GladeWidget *gwidget;
-      GObject *obj;
-      
-      gtk_tree_model_get (model, &iter,
-                          GLADE_PROJECT_MODEL_COLUMN_OBJECT, &obj,
-                          -1);
-
-      gwidget = glade_widget_get_from_gobject (obj);
-      composite = glade_widget_get_is_composite (gwidget);
-
-      if (composite)
-        {
-          gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->template_checkbutton), TRUE);
-          gtk_combo_box_set_model (GTK_COMBO_BOX (priv->template_combobox), model);
-          gtk_combo_box_set_active_iter (GTK_COMBO_BOX (priv->template_combobox), &iter);
-        }
-
-      valid = gtk_tree_model_iter_next (model, &iter);
-    }
-
-  g_object_unref (model);
 }
 
 static gboolean
@@ -4232,26 +4237,12 @@ on_domain_entry_activate (GtkWidget *entry, GladeProject *project)
 }
 
 static void
-glade_project_clear_composite (GladeProject *project)
-{
-  GladeProjectPrivate *priv = project->priv;
-  GList *l;
-
-  for (l = priv->tree; l; l = g_list_next (l))
-    {
-      GladeWidget *gwidget = glade_widget_get_from_gobject (l->data);
-
-      /* XXX Need a glade_command_set_composite() */
-      glade_widget_set_is_composite (gwidget, FALSE);
-    }
-}
-
-static void
 on_template_combo_box_changed (GtkComboBox *combo, GladeProject *project)
 {
   GtkTreeIter iter;
 
-  glade_project_clear_composite (project);
+  if (project->priv->loading)
+    return;
 
   if (gtk_combo_box_get_active_iter (combo, &iter))
     {
@@ -4263,8 +4254,7 @@ on_template_combo_box_changed (GtkComboBox *combo, GladeProject *project)
       
       gwidget = glade_widget_get_from_gobject (object);
 
-      /* XXX Need a glade_command_set_composite() */
-      glade_widget_set_is_composite (gwidget, TRUE);
+      glade_command_set_template (project, gwidget);
     }
 }
 
@@ -4272,28 +4262,127 @@ static void
 on_template_checkbutton_toggled (GtkToggleButton *togglebutton,
                                  GladeProject    *project)
 {
-  GtkComboBox *combobox = GTK_COMBO_BOX (project->priv->template_combobox);
   gboolean active = gtk_toggle_button_get_active (togglebutton);
+  gboolean composite = FALSE;
 
-  glade_project_clear_composite (project);
-
-  if (gtk_combo_box_get_model (combobox))
-    gtk_combo_box_set_active_iter (combobox, NULL);
+  if (project->priv->loading)
+    return;
   
   if (active)
     {
-      GtkTreeModel *model = glade_project_toplevel_model_filter_new (project);
-      GladeProjectPrivate *priv = project->priv;
+      GList *l;
 
-      gtk_combo_box_set_model (combobox, model);
+      for (l = project->priv->tree; l; l = l->next)
+	{
+	  GObject *object = l->data;
+	  GladeWidget *gwidget;
 
-      if (priv->tree && !g_list_next (priv->tree))
-        gtk_combo_box_set_active (combobox, 0);
+	  gwidget = glade_widget_get_from_gobject (object);
+
+	  if (GTK_IS_WIDGET (object))
+	    {
+	      glade_command_set_template (project, gwidget);
+	      composite = TRUE;
+	      break;
+	    }
+	}
+
+      if (!composite)
+	gtk_toggle_button_set_active (togglebutton, FALSE);
     }
-
-  gtk_widget_set_sensitive (GTK_WIDGET (combobox), active);
+  else
+    glade_command_set_template (project, NULL);
 }
 
+static gboolean
+template_visible_func (GtkTreeModel *model, GtkTreeIter *iter, gpointer data)
+{
+  GtkTreeIter parent;
+  gboolean visible;
+  GObject *object;
+
+  visible = !gtk_tree_model_iter_parent (model, &parent, iter);
+
+  if (visible)
+    {
+      gtk_tree_model_get (model, iter,
+			  GLADE_PROJECT_MODEL_COLUMN_OBJECT, &object,
+			  -1);
+
+      visible = GTK_IS_WIDGET (object);
+      g_object_unref (object);
+    }
+
+  return visible;
+}
+
+static GtkTreeModel *
+glade_project_toplevel_model_filter_new (GladeProject *project)
+{
+  GtkTreeModel *model = gtk_tree_model_filter_new (GTK_TREE_MODEL (project), NULL);
+  gtk_tree_model_filter_set_visible_func (GTK_TREE_MODEL_FILTER (model),
+                                          template_visible_func, NULL, NULL);
+  return model;
+}
+
+static void
+glade_project_fix_template (GladeProject *project)
+{
+  GtkTreeModel *model;
+  GladeProjectPrivate *priv = project->priv;
+  GtkTreeIter iter;
+  gboolean valid;
+  gboolean composite = FALSE;
+
+  g_signal_handlers_block_by_func (priv->template_combobox, on_template_combo_box_changed, project);
+  g_signal_handlers_block_by_func (priv->template_checkbutton, on_template_checkbutton_toggled, project);
+
+  model = gtk_combo_box_get_model (GTK_COMBO_BOX (priv->template_combobox));
+  if (!model)
+    {
+      model = glade_project_toplevel_model_filter_new (project);
+
+      gtk_combo_box_set_model (GTK_COMBO_BOX (priv->template_combobox), model);
+      g_object_unref (model);
+    }
+
+  valid = gtk_tree_model_get_iter_first (model, &iter);
+  while (valid)
+    {
+      GladeWidget *gwidget;
+      GObject *obj;
+      
+      gtk_tree_model_get (model, &iter,
+                          GLADE_PROJECT_MODEL_COLUMN_OBJECT, &obj,
+                          -1);
+
+      gwidget = glade_widget_get_from_gobject (obj);
+      g_object_unref (obj);
+
+      composite = glade_widget_get_is_composite (gwidget);
+
+      if (composite)
+        {
+          gtk_combo_box_set_active_iter (GTK_COMBO_BOX (priv->template_combobox), &iter);
+
+	  /* Resolve the template widget for this project */
+	  priv->template = gwidget;
+
+	  break;
+        }
+
+      valid = gtk_tree_model_iter_next (model, &iter);
+    }
+
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->template_checkbutton), composite);
+  gtk_widget_set_sensitive (priv->template_combobox, composite);
+
+  if (!composite && gtk_combo_box_get_model (GTK_COMBO_BOX (priv->template_combobox)))
+    gtk_combo_box_set_active_iter (GTK_COMBO_BOX (priv->template_combobox), NULL);
+
+  g_signal_handlers_unblock_by_func (priv->template_combobox, on_template_combo_box_changed, project);
+  g_signal_handlers_unblock_by_func (priv->template_checkbutton, on_template_checkbutton_toggled, project);
+}
 
 #define GET_OBJECT(b,c,o) c(gtk_builder_get_object(b,o));
 

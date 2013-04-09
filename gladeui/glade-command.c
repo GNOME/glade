@@ -860,6 +860,17 @@ glade_command_set_name_unifies (GladeCommand *this_cmd, GladeCommand *other_cmd)
   GladeCommandSetName *cmd1;
   GladeCommandSetName *cmd2;
 
+  if (!other_cmd)
+    {
+      if (GLADE_IS_COMMAND_SET_NAME (this_cmd))
+        {
+          cmd1 = (GladeCommandSetName *) this_cmd;
+
+	  return (g_strcmp0 (cmd1->old_name, cmd1->name) == 0);
+        }
+      return FALSE;
+    }
+
   if (GLADE_IS_COMMAND_SET_NAME (this_cmd) &&
       GLADE_IS_COMMAND_SET_NAME (other_cmd))
     {
@@ -2302,3 +2313,179 @@ glade_command_unlock_widget (GladeWidget *widget)
     g_object_unref (G_OBJECT (me));
 
 }
+
+
+
+/******************************************************************************
+ * 
+ * This command sets the template object in a GtkBuilder file
+ * 
+ *****************************************************************************/
+
+typedef struct
+{
+  GladeCommand parent;
+  GladeWidget *old_template;
+  GladeWidget *new_template;
+} GladeCommandTemplate;
+
+
+GLADE_MAKE_COMMAND (GladeCommandTemplate, glade_command_template);
+#define GLADE_COMMAND_TEMPLATE_TYPE			(glade_command_template_get_type ())
+#define GLADE_COMMAND_TEMPLATE(o)	  		(G_TYPE_CHECK_INSTANCE_CAST ((o), GLADE_COMMAND_TEMPLATE_TYPE, GladeCommandTemplate))
+#define GLADE_COMMAND_TEMPLATE_CLASS(k)		(G_TYPE_CHECK_CLASS_CAST ((k), GLADE_COMMAND_TEMPLATE_TYPE, GladeCommandTemplateClass))
+#define GLADE_IS_COMMAND_TEMPLATE(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), GLADE_COMMAND_TEMPLATE_TYPE))
+#define GLADE_IS_COMMAND_TEMPLATE_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), GLADE_COMMAND_TEMPLATE_TYPE))
+
+static gboolean
+glade_command_template_execute (GladeCommand *cmd)
+{
+  GladeCommandTemplate *me = (GladeCommandTemplate *) cmd;
+
+  glade_project_set_template (cmd->priv->project, me->new_template);
+
+  return TRUE;
+}
+
+static gboolean
+glade_command_template_undo (GladeCommand *cmd)
+{
+  GladeCommandTemplate *me = (GladeCommandTemplate *) cmd;
+
+  glade_project_set_template (cmd->priv->project, me->old_template);
+
+  return TRUE;
+}
+
+static void
+glade_command_template_finalize (GObject *obj)
+{
+  GladeCommandTemplate *me = (GladeCommandTemplate *) obj;
+
+  if (me->new_template)
+    g_object_unref (me->new_template);
+
+  if (me->old_template)
+    g_object_unref (me->old_template);
+
+  glade_command_finalize (obj);
+}
+
+static gboolean
+glade_command_template_unifies (GladeCommand *this_cmd, GladeCommand *other_cmd)
+{
+  GladeCommandTemplate *me;
+
+  /* Do we unify with self ? */
+  if (!other_cmd)
+    {
+      if (GLADE_IS_COMMAND_TEMPLATE (this_cmd))
+        {
+          me = (GladeCommandTemplate *) this_cmd;
+
+	  return me->old_template == me->new_template;
+        }
+      return FALSE;
+    }
+
+  if (GLADE_IS_COMMAND_TEMPLATE (this_cmd) &&
+      GLADE_IS_COMMAND_TEMPLATE (other_cmd))
+    {
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+static void
+glade_command_template_collapse (GladeCommand *this_cmd, GladeCommand *other_cmd)
+{
+  GladeCommandTemplate *this;
+  GladeCommandTemplate *other;
+
+  g_return_if_fail (GLADE_IS_COMMAND_TEMPLATE (this_cmd) &&
+                    GLADE_IS_COMMAND_TEMPLATE (other_cmd));
+
+  this = GLADE_COMMAND_TEMPLATE (this_cmd);
+  other = GLADE_COMMAND_TEMPLATE (other_cmd);
+
+  if (this->new_template)
+    g_object_unref (this->new_template);
+
+  this->new_template = other->new_template;
+
+  if (this->new_template)
+    g_object_ref (this->new_template);
+
+  if (this->new_template == NULL && this->old_template != NULL)
+    {
+      g_free (this_cmd->priv->description);
+      this_cmd->priv->description =
+	g_strdup_printf (_("Unsetting widget '%s' as template"), 
+			 glade_widget_get_name (this->old_template));
+    }
+  else if (this->new_template != NULL)
+    {
+      g_free (this_cmd->priv->description);
+      this_cmd->priv->description =
+	g_strdup_printf (_("Setting widget '%s' as template"), 
+			 glade_widget_get_name (this->new_template));
+    }
+}
+
+/**
+ * glade_command_set_template:
+ * @project: A #GladeProject
+ * @widget: The #GladeWidget to make template
+ *
+ * Sets @widget to be the template widget in @project.
+ */
+void
+glade_command_set_template (GladeProject *project,
+			    GladeWidget  *widget)
+{
+  GladeCommandTemplate *me;
+  GladeWidget *old_template;
+
+  g_return_if_fail (GLADE_IS_PROJECT (project));
+  g_return_if_fail (widget == NULL || GLADE_IS_WIDGET (widget));
+
+  old_template = glade_project_get_template (project);
+
+  if (widget == old_template)
+    {
+      /* Just do nothing if there's nothing to do */
+      return;
+    }
+
+  /* load up the command */
+  me = g_object_new (GLADE_COMMAND_TEMPLATE_TYPE, NULL);
+  GLADE_COMMAND (me)->priv->project = project;
+
+  if (old_template)
+    me->old_template = g_object_ref (old_template);
+
+  if (widget)
+    {
+      me->new_template = g_object_ref (widget);
+
+      GLADE_COMMAND (me)->priv->description =
+	g_strdup_printf (_("Setting widget '%s' as template"), 
+			 glade_widget_get_name (widget));
+    }
+  else
+    GLADE_COMMAND (me)->priv->description =
+      g_strdup_printf (_("Unsetting widget '%s' as template"), 
+		       glade_widget_get_name (me->old_template));
+
+  glade_command_check_group (GLADE_COMMAND (me));
+
+  /* execute the command and push it on the stack if successful 
+   * this sets the actual policy
+   */
+  if (glade_command_template_execute (GLADE_COMMAND (me)))
+    glade_project_push_undo (GLADE_COMMAND (me)->priv->project, GLADE_COMMAND (me));
+  else
+    g_object_unref (G_OBJECT (me));
+}
+
