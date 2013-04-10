@@ -1125,8 +1125,8 @@ glade_eprop_model_data_create_input (GladeEditorProperty * eprop)
 
   button = gtk_button_new ();
   gtk_button_set_image (GTK_BUTTON (button),
-                        gtk_image_new_from_stock (GTK_STOCK_ADD,
-                                                  GTK_ICON_SIZE_BUTTON));
+                        gtk_image_new_from_icon_name ("list-add-symbolic",
+						      GTK_ICON_SIZE_BUTTON));
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
 
   g_signal_connect (G_OBJECT (button), "clicked",
@@ -1135,8 +1135,8 @@ glade_eprop_model_data_create_input (GladeEditorProperty * eprop)
 
   button = gtk_button_new ();
   gtk_button_set_image (GTK_BUTTON (button),
-                        gtk_image_new_from_stock (GTK_STOCK_REMOVE,
-                                                  GTK_ICON_SIZE_BUTTON));
+                        gtk_image_new_from_icon_name ("list-remove-symbolic",
+						      GTK_ICON_SIZE_BUTTON));
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
 
   g_signal_connect (G_OBJECT (button), "clicked",
