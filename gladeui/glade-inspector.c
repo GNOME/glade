@@ -829,6 +829,24 @@ button_press_cb (GtkWidget *widget,
 }
 
 static void
+glade_inspector_warning_cell_data_func (GtkTreeViewColumn *column,
+					GtkCellRenderer *renderer,
+					GtkTreeModel *model,
+					GtkTreeIter *iter,
+					gpointer data)
+{
+  gchar *warning = NULL;
+
+  gtk_tree_model_get (model, iter,
+		      GLADE_PROJECT_MODEL_COLUMN_WARNING, &warning,
+		      -1);
+
+  g_object_set (renderer, "visible", warning != NULL, NULL);
+
+  g_free (warning);
+}
+
+static void
 add_columns (GtkTreeView *view)
 {
   GtkTreeViewColumn *column;
@@ -842,12 +860,29 @@ add_columns (GtkTreeView *view)
   gtk_tree_view_column_set_sizing (column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_cell_area_box_set_spacing (GTK_CELL_AREA_BOX (box), 2);
 
+  gtk_tree_view_set_tooltip_column (view, GLADE_PROJECT_MODEL_COLUMN_WARNING);
 
-  /* First pixbuf sell needs some spacing after the expander */
+  /* Padding */
+  renderer = gtk_cell_renderer_text_new ();
+  g_object_set (G_OBJECT (renderer), "width", 4, NULL);
+  gtk_cell_area_box_pack_start (box, renderer, FALSE, FALSE, FALSE);
+
+  /* Warning cell */
   renderer = gtk_cell_renderer_pixbuf_new ();
-  gtk_cell_renderer_set_padding (renderer, 6, 0);
-  gtk_cell_renderer_set_alignment (renderer, 1.0, 0.5);
+  g_object_set (renderer,
+		"stock-id", "gtk-dialog-warning",
+		"xpad", 2,
+		NULL);
+  gtk_cell_area_box_pack_start (box, renderer, FALSE, FALSE, FALSE);
+  gtk_tree_view_column_set_cell_data_func (column, renderer,
+					   glade_inspector_warning_cell_data_func,
+					   NULL, NULL);
 
+  /* Class Icon */
+  renderer = gtk_cell_renderer_pixbuf_new ();
+  g_object_set (renderer,
+		"xpad", 2,
+		NULL);
   gtk_cell_area_box_pack_start (box, renderer, FALSE, FALSE, FALSE);
   gtk_tree_view_column_set_attributes (column,
                                        renderer,
