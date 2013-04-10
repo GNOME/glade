@@ -576,7 +576,7 @@ glade_inspector_init (GladeInspector *inspector)
 
   priv->entry = gtk_entry_new ();
 
-  gtk_entry_set_placeholder_text (GTK_ENTRY (priv->entry), _("< Search Widgets >"));
+  gtk_entry_set_placeholder_text (GTK_ENTRY (priv->entry), _(" < Search Widgets >"));
   gtk_widget_show (priv->entry);
   gtk_box_pack_start (GTK_BOX (inspector), priv->entry, FALSE, FALSE, 2);
 
@@ -606,6 +606,11 @@ glade_inspector_init (GladeInspector *inspector)
   gtk_tree_selection_set_mode (selection, GTK_SELECTION_MULTIPLE);
   g_signal_connect (G_OBJECT (selection), "changed",
                     G_CALLBACK (selection_changed_cb), inspector);
+
+  /* Expand All */
+  gtk_entry_set_icon_from_stock (GTK_ENTRY (priv->entry), GTK_ENTRY_ICON_SECONDARY, GTK_STOCK_GO_DOWN);
+  gtk_entry_set_icon_tooltip_text (GTK_ENTRY (priv->entry), GTK_ENTRY_ICON_SECONDARY, _("Expand all"));
+  g_signal_connect_swapped (priv->entry, "icon-press", G_CALLBACK (gtk_tree_view_expand_all), priv->view);
 
   /* popup menu */
   g_signal_connect (G_OBJECT (priv->view), "button-press-event",
