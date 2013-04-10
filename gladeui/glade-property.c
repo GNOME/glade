@@ -274,8 +274,17 @@ glade_property_fix_state (GladeProperty * property)
 {
   property->priv->state = GLADE_STATE_NORMAL;
 
-  if (!glade_property_original_default (property))
-    property->priv->state = GLADE_STATE_CHANGED;
+  /* Properties are 'changed' state if they are not default, or if 
+   * they are optional and enabled, optional enabled properties
+   * are saved regardless of default value
+   */
+  if (glade_property_class_optional (property->priv->klass))
+    {
+      if (glade_property_get_enabled (property))
+	property->priv->state |= GLADE_STATE_CHANGED;
+    }
+  else if (!glade_property_original_default (property))
+    property->priv->state |= GLADE_STATE_CHANGED;
 
   if (property->priv->support_warning)
     property->priv->state |= GLADE_STATE_UNSUPPORTED;
@@ -294,6 +303,7 @@ glade_property_set_value_impl (GladeProperty * property, const GValue * value)
       glade_widget_get_project (property->priv->widget) : NULL;
   gboolean changed = FALSE;
   GValue old_value = { 0, };
+  gboolean warn_before, warn_after;
 
 #if 0
   {
@@ -337,7 +347,6 @@ glade_property_set_value_impl (GladeProperty * property, const GValue * value)
    */
   changed = !glade_property_equals_value (property, value);
 
-
   /* Add/Remove references from widget ref stacks here
    * (before assigning the value)
    */
@@ -345,6 +354,8 @@ glade_property_set_value_impl (GladeProperty * property, const GValue * value)
       glade_property_class_is_object (property->priv->klass))
     glade_property_update_prop_refs (property, property->priv->value, value);
 
+  /* Check pre-changed warning state */
+  warn_before = glade_property_warn_usage (property);
 
   /* Make a copy of the old value */
   g_value_init (&old_value, G_VALUE_TYPE (property->priv->value));
@@ -367,6 +378,13 @@ glade_property_set_value_impl (GladeProperty * property, const GValue * value)
                      0, &old_value, property->priv->value);
 
       glade_project_verify_property (property);
+
+      /* Check post change warning state */
+      warn_after = glade_property_warn_usage (property);
+
+      /* Update owning widget's warning state if need be */
+      if (property->priv->widget != NULL && warn_before != warn_after)
+	glade_widget_verify (property->priv->widget);
     }
 
   /* Special case parentless widget properties */
@@ -764,6 +782,7 @@ glade_property_new (GladePropertyClass * klass,
       g_value_init (property->priv->value, orig_def->g_type);
       g_value_copy (orig_def, property->priv->value);
     }
+
   return property;
 }
 
@@ -1431,7 +1450,12 @@ void
 glade_property_set_support_warning (GladeProperty * property,
                                     gboolean disable, const gchar * reason)
 {
+  gboolean warn_before, warn_after;
+
   g_return_if_fail (GLADE_IS_PROPERTY (property));
+
+  /* Check pre-changed warning state */
+  warn_before = glade_property_warn_usage (property);
 
   if (property->priv->support_warning)
     g_free (property->priv->support_warning);
@@ -1447,6 +1471,13 @@ glade_property_set_support_warning (GladeProperty * property,
 		 property->priv->support_warning);
 
   glade_property_fix_state (property);
+
+  /* Check post-changed warning state */
+  warn_after = glade_property_warn_usage (property);
+
+  /* Update owning widget's warning state if need be */
+  if (property->priv->widget != NULL && warn_before != warn_after)
+    glade_widget_verify (property->priv->widget);
 }
 
 G_CONST_RETURN gchar *
@@ -1457,6 +1488,16 @@ glade_property_get_support_warning (GladeProperty *property)
   return property->priv->support_warning;
 }
 
+gboolean
+glade_property_warn_usage (GladeProperty *property)
+{
+  g_return_val_if_fail (GLADE_IS_PROPERTY (property), FALSE);
+
+  if (!property->priv->support_warning)
+    return FALSE;
+
+  return ((property->priv->state & GLADE_STATE_CHANGED) != 0);
+}
 
 /**
  * glade_property_set_save_always:
@@ -1495,13 +1536,25 @@ glade_property_get_save_always (GladeProperty * property)
 void
 glade_property_set_enabled (GladeProperty * property, gboolean enabled)
 {
+  gboolean warn_before, warn_after;
+
   g_return_if_fail (GLADE_IS_PROPERTY (property));
+
+  /* Check pre-changed warning state */
+  warn_before = glade_property_warn_usage (property);
 
   property->priv->enabled = enabled;
   if (enabled)
     glade_property_sync (property);
 
   glade_property_fix_state (property);
+
+  /* Check post-changed warning state */
+  warn_after = glade_property_warn_usage (property);
+
+  /* Update owning widget's warning state if need be */
+  if (property->priv->widget != NULL && warn_before != warn_after)
+    glade_widget_verify (property->priv->widget);
 
   g_object_notify_by_pspec (G_OBJECT (property), properties[PROP_ENABLED]);
 }

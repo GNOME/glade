@@ -335,6 +335,9 @@ glade_widget_add_signal_handler (GladeWidget *widget, const GladeSignal *signal_
   g_signal_emit (widget, glade_widget_signals[ADD_SIGNAL_HANDLER], 0, new_signal_handler);
 
   glade_project_verify_signal (widget, new_signal_handler);
+
+  if (glade_signal_get_support_warning (new_signal_handler))
+    glade_widget_verify (widget);
 }
 
 /**
@@ -367,8 +370,12 @@ glade_widget_remove_signal_handler (GladeWidget * widget,
       if (glade_signal_equal (tmp_signal_handler, signal_handler))
         {
 	  g_signal_emit (widget, glade_widget_signals[REMOVE_SIGNAL_HANDLER], 0, tmp_signal_handler);
-          g_object_unref (tmp_signal_handler);
           g_ptr_array_remove_index (signals, i);
+
+	  if (glade_signal_get_support_warning (tmp_signal_handler))
+	    glade_widget_verify (widget);
+
+          g_object_unref (tmp_signal_handler);
           break;
         }
     }
@@ -936,6 +943,9 @@ glade_widget_constructor (GType type,
     }
   else if (GTK_IS_WIDGET (gwidget->priv->object) == FALSE)
     gwidget->priv->visible = TRUE;
+
+  /* Verify support warnings to start off */
+  glade_widget_verify (gwidget);
 
   return ret_obj;
 }
@@ -2938,7 +2948,6 @@ glade_widget_pack_property_set_sensitive (GladeWidget * widget,
   return FALSE;
 }
 
-
 /**
  * glade_widget_property_set_enabled:
  * @widget: a #GladeWidget
@@ -4596,6 +4605,125 @@ glade_widget_generate_path_name (GladeWidget * widget)
   return g_string_free (string, FALSE);
 }
 
+/**
+ * glade_widget_verify:
+ * @widget: A #GladeWidget
+ *
+ * Verify this widget for deprecation and versioning warnings.
+ *
+ * This function will update the widget's support warning.
+ */
+void
+glade_widget_verify (GladeWidget      *widget)
+{
+  gchar *warning;
+  GList *warn_properties = NULL;
+  GList *warn_signals = NULL;
+
+  g_return_if_fail (GLADE_IS_WIDGET (widget));
+
+  if (widget->priv->project == NULL)
+    return;
+
+  warning = glade_project_verify_widget_adaptor (widget->priv->project,
+						 widget->priv->adaptor,
+						 NULL);
+
+  /* If there is already support issues with the adaptor, skip signals
+   * and properties
+   */
+  if (!warning)
+    {
+      GHashTableIter iter;
+      gpointer key, value;
+      GList *l;
+      GString *string = NULL;
+
+      /* Collect signals with warnings on them */
+      g_hash_table_iter_init (&iter, widget->priv->signals);
+      while (g_hash_table_iter_next (&iter, &key, &value))
+	{
+	  GPtrArray *signals = (GPtrArray *)value;
+	  gint i;
+
+	  for (i = 0; i < signals->len; i++)
+	    {
+	      GladeSignal *signal = g_ptr_array_index (signals, i);
+
+	      if (glade_signal_get_support_warning (signal))
+		warn_signals = g_list_prepend (warn_signals, signal);
+	    }
+	}
+
+      /* Collect properties with warnings on them */
+      for (l = widget->priv->properties; l; l = l->next)
+	{
+	  GladeProperty *property = l->data;
+
+	  if (glade_property_warn_usage (property))
+	    warn_properties = g_list_prepend (warn_properties, property);
+	}
+ 
+      for (l = widget->priv->packing_properties; l; l = l->next)
+	{
+	  GladeProperty *property = l->data;
+
+	  if (glade_property_warn_usage (property))
+	    warn_properties = g_list_prepend (warn_properties, property);
+	}
+
+      if (warn_signals || warn_properties)
+	string = g_string_new (NULL);
+
+      /* Print out property warnings */
+      for (l = warn_properties; l; l = l->next)
+	{
+	  GladeProperty *property = l->data;
+	  GladePropertyClass *pclass = glade_property_get_class (property);
+
+	  if (l->prev == NULL)
+	    {
+	      if (l->next == NULL)
+		g_string_append (string, _("Property has versioning problems: "));
+	      else
+		g_string_append (string, _("Some properties have versioning problems: "));
+	    }
+	  else
+	    g_string_append (string, ", ");
+
+	  g_string_append (string, glade_property_class_get_name (pclass));
+	}
+
+      /* New line if printing both */
+      if (warn_signals && warn_properties)
+	g_string_append (string, "\n");
+
+      /* Print out signal warnings */
+      for (l = warn_signals; l; l = l->next)
+	{
+	  GladeSignal *signal = l->data;
+
+	  if (l->prev == NULL)
+	    {
+	      if (l->next == NULL)
+		g_string_append (string, _("Signal has versioning problems: "));
+	      else
+		g_string_append (string, _("Some signals have versioning problems: "));
+	    }
+	  else
+	    g_string_append (string, ", ");
+
+	  g_string_append (string, glade_signal_get_name (signal));
+	}
+
+      if (string)
+	warning = g_string_free (string, FALSE);
+    }
+
+  glade_widget_set_support_warning (widget, warning);
+  g_free (warning);
+}
+
 void
 glade_widget_set_support_warning (GladeWidget * widget, const gchar * warning)
 {
@@ -4604,6 +4732,10 @@ glade_widget_set_support_warning (GladeWidget * widget, const gchar * warning)
   if (widget->priv->support_warning)
     g_free (widget->priv->support_warning);
   widget->priv->support_warning = g_strdup (warning);
+
+  if (widget->priv->project &&
+      glade_project_has_object (widget->priv->project, widget->priv->object))
+    glade_project_widget_changed (widget->priv->project, widget);
 
   g_object_notify_by_pspec (G_OBJECT (widget), properties[PROP_SUPPORT_WARNING]);
 }

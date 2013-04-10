@@ -2797,21 +2797,17 @@ glade_project_verify_project_for_ui (GladeProject *project)
 {
   GList *list;
   GladeWidget *widget;
-  gchar *warning;
 
   /* Sync displayable info here */
   for (list = project->priv->objects; list; list = list->next)
     {
       widget = glade_widget_get_from_gobject (list->data);
 
-      warning =
-          glade_project_verify_widget_adaptor (project, glade_widget_get_adaptor (widget), NULL);
-      glade_widget_set_support_warning (widget, warning);
-
-      if (warning)
-        g_free (warning);
-
+      /* Update the support warnings for widget's properties */
       glade_project_verify_properties (widget);
+
+      /* Update the support warning for widget */
+      glade_widget_verify (widget);
     }
 }
 
@@ -4679,6 +4675,8 @@ glade_project_model_get_column_type (GtkTreeModel *model, gint column)
         return G_TYPE_OBJECT;
       case GLADE_PROJECT_MODEL_COLUMN_MISC:
         return G_TYPE_STRING;
+      case GLADE_PROJECT_MODEL_COLUMN_WARNING:
+        return G_TYPE_STRING;
       default:
         g_assert_not_reached ();
         return G_TYPE_NONE;
@@ -4841,6 +4839,10 @@ glade_project_model_get_value (GtkTreeModel *model,
 
         g_value_take_string (value, str);
         break;
+      case GLADE_PROJECT_MODEL_COLUMN_WARNING:
+        g_value_set_string (value, glade_widget_support_warning (widget));
+	break;
+
       default:
         g_assert_not_reached ();
     }

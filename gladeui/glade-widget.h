@@ -377,6 +377,7 @@ void                    glade_widget_push_superuser         (void);
  
 void                    glade_widget_pop_superuser          (void);
 
+void                    glade_widget_verify                 (GladeWidget      *widget);
 void                    glade_widget_set_support_warning    (GladeWidget      *widget,
 							     const gchar      *warning);
 G_CONST_RETURN gchar   *glade_widget_support_warning        (GladeWidget      *widget);

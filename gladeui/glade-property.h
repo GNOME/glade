@@ -133,6 +133,8 @@ void                    glade_property_set_support_warning   (GladeProperty     
 							      const gchar        *reason);
 G_CONST_RETURN gchar   *glade_property_get_support_warning   (GladeProperty      *property);
 
+gboolean                glade_property_warn_usage            (GladeProperty      *property);
+
 gboolean                glade_property_get_sensitive         (GladeProperty      *property);
 
 
