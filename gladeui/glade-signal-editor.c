@@ -1025,10 +1025,13 @@ glade_signal_editor_warning_cell_data_func (GtkTreeViewColumn *column,
 {
   GladeSignal *signal;
   gboolean visible = FALSE;
+  gboolean show_name;
 
   gtk_tree_model_get (model, iter,
 		      GLADE_SIGNAL_COLUMN_SIGNAL, &signal,
+		      GLADE_SIGNAL_COLUMN_SHOW_NAME, &show_name,
 		      -1);
+
   if (signal)
     {
       const gchar* warning = glade_signal_get_support_warning (signal);
@@ -1037,7 +1040,7 @@ glade_signal_editor_warning_cell_data_func (GtkTreeViewColumn *column,
     }
 		
   g_object_set (renderer, 
-		"visible", visible,
+		"visible", (visible && show_name),
 		NULL);
 }
 
