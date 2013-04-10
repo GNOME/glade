@@ -1856,6 +1856,8 @@ glade_editor_property_show_i18n_dialog (GtkWidget *parent,
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), GTK_SHADOW_IN);
 
   text_view = gtk_text_view_new ();
+  gtk_scrollable_set_hscroll_policy (GTK_SCROLLABLE (text_view), GTK_SCROLL_MINIMUM);
+  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (text_view), GTK_WRAP_WORD);
   gtk_widget_show (text_view);
 
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), text_view);
@@ -1908,6 +1910,7 @@ glade_editor_property_show_i18n_dialog (GtkWidget *parent,
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), GTK_SHADOW_IN);
 
   context_view = gtk_text_view_new ();
+  gtk_scrollable_set_hscroll_policy (GTK_SCROLLABLE (context_view), GTK_SCROLL_MINIMUM);
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (context_view), GTK_WRAP_WORD);
   gtk_widget_show (context_view);
 
@@ -1941,6 +1944,7 @@ glade_editor_property_show_i18n_dialog (GtkWidget *parent,
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), GTK_SHADOW_IN);
 
   comment_view = gtk_text_view_new ();
+  gtk_scrollable_set_hscroll_policy (GTK_SCROLLABLE (comment_view), GTK_SCROLL_MINIMUM);
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (comment_view), GTK_WRAP_WORD);
   gtk_widget_show (comment_view);
 
@@ -2217,6 +2221,8 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
                                            GTK_SHADOW_IN);
 
       eprop_text->text_entry = gtk_text_view_new ();
+      gtk_scrollable_set_hscroll_policy (GTK_SCROLLABLE (eprop_text->text_entry), GTK_SCROLL_MINIMUM);
+      gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (eprop_text->text_entry), GTK_WRAP_WORD);
       buffer =
           gtk_text_view_get_buffer (GTK_TEXT_VIEW (eprop_text->text_entry));
 
