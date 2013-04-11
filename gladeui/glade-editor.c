@@ -401,8 +401,8 @@ glade_editor_setup_class_field (GladeEditor *editor)
   gtk_misc_set_alignment (GTK_MISC (priv->class_label), 0.0, 0.5);
   gtk_label_set_ellipsize (GTK_LABEL (priv->class_label), PANGO_ELLIPSIZE_END);
 
-  gtk_box_pack_start (GTK_BOX (hbox), priv->class_icon, FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (hbox), priv->warning, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), priv->class_icon, FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (hbox), priv->class_label, TRUE, TRUE, 0);
 
   gtk_icon_size_lookup (GTK_ICON_SIZE_BUTTON, NULL, &icon_height);
