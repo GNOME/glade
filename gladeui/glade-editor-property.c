@@ -271,6 +271,14 @@ glade_editor_property_state_cb (GladeProperty *property,
 }
 
 static void
+glade_editor_property_enabled_toggled_cb (GtkWidget *check,
+                                          GladeEditorProperty *eprop)
+{
+  glade_command_set_property_enabled (eprop->priv->property,
+				      gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (check)));
+}
+
+static void
 glade_editor_property_enabled_cb (GladeProperty *property,
                                   GParamSpec *pspec,
                                   GladeEditorProperty *eprop)
@@ -289,17 +297,10 @@ glade_editor_property_enabled_cb (GladeProperty *property,
                (glade_property_get_state (property) & GLADE_STATE_SUPPORT_DISABLED) != 0)
         gtk_widget_set_sensitive (eprop->priv->input, TRUE);
 
+      g_signal_handlers_block_by_func (eprop->priv->check, glade_editor_property_enabled_toggled_cb, eprop);
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (eprop->priv->check), enabled);
+      g_signal_handlers_unblock_by_func (eprop->priv->check, glade_editor_property_enabled_toggled_cb, eprop);
     }
-}
-
-static void
-glade_editor_property_enabled_toggled_cb (GtkWidget *check,
-                                          GladeEditorProperty *eprop)
-{
-  glade_property_set_enabled (eprop->priv->property,
-                              gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON
-                                                            (check)));
 }
 
 static gboolean

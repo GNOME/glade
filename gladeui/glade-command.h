@@ -93,14 +93,17 @@ void           glade_command_set_project_template(GladeProject *project,
 
 /************************** properties *********************************/
 
-void           glade_command_set_property        (GladeProperty *property,     
+void           glade_command_set_property_enabled(GladeProperty *property,
+					          gboolean       enabled);
+
+void           glade_command_set_property        (GladeProperty *property,
 					          ...);
 
-void           glade_command_set_property_value  (GladeProperty *property,     
+void           glade_command_set_property_value  (GladeProperty *property,
 						  const GValue  *value);
 
-void           glade_command_set_properties      (GladeProperty *property, 
-					          const GValue  *old_value, 
+void           glade_command_set_properties      (GladeProperty *property,
+					          const GValue  *old_value,
 					          const GValue  *new_value,
 						  ...);
 

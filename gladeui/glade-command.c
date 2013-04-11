@@ -352,6 +352,183 @@ glade_command_check_group (GladeCommand *cmd)
     }
 }
 
+
+/****************************************************/
+/*******  GLADE_COMMAND_PROPERTY_ENABLED      *******/
+/****************************************************/
+typedef struct
+{
+  GladeCommand parent;
+  GladeProperty *property;
+  gboolean old_enabled;
+  gboolean new_enabled;
+} GladeCommandPropertyEnabled;
+
+/* standard macros */
+GLADE_MAKE_COMMAND (GladeCommandPropertyEnabled, glade_command_property_enabled);
+#define GLADE_COMMAND_PROPERTY_ENABLED_TYPE       (glade_command_property_enabled_get_type ())
+#define GLADE_COMMAND_PROPERTY_ENABLED(o)	  (G_TYPE_CHECK_INSTANCE_CAST \
+						   ((o), GLADE_COMMAND_PROPERTY_ENABLED_TYPE, \
+						    GladeCommandPropertyEnabled))
+#define GLADE_COMMAND_PROPERTY_ENABLED_CLASS(k)	  (G_TYPE_CHECK_CLASS_CAST \
+						   ((k), GLADE_COMMAND_PROPERTY_ENABLED_TYPE, \
+						    GladeCommandPropertyEnabledClass))
+#define GLADE_IS_COMMAND_PROPERTY_ENABLED(o)	   (G_TYPE_CHECK_INSTANCE_TYPE ((o), GLADE_COMMAND_PROPERTY_ENABLED_TYPE))
+#define GLADE_IS_COMMAND_PROPERTY_ENABLED_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), GLADE_COMMAND_PROPERTY_ENABLED_TYPE))
+
+
+static gboolean
+glade_command_property_enabled_execute (GladeCommand *cmd)
+{
+  GladeCommandPropertyEnabled *me = GLADE_COMMAND_PROPERTY_ENABLED (cmd);
+
+  glade_property_set_enabled (me->property, me->new_enabled);
+
+  return TRUE;
+}
+
+static gboolean
+glade_command_property_enabled_undo (GladeCommand *cmd)
+{
+  GladeCommandPropertyEnabled *me = GLADE_COMMAND_PROPERTY_ENABLED (cmd);
+
+  glade_property_set_enabled (me->property, me->old_enabled);
+
+  return TRUE;
+}
+
+static void
+glade_command_property_enabled_finalize (GObject *obj)
+{
+  GladeCommandPropertyEnabled *me;
+
+  g_return_if_fail (GLADE_IS_COMMAND_PROPERTY_ENABLED (obj));
+
+  me = GLADE_COMMAND_PROPERTY_ENABLED (obj);
+
+  g_object_unref (me->property);
+  glade_command_finalize (obj);
+}
+
+static gboolean
+glade_command_property_enabled_unifies (GladeCommand *this_cmd, GladeCommand *other_cmd)
+{
+  GladeCommandPropertyEnabled *cmd1;
+  GladeCommandPropertyEnabled *cmd2;
+
+  if (!other_cmd)
+    {
+      if (GLADE_IS_COMMAND_PROPERTY_ENABLED (this_cmd))
+        {
+          cmd1 = (GladeCommandPropertyEnabled *) this_cmd;
+
+	  return (cmd1->old_enabled == cmd1->new_enabled);
+        }
+      return FALSE;
+    }
+
+  if (GLADE_IS_COMMAND_PROPERTY_ENABLED (this_cmd) &&
+      GLADE_IS_COMMAND_PROPERTY_ENABLED (other_cmd))
+    {
+      cmd1 = GLADE_COMMAND_PROPERTY_ENABLED (this_cmd);
+      cmd2 = GLADE_COMMAND_PROPERTY_ENABLED (other_cmd);
+
+      return (cmd1->property == cmd2->property);
+    }
+
+  return FALSE;
+}
+
+static void
+glade_command_property_enabled_collapse (GladeCommand *this_cmd,
+					 GladeCommand *other_cmd)
+{
+  GladeCommandPropertyEnabled *this = GLADE_COMMAND_PROPERTY_ENABLED (this_cmd);
+  GladeCommandPropertyEnabled *other = GLADE_COMMAND_PROPERTY_ENABLED (other_cmd);
+  GladeWidget *widget;
+  GladePropertyClass *pclass;
+
+  this->new_enabled = other->new_enabled;
+
+  widget = glade_property_get_widget (this->property);
+  pclass = glade_property_get_class (this->property);
+
+  g_free (this_cmd->priv->description);
+  if (this->new_enabled)
+    this_cmd->priv->description =
+      g_strdup_printf (_("Enabling property %s on widget %s"),
+		       glade_property_class_get_name (pclass),
+		       glade_widget_get_name (widget));
+  else
+    this_cmd->priv->description =
+      g_strdup_printf (_("Disabling property %s on widget %s"),
+		       glade_property_class_get_name (pclass),
+		       glade_widget_get_name (widget));
+}
+
+/**
+ * glade_command_set_property_enabled:
+ * @property: An optional #GladeProperty
+ * @enabled: Whether the property should be enabled
+ *
+ * Enables or disables @property.
+ *
+ * @property must be an optional property.
+ */
+void
+glade_command_set_property_enabled (GladeProperty *property,
+				    gboolean       enabled)
+{
+  GladeCommandPropertyEnabled *me;
+  GladeCommand *cmd;
+  GladeWidget *widget;
+  GladePropertyClass *pclass;
+  gboolean old_enabled;
+
+  /* Sanity checks */
+  g_return_if_fail (GLADE_IS_PROPERTY (property));
+
+  widget = glade_property_get_widget (property);
+  g_return_if_fail (GLADE_IS_WIDGET (widget));
+
+  /* Only applies to optional properties */
+  pclass = glade_property_get_class (property);
+  g_return_if_fail (glade_property_class_optional (pclass));
+
+  /* Fetch current state */
+  old_enabled = glade_property_get_enabled (property);
+
+  /* Avoid useless command */
+  if (old_enabled == enabled)
+    return;
+
+  me = g_object_new (GLADE_COMMAND_PROPERTY_ENABLED_TYPE, NULL);
+  cmd = GLADE_COMMAND (me);
+  cmd->priv->project = glade_widget_get_project (widget);
+
+  me->property = g_object_ref (property);
+  me->new_enabled = enabled;
+  me->old_enabled = old_enabled;
+
+  if (enabled)
+    cmd->priv->description =
+      g_strdup_printf (_("Enabling property %s on widget %s"),
+		       glade_property_class_get_name (pclass),
+		       glade_widget_get_name (widget));
+  else
+    cmd->priv->description =
+      g_strdup_printf (_("Disabling property %s on widget %s"),
+		       glade_property_class_get_name (pclass),
+		       glade_widget_get_name (widget));
+
+  glade_command_check_group (GLADE_COMMAND (me));
+
+  if (glade_command_property_enabled_execute (GLADE_COMMAND (me)))
+    glade_project_push_undo (cmd->priv->project, cmd);
+  else
+    g_object_unref (G_OBJECT (me));
+}
+
 /**************************************************/
 /*******     GLADE_COMMAND_SET_PROPERTY     *******/
 /**************************************************/

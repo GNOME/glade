@@ -562,7 +562,13 @@ glade_fixed_configure_child_impl (GladeFixed *fixed,
                                   GladeWidget *child,
                                   GdkRectangle *rect)
 {
-  /* Make sure we can modify these properties */
+  /* Make sure we can modify these properties
+   *
+   * FIXME: This is inappropriate how that enabled state of properties
+   * is undoable... instead there should be some adaptor hooks to allow
+   * adding commands to the command group which adds a child to
+   * the given widget... where we can undoably override this.
+   */
   glade_widget_pack_property_set_enabled (child, fixed->x_prop, TRUE);
   glade_widget_pack_property_set_enabled (child, fixed->y_prop, TRUE);
   glade_widget_property_set_enabled (child, fixed->width_prop, TRUE);
