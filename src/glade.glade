@@ -211,15 +211,6 @@
       <accelerator key="q" modifiers="GDK_CONTROL_MASK"/>
     </child>
     <child>
-      <object class="GtkRecentAction" id="open_recent_action">
-        <property name="label" translatable="yes">Open _Recent</property>
-        <property name="limit">10</property>
-        <property name="sort_type">mru</property>
-        <property name="show_numbers">True</property>
-        <signal name="item-activated" handler="on_open_recent_action_item_activated" swapped="no"/>
-      </object>
-    </child>
-    <child>
       <object class="GtkAction" id="about_action">
         <property name="label" translatable="yes">About</property>
         <property name="tooltip" translatable="yes">About this application</property>
@@ -241,6 +232,16 @@
         <property name="tooltip" translatable="yes">Edit Glade preferences</property>
         <property name="stock_id">gtk-preferences</property>
         <signal name="activate" handler="on_preferences_action_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkRecentAction" id="open_recent_action">
+        <property name="label" translatable="yes">Open _Recent</property>
+        <property name="filter">recentfilter</property>
+        <property name="limit">10</property>
+        <property name="sort_type">mru</property>
+        <property name="show_numbers">True</property>
+        <signal name="item-activated" handler="on_open_recent_action_item_activated" swapped="no"/>
       </object>
     </child>
   </object>
@@ -1129,5 +1130,10 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         <property name="position">3</property>
       </packing>
     </child>
+  </object>
+  <object class="GtkRecentFilter" id="recentfilter">
+    <mime-types>
+      <mime-type>application/x-glade</mime-type>
+    </mime-types>
   </object>
 </interface>

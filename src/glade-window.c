@@ -3160,12 +3160,6 @@ glade_window_constructed (GObject *object)
 
   /* recent files */
   priv->recent_manager = gtk_recent_manager_get_default ();
-    {
-      GtkRecentFilter *filter = gtk_recent_filter_new ();
-      gtk_recent_filter_add_application (filter, g_get_application_name ());
-      gtk_recent_chooser_set_filter (GET_OBJECT (builder, GTK_RECENT_CHOOSER, "open_recent_action"),
-                                     filter);
-    }
 
   /* Init preferences */
   priv->preferences = (GladePreferences *)glade_preferences_new ();
