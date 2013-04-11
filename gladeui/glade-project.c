@@ -4227,9 +4227,9 @@ glade_project_target_version_box_fill (GladeProject *project, GtkWidget *vbox)
 }
 
 static void
-on_domain_entry_activate (GtkWidget *entry, GladeProject *project)
+on_domain_entry_changed (GtkWidget *entry, GladeProject *project)
 {
-  glade_project_set_translation_domain (project, gtk_entry_get_text (GTK_ENTRY (entry)));
+  glade_command_set_project_domain (project, gtk_entry_get_text (GTK_ENTRY (entry)));
 }
 
 static void
@@ -4436,8 +4436,8 @@ glade_project_build_prefs_dialog (GladeProject *project)
   g_signal_connect (verify_button, "clicked",
                     G_CALLBACK (verify_clicked), project);
 
-  g_signal_connect (priv->domain_entry, "activate",
-                    G_CALLBACK (on_domain_entry_activate), project);
+  g_signal_connect (priv->domain_entry, "changed",
+                    G_CALLBACK (on_domain_entry_changed), project);
 
   gtk_builder_connect_signals (builder, NULL);
   g_object_unref (builder);
@@ -4531,7 +4531,10 @@ glade_project_set_translation_domain (GladeProject *project, const gchar *domain
       g_free (priv->translation_domain);
       priv->translation_domain = g_strdup (domain);
 
+      g_signal_handlers_block_by_func (priv->domain_entry, on_domain_entry_changed, project);
       gtk_entry_set_text (GTK_ENTRY (priv->domain_entry), domain);
+      g_signal_handlers_unblock_by_func (priv->domain_entry, on_domain_entry_changed, project);
+
       g_object_notify_by_pspec (G_OBJECT (project),
                                 properties[PROP_TRANSLATION_DOMAIN]);
     }

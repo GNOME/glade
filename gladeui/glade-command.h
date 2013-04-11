@@ -85,6 +85,9 @@ void           glade_command_set_project_target  (GladeProject *project,
 						  gint          major,
 						  gint          minor);
 
+void           glade_command_set_project_domain  (GladeProject *project,     
+					          const gchar  *domain);
+
 void           glade_command_set_template        (GladeProject *project,     
 					          GladeWidget  *widget);
 

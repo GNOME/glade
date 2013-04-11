@@ -2485,6 +2485,147 @@ glade_command_set_project_target  (GladeProject *project,
 
 /******************************************************************************
  * 
+ * This command sets the translation domain of a GladeProject
+ * 
+ *****************************************************************************/
+typedef struct
+{
+  GladeCommand parent;
+  gchar       *new_domain;
+  gchar       *old_domain;
+} GladeCommandDomain;
+
+GLADE_MAKE_COMMAND (GladeCommandDomain, glade_command_domain);
+#define GLADE_COMMAND_DOMAIN_TYPE	 (glade_command_domain_get_type ())
+#define GLADE_COMMAND_DOMAIN(o)	  	 (G_TYPE_CHECK_INSTANCE_CAST ((o), GLADE_COMMAND_DOMAIN_TYPE, GladeCommandDomain))
+#define GLADE_COMMAND_DOMAIN_CLASS(k)	 (G_TYPE_CHECK_CLASS_CAST ((k), GLADE_COMMAND_DOMAIN_TYPE, GladeCommandDomainClass))
+#define GLADE_IS_COMMAND_DOMAIN(o)	 (G_TYPE_CHECK_INSTANCE_TYPE ((o), GLADE_COMMAND_DOMAIN_TYPE))
+#define GLADE_IS_COMMAND_DOMAIN_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), GLADE_COMMAND_DOMAIN_TYPE))
+
+static gboolean
+glade_command_domain_execute (GladeCommand *cmd)
+{
+  GladeCommandDomain *me = (GladeCommandDomain *) cmd;
+
+  glade_project_set_translation_domain (cmd->priv->project, me->new_domain);
+
+  return TRUE;
+}
+
+static gboolean
+glade_command_domain_undo (GladeCommand *cmd)
+{
+  GladeCommandDomain *me = (GladeCommandDomain *) cmd;
+
+  glade_project_set_translation_domain (cmd->priv->project, me->old_domain);
+
+  return TRUE;
+}
+
+static void
+glade_command_domain_finalize (GObject *obj)
+{
+  GladeCommandDomain *me = (GladeCommandDomain *) obj;
+
+  g_free (me->new_domain);
+  g_free (me->old_domain);
+
+  glade_command_finalize (obj);
+}
+
+static gboolean
+glade_command_domain_unifies (GladeCommand *this_cmd, GladeCommand *other_cmd)
+{
+  GladeCommandDomain *me;
+
+  /* Do we unify with self ? */
+  if (!other_cmd)
+    {
+      if (GLADE_IS_COMMAND_DOMAIN (this_cmd))
+        {
+          me = (GladeCommandDomain *) this_cmd;
+
+	  return g_strcmp0 (me->new_domain, me->old_domain) == 0;
+        }
+      return FALSE;
+    }
+
+  if (GLADE_IS_COMMAND_DOMAIN (this_cmd) &&
+      GLADE_IS_COMMAND_DOMAIN (other_cmd))
+    {
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+static void
+glade_command_domain_collapse (GladeCommand *this_cmd, GladeCommand *other_cmd)
+{
+  GladeCommandDomain *this;
+  GladeCommandDomain *other;
+
+  g_return_if_fail (GLADE_IS_COMMAND_DOMAIN (this_cmd) &&
+                    GLADE_IS_COMMAND_DOMAIN (other_cmd));
+
+  this = GLADE_COMMAND_DOMAIN (this_cmd);
+  other = GLADE_COMMAND_DOMAIN (other_cmd);
+
+  g_free (this->new_domain);
+  this->new_domain = g_strdup (other->new_domain);
+
+  g_free (this_cmd->priv->description);
+  this_cmd->priv->description =
+    g_strdup_printf (_("Setting translation domain to '%s'"), 
+		     this->new_domain);
+}
+
+/**
+ * glade_command_set_project_domain:
+ * @project: A #GladeProject
+ * @domain: The translation domain for @project
+ *
+ * Sets @domain as the translation domain for @project.
+ */
+void
+glade_command_set_project_domain  (GladeProject *project,
+				   const gchar  *domain)
+{
+  GladeCommandDomain *me;
+  const gchar *old_domain;
+
+  g_return_if_fail (GLADE_IS_PROJECT (project));
+
+  old_domain = glade_project_get_translation_domain (project);
+
+  /* Do nothing if nothing has changed */
+  if (g_strcmp0 (domain, old_domain) == 0)
+    return;
+
+  /* load up the command */
+  me = g_object_new (GLADE_COMMAND_DOMAIN_TYPE, NULL);
+  GLADE_COMMAND (me)->priv->project = project;
+
+  me->new_domain = g_strdup (domain);
+  me->old_domain = g_strdup (old_domain);
+
+  GLADE_COMMAND (me)->priv->description =
+    g_strdup_printf (_("Setting translation domain to '%s'"), 
+		     me->new_domain);
+
+  glade_command_check_group (GLADE_COMMAND (me));
+
+  /* execute the command and push it on the stack if successful 
+   * this sets the actual policy
+   */
+  if (glade_command_domain_execute (GLADE_COMMAND (me)))
+    glade_project_push_undo (GLADE_COMMAND (me)->priv->project, GLADE_COMMAND (me));
+  else
+    g_object_unref (G_OBJECT (me));
+}
+
+/******************************************************************************
+ * 
  * This command sets the template object in a GtkBuilder file
  * 
  *****************************************************************************/
