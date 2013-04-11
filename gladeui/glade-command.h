@@ -80,6 +80,10 @@ void                  glade_command_collapse             (GladeCommand      *com
 							  GladeCommand      *other);
 
 /************************ project ******************************/
+void           glade_command_set_project_target  (GladeProject *project,
+						  const gchar  *catalog,
+						  gint          major,
+						  gint          minor);
 
 void           glade_command_set_template        (GladeProject *project,     
 					          GladeWidget  *widget);

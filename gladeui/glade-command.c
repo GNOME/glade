@@ -2319,6 +2319,169 @@ glade_command_unlock_widget (GladeWidget *widget)
 }
 
 
+/******************************************************************************
+ * 
+ * This command sets the target version of a GladeProject
+ * 
+ *****************************************************************************/
+typedef struct
+{
+  GladeCommand parent;
+  gchar       *catalog;
+  gint         old_major;
+  gint         old_minor;
+  gint         new_major;
+  gint         new_minor;
+} GladeCommandTarget;
+
+GLADE_MAKE_COMMAND (GladeCommandTarget, glade_command_target);
+#define GLADE_COMMAND_TARGET_TYPE	 (glade_command_target_get_type ())
+#define GLADE_COMMAND_TARGET(o)	  	 (G_TYPE_CHECK_INSTANCE_CAST ((o), GLADE_COMMAND_TARGET_TYPE, GladeCommandTarget))
+#define GLADE_COMMAND_TARGET_CLASS(k)	 (G_TYPE_CHECK_CLASS_CAST ((k), GLADE_COMMAND_TARGET_TYPE, GladeCommandTargetClass))
+#define GLADE_IS_COMMAND_TARGET(o)	 (G_TYPE_CHECK_INSTANCE_TYPE ((o), GLADE_COMMAND_TARGET_TYPE))
+#define GLADE_IS_COMMAND_TARGET_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), GLADE_COMMAND_TARGET_TYPE))
+
+static gboolean
+glade_command_target_execute (GladeCommand *cmd)
+{
+  GladeCommandTarget *me = (GladeCommandTarget *) cmd;
+
+  glade_project_set_target_version (cmd->priv->project,
+				    me->catalog,
+				    me->new_major,
+				    me->new_minor);
+
+  return TRUE;
+}
+
+static gboolean
+glade_command_target_undo (GladeCommand *cmd)
+{
+  GladeCommandTarget *me = (GladeCommandTarget *) cmd;
+
+  glade_project_set_target_version (cmd->priv->project,
+				    me->catalog,
+				    me->old_major,
+				    me->old_minor);
+
+  return TRUE;
+}
+
+static void
+glade_command_target_finalize (GObject *obj)
+{
+  GladeCommandTarget *me = (GladeCommandTarget *) obj;
+
+  g_free (me->catalog);
+
+  glade_command_finalize (obj);
+}
+
+static gboolean
+glade_command_target_unifies (GladeCommand *this_cmd, GladeCommand *other_cmd)
+{
+  GladeCommandTarget *me;
+
+  /* Do we unify with self ? */
+  if (!other_cmd)
+    {
+      if (GLADE_IS_COMMAND_TARGET (this_cmd))
+        {
+          me = (GladeCommandTarget *) this_cmd;
+
+	  return (me->old_major == me->new_major &&
+		  me->old_minor == me->new_minor);
+        }
+      return FALSE;
+    }
+
+  if (GLADE_IS_COMMAND_TARGET (this_cmd) &&
+      GLADE_IS_COMMAND_TARGET (other_cmd))
+    {
+      GladeCommandTarget *other;
+
+      me = (GladeCommandTarget *) this_cmd;
+      other = (GladeCommandTarget *) other_cmd;
+
+      return g_strcmp0 (me->catalog, other->catalog) == 0;
+    }
+
+  return FALSE;
+}
+
+static void
+glade_command_target_collapse (GladeCommand *this_cmd, GladeCommand *other_cmd)
+{
+  GladeCommandTarget *this;
+  GladeCommandTarget *other;
+
+  g_return_if_fail (GLADE_IS_COMMAND_TARGET (this_cmd) &&
+                    GLADE_IS_COMMAND_TARGET (other_cmd));
+
+  this = GLADE_COMMAND_TARGET (this_cmd);
+  other = GLADE_COMMAND_TARGET (other_cmd);
+
+  this->new_major = other->new_major;
+  this->new_minor = other->new_minor;
+
+  g_free (this_cmd->priv->description);
+  this_cmd->priv->description =
+    g_strdup_printf (_("Setting target version of '%s' to %d.%d"), 
+		     this->catalog, this->new_major, this->new_minor);
+
+}
+
+/**
+ * glade_command_set_project_target:
+ * @project: A #GladeProject
+ * @catalog: The name of the catalog to set the project's target for
+ * @major: The new major version of @catalog to target
+ * @minor: The new minor version of @catalog to target
+ *
+ * Sets the target of @catalog to @major.@minor in @project.
+ */
+void
+glade_command_set_project_target  (GladeProject *project,
+				   const gchar  *catalog,
+				   gint          major,
+				   gint          minor)
+{
+  GladeCommandTarget *me;
+  gint old_major = 0;
+  gint old_minor = 0;
+
+  g_return_if_fail (GLADE_IS_PROJECT (project));
+  g_return_if_fail (catalog && catalog[0]);
+  g_return_if_fail (major >= 0);
+  g_return_if_fail (minor >= 0);
+
+  /* load up the command */
+  me = g_object_new (GLADE_COMMAND_TARGET_TYPE, NULL);
+  GLADE_COMMAND (me)->priv->project = project;
+
+  me->catalog = g_strdup (catalog);
+
+  glade_project_get_target_version (project, me->catalog, &old_major, &old_minor);
+
+  me->new_major = major;
+  me->new_minor = minor;
+  me->old_major = old_major;
+  me->old_minor = old_minor;
+
+  GLADE_COMMAND (me)->priv->description =
+    g_strdup_printf (_("Setting target version of '%s' to %d.%d"), 
+		     me->catalog, me->new_major, me->new_minor);
+
+  glade_command_check_group (GLADE_COMMAND (me));
+
+  /* execute the command and push it on the stack if successful 
+   * this sets the actual policy
+   */
+  if (glade_command_target_execute (GLADE_COMMAND (me)))
+    glade_project_push_undo (GLADE_COMMAND (me)->priv->project, GLADE_COMMAND (me));
+  else
+    g_object_unref (G_OBJECT (me));
+}
 
 /******************************************************************************
  * 

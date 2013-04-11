@@ -199,10 +199,6 @@ glade_pointer_mode_get_type (void)
   return etype;
 }
 
-static void glade_project_set_target_version (GladeProject *project,
-                                              const gchar *catalog,
-                                              guint16 major, guint16 minor);
-
 static void glade_project_target_version_for_adaptor (GladeProject *project,
                                                       GladeWidgetAdaptor *adaptor,
                                                       gint *major,
@@ -3287,15 +3283,20 @@ glade_project_remove_object (GladeProject *project, GObject *object)
 /*******************************************************************
                         Remaining stubs and api
  *******************************************************************/
-static void
+void
 glade_project_set_target_version (GladeProject *project,
                                   const gchar *catalog,
-                                  guint16 major,
-                                  guint16 minor)
+                                  gint major,
+                                  gint minor)
 {
   GladeTargetableVersion *version;
   GSList *radios, *list;
   GtkWidget *radio;
+
+  g_return_if_fail (GLADE_IS_PROJECT (project));
+  g_return_if_fail (catalog && catalog[0]);
+  g_return_if_fail (major >= 0);
+  g_return_if_fail (minor >= 0);
 
   g_hash_table_insert (project->priv->target_versions_major,
                        g_strdup (catalog), GINT_TO_POINTER ((int) major));
@@ -4027,8 +4028,7 @@ target_button_clicked (GtkWidget *widget, GladeProject *project)
       g_object_get_data (G_OBJECT (widget), "version");
   gchar *catalog = g_object_get_data (G_OBJECT (widget), "catalog");
 
-  glade_project_set_target_version (project,
-                                    catalog, version->major, version->minor);
+  glade_command_set_project_target (project, catalog, version->major, version->minor);
 }
 
 static void

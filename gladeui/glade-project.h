@@ -218,6 +218,10 @@ GladePointerMode    glade_project_get_pointer_mode     (GladeProject       *proj
 void                glade_project_set_add_item         (GladeProject       *project,
                                                         GladeWidgetAdaptor *adaptor);
 GladeWidgetAdaptor *glade_project_get_add_item         (GladeProject       *project);
+void                glade_project_set_target_version   (GladeProject       *project,
+							const gchar        *catalog,
+							gint                major,
+							gint                minor);
 void                glade_project_get_target_version   (GladeProject       *project,
                                                         const gchar        *catalog,
                                                         gint               *major,
