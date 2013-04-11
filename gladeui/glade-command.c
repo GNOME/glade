@@ -1250,7 +1250,7 @@ glade_command_remove (GList *widgets)
 
       /* If we're removing the template widget, then we need to unset it as template */
       if (glade_project_get_template (GLADE_COMMAND (me)->priv->project) == widget)
-	glade_command_set_template (GLADE_COMMAND (me)->priv->project, NULL);
+	glade_command_set_project_template (GLADE_COMMAND (me)->priv->project, NULL);
 
       /* Undoably unset any object properties that may point to the removed object */
       glade_command_delete_prop_refs (widget);
@@ -2742,15 +2742,15 @@ glade_command_template_collapse (GladeCommand *this_cmd, GladeCommand *other_cmd
 }
 
 /**
- * glade_command_set_template:
+ * glade_command_set_project_template:
  * @project: A #GladeProject
  * @widget: The #GladeWidget to make template
  *
  * Sets @widget to be the template widget in @project.
  */
 void
-glade_command_set_template (GladeProject *project,
-			    GladeWidget  *widget)
+glade_command_set_project_template (GladeProject *project,
+				    GladeWidget  *widget)
 {
   GladeCommandTemplate *me;
   GladeWidget *old_template;

@@ -4250,7 +4250,7 @@ on_template_combo_box_changed (GtkComboBox *combo, GladeProject *project)
       
       gwidget = glade_widget_get_from_gobject (object);
 
-      glade_command_set_template (project, gwidget);
+      glade_command_set_project_template (project, gwidget);
     }
 }
 
@@ -4277,7 +4277,7 @@ on_template_checkbutton_toggled (GtkToggleButton *togglebutton,
 
 	  if (GTK_IS_WIDGET (object))
 	    {
-	      glade_command_set_template (project, gwidget);
+	      glade_command_set_project_template (project, gwidget);
 	      composite = TRUE;
 	      break;
 	    }
@@ -4287,7 +4287,7 @@ on_template_checkbutton_toggled (GtkToggleButton *togglebutton,
 	gtk_toggle_button_set_active (togglebutton, FALSE);
     }
   else
-    glade_command_set_template (project, NULL);
+    glade_command_set_project_template (project, NULL);
 }
 
 static gboolean
