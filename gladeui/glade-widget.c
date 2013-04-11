@@ -4616,7 +4616,7 @@ glade_widget_generate_path_name (GladeWidget * widget)
 void
 glade_widget_verify (GladeWidget      *widget)
 {
-  gchar *warning;
+  gchar *warning = NULL;
   GList *warn_properties = NULL;
   GList *warn_signals = NULL;
 
@@ -4625,9 +4625,19 @@ glade_widget_verify (GladeWidget      *widget)
   if (widget->priv->project == NULL)
     return;
 
-  warning = glade_project_verify_widget_adaptor (widget->priv->project,
-						 widget->priv->adaptor,
-						 NULL);
+  if (GLADE_IS_OBJECT_STUB (widget->priv->object))
+    {
+      gchar *type;
+      g_object_get (widget->priv->object, "object-type", &type, NULL);
+          
+      warning = g_strdup_printf (_("Object has unrecognized type %s"), type);
+      g_free (type);
+    }
+
+  if (!warning)
+    warning = glade_project_verify_widget_adaptor (widget->priv->project,
+						   widget->priv->adaptor,
+						   NULL);
 
   /* If there is already support issues with the adaptor, skip signals
    * and properties
