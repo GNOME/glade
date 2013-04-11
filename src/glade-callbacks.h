@@ -41,6 +41,7 @@ void on_redo_action_activate             (GtkAction *action, GladeWindow *window
 void on_quit_action_activate             (GtkAction *action, GladeWindow *window);
 void on_about_action_activate            (GtkAction *action, GladeWindow *window);
 void on_reference_action_activate        (GtkAction *action, GladeWindow *window);
+void on_preferences_action_activate      (GtkAction *action, GladeWindow *window);
 
 void on_open_recent_action_item_activated (GtkRecentChooser *chooser,
                                            GladeWindow *window);

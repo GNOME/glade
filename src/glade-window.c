@@ -2131,6 +2131,13 @@ on_reference_action_activate (GtkAction *action, GladeWindow *window)
 }
 
 void
+on_preferences_action_activate (GtkAction   *action,
+				GladeWindow *window)
+{
+  gtk_widget_show (GTK_WIDGET (window->priv->preferences));
+}
+
+void
 on_about_action_activate (GtkAction *action, GladeWindow *window)
 {
   GladeWindowPrivate *priv = GLADE_WINDOW_GET_PRIVATE (window);
@@ -2813,7 +2820,7 @@ glade_window_config_save (GladeWindow * window)
   save_paned_position (config, window->priv->left_pane, "left_pane");
   save_paned_position (config, window->priv->right_pane, "right_pane");
 
-  glade_preferences_config_save (window->priv->preferences, config);
+  glade_preferences_save (window->priv->preferences, config);
 
   glade_app_config_save ();
 }
@@ -3012,7 +3019,7 @@ glade_window_config_load (GladeWindow *window)
   load_paned_position (config, window->priv->center_pane, "center_pane", 400);
   load_paned_position (config, window->priv->right_pane, "right_pane", 220);
 
-  glade_preferences_config_load (window->priv->preferences, config);
+  glade_preferences_load (window->priv->preferences, config);
 }
 
 static void
@@ -3161,7 +3168,7 @@ glade_window_constructed (GObject *object)
     }
 
   /* Init preferences */
-  priv->preferences = glade_preferences_new (builder);
+  priv->preferences = (GladePreferences *)glade_preferences_new ();
   
   /* Fetch pointers */
   vbox = GET_OBJECT (builder, GTK_WIDGET, "main_box");

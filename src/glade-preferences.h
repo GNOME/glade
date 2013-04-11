@@ -17,6 +17,7 @@
  *
  * Authors:
  *   Juan Pablo Ugarte <juanpablougarte@gmail.com>
+ *   Tristan Van Berkom <tristan.van.berkom@gmail.com>
  */
 
 #ifndef __GLADE_PREFERENCES_H__
@@ -24,27 +25,44 @@
 
 #include <gtk/gtk.h>
 
-typedef struct _GladePreferences GladePreferences;
+G_BEGIN_DECLS
 
-GladePreferences *glade_preferences_new     (GtkBuilder *builder);
-void              glade_preferences_destroy (GladePreferences *prefs);
+#define GLADE_TYPE_PREFERENCES                 (glade_preferences_get_type ())
+#define GLADE_PREFERENCES(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_PREFERENCES, GladePreferences))
+#define GLADE_PREFERENCES_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_PREFERENCES, GladePreferencesClass))
+#define GLADE_IS_PREFERENCES(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_PREFERENCES))
+#define GLADE_IS_PREFERENCES_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_PREFERENCES))
+#define GLADE_PREFERENCES_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_PREFERENCES, GladePreferencesClass))
 
-void glade_preferences_config_save (GladePreferences *prefs,
-                                    GKeyFile *config);
-void glade_preferences_config_load (GladePreferences *prefs,
-                                    GKeyFile *config);
+typedef struct _GladePreferences             GladePreferences;
+typedef struct _GladePreferencesClass        GladePreferencesClass;
+typedef struct _GladePreferencesPrivate      GladePreferencesPrivate;
 
-gboolean glade_preferences_backup   (GladePreferences *prefs);
-gboolean glade_preferences_autosave (GladePreferences *prefs);
-gint     glade_preferences_autosave_seconds (GladePreferences *prefs);
+struct _GladePreferences
+{
+  /*< private >*/
+  GtkDialog dialog;
 
-/* Callbacks */
+  GladePreferencesPrivate *priv;
+};
 
-void on_preferences_filechooserdialog_response (GtkDialog *dialog,
-                                                gint response_id,
-                                                GtkComboBoxText *combo);
-void on_catalog_path_remove_button_clicked     (GtkButton *button,
-                                                GtkComboBoxText *combo);
+struct _GladePreferencesClass
+{
+  GtkDialogClass parent_class;
+};
 
+GType             glade_preferences_get_type         (void) G_GNUC_CONST;
+GtkWidget        *glade_preferences_new              (void);
+
+void              glade_preferences_save             (GladePreferences *prefs,
+						      GKeyFile         *config);
+void              glade_preferences_load             (GladePreferences *prefs,
+						      GKeyFile         *config);
+
+gboolean          glade_preferences_backup           (GladePreferences *prefs);
+gboolean          glade_preferences_autosave         (GladePreferences *prefs);
+gint              glade_preferences_autosave_seconds (GladePreferences *prefs);
+
+G_END_DECLS
 
 #endif /* __GLADE_PREFERENCES_H__ */

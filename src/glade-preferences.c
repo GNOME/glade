@@ -22,16 +22,6 @@
 #include "glade-preferences.h"
 #include <gladeui/glade-catalog.h>
 
-struct _GladePreferences
-{
-  GObject *toplevel;
-  GtkComboBoxText *catalog_path_combo;
-
-  GtkWidget *create_backups_toggle;
-  GtkWidget *autosave_toggle;
-  GtkWidget *autosave_spin;
-};
-
 #define CONFIG_GROUP "Preferences"
 #define CONFIG_KEY_CATALOG_PATHS "catalog-paths"
 
@@ -40,6 +30,92 @@ struct _GladePreferences
 #define CONFIG_KEY_AUTOSAVE         "autosave"
 #define CONFIG_KEY_AUTOSAVE_SECONDS "autosave-seconds"
 
+struct _GladePreferencesPrivate
+{
+  GtkComboBoxText *catalog_path_combo;
+
+  GtkWidget *create_backups_toggle;
+  GtkWidget *autosave_toggle;
+  GtkWidget *autosave_spin;
+};
+
+
+G_DEFINE_TYPE (GladePreferences, glade_preferences, GTK_TYPE_DIALOG);
+
+/********************************************************
+ *                       CALLBACKS                      *
+ ********************************************************/
+static void
+autosave_toggled (GtkToggleButton  *button,
+		  GladePreferences *prefs)
+{
+  gtk_widget_set_sensitive (prefs->priv->autosave_spin,
+			    gtk_toggle_button_get_active (button));
+}
+
+static gboolean 
+find_row (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer data)
+{
+  gchar **directory = data;
+  gchar *string;
+  
+  gtk_tree_model_get (model, iter, 1, &string, -1);
+
+  if (g_strcmp0 (string, *directory) == 0)
+    {
+      g_free (*directory);
+      *directory = NULL;
+      return TRUE;
+    }
+  
+  return FALSE;
+}
+
+static void
+on_preferences_filechooserdialog_response (GtkDialog *dialog,
+                                           gint response_id,
+                                           GtkComboBoxText *combo)
+{
+  gtk_widget_hide (GTK_WIDGET (dialog));
+
+  if (response_id == GTK_RESPONSE_ACCEPT)
+    {
+      gchar *directory = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+      GtkTreeModel *model = gtk_combo_box_get_model (GTK_COMBO_BOX (combo));
+      
+      gtk_tree_model_foreach (model, find_row, &directory);
+
+      if (directory)
+        {
+          glade_catalog_add_path (directory);
+          gtk_combo_box_text_append (combo, directory, directory);
+          gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 0);
+          g_free (directory);
+        }
+    }
+}
+
+static void
+on_catalog_path_remove_button_clicked (GtkButton *button, GtkComboBoxText *combo)
+{
+  gint active = gtk_combo_box_get_active (GTK_COMBO_BOX (combo));
+
+  if (active >= 0)
+    {
+      gchar *directory = gtk_combo_box_text_get_active_text (combo);
+      glade_catalog_remove_path (directory);
+      g_free (directory);
+
+      gtk_combo_box_text_remove (combo, active);
+
+      if (--active < 0) active = 0;
+      gtk_combo_box_set_active (GTK_COMBO_BOX (combo), active);
+    }
+}
+
+/********************************************************
+ *                  Class/Instance Init                 *
+ ********************************************************/
 static void
 combo_box_text_init_cell (GtkCellLayout *cell)
 {
@@ -59,44 +135,62 @@ combo_box_text_init_cell (GtkCellLayout *cell)
 }
 
 static void
-autosave_toggled (GtkToggleButton  *button,
-		  GladePreferences *prefs)
+glade_preferences_init (GladePreferences *preferences)
 {
-  gtk_widget_set_sensitive (prefs->autosave_spin,
-			    gtk_toggle_button_get_active (button));
+  preferences->priv = G_TYPE_INSTANCE_GET_PRIVATE (preferences,
+						   GLADE_TYPE_PREFERENCES,
+						   GladePreferencesPrivate);
+
+  gtk_widget_init_template (GTK_WIDGET (preferences));
+
+  combo_box_text_init_cell (GTK_CELL_LAYOUT (preferences->priv->catalog_path_combo));
 }
 
-GladePreferences *
-glade_preferences_new (GtkBuilder *builder)
+static void
+glade_preferences_class_init (GladePreferencesClass *klass)
 {
-  GladePreferences *prefs = g_new0 (GladePreferences, 1);
+  GObjectClass *gobject_class;
+  GtkWidgetClass *widget_class;
 
-  prefs->toplevel = gtk_builder_get_object (builder, "preferences_dialog");
-  prefs->catalog_path_combo = GTK_COMBO_BOX_TEXT (gtk_builder_get_object (builder, "catalog_path_comboboxtext"));
-  combo_box_text_init_cell (GTK_CELL_LAYOUT (prefs->catalog_path_combo));
+  gobject_class = G_OBJECT_CLASS (klass);
+  widget_class  = GTK_WIDGET_CLASS (klass);
 
-  prefs->create_backups_toggle = GTK_WIDGET (gtk_builder_get_object (builder, "create_backups_toggle"));
-  prefs->autosave_toggle = GTK_WIDGET (gtk_builder_get_object (builder, "autosave_toggle"));
-  prefs->autosave_spin = GTK_WIDGET (gtk_builder_get_object (builder, "autosave_spin"));
+  /* Setup the template GtkBuilder xml for this class
+   */
+  gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/glade/glade-preferences.glade");
 
-  g_signal_connect (G_OBJECT (prefs->autosave_toggle), "toggled",
-		    G_CALLBACK (autosave_toggled), prefs);
-  
-  return prefs;
+  /* Define the relationship of the private entry and the entry defined in the xml
+   */
+  gtk_widget_class_bind_child (widget_class, GladePreferencesPrivate, catalog_path_combo);
+  gtk_widget_class_bind_child (widget_class, GladePreferencesPrivate, create_backups_toggle);
+  gtk_widget_class_bind_child (widget_class, GladePreferencesPrivate, autosave_toggle);
+  gtk_widget_class_bind_child (widget_class, GladePreferencesPrivate, autosave_spin);
+
+  /* Declare the callback ports that this widget class exposes, to bind with <signal>
+   * connections defined in the GtkBuilder xml
+   */
+  gtk_widget_class_bind_callback (widget_class, autosave_toggled);
+  gtk_widget_class_bind_callback (widget_class, on_preferences_filechooserdialog_response);
+  gtk_widget_class_bind_callback (widget_class, on_catalog_path_remove_button_clicked);
+
+  g_type_class_add_private (gobject_class, sizeof (GladePreferencesPrivate));
+}
+
+/********************************************************
+ *                         API                          *
+ ********************************************************/
+GtkWidget *
+glade_preferences_new (void)
+{
+  return g_object_new (GLADE_TYPE_PREFERENCES, NULL);
 }
 
 void
-glade_preferences_destroy (GladePreferences *prefs)
+glade_preferences_save (GladePreferences *prefs,
+			GKeyFile         *config)
 {
-  g_object_unref (prefs->toplevel);
-  g_free (prefs);
-}
-
-void
-glade_preferences_config_save (GladePreferences *prefs, GKeyFile *config)
-{
-  GtkTreeModel *model = gtk_combo_box_get_model (GTK_COMBO_BOX (prefs->catalog_path_combo));
-  gint column = gtk_combo_box_get_entry_text_column (GTK_COMBO_BOX (prefs->catalog_path_combo));
+  GtkTreeModel *model = gtk_combo_box_get_model (GTK_COMBO_BOX (prefs->priv->catalog_path_combo));
+  gint column = gtk_combo_box_get_entry_text_column (GTK_COMBO_BOX (prefs->priv->catalog_path_combo));
   GString *string = g_string_new ("");
   GtkTreeIter iter;
   gboolean valid;
@@ -128,7 +222,8 @@ glade_preferences_config_save (GladePreferences *prefs, GKeyFile *config)
 }
 
 void
-glade_preferences_config_load (GladePreferences *prefs, GKeyFile *config)
+glade_preferences_load (GladePreferences *prefs,
+			GKeyFile         *config)
 {
   gchar *string;
   gboolean backups = TRUE;
@@ -139,7 +234,7 @@ glade_preferences_config_load (GladePreferences *prefs, GKeyFile *config)
 
   if (string && g_strcmp0 (string, ""))
     {
-      GtkComboBoxText *combo = prefs->catalog_path_combo;
+      GtkComboBoxText *combo = prefs->priv->catalog_path_combo;
       gchar **paths, **path;
 
       gtk_combo_box_text_remove_all (combo);
@@ -167,10 +262,10 @@ glade_preferences_config_load (GladePreferences *prefs, GKeyFile *config)
   if (g_key_file_has_key (config, CONFIG_GROUP_LOAD_SAVE, CONFIG_KEY_AUTOSAVE_SECONDS, NULL))
     autosave_seconds = g_key_file_get_integer (config, CONFIG_GROUP_LOAD_SAVE, CONFIG_KEY_AUTOSAVE_SECONDS, NULL);
 
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (prefs->create_backups_toggle), backups);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (prefs->autosave_toggle), autosave);
-  gtk_spin_button_set_value (GTK_SPIN_BUTTON (prefs->autosave_spin), autosave_seconds);
-  gtk_widget_set_sensitive (prefs->autosave_spin, autosave);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (prefs->priv->create_backups_toggle), backups);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (prefs->priv->autosave_toggle), autosave);
+  gtk_spin_button_set_value (GTK_SPIN_BUTTON (prefs->priv->autosave_spin), autosave_seconds);
+  gtk_widget_set_sensitive (prefs->priv->autosave_spin, autosave);
 
   g_free (string);
 }
@@ -178,79 +273,17 @@ glade_preferences_config_load (GladePreferences *prefs, GKeyFile *config)
 gboolean
 glade_preferences_backup (GladePreferences *prefs)
 {
-  return gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (prefs->create_backups_toggle));
+  return gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (prefs->priv->create_backups_toggle));
 }
 
 gboolean
 glade_preferences_autosave (GladePreferences *prefs)
 {
-  return gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (prefs->autosave_toggle));
+  return gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (prefs->priv->autosave_toggle));
 }
 
 gint
 glade_preferences_autosave_seconds (GladePreferences *prefs)
 {
-  return (gint)gtk_spin_button_get_value (GTK_SPIN_BUTTON (prefs->autosave_spin));
-}
-
-/* Callbacks */
-
-static gboolean 
-find_row (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer data)
-{
-  gchar **directory = data;
-  gchar *string;
-  
-  gtk_tree_model_get (model, iter, 1, &string, -1);
-
-  if (g_strcmp0 (string, *directory) == 0)
-    {
-      g_free (*directory);
-      *directory = NULL;
-      return TRUE;
-    }
-  
-  return FALSE;
-}
-
-void
-on_preferences_filechooserdialog_response (GtkDialog *dialog,
-                                           gint response_id,
-                                           GtkComboBoxText *combo)
-{
-  gtk_widget_hide (GTK_WIDGET (dialog));
-
-  if (response_id == GTK_RESPONSE_ACCEPT)
-    {
-      gchar *directory = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
-      GtkTreeModel *model = gtk_combo_box_get_model (GTK_COMBO_BOX (combo));
-      
-      gtk_tree_model_foreach (model, find_row, &directory);
-
-      if (directory)
-        {
-          glade_catalog_add_path (directory);
-          gtk_combo_box_text_append (combo, directory, directory);
-          gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 0);
-          g_free (directory);
-        }
-    }
-}
-
-void
-on_catalog_path_remove_button_clicked (GtkButton *button, GtkComboBoxText *combo)
-{
-  gint active = gtk_combo_box_get_active (GTK_COMBO_BOX (combo));
-
-  if (active >= 0)
-    {
-      gchar *directory = gtk_combo_box_text_get_active_text (combo);
-      glade_catalog_remove_path (directory);
-      g_free (directory);
-
-      gtk_combo_box_text_remove (combo, active);
-
-      if (--active < 0) active = 0;
-      gtk_combo_box_set_active (GTK_COMBO_BOX (combo), active);
-    }
+  return (gint)gtk_spin_button_get_value (GTK_SPIN_BUTTON (prefs->priv->autosave_spin));
 }
