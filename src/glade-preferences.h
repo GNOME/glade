@@ -63,6 +63,10 @@ gboolean          glade_preferences_backup           (GladePreferences *prefs);
 gboolean          glade_preferences_autosave         (GladePreferences *prefs);
 gint              glade_preferences_autosave_seconds (GladePreferences *prefs);
 
+gboolean          glade_preferences_warn_versioning  (GladePreferences *prefs);
+gboolean          glade_preferences_warn_deprecations(GladePreferences *prefs);
+gboolean          glade_preferences_warn_unrecognized(GladePreferences *prefs);
+
 G_END_DECLS
 
 #endif /* __GLADE_PREFERENCES_H__ */

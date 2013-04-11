@@ -1148,6 +1148,7 @@ static gboolean
 do_save (GladeWindow *window, GladeProject *project, const gchar *path)
 {
   GError *error = NULL;
+  GladeVerifyFlags verify_flags = 0;
   gchar *display_path = g_strdup (path);
 
   if (glade_preferences_backup (window->priv->preferences) &&
@@ -1162,13 +1163,20 @@ do_save (GladeWindow *window, GladeProject *project, const gchar *path)
 	}
     }
 
-  if (!glade_project_save (project, path, &error))
-    {
-      /* Reset path so future saves will prompt the file chooser */
-      glade_project_reset_path (project);
+  if (glade_preferences_warn_versioning (window->priv->preferences))
+    verify_flags |= GLADE_VERIFY_VERSIONS;
+  if (glade_preferences_warn_deprecations (window->priv->preferences))
+    verify_flags |= GLADE_VERIFY_DEPRECATIONS;
+  if (glade_preferences_warn_unrecognized (window->priv->preferences))
+    verify_flags |= GLADE_VERIFY_UNRECOGNIZED;
 
+  if (!glade_project_save_verify (project, path, verify_flags, &error))
+    {
       if (error)
         {
+	  /* Reset path so future saves will prompt the file chooser */
+	  glade_project_reset_path (project);
+
           glade_util_ui_message (GTK_WIDGET (window), GLADE_UI_ERROR, NULL,
                                  _("Failed to save %s: %s"),
                                  display_path, error->message);

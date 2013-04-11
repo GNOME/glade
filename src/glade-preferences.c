@@ -31,6 +31,11 @@
 #define CONFIG_KEY_AUTOSAVE         "autosave"
 #define CONFIG_KEY_AUTOSAVE_SECONDS "autosave-seconds"
 
+#define CONFIG_GROUP_SAVE_WARNINGS  "Save Warnings"
+#define CONFIG_KEY_VERSIONING       "versioning"
+#define CONFIG_KEY_DEPRECATIONS     "deprecations"
+#define CONFIG_KEY_UNRECOGNIZED     "unrecognized"
+
 enum {
   COLUMN_PATH = 0,
   COLUMN_CANONICAL_PATH
@@ -45,6 +50,10 @@ struct _GladePreferencesPrivate
   GtkWidget *create_backups_toggle;
   GtkWidget *autosave_toggle;
   GtkWidget *autosave_spin;
+
+  GtkWidget *versioning_toggle;
+  GtkWidget *deprecations_toggle;
+  GtkWidget *unrecognized_toggle;
 };
 
 
@@ -188,6 +197,9 @@ glade_preferences_class_init (GladePreferencesClass *klass)
   gtk_widget_class_bind_child (widget_class, GladePreferencesPrivate, create_backups_toggle);
   gtk_widget_class_bind_child (widget_class, GladePreferencesPrivate, autosave_toggle);
   gtk_widget_class_bind_child (widget_class, GladePreferencesPrivate, autosave_spin);
+  gtk_widget_class_bind_child (widget_class, GladePreferencesPrivate, versioning_toggle);
+  gtk_widget_class_bind_child (widget_class, GladePreferencesPrivate, deprecations_toggle);
+  gtk_widget_class_bind_child (widget_class, GladePreferencesPrivate, unrecognized_toggle);
 
   /* Declare the callback ports that this widget class exposes, to bind with <signal>
    * connections defined in the GtkBuilder xml
@@ -235,12 +247,21 @@ glade_preferences_save (GladePreferences *prefs,
   
   g_key_file_set_string (config, CONFIG_GROUP, CONFIG_KEY_CATALOG_PATHS, string->str);
 
+  /* Load and save */
   g_key_file_set_boolean (config, CONFIG_GROUP_LOAD_SAVE, CONFIG_KEY_BACKUP,
 			  glade_preferences_backup (prefs));
   g_key_file_set_boolean (config, CONFIG_GROUP_LOAD_SAVE, CONFIG_KEY_AUTOSAVE,
 			  glade_preferences_autosave (prefs));
   g_key_file_set_integer (config, CONFIG_GROUP_LOAD_SAVE, CONFIG_KEY_AUTOSAVE_SECONDS,
 			  glade_preferences_autosave_seconds (prefs));
+
+  /* Warnings */
+  g_key_file_set_boolean (config, CONFIG_GROUP_SAVE_WARNINGS, CONFIG_KEY_VERSIONING,
+			  glade_preferences_warn_versioning (prefs));
+  g_key_file_set_boolean (config, CONFIG_GROUP_SAVE_WARNINGS, CONFIG_KEY_DEPRECATIONS,
+			  glade_preferences_warn_deprecations (prefs));
+  g_key_file_set_boolean (config, CONFIG_GROUP_SAVE_WARNINGS, CONFIG_KEY_UNRECOGNIZED,
+			  glade_preferences_warn_unrecognized (prefs));
 
   g_string_free (string, TRUE);
 }
@@ -252,6 +273,9 @@ glade_preferences_load (GladePreferences *prefs,
   gchar *string;
   gboolean backups = TRUE;
   gboolean autosave = TRUE;
+  gboolean warn_versioning = TRUE;
+  gboolean warn_deprecations = FALSE;
+  gboolean warn_unrecognized = TRUE;
   gint autosave_seconds = 30;
   
   string = g_key_file_get_string (config, CONFIG_GROUP, CONFIG_KEY_CATALOG_PATHS, NULL);
@@ -289,6 +313,7 @@ glade_preferences_load (GladePreferences *prefs,
       g_strfreev (paths);
     }
 
+  /* Load and save */
   if (g_key_file_has_key (config, CONFIG_GROUP_LOAD_SAVE, CONFIG_KEY_BACKUP, NULL))
     backups = g_key_file_get_boolean (config, CONFIG_GROUP_LOAD_SAVE, CONFIG_KEY_BACKUP, NULL);
 
@@ -302,6 +327,20 @@ glade_preferences_load (GladePreferences *prefs,
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (prefs->priv->autosave_toggle), autosave);
   gtk_spin_button_set_value (GTK_SPIN_BUTTON (prefs->priv->autosave_spin), autosave_seconds);
   gtk_widget_set_sensitive (prefs->priv->autosave_spin, autosave);
+
+  /* Warnings */
+  if (g_key_file_has_key (config, CONFIG_GROUP_SAVE_WARNINGS, CONFIG_KEY_VERSIONING, NULL))
+    warn_versioning = g_key_file_get_boolean (config, CONFIG_GROUP_SAVE_WARNINGS, CONFIG_KEY_VERSIONING, NULL);
+
+  if (g_key_file_has_key (config, CONFIG_GROUP_SAVE_WARNINGS, CONFIG_KEY_DEPRECATIONS, NULL))
+    warn_deprecations = g_key_file_get_boolean (config, CONFIG_GROUP_SAVE_WARNINGS, CONFIG_KEY_DEPRECATIONS, NULL);
+
+  if (g_key_file_has_key (config, CONFIG_GROUP_SAVE_WARNINGS, CONFIG_KEY_UNRECOGNIZED, NULL))
+    warn_unrecognized = g_key_file_get_boolean (config, CONFIG_GROUP_SAVE_WARNINGS, CONFIG_KEY_UNRECOGNIZED, NULL);
+
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (prefs->priv->versioning_toggle), warn_versioning);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (prefs->priv->deprecations_toggle), warn_deprecations);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (prefs->priv->unrecognized_toggle), warn_unrecognized);
 
   g_free (string);
 }
@@ -322,4 +361,22 @@ gint
 glade_preferences_autosave_seconds (GladePreferences *prefs)
 {
   return (gint)gtk_spin_button_get_value (GTK_SPIN_BUTTON (prefs->priv->autosave_spin));
+}
+
+gboolean
+glade_preferences_warn_versioning (GladePreferences *prefs)
+{
+  return gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (prefs->priv->versioning_toggle));
+}
+
+gboolean
+glade_preferences_warn_deprecations (GladePreferences *prefs)
+{
+  return gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (prefs->priv->deprecations_toggle));
+}
+
+gboolean
+glade_preferences_warn_unrecognized (GladePreferences *prefs)
+{
+  return gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (prefs->priv->unrecognized_toggle));
 }
