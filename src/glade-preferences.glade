@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface domain="glade">
   <!-- interface-requires gtk+ 3.8 -->
+  <object class="GtkAdjustment" id="autosave_seconds_adjustment">
+    <property name="lower">1</property>
+    <property name="upper">60</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
   <object class="GtkListStore" id="catalog_path_store">
     <columns>
       <!-- column-name path -->
@@ -88,6 +94,7 @@ the project is modified and the specified timeout elapses</property>
                         <property name="halign">start</property>
                         <property name="hexpand">False</property>
                         <property name="invisible_char">•</property>
+                        <property name="adjustment">autosave_seconds_adjustment</property>
                         <property name="numeric">True</property>
                       </object>
                       <packing>
