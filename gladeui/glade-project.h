@@ -70,6 +70,19 @@ typedef enum
   GLADE_PROJECT_MODEL_N_COLUMNS
 } GladeProjectModelColumns;
 
+/**
+ * GladeVerifyFlags:
+ * @GLADE_VERIFY_VERSIONS: Verify version mismatches
+ * @GLADE_VERIFY_DEPRECATIONS: Verify deprecations
+ * @GLADE_VERIFY_UNRECOGNIZED: Verify unrecognized types
+ *
+ */
+typedef enum {
+  GLADE_VERIFY_VERSIONS,
+  GLADE_VERIFY_DEPRECATIONS,
+  GLADE_VERIFY_UNRECOGNIZED
+} GladeVerifyFlags;
+
 struct _GladeProject
 {
   GObject parent_instance;
@@ -124,6 +137,10 @@ gboolean            glade_project_load_from_file      (GladeProject        *proj
                                                        const gchar         *path);
 gboolean            glade_project_save                (GladeProject        *project,
                                                        const gchar         *path, 
+                                                       GError             **error);
+gboolean            glade_project_save_verify         (GladeProject        *project,
+                                                       const gchar         *path,
+						       GladeVerifyFlags     flags,
                                                        GError             **error);
 gboolean            glade_project_autosave            (GladeProject        *project,
                                                        GError             **error);

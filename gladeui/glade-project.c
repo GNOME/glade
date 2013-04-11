@@ -208,7 +208,7 @@ static void glade_project_set_readonly (GladeProject *project,
                                         gboolean readonly);
 
 
-static gboolean glade_project_verify (GladeProject *project, gboolean saving);
+static gboolean glade_project_verify (GladeProject *project, gboolean saving, GladeVerifyFlags flags);
 static void     glade_project_verify_properties     (GladeWidget  *widget);
 static void     glade_project_verify_project_for_ui (GladeProject *project);
 
@@ -216,7 +216,7 @@ static void glade_project_verify_adaptor (GladeProject *project,
                                           GladeWidgetAdaptor *adaptor,
                                           const gchar *path_name,
                                           GString *string,
-                                          gboolean saving,
+                                          GladeVerifyFlags flags,
                                           gboolean forwidget,
                                           GladeSupportMask *mask);
 
@@ -2156,14 +2156,18 @@ glade_project_autosave (GladeProject        *project,
  * glade_project_save:
  * @project: a #GladeProject
  * @path: location to save glade file
- * @error: an error from the G_FILE_ERROR domain.
+ * @flags: the #GladeVerifyFlags to warn about
+ * @error: an error from the %G_FILE_ERROR domain.
  * 
  * Saves @project to the given path. 
  *
  * Returns: %TRUE on success, %FALSE on failure
  */
 gboolean
-glade_project_save (GladeProject *project, const gchar *path, GError **error)
+glade_project_save_verify (GladeProject        *project,
+			   const gchar         *path,
+			   GladeVerifyFlags     flags,
+			   GError             **error)
 {
   GladeXmlContext *context;
   GladeXmlDoc *doc;
@@ -2176,7 +2180,7 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
   if (glade_project_is_loading (project))
     return FALSE;
 
-  if (!glade_project_verify (project, TRUE))
+  if (!glade_project_verify (project, TRUE, flags))
     return FALSE;
 
   /* Delete any autosaves at this point, if they exist */
@@ -2224,6 +2228,25 @@ glade_project_save (GladeProject *project, const gchar *path, GError **error)
   g_free (canonical_path);
 
   return ret > 0;
+}
+
+/**
+ * glade_project_save:
+ * @project: a #GladeProject
+ * @path: location to save glade file
+ * @error: an error from the %G_FILE_ERROR domain.
+ * 
+ * Saves @project to the given path. 
+ *
+ * Returns: %TRUE on success, %FALSE on failure
+ */
+gboolean
+glade_project_save (GladeProject *project, const gchar *path, GError **error)
+{
+  return glade_project_save_verify (project, path,
+				    GLADE_VERIFY_VERSIONS |
+				    GLADE_VERIFY_UNRECOGNIZED,
+				    error);
 }
 
 /**
@@ -2349,7 +2372,7 @@ glade_project_verify_property_internal (GladeProject *project,
                                         const gchar *path_name,
                                         GString *string,
                                         gboolean forwidget,
-					gboolean saving)
+					GladeVerifyFlags flags)
 {
   GladeWidgetAdaptor *adaptor, *prop_adaptor;
   GladePropertyClass *pclass;
@@ -2369,7 +2392,8 @@ glade_project_verify_property_internal (GladeProject *project,
   glade_project_target_version_for_adaptor (project, adaptor,
                                             &target_major, &target_minor);
 
-  if (!GPC_VERSION_CHECK (pclass, target_major, target_minor))
+  if ((flags & GLADE_VERIFY_VERSIONS) != 0 &&
+      !GPC_VERSION_CHECK (pclass, target_major, target_minor))
     {
       if (forwidget)
         {
@@ -2394,7 +2418,8 @@ glade_project_verify_property_internal (GladeProject *project,
                                   glade_property_class_since_major (pclass),
                                   glade_property_class_since_minor (pclass));
     }
-  else if (!saving && glade_property_class_deprecated (pclass))
+  else if ((flags & GLADE_VERIFY_DEPRECATIONS) != 0 &&
+	   glade_property_class_deprecated (pclass))
     {
       if (forwidget)
 	glade_property_set_support_warning (property, FALSE, PROP_DEPRECATED_MSG);
@@ -2416,7 +2441,7 @@ glade_project_verify_properties_internal (GladeWidget *widget,
                                           const gchar *path_name,
                                           GString *string,
                                           gboolean forwidget,
-					  gboolean saving)
+					  GladeVerifyFlags flags)
 {
   GList *list;
   GladeProperty *property;
@@ -2426,7 +2451,7 @@ glade_project_verify_properties_internal (GladeWidget *widget,
       property = list->data;
       glade_project_verify_property_internal (glade_widget_get_project (widget), 
                                               property, path_name,
-                                              string, forwidget, saving);
+                                              string, forwidget, flags);
     }
 
   /* Sometimes widgets on the clipboard have packing props with no parent */
@@ -2436,7 +2461,7 @@ glade_project_verify_properties_internal (GladeWidget *widget,
         {
           property = list->data;
           glade_project_verify_property_internal (glade_widget_get_project (widget), 
-                                                  property, path_name, string, forwidget, saving);
+                                                  property, path_name, string, forwidget, flags);
         }
     }
 }
@@ -2447,7 +2472,7 @@ glade_project_verify_signal_internal (GladeWidget *widget,
                                       const gchar *path_name,
                                       GString *string,
                                       gboolean forwidget,
-				      gboolean saving)
+				      GladeVerifyFlags flags)
 {
   GladeSignalClass   *signal_class;
   GladeWidgetAdaptor *adaptor;
@@ -2468,7 +2493,8 @@ glade_project_verify_signal_internal (GladeWidget *widget,
                                             adaptor,
                                             &target_major, &target_minor);
 
-  if (!GSC_VERSION_CHECK (signal_class, target_major, target_minor))
+  if ((flags & GLADE_VERIFY_VERSIONS) != 0 &&
+      !GSC_VERSION_CHECK (signal_class, target_major, target_minor))
     {
       if (forwidget)
         {
@@ -2492,7 +2518,8 @@ glade_project_verify_signal_internal (GladeWidget *widget,
                                 glade_signal_class_since_major (signal_class),
                                 glade_signal_class_since_minor (signal_class));
     }
-  else if (!saving && glade_signal_class_deprecated (signal_class))
+  else if ((flags & GLADE_VERIFY_DEPRECATIONS) != 0 &&
+	   glade_signal_class_deprecated (signal_class))
     {
       if (forwidget)
 	glade_signal_set_support_warning (signal, SIGNAL_DEPRECATED_MSG);
@@ -2535,7 +2562,7 @@ glade_project_verify_signals (GladeWidget *widget,
                               const gchar *path_name,
                               GString *string,
                               gboolean forwidget,
-			      gboolean saving)
+			      GladeVerifyFlags flags)
 {
   GladeSignal *signal;
   GList *signals, *list;
@@ -2546,7 +2573,7 @@ glade_project_verify_signals (GladeWidget *widget,
         {
           signal = list->data;
           glade_project_verify_signal_internal (widget, signal, path_name,
-                                                string, forwidget, saving);
+                                                string, forwidget, flags);
         }
       g_list_free (signals);
     }
@@ -2581,7 +2608,7 @@ glade_project_verify_properties (GladeWidget *widget)
 static gboolean
 glade_project_verify_dialog (GladeProject *project,
                              GString *string,
-                             gboolean saving)
+			     gboolean saving)
 {
   GtkWidget *swindow;
   GtkWidget *textview;
@@ -2618,7 +2645,7 @@ glade_project_verify_dialog (GladeProject *project,
 
 
 static gboolean
-glade_project_verify (GladeProject *project, gboolean saving)
+glade_project_verify (GladeProject *project, gboolean saving, GladeVerifyFlags flags)
 {
   GString *string = g_string_new (NULL);
   GList *list;
@@ -2628,13 +2655,13 @@ glade_project_verify (GladeProject *project, gboolean saving)
     {
       GladeWidget *widget = glade_widget_get_from_gobject (list->data);
       
-      if (GLADE_IS_OBJECT_STUB (list->data))
+      if ((flags & GLADE_VERIFY_UNRECOGNIZED) != 0 &&
+	  GLADE_IS_OBJECT_STUB (list->data))
         {
           gchar *type;
           g_object_get (list->data, "object-type", &type, NULL);
           
-          /* translators: refers to an unknown object named '%s' of type '%s' */
-          g_string_append_printf (string, _("Unknown object %s with type %s\n"), 
+          g_string_append_printf (string, _("Object %s has unrecognized type %s\n"), 
                                   glade_widget_get_name (widget), type);
           g_free (type);
         }
@@ -2643,9 +2670,9 @@ glade_project_verify (GladeProject *project, gboolean saving)
           gchar *path_name = glade_widget_generate_path_name (widget);
 
           glade_project_verify_adaptor (project, glade_widget_get_adaptor (widget),
-                                        path_name, string, saving, FALSE, NULL);
-          glade_project_verify_properties_internal (widget, path_name, string, FALSE, saving);
-          glade_project_verify_signals (widget, path_name, string, FALSE, saving);
+                                        path_name, string, flags, FALSE, NULL);
+          glade_project_verify_properties_internal (widget, path_name, string, FALSE, flags);
+          glade_project_verify_signals (widget, path_name, string, FALSE, flags);
 
           g_free (path_name);
         }
@@ -2682,7 +2709,7 @@ glade_project_verify_adaptor (GladeProject *project,
                               GladeWidgetAdaptor *adaptor,
                               const gchar *path_name,
                               GString *string,
-                              gboolean saving,
+                              GladeVerifyFlags flags,
                               gboolean forwidget,
                               GladeSupportMask *mask)
 {
@@ -2701,7 +2728,8 @@ glade_project_verify_adaptor (GladeProject *project,
 
       /* Only one versioning message (builder or otherwise)...
        */
-      if (!GWA_VERSION_CHECK (adaptor_iter, target_major, target_minor))
+      if ((flags & GLADE_VERIFY_VERSIONS) != 0 &&
+	  !GWA_VERSION_CHECK (adaptor_iter, target_major, target_minor))
         {
           if (forwidget)
             g_string_append_printf (string,
@@ -2722,7 +2750,8 @@ glade_project_verify_adaptor (GladeProject *project,
           support_mask |= GLADE_SUPPORT_MISMATCH;
         }
 
-      if (!saving && GWA_DEPRECATED (adaptor_iter))
+      if ((flags & GLADE_VERIFY_DEPRECATIONS) != 0 &&
+	  GWA_DEPRECATED (adaptor_iter))
         {
           if (forwidget)
             {
@@ -4034,7 +4063,10 @@ target_button_clicked (GtkWidget *widget, GladeProject *project)
 static void
 verify_clicked (GtkWidget *button, GladeProject *project)
 {
-  if (glade_project_verify (project, FALSE))
+  if (glade_project_verify (project, FALSE,
+			    GLADE_VERIFY_VERSIONS     |
+			    GLADE_VERIFY_DEPRECATIONS |
+			    GLADE_VERIFY_UNRECOGNIZED))
     {
       gchar *name = glade_project_get_name (project);
       glade_util_ui_message (glade_app_get_window (),
