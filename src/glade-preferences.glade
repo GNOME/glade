@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.8 -->
+  <object class="GtkListStore" id="catalog_path_store">
+    <columns>
+      <!-- column-name path -->
+      <column type="gchararray"/>
+      <!-- column-name canonical_path -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
   <template class="GladePreferences" parent="GtkDialog">
     <property name="width_request">320</property>
     <property name="height_request">200</property>
@@ -148,16 +156,52 @@ whenever the project is modified</property>
                     <property name="row_spacing">6</property>
                     <property name="column_spacing">6</property>
                     <child>
-                      <object class="GtkButton" id="catalog_path_remove_button">
+                      <object class="GtkScrolledWindow" id="scrolledwindow1">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="tooltip_text" translatable="yes">Removes the selected catalog path</property>
-                        <property name="margin_top">2</property>
-                        <property name="margin_bottom">2</property>
-                        <signal name="clicked" handler="on_catalog_path_remove_button_clicked" object="catalog_path_combo" swapped="no"/>
+                        <property name="shadow_type">in</property>
                         <child>
-                          <object class="GtkImage" id="image1">
+                          <object class="GtkTreeView" id="treeview1">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="vexpand">True</property>
+                            <property name="model">catalog_path_store</property>
+                            <property name="headers_visible">False</property>
+                            <child internal-child="selection">
+                              <object class="GtkTreeSelection" id="selection">
+                                <signal name="changed" handler="catalog_selection_changed" swapped="no"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkTreeViewColumn" id="column">
+                                <property name="title" translatable="yes">column</property>
+                                <child>
+                                  <object class="GtkCellRendererText" id="path_cell"/>
+                                  <attributes>
+                                    <attribute name="text">0</attribute>
+                                  </attributes>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">0</property>
+                        <property name="width">3</property>
+                        <property name="height">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="remove_catalog_button">
+                        <property name="visible">True</property>
+                        <property name="sensitive">False</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="clicked" handler="remove_catalog_clicked" swapped="no"/>
+                        <child>
+                          <object class="GtkImage" id="image2">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="icon_name">list-remove-symbolic</property>
@@ -165,38 +209,22 @@ whenever the project is modified</property>
                         </child>
                       </object>
                       <packing>
-                        <property name="left_attach">2</property>
-                        <property name="top_attach">0</property>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">1</property>
                         <property name="width">1</property>
                         <property name="height">1</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkComboBoxText" id="catalog_path_combo">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="hexpand">True</property>
-                        <property name="entry_text_column">0</property>
-                        <property name="id_column">1</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">0</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="catalog_path_add_button">
+                      <object class="GtkButton" id="add_catalog_button">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="tooltip_text" translatable="yes">Add a new catalog path</property>
-                        <property name="margin_top">2</property>
-                        <property name="margin_bottom">2</property>
+                        <property name="halign">start</property>
+                        <property name="use_underline">True</property>
                         <signal name="clicked" handler="gtk_widget_show" object="preferences_filechooserdialog" swapped="yes"/>
                         <child>
-                          <object class="GtkImage" id="image2">
+                          <object class="GtkImage" id="image1">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="icon_name">list-add-symbolic</property>
@@ -204,11 +232,14 @@ whenever the project is modified</property>
                         </child>
                       </object>
                       <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">0</property>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">1</property>
                         <property name="width">1</property>
                         <property name="height">1</property>
                       </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
                     </child>
                   </object>
                 </child>
@@ -252,7 +283,7 @@ whenever the project is modified</property>
     <property name="action">select-folder</property>
     <signal name="delete-event" handler="gtk_true" swapped="no"/>
     <signal name="delete-event" handler="gtk_widget_hide" swapped="no"/>
-    <signal name="response" handler="on_preferences_filechooserdialog_response" object="catalog_path_combo" swapped="no"/>
+    <signal name="response" handler="on_preferences_filechooserdialog_response" swapped="no"/>
     <child internal-child="vbox">
       <object class="GtkBox" id="filechooserdialog-vbox1">
         <property name="can_focus">False</property>

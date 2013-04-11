@@ -21,6 +21,7 @@
 
 #include "glade-preferences.h"
 #include <gladeui/glade-catalog.h>
+#include <gladeui/glade-utils.h>
 
 #define CONFIG_GROUP "Preferences"
 #define CONFIG_KEY_CATALOG_PATHS "catalog-paths"
@@ -30,9 +31,16 @@
 #define CONFIG_KEY_AUTOSAVE         "autosave"
 #define CONFIG_KEY_AUTOSAVE_SECONDS "autosave-seconds"
 
+enum {
+  COLUMN_PATH = 0,
+  COLUMN_CANONICAL_PATH
+};
+
 struct _GladePreferencesPrivate
 {
-  GtkComboBoxText *catalog_path_combo;
+  GtkTreeModel *catalog_path_store;
+  GtkTreeSelection *selection;
+  GtkWidget *remove_catalog_button;
 
   GtkWidget *create_backups_toggle;
   GtkWidget *autosave_toggle;
@@ -59,7 +67,7 @@ find_row (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer da
   gchar **directory = data;
   gchar *string;
   
-  gtk_tree_model_get (model, iter, 1, &string, -1);
+  gtk_tree_model_get (model, iter, COLUMN_CANONICAL_PATH, &string, -1);
 
   if (g_strcmp0 (string, *directory) == 0)
     {
@@ -74,66 +82,81 @@ find_row (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer da
 static void
 on_preferences_filechooserdialog_response (GtkDialog *dialog,
                                            gint response_id,
-                                           GtkComboBoxText *combo)
+                                           GladePreferences *preferences)
 {
+  GladePreferencesPrivate *priv = preferences->priv;
+
   gtk_widget_hide (GTK_WIDGET (dialog));
 
   if (response_id == GTK_RESPONSE_ACCEPT)
     {
       gchar *directory = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
-      GtkTreeModel *model = gtk_combo_box_get_model (GTK_COMBO_BOX (combo));
-      
-      gtk_tree_model_foreach (model, find_row, &directory);
+      gchar *canonical, *display;
 
-      if (directory)
+      canonical = glade_util_canonical_path (directory);
+      display   = glade_utils_replace_home_dir_with_tilde (canonical);
+
+      gtk_tree_model_foreach (priv->catalog_path_store, find_row, &canonical);
+
+      if (canonical)
         {
-          glade_catalog_add_path (directory);
-          gtk_combo_box_text_append (combo, directory, directory);
-          gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 0);
-          g_free (directory);
+	  GtkTreeIter iter;
+
+          glade_catalog_add_path (canonical);
+
+	  gtk_list_store_append (GTK_LIST_STORE (priv->catalog_path_store), &iter);
+	  gtk_list_store_set (GTK_LIST_STORE (priv->catalog_path_store), &iter,
+			      COLUMN_PATH, display,
+			      COLUMN_CANONICAL_PATH, canonical,
+			      -1);
         }
+
+      g_free (directory);
+      g_free (canonical);
+      g_free (display);
     }
 }
 
 static void
-on_catalog_path_remove_button_clicked (GtkButton *button, GtkComboBoxText *combo)
+remove_catalog_clicked (GtkButton        *button,
+			GladePreferences *preferences)
 {
-  gint active = gtk_combo_box_get_active (GTK_COMBO_BOX (combo));
+  GladePreferencesPrivate *priv = preferences->priv;
+  GtkTreeIter iter;
 
-  if (active >= 0)
+  if (gtk_tree_selection_get_selected (priv->selection, NULL, &iter))
     {
-      gchar *directory = gtk_combo_box_text_get_active_text (combo);
-      glade_catalog_remove_path (directory);
-      g_free (directory);
+      gchar *path = NULL;
 
-      gtk_combo_box_text_remove (combo, active);
+      gtk_tree_model_get (priv->catalog_path_store, &iter,
+			  COLUMN_CANONICAL_PATH, &path,
+			  -1);
 
-      if (--active < 0) active = 0;
-      gtk_combo_box_set_active (GTK_COMBO_BOX (combo), active);
+      if (path)
+	{
+	  glade_catalog_remove_path (path);
+	  g_free (path);
+	}
+
+      gtk_list_store_remove (GTK_LIST_STORE (priv->catalog_path_store), &iter);
     }
+}
+
+static void
+catalog_selection_changed (GtkTreeSelection *selection,
+			   GladePreferences *preferences)
+{
+  gboolean selected;
+
+  selected = gtk_tree_selection_get_selected (selection, NULL, NULL);
+
+  /* Make the button sensitive if anything is selected */
+  gtk_widget_set_sensitive (preferences->priv->remove_catalog_button, selected);
 }
 
 /********************************************************
  *                  Class/Instance Init                 *
  ********************************************************/
-static void
-combo_box_text_init_cell (GtkCellLayout *cell)
-{
-  GList *l, *cels = gtk_cell_layout_get_cells (cell);
-
-  for (l = cels; l; l = g_list_next (l))
-    {
-      g_object_set (l->data,
-                    "ellipsize", PANGO_ELLIPSIZE_MIDDLE,
-                    "ellipsize-set", TRUE,
-                    "max-width-chars", 128,
-                    "width-chars", 32,
-                    NULL);
-    }
-
-  g_list_free (cels);
-}
-
 static void
 glade_preferences_init (GladePreferences *preferences)
 {
@@ -142,8 +165,6 @@ glade_preferences_init (GladePreferences *preferences)
 						   GladePreferencesPrivate);
 
   gtk_widget_init_template (GTK_WIDGET (preferences));
-
-  combo_box_text_init_cell (GTK_CELL_LAYOUT (preferences->priv->catalog_path_combo));
 }
 
 static void
@@ -161,7 +182,9 @@ glade_preferences_class_init (GladePreferencesClass *klass)
 
   /* Define the relationship of the private entry and the entry defined in the xml
    */
-  gtk_widget_class_bind_child (widget_class, GladePreferencesPrivate, catalog_path_combo);
+  gtk_widget_class_bind_child (widget_class, GladePreferencesPrivate, catalog_path_store);
+  gtk_widget_class_bind_child (widget_class, GladePreferencesPrivate, remove_catalog_button);
+  gtk_widget_class_bind_child (widget_class, GladePreferencesPrivate, selection);
   gtk_widget_class_bind_child (widget_class, GladePreferencesPrivate, create_backups_toggle);
   gtk_widget_class_bind_child (widget_class, GladePreferencesPrivate, autosave_toggle);
   gtk_widget_class_bind_child (widget_class, GladePreferencesPrivate, autosave_spin);
@@ -171,7 +194,8 @@ glade_preferences_class_init (GladePreferencesClass *klass)
    */
   gtk_widget_class_bind_callback (widget_class, autosave_toggled);
   gtk_widget_class_bind_callback (widget_class, on_preferences_filechooserdialog_response);
-  gtk_widget_class_bind_callback (widget_class, on_catalog_path_remove_button_clicked);
+  gtk_widget_class_bind_callback (widget_class, catalog_selection_changed);
+  gtk_widget_class_bind_callback (widget_class, remove_catalog_clicked);
 
   g_type_class_add_private (gobject_class, sizeof (GladePreferencesPrivate));
 }
@@ -189,8 +213,7 @@ void
 glade_preferences_save (GladePreferences *prefs,
 			GKeyFile         *config)
 {
-  GtkTreeModel *model = gtk_combo_box_get_model (GTK_COMBO_BOX (prefs->priv->catalog_path_combo));
-  gint column = gtk_combo_box_get_entry_text_column (GTK_COMBO_BOX (prefs->priv->catalog_path_combo));
+  GtkTreeModel *model = prefs->priv->catalog_path_store;
   GString *string = g_string_new ("");
   GtkTreeIter iter;
   gboolean valid;
@@ -200,7 +223,8 @@ glade_preferences_save (GladePreferences *prefs,
     {
       gchar *path;
 
-      gtk_tree_model_get (model, &iter, column, &path, -1);
+      gtk_tree_model_get (model, &iter, COLUMN_CANONICAL_PATH, &path, -1);
+
       valid = gtk_tree_model_iter_next (model, &iter);
       
       g_string_append (string, path);
@@ -234,10 +258,9 @@ glade_preferences_load (GladePreferences *prefs,
 
   if (string && g_strcmp0 (string, ""))
     {
-      GtkComboBoxText *combo = prefs->priv->catalog_path_combo;
       gchar **paths, **path;
 
-      gtk_combo_box_text_remove_all (combo);
+      gtk_list_store_clear (GTK_LIST_STORE (prefs->priv->catalog_path_store));
       glade_catalog_remove_path (NULL);
 
       paths = g_strsplit (string, ":", -1);
@@ -245,11 +268,24 @@ glade_preferences_load (GladePreferences *prefs,
       path = paths;
       do
         {
-          glade_catalog_add_path (*path);
-          gtk_combo_box_text_append (combo, *path, *path);
+	  GtkTreeIter iter;
+	  gchar *canonical, *display;
+
+	  canonical = glade_util_canonical_path (*path);
+	  display   = glade_utils_replace_home_dir_with_tilde (canonical);
+
+          glade_catalog_add_path (canonical);
+
+	  gtk_list_store_append (GTK_LIST_STORE (prefs->priv->catalog_path_store), &iter);
+	  gtk_list_store_set (GTK_LIST_STORE (prefs->priv->catalog_path_store), &iter,
+			      COLUMN_PATH, display,
+			      COLUMN_CANONICAL_PATH, canonical,
+			      -1);
+	  g_free (display);
+	  g_free (canonical);
+
         } while (*++path);
 
-      gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 0);
       g_strfreev (paths);
     }
 
