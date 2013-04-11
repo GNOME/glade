@@ -254,11 +254,14 @@ contains any unrecognized types</property>
                           <object class="GtkTreeView" id="treeview1">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="hexpand">True</property>
                             <property name="vexpand">True</property>
                             <property name="model">catalog_path_store</property>
                             <property name="headers_visible">False</property>
                             <child internal-child="selection">
-                              <object class="GtkTreeSelection" id="selection"/>
+                              <object class="GtkTreeSelection" id="selection">
+                                <signal name="changed" handler="catalog_selection_changed" swapped="no"/>
+                              </object>
                             </child>
                             <child>
                               <object class="GtkTreeViewColumn" id="column">
@@ -287,6 +290,7 @@ contains any unrecognized types</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <property name="tooltip_text" translatable="yes">Remove the selected catalog search path</property>
                         <signal name="clicked" handler="remove_catalog_clicked" swapped="no"/>
                         <child>
                           <object class="GtkImage" id="image2">
@@ -308,6 +312,7 @@ contains any unrecognized types</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <property name="tooltip_text" translatable="yes">Add a new catalog search path</property>
                         <property name="halign">start</property>
                         <property name="use_underline">True</property>
                         <signal name="clicked" handler="gtk_widget_show" object="preferences_filechooserdialog" swapped="yes"/>
