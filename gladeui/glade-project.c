@@ -2380,7 +2380,12 @@ glade_project_verify_property_internal (GladeProject *project,
   gint target_major, target_minor;
   gchar *catalog, *tooltip;
 
-  if (glade_property_original_default (property) && !forwidget)
+  /* For verification lists, we're only interested in verifying the 'used' state of properties.
+   *
+   * For the UI on the other hand, we want to show warnings on unset properties until they
+   * are set.
+   */
+  if (!forwidget && (glade_property_get_state (property) & GLADE_STATE_CHANGED) == 0)
     return;
 
   pclass       = glade_property_get_class (property);
