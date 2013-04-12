@@ -24,14 +24,14 @@ typedef struct _GladeEditorPrivate   GladeEditorPrivate;
  */
 struct _GladeEditor
 {
-  GtkVBox vbox;  /* The editor is a vbox */
+  GtkBox vbox;  /* The editor is a vbox */
 	
   GladeEditorPrivate *priv;
 };
 
 struct _GladeEditorClass
 {
-  GtkVBoxClass parent_class;
+  GtkBoxClass parent_class;
 
   void   (* glade_reserved1)   (void);
   void   (* glade_reserved2)   (void);

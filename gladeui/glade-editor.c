@@ -138,7 +138,7 @@ struct _GladeEditorPrivate
   gboolean show_class_field; /* Whether or not to show the class field at the top */
 };
 
-G_DEFINE_TYPE (GladeEditor, glade_editor, GTK_TYPE_VBOX);
+G_DEFINE_TYPE (GladeEditor, glade_editor, GTK_TYPE_BOX);
 
 static GParamSpec *properties[N_PROPERTIES];
 
@@ -273,8 +273,7 @@ glade_editor_notebook_page (GladeEditor *editor,
   /* construct tab label widget */
   if (type == GLADE_PAGE_ATK)
     {
-      gchar *path = g_build_filename (glade_app_get_pixmaps_dir (), "atk.png", NULL);
-      GtkWidget *image = gtk_image_new_from_file (path);
+      GtkWidget *image = gtk_image_new_from_resource ("/org/gnome/gladeui/atk.png");
 
       label_widget = gtk_event_box_new ();
       gtk_container_add (GTK_CONTAINER (label_widget), image);
@@ -282,7 +281,6 @@ glade_editor_notebook_page (GladeEditor *editor,
       gtk_widget_show (image);
 
       gtk_widget_set_tooltip_text (label_widget, name);
-      g_free (path);
     }
   else
     {
@@ -450,6 +448,8 @@ glade_editor_init (GladeEditor *editor)
 {
   GladeEditorPrivate *priv;
   GtkWidget    *hbox;
+
+  gtk_orientable_set_orientation (GTK_ORIENTABLE (editor), GTK_ORIENTATION_VERTICAL);
 
   editor->priv = priv = GLADE_EDITOR_GET_PRIVATE (editor);
 

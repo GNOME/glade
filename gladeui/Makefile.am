@@ -54,12 +54,17 @@ UI_FILES = \
 	glade-project-properties.ui \
 	glade-property-label.ui
 
-EXTRA_DIST = \
-	$(UI_FILES)	\
-	glade-marshallers.list \
-	gladeui.rc.in \
-	icon-naming-spec.c \
-	glade-previewer.rc.in \
+GRAPHICS_FILES = \
+	atk.png
+
+
+EXTRA_DIST = 			\
+	$(UI_FILES)		\
+	$(GRAPHICS_FILES)	\
+	glade-marshallers.list 	\
+	gladeui.rc.in 		\
+	icon-naming-spec.c 	\
+	glade-previewer.rc.in 	\
 	gladeui-resources.gresource.xml
 
 # The glade core library
@@ -236,9 +241,9 @@ CLEANFILES += $(gir_DATA) $(typelib_DATA)
 endif
 
 # Generate resources
-gladeui-resources.h: gladeui-resources.gresource.xml $(UI_FILES)
+gladeui-resources.h: gladeui-resources.gresource.xml $(UI_FILES) $(GRAPHICS_FILES)
 	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) $(srcdir)/gladeui-resources.gresource.xml \
 		--target=$@ --sourcedir=$(srcdir) --c-name _gladeui --generate-header
-gladeui-resources.c: gladeui-resources.gresource.xml $(UI_FILES)
+gladeui-resources.c: gladeui-resources.gresource.xml $(UI_FILES) $(GRAPHICS_FILES)
 	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) $(srcdir)/gladeui-resources.gresource.xml \
 		--target=$@ --sourcedir=$(srcdir) --c-name _gladeui --generate-source
