@@ -46,7 +46,7 @@
 #include "glade-project.h"
 #include "glade-cell-renderer-icon.h"
 
-G_DEFINE_TYPE (GladeSignalEditor, glade_signal_editor, GTK_TYPE_VBOX)
+G_DEFINE_TYPE (GladeSignalEditor, glade_signal_editor, GTK_TYPE_BOX)
 
 #define GLADE_SIGNAL_EDITOR_GET_PRIVATE(o)  \
         (G_TYPE_INSTANCE_GET_PRIVATE ((o), GLADE_TYPE_SIGNAL_EDITOR, GladeSignalEditorPrivate))

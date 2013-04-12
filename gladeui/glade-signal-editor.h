@@ -22,14 +22,14 @@ typedef struct _GladeSignalEditorClass  GladeSignalEditorClass;
  */
 struct _GladeSignalEditor
 {
-  GtkVBox parent;
+  GtkBox parent;
 
   GladeSignalEditorPrivate *priv;
 };
 
 struct _GladeSignalEditorClass
 {
-  GtkVBoxClass parent_class;
+  GtkBoxClass parent_class;
 
   gchar ** (* callback_suggestions) (GladeSignalEditor *editor, GladeSignal *signal);
   gchar ** (* detail_suggestions) (GladeSignalEditor *editor, GladeSignal *signal);
