@@ -50,8 +50,9 @@ BUILT_SOURCES = \
 	gladeui-resources.c \
 	gladeui-resources.h
 
-UI_FILES = \
-	glade-project-properties.ui \
+UI_FILES = 				\
+	glade-editor.ui			\
+	glade-project-properties.ui	\
 	glade-property-label.ui
 
 GRAPHICS_FILES = \

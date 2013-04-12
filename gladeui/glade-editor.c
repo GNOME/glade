@@ -52,6 +52,11 @@
 #include "glade-utils.h"
 #include "glade-editor-property.h"
 
+static void glade_editor_switch_page (GtkNotebook     *notebook,
+				      GtkWidget       *page,
+				      guint            page_num,
+				      GladeEditor     *editor);
+
 enum
 {
   PROP_0,
@@ -96,7 +101,6 @@ struct _GladeEditorPrivate
   GtkWidget *page_widget;
   GtkWidget *page_packing;
   GtkWidget *page_common;
-  GtkWidget *page_signals;
   GtkWidget *page_atk;
 
   GladeSignalEditor *signal_editor; /* The signal editor packed into vbox_signals
@@ -133,7 +137,6 @@ struct _GladeEditorPrivate
 
   GtkWidget *class_icon; /* An image with the current widget's class icon.  */
   GtkWidget *class_label; /* A label with the current class label. */
-  GtkWidget *widget_label; /* A label with the current widget name. */
 
   gboolean show_class_field; /* Whether or not to show the class field at the top */
 };
@@ -216,10 +219,8 @@ glade_editor_dispose (GObject *object)
 static void
 glade_editor_class_init (GladeEditorClass *klass)
 {
-  GObjectClass *object_class;
-
-  glade_editor_parent_class = g_type_class_peek_parent (klass);
-  object_class = G_OBJECT_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   object_class->dispose      = glade_editor_dispose;
   object_class->set_property = glade_editor_set_property;
@@ -258,66 +259,23 @@ glade_editor_class_init (GladeEditorClass *klass)
   /* Install all properties */
   g_object_class_install_properties (object_class, N_PROPERTIES, properties);
 
+  /* Bind to template */
+  gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladeui/glade-editor.ui");
+
+  gtk_widget_class_bind_child (widget_class, GladeEditorPrivate, notebook);
+  gtk_widget_class_bind_child (widget_class, GladeEditorPrivate, page_widget);
+  gtk_widget_class_bind_child (widget_class, GladeEditorPrivate, page_packing);
+  gtk_widget_class_bind_child (widget_class, GladeEditorPrivate, page_common);
+  gtk_widget_class_bind_child (widget_class, GladeEditorPrivate, page_atk);
+  gtk_widget_class_bind_child (widget_class, GladeEditorPrivate, class_field);
+  gtk_widget_class_bind_child (widget_class, GladeEditorPrivate, class_icon);
+  gtk_widget_class_bind_child (widget_class, GladeEditorPrivate, class_label);
+  gtk_widget_class_bind_child (widget_class, GladeEditorPrivate, warning);
+  gtk_widget_class_bind_child (widget_class, GladeEditorPrivate, signal_editor);
+
+  gtk_widget_class_bind_callback (widget_class, glade_editor_switch_page);
+
   g_type_class_add_private (klass, sizeof (GladeEditorPrivate));
-}
-
-static GtkWidget *
-glade_editor_notebook_page (GladeEditor *editor,
-                            GladeEditorPageType type,
-                            const gchar *name)
-{
-  GtkWidget *label_widget;
-  GtkWidget *container;
-  static gint page = 0;
-
-  /* construct tab label widget */
-  if (type == GLADE_PAGE_ATK)
-    {
-      GtkWidget *image = gtk_image_new_from_resource ("/org/gnome/gladeui/atk.png");
-
-      label_widget = gtk_event_box_new ();
-      gtk_container_add (GTK_CONTAINER (label_widget), image);
-      gtk_widget_show (label_widget);
-      gtk_widget_show (image);
-
-      gtk_widget_set_tooltip_text (label_widget, name);
-    }
-  else
-    {
-      label_widget = gtk_label_new_with_mnemonic (name);
-    }
-
-  /* configure page container */
-  if (type == GLADE_PAGE_SIGNAL)
-    {
-      container = gtk_alignment_new (.5, .5, 1, 1);
-      gtk_notebook_insert_page (GTK_NOTEBOOK (editor->priv->notebook), container,
-                                label_widget, page++);
-    }
-  else
-    {
-      GtkWidget *sw;
-      
-      container = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-      
-      gtk_widget_set_margin_top (container, 2);
-      gtk_widget_set_margin_left (container, 4);
-      gtk_widget_set_margin_right (container, 2);
-      
-      gtk_container_set_border_width (GTK_CONTAINER (container), 2);
-      /* wrap the alignment in a scrolled window */
-      sw = gtk_scrolled_window_new (NULL, NULL);
-      gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
-                                      GTK_POLICY_AUTOMATIC,
-                                      GTK_POLICY_AUTOMATIC);
-      gtk_container_add (GTK_CONTAINER (sw), container);
-
-      gtk_notebook_insert_page (GTK_NOTEBOOK (editor->priv->notebook), sw,
-                                label_widget, page++);
-    }
-
-  gtk_widget_show (container);
-  return container;
 }
 
 static void
@@ -379,40 +337,6 @@ glade_editor_update_widget_name_cb (GladeWidget *widget,
   glade_editor_update_class_field (editor);
 }
 
-static GtkWidget *
-glade_editor_setup_class_field (GladeEditor *editor)
-{
-  GladeEditorPrivate *priv = GLADE_EDITOR_PRIVATE (editor);
-  GtkWidget *hbox;
-  gint       icon_height;
-
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
-
-  priv->class_icon = gtk_image_new ();
-  priv->class_label = gtk_label_new (NULL);
-  priv->warning = gtk_image_new_from_stock (GTK_STOCK_DIALOG_WARNING,
-                                            GTK_ICON_SIZE_MENU);
-
-  gtk_widget_set_no_show_all (priv->warning, TRUE);
-  gtk_widget_set_no_show_all (priv->class_icon, TRUE);
-
-  gtk_misc_set_alignment (GTK_MISC (priv->class_label), 0.0, 0.5);
-  gtk_label_set_ellipsize (GTK_LABEL (priv->class_label), PANGO_ELLIPSIZE_END);
-
-  gtk_box_pack_start (GTK_BOX (hbox), priv->warning, FALSE, FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (hbox), priv->class_icon, FALSE, FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (hbox), priv->class_label, TRUE, TRUE, 0);
-
-  gtk_icon_size_lookup (GTK_ICON_SIZE_BUTTON, NULL, &icon_height);
-  gtk_widget_set_size_request (priv->class_label, -1, icon_height + 2);
-
-  glade_editor_update_class_field (editor);
-  gtk_widget_show_all (hbox);
-
-  return hbox;
-}
-
-
 static void
 glade_editor_switch_page (GtkNotebook     *notebook,
 			  GtkWidget       *page,
@@ -447,45 +371,16 @@ static void
 glade_editor_init (GladeEditor *editor)
 {
   GladeEditorPrivate *priv;
-  GtkWidget    *hbox;
-
-  gtk_orientable_set_orientation (GTK_ORIENTABLE (editor), GTK_ORIENTATION_VERTICAL);
+  gint                icon_height;
 
   editor->priv = priv = GLADE_EDITOR_GET_PRIVATE (editor);
 
-  priv->notebook = gtk_notebook_new ();
-  priv->page_widget = glade_editor_notebook_page (editor, GLADE_PAGE_GENERAL, _("_General"));
-  priv->page_packing = glade_editor_notebook_page (editor, GLADE_PAGE_PACKING, _("_Packing"));
-  priv->page_common = glade_editor_notebook_page (editor, GLADE_PAGE_COMMON, _("_Common"));
-  priv->page_signals = glade_editor_notebook_page (editor, GLADE_PAGE_SIGNAL, _("_Signals"));
-  priv->page_atk = glade_editor_notebook_page (editor, GLADE_PAGE_ATK, _("Accessibility"));
-  priv->editables = NULL;
-  priv->loading = FALSE;
-  priv->show_class_field = TRUE;
+  gtk_widget_init_template (GTK_WIDGET (editor));
 
-  g_signal_connect (G_OBJECT (priv->notebook), "switch-page",
-		    G_CALLBACK (glade_editor_switch_page), editor);
+  gtk_icon_size_lookup (GTK_ICON_SIZE_BUTTON, NULL, &icon_height);
+  gtk_widget_set_size_request (priv->class_label, -1, icon_height + 2);
 
-  priv->class_field = glade_editor_setup_class_field (editor);
-
-  gtk_container_set_border_width (GTK_CONTAINER (priv->notebook), 0);
-
-  gtk_notebook_set_scrollable (GTK_NOTEBOOK (priv->notebook), TRUE);
-
-  gtk_box_pack_start (GTK_BOX (editor), priv->class_field, FALSE, FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (editor), priv->notebook, TRUE, TRUE, 0);
-
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-  gtk_widget_set_hexpand (hbox, FALSE);
-
-  gtk_notebook_set_action_widget (GTK_NOTEBOOK (priv->notebook), hbox, GTK_PACK_END);
-  gtk_widget_show_all (hbox);
-  
-  gtk_widget_show_all (GTK_WIDGET (editor));
-
-  gtk_widget_hide (GTK_WIDGET (editor));
-
-  gtk_widget_set_no_show_all (GTK_WIDGET (editor), TRUE);
+  glade_editor_update_class_field (editor);
 }
 
 static GtkWidget *
@@ -611,19 +506,6 @@ glade_editor_load_editable_in_page (GladeEditor *editor,
 }
 
 static void
-glade_editor_load_signal_page (GladeEditor *editor)
-{
-  GladeEditorPrivate *priv = GLADE_EDITOR_PRIVATE (editor);
-
-  if (priv->signal_editor == NULL)
-    {
-      priv->signal_editor = glade_signal_editor_new ();
-      gtk_container_add (GTK_CONTAINER (priv->page_signals),
-                         GTK_WIDGET (priv->signal_editor));
-    }
-}
-
-static void
 glade_editor_load_widget_class (GladeEditor *editor,
                                 GladeWidgetAdaptor *adaptor)
 {
@@ -632,7 +514,6 @@ glade_editor_load_widget_class (GladeEditor *editor,
   glade_editor_load_editable_in_page (editor, adaptor, GLADE_PAGE_COMMON);
   glade_editor_load_editable_in_page (editor, adaptor, GLADE_PAGE_ATK);
   glade_editor_load_editable_in_page (editor, NULL, GLADE_PAGE_PACKING);
-  glade_editor_load_signal_page (editor);
 
   editor->priv->loaded_adaptor = adaptor;
 }
