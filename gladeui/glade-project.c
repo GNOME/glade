@@ -2548,13 +2548,19 @@ glade_project_verify_property (GladeProperty *property)
   project = glade_widget_get_project (widget);
 
   if (project)
-    glade_project_verify_property_internal (project, property, NULL, NULL, TRUE, FALSE);
+    glade_project_verify_property_internal (project, property, NULL, NULL, TRUE,
+					    GLADE_VERIFY_VERSIONS     |
+					    GLADE_VERIFY_DEPRECATIONS |
+					    GLADE_VERIFY_UNRECOGNIZED);
 }
 
 void
 glade_project_verify_signal (GladeWidget *widget, GladeSignal *signal)
 {
-  glade_project_verify_signal_internal (widget, signal, NULL, NULL, TRUE, FALSE);
+  glade_project_verify_signal_internal (widget, signal, NULL, NULL, TRUE,
+					GLADE_VERIFY_VERSIONS     |
+					GLADE_VERIFY_DEPRECATIONS |
+					GLADE_VERIFY_UNRECOGNIZED);
 }
 
 static void
@@ -2599,8 +2605,14 @@ glade_project_verify_properties (GladeWidget *widget)
   if (!project || project->priv->loading)
     return;
 
-  glade_project_verify_properties_internal (widget, NULL, NULL, TRUE, FALSE);
-  glade_project_verify_signals (widget, NULL, NULL, TRUE, FALSE);
+  glade_project_verify_properties_internal (widget, NULL, NULL, TRUE,
+					    GLADE_VERIFY_VERSIONS     |
+					    GLADE_VERIFY_DEPRECATIONS |
+					    GLADE_VERIFY_UNRECOGNIZED);
+  glade_project_verify_signals (widget, NULL, NULL, TRUE,
+				GLADE_VERIFY_VERSIONS     |
+				GLADE_VERIFY_DEPRECATIONS |
+				GLADE_VERIFY_UNRECOGNIZED);
 
   glade_widget_support_changed (widget);
 }
@@ -2795,7 +2807,11 @@ glade_project_verify_widget_adaptor (GladeProject *project,
   gchar *ret = NULL;
 
   glade_project_verify_adaptor (project, adaptor, NULL,
-                                string, FALSE, TRUE, mask);
+                                string,
+				GLADE_VERIFY_VERSIONS     |
+				GLADE_VERIFY_DEPRECATIONS |
+				GLADE_VERIFY_UNRECOGNIZED,
+				TRUE, mask);
 
   /* there was a '\0' byte... */
   if (string->len > 0)
