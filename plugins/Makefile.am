@@ -6,6 +6,10 @@ if BUILD_PYTHON
 SUBDIRS += python
 endif
 
+if BUILD_GLADEUI
+SUBDIRS += gladeui
+endif
+
 dtddir = $(pkgdatadir)/catalogs
 dtd_DATA = glade-catalog.dtd
 

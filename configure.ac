@@ -255,6 +255,16 @@ dnl Check for extra functions
 dnl ================================================================
 AC_CHECK_FUNCS(gtk_builder_add_from_resource)
 
+dnl ================================================================
+dnl Enable installation of Gladeui catalog
+dnl ================================================================
+AC_ARG_ENABLE([gladeui],
+	AS_HELP_STRING([--enable-gladeui],
+	[Enable installation of the Gladeui catalog]),
+	[enable_gladeui="$enableval"],[enable_gladeui="no"])
+
+AM_CONDITIONAL(BUILD_GLADEUI, test x"$enable_gladeui" = "xyes")
+
 
 dnl ================================================================
 dnl Testing environment
@@ -302,6 +312,7 @@ plugins/gtk+/icons/Makefile
 plugins/gtk+/icons/16x16/Makefile
 plugins/gtk+/icons/22x22/Makefile
 plugins/python/Makefile
+plugins/gladeui/Makefile
 po/Makefile.in
 doc/Makefile
 doc/version.xml
@@ -320,6 +331,7 @@ Configuration:
 	Compiler:		 ${CC}
 	GTK+ UNIX Print Widgets: ${have_unix_print}
 	PYTHON Widgets support:	 ${have_python}
+	Gladeui Catalog:         ${enable_gladeui}
 	Introspection Data:      ${found_introspection}
 
 	Build Reference Manual:  ${enable_gtk_doc}

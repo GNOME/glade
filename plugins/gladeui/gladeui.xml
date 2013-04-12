@@ -1,0 +1,18 @@
+<glade-catalog name="gladeui"
+	       depends="gtk+"
+	       library="gladeui-2">
+  <glade-widget-classes>
+    <!-- base GTK+ private widgets -->
+    <glade-widget-class name="GladeEditor" generic-name="propertyeditor" title="Property Editor"/>
+    <glade-widget-class name="GladeSignalEditor" generic-name="signaleditor" title="Signal Editor"/>
+    <glade-widget-class name="GladeInspector" generic-name="inspector" title="Inspector"/>
+    <glade-widget-class name="GladePropertyLabel" generic-name="propertylabel" title="Property Label"/>
+  </glade-widget-classes>
+  
+  <glade-widget-group name="gtk-private" title="Glade Widgets">
+    <glade-widget-class-ref name="GladeEditor"/>
+    <glade-widget-class-ref name="GladeSignalEditor"/>
+    <glade-widget-class-ref name="GladeInspector"/>
+    <glade-widget-class-ref name="GladePropertyLabel"/>
+  </glade-widget-group>
+</glade-catalog>
