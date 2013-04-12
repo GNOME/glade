@@ -51,7 +51,8 @@ BUILT_SOURCES = \
 	gladeui-resources.h
 
 UI_FILES = \
-	glade-project-properties.ui
+	glade-project-properties.ui \
+	glade-property-label.ui
 
 EXTRA_DIST = \
 	$(UI_FILES)	\
@@ -72,6 +73,7 @@ libgladeui_2_la_SOURCES = \
 	glade-widget.c \
 	glade-property-class.c \
 	glade-property.c \
+	glade-property-label.c \
 	glade-signal-class.c \
 	glade-signal.c \
 	glade-widget-action.c \
@@ -139,6 +141,7 @@ libgladeuiinclude_HEADERS = \
 	glade-widget-adaptor.h \
 	glade-property.h \
 	glade-property-class.h \
+	glade-property-label.h \
 	glade-utils.h \
 	glade-clipboard.h \
 	glade-command.h \
