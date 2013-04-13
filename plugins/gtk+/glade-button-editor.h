@@ -34,34 +34,18 @@ G_BEGIN_DECLS
 
 typedef struct _GladeButtonEditor        GladeButtonEditor;
 typedef struct _GladeButtonEditorClass   GladeButtonEditorClass;
+typedef struct _GladeButtonEditorPrivate GladeButtonEditorPrivate;
 
 struct _GladeButtonEditor
 {
-	GtkVBox  parent;
+  GladeEditorSkeleton  parent;
 
-	GtkWidget *embed;
-
-	GtkWidget *standard_radio; /* Use standard properties to layout a button */
-	GtkWidget *custom_radio;   /* Use a placeholder in the button */
-
-	/* Available in standard mode: */
-	GtkWidget *stock_radio;    /* Create the button using the stock (Available: stock, image-position) */
-	GtkWidget *label_radio;    /* Create the button with a custom label
-				    * (Available: label, use-underline, image, image-position */
-
-	GtkWidget *standard_frame; /* Contains all the button configurations
-				    */
-	GtkWidget *stock_frame;    /* Contains stock and image-position properties
-				    */
-	GtkWidget *label_frame;    /* Contains label, use-underline, image and image-position properties 
-				    */
-
-	GList *properties;         /* A list of eprops to update at load() time */
+  GladeButtonEditorPrivate *priv;
 };
 
 struct _GladeButtonEditorClass
 {
-	GtkVBoxClass parent;
+  GladeEditorSkeletonClass parent;
 };
 
 GType            glade_button_editor_get_type (void) G_GNUC_CONST;

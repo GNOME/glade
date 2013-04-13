@@ -21,6 +21,7 @@ libgladegtk_la_CPPFLAGS =   \
 libgladegtk_la_CFLAGS = $(AM_CFLAGS)
 
 libgladegtk_la_SOURCES = \
+	$(BUILT_SOURCES) \
 	glade-gtk.c \
 	glade-fixed.c \
 	glade-accels.c \
@@ -48,8 +49,7 @@ libgladegtk_la_SOURCES = \
 	glade-gtk-action-widgets.c \
 	glade-gtk-info-bar.c \
 	glade-gtk-activatable.c \
-	glade-gtk-switch.c \
-	glade-gtk-marshallers.c
+	glade-gtk-switch.c
 
 libgladegtk_la_LDFLAGS     = -module -avoid-version $(AM_LDFLAGS)
 libgladegtk_la_LIBADD      = $(libgladeui) $(GTK_LIBS)
@@ -78,7 +78,8 @@ noinst_HEADERS = \
 	glade-string-list.h \
 	glade-gtk-marshallers.h \
 	glade-gtk-activatable.h \
-	glade-gtk-action-widgets.h
+	glade-gtk-action-widgets.h \
+	glade-gtk-resources.h
 
 
 if PLATFORM_WIN32
@@ -98,12 +99,23 @@ endif
 
 @INTLTOOL_XML_NOMERGE_RULE@
 
+BUILT_SOURCES = \
+	glade-gtk-marshallers.c \
+	glade-gtk-marshallers.h \
+	glade-gtk-resources.c \
+	glade-gtk-resources.h
 
-CLEANFILES = gtk+.xml gtkunixprint.xml
+EXTRA_DIST = \
+	$(UI_FILES)	\
+	glade-gtk-marshallers.list \
+	gtk+.xml gtk+.xml.in \
+	gtkunixprint.xml gtkunixprint.xml.in \
+	glade-gtk-resources.gresource.xml
 
-BUILT_SOURCES = glade-gtk-marshallers.c glade-gtk-marshallers.h
+UI_FILES = \
+	glade-button-editor.ui
 
-EXTRA_DIST = glade-gtk-marshallers.list gtk+.xml gtk+.xml.in gtkunixprint.xml gtkunixprint.xml.in
+CLEANFILES = gtk+.xml gtkunixprint.xml $(BUILT_SOURCES)
 
 #
 # Marshaller generation
@@ -116,3 +128,11 @@ glade-gtk-marshallers.c: glade-gtk-marshallers.list $(GLIB_GENMARSHAL)
 	$(GLIB_GENMARSHAL) --prefix=glade_gtk_marshal $(srcdir)/glade-gtk-marshallers.list --body --header > glade-gtk-marshallers-c.tmp     \
 	&& mv glade-gtk-marshallers-c.tmp glade-gtk-marshallers.c \
 	|| ( rm -f glade-gtk-marshallers-c.tmp && exit 1 )
+
+# Generate resources
+glade-gtk-resources.h: glade-gtk-resources.gresource.xml $(UI_FILES) $(GRAPHICS_FILES)
+	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) $(srcdir)/glade-gtk-resources.gresource.xml \
+		--target=$@ --sourcedir=$(srcdir) --c-name _glade_gtk --generate-header
+glade-gtk-resources.c: glade-gtk-resources.gresource.xml $(UI_FILES) $(GRAPHICS_FILES)
+	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) $(srcdir)/glade-gtk-resources.gresource.xml \
+		--target=$@ --sourcedir=$(srcdir) --c-name _glade_gtk --generate-source

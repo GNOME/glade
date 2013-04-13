@@ -1548,6 +1548,7 @@ embedded in another object</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkGrid" generic-name="grid" _title="Grid">
+      <destroy-object-function>glade_gtk_grid_destroy_object</destroy-object-function>
       <create-widget-function>glade_gtk_create_fixed_widget</create-widget-function>
       <post-create-function>glade_gtk_grid_post_create</post-create-function>
       <child-set-property-function>glade_gtk_grid_set_child_property</child-set-property-function>
