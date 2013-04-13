@@ -3436,10 +3436,6 @@ glade_widget_set_object (GladeWidget * gwidget, GObject * new_object)
   /* Remove internal reference to old widget */
   if (old_object)
     {
-      /* From this point on, the GladeWidget is no longer retrievable with
-       * glade_widget_get_from_gobject() */
-      g_object_set_qdata (G_OBJECT (old_object), glade_widget_name_quark, NULL);
-
       if (gwidget->priv->internal == NULL)
         {
 #if _YOU_WANT_TO_LOOK_AT_PROJECT_REFCOUNT_BALANCING_
@@ -3451,9 +3447,18 @@ glade_widget_set_object (GladeWidget * gwidget, GObject * new_object)
 
 	  /* Have the adaptor for this widget break any additional references */
 	  glade_widget_adaptor_destroy_object (gwidget->priv->adaptor, old_object);
-
-          g_object_unref (old_object);
         }
+
+      /* From this point on, the GladeWidget is no longer retrievable with
+       * glade_widget_get_from_gobject()... we let it be for the duration
+       * of ->destroy_object()
+       */
+      g_object_set_qdata (G_OBJECT (old_object), glade_widget_name_quark, NULL);
+
+      if (gwidget->priv->internal == NULL)
+          g_object_unref (old_object);
+
+
     }
   g_object_notify_by_pspec (G_OBJECT (gwidget), properties[PROP_OBJECT]);
 }
