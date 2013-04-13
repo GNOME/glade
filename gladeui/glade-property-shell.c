@@ -99,7 +99,7 @@ glade_property_shell_class_init (GladePropertyShellClass *class)
       (gobject_class, PROP_USE_COMMAND,
        g_param_spec_boolean ("use-command", _("Use Command"),
 			     _("Whether to use the GladeCommand API when modifying properties"),
-			     FALSE, G_PARAM_READWRITE));
+			     TRUE, G_PARAM_READWRITE));
 
   g_type_class_add_private (gobject_class, sizeof (GladePropertyShellPrivate));
 }
