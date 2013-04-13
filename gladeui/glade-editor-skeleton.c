@@ -187,9 +187,6 @@ glade_editor_skeleton_custom_tag_start (GtkBuildable  *buildable,
 					GMarkupParser *parser,
 					gpointer      *data)
 {
-  if (child)
-    return FALSE;
-
   if (strcmp (tagname, "child-editors") == 0)
     {
       EditorParserData *parser_data;
@@ -214,7 +211,7 @@ glade_editor_skeleton_custom_finished (GtkBuildable *buildable,
   EditorParserData *editor_data = (EditorParserData *)user_data;
   GSList *l;
 
-  if (strcmp (tagname, "child-editors"))
+  if (strcmp (tagname, "child-editors") != 0)
     {
       parent_buildable_iface->custom_finished (buildable, builder, child,
 					       tagname, user_data);
