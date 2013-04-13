@@ -114,9 +114,9 @@ glade_property_label_class_init (GladePropertyLabelClass *class)
 
   g_object_class_install_property
     (gobject_class, PROP_PROPERTY,
-     g_param_spec_string ("property", _("Property"),
+     g_param_spec_object ("property", _("Property"),
 			  _("The GladeProperty to display a label for"),
-			  NULL, G_PARAM_READWRITE));
+			  GLADE_TYPE_PROPERTY, G_PARAM_READWRITE));
 
   g_object_class_install_property
       (gobject_class, PROP_PROPERTY_NAME,
