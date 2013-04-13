@@ -33,8 +33,30 @@
 #include "glade-project.h"
 #include "glade-widget.h"
 #include "glade-editable.h"
+#include "glade-property-editor.h"
 
-G_DEFINE_INTERFACE (GladeEditable, glade_editable, GTK_TYPE_WIDGET);
+
+static void glade_editable_property_editor_init (GladePropertyEditorInterface *iface);
+
+G_DEFINE_INTERFACE_WITH_CODE (GladeEditable, glade_editable, GTK_TYPE_WIDGET,
+			      G_IMPLEMENT_INTERFACE (GLADE_TYPE_PROPERTY_EDITOR,
+						     glade_editable_property_editor_init));
+
+/*******************************************************************************
+ *                         GladePropertyEditorInterface                        *                               
+ *******************************************************************************/
+static void
+glade_editable_property_editor_load (GladePropertyEditor  *editor,
+				     GladeWidget          *widget)
+{
+  glade_editable_load (GLADE_EDITABLE (editor), widget);
+}
+
+static void
+glade_editable_property_editor_init (GladePropertyEditorInterface *iface)
+{
+  iface->load = glade_editable_property_editor_load;
+}
 
 static GQuark glade_editable_project_quark = 0;
 static GQuark glade_editable_widget_quark = 0;

@@ -51,7 +51,6 @@ gboolean     glade_editable_loading        (GladeEditable *editable);
 void         glade_editable_block          (GladeEditable *editable);
 void         glade_editable_unblock        (GladeEditable *editable);
 
-
 G_END_DECLS
 
 #endif /* __GLADE_EDITABLE_H__ */
