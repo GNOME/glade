@@ -2214,6 +2214,8 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
 
       gtk_widget_show_all (swindow);
 
+      gtk_widget_set_hexpand (swindow, TRUE);
+
       g_signal_connect (G_OBJECT (buffer), "changed",
                         G_CALLBACK (glade_eprop_text_buffer_changed), eprop);
 
