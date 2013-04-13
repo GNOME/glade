@@ -107,9 +107,9 @@ glade_editor_skeleton_load (GladeEditable   *editable,
 
   for (l = priv->editors; l; l = l->next)
     {
-      GladePropertyEditor *editor = l->data;
+      GladeEditable *editor = l->data;
 
-      glade_property_editor_load (editor, widget);
+      glade_editable_load (editor, widget);
     }
 }
 
@@ -122,10 +122,9 @@ glade_editor_skeleton_set_show_name (GladeEditable * editable, gboolean show_nam
 
   for (l = priv->editors; l; l = l->next)
     {
-      GladePropertyEditor *editor = l->data;
+      GladeEditable *editor = l->data;
 
-      if (GLADE_IS_EDITABLE (editor))
-	glade_editable_set_show_name (GLADE_EDITABLE (editor), show_name);
+      glade_editable_set_show_name (editor, show_name);
     }
 }
 
@@ -229,12 +228,12 @@ glade_editor_skeleton_custom_finished (GtkBuildable *buildable,
 
       object = gtk_builder_get_object (builder, id);
 
-      if (!GLADE_IS_PROPERTY_EDITOR (object))
-	g_warning ("Object '%s' is not a property editor\n",
+      if (!GLADE_EDITABLE (object))
+	g_warning ("Object '%s' is not a GladeEditable\n",
 		   object ? G_OBJECT_TYPE_NAME (object) : "(null)");
       else
 	glade_editor_skeleton_add_editor (GLADE_EDITOR_SKELETON (buildable),
-					  GLADE_PROPERTY_EDITOR (object));
+					  GLADE_EDITABLE (object));
     }
 
   g_slist_free_full (editor_data->editors, g_free);
@@ -260,12 +259,12 @@ glade_editor_skeleton_new (void)
 
 void
 glade_editor_skeleton_add_editor (GladeEditorSkeleton *skeleton,
-				  GladePropertyEditor *editor)
+				  GladeEditable       *editor)
 {
   GladeEditorSkeletonPrivate *priv;
 
   g_return_if_fail (GLADE_IS_EDITOR_SKELETON (skeleton));
-  g_return_if_fail (GLADE_IS_PROPERTY_EDITOR (editor));
+  g_return_if_fail (GLADE_IS_EDITABLE (editor));
 
   priv = skeleton->priv;
 

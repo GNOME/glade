@@ -28,7 +28,7 @@
 #include "glade.h"
 #include "glade-widget.h"
 #include "glade-popup.h"
-#include "glade-property-editor.h"
+#include "glade-editable.h"
 #include "glade-property-shell.h"
 
 /* GObjectClass */
@@ -42,8 +42,8 @@ static void      glade_property_shell_get_real_property (GObject         *object
 							 GValue          *value,
 							 GParamSpec      *pspec);
 
-/* GladePropertyEditorInterface */
-static void      glade_property_shell_property_editor_init (GladePropertyEditorInterface *iface);
+/* GladeEditableIface */
+static void      glade_property_shell_editable_init     (GladeEditableIface *iface);
 
 struct _GladePropertyShellPrivate
 {
@@ -64,9 +64,11 @@ enum {
   PROP_USE_COMMAND,
 };
 
+static GladeEditableIface *parent_editable_iface;
+
 G_DEFINE_TYPE_WITH_CODE (GladePropertyShell, glade_property_shell, GTK_TYPE_BOX,
-			 G_IMPLEMENT_INTERFACE (GLADE_TYPE_PROPERTY_EDITOR,
-                                                glade_property_shell_property_editor_init));
+			 G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
+                                                glade_property_shell_editable_init));
 
 static void
 glade_property_shell_init (GladePropertyShell *shell)
@@ -175,14 +177,17 @@ glade_property_shell_get_real_property (GObject         *object,
 }
 
 /*******************************************************************************
- *                         GladePropertyEditorInterface                        *                               
+ *                            GladeEditableIface                               *                               
  *******************************************************************************/
 static void
-glade_property_shell_property_editor_load (GladePropertyEditor  *editor,
-					   GladeWidget          *widget)
+glade_property_shell_load (GladeEditable   *editable,
+			   GladeWidget     *widget)
 {
-  GladePropertyShell *shell = GLADE_PROPERTY_SHELL (editor);
+  GladePropertyShell *shell = GLADE_PROPERTY_SHELL (editable);
   GladePropertyShellPrivate *priv;
+
+  /* Chain up to default implementation */
+  parent_editable_iface->load (editable, widget);
 
   g_return_if_fail (shell->priv->property_name != NULL);
 
@@ -212,16 +217,24 @@ glade_property_shell_property_editor_load (GladePropertyEditor  *editor,
 
       /* If we have an editor for the right adaptor, load it */
       if (priv->property_editor)
-	glade_property_editor_load (GLADE_PROPERTY_EDITOR (priv->property_editor), widget);
+	glade_editable_load (GLADE_EDITABLE (priv->property_editor), widget);
     }
   else if (priv->property_editor)
-    glade_property_editor_load (GLADE_PROPERTY_EDITOR (priv->property_editor), NULL);
+    glade_editable_load (GLADE_EDITABLE (priv->property_editor), NULL);
 }
 
 static void
-glade_property_shell_property_editor_init (GladePropertyEditorInterface *iface)
+glade_property_shell_set_show_name (GladeEditable * editable, gboolean show_name)
 {
-  iface->load = glade_property_shell_property_editor_load;
+}
+
+static void
+glade_property_shell_editable_init (GladeEditableIface * iface)
+{
+  parent_editable_iface = g_type_default_interface_peek (GLADE_TYPE_EDITABLE);
+
+  iface->load = glade_property_shell_load;
+  iface->set_show_name = glade_property_shell_set_show_name;
 }
 
 /***********************************************************

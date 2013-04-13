@@ -40,7 +40,7 @@
 
 #include "glade.h"
 #include "glade-widget.h"
-#include "glade-property-editor.h"
+#include "glade-editable.h"
 #include "glade-editor-property.h"
 #include "glade-property-label.h"
 #include "glade-property.h"
@@ -106,26 +106,40 @@ struct _GladeEditorPropertyPrivate
   guint               disable_check : 1; /* Whether to explicitly disable the optional check button */
 };
 
-static void glade_editor_property_property_editor_init (GladePropertyEditorInterface *iface);
+static void glade_editor_property_editable_init (GladeEditableIface *iface);
+
+static GladeEditableIface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladeEditorProperty, glade_editor_property, GTK_TYPE_BOX,
-                         G_IMPLEMENT_INTERFACE (GLADE_TYPE_PROPERTY_EDITOR,
-                                                glade_editor_property_property_editor_init));
+                         G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
+                                                glade_editor_property_editable_init));
+
 
 /*******************************************************************************
- *                         GladePropertyEditorInterface                        *                               
+ *                            GladeEditableIface                               *                               
  *******************************************************************************/
 static void
-glade_editor_property_property_editor_load (GladePropertyEditor  *editor,
-					    GladeWidget          *widget)
+glade_editor_property_editable_load (GladeEditable   *editable,
+				     GladeWidget     *widget)
 {
-  glade_editor_property_load_by_widget (GLADE_EDITOR_PROPERTY (editor), widget);
+  /* Chain up to default implementation */
+  parent_editable_iface->load (editable, widget);
+
+  glade_editor_property_load_by_widget (GLADE_EDITOR_PROPERTY (editable), widget);
 }
 
 static void
-glade_editor_property_property_editor_init (GladePropertyEditorInterface *iface)
+glade_editor_property_set_show_name (GladeEditable * editable, gboolean show_name)
 {
-  iface->load = glade_editor_property_property_editor_load;
+}
+
+static void
+glade_editor_property_editable_init (GladeEditableIface * iface)
+{
+  parent_editable_iface = g_type_default_interface_peek (GLADE_TYPE_EDITABLE);
+
+  iface->load = glade_editor_property_editable_load;
+  iface->set_show_name = glade_editor_property_set_show_name;
 }
 
 /*******************************************************************************

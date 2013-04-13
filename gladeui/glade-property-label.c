@@ -28,7 +28,7 @@
 #include "glade.h"
 #include "glade-widget.h"
 #include "glade-popup.h"
-#include "glade-property-editor.h"
+#include "glade-editable.h"
 #include "glade-property-label.h"
 
 /* GObjectClass */
@@ -47,8 +47,8 @@ static void      glade_property_label_get_real_property (GObject         *object
 static gint      glade_property_label_button_press      (GtkWidget       *widget,
 							 GdkEventButton  *event);
 
-/* GladePropertyEditorInterface */
-static void      glade_property_label_property_editor_init (GladePropertyEditorInterface *iface);
+/* GladeEditableIface */
+static void      glade_property_label_editable_init     (GladeEditableIface *iface);
 
 struct _GladePropertyLabelPrivate
 {
@@ -79,9 +79,11 @@ enum {
   PROP_CUSTOM_TOOLTIP,
 };
 
+static GladeEditableIface *parent_editable_iface;
+
 G_DEFINE_TYPE_WITH_CODE (GladePropertyLabel, glade_property_label, GTK_TYPE_EVENT_BOX,
-			 G_IMPLEMENT_INTERFACE (GLADE_TYPE_PROPERTY_EDITOR,
-                                                glade_property_label_property_editor_init));
+			 G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
+                                                glade_property_label_editable_init));
 
 static void
 glade_property_label_init (GladePropertyLabel *label)
@@ -236,15 +238,18 @@ glade_property_label_get_real_property (GObject         *object,
 }
 
 /*******************************************************************************
- *                         GladePropertyEditorInterface                        *                               
+ *                            GladeEditableIface                               *                               
  *******************************************************************************/
 static void
-glade_property_label_property_editor_load (GladePropertyEditor  *editor,
-					   GladeWidget          *widget)
+glade_property_label_load (GladeEditable   *editable,
+			   GladeWidget     *widget)
 {
-  GladePropertyLabel *label = GLADE_PROPERTY_LABEL (editor);
+  GladePropertyLabel *label = GLADE_PROPERTY_LABEL (editable);
   GladePropertyLabelPrivate *priv;
   GladeProperty *property;
+
+  /* Chain up to default implementation */
+  parent_editable_iface->load (editable, widget);
 
   g_return_if_fail (label->priv->property_name != NULL);
 
@@ -264,9 +269,17 @@ glade_property_label_property_editor_load (GladePropertyEditor  *editor,
 }
 
 static void
-glade_property_label_property_editor_init (GladePropertyEditorInterface *iface)
+glade_property_label_set_show_name (GladeEditable * editable, gboolean show_name)
 {
-  iface->load = glade_property_label_property_editor_load;
+}
+
+static void
+glade_property_label_editable_init (GladeEditableIface * iface)
+{
+  parent_editable_iface = g_type_default_interface_peek (GLADE_TYPE_EDITABLE);
+
+  iface->load = glade_property_label_load;
+  iface->set_show_name = glade_property_label_set_show_name;
 }
 
 /***********************************************************

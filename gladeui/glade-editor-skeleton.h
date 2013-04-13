@@ -23,7 +23,7 @@
 
 #include <gtk/gtk.h>
 #include <gladeui/glade-xml-utils.h>
-#include <gladeui/glade-property-editor.h>
+#include <gladeui/glade-editable.h>
 
 G_BEGIN_DECLS
 
@@ -55,7 +55,7 @@ GType          glade_editor_skeleton_get_type          (void) G_GNUC_CONST;
 
 GtkWidget     *glade_editor_skeleton_new               (void);
 void           glade_editor_skeleton_add_editor        (GladeEditorSkeleton *skeleton,
-							GladePropertyEditor *editor);
+							GladeEditable       *editor);
 
 G_END_DECLS
 
