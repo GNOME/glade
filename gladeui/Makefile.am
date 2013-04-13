@@ -102,6 +102,7 @@ libgladeui_2_la_SOURCES = \
 	glade-project.c \
 	glade-property.c \
 	glade-property-class.c \
+	glade-property-editor.c \
 	glade-property-label.c \
 	glade-property-shell.c \
 	glade-signal.c \
@@ -155,6 +156,7 @@ libgladeuiinclude_HEADERS = \
 	glade-project.h \
 	glade-property.h \
 	glade-property-class.h \
+	glade-property-editor.h \
 	glade-property-label.h \
 	glade-property-shell.h \
 	glade-signal.h \

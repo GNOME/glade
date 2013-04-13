@@ -40,6 +40,7 @@
 
 #include "glade.h"
 #include "glade-widget.h"
+#include "glade-property-editor.h"
 #include "glade-editor-property.h"
 #include "glade-property-label.h"
 #include "glade-property.h"
@@ -105,7 +106,27 @@ struct _GladeEditorPropertyPrivate
   guint               disable_check : 1; /* Whether to explicitly disable the optional check button */
 };
 
-G_DEFINE_TYPE (GladeEditorProperty, glade_editor_property, GTK_TYPE_BOX);
+static void glade_editor_property_property_editor_init (GladePropertyEditorInterface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (GladeEditorProperty, glade_editor_property, GTK_TYPE_BOX,
+                         G_IMPLEMENT_INTERFACE (GLADE_TYPE_PROPERTY_EDITOR,
+                                                glade_editor_property_property_editor_init));
+
+/*******************************************************************************
+ *                         GladePropertyEditorInterface                        *                               
+ *******************************************************************************/
+static void
+glade_editor_property_property_editor_load (GladePropertyEditor  *editor,
+					    GladeWidget          *widget)
+{
+  glade_editor_property_load_by_widget (GLADE_EDITOR_PROPERTY (editor), widget);
+}
+
+static void
+glade_editor_property_property_editor_init (GladePropertyEditorInterface *iface)
+{
+  iface->load = glade_editor_property_property_editor_load;
+}
 
 /*******************************************************************************
                                GladeEditorPropertyClass

@@ -28,6 +28,7 @@
 #include "glade.h"
 #include "glade-widget.h"
 #include "glade-popup.h"
+#include "glade-property-editor.h"
 #include "glade-property-shell.h"
 
 /* GObjectClass */
@@ -40,6 +41,9 @@ static void      glade_property_shell_get_real_property (GObject         *object
 							 guint            prop_id,
 							 GValue          *value,
 							 GParamSpec      *pspec);
+
+/* GladePropertyEditorInterface */
+static void      glade_property_shell_property_editor_init (GladePropertyEditorInterface *iface);
 
 struct _GladePropertyShellPrivate
 {
@@ -60,7 +64,9 @@ enum {
   PROP_USE_COMMAND,
 };
 
-G_DEFINE_TYPE (GladePropertyShell, glade_property_shell, GTK_TYPE_BOX);
+G_DEFINE_TYPE_WITH_CODE (GladePropertyShell, glade_property_shell, GTK_TYPE_BOX,
+			 G_IMPLEMENT_INTERFACE (GLADE_TYPE_PROPERTY_EDITOR,
+                                                glade_property_shell_property_editor_init));
 
 static void
 glade_property_shell_init (GladePropertyShell *shell)
@@ -168,23 +174,16 @@ glade_property_shell_get_real_property (GObject         *object,
     }
 }
 
-/***********************************************************
- *                            API                          *
- ***********************************************************/
-GtkWidget *
-glade_property_shell_new (void)
+/*******************************************************************************
+ *                         GladePropertyEditorInterface                        *                               
+ *******************************************************************************/
+static void
+glade_property_shell_property_editor_load (GladePropertyEditor  *editor,
+					   GladeWidget          *widget)
 {
-  return g_object_new (GLADE_TYPE_PROPERTY_SHELL, NULL);
-}
-
-void
-glade_property_shell_load_by_widget (GladePropertyShell *shell,
-				     GladeWidget        *widget)
-{
+  GladePropertyShell *shell = GLADE_PROPERTY_SHELL (editor);
   GladePropertyShellPrivate *priv;
 
-  g_return_if_fail (GLADE_IS_PROPERTY_SHELL (shell));
-  g_return_if_fail (widget == NULL || GLADE_IS_WIDGET (widget));
   g_return_if_fail (shell->priv->property_name != NULL);
 
   priv = shell->priv;
@@ -213,10 +212,25 @@ glade_property_shell_load_by_widget (GladePropertyShell *shell,
 
       /* If we have an editor for the right adaptor, load it */
       if (priv->property_editor)
-	glade_editor_property_load_by_widget (priv->property_editor, widget);
+	glade_property_editor_load (GLADE_PROPERTY_EDITOR (priv->property_editor), widget);
     }
   else if (priv->property_editor)
-    glade_editor_property_load_by_widget (priv->property_editor, NULL);
+    glade_property_editor_load (GLADE_PROPERTY_EDITOR (priv->property_editor), NULL);
+}
+
+static void
+glade_property_shell_property_editor_init (GladePropertyEditorInterface *iface)
+{
+  iface->load = glade_property_shell_property_editor_load;
+}
+
+/***********************************************************
+ *                            API                          *
+ ***********************************************************/
+GtkWidget *
+glade_property_shell_new (void)
+{
+  return g_object_new (GLADE_TYPE_PROPERTY_SHELL, NULL);
 }
 
 void

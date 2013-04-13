@@ -28,6 +28,7 @@
 #include "glade.h"
 #include "glade-widget.h"
 #include "glade-popup.h"
+#include "glade-property-editor.h"
 #include "glade-property-label.h"
 
 /* GObjectClass */
@@ -45,6 +46,9 @@ static void      glade_property_label_get_real_property (GObject         *object
 /* GtkWidgetClass */
 static gint      glade_property_label_button_press      (GtkWidget       *widget,
 							 GdkEventButton  *event);
+
+/* GladePropertyEditorInterface */
+static void      glade_property_label_property_editor_init (GladePropertyEditorInterface *iface);
 
 struct _GladePropertyLabelPrivate
 {
@@ -75,7 +79,9 @@ enum {
   PROP_CUSTOM_TOOLTIP,
 };
 
-G_DEFINE_TYPE (GladePropertyLabel, glade_property_label, GTK_TYPE_EVENT_BOX);
+G_DEFINE_TYPE_WITH_CODE (GladePropertyLabel, glade_property_label, GTK_TYPE_EVENT_BOX,
+			 G_IMPLEMENT_INTERFACE (GLADE_TYPE_PROPERTY_EDITOR,
+                                                glade_property_label_property_editor_init));
 
 static void
 glade_property_label_init (GladePropertyLabel *label)
@@ -229,6 +235,40 @@ glade_property_label_get_real_property (GObject         *object,
     }
 }
 
+/*******************************************************************************
+ *                         GladePropertyEditorInterface                        *                               
+ *******************************************************************************/
+static void
+glade_property_label_property_editor_load (GladePropertyEditor  *editor,
+					   GladeWidget          *widget)
+{
+  GladePropertyLabel *label = GLADE_PROPERTY_LABEL (editor);
+  GladePropertyLabelPrivate *priv;
+  GladeProperty *property;
+
+  g_return_if_fail (label->priv->property_name != NULL);
+
+  priv = label->priv;
+
+  if (widget)
+    {
+      if (priv->packing)
+	property = glade_widget_get_pack_property (widget, priv->property_name);
+      else
+	property = glade_widget_get_property (widget, priv->property_name);
+
+      glade_property_label_set_property (label, property);
+    }
+  else
+    glade_property_label_set_property (label, NULL);
+}
+
+static void
+glade_property_label_property_editor_init (GladePropertyEditorInterface *iface)
+{
+  iface->load = glade_property_label_property_editor_load;
+}
+
 /***********************************************************
  *                     GtkWidgetClass                      *
  ***********************************************************/
@@ -338,32 +378,6 @@ GtkWidget *
 glade_property_label_new (void)
 {
   return g_object_new (GLADE_TYPE_PROPERTY_LABEL, NULL);
-}
-
-void
-glade_property_label_load_by_widget (GladePropertyLabel *label,
-				     GladeWidget        *widget)
-{
-  GladePropertyLabelPrivate *priv;
-  GladeProperty *property;
-
-  g_return_if_fail (GLADE_IS_PROPERTY_LABEL (label));
-  g_return_if_fail (widget == NULL || GLADE_IS_WIDGET (widget));
-  g_return_if_fail (label->priv->property_name != NULL);
-
-  priv = label->priv;
-
-  if (widget)
-    {
-      if (priv->packing)
-	property = glade_widget_get_pack_property (widget, priv->property_name);
-      else
-	property = glade_widget_get_property (widget, priv->property_name);
-
-      glade_property_label_set_property (label, property);
-    }
-  else
-    glade_property_label_set_property (label, NULL);
 }
 
 void

@@ -56,8 +56,6 @@ GType          glade_property_label_get_type          (void) G_GNUC_CONST;
 
 GtkWidget     *glade_property_label_new               (void);
 
-void           glade_property_label_load_by_widget    (GladePropertyLabel *label,
-						       GladeWidget        *widget);
 void           glade_property_label_set_property_name (GladePropertyLabel *label,
 						       const gchar        *property_name);
 const gchar   *glade_property_label_get_property_name (GladePropertyLabel *label);

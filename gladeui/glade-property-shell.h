@@ -56,8 +56,6 @@ GType          glade_property_shell_get_type          (void) G_GNUC_CONST;
 
 GtkWidget     *glade_property_shell_new               (void);
 
-void           glade_property_shell_load_by_widget    (GladePropertyShell *shell,
-						       GladeWidget        *widget);
 void           glade_property_shell_set_property_name (GladePropertyShell *shell,
 						       const gchar        *property_name);
 const gchar   *glade_property_shell_get_property_name (GladePropertyShell *shell);
