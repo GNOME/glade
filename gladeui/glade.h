@@ -35,6 +35,7 @@
 #include <gladeui/glade-command.h>
 #include <gladeui/glade-design-view.h>
 #include <gladeui/glade-editor.h>
+#include <gladeui/glade-editor-skeleton.h>
 #include <gladeui/glade-editor-property.h>
 #include <gladeui/glade-palette.h>
 #include <gladeui/glade-clipboard.h>
