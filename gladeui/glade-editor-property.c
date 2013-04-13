@@ -55,7 +55,8 @@ enum
 {
   PROP_0,
   PROP_PROPERTY_CLASS,
-  PROP_USE_COMMAND
+  PROP_USE_COMMAND,
+  PROP_DISABLE_CHECK
 };
 
 enum
@@ -100,9 +101,11 @@ struct _GladeEditorPropertyPrivate
 					* (used for query dialogs).
 					*/
   guint               changed_blocked : 1; /* Whether the GladeProperty changed signal is currently blocked */
+
+  guint               disable_check : 1; /* Whether to explicitly disable the optional check button */
 };
 
-G_DEFINE_TYPE (GladeEditorProperty, glade_editor_property, GTK_TYPE_HBOX);
+G_DEFINE_TYPE (GladeEditorProperty, glade_editor_property, GTK_TYPE_BOX);
 
 /*******************************************************************************
                                GladeEditorPropertyClass
@@ -286,26 +289,24 @@ glade_editor_property_button_pressed (GtkWidget *widget,
 }
 
 
-static GObject *
-glade_editor_property_constructor (GType type,
-                                   guint n_construct_properties,
-                                   GObjectConstructParam *construct_properties)
+static void
+glade_editor_property_constructed (GObject *object)
 {
-  GObject *obj;
   GladeEditorProperty *eprop;
 
-  /* Invoke parent constructor (eprop->priv->klass should be resolved by this point) . */
-  obj = G_OBJECT_CLASS (table_class)->constructor
-      (type, n_construct_properties, construct_properties);
+  eprop = GLADE_EDITOR_PROPERTY (object);
 
-  eprop = GLADE_EDITOR_PROPERTY (obj);
+  G_OBJECT_CLASS (glade_editor_property_parent_class)->constructed (object);
 
   /* Create hbox and possibly check button
    */
   if (glade_property_class_optional (eprop->priv->klass))
     {
       eprop->priv->check = gtk_check_button_new ();
-      gtk_widget_show (eprop->priv->check);
+
+      if (!eprop->priv->disable_check)
+	gtk_widget_show (eprop->priv->check);
+
       gtk_box_pack_start (GTK_BOX (eprop), eprop->priv->check, FALSE, FALSE, 0);
       g_signal_connect (G_OBJECT (eprop->priv->check), "toggled",
                         G_CALLBACK (glade_editor_property_enabled_toggled_cb),
@@ -323,9 +324,6 @@ glade_editor_property_constructor (GType type,
     gtk_box_pack_start (GTK_BOX (eprop), eprop->priv->input, FALSE, TRUE, 0);
   else
     gtk_box_pack_start (GTK_BOX (eprop), eprop->priv->input, TRUE, TRUE, 0);
-
-  
-  return obj;
 }
 
 static void
@@ -369,6 +367,17 @@ glade_editor_property_set_property (GObject *object,
       case PROP_USE_COMMAND:
         eprop->priv->use_command = g_value_get_boolean (value);
         break;
+      case PROP_DISABLE_CHECK:
+        eprop->priv->disable_check = g_value_get_boolean (value);
+
+	if (eprop->priv->check)
+	  {
+	    if (eprop->priv->disable_check)
+	      gtk_widget_hide (eprop->priv->check);
+	    else
+	      gtk_widget_show (eprop->priv->check);
+	  }
+        break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
@@ -391,6 +400,9 @@ glade_editor_property_real_get_property (GObject *object,
       case PROP_USE_COMMAND:
         g_value_set_boolean (value, eprop->priv->use_command);
         break;
+      case PROP_DISABLE_CHECK:
+	g_value_set_boolean (value, eprop->priv->disable_check);
+	break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
@@ -509,6 +521,8 @@ glade_editor_property_init (GladeEditorProperty *eprop)
 				 GLADE_TYPE_EDITOR_PROPERTY,
 				 GladeEditorPropertyPrivate);
 
+  gtk_orientable_set_orientation (GTK_ORIENTABLE (eprop),
+				  GTK_ORIENTATION_HORIZONTAL);
 }
 
 static void
@@ -524,7 +538,7 @@ glade_editor_property_class_init (GladeEditorPropertyClass *eprop_class)
   object_class = G_OBJECT_CLASS (eprop_class);
 
   /* GObjectClass */
-  object_class->constructor = glade_editor_property_constructor;
+  object_class->constructed = glade_editor_property_constructed;
   object_class->finalize = glade_editor_property_finalize;
   object_class->dispose = glade_editor_property_dispose;
   object_class->get_property = glade_editor_property_real_get_property;
@@ -583,6 +597,13 @@ glade_editor_property_class_init (GladeEditorPropertyClass *eprop_class)
        ("use-command", _("Use Command"),
         _("Whether we should use the command API for the undo/redo stack"),
         FALSE, G_PARAM_READWRITE));
+
+  g_object_class_install_property
+      (object_class, PROP_DISABLE_CHECK,
+       g_param_spec_boolean
+       ("disable-check", _("Disable Check"),
+        _("Whether to explicitly disable the check button"),
+        FALSE, G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   g_type_class_add_private (eprop_class, sizeof (GladeEditorPropertyPrivate));
 }

@@ -76,13 +76,13 @@ typedef struct _GladeEditorPropertyPrivate GladeEditorPropertyPrivate;
 
 struct _GladeEditorProperty
 {
-  GtkHBox             parent_instance;
+  GtkBox             parent_instance;
 
   GladeEditorPropertyPrivate *priv;
 };
 
 struct _GladeEditorPropertyClass {
-  GtkHBoxClass  parent_class;
+  GtkBoxClass  parent_class;
 
   void        (* load)          (GladeEditorProperty *, GladeProperty *);
   GtkWidget  *(* create_input)  (GladeEditorProperty *);
