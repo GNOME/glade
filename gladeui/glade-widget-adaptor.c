@@ -1102,6 +1102,15 @@ glade_widget_adaptor_object_write_widget (GladeWidgetAdaptor *adaptor,
 }
 
 static void
+glade_widget_adaptor_object_write_widget_after (GladeWidgetAdaptor *adaptor,
+						GladeWidget *widget,
+						GladeXmlContext *context,
+						GladeXmlNode *node)
+{
+
+}
+
+static void
 glade_widget_adaptor_object_read_child (GladeWidgetAdaptor *adaptor,
                                         GladeWidget *widget,
                                         GladeXmlNode *node)
@@ -1396,6 +1405,7 @@ glade_widget_adaptor_class_init (GladeWidgetAdaptorClass *adaptor_class)
   adaptor_class->depends = glade_widget_adaptor_object_depends;
   adaptor_class->read_widget = glade_widget_adaptor_object_read_widget;
   adaptor_class->write_widget = glade_widget_adaptor_object_write_widget;
+  adaptor_class->write_widget_after = glade_widget_adaptor_object_write_widget_after;
   adaptor_class->read_child = glade_widget_adaptor_object_read_child;
   adaptor_class->write_child = glade_widget_adaptor_object_write_child;
   adaptor_class->create_eprop = glade_widget_adaptor_object_create_eprop;
@@ -1625,6 +1635,10 @@ gwa_extend_with_node_load_sym (GladeWidgetAdaptorClass *klass,
   if (glade_xml_load_sym_from_node (node, module,
                                     GLADE_TAG_WRITE_WIDGET_FUNCTION, &symbol))
     klass->write_widget = symbol;
+
+  if (glade_xml_load_sym_from_node (node, module,
+                                    GLADE_TAG_WRITE_WIDGET_AFTER_FUNCTION, &symbol))
+    klass->write_widget_after = symbol;
 
   if (glade_xml_load_sym_from_node (node, module,
                                     GLADE_TAG_READ_CHILD_FUNCTION, &symbol))
@@ -4208,6 +4222,31 @@ glade_widget_adaptor_write_widget (GladeWidgetAdaptor *adaptor,
 
   GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->write_widget (adaptor, widget,
                                                           context, node);
+}
+
+
+/**
+ * glade_widget_adaptor_write_widget_after:
+ * @adaptor: A #GladeWidgetAdaptor
+ * @widget: The #GladeWidget
+ * @context: The #GladeXmlContext
+ * @node: The #GladeXmlNode
+ *
+ * This function is called to write @widget to @node 
+ * when writing xml files (after writing children)
+ */
+void
+glade_widget_adaptor_write_widget_after (GladeWidgetAdaptor *adaptor,
+					 GladeWidget *widget,
+					 GladeXmlContext *context,
+					 GladeXmlNode *node)
+{
+  g_return_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor));
+  g_return_if_fail (GLADE_IS_WIDGET (widget));
+  g_return_if_fail (node != NULL);
+
+  GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->write_widget_after (adaptor, widget,
+								context, node);
 }
 
 

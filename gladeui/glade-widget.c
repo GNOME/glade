@@ -4170,6 +4170,9 @@ glade_widget_write (GladeWidget * widget,
         }
       g_list_free (list);
     }
+
+  /* Write out trailing widget content (anything that goes after children) */
+  glade_widget_adaptor_write_widget_after (widget->priv->adaptor, widget, context, widget_node);
 }
 
 

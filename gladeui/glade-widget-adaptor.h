@@ -611,8 +611,6 @@ struct _GladeWidgetAdaptorClass
   GladeConstructObjectFunc   construct_object;  /* Object constructor
 						 */
 
-  GladeDestroyObjectFunc     destroy_object; /* Object destructor */
-
   GladePostCreateFunc        deep_post_create;   /* Executed after widget creation: 
 						  * plugins use this to setup various
 						  * support codes (adaptors must always
@@ -682,6 +680,9 @@ struct _GladeWidgetAdaptorClass
   GladeCreateEPropFunc         create_eprop;      /* Creates a GladeEditorProperty */
   GladeStringFromValueFunc     string_from_value; /* Creates a string for a value */
   GladeCreateEditableFunc      create_editable;   /* Creates a page for the editor */
+
+  GladeDestroyObjectFunc       destroy_object;    /* Object destructor */
+  GladeWriteWidgetFunc         write_widget_after;/* Writes widget attributes to the xml (after children) */
     
   void   (* glade_reserved1)   (void);
   void   (* glade_reserved2)   (void);
@@ -689,7 +690,6 @@ struct _GladeWidgetAdaptorClass
   void   (* glade_reserved4)   (void);
   void   (* glade_reserved5)   (void);
   void   (* glade_reserved6)   (void);
-  void   (* glade_reserved7)   (void);
 };
 
 #define glade_widget_adaptor_create_widget(adaptor, query, ...) \
@@ -840,6 +840,10 @@ void                  glade_widget_adaptor_read_widget        (GladeWidgetAdapto
 							       GladeWidget        *widget,
 							       GladeXmlNode       *node);
 void                  glade_widget_adaptor_write_widget       (GladeWidgetAdaptor *adaptor,
+							       GladeWidget        *widget,
+							       GladeXmlContext    *context,
+							       GladeXmlNode       *node);
+void                  glade_widget_adaptor_write_widget_after (GladeWidgetAdaptor *adaptor,
 							       GladeWidget        *widget,
 							       GladeXmlContext    *context,
 							       GladeXmlNode       *node);

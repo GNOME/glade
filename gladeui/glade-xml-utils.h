@@ -110,6 +110,7 @@ typedef struct _GladeProject        GladeProject;
 #define GLADE_TAG_DEPENDS_FUNCTION                "depends-function"
 #define GLADE_TAG_READ_WIDGET_FUNCTION            "read-widget-function"
 #define GLADE_TAG_WRITE_WIDGET_FUNCTION           "write-widget-function"
+#define GLADE_TAG_WRITE_WIDGET_AFTER_FUNCTION     "write-widget-after-function"
 #define GLADE_TAG_READ_CHILD_FUNCTION             "read-child-function"
 #define GLADE_TAG_WRITE_CHILD_FUNCTION            "write-child-function"
 #define GLADE_TAG_CREATE_EPROP_FUNCTION           "create-editor-property-function"
