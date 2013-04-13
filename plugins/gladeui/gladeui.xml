@@ -23,6 +23,19 @@
       </properties>
     </glade-widget-class>
 
+    <glade-widget-class name="GladeEditorTable" generic-name="editortable"
+			title="Editor Table" icon-name="widget-gtk-table" use-placeholders="False">
+      <properties>
+	<property id="orientation" disabled="True"/>
+	<property id="n-rows" disabled="True"/>
+	<property id="n-columns" disabled="True"/>
+	<property id="row-spacing" disabled="True"/>
+	<property id="column-spacing" disabled="True"/>
+	<property id="row-homogenous" disabled="True"/>
+	<property id="column-homogenous" disabled="True"/>
+      </properties>
+    </glade-widget-class>
+
     <glade-widget-class name="GladePropertyLabel" generic-name="propertylabel" title="Property Label" icon-name="widget-gtk-label"/>
     <glade-widget-class name="GladePropertyShell" generic-name="propertyshell"
 			title="Property Shell" icon-name="widget-gtk-entry" use-placeholders="False">
@@ -46,6 +59,7 @@
     <default-palette-state expanded="False"/>
 
     <glade-widget-class-ref name="GladeEditorSkeleton"/>
+    <glade-widget-class-ref name="GladeEditorTable"/>
     <glade-widget-class-ref name="GladePropertyLabel"/>
     <glade-widget-class-ref name="GladePropertyShell"/>
 
