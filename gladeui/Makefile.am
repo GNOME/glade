@@ -70,49 +70,48 @@ EXTRA_DIST = 			\
 
 # The glade core library
 libgladeui_2_la_SOURCES = \
-	gladeui-resources.c \
-	glade-debug.c \
-	glade-object-stub.c \
-	glade-xml-utils.c \
-	glade-catalog.c \
-	glade-widget-adaptor.c \
-	glade-widget.c \
-	glade-property-class.c \
-	glade-property.c \
-	glade-property-label.c \
-	glade-signal-class.c \
-	glade-signal.c \
-	glade-widget-action.c \
-	glade-editable.c \
-	glade-editor-table.c \
-	glade-editor-property.c \
-	glade-editor.c \
+	$(BUILT_SOURCES)	\
+	glade-accumulators.c \
+	glade-app.c \
 	glade-base-editor.c \
-	glade-signal-editor.c \
-	glade-palette.c \
-	glade-inspector.c \
+	glade-builtins.c \
+	glade-catalog.c \
+	glade-cell-renderer-icon.c \
+	glade-clipboard.c \
+	glade-command.c \
+	glade-cursor.c \
+	glade-debug.c \
 	glade-design-layout.c \
 	glade-design-view.c \
+	glade-displayable-values.c \
+	glade-editable.c \
+	glade-editor.c \
+	glade-editor-property.c \
+	glade-editor-table.c \
 	glade-id-allocator.c \
 	glade-id-allocator.h \
-	glade-project.c \
-	glade-cursor.c \
-	glade-placeholder.c \
+	glade-object-stub.c \
+	glade-inspector.c \
+	glade-name-context.c \
 	glade-named-icon-chooser-dialog.c \
 	glade-named-icon-chooser-dialog.h \
+	glade-palette.c \
+	glade-placeholder.c \
 	glade-popup.c \
-	glade-utils.c \
-	glade-command.c \
-	glade-marshallers.c \
-	glade-accumulators.c \
-	glade-builtins.c \
-	glade-app.c \
-	glade-clipboard.c \
-	glade-name-context.c \
-	glade-displayable-values.c \
+	glade-preview.c	\
+	glade-project.c \
+	glade-property.c \
+	glade-property-class.c \
+	glade-property-label.c \
+	glade-signal.c \
+	glade-signal-class.c \
+	glade-signal-editor.c \
 	glade-signal-model.c \
-	glade-cell-renderer-icon.c \
-	glade-preview.c
+	glade-utils.c \
+	glade-widget.c \
+	glade-widget-action.c \
+	glade-widget-adaptor.c \
+	glade-xml-utils.c
 
 libgladeui_2_la_CPPFLAGS =  \
 	$(common_defines)   \
@@ -130,42 +129,41 @@ libgladeui_2_la_CFLAGS =    \
 libgladeui_2_la_LDFLAGS = -version-info $(GLADE_CURRENT):$(GLADE_REVISION):$(GLADE_AGE) $(AM_LDFLAGS)
 libgladeui_2_la_LIBADD = $(GTK_LIBS) $(GTK_MAC_LIBS)
 
-
 libgladeuiincludedir=$(includedir)/libgladeui-2.0/gladeui
 libgladeuiinclude_HEADERS = \
 	glade.h \
+	glade-app.h \
+	glade-base-editor.h \
+	glade-builtins.h \
+	glade-catalog.h \
+	glade-cell-renderer-icon.h \
+	glade-clipboard.h \
+	glade-command.h \
+	glade-cursor.h \
 	glade-debug.h \
-	glade-project.h \
-	glade-inspector.h \
-	glade-placeholder.h \
+	glade-design-view.h \
+	glade-displayable-values.h \
+	glade-editable.h \
 	glade-editor.h \
 	glade-editor-property.h \
-	glade-signal-editor.h \
+	glade-editor-table.h \
+	glade-inspector.h \
+	glade-name-context.h \
 	glade-palette.h \
-	glade-design-view.h \
-	glade-widget.h \
-	glade-widget-adaptor.h \
+	glade-placeholder.h \
+	glade-project.h \
 	glade-property.h \
 	glade-property-class.h \
 	glade-property-label.h \
-	glade-utils.h \
-	glade-clipboard.h \
-	glade-command.h \
-	glade-app.h \
-	glade-builtins.h \
-	glade-base-editor.h \
-	glade-xml-utils.h \
 	glade-signal.h \
 	glade-signal-class.h \
-	glade-catalog.h \
+	glade-signal-editor.h \
+	glade-signal-model.h \
+	glade-utils.h \
+	glade-widget.h \
 	glade-widget-action.h \
-	glade-name-context.h \
-	glade-displayable-values.h \
-	glade-editable.h \
-	glade-editor-table.h \
-	glade-cell-renderer-icon.h \
-	glade-cursor.h \
-	glade-signal-model.h
+	glade-widget-adaptor.h \
+	glade-xml-utils.h
 
 noinst_HEADERS = \
 	gladeui-resources.h \
