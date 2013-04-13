@@ -1,6 +1,6 @@
 <glade-catalog name="gladeui"
 	       depends="gtk+"
-	       library="gladeui-2">
+	       library="gladeglade">
   <glade-widget-classes>
     <!-- Main Glade User Interface Components -->
     <glade-widget-class name="GladeEditor" generic-name="propertyeditor" title="Property Editor" icon-name="widget-gtk-notebook"/>
@@ -8,9 +8,24 @@
     <glade-widget-class name="GladeInspector" generic-name="inspector" title="Inspector" icon-name="widget-gtk-treeview"/>
 
     <!-- Glade Editor Components -->
+    <glade-widget-class name="GladeEditorSkeleton" generic-name="skeleton"
+			title="Editor Skeleton" icon-name="widget-gtk-frame">
+      <read-widget-function>glade_glade_editor_skeleton_read_widget</read-widget-function>
+      <write-widget-after-function>glade_glade_editor_skeleton_write_widget_after</write-widget-after-function>
+      <properties>
+	<property id="editors" name="Editors" ignore="True" save="False">
+	  <parameter-spec>
+	    <type>GladeParamObjects</type>
+	    <value-type>GladeEditable</value-type>
+	  </parameter-spec>
+	  <tooltip>List of editors which are children to this skeleton</tooltip>
+	</property>
+      </properties>
+    </glade-widget-class>
+
     <glade-widget-class name="GladePropertyLabel" generic-name="propertylabel" title="Property Label" icon-name="widget-gtk-label"/>
     <glade-widget-class name="GladePropertyShell" generic-name="propertyshell"
-			title="Property Shell" icon-name="widget-gtk-frame" use-placeholders="False">
+			title="Property Shell" icon-name="widget-gtk-entry" use-placeholders="False">
       <properties>
 	<property id="orientation" disabled="True"/>
 	<property id="size" disabled="True"/>
@@ -18,7 +33,6 @@
 	<property id="homogenous" disabled="True"/>
       </properties>
     </glade-widget-class>
-
   </glade-widget-classes>
   
   <glade-widget-group name="gladeui-main" title="Glade Embed Widgets">
@@ -31,6 +45,7 @@
 
     <default-palette-state expanded="False"/>
 
+    <glade-widget-class-ref name="GladeEditorSkeleton"/>
     <glade-widget-class-ref name="GladePropertyLabel"/>
     <glade-widget-class-ref name="GladePropertyShell"/>
 
