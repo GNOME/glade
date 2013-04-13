@@ -1,0 +1,19 @@
+<glade-catalog name="glade-gtk-plugin"
+	       depends="gtk+"
+	       library="gladegtk">
+  <glade-widget-classes>
+    <!-- Editors to use in our GTK+ plugin -->
+    <glade-widget-class name="GladeActivatableEditor" generic-name="activatableeditor" title="Activatable Editor"
+			icon-name="widget-gtk-action"/>
+    <glade-widget-class name="GladeButtonEditor" generic-name="buttoneditor" title="Button Editor"
+			icon-name="widget-gtk-button"/>
+  </glade-widget-classes>
+
+  <glade-widget-group name="glade-gtk-plugin" title="GTK+ Plugin Editors">
+
+    <default-palette-state expanded="False"/>
+
+    <glade-widget-class-ref name="GladeActivatableEditor"/>
+    <glade-widget-class-ref name="GladeButtonEditor"/>
+  </glade-widget-group>
+</glade-catalog>
