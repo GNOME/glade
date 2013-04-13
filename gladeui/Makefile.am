@@ -87,6 +87,7 @@ libgladeui_2_la_SOURCES = \
 	glade-editable.c \
 	glade-editor.c \
 	glade-editor-property.c \
+	glade-editor-skeleton.c \
 	glade-editor-table.c \
 	glade-id-allocator.c \
 	glade-id-allocator.h \
@@ -148,6 +149,7 @@ libgladeuiinclude_HEADERS = \
 	glade-editable.h \
 	glade-editor.h \
 	glade-editor-property.h \
+	glade-editor-skeleton.h \
 	glade-editor-table.h \
 	glade-inspector.h \
 	glade-name-context.h \
