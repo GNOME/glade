@@ -55,9 +55,15 @@ struct _GladePropertyLabelClass
 GType          glade_property_label_get_type          (void) G_GNUC_CONST;
 
 GtkWidget     *glade_property_label_new               (void);
-void           glade_property_label_set_property      (GladePropertyLabel *label,
-						       GladeProperty      *property);
-GladeProperty *glade_property_label_get_property      (GladePropertyLabel *label);
+
+void           glade_property_label_load_by_widget    (GladePropertyLabel *label,
+						       GladeWidget        *widget);
+void           glade_property_label_set_property_name (GladePropertyLabel *label,
+						       const gchar        *property_name);
+const gchar   *glade_property_label_get_property_name (GladePropertyLabel *label);
+void           glade_property_label_set_packing       (GladePropertyLabel *label,
+						       gboolean            packing);
+gboolean       glade_property_label_get_packing       (GladePropertyLabel *label);
 
 void           glade_property_label_set_custom_text   (GladePropertyLabel *label,
 						       const gchar        *custom_text);
@@ -65,6 +71,10 @@ const gchar   *glade_property_label_get_custom_text   (GladePropertyLabel *label
 void           glade_property_label_set_custom_tooltip(GladePropertyLabel *label,
 						       const gchar        *custom_tooltip);
 const gchar   *glade_property_label_get_custom_tooltip(GladePropertyLabel *label);
+
+void           glade_property_label_set_property      (GladePropertyLabel *label,
+						       GladeProperty      *property);
+GladeProperty *glade_property_label_get_property      (GladePropertyLabel *label);
 
 G_END_DECLS
 

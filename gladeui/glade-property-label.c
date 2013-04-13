@@ -31,6 +31,7 @@
 #include "glade-property-label.h"
 
 /* GObjectClass */
+static void      glade_property_label_finalize          (GObject         *object);
 static void      glade_property_label_dispose           (GObject         *object);
 static void      glade_property_label_set_real_property (GObject         *object,
 							 guint            prop_id,
@@ -58,6 +59,9 @@ struct _GladePropertyLabelPrivate
   gulong         sensitive_id; /* signal connection id for sensitivity changes */
   gulong         enabled_id;   /* signal connection id for property enabled changes */
 
+  gchar         *property_name; /* The property name to use when loading by GladeWidget */
+
+  guint          packing : 1;
   guint          custom_text : 1;
   guint          custom_tooltip : 1;
 };
@@ -65,6 +69,8 @@ struct _GladePropertyLabelPrivate
 enum {
   PROP_0,
   PROP_PROPERTY,
+  PROP_PROPERTY_NAME,
+  PROP_PACKING,
   PROP_CUSTOM_TEXT,
   PROP_CUSTOM_TOOLTIP,
 };
@@ -91,6 +97,7 @@ glade_property_label_class_init (GladePropertyLabelClass *class)
   GObjectClass *gobject_class = G_OBJECT_CLASS (class);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (class);
   
+  gobject_class->finalize = glade_property_label_finalize;
   gobject_class->dispose = glade_property_label_dispose;
   gobject_class->set_property = glade_property_label_set_real_property;
   gobject_class->get_property = glade_property_label_get_real_property;
@@ -102,6 +109,18 @@ glade_property_label_class_init (GladePropertyLabelClass *class)
      g_param_spec_string ("property", _("Property"),
 			  _("The GladeProperty to display a label for"),
 			  NULL, G_PARAM_READWRITE));
+
+  g_object_class_install_property
+      (gobject_class, PROP_PROPERTY_NAME,
+       g_param_spec_string ("property-name", _("Property Name"),
+			    _("The property name to use when loading by widget"),
+			    NULL, G_PARAM_READWRITE));
+
+  g_object_class_install_property
+      (gobject_class, PROP_PACKING,
+       g_param_spec_boolean ("packing", _("Packing"),
+			     _("Whether the property to load is a packing property or not"),
+			     FALSE, G_PARAM_READWRITE));
 
   g_object_class_install_property
       (gobject_class, PROP_CUSTOM_TEXT,
@@ -129,9 +148,21 @@ glade_property_label_class_init (GladePropertyLabelClass *class)
  *                     GObjectClass                        *
  ***********************************************************/
 static void
+glade_property_label_finalize (GObject *object)
+{
+  GladePropertyLabel *label = GLADE_PROPERTY_LABEL (object);
+
+  g_free (label->priv->property_name);
+
+  G_OBJECT_CLASS (glade_property_label_parent_class)->finalize (object);
+}
+
+static void
 glade_property_label_dispose (GObject *object)
 {
-  glade_property_label_set_property (GLADE_PROPERTY_LABEL (object), NULL);
+  GladePropertyLabel *label = GLADE_PROPERTY_LABEL (object);
+
+  glade_property_label_set_property (label, NULL);
 
   G_OBJECT_CLASS (glade_property_label_parent_class)->dispose (object);
 }
@@ -148,6 +179,12 @@ glade_property_label_set_real_property (GObject         *object,
     {
     case PROP_PROPERTY:
       glade_property_label_set_property (label, g_value_get_object (value));
+      break;
+    case PROP_PROPERTY_NAME:
+      glade_property_label_set_property_name (label, g_value_get_string (value));
+      break;
+    case PROP_PACKING:
+      glade_property_label_set_packing (label, g_value_get_boolean (value));
       break;
     case PROP_CUSTOM_TEXT:
       glade_property_label_set_custom_text (label, g_value_get_string (value));
@@ -173,6 +210,12 @@ glade_property_label_get_real_property (GObject         *object,
     {
     case PROP_PROPERTY:
       g_value_set_object (value, glade_property_label_get_property (label));
+      break;
+    case PROP_PROPERTY_NAME:
+      g_value_set_string (value, glade_property_label_get_property_name (label));
+      break;
+    case PROP_PACKING:
+      g_value_set_boolean (value, glade_property_label_get_packing (label));
       break;
     case PROP_CUSTOM_TEXT:
       g_value_set_string (value, glade_property_label_get_custom_text (label));
@@ -298,96 +341,82 @@ glade_property_label_new (void)
 }
 
 void
-glade_property_label_set_property (GladePropertyLabel    *label,
-				   GladeProperty         *property)
+glade_property_label_load_by_widget (GladePropertyLabel *label,
+				     GladeWidget        *widget)
+{
+  GladePropertyLabelPrivate *priv;
+  GladeProperty *property;
+
+  g_return_if_fail (GLADE_IS_PROPERTY_LABEL (label));
+  g_return_if_fail (widget == NULL || GLADE_IS_WIDGET (widget));
+  g_return_if_fail (label->priv->property_name != NULL);
+
+  priv = label->priv;
+
+  if (widget)
+    {
+      if (priv->packing)
+	property = glade_widget_get_pack_property (widget, priv->property_name);
+      else
+	property = glade_widget_get_property (widget, priv->property_name);
+
+      glade_property_label_set_property (label, property);
+    }
+  else
+    glade_property_label_set_property (label, NULL);
+}
+
+void
+glade_property_label_set_property_name (GladePropertyLabel *label,
+					const gchar        *property_name)
 {
   GladePropertyLabelPrivate *priv;
 
   g_return_if_fail (GLADE_IS_PROPERTY_LABEL (label));
-  g_return_if_fail (property == NULL || GLADE_IS_PROPERTY (property));
 
   priv = label->priv;
 
-  if (priv->property != property)
+  if (g_strcmp0 (priv->property_name, property_name))
     {
+      g_free (priv->property_name);
+      priv->property_name = g_strdup (property_name);
 
-      /* Disconnect last */
-      if (priv->property)
-	{
-	  if (priv->tooltip_id > 0)
-	    g_signal_handler_disconnect (priv->property, priv->tooltip_id);
-	  if (priv->state_id > 0)
-	    g_signal_handler_disconnect (priv->property, priv->state_id);
-	  if (priv->sensitive_id > 0)
-	    g_signal_handler_disconnect (priv->property, priv->sensitive_id);
-	  if (priv->enabled_id > 0)
-	    g_signal_handler_disconnect (priv->property, priv->enabled_id);
-
-	  priv->tooltip_id = 0;
-	  priv->state_id = 0;
-	  priv->sensitive_id = 0;
-	  priv->enabled_id = 0;
-
-	  g_object_weak_unref (G_OBJECT (priv->property),
-			       (GWeakNotify) glade_property_label_property_finalized, label);
-	}
-
-      priv->property = property;
-
-      /* Connect new */
-      if (priv->property)
-	{
-	  GladePropertyClass *pclass = glade_property_get_class (priv->property);
-
-	  priv->tooltip_id =
-	    g_signal_connect (G_OBJECT (priv->property),
-			      "tooltip-changed",
-			      G_CALLBACK (glade_property_label_tooltip_cb),
-			      label);
-	  priv->sensitive_id =
-	    g_signal_connect (G_OBJECT (priv->property),
-			      "notify::sensitive",
-			      G_CALLBACK (glade_property_label_sensitivity_cb),
-			      label);
-	  priv->state_id =
-	    g_signal_connect (G_OBJECT (priv->property),
-			      "notify::state",
-			      G_CALLBACK (glade_property_label_state_cb), label);
-	  priv->enabled_id =
-	    g_signal_connect (G_OBJECT (priv->property),
-			      "notify::enabled",
-			      G_CALLBACK (glade_property_label_sensitivity_cb),
-			      label);
-
-	  g_object_weak_ref (G_OBJECT (priv->property),
-			     (GWeakNotify) glade_property_label_property_finalized, label);
-
-	  /* Load initial tooltips
-	   */
-	  glade_property_label_tooltip_cb
-	    (property, glade_property_class_get_tooltip (pclass),
-	     glade_propert_get_insensitive_tooltip (property),
-	     glade_property_get_support_warning (property), label);
-
-	  /* Load initial sensitive state.
-	   */
-	  glade_property_label_sensitivity_cb (property, NULL, label);
-
-	  /* Load intial label state
-	   */
-	  glade_property_label_state_cb (property, NULL, label);
-	}
-
-      g_object_notify (G_OBJECT (label), "property");
+      g_object_notify (G_OBJECT (label), "property-name");
     }
 }
 
-GladeProperty *
-glade_property_label_get_property (GladePropertyLabel *label)
+const gchar *
+glade_property_label_get_property_name (GladePropertyLabel *label)
 {
   g_return_val_if_fail (GLADE_IS_PROPERTY_LABEL (label), NULL);
 
-  return label->priv->property;
+  return label->priv->property_name;
+}
+
+void
+glade_property_label_set_packing (GladePropertyLabel *label,
+				  gboolean            packing)
+{
+  GladePropertyLabelPrivate *priv;
+
+  g_return_if_fail (GLADE_IS_PROPERTY_LABEL (label));
+
+  priv = label->priv;
+
+  if (priv->packing != packing)
+    {
+      priv->packing = packing;
+
+      g_object_notify (G_OBJECT (label), "packing");
+    }
+}
+
+gboolean
+glade_property_label_get_packing (GladePropertyLabel *label)
+{
+  g_return_val_if_fail (GLADE_IS_PROPERTY_LABEL (label), FALSE);
+
+  return label->priv->packing;
 }
 
 void
@@ -495,4 +524,97 @@ glade_property_label_get_custom_tooltip (GladePropertyLabel *label)
     return gtk_widget_get_tooltip_text (priv->label);
 
   return NULL;
+}
+
+void
+glade_property_label_set_property (GladePropertyLabel    *label,
+				   GladeProperty         *property)
+{
+  GladePropertyLabelPrivate *priv;
+
+  g_return_if_fail (GLADE_IS_PROPERTY_LABEL (label));
+  g_return_if_fail (property == NULL || GLADE_IS_PROPERTY (property));
+
+  priv = label->priv;
+
+  if (priv->property != property)
+    {
+
+      /* Disconnect last */
+      if (priv->property)
+	{
+	  if (priv->tooltip_id > 0)
+	    g_signal_handler_disconnect (priv->property, priv->tooltip_id);
+	  if (priv->state_id > 0)
+	    g_signal_handler_disconnect (priv->property, priv->state_id);
+	  if (priv->sensitive_id > 0)
+	    g_signal_handler_disconnect (priv->property, priv->sensitive_id);
+	  if (priv->enabled_id > 0)
+	    g_signal_handler_disconnect (priv->property, priv->enabled_id);
+
+	  priv->tooltip_id = 0;
+	  priv->state_id = 0;
+	  priv->sensitive_id = 0;
+	  priv->enabled_id = 0;
+
+	  g_object_weak_unref (G_OBJECT (priv->property),
+			       (GWeakNotify) glade_property_label_property_finalized, label);
+	}
+
+      priv->property = property;
+
+      /* Connect new */
+      if (priv->property)
+	{
+	  GladePropertyClass *pclass = glade_property_get_class (priv->property);
+
+	  priv->tooltip_id =
+	    g_signal_connect (G_OBJECT (priv->property),
+			      "tooltip-changed",
+			      G_CALLBACK (glade_property_label_tooltip_cb),
+			      label);
+	  priv->sensitive_id =
+	    g_signal_connect (G_OBJECT (priv->property),
+			      "notify::sensitive",
+			      G_CALLBACK (glade_property_label_sensitivity_cb),
+			      label);
+	  priv->state_id =
+	    g_signal_connect (G_OBJECT (priv->property),
+			      "notify::state",
+			      G_CALLBACK (glade_property_label_state_cb), label);
+	  priv->enabled_id =
+	    g_signal_connect (G_OBJECT (priv->property),
+			      "notify::enabled",
+			      G_CALLBACK (glade_property_label_sensitivity_cb),
+			      label);
+
+	  g_object_weak_ref (G_OBJECT (priv->property),
+			     (GWeakNotify) glade_property_label_property_finalized, label);
+
+	  /* Load initial tooltips
+	   */
+	  glade_property_label_tooltip_cb
+	    (property, glade_property_class_get_tooltip (pclass),
+	     glade_propert_get_insensitive_tooltip (property),
+	     glade_property_get_support_warning (property), label);
+
+	  /* Load initial sensitive state.
+	   */
+	  glade_property_label_sensitivity_cb (property, NULL, label);
+
+	  /* Load intial label state
+	   */
+	  glade_property_label_state_cb (property, NULL, label);
+	}
+
+      g_object_notify (G_OBJECT (label), "property");
+    }
+}
+
+GladeProperty *
+glade_property_label_get_property (GladePropertyLabel *label)
+{
+  g_return_val_if_fail (GLADE_IS_PROPERTY_LABEL (label), NULL);
+
+  return label->priv->property;
 }
