@@ -27,6 +27,7 @@
 #include <gladeui/glade-property-class.h>
 #include <gladeui/glade-property.h>
 #include <gladeui/glade-signal-class.h>
+#include <gladeui/glade-signal-model.h>
 #include <gladeui/glade-signal.h>
 #include <gladeui/glade-project.h>
 #include <gladeui/glade-app.h>

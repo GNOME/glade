@@ -170,8 +170,6 @@ typedef enum
 	GLADE_CREATE_REASONS
 } GladeCreateReason;
 
-#define GLADE_TYPE_CREATE_REASON (glade_create_reason_get_type())
-
 /**
  * GladeSetPropertyFunc:
  * @adaptor: A #GladeWidgetAdaptor
@@ -697,7 +695,6 @@ struct _GladeWidgetAdaptorClass
 
 
 GType                 glade_widget_adaptor_get_type         (void) G_GNUC_CONST;
-GType                 glade_create_reason_get_type          (void) G_GNUC_CONST;
 
 GType                 glade_widget_adaptor_get_object_type  (GladeWidgetAdaptor   *adaptor);
 G_CONST_RETURN gchar *glade_widget_adaptor_get_name         (GladeWidgetAdaptor   *adaptor);

@@ -44,6 +44,7 @@ LT_INIT([dlopen win32-dll disable-static])
 
 AC_PATH_PROG(GLIB_COMPILE_RESOURCES, glib-compile-resources)
 AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal)
+AC_PATH_PROG(GLIB_MKENUMS, glib-mkenums)
 AC_PATH_PROG(DLLTOOL, dlltool)
 
 # If the source code has changed at all, increment GLADE_REVISION

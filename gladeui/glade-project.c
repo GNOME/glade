@@ -39,6 +39,7 @@
 #include <glib/gstdio.h>
 
 #include "glade.h"
+#include "gladeui-enum-types.h"
 #include "glade-widget.h"
 #include "glade-id-allocator.h"
 #include "glade-app.h"
@@ -178,26 +179,6 @@ typedef struct
   gchar *catalog;
   gint position;
 } CatalogInfo;
-
-GType
-glade_pointer_mode_get_type (void)
-{
-  static GType etype = 0;
-
-  if (etype == 0)
-    {
-      static const GEnumValue values[] = {
-        {GLADE_POINTER_SELECT, "select", "Select-widgets"},
-        {GLADE_POINTER_ADD_WIDGET, "add", "Add-widgets"},
-        {GLADE_POINTER_DRAG_RESIZE, "drag-resize", "Drag-and-resize-widgets"},
-        {GLADE_POINTER_MARGIN_EDIT, "margin-edit", "Edit-widget-margins"},
-        {GLADE_POINTER_ALIGN_EDIT, "align-edit", "Edit-widget-alignment"},
-        {0, NULL, NULL}
-      };
-      etype = g_enum_register_static ("GladePointerMode", values);
-    }
-  return etype;
-}
 
 static void glade_project_target_version_for_adaptor (GladeProject *project,
                                                       GladeWidgetAdaptor *adaptor,

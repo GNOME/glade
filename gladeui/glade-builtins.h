@@ -13,7 +13,6 @@ typedef struct _GladeParamSpecObjects   GladeParamSpecObjects;
 #define GLADE_TYPE_STOCK_IMAGE         (glade_standard_stock_image_get_type())
 #define	GLADE_TYPE_GLIST               (glade_glist_get_type())
 #define	GLADE_TYPE_PARAM_OBJECTS       (glade_param_objects_get_type())
-#define GLADE_TYPE_ITEM_APPEARANCE     (glade_item_appearance_get_type())
 
 #define GLADE_IS_STOCK(pspec) \
         (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), GLADE_TYPE_STOCK))
@@ -32,7 +31,6 @@ GType        glade_standard_stock_get_type       (void) G_GNUC_CONST;
 GType        glade_standard_stock_image_get_type (void) G_GNUC_CONST;
 GType        glade_glist_get_type                (void) G_GNUC_CONST;
 GType        glade_param_objects_get_type        (void) G_GNUC_CONST;
-GType        glade_item_appearance_get_type      (void) G_GNUC_CONST;
 
 GParamSpec  *glade_param_spec_objects      (const gchar   *name,
 					    const gchar   *nick,

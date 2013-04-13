@@ -38,6 +38,7 @@
  */
 
 #include "glade.h"
+#include "gladeui-enum-types.h"
 #include "glade-app.h"
 #include "glade-palette.h"
 #include "glade-catalog.h"

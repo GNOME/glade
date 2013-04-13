@@ -13,7 +13,6 @@ G_BEGIN_DECLS
 #define GLADE_IS_PROJECT(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_PROJECT))
 #define GLADE_IS_PROJECT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_PROJECT))
 #define GLADE_PROJECT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GLADE_TYPE_PROJECT, GladeProjectClass))
-#define GLADE_TYPE_POINTER_MODE       (glade_pointer_mode_get_type())
 
 typedef struct _GladeProjectPrivate  GladeProjectPrivate;
 typedef struct _GladeProjectClass    GladeProjectClass;
@@ -128,7 +127,6 @@ struct _GladeProjectClass
 };
 
 
-GType               glade_pointer_mode_get_type       (void) G_GNUC_CONST;
 GType               glade_project_get_type            (void) G_GNUC_CONST;
 
 GladeProject       *glade_project_new                 (void);

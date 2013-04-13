@@ -48,7 +48,10 @@ BUILT_SOURCES = \
 	glade-marshallers.c \
 	glade-marshallers.h \
 	gladeui-resources.c \
-	gladeui-resources.h
+	gladeui-resources.h \
+	gladeui-enum-types.c \
+	gladeui-enum-types.h
+
 
 UI_FILES = 				\
 	glade-editor.ui			\
@@ -66,7 +69,10 @@ EXTRA_DIST = 			\
 	gladeui.rc.in 		\
 	icon-naming-spec.c 	\
 	glade-previewer.rc.in 	\
-	gladeui-resources.gresource.xml
+	gladeui-resources.gresource.xml \
+	gladeui-enum-types.c.template	\
+	gladeui-enum-types.h.template
+
 
 # The glade core library
 libgladeui_2_la_SOURCES = \
@@ -207,6 +213,17 @@ glade-marshallers.c: glade-marshallers.list $(GLIB_GENMARSHAL)
 	$(GLIB_GENMARSHAL) --prefix=_glade_marshal $(srcdir)/glade-marshallers.list --body --header > glade-marshallers-c.tmp     \
 	&& mv glade-marshallers-c.tmp glade-marshallers.c \
 	|| ( rm -f glade-marshallers-c.tmp && exit 1 )
+
+#
+# Enum type generation
+#
+gladeui-enum-types.h: gladeui-enum-types.h.template $(libgladeuiinclude_HEADERS) $(GLIB_MKENUMS)
+	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template $@.template \
+	$(libgladeuiinclude_HEADERS)) > $@
+
+gladeui-enum-types.c: gladeui-enum-types.c.template $(libgladeuiinclude_HEADERS) $(GLIB_MKENUMS)
+	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template $@.template \
+	$(libgladeuiinclude_HEADERS)) > $@
 
 CLEANFILES = $(BUILT_SOURCES)
 

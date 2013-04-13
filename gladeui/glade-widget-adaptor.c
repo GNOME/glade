@@ -1485,28 +1485,6 @@ glade_widget_adaptor_class_init (GladeWidgetAdaptorClass *adaptor_class)
   g_type_class_add_private (adaptor_class, sizeof (GladeWidgetAdaptorPrivate));
 }
 
-GType
-glade_create_reason_get_type (void)
-{
-  static GType etype = 0;
-
-  if (etype == 0)
-    {
-      static const GEnumValue values[] = {
-        {GLADE_CREATE_USER, "GLADE_CREATE_USER", "create-user"},
-        {GLADE_CREATE_COPY, "GLADE_CREATE_COPY", "create-copy"},
-        {GLADE_CREATE_LOAD, "GLADE_CREATE_LOAD", "create-load"},
-        {GLADE_CREATE_REBUILD, "GLADE_CREATE_REBUILD", "create-rebuild"},
-        {0, NULL, NULL}
-      };
-
-      etype = g_enum_register_static ("GladeCreateReason", values);
-
-    }
-
-  return etype;
-}
-
 /*******************************************************************************
                         Synthetic Object Derivation
  *******************************************************************************/
