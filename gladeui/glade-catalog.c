@@ -494,6 +494,12 @@ catalogs_from_path (GList *catalogs, const gchar *path)
           if (!g_str_has_suffix (filename, ".xml"))
             continue;
 
+	  /* Special case, ignore gresource files (which are present
+	   * while running tests)
+	   */
+	  if (g_str_has_suffix (filename, ".gresource.xml"))
+	    continue;
+
           catalog_filename = g_build_filename (path, filename, NULL);
           catalog = catalog_open (catalog_filename);
           g_free (catalog_filename);
