@@ -556,8 +556,13 @@ embedded in another object</_tooltip>
         <property id="use-underline" _name="Use Underline" since="2.16"/>
 
 	<!-- GtkActivatable -->
-      	<property id="related-action" _name="Related Action" custom-layout="True" since="2.16" save="False" needs-sync="True"/>
-      	<property id="use-action-appearance" _name="Use Action Appearance" save="False" custom-layout="True" needs-sync="True" since="2.16" default="False"/>
+      	<property id="related-action" _name="Related Action" custom-layout="True" since="2.16" save="False" needs-sync="True"
+		  optional="True" optional-default="False"/>
+      	<property id="use-action-appearance" _name="Use Action Appearance" save="False" custom-layout="True" needs-sync="True"
+		  since="2.16" default="False" optional="True" optional-default="False"/>
+
+	<!-- GtkActionable -->
+      	<property id="action-name" _name="Action Name" custom-layout="True" since="3.4"/>
 
 	<!-- Atk click property -->
 	<property id="atk-click" _name="Click" ignore="True" atk-property="True" save="False" 
@@ -785,8 +790,10 @@ embedded in another object</_tooltip>
 
       <properties>
 	<!-- GtkActivatable -->
-      	<property id="related-action" _name="Related Action" custom-layout="True" since="2.16" save="False" needs-sync="True"/>
-      	<property id="use-action-appearance" _name="Use Action Appearance" custom-layout="True" save="False" needs-sync="True" since="2.16" default="False"/>
+      	<property id="related-action" _name="Related Action" custom-layout="True" since="2.16" save="False" needs-sync="True"
+		  optional="True" optional-default="False"/>
+      	<property id="use-action-appearance" _name="Use Action Appearance" custom-layout="True" save="False" needs-sync="True"
+		  since="2.16" default="False" optional="True" optional-default="False"/>
       </properties>
 
     </glade-widget-class>
@@ -799,6 +806,10 @@ embedded in another object</_tooltip>
       <set-property-function>glade_gtk_tool_button_set_property</set-property-function>
       <read-widget-function>glade_gtk_tool_button_read_widget</read-widget-function>
       <properties>
+
+	<!-- GtkActionable -->
+      	<property id="action-name" _name="Action Name" custom-layout="True" since="3.4"/>
+
 	<!-- Virtual label type property -->
         <property id="custom-label" visible="False" save="False">
 	  <parameter-spec>
@@ -1114,8 +1125,13 @@ embedded in another object</_tooltip>
 	</property>
 
 	<!-- GtkActivatable -->
-      	<property id="related-action" _name="Related Action" custom-layout="True" since="2.16" save="False" needs-sync="True"/>
-      	<property id="use-action-appearance" _name="Use Action Appearance" custom-layout="True" save="False" needs-sync="True" since="2.16" default="False"/>
+      	<property id="related-action" _name="Related Action" custom-layout="True" since="2.16" save="False" needs-sync="True"
+		  optional="True" optional-default="False"/>
+      	<property id="use-action-appearance" _name="Use Action Appearance" custom-layout="True" save="False" needs-sync="True"
+		  since="2.16" default="False" optional="True" optional-default="False"/>
+
+	<!-- GtkActionable -->
+      	<property id="action-name" _name="Action Name" custom-layout="True" since="3.4"/>
 
 	<!-- Atk click property -->
 	<property id="atk-click" _name="Click" ignore="True" atk-property="True" save="False" multiline="True">
@@ -1198,18 +1214,24 @@ embedded in another object</_tooltip>
 
     <glade-widget-class name="GtkSwitch" generic-name="switch" _title="Switch">
       <post-create-function>glade_gtk_switch_post_create</post-create-function>
-      <set-property-function>glade_gtk_switch_set_property</set-property-function>
       <create-editable-function>glade_gtk_switch_create_editable</create-editable-function>
       <properties>
+
         <!-- GtkActivatable -->
-        <property id="related-action" _name="Related Action" custom-layout="True" save="False" needs-sync="True">
+        <property id="related-action" _name="Related Action" custom-layout="True" save="False" needs-sync="True"
+		  optional="True" optional-default="False">
       	  <parameter-spec>
 	    <type>GParamObject</type>
 	    <value-type>GtkToggleAction</value-type>
           </parameter-spec>
         </property>
-        <property id="use-action-appearance" _name="Use Action Appearance" custom-layout="True" save="False" needs-sync="True" default="False"/>
+        <property id="use-action-appearance" _name="Use Action Appearance" custom-layout="True" save="False" needs-sync="True"
+		  default="False" optional="True" optional-default="False"/>
       </properties>
+
+      <!-- GtkActionable -->
+      <property id="action-name" _name="Action Name" custom-layout="True" since="3.4"/>
+
     </glade-widget-class>
 
     <glade-widget-class name="GtkFileChooserButton" generic-name="filechooserbutton" _title="File Chooser Button">

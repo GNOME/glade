@@ -13,4 +13,4 @@ endif
 dtddir = $(pkgdatadir)/catalogs
 dtd_DATA = glade-catalog.dtd
 
-EXTRA_DIST = glade-catalog.dtd
+EXTRA_DIST = glade-catalog.dtd gtk-private/glade-gtk-private.xml

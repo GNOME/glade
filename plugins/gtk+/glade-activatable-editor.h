@@ -22,6 +22,7 @@
 #define _GLADE_ACTIVATABLE_EDITOR_H_
 
 #include <gtk/gtk.h>
+#include <gladeui/glade.h>
 
 G_BEGIN_DECLS
 
@@ -34,19 +35,18 @@ G_BEGIN_DECLS
 
 typedef struct _GladeActivatableEditor        GladeActivatableEditor;
 typedef struct _GladeActivatableEditorClass   GladeActivatableEditorClass;
+typedef struct _GladeActivatableEditorPrivate GladeActivatableEditorPrivate;
 
 struct _GladeActivatableEditor
 {
-	GtkVBox  parent;
+  GladeEditorSkeleton  parent;
 
-	GtkWidget *embed;
-
-	GList *properties;         /* A list of eprops to update at load() time */
+  GladeActivatableEditorPrivate *priv;
 };
 
 struct _GladeActivatableEditorClass
 {
-	GtkVBoxClass parent;
+  GladeEditorSkeletonClass parent;
 };
 
 GType            glade_activatable_editor_get_type (void) G_GNUC_CONST;

@@ -23,22 +23,16 @@
  */
 
 #include <config.h>
-#include "glade-gtk-activatable.h"
 #include "glade-activatable-editor.h"
 
 GladeEditable *
 glade_gtk_switch_create_editable (GladeWidgetAdaptor *adaptor,
                                   GladeEditorPageType type)
 {
-  GladeEditable *editable;
-
-  /* Get base editable */
-  editable = GWA_GET_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
-
   if (type == GLADE_PAGE_GENERAL)
-    return (GladeEditable *) glade_activatable_editor_new (adaptor, editable);
+    return (GladeEditable *) glade_activatable_editor_new (adaptor, NULL);
 
-  return editable;
+  return GWA_GET_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
 }
 
 void
@@ -53,19 +47,4 @@ glade_gtk_switch_post_create (GladeWidgetAdaptor *adaptor,
   g_return_if_fail (GTK_IS_SWITCH (widget));
   gwidget = glade_widget_get_from_gobject (widget);
   g_return_if_fail (GLADE_IS_WIDGET (gwidget));
-
-  g_signal_connect (glade_widget_get_project (gwidget), "parse-finished",
-                    G_CALLBACK (glade_gtk_activatable_parse_finished),
-                    gwidget);
-}
-
-void
-glade_gtk_switch_set_property (GladeWidgetAdaptor *adaptor,
-                               GObject *object,
-                               const gchar *id,
-                               const GValue *value)
-{
-  glade_gtk_activatable_evaluate_property_sensitivity (object, id, value);
-
-  GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
 }

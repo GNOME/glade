@@ -40,7 +40,6 @@
 #include "glade-cell-renderer-editor.h"
 #include "glade-treeview-editor.h"
 #include "glade-entry-editor.h"
-#include "glade-gtk-activatable.h"
 #include "glade-activatable-editor.h"
 #include "glade-tool-item-group-editor.h"
 #include "glade-string-list.h"
@@ -694,7 +693,7 @@ glade_gtk_widget_write_widget (GladeWidgetAdaptor * adaptor,
                                GladeWidget * widget,
                                GladeXmlContext * context, GladeXmlNode * node)
 {
-  GObject *obj;
+  GladeProperty *prop;
 
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
 	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
@@ -702,20 +701,13 @@ glade_gtk_widget_write_widget (GladeWidgetAdaptor * adaptor,
 
   /* Make sure use-action-appearance and related-action properties are
    * ordered in a sane way and are only saved if there is an action */
-  if ((obj = glade_widget_get_object (widget)) &&
-      GTK_IS_ACTIVATABLE (obj) &&
-      gtk_activatable_get_related_action (GTK_ACTIVATABLE (obj)))
-    {
-      GladeProperty *prop;
+  prop = glade_widget_get_property (widget, "use-action-appearance");
+  if (prop)
+    glade_property_write (prop, context, node);
 
-      prop = glade_widget_get_property (widget, "use-action-appearance");
-      if (prop)
-	glade_property_write (prop, context, node);
-
-      prop = glade_widget_get_property (widget, "related-action");
-      if (prop)
-	glade_property_write (prop, context, node);
-    }
+  prop = glade_widget_get_property (widget, "related-action");
+  if (prop)
+    glade_property_write (prop, context, node);
 
   /* First chain up and read in all the normal properties.. */
   GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
@@ -3717,19 +3709,10 @@ GladeEditable *
 glade_gtk_button_create_editable (GladeWidgetAdaptor * adaptor,
                                   GladeEditorPageType type)
 {
-  GladeEditable *editable;
-
-  /* Get base editable */
-  editable =
-      GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
-
   if (type == GLADE_PAGE_GENERAL)
-    {
-      editable =
-          (GladeEditable *) glade_activatable_editor_new (adaptor, editable);
-      return (GladeEditable *) glade_button_editor_new (adaptor, editable);
-    }
-  return editable;
+    return (GladeEditable *) glade_button_editor_new (adaptor, NULL);
+
+  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }
 
 static void
@@ -3769,11 +3752,7 @@ glade_gtk_button_post_create (GladeWidgetAdaptor * adaptor,
   glade_widget_property_set_sensitive (gbutton, "response-id", FALSE,
                                        RESPID_INSENSITIVE_MSG);
 
-  if (reason == GLADE_CREATE_LOAD)
-    g_signal_connect (glade_widget_get_project (gbutton), "parse-finished",
-		      G_CALLBACK (glade_gtk_activatable_parse_finished),
-		      gbutton);
-  else if (reason == GLADE_CREATE_USER)
+  if (reason == GLADE_CREATE_USER)
     glade_gtk_button_update_stock (gbutton);
 }
 
@@ -3784,8 +3763,6 @@ glade_gtk_button_set_property (GladeWidgetAdaptor * adaptor,
 {
   GladeWidget *widget = glade_widget_get_from_gobject (object);
   GladeProperty *property = glade_widget_get_property (widget, id);
-
-  glade_gtk_activatable_evaluate_property_sensitivity (object, id, value);
 
   if (strcmp (id, "custom-child") == 0)
     {
@@ -4123,15 +4100,10 @@ GladeEditable *
 glade_gtk_recent_chooser_menu_create_editable (GladeWidgetAdaptor * adaptor,
 					       GladeEditorPageType type)
 {
-  GladeEditable *editable;
-
-  /* Get base editable */
-  editable = GWA_GET_CLASS (GTK_TYPE_MENU)->create_editable (adaptor, type);
-
   if (type == GLADE_PAGE_GENERAL)
-    return (GladeEditable *) glade_activatable_editor_new (adaptor, editable);
+    return (GladeEditable *) glade_activatable_editor_new (adaptor, NULL);
 
-  return editable;
+  return GWA_GET_CLASS (GTK_TYPE_MENU)->create_editable (adaptor, type);
 }
 
 void
@@ -4141,8 +4113,6 @@ glade_gtk_recent_chooser_menu_set_property (GladeWidgetAdaptor * adaptor,
 {
   GladeWidget *widget = glade_widget_get_from_gobject (object);
   GladeProperty *property = glade_widget_get_property (widget, id);
-
-  glade_gtk_activatable_evaluate_property_sensitivity (object, id, value);
 
   if (GPC_VERSION_CHECK (glade_property_get_class (property), gtk_major_version, gtk_minor_version + 1))
     GWA_GET_CLASS (GTK_TYPE_MENU)->set_property (adaptor, object, id, value);
@@ -4748,16 +4718,10 @@ GladeEditable *
 glade_gtk_activatable_create_editable (GladeWidgetAdaptor * adaptor,
                                        GladeEditorPageType type)
 {
-  GladeEditable *editable;
-
-  /* Get base editable */
-  editable =
-      GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
-
   if (type == GLADE_PAGE_GENERAL)
-    return (GladeEditable *) glade_activatable_editor_new (adaptor, editable);
+    return (GladeEditable *) glade_activatable_editor_new (adaptor, NULL);
 
-  return editable;
+  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
 }
 
 void
@@ -4829,11 +4793,6 @@ glade_gtk_menu_item_post_create (GladeWidgetAdaptor * adaptor,
       gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
       gtk_container_add (GTK_CONTAINER (object), label);
     }
-
-  if (reason == GLADE_CREATE_LOAD)
-    g_signal_connect (G_OBJECT (glade_widget_get_project (gitem)), "parse-finished",
-		      G_CALLBACK (glade_gtk_activatable_parse_finished),
-		      gitem);
 }
 
 GList *
@@ -4954,8 +4913,6 @@ glade_gtk_menu_item_set_property (GladeWidgetAdaptor * adaptor,
 {
   GladeWidget *gwidget = glade_widget_get_from_gobject (object);
   GladeProperty *property = glade_widget_get_property (gwidget, id);
-
-  glade_gtk_activatable_evaluate_property_sensitivity (object, id, value);
 
   if (!strcmp (id, "use-underline"))
     glade_gtk_menu_item_set_use_underline (object, value);
@@ -5965,11 +5922,6 @@ glade_gtk_tool_item_post_create (GladeWidgetAdaptor *adaptor,
   if (reason == GLADE_CREATE_USER &&
       gtk_bin_get_child (GTK_BIN (object)) == NULL)
     gtk_container_add (GTK_CONTAINER (object), glade_placeholder_new ());
-
-  if (reason == GLADE_CREATE_LOAD)
-    g_signal_connect (G_OBJECT (glade_widget_get_project (gitem)), "parse-finished",
-		      G_CALLBACK (glade_gtk_activatable_parse_finished),
-		      gitem);
 }
 
 void
@@ -5980,7 +5932,6 @@ glade_gtk_tool_item_set_property (GladeWidgetAdaptor * adaptor,
   GladeWidget *gwidget = glade_widget_get_from_gobject (object);
   GladeProperty *property = glade_widget_get_property (gwidget, id);
 
-  glade_gtk_activatable_evaluate_property_sensitivity (object, id, value);
   if (GPC_VERSION_CHECK
       (glade_property_get_class (property), gtk_major_version, gtk_minor_version + 1))
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id,

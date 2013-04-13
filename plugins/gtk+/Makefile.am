@@ -48,7 +48,6 @@ libgladegtk_la_SOURCES = \
 	glade-gtk-box.c \
 	glade-gtk-action-widgets.c \
 	glade-gtk-info-bar.c \
-	glade-gtk-activatable.c \
 	glade-gtk-switch.c
 
 libgladegtk_la_LDFLAGS     = -module -avoid-version $(AM_LDFLAGS)
@@ -77,7 +76,6 @@ noinst_HEADERS = \
 	glade-tool-item-group-editor.h \
 	glade-string-list.h \
 	glade-gtk-marshallers.h \
-	glade-gtk-activatable.h \
 	glade-gtk-action-widgets.h \
 	glade-gtk-resources.h
 

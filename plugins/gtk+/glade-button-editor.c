@@ -109,16 +109,13 @@ glade_button_editor_load (GladeEditable * editable, GladeWidget * widget)
   GladeButtonEditor *button_editor = GLADE_BUTTON_EDITOR (editable);
   GladeWidget *gchild = NULL;
   GtkWidget *child, *button;
-  gboolean use_stock = FALSE, use_appearance = FALSE;
+  gboolean use_stock = FALSE;
 
   /* Chain up to default implementation */
   parent_editable_iface->load (editable, widget);
 
   if (widget)
     {
-      glade_widget_property_get (widget, "use-action-appearance",
-                                 &use_appearance);
-
       button = GTK_WIDGET (glade_widget_get_object (widget));
       child = gtk_bin_get_child (GTK_BIN (button));
       if (child)
@@ -157,12 +154,6 @@ glade_button_editor_load (GladeEditable * editable, GladeWidget * widget)
                                             (button_editor->priv->label_radio), TRUE);
             }
         }
-
-      if (use_appearance)
-        gtk_widget_set_sensitive (button_editor->priv->custom_radio, FALSE);
-      else
-        gtk_widget_set_sensitive (button_editor->priv->custom_radio, TRUE);
-
     }
 }
 
@@ -198,7 +189,6 @@ standard_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
   GladeWidget *gchild = NULL, *gwidget;
   GtkWidget *child, *button;
   GValue value = { 0, };
-  gboolean use_appearance = FALSE;
 
   gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (button_editor));
 
@@ -227,28 +217,20 @@ standard_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
       glade_command_delete (&widgets);
     }
 
-  property =
-      glade_widget_get_property (gwidget, "custom-child");
+  property = glade_widget_get_property (gwidget, "custom-child");
   glade_command_set_property (property, FALSE);
 
   /* Setup reasonable defaults for button label. */
   property = glade_widget_get_property (gwidget, "stock");
   glade_command_set_property (property, NULL);
 
-  property =
-      glade_widget_get_property (gwidget, "use-stock");
+  property = glade_widget_get_property (gwidget, "use-stock");
   glade_command_set_property (property, FALSE);
 
-  glade_widget_property_get (gwidget,
-                             "use-action-appearance", &use_appearance);
-  if (!use_appearance)
-    {
-      property =
-          glade_widget_get_property (gwidget, "label");
-      glade_property_get_default (property, &value);
-      glade_command_set_property_value (property, &value);
-      g_value_unset (&value);
-    }
+  property = glade_widget_get_property (gwidget, "label");
+  glade_property_get_default (property, &value);
+  glade_command_set_property_value (property, &value);
+  g_value_unset (&value);
 
   glade_command_pop_group ();
 
@@ -280,8 +262,7 @@ custom_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
   property = glade_widget_get_property (gwidget, "image");
   glade_command_set_property (property, NULL);
 
-  property =
-      glade_widget_get_property (gwidget, "use-stock");
+  property = glade_widget_get_property (gwidget, "use-stock");
   glade_command_set_property (property, FALSE);
 
   property = glade_widget_get_property (gwidget, "stock");
@@ -291,8 +272,7 @@ custom_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
   glade_command_set_property (property, NULL);
 
   /* Add a placeholder via the custom-child property... */
-  property =
-      glade_widget_get_property (gwidget, "custom-child");
+  property = glade_widget_get_property (gwidget, "custom-child");
   glade_command_set_property (property, TRUE);
 
   glade_command_pop_group ();
@@ -307,7 +287,6 @@ static void
 stock_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
 {
   GladeProperty *property;
-  gboolean use_appearance = FALSE;
   GladeWidget *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (button_editor));
 
   if (glade_editable_loading (GLADE_EDITABLE (button_editor)) || !gwidget)
@@ -326,16 +305,10 @@ stock_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
   property = glade_widget_get_property (gwidget, "image");
   glade_command_set_property (property, NULL);
 
-  glade_widget_property_get (gwidget, "use-action-appearance", &use_appearance);
-  if (!use_appearance)
-    {
-      property =
-          glade_widget_get_property (gwidget, "label");
-      glade_command_set_property (property, "");
-    }
+  property = glade_widget_get_property (gwidget, "label");
+  glade_command_set_property (property, "");
 
-  property =
-      glade_widget_get_property (gwidget, "use-stock");
+  property = glade_widget_get_property (gwidget, "use-stock");
   glade_command_set_property (property, TRUE);
 
   property = glade_widget_get_property (gwidget, "stock");
@@ -354,7 +327,6 @@ label_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
 {
   GladeProperty *property;
   GValue value = { 0, };
-  gboolean use_appearance = FALSE;
   GladeWidget *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (button_editor));
 
   if (glade_editable_loading (GLADE_EDITABLE (button_editor)) || !gwidget)
@@ -375,15 +347,10 @@ label_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
   property = glade_widget_get_property (gwidget, "use-stock");
   glade_command_set_property (property, FALSE);
 
-  glade_widget_property_get (gwidget, "use-action-appearance", &use_appearance);
-  if (!use_appearance)
-    {
-      property =
-          glade_widget_get_property (gwidget, "label");
-      glade_property_get_default (property, &value);
-      glade_command_set_property_value (property, &value);
-      g_value_unset (&value);
-    }
+  property = glade_widget_get_property (gwidget, "label");
+  glade_property_get_default (property, &value);
+  glade_command_set_property_value (property, &value);
+  g_value_unset (&value);
 
   glade_command_pop_group ();
 

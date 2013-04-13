@@ -20,26 +20,18 @@
  */
 
 #include <config.h>
-#include <gladeui/glade.h>
 #include <glib/gi18n-lib.h>
 #include <gdk/gdkkeysyms.h>
 
 #include "glade-activatable-editor.h"
 
-
-static void glade_activatable_editor_finalize (GObject * object);
-
-static void glade_activatable_editor_editable_init (GladeEditableIface * iface);
-
 static void glade_activatable_editor_grab_focus (GtkWidget * widget);
 
-static GladeEditableIface *parent_editable_iface;
+struct _GladeActivatableEditorPrivate {
+  GtkWidget *embed;
+};
 
-G_DEFINE_TYPE_WITH_CODE (GladeActivatableEditor, glade_activatable_editor,
-                         GTK_TYPE_VBOX,
-                         G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
-                                                glade_activatable_editor_editable_init));
-
+G_DEFINE_TYPE (GladeActivatableEditor, glade_activatable_editor, GLADE_TYPE_EDITOR_SKELETON);
 
 static void
 glade_activatable_editor_class_init (GladeActivatableEditorClass * klass)
@@ -47,68 +39,24 @@ glade_activatable_editor_class_init (GladeActivatableEditorClass * klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-  object_class->finalize = glade_activatable_editor_finalize;
   widget_class->grab_focus = glade_activatable_editor_grab_focus;
+
+  gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-activatable-editor.ui");
+  gtk_widget_class_bind_child (widget_class, GladeActivatableEditorPrivate, embed);
+
+  g_type_class_add_private (object_class, sizeof (GladeActivatableEditorPrivate));  
+
 }
 
 static void
 glade_activatable_editor_init (GladeActivatableEditor * self)
 {
-}
+  self->priv = 
+    G_TYPE_INSTANCE_GET_PRIVATE (self,
+				 GLADE_TYPE_ACTIVATABLE_EDITOR,
+				 GladeActivatableEditorPrivate);
 
-static void
-glade_activatable_editor_load (GladeEditable * editable, GladeWidget * widget)
-{
-  GladeActivatableEditor *activatable_editor =
-      GLADE_ACTIVATABLE_EDITOR (editable);
-  GList *l;
-
-  /* Chain up to default implementation */
-  parent_editable_iface->load (editable, widget);
-
-  /* load the embedded editable... */
-  if (activatable_editor->embed)
-    glade_editable_load (GLADE_EDITABLE (activatable_editor->embed), widget);
-
-  for (l = activatable_editor->properties; l; l = l->next)
-    glade_editor_property_load_by_widget (GLADE_EDITOR_PROPERTY (l->data),
-                                          widget);
-}
-
-static void
-glade_activatable_editor_set_show_name (GladeEditable * editable,
-                                        gboolean show_name)
-{
-  GladeActivatableEditor *activatable_editor =
-      GLADE_ACTIVATABLE_EDITOR (editable);
-
-  glade_editable_set_show_name (GLADE_EDITABLE (activatable_editor->embed),
-                                show_name);
-}
-
-static void
-glade_activatable_editor_editable_init (GladeEditableIface * iface)
-{
-  parent_editable_iface = g_type_default_interface_peek (GLADE_TYPE_EDITABLE);
-
-  iface->load = glade_activatable_editor_load;
-  iface->set_show_name = glade_activatable_editor_set_show_name;
-}
-
-static void
-glade_activatable_editor_finalize (GObject * object)
-{
-  GladeActivatableEditor *activatable_editor =
-      GLADE_ACTIVATABLE_EDITOR (object);
-
-  if (activatable_editor->properties)
-    g_list_free (activatable_editor->properties);
-  activatable_editor->properties = NULL;
-  activatable_editor->embed = NULL;
-
-  glade_editable_load (GLADE_EDITABLE (object), NULL);
-
-  G_OBJECT_CLASS (glade_activatable_editor_parent_class)->finalize (object);
+  gtk_widget_init_template (GTK_WIDGET (self));
 }
 
 static void
@@ -117,283 +65,12 @@ glade_activatable_editor_grab_focus (GtkWidget * widget)
   GladeActivatableEditor *activatable_editor =
       GLADE_ACTIVATABLE_EDITOR (widget);
 
-  gtk_widget_grab_focus (activatable_editor->embed);
-}
-
-static void
-table_attach (GtkWidget * table, GtkWidget * child, gint pos, gint row)
-{
-  gtk_grid_attach (GTK_GRID (table), child, pos, row, 1, 1);
-
-  if (pos)
-    gtk_widget_set_hexpand (child, TRUE);
-}
-
-static void
-reset_property (GladeWidget * gwidget, const gchar * property_name)
-{
-  GladeProperty *property;
-  GValue value = { 0, };
-
-  if ((property = glade_widget_get_property (gwidget, property_name)) != NULL)
-    {
-      glade_property_get_default (property, &value);
-      glade_command_set_property_value (property, &value);
-      g_value_unset (&value);
-    }
-}
-
-static GladeWidget *
-get_image_widget (GladeWidget * widget)
-{
-  GtkWidget *image = NULL;
-
-  if (GTK_IS_IMAGE_MENU_ITEM (glade_widget_get_object (widget)))
-    image = gtk_image_menu_item_get_image (GTK_IMAGE_MENU_ITEM (glade_widget_get_object (widget)));
-  return image ? glade_widget_get_from_gobject (image) : NULL;
-}
-
-static void
-reset_properties (GladeWidget * gwidget,
-                  GtkAction * action,
-                  gboolean use_appearance, gboolean use_appearance_changed)
-{
-  GObject *object;
-
-  reset_property (gwidget, "visible");
-  reset_property (gwidget, "sensitive");
-
-  object = glade_widget_get_object (gwidget);
-
-  if (GTK_IS_MENU_ITEM (object))
-    {
-      if (!use_appearance_changed)
-        reset_property (gwidget, "accel-group");
-
-      if (use_appearance)
-        {
-          GladeWidget *image;
-          GladeProperty *property;
-
-          reset_property (gwidget, "stock");
-          reset_property (gwidget, "use-underline");
-          reset_property (gwidget, "use-stock");
-
-          /* Delete image... */
-          if ((image = get_image_widget (gwidget)) != NULL)
-            {
-              GList list = { 0, };
-              list.data = image;
-              glade_command_unlock_widget (image);
-              glade_command_delete (&list);
-            }
-
-          property = glade_widget_get_property (gwidget, "label");
-          glade_command_set_property (property, NULL);
-        }
-      else if (use_appearance_changed)
-        {
-          reset_property (gwidget, "stock");
-          reset_property (gwidget, "use-underline");
-          reset_property (gwidget, "use-stock");
-
-          reset_property (gwidget, "label");
-
-        }
-    }
-  else if (GTK_IS_TOOL_ITEM (object))
-    {
-      reset_property (gwidget, "visible-horizontal");
-      reset_property (gwidget, "visible-vertical");
-      reset_property (gwidget, "is-important");
-
-      if (use_appearance || use_appearance_changed)
-        {
-          reset_property (gwidget, "label-widget");
-          reset_property (gwidget, "custom-label");
-          reset_property (gwidget, "stock-id");
-          reset_property (gwidget, "icon-name");
-          reset_property (gwidget, "icon");
-          reset_property (gwidget, "icon-widget");
-          reset_property (gwidget, "image-mode");
-        }
-    }
-  else if (GTK_IS_BUTTON (object))
-    {
-      reset_property (gwidget, "active");
-
-
-      if (use_appearance)
-        {
-
-          GtkWidget *button, *child;
-          GladeWidget *gchild = NULL;
-          GladeProperty *property;
-
-          /* If theres a widget customly inside... command remove it first... */
-          button = GTK_WIDGET (object);
-          child = gtk_bin_get_child (GTK_BIN (button));
-          if (child)
-            gchild = glade_widget_get_from_gobject (child);
-
-          if (gchild && glade_widget_get_parent (gchild) == gwidget)
-            {
-              GList widgets = { 0, };
-              widgets.data = gchild;
-              glade_command_delete (&widgets);
-            }
-
-          reset_property (gwidget, "custom-child");
-          reset_property (gwidget, "stock");
-          //reset_property (gwidget, "use-stock");
-
-          property = glade_widget_get_property (gwidget, "label");
-          glade_command_set_property (property, "");
-
-        }
-      else if (use_appearance_changed)
-        {
-          reset_property (gwidget, "label");
-          reset_property (gwidget, "custom-child");
-          reset_property (gwidget, "stock");
-          //reset_property (gwidget, "use-stock");
-        }
-    }
-  /* Make sure none of our property resets screw with the current selection,
-   * since we rely on the selection during commit time.
-   */
-  glade_project_selection_set (glade_widget_get_project (gwidget), object, TRUE);
-}
-
-static void
-related_action_pre_commit (GladeEditorProperty * property,
-                           GValue * value,
-                           GladeActivatableEditor * activatable_editor)
-{
-  GladeWidget *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (activatable_editor));
-  GtkAction *action = g_value_get_object (value);
-  gboolean use_appearance = FALSE;
-
-  glade_widget_property_get (gwidget, "use-action-appearance", &use_appearance);
-
-  glade_command_push_group (_("Setting %s action"), glade_widget_get_name (gwidget));
-
-  reset_properties (gwidget, action, use_appearance, FALSE);
-
-}
-
-static void
-related_action_post_commit (GladeEditorProperty * property,
-                            GValue * value,
-                            GladeActivatableEditor * activatable_editor)
-{
-
-  glade_command_pop_group ();
-}
-
-
-static void
-use_appearance_pre_commit (GladeEditorProperty * property,
-                           GValue * value,
-                           GladeActivatableEditor * activatable_editor)
-{
-  GladeWidget *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (activatable_editor));
-  GtkAction *action = NULL;
-  gboolean use_appearance = g_value_get_boolean (value);
-
-  glade_widget_property_get (gwidget, "related-action", &action);
-
-  glade_editable_block (GLADE_EDITABLE (activatable_editor));
-
-  glade_command_push_group (use_appearance ?
-                            _("Setting %s to use action appearance") :
-                            _("Setting %s to not use action appearance"),
-                            glade_widget_get_name (gwidget));
-
-  reset_properties (gwidget, action, use_appearance, TRUE);
-}
-
-static void
-use_appearance_post_commit (GladeEditorProperty * property,
-                            GValue * value,
-                            GladeActivatableEditor * activatable_editor)
-{
-
-  glade_command_pop_group ();
-
-  glade_editable_unblock (GLADE_EDITABLE (activatable_editor));
+  gtk_widget_grab_focus (activatable_editor->priv->embed);
 }
 
 GtkWidget *
 glade_activatable_editor_new (GladeWidgetAdaptor * adaptor,
                               GladeEditable * embed)
 {
-  GladeActivatableEditor *activatable_editor;
-  GladeEditorProperty *eprop;
-  GtkWidget *table, *frame, *alignment, *label;
-  gchar *str;
-  gint row = 0;
-
-  g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
-  g_return_val_if_fail (GLADE_IS_EDITABLE (embed), NULL);
-
-  activatable_editor = g_object_new (GLADE_TYPE_ACTIVATABLE_EDITOR, NULL);
-  activatable_editor->embed = GTK_WIDGET (embed);
-
-  /* Pack the parent on top... */
-  gtk_box_pack_start (GTK_BOX (activatable_editor), GTK_WIDGET (embed), FALSE,
-                      FALSE, 0);
-
-  str = g_strdup_printf ("<b>%s</b>", _("Action"));
-  label = gtk_label_new (str);
-  gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
-  g_free (str);
-  frame = gtk_frame_new (NULL);
-  gtk_frame_set_label_widget (GTK_FRAME (frame), label);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
-  gtk_box_pack_start (GTK_BOX (activatable_editor), frame, FALSE, FALSE, 4);
-
-  alignment = gtk_alignment_new (0.5F, 0.5F, 1.0F, 1.0F);
-  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 6, 0, 12, 0);
-  gtk_container_add (GTK_CONTAINER (frame), alignment);
-
-  table = gtk_grid_new ();
-  gtk_orientable_set_orientation (GTK_ORIENTABLE (table),
-                                  GTK_ORIENTATION_VERTICAL);
-  gtk_grid_set_row_spacing (GTK_GRID (table), 4);
-
-  gtk_container_add (GTK_CONTAINER (alignment), table);
-
-  eprop =
-      glade_widget_adaptor_create_eprop_by_name (adaptor, "related-action",
-                                                 FALSE, TRUE);
-  table_attach (table, glade_editor_property_get_item_label (eprop), 0, row);
-  table_attach (table, GTK_WIDGET (eprop), 1, row++);
-  activatable_editor->properties =
-      g_list_prepend (activatable_editor->properties, eprop);
-
-  g_signal_connect (G_OBJECT (eprop), "commit",
-                    G_CALLBACK (related_action_pre_commit), activatable_editor);
-  g_signal_connect_after (G_OBJECT (eprop), "commit",
-                          G_CALLBACK (related_action_post_commit),
-                          activatable_editor);
-
-  eprop =
-      glade_widget_adaptor_create_eprop_by_name (adaptor,
-                                                 "use-action-appearance", FALSE,
-                                                 TRUE);
-  table_attach (table, glade_editor_property_get_item_label (eprop), 0, row);
-  table_attach (table, GTK_WIDGET (eprop), 1, row++);
-  activatable_editor->properties =
-      g_list_prepend (activatable_editor->properties, eprop);
-
-  gtk_widget_show_all (GTK_WIDGET (activatable_editor));
-
-  g_signal_connect (G_OBJECT (eprop), "commit",
-                    G_CALLBACK (use_appearance_pre_commit), activatable_editor);
-  g_signal_connect_after (G_OBJECT (eprop), "commit",
-                          G_CALLBACK (use_appearance_post_commit),
-                          activatable_editor);
-
-  return GTK_WIDGET (activatable_editor);
+  return g_object_new (GLADE_TYPE_ACTIVATABLE_EDITOR, NULL);
 }
