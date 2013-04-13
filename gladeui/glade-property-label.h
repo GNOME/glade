@@ -59,6 +59,13 @@ void           glade_property_label_set_property      (GladePropertyLabel *label
 						       GladeProperty      *property);
 GladeProperty *glade_property_label_get_property      (GladePropertyLabel *label);
 
+void           glade_property_label_set_custom_text   (GladePropertyLabel *label,
+						       const gchar        *custom_text);
+const gchar   *glade_property_label_get_custom_text   (GladePropertyLabel *label);
+void           glade_property_label_set_custom_tooltip(GladePropertyLabel *label,
+						       const gchar        *custom_tooltip);
+const gchar   *glade_property_label_get_custom_tooltip(GladePropertyLabel *label);
+
 G_END_DECLS
 
 #endif /* __GLADE_PROPERTY_LABEL_H__ */

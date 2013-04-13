@@ -51,16 +51,22 @@ struct _GladePropertyLabelPrivate
 
   GtkWidget     *warning;
   GtkWidget     *label;
+  GtkWidget     *box;
 
   gulong         tooltip_id;   /* signal connection id for tooltip changes     */
   gulong         state_id;     /* signal connection id for state changes       */
   gulong         sensitive_id; /* signal connection id for sensitivity changes */
   gulong         enabled_id;   /* signal connection id for property enabled changes */
+
+  guint          custom_text : 1;
+  guint          custom_tooltip : 1;
 };
 
 enum {
   PROP_0,
-  PROP_PROPERTY
+  PROP_PROPERTY,
+  PROP_CUSTOM_TEXT,
+  PROP_CUSTOM_TOOLTIP,
 };
 
 G_DEFINE_TYPE (GladePropertyLabel, glade_property_label, GTK_TYPE_EVENT_BOX);
@@ -72,6 +78,9 @@ glade_property_label_init (GladePropertyLabel *label)
     G_TYPE_INSTANCE_GET_PRIVATE (label,
 				 GLADE_TYPE_PROPERTY_LABEL,
 				 GladePropertyLabelPrivate);
+
+  label->priv->custom_text = FALSE;
+  label->priv->custom_tooltip = FALSE;
   
   gtk_widget_init_template (GTK_WIDGET (label));
 }
@@ -88,17 +97,27 @@ glade_property_label_class_init (GladePropertyLabelClass *class)
 
   widget_class->button_press_event = glade_property_label_button_press;
 
-  /* Install a property, this is actually just a proxy for the internal GtkEntry text */
-  g_object_class_install_property (gobject_class,
-                                   PROP_PROPERTY,
-                                   g_param_spec_string ("property",
-							_("Property"),
-                                                        _("The GladeProperty to display a label for"),
-                                                        NULL,
-                                                        G_PARAM_READWRITE));
+  g_object_class_install_property
+    (gobject_class, PROP_PROPERTY,
+     g_param_spec_string ("property", _("Property"),
+			  _("The GladeProperty to display a label for"),
+			  NULL, G_PARAM_READWRITE));
+
+  g_object_class_install_property
+      (gobject_class, PROP_CUSTOM_TEXT,
+       g_param_spec_string ("custom-text", _("Custom Text"),
+			    _("Custom text to override the property name"),
+			    NULL, G_PARAM_READWRITE));
+
+  g_object_class_install_property
+      (gobject_class, PROP_CUSTOM_TOOLTIP,
+       g_param_spec_string ("custom-tooltip", _("Custom Tooltip"),
+			    _("Custom tooltip to override the property description"),
+			    NULL, G_PARAM_READWRITE));
 
   /* Bind to template */
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladeui/glade-property-label.ui");
+  gtk_widget_class_bind_child (widget_class, GladePropertyLabelPrivate, box);
   gtk_widget_class_bind_child (widget_class, GladePropertyLabelPrivate, label);
   gtk_widget_class_bind_child (widget_class, GladePropertyLabelPrivate, warning);
 
@@ -130,6 +149,12 @@ glade_property_label_set_real_property (GObject         *object,
     case PROP_PROPERTY:
       glade_property_label_set_property (label, g_value_get_object (value));
       break;
+    case PROP_CUSTOM_TEXT:
+      glade_property_label_set_custom_text (label, g_value_get_string (value));
+      break;
+    case PROP_CUSTOM_TOOLTIP:
+      glade_property_label_set_custom_tooltip (label, g_value_get_string (value));
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -148,6 +173,12 @@ glade_property_label_get_real_property (GObject         *object,
     {
     case PROP_PROPERTY:
       g_value_set_object (value, glade_property_label_get_property (label));
+      break;
+    case PROP_CUSTOM_TEXT:
+      g_value_set_string (value, glade_property_label_get_custom_text (label));
+      break;
+    case PROP_CUSTOM_TOOLTIP:
+      g_value_set_string (value, glade_property_label_get_custom_tooltip (label));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -192,7 +223,9 @@ glade_property_label_tooltip_cb (GladeProperty      *property,
   else
     choice_tooltip = insensitive;
 
-  gtk_widget_set_tooltip_text (priv->label, choice_tooltip);
+  if (!priv->custom_tooltip)
+    gtk_widget_set_tooltip_text (priv->label, choice_tooltip);
+
   gtk_widget_set_tooltip_text (priv->warning, support);
 }
 
@@ -208,7 +241,7 @@ glade_property_label_sensitivity_cb (GladeProperty      *property,
   sensitive = sensitive && glade_property_get_sensitive (priv->property);
   sensitive = sensitive && (glade_property_get_state (priv->property) & GLADE_STATE_SUPPORT_DISABLED) == 0;
 
-  gtk_widget_set_sensitive (GTK_WIDGET (label), sensitive);
+  gtk_widget_set_sensitive (priv->box, sensitive);
 }
 
 static void
@@ -226,12 +259,15 @@ glade_property_label_state_cb (GladeProperty      *property,
   pclass = glade_property_get_class (priv->property);
 
   /* refresh label */
-  if ((glade_property_get_state (priv->property) & GLADE_STATE_CHANGED) != 0)
-    text = g_strdup_printf ("<b>%s:</b>", glade_property_class_get_name (pclass));
-  else
-    text = g_strdup_printf ("%s:", glade_property_class_get_name (pclass));
-  gtk_label_set_markup (GTK_LABEL (priv->label), text);
-  g_free (text);
+  if (!priv->custom_text)
+    {
+      if ((glade_property_get_state (priv->property) & GLADE_STATE_CHANGED) != 0)
+	text = g_strdup_printf ("<b>%s:</b>", glade_property_class_get_name (pclass));
+      else
+	text = g_strdup_printf ("%s:", glade_property_class_get_name (pclass));
+      gtk_label_set_markup (GTK_LABEL (priv->label), text);
+      g_free (text);
+    }
 
   /* refresh icon */
   if ((glade_property_get_state (priv->property) & GLADE_STATE_UNSUPPORTED) != 0)
@@ -352,4 +388,111 @@ glade_property_label_get_property (GladePropertyLabel *label)
   g_return_val_if_fail (GLADE_IS_PROPERTY_LABEL (label), NULL);
 
   return label->priv->property;
+}
+
+void
+glade_property_label_set_custom_text (GladePropertyLabel *label,
+				      const gchar        *custom_text)
+{
+  GladePropertyLabelPrivate *priv;
+  gboolean changed = FALSE;
+
+  g_return_if_fail (GLADE_IS_PROPERTY_LABEL (label));
+
+  priv = label->priv;
+
+  if (custom_text)
+    {
+      if (!priv->custom_text)
+	changed = TRUE;
+
+      priv->custom_text = TRUE;
+
+      gtk_label_set_markup (GTK_LABEL (priv->label), custom_text);
+    }
+  else
+    {
+      if (priv->custom_text)
+	changed = TRUE;
+
+      priv->custom_text = FALSE;
+
+      if (priv->property)
+	  glade_property_label_state_cb (priv->property, NULL, label);
+    }
+
+  if (changed)
+    g_object_notify (G_OBJECT (label), "custom-text");
+}
+
+const gchar *
+glade_property_label_get_custom_text (GladePropertyLabel *label)
+{
+  GladePropertyLabelPrivate *priv;
+
+  g_return_val_if_fail (GLADE_IS_PROPERTY_LABEL (label), NULL);
+
+  priv = label->priv;
+
+  if (priv->custom_text)
+    return gtk_label_get_text (GTK_LABEL (priv->label));
+
+  return NULL;
+}
+
+void
+glade_property_label_set_custom_tooltip (GladePropertyLabel *label,
+					 const gchar        *custom_tooltip)
+{
+  GladePropertyLabelPrivate *priv;
+  gboolean changed = FALSE;
+
+  g_return_if_fail (GLADE_IS_PROPERTY_LABEL (label));
+
+  priv = label->priv;
+
+  if (custom_tooltip)
+    {
+      if (!priv->custom_tooltip)
+	changed = TRUE;
+
+      priv->custom_tooltip = TRUE;
+
+      gtk_widget_set_tooltip_text (GTK_WIDGET (priv->label), custom_tooltip);
+    }
+  else
+    {
+      if (priv->custom_tooltip)
+	changed = TRUE;
+
+      priv->custom_tooltip = FALSE;
+
+      if (priv->property)
+	{
+	  GladePropertyClass *pclass = glade_property_get_class (priv->property);
+
+	  glade_property_label_tooltip_cb
+	    (priv->property, glade_property_class_get_tooltip (pclass),
+	     glade_propert_get_insensitive_tooltip (priv->property),
+	     glade_property_get_support_warning (priv->property), label);
+	}
+    }
+
+  if (changed)
+    g_object_notify (G_OBJECT (label), "custom-tooltip");
+}
+
+const gchar *
+glade_property_label_get_custom_tooltip (GladePropertyLabel *label)
+{
+  GladePropertyLabelPrivate *priv;
+
+  g_return_val_if_fail (GLADE_IS_PROPERTY_LABEL (label), NULL);
+
+  priv = label->priv;
+
+  if (priv->custom_tooltip)
+    return gtk_widget_get_tooltip_text (priv->label);
+
+  return NULL;
 }
