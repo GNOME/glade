@@ -52,14 +52,14 @@ typedef struct _GladeInspectorPrivate  GladeInspectorPrivate;
  */
 struct _GladeInspector
 {
-  GtkVBox parent_instance;
+  GtkBox parent_instance;
 
   GladeInspectorPrivate *priv;
 };
 
 struct _GladeInspectorClass
 {
-  GtkVBoxClass parent_class;
+  GtkBoxClass parent_class;
 
   void   (* selection_changed) (GladeInspector *inspector);
   void   (* item_activated)    (GladeInspector *inspector);

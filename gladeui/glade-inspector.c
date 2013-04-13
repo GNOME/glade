@@ -111,11 +111,12 @@ static gint button_press_cb (GtkWidget *widget,
                              GdkEventButton *event,
                              GladeInspector *inspector);
 
-G_DEFINE_TYPE (GladeInspector, glade_inspector, GTK_TYPE_VBOX)
-     static void
-         glade_inspector_set_property (GObject *object,
-                                       guint property_id,
-                                       const GValue *value, GParamSpec *pspec)
+G_DEFINE_TYPE (GladeInspector, glade_inspector, GTK_TYPE_BOX)
+
+static void
+glade_inspector_set_property (GObject *object,
+			      guint property_id,
+			      const GValue *value, GParamSpec *pspec)
 {
   GladeInspector *inspector = GLADE_INSPECTOR (object);
 
@@ -571,6 +572,9 @@ glade_inspector_init (GladeInspector *inspector)
   GtkTreeSelection *selection;
 
   inspector->priv = priv = GLADE_INSPECTOR_GET_PRIVATE (inspector);
+
+  gtk_orientable_set_orientation (GTK_ORIENTABLE (inspector),
+				  GTK_ORIENTATION_VERTICAL);
 
   priv->project = NULL;
 
