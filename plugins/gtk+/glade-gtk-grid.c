@@ -188,6 +188,17 @@ glade_gtk_grid_post_create (GladeWidgetAdaptor *adaptor,
                       container);
 }
 
+void
+glade_gtk_grid_destroy_object (GladeWidgetAdaptor *adaptor,
+			       GObject            *object)
+{
+  GladeWidget *widget = glade_widget_get_from_gobject (object);
+  GladeProject *project = glade_widget_get_project (widget);
+
+  if (project)
+    g_signal_handlers_disconnect_by_func (project, glade_gtk_grid_parse_finished, object);
+}
+
 static gboolean
 glade_gtk_grid_widget_exceeds_bounds (GtkGrid *grid, gint n_rows, gint n_cols)
 {
