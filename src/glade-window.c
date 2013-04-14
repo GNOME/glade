@@ -3026,8 +3026,6 @@ glade_window_config_load (GladeWindow *window)
   load_paned_position (config, window->priv->left_pane, "left_pane", 200);
   load_paned_position (config, window->priv->center_pane, "center_pane", 400);
   load_paned_position (config, window->priv->right_pane, "right_pane", 220);
-
-  glade_preferences_load (window->priv->preferences, config);
 }
 
 static void
@@ -3143,16 +3141,26 @@ on_editor_class_field_notify (GObject     *gobject,
 static void
 glade_window_constructed (GObject *object)
 {
-  GladeWindowPrivate *priv = GLADE_WINDOW_GET_PRIVATE (object);
+  GladeWindow *window = GLADE_WINDOW (object);
+  GladeWindowPrivate *priv = window->priv;
   GtkBuilder *builder;  
-  GladeWindow *window;
   GError *error = NULL;
   GtkWidget *vbox;
   GtkActionGroup *group;
 
   /* Chain up... */
   G_OBJECT_CLASS (glade_window_parent_class)->constructed (object);
-  
+
+  /* Init preferences first, this has to be done before anything initializes
+   * the real GladeApp, so that catalog paths are loaded correctly before we
+   * continue.
+   *
+   * This should be fixed so that dynamic addition of catalogs at runtime
+   * is supported.
+   */
+  priv->preferences = (GladePreferences *)glade_preferences_new ();
+  glade_preferences_load (window->priv->preferences, glade_app_get_config ());
+
   /* Build UI */
   builder = gtk_builder_new ();
   if (gtk_builder_add_from_resource (builder, "/org/gnome/glade/glade.glade", &error) == 0)
@@ -3160,17 +3168,12 @@ glade_window_constructed (GObject *object)
       g_warning ("gtk_builder_add_from_resource() failed %s", (error) ? error->message : "");
       return;
     }
-  
-  window = GLADE_WINDOW (object);
 
   priv->projects_list_menu_actions = GET_OBJECT (builder, GTK_ACTION_GROUP, "project_list_actiongroup");
   g_object_ref_sink (priv->projects_list_menu_actions);
 
   /* recent files */
   priv->recent_manager = gtk_recent_manager_get_default ();
-
-  /* Init preferences */
-  priv->preferences = (GladePreferences *)glade_preferences_new ();
   
   /* Fetch pointers */
   vbox = GET_OBJECT (builder, GTK_WIDGET, "main_box");
