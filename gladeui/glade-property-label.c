@@ -357,7 +357,7 @@ glade_property_label_sensitivity_cb (GladeProperty      *property,
 }
 
 static PangoAttrList *
-get_bold_attribute (void)
+get_modified_attribute (void)
 {
   static PangoAttrList *attrs = NULL;
 
@@ -366,7 +366,7 @@ get_bold_attribute (void)
       PangoAttribute *attr;
 
       attrs = pango_attr_list_new ();
-      attr  = pango_attr_weight_new (PANGO_WEIGHT_BOLD);
+      attr  = pango_attr_style_new (PANGO_STYLE_ITALIC);
       pango_attr_list_insert (attrs, attr);
     }
 
@@ -385,7 +385,7 @@ glade_property_label_state_cb (GladeProperty      *property,
 
   /* refresh label */
   if ((glade_property_get_state (priv->property) & GLADE_STATE_CHANGED) != 0)
-    gtk_label_set_attributes (GTK_LABEL (priv->label), get_bold_attribute());
+    gtk_label_set_attributes (GTK_LABEL (priv->label), get_modified_attribute());
   else
     gtk_label_set_attributes (GTK_LABEL (priv->label), NULL);
 
