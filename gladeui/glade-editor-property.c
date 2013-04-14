@@ -2126,6 +2126,31 @@ eprop_text_stock_changed (GtkComboBox *combo, GladeEditorProperty *eprop)
     }
 }
 
+static gint
+get_text_view_height (void)
+{
+  static gint height = -1;
+
+  if (height < 0)
+    {
+      GtkWidget *label = gtk_label_new (NULL);
+      PangoLayout *layout =
+	gtk_widget_create_pango_layout (label, 
+					"The quick\n"
+					"brown fox\n"
+					"jumped over\n"
+					"the lazy dog");
+
+      pango_layout_get_pixel_size (layout, NULL, &height);
+
+      g_object_unref (layout);
+      g_object_ref_sink (label);
+      g_object_unref (label);
+    }
+
+  return height;
+}
+
 static GtkWidget *
 glade_eprop_text_create_input (GladeEditorProperty *eprop)
 {
@@ -2194,9 +2219,10 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
     {
       GtkWidget *swindow;
       GtkTextBuffer *buffer;
+      gint min_height = get_text_view_height ();
 
       swindow = gtk_scrolled_window_new (NULL, NULL);
-      gtk_scrolled_window_set_min_content_height (GTK_SCROLLED_WINDOW (swindow), 128);
+      gtk_scrolled_window_set_min_content_height (GTK_SCROLLED_WINDOW (swindow), min_height);
       gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (swindow),
                                       GTK_POLICY_AUTOMATIC,
                                       GTK_POLICY_AUTOMATIC);
