@@ -340,30 +340,38 @@ glade_property_label_sensitivity_cb (GladeProperty      *property,
   gtk_widget_set_sensitive (priv->box, sensitive);
 }
 
+static PangoAttrList *
+get_bold_attribute (void)
+{
+  static PangoAttrList *attrs = NULL;
+
+  if (!attrs)
+    {
+      PangoAttribute *attr;
+
+      attrs = pango_attr_list_new ();
+      attr  = pango_attr_weight_new (PANGO_WEIGHT_BOLD);
+      pango_attr_list_insert (attrs, attr);
+    }
+
+  return attrs;
+}
+
 static void
 glade_property_label_state_cb (GladeProperty      *property,
 			       GParamSpec         *pspec,
 			       GladePropertyLabel *label)
 {
   GladePropertyLabelPrivate *priv = label->priv;
-  GladePropertyClass *pclass;
-  gchar *text = NULL;
 
   if (!priv->property)
     return;
 
-  pclass = glade_property_get_class (priv->property);
-
   /* refresh label */
-  if (!priv->custom_text)
-    {
-      if ((glade_property_get_state (priv->property) & GLADE_STATE_CHANGED) != 0)
-	text = g_strdup_printf ("<b>%s:</b>", glade_property_class_get_name (pclass));
-      else
-	text = g_strdup_printf ("%s:", glade_property_class_get_name (pclass));
-      gtk_label_set_markup (GTK_LABEL (priv->label), text);
-      g_free (text);
-    }
+  if ((glade_property_get_state (priv->property) & GLADE_STATE_CHANGED) != 0)
+    gtk_label_set_attributes (GTK_LABEL (priv->label), get_bold_attribute());
+  else
+    gtk_label_set_attributes (GTK_LABEL (priv->label), NULL);
 
   /* refresh icon */
   if ((glade_property_get_state (priv->property) & GLADE_STATE_UNSUPPORTED) != 0)
@@ -632,6 +640,13 @@ glade_property_label_set_property (GladePropertyLabel    *label,
 	  /* Load intial label state
 	   */
 	  glade_property_label_state_cb (property, NULL, label);
+
+	  if (!priv->custom_text)
+	    {
+	      gchar *text = g_strdup_printf ("%s:", glade_property_class_get_name (pclass));
+	      gtk_label_set_text (GTK_LABEL (priv->label), text);
+	      g_free (text);
+	    }
 	}
 
       g_object_notify (G_OBJECT (label), "property");
