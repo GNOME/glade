@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface domain="glade">
+  <!-- interface-requires gladeui 0.0 -->
+  <!-- interface-requires gtk+ 3.8 -->
+  <!-- interface-requires glade-gtk-plugin 0.0 -->
+  <template class="GladeToggleButtonEditor" parent="GladeEditorSkeleton">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="orientation">vertical</property>
+    <child>
+      <object class="GladeButtonEditor" id="embed">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">4</property>
+        <child>
+          <object class="GtkGrid" id="grid1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="margin_left">12</property>
+            <property name="row_spacing">6</property>
+            <property name="column_spacing">6</property>
+            <child>
+              <object class="GladePropertyShell" id="propertyshell1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="valign">center</property>
+                <property name="property_name">active</property>
+                <property name="editor_type">GladeEpropCheck</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GladePropertyShell" id="propertyshell2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="valign">center</property>
+                <property name="property_name">draw-indicator</property>
+                <property name="editor_type">GladeEpropCheck</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">1</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GladePropertyShell" id="propertyshell3">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="valign">center</property>
+                <property name="property_name">inconsistent</property>
+                <property name="editor_type">GladeEpropCheck</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">0</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child-editors>
+      <editor id="embed"/>
+      <editor id="propertyshell1"/>
+      <editor id="propertyshell2"/>
+      <editor id="propertyshell3"/>
+    </child-editors>
+  </template>
+</interface>

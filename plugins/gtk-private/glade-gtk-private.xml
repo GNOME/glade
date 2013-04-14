@@ -7,6 +7,12 @@
 			icon-name="widget-gtk-action"/>
     <glade-widget-class name="GladeButtonEditor" generic-name="buttoneditor" title="Button Editor"
 			icon-name="widget-gtk-button"/>
+    <glade-widget-class name="GladeToggleButtonEditor" generic-name="buttoneditor" title="Button Editor"
+			icon-name="widget-gtk-togglebutton">
+      <internal-children>
+	<object name="embed"/>
+      </internal-children>
+    </glade-widget-class>
   </glade-widget-classes>
 
   <glade-widget-group name="glade-gtk-plugin" title="GTK+ Plugin Editors">
@@ -15,5 +21,6 @@
 
     <glade-widget-class-ref name="GladeActivatableEditor"/>
     <glade-widget-class-ref name="GladeButtonEditor"/>
+    <glade-widget-class-ref name="GladeToggleButtonEditor"/>
   </glade-widget-group>
 </glade-catalog>

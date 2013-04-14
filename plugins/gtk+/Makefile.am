@@ -45,6 +45,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-model-data.c		\
 	glade-store-editor.c		\
 	glade-string-list.c		\
+	glade-toggle-button-editor.c	\
 	glade-tool-button-editor.c	\
 	glade-tool-item-group-editor.c	\
 	glade-treeview-editor.c
@@ -71,6 +72,7 @@ noinst_HEADERS =			\
 	glade-model-data.h		\
 	glade-store-editor.h		\
 	glade-string-list.h		\
+	glade-toggle-button-editor.h	\
 	glade-tool-button-editor.h	\
 	glade-tool-item-group-editor.h	\
 	glade-treeview-editor.h
@@ -100,7 +102,8 @@ BUILT_SOURCES = 		\
 
 UI_FILES = 				\
 	glade-activatable-editor.ui	\
-	glade-button-editor.ui
+	glade-button-editor.ui		\
+	glade-toggle-button-editor.ui
 
 EXTRA_DIST = 					\
 	$(UI_FILES)				\

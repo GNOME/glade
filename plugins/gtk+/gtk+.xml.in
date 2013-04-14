@@ -1175,6 +1175,9 @@ embedded in another object</_tooltip>
   
     <glade-widget-class name="GtkToggleButton" generic-name="togglebutton" _title="Toggle Button">
       <properties>
+      	<property id="draw-indicator" custom-layout="True"/>
+      	<property id="inconsistent" custom-layout="True"/>
+      	<property id="active" custom-layout="True"/>
       	<property id="label" default="togglebutton"/>
       </properties>
     </glade-widget-class>
