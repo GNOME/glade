@@ -48,6 +48,7 @@
 
     <glade-widget-class name="GladePropertyShell" generic-name="propertyshell"
 			title="Property Shell" icon-name="widget-gtk-entry" use-placeholders="False">
+      <post-create-function>glade_glade_property_shell_post_create</post-create-function>
       <properties>
 	<property id="editor-type" name="Editor Type" ignore="True"/>
 	<property id="orientation" disabled="True"/>

@@ -17,7 +17,9 @@ libgladeglade_la_CPPFLAGS =   \
 libgladeglade_la_CFLAGS      = $(AM_CFLAGS)
 libgladeglade_la_LDFLAGS     = -module -avoid-version $(AM_LDFLAGS)
 libgladeglade_la_LIBADD      = $(libgladeui) $(GTK_LIBS)
-libgladeglade_la_SOURCES     = glade-glade-editor-skeleton.c
+libgladeglade_la_SOURCES     = 		\
+	glade-glade-editor-skeleton.c	\
+	glade-glade-property-shell.c
 
 catalogsdir = $(pkgdatadir)/catalogs
 
