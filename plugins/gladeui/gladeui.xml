@@ -36,7 +36,14 @@
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GladePropertyLabel" generic-name="propertylabel" title="Property Label" icon-name="widget-gtk-label"/>
+    <glade-widget-class name="GladePropertyLabel" generic-name="propertylabel" title="Property Label" icon-name="widget-gtk-label">
+      <properties>
+	<property id="property" disabled="True"/>
+	<property id="visible-window" disabled="True"/>
+	<property id="above-child" disabled="True"/>
+      </properties>
+    </glade-widget-class>
+
     <glade-widget-class name="GladePropertyShell" generic-name="propertyshell"
 			title="Property Shell" icon-name="widget-gtk-entry" use-placeholders="False">
       <properties>
