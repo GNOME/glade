@@ -20,65 +20,60 @@ libgladegtk_la_CPPFLAGS =   \
 
 libgladegtk_la_CFLAGS = $(AM_CFLAGS)
 
-libgladegtk_la_SOURCES = \
-	$(BUILT_SOURCES) \
-	glade-gtk.c \
-	glade-fixed.c \
-	glade-accels.c \
-	glade-attributes.c \
-	glade-column-types.c \
-	glade-model-data.c \
-	glade-text-button.c \
-	glade-icon-sources.c \
-	glade-button-editor.c \
-	glade-tool-button-editor.c \
-	glade-image-editor.c \
-	glade-image-item-editor.c \
-	glade-icon-factory-editor.c \
-	glade-store-editor.c \
-	glade-label-editor.c \
-	glade-cell-renderer-editor.c \
-	glade-treeview-editor.c \
-	glade-entry-editor.c \
-	glade-activatable-editor.c \
-	glade-tool-item-group-editor.c \
-	glade-string-list.c \
-	glade-gtk-table.c \
-	glade-gtk-grid.c \
-	glade-gtk-box.c \
-	glade-gtk-action-widgets.c \
-	glade-gtk-info-bar.c \
-	glade-gtk-switch.c
+libgladegtk_la_SOURCES = 		\
+	$(BUILT_SOURCES) 		\
+	glade-accels.c			\
+	glade-activatable-editor.c	\
+	glade-attributes.c		\
+	glade-button-editor.c		\
+	glade-cell-renderer-editor.c	\
+	glade-column-types.c		\
+	glade-entry-editor.c		\
+	glade-fixed.c			\
+	glade-gtk.c			\
+	glade-gtk-action-widgets.c	\
+	glade-gtk-box.c			\
+	glade-gtk-grid.c		\
+	glade-gtk-info-bar.c		\
+	glade-gtk-switch.c		\
+	glade-gtk-table.c		\
+	glade-icon-factory-editor.c	\
+	glade-icon-sources.c		\
+	glade-image-editor.c		\
+	glade-image-item-editor.c	\
+	glade-label-editor.c		\
+	glade-model-data.c		\
+	glade-store-editor.c		\
+	glade-string-list.c		\
+	glade-tool-button-editor.c	\
+	glade-tool-item-group-editor.c	\
+	glade-treeview-editor.c
 
 libgladegtk_la_LDFLAGS     = -module -avoid-version $(AM_LDFLAGS)
 libgladegtk_la_LIBADD      = $(libgladeui) $(GTK_LIBS)
 
-noinst_HEADERS = \
-	glade-gtk.h \
-	glade-accels.h \
-	glade-attributes.h \
-	glade-column-types.h \
-	glade-model-data.h \
-	glade-text-button.h \
-	glade-icon-sources.h \
-	glade-button-editor.h \
-	glade-tool-button-editor.h \
-	glade-image-editor.h \
-	glade-image-item-editor.h \
-	glade-icon-factory-editor.h \
-	glade-store-editor.h \
-	glade-label-editor.h \
-	glade-cell-renderer-editor.h \
-	glade-treeview-editor.h \
-	glade-entry-editor.h \
-	glade-activatable-editor.h \
-	glade-fixed.h \
-	glade-tool-item-group-editor.h \
-	glade-string-list.h \
-	glade-gtk-marshallers.h \
-	glade-gtk-action-widgets.h \
-	glade-gtk-resources.h
-
+noinst_HEADERS =			\
+	glade-accels.h			\
+	glade-activatable-editor.h	\
+	glade-attributes.h		\
+	glade-button-editor.h		\
+	glade-cell-renderer-editor.h	\
+	glade-column-types.h		\
+	glade-entry-editor.h		\
+	glade-fixed.h			\
+	glade-gtk.h			\
+	glade-gtk-action-widgets.h	\
+	glade-icon-factory-editor.h	\
+	glade-icon-sources.h		\
+	glade-image-editor.h		\
+	glade-image-item-editor.h	\
+	glade-label-editor.h		\
+	glade-model-data.h		\
+	glade-store-editor.h		\
+	glade-string-list.h		\
+	glade-tool-button-editor.h	\
+	glade-tool-item-group-editor.h	\
+	glade-treeview-editor.h
 
 if PLATFORM_WIN32
 libgladegtk_la_LDFLAGS += -no-undefined
@@ -97,21 +92,22 @@ endif
 
 @INTLTOOL_XML_NOMERGE_RULE@
 
-BUILT_SOURCES = \
+BUILT_SOURCES = 		\
 	glade-gtk-marshallers.c \
 	glade-gtk-marshallers.h \
-	glade-gtk-resources.c \
+	glade-gtk-resources.c 	\
 	glade-gtk-resources.h
 
-EXTRA_DIST = \
-	$(UI_FILES)	\
-	glade-gtk-marshallers.list \
-	gtk+.xml gtk+.xml.in \
-	gtkunixprint.xml gtkunixprint.xml.in \
-	glade-gtk-resources.gresource.xml
-
-UI_FILES = \
+UI_FILES = 				\
+	glade-activatable-editor.ui	\
 	glade-button-editor.ui
+
+EXTRA_DIST = 					\
+	$(UI_FILES)				\
+	glade-gtk-marshallers.list 		\
+	gtk+.xml gtk+.xml.in 			\
+	gtkunixprint.xml gtkunixprint.xml.in 	\
+	glade-gtk-resources.gresource.xml
 
 CLEANFILES = gtk+.xml gtkunixprint.xml $(BUILT_SOURCES)
 

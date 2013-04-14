@@ -1,14 +1,13 @@
 [encoding: UTF-8]
 # List of source files containing translatable strings.
 
-
 # Main application
 data/glade.desktop.in.in
 src/glade-close-button.c
-[type: gettext/glade]src/glade.glade
-[type: gettext/glade]src/glade-preferences.glade
 src/glade-window.c
 src/main.c
+[type: gettext/glade]src/glade.glade
+[type: gettext/glade]src/glade-preferences.glade
 
 # libgladeui shared core library
 gladeui/glade-app.c
@@ -22,7 +21,6 @@ gladeui/glade-debug.c
 gladeui/glade-design-layout.c
 gladeui/glade-design-view.c
 gladeui/glade-editor.c
-[type: gettext/glade]gladeui/glade-editor.ui
 gladeui/glade-editor-property.c
 gladeui/glade-editor-skeleton.c
 gladeui/glade-editor-table.c
@@ -35,12 +33,10 @@ gladeui/glade-popup.c
 gladeui/glade-preview.c
 gladeui/glade-previewer.c
 gladeui/glade-project.c
-[type: gettext/glade]gladeui/glade-project-properties.ui
 gladeui/glade-property.c
 gladeui/glade-property-class.c
 gladeui/glade-property-label.c
 gladeui/glade-property-shell.c
-[type: gettext/glade]gladeui/glade-property-label.ui
 gladeui/glade-signal.c
 gladeui/glade-signal-class.c
 gladeui/glade-signal-editor.c
@@ -50,14 +46,15 @@ gladeui/glade-widget-adaptor.c
 gladeui/glade-widget.c
 gladeui/glade-xml-utils.c
 gladeui/icon-naming-spec.c
+[type: gettext/glade]gladeui/glade-editor.ui
+[type: gettext/glade]gladeui/glade-project-properties.ui
+[type: gettext/glade]gladeui/glade-property-label.ui
 
 # gtk plugin backend
 plugins/gtk+/glade-accels.c
 plugins/gtk+/glade-activatable-editor.c
-[type: gettext/glade]plugins/gtk+/glade-activatable-editor.ui
 plugins/gtk+/glade-attributes.c
 plugins/gtk+/glade-button-editor.c
-[type: gettext/glade]plugins/gtk+/glade-button-editor.ui
 plugins/gtk+/glade-cell-renderer-editor.c
 plugins/gtk+/glade-column-types.c
 plugins/gtk+/glade-entry-editor.c
@@ -80,3 +77,5 @@ plugins/gtk+/glade-tool-item-group-editor.c
 plugins/gtk+/glade-treeview-editor.c
 plugins/gtk+/gtkunixprint.xml.in
 plugins/gtk+/gtk+.xml.in
+[type: gettext/glade]plugins/gtk+/glade-activatable-editor.ui
+[type: gettext/glade]plugins/gtk+/glade-button-editor.ui

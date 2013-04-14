@@ -4780,10 +4780,6 @@ void
 glade_gtk_menu_item_post_create (GladeWidgetAdaptor * adaptor,
                                  GObject * object, GladeCreateReason reason)
 {
-  GladeWidget *gitem;
-
-  gitem = glade_widget_get_from_gobject (object);
-
   if (GTK_IS_SEPARATOR_MENU_ITEM (object))
     return;
 
@@ -5914,8 +5910,6 @@ glade_gtk_tool_item_post_create (GladeWidgetAdaptor *adaptor,
                                  GObject            *object, 
 				 GladeCreateReason   reason)
 {
-  GladeWidget *gitem = glade_widget_get_from_gobject (object);
-
   if (GTK_IS_SEPARATOR_TOOL_ITEM (object))
     return;
 
