@@ -338,6 +338,7 @@ glade_editor_property_constructed (GObject *object)
   if (glade_property_class_optional (eprop->priv->klass))
     {
       eprop->priv->check = gtk_check_button_new ();
+      gtk_button_set_focus_on_click (GTK_BUTTON (eprop->priv->check), FALSE);
 
       if (!eprop->priv->disable_check)
 	gtk_widget_show (eprop->priv->check);
@@ -2452,6 +2453,8 @@ glade_eprop_check_create_input (GladeEditorProperty *eprop)
   gtk_widget_show (eprop_check->label);
   
   eprop_check->button = gtk_check_button_new ();
+  gtk_button_set_focus_on_click (GTK_BUTTON (eprop_check->button), FALSE);
+
   gtk_container_add (GTK_CONTAINER (eprop_check->button), eprop_check->label);
 
   gtk_widget_set_halign (eprop_check->button, GTK_ALIGN_START);
