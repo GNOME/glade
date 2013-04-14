@@ -52,6 +52,7 @@ struct _GladePropertyShellPrivate
   GladeEditorProperty *property_editor;
 
   /* Properties, used to load the internal editor */
+  GType                editor_type;
   gchar               *property_name;
   guint                packing : 1;
   guint                use_command : 1;
@@ -62,6 +63,7 @@ enum {
   PROP_PROPERTY_NAME,
   PROP_PACKING,
   PROP_USE_COMMAND,
+  PROP_EDITOR_TYPE
 };
 
 static GladeEditableIface *parent_editable_iface;
@@ -109,6 +111,12 @@ glade_property_shell_class_init (GladePropertyShellClass *class)
 			     _("Whether to use the GladeCommand API when modifying properties"),
 			     TRUE, G_PARAM_READWRITE));
 
+  g_object_class_install_property
+      (gobject_class, PROP_EDITOR_TYPE,
+       g_param_spec_string ("editor-type", _("Editor Property Type Name"),
+			    _("Specify the actual editor property type name to use for this shell"),
+			    NULL, G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
+
   g_type_class_add_private (gobject_class, sizeof (GladePropertyShellPrivate));
 }
 
@@ -133,6 +141,9 @@ glade_property_shell_set_real_property (GObject         *object,
 					GParamSpec      *pspec)
 {
   GladePropertyShell *shell = GLADE_PROPERTY_SHELL (object);
+  GladePropertyShellPrivate *priv = shell->priv;
+  const gchar *type_name = NULL;
+  GType type = 0;
 
   switch (prop_id)
     {
@@ -144,6 +155,18 @@ glade_property_shell_set_real_property (GObject         *object,
       break;
     case PROP_USE_COMMAND:
       glade_property_shell_set_use_command (shell, g_value_get_boolean (value));
+      break;
+    case PROP_EDITOR_TYPE:
+      type_name = g_value_get_string (value);
+
+      if (type_name)
+	type = glade_util_get_type_from_name (type_name, FALSE);
+
+      if (type > 0 && !g_type_is_a (type, GLADE_TYPE_EDITOR_PROPERTY))
+	g_warning ("Editor type '%s' is not a GladeEditorProperty", type_name);
+      else
+	priv->editor_type = type;
+
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -205,11 +228,28 @@ glade_property_shell_load (GladeEditable   *editable,
 
 	  priv->adaptor = adaptor;
 
-	  priv->property_editor = 
-	    glade_widget_adaptor_create_eprop_by_name (priv->adaptor,
-						       priv->property_name,
-						       priv->packing,
-						       priv->use_command);
+	  /* Construct custom editor property if specified */
+	  if (g_type_is_a (priv->editor_type, GLADE_TYPE_EDITOR_PROPERTY))
+	    {
+	      GladePropertyClass *pclass;
+
+	      pclass = glade_widget_adaptor_get_property_class (priv->adaptor,
+								priv->property_name);
+
+	      priv->property_editor = g_object_new (priv->editor_type,
+						    "property-class", pclass,
+						    "use-command", priv->use_command,
+						    NULL);
+	    }
+	  else
+	    {
+	      /* Let the adaptor create one */
+	      priv->property_editor = 
+		glade_widget_adaptor_create_eprop_by_name (priv->adaptor,
+							   priv->property_name,
+							   priv->packing,
+							   priv->use_command);
+	    }
 
 	  if (priv->property_editor)
 	    gtk_container_add (GTK_CONTAINER (shell), GTK_WIDGET (priv->property_editor));
