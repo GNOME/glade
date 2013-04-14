@@ -68,12 +68,14 @@ struct _GladePropertyLabelPrivate
   guint          packing : 1;
   guint          custom_text : 1;
   guint          custom_tooltip : 1;
+  guint          append_colon : 1;
 };
 
 enum {
   PROP_0,
   PROP_PROPERTY,
   PROP_PROPERTY_NAME,
+  PROP_APPEND_COLON,
   PROP_PACKING,
   PROP_CUSTOM_TEXT,
   PROP_CUSTOM_TOOLTIP,
@@ -93,8 +95,10 @@ glade_property_label_init (GladePropertyLabel *label)
 				 GLADE_TYPE_PROPERTY_LABEL,
 				 GladePropertyLabelPrivate);
 
+  label->priv->packing = FALSE;
   label->priv->custom_text = FALSE;
   label->priv->custom_tooltip = FALSE;
+  label->priv->append_colon = TRUE;
   
   gtk_widget_init_template (GTK_WIDGET (label));
 }
@@ -123,6 +127,12 @@ glade_property_label_class_init (GladePropertyLabelClass *class)
        g_param_spec_string ("property-name", _("Property Name"),
 			    _("The property name to use when loading by widget"),
 			    NULL, G_PARAM_READWRITE));
+
+  g_object_class_install_property
+      (gobject_class, PROP_APPEND_COLON,
+       g_param_spec_boolean ("append-colon", _("Append Colon"),
+			     _("Whether to append a colon ':' to the property name"),
+			     TRUE, G_PARAM_READWRITE));
 
   g_object_class_install_property
       (gobject_class, PROP_PACKING,
@@ -191,6 +201,9 @@ glade_property_label_set_real_property (GObject         *object,
     case PROP_PROPERTY_NAME:
       glade_property_label_set_property_name (label, g_value_get_string (value));
       break;
+    case PROP_APPEND_COLON:
+      glade_property_label_set_append_colon (label, g_value_get_boolean (value));
+      break;
     case PROP_PACKING:
       glade_property_label_set_packing (label, g_value_get_boolean (value));
       break;
@@ -224,6 +237,9 @@ glade_property_label_get_real_property (GObject         *object,
       break;
     case PROP_PACKING:
       g_value_set_boolean (value, glade_property_label_get_packing (label));
+      break;
+    case PROP_APPEND_COLON:
+      g_value_set_boolean (value, glade_property_label_get_append_colon (label));
       break;
     case PROP_CUSTOM_TEXT:
       g_value_set_string (value, glade_property_label_get_custom_text (label));
@@ -426,6 +442,32 @@ glade_property_label_get_property_name (GladePropertyLabel *label)
   g_return_val_if_fail (GLADE_IS_PROPERTY_LABEL (label), NULL);
 
   return label->priv->property_name;
+}
+
+void
+glade_property_label_set_append_colon (GladePropertyLabel *label,
+				       gboolean            append_colon)
+{
+  GladePropertyLabelPrivate *priv;
+
+  g_return_if_fail (GLADE_IS_PROPERTY_LABEL (label));
+
+  priv = label->priv;
+
+  if (priv->append_colon != append_colon)
+    {
+      priv->append_colon = append_colon;
+
+      g_object_notify (G_OBJECT (label), "append-colon");
+    }
+}
+
+gboolean
+glade_property_label_get_append_colon (GladePropertyLabel *label)
+{
+  g_return_val_if_fail (GLADE_IS_PROPERTY_LABEL (label), FALSE);
+
+  return label->priv->append_colon;
 }
 
 void
@@ -643,9 +685,17 @@ glade_property_label_set_property (GladePropertyLabel    *label,
 
 	  if (!priv->custom_text)
 	    {
-	      gchar *text = g_strdup_printf ("%s:", glade_property_class_get_name (pclass));
-	      gtk_label_set_text (GTK_LABEL (priv->label), text);
-	      g_free (text);
+	      if (priv->append_colon)
+		{
+		  gchar *text = g_strdup_printf ("%s:", glade_property_class_get_name (pclass));
+		  gtk_label_set_text (GTK_LABEL (priv->label), text);
+		  g_free (text);
+		}
+	      else
+		{
+		  gtk_label_set_text (GTK_LABEL (priv->label),
+				      glade_property_class_get_name (pclass));
+		}
 	    }
 	}
 

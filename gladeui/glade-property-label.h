@@ -59,6 +59,9 @@ GtkWidget     *glade_property_label_new               (void);
 void           glade_property_label_set_property_name (GladePropertyLabel *label,
 						       const gchar        *property_name);
 const gchar   *glade_property_label_get_property_name (GladePropertyLabel *label);
+void           glade_property_label_set_append_colon  (GladePropertyLabel *label,
+						       gboolean            append_colon);
+gboolean       glade_property_label_get_append_colon  (GladePropertyLabel *label);
 void           glade_property_label_set_packing       (GladePropertyLabel *label,
 						       gboolean            packing);
 gboolean       glade_property_label_get_packing       (GladePropertyLabel *label);
