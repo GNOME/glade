@@ -2401,9 +2401,12 @@ glade_eprop_check_load (GladeEditorProperty *eprop, GladeProperty *property)
   editor_property_class->load (eprop, property);
 
   /* Load the inner label */
-  widget = glade_property_get_widget (property);
-  if (widget)
-    glade_editable_load (GLADE_EDITABLE (eprop_check->label), widget);
+  if (property)
+    {
+      widget = glade_property_get_widget (property);
+      if (widget)
+	glade_editable_load (GLADE_EDITABLE (eprop_check->label), widget);
+    }
 
   if (property)
     {
