@@ -134,7 +134,9 @@ glade_util_get_type_from_name (const gchar *name, gboolean have_func)
         {
           g_warning (_("We could not find the symbol \"%s\""), func_name);
         }
-      g_free (func_name);
+
+      if (!have_func)
+	g_free (func_name);
     }
 
   if (type == 0)

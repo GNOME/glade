@@ -2681,9 +2681,11 @@ glade_widget_adaptor_from_catalog (GladeCatalog *catalog,
     }
   else if ((func_name =
             glade_xml_get_property_string (class_node,
-                                           GLADE_TAG_GET_TYPE_FUNCTION)) !=
-           NULL)
-    object_type = glade_util_get_type_from_name (func_name, TRUE);
+                                           GLADE_TAG_GET_TYPE_FUNCTION)) != NULL)
+    {
+      object_type = glade_util_get_type_from_name (func_name, TRUE);
+      g_free (func_name);
+    }
   else
     {
       GType type_iter;
