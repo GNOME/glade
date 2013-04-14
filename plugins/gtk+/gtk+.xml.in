@@ -1097,13 +1097,18 @@ embedded in another object</_tooltip>
       <write-widget-function>glade_gtk_button_write_widget</write-widget-function>
 
       <properties>
-	<property id="always-show-image" since="3.6"/>
+	<property id="always-show-image" since="3.6" custom-layout="True"/>
 	<property id="receives-default" save-always="True"/>
 	<property id="image" parentless-widget="True" create-type="GtkImage" custom-layout="True"/>
 	<property id="use-stock" visible="False" custom-layout="True"/>
       	<property id="label" default="button" translatable="True" custom-layout="True" save="False"
 		  multiline="True"/>
 	<property id="use-underline" custom-layout="True"/>
+	<property id="xalign" custom-layout="True"/>
+	<property id="yalign" custom-layout="True"/>
+	<property id="relief" custom-layout="True"/>
+	<property id="focus-on-click" custom-layout="True"/>
+
 	<property id="stock" _name="Stock Button" stock="True" save="False" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamString</type>
@@ -1117,7 +1122,7 @@ embedded in another object</_tooltip>
         </property>
 	<property id="image-position" custom-layout="True"/>
 	<property id="response-id" _name="Response ID" default="0" optional="True"
-		  optional-default="False" common="False" ignore="True" save="False">
+		  optional-default="False" common="False" ignore="True" save="False" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	  </parameter-spec>

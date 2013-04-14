@@ -25,7 +25,7 @@
         <property name="can_focus">False</property>
         <property name="halign">start</property>
         <property name="valign">center</property>
-        <property name="label" translatable="yes">Button Appearance</property>
+        <property name="label" translatable="yes">Button Attributes</property>
         <property name="use_markup">True</property>
         <attributes>
           <attribute name="weight" value="bold"/>
@@ -35,6 +35,161 @@
         <property name="expand">False</property>
         <property name="fill">True</property>
         <property name="position">1</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkGrid" id="grid1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="halign">start</property>
+        <property name="margin_left">12</property>
+        <property name="row_spacing">6</property>
+        <property name="column_spacing">6</property>
+        <child>
+          <object class="GtkLabel" id="label2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="valign">center</property>
+            <property name="label" translatable="yes">Child alignments</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">2</property>
+            <property name="width">4</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="propertylabel3">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">end</property>
+            <property name="property_name">xalign</property>
+            <property name="custom_text" translatable="yes">Horizontal:</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">3</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="propertylabel4">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">end</property>
+            <property name="property_name">yalign</property>
+            <property name="custom_text" translatable="yes">Vertical:</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">3</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="propertyshell9">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="property_name">xalign</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">3</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="propertyshell10">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="property_name">yalign</property>
+          </object>
+          <packing>
+            <property name="left_attach">3</property>
+            <property name="top_attach">3</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="propertylabel7">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="property_name">relief</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">0</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="propertyshell11">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="property_name">relief</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">0</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="propertyshell13">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="property_name">focus-on-click</property>
+            <property name="editor_type">GladeEpropCheck</property>
+          </object>
+          <packing>
+            <property name="left_attach">3</property>
+            <property name="top_attach">0</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="propertylabel8">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="property_name">response-id</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">1</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="propertyshell12">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="property_name">response-id</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">1</property>
+            <property name="width">3</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">2</property>
       </packing>
     </child>
     <child>
@@ -52,7 +207,6 @@
               <object class="GtkFrame" id="standard">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_left">4</property>
                 <property name="margin_top">4</property>
                 <property name="label_xalign">0</property>
                 <property name="shadow_type">none</property>
@@ -60,6 +214,7 @@
                   <object class="GtkBox" id="standard_frame">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="halign">start</property>
                     <property name="margin_left">12</property>
                     <property name="margin_top">6</property>
                     <property name="hexpand">True</property>
@@ -136,6 +291,23 @@
                                 <property name="height">1</property>
                               </packing>
                             </child>
+                            <child>
+                              <object class="GladePropertyShell" id="propertyshell8">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="property_name">always-show-image</property>
+                                <property name="editor_type">GladeEpropCheck</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">2</property>
+                                <property name="width">1</property>
+                                <property name="height">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
                           </object>
                         </child>
                         <child type="label">
@@ -197,7 +369,7 @@
                                 <property name="custom_text" translatable="yes">Image:</property>
                               </object>
                               <packing>
-                                <property name="left_attach">2</property>
+                                <property name="left_attach">0</property>
                                 <property name="top_attach">1</property>
                                 <property name="width">1</property>
                                 <property name="height">1</property>
@@ -211,7 +383,7 @@
                                 <property name="property_name">image</property>
                               </object>
                               <packing>
-                                <property name="left_attach">3</property>
+                                <property name="left_attach">1</property>
                                 <property name="top_attach">1</property>
                                 <property name="width">1</property>
                                 <property name="height">1</property>
@@ -225,7 +397,7 @@
                                 <property name="property_name">image-position</property>
                               </object>
                               <packing>
-                                <property name="left_attach">3</property>
+                                <property name="left_attach">1</property>
                                 <property name="top_attach">2</property>
                                 <property name="width">1</property>
                                 <property name="height">1</property>
@@ -241,7 +413,7 @@
                                 <property name="custom_text" translatable="yes">Position:</property>
                               </object>
                               <packing>
-                                <property name="left_attach">2</property>
+                                <property name="left_attach">0</property>
                                 <property name="top_attach">2</property>
                                 <property name="width">1</property>
                                 <property name="height">1</property>
@@ -251,27 +423,26 @@
                               <object class="GladePropertyShell" id="propertyshell4">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="halign">start</property>
-                                <property name="hexpand">False</property>
                                 <property name="property_name">use-underline</property>
+                                <property name="editor_type">GladeEpropCheck</property>
                               </object>
                               <packing>
-                                <property name="left_attach">1</property>
+                                <property name="left_attach">2</property>
                                 <property name="top_attach">1</property>
                                 <property name="width">1</property>
                                 <property name="height">1</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GladePropertyLabel" id="propertylabel4">
+                              <object class="GladePropertyShell" id="propertyshell7">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="hexpand">False</property>
-                                <property name="property_name">use-underline</property>
+                                <property name="property_name">always-show-image</property>
+                                <property name="editor_type">GladeEpropCheck</property>
                               </object>
                               <packing>
-                                <property name="left_attach">0</property>
-                                <property name="top_attach">1</property>
+                                <property name="left_attach">2</property>
+                                <property name="top_attach">2</property>
                                 <property name="width">1</property>
                                 <property name="height">1</property>
                               </packing>
@@ -331,7 +502,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
-                <property name="margin_left">8</property>
+                <property name="margin_left">4</property>
                 <property name="xalign">0</property>
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
@@ -353,22 +524,32 @@
       <packing>
         <property name="expand">False</property>
         <property name="fill">False</property>
-        <property name="position">2</property>
+        <property name="position">3</property>
       </packing>
     </child>
     <child-editors>
       <editor id="embed"/>
+      <editor id="propertylabel3"/>
+      <editor id="propertylabel4"/>
+      <editor id="propertyshell9"/>
+      <editor id="propertyshell10"/>
+      <editor id="propertylabel7"/>
+      <editor id="propertyshell11"/>
+      <editor id="propertyshell13"/>
+      <editor id="propertylabel8"/>
+      <editor id="propertyshell12"/>
       <editor id="propertylabel1"/>
       <editor id="propertylabel2"/>
       <editor id="propertyshell2"/>
       <editor id="propertyshell1"/>
+      <editor id="propertyshell8"/>
       <editor id="propertyshell3"/>
       <editor id="propertylabel5"/>
       <editor id="propertyshell5"/>
       <editor id="propertyshell6"/>
       <editor id="propertylabel6"/>
       <editor id="propertyshell4"/>
-      <editor id="propertylabel4"/>
+      <editor id="propertyshell7"/>
     </child-editors>
   </template>
 </interface>
