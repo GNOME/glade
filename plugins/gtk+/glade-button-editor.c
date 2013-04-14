@@ -76,6 +76,7 @@ glade_button_editor_class_init (GladeButtonEditorClass * klass)
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-button-editor.ui");
 
+  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, embed);
   gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, standard_radio);
   gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, custom_radio);
   gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, stock_radio);
