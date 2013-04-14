@@ -140,6 +140,7 @@ gboolean             glade_editor_property_show_object_dialog (GladeProject     
 #define GLADE_TYPE_EPROP_NAMED_ICON      (glade_eprop_named_icon_get_type())
 #define GLADE_TYPE_EPROP_TEXT            (glade_eprop_text_get_type())
 #define GLADE_TYPE_EPROP_BOOL            (glade_eprop_bool_get_type())
+#define GLADE_TYPE_EPROP_CHECK           (glade_eprop_check_get_type())
 #define GLADE_TYPE_EPROP_UNICHAR         (glade_eprop_unichar_get_type())
 #define GLADE_TYPE_EPROP_OBJECT          (glade_eprop_object_get_type())
 #define GLADE_TYPE_EPROP_OBJECTS         (glade_eprop_objects_get_type())
@@ -150,6 +151,7 @@ GType     glade_eprop_color_get_type       (void) G_GNUC_CONST;
 GType     glade_eprop_named_icon_get_type  (void) G_GNUC_CONST;
 GType     glade_eprop_text_get_type        (void) G_GNUC_CONST;
 GType     glade_eprop_bool_get_type        (void) G_GNUC_CONST;
+GType     glade_eprop_check_get_type       (void) G_GNUC_CONST;
 GType     glade_eprop_unichar_get_type     (void) G_GNUC_CONST;
 GType     glade_eprop_object_get_type      (void) G_GNUC_CONST;
 GType     glade_eprop_objects_get_type     (void) G_GNUC_CONST;

@@ -2366,6 +2366,99 @@ glade_eprop_bool_create_input (GladeEditorProperty *eprop)
   return eprop_bool->button;
 }
 
+/*******************************************************************************
+                        GladeEditorPropertyCheckClass
+ *******************************************************************************/
+typedef struct
+{
+  GladeEditorProperty parent_instance;
+
+  GtkWidget *button;
+  GtkWidget *label;
+} GladeEPropCheck;
+
+GLADE_MAKE_EPROP (GladeEPropCheck, glade_eprop_check)
+#define GLADE_EPROP_CHECK(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GLADE_TYPE_EPROP_CHECK, GladeEPropCheck))
+#define GLADE_EPROP_CHECK_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GLADE_TYPE_EPROP_CHECK, GladeEPropCheckClass))
+#define GLADE_IS_EPROP_CHECK(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_CHECK))
+#define GLADE_IS_EPROP_CHECK_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_CHECK))
+#define GLADE_EPROP_CHECK_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_CHECK, GladeEPropCheckClass))
+
+static void
+glade_eprop_check_finalize (GObject *object)
+{
+  /* Chain up */
+  G_OBJECT_CLASS (editor_property_class)->finalize (object);
+}
+
+static void
+glade_eprop_check_load (GladeEditorProperty *eprop, GladeProperty *property)
+{
+  GladeEPropCheck *eprop_check = GLADE_EPROP_CHECK (eprop);
+  GladeWidget *widget;
+
+  /* Chain up first */
+  editor_property_class->load (eprop, property);
+
+  /* Load the inner label */
+  widget = glade_property_get_widget (property);
+  if (widget)
+    glade_editable_load (GLADE_EDITABLE (eprop_check->label), widget);
+
+  if (property)
+    {
+      GladeEPropCheck *eprop_check = GLADE_EPROP_CHECK (eprop);
+      gboolean state = g_value_get_boolean (glade_property_inline_value (property));
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (eprop_check->button), state);
+    }
+}
+
+static void
+glade_eprop_check_active_notify (GObject             *gobject,
+				 GParamSpec          *pspec,
+				 GladeEditorProperty *eprop)
+{
+  GValue val = { 0, };
+
+  if (eprop->priv->loading)
+    return;
+
+  g_value_init (&val, G_TYPE_BOOLEAN);
+  g_value_set_boolean (&val, gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (gobject)));
+
+  glade_editor_property_commit_no_callback (eprop, &val);
+
+  g_value_unset (&val);
+}
+
+static GtkWidget *
+glade_eprop_check_create_input (GladeEditorProperty *eprop)
+{
+  GladeEPropCheck *eprop_check = GLADE_EPROP_CHECK (eprop);
+  GladePropertyClass *pclass;
+
+  pclass = eprop->priv->klass;
+
+  /* Add the property label as the check button's child */
+  eprop_check->label = glade_property_label_new ();
+  glade_property_label_set_property_name (GLADE_PROPERTY_LABEL (eprop_check->label),
+					  glade_property_class_id (pclass));
+  glade_property_label_set_packing (GLADE_PROPERTY_LABEL (eprop_check->label),
+				    glade_property_class_get_is_packing (pclass));
+  glade_property_label_set_append_colon (GLADE_PROPERTY_LABEL (eprop_check->label), FALSE);
+  gtk_widget_show (eprop_check->label);
+  
+  eprop_check->button = gtk_check_button_new ();
+  gtk_container_add (GTK_CONTAINER (eprop_check->button), eprop_check->label);
+
+  gtk_widget_set_halign (eprop_check->button, GTK_ALIGN_START);
+  gtk_widget_set_valign (eprop_check->button, GTK_ALIGN_CENTER);
+
+  g_signal_connect (eprop_check->button, "notify::active",
+                    G_CALLBACK (glade_eprop_check_active_notify), eprop);
+
+  return eprop_check->button;
+}
 
 /*******************************************************************************
                         GladeEditorPropertyUnicharClass
