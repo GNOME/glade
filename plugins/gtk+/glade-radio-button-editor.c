@@ -23,52 +23,52 @@
 #include <gladeui/glade.h>
 #include <glib/gi18n-lib.h>
 
-#include "glade-toggle-button-editor.h"
+#include "glade-radio-button-editor.h"
 
-static void glade_toggle_button_editor_grab_focus (GtkWidget * widget);
+static void glade_radio_button_editor_grab_focus (GtkWidget * widget);
 
-struct _GladeToggleButtonEditorPrivate
+struct _GladeRadioButtonEditorPrivate
 {
   GtkWidget *embed;
 };
 
-G_DEFINE_TYPE (GladeToggleButtonEditor, glade_toggle_button_editor, GLADE_TYPE_EDITOR_SKELETON);
+G_DEFINE_TYPE (GladeRadioButtonEditor, glade_radio_button_editor, GLADE_TYPE_EDITOR_SKELETON);
 
 static void
-glade_toggle_button_editor_class_init (GladeToggleButtonEditorClass * klass)
+glade_radio_button_editor_class_init (GladeRadioButtonEditorClass * klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-  widget_class->grab_focus = glade_toggle_button_editor_grab_focus;
+  widget_class->grab_focus = glade_radio_button_editor_grab_focus;
 
-  gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-toggle-button-editor.ui");
-  gtk_widget_class_bind_child_internal (widget_class, GladeToggleButtonEditorPrivate, embed);
+  gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-radio-button-editor.ui");
+  gtk_widget_class_bind_child (widget_class, GladeRadioButtonEditorPrivate, embed);
 
-  g_type_class_add_private (object_class, sizeof (GladeToggleButtonEditorPrivate));  
+  g_type_class_add_private (object_class, sizeof (GladeRadioButtonEditorPrivate));  
 }
 
 static void
-glade_toggle_button_editor_init (GladeToggleButtonEditor * self)
+glade_radio_button_editor_init (GladeRadioButtonEditor * self)
 {
   self->priv = 
     G_TYPE_INSTANCE_GET_PRIVATE (self,
-				 GLADE_TYPE_TOGGLE_BUTTON_EDITOR,
-				 GladeToggleButtonEditorPrivate);
+				 GLADE_TYPE_RADIO_BUTTON_EDITOR,
+				 GladeRadioButtonEditorPrivate);
 
   gtk_widget_init_template (GTK_WIDGET (self));
 }
 
 static void
-glade_toggle_button_editor_grab_focus (GtkWidget * widget)
+glade_radio_button_editor_grab_focus (GtkWidget * widget)
 {
-  GladeToggleButtonEditor *toggle_button_editor = GLADE_TOGGLE_BUTTON_EDITOR (widget);
+  GladeRadioButtonEditor *radio_button_editor = GLADE_RADIO_BUTTON_EDITOR (widget);
 
-  gtk_widget_grab_focus (toggle_button_editor->priv->embed);
+  gtk_widget_grab_focus (radio_button_editor->priv->embed);
 }
 
 GtkWidget *
-glade_toggle_button_editor_new (void)
+glade_radio_button_editor_new (void)
 {
-  return g_object_new (GLADE_TYPE_TOGGLE_BUTTON_EDITOR, NULL);
+  return g_object_new (GLADE_TYPE_RADIO_BUTTON_EDITOR, NULL);
 }
