@@ -130,7 +130,7 @@ GOBJECT_INTROSPECTION_CHECK([0.10.1])
 dnl ================================================================
 dnl Check for gtk+
 dnl ================================================================
-GTK_REQUIRED=3.8.0
+GTK_REQUIRED=3.9.0
 PKG_CHECK_MODULES([GTK],[
   gtk+-3.0 >= $GTK_REQUIRED
   gmodule-2.0
