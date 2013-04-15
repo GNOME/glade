@@ -218,24 +218,50 @@ glade_property_shell_load (GladeEditable   *editable,
 
   if (widget)
     {
-      GladeWidgetAdaptor *adaptor = glade_widget_get_adaptor (widget);
+      GladeWidgetAdaptor *adaptor = NULL;
+
+      /* Use the parent adaptor if we're a packing property */
+      if (priv->packing)
+	{
+	  GladeWidget *parent = glade_widget_get_parent (widget);
+
+	  if (parent)
+	    adaptor = glade_widget_get_adaptor (parent);
+	}
+      else
+	adaptor = glade_widget_get_adaptor (widget);
 
       /* Need to rebuild the internal editor */
       if (priv->adaptor != adaptor)
 	{
+	  GladePropertyClass *pclass = NULL;
+
 	  if (priv->property_editor)
 	    gtk_widget_destroy (GTK_WIDGET (priv->property_editor));
 
 	  priv->adaptor = adaptor;
 
-	  /* Construct custom editor property if specified */
-	  if (g_type_is_a (priv->editor_type, GLADE_TYPE_EDITOR_PROPERTY))
+	  if (adaptor)
 	    {
-	      GladePropertyClass *pclass;
+	      if (priv->packing)
+		pclass = glade_widget_adaptor_get_pack_property_class (priv->adaptor,
+								       priv->property_name);
+	      else
+		pclass = glade_widget_adaptor_get_property_class (priv->adaptor,
+								  priv->property_name);
+	    }
 
-	      pclass = glade_widget_adaptor_get_property_class (priv->adaptor,
-								priv->property_name);
-
+	  /* Be forgiving, allow usage of properties that wont work, so that
+	   * some editors can include properties for subclasses, and hide
+	   * those properties if they're not applicable
+	   */
+	  if (pclass == NULL)
+	    {
+	      priv->property_editor = NULL;
+	    }
+	  /* Construct custom editor property if specified */
+	  else if (g_type_is_a (priv->editor_type, GLADE_TYPE_EDITOR_PROPERTY))
+	    {
 	      priv->property_editor = g_object_new (priv->editor_type,
 						    "property-class", pclass,
 						    "use-command", priv->use_command,
