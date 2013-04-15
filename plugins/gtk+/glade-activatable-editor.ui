@@ -1,29 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface domain="glade">
-  <!-- interface-requires gtk+ 3.8 -->
   <!-- interface-requires gladeui 0.0 -->
+  <!-- interface-requires gtk+ 3.8 -->
   <template class="GladeActivatableEditor" parent="GladeEditorSkeleton">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="orientation">vertical</property>
     <property name="spacing">4</property>
     <child>
-      <object class="GladeEditorTable" id="embed">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">False</property>
-        <property name="position">0</property>
-      </packing>
-    </child>
-    <child>
       <object class="GtkGrid" id="grid1">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="margin_top">6</property>
-        <property name="row_spacing">4</property>
+        <property name="halign">start</property>
+        <property name="row_spacing">6</property>
+        <property name="column_spacing">6</property>
         <child>
           <object class="GladePropertyLabel" id="propertylabel1">
             <property name="visible">True</property>
@@ -33,7 +23,7 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">1</property>
+            <property name="top_attach">2</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -47,7 +37,7 @@
           </object>
           <packing>
             <property name="left_attach">1</property>
-            <property name="top_attach">1</property>
+            <property name="top_attach">2</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -61,7 +51,7 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">2</property>
+            <property name="top_attach">3</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -75,7 +65,7 @@
           </object>
           <packing>
             <property name="left_attach">1</property>
-            <property name="top_attach">2</property>
+            <property name="top_attach">3</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -89,7 +79,7 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">3</property>
+            <property name="top_attach">4</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -103,7 +93,7 @@
           </object>
           <packing>
             <property name="left_attach">1</property>
-            <property name="top_attach">3</property>
+            <property name="top_attach">4</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -114,11 +104,24 @@
             <property name="can_focus">False</property>
             <property name="halign">start</property>
             <property name="valign">center</property>
+            <property name="margin_bottom">2</property>
             <property name="label" translatable="yes">Activatable / Actionable</property>
             <property name="use_markup">True</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">1</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladeEditorTable" id="embed">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -131,17 +134,17 @@
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
-        <property name="position">1</property>
+        <property name="position">0</property>
       </packing>
     </child>
     <child-editors>
-      <editor id="embed"/>
       <editor id="propertylabel1"/>
       <editor id="propertyshell1"/>
       <editor id="propertylabel2"/>
       <editor id="propertyshell2"/>
       <editor id="propertylabel3"/>
       <editor id="propertyshell3"/>
+      <editor id="embed"/>
     </child-editors>
   </template>
 </interface>
