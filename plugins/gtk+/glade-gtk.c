@@ -42,8 +42,6 @@
 #include "glade-entry-editor.h"
 #include "glade-activatable-editor.h"
 #include "glade-tool-item-group-editor.h"
-#include "glade-toggle-button-editor.h"
-#include "glade-radio-button-editor.h"
 #include "glade-string-list.h"
 #include "glade-fixed.h"
 #include "glade-gtk-action-widgets.h"
@@ -3713,12 +3711,7 @@ glade_gtk_button_create_editable (GladeWidgetAdaptor * adaptor,
 {
   if (type == GLADE_PAGE_GENERAL)
     {
-      if (g_type_is_a (glade_widget_adaptor_get_object_type (adaptor), GTK_TYPE_RADIO_BUTTON))
-	return (GladeEditable *) glade_radio_button_editor_new ();
-      else if (g_type_is_a (glade_widget_adaptor_get_object_type (adaptor), GTK_TYPE_TOGGLE_BUTTON))
-	return (GladeEditable *) glade_toggle_button_editor_new ();
-      else
-	return (GladeEditable *) glade_button_editor_new (adaptor, NULL);
+      return (GladeEditable *) glade_button_editor_new (adaptor, NULL);
     }
 
   return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);

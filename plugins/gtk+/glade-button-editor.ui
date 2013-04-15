@@ -46,10 +46,36 @@
         <property name="row_spacing">6</property>
         <property name="column_spacing">6</property>
         <child>
-          <object class="GladePropertyLabel" id="propertylabel8">
+          <object class="GladePropertyLabel" id="response_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="property_name">response-id</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">2</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="response_shell">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="property_name">response-id</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">2</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="relief_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="property_name">relief</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -59,40 +85,14 @@
           </packing>
         </child>
         <child>
-          <object class="GladePropertyShell" id="propertyshell12">
+          <object class="GladePropertyShell" id="relief_shell">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="property_name">response-id</property>
+            <property name="property_name">relief</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
             <property name="top_attach">1</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GladePropertyLabel" id="propertylabel7">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="property_name">relief</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GladePropertyShell" id="propertyshell11">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="property_name">relief</property>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">0</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -107,7 +107,7 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">2</property>
+            <property name="top_attach">3</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -122,7 +122,7 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">3</property>
+            <property name="top_attach">4</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -137,7 +137,7 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">4</property>
+            <property name="top_attach">5</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -150,7 +150,7 @@
           </object>
           <packing>
             <property name="left_attach">1</property>
-            <property name="top_attach">3</property>
+            <property name="top_attach">4</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -163,7 +163,7 @@
           </object>
           <packing>
             <property name="left_attach">1</property>
-            <property name="top_attach">4</property>
+            <property name="top_attach">5</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -179,13 +179,84 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">5</property>
+            <property name="top_attach">6</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
         </child>
         <child>
-          <placeholder/>
+          <object class="GladePropertyShell" id="active_shell">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="valign">center</property>
+            <property name="property_name">active</property>
+            <property name="editor_type">GladeEpropCheck</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">6</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="inconsistent_shell">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="valign">center</property>
+            <property name="property_name">inconsistent</property>
+            <property name="editor_type">GladeEpropCheck</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">7</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="draw_indicator_shell">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="valign">center</property>
+            <property name="property_name">draw-indicator</property>
+            <property name="editor_type">GladeEpropCheck</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">7</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="group_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="property_name">group</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">0</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="group_shell">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="property_name">group</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">0</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
         </child>
         <child>
           <placeholder/>
@@ -198,7 +269,7 @@
       </packing>
     </child>
     <child>
-      <object class="GtkLabel" id="label3">
+      <object class="GtkLabel" id="content_label">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="halign">start</property>
@@ -215,7 +286,7 @@
       </packing>
     </child>
     <child>
-      <object class="GtkFrame" id="frame1">
+      <object class="GtkFrame" id="content_frame">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="label_xalign">0</property>
@@ -553,15 +624,20 @@
     </child>
     <child-editors>
       <editor id="embed"/>
-      <editor id="propertylabel8"/>
-      <editor id="propertyshell12"/>
-      <editor id="propertylabel7"/>
-      <editor id="propertyshell11"/>
+      <editor id="response_label"/>
+      <editor id="response_shell"/>
+      <editor id="relief_label"/>
+      <editor id="relief_shell"/>
       <editor id="propertylabel3"/>
       <editor id="propertylabel4"/>
       <editor id="propertyshell9"/>
       <editor id="propertyshell10"/>
       <editor id="propertyshell13"/>
+      <editor id="active_shell"/>
+      <editor id="inconsistent_shell"/>
+      <editor id="draw_indicator_shell"/>
+      <editor id="group_label"/>
+      <editor id="group_shell"/>
       <editor id="propertylabel1"/>
       <editor id="propertylabel2"/>
       <editor id="propertyshell2"/>

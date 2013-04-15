@@ -42,6 +42,25 @@ struct _GladeButtonEditorPrivate
 {
   GtkWidget *embed;
 
+  /* Radio Button */
+  GtkWidget *group_label;
+  GtkWidget *group_shell;
+
+  /* Toggle Button */
+  GtkWidget *active_shell;
+  GtkWidget *inconsistent_shell;
+  GtkWidget *draw_indicator_shell;
+
+  /* Button */
+  GtkWidget *content_label;
+  GtkWidget *content_frame;
+
+  GtkWidget *relief_label;
+  GtkWidget *relief_shell;
+
+  GtkWidget *response_label;
+  GtkWidget *response_shell;
+
   GtkWidget *standard_radio; /* Use standard properties to layout a button */
   GtkWidget *custom_radio;   /* Use a placeholder in the button */
 
@@ -77,6 +96,17 @@ glade_button_editor_class_init (GladeButtonEditorClass * klass)
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-button-editor.ui");
 
   gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, embed);
+  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, relief_label);
+  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, relief_shell);
+  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, response_label);
+  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, response_shell);
+  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, content_label);
+  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, content_frame);
+  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, group_shell);
+  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, group_label);
+  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, active_shell);
+  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, inconsistent_shell);
+  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, draw_indicator_shell);
   gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, standard_radio);
   gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, custom_radio);
   gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, stock_radio);
@@ -108,16 +138,45 @@ static void
 glade_button_editor_load (GladeEditable * editable, GladeWidget * widget)
 {
   GladeButtonEditor *button_editor = GLADE_BUTTON_EDITOR (editable);
+  GladeButtonEditorPrivate *priv = button_editor->priv;
   GladeWidget *gchild = NULL;
   GtkWidget *child, *button;
   gboolean use_stock = FALSE;
+
+  if (widget)
+    button = GTK_WIDGET (glade_widget_get_object (widget));
+
+  /* If the widget changed, adjust some visibility
+   */
+  if (widget && glade_editable_loaded_widget (editable) != widget)
+    {
+      gboolean is_toggle = GTK_IS_TOGGLE_BUTTON (button);
+      gboolean is_check  = GTK_IS_CHECK_BUTTON (button);
+      gboolean is_radio  = GTK_IS_RADIO_BUTTON (button);
+      gboolean is_menu   = GTK_IS_MENU_BUTTON (button);
+
+      gtk_widget_set_visible (priv->active_shell, is_toggle);
+      gtk_widget_set_visible (priv->inconsistent_shell, is_toggle);
+      gtk_widget_set_visible (priv->draw_indicator_shell, is_toggle);
+
+      gtk_widget_set_visible (priv->relief_label, !is_check);
+      gtk_widget_set_visible (priv->relief_shell, !is_check);
+
+      gtk_widget_set_visible (priv->response_label, !is_toggle);
+      gtk_widget_set_visible (priv->response_shell, !is_toggle);
+
+      gtk_widget_set_visible (priv->group_label, is_radio);
+      gtk_widget_set_visible (priv->group_shell, is_radio);
+
+      gtk_widget_set_visible (priv->content_label, !is_menu);
+      gtk_widget_set_visible (priv->content_frame, !is_menu);
+    }
 
   /* Chain up to default implementation */
   parent_editable_iface->load (editable, widget);
 
   if (widget)
     {
-      button = GTK_WIDGET (glade_widget_get_object (widget));
       child = gtk_bin_get_child (GTK_BIN (button));
       if (child)
         gchild = glade_widget_get_from_gobject (child);
@@ -127,32 +186,30 @@ glade_button_editor_load (GladeEditable * editable, GladeWidget * widget)
           GLADE_IS_PLACEHOLDER (child)) // placeholder there, custom mode
         {
           /* Custom */
-          gtk_widget_set_sensitive (button_editor->priv->standard_frame, FALSE);
+          gtk_widget_set_sensitive (priv->standard_frame, FALSE);
           gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON
-                                        (button_editor->priv->custom_radio), TRUE);
+                                        (priv->custom_radio), TRUE);
         }
       else
         {
           /* Standard */
-          gtk_widget_set_sensitive (button_editor->priv->standard_frame, TRUE);
+          gtk_widget_set_sensitive (priv->standard_frame, TRUE);
           gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON
-                                        (button_editor->priv->standard_radio), TRUE);
+                                        (priv->standard_radio), TRUE);
 
           glade_widget_property_get (widget, "use-stock", &use_stock);
 
           if (use_stock)
             {
-              gtk_widget_set_sensitive (button_editor->priv->stock_frame, TRUE);
-              gtk_widget_set_sensitive (button_editor->priv->label_frame, FALSE);
-              gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON
-                                            (button_editor->priv->stock_radio), TRUE);
+              gtk_widget_set_sensitive (priv->stock_frame, TRUE);
+              gtk_widget_set_sensitive (priv->label_frame, FALSE);
+              gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->stock_radio), TRUE);
             }
           else
             {
-              gtk_widget_set_sensitive (button_editor->priv->stock_frame, FALSE);
-              gtk_widget_set_sensitive (button_editor->priv->label_frame, TRUE);
-              gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON
-                                            (button_editor->priv->label_radio), TRUE);
+              gtk_widget_set_sensitive (priv->stock_frame, FALSE);
+              gtk_widget_set_sensitive (priv->label_frame, TRUE);
+              gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->label_radio), TRUE);
             }
         }
     }

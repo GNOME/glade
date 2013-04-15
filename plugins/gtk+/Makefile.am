@@ -43,10 +43,8 @@ libgladegtk_la_SOURCES = 		\
 	glade-image-item-editor.c	\
 	glade-label-editor.c		\
 	glade-model-data.c		\
-	glade-radio-button-editor.c	\
 	glade-store-editor.c		\
 	glade-string-list.c		\
-	glade-toggle-button-editor.c	\
 	glade-tool-button-editor.c	\
 	glade-tool-item-group-editor.c	\
 	glade-treeview-editor.c
@@ -71,10 +69,8 @@ noinst_HEADERS =			\
 	glade-image-item-editor.h	\
 	glade-label-editor.h		\
 	glade-model-data.h		\
-	glade-radio-button-editor.h	\
 	glade-store-editor.h		\
 	glade-string-list.h		\
-	glade-toggle-button-editor.h	\
 	glade-tool-button-editor.h	\
 	glade-tool-item-group-editor.h	\
 	glade-treeview-editor.h
@@ -104,9 +100,7 @@ BUILT_SOURCES = 		\
 
 UI_FILES = 				\
 	glade-activatable-editor.ui	\
-	glade-button-editor.ui		\
-	glade-radio-button-editor.ui	\
-	glade-toggle-button-editor.ui
+	glade-button-editor.ui
 
 EXTRA_DIST = 					\
 	$(UI_FILES)				\
