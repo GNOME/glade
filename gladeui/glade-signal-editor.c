@@ -629,6 +629,13 @@ glade_signal_editor_new ()
   return signal_editor;
 }
 
+static gint
+find_adaptor_by_name (GladeWidgetAdaptor *adaptor,
+		      const gchar        *name)
+{
+  return g_strcmp0 (glade_widget_adaptor_get_name (adaptor), name);
+}
+
 /**
  * glade_signal_editor_load_widget:
  * @editor: a #GladeSignalEditor
@@ -642,8 +649,10 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
 				 GladeWidget *widget)
 {
   GladeSignalEditorPrivate *priv = editor->priv;
+  GList *signals, *l, *adaptors = NULL;
   GtkTreePath *path;
   GtkTreeIter  iter;
+  gboolean valid;
 	
   if (priv->widget != widget)
     {	
@@ -672,6 +681,45 @@ glade_signal_editor_load_widget (GladeSignalEditor *editor,
       gtk_tree_view_expand_row (GTK_TREE_VIEW (priv->signal_tree), path, FALSE);
       gtk_tree_path_free (path);
     }
+
+  /* Collect a list of adaptors which actually have used signals */
+  signals = glade_widget_get_signal_list (widget);
+  for (l = signals; l; l = l->next)
+    {
+      GladeSignal            *signal = l->data;
+      const GladeSignalClass *signal_class;
+      GladeWidgetAdaptor     *adaptor;
+
+      signal_class = glade_signal_get_class (signal);
+      adaptor = glade_signal_class_get_adaptor (signal_class);
+
+      if (!g_list_find (adaptors, adaptor))
+	adaptors = g_list_prepend (adaptors, adaptor);
+    }
+  g_list_free (signals);
+
+  /* Expand any rows which actually contain used signals */
+  valid = gtk_tree_model_iter_children (priv->model, &iter, NULL);
+  while (valid)
+    {
+      gchar *name = NULL;
+
+      gtk_tree_model_get (priv->model, &iter,
+			  GLADE_SIGNAL_COLUMN_NAME, &name,
+			  -1);
+
+      if (g_list_find_custom (adaptors, name, (GCompareFunc)find_adaptor_by_name))
+	{
+	  path = gtk_tree_model_get_path (priv->model, &iter);
+	  gtk_tree_view_expand_row (GTK_TREE_VIEW (priv->signal_tree), path, FALSE);
+	  gtk_tree_path_free (path);
+	}
+
+      g_free (name);
+      valid = gtk_tree_model_iter_next (priv->model, &iter);
+    }
+
+  g_list_free (adaptors);
 }
 
 /**
