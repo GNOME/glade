@@ -1901,47 +1901,108 @@ glade_design_layout_finalize (GObject *object)
 }
 
 static gboolean
-on_drag_icon_draw (GtkWidget *widget, cairo_t *cr, GtkWidget *drag_source)
+on_drag_icon_draw (GtkWidget *widget, cairo_t *cr, GladeDesignLayout *layout)
 {
-  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
-  cairo_paint (cr);
+  GtkStyleContext *context = gtk_widget_get_style_context (widget);
+  cairo_pattern_t *gradient;
+  GtkAllocation alloc;
+  gint x, y, w, h;
+  gdouble h2;
+  GdkRGBA bg;
+  
+  gtk_widget_get_allocation (widget, &alloc);
+  x = alloc.x;
+  y = alloc.y;
+  w = alloc.width;
+  h = alloc.height;
+  h2 = h/2.0;
 
-  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-  cairo_push_group (cr);
-  gtk_widget_draw (drag_source, cr);
-  cairo_pop_group_to_source (cr);
-  cairo_paint_with_alpha (cr, .5);
+  gtk_style_context_get_background_color (context, GTK_STATE_NORMAL, &bg);
+
+  gradient = cairo_pattern_create_linear (x, y, x, y+h);
+  cairo_pattern_add_color_stop_rgba (gradient, 0, bg.red, bg.green, bg.blue, 0);
+  cairo_pattern_add_color_stop_rgba (gradient, .5, bg.red, bg.green, bg.blue, .8);
+  cairo_pattern_add_color_stop_rgba (gradient, 1, bg.red, bg.green, bg.blue, 0);
+
+  cairo_set_source (cr, gradient);
+  cairo_rectangle (cr, x+h2, y, w-h, h);
+  cairo_fill (cr);
+  cairo_pattern_destroy (gradient);
+
+  gradient = cairo_pattern_create_radial (x+h2, y+h2, 0, x+h2, y+h2, h2);
+  cairo_pattern_add_color_stop_rgba (gradient, 0, bg.red, bg.green, bg.blue, .8);
+  cairo_pattern_add_color_stop_rgba (gradient, 1, bg.red, bg.green, bg.blue, 0);
+
+  cairo_set_source (cr, gradient);
+  cairo_rectangle (cr, x, y, h2, h);
+  cairo_fill (cr);
+
+  cairo_translate (cr, w-h, 0);
+  cairo_set_source (cr, gradient);
+  cairo_rectangle (cr, x+h2, y, h2, h);
+  cairo_fill (cr);
+  
+  cairo_pattern_destroy (gradient);
 
   return FALSE;
+}
+
+GtkWidget *
+_glade_design_layout_dnd_icon_widget_new (GdkDragContext *context,
+                                          const gchar *icon_name,
+                                          const gchar *description)
+{
+  GtkWidget *window, *box, *label, *icon;
+  GdkScreen *screen;
+  GdkVisual *visual;
+
+  screen = gdk_window_get_screen (gdk_drag_context_get_source_window (context));
+  visual = gdk_screen_get_rgba_visual (screen);
+  window = gtk_window_new (GTK_WINDOW_POPUP);
+  
+  gtk_window_set_type_hint (GTK_WINDOW (window), GDK_WINDOW_TYPE_HINT_DND);
+  gtk_window_set_screen (GTK_WINDOW (window), screen);
+  gtk_widget_set_visual (window, visual);
+
+  box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
+  gtk_container_set_border_width (GTK_CONTAINER (box), 12);
+
+  icon = gtk_image_new_from_icon_name (icon_name, GTK_ICON_SIZE_BUTTON);
+  gtk_widget_set_opacity (icon, .8);
+  
+  label = gtk_label_new (description);
+
+  gtk_box_pack_start (GTK_BOX (box), icon, FALSE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (box), label, FALSE, TRUE, 0);
+
+  gtk_widget_show_all (box);
+  gtk_container_add (GTK_CONTAINER (window), box);
+
+  gtk_widget_set_app_paintable (window, TRUE);
+  g_signal_connect (window, "draw", G_CALLBACK (on_drag_icon_draw), NULL);
+
+  return window;
 }
 
 static void
 glade_design_layout_drag_begin (GtkWidget *widget, GdkDragContext *context)
 {
   GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_PRIVATE (widget);
-  GtkAllocation alloc;
-  GdkScreen *screen;
-  GdkVisual *visual;
-  GtkWidget *window;
+  GladeWidgetAdaptor *adaptor;
+  GladeWidget *gwidget;
+  const gchar *icon_name;
+  gchar *description;
 
-  gtk_widget_get_allocation (priv->drag_source, &alloc);
+  gwidget = glade_widget_get_from_gobject (priv->drag_source);
+  adaptor = glade_widget_get_adaptor (gwidget);
+  icon_name = glade_widget_adaptor_get_icon_name (adaptor);
+  description = g_strdup_printf ("%s [%s]",
+                                 glade_widget_adaptor_get_name (adaptor),
+                                 glade_widget_get_name (gwidget));
 
-  screen = gdk_window_get_screen (gdk_drag_context_get_source_window (context));
-  visual = gdk_screen_get_rgba_visual (screen);
-  window = gtk_window_new (GTK_WINDOW_POPUP);
-  
-  gtk_widget_set_size_request (window, alloc.width, alloc.height);
-  gtk_window_set_type_hint (GTK_WINDOW (window), GDK_WINDOW_TYPE_HINT_DND);
-  gtk_window_set_screen (GTK_WINDOW (window), screen);
-  gtk_widget_set_visual (window, visual);
-  gtk_widget_set_app_paintable (window, TRUE);
-
-  g_signal_connect_object (window, "draw",
-                           G_CALLBACK (on_drag_icon_draw),
-                           priv->drag_source, 0);
-
-  priv->drag_icon = g_object_ref_sink (window);
-  gtk_drag_set_icon_widget (context, window, priv->drag_x, priv->drag_y);
+  priv->drag_icon = _glade_design_layout_dnd_icon_widget_new (context, icon_name, description);
+  g_object_ref_sink (priv->drag_icon);
+  gtk_drag_set_icon_widget (context, priv->drag_icon, 0, 0);
 }
 
 static void

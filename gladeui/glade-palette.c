@@ -46,6 +46,7 @@
 #include "glade-widget.h"
 #include "glade-widget-adaptor.h"
 #include "glade-popup.h"
+#include "glade-design-private.h"
 
 #include <glib/gi18n-lib.h>
 #include <gdk/gdk.h>
@@ -269,6 +270,31 @@ palette_item_toggled_cb (GtkToggleToolButton *button, GladePalette *palette)
     }
 }
 
+static void
+glade_palette_drag_end (GtkWidget *widget,
+                        GdkDragContext *context,
+                        GtkWidget *drag_icon)
+{
+  g_object_unref (drag_icon);
+  g_signal_handlers_disconnect_by_func (widget, glade_palette_drag_end, drag_icon);
+}
+
+static void
+glade_palette_drag_begin (GtkWidget *widget,
+                          GdkDragContext *context,
+                          GladeWidgetAdaptor *adaptor)
+{
+  GtkWidget *drag_icon;
+
+  drag_icon = _glade_design_layout_dnd_icon_widget_new (context,
+                                                        glade_widget_adaptor_get_icon_name (adaptor),
+                                                        glade_widget_adaptor_get_name (adaptor));
+  g_object_ref_sink (drag_icon);
+  gtk_drag_set_icon_widget (context, drag_icon, 0, 0);
+  g_signal_connect_object (widget, "drag-end",
+                           G_CALLBACK (glade_palette_drag_end), drag_icon, 0);
+}
+
 static gint
 palette_item_button_press_cb (GtkWidget      *button,
 			      GdkEventButton *event, 
@@ -281,10 +307,6 @@ palette_item_button_press_cb (GtkWidget      *button,
     {
       glade_popup_palette_pop (palette, adaptor, event);
       return TRUE;
-    }
-  else
-    {
-      gtk_drag_source_set_icon_name (button, glade_widget_adaptor_get_icon_name (adaptor));                                
     }
 
   return FALSE;
@@ -326,7 +348,8 @@ glade_palette_new_item (GladePalette * palette, GladeWidgetAdaptor * adaptor)
   /* Fire Glade palette popup menus */
   g_signal_connect (G_OBJECT (button), "button-press-event",
                     G_CALLBACK (palette_item_button_press_cb), item);
-
+  g_signal_connect_object (button, "drag-begin",
+                           G_CALLBACK (glade_palette_drag_begin), adaptor, 0);
   gtk_widget_show (item);
 
   g_hash_table_insert (palette->priv->button_table, 
