@@ -1747,6 +1747,7 @@ glade_design_layout_init (GladeDesignLayout *layout)
   priv->default_context = gtk_style_context_new ();
   gtk_widget_path_append_type (path, GTK_TYPE_WINDOW);
   gtk_style_context_set_path (priv->default_context, path);
+  gtk_style_context_add_class (priv->default_context, GTK_STYLE_CLASS_BACKGROUND);
 
   /* setup static member of rectangles */
   priv->east.width = PADDING + OUTLINE_WIDTH;
