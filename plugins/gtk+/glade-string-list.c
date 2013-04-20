@@ -614,6 +614,8 @@ glade_eprop_string_list_create_input (GladeEditorProperty * eprop)
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (swindow), GTK_SHADOW_IN);
   gtk_container_add (GTK_CONTAINER (swindow), eprop_string_list->view);
 
+  gtk_widget_set_hexpand (swindow, TRUE);
+
   gtk_widget_show (eprop_string_list->view);
   gtk_widget_show (swindow);
 
