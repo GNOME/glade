@@ -47,7 +47,8 @@ libgladegtk_la_SOURCES = 		\
 	glade-string-list.c		\
 	glade-tool-button-editor.c	\
 	glade-tool-item-group-editor.c	\
-	glade-treeview-editor.c
+	glade-treeview-editor.c		\
+	glade-widget-editor.c
 
 libgladegtk_la_LDFLAGS     = -module -avoid-version $(AM_LDFLAGS)
 libgladegtk_la_LIBADD      = $(libgladeui) $(GTK_LIBS)
@@ -73,7 +74,8 @@ noinst_HEADERS =			\
 	glade-string-list.h		\
 	glade-tool-button-editor.h	\
 	glade-tool-item-group-editor.h	\
-	glade-treeview-editor.h
+	glade-treeview-editor.h		\
+	glade-widget-editor.h
 
 if PLATFORM_WIN32
 libgladegtk_la_LDFLAGS += -no-undefined
@@ -100,7 +102,8 @@ BUILT_SOURCES = 		\
 
 UI_FILES = 				\
 	glade-activatable-editor.ui	\
-	glade-button-editor.ui
+	glade-button-editor.ui		\
+	glade-widget-editor.ui
 
 EXTRA_DIST = 					\
 	$(UI_FILES)				\

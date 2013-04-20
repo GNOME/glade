@@ -31,6 +31,7 @@
 #include "glade-model-data.h"
 #include "glade-icon-sources.h"
 #include "glade-button-editor.h"
+#include "glade-widget-editor.h"
 #include "glade-tool-button-editor.h"
 #include "glade-image-editor.h"
 #include "glade-image-item-editor.h"
@@ -418,6 +419,8 @@ void
 glade_gtk_widget_read_widget (GladeWidgetAdaptor * adaptor,
                               GladeWidget * widget, GladeXmlNode * node)
 {
+  const gchar *tooltip_markup = NULL;
+
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
 	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
@@ -433,6 +436,11 @@ glade_gtk_widget_read_widget (GladeWidgetAdaptor * adaptor,
 
   /* Read in the style classes */
   glade_gtk_widget_read_style_classes (widget, node);
+
+  /* Resolve the virtual tooltip use markup property */
+  glade_widget_property_get (widget, "tooltip-markup", &tooltip_markup);
+  if (tooltip_markup != NULL)
+    glade_widget_property_set (widget, "glade-tooltip-markup", TRUE);
 }
 
 static void
@@ -702,11 +710,11 @@ glade_gtk_widget_write_widget (GladeWidgetAdaptor * adaptor,
   /* Make sure use-action-appearance and related-action properties are
    * ordered in a sane way and are only saved if there is an action */
   prop = glade_widget_get_property (widget, "use-action-appearance");
-  if (prop)
+  if (prop && glade_property_get_enabled (prop))
     glade_property_write (prop, context, node);
 
   prop = glade_widget_get_property (widget, "related-action");
-  if (prop)
+  if (prop && glade_property_get_enabled (prop))
     glade_property_write (prop, context, node);
 
   /* First chain up and read in all the normal properties.. */
@@ -739,6 +747,21 @@ glade_gtk_widget_create_eprop (GladeWidgetAdaptor * adaptor,
         (G_TYPE_OBJECT)->create_eprop (adaptor, klass, use_command);
 
   return eprop;
+}
+
+GladeEditable *
+glade_gtk_widget_create_editable (GladeWidgetAdaptor * adaptor,
+				  GladeEditorPageType type)
+{
+  GladeEditable *editable;
+
+  /* Get base editable */
+  if (type == GLADE_PAGE_COMMON)
+    editable = (GladeEditable *)glade_widget_editor_new ();
+  else
+    editable = GWA_GET_CLASS (G_TYPE_OBJECT)->create_editable (adaptor, type);
+
+  return editable;
 }
 
 gchar *
