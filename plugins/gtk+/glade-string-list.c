@@ -521,6 +521,31 @@ treeview_key_press (GtkWidget           *treeview,
   return FALSE;
 }
 
+static gint
+get_tree_view_height (void)
+{
+  static gint height = -1;
+
+  if (height < 0)
+    {
+      GtkWidget *label = gtk_label_new (NULL);
+      PangoLayout *layout =
+	gtk_widget_create_pango_layout (label, 
+					"The quick\n"
+					"brown fox\n"
+					"jumped over\n"
+					"the lazy dog");
+
+      pango_layout_get_pixel_size (layout, NULL, &height);
+
+      g_object_unref (layout);
+      g_object_ref_sink (label);
+      g_object_unref (label);
+    }
+
+  return height;
+}
+
 static GtkWidget *
 glade_eprop_string_list_create_input (GladeEditorProperty * eprop)
 {
@@ -582,7 +607,7 @@ glade_eprop_string_list_create_input (GladeEditorProperty * eprop)
 
   swindow = gtk_scrolled_window_new (NULL, NULL);
 
-  gtk_scrolled_window_set_min_content_height (GTK_SCROLLED_WINDOW (swindow), 150);
+  gtk_scrolled_window_set_min_content_height (GTK_SCROLLED_WINDOW (swindow), get_tree_view_height ());
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (swindow),
 				  GTK_POLICY_AUTOMATIC,
 				  GTK_POLICY_AUTOMATIC);
