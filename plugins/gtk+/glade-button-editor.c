@@ -33,7 +33,6 @@ static void glade_button_editor_editable_init (GladeEditableIface * iface);
 
 static void glade_button_editor_grab_focus (GtkWidget * widget);
 
-static void standard_toggled (GtkWidget * widget, GladeButtonEditor * button_editor);
 static void custom_toggled (GtkWidget * widget, GladeButtonEditor * button_editor);
 static void stock_toggled (GtkWidget * widget, GladeButtonEditor * button_editor);
 static void label_toggled (GtkWidget * widget, GladeButtonEditor * button_editor);
@@ -53,7 +52,6 @@ struct _GladeButtonEditorPrivate
 
   /* Button */
   GtkWidget *content_label;
-  GtkWidget *content_frame;
 
   GtkWidget *relief_label;
   GtkWidget *relief_shell;
@@ -61,8 +59,7 @@ struct _GladeButtonEditorPrivate
   GtkWidget *response_label;
   GtkWidget *response_shell;
 
-  GtkWidget *standard_radio; /* Use standard properties to layout a button */
-  GtkWidget *custom_radio;   /* Use a placeholder in the button */
+  GtkWidget *custom_check;   /* Use a placeholder in the button */
 
   /* Available in standard mode: */
   GtkWidget *stock_radio;    /* Create the button using the stock (Available: stock, image-position) */
@@ -92,7 +89,6 @@ glade_button_editor_class_init (GladeButtonEditorClass * klass)
   object_class->finalize = glade_button_editor_finalize;
   widget_class->grab_focus = glade_button_editor_grab_focus;
 
-
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-button-editor.ui");
 
   gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, embed);
@@ -101,21 +97,18 @@ glade_button_editor_class_init (GladeButtonEditorClass * klass)
   gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, response_label);
   gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, response_shell);
   gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, content_label);
-  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, content_frame);
   gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, group_shell);
   gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, group_label);
   gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, active_shell);
   gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, inconsistent_shell);
   gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, draw_indicator_shell);
-  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, standard_radio);
-  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, custom_radio);
+  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, custom_check);
   gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, stock_radio);
   gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, label_radio);
   gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, standard_frame);
   gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, stock_frame);
   gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, label_frame);
 
-  gtk_widget_class_bind_callback (widget_class, standard_toggled);
   gtk_widget_class_bind_callback (widget_class, custom_toggled);
   gtk_widget_class_bind_callback (widget_class, stock_toggled);
   gtk_widget_class_bind_callback (widget_class, label_toggled);
@@ -168,8 +161,9 @@ glade_button_editor_load (GladeEditable * editable, GladeWidget * widget)
       gtk_widget_set_visible (priv->group_label, is_radio);
       gtk_widget_set_visible (priv->group_shell, is_radio);
 
-      gtk_widget_set_visible (priv->content_label, !is_menu);
-      gtk_widget_set_visible (priv->content_frame, !is_menu);
+      gtk_widget_set_visible (priv->content_label,  !is_menu);
+      gtk_widget_set_visible (priv->custom_check,   !is_menu);
+      gtk_widget_set_visible (priv->standard_frame, !is_menu);
     }
 
   /* Chain up to default implementation */
@@ -187,15 +181,13 @@ glade_button_editor_load (GladeEditable * editable, GladeWidget * widget)
         {
           /* Custom */
           gtk_widget_set_sensitive (priv->standard_frame, FALSE);
-          gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON
-                                        (priv->custom_radio), TRUE);
+          gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->custom_check), TRUE);
         }
       else
         {
           /* Standard */
           gtk_widget_set_sensitive (priv->standard_frame, TRUE);
-          gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON
-                                        (priv->standard_radio), TRUE);
+          gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->custom_check), FALSE);
 
           glade_widget_property_get (widget, "use-stock", &use_stock);
 
@@ -239,101 +231,84 @@ glade_button_editor_grab_focus (GtkWidget * widget)
   gtk_widget_grab_focus (button_editor->priv->embed);
 }
 
-/* Secion control radio button callbacks: */
-static void
-standard_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
-{
-  GladeProperty *property;
-  GladeWidget *gchild = NULL, *gwidget;
-  GtkWidget *child, *button;
-  GValue value = { 0, };
-
-  gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (button_editor));
-
-  if (glade_editable_loading (GLADE_EDITABLE (button_editor)) || !gwidget)
-    return;
-
-  if (!gtk_toggle_button_get_active
-      (GTK_TOGGLE_BUTTON (button_editor->priv->standard_radio)))
-    return;
-
-  glade_editable_block (GLADE_EDITABLE (button_editor));
-
-  glade_command_push_group (_("Setting %s to use standard configuration"),
-                            glade_widget_get_name (gwidget));
-
-  /* If theres a widget customly inside... command remove it first... */
-  button = GTK_WIDGET (glade_widget_get_object (gwidget));
-  child = gtk_bin_get_child (GTK_BIN (button));
-  if (child)
-    gchild = glade_widget_get_from_gobject (child);
-
-  if (gchild && glade_widget_get_parent (gchild) == gwidget)
-    {
-      GList widgets = { 0, };
-      widgets.data = gchild;
-      glade_command_delete (&widgets);
-    }
-
-  property = glade_widget_get_property (gwidget, "custom-child");
-  glade_command_set_property (property, FALSE);
-
-  /* Setup reasonable defaults for button label. */
-  property = glade_widget_get_property (gwidget, "stock");
-  glade_command_set_property (property, NULL);
-
-  property = glade_widget_get_property (gwidget, "use-stock");
-  glade_command_set_property (property, FALSE);
-
-  property = glade_widget_get_property (gwidget, "label");
-  glade_property_get_default (property, &value);
-  glade_command_set_property_value (property, &value);
-  g_value_unset (&value);
-
-  glade_command_pop_group ();
-
-  glade_editable_unblock (GLADE_EDITABLE (button_editor));
-
-  /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (button_editor), gwidget);
-}
-
+/* Section control radio/check button callbacks: */
 static void
 custom_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
 {
   GladeProperty *property;
   GladeWidget *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (button_editor));
+  gboolean active;
 
   if (glade_editable_loading (GLADE_EDITABLE (button_editor)) || !gwidget)
     return;
 
-  if (!gtk_toggle_button_get_active
-      (GTK_TOGGLE_BUTTON (button_editor->priv->custom_radio)))
-    return;
+  active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button_editor->priv->custom_check));
 
   glade_editable_block (GLADE_EDITABLE (button_editor));
 
-  glade_command_push_group (_("Setting %s to use a custom child"),
-                            glade_widget_get_name (gwidget));
+  if (active)
+    {
+      glade_command_push_group (_("Setting %s to use a custom child"),
+				glade_widget_get_name (gwidget));
 
-  /* clear out some things... */
-  property = glade_widget_get_property (gwidget, "image");
-  glade_command_set_property (property, NULL);
+      /* clear out some things... */
+      property = glade_widget_get_property (gwidget, "image");
+      glade_command_set_property (property, NULL);
 
-  property = glade_widget_get_property (gwidget, "use-stock");
-  glade_command_set_property (property, FALSE);
+      property = glade_widget_get_property (gwidget, "use-stock");
+      glade_command_set_property (property, FALSE);
 
-  property = glade_widget_get_property (gwidget, "stock");
-  glade_command_set_property (property, NULL);
+      property = glade_widget_get_property (gwidget, "stock");
+      glade_command_set_property (property, NULL);
 
-  property = glade_widget_get_property (gwidget, "label");
-  glade_command_set_property (property, NULL);
+      property = glade_widget_get_property (gwidget, "label");
+      glade_command_set_property (property, NULL);
 
-  /* Add a placeholder via the custom-child property... */
-  property = glade_widget_get_property (gwidget, "custom-child");
-  glade_command_set_property (property, TRUE);
+      /* Add a placeholder via the custom-child property... */
+      property = glade_widget_get_property (gwidget, "custom-child");
+      glade_command_set_property (property, TRUE);
 
-  glade_command_pop_group ();
+      glade_command_pop_group ();
+    }
+  else
+    {
+      GtkWidget *button, *child;
+      GladeWidget *gchild = NULL;
+      GValue value = { 0, };
+
+      glade_command_push_group (_("Setting %s to use standard configuration"),
+				glade_widget_get_name (gwidget));
+
+      /* If theres a widget customly inside... command remove it first... */
+      button = GTK_WIDGET (glade_widget_get_object (gwidget));
+      child = gtk_bin_get_child (GTK_BIN (button));
+      if (child)
+	gchild = glade_widget_get_from_gobject (child);
+
+      if (gchild && glade_widget_get_parent (gchild) == gwidget)
+	{
+	  GList widgets = { 0, };
+	  widgets.data = gchild;
+	  glade_command_delete (&widgets);
+	}
+
+      property = glade_widget_get_property (gwidget, "custom-child");
+      glade_command_set_property (property, FALSE);
+
+      /* Setup reasonable defaults for button label. */
+      property = glade_widget_get_property (gwidget, "stock");
+      glade_command_set_property (property, NULL);
+
+      property = glade_widget_get_property (gwidget, "use-stock");
+      glade_command_set_property (property, FALSE);
+
+      property = glade_widget_get_property (gwidget, "label");
+      glade_property_get_default (property, &value);
+      glade_command_set_property_value (property, &value);
+      g_value_unset (&value);
+
+      glade_command_pop_group ();
+    }
 
   glade_editable_unblock (GLADE_EDITABLE (button_editor));
 
