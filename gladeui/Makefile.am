@@ -107,6 +107,7 @@ libgladeui_2_la_SOURCES = \
 	glade-popup.c \
 	glade-preview.c	\
 	glade-project.c \
+	glade-project-properties.c \
 	glade-property.c \
 	glade-property-class.c \
 	glade-property-label.c \
@@ -176,16 +177,17 @@ libgladeuiinclude_HEADERS = \
 	glade-xml-utils.h
 
 noinst_HEADERS = \
-	gladeui-resources.h \
-	glade-marshallers.h \
-	glade-design-layout.h \
-	glade-object-stub.h \
-	glade-popup.h \
 	glade-accumulators.h \
+	glade-design-layout.h \
 	glade-design-private.h \
-	glade-preview-tokens.h \
+	glade-marshallers.h \
+	glade-object-stub.h \
+	glade-path.h \
+	glade-popup.h \
 	glade-preview.h \
-	glade-path.h
+	glade-preview-tokens.h \
+	glade-project-properties.h \
+	gladeui-resources.h
 
 if PLATFORM_WIN32
 libgladeui_2_la_LDFLAGS += -no-undefined

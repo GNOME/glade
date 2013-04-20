@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface domain="glade">
-  <!-- interface-requires gtk+ 3.6 -->
-  <object class="GtkDialog" id="prefs_dialog">
+  <!-- interface-requires gtk+ 3.8 -->
+  <template class="GladeProjectProperties" parent="GtkDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
     <property name="resizable">False</property>
@@ -54,6 +54,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">●</property>
+                        <signal name="changed" handler="on_domain_entry_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -67,6 +68,7 @@
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
+                        <signal name="changed" handler="on_template_combo_box_changed" swapped="no"/>
                         <child>
                           <object class="GtkCellRendererPixbuf" id="cellrenderertext1"/>
                           <attributes>
@@ -95,6 +97,7 @@
                         <property name="receives_default">False</property>
                         <property name="xalign">0</property>
                         <property name="draw_indicator">True</property>
+                        <signal name="toggled" handler="on_template_checkbutton_toggled" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
@@ -146,6 +149,7 @@
                         <property name="xalign">0</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
+                        <signal name="toggled" handler="resource_default_toggled" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
@@ -164,6 +168,7 @@
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
                         <property name="group">resource_default_radio</property>
+                        <signal name="toggled" handler="resource_relative_toggled" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
@@ -182,6 +187,7 @@
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
                         <property name="group">resource_default_radio</property>
+                        <signal name="toggled" handler="resource_fullpath_toggled" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
@@ -198,6 +204,7 @@
                         <property name="orientation">vertical</property>
                         <property name="action">select-folder</property>
                         <property name="title" translatable="yes">Choose a path to load image resources</property>
+                        <signal name="file-set" handler="resource_full_path_set" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -212,6 +219,7 @@
                         <property name="can_focus">True</property>
                         <property name="hexpand">True</property>
                         <property name="invisible_char">●</property>
+                        <signal name="activate" handler="resource_path_activated" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -294,6 +302,7 @@
                 <property name="tooltip_text" translatable="yes">Verify that the project does not use any  properties,
 signals or widgets which are not available in the target version</property>
                 <property name="use_underline">True</property>
+                <signal name="clicked" handler="verify_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -329,5 +338,5 @@ signals or widgets which are not available in the target version</property>
     <action-widgets>
       <action-widget response="-3">close_button</action-widget>
     </action-widgets>
-  </object>
+  </template>
 </interface>

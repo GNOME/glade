@@ -154,6 +154,9 @@ void                glade_project_preview              (GladeProject       *proj
 void                glade_project_properties           (GladeProject       *project);
 gchar              *glade_project_resource_fullpath    (GladeProject       *project,
                                                         const gchar        *resource);
+void                glade_project_set_resource_path    (GladeProject       *project,
+                                                        const gchar        *path);
+const gchar        *glade_project_get_resource_path    (GladeProject       *project);
 
 void                glade_project_widget_visibility_changed (GladeProject  *project,
                                                              GladeWidget   *widget,
@@ -251,6 +254,9 @@ void                glade_project_set_translation_domain (GladeProject *project,
 const gchar        *glade_project_get_translation_domain (GladeProject *project);
 
 /* Verifications */
+gboolean            glade_project_verify               (GladeProject       *project,
+							gboolean            saving,
+							GladeVerifyFlags    flags);
 gchar              *glade_project_verify_widget_adaptor(GladeProject       *project,
                                                         GladeWidgetAdaptor *adaptor,
                                                         GladeSupportMask   *mask);

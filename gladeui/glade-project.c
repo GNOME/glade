@@ -52,40 +52,34 @@
 #include "glade-command.h"
 #include "glade-name-context.h"
 #include "glade-object-stub.h"
+#include "glade-project-properties.h"
 
-#define VALID_ITER(project, iter) ((iter)!= NULL && G_IS_OBJECT ((iter)->user_data) && ((GladeProject*)(project))->priv->stamp == (iter)->stamp)
+static void     glade_project_target_version_for_adaptor
+                                                    (GladeProject       *project,
+						     GladeWidgetAdaptor *adaptor,
+						     gint               *major,
+						     gint               *minor);
+static void     glade_project_verify_properties     (GladeWidget        *widget);
+static void     glade_project_verify_project_for_ui (GladeProject       *project);
+static void     glade_project_verify_adaptor        (GladeProject       *project,
+						     GladeWidgetAdaptor *adaptor,
+						     const gchar        *path_name,
+						     GString            *string,
+						     GladeVerifyFlags    flags,
+						     gboolean            forwidget,
+						     GladeSupportMask   *mask);
+static void     glade_project_set_readonly          (GladeProject       *project,
+						     gboolean            readonly);
+static void     glade_project_set_modified          (GladeProject       *project,
+						     gboolean            modified);
 
-enum
-{
-  ADD_WIDGET,
-  REMOVE_WIDGET,
-  WIDGET_NAME_CHANGED,
-  SELECTION_CHANGED,
-  CLOSE,
-  CHANGED,
-  PARSE_BEGAN,
-  PARSE_FINISHED,
-  TARGETS_CHANGED,
-  LOAD_PROGRESS,
-  WIDGET_VISIBILITY_CHANGED,
-  LAST_SIGNAL
-};
-
-enum
-{
-  PROP_0,
-  PROP_MODIFIED,
-  PROP_HAS_SELECTION,
-  PROP_PATH,
-  PROP_READ_ONLY,
-  PROP_ADD_ITEM,
-  PROP_POINTER_MODE,
-  PROP_TRANSLATION_DOMAIN,
-  PROP_TEMPLATE,
-  N_PROPERTIES
-};
-
-static GParamSpec *properties[N_PROPERTIES];
+static void     glade_project_model_iface_init      (GtkTreeModelIface  *iface);
+static void     glade_project_model_get_iter_for_object
+                                                    (GladeProject       *project,
+                                                     GObject            *object,
+                                                     GtkTreeIter        *iter);
+static gint     glade_project_count_children        (GladeProject       *project, 
+						     GladeWidget        *parent);
 
 struct _GladeProjectPrivate
 {
@@ -138,20 +132,7 @@ struct _GladeProjectPrivate
 
   GList *unknown_catalogs; /* List of CatalogInfo catalogs */
 
-  /* Control on the properties dialog to update buttons etc when properties change */
   GtkWidget *prefs_dialog;
-  GtkWidget *project_wide_radio;
-  GtkWidget *toplevel_contextual_radio;
-  GHashTable *target_radios;
-
-  GtkWidget *resource_default_radio;
-  GtkWidget *resource_relative_radio;
-  GtkWidget *resource_fullpath_radio;
-  GtkWidget *relative_path_entry;
-  GtkWidget *full_path_button;
-  GtkWidget *domain_entry;
-  GtkWidget *template_combobox;
-  GtkWidget *template_checkbutton;
 
   /* Store previews, so we can kill them on close */
   GHashTable *previews;
@@ -180,53 +161,52 @@ typedef struct
   gint position;
 } CatalogInfo;
 
-static void glade_project_target_version_for_adaptor (GladeProject *project,
-                                                      GladeWidgetAdaptor *adaptor,
-                                                      gint *major,
-                                                      gint *minor);
 
-static void glade_project_set_readonly (GladeProject *project,
-                                        gboolean readonly);
+enum
+{
+  ADD_WIDGET,
+  REMOVE_WIDGET,
+  WIDGET_NAME_CHANGED,
+  SELECTION_CHANGED,
+  CLOSE,
+  CHANGED,
+  PARSE_BEGAN,
+  PARSE_FINISHED,
+  TARGETS_CHANGED,
+  LOAD_PROGRESS,
+  WIDGET_VISIBILITY_CHANGED,
+  LAST_SIGNAL
+};
 
+enum
+{
+  PROP_0,
+  PROP_MODIFIED,
+  PROP_HAS_SELECTION,
+  PROP_PATH,
+  PROP_READ_ONLY,
+  PROP_ADD_ITEM,
+  PROP_POINTER_MODE,
+  PROP_TRANSLATION_DOMAIN,
+  PROP_TEMPLATE,
+  PROP_RESOURCE_PATH,
+  N_PROPERTIES
+};
 
-static gboolean glade_project_verify (GladeProject *project, gboolean saving, GladeVerifyFlags flags);
-static void     glade_project_verify_properties     (GladeWidget  *widget);
-static void     glade_project_verify_project_for_ui (GladeProject *project);
-
-static void glade_project_verify_adaptor (GladeProject *project,
-                                          GladeWidgetAdaptor *adaptor,
-                                          const gchar *path_name,
-                                          GString *string,
-                                          GladeVerifyFlags flags,
-                                          gboolean forwidget,
-                                          GladeSupportMask *mask);
-
-static GtkWidget *glade_project_build_prefs_dialog (GladeProject *project);
-
-static void target_button_clicked (GtkWidget *widget, GladeProject *project);
-static void update_prefs_for_resource_path (GladeProject *project);
-
-static void gtk_tree_model_iface_init (GtkTreeModelIface *iface);
-
-static void glade_project_model_get_iter_for_object (GladeProject *project,
-                                                     GObject *object,
-                                                     GtkTreeIter *iter);
-
-static gint glade_project_count_children (GladeProject *project, 
-                                          GladeWidget  *parent);
-
-static void glade_project_fix_template (GladeProject *project);
-
-
-static guint glade_project_signals[LAST_SIGNAL] = { 0 };
-
+static GParamSpec       *glade_project_props[N_PROPERTIES];
+static guint             glade_project_signals[LAST_SIGNAL] = { 0 };
 static GladeIDAllocator *unsaved_number_allocator = NULL;
+
 
 #define GLADE_PROJECT_LARGE_PROJECT 40
 
+#define VALID_ITER(project, iter) \
+  ((iter)!= NULL && G_IS_OBJECT ((iter)->user_data) && \
+   ((GladeProject*)(project))->priv->stamp == (iter)->stamp)
+
 G_DEFINE_TYPE_WITH_CODE (GladeProject, glade_project, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (GTK_TYPE_TREE_MODEL,
-                                                gtk_tree_model_iface_init))
+                                                glade_project_model_iface_init))
 
 
 /*******************************************************************
@@ -352,7 +332,6 @@ glade_project_finalize (GObject *object)
 
   g_hash_table_destroy (project->priv->target_versions_major);
   g_hash_table_destroy (project->priv->target_versions_minor);
-  g_hash_table_destroy (project->priv->target_radios);
 
   glade_name_context_destroy (project->priv->widget_names);
 
@@ -393,6 +372,9 @@ glade_project_get_property (GObject *object,
     case PROP_TEMPLATE:
       g_value_set_object (value, project->priv->template);
       break;
+    case PROP_RESOURCE_PATH:
+      g_value_set_string (value, project->priv->resource_path);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -415,153 +397,14 @@ glade_project_set_property (GObject *object,
       glade_project_set_template (GLADE_PROJECT (object),
 				  g_value_get_object (value));
       break;
+    case PROP_RESOURCE_PATH:
+      glade_project_set_resource_path (GLADE_PROJECT (object),
+				       g_value_get_string (value));
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
-}
-
-/**
- * glade_project_set_modified:
- * @project: a #GladeProject
- * @modified: Whether the project should be set as modified or not
- * @modification: The first #GladeCommand which caused the project to have unsaved changes
- *
- * Set's whether a #GladeProject should be flagged as modified or not. This is useful
- * for indicating that a project has unsaved changes. If @modified is #TRUE, then
- * @modification will be recorded as the first change which caused the project to 
- * have unsaved changes. @modified is #FALSE then @modification will be ignored.
- *
- * If @project is already flagged as modified, then calling this method with
- * @modified as #TRUE, will have no effect. Likewise, if @project is unmodified
- * then calling this method with @modified as #FALSE, will have no effect.
- *
- */
-static void
-glade_project_set_modified (GladeProject *project, gboolean modified)
-{
-  GladeProjectPrivate *priv;
-
-  g_return_if_fail (GLADE_IS_PROJECT (project));
-
-  priv = project->priv;
-
-  if (priv->modified != modified)
-    {
-      priv->modified = !priv->modified;
-
-      if (!priv->modified)
-        {
-          priv->first_modification = project->priv->prev_redo_item;
-          priv->first_modification_is_na = FALSE;
-        }
-
-      g_object_notify_by_pspec (G_OBJECT (project), properties[PROP_MODIFIED]);
-    }
-}
-
-/**
- * glade_project_get_modified:
- * @project: a #GladeProject
- *
- * Get's whether the project has been modified since it was last saved.
- *
- * Returns: %TRUE if the project has been modified since it was last saved
- */
-gboolean
-glade_project_get_modified (GladeProject *project)
-{
-  g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
-
-  return project->priv->modified;
-}
-
-void
-glade_project_set_pointer_mode (GladeProject *project, GladePointerMode mode)
-{
-  g_return_if_fail (GLADE_IS_PROJECT (project));
-
-  if (project->priv->pointer_mode != mode)
-    {
-      project->priv->pointer_mode = mode;
-
-      g_object_notify_by_pspec (G_OBJECT (project), properties[PROP_POINTER_MODE]);
-    }
-}
-
-GladePointerMode
-glade_project_get_pointer_mode (GladeProject *project)
-{
-  g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
-
-  return project->priv->pointer_mode;
-}
-
-void
-glade_project_set_template (GladeProject       *project,
-			    GladeWidget        *widget)
-{
-  g_return_if_fail (GLADE_IS_PROJECT (project));
-  g_return_if_fail (widget == NULL || GLADE_IS_WIDGET (widget));
-
-  if (widget)
-    {
-      GObject *object = glade_widget_get_object (widget);
-
-      g_return_if_fail (GTK_IS_WIDGET (object));
-      g_return_if_fail (glade_widget_get_parent (widget) == NULL);
-      g_return_if_fail (glade_widget_get_project (widget) == project);
-    }
-
-  /* Let's not add any strong reference here, we already own the widget */
-  if (project->priv->template != widget)
-    {
-      if (project->priv->template)
-	glade_widget_set_is_composite (project->priv->template, FALSE);
-
-      project->priv->template = widget;
-
-      if (project->priv->template)
-	glade_widget_set_is_composite (project->priv->template, TRUE);
-
-      glade_project_fix_template (project);
-
-      g_object_notify_by_pspec (G_OBJECT (project), properties[PROP_TEMPLATE]);
-    }
-}
-
-GladeWidget *
-glade_project_get_template (GladeProject       *project)
-{
-  g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
-
-  return project->priv->template;
-}
-
-
-void
-glade_project_set_add_item (GladeProject *project, GladeWidgetAdaptor *adaptor)
-{
-  GladeProjectPrivate *priv;
-
-  g_return_if_fail (GLADE_IS_PROJECT (project));
-
-  priv = project->priv;
-
-  if (priv->add_item != adaptor)
-    {
-      priv->add_item = adaptor;
-
-      g_object_notify_by_pspec (G_OBJECT (project), properties[PROP_ADD_ITEM]);
-    }
-}
-
-GladeWidgetAdaptor *
-glade_project_get_add_item (GladeProject *project)
-{
-  g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
-
-  return project->priv->add_item;
 }
 
 /*******************************************************************
@@ -780,7 +623,6 @@ glade_project_changed_impl (GladeProject *project,
     }
 }
 
-
 /*******************************************************************
                           Class Initializers
  *******************************************************************/
@@ -841,10 +683,7 @@ glade_project_init (GladeProject *project)
                                         (catalog));
     }
 
-  priv->target_radios = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                               g_free, NULL);
-  priv->prefs_dialog = glade_project_build_prefs_dialog (project);
-
+  priv->prefs_dialog = glade_project_properties_new (project);
 }
 
 static void
@@ -1038,42 +877,42 @@ glade_project_class_init (GladeProjectClass *klass)
                     _glade_marshal_VOID__OBJECT_BOOLEAN,
                     G_TYPE_NONE, 2, GLADE_TYPE_WIDGET, G_TYPE_BOOLEAN);
 
-  properties[PROP_MODIFIED] =
+  glade_project_props[PROP_MODIFIED] =
     g_param_spec_boolean ("modified",
                           "Modified",
                           _("Whether project has been modified since it was last saved"),
                           FALSE,
                           G_PARAM_READABLE);
 
-  properties[PROP_HAS_SELECTION] =
+  glade_project_props[PROP_HAS_SELECTION] =
     g_param_spec_boolean ("has-selection",
                           _("Has Selection"),
                           _("Whether project has a selection"),
                           FALSE,
                           G_PARAM_READABLE);
 
-  properties[PROP_PATH] =
+  glade_project_props[PROP_PATH] =
     g_param_spec_string ("path",
                          _("Path"),
                          _("The filesystem path of the project"),
                          NULL,
                          G_PARAM_READABLE);
 
-  properties[PROP_READ_ONLY] =
+  glade_project_props[PROP_READ_ONLY] =
     g_param_spec_boolean ("read-only",
                           _("Read Only"),
                           _("Whether project is read-only"),
                           FALSE,
                           G_PARAM_READABLE);
 
-  properties[PROP_ADD_ITEM] = 
+  glade_project_props[PROP_ADD_ITEM] = 
     g_param_spec_object ("add-item",
                          _("Add Item"),
                          _("The current item to add to the project"),
                          GLADE_TYPE_WIDGET_ADAPTOR,
                          G_PARAM_READABLE);
 
-  properties[PROP_POINTER_MODE] =
+  glade_project_props[PROP_POINTER_MODE] =
     g_param_spec_enum ("pointer-mode",
                        _("Pointer Mode"),
                        _("The currently effective GladePointerMode"),
@@ -1081,24 +920,526 @@ glade_project_class_init (GladeProjectClass *klass)
                        GLADE_POINTER_SELECT,
                        G_PARAM_READABLE);
 
-  properties[PROP_TRANSLATION_DOMAIN] =
+  glade_project_props[PROP_TRANSLATION_DOMAIN] =
     g_param_spec_string ("translation-domain",
                          _("Translation Domain"),
                          _("The project translation domain"),
                          NULL,
                          G_PARAM_READWRITE);
   
-  properties[PROP_TEMPLATE] = 
+  glade_project_props[PROP_TEMPLATE] = 
     g_param_spec_object ("template",
                          _("Template"),
                          _("The project's template widget, if any"),
                          GLADE_TYPE_WIDGET,
                          G_PARAM_READWRITE);
 
+  glade_project_props[PROP_RESOURCE_PATH] =
+    g_param_spec_string ("resource-path",
+                         _("Resource Path"),
+                         _("Path to load images and resources in Glade's runtime"),
+                         NULL,
+                         G_PARAM_READWRITE);
+
   /* Install all properties */
-  g_object_class_install_properties (object_class, N_PROPERTIES, properties);
+  g_object_class_install_properties (object_class, N_PROPERTIES, glade_project_props);
 
   g_type_class_add_private (klass, sizeof (GladeProjectPrivate));
+}
+
+/******************************************************************
+ *                    GtkTreeModelIface                           *
+ ******************************************************************/
+static GObject *
+glade_project_nth_child (GladeProject *project,
+                         GladeWidget  *parent, 
+                         gint          nth)
+{
+  GList   *children, *list;
+  GObject *child = NULL;
+  gint     i;
+
+  children = glade_widget_get_children (parent);
+
+  for (list = children, i = 0; list; list = list->next)
+    {
+      child = list->data;
+
+      if (!glade_project_has_object (project, child))
+         continue;      
+
+      if (i == nth)
+        break;
+
+      child = NULL;
+      i++;
+    }
+
+  g_list_free (children);
+
+  return child;
+}
+
+static gint
+glade_project_child_position (GladeProject *project,
+                              GladeWidget  *parent, 
+                              GObject      *child)
+{
+  GList   *children, *list;
+  GObject *iter;
+  gint     i, position = -1;
+
+  children = glade_widget_get_children (parent);
+
+  for (list = children, i = 0; list; list = list->next)
+    {
+      iter = list->data;
+
+      if (!glade_project_has_object (project, iter))
+        continue;
+
+      if (iter == child)
+        {
+          position = i;
+          break;
+        }
+      i++;
+    }
+
+  g_list_free (children);
+
+  return position;
+}
+
+static gint
+glade_project_count_children (GladeProject *project, GladeWidget *parent)
+{
+  GList   *children, *list;
+  GObject *iter;
+  gint     i;
+
+  children = glade_widget_get_children (parent);
+
+  for (list = children, i = 0; list; list = list->next)
+    {
+      iter = list->data;
+
+      if (!glade_project_has_object (project, iter))
+        continue;
+      i++;
+    }
+
+  g_list_free (children);
+
+  return i;
+}
+
+static void
+glade_project_model_get_iter_for_object (GladeProject *project,
+                                         GObject *object,
+                                         GtkTreeIter *iter)
+{
+  g_assert (object);
+
+  iter->stamp = project->priv->stamp;
+  iter->user_data = object;
+}
+
+static GtkTreeModelFlags
+glade_project_model_get_flags (GtkTreeModel *model)
+{
+  return 0;
+}
+
+static gint
+glade_project_model_get_n_columns (GtkTreeModel *model)
+{
+  return GLADE_PROJECT_MODEL_N_COLUMNS;
+}
+
+static GType
+glade_project_model_get_column_type (GtkTreeModel *model, gint column)
+{
+  switch (column)
+    {
+      case GLADE_PROJECT_MODEL_COLUMN_ICON_NAME:
+        return G_TYPE_STRING;
+      case GLADE_PROJECT_MODEL_COLUMN_NAME:
+        return G_TYPE_STRING;
+      case GLADE_PROJECT_MODEL_COLUMN_TYPE_NAME:
+        return G_TYPE_STRING;
+      case GLADE_PROJECT_MODEL_COLUMN_OBJECT:
+        return G_TYPE_OBJECT;
+      case GLADE_PROJECT_MODEL_COLUMN_MISC:
+        return G_TYPE_STRING;
+      case GLADE_PROJECT_MODEL_COLUMN_WARNING:
+        return G_TYPE_STRING;
+      default:
+        g_assert_not_reached ();
+        return G_TYPE_NONE;
+    }
+}
+
+static gboolean
+glade_project_model_get_iter (GtkTreeModel *model,
+                              GtkTreeIter *iter,
+                              GtkTreePath *path)
+{
+  GladeProject *project = GLADE_PROJECT (model);
+  gint         *indices = gtk_tree_path_get_indices (path);
+  gint          depth = gtk_tree_path_get_depth (path);
+  GladeWidget  *widget;
+  GObject      *object;
+  gint          i;
+  GList        *parent;
+
+  if ((parent = g_list_nth (project->priv->tree, indices[0])) != NULL)
+    {
+      object = parent->data;
+      widget = glade_widget_get_from_gobject (object);
+    }
+  else
+    {
+      iter->stamp = 0;
+      iter->user_data = NULL;
+      return FALSE;
+    }
+
+  for (i = 1; i < depth; i++)
+    {
+      object = glade_project_nth_child (project, widget, indices[i]);
+
+      if (!object)
+        {
+          iter->stamp = 0;
+          iter->user_data = NULL;
+          return FALSE;
+        }
+
+      widget = glade_widget_get_from_gobject (object);
+    }
+
+  if (object)
+    {
+      glade_project_model_get_iter_for_object (project, object, iter);
+      return TRUE;
+    }
+  else
+    {
+      iter->stamp = 0;
+      iter->user_data = NULL;
+      return FALSE;
+    }
+}
+
+static GtkTreePath *
+glade_project_model_get_path (GtkTreeModel *model, GtkTreeIter *iter)
+{
+  GladeProject *project = GLADE_PROJECT (model);
+  GtkTreePath  *path;
+  GObject      *object;
+  GladeWidget  *widget;
+  GladeWidget  *toplevel;
+  GladeWidget  *parent;
+  GList        *top;
+
+  g_return_val_if_fail (VALID_ITER (project, iter), NULL);
+
+  object   = iter->user_data;
+  widget   = glade_widget_get_from_gobject (object);
+  toplevel = glade_widget_get_toplevel (widget);
+  parent   = widget;
+
+  path = gtk_tree_path_new ();
+
+  while ((parent = glade_widget_get_parent (widget)) != NULL)
+    {
+      gint position;
+
+      if ((position = glade_project_child_position (project, parent, 
+                                                    glade_widget_get_object (widget))) < 0)
+        gtk_tree_path_prepend_index (path, 0);
+      else
+        gtk_tree_path_prepend_index (path, position);
+
+      widget = parent;
+    }
+
+  /* Get the index for the top-level list */
+  top = g_list_find (project->priv->tree, glade_widget_get_object (toplevel));
+
+  /* While the project is disposing widgets are unparented and sometimes no longer in the tree */
+  if (top)
+    gtk_tree_path_prepend_index (path, g_list_position (project->priv->tree, top));
+  else
+    gtk_tree_path_prepend_index (path, 0);
+  
+  return path;
+}
+
+static void
+glade_project_model_get_value (GtkTreeModel *model,
+                               GtkTreeIter *iter,
+                               gint column,
+                               GValue *value)
+{
+  GObject *object;
+  GladeWidget *widget;
+  GladeProperty *ref_prop;
+  gchar *str = NULL, *child_type;
+
+  g_return_if_fail (VALID_ITER (model, iter));
+
+  object = iter->user_data;
+  widget = glade_widget_get_from_gobject (object);
+
+  value = g_value_init (value,
+                        glade_project_model_get_column_type (model, column));
+
+  switch (column)
+    {
+      case GLADE_PROJECT_MODEL_COLUMN_ICON_NAME:
+        g_object_get (glade_widget_get_adaptor (widget), "icon-name", &str, NULL);
+        g_value_take_string (value, str);
+        break;
+      case GLADE_PROJECT_MODEL_COLUMN_NAME:
+        g_value_set_string (value, glade_widget_get_name (widget));
+        break;
+      case GLADE_PROJECT_MODEL_COLUMN_TYPE_NAME:
+        g_value_set_static_string (value, G_OBJECT_TYPE_NAME (object));
+        break;
+      case GLADE_PROJECT_MODEL_COLUMN_OBJECT:
+        g_value_set_object (value, object);
+        break;
+      case GLADE_PROJECT_MODEL_COLUMN_MISC:
+        /* special child type / internal child */
+        if (glade_widget_get_internal (widget) != NULL)
+          str = g_strdup_printf (_("(internal %s)"),
+                                 glade_widget_get_internal (widget));
+        else if ((child_type =
+                  g_object_get_data (glade_widget_get_object (widget),
+                                     "special-child-type")) != NULL)
+          str = g_strdup_printf (_("(%s child)"), child_type);
+        else if (glade_widget_get_is_composite (widget))
+          str = g_strdup_printf (_("(template)"));
+        else if ((ref_prop = 
+                  glade_widget_get_parentless_widget_ref (widget)) != NULL)
+        {
+          GladePropertyClass *pclass     = glade_property_get_class (ref_prop);
+          GladeWidget        *ref_widget = glade_property_get_widget (ref_prop);
+
+          /* translators: refers to a property named '%s' of widget '%s' */
+          str = g_strdup_printf (_("(%s of %s)"), 
+                                 glade_property_class_get_name (pclass),
+                                 glade_widget_get_name (ref_widget));
+        }
+
+        g_value_take_string (value, str);
+        break;
+      case GLADE_PROJECT_MODEL_COLUMN_WARNING:
+        g_value_set_string (value, glade_widget_support_warning (widget));
+	break;
+
+      default:
+        g_assert_not_reached ();
+    }
+}
+
+static gboolean
+glade_project_model_iter_next (GtkTreeModel *model, GtkTreeIter *iter)
+{
+  GladeProject *project = GLADE_PROJECT (model);
+  GObject *object = iter->user_data;
+  GladeWidget *widget;
+  GladeWidget *parent;
+  GList *children;
+  GList *child;
+  GList *next;
+  gboolean retval = FALSE;
+
+  g_return_val_if_fail (VALID_ITER (project, iter), FALSE);
+
+  widget = glade_widget_get_from_gobject (object);
+  parent = glade_widget_get_parent (widget);
+
+  if (parent)
+    {
+      children = glade_widget_get_children (parent);
+    }
+  else
+    {
+      children = project->priv->tree;
+    }
+
+  child = g_list_find (children, object);
+  if (child)
+    {
+      /* Get the next child that is actually in the project */
+      for (next = child->next; next; next = next->next)
+        {
+          GObject *object = next->data;
+
+          if (glade_project_has_object (project, object))
+            break;
+        }
+
+      if (next)
+        {
+          glade_project_model_get_iter_for_object (project, next->data, iter);
+          retval = TRUE;
+        }
+    }
+  if (children != project->priv->tree)
+    g_list_free (children);
+
+  return retval;
+}
+
+static gboolean
+glade_project_model_iter_has_child (GtkTreeModel *model, GtkTreeIter *iter)
+{
+  GladeProject *project = GLADE_PROJECT (model);
+  GladeWidget  *widget;
+
+  g_return_val_if_fail (VALID_ITER (model, iter), FALSE);
+
+  widget = glade_widget_get_from_gobject (iter->user_data);
+
+  if (glade_project_count_children (project, widget) > 0)
+    return TRUE;
+
+  return FALSE;
+}
+
+static gint
+glade_project_model_iter_n_children (GtkTreeModel *model, GtkTreeIter *iter)
+{
+  GladeProject *project = GLADE_PROJECT (model);
+
+  g_return_val_if_fail (iter == NULL || VALID_ITER (project, iter), 0);
+
+  if (iter)
+    {
+      GladeWidget *widget = glade_widget_get_from_gobject (iter->user_data);
+
+      return glade_project_count_children (project, widget);
+    }
+
+  return g_list_length (project->priv->tree);
+}
+
+static gboolean
+glade_project_model_iter_nth_child (GtkTreeModel *model,
+                                    GtkTreeIter *iter,
+                                    GtkTreeIter *parent,
+                                    gint nth)
+{
+  GladeProject *project = GLADE_PROJECT (model);
+  GObject      *object = NULL;
+
+  g_return_val_if_fail (parent == NULL || VALID_ITER (project, parent), FALSE);
+
+  if (parent != NULL)
+    {
+      GObject     *obj    = parent->user_data;
+      GladeWidget *widget = glade_widget_get_from_gobject (obj);
+
+      object = glade_project_nth_child (project, widget, nth);
+    }
+  else if (project->priv->tree)
+    {
+      GList *child = g_list_nth (project->priv->tree, nth);
+
+      if (child)
+        object = child->data;
+    }
+
+  if (object)
+    {
+      glade_project_model_get_iter_for_object (project, object, iter);
+      return TRUE;
+    }
+
+  iter->stamp     = 0;
+  iter->user_data = NULL;
+
+  return FALSE;
+}
+
+static gboolean
+glade_project_model_iter_children (GtkTreeModel *model,
+                                   GtkTreeIter *iter,
+                                   GtkTreeIter *parent)
+{
+  GladeProject *project = GLADE_PROJECT (model);
+  GObject      *object  = NULL;
+
+  g_return_val_if_fail (parent == NULL || VALID_ITER (project, parent), FALSE);
+
+  if (parent)
+    {
+      GladeWidget *widget = glade_widget_get_from_gobject (parent->user_data);
+
+      object = glade_project_nth_child (project, widget, 0);
+    }
+  else if (project->priv->tree)
+    object = project->priv->tree->data;
+
+  if (object)
+    {
+      glade_project_model_get_iter_for_object (project, object, iter);
+      return TRUE;
+    }
+
+  iter->stamp = 0;
+  iter->user_data = NULL;
+  return FALSE;
+}
+
+static gboolean
+glade_project_model_iter_parent (GtkTreeModel *model,
+                                 GtkTreeIter *iter,
+                                 GtkTreeIter *child)
+{
+  GladeProject *project = GLADE_PROJECT (model);
+  GladeWidget *widget;
+  GladeWidget *parent;
+
+  g_return_val_if_fail (VALID_ITER (project, child), FALSE);
+
+  widget = glade_widget_get_from_gobject (child->user_data);
+  parent = glade_widget_get_parent (widget);
+
+  if (parent && 
+      glade_project_has_object (project, glade_widget_get_object (parent)))
+    {
+      glade_project_model_get_iter_for_object (project,
+                                               glade_widget_get_object (parent),
+                                               iter);
+      return TRUE;
+    }
+
+  iter->stamp = 0;
+  iter->user_data = NULL;
+
+  return FALSE;
+}
+
+static void
+glade_project_model_iface_init (GtkTreeModelIface *iface)
+{
+  iface->get_flags = glade_project_model_get_flags;
+  iface->get_column_type = glade_project_model_get_column_type;
+  iface->get_n_columns = glade_project_model_get_n_columns;
+  iface->get_iter = glade_project_model_get_iter;
+  iface->get_path = glade_project_model_get_path;
+  iface->get_value = glade_project_model_get_value;
+  iface->iter_next = glade_project_model_iter_next;
+  iface->iter_children = glade_project_model_iter_children;
+  iface->iter_has_child = glade_project_model_iter_has_child;
+  iface->iter_n_children = glade_project_model_iter_n_children;
+  iface->iter_nth_child = glade_project_model_iter_nth_child;
+  iface->iter_parent = glade_project_model_iter_parent;
 }
 
 /*******************************************************************
@@ -1162,6 +1503,28 @@ glade_project_fix_object_props (GladeProject *project)
         }
     }
   g_list_free (objects);
+}
+
+static void
+glade_project_fix_template (GladeProject *project)
+{
+  GList *l;
+  gboolean composite = FALSE;
+
+  for (l = project->priv->tree; l; l = l->next)
+    {
+      GObject     *obj = l->data;
+      GladeWidget *gwidget;
+
+      gwidget   = glade_widget_get_from_gobject (obj);
+      composite = glade_widget_get_is_composite (gwidget);
+
+      if (composite)
+        {
+	  glade_project_set_template (project, gwidget);
+	  break;
+        }
+    }
 }
 
 static gchar *
@@ -1339,16 +1702,28 @@ update_project_for_resource_path (GladeProject *project)
     }
 }
 
-
-/* This function assumes ownership of 'path'. */
-static void
-glade_project_set_resource_path (GladeProject *project, gchar *path)
+void
+glade_project_set_resource_path (GladeProject *project, const gchar *path)
 {
-  g_free (project->priv->resource_path);
-  project->priv->resource_path = path;
+  g_return_if_fail (GLADE_IS_PROJECT (project));
 
-  update_project_for_resource_path (project);
-  update_prefs_for_resource_path (project);
+  if (g_strcmp0 (project->priv->resource_path, path) != 0)
+    {
+      g_free (project->priv->resource_path);
+      project->priv->resource_path = g_strdup (path);
+
+      update_project_for_resource_path (project);
+
+      g_object_notify_by_pspec (G_OBJECT (project), glade_project_props[PROP_RESOURCE_PATH]);
+    }
+}
+
+const gchar *
+glade_project_get_resource_path (GladeProject *project)
+{
+  g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
+
+  return project->priv->resource_path;
 }
 
 static void
@@ -1367,6 +1742,7 @@ glade_project_read_resource_path (GladeProject *project,
     }
 
   glade_project_set_resource_path (project, path);
+  g_free (path);
 }
 
 
@@ -1823,7 +2199,7 @@ glade_project_load_from_file (GladeProject *project, const gchar *path)
   g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
 
   project->priv->path = glade_util_canonical_path (path);
-  g_object_notify_by_pspec (G_OBJECT (project), properties[PROP_PATH]);
+  g_object_notify_by_pspec (G_OBJECT (project), glade_project_props[PROP_PATH]);
 
   if ((retval = glade_project_load_internal (project)))
     glade_project_update_properties_title (project);
@@ -2186,7 +2562,7 @@ glade_project_save_verify (GladeProject        *project,
     {
       project->priv->path = (g_free (project->priv->path),
                              g_strdup (canonical_path));
-      g_object_notify_by_pspec (G_OBJECT (project), properties[PROP_PATH]);
+      g_object_notify_by_pspec (G_OBJECT (project), glade_project_props[PROP_PATH]);
 
       glade_project_update_properties_title (project);
     }
@@ -2642,7 +3018,7 @@ glade_project_verify_dialog (GladeProject *project,
 }
 
 
-static gboolean
+gboolean
 glade_project_verify (GladeProject *project, gboolean saving, GladeVerifyFlags flags)
 {
   GString *string = g_string_new (NULL);
@@ -3312,18 +3688,154 @@ glade_project_remove_object (GladeProject *project, GObject *object)
 }
 
 /*******************************************************************
-                        Remaining stubs and api
+ *                          Other API                              *
  *******************************************************************/
+/**
+ * glade_project_set_modified:
+ * @project: a #GladeProject
+ * @modified: Whether the project should be set as modified or not
+ * @modification: The first #GladeCommand which caused the project to have unsaved changes
+ *
+ * Set's whether a #GladeProject should be flagged as modified or not. This is useful
+ * for indicating that a project has unsaved changes. If @modified is #TRUE, then
+ * @modification will be recorded as the first change which caused the project to 
+ * have unsaved changes. @modified is #FALSE then @modification will be ignored.
+ *
+ * If @project is already flagged as modified, then calling this method with
+ * @modified as #TRUE, will have no effect. Likewise, if @project is unmodified
+ * then calling this method with @modified as #FALSE, will have no effect.
+ *
+ */
+static void
+glade_project_set_modified (GladeProject *project, gboolean modified)
+{
+  GladeProjectPrivate *priv;
+
+  g_return_if_fail (GLADE_IS_PROJECT (project));
+
+  priv = project->priv;
+
+  if (priv->modified != modified)
+    {
+      priv->modified = !priv->modified;
+
+      if (!priv->modified)
+        {
+          priv->first_modification = project->priv->prev_redo_item;
+          priv->first_modification_is_na = FALSE;
+        }
+
+      g_object_notify_by_pspec (G_OBJECT (project), glade_project_props[PROP_MODIFIED]);
+    }
+}
+
+/**
+ * glade_project_get_modified:
+ * @project: a #GladeProject
+ *
+ * Get's whether the project has been modified since it was last saved.
+ *
+ * Returns: %TRUE if the project has been modified since it was last saved
+ */
+gboolean
+glade_project_get_modified (GladeProject *project)
+{
+  g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+
+  return project->priv->modified;
+}
+
+void
+glade_project_set_pointer_mode (GladeProject *project, GladePointerMode mode)
+{
+  g_return_if_fail (GLADE_IS_PROJECT (project));
+
+  if (project->priv->pointer_mode != mode)
+    {
+      project->priv->pointer_mode = mode;
+
+      g_object_notify_by_pspec (G_OBJECT (project), glade_project_props[PROP_POINTER_MODE]);
+    }
+}
+
+GladePointerMode
+glade_project_get_pointer_mode (GladeProject *project)
+{
+  g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+
+  return project->priv->pointer_mode;
+}
+
+void
+glade_project_set_template (GladeProject       *project,
+			    GladeWidget        *widget)
+{
+  g_return_if_fail (GLADE_IS_PROJECT (project));
+  g_return_if_fail (widget == NULL || GLADE_IS_WIDGET (widget));
+
+  if (widget)
+    {
+      GObject *object = glade_widget_get_object (widget);
+
+      g_return_if_fail (GTK_IS_WIDGET (object));
+      g_return_if_fail (glade_widget_get_parent (widget) == NULL);
+      g_return_if_fail (glade_widget_get_project (widget) == project);
+    }
+
+  /* Let's not add any strong reference here, we already own the widget */
+  if (project->priv->template != widget)
+    {
+      if (project->priv->template)
+	glade_widget_set_is_composite (project->priv->template, FALSE);
+
+      project->priv->template = widget;
+
+      if (project->priv->template)
+	glade_widget_set_is_composite (project->priv->template, TRUE);
+
+      g_object_notify_by_pspec (G_OBJECT (project), glade_project_props[PROP_TEMPLATE]);
+    }
+}
+
+GladeWidget *
+glade_project_get_template (GladeProject       *project)
+{
+  g_return_val_if_fail (GLADE_IS_PROJECT (project), FALSE);
+
+  return project->priv->template;
+}
+
+void
+glade_project_set_add_item (GladeProject *project, GladeWidgetAdaptor *adaptor)
+{
+  GladeProjectPrivate *priv;
+
+  g_return_if_fail (GLADE_IS_PROJECT (project));
+
+  priv = project->priv;
+
+  if (priv->add_item != adaptor)
+    {
+      priv->add_item = adaptor;
+
+      g_object_notify_by_pspec (G_OBJECT (project), glade_project_props[PROP_ADD_ITEM]);
+    }
+}
+
+GladeWidgetAdaptor *
+glade_project_get_add_item (GladeProject *project)
+{
+  g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
+
+  return project->priv->add_item;
+}
+
 void
 glade_project_set_target_version (GladeProject *project,
                                   const gchar *catalog,
                                   gint major,
                                   gint minor)
 {
-  GladeTargetableVersion *version;
-  GSList *radios, *list;
-  GtkWidget *radio;
-
   g_return_if_fail (GLADE_IS_PROJECT (project));
   g_return_if_fail (catalog && catalog[0]);
   g_return_if_fail (major >= 0);
@@ -3333,34 +3845,6 @@ glade_project_set_target_version (GladeProject *project,
                        g_strdup (catalog), GINT_TO_POINTER ((int) major));
   g_hash_table_insert (project->priv->target_versions_minor,
                        g_strdup (catalog), GINT_TO_POINTER ((int) minor));
-
-  /* Update prefs dialog from here... */
-  if (project->priv->target_radios &&
-      (radios =
-       g_hash_table_lookup (project->priv->target_radios, catalog)) != NULL)
-    {
-      for (list = radios; list; list = list->next)
-        g_signal_handlers_block_by_func (G_OBJECT (list->data),
-                                         G_CALLBACK (target_button_clicked),
-                                         project);
-
-      for (list = radios; list; list = list->next)
-        {
-          radio = list->data;
-
-          version = g_object_get_data (G_OBJECT (radio), "version");
-          if (version->major == major && version->minor == minor)
-            {
-              gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (radio), TRUE);
-              break;
-            }
-        }
-
-      for (list = radios; list; list = list->next)
-        g_signal_handlers_unblock_by_func (G_OBJECT (list->data),
-                                           G_CALLBACK (target_button_clicked),
-                                           project);
-    }
 
   glade_project_verify_project_for_ui (project);
 
@@ -3375,10 +3859,9 @@ glade_project_set_readonly (GladeProject *project, gboolean readonly)
   if (project->priv->readonly != readonly)
     {
       project->priv->readonly = readonly;
-      g_object_notify_by_pspec (G_OBJECT (project), properties[PROP_READ_ONLY]);
+      g_object_notify_by_pspec (G_OBJECT (project), glade_project_props[PROP_READ_ONLY]);
     }
 }
-
 
 /**
  * glade_project_get_target_version:
@@ -3421,7 +3904,6 @@ glade_project_get_readonly (GladeProject *project)
 
   return project->priv->readonly;
 }
-
 
 /**
  * glade_project_selection_changed:
@@ -3469,7 +3951,7 @@ glade_project_set_has_selection (GladeProject *project, gboolean has_selection)
   if (project->priv->has_selection != has_selection)
     {
       project->priv->has_selection = has_selection;
-      g_object_notify_by_pspec (G_OBJECT (project), properties[PROP_HAS_SELECTION]);
+      g_object_notify_by_pspec (G_OBJECT (project), glade_project_props[PROP_HAS_SELECTION]);
     }
 }
 
@@ -3739,7 +4221,6 @@ glade_project_next_undo_item (GladeProject *project)
   return GLADE_PROJECT_GET_CLASS (project)->next_undo_item (project);
 }
 
-
 /**
  * glade_project_next_redo_item:
  * @project: a #GladeProject
@@ -3754,8 +4235,6 @@ glade_project_next_redo_item (GladeProject *project)
   g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
   return GLADE_PROJECT_GET_CLASS (project)->next_redo_item (project);
 }
-
-
 
 /**
  * glade_project_push_undo:
@@ -4052,433 +4531,6 @@ glade_project_get_objects (GladeProject *project)
   return project->priv->objects;
 }
 
-static void
-target_button_clicked (GtkWidget *widget, GladeProject *project)
-{
-  GladeTargetableVersion *version =
-      g_object_get_data (G_OBJECT (widget), "version");
-  gchar *catalog = g_object_get_data (G_OBJECT (widget), "catalog");
-
-  glade_command_set_project_target (project, catalog, version->major, version->minor);
-}
-
-static void
-verify_clicked (GtkWidget *button, GladeProject *project)
-{
-  if (glade_project_verify (project, FALSE,
-			    GLADE_VERIFY_VERSIONS     |
-			    GLADE_VERIFY_DEPRECATIONS |
-			    GLADE_VERIFY_UNRECOGNIZED))
-    {
-      gchar *name = glade_project_get_name (project);
-      glade_util_ui_message (glade_app_get_window (),
-                             GLADE_UI_INFO, NULL,
-                             _("Project %s has no deprecated widgets "
-                               "or version mismatches."), name);
-      g_free (name);
-    }
-}
-
-static void
-resource_default_toggled (GtkWidget *widget, GladeProject *project)
-{
-  if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
-    return;
-
-  glade_project_set_resource_path (project, NULL);
-  gtk_widget_set_sensitive (project->priv->relative_path_entry, FALSE);
-  gtk_widget_set_sensitive (project->priv->full_path_button, FALSE);
-}
-
-
-static void
-resource_relative_toggled (GtkWidget *widget, GladeProject *project)
-{
-  if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
-    return;
-
-  gtk_widget_set_sensitive (project->priv->relative_path_entry, TRUE);
-  gtk_widget_set_sensitive (project->priv->full_path_button, FALSE);
-}
-
-static void
-resource_fullpath_toggled (GtkWidget *widget, GladeProject *project)
-{
-  if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
-    return;
-
-  gtk_widget_set_sensitive (project->priv->relative_path_entry, FALSE);
-  gtk_widget_set_sensitive (project->priv->full_path_button, TRUE);
-}
-
-static void
-resource_path_activated (GtkEntry *entry, GladeProject *project)
-{
-  const gchar *text = gtk_entry_get_text (entry);
-
-  glade_project_set_resource_path (project, text ? g_strdup (text) : NULL);
-}
-
-
-static void
-resource_full_path_set (GtkFileChooserButton *button, GladeProject *project)
-{
-  gchar *text = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (button));
-
-  glade_project_set_resource_path (project, text);
-}
-
-static void
-update_prefs_for_resource_path (GladeProject *project)
-{
-  GladeProjectPrivate *priv = project->priv;
-  
-  gtk_widget_set_sensitive (priv->full_path_button, FALSE);
-  gtk_widget_set_sensitive (priv->relative_path_entry, FALSE);
-
-
-  g_signal_handlers_block_by_func (priv->resource_default_radio,
-                                   G_CALLBACK (resource_default_toggled),
-                                   project);
-  g_signal_handlers_block_by_func (priv->resource_relative_radio,
-                                   G_CALLBACK (resource_relative_toggled),
-                                   project);
-  g_signal_handlers_block_by_func (priv->resource_fullpath_radio,
-                                   G_CALLBACK (resource_fullpath_toggled),
-                                   project);
-  g_signal_handlers_block_by_func (priv->relative_path_entry,
-                                   G_CALLBACK (resource_path_activated),
-                                   project);
-
-  if (project->priv->resource_path == NULL)
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->resource_default_radio), TRUE);
-  else if (g_path_is_absolute (priv->resource_path))
-    {
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->resource_fullpath_radio), TRUE);
-      gtk_widget_set_sensitive (priv->full_path_button, TRUE);
-    }
-  else
-    {
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->resource_relative_radio), TRUE);
-      gtk_widget_set_sensitive (priv->relative_path_entry, TRUE);
-    }
-
-  gtk_entry_set_text (GTK_ENTRY (priv->relative_path_entry),
-                      priv->resource_path ? priv->resource_path : "");
-
-  g_signal_handlers_unblock_by_func (priv->resource_default_radio,
-                                     G_CALLBACK (resource_default_toggled),
-                                     project);
-  g_signal_handlers_unblock_by_func (priv->resource_relative_radio,
-                                     G_CALLBACK (resource_relative_toggled),
-                                     project);
-  g_signal_handlers_unblock_by_func (priv->resource_fullpath_radio,
-                                     G_CALLBACK (resource_fullpath_toggled),
-                                     project);
-  g_signal_handlers_unblock_by_func (priv->relative_path_entry,
-                                     G_CALLBACK (resource_path_activated),
-                                     project);
-}
-
-static void
-glade_project_target_version_box_fill (GladeProject *project, GtkWidget *vbox)
-{
-  GtkWidget *label, *active_radio, *target_radio, *hbox;
-  GList *list, *targets;
-
-  /* Add stuff to vbox */
-  for (list = glade_app_get_catalogs (); list; list = g_list_next (list))
-    {
-      GladeCatalog *catalog = list->data;
-      gint minor, major;
-
-      /* Skip if theres only one option */
-      if (g_list_length (glade_catalog_get_targets (catalog)) <= 1)
-        continue;
-
-      glade_project_get_target_version (project,
-                                        glade_catalog_get_name (catalog),
-                                        &major, &minor);
-
-      /* Special case to mark GTK+ in upper case */
-      if (strcmp (glade_catalog_get_name (catalog), "gtk+") == 0)
-        label = gtk_label_new ("GTK+");
-      else
-        label = gtk_label_new (glade_catalog_get_name (catalog));
-      gtk_misc_set_alignment (GTK_MISC (label), 0.0F, 0.5F);
-
-      gtk_widget_show (label);
-      gtk_box_pack_start (GTK_BOX (vbox), label, TRUE, TRUE, 2);
-      hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-
-      active_radio = target_radio = NULL;
-
-      for (targets = glade_catalog_get_targets (catalog);
-           targets; targets = targets->next)
-        {
-          GladeTargetableVersion *version = targets->data;
-          gchar *name = g_strdup_printf ("%d.%d",
-                                         version->major,
-                                         version->minor);
-
-          if (!target_radio)
-            target_radio = gtk_radio_button_new_with_label (NULL, name);
-          else
-            target_radio =
-                gtk_radio_button_new_with_label_from_widget
-                (GTK_RADIO_BUTTON (target_radio), name);
-          g_free (name);
-
-          g_signal_connect (G_OBJECT (target_radio), "clicked",
-                            G_CALLBACK (target_button_clicked), project);
-
-          g_object_set_data (G_OBJECT (target_radio), "version", version);
-          g_object_set_data (G_OBJECT (target_radio), "catalog",
-                             (gchar *) glade_catalog_get_name (catalog));
-
-          gtk_widget_show (target_radio);
-          gtk_box_pack_end (GTK_BOX (hbox), target_radio, TRUE, TRUE, 2);
-
-          if (major == version->major && minor == version->minor)
-            active_radio = target_radio;
-
-        }
-
-      if (active_radio)
-        {
-          gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (active_radio), TRUE);
-          g_hash_table_insert (project->priv->target_radios,
-                               g_strdup (glade_catalog_get_name (catalog)),
-                               gtk_radio_button_get_group (GTK_RADIO_BUTTON
-                                                           (active_radio)));
-        }
-      else
-        g_warning ("Corrupt catalog versions");
-
-      gtk_widget_show (hbox);
-      gtk_box_pack_start (GTK_BOX (vbox), hbox, TRUE, TRUE, 2);
-    }
-}
-
-static void
-on_domain_entry_changed (GtkWidget *entry, GladeProject *project)
-{
-  glade_command_set_project_domain (project, gtk_entry_get_text (GTK_ENTRY (entry)));
-}
-
-static void
-on_template_combo_box_changed (GtkComboBox *combo, GladeProject *project)
-{
-  GtkTreeIter iter;
-
-  if (project->priv->loading)
-    return;
-
-  if (gtk_combo_box_get_active_iter (combo, &iter))
-    {
-      GladeWidget *gwidget;
-      GObject *object;
-
-      gtk_tree_model_get (gtk_combo_box_get_model (combo), &iter,
-                          GLADE_PROJECT_MODEL_COLUMN_OBJECT, &object, -1);
-      
-      gwidget = glade_widget_get_from_gobject (object);
-
-      glade_command_set_project_template (project, gwidget);
-    }
-}
-
-static void
-on_template_checkbutton_toggled (GtkToggleButton *togglebutton,
-                                 GladeProject    *project)
-{
-  gboolean active = gtk_toggle_button_get_active (togglebutton);
-  gboolean composite = FALSE;
-
-  if (project->priv->loading)
-    return;
-  
-  if (active)
-    {
-      GList *l;
-
-      for (l = project->priv->tree; l; l = l->next)
-	{
-	  GObject *object = l->data;
-	  GladeWidget *gwidget;
-
-	  gwidget = glade_widget_get_from_gobject (object);
-
-	  if (GTK_IS_WIDGET (object))
-	    {
-	      glade_command_set_project_template (project, gwidget);
-	      composite = TRUE;
-	      break;
-	    }
-	}
-
-      if (!composite)
-	gtk_toggle_button_set_active (togglebutton, FALSE);
-    }
-  else
-    glade_command_set_project_template (project, NULL);
-}
-
-static gboolean
-template_visible_func (GtkTreeModel *model, GtkTreeIter *iter, gpointer data)
-{
-  GtkTreeIter parent;
-  gboolean visible;
-  GObject *object;
-
-  visible = !gtk_tree_model_iter_parent (model, &parent, iter);
-
-  if (visible)
-    {
-      gtk_tree_model_get (model, iter,
-			  GLADE_PROJECT_MODEL_COLUMN_OBJECT, &object,
-			  -1);
-
-      visible = GTK_IS_WIDGET (object);
-      g_object_unref (object);
-    }
-
-  return visible;
-}
-
-static GtkTreeModel *
-glade_project_toplevel_model_filter_new (GladeProject *project)
-{
-  GtkTreeModel *model = gtk_tree_model_filter_new (GTK_TREE_MODEL (project), NULL);
-  gtk_tree_model_filter_set_visible_func (GTK_TREE_MODEL_FILTER (model),
-                                          template_visible_func, NULL, NULL);
-  return model;
-}
-
-static void
-glade_project_fix_template (GladeProject *project)
-{
-  GtkTreeModel *model;
-  GladeProjectPrivate *priv = project->priv;
-  GtkTreeIter iter;
-  gboolean valid;
-  gboolean composite = FALSE;
-
-  g_signal_handlers_block_by_func (priv->template_combobox, on_template_combo_box_changed, project);
-  g_signal_handlers_block_by_func (priv->template_checkbutton, on_template_checkbutton_toggled, project);
-
-  model = gtk_combo_box_get_model (GTK_COMBO_BOX (priv->template_combobox));
-  if (!model)
-    {
-      model = glade_project_toplevel_model_filter_new (project);
-
-      gtk_combo_box_set_model (GTK_COMBO_BOX (priv->template_combobox), model);
-      g_object_unref (model);
-    }
-
-  valid = gtk_tree_model_get_iter_first (model, &iter);
-  while (valid)
-    {
-      GladeWidget *gwidget;
-      GObject *obj;
-      
-      gtk_tree_model_get (model, &iter,
-                          GLADE_PROJECT_MODEL_COLUMN_OBJECT, &obj,
-                          -1);
-
-      gwidget = glade_widget_get_from_gobject (obj);
-      g_object_unref (obj);
-
-      composite = glade_widget_get_is_composite (gwidget);
-
-      if (composite)
-        {
-          gtk_combo_box_set_active_iter (GTK_COMBO_BOX (priv->template_combobox), &iter);
-
-	  /* Resolve the template widget for this project */
-	  priv->template = gwidget;
-
-	  break;
-        }
-
-      valid = gtk_tree_model_iter_next (model, &iter);
-    }
-
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->template_checkbutton), composite);
-  gtk_widget_set_sensitive (priv->template_combobox, composite);
-
-  if (!composite && gtk_combo_box_get_model (GTK_COMBO_BOX (priv->template_combobox)))
-    gtk_combo_box_set_active_iter (GTK_COMBO_BOX (priv->template_combobox), NULL);
-
-  g_signal_handlers_unblock_by_func (priv->template_combobox, on_template_combo_box_changed, project);
-  g_signal_handlers_unblock_by_func (priv->template_checkbutton, on_template_checkbutton_toggled, project);
-}
-
-#define GET_OBJECT(b,c,o) c(gtk_builder_get_object(b,o));
-
-static GtkWidget *
-glade_project_build_prefs_dialog (GladeProject *project)
-{
-  GladeProjectPrivate *priv = project->priv;  
-  GtkWidget *verify_button, *toolkit_box;
-  GError *error = NULL;
-  GtkBuilder *builder;
-  GtkWidget *dialog;
-
-  /* Build UI */
-  builder = gtk_builder_new ();
-  if (gtk_builder_add_from_resource (builder, "/org/gnome/gladeui/glade-project-properties.ui", &error) == 0)
-    {
-      g_warning ("gtk_builder_add_from_resource() failed %s", (error) ? error->message : "");
-      return NULL;
-    }
-
-  /* Fetch Pointers */
-  dialog = GET_OBJECT (builder, GTK_WIDGET, "prefs_dialog");
-  g_object_ref_sink (dialog);
-  priv->resource_default_radio = GET_OBJECT (builder, GTK_WIDGET, "resource_default_radio");
-  priv->resource_relative_radio = GET_OBJECT (builder, GTK_WIDGET, "resource_relative_radio");
-  priv->resource_fullpath_radio = GET_OBJECT (builder, GTK_WIDGET, "resource_fullpath_radio");
-  priv->relative_path_entry = GET_OBJECT (builder, GTK_WIDGET, "relative_path_entry");
-  priv->full_path_button = GET_OBJECT (builder, GTK_WIDGET, "full_path_button");
-  priv->domain_entry = GET_OBJECT (builder, GTK_WIDGET, "domain_entry");
-  priv->template_checkbutton = GET_OBJECT (builder, GTK_WIDGET, "template_checkbutton");
-  priv->template_combobox = GET_OBJECT (builder, GTK_WIDGET, "template_combobox");
-  g_signal_connect (priv->template_combobox, "changed",
-                    G_CALLBACK (on_template_combo_box_changed), project);
-  g_signal_connect (priv->template_checkbutton, "toggled",
-                    G_CALLBACK (on_template_checkbutton_toggled), project);
-
-  verify_button = GET_OBJECT (builder, GTK_WIDGET, "verify_button");
-  toolkit_box = GET_OBJECT (builder, GTK_WIDGET, "toolkit_box");
-  glade_project_target_version_box_fill (project, toolkit_box);
-
-  update_prefs_for_resource_path (project);
-
-  g_signal_connect (priv->resource_default_radio, "toggled",
-                    G_CALLBACK (resource_default_toggled), project);
-  g_signal_connect (priv->resource_relative_radio, "toggled",
-                    G_CALLBACK (resource_relative_toggled), project);
-  g_signal_connect (priv->resource_fullpath_radio, "toggled",
-                    G_CALLBACK (resource_fullpath_toggled), project);
-
-  g_signal_connect (priv->relative_path_entry, "activate",
-                    G_CALLBACK (resource_path_activated), project);
-  g_signal_connect (priv->full_path_button, "file-set",
-                    G_CALLBACK (resource_full_path_set), project);
-
-  g_signal_connect (verify_button, "clicked",
-                    G_CALLBACK (verify_clicked), project);
-
-  g_signal_connect (priv->domain_entry, "changed",
-                    G_CALLBACK (on_domain_entry_changed), project);
-
-  gtk_builder_connect_signals (builder, NULL);
-  g_object_unref (builder);
-
-  return dialog;
-}
-
 /**
  * glade_project_properties:
  * @project: A #GladeProject
@@ -4492,7 +4544,6 @@ glade_project_properties (GladeProject *project)
 
   gtk_window_present (GTK_WINDOW (project->priv->prefs_dialog));
 }
-
 
 gchar *
 glade_project_display_dependencies (GladeProject *project)
@@ -4565,12 +4616,8 @@ glade_project_set_translation_domain (GladeProject *project, const gchar *domain
       g_free (priv->translation_domain);
       priv->translation_domain = g_strdup (domain);
 
-      g_signal_handlers_block_by_func (priv->domain_entry, on_domain_entry_changed, project);
-      gtk_entry_set_text (GTK_ENTRY (priv->domain_entry), domain);
-      g_signal_handlers_unblock_by_func (priv->domain_entry, on_domain_entry_changed, project);
-
       g_object_notify_by_pspec (G_OBJECT (project),
-                                properties[PROP_TRANSLATION_DOMAIN]);
+                                glade_project_props[PROP_TRANSLATION_DOMAIN]);
     }
 }
 
@@ -4587,501 +4634,6 @@ glade_project_get_translation_domain (GladeProject *project)
 
   return project->priv->translation_domain;
 }
-
-/* GtkTreeModel implementation */
-
-static GObject *
-glade_project_nth_child (GladeProject *project,
-                         GladeWidget  *parent, 
-                         gint          nth)
-{
-  GList   *children, *list;
-  GObject *child = NULL;
-  gint     i;
-
-  children = glade_widget_get_children (parent);
-
-  for (list = children, i = 0; list; list = list->next)
-    {
-      child = list->data;
-
-      if (!glade_project_has_object (project, child))
-         continue;      
-
-      if (i == nth)
-        break;
-
-      child = NULL;
-      i++;
-    }
-
-  g_list_free (children);
-
-  return child;
-}
-
-static gint
-glade_project_child_position (GladeProject *project,
-                              GladeWidget  *parent, 
-                              GObject      *child)
-{
-  GList   *children, *list;
-  GObject *iter;
-  gint     i, position = -1;
-
-  children = glade_widget_get_children (parent);
-
-  for (list = children, i = 0; list; list = list->next)
-    {
-      iter = list->data;
-
-      if (!glade_project_has_object (project, iter))
-        continue;
-
-      if (iter == child)
-        {
-          position = i;
-          break;
-        }
-      i++;
-    }
-
-  g_list_free (children);
-
-  return position;
-}
-
-static gint
-glade_project_count_children (GladeProject *project, GladeWidget *parent)
-{
-  GList   *children, *list;
-  GObject *iter;
-  gint     i;
-
-  children = glade_widget_get_children (parent);
-
-  for (list = children, i = 0; list; list = list->next)
-    {
-      iter = list->data;
-
-      if (!glade_project_has_object (project, iter))
-        continue;
-      i++;
-    }
-
-  g_list_free (children);
-
-  return i;
-}
-
-static void
-glade_project_model_get_iter_for_object (GladeProject *project,
-                                         GObject *object,
-                                         GtkTreeIter *iter)
-{
-  g_assert (object);
-
-  iter->stamp = project->priv->stamp;
-  iter->user_data = object;
-}
-
-static GtkTreeModelFlags
-glade_project_model_get_flags (GtkTreeModel *model)
-{
-  return 0;
-}
-
-static gint
-glade_project_model_get_n_columns (GtkTreeModel *model)
-{
-  return GLADE_PROJECT_MODEL_N_COLUMNS;
-}
-
-static GType
-glade_project_model_get_column_type (GtkTreeModel *model, gint column)
-{
-  switch (column)
-    {
-      case GLADE_PROJECT_MODEL_COLUMN_ICON_NAME:
-        return G_TYPE_STRING;
-      case GLADE_PROJECT_MODEL_COLUMN_NAME:
-        return G_TYPE_STRING;
-      case GLADE_PROJECT_MODEL_COLUMN_TYPE_NAME:
-        return G_TYPE_STRING;
-      case GLADE_PROJECT_MODEL_COLUMN_OBJECT:
-        return G_TYPE_OBJECT;
-      case GLADE_PROJECT_MODEL_COLUMN_MISC:
-        return G_TYPE_STRING;
-      case GLADE_PROJECT_MODEL_COLUMN_WARNING:
-        return G_TYPE_STRING;
-      default:
-        g_assert_not_reached ();
-        return G_TYPE_NONE;
-    }
-}
-
-static gboolean
-glade_project_model_get_iter (GtkTreeModel *model,
-                              GtkTreeIter *iter,
-                              GtkTreePath *path)
-{
-  GladeProject *project = GLADE_PROJECT (model);
-  gint         *indices = gtk_tree_path_get_indices (path);
-  gint          depth = gtk_tree_path_get_depth (path);
-  GladeWidget  *widget;
-  GObject      *object;
-  gint          i;
-  GList        *parent;
-
-  if ((parent = g_list_nth (project->priv->tree, indices[0])) != NULL)
-    {
-      object = parent->data;
-      widget = glade_widget_get_from_gobject (object);
-    }
-  else
-    {
-      iter->stamp = 0;
-      iter->user_data = NULL;
-      return FALSE;
-    }
-
-  for (i = 1; i < depth; i++)
-    {
-      object = glade_project_nth_child (project, widget, indices[i]);
-
-      if (!object)
-        {
-          iter->stamp = 0;
-          iter->user_data = NULL;
-          return FALSE;
-        }
-
-      widget = glade_widget_get_from_gobject (object);
-    }
-
-  if (object)
-    {
-      glade_project_model_get_iter_for_object (project, object, iter);
-      return TRUE;
-    }
-  else
-    {
-      iter->stamp = 0;
-      iter->user_data = NULL;
-      return FALSE;
-    }
-}
-
-static GtkTreePath *
-glade_project_model_get_path (GtkTreeModel *model, GtkTreeIter *iter)
-{
-  GladeProject *project = GLADE_PROJECT (model);
-  GtkTreePath  *path;
-  GObject      *object;
-  GladeWidget  *widget;
-  GladeWidget  *toplevel;
-  GladeWidget  *parent;
-  GList        *top;
-
-  g_return_val_if_fail (VALID_ITER (project, iter), NULL);
-
-  object   = iter->user_data;
-  widget   = glade_widget_get_from_gobject (object);
-  toplevel = glade_widget_get_toplevel (widget);
-  parent   = widget;
-
-  path = gtk_tree_path_new ();
-
-  while ((parent = glade_widget_get_parent (widget)) != NULL)
-    {
-      gint position;
-
-      if ((position = glade_project_child_position (project, parent, 
-                                                    glade_widget_get_object (widget))) < 0)
-        gtk_tree_path_prepend_index (path, 0);
-      else
-        gtk_tree_path_prepend_index (path, position);
-
-      widget = parent;
-    }
-
-  /* Get the index for the top-level list */
-  top = g_list_find (project->priv->tree, glade_widget_get_object (toplevel));
-
-  /* While the project is disposing widgets are unparented and sometimes no longer in the tree */
-  if (top)
-    gtk_tree_path_prepend_index (path, g_list_position (project->priv->tree, top));
-  else
-    gtk_tree_path_prepend_index (path, 0);
-  
-  return path;
-}
-
-static void
-glade_project_model_get_value (GtkTreeModel *model,
-                               GtkTreeIter *iter,
-                               gint column,
-                               GValue *value)
-{
-  GObject *object;
-  GladeWidget *widget;
-  GladeProperty *ref_prop;
-  gchar *str = NULL, *child_type;
-
-  g_return_if_fail (VALID_ITER (model, iter));
-
-  object = iter->user_data;
-  widget = glade_widget_get_from_gobject (object);
-
-  value = g_value_init (value,
-                        glade_project_model_get_column_type (model, column));
-
-  switch (column)
-    {
-      case GLADE_PROJECT_MODEL_COLUMN_ICON_NAME:
-        g_object_get (glade_widget_get_adaptor (widget), "icon-name", &str, NULL);
-        g_value_take_string (value, str);
-        break;
-      case GLADE_PROJECT_MODEL_COLUMN_NAME:
-        g_value_set_string (value, glade_widget_get_name (widget));
-        break;
-      case GLADE_PROJECT_MODEL_COLUMN_TYPE_NAME:
-        g_value_set_static_string (value, G_OBJECT_TYPE_NAME (object));
-        break;
-      case GLADE_PROJECT_MODEL_COLUMN_OBJECT:
-        g_value_set_object (value, object);
-        break;
-      case GLADE_PROJECT_MODEL_COLUMN_MISC:
-        /* special child type / internal child */
-        if (glade_widget_get_internal (widget) != NULL)
-          str = g_strdup_printf (_("(internal %s)"),
-                                 glade_widget_get_internal (widget));
-        else if ((child_type =
-                  g_object_get_data (glade_widget_get_object (widget),
-                                     "special-child-type")) != NULL)
-          str = g_strdup_printf (_("(%s child)"), child_type);
-        else if (glade_widget_get_is_composite (widget))
-          str = g_strdup_printf (_("(template)"));
-        else if ((ref_prop = 
-                  glade_widget_get_parentless_widget_ref (widget)) != NULL)
-        {
-          GladePropertyClass *pclass     = glade_property_get_class (ref_prop);
-          GladeWidget        *ref_widget = glade_property_get_widget (ref_prop);
-
-          /* translators: refers to a property named '%s' of widget '%s' */
-          str = g_strdup_printf (_("(%s of %s)"), 
-                                 glade_property_class_get_name (pclass),
-                                 glade_widget_get_name (ref_widget));
-        }
-
-        g_value_take_string (value, str);
-        break;
-      case GLADE_PROJECT_MODEL_COLUMN_WARNING:
-        g_value_set_string (value, glade_widget_support_warning (widget));
-	break;
-
-      default:
-        g_assert_not_reached ();
-    }
-}
-
-static gboolean
-glade_project_model_iter_next (GtkTreeModel *model, GtkTreeIter *iter)
-{
-  GladeProject *project = GLADE_PROJECT (model);
-  GObject *object = iter->user_data;
-  GladeWidget *widget;
-  GladeWidget *parent;
-  GList *children;
-  GList *child;
-  GList *next;
-  gboolean retval = FALSE;
-
-  g_return_val_if_fail (VALID_ITER (project, iter), FALSE);
-
-  widget = glade_widget_get_from_gobject (object);
-  parent = glade_widget_get_parent (widget);
-
-  if (parent)
-    {
-      children = glade_widget_get_children (parent);
-    }
-  else
-    {
-      children = project->priv->tree;
-    }
-
-  child = g_list_find (children, object);
-  if (child)
-    {
-      /* Get the next child that is actually in the project */
-      for (next = child->next; next; next = next->next)
-        {
-          GObject *object = next->data;
-
-          if (glade_project_has_object (project, object))
-            break;
-        }
-
-      if (next)
-        {
-          glade_project_model_get_iter_for_object (project, next->data, iter);
-          retval = TRUE;
-        }
-    }
-  if (children != project->priv->tree)
-    g_list_free (children);
-
-  return retval;
-}
-
-static gboolean
-glade_project_model_iter_has_child (GtkTreeModel *model, GtkTreeIter *iter)
-{
-  GladeProject *project = GLADE_PROJECT (model);
-  GladeWidget  *widget;
-
-  g_return_val_if_fail (VALID_ITER (model, iter), FALSE);
-
-  widget = glade_widget_get_from_gobject (iter->user_data);
-
-  if (glade_project_count_children (project, widget) > 0)
-    return TRUE;
-
-  return FALSE;
-}
-
-static gint
-glade_project_model_iter_n_children (GtkTreeModel *model, GtkTreeIter *iter)
-{
-  GladeProject *project = GLADE_PROJECT (model);
-
-  g_return_val_if_fail (iter == NULL || VALID_ITER (project, iter), 0);
-
-  if (iter)
-    {
-      GladeWidget *widget = glade_widget_get_from_gobject (iter->user_data);
-
-      return glade_project_count_children (project, widget);
-    }
-
-  return g_list_length (project->priv->tree);
-}
-
-static gboolean
-glade_project_model_iter_nth_child (GtkTreeModel *model,
-                                    GtkTreeIter *iter,
-                                    GtkTreeIter *parent,
-                                    gint nth)
-{
-  GladeProject *project = GLADE_PROJECT (model);
-  GObject      *object = NULL;
-
-  g_return_val_if_fail (parent == NULL || VALID_ITER (project, parent), FALSE);
-
-  if (parent != NULL)
-    {
-      GObject     *obj    = parent->user_data;
-      GladeWidget *widget = glade_widget_get_from_gobject (obj);
-
-      object = glade_project_nth_child (project, widget, nth);
-    }
-  else if (project->priv->tree)
-    {
-      GList *child = g_list_nth (project->priv->tree, nth);
-
-      if (child)
-        object = child->data;
-    }
-
-  if (object)
-    {
-      glade_project_model_get_iter_for_object (project, object, iter);
-      return TRUE;
-    }
-
-  iter->stamp     = 0;
-  iter->user_data = NULL;
-
-  return FALSE;
-}
-
-static gboolean
-glade_project_model_iter_children (GtkTreeModel *model,
-                                   GtkTreeIter *iter,
-                                   GtkTreeIter *parent)
-{
-  GladeProject *project = GLADE_PROJECT (model);
-  GObject      *object  = NULL;
-
-  g_return_val_if_fail (parent == NULL || VALID_ITER (project, parent), FALSE);
-
-  if (parent)
-    {
-      GladeWidget *widget = glade_widget_get_from_gobject (parent->user_data);
-
-      object = glade_project_nth_child (project, widget, 0);
-    }
-  else if (project->priv->tree)
-    object = project->priv->tree->data;
-
-  if (object)
-    {
-      glade_project_model_get_iter_for_object (project, object, iter);
-      return TRUE;
-    }
-
-  iter->stamp = 0;
-  iter->user_data = NULL;
-  return FALSE;
-}
-
-static gboolean
-glade_project_model_iter_parent (GtkTreeModel *model,
-                                 GtkTreeIter *iter,
-                                 GtkTreeIter *child)
-{
-  GladeProject *project = GLADE_PROJECT (model);
-  GladeWidget *widget;
-  GladeWidget *parent;
-
-  g_return_val_if_fail (VALID_ITER (project, child), FALSE);
-
-  widget = glade_widget_get_from_gobject (child->user_data);
-  parent = glade_widget_get_parent (widget);
-
-  if (parent && 
-      glade_project_has_object (project, glade_widget_get_object (parent)))
-    {
-      glade_project_model_get_iter_for_object (project,
-                                               glade_widget_get_object (parent),
-                                               iter);
-      return TRUE;
-    }
-
-  iter->stamp = 0;
-  iter->user_data = NULL;
-
-  return FALSE;
-}
-
-static void
-gtk_tree_model_iface_init (GtkTreeModelIface *iface)
-{
-  iface->get_flags = glade_project_model_get_flags;
-  iface->get_column_type = glade_project_model_get_column_type;
-  iface->get_n_columns = glade_project_model_get_n_columns;
-  iface->get_iter = glade_project_model_get_iter;
-  iface->get_path = glade_project_model_get_path;
-  iface->get_value = glade_project_model_get_value;
-  iface->iter_next = glade_project_model_iter_next;
-  iface->iter_children = glade_project_model_iter_children;
-  iface->iter_has_child = glade_project_model_iter_has_child;
-  iface->iter_n_children = glade_project_model_iter_n_children;
-  iface->iter_nth_child = glade_project_model_iter_nth_child;
-  iface->iter_parent = glade_project_model_iter_parent;
-}
-
 
 /*************************************************
  *                Command Central                *
