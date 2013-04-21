@@ -60,30 +60,30 @@
 	<property id="tooltip-text" since="2.12" weight="4.2" translatable="True" custom-layout="True"
 		  multiline="True" ignore="True"/>
 	<property id="has-tooltip" custom-layout="True" ignore="True"/>
-        <property id="can-focus" common="True" custom-layout="True" save-always="True"/>
-        <property id="has-focus" common="True" custom-layout="True" save-always="True"/>
-        <property id="is-focus" common="True" custom-layout="True" save-always="True"/>
-	<property id="has-default" common="True" custom-layout="True" ignore="True"/>
-	<property id="can-default" common="True" custom-layout="True"/>
-	<property id="receives-default" common="True" custom-layout="True"/>
+        <property id="can-focus" custom-layout="True" save-always="True"/>
+        <property id="has-focus" custom-layout="True" save-always="True"/>
+        <property id="is-focus" custom-layout="True" save-always="True"/>
+	<property id="has-default" custom-layout="True" ignore="True"/>
+	<property id="can-default" custom-layout="True"/>
+	<property id="receives-default" custom-layout="True"/>
 	<property id="tooltip-markup" since="2.12" weight="4.1" translatable="True" custom-layout="True" 
 		  multiline="True" ignore="True"/>
-	<property id="visible" default="True" common="True" custom-layout="True" ignore="True"/>
-	<property id="width-request"  common="True" custom-layout="True" optional="True" optional-default="False" default="0"/>
-	<property id="height-request" common="True" custom-layout="True" optional="True" optional-default="False" default="0"/>
+	<property id="visible" default="True" custom-layout="True" ignore="True"/>
+	<property id="width-request"  custom-layout="True" optional="True" optional-default="False" default="0"/>
+	<property id="height-request" custom-layout="True" optional="True" optional-default="False" default="0"/>
 	<property id="no-show-all" weight="4.6" custom-layout="True" ignore="True"/>
 	<property id="expand" disabled="True" since="3.0"/>
-	<property id="hexpand" common="True" since="3.0" needs-sync="True" custom-layout="True"
+	<property id="hexpand" since="3.0" needs-sync="True" custom-layout="True"
 		  optional="True" optional-default="False"/>
-	<property id="vexpand" common="True" since="3.0" needs-sync="True" custom-layout="True"
+	<property id="vexpand" since="3.0" needs-sync="True" custom-layout="True"
 		  optional="True" optional-default="False"/>
 	<property id="hexpand-set" disabled="True" since="3.0"/>
 	<property id="vexpand-set" disabled="True" since="3.0"/>
 	<property id="margin" disabled="True" since="3.0"/>
-	<property id="margin-left" common="True" custom-layout="True" since="3.0"/>
-	<property id="margin-right" common="True" custom-layout="True" since="3.0"/>
-	<property id="margin-top" common="True" custom-layout="True" since="3.0"/>
-	<property id="margin-bottom" common="True" custom-layout="True" since="3.0"/>
+	<property id="margin-left" custom-layout="True" since="3.0"/>
+	<property id="margin-right" custom-layout="True" since="3.0"/>
+	<property id="margin-top" custom-layout="True" since="3.0"/>
+	<property id="margin-bottom" custom-layout="True" since="3.0"/>
 
         <property id="glade-tooltip-markup" save="False" custom-layout="True" ignore="True" default="False">
 	  <parameter-spec>
@@ -92,7 +92,7 @@
         </property>
 
 	<property id="glade-style-classes" _name="Style Classes" weight="4.25" custom-layout="True"
-		  common="True" save="False" ignore="True" since="3.0">
+		  save="False" ignore="True" since="3.0">
 	  <parameter-spec>
 	    <type>GParamBoxed</type>
 	    <value-type>GladeStringList</value-type>
@@ -100,7 +100,7 @@
 	  <_tooltip>A list of style class names to apply to this widget</_tooltip>
 	</property>
 
-	<property id="halign" common="True" custom-layout="True" since="3.0">
+	<property id="halign" custom-layout="True" since="3.0">
   	  <displayable-values>
 	    <value id="GTK_ALIGN_FILL" _name="Fill"/>
 	    <value id="GTK_ALIGN_START" _name="Start"/>
@@ -108,17 +108,9 @@
 	    <value id="GTK_ALIGN_END" _name="End"/>
 	  </displayable-values>
 	</property>
-	<property id="valign" common="True" custom-layout="True" since="3.0"/>
+	<property id="valign" custom-layout="True" since="3.0"/>
 
-	<property id="extension-events" common="True">
-  	  <displayable-values>
-	    <value id="GDK_EXTENSION_EVENTS_NONE" _name="None"/>
-	    <value id="GDK_EXTENSION_EVENTS_ALL" _name="All"/>
-	    <value id="GDK_EXTENSION_EVENTS_CURSOR" _name="Cursor"/>
-	  </displayable-values>
-	</property>
-
-	<property id="events" custom-layout="True" ignore="True" common="True">
+	<property id="events" custom-layout="True" ignore="True">
   	  <displayable-values>
 	    <value id="GDK_EXPOSURE_MASK" _name="Exposure"/>
 	    <value id="GDK_POINTER_MOTION_MASK" _name="Pointer Motion"/>
@@ -148,7 +140,7 @@
 	</property>
 
 	<!-- Put the name in the main properties page glade-editor-table.c ensures it's always at the top -->
-	<property id="name" common="True" custom-layout="True"/>
+	<property id="name" custom-layout="True"/>
 
 	<property id="window" disabled="True" since="2.14"/>
 	<property id="parent" disabled="True"/>
@@ -158,7 +150,7 @@
 	<property id="double-buffered" custom-layout="True" since="2.18"/>
 
 	<!-- Accelerators -->
-	<property id="accelerator" _name="Accelerators" ignore="True" custom-layout="True" common="True" save="False">
+	<property id="accelerator" _name="Accelerators" ignore="True" custom-layout="True" save="False">
 	  <parameter-spec>
 	    <type>GParamBoxed</type>
 	    <value-type>GladeAccelGList</value-type>
@@ -333,9 +325,9 @@ embedded in another object</_tooltip>
       <get-children-function>glade_gtk_container_get_children</get-children-function>
 
       <properties>
-        <property id="border-width" common="True" custom-layout="True"
+        <property id="border-width" custom-layout="True"
 		  optional="True" optional-default="False"/>
-        <property id="resize-mode" ignore="True" custom-layout="True" common="True">
+        <property id="resize-mode" ignore="True" custom-layout="True">
   	  <displayable-values>
 	    <value id="GTK_RESIZE_PARENT" _name="Parent"/>
 	    <value id="GTK_RESIZE_QUEUE" _name="Queue"/>
@@ -422,7 +414,7 @@ embedded in another object</_tooltip>
 	<property id="visible" default="False"/>
 	<property id="icon" ignore="True"/>
 	<property id="icon-name" themed-icon="True" ignore="True"/>
-     	<property common="True" id="gravity">
+     	<property id="gravity">
   	  <displayable-values>
 	    <value id="GDK_GRAVITY_NORTH_WEST" _name="North West"/>
 	    <value id="GDK_GRAVITY_NORTH" _name="North"/>
@@ -2114,8 +2106,6 @@ embedded in another object</_tooltip>
 
 	<property id="default-width"  default="400" optional="True" optional-default="False"/>
 	<property id="default-height" default="115" optional="True" optional-default="False"/>
-
-	<property common="True" id="sensitive"/>
 
 	<property id="image" since="2.10" parentless-widget="True"/>
 	<property id="secondary-text" translatable="True" since="2.10"/>
