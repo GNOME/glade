@@ -1131,7 +1131,8 @@ glade_eprop_attrs_create_input (GladeEditorProperty *eprop)
 
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 
-  button = gtk_button_new_from_stock (GTK_STOCK_EDIT);
+  button = gtk_button_new_with_label (_("Edit Attributes"));
+  gtk_widget_set_hexpand (button, TRUE);
   gtk_widget_show (button);
   gtk_box_pack_start (GTK_BOX (hbox), button, TRUE, TRUE, 0);
 
