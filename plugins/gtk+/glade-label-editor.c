@@ -26,20 +26,49 @@
 
 #include "glade-label-editor.h"
 
+/* GtkWidgetClass */
+static void glade_label_editor_grab_focus    (GtkWidget          *widget);
 
-static void glade_label_editor_finalize (GObject * object);
+/* GladeEditableIface */
+static void glade_label_editor_load          (GladeEditable      *editable,
+					      GladeWidget        *widget);
+static void glade_label_editor_editable_init (GladeEditableIface *iface);
 
-static void glade_label_editor_editable_init (GladeEditableIface * iface);
+/* Callbacks */
+static void attributes_toggled (GtkWidget *widget, GladeLabelEditor *label_editor);
+static void markup_toggled     (GtkWidget *widget, GladeLabelEditor *label_editor);
+static void pattern_toggled    (GtkWidget *widget, GladeLabelEditor *label_editor);
+static void width_toggled      (GtkWidget *widget, GladeLabelEditor *label_editor);
+static void max_width_toggled  (GtkWidget *widget, GladeLabelEditor *label_editor);
+static void wrap_free_toggled  (GtkWidget *widget, GladeLabelEditor *label_editor);
+static void single_toggled     (GtkWidget *widget, GladeLabelEditor *label_editor);
+static void wrap_mode_toggled  (GtkWidget *widget, GladeLabelEditor *label_editor);
 
-static void glade_label_editor_grab_focus (GtkWidget * widget);
+struct _GladeLabelEditorPrivate
+{
+  GtkWidget *embed;
 
+  GtkWidget *attributes_radio;    /* Set pango attributes manually (attributes eprop embedded) */
+  GtkWidget *markup_radio;        /* Parse the label as a pango markup string (no showing eprop) */
+  GtkWidget *pattern_radio;       /* Use a pattern string to underline portions of the text
+				   * (pattern eprop embedded) */
+
+  /* These control whether to use max-width-chars or just width-chars */
+  GtkWidget *width_radio;
+  GtkWidget *max_width_radio;
+
+  /* These control whether to use single-line-mode, wrap & wrap-mode or niether */
+  GtkWidget *wrap_free_label; /* Set boldness on this label for a fake property */
+  GtkWidget *wrap_free_radio;
+  GtkWidget *single_radio;
+  GtkWidget *wrap_mode_radio;
+};
 
 static GladeEditableIface *parent_editable_iface;
 
-G_DEFINE_TYPE_WITH_CODE (GladeLabelEditor, glade_label_editor, GTK_TYPE_VBOX,
+G_DEFINE_TYPE_WITH_CODE (GladeLabelEditor, glade_label_editor, GLADE_TYPE_EDITOR_SKELETON,
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
                                                 glade_label_editor_editable_init));
-
 
 static void
 glade_label_editor_class_init (GladeLabelEditorClass * klass)
@@ -47,45 +76,66 @@ glade_label_editor_class_init (GladeLabelEditorClass * klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-  object_class->finalize = glade_label_editor_finalize;
   widget_class->grab_focus = glade_label_editor_grab_focus;
+
+  gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-label-editor.ui");
+
+  gtk_widget_class_bind_child (widget_class, GladeLabelEditorPrivate, embed);
+  gtk_widget_class_bind_child (widget_class, GladeLabelEditorPrivate, attributes_radio);
+  gtk_widget_class_bind_child (widget_class, GladeLabelEditorPrivate, markup_radio);
+  gtk_widget_class_bind_child (widget_class, GladeLabelEditorPrivate, pattern_radio);
+  gtk_widget_class_bind_child (widget_class, GladeLabelEditorPrivate, width_radio);
+  gtk_widget_class_bind_child (widget_class, GladeLabelEditorPrivate, max_width_radio);
+  gtk_widget_class_bind_child (widget_class, GladeLabelEditorPrivate, wrap_free_label);
+  gtk_widget_class_bind_child (widget_class, GladeLabelEditorPrivate, wrap_free_radio);
+  gtk_widget_class_bind_child (widget_class, GladeLabelEditorPrivate, single_radio);
+  gtk_widget_class_bind_child (widget_class, GladeLabelEditorPrivate, wrap_mode_radio);
+
+  gtk_widget_class_bind_callback (widget_class, attributes_toggled);
+  gtk_widget_class_bind_callback (widget_class, markup_toggled);
+  gtk_widget_class_bind_callback (widget_class, pattern_toggled);
+  gtk_widget_class_bind_callback (widget_class, width_toggled);
+  gtk_widget_class_bind_callback (widget_class, max_width_toggled);
+  gtk_widget_class_bind_callback (widget_class, wrap_free_toggled);
+  gtk_widget_class_bind_callback (widget_class, single_toggled);
+  gtk_widget_class_bind_callback (widget_class, wrap_mode_toggled);
+
+  g_type_class_add_private (object_class, sizeof (GladeLabelEditorPrivate));  
 }
 
 static void
 glade_label_editor_init (GladeLabelEditor * self)
 {
+  self->priv = 
+    G_TYPE_INSTANCE_GET_PRIVATE (self,
+				 GLADE_TYPE_LABEL_EDITOR,
+				 GladeLabelEditorPrivate);
+
+  gtk_widget_init_template (GTK_WIDGET (self));
 }
 
 static void
 glade_label_editor_load (GladeEditable * editable, GladeWidget * widget)
 {
   GladeLabelEditor *label_editor = GLADE_LABEL_EDITOR (editable);
-  GList *l;
+  GladeLabelEditorPrivate *priv = label_editor->priv;
 
   /* Chain up to default implementation */
   parent_editable_iface->load (editable, widget);
-
-  /* load the embedded editable... */
-  if (label_editor->embed)
-    glade_editable_load (GLADE_EDITABLE (label_editor->embed), widget);
-
-  for (l = label_editor->properties; l; l = l->next)
-    glade_editor_property_load_by_widget (GLADE_EDITOR_PROPERTY (l->data),
-                                          widget);
 
   if (widget)
     {
       GladeLabelContentMode content_mode;
       GladeLabelWrapMode wrap_mode;
-      static PangoAttrList *bold_attr_list = NULL;
+      static PangoAttrList *italic_attr_list = NULL;
       gboolean use_max_width;
 
-      if (!bold_attr_list)
+      if (!italic_attr_list)
         {
           PangoAttribute *attr;
-          bold_attr_list = pango_attr_list_new ();
-          attr = pango_attr_weight_new (PANGO_WEIGHT_BOLD);
-          pango_attr_list_insert (bold_attr_list, attr);
+          italic_attr_list = pango_attr_list_new ();
+          attr = pango_attr_style_new (PANGO_STYLE_ITALIC);
+          pango_attr_list_insert (italic_attr_list, attr);
         }
 
       glade_widget_property_get (widget, "label-content-mode", &content_mode);
@@ -96,42 +146,42 @@ glade_label_editor_load (GladeEditable * editable, GladeWidget * widget)
         {
           case GLADE_LABEL_MODE_ATTRIBUTES:
             gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON
-                                          (label_editor->attributes_radio),
+                                          (priv->attributes_radio),
                                           TRUE);
             break;
           case GLADE_LABEL_MODE_MARKUP:
             gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON
-                                          (label_editor->markup_radio), TRUE);
+                                          (priv->markup_radio), TRUE);
             break;
           case GLADE_LABEL_MODE_PATTERN:
             gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON
-                                          (label_editor->pattern_radio), TRUE);
+                                          (priv->pattern_radio), TRUE);
             break;
           default:
             break;
         }
 
       if (wrap_mode == GLADE_LABEL_WRAP_FREE)
-        gtk_label_set_attributes (GTK_LABEL (label_editor->wrap_free_label),
-                                  bold_attr_list);
+        gtk_label_set_attributes (GTK_LABEL (priv->wrap_free_label),
+                                  italic_attr_list);
       else
-        gtk_label_set_attributes (GTK_LABEL (label_editor->wrap_free_label),
+        gtk_label_set_attributes (GTK_LABEL (priv->wrap_free_label),
                                   NULL);
 
       switch (wrap_mode)
         {
           case GLADE_LABEL_WRAP_FREE:
             gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON
-                                          (label_editor->wrap_free_radio),
+                                          (priv->wrap_free_radio),
                                           TRUE);
             break;
           case GLADE_LABEL_SINGLE_LINE:
             gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON
-                                          (label_editor->single_radio), TRUE);
+                                          (priv->single_radio), TRUE);
             break;
           case GLADE_LABEL_WRAP_MODE:
             gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON
-                                          (label_editor->wrap_mode_radio),
+                                          (priv->wrap_mode_radio),
                                           TRUE);
             break;
           default:
@@ -140,55 +190,30 @@ glade_label_editor_load (GladeEditable * editable, GladeWidget * widget)
 
       if (use_max_width)
         gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON
-                                      (label_editor->max_width_radio), TRUE);
+                                      (priv->max_width_radio), TRUE);
       else
         gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON
-                                      (label_editor->width_radio), TRUE);
+                                      (priv->width_radio), TRUE);
 
     }
 }
 
 static void
-glade_label_editor_set_show_name (GladeEditable * editable, gboolean show_name)
-{
-  GladeLabelEditor *label_editor = GLADE_LABEL_EDITOR (editable);
-
-  glade_editable_set_show_name (GLADE_EDITABLE (label_editor->embed),
-                                show_name);
-}
-
-static void
 glade_label_editor_editable_init (GladeEditableIface * iface)
 {
-  parent_editable_iface = g_type_default_interface_peek (GLADE_TYPE_EDITABLE);
+  parent_editable_iface = g_type_interface_peek_parent (iface);
 
   iface->load = glade_label_editor_load;
-  iface->set_show_name = glade_label_editor_set_show_name;
-}
-
-static void
-glade_label_editor_finalize (GObject * object)
-{
-  GladeLabelEditor *label_editor = GLADE_LABEL_EDITOR (object);
-
-  if (label_editor->properties)
-    g_list_free (label_editor->properties);
-  label_editor->properties = NULL;
-  label_editor->embed = NULL;
-
-  glade_editable_load (GLADE_EDITABLE (object), NULL);
-
-  G_OBJECT_CLASS (glade_label_editor_parent_class)->finalize (object);
 }
 
 static void
 glade_label_editor_grab_focus (GtkWidget * widget)
 {
-  GladeLabelEditor *label_editor = GLADE_LABEL_EDITOR (widget);
+  GladeLabelEditor        *label_editor = GLADE_LABEL_EDITOR (widget);
+  GladeLabelEditorPrivate *priv = label_editor->priv;
 
-  gtk_widget_grab_focus (label_editor->embed);
+  gtk_widget_grab_focus (priv->embed);
 }
-
 
 /**********************************************************************
                     label-content-mode radios
@@ -196,6 +221,7 @@ glade_label_editor_grab_focus (GtkWidget * widget)
 static void
 attributes_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 {
+  GladeLabelEditorPrivate *priv = label_editor->priv;
   GladeProperty *property;
   GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (label_editor));
 
@@ -203,7 +229,7 @@ attributes_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
     return;
 
   if (!gtk_toggle_button_get_active
-      (GTK_TOGGLE_BUTTON (label_editor->attributes_radio)))
+      (GTK_TOGGLE_BUTTON (priv->attributes_radio)))
     return;
 
   glade_editable_block (GLADE_EDITABLE (label_editor));
@@ -229,6 +255,7 @@ attributes_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 static void
 markup_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 {
+  GladeLabelEditorPrivate *priv = label_editor->priv;
   GladeProperty *property;
   GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (label_editor));
 
@@ -236,7 +263,7 @@ markup_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
     return;
 
   if (!gtk_toggle_button_get_active
-      (GTK_TOGGLE_BUTTON (label_editor->markup_radio)))
+      (GTK_TOGGLE_BUTTON (priv->markup_radio)))
     return;
 
   glade_editable_block (GLADE_EDITABLE (label_editor));
@@ -265,6 +292,7 @@ markup_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 static void
 pattern_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 {
+  GladeLabelEditorPrivate *priv = label_editor->priv;
   GladeProperty *property;
   GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (label_editor));
 
@@ -272,7 +300,7 @@ pattern_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
     return;
 
   if (!gtk_toggle_button_get_active
-      (GTK_TOGGLE_BUTTON (label_editor->pattern_radio)))
+      (GTK_TOGGLE_BUTTON (priv->pattern_radio)))
     return;
 
   glade_editable_block (GLADE_EDITABLE (label_editor));
@@ -298,10 +326,10 @@ pattern_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 /**********************************************************************
                     use-max-width radios
  **********************************************************************/
-
 static void
 width_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 {
+  GladeLabelEditorPrivate *priv = label_editor->priv;
   GladeProperty *property;
   GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (label_editor));
 
@@ -309,7 +337,7 @@ width_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
     return;
 
   if (!gtk_toggle_button_get_active
-      (GTK_TOGGLE_BUTTON (label_editor->width_radio)))
+      (GTK_TOGGLE_BUTTON (priv->width_radio)))
     return;
 
   glade_editable_block (GLADE_EDITABLE (label_editor));
@@ -333,6 +361,7 @@ width_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 static void
 max_width_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 {
+  GladeLabelEditorPrivate *priv = label_editor->priv;
   GladeProperty *property;
   GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (label_editor));
 
@@ -340,7 +369,7 @@ max_width_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
     return;
 
   if (!gtk_toggle_button_get_active
-      (GTK_TOGGLE_BUTTON (label_editor->max_width_radio)))
+      (GTK_TOGGLE_BUTTON (priv->max_width_radio)))
     return;
 
   glade_editable_block (GLADE_EDITABLE (label_editor));
@@ -367,6 +396,7 @@ max_width_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 static void
 wrap_free_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 {
+  GladeLabelEditorPrivate *priv = label_editor->priv;
   GladeProperty *property;
   GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (label_editor));
 
@@ -374,7 +404,7 @@ wrap_free_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
     return;
 
   if (!gtk_toggle_button_get_active
-      (GTK_TOGGLE_BUTTON (label_editor->wrap_free_radio)))
+      (GTK_TOGGLE_BUTTON (priv->wrap_free_radio)))
     return;
 
   glade_editable_block (GLADE_EDITABLE (label_editor));
@@ -403,6 +433,7 @@ wrap_free_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 static void
 single_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 {
+  GladeLabelEditorPrivate *priv = label_editor->priv;
   GladeProperty *property;
   GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (label_editor));
 
@@ -410,7 +441,7 @@ single_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
     return;
 
   if (!gtk_toggle_button_get_active
-      (GTK_TOGGLE_BUTTON (label_editor->single_radio)))
+      (GTK_TOGGLE_BUTTON (priv->single_radio)))
     return;
 
   glade_editable_block (GLADE_EDITABLE (label_editor));
@@ -439,6 +470,7 @@ single_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 static void
 wrap_mode_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
 {
+  GladeLabelEditorPrivate *priv = label_editor->priv;
   GladeProperty *property;
   GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (label_editor));
 
@@ -446,7 +478,7 @@ wrap_mode_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
     return;
 
   if (!gtk_toggle_button_get_active
-      (GTK_TOGGLE_BUTTON (label_editor->wrap_mode_radio)))
+      (GTK_TOGGLE_BUTTON (priv->wrap_mode_radio)))
     return;
 
   glade_editable_block (GLADE_EDITABLE (label_editor));
@@ -470,6 +502,7 @@ wrap_mode_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
   glade_editable_load (GLADE_EDITABLE (label_editor), gwidget);
 }
 
+#if 0
 static void
 table_attach (GtkWidget * table, GtkWidget * child, gint pos, gint row)
 {
@@ -717,10 +750,15 @@ append_label_wrapping (GladeLabelEditor * label_editor,
                           single_line_eprop,
                           (GDestroyNotify) gtk_widget_destroy);
 }
+#endif
+
 
 GtkWidget *
-glade_label_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
+glade_label_editor_new (void)
 {
+  return g_object_new (GLADE_TYPE_LABEL_EDITOR, NULL);
+
+#if 0
   GladeLabelEditor *label_editor;
 
   g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
@@ -761,4 +799,5 @@ glade_label_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
   gtk_widget_show_all (GTK_WIDGET (label_editor));
 
   return GTK_WIDGET (label_editor);
+#endif
 }

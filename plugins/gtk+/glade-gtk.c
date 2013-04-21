@@ -6489,43 +6489,6 @@ glade_gtk_label_set_use_underline (GObject * object, const GValue * value)
   gtk_label_set_use_underline (GTK_LABEL (object), g_value_get_boolean (value));
 }
 
-static void
-glade_gtk_label_set_ellipsize (GObject * object, const GValue * value)
-{
-  GladeWidget *glabel;
-  const gchar *insensitive_msg =
-      _("This property does not apply when Ellipsize is set.");
-
-  glabel = glade_widget_get_from_gobject (object);
-
-  if (!glade_widget_property_original_default (glabel, "ellipsize"))
-    glade_widget_property_set_sensitive (glabel, "angle", FALSE,
-                                         insensitive_msg);
-  else
-    glade_widget_property_set_sensitive (glabel, "angle", TRUE, NULL);
-
-  gtk_label_set_ellipsize (GTK_LABEL (object), g_value_get_enum (value));
-}
-
-
-static void
-glade_gtk_label_set_angle (GObject * object, const GValue * value)
-{
-  GladeWidget *glabel;
-  const gchar *insensitive_msg =
-      _("This property does not apply when Angle is set.");
-
-  glabel = glade_widget_get_from_gobject (object);
-
-  if (!glade_widget_property_original_default (glabel, "angle"))
-    glade_widget_property_set_sensitive (glabel, "ellipsize", FALSE,
-                                         insensitive_msg);
-  else
-    glade_widget_property_set_sensitive (glabel, "ellipsize", TRUE, NULL);
-
-  gtk_label_set_angle (GTK_LABEL (object), g_value_get_double (value));
-}
-
 void
 glade_gtk_label_set_property (GladeWidgetAdaptor * adaptor,
                               GObject * object,
@@ -6543,10 +6506,6 @@ glade_gtk_label_set_property (GladeWidgetAdaptor * adaptor,
     glade_gtk_label_set_wrap_mode (object, value);
   else if (!strcmp (id, "use-underline"))
     glade_gtk_label_set_use_underline (object, value);
-  else if (!strcmp (id, "ellipsize"))
-    glade_gtk_label_set_ellipsize (object, value);
-  else if (!strcmp (id, "angle"))
-    glade_gtk_label_set_angle (object, value);
   else
     GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
 }
@@ -6789,11 +6748,10 @@ glade_gtk_label_create_editable (GladeWidgetAdaptor * adaptor,
 {
   GladeEditable *editable;
 
-  /* Get base editable */
-  editable = GWA_GET_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
-
   if (type == GLADE_PAGE_GENERAL)
-    return (GladeEditable *) glade_label_editor_new (adaptor, editable);
+    editable = (GladeEditable *) glade_label_editor_new ();
+  else
+    editable = GWA_GET_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
 
   return editable;
 }

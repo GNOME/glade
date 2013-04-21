@@ -917,27 +917,31 @@ embedded in another object</_tooltip>
 	  </parameter-spec>
         </property>
       	<property id="label" default="label" translatable="True" custom-layout="True" multiline="True"/>
-	<property id="glade-attributes" _name="Attributes" save="False" custom-layout="True" 
-		  since="2.16">
+	<property id="glade-attributes" _name="Attributes" save="False" custom-layout="True" since="2.16">
 	  <parameter-spec>
 	    <type>GParamBoxed</type>
 	    <value-type>GladeAttrGList</value-type>
 	  </parameter-spec>
 	  <_tooltip>The pango attributes for this label</_tooltip>
 	</property>
+
+	<property id="xalign" custom-layout="True"/>
+	<property id="yalign" custom-layout="True"/>
+	<property id="xpad" custom-layout="True"/>
+	<property id="ypad" custom-layout="True"/>
 	<property id="pattern" custom-layout="True"/>
 	<property id="use-markup" custom-layout="True"/>
-
 	<property id="ellipsize" custom-layout="True"/>
-	<property id="justify" custom-layout="True"/>
+	<property id="use-underline" custom-layout="True"/>
+	<property id="mnemonic-widget" custom-layout="True"/>
+	<property id="track-visited-links" custom-layout="True"/>
 	<property id="angle" custom-layout="True"/>
 	<property id="single-line-mode" custom-layout="True"/>
 	<property id="max-width-chars" custom-layout="True"/>
 	<property id="width-chars" custom-layout="True"/>
 	<property id="wrap" custom-layout="True"/>	
-	<property id="wrap-mode" custom-layout="True"/>
-        <property id="selectable" ignore="True" weight="0.5"/>
-      	<property id="justify">
+        <property id="selectable" ignore="True" custom-layout="True"/>
+      	<property id="justify" custom-layout="True">
   	  <displayable-values>
 	    <value id="GTK_JUSTIFY_LEFT" _name="Left"/>
 	    <value id="GTK_JUSTIFY_RIGHT" _name="Right"/>
@@ -945,14 +949,14 @@ embedded in another object</_tooltip>
 	    <value id="GTK_JUSTIFY_FILL" _name="Fill"/>
 	  </displayable-values>
 	</property>
-      	<property id="wrap-mode" since="2.10">
+      	<property id="wrap-mode" since="2.10" custom-layout="True">
   	  <displayable-values>
              <value id="PANGO_WRAP_WORD" _name="Word"/>
 	    <value id="PANGO_WRAP_CHAR" _name="Character"/>
 	    <value id="PANGO_WRAP_WORD_CHAR" _name="Word Character"/>
 	  </displayable-values>
 	</property>
-	<property id="track-visited-links" since="2.18"/>
+	<property id="track-visited-links" since="2.18" custom-layout="True"/>
       </properties>
 
       <signals>

@@ -34,51 +34,34 @@ G_BEGIN_DECLS
 
 typedef struct _GladeLabelEditor        GladeLabelEditor;
 typedef struct _GladeLabelEditorClass   GladeLabelEditorClass;
+typedef struct _GladeLabelEditorPrivate GladeLabelEditorPrivate;
 
 typedef enum {
-	GLADE_LABEL_MODE_ATTRIBUTES = 0, /* default */
-	GLADE_LABEL_MODE_MARKUP,
-	GLADE_LABEL_MODE_PATTERN
+  GLADE_LABEL_MODE_ATTRIBUTES = 0, /* default */
+  GLADE_LABEL_MODE_MARKUP,
+  GLADE_LABEL_MODE_PATTERN
 } GladeLabelContentMode;
 
 typedef enum {
-	GLADE_LABEL_WRAP_FREE = 0, /* default */
-	GLADE_LABEL_SINGLE_LINE,
-	GLADE_LABEL_WRAP_MODE
+  GLADE_LABEL_WRAP_FREE = 0, /* default */
+  GLADE_LABEL_SINGLE_LINE,
+  GLADE_LABEL_WRAP_MODE
 } GladeLabelWrapMode;
 
 struct _GladeLabelEditor
 {
-	GtkVBox  parent;
+  GladeEditorSkeleton parent;
 
-	GtkWidget *embed;
-
-	GtkWidget *attributes_radio;    /* Set pango attributes manually (attributes eprop embedded) */
-	GtkWidget *markup_radio;        /* Parse the label as a pango markup string (no showing eprop) */
-	GtkWidget *pattern_radio;       /* Use a pattern string to underline portions of the text
-					 * (pattern eprop embedded) */
-
-	/* These control whether to use max-width-chars or just width-chars */
-	GtkWidget *width_radio;
-	GtkWidget *max_width_radio;
-
-	/* These control whether to use single-line-mode, wrap & wrap-mode or niether */
-	GtkWidget *wrap_free_label; /* Set boldness on this label for a fake property */
-	GtkWidget *wrap_free_radio;
-	GtkWidget *single_radio;
-	GtkWidget *wrap_mode_radio;
-
-	GList *properties;         /* A list of eprops to update at load() time */
+  GladeLabelEditorPrivate *priv;
 };
 
 struct _GladeLabelEditorClass
 {
-	GtkVBoxClass parent;
+  GladeEditorSkeletonClass parent;
 };
 
 GType            glade_label_editor_get_type (void) G_GNUC_CONST;
-GtkWidget       *glade_label_editor_new      (GladeWidgetAdaptor *adaptor,
-					      GladeEditable      *editable);
+GtkWidget       *glade_label_editor_new      (void);
 
 G_END_DECLS
 
