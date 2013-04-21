@@ -31,15 +31,11 @@ static void glade_widget_editor_finalize (GObject * object);
 
 static void glade_widget_editor_editable_init (GladeEditableIface * iface);
 
-static void glade_widget_editor_grab_focus (GtkWidget * widget);
-
 static void markup_toggled (GtkWidget * widget, GladeWidgetEditor * widget_editor);
 static void custom_tooltip_toggled (GtkWidget * widget, GladeWidgetEditor * widget_editor);
 
 struct _GladeWidgetEditorPrivate
 {
-  GtkWidget *embed;
-
   GtkWidget *custom_tooltip_check;
   GtkWidget *tooltip_markup_check;
   GtkWidget *tooltip_label_notebook;
@@ -68,11 +64,9 @@ glade_widget_editor_class_init (GladeWidgetEditorClass * klass)
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   object_class->finalize = glade_widget_editor_finalize;
-  widget_class->grab_focus = glade_widget_editor_grab_focus;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-widget-editor.ui");
 
-  gtk_widget_class_bind_child (widget_class, GladeWidgetEditorPrivate, embed);
   gtk_widget_class_bind_child (widget_class, GladeWidgetEditorPrivate, custom_tooltip_check);
   gtk_widget_class_bind_child (widget_class, GladeWidgetEditorPrivate, tooltip_markup_check);
   gtk_widget_class_bind_child (widget_class, GladeWidgetEditorPrivate, tooltip_label_notebook);
@@ -151,14 +145,6 @@ glade_widget_editor_finalize (GObject * object)
   glade_editable_load (GLADE_EDITABLE (object), NULL);
 
   G_OBJECT_CLASS (glade_widget_editor_parent_class)->finalize (object);
-}
-
-static void
-glade_widget_editor_grab_focus (GtkWidget * widget)
-{
-  GladeWidgetEditor *widget_editor = GLADE_WIDGET_EDITOR (widget);
-
-  gtk_widget_grab_focus (widget_editor->priv->embed);
 }
 
 static void
