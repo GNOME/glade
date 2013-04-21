@@ -763,7 +763,8 @@ glade_eprop_numeric_create_input (GladeEditorProperty *eprop)
     gtk_spin_button_new (adjustment, 4,
 			 G_IS_PARAM_SPEC_FLOAT (pspec) ||
 			 G_IS_PARAM_SPEC_DOUBLE (pspec) ? 2 : 0);
-  gtk_widget_set_halign (eprop_numeric->spin, GTK_ALIGN_START);
+  gtk_widget_set_hexpand (eprop_numeric->spin, TRUE);
+  gtk_widget_set_halign (eprop_numeric->spin, GTK_ALIGN_FILL);
   gtk_widget_set_valign (eprop_numeric->spin, GTK_ALIGN_CENTER);
 
   gtk_widget_show (eprop_numeric->spin);
@@ -1176,6 +1177,8 @@ glade_eprop_flags_create_input (GladeEditorProperty *eprop)
                                                              G_TYPE_UINT));
 
   eprop_flags->entry = gtk_entry_new ();
+  gtk_widget_set_hexpand (eprop_flags->entry, TRUE);
+
   gtk_editable_set_editable (GTK_EDITABLE (eprop_flags->entry), FALSE);
   gtk_entry_set_icon_from_stock (GTK_ENTRY (eprop_flags->entry), 
                                  GTK_ENTRY_ICON_SECONDARY,
@@ -1321,6 +1324,7 @@ glade_eprop_color_create_input (GladeEditorProperty *eprop)
   gtk_widget_set_valign (hbox, GTK_ALIGN_CENTER);
   
   eprop_color->entry = gtk_entry_new ();
+  gtk_widget_set_hexpand (eprop_color->entry, TRUE);
   gtk_editable_set_editable (GTK_EDITABLE (eprop_color->entry), FALSE);
   gtk_widget_show (eprop_color->entry);
   gtk_box_pack_start (GTK_BOX (hbox), eprop_color->entry, TRUE, TRUE, 0);
@@ -1526,6 +1530,7 @@ glade_eprop_named_icon_create_input (GladeEditorProperty *eprop)
   GladeEPropNamedIcon *eprop_named_icon = GLADE_EPROP_NAMED_ICON (eprop);
   
   eprop_named_icon->entry = gtk_entry_new ();
+  gtk_widget_set_hexpand (eprop_named_icon->entry, TRUE);
   gtk_widget_set_valign (eprop_named_icon->entry, GTK_ALIGN_CENTER);
   gtk_entry_set_icon_from_stock (GTK_ENTRY (eprop_named_icon->entry), 
                                  GTK_ENTRY_ICON_SECONDARY,
@@ -2250,6 +2255,7 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
   else
     {
       eprop_text->text_entry = gtk_entry_new ();
+      gtk_widget_set_hexpand (eprop_text->text_entry, TRUE);
       gtk_widget_show (eprop_text->text_entry);
 
       gtk_box_pack_start (GTK_BOX (hbox), eprop_text->text_entry, TRUE, TRUE, 0);
@@ -3292,6 +3298,7 @@ glade_eprop_object_create_input (GladeEditorProperty *eprop)
   GladeEPropObject *eprop_object = GLADE_EPROP_OBJECT (eprop);
 
   eprop_object->entry = gtk_entry_new ();
+  gtk_widget_set_hexpand (eprop_object->entry, TRUE);
   gtk_widget_set_valign (eprop_object->entry, GTK_ALIGN_CENTER);
   gtk_editable_set_editable (GTK_EDITABLE (eprop_object->entry), FALSE);
   gtk_entry_set_icon_from_stock (GTK_ENTRY (eprop_object->entry), 
@@ -3490,6 +3497,7 @@ glade_eprop_objects_create_input (GladeEditorProperty *eprop)
   GladeEPropObjects *eprop_objects = GLADE_EPROP_OBJECTS (eprop);
 
   eprop_objects->entry = gtk_entry_new ();
+  gtk_widget_set_hexpand (eprop_objects->entry, TRUE);
   gtk_widget_set_valign (eprop_objects->entry, GTK_ALIGN_CENTER);
   gtk_editable_set_editable (GTK_EDITABLE (eprop_objects->entry), FALSE);
   gtk_entry_set_icon_from_stock (GTK_ENTRY (eprop_objects->entry), 
