@@ -34,39 +34,29 @@ G_BEGIN_DECLS
 
 typedef struct _GladeImageEditor        GladeImageEditor;
 typedef struct _GladeImageEditorClass   GladeImageEditorClass;
+typedef struct _GladeImageEditorPrivate GladeImageEditorPrivate;
 
 typedef enum {
-	GLADE_IMAGE_MODE_STOCK = 0, /* default */
-	GLADE_IMAGE_MODE_ICON,
-	GLADE_IMAGE_MODE_RESOURCE,
-	GLADE_IMAGE_MODE_FILENAME
+  GLADE_IMAGE_MODE_STOCK = 0, /* default */
+  GLADE_IMAGE_MODE_ICON,
+  GLADE_IMAGE_MODE_RESOURCE,
+  GLADE_IMAGE_MODE_FILENAME
 } GladeImageEditMode;
 
 struct _GladeImageEditor
 {
-	GtkVBox  parent;
+  GladeEditorSkeleton  parent;
 
-	GtkWidget *embed;
-
-	GtkWidget *stock_radio;    /* Create the image from stock-id */
-	GtkWidget *icon_radio;     /* Create the image with the icon theme */
-	GtkWidget *resource_radio; /* Create the image from GResource data */
-	GtkWidget *file_radio;     /* Create the image from filename (libglade only) */
-
-	GtkWidget *size_radio;     /* Set size with GtkIconSize */
-	GtkWidget *pixels_radio;   /* Set size in Pixel value */
-
-	GList *properties;         /* A list of eprops to update at load() time */
+  GladeImageEditorPrivate *priv;
 };
 
 struct _GladeImageEditorClass
 {
-	GtkVBoxClass parent;
+  GladeEditorSkeletonClass parent;
 };
 
 GType            glade_image_editor_get_type (void) G_GNUC_CONST;
-GtkWidget       *glade_image_editor_new      (GladeWidgetAdaptor *adaptor,
-					      GladeEditable      *editable);
+GtkWidget       *glade_image_editor_new      (void);
 
 G_END_DECLS
 

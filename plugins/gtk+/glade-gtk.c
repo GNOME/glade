@@ -3989,8 +3989,10 @@ glade_gtk_image_set_image_mode (GObject * object, const GValue * value)
   glade_widget_property_set_sensitive (gwidget, "resource", FALSE,
                                        NOT_SELECTED_MSG);
   glade_widget_property_set_sensitive (gwidget, "icon-size", FALSE,
-                                       _("This property only applies to stock images"));
+                                       _("This property only applies to stock images or named icons"));
   glade_widget_property_set_sensitive (gwidget, "pixel-size", FALSE,
+                                       _("This property only applies to named icons"));
+  glade_widget_property_set_sensitive (gwidget, "use-fallback", FALSE,
                                        _("This property only applies to named icons"));
 
   switch ((type = g_value_get_int (value)))
@@ -4002,7 +4004,9 @@ glade_gtk_image_set_image_mode (GObject * object, const GValue * value)
 
       case GLADE_IMAGE_MODE_ICON:
         glade_widget_property_set_sensitive (gwidget, "icon-name", TRUE, NULL);
+        glade_widget_property_set_sensitive (gwidget, "icon-size", TRUE, NULL);
         glade_widget_property_set_sensitive (gwidget, "pixel-size", TRUE, NULL);
+        glade_widget_property_set_sensitive (gwidget, "use-fallback", TRUE, NULL);
         break;
 
       case GLADE_IMAGE_MODE_RESOURCE:
@@ -4089,15 +4093,10 @@ GladeEditable *
 glade_gtk_image_create_editable (GladeWidgetAdaptor * adaptor,
                                  GladeEditorPageType type)
 {
-  GladeEditable *editable;
-
-  /* Get base editable */
-  editable = GWA_GET_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
-
   if (type == GLADE_PAGE_GENERAL)
-    return (GladeEditable *) glade_image_editor_new (adaptor, editable);
-
-  return editable;
+    return (GladeEditable *) glade_image_editor_new ();
+  else
+    return GWA_GET_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
 }
 
 /* ----------------------------- GtkMenu ------------------------------ */

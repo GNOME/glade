@@ -405,6 +405,7 @@ embedded in another object</_tooltip>
 	    <type>GladeParamObjects</type>
 	    <value-type>GtkAccelGroup</value-type>
 	  </parameter-spec>
+	  <_tooltip>A list of accel groups to be added to this window</_tooltip>
 	</property>
 	<property id="attached-to" since="3.4" ignore="True"/>
 	<property id="opacity" since="2.12" ignore="True"/>
@@ -476,6 +477,7 @@ embedded in another object</_tooltip>
 	<property id="application" since="3.0" disabled="True"/>
 	<property id="has-resize-grip" since="3.0"/>
 	<property id="resize-grip-visible" since="3.0" disabled="True"/>
+      	<property id="mnemonics-visible" disabled="True"/>
       </properties>
     </glade-widget-class>
 
@@ -1507,9 +1509,14 @@ embedded in another object</_tooltip>
 	</property>
 	<property id="stock" stock-icon="True" custom-layout="True" default="gtk-missing-image"/>
 	<property id="icon-name" _name="Icon Name" themed-icon="True" custom-layout="True" />
+	<property id="use-fallback" custom-layout="True"/>
 	<property id="pixbuf" _name="File Name" custom-layout="True"/>
 	<property id="resource" _name="Resource Name" custom-layout="True" ignore="True" since="3.8"/>
 	<property id="pixel-size" custom-layout="True"/>
+	<property id="xalign" custom-layout="True"/>
+	<property id="yalign" custom-layout="True"/>
+	<property id="xpad" custom-layout="True"/>
+	<property id="ypad" custom-layout="True"/>
 	<!-- We have to save/load icon-size as int, and fake the enum -->
 	<property id="icon-size" _name="Icon Size" custom-layout="True" 
 		  default="GTK_ICON_SIZE_BUTTON" save="False">

@@ -103,6 +103,7 @@ BUILT_SOURCES = 		\
 UI_FILES = 				\
 	glade-activatable-editor.ui	\
 	glade-button-editor.ui		\
+	glade-image-editor.ui		\
 	glade-label-editor.ui		\
 	glade-widget-editor.ui
 
