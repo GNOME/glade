@@ -77,6 +77,8 @@ struct _GladeEditorTablePrivate
 			  * entry which will not be created from a
 			  * GladeProperty but rather from code.
 			  */
+  GtkWidget *composite_check; /* A pointer to the composite check button */
+  GtkWidget *name_field; /* A box containing the name entry and composite check */
 
   GList *properties; /* A list of GladeEditorPropery items.
 		      * For each row in the gtk_table, there is a
@@ -228,6 +230,30 @@ widget_name_edited (GtkWidget * editable, GladeEditorTable * table)
 }
 
 static void
+widget_composite_toggled (GtkToggleButton  *composite_check,
+			  GladeEditorTable *table)
+{
+  GladeProject *project;
+
+  if (table->priv->loaded_widget == NULL)
+    {
+      g_warning ("Name entry edited with no loaded widget in editor %p!\n",
+                 table);
+      return;
+    }
+
+  project = glade_widget_get_project (table->priv->loaded_widget);
+
+  if (project)
+    {
+      if (gtk_toggle_button_get_active (composite_check))
+	glade_command_set_project_template (project, table->priv->loaded_widget);
+      else
+	glade_command_set_project_template (project, NULL);
+    }
+}
+
+static void
 widget_name_changed (GladeWidget      *widget,
                      GParamSpec       *pspec,
 		     GladeEditorTable *table)
@@ -256,6 +282,16 @@ widget_composite_changed (GladeWidget      *widget,
     gtk_label_set_text (GTK_LABEL (table->priv->name_label),
 			glade_widget_get_is_composite (table->priv->loaded_widget) ?
 			_("Class Name:") : _("ID:"));
+
+  if (table->priv->composite_check)
+    {
+      g_signal_handlers_block_by_func (G_OBJECT (table->priv->composite_check),
+				       G_CALLBACK (widget_composite_toggled), table);
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (table->priv->composite_check),
+				    glade_widget_get_is_composite (table->priv->loaded_widget));
+      g_signal_handlers_unblock_by_func (G_OBJECT (table->priv->composite_check),
+					 G_CALLBACK (widget_composite_toggled), table);
+    }
 }
 
 static void
@@ -319,6 +355,17 @@ glade_editor_table_load (GladeEditable * editable, GladeWidget * widget)
       g_object_weak_ref (G_OBJECT (table->priv->loaded_widget),
                          (GWeakNotify) widget_finalized, table);
 
+      if (table->priv->composite_check)
+	{
+	  GObject *object = glade_widget_get_object (table->priv->loaded_widget);
+
+	  if (GTK_IS_WIDGET (object) && 
+	      glade_widget_get_parent (table->priv->loaded_widget) == NULL)
+	    gtk_widget_show (table->priv->composite_check);
+	  else
+	    gtk_widget_hide (table->priv->composite_check);
+	}
+
       if (table->priv->name_entry)
         gtk_entry_set_text (GTK_ENTRY (table->priv->name_entry), 
 			    glade_widget_get_name (widget));
@@ -349,12 +396,12 @@ glade_editor_table_set_show_name (GladeEditable * editable, gboolean show_name)
       if (show_name)
         {
           gtk_widget_show (table->priv->name_label);
-          gtk_widget_show (table->priv->name_entry);
+          gtk_widget_show (table->priv->name_field);
         }
       else
         {
           gtk_widget_hide (table->priv->name_label);
-          gtk_widget_hide (table->priv->name_entry);
+          gtk_widget_hide (table->priv->name_field);
         }
     }
 }
@@ -450,6 +497,7 @@ append_item (GladeEditorTable * table,
              GladePropertyClass * klass, gboolean from_query_dialog)
 {
   GladeEditorProperty *property;
+  GtkWidget *label;
 
   if (!(property = glade_widget_adaptor_create_eprop
         (glade_property_class_get_adaptor (klass), klass, from_query_dialog == FALSE)))
@@ -463,7 +511,10 @@ append_item (GladeEditorTable * table,
   gtk_widget_show (GTK_WIDGET (property));
   gtk_widget_show_all (glade_editor_property_get_item_label (property));
 
-  glade_editor_table_attach (table, glade_editor_property_get_item_label (property), 0, table->priv->rows);
+  label = glade_editor_property_get_item_label (property);
+  gtk_widget_set_hexpand (label, FALSE);
+
+  glade_editor_table_attach (table, label, 0, table->priv->rows);
   glade_editor_table_attach (table, GTK_WIDGET (property), 1, table->priv->rows);
 
   table->priv->rows++;
@@ -503,9 +554,17 @@ append_name_field (GladeEditorTable * table)
   gtk_widget_show (table->priv->name_label);
   gtk_widget_set_no_show_all (table->priv->name_label, TRUE);
 
+  table->priv->name_field = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
+  gtk_widget_set_no_show_all (table->priv->name_field, TRUE);
+  gtk_widget_show (table->priv->name_field);
+
+  table->priv->composite_check = gtk_check_button_new_with_label (_("Composite"));
+  gtk_widget_set_hexpand (table->priv->composite_check, FALSE);
+  gtk_widget_set_tooltip_text (table->priv->composite_check, _("Whether this widget is a composite template"));
+  gtk_widget_set_no_show_all (table->priv->composite_check, TRUE);
+
   table->priv->name_entry = gtk_entry_new ();
   gtk_widget_show (table->priv->name_entry);
-  gtk_widget_set_no_show_all (table->priv->name_entry, TRUE);
 
   gtk_widget_set_tooltip_text (table->priv->name_label, text);
   gtk_widget_set_tooltip_text (table->priv->name_entry, text);
@@ -514,9 +573,14 @@ append_name_field (GladeEditorTable * table)
                     G_CALLBACK (widget_name_edited), table);
   g_signal_connect (G_OBJECT (table->priv->name_entry), "changed",
                     G_CALLBACK (widget_name_edited), table);
+  g_signal_connect (G_OBJECT (table->priv->composite_check), "toggled",
+                    G_CALLBACK (widget_composite_toggled), table);
+
+  gtk_box_pack_start (GTK_BOX (table->priv->name_field), table->priv->name_entry, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (table->priv->name_field), table->priv->composite_check, FALSE, FALSE, 0);
 
   glade_editor_table_attach (table, table->priv->name_label, 0, table->priv->rows);
-  glade_editor_table_attach (table, table->priv->name_entry, 1, table->priv->rows);
+  glade_editor_table_attach (table, table->priv->name_field, 1, table->priv->rows);
 
   table->priv->rows++;
 }
