@@ -228,8 +228,9 @@ widget_name_edited (GtkWidget * editable, GladeEditorTable * table)
 }
 
 static void
-widget_name_changed (GladeWidget * widget,
-                     GParamSpec * pspec, GladeEditorTable * table)
+widget_name_changed (GladeWidget      *widget,
+                     GParamSpec       *pspec,
+		     GladeEditorTable *table)
 {
   if (!gtk_widget_get_mapped (GTK_WIDGET (table)))
     return;
@@ -241,7 +242,20 @@ widget_name_changed (GladeWidget * widget,
                           glade_widget_get_name (table->priv->loaded_widget));
       UNBLOCK_NAME_ENTRY_CB (table);
     }
+}
 
+static void
+widget_composite_changed (GladeWidget      *widget,
+			  GParamSpec       *pspec,
+			  GladeEditorTable *table)
+{
+  if (!gtk_widget_get_mapped (GTK_WIDGET (table)))
+    return;
+
+  if (table->priv->name_label)
+    gtk_label_set_text (GTK_LABEL (table->priv->name_label),
+			glade_widget_get_is_composite (table->priv->loaded_widget) ?
+			_("Class Name:") : _("ID:"));
 }
 
 static void
@@ -280,6 +294,9 @@ glade_editor_table_load (GladeEditable * editable, GladeWidget * widget)
       g_signal_handlers_disconnect_by_func (G_OBJECT (table->priv->loaded_widget),
                                             G_CALLBACK (widget_name_changed),
                                             table);
+      g_signal_handlers_disconnect_by_func (G_OBJECT (table->priv->loaded_widget),
+                                            G_CALLBACK (widget_composite_changed),
+                                            table);
 
       /* The widget could die unexpectedly... */
       g_object_weak_unref (G_OBJECT (table->priv->loaded_widget),
@@ -295,6 +312,9 @@ glade_editor_table_load (GladeEditable * editable, GladeWidget * widget)
       g_signal_connect (G_OBJECT (table->priv->loaded_widget), "notify::name",
                         G_CALLBACK (widget_name_changed), table);
 
+      g_signal_connect (G_OBJECT (table->priv->loaded_widget), "notify::composite",
+                        G_CALLBACK (widget_composite_changed), table);
+
       /* The widget could die unexpectedly... */
       g_object_weak_ref (G_OBJECT (table->priv->loaded_widget),
                          (GWeakNotify) widget_finalized, table);
@@ -303,6 +323,8 @@ glade_editor_table_load (GladeEditable * editable, GladeWidget * widget)
         gtk_entry_set_text (GTK_ENTRY (table->priv->name_entry), 
 			    glade_widget_get_name (widget));
 
+      if (table->priv->name_label)
+	widget_composite_changed (widget, NULL, table);
     }
   else if (table->priv->name_entry)
     gtk_entry_set_text (GTK_ENTRY (table->priv->name_entry), "");
