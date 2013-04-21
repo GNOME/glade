@@ -34,35 +34,22 @@ G_BEGIN_DECLS
 
 typedef struct _GladeEntryEditor        GladeEntryEditor;
 typedef struct _GladeEntryEditorClass   GladeEntryEditorClass;
+typedef struct _GladeEntryEditorPrivate GladeEntryEditorPrivate;
 
 struct _GladeEntryEditor
 {
-	GtkVBox  parent;
+  GladeEditorSkeleton  parent;
 
-	GtkWidget *embed;
-
-	GtkWidget *text_radio;
-	GtkWidget *buffer_radio;
-
-	GtkWidget *primary_pixbuf_radio;
-	GtkWidget *primary_stock_radio;
-	GtkWidget *primary_icon_name_radio;
-
-	GtkWidget *secondary_pixbuf_radio;
-	GtkWidget *secondary_stock_radio;
-	GtkWidget *secondary_icon_name_radio;
-
-	GList     *properties;
+  GladeEntryEditorPrivate *priv;
 };
 
 struct _GladeEntryEditorClass
 {
-	GtkVBoxClass parent;
+  GladeEditorSkeletonClass parent;
 };
 
 GType            glade_entry_editor_get_type (void) G_GNUC_CONST;
-GtkWidget       *glade_entry_editor_new      (GladeWidgetAdaptor *adaptor,
-					      GladeEditable      *editable);
+GtkWidget       *glade_entry_editor_new      (void);
 
 G_END_DECLS
 

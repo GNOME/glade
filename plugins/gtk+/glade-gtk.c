@@ -2816,15 +2816,10 @@ GladeEditable *
 glade_gtk_entry_create_editable (GladeWidgetAdaptor * adaptor,
                                  GladeEditorPageType type)
 {
-  GladeEditable *editable;
-
-  /* Get base editable */
-  editable = GWA_GET_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
-
   if (type == GLADE_PAGE_GENERAL)
-    return (GladeEditable *) glade_entry_editor_new (adaptor, editable);
-
-  return editable;
+    return (GladeEditable *) glade_entry_editor_new ();
+  else
+    return GWA_GET_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
 }
 
 
@@ -2943,7 +2938,24 @@ glade_gtk_entry_set_property (GladeWidgetAdaptor * adaptor,
 
       g_signal_handlers_unblock_by_func (object, glade_gtk_entry_changed,
                                          gwidget);
-
+    }
+  else if (!strcmp (id, "has-frame"))
+    {
+      if (g_value_get_boolean (value))
+	glade_widget_property_set_sensitive (gwidget, "shadow-type", TRUE, NULL);
+      else
+	glade_widget_property_set_sensitive (gwidget, "shadow-type", FALSE,
+					     _("This property is only available\n"
+					       "if the entry has a frame"));
+    }
+  else if (!strcmp (id, "visibility"))
+    {
+      if (g_value_get_boolean (value))
+	glade_widget_property_set_sensitive (gwidget, "invisible-char", FALSE,
+					     _("This property is only available\n"
+					       "if the entry characters are invisible"));
+      else
+	glade_widget_property_set_sensitive (gwidget, "invisible-char", TRUE, NULL);
     }
   else if (GPC_VERSION_CHECK
            (glade_property_get_class (property), gtk_major_version, gtk_minor_version + 1))
@@ -2963,7 +2975,7 @@ glade_gtk_entry_read_widget (GladeWidgetAdaptor * adaptor,
   /* First chain up and read in all the normal properties.. */
   GWA_GET_CLASS (GTK_TYPE_WIDGET)->read_widget (adaptor, widget, node);
 
-  if (glade_widget_property_original_default (widget, "text") == FALSE)
+  if (!glade_widget_property_original_default (widget, "text"))
     {
       property = glade_widget_get_property (widget, "text");
       glade_widget_property_set (widget, "use-entry-buffer", FALSE);
@@ -2989,21 +3001,19 @@ glade_gtk_entry_read_widget (GladeWidgetAdaptor * adaptor,
         glade_widget_property_set (widget, "use-entry-buffer", FALSE);
     }
 
-  if (glade_widget_property_original_default (widget, "primary-icon-name") ==
-      FALSE)
+  if (!glade_widget_property_original_default (widget, "primary-icon-name"))
     {
       property = glade_widget_get_property (widget, "primary-icon-name");
       glade_widget_property_set (widget, "primary-icon-mode",
                                  GLADE_IMAGE_MODE_ICON);
     }
-  else if (glade_widget_property_original_default
-           (widget, "primary-icon-pixbuf") == FALSE)
+  else if (!glade_widget_property_original_default (widget, "primary-icon-pixbuf"))
     {
       property = glade_widget_get_property (widget, "primary-icon-pixbuf");
       glade_widget_property_set (widget, "primary-icon-mode",
                                  GLADE_IMAGE_MODE_FILENAME);
     }
-  else                          /*  if (glade_widget_property_original_default (widget, "stock") == FALSE) */
+  else /*  if (glade_widget_property_original_default (widget, "stock") == FALSE) */
     {
       property = glade_widget_get_property (widget, "primary-icon-stock");
       glade_widget_property_set (widget, "primary-icon-mode",
@@ -3012,21 +3022,19 @@ glade_gtk_entry_read_widget (GladeWidgetAdaptor * adaptor,
 
   glade_property_sync (property);
 
-  if (glade_widget_property_original_default (widget, "secondary-icon-name") ==
-      FALSE)
+  if (!glade_widget_property_original_default (widget, "secondary-icon-name"))
     {
       property = glade_widget_get_property (widget, "secondary-icon-name");
       glade_widget_property_set (widget, "secondary-icon-mode",
                                  GLADE_IMAGE_MODE_ICON);
     }
-  else if (glade_widget_property_original_default
-           (widget, "secondary-icon-pixbuf") == FALSE)
+  else if (!glade_widget_property_original_default (widget, "secondary-icon-pixbuf"))
     {
       property = glade_widget_get_property (widget, "secondary-icon-pixbuf");
       glade_widget_property_set (widget, "secondary-icon-mode",
                                  GLADE_IMAGE_MODE_FILENAME);
     }
-  else                          /*  if (glade_widget_property_original_default (widget, "stock") == FALSE) */
+  else /*  if (glade_widget_property_original_default (widget, "stock") == FALSE) */
     {
       property = glade_widget_get_property (widget, "secondary-icon-stock");
       glade_widget_property_set (widget, "secondary-icon-mode",
@@ -3034,6 +3042,12 @@ glade_gtk_entry_read_widget (GladeWidgetAdaptor * adaptor,
     }
 
   glade_property_sync (property);
+
+  if (!glade_widget_property_original_default (widget, "primary-icon-tooltip-markup"))
+    glade_widget_property_set (widget, "glade-primary-tooltip-markup", TRUE);
+
+  if (!glade_widget_property_original_default (widget, "secondary-icon-tooltip-markup"))
+    glade_widget_property_set (widget, "glade-secondary-tooltip-markup", TRUE);
 }
 
 /* ----------------------------- GtkFixed/GtkLayout ------------------------------ */

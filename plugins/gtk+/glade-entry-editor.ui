@@ -1,0 +1,1585 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <!-- interface-requires gladeui 0.0 -->
+  <!-- interface-requires gtk+ 3.8 -->
+  <template class="GladeEntryEditor" parent="GladeEditorSkeleton">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="has_focus">False</property>
+    <property name="is_focus">False</property>
+    <property name="orientation">vertical</property>
+    <child>
+      <object class="GtkGrid" id="grid">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="has_focus">False</property>
+        <property name="is_focus">False</property>
+        <property name="row_spacing">6</property>
+        <property name="column_spacing">6</property>
+        <child>
+          <object class="GtkLabel" id="entry_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="halign">start</property>
+            <property name="valign">center</property>
+            <property name="label" translatable="yes">Entry</property>
+            <attributes>
+              <attribute name="weight" value="bold"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">1</property>
+            <property name="width">6</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladeEditorTable" id="embed">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">0</property>
+            <property name="width">6</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="completion_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">completion</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">2</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="completion_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">completion</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">2</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="purpose_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">input-purpose</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">3</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="purpose_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">input-purpose</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">3</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="hints_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">input-hints</property>
+            <property name="custom_text" translatable="yes">Input Hints:</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">4</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="hints_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">input-hints</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">4</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="visibility_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">visibility</property>
+            <property name="editor_type">GladeEpropCheck</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">8</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="invisible_char_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">invisible-char</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">8</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="has_frame_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">has-frame</property>
+            <property name="editor_type">GladeEpropCheck</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">9</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="shadow_type_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">shadow-type</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">9</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="editable_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">editable</property>
+            <property name="editor_type">GladeEpropCheck</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">10</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="activates_default_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">activates-default</property>
+            <property name="editor_type">GladeEpropCheck</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">10</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="overwrite_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">overwrite-mode</property>
+            <property name="editor_type">GladeEpropCheck</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">11</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="truncate_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">truncate-multiline</property>
+            <property name="editor_type">GladeEpropCheck</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">11</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="caps_warn_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">caps-lock-warning</property>
+            <property name="editor_type">GladeEpropCheck</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">12</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="max_length_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">max-length</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">5</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="max_length_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">max-length</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">5</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="populate_all_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">populate-all</property>
+            <property name="editor_type">GladeEpropCheck</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">12</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="text_title">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="halign">start</property>
+            <property name="valign">center</property>
+            <property name="label" translatable="yes">Text</property>
+            <attributes>
+              <attribute name="weight" value="bold"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">13</property>
+            <property name="width">6</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRadioButton" id="text_radio">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="receives_default">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="xalign">0</property>
+            <property name="active">True</property>
+            <property name="draw_indicator">True</property>
+            <signal name="toggled" handler="text_toggled" swapped="no"/>
+            <child>
+              <object class="GladePropertyLabel" id="text_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="has_focus">False</property>
+                <property name="is_focus">False</property>
+                <property name="property_name">text</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">14</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="text-editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="hexpand">True</property>
+            <property name="property_name">text</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">14</property>
+            <property name="width">4</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRadioButton" id="buffer_radio">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="receives_default">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="xalign">0</property>
+            <property name="active">True</property>
+            <property name="draw_indicator">True</property>
+            <property name="group">text_radio</property>
+            <signal name="toggled" handler="buffer_toggled" swapped="no"/>
+            <child>
+              <object class="GladePropertyLabel" id="buffer_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="has_focus">False</property>
+                <property name="is_focus">False</property>
+                <property name="property_name">buffer</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">15</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="buffer_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="hexpand">True</property>
+            <property name="property_name">buffer</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">15</property>
+            <property name="width">4</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="placeholder_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">placeholder-text</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">16</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="placeholder_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="hexpand">True</property>
+            <property name="property_name">placeholder-text</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">16</property>
+            <property name="width">4</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="progress_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="halign">start</property>
+            <property name="valign">center</property>
+            <property name="label" translatable="yes">Progress</property>
+            <attributes>
+              <attribute name="weight" value="bold"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">17</property>
+            <property name="width">6</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="fraction_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">progress-fraction</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">18</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="fraction_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">progress-fraction</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">18</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="pulse_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">progress-pulse-step</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">19</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="pulse_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">progress-pulse-step</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">19</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="primary_icon_title">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="halign">start</property>
+            <property name="valign">center</property>
+            <property name="label" translatable="yes">Primary Icon</property>
+            <attributes>
+              <attribute name="weight" value="bold"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">20</property>
+            <property name="width">6</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRadioButton" id="primary_stock_radio">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="receives_default">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="xalign">0</property>
+            <property name="active">True</property>
+            <property name="draw_indicator">True</property>
+            <signal name="toggled" handler="primary_stock_toggled" swapped="no"/>
+            <child>
+              <object class="GladePropertyLabel" id="primary_stock_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="has_focus">False</property>
+                <property name="is_focus">False</property>
+                <property name="property_name">primary-icon-stock</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">21</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="primary_stock_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">primary-icon-stock</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">21</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRadioButton" id="primary_icon_name_radio">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="receives_default">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="xalign">0</property>
+            <property name="active">True</property>
+            <property name="draw_indicator">True</property>
+            <property name="group">primary_stock_radio</property>
+            <signal name="toggled" handler="primary_icon_name_toggled" swapped="no"/>
+            <child>
+              <object class="GladePropertyLabel" id="primary_icon_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="has_focus">False</property>
+                <property name="is_focus">False</property>
+                <property name="property_name">primary-icon-name</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">22</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRadioButton" id="primary_pixbuf_radio">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="receives_default">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="xalign">0</property>
+            <property name="active">True</property>
+            <property name="draw_indicator">True</property>
+            <property name="group">primary_stock_radio</property>
+            <signal name="toggled" handler="primary_pixbuf_toggled" swapped="no"/>
+            <child>
+              <object class="GladePropertyLabel" id="primary_pixbuf_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="has_focus">False</property>
+                <property name="is_focus">False</property>
+                <property name="property_name">primary-icon-pixbuf</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">23</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="primary_icon_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">primary-icon-name</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">22</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="primary_pixbuf_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">primary-icon-pixbuf</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">23</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkNotebook" id="primary_tooltip_notebook">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="show_tabs">False</property>
+            <property name="show_border">False</property>
+            <child>
+              <object class="GladePropertyLabel" id="primary_tooltip_text_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="has_focus">False</property>
+                <property name="is_focus">False</property>
+                <property name="property_name">primary-icon-tooltip-text</property>
+                <property name="custom_text" translatable="yes">Tooltip:</property>
+              </object>
+            </child>
+            <child type="tab">
+              <placeholder/>
+            </child>
+            <child>
+              <object class="GladePropertyLabel" id="primary_tooltip_markup_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="has_focus">False</property>
+                <property name="is_focus">False</property>
+                <property name="property_name">primary-icon-tooltip-markup</property>
+                <property name="custom_text" translatable="yes">Tooltip:</property>
+              </object>
+              <packing>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child type="tab">
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">25</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkCheckButton" id="primary_tooltip_markup_check">
+            <property name="label" translatable="yes">Use markup</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="receives_default">False</property>
+            <property name="tooltip_text" translatable="yes">Whether to use markup in the
+primary icon's tooltip
+</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="xalign">0</property>
+            <property name="draw_indicator">True</property>
+            <signal name="toggled" handler="primary_tooltip_markup_toggled" swapped="no"/>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">26</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkNotebook" id="primary_tooltip_editor_notebook">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="hexpand">True</property>
+            <property name="show_tabs">False</property>
+            <property name="show_border">False</property>
+            <child>
+              <object class="GladePropertyShell" id="primary_tooltip_text_editor">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="has_focus">False</property>
+                <property name="is_focus">False</property>
+                <property name="hexpand">True</property>
+                <property name="property_name">primary-icon-tooltip-text</property>
+              </object>
+            </child>
+            <child type="tab">
+              <placeholder/>
+            </child>
+            <child>
+              <object class="GladePropertyShell" id="primary_tooltip_markup_editor">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="has_focus">False</property>
+                <property name="is_focus">False</property>
+                <property name="hexpand">True</property>
+                <property name="property_name">primary-icon-tooltip-markup</property>
+              </object>
+              <packing>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child type="tab">
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">24</property>
+            <property name="width">4</property>
+            <property name="height">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="primary_icon_sensitive_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">primary-icon-sensitive</property>
+            <property name="editor_type">GladeEpropCheck</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">27</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="primary_icon_activatable_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">primary-icon-activatable</property>
+            <property name="editor_type">GladeEpropCheck</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">27</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="secondary_icon_title">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="halign">start</property>
+            <property name="valign">center</property>
+            <property name="label" translatable="yes">Secondary Icon</property>
+            <attributes>
+              <attribute name="weight" value="bold"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">28</property>
+            <property name="width">6</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRadioButton" id="secondary_stock_radio">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="receives_default">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="xalign">0</property>
+            <property name="active">True</property>
+            <property name="draw_indicator">True</property>
+            <signal name="toggled" handler="secondary_stock_toggled" swapped="no"/>
+            <child>
+              <object class="GladePropertyLabel" id="secondary_stock_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="has_focus">False</property>
+                <property name="is_focus">False</property>
+                <property name="property_name">secondary-icon-stock</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">29</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRadioButton" id="secondary_icon_name_radio">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="receives_default">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="xalign">0</property>
+            <property name="active">True</property>
+            <property name="draw_indicator">True</property>
+            <property name="group">secondary_stock_radio</property>
+            <signal name="toggled" handler="secondary_icon_name_toggled" swapped="no"/>
+            <child>
+              <object class="GladePropertyLabel" id="secondary_icon_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="has_focus">False</property>
+                <property name="is_focus">False</property>
+                <property name="property_name">secondary-icon-name</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">30</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRadioButton" id="secondary_pixbuf_radio">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="receives_default">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="xalign">0</property>
+            <property name="active">True</property>
+            <property name="draw_indicator">True</property>
+            <property name="group">secondary_stock_radio</property>
+            <signal name="toggled" handler="secondary_pixbuf_toggled" swapped="no"/>
+            <child>
+              <object class="GladePropertyLabel" id="secondary_pixbuf_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="has_focus">False</property>
+                <property name="is_focus">False</property>
+                <property name="property_name">secondary-icon-pixbuf</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">31</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="secondary_stock_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">secondary-icon-stock</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">29</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="secondary_icon_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">secondary-icon-name</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">30</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="secondary_pixbuf_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">secondary-icon-pixbuf</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">31</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkNotebook" id="secondary_tooltip_notebook">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="show_tabs">False</property>
+            <property name="show_border">False</property>
+            <child>
+              <object class="GladePropertyLabel" id="secondary_tooltip_text_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="has_focus">False</property>
+                <property name="is_focus">False</property>
+                <property name="property_name">secondary-icon-tooltip-text</property>
+                <property name="custom_text" translatable="yes">Tooltip:</property>
+              </object>
+            </child>
+            <child type="tab">
+              <placeholder/>
+            </child>
+            <child>
+              <object class="GladePropertyLabel" id="secondary_tooltip_markup_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="has_focus">False</property>
+                <property name="is_focus">False</property>
+                <property name="property_name">secondary-icon-tooltip-markup</property>
+                <property name="custom_text" translatable="yes">Tooltip:</property>
+              </object>
+              <packing>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child type="tab">
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">33</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkCheckButton" id="secondary_tooltip_markup_check">
+            <property name="label" translatable="yes">Use markup</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="receives_default">False</property>
+            <property name="tooltip_text" translatable="yes">Whether to use markup in the
+primary icon's tooltip</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="xalign">0</property>
+            <property name="draw_indicator">True</property>
+            <signal name="toggled" handler="secondary_tooltip_markup_toggled" swapped="no"/>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">34</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkNotebook" id="secondary_tooltip_editor_notebook">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="hexpand">True</property>
+            <property name="show_tabs">False</property>
+            <property name="show_border">False</property>
+            <child>
+              <object class="GladePropertyShell" id="secondary_tooltip_text_editor">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="has_focus">False</property>
+                <property name="is_focus">False</property>
+                <property name="hexpand">True</property>
+                <property name="property_name">secondary-icon-tooltip-text</property>
+              </object>
+            </child>
+            <child type="tab">
+              <placeholder/>
+            </child>
+            <child>
+              <object class="GladePropertyShell" id="secondary_tooltip_markup_editor">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="has_focus">False</property>
+                <property name="is_focus">False</property>
+                <property name="hexpand">True</property>
+                <property name="property_name">secondary-icon-tooltip-markup</property>
+              </object>
+              <packing>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child type="tab">
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">32</property>
+            <property name="width">4</property>
+            <property name="height">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="secondary_icon_sensitive_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">secondary-icon-sensitive</property>
+            <property name="editor_type">GladeEpropCheck</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">35</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="secondary_icon_activatable_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">secondary-icon-activatable</property>
+            <property name="editor_type">GladeEpropCheck</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">35</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="invisible_char_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="halign">end</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">invisible-char</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">8</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="shadow_type_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="halign">end</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">shadow-type</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">9</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="width_chars_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">width-chars</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">6</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="width_chars_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">width-chars</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">6</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="xalign_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">xalign</property>
+            <property name="custom_text" translatable="yes">Horizontal Alignment:</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">7</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="xalign_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">xalign</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">7</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child-editors>
+      <editor id="embed"/>
+      <editor id="completion_label"/>
+      <editor id="completion_editor"/>
+      <editor id="purpose_label"/>
+      <editor id="purpose_editor"/>
+      <editor id="hints_label"/>
+      <editor id="hints_editor"/>
+      <editor id="visibility_editor"/>
+      <editor id="invisible_char_editor"/>
+      <editor id="has_frame_editor"/>
+      <editor id="shadow_type_editor"/>
+      <editor id="editable_editor"/>
+      <editor id="activates_default_editor"/>
+      <editor id="overwrite_editor"/>
+      <editor id="truncate_editor"/>
+      <editor id="caps_warn_editor"/>
+      <editor id="max_length_label"/>
+      <editor id="max_length_editor"/>
+      <editor id="populate_all_editor"/>
+      <editor id="text_label"/>
+      <editor id="text-editor"/>
+      <editor id="buffer_label"/>
+      <editor id="buffer_editor"/>
+      <editor id="placeholder_label"/>
+      <editor id="placeholder_editor"/>
+      <editor id="fraction_label"/>
+      <editor id="fraction_editor"/>
+      <editor id="pulse_label"/>
+      <editor id="pulse_editor"/>
+      <editor id="primary_stock_label"/>
+      <editor id="primary_stock_editor"/>
+      <editor id="primary_icon_label"/>
+      <editor id="primary_pixbuf_label"/>
+      <editor id="primary_icon_editor"/>
+      <editor id="primary_pixbuf_editor"/>
+      <editor id="primary_tooltip_text_label"/>
+      <editor id="primary_tooltip_markup_label"/>
+      <editor id="primary_tooltip_text_editor"/>
+      <editor id="primary_tooltip_markup_editor"/>
+      <editor id="primary_icon_sensitive_editor"/>
+      <editor id="primary_icon_activatable_editor"/>
+      <editor id="secondary_stock_label"/>
+      <editor id="secondary_icon_label"/>
+      <editor id="secondary_pixbuf_label"/>
+      <editor id="secondary_stock_editor"/>
+      <editor id="secondary_icon_editor"/>
+      <editor id="secondary_pixbuf_editor"/>
+      <editor id="secondary_tooltip_text_label"/>
+      <editor id="secondary_tooltip_markup_label"/>
+      <editor id="secondary_tooltip_text_editor"/>
+      <editor id="secondary_tooltip_markup_editor"/>
+      <editor id="secondary_icon_sensitive_editor"/>
+      <editor id="secondary_icon_activatable_editor"/>
+      <editor id="invisible_char_label"/>
+      <editor id="shadow_type_label"/>
+      <editor id="width_chars_label"/>
+      <editor id="width_chars_editor"/>
+      <editor id="xalign_label"/>
+      <editor id="xalign_editor"/>
+    </child-editors>
+  </template>
+</interface>

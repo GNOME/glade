@@ -982,7 +982,7 @@ embedded in another object</_tooltip>
 
       <properties>
 	<property id="attributes" since="3.6" disabled="True"/>
-	<property id="input-purpose" since="3.6">
+	<property id="input-purpose" since="3.6" custom-layout="True">
   	  <displayable-values>
 	    <value id="GTK_INPUT_PURPOSE_FREE_FORM" _name="Free Form"/>
 	    <value id="GTK_INPUT_PURPOSE_ALPHA" _name="Alpha"/>
@@ -996,7 +996,7 @@ embedded in another object</_tooltip>
 	    <value id="GTK_INPUT_PURPOSE_PIN" _name="Pin Code"/>
   	  </displayable-values>
 	</property>
-	<property id="input-hints" since="3.6">
+	<property id="input-hints" since="3.6" custom-layout="True">
   	  <displayable-values>
 	    <value id="GTK_INPUT_HINT_NONE" _name="None"/>
 	    <value id="GTK_INPUT_HINT_SPELLCHECK" _name="Spellcheck"/>
@@ -1010,14 +1010,20 @@ embedded in another object</_tooltip>
   	  </displayable-values>
 	</property>
 
-	<property id="attributes" since="3.6" disabled="True"/>
-
+	<property id="overwrite-mode" custom-layout="True"/>
+	<property id="caps-lock-warning" custom-layout="True"/>
+	<property id="editable" custom-layout="True"/>
+	<property id="activates-default" custom-layout="True"/>
+	<property id="xalign" custom-layout="True"/>
+	<property id="width-chars" custom-layout="True"/>
+	<property id="max-length" custom-layout="True"/>
+	<property id="has-frame" custom-layout="True" needs-sync="True"/>
+	<property id="visibility" custom-layout="True" needs-sync="True"/>
 	<property id="text" translatable="True" custom-layout="True"/>
         <property id="buffer" create-type="GtkEntryBuffer" since="2.18" custom-layout="True"/>
-	<property id="placeholder-text" translatable="True" since="3.2"/>
-        <property id="inner-border" since="2.10"/>
-        <property id="truncate-multiline" since="2.10"/>
-	<property id="shadow-type" since="2.12"/>
+	<property id="placeholder-text" translatable="True" since="3.2" custom-layout="True"/>
+        <property id="truncate-multiline" custom-layout="True" since="2.10"/>
+	<property id="shadow-type" custom-layout="True" since="2.12"/>
 	<property id="editing-canceled" disabled="True" since="2.20"/>
 	<property id="primary-icon-gicon" disabled="True"/>
 	<property id="secondary-icon-gicon" disabled="True"/>
@@ -1042,7 +1048,9 @@ embedded in another object</_tooltip>
 	<property id="progress-fraction" _name="Progress Fraction" since="2.16" custom-layout="True"/>
 	<property id="progress-pulse-step" _name="Progress Pulse Step" since="2.16" custom-layout="True"/>
 
-	<property id="invisible-char-set" _name="Invisible Char Set" since="2.16"/>
+	<property id="populate-all" custom-layout="True" since="3.8"/>
+	<property id="invisible-char" custom-layout="True" optional="True" optional-default="False"/>
+	<property id="invisible-char-set" disabled="True" since="2.16"/>
 	<property id="primary-icon-tooltip-text" translatable="True" multiline="True" 
 		  _name="Primary Icon Tooltip Text" custom-layout="True" since="2.16"/>
 	<property id="secondary-icon-tooltip-text" translatable="True" multiline="True"
@@ -1053,8 +1061,7 @@ embedded in another object</_tooltip>
 		  _name="Secondary Icon Tooltip Markup" custom-layout="True" since="2.16"/>
 
 	<property id="im-module" disabled="True"/>
-
-        <property id="completion" since="3.2"/>
+        <property id="completion" since="3.2" custom-layout="True"/>
 
 	<!-- Virtual edit mode properties -->
         <property id="use-entry-buffer" visible="False" save="False" default="False">
@@ -1070,6 +1077,16 @@ embedded in another object</_tooltip>
         <property id="secondary-icon-mode" visible="False" save="False">
 	  <parameter-spec>
 	    <type>GParamInt</type>
+	  </parameter-spec>
+        </property>
+        <property id="glade-primary-tooltip-markup" save="False" custom-layout="True" ignore="True" default="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+        </property>
+        <property id="glade-secondary-tooltip-markup" save="False" custom-layout="True" ignore="True" default="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
 	  </parameter-spec>
         </property>
 
