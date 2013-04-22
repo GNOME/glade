@@ -75,6 +75,7 @@ icons_DATA = \
 	widget-gtk-offscreenwindow.png \
         widget-gtk-paned.png \
         widget-gtk-pagesetupdialog.png \
+	widget-gtk-placessidebar.png \
         widget-gtk-printdialog.png \
         widget-gtk-progressbar.png \
         widget-gtk-levelbar.png \
