@@ -1,4 +1,65 @@
 ============
+Glade 3.15.1
+============
+
+	- Much UI fixing and refactoring (Juan Pablo Ugarte)
+	- Added new --css and --screenshot options to glade-preview (Juan Pablo Ugarte)
+	- Fix main window shortcuts (bug 695866 Juan Pablo Ugarte)
+	- Implemented Project Properties dialog with Glade as a composite tempalte (Juan Pablo Ugarte)
+	- Support editing the GtkWidget:name property (useful for CSS theming)
+	- Improved project inter-widget dependancy calculation and project serialization ordering,
+	  object output ordering (and signal ordering) is now consistent and sorted.
+	- GtkButton: response-id for dialogs is now optional (allowing adding dialog buttons that
+          have no dialog response)
+	- GtkImage: Support the new "resource" property
+	- GTK+ catalog updated to cover widgets in GTK+ 3.8
+	- Now show warnings in the UI for deprecated properties and signals
+	- Now show warnings in the Inspector view if any deprecated widgets, signals
+	  or properties are used (or if anything is used which is not available in
+	  the project's target version).
+	- Optional properties are now always saved if they are enabled, allowing
+	  to explicitly set them to the default value (eg. GtkWidget:hexpand/vexpand) 
+	- Inspector search entry: Restore completions to work nicely again and filter
+	  the treeview with a search-in-text algorithm.
+	- Inspector: Add a feature to expand-all
+	- Property editor title-bar is now optional in the View menu
+	- Fixed many deprecation warnings in Glade's compile
+	- Added Glade's first 2 ever unit tests
+	- Fixed Devhelp doc search for properties (Juan Pablo Ugarte)
+	- Make Drag'n'Drop work on regular clicks without entering Drag Mode
+	  and restored old Drag/Resize functionality when SHIFT is pressed (Juan Pablo Ugarte)
+	- Improved Drag/Resize which has been rather broken for a while
+	- Added Autosave and Automatic backup of previous file features, configurable
+	  in Glade's preferences Dialog
+	- Support Composite GtkBuilder template editing (mark a toplevel GtkWidget as
+	  the "composite template" widget in the Project Properties dialog or
+	  property editor).
+	- Support editing of the project domain in the project properties dialog (Juan Pablo Ugarte)
+	- Properties in the Project Properties dialog are now undoable
+	- GladeSignalEditor: Automatically expand rows which have signal callbacks assigned when
+	  loading a widget
+	- Add options to decide what types of warnings should be presented at project save time,
+	  configurable in Glade's preferences dialog.
+	- Added new property editor components GladePropertyLabel, GladePropertyShell and
+	  GladeEditorSkeleton, allowing us to create custom property editors using Glade.
+	- Add "Grid" option to "Add parent" menu (Dmitrijs Ledkovs)
+	- Added Gladeui catalog for IDE's and embedders to design Glade frontends with Glade
+	- Added private catalog to allow the GTK+ plugin to embed editors that it provides
+	- Added new GladeEpropCheck boolean property editor, to be used in some cases for
+	  boolean properties.
+	- Added new adaptor methods GladeWidgetAdaptor->write_widget_after() and
+	  GladeWidgetAdaptor->destroy_object()
+	- Automatically generate gladeui's enum types with glib-mkenums
+	- Modified properties now show up in italic letering instead of bold, bold
+	  lettering is reserved for title labels in custom property editors.
+	- New components that now use GtkBuilder Composite Templates (and have had
+	  a basic review and rework of their UIs): GladePreferences (Glade's preferences
+	  dialog), GladeEditor (the property editor), GladeProjectProperties (the project
+	  properties dialog) and custom property editors: GladeActivatableEditor,
+	  GladeButtonEditor, GladeEntryEditor, GladeImageEditor, GladeLabelEditor, GladeWidgetEditor
+	- And... many various bugfixes and UI fixes by Juan Pablo and myself.
+
+============
 Glade 3.15.0
 ============
 
