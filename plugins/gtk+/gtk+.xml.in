@@ -1350,6 +1350,12 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
 
+    <glade-widget-class name="GtkPlacesSidebar" generic-name="placessidebar" title="Places Sidebar" since="3.10">
+      <properties>
+	<property id="location" disabled="True"/>
+      </properties>
+    </glade-widget-class>>
+
     <glade-widget-class name="GtkColorButton" generic-name="colorbutton" _title="Color Button">
       <create-editable-function>glade_gtk_container_create_editable</create-editable-function>
       <set-property-function>glade_gtk_color_button_set_property</set-property-function>
@@ -2103,7 +2109,7 @@ embedded in another object</_tooltip>
 	<signal id="file-set" since="2.12"/>
       </signals>
     </glade-widget-class>
-    
+
     <glade-widget-class name="GtkFontSelectionDialog" deprecated="True" generic-name="fontselectiondialog" _title="Font Selection Dialog">
       <internal-children>
         <object name="vbox">
@@ -4071,6 +4077,7 @@ embedded in another object</_tooltip>
     <glade-widget-class-ref name="GtkAccelLabel"/>
 
     <glade-widget-class-ref name="GtkFileChooserButton"/>
+    <glade-widget-class-ref name="GtkPlacesSidebar"/>
     <glade-widget-class-ref name="GtkColorButton"/>
     <glade-widget-class-ref name="GtkFontButton"/>
     <glade-widget-class-ref name="GtkLinkButton"/>
