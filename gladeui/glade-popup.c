@@ -362,7 +362,7 @@ glade_popup_action_populate_menu (GtkWidget *menu,
     {
       if (n)
         {
-          GtkWidget *separator = gtk_menu_item_new ();
+          GtkWidget *separator = gtk_separator_menu_item_new ();
           gtk_menu_shell_append (GTK_MENU_SHELL (menu), separator);
           gtk_widget_show (separator);
         }
@@ -411,7 +411,7 @@ glade_popup_create_menu (GladeWidget      *widget,
       glade_popup_append_item (popup_menu, NULL, _("Add widget as _toplevel"),
                                NULL, TRUE, glade_popup_root_add_cb, data);
 
-      separator = gtk_menu_item_new ();
+      separator = gtk_separator_menu_item_new ();
       gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), separator);
       gtk_widget_show (separator);
     }
@@ -448,7 +448,7 @@ glade_popup_create_menu (GladeWidget      *widget,
     {
       if (widget && glade_widget_get_actions (widget))
         {
-          GtkWidget *separator = gtk_menu_item_new ();
+          GtkWidget *separator = gtk_separator_menu_item_new ();
           gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), separator);
           gtk_widget_show (separator);
 
@@ -461,7 +461,7 @@ glade_popup_create_menu (GladeWidget      *widget,
 
       if (glade_placeholder_packing_actions (placeholder))
         {
-          GtkWidget *separator = gtk_menu_item_new ();
+          GtkWidget *separator = gtk_separator_menu_item_new ();
           gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), separator);
           gtk_widget_show (separator);
 
@@ -476,7 +476,7 @@ glade_popup_create_menu (GladeWidget      *widget,
   else if (widget && (glade_widget_get_actions (widget) || 
 		      (packing && glade_widget_get_pack_actions (widget))))
     {
-      GtkWidget *separator = gtk_menu_item_new ();
+      GtkWidget *separator = gtk_separator_menu_item_new ();
       gtk_menu_shell_append (GTK_MENU_SHELL (popup_menu), separator);
       gtk_widget_show (separator);
 
