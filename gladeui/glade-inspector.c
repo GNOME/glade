@@ -601,6 +601,7 @@ glade_inspector_init (GladeInspector *inspector)
 
   priv->view = gtk_tree_view_new ();
   gtk_tree_view_set_enable_search (GTK_TREE_VIEW (priv->view), FALSE);
+  gtk_scrollable_set_hscroll_policy (GTK_SCROLLABLE (priv->view), GTK_SCROLL_MINIMUM);
   add_columns (GTK_TREE_VIEW (priv->view));
 
   g_signal_connect (G_OBJECT (priv->view), "row-activated",
@@ -856,6 +857,38 @@ glade_inspector_warning_cell_data_func (GtkTreeViewColumn *column,
 }
 
 static void
+glade_inspector_detail_cell_data_func (GtkTreeViewColumn *column,
+				       GtkCellRenderer *renderer,
+				       GtkTreeModel *model,
+				       GtkTreeIter *iter,
+				       gpointer data)
+{
+  gchar *type_name = NULL, *detail = NULL;
+
+  gtk_tree_model_get (model, iter,
+		      GLADE_PROJECT_MODEL_COLUMN_TYPE_NAME, &type_name,
+		      GLADE_PROJECT_MODEL_COLUMN_MISC, &detail,
+		      -1);
+
+  if (detail)
+    {
+      gchar *final = g_strconcat (type_name, "  ", detail, NULL);
+
+      g_object_set (renderer, "text", final, NULL);
+
+      g_free (final);
+    }
+  else
+      g_object_set (renderer, "text", type_name, NULL);
+
+  g_free (type_name);
+  g_free (detail);
+}
+
+
+
+
+static void
 add_columns (GtkTreeView *view)
 {
   GtkTreeViewColumn *column;
@@ -912,32 +945,18 @@ add_columns (GtkTreeView *view)
   g_object_set (G_OBJECT (renderer), "width", 8, NULL);
   gtk_cell_area_box_pack_start (box, renderer, FALSE, FALSE, FALSE);
 
-  /* Class name */
+  /* Class name & detail */
   renderer = gtk_cell_renderer_text_new ();
   g_object_set (G_OBJECT (renderer),
                 "style", PANGO_STYLE_ITALIC,
 		"foreground", "Gray",
+		"ellipsize", PANGO_ELLIPSIZE_END,
 		NULL);
-  gtk_cell_area_box_pack_start (box, renderer, FALSE, FALSE, FALSE);
-  gtk_tree_view_column_set_attributes (column,
-                                       renderer,
-                                       "text",
-                                       GLADE_PROJECT_MODEL_COLUMN_TYPE_NAME,
-                                       NULL);
 
-  /* Misc detail */
-  renderer = gtk_cell_renderer_text_new ();
-  g_object_set (G_OBJECT (renderer),
-                "style", PANGO_STYLE_ITALIC,
-		"foreground", "Gray",
-		"scale", 0.8F,
-		"yalign", 0.8F,
-		NULL);
   gtk_cell_area_box_pack_start (box, renderer, FALSE, FALSE, FALSE);
-  gtk_tree_view_column_set_attributes (column,
-                                       renderer,
-                                       "text", GLADE_PROJECT_MODEL_COLUMN_MISC,
-                                       NULL);
+  gtk_tree_view_column_set_cell_data_func (column, renderer,
+					   glade_inspector_detail_cell_data_func,
+					   NULL, NULL);
 
   gtk_tree_view_append_column (view, column);
   gtk_tree_view_set_headers_visible (view, FALSE);
