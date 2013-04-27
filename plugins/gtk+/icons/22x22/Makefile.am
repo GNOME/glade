@@ -68,6 +68,7 @@ icons_DATA = \
         widget-gtk-linkbutton.png \
         widget-gtk-menu.png \
         widget-gtk-menubar.png \
+        widget-gtk-menubutton.png \
         widget-gtk-menuitem.png \
         widget-gtk-menutoolbutton.png \
         widget-gtk-messagedialog.png \
