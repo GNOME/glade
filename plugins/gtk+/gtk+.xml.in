@@ -405,25 +405,27 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkWindow" generic-name="window" _title="Window" toplevel="True" default-width="440" default-height="250">
       <read-widget-function>glade_gtk_window_read_widget</read-widget-function>
       <write-widget-function>glade_gtk_window_write_widget</write-widget-function>
+      <create-editable-function>glade_gtk_window_create_editable</create-editable-function>
+      <set-property-function>glade_gtk_window_set_property</set-property-function>
 
       <properties> 
 	<!-- Virtual accel-groups property to record accel groups -->
-	<property id="accel-groups" name="Accel Groups" ignore="True" since="2.16" save="False" weight="0.5">
+	<property id="accel-groups" name="Accel Groups" ignore="True" since="2.16" save="False" weight="0.5" custom-layout="True">
 	  <parameter-spec>
 	    <type>GladeParamObjects</type>
 	    <value-type>GtkAccelGroup</value-type>
 	  </parameter-spec>
 	  <_tooltip>A list of accel groups to be added to this window</_tooltip>
 	</property>
-	<property id="attached-to" since="3.4" ignore="True"/>
-	<property id="opacity" since="2.12" ignore="True"/>
-	<property id="startup-id" since="2.12"/>
-	<property id="deletable" since="2.10"/>
-	<property id="transient-for" since="2.10" ignore="True"/>
+	<property id="attached-to" since="3.4" ignore="True" custom-layout="True"/>
+	<property id="startup-id" since="2.12" custom-layout="True"/>
+	<property id="deletable" since="2.10" custom-layout="True"/>
+	<property id="transient-for" since="2.10" ignore="True" custom-layout="True"/>
+	<property id="focus-visible" disabled="True"/>
 	<property id="visible" default="False"/>
-	<property id="icon" ignore="True"/>
-	<property id="icon-name" themed-icon="True" ignore="True"/>
-     	<property id="gravity">
+	<property id="icon" ignore="True" custom-layout="True"/>
+	<property id="icon-name" themed-icon="True" ignore="True" custom-layout="True"/>
+     	<property id="gravity" custom-layout="True">
   	  <displayable-values>
 	    <value id="GDK_GRAVITY_NORTH_WEST" _name="North West"/>
 	    <value id="GDK_GRAVITY_NORTH" _name="North"/>
@@ -437,10 +439,10 @@ embedded in another object</_tooltip>
 	    <value id="GDK_GRAVITY_STATIC" _name="Static"/>
 	  </displayable-values>
 	</property>
-	<property id="modal" ignore="True"/>
-	<property id="default-width" default="440" optional="True" optional-default="False"/>
-	<property id="default-height" default="250" optional="True" optional-default="False"/>
-	<property id="type-hint" ignore="True">
+	<property id="modal" ignore="True" custom-layout="True"/>
+	<property id="default-width" default="440" optional="True" optional-default="False" custom-layout="True"/>
+	<property id="default-height" default="250" optional="True" optional-default="False" custom-layout="True"/>
+	<property id="type-hint" ignore="True" custom-layout="True">
   	  <displayable-values>
 	    <value id="GDK_WINDOW_TYPE_HINT_NORMAL" _name="Normal"/>
 	    <value id="GDK_WINDOW_TYPE_HINT_DIALOG" _name="Dialog"/>
@@ -458,7 +460,7 @@ embedded in another object</_tooltip>
 	    <value id="GDK_WINDOW_TYPE_HINT_DND" _name="Drag and Drop"/>
 	  </displayable-values>
 	</property>
-	<property id="type" ignore="True">
+	<property id="type" ignore="True" custom-layout="True">
 	  <displayable-values>
 	    <value id="GTK_WINDOW_TOPLEVEL" _name="Top Level"/>
 	    <value id="GTK_WINDOW_POPUP" _name="Popup"/>
@@ -469,10 +471,10 @@ embedded in another object</_tooltip>
 	<property id="allow-grow" disabled="True" />
 	<property id="resize-mode" disabled="True" />
 	<property id="screen" disabled="True" />
-	<property id="resizable" ignore="True" />
-	<property id="decorated" ignore="True" />
-	<property id="title" ignore="True" translatable="True"/>
-      	<property id="window-position" ignore="True">
+	<property id="resizable" ignore="True" custom-layout="True"/>
+	<property id="decorated" ignore="True" custom-layout="True"/>
+	<property id="title" ignore="True" translatable="True" custom-layout="True"/>
+      	<property id="window-position" ignore="True" custom-layout="True">
   	  <displayable-values>
 	    <value id="GTK_WIN_POS_NONE" _name="None"/>
 	    <value id="GTK_WIN_POS_CENTER" _name="Center"/>
@@ -481,11 +483,26 @@ embedded in another object</_tooltip>
 	    <value id="GTK_WIN_POS_CENTER_ON_PARENT" _name="Center on Parent"/>
           </displayable-values>
 	</property>
-	<property id="accept-focus" ignore="True"/>
+
+	<property id="role" ignore="True" custom-layout="True"/>
+	<property id="urgency-hint" ignore="True" custom-layout="True"/>
+	<property id="skip-taskbar-hint" ignore="True" custom-layout="True"/>
+	<property id="skip-pager-hint" ignore="True" custom-layout="True"/>
+	<property id="destroy-with-parent" ignore="True" custom-layout="True"/>
+	<property id="hide-titlebar-when-maximized" ignore="True" custom-layout="True"/>
+	<property id="accept-focus" ignore="True" custom-layout="True"/>
+	<property id="focus-on-map" ignore="True" custom-layout="True"/>
 	<property id="application" since="3.0" disabled="True"/>
-	<property id="has-resize-grip" since="3.0"/>
+	<property id="has-resize-grip" since="3.0" custom-layout="True"/>
 	<property id="resize-grip-visible" since="3.0" disabled="True"/>
       	<property id="mnemonics-visible" disabled="True"/>
+
+	<!-- A virtual property to drive the radio button selecting icon name or icon file -->
+        <property id="glade-window-icon-name" default="True" save="False" visible="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+	</property>
       </properties>
     </glade-widget-class>
 

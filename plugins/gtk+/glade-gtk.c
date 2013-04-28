@@ -32,6 +32,7 @@
 #include "glade-icon-sources.h"
 #include "glade-button-editor.h"
 #include "glade-widget-editor.h"
+#include "glade-window-editor.h"
 #include "glade-tool-button-editor.h"
 #include "glade-image-editor.h"
 #include "glade-image-item-editor.h"
@@ -90,7 +91,6 @@ glade_gtk_stop_emission_POINTER (gpointer instance, gpointer dummy,
 void
 glade_gtk_init (const gchar * name)
 {
-
 }
 
 /* ----------------------------- GtkWidget ------------------------------ */
@@ -3218,9 +3218,14 @@ glade_gtk_window_read_widget (GladeWidgetAdaptor * adaptor,
   /* First chain up and read in all the normal properties.. */
   GWA_GET_CLASS (GTK_TYPE_WIDGET)->read_widget (adaptor, widget, node);
 
+  /* Sync the icon mode */
+  if (glade_widget_property_original_default (widget, "icon") == FALSE)
+    glade_widget_property_set (widget, "glade-window-icon-name", FALSE);
+  else
+    glade_widget_property_set (widget, "glade-window-icon-name", TRUE);
+
   glade_gtk_window_read_accel_groups (widget, node);
 }
-
 
 static void
 glade_gtk_window_write_accel_groups (GladeWidget * widget,
@@ -3269,6 +3274,46 @@ glade_gtk_window_write_widget (GladeWidgetAdaptor * adaptor,
   glade_gtk_window_write_accel_groups (widget, context, node);
 }
 
+GladeEditable *
+glade_gtk_window_create_editable (GladeWidgetAdaptor * adaptor,
+				  GladeEditorPageType type)
+{
+  GladeEditable *editable;
+
+  if (type == GLADE_PAGE_GENERAL &&
+      /* Don't show all the GtkWindow properties for offscreen windows.
+       *
+       * We spoof the offscreen window type instead of using the real GType,
+       * so don't check it by GType but use strcmp() instead.
+       */
+      strcmp (glade_widget_adaptor_get_name (adaptor), "GtkOffscreenWindow") != 0)
+    editable = (GladeEditable *) glade_window_editor_new ();
+  else
+    editable = GWA_GET_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
+
+  return editable;
+}
+
+void
+glade_gtk_window_set_property (GladeWidgetAdaptor * adaptor,
+			       GObject * object,
+			       const gchar * id, const GValue * value)
+{
+  if (!strcmp (id, "glade-window-icon-name"))
+    {
+      GladeWidget *gwidget = glade_widget_get_from_gobject (object);
+
+      glade_widget_property_set_sensitive (gwidget, "icon", FALSE, NOT_SELECTED_MSG);
+      glade_widget_property_set_sensitive (gwidget, "icon-name", FALSE, NOT_SELECTED_MSG);
+
+      if (g_value_get_boolean (value))
+	glade_widget_property_set_sensitive (gwidget, "icon-name", TRUE, NULL);
+      else
+	glade_widget_property_set_sensitive (gwidget, "icon", TRUE, NULL);
+    }
+  else
+    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
+}
 
 /* ----------------------------- GtkDialog(s) ------------------------------ */
 static void
