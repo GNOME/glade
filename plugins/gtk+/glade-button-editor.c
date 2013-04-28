@@ -26,9 +26,6 @@
 
 #include "glade-button-editor.h"
 
-
-static void glade_button_editor_finalize (GObject * object);
-
 static void glade_button_editor_editable_init (GladeEditableIface * iface);
 
 static void glade_button_editor_grab_focus (GtkWidget * widget);
@@ -86,7 +83,6 @@ glade_button_editor_class_init (GladeButtonEditorClass * klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-  object_class->finalize = glade_button_editor_finalize;
   widget_class->grab_focus = glade_button_editor_grab_focus;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-button-editor.ui");
@@ -213,14 +209,6 @@ glade_button_editor_editable_init (GladeEditableIface * iface)
   parent_editable_iface = g_type_interface_peek_parent (iface);
 
   iface->load = glade_button_editor_load;
-}
-
-static void
-glade_button_editor_finalize (GObject * object)
-{
-  glade_editable_load (GLADE_EDITABLE (object), NULL);
-
-  G_OBJECT_CLASS (glade_button_editor_parent_class)->finalize (object);
 }
 
 static void
