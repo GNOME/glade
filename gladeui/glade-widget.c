@@ -541,10 +541,11 @@ glade_widget_event (GladeWidget * gwidget, GdkEvent * event)
 
   handled = GLADE_WIDGET_GET_CLASS (gwidget)->event (gwidget, event);
 
-#if 0
+#ifdef GLADE_ENABLE_DEBUG
   if (event->type != GDK_EXPOSE)
-    g_print ("event widget '%s' handled '%d' event '%d'\n",
-             gwidget->priv->name, handled, event->type);
+    GLADE_NOTE (WIDGET_EVENTS,
+		g_print ("event widget '%s' handled '%d' event '%d'\n",
+			 gwidget->priv->name, handled, event->type));
 #endif
 
   return handled;
@@ -957,10 +958,8 @@ glade_widget_finalize (GObject * object)
 
   g_return_if_fail (GLADE_IS_WIDGET (object));
 
-#if 0
-  /* A good way to check if refcounts are balancing at project close time */
-  g_print ("Finalizing widget %s\n", widget->priv->name);
-#endif
+  GLADE_NOTE (REF_COUNTS,
+	      g_print ("Finalizing widget %s\n", widget->priv->name));
 
   g_free (widget->priv->name);
   g_free (widget->priv->internal);
@@ -1689,12 +1688,7 @@ glade_widget_extract_children (GladeWidget * gwidget)
     {
       GObject *child = G_OBJECT (list->data);
       GladeWidget *gchild = glade_widget_get_from_gobject (child);
-#if 0
-      g_print ("Extracting %s from %s\n",
-               gchild ? gchild->name :
-               GLADE_IS_PLACEHOLDER (child) ? "placeholder" : "unknown widget",
-               gwidget->priv->name);
-#endif
+
       if (gchild && gchild->priv->internal)
         {
           /* Recurse and collect any deep child hierarchies
@@ -3438,12 +3432,11 @@ glade_widget_set_object (GladeWidget * gwidget, GObject * new_object)
     {
       if (gwidget->priv->internal == NULL)
         {
-#if _YOU_WANT_TO_LOOK_AT_PROJECT_REFCOUNT_BALANCING_
-          g_print ("Killing '%s::%s' widget's object with reference count %d\n",
-                   glade_widget_adaptor_get_name (gwidget->priv->adaptor),
-                   gwidget->priv->name ? gwidget->priv->name : "(unknown)",
-                   old_object->ref_count);
-#endif
+	  GLADE_NOTE (REF_COUNTS,
+		      g_print ("Killing '%s::%s' widget's object with reference count %d\n",
+			       glade_widget_adaptor_get_name (gwidget->priv->adaptor),
+			       gwidget->priv->name ? gwidget->priv->name : "(unknown)",
+			       old_object->ref_count));
 
 	  /* Have the adaptor for this widget break any additional references */
 	  glade_widget_adaptor_destroy_object (gwidget->priv->adaptor, old_object);

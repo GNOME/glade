@@ -590,19 +590,20 @@ glade_command_set_property_execute (GladeCommand *cmd)
       else
         g_value_copy (sdata->new_value, &new_value);
 
-#if 0
-      {
-        gchar *str =
+#ifdef GLADE_ENABLE_DEBUG
+      if (glade_get_debug_flags () & GLADE_DEBUG_COMMANDS)
+	{
+	  gchar *str =
             glade_widget_adaptor_string_from_value
-            (GLADE_WIDGET_ADAPTOR (pclass->handle), pclass, &new_value);
+            (glade_property_class_get_adaptor (pclass), pclass, &new_value);
 
-        g_print ("Setting %s property of %s to %s (sumode: %d)\n",
-                 pclass->id,
-                 glade_widget_get_name (widget),
-                 str, glade_property_superuser ());
+	  g_print ("Setting %s property of %s to %s (sumode: %d)\n",
+		   glade_property_class_id (pclass),
+		   glade_widget_get_name (widget),
+		   str, glade_property_superuser ());
 
-        g_free (str);
-      }
+	  g_free (str);
+	}
 #endif
 
       /* Packing properties need to be refreshed here since

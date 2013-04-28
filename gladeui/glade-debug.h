@@ -4,7 +4,11 @@
 G_BEGIN_DECLS
 
 typedef enum {
-  GLADE_DEBUG_VERIFY = (1 << 0)
+  GLADE_DEBUG_REF_COUNTS    = (1 << 0),
+  GLADE_DEBUG_WIDGET_EVENTS = (1 << 1),
+  GLADE_DEBUG_COMMANDS      = (1 << 2),
+  GLADE_DEBUG_PROPERTIES    = (1 << 3),
+  GLADE_DEBUG_VERIFY        = (1 << 4)
 } GladeDebugFlag;
 
 #ifdef GLADE_ENABLE_DEBUG

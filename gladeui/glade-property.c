@@ -305,28 +305,27 @@ glade_property_set_value_impl (GladeProperty * property, const GValue * value)
   GValue old_value = { 0, };
   gboolean warn_before, warn_after;
 
-#if 0
-  {
-    g_print ("***************************************************\n");
-    g_print ("Setting %s property %s on %s ..\n",
-             property->priv->klass->packing ? "packing" : "normal",
-             property->priv->klass->id,
-             property->priv->widget ? property->priv->widget->name : "unknown");
+#ifdef GLADE_ENABLE_DEBUG
+  if (glade_get_debug_flags () & GLADE_DEBUG_PROPERTIES)
+    {
+      g_print ("PROPERTY: Setting %s property %s on %s ",
+	       glade_property_class_get_is_packing (property->priv->klass) ? "packing" : "normal",
+	       glade_property_class_id (property->priv->klass),
+	       property->priv->widget ? glade_widget_get_name (property->priv->widget) : "unknown");
 
-    gchar *str1 = glade_widget_adaptor_string_from_value
-        (GLADE_WIDGET_ADAPTOR (property->priv->klass->handle),
-         property->priv->klass, property->priv->value);
-    gchar *str2 = glade_widget_adaptor_string_from_value
-        (GLADE_WIDGET_ADAPTOR (property->priv->klass->handle),
-         property->priv->klass, value);
-    g_print ("from %s to %s\n", str1, str2);
-    g_free (str1);
-    g_free (str2);
-  }
-#endif
+      gchar *str1 =
+	glade_widget_adaptor_string_from_value (glade_property_class_get_adaptor (property->priv->klass),
+						property->priv->klass, property->priv->value);
+      gchar *str2 =
+	glade_widget_adaptor_string_from_value (glade_property_class_get_adaptor (property->priv->klass),
+						property->priv->klass, value);
+      g_print ("from %s to %s\n", str1, str2);
+      g_free (str1);
+      g_free (str2);
+    }
+#endif /* GLADE_ENABLE_DEBUG */
 
-  if (!g_value_type_compatible
-      (G_VALUE_TYPE (property->priv->value), G_VALUE_TYPE (value)))
+  if (!g_value_type_compatible (G_VALUE_TYPE (property->priv->value), G_VALUE_TYPE (value)))
     {
       g_warning ("Trying to assign an incompatible value to property %s\n",
                  glade_property_class_id (property->priv->klass));

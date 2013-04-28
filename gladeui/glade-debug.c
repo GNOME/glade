@@ -72,8 +72,11 @@ glade_setup_log_handlers ()
 
 static GladeDebugFlag glade_debug_flags = 0;
 
-
 static const GDebugKey glade_debug_keys[] = {
+  { "ref-counts",    GLADE_DEBUG_REF_COUNTS },
+  { "widget-events", GLADE_DEBUG_WIDGET_EVENTS },
+  { "commands",      GLADE_DEBUG_COMMANDS },
+  { "properties",    GLADE_DEBUG_PROPERTIES },
   { "verify",        GLADE_DEBUG_VERIFY }
 };
 
