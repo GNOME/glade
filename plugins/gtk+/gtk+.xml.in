@@ -1,6 +1,6 @@
 <glade-catalog name="gtk+"
-	       version="3.8"
-	       targetable="3.6,3.4,3.2,3.0"
+	       version="3.10"
+	       targetable="3.8,3.6,3.4,3.2,3.0"
                icon-prefix="gtk"
                library="gladegtk"
                domain="glade3"
@@ -106,6 +106,7 @@
 	    <value id="GTK_ALIGN_START" _name="Start"/>
 	    <value id="GTK_ALIGN_CENTER" _name="Center"/>
 	    <value id="GTK_ALIGN_END" _name="End"/>
+	    <value id="GTK_ALIGN_BASELINE" _name="Baseline"/>
 	  </displayable-values>
 	</property>
 	<property id="valign" custom-layout="True" since="3.0"/>
@@ -366,6 +367,13 @@ embedded in another object</_tooltip>
 	  </parameter-spec>
 	  <_tooltip>The number of items in the box</_tooltip>
 	</property>
+        <property id="baseline-position" since="3.10">
+          <displayable-values>
+            <value id="GTK_BASELINE_POSITION_TOP" _name="Top"/>
+            <value id="GTK_BASELINE_POSITION_CENTER" _name="Center"/>
+            <value id="GTK_BASELINE_POSITION_BOTTOM" _name="Bottom"/>
+          </displayable-values>
+        </property>
       </properties>
 
       <packing-properties>
@@ -1365,6 +1373,13 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkPlacesSidebar" generic-name="placessidebar" title="Places Sidebar" since="3.10">
       <properties>
 	<property id="location" disabled="True"/>
+	<property id="open-flags">
+  	  <displayable-values>
+	    <value id="GTK_PLACES_OPEN_NORMAL" _name="Normal"/>
+	    <value id="GTK_PLACES_OPEN_NEW_TAB" _name="New Tab"/>
+	    <value id="GTK_PLACES_OPEN_NEW_WINDOW" _name="New Window"/>
+  	  </displayable-values>
+	</property>
       </properties>
     </glade-widget-class>>
 
