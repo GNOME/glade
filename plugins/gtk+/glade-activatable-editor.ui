@@ -5,18 +5,24 @@
   <template class="GladeActivatableEditor" parent="GladeEditorSkeleton">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="has_focus">False</property>
+    <property name="is_focus">False</property>
     <property name="orientation">vertical</property>
     <property name="spacing">4</property>
     <child>
       <object class="GtkGrid" id="grid1">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="has_focus">False</property>
+        <property name="is_focus">False</property>
         <property name="row_spacing">6</property>
         <property name="column_spacing">6</property>
         <child>
           <object class="GladePropertyLabel" id="propertylabel1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="property_name">related-action</property>
@@ -32,6 +38,8 @@
           <object class="GladePropertyShell" id="propertyshell1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
             <property name="hexpand">True</property>
             <property name="property_name">related-action</property>
           </object>
@@ -46,6 +54,8 @@
           <object class="GladePropertyLabel" id="propertylabel2">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="property_name">use-action-appearance</property>
@@ -61,6 +71,8 @@
           <object class="GladePropertyShell" id="propertyshell2">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
             <property name="hexpand">True</property>
             <property name="property_name">use-action-appearance</property>
           </object>
@@ -72,9 +84,11 @@
           </packing>
         </child>
         <child>
-          <object class="GladePropertyLabel" id="propertylabel3">
+          <object class="GladePropertyLabel" id="action_name_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="property_name">action-name</property>
@@ -87,9 +101,11 @@
           </packing>
         </child>
         <child>
-          <object class="GladePropertyShell" id="propertyshell3">
+          <object class="GladePropertyShell" id="action_name_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
             <property name="hexpand">True</property>
             <property name="property_name">action-name</property>
           </object>
@@ -104,6 +120,8 @@
           <object class="GtkLabel" id="label1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
             <property name="halign">start</property>
             <property name="valign">center</property>
             <property name="margin_bottom">2</property>
@@ -124,6 +142,8 @@
           <object class="GladeEditorTable" id="embed">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="has_focus">False</property>
+            <property name="is_focus">False</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -144,8 +164,8 @@
       <editor id="propertyshell1"/>
       <editor id="propertylabel2"/>
       <editor id="propertyshell2"/>
-      <editor id="propertylabel3"/>
-      <editor id="propertyshell3"/>
+      <editor id="action_name_label"/>
+      <editor id="action_name_editor"/>
       <editor id="embed"/>
     </child-editors>
   </template>
