@@ -69,3 +69,36 @@ glade_setup_log_handlers ()
   glade_set_log_handler ("Gtk");
   glade_set_log_handler ("Gdk");
 }
+
+static GladeDebugFlag glade_debug_flags = 0;
+
+
+static const GDebugKey glade_debug_keys[] = {
+  { "verify",        GLADE_DEBUG_VERIFY }
+};
+
+guint
+glade_get_debug_flags (void)
+{
+  return glade_debug_flags;
+}
+
+void
+glade_init_debug_flags (void)
+{
+  static gboolean initialized = FALSE;
+
+  if (G_UNLIKELY (!initialized))
+    {
+      const gchar *env_string;
+
+      initialized = TRUE;
+
+      env_string = g_getenv ("GLADE_DEBUG");
+      if (env_string != NULL)
+	glade_debug_flags = 
+	  g_parse_debug_string (env_string,
+				glade_debug_keys,
+				G_N_ELEMENTS (glade_debug_keys));
+    }
+}

@@ -11,6 +11,7 @@ glade_previewer_CPPFLAGS = \
 	$(GTK_CFLAGS)      \
 	$(GTK_MAC_CFLAGS)  \
 	$(WARN_CFLAGS)     \
+	$(GLADE_DEBUG_FLAGS) \
 	$(AM_CPPFLAGS)
 
 glade_previewer_CFLAGS =   \
@@ -130,6 +131,7 @@ libgladeui_2_la_CPPFLAGS =  \
 	$(GTK_MAC_BUNDLE_FLAG) \
 	$(GTK_MAC_CFLAGS)  \
 	$(WARN_CFLAGS)      \
+	$(GLADE_DEBUG_FLAGS) \
 	$(AM_CPPFLAGS)
 
 libgladeui_2_la_CFLAGS =    \

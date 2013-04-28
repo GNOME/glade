@@ -77,9 +77,9 @@ typedef enum
  *
  */
 typedef enum {
-  GLADE_VERIFY_VERSIONS,
-  GLADE_VERIFY_DEPRECATIONS,
-  GLADE_VERIFY_UNRECOGNIZED
+  GLADE_VERIFY_VERSIONS      = (1 << 0),
+  GLADE_VERIFY_DEPRECATIONS  = (1 << 1),
+  GLADE_VERIFY_UNRECOGNIZED  = (1 << 2)
 } GladeVerifyFlags;
 
 struct _GladeProject

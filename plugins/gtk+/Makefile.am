@@ -16,6 +16,7 @@ libgladegtk_la_CPPFLAGS =   \
 	-DG_LOG_DOMAIN=\"GladeUI-GTK\" \
 	$(GTK_CFLAGS)	               \
 	$(PLUGINS_WARN_CFLAGS)         \
+	$(GLADE_DEBUG_FLAGS)		\
 	$(AM_CPPFLAGS)
 
 libgladegtk_la_CFLAGS = $(AM_CFLAGS)

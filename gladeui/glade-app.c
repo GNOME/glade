@@ -208,6 +208,8 @@ glade_init_check (void)
   if (check_initialised)
     return;
 
+  glade_init_debug_flags ();
+
   /* Make sure path accessors work on osx */
   build_package_paths ();
 

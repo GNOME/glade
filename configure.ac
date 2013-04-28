@@ -90,6 +90,24 @@ if test "x$GCC" = "xyes"; then
 fi
 AC_SUBST(PLUGINS_WARN_CFLAGS)
 
+
+dnl ================================================================
+dnl Collect some arguments.
+dnl ================================================================
+AC_ARG_ENABLE(debug,
+              [AC_HELP_STRING([--enable-debug],
+                              [enable debug build [default=no]])],,
+              [enable_debug="no"])
+
+AM_CONDITIONAL([GLADE_DEBUG],[test "x$enable_debug" = "xyes"])
+
+if test "x$enable_debug" = "xyes"; then
+   GLADE_DEBUG_FLAGS=-DGLADE_ENABLE_DEBUG
+else
+   GLADE_DEBUG_FLAGS=
+fi
+AC_SUBST(GLADE_DEBUG_FLAGS)
+
 dnl ================================================================
 dnl Gettext stuff.
 dnl ================================================================
@@ -330,6 +348,7 @@ Configuration:
 
 	Source code location:	 ${srcdir}
 	Compiler:		 ${CC}
+	Debug Enabled:           ${enable_debug}
 	GTK+ UNIX Print Widgets: ${have_unix_print}
 	PYTHON Widgets support:	 ${have_python}
 	Gladeui Catalog:         ${enable_gladeui}
