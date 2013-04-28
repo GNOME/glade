@@ -202,7 +202,8 @@ glade_editor_property_get_item_label  (GladeEditorProperty *eprop)
       g_object_ref_sink (eprop->priv->item_label);
 
       if (eprop->priv->property)
-	glade_property_label_set_property (GLADE_PROPERTY_LABEL (eprop), eprop->priv->property);
+	glade_property_label_set_property (GLADE_PROPERTY_LABEL (eprop->priv->item_label),
+					   eprop->priv->property);
     }
 
   return eprop->priv->item_label;
