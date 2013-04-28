@@ -106,6 +106,7 @@ UI_FILES = 				\
 	glade-entry-editor.ui		\
 	glade-image-editor.ui		\
 	glade-label-editor.ui		\
+	glade-tool-button-editor.ui	\
 	glade-widget-editor.ui
 
 EXTRA_DIST = 					\

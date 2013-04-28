@@ -5975,16 +5975,10 @@ GladeEditable *
 glade_gtk_tool_button_create_editable (GladeWidgetAdaptor * adaptor,
                                        GladeEditorPageType type)
 {
-  GladeEditable *editable;
-
-  /* Get base editable */
-  editable =
-      GWA_GET_CLASS (GTK_TYPE_TOOL_ITEM)->create_editable (adaptor, type);
-
   if (type == GLADE_PAGE_GENERAL)
-    return (GladeEditable *) glade_tool_button_editor_new (adaptor, editable);
-
-  return editable;
+    return (GladeEditable *) glade_tool_button_editor_new ();
+  else
+    return GWA_GET_CLASS (GTK_TYPE_TOOL_ITEM)->create_editable (adaptor, type);
 }
 
 static void
@@ -5995,12 +5989,9 @@ glade_gtk_tool_button_set_image_mode (GObject * object, const GValue * value)
   g_return_if_fail (GTK_IS_TOOL_BUTTON (object));
   gbutton = glade_widget_get_from_gobject (object);
 
-  glade_widget_property_set_sensitive (gbutton, "stock-id", FALSE,
-                                       NOT_SELECTED_MSG);
-  glade_widget_property_set_sensitive (gbutton, "icon-name", FALSE,
-                                       NOT_SELECTED_MSG);
-  glade_widget_property_set_sensitive (gbutton, "icon-widget", FALSE,
-                                       NOT_SELECTED_MSG);
+  glade_widget_property_set_sensitive (gbutton, "stock-id", FALSE, NOT_SELECTED_MSG);
+  glade_widget_property_set_sensitive (gbutton, "icon-name", FALSE, NOT_SELECTED_MSG);
+  glade_widget_property_set_sensitive (gbutton, "icon-widget", FALSE, NOT_SELECTED_MSG);
 
   switch (g_value_get_int (value))
     {
@@ -6011,8 +6002,7 @@ glade_gtk_tool_button_set_image_mode (GObject * object, const GValue * value)
         glade_widget_property_set_sensitive (gbutton, "icon-name", TRUE, NULL);
         break;
       case GLADE_TB_MODE_CUSTOM:
-        glade_widget_property_set_sensitive (gbutton, "icon-widget", TRUE,
-                                             NULL);
+        glade_widget_property_set_sensitive (gbutton, "icon-widget", TRUE, NULL);
         break;
       default:
         break;
@@ -6028,15 +6018,18 @@ glade_gtk_tool_button_set_custom_label (GObject * object, const GValue * value)
   g_return_if_fail (GTK_IS_TOOL_BUTTON (object));
   gbutton = glade_widget_get_from_gobject (object);
 
-  glade_widget_property_set_sensitive (gbutton, "label", FALSE,
-                                       NOT_SELECTED_MSG);
-  glade_widget_property_set_sensitive (gbutton, "label-widget", FALSE,
-                                       NOT_SELECTED_MSG);
+  glade_widget_property_set_sensitive (gbutton, "label", FALSE, NOT_SELECTED_MSG);
+  glade_widget_property_set_sensitive (gbutton, "label-widget", FALSE, NOT_SELECTED_MSG);
+  glade_widget_property_set_sensitive (gbutton, "use-underline", FALSE,
+                                       _("This property only applies when configuring the label with text"));
 
   if (g_value_get_boolean (value))
     glade_widget_property_set_sensitive (gbutton, "label-widget", TRUE, NULL);
   else
-    glade_widget_property_set_sensitive (gbutton, "label", TRUE, NULL);
+    {
+      glade_widget_property_set_sensitive (gbutton, "label", TRUE, NULL);
+      glade_widget_property_set_sensitive (gbutton, "use-underline", TRUE, NULL);
+    }
 }
 
 static void

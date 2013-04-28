@@ -818,6 +818,10 @@ embedded in another object</_tooltip>
       <set-property-function>glade_gtk_tool_button_set_property</set-property-function>
       <read-widget-function>glade_gtk_tool_button_read_widget</read-widget-function>
       <properties>
+        <property id="visible-vertical" custom-layout="True"/>
+        <property id="visible-horizontal" custom-layout="True"/>
+        <property id="is-important" custom-layout="True"/>
+        <property id="use-underline" custom-layout="True"/>
 
 	<!-- GtkActionable -->
       	<property id="action-name" _name="Action Name" custom-layout="True" since="3.4"/>
@@ -846,9 +850,17 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
     
-    <glade-widget-class name="GtkToggleToolButton" generic-name="toggletoolbutton" _title="Toggle Tool Button"/>
+    <glade-widget-class name="GtkToggleToolButton" generic-name="toggletoolbutton" _title="Toggle Tool Button">
+      <properties>
+        <property id="active" custom-layout="True"/>
+      </properties>
+    </glade-widget-class>
     
-    <glade-widget-class name="GtkRadioToolButton" generic-name="radiotoolbutton" _title="Radio Tool Button"/>
+    <glade-widget-class name="GtkRadioToolButton" generic-name="radiotoolbutton" _title="Radio Tool Button">
+      <properties>
+        <property id="group" custom-layout="True"/>
+      </properties>
+    </glade-widget-class>
     
     <glade-widget-class name="GtkMenuToolButton" generic-name="menutoolbutton" use-placeholders="False"
 			_title="Menu Tool Button">

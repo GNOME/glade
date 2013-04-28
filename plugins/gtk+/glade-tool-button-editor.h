@@ -34,42 +34,29 @@ G_BEGIN_DECLS
 
 typedef struct _GladeToolButtonEditor        GladeToolButtonEditor;
 typedef struct _GladeToolButtonEditorClass   GladeToolButtonEditorClass;
+typedef struct _GladeToolButtonEditorPrivate GladeToolButtonEditorPrivate;
 
 typedef enum {
-	GLADE_TB_MODE_STOCK = 0, /* default */
-	GLADE_TB_MODE_ICON,
-	GLADE_TB_MODE_CUSTOM
+  GLADE_TB_MODE_STOCK = 0, /* default */
+  GLADE_TB_MODE_ICON,
+  GLADE_TB_MODE_CUSTOM
 } GladeToolButtonImageMode;
 
 
 struct _GladeToolButtonEditor
 {
-	GtkVBox  parent;
+  GladeEditorSkeleton  parent;
 
-	GtkWidget *embed;           /* Embedded parent class editor */
-
-	GtkWidget *label_table;
-	GtkWidget *standard_label_radio; /* Set label with label property */
-	GtkWidget *custom_label_radio;   /* Set a widget to be placed as the tool button's label */
-
-
-	GtkWidget *image_table;
-	GtkWidget *stock_radio;    /* Create the image from stock-id */
-	GtkWidget *icon_radio;     /* Create the image with the icon theme */
-	GtkWidget *custom_radio;   /* Set a widget to be used in the image position */
-
-
-	GList *properties;         /* A list of eprops to update at load() time */
+  GladeToolButtonEditorPrivate *priv;
 };
 
 struct _GladeToolButtonEditorClass
 {
-	GtkVBoxClass parent;
+  GladeEditorSkeletonClass parent;
 };
 
 GType            glade_tool_button_editor_get_type (void) G_GNUC_CONST;
-GtkWidget       *glade_tool_button_editor_new      (GladeWidgetAdaptor *adaptor,
-						    GladeEditable      *editable);
+GtkWidget       *glade_tool_button_editor_new      (void);
 
 G_END_DECLS
 
