@@ -39,6 +39,7 @@ G_DEFINE_INTERFACE (GladeEditable, glade_editable, GTK_TYPE_WIDGET);
 static GQuark glade_editable_project_quark = 0;
 static GQuark glade_editable_widget_quark = 0;
 static GQuark glade_editable_loading_quark = 0;
+static GQuark glade_editable_destroy_quark = 0;
 
 static void
 project_changed (GladeProject  *project,
@@ -56,6 +57,12 @@ project_changed (GladeProject  *project,
 static void
 project_closed (GladeProject  *project,
 		GladeEditable *editable)
+{
+  glade_editable_load (editable, NULL);
+}
+
+static void
+editable_destroyed (GladeEditable *editable)
 {
   glade_editable_load (editable, NULL);
 }
@@ -102,6 +109,7 @@ glade_editable_default_init (GladeEditableIface *iface)
   glade_editable_project_quark = g_quark_from_static_string ("glade-editable-project-quark");
   glade_editable_widget_quark  = g_quark_from_static_string ("glade-editable-widget-quark");
   glade_editable_loading_quark = g_quark_from_static_string ("glade-editable-loading-quark");
+  glade_editable_destroy_quark = g_quark_from_static_string ("glade-editable-destroy-quark");
 
   iface->load = glade_editable_load_default;
 }
@@ -121,6 +129,15 @@ glade_editable_load (GladeEditable *editable, GladeWidget *widget)
   GladeEditableIface *iface;
   g_return_if_fail (GLADE_IS_EDITABLE (editable));
   g_return_if_fail (widget == NULL || GLADE_IS_WIDGET (widget));
+
+  /* Connect to the destroy signal once, make sure we unload the widget and disconnect
+   * to any signals when destroying
+   */
+  if (!GPOINTER_TO_INT (g_object_get_qdata (G_OBJECT (editable), glade_editable_destroy_quark)))
+    {
+      g_signal_connect (editable, "destroy", G_CALLBACK (editable_destroyed), NULL);
+      g_object_set_qdata (G_OBJECT (editable), glade_editable_destroy_quark, GINT_TO_POINTER (TRUE));
+    }
 
   iface = GLADE_EDITABLE_GET_IFACE (editable);
 
