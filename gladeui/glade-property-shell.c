@@ -30,6 +30,7 @@
 #include "glade-popup.h"
 #include "glade-editable.h"
 #include "glade-property-shell.h"
+#include "glade-marshallers.h"
 
 /* GObjectClass */
 static void      glade_property_shell_finalize          (GObject         *object);
@@ -50,6 +51,8 @@ struct _GladePropertyShellPrivate
   /* Current State */
   GladeWidgetAdaptor  *adaptor;
   GladeEditorProperty *property_editor;
+  gulong               pre_commit_id;
+  gulong               post_commit_id;
 
   /* Properties, used to load the internal editor */
   GType                editor_type;
@@ -65,6 +68,15 @@ enum {
   PROP_USE_COMMAND,
   PROP_EDITOR_TYPE
 };
+
+enum
+{
+  PRE_COMMIT,
+  POST_COMMIT,
+  LAST_SIGNAL
+};
+
+static guint glade_property_shell_signals[LAST_SIGNAL] = { 0, };
 
 static GladeEditableIface *parent_editable_iface;
 
@@ -116,6 +128,38 @@ glade_property_shell_class_init (GladePropertyShellClass *class)
        g_param_spec_string ("editor-type", _("Editor Property Type Name"),
 			    _("Specify the actual editor property type name to use for this shell"),
 			    NULL, G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
+
+  /**
+   * GladePropertyShell::pre-commit:
+   * @gladeeditorproperty: the #GladeEditorProperty which changed value
+   * @arg1: the new #GValue to commit.
+   *
+   * Emitted before a property's value is committed, can be useful to serialize
+   * commands before a property's commit command from custom editors.
+   */
+  glade_property_shell_signals[PRE_COMMIT] =
+      g_signal_new ("pre-commit",
+                    G_TYPE_FROM_CLASS (gobject_class),
+                    G_SIGNAL_RUN_LAST,
+                    0, NULL, NULL,
+                    _glade_marshal_VOID__POINTER,
+                    G_TYPE_NONE, 1, G_TYPE_POINTER);
+
+  /**
+   * GladePropertyShell::post-commit:
+   * @gladeeditorproperty: the #GladeEditorProperty which changed value
+   * @arg1: the new #GValue to commit.
+   *
+   * Emitted after a property's value is committed, can be useful to serialize
+   * commands after a property's commit command from custom editors.
+   */
+  glade_property_shell_signals[POST_COMMIT] =
+      g_signal_new ("post-commit",
+                    G_TYPE_FROM_CLASS (gobject_class),
+                    G_SIGNAL_RUN_LAST,
+                    0, NULL, NULL,
+                    _glade_marshal_VOID__POINTER,
+                    G_TYPE_NONE, 1, G_TYPE_POINTER);
 
   g_type_class_add_private (gobject_class, sizeof (GladePropertyShellPrivate));
 }
@@ -203,6 +247,54 @@ glade_property_shell_get_real_property (GObject         *object,
  *                            GladeEditableIface                               *                               
  *******************************************************************************/
 static void
+propagate_pre_commit (GladeEditorProperty *property,
+		      GValue              *value,
+		      GladePropertyShell  *shell)
+{
+  g_signal_emit (G_OBJECT (shell), glade_property_shell_signals[PRE_COMMIT], 0, value);
+}
+
+static void
+propagate_post_commit (GladeEditorProperty *property,
+		       GValue              *value,
+		       GladePropertyShell  *shell)
+{
+  g_signal_emit (G_OBJECT (shell), glade_property_shell_signals[POST_COMMIT], 0, value);
+}
+
+static void
+glade_property_shell_set_eprop (GladePropertyShell  *shell,
+				GladeEditorProperty *eprop)
+{
+  GladePropertyShellPrivate *priv = shell->priv;
+
+  if (priv->property_editor != eprop)
+    {
+      if (priv->property_editor)
+	{
+	  g_signal_handler_disconnect (priv->property_editor, priv->pre_commit_id);
+	  g_signal_handler_disconnect (priv->property_editor, priv->post_commit_id);
+	  priv->pre_commit_id = 0;
+	  priv->post_commit_id = 0;
+
+	  gtk_widget_destroy (GTK_WIDGET (priv->property_editor));
+	}
+
+      priv->property_editor = eprop;
+
+      if (priv->property_editor)
+	{
+	  priv->pre_commit_id = g_signal_connect (priv->property_editor, "commit",
+						  G_CALLBACK (propagate_pre_commit), shell);
+	  priv->post_commit_id = g_signal_connect_after (priv->property_editor, "commit",
+							 G_CALLBACK (propagate_post_commit), shell);
+
+	  gtk_container_add (GTK_CONTAINER (shell), GTK_WIDGET (priv->property_editor));
+	}
+    }
+}
+
+static void
 glade_property_shell_load (GladeEditable   *editable,
 			   GladeWidget     *widget)
 {
@@ -235,9 +327,7 @@ glade_property_shell_load (GladeEditable   *editable,
       if (priv->adaptor != adaptor)
 	{
 	  GladePropertyClass *pclass = NULL;
-
-	  if (priv->property_editor)
-	    gtk_widget_destroy (GTK_WIDGET (priv->property_editor));
+	  GladeEditorProperty *eprop = NULL;
 
 	  priv->adaptor = adaptor;
 
@@ -262,23 +352,21 @@ glade_property_shell_load (GladeEditable   *editable,
 	  /* Construct custom editor property if specified */
 	  else if (g_type_is_a (priv->editor_type, GLADE_TYPE_EDITOR_PROPERTY))
 	    {
-	      priv->property_editor = g_object_new (priv->editor_type,
-						    "property-class", pclass,
-						    "use-command", priv->use_command,
-						    NULL);
+	      eprop = g_object_new (priv->editor_type,
+				    "property-class", pclass,
+				    "use-command", priv->use_command,
+				    NULL);
 	    }
 	  else
 	    {
 	      /* Let the adaptor create one */
-	      priv->property_editor = 
-		glade_widget_adaptor_create_eprop_by_name (priv->adaptor,
-							   priv->property_name,
-							   priv->packing,
-							   priv->use_command);
+	      eprop = glade_widget_adaptor_create_eprop_by_name (priv->adaptor,
+								 priv->property_name,
+								 priv->packing,
+								 priv->use_command);
 	    }
 
-	  if (priv->property_editor)
-	    gtk_container_add (GTK_CONTAINER (shell), GTK_WIDGET (priv->property_editor));
+	  glade_property_shell_set_eprop (shell, eprop);
 	}
 
       /* If we have an editor for the right adaptor, load it */

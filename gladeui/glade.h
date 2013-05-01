@@ -25,6 +25,7 @@
 #include <gladeui/glade-widget-adaptor.h>
 #include <gladeui/glade-widget.h>
 #include <gladeui/glade-property-class.h>
+#include <gladeui/glade-property-shell.h>
 #include <gladeui/glade-property.h>
 #include <gladeui/glade-signal-class.h>
 #include <gladeui/glade-signal-model.h>
