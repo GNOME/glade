@@ -24,6 +24,7 @@
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
                 <property name="valign">center</property>
+                <property name="hexpand">False</property>
                 <property name="label" translatable="yes">Program Attributes</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
@@ -62,7 +63,7 @@
               <packing>
                 <property name="left_attach">1</property>
                 <property name="top_attach">1</property>
-                <property name="width">2</property>
+                <property name="width">6</property>
                 <property name="height">1</property>
               </packing>
             </child>
@@ -77,7 +78,7 @@
               </object>
               <packing>
                 <property name="left_attach">0</property>
-                <property name="top_attach">10</property>
+                <property name="top_attach">13</property>
                 <property name="width">1</property>
                 <property name="height">1</property>
               </packing>
@@ -91,9 +92,9 @@
                 <property name="custom_text" translatable="yes">License Text</property>
               </object>
               <packing>
-                <property name="left_attach">3</property>
-                <property name="top_attach">10</property>
-                <property name="width">2</property>
+                <property name="left_attach">2</property>
+                <property name="top_attach">13</property>
+                <property name="width">1</property>
                 <property name="height">1</property>
               </packing>
             </child>
@@ -108,8 +109,8 @@
               </object>
               <packing>
                 <property name="left_attach">1</property>
-                <property name="top_attach">10</property>
-                <property name="width">2</property>
+                <property name="top_attach">13</property>
+                <property name="width">1</property>
                 <property name="height">1</property>
               </packing>
             </child>
@@ -117,14 +118,14 @@
               <object class="GladePropertyLabel" id="program_version_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="halign">end</property>
+                <property name="margin_left">12</property>
                 <property name="hexpand">False</property>
                 <property name="property_name">version</property>
                 <property name="custom_text" translatable="yes">Version:</property>
               </object>
               <packing>
-                <property name="left_attach">3</property>
-                <property name="top_attach">1</property>
+                <property name="left_attach">0</property>
+                <property name="top_attach">2</property>
                 <property name="width">1</property>
                 <property name="height">1</property>
               </packing>
@@ -137,9 +138,9 @@
                 <property name="property_name">version</property>
               </object>
               <packing>
-                <property name="left_attach">4</property>
-                <property name="top_attach">1</property>
-                <property name="width">3</property>
+                <property name="left_attach">1</property>
+                <property name="top_attach">2</property>
+                <property name="width">6</property>
                 <property name="height">1</property>
               </packing>
             </child>
@@ -147,13 +148,14 @@
               <object class="GladePropertyShell" id="wrap_license_editor">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="hexpand">True</property>
                 <property name="property_name">wrap-license</property>
                 <property name="editor_type">GladeEpropCheck</property>
               </object>
               <packing>
-                <property name="left_attach">5</property>
-                <property name="top_attach">10</property>
-                <property name="width">2</property>
+                <property name="left_attach">3</property>
+                <property name="top_attach">13</property>
+                <property name="width">4</property>
                 <property name="height">1</property>
               </packing>
             </child>
@@ -161,13 +163,13 @@
               <object class="GladePropertyShell" id="license_editor">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="hexpand">True</property>
+                <property name="hexpand">False</property>
                 <property name="property_name">license</property>
               </object>
               <packing>
-                <property name="left_attach">3</property>
-                <property name="top_attach">11</property>
-                <property name="width">4</property>
+                <property name="left_attach">2</property>
+                <property name="top_attach">14</property>
+                <property name="width">5</property>
                 <property name="height">2</property>
               </packing>
             </child>
@@ -193,7 +195,7 @@
               <packing>
                 <property name="left_attach">1</property>
                 <property name="top_attach">3</property>
-                <property name="width">1</property>
+                <property name="width">2</property>
                 <property name="height">1</property>
               </packing>
             </child>
@@ -220,7 +222,7 @@
               <packing>
                 <property name="left_attach">1</property>
                 <property name="top_attach">4</property>
-                <property name="width">1</property>
+                <property name="width">2</property>
                 <property name="height">1</property>
               </packing>
             </child>
@@ -228,13 +230,13 @@
               <object class="GladePropertyShell" id="logo_icon_editor">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="hexpand">True</property>
+                <property name="hexpand">False</property>
                 <property name="property_name">logo-icon-name</property>
               </object>
               <packing>
-                <property name="left_attach">2</property>
+                <property name="left_attach">3</property>
                 <property name="top_attach">3</property>
-                <property name="width">5</property>
+                <property name="width">4</property>
                 <property name="height">1</property>
               </packing>
             </child>
@@ -242,37 +244,23 @@
               <object class="GladePropertyShell" id="logo_file_editor">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="hexpand">True</property>
+                <property name="hexpand">False</property>
                 <property name="property_name">logo</property>
               </object>
               <packing>
-                <property name="left_attach">2</property>
+                <property name="left_attach">3</property>
                 <property name="top_attach">4</property>
-                <property name="width">5</property>
+                <property name="width">4</property>
                 <property name="height">1</property>
               </packing>
             </child>
             <child>
-              <object class="GladePropertyLabel" id="website_label">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_left">12</property>
-                <property name="hexpand">False</property>
-                <property name="property_name">website</property>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">6</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GladePropertyShell" id="website_editor">
+              <object class="GladePropertyLabel" id="website_url_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="hexpand">False</property>
                 <property name="property_name">website</property>
+                <property name="custom_text" translatable="yes">URL</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -282,15 +270,31 @@
               </packing>
             </child>
             <child>
+              <object class="GladePropertyShell" id="website_editor">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="valign">start</property>
+                <property name="hexpand">False</property>
+                <property name="property_name">website</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">7</property>
+                <property name="width">2</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
               <object class="GladePropertyLabel" id="website_label_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="property_name">website-label</property>
+                <property name="custom_text" translatable="yes">Label</property>
               </object>
               <packing>
                 <property name="left_attach">3</property>
                 <property name="top_attach">6</property>
-                <property name="width">1</property>
+                <property name="width">4</property>
                 <property name="height">1</property>
               </packing>
             </child>
@@ -298,13 +302,13 @@
               <object class="GladePropertyShell" id="website_label_editor">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="hexpand">True</property>
+                <property name="hexpand">False</property>
                 <property name="property_name">website-label</property>
               </object>
               <packing>
-                <property name="left_attach">4</property>
-                <property name="top_attach">6</property>
-                <property name="width">3</property>
+                <property name="left_attach">3</property>
+                <property name="top_attach">7</property>
+                <property name="width">4</property>
                 <property name="height">3</property>
               </packing>
             </child>
@@ -319,7 +323,7 @@
               </object>
               <packing>
                 <property name="left_attach">0</property>
-                <property name="top_attach">13</property>
+                <property name="top_attach">19</property>
                 <property name="width">3</property>
                 <property name="height">1</property>
               </packing>
@@ -334,7 +338,7 @@
               </object>
               <packing>
                 <property name="left_attach">0</property>
-                <property name="top_attach">14</property>
+                <property name="top_attach">20</property>
                 <property name="width">3</property>
                 <property name="height">1</property>
               </packing>
@@ -343,12 +347,13 @@
               <object class="GladePropertyLabel" id="translators_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="hexpand">False</property>
                 <property name="property_name">translator-credits</property>
                 <property name="custom_text" translatable="yes">Translators</property>
               </object>
               <packing>
                 <property name="left_attach">3</property>
-                <property name="top_attach">13</property>
+                <property name="top_attach">19</property>
                 <property name="width">4</property>
                 <property name="height">1</property>
               </packing>
@@ -357,11 +362,12 @@
               <object class="GladePropertyShell" id="translators_editor">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="hexpand">False</property>
                 <property name="property_name">translator-credits</property>
               </object>
               <packing>
                 <property name="left_attach">3</property>
-                <property name="top_attach">14</property>
+                <property name="top_attach">20</property>
                 <property name="width">4</property>
                 <property name="height">1</property>
               </packing>
@@ -377,7 +383,7 @@
               </object>
               <packing>
                 <property name="left_attach">0</property>
-                <property name="top_attach">15</property>
+                <property name="top_attach">21</property>
                 <property name="width">3</property>
                 <property name="height">1</property>
               </packing>
@@ -392,7 +398,7 @@
               </object>
               <packing>
                 <property name="left_attach">0</property>
-                <property name="top_attach">16</property>
+                <property name="top_attach">22</property>
                 <property name="width">3</property>
                 <property name="height">1</property>
               </packing>
@@ -401,12 +407,13 @@
               <object class="GladePropertyLabel" id="documenters_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="hexpand">False</property>
                 <property name="property_name">documenters</property>
                 <property name="custom_text" translatable="yes">Documenters</property>
               </object>
               <packing>
                 <property name="left_attach">3</property>
-                <property name="top_attach">15</property>
+                <property name="top_attach">21</property>
                 <property name="width">4</property>
                 <property name="height">1</property>
               </packing>
@@ -415,11 +422,12 @@
               <object class="GladePropertyShell" id="documenters_editor">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="hexpand">False</property>
                 <property name="property_name">documenters</property>
               </object>
               <packing>
                 <property name="left_attach">3</property>
-                <property name="top_attach">16</property>
+                <property name="top_attach">22</property>
                 <property name="width">4</property>
                 <property name="height">1</property>
               </packing>
@@ -435,8 +443,8 @@
               </object>
               <packing>
                 <property name="left_attach">0</property>
-                <property name="top_attach">17</property>
-                <property name="width">3</property>
+                <property name="top_attach">16</property>
+                <property name="width">7</property>
                 <property name="height">1</property>
               </packing>
             </child>
@@ -450,8 +458,8 @@
               </object>
               <packing>
                 <property name="left_attach">0</property>
-                <property name="top_attach">18</property>
-                <property name="width">3</property>
+                <property name="top_attach">17</property>
+                <property name="width">7</property>
                 <property name="height">1</property>
               </packing>
             </child>
@@ -459,13 +467,15 @@
               <object class="GladePropertyLabel" id="comments_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="margin_left">12</property>
+                <property name="hexpand">False</property>
                 <property name="property_name">comments</property>
                 <property name="custom_text" translatable="yes">Comments</property>
               </object>
               <packing>
-                <property name="left_attach">3</property>
-                <property name="top_attach">17</property>
-                <property name="width">4</property>
+                <property name="left_attach">0</property>
+                <property name="top_attach">10</property>
+                <property name="width">7</property>
                 <property name="height">1</property>
               </packing>
             </child>
@@ -473,40 +483,31 @@
               <object class="GladePropertyShell" id="comments_editor">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="margin_left">12</property>
+                <property name="hexpand">False</property>
                 <property name="property_name">comments</property>
               </object>
               <packing>
-                <property name="left_attach">3</property>
-                <property name="top_attach">18</property>
-                <property name="width">4</property>
+                <property name="left_attach">0</property>
+                <property name="top_attach">11</property>
+                <property name="width">7</property>
                 <property name="height">1</property>
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label1">
+              <object class="GtkLabel" id="logo_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
                 <property name="valign">center</property>
                 <property name="margin_left">12</property>
+                <property name="hexpand">False</property>
                 <property name="label" translatable="yes">Logo:</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
                 <property name="top_attach">3</property>
                 <property name="width">1</property>
-                <property name="height">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="spacing">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">2</property>
-                <property name="width">7</property>
                 <property name="height">1</property>
               </packing>
             </child>
@@ -523,25 +524,58 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="spacing2">
+              <object class="GtkLabel" id="legal_title">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="valign">center</property>
+                <property name="label" translatable="yes">License and Copyright</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                </attributes>
               </object>
               <packing>
                 <property name="left_attach">0</property>
-                <property name="top_attach">9</property>
+                <property name="top_attach">12</property>
                 <property name="width">7</property>
                 <property name="height">1</property>
               </packing>
             </child>
             <child>
-              <placeholder/>
+              <object class="GtkLabel" id="website_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="valign">center</property>
+                <property name="margin_left">12</property>
+                <property name="hexpand">False</property>
+                <property name="label" translatable="yes">Website:</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">6</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
             </child>
             <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
+              <object class="GtkLabel" id="credits_title">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="valign">center</property>
+                <property name="hexpand">False</property>
+                <property name="label" translatable="yes">Credits</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">18</property>
+                <property name="width">7</property>
+                <property name="height">1</property>
+              </packing>
             </child>
             <child>
               <placeholder/>
@@ -607,7 +641,7 @@
       <editor id="logo_file_label"/>
       <editor id="logo_icon_editor"/>
       <editor id="logo_file_editor"/>
-      <editor id="website_label"/>
+      <editor id="website_url_label"/>
       <editor id="website_editor"/>
       <editor id="website_label_label"/>
       <editor id="website_label_editor"/>
