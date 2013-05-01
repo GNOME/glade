@@ -899,6 +899,10 @@ glade_eprop_enum_create_input (GladeEditorProperty *eprop)
   gtk_widget_set_hexpand (eprop_enum->combo_box, TRUE);
   
   cell_renderer = gtk_cell_renderer_text_new ();
+  g_object_set (cell_renderer,
+		"wrap-mode", PANGO_WRAP_WORD,
+		"wrap-width", 10,
+		NULL);
   gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (eprop_enum->combo_box),
                               cell_renderer, TRUE);
   gtk_cell_layout_add_attribute (GTK_CELL_LAYOUT (eprop_enum->combo_box),
