@@ -894,8 +894,9 @@ glade_eprop_enum_create_input (GladeEditorProperty *eprop)
     }
 
   eprop_enum->combo_box = gtk_combo_box_new_with_model (GTK_TREE_MODEL (list_store));
-  gtk_widget_set_halign (eprop_enum->combo_box, GTK_ALIGN_START);
+  gtk_widget_set_halign (eprop_enum->combo_box, GTK_ALIGN_FILL);
   gtk_widget_set_valign (eprop_enum->combo_box, GTK_ALIGN_CENTER);
+  gtk_widget_set_hexpand (eprop_enum->combo_box, TRUE);
   
   cell_renderer = gtk_cell_renderer_text_new ();
   gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (eprop_enum->combo_box),
