@@ -2094,14 +2094,26 @@ embedded in another object</_tooltip>
     -->
     
    <glade-widget-class name="GtkAboutDialog" generic-name="aboutdialog" _title="About Dialog">
-      <properties>
-	<property id="program-name" since="2.12"/>
-	<property id="copyright" translatable="True" multiline="True"/>
-	<property id="comments" translatable="True" multiline="True"/>
-	<property id="license" translatable="True" multiline="True"/>
-	<property id="website-label" translatable="True" multiline="True"/>
 
-       	<property id="license-type" since="3.0">
+      <read-widget-function>glade_gtk_about_dialog_read_widget</read-widget-function>
+      <set-property-function>glade_gtk_about_dialog_set_property</set-property-function>
+
+      <properties>
+	<property id="program-name" since="2.12" custom-layout="True"/>
+	<property id="version" custom-layout="True"/>
+	<property id="license" translatable="True" multiline="True" custom-layout="True"/>
+	<property id="wrap-license" custom-layout="True"/>
+	<property id="logo-icon-name" themed-icon="True" custom-layout="True"/>
+	<property id="logo" custom-layout="True"/>
+	<property id="website" custom-layout="True"/>
+	<property id="website-label" translatable="True" multiline="True" custom-layout="True"/>
+	<property id="authors" custom-layout="True"/>
+	<property id="artists" custom-layout="True"/>
+	<property id="documenters" custom-layout="True"/>
+	<property id="copyright" translatable="True" multiline="True" custom-layout="True"/>
+	<property id="comments" translatable="True" multiline="True" custom-layout="True"/>
+
+       	<property id="license-type" since="3.0" custom-layout="True">
   	  <displayable-values>
 	    <value id="GTK_LICENSE_UNKNOWN" _name="Unknown"/>
 	    <value id="GTK_LICENSE_CUSTOM" _name="Custom"/>
@@ -2114,9 +2126,16 @@ embedded in another object</_tooltip>
 	    <value id="GTK_LICENSE_ARTISTIC" _name="Artistic"/>
 	  </displayable-values>
 	</property>
+
+	<!-- A virtual property to drive the radio button between setting the Logo as a file or icon name -->
+        <property id="glade-logo-as-file" visible="False" save="False">
+	  <parameter-spec>
+	    <type>GParamBoolean</type>
+	  </parameter-spec>
+        </property>
 	
 	<!-- It is disputable whether this should really be translatable -->
-	<property id="translator-credits" translatable="True" multiline="True">
+	<property id="translator-credits" translatable="True" multiline="True" custom-layout="True">
 	  <_tooltip>You can mark this as translatable and set one name/address if you want to show a translation specific translator, otherwise you should list all translators and unmark this string for translation</_tooltip>
 	</property>
       </properties>

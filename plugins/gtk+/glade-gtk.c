@@ -25,28 +25,29 @@
 #include <config.h>
 
 #include "glade-gtk.h"
+#include "glade-about-dialog-editor.h"
 #include "glade-accels.h"
-#include "glade-attributes.h"
-#include "glade-column-types.h"
-#include "glade-model-data.h"
-#include "glade-icon-sources.h"
-#include "glade-button-editor.h"
-#include "glade-widget-editor.h"
-#include "glade-window-editor.h"
-#include "glade-tool-button-editor.h"
-#include "glade-image-editor.h"
-#include "glade-image-item-editor.h"
-#include "glade-icon-factory-editor.h"
-#include "glade-store-editor.h"
-#include "glade-label-editor.h"
-#include "glade-cell-renderer-editor.h"
-#include "glade-treeview-editor.h"
-#include "glade-entry-editor.h"
 #include "glade-activatable-editor.h"
-#include "glade-tool-item-group-editor.h"
-#include "glade-string-list.h"
+#include "glade-attributes.h"
+#include "glade-button-editor.h"
+#include "glade-cell-renderer-editor.h"
+#include "glade-column-types.h"
+#include "glade-entry-editor.h"
 #include "glade-fixed.h"
 #include "glade-gtk-action-widgets.h"
+#include "glade-icon-factory-editor.h"
+#include "glade-icon-sources.h"
+#include "glade-image-editor.h"
+#include "glade-image-item-editor.h"
+#include "glade-label-editor.h"
+#include "glade-model-data.h"
+#include "glade-store-editor.h"
+#include "glade-string-list.h"
+#include "glade-tool-button-editor.h"
+#include "glade-tool-item-group-editor.h"
+#include "glade-treeview-editor.h"
+#include "glade-widget-editor.h"
+#include "glade-window-editor.h"
 
 #include <gladeui/glade-editor-property.h>
 #include <gladeui/glade-base-editor.h>
@@ -3287,7 +3288,14 @@ glade_gtk_window_create_editable (GladeWidgetAdaptor * adaptor,
        * so don't check it by GType but use strcmp() instead.
        */
       strcmp (glade_widget_adaptor_get_name (adaptor), "GtkOffscreenWindow") != 0)
-    editable = (GladeEditable *) glade_window_editor_new ();
+    {
+      GType window_type = glade_widget_adaptor_get_object_type (adaptor);
+
+      if (g_type_is_a (window_type, GTK_TYPE_ABOUT_DIALOG))
+	editable = (GladeEditable *) glade_about_dialog_editor_new ();
+      else
+	editable = (GladeEditable *) glade_window_editor_new ();
+    }
   else
     editable = GWA_GET_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
 
@@ -3314,6 +3322,47 @@ glade_gtk_window_set_property (GladeWidgetAdaptor * adaptor,
   else
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
 }
+
+/* ----------------------------- GtkAboutDialog ------------------------------ */
+void
+glade_gtk_about_dialog_read_widget (GladeWidgetAdaptor * adaptor,
+				    GladeWidget * widget, GladeXmlNode * node)
+{
+  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
+	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
+    return;
+
+  /* First chain up and read in all the normal properties.. */
+  GWA_GET_CLASS (GTK_TYPE_WIDGET)->read_widget (adaptor, widget, node);
+
+  /* Sync the logo icon mode */
+  if (glade_widget_property_original_default (widget, "logo") == FALSE)
+    glade_widget_property_set (widget, "glade-logo-as-file", TRUE);
+  else
+    glade_widget_property_set (widget, "glade-logo-as-file", FALSE);
+}
+
+void
+glade_gtk_about_dialog_set_property (GladeWidgetAdaptor * adaptor,
+				     GObject * object,
+				     const gchar * id, const GValue * value)
+{
+  if (!strcmp (id, "glade-logo-as-file"))
+    {
+      GladeWidget *gwidget = glade_widget_get_from_gobject (object);
+
+      glade_widget_property_set_sensitive (gwidget, "logo", FALSE, NOT_SELECTED_MSG);
+      glade_widget_property_set_sensitive (gwidget, "logo-icon-name", FALSE, NOT_SELECTED_MSG);
+
+      if (g_value_get_boolean (value))
+	glade_widget_property_set_sensitive (gwidget, "logo", TRUE, NULL);
+      else
+	glade_widget_property_set_sensitive (gwidget, "logo-icon-name", TRUE, NULL);
+    }
+  else
+    GWA_GET_CLASS (GTK_TYPE_DIALOG)->set_property (adaptor, object, id, value);
+}
+
 
 /* ----------------------------- GtkDialog(s) ------------------------------ */
 static void

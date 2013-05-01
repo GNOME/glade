@@ -23,6 +23,7 @@ libgladegtk_la_CFLAGS = $(AM_CFLAGS)
 
 libgladegtk_la_SOURCES = 		\
 	$(BUILT_SOURCES) 		\
+	glade-about-dialog-editor.c	\
 	glade-accels.c			\
 	glade-activatable-editor.c	\
 	glade-attributes.c		\
@@ -56,6 +57,7 @@ libgladegtk_la_LDFLAGS     = -module -avoid-version $(AM_LDFLAGS)
 libgladegtk_la_LIBADD      = $(libgladeui) $(GTK_LIBS)
 
 noinst_HEADERS =			\
+	glade-about-dialog-editor.h	\
 	glade-accels.h			\
 	glade-activatable-editor.h	\
 	glade-attributes.h		\
@@ -84,9 +86,7 @@ if PLATFORM_WIN32
 libgladegtk_la_LDFLAGS += -no-undefined
 endif
 
-
 # catalog data
-
 catalogsdir = $(pkgdatadir)/catalogs
 
 catalogs_DATA = gtk+.xml
@@ -104,6 +104,7 @@ BUILT_SOURCES = 		\
 	glade-gtk-resources.h
 
 UI_FILES = 				\
+	glade-about-dialog-editor.ui	\
 	glade-activatable-editor.ui	\
 	glade-button-editor.ui		\
 	glade-entry-editor.ui		\
