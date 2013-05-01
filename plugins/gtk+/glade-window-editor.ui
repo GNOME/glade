@@ -1,27 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface domain="glade">
-  <!-- interface-requires gladeui 0.0 -->
   <!-- interface-requires gtk+ 3.10 -->
+  <!-- interface-requires gladeui 0.0 -->
   <template class="GladeWindowEditor" parent="GladeEditorSkeleton">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="has_focus">False</property>
-    <property name="is_focus">False</property>
     <property name="orientation">vertical</property>
     <child>
       <object class="GtkGrid" id="grid">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="has_focus">False</property>
-        <property name="is_focus">False</property>
         <property name="row_spacing">6</property>
         <property name="column_spacing">6</property>
         <child>
           <object class="GladeEditorTable" id="embed">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -34,18 +28,16 @@
           <object class="GtkLabel" id="params_title">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="halign">start</property>
             <property name="valign">center</property>
-            <property name="label" translatable="yes">Window Parameters</property>
+            <property name="label" translatable="yes">Window Attributes</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">1</property>
+            <property name="top_attach">2</property>
             <property name="width">6</property>
             <property name="height">1</property>
           </packing>
@@ -54,8 +46,6 @@
           <object class="GladePropertyLabel" id="type_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="property_name">type</property>
@@ -63,7 +53,7 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">2</property>
+            <property name="top_attach">3</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -72,14 +62,12 @@
           <object class="GladePropertyShell" id="type_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="hexpand">False</property>
             <property name="property_name">type</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
-            <property name="top_attach">2</property>
+            <property name="top_attach">3</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -88,8 +76,6 @@
           <object class="GladePropertyLabel" id="type_hint_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="property_name">type-hint</property>
@@ -97,7 +83,7 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">3</property>
+            <property name="top_attach">4</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -106,14 +92,12 @@
           <object class="GladePropertyShell" id="type_hint_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="hexpand">False</property>
             <property name="property_name">type-hint</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
-            <property name="top_attach">3</property>
+            <property name="top_attach">4</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -122,15 +106,13 @@
           <object class="GladePropertyLabel" id="position_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="hexpand">False</property>
             <property name="property_name">window-position</property>
             <property name="custom_text" translatable="yes">Position:</property>
           </object>
           <packing>
             <property name="left_attach">3</property>
-            <property name="top_attach">2</property>
+            <property name="top_attach">3</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -139,15 +121,13 @@
           <object class="GladePropertyLabel" id="gravity_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="hexpand">False</property>
             <property name="property_name">gravity</property>
             <property name="custom_text" translatable="yes">Gravity:</property>
           </object>
           <packing>
             <property name="left_attach">3</property>
-            <property name="top_attach">3</property>
+            <property name="top_attach">4</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -156,26 +136,8 @@
           <object class="GladePropertyShell" id="position_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="hexpand">False</property>
             <property name="property_name">window-position</property>
-          </object>
-          <packing>
-            <property name="left_attach">4</property>
-            <property name="top_attach">2</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GladePropertyShell" id="gravity_editor">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
-            <property name="hexpand">False</property>
-            <property name="property_name">gravity</property>
           </object>
           <packing>
             <property name="left_attach">4</property>
@@ -185,18 +147,30 @@
           </packing>
         </child>
         <child>
+          <object class="GladePropertyShell" id="gravity_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">gravity</property>
+          </object>
+          <packing>
+            <property name="left_attach">4</property>
+            <property name="top_attach">4</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
           <object class="GladePropertyLabel" id="groups_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="property_name">accel-groups</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">4</property>
+            <property name="top_attach">5</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -205,14 +179,12 @@
           <object class="GladePropertyShell" id="groups_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="hexpand">False</property>
             <property name="property_name">accel-groups</property>
           </object>
           <packing>
             <property name="left_attach">2</property>
-            <property name="top_attach">4</property>
+            <property name="top_attach">5</property>
             <property name="width">4</property>
             <property name="height">1</property>
           </packing>
@@ -221,8 +193,6 @@
           <object class="GladePropertyLabel" id="transient_for_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="property_name">transient-for</property>
@@ -230,7 +200,7 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">5</property>
+            <property name="top_attach">6</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -239,8 +209,6 @@
           <object class="GladePropertyLabel" id="attached_to_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="property_name">attached-to</property>
@@ -248,7 +216,7 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">6</property>
+            <property name="top_attach">7</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -257,26 +225,8 @@
           <object class="GladePropertyShell" id="transient_for_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="hexpand">False</property>
             <property name="property_name">transient-for</property>
-          </object>
-          <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">5</property>
-            <property name="width">4</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GladePropertyShell" id="attached_to_editor">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
-            <property name="hexpand">False</property>
-            <property name="property_name">attached-to</property>
           </object>
           <packing>
             <property name="left_attach">2</property>
@@ -286,18 +236,30 @@
           </packing>
         </child>
         <child>
+          <object class="GladePropertyShell" id="attached_to_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">attached-to</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">7</property>
+            <property name="width">4</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
           <object class="GladePropertyLabel" id="role_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="property_name">role</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">7</property>
+            <property name="top_attach">8</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -306,14 +268,12 @@
           <object class="GladePropertyShell" id="role_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="hexpand">False</property>
             <property name="property_name">role</property>
           </object>
           <packing>
             <property name="left_attach">2</property>
-            <property name="top_attach">7</property>
+            <property name="top_attach">8</property>
             <property name="width">4</property>
             <property name="height">1</property>
           </packing>
@@ -322,15 +282,13 @@
           <object class="GladePropertyLabel" id="startup_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="property_name">startup-id</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">8</property>
+            <property name="top_attach">9</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -339,14 +297,12 @@
           <object class="GladePropertyShell" id="startup_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="hexpand">False</property>
             <property name="property_name">startup-id</property>
           </object>
           <packing>
             <property name="left_attach">2</property>
-            <property name="top_attach">8</property>
+            <property name="top_attach">9</property>
             <property name="width">4</property>
             <property name="height">1</property>
           </packing>
@@ -355,8 +311,6 @@
           <object class="GtkLabel" id="appearance_title">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="halign">start</property>
             <property name="valign">center</property>
             <property name="label" translatable="yes">Appearance</property>
@@ -366,7 +320,7 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">9</property>
+            <property name="top_attach">10</property>
             <property name="width">6</property>
             <property name="height">1</property>
           </packing>
@@ -375,8 +329,6 @@
           <object class="GladePropertyLabel" id="title_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="property_name">title</property>
@@ -384,7 +336,7 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">10</property>
+            <property name="top_attach">11</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -393,14 +345,12 @@
           <object class="GladePropertyShell" id="title_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="hexpand">False</property>
             <property name="property_name">title</property>
           </object>
           <packing>
             <property name="left_attach">2</property>
-            <property name="top_attach">10</property>
+            <property name="top_attach">11</property>
             <property name="width">4</property>
             <property name="height">1</property>
           </packing>
@@ -409,8 +359,6 @@
           <object class="GtkRadioButton" id="icon_file_radio">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="receives_default">False</property>
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
@@ -422,8 +370,6 @@
               <object class="GladePropertyLabel" id="icon_file_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="has_focus">False</property>
-                <property name="is_focus">False</property>
                 <property name="property_name">icon</property>
                 <property name="custom_text" translatable="yes">Icon File</property>
               </object>
@@ -431,7 +377,7 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">13</property>
+            <property name="top_attach">14</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -440,8 +386,6 @@
           <object class="GtkRadioButton" id="icon_name_radio">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="receives_default">False</property>
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
@@ -454,8 +398,6 @@
               <object class="GladePropertyLabel" id="icon_name_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="has_focus">False</property>
-                <property name="is_focus">False</property>
                 <property name="property_name">icon-name</property>
                 <property name="custom_text" translatable="yes">Icon Name</property>
               </object>
@@ -463,7 +405,7 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">12</property>
+            <property name="top_attach">13</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -472,26 +414,8 @@
           <object class="GladePropertyShell" id="icon_name_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="hexpand">False</property>
             <property name="property_name">icon-name</property>
-          </object>
-          <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">12</property>
-            <property name="width">4</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GladePropertyShell" id="icon_file_editor">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
-            <property name="hexpand">False</property>
-            <property name="property_name">icon</property>
           </object>
           <packing>
             <property name="left_attach">2</property>
@@ -501,18 +425,30 @@
           </packing>
         </child>
         <child>
+          <object class="GladePropertyShell" id="icon_file_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">icon</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">14</property>
+            <property name="width">4</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
           <object class="GladePropertyLabel" id="default_width_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="property_name">default-width</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">14</property>
+            <property name="top_attach">15</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -521,15 +457,13 @@
           <object class="GladePropertyLabel" id="default_height_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="property_name">default-height</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">15</property>
+            <property name="top_attach">16</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -538,26 +472,8 @@
           <object class="GladePropertyShell" id="default_width_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="hexpand">False</property>
             <property name="property_name">default-width</property>
-          </object>
-          <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">14</property>
-            <property name="width">4</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GladePropertyShell" id="default_height_editor">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
-            <property name="hexpand">False</property>
-            <property name="property_name">default-height</property>
           </object>
           <packing>
             <property name="left_attach">2</property>
@@ -567,11 +483,23 @@
           </packing>
         </child>
         <child>
+          <object class="GladePropertyShell" id="default_height_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">default-height</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">16</property>
+            <property name="width">4</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkLabel" id="flags_title">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="halign">start</property>
             <property name="valign">center</property>
             <property name="label" translatable="yes">Window Flags</property>
@@ -581,7 +509,7 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">16</property>
+            <property name="top_attach">17</property>
             <property name="width">6</property>
             <property name="height">1</property>
           </packing>
@@ -590,15 +518,13 @@
           <object class="GladePropertyShell" id="hide_titlebar_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="hexpand">False</property>
             <property name="property_name">hide-titlebar-when-maximized</property>
             <property name="editor_type">GladeEpropCheck</property>
           </object>
           <packing>
             <property name="left_attach">2</property>
-            <property name="top_attach">11</property>
+            <property name="top_attach">12</property>
             <property name="width">4</property>
             <property name="height">1</property>
           </packing>
@@ -607,8 +533,6 @@
           <object class="GladePropertyShell" id="decorated_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="property_name">decorated</property>
@@ -616,7 +540,7 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">11</property>
+            <property name="top_attach">12</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -625,8 +549,6 @@
           <object class="GladePropertyShell" id="deletable_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="property_name">deletable</property>
@@ -634,7 +556,7 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">17</property>
+            <property name="top_attach">18</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -643,15 +565,13 @@
           <object class="GladePropertyShell" id="destroy_with_parent_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="hexpand">False</property>
             <property name="property_name">destroy-with-parent</property>
             <property name="editor_type">GladeEpropCheck</property>
           </object>
           <packing>
             <property name="left_attach">2</property>
-            <property name="top_attach">17</property>
+            <property name="top_attach">18</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -660,8 +580,6 @@
           <object class="GladePropertyShell" id="resizable_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="property_name">resizable</property>
@@ -669,7 +587,7 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">18</property>
+            <property name="top_attach">19</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -678,8 +596,6 @@
           <object class="GladePropertyShell" id="urgent_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="property_name">urgency-hint</property>
@@ -687,7 +603,7 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">19</property>
+            <property name="top_attach">20</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -696,15 +612,13 @@
           <object class="GladePropertyShell" id="resize_grip_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="hexpand">False</property>
             <property name="property_name">has-resize-grip</property>
             <property name="editor_type">GladeEpropCheck</property>
           </object>
           <packing>
             <property name="left_attach">2</property>
-            <property name="top_attach">18</property>
+            <property name="top_attach">19</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -713,15 +627,13 @@
           <object class="GladePropertyShell" id="modal_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="hexpand">False</property>
             <property name="property_name">modal</property>
             <property name="editor_type">GladeEpropCheck</property>
           </object>
           <packing>
             <property name="left_attach">3</property>
-            <property name="top_attach">17</property>
+            <property name="top_attach">18</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -730,15 +642,13 @@
           <object class="GladePropertyShell" id="skip_taskbar_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="hexpand">False</property>
             <property name="property_name">skip-taskbar-hint</property>
             <property name="editor_type">GladeEpropCheck</property>
           </object>
           <packing>
             <property name="left_attach">2</property>
-            <property name="top_attach">19</property>
+            <property name="top_attach">20</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -747,15 +657,13 @@
           <object class="GladePropertyShell" id="skip_pager_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="hexpand">False</property>
             <property name="property_name">skip-pager-hint</property>
             <property name="editor_type">GladeEpropCheck</property>
           </object>
           <packing>
             <property name="left_attach">3</property>
-            <property name="top_attach">19</property>
+            <property name="top_attach">20</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -764,8 +672,6 @@
           <object class="GladePropertyShell" id="accept_focus_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="property_name">accept-focus</property>
@@ -773,7 +679,7 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">20</property>
+            <property name="top_attach">21</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -782,16 +688,30 @@
           <object class="GladePropertyShell" id="focus_on_map_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
             <property name="hexpand">False</property>
             <property name="property_name">focus-on-map</property>
             <property name="editor_type">GladeEpropCheck</property>
           </object>
           <packing>
             <property name="left_attach">2</property>
-            <property name="top_attach">20</property>
+            <property name="top_attach">21</property>
             <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="extension_port">
+            <property name="can_focus">False</property>
+            <property name="no_show_all">True</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">1</property>
+            <property name="width">6</property>
             <property name="height">1</property>
           </packing>
         </child>

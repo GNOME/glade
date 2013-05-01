@@ -49,8 +49,8 @@ struct _GladeWindowEditorClass
   GladeEditorSkeletonClass parent;
 };
 
-GType            glade_window_editor_get_type (void) G_GNUC_CONST;
-GtkWidget       *glade_window_editor_new      (void);
+GType            glade_window_editor_get_type       (void) G_GNUC_CONST;
+GtkWidget       *glade_window_editor_new            (void);
 
 G_END_DECLS
 

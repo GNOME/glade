@@ -35,6 +35,7 @@ static void icon_file_toggled    (GtkWidget *widget, GladeWindowEditor * window_
 struct _GladeWindowEditorPrivate {
   GtkWidget *embed;
 
+  GtkWidget *extension_port;
   GtkWidget *icon_name_radio;
   GtkWidget *icon_file_radio;
 };
@@ -57,6 +58,7 @@ glade_window_editor_class_init (GladeWindowEditorClass * klass)
   gtk_widget_class_bind_child (widget_class, GladeWindowEditorPrivate, embed);
   gtk_widget_class_bind_child (widget_class, GladeWindowEditorPrivate, icon_name_radio);
   gtk_widget_class_bind_child (widget_class, GladeWindowEditorPrivate, icon_file_radio);
+  gtk_widget_class_bind_child_internal (widget_class, GladeWindowEditorPrivate, extension_port);
 
   gtk_widget_class_bind_callback (widget_class, icon_name_toggled);
   gtk_widget_class_bind_callback (widget_class, icon_file_toggled);
@@ -183,9 +185,24 @@ icon_file_toggled (GtkWidget         *widget,
   glade_editable_load (GLADE_EDITABLE (window_editor), gwidget);
 }
 
-
+/*************************************
+ *                API                *
+ *************************************/
 GtkWidget *
 glade_window_editor_new (void)
 {
   return g_object_new (GLADE_TYPE_WINDOW_EDITOR, NULL);
+}
+
+/*************************************
+ *     Private Plugin Extensions     *
+ *************************************/
+void
+glade_window_editor_post_create (GladeWidgetAdaptor *adaptor,
+				 GObject            *editor,
+				 GladeCreateReason   reason)
+{
+  GladeWindowEditorPrivate *priv = GLADE_WINDOW_EDITOR (editor)->priv;
+
+  gtk_widget_show (priv->extension_port);
 }
