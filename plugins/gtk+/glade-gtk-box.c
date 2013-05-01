@@ -68,20 +68,22 @@ glade_gtk_box_post_create (GladeWidgetAdaptor * adaptor,
 }
 
 static gint
-sort_box_children (GtkWidget * widget_a, GtkWidget * widget_b)
+sort_box_children (GtkWidget * widget_a, GtkWidget * widget_b, GtkWidget *box)
 {
-  GtkWidget *box;
   GladeWidget *gwidget_a, *gwidget_b;
   gint position_a, position_b;
 
   gwidget_a = glade_widget_get_from_gobject (widget_a);
   gwidget_b = glade_widget_get_from_gobject (widget_b);
 
-  box = gtk_widget_get_parent (widget_a);
+  /* Indirect children might be internal children, sort internal children before any other children */
+  if (box != gtk_widget_get_parent (widget_a))
+    return -1;
+  if (box != gtk_widget_get_parent (widget_b))
+    return 1;
 
   /* XXX Sometimes the packing "position" property doesnt exist here, why ?
    */
-
   if (gwidget_a)
     glade_widget_pack_property_get (gwidget_a, "position", &position_a);
   else
@@ -98,11 +100,13 @@ sort_box_children (GtkWidget * widget_a, GtkWidget * widget_b)
 
 GList *
 glade_gtk_box_get_children (GladeWidgetAdaptor * adaptor,
-                            GtkContainer * container)
+                            GObject * container)
 {
-  GList *children = glade_util_container_get_all_children (container);
+  GList *children;
 
-  return g_list_sort (children, (GCompareFunc) sort_box_children);
+  children = GWA_GET_CLASS (GTK_TYPE_CONTAINER)->get_children (adaptor, container);
+
+  return g_list_sort_with_data (children, (GCompareDataFunc) sort_box_children, container);
 }
 
 void
