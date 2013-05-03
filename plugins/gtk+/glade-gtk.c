@@ -79,34 +79,6 @@ glade_gtk_init (const gchar * name)
 }
 
 
-
-/* ----------------------------- GtkFileChooserWidget ------------------------------ */
-void
-glade_gtk_file_chooser_widget_post_create (GladeWidgetAdaptor * adaptor,
-                                           GObject * object,
-                                           GladeCreateReason reason)
-{
-  gtk_container_forall (GTK_CONTAINER (object),
-                        glade_gtk_file_chooser_default_forall, NULL);
-}
-
-void
-glade_gtk_file_chooser_button_set_property (GladeWidgetAdaptor * adaptor,
-                                            GObject * object,
-                                            const gchar * id,
-                                            const GValue * value)
-{
-  /* Avoid a warning */
-  if (!strcmp (id, "action"))
-    {
-      if (g_value_get_enum (value) == GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER ||
-          g_value_get_enum (value) == GTK_FILE_CHOOSER_ACTION_SAVE)
-        return;
-    }
-
-  GWA_GET_CLASS (GTK_TYPE_BOX)->set_property (adaptor, object, id, value);
-}
-
 /* ----------------------------- GtkFontButton ------------------------------ */
 /* Use the font-buttons launch dialog to actually set the font-name
  * glade property through the glade-command api.
