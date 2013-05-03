@@ -44,15 +44,13 @@
 G_BEGIN_DECLS
 
 /* Shared functions */
-void
-glade_gtk_box_notebook_child_insert_remove_action (GladeWidgetAdaptor * adaptor,
-                                                   GObject * container,
-                                                   GObject * object,
-                                                   const gchar * size_prop,
-                                                   const gchar * group_format,
-                                                   gboolean remove,
-                                                   gboolean after);
-
+void      glade_gtk_box_notebook_child_insert_remove_action (GladeWidgetAdaptor * adaptor,
+							     GObject * container,
+							     GObject * object,
+							     const gchar * size_prop,
+							     const gchar * group_format,
+							     gboolean remove,
+							     gboolean after);
 
 G_END_DECLS
 

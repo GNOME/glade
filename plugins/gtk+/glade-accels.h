@@ -54,6 +54,15 @@ GladeXmlNode   *glade_accel_write          (GladeAccelInfo   *accel_info,
 					    GladeXmlContext  *context,
 					    gboolean          write_signal);
 
+
+void         glade_gtk_write_accels        (GladeWidget      *widget,
+					    GladeXmlContext  *context,
+					    GladeXmlNode     *node,
+					    gboolean          write_signal);
+void         glade_gtk_read_accels         (GladeWidget      *widget,
+					    GladeXmlNode     *node,
+					    gboolean          require_signal);
+
 G_END_DECLS
 
 #endif   /* __GLADE_ACCELS_H__ */

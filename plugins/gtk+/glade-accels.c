@@ -859,3 +859,60 @@ glade_accel_write (GladeAccelInfo * accel,
 
   return accel_node;
 }
+
+
+void
+glade_gtk_read_accels (GladeWidget * widget,
+                       GladeXmlNode * node, gboolean require_signal)
+{
+  GladeProperty *property;
+  GladeXmlNode *prop;
+  GladeAccelInfo *ainfo;
+  GValue *value = NULL;
+  GList *accels = NULL;
+
+  for (prop = glade_xml_node_get_children (node);
+       prop; prop = glade_xml_node_next (prop))
+    {
+      if (!glade_xml_node_verify_silent (prop, GLADE_TAG_ACCEL))
+        continue;
+
+      if ((ainfo = glade_accel_read (prop, require_signal)) != NULL)
+        accels = g_list_prepend (accels, ainfo);
+    }
+
+  if (accels)
+    {
+      value = g_new0 (GValue, 1);
+      g_value_init (value, GLADE_TYPE_ACCEL_GLIST);
+      g_value_take_boxed (value, accels);
+
+      property = glade_widget_get_property (widget, "accelerator");
+      glade_property_set_value (property, value);
+
+      g_value_unset (value);
+      g_free (value);
+    }
+}
+
+void
+glade_gtk_write_accels (GladeWidget * widget,
+                        GladeXmlContext * context,
+                        GladeXmlNode * node, gboolean write_signal)
+{
+  GladeXmlNode *accel_node;
+  GladeProperty *property;
+  GList *list;
+
+  /* Some child widgets may have disabled the property */
+  if (!(property = glade_widget_get_property (widget, "accelerator")))
+    return;
+
+  for (list = g_value_get_boxed (glade_property_inline_value (property)); list; list = list->next)
+    {
+      GladeAccelInfo *accel = list->data;
+
+      accel_node = glade_accel_write (accel, context, write_signal);
+      glade_xml_node_append_child (node, accel_node);
+    }
+}
