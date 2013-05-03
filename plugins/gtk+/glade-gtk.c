@@ -25,6 +25,7 @@
 #include <config.h>
 
 #include "glade-gtk.h"
+#include "glade-gtk-frame.h"
 #include "glade-about-dialog-editor.h"
 #include "glade-accels.h"
 #include "glade-activatable-editor.h"
@@ -82,189 +83,6 @@ glade_gtk_stop_emission_POINTER (gpointer instance, gpointer dummy,
 void
 glade_gtk_init (const gchar * name)
 {
-}
-
-/* ----------------- Generic GladeFixed constructor ------------------ */
-
-/* ----------------------------- GtkFrame ------------------------------ */
-void
-glade_gtk_frame_post_create (GladeWidgetAdaptor * adaptor,
-                             GObject * frame, GladeCreateReason reason)
-{
-  static GladeWidgetAdaptor *label_adaptor = NULL, *alignment_adaptor = NULL;
-  GladeWidget *gframe, *glabel, *galignment;
-  GtkWidget *label;
-  gchar *label_text;
-
-  if (reason != GLADE_CREATE_USER)
-    return;
-
-  g_return_if_fail (GTK_IS_FRAME (frame));
-  gframe = glade_widget_get_from_gobject (frame);
-  g_return_if_fail (GLADE_IS_WIDGET (gframe));
-
-  /* If we didnt put this object here or if frame is an aspect frame... */
-  if (((label = gtk_frame_get_label_widget (GTK_FRAME (frame))) == NULL ||
-       (glade_widget_get_from_gobject (label) == NULL)) &&
-      (GTK_IS_ASPECT_FRAME (frame) == FALSE))
-    {
-
-      if (label_adaptor == NULL)
-        label_adaptor = glade_widget_adaptor_get_by_type (GTK_TYPE_LABEL);
-      if (alignment_adaptor == NULL)
-        alignment_adaptor =
-            glade_widget_adaptor_get_by_type (GTK_TYPE_ALIGNMENT);
-
-      /* add label (as an internal child) */
-      glabel = glade_widget_adaptor_create_widget (label_adaptor, FALSE,
-                                                   "parent", gframe,
-                                                   "project",
-                                                   glade_widget_get_project
-                                                   (gframe), NULL);
-
-      label_text =
-          g_strdup_printf ("<b>%s</b>", glade_widget_get_name (gframe));
-      glade_widget_property_set (glabel, "label", label_text);
-      glade_widget_property_set (glabel, "use-markup", "TRUE");
-      g_free (label_text);
-
-      g_object_set_data (glade_widget_get_object (glabel), 
-			 "special-child-type", "label_item");
-      glade_widget_add_child (gframe, glabel, FALSE);
-
-      /* add alignment */
-      galignment = glade_widget_adaptor_create_widget (alignment_adaptor, FALSE,
-                                                       "parent", gframe,
-                                                       "project",
-                                                       glade_widget_get_project
-                                                       (gframe), NULL);
-
-      glade_widget_property_set (galignment, "left-padding", 12);
-      glade_widget_add_child (gframe, galignment, FALSE);
-    }
-
-  /* Chain Up */
-  GWA_GET_CLASS (GTK_TYPE_CONTAINER)->post_create (adaptor, frame, reason);
-}
-
-void
-glade_gtk_frame_replace_child (GladeWidgetAdaptor * adaptor,
-                               GtkWidget * container,
-                               GtkWidget * current, GtkWidget * new_widget)
-{
-  gchar *special_child_type;
-
-  special_child_type =
-      g_object_get_data (G_OBJECT (current), "special-child-type");
-
-  if (special_child_type && !strcmp (special_child_type, "label_item"))
-    {
-      g_object_set_data (G_OBJECT (new_widget), "special-child-type",
-                         "label_item");
-      gtk_frame_set_label_widget (GTK_FRAME (container), new_widget);
-      return;
-    }
-
-  /* Chain Up */
-  GWA_GET_CLASS
-      (GTK_TYPE_CONTAINER)->replace_child (adaptor,
-                                           G_OBJECT (container),
-                                           G_OBJECT (current),
-                                           G_OBJECT (new_widget));
-}
-
-void
-glade_gtk_frame_add_child (GladeWidgetAdaptor * adaptor,
-                           GObject * object, GObject * child)
-{
-  GtkWidget *bin_child;
-  gchar *special_child_type;
-
-  special_child_type = g_object_get_data (child, "special-child-type");
-
-  if (special_child_type && !strcmp (special_child_type, "label"))
-    {
-      g_object_set_data (child, "special-child-type", "label_item");
-      gtk_frame_set_label_widget (GTK_FRAME (object), GTK_WIDGET (child));
-    }
-  else if (special_child_type && !strcmp (special_child_type, "label_item"))
-    {
-      gtk_frame_set_label_widget (GTK_FRAME (object), GTK_WIDGET (child));
-    }
-  else
-    {
-      /* Get a placeholder out of the way before adding the child
-       */
-      bin_child = gtk_bin_get_child (GTK_BIN (object));
-      if (bin_child)
-        {
-          if (GLADE_IS_PLACEHOLDER (bin_child))
-            gtk_container_remove (GTK_CONTAINER (object), bin_child);
-          else
-            {
-              g_critical ("Cant add more than one widget to a GtkFrame");
-              return;
-            }
-        }
-      gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
-    }
-}
-
-void
-glade_gtk_frame_remove_child (GladeWidgetAdaptor * adaptor,
-                              GObject * object, GObject * child)
-{
-  gchar *special_child_type;
-
-  special_child_type = g_object_get_data (child, "special-child-type");
-  if (special_child_type && !strcmp (special_child_type, "label_item"))
-    {
-      gtk_frame_set_label_widget (GTK_FRAME (object), glade_placeholder_new ());
-    }
-  else
-    {
-      gtk_container_remove (GTK_CONTAINER (object), GTK_WIDGET (child));
-      gtk_container_add (GTK_CONTAINER (object), glade_placeholder_new ());
-    }
-}
-
-static gboolean
-write_special_child_label_item (GladeWidgetAdaptor * adaptor,
-                                GladeWidget * widget,
-                                GladeXmlContext * context,
-                                GladeXmlNode * node,
-                                GladeWriteWidgetFunc write_func)
-{
-  gchar *special_child_type = NULL;
-  GObject *child;
-
-  child = glade_widget_get_object (widget);
-  if (child)
-    special_child_type = g_object_get_data (child, "special-child-type");
-
-  if (special_child_type && !strcmp (special_child_type, "label_item"))
-    {
-      g_object_set_data (child, "special-child-type", "label");
-      write_func (adaptor, widget, context, node);
-      g_object_set_data (child, "special-child-type", "label_item");
-      return TRUE;
-    }
-  else
-    return FALSE;
-}
-
-void
-glade_gtk_frame_write_child (GladeWidgetAdaptor * adaptor,
-                             GladeWidget * widget,
-                             GladeXmlContext * context, GladeXmlNode * node)
-{
-
-  if (!write_special_child_label_item (adaptor, widget, context, node,
-                                       GWA_GET_CLASS (GTK_TYPE_CONTAINER)->
-                                       write_child))
-    /* Chain Up */
-    GWA_GET_CLASS
-        (GTK_TYPE_CONTAINER)->write_child (adaptor, widget, context, node);
 }
 
 /* ----------------------------- GtkNotebook ------------------------------ */
@@ -1453,9 +1271,9 @@ glade_gtk_expander_write_child (GladeWidgetAdaptor * adaptor,
                                 GladeXmlContext * context, GladeXmlNode * node)
 {
 
-  if (!write_special_child_label_item (adaptor, widget, context, node,
-                                       GWA_GET_CLASS (GTK_TYPE_CONTAINER)->
-                                       write_child))
+  if (!glade_gtk_write_special_child_label_item (adaptor, widget, context, node,
+						 GWA_GET_CLASS (GTK_TYPE_CONTAINER)->
+						 write_child))
     /* Chain Up */
     GWA_GET_CLASS
         (GTK_TYPE_CONTAINER)->write_child (adaptor, widget, context, node);
