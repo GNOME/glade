@@ -81,35 +81,6 @@ glade_gtk_init (const gchar * name)
 {
 }
 
-/* ----------------------------- GtkRadioMenuItem ------------------------------ */
-static void
-glade_gtk_radio_menu_item_set_group (GObject * object, const GValue * value)
-{
-  GObject *val;
-
-  g_return_if_fail (GTK_IS_RADIO_MENU_ITEM (object));
-
-  if ((val = g_value_get_object (value)))
-    {
-      GSList *group = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (val));
-
-      if (!g_slist_find (group, GTK_RADIO_MENU_ITEM (object)))
-        gtk_radio_menu_item_set_group (GTK_RADIO_MENU_ITEM (object), group);
-    }
-}
-
-void
-glade_gtk_radio_menu_item_set_property (GladeWidgetAdaptor * adaptor,
-                                        GObject * object,
-                                        const gchar * id, const GValue * value)
-{
-
-  if (!strcmp (id, "group"))
-    glade_gtk_radio_menu_item_set_group (object, value);
-  else
-    GWA_GET_CLASS (GTK_TYPE_MENU_ITEM)->set_property (adaptor, object,
-                                                      id, value);
-}
 
 /* ----------------------------- GtkMenuBar ------------------------------ */
 static GladeWidget *
