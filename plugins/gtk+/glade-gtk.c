@@ -85,14 +85,6 @@ glade_gtk_init (const gchar * name)
 }
 
 /* ----------------- Generic GladeFixed constructor ------------------ */
-GladeWidget *
-glade_gtk_create_fixed_widget (GladeWidgetAdaptor * adaptor,
-                               const gchar * first_property_name,
-                               va_list var_args)
-{
-  return (GladeWidget *) g_object_new_valist (GLADE_TYPE_FIXED,
-                                              first_property_name, var_args);
-}
 
 /* ----------------------------- GtkFrame ------------------------------ */
 void
