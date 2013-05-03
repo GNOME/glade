@@ -27,8 +27,8 @@
 #include <string.h>
 
 #include "glade-fixed.h"
+#include "glade-gtk-notebook.h"
 #include "glade-gtk.h"
-
 
 static gboolean glade_gtk_box_configure_child (GladeFixed * fixed,
 					       GladeWidget * child,
