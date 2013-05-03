@@ -38,6 +38,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-gtk-container.c		\
 	glade-gtk-entry.c		\
 	glade-gtk-expander.c		\
+	glade-gtk-fixed-layout.c	\
 	glade-gtk-frame.c		\
 	glade-gtk-grid.c		\
 	glade-gtk-info-bar.c		\
