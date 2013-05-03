@@ -86,46 +86,6 @@ glade_gtk_init (const gchar * name)
 }
 
 
-/* ----------------------------- GtkAboutDialog ------------------------------ */
-void
-glade_gtk_about_dialog_read_widget (GladeWidgetAdaptor * adaptor,
-				    GladeWidget * widget, GladeXmlNode * node)
-{
-  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
-    return;
-
-  /* First chain up and read in all the normal properties.. */
-  GWA_GET_CLASS (GTK_TYPE_WIDGET)->read_widget (adaptor, widget, node);
-
-  /* Sync the logo icon mode */
-  if (glade_widget_property_original_default (widget, "logo") == FALSE)
-    glade_widget_property_set (widget, "glade-logo-as-file", TRUE);
-  else
-    glade_widget_property_set (widget, "glade-logo-as-file", FALSE);
-}
-
-void
-glade_gtk_about_dialog_set_property (GladeWidgetAdaptor * adaptor,
-				     GObject * object,
-				     const gchar * id, const GValue * value)
-{
-  if (!strcmp (id, "glade-logo-as-file"))
-    {
-      GladeWidget *gwidget = glade_widget_get_from_gobject (object);
-
-      glade_widget_property_set_sensitive (gwidget, "logo", FALSE, NOT_SELECTED_MSG);
-      glade_widget_property_set_sensitive (gwidget, "logo-icon-name", FALSE, NOT_SELECTED_MSG);
-
-      if (g_value_get_boolean (value))
-	glade_widget_property_set_sensitive (gwidget, "logo", TRUE, NULL);
-      else
-	glade_widget_property_set_sensitive (gwidget, "logo-icon-name", TRUE, NULL);
-    }
-  else
-    GWA_GET_CLASS (GTK_TYPE_DIALOG)->set_property (adaptor, object, id, value);
-}
-
 
 /* ----------------------------- GtkDialog(s) ------------------------------ */
 static void
