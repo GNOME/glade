@@ -40,6 +40,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-gtk-grid.c		\
 	glade-gtk-info-bar.c		\
 	glade-gtk-notebook.c		\
+	glade-gtk-paned.c		\
 	glade-gtk-switch.c		\
 	glade-gtk-table.c		\
 	glade-gtk-widget.c		\
