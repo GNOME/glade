@@ -15,9 +15,6 @@ G_BEGIN_DECLS
 #define GLADE_TAG_ACCEL_MODIFIERS   "modifiers"
 #define GLADE_TAG_ACCEL_SIGNAL      "signal"
 
-#define GLADE_TAG_ACCEL_GROUPS "accel-groups"
-#define GLADE_TAG_ACCEL_GROUP  "group"
-
 
 typedef struct _GladeKey                GladeKey;
 typedef struct _GladeAccelInfo          GladeAccelInfo;
