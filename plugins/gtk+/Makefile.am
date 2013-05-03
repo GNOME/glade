@@ -45,6 +45,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-gtk-fixed-layout.c	\
 	glade-gtk-frame.c		\
 	glade-gtk-grid.c		\
+	glade-gtk-image.c		\
 	glade-gtk-info-bar.c		\
 	glade-gtk-message-dialog.c	\
 	glade-gtk-notebook.c		\
@@ -82,8 +83,10 @@ noinst_HEADERS =			\
 	glade-fixed.h			\
 	glade-gtk.h			\
 	glade-gtk-action-widgets.h	\
+	glade-gtk-button.h		\
 	glade-gtk-dialog.h		\
 	glade-gtk-frame.h		\
+	glade-gtk-image.h		\
 	glade-gtk-notebook.h		\
 	glade-icon-factory-editor.h	\
 	glade-icon-sources.h		\

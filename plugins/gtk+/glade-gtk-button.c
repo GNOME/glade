@@ -27,6 +27,7 @@
 
 #include "glade-button-editor.h"
 #include "glade-gtk.h"
+#include "glade-gtk-button.h"
 
 /* ----------------------------- GtkFontButton ------------------------------ */
 
@@ -112,27 +113,6 @@ glade_gtk_color_button_set_property (GladeWidgetAdaptor * adaptor,
 }
 
 /* ----------------------------- GtkButton ------------------------------ */
-static void 
-sync_use_appearance (GladeWidget *gwidget)
-{
-  GladeProperty *prop;
-  gboolean       use_appearance;
-
-  /* This is the kind of thing we avoid doing at project load time ;-) */
-  if (glade_widget_superuser ())
-    return;
-
-  prop = glade_widget_get_property (gwidget, "use-action-appearance");
-  use_appearance = FALSE;
-  
-  glade_property_get (prop, &use_appearance);
-  if (use_appearance)
-    {
-      glade_property_set (prop, FALSE);
-      glade_property_set (prop, TRUE);
-    }
-}
-
 GladeEditable *
 glade_gtk_button_create_editable (GladeWidgetAdaptor * adaptor,
                                   GladeEditorPageType type)
@@ -223,7 +203,7 @@ glade_gtk_button_set_property (GladeWidgetAdaptor * adaptor,
        */
       GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object,
                                                         id, value);
-      sync_use_appearance (widget);
+      glade_gtk_sync_use_appearance (widget);
     }
   else if (GPC_VERSION_CHECK (glade_property_get_class (property), gtk_major_version, gtk_minor_version + 1))
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
@@ -281,4 +261,26 @@ glade_gtk_button_write_widget (GladeWidgetAdaptor * adaptor,
   GWA_GET_CLASS (GTK_TYPE_CONTAINER)->write_widget (adaptor, widget, context,
                                                     node);
 
+}
+
+/* Shared with other classes */
+void 
+glade_gtk_sync_use_appearance (GladeWidget *gwidget)
+{
+  GladeProperty *prop;
+  gboolean       use_appearance;
+
+  /* This is the kind of thing we avoid doing at project load time ;-) */
+  if (glade_widget_superuser ())
+    return;
+
+  prop = glade_widget_get_property (gwidget, "use-action-appearance");
+  use_appearance = FALSE;
+  
+  glade_property_get (prop, &use_appearance);
+  if (use_appearance)
+    {
+      glade_property_set (prop, FALSE);
+      glade_property_set (prop, TRUE);
+    }
 }
