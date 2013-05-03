@@ -80,29 +80,6 @@ glade_gtk_init (const gchar * name)
 {
 }
 
-/* ----------------------------- GtkRecentChooserMenu ------------------------------ */
-GladeEditable *
-glade_gtk_recent_chooser_menu_create_editable (GladeWidgetAdaptor * adaptor,
-					       GladeEditorPageType type)
-{
-  if (type == GLADE_PAGE_GENERAL)
-    return (GladeEditable *) glade_activatable_editor_new (adaptor, NULL);
-
-  return GWA_GET_CLASS (GTK_TYPE_MENU)->create_editable (adaptor, type);
-}
-
-void
-glade_gtk_recent_chooser_menu_set_property (GladeWidgetAdaptor * adaptor,
-					    GObject * object,
-					    const gchar * id, const GValue * value)
-{
-  GladeWidget *widget = glade_widget_get_from_gobject (object);
-  GladeProperty *property = glade_widget_get_property (widget, id);
-
-  if (GPC_VERSION_CHECK (glade_property_get_class (property), gtk_major_version, gtk_minor_version + 1))
-    GWA_GET_CLASS (GTK_TYPE_MENU)->set_property (adaptor, object, id, value);
-}
-
 /* ----------------------------- GtkMenuShell ------------------------------ */
 gboolean
 glade_gtk_menu_shell_add_verify (GladeWidgetAdaptor *adaptor,
