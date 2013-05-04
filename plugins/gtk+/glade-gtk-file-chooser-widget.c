@@ -27,6 +27,7 @@
 
 #include "glade-gtk-dialog.h"
 #include "glade-file-chooser-widget-editor.h"
+#include "glade-file-chooser-button-editor.h"
 
 void
 glade_gtk_file_chooser_widget_post_create (GladeWidgetAdaptor * adaptor,
