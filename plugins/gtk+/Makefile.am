@@ -59,6 +59,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-gtk-recent-chooser-menu.c	\
 	glade-gtk-switch.c		\
 	glade-gtk-table.c		\
+	glade-gtk-toolbar.c		\
 	glade-gtk-widget.c		\
 	glade-gtk-window.c		\
 	glade-icon-factory-editor.c	\
