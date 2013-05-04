@@ -79,46 +79,6 @@ glade_gtk_init (const gchar * name)
 }
 
 
-
-/* ----------------------------- GtkTextView ------------------------------ */
-static gboolean
-glade_gtk_text_view_stop_double_click (GtkWidget * widget,
-                                       GdkEventButton * event,
-                                       gpointer user_data)
-{
-  /* Return True if the event is double or triple click */
-  return (event->type == GDK_2BUTTON_PRESS || event->type == GDK_3BUTTON_PRESS);
-}
-
-void
-glade_gtk_text_view_post_create (GladeWidgetAdaptor * adaptor,
-                                 GObject * object, GladeCreateReason reason)
-{
-  /* This makes gtk_text_view_set_buffer() stop complaing */
-  gtk_drag_dest_set (GTK_WIDGET (object), 0, NULL, 0, 0);
-
-  /* Glade hangs when a TextView gets a double click. So we stop them */
-  g_signal_connect (object, "button-press-event",
-                    G_CALLBACK (glade_gtk_text_view_stop_double_click), NULL);
-}
-
-void
-glade_gtk_text_view_set_property (GladeWidgetAdaptor * adaptor,
-                                  GObject * object,
-                                  const gchar * property_name,
-                                  const GValue * value)
-{
-  if (strcmp (property_name, "buffer") == 0)
-    {
-      if (!g_value_get_object (value))
-        return;
-    }
-
-  GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor,
-                                                    object,
-                                                    property_name, value);
-}
-
 /* ----------------------------- GtkComboBox ------------------------------ */
 void
 glade_gtk_combo_box_set_property (GladeWidgetAdaptor * adaptor,
