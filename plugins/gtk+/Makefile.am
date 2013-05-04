@@ -31,6 +31,8 @@ libgladegtk_la_SOURCES = 		\
 	glade-cell-renderer-editor.c	\
 	glade-column-types.c		\
 	glade-entry-editor.c		\
+	glade-file-chooser-dialog-editor.c \
+	glade-file-chooser-editor.c	\
 	glade-fixed.c			\
 	glade-gtk-about-dialog.c	\
 	glade-gtk-action.c		\
@@ -112,6 +114,8 @@ noinst_HEADERS =			\
 	glade-cell-renderer-editor.h	\
 	glade-column-types.h		\
 	glade-entry-editor.h		\
+	glade-file-chooser-dialog-editor.h \
+	glade-file-chooser-editor.h	\
 	glade-fixed.h			\
 	glade-gtk.h			\
 	glade-gtk-action-widgets.h	\
@@ -164,6 +168,8 @@ UI_FILES = 				\
 	glade-activatable-editor.ui	\
 	glade-button-editor.ui		\
 	glade-entry-editor.ui		\
+	glade-file-chooser-dialog-editor.ui \
+	glade-file-chooser-editor.ui	\
 	glade-image-editor.ui		\
 	glade-label-editor.ui		\
 	glade-tool-button-editor.ui	\

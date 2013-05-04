@@ -7,6 +7,8 @@
 			icon-name="widget-gtk-action"/>
     <glade-widget-class name="GladeButtonEditor" generic-name="buttoneditor" title="Button Editor"
 			icon-name="widget-gtk-button"/>
+    <glade-widget-class name="GladeFileChooserEditor" generic-name="filechoosereditor" title="File Chooser Editor"
+			icon-name="widget-gtk-filechooserwidget"/>
     <glade-widget-class name="GladeWindowEditor" generic-name="windoweditor" title="Window Editor"
 			icon-name="widget-gtk-window">
       <post-create-function>glade_window_editor_post_create</post-create-function>
@@ -25,6 +27,7 @@
 
     <glade-widget-class-ref name="GladeActivatableEditor"/>
     <glade-widget-class-ref name="GladeButtonEditor"/>
+    <glade-widget-class-ref name="GladeFileChooserEditor"/>
     <glade-widget-class-ref name="GladeWindowEditor"/>
   </glade-widget-group>
 </glade-catalog>
