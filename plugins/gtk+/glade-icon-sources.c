@@ -129,7 +129,6 @@ typedef struct
 
   GtkTreeView *view;
   GtkTreeStore *store;
-  GtkListStore *icon_names_store;
   GtkTreeViewColumn *filename_column;
   GtkWidget *combo;
 } GladeEPropIconSources;
@@ -159,9 +158,8 @@ populate_store_foreach (const gchar * icon_name,
   GList *l;
 
   /* Update the comboboxentry's store here... */
-  gtk_list_store_append (eprop_sources->icon_names_store, &iter);
-  gtk_list_store_set (eprop_sources->icon_names_store, &iter, 0, icon_name, -1);
-  gtk_combo_box_set_active_iter (GTK_COMBO_BOX (eprop_sources->combo), &iter);
+  gtk_combo_box_text_insert (GTK_COMBO_BOX_TEXT (eprop_sources->combo), -1, icon_name, icon_name);
+  gtk_combo_box_set_active_id (GTK_COMBO_BOX (eprop_sources->combo), icon_name);
 
   /* Dont set COLUMN_ICON_NAME here */
   gtk_tree_store_append (eprop_sources->store, &parent_iter, NULL);
@@ -234,16 +232,16 @@ populate_store_foreach (const gchar * icon_name,
 }
 
 static void
-populate_store (GladeEPropIconSources * eprop_sources)
+icon_sources_populate_store (GladeEPropIconSources * eprop_sources)
 {
   GladeIconSources *sources = NULL;
   GladeProperty *property;
 
   gtk_tree_store_clear (eprop_sources->store);
-  gtk_list_store_clear (eprop_sources->icon_names_store);
+  gtk_combo_box_text_remove_all (GTK_COMBO_BOX_TEXT (eprop_sources->combo));
 
   property = glade_editor_property_get_property (GLADE_EDITOR_PROPERTY (eprop_sources));
-  if (property)
+  if (!property)
     return;
 
   glade_property_get (property, &sources);
@@ -265,7 +263,7 @@ glade_eprop_icon_sources_load (GladeEditorProperty * eprop,
   /* Chain up in a clean state... */
   parent_class->load (eprop, property);
 
-  populate_store (eprop_sources);
+  icon_sources_populate_store (eprop_sources);
 
   gtk_widget_queue_draw (GTK_WIDGET (eprop_sources->view));
 }
@@ -279,6 +277,30 @@ reload_icon_sources_idle (GladeEditorProperty * eprop)
   return FALSE;
 }
 
+
+typedef struct {
+  GladeEPropIconSources *eprop;
+  GtkTreeRowReference   *row_ref;
+} RowEditData;
+
+static gboolean
+edit_row_idle (RowEditData *data)
+{
+  GtkTreePath *new_item_path;
+
+  new_item_path = gtk_tree_row_reference_get_path (data->row_ref);
+
+  gtk_widget_grab_focus (GTK_WIDGET (data->eprop->view));
+  gtk_tree_view_expand_to_path (data->eprop->view, new_item_path);
+  gtk_tree_view_set_cursor (data->eprop->view, new_item_path,
+                            data->eprop->filename_column, TRUE);
+
+  gtk_tree_path_free (new_item_path);
+  gtk_tree_row_reference_free (data->row_ref);
+  g_slice_free (RowEditData, data);
+  return FALSE;
+}
+
 static void
 add_clicked (GtkWidget * button, GladeEPropIconSources * eprop_sources)
 {
@@ -288,18 +310,15 @@ add_clicked (GtkWidget * button, GladeEPropIconSources * eprop_sources)
   gchar *icon_name;
   gchar *selected_icon_name = NULL;
   gint index;
+  RowEditData *edit_data;
 
-  if (gtk_combo_box_get_active_iter
-      (GTK_COMBO_BOX (eprop_sources->combo), &iter))
-    gtk_tree_model_get (GTK_TREE_MODEL (eprop_sources->icon_names_store), &iter,
-                        0, &selected_icon_name, -1);
+  selected_icon_name = gtk_combo_box_text_get_active_text (GTK_COMBO_BOX_TEXT (eprop_sources->combo));
 
   if (!selected_icon_name)
     return;
 
   /* Find the right parent iter to add a child to... */
-  if (gtk_tree_model_get_iter_first
-      (GTK_TREE_MODEL (eprop_sources->store), &iter))
+  if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (eprop_sources->store), &iter))
     {
       do
         {
@@ -310,11 +329,9 @@ add_clicked (GtkWidget * button, GladeEPropIconSources * eprop_sources)
             parent_iter = gtk_tree_iter_copy (&iter);
 
           g_free (icon_name);
-
         }
       while (parent_iter == NULL &&
-             gtk_tree_model_iter_next (GTK_TREE_MODEL (eprop_sources->store),
-                                       &iter));
+             gtk_tree_model_iter_next (GTK_TREE_MODEL (eprop_sources->store), &iter));
     }
 
   /* check if we're already adding one here... */
@@ -332,10 +349,8 @@ add_clicked (GtkWidget * button, GladeEPropIconSources * eprop_sources)
             goto expand_to_path_and_focus;
 
         }
-      while (gtk_tree_model_iter_next
-             (GTK_TREE_MODEL (eprop_sources->store), &iter));
+      while (gtk_tree_model_iter_next (GTK_TREE_MODEL (eprop_sources->store), &iter));
     }
-
 
   if (!parent_iter)
     {
@@ -357,15 +372,19 @@ add_clicked (GtkWidget * button, GladeEPropIconSources * eprop_sources)
 
   /* By now iter is valid. */
 expand_to_path_and_focus:
-  new_item_path =
-      gtk_tree_model_get_path (GTK_TREE_MODEL (eprop_sources->store), &iter);
+  new_item_path = gtk_tree_model_get_path (GTK_TREE_MODEL (eprop_sources->store), &iter);
 
-  gtk_widget_grab_focus (GTK_WIDGET (eprop_sources->view));
-  gtk_tree_view_expand_to_path (eprop_sources->view, new_item_path);
-  gtk_tree_view_set_cursor (eprop_sources->view, new_item_path,
-                            eprop_sources->filename_column, TRUE);
+  /* Queue an idle to expand to row, GtkTreeView seems to be broken now
+   * and will not expand to the second row we just added (instead the parent row get's focus),
+   * deferring this to an idle handler fixes the problem.
+   */
+  edit_data = g_slice_new (RowEditData);
+  edit_data->eprop = eprop_sources;
+  edit_data->row_ref = gtk_tree_row_reference_new (GTK_TREE_MODEL (eprop_sources->store), new_item_path);
+  g_idle_add ((GSourceFunc)edit_row_idle, edit_data);
 
   g_free (selected_icon_name);
+  gtk_tree_path_free (new_item_path);
   gtk_tree_iter_free (parent_iter);
 }
 
@@ -931,15 +950,26 @@ static void
 icon_name_entry_activated (GtkEntry * entry,
                            GladeEPropIconSources * eprop_sources)
 {
-  GtkTreeIter iter;
   const gchar *text = gtk_entry_get_text (entry);
+  GladeProperty *property;
+  GladeIconSources *sources = NULL;
 
   if (!text || !text[0])
     return;
 
-  gtk_list_store_append (eprop_sources->icon_names_store, &iter);
-  gtk_list_store_set (eprop_sources->icon_names_store, &iter, 0, text, -1);
-  gtk_combo_box_set_active_iter (GTK_COMBO_BOX (eprop_sources->combo), &iter);
+  property = glade_editor_property_get_property (GLADE_EDITOR_PROPERTY (eprop_sources));
+  if (!property)
+    return;
+
+  glade_property_get (property, &sources);
+  if (sources == NULL || g_hash_table_lookup (sources->sources, text) == NULL)
+    {
+      /* Add the new source if it doesnt already exist */
+      gtk_combo_box_text_insert (GTK_COMBO_BOX_TEXT (eprop_sources->combo), -1, text, text);
+    }
+
+  /* Set the active id whether it existed or not */
+  gtk_combo_box_set_active_id (GTK_COMBO_BOX (eprop_sources->combo), text);
 }
 
 static GtkWidget *
@@ -954,27 +984,26 @@ glade_eprop_icon_sources_create_input (GladeEditorProperty * eprop)
   /* hbox with comboboxentry add/remove source buttons on the right... */
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
 
-  eprop_sources->icon_names_store = gtk_list_store_new (1, G_TYPE_STRING);
-  eprop_sources->combo = gtk_combo_box_new_with_entry ();
-  gtk_combo_box_set_model (GTK_COMBO_BOX (eprop_sources->combo),
-                           GTK_TREE_MODEL (eprop_sources->icon_names_store));
+  eprop_sources->combo = gtk_combo_box_text_new_with_entry ();
   g_signal_connect (G_OBJECT
                     (gtk_bin_get_child (GTK_BIN (eprop_sources->combo))),
                     "activate", G_CALLBACK (icon_name_entry_activated), eprop);
 
   gtk_box_pack_start (GTK_BOX (hbox), eprop_sources->combo, TRUE, TRUE, 0);
   button = gtk_button_new ();
+  gtk_container_set_border_width (GTK_CONTAINER (button), 2);
   gtk_button_set_image (GTK_BUTTON (button),
-                        gtk_image_new_from_stock (GTK_STOCK_ADD,
-                                                  GTK_ICON_SIZE_BUTTON));
+                        gtk_image_new_from_icon_name ("list-add-symbolic",
+						      GTK_ICON_SIZE_BUTTON));
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
   g_signal_connect (G_OBJECT (button), "clicked",
                     G_CALLBACK (add_clicked), eprop_sources);
 
   button = gtk_button_new ();
   gtk_button_set_image (GTK_BUTTON (button),
-                        gtk_image_new_from_stock (GTK_STOCK_REMOVE,
-                                                  GTK_ICON_SIZE_BUTTON));
+                        gtk_image_new_from_icon_name ("list-remove-symbolic",
+						      GTK_ICON_SIZE_BUTTON));
+  gtk_container_set_border_width (GTK_CONTAINER (button), 2);
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
 
   g_signal_connect (G_OBJECT (button), "clicked",
