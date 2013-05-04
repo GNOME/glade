@@ -38,6 +38,8 @@
 
 #define ONLY_THIS_GOES_IN_THAT_MSG _("Only objects of type %s can be added to objects of type %s.")
 
+#define ACTION_ACCEL_INSENSITIVE_MSG _("The accelerator can only be set when inside an Action Group.")
+
 #define GLADE_TAG_ATTRIBUTES        "attributes"
 #define GLADE_TAG_ATTRIBUTE         "attribute"
 
