@@ -1387,6 +1387,13 @@ embedded in another object</_tooltip>
       <properties>
         <property id="size" default="1" query="False" />
 
+	<!-- Disable GtkBox stuff -->
+	<property id="size" disabled="True"/>
+	<property id="homogeneous" disabled="True"/>
+	<property id="orientation" disabled="True"/>
+	<property id="spacing" disabled="True"/>
+	<property id="baseline-position" disabled="True"/>
+
 	<!-- GtkFileChooser properties are custom-layout, handled in GladeFileChooserEditor -->
 	<property id="extra-widget" parentless-widget="True" custom-layout="True"/>
 	<property id="preview-widget" parentless-widget="True" custom-layout="True"/>
@@ -2277,7 +2284,24 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkColorChooserDialog" generic-name="colorchooserdialog"
 			_title="Color Chooser Dialog" icon-name="widget-gtk-colorselectiondialog" since="3.4"/>
     <glade-widget-class name="GtkFontChooserWidget" generic-name="fontchooserwidget"
-			_title="Font Chooser Widget" icon-name="widget-gtk-fontselection" since="3.2"/>
+			_title="Font Chooser Widget" icon-name="widget-gtk-fontselection" since="3.2">
+      <create-editable-function>glade_gtk_font_chooser_widget_create_editable</create-editable-function>
+      <properties>
+
+	<!-- Disable GtkBox stuff -->
+	<property id="size" disabled="True"/>
+	<property id="homogeneous" disabled="True"/>
+	<property id="orientation" disabled="True"/>
+	<property id="spacing" disabled="True"/>
+	<property id="baseline-position" disabled="True"/>
+
+	<!-- Claim the GladeFontChooserEditor properties -->
+	<property id="font" custom-layout="True"/>
+	<property id="preview-text" custom-layout="True"/>
+	<property id="show-preview-entry" custom-layout="True"/>
+      </properties>
+    </glade-widget-class>    
+
     <glade-widget-class name="GtkFontChooserDialog" generic-name="fontchooserdialog"
 			_title="Font Chooser Dialog" icon-name="widget-gtk-fontselectiondialog" since="3.2">
       <properties>
