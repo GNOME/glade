@@ -62,6 +62,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-gtk-paned.c		\
 	glade-gtk-radio-menu-item.c	\
 	glade-gtk-recent-chooser-menu.c	\
+	glade-gtk-spin-button.c		\
 	glade-gtk-switch.c		\
 	glade-gtk-table.c		\
 	glade-gtk-text-buffer.c		\
