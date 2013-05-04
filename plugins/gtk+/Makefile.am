@@ -38,6 +38,8 @@ libgladegtk_la_SOURCES = 		\
 	glade-gtk-assistant.c		\
 	glade-gtk-box.c			\
 	glade-gtk-button.c		\
+	glade-gtk-cell-layout.c		\
+	glade-gtk-cell-renderer.c	\
 	glade-gtk-combo-box.c		\
 	glade-gtk-combo-box-text.c	\
 	glade-gtk-container.c		\
@@ -54,6 +56,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-gtk-image-menu-item.c	\
 	glade-gtk-info-bar.c		\
 	glade-gtk-label.c		\
+	glade-gtk-list-store.c		\
 	glade-gtk-menu.c		\
 	glade-gtk-menu-bar.c		\
 	glade-gtk-menu-item.c		\
@@ -76,6 +79,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-gtk-tool-item-group.c	\
 	glade-gtk-tool-palette.c	\
 	glade-gtk-toolbar.c		\
+	glade-gtk-tree-view.c		\
 	glade-gtk-widget.c		\
 	glade-gtk-window.c		\
 	glade-icon-factory-editor.c	\
@@ -108,11 +112,14 @@ noinst_HEADERS =			\
 	glade-gtk.h			\
 	glade-gtk-action-widgets.h	\
 	glade-gtk-button.h		\
+	glade-gtk-cell-layout.h		\
+	glade-gtk-cell-renderer.h	\
 	glade-gtk-dialog.h		\
 	glade-gtk-frame.h		\
 	glade-gtk-image.h		\
 	glade-gtk-menu-shell.h		\
 	glade-gtk-notebook.h		\
+	glade-gtk-tree-view.h		\
 	glade-icon-factory-editor.h	\
 	glade-icon-sources.h		\
 	glade-image-editor.h		\
