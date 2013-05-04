@@ -44,6 +44,16 @@
 #define GLADE_TAG_STYLE             "style"
 #define GLADE_TAG_CLASS             "class"
 
+
+/* This function does absolutely nothing
+ * (and is for use in overriding some post_create functions
+ * throughout the catalog).
+ */
+void
+empty (GObject * container, GladeCreateReason reason)
+{
+}
+
 static const gchar *atk_relations_list[] = {
   "controlled-by",
   "controller-for",

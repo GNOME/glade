@@ -32,7 +32,6 @@ libgladegtk_la_SOURCES = 		\
 	glade-column-types.c		\
 	glade-entry-editor.c		\
 	glade-fixed.c			\
-	glade-gtk.c			\
 	glade-gtk-about-dialog.c	\
 	glade-gtk-action.c		\
 	glade-gtk-action-group.c	\
