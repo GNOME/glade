@@ -83,51 +83,6 @@ glade_gtk_init (const gchar * name)
 
 
 /* ----------------------------- GtkToolItem ------------------------------ */
-GObject *
-glade_gtk_tool_item_constructor (GType type,
-                                 guint n_construct_properties,
-                                 GObjectConstructParam * construct_properties)
-{
-  GladeWidgetAdaptor *adaptor;
-  GObject *ret_obj;
-
-  ret_obj = GWA_GET_OCLASS (GTK_TYPE_CONTAINER)->constructor
-      (type, n_construct_properties, construct_properties);
-
-  adaptor = GLADE_WIDGET_ADAPTOR (ret_obj);
-
-  glade_widget_adaptor_action_remove (adaptor, "add_parent");
-  glade_widget_adaptor_action_remove (adaptor, "remove_parent");
-
-  return ret_obj;
-}
-
-void
-glade_gtk_tool_item_post_create (GladeWidgetAdaptor *adaptor,
-                                 GObject            *object, 
-				 GladeCreateReason   reason)
-{
-  if (GTK_IS_SEPARATOR_TOOL_ITEM (object))
-    return;
-
-  if (reason == GLADE_CREATE_USER &&
-      gtk_bin_get_child (GTK_BIN (object)) == NULL)
-    gtk_container_add (GTK_CONTAINER (object), glade_placeholder_new ());
-}
-
-void
-glade_gtk_tool_item_set_property (GladeWidgetAdaptor * adaptor,
-                                  GObject * object,
-                                  const gchar * id, const GValue * value)
-{
-  GladeWidget *gwidget = glade_widget_get_from_gobject (object);
-  GladeProperty *property = glade_widget_get_property (gwidget, id);
-
-  if (GPC_VERSION_CHECK
-      (glade_property_get_class (property), gtk_major_version, gtk_minor_version + 1))
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id,
-                                                      value);
-}
 
 /* ----------------------------- GtkToolButton ------------------------------ */
 GladeEditable *
