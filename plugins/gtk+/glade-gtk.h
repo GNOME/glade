@@ -41,4 +41,7 @@
 
 #define ONLY_THIS_GOES_IN_THAT_MSG _("Only objects of type %s can be added to objects of type %s.")
 
+#define GLADE_TAG_ATTRIBUTES        "attributes"
+#define GLADE_TAG_ATTRIBUTE         "attribute"
+
 #endif /* __GLADE_GTK_H__ */

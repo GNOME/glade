@@ -48,6 +48,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-gtk-image.c		\
 	glade-gtk-image-menu-item.c	\
 	glade-gtk-info-bar.c		\
+	glade-gtk-label.c		\
 	glade-gtk-menu.c		\
 	glade-gtk-menu-bar.c		\
 	glade-gtk-menu-item.c		\
