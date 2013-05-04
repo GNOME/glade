@@ -90,6 +90,8 @@ struct _GladeEditorTablePrivate
 			     */
 
   gint rows;
+
+  gboolean show_name;
 };
 
 enum {
@@ -135,6 +137,9 @@ glade_editor_table_init (GladeEditorTable * self)
                                   GTK_ORIENTATION_VERTICAL);
   gtk_grid_set_row_spacing (GTK_GRID (self), 2);
   gtk_grid_set_column_spacing (GTK_GRID (self), 6);
+
+  /* Show name by default */
+  self->priv->show_name = TRUE;
 }
 
 static void
@@ -391,18 +396,15 @@ glade_editor_table_set_show_name (GladeEditable * editable, gboolean show_name)
 {
   GladeEditorTable *table = GLADE_EDITOR_TABLE (editable);
 
-  if (table->priv->name_label)
+  if (table->priv->show_name != show_name)
     {
-      if (show_name)
-        {
-          gtk_widget_show (table->priv->name_label);
-          gtk_widget_show (table->priv->name_field);
-        }
-      else
-        {
-          gtk_widget_hide (table->priv->name_label);
-          gtk_widget_hide (table->priv->name_field);
-        }
+      table->priv->show_name = show_name;
+
+      if (table->priv->name_label)
+	{
+	  gtk_widget_set_visible (table->priv->name_label, show_name);
+	  gtk_widget_set_visible (table->priv->name_field, show_name);
+	}
     }
 }
 
@@ -582,6 +584,10 @@ append_name_field (GladeEditorTable * table)
   glade_editor_table_attach (table, table->priv->name_label, 0, table->priv->rows);
   glade_editor_table_attach (table, table->priv->name_field, 1, table->priv->rows);
 
+  /* Set initial visiblity */
+  gtk_widget_set_visible (table->priv->name_label, table->priv->show_name);
+  gtk_widget_set_visible (table->priv->name_field, table->priv->show_name);
+
   table->priv->rows++;
 }
 
@@ -605,10 +611,10 @@ glade_editor_table_new (GladeWidgetAdaptor * adaptor, GladeEditorPageType type)
   table = g_object_new (GLADE_TYPE_EDITOR_TABLE, "page-type", type, NULL);
   table->priv->adaptor = adaptor;
 
-  if (type == GLADE_PAGE_GENERAL)
+  if (table->priv->type == GLADE_PAGE_GENERAL)
     append_name_field (table);
 
-  append_items (table, adaptor, type);
+  append_items (table, table->priv->adaptor, table->priv->type);
 
-  return GTK_WIDGET (table);
+  return (GtkWidget *)table;
 }
