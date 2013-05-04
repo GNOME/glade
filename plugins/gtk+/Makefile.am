@@ -40,6 +40,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-gtk-container.c		\
 	glade-gtk-dialog.c		\
 	glade-gtk-entry.c		\
+	glade-gtk-entry-buffer.c	\
 	glade-gtk-expander.c		\
 	glade-gtk-file-chooser-widget.c	\
 	glade-gtk-fixed-layout.c	\
