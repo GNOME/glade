@@ -31,9 +31,6 @@
 
 /* --------------------------------- Constants ------------------------------ */
 
-#define FIXED_DEFAULT_CHILD_WIDTH  100
-#define FIXED_DEFAULT_CHILD_HEIGHT 60
-
 #define MNEMONIC_INSENSITIVE_MSG   _("This property does not apply unless Use Underline is set.")
 #define NOT_SELECTED_MSG           _("Property not selected")
 #define RESPID_INSENSITIVE_MSG     _("This property is only for use in dialog action buttons")
