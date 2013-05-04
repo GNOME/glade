@@ -35,6 +35,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-gtk.c			\
 	glade-gtk-about-dialog.c	\
 	glade-gtk-action.c		\
+	glade-gtk-action-group.c	\
 	glade-gtk-action-widgets.c	\
 	glade-gtk-adjustment.c		\
 	glade-gtk-assistant.c		\
