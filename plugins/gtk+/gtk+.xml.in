@@ -1365,11 +1365,24 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkFileChooserWidget" generic-name="filechooserwidget" 
 			_title="File Chooser Widget">
       <post-create-function>glade_gtk_file_chooser_widget_post_create</post-create-function>
+      <create-editable-function>glade_gtk_file_chooser_widget_create_editable</create-editable-function>
       <properties>
         <property id="size" default="1" query="False" />
-	<property id="extra-widget" parentless-widget="True" />
-	<property id="preview-widget" parentless-widget="True" />
-	<property id="create-folders" since="2.18"/>
+
+	<!-- GtkFileChooser properties are custom-layout, handled in GladeFileChooserEditor -->
+	<property id="extra-widget" parentless-widget="True" custom-layout="True"/>
+	<property id="preview-widget" parentless-widget="True" custom-layout="True"/>
+	<property id="create-folders" since="2.18" custom-layout="True"/>
+	<property id="action" custom-layout="True"/>
+	<property id="filter" custom-layout="True"/>
+	<property id="local-only" custom-layout="True"/>
+	<property id="show-hidden" custom-layout="True"/>
+	<property id="do-overwrite-confirmation" custom-layout="True"/>
+	<property id="preview-widget-active" custom-layout="True"/>
+	<property id="use-preview-label" custom-layout="True"/>
+	<property id="select-multiple" custom-layout="True"/>
+
+
       </properties>
 
       <signals>
@@ -2163,6 +2176,8 @@ embedded in another object</_tooltip>
 
     <glade-widget-class name="GtkFileChooserDialog" generic-name="filechooserdialog" _title="File Chooser Dialog">
       <properties>
+
+	<!-- GtkFileChooser properties are custom-layout, handled in GladeFileChooserEditor -->
 	<property id="extra-widget" parentless-widget="True" custom-layout="True"/>
 	<property id="preview-widget" parentless-widget="True" custom-layout="True"/>
 	<property id="create-folders" since="2.18" custom-layout="True"/>

@@ -26,6 +26,7 @@
 #include <gladeui/glade.h>
 
 #include "glade-gtk-dialog.h"
+#include "glade-file-chooser-widget-editor.h"
 
 void
 glade_gtk_file_chooser_widget_post_create (GladeWidgetAdaptor * adaptor,
@@ -51,4 +52,14 @@ glade_gtk_file_chooser_button_set_property (GladeWidgetAdaptor * adaptor,
     }
 
   GWA_GET_CLASS (GTK_TYPE_BOX)->set_property (adaptor, object, id, value);
+}
+
+GladeEditable *
+glade_gtk_file_chooser_widget_create_editable (GladeWidgetAdaptor *adaptor,
+					       GladeEditorPageType type)
+{
+  if (type == GLADE_PAGE_GENERAL)
+    return (GladeEditable *) glade_file_chooser_widget_editor_new ();
+
+  return GWA_GET_CLASS (GTK_TYPE_WIDGET)->create_editable (adaptor, type);
 }
