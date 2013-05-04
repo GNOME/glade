@@ -78,32 +78,6 @@ glade_gtk_init (const gchar * name)
 {
 }
 
-/*--------------------------- GtkAdjustment ---------------------------------*/
-void
-glade_gtk_adjustment_write_widget (GladeWidgetAdaptor * adaptor,
-                                   GladeWidget * widget,
-                                   GladeXmlContext * context,
-                                   GladeXmlNode * node)
-{
-  GladeProperty *prop;
-
-  if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
-	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
-    return;
-
-  /* Ensure proper order of adjustment properties by writing them here. */
-  prop = glade_widget_get_property (widget, "lower");
-  glade_property_write (prop, context, node);
-
-  prop = glade_widget_get_property (widget, "upper");
-  glade_property_write (prop, context, node);
-
-  prop = glade_widget_get_property (widget, "value");
-  glade_property_write (prop, context, node);
-
-  GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
-}
-
 
 /*--------------------------- GtkAction ---------------------------------*/
 #define ACTION_ACCEL_INSENSITIVE_MSG _("The accelerator can only be set when inside an Action Group.")
