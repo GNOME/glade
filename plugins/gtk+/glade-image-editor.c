@@ -124,22 +124,11 @@ glade_image_editor_load (GladeEditable * editable, GladeWidget * widget)
 }
 
 static void
-glade_image_editor_set_show_name (GladeEditable * editable, gboolean show_name)
-{
-  GladeImageEditor        *image_editor = GLADE_IMAGE_EDITOR (editable);
-  GladeImageEditorPrivate *priv = image_editor->priv;
-
-  glade_editable_set_show_name (GLADE_EDITABLE (priv->embed),
-                                show_name);
-}
-
-static void
 glade_image_editor_editable_init (GladeEditableIface * iface)
 {
   parent_editable_iface = g_type_interface_peek_parent (iface);
 
   iface->load = glade_image_editor_load;
-  iface->set_show_name = glade_image_editor_set_show_name;
 }
 
 static void
