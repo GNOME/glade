@@ -80,31 +80,6 @@ glade_gtk_init (const gchar * name)
 
 
 
-/*--------------------------- GtkRadioButton ---------------------------------*/
-void
-glade_gtk_radio_button_set_property (GladeWidgetAdaptor * adaptor,
-                                     GObject * object,
-                                     const gchar * property_name,
-                                     const GValue * value)
-{
-  if (strcmp (property_name, "group") == 0)
-    {
-      GtkRadioButton *radio = g_value_get_object (value);
-      /* g_object_set () on this property produces a bogus warning,
-       * so we better use the API GtkRadioButton provides.
-       */
-      gtk_radio_button_set_group (GTK_RADIO_BUTTON (object),
-                                  radio ? gtk_radio_button_get_group (radio) :
-                                  NULL);
-      return;
-    }
-
-  /* Chain Up */
-  GWA_GET_CLASS (GTK_TYPE_CHECK_BUTTON)->set_property (adaptor,
-                                                       object,
-                                                       property_name, value);
-}
-
 /*--------------------------- GtkSizeGroup ---------------------------------*/
 gboolean
 glade_gtk_size_group_depends (GladeWidgetAdaptor * adaptor,
