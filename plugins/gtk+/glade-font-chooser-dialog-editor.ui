@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <!-- interface-requires glade-gtk-plugin 0.0 -->
+  <!-- interface-requires gtk+ 3.10 -->
+  <template class="GladeFontChooserDialogEditor" parent="GladeWindowEditor">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="orientation">vertical</property>
+    <child internal-child="extension_port">
+      <object class="GtkBox" id="extension_port">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GladeFontChooserEditor" id="fontchoosereditor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <child-editors>
+      <editor id="fontchoosereditor"/>
+    </child-editors>
+  </template>
+</interface>
