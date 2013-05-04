@@ -1456,9 +1456,24 @@ embedded in another object</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkFontButton" generic-name="fontbutton" _title="Font Button">
-      <create-editable-function>glade_gtk_container_create_editable</create-editable-function>
+      <create-editable-function>glade_gtk_button_create_editable</create-editable-function>
       <properties>
 	<property id="title" translatable="True"/>
+
+	<!-- This one is never displayed, use the GtkFontChooser:font property instead -->
+	<property id="font-name" save="False" custom-layout="True" ignore="True"/>
+
+	<!-- Claim the GladeFontButtonEditor properties -->
+	<property id="title" custom-layout="True"/>
+	<property id="use-font" custom-layout="True"/>
+	<property id="use-size" custom-layout="True"/>
+	<property id="show-style" custom-layout="True"/>
+	<property id="show-size" custom-layout="True"/>
+
+	<!-- Claim the GladeFontChooserEditor properties -->
+	<property id="font" custom-layout="True"/>
+	<property id="preview-text" custom-layout="True"/>
+	<property id="show-preview-entry" custom-layout="True"/>
 
 	<!-- These props dont apply to font buttons -->
 	<property id="glade-type" disabled="True"/>

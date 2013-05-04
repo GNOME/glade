@@ -26,6 +26,7 @@
 #include <gladeui/glade.h>
 
 #include "glade-button-editor.h"
+#include "glade-font-button-editor.h"
 #include "glade-gtk.h"
 #include "glade-gtk-button.h"
 
@@ -119,7 +120,12 @@ glade_gtk_button_create_editable (GladeWidgetAdaptor * adaptor,
 {
   if (type == GLADE_PAGE_GENERAL)
     {
-      return (GladeEditable *) glade_button_editor_new (adaptor, NULL);
+      GType type = glade_widget_adaptor_get_object_type (adaptor);
+
+      if (g_type_is_a (type, GTK_TYPE_FONT_BUTTON))
+	return (GladeEditable *) glade_font_button_editor_new ();
+      else
+	return (GladeEditable *) glade_button_editor_new (adaptor, NULL);
     }
 
   return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
@@ -213,6 +219,8 @@ void
 glade_gtk_button_read_widget (GladeWidgetAdaptor * adaptor,
                               GladeWidget * widget, GladeXmlNode * node)
 {
+  GObject *object;
+
   if (!(glade_xml_node_verify_silent (node, GLADE_XML_TAG_WIDGET) ||
 	glade_xml_node_verify_silent (node, GLADE_XML_TAG_TEMPLATE)))
     return;
@@ -221,6 +229,21 @@ glade_gtk_button_read_widget (GladeWidgetAdaptor * adaptor,
   GWA_GET_CLASS (GTK_TYPE_CONTAINER)->read_widget (adaptor, widget, node);
 
   glade_gtk_button_update_stock (widget);
+
+  /* Fold "font-name" property into the "font" propery */
+  object = glade_widget_get_object (widget);
+  if (GTK_IS_FONT_BUTTON (object))
+    {
+      gchar *font_prop_value = NULL;
+
+      glade_widget_property_get (widget, "font-name", &font_prop_value);
+
+      if (font_prop_value != NULL)
+	{
+	  glade_widget_property_set (widget, "font", font_prop_value);
+	  glade_widget_property_set (widget, "font-name", NULL);
+	}
+    }
 }
 
 void

@@ -36,6 +36,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-file-chooser-editor.c	\
 	glade-file-chooser-widget-editor.c \
 	glade-fixed.c			\
+	glade-font-button-editor.c 	\
 	glade-font-chooser-dialog-editor.c \
 	glade-font-chooser-editor.c	\
 	glade-font-chooser-widget-editor.c \
@@ -125,6 +126,7 @@ noinst_HEADERS =			\
 	glade-file-chooser-editor.h	\
 	glade-file-chooser-widget-editor.h \
 	glade-fixed.h			\
+	glade-font-button-editor.h 	\
 	glade-font-chooser-dialog-editor.h \
 	glade-font-chooser-editor.h	\
 	glade-font-chooser-widget-editor.h \
@@ -183,6 +185,7 @@ UI_FILES = 				\
 	glade-file-chooser-dialog-editor.ui \
 	glade-file-chooser-editor.ui	\
 	glade-file-chooser-widget-editor.ui \
+	glade-font-button-editor.ui 	\
 	glade-font-chooser-dialog-editor.ui \
 	glade-font-chooser-editor.ui	\
 	glade-font-chooser-widget-editor.ui \
