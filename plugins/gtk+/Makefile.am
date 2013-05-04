@@ -37,6 +37,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-gtk-action-widgets.c	\
 	glade-gtk-box.c			\
 	glade-gtk-button.c		\
+	glade-gtk-combo-box.c		\
 	glade-gtk-container.c		\
 	glade-gtk-dialog.c		\
 	glade-gtk-entry.c		\
