@@ -2477,24 +2477,32 @@ embedded in another object</_tooltip>
       <create-editor-property-function>glade_gtk_widget_create_eprop</create-editor-property-function>
       <string-from-value-function>glade_gtk_widget_string_from_value</string-from-value-function>
       <action-activate-function>glade_gtk_action_action_activate</action-activate-function>
+      <create-editable-function>glade_gtk_action_create_editable</create-editable-function>
       <actions>
         <action id="launch_editor" _name="Edit&#8230;" stock="gtk-edit" important="True"/>
       </actions>
 
       <properties>
 	<property id="name" disabled="True"/>
-	<property id="label" translatable="True"/>
-	<property id="short-label" translatable="True"/>
-	<property id="tooltip" translatable="True"/>
-	<property id="stock-id" stock-icon="True"/>
-	<property id="icon-name" themed-icon="True" since="2.10"/>
+	<property id="label" translatable="True" custom-layout="True"/>
+	<property id="short-label" translatable="True" custom-layout="True"/>
+	<property id="tooltip" translatable="True" multiline="True" custom-layout="True"/>
+	<property id="stock-id" stock-icon="True" custom-layout="True"/>
+	<property id="icon-name" themed-icon="True" since="2.10" custom-layout="True"/>
 	<property id="gicon" disabled="True" since="2.16"/>
 	<property id="action-group" disabled="True"/>
-	<property id="always-show-image" since="2.20"/>
+	<property id="always-show-image" since="2.20" custom-layout="True"/>
+	<property id="visible" custom-layout="True"/>
+	<property id="sensitive" custom-layout="True"/>
+	<property id="visible-vertical" custom-layout="True"/>
+	<property id="visible-horizontal" custom-layout="True"/>
+	<property id="visible-overflown" custom-layout="True"/>
+	<property id="is-important" custom-layout="True"/>
+	<property id="hide-if-empty" custom-layout="True"/>
 
 	<!-- Accelerator -->
 	<property id="accelerator" _name="Accelerator" ignore="True" 
-		  common="False" save="False" weight="2.0">
+		  save="False" weight="2.0" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamBoxed</type>
 	    <value-type>GladeAccelGList</value-type>

@@ -23,17 +23,28 @@
 	<object name="extension_port" anarchist="True"/>
       </internal-children>
     </glade-widget-class>
+    <glade-widget-class name="GladeActionEditor" generic-name="actioneditor" title="Action Editor"
+			icon-name="widget-gtk-action">
+      <post-create-function>glade_action_editor_post_create</post-create-function>
+      <properties>
+	<property id="size" disabled="True"/>
+      </properties>
+      <internal-children>
+	<object name="extension_port" anarchist="True"/>
+      </internal-children>
+    </glade-widget-class>
   </glade-widget-classes>
 
   <glade-widget-group name="glade-gtk-plugin" title="GTK+ Plugin Editors">
 
     <default-palette-state expanded="False"/>
 
+    <glade-widget-class-ref name="GladeActionEditor"/>
+    <glade-widget-class-ref name="GladeWindowEditor"/>
     <glade-widget-class-ref name="GladeActivatableEditor"/>
     <glade-widget-class-ref name="GladeButtonEditor"/>
     <glade-widget-class-ref name="GladeFileChooserEditor"/>
     <glade-widget-class-ref name="GladeFontChooserEditor"/>
     <glade-widget-class-ref name="GladeRecentChooserEditor"/>
-    <glade-widget-class-ref name="GladeWindowEditor"/>
   </glade-widget-group>
 </glade-catalog>

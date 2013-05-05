@@ -25,6 +25,7 @@ libgladegtk_la_SOURCES = 		\
 	$(BUILT_SOURCES) 		\
 	glade-about-dialog-editor.c	\
 	glade-accels.c			\
+	glade-action-editor.c		\
 	glade-activatable-editor.c	\
 	glade-attributes.c		\
 	glade-button-editor.c		\
@@ -120,6 +121,7 @@ libgladegtk_la_LIBADD      = $(libgladeui) $(GTK_LIBS)
 noinst_HEADERS =			\
 	glade-about-dialog-editor.h	\
 	glade-accels.h			\
+	glade-action-editor.h		\
 	glade-activatable-editor.h	\
 	glade-attributes.h		\
 	glade-button-editor.h		\
@@ -187,6 +189,7 @@ BUILT_SOURCES = 		\
 
 UI_FILES = 				\
 	glade-about-dialog-editor.ui	\
+	glade-action-editor.ui		\
 	glade-activatable-editor.ui	\
 	glade-button-editor.ui		\
 	glade-entry-editor.ui		\

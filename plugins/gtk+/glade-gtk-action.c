@@ -26,6 +26,7 @@
 #include <gladeui/glade.h>
 
 #include "glade-gtk.h"
+#include "glade-action-editor.h"
 
 void
 glade_gtk_action_post_create (GladeWidgetAdaptor * adaptor,
@@ -42,4 +43,20 @@ glade_gtk_action_post_create (GladeWidgetAdaptor * adaptor,
   glade_widget_set_action_sensitive (gwidget, "launch_editor", FALSE);
   glade_widget_property_set_sensitive (gwidget, "accelerator", FALSE, 
 				       ACTION_ACCEL_INSENSITIVE_MSG);
+}
+
+GladeEditable *
+glade_gtk_action_create_editable (GladeWidgetAdaptor * adaptor,
+				  GladeEditorPageType type)
+{
+  GladeEditable *editable;
+
+  if (type == GLADE_PAGE_GENERAL)
+    {
+      editable = (GladeEditable *) glade_action_editor_new ();
+    }
+  else
+    editable = GWA_GET_CLASS (G_TYPE_OBJECT)->create_editable (adaptor, type);
+
+  return editable;
 }
