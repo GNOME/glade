@@ -25,14 +25,14 @@
 #include <glib/gi18n-lib.h>
 #include <gladeui/glade.h>
 
-#include "glade-activatable-editor.h"
+#include "glade-recent-chooser-menu-editor.h"
 
 GladeEditable *
 glade_gtk_recent_chooser_menu_create_editable (GladeWidgetAdaptor * adaptor,
 					       GladeEditorPageType type)
 {
   if (type == GLADE_PAGE_GENERAL)
-    return (GladeEditable *) glade_activatable_editor_new (adaptor, NULL);
+    return (GladeEditable *) glade_recent_chooser_menu_editor_new ();
 
   return GWA_GET_CLASS (GTK_TYPE_MENU)->create_editable (adaptor, type);
 }
