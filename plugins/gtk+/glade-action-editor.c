@@ -25,14 +25,28 @@
 
 #include "glade-action-editor.h"
 
+static void glade_action_editor_editable_init (GladeEditableIface * iface);
 static void glade_action_editor_grab_focus (GtkWidget * widget);
 
 struct _GladeActionEditorPrivate {
   GtkWidget *embed;
   GtkWidget *extension_port;
+
+  /* GtkToggleAction/GtkRadioAction widgets */
+  GtkWidget *toggle_title;
+  GtkWidget *radio_proxy_editor;
+  GtkWidget *toggle_active_editor;
+  GtkWidget *radio_group_label;
+  GtkWidget *radio_group_editor;
+  GtkWidget *radio_value_label;
+  GtkWidget *radio_value_editor;
 };
 
-G_DEFINE_TYPE (GladeActionEditor, glade_action_editor, GLADE_TYPE_EDITOR_SKELETON)
+static GladeEditableIface *parent_editable_iface;
+
+G_DEFINE_TYPE_WITH_CODE (GladeActionEditor, glade_action_editor, GLADE_TYPE_EDITOR_SKELETON,
+                         G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
+                                                glade_action_editor_editable_init));
 
 static void
 glade_action_editor_class_init (GladeActionEditorClass * klass)
@@ -43,8 +57,15 @@ glade_action_editor_class_init (GladeActionEditorClass * klass)
   widget_class->grab_focus = glade_action_editor_grab_focus;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-action-editor.ui");
-  gtk_widget_class_bind_child (widget_class, GladeActionEditorPrivate, embed);
   gtk_widget_class_bind_child_internal (widget_class, GladeActionEditorPrivate, extension_port);
+  gtk_widget_class_bind_child (widget_class, GladeActionEditorPrivate, embed);
+  gtk_widget_class_bind_child (widget_class, GladeActionEditorPrivate, toggle_title);
+  gtk_widget_class_bind_child (widget_class, GladeActionEditorPrivate, radio_proxy_editor);
+  gtk_widget_class_bind_child (widget_class, GladeActionEditorPrivate, toggle_active_editor);
+  gtk_widget_class_bind_child (widget_class, GladeActionEditorPrivate, radio_group_label);
+  gtk_widget_class_bind_child (widget_class, GladeActionEditorPrivate, radio_group_editor);
+  gtk_widget_class_bind_child (widget_class, GladeActionEditorPrivate, radio_value_label);
+  gtk_widget_class_bind_child (widget_class, GladeActionEditorPrivate, radio_value_editor);
 
   g_type_class_add_private (object_class, sizeof (GladeActionEditorPrivate));  
 }
@@ -67,6 +88,41 @@ glade_action_editor_grab_focus (GtkWidget * widget)
       GLADE_ACTION_EDITOR (widget);
 
   gtk_widget_grab_focus (action_editor->priv->embed);
+}
+
+static void
+glade_action_editor_load (GladeEditable *editable,
+			  GladeWidget   *gwidget)
+{
+  GladeActionEditor *action_editor = GLADE_ACTION_EDITOR (editable);
+  GladeActionEditorPrivate *priv = action_editor->priv;
+
+  /* Chain up to default implementation */
+  parent_editable_iface->load (editable, gwidget);
+
+  if (gwidget)
+    {
+      GObject *object = glade_widget_get_object (gwidget);
+      gboolean is_toggle = GTK_IS_TOGGLE_ACTION (object);
+      gboolean is_radio = GTK_IS_RADIO_ACTION (object);
+
+      /* Update subclass specific editor visibility */
+      gtk_widget_set_visible (priv->toggle_title, is_toggle);
+      gtk_widget_set_visible (priv->radio_proxy_editor, is_toggle);
+      gtk_widget_set_visible (priv->toggle_active_editor, is_toggle);
+      gtk_widget_set_visible (priv->radio_group_label, is_radio);
+      gtk_widget_set_visible (priv->radio_group_editor, is_radio);
+      gtk_widget_set_visible (priv->radio_value_label, is_radio);
+      gtk_widget_set_visible (priv->radio_value_editor, is_radio);
+    }
+}
+
+static void
+glade_action_editor_editable_init (GladeEditableIface * iface)
+{
+  parent_editable_iface = g_type_interface_peek_parent (iface);
+
+  iface->load = glade_action_editor_load;
 }
 
 /*************************************

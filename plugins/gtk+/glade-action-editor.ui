@@ -276,7 +276,7 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">12</property>
+            <property name="top_attach">16</property>
             <property name="width">6</property>
             <property name="height">1</property>
           </packing>
@@ -292,7 +292,7 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">13</property>
+            <property name="top_attach">17</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -308,7 +308,7 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">14</property>
+            <property name="top_attach">18</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -323,7 +323,7 @@
           </object>
           <packing>
             <property name="left_attach">2</property>
-            <property name="top_attach">13</property>
+            <property name="top_attach">17</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -338,7 +338,7 @@
           </object>
           <packing>
             <property name="left_attach">2</property>
-            <property name="top_attach">14</property>
+            <property name="top_attach">18</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -370,6 +370,133 @@
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="toggle_title">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="valign">center</property>
+            <property name="label" translatable="yes">Toggle and Radio</property>
+            <attributes>
+              <attribute name="weight" value="bold"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">12</property>
+            <property name="width">6</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="radio_group_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">group</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">13</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="radio_value_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">value</property>
+            <property name="custom_text" translatable="yes">Value ID:</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">14</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="radio_group_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">group</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">13</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="radio_value_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">value</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">14</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="toggle_active_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">active</property>
+            <property name="editor_type">GladeEpropCheck</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">15</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="radio_proxy_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">draw-as-radio</property>
+            <property name="editor_type">GladeEpropCheck</property>
+            <property name="custom_text">Radio proxies</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">15</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
         </child>
         <child>
           <placeholder/>
@@ -454,6 +581,12 @@
       <editor id="is_important_editor"/>
       <editor id="accel_label"/>
       <editor id="accel_editor"/>
+      <editor id="radio_group_label"/>
+      <editor id="radio_value_label"/>
+      <editor id="radio_group_editor"/>
+      <editor id="radio_value_editor"/>
+      <editor id="toggle_active_editor"/>
+      <editor id="radio_proxy_editor"/>
     </child-editors>
   </template>
 </interface>

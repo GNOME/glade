@@ -2512,9 +2512,16 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkToggleAction" generic-name="toggleaction" _title="Toggle Action" />
+    <glade-widget-class name="GtkToggleAction" generic-name="toggleaction" _title="Toggle Action">
+      <properties>
+	<property id="active" custom-layout="True"/>
+	<property id="draw-as-radio" custom-layout="True"/>
+      </properties>
+    </glade-widget-class>
     <glade-widget-class name="GtkRadioAction" generic-name="radioaction" _title="Radio Action">
       <properties>
+	<property id="value" custom-layout="True"/>
+	<property id="group" custom-layout="True"/>
 	<property id="current-value" disabled="True"/>
       </properties>
     </glade-widget-class>
