@@ -27,6 +27,7 @@
 
 #include "glade-gtk.h"
 #include "glade-action-editor.h"
+#include "glade-recent-action-editor.h"
 
 void
 glade_gtk_action_post_create (GladeWidgetAdaptor * adaptor,
@@ -53,7 +54,12 @@ glade_gtk_action_create_editable (GladeWidgetAdaptor * adaptor,
 
   if (type == GLADE_PAGE_GENERAL)
     {
-      editable = (GladeEditable *) glade_action_editor_new ();
+      GType action_type = glade_widget_adaptor_get_object_type (adaptor);
+
+      if (g_type_is_a (action_type, GTK_TYPE_RECENT_ACTION))
+	editable = (GladeEditable *) glade_recent_action_editor_new ();
+      else
+	editable = (GladeEditable *) glade_action_editor_new ();
     }
   else
     editable = GWA_GET_CLASS (G_TYPE_OBJECT)->create_editable (adaptor, type);

@@ -25,21 +25,73 @@
 
 #include "glade-recent-chooser-editor.h"
 
-G_DEFINE_TYPE (GladeRecentChooserEditor, glade_recent_chooser_editor, GLADE_TYPE_EDITOR_SKELETON)
+static void glade_recent_chooser_editor_editable_init (GladeEditableIface * iface);
+
+struct _GladeRecentChooserEditorPrivate {
+  GtkWidget *select_multiple_editor;
+  GtkWidget *show_numbers_editor;
+};
+
+static GladeEditableIface *parent_editable_iface;
+
+G_DEFINE_TYPE_WITH_CODE (GladeRecentChooserEditor, glade_recent_chooser_editor, GLADE_TYPE_EDITOR_SKELETON,
+                         G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
+                                                glade_recent_chooser_editor_editable_init));
 
 static void
 glade_recent_chooser_editor_class_init (GladeRecentChooserEditorClass * klass)
 {
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-recent-chooser-editor.ui");
+
+  gtk_widget_class_bind_child (widget_class, GladeRecentChooserEditorPrivate, select_multiple_editor);
+  gtk_widget_class_bind_child (widget_class, GladeRecentChooserEditorPrivate, show_numbers_editor);
+
+  g_type_class_add_private (object_class, sizeof (GladeRecentChooserEditorPrivate));  
 }
 
 static void
 glade_recent_chooser_editor_init (GladeRecentChooserEditor * self)
 {
+  self->priv = 
+    G_TYPE_INSTANCE_GET_PRIVATE (self,
+				 GLADE_TYPE_RECENT_CHOOSER_EDITOR,
+				 GladeRecentChooserEditorPrivate);
+
   gtk_widget_init_template (GTK_WIDGET (self));
 }
+
+static void
+glade_recent_chooser_editor_load (GladeEditable *editable,
+				  GladeWidget   *gwidget)
+{
+  GladeRecentChooserEditor *recent_editor = GLADE_RECENT_CHOOSER_EDITOR (editable);
+  GladeRecentChooserEditorPrivate *priv = recent_editor->priv;
+
+  /* Chain up to default implementation */
+  parent_editable_iface->load (editable, gwidget);
+
+  if (gwidget)
+    {
+      GObject *object = glade_widget_get_object (gwidget);
+      gboolean is_recent_action = GTK_IS_RECENT_ACTION (object);
+
+      /* Update subclass specific editor visibility */
+      gtk_widget_set_visible (priv->select_multiple_editor, !is_recent_action);
+      gtk_widget_set_visible (priv->show_numbers_editor, is_recent_action);
+    }
+}
+
+static void
+glade_recent_chooser_editor_editable_init (GladeEditableIface * iface)
+{
+  parent_editable_iface = g_type_interface_peek_parent (iface);
+
+  iface->load = glade_recent_chooser_editor_load;
+}
+
 
 GtkWidget *
 glade_recent_chooser_editor_new (void)

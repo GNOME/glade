@@ -2528,7 +2528,18 @@ embedded in another object</_tooltip>
 
     <glade-widget-class name="GtkRecentAction" generic-name="recentaction" _title="Recent Action" since="2.12">
       <properties>
-	<property id="select-multiple" disabled="True"/>
+	<!-- Claim the GladeRecentChooserEditor properties  -->
+	<property id="recent-manager" custom-layout="True"/>
+	<property id="filter" custom-layout="True"/>
+	<property id="limit" custom-layout="True"/>
+	<property id="sort-type" custom-layout="True"/>
+	<property id="show-private" custom-layout="True"/>
+	<property id="show-tips" custom-layout="True"/>
+	<property id="show-icons" custom-layout="True"/>
+	<property id="show-not-found" custom-layout="True"/>
+	<property id="local-only" custom-layout="True"/>
+	<property id="select-multiple" custom-layout="True"/>
+	<property id="show-numbers" custom-layout="True"/>
       </properties>
     </glade-widget-class>
 
