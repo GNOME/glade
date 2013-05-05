@@ -57,6 +57,7 @@ struct _GladePropertyShellPrivate
   /* Properties, used to load the internal editor */
   GType                editor_type;
   gchar               *property_name;
+  gchar               *custom_text;
   guint                packing : 1;
   guint                use_command : 1;
 };
@@ -66,7 +67,8 @@ enum {
   PROP_PROPERTY_NAME,
   PROP_PACKING,
   PROP_USE_COMMAND,
-  PROP_EDITOR_TYPE
+  PROP_EDITOR_TYPE,
+  PROP_CUSTOM_TEXT
 };
 
 enum
@@ -129,6 +131,12 @@ glade_property_shell_class_init (GladePropertyShellClass *class)
 			    _("Specify the actual editor property type name to use for this shell"),
 			    NULL, G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
 
+  g_object_class_install_property
+      (gobject_class, PROP_CUSTOM_TEXT,
+       g_param_spec_string ("custom-text", _("Custom Text"),
+			    _("Custom Text to display in the property label"),
+			    NULL, G_PARAM_READWRITE));
+
   /**
    * GladePropertyShell::pre-commit:
    * @gladeeditorproperty: the #GladeEditorProperty which changed value
@@ -174,6 +182,7 @@ glade_property_shell_finalize (GObject *object)
   GladePropertyShell *shell = GLADE_PROPERTY_SHELL (object);
 
   g_free (shell->priv->property_name);
+  g_free (shell->priv->custom_text);
 
   G_OBJECT_CLASS (glade_property_shell_parent_class)->finalize (object);
 }
@@ -212,6 +221,9 @@ glade_property_shell_set_real_property (GObject         *object,
 	priv->editor_type = type;
 
       break;
+    case PROP_CUSTOM_TEXT:
+      glade_property_shell_set_custom_text (shell, g_value_get_string (value));
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -236,6 +248,9 @@ glade_property_shell_get_real_property (GObject         *object,
       break;
     case PROP_USE_COMMAND:
       g_value_set_boolean (value, glade_property_shell_get_use_command (shell));
+      break;
+    case PROP_CUSTOM_TEXT:
+      g_value_set_string (value, glade_property_shell_get_custom_text (shell));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -284,6 +299,8 @@ glade_property_shell_set_eprop (GladePropertyShell  *shell,
 
       if (priv->property_editor)
 	{
+	  glade_editor_property_set_custom_text (priv->property_editor, priv->custom_text);
+
 	  priv->pre_commit_id = g_signal_connect (priv->property_editor, "commit",
 						  G_CALLBACK (propagate_pre_commit), shell);
 	  priv->post_commit_id = g_signal_connect_after (priv->property_editor, "commit",
@@ -410,7 +427,7 @@ glade_property_shell_set_property_name (GladePropertyShell *shell,
 
   priv = shell->priv;
 
-  if (g_strcmp0 (priv->property_name, property_name))
+  if (g_strcmp0 (priv->property_name, property_name) != 0)
     {
       g_free (priv->property_name);
       priv->property_name = g_strdup (property_name);
@@ -425,6 +442,36 @@ glade_property_shell_get_property_name (GladePropertyShell *shell)
   g_return_val_if_fail (GLADE_IS_PROPERTY_SHELL (shell), NULL);
 
   return shell->priv->property_name;
+}
+
+void
+glade_property_shell_set_custom_text (GladePropertyShell *shell,
+				      const gchar        *custom_text)
+{
+  GladePropertyShellPrivate *priv;
+
+  g_return_if_fail (GLADE_IS_PROPERTY_SHELL (shell));
+
+  priv = shell->priv;
+
+  if (g_strcmp0 (priv->custom_text, custom_text) != 0)
+    {
+      g_free (priv->custom_text);
+      priv->custom_text = g_strdup (custom_text);
+
+      if (priv->property_editor)
+	glade_editor_property_set_custom_text (priv->property_editor, custom_text);
+
+      g_object_notify (G_OBJECT (shell), "custom-text");
+    }
+}
+
+const gchar *
+glade_property_shell_get_custom_text (GladePropertyShell *shell)
+{
+  g_return_val_if_fail (GLADE_IS_PROPERTY_SHELL (shell), NULL);
+
+  return shell->priv->custom_text;
 }
 
 void

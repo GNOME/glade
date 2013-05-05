@@ -57,7 +57,8 @@ enum
   PROP_0,
   PROP_PROPERTY_CLASS,
   PROP_USE_COMMAND,
-  PROP_DISABLE_CHECK
+  PROP_DISABLE_CHECK,
+  PROP_CUSTOM_TEXT
 };
 
 enum
@@ -90,8 +91,10 @@ struct _GladeEditorPropertyPrivate
   gulong              sensitive_id;   /* signal connection id for sensitivity changes    */
   gulong              changed_id;     /* signal connection id for value changes          */
   gulong              enabled_id;     /* signal connection id for enable/disable changes */
-	
-  gboolean            loading;        /* True during glade_editor_property_load calls, this
+
+  gchar              *custom_text;    /* Custom text to display in the property label */
+
+  guint               loading : 1;    /* True during glade_editor_property_load calls, this
 				       * is used to avoid feedback from input widgets.
 				       */
   guint               committing : 1; /* True while the editor property itself is applying
@@ -188,6 +191,38 @@ glade_editor_property_commit_no_callback (GladeEditorProperty *eprop,
    */
   if (eprop->priv->changed_blocked)
     g_signal_handler_unblock (G_OBJECT (eprop->priv->property), eprop->priv->changed_id);
+}
+
+
+void
+glade_editor_property_set_custom_text (GladeEditorProperty *eprop,
+				       const gchar         *custom_text)
+{
+  GladeEditorPropertyPrivate *priv;
+
+  g_return_if_fail (GLADE_IS_EDITOR_PROPERTY (eprop));
+
+  priv = eprop->priv;
+
+  if (g_strcmp0 (priv->custom_text, custom_text) != 0)
+    {
+      g_free (priv->custom_text);
+      priv->custom_text = g_strdup (custom_text);
+
+      if (priv->item_label)
+	glade_property_label_set_custom_text (GLADE_PROPERTY_LABEL (priv->item_label),
+					      custom_text);
+
+      g_object_notify (G_OBJECT (eprop), "custom-text");
+    }
+}
+
+const gchar *
+glade_editor_property_get_custom_text (GladeEditorProperty *eprop)
+{
+  g_return_val_if_fail (GLADE_IS_EDITOR_PROPERTY (eprop), NULL);
+
+  return eprop->priv->custom_text;
 }
 
 GtkWidget *
@@ -371,6 +406,8 @@ glade_editor_property_finalize (GObject *object)
   /* detatch from loaded property */
   glade_editor_property_load_common (eprop, NULL);
 
+  g_free (eprop->priv->custom_text);
+
   G_OBJECT_CLASS (table_class)->finalize (object);
 }
 
@@ -415,6 +452,9 @@ glade_editor_property_set_property (GObject *object,
 	      gtk_widget_show (eprop->priv->check);
 	  }
         break;
+      case PROP_CUSTOM_TEXT:
+	glade_editor_property_set_custom_text (eprop, g_value_get_string (value));
+	break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
@@ -439,6 +479,9 @@ glade_editor_property_real_get_property (GObject *object,
         break;
       case PROP_DISABLE_CHECK:
 	g_value_set_boolean (value, eprop->priv->disable_check);
+	break;
+      case PROP_CUSTOM_TEXT:
+	g_value_set_string (value, eprop->priv->custom_text);
 	break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -641,6 +684,13 @@ glade_editor_property_class_init (GladeEditorPropertyClass *eprop_class)
        ("disable-check", _("Disable Check"),
         _("Whether to explicitly disable the check button"),
         FALSE, G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property
+      (object_class, PROP_CUSTOM_TEXT,
+       g_param_spec_string
+       ("custom-text", _("Custom Text"),
+        _("Custom Text to display in the property label"),
+        NULL, G_PARAM_READWRITE));
 
   g_type_class_add_private (eprop_class, sizeof (GladeEditorPropertyPrivate));
 }
@@ -2388,7 +2438,6 @@ typedef struct
   GladeEditorProperty parent_instance;
 
   GtkWidget *button;
-  GtkWidget *label;
 } GladeEPropCheck;
 
 GLADE_MAKE_EPROP (GladeEPropCheck, glade_eprop_check)
@@ -2408,19 +2457,8 @@ glade_eprop_check_finalize (GObject *object)
 static void
 glade_eprop_check_load (GladeEditorProperty *eprop, GladeProperty *property)
 {
-  GladeEPropCheck *eprop_check = GLADE_EPROP_CHECK (eprop);
-  GladeWidget *widget;
-
   /* Chain up first */
   editor_property_class->load (eprop, property);
-
-  /* Load the inner label */
-  if (property)
-    {
-      widget = glade_property_get_widget (property);
-      if (widget)
-	glade_editable_load (GLADE_EDITABLE (eprop_check->label), widget);
-    }
 
   if (property)
     {
@@ -2453,22 +2491,26 @@ glade_eprop_check_create_input (GladeEditorProperty *eprop)
 {
   GladeEPropCheck *eprop_check = GLADE_EPROP_CHECK (eprop);
   GladePropertyClass *pclass;
+  GtkWidget *label;
 
   pclass = eprop->priv->klass;
 
   /* Add the property label as the check button's child */
-  eprop_check->label = glade_property_label_new ();
-  glade_property_label_set_property_name (GLADE_PROPERTY_LABEL (eprop_check->label),
+  label = glade_editor_property_get_item_label (eprop);
+
+  glade_property_label_set_property_name (GLADE_PROPERTY_LABEL (label),
 					  glade_property_class_id (pclass));
-  glade_property_label_set_packing (GLADE_PROPERTY_LABEL (eprop_check->label),
+  glade_property_label_set_packing (GLADE_PROPERTY_LABEL (label),
 				    glade_property_class_get_is_packing (pclass));
-  glade_property_label_set_append_colon (GLADE_PROPERTY_LABEL (eprop_check->label), FALSE);
-  gtk_widget_show (eprop_check->label);
+  glade_property_label_set_append_colon (GLADE_PROPERTY_LABEL (label), FALSE);
+  glade_property_label_set_custom_text (GLADE_PROPERTY_LABEL (label),
+					eprop->priv->custom_text);
+  gtk_widget_show (label);
   
   eprop_check->button = gtk_check_button_new ();
   gtk_button_set_focus_on_click (GTK_BUTTON (eprop_check->button), FALSE);
 
-  gtk_container_add (GTK_CONTAINER (eprop_check->button), eprop_check->label);
+  gtk_container_add (GTK_CONTAINER (eprop_check->button), label);
 
   gtk_widget_set_halign (eprop_check->button, GTK_ALIGN_START);
   gtk_widget_set_valign (eprop_check->button, GTK_ALIGN_CENTER);

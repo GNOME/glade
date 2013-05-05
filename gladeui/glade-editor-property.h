@@ -107,9 +107,11 @@ void                 glade_editor_property_load_by_widget (GladeEditorProperty *
 
 void                 glade_editor_property_commit         (GladeEditorProperty *eprop,
 							   GValue              *value);
-
 void                 glade_editor_property_commit_no_callback (GladeEditorProperty *eprop,
 							       GValue              *value);
+void                 glade_editor_property_set_custom_text(GladeEditorProperty *eprop,
+							   const gchar         *custom_text);
+const gchar         *glade_editor_property_get_custom_text(GladeEditorProperty *eprop);
 
 GtkWidget           *glade_editor_property_get_item_label  (GladeEditorProperty *eprop);
 GladePropertyClass  *glade_editor_property_get_pclass      (GladeEditorProperty *eprop);

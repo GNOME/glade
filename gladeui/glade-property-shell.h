@@ -59,6 +59,9 @@ GtkWidget     *glade_property_shell_new               (void);
 void           glade_property_shell_set_property_name (GladePropertyShell *shell,
 						       const gchar        *property_name);
 const gchar   *glade_property_shell_get_property_name (GladePropertyShell *shell);
+void           glade_property_shell_set_custom_text   (GladePropertyShell *shell,
+						       const gchar        *custom_text);
+const gchar   *glade_property_shell_get_custom_text   (GladePropertyShell *shell);
 void           glade_property_shell_set_packing       (GladePropertyShell *shell,
 						       gboolean            packing);
 gboolean       glade_property_shell_get_packing       (GladePropertyShell *shell);
