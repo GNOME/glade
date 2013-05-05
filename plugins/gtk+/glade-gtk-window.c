@@ -30,6 +30,7 @@
 #include "glade-file-chooser-dialog-editor.h"
 #include "glade-font-chooser-dialog-editor.h"
 #include "glade-message-dialog-editor.h"
+#include "glade-recent-chooser-dialog-editor.h"
 #include "glade-gtk.h"
 
 #define GLADE_TAG_ACCEL_GROUPS "accel-groups"
@@ -174,6 +175,8 @@ glade_gtk_window_create_editable (GladeWidgetAdaptor * adaptor,
 	editable = (GladeEditable *) glade_file_chooser_dialog_editor_new ();
       else if (g_type_is_a (window_type, GTK_TYPE_FONT_CHOOSER_DIALOG))
 	editable = (GladeEditable *) glade_font_chooser_dialog_editor_new ();
+      else if (g_type_is_a (window_type, GTK_TYPE_RECENT_CHOOSER_DIALOG))
+	editable = (GladeEditable *) glade_recent_chooser_dialog_editor_new ();
       else if (g_type_is_a (window_type, GTK_TYPE_MESSAGE_DIALOG))
 	editable = (GladeEditable *) glade_message_dialog_editor_new ();
       else

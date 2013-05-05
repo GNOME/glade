@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface domain="glade">
+  <!-- interface-requires glade-gtk-plugin 0.0 -->
+  <!-- interface-requires gtk+ 3.10 -->
+  <template class="GladeRecentChooserDialogEditor" parent="GladeWindowEditor">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="orientation">vertical</property>
+    <child internal-child="extension_port">
+      <object class="GtkBox" id="extension_port">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GladeRecentChooserEditor" id="recentchoosereditor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <child-editors>
+      <editor id="recentchoosereditor"/>
+    </child-editors>
+  </template>
+</interface>

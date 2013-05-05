@@ -102,6 +102,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-label-editor.c		\
 	glade-message-dialog-editor.c	\
 	glade-model-data.c		\
+	glade-recent-chooser-dialog-editor.c \
 	glade-recent-chooser-editor.c	\
 	glade-store-editor.c		\
 	glade-string-list.c		\
@@ -150,6 +151,7 @@ noinst_HEADERS =			\
 	glade-label-editor.h		\
 	glade-message-dialog-editor.h	\
 	glade-model-data.h		\
+	glade-recent-chooser-dialog-editor.h \
 	glade-recent-chooser-editor.h	\
 	glade-store-editor.h		\
 	glade-string-list.h		\
@@ -196,6 +198,7 @@ UI_FILES = 				\
 	glade-image-editor.ui		\
 	glade-label-editor.ui		\
 	glade-message-dialog-editor.ui	\
+	glade-recent-chooser-dialog-editor.ui \
 	glade-recent-chooser-editor.ui	\
 	glade-tool-button-editor.ui	\
 	glade-widget-editor.ui		\

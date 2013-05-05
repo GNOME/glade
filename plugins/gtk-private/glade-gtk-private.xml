@@ -11,6 +11,8 @@
 			icon-name="widget-gtk-filechooserwidget"/>
     <glade-widget-class name="GladeFontChooserEditor" generic-name="fontchoosereditor" title="Font Chooser Editor"
 			icon-name="widget-gtk-fontselection"/>
+    <glade-widget-class name="GladeRecentChooserEditor" generic-name="recentchoosereditor" title="Recent Chooser Editor"
+			icon-name="widget-gtk-recentchooser"/>
     <glade-widget-class name="GladeWindowEditor" generic-name="windoweditor" title="Window Editor"
 			icon-name="widget-gtk-window">
       <post-create-function>glade_window_editor_post_create</post-create-function>
@@ -31,6 +33,7 @@
     <glade-widget-class-ref name="GladeButtonEditor"/>
     <glade-widget-class-ref name="GladeFileChooserEditor"/>
     <glade-widget-class-ref name="GladeFontChooserEditor"/>
+    <glade-widget-class-ref name="GladeRecentChooserEditor"/>
     <glade-widget-class-ref name="GladeWindowEditor"/>
   </glade-widget-group>
 </glade-catalog>

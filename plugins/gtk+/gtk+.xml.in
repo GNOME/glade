@@ -2406,7 +2406,22 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
     
-    <glade-widget-class name="GtkRecentChooserDialog" generic-name="recentchooserdialog" _title="Recent Chooser Dialog"/>
+    <glade-widget-class name="GtkRecentChooserDialog" generic-name="recentchooserdialog" _title="Recent Chooser Dialog">
+      <!-- Claim the GladeRecentChooserEditor properties  -->
+      <properties>
+	<property id="recent-manager" custom-layout="True"/>
+	<property id="filter" custom-layout="True"/>
+	<property id="limit" custom-layout="True"/>
+	<property id="sort-type" custom-layout="True"/>
+	<property id="show-private" custom-layout="True"/>
+	<property id="show-tips" custom-layout="True"/>
+	<property id="show-icons" custom-layout="True"/>
+	<property id="show-not-found" custom-layout="True"/>
+	<property id="select-multiple" custom-layout="True"/>
+	<property id="local-only" custom-layout="True"/>
+      </properties>
+
+    </glade-widget-class>
     
     <glade-widget-class name="GtkSizeGroup" generic-name="sizegroup" _title="Size Group" toplevel="True">
       <depends-function>glade_gtk_size_group_depends</depends-function>
