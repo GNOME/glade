@@ -2242,6 +2242,7 @@ glade_eprop_text_create_input (GladeEditorProperty *eprop)
 
       gtk_widget_set_halign (hbox, GTK_ALIGN_START);
       gtk_widget_set_valign (hbox, GTK_ALIGN_CENTER);
+      gtk_widget_set_hexpand (combo, TRUE);
       
       eprop_text->store = (GtkTreeModel *)
           glade_eprop_text_create_store (glade_property_class_stock (klass) ? 
