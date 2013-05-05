@@ -79,6 +79,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-gtk-radio-button.c	\
 	glade-gtk-radio-menu-item.c	\
 	glade-gtk-recent-chooser-menu.c	\
+	glade-gtk-recent-chooser-widget.c \
 	glade-gtk-recent-file-filter.c	\
 	glade-gtk-size-group.c		\
 	glade-gtk-spin-button.c		\
@@ -104,6 +105,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-model-data.c		\
 	glade-recent-chooser-dialog-editor.c \
 	glade-recent-chooser-editor.c	\
+	glade-recent-chooser-widget-editor.c \
 	glade-store-editor.c		\
 	glade-string-list.c		\
 	glade-tool-button-editor.c	\
@@ -153,6 +155,7 @@ noinst_HEADERS =			\
 	glade-model-data.h		\
 	glade-recent-chooser-dialog-editor.h \
 	glade-recent-chooser-editor.h	\
+	glade-recent-chooser-widget-editor.h \
 	glade-store-editor.h		\
 	glade-string-list.h		\
 	glade-tool-button-editor.h	\
@@ -200,6 +203,7 @@ UI_FILES = 				\
 	glade-message-dialog-editor.ui	\
 	glade-recent-chooser-dialog-editor.ui \
 	glade-recent-chooser-editor.ui	\
+	glade-recent-chooser-widget-editor.ui \
 	glade-tool-button-editor.ui	\
 	glade-widget-editor.ui		\
 	glade-window-editor.ui

@@ -2378,7 +2378,8 @@ embedded in another object</_tooltip>
       </properties>
    </glade-widget-class>
 
-    <glade-widget-class name="GtkRecentChooserWidget" generic-name="recentchooser" _title="Recent Chooser">
+    <glade-widget-class name="GtkRecentChooserWidget" generic-name="recentchooser" _title="Recent Chooser" since="2.10">
+      <create-editable-function>glade_gtk_recent_chooser_widget_create_editable</create-editable-function>
 
       <signals>
 	<signal id="item-activated" since="2.10"/>
@@ -2386,16 +2387,24 @@ embedded in another object</_tooltip>
       </signals>
 
       <properties>
+	<!-- Disable GtkBox stuff -->
 	<property id="size" disabled="True"/>
-	<property id="filter" since="2.10"/>
-	<property id="limit" since="2.10"/>
-	<property id="local-only" since="2.10"/>
-	<property id="recent-manager" since="2.10"/>
-	<property id="select-multiple" since="2.10"/>
-	<property id="show-icons" since="2.10"/>
-	<property id="show-not-found" since="2.10"/>
-	<property id="show-tips" since="2.10"/>
-        <property id="sort-type" since="2.10">
+	<property id="homogeneous" disabled="True"/>
+	<property id="orientation" disabled="True"/>
+	<property id="spacing" disabled="True"/>
+	<property id="baseline-position" disabled="True"/>
+
+	<!-- Claim the GladeRecentChooserEditor properties  -->
+	<property id="recent-manager" custom-layout="True"/>
+	<property id="filter" custom-layout="True"/>
+	<property id="limit" custom-layout="True"/>
+	<property id="show-private" custom-layout="True"/>
+	<property id="show-tips" custom-layout="True"/>
+	<property id="show-icons" custom-layout="True"/>
+	<property id="show-not-found" custom-layout="True"/>
+	<property id="select-multiple" custom-layout="True"/>
+	<property id="local-only" custom-layout="True"/>
+        <property id="sort-type" custom-layout="True">
   	  <displayable-values>
 	    <value id="GTK_RECENT_SORT_NONE" _name="None"/>
 	    <value id="GTK_RECENT_SORT_MRU" _name="Most Recently Used first"/>
@@ -2420,7 +2429,6 @@ embedded in another object</_tooltip>
 	<property id="select-multiple" custom-layout="True"/>
 	<property id="local-only" custom-layout="True"/>
       </properties>
-
     </glade-widget-class>
     
     <glade-widget-class name="GtkSizeGroup" generic-name="sizegroup" _title="Size Group" toplevel="True">
