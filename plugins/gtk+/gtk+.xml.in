@@ -1670,7 +1670,6 @@ embedded in another object</_tooltip>
       <properties>
 	<property id="default-width"  default="320" optional="True" optional-default="False"/>
 	<property id="default-height" default="260" optional="True" optional-default="False"/>
-	<property id="has-separator"  default="False"/>
 	<property id="type-hint" default="GDK_WINDOW_TYPE_HINT_DIALOG" save-always="True"/>
       </properties>
 
@@ -2209,9 +2208,6 @@ embedded in another object</_tooltip>
             <object name="help_button"/>
         </object>
       </internal-children>
-      <properties>
-        <property id="has-separator"  disabled="True"/>
-      </properties>
     </glade-widget-class>
 
     <glade-widget-class name="GtkFileChooserDialog" generic-name="filechooserdialog" _title="File Chooser Dialog">
@@ -2247,9 +2243,6 @@ embedded in another object</_tooltip>
             <object name="apply_button"/>
         </object>
       </internal-children>
-      <properties>
-        <property id="has-separator"  disabled="True"/>
-      </properties>
     </glade-widget-class>
     
     <glade-widget-class name="GtkAppChooserDialog" generic-name="appchooserdialog" 
@@ -2262,18 +2255,16 @@ embedded in another object</_tooltip>
       <verify-function>glade_gtk_message_dialog_verify_property</verify-function>
 
       <properties>
-        <property id="has-separator"  disabled="True"/>
-
 	<property id="default-width"  default="400" optional="True" optional-default="False"/>
 	<property id="default-height" default="115" optional="True" optional-default="False"/>
 
-	<property id="image" since="2.10" parentless-widget="True"/>
-	<property id="secondary-text" translatable="True" since="2.10"/>
-	<property id="secondary-use-markup" since="2.10"/>
-	<property id="text" translatable="True" since="2.10"/>
-	<property id="use-markup" since="2.10"/>
-
-	<property id="buttons">
+	<property id="image" since="2.10" parentless-widget="True" create-type="GtkImage" custom-layout="True"/>
+	<property id="secondary-text" translatable="True" since="2.10" custom-layout="True"/>
+	<property id="secondary-use-markup" since="2.10" custom-layout="True"/>
+	<property id="text" translatable="True" since="2.10" custom-layout="True"/>
+	<property id="use-markup" since="2.10" custom-layout="True"/>
+	<property id="message-type" custom-layout="True"/>
+	<property id="buttons" custom-layout="True">
   	  <displayable-values>
 	    <value id="GTK_BUTTONS_NONE" _name="None"/>
 	    <value id="GTK_BUTTONS_OK" _name="Ok"/>
