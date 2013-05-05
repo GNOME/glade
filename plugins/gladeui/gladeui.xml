@@ -51,10 +51,13 @@
       <post-create-function>glade_glade_property_shell_post_create</post-create-function>
       <properties>
 	<property id="editor-type" name="Editor Type" ignore="True"/>
+
+	<!-- Disable GtkBox stuff -->
 	<property id="orientation" disabled="True"/>
 	<property id="size" disabled="True"/>
 	<property id="spacing" disabled="True"/>
 	<property id="homogenous" disabled="True"/>
+	<property id="baseline-position" disabled="True"/>
       </properties>
     </glade-widget-class>
   </glade-widget-classes>
