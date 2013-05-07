@@ -111,6 +111,7 @@ glade_gtk_dialog_post_create (GladeWidgetAdaptor *adaptor,
       GObject *child;
       gint size;
 
+      G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
       if (GTK_IS_COLOR_SELECTION_DIALOG (object))
         {
           child = glade_widget_adaptor_get_internal_child (adaptor, object, "color_selection");
@@ -123,6 +124,7 @@ glade_gtk_dialog_post_create (GladeWidgetAdaptor *adaptor,
         }
       else
         size = -1;
+      G_GNUC_END_IGNORE_DEPRECATIONS;
 
       /* Set this to a sane value. At load time, if there are any children then
        * size will adjust appropriately (otherwise the default "3" gets
