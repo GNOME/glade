@@ -47,6 +47,10 @@ typedef enum
   DIR_RIGHT
 } GladeTableDir;
 
+/* Redefine GTK_TABLE() macro, as GtkTable is deprecated */
+#undef GTK_TABLE
+#define GTK_TABLE(obj) ((GtkTable *)obj)
+
 static void
 glade_gtk_table_get_child_attachments (GtkWidget * table,
                                        GtkWidget * child,
@@ -195,8 +199,6 @@ glade_gtk_table_get_children (GladeWidgetAdaptor * adaptor,
 {
   GList *children = NULL;
 
-  g_return_val_if_fail (GTK_IS_TABLE (container), NULL);
-
   gtk_container_forall (container, gtk_table_children_callback, &children);
 
   /* GtkTable has the children list already reversed */
@@ -207,9 +209,6 @@ void
 glade_gtk_table_add_child (GladeWidgetAdaptor * adaptor,
                            GObject * object, GObject * child)
 {
-  g_return_if_fail (GTK_IS_TABLE (object));
-  g_return_if_fail (GTK_IS_WIDGET (child));
-
   gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
 
   glade_gtk_table_refresh_placeholders (GTK_TABLE (object));
@@ -219,9 +218,6 @@ void
 glade_gtk_table_remove_child (GladeWidgetAdaptor * adaptor,
                               GObject * object, GObject * child)
 {
-  g_return_if_fail (GTK_IS_TABLE (object));
-  g_return_if_fail (GTK_IS_WIDGET (child));
-
   gtk_container_remove (GTK_CONTAINER (object), GTK_WIDGET (child));
 
   glade_gtk_table_refresh_placeholders (GTK_TABLE (object));
@@ -232,10 +228,6 @@ glade_gtk_table_replace_child (GladeWidgetAdaptor * adaptor,
                                GtkWidget * container,
                                GtkWidget * current, GtkWidget * new_widget)
 {
-  g_return_if_fail (GTK_IS_TABLE (container));
-  g_return_if_fail (GTK_IS_WIDGET (current));
-  g_return_if_fail (GTK_IS_WIDGET (new_widget));
-
   /* Chain Up */
   GWA_GET_CLASS
       (GTK_TYPE_CONTAINER)->replace_child (adaptor,
@@ -264,7 +256,6 @@ glade_gtk_table_set_n_common (GObject * object, const GValue * value,
   guint new_size, old_size, n_columns, n_rows;
 
   table = GTK_TABLE (object);
-  g_return_if_fail (GTK_IS_TABLE (table));
 
   g_object_get (table, "n-columns", &n_columns, "n-rows", &n_rows, NULL);
 
@@ -404,10 +395,6 @@ glade_gtk_table_set_child_property (GladeWidgetAdaptor * adaptor,
                                     GObject * child,
                                     const gchar * property_name, GValue * value)
 {
-  g_return_if_fail (GTK_IS_TABLE (container));
-  g_return_if_fail (GTK_IS_WIDGET (child));
-  g_return_if_fail (property_name != NULL && value != NULL);
-
   GWA_GET_CLASS
       (GTK_TYPE_CONTAINER)->child_set_property (adaptor,
                                                 container, child,
