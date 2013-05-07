@@ -1,3 +1,4 @@
+
 /*
  * Copyright (C) 2006 Juan Pablo Ugarte.
  *
@@ -113,7 +114,7 @@ enum
   N_PROPERTIES
 };
 
-G_DEFINE_TYPE (GladeBaseEditor, glade_base_editor, GTK_TYPE_VBOX)
+G_DEFINE_TYPE (GladeBaseEditor, glade_base_editor, GTK_TYPE_BOX)
 
 static GParamSpec *properties[N_PROPERTIES];
 static guint glade_base_editor_signals[LAST_SIGNAL] = { 0 };
@@ -1702,6 +1703,8 @@ glade_base_editor_init (GladeBaseEditor *editor)
   GtkWidget *paned, *hbox, *vbox, *tree_vbox, *scroll, *button_table, *button,
       *label;
 
+  gtk_orientable_set_orientation (GTK_ORIENTABLE (editor),
+				  GTK_ORIENTATION_VERTICAL);
   gtk_box_set_spacing (GTK_BOX (editor), 8);
 
   e = editor->priv = g_new0 (GladeBaseEditorPrivate, 1);

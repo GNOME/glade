@@ -45,14 +45,14 @@ typedef struct _GladeDesignViewClass    GladeDesignViewClass;
 
 struct _GladeDesignView
 {
-  GtkVBox parent_instance;
+  GtkBox parent_instance;
 
   GladeDesignViewPrivate *priv;
 };
 
 struct _GladeDesignViewClass
 {
-  GtkVBoxClass parent_class;
+  GtkBoxClass parent_class;
 
   void   (* glade_reserved1)   (void);
   void   (* glade_reserved2)   (void);

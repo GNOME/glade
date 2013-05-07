@@ -99,7 +99,7 @@ static void glade_palette_update_appearance (GladePalette        *palette);
 static void palette_item_toggled_cb         (GtkToggleToolButton *button, 
 					     GladePalette        *palette);
 
-G_DEFINE_TYPE (GladePalette, glade_palette, GTK_TYPE_VBOX)
+G_DEFINE_TYPE (GladePalette, glade_palette, GTK_TYPE_BOX)
 
 
 /*******************************************************
@@ -651,6 +651,9 @@ glade_palette_init (GladePalette * palette)
 {
   GladePalettePrivate *priv;
   GtkWidget           *sw;
+
+  gtk_orientable_set_orientation (GTK_ORIENTABLE (palette),
+				  GTK_ORIENTATION_VERTICAL);
 
   priv = palette->priv = GLADE_PALETTE_GET_PRIVATE (palette);
 

@@ -47,14 +47,14 @@ typedef struct _GladePaletteClass    GladePaletteClass;
 
 struct _GladePalette
 {
-  GtkVBox parent_instance;
+  GtkBox parent_instance;
 
   GladePalettePrivate *priv;
 };
 
 struct _GladePaletteClass
 {
-  GtkVBoxClass parent_class;
+  GtkBoxClass parent_class;
 
   void   (* refresh)    (GladePalette *palette);
 

@@ -69,7 +69,7 @@ struct _GladeDesignViewPrivate
 
 static GtkVBoxClass *parent_class = NULL;
 
-G_DEFINE_TYPE (GladeDesignView, glade_design_view, GTK_TYPE_VBOX)
+G_DEFINE_TYPE (GladeDesignView, glade_design_view, GTK_TYPE_BOX)
 
 static void
 glade_design_layout_scroll (GladeDesignView *view, gint x, gint y, gint w, gint h)
@@ -360,6 +360,8 @@ glade_design_view_init (GladeDesignView *view)
   view->priv = GLADE_DESIGN_VIEW_GET_PRIVATE (view);
 
   gtk_widget_set_no_show_all (GTK_WIDGET (view), TRUE);
+  gtk_orientable_set_orientation (GTK_ORIENTABLE (view),
+				  GTK_ORIENTATION_VERTICAL);
 
   view->priv->project = NULL;
   view->priv->layout_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
