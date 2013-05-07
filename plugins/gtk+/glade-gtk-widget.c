@@ -850,8 +850,6 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
         new_type = GTK_TYPE_SCROLLED_WINDOW;
       else if (strcmp (action, "expander") == 0)
         new_type = GTK_TYPE_EXPANDER;
-      else if (strcmp (action, "table") == 0)
-        new_type = GTK_TYPE_TABLE;
       else if (strcmp (action, "grid") == 0)
         new_type = GTK_TYPE_GRID;
       else if (strcmp (action, "box") == 0)
