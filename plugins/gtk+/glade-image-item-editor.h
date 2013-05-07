@@ -37,7 +37,7 @@ typedef struct _GladeImageItemEditorClass   GladeImageItemEditorClass;
 
 struct _GladeImageItemEditor
 {
-  GtkVBox  parent;
+  GtkBox  parent;
 
   GtkWidget *embed;           /* Embedded parent class editor */
   GtkWidget *embed_image;     /* Embedded GladeEditable for the image */
@@ -52,7 +52,7 @@ struct _GladeImageItemEditor
 
 struct _GladeImageItemEditorClass
 {
-  GtkVBoxClass parent;
+  GtkBoxClass parent;
 };
 
 GType            glade_image_item_editor_get_type (void) G_GNUC_CONST;

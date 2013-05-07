@@ -37,7 +37,7 @@ typedef struct _GladeStoreEditorClass   GladeStoreEditorClass;
 
 struct _GladeStoreEditor
 {
-	GtkVBox  parent;
+	GtkBox  parent;
 
 	GtkWidget *embed;
 
@@ -46,7 +46,7 @@ struct _GladeStoreEditor
 
 struct _GladeStoreEditorClass
 {
-	GtkVBoxClass parent;
+	GtkBoxClass parent;
 };
 
 GType            glade_store_editor_get_type (void) G_GNUC_CONST;

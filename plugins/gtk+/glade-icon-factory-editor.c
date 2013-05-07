@@ -37,7 +37,7 @@ static void glade_icon_factory_editor_grab_focus (GtkWidget * widget);
 static GladeEditableIface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladeIconFactoryEditor, glade_icon_factory_editor,
-                         GTK_TYPE_VBOX,
+                         GTK_TYPE_BOX,
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
                                                 glade_icon_factory_editor_editable_init));
 
@@ -55,6 +55,8 @@ glade_icon_factory_editor_class_init (GladeIconFactoryEditorClass * klass)
 static void
 glade_icon_factory_editor_init (GladeIconFactoryEditor * self)
 {
+  gtk_orientable_set_orientation (GTK_ORIENTABLE (self),
+				  GTK_ORIENTATION_VERTICAL);
 }
 
 static void
