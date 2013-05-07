@@ -41,7 +41,7 @@ typedef struct _GladeCellRendererEditorClass   GladeCellRendererEditorClass;
 
 struct _GladeCellRendererEditor
 {
-	GtkVBox  parent;
+	GtkBox  parent;
 
 	GtkWidget *embed;           /* Embedded parent class editor */
 
@@ -52,7 +52,7 @@ struct _GladeCellRendererEditor
 
 struct _GladeCellRendererEditorClass
 {
-	GtkVBoxClass parent;
+	GtkBoxClass parent;
 };
 
 GType            glade_eprop_cell_attribute_get_type (void) G_GNUC_CONST;
