@@ -37,7 +37,7 @@ static void glade_tree_view_editor_grab_focus (GtkWidget * widget);
 
 static GladeEditableIface *parent_editable_iface;
 
-G_DEFINE_TYPE_WITH_CODE (GladeTreeViewEditor, glade_tree_view_editor, GTK_TYPE_HBOX,
+G_DEFINE_TYPE_WITH_CODE (GladeTreeViewEditor, glade_tree_view_editor, GTK_TYPE_BOX,
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
                                                 glade_tree_view_editor_editable_init));
 
@@ -57,6 +57,8 @@ glade_tree_view_editor_class_init (GladeTreeViewEditorClass * klass)
 static void
 glade_tree_view_editor_init (GladeTreeViewEditor * self)
 {
+  gtk_orientable_set_orientation (GTK_ORIENTABLE (self),
+				  GTK_ORIENTATION_HORIZONTAL);
 }
 
 static GladeWidget *

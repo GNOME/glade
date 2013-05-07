@@ -37,7 +37,7 @@ typedef struct _GladeToolItemGroupEditorClass   GladeToolItemGroupEditorClass;
 
 struct _GladeToolItemGroupEditor
 {
-	GtkVBox  parent;
+	GtkBox  parent;
 
 	GtkWidget *embed;
 
@@ -49,7 +49,7 @@ struct _GladeToolItemGroupEditor
 
 struct _GladeToolItemGroupEditorClass
 {
-	GtkVBoxClass parent;
+	GtkBoxClass parent;
 };
 
 GType            glade_tool_item_group_editor_get_type (void) G_GNUC_CONST;
