@@ -1335,7 +1335,7 @@ glade_widget_class_init (GladeWidgetClass * klass)
                              FALSE, G_PARAM_READABLE);
 
   properties[PROP_COMPOSITE] =
-       g_param_spec_boolean ("composite", _("Compisite"),
+       g_param_spec_boolean ("composite", _("Composite"),
                             _("Whether this widget is the template for a composite widget"),
                             FALSE, G_PARAM_READWRITE);
 
