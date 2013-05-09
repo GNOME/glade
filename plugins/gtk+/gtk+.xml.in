@@ -340,6 +340,7 @@ embedded in another object</_tooltip>
     
     <glade-widget-class name="GtkBox" generic-name="box" _title="Box">
       <create-widget-function>glade_gtk_create_fixed_widget</create-widget-function>
+      <create-editable-function>glade_gtk_box_create_editable</create-editable-function>
       <post-create-function>glade_gtk_box_post_create</post-create-function>
       <get-children-function>glade_gtk_box_get_children</get-children-function>
       <set-property-function>glade_gtk_box_set_property</set-property-function>
@@ -358,15 +359,17 @@ embedded in another object</_tooltip>
       </packing-actions>
 
       <properties>
-	<property id="orientation" default="GTK_ORIENTATION_VERTICAL"/>
-	<property id="size" _name="Number of items" query="True" default="3" save="False">
+	<property id="orientation" default="GTK_ORIENTATION_VERTICAL" custom-layout="True"/>
+	<property id="homogeneous" custom-layout="True"/>
+	<property id="spacing" custom-layout="True"/>
+	<property id="size" _name="Number of items" query="True" default="3" save="False" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>1</min>
 	  </parameter-spec>
 	  <_tooltip>The number of items in the box</_tooltip>
 	</property>
-        <property id="baseline-position" since="3.10">
+        <property id="baseline-position" since="3.10" custom-layout="True">
           <displayable-values>
             <value id="GTK_BASELINE_POSITION_TOP" _name="Top"/>
             <value id="GTK_BASELINE_POSITION_CENTER" _name="Center"/>

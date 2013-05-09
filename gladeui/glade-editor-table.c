@@ -481,11 +481,13 @@ get_sorted_properties (GladeWidgetAdaptor * adaptor, GladeEditorPageType type)
       GladePropertyClass *klass = l->data;
 
       /* Collect properties in our domain, query dialogs are allowed editor 
-       * invisible properties, allow adaptors to filter out properties from
-       * the GladeEditorTable using the "custom-layout" attribute.
+       * invisible (or custom-layout) properties, allow adaptors to filter
+       * out properties from the GladeEditorTable using the "custom-layout" attribute.
        */
-      if (!glade_property_class_custom_layout (klass) && GLADE_PROPERTY_CLASS_IS_TYPE (klass, type)
-          && (glade_property_class_is_visible (klass) || type == GLADE_PAGE_QUERY))
+      if (GLADE_PROPERTY_CLASS_IS_TYPE (klass, type) &&
+	  (type == GLADE_PAGE_QUERY || 
+	   (!glade_property_class_custom_layout (klass) &&
+	    glade_property_class_is_visible (klass))))
         {
           list = g_list_prepend (list, klass);
         }

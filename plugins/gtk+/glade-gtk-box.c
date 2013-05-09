@@ -28,6 +28,7 @@
 
 #include "glade-fixed.h"
 #include "glade-gtk-notebook.h"
+#include "glade-box-editor.h"
 #include "glade-gtk.h"
 
 static gboolean glade_gtk_box_configure_child (GladeFixed * fixed,
@@ -45,6 +46,15 @@ static gboolean glade_gtk_box_configure_end (GladeFixed * fixed,
 					     GtkWidget * box);
 
 
+GladeEditable *
+glade_gtk_box_create_editable (GladeWidgetAdaptor * adaptor,
+			       GladeEditorPageType type)
+{
+  if (type == GLADE_PAGE_GENERAL)
+    return (GladeEditable *) glade_box_editor_new ();
+
+  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+}
 
 void
 glade_gtk_box_post_create (GladeWidgetAdaptor * adaptor,
