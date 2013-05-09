@@ -28,6 +28,7 @@
 #include <string.h>
 
 #include "glade-fixed.h"
+#include "glade-grid-editor.h"
 
 typedef struct
 {
@@ -47,6 +48,16 @@ static gboolean glade_gtk_grid_configure_child (GladeFixed   *fixed,
 						GladeWidget  *child,
 						GdkRectangle *rect,
 						GtkWidget    *grid);
+
+GladeEditable *
+glade_gtk_grid_create_editable (GladeWidgetAdaptor * adaptor,
+				GladeEditorPageType type)
+{
+  if (type == GLADE_PAGE_GENERAL)
+    return (GladeEditable *) glade_grid_editor_new ();
+
+  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+}
 
 static void
 glade_gtk_grid_get_child_attachments (GtkWidget            *grid,

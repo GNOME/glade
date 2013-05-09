@@ -1721,6 +1721,7 @@ embedded in another object</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkGrid" generic-name="grid" _title="Grid">
+      <create-editable-function>glade_gtk_grid_create_editable</create-editable-function>
       <destroy-object-function>glade_gtk_grid_destroy_object</destroy-object-function>
       <create-widget-function>glade_gtk_create_fixed_widget</create-widget-function>
       <post-create-function>glade_gtk_grid_post_create</post-create-function>
@@ -1748,13 +1749,19 @@ embedded in another object</_tooltip>
       </packing-actions>
 
       <properties>
-	<property id="n-rows" _name="Rows" default="3" query="True" needs-sync="True" save="False">
+	<property id="orientation" custom-layout="True"/>
+	<property id="row-homogeneous" custom-layout="True"/>
+	<property id="column-homogeneous" custom-layout="True"/>
+	<property id="row-spacing" custom-layout="True"/>
+	<property id="column-spacing" custom-layout="True"/>
+	<property id="baseline-row" since="3.10" custom-layout="True"/>
+	<property id="n-rows" _name="Rows" default="3" query="True" needs-sync="True" save="False" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamUInt</type>
 	  </parameter-spec>
 	  <_tooltip>The number of rows for this grid</_tooltip>
 	</property>
-	<property id="n-columns" _name="Columns" default="3" query="True" needs-sync="True" save="False">
+	<property id="n-columns" _name="Columns" default="3" query="True" needs-sync="True" save="False" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamUInt</type>
 	  </parameter-spec>

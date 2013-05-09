@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface domain="glade">
+  <!-- interface-requires gladeui 0.0 -->
+  <!-- interface-requires gtk+ 3.10 -->
+  <template class="GladeGridEditor" parent="GladeEditorSkeleton">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="orientation">vertical</property>
+    <child>
+      <object class="GtkGrid" id="grid">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="row_spacing">6</property>
+        <property name="column_spacing">6</property>
+        <child>
+          <object class="GladeEditorTable" id="embed">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">0</property>
+            <property name="width">6</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="title">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="valign">center</property>
+            <property name="label" translatable="yes">Grid Attributes</property>
+            <attributes>
+              <attribute name="weight" value="bold"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">1</property>
+            <property name="width">6</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="orientation_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">orientation</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">2</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="orientation_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">orientation</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">2</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="baseline_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">baseline-row</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">2</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="baseline_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">baseline-row</property>
+          </object>
+          <packing>
+            <property name="left_attach">3</property>
+            <property name="top_attach">2</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="rows_title">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="valign">center</property>
+            <property name="margin_left">12</property>
+            <property name="label" translatable="yes">Rows</property>
+            <attributes>
+              <attribute name="weight" value="bold"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">3</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="columns_title">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="valign">center</property>
+            <property name="label" translatable="yes">Columns</property>
+            <attributes>
+              <attribute name="weight" value="bold"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">3</property>
+            <property name="width">3</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="row_spacing_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">24</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">row-spacing</property>
+            <property name="custom_text" translatable="yes">Spacing:</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">5</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="row_spacing_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">row-spacing</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">5</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="row_homogeneous_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">24</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">row-homogeneous</property>
+            <property name="editor_type">GladeEpropCheck</property>
+            <property name="custom_text" translatable="yes">Homogeneous</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">6</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="column_spacing_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">column-spacing</property>
+            <property name="custom_text" translatable="yes">Spacing:</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">5</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="column_spacing_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">column-spacing</property>
+          </object>
+          <packing>
+            <property name="left_attach">3</property>
+            <property name="top_attach">5</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="column_homogeneous_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">column-homogeneous</property>
+            <property name="editor_type">GladeEpropCheck</property>
+            <property name="custom_text" translatable="yes">Homogeneous</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">6</property>
+            <property name="width">3</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="row_count_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">24</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">n-rows</property>
+            <property name="custom_text" translatable="yes">Count:</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">4</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="row_count_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">n-rows</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">4</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="column_count_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">n-columns</property>
+            <property name="custom_text" translatable="yes">Count:</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">4</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="column_count_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">n-columns</property>
+          </object>
+          <packing>
+            <property name="left_attach">3</property>
+            <property name="top_attach">4</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child-editors>
+      <editor id="embed"/>
+      <editor id="orientation_label"/>
+      <editor id="orientation_editor"/>
+      <editor id="baseline_label"/>
+      <editor id="baseline_editor"/>
+      <editor id="row_spacing_label"/>
+      <editor id="row_spacing_editor"/>
+      <editor id="row_homogeneous_editor"/>
+      <editor id="column_spacing_label"/>
+      <editor id="column_spacing_editor"/>
+      <editor id="column_homogeneous_editor"/>
+      <editor id="row_count_label"/>
+      <editor id="row_count_editor"/>
+      <editor id="column_count_label"/>
+      <editor id="column_count_editor"/>
+    </child-editors>
+  </template>
+</interface>
