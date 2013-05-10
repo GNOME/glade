@@ -144,7 +144,7 @@ noinst_HEADERS =			\
 	glade-font-chooser-dialog-editor.h \
 	glade-font-chooser-editor.h	\
 	glade-font-chooser-widget-editor.h \
-	glade-grid-editor.c		\
+	glade-grid-editor.h		\
 	glade-gtk.h			\
 	glade-gtk-action-widgets.h	\
 	glade-gtk-button.h		\
