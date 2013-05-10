@@ -2143,21 +2143,25 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkViewport" generic-name="viewport" _title="Viewport"/>
     
     <glade-widget-class name="GtkScrolledWindow" generic-name="scrolledwindow" _title="Scrolled Window">
+      <create-editable-function>glade_gtk_scrolled_window_create_editable</create-editable-function>
+      <set-property-function>glade_gtk_scrolled_window_set_property</set-property-function>
       <properties>
-        <property id="kinetic-scrolling" since="3.4"/>
-        <property id="shadow-type" default="GTK_SHADOW_IN"/>
-        <property id="min-content-width" since="3.0"/>
-        <property id="min-content-height" since="3.0"/>
-        <property id="window-placement-set" since="2.10" ignore="True"/>
-      	<property id="hscrollbar-policy" default="GTK_POLICY_AUTOMATIC">
+        <property id="hadjustment" custom-layout="True"/>
+        <property id="vadjustment" custom-layout="True"/>
+        <property id="kinetic-scrolling" since="3.4" custom-layout="True"/>
+        <property id="shadow-type" default="GTK_SHADOW_IN" custom-layout="True"/>
+        <property id="min-content-width" since="3.0" custom-layout="True"/>
+        <property id="min-content-height" since="3.0" custom-layout="True"/>
+        <property id="window-placement-set" since="2.10" needs-sync="True" custom-layout="True"/>
+      	<property id="hscrollbar-policy" default="GTK_POLICY_AUTOMATIC" custom-layout="True">
   	  <displayable-values>
 	    <value id="GTK_POLICY_ALWAYS" _name="Always"/>
 	    <value id="GTK_POLICY_AUTOMATIC" _name="Automatic"/>
 	    <value id="GTK_POLICY_NEVER" _name="Never"/>
 	  </displayable-values>
 	</property>
-      	<property id="vscrollbar-policy" default="GTK_POLICY_AUTOMATIC"/>
-      	<property id="window-placement">
+      	<property id="vscrollbar-policy" default="GTK_POLICY_AUTOMATIC" custom-layout="True"/>
+      	<property id="window-placement" custom-layout="True">
   	  <displayable-values>
 	    <value id="GTK_CORNER_TOP_LEFT" _name="Top Left"/>
 	    <value id="GTK_CORNER_BOTTOM_LEFT" _name="Bottom Left"/>
