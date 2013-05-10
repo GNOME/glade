@@ -409,13 +409,9 @@ glade_app_event_handler (GdkEvent *event, gpointer data)
 static void
 glade_app_class_init (GladeAppClass * klass)
 {
-	GObjectClass *object_class;
+  GObjectClass *object_class;
 	
-	object_class = G_OBJECT_CLASS (klass);
-	
-	object_class->constructor  = glade_app_constructor;
-	object_class->dispose      = glade_app_dispose;
-	object_class->finalize     = glade_app_finalize;
+  object_class = G_OBJECT_CLASS (klass);
 
   object_class->constructor = glade_app_constructor;
   object_class->dispose = glade_app_dispose;
