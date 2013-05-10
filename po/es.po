@@ -13,14 +13,14 @@ msgstr ""
 "Project-Id-Version: glade3.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-05-09 14:59+0000\n"
-"PO-Revision-Date: 2013-05-09 17:29+0200\n"
+"POT-Creation-Date: 2013-05-10 14:48+0000\n"
+"PO-Revision-Date: 2013-05-10 17:09+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "X-Generator: Gtranslator 2.91.5\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
@@ -735,7 +735,7 @@ msgstr "Rutas de catálogos adicionales"
 msgid "Select a catalog search path"
 msgstr "Seleccionar una rutas de búsqueda de catálogos"
 
-#: ../gladeui/glade-app.c:548
+#: ../gladeui/glade-app.c:544
 #, c-format
 msgid ""
 "Trying to save private data to %s directory but it is a regular file.\n"
@@ -745,7 +745,7 @@ msgstr ""
 "pero es un archivo regular.\n"
 "No se guardará ningún dato privado en esta sesión"
 
-#: ../gladeui/glade-app.c:560
+#: ../gladeui/glade-app.c:556
 #, c-format
 msgid ""
 "Failed to create directory %s to save private data.\n"
@@ -755,7 +755,7 @@ msgstr ""
 "datos privados.\n"
 "No se guardará ningún dato privado en esta sesión"
 
-#: ../gladeui/glade-app.c:588
+#: ../gladeui/glade-app.c:584
 #, c-format
 msgid ""
 "Error writing private data to %s (%s).\n"
@@ -764,7 +764,7 @@ msgstr ""
 "Error al escribir los datos privados en %s (%s).\n"
 "No se guardará ningún dato privado en esta sesión"
 
-#: ../gladeui/glade-app.c:600
+#: ../gladeui/glade-app.c:596
 #, c-format
 msgid ""
 "Error serializing configuration data to save (%s).\n"
@@ -773,7 +773,7 @@ msgstr ""
 "Error al serializar los datos de configuración para guardar (%s).\n"
 "No se guardarán ningún dato privado en esta sesión"
 
-#: ../gladeui/glade-app.c:613
+#: ../gladeui/glade-app.c:609
 #, c-format
 msgid ""
 "Error opening %s to write private data (%s).\n"
@@ -3047,6 +3047,11 @@ msgstr "Insertar página en %s"
 msgid "Remove page from %s"
 msgstr "Eliminar página de %s"
 
+#: ../plugins/gtk+/glade-gtk-scrolled-window.c:56
+#| msgid "This property is deprecated"
+msgid "This property is disabled"
+msgstr "Esta propiedad está desactivada"
+
 #: ../plugins/gtk+/glade-gtk-text-tag-table.c:122
 #: ../plugins/gtk+/glade-gtk-text-tag-table.c:152
 msgid "Tag"
@@ -4081,11 +4086,13 @@ msgstr "Barra de herramientas"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:166 ../plugins/gtk+/glade-image-editor.ui.h:5
 #: ../plugins/gtk+/glade-label-editor.ui.h:9
+#: ../plugins/gtk+/glade-scrolled-window-editor.ui.h:3
 msgid "Horizontal"
 msgstr "Horizontal"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:167 ../plugins/gtk+/glade-image-editor.ui.h:6
 #: ../plugins/gtk+/glade-label-editor.ui.h:10
+#: ../plugins/gtk+/glade-scrolled-window-editor.ui.h:4
 msgid "Vertical"
 msgstr "Vertical"
 
@@ -5914,6 +5921,26 @@ msgstr "Texto secundario:"
 msgid "Recent Chooser Attributes"
 msgstr "Atributos del selector de recientes"
 
+#: ../plugins/gtk+/glade-scrolled-window-editor.ui.h:1
+#| msgid "Window Attributes"
+msgid "Scrolled Window Attributes"
+msgstr "Atributos de la ventana desplazada"
+
+#: ../plugins/gtk+/glade-scrolled-window-editor.ui.h:2
+#| msgid "Window Parameters"
+msgid "Window Placement:"
+msgstr "Colocación de la ventana:"
+
+#: ../plugins/gtk+/glade-scrolled-window-editor.ui.h:5
+#| msgid "Scrollbar"
+msgid "Scrollbar Policy:"
+msgstr "Política de desplazamiento:"
+
+#: ../plugins/gtk+/glade-scrolled-window-editor.ui.h:6
+#| msgid "Adjustment"
+msgid "Adjustment:"
+msgstr "Ajuste:"
+
 #: ../plugins/gtk+/glade-tool-button-editor.ui.h:3
 msgid "Text:"
 msgstr "Texto:"
@@ -6009,9 +6036,6 @@ msgstr "Opciones de la ventana"
 
 #~ msgid "The accelerator can only be set when inside an Action Group."
 #~ msgstr "El acelerador sólo se puede establecer dentro de un Grupo de acción"
-
-#~ msgid "Window Parameters"
-#~ msgstr "Parámetros de la ventana"
 
 #~ msgid "Failed to save %s to %s: %s"
 #~ msgstr "Falló al guardar %s a %s: %s"
