@@ -33,7 +33,7 @@ glade_gtk_scrolled_window_create_editable (GladeWidgetAdaptor * adaptor,
 {
   if (type == GLADE_PAGE_GENERAL)
     {
-      return glade_scrolled_window_editor_new ();
+      return (GladeEditable *)glade_scrolled_window_editor_new ();
     }
 
   return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
