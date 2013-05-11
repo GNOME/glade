@@ -25,6 +25,7 @@
 #include <gladeui/glade.h>
 
 #include "glade-gtk-notebook.h"
+#include "glade-notebook-editor.h"
 
 typedef struct
 {
@@ -39,6 +40,17 @@ typedef struct
 } NotebookChildren;
 
 static gboolean glade_gtk_notebook_setting_position = FALSE;
+
+
+GladeEditable *
+glade_gtk_notebook_create_editable (GladeWidgetAdaptor * adaptor,
+				    GladeEditorPageType type)
+{
+  if (type == GLADE_PAGE_GENERAL)
+    return (GladeEditable *) glade_notebook_editor_new ();
+
+  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+}
 
 static gint
 notebook_child_compare_func (GtkWidget * widget_a, GtkWidget * widget_b)

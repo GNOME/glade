@@ -1810,6 +1810,7 @@ embedded in another object</_tooltip>
     </glade-widget-class>
   
     <glade-widget-class name="GtkNotebook" generic-name="notebook" _title="Notebook">
+      <create-editable-function>glade_gtk_notebook_create_editable</create-editable-function>
       <post-create-function>glade_gtk_notebook_post_create</post-create-function>
       <add-child-function>glade_gtk_notebook_add_child</add-child-function>
       <remove-child-function>glade_gtk_notebook_remove_child</remove-child-function>
@@ -1836,14 +1837,17 @@ embedded in another object</_tooltip>
       </packing-actions>
 
       <properties>
-	<property id="group" since="2.12"/>
-	<property id="group-name" since="2.24"/>
-	<property id="initial-gap" since="3.2"/>
-	<property id="page" save="False">
-	  <_tooltip>Set the current page (strictly for editing purposes)</_tooltip>
+	<property id="group-name" since="2.24" custom-layout="True"/>
+	<property id="page" save="False" custom-layout="True">
+	  <_tooltip>Set the currently active page to edit, this property will not be saved</_tooltip>
 	</property>
+	<property id="show-tabs" custom-layout="True"/>
+	<property id="show-border" custom-layout="True"/>
+	<property id="tab-pos" custom-layout="True"/>
+	<property id="enable-popup" custom-layout="True"/>
+	<property id="scrollable" custom-layout="True"/>
 
-	<property id="pages" _name="Number of pages" visible="False" save="False" default="3">
+	<property id="pages" _name="Number of pages" visible="False" save="False" default="3" custom-layout="True">
 	  <parameter-spec>
 	    <type>GParamInt</type>
 	    <min>1</min>
