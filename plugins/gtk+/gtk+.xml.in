@@ -1265,6 +1265,7 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkSpinButton" generic-name="spinbutton" _title="Spin Button">
       <post-create-function>empty</post-create-function>
       <set-property-function>glade_gtk_spin_button_set_property</set-property-function>
+      <create-editable-function>glade_gtk_spin_button_create_editable</create-editable-function>
 
       <signals>
 	<signal id="wrapped" since="2.10"/>
@@ -1272,10 +1273,15 @@ embedded in another object</_tooltip>
       </signals>
 
       <properties>
-        <property id="text" disabled="True"/>
-        <property id="value" disabled="True"/>
-        <property id="adjustment" default="0 0 100 1 10 0"/>
-        <property id="update-policy">
+	<property id="snap-to-ticks" custom-layout="True"/>
+	<property id="climb-rate" custom-layout="True"/>
+	<property id="digits" custom-layout="True"/>
+	<property id="numeric" custom-layout="True"/>
+	<property id="value" custom-layout="True"/>
+	<property id="wrap" custom-layout="True"/>
+	<property id="orientation" custom-layout="True"/>
+        <property id="adjustment" default="0 0 100 1 10 0" custom-layout="True"/>
+        <property id="update-policy" custom-layout="True">
   	  <displayable-values>
 	    <value id="GTK_UPDATE_ALWAYS" _name="Always"/>
 	    <value id="GTK_UPDATE_IF_VALID" _name="If Valid"/>

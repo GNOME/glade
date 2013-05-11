@@ -25,6 +25,18 @@
 #include <glib/gi18n-lib.h>
 #include <gladeui/glade.h>
 
+#include "glade-spin-button-editor.h"
+
+GladeEditable *
+glade_gtk_spin_button_create_editable (GladeWidgetAdaptor * adaptor,
+				       GladeEditorPageType type)
+{
+  if (type == GLADE_PAGE_GENERAL)
+    return (GladeEditable *) glade_spin_button_editor_new ();
+
+  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+}
+
 static void
 glade_gtk_spin_button_set_adjustment (GObject * object, const GValue * value)
 {
