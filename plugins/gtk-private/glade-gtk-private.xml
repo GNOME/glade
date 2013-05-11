@@ -33,6 +33,18 @@
 	<object name="extension_port" anarchist="True"/>
       </internal-children>
     </glade-widget-class>
+
+    <glade-widget-class name="GladeEntryEditor" generic-name="entryeditor" title="Entry Editor"
+			icon-name="widget-gtk-entry">
+      <post-create-function>glade_entry_editor_post_create</post-create-function>
+      <properties>
+	<property id="size" disabled="True"/>
+      </properties>
+      <internal-children>
+	<object name="extension_port" anarchist="True"/>
+      </internal-children>
+    </glade-widget-class>
+
   </glade-widget-classes>
 
   <glade-widget-group name="glade-gtk-plugin" title="GTK+ Plugin Editors">
@@ -43,6 +55,7 @@
     <glade-widget-class-ref name="GladeWindowEditor"/>
     <glade-widget-class-ref name="GladeActivatableEditor"/>
     <glade-widget-class-ref name="GladeButtonEditor"/>
+    <glade-widget-class-ref name="GladeEntryEditor"/>
     <glade-widget-class-ref name="GladeFileChooserEditor"/>
     <glade-widget-class-ref name="GladeFontChooserEditor"/>
     <glade-widget-class-ref name="GladeRecentChooserEditor"/>

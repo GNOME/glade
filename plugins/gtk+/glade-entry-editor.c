@@ -45,6 +45,7 @@ static void secondary_tooltip_markup_toggled (GtkWidget *widget, GladeEntryEdito
 struct _GladeEntryEditorPrivate
 {
   GtkWidget *embed;
+  GtkWidget *extension_port;
 
   GtkWidget *text_radio;
   GtkWidget *buffer_radio;
@@ -93,6 +94,7 @@ glade_entry_editor_class_init (GladeEntryEditorClass * klass)
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-entry-editor.ui");
 
+  gtk_widget_class_bind_child_internal (widget_class, GladeEntryEditorPrivate, extension_port);
   gtk_widget_class_bind_child (widget_class, GladeEntryEditorPrivate, embed);
   gtk_widget_class_bind_child (widget_class, GladeEntryEditorPrivate, text_radio);
   gtk_widget_class_bind_child (widget_class, GladeEntryEditorPrivate, buffer_radio);
@@ -625,4 +627,17 @@ GtkWidget *
 glade_entry_editor_new (void)
 {
   return g_object_new (GLADE_TYPE_ENTRY_EDITOR, NULL);
+}
+
+/*************************************
+ *     Private Plugin Extensions     *
+ *************************************/
+void
+glade_entry_editor_post_create (GladeWidgetAdaptor *adaptor,
+				GObject            *editor,
+				GladeCreateReason   reason)
+{
+  GladeEntryEditorPrivate *priv = GLADE_ENTRY_EDITOR (editor)->priv;
+
+  gtk_widget_show (priv->extension_port);
 }
