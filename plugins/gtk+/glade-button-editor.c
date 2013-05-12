@@ -142,7 +142,10 @@ glade_button_editor_load (GladeEditable * editable, GladeWidget * widget)
       gboolean is_toggle = GTK_IS_TOGGLE_BUTTON (button);
       gboolean is_check  = GTK_IS_CHECK_BUTTON (button);
       gboolean is_radio  = GTK_IS_RADIO_BUTTON (button);
-      gboolean is_menu   = GTK_IS_MENU_BUTTON (button);
+      gboolean modify_content = TRUE;
+
+      if (GTK_IS_MENU_BUTTON (button) || GTK_IS_LINK_BUTTON (button))
+	modify_content = FALSE;
 
       gtk_widget_set_visible (priv->active_shell, is_toggle);
       gtk_widget_set_visible (priv->inconsistent_shell, is_toggle);
@@ -157,9 +160,9 @@ glade_button_editor_load (GladeEditable * editable, GladeWidget * widget)
       gtk_widget_set_visible (priv->group_label, is_radio);
       gtk_widget_set_visible (priv->group_shell, is_radio);
 
-      gtk_widget_set_visible (priv->content_label,  !is_menu);
-      gtk_widget_set_visible (priv->custom_check,   !is_menu);
-      gtk_widget_set_visible (priv->standard_frame, !is_menu);
+      gtk_widget_set_visible (priv->content_label,  modify_content);
+      gtk_widget_set_visible (priv->custom_check,   modify_content);
+      gtk_widget_set_visible (priv->standard_frame, modify_content);
     }
 
   /* Chain up to default implementation */
