@@ -5,8 +5,6 @@
     <!-- Editors to use in our GTK+ plugin -->
     <glade-widget-class name="GladeActivatableEditor" generic-name="activatableeditor" title="Activatable Editor"
 			icon-name="widget-gtk-action"/>
-    <glade-widget-class name="GladeButtonEditor" generic-name="buttoneditor" title="Button Editor"
-			icon-name="widget-gtk-button"/>
     <glade-widget-class name="GladeFileChooserEditor" generic-name="filechoosereditor" title="File Chooser Editor"
 			icon-name="widget-gtk-filechooserwidget"/>
     <glade-widget-class name="GladeFontChooserEditor" generic-name="fontchoosereditor" title="Font Chooser Editor"
@@ -45,6 +43,16 @@
       </internal-children>
     </glade-widget-class>
 
+    <glade-widget-class name="GladeButtonEditor" generic-name="buttoneditor" title="Button Editor"
+			icon-name="widget-gtk-button">
+      <post-create-function>glade_button_editor_post_create</post-create-function>
+      <properties>
+	<property id="size" disabled="True"/>
+      </properties>
+      <internal-children>
+	<object name="extension_port" anarchist="True"/>
+      </internal-children>
+    </glade-widget-class>
   </glade-widget-classes>
 
   <glade-widget-group name="glade-gtk-plugin" title="GTK+ Plugin Editors">

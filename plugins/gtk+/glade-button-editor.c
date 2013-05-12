@@ -37,6 +37,7 @@ static void label_toggled (GtkWidget * widget, GladeButtonEditor * button_editor
 struct _GladeButtonEditorPrivate
 {
   GtkWidget *embed;
+  GtkWidget *extension_port;
 
   /* Radio Button */
   GtkWidget *group_label;
@@ -87,6 +88,7 @@ glade_button_editor_class_init (GladeButtonEditorClass * klass)
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-button-editor.ui");
 
+  gtk_widget_class_bind_child_internal (widget_class, GladeButtonEditorPrivate, extension_port);
   gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, embed);
   gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, relief_label);
   gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, relief_shell);
@@ -144,7 +146,9 @@ glade_button_editor_load (GladeEditable * editable, GladeWidget * widget)
       gboolean is_radio  = GTK_IS_RADIO_BUTTON (button);
       gboolean modify_content = TRUE;
 
-      if (GTK_IS_MENU_BUTTON (button) || GTK_IS_LINK_BUTTON (button))
+      if (GTK_IS_MENU_BUTTON (button) ||
+	  GTK_IS_LINK_BUTTON (button) ||
+	  GTK_IS_SCALE_BUTTON (button))
 	modify_content = FALSE;
 
       gtk_widget_set_visible (priv->active_shell, is_toggle);
@@ -385,7 +389,20 @@ label_toggled (GtkWidget * widget, GladeButtonEditor * button_editor)
 }
 
 GtkWidget *
-glade_button_editor_new (GladeWidgetAdaptor * adaptor, GladeEditable * embed)
+glade_button_editor_new (void)
 {
   return g_object_new (GLADE_TYPE_BUTTON_EDITOR, NULL);
+}
+
+/*************************************
+ *     Private Plugin Extensions     *
+ *************************************/
+void
+glade_button_editor_post_create (GladeWidgetAdaptor *adaptor,
+				 GObject            *editor,
+				 GladeCreateReason   reason)
+{
+  GladeButtonEditorPrivate *priv = GLADE_BUTTON_EDITOR (editor)->priv;
+
+  gtk_widget_show (priv->extension_port);
 }
