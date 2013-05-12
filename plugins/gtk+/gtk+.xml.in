@@ -2297,6 +2297,11 @@ range of values</_tooltip>
     
     <glade-widget-class name="GtkAppChooserDialog" generic-name="appchooserdialog" 
 			_title="Application Chooser Dialog" since="3.0">
+      <properties>
+	<property id="heading" translatable="True"/>
+	<property id="gfile" disabled="True"/>
+      </properties>
+
     </glade-widget-class>
 
     <glade-widget-class name="GtkMessageDialog" generic-name="messagedialog" _title="Message Dialog" default-width="400" default-height="115">
