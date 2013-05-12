@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface domain="glade">
+  <!-- interface-requires gladeui 0.0 -->
+  <!-- interface-requires gtk+ 3.10 -->
+  <!-- interface-requires glade-gtk-plugin 0.0 -->
+  <template class="GladeScaleButtonEditor" parent="GladeButtonEditor">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="orientation">vertical</property>
+    <property name="spacing">4</property>
+    <child internal-child="extension_port">
+      <object class="GtkBox" id="extension_port">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkGrid" id="grid">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="row_spacing">6</property>
+            <property name="column_spacing">6</property>
+            <child>
+              <object class="GtkLabel" id="title">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="valign">center</property>
+                <property name="label" translatable="yes">Scale Button Attributes</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+                <property name="width">5</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GladePropertyLabel" id="orientation_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_left">12</property>
+                <property name="hexpand">False</property>
+                <property name="property_name">orientation</property>
+                <property name="custom_text" translatable="yes">Scale orientation:</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">1</property>
+                <property name="width">2</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GladePropertyShell" id="orientation_editor">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="hexpand">False</property>
+                <property name="property_name">orientation</property>
+              </object>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="top_attach">1</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GladePropertyLabel" id="adj_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_left">12</property>
+                <property name="hexpand">False</property>
+                <property name="property_name">adjustment</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">2</property>
+                <property name="width">2</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GladePropertyShell" id="adj_editor">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="hexpand">False</property>
+                <property name="property_name">adjustment</property>
+              </object>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="top_attach">2</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GladePropertyLabel" id="value_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_left">12</property>
+                <property name="hexpand">False</property>
+                <property name="property_name">value</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">3</property>
+                <property name="width">2</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GladePropertyShell" id="value_editor">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="hexpand">False</property>
+                <property name="property_name">value</property>
+              </object>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="top_attach">3</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GladePropertyLabel" id="icons_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_left">12</property>
+                <property name="hexpand">False</property>
+                <property name="property_name">icons</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">4</property>
+                <property name="width">2</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GladePropertyShell" id="icons_editor">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_left">12</property>
+                <property name="property_name">icons</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">5</property>
+                <property name="width">5</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox" id="box">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_left">12</property>
+                <property name="hexpand">False</property>
+                <property name="spacing">6</property>
+                <child>
+                  <object class="GladePropertyLabel" id="size_label">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">False</property>
+                    <property name="property_name">size</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GladePropertyShell" id="size_editor">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">False</property>
+                    <property name="property_name">size</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GladePropertyShell" id="use_symbolic_editor">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="property_name">use-symbolic</property>
+                    <property name="editor_type">GladeEpropCheck</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">6</property>
+                <property name="width">5</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <child-editors>
+      <editor id="orientation_label"/>
+      <editor id="orientation_editor"/>
+      <editor id="adj_label"/>
+      <editor id="adj_editor"/>
+      <editor id="value_label"/>
+      <editor id="value_editor"/>
+      <editor id="icons_label"/>
+      <editor id="icons_editor"/>
+      <editor id="size_label"/>
+      <editor id="size_editor"/>
+      <editor id="use_symbolic_editor"/>
+    </child-editors>
+  </template>
+</interface>

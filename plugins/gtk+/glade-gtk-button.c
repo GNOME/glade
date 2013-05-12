@@ -26,6 +26,7 @@
 #include <gladeui/glade.h>
 
 #include "glade-button-editor.h"
+#include "glade-scale-button-editor.h"
 #include "glade-font-button-editor.h"
 #include "glade-gtk.h"
 #include "glade-gtk-button.h"
@@ -124,8 +125,10 @@ glade_gtk_button_create_editable (GladeWidgetAdaptor * adaptor,
 
       if (g_type_is_a (type, GTK_TYPE_FONT_BUTTON))
 	return (GladeEditable *) glade_font_button_editor_new ();
+      else if (g_type_is_a (type, GTK_TYPE_SCALE_BUTTON))
+	return (GladeEditable *) glade_scale_button_editor_new ();
       else
-	return (GladeEditable *) glade_button_editor_new (adaptor, NULL);
+	return (GladeEditable *) glade_button_editor_new ();
     }
 
   return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);

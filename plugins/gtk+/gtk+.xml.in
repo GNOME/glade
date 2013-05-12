@@ -1369,13 +1369,18 @@ embedded in another object</_tooltip>
 
     <glade-widget-class name="GtkScaleButton" generic-name="scalebutton" _title="Scale Button" since="2.12">
       <properties>
-        <property id="orientation" since="2.14"/>
-
-	<!-- These props dont apply to scale buttons -->
-	<property id="glade-type" disabled="True"/>
-	<property id="label" disabled="True"/>
-	<property id="use-underline" disabled="True"/>
-	<property id="stock" disabled="True"/>
+        <property id="orientation" custom-layout="True"/>
+        <property id="size" custom-layout="True"/>
+        <property id="adjustment" custom-layout="True"/>
+        <property id="value" custom-layout="True"/>
+        <property id="icons" custom-layout="True">
+	  <_tooltip>The names of the icons to be used by the scale button.
+The first item in the array will be used in the button
+when the current value is the lowest value, the second
+item for the highest value. All the subsequent icons will
+be used for all the other values, spread evenly over the
+range of values</_tooltip>
+	</property>
       </properties>
 
       <internal-children>
@@ -1387,7 +1392,7 @@ embedded in another object</_tooltip>
 
     <glade-widget-class name="GtkVolumeButton" generic-name="volumebutton" _title="Volume Button">
       <properties>
-        <property id="use-symbolic" since="3.0"/>
+        <property id="use-symbolic" since="3.0" custom-layout="True"/>
       </properties>
     </glade-widget-class>
 
