@@ -26,9 +26,23 @@
 #include <gladeui/glade.h>
 
 #include "glade-string-list.h"
+#include "glade-combo-box-text-editor.h"
 
 #define GLADE_TAG_ITEMS  "items"
 #define GLADE_TAG_ITEM   "item"
+
+
+GladeEditable *
+glade_gtk_combo_box_text_create_editable (GladeWidgetAdaptor * adaptor,
+					  GladeEditorPageType type)
+{
+  if (type == GLADE_PAGE_GENERAL)
+    {
+      return (GladeEditable *) glade_combo_box_text_editor_new ();
+    }
+
+  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+}
 
 void
 glade_gtk_combo_box_text_post_create (GladeWidgetAdaptor *adaptor,
