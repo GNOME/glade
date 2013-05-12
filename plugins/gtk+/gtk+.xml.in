@@ -1422,8 +1422,6 @@ range of values</_tooltip>
 	<property id="preview-widget-active" custom-layout="True"/>
 	<property id="use-preview-label" custom-layout="True"/>
 	<property id="select-multiple" custom-layout="True"/>
-
-
       </properties>
 
       <signals>
@@ -1433,11 +1431,21 @@ range of values</_tooltip>
 
     <glade-widget-class name="GtkAppChooserWidget" generic-name="appchooserwidget" 
 			_title="Application Chooser Widget" since="3.0">
+      <create-editable-function>glade_gtk_app_chooser_widget_create_editable</create-editable-function>
       <properties>
 	<property id="size" disabled="True"/>
 	<property id="spacing" disabled="True"/>
 	<property id="homogeneous" disabled="True"/>
 	<property id="orientation" disabled="True"/>
+	<property id="baseline-position" disabled="True"/>
+
+	<property id="default-text" translatable="True" custom-layout="True"/>
+	<property id="content-type" ignore="True" custom-layout="True"/>
+	<property id="show-default" custom-layout="True"/>
+	<property id="show-recommended" custom-layout="True"/>
+	<property id="show-fallback" custom-layout="True"/>
+	<property id="show-other" custom-layout="True"/>
+	<property id="show-all" custom-layout="True"/>
       </properties>
     </glade-widget-class>
 
@@ -1596,6 +1604,9 @@ range of values</_tooltip>
 	<property id="active-id" disabled="True"/>
 	<property id="cell-area" disabled="True"/>
 	<property id="show-default-item" since="3.2"/>
+
+	<property id="heading" translatable="True"/>
+	<property id="content-type" ignore="True"/>
       </properties>
     </glade-widget-class>
 
@@ -2300,8 +2311,8 @@ range of values</_tooltip>
       <properties>
 	<property id="heading" translatable="True"/>
 	<property id="gfile" disabled="True"/>
+	<property id="content-type" ignore="True"/>
       </properties>
-
     </glade-widget-class>
 
     <glade-widget-class name="GtkMessageDialog" generic-name="messagedialog" _title="Message Dialog" default-width="400" default-height="115">
