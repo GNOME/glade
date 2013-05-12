@@ -1588,6 +1588,8 @@ range of values</_tooltip>
 
     <glade-widget-class name="GtkAppChooserButton" generic-name="appchooserbutton" 
 			_title="Application Chooser Button" since="3.0">
+      <post-create-function>glade_gtk_app_chooser_button_post_create</post-create-function>
+      <create-editable-function>glade_gtk_app_chooser_button_create_editable</create-editable-function>
       <properties>
 	<property id="model" disabled="True"/>
 	<property id="wrap-width" disabled="True"/>
@@ -1603,10 +1605,13 @@ range of values</_tooltip>
 	<property id="id-column" disabled="True"/>
 	<property id="active-id" disabled="True"/>
 	<property id="cell-area" disabled="True"/>
-	<property id="show-default-item" since="3.2"/>
 
-	<property id="heading" translatable="True"/>
-	<property id="content-type" ignore="True"/>
+	<property id="show-default-item" since="3.2" custom-layout="True"/>
+	<property id="show-dialog-item" custom-layout="True"/>
+	<property id="focus-on-click" custom-layout="True"/>
+	<property id="popup-fixed-width" custom-layout="True"/>
+	<property id="heading" translatable="True" custom-layout="True"/>
+	<property id="content-type" ignore="True" custom-layout="True"/>
       </properties>
     </glade-widget-class>
 

@@ -27,6 +27,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-accels.c			\
 	glade-action-editor.c		\
 	glade-activatable-editor.c	\
+	glade-app-chooser-button-editor.c \
 	glade-app-chooser-widget-editor.c \
 	glade-attributes.c		\
 	glade-box-editor.c		\
@@ -49,6 +50,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-gtk-action-group.c	\
 	glade-gtk-action-widgets.c	\
 	glade-gtk-adjustment.c		\
+	glade-gtk-app-chooser-button.c	\
 	glade-gtk-app-chooser-widget.c	\
 	glade-gtk-assistant.c		\
 	glade-gtk-box.c			\
@@ -134,6 +136,7 @@ noinst_HEADERS =			\
 	glade-accels.h			\
 	glade-action-editor.h		\
 	glade-activatable-editor.h	\
+	glade-app-chooser-button-editor.h \
 	glade-app-chooser-widget-editor.h \
 	glade-attributes.h		\
 	glade-box-editor.h		\
@@ -211,6 +214,7 @@ UI_FILES = 				\
 	glade-about-dialog-editor.ui	\
 	glade-action-editor.ui		\
 	glade-activatable-editor.ui	\
+	glade-app-chooser-button-editor.ui \
 	glade-app-chooser-widget-editor.ui \
 	glade-box-editor.ui		\
 	glade-button-editor.ui		\
