@@ -34,6 +34,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-button-editor.c		\
 	glade-cell-renderer-editor.c	\
 	glade-column-types.c		\
+	glade-combo-box-editor.c	\
 	glade-combo-box-text-editor.c	\
 	glade-entry-editor.c		\
 	glade-file-chooser-button-editor.c \
@@ -144,6 +145,7 @@ noinst_HEADERS =			\
 	glade-button-editor.h		\
 	glade-cell-renderer-editor.h	\
 	glade-column-types.h		\
+	glade-combo-box-editor.h	\
 	glade-combo-box-text-editor.h	\
 	glade-entry-editor.h		\
 	glade-file-chooser-button-editor.h \
@@ -220,6 +222,7 @@ UI_FILES = 				\
 	glade-app-chooser-widget-editor.ui \
 	glade-box-editor.ui		\
 	glade-button-editor.ui		\
+	glade-combo-box-editor.ui	\
 	glade-combo-box-text-editor.ui	\
 	glade-entry-editor.ui		\
 	glade-file-chooser-button-editor.ui \

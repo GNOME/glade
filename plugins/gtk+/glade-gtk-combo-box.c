@@ -26,8 +26,21 @@
 #include <gladeui/glade.h>
 
 #include "glade-gtk-cell-layout.h"
+#include "glade-combo-box-editor.h"
 
 #define NO_ENTRY_MSG _("This combo box is not configured to have an entry")
+
+GladeEditable *
+glade_gtk_combo_box_create_editable (GladeWidgetAdaptor * adaptor,
+				     GladeEditorPageType type)
+{
+  if (type == GLADE_PAGE_GENERAL)
+    {
+      return (GladeEditable *) glade_combo_box_editor_new ();
+    }
+
+  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+}
 
 void
 glade_gtk_combo_box_post_create (GladeWidgetAdaptor *adaptor,

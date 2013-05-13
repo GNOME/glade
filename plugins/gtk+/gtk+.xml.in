@@ -1508,6 +1508,7 @@ range of values</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkComboBox" generic-name="combobox" _title="Combo Box">
+      <create-editable-function>glade_gtk_combo_box_create_editable</create-editable-function>
       <post-create-function>glade_gtk_combo_box_post_create</post-create-function>
       <set-property-function>glade_gtk_combo_box_set_property</set-property-function>
       <add-child-verify-function>glade_gtk_cell_layout_add_verify</add-child-verify-function>
@@ -1535,21 +1536,23 @@ range of values</_tooltip>
 	<signal id="popup" since="2.12"/>
       </signals>
       <properties>
-        <property id="model" create-type="GtkListStore"/>
+	<property id="has-frame" custom-layout="True"/>
+	<property id="focus-on-click" custom-layout="True"/>
+	<property id="wrap-width" custom-layout="True"/>
+        <property id="model" create-type="GtkListStore" custom-layout="True"/>
 	<property id="cell-area" disabled="True"/>
-        <property id="popup-shown" since="2.10"/>
-        <property id="arrow-scaling" since="3.2"/>
-	<property id="add-tearoffs" needs-sync="True"/>
-        <property id="tearoff-title" since="2.10" translatable="True"/>
-        <property id="active" ignore="True"/>
-        <property id="active-id" ignore="True" since="3.0"/>
-        <property id="id-column" since="3.0"/>
-        <property id="column-span-column" ignore="True"/>
-        <property id="row-span-column" ignore="True"/>
-	<property id="entry-text-column" since="2.24"/>
-	<property id="has-entry" since="2.24"/>
-	<property id="popup-fixed-width" since="3.0"/>
-	<property id="button-sensitivity">
+        <property id="arrow-scaling" since="3.2" custom-layout="True"/>
+	<property id="add-tearoffs" needs-sync="True" custom-layout="True"/>
+        <property id="tearoff-title" since="2.10" translatable="True" custom-layout="True"/>
+        <property id="active" ignore="True" custom-layout="True"/>
+        <property id="active-id" ignore="True" since="3.0" custom-layout="True"/>
+        <property id="id-column" since="3.0" custom-layout="True"/>
+        <property id="column-span-column" ignore="True" custom-layout="True"/>
+        <property id="row-span-column" ignore="True" custom-layout="True"/>
+	<property id="entry-text-column" since="2.24" custom-layout="True"/>
+	<property id="has-entry" since="2.24" custom-layout="True"/>
+	<property id="popup-fixed-width" since="3.0" custom-layout="True"/>
+	<property id="button-sensitivity" custom-layout="True">
   	  <displayable-values>
 	    <value id="GTK_SENSITIVITY_AUTO" _name="Automatic"/>
 	    <value id="GTK_SENSITIVITY_ON" _name="On"/>

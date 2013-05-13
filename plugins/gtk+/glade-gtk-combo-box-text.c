@@ -31,7 +31,6 @@
 #define GLADE_TAG_ITEMS  "items"
 #define GLADE_TAG_ITEM   "item"
 
-
 GladeEditable *
 glade_gtk_combo_box_text_create_editable (GladeWidgetAdaptor * adaptor,
 					  GladeEditorPageType type)
