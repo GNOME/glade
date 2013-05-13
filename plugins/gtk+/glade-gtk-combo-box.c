@@ -70,6 +70,16 @@ glade_gtk_combo_box_set_property (GladeWidgetAdaptor * adaptor,
         gtk_combo_box_set_entry_text_column (GTK_COMBO_BOX (object),
                                              g_value_get_int (value));
     }
+  else if (!strcmp (id, "add-tearoffs"))
+    {
+      GladeWidget *widget = glade_widget_get_from_gobject (object);
+
+      if (g_value_get_boolean (value))
+	glade_widget_property_set_sensitive (widget, "tearoff-title", TRUE, NULL);
+      else
+	glade_widget_property_set_sensitive (widget, "tearoff-title", FALSE,
+					     _("Tearoff menus are disabled"));
+    }
   else
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor,
                                                       object, id, value);

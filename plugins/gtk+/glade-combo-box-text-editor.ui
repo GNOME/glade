@@ -83,7 +83,7 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">8</property>
+            <property name="top_attach">9</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -98,7 +98,7 @@
           </object>
           <packing>
             <property name="left_attach">2</property>
-            <property name="top_attach">8</property>
+            <property name="top_attach">9</property>
             <property name="width">3</property>
             <property name="height">1</property>
           </packing>
@@ -223,6 +223,52 @@
           </packing>
         </child>
         <child>
+          <object class="GladePropertyShell" id="add_tearoffs_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">add-tearoffs</property>
+            <property name="editor_type">GladeEpropCheck</property>
+            <property name="custom_text" translatable="yes">Tearoff menus</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">8</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="tearoff_title_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="property_name">tearoff-title</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">8</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="tearoff_title_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="property_name">tearoff-title</property>
+          </object>
+          <packing>
+            <property name="left_attach">3</property>
+            <property name="top_attach">8</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
           <placeholder/>
         </child>
         <child>
@@ -270,6 +316,9 @@
       <editor id="has_frame_editor"/>
       <editor id="button_sensitivity_label"/>
       <editor id="button_sensitivity_editor"/>
+      <editor id="add_tearoffs_editor"/>
+      <editor id="tearoff_title_label"/>
+      <editor id="tearoff_title_editor"/>
     </child-editors>
   </template>
 </interface>

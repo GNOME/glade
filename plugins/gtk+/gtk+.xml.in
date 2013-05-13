@@ -1536,9 +1536,11 @@ range of values</_tooltip>
       </signals>
       <properties>
         <property id="model" create-type="GtkListStore"/>
+	<property id="cell-area" disabled="True"/>
         <property id="popup-shown" since="2.10"/>
         <property id="arrow-scaling" since="3.2"/>
-        <property id="tearoff-title" since="2.10"/>
+	<property id="add-tearoffs" needs-sync="True"/>
+        <property id="tearoff-title" since="2.10" translatable="True"/>
         <property id="active" ignore="True"/>
         <property id="active-id" ignore="True" since="3.0"/>
         <property id="id-column" since="3.0"/>
@@ -1581,12 +1583,12 @@ range of values</_tooltip>
 	<property id="wrap-width" disabled="True"/>
 	<property id="row-span-column" disabled="True"/>
 	<property id="column-span-column" disabled="True"/>
-	<property id="add-tearoffs" disabled="True"/>
-	<property id="tearoff-title" disabled="True"/>
 	<property id="entry-text-column" disabled="True"/>
 	<property id="id-column" disabled="True"/>
 	<property id="cell-area" disabled="True"/>
 
+	<property id="add-tearoffs" custom-layout="True"/>
+	<property id="tearoff-title" custom-layout="True"/>
 	<property id="has-entry" custom-layout="True"/>
 	<property id="has-frame" custom-layout="True"/>
 	<property id="button-sensitivity" custom-layout="True"/>
