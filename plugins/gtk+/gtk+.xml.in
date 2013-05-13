@@ -1508,6 +1508,7 @@ range of values</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkComboBox" generic-name="combobox" _title="Combo Box">
+      <post-create-function>glade_gtk_combo_box_post_create</post-create-function>
       <set-property-function>glade_gtk_combo_box_set_property</set-property-function>
       <add-child-verify-function>glade_gtk_cell_layout_add_verify</add-child-verify-function>
       <add-child-function>glade_gtk_cell_layout_add_child</add-child-function>
@@ -1581,14 +1582,14 @@ range of values</_tooltip>
 	<property id="row-span-column" disabled="True"/>
 	<property id="column-span-column" disabled="True"/>
 	<property id="add-tearoffs" disabled="True"/>
-	<property id="has-frame" disabled="True"/>
 	<property id="tearoff-title" disabled="True"/>
-	<property id="has-entry" disabled="True"/>
-	<property id="button-sensitivity" disabled="True"/>
 	<property id="entry-text-column" disabled="True"/>
 	<property id="id-column" disabled="True"/>
 	<property id="cell-area" disabled="True"/>
 
+	<property id="has-entry" custom-layout="True"/>
+	<property id="has-frame" custom-layout="True"/>
+	<property id="button-sensitivity" custom-layout="True"/>
 	<property id="active" custom-layout="True"/>
 	<property id="active-id" custom-layout="True"/>
 	<property id="focus-on-click" custom-layout="True"/>

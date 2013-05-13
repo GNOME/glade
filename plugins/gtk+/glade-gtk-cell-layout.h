@@ -39,6 +39,8 @@ gboolean glade_gtk_cell_layout_move_child       (GladeBaseEditor * editor,
 						 GladeWidget * gparent,
 						 GladeWidget * gchild,
 						 gpointer data); 
+GList   *glade_gtk_cell_layout_get_children     (GladeWidgetAdaptor * adaptor,
+						 GObject * container);
 
 G_END_DECLS
 

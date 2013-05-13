@@ -49,11 +49,12 @@
             <property name="margin_left">12</property>
             <property name="hexpand">False</property>
             <property name="property_name">glade-items</property>
+            <property name="custom_text" translatable="yes">List of items:</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">2</property>
-            <property name="width">2</property>
+            <property name="width">5</property>
             <property name="height">1</property>
           </packing>
         </child>
@@ -82,7 +83,7 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">6</property>
+            <property name="top_attach">8</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
@@ -97,7 +98,7 @@
           </object>
           <packing>
             <property name="left_attach">2</property>
-            <property name="top_attach">6</property>
+            <property name="top_attach">8</property>
             <property name="width">3</property>
             <property name="height">1</property>
           </packing>
@@ -142,7 +143,7 @@
           <packing>
             <property name="left_attach">2</property>
             <property name="top_attach">4</property>
-            <property name="width">3</property>
+            <property name="width">2</property>
             <property name="height">1</property>
           </packing>
         </child>
@@ -156,9 +157,76 @@
           <packing>
             <property name="left_attach">2</property>
             <property name="top_attach">5</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="has_entry_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">has-entry</property>
+            <property name="editor_type">GladeEpropCheck</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">7</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="has_frame_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">has-frame</property>
+            <property name="editor_type">GladeEpropCheck</property>
+            <property name="custom_text" translatable="yes">Draw frame around entry</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">7</property>
             <property name="width">3</property>
             <property name="height">1</property>
           </packing>
+        </child>
+        <child>
+          <object class="GladePropertyLabel" id="button_sensitivity_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">button-sensitivity</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">6</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GladePropertyShell" id="button_sensitivity_editor">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="property_name">button-sensitivity</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">6</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
         </child>
         <child>
           <placeholder/>
@@ -198,6 +266,10 @@
       <editor id="active_id_label"/>
       <editor id="active_editor"/>
       <editor id="active_id_editor"/>
+      <editor id="has_entry_editor"/>
+      <editor id="has_frame_editor"/>
+      <editor id="button_sensitivity_label"/>
+      <editor id="button_sensitivity_editor"/>
     </child-editors>
   </template>
 </interface>

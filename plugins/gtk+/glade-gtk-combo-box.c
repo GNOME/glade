@@ -25,6 +25,33 @@
 #include <glib/gi18n-lib.h>
 #include <gladeui/glade.h>
 
+#include "glade-gtk-cell-layout.h"
+
+#define NO_ENTRY_MSG _("This combo box is not configured to have an entry")
+
+void
+glade_gtk_combo_box_post_create (GladeWidgetAdaptor *adaptor,
+				 GObject            *object, 
+				 GladeCreateReason   reason)
+{
+  GladeWidget *widget;
+
+  /* Chain Up */
+  GWA_GET_CLASS (GTK_TYPE_CONTAINER)->post_create (adaptor, object, reason);
+
+  widget = glade_widget_get_from_gobject (object);
+  if (gtk_combo_box_get_has_entry (GTK_COMBO_BOX (object)))
+    {
+      glade_widget_property_set_sensitive (widget, "entry-text-column", TRUE, NULL);
+      glade_widget_property_set_sensitive (widget, "has-frame", TRUE, NULL);
+    }
+  else
+    {
+      glade_widget_property_set_sensitive (widget, "entry-text-column", FALSE, NO_ENTRY_MSG);
+      glade_widget_property_set_sensitive (widget, "has-frame", FALSE, NO_ENTRY_MSG);
+    }
+}
+
 void
 glade_gtk_combo_box_set_property (GladeWidgetAdaptor * adaptor,
                                   GObject * object,
@@ -48,9 +75,6 @@ glade_gtk_combo_box_set_property (GladeWidgetAdaptor * adaptor,
                                                       object, id, value);
 }
 
-GList *glade_gtk_cell_layout_get_children (GladeWidgetAdaptor * adaptor,
-                                           GObject * container);
-
 GList *
 glade_gtk_combo_box_get_children (GladeWidgetAdaptor * adaptor,
                                   GtkComboBox * combo)
@@ -59,11 +83,6 @@ glade_gtk_combo_box_get_children (GladeWidgetAdaptor * adaptor,
 
   list = glade_gtk_cell_layout_get_children (adaptor, G_OBJECT (combo));
 
-  /* return the internal entry.
-   *
-   * FIXME: for recent gtk+ we have no comboboxentry
-   * but a "has-entry" property instead
-   */
   if (gtk_combo_box_get_has_entry (combo))
     list = g_list_append (list, gtk_bin_get_child (GTK_BIN (combo)));
 
