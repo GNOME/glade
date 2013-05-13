@@ -1759,6 +1759,23 @@ glade_widget_insert_children (GladeWidget * gwidget, GList * children)
 							     gwidget,
 							     extract->internal_name);
 
+	  /* Some internal children can disappear after a construct only
+	   * property has changed, eg. the "has-entry" property of
+	   * GtkComboBox decides whether there is an internal entry.
+	   *
+	   * Just ignore the saved information we have about missing internal
+	   * children.
+	   */
+	  if (!internal_object)
+	    {
+	      if (extract->properties)
+		g_list_free_full (extract->properties, (GDestroyNotify)g_object_unref);
+
+	      g_free (extract->internal_name);
+	      g_free (extract);
+	      continue;
+	    }
+
           gchild = glade_widget_get_from_gobject (internal_object);
 
           /* This will free the list... */
