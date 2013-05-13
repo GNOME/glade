@@ -86,7 +86,7 @@ glade_gtk_filter_read_strings (GladeWidget  *widget,
           if ((str = glade_xml_get_content (item_node)) == NULL)
 	    continue;
 
-	  string_list = glade_string_list_append (string_list, str, NULL, NULL, FALSE);
+	  string_list = glade_string_list_append (string_list, str, NULL, NULL, FALSE, NULL);
 	  g_free (str);
 	}
 
@@ -143,7 +143,7 @@ glade_gtk_recent_file_filter_create_eprop (GladeWidgetAdaptor * adaptor,
 
   if (pspec->value_type == GLADE_TYPE_STRING_LIST)
     {
-      eprop = glade_eprop_string_list_new (klass, use_command, FALSE);
+      eprop = glade_eprop_string_list_new (klass, use_command, FALSE, FALSE);
     }
   else
     eprop = GWA_GET_CLASS

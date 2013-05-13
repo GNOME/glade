@@ -39,7 +39,8 @@ static GladeString *
 glade_string_new (const gchar *string,
 		  const gchar *comment,
 		  const gchar *context,
-		  gboolean     translatable)
+		  gboolean     translatable,
+		  const gchar *id)
 {
   GladeString *gstring = g_slice_new0 (GladeString);
 
@@ -47,6 +48,7 @@ glade_string_new (const gchar *string,
   gstring->comment      = g_strdup (comment);
   gstring->context      = g_strdup (context);
   gstring->translatable = translatable;
+  gstring->id           = g_strdup (id);
 
   return gstring;
 }
@@ -57,7 +59,8 @@ glade_string_copy (GladeString *string)
   return glade_string_new (string->string, 
 			   string->comment, 
 			   string->context, 
-			   string->translatable);
+			   string->translatable,
+			   string->id);
 }
 
 static void
@@ -66,19 +69,21 @@ glade_string_free (GladeString *string)
   g_free (string->string);
   g_free (string->comment);
   g_free (string->context);
+  g_free (string->id);
   g_slice_free (GladeString, string);
 }
 
 GList *
-glade_string_list_append (GList   *list,
-			  gchar   *string,
-			  gchar   *comment,
-			  gchar   *context,
-			  gboolean translatable)
+glade_string_list_append (GList       *list,
+			  const gchar *string,
+			  const gchar *comment,
+			  const gchar *context,
+			  gboolean     translatable,
+			  const gchar *id)
 {
   GladeString *gstring;
 
-  gstring = glade_string_new (string, comment, context, translatable);
+  gstring = glade_string_new (string, comment, context, translatable, id);
 
   return g_list_append (list, gstring);
 }
@@ -135,11 +140,12 @@ glade_string_list_to_string (GList   *list)
       if (l != list)
 	g_string_append_c (string, ',');
 
-      g_string_append_printf (string, "%s:%s:%s:%d", 
+      g_string_append_printf (string, "%s:%s:%s:%d:%s", 
 			      str->string,
 			      str->comment ? str->comment : "",
 			      str->context ? str->context : "",
-			      str->translatable);
+			      str->translatable,
+			      str->id ? str->id : "");
     }
 
   return g_string_free (string, FALSE);
@@ -156,6 +162,7 @@ typedef struct
   GtkWidget    *view;
 
   guint  translatable : 1;
+  guint  with_id : 1;
   guint  want_focus : 1;
 
   guint  editing_index;
@@ -170,6 +177,7 @@ enum
   COLUMN_STRING,
   COLUMN_INDEX,
   COLUMN_DUMMY,
+  COLUMN_ID,
   NUM_COLUMNS
 };
 
@@ -317,6 +325,7 @@ glade_eprop_string_list_load (GladeEditorProperty * eprop, GladeProperty * prope
 			  COLUMN_STRING, string->string,
 			  COLUMN_INDEX, i,
 			  COLUMN_DUMMY, FALSE,
+			  COLUMN_ID, string->id,
 			  -1);
     }
 
@@ -325,6 +334,7 @@ glade_eprop_string_list_load (GladeEditorProperty * eprop, GladeProperty * prope
 		      COLUMN_STRING, _("<Type Here>"),
 		      COLUMN_INDEX, i,
 		      COLUMN_DUMMY, TRUE,
+		      COLUMN_ID, NULL,
 		      -1);
 
   if (eprop_string_list->want_focus)
@@ -370,7 +380,8 @@ string_edited (GtkCellRendererText *renderer,
 	string_list = 
 	  glade_string_list_append (string_list,
 				    new_text, NULL, NULL, 
-				    eprop_string_list->translatable);
+				    eprop_string_list->translatable,
+				    NULL);
     }
   else if (new_text && new_text[0])
     {
@@ -387,6 +398,52 @@ string_edited (GtkCellRendererText *renderer,
       string_list = 
 	g_list_delete_link (string_list, node);
     }
+
+  eprop_string_list->editing_index = index;
+
+  if (eprop_string_list->pending_string_list)
+    glade_string_list_free (eprop_string_list->pending_string_list);
+  eprop_string_list->pending_string_list = string_list;
+
+  if (eprop_string_list->update_id == 0)
+    eprop_string_list->update_id = 
+      g_idle_add ((GSourceFunc) update_string_list_idle, eprop);
+
+  gtk_tree_path_free (tree_path);
+}
+
+static void
+id_edited (GtkCellRendererText *renderer,
+	   gchar               *path,
+	   gchar               *new_text,
+	   GladeEditorProperty *eprop)
+{
+  GladeEPropStringList *eprop_string_list = GLADE_EPROP_STRING_LIST (eprop);
+  GtkTreePath          *tree_path = gtk_tree_path_new_from_string (path);
+  GtkTreeIter           iter;
+  guint                 index;
+  GladeProperty        *property = glade_editor_property_get_property (eprop);
+  GList                *string_list = NULL;
+  GladeString          *string;
+
+  gtk_tree_model_get_iter (eprop_string_list->model, &iter, tree_path);
+  gtk_tree_model_get (eprop_string_list->model, &iter,
+		      COLUMN_INDEX, &index,
+		      -1);
+
+  glade_property_get (property, &string_list);
+
+  if (string_list)
+    string_list = glade_string_list_copy (string_list);
+
+  string = g_list_nth_data (string_list, index);
+
+  g_free (string->id);
+
+  if (new_text && new_text[0])
+    string->id = g_strdup (new_text);
+  else
+    string->id = NULL;
 
   eprop_string_list->editing_index = index;
 
@@ -484,6 +541,67 @@ cell_data_func (GtkTreeViewColumn   *column,
     g_object_set (renderer, "visible", !dummy && eprop_string_list->translatable, NULL);
 }
 
+static void
+id_cell_data_func (GtkTreeViewColumn   *column,
+		   GtkCellRenderer     *renderer,
+		   GtkTreeModel        *model,
+		   GtkTreeIter         *iter,
+		   GladeEditorProperty *eprop)
+{
+  GladeEPropStringList *eprop_string_list = GLADE_EPROP_STRING_LIST (eprop);
+
+  if (eprop_string_list->with_id)
+    {
+      GtkStyleContext* context = gtk_widget_get_style_context (eprop_string_list->view);
+      GdkRGBA  color;
+      guint index;
+      gboolean dummy;
+      gchar *id = NULL;
+
+      gtk_tree_model_get (eprop_string_list->model, iter,
+			  COLUMN_INDEX, &index,
+			  COLUMN_DUMMY, &dummy,
+			  COLUMN_ID, &id,
+			  -1);
+
+      /* Dummy, no data yet */
+      if (dummy)
+	{
+	  g_object_set (renderer,
+			"editable", FALSE,
+			"text", NULL,
+			NULL);
+	}
+      /* Not dummy, and id already set */
+      else if (id)
+	{
+	  gtk_style_context_get_color (context, GTK_STATE_FLAG_NORMAL, &color);
+	  g_object_set (renderer,
+			"style", PANGO_STYLE_NORMAL,
+			"foreground-rgba", &color,
+			"editable", TRUE,
+			"text", id,
+			NULL);
+	}
+      /* Not dummy, but no id yet */
+      else
+	{
+	  gtk_style_context_get_color (context, GTK_STATE_FLAG_INSENSITIVE, &color);
+	  g_object_set (renderer, 
+			"style", PANGO_STYLE_ITALIC,
+			"foreground-rgba", &color,
+			"editable", TRUE,
+			"text", _("<Enter ID>"),
+			NULL);
+	}
+
+      g_free (id);
+    }
+  else
+    g_object_set (renderer, "visible", FALSE, NULL);
+
+}
+
 static gboolean
 treeview_key_press (GtkWidget           *treeview,
 		    GdkEventKey         *event, 
@@ -533,8 +651,10 @@ get_tree_view_height (void)
 	gtk_widget_create_pango_layout (label, 
 					"The quick\n"
 					"brown fox\n"
-					"jumped over\n"
-					"the lazy dog");
+					"jumped\n"
+					"over\n"
+					"the lazy\n"
+					"dog");
 
       pango_layout_get_pixel_size (layout, NULL, &height);
 
@@ -563,15 +683,25 @@ glade_eprop_string_list_create_input (GladeEditorProperty * eprop)
 		"editable", TRUE,
 		"ellipsize", PANGO_ELLIPSIZE_END,
 		NULL);
-  g_signal_connect (G_OBJECT (renderer), "edited",
-		    G_CALLBACK (string_edited), eprop);
+  g_signal_connect (G_OBJECT (renderer), "edited", G_CALLBACK (string_edited), eprop);
 
   gtk_tree_view_column_pack_start (column, renderer, TRUE);
-  gtk_tree_view_column_set_attributes (column, renderer,
-				       "text", COLUMN_STRING,
-				       NULL);
+  gtk_tree_view_column_set_attributes (column, renderer, "text", COLUMN_STRING, NULL);
   gtk_tree_view_column_set_cell_data_func (column, renderer,
 					   (GtkTreeCellDataFunc)cell_data_func,
+					   eprop, NULL);
+
+  /* "id" renderer */
+  renderer = gtk_cell_renderer_text_new ();
+  g_object_set (G_OBJECT (renderer), 
+		"editable", TRUE,
+		"ellipsize", PANGO_ELLIPSIZE_END,
+		NULL);
+  g_signal_connect (G_OBJECT (renderer), "edited", G_CALLBACK (id_edited), eprop);
+
+  gtk_tree_view_column_pack_start (column, renderer, TRUE);
+  gtk_tree_view_column_set_cell_data_func (column, renderer,
+					   (GtkTreeCellDataFunc)id_cell_data_func,
 					   eprop, NULL);
 
   /* i18n icon renderer */
@@ -588,8 +718,8 @@ glade_eprop_string_list_create_input (GladeEditorProperty * eprop)
   eprop_string_list->model = (GtkTreeModel *)gtk_list_store_new (NUM_COLUMNS,
 								 G_TYPE_STRING,
 								 G_TYPE_UINT,
-								 G_TYPE_BOOLEAN);
-
+								 G_TYPE_BOOLEAN,
+								 G_TYPE_STRING);
 
   g_signal_connect (G_OBJECT (eprop_string_list->model), "row-deleted",
 		    G_CALLBACK (row_deleted), eprop);
@@ -625,7 +755,8 @@ glade_eprop_string_list_create_input (GladeEditorProperty * eprop)
 GladeEditorProperty *
 glade_eprop_string_list_new (GladePropertyClass *pclass,
 			     gboolean            use_command,
-			     gboolean            translatable)
+			     gboolean            translatable,
+			     gboolean            with_id)
 {
   GladeEditorProperty *eprop = 
     g_object_new (GLADE_TYPE_EPROP_STRING_LIST, 
@@ -636,6 +767,7 @@ glade_eprop_string_list_new (GladePropertyClass *pclass,
   GladeEPropStringList *eprop_string_list = GLADE_EPROP_STRING_LIST (eprop);
 
   eprop_string_list->translatable = translatable;
+  eprop_string_list->with_id = with_id;
 
   return eprop;
 }

@@ -313,7 +313,7 @@ glade_gtk_widget_read_style_classes (GladeWidget * widget, GladeXmlNode * node)
 
 	  name = glade_xml_get_property_string (class_node, GLADE_TAG_NAME);
 
-	  string_list = glade_string_list_append (string_list, name, NULL, NULL, FALSE);
+	  string_list = glade_string_list_append (string_list, name, NULL, NULL, FALSE, NULL);
 
 	  g_free (name);
 	}
@@ -628,7 +628,7 @@ glade_gtk_widget_create_eprop (GladeWidgetAdaptor * adaptor,
                           "property-class", klass,
                           "use-command", use_command, NULL);
   else if (pspec->value_type == GLADE_TYPE_STRING_LIST)
-    eprop = glade_eprop_string_list_new (klass, use_command, FALSE);
+    eprop = glade_eprop_string_list_new (klass, use_command, FALSE, FALSE);
   else
     eprop = GWA_GET_CLASS
         (G_TYPE_OBJECT)->create_eprop (adaptor, klass, use_command);

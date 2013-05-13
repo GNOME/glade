@@ -71,7 +71,7 @@ glade_gtk_combo_box_text_create_eprop (GladeWidgetAdaptor * adaptor,
 
   if (pspec->value_type == GLADE_TYPE_STRING_LIST)
     {
-      eprop = glade_eprop_string_list_new (klass, use_command, TRUE);
+      eprop = glade_eprop_string_list_new (klass, use_command, TRUE, TRUE);
     }
   else
     eprop = GWA_GET_CLASS
@@ -122,7 +122,7 @@ glade_gtk_combo_box_text_set_property (GladeWidgetAdaptor * adaptor,
 	{
 	  string = l->data;
 
-	  gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (object), string->string);
+	  gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (object), string->id, string->string);
 	}
 
       gtk_combo_box_set_active (GTK_COMBO_BOX (object),
@@ -147,6 +147,7 @@ glade_gtk_combo_box_text_read_items (GladeWidget * widget, GladeXmlNode * node)
 	   item_node; item_node = glade_xml_node_next (item_node))
 	{
 	  gchar *str, *comment, *context;
+	  gchar *id;
 	  gboolean translatable;
 
 	  if (!glade_xml_node_verify (item_node, GLADE_TAG_ITEM))
@@ -155,17 +156,19 @@ glade_gtk_combo_box_text_read_items (GladeWidget * widget, GladeXmlNode * node)
           if ((str = glade_xml_get_content (item_node)) == NULL)
 	    continue;
 
+	  id           = glade_xml_get_property_string (item_node, GLADE_TAG_ID);
 	  context      = glade_xml_get_property_string (item_node, GLADE_TAG_CONTEXT);
 	  comment      = glade_xml_get_property_string (item_node, GLADE_TAG_COMMENT);
           translatable = glade_xml_get_property_boolean (item_node, GLADE_TAG_TRANSLATABLE, FALSE);
 
 	  string_list = 
 	    glade_string_list_append (string_list,
-				      str, comment, context, translatable);
+				      str, comment, context, translatable, id);
 
 	  g_free (str);
 	  g_free (context);
 	  g_free (comment);
+	  g_free (id);
 	}
 
       glade_widget_property_set (widget, "glade-items", string_list);
@@ -207,6 +210,11 @@ glade_gtk_combo_box_text_write_items (GladeWidget * widget,
       glade_xml_node_append_child (node, item_node);
 
       glade_xml_set_content (item_node, string->string);
+
+      if (string->id)
+        glade_xml_node_set_property_string (item_node,
+                                            GLADE_TAG_ID,
+                                            string->id);
 
       if (string->translatable)
         glade_xml_node_set_property_string (item_node,
