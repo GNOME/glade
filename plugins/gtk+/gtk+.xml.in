@@ -1953,8 +1953,27 @@ range of values</_tooltip>
     </glade-widget-class>
     
     <glade-widget-class name="GtkScale" generic-name="scale" _title="Scale">
+      <create-editable-function>glade_gtk_scale_create_editable</create-editable-function>
+      <set-property-function>glade_gtk_scale_set_property</set-property-function>
       <properties>
-	<property id="orientation" default="GTK_ORIENTATION_VERTICAL"/>
+	<property id="orientation" default="GTK_ORIENTATION_VERTICAL" custom-layout="True"/>
+	<property id="adjustment" custom-layout="True"/>
+	<property id="round-digits" custom-layout="True">
+	  <_tooltip>The number of digits to round the value to when the value changes</_tooltip>
+	</property>
+	<property id="lower-stepper-sensitivity" custom-layout="True"/>
+	<property id="upper-stepper-sensitivity" custom-layout="True"/>
+	<property id="has-origin" custom-layout="True">
+	  <_tooltip>Whether to highlight the area of the trough from the bottom or left leading up to the knob</_tooltip>
+	</property>
+	<property id="inverted" custom-layout="True"/>
+	<property id="draw-value" custom-layout="True" needs-sync="True"/>
+	<property id="value-pos" custom-layout="True"/>
+	<property id="show-fill-level" custom-layout="True"/>
+	<property id="restrict-to-fill-level" custom-layout="True"/>
+	<property id="digits" custom-layout="True"/>
+	<property id="fill-level" custom-layout="True"/>
+
       </properties>
     </glade-widget-class>
 
