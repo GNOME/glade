@@ -1639,22 +1639,16 @@ range of values</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkProgressBar" generic-name="progressbar" _title="Progress Bar">
+      <create-editable-function>glade_gtk_progress_bar_create_editable</create-editable-function>
+      <set-property-function>glade_gtk_progress_bar_set_property</set-property-function>
       <properties>
-        <property id="text" translatable="True"/>
-        <property id="show-text" since="3.0"/>
-        <property id="activity-blocks" disabled="True"/>
-	<property id="activity-step" disabled="True"/>
-	<property id="bar-style" disabled="True"/>
-       	<property id="bar-style">
-  	  <displayable-values>
-	    <value id="GTK_PROGRESS_CONTINUOUS" _name="Continuous"/>
-	    <value id="GTK_PROGRESS_DISCRETE" _name="Discrete"/>
-	  </displayable-values>
-	</property>
-        <property id="min-horizontal-bar-height" since="2.14"/>
-        <property id="min-horizontal-bar-width" since="2.14"/>
-        <property id="min-vertical-bar-height" since="2.14"/>
-        <property id="min-vertical-bar-width" since="2.14"/>
+        <property id="text" translatable="True" custom-layout="True"/>
+        <property id="show-text" since="3.0" needs-sync="True" custom-layout="True"/>
+        <property id="orientation" custom-layout="True"/>
+        <property id="inverted" custom-layout="True"/>
+        <property id="fraction" custom-layout="True"/>
+        <property id="pulse-step" custom-layout="True"/>
+        <property id="ellipsize" custom-layout="True"/>
       </properties>
     </glade-widget-class>
 
