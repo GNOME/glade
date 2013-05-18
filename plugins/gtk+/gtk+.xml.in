@@ -746,6 +746,7 @@ embedded in another object</_tooltip>
     
     <glade-widget-class name="GtkToolPalette" generic-name="toolpalette" _title="Tool Palette" 
 			use-placeholders="False" since="2.20">
+      <create-editable-function>glade_gtk_tool_palette_create_editable</create-editable-function>
       <post-create-function>glade_gtk_toolbar_post_create</post-create-function>
       <add-child-verify-function>glade_gtk_tool_palette_add_verify</add-child-verify-function>
       <add-child-function>glade_gtk_tool_palette_add_child</add-child-function>
@@ -761,6 +762,20 @@ embedded in another object</_tooltip>
       	<property id="icon-size-set" disabled="True"/>
       	<property id="toolbar-style" save-always="True" optional="True" optional-default="False" weight="0.4"/>
       	<property id="icon-size" optional="True" optional-default="False" weight="0.5"/>
+
+	<!-- Scrollable attributes -->
+	<property id="hadjustment" custom-layout="True"/>
+	<property id="vadjustment" custom-layout="True"/>
+	<property id="hscroll-policy" custom-layout="True">
+	  <_tooltip>Whether to start scrolling at less than minimum or natural width</_tooltip>
+  	  <displayable-values>
+	    <value id="GTK_SCROLL_MINIMUM" _name="Minimum"/>
+	    <value id="GTK_SCROLL_NATURAL" _name="Natural"/>
+  	  </displayable-values>
+	</property>
+	<property id="vscroll-policy" custom-layout="True">
+	  <_tooltip>Whether to start scrolling at less than minimum or natural height</_tooltip>
+	</property>
       </properties>
 
       <packing-properties>
@@ -1164,19 +1179,6 @@ embedded in another object</_tooltip>
 	<property id="pixels-above-lines" custom-layout="True"/>
 	<property id="pixels-below-lines" custom-layout="True"/>
 	<property id="pixels-inside-wrap" custom-layout="True"/>
-	<property id="hadjustment" custom-layout="True"/>
-	<property id="vadjustment" custom-layout="True"/>
-
-	<property id="hscroll-policy" custom-layout="True">
-	  <_tooltip>Whether to start scrolling at less than Minimum or Natural width</_tooltip>
-  	  <displayable-values>
-	    <value id="GTK_SCROLL_MINIMUM" _name="Minimum"/>
-	    <value id="GTK_SCROLL_NATURAL" _name="Natural"/>
-  	  </displayable-values>
-	</property>
-	<property id="vscroll-policy" custom-layout="True">
-	  <_tooltip>Whether to start scrolling at less than Minimum or Natural height</_tooltip>
-	</property>
 
       	<property id="wrap-mode" custom-layout="True">
   	  <displayable-values>
@@ -1185,6 +1187,16 @@ embedded in another object</_tooltip>
 	    <value id="GTK_WRAP_WORD" _name="Word"/>
 	    <value id="GTK_WRAP_WORD_CHAR" _name="Word Character"/>
 	  </displayable-values>
+	</property>
+
+	<!-- Scrollable attributes -->
+	<property id="hadjustment" custom-layout="True"/>
+	<property id="vadjustment" custom-layout="True"/>
+	<property id="hscroll-policy" custom-layout="True">
+	  <_tooltip>Whether to start scrolling at less than minimum or natural width</_tooltip>
+	</property>
+	<property id="vscroll-policy" custom-layout="True">
+	  <_tooltip>Whether to start scrolling at less than minimum or natural height</_tooltip>
 	</property>
       </properties>
     </glade-widget-class>

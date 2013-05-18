@@ -25,15 +25,28 @@
 #include <glib/gi18n-lib.h>
 #include <gladeui/glade.h>
 
+#include "glade-tool-palette-editor.h"
 #include "glade-gtk-menu-shell.h"
 #include "glade-gtk.h"
 
+GladeEditable *
+glade_gtk_tool_palette_create_editable (GladeWidgetAdaptor * adaptor,
+					GladeEditorPageType type)
+{
+  if (type == GLADE_PAGE_GENERAL)
+    {
+      return (GladeEditable *)glade_tool_palette_editor_new ();
+    }
+
+  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+}
+
 void
 glade_gtk_tool_palette_get_child_property (GladeWidgetAdaptor * adaptor,
-                                      GObject * container,
-                                      GObject * child,
-                                      const gchar * property_name,
-                                      GValue * value)
+					   GObject * container,
+					   GObject * child,
+					   const gchar * property_name,
+					   GValue * value)
 {
   g_return_if_fail (GTK_IS_TOOL_PALETTE (container));
   if (GTK_IS_TOOL_ITEM_GROUP (child) == FALSE)

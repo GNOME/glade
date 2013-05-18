@@ -136,6 +136,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-text-view-editor.c	\
 	glade-tool-button-editor.c	\
 	glade-tool-item-group-editor.c	\
+	glade-tool-palette-editor.c	\
 	glade-treeview-editor.c		\
 	glade-widget-editor.c		\
 	glade-window-editor.c
@@ -205,6 +206,7 @@ noinst_HEADERS =			\
 	glade-text-view-editor.h	\
 	glade-tool-button-editor.h	\
 	glade-tool-item-group-editor.h	\
+	glade-tool-palette-editor.h	\
 	glade-treeview-editor.h		\
 	glade-widget-editor.h		\
 	glade-window-editor.h
@@ -269,6 +271,7 @@ UI_FILES = 				\
 	glade-spin-button-editor.ui	\
 	glade-text-view-editor.ui	\
 	glade-tool-button-editor.ui	\
+	glade-tool-palette-editor.ui	\
 	glade-widget-editor.ui		\
 	glade-window-editor.ui
 
