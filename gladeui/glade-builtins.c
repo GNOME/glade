@@ -146,7 +146,6 @@ compare_two_gsi (gconstpointer a, gconstpointer b)
   return strcmp (gsi1->clean_name, gsi2->clean_name);
 }
 
-
 static GArray *
 list_stock_items (gboolean include_images)
 {
@@ -159,6 +158,18 @@ list_stock_items (gboolean include_images)
   GladeStockItem *gsi;
   GSList *gsi_list = NULL;
   GSList *gsi_list_list = NULL;
+
+  if (gdk_display_get_default () == NULL)
+    {
+      values = g_array_sized_new (TRUE, TRUE, sizeof (GEnumValue), 1);
+
+      value.value = 0;
+      value.value_name = "dummy";
+      value.value_nick = "Dummy";
+      g_array_append_val (values, value);
+
+      return values;
+    }
 
   stock_list = g_slist_reverse (gtk_stock_list_ids ());
 
