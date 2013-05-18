@@ -270,11 +270,6 @@ if test "x$_gdk_tgt" = xquartz; then
 fi
 
 dnl ================================================================
-dnl Check for extra functions
-dnl ================================================================
-AC_CHECK_FUNCS(gtk_builder_add_from_resource)
-
-dnl ================================================================
 dnl Enable installation of Gladeui catalog
 dnl ================================================================
 AC_ARG_ENABLE([gladeui],
@@ -284,17 +279,11 @@ AC_ARG_ENABLE([gladeui],
 
 AM_CONDITIONAL(BUILD_GLADEUI, test x"$enable_gladeui" = "xyes")
 
-
 dnl ================================================================
 dnl Testing environment
 dnl ================================================================
 GLADE_TEST_ENVIRONMENT='GLADE_TESTING=1 GLADE_PIXMAP_DIR=$(top_srcdir)/data/icons GLADE_CATALOG_SEARCH_PATH=$(top_srcdir)/plugins/gtk+ GLADE_MODULE_SEARCH_PATH=$(top_builddir)/plugins/gtk+/.libs'
 AC_SUBST(GLADE_TEST_ENVIRONMENT)
-
-
-
-AC_SUBST([GLADE_PREFIX])
-
 
 AC_SUBST([AM_CPPFLAGS])
 AC_SUBST([AM_CFLAGS])
