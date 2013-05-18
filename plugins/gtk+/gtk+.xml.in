@@ -1145,12 +1145,40 @@ embedded in another object</_tooltip>
     <glade-widget-class name="GtkTextView" generic-name="textview" _title="Text View">
       <post-create-function>glade_gtk_text_view_post_create</post-create-function>
       <set-property-function>glade_gtk_text_view_set_property</set-property-function>
+      <create-editable-function>glade_gtk_text_view_create_editable</create-editable-function>
 
       <properties>
       	<property id="im-module" disabled="True"/>
-	<property id="input-purpose" since="3.6"/>
-	<property id="input-hints" since="3.6"/>
-      	<property id="wrap-mode">
+	<property id="input-purpose" since="3.6" custom-layout="True"/>
+	<property id="input-hints" since="3.6" custom-layout="True"/>
+	<property id="buffer" custom-layout="True"/>
+	<property id="editable" custom-layout="True"/>
+	<property id="cursor-visible" custom-layout="True"/>
+	<property id="overwrite" custom-layout="True"/>
+	<property id="accepts-tab" custom-layout="True"/>
+	<property id="populate-all" custom-layout="True"/>
+	<property id="justification" custom-layout="True"/>
+	<property id="indent" custom-layout="True"/>
+	<property id="left-margin" custom-layout="True"/>
+	<property id="right-margin" custom-layout="True"/>
+	<property id="pixels-above-lines" custom-layout="True"/>
+	<property id="pixels-below-lines" custom-layout="True"/>
+	<property id="pixels-inside-wrap" custom-layout="True"/>
+	<property id="hadjustment" custom-layout="True"/>
+	<property id="vadjustment" custom-layout="True"/>
+
+	<property id="hscroll-policy" custom-layout="True">
+	  <_tooltip>Whether to start scrolling at less than Minimum or Natural width</_tooltip>
+  	  <displayable-values>
+	    <value id="GTK_SCROLL_MINIMUM" _name="Minimum"/>
+	    <value id="GTK_SCROLL_NATURAL" _name="Natural"/>
+  	  </displayable-values>
+	</property>
+	<property id="vscroll-policy" custom-layout="True">
+	  <_tooltip>Whether to start scrolling at less than Minimum or Natural height</_tooltip>
+	</property>
+
+      	<property id="wrap-mode" custom-layout="True">
   	  <displayable-values>
 	    <value id="GTK_WRAP_NONE" _name="None"/>
 	    <value id="GTK_WRAP_CHAR" _name="Character"/>

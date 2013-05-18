@@ -127,11 +127,13 @@ libgladegtk_la_SOURCES = 		\
 	glade-recent-chooser-widget-editor.c \
 	glade-scale-button-editor.c	\
 	glade-scale-editor.c		\
+	glade-scrollable-editor.c	\
 	glade-scrollbar-editor.c	\
 	glade-scrolled-window-editor.c	\
 	glade-spin-button-editor.c	\
 	glade-store-editor.c		\
 	glade-string-list.c		\
+	glade-text-view-editor.c	\
 	glade-tool-button-editor.c	\
 	glade-tool-item-group-editor.c	\
 	glade-treeview-editor.c		\
@@ -194,11 +196,13 @@ noinst_HEADERS =			\
 	glade-recent-chooser-widget-editor.h \
 	glade-scale-editor.h		\
 	glade-scale-button-editor.h	\
+	glade-scrollable-editor.h	\
 	glade-scrollbar-editor.h	\
 	glade-scrolled-window-editor.h	\
 	glade-spin-button-editor.h	\
 	glade-store-editor.h		\
 	glade-string-list.h		\
+	glade-text-view-editor.h	\
 	glade-tool-button-editor.h	\
 	glade-tool-item-group-editor.h	\
 	glade-treeview-editor.h		\
@@ -259,9 +263,11 @@ UI_FILES = 				\
 	glade-recent-chooser-widget-editor.ui \
 	glade-scale-editor.ui		\
 	glade-scale-button-editor.ui	\
+	glade-scrollable-editor.ui	\
 	glade-scrollbar-editor.ui	\
 	glade-scrolled-window-editor.ui	\
 	glade-spin-button-editor.ui	\
+	glade-text-view-editor.ui	\
 	glade-tool-button-editor.ui	\
 	glade-widget-editor.ui		\
 	glade-window-editor.ui

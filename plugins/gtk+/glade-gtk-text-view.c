@@ -25,6 +25,20 @@
 #include <glib/gi18n-lib.h>
 #include <gladeui/glade.h>
 
+#include "glade-text-view-editor.h"
+
+GladeEditable *
+glade_gtk_text_view_create_editable (GladeWidgetAdaptor * adaptor,
+				     GladeEditorPageType type)
+{
+  if (type == GLADE_PAGE_GENERAL)
+    {
+      return (GladeEditable *)glade_text_view_editor_new ();
+    }
+
+  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+}
+
 static gboolean
 glade_gtk_text_view_stop_double_click (GtkWidget * widget,
                                        GdkEventButton * event,
