@@ -2202,10 +2202,23 @@ range of values</_tooltip>
     </glade-widget-class>
     
     <glade-widget-class name="GtkLayout" generic-name="layout" _title="Layout" use-placeholders="False">
+      <create-editable-function>glade_gtk_layout_create_editable</create-editable-function>
       <create-widget-function>glade_gtk_create_fixed_widget</create-widget-function>
       <post-create-function>glade_gtk_fixed_layout_post_create</post-create-function>
       <add-child-function>glade_gtk_fixed_layout_add_child</add-child-function>
       <remove-child-function>glade_gtk_fixed_layout_remove_child</remove-child-function> 
+
+      <properties>
+	<!-- Scrollable attributes -->
+	<property id="hadjustment" custom-layout="True"/>
+	<property id="vadjustment" custom-layout="True"/>
+	<property id="hscroll-policy" custom-layout="True">
+	  <_tooltip>Whether to start scrolling at less than minimum or natural width</_tooltip>
+	</property>
+	<property id="vscroll-policy" custom-layout="True">
+	  <_tooltip>Whether to start scrolling at less than minimum or natural height</_tooltip>
+	</property>
+      </properties>
     </glade-widget-class>
     
     <glade-widget-class name="GtkFixed" generic-name="fixed" _title="Fixed" use-placeholders="False">

@@ -25,6 +25,20 @@
 #include <glib/gi18n-lib.h>
 #include <gladeui/glade.h>
 
+#include "glade-layout-editor.h"
+
+GladeEditable *
+glade_gtk_layout_create_editable (GladeWidgetAdaptor * adaptor,
+				  GladeEditorPageType type)
+{
+  if (type == GLADE_PAGE_GENERAL)
+    {
+      return (GladeEditable *)glade_layout_editor_new ();
+    }
+
+  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+}
+
 static void
 glade_gtk_fixed_layout_sync_size_requests (GtkWidget * widget)
 {
