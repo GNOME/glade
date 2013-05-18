@@ -30,6 +30,20 @@
 #include "glade-gtk-cell-layout.h"
 
 #include "glade-treeview-editor.h"
+#include "glade-real-tree-view-editor.h"
+
+
+GladeEditable *
+glade_gtk_treeview_create_editable (GladeWidgetAdaptor * adaptor,
+				    GladeEditorPageType type)
+{
+  if (type == GLADE_PAGE_GENERAL)
+    {
+      return (GladeEditable *)glade_real_tree_view_editor_new ();
+    }
+
+  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->create_editable (adaptor, type);
+}
 
 gboolean
 glade_gtk_treeview_add_verify (GladeWidgetAdaptor *adaptor,
@@ -272,4 +286,38 @@ glade_gtk_treeview_depends (GladeWidgetAdaptor * adaptor,
     return TRUE;
 
   return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->depends (adaptor, widget, another);
+}
+
+void
+glade_gtk_treeview_set_property (GladeWidgetAdaptor * adaptor,
+				 GObject * object,
+				 const gchar * id, const GValue * value)
+{
+  GladeWidget *widget = glade_widget_get_from_gobject (object);
+  GladeProperty *property = glade_widget_get_property (widget, id);
+
+  if (strcmp (id, "enable-search") == 0)
+    {
+      if (g_value_get_boolean (value))
+	glade_widget_property_set_sensitive (widget, "search-column", TRUE, NULL);
+      else
+	glade_widget_property_set_sensitive (widget, "search-column", FALSE, _("Search is disabled"));
+    }
+  else if (strcmp (id, "headers-visible") == 0)
+    {
+      if (g_value_get_boolean (value))
+	glade_widget_property_set_sensitive (widget, "headers-clickable", TRUE, NULL);
+      else
+	glade_widget_property_set_sensitive (widget, "headers-clickable", FALSE, _("Headers are invisible"));
+    }
+  else if (strcmp (id, "show-expanders") == 0)
+    {
+      if (g_value_get_boolean (value))
+	glade_widget_property_set_sensitive (widget, "expander-column", TRUE, NULL);
+      else
+	glade_widget_property_set_sensitive (widget, "expander-column", FALSE, _("Expanders are not shown"));
+    }
+
+  if (GPC_VERSION_CHECK (glade_property_get_class (property), gtk_major_version, gtk_minor_version + 1))
+    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
 }

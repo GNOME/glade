@@ -2855,7 +2855,9 @@ range of values</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkTreeView" generic-name="treeview" _title="Tree View">
+      <create-editable-function>glade_gtk_treeview_create_editable</create-editable-function>
       <post-create-function>empty</post-create-function>
+      <set-property-function>glade_gtk_treeview_set_property</set-property-function>
       <add-child-verify-function>glade_gtk_treeview_add_verify</add-child-verify-function>
       <child-set-property-function>glade_gtk_treeview_set_child_property</child-set-property-function>
       <child-get-property-function>glade_gtk_treeview_get_child_property</child-get-property-function>
@@ -2875,10 +2877,16 @@ range of values</_tooltip>
       </internal-children>
 
       <properties>
-        <property id="activate-on-single-click" since="3.8"/>
-        <property id="level-indentation" since="2.12"/>
-        <property id="show-expanders" since="2.12"/>
-        <property id="enable-grid-lines" ignore="True">
+        <property id="model" create-type="GtkListStore" query="True" custom-layout="True"/>
+        <property id="enable-search" needs-sync="True"  custom-layout="True"/>
+        <property id="search-column" custom-layout="True"/>
+        <property id="show-expanders" since="2.12" custom-layout="True"/>
+        <property id="expander-column" custom-layout="True"/>
+        <property id="level-indentation" since="2.12" custom-layout="True"/>
+        <property id="tooltip-column" custom-layout="True"/>
+        <property id="headers-visible" needs-sync="True" custom-layout="True"/>
+        <property id="headers-clickable" needs-sync="True" custom-layout="True"/>
+        <property id="enable-grid-lines" ignore="True" custom-layout="True">
   	  <displayable-values>
 	    <value id="GTK_TREE_VIEW_GRID_LINES_NONE" _name="None"/>
 	    <value id="GTK_TREE_VIEW_GRID_LINES_HORIZONTAL" _name="Horizontal"/>
@@ -2886,7 +2894,24 @@ range of values</_tooltip>
 	    <value id="GTK_TREE_VIEW_GRID_LINES_BOTH" _name="Horizontal and Vertical"/>
 	  </displayable-values>
 	</property>
-        <property id="model" create-type="GtkListStore" query="True" />
+        <property id="reorderable" custom-layout="True"/>
+        <property id="fixed-height-mode" custom-layout="True"/>
+        <property id="activate-on-single-click" since="3.8" custom-layout="True"/>
+        <property id="rules-hint" custom-layout="True"/>
+        <property id="enable-tree-lines" custom-layout="True"/>
+        <property id="hover-selection" custom-layout="True"/>
+        <property id="hover-expand" custom-layout="True"/>
+        <property id="rubber-banding" custom-layout="True"/>
+
+	<!-- Scrollable attributes -->
+	<property id="hadjustment" custom-layout="True"/>
+	<property id="vadjustment" custom-layout="True"/>
+	<property id="hscroll-policy" custom-layout="True">
+	  <_tooltip>Whether to start scrolling at less than minimum or natural width</_tooltip>
+	</property>
+	<property id="vscroll-policy" custom-layout="True">
+	  <_tooltip>Whether to start scrolling at less than minimum or natural height</_tooltip>
+	</property>
       </properties>
       
       <packing-properties>
