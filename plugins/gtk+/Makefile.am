@@ -108,6 +108,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-gtk-tool-palette.c	\
 	glade-gtk-toolbar.c		\
 	glade-gtk-tree-view.c		\
+	glade-gtk-viewport.c		\
 	glade-gtk-widget.c		\
 	glade-gtk-window.c		\
 	glade-icon-factory-editor.c	\
@@ -139,6 +140,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-tool-item-group-editor.c	\
 	glade-tool-palette-editor.c	\
 	glade-treeview-editor.c		\
+	glade-viewport-editor.c		\
 	glade-widget-editor.c		\
 	glade-window-editor.c
 
@@ -210,6 +212,7 @@ noinst_HEADERS =			\
 	glade-tool-item-group-editor.h	\
 	glade-tool-palette-editor.h	\
 	glade-treeview-editor.h		\
+	glade-viewport-editor.h		\
 	glade-widget-editor.h		\
 	glade-window-editor.h
 
@@ -275,6 +278,7 @@ UI_FILES = 				\
 	glade-text-view-editor.ui	\
 	glade-tool-button-editor.ui	\
 	glade-tool-palette-editor.ui	\
+	glade-viewport-editor.ui	\
 	glade-widget-editor.ui		\
 	glade-window-editor.ui
 
