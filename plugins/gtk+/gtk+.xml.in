@@ -1653,9 +1653,14 @@ range of values</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkLevelBar" generic-name="levelbar" _title="Level Bar" since="3.6">
+      <create-editable-function>glade_gtk_level_bar_create_editable</create-editable-function>
       <properties>
-	<property id="inverted" since="3.8"/>
-	<property id="mode">
+	<property id="orientation" custom-layout="True"/>
+	<property id="value" custom-layout="True"/>
+	<property id="min-value" custom-layout="True"/>
+	<property id="max-value" custom-layout="True"/>
+	<property id="inverted" since="3.8" custom-layout="True"/>
+	<property id="mode" custom-layout="True">
   	  <displayable-values>
 	    <value id="GTK_LEVEL_BAR_MODE_CONTINUOUS" _name="Continuous"/>
 	    <value id="GTK_LEVEL_BAR_MODE_DISCRETE" _name="Discrete"/>

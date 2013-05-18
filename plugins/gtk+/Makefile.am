@@ -76,6 +76,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-gtk-image-menu-item.c	\
 	glade-gtk-info-bar.c		\
 	glade-gtk-label.c		\
+	glade-gtk-level-bar.c		\
 	glade-gtk-list-store.c		\
 	glade-gtk-menu.c		\
 	glade-gtk-menu-bar.c		\
@@ -114,6 +115,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-image-editor.c		\
 	glade-image-item-editor.c	\
 	glade-label-editor.c		\
+	glade-level-bar-editor.c	\
 	glade-message-dialog-editor.c	\
 	glade-model-data.c		\
 	glade-notebook-editor.c		\
@@ -180,6 +182,7 @@ noinst_HEADERS =			\
 	glade-image-editor.h		\
 	glade-image-item-editor.h	\
 	glade-label-editor.h		\
+	glade-level-bar-editor.h	\
 	glade-message-dialog-editor.h	\
 	glade-model-data.h		\
 	glade-notebook-editor.h		\
@@ -245,6 +248,7 @@ UI_FILES = 				\
 	glade-grid-editor.ui		\
 	glade-image-editor.ui		\
 	glade-label-editor.ui		\
+	glade-level-bar-editor.ui	\
 	glade-message-dialog-editor.ui	\
 	glade-notebook-editor.ui	\
 	glade-progress-bar-editor.ui	\
