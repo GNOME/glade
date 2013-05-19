@@ -2967,6 +2967,8 @@ range of values</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkIconView" generic-name="iconview" _title="Icon View">
+      <create-editable-function>glade_gtk_icon_view_create_editable</create-editable-function>
+
       <post-create-function>empty</post-create-function>
       <add-child-verify-function>glade_gtk_cell_layout_add_verify</add-child-verify-function>
       <add-child-function>glade_gtk_cell_layout_add_child</add-child-function>
@@ -2983,15 +2985,39 @@ range of values</_tooltip>
       </actions>
 
       <properties>
-        <property id="activate-on-single-click" since="3.8"/>
-        <property id="item-orientation" since="2.22"/>
-        <property id="item-padding" since="2.18"/>
+        <property id="cell-area" disabled="True"/>
         <property id="text-column" disabled="True"/>
         <property id="markup-column" disabled="True"/>
         <property id="pixbuf-column" disabled="True"/>
-        <property id="reorderable" ignore="True"/>
-        <property id="model" create-type="GtkListStore" query="True" />
-        <property id="selection-mode" since="2.6"/>
+
+	<!-- Reenable the margin property which is also declared on GtkWidgetClass with a different default,
+	     must be 'save-always' because of original default mixup -->
+        <property id="margin" disabled="False" save="True" ignore="False"
+		  visible="True" common="False" save-always="True" custom-layout="True"/>
+
+	<!-- Claim properties for the editor -->
+        <property id="model" create-type="GtkListStore" query="True" custom-layout="True"/>
+        <property id="selection-mode" since="2.6" custom-layout="True"/>
+        <property id="tooltip-column"  custom-layout="True"/>
+        <property id="columns" custom-layout="True"/>
+        <property id="item-orientation" since="2.22" custom-layout="True"/>
+        <property id="activate-on-single-click" since="3.8" custom-layout="True"/>
+        <property id="reorderable" ignore="True" custom-layout="True"/>
+        <property id="item-padding" since="2.18" custom-layout="True"/>
+        <property id="item-width" custom-layout="True"/>
+        <property id="row-spacing" custom-layout="True"/>
+        <property id="column-spacing" custom-layout="True"/>
+        <property id="spacing" custom-layout="True"/>
+
+	<!-- Scrollable attributes -->
+	<property id="hadjustment" custom-layout="True"/>
+	<property id="vadjustment" custom-layout="True"/>
+	<property id="hscroll-policy" custom-layout="True">
+	  <_tooltip>Whether to start scrolling at less than minimum or natural width</_tooltip>
+	</property>
+	<property id="vscroll-policy" custom-layout="True">
+	  <_tooltip>Whether to start scrolling at less than minimum or natural height</_tooltip>
+	</property>
       </properties>
 
       <packing-properties>
