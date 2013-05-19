@@ -2251,7 +2251,10 @@ range of values</_tooltip>
 	    <value id="GTK_MESSAGE_OTHER" _name="Other"/>
 	  </displayable-values>
 	</property>
-        <property id="size" query="True" ignore="True" disabled="True"/>
+
+	<!-- Info Bars are horizontal -->
+	<property id="orientation" default="GTK_ORIENTATION_HORIZONTAL"/>
+        <property id="size" query="False" default="2"/>
       </properties>
     </glade-widget-class>
 
