@@ -974,11 +974,6 @@ embedded in another object</_tooltip>
 	  </parameter-spec>
 	  <_tooltip>The pango attributes for this label</_tooltip>
 	</property>
-
-	<property id="xalign" custom-layout="True"/>
-	<property id="yalign" custom-layout="True"/>
-	<property id="xpad" custom-layout="True"/>
-	<property id="ypad" custom-layout="True"/>
 	<property id="pattern" custom-layout="True"/>
 	<property id="use-markup" custom-layout="True"/>
 	<property id="ellipsize" custom-layout="True"/>
@@ -1007,6 +1002,12 @@ embedded in another object</_tooltip>
 	  </displayable-values>
 	</property>
 	<property id="track-visited-links" since="2.18" custom-layout="True"/>
+
+	<!-- GtkMisc properties -->
+	<property id="xalign" custom-layout="True"/>
+	<property id="yalign" custom-layout="True"/>
+	<property id="xpad" custom-layout="True"/>
+	<property id="ypad" custom-layout="True"/>
       </properties>
 
       <signals>
@@ -1721,10 +1722,6 @@ range of values</_tooltip>
 	<property id="pixbuf" _name="File Name" custom-layout="True"/>
 	<property id="resource" _name="Resource Name" custom-layout="True" ignore="True" since="3.8"/>
 	<property id="pixel-size" custom-layout="True"/>
-	<property id="xalign" custom-layout="True"/>
-	<property id="yalign" custom-layout="True"/>
-	<property id="xpad" custom-layout="True"/>
-	<property id="ypad" custom-layout="True"/>
 	<!-- We have to save/load icon-size as int, and fake the enum -->
 	<property id="icon-size" _name="Icon Size" custom-layout="True" 
 		  default="GTK_ICON_SIZE_BUTTON" save="False">
@@ -1740,6 +1737,12 @@ range of values</_tooltip>
 	<property id="pixmap" disabled="True"/>
 	<property id="image" disabled="True"/>
 	<property id="mask" disabled="True"/>
+
+	<!-- GtkMisc properties -->
+	<property id="xalign" custom-layout="True"/>
+	<property id="yalign" custom-layout="True"/>
+	<property id="xpad" custom-layout="True"/>
+	<property id="ypad" custom-layout="True"/>
       </properties>
     </glade-widget-class>
 
@@ -2171,6 +2174,7 @@ range of values</_tooltip>
     <glade-widget-class name="GtkAccelLabel" generic-name="accellabel" _title="Accel Label"/>
 
     <glade-widget-class name="GtkArrow" generic-name="arrow" _title="Arrow">
+      <create-editable-function>glade_gtk_arrow_create_editable</create-editable-function>
       <properties>
       	<property id="arrow-type">
   	  <displayable-values>
@@ -2181,6 +2185,12 @@ range of values</_tooltip>
 	    <value id="GTK_ARROW_NONE" _name="None"/>
 	  </displayable-values>
 	</property>
+
+	<!-- GtkMisc properties -->
+	<property id="xalign" custom-layout="True"/>
+	<property id="yalign" custom-layout="True"/>
+	<property id="xpad" custom-layout="True"/>
+	<property id="ypad" custom-layout="True"/>
       </properties>
     </glade-widget-class>
 
