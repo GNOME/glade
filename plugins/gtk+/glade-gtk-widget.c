@@ -729,6 +729,10 @@ glade_gtk_widget_set_property (GladeWidgetAdaptor * adaptor,
       id = "tooltip-text";
     }
 
+  /* Setting can-focus in the runtime has been known to cause crashes */
+  if (!strcmp (id, "can-focus"))
+    return;
+
   GWA_GET_CLASS (G_TYPE_OBJECT)->set_property (adaptor, object, id, value);
 }
 
