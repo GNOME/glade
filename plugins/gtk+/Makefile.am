@@ -121,6 +121,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-layout-editor.c		\
 	glade-level-bar-editor.c	\
 	glade-message-dialog-editor.c	\
+	glade-misc-editor.c		\
 	glade-model-data.c		\
 	glade-notebook-editor.c		\
 	glade-progress-bar-editor.c 	\
@@ -195,6 +196,7 @@ noinst_HEADERS =			\
 	glade-layout-editor.h		\
 	glade-level-bar-editor.h	\
 	glade-message-dialog-editor.h	\
+	glade-misc-editor.h		\
 	glade-model-data.h		\
 	glade-notebook-editor.h		\
 	glade-progress-bar-editor.h 	\
@@ -268,6 +270,7 @@ UI_FILES = 				\
 	glade-layout-editor.ui		\
 	glade-level-bar-editor.ui	\
 	glade-message-dialog-editor.ui	\
+	glade-misc-editor.ui		\
 	glade-notebook-editor.ui	\
 	glade-progress-bar-editor.ui	\
 	glade-real-tree-view-editor.ui 	\
