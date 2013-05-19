@@ -239,25 +239,6 @@ glade_gtk_label_set_content_mode (GObject * object, const GValue * value)
 }
 
 static void
-glade_gtk_label_set_use_max_width (GObject * object, const GValue * value)
-{
-  GladeWidget *glabel;
-
-  glabel = glade_widget_get_from_gobject (object);
-
-  glade_widget_property_set_sensitive (glabel, "width-chars", FALSE,
-                                       NOT_SELECTED_MSG);
-  glade_widget_property_set_sensitive (glabel, "max-width-chars", FALSE,
-                                       NOT_SELECTED_MSG);
-
-  if (g_value_get_boolean (value))
-    glade_widget_property_set_sensitive (glabel, "max-width-chars", TRUE, NULL);
-  else
-    glade_widget_property_set_sensitive (glabel, "width-chars", TRUE, NULL);
-}
-
-
-static void
 glade_gtk_label_set_wrap_mode (GObject * object, const GValue * value)
 {
   GladeLabelWrapMode mode = g_value_get_int (value);
@@ -304,8 +285,6 @@ glade_gtk_label_set_property (GladeWidgetAdaptor * adaptor,
     glade_gtk_label_set_attributes (object, value);
   else if (!strcmp (id, "label-content-mode"))
     glade_gtk_label_set_content_mode (object, value);
-  else if (!strcmp (id, "use-max-width"))
-    glade_gtk_label_set_use_max_width (object, value);
   else if (!strcmp (id, "label-wrap-mode"))
     glade_gtk_label_set_wrap_mode (object, value);
   else if (!strcmp (id, "use-underline"))
@@ -419,12 +398,6 @@ glade_gtk_label_read_widget (GladeWidgetAdaptor * adaptor,
   else
     glade_widget_property_set (widget, "label-wrap-mode",
                                GLADE_LABEL_WRAP_FREE);
-
-  /* Resolve "use-max-width" virtual control property  */
-  if (!glade_widget_property_original_default (widget, "max-width-chars"))
-    glade_widget_property_set (widget, "use-max-width", TRUE);
-  else
-    glade_widget_property_set (widget, "use-max-width", TRUE);
 
   if (glade_widget_property_original_default (widget, "use-markup"))
     glade_widget_property_set_sensitive (widget, "mnemonic-widget",

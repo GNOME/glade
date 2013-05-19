@@ -38,8 +38,6 @@ static void glade_label_editor_editable_init (GladeEditableIface *iface);
 static void attributes_toggled (GtkWidget *widget, GladeLabelEditor *label_editor);
 static void markup_toggled     (GtkWidget *widget, GladeLabelEditor *label_editor);
 static void pattern_toggled    (GtkWidget *widget, GladeLabelEditor *label_editor);
-static void width_toggled      (GtkWidget *widget, GladeLabelEditor *label_editor);
-static void max_width_toggled  (GtkWidget *widget, GladeLabelEditor *label_editor);
 static void wrap_free_toggled  (GtkWidget *widget, GladeLabelEditor *label_editor);
 static void single_toggled     (GtkWidget *widget, GladeLabelEditor *label_editor);
 static void wrap_mode_toggled  (GtkWidget *widget, GladeLabelEditor *label_editor);
@@ -52,10 +50,6 @@ struct _GladeLabelEditorPrivate
   GtkWidget *markup_radio;        /* Parse the label as a pango markup string (no showing eprop) */
   GtkWidget *pattern_radio;       /* Use a pattern string to underline portions of the text
 				   * (pattern eprop embedded) */
-
-  /* These control whether to use max-width-chars or just width-chars */
-  GtkWidget *width_radio;
-  GtkWidget *max_width_radio;
 
   /* These control whether to use single-line-mode, wrap & wrap-mode or niether */
   GtkWidget *wrap_free_label; /* Set boldness on this label for a fake property */
@@ -84,8 +78,6 @@ glade_label_editor_class_init (GladeLabelEditorClass * klass)
   gtk_widget_class_bind_child (widget_class, GladeLabelEditorPrivate, attributes_radio);
   gtk_widget_class_bind_child (widget_class, GladeLabelEditorPrivate, markup_radio);
   gtk_widget_class_bind_child (widget_class, GladeLabelEditorPrivate, pattern_radio);
-  gtk_widget_class_bind_child (widget_class, GladeLabelEditorPrivate, width_radio);
-  gtk_widget_class_bind_child (widget_class, GladeLabelEditorPrivate, max_width_radio);
   gtk_widget_class_bind_child (widget_class, GladeLabelEditorPrivate, wrap_free_label);
   gtk_widget_class_bind_child (widget_class, GladeLabelEditorPrivate, wrap_free_radio);
   gtk_widget_class_bind_child (widget_class, GladeLabelEditorPrivate, single_radio);
@@ -94,8 +86,6 @@ glade_label_editor_class_init (GladeLabelEditorClass * klass)
   gtk_widget_class_bind_callback (widget_class, attributes_toggled);
   gtk_widget_class_bind_callback (widget_class, markup_toggled);
   gtk_widget_class_bind_callback (widget_class, pattern_toggled);
-  gtk_widget_class_bind_callback (widget_class, width_toggled);
-  gtk_widget_class_bind_callback (widget_class, max_width_toggled);
   gtk_widget_class_bind_callback (widget_class, wrap_free_toggled);
   gtk_widget_class_bind_callback (widget_class, single_toggled);
   gtk_widget_class_bind_callback (widget_class, wrap_mode_toggled);
@@ -187,14 +177,6 @@ glade_label_editor_load (GladeEditable * editable, GladeWidget * widget)
           default:
             break;
         }
-
-      if (use_max_width)
-        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON
-                                      (priv->max_width_radio), TRUE);
-      else
-        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON
-                                      (priv->width_radio), TRUE);
-
     }
 }
 
@@ -314,73 +296,6 @@ pattern_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
   glade_command_set_property (property, FALSE);
   property = glade_widget_get_property (gwidget, "label-content-mode");
   glade_command_set_property (property, GLADE_LABEL_MODE_PATTERN);
-
-  glade_command_pop_group ();
-
-  glade_editable_unblock (GLADE_EDITABLE (label_editor));
-
-  /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (label_editor), gwidget);
-}
-
-/**********************************************************************
-                    use-max-width radios
- **********************************************************************/
-static void
-width_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
-{
-  GladeLabelEditorPrivate *priv = label_editor->priv;
-  GladeProperty *property;
-  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (label_editor));
-
-  if (glade_editable_loading (GLADE_EDITABLE (label_editor)) || !gwidget)
-    return;
-
-  if (!gtk_toggle_button_get_active
-      (GTK_TOGGLE_BUTTON (priv->width_radio)))
-    return;
-
-  glade_editable_block (GLADE_EDITABLE (label_editor));
-
-  glade_command_push_group (_("Setting %s to set desired width in characters"),
-                            glade_widget_get_name (gwidget));
-
-  property = glade_widget_get_property (gwidget, "max-width-chars");
-  glade_command_set_property (property, -1);
-  property = glade_widget_get_property (gwidget, "use-max-width");
-  glade_command_set_property (property, FALSE);
-
-  glade_command_pop_group ();
-
-  glade_editable_unblock (GLADE_EDITABLE (label_editor));
-
-  /* reload buttons and sensitivity and stuff... */
-  glade_editable_load (GLADE_EDITABLE (label_editor), gwidget);
-}
-
-static void
-max_width_toggled (GtkWidget * widget, GladeLabelEditor * label_editor)
-{
-  GladeLabelEditorPrivate *priv = label_editor->priv;
-  GladeProperty *property;
-  GladeWidget   *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (label_editor));
-
-  if (glade_editable_loading (GLADE_EDITABLE (label_editor)) || !gwidget)
-    return;
-
-  if (!gtk_toggle_button_get_active
-      (GTK_TOGGLE_BUTTON (priv->max_width_radio)))
-    return;
-
-  glade_editable_block (GLADE_EDITABLE (label_editor));
-
-  glade_command_push_group (_("Setting %s to set maximum width in characters"),
-                            glade_widget_get_name (gwidget));
-
-  property = glade_widget_get_property (gwidget, "width-chars");
-  glade_command_set_property (property, -1);
-  property = glade_widget_get_property (gwidget, "use-max-width");
-  glade_command_set_property (property, TRUE);
 
   glade_command_pop_group ();
 
