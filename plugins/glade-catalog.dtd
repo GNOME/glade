@@ -2,7 +2,14 @@
 			 glade-widget-group*)>
 
 <!ATTLIST glade-catalog name     CDATA #REQUIRED
+                        version  CDATA #IMPLIED
+                        targetable CDATA #IMPLIED
                         library  CDATA #IMPLIED
+                        depends  CDATA #IMPLIED
+                        domain   CDATA #IMPLIED
+                        book     CDATA #IMPLIED
+                        icon-prefix CDATA #IMPLIED
+                        init-function CDATA #IMPLIED
 			requires CDATA #IMPLIED>
 
 <!ELEMENT glade-widget-classes (glade-widget-class+)>
@@ -15,9 +22,18 @@
 			      packing-defaults?)>
 
 <!ATTLIST glade-widget-class toplevel     CDATA #IMPLIED
+                             since        CDATA #IMPLIED
+                             deprecated   CDATA #IMPLIED
+                             use-placeholders CDATA #IMPLIED
+                             default-width CDATA #IMPLIED
+                             default-height CDATA #IMPLIED
 			     name         CDATA #REQUIRED
                              generic-name CDATA #IMPLIED
-			     title        CDATA #IMPLIED>
+                             icon-name    CDATA #IMPLIED
+			     title        CDATA #REQUIRED
+                             parent       CDATA #IMPLIED
+                             get-type-function CDATA #IMPLIED
+                             adaptor      CDATA #IMPLIED>
 
 <!ELEMENT properties (property+)>
 
@@ -30,14 +46,32 @@
 		    verify-function?)>
 
 <!ATTLIST property id               CDATA #REQUIRED
+                   since            CDATA #IMPLIED
+                   deprecated       CDATA #IMPLIED
+                   create-type      CDATA #IMPLIED
                    name             CDATA #IMPLIED
+                   tooltip          CDATA #IMPLIED
+                   themed-icon      CDATA #IMPLIED
+                   stock            CDATA #IMPLIED
+                   stock-icon       CDATA #IMPLIED
+                   weight           CDATA #IMPLIED
+                   transfer-on-paste CDATA #IMPLIED
+                   save-always      CDATA #IMPLIED
+                   parentless-widget CDATA #IMPLIED
+                   atk-property     CDATA #IMPLIED
 		   default          CDATA #IMPLIED
 		   query            CDATA #IMPLIED
+                   save             CDATA #IMPLIED
 		   common           CDATA #IMPLIED
 		   disabled         CDATA #IMPLIED
 		   visible          CDATA #IMPLIED
+                   custom-layout    CDATA #IMPLIED
+                   multiline        CDATA #IMPLIED
 		   optional         CDATA #IMPLIED
 		   optional-default CDATA #IMPLIED
+                   ignore           CDATA #IMPLIED
+                   needs-sync       CDATA #IMPLIED
+                   construct-only   CDATA #IMPLIED
 		   translatable     CDATA #IMPLIED>
 
 <!ELEMENT set-function (#PCDATA)>
