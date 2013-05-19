@@ -173,20 +173,16 @@ glade_gtk_entry_set_property (GladeWidgetAdaptor * adaptor,
     {
       /* Avoid a silly crash in GTK+ */
       if (gtk_entry_get_icon_storage_type (GTK_ENTRY (object),
-                                           GTK_ENTRY_ICON_PRIMARY) !=
-          GTK_IMAGE_EMPTY)
-        GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id,
-                                                       value);
+                                           GTK_ENTRY_ICON_PRIMARY) != GTK_IMAGE_EMPTY)
+        GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
     }
   else if (!strcmp (id, "secondary-icon-tooltip-text") ||
            !strcmp (id, "secondary-icon-tooltip-markup"))
     {
       /* Avoid a silly crash in GTK+ */
       if (gtk_entry_get_icon_storage_type (GTK_ENTRY (object),
-                                           GTK_ENTRY_ICON_SECONDARY) !=
-          GTK_IMAGE_EMPTY)
-        GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id,
-                                                       value);
+                                           GTK_ENTRY_ICON_SECONDARY) != GTK_IMAGE_EMPTY)
+        GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
     }
   else if (!strcmp (id, "text"))
     {
@@ -209,6 +205,8 @@ glade_gtk_entry_set_property (GladeWidgetAdaptor * adaptor,
 	glade_widget_property_set_sensitive (gwidget, "shadow-type", FALSE,
 					     _("This property is only available\n"
 					       "if the entry has a frame"));
+
+      GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
     }
   else if (!strcmp (id, "visibility"))
     {
@@ -218,6 +216,8 @@ glade_gtk_entry_set_property (GladeWidgetAdaptor * adaptor,
 					       "if the entry characters are invisible"));
       else
 	glade_widget_property_set_sensitive (gwidget, "invisible-char", TRUE, NULL);
+
+      GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
     }
   else if (GPC_VERSION_CHECK
            (glade_property_get_class (property), gtk_major_version, gtk_minor_version + 1))
