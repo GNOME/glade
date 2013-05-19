@@ -4667,6 +4667,30 @@ glade_project_get_translation_domain (GladeProject *project)
 /*************************************************
  *                Command Central                *
  *************************************************/
+static gboolean
+widget_contains_unknown_type (GladeWidget * widget)
+{
+  GList *list, *l;
+  GObject *object;
+  gboolean has_unknown = FALSE;
+
+  object = glade_widget_get_object (widget);
+
+  if (GLADE_IS_OBJECT_STUB (object))
+    return TRUE;
+
+  list = glade_widget_get_children (widget);
+  for (l = list; l && has_unknown == FALSE; l = l->next)
+    {
+      GladeWidget *child = glade_widget_get_from_gobject (l->data);
+
+      has_unknown = widget_contains_unknown_type (child);
+    }
+  g_list_free (list);
+
+  return has_unknown;
+}
+
 void
 glade_project_copy_selection (GladeProject *project)
 {
@@ -4687,19 +4711,18 @@ glade_project_copy_selection (GladeProject *project)
 
   for (list = project->priv->selection; list && list->data; list = list->next)
     {
-      if (GLADE_IS_OBJECT_STUB (list->data))
+      GladeWidget *widget = glade_widget_get_from_gobject (list->data);
+
+      if (widget_contains_unknown_type (widget))
         has_unknown = TRUE;
       else
-        {
-          GladeWidget *widget = glade_widget_get_from_gobject (list->data);
-          widgets = g_list_prepend (widgets, glade_widget_dup (widget, FALSE));
-        }
+	widgets = g_list_prepend (widgets, glade_widget_dup (widget, FALSE));
     }
 
   if (has_unknown)
     glade_util_ui_message (glade_app_get_window (),
-                           GLADE_UI_INFO, NULL, _("Unknown widgets ignored."));
-  
+                           GLADE_UI_INFO, NULL, _("Unable to copy unrecognized widget type."));
+
   glade_clipboard_add (glade_app_get_clipboard (), widgets);
   g_list_free (widgets);
 }
@@ -4718,20 +4741,19 @@ glade_project_command_cut (GladeProject *project)
 
   for (list = project->priv->selection; list && list->data; list = list->next)
     {
-      if (GLADE_IS_OBJECT_STUB (list->data))
+      GladeWidget *widget = glade_widget_get_from_gobject (list->data);
+
+      if (widget_contains_unknown_type (widget))
         has_unknown = TRUE;
       else
-        {
-          GladeWidget *widget = glade_widget_get_from_gobject (list->data);
-          widgets = g_list_prepend (widgets, widget);
-        }
+	widgets = g_list_prepend (widgets, widget);
     }
   
   if (failed == FALSE && widgets != NULL)
     glade_command_cut (widgets);
   else if (has_unknown)
     glade_util_ui_message (glade_app_get_window (),
-                           GLADE_UI_INFO, NULL, _("Unknown widgets ignored."));
+                           GLADE_UI_INFO, NULL, _("Unable to cut unrecognized widget type"));
   else if (widgets == NULL)
     glade_util_ui_message (glade_app_get_window (),
                            GLADE_UI_INFO, NULL, _("No widget selected."));
