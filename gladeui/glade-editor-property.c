@@ -825,6 +825,7 @@ glade_eprop_numeric_create_input (GladeEditorProperty *eprop)
   gtk_widget_set_halign (eprop_numeric->spin, GTK_ALIGN_FILL);
   gtk_widget_set_valign (eprop_numeric->spin, GTK_ALIGN_CENTER);
 
+  gtk_entry_set_activates_default (GTK_ENTRY (eprop_numeric->spin), TRUE);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (eprop_numeric->spin), TRUE);
 
   gtk_widget_show (eprop_numeric->spin);
