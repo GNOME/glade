@@ -726,6 +726,15 @@ query_dialog_style_set_cb (GtkWidget *dialog,
   gtk_box_set_spacing (GTK_BOX (action_area), 6);
 }
 
+static gboolean
+query_dialog_delete_event_cb (GtkDialog *dialog,
+			      GdkEvent  *event,
+			      gpointer   user_data)
+{
+  gtk_dialog_response (dialog, GTK_RESPONSE_CANCEL);
+  return TRUE;
+}
+
 gboolean
 glade_editor_query_dialog (GladeWidget *widget)
 {
@@ -768,6 +777,9 @@ glade_editor_query_dialog (GladeWidget *widget)
 
   g_signal_connect (dialog, "style-set",
                     G_CALLBACK (query_dialog_style_set_cb), NULL);
+
+  g_signal_connect (dialog, "delete-event",
+                    G_CALLBACK (query_dialog_delete_event_cb), NULL);
 
   answer = gtk_dialog_run (GTK_DIALOG (dialog));
 
