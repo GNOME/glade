@@ -2161,8 +2161,9 @@ range of values</_tooltip>
     </glade-widget-class>
 
     <glade-widget-class name="GtkStatusbar" generic-name="statusbar" _title="Status Bar">
+      <property id="orientation" default="GTK_ORIENTATION_HORIZONTAL" needs-sync="True"/>
       <properties>
-	<property id="size" disabled="True" />
+	<property id="size" default="1" query="False"/>
       </properties>
       <packing-defaults>
 	<parent-class name="GtkVBox">
