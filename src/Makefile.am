@@ -28,7 +28,6 @@ glade_SOURCES = \
 	glade-close-button.c \
 	glade-close-button.h \
 	glade-resources.c \
-	glade-callbacks.h \
 	glade-preferences.c \
 	glade-preferences.h \
 	main.c
