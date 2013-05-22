@@ -375,6 +375,8 @@ glade_editor_init (GladeEditor *editor)
 
   editor->priv = priv = GLADE_EDITOR_GET_PRIVATE (editor);
 
+  priv->show_class_field = TRUE;
+
   gtk_widget_init_template (GTK_WIDGET (editor));
 
   gtk_icon_size_lookup (GTK_ICON_SIZE_BUTTON, NULL, &icon_height);
