@@ -1128,6 +1128,11 @@ glade_property_read (GladeProperty * property,
   if (!(value = glade_xml_get_content (prop)))
     return;
 
+  /* If an optional property is specified in the
+   * glade file, its enabled
+   */
+  property->priv->enabled = TRUE;
+  
   if (glade_property_class_is_object (property->priv->klass))
     {
       /* we must synchronize this directly after loading this project
@@ -1139,11 +1144,6 @@ glade_property_read (GladeProperty * property,
     }
   else
     {
-      /* If an optional property is specified in the
-       * glade file, its enabled
-       */
-      property->priv->enabled = TRUE;
-
       gvalue = 
 	glade_property_class_make_gvalue_from_string (property->priv->klass, value, project);
 
