@@ -1902,7 +1902,7 @@ glade_design_layout_finalize (GObject *object)
 }
 
 static gboolean
-on_drag_icon_draw (GtkWidget *widget, cairo_t *cr, GladeDesignLayout *layout)
+on_drag_icon_draw (GtkWidget *widget, cairo_t *cr)
 {
   GtkStyleContext *context = gtk_widget_get_style_context (widget);
   cairo_pattern_t *gradient;
@@ -1910,6 +1910,17 @@ on_drag_icon_draw (GtkWidget *widget, cairo_t *cr, GladeDesignLayout *layout)
   gint x, y, w, h;
   gdouble h2;
   GdkRGBA bg;
+
+  /* Not needed acording to GtkWidget:draw documentation
+   * But seems like there is a bug when used as a drag_icon that makes the
+   * cairo translation used here persist when drawind children.
+   */
+  cairo_save (cr);
+
+  /* Clear BG */
+  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+  cairo_paint (cr);
+  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
   
   gtk_widget_get_allocation (widget, &alloc);
   x = alloc.x;
@@ -1944,6 +1955,7 @@ on_drag_icon_draw (GtkWidget *widget, cairo_t *cr, GladeDesignLayout *layout)
   cairo_fill (cr);
   
   cairo_pattern_destroy (gradient);
+  cairo_restore (cr);
 
   return FALSE;
 }
