@@ -2303,11 +2303,8 @@ _glade_design_layout_do_event (GladeDesignLayout *layout, GdkEvent *event)
     {
       GObject *source;
 
-      if (event->button.state & GDK_SHIFT_MASK)
-        {
-          priv->drag_source = NULL;
-        }
-      else if (data.gwidget && (source = glade_widget_get_object (data.gwidget)))
+      if (!(event->button.state & GDK_SHIFT_MASK) &&
+          data.gwidget && (source = glade_widget_get_object (data.gwidget)))
         {
           priv->drag_source = GTK_WIDGET (source);
 
@@ -2315,6 +2312,14 @@ _glade_design_layout_do_event (GladeDesignLayout *layout, GdkEvent *event)
                                             data.x, data.y,
                                             &priv->drag_x, &priv->drag_y);
         }
+      else
+        {
+          priv->drag_source = NULL;
+        }
+    }
+  else if (event->type == GDK_BUTTON_RELEASE && event->button.button == 1)
+    {
+      priv->drag_source = NULL;
     }
 
   _glade_design_view_freeze (priv->view);
