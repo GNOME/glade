@@ -994,6 +994,9 @@ glade_inspector_set_project (GladeInspector *inspector, GladeProject *project)
 
   GladeInspectorPrivate *priv = inspector->priv;
 
+  if(priv->project == project)
+    return;
+
   if (inspector->priv->project)
     {
       disconnect_project_signals (inspector, inspector->priv->project);
