@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: glade3.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-06-04 20:13+0000\n"
-"PO-Revision-Date: 2013-06-05 18:24+0200\n"
+"POT-Creation-Date: 2013-06-15 04:22+0000\n"
+"PO-Revision-Date: 2013-06-17 17:24+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -821,7 +821,7 @@ msgid "The container object this editor is currently editing"
 msgstr "El objeto contenedor que este editor está editando actualmente"
 
 #. translators: refers to a tab name used to group all the relevant widget's properties
-#: ../gladeui/glade-base-editor.c:1731 ../gladeui/glade-editor.c:896
+#: ../gladeui/glade-base-editor.c:1731 ../gladeui/glade-editor.c:898
 msgid "General"
 msgstr "General"
 
@@ -1095,11 +1095,11 @@ msgstr "Editando la alineación de %s"
 msgid "Editing margins of %s"
 msgstr "Editando márgenes de %s"
 
-#: ../gladeui/glade-design-layout.c:2077
+#: ../gladeui/glade-design-layout.c:2089
 msgid "Design View"
 msgstr "Vista de diseño"
 
-#: ../gladeui/glade-design-layout.c:2078
+#: ../gladeui/glade-design-layout.c:2090
 msgid "The GladeDesignView that contains this layout"
 msgstr "El GladeDesignView que contiene esta disposición"
 
@@ -1142,65 +1142,65 @@ msgstr "La cadena del campo de clase"
 msgid "%s Properties - %s [%s]"
 msgstr "Propiedades de %s - %s [%s]"
 
-#: ../gladeui/glade-editor.c:741
+#: ../gladeui/glade-editor.c:743
 #, c-format
 msgid "Create a %s"
 msgstr "Crear un %s"
 
-#: ../gladeui/glade-editor.c:749
+#: ../gladeui/glade-editor.c:751
 msgid "Crea_te"
 msgstr "C_rear"
 
-#: ../gladeui/glade-editor.c:854
+#: ../gladeui/glade-editor.c:856
 msgid "Reset"
 msgstr "Restablecer"
 
-#: ../gladeui/glade-editor.c:865 ../gladeui/glade-property-label.c:121
+#: ../gladeui/glade-editor.c:867 ../gladeui/glade-property-label.c:121
 msgid "Property"
 msgstr "Propiedad"
 
-#: ../gladeui/glade-editor.c:904
+#: ../gladeui/glade-editor.c:906
 msgid "Common"
 msgstr "Comunes"
 
-#: ../gladeui/glade-editor.c:912 ../gladeui/glade-editor.ui.h:5
+#: ../gladeui/glade-editor.c:914 ../gladeui/glade-editor.ui.h:5
 msgid "Accessibility"
 msgstr "Accesibilidad"
 
-#: ../gladeui/glade-editor.c:945
+#: ../gladeui/glade-editor.c:947
 msgid "(default)"
 msgstr "(predet.)"
 
-#: ../gladeui/glade-editor.c:960
+#: ../gladeui/glade-editor.c:962
 msgid "Select the properties that you want to reset to their default values"
 msgstr ""
 "Seleccione las propiedades que quiere restablecer a sus valores "
 "predeterminados"
 
-#: ../gladeui/glade-editor.c:1094
+#: ../gladeui/glade-editor.c:1096
 msgid "Reset Widget Properties"
 msgstr "Restablecer propiedades del widget"
 
 #. Checklist
-#: ../gladeui/glade-editor.c:1111
+#: ../gladeui/glade-editor.c:1113
 msgid "_Properties:"
 msgstr "_Propiedades:"
 
-#: ../gladeui/glade-editor.c:1140
+#: ../gladeui/glade-editor.c:1142
 msgid "_Select All"
 msgstr "_Seleccionar todo"
 
-#: ../gladeui/glade-editor.c:1148
+#: ../gladeui/glade-editor.c:1150
 msgid "_Unselect All"
 msgstr "_Deseleccionar todo"
 
 #. Description
-#: ../gladeui/glade-editor.c:1158
+#: ../gladeui/glade-editor.c:1160
 msgid "Property _Description:"
 msgstr "_Descripción de propiedad:"
 
 #. Translators: first %s is the project name, second is a widget name
-#: ../gladeui/glade-editor.c:1274
+#: ../gladeui/glade-editor.c:1276
 #, c-format
 msgid "%s - %s Properties"
 msgstr "Propiedades de %s - %s"
@@ -1384,8 +1384,9 @@ msgid "The project being inspected"
 msgstr "El proyecto que se está inspeccionando"
 
 #: ../gladeui/glade-inspector.c:583
-msgid " < Search Widgets >"
-msgstr " < Buscar widgets >"
+#| msgid " < Search Widgets >"
+msgid "Search Widgets"
+msgstr "Buscar widgets"
 
 #: ../gladeui/glade-inspector.c:617
 msgid "Expand all"
@@ -5940,9 +5941,6 @@ msgid "Secondary Icon"
 msgstr "Icono secundario:"
 
 #: ../plugins/gtk+/glade-entry-editor.ui.h:12
-#| msgid ""
-#| "Whether to use markup in the\n"
-#| "primary icon's tooltip"
 msgid ""
 "Whether to use markup in the\n"
 "secondary icon's tooltip"
