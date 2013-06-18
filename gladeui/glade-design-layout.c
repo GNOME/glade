@@ -1602,6 +1602,7 @@ glade_design_layout_realize (GtkWidget * widget)
 {
   GladeDesignLayoutPrivate *priv;
   GdkWindowAttr attributes;
+  GtkWidget *child;
   gint attributes_mask, border_width;
   GtkAllocation allocation;
   GdkDisplay *display;
@@ -1641,14 +1642,26 @@ glade_design_layout_realize (GtkWidget * widget)
                     G_CALLBACK (pick_offscreen_child), widget);
 
   /* Offscreen window */
+  child = gtk_bin_get_child (GTK_BIN (widget));
   attributes.window_type = GDK_WINDOW_OFFSCREEN;
   attributes.x = attributes.y = 0;
-  attributes.width = attributes.height = 0;
+
+  if (child && gtk_widget_get_visible (child))
+    {
+      GtkAllocation alloc;
+
+      gtk_widget_get_allocation (child, &alloc);
+      attributes.width = alloc.width;
+      attributes.height = alloc.height;
+    }
+    else
+      attributes.width = attributes.height = 0;
 
   priv->offscreen_window = gdk_window_new (gtk_widget_get_root_window (widget),
                                            &attributes, attributes_mask);
   gdk_window_set_user_data (priv->offscreen_window, widget);
-  
+
+  if (child) gtk_widget_set_parent_window (child, priv->offscreen_window);
   gdk_offscreen_window_set_embedder (priv->offscreen_window, priv->window);
 
   g_signal_connect (priv->offscreen_window, "to-embedder",
