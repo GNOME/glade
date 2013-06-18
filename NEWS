@@ -1,4 +1,24 @@
 ============
+Glade 3.15.2
+============
+	- Add GtkPlacesSidebar to GTK+ catalog (Federico Mena Quintero)
+	- New icon for GtkMenuButton (Paolo Borelli)
+	- GTK+ catalog version now bumped to 3.10, include new translatable enumeration values
+          and updated new versions and deprecations
+	- Added --enable-debug option and some debug flags to be set with GLADE_DEBUG environment variable
+	- Enable word wrapping in combo boxes (used to edit enumeration properties)
+	- Split up the GTK+ plugin into mini source files, each one implementing it's own widget adaptor
+	  code (instead of one huge glade-gtk.c file)
+	- Fix GtkIconFactory sources editor (was very broken)
+	- Allow setting the "id" attributes of items set in a GtkComboBoxText
+	- Avoid calling gtk_stock_list_ids() when gdk_display_get_default() is NULL, allows GIRs to
+	  build on some build machines.
+	- Avoid updating the inspector treeview if the same project is set twice (Marco Diego Aurélio Mesquita)
+	- Escape key cancels a query dialog instead of approves creation of the new widget
+	- Many minor bugs and random crasher bugs also fixed
+	- Alsmost all widget types have their own custom editors now
+
+============
 Glade 3.15.1
 ============
 
