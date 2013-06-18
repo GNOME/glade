@@ -578,9 +578,9 @@ glade_inspector_init (GladeInspector *inspector)
 
   priv->project = NULL;
 
-  priv->entry = gtk_search_entry_new ();
+  priv->entry = gtk_entry_new ();
 
-  gtk_entry_set_placeholder_text (GTK_ENTRY (priv->entry), _("Search Widgets"));
+  gtk_entry_set_placeholder_text (GTK_ENTRY (priv->entry), _(" < Search Widgets >"));
   gtk_widget_show (priv->entry);
   gtk_box_pack_start (GTK_BOX (inspector), priv->entry, FALSE, FALSE, 2);
 
