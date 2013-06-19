@@ -1186,30 +1186,27 @@ draw_pixel_value (cairo_t *cr,
 {
   cairo_text_extents_t extents;
   gchar pixel_str[8];
-  gdouble xx, yy;
 
   g_snprintf (pixel_str, 8, "%d", val);
 
   cairo_text_extents (cr, pixel_str, &extents);
 
+  cairo_save (cr);
+  
   if (rotate)
     {
-      xx = x - 1.5;
-      yy = y + .5 + extents.width/2;
+      cairo_translate (cr, x - 1.5, y + .5 + extents.width/2);
       cairo_rotate (cr, G_PI/-2);
-      cairo_device_to_user (cr, &xx, &yy);
     }
   else
-    {
-      xx = x - (extents.width+extents.x_bearing)/2;
-      yy = y - 2;
-    }
+    cairo_translate (cr, x - (extents.width+extents.x_bearing)/2, y - 2);
 
+  cairo_move_to (cr, 0, 0);
+  
   if (draw_border || extents.width + 4 >= val)
     {
       cairo_set_source_rgba (cr, bg->red, bg->green, bg->blue, .9);
 
-      cairo_move_to (cr, xx, yy);
       cairo_text_path (cr, pixel_str);
       cairo_set_line_width (cr, 3);
       cairo_stroke (cr);
@@ -1218,10 +1215,9 @@ draw_pixel_value (cairo_t *cr,
       gdk_cairo_set_source_rgba (cr, fg);
     }
 
-  cairo_move_to (cr, xx, yy);
   cairo_show_text (cr, pixel_str);
 
-  if (rotate) cairo_rotate (cr, G_PI/2);
+  cairo_restore (cr);
 }
 
 static void
@@ -1290,11 +1286,6 @@ draw_dimensions (cairo_t *cr,
       if (right) draw_hmark (cr, x + w + right, yy);
 
       draw_stroke_lines (cr, bg, fg, top < DIMENSION_OFFSET+OUTLINE_WIDTH);
-
-      /* Draw pixel values */
-      draw_pixel_value (cr, bg, fg, x + w/2, yy, FALSE, h_clutter, w+1);
-      if (left) draw_pixel_value (cr,bg, fg, x - left/2, yy, FALSE, h_clutter, left);
-      if (right) draw_pixel_value (cr,bg, fg, x + w + right/2, yy, FALSE, h_clutter, right);
     }
   
   if (top || bottom)
@@ -1321,7 +1312,18 @@ draw_dimensions (cairo_t *cr,
       if (bottom) draw_vmark (cr, xx, y + h + bottom);
 
       draw_stroke_lines (cr, bg, fg, v_clutter);
+    }
 
+  if (left || right)
+    {
+      /* Draw pixel values */
+      draw_pixel_value (cr, bg, fg, x + w/2, yy, FALSE, h_clutter, w+1);
+      if (left) draw_pixel_value (cr,bg, fg, x - left/2, yy, FALSE, h_clutter, left);
+      if (right) draw_pixel_value (cr,bg, fg, x + w + right/2, yy, FALSE, h_clutter, right);
+    }
+  
+  if (top || bottom)
+    {
       /* Draw pixel values */
       draw_pixel_value (cr,bg, fg, xx, y + h/2, TRUE, v_clutter, h+1);
       if (top) draw_pixel_value (cr,bg, fg, xx, y - top/2, TRUE, v_clutter, top);
@@ -1339,12 +1341,11 @@ draw_pushpin (cairo_t *cr, gdouble x, gdouble y, gint angle,
   if (active)
     {
       outline = outline2;
-      x += .5;
+      cairo_translate (cr, x + .5, y);
       cairo_rotate (cr, angle*(G_PI/180));
-      cairo_device_to_user (cr, &x, &y);
     }
   else
-    x += 1.5;
+    cairo_translate (cr, x + 1.5, y);
 
   /* Swap colors if mouse is over */
   if (over)
@@ -1353,9 +1354,8 @@ draw_pushpin (cairo_t *cr, gdouble x, gdouble y, gint angle,
       outline = fill;
       fill = tmp;
     }
-  
-  cairo_translate (cr, x, y);
 
+  cairo_move_to (cr, 0, 0);
   _glade_design_layout_draw_pushpin (cr, (active) ? 2.5 : 4, outline, fill,
                                      (over) ? outline : fill, fg);
   
