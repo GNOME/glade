@@ -1,0 +1,114 @@
+<?xml version='1.0'?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+        "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+
+<refentry id="glade">
+
+        <refentryinfo>
+                <title>glade</title>
+                <productname>GNOME</productname>
+
+                <authorgroup>
+                        <author>
+                                <contrib>Maintainer</contrib>
+                                <firstname>Tristan Van Berkom</firstname>
+                                <surname>Van Berkom</surname>
+                                <email>tristan.van.berkom@gmail.com</email>
+                        </author>
+                        <author>
+                                <contrib>Maintainer</contrib>
+                                <firstname>Juan Pablo</firstname>
+                                <surname>Ugarte</surname>
+                                <email>juanpablougarte@gmail.com</email>
+                        </author>
+                </authorgroup>
+
+        </refentryinfo>
+
+        <refmeta>
+                <refentrytitle>glade</refentrytitle>
+                <manvolnum>1</manvolnum>
+                <refmiscinfo class="manual">User Commands</refmiscinfo>
+        </refmeta>
+
+        <refnamediv>
+                <refname>glade</refname>
+                <refpurpose>Create GTK+ user interfaces</refpurpose>
+        </refnamediv>
+
+        <refsynopsisdiv>
+                <cmdsynopsis>
+                        <command>glade <arg choice="opt" rep="repeat">OPTION</arg> <arg choice="opt" rep="repeat">FILE</arg></command>
+                </cmdsynopsis>
+        </refsynopsisdiv>
+
+        <refsect1>
+                <title>Description</title>
+
+                <para><command>glade</command> is a tool to create or edit
+                user interfaces for GTK+ or GNOME applications. It saves
+                the user interface descriptions in xml files which can be
+                read by the GtkBuilder API that is part of GTK+.</para>
+        </refsect1>
+
+        <refsect1>
+                <title>Options</title>
+
+                <para>The following options can be specified:</para>
+
+                <variablelist>
+                        <varlistentry>
+                                <term><option>-h</option>, <option>--help</option></term>
+
+                                <listitem><para>Show help options.</para></listitem>
+                        </varlistentry>
+
+                        <varlistentry>
+                                <term><option>--help-all</option></term>
+
+                                <listitem><para>Show all help options.</para></listitem>
+                        </varlistentry>
+
+                        <varlistentry>
+                                <term><option>--help-debug</option></term>
+
+                                <listitem><para>Show Glade debug options.</para></listitem>
+                        </varlistentry>
+
+                        <varlistentry>
+                                <term><option>--help-gtk</option></term>
+
+                                <listitem><para>Show GTK+ options.</para></listitem>
+                        </varlistentry>
+
+                        <varlistentry>
+                                <term><option>--version</option></term>
+
+                                <listitem><para>Output version information
+                                and exit.</para></listitem>
+                        </varlistentry>
+
+                        <varlistentry>
+                                <term><option>--without-devhelp</option></term>
+
+                                <listitem><para>Disable devhelp integration.</para></listitem>
+                        </varlistentry>
+
+                        <varlistentry>
+                                <term><option>--display=DISPLAY</option></term>
+
+                                <listitem><para>X display to use.</para></listitem>
+                        </varlistentry>
+
+                </variablelist>
+
+        </refsect1>
+
+        <refsect1>
+                <title>See Also</title>
+                <para>
+                        <citerefentry><refentrytitle>devhelp</refentrytitle><manvolnum>1</manvolnum></citerefentry>
+                </para>
+        </refsect1>
+
+</refentry>

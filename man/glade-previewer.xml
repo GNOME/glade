@@ -1,0 +1,105 @@
+<?xml version='1.0'?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+        "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+
+<refentry id="glade-previewer">
+
+        <refentryinfo>
+                <title>glade-previewer</title>
+                <productname>GNOME</productname>
+
+                <authorgroup>
+                        <author>
+                                <contrib>Maintainer</contrib>
+                                <firstname>Tristan Van Berkom</firstname>
+                                <surname>Van Berkom</surname>
+                                <email>tristan.van.berkom@gmail.com</email>
+                        </author>
+                        <author>
+                                <contrib>Maintainer</contrib>
+                                <firstname>Juan Pablo</firstname>
+                                <surname>Ugarte</surname>
+                                <email>juanpablougarte@gmail.com</email>
+                        </author>
+                </authorgroup>
+
+        </refentryinfo>
+
+        <refmeta>
+                <refentrytitle>glade-previewer</refentrytitle>
+                <manvolnum>1</manvolnum>
+                <refmiscinfo class="manual">User Commands</refmiscinfo>
+        </refmeta>
+
+        <refnamediv>
+                <refname>glade-previewer</refname>
+                <refpurpose>Preview glade user interface definitions</refpurpose>
+        </refnamediv>
+
+        <refsynopsisdiv>
+                <cmdsynopsis>
+                        <command>glade-previewer <arg choice="opt" rep="repeat">OPTION</arg></command>
+                </cmdsynopsis>
+        </refsynopsisdiv>
+
+        <refsect1>
+                <title>Description</title>
+
+                <para><command>glade-previewer</command> is a tool that
+                can load and display a User Interface that has been defined
+                with glade. glade itself uses glade-previewer, but it
+                can also be used as a standalone utility.</para>
+        </refsect1>
+
+        <refsect1>
+                <title>Options</title>
+
+                <para>The following options can be specified:</para>
+
+                <variablelist>
+                        <varlistentry>
+                                <term><option>-f FILENAME</option>, <option>--filename=FILENAME</option></term>
+
+                                <listitem><para>Name of the file to preview.</para></listitem>
+
+                        </varlistentry>
+
+                        <varlistentry>
+                                <term><option>-t TOPLEVEL</option>, <option>--toplevel=TOPLEVEL</option></term>
+
+                                <listitem><para>Name of the toplevel to preview.</para></listitem>
+                        </varlistentry>
+
+                        <varlistentry>
+                                <term><option>-l</option>, <option>--listen</option></term>
+
+                                <listitem><para>Listen on standard input.</para></listitem>
+                        </varlistentry>
+
+                        <varlistentry>
+                                <term><option>-v</option>, <option>--version</option></term>
+
+                                <listitem><para>Output version information and exit.</para></listitem>
+                        </varlistentry>
+
+                        <varlistentry>
+                                <term><option>--display=DISPLAY</option></term>
+
+                                <listitem><para>X display to use.</para></listitem>
+                        </varlistentry>
+
+                </variablelist>
+
+                <para>One of the <option>--filename</option> or
+                <option>--listen</option> options has to be specified.</para>
+
+        </refsect1>
+
+        <refsect1>
+                <title>See Also</title>
+                <para>
+                        <citerefentry><refentrytitle>glade</refentrytitle><manvolnum>1</manvolnum></citerefentry>
+                </para>
+        </refsect1>
+
+</refentry>

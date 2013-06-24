@@ -214,6 +214,22 @@ AM_CONDITIONAL(BUILD_PYTHON, test x"$have_python" = "xyes")
 
 YELP_HELP_INIT
 
+# ==================================================================
+# Man pages (requires xsltproc)
+# ==================================================================
+
+AC_ARG_ENABLE(man-pages,
+              AC_HELP_STRING([--enable-man-pages],
+                             [build manual pages]),,
+              enable_man_pages=yes)
+if test x$enable_man_pages = xyes; then
+   AC_PATH_PROG([XSLTPROC], [xsltproc])
+   if test x$XSLTPROC = x; then
+      AC_MSG_ERROR([xsltproc is required to build manual pages])
+   fi
+fi
+AM_CONDITIONAL(BUILD_MAN_PAGES, test x$enable_man_pages = xyes)
+
 dnl ================================================================
 dnl Check for windows
 dnl ================================================================
@@ -325,6 +341,7 @@ po/Makefile.in
 doc/Makefile
 doc/version.xml
 help/Makefile
+man/Makefile
 tests/Makefile
 build/mingw-w64/glade.nsi
 ])
@@ -344,4 +361,5 @@ Configuration:
 	Introspection Data:      ${found_introspection}
 
 	Build Reference Manual:  ${enable_gtk_doc}
+	Build Manual Pages:      ${enable_man_pages}
 "

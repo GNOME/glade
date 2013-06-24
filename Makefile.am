@@ -1,6 +1,10 @@
 ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 
 SUBDIRS = po data gladeui src plugins tests doc help
+if BUILD_MAN_PAGES
+SUBDIRS += man
+endif
+DIST_SUBDIRS = po data gladeui src plugins tests doc help man
 
 EXTRA_DIST = \
 	autogen.sh \
@@ -14,7 +18,7 @@ DISTCLEANFILES = intltool-extract \
                  intltool-merge \
                  intltool-update
 
-DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc --enable-introspection
+DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc --enable-introspection --enable-man-pages
 
 dist-hook:
 	@if test -d "$(srcdir)/.git"; \
