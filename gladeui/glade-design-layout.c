@@ -877,7 +877,11 @@ update_rectangles (GladeDesignLayoutPrivate *priv, GtkAllocation *alloc)
   priv->south.width = alloc->width;
   
   /* Update south east rectangle width */
-  pango_layout_get_pixel_size (priv->widget_name, &width, &height);
+  if (priv->widget_name)
+    pango_layout_get_pixel_size (priv->widget_name, &width, &height);
+  else
+    width = height = 0;
+
   priv->layout_width = width + (OUTLINE_WIDTH*2);
   width = MIN (alloc->width, width);
 
@@ -934,13 +938,22 @@ glade_design_layout_size_allocate (GtkWidget *widget,
     }
 }
 
+static inline void
+update_widget_name (GladeDesignLayout *layout, GladeWidget *gwidget) 
+{
+  GladeDesignLayoutPrivate *priv = layout->priv;
+
+  if (priv->widget_name && gwidget)
+    {
+      pango_layout_set_text (priv->widget_name, glade_widget_get_name (gwidget), -1);
+      gtk_widget_queue_resize (GTK_WIDGET (layout));
+    }
+}
+
 static void
 on_glade_widget_name_notify (GObject *gobject, GParamSpec *pspec, GladeDesignLayout *layout) 
 {
-  GladeDesignLayoutPrivate *priv = layout->priv;
-  
-  pango_layout_set_text (priv->widget_name, glade_widget_get_name (GLADE_WIDGET (gobject)), -1);
-  gtk_widget_queue_resize (GTK_WIDGET (layout));
+  update_widget_name (layout, GLADE_WIDGET (gobject));
 }
 
 static void
@@ -960,7 +973,7 @@ glade_design_layout_add (GtkContainer *container, GtkWidget *widget)
 
   if ((gchild = glade_widget_get_from_gobject (G_OBJECT (widget))))
     {
-      on_glade_widget_name_notify (G_OBJECT (gchild), NULL, layout);
+      update_widget_name (layout, gchild);
       g_signal_connect (gchild, "notify::name", G_CALLBACK (on_glade_widget_name_notify), layout);
     }
     
@@ -1596,9 +1609,8 @@ offscreen_window_from_parent (GdkWindow     *window,
   to_child (bin, parent_x, parent_y, offscreen_x, offscreen_y);
 }
 
-
 static void
-glade_design_layout_realize (GtkWidget * widget)
+glade_design_layout_realize (GtkWidget *widget)
 {
   GladeDesignLayoutPrivate *priv;
   GdkWindowAttr attributes;
@@ -1688,6 +1700,9 @@ glade_design_layout_realize (GtkWidget * widget)
   priv->cursors[ACTIVITY_MARGINS_BOTTOM_RIGHT] = g_object_ref (priv->cursors[ACTIVITY_RESIZE_WIDTH_AND_HEIGHT]);
   
   priv->widget_name = pango_layout_new (gtk_widget_get_pango_context (widget));
+  if (child)
+    update_widget_name (GLADE_DESIGN_LAYOUT (widget),
+                        glade_widget_get_from_gobject (child));
 }
 
 static void
