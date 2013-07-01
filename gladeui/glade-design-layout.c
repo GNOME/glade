@@ -589,7 +589,8 @@ glade_design_layout_button_press_event (GtkWidget *widget, GdkEventButton *ev)
   GtkWidget *child;
   gint x, y;
 
-  if (ev->button != 1 || ev->type != GDK_BUTTON_PRESS ||
+  if (ev->button != 1 ||
+      (ev->type != GDK_BUTTON_PRESS && ev->type != GDK_2BUTTON_PRESS) ||
       (child = gtk_bin_get_child (GTK_BIN (widget))) == NULL)
     return FALSE;
 
@@ -694,8 +695,9 @@ glade_design_layout_button_press_event (GtkWidget *widget, GdkEventButton *ev)
   priv->dx = x - (child_allocation.x + child_allocation.width + priv->child_offset);
   priv->dy = y - (child_allocation.y + child_allocation.height + priv->child_offset);
 
-  if (activity != ACTIVITY_NONE &&
-      !glade_project_is_toplevel_active (priv->project, child))
+  if (activity != ACTIVITY_NONE && 
+      (!glade_project_is_toplevel_active (priv->project, child) ||
+      ev->type == GDK_2BUTTON_PRESS))
     {
       _glade_design_view_freeze (priv->view);
       glade_project_selection_set (priv->project, G_OBJECT (child), TRUE);
@@ -704,7 +706,6 @@ glade_design_layout_button_press_event (GtkWidget *widget, GdkEventButton *ev)
 
   return FALSE;
 }
-
 static gboolean
 glade_design_layout_button_release_event (GtkWidget *widget,
                                           GdkEventButton *ev)
