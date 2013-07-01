@@ -1989,6 +1989,40 @@ range of values</_tooltip>
 
     <glade-widget-class name="GtkAspectFrame" generic-name="aspectframe" _title="Aspect Frame"/>
 
+    <glade-widget-class name="GtkListBox" generic-name="listbox" _title="List Box" use-placeholders="False">
+      <child-action-activate-function>glade_gtk_listbox_child_action_activate</child-action-activate-function>
+      <create-widget-function>glade_gtk_create_fixed_widget</create-widget-function>
+      <post-create-function>glade_gtk_listbox_post_create</post-create-function>
+      <add-child-verify-function>glade_gtk_listbox_add_verify</add-child-verify-function>
+      <add-child-function>glade_gtk_listbox_add_child</add-child-function>
+      <remove-child-function>glade_gtk_listbox_remove_child</remove-child-function>
+      <child-set-property-function>glade_gtk_listbox_set_child_property</child-set-property-function>
+      <child-get-property-function>glade_gtk_listbox_get_child_property</child-get-property-function>
+
+      <packing-actions>
+        <action id="insert_before" _name="Insert Before" stock="gtk-add"/>
+        <action id="insert_after" _name="Insert After" stock="gtk-add"/>
+      </packing-actions>
+
+      <properties>
+        <property id="activate-on-single-click" default="True"/>
+        <property id="selection-mode" default="GTK_SELECTION_SINGLE"/>
+      </properties>
+
+      <packing-properties>
+        <property id="position" _name="Position" default="0" save="False">
+          <parameter-spec>
+            <type>GParamInt</type>
+            <min>0</min>
+          </parameter-spec>
+          <_tooltip>The position of the row item in the listbox</_tooltip>
+        </property>
+      </packing-properties>
+
+    </glade-widget-class>
+
+    <glade-widget-class name="GtkListBoxRow" generic-name="listboxrow" _title="List Box Row"/>
+
     <glade-widget-class name="GtkRange" _title="Range">
       <properties>
         <property id="fill-level" since="2.12"/>
@@ -4498,6 +4532,7 @@ range of values</_tooltip>
     <glade-widget-class-ref name="GtkNotebook"/>
     <glade-widget-class-ref name="GtkFrame"/>
     <glade-widget-class-ref name="GtkAspectFrame"/>
+    <glade-widget-class-ref name="GtkListBox"/>
     <glade-widget-class-ref name="GtkOverlay"/>
     <glade-widget-class-ref name="GtkMenuBar"/>
     <glade-widget-class-ref name="GtkToolbar"/>

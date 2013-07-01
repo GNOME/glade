@@ -80,6 +80,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-gtk-info-bar.c		\
 	glade-gtk-label.c		\
 	glade-gtk-level-bar.c		\
+	glade-gtk-list-box.c		\
 	glade-gtk-list-store.c		\
 	glade-gtk-menu.c		\
 	glade-gtk-menu-bar.c		\
