@@ -360,17 +360,8 @@ glade_placeholder_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 static gboolean
 glade_placeholder_draw (GtkWidget *widget, cairo_t *cr)
 {
-  GtkStyle *style;
-  GdkColor *light;
-  GdkColor *dark;
-  gint w, h;
-
-  style = gtk_widget_get_style (widget);
-  light = &style->light[GTK_STATE_NORMAL];
-  dark = &style->dark[GTK_STATE_NORMAL];
-
-  h = gtk_widget_get_allocated_height (widget);
-  w = gtk_widget_get_allocated_width (widget);
+  gint h = gtk_widget_get_allocated_height (widget) - 1;
+  gint w = gtk_widget_get_allocated_width (widget) - 1;
 
   if (placeholder_pattern)
     {
@@ -381,12 +372,21 @@ glade_placeholder_draw (GtkWidget *widget, cairo_t *cr)
       cairo_restore (cr);
     }
 
+  cairo_translate (cr, .5, .5);
   cairo_set_line_width (cr, 1.0);
 
-  glade_utils_cairo_draw_line (cr, light, 0, 0, w - 1, 0);
-  glade_utils_cairo_draw_line (cr, light, 0, 0, 0, h - 1);
-  glade_utils_cairo_draw_line (cr, dark, 0, h - 1, w - 1, h - 1);
-  glade_utils_cairo_draw_line (cr, dark, w - 1, 0, w - 1, h - 1);
+  /* We hardcode colors here since we are already using an image as bg pattern */
+  cairo_set_source_rgb (cr, .9, .9, .9);
+  cairo_move_to (cr, w, 0);
+  cairo_line_to (cr, 0, 0);
+  cairo_line_to (cr, 0, h);
+  cairo_stroke (cr);
+
+  cairo_set_source_rgb (cr, .64, .64, .64);
+  cairo_move_to (cr, w, 0);
+  cairo_line_to (cr, w, h);
+  cairo_line_to (cr, 0, h);
+  cairo_stroke (cr);
 
   return FALSE;
 }
