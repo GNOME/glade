@@ -2045,6 +2045,7 @@ glade_design_layout_drag_begin (GtkWidget *widget, GdkDragContext *context)
   priv->drag_icon = _glade_design_layout_dnd_icon_widget_new (context, icon_name, description);
   g_object_ref_sink (priv->drag_icon);
   gtk_drag_set_icon_widget (context, priv->drag_icon, 0, 0);
+  g_free (description);
 }
 
 static void
