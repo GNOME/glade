@@ -544,7 +544,16 @@ embedded in another object</_tooltip>
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkOverlay" generic-name="overlay" _title="Overlay" since="3.2" icon-name="widget-gtk-frame"/>
+    <glade-widget-class name="GtkOverlay" generic-name="overlay" _title="Overlay" since="3.2"
+                        icon-name="widget-gtk-frame"
+                        use-placeholders="False">
+      <post-create-function>glade_gtk_overlay_post_create</post-create-function>
+      <add-child-verify-function>glade_gtk_overlay_add_verify</add-child-verify-function>
+      <add-child-function>glade_gtk_overlay_add_child</add-child-function>
+      <remove-child-function>glade_gtk_overlay_remove_child</remove-child-function>
+      <get-child-at-position-function>glade_gtk_overlay_get_child_at_position</get-child-at-position-function>
+      <special-child-type>overlay</special-child-type>
+    </glade-widget-class>
 
     <glade-widget-class name="GtkMenuShell" _title="Menu Shell" use-placeholders="False" since="2.16">
       <post-create-function>empty</post-create-function>

@@ -89,6 +89,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-gtk-menu-tool-button.c	\
 	glade-gtk-message-dialog.c	\
 	glade-gtk-notebook.c		\
+	glade-gtk-overlay.c		\
 	glade-gtk-paned.c		\
 	glade-gtk-progress-bar.c	\
 	glade-gtk-radio-button.c	\
