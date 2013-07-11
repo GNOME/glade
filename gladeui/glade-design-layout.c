@@ -81,7 +81,7 @@ struct _GladeDesignLayoutPrivate
   GdkCursor *cursor;            /* Current cursor */
   GdkCursor *cursors[N_ACTIVITY];
 
-  gint current_width, current_height;
+  GdkRectangle child_rect;
   PangoLayout *widget_name;
   gint layout_width;
 
@@ -129,16 +129,17 @@ G_DEFINE_TYPE (GladeDesignLayout, glade_design_layout, GTK_TYPE_BIN)
 #define RECTANGLE_POINT_IN(rect,x,y) (x >= rect.x && x <= (rect.x + rect.width) && y >= rect.y && y <= (rect.y + rect.height))
 
 static Margins
-gdl_get_margins_from_pointer (GtkWidget *child, GtkWidget *widget, gint x, gint y)
+gdl_get_margins_from_pointer (GladeDesignLayout *layout, GtkWidget *widget, gint x, gint y)
 {
+  GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_PRIVATE (layout);
   gint width, height, xx, yy, top, bottom, left, right;
+  GdkRectangle rec, child_rec;
   Margins margin = 0;
-  GdkRectangle rec;
-  
+
   width = gtk_widget_get_allocated_width (widget);
   height = gtk_widget_get_allocated_height (widget);
 
-  gtk_widget_translate_coordinates (widget, child, 0, 0, &xx, &yy);
+  gtk_widget_translate_coordinates (widget, GTK_WIDGET (layout), 0, 0, &xx, &yy);
   
   top = gtk_widget_get_margin_top (widget);
   bottom = gtk_widget_get_margin_bottom (widget);
@@ -149,6 +150,14 @@ gdl_get_margins_from_pointer (GtkWidget *child, GtkWidget *widget, gint x, gint 
   rec.y = yy - top - OUTLINE_WIDTH;
   rec.width = width + left + right + (OUTLINE_WIDTH * 2);
   rec.height = height + top + bottom + (OUTLINE_WIDTH * 2);
+
+  gtk_widget_get_allocation (gtk_bin_get_child (GTK_BIN (layout)), &child_rec);
+  child_rec.x = (child_rec.x + priv->child_offset) - OUTLINE_WIDTH;
+  child_rec.y = (child_rec.y + priv->child_offset) - OUTLINE_WIDTH;
+  child_rec.width += OUTLINE_WIDTH * 2;
+  child_rec.height += OUTLINE_WIDTH * 2;
+
+  gdk_rectangle_intersect (&rec, &child_rec, &rec);
 
   if (RECTANGLE_POINT_IN (rec, x, y))
     {      
@@ -169,9 +178,7 @@ gdl_get_activity_from_pointer (GladeDesignLayout *layout, gint x, gint y)
   
   if (priv->selection)
     {
-      priv->margin = gdl_get_margins_from_pointer (GTK_WIDGET (layout),
-                                                   priv->selection,
-                                                   x, y);
+      priv->margin = gdl_get_margins_from_pointer (layout, priv->selection, x, y);
       
       if (priv->margin)
         {
@@ -877,7 +884,7 @@ glade_design_layout_size_allocate (GtkWidget *widget,
       gint height, offset;
 
       offset = gtk_container_get_border_width (GTK_CONTAINER (widget)) + PADDING + OUTLINE_WIDTH;
-      priv->child_offset = offset;
+      priv->child_rect.x = priv->child_rect.y = priv->child_offset = offset;
 
       if (priv->widget_name)
         pango_layout_get_pixel_size (priv->widget_name, NULL, &height);
@@ -885,8 +892,8 @@ glade_design_layout_size_allocate (GtkWidget *widget,
         height = PADDING;
       
       alloc.x = alloc.y = 0;
-      priv->current_width = alloc.width = allocation->width - (offset * 2);
-      priv->current_height = alloc.height = allocation->height - (offset + OUTLINE_WIDTH * 1.5 + height);
+      priv->child_rect.width = alloc.width = allocation->width - (offset * 2);
+      priv->child_rect.height = alloc.height = allocation->height - (offset + OUTLINE_WIDTH * 1.5 + height);
       
       if (gtk_widget_get_realized (widget))
         gdk_window_move_resize (priv->offscreen_window,
@@ -921,8 +928,8 @@ glade_design_layout_add (GtkContainer *container, GtkWidget *widget)
   GladeDesignLayout *layout = GLADE_DESIGN_LAYOUT (container);
   GladeDesignLayoutPrivate *priv = layout->priv;
 
-  layout->priv->current_width = 0;
-  layout->priv->current_height = 0;
+  priv->child_rect.width = 0;
+  priv->child_rect.height = 0;
 
   gtk_widget_set_parent_window (widget, priv->offscreen_window);
 
@@ -1352,25 +1359,23 @@ draw_selection_nodes (cairo_t *cr,
   GtkWidget *widget = priv->selection;
   gint top, bottom, left, right;
   gint x1, x2, x3, y1, y2, y3;
-  GtkAllocation alloc, palloc;
+  GtkAllocation alloc;
   GdkRGBA *c1, *c2, *c3, *fg;
   gint x, y, w, h;
+  gint offset = priv->child_offset;
+  GdkRectangle clip = {0, };
 
-  gtk_widget_get_allocation (widget, &alloc);
-  if (alloc.x < 0 || alloc.y < 0) return;
+  gtk_widget_translate_coordinates (widget, parent, 0, 0, &x, &y);
 
   c1 = &priv->frame_color_active[0];
   c2 = &priv->frame_color_active[1];
   c3 = &priv->frame_color[0];
   fg = &priv->fg_color;
   
-  gtk_widget_get_allocation (parent, &palloc);
-  
+  gtk_widget_get_allocation (widget, &alloc);
   w = alloc.width;
   h = alloc.height;
   
-  gtk_widget_translate_coordinates (widget, parent, 0, 0, &x, &y);
-
   top = gtk_widget_get_margin_top (widget);
   bottom = gtk_widget_get_margin_bottom (widget);
   left = gtk_widget_get_margin_left (widget);
@@ -1383,6 +1388,39 @@ draw_selection_nodes (cairo_t *cr,
   y1 = y - top;
   y2 = y + h/2;
   y3 = y + h + bottom;
+
+  /* Calculate clipping region to avoid drawing nodes outside of the toplevel
+   * allocation. This could happen for example with GtkOverlay overlay children.
+   */
+  if (offset > x1)
+    {
+      clip.x = offset;
+      clip.width = 0;
+    }
+  else
+    {
+      clip.x = 0;
+      clip.width = offset;      
+    }
+  if (offset > y1)
+    {
+      clip.y = offset;
+      clip.height = 0;
+    }
+  else
+    {
+      clip.y = 0;
+      clip.height = offset;      
+    }
+
+  clip.width += (priv->child_rect.width + offset < x3) ?
+                 priv->child_rect.width : gdk_window_get_width (priv->window);
+  clip.height += (priv->child_rect.height + offset < y3) ?
+                  priv->child_rect.height : gdk_window_get_height (priv->window);
+
+  cairo_save (cr);
+  gdk_cairo_rectangle (cr, &clip);
+  cairo_clip (cr);
 
   /* Draw nodes */
   cairo_set_line_width (cr, OUTLINE_WIDTH);
@@ -1430,6 +1468,8 @@ draw_selection_nodes (cairo_t *cr,
           draw_pushpin (cr, x3, y2, 45, c3, c2, c1, fg, node & MARGIN_RIGHT, halign == GTK_ALIGN_END);
         }
     }
+
+  cairo_restore (cr);
 }
 
 static gboolean
@@ -1452,8 +1492,7 @@ glade_design_layout_draw (GtkWidget *widget, cairo_t *cr)
           /* draw offscreen widgets */
           gdk_cairo_set_source_window (cr, priv->offscreen_window,
                                        priv->child_offset, priv->child_offset);
-          cairo_rectangle (cr, priv->child_offset, priv->child_offset,
-                           priv->current_width, priv->current_height);
+          gdk_cairo_rectangle (cr, &priv->child_rect);
           cairo_fill (cr);
 
           /* Draw selection */
@@ -1470,7 +1509,17 @@ glade_design_layout_draw (GtkWidget *widget, cairo_t *cr)
                   if (GTK_IS_WIDGET (selection) && 
                       gtk_widget_is_ancestor (selection, child))
                   {
+                    GdkRectangle *rect = &priv->child_rect;
+                    cairo_save (cr);
+                    cairo_rectangle (cr,
+                                     rect->x - OUTLINE_WIDTH/2,
+                                     rect->y - OUTLINE_WIDTH/2, 
+                                     rect->width + OUTLINE_WIDTH,
+                                     rect->height + OUTLINE_WIDTH);
+                    cairo_clip (cr);
                     draw_selection (cr, widget, selection, &priv->frame_color_active[0]);
+                    cairo_restore (cr);
+                    
                     selected = TRUE;
                   }
                 }
@@ -1482,11 +1531,11 @@ glade_design_layout_draw (GtkWidget *widget, cairo_t *cr)
           draw_frame (cr, priv, selected,
                       border_width + PADDING,
                       border_width + PADDING,
-                      priv->current_width + 2 * OUTLINE_WIDTH,
-                      priv->current_height + 2 * OUTLINE_WIDTH);
+                      priv->child_rect.width + 2 * OUTLINE_WIDTH,
+                      priv->child_rect.height + 2 * OUTLINE_WIDTH);
 
           /* Draw selection nodes if we are in margins edit mode */
-          if (priv->selection)
+          if (priv->selection && gtk_widget_is_ancestor (priv->selection, child))
             draw_selection_nodes (cr, priv, widget);
         }
     }
@@ -2489,7 +2538,7 @@ _glade_design_layout_do_event (GladeDesignLayout *layout, GdkEvent *event)
       g_list_next (l) == NULL && GTK_IS_WIDGET (l->data) && 
       gtk_widget_is_ancestor (l->data, widget))
     {
-      if (gdl_get_margins_from_pointer (widget, l->data, x, y))
+      if (gdl_get_margins_from_pointer (layout, l->data, x, y))
         {
           if (event->button.button == 2)
             {
