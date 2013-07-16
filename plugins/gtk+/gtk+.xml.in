@@ -1950,6 +1950,21 @@ range of values</_tooltip>
       </packing-properties>
     </glade-widget-class>
 
+    <glade-widget-class name="GtkRevealer" generic-name="revealer" _title="Revealer">
+      <properties>
+        <property id="transition-type" default="GTK_REVEALER_TRANSITION_TYPE_NONE">
+          <displayable-values>
+            <value id="GTK_REVEALER_TRANSITION_TYPE_NONE"           _name="None" />
+            <value id="GTK_REVEALER_TRANSITION_TYPE_CROSSFADE"      _name="Crossfade" />
+            <value id="GTK_REVEALER_TRANSITION_TYPE_SLIDE_RIGHT"    _name="Slide Right" />
+            <value id="GTK_REVEALER_TRANSITION_TYPE_SLIDE_LEFT"     _name="Slide Left" />
+            <value id="GTK_REVEALER_TRANSITION_TYPE_SLIDE_UP"       _name="Slide Up" />
+            <value id="GTK_REVEALER_TRANSITION_TYPE_SLIDE_DOWN"     _name="Slide Down" />
+          </displayable-values>
+        </property>
+      </properties>
+    </glade-widget-class>
+
 
     <glade-widget-class name="GtkAlignment" generic-name="alignment" _title="Alignment"/>
 
@@ -4494,6 +4509,7 @@ range of values</_tooltip>
     <glade-widget-class-ref name="GtkViewport"/>
     <glade-widget-class-ref name="GtkScrolledWindow"/>
     <glade-widget-class-ref name="GtkAlignment"/>
+    <glade-widget-class-ref name="GtkRevealer" />
   </glade-widget-group>
 
   <glade-widget-group name="gtk-control-display" _title="Control and Display">
