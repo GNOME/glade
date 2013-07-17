@@ -69,9 +69,6 @@ GladeProject      *glade_design_view_get_project      (GladeDesignView *view);
 
 GladeDesignView   *glade_design_view_get_from_project (GladeProject *project);
 
-void               glade_design_view_set_drag_source  (GladeDesignView *view,
-                                                       GtkToolPalette  *source);
-
 G_END_DECLS
 
 #endif /* __GLADE_DESIGN_VIEW_H__ */

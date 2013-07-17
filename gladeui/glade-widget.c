@@ -57,6 +57,7 @@
 #include "glade-widget-action.h"
 #include "glade-signal-model.h"
 #include "glade-object-stub.h"
+#include "glade-dnd.h"
 
 static void glade_widget_set_adaptor (GladeWidget * widget,
                                       GladeWidgetAdaptor * adaptor);
@@ -203,7 +204,12 @@ static guint glade_widget_signals[LAST_SIGNAL] = { 0 };
 
 static GQuark glade_widget_name_quark = 0;
 
-G_DEFINE_TYPE (GladeWidget, glade_widget, G_TYPE_INITIALLY_UNOWNED)
+static void glade_widget_drag_init (_GladeDragInterface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (GladeWidget, glade_widget, G_TYPE_INITIALLY_UNOWNED,
+                         G_IMPLEMENT_INTERFACE (GLADE_TYPE_DRAG, 
+                                                glade_widget_drag_init))
+
 /*******************************************************************************
                            GladeWidget class methods
  *******************************************************************************/
@@ -1213,6 +1219,100 @@ glade_widget_init (GladeWidget * widget)
   /* Initial invalid values */
   widget->priv->width = -1;
   widget->priv->height = -1;
+}
+
+static gboolean
+glade_widget_drag_can_drag (_GladeDrag *source)
+{
+  g_return_val_if_fail (GLADE_IS_DRAG (source), FALSE);
+
+  return GLADE_WIDGET (source)->priv->internal == NULL;
+}
+
+static gboolean
+glade_widget_drag_can_drop (_GladeDrag *dest, gint x, gint y, GObject *data)
+{
+  GObject *object;
+
+  g_return_val_if_fail (GLADE_IS_DRAG (dest), FALSE);
+
+  object = GLADE_WIDGET (dest)->priv->object;
+
+  if (!(GTK_IS_FIXED (object) ||
+        GTK_IS_LAYOUT (object) ||
+        GTK_IS_OVERLAY (object)))
+    return FALSE;
+
+  if (GLADE_IS_WIDGET_ADAPTOR (data))
+    {
+      GType otype = glade_widget_adaptor_get_object_type (GLADE_WIDGET_ADAPTOR (data));
+
+      if (g_type_is_a (otype, GTK_TYPE_WIDGET) && !GWA_IS_TOPLEVEL (data))
+        return TRUE;
+    }
+  else
+    {
+      GladeWidget *new_child, *parent = GLADE_WIDGET (dest);
+      GObject *object = glade_widget_get_object (parent);
+
+      if (object == data)
+        return FALSE;
+        
+      if (GTK_IS_WIDGET (data) && GTK_IS_WIDGET (object) &&
+          gtk_widget_is_ancestor (GTK_WIDGET (data), GTK_WIDGET (object)))
+        return FALSE;
+
+      if ((new_child = glade_widget_get_from_gobject (data)) &&
+          (!glade_widget_add_verify (parent, new_child, FALSE) ||
+           glade_widget_placeholder_relation (parent, new_child)))
+        return FALSE;
+
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+static gboolean
+glade_widget_drag_drop (_GladeDrag *dest, gint x, gint y, GObject *data)
+{
+  GladeWidget *gsource;
+
+  g_return_val_if_fail (GLADE_IS_DRAG (dest), FALSE);
+
+  if (!data)
+    return FALSE;
+
+  if (GLADE_IS_WIDGET_ADAPTOR (data))
+    {
+      GladeWidget *parent = GLADE_WIDGET (dest);
+
+      glade_command_create (GLADE_WIDGET_ADAPTOR (data), parent, NULL, 
+                            glade_widget_get_project (parent));
+      return TRUE;
+    }
+  else if ((gsource = glade_widget_get_from_gobject (data)))
+    {
+      GladeWidget *parent = GLADE_WIDGET (dest);
+      GList widgets = {gsource, NULL, NULL};
+
+      /* Check for recursive paste */
+      if (parent != gsource)
+        {
+          glade_command_dnd (&widgets, parent, NULL);
+          return TRUE;
+        }
+    }
+
+  return FALSE;
+}
+
+static void
+glade_widget_drag_init (_GladeDragInterface *iface)
+{
+  iface->can_drag = glade_widget_drag_can_drag;
+  iface->can_drop = glade_widget_drag_can_drop;
+  iface->drop = glade_widget_drag_drop;
 }
 
 static void

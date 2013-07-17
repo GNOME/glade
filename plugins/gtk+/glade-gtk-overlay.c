@@ -119,11 +119,12 @@ glade_gtk_overlay_post_create (GladeWidgetAdaptor *adaptor,
                                GObject            *object,
                                GladeCreateReason   reason)
 {
+  GladeWidget *widget = glade_widget_get_from_gobject (object);
+
   if (reason == GLADE_CREATE_USER)
     gtk_container_add (GTK_CONTAINER (object), glade_placeholder_new ());
 
-  on_widget_project_notify (G_OBJECT (glade_widget_get_from_gobject (object)),
-                            NULL, NULL);
+  on_widget_project_notify (G_OBJECT (widget), NULL, NULL);
 }
 
 gboolean

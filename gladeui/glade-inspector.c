@@ -43,6 +43,7 @@
 #include "glade-inspector.h"
 #include "glade-popup.h"
 #include "glade-app.h"
+#include "glade-dnd.h"
 
 #include <string.h>
 #include <glib/gi18n-lib.h>
@@ -603,6 +604,11 @@ glade_inspector_init (GladeInspector *inspector)
   gtk_tree_view_set_enable_search (GTK_TREE_VIEW (priv->view), FALSE);
   gtk_scrollable_set_hscroll_policy (GTK_SCROLLABLE (priv->view), GTK_SCROLL_MINIMUM);
   add_columns (GTK_TREE_VIEW (priv->view));
+
+  /* Set it as a drag source */
+  gtk_tree_view_enable_model_drag_source (GTK_TREE_VIEW (priv->view),
+                                          GDK_BUTTON1_MASK,
+                                          _glade_dnd_get_target (), 1, 0);
 
   g_signal_connect (G_OBJECT (priv->view), "row-activated",
                     G_CALLBACK (item_activated_cb), inspector);

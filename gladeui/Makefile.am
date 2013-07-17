@@ -121,7 +121,9 @@ libgladeui_2_la_SOURCES = \
 	glade-widget.c \
 	glade-widget-action.c \
 	glade-widget-adaptor.c \
-	glade-xml-utils.c
+	glade-xml-utils.c \
+	glade-drag.c \
+	glade-dnd.c
 
 libgladeui_2_la_CPPFLAGS =  \
 	$(common_defines)   \
@@ -189,7 +191,9 @@ noinst_HEADERS = \
 	glade-preview.h \
 	glade-preview-tokens.h \
 	glade-project-properties.h \
-	gladeui-resources.h
+	gladeui-resources.h \
+	glade-drag.h \
+	glade-dnd.h
 
 if PLATFORM_WIN32
 libgladeui_2_la_LDFLAGS += -no-undefined

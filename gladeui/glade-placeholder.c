@@ -47,36 +47,11 @@
 #include "glade-app.h"
 #include <math.h>
 
+#include "glade-dnd.h"
+#include "glade-drag.h"
+
 #define WIDTH_REQUISITION    20
 #define HEIGHT_REQUISITION   20
-
-static void glade_placeholder_finalize (GObject *object);
-static void glade_placeholder_set_property (GObject *object,
-                                            guint prop_id,
-                                            const GValue *value,
-                                            GParamSpec *pspec);
-static void glade_placeholder_get_property (GObject *object,
-                                            guint prop_id,
-                                            GValue *value,
-                                            GParamSpec *pspec);
-static void glade_placeholder_realize (GtkWidget *widget);
-static void glade_placeholder_unrealize (GtkWidget *widget);
-static void glade_placeholder_map (GtkWidget *widget);
-static void glade_placeholder_unmap (GtkWidget *widget);
-
-static void glade_placeholder_size_allocate (GtkWidget *widget,
-                                             GtkAllocation *allocation);
-
-static gboolean glade_placeholder_draw (GtkWidget *widget, cairo_t *cr);
-
-static gboolean glade_placeholder_motion_notify_event (GtkWidget *widget,
-                                                       GdkEventMotion *event);
-
-static gboolean glade_placeholder_button_press (GtkWidget *widget,
-                                                GdkEventButton *event);
-
-static gboolean glade_placeholder_popup_menu (GtkWidget *widget);
-
 
 static cairo_pattern_t *placeholder_pattern = NULL;
 
@@ -85,6 +60,8 @@ struct _GladePlaceholderPrivate
   GList *packing_actions;
 
   GdkWindow *event_window;
+
+  gboolean drag_highlight;
 };
 
 enum
@@ -99,56 +76,14 @@ enum
 #define GLADE_PLACEHOLDER_GET_PRIVATE(object) (G_TYPE_INSTANCE_GET_PRIVATE ((object), \
                                                GLADE_TYPE_PLACEHOLDER,                \
                                                GladePlaceholderPrivate))
+#define GLADE_PLACEHOLDER_PRIVATE(object) (((GladePlaceholder*)object)->priv)
+
+static void glade_placeholder_drag_init (_GladeDragInterface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (GladePlaceholder, glade_placeholder, GTK_TYPE_WIDGET,
-                         G_IMPLEMENT_INTERFACE (GTK_TYPE_SCROLLABLE, NULL))
-
-static void glade_placeholder_class_init (GladePlaceholderClass *klass)
-{
-  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  gchar *path;
-  cairo_surface_t *surface;
-
-  object_class->finalize = glade_placeholder_finalize;
-  object_class->set_property = glade_placeholder_set_property;
-  object_class->get_property = glade_placeholder_get_property;
-
-  widget_class->realize = glade_placeholder_realize;
-  widget_class->unrealize = glade_placeholder_unrealize;
-  widget_class->map = glade_placeholder_map;
-  widget_class->unmap = glade_placeholder_unmap;
-  widget_class->size_allocate = glade_placeholder_size_allocate;
-  widget_class->draw = glade_placeholder_draw;
-  widget_class->motion_notify_event = glade_placeholder_motion_notify_event;
-  widget_class->button_press_event = glade_placeholder_button_press;
-  widget_class->popup_menu = glade_placeholder_popup_menu;
-
-  /* GtkScrollable implementation */
-  g_object_class_override_property (object_class, PROP_HADJUSTMENT,
-                                    "hadjustment");
-  g_object_class_override_property (object_class, PROP_VADJUSTMENT,
-                                    "vadjustment");
-  g_object_class_override_property (object_class, PROP_HSCROLL_POLICY,
-                                    "hscroll-policy");
-  g_object_class_override_property (object_class, PROP_VSCROLL_POLICY,
-                                    "vscroll-policy");
-
-  /* Create our tiled background pattern */
-  path = g_build_filename (glade_app_get_pixmaps_dir (), "placeholder.png", NULL);
-  surface = cairo_image_surface_create_from_png (path);
-
-  if (!surface)
-    g_warning ("Failed to create surface for %s\n", path);
-  else
-    {
-      placeholder_pattern = cairo_pattern_create_for_surface (surface);
-      cairo_pattern_set_extend (placeholder_pattern, CAIRO_EXTEND_REPEAT);
-    }
-  g_free (path);
-
-  g_type_class_add_private (klass, sizeof (GladePlaceholderPrivate));
-}
+                         G_IMPLEMENT_INTERFACE (GTK_TYPE_SCROLLABLE, NULL)
+                         G_IMPLEMENT_INTERFACE (GLADE_TYPE_DRAG, 
+                                                glade_placeholder_drag_init))
 
 static void
 glade_placeholder_notify_parent (GObject *gobject,
@@ -187,6 +122,8 @@ glade_placeholder_init (GladePlaceholder *placeholder)
 
   gtk_widget_set_size_request (GTK_WIDGET (placeholder),
                                WIDTH_REQUISITION, HEIGHT_REQUISITION);
+
+  _glade_dnd_dest_set (GTK_WIDGET (placeholder));
 
   g_signal_connect (placeholder, "notify::parent",
                     G_CALLBACK (glade_placeholder_notify_parent), NULL);
@@ -360,6 +297,7 @@ glade_placeholder_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 static gboolean
 glade_placeholder_draw (GtkWidget *widget, cairo_t *cr)
 {
+  GladePlaceholder *placeholder = GLADE_PLACEHOLDER (widget);
   gint h = gtk_widget_get_allocated_height (widget) - 1;
   gint w = gtk_widget_get_allocated_width (widget) - 1;
 
@@ -387,6 +325,32 @@ glade_placeholder_draw (GtkWidget *widget, cairo_t *cr)
   cairo_line_to (cr, w, h);
   cairo_line_to (cr, 0, h);
   cairo_stroke (cr);
+
+  if (placeholder->priv->drag_highlight)
+    {
+      cairo_pattern_t *gradient;
+      GtkStyleContext *context;
+      gdouble ww, hh;
+      GdkRGBA c;
+
+      context = gtk_widget_get_style_context (widget);
+      gtk_style_context_get_background_color (context, GTK_STATE_FLAG_SELECTED |
+                                              GTK_STATE_FLAG_FOCUSED, &c);
+
+      ww = w/2.0;
+      hh = h/2.0;
+      gradient = cairo_pattern_create_radial (ww, hh, MIN (w, h)/6,
+                                              ww, hh, MAX (ww, hh));
+      cairo_pattern_add_color_stop_rgba (gradient, 0, c.red, c.green, c.blue, .08);
+      cairo_pattern_add_color_stop_rgba (gradient, 1, c.red, c.green, c.blue, .28);
+
+      cairo_set_source (cr, gradient);
+
+      cairo_rectangle (cr, 0, 0, w, h);
+      cairo_fill (cr);
+
+      cairo_pattern_destroy (gradient);
+    }
 
   return FALSE;
 }
@@ -465,6 +429,145 @@ glade_placeholder_popup_menu (GtkWidget *widget)
   return TRUE;
 }
 
+static gboolean
+glade_placeholder_drag_can_drag (_GladeDrag *source)
+{
+  GladeWidget *parent = glade_placeholder_get_parent (GLADE_PLACEHOLDER (source));
+  return (parent) ? _glade_drag_can_drag (GLADE_DRAG (parent)) : FALSE;
+}
+
+static gboolean
+glade_placeholder_drag_can_drop (_GladeDrag *dest, gint x, gint y, GObject *data)
+{
+  if (GLADE_IS_WIDGET_ADAPTOR (data))
+    {
+      GType otype = glade_widget_adaptor_get_object_type (GLADE_WIDGET_ADAPTOR (data));
+
+      if (g_type_is_a (otype, GTK_TYPE_WIDGET) && !GWA_IS_TOPLEVEL (data))
+        return TRUE;
+    }
+  else if (GTK_IS_WIDGET (data))
+    {
+      GladeWidget *parent, *new_child;
+
+      /* Avoid recursion */
+      if (gtk_widget_is_ancestor (GTK_WIDGET (dest), GTK_WIDGET (data)))
+        return FALSE;
+
+      parent = glade_placeholder_get_parent (GLADE_PLACEHOLDER (dest));
+
+      if ((new_child = glade_widget_get_from_gobject (data)) &&
+          !glade_widget_add_verify (parent, new_child, FALSE))
+        return FALSE;
+
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+static gboolean
+glade_placeholder_drag_drop (_GladeDrag *dest, gint x, gint y, GObject *data)
+{
+  GladePlaceholder *placeholder = GLADE_PLACEHOLDER (dest);
+  GladeWidget *gsource;
+
+  if (!data)
+    return FALSE;
+  
+  if (GLADE_IS_WIDGET_ADAPTOR (data))
+    {
+      GladeWidget *parent = glade_placeholder_get_parent (placeholder);
+      
+      glade_command_create (GLADE_WIDGET_ADAPTOR (data), parent, placeholder, 
+                            glade_widget_get_project (parent));
+      return TRUE;
+    }
+  else if ((gsource = glade_widget_get_from_gobject (data)))
+    {
+      GladeWidget *parent = glade_placeholder_get_parent (placeholder);
+      GList widgets = {gsource, NULL, NULL};
+
+      /* Check for recursive paste */
+      if (parent != gsource)
+        {
+          glade_command_dnd (&widgets, parent, placeholder);
+          return TRUE;
+        }
+    }
+
+  return FALSE;
+}
+
+static void
+glade_placeholder_drag_highlight (_GladeDrag *dest, gint x, gint y)
+{
+  GladePlaceholderPrivate *priv = GLADE_PLACEHOLDER (dest)->priv;
+  gboolean highlight = !(x < 0 || y < 0);
+
+  if (priv->drag_highlight == highlight)
+    return;
+
+  priv->drag_highlight = highlight;
+  gtk_widget_queue_draw (GTK_WIDGET (dest));
+}
+
+static void
+glade_placeholder_drag_init (_GladeDragInterface *iface)
+{
+  iface->can_drag = glade_placeholder_drag_can_drag;
+  iface->can_drop = glade_placeholder_drag_can_drop;
+  iface->drop = glade_placeholder_drag_drop;
+  iface->highlight = glade_placeholder_drag_highlight;
+}
+
+static void
+glade_placeholder_class_init (GladePlaceholderClass *klass)
+{
+  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  gchar *path;
+  cairo_surface_t *surface;
+
+  object_class->finalize = glade_placeholder_finalize;
+  object_class->set_property = glade_placeholder_set_property;
+  object_class->get_property = glade_placeholder_get_property;
+
+  widget_class->realize = glade_placeholder_realize;
+  widget_class->unrealize = glade_placeholder_unrealize;
+  widget_class->map = glade_placeholder_map;
+  widget_class->unmap = glade_placeholder_unmap;
+  widget_class->size_allocate = glade_placeholder_size_allocate;
+  widget_class->draw = glade_placeholder_draw;
+  widget_class->motion_notify_event = glade_placeholder_motion_notify_event;
+  widget_class->button_press_event = glade_placeholder_button_press;
+  widget_class->popup_menu = glade_placeholder_popup_menu;
+  
+  /* GtkScrollable implementation */
+  g_object_class_override_property (object_class, PROP_HADJUSTMENT,
+                                    "hadjustment");
+  g_object_class_override_property (object_class, PROP_VADJUSTMENT,
+                                    "vadjustment");
+  g_object_class_override_property (object_class, PROP_HSCROLL_POLICY,
+                                    "hscroll-policy");
+  g_object_class_override_property (object_class, PROP_VSCROLL_POLICY,
+                                    "vscroll-policy");
+
+  /* Create our tiled background pattern */
+  path = g_build_filename (glade_app_get_pixmaps_dir (), "placeholder.png", NULL);
+  surface = cairo_image_surface_create_from_png (path);
+
+  if (!surface)
+    g_warning ("Failed to create surface for %s\n", path);
+  else
+    {
+      placeholder_pattern = cairo_pattern_create_for_surface (surface);
+      cairo_pattern_set_extend (placeholder_pattern, CAIRO_EXTEND_REPEAT);
+    }
+  g_free (path);
+
+  g_type_class_add_private (klass, sizeof (GladePlaceholderPrivate));
+}
 
 /**
  * glade_placeholder_new:

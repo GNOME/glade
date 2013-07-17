@@ -25,11 +25,9 @@
 #ifndef __GLADE_DESIGN_PRIVATE_H__
 #define __GLADE_DESIGN_PRIVATE_H__
 
-#define GDL_DND_INFO_WIDGET 15956
-#define GDL_DND_TARGET_WIDGET "glade/x-widget"
-
 #include "glade-design-view.h"
 #include "glade-design-layout.h"
+#include "glade-dnd.h"
 
 G_BEGIN_DECLS
 
@@ -53,19 +51,18 @@ void _glade_design_layout_draw_pushpin (cairo_t *cr,
                                         GdkRGBA *bg,
                                         GdkRGBA *fg);
 
-void            _glade_design_layout_get_hot_point (GladeDesignLayout *layout,
-                                                    gint *x,
-                                                    gint *y);
+void _glade_design_layout_get_hot_point (GladeDesignLayout *layout,
+                                         gint *x,
+                                         gint *y);
 
-GtkTargetEntry *_glade_design_layout_get_dnd_target (void);
-
-GtkWidget *_glade_design_layout_dnd_icon_widget_new (GdkDragContext *context,
-                                                     const gchar *icon_name,
-                                                     const gchar *description);
+GladeWidget * _glade_design_layout_get_child (GladeDesignLayout *layout);
 
 GtkWidget   *_glade_design_layout_get_child_at_position (GtkWidget *widget,
                                                          gint       x, 
                                                          gint       y);
+
+void         _glade_design_layout_set_highlight (GladeDesignLayout *layout,
+                                                 GladeWidget       *drag);
 
 G_END_DECLS
 

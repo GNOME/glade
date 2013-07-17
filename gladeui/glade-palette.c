@@ -47,6 +47,7 @@
 #include "glade-widget-adaptor.h"
 #include "glade-popup.h"
 #include "glade-design-private.h"
+#include "glade-dnd.h"
 
 #include <glib/gi18n-lib.h>
 #include <gdk/gdk.h>
@@ -271,28 +272,24 @@ palette_item_toggled_cb (GtkToggleToolButton *button, GladePalette *palette)
 }
 
 static void
-glade_palette_drag_end (GtkWidget *widget,
-                        GdkDragContext *context,
-                        GtkWidget *drag_icon)
-{
-  g_object_unref (drag_icon);
-  g_signal_handlers_disconnect_by_func (widget, glade_palette_drag_end, drag_icon);
-}
-
-static void
 glade_palette_drag_begin (GtkWidget *widget,
                           GdkDragContext *context,
                           GladeWidgetAdaptor *adaptor)
 {
-  GtkWidget *drag_icon;
+  _glade_dnd_set_icon_widget (context,
+                              glade_widget_adaptor_get_icon_name (adaptor),
+                              glade_widget_adaptor_get_name (adaptor));
+}
 
-  drag_icon = _glade_design_layout_dnd_icon_widget_new (context,
-                                                        glade_widget_adaptor_get_icon_name (adaptor),
-                                                        glade_widget_adaptor_get_name (adaptor));
-  g_object_ref_sink (drag_icon);
-  gtk_drag_set_icon_widget (context, drag_icon, 0, 0);
-  g_signal_connect_object (widget, "drag-end",
-                           G_CALLBACK (glade_palette_drag_end), drag_icon, 0);
+static void
+glade_palette_drag_data_get (GtkWidget          *widget,
+                             GdkDragContext     *context,
+                             GtkSelectionData   *data,
+                             guint               info,
+                             guint               time,
+                             GladeWidgetAdaptor *adaptor)
+{
+  _glade_dnd_set_data (data, G_OBJECT (adaptor));
 }
 
 static gint
@@ -350,6 +347,11 @@ glade_palette_new_item (GladePalette * palette, GladeWidgetAdaptor * adaptor)
                     G_CALLBACK (palette_item_button_press_cb), item);
   g_signal_connect_object (button, "drag-begin",
                            G_CALLBACK (glade_palette_drag_begin), adaptor, 0);
+  g_signal_connect_object (button, "drag-data-get",
+                           G_CALLBACK (glade_palette_drag_data_get), adaptor, 0);
+
+  gtk_drag_source_set (button, GDK_BUTTON1_MASK, _glade_dnd_get_target (), 1, 0);
+
   gtk_widget_show (item);
 
   g_hash_table_insert (palette->priv->button_table, 

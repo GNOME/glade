@@ -53,6 +53,7 @@
 #include "glade-name-context.h"
 #include "glade-object-stub.h"
 #include "glade-project-properties.h"
+#include "glade-dnd.h"
 
 static void     glade_project_target_version_for_adaptor
                                                     (GladeProject       *project,
@@ -80,6 +81,7 @@ static void     glade_project_model_get_iter_for_object
                                                      GtkTreeIter        *iter);
 static gint     glade_project_count_children        (GladeProject       *project, 
 						     GladeWidget        *parent);
+static void     glade_project_drag_source_init      (GtkTreeDragSourceIface *iface);
 
 struct _GladeProjectPrivate
 {
@@ -207,7 +209,9 @@ static GladeIDAllocator *unsaved_number_allocator = NULL;
 
 G_DEFINE_TYPE_WITH_CODE (GladeProject, glade_project, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (GTK_TYPE_TREE_MODEL,
-                                                glade_project_model_iface_init))
+                                                glade_project_model_iface_init)
+                         G_IMPLEMENT_INTERFACE (GTK_TYPE_TREE_DRAG_SOURCE,
+                                                glade_project_drag_source_init))
 
 
 /*******************************************************************
@@ -1447,6 +1451,48 @@ glade_project_model_iface_init (GtkTreeModelIface *iface)
   iface->iter_n_children = glade_project_model_iter_n_children;
   iface->iter_nth_child = glade_project_model_iter_nth_child;
   iface->iter_parent = glade_project_model_iter_parent;
+}
+
+static gboolean 
+glade_project_row_draggable (GtkTreeDragSource *drag_source, GtkTreePath *path)
+{
+  return TRUE;
+}
+  
+static gboolean
+glade_project_drag_data_delete (GtkTreeDragSource *drag_source, GtkTreePath *path)
+{
+  return FALSE;
+}
+
+static gboolean
+glade_project_drag_data_get (GtkTreeDragSource *drag_source,
+                             GtkTreePath       *path,
+                             GtkSelectionData  *selection_data)
+{
+  GtkTreeIter iter;
+
+  if (gtk_tree_model_get_iter (GTK_TREE_MODEL (drag_source), &iter, path))
+    {
+      GObject *object;
+
+      gtk_tree_model_get (GTK_TREE_MODEL (drag_source), &iter,
+                          GLADE_PROJECT_MODEL_COLUMN_OBJECT, &object,
+                          -1);
+
+      _glade_dnd_set_data (selection_data, object);
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+static void
+glade_project_drag_source_init (GtkTreeDragSourceIface *iface)
+{
+  iface->row_draggable = glade_project_row_draggable;
+  iface->drag_data_delete = glade_project_drag_data_delete;
+  iface->drag_data_get = glade_project_drag_data_get;
 }
 
 /*******************************************************************
