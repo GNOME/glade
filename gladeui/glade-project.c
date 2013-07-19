@@ -117,8 +117,8 @@ struct _GladeProjectPrivate
 
   GladeWidget *template;        /* The template widget */
 
-  gchar *comment;               /* XML comment, Glade will preserve whatever comment was
-                                 * in file, so users can delete or change it.
+  GList *comments;              /* XML comments, Glade will preserve whatever comment was
+                                 * in file before the root element, so users can delete or change it.
                                  */
 
   time_t mtime;                 /* last UTC modification time of file, or 0 if it could not be read */
@@ -198,6 +198,7 @@ static guint             glade_project_signals[LAST_SIGNAL] = { 0 };
 static GladeIDAllocator *unsaved_number_allocator = NULL;
 
 
+#define GLADE_XML_COMMENT "Generated with "PACKAGE_NAME
 #define GLADE_PROJECT_LARGE_PROJECT 40
 
 #define VALID_ITER(project, iter) \
@@ -320,20 +321,26 @@ static void
 glade_project_finalize (GObject *object)
 {
   GladeProject *project = GLADE_PROJECT (object);
+  GladeProjectPrivate *priv = project->priv;
 
-  gtk_widget_destroy (project->priv->prefs_dialog);
+  gtk_widget_destroy (priv->prefs_dialog);
 
-  g_free (project->priv->path);
-  g_free (project->priv->comment);
+  g_free (priv->path);
 
-  if (project->priv->unsaved_number > 0)
+  if (priv->comments)
+    {
+      g_list_foreach (priv->comments, (GFunc) g_free, NULL);
+      g_list_free (priv->comments);
+    }
+
+  if (priv->unsaved_number > 0)
     glade_id_allocator_release (get_unsaved_number_allocator (),
-                                project->priv->unsaved_number);
+                                priv->unsaved_number);
 
-  g_hash_table_destroy (project->priv->target_versions_major);
-  g_hash_table_destroy (project->priv->target_versions_minor);
+  g_hash_table_destroy (priv->target_versions_major);
+  g_hash_table_destroy (priv->target_versions_minor);
 
-  glade_name_context_destroy (project->priv->widget_names);
+  glade_name_context_destroy (priv->widget_names);
 
   G_OBJECT_CLASS (glade_project_parent_class)->finalize (object);
 }
@@ -1745,15 +1752,37 @@ glade_project_read_resource_path (GladeProject *project,
   g_free (path);
 }
 
-
-static void
-glade_project_read_comment (GladeProject *project, GladeXmlDoc *doc)
+static inline void
+glade_project_read_comments (GladeProject *project, GladeXmlNode *root)
 {
-  /* TODO Write me !! Find out how to extract root level comments 
-   * with libxml2 !!! 
-   */
-}
+  GladeProjectPrivate *priv = project->priv;
+  GladeXmlNode *node;
 
+  /* We only support comments before the root element */
+  for (node = glade_xml_node_prev_with_comments (root); node;
+       node = glade_xml_node_prev_with_comments (node))
+    {     
+      if (glade_xml_node_is_comment (node))
+        {
+          gchar *start, *comment = glade_xml_get_content (node);
+
+          /* Ignore leading spaces */
+          for (start = comment; *start && g_ascii_isspace (*start); start++);
+
+          /* Do not load generated with glade comment! */
+          if (g_str_has_prefix (start, GLADE_XML_COMMENT))
+            {
+              g_free (comment);
+              continue;
+            }
+          
+          /* Since we are reading in backwards order,
+           * prepending gives us the right order
+           */
+          priv->comments = g_list_prepend (priv->comments, comment);
+        }
+    }
+}
 
 typedef struct
 {
@@ -2104,8 +2133,7 @@ glade_project_load_internal (GladeProject *project)
   if ((domain = glade_xml_get_property_string (root, GLADE_TAG_DOMAIN)))
     glade_project_set_translation_domain (project, domain);
 
-  /* XXX Need to load project->priv->comment ! */
-  glade_project_read_comment (project, doc);
+  glade_project_read_comments (project, root);
 
   /* Read requieres, and do not abort load if there are missing catalog since
    * GladeObjectStub is created to keep the original xml for unknown object classes
@@ -2243,54 +2271,16 @@ glade_project_load (const gchar *path)
                     Writing project code here
  *******************************************************************/
 
-#define GLADE_XML_COMMENT "Generated with "PACKAGE_NAME
-
 static gchar *
 glade_project_make_comment (void)
 {
   time_t now = time (NULL);
   gchar *comment;
-  comment = g_strdup_printf (GLADE_XML_COMMENT " " PACKAGE_VERSION " on %s",
+  comment = g_strdup_printf (" " GLADE_XML_COMMENT " " PACKAGE_VERSION " on %s",
                              ctime (&now));
   glade_util_replace (comment, '\n', ' ');
 
   return comment;
-}
-
-static void
-glade_project_update_comment (GladeProject *project)
-{
-  gchar **lines, **l, *comment = NULL;
-
-  /* If project has no comment -> add the new one */
-  if (project->priv->comment == NULL)
-    {
-      project->priv->comment = glade_project_make_comment ();
-      return;
-    }
-
-  for (lines = l = g_strsplit (project->priv->comment, "\n", 0); *l; l++)
-    {
-      gchar *start;
-
-      /* Ignore leading spaces */
-      for (start = *l; *start && g_ascii_isspace (*start); start++);
-
-      if (g_str_has_prefix (start, GLADE_XML_COMMENT))
-        {
-          /* This line was generated by glade -> updating... */
-          g_free (*l);
-          *l = comment = glade_project_make_comment ();
-        }
-    }
-
-  if (comment)
-    {
-      g_free (project->priv->comment);
-      project->priv->comment = g_strjoinv ("\n", lines);
-    }
-
-  g_strfreev (lines);
 }
 
 static void
@@ -2372,13 +2362,39 @@ sort_project_dependancies (GObject *a, GObject *b)
     return strcmp (glade_widget_get_name (ga), glade_widget_get_name (gb));
 }
 
+static inline void
+glade_project_write_comments (GladeProject *project,
+                             GladeXmlDoc  *doc,
+                             GladeXmlNode *root)
+{
+  GladeProjectPrivate *priv = project->priv;
+  GladeXmlNode *comment_node;
+  gchar *glade_comment;
+  GList *l;
+
+  glade_comment = glade_project_make_comment ();
+  comment_node = glade_xml_doc_new_comment (doc, glade_comment); 
+  comment_node = glade_xml_node_add_prev_sibling (root, comment_node);
+  
+  for (l = priv->comments; l; l = g_list_next (l))
+    {
+      gchar *comment = l->data;
+      GladeXmlNode *node;
+      
+      node = glade_xml_doc_new_comment (doc, comment);
+      comment_node = glade_xml_node_add_next_sibling (comment_node, node);
+    }
+
+  g_free (glade_comment);
+}
+
 static GladeXmlContext *
 glade_project_write (GladeProject *project)
 {
   GladeProjectPrivate *priv = project->priv;
   GladeXmlContext *context;
   GladeXmlDoc *doc;
-  GladeXmlNode *root;           /* *comment_node; */
+  GladeXmlNode *root;
   GList *list;
   GList *toplevels;
 
@@ -2390,11 +2406,7 @@ glade_project_write (GladeProject *project)
   if (priv->translation_domain)
     glade_xml_node_set_property_string (root, GLADE_TAG_DOMAIN, priv->translation_domain);
   
-  glade_project_update_comment (project);
-  /* comment_node = glade_xml_node_new_comment (context, project->priv->comment); */
-
-  /* XXX Need to append this to the doc ! not the ROOT !
-     glade_xml_node_append_child (root, comment_node); */
+  glade_project_write_comments (project, doc, root);
 
   glade_project_write_required_libs (project, context, root);
 
