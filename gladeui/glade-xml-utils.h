@@ -234,8 +234,10 @@ void           glade_xml_node_append_child (GladeXmlNode * node, GladeXmlNode * 
 void           glade_xml_node_remove (GladeXmlNode *node_in);
 gboolean       glade_xml_node_is_comment (GladeXmlNode *node_in);
 GladeXmlNode * glade_xml_node_next_with_comments (GladeXmlNode *node_in);
+GladeXmlNode * glade_xml_node_prev_with_comments (GladeXmlNode * node_in);
 GladeXmlNode * glade_xml_node_get_children_with_comments (GladeXmlNode *node);
-
+GladeXmlNode * glade_xml_node_add_prev_sibling (GladeXmlNode *node, GladeXmlNode *new_node);
+GladeXmlNode * glade_xml_node_add_next_sibling (GladeXmlNode *node, GladeXmlNode *new_node);
 
 /* Document Operatons */
 GladeXmlNode * glade_xml_doc_get_root (GladeXmlDoc *doc);
@@ -243,6 +245,7 @@ GladeXmlDoc *  glade_xml_doc_new (void);
 void           glade_xml_doc_set_root (GladeXmlDoc *doc, GladeXmlNode *node);
 void           glade_xml_doc_free (GladeXmlDoc *doc_in);
 gint           glade_xml_doc_save (GladeXmlDoc *doc_in, const gchar *full_path);
+GladeXmlNode * glade_xml_doc_new_comment (GladeXmlDoc *doc, const gchar *comment);
 
 /* Parse Context */
 GladeXmlContext * glade_xml_context_new     (GladeXmlDoc *doc, const gchar *name_space);

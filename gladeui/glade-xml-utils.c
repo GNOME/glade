@@ -858,6 +858,13 @@ glade_xml_node_next_with_comments (GladeXmlNode * node_in)
   return (GladeXmlNode *) node->next;
 }
 
+GladeXmlNode *
+glade_xml_node_prev_with_comments (GladeXmlNode * node_in)
+{
+  xmlNodePtr node = (xmlNodePtr) node_in;
+
+  return (GladeXmlNode *) node->prev;
+}
 
 const gchar *
 glade_xml_node_get_name (GladeXmlNode * node_in)
@@ -961,4 +968,22 @@ glade_xml_load_sym_from_node (GladeXmlNode * node_in,
       g_free (buff);
     }
   return retval;
+}
+
+GladeXmlNode *
+glade_xml_doc_new_comment (GladeXmlDoc *doc, const gchar *comment)
+{
+  return (GladeXmlNode *) xmlNewDocComment ((xmlDocPtr) (doc), BAD_CAST (comment));
+}
+
+GladeXmlNode *
+glade_xml_node_add_prev_sibling (GladeXmlNode *node, GladeXmlNode *new_node)
+{
+  return (GladeXmlNode *) xmlAddPrevSibling ((xmlNodePtr) node, (xmlNodePtr) new_node);
+}
+
+GladeXmlNode *
+glade_xml_node_add_next_sibling (GladeXmlNode *node, GladeXmlNode *new_node)
+{
+  return (GladeXmlNode *) xmlAddNextSibling ((xmlNodePtr) node, (xmlNodePtr) new_node);
 }
