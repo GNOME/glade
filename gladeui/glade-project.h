@@ -169,6 +169,11 @@ void                glade_project_set_template         (GladeProject       *proj
 							GladeWidget        *widget);
 GladeWidget        *glade_project_get_template         (GladeProject       *project);
 
+void                glade_project_set_license          (GladeProject       *project,
+                                                        const gchar        *license);
+
+const gchar        *glade_project_get_license          (GladeProject       *project);
+
 /* Commands */
 void                glade_project_undo                 (GladeProject       *project);
 void                glade_project_redo                 (GladeProject       *project);
