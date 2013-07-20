@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.15.2 on Sat Jul 20 03:56:38 2013 -->
 <interface domain="glade">
   <!-- interface-requires gtk+ 3.8 -->
+  <object class="GtkTextBuffer" id="license_textbuffer"/>
   <template class="GladeProjectProperties" parent="GtkDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
-    <property name="resizable">False</property>
     <property name="type_hint">dialog</property>
     <signal name="delete-event" handler="gtk_widget_hide_on_delete" swapped="no"/>
+    <signal name="hide" handler="on_glade_project_properties_hide" swapped="no"/>
     <signal name="response" handler="gtk_widget_hide" swapped="no"/>
     <child internal-child="vbox">
       <object class="GtkBox" id="dialog-vbox1">
@@ -53,6 +55,7 @@
                       <object class="GtkEntry" id="domain_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="hexpand">True</property>
                         <property name="invisible_char">●</property>
                         <signal name="changed" handler="on_domain_entry_changed" swapped="no"/>
                       </object>
@@ -68,6 +71,7 @@
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
+                        <property name="hexpand">True</property>
                         <signal name="changed" handler="on_template_combo_box_changed" swapped="no"/>
                         <child>
                           <object class="GtkCellRendererPixbuf" id="cellrenderertext1"/>
@@ -201,7 +205,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="hexpand">True</property>
-                        <property name="orientation">vertical</property>
                         <property name="action">select-folder</property>
                         <property name="title" translatable="yes">Choose a path to load image resources</property>
                         <signal name="file-set" handler="resource_full_path_set" swapped="no"/>
@@ -219,7 +222,8 @@
                         <property name="can_focus">True</property>
                         <property name="hexpand">True</property>
                         <property name="invisible_char">●</property>
-                        <signal name="activate" handler="resource_path_activated" swapped="no"/>
+                        <signal name="changed" handler="on_relative_path_entry_changed" swapped="no"/>
+                        <signal name="insert-text" handler="on_relative_path_entry_insert_text" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -280,6 +284,75 @@
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkFrame" id="frame4">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label_xalign">0</property>
+                <property name="shadow_type">none</property>
+                <child>
+                  <object class="GtkScrolledWindow" id="scrolledwindow1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="margin_left">12</property>
+                    <property name="margin_top">6</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
+                    <property name="shadow_type">in</property>
+                    <child>
+                      <object class="GtkTextView" id="license_textview">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="buffer">license_textbuffer</property>
+                        <signal name="populate-popup" handler="on_license_textview_populate_popup" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child type="label">
+                  <object class="GtkBox" id="box2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="spacing">4</property>
+                    <child>
+                      <object class="GtkLabel" id="label4">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">License:</property>
+                        <attributes>
+                          <attribute name="weight" value="bold"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label6">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">(Use right click to insert common licenses)</property>
+                        <attributes>
+                          <attribute name="style" value="italic"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
               </packing>
             </child>
           </object>
