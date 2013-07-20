@@ -46,7 +46,12 @@ static void     resource_relative_toggled             (GtkWidget              *w
 						       GladeProjectProperties *properties);
 static void     resource_fullpath_toggled             (GtkWidget              *widget,
 						       GladeProjectProperties *properties);
-static void     resource_path_activated               (GtkEntry               *entry,
+static void     on_relative_path_entry_insert_text    (GtkEditable            *editable,
+                                                       gchar                  *new_text,
+                                                       gint                    new_text_length,
+                                                       gint                   *position,
+                                                       GladeProjectProperties *properties); 
+static void     on_relative_path_entry_changed        (GtkEntry               *entry,
 						       GladeProjectProperties *properties);
 static void     resource_full_path_set                (GtkFileChooserButton   *button,
 						       GladeProjectProperties *properties);
@@ -56,7 +61,11 @@ static void     on_domain_entry_changed               (GtkWidget              *e
 						       GladeProjectProperties *properties);
 static void     target_button_clicked                 (GtkWidget              *widget,
 						       GladeProjectProperties *properties);
-
+static void     on_license_textview_populate_popup    (GtkTextView            *text_view,
+                                                       GtkWidget              *popup,
+                                                       GladeProjectProperties *properties);
+static void     on_glade_project_properties_hide      (GtkWidget              *widget,
+                                                       GladeProjectProperties *properties);
 /* Project callbacks */
 static void     project_resource_path_changed         (GladeProject           *project,
 						       GParamSpec             *pspec,
@@ -68,6 +77,9 @@ static void     project_domain_changed                (GladeProject           *p
 						       GParamSpec             *pspec,
 						       GladeProjectProperties *properties);
 static void     project_targets_changed               (GladeProject           *project,
+						       GladeProjectProperties *properties);
+static void     project_license_changed               (GladeProject           *project,
+						       GParamSpec             *pspec,
 						       GladeProjectProperties *properties);
 
 struct _GladeProjectPropertiesPrivate
@@ -86,8 +98,10 @@ struct _GladeProjectPropertiesPrivate
   GtkWidget *domain_entry;
   GtkWidget *template_combobox;
   GtkWidget *template_checkbutton;
+  GtkTextBuffer *license_textbuffer;
 
   GHashTable *target_radios;
+  gboolean ignore_ui_cb;
 };
 
 enum
@@ -148,6 +162,7 @@ glade_project_properties_class_init (GladeProjectPropertiesClass *klass)
   gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, template_checkbutton);
   gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, template_combobox);
   gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, toolkit_box);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, license_textbuffer);
 
   /* Declare the callback ports that this widget class exposes, to bind with <signal>
    * connections defined in the GtkBuilder xml
@@ -157,10 +172,13 @@ glade_project_properties_class_init (GladeProjectPropertiesClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, resource_default_toggled);
   gtk_widget_class_bind_template_callback (widget_class, resource_relative_toggled);
   gtk_widget_class_bind_template_callback (widget_class, resource_fullpath_toggled);
-  gtk_widget_class_bind_template_callback (widget_class, resource_path_activated);
   gtk_widget_class_bind_template_callback (widget_class, resource_full_path_set);
   gtk_widget_class_bind_template_callback (widget_class, verify_clicked);
   gtk_widget_class_bind_template_callback (widget_class, on_domain_entry_changed);
+  gtk_widget_class_bind_template_callback (widget_class, on_relative_path_entry_insert_text);
+  gtk_widget_class_bind_template_callback (widget_class, on_relative_path_entry_changed);
+  gtk_widget_class_bind_template_callback (widget_class, on_license_textview_populate_popup);
+  gtk_widget_class_bind_template_callback (widget_class, on_glade_project_properties_hide);  
 }
 
 /********************************************************
@@ -264,52 +282,41 @@ static void
 update_prefs_for_resource_path (GladeProjectProperties *properties)
 {
   GladeProjectPropertiesPrivate *priv = properties->priv;
+  const gchar *resource_path;
+
+  resource_path = glade_project_get_resource_path (priv->project);
   
-  gtk_widget_set_sensitive (priv->full_path_button, FALSE);
-  gtk_widget_set_sensitive (priv->relative_path_entry, FALSE);
-
-  g_signal_handlers_block_by_func (priv->resource_default_radio,
-                                   G_CALLBACK (resource_default_toggled),
-                                   properties);
-  g_signal_handlers_block_by_func (priv->resource_relative_radio,
-                                   G_CALLBACK (resource_relative_toggled),
-                                   properties);
-  g_signal_handlers_block_by_func (priv->resource_fullpath_radio,
-                                   G_CALLBACK (resource_fullpath_toggled),
-                                   properties);
-  g_signal_handlers_block_by_func (priv->relative_path_entry,
-                                   G_CALLBACK (resource_path_activated),
-                                   properties);
-
-  if (glade_project_get_resource_path (priv->project) == NULL)
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->resource_default_radio), TRUE);
-  else if (glade_project_get_resource_path (priv->project))
+  if (resource_path == NULL)
     {
+      gtk_entry_set_text (GTK_ENTRY (priv->relative_path_entry), "");
+      gtk_file_chooser_unselect_all (GTK_FILE_CHOOSER (priv->full_path_button));
+
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->resource_default_radio), TRUE);
+      gtk_widget_set_sensitive (priv->full_path_button, FALSE);
+      gtk_widget_set_sensitive (priv->relative_path_entry, FALSE);
+    }
+  else if (g_path_is_absolute (resource_path) &&
+           g_file_test (resource_path, G_FILE_TEST_IS_DIR))
+    {
+      gtk_entry_set_text (GTK_ENTRY (priv->relative_path_entry), "");
+      gtk_file_chooser_select_filename (GTK_FILE_CHOOSER (priv->full_path_button),
+                                        resource_path);
+
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->resource_fullpath_radio), TRUE);
       gtk_widget_set_sensitive (priv->full_path_button, TRUE);
+      gtk_widget_set_sensitive (priv->relative_path_entry, FALSE);
     }
   else
     {
+      if (g_strcmp0 (resource_path, gtk_entry_get_text (GTK_ENTRY (priv->relative_path_entry))))
+        gtk_entry_set_text (GTK_ENTRY (priv->relative_path_entry), resource_path);
+
+      gtk_file_chooser_unselect_all (GTK_FILE_CHOOSER (priv->full_path_button));
+
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->resource_relative_radio), TRUE);
       gtk_widget_set_sensitive (priv->relative_path_entry, TRUE);
+      gtk_widget_set_sensitive (priv->full_path_button, FALSE);
     }
-
-  gtk_entry_set_text (GTK_ENTRY (priv->relative_path_entry),
-		      glade_project_get_resource_path (priv->project) ? 
-		      glade_project_get_resource_path (priv->project) : "");
-
-  g_signal_handlers_unblock_by_func (priv->resource_default_radio,
-                                     G_CALLBACK (resource_default_toggled),
-                                     properties);
-  g_signal_handlers_unblock_by_func (priv->resource_relative_radio,
-                                     G_CALLBACK (resource_relative_toggled),
-                                     properties);
-  g_signal_handlers_unblock_by_func (priv->resource_fullpath_radio,
-                                     G_CALLBACK (resource_fullpath_toggled),
-                                     properties);
-  g_signal_handlers_unblock_by_func (priv->relative_path_entry,
-                                     G_CALLBACK (resource_path_activated),
-                                     properties);
 }
 
 static void
@@ -330,6 +337,8 @@ glade_project_properties_set_project (GladeProjectProperties *properties,
 		    G_CALLBACK (project_domain_changed), properties);
   g_signal_connect (priv->project, "targets-changed",
 		    G_CALLBACK (project_targets_changed), properties);
+  g_signal_connect (priv->project, "notify::license",
+		    G_CALLBACK (project_license_changed), properties);
 
   target_version_box_fill (properties);
   update_prefs_for_resource_path (properties);
@@ -364,9 +373,14 @@ target_button_clicked (GtkWidget              *widget,
 		       GladeProjectProperties *properties)
 {
   GladeProjectPropertiesPrivate *priv = properties->priv;
-  GladeTargetableVersion        *version = g_object_get_data (G_OBJECT (widget), "version");
-  gchar                         *catalog = g_object_get_data (G_OBJECT (widget), "catalog");
+  GladeTargetableVersion        *version;
+  gchar                         *catalog;
 
+  if (priv->ignore_ui_cb)
+    return;
+
+  version = g_object_get_data (G_OBJECT (widget), "version");
+  catalog = g_object_get_data (G_OBJECT (widget), "catalog");
   glade_command_set_project_target (priv->project, catalog, version->major, version->minor);
 }
 
@@ -376,12 +390,11 @@ resource_default_toggled (GtkWidget              *widget,
 {
   GladeProjectPropertiesPrivate *priv = properties->priv;
 
-  if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
+  if (priv->ignore_ui_cb || 
+      !gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
     return;
 
-  glade_project_set_resource_path (priv->project, NULL);
-  gtk_widget_set_sensitive (priv->relative_path_entry, FALSE);
-  gtk_widget_set_sensitive (priv->full_path_button, FALSE);
+  glade_command_set_project_resource_path (priv->project, NULL);
 }
 
 static void
@@ -389,10 +402,13 @@ resource_relative_toggled (GtkWidget              *widget,
 			   GladeProjectProperties *properties)
 {
   GladeProjectPropertiesPrivate *priv = properties->priv;
-
-  if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
+  GtkToggleButton *toggle = GTK_TOGGLE_BUTTON (widget);
+  
+  if (priv->ignore_ui_cb || !gtk_toggle_button_get_active (toggle))
     return;
 
+  glade_command_set_project_resource_path (priv->project, NULL);
+  gtk_toggle_button_set_active (toggle, TRUE);
   gtk_widget_set_sensitive (priv->relative_path_entry, TRUE);
   gtk_widget_set_sensitive (priv->full_path_button, FALSE);
 }
@@ -402,30 +418,56 @@ resource_fullpath_toggled (GtkWidget              *widget,
 			   GladeProjectProperties *properties)
 {
   GladeProjectPropertiesPrivate *priv = properties->priv;
+  GtkToggleButton *toggle = GTK_TOGGLE_BUTTON (widget);
 
-  if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
+  if (priv->ignore_ui_cb || !gtk_toggle_button_get_active (toggle))
     return;
 
+  glade_command_set_project_resource_path (priv->project, NULL);
+  gtk_toggle_button_set_active (toggle, TRUE);
   gtk_widget_set_sensitive (priv->relative_path_entry, FALSE);
   gtk_widget_set_sensitive (priv->full_path_button, TRUE);
 }
 
 static void
-resource_path_activated (GtkEntry *entry, GladeProjectProperties *properties)
+on_relative_path_entry_insert_text (GtkEditable            *editable,
+                                    gchar                  *new_text,
+                                    gint                    new_text_length,
+                                    gint                   *position,
+                                    GladeProjectProperties *properties) 
+{
+  GString *fullpath = g_string_new (gtk_entry_get_text (GTK_ENTRY(editable)));
+
+  g_string_insert (fullpath, *position, new_text);
+  
+  if (g_path_is_absolute (fullpath->str))
+    g_signal_stop_emission_by_name (editable, "insert-text");
+  
+  g_string_free (fullpath, TRUE);
+}
+
+static void
+on_relative_path_entry_changed (GtkEntry *entry, GladeProjectProperties *properties)
 {
   GladeProjectPropertiesPrivate *priv = properties->priv;
-  const gchar *text = gtk_entry_get_text (entry);
 
-  glade_project_set_resource_path (priv->project, text);
+  if (priv->ignore_ui_cb)
+    return;
+
+  glade_command_set_project_resource_path (priv->project, gtk_entry_get_text (entry));
 }
 
 static void
 resource_full_path_set (GtkFileChooserButton *button, GladeProjectProperties *properties)
 {
   GladeProjectPropertiesPrivate *priv = properties->priv;
-  gchar *text = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (button));
-
-  glade_project_set_resource_path (priv->project, text);
+  gchar *text;
+  
+  if (priv->ignore_ui_cb)
+    return;
+  
+  text = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (button));
+  glade_command_set_project_resource_path (priv->project, text);
   g_free (text);
 }
 
@@ -436,6 +478,9 @@ on_template_combo_box_changed (GtkComboBox            *combo,
   GladeProjectPropertiesPrivate *priv = properties->priv;
   GtkTreeIter iter;
 
+  if (priv->ignore_ui_cb)
+    return;
+  
   if (gtk_combo_box_get_active_iter (combo, &iter))
     {
       GladeWidget *gwidget;
@@ -455,11 +500,13 @@ on_template_checkbutton_toggled (GtkToggleButton        *togglebutton,
                                  GladeProjectProperties *properties)
 {
   GladeProjectPropertiesPrivate *priv = properties->priv;
-  gboolean active = gtk_toggle_button_get_active (togglebutton);
-  gboolean composite = FALSE;
+
+  if (priv->ignore_ui_cb)
+    return;
   
-  if (active)
+  if (gtk_toggle_button_get_active (togglebutton))
     {
+      gboolean composite = FALSE;
       GList *l;
 
       for (l = glade_project_toplevels (priv->project); l; l = l->next)
@@ -542,7 +589,227 @@ on_domain_entry_changed (GtkWidget *entry, GladeProjectProperties *properties)
 {
   GladeProjectPropertiesPrivate *priv = properties->priv;
 
+  if (priv->ignore_ui_cb)
+    return;
+
   glade_command_set_project_domain (priv->project, gtk_entry_get_text (GTK_ENTRY (entry)));
+}
+
+static void
+on_gplv2_activate (GtkMenuItem *menuitem, GladeProjectProperties *properties)
+{
+  gtk_text_buffer_insert_at_cursor (properties->priv->license_textbuffer,
+    "one line to give the program's name and an idea of what it does.\n"
+    "Copyright (C) yyyy  name of author\n"
+    "\n"
+    "This program is free software; you can redistribute it and/or\n"
+    "modify it under the terms of the GNU General Public License\n"
+    "as published by the Free Software Foundation; either version 2\n"
+    "of the License, or (at your option) any later version.\n"
+    "\n"
+    "This program is distributed in the hope that it will be useful,\n"
+    "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+    "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+    "GNU General Public License for more details.\n"
+    "\n"
+    "You should have received a copy of the GNU General Public License\n"
+    "along with this program; if not, write to the Free Software\n"
+    "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.",
+                                    -1);
+}
+
+static void
+on_lgplv2_activate (GtkMenuItem *menuitem, GladeProjectProperties *properties)
+{
+  gtk_text_buffer_insert_at_cursor (properties->priv->license_textbuffer,
+    "one line to give the library's name and an idea of what it does.\n"
+    "Copyright (C) year  name of author\n"
+    "\n"
+    "This library is free software; you can redistribute it and/or\n"
+    "modify it under the terms of the GNU Lesser General Public\n"
+    "License as published by the Free Software Foundation; either\n"
+    "version 2.1 of the License, or (at your option) any later version.\n"
+    "\n"
+    "This library is distributed in the hope that it will be useful,\n"
+    "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+    "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU\n"
+    "Lesser General Public License for more details.\n"
+    "\n"
+    "You should have received a copy of the GNU Lesser General Public\n"
+    "License along with this library; if not, write to the Free Software\n"
+    "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA", -1);
+}
+
+static void
+on_gplv3_activate (GtkMenuItem *menuitem, GladeProjectProperties *properties)
+{
+  gtk_text_buffer_insert_at_cursor (properties->priv->license_textbuffer,
+    "This file is part of Foobar.\n"
+    "\n"
+    "Foobar is free software: you can redistribute it and/or modify\n"
+    "it under the terms of the GNU General Public License as published by\n"
+    "the Free Software Foundation, either version 3 of the License, or\n"
+    "(at your option) any later version.\n"
+    "\n"
+    "Foobar is distributed in the hope that it will be useful,\n"
+    "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+    "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+    "GNU General Public License for more details.\n"
+    "\n"
+    "You should have received a copy of the GNU General Public License\n"
+    "along with Foobar.  If not, see <http://www.gnu.org/licenses/>.", -1);
+}
+
+static void
+on_lgplv3_activate (GtkMenuItem *menuitem, GladeProjectProperties *properties)
+{
+  gtk_text_buffer_insert_at_cursor (properties->priv->license_textbuffer,
+    "This file is part of Foobar.\n"
+    "\n"
+    "Foobar is free software: you can redistribute it and/or modify\n"
+    "it under the terms of the GNU General Public License as published by\n"
+    "the Free Software Foundation, either version 3 of the License, or\n"
+    "(at your option) any later version.\n"
+    "\n"
+    "Foobar is distributed in the hope that it will be useful,\n"
+    "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+    "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+    "GNU General Public License for more details.\n"
+    "\n"
+    "You should have received a copy of the GNU General Public License\n"
+    "along with Foobar.  If not, see <http://www.gnu.org/licenses/>.", -1);
+}
+
+static void
+on_bsd3c_activate (GtkMenuItem *menuitem, GladeProjectProperties *properties)
+{
+  gtk_text_buffer_insert_at_cursor (properties->priv->license_textbuffer,
+    "Copyright (c) <year>, <copyright holder>\n"
+    "All rights reserved.\n"
+    "\n"
+    "Redistribution and use in source and binary forms, with or without\n"
+    "modification, are permitted provided that the following conditions are met:\n"
+    "    * Redistributions of source code must retain the above copyright\n"
+    "      notice, this list of conditions and the following disclaimer.\n"
+    "    * Redistributions in binary form must reproduce the above copyright\n"
+    "      notice, this list of conditions and the following disclaimer in the\n"
+    "      documentation and/or other materials provided with the distribution.\n"
+    "    * Neither the name of the <organization> nor the\n"
+    "      names of its contributors may be used to endorse or promote products\n"
+    "      derived from this software without specific prior written permission.\n"
+    "\n"
+    "THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\n"
+    "ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\n"
+    "WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\n"
+    "DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY\n"
+    "DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n"
+    "(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\n"
+    "LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\n"
+    "ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n"
+    "(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\n"
+    "SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.", -1);
+}
+
+static void
+on_bsd2c_activate (GtkMenuItem *menuitem, GladeProjectProperties *properties)
+{
+  gtk_text_buffer_insert_at_cursor (properties->priv->license_textbuffer,
+    "Copyright (c) <YEAR>, <OWNER>\n"
+    "All rights reserved.\n"
+    "\n"
+    "Redistribution and use in source and binary forms, with or without\n"
+    "modification, are permitted provided that the following conditions are met:\n" 
+    "\n"
+    "1. Redistributions of source code must retain the above copyright notice, this\n"
+    "   list of conditions and the following disclaimer. \n"
+    "2. Redistributions in binary form must reproduce the above copyright notice,\n"
+    "   this list of conditions and the following disclaimer in the documentation\n"
+    "   and/or other materials provided with the distribution. \n"
+    "\n"
+    "THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\n"
+    "ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\n"
+    "WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\n"
+    "DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR\n"
+    "ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n"
+    "(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\n"
+    "LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\n"
+    "ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n"
+    "(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\n"
+    "SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n"
+    "\n"
+    "The views and conclusions contained in the software and documentation are those\n"
+    "of the authors and should not be interpreted as representing official policies, \n"
+    "either expressed or implied, of the FreeBSD Project.", -1);
+}
+
+static void
+on_clear_text_activate (GtkMenuItem *menuitem, GladeProjectProperties *properties)
+{
+  gtk_text_buffer_set_text (properties->priv->license_textbuffer, "", -1);
+}
+
+static void
+gpp_append_new_item (GladeProjectProperties *properties,
+                     GtkWidget              *popup,
+                     const gchar            *label,
+                     GCallback               activate_cb)
+{
+  GtkWidget *item;
+
+  if (label)
+    item = gtk_menu_item_new_with_label (label);
+  else
+    item = gtk_separator_menu_item_new ();
+
+  if (activate_cb)
+    g_signal_connect (item, "activate", activate_cb, properties);
+
+  gtk_menu_shell_append (GTK_MENU_SHELL (popup), item);
+  gtk_widget_show (item);
+}
+
+static void
+on_license_textview_populate_popup (GtkTextView            *text_view,
+                                    GtkWidget              *popup,
+                                    GladeProjectProperties *properties)
+{
+  if (!GTK_IS_MENU (popup))
+    return;
+
+  gpp_append_new_item (properties, popup, _("Clear text"),
+                       G_CALLBACK (on_clear_text_activate));
+  
+  gpp_append_new_item (properties, popup, NULL, NULL);
+  
+  gpp_append_new_item (properties, popup, _("Insert GPL v2"),
+                       G_CALLBACK (on_gplv2_activate));
+  gpp_append_new_item (properties, popup, _("Insert GPL v3"),
+                       G_CALLBACK (on_gplv3_activate));
+  gpp_append_new_item (properties, popup, _("Insert LGPL v2.1"),
+                       G_CALLBACK (on_lgplv2_activate));
+  gpp_append_new_item (properties, popup, _("Insert LGPL v3"),
+                       G_CALLBACK (on_lgplv3_activate));
+  gpp_append_new_item (properties, popup, _("Insert BSD 2-clause"),
+                       G_CALLBACK (on_bsd2c_activate));
+  gpp_append_new_item (properties, popup, _("Insert BSD 3-clause"),
+                       G_CALLBACK (on_bsd3c_activate));
+}
+
+static void
+on_glade_project_properties_hide (GtkWidget              *widget,
+                                  GladeProjectProperties *properties)
+{
+  GladeProjectPropertiesPrivate *priv = properties->priv;
+  GtkTextIter start, end;
+  gchar *license;
+
+  gtk_text_buffer_get_bounds (priv->license_textbuffer, &start, &end);
+  license = gtk_text_buffer_get_text (priv->license_textbuffer, &start, &end, FALSE);
+  g_strstrip (license);
+
+  glade_command_set_project_license (priv->project, (license[0] != '\0') ? license : NULL);
+
+  g_free (license);
 }
 
 /******************************************************
@@ -555,6 +822,8 @@ project_targets_changed (GladeProject           *project,
   GladeProjectPropertiesPrivate *priv = properties->priv;
   GList *list;
   GSList *radios, *l;
+
+  priv->ignore_ui_cb = TRUE;
 
   /* For each catalog */
   for (list = glade_app_get_catalogs (); list; list = g_list_next (list))
@@ -577,11 +846,6 @@ project_targets_changed (GladeProject           *project,
 	  (radios = g_hash_table_lookup (priv->target_radios, glade_catalog_get_name (catalog))) != NULL)
 	{
 	  for (l = radios; l; l = l->next)
-	    g_signal_handlers_block_by_func (G_OBJECT (l->data),
-					     G_CALLBACK (target_button_clicked),
-					     properties);
-
-	  for (l = radios; l; l = l->next)
 	    {
 	      GtkWidget *radio = l->data;
 
@@ -593,13 +857,9 @@ project_targets_changed (GladeProject           *project,
 		  break;
 		}
 	    }
-
-	  for (l = radios; l; l = l->next)
-	    g_signal_handlers_unblock_by_func (G_OBJECT (l->data),
-					       G_CALLBACK (target_button_clicked),
-					       properties);
 	}
     }
+  priv->ignore_ui_cb = FALSE;
 }
 
 static void
@@ -610,11 +870,12 @@ project_domain_changed (GladeProject           *project,
   GladeProjectPropertiesPrivate *priv = properties->priv;
   const gchar *domain;
 
+  priv->ignore_ui_cb = TRUE;
+  
   domain = glade_project_get_translation_domain (priv->project);
-
-  g_signal_handlers_block_by_func (priv->domain_entry, on_domain_entry_changed, properties);
   gtk_entry_set_text (GTK_ENTRY (priv->domain_entry), domain ? domain : "");
-  g_signal_handlers_unblock_by_func (priv->domain_entry, on_domain_entry_changed, properties);
+
+  priv->ignore_ui_cb = FALSE;
 }
 
 static void
@@ -622,7 +883,10 @@ project_resource_path_changed (GladeProject           *project,
 			       GParamSpec             *pspec,
 			       GladeProjectProperties *properties)
 {
+  GladeProjectPropertiesPrivate *priv = properties->priv;
+  priv->ignore_ui_cb = TRUE;
   update_prefs_for_resource_path (properties);
+  priv->ignore_ui_cb = FALSE;
 }
 
 static void
@@ -636,8 +900,7 @@ project_template_changed (GladeProject           *project,
   gboolean valid;
   gboolean template_found = FALSE;
 
-  g_signal_handlers_block_by_func (priv->template_combobox, on_template_combo_box_changed, properties);
-  g_signal_handlers_block_by_func (priv->template_checkbutton, on_template_checkbutton_toggled, properties);
+  priv->ignore_ui_cb = TRUE;
 
   model = gtk_combo_box_get_model (GTK_COMBO_BOX (priv->template_combobox));
   if (!model)
@@ -678,8 +941,21 @@ project_template_changed (GladeProject           *project,
   if (!template_found && gtk_combo_box_get_model (GTK_COMBO_BOX (priv->template_combobox)))
     gtk_combo_box_set_active_iter (GTK_COMBO_BOX (priv->template_combobox), NULL);
 
-  g_signal_handlers_unblock_by_func (priv->template_combobox, on_template_combo_box_changed, properties);
-  g_signal_handlers_unblock_by_func (priv->template_checkbutton, on_template_checkbutton_toggled, properties);
+  priv->ignore_ui_cb = FALSE;
+}
+
+static void
+project_license_changed (GladeProject           *project,
+                         GParamSpec             *pspec,
+			 GladeProjectProperties *properties)
+{
+  GladeProjectPropertiesPrivate *priv = properties->priv;
+
+  priv->ignore_ui_cb = TRUE;  
+  gtk_text_buffer_set_text (priv->license_textbuffer, 
+                            glade_project_get_license (project),
+                            -1);
+  priv->ignore_ui_cb = FALSE;
 }
 
 /******************************************************
