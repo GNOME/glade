@@ -119,6 +119,8 @@ struct _GladeProjectPrivate
 
   GladeWidget *template;        /* The template widget */
 
+  gchar *license;               /* License for this project (will be saved as a comment) */
+
   GList *comments;              /* XML comments, Glade will preserve whatever comment was
                                  * in file before the root element, so users can delete or change it.
                                  */
@@ -192,6 +194,7 @@ enum
   PROP_TRANSLATION_DOMAIN,
   PROP_TEMPLATE,
   PROP_RESOURCE_PATH,
+  PROP_LICENSE,
   N_PROPERTIES
 };
 
@@ -330,6 +333,7 @@ glade_project_finalize (GObject *object)
   gtk_widget_destroy (priv->prefs_dialog);
 
   g_free (priv->path);
+  g_free (priv->license);
 
   if (priv->comments)
     {
@@ -386,6 +390,9 @@ glade_project_get_property (GObject *object,
     case PROP_RESOURCE_PATH:
       g_value_set_string (value, project->priv->resource_path);
       break;
+    case PROP_LICENSE:
+      g_value_set_string (value, project->priv->license);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -411,6 +418,10 @@ glade_project_set_property (GObject *object,
     case PROP_RESOURCE_PATH:
       glade_project_set_resource_path (GLADE_PROJECT (object),
 				       g_value_get_string (value));
+      break;
+    case PROP_LICENSE:
+      glade_project_set_license (GLADE_PROJECT (object),
+                                 g_value_get_string (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -949,6 +960,13 @@ glade_project_class_init (GladeProjectClass *klass)
     g_param_spec_string ("resource-path",
                          _("Resource Path"),
                          _("Path to load images and resources in Glade's runtime"),
+                         NULL,
+                         G_PARAM_READWRITE);
+  
+  glade_project_props[PROP_LICENSE] =
+    g_param_spec_string ("license",
+                         _("License"),
+                         _("License for this project, it will be added as a document level comment."),
                          NULL,
                          G_PARAM_READWRITE);
 
@@ -1779,6 +1797,31 @@ glade_project_get_resource_path (GladeProject *project)
   return project->priv->resource_path;
 }
 
+void
+glade_project_set_license (GladeProject *project, const gchar *license)
+{
+  GladeProjectPrivate *priv;
+  
+  g_return_if_fail (GLADE_IS_PROJECT (project));
+  priv = project->priv;
+
+  if ((!license && priv->license) ||
+      (license && g_strcmp0 (priv->license, license) != 0))
+    {
+      g_free (priv->license);
+      priv->license = g_strdup (license);
+      g_object_notify_by_pspec (G_OBJECT (project), glade_project_props[PROP_LICENSE]);
+    }
+}
+
+const gchar *
+glade_project_get_license (GladeProject *project)
+{
+  g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
+
+  return project->priv->license;
+}
+
 static void
 glade_project_read_resource_path (GladeProject *project,
                                   GladeXmlNode *root_node)
@@ -1818,6 +1861,11 @@ glade_project_read_comments (GladeProject *project, GladeXmlNode *root)
           /* Do not load generated with glade comment! */
           if (g_str_has_prefix (start, GLADE_XML_COMMENT))
             {
+              gchar *new_line = g_strstr_len (start, -1, "\n");
+
+              if (new_line)
+                glade_project_set_license (project, g_strstrip (new_line));
+
               g_free (comment);
               continue;
             }
@@ -2410,24 +2458,29 @@ sort_project_dependancies (GObject *a, GObject *b)
 
 static inline void
 glade_project_write_comments (GladeProject *project,
-                             GladeXmlDoc  *doc,
-                             GladeXmlNode *root)
+                              GladeXmlDoc  *doc,
+                              GladeXmlNode *root)
 {
   GladeProjectPrivate *priv = project->priv;
-  GladeXmlNode *comment_node;
+  GladeXmlNode *comment_node, *node;
   gchar *glade_comment;
   GList *l;
 
-  glade_comment = glade_project_make_comment ();
+  if (priv->license)
+    {
+      gchar *comment = glade_project_make_comment ();
+      glade_comment = g_strdup_printf ("%s\n\n%s\n\n", comment, priv->license);
+      g_free (comment);
+    }
+  else
+    glade_comment = glade_project_make_comment ();
+
   comment_node = glade_xml_doc_new_comment (doc, glade_comment); 
   comment_node = glade_xml_node_add_prev_sibling (root, comment_node);
   
   for (l = priv->comments; l; l = g_list_next (l))
     {
-      gchar *comment = l->data;
-      GladeXmlNode *node;
-      
-      node = glade_xml_doc_new_comment (doc, comment);
+      node = glade_xml_doc_new_comment (doc, l->data);
       comment_node = glade_xml_node_add_next_sibling (comment_node, node);
     }
 
