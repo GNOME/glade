@@ -91,6 +91,12 @@ void           glade_command_set_project_domain  (GladeProject *project,
 void           glade_command_set_project_template(GladeProject *project,     
 					          GladeWidget  *widget);
 
+void           glade_command_set_project_license (GladeProject *project,
+                                                  const gchar  *license);
+
+void           glade_command_set_project_resource_path (GladeProject *project,
+                                                        const gchar  *path);
+
 /************************** properties *********************************/
 
 void           glade_command_set_property_enabled(GladeProperty *property,
