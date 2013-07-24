@@ -134,6 +134,10 @@ struct _GladeProjectPrivate
                                  * (full or relative path, null means project directory).
                                  */
 
+  gchar *css_provider_path;     /* The custom css to use for this project */
+  GtkCssProvider *css_provider;
+  GFileMonitor *css_monitor;
+
   GList *unknown_catalogs; /* List of CatalogInfo catalogs */
 
   GtkWidget *prefs_dialog;
@@ -195,6 +199,7 @@ enum
   PROP_TEMPLATE,
   PROP_RESOURCE_PATH,
   PROP_LICENSE,
+  PROP_CSS_PROVIDER_PATH,
   N_PROPERTIES
 };
 
@@ -284,6 +289,9 @@ glade_project_dispose (GObject *object)
 
   glade_project_selection_clear (project, TRUE);
 
+  g_clear_object (&priv->css_provider);
+  g_clear_object (&priv->css_monitor);
+  
   glade_project_list_unref (priv->undo_stack);
   priv->undo_stack = NULL;
 
@@ -334,6 +342,7 @@ glade_project_finalize (GObject *object)
 
   g_free (priv->path);
   g_free (priv->license);
+  g_free (priv->css_provider_path);
 
   if (priv->comments)
     {
@@ -393,6 +402,9 @@ glade_project_get_property (GObject *object,
     case PROP_LICENSE:
       g_value_set_string (value, project->priv->license);
       break;
+    case PROP_CSS_PROVIDER_PATH:
+      g_value_set_string (value, project->priv->css_provider_path);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -422,6 +434,10 @@ glade_project_set_property (GObject *object,
     case PROP_LICENSE:
       glade_project_set_license (GLADE_PROJECT (object),
                                  g_value_get_string (value));
+      break;
+    case PROP_CSS_PROVIDER_PATH:
+      glade_project_set_css_provider_path (GLADE_PROJECT (object),
+                                           g_value_get_string (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -645,6 +661,32 @@ glade_project_changed_impl (GladeProject *project,
     }
 }
 
+static void 
+glade_project_set_css_provider_forall (GtkWidget *widget, gpointer data)
+{
+  if (GLADE_IS_PLACEHOLDER (widget) || GLADE_IS_OBJECT_STUB (widget))
+    return;
+
+  gtk_style_context_add_provider (gtk_widget_get_style_context (widget),
+                                  GTK_STYLE_PROVIDER (data),
+                                  GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+  
+  if (GTK_IS_CONTAINER (widget))
+    gtk_container_forall (GTK_CONTAINER (widget), glade_project_set_css_provider_forall, data);
+}
+
+static void
+glade_project_add_object_impl (GladeProject *project, GladeWidget *gwidget)
+{
+  GladeProjectPrivate *priv = project->priv;
+  GObject *widget = glade_widget_get_object (gwidget);
+  
+  if (!priv->css_provider || !GTK_IS_WIDGET (widget))
+    return;
+
+  glade_project_set_css_provider_forall (GTK_WIDGET (widget), priv->css_provider);
+}
+
 /*******************************************************************
                           Class Initializers
  *******************************************************************/
@@ -720,7 +762,7 @@ glade_project_class_init (GladeProjectClass *klass)
   object_class->finalize = glade_project_finalize;
   object_class->dispose = glade_project_dispose;
 
-  klass->add_object = NULL;
+  klass->add_object = glade_project_add_object_impl;
   klass->remove_object = NULL;
   klass->undo = glade_project_undo_impl;
   klass->redo = glade_project_redo_impl;
@@ -967,6 +1009,13 @@ glade_project_class_init (GladeProjectClass *klass)
     g_param_spec_string ("license",
                          _("License"),
                          _("License for this project, it will be added as a document level comment."),
+                         NULL,
+                         G_PARAM_READWRITE);
+
+  glade_project_props[PROP_CSS_PROVIDER_PATH] =
+    g_param_spec_string ("css-provider-path",
+                         _("Css Provider Path"),
+                         _("Path to use as the custom css provider for this project."),
                          NULL,
                          G_PARAM_READWRITE);
 
@@ -1841,6 +1890,46 @@ glade_project_read_resource_path (GladeProject *project,
   g_free (path);
 }
 
+static void
+glade_project_read_css_provider_path (GladeProject *project,
+                                      GladeXmlNode *root_node)
+{
+  GladeXmlNode *node;
+
+  for (node = glade_xml_node_get_children_with_comments (root_node);
+       node; node = glade_xml_node_next_with_comments (node))
+    {
+      gchar *value;
+
+      if (glade_xml_node_is_comment (node) &&
+          (value = glade_xml_get_content (node)))
+        {
+          gchar **tokens = g_strsplit (g_strstrip (value), " ", 2);
+
+          if (tokens[0] && !g_strcmp0 (tokens[0], "interface-css-provider-path"))
+            {
+              gchar *path = tokens[1];
+
+              if (g_path_is_absolute (path))
+                glade_project_set_css_provider_path (project, path);
+              else
+                {
+                  gchar *dirname = g_path_get_dirname (project->priv->path);
+                  gchar *full_path = g_build_filename (dirname, path, NULL);
+
+                  glade_project_set_css_provider_path (project, full_path);
+
+                  g_free (dirname);
+                  g_free (full_path);
+                }
+            }
+
+          g_strfreev (tokens);
+          g_free (value);
+        }
+    }
+}
+
 static inline void
 glade_project_read_comments (GladeProject *project, GladeXmlNode *root)
 {
@@ -2236,6 +2325,8 @@ glade_project_load_internal (GladeProject *project)
 
   glade_project_read_resource_path (project, root);
 
+  glade_project_read_css_provider_path (project, root);
+
   /* Launch a dialog if it's going to take enough time to be
    * worth showing at all */
   count = glade_project_count_xml_objects (project, root, 0);
@@ -2440,6 +2531,42 @@ glade_project_write_resource_path (GladeProject *project,
     }
 }
 
+static void
+glade_project_write_css_provider_path (GladeProject *project,
+                                       GladeXmlContext *context,
+                                       GladeXmlNode *root)
+{
+  GladeProjectPrivate *priv = project->priv;
+  GladeXmlNode *path_node;
+  gchar *dirname;
+
+  if (priv->css_provider_path && priv->path &&
+      (dirname = g_path_get_dirname (priv->path)))
+    {
+      GFile *project_path = g_file_new_for_path (dirname);
+      GFile *file_path = g_file_new_for_path (priv->css_provider_path);
+      gchar *css_provider_path;
+
+      css_provider_path = g_file_get_relative_path (project_path, file_path);
+
+      if (css_provider_path)
+        {
+          gchar *comment = g_strdup_printf (" interface-css-provider-path %s ",
+                                            css_provider_path);
+          path_node = glade_xml_node_new_comment (context, comment);
+          glade_xml_node_append_child (root, path_node);
+          g_free (comment);
+        }
+      else
+        g_warning ("g_file_get_relative_path () return NULL");
+
+      g_object_unref (project_path);
+      g_object_unref (file_path);
+      g_free (css_provider_path);
+      g_free (dirname);
+    }
+}
+
 static gint
 sort_project_dependancies (GObject *a, GObject *b)
 {
@@ -2510,6 +2637,8 @@ glade_project_write (GladeProject *project)
   glade_project_write_required_libs (project, context, root);
 
   glade_project_write_resource_path (project, context, root);
+
+  glade_project_write_css_provider_path (project, context, root);
 
   /* Sort the toplevels */
   toplevels = g_list_copy (project->priv->tree);
@@ -4787,6 +4916,120 @@ glade_project_get_translation_domain (GladeProject *project)
   g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
 
   return project->priv->translation_domain;
+}
+
+static void 
+glade_project_css_provider_remove_forall (GtkWidget *widget, gpointer data)
+{
+  gtk_style_context_remove_provider (gtk_widget_get_style_context (widget),
+                                     GTK_STYLE_PROVIDER (data));
+  
+  if (GTK_IS_CONTAINER (widget))
+    gtk_container_forall (GTK_CONTAINER (widget), glade_project_css_provider_remove_forall, data);
+}
+
+static inline void
+glade_project_css_provider_refresh (GladeProject *project, gboolean remove)
+{
+  GladeProjectPrivate *priv = project->priv;
+  GtkCssProvider *provider = priv->css_provider;
+  const GList *l;
+
+  for (l = priv->tree; l; l = g_list_next (l))
+    {
+      GObject *object = l->data;
+
+      if (!GTK_IS_WIDGET (object) || GLADE_IS_OBJECT_STUB (object))
+        continue;
+
+      if (remove)
+        glade_project_css_provider_remove_forall (GTK_WIDGET (object), provider);
+      else
+        glade_project_set_css_provider_forall (GTK_WIDGET (object), provider);
+    }
+}
+
+static void 
+on_css_monitor_changed (GFileMonitor     *monitor,
+                        GFile            *file,
+                        GFile            *other_file,
+                        GFileMonitorEvent event_type,
+                        GladeProject     *project)
+{
+  GError *error = NULL;
+
+  gtk_css_provider_load_from_file (project->priv->css_provider, file, &error);
+
+  if (error)
+    {
+      g_message ("CSS parsing failed: %s", error->message);
+      g_error_free (error);
+    }
+}
+
+/**
+ * glade_project_set_css_provider_path:
+ * @project: a #GladeProject
+ * @path: a CSS file path
+ *
+ * Set the custom CSS provider path to use in @project
+ */
+void
+glade_project_set_css_provider_path (GladeProject *project, const gchar *path)
+{
+  GladeProjectPrivate *priv;
+
+  g_return_if_fail (GLADE_IS_PROJECT (project));
+  priv = project->priv;
+
+  if (g_strcmp0 (priv->css_provider_path, path) != 0)
+    {
+      g_free (priv->css_provider_path);
+      priv->css_provider_path = g_strdup (path);
+
+      g_clear_object (&priv->css_monitor);
+      
+      if (priv->css_provider)
+        {
+          glade_project_css_provider_refresh (project, TRUE);
+          g_clear_object (&priv->css_provider);
+        }
+
+      if (priv->css_provider_path &&
+          g_file_test (priv->css_provider_path, G_FILE_TEST_IS_REGULAR))
+        {
+          GFile *file = g_file_new_for_path (priv->css_provider_path);
+
+          priv->css_provider = GTK_CSS_PROVIDER (gtk_css_provider_new ());
+          g_object_ref_sink (priv->css_provider);
+          gtk_css_provider_load_from_file (priv->css_provider, file, NULL);
+
+          g_clear_object (&priv->css_monitor);
+          priv->css_monitor = g_file_monitor_file (file, G_FILE_MONITOR_NONE, NULL, NULL);
+          g_object_ref_sink (priv->css_monitor);
+          g_signal_connect_object (priv->css_monitor, "changed",
+                                   G_CALLBACK (on_css_monitor_changed), project, 0);
+
+          glade_project_css_provider_refresh (project, FALSE);
+          g_object_unref (file);
+        }
+
+      g_object_notify_by_pspec (G_OBJECT (project), glade_project_props[PROP_CSS_PROVIDER_PATH]);
+    }
+}
+
+/**
+ * glade_project_get_css_provider_path:
+ * @project: a #GladeProject
+ *
+ * Returns: the CSS path of the custom provider used for @project 
+ */
+const gchar *
+glade_project_get_css_provider_path (GladeProject *project)
+{
+  g_return_val_if_fail (GLADE_IS_PROJECT (project), NULL);
+
+  return project->priv->css_provider_path;
 }
 
 /*************************************************

@@ -258,6 +258,11 @@ void                glade_project_set_translation_domain (GladeProject *project,
                                                           const gchar *domain);
 const gchar        *glade_project_get_translation_domain (GladeProject *project);
 
+void                glade_project_set_css_provider_path  (GladeProject *project,
+                                                          const gchar  *path);
+
+const gchar        *glade_project_get_css_provider_path  (GladeProject *project);
+
 /* Verifications */
 gboolean            glade_project_verify               (GladeProject       *project,
 							gboolean            saving,
