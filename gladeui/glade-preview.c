@@ -47,6 +47,12 @@
 
 #include "glade-preview-tokens.h"
 
+#ifdef G_OS_WIN32
+#define GLADE_PREVIEWER "glade-previewer.exe"
+#else
+#define GLADE_PREVIEWER "glade-previewer"
+#endif
+
 /* Private data for glade-preview */
 struct _GladePreviewPrivate
 {
@@ -77,7 +83,7 @@ static guint glade_preview_signals[LAST_SIGNAL] = { 0 };
  *
  */
 static void
-glade_preview_kill (GladePreview * preview)
+glade_preview_kill (GladePreview *preview)
 {
   const gchar *quit = QUIT_TOKEN;
   GIOChannel *channel;
@@ -89,27 +95,27 @@ glade_preview_kill (GladePreview * preview)
 
   if (size != strlen (quit) && error != NULL)
     {
-      g_printerr ("Error passing quit signal trough pipe: %s", error->message);
+      g_warning ("Error passing quit signal trough pipe: %s", error->message);
       g_error_free (error);
     }
 
   g_io_channel_flush (channel, &error);
   if (error != NULL)
     {
-      g_printerr ("Error flushing channel: %s", error->message);
+      g_warning ("Error flushing channel: %s", error->message);
       g_error_free (error);
     }
 
   g_io_channel_shutdown (channel, TRUE, &error);
   if (error != NULL)
     {
-      g_printerr ("Error shutting down channel: %s", error->message);
+      g_warning ("Error shutting down channel: %s", error->message);
       g_error_free (error);
     }
 }
 
 static void
-glade_preview_dispose (GObject * gobject)
+glade_preview_dispose (GObject *gobject)
 {
   GladePreview *self = GLADE_PREVIEW (gobject);
 
@@ -130,13 +136,13 @@ glade_preview_dispose (GObject * gobject)
 
 /* We have to use finalize because of the signal that is sent in dispose */
 static void
-glade_preview_finalize (GObject * gobject)
+glade_preview_finalize (GObject *gobject)
 {
   G_OBJECT_CLASS (glade_preview_parent_class)->finalize (gobject);
 }
 
 static void
-glade_preview_class_init (GladePreviewClass * klass)
+glade_preview_class_init (GladePreviewClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
@@ -161,7 +167,7 @@ glade_preview_class_init (GladePreviewClass * klass)
 }
 
 static void
-glade_preview_init (GladePreview * self)
+glade_preview_init (GladePreview *self)
 {
   GladePreviewPrivate *priv;
 
@@ -191,47 +197,61 @@ glade_preview_internal_watch (GPid pid, gint status, gpointer data)
  * 
  */
 GladePreview *
-glade_preview_launch (GladeWidget * widget, 
-		      const gchar * buffer)
+glade_preview_launch (GladeWidget *widget, const gchar *buffer)
 {
   GPid pid;
   GError *error = NULL;
-  gchar *argv[4];
+  gchar *argv[9], *executable;
   gint child_stdin;
   gsize bytes_written;
   GIOChannel *output;
   GladePreview *preview = NULL;
+  const gchar *css_provider, *filename;
+  GladeProject *project;
+  gchar *name;
 
   g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
 
-#ifdef WINDOWS
-  argv[0] =
-      g_build_filename (glade_app_get_bin_dir (), "glade-previewer.exe", NULL);
-#else
-  argv[0] =
-      g_build_filename (glade_app_get_bin_dir (), "glade-previewer", NULL);
-#endif
+  executable = g_build_filename (glade_app_get_bin_dir (), GLADE_PREVIEWER, NULL);
 
+  project = glade_widget_get_project (widget);
+  filename = glade_project_get_path (project);
+  name = (filename) ? NULL : glade_project_get_name (project);
+  
+  argv[0] = executable;
   argv[1] = "--listen";
-  argv[2] = g_strdup_printf ("--toplevel=%s", glade_widget_get_name (widget));
-  argv[3] = NULL;
+  argv[2] = "--toplevel";
+  argv[3] = (gchar *) glade_widget_get_name (widget);
+  argv[4] = "--filename";
+  argv[5] = (filename) ? (gchar *) filename : name;
+  argv[6] = NULL;
 
+  css_provider = glade_project_get_css_provider_path (glade_widget_get_project (widget));
+  if (css_provider)
+    {
+      argv[6] = "--css";
+      argv[7] = (gchar *) css_provider;
+      argv[8] = NULL;
+    }
+  
   if (g_spawn_async_with_pipes (NULL,
                                 argv,
                                 NULL, G_SPAWN_DO_NOT_REAP_CHILD, NULL, NULL,
                                 &pid, &child_stdin, NULL, NULL,
                                 &error) == FALSE)
     {
-      g_printerr (_("Error launching previewer: %s\n"), error->message);
+      g_warning (_("Error launching previewer: %s\n"), error->message);
       glade_util_ui_message (glade_app_get_window (),
                              GLADE_UI_ERROR, NULL,
                              _("Failed to launch preview: %s.\n"),
                              error->message);
       g_error_free (error);
-      goto end;
+      g_free (executable);
+      g_free (name);
+      return NULL;
     }
 
-#ifdef WINDOWS
+#ifdef G_OS_WIN32
   output = g_io_channel_win32_new_fd (child_stdin);
 #else
   output = g_io_channel_unix_new (child_stdin);
@@ -242,19 +262,16 @@ glade_preview_launch (GladeWidget * widget,
 
   if (bytes_written != strlen (buffer) && error != NULL)
     {
-      g_printerr ("Error passing UI trough pipe: %s", error->message);
+      g_warning ("Error passing UI trough pipe: %s", error->message);
       g_error_free (error);
     }
 
   g_io_channel_flush (output, &error);
   if (error != NULL)
     {
-      g_printerr ("Error flushing UI trough pipe: %s", error->message);
+      g_warning ("Error flushing UI trough pipe: %s", error->message);
       g_error_free (error);
     }
-
-  if (widget != NULL)
-    g_free (argv[2]);
 
   /* Setting up preview data */
   preview                         = g_object_new (GLADE_TYPE_PREVIEW, NULL);
@@ -267,15 +284,14 @@ glade_preview_launch (GladeWidget * widget,
 		       glade_preview_internal_watch,
 		       preview);
 
-end:
-  g_free (argv[0]);
+  g_free (executable);
+  g_free (name);
 
   return preview;
 }
 
 void
-glade_preview_update (GladePreview *preview, 
-		      const gchar  *buffer)
+glade_preview_update (GladePreview *preview, const gchar  *buffer)
 {
   const gchar *update_token = UPDATE_TOKEN;
   gchar *update;
@@ -298,14 +314,14 @@ glade_preview_update (GladePreview *preview,
 
   if (size != strlen (update) && error != NULL)
     {
-      g_printerr ("Error passing quit signal trough pipe: %s", error->message);
+      g_warning ("Error passing quit signal trough pipe: %s", error->message);
       g_error_free (error);
     }
 
   g_io_channel_flush (channel, &error);
   if (error != NULL)
     {
-      g_printerr ("Error flushing channel: %s", error->message);
+      g_warning ("Error flushing channel: %s", error->message);
       g_error_free (error);
     }
 
@@ -315,14 +331,14 @@ glade_preview_update (GladePreview *preview,
 
   if (bytes_written != strlen (buffer) && error != NULL)
     {
-      g_printerr ("Error passing UI trough pipe: %s", error->message);
+      g_warning ("Error passing UI trough pipe: %s", error->message);
       g_error_free (error);
     }
 
   g_io_channel_flush (channel, &error);
   if (error != NULL)
     {
-      g_printerr ("Error flushing UI trough pipe: %s", error->message);
+      g_warning ("Error flushing UI trough pipe: %s", error->message);
       g_error_free (error);
     }
 
@@ -330,13 +346,15 @@ glade_preview_update (GladePreview *preview,
 }
 
 GladeWidget *
-glade_preview_get_widget (GladePreview * preview)
+glade_preview_get_widget (GladePreview *preview)
 {
+  g_return_val_if_fail (GLADE_IS_PREVIEW (preview), NULL);
   return preview->priv->previewed_widget;
 }
 
 GPid
-glade_preview_get_pid (GladePreview * preview)
+glade_preview_get_pid (GladePreview *preview)
 {
+  g_return_val_if_fail (GLADE_IS_PREVIEW (preview), 0);
   return preview->priv->pid;
 }

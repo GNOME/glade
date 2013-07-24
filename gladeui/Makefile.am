@@ -22,7 +22,9 @@ glade_previewer_LDFLAGS = $(AM_LDFLAGS)
 glade_previewer_LDADD = libgladeui-2.la $(GTK_MAC_LIBS)
 
 glade_previewer_SOURCES = \
-	glade-previewer.c
+	glade-previewer.c \
+	glade-preview-window.c \
+	glade-preview-window.h
 
 if NATIVE_WIN32
 glade_previewer_LDADD += glade-win32-res.o
