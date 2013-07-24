@@ -733,7 +733,34 @@ glade_gtk_widget_set_property (GladeWidgetAdaptor * adaptor,
   if (!strcmp (id, "can-focus"))
     return;
 
-  GWA_GET_CLASS (G_TYPE_OBJECT)->set_property (adaptor, object, id, value);
+  if (!strcmp (id, "glade-style-classes"))
+    {
+      GtkStyleContext *context = gtk_widget_get_style_context (GTK_WIDGET (object));
+      GList *l, *styles;
+
+      /* NOTE: we can not use gtk_style_context_list_classes() because we only
+       * want to remove the classes we added not the ones added by the widget
+       */
+      styles = g_object_get_data (object, "glade-style-classes");
+      for (l = styles; l; l = g_list_next (l))
+	{
+	  GladeString *style = l->data;
+          gtk_style_context_remove_class (context, style->string);
+	}
+
+      for (l = g_value_get_boxed (value); l; l = g_list_next (l))
+	{
+	  GladeString *style = l->data;
+	  gtk_style_context_add_class (context, style->string);
+	}
+
+      /* Save the list here so we can use it later on to remove them from the style context */
+      g_object_set_data_full (object, "glade-style-classes",
+                              glade_string_list_copy (g_value_get_boxed (value)),
+                              (GDestroyNotify) glade_string_list_free);
+    }
+  else
+      GWA_GET_CLASS (G_TYPE_OBJECT)->set_property (adaptor, object, id, value);
 }
 
 void
