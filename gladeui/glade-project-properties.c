@@ -142,28 +142,28 @@ glade_project_properties_class_init (GladeProjectPropertiesClass *klass)
 
   /* Define the relationship of the private entry and the entry defined in the xml
    */
-  gtk_widget_class_bind_child (widget_class, GladeProjectPropertiesPrivate, resource_default_radio);
-  gtk_widget_class_bind_child (widget_class, GladeProjectPropertiesPrivate, resource_relative_radio);
-  gtk_widget_class_bind_child (widget_class, GladeProjectPropertiesPrivate, resource_fullpath_radio);
-  gtk_widget_class_bind_child (widget_class, GladeProjectPropertiesPrivate, relative_path_entry);
-  gtk_widget_class_bind_child (widget_class, GladeProjectPropertiesPrivate, full_path_button);
-  gtk_widget_class_bind_child (widget_class, GladeProjectPropertiesPrivate, domain_entry);
-  gtk_widget_class_bind_child (widget_class, GladeProjectPropertiesPrivate, template_checkbutton);
-  gtk_widget_class_bind_child (widget_class, GladeProjectPropertiesPrivate, template_combobox);
-  gtk_widget_class_bind_child (widget_class, GladeProjectPropertiesPrivate, toolkit_box);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, resource_default_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, resource_relative_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, resource_fullpath_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, relative_path_entry);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, full_path_button);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, domain_entry);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, template_checkbutton);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, template_combobox);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeProjectProperties, toolkit_box);
 
   /* Declare the callback ports that this widget class exposes, to bind with <signal>
    * connections defined in the GtkBuilder xml
    */
-  gtk_widget_class_bind_callback (widget_class, on_template_combo_box_changed);
-  gtk_widget_class_bind_callback (widget_class, on_template_checkbutton_toggled);
-  gtk_widget_class_bind_callback (widget_class, resource_default_toggled);
-  gtk_widget_class_bind_callback (widget_class, resource_relative_toggled);
-  gtk_widget_class_bind_callback (widget_class, resource_fullpath_toggled);
-  gtk_widget_class_bind_callback (widget_class, resource_path_activated);
-  gtk_widget_class_bind_callback (widget_class, resource_full_path_set);
-  gtk_widget_class_bind_callback (widget_class, verify_clicked);
-  gtk_widget_class_bind_callback (widget_class, on_domain_entry_changed);
+  gtk_widget_class_bind_template_callback (widget_class, on_template_combo_box_changed);
+  gtk_widget_class_bind_template_callback (widget_class, on_template_checkbutton_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, resource_default_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, resource_relative_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, resource_fullpath_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, resource_path_activated);
+  gtk_widget_class_bind_template_callback (widget_class, resource_full_path_set);
+  gtk_widget_class_bind_template_callback (widget_class, verify_clicked);
+  gtk_widget_class_bind_template_callback (widget_class, on_domain_entry_changed);
 
   g_type_class_add_private (gobject_class, sizeof (GladeProjectPropertiesPrivate));
 }

@@ -262,18 +262,18 @@ glade_editor_class_init (GladeEditorClass *klass)
   /* Bind to template */
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladeui/glade-editor.ui");
 
-  gtk_widget_class_bind_child (widget_class, GladeEditorPrivate, notebook);
-  gtk_widget_class_bind_child (widget_class, GladeEditorPrivate, page_widget);
-  gtk_widget_class_bind_child (widget_class, GladeEditorPrivate, page_packing);
-  gtk_widget_class_bind_child (widget_class, GladeEditorPrivate, page_common);
-  gtk_widget_class_bind_child (widget_class, GladeEditorPrivate, page_atk);
-  gtk_widget_class_bind_child (widget_class, GladeEditorPrivate, class_field);
-  gtk_widget_class_bind_child (widget_class, GladeEditorPrivate, class_icon);
-  gtk_widget_class_bind_child (widget_class, GladeEditorPrivate, class_label);
-  gtk_widget_class_bind_child (widget_class, GladeEditorPrivate, warning);
-  gtk_widget_class_bind_child (widget_class, GladeEditorPrivate, signal_editor);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeEditor, notebook);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeEditor, page_widget);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeEditor, page_packing);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeEditor, page_common);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeEditor, page_atk);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeEditor, class_field);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeEditor, class_icon);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeEditor, class_label);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeEditor, warning);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeEditor, signal_editor);
 
-  gtk_widget_class_bind_callback (widget_class, glade_editor_switch_page);
+  gtk_widget_class_bind_template_callback (widget_class, glade_editor_switch_page);
 
   g_type_class_add_private (klass, sizeof (GladeEditorPrivate));
 }

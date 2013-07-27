@@ -199,23 +199,23 @@ glade_preferences_class_init (GladePreferencesClass *klass)
 
   /* Define the relationship of the private entry and the entry defined in the xml
    */
-  gtk_widget_class_bind_child (widget_class, GladePreferencesPrivate, catalog_path_store);
-  gtk_widget_class_bind_child (widget_class, GladePreferencesPrivate, remove_catalog_button);
-  gtk_widget_class_bind_child (widget_class, GladePreferencesPrivate, selection);
-  gtk_widget_class_bind_child (widget_class, GladePreferencesPrivate, create_backups_toggle);
-  gtk_widget_class_bind_child (widget_class, GladePreferencesPrivate, autosave_toggle);
-  gtk_widget_class_bind_child (widget_class, GladePreferencesPrivate, autosave_spin);
-  gtk_widget_class_bind_child (widget_class, GladePreferencesPrivate, versioning_toggle);
-  gtk_widget_class_bind_child (widget_class, GladePreferencesPrivate, deprecations_toggle);
-  gtk_widget_class_bind_child (widget_class, GladePreferencesPrivate, unrecognized_toggle);
+  gtk_widget_class_bind_template_child_private (widget_class, GladePreferences, catalog_path_store);
+  gtk_widget_class_bind_template_child_private (widget_class, GladePreferences, remove_catalog_button);
+  gtk_widget_class_bind_template_child_private (widget_class, GladePreferences, selection);
+  gtk_widget_class_bind_template_child_private (widget_class, GladePreferences, create_backups_toggle);
+  gtk_widget_class_bind_template_child_private (widget_class, GladePreferences, autosave_toggle);
+  gtk_widget_class_bind_template_child_private (widget_class, GladePreferences, autosave_spin);
+  gtk_widget_class_bind_template_child_private (widget_class, GladePreferences, versioning_toggle);
+  gtk_widget_class_bind_template_child_private (widget_class, GladePreferences, deprecations_toggle);
+  gtk_widget_class_bind_template_child_private (widget_class, GladePreferences, unrecognized_toggle);
 
   /* Declare the callback ports that this widget class exposes, to bind with <signal>
    * connections defined in the GtkBuilder xml
    */
-  gtk_widget_class_bind_callback (widget_class, autosave_toggled);
-  gtk_widget_class_bind_callback (widget_class, on_preferences_filechooserdialog_response);
-  gtk_widget_class_bind_callback (widget_class, catalog_selection_changed);
-  gtk_widget_class_bind_callback (widget_class, remove_catalog_clicked);
+  gtk_widget_class_bind_template_callback (widget_class, autosave_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, on_preferences_filechooserdialog_response);
+  gtk_widget_class_bind_template_callback (widget_class, catalog_selection_changed);
+  gtk_widget_class_bind_template_callback (widget_class, remove_catalog_clicked);
 
   g_type_class_add_private (gobject_class, sizeof (GladePreferencesPrivate));
 }

@@ -154,9 +154,9 @@ glade_property_label_class_init (GladePropertyLabelClass *class)
 
   /* Bind to template */
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladeui/glade-property-label.ui");
-  gtk_widget_class_bind_child (widget_class, GladePropertyLabelPrivate, box);
-  gtk_widget_class_bind_child (widget_class, GladePropertyLabelPrivate, label);
-  gtk_widget_class_bind_child (widget_class, GladePropertyLabelPrivate, warning);
+  gtk_widget_class_bind_template_child_private (widget_class, GladePropertyLabel, box);
+  gtk_widget_class_bind_template_child_private (widget_class, GladePropertyLabel, label);
+  gtk_widget_class_bind_template_child_private (widget_class, GladePropertyLabel, warning);
 
   g_type_class_add_private (gobject_class, sizeof (GladePropertyLabelPrivate));
 }
