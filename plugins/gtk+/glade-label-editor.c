@@ -74,21 +74,21 @@ glade_label_editor_class_init (GladeLabelEditorClass * klass)
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-label-editor.ui");
 
-  gtk_widget_class_bind_child (widget_class, GladeLabelEditorPrivate, embed);
-  gtk_widget_class_bind_child (widget_class, GladeLabelEditorPrivate, attributes_radio);
-  gtk_widget_class_bind_child (widget_class, GladeLabelEditorPrivate, markup_radio);
-  gtk_widget_class_bind_child (widget_class, GladeLabelEditorPrivate, pattern_radio);
-  gtk_widget_class_bind_child (widget_class, GladeLabelEditorPrivate, wrap_free_label);
-  gtk_widget_class_bind_child (widget_class, GladeLabelEditorPrivate, wrap_free_radio);
-  gtk_widget_class_bind_child (widget_class, GladeLabelEditorPrivate, single_radio);
-  gtk_widget_class_bind_child (widget_class, GladeLabelEditorPrivate, wrap_mode_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeLabelEditor, embed);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeLabelEditor, attributes_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeLabelEditor, markup_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeLabelEditor, pattern_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeLabelEditor, wrap_free_label);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeLabelEditor, wrap_free_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeLabelEditor, single_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeLabelEditor, wrap_mode_radio);
 
-  gtk_widget_class_bind_callback (widget_class, attributes_toggled);
-  gtk_widget_class_bind_callback (widget_class, markup_toggled);
-  gtk_widget_class_bind_callback (widget_class, pattern_toggled);
-  gtk_widget_class_bind_callback (widget_class, wrap_free_toggled);
-  gtk_widget_class_bind_callback (widget_class, single_toggled);
-  gtk_widget_class_bind_callback (widget_class, wrap_mode_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, attributes_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, markup_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, pattern_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, wrap_free_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, single_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, wrap_mode_toggled);
 
   g_type_class_add_private (object_class, sizeof (GladeLabelEditorPrivate));  
 }

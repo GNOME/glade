@@ -67,17 +67,17 @@ glade_widget_editor_class_init (GladeWidgetEditorClass * klass)
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-widget-editor.ui");
 
-  gtk_widget_class_bind_child (widget_class, GladeWidgetEditorPrivate, custom_tooltip_check);
-  gtk_widget_class_bind_child (widget_class, GladeWidgetEditorPrivate, tooltip_markup_check);
-  gtk_widget_class_bind_child (widget_class, GladeWidgetEditorPrivate, tooltip_label_notebook);
-  gtk_widget_class_bind_child (widget_class, GladeWidgetEditorPrivate, tooltip_editor_notebook);
-  gtk_widget_class_bind_child (widget_class, GladeWidgetEditorPrivate, resize_mode_label);
-  gtk_widget_class_bind_child (widget_class, GladeWidgetEditorPrivate, resize_mode_editor);
-  gtk_widget_class_bind_child (widget_class, GladeWidgetEditorPrivate, border_width_label);
-  gtk_widget_class_bind_child (widget_class, GladeWidgetEditorPrivate, border_width_editor);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWidgetEditor, custom_tooltip_check);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWidgetEditor, tooltip_markup_check);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWidgetEditor, tooltip_label_notebook);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWidgetEditor, tooltip_editor_notebook);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWidgetEditor, resize_mode_label);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWidgetEditor, resize_mode_editor);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWidgetEditor, border_width_label);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWidgetEditor, border_width_editor);
 
-  gtk_widget_class_bind_callback (widget_class, markup_toggled);
-  gtk_widget_class_bind_callback (widget_class, custom_tooltip_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, markup_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, custom_tooltip_toggled);
 
   g_type_class_add_private (object_class, sizeof (GladeWidgetEditorPrivate));  
 }

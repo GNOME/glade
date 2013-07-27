@@ -94,33 +94,33 @@ glade_entry_editor_class_init (GladeEntryEditorClass * klass)
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-entry-editor.ui");
 
-  gtk_widget_class_bind_child_internal (widget_class, GladeEntryEditorPrivate, extension_port);
-  gtk_widget_class_bind_child (widget_class, GladeEntryEditorPrivate, embed);
-  gtk_widget_class_bind_child (widget_class, GladeEntryEditorPrivate, text_radio);
-  gtk_widget_class_bind_child (widget_class, GladeEntryEditorPrivate, buffer_radio);
-  gtk_widget_class_bind_child (widget_class, GladeEntryEditorPrivate, primary_stock_radio);
-  gtk_widget_class_bind_child (widget_class, GladeEntryEditorPrivate, primary_icon_name_radio);
-  gtk_widget_class_bind_child (widget_class, GladeEntryEditorPrivate, primary_pixbuf_radio);
-  gtk_widget_class_bind_child (widget_class, GladeEntryEditorPrivate, primary_tooltip_markup_check);
-  gtk_widget_class_bind_child (widget_class, GladeEntryEditorPrivate, primary_tooltip_notebook);
-  gtk_widget_class_bind_child (widget_class, GladeEntryEditorPrivate, primary_tooltip_editor_notebook);
-  gtk_widget_class_bind_child (widget_class, GladeEntryEditorPrivate, secondary_stock_radio);
-  gtk_widget_class_bind_child (widget_class, GladeEntryEditorPrivate, secondary_icon_name_radio);
-  gtk_widget_class_bind_child (widget_class, GladeEntryEditorPrivate, secondary_pixbuf_radio);
-  gtk_widget_class_bind_child (widget_class, GladeEntryEditorPrivate, secondary_tooltip_markup_check);
-  gtk_widget_class_bind_child (widget_class, GladeEntryEditorPrivate, secondary_tooltip_notebook);
-  gtk_widget_class_bind_child (widget_class, GladeEntryEditorPrivate, secondary_tooltip_editor_notebook);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeEntryEditor, extension_port);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeEntryEditor, embed);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeEntryEditor, text_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeEntryEditor, buffer_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeEntryEditor, primary_stock_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeEntryEditor, primary_icon_name_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeEntryEditor, primary_pixbuf_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeEntryEditor, primary_tooltip_markup_check);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeEntryEditor, primary_tooltip_notebook);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeEntryEditor, primary_tooltip_editor_notebook);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeEntryEditor, secondary_stock_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeEntryEditor, secondary_icon_name_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeEntryEditor, secondary_pixbuf_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeEntryEditor, secondary_tooltip_markup_check);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeEntryEditor, secondary_tooltip_notebook);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeEntryEditor, secondary_tooltip_editor_notebook);
 
-  gtk_widget_class_bind_callback (widget_class, text_toggled);
-  gtk_widget_class_bind_callback (widget_class, buffer_toggled);
-  gtk_widget_class_bind_callback (widget_class, primary_stock_toggled);
-  gtk_widget_class_bind_callback (widget_class, primary_icon_name_toggled);
-  gtk_widget_class_bind_callback (widget_class, primary_pixbuf_toggled);
-  gtk_widget_class_bind_callback (widget_class, primary_tooltip_markup_toggled);
-  gtk_widget_class_bind_callback (widget_class, secondary_stock_toggled);
-  gtk_widget_class_bind_callback (widget_class, secondary_icon_name_toggled);
-  gtk_widget_class_bind_callback (widget_class, secondary_pixbuf_toggled);
-  gtk_widget_class_bind_callback (widget_class, secondary_tooltip_markup_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, text_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, buffer_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, primary_stock_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, primary_icon_name_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, primary_pixbuf_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, primary_tooltip_markup_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, secondary_stock_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, secondary_icon_name_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, secondary_pixbuf_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, secondary_tooltip_markup_toggled);
 
   g_type_class_add_private (object_class, sizeof (GladeEntryEditorPrivate));  
 }

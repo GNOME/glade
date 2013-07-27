@@ -60,16 +60,16 @@ glade_image_editor_class_init (GladeImageEditorClass * klass)
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-image-editor.ui");
 
-  gtk_widget_class_bind_child (widget_class, GladeImageEditorPrivate, embed);
-  gtk_widget_class_bind_child (widget_class, GladeImageEditorPrivate, stock_radio);
-  gtk_widget_class_bind_child (widget_class, GladeImageEditorPrivate, icon_radio);
-  gtk_widget_class_bind_child (widget_class, GladeImageEditorPrivate, resource_radio);
-  gtk_widget_class_bind_child (widget_class, GladeImageEditorPrivate, file_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeImageEditor, embed);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeImageEditor, stock_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeImageEditor, icon_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeImageEditor, resource_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeImageEditor, file_radio);
 
-  gtk_widget_class_bind_callback (widget_class, stock_toggled);
-  gtk_widget_class_bind_callback (widget_class, icon_toggled);
-  gtk_widget_class_bind_callback (widget_class, resource_toggled);
-  gtk_widget_class_bind_callback (widget_class, file_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, stock_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, icon_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, resource_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, file_toggled);
 
   g_type_class_add_private (object_class, sizeof (GladeImageEditorPrivate));  
 }

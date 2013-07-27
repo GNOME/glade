@@ -75,21 +75,21 @@ glade_tool_button_editor_class_init (GladeToolButtonEditorClass * klass)
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-tool-button-editor.ui");
 
-  gtk_widget_class_bind_child (widget_class, GladeToolButtonEditorPrivate, embed);
-  gtk_widget_class_bind_child (widget_class, GladeToolButtonEditorPrivate, standard_label_radio);
-  gtk_widget_class_bind_child (widget_class, GladeToolButtonEditorPrivate, custom_label_radio);
-  gtk_widget_class_bind_child (widget_class, GladeToolButtonEditorPrivate, stock_radio);
-  gtk_widget_class_bind_child (widget_class, GladeToolButtonEditorPrivate, icon_radio);
-  gtk_widget_class_bind_child (widget_class, GladeToolButtonEditorPrivate, custom_radio);
-  gtk_widget_class_bind_child (widget_class, GladeToolButtonEditorPrivate, toggle_active_editor);
-  gtk_widget_class_bind_child (widget_class, GladeToolButtonEditorPrivate, radio_group_label);
-  gtk_widget_class_bind_child (widget_class, GladeToolButtonEditorPrivate, radio_group_editor);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeToolButtonEditor, embed);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeToolButtonEditor, standard_label_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeToolButtonEditor, custom_label_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeToolButtonEditor, stock_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeToolButtonEditor, icon_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeToolButtonEditor, custom_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeToolButtonEditor, toggle_active_editor);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeToolButtonEditor, radio_group_label);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeToolButtonEditor, radio_group_editor);
 
-  gtk_widget_class_bind_callback (widget_class, standard_label_toggled);
-  gtk_widget_class_bind_callback (widget_class, custom_label_toggled);
-  gtk_widget_class_bind_callback (widget_class, stock_toggled);
-  gtk_widget_class_bind_callback (widget_class, icon_toggled);
-  gtk_widget_class_bind_callback (widget_class, custom_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, standard_label_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, custom_label_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, stock_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, icon_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, custom_toggled);
 
   g_type_class_add_private (object_class, sizeof (GladeToolButtonEditorPrivate));  
 }

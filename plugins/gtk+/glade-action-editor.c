@@ -57,15 +57,15 @@ glade_action_editor_class_init (GladeActionEditorClass * klass)
   widget_class->grab_focus = glade_action_editor_grab_focus;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-action-editor.ui");
-  gtk_widget_class_bind_child_internal (widget_class, GladeActionEditorPrivate, extension_port);
-  gtk_widget_class_bind_child (widget_class, GladeActionEditorPrivate, embed);
-  gtk_widget_class_bind_child (widget_class, GladeActionEditorPrivate, toggle_title);
-  gtk_widget_class_bind_child (widget_class, GladeActionEditorPrivate, radio_proxy_editor);
-  gtk_widget_class_bind_child (widget_class, GladeActionEditorPrivate, toggle_active_editor);
-  gtk_widget_class_bind_child (widget_class, GladeActionEditorPrivate, radio_group_label);
-  gtk_widget_class_bind_child (widget_class, GladeActionEditorPrivate, radio_group_editor);
-  gtk_widget_class_bind_child (widget_class, GladeActionEditorPrivate, radio_value_label);
-  gtk_widget_class_bind_child (widget_class, GladeActionEditorPrivate, radio_value_editor);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeActionEditor, extension_port);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeActionEditor, embed);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeActionEditor, toggle_title);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeActionEditor, radio_proxy_editor);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeActionEditor, toggle_active_editor);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeActionEditor, radio_group_label);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeActionEditor, radio_group_editor);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeActionEditor, radio_value_label);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeActionEditor, radio_value_editor);
 
   g_type_class_add_private (object_class, sizeof (GladeActionEditorPrivate));  
 }

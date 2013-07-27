@@ -43,7 +43,7 @@ glade_level_bar_editor_class_init (GladeLevelBarEditorClass * klass)
   widget_class->grab_focus = glade_level_bar_editor_grab_focus;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-level-bar-editor.ui");
-  gtk_widget_class_bind_child (widget_class, GladeLevelBarEditorPrivate, embed);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeLevelBarEditor, embed);
 
   g_type_class_add_private (object_class, sizeof (GladeLevelBarEditorPrivate));
 }

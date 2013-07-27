@@ -88,28 +88,28 @@ glade_button_editor_class_init (GladeButtonEditorClass * klass)
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-button-editor.ui");
 
-  gtk_widget_class_bind_child_internal (widget_class, GladeButtonEditorPrivate, extension_port);
-  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, embed);
-  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, relief_label);
-  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, relief_shell);
-  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, response_label);
-  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, response_shell);
-  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, content_label);
-  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, group_shell);
-  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, group_label);
-  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, active_shell);
-  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, inconsistent_shell);
-  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, draw_indicator_shell);
-  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, custom_check);
-  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, stock_radio);
-  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, label_radio);
-  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, standard_frame);
-  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, stock_frame);
-  gtk_widget_class_bind_child (widget_class, GladeButtonEditorPrivate, label_frame);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeButtonEditor, extension_port);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeButtonEditor, embed);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeButtonEditor, relief_label);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeButtonEditor, relief_shell);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeButtonEditor, response_label);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeButtonEditor, response_shell);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeButtonEditor, content_label);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeButtonEditor, group_shell);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeButtonEditor, group_label);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeButtonEditor, active_shell);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeButtonEditor, inconsistent_shell);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeButtonEditor, draw_indicator_shell);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeButtonEditor, custom_check);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeButtonEditor, stock_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeButtonEditor, label_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeButtonEditor, standard_frame);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeButtonEditor, stock_frame);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeButtonEditor, label_frame);
 
-  gtk_widget_class_bind_callback (widget_class, custom_toggled);
-  gtk_widget_class_bind_callback (widget_class, stock_toggled);
-  gtk_widget_class_bind_callback (widget_class, label_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, custom_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, stock_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, label_toggled);
 
   g_type_class_add_private (object_class, sizeof (GladeButtonEditorPrivate));  
 }

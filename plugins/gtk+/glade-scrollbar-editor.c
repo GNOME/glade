@@ -44,7 +44,7 @@ glade_scrollbar_editor_class_init (GladeScrollbarEditorClass * klass)
   widget_class->grab_focus = glade_scrollbar_editor_grab_focus;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-scrollbar-editor.ui");
-  gtk_widget_class_bind_child (widget_class, GladeScrollbarEditorPrivate, embed);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeScrollbarEditor, embed);
 
   g_type_class_add_private (object_class, sizeof (GladeScrollbarEditorPrivate));  
 }

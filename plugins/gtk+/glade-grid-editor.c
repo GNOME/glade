@@ -44,7 +44,7 @@ glade_grid_editor_class_init (GladeGridEditorClass * klass)
   widget_class->grab_focus = glade_grid_editor_grab_focus;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-grid-editor.ui");
-  gtk_widget_class_bind_child (widget_class, GladeGridEditorPrivate, embed);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeGridEditor, embed);
 
   g_type_class_add_private (object_class, sizeof (GladeGridEditorPrivate));  
 }

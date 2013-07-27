@@ -46,8 +46,8 @@ glade_recent_chooser_editor_class_init (GladeRecentChooserEditorClass * klass)
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-recent-chooser-editor.ui");
 
-  gtk_widget_class_bind_child (widget_class, GladeRecentChooserEditorPrivate, select_multiple_editor);
-  gtk_widget_class_bind_child (widget_class, GladeRecentChooserEditorPrivate, show_numbers_editor);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeRecentChooserEditor, select_multiple_editor);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeRecentChooserEditor, show_numbers_editor);
 
   g_type_class_add_private (object_class, sizeof (GladeRecentChooserEditorPrivate));  
 }

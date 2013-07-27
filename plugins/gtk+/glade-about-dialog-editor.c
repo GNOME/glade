@@ -64,16 +64,16 @@ glade_about_dialog_editor_class_init (GladeAboutDialogEditorClass * klass)
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-about-dialog-editor.ui");
 
-  gtk_widget_class_bind_child (widget_class, GladeAboutDialogEditorPrivate, license_label);
-  gtk_widget_class_bind_child (widget_class, GladeAboutDialogEditorPrivate, license_editor);
-  gtk_widget_class_bind_child (widget_class, GladeAboutDialogEditorPrivate, wrap_license_editor);
-  gtk_widget_class_bind_child (widget_class, GladeAboutDialogEditorPrivate, logo_file_radio);
-  gtk_widget_class_bind_child (widget_class, GladeAboutDialogEditorPrivate, logo_icon_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeAboutDialogEditor, license_label);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeAboutDialogEditor, license_editor);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeAboutDialogEditor, wrap_license_editor);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeAboutDialogEditor, logo_file_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeAboutDialogEditor, logo_icon_radio);
 
-  gtk_widget_class_bind_callback (widget_class, license_type_pre_commit);
-  gtk_widget_class_bind_callback (widget_class, license_type_post_commit);
-  gtk_widget_class_bind_callback (widget_class, logo_file_toggled);
-  gtk_widget_class_bind_callback (widget_class, logo_icon_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, license_type_pre_commit);
+  gtk_widget_class_bind_template_callback (widget_class, license_type_post_commit);
+  gtk_widget_class_bind_template_callback (widget_class, logo_file_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, logo_icon_toggled);
 
   g_type_class_add_private (object_class, sizeof (GladeAboutDialogEditorPrivate));  
 }

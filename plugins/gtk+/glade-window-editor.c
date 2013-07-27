@@ -55,13 +55,13 @@ glade_window_editor_class_init (GladeWindowEditorClass * klass)
   widget_class->grab_focus = glade_window_editor_grab_focus;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-window-editor.ui");
-  gtk_widget_class_bind_child (widget_class, GladeWindowEditorPrivate, embed);
-  gtk_widget_class_bind_child (widget_class, GladeWindowEditorPrivate, icon_name_radio);
-  gtk_widget_class_bind_child (widget_class, GladeWindowEditorPrivate, icon_file_radio);
-  gtk_widget_class_bind_child_internal (widget_class, GladeWindowEditorPrivate, extension_port);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWindowEditor, embed);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWindowEditor, icon_name_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWindowEditor, icon_file_radio);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeWindowEditor, extension_port);
 
-  gtk_widget_class_bind_callback (widget_class, icon_name_toggled);
-  gtk_widget_class_bind_callback (widget_class, icon_file_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, icon_name_toggled);
+  gtk_widget_class_bind_template_callback (widget_class, icon_file_toggled);
 
   g_type_class_add_private (object_class, sizeof (GladeWindowEditorPrivate));  
 }
