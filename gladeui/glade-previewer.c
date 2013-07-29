@@ -45,12 +45,12 @@ get_toplevel (GtkBuilder *builder, gchar *name)
 
   if (name == NULL)
     {
-      GSList *objects;
+      GSList *l, *objects = gtk_builder_get_objects (builder);
 
       /* Iterate trough objects and search for a window or widget */
-      for (objects = gtk_builder_get_objects (builder); objects; objects = g_slist_next (objects))
+      for (l = objects; l; l = g_slist_next (l))
         {
-          GObject *obj = objects->data;
+          GObject *obj = l->data;
 
           if (!GTK_IS_WIDGET (obj) || gtk_widget_get_parent (GTK_WIDGET (obj)))
             continue;
@@ -289,8 +289,56 @@ glade_previewer_free (GladePreviewer *app)
   g_free (app);
 }
 
+static gint
+objects_cmp_func (gconstpointer a, gconstpointer b)
+{
+  const gchar *name_a, *name_b;
+  name_a = gtk_buildable_get_name (GTK_BUILDABLE (a));
+  name_b = gtk_buildable_get_name (GTK_BUILDABLE (b));
+  return g_strcmp0 (name_a, name_b);
+}
+static gboolean 
+glade_previewer_stack_key_press_event (GtkWidget *window, GdkEventKey *event, GtkWidget *widget)
+{
+  GtkWidget *child =  gtk_stack_get_visible_child  (GTK_STACK (widget));
+  GList *children, *node;
+  gboolean retval;
+  
+  if (!child)
+    return FALSE;
+
+  children = gtk_container_get_children (GTK_CONTAINER (widget));
+
+  node = g_list_find (children, child);
+
+  if (node)
+    {
+      switch (event->keyval)
+        {
+          case GDK_KEY_Page_Up:
+            if (node->prev)
+              gtk_stack_set_visible_child  (GTK_STACK (widget), node->prev->data);
+            retval = TRUE;
+            break;
+          case GDK_KEY_Page_Down:
+            if (node->next)
+              gtk_stack_set_visible_child  (GTK_STACK (widget), node->next->data);
+            retval = TRUE;
+            break;
+          default:
+            retval = FALSE;
+            break;
+        }
+    }
+
+  g_list_free (children);
+  return retval;
+}
+
+
 static gboolean listen = FALSE;
 static gboolean version = FALSE;
+static gboolean slideshow = FALSE;
 static gchar *file_name = NULL;
 static gchar *toplevel_name = NULL;
 static gchar *css_file_name = NULL;
@@ -303,6 +351,7 @@ static GOptionEntry option_entries[] =
     {"screenshot", 0, 0, G_OPTION_ARG_FILENAME, &screenshot_file_name, N_("File name to save a screenshot"), NULL},
     {"css", 0, 0, G_OPTION_ARG_FILENAME, &css_file_name, N_("CSS file to use"), NULL},
     {"listen", 'l', 0, G_OPTION_ARG_NONE, &listen, N_("Listen standard input"), NULL},
+    {"slideshow", 0, 0, G_OPTION_ARG_NONE, &slideshow, N_("make a slideshow of every toplevel widget by adding them in a GtkStack"), NULL},
     {"version", 'v', 0, G_OPTION_ARG_NONE, &version, N_("Display previewer version"), NULL},
     {NULL}
 };
@@ -373,7 +422,6 @@ main (int argc, char **argv)
     {
       GtkBuilder *builder = gtk_builder_new ();
       GError *error = NULL;
-      GtkWidget *widget;
 
       /* Use from_file() function gives builder a chance to know where to load resources from */
       if (!gtk_builder_add_from_file (builder, app->file_name, &error))
@@ -383,14 +431,58 @@ main (int argc, char **argv)
           return 1;
         }
 
-      widget = get_toplevel (builder, toplevel_name);
-      glade_preview_window_set_widget (app->window, widget);
-      gtk_widget_show (widget);
+      if (slideshow)
+        {
+          GSList *l, *objects = gtk_builder_get_objects (builder);
+          GtkStack *stack = GTK_STACK (gtk_stack_new ());
 
-      if (screenshot_file_name)
-        glade_preview_window_screenshot (app->window, TRUE, screenshot_file_name);
+          /* Add Page up and Page down key binding */
+          g_signal_connect (app->window, "key-press-event",
+                            G_CALLBACK (glade_previewer_stack_key_press_event),
+                            stack);
+
+          objects = g_slist_sort (objects, objects_cmp_func);
+
+          for (l = objects; l; l = g_slist_next (l))
+            {
+              GObject *obj = l->data;
+
+              if (!GTK_IS_WIDGET (obj) || gtk_widget_get_parent (GTK_WIDGET (obj)))
+                continue;
+
+              /* TODO: make sure we can add a toplevel inside a stack */
+              if (GTK_IS_WINDOW (obj))
+                continue;
+
+              gtk_stack_add_named (stack, GTK_WIDGET (obj),
+                                   gtk_buildable_get_name (GTK_BUILDABLE (obj)));
+            }
+
+          glade_preview_window_set_widget (app->window, GTK_WIDGET (stack));
+          gtk_widget_show (GTK_WIDGET (stack));
+          
+          if (screenshot_file_name)
+            glade_preview_window_slideshow_save (app->window, screenshot_file_name);
+          else
+            {
+              gtk_stack_set_transition_type (stack, GTK_STACK_TRANSITION_TYPE_CROSSFADE);
+
+              gtk_main ();
+            }
+
+          g_slist_free (objects);
+        }
       else
-        gtk_main ();
+        {
+          GtkWidget *widget = get_toplevel (builder, toplevel_name);
+          glade_preview_window_set_widget (app->window, widget);
+          gtk_widget_show (widget);
+
+          if (screenshot_file_name)
+            glade_preview_window_screenshot (app->window, TRUE, screenshot_file_name);
+          else
+            gtk_main ();
+        }
 
       g_object_unref (builder);
     }
