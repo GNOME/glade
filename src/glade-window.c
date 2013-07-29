@@ -75,10 +75,6 @@
 #define CONFIG_KEY_AUTOSAVE         "autosave"
 #define CONFIG_KEY_AUTOSAVE_SECONDS "autosave-seconds"
 
-#define GLADE_WINDOW_GET_PRIVATE(object) (G_TYPE_INSTANCE_GET_PRIVATE ((object),  \
-					  GLADE_TYPE_WINDOW,                      \
-					  GladeWindowPrivate))
-
 enum
 {
   DOCK_PALETTE,
@@ -161,7 +157,7 @@ struct _GladeWindowPrivate
 
 static void check_reload_project (GladeWindow *window, GladeProject *project);
 
-G_DEFINE_TYPE (GladeWindow, glade_window, GTK_TYPE_WINDOW)
+G_DEFINE_TYPE_WITH_PRIVATE (GladeWindow, glade_window, GTK_TYPE_WINDOW)
 
 /* the following functions are taken from gedit-utils.c */
 static gchar *
@@ -2147,7 +2143,7 @@ on_preferences_action_activate (GtkAction   *action,
 static void
 on_about_action_activate (GtkAction *action, GladeWindow *window)
 {
-  GladeWindowPrivate *priv = GLADE_WINDOW_GET_PRIVATE (window);
+  GladeWindowPrivate *priv = window->priv;
   
   gtk_about_dialog_set_version (GTK_ABOUT_DIALOG (priv->about_dialog), PACKAGE_VERSION);
   
@@ -3114,7 +3110,7 @@ glade_window_init (GladeWindow *window)
 {
   GladeWindowPrivate *priv;
 
-  window->priv = priv = GLADE_WINDOW_GET_PRIVATE (window);
+  window->priv = priv = glade_window_get_instance_private (window);
 
   priv->default_path = NULL;
 
@@ -3279,8 +3275,6 @@ glade_window_class_init (GladeWindowClass *klass)
                                              GTK_STYLE_PROVIDER (provider),
                                              GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
   g_object_unref (provider);
-
-  g_type_class_add_private (klass, sizeof (GladeWindowPrivate));
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/glade/glade.glade");
 

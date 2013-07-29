@@ -35,30 +35,25 @@ struct _GladeRecentChooserEditorPrivate {
 static GladeEditableIface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladeRecentChooserEditor, glade_recent_chooser_editor, GLADE_TYPE_EDITOR_SKELETON,
+                         G_ADD_PRIVATE (GladeRecentChooserEditor)
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
                                                 glade_recent_chooser_editor_editable_init));
 
 static void
 glade_recent_chooser_editor_class_init (GladeRecentChooserEditorClass * klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-recent-chooser-editor.ui");
 
   gtk_widget_class_bind_template_child_private (widget_class, GladeRecentChooserEditor, select_multiple_editor);
   gtk_widget_class_bind_template_child_private (widget_class, GladeRecentChooserEditor, show_numbers_editor);
-
-  g_type_class_add_private (object_class, sizeof (GladeRecentChooserEditorPrivate));  
 }
 
 static void
 glade_recent_chooser_editor_init (GladeRecentChooserEditor * self)
 {
-  self->priv = 
-    G_TYPE_INSTANCE_GET_PRIVATE (self,
-				 GLADE_TYPE_RECENT_CHOOSER_EDITOR,
-				 GladeRecentChooserEditorPrivate);
+  self->priv = glade_recent_chooser_editor_get_instance_private (self);
 
   gtk_widget_init_template (GTK_WIDGET (self));
 }

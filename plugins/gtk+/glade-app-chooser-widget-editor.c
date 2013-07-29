@@ -32,29 +32,23 @@ struct _GladeAppChooserWidgetEditorPrivate
   GtkWidget *embed;
 };
 
-G_DEFINE_TYPE (GladeAppChooserWidgetEditor, glade_app_chooser_widget_editor, GLADE_TYPE_EDITOR_SKELETON)
+G_DEFINE_TYPE_WITH_PRIVATE (GladeAppChooserWidgetEditor, glade_app_chooser_widget_editor, GLADE_TYPE_EDITOR_SKELETON)
 
 static void
 glade_app_chooser_widget_editor_class_init (GladeAppChooserWidgetEditorClass * klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   widget_class->grab_focus = glade_app_chooser_widget_editor_grab_focus;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-app-chooser-widget-editor.ui");
   gtk_widget_class_bind_template_child_private (widget_class, GladeAppChooserWidgetEditor, embed);
-
-  g_type_class_add_private (object_class, sizeof (GladeAppChooserWidgetEditorPrivate));  
 }
 
 static void
 glade_app_chooser_widget_editor_init (GladeAppChooserWidgetEditor * self)
 {
-  self->priv = 
-    G_TYPE_INSTANCE_GET_PRIVATE (self,
-				 GLADE_TYPE_APP_CHOOSER_WIDGET_EDITOR,
-				 GladeAppChooserWidgetEditorPrivate);
+  self->priv = glade_app_chooser_widget_editor_get_instance_private (self);
 
   gtk_widget_init_template (GTK_WIDGET (self));
 }

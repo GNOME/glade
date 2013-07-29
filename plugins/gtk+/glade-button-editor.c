@@ -75,13 +75,13 @@ struct _GladeButtonEditorPrivate
 static GladeEditableIface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladeButtonEditor, glade_button_editor, GLADE_TYPE_EDITOR_SKELETON,
+                         G_ADD_PRIVATE (GladeButtonEditor)
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
                                                 glade_button_editor_editable_init));
 
 static void
 glade_button_editor_class_init (GladeButtonEditorClass * klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   widget_class->grab_focus = glade_button_editor_grab_focus;
@@ -110,17 +110,12 @@ glade_button_editor_class_init (GladeButtonEditorClass * klass)
   gtk_widget_class_bind_template_callback (widget_class, custom_toggled);
   gtk_widget_class_bind_template_callback (widget_class, stock_toggled);
   gtk_widget_class_bind_template_callback (widget_class, label_toggled);
-
-  g_type_class_add_private (object_class, sizeof (GladeButtonEditorPrivate));  
 }
 
 static void
 glade_button_editor_init (GladeButtonEditor * self)
 {
-  self->priv = 
-    G_TYPE_INSTANCE_GET_PRIVATE (self,
-				 GLADE_TYPE_BUTTON_EDITOR,
-				 GladeButtonEditorPrivate);
+  self->priv = glade_button_editor_get_instance_private (self);
 
   gtk_widget_init_template (GTK_WIDGET (self));
 }

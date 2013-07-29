@@ -54,6 +54,7 @@ static GladeEditableIface *parent_editable_iface;
 #define TOOLTIP_MARKUP_PAGE 1
 
 G_DEFINE_TYPE_WITH_CODE (GladeWidgetEditor, glade_widget_editor, GLADE_TYPE_EDITOR_SKELETON,
+                         G_ADD_PRIVATE (GladeWidgetEditor)
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
                                                 glade_widget_editor_editable_init));
 
@@ -78,17 +79,12 @@ glade_widget_editor_class_init (GladeWidgetEditorClass * klass)
 
   gtk_widget_class_bind_template_callback (widget_class, markup_toggled);
   gtk_widget_class_bind_template_callback (widget_class, custom_tooltip_toggled);
-
-  g_type_class_add_private (object_class, sizeof (GladeWidgetEditorPrivate));  
 }
 
 static void
 glade_widget_editor_init (GladeWidgetEditor * self)
 {
-  self->priv = 
-    G_TYPE_INSTANCE_GET_PRIVATE (self,
-				 GLADE_TYPE_WIDGET_EDITOR,
-				 GladeWidgetEditorPrivate);
+  self->priv = glade_widget_editor_get_instance_private (self);
 
   gtk_widget_init_template (GTK_WIDGET (self));
 }

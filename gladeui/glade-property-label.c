@@ -84,16 +84,14 @@ enum {
 static GladeEditableIface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladePropertyLabel, glade_property_label, GTK_TYPE_EVENT_BOX,
+                         G_ADD_PRIVATE (GladePropertyLabel)
 			 G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
                                                 glade_property_label_editable_init));
 
 static void
 glade_property_label_init (GladePropertyLabel *label)
 {
-  label->priv = 
-    G_TYPE_INSTANCE_GET_PRIVATE (label,
-				 GLADE_TYPE_PROPERTY_LABEL,
-				 GladePropertyLabelPrivate);
+  label->priv = glade_property_label_get_instance_private (label);
 
   label->priv->packing = FALSE;
   label->priv->custom_text = FALSE;
@@ -157,8 +155,6 @@ glade_property_label_class_init (GladePropertyLabelClass *class)
   gtk_widget_class_bind_template_child_private (widget_class, GladePropertyLabel, box);
   gtk_widget_class_bind_template_child_private (widget_class, GladePropertyLabel, label);
   gtk_widget_class_bind_template_child_private (widget_class, GladePropertyLabel, warning);
-
-  g_type_class_add_private (gobject_class, sizeof (GladePropertyLabelPrivate));
 }
 
 

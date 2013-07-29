@@ -32,29 +32,23 @@ struct _GladeComboBoxEditorPrivate
   GtkWidget *embed;
 };
 
-G_DEFINE_TYPE (GladeComboBoxEditor, glade_combo_box_editor, GLADE_TYPE_EDITOR_SKELETON)
+G_DEFINE_TYPE_WITH_PRIVATE (GladeComboBoxEditor, glade_combo_box_editor, GLADE_TYPE_EDITOR_SKELETON)
 
 static void
 glade_combo_box_editor_class_init (GladeComboBoxEditorClass * klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   widget_class->grab_focus = glade_combo_box_editor_grab_focus;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-combo-box-editor.ui");
   gtk_widget_class_bind_template_child_private (widget_class, GladeComboBoxEditor, embed);
-
-  g_type_class_add_private (object_class, sizeof (GladeComboBoxEditorPrivate));  
 }
 
 static void
 glade_combo_box_editor_init (GladeComboBoxEditor * self)
 {
-  self->priv = 
-    G_TYPE_INSTANCE_GET_PRIVATE (self,
-				 GLADE_TYPE_COMBO_BOX_EDITOR,
-				 GladeComboBoxEditorPrivate);
+  self->priv = glade_combo_box_editor_get_instance_private (self);
 
   gtk_widget_init_template (GTK_WIDGET (self));
 }

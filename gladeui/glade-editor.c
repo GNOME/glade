@@ -67,10 +67,6 @@ enum
   N_PROPERTIES
 };
 
-#define GLADE_EDITOR_GET_PRIVATE(object) (G_TYPE_INSTANCE_GET_PRIVATE ((object),  \
-					  GLADE_TYPE_EDITOR,                      \
-					  GladeEditorPrivate))
-
 #define GLADE_EDITOR_PRIVATE(object) (((GladeEditor*)object)->priv)
 
 struct _GladeEditorPrivate
@@ -141,7 +137,7 @@ struct _GladeEditorPrivate
   gboolean show_class_field; /* Whether or not to show the class field at the top */
 };
 
-G_DEFINE_TYPE (GladeEditor, glade_editor, GTK_TYPE_BOX);
+G_DEFINE_TYPE_WITH_PRIVATE (GladeEditor, glade_editor, GTK_TYPE_BOX);
 
 static GParamSpec *properties[N_PROPERTIES];
 
@@ -274,8 +270,6 @@ glade_editor_class_init (GladeEditorClass *klass)
   gtk_widget_class_bind_template_child_private (widget_class, GladeEditor, signal_editor);
 
   gtk_widget_class_bind_template_callback (widget_class, glade_editor_switch_page);
-
-  g_type_class_add_private (klass, sizeof (GladeEditorPrivate));
 }
 
 static void
@@ -373,7 +367,7 @@ glade_editor_init (GladeEditor *editor)
   GladeEditorPrivate *priv;
   gint                icon_height;
 
-  editor->priv = priv = GLADE_EDITOR_GET_PRIVATE (editor);
+  editor->priv = priv = glade_editor_get_instance_private (editor);
 
   priv->show_class_field = TRUE;
 

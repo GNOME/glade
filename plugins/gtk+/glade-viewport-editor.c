@@ -33,29 +33,23 @@ struct _GladeViewportEditorPrivate
   GtkWidget *embed;
 };
 
-G_DEFINE_TYPE (GladeViewportEditor, glade_viewport_editor, GLADE_TYPE_EDITOR_SKELETON)
+G_DEFINE_TYPE_WITH_PRIVATE (GladeViewportEditor, glade_viewport_editor, GLADE_TYPE_EDITOR_SKELETON)
 
 static void
 glade_viewport_editor_class_init (GladeViewportEditorClass * klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   widget_class->grab_focus = glade_viewport_editor_grab_focus;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-viewport-editor.ui");
   gtk_widget_class_bind_template_child_private (widget_class, GladeViewportEditor, embed);
-
-  g_type_class_add_private (object_class, sizeof (GladeViewportEditorPrivate));  
 }
 
 static void
 glade_viewport_editor_init (GladeViewportEditor * self)
 {
-  self->priv = 
-    G_TYPE_INSTANCE_GET_PRIVATE (self,
-				 GLADE_TYPE_VIEWPORT_EDITOR,
-				 GladeViewportEditorPrivate);
+  self->priv = glade_viewport_editor_get_instance_private (self);
 
   gtk_widget_init_template (GTK_WIDGET (self));
 }

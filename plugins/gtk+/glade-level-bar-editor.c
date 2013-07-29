@@ -32,29 +32,23 @@ struct _GladeLevelBarEditorPrivate
 
 static void glade_level_bar_editor_grab_focus (GtkWidget * widget);
 
-G_DEFINE_TYPE (GladeLevelBarEditor, glade_level_bar_editor, GLADE_TYPE_EDITOR_SKELETON)
+G_DEFINE_TYPE_WITH_PRIVATE (GladeLevelBarEditor, glade_level_bar_editor, GLADE_TYPE_EDITOR_SKELETON)
 
 static void
 glade_level_bar_editor_class_init (GladeLevelBarEditorClass * klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   widget_class->grab_focus = glade_level_bar_editor_grab_focus;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-level-bar-editor.ui");
   gtk_widget_class_bind_template_child_private (widget_class, GladeLevelBarEditor, embed);
-
-  g_type_class_add_private (object_class, sizeof (GladeLevelBarEditorPrivate));
 }
 
 static void
 glade_level_bar_editor_init (GladeLevelBarEditor * self)
 {
-  self->priv = 
-    G_TYPE_INSTANCE_GET_PRIVATE (self,
-				 GLADE_TYPE_LEVEL_BAR_EDITOR,
-				 GladeLevelBarEditorPrivate);
+  self->priv = glade_level_bar_editor_get_instance_private (self);
 
   gtk_widget_init_template (GTK_WIDGET (self));
 }

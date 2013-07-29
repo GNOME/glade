@@ -65,7 +65,7 @@ struct _GladePreferencesPrivate
 };
 
 
-G_DEFINE_TYPE (GladePreferences, glade_preferences, GTK_TYPE_DIALOG);
+G_DEFINE_TYPE_WITH_PRIVATE (GladePreferences, glade_preferences, GTK_TYPE_DIALOG);
 
 /********************************************************
  *                       CALLBACKS                      *
@@ -163,9 +163,7 @@ static void
 catalog_selection_changed (GtkTreeSelection *selection,
 			   GladePreferences *preferences)
 {
-  gboolean selected;
-
-  selected = gtk_tree_selection_get_selected (selection, NULL, NULL);
+  gboolean selected = gtk_tree_selection_get_selected (selection, NULL, NULL);
 
   /* Make the button sensitive if anything is selected */
   gtk_widget_set_sensitive (preferences->priv->remove_catalog_button, selected);
@@ -177,9 +175,7 @@ catalog_selection_changed (GtkTreeSelection *selection,
 static void
 glade_preferences_init (GladePreferences *preferences)
 {
-  preferences->priv = G_TYPE_INSTANCE_GET_PRIVATE (preferences,
-						   GLADE_TYPE_PREFERENCES,
-						   GladePreferencesPrivate);
+  preferences->priv = glade_preferences_get_instance_private (preferences);
 
   gtk_widget_init_template (GTK_WIDGET (preferences));
 }
@@ -187,10 +183,8 @@ glade_preferences_init (GladePreferences *preferences)
 static void
 glade_preferences_class_init (GladePreferencesClass *klass)
 {
-  GObjectClass *gobject_class;
   GtkWidgetClass *widget_class;
 
-  gobject_class = G_OBJECT_CLASS (klass);
   widget_class  = GTK_WIDGET_CLASS (klass);
 
   /* Setup the template GtkBuilder xml for this class
@@ -216,8 +210,6 @@ glade_preferences_class_init (GladePreferencesClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, on_preferences_filechooserdialog_response);
   gtk_widget_class_bind_template_callback (widget_class, catalog_selection_changed);
   gtk_widget_class_bind_template_callback (widget_class, remove_catalog_clicked);
-
-  g_type_class_add_private (gobject_class, sizeof (GladePreferencesPrivate));
 }
 
 /********************************************************

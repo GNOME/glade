@@ -33,29 +33,23 @@ struct _GladeGridEditorPrivate
   GtkWidget *embed;
 };
 
-G_DEFINE_TYPE (GladeGridEditor, glade_grid_editor, GLADE_TYPE_EDITOR_SKELETON)
+G_DEFINE_TYPE_WITH_PRIVATE (GladeGridEditor, glade_grid_editor, GLADE_TYPE_EDITOR_SKELETON)
 
 static void
 glade_grid_editor_class_init (GladeGridEditorClass * klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   widget_class->grab_focus = glade_grid_editor_grab_focus;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-grid-editor.ui");
   gtk_widget_class_bind_template_child_private (widget_class, GladeGridEditor, embed);
-
-  g_type_class_add_private (object_class, sizeof (GladeGridEditorPrivate));  
 }
 
 static void
 glade_grid_editor_init (GladeGridEditor * self)
 {
-  self->priv = 
-    G_TYPE_INSTANCE_GET_PRIVATE (self,
-				 GLADE_TYPE_GRID_EDITOR,
-				 GladeGridEditorPrivate);
+  self->priv = glade_grid_editor_get_instance_private (self);
 
   gtk_widget_init_template (GTK_WIDGET (self));
 }

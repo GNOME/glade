@@ -96,7 +96,7 @@ enum
   PROP_PROJECT,
 };
 
-G_DEFINE_TYPE (GladeProjectProperties, glade_project_properties, GTK_TYPE_DIALOG);
+G_DEFINE_TYPE_WITH_PRIVATE (GladeProjectProperties, glade_project_properties, GTK_TYPE_DIALOG);
 
 /********************************************************
  *                  Class/Instance Init                 *
@@ -106,10 +106,7 @@ glade_project_properties_init (GladeProjectProperties *properties)
 {
   GladeProjectPropertiesPrivate *priv;
 
-  properties->priv = priv =
-    G_TYPE_INSTANCE_GET_PRIVATE (properties,
-				 GLADE_TYPE_PROJECT_PROPERTIES,
-				 GladeProjectPropertiesPrivate);
+  properties->priv = priv = glade_project_properties_get_instance_private (properties);
 
   priv->target_radios = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                g_free, NULL);
@@ -164,8 +161,6 @@ glade_project_properties_class_init (GladeProjectPropertiesClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, resource_full_path_set);
   gtk_widget_class_bind_template_callback (widget_class, verify_clicked);
   gtk_widget_class_bind_template_callback (widget_class, on_domain_entry_changed);
-
-  g_type_class_add_private (gobject_class, sizeof (GladeProjectPropertiesPrivate));
 }
 
 /********************************************************

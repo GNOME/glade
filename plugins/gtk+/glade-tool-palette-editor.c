@@ -32,29 +32,23 @@ struct _GladeToolPaletteEditorPrivate
 
 static void glade_tool_palette_editor_grab_focus (GtkWidget * widget);
 
-G_DEFINE_TYPE (GladeToolPaletteEditor, glade_tool_palette_editor, GLADE_TYPE_EDITOR_SKELETON)
+G_DEFINE_TYPE_WITH_PRIVATE (GladeToolPaletteEditor, glade_tool_palette_editor, GLADE_TYPE_EDITOR_SKELETON)
 
 static void
 glade_tool_palette_editor_class_init (GladeToolPaletteEditorClass * klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   widget_class->grab_focus = glade_tool_palette_editor_grab_focus;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-tool-palette-editor.ui");
   gtk_widget_class_bind_template_child_private (widget_class, GladeToolPaletteEditor, embed);
-
-  g_type_class_add_private (object_class, sizeof (GladeToolPaletteEditorPrivate));
 }
 
 static void
 glade_tool_palette_editor_init (GladeToolPaletteEditor * self)
 {
-  self->priv = 
-    G_TYPE_INSTANCE_GET_PRIVATE (self,
-				 GLADE_TYPE_TOOL_PALETTE_EDITOR,
-				 GladeToolPaletteEditorPrivate);
+  self->priv = glade_tool_palette_editor_get_instance_private (self);
 
   gtk_widget_init_template (GTK_WIDGET (self));
 }

@@ -32,29 +32,23 @@ struct _GladeTextViewEditorPrivate
 
 static void glade_text_view_editor_grab_focus (GtkWidget * widget);
 
-G_DEFINE_TYPE (GladeTextViewEditor, glade_text_view_editor, GLADE_TYPE_EDITOR_SKELETON)
+G_DEFINE_TYPE_WITH_PRIVATE (GladeTextViewEditor, glade_text_view_editor, GLADE_TYPE_EDITOR_SKELETON)
 
 static void
 glade_text_view_editor_class_init (GladeTextViewEditorClass * klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   widget_class->grab_focus = glade_text_view_editor_grab_focus;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-text-view-editor.ui");
   gtk_widget_class_bind_template_child_private (widget_class, GladeTextViewEditor, embed);
-
-  g_type_class_add_private (object_class, sizeof (GladeTextViewEditorPrivate));
 }
 
 static void
 glade_text_view_editor_init (GladeTextViewEditor * self)
 {
-  self->priv = 
-    G_TYPE_INSTANCE_GET_PRIVATE (self,
-				 GLADE_TYPE_TEXT_VIEW_EDITOR,
-				 GladeTextViewEditorPrivate);
+  self->priv = glade_text_view_editor_get_instance_private (self);
 
   gtk_widget_init_template (GTK_WIDGET (self));
 }

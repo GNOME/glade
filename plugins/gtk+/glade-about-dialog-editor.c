@@ -53,13 +53,13 @@ struct _GladeAboutDialogEditorPrivate
 static GladeEditableIface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (GladeAboutDialogEditor, glade_about_dialog_editor, GLADE_TYPE_WINDOW_EDITOR,
+                         G_ADD_PRIVATE (GladeAboutDialogEditor)
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
                                                 glade_about_dialog_editor_editable_init));
 
 static void
 glade_about_dialog_editor_class_init (GladeAboutDialogEditorClass * klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-about-dialog-editor.ui");
@@ -74,17 +74,12 @@ glade_about_dialog_editor_class_init (GladeAboutDialogEditorClass * klass)
   gtk_widget_class_bind_template_callback (widget_class, license_type_post_commit);
   gtk_widget_class_bind_template_callback (widget_class, logo_file_toggled);
   gtk_widget_class_bind_template_callback (widget_class, logo_icon_toggled);
-
-  g_type_class_add_private (object_class, sizeof (GladeAboutDialogEditorPrivate));  
 }
 
 static void
 glade_about_dialog_editor_init (GladeAboutDialogEditor * self)
 {
-  self->priv = 
-    G_TYPE_INSTANCE_GET_PRIVATE (self,
-				 GLADE_TYPE_ABOUT_DIALOG_EDITOR,
-				 GladeAboutDialogEditorPrivate);
+  self->priv = glade_about_dialog_editor_get_instance_private (self);
 
   gtk_widget_init_template (GTK_WIDGET (self));
 }
