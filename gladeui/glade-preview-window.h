@@ -73,6 +73,9 @@ void       glade_preview_window_screenshot  (GladePreviewWindow *window,
                                              gboolean wait,
                                              const gchar *filename);
 
+void       glade_preview_window_slideshow_save (GladePreviewWindow *window,
+                                                const gchar        *filename);
+
 G_END_DECLS
 
 #endif /* _GLADE_PREVIEW_WINDOW_H_ */

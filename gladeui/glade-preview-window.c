@@ -108,6 +108,14 @@ glade_preview_window_key_press_event (GtkWidget *widget, GdkEventKey *event)
       case GDK_KEY_F8:
         extension = priv->extension ? priv->extension : "png";
       break;
+      case GDK_KEY_F11:
+        if (gdk_window_get_state (gtk_widget_get_window (widget)) & GDK_WINDOW_STATE_FULLSCREEN)
+          gtk_window_unfullscreen (GTK_WINDOW (widget));
+        else
+          gtk_window_fullscreen (GTK_WINDOW (widget));
+
+        return TRUE;
+      break;
       default:
         return FALSE;
       break;
@@ -334,7 +342,7 @@ check_for_draw (GdkEvent *event, gpointer loop)
 
 /* Taken from Gtk sources gtk-reftest.c  */
 static void
-wait_for_drawing (GdkWindow *window)
+glade_preview_wait_for_drawing (GdkWindow *window)
 {
   GMainLoop *loop;
 
@@ -355,25 +363,70 @@ wait_for_drawing (GdkWindow *window)
   g_main_loop_run (loop);
 }
 
-static inline gdouble
-get_x_scale (GdkScreen *screen)
+static const gchar *
+glade_preview_get_extension (const gchar *filename)
 {
-  return 72.0 / (gdk_screen_get_width (screen) / (gdk_screen_get_width_mm (screen) * 0.03937008));
+  gchar *extension;
+  
+  g_return_val_if_fail (filename != NULL, NULL);
+
+  extension = g_strrstr (filename,".");
+
+  if (extension)
+    extension++;
+
+  if (!extension)
+    {
+      g_warning ("%s has no extension!", filename);
+      return NULL;
+    }
+  return extension;
 }
 
-static inline gdouble
-get_y_scale (GdkScreen *screen)
+static void
+glade_preview_get_scale (GdkScreen *screen, gdouble *sx, gdouble *sy)
 {
-  return 72.0 / (gdk_screen_get_height (screen) / (gdk_screen_get_height_mm (screen) * 0.03937008));
+  if (sx)
+    *sx = 72.0 / (gdk_screen_get_width (screen) / (gdk_screen_get_width_mm (screen) * 0.03937008));
+
+  if (sy)
+    *sy = 72.0 / (gdk_screen_get_height (screen) / (gdk_screen_get_height_mm (screen) * 0.03937008));
 }
 
-typedef enum 
+static cairo_surface_t *
+glade_preview_surface_from_file (const gchar *filename, gdouble w, gdouble h)
 {
-  EXT_TYPE_SVG,
-  EXT_TYPE_PS,
-  EXT_TYPE_PDF,
-  EXT_TYPE_OTHER
-} ExtTypeEnum;
+  cairo_surface_t *surface;
+  const gchar *extension;
+
+  extension = glade_preview_get_extension (filename);
+  
+  if (extension == NULL)
+    return NULL;
+
+  if (g_strcmp0 (extension, "svg") == 0)
+#if CAIRO_HAS_SVG_SURFACE
+    surface = cairo_svg_surface_create (filename, w, h);
+#else
+    g_warning ("PDF not supported by the cairo version used");
+#endif
+  else if (g_strcmp0 (extension, "ps") == 0)
+#if CAIRO_HAS_PS_SURFACE
+    surface = cairo_ps_surface_create (filename, w, h);
+#else
+    g_warning ("PS not supported by the cairo version used");
+#endif
+  else if (g_strcmp0 (extension, "pdf") == 0)
+#if CAIRO_HAS_PDF_SURFACE
+    surface = cairo_pdf_surface_create (filename, w, h);
+#else
+    g_warning ("PDF not supported by the cairo version used");
+#endif
+  else
+    return NULL;
+
+  return surface;
+}
 
 /**
  * glade_preview_window_screenshot:
@@ -390,10 +443,10 @@ glade_preview_window_screenshot (GladePreviewWindow *window,
                                  const gchar *filename)
 {
   GladePreviewWindowPrivate *priv;
+  cairo_surface_t *surface;
   GdkWindow *gdkwindow;
   GdkScreen *screen;
-  gchar *extension;
-  ExtTypeEnum ext_type;
+  gdouble sx, sy;
   gint w, h;
 
   g_return_if_fail (GLADE_IS_PREVIEW_WINDOW (window));
@@ -403,74 +456,99 @@ glade_preview_window_screenshot (GladePreviewWindow *window,
   if (!priv->widget)
     return;
 
-  extension = g_strrstr (filename,".");
-
-  if (extension)
-    extension++;
-
-  if (!extension)
-    {
-      g_warning ("%s has no extension!", filename);
-      return;
-    }
-
   gdkwindow = gtk_widget_get_window (priv->widget);
   screen = gdk_window_get_screen (gdkwindow);
 
   if (wait)
-    wait_for_drawing (gdkwindow);
+    glade_preview_wait_for_drawing (gdkwindow);
 
   w = gtk_widget_get_allocated_width (priv->widget);
   h = gtk_widget_get_allocated_height (priv->widget);
+  glade_preview_get_scale (screen, &sx, &sy);
+    
+  surface = glade_preview_surface_from_file (filename, w*sx, h*sy);
 
-  if (g_strcmp0 (extension, "svg") == 0)
-    ext_type = EXT_TYPE_SVG;
-  else if (g_strcmp0 (extension, "ps") == 0)
-    ext_type = EXT_TYPE_PS;
-  else if (g_strcmp0 (extension, "pdf") == 0)
-    ext_type = EXT_TYPE_PDF;
-  else
-    ext_type = EXT_TYPE_OTHER;
-
-  if (ext_type == EXT_TYPE_OTHER)
+  if (surface)
     {
-      GdkPixbuf *pix = gdk_pixbuf_get_from_window (gdkwindow, 0, 0, w, h);
-
-      gdk_pixbuf_save (pix, filename, extension, NULL, NULL);
-
-      g_object_unref (pix);
-    }
-  else
-    {
-      cairo_surface_t *surface;
-      cairo_t *cr;
-      gdouble sx = get_x_scale (screen);
-      gdouble sy = get_y_scale (screen);
-
-      if (ext_type == EXT_TYPE_SVG)
-#if CAIRO_HAS_SVG_SURFACE
-        surface = cairo_svg_surface_create (filename, w*sx, h*sy);
-#else
-      g_warning ("PDF not supported by the cairo version used");
-#endif
-      else if (ext_type == EXT_TYPE_PS)
-#if CAIRO_HAS_PS_SURFACE
-        surface = cairo_ps_surface_create (filename, w*sx, h*sy);
-#else
-      g_warning ("PS not supported by the cairo version used");
-#endif
-      else if (ext_type == EXT_TYPE_PDF)
-#if CAIRO_HAS_PDF_SURFACE
-        surface = cairo_pdf_surface_create (filename, w*sx, h*sy);
-#else
-      g_warning ("PDF not supported by the cairo version used");
-#endif
-      
-      cr  = cairo_create (surface);
+      cairo_t *cr = cairo_create (surface);
       cairo_scale (cr, sx, sy);
       gtk_widget_draw (priv->widget, cr);
       cairo_destroy (cr);
       cairo_surface_destroy(surface);
-
     }
+  else
+    {
+      GdkPixbuf *pix = gdk_pixbuf_get_from_window (gdkwindow, 0, 0, w, h);
+      const gchar *ext = glade_preview_get_extension (filename);
+      GError *error = NULL;
+      
+      if (gdk_pixbuf_save (pix, filename, ext ? ext : "png", &error, NULL))
+        {
+          g_warning ("Could not save screenshot to %s because %s", filename, error->message);
+          g_error_free (error);
+        }
+
+      g_object_unref (pix);
+    }
+}
+
+/**
+ * glade_preview_window_slideshow_save:
+ * @window: A GladePreviewWindow
+ * @filename:  a filename to save the slideshow.
+ * 
+ * Takes a screenshot of every widget GtkStack children and save it to @filename
+ * each in a different page
+ */
+void
+glade_preview_window_slideshow_save (GladePreviewWindow *window,
+                                     const gchar *filename)
+{
+  GladePreviewWindowPrivate *priv;
+  cairo_surface_t *surface;
+  GdkWindow *gdkwindow;
+  GtkStack *stack;
+  gdouble sx, sy;
+
+  g_return_if_fail (GLADE_IS_PREVIEW_WINDOW (window));
+  g_return_if_fail (filename != NULL);
+  priv = window->priv;
+
+  g_return_if_fail (priv->widget);
+  g_return_if_fail (GTK_IS_STACK (priv->widget));
+  stack = GTK_STACK (priv->widget);
+
+  gdkwindow = gtk_widget_get_window (priv->widget);
+  glade_preview_wait_for_drawing (gdkwindow);
+  
+  glade_preview_get_scale (gtk_widget_get_screen (GTK_WIDGET (window)), &sx, &sy); 
+  surface = glade_preview_surface_from_file (filename, 
+                                             gtk_widget_get_allocated_width (GTK_WIDGET (stack))*sx,
+                                             gtk_widget_get_allocated_height (GTK_WIDGET (stack))*sy);
+
+  if (surface)
+    {
+      GList *l, *children = gtk_container_get_children (GTK_CONTAINER (stack));
+      cairo_t *cr= cairo_create (surface);
+
+      cairo_scale (cr, sx, sy);
+
+      for (l = children; l; l = g_list_next (l))
+        {
+          GtkWidget *child = l->data;
+          gtk_stack_set_visible_child (stack, child);
+          glade_preview_wait_for_drawing (gdkwindow);
+          gtk_widget_draw (child, cr);
+          cairo_show_page (cr);
+        }
+
+      if (children)
+        gtk_stack_set_visible_child (stack, children->data);
+
+      g_list_free (children);
+      cairo_destroy (cr);
+      cairo_surface_destroy(surface);
+    }
+  else
+    g_warning ("Could not save slideshow to %s", filename);
 }
