@@ -1950,16 +1950,25 @@ range of values</_tooltip>
       </packing-properties>
     </glade-widget-class>
 
-    <glade-widget-class name="GtkRevealer" generic-name="revealer" _title="Revealer">
+    <glade-widget-class name="GtkRevealer" generic-name="revealer" _title="Revealer" since="3.10">
+      <post-create-function>glade_gtk_revealer_post_create</post-create-function>
+      <set-property-function>glade_gtk_revealer_set_property</set-property-function>
       <properties>
+        <property id="reveal-child" ignore="True"/>
+	    <property id="glade-test-reveal" _name="Reveal Child Test Proxy" save="False" default="True">
+	      <parameter-spec>
+	        <type>GParamBoolean</type>
+	      </parameter-spec>
+	      <_tooltip>Proxy property to test revealing child in the workspace</_tooltip>
+	    </property>
         <property id="transition-type" default="GTK_REVEALER_TRANSITION_TYPE_NONE">
           <displayable-values>
-            <value id="GTK_REVEALER_TRANSITION_TYPE_NONE"           _name="None" />
-            <value id="GTK_REVEALER_TRANSITION_TYPE_CROSSFADE"      _name="Crossfade" />
-            <value id="GTK_REVEALER_TRANSITION_TYPE_SLIDE_RIGHT"    _name="Slide Right" />
-            <value id="GTK_REVEALER_TRANSITION_TYPE_SLIDE_LEFT"     _name="Slide Left" />
-            <value id="GTK_REVEALER_TRANSITION_TYPE_SLIDE_UP"       _name="Slide Up" />
-            <value id="GTK_REVEALER_TRANSITION_TYPE_SLIDE_DOWN"     _name="Slide Down" />
+            <value id="GTK_REVEALER_TRANSITION_TYPE_NONE"        _name="None" />
+            <value id="GTK_REVEALER_TRANSITION_TYPE_CROSSFADE"   _name="Crossfade" />
+            <value id="GTK_REVEALER_TRANSITION_TYPE_SLIDE_RIGHT" _name="Slide Right" />
+            <value id="GTK_REVEALER_TRANSITION_TYPE_SLIDE_LEFT"  _name="Slide Left" />
+            <value id="GTK_REVEALER_TRANSITION_TYPE_SLIDE_UP"    _name="Slide Up" />
+            <value id="GTK_REVEALER_TRANSITION_TYPE_SLIDE_DOWN"  _name="Slide Down" />
           </displayable-values>
         </property>
       </properties>

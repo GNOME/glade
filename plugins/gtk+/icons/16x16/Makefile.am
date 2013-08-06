@@ -137,6 +137,7 @@ icons_DATA = \
 	widget-gtk-treestore.png \
 	widget-gtk-liststore.png \
 	widget-gtk-scalebutton.png \
+	widget-gtk-revealer.png \
 	widget-gtk-iconfactory.png
 
 

@@ -95,6 +95,7 @@ libgladegtk_la_SOURCES = 		\
 	glade-gtk-recent-chooser-menu.c	\
 	glade-gtk-recent-chooser-widget.c \
 	glade-gtk-recent-file-filter.c	\
+	glade-gtk-revealer.c	\
 	glade-gtk-scale.c		\
 	glade-gtk-scrollbar.c		\
 	glade-gtk-scrolled-window.c	\
