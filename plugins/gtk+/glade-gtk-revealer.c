@@ -22,7 +22,6 @@
  */
 
 #include <config.h>
-#include <glib/gi18n-lib.h>
 #include <gladeui/glade.h>
 
 void
@@ -34,18 +33,7 @@ glade_gtk_revealer_post_create (GladeWidgetAdaptor *adaptor,
     {
       gtk_container_add (GTK_CONTAINER (container), glade_placeholder_new ());
     }
-  gtk_revealer_set_reveal_child (GTK_REVEALER (container), TRUE);
-}
 
-void
-glade_gtk_revealer_set_property (GladeWidgetAdaptor *adaptor,
-                                 GObject            *object,
-                                 const gchar        *id,
-                                 const GValue       *value)
-{
-  if (!g_strcmp0 (id, "glade-test-reveal"))
-    gtk_revealer_set_reveal_child (GTK_REVEALER (object),
-                                   g_value_get_boolean (value));
-  else
-    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
+  /* We always show the widget in the workspace, and ignore reveal-child prop */
+  gtk_revealer_set_reveal_child (GTK_REVEALER (container), TRUE);
 }

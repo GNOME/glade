@@ -1952,15 +1952,8 @@ range of values</_tooltip>
 
     <glade-widget-class name="GtkRevealer" generic-name="revealer" _title="Revealer" since="3.10">
       <post-create-function>glade_gtk_revealer_post_create</post-create-function>
-      <set-property-function>glade_gtk_revealer_set_property</set-property-function>
       <properties>
-        <property id="reveal-child" ignore="True"/>
-	    <property id="glade-test-reveal" _name="Reveal Child Test Proxy" save="False" default="True">
-	      <parameter-spec>
-	        <type>GParamBoolean</type>
-	      </parameter-spec>
-	      <_tooltip>Proxy property to test revealing child in the workspace</_tooltip>
-	    </property>
+        <property id="reveal-child" default="True" ignore="True"/>
         <property id="transition-type" default="GTK_REVEALER_TRANSITION_TYPE_NONE">
           <displayable-values>
             <value id="GTK_REVEALER_TRANSITION_TYPE_NONE"        _name="None" />
