@@ -1990,6 +1990,8 @@ range of values</_tooltip>
     <glade-widget-class name="GtkAspectFrame" generic-name="aspectframe" _title="Aspect Frame"/>
 
     <glade-widget-class name="GtkListBox" generic-name="listbox" _title="List Box" use-placeholders="False">
+
+      <action-activate-function>glade_gtk_listbox_action_activate</action-activate-function>
       <child-action-activate-function>glade_gtk_listbox_child_action_activate</child-action-activate-function>
       <create-widget-function>glade_gtk_create_fixed_widget</create-widget-function>
       <post-create-function>glade_gtk_listbox_post_create</post-create-function>
@@ -1998,6 +2000,10 @@ range of values</_tooltip>
       <remove-child-function>glade_gtk_listbox_remove_child</remove-child-function>
       <child-set-property-function>glade_gtk_listbox_set_child_property</child-set-property-function>
       <child-get-property-function>glade_gtk_listbox_get_child_property</child-get-property-function>
+
+      <actions>
+        <action id="add_row" _name="Add Row" stock="gtk-add" important="True"/>
+      </actions>
 
       <packing-actions>
         <action id="insert_before" _name="Insert Before" stock="gtk-add"/>

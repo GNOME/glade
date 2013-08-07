@@ -189,8 +189,6 @@ glade_gtk_listbox_add_verify (GladeWidgetAdaptor *adaptor,
                               GtkWidget          *child,
                               gboolean            user_feedback)
 {
-  g_return_if_fail (GTK_IS_LIST_BOX (container));
-
   if (!GTK_IS_LIST_BOX_ROW (child))
     {
       if (user_feedback)
@@ -271,6 +269,26 @@ glade_gtk_listbox_child_insert_action (GladeWidgetAdaptor *adaptor,
 }
 
 void
+glade_gtk_listbox_action_activate (GladeWidgetAdaptor * adaptor,
+				   GObject * object,
+				   const gchar * action_path)
+{
+  if (strcmp (action_path, "add_row") == 0)
+    {
+      GladeWidgetAdaptor *adaptor = glade_widget_adaptor_get_by_type (GTK_TYPE_LIST_BOX_ROW);
+      GladeWidget *gparent = glade_widget_get_from_gobject (object);
+      GladeProject *project = glade_widget_get_project (gparent);
+
+      glade_command_create (adaptor, gparent, NULL, project);
+
+      glade_project_selection_set (project, object, TRUE);
+    }
+  else
+    GWA_GET_CLASS (GTK_TYPE_CONTAINER)->action_activate (adaptor,
+                                                         object, action_path);
+}
+
+void
 glade_gtk_listbox_child_action_activate (GladeWidgetAdaptor *adaptor,
                                          GObject            *container,
                                          GObject            *object,
@@ -296,3 +314,4 @@ glade_gtk_listbox_child_action_activate (GladeWidgetAdaptor *adaptor,
                                                                  action_path);
     }
 }
+
