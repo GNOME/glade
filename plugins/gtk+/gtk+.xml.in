@@ -1994,7 +1994,8 @@ range of values</_tooltip>
       <action-activate-function>glade_gtk_listbox_action_activate</action-activate-function>
       <child-action-activate-function>glade_gtk_listbox_child_action_activate</child-action-activate-function>
       <create-widget-function>glade_gtk_create_fixed_widget</create-widget-function>
-      <post-create-function>glade_gtk_listbox_post_create</post-create-function>
+      <!-- We do not want glade_gtk_container_post_create be executed -->
+      <post-create-function>empty</post-create-function>
       <add-child-verify-function>glade_gtk_listbox_add_verify</add-child-verify-function>
       <add-child-function>glade_gtk_listbox_add_child</add-child-function>
       <remove-child-function>glade_gtk_listbox_remove_child</remove-child-function>

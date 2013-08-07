@@ -29,32 +29,10 @@
 #include <gladeui/glade.h>
 #include "glade-gtk.h"
 
-static int
-glade_gtk_listboxrow_sort (GtkListBoxRow *row1,
-                           GtkListBoxRow *row2,
-                           gpointer       user_data)
-{
-  gint pos1 = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (row1), "position"));
-  gint pos2 = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (row2), "position"));
-
-  return pos1 - pos2;
-}
-
-void
-glade_gtk_listbox_post_create (GladeWidgetAdaptor *adaptor,
-                               GObject            *container,
-                               GladeCreateReason   reason)
-{
-  g_return_if_fail (GTK_IS_LIST_BOX (container));
-
-  gtk_list_box_set_sort_func (GTK_LIST_BOX (container), (GtkListBoxSortFunc)glade_gtk_listboxrow_sort, NULL, NULL);
-}
-
 static void
-sync_row_positions (GList *rows)
+sync_row_positions (GtkListBox *listbox)
 {
-  GList *l;
-  GList *changed_rows = NULL;
+  GList *l, *rows;
   int position;
   static gboolean recursion = FALSE;
 
@@ -62,12 +40,15 @@ sync_row_positions (GList *rows)
   if (recursion)
     return;
 
+  rows = gtk_container_get_children (GTK_CONTAINER (listbox));
+
   position = 0;
   for (l = rows; l; l = g_list_next (l))
     {
       gint old_position;
 
-      old_position = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (l->data), "position"));
+      glade_widget_pack_property_get (glade_widget_get_from_gobject (l->data),
+                                      "position", &old_position);
       if (position != old_position)
         {
           /* Update glade with the new value */
@@ -75,19 +56,12 @@ sync_row_positions (GList *rows)
           glade_widget_pack_property_set (glade_widget_get_from_gobject (l->data),
                                           "position", position);
           recursion = FALSE;
-
-          /* Position has changed; need to resort */
-          changed_rows = g_list_prepend (changed_rows, l->data);
         }
 
       position++;
     }
 
-  /* Resort the changed rows */
-  for (l = changed_rows; l; l = g_list_next (l))
-    {
-      gtk_list_box_row_changed (GTK_LIST_BOX_ROW (l->data));
-    }
+  g_list_free (rows);
 }
 
 static void
@@ -95,16 +69,9 @@ glade_gtk_listbox_insert (GtkListBox    *listbox,
                           GtkListBoxRow *row,
                           gint           position)
 {
-  GList *children;
+  gtk_list_box_insert (listbox, GTK_WIDGET (row), position);
 
-  children = gtk_container_get_children (GTK_CONTAINER (listbox));
-
-  gtk_container_add (GTK_CONTAINER (listbox), GTK_WIDGET (row));
-
-  /* Update the positions */
-  children = g_list_insert (children, row, position);
-  sync_row_positions (children);
-  g_list_free (children);
+  sync_row_positions (listbox);
 }
 
 static void
@@ -112,15 +79,10 @@ glade_gtk_listbox_reorder (GtkListBox    *listbox,
                            GtkListBoxRow *row,
                            gint           position)
 {
-  GList *children;
+  gtk_container_remove (GTK_CONTAINER (listbox), GTK_WIDGET (row));
+  gtk_list_box_insert (listbox, GTK_WIDGET (row), position);
 
-  children = gtk_container_get_children (GTK_CONTAINER (listbox));
-
-  /* Update the positions */
-  children = g_list_remove (children, row);
-  children = g_list_insert (children, row, position);
-  sync_row_positions (children);
-  g_list_free (children);
+  sync_row_positions (listbox);
 }
 
 void
@@ -135,7 +97,7 @@ glade_gtk_listbox_get_child_property (GladeWidgetAdaptor *adaptor,
 
   if (strcmp (property_name, "position") == 0)
     {
-      gint position = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (child), "position"));
+      gint position = gtk_list_box_row_get_index (GTK_LIST_BOX_ROW (child));
       g_value_set_int (value, position);
     }
   else
@@ -166,8 +128,6 @@ glade_gtk_listbox_set_child_property (GladeWidgetAdaptor *adaptor,
       gint position;
 
       position = g_value_get_int (value);
-      g_object_set_data (G_OBJECT (child), "position", GINT_TO_POINTER (position));
-
       glade_gtk_listbox_reorder (GTK_LIST_BOX (container),
                                  GTK_LIST_BOX_ROW (child),
                                  position);
@@ -228,17 +188,9 @@ glade_gtk_listbox_remove_child (GladeWidgetAdaptor *adaptor,
                                 GObject            *object,
                                 GObject            *child)
 {
-  GList *children;
-
-  g_return_if_fail (GTK_IS_LIST_BOX (object));
-  g_return_if_fail (GTK_IS_LIST_BOX_ROW (child));
-
   gtk_container_remove (GTK_CONTAINER (object), GTK_WIDGET (child));
 
-  /* Update the positions */
-  children = gtk_container_get_children (GTK_CONTAINER (object));
-  sync_row_positions (children);
-  g_list_free (children);
+  sync_row_positions (GTK_LIST_BOX (object));
 }
 
 static void
@@ -255,7 +207,7 @@ glade_gtk_listbox_child_insert_action (GladeWidgetAdaptor *adaptor,
   parent = glade_widget_get_from_gobject (container);
   glade_command_push_group (group_format, glade_widget_get_name (parent));
 
-  position = GPOINTER_TO_INT (g_object_get_data (object, "position"));
+  position = gtk_list_box_row_get_index (GTK_LIST_BOX_ROW (object));
   if (after)
     position++;
 
@@ -314,4 +266,3 @@ glade_gtk_listbox_child_action_activate (GladeWidgetAdaptor *adaptor,
                                                                  action_path);
     }
 }
-
