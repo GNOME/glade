@@ -73,6 +73,7 @@ typedef enum
 
 struct _GladeDesignLayoutPrivate
 {
+  GladeWidget *gchild;
   GdkWindow *window, *offscreen_window;
 
   gint child_offset;
@@ -475,49 +476,6 @@ glade_design_layout_motion_notify_event (GtkWidget *widget, GdkEventMotion *ev)
 
   glade_design_layout_update_child (GLADE_DESIGN_LAYOUT (widget), child, &allocation);
   return FALSE;
-}
-
-typedef struct
-{
-  GtkWidget *toplevel;
-  gint x;
-  gint y;
-  GtkWidget *placeholder;
-  GladeWidget *gwidget;
-} GladeFindInContainerData;
-
-static void
-glade_design_layout_find_inside_container (GtkWidget                *widget,
-                                           GladeFindInContainerData *data)
-{
-  gint x, y, w, h;
-
-  if (data->gwidget || !gtk_widget_get_mapped (widget))
-    return;
-
-  gtk_widget_translate_coordinates (data->toplevel, widget, data->x, data->y,
-                                    &x, &y);
-  
-  /* Margins are not part of the widget allocation */
-  w = gtk_widget_get_allocated_width (widget) + gtk_widget_get_margin_right (widget);
-  h = gtk_widget_get_allocated_height (widget) + gtk_widget_get_margin_bottom (widget);
-
-  if (x >= (0 - gtk_widget_get_margin_left (widget)) && x < w &&
-      y >= (0 - gtk_widget_get_margin_top (widget)) && y < h)
-    {
-      if (GLADE_IS_PLACEHOLDER (widget))
-        data->placeholder = widget;
-      else
-        {
-          if (GTK_IS_CONTAINER (widget))
-            gtk_container_forall (GTK_CONTAINER (widget), (GtkCallback)
-                                  glade_design_layout_find_inside_container,
-                                  data);
-
-          if (!data->gwidget)
-            data->gwidget = glade_widget_get_from_gobject (widget);
-        }
-    }
 }
 
 static gboolean
@@ -962,7 +920,6 @@ glade_design_layout_add (GtkContainer *container, GtkWidget *widget)
 {
   GladeDesignLayout *layout = GLADE_DESIGN_LAYOUT (container);
   GladeDesignLayoutPrivate *priv = layout->priv;
-  GladeWidget *gchild;
 
   layout->priv->current_width = 0;
   layout->priv->current_height = 0;
@@ -972,10 +929,13 @@ glade_design_layout_add (GtkContainer *container, GtkWidget *widget)
   GTK_CONTAINER_CLASS (glade_design_layout_parent_class)->add (container,
                                                                widget);
 
-  if ((gchild = glade_widget_get_from_gobject (G_OBJECT (widget))))
+  if (!priv->gchild &&
+      (priv->gchild = glade_widget_get_from_gobject (G_OBJECT (widget))))
     {
-      update_widget_name (layout, gchild);
-      g_signal_connect (gchild, "notify::name", G_CALLBACK (on_glade_widget_name_notify), layout);
+      update_widget_name (layout, priv->gchild);
+      g_signal_connect (priv->gchild, "notify::name",
+                        G_CALLBACK (on_glade_widget_name_notify),
+                        layout);
     }
     
   gtk_widget_queue_draw (GTK_WIDGET (container)); 
@@ -987,8 +947,14 @@ glade_design_layout_remove (GtkContainer *container, GtkWidget *widget)
   GladeWidget *gchild;
 
   if ((gchild = glade_widget_get_from_gobject (G_OBJECT (widget))))
-    g_signal_handlers_disconnect_by_func (gchild, on_glade_widget_name_notify,
-                                          GLADE_DESIGN_LAYOUT (container));
+    {
+      GladeDesignLayoutPrivate *priv = GLADE_DESIGN_LAYOUT_PRIVATE (container);
+      
+      g_signal_handlers_disconnect_by_func (gchild, on_glade_widget_name_notify,
+                                            GLADE_DESIGN_LAYOUT (container));
+      if (gchild == priv->gchild)
+        priv->gchild = NULL;
+    }
 
   GTK_CONTAINER_CLASS (glade_design_layout_parent_class)->remove (container, widget);
   gtk_widget_queue_draw (GTK_WIDGET (container));
@@ -2284,6 +2250,210 @@ _glade_design_layout_get_hot_point (GladeDesignLayout *layout,
     *y = priv->drag_y;
 }
 
+typedef struct
+{
+  GtkWidget *toplevel;
+  gint x, y;
+  GtkWidget *child;
+  gint level;
+} FindInContainerData;
+
+static void
+find_first_child_inside_container (GtkWidget *widget, FindInContainerData *data)
+{
+  gint x, y, w, h;
+
+  if (data->child || !gtk_widget_get_mapped (widget))
+    return;
+
+  gtk_widget_translate_coordinates (data->toplevel, widget, data->x, data->y,
+                                    &x, &y);
+  
+  /* Margins are not part of the widget allocation */
+  w = gtk_widget_get_allocated_width (widget) + gtk_widget_get_margin_right (widget);
+  h = gtk_widget_get_allocated_height (widget) + gtk_widget_get_margin_bottom (widget);
+
+  if (x >= (0 - gtk_widget_get_margin_left (widget)) && x < w &&
+      y >= (0 - gtk_widget_get_margin_top (widget)) && y < h)
+    {
+      if (GLADE_IS_PLACEHOLDER (widget))
+        data->child = widget;
+      else
+        {
+          GladeWidget *gwidget = glade_widget_get_from_gobject (widget);
+
+          if (GTK_IS_CONTAINER (widget))
+            {
+              if (gwidget)
+                data->child = _glade_design_layout_get_child_at_position (widget, x, y);
+              else
+                gtk_container_forall (GTK_CONTAINER (widget),
+                                      (GtkCallback) find_first_child_inside_container,
+                                      data);
+            }
+          
+          if (!data->child && gwidget)
+            data->child = widget;
+        }
+    }
+}
+
+static void
+find_last_child_inside_container (GtkWidget *widget, FindInContainerData *data)
+{
+  gint x, y, w, h;
+
+  if ((data->child && data->level) || !gtk_widget_get_mapped (widget))
+    return;
+
+  gtk_widget_translate_coordinates (data->toplevel, widget, data->x, data->y,
+                                    &x, &y);
+
+  /* Margins are not part of the widget allocation */
+  w = gtk_widget_get_allocated_width (widget) + gtk_widget_get_margin_right (widget);
+  h = gtk_widget_get_allocated_height (widget) + gtk_widget_get_margin_bottom (widget);
+
+  if (x >= (0 - gtk_widget_get_margin_left (widget)) && x < w &&
+      y >= (0 - gtk_widget_get_margin_top (widget)) && y < h)
+    {
+      GladeWidget *gwidget = glade_widget_get_from_gobject (widget);
+
+      if (GTK_IS_CONTAINER (widget))
+        {
+          if (!data->level)
+            data->child = NULL;
+
+          data->level++;
+
+          if (gwidget)
+            data->child = _glade_design_layout_get_child_at_position (widget, x, y);
+          else
+            gtk_container_forall (GTK_CONTAINER (widget),
+                                  (GtkCallback) find_last_child_inside_container,
+                                  data);
+          data->level--;
+        }
+
+      if (data->level)
+        {
+          if (!data->child && (GLADE_IS_PLACEHOLDER (widget) || gwidget))
+            data->child = widget;
+        }
+      else if ((!data->child || data->toplevel == gtk_widget_get_parent (data->child)) &&
+               (GLADE_IS_PLACEHOLDER (widget) || gwidget))
+        data->child = widget;
+    }
+}
+
+GtkWidget *
+_glade_design_layout_get_child_at_position (GtkWidget *widget, gint x, gint y)
+{
+  gboolean find_last;
+
+  if (!gtk_widget_get_mapped (widget))
+    return NULL;
+
+  find_last = (GTK_IS_FIXED (widget) || GTK_IS_LAYOUT (widget) || GTK_IS_OVERLAY (widget));
+  
+  if (x >= 0 && x <= gtk_widget_get_allocated_width (widget) &&
+      y >= 0 && y <= gtk_widget_get_allocated_height (widget))
+    {
+      if (GTK_IS_CONTAINER (widget))
+        {
+          FindInContainerData data = {widget, x, y, NULL, 0};
+
+          if (find_last)
+            gtk_container_forall (GTK_CONTAINER (widget),
+                                  (GtkCallback)find_last_child_inside_container,
+                                  &data);
+          else
+            gtk_container_forall (GTK_CONTAINER (widget),
+                                  (GtkCallback)find_first_child_inside_container,
+                                  &data);
+
+          return (data.child) ? data.child : widget;
+        }
+      else
+        return widget;
+    }
+  
+  return NULL;
+}
+
+static inline gboolean
+gdl_get_child_from_event (GladeDesignLayout *layout,
+                          GdkEvent          *event,
+                          GladeWidget      **gwidget,
+                          GtkWidget        **placeholder,
+                          gint              *x,
+                          gint              *y)
+{
+  GladeDesignLayoutPrivate *priv = layout->priv;
+  GtkWidget *child;
+
+  if (!priv->gchild)
+    return TRUE;
+      
+  _glade_design_layout_coords_from_event (priv->window, event, x, y);
+
+  child = GTK_WIDGET (glade_widget_get_object (priv->gchild));
+  if ((child = _glade_design_layout_get_child_at_position (child,
+                                                          *x - priv->child_offset,
+                                                          *y - priv->child_offset)))
+    {
+      if (GLADE_IS_PLACEHOLDER (child))
+        {
+          *gwidget = glade_placeholder_get_parent (GLADE_PLACEHOLDER (child));
+          *placeholder = child;
+        }
+      else
+        {
+          *gwidget = glade_widget_get_from_gobject (child);
+          *placeholder = NULL;
+        }
+
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+static inline void
+gdl_drag_source_check (GladeDesignLayout *layout,
+                       GladePointerMode   mode,
+                       GdkEvent          *event,
+                       GladeWidget       *gwidget,
+                       gint               x,
+                       gint               y)
+{
+  GladeDesignLayoutPrivate *priv = layout->priv;
+
+  if (mode == GLADE_POINTER_SELECT && 
+      event->type == GDK_BUTTON_PRESS &&
+      event->button.button == 1)
+    {
+      GObject *source;
+
+      if (gwidget && (source = glade_widget_get_object (gwidget)) &&
+          !(event->button.state & GDK_SHIFT_MASK))
+        {
+          priv->drag_source = GTK_WIDGET (source);
+
+          gtk_widget_translate_coordinates (GTK_WIDGET (layout),
+                                            priv->drag_source, x, y,
+                                            &priv->drag_x, &priv->drag_y);
+        }
+      else
+        {
+          priv->drag_source = NULL;
+        }
+    }
+  else if (event->type == GDK_BUTTON_RELEASE && event->button.button == 1)
+    {
+      priv->drag_source = NULL;
+    }
+}
+
 /*
  * _glade_design_layout_do_event:
  * @layout: A #GladeDesignLayout
@@ -2297,19 +2467,19 @@ _glade_design_layout_get_hot_point (GladeDesignLayout *layout,
 gboolean
 _glade_design_layout_do_event (GladeDesignLayout *layout, GdkEvent *event)
 {
+  GladeDesignLayoutPrivate *priv = layout->priv;
   GtkWidget *widget = GTK_WIDGET (layout);
-  GladeFindInContainerData data = { widget, 0, };
-  GladeDesignLayoutPrivate *priv;
+  GtkWidget *placeholder;
+  GladeWidget *gwidget;
   GladePointerMode mode;
   gboolean retval;
+  gint x, y;
   GList *l;
-
-  priv = layout->priv;
-
-  _glade_design_layout_coords_from_event (priv->window, event, &data.x, &data.y);
-
+  
+  if (gdl_get_child_from_event (layout, event, &gwidget, &placeholder, &x, &y))
+    return FALSE;
+    
   mode = glade_project_get_pointer_mode (priv->project);
-  glade_design_layout_find_inside_container (widget, &data);
  
   /* Check if we want to enter in margin edit mode */
   if ((event->type == GDK_BUTTON_PRESS || event->type == GDK_2BUTTON_PRESS)  &&
@@ -2319,7 +2489,7 @@ _glade_design_layout_do_event (GladeDesignLayout *layout, GdkEvent *event)
       g_list_next (l) == NULL && GTK_IS_WIDGET (l->data) && 
       gtk_widget_is_ancestor (l->data, widget))
     {
-      if (gdl_get_margins_from_pointer (widget, l->data, data.x, data.y))
+      if (gdl_get_margins_from_pointer (widget, l->data, x, y))
         {
           if (event->button.button == 2)
             {
@@ -2340,37 +2510,18 @@ _glade_design_layout_do_event (GladeDesignLayout *layout, GdkEvent *event)
         }
     }
 
-  if (event->type == GDK_BUTTON_PRESS && event->button.button == 1 &&
-      mode == GLADE_POINTER_SELECT)
-    {
-      GObject *source;
-
-      if (!(event->button.state & GDK_SHIFT_MASK) &&
-          data.gwidget && (source = glade_widget_get_object (data.gwidget)))
-        {
-          priv->drag_source = GTK_WIDGET (source);
-
-          gtk_widget_translate_coordinates (widget, priv->drag_source,
-                                            data.x, data.y,
-                                            &priv->drag_x, &priv->drag_y);
-        }
-      else
-        {
-          priv->drag_source = NULL;
-        }
-    }
-  else if (event->type == GDK_BUTTON_RELEASE && event->button.button == 1)
-    {
-      priv->drag_source = NULL;
-    }
+  /* Check if this event could start a drag event and save the initial
+   * coordinates for later.
+   */
+  gdl_drag_source_check (layout, mode, event, gwidget, x, y);
 
   _glade_design_view_freeze (priv->view);
   
   /* Try the placeholder first */
-  if (data.placeholder && gtk_widget_event (data.placeholder, event)) 
+  if (placeholder && gtk_widget_event (placeholder, event)) 
     retval = TRUE;
-  else if (data.gwidget) /* Then we try a GladeWidget */
-    retval = glade_widget_event (data.gwidget, event);
+  else if (gwidget) /* Then we try a GladeWidget */
+    retval = glade_widget_event (gwidget, event);
   else
     retval = FALSE;
 

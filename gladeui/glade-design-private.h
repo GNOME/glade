@@ -63,6 +63,10 @@ GtkWidget *_glade_design_layout_dnd_icon_widget_new (GdkDragContext *context,
                                                      const gchar *icon_name,
                                                      const gchar *description);
 
+GtkWidget   *_glade_design_layout_get_child_at_position (GtkWidget *widget,
+                                                         gint       x, 
+                                                         gint       y);
+
 G_END_DECLS
 
 #endif /* __GLADE_DESIGN_PRIVATE_H__ */
