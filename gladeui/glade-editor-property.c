@@ -805,7 +805,21 @@ static void
 glade_eprop_numeric_force_update (GtkSpinButton *spin,
 				  GladeEditorProperty *eprop)
 {
-  gtk_spin_button_update (spin);
+  const gchar *txt;
+
+  txt = gtk_entry_get_text (GTK_ENTRY (spin));
+
+  /* Here we only force an update if there is actually text
+   * to force an update with.
+   *
+   * If we unconditionally update the spin button whenever
+   * the entry changes we get bogus results (notably, the
+   * updating the spin button will insert 0 whenever text
+   * is removed, so selecting and inserting text will have
+   * an appended 0).
+   */
+  if (txt && txt[0])
+    gtk_spin_button_update (spin);
 }
 
 static GtkWidget *
@@ -834,6 +848,10 @@ glade_eprop_numeric_create_input (GladeEditorProperty *eprop)
   if (gtk_adjustment_get_upper (adjustment) > 9999999999999999.0)
     gtk_entry_set_width_chars (GTK_ENTRY (eprop_numeric->spin), 16);
 
+  /* The force update callback is here to ensure that whenever the value
+   * is modified, it's committed immediately without requiring entry activation
+   * (this avoids lost modifications when modifying a value and navigating away)
+   */
   g_signal_connect (G_OBJECT (eprop_numeric->spin), "changed",
                     G_CALLBACK (glade_eprop_numeric_force_update), eprop);
 
