@@ -869,12 +869,6 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
 	  GladeWidget *gnew_parent;
           GladeProperty *property;
 
-          /* Dont add non-scrollable widgets to scrolled windows... */
-          if (gparent &&
-              glade_util_check_and_warn_scrollable (gparent, adaptor,
-                                                    glade_app_get_window ()))
-            return;
-
           glade_command_push_group (_("Adding parent %s for %s"),
                                     glade_widget_adaptor_get_title (adaptor), 
 				    glade_widget_get_name (gwidget));

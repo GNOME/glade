@@ -68,14 +68,10 @@ glade_popup_widget_add_cb (GtkMenuItem *item, RootAddData *data)
 {
   g_return_if_fail (data->adaptor != NULL);
 
-  if (!glade_util_check_and_warn_scrollable
-      (data->parent, data->adaptor, glade_app_get_window ()))
-    {
-      if (glade_command_create (data->adaptor, data->parent,
-				data->placeholder, data->project))
+  if (glade_command_create (data->adaptor, data->parent,
+                            data->placeholder, data->project))
 
-      glade_project_set_add_item (data->project, NULL);
-    }
+    glade_project_set_add_item (data->project, NULL);
 }
 
 static void

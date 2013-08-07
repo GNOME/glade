@@ -58,3 +58,17 @@ glade_gtk_scrolled_window_set_property (GladeWidgetAdaptor * adaptor,
   else if (GPC_VERSION_CHECK (glade_property_get_class (property), gtk_major_version, gtk_minor_version + 1))
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->set_property (adaptor, object, id, value);
 }
+
+gboolean
+glade_gtk_scrolled_window_add_child_verify (GladeWidgetAdaptor *adaptor,
+                                            GtkWidget          *container,
+                                            GtkWidget          *child,
+                                            gboolean            user_feedback)
+{
+  GladeWidget *gcontainer = glade_widget_get_from_gobject (container);
+  GladeWidget *gchild = glade_widget_get_from_gobject (child);
+
+  return !glade_util_check_and_warn_scrollable (gcontainer,
+                                                glade_widget_get_adaptor (gchild),
+                                                glade_app_get_window ());
+}

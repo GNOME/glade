@@ -2362,6 +2362,7 @@ range of values</_tooltip>
     <glade-widget-class name="GtkScrolledWindow" generic-name="scrolledwindow" _title="Scrolled Window">
       <create-editable-function>glade_gtk_scrolled_window_create_editable</create-editable-function>
       <set-property-function>glade_gtk_scrolled_window_set_property</set-property-function>
+      <add-child-verify-function>glade_gtk_scrolled_window_add_child_verify</add-child-verify-function>
       <properties>
         <property id="hadjustment" custom-layout="True"/>
         <property id="vadjustment" custom-layout="True"/>

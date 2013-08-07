@@ -4834,12 +4834,6 @@ glade_project_command_paste (GladeProject *project,
         }
     }
 
-  /* Abort operation when adding a non scrollable widget to any kind of GtkScrolledWindow. */
-  if (parent && widget &&
-      glade_util_check_and_warn_scrollable (parent, glade_widget_get_adaptor (widget),
-                                            glade_app_get_window ()))
-    return;
-
   /* Check if we have anything to paste */
   if (g_list_length (glade_clipboard_widgets (clipboard)) == 0)
     {

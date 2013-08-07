@@ -433,19 +433,15 @@ glade_placeholder_button_press (GtkWidget *widget, GdkEventButton *event)
         {
           GladeWidget *parent = glade_placeholder_get_parent (placeholder);
 
-          if (!glade_util_check_and_warn_scrollable
-              (parent, adaptor, glade_app_get_window ()))
-            {
-              /* A widget type is selected in the palette.
-               * Add a new widget of that type.
-               */
-              glade_command_create (adaptor, parent, placeholder, project);
+          /* A widget type is selected in the palette.
+           * Add a new widget of that type.
+           */
+          glade_command_create (adaptor, parent, placeholder, project);
 
-	      glade_project_set_add_item (project, NULL);
+          glade_project_set_add_item (project, NULL);
 
-              /* reset the cursor */
-              glade_cursor_set (project, event->window, GLADE_CURSOR_SELECTOR);
-            }
+          /* reset the cursor */
+          glade_cursor_set (project, event->window, GLADE_CURSOR_SELECTOR);
           handled = TRUE;
         }
     }
