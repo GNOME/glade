@@ -94,7 +94,7 @@ glade_entry_editor_class_init (GladeEntryEditorClass * klass)
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-entry-editor.ui");
 
-  gtk_widget_class_bind_template_child_private (widget_class, GladeEntryEditor, extension_port);
+  gtk_widget_class_bind_template_child_internal_private (widget_class, GladeEntryEditor, extension_port);
   gtk_widget_class_bind_template_child_private (widget_class, GladeEntryEditor, embed);
   gtk_widget_class_bind_template_child_private (widget_class, GladeEntryEditor, text_radio);
   gtk_widget_class_bind_template_child_private (widget_class, GladeEntryEditor, buffer_radio);

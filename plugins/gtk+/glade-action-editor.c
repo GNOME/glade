@@ -57,7 +57,7 @@ glade_action_editor_class_init (GladeActionEditorClass * klass)
   widget_class->grab_focus = glade_action_editor_grab_focus;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-action-editor.ui");
-  gtk_widget_class_bind_template_child_private (widget_class, GladeActionEditor, extension_port);
+  gtk_widget_class_bind_template_child_internal_private (widget_class, GladeActionEditor, extension_port);
   gtk_widget_class_bind_template_child_private (widget_class, GladeActionEditor, embed);
   gtk_widget_class_bind_template_child_private (widget_class, GladeActionEditor, toggle_title);
   gtk_widget_class_bind_template_child_private (widget_class, GladeActionEditor, radio_proxy_editor);

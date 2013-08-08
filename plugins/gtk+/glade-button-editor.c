@@ -88,7 +88,7 @@ glade_button_editor_class_init (GladeButtonEditorClass * klass)
 
   gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/gladegtk/glade-button-editor.ui");
 
-  gtk_widget_class_bind_template_child_private (widget_class, GladeButtonEditor, extension_port);
+  gtk_widget_class_bind_template_child_internal_private (widget_class, GladeButtonEditor, extension_port);
   gtk_widget_class_bind_template_child_private (widget_class, GladeButtonEditor, embed);
   gtk_widget_class_bind_template_child_private (widget_class, GladeButtonEditor, relief_label);
   gtk_widget_class_bind_template_child_private (widget_class, GladeButtonEditor, relief_shell);
