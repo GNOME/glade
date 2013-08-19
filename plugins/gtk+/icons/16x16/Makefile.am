@@ -3,21 +3,21 @@
 iconsdir = $(pkgdatadir)/pixmaps/hicolor/16x16/actions
 
 icons_DATA = \
-        widget-gtk-aboutdialog.png \
-        widget-gtk-accelgroup.png \
-        widget-gtk-accellabel.png \
-        widget-gtk-adjustment.png \
-        widget-gtk-alignment.png \
+	widget-gtk-aboutdialog.png \
+	widget-gtk-accelgroup.png \
+	widget-gtk-accellabel.png \
+	widget-gtk-adjustment.png \
+	widget-gtk-alignment.png \
 	widget-gtk-appchooserbutton.png \
 	widget-gtk-appchooserdialog.png \
 	widget-gtk-appchooserwidget.png \
-        widget-gtk-arrow.png \
-        widget-gtk-aspectframe.png \
-        widget-gtk-assistant.png \
-        widget-gtk-button.png \
-        widget-gtk-buttonbox.png \
-        widget-gtk-box.png \
-        widget-gtk-calendar.png \
+	widget-gtk-arrow.png \
+	widget-gtk-aspectframe.png \
+	widget-gtk-assistant.png \
+	widget-gtk-button.png \
+	widget-gtk-buttonbox.png \
+	widget-gtk-box.png \
+	widget-gtk-calendar.png \
 	widget-gtk-cellareabox.png \
 	widget-gtk-cellrenderertext.png \
 	widget-gtk-cellrendereraccel.png \
@@ -27,106 +27,106 @@ icons_DATA = \
 	widget-gtk-cellrendererpixbuf.png \
 	widget-gtk-cellrendererprogress.png \
 	widget-gtk-cellrenderertoggle.png \
-        widget-gtk-checkbutton.png \
-        widget-gtk-checkmenuitem.png \
-        widget-gtk-colorbutton.png \
-        widget-gtk-colorselection.png \
-        widget-gtk-colorselectiondialog.png \
-        widget-gtk-combobox.png \
+	widget-gtk-checkbutton.png \
+	widget-gtk-checkmenuitem.png \
+	widget-gtk-colorbutton.png \
+	widget-gtk-colorselection.png \
+	widget-gtk-colorselectiondialog.png \
+	widget-gtk-combobox.png \
 	widget-gtk-comboboxtext.png \
-        widget-gtk-default.png \
-        widget-gtk-dialog.png \
-        widget-gtk-drawingarea.png \
-        widget-gtk-entry.png \
-        widget-gtk-entrybuffer.png \
-        widget-gtk-eventbox.png \
-        widget-gtk-expander.png \
-        widget-gtk-filechooserbutton.png \
-        widget-gtk-filechooserdialog.png \
-        widget-gtk-filechooserwidget.png \
-        widget-gtk-filefilter.png \
-        widget-gtk-fixed.png \
-        widget-gtk-fontbutton.png \
-        widget-gtk-fontselection.png \
-        widget-gtk-fontselectiondialog.png \
-        widget-gtk-frame.png \
-        widget-gtk-grid.png \
-        widget-gtk-handlebox.png \
-        widget-gtk-hbox.png \
-        widget-gtk-hbuttonbox.png \
-        widget-gtk-hpaned.png \
-        widget-gtk-hscale.png \
-        widget-gtk-hscrollbar.png \
-        widget-gtk-hseparator.png \
-        widget-gtk-iconview.png \
-        widget-gtk-image.png \
-        widget-gtk-imagemenuitem.png \
+	widget-gtk-default.png \
+	widget-gtk-dialog.png \
+	widget-gtk-drawingarea.png \
+	widget-gtk-entry.png \
+	widget-gtk-entrybuffer.png \
+	widget-gtk-eventbox.png \
+	widget-gtk-expander.png \
+	widget-gtk-filechooserbutton.png \
+	widget-gtk-filechooserdialog.png \
+	widget-gtk-filechooserwidget.png \
+	widget-gtk-filefilter.png \
+	widget-gtk-fixed.png \
+	widget-gtk-fontbutton.png \
+	widget-gtk-fontselection.png \
+	widget-gtk-fontselectiondialog.png \
+	widget-gtk-frame.png \
+	widget-gtk-grid.png \
+	widget-gtk-handlebox.png \
+	widget-gtk-hbox.png \
+	widget-gtk-hbuttonbox.png \
+	widget-gtk-hpaned.png \
+	widget-gtk-hscale.png \
+	widget-gtk-hscrollbar.png \
+	widget-gtk-hseparator.png \
+	widget-gtk-iconview.png \
+	widget-gtk-image.png \
+	widget-gtk-imagemenuitem.png \
 	widget-gtk-infobar.png \
-        widget-gtk-inputdialog.png \
-        widget-gtk-label.png \
-        widget-gtk-layout.png \
-        widget-gtk-linkbutton.png \
-        widget-gtk-menu.png \
-        widget-gtk-menubar.png \
-        widget-gtk-menubutton.png \
-        widget-gtk-menuitem.png \
-        widget-gtk-menutoolbutton.png \
-        widget-gtk-messagedialog.png \
-        widget-gtk-notebook.png \
+	widget-gtk-inputdialog.png \
+	widget-gtk-label.png \
+	widget-gtk-layout.png \
+	widget-gtk-linkbutton.png \
+	widget-gtk-menu.png \
+	widget-gtk-menubar.png \
+	widget-gtk-menubutton.png \
+	widget-gtk-menuitem.png \
+	widget-gtk-menutoolbutton.png \
+	widget-gtk-messagedialog.png \
+	widget-gtk-notebook.png \
 	widget-gtk-offscreenwindow.png \
-        widget-gtk-paned.png \
-        widget-gtk-pagesetupdialog.png \
+	widget-gtk-paned.png \
+	widget-gtk-pagesetupdialog.png \
 	widget-gtk-placessidebar.png \
-        widget-gtk-printdialog.png \
-        widget-gtk-progressbar.png \
-        widget-gtk-levelbar.png \
-        widget-gtk-radiobutton.png \
-        widget-gtk-radiomenuitem.png \
-        widget-gtk-radiotoolbutton.png \
+	widget-gtk-printdialog.png \
+	widget-gtk-progressbar.png \
+	widget-gtk-levelbar.png \
+	widget-gtk-radiobutton.png \
+	widget-gtk-radiomenuitem.png \
+	widget-gtk-radiotoolbutton.png \
 	widget-gtk-recentaction.png \
-        widget-gtk-recentchooser.png \
-        widget-gtk-recentchooserdialog.png \
-        widget-gtk-recentchoosermenu.png \
-        widget-gtk-recentfilter.png \
-        widget-gtk-recentmanager.png \
-        widget-gtk-scale.png \
-        widget-gtk-scrollbar.png \
-        widget-gtk-scrolledwindow.png \
-        widget-gtk-separator.png \
-        widget-gtk-separatormenuitem.png \
-        widget-gtk-separatortoolitem.png \
+	widget-gtk-recentchooser.png \
+	widget-gtk-recentchooserdialog.png \
+	widget-gtk-recentchoosermenu.png \
+	widget-gtk-recentfilter.png \
+	widget-gtk-recentmanager.png \
+	widget-gtk-scale.png \
+	widget-gtk-scrollbar.png \
+	widget-gtk-scrolledwindow.png \
+	widget-gtk-separator.png \
+	widget-gtk-separatormenuitem.png \
+	widget-gtk-separatortoolitem.png \
 	widget-gtk-sizegroup.png \
-        widget-gtk-spinbutton.png \
-        widget-gtk-spinner.png \
-        widget-gtk-statusbar.png \
-        widget-gtk-statusicon.png \
-        widget-gtk-table.png \
+	widget-gtk-spinbutton.png \
+	widget-gtk-spinner.png \
+	widget-gtk-statusbar.png \
+	widget-gtk-statusicon.png \
+	widget-gtk-table.png \
 	widget-gtk-tearoffmenuitem.png \
 	widget-gtk-textbuffer.png \
 	widget-gtk-texttag.png \
 	widget-gtk-texttagtable.png \
-        widget-gtk-textview.png \
-        widget-gtk-togglebutton.png \
-        widget-gtk-switch.png \
-        widget-gtk-toggletoolbutton.png \
-        widget-gtk-toolbar.png \
-        widget-gtk-toolbutton.png \
-        widget-gtk-toolitem.png \
+	widget-gtk-textview.png \
+	widget-gtk-togglebutton.png \
+	widget-gtk-switch.png \
+	widget-gtk-toggletoolbutton.png \
+	widget-gtk-toolbar.png \
+	widget-gtk-toolbutton.png \
+	widget-gtk-toolitem.png \
 	widget-gtk-toolitemgroup.png \
 	widget-gtk-toolpalette.png \
-        widget-gtk-treemodelfilter.png \
-        widget-gtk-treemodelsort.png \
-        widget-gtk-treeselection.png \
-        widget-gtk-treeview.png \
-        widget-gtk-treeviewcolumn.png \
-        widget-gtk-vbox.png \
-        widget-gtk-vbuttonbox.png \
-        widget-gtk-viewport.png \
-        widget-gtk-vpaned.png \
-        widget-gtk-vscale.png \
-        widget-gtk-vscrollbar.png \
-        widget-gtk-vseparator.png \
-        widget-gtk-window.png \
+	widget-gtk-treemodelfilter.png \
+	widget-gtk-treemodelsort.png \
+	widget-gtk-treeselection.png \
+	widget-gtk-treeview.png \
+	widget-gtk-treeviewcolumn.png \
+	widget-gtk-vbox.png \
+	widget-gtk-vbuttonbox.png \
+	widget-gtk-viewport.png \
+	widget-gtk-vpaned.png \
+	widget-gtk-vscale.png \
+	widget-gtk-vscrollbar.png \
+	widget-gtk-vseparator.png \
+	widget-gtk-window.png \
 	widget-gtk-entrycompletion.png \
 	widget-gtk-action.png \
 	widget-gtk-actiongroup.png \
@@ -138,6 +138,7 @@ icons_DATA = \
 	widget-gtk-liststore.png \
 	widget-gtk-scalebutton.png \
 	widget-gtk-revealer.png \
+	widget-gtk-overlay.png \
 	widget-gtk-iconfactory.png
 
 
