@@ -141,6 +141,7 @@ icons_DATA = \
 	widget-gtk-overlay.png \
 	widget-gtk-listbox.png \
 	widget-gtk-listboxrow.png \
+	widget-gtk-searchentry.png \
 	widget-gtk-iconfactory.png
 
 
