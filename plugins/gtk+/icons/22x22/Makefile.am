@@ -139,6 +139,8 @@ icons_DATA = \
 	widget-gtk-scalebutton.png \
 	widget-gtk-revealer.png \
 	widget-gtk-overlay.png \
+	widget-gtk-listbox.png \
+	widget-gtk-listboxrow.png \
 	widget-gtk-iconfactory.png
 
 
