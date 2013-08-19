@@ -2001,7 +2001,7 @@ range of values</_tooltip>
 
     <glade-widget-class name="GtkAspectFrame" generic-name="aspectframe" _title="Aspect Frame"/>
 
-    <glade-widget-class name="GtkListBox" generic-name="listbox" _title="List Box" use-placeholders="False">
+    <glade-widget-class name="GtkListBox" generic-name="listbox" _title="List Box" use-placeholders="False" since="3.10">
 
       <action-activate-function>glade_gtk_listbox_action_activate</action-activate-function>
       <child-action-activate-function>glade_gtk_listbox_child_action_activate</child-action-activate-function>
@@ -2025,7 +2025,14 @@ range of values</_tooltip>
 
       <properties>
         <property id="activate-on-single-click" default="True"/>
-        <property id="selection-mode" default="GTK_SELECTION_SINGLE"/>
+        <property id="selection-mode">
+          <displayable-values>
+	        <value id="GTK_SELECTION_NONE" _name="None"/>
+	        <value id="GTK_SELECTION_SINGLE" _name="Single"/>
+	        <value id="GTK_SELECTION_BROWSE" _name="Browse"/>
+            <value id="GTK_SELECTION_MULTIPLE" _name="Multiple"/>
+          </displayable-values>
+        </property>
       </properties>
 
       <packing-properties>
@@ -2040,7 +2047,7 @@ range of values</_tooltip>
 
     </glade-widget-class>
 
-    <glade-widget-class name="GtkListBoxRow" generic-name="listboxrow" _title="List Box Row"/>
+    <glade-widget-class name="GtkListBoxRow" generic-name="listboxrow" _title="List Box Row" since="3.10"/>
 
     <glade-widget-class name="GtkRange" _title="Range">
       <properties>
@@ -2922,14 +2929,7 @@ range of values</_tooltip>
 			toplevel="True"/>
     <glade-widget-class name="GtkTreeSelection" generic-name="treeselection" _title="Tree Selection">
       <properties>
-        <property id="mode" since="3.2">
-  	  <displayable-values>
-	    <value id="GTK_SELECTION_NONE" _name="None"/>
-	    <value id="GTK_SELECTION_SINGLE" _name="Single"/>
-	    <value id="GTK_SELECTION_BROWSE" _name="Browse"/>
-	    <value id="GTK_SELECTION_MULTIPLE" _name="Multiple"/>
-	  </displayable-values>
-	</property>
+        <property id="mode" since="3.2"/>
       </properties>
     </glade-widget-class>
 
