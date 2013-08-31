@@ -184,7 +184,7 @@
 	  <_tooltip>The accessible role of this object</_tooltip>
       <displayable-values>
         <value id="ATK_ROLE_INVALID" _name="Invalid"/>
-        <value id="ATK_ROLE_ACCEL_LABEL" _name="Acceletaror Label"/>
+        <value id="ATK_ROLE_ACCEL_LABEL" _name="Accelerator Label"/>
         <value id="ATK_ROLE_ALERT" _name="Alert"/>
         <value id="ATK_ROLE_ANIMATION" _name="Animation"/>
         <value id="ATK_ROLE_ARROW" _name="Arrow"/>
@@ -306,12 +306,12 @@
 	  <_tooltip>Indicates an object is a controller for one or more target objects</_tooltip>
 	</property>
 
-	<property id="labelled-by" _name="Labelled By" ignore="True" atk-property="True" save="False">
+	<property id="labelled-by" _name="Labeled By" ignore="True" atk-property="True" save="False">
 	  <parameter-spec>
 	    <type>GladeParamObjects</type>
 	    <value-type>GtkWidget</value-type>
 	  </parameter-spec>
-	  <_tooltip>Indicates an object is labelled by one or more target objects</_tooltip>
+	  <_tooltip>Indicates an object is labeled by one or more target objects</_tooltip>
 	</property>
 
 	<property id="label-for" _name="Label For" ignore="True" atk-property="True" save="False">
@@ -617,7 +617,7 @@ embedded in another object</_tooltip>
 			parent="GtkWindow" toplevel="True" default-width="440" default-height="250" 
 			since="2.20">
       <properties> 
-	<!-- Disable a handfull of properties that dont make sense for GtkOffScreenWindow
+	<!-- Disable a handful of properties that dont make sense for GtkOffScreenWindow
 	     (all window properties actually)
 	  -->
 	<property id="accel-groups" disabled="True"/>
@@ -1172,7 +1172,7 @@ embedded in another object</_tooltip>
 	    <value id="GTK_INPUT_HINT_UPPERCASE_CHARS" _name="Uppercase Chars"/>
 	    <value id="GTK_INPUT_HINT_UPPERCASE_WORDS" _name="Uppercase Words"/>
 	    <value id="GTK_INPUT_HINT_UPPERCASE_SENTENCES" _name="Uppercase Sentences"/>
-	    <value id="GTK_INPUT_HINT_INHIBIT_OSK" _name="Inhibit Onscreen Keyboard"/>
+	    <value id="GTK_INPUT_HINT_INHIBIT_OSK" _name="Inhibit On-screen Keyboard"/>
   	  </displayable-values>
 	</property>
 
