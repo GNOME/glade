@@ -1,54 +1,54 @@
 
 Mailing List
 ~~~~~~~~~~~~
-Glade-3 discussion takes place on glade-devel@ximian.org
+Glade discussion takes place on glade-devel@lists.ximian.com
 To subscribe or to consult archives visit
 http://lists.ximian.com/mailman/listinfo/glade-devel
-When posting to the list include [glade3] in the subject,
-since the list is also used for Glade-2 developement.
 
 
 Bugzilla
 ~~~~~~~~
-Glade-3 bugs are tracked in the glade3 module of 
+Glade bugs are tracked in the glade module of 
 http://bugzilla.gnome.org
 
 
-SVN
+GIT
 ~~~
-The Glade-3 repository is hosted at svn.gnome.org
+The Glade repository is hosted at git.gnome.org
+
+You can browse the source code at https://git.gnome.org/browse/glade
+
 To check out a copy of Glade-3 you can use the following commands:
 
-svn checkout svn://svn.gnome.org/svn/glade3 glade3
-
+git clone git://git.gnome.org/glade
 
 Patches
 ~~~~~~~
 Patches must be in the unified format (diff -u) and must include a
 ChangeLog entry. Please send all patches to bugzilla.
 
-Currently svn only permits this with the following command:
+It is better to use git format-patch command
 
-svn diff --diff-cmd=/usr/bin/diff -x -uBp . > file.patch
+git format-patch HEAD^
 
 Coding Style
 ~~~~~~~~~~~~
-Code in Glade-3 should follow the GNOME Programming Guidelines
+Code in Glade should follow the GNOME Programming Guidelines
 (http://developer.gnome.org/doc/guides/programming-guidelines/),
 basically this means being consistent with the sorrounding code.
 The only exception is that we prefer having braces always on a new line
 e.g.:
 
 if (...)
-{
-	...
-}
+  {
+    ...
+  }
 
 Note however that a lot of the current codebase still uses the following
 style:
 
 if (...) {
-	...
+  ...
 }
 
 Over time we'll migrate to the preferred form.
