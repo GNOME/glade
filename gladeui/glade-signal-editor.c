@@ -100,8 +100,8 @@ glade_signal_is_dummy (GladeSignal *signal)
 }
 
 static void
-glade_signal_editor_take_target_focus_path ( GladeSignalEditor *editor,
-                                             GtkTreePath *path)
+glade_signal_editor_take_target_focus_path (GladeSignalEditor *editor,
+                                            GtkTreePath *path)
 {
   GladeSignalEditorPrivate *priv = editor->priv;
 
@@ -128,28 +128,27 @@ glade_signal_editor_take_target_focus_path ( GladeSignalEditor *editor,
 }
 
 /* Signal handlers */
-static gboolean tree_path_focus_idle (gpointer data)
+static gboolean
+tree_path_focus_idle (gpointer data)
 {
   GladeSignalEditor *self = GLADE_SIGNAL_EDITOR (data);
   GtkTreeSelection *selection;
   GtkTreeIter iter;
   GladeSignal *signal;
 
-  selection = gtk_tree_view_get_selection ( GTK_TREE_VIEW (self->priv->signal_tree) );
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (self->priv->signal_tree));
 
-  if (!gtk_tree_selection_get_selected (selection,
-                                        NULL,
-                                        &iter))
+  if (!gtk_tree_selection_get_selected (selection, NULL, &iter))
     return FALSE;
 
   gtk_tree_model_get (self->priv->model, &iter,
 		      GLADE_SIGNAL_COLUMN_SIGNAL, &signal, -1);
 
-  if ( glade_signal_is_dummy (signal) )
-    gtk_tree_view_set_cursor ( GTK_TREE_VIEW (self->priv->signal_tree),
-                               self->priv->target_focus_path,
-                               NULL,
-                               FALSE);
+  if (glade_signal_is_dummy (signal))
+    gtk_tree_view_set_cursor (GTK_TREE_VIEW (self->priv->signal_tree),
+                              self->priv->target_focus_path,
+                              NULL,
+                              FALSE);
 
   g_object_unref (signal);
   glade_signal_editor_take_target_focus_path (self, NULL);
