@@ -11,7 +11,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2013-09-01 00:32+0000\n"
-"PO-Revision-Date: 2013-09-01 20:27+0100\n"
+"PO-Revision-Date: 2013-09-01 21:31+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -642,12 +642,16 @@ msgid ""
 "Create a backup of the last version of the project every time the project is "
 "saved"
 msgstr ""
+"Ustvari varnostno kopijo zadnje različice projekta vsakič, ko je projekt "
+"shranjen"
 
 #: ../src/glade-preferences.glade.h:4
 msgid ""
 "Automatically save the project to an alternate file whenever\n"
 "the project is modified and the specified timeout elapses"
 msgstr ""
+"Samodejno shrani projekt v novo datoteko, kadar je\n"
+"projekt spremenjen in na določene časovne razmike."
 
 #: ../src/glade-preferences.glade.h:6
 msgid "seconds"
@@ -672,9 +676,8 @@ msgid ""
 msgstr ""
 
 #: ../src/glade-preferences.glade.h:12
-#, fuzzy
 msgid "Deprecation warnings"
-msgstr "Pokaži _opozorila"
+msgstr "Opozorila opuščenosti"
 
 #: ../src/glade-preferences.glade.h:13
 msgid ""
@@ -701,9 +704,8 @@ msgid "column"
 msgstr "stolpec"
 
 #: ../src/glade-preferences.glade.h:20
-#, fuzzy
 msgid "Remove the selected catalog search path"
-msgstr "Odstrani izbrane slike iz kataloga"
+msgstr "Odstrani izbrane poti iskanja kataloga"
 
 #: ../src/glade-preferences.glade.h:21
 #, fuzzy
@@ -1204,7 +1206,7 @@ msgstr "Onemogoči preverjanje"
 
 #: ../gladeui/glade-editor-property.c:685
 msgid "Whether to explicitly disable the check button"
-msgstr ""
+msgstr "Ali naj bo gumb za preverjanje onemogočen"
 
 #: ../gladeui/glade-editor-property.c:691
 #: ../gladeui/glade-property-label.c:143 ../gladeui/glade-property-shell.c:136
@@ -2888,6 +2890,8 @@ msgid ""
 "This property is only available\n"
 "if the entry characters are invisible"
 msgstr ""
+"Lastnost je na voljo le,\n"
+"če so znaki vpisa nevidni"
 
 #: ../plugins/gtk+/glade-gtk-grid.c:597 ../plugins/gtk+/glade-gtk-grid.c:604
 #: ../plugins/gtk+/glade-gtk-list-box.c:252
@@ -3030,7 +3034,7 @@ msgstr "Vrstica napredka ne kaže besedila"
 
 #: ../plugins/gtk+/glade-gtk-scale.c:30
 msgid "Scale is configured to not draw the value"
-msgstr ""
+msgstr "Merilnik je nastavljen, da ne izriše vrednsti"
 
 #: ../plugins/gtk+/glade-gtk-scrolled-window.c:56
 #, fuzzy
@@ -5279,14 +5283,12 @@ msgid "Color Chooser Widget"
 msgstr "Gradnik izbirnika programov"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:511
-#, fuzzy
 msgid "Color Chooser Dialog"
-msgstr "Pogovorno okno izbirnika programov"
+msgstr "Pogovorno okno izbirnika barv"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:512
-#, fuzzy
 msgid "Font Chooser Widget"
-msgstr "Gradnik izbirnika programov"
+msgstr "Gradnik izbirnika pisave"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:513
 #, fuzzy
@@ -5865,9 +5867,8 @@ msgid "Pixbuf column"
 msgstr "Stolpec sličice"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:663
-#, fuzzy
 msgid "GIcon column"
-msgstr "glava stolpca"
+msgstr "Stolpec GIcon"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:664
 msgid "Pixbuf Expander Closed column"
@@ -6171,9 +6172,8 @@ msgid "Combo Box Attributes"
 msgstr "Spustno polje besedila"
 
 #: ../plugins/gtk+/glade-combo-box-editor.ui.h:2
-#, fuzzy
 msgid "Tree model:"
-msgstr "Maska razvrščanja drevesnega pogleda"
+msgstr "Model drevesa:"
 
 #: ../plugins/gtk+/glade-combo-box-editor.ui.h:3
 #: ../plugins/gtk+/glade-combo-box-text-editor.ui.h:3
@@ -6183,9 +6183,8 @@ msgstr "%g milisekund za izris ene sličice okna"
 
 #: ../plugins/gtk+/glade-combo-box-editor.ui.h:4
 #: ../plugins/gtk+/glade-combo-box-text-editor.ui.h:4
-#, fuzzy
 msgid "Tearoff menus"
-msgstr "Meniji imajo odpenjalnike"
+msgstr "Odpenjalni meni"
 
 #: ../plugins/gtk+/glade-combo-box-editor.ui.h:5
 #, fuzzy
@@ -6258,9 +6257,8 @@ msgid "Font Chooser Attributes"
 msgstr "Naziv pogovornega okna za izbor pisave"
 
 #: ../plugins/gtk+/glade-grid-editor.ui.h:1
-#, fuzzy
 msgid "Grid Attributes"
-msgstr "Surovi atributi"
+msgstr "Atributi mreže"
 
 #: ../plugins/gtk+/glade-grid-editor.ui.h:4
 msgid "Spacing:"
@@ -6290,18 +6288,16 @@ msgid "Columns:"
 msgstr "Stolpci:"
 
 #: ../plugins/gtk+/glade-icon-view-editor.ui.h:4
-#, fuzzy
 msgid "Cell Spacing:"
-msgstr "Razmik med vrsticami:"
+msgstr "Razmik med celicami:"
 
 #: ../plugins/gtk+/glade-icon-view-editor.ui.h:5
 msgid "Item Width:"
 msgstr "Širina predmeta:"
 
 #: ../plugins/gtk+/glade-icon-view-editor.ui.h:6
-#, fuzzy
 msgid "View Margin:"
-msgstr "Rob _zaznamovanj"
+msgstr "Rob pogleda:"
 
 #: ../plugins/gtk+/glade-icon-view-editor.ui.h:7
 #, fuzzy
@@ -6371,42 +6367,36 @@ msgid "Message Dialog Attributes"
 msgstr "Osnovno besedilo pogovornega okna sporočila"
 
 #: ../plugins/gtk+/glade-message-dialog-editor.ui.h:2
-#, fuzzy
 msgid "Primary Text:"
-msgstr "Besedilo namiga osnovne ikone"
+msgstr "Osnovno besedilo:"
 
 #: ../plugins/gtk+/glade-message-dialog-editor.ui.h:3
-#, fuzzy
 msgid "Secondary Text:"
-msgstr "Drugotno besedilo"
+msgstr "Drugo besedilo:"
 
 #: ../plugins/gtk+/glade-misc-editor.ui.h:1
-#, fuzzy
 msgid "Alignment and Padding"
-msgstr "Sledenje in poravnava"
+msgstr "Poravnava in blazinjenje"
 
 #: ../plugins/gtk+/glade-misc-editor.ui.h:5
 msgid "Padding"
 msgstr "Blazinjenje"
 
 #: ../plugins/gtk+/glade-notebook-editor.ui.h:1
-#, fuzzy
 msgid "Notebook Attributes"
-msgstr "Surovi atributi"
+msgstr "Atributi beležke"
 
 #: ../plugins/gtk+/glade-notebook-editor.ui.h:2
-#, fuzzy
 msgid "Edit page:"
-msgstr "Uredi _stran"
+msgstr "Uredi stran:"
 
 #: ../plugins/gtk+/glade-notebook-editor.ui.h:3
 msgid "Tab Attributes"
 msgstr "Atributi zavihka"
 
 #: ../plugins/gtk+/glade-progress-bar-editor.ui.h:1
-#, fuzzy
 msgid "Progress Bar Attributes"
-msgstr "Vrednost vrstice napredka"
+msgstr "Atributi vrstice napredka"
 
 #: ../plugins/gtk+/glade-progress-bar-editor.ui.h:2
 #, fuzzy
@@ -6414,19 +6404,16 @@ msgid "Ellipsize Text:"
 msgstr "Besedilne datoteke"
 
 #: ../plugins/gtk+/glade-real-tree-view-editor.ui.h:1
-#, fuzzy
 msgid "Tree View Attributes"
-msgstr "Stolpec drevesnega pogleda"
+msgstr "Atributi drevesnega pogleda"
 
 #: ../plugins/gtk+/glade-real-tree-view-editor.ui.h:2
-#, fuzzy
 msgid "Search Column:"
-msgstr "Stolpec iskanja"
+msgstr "Stolpec iskanja:"
 
 #: ../plugins/gtk+/glade-real-tree-view-editor.ui.h:3
-#, fuzzy
 msgid "Expander Column:"
-msgstr "Stolpec razširilnika"
+msgstr "Stolpec razširilnika:"
 
 #: ../plugins/gtk+/glade-recent-chooser-editor.ui.h:1
 #, fuzzy
@@ -6434,61 +6421,51 @@ msgid "Recent Chooser Attributes"
 msgstr "Meni izbirnika nedavnih datotek"
 
 #: ../plugins/gtk+/glade-scale-editor.ui.h:1
-#, fuzzy
 msgid "Scale Attributes"
-msgstr "Surovi atributi"
+msgstr "Atributi merila"
 
 #: ../plugins/gtk+/glade-scale-editor.ui.h:2
 #: ../plugins/gtk+/glade-scrollbar-editor.ui.h:2
-#, fuzzy
 msgid "Stepper Sensitivity"
-msgstr "Občutljivost spodnjega koračnika"
+msgstr "Občutljivost koračnika"
 
 #: ../plugins/gtk+/glade-scale-editor.ui.h:3
 #: ../plugins/gtk+/glade-scrollbar-editor.ui.h:3
-#, fuzzy
 msgid "Lower:"
-msgstr "_Spusti"
+msgstr "Spodnje:"
 
 #: ../plugins/gtk+/glade-scale-editor.ui.h:4
 #: ../plugins/gtk+/glade-scrollbar-editor.ui.h:4
-#, fuzzy
 msgid "Upper:"
-msgstr "\"Zgornjih\" 0%"
+msgstr "Zgorne:"
 
 #: ../plugins/gtk+/glade-scale-editor.ui.h:5
-#, fuzzy
 msgid "Highlight Origin"
-msgstr "Blizu izvora"
+msgstr "Vir poudarjanja"
 
 #: ../plugins/gtk+/glade-scale-button-editor.ui.h:1
-#, fuzzy
 msgid "Scale Button Attributes"
-msgstr "Skrij osebne atribute"
+msgstr "Atributi merilnega gumba"
 
 #: ../plugins/gtk+/glade-scale-button-editor.ui.h:2
-#, fuzzy
 msgid "Scale orientation:"
-msgstr "Usmerjenost razporeditve"
+msgstr "Usmerjenost merila"
 
 #: ../plugins/gtk+/glade-scrollable-editor.ui.h:1
-#, fuzzy
 msgid "Scrolling Attributes"
-msgstr "Surovi atributi"
+msgstr "Atributi drsenja"
 
 #: ../plugins/gtk+/glade-scrollable-editor.ui.h:4
 msgid "Policy:"
 msgstr "Pravila:"
 
 #: ../plugins/gtk+/glade-scrollbar-editor.ui.h:1
-#, fuzzy
 msgid "Scrollbar Attributes"
-msgstr "Surovi atributi"
+msgstr "Atributi drsnika"
 
 #: ../plugins/gtk+/glade-scrolled-window-editor.ui.h:1
-#, fuzzy
 msgid "Scrolled Window Attributes"
-msgstr "Postavitev drsečega okna"
+msgstr "Atributi drsečega okna"
 
 #: ../plugins/gtk+/glade-scrolled-window-editor.ui.h:2
 msgid "Window Placement:"
@@ -6503,9 +6480,8 @@ msgid "Adjustment:"
 msgstr "Prilagoditev:"
 
 #: ../plugins/gtk+/glade-spin-button-editor.ui.h:1
-#, fuzzy
 msgid "Spin Button Attributes"
-msgstr "Posodobi vrtilni gumb"
+msgstr "Atributi vrtilnega gumba"
 
 #: ../plugins/gtk+/glade-spin-button-editor.ui.h:2
 msgid "Button Orientation:"
