@@ -2132,8 +2132,8 @@ glade_project_load_internal (GladeProject *project)
 
       if (glade_util_ui_message (glade_app_get_window (),
 				 GLADE_UI_YES_OR_NO, NULL,
-				 _("An automatically saved version of `%s' is more recent\n\n"
-				   "Would you like to load the autosave version instead ?"),
+				 _("An automatically saved version of `%s' is more recent.\n\n"
+				   "Would you like to load the autosave version instead?"),
 				 display_name))
 	{
 	  mtime = autosave_mtime;

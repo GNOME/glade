@@ -1151,7 +1151,7 @@ do_save (GladeWindow *window, GladeProject *project, const gchar *path)
     {
       if (!glade_util_ui_message (GTK_WIDGET (window),
 				  GLADE_UI_ARE_YOU_SURE, NULL,
-				  _("Failed to backup existing file, continue saving ?")))
+				  _("Failed to backup existing file, continue saving?")))
 	{
 	  g_free (display_path);
 	  return FALSE;
