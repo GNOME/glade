@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: glade3 master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-08-29 14:10+0000\n"
-"PO-Revision-Date: 2013-08-29 18:40+0100\n"
+"POT-Creation-Date: 2013-09-01 00:32+0000\n"
+"PO-Revision-Date: 2013-09-01 20:27+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -1199,9 +1199,8 @@ msgstr ""
 "Ali naj se uporabi ukaz API za sklad razveljavitev in ponovnih uveljavitev"
 
 #: ../gladeui/glade-editor-property.c:684
-#, fuzzy
 msgid "Disable Check"
-msgstr "Preverjanje uhajanja:"
+msgstr "Onemogoči preverjanje"
 
 #: ../gladeui/glade-editor-property.c:685
 msgid "Whether to explicitly disable the check button"
@@ -1362,12 +1361,10 @@ msgid "The project being inspected"
 msgstr "Nadzorovan projekt"
 
 #: ../gladeui/glade-inspector.c:584
-#, fuzzy
 msgid " < Search Widgets >"
-msgstr "< poišči gradnike >"
+msgstr "< iskanje gradnikov >"
 
 #: ../gladeui/glade-inspector.c:623
-#, fuzzy
 msgid "Expand all"
 msgstr "Razširi vse"
 
@@ -1947,7 +1944,7 @@ msgstr "RazredSignala"
 msgid "The signal class of this signal"
 msgstr "Razred signala tega signala"
 
-#: ../gladeui/glade-signal.c:185 ../gladeui/glade-signal-editor.c:1224
+#: ../gladeui/glade-signal.c:185 ../gladeui/glade-signal-editor.c:1296
 msgid "Detail"
 msgstr "Podrobnost"
 
@@ -1955,7 +1952,7 @@ msgstr "Podrobnost"
 msgid "The detail for this signal"
 msgstr "Podrobnosti signala"
 
-#: ../gladeui/glade-signal.c:191 ../gladeui/glade-signal-editor.c:1239
+#: ../gladeui/glade-signal.c:191 ../gladeui/glade-signal-editor.c:1311
 msgid "Handler"
 msgstr "Upravljalnik"
 
@@ -1979,7 +1976,7 @@ msgstr "Opozorilo podpore"
 msgid "The versioning support warning for this signal"
 msgstr "Opozorilo podpore oštevilčenja različic za ta signal"
 
-#: ../gladeui/glade-signal.c:209 ../gladeui/glade-signal-editor.c:1309
+#: ../gladeui/glade-signal.c:209 ../gladeui/glade-signal-editor.c:1381
 #: ../plugins/gtk+/gtk+.xml.in.h:385
 msgid "After"
 msgstr "Po"
@@ -1996,27 +1993,27 @@ msgstr "Zamenjano"
 msgid "Whether the user data is swapped with the instance for the handler"
 msgstr "Ali naj se uporabniški podatki zamenjajo z primerkom za ročnik"
 
-#: ../gladeui/glade-signal-editor.c:452
+#: ../gladeui/glade-signal-editor.c:517
 msgid "Select an object to pass to the handler"
 msgstr "Izberite predmet, ki naj bo podan ročniku."
 
-#: ../gladeui/glade-signal-editor.c:1217 ../plugins/gtk+/glade-accels.c:445
+#: ../gladeui/glade-signal-editor.c:1289 ../plugins/gtk+/glade-accels.c:445
 msgid "Signal"
 msgstr "Signal"
 
-#: ../gladeui/glade-signal-editor.c:1277
+#: ../gladeui/glade-signal-editor.c:1349
 msgid "User data"
 msgstr "Uporabniški podatki"
 
-#: ../gladeui/glade-signal-editor.c:1292
+#: ../gladeui/glade-signal-editor.c:1364
 msgid "Swap"
 msgstr "Zamenjaj"
 
-#: ../gladeui/glade-signal-editor.c:1455
+#: ../gladeui/glade-signal-editor.c:1528
 msgid "Glade Widget"
 msgstr "Gradnik Glade"
 
-#: ../gladeui/glade-signal-editor.c:1456
+#: ../gladeui/glade-signal-editor.c:1529
 msgid "The glade widget to edit signals"
 msgstr "Gradnik Glade za urejanje signalov"
 
@@ -3649,7 +3646,7 @@ msgstr "Neveljavno"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:56
 #, fuzzy
-msgid "Acceletaror Label"
+msgid "Accelerator Label"
 msgstr "oznaka pospeševalnika"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:57
@@ -4027,8 +4024,9 @@ msgid "Controller For"
 msgstr "Nadzorovan za"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:161
-msgid "Labelled By"
-msgstr "Označen preko"
+#, fuzzy
+msgid "Labeled By"
+msgstr "Po _prihodu"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:162
 msgid "Label For"
@@ -4107,7 +4105,8 @@ msgid "Indicates an object is a controller for one or more target objects"
 msgstr "Določa predmet nadzorovan za enega ali več ciljnih predmetov"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:181
-msgid "Indicates an object is labelled by one or more target objects"
+#, fuzzy
+msgid "Indicates an object is labeled by one or more target objects"
 msgstr "Določa predmet označen preko enega ali več ciljnih predmetov"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:182
@@ -4646,8 +4645,9 @@ msgid "Uppercase Sentences"
 msgstr "Stavki z velikimi črkami"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:317
-msgid "Inhibit Onscreen Keyboard"
-msgstr "Onemogoči zaslonsko tipkovnico"
+#, fuzzy
+msgid "Inhibit On-screen Keyboard"
+msgstr "Zaslonska tipkovnica GNOME"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:318
 msgid "Primary Stock Icon"
