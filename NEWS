@@ -1,4 +1,24 @@
 ============
+Glade 3.15.3
+============
+
+	- Add man pages bug 703013 (Matthias Clasen)
+	- Fixed bug #700730 - Weird windows showing up when a dock is moved while editing a GtkBuilder file
+	  (Sébastien Granjoux)
+	- Double click on a toplevel border select the widget even if there is a child selected.
+	- Support document level comments present before the root element.
+	- Save glade version used to create the file in a comment.
+	- Add GtkRevealer to the Gtk+ catalog (Timm Bäder)
+	- Add GtkListBox support (Kalev Lember)
+	- Added GtkOverlay support
+	- Improved Drag&Drop support, made inspector a drag source
+	- Added GtkApplicationWindow basic support
+	- Added GtkSearchEntry icons 
+	- Fix autogen with latest gnome-common bug 706832 (Seán de Búrca)
+	- Fix a few typos bug 707173 (Christian Kirbach)
+	- Fixed Bug 703621 - Signals treeview: click on user data moves the selected row below (Miguel Azevedo)
+
+============
 Glade 3.15.2
 ============
 	- Add GtkPlacesSidebar to GTK+ catalog (Federico Mena Quintero)
