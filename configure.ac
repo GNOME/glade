@@ -166,10 +166,10 @@ AM_CONDITIONAL(HAVE_GTK_UNIX_PRINT, test x"$have_unix_print" = "xyes")
 dnl ================================================================
 dnl Python for optional python dev libs
 dnl ================================================================
-PYGOBJECT_REQS=2.90.4
-PYGOBJECT_REQUIRED_MAJOR=2
-PYGOBJECT_REQUIRED_MINOR=90
-PYGOBJECT_REQUIRED_MICRO=4
+PYGOBJECT_REQUIRED_MAJOR=3
+PYGOBJECT_REQUIRED_MINOR=8
+PYGOBJECT_REQUIRED_MICRO=0
+PYGOBJECT_REQS=$PYGOBJECT_REQUIRED_MAJOR.$PYGOBJECT_REQUIRED_MINOR.$PYGOBJECT_REQUIRED_MICRO
 
 AC_ARG_ENABLE(python,
     AS_HELP_STRING([--disable-python], [disable python catalog]),
@@ -178,7 +178,7 @@ AC_ARG_ENABLE(python,
 if test x"$check_python" = x"yes"; then
   have_python=yes
 
-  PKG_CHECK_MODULES([PYGOBJECT],[pygobject-3.0 >= ${PYGOBJECT_REQUIRED_MAJOR}.${PYGOBJECT_REQUIRED_MINOR}.${PYGOBJECT_REQUIRED_MICRO}],[have_pygobject=yes],[have_pygobject=no])
+  PKG_CHECK_MODULES([PYGOBJECT],[pygobject-3.0 >= $PYGOBJECT_REQS],[have_pygobject=yes],[have_pygobject=no])
 
   AM_CHECK_PYTHON_HEADERS(, [have_python_headers=no])
   AM_CHECK_PYTHON_LIBS(, [have_python_lib=no])
