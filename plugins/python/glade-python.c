@@ -29,16 +29,14 @@
 static void
 python_init (void)
 {
-  char *argv[1];
+  const gchar *argv = g_get_prgname ();
   
   if (Py_IsInitialized ())
     return;
 
   Py_InitializeEx (0);
 
-  argv[0] = g_get_prgname ();
-
-  PySys_SetArgv (1, argv);
+  PySys_SetArgv (1, (char **) &argv);
 }
 
 static void
@@ -75,7 +73,7 @@ glade_python_init_pygobject_check (gint req_major, gint req_minor, gint req_micr
     }
 }
 
-static void
+static gboolean
 glade_python_setup ()
 {
   gchar *command;
@@ -103,7 +101,8 @@ glade_python_setup ()
                  PYGOBJECT_REQUIRED_MICRO, PyString_AsString (pvalue));
       PyErr_Clear ();
       Py_Finalize ();
-      return;
+
+      return TRUE;
     }
 
   pyg_disable_warning_redirections ();
@@ -120,19 +119,22 @@ glade_python_setup ()
 
   PyRun_SimpleString (command);
   g_free (command);
+  
+  return FALSE;
 }
-
 
 void
 glade_python_init (const gchar * name)
 {
-  static gboolean init = TRUE;
+  static gsize init = 0;
   gchar *import_sentence;
 
-  if (init)
+  if (g_once_init_enter (&init))
     {
-      glade_python_setup ();
-      init = FALSE;
+      if (glade_python_setup ())
+        return;
+
+      g_once_init_leave (&init, TRUE);
     }
 
   /* Yeah, we use the catalog name as the library */
