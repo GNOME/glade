@@ -3112,6 +3112,16 @@ glade_window_init (GladeWindow *window)
 
   priv->default_path = NULL;
 
+  /* Init preferences first, this has to be done before anything initializes
+   * the real GladeApp, so that catalog paths are loaded correctly before we
+   * continue.
+   *
+   * This should be fixed so that dynamic addition of catalogs at runtime
+   * is supported.
+   */
+  priv->preferences = (GladePreferences *)glade_preferences_new ();
+  glade_preferences_load (window->priv->preferences, glade_app_get_config ());
+  
   /* We need this for the icons to be available */
   glade_init ();
 
@@ -3139,16 +3149,6 @@ glade_window_constructed (GObject *object)
 
   /* Chain up... */
   G_OBJECT_CLASS (glade_window_parent_class)->constructed (object);
-
-  /* Init preferences first, this has to be done before anything initializes
-   * the real GladeApp, so that catalog paths are loaded correctly before we
-   * continue.
-   *
-   * This should be fixed so that dynamic addition of catalogs at runtime
-   * is supported.
-   */
-  priv->preferences = (GladePreferences *)glade_preferences_new ();
-  glade_preferences_load (window->priv->preferences, glade_app_get_config ());
 
   /* recent files */
   priv->recent_manager = gtk_recent_manager_get_default ();
