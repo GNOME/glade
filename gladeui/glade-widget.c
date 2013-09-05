@@ -84,11 +84,10 @@ enum
 enum
 {
 	PROP_0,
+	PROP_ADAPTOR,
 	PROP_NAME,
 	PROP_INTERNAL,
 	PROP_ANARCHIST,
-	PROP_OBJECT,
-	PROP_ADAPTOR,
 	PROP_PROJECT,
 	PROP_PROPERTIES,
 	PROP_PARENT,
@@ -98,7 +97,8 @@ enum
 	PROP_REASON,
 	PROP_TOPLEVEL_WIDTH,
 	PROP_TOPLEVEL_HEIGHT,
-	PROP_SUPPORT_WARNING
+	PROP_SUPPORT_WARNING,
+	PROP_OBJECT
 };
 
 static guint         glade_widget_signals[LAST_SIGNAL] = {0};
@@ -1084,6 +1084,14 @@ glade_widget_class_init (GladeWidgetClass *klass)
 	klass->motion_notify_event    = NULL;
 
 	g_object_class_install_property
+		(object_class, PROP_ADAPTOR,
+		   g_param_spec_object ("adaptor", _("Adaptor"),
+					_("The class adaptor for the associated widget"),
+					GLADE_TYPE_WIDGET_ADAPTOR,
+					G_PARAM_READWRITE |
+					G_PARAM_CONSTRUCT_ONLY));
+	
+	g_object_class_install_property
 		(object_class, PROP_NAME,
 		 g_param_spec_string ("name", _("Name"),
 				      _("The name of the widget"),
@@ -1105,22 +1113,6 @@ glade_widget_class_init (GladeWidgetClass *klass)
 					 "an ancestral child or an anarchist child"),
 				       FALSE, G_PARAM_READWRITE |
 				       G_PARAM_CONSTRUCT_ONLY));
-
-	g_object_class_install_property
-		(object_class, PROP_OBJECT,
-		 g_param_spec_object ("object", _("Object"),
-				      _("The object associated"),
-				      G_TYPE_OBJECT,
-				      G_PARAM_READWRITE |
-				      G_PARAM_CONSTRUCT));
-
-	g_object_class_install_property
-		(object_class, PROP_ADAPTOR,
-		   g_param_spec_object ("adaptor", _("Adaptor"),
-					_("The class adaptor for the associated widget"),
-					GLADE_TYPE_WIDGET_ADAPTOR,
-					G_PARAM_READWRITE |
-					G_PARAM_CONSTRUCT_ONLY));
 
 	g_object_class_install_property
 		(object_class, PROP_PROJECT,
@@ -1199,6 +1191,17 @@ glade_widget_class_init (GladeWidgetClass *klass)
 		 g_param_spec_string ("support warning", _("Support Warning"),
 				      _("A warning string about version mismatches"),
 				      NULL, G_PARAM_READABLE));
+
+	/* this property setter depends on adaptor and internal properties to be set
+	 * so we install it at the end since in new glib construct properties are
+	 * set in instalation order!
+	 */
+	g_object_class_install_property
+		(object_class, PROP_OBJECT,
+		 g_param_spec_object ("object", _("Object"),
+				      _("The object associated"),
+				      G_TYPE_OBJECT,
+				      G_PARAM_READWRITE));
 
 	/**
 	 * GladeWidget::add-signal-handler:
