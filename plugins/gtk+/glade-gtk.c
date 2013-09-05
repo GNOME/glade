@@ -992,12 +992,6 @@ glade_gtk_widget_set_property (GladeWidgetAdaptor *adaptor,
 			       const gchar        *id,
 			       const GValue       *value)
 {
-        /* FIXME: is this still needed with the new gtk+ tooltips? */
-	if (!strcmp (id, "tooltip"))
-	{
-                id = "tooltip-text";
-        }
-
         GWA_GET_CLASS (G_TYPE_OBJECT)->set_property (adaptor, object, id, value);
 }
 
@@ -1007,11 +1001,6 @@ glade_gtk_widget_get_property (GladeWidgetAdaptor *adaptor,
 			       const gchar        *id,
 			       GValue             *value)
 {
-	if (!strcmp (id, "tooltip"))
-	{
-                id = "tooltip-text";
-	}
-	
         GWA_GET_CLASS (G_TYPE_OBJECT)->get_property (adaptor, object, id, value);
 }
 

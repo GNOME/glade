@@ -52,10 +52,10 @@
       <properties>
 	<!-- Disable tooltip-text & tooltip-markup in libglade since we do
 	     conversions of the "tooltip" fake property -->
-	<property id="tooltip-text" since="2.12" weight="4.2" translatable="True" libglade-unsupported="True">
+	<property id="tooltip-text" since="2.12" weight="4.2" translatable="True" libglade-unsupported="True" ignore="True">
 	  <visible-lines>2</visible-lines>
 	</property>
-	<property id="tooltip-markup" since="2.12" weight="4.1" libglade-unsupported="True"/>
+	<property id="tooltip-markup" since="2.12" weight="4.1" libglade-unsupported="True" ignore="True"/>
         <property id="can-focus" common="True" save-always="True"/>
 	<property id="has-default" common="True" ignore="True"/>
 	<property id="can-default" common="True" />
@@ -65,7 +65,7 @@
 	<property id="no-show-all" weight="4.6" ignore="True"/>
 
 	<property common="True" id="tooltip" _name="Tooltip" default="" translatable="True" weight="4.5" 
-		  libglade-only="True">
+		  libglade-only="True" ignore="True">
 	  <parameter-spec>
 	    <type>GParamString</type>
 	  </parameter-spec>
