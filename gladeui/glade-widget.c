@@ -706,7 +706,7 @@ glade_widget_constructor (GType                  type,
 			  GObjectConstructParam *construct_properties)
 {
 	GladeWidget      *gwidget;
-	GObject          *ret_obj, *object;
+	GObject          *ret_obj;
 	GList            *properties = NULL, *list;
 
 	ret_obj = G_OBJECT_CLASS (glade_widget_parent_class)->constructor
@@ -752,11 +752,9 @@ glade_widget_constructor (GType                  type,
 	}
 
 	if (gwidget->object == NULL)
-	{
-		object = glade_widget_build_object (gwidget, 
-						    gwidget->construct_template, 
-						    gwidget->construct_reason);
-	}
+		glade_widget_build_object (gwidget,
+		                           gwidget->construct_template, 
+		                           gwidget->construct_reason);
 
 	/* Copy sync parentless widget props here after a dup
 	 */
@@ -2340,7 +2338,7 @@ glade_widget_rebuild (GladeWidget *gwidget)
 	GladeWidgetAdaptor *adaptor;
 	GladeProject       *project = NULL;
 	GList              *children;
-	gboolean            reselect = FALSE, inproject;
+	gboolean            reselect = FALSE;
 	GList              *restore_properties = NULL;
 	GList              *save_properties, *l;	
 	GladeWidget        *parent = NULL;
@@ -2368,10 +2366,6 @@ glade_widget_rebuild (GladeWidget *gwidget)
 	/* Here we take care removing the widget from the project and
 	 * the selection before rebuilding the instance.
 	 */
-	inproject = gwidget->project ?
-		(glade_project_has_object
-		 (gwidget->project, gwidget->object) ? TRUE : FALSE) : FALSE;
-
 	if (project)
 	{
 		if (glade_project_is_selected (project, gwidget->object))
@@ -3356,14 +3350,15 @@ glade_widget_set_object (GladeWidget *gwidget, GObject *new_object, gboolean des
 	GObject            *old_object;
 	
 	g_return_if_fail (GLADE_IS_WIDGET (gwidget));
+	adaptor = gwidget->adaptor;
+	g_return_if_fail (adaptor);
 	g_return_if_fail (new_object == NULL || 
-			  g_type_is_a (G_OBJECT_TYPE (new_object),
-				       gwidget->adaptor->type));
+			  g_type_is_a (G_OBJECT_TYPE (new_object), 
+			               adaptor->type));
 
 	if (gwidget->object == new_object)
 		return;
 
-	adaptor         = gwidget->adaptor;
 	old_object      = gwidget->object;
 	gwidget->object = new_object;
 
