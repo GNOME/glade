@@ -98,7 +98,6 @@ struct _GladeSignalEditorPrivate
 
 	GtkWidget *signals_list;
 	GtkTreeStore *model;
-	GtkTreeView *tree_view;
 
 	GtkTreeModel *handler_store;
 	GtkTreeModel *userdata_store;
@@ -1124,7 +1123,7 @@ glade_signal_editor_constructor (GType                  type,
 					GTK_POLICY_AUTOMATIC,
 					GTK_POLICY_AUTOMATIC);
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scroll),
-					     GTK_SHADOW_IN);
+					     GTK_SHADOW_NONE);
 
 	g_signal_emit_by_name (glade_app_get(), "signal-editor-created", retval);
 

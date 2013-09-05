@@ -191,8 +191,6 @@ glade_editor_notebook_page (GladeEditor *editor, const gchar *name)
 	GtkWidget     *alignment;
 	GtkWidget     *sw;
 	GtkWidget     *label_widget;
-	GtkWidget     *image;
-	static gchar  *path;
 	static gint page = 0;
 
 	/* alignment is needed to ensure property labels have some padding on the left */
@@ -202,14 +200,13 @@ glade_editor_notebook_page (GladeEditor *editor, const gchar *name)
 	/* construct tab label widget */
 	if (strcmp (name, _("Accessibility")) == 0)
 	{
-		path = g_build_filename (glade_app_get_pixmaps_dir (), "atk.png", NULL);
-		image = gtk_image_new_from_file (path);
-		label_widget = gtk_event_box_new ();
-		gtk_container_add (GTK_CONTAINER (label_widget), image);
+		gchar  *path = g_build_filename (glade_app_get_pixmaps_dir (), "atk.png", NULL);
+		
+		label_widget = gtk_image_new_from_file (path);
 		gtk_widget_show (label_widget);
-		gtk_widget_show (image);
 
 		gtk_widget_set_tooltip_text (label_widget, name);
+		g_free (path);
 	}
 	else
 	{
@@ -222,7 +219,6 @@ glade_editor_notebook_page (GladeEditor *editor, const gchar *name)
 		gtk_alignment_set (GTK_ALIGNMENT (alignment), 0.5, 0.5, 1, 1);
 		gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 0, 0, 0, 0);
 
-		gtk_container_set_border_width (GTK_CONTAINER (alignment), 6);
 		gtk_notebook_insert_page (GTK_NOTEBOOK (editor->notebook), alignment, 
 					  label_widget, page++);
 	}
@@ -234,7 +230,8 @@ glade_editor_notebook_page (GladeEditor *editor, const gchar *name)
 						GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 		gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (sw),
 						       GTK_WIDGET (alignment));
-		gtk_container_set_border_width (GTK_CONTAINER (sw), 6);
+		gtk_viewport_set_shadow_type (GTK_VIEWPORT (gtk_bin_get_child (GTK_BIN(sw))),
+		                              GTK_SHADOW_NONE);
 
 		gtk_notebook_insert_page (GTK_NOTEBOOK (editor->notebook), sw, 
 					  label_widget, page++);
