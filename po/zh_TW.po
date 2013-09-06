@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3 3.10.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-29 22:09+0800\n"
-"PO-Revision-Date: 2013-08-28 09:35+0800\n"
+"POT-Creation-Date: 2013-09-06 16:19+0800\n"
+"PO-Revision-Date: 2013-09-04 16:21+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (Taiwan) <zh-l10n@lists.linux.org.tw>\n"
 "Language: zh_TW\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.5.5\n"
 
 #: ../data/glade.desktop.in.in.h:1 ../src/main.c:42
 msgid "Glade"
@@ -1921,7 +1921,7 @@ msgstr "訊號類別"
 msgid "The signal class of this signal"
 msgstr "這個訊號的訊號類別"
 
-#: ../gladeui/glade-signal.c:185 ../gladeui/glade-signal-editor.c:1224
+#: ../gladeui/glade-signal.c:185 ../gladeui/glade-signal-editor.c:1296
 msgid "Detail"
 msgstr "詳細資料"
 
@@ -1929,7 +1929,7 @@ msgstr "詳細資料"
 msgid "The detail for this signal"
 msgstr "這個信號的詳細資料"
 
-#: ../gladeui/glade-signal.c:191 ../gladeui/glade-signal-editor.c:1239
+#: ../gladeui/glade-signal.c:191 ../gladeui/glade-signal-editor.c:1311
 msgid "Handler"
 msgstr "處理器"
 
@@ -1953,7 +1953,7 @@ msgstr "支援警示"
 msgid "The versioning support warning for this signal"
 msgstr "這個信號的版本支援警示"
 
-#: ../gladeui/glade-signal.c:209 ../gladeui/glade-signal-editor.c:1309
+#: ../gladeui/glade-signal.c:209 ../gladeui/glade-signal-editor.c:1381
 #: ../plugins/gtk+/gtk+.xml.in.h:385
 msgid "After"
 msgstr "之後"
@@ -1970,27 +1970,27 @@ msgstr "置換"
 msgid "Whether the user data is swapped with the instance for the handler"
 msgstr "使用者資料是否應置換處理器的實體"
 
-#: ../gladeui/glade-signal-editor.c:452
+#: ../gladeui/glade-signal-editor.c:517
 msgid "Select an object to pass to the handler"
 msgstr "選擇要傳送給處理器的物件"
 
-#: ../gladeui/glade-signal-editor.c:1217 ../plugins/gtk+/glade-accels.c:445
+#: ../gladeui/glade-signal-editor.c:1289 ../plugins/gtk+/glade-accels.c:445
 msgid "Signal"
 msgstr "信號"
 
-#: ../gladeui/glade-signal-editor.c:1277
+#: ../gladeui/glade-signal-editor.c:1349
 msgid "User data"
 msgstr "使用者資料"
 
-#: ../gladeui/glade-signal-editor.c:1292
+#: ../gladeui/glade-signal-editor.c:1364
 msgid "Swap"
 msgstr "置換"
 
-#: ../gladeui/glade-signal-editor.c:1455
+#: ../gladeui/glade-signal-editor.c:1528
 msgid "Glade Widget"
 msgstr "Glade 視窗元件"
 
-#: ../gladeui/glade-signal-editor.c:1456
+#: ../gladeui/glade-signal-editor.c:1529
 msgid "The glade widget to edit signals"
 msgstr "編輯信號的 glade 視窗元件"
 
@@ -3604,7 +3604,7 @@ msgid "Invalid"
 msgstr "無效的"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:56
-msgid "Acceletaror Label"
+msgid "Accelerator Label"
 msgstr "捷徑鍵標籤"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:57
@@ -3982,8 +3982,8 @@ msgid "Controller For"
 msgstr "控制著"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:161
-msgid "Labelled By"
-msgstr "由此標籤"
+msgid "Labeled By"
+msgstr "設標籤於"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:162
 msgid "Label For"
@@ -4062,7 +4062,7 @@ msgid "Indicates an object is a controller for one or more target objects"
 msgstr "表示物件是一或多個目標物件的控制器"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:181
-msgid "Indicates an object is labelled by one or more target objects"
+msgid "Indicates an object is labeled by one or more target objects"
 msgstr "表示物件被一或多個目標物件標籤"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:182
@@ -4587,7 +4587,7 @@ msgid "Uppercase Sentences"
 msgstr "大寫段落"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:317
-msgid "Inhibit Onscreen Keyboard"
+msgid "Inhibit On-screen Keyboard"
 msgstr "抑制螢幕鍵盤"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:318
@@ -5500,12 +5500,12 @@ msgstr "可編輯欄"
 #: ../plugins/gtk+/gtk+.xml.in.h:588
 #, fuzzy
 msgid "Ellipsize column"
-msgstr "欄位標頭"
+msgstr "加入一欄"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:589
 #, fuzzy
 msgid "Family column"
-msgstr "欄位標頭"
+msgstr "加入一欄"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:590
 msgid "Font column"
@@ -5835,7 +5835,7 @@ msgstr "方向欄"
 #: ../plugins/gtk+/gtk+.xml.in.h:671
 #, fuzzy
 msgid "Pulse column"
-msgstr "欄位標頭"
+msgstr "加入一欄"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:672
 msgid "Text Horizontal Alignment column"
