@@ -3825,11 +3825,13 @@ glade_widget_read (GladeProject *project,
 		     glade_xml_get_property_string_required
 		     (node, GLADE_XML_TAG_ID, NULL)) != NULL)
 		{
+			adaptor = glade_widget_adaptor_get_by_name (klass);
 			/* 
 			 * Create GladeWidget instance based on type. 
 			 */
-			if ((adaptor = 
-			     glade_widget_adaptor_get_by_name (klass)) != NULL)
+			if (adaptor &&
+			    G_TYPE_IS_INSTANTIATABLE (adaptor->type) &&
+			    G_TYPE_IS_ABSTRACT (adaptor->type) == FALSE)
 			{
 
 				// Internal children !!!
@@ -3868,8 +3870,27 @@ glade_widget_read (GladeProject *project,
 				glade_widget_adaptor_read_widget (adaptor,
 								  widget,
 								  node);
-
 			}
+			else if (adaptor)
+			{
+				if (G_TYPE_IS_ABSTRACT (adaptor->type))
+					glade_util_ui_message (glade_app_get_window (),
+				                       GLADE_UI_WARN, NULL,
+				                       "Unable to load widget %s with abstract class %s",
+				                       id, klass);
+				else
+					glade_util_ui_message (glade_app_get_window (),
+				                       GLADE_UI_WARN, NULL,
+				                       "Unable to load widget %s of class %s",
+				                       id, klass);
+					
+			}
+			else
+				glade_util_ui_message (glade_app_get_window (),
+				                       GLADE_UI_WARN, NULL,
+				                       "Unable to load widget %s of unknown class %s",
+				                       id, klass);
+
 			g_free (id);
 		}
 		g_free (klass);
