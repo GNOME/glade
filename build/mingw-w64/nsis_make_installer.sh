@@ -109,6 +109,11 @@ fi
 
 fi
 
+if test ! -e $MINGW_ROOT_BIN/bin/glade.exe; then
+	echo Executable not found! Aborting...
+	exit 1
+fi
+
 #copy files to installer directory
 
 cp $ROOT/build/mingw-w64/glade.nsi $ROOT/data/icons/glade.ico $MINGW_ROOT_BIN
