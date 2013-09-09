@@ -447,6 +447,9 @@ glade_gtk_box_add_child (GladeWidgetAdaptor * adaptor,
 
   gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
 
+  if (glade_widget_superuser ())
+    return;
+
   children = gtk_container_get_children (GTK_CONTAINER (object));
   num_children = g_list_length (children);
   g_list_free (children);
