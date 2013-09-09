@@ -2495,6 +2495,7 @@ glade_widget_rebuild (GladeWidget * gwidget)
    * reparenting in the process of rebuilding a widget instance
    */
   gwidget->priv->rebuilding = TRUE;
+  glade_widget_push_superuser ();
 
   adaptor = gwidget->priv->adaptor;
 
@@ -2579,9 +2580,7 @@ glade_widget_rebuild (GladeWidget * gwidget)
   /* Reparent any children of the old object to the new object
    * (this function will consume and free the child list).
    */
-  glade_widget_push_superuser ();
   glade_widget_insert_children (gwidget, children);
-  glade_widget_pop_superuser ();
 
   /* Add new object to parent
    */
@@ -2640,7 +2639,7 @@ glade_widget_rebuild (GladeWidget * gwidget)
   g_object_unref (gwidget);
 
   gwidget->priv->rebuilding = FALSE;
-
+  glade_widget_pop_superuser ();
 }
 
 /**
