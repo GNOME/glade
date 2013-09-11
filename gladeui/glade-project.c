@@ -3731,15 +3731,25 @@ glade_project_remove_object (GladeProject *project, GObject *object)
   g_return_if_fail (GLADE_IS_PROJECT (project));
   g_return_if_fail (G_IS_OBJECT (object));
 
-  if (!glade_project_has_object (project, object))
-    return;
-
   if (GLADE_IS_PLACEHOLDER (object))
     return;
 
   if ((gwidget = glade_widget_get_from_gobject (object)) == NULL)
-    return;
+    {
+      if (g_list_find (project->priv->objects, object))
+        {
+          project->priv->tree = g_list_remove_all (project->priv->tree, object);
+          project->priv->objects = g_list_remove_all (project->priv->objects, object);
+          project->priv->selection = g_list_remove_all (project->priv->selection, object);
+          g_warning ("Internal data model error, removing object %p %s without a GladeWidget wrapper",
+                     object, G_OBJECT_TYPE_NAME (object));
+        }
+      return;
+    }
 
+  if (!glade_project_has_object (project, object))
+    return;
+  
   /* Recurse and remove deepest children first */
   if ((children = glade_widget_get_children (gwidget)) != NULL)
     {
