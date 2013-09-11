@@ -2483,7 +2483,7 @@ glade_widget_rebuild (GladeWidget * gwidget)
   GladeProject *project = NULL;
   GladeWidget  *parent = NULL;
   GList *children;
-  gboolean reselect = FALSE;
+  GList *selection = NULL;
   GList *restore_properties = NULL;
   GList *save_properties, *l;
 
@@ -2513,16 +2513,14 @@ glade_widget_rebuild (GladeWidget * gwidget)
   /* Here we take care removing the widget from the project and
    * the selection before rebuilding the instance.
    */
-  if (gwidget->priv->project && glade_project_has_object (gwidget->priv->project, gwidget->priv->object))
-    project = gwidget->priv->project;
-
-  if (project)
+  if (gwidget->priv->project && glade_project_has_object (gwidget->priv->project,
+                                                          gwidget->priv->object))
     {
+      project = gwidget->priv->project;
+
       if (glade_project_is_selected (project, gwidget->priv->object))
-        {
-          reselect = TRUE;
-          glade_project_selection_remove (project, gwidget->priv->object, FALSE);
-        }
+        selection = g_list_copy (glade_project_selection_get (project));
+
       glade_project_remove_object (project, gwidget->priv->object);
     }
 
@@ -2571,12 +2569,6 @@ glade_widget_rebuild (GladeWidget * gwidget)
   /* Only call this once the object has a proper GladeWidget */
   glade_widget_adaptor_post_create (adaptor, new_object, GLADE_CREATE_REBUILD);
 
-  /* Must call dispose for cases like dialogs and toplevels */
-  if (GTK_IS_WINDOW (old_object))
-    gtk_widget_destroy (GTK_WIDGET (old_object));
-  else
-    g_object_unref (old_object);
-
   /* Reparent any children of the old object to the new object
    * (this function will consume and free the child list).
    */
@@ -2623,10 +2615,31 @@ glade_widget_rebuild (GladeWidget * gwidget)
   if (project)
     {
       glade_project_add_object (project, gwidget->priv->object);
-      if (reselect)
-        glade_project_selection_add (project, gwidget->priv->object, TRUE);
+
+      if (selection)
+        {
+          glade_project_selection_clear (project, FALSE);
+
+          for (l = selection; l; l = g_list_next (l))
+            {
+              GObject *selected = l->data;
+
+              if (selected == old_object)
+                glade_project_selection_add (project, gwidget->priv->object, TRUE);
+              else
+                glade_project_selection_add (project, selected, TRUE);
+            }
+
+          g_list_free (selection);
+        }
     }
 
+  /* Must call dispose for cases like dialogs and toplevels */
+  if (GTK_IS_WINDOW (old_object))
+    gtk_widget_destroy (GTK_WIDGET (old_object));
+  else
+    g_object_unref (old_object);
+  
   /* Ensure rebuilt widget visibility */
   if (GTK_IS_WIDGET (gwidget->priv->object) && 
       !GTK_IS_WINDOW (gwidget->priv->object))
