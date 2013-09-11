@@ -11,7 +11,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2013-09-01 00:32+0000\n"
-"PO-Revision-Date: 2013-09-09 21:07+0100\n"
+"PO-Revision-Date: 2013-09-11 21:27+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -1050,14 +1050,14 @@ msgid "Setting translation domain to '%s'"
 msgstr "Z domeno %s povezava ni mogoča: %s"
 
 #: ../gladeui/glade-command.c:2910 ../gladeui/glade-command.c:2964
-#, fuzzy, c-format
+#, c-format
 msgid "Unsetting widget '%s' as template"
-msgstr "Dodaj gradnik kot vrhnjo _raven"
+msgstr "Odstranjevanje nastavitve gradnika '%s' kot predloge"
 
 #: ../gladeui/glade-command.c:2917 ../gladeui/glade-command.c:2959
-#, fuzzy, c-format
+#, c-format
 msgid "Setting widget '%s' as template"
-msgstr "Dodaj gradnik kot vrhnjo _raven"
+msgstr "Nastavljanje gradnika '%s' kot predloge"
 
 #: ../gladeui/glade-cursor.c:184
 #, c-format
@@ -1214,9 +1214,8 @@ msgstr "Besedilo po meri"
 
 #: ../gladeui/glade-editor-property.c:692
 #: ../gladeui/glade-property-shell.c:137
-#, fuzzy
 msgid "Custom Text to display in the property label"
-msgstr "Ime lastnosti po meri se mora začeti s črko."
+msgstr "Besedilo po meri, ki naj se izpiše v oznaki lastnosti"
 
 #: ../gladeui/glade-editor-property.c:1216
 msgid "Select Fields"
@@ -1338,9 +1337,8 @@ msgid "ID:"
 msgstr "ID:"
 
 #: ../gladeui/glade-editor-table.c:553
-#, fuzzy
 msgid "The object's unique identifier"
-msgstr "Edinstveno določilo naprave"
+msgstr "Edinstveno določilo predmeta"
 
 #: ../gladeui/glade-editor-table.c:565 ../gladeui/glade-widget.c:1438
 #, fuzzy
@@ -1449,9 +1447,8 @@ msgid "Name of the toplevel to preview"
 msgstr "Ime vrhnje ravni za predogled"
 
 #: ../gladeui/glade-previewer.c:64
-#, fuzzy
 msgid "File name to save a screenshot"
-msgstr "Shrani zaslonsko sliko neposredno v to datoteko"
+msgstr "Ime datoteke za shranjevanje zaslonske slike"
 
 #: ../gladeui/glade-previewer.c:65
 msgid "CSS file to use"
@@ -1723,9 +1720,8 @@ msgstr ""
 "[%s] Lastnost pakiranja '%s' razreda predmeta '%s' je bil vpeljan %s %d.%d\n"
 
 #: ../gladeui/glade-project.c:2764
-#, fuzzy
 msgid "This property is deprecated"
-msgstr "Gradnik je opuščen."
+msgstr "Ta možnost je opuščena."
 
 #. translators: refers to a property '%s' of widget '[%s]'
 #: ../gladeui/glade-project.c:2767
@@ -1786,14 +1782,12 @@ msgid "No widget selected."
 msgstr "Ni izbranega gradnika."
 
 #: ../gladeui/glade-project.c:4782
-#, fuzzy
 msgid "Unable to copy unrecognized widget type."
-msgstr "<li> ima napačno vrsto %s"
+msgstr "Ni mogoče kopirati neprepoznane vrste gradnika."
 
 #: ../gladeui/glade-project.c:4814
-#, fuzzy
 msgid "Unable to cut unrecognized widget type"
-msgstr "<li> ima napačno vrsto %s"
+msgstr "Ni mogoče izrezati neprepoznane vrste gradnika."
 
 #: ../gladeui/glade-project.c:4866
 msgid "Unable to paste to the selected parent"
@@ -1816,9 +1810,8 @@ msgid "Insufficient amount of placeholders in target container"
 msgstr "Nezadostno število vsebnikov v ciljnem zabojniku"
 
 #: ../gladeui/glade-project-properties.c:132
-#, fuzzy
 msgid "The project this properties dialog was created for"
-msgstr "GladePropertyClass za katerega je bil ustvarjen ta GladeEditorProperty"
+msgstr "Projekt, za katerega je bilo ustvarjeno to pogovorno okno"
 
 #: ../gladeui/glade-project-properties.c:534
 #, c-format
@@ -2385,7 +2378,6 @@ msgid "Image resources are loaded locally:"
 msgstr "Viri krajevno naloženih slik:"
 
 #: ../gladeui/glade-project-properties.ui.h:9
-#, fuzzy
 msgid "Toolkit version required:"
 msgstr "Zahtevana različica zbirke orodij:"
 
@@ -2396,9 +2388,9 @@ msgid ""
 msgstr ""
 
 #: ../plugins/gtk+/glade-about-dialog-editor.c:138
-#, fuzzy, c-format
+#, c-format
 msgid "Setting License type of %s"
-msgstr "Vrsta dovoljenja programa"
+msgstr "Nastavljanje vrsta dovoljenja za program %s"
 
 #: ../plugins/gtk+/glade-about-dialog-editor.c:177
 #, fuzzy, c-format
@@ -3235,9 +3227,9 @@ msgid "Setting %s to use an image from the icon theme"
 msgstr "Nastavitev %s ikone iz namizne teme"
 
 #: ../plugins/gtk+/glade-image-editor.c:275
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use a resource name"
-msgstr "Ime naprave xinput, ki naj se uporabi"
+msgstr "Nastavljanje %s za uporabo imena vira"
 
 #: ../plugins/gtk+/glade-image-editor.c:301
 #, c-format
@@ -3355,14 +3347,14 @@ msgstr ""
 
 #: ../plugins/gtk+/glade-widget-editor.c:163
 #: ../plugins/gtk+/glade-widget-editor.c:183
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use a custom tooltip"
-msgstr "Nastavitev %s za uporabo podrejenega procesa po meri"
+msgstr "Nastavljanje %s za uporabo orodnega namiga po meri"
 
 #: ../plugins/gtk+/glade-widget-editor.c:265
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use tooltip markup"
-msgstr "Nastavitev %s za uporabo videza dejanj"
+msgstr "Nastavljanje %s za uporabo oblikovanja v orodnih namigih"
 
 #: ../plugins/gtk+/glade-widget-editor.c:277
 #, fuzzy, c-format
@@ -3370,14 +3362,14 @@ msgid "Setting %s to not use tooltip markup"
 msgstr "Nastavitev %s za neuporabo videza dejanj"
 
 #: ../plugins/gtk+/glade-window-editor.c:131
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use a named icon"
-msgstr "Ikona uporabljena z oznako"
+msgstr "Nastavljanje %s za uporabo poimenovane ikone"
 
 #: ../plugins/gtk+/glade-window-editor.c:165
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use an icon file"
-msgstr "Pogovorno okno izbire datotek, ki naj bo uporabljeno."
+msgstr "Nastavljanje %s za uporabo datoteke ikone"
 
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:1
 msgid "Page Setup Dialog"
@@ -4639,9 +4631,8 @@ msgid "Uppercase Sentences"
 msgstr "Stavki z velikimi črkami"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:317
-#, fuzzy
 msgid "Inhibit On-screen Keyboard"
-msgstr "Zaslonska tipkovnica GNOME"
+msgstr "Zaviraj prikaz zaslonske tipkovnice"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:318
 msgid "Primary Stock Icon"
@@ -5005,9 +4996,8 @@ msgid "Multiple"
 msgstr "Večkratno"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:414
-#, fuzzy
 msgid "The position of the row item in the listbox"
-msgstr "Mesto predmeta menija v menijski lupini"
+msgstr "položaj predmeta vrstice v polju seznama"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:415
 #, fuzzy
@@ -5268,9 +5258,8 @@ msgid "Color Selection"
 msgstr "Izbira barve"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:510
-#, fuzzy
 msgid "Color Chooser Widget"
-msgstr "Gradnik izbirnika programov"
+msgstr "Gradnik izbirnika barv"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:511
 msgid "Color Chooser Dialog"
@@ -5281,9 +5270,8 @@ msgid "Font Chooser Widget"
 msgstr "Gradnik izbirnika pisave"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:513
-#, fuzzy
 msgid "Font Chooser Dialog"
-msgstr "Naziv pogovornega okna za izbor pisave"
+msgstr "Pogovorno okno izbora pisave"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:514
 msgid "Font Selection"
