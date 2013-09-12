@@ -1268,6 +1268,15 @@ save (GladeWindow *window, GladeProject *project, const gchar *path)
   g_free (display_name);
 }
 
+static gboolean
+path_has_extension (const gchar *path)
+{
+  gchar *basename = g_path_get_basename (path);
+  gboolean retval = g_utf8_strrchr (basename, -1, '.') != NULL;
+  g_free (basename);
+  return retval;
+}
+
 static void
 save_as (GladeWindow *window)
 {
@@ -1275,7 +1284,7 @@ save_as (GladeWindow *window)
   GtkWidget *filechooser;
   GtkWidget *dialog;
   gchar *path = NULL;
-  gchar *real_path, *ch, *project_name;
+  gchar *project_name;
 
   project = glade_design_view_get_project (window->priv->active_view);
 
@@ -1310,31 +1319,47 @@ save_as (GladeWindow *window)
       g_free (project_name);
     }
 
-  if (gtk_dialog_run (GTK_DIALOG (filechooser)) == GTK_RESPONSE_OK)
-    path = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (filechooser));
+  while (gtk_dialog_run (GTK_DIALOG (filechooser)) == GTK_RESPONSE_OK)
+    {
+      path = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (filechooser));
+
+      /* Check if selected filename has an extension or not */
+      if (!path_has_extension (path))
+        {
+          gchar *real_path = g_strconcat (path, ".glade", NULL);
+
+          g_free (path);
+          path = real_path;
+
+          /* We added .glade extension!,
+           * check if file exist to avoid overwriting a file without asking
+           */
+          if (g_file_test (path, G_FILE_TEST_EXISTS))
+            {
+              /* Set existing filename and let filechooser ask about overwriting */
+              gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (filechooser), path);
+              g_free (path);
+              path = NULL;
+              continue;
+            }
+        }
+      break;
+    }
 
   gtk_widget_destroy (filechooser);
 
   if (!path)
     return;
 
-  ch = strrchr (path, '.');
-  if (!ch || strchr (ch, G_DIR_SEPARATOR))
-    real_path = g_strconcat (path, ".glade", NULL);
-  else
-    real_path = g_strdup (path);
-
-  g_free (path);
-
   /* checks if selected path is actually writable */
-  if (glade_util_file_is_writeable (real_path) == FALSE)
+  if (glade_util_file_is_writeable (path) == FALSE)
     {
       dialog = gtk_message_dialog_new (GTK_WINDOW (window),
                                        GTK_DIALOG_MODAL,
                                        GTK_MESSAGE_ERROR,
                                        GTK_BUTTONS_OK,
                                        _("Could not save the file %s"),
-                                       real_path);
+                                       path);
 
       gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog),
 						_("You do not have the permissions "
@@ -1346,12 +1371,12 @@ save_as (GladeWindow *window)
                                 G_CALLBACK (gtk_widget_destroy), dialog);
 
       gtk_widget_show (dialog);
-      g_free (real_path);
+      g_free (path);
       return;
     }
 
   /* checks if another open project is using selected path */
-  if ((another_project = glade_app_get_project_by_path (real_path)) != NULL)
+  if ((another_project = glade_app_get_project_by_path (path)) != NULL)
     {
       if (project != another_project)
         {
@@ -1360,17 +1385,17 @@ save_as (GladeWindow *window)
                                  GLADE_UI_ERROR, NULL,
                                  _
                                  ("Could not save file %s. Another project with that path is open."),
-                                 real_path);
+                                 path);
 
-          g_free (real_path);
+          g_free (path);
           return;
         }
 
     }
 
-  save (window, project, real_path);
+  save (window, project, path);
 
-  g_free (real_path);
+  g_free (path);
 }
 
 static void
