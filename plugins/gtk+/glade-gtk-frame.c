@@ -33,7 +33,6 @@ glade_gtk_frame_post_create (GladeWidgetAdaptor * adaptor,
   static GladeWidgetAdaptor *label_adaptor = NULL, *alignment_adaptor = NULL;
   GladeWidget *gframe, *glabel, *galignment;
   GtkWidget *label;
-  gchar *label_text;
 
   if (reason != GLADE_CREATE_USER)
     return;
@@ -61,12 +60,7 @@ glade_gtk_frame_post_create (GladeWidgetAdaptor * adaptor,
                                                    glade_widget_get_project
                                                    (gframe), NULL);
 
-      label_text =
-          g_strdup_printf ("<b>%s</b>", glade_widget_get_name (gframe));
-      glade_widget_property_set (glabel, "label", label_text);
-      glade_widget_property_set (glabel, "use-markup", "TRUE");
-      g_free (label_text);
-
+      glade_widget_property_set (glabel, "label", glade_widget_get_name (gframe));
       g_object_set_data (glade_widget_get_object (glabel), 
 			 "special-child-type", "label_item");
       glade_widget_add_child (gframe, glabel, FALSE);
