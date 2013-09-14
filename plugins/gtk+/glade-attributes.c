@@ -780,7 +780,7 @@ value_combo_spin_edited (GtkCellRendererText *cell,
 			    -1);
 
 	/* Reset the column */
-	if (new_text && strcmp (new_text, _("None")) == 0)
+	if (new_text && (*new_text == '\0' || strcmp (new_text, _("None")) == 0))
 	{
 		gtk_list_store_set (GTK_LIST_STORE (eprop_attrs->model), &iter,
 				    COLUMN_TEXT, _("<Enter Value>"),
@@ -799,6 +799,16 @@ value_combo_spin_edited (GtkCellRendererText *cell,
 
 	sync_object (eprop_attrs, FALSE);
 
+
+}
+
+static void
+value_combo_spin_editing_started (GtkCellRenderer *cell,
+                                  GtkCellEditable *editable,
+                                  const gchar     *path)
+{
+  if (GTK_IS_SPIN_BUTTON (editable))
+    gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (editable), TRUE);
 }
 
 static GtkWidget *
@@ -908,7 +918,7 @@ glade_eprop_attrs_view (GladeEditorProperty *eprop)
 
 	/* Spin renderer */
  	renderer = gtk_cell_renderer_spin_new ();
-	adjustment = (GtkAdjustment *)gtk_adjustment_new (0, -G_MAXDOUBLE, G_MAXDOUBLE, 100, 100, 100);
+	adjustment = (GtkAdjustment *)gtk_adjustment_new (0, -G_MAXDOUBLE, G_MAXDOUBLE, 100, 100, 0);
 	g_object_set (G_OBJECT (renderer), "adjustment", adjustment, NULL);
 	gtk_tree_view_column_pack_start (column, renderer, TRUE);
 	gtk_tree_view_column_set_attributes (column, renderer, 
@@ -921,6 +931,8 @@ glade_eprop_attrs_view (GladeEditorProperty *eprop)
 					     NULL);
 	g_signal_connect (G_OBJECT (renderer), "edited",
 			  G_CALLBACK (value_combo_spin_edited), eprop);
+	g_signal_connect (G_OBJECT (renderer), "editing-started",
+	                  G_CALLBACK (value_combo_spin_editing_started), NULL);
 
 	gtk_tree_view_column_set_expand (GTK_TREE_VIEW_COLUMN (column), TRUE);
  	gtk_tree_view_append_column (GTK_TREE_VIEW (view_widget), column);
@@ -996,11 +1008,9 @@ glade_eprop_attrs_show_dialog (GtkWidget           *dialog_button,
 {
 	GladeEPropAttrs  *eprop_attrs = GLADE_EPROP_ATTRS (eprop);
 	GtkWidget        *dialog, *parent, *vbox, *sw, *tree_view;
-	GladeProject     *project;
 	GList            *old_attributes;
 	gint              res;
-	
-	project = glade_widget_get_project (eprop->property->widget);
+
 	parent = gtk_widget_get_toplevel (GTK_WIDGET (eprop));
 
 
