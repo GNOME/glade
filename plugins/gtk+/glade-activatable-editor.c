@@ -56,30 +56,6 @@ glade_activatable_editor_init (GladeActivatableEditor *self)
 }
 
 static void
-project_changed (GladeProject      *project,
-		 GladeCommand      *command,
-		 gboolean           execute,
-		 GladeActivatableEditor *activatable_editor)
-{
-	if (activatable_editor->modifying ||
-	    !gtk_widget_get_mapped (GTK_WIDGET (activatable_editor)))
-		return;
-
-	/* Reload on all commands */
-	glade_editable_load (GLADE_EDITABLE (activatable_editor), activatable_editor->loaded_widget);
-}
-
-
-static void
-project_finalized (GladeActivatableEditor *activatable_editor,
-		   GladeProject       *where_project_was)
-{
-	activatable_editor->loaded_widget = NULL;
-
-	glade_editable_load (GLADE_EDITABLE (activatable_editor), NULL);
-}
-
-static void
 glade_activatable_editor_load (GladeEditable *editable,
 			  GladeWidget   *widget)
 {
@@ -88,34 +64,8 @@ glade_activatable_editor_load (GladeEditable *editable,
 
 	activatable_editor->loading = TRUE;
 
-	/* Since we watch the project*/
-	if (activatable_editor->loaded_widget)
-	{
-		/* watch custom-child and use-stock properties here for reloads !!! */
-
-		g_signal_handlers_disconnect_by_func (G_OBJECT (activatable_editor->loaded_widget->project),
-						      G_CALLBACK (project_changed), activatable_editor);
-
-		/* The widget could die unexpectedly... */
-		g_object_weak_unref (G_OBJECT (activatable_editor->loaded_widget->project),
-				     (GWeakNotify)project_finalized,
-				     activatable_editor);
-	}
-
 	/* Mark our widget... */
 	activatable_editor->loaded_widget = widget;
-
-	if (activatable_editor->loaded_widget)
-	{
-		/* This fires for undo/redo */
-		g_signal_connect (G_OBJECT (activatable_editor->loaded_widget->project), "changed",
-				  G_CALLBACK (project_changed), activatable_editor);
-
-		/* The widget/project could die unexpectedly... */
-		g_object_weak_ref (G_OBJECT (activatable_editor->loaded_widget->project),
-				   (GWeakNotify)project_finalized,
-				   activatable_editor);
-	}
 
 	/* load the embedded editable... */
 	if (activatable_editor->embed)
@@ -124,9 +74,6 @@ glade_activatable_editor_load (GladeEditable *editable,
 	for (l = activatable_editor->properties; l; l = l->next)
 		glade_editor_property_load_by_widget (GLADE_EDITOR_PROPERTY (l->data), widget);
 
-	if (widget)
-	{
-	}
 	activatable_editor->loading = FALSE;
 }
 
@@ -172,17 +119,13 @@ glade_activatable_editor_grab_focus (GtkWidget *widget)
 static void
 table_attach (GtkWidget *table, 
 	      GtkWidget *child, 
-	      gint pos, gint row,
-	      GtkSizeGroup *group)
+	      gint pos, gint row)
 {
 	gtk_table_attach (GTK_TABLE (table), child,
 			  pos, pos+1, row, row +1,
-			  pos ? 0 : GTK_EXPAND | GTK_FILL,
+			  pos ? GTK_FILL : GTK_EXPAND | GTK_FILL,
 			  GTK_EXPAND | GTK_FILL,
 			  3, 1);
-
-	if (pos)
-		gtk_size_group_add_widget (group, child);
 }
 
 static void
@@ -379,7 +322,6 @@ glade_activatable_editor_new (GladeWidgetAdaptor *adaptor,
 	GladeActivatableEditor    *activatable_editor;
 	GladeEditorProperty *eprop;
 	GtkWidget           *table, *frame, *alignment, *label;
-	GtkSizeGroup        *group;
 	gchar               *str;
 	gint                 row = 0;
 
@@ -408,11 +350,9 @@ glade_activatable_editor_new (GladeWidgetAdaptor *adaptor,
 	table = gtk_table_new (0, 0, FALSE);
 	gtk_container_add (GTK_CONTAINER (alignment), table);
 
-	group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
-
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "related-action", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, row, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, row++, group);
+	table_attach (table, eprop->item_label, 0, row);
+	table_attach (table, GTK_WIDGET (eprop), 1, row++);
 	activatable_editor->properties = g_list_prepend (activatable_editor->properties, eprop);
 
 	g_signal_connect (G_OBJECT (eprop), "commit",
@@ -421,8 +361,8 @@ glade_activatable_editor_new (GladeWidgetAdaptor *adaptor,
 				G_CALLBACK (related_action_post_commit), activatable_editor);
 
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "use-action-appearance", FALSE, TRUE);
-	table_attach (table, eprop->item_label, 0, row, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, row++, group);
+	table_attach (table, eprop->item_label, 0, row);
+	table_attach (table, GTK_WIDGET (eprop), 1, row++);
 	activatable_editor->properties = g_list_prepend (activatable_editor->properties, eprop);
 
 	gtk_widget_show_all (GTK_WIDGET (activatable_editor));

@@ -39,7 +39,6 @@ G_DEFINE_TYPE_WITH_CODE (GladeToolButtonEditor, glade_tool_button_editor, GTK_TY
                          G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
                                                 glade_tool_button_editor_editable_init));
 
-
 static void
 glade_tool_button_editor_class_init (GladeToolButtonEditorClass *klass)
 {
@@ -56,30 +55,6 @@ glade_tool_button_editor_init (GladeToolButtonEditor *self)
 }
 
 static void
-project_changed (GladeProject      *project,
-		 GladeCommand      *command,
-		 gboolean           execute,
-		 GladeToolButtonEditor *button_editor)
-{
-	if (button_editor->modifying ||
-	    !gtk_widget_get_mapped (GTK_WIDGET (button_editor)))
-		return;
-
-	/* Reload on all commands */
-	glade_editable_load (GLADE_EDITABLE (button_editor), button_editor->loaded_widget);
-}
-
-
-static void
-project_finalized (GladeToolButtonEditor *button_editor,
-		   GladeProject       *where_project_was)
-{
-	button_editor->loaded_widget = NULL;
-
-	glade_editable_load (GLADE_EDITABLE (button_editor), NULL);
-}
-
-static void
 glade_tool_button_editor_load (GladeEditable *editable,
 			       GladeWidget   *widget)
 {
@@ -90,32 +65,8 @@ glade_tool_button_editor_load (GladeEditable *editable,
 
 	button_editor->loading = TRUE;
 
-	/* Since we watch the project*/
-	if (button_editor->loaded_widget)
-	{
-		g_signal_handlers_disconnect_by_func (G_OBJECT (button_editor->loaded_widget->project),
-						      G_CALLBACK (project_changed), button_editor);
-
-		/* The widget could die unexpectedly... */
-		g_object_weak_unref (G_OBJECT (button_editor->loaded_widget->project),
-				     (GWeakNotify)project_finalized,
-				     button_editor);
-	}
-
 	/* Mark our widget... */
 	button_editor->loaded_widget = widget;
-
-	if (button_editor->loaded_widget)
-	{
-		/* This fires for undo/redo */
-		g_signal_connect (G_OBJECT (button_editor->loaded_widget->project), "changed",
-				  G_CALLBACK (project_changed), button_editor);
-
-		/* The widget/project could die unexpectedly... */
-		g_object_weak_ref (G_OBJECT (button_editor->loaded_widget->project),
-				   (GWeakNotify)project_finalized,
-				   button_editor);
-	}
 
 	/* load the embedded editable... */
 	if (button_editor->embed)
@@ -415,17 +366,13 @@ glade_tool_button_editor_grab_focus (GtkWidget *widget)
 static void
 table_attach (GtkWidget *table, 
 	      GtkWidget *child, 
-	      gint pos, gint row,
-	      GtkSizeGroup *group)
+	      gint pos, gint row)
 {
 	gtk_table_attach (GTK_TABLE (table), child,
 			  pos, pos+1, row, row +1,
-			  pos ? 0 : GTK_EXPAND | GTK_FILL,
+			  pos ? GTK_FILL : GTK_EXPAND | GTK_FILL,
 			  GTK_EXPAND | GTK_FILL,
 			  3, 1);
-
-	if (pos)
-		gtk_size_group_add_widget (group, child);
 }
 
 
@@ -436,7 +383,6 @@ glade_tool_button_editor_new (GladeWidgetAdaptor *adaptor,
 	GladeToolButtonEditor   *button_editor;
 	GladeEditorProperty     *eprop;
 	GtkWidget               *label, *alignment, *frame, *table, *hbox;
-	GtkSizeGroup            *group;
 	gchar                   *str;
 
 	g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
@@ -465,16 +411,14 @@ glade_tool_button_editor_new (GladeWidgetAdaptor *adaptor,
 	button_editor->label_table = table = gtk_table_new (0, 0, FALSE);
 	gtk_container_add (GTK_CONTAINER (alignment), table);
 
-	group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
-
 	/* Standard label... */
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "label", FALSE, TRUE);
 	hbox  = gtk_hbox_new (FALSE, 0);
 	button_editor->standard_label_radio = gtk_radio_button_new (NULL);
 	gtk_box_pack_start (GTK_BOX (hbox), button_editor->standard_label_radio, FALSE, FALSE, 2);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
-	table_attach (table, hbox, 0, 0, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 0, group);
+	table_attach (table, hbox, 0, 0);
+	table_attach (table, GTK_WIDGET (eprop), 1, 0);
 	button_editor->properties = g_list_prepend (button_editor->properties, eprop);
 
 	/* Custom label... */
@@ -484,11 +428,9 @@ glade_tool_button_editor_new (GladeWidgetAdaptor *adaptor,
 	  (GTK_RADIO_BUTTON (button_editor->standard_label_radio));
 	gtk_box_pack_start (GTK_BOX (hbox), button_editor->custom_label_radio, FALSE, FALSE, 2);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
-	table_attach (table, hbox, 0, 1, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 1, group);
+	table_attach (table, hbox, 0, 1);
+	table_attach (table, GTK_WIDGET (eprop), 1, 1);
 	button_editor->properties = g_list_prepend (button_editor->properties, eprop);
-
-	g_object_unref (group);
 
 	/* Image area frame... */
 	str = g_strdup_printf ("<b>%s</b>", _("Edit Image"));
@@ -507,16 +449,14 @@ glade_tool_button_editor_new (GladeWidgetAdaptor *adaptor,
 	button_editor->image_table = table = gtk_table_new (0, 0, FALSE);
 	gtk_container_add (GTK_CONTAINER (alignment), table);
 
-	group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
-
 	/* Stock image... */
 	eprop = glade_widget_adaptor_create_eprop_by_name (adaptor, "stock-id", FALSE, TRUE);
 	hbox  = gtk_hbox_new (FALSE, 0);
 	button_editor->stock_radio = gtk_radio_button_new (NULL);
 	gtk_box_pack_start (GTK_BOX (hbox), button_editor->stock_radio, FALSE, FALSE, 2);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
-	table_attach (table, hbox, 0, 0, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 0, group);
+	table_attach (table, hbox, 0, 0);
+	table_attach (table, GTK_WIDGET (eprop), 1, 0);
 	button_editor->properties = g_list_prepend (button_editor->properties, eprop);
 
 	/* Icon theme image... */
@@ -526,8 +466,8 @@ glade_tool_button_editor_new (GladeWidgetAdaptor *adaptor,
 	  (GTK_RADIO_BUTTON (button_editor->stock_radio));
 	gtk_box_pack_start (GTK_BOX (hbox), button_editor->icon_radio, FALSE, FALSE, 2);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
-	table_attach (table, hbox, 0, 1, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 1, group);
+	table_attach (table, hbox, 0, 1);
+	table_attach (table, GTK_WIDGET (eprop), 1, 1);
 	button_editor->properties = g_list_prepend (button_editor->properties, eprop);
 
 	/* Filename... */
@@ -537,8 +477,8 @@ glade_tool_button_editor_new (GladeWidgetAdaptor *adaptor,
 	  (GTK_RADIO_BUTTON (button_editor->stock_radio));
 	gtk_box_pack_start (GTK_BOX (hbox), button_editor->file_radio, FALSE, FALSE, 2);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
-	table_attach (table, hbox, 0, 2, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 2, group);
+	table_attach (table, hbox, 0, 2);
+	table_attach (table, GTK_WIDGET (eprop), 1, 2);
 	button_editor->properties = g_list_prepend (button_editor->properties, eprop);
 
 	/* Custom embedded image widget... */
@@ -548,11 +488,9 @@ glade_tool_button_editor_new (GladeWidgetAdaptor *adaptor,
 		(GTK_RADIO_BUTTON (button_editor->stock_radio));
 	gtk_box_pack_start (GTK_BOX (hbox), button_editor->custom_radio, FALSE, FALSE, 2);
 	gtk_box_pack_start (GTK_BOX (hbox), eprop->item_label, TRUE, TRUE, 2);
-	table_attach (table, hbox, 0, 3, group);
-	table_attach (table, GTK_WIDGET (eprop), 1, 3, group);
+	table_attach (table, hbox, 0, 3);
+	table_attach (table, GTK_WIDGET (eprop), 1, 3);
 	button_editor->properties = g_list_prepend (button_editor->properties, eprop);
-
-	g_object_unref (group);
 
 	/* Connect radio button signals... */
 	g_signal_connect (G_OBJECT (button_editor->standard_label_radio), "toggled",
