@@ -150,7 +150,7 @@ glade_gtk_image_get_property (GladeWidgetAdaptor * adaptor,
       g_value_unset (&int_value);
     }
   else
-    GWA_GET_CLASS (GTK_TYPE_WIDGET)->set_property (adaptor, object, id, value);
+    GWA_GET_CLASS (GTK_TYPE_WIDGET)->get_property (adaptor, object, id, value);
 }
 
 void
