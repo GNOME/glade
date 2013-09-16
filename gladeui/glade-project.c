@@ -2907,6 +2907,7 @@ glade_project_verify_signal_internal (GladeWidget *widget,
   GladeWidgetAdaptor *adaptor;
   gint                target_major, target_minor;
   gchar              *catalog;
+  GladeProject       *project;
 
   signal_class =
       glade_widget_adaptor_get_signal_class (glade_widget_get_adaptor (widget),
@@ -2916,10 +2917,13 @@ glade_project_verify_signal_internal (GladeWidget *widget,
     return;
 
   adaptor = glade_signal_class_get_adaptor (signal_class);
+  project = glade_widget_get_project (widget);
+
+  if (!project)
+    return;
 
   g_object_get (adaptor, "catalog", &catalog, NULL);
-  glade_project_target_version_for_adaptor (glade_widget_get_project (widget),
-                                            adaptor,
+  glade_project_target_version_for_adaptor (project, adaptor, 
                                             &target_major, &target_minor);
 
   if ((flags & GLADE_VERIFY_VERSIONS) != 0 &&
