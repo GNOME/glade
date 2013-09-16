@@ -1,4 +1,20 @@
 ============
+Glade 3.15.4
+============
+
+	- Fixed bug when copying a button with custom content.
+	- Added workaround for Bug 625867 "RadioButton information lost on cut+paste, add/remove parent, etc"
+	- Fixes bug that prevented the runtime object to show the right pixbuf when copying a GtkImage.
+	- Fixed Bug 679079 "Glade changes the "homogenous" packing property of toolbar buttons to "yes""
+	- Improved pango text integer attributes editors. This should be enough to close Bug 679006
+	  "The "size" attribute for labels only accepts integer values (not strings like "larger")"
+	- Fixed bug 643923 "Should not use markup for GtkFrame's label"
+	- Fixed bug 584381 "Saving as an existing file name except the extension overwrites without confirmation."
+	- Fixed Bug 652655 "Setting entry on combobox moves the widget"
+	- Fixed Bug 706304 "Python plugin broken by over-zealous version check" Bumped pygobject version to 3.8.0
+	- Fixed regresion that prevented loading extra catalog path at init time.
+
+============
 Glade 3.15.3
 ============
 
