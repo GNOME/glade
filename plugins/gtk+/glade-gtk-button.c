@@ -186,8 +186,13 @@ glade_gtk_button_set_property (GladeWidgetAdaptor * adaptor,
   if (strcmp (id, "custom-child") == 0)
     {
       GtkWidget *child = gtk_bin_get_child (GTK_BIN (object));
+      gboolean custom_child = g_value_get_boolean (value);
 
-      if (g_value_get_boolean (value))
+      /* Avoid removing a child if we already have a custom child */
+      if (custom_child && (child && glade_widget_get_from_gobject (child)))
+        return;
+
+      if (custom_child)
         {
           if (child)
             gtk_container_remove (GTK_CONTAINER (object), child);
