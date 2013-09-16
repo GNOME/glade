@@ -627,9 +627,14 @@ glade_widget_template_params (GladeWidget * widget,
           continue;
         }
 
-      if (g_param_values_cmp (pspec[i],
+      /* We only check equality on properties introduced by the same class because
+       * others properties could change its default in a derivated class
+       * so its is better to transfer every property and reset them.
+       */
+      if (pspec[i]->owner_type == glade_widget_adaptor_get_object_type (adaptor) &&
+          g_param_values_cmp (pspec[i],
                               glade_property_inline_value (glade_property), 
-			      glade_property_class_get_original_default (pclass)) == 0)
+                              glade_property_class_get_original_default (pclass)) == 0)
         continue;
 
       /* Not sure if it's safe to use glade_property_get_value() instead as the 
