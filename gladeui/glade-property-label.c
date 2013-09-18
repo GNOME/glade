@@ -123,6 +123,10 @@ glade_property_label_class_init (GladePropertyLabelClass *class)
   g_object_class_install_property
       (gobject_class, PROP_PROPERTY_NAME,
        g_param_spec_string ("property-name", _("Property Name"),
+                            /* To Translators: the property name/id to use to get
+                             * the GladeProperty object from the GladeWidget the
+                             * property belongs to.
+                             */
 			    _("The property name to use when loading by widget"),
 			    NULL, G_PARAM_READWRITE));
 
@@ -135,6 +139,11 @@ glade_property_label_class_init (GladePropertyLabelClass *class)
   g_object_class_install_property
       (gobject_class, PROP_PACKING,
        g_param_spec_boolean ("packing", _("Packing"),
+                             /* To Translators: packing properties or child properties are
+                              * properties introduced by GtkContainer and they are not specific
+                              * to the container or child widget but to the relation.
+                              * For more information see GtkContainer docs.
+                              */
 			     _("Whether the property to load is a packing property or not"),
 			     FALSE, G_PARAM_READWRITE));
 
