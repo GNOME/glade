@@ -100,7 +100,7 @@ GTKDOC_CFLAGS= \
 	-I$(top_builddir)         \
 	`pkg-config --cflags gtk+-2.0`
 
-GTKDOC_LIBS=${top_builddir}/gladeui/libgladeui-1.la
+GTKDOC_LIBS=`pkg-config --libs gtk+-2.0` ${top_builddir}/gladeui/libgladeui-1.la
 
 # This includes the standard gtk-doc make rules, copied by gtkdocize.
 include $(top_srcdir)/gtk-doc.make
