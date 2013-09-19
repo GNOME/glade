@@ -1,4 +1,20 @@
 ===========
+Glade 3.8.4
+===========
+	- Added workaround for Bug 625867 "RadioButton information lost on cut+paste, add/remove parent, etc"
+	- Fixed glade_gtk_image_get_property() chainup. (was calling set_property)
+	- Fixed bug that prevented the runtime object to show the right pixbuf when copying a GtkImage.
+	- Improved pango text integer attributes editors. Bug 679006
+	  "The "size" attribute for labels only accepts integer values (not strings like "larger")"
+	- Fixed Bug 616834 "Freeze when changing toolbutton type after renaming it"
+	- Fixed bug 584381 "Saving as an existing file name except the extension overwrites without confirmation."    
+	- Fixed Bug 646259 "SIGSEGV in glade_widget_adaptor_object_construct_object loading ui file"
+	- Fixed Bug 694081 "Glade loses widget's tooltips on Cut/Paste"    
+	- Fixed bug 702886 "SEGV when creating a new GtkDialog (GLib 2.37.x)"
+	- Made a few ui fixes, like removing unnecessary shadows in the workspace and property editor.
+	- Replaced old atk icon with new one.
+
+===========
 Glade 3.8.3
 ===========
 

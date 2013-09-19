@@ -1,3 +1,66 @@
+2013-10-19  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* configure.ac, NEWS: Rolling Glade 3.8.4
+
+	* gladeui/glade-widget.c: Added workaround for Bug 625867
+	 "RadioButton information lost on cut+paste, add/remove parent, etc"
+
+2013-10-14 Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* plugins/gtk+/glade-gtk.c: Fixed glade_gtk_image_get_property() chainup. (was calling set_property)
+	  Fixes bug that prevented the runtime object to show the right pixbuf when copying a GtkImage.
+
+	* plugins/gtk+/glade-activatable-editor.c, plugins/gtk+/glade-tool-button-editor.c:
+	  Misc activatable and tool button editor cleanups.
+	  Removed use of size groups, replaced with table attachment fill prop.
+	  Fixes Bug 616834 "Freeze when changing toolbutton type after renaming it"
+
+2013-10-13 Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* plugins/gtk+/glade-attributes.c: Improved pango text integer attributes editors.
+	  Make the spin button numeric and clear the attr if the new text is an empty string!
+	  This should be enough to close Bug 679006
+	  "The "size" attribute for labels only accepts integer values (not strings like "larger")"
+
+2013-10-12 Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* src/glade-window.c: Fixed bug 584381
+	  "Saving as an existing file name except the extension overwrites without confirmation."
+	  The problem was that if the selected filename did not had an extension we appended append a .glade extension
+	  but did not check if the new filename existed or not.
+	  Now we fixed this problem by selecting the file if it exist and running the dialog again, giving it a chance
+	  to promt the user about overwriting.
+
+	* gladeui/glade-widget.c: Fixed Bug 646259
+	  "SIGSEGV in glade_widget_adaptor_object_construct_object loading ui file"
+	  Do not try to instantiate abstract class objects, this should prevent glade aborting when
+	  trying to load uninstantiable objects.
+
+2013-10-06 Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* build/mingw-w64/nsis_make_installer.sh: Added executable check to build script
+
+2013-10-05 Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+	* plugins/gtk+/glade-gtk.c: Fixed Bug 694081 "Glade loses widget's tooltips on Cut/Paste"	
+	 As a simple workaround we simply make glade ignore all tooltip related properties at runtime.
+	 You can still edit them as normal, but you just wont be able to see the tooltips in the workspace.
+
+	* gladeui/glade-widget.c: Fixed bug 702886 "SEGV when creating a new GtkDialog (GLib 2.37.x)"
+	  glib changed the order construct properties are set which exposed this bug,
+	  now they are set in the order they are installed in the class.
+	  So we fixed the bug by installing adaptor property first and object last.
+
+	* gladeui/glade-widget.c: Fixed some compiler warnings and added extra check to
+	  glade_widget_set_object() to make sure there is an adaptor.
+
+	* src/glade-window.c: Fixed copyright dates in about dialog
+
+	* gladeui/glade-design-view.c, gladeui/glade-editor.c, gladeui/glade-signal-editor.c:
+	  Made a few ui fixes, like removing unnecessary shadows in the workspace and property editor.
+
+        * data/icons/atk.png: Also replaces old atk icons with a new one.
+
 2012-12-03  Juan Pablo Ugarte <juanpablougarte@gmail.com>
 
         * configure.ac, NEWS: Rolling Glade 3.8.3
