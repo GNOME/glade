@@ -251,6 +251,7 @@ void glade_xml_node_set_property_boolean (GladeXmlNode *node_in, const gchar *na
 /* Node operations */
 GladeXmlNode * glade_xml_node_new (GladeXmlContext *context, const gchar *name);
 GladeXmlNode * glade_xml_node_new_comment (GladeXmlContext *context, const gchar *comment);
+GladeXmlNode * glade_xml_node_copy (GladeXmlNode *node);
 void           glade_xml_node_delete (GladeXmlNode *node);
 GladeXmlNode * glade_xml_node_get_children (GladeXmlNode *node);
 GladeXmlNode * glade_xml_node_get_parent (GladeXmlNode *node_in);

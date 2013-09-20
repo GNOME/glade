@@ -25,6 +25,7 @@ libgladeui_1_la_SOURCES = \
 	glade-placeholder.c \
 	glade-custom.c \
 	glade-inspector.c \
+	glade-object-stub.c \
 	glade-xml-utils.c \
 	glade-palette.c \
 	glade-design-layout.c \
@@ -117,6 +118,12 @@ libgladeuiinclude_HEADERS = \
 	glade-cell-renderer-icon.h
 
 
+noinst_HEADERS = \
+	glade-marshallers.h \
+	glade-design-layout.h \
+	glade-object-stub.h \
+	glade-popup.h \
+	glade-accumulators.h
 
 if PLATFORM_WIN32
 libgladeui_1_la_LDFLAGS += -no-undefined

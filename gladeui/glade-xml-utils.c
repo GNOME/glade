@@ -751,7 +751,18 @@ glade_xml_node_new_comment (GladeXmlContext *context, const gchar *comment)
 	return (GladeXmlNode *) xmlNewDocComment ((xmlDocPtr) context->doc, BAD_CAST(comment));
 }
 
-					   
+GladeXmlNode *
+glade_xml_node_copy (GladeXmlNode *node)
+{
+  if (node)
+    {
+      xmlNodePtr xnode = (xmlNodePtr) node;
+      return (GladeXmlNode *) xmlDocCopyNode (xnode, NULL, 1);
+    }
+  else
+    return NULL;
+}
+
 void
 glade_xml_node_delete (GladeXmlNode *node)
 {

@@ -56,8 +56,7 @@
 #include "glade-app.h"
 #include "glade-design-view.h"
 #include "glade-widget-action.h"
-
-
+#include "glade-object-stub.h"
 
 static void         glade_widget_set_adaptor           (GladeWidget           *widget,
 							GladeWidgetAdaptor    *adaptor);
@@ -3876,26 +3875,22 @@ glade_widget_read (GladeProject *project,
 								  widget,
 								  node);
 			}
-			else if (adaptor)
-			{
-				if (G_TYPE_IS_ABSTRACT (adaptor->type))
-					glade_util_ui_message (glade_app_get_window (),
-				                       GLADE_UI_WARN, NULL,
-				                       "Unable to load widget %s with abstract class %s",
-				                       id, klass);
-				else
-					glade_util_ui_message (glade_app_get_window (),
-				                       GLADE_UI_WARN, NULL,
-				                       "Unable to load widget %s of class %s",
-				                       id, klass);
-					
-			}
 			else
-				glade_util_ui_message (glade_app_get_window (),
-				                       GLADE_UI_WARN, NULL,
-				                       "Unable to load widget %s of unknown class %s",
-				                       id, klass);
+			{
+				GObject *stub = g_object_new (GLADE_TYPE_OBJECT_STUB,
+				                              "object-type", klass,
+				                              "xml-node", node,
+				                              NULL);
 
+				widget = glade_widget_adaptor_create_widget (glade_widget_adaptor_get_by_type (GTK_TYPE_HBOX),
+				                                             FALSE,
+				                                             "parent", parent,
+				                                             "project", project,
+				                                             "reason", GLADE_CREATE_LOAD,
+				                                             "object", stub,
+				                                             "name", id,
+				                                             NULL);
+			}
 			g_free (id);
 		}
 		g_free (klass);
@@ -4033,6 +4028,14 @@ glade_widget_write (GladeWidget     *widget,
 	GladeXmlNode *widget_node;
 	GList *l, *list;
 	GladeProjectFormat fmt = glade_project_get_format (widget->project);
+
+	/* Check if its an unknown object, and use saved xml if so */
+	if (GLADE_IS_OBJECT_STUB (widget->object))
+	{
+		g_object_get (widget->object, "xml-node", &widget_node, NULL);
+		glade_xml_node_append_child (node, widget_node);
+		return;
+	}
 
 	widget_node = glade_xml_node_new (context, GLADE_XML_TAG_WIDGET (fmt));
 	glade_xml_node_append_child (node, widget_node);

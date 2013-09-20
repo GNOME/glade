@@ -49,7 +49,7 @@
 #include "glade-project.h"
 #include "glade-command.h"
 #include "glade-name-context.h"
-
+#include "glade-object-stub.h"
 
 #define VALID_ITER(project, iter) ((iter)!= NULL && G_IS_OBJECT ((iter)->user_data) && ((GladeProject*)(project))->priv->stamp == (iter)->stamp)
 
@@ -142,6 +142,8 @@ struct _GladeProjectPrivate
 			       * (full or relative path, null means project directory).
 			       */
 	
+	GList *unknown_catalogs; /* List of CatalogInfo catalogs */
+
 	/* Control on the preferences dialog to update buttons etc when properties change */
 	GtkWidget *prefs_dialog;
 	GtkWidget *glade_radio;
@@ -161,6 +163,12 @@ struct _GladeProjectPrivate
 	gint       progress_full;
 	gboolean   load_cancel;
 };
+
+typedef struct 
+{
+  gchar *catalog;
+  gint position;
+} CatalogInfo;
 
 typedef struct {
 	GladeWidget      *toplevel;
@@ -354,6 +362,21 @@ glade_project_finalize (GObject *object)
 		g_free (tinfo);
 	}
 	g_list_free (project->priv->toplevels);
+
+	if (project->priv->unknown_catalogs)
+	{
+		GList *l;
+
+		for (l = project->priv->unknown_catalogs; l; l = g_list_next (l))
+		{
+			CatalogInfo *data = l->data;
+			g_free (data->catalog);
+			g_free (data);
+		}
+
+		g_list_free (project->priv->unknown_catalogs);
+		project->priv->unknown_catalogs = NULL;
+	}
 
 	G_OBJECT_CLASS (glade_project_parent_class)->finalize (object);
 }
@@ -631,6 +654,7 @@ glade_project_init (GladeProject *project)
 	priv->prev_redo_item = NULL;
 	priv->first_modification = NULL;
 	priv->first_modification_is_na = FALSE;
+	priv->unknown_catalogs = NULL;
 
 	priv->toplevel_names = glade_name_context_new ();
 	priv->naming_policy = GLADE_POLICY_PROJECT_WIDE;
@@ -1036,6 +1060,7 @@ glade_project_read_requires (GladeProject *project,
 	gchar        *required_lib = NULL;
 	gboolean      loadable = TRUE;
 	guint16       major, minor;
+	gint          position = 0;
 
 	for (node = glade_xml_node_get_children_with_comments (root_node); 
 	     node; node = glade_xml_node_next_with_comments (node))
@@ -1062,6 +1087,17 @@ glade_project_read_requires (GladeProject *project,
 		 */
 		if (!glade_catalog_is_loaded (required_lib))
 		{
+			CatalogInfo *data = g_new0(CatalogInfo, 1);
+
+			data->catalog = required_lib;
+			data->position = position;
+
+			/* Keep a list of unknown catalogs to avoid loosing the requirement */
+			project->priv->unknown_catalogs = g_list_append (project->priv->unknown_catalogs,
+                                                           data);
+			/* Also keep the version */
+			glade_project_set_target_version (project, required_lib, major, minor);
+
 			if (!loadable)
 				g_string_append (string, ", ");
 
@@ -1075,9 +1111,10 @@ glade_project_read_requires (GladeProject *project,
 
 			glade_project_set_target_version
 				(project, required_lib, major, minor);
+			g_free (required_lib);
 		}
-		
-		g_free (required_lib);
+
+		position++;
 	}
 
 	if (!loadable)
@@ -1468,12 +1505,7 @@ glade_project_load_internal (GladeProject *project)
 	/* XXX Need to load project->priv->comment ! */
 	glade_project_read_comment (project, doc);
 
-	if (glade_project_read_requires (project, root, project->priv->path, &has_gtk_dep) == FALSE)
-	{
-		project->priv->loading = FALSE;
-		glade_xml_context_free (context);
-		return FALSE;
-	}
+	glade_project_read_requires (project, root, project->priv->path, &has_gtk_dep);
 
 	glade_project_read_naming_policy (project, root);
 
@@ -2270,25 +2302,37 @@ static gboolean
 glade_project_verify (GladeProject *project, 
 		      gboolean      saving)
 {
-	GString     *string = g_string_new (NULL);
-	GladeWidget *widget;
-	GList       *list;
-	gboolean     ret = TRUE;
-	gchar       *path_name;
+  GString *string = g_string_new (NULL);
+  GList *list;
+  gboolean ret = TRUE;
+  
+  for (list = project->priv->objects; list; list = list->next)
+    {
+      GladeWidget *widget = glade_widget_get_from_gobject (list->data);
+      
+      if (GLADE_IS_OBJECT_STUB (list->data))
+        {
+          gchar *type;
+          g_object_get (list->data, "object-type", &type, NULL);
+          
+          /* translators: reffers to an unknow object named '%s' of type '%s' */
+          g_string_append_printf (string, _("Unknow object %s with type %s\n"), 
+                                  glade_widget_get_name (widget), type);
+          g_free (type);
+        }
+      else
+        {
+          gchar *path_name = glade_widget_generate_path_name (widget);
 
-	for (list = project->priv->objects; list; list = list->next)
-	{
-		widget = glade_widget_get_from_gobject (list->data);
+          glade_project_verify_adaptor (project, glade_widget_get_adaptor (widget),
+                                        path_name, string, saving, FALSE, NULL);
+          glade_project_verify_properties_internal (widget, path_name, string,
+                                                    FALSE);
+          glade_project_verify_signals (widget, path_name, string, FALSE);
 
-		path_name = glade_widget_generate_path_name (widget);
-
-		glade_project_verify_adaptor (project, widget->adaptor, 
-					      path_name, string, saving, FALSE, NULL);
-		glade_project_verify_properties_internal (widget, path_name, string, FALSE);
-		glade_project_verify_signals (widget, path_name, string, FALSE);
-
-		g_free (path_name);
-	}
+          g_free (path_name);
+        }
+    }
 
 	if (string->len > 0)
 	{
@@ -3498,7 +3542,14 @@ glade_project_required_libs (GladeProject *project)
 	if (!required)
 		required = g_list_prepend (required, g_strdup ("gtk+"));
 
-	return g_list_reverse (required);
+	for (l = project->priv->unknown_catalogs; l; l = g_list_next (l))
+	{
+		CatalogInfo *data = l->data;
+		/* Keep position to make sure we do not create a diff when saving */
+		required = g_list_insert (required, g_strdup (data->catalog), data->position);
+	}
+
+	return required;
 }
 
 /**
