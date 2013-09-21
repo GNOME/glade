@@ -1,5 +1,5 @@
 # Slovak translation for glade.
-# Copyright (C) 2000, 2001, 2011 Free Software Foundation, Inc.
+# Copyright (C) 2000, 2001, 2011, 2013 Free Software Foundation, Inc.
 # This file is distributed under the same license as the glade package.
 # Stanislav Visnovsky <visnovsky@nenya.ms.mff.cuni.cz>, 2000, 2001.
 # Ivan Masár <helix84@centrum.sk>, 2011.
@@ -10,15 +10,15 @@ msgstr ""
 "Project-Id-Version: glade\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-18 23:08+0000\n"
-"PO-Revision-Date: 2013-09-18 22:36+0200\n"
-"Last-Translator: Pavol Klačanský <pavol@klacansky.com>\n"
+"POT-Creation-Date: 2013-09-19 17:40+0000\n"
+"PO-Revision-Date: 2013-09-21 20:15+0100\n"
+"Last-Translator: Peter Mráz <etkinator@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 1.5.4\n"
 
 # desktop entry name
 #: ../data/glade.desktop.in.in.h:1 ../src/main.c:42
@@ -43,6 +43,7 @@ msgstr "Vytvára alebo otvára návrhy rozhraní pre aplikácie GTK+."
 #: ../data/glade.desktop.in.in.h:5
 msgid "GUI designer;user interface;ui builder;"
 msgstr ""
+"návrhár GUI;používateľské rozhranie;návrhár ui;"
 
 # indicator
 #: ../src/glade-window.c:55
@@ -115,12 +116,12 @@ msgstr "Zopakuje: %s"
 #: ../src/glade-window.c:690
 #, c-format
 msgid "Autosaving '%s'"
-msgstr ""
+msgstr "Automatické ukladanie „%s“"
 
 #: ../src/glade-window.c:695
 #, c-format
 msgid "Error autosaving '%s'"
-msgstr ""
+msgstr "Chyba pri automatickom ukladaní „%s“"
 
 # filechooser
 #: ../src/glade-window.c:1101
@@ -135,7 +136,7 @@ msgstr "Projekt %s sa ešte načítava."
 
 #: ../src/glade-window.c:1154
 msgid "Failed to backup existing file, continue saving ?"
-msgstr ""
+msgstr "Zlyhalo zálohovanie existujúceho súboru, pokračovať v ukladaní?"
 
 # message
 #: ../src/glade-window.c:1176
@@ -669,9 +670,10 @@ msgstr "Zobrazí položky len ako text"
 msgid "_Editor Header"
 msgstr "_Editor hlavičky"
 
+# tooltip
 #: ../src/glade.glade.h:67
 msgid "Show the header in the property editor"
-msgstr ""
+msgstr "Zobrazí hlavičku v editore vlastností"
 
 # GtkMenuItem label
 #: ../src/glade.glade.h:68 ../plugins/gtk+/glade-gtk-menu-bar.c:113
@@ -758,7 +760,7 @@ msgstr ""
 " Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, \n"
 "MA 02110-1301, USA"
 
-# GtkAboutDialog 
+# GtkAboutDialog
 #: ../src/glade.glade.h:93
 msgid "translator-credits"
 msgstr ""
@@ -1301,9 +1303,9 @@ msgstr "Zobrazenie návrhu"
 # tooltip / popis
 #: ../gladeui/glade-design-layout.c:2054
 msgid "The GladeDesignView that contains this layout"
-msgstr "GladeDesignView, ktorý obsahuje toto rozloženie"
+msgstr "Vlastnosť GladeDesignView, ktorá obsahuje toto rozloženie"
 
-# editor property
+# property
 #: ../gladeui/glade-editor.c:228
 msgid "Show info"
 msgstr "Zobraziť informácie"
@@ -1311,9 +1313,9 @@ msgstr "Zobraziť informácie"
 # tooltip / popis
 #: ../gladeui/glade-editor.c:229
 msgid "Whether to show an informational button for the loaded widget"
-msgstr "Či zobraziť informačné tlačidlo načítaného ovládacieho prvku"
+msgstr "Určuje, či zobraziť informačné tlačidlo pre načítaný ovládací prvok"
 
-# editor property
+# property
 #: ../gladeui/glade-editor.c:236 ../plugins/gtk+/gtk+.xml.in.h:1
 msgid "Widget"
 msgstr "Prvok"
@@ -1323,28 +1325,25 @@ msgstr "Prvok"
 msgid "The currently loaded widget in this editor"
 msgstr "Momentálne načítaný ovládací prvok v tomto editore"
 
+# property
 #: ../gladeui/glade-editor.c:243
 msgid "Show Class Field"
-msgstr ""
+msgstr "Zobraziť pole triedy"
 
+#  tooltip / popis
 #: ../gladeui/glade-editor.c:244
 msgid "Whether to show the class field at the top"
-msgstr ""
+msgstr "Určuje, či sa má navrchu zobraziť pole triedy"
 
-# 1. tree view column
-# 2. GladePropertyClass
+# property
 #: ../gladeui/glade-editor.c:250
-#, fuzzy
-#| msgid "Class"
 msgid "Class Field"
-msgstr "Trieda"
+msgstr "Pole triedy"
 
 # tooltip / popis
 #: ../gladeui/glade-editor.c:251
-#, fuzzy
-#| msgid "The signal class of this signal"
 msgid "The class field string"
-msgstr "Trieda tohto signálu"
+msgstr "Reťazec poľa triedy"
 
 # Nadpis v doku Properties
 #. translators: referring to the properties of a widget named '%s [%s]'
@@ -1374,6 +1373,7 @@ msgstr "Obnoviť"
 msgid "Property"
 msgstr "Vlastnosť"
 
+# asi vlastnosti
 # tree column
 #: ../gladeui/glade-editor.c:912
 msgid "Common"
@@ -1386,6 +1386,7 @@ msgstr "Bežné"
 msgid "Accessibility"
 msgstr "Bezbariérový prístup"
 
+# asi vlastnosti
 # tree column defstring
 #: ../gladeui/glade-editor.c:953
 msgid "(default)"
@@ -1427,6 +1428,7 @@ msgstr "_Popis vlastnosti:"
 msgid "%s - %s Properties"
 msgstr "%s - Vlastnosti %s"
 
+# property
 #: ../gladeui/glade-editor-property.c:670
 msgid "Property Class"
 msgstr "Trieda vlastnosti"
@@ -1434,39 +1436,47 @@ msgstr "Trieda vlastnosti"
 # tooltip / popis
 #: ../gladeui/glade-editor-property.c:671
 msgid "The GladePropertyClass this GladeEditorProperty was created for"
-msgstr "GladePropertyClass, pre ktorú bol tento GladeEditorProperty vytvorený"
+msgstr ""
+"Trieda GladePropertyClass, pre ktorú bola vlastnosť GladeEditorProperty "
+"vytvorená"
 
+# property
 #: ../gladeui/glade-editor-property.c:677
 #: ../gladeui/glade-property-shell.c:124
 msgid "Use Command"
 msgstr "Použiť príkaz"
 
+# PM: nejako mi ten popis nesedí k názvu tej vlastnosti
 # tooltip / popis
 #: ../gladeui/glade-editor-property.c:678
+#, fuzzy
 msgid "Whether we should use the command API for the undo/redo stack"
-msgstr "Či sa má použiť API príkazov na zásobník histórie"
+msgstr "Určuje, či sa má použiť API príkazov na zásobník histórie"
 
+# property
 #: ../gladeui/glade-editor-property.c:684
+#, fuzzy
 msgid "Disable Check"
-msgstr ""
+msgstr "Zakázať kontrolu"
 
+# PM: neviem či sa náhodou nemyslí zašrtávacie tlačidlo
+# tooltip / popis
 #: ../gladeui/glade-editor-property.c:685
+#, fuzzy
 msgid "Whether to explicitly disable the check button"
-msgstr ""
+msgstr "Určuje, či sa má explicitne zakázať tlačidlo kontroly"
 
-# GType tool button
-# value (page-type, recent sort type, ...)
-# PM: Je tu správny rod? Asi bude potrebné požiadať o rozdelenie
-# IM: Bug 660662
+# property
 #: ../gladeui/glade-editor-property.c:691
 #: ../gladeui/glade-property-label.c:152 ../gladeui/glade-property-shell.c:136
 msgid "Custom Text"
 msgstr "Vlastný text"
 
+# tooltip / popis
 #: ../gladeui/glade-editor-property.c:692
 #: ../gladeui/glade-property-shell.c:137
 msgid "Custom Text to display in the property label"
-msgstr ""
+msgstr "Vlastný text, ktorý sa má zobraziť v označení vlastnosti"
 
 # dialog title
 #: ../gladeui/glade-editor-property.c:1216
@@ -1492,7 +1502,7 @@ msgstr "Úprava textu"
 msgid "_Text:"
 msgstr "_Text:"
 
-# chceck button pod Text:
+# check button pod Text:
 #. Translatable
 #: ../gladeui/glade-editor-property.c:1958
 msgid "T_ranslatable"
@@ -1501,7 +1511,7 @@ msgstr "_Preložiteľné"
 # Tooltip
 #: ../gladeui/glade-editor-property.c:1964 ../gladeui/glade-property.c:677
 msgid "Whether this property is translatable"
-msgstr "Či je túto položku možné preložiť"
+msgstr "Určuje, či je túto položku možné preložiť"
 
 #: ../gladeui/glade-editor-property.c:1972
 msgid "Conte_xt for translation:"
@@ -1589,7 +1599,6 @@ msgstr "Vytvorenie %s pre %s prvku %s"
 msgid "Objects:"
 msgstr "Objekty:"
 
-# GTK_PRINT_CAPABILITY_PAGE_SET:	Print dialog will offer printing even/odd pages.
 #: ../gladeui/glade-editor-table.c:120
 msgid "Page Type"
 msgstr "Typ stránky"
@@ -1597,6 +1606,7 @@ msgstr "Typ stránky"
 #: ../gladeui/glade-editor-table.c:121
 msgid "The editor page type to create this GladeEditorTable for"
 msgstr ""
+"Typ stránky editora, ktorá sa má vytvoriť pre túto tabuľku GladeEditorTable"
 
 # 1.je za tým path
 # 2. gchild name
@@ -1614,19 +1624,15 @@ msgstr "Identifikátor:"
 msgid "The object's unique identifier"
 msgstr "Jedinečný identifikátor objektu"
 
-# widget group
+# check_button
 #: ../gladeui/glade-editor-table.c:565 ../gladeui/glade-widget.c:1443
-#, fuzzy
-#| msgid "Composite Widgets"
 msgid "Composite"
-msgstr "Zložené ovládacie prvky"
+msgstr "Zložený prvok"
 
-# tooltip / popis
+# tooltip
 #: ../gladeui/glade-editor-table.c:567
-#, fuzzy
-#| msgid "Wether the widget is visible or not"
 msgid "Whether this widget is a composite template"
-msgstr "Či je ovládací prvok viditeľný alebo nie"
+msgstr "Určuje, či je tento prvok šablónou pre zložený prvok"
 
 #: ../gladeui/glade-inspector.c:194 ../gladeui/glade-project-properties.c:131
 #: ../gladeui/glade-widget.c:1378
@@ -1640,10 +1646,8 @@ msgstr "Skúmaný projekt"
 
 # entry text
 #: ../gladeui/glade-inspector.c:584
-#, fuzzy
-#| msgid "< search widgets >"
 msgid " < Search Widgets >"
-msgstr "< hľadať ovládacie prvky >"
+msgstr "< Hľadať prvky >"
 
 # value (x-options)
 #: ../gladeui/glade-inspector.c:623
@@ -1658,16 +1662,19 @@ msgstr "Všetky kontexty"
 # dialog title
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1368
 msgid "Named Icon Chooser"
-msgstr "Výber ikony s názvom"
+msgstr "Výber pomenovanej ikony"
 
+# label
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1402
 msgid "Icon _Name:"
 msgstr "_Názov ikony:"
 
+# label
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1446
 msgid "C_ontexts:"
 msgstr "_Kontexty:"
 
+# label
 #: ../gladeui/glade-named-icon-chooser-dialog.c:1469
 msgid "Icon Na_mes:"
 msgstr "Názvy _ikon:"
@@ -1744,15 +1751,17 @@ msgstr "Názov súboru, ktorého náhľad sa má zobraziť"
 # popis voľby príkazového riadka
 #: ../gladeui/glade-previewer.c:63
 msgid "Name of the toplevel to preview"
-msgstr "Názov najvyššej úrovne, ktorej náhľad zobraziť"
+msgstr "Názov najvyššej úrovne, ktorej náhľad sa má zobraziť"
 
+# popis voľby príkazového riadka
 #: ../gladeui/glade-previewer.c:64
 msgid "File name to save a screenshot"
-msgstr ""
+msgstr "Názov súboru na uloženie snímky obrazovky"
 
+# popis voľby príkazového riadka
 #: ../gladeui/glade-previewer.c:65
 msgid "CSS file to use"
-msgstr ""
+msgstr "Súbor CSS, ktorý sa má použiť"
 
 # popis voľby príkazového riadka
 #: ../gladeui/glade-previewer.c:66
@@ -1825,17 +1834,17 @@ msgid "Error: %s.\n"
 msgstr "Chyba: %s.\n"
 
 # error
-# PM: nedávno sa v ML objavil názor, že pipe by sme mali prekladať ako zreťazenie.
 #: ../gladeui/glade-previewer.c:376
 #, c-format
 msgid "Broken pipe!\n"
-msgstr "Prerušená rúra!\n"
+msgstr "Prerušené zreťazenie!\n"
 
 # tooltip / popis modified
 #: ../gladeui/glade-project.c:894
 msgid "Whether project has been modified since it was last saved"
-msgstr "Či bol tento projekt od posledného uloženia zmenený"
+msgstr "Určuje, či bol tento projekt od posledného uloženia zmenený"
 
+# property
 #: ../gladeui/glade-project.c:900
 msgid "Has Selection"
 msgstr "Obsahuje výber"
@@ -1843,8 +1852,9 @@ msgstr "Obsahuje výber"
 # tooltip / popis
 #: ../gladeui/glade-project.c:901
 msgid "Whether project has a selection"
-msgstr "Či projekt obsahuje výber"
+msgstr "Určuje, či projekt obsahuje výber"
 
+# property
 #: ../gladeui/glade-project.c:907
 msgid "Path"
 msgstr "Cesta"
@@ -1854,6 +1864,7 @@ msgstr "Cesta"
 msgid "The filesystem path of the project"
 msgstr "Cesta k projektu v súborovom systéme"
 
+# property
 #: ../gladeui/glade-project.c:914
 msgid "Read Only"
 msgstr "Len na čítanie"
@@ -1861,8 +1872,9 @@ msgstr "Len na čítanie"
 # tooltip / popis
 #: ../gladeui/glade-project.c:915
 msgid "Whether project is read-only"
-msgstr "Či je projekt len na čítanie"
+msgstr "Určuje, či je projekt len na čítanie"
 
+# property
 #: ../gladeui/glade-project.c:921
 msgid "Add Item"
 msgstr "Pridať položku"
@@ -1872,6 +1884,7 @@ msgstr "Pridať položku"
 msgid "The current item to add to the project"
 msgstr "Aktuálna položka, ktorá sa pridá do projektu"
 
+# property
 #: ../gladeui/glade-project.c:928
 msgid "Pointer Mode"
 msgstr "Režim kurzora"
@@ -1883,42 +1896,39 @@ msgstr "Práve účinný režim GladePointerMode"
 
 # property
 #: ../gladeui/glade-project.c:936
-#, fuzzy
-#| msgid "Orientation column"
 msgid "Translation Domain"
-msgstr "Stĺpec Orientácia"
+msgstr "Doména prekladu"
 
+# tooltip / popis
 #: ../gladeui/glade-project.c:937
 msgid "The project translation domain"
-msgstr ""
+msgstr "Doména prekladu projektu"
 
+# property
 #: ../gladeui/glade-project.c:943 ../gladeui/glade-widget.c:1401
 msgid "Template"
 msgstr "Šablóna"
 
+# tooltip / popis
 #: ../gladeui/glade-project.c:944
 msgid "The project's template widget, if any"
-msgstr ""
+msgstr "Prvok šablóny projektu, ak existuje"
 
 # action
 #: ../gladeui/glade-project.c:950
-#, fuzzy
-#| msgid "Remove Parent"
 msgid "Resource Path"
-msgstr "Odstrániť nadradené"
+msgstr "Cesta k zdrojom"
 
 # dialog title
 #: ../gladeui/glade-project.c:951
-#, fuzzy
-#| msgid "Choose a path to load image resources"
 msgid "Path to load images and resources in Glade's runtime"
-msgstr "Vyberte cestu, z ktorej načítať zdroje obrázka"
+msgstr "Cesta, z ktorej sa majú načítať obrázky a ďalšie zdroje počas behu"
 
 # special child type, %s je widget
 #: ../gladeui/glade-project.c:1228
 #, c-format
 msgid "(internal %s)"
-msgstr "(vnútorný %s)"
+msgstr "(vnútorný v %s)"
 
 # %s child type
 #: ../gladeui/glade-project.c:1233
@@ -1989,6 +1999,9 @@ msgid ""
 "\n"
 "Would you like to load the autosave version instead ?"
 msgstr ""
+"Automaticky uložená verzia „%s“ je novšia\n"
+"\n"
+"Chcete načítať radšej automaticky uloženú verziu?"
 
 # dialog title; %s - project name
 #: ../gladeui/glade-project.c:2261
@@ -2105,7 +2118,7 @@ msgstr ""
 #: ../gladeui/glade-project.c:3120
 #, c-format
 msgid "Object %s has unrecognized type %s\n"
-msgstr ""
+msgstr "Objekt %s má nerozpoznaný typ %s\n"
 
 # project name - %i číslo neuloženého projektu
 #: ../gladeui/glade-project.c:4595
@@ -2121,7 +2134,7 @@ msgstr "Nie je vybraný žiaden ovládací prvok."
 
 #: ../gladeui/glade-project.c:4796
 msgid "Unable to copy unrecognized widget type."
-msgstr ""
+msgstr "Nepodarilo sa skopírovať nerozpoznaný typ ovládacieho prvku."
 
 # message
 #: ../gladeui/glade-project.c:4828
@@ -2155,10 +2168,8 @@ msgstr "Nedostatočný počet vyhradených miest v cieľovom kontajneri"
 
 # tooltip / popis
 #: ../gladeui/glade-project-properties.c:132
-#, fuzzy
-#| msgid "The GladePropertyClass this GladeEditorProperty was created for"
 msgid "The project this properties dialog was created for"
-msgstr "GladePropertyClass, pre ktorú bol tento GladeEditorProperty vytvorený"
+msgstr "Projekt, pre ktorý bolo vytvorené toto dialógové okno"
 
 # message
 #: ../gladeui/glade-project-properties.c:534
@@ -2173,6 +2184,7 @@ msgstr ""
 msgid "The GladePropertyClass for this property"
 msgstr "GladePropertyClass tejto vlastnosti"
 
+# property
 #: ../gladeui/glade-property.c:650
 msgid "Enabled"
 msgstr "Povolená"
@@ -2182,8 +2194,10 @@ msgstr "Povolená"
 msgid "If the property is optional, this is its enabled state"
 msgstr "Ak je vlastnosť nepovinná, toto je jej povolený stav"
 
-# PM: je tu správny rod?
+# MČ: nebolo by tu vhodnejšie „citlivosť“?
+# property
 #: ../gladeui/glade-property.c:656 ../gladeui/glade-widget-action.c:190
+#, fuzzy
 msgid "Sensitive"
 msgstr "Citlivá"
 
@@ -2193,6 +2207,7 @@ msgid "This gives backends control to set property sensitivity"
 msgstr ""
 "Toto dáva obslužným programom kontrolu nad nastavením citlivosti vlastnosti"
 
+# property
 #: ../gladeui/glade-property.c:662
 msgid "Context"
 msgstr "Kontext"
@@ -2202,6 +2217,7 @@ msgstr "Kontext"
 msgid "Context for translation"
 msgstr "Kontext k prekladu"
 
+# property
 #. AtkRole enumeration value
 #: ../gladeui/glade-property.c:669 ../plugins/gtk+/gtk+.xml.in.h:269
 msgid "Comment"
@@ -2212,10 +2228,12 @@ msgstr "Komentár"
 msgid "Comment for translators"
 msgstr "Komentár pre prekladateľov"
 
+# property
 #: ../gladeui/glade-property.c:676
 msgid "Translatable"
 msgstr "Preložiteľná"
 
+# property
 #: ../gladeui/glade-property.c:683
 msgid "Visual State"
 msgstr "Vizuálny stav"
@@ -2228,7 +2246,7 @@ msgstr "Informácie o priorite, s ktorými pracuje editor vlastností"
 # toltip / popis
 #: ../gladeui/glade-property-label.c:120
 msgid "The GladeProperty to display a label for"
-msgstr "Vlastnosť GladeProperty, pre ktorú sa má zobraziť označenie"
+msgstr "Vlastnosť GladeProperty, pre ktorú bolo zobrazené označenie"
 
 # property name
 #: ../gladeui/glade-property-label.c:125 ../gladeui/glade-property-shell.c:112
@@ -2252,16 +2270,14 @@ msgstr "Pridať dvojbodku"
 # Tooltip / popis
 #: ../gladeui/glade-property-label.c:136
 msgid "Whether to append a colon ':' to the property name"
-msgstr "Či sa má pridať k názvu vlastnosti dvojbodka „:“"
+msgstr "Určuje, či sa má pridať k názvu vlastnosti dvojbodka „:“"
 
-# PM: nie som si istý či je to správny názov vzhľadom na popis
 # property name
 #: ../gladeui/glade-property-label.c:141 ../gladeui/glade-property-shell.c:118
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:521
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:544
-#, fuzzy
 msgid "Packing"
-msgstr "Zoskupovanie"
+msgstr "Zoskupenie"
 
 #. To Translators: packing properties or child properties are
 #. * properties introduced by GtkContainer and they are not specific
@@ -2270,66 +2286,77 @@ msgstr "Zoskupovanie"
 #.
 #: ../gladeui/glade-property-label.c:147 ../gladeui/glade-property-shell.c:119
 msgid "Whether the property to load is a packing property or not"
-msgstr ""
+msgstr "Určuje, či sa má vlastnosť načítať ako zoskupená alebo nie"
 
+# Tooltip / popis
 #: ../gladeui/glade-property-label.c:153
 msgid "Custom text to override the property name"
-msgstr ""
+msgstr "Vlastný text, ktorým sa nahradí názov vlastnosti"
 
-# value (window type hint)
+# property
 # PŠ: bublinový popis - zišlo by sa všade...
 #: ../gladeui/glade-property-label.c:158
 msgid "Custom Tooltip"
 msgstr "Vlastný bublinový popis"
 
+# Tooltip / popis
 #: ../gladeui/glade-property-label.c:159
 msgid "Custom tooltip to override the property description"
 msgstr "Vlastný bublinový popis, ktorým sa nahradí popis vlastnosti"
 
 # tooltip / popis
 #: ../gladeui/glade-property-shell.c:125
-#, fuzzy
-#| msgid "Whether we should use the command API for the undo/redo stack"
 msgid "Whether to use the GladeCommand API when modifying properties"
-msgstr "Či sa má použiť API príkazov na zásobník histórie"
+msgstr "Určuje, či sa má použiť API príkazu GladeCommand pri úprave vlastností"
 
+# PM: nie som si istý nechávam kontrolórovi na posúdenie
+# MČ: zdá sa mi, že by ti mal byť „editor typu vlastnosti“ a teda jeho názov.
+# PK: bug report
+# property
 #: ../gladeui/glade-property-shell.c:130
+#, fuzzy
 msgid "Editor Property Type Name"
-msgstr ""
+msgstr "Názov typu editora vlastností"
 
+# tooltip / popis
 #: ../gladeui/glade-property-shell.c:131
+#, fuzzy
 msgid "Specify the actual editor property type name to use for this shell"
 msgstr ""
+"Určuje súčasný názov typu editora vlastností, ktorý sa použije pre tento "
+"shell"
 
-# PM: toto naozaj treba preložiť?
-# IM: Je to tu, tak vývojár asi cítil potrebu.
+# property
 #: ../gladeui/glade-signal.c:179
 msgid "SignalClass"
-msgstr "TriedaSignálu"
+msgstr "Trieda Signálu"
 
 # tooltip / popis
 #: ../gladeui/glade-signal.c:180
 msgid "The signal class of this signal"
-msgstr "Trieda tohto signálu"
+msgstr "Trieda signálov tohto signálu"
 
-# expander
+# property
 #: ../gladeui/glade-signal.c:185 ../gladeui/glade-signal-editor.c:1296
 msgid "Detail"
-msgstr "Podrobnosť"
+msgstr "Podrobnosti"
 
 # tooltip / popis
 #: ../gladeui/glade-signal.c:186
 msgid "The detail for this signal"
 msgstr "Podrobnosti tohto signálu"
 
+# property
 #: ../gladeui/glade-signal.c:191 ../gladeui/glade-signal-editor.c:1311
 msgid "Handler"
 msgstr "Obsluha"
 
+# tooltip / popis
 #: ../gladeui/glade-signal.c:192
 msgid "The handler for this signal"
 msgstr "Obsluha tohto signálu"
 
+# property
 #: ../gladeui/glade-signal.c:197
 msgid "User Data"
 msgstr "Používateľské údaje"
@@ -2339,6 +2366,7 @@ msgstr "Používateľské údaje"
 msgid "The user data for this signal"
 msgstr "Používateľské údaje tohto signálu"
 
+# property
 #: ../gladeui/glade-signal.c:203 ../gladeui/glade-widget.c:1433
 msgid "Support Warning"
 msgstr "Upozornenie o podpore"
@@ -2348,8 +2376,8 @@ msgstr "Upozornenie o podpore"
 msgid "The versioning support warning for this signal"
 msgstr "Upozornenie o podpore verzií tohto signálu"
 
-# 1.
-# 2.
+# PM: pri troche dobrej vôle sa to dá prežiť a netreba rozdelovať ale ak niekto chce može nahlásiť bug
+# 1., 2. property
 # 3. action
 #: ../gladeui/glade-signal.c:209 ../gladeui/glade-signal-editor.c:1381
 #: ../plugins/gtk+/gtk+.xml.in.h:600
@@ -2359,7 +2387,7 @@ msgstr "Za"
 # tooltip / popis
 #: ../gladeui/glade-signal.c:210
 msgid "Whether this signal is run after default handlers"
-msgstr "Či sa tento signál spustí po štandardných obsluhách"
+msgstr "Určuje, či sa tento signál spustí po štandardných obsluhách"
 
 #: ../gladeui/glade-signal.c:215
 msgid "Swapped"
@@ -2368,12 +2396,12 @@ msgstr "Vymenené"
 # tooltip / popis
 #: ../gladeui/glade-signal.c:216
 msgid "Whether the user data is swapped with the instance for the handler"
-msgstr "Či sú používateľské údaje vymenené s inštanciou obsluhy"
+msgstr "Určuje, či sú používateľské údaje vymenené s inštanciou obsluhy"
 
 # dialog title
 #: ../gladeui/glade-signal-editor.c:517
 msgid "Select an object to pass to the handler"
-msgstr "Vybrať objekt, ktorý sa má odovzdať obsluhe"
+msgstr "Výber objektu, ktorý sa má odovzdať obsluhe"
 
 # tree view column
 #: ../gladeui/glade-signal-editor.c:1289 ../plugins/gtk+/glade-accels.c:445
@@ -2390,17 +2418,15 @@ msgstr "Používateľské údaje"
 msgid "Swap"
 msgstr "Vymeniť"
 
-# editor property
+# property
 #: ../gladeui/glade-signal-editor.c:1528
 msgid "Glade Widget"
-msgstr ""
+msgstr "Prvok Glade"
 
 # tooltip / popis
 #: ../gladeui/glade-signal-editor.c:1529
-#, fuzzy
-#| msgid "The user data for this signal"
 msgid "The glade widget to edit signals"
-msgstr "Používateľské údaje tohto signálu"
+msgstr "Prvok nástroja glade na úpravu signálov"
 
 # warning; %s - func_name
 #: ../gladeui/glade-utils.c:135 ../gladeui/glade-utils.c:167
@@ -2473,20 +2499,22 @@ msgstr "Ukazovateľ na štruktúru GladeWidgetActionClass"
 # tooltip / popis
 #: ../gladeui/glade-widget-action.c:191
 msgid "Whether this action is sensitive"
-msgstr "Či je táto akcia citlivá"
+msgstr "Určuje, či je táto akcia citlivá"
 
 # PM: je to na troch miestach je tam všade správny rod? Požiadaj o komentár a prípadné rozdelenie
 # IM: Bug 660662
 # PŠ: ten bug je uz zmäť všeličoho... Treba hlásiť kontrétne veci s konkrétnym problémom aj navrhnutým riešením. A po jednom...
+# PM: Stále tu nemáme komentár tak prosím nahlásiť znova
 #: ../gladeui/glade-widget-action.c:197 ../gladeui/glade-widget.c:1438
 #: ../plugins/gtk+/gtk+.xml.in.h:815
+#, fuzzy
 msgid "Visible"
 msgstr "Viditeľný"
 
 # tooltip / popis
 #: ../gladeui/glade-widget-action.c:198
 msgid "Whether this action is visible"
-msgstr "Či je táto operácia viditeľná"
+msgstr "Určuje, či je táto operácia viditeľná"
 
 # error; prve %s type name of widget adaptor; type name
 #: ../gladeui/glade-widget-adaptor.c:256
@@ -2498,7 +2526,7 @@ msgstr "Odvodený adaptér (%s) prvku %s už existuje!"
 #: ../gladeui/glade-widget-adaptor.c:933
 #, c-format
 msgid "%s does not support adding any children."
-msgstr "%s nepodporuje pridávanie žiadnych podradených prvkov."
+msgstr "Adaptér %s nepodporuje pridávanie žiadnych podradených prvkov."
 
 # tooltip / popis
 #: ../gladeui/glade-widget-adaptor.c:1426
@@ -2510,6 +2538,8 @@ msgstr "Názov triedy"
 msgid "GType of the class"
 msgstr "GType triedy"
 
+# PM: rozmýšľam či to nezmeniť na titul
+# property
 #: ../gladeui/glade-widget-adaptor.c:1439
 msgid "Title"
 msgstr "Titulok"
@@ -2519,6 +2549,7 @@ msgstr "Titulok"
 msgid "Translated title for the class used in the glade UI"
 msgstr "Preložený titulok triedy použitý v používateľskom rozhraní Glade"
 
+# property
 #: ../gladeui/glade-widget-adaptor.c:1446
 msgid "Generic Name"
 msgstr "Všeobecný názov"
@@ -2538,6 +2569,7 @@ msgstr "Názov ikony"
 msgid "The icon name"
 msgstr "Názov ikony"
 
+# property
 #: ../gladeui/glade-widget-adaptor.c:1460
 msgid "Catalog"
 msgstr "Katalóg"
@@ -2547,14 +2579,17 @@ msgstr "Katalóg"
 msgid "The name of the widget catalog this class was declared by"
 msgstr "Názov katalógu ovládacích prvkov, ktorý deklaroval túto triedu"
 
+# property
 #: ../gladeui/glade-widget-adaptor.c:1467
 msgid "Book"
 msgstr "Kniha"
 
+# tooltip / popis
 #: ../gladeui/glade-widget-adaptor.c:1468
 msgid "DevHelp search namespace for this widget class"
-msgstr "Menný priestor hľadania DevHelp pre túto triedu prvku"
+msgstr "Menný priestor hľadania v DevHelp pre túto triedu prvku"
 
+# property
 #: ../gladeui/glade-widget-adaptor.c:1474
 msgid "Special Child Type"
 msgstr "Špeciálny typ podradeného prvku"
@@ -2568,8 +2603,7 @@ msgstr ""
 "Obsahuje názov zoskupovacej vlastnosti, ktorá zobrazuje špeciálne podradené "
 "prvky tejto kontajnerovej triedy"
 
-# 1. eidget adaptor
-# 2. value (extensions events)
+# property
 #: ../gladeui/glade-widget-adaptor.c:1482
 msgid "Cursor"
 msgstr "Kurzor"
@@ -2584,6 +2618,7 @@ msgstr "Kurzor na vkladanie ovládacích prvkov do rozhrania"
 msgid "The name of the widget"
 msgstr "Názov ovládacieho prvku"
 
+# property
 #: ../gladeui/glade-widget.c:1354
 msgid "Internal name"
 msgstr "Vnútorný názov"
@@ -2593,6 +2628,7 @@ msgstr "Vnútorný názov"
 msgid "The internal name of the widget"
 msgstr "Vnútorný názov ovládacieho prvku"
 
+# property
 #: ../gladeui/glade-widget.c:1359
 msgid "Anarchist"
 msgstr "Anarchista"
@@ -2601,8 +2637,9 @@ msgstr "Anarchista"
 #: ../gladeui/glade-widget.c:1360
 msgid ""
 "Whether this composite child is an ancestral child or an anarchist child"
-msgstr "Či je tento zložený podradený prvok potomkom alebo anarchistom"
+msgstr "Určuje, či je tento zložený podradený prvok potomkom alebo anarchistom"
 
+# property
 #: ../gladeui/glade-widget.c:1366
 msgid "Object"
 msgstr "Objekt"
@@ -2612,6 +2649,7 @@ msgstr "Objekt"
 msgid "The object associated"
 msgstr "Priradený objekt"
 
+# property
 #: ../gladeui/glade-widget.c:1372
 msgid "Adaptor"
 msgstr "Adaptér"
@@ -2629,9 +2667,9 @@ msgstr "Projekt glade, ktorému patrí tento ovládací prvok"
 # tooltip / popis
 #: ../gladeui/glade-widget.c:1386
 msgid "A list of GladeProperties"
-msgstr "Zoznam GladeProperties"
+msgstr "Zoznam vlastností GladeProperties"
 
-# value (resize-mode)
+# property
 #. GtkResizeMode enumeration value
 #: ../gladeui/glade-widget.c:1390 ../plugins/gtk+/gtk+.xml.in.h:322
 msgid "Parent"
@@ -2640,8 +2678,9 @@ msgstr "Nadradený"
 # tooltip / popis
 #: ../gladeui/glade-widget.c:1391
 msgid "A pointer to the parenting GladeWidget"
-msgstr "Odkaz na nadradený GladeWidget"
+msgstr "Odkaz na nadradený prvok GladeWidget"
 
+# property
 #: ../gladeui/glade-widget.c:1396
 msgid "Internal Name"
 msgstr "Vnútorný názov"
@@ -2656,6 +2695,7 @@ msgstr "Všeobecná predpona názvov vnútorných ovládacích prvkov"
 msgid "A GladeWidget template to base a new widget on"
 msgstr "Šablóna GladeWidget, podľa ktorej sa zakladá nový ovládací prvok"
 
+# property
 #: ../gladeui/glade-widget.c:1407
 msgid "Exact Template"
 msgstr "Presná šablóna"
@@ -2663,8 +2703,9 @@ msgstr "Presná šablóna"
 # tooltip / popis
 #: ../gladeui/glade-widget.c:1409
 msgid "Whether we are creating an exact duplicate when using a template"
-msgstr "Či sa použitím šablóny vytvorí presný duplikát"
+msgstr "Určuje, či sa použitím šablóny vytvorí presný duplikát"
 
+# property
 #: ../gladeui/glade-widget.c:1413
 msgid "Reason"
 msgstr "Dôvod"
@@ -2672,8 +2713,9 @@ msgstr "Dôvod"
 # tooltip / popis
 #: ../gladeui/glade-widget.c:1414
 msgid "A GladeCreateReason for this creation"
-msgstr "GladeCreateReason tohto vytvorenia"
+msgstr "Dôvod GladeCreateReason tohto vytvorenia"
 
+# property
 #: ../gladeui/glade-widget.c:1421
 msgid "Toplevel Width"
 msgstr "Šírka na najvyššej úrovni"
@@ -2682,8 +2724,10 @@ msgstr "Šírka na najvyššej úrovni"
 #: ../gladeui/glade-widget.c:1422
 msgid "The width of the widget when toplevel in the GladeDesignLayout"
 msgstr ""
-"Šírka ovládacieho prvku, keď je na najvyššej úrovni v GladeDesignLayout"
+"Šírka ovládacieho prvku, keď je na najvyššej úrovni v rozložení "
+"GladeDesignLayout"
 
+# property
 #: ../gladeui/glade-widget.c:1427
 msgid "Toplevel Height"
 msgstr "Výška na najvyššej úrovni"
@@ -2692,7 +2736,8 @@ msgstr "Výška na najvyššej úrovni"
 #: ../gladeui/glade-widget.c:1428
 msgid "The height of the widget when toplevel in the GladeDesignLayout"
 msgstr ""
-"Výška ovládacieho prvku, keď je na najvyššej úrovni v GladeDesignLayout"
+"Výška ovládacieho prvku, keď je na najvyššej úrovni v rozložení "
+"GladeDesignLayout"
 
 # tooltip / popis
 #: ../gladeui/glade-widget.c:1434
@@ -2702,35 +2747,32 @@ msgstr "Reťazec upozornenia na nezhodu verzií"
 # tooltip / popis
 #: ../gladeui/glade-widget.c:1439
 msgid "Wether the widget is visible or not"
-msgstr "Či je ovládací prvok viditeľný alebo nie"
+msgstr "Určuje, či je ovládací prvok viditeľný alebo nie"
 
 #: ../gladeui/glade-widget.c:1444
-#, fuzzy
-#| msgid "You cannot remove a widget internal to a composite widget."
 msgid "Whether this widget is the template for a composite widget"
-msgstr ""
-"Nemôžete odstrániť vnútorný ovládací prvok zloženého ovládacieho prvku."
+msgstr "Určuje, či je tento prvok šablónou pre zložený prvok."
 
 #: ../gladeui/glade-widget.c:4768
 #, c-format
 msgid "Object has unrecognized type %s"
-msgstr ""
+msgstr "Objekt má nerozpoznaný typ %s"
 
 #: ../gladeui/glade-widget.c:4832
 msgid "Property has versioning problems: "
-msgstr ""
+msgstr "Vlastnosť má problém s verziou: "
 
 #: ../gladeui/glade-widget.c:4834
 msgid "Some properties have versioning problems: "
-msgstr ""
+msgstr "Niektoré vlastnosti majú problémy s verziou: "
 
 #: ../gladeui/glade-widget.c:4854
 msgid "Signal has versioning problems: "
-msgstr ""
+msgstr "Signál má problém s verziou: "
 
 #: ../gladeui/glade-widget.c:4856
 msgid "Some signals have versioning problems: "
-msgstr ""
+msgstr "Niektoré signály majú problémy s verziou: "
 
 # 1. kategória názvov ikon
 # 2. widget group
@@ -2762,7 +2804,7 @@ msgstr "Emblémy"
 # kategória názvov ikon
 #: ../gladeui/icon-naming-spec.c:48
 msgid "Emoticons"
-msgstr "Emotikony"
+msgstr "Smejkovia"
 
 # kategória názvov ikon
 #: ../gladeui/icon-naming-spec.c:50
@@ -2782,7 +2824,7 @@ msgstr "Miesta"
 # kategória názvov ikon
 #: ../gladeui/icon-naming-spec.c:56
 msgid "Status"
-msgstr "Stav"
+msgstr "Stavy"
 
 # notebook page
 #: ../gladeui/glade-editor.ui.h:1
@@ -2792,7 +2834,7 @@ msgstr "_Všeobecné"
 # notebook page
 #: ../gladeui/glade-editor.ui.h:2
 msgid "_Packing"
-msgstr "_Zoskupovanie"
+msgstr "_Zoskupenie"
 
 # notebook page
 #: ../gladeui/glade-editor.ui.h:3
@@ -2805,15 +2847,19 @@ msgstr "_Bežné"
 msgid "_Signals"
 msgstr "_Signály"
 
+# GtkLabel
 #: ../gladeui/glade-project-properties.ui.h:1
 msgid "Translation domain:"
-msgstr ""
+msgstr "Doména prekladu:"
 
+# PM: Nie som si istý treba odskúšať v programe
+# GtkCheckButton
 #: ../gladeui/glade-project-properties.ui.h:2
+#, fuzzy
 msgid "Composite template toplevel:"
-msgstr ""
+msgstr "Vrchná úroveň šablóny pre zložené prvky:"
 
-# tooltip EditMenu
+# GtkLabel
 #: ../gladeui/glade-project-properties.ui.h:3
 msgid "Project properties:"
 msgstr "Vlastnosti projektu:"
@@ -2836,44 +2882,44 @@ msgstr "Z tohto adresára"
 # dialog title
 #: ../gladeui/glade-project-properties.ui.h:7
 msgid "Choose a path to load image resources"
-msgstr "Vyberte cestu, z ktorej načítať zdroje obrázka"
+msgstr "Výber cesty, z ktorej sa načítajú zdroje obrázkov"
 
-# radio button frame
+# radio button frame label
 #: ../gladeui/glade-project-properties.ui.h:8
 msgid "Image resources are loaded locally:"
 msgstr "Zdroje obrázkov sú načítané lokálne:"
 
-# radio button frame
+# radio button frame label
 #: ../gladeui/glade-project-properties.ui.h:9
 msgid "Toolkit version required:"
 msgstr "Požadovaná verzia sady nástrojov:"
 
+# tooltip
 #: ../gladeui/glade-project-properties.ui.h:10
 msgid ""
 "Verify that the project does not use any properties,\n"
 "signals or widgets which are not available in the target version"
 msgstr ""
+"Overí, či projekt nepoužíva nejaké vlastnosti,\n"
+"signály alebo prvky, ktoré nie sú pre cieľovú verziu dostupné"
 
-# property description; prve % class name; druhé widget name
+# command group
 #: ../plugins/gtk+/glade-about-dialog-editor.c:138
-#, fuzzy, c-format
-#| msgid "Setting %s of %s"
+#, c-format
 msgid "Setting License type of %s"
-msgstr "Nastavenie %s prvku %s"
+msgstr "Nastavenie typu licencie prvku %s"
 
 # command
 #: ../plugins/gtk+/glade-about-dialog-editor.c:177
-#, fuzzy, c-format
-#| msgid "Setting %s to use a single line"
+#, c-format
 msgid "Setting %s to use a logo icon"
-msgstr "Nastavenie, aby %s používal jediný riadok"
+msgstr "Nastavenie, aby prvok %s používal ikonu loga"
 
 # command
 #: ../plugins/gtk+/glade-about-dialog-editor.c:211
-#, fuzzy, c-format
-#| msgid "Setting %s to use a stock item"
+#, c-format
 msgid "Setting %s to use logo file"
-msgstr "Nastavenie, aby %s používal položku z palety"
+msgstr "Nastavenie, aby prvok %s používal súbor loga"
 
 # column text, v tree store
 #: ../plugins/gtk+/glade-accels.c:320 ../plugins/gtk+/glade-accels.c:389
@@ -2888,7 +2934,7 @@ msgstr "Akcelerátor"
 # dialog title
 #: ../plugins/gtk+/glade-accels.c:514
 msgid "Choose accelerator keys..."
-msgstr "Zvoľte akcelerátory…"
+msgstr "Výber akcelerátorov…"
 
 #: ../plugins/gtk+/glade-attributes.c:223
 msgctxt "textattr"
@@ -2978,7 +3024,7 @@ msgstr "Popis písma"
 #: ../plugins/gtk+/glade-attributes.c:375
 #: ../plugins/gtk+/glade-attributes.c:826
 msgid "<Enter Value>"
-msgstr "<zadajte hodnotu>"
+msgstr "<Zadajte hodnotu>"
 
 # V podmienke prikazu if
 #: ../plugins/gtk+/glade-attributes.c:360
@@ -3008,9 +3054,9 @@ msgstr "Hodnota"
 # dialog title
 #: ../plugins/gtk+/glade-attributes.c:1053
 msgid "Setup Text Attributes"
-msgstr "Nastavenia atribútov textu"
+msgstr "Nastavenie atribútov textu"
 
-# label
+# button label
 #: ../plugins/gtk+/glade-attributes.c:1145
 msgid "Edit Attributes"
 msgstr "Upraviť atribúty"
@@ -3019,40 +3065,40 @@ msgstr "Upraviť atribúty"
 #: ../plugins/gtk+/glade-button-editor.c:241
 #, c-format
 msgid "Setting %s to use a custom child"
-msgstr "Nastavenie, aby %s používal vlastný podradený prvok"
+msgstr "Nastavenie, aby prvok %s používal vlastný podradený prvok"
 
 # command
 #: ../plugins/gtk+/glade-button-editor.c:269
 #, c-format
 msgid "Setting %s to use standard configuration"
-msgstr "Nastavenie, aby %s používal štandardnú konfiguráciu"
+msgstr "Nastavenie, aby prvok %s používal štandardnú konfiguráciu"
 
 # command
 #: ../plugins/gtk+/glade-button-editor.c:324
 #, c-format
 msgid "Setting %s to use a stock button"
-msgstr "Nastavenie, aby %s používal tlačidlo z palety"
+msgstr "Nastavenie, aby prvok %s používal tlačidlo z palety"
 
 # command
 #: ../plugins/gtk+/glade-button-editor.c:364
 #: ../plugins/gtk+/glade-image-item-editor.c:220
 #, c-format
 msgid "Setting %s to use a label and image"
-msgstr "Nastavenie, aby %s používal označenie a obrázok"
+msgstr "Nastavenie, aby prvok %s používal označenie a obrázok"
 
 # command
 #: ../plugins/gtk+/glade-cell-renderer-editor.c:191
 #, c-format
 msgid "Setting %s to use the %s property as an attribute"
-msgstr "Nastavenie, aby %s používal vlastnosť %s ako atribút"
+msgstr "Nastavenie, aby prvok %s používal vlastnosť %s ako atribút"
 
 # command
 #: ../plugins/gtk+/glade-cell-renderer-editor.c:212
 #, c-format
 msgid "Setting %s to use the %s property directly"
-msgstr "Nastavenie, aby %s používal vlastnosť %s priamo"
+msgstr "Nastavenie, aby prvok %s používal vlastnosť %s priamo"
 
-# tooltip pre checkbox; prve %s class name; druhe type name
+# tooltip pre checkbox; prve %s property class name; druhe type name
 #: ../plugins/gtk+/glade-cell-renderer-editor.c:356
 #, c-format
 msgid "Retrieve %s from model (type %s)"
@@ -3102,104 +3148,101 @@ msgstr "Názov stĺpca"
 #: ../plugins/gtk+/glade-entry-editor.c:247
 #, c-format
 msgid "Setting %s to use static text"
-msgstr "Nastavenie, aby %s používal statický text"
+msgstr "Nastavenie, aby prvok %s používal statický text"
 
 # command
 #: ../plugins/gtk+/glade-entry-editor.c:287
 #, c-format
 msgid "Setting %s to use an external buffer"
-msgstr "Nastavenie, aby %s používal externý buffer"
+msgstr "Nastavenie, aby prvok %s používal externý buffer"
 
 # command
 #: ../plugins/gtk+/glade-entry-editor.c:371
 #, c-format
 msgid "Setting %s to use a primary icon from stock"
-msgstr "Nastavenie, aby %s používal primárnu ikonu z palety"
+msgstr "Nastavenie, aby prvok %s používal hlavnú ikonu z palety"
 
 # command
 #: ../plugins/gtk+/glade-entry-editor.c:397
 #, c-format
 msgid "Setting %s to use a primary icon from the icon theme"
-msgstr "Nastavenue, aby %s používal primárnu ikonu z témy ikon"
+msgstr "Nastavenie, aby prvok %s používal hlavnú ikonu z témy ikon"
 
 # command
 #: ../plugins/gtk+/glade-entry-editor.c:423
 #, c-format
 msgid "Setting %s to use a primary icon from filename"
-msgstr "Nastavenie, aby %s používal primárnu ikonu zo súboru"
+msgstr "Nastavenie, aby prvok %s používal hlavnú ikonu zo súboru"
 
 # command
 #: ../plugins/gtk+/glade-entry-editor.c:449
 #, c-format
 msgid "Setting %s to use a secondary icon from stock"
-msgstr "Nastavenie, aby %s používal sekundárnu ikonu z palety"
+msgstr "Nastavenie, aby prvok %s používal vedľajšiu ikonu z palety"
 
 # command
 #: ../plugins/gtk+/glade-entry-editor.c:476
 #, c-format
 msgid "Setting %s to use a secondary icon from the icon theme"
-msgstr "Nastavenie, aby %s používal sekundárnu ikonu z témy ikon"
+msgstr "Nastavenie, aby prvok %s používal vedľajšiu ikonu z témy ikon"
 
 # command
 #: ../plugins/gtk+/glade-entry-editor.c:502
 #, c-format
 msgid "Setting %s to use a secondary icon from filename"
-msgstr "Nastavenie, aby %s používal sekundárnu ikonu zo súboru"
+msgstr "Nastavenie, aby prvok %s používal vedľajšiu ikonu zo súboru"
 
 # command
 #: ../plugins/gtk+/glade-entry-editor.c:571
-#, fuzzy, c-format
-#| msgid "Setting %s to use a primary icon from stock"
+#, c-format
 msgid "Setting primary icon of %s to use tooltip markup"
-msgstr "Nastavenie, aby %s používal primárnu ikonu z palety"
+msgstr "Nastavenie, aby hlavná ikona prvku %s používala bublinový popis"
 
-# property
-# bublinový popis
+# command
 #: ../plugins/gtk+/glade-entry-editor.c:574
-#, fuzzy, c-format
-#| msgid "Secondary Icon Tooltip Markup"
+#, c-format
 msgid "Setting secondary icon of %s to use tooltip markup"
-msgstr "Značkovanie tipu sekundárnej ikony"
+msgstr "Nastavenie, aby vedľajšia ikona prvku %s používala bublinový popis"
 
+# command
 #: ../plugins/gtk+/glade-entry-editor.c:587
 #, c-format
 msgid "Setting primary icon of %s to not use tooltip markup"
-msgstr ""
+msgstr "Nastavenie, aby hlavná ikona prvku %s nepoužívala bublinový popis"
 
-# property
-# bublinový popis
+# command
 #: ../plugins/gtk+/glade-entry-editor.c:590
-#, fuzzy, c-format
-#| msgid "Secondary Icon Tooltip Markup"
+#, c-format
 msgid "Setting secondary icon of %s to not use tooltip markup"
-msgstr "Značkovanie tipu sekundárnej ikony"
+msgstr "Nastavenie, aby vedľajšia ikona prvku %s nepoužívala bublinový popis"
 
 # command
 #: ../plugins/gtk+/glade-fixed.c:622 ../plugins/gtk+/glade-gtk-grid.c:994
 #, c-format
 msgid "Placing %s inside %s"
-msgstr "Vloženie %s dovnútra %s"
+msgstr "Vloženie prvku %s dovnútra %s"
 
+# property
 #: ../plugins/gtk+/glade-fixed.c:1134
 msgid "X position property"
-msgstr "Vlastnosť poloha X"
+msgstr "Vlastnosť Poloha X"
 
 # Tooltip / popis
 #: ../plugins/gtk+/glade-fixed.c:1135
 msgid "The property used to set the X position of a child object"
 msgstr "Vlastnosť, ktorá sa používa na nastavenie polohy X podradeného objektu"
 
-# PM: Raz máš názvy vlastností malým raz veľkým písmenom - ujednoť si to
-# PŠ: zapracovať!!!
+# property
 #: ../plugins/gtk+/glade-fixed.c:1141
 msgid "Y position property"
-msgstr "Vlastnosť poloha X"
+msgstr "Vlastnosť Poloha Y"
 
 # Tooltip / popis
 #: ../plugins/gtk+/glade-fixed.c:1142
 msgid "The property used to set the Y position of a child object"
 msgstr "Vlastnosť, ktorá sa používa na nastavenie polohy Y podradeného objektu"
 
+# property
 #: ../plugins/gtk+/glade-fixed.c:1148
 msgid "Width property"
 msgstr "Vlastnosť Šírka"
@@ -3209,6 +3252,7 @@ msgstr "Vlastnosť Šírka"
 msgid "The property used to set the width of a child object"
 msgstr "Vlastnosť, ktorá sa používa na nastavenie šírky podradeného objektu"
 
+# property
 #: ../plugins/gtk+/glade-fixed.c:1155
 msgid "Height property"
 msgstr "Vlastnosť Výška"
@@ -3218,6 +3262,7 @@ msgstr "Vlastnosť Výška"
 msgid "The property used to set the height of a child object"
 msgstr "Vlastnosť, ktorá sa používa na nastavenie výšky podradeného objektu"
 
+# property
 #: ../plugins/gtk+/glade-fixed.c:1162
 msgid "Can resize"
 msgstr "Meniteľná veľkosť"
@@ -3226,7 +3271,7 @@ msgstr "Meniteľná veľkosť"
 #: ../plugins/gtk+/glade-fixed.c:1163
 msgid "Whether this container supports resizes of child widgets"
 msgstr ""
-"Či tento kontajner podporuje zmeny veľkostí podradených ovládacích prvkov"
+"Určuje, či tento kontajner podporuje zmeny veľkostí podradených ovládacích prvkov"
 
 #: ../plugins/gtk+/glade-gtk-action-group.c:173
 #: ../plugins/gtk+/glade-gtk-action-group.c:206
@@ -3244,7 +3289,7 @@ msgstr "Akcia"
 #: ../plugins/gtk+/glade-gtk-toolbar.c:233
 #: ../plugins/gtk+/glade-gtk-tree-view.c:97
 msgid "Toggle"
-msgstr "Prepínacie"
+msgstr "Prepínacia položka"
 
 # GType tool button
 # GType menu item
@@ -3258,12 +3303,12 @@ msgstr "Prepínacie"
 #: ../plugins/gtk+/glade-gtk-toolbar.c:245
 #: ../plugins/gtk+/glade-gtk-toolbar.c:253
 msgid "Radio"
-msgstr "Výberové"
+msgstr "Rádiová položka"
 
 # GType action
 #: ../plugins/gtk+/glade-gtk-action-group.c:209
 msgid "Recent"
-msgstr "Nedávne"
+msgstr "Nedávna položka"
 
 # window title
 #: ../plugins/gtk+/glade-gtk-action-group.c:217
@@ -3345,7 +3390,7 @@ msgstr "Akcelerátor"
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:414
 #: ../plugins/gtk+/glade-gtk-tree-view.c:93 ../plugins/gtk+/gtk+.xml.in.h:373
 msgid "Combo"
-msgstr "Roletový zoznam"
+msgstr "Kombinované pole"
 
 # GType cell render
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:415
@@ -3403,11 +3448,11 @@ msgstr "Prvok %s má nastavené, aby pracoval s %s priamo"
 
 #: ../plugins/gtk+/glade-gtk-combo-box.c:31
 msgid "This combo box is not configured to have an entry"
-msgstr ""
+msgstr "Toto kombinované pole nie je nastavené tak, aby umožňovalo vstup"
 
 #: ../plugins/gtk+/glade-gtk-combo-box.c:94
 msgid "Tearoff menus are disabled"
-msgstr ""
+msgstr "Oddeliteľné ponuky sú zakázané"
 
 # message
 #: ../plugins/gtk+/glade-gtk-container.c:58
@@ -3430,18 +3475,20 @@ msgstr ""
 
 # message
 #: ../plugins/gtk+/glade-gtk-entry.c:206
-#, fuzzy
-#| msgid "This property only applies to stock images"
 msgid ""
 "This property is only available\n"
 "if the entry has a frame"
-msgstr "Táto vlastnosť sa týka iba obrázkov z palety"
+msgstr ""
+"Táto vlastnosť je dostupná iba\n"
+"ak má textový vstup rámec"
 
 #: ../plugins/gtk+/glade-gtk-entry.c:215
 msgid ""
 "This property is only available\n"
 "if the entry characters are invisible"
 msgstr ""
+"Táto položka je dostupná iba\n"
+"ak sú znaky textového vstupu neviditeľné"
 
 # command
 #: ../plugins/gtk+/glade-gtk-grid.c:597 ../plugins/gtk+/glade-gtk-grid.c:604
@@ -3473,10 +3520,8 @@ msgstr "Odstránenie riadka z %s"
 
 # message
 #: ../plugins/gtk+/glade-gtk-image.c:106
-#, fuzzy
-#| msgid "This property only applies to stock images"
 msgid "This property only applies to stock images or named icons"
-msgstr "Táto vlastnosť sa týka iba obrázkov z palety"
+msgstr "Táto vlastnosť sa týka iba obrázkov z palety alebo pomenovaných ikon"
 
 # message
 #: ../plugins/gtk+/glade-gtk-image.c:108 ../plugins/gtk+/glade-gtk-image.c:110
@@ -3497,8 +3542,7 @@ msgstr "Upraviť ponuku"
 
 # message
 #: ../plugins/gtk+/glade-gtk-menu-item.c:142
-#, fuzzy, c-format
-#| msgid "A object of type %s cannot have any children."
+#, c-format
 msgid "An object of type %s cannot have any children."
 msgstr "Objekt typu %s nemôže mať žiadne podradené prvky."
 
@@ -3611,11 +3655,11 @@ msgstr "Odstránenie stránky z %s"
 
 #: ../plugins/gtk+/glade-gtk-progress-bar.c:30
 msgid "This progressbar does not show text"
-msgstr ""
+msgstr "Tento ukazovateľ priebehu nezobrazuje text"
 
 #: ../plugins/gtk+/glade-gtk-scale.c:30
 msgid "Scale is configured to not draw the value"
-msgstr ""
+msgstr "Mierka je nastavená tak, aby nevykresľovala hodnotu"
 
 # Tooltip
 #: ../plugins/gtk+/glade-gtk-scrolled-window.c:56
@@ -3747,15 +3791,15 @@ msgstr ""
 
 #: ../plugins/gtk+/glade-gtk-tree-view.c:304
 msgid "Search is disabled"
-msgstr ""
+msgstr "Vyhľadávanie je zakázané"
 
 #: ../plugins/gtk+/glade-gtk-tree-view.c:311
 msgid "Headers are invisible"
-msgstr ""
+msgstr "Hlavičky sú neviditeľné"
 
 #: ../plugins/gtk+/glade-gtk-tree-view.c:318
 msgid "Expanders are not shown"
-msgstr ""
+msgstr "Rozbaľovače nie sú zobrazené"
 
 # command
 #: ../plugins/gtk+/glade-gtk-widget.c:815
@@ -3854,7 +3898,7 @@ msgstr "Názov súboru"
 #: ../plugins/gtk+/glade-tool-button-editor.c:232
 #, c-format
 msgid "Setting %s to use an image from stock"
-msgstr "Nastavenie, aby %s používal obrázok z palety"
+msgstr "Nastavenie, aby prvok %s používal obrázok z palety"
 
 # command
 #: ../plugins/gtk+/glade-image-editor.c:249
@@ -3862,26 +3906,25 @@ msgstr "Nastavenie, aby %s používal obrázok z palety"
 #: ../plugins/gtk+/glade-tool-button-editor.c:302
 #, c-format
 msgid "Setting %s to use an image from the icon theme"
-msgstr "Nastavenie, aby %s používal obrázok z témy ikon"
+msgstr "Nastavenie, aby prvok %s používal obrázok z témy ikon"
 
 # command
 #: ../plugins/gtk+/glade-image-editor.c:275
-#, fuzzy, c-format
-#| msgid "Setting %s to use a stock item"
+#, c-format
 msgid "Setting %s to use a resource name"
-msgstr "Nastavenie, aby %s používal položku z palety"
+msgstr "Nastavenie, aby prvok %s používal názov zdroja"
 
 # command
 #: ../plugins/gtk+/glade-image-editor.c:301
 #, c-format
 msgid "Setting %s to use an image from filename"
-msgstr "Nastavenie, aby %s používal obrázok zo súboru"
+msgstr "Nastavenie, aby prvok %s používal obrázok zo súboru"
 
 # command
 #: ../plugins/gtk+/glade-image-item-editor.c:173
 #, c-format
 msgid "Setting %s to use a stock item"
-msgstr "Nastavenie, aby %s používal položku z palety"
+msgstr "Nastavenie, aby prvok %s používal položku z palety"
 
 # radio button
 #: ../plugins/gtk+/glade-image-item-editor.c:302
@@ -3915,31 +3958,33 @@ msgstr "Nastavenie, aby %s používal zoznam atribútov"
 #: ../plugins/gtk+/glade-label-editor.c:248
 #, c-format
 msgid "Setting %s to use a Pango markup string"
-msgstr "Nastavenie, aby %s používal značkovací reťazec Pango"
+msgstr "Nastavenie, aby prvok %s používal značkovací reťazec knižnice Pango"
 
 # command
 #: ../plugins/gtk+/glade-label-editor.c:285
 #, c-format
 msgid "Setting %s to use a pattern string"
-msgstr "Nastavenie, aby %s používal reťazec so vzorom"
+msgstr "Nastavenie, aby prvok %s používal reťazec so vzorom"
 
 # command
 #: ../plugins/gtk+/glade-label-editor.c:322
 #, c-format
 msgid "Setting %s to use normal line wrapping"
-msgstr "Nastavenie, aby %s používal bežné zalamovanie riadkov"
+msgstr "Nastavenie, aby prvok %s používal bežné zalamovanie riadkov"
 
 # command
 #: ../plugins/gtk+/glade-label-editor.c:359
 #, c-format
 msgid "Setting %s to use a single line"
-msgstr "Nastavenie, aby %s používal jediný riadok"
+msgstr "Nastavenie, aby prvok %s používal jediný riadok"
 
 # command
 #: ../plugins/gtk+/glade-label-editor.c:396
 #, c-format
 msgid "Setting %s to use specific Pango word wrapping"
-msgstr "Nastavenie, aby %s používal zalamovanie riadkov špecifické pre Pango"
+msgstr ""
+"Nastavenie, aby prvok %s používal delenie slov špecifické pre "
+"knižnicu Pango"
 
 # label
 #: ../plugins/gtk+/glade-model-data.c:1118
@@ -4007,38 +4052,33 @@ msgstr ""
 # command
 #: ../plugins/gtk+/glade-widget-editor.c:163
 #: ../plugins/gtk+/glade-widget-editor.c:183
-#, fuzzy, c-format
-#| msgid "Setting %s to use a custom child"
+#, c-format
 msgid "Setting %s to use a custom tooltip"
-msgstr "Nastavenie, aby %s používal vlastný podradený prvok"
+msgstr "Nastavenie, aby prvok %s používal vlastný bublinový popis"
 
 # command
 #: ../plugins/gtk+/glade-widget-editor.c:265
-#, fuzzy, c-format
-#| msgid "Setting %s to use a Pango markup string"
+#, c-format
 msgid "Setting %s to use tooltip markup"
-msgstr "Nastavenie, aby %s používal značkovací reťazec Pango"
+msgstr "Nastavenie, aby prvok %s používal bublinový popis"
 
 # command
 #: ../plugins/gtk+/glade-widget-editor.c:277
-#, fuzzy, c-format
-#| msgid "Setting %s to not use action appearance"
+#, c-format
 msgid "Setting %s to not use tooltip markup"
-msgstr "Nastavenie, aby %s nepoužíval vzhľad akcie"
+msgstr "Nastavenie, aby prvok %s nepoužíval bublinový popis"
 
 # command
 #: ../plugins/gtk+/glade-window-editor.c:131
-#, fuzzy, c-format
-#| msgid "Setting %s to use a single line"
+#, c-format
 msgid "Setting %s to use a named icon"
-msgstr "Nastavenie, aby %s používal jediný riadok"
+msgstr "Nastavenie, aby prvok %s používal pomenovanú ikonu"
 
 # command
 #: ../plugins/gtk+/glade-window-editor.c:165
 #, fuzzy, c-format
-#| msgid "Setting %s to use a single line"
 msgid "Setting %s to use an icon file"
-msgstr "Nastavenie, aby %s používal jediný riadok"
+msgstr "Nastavenie, aby prvok %s používal jediný riadok"
 
 # widget class
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:1
@@ -4216,10 +4256,12 @@ msgstr "Stred"
 msgid "End"
 msgstr "Koniec"
 
+# MČ: nie som si istý, ale nemala by to byť „základňa riadku“?
 #. GtkAlign enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:31
+#, fuzzy
 msgid "Baseline"
-msgstr ""
+msgstr "Základná čiara"
 
 # value (events)
 #. GdkEventMask enumeration value
@@ -4345,18 +4387,16 @@ msgstr "Subštruktúra"
 #. GdkEventMask enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:73
 msgid "Scroll"
-msgstr "Rolovať"
+msgstr "Rolovanie"
 
 #. GdkEventMask enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:75
 msgid "Touch"
-msgstr ""
+msgstr "Dotyk"
 
-# PM: spolu s akými ďalšími hodnotami je táto hodnota? lebo vyššie je rolovať ako sloveso tu je to ako podstatné meno
 # value (events)
 #. GdkEventMask enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:77
-#, fuzzy
 msgid "Smooth scroll"
 msgstr "Jemné rolovanie"
 
@@ -4385,7 +4425,7 @@ msgstr "Prístupný popis"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:85
 msgid "Role"
-msgstr ""
+msgstr "Rola"
 
 # value (icon-size)
 #. GtkIconSize enumeration value
@@ -6668,7 +6708,7 @@ msgid ""
 "Whether this page will initially be marked as complete regardless of user "
 "input."
 msgstr ""
-"Či má táto stránka byť prvotne označená ako hotová bez ohľadu na vstup od "
+"Určuje, či má táto stránka byť prvotne označená ako hotová bez ohľadu na vstup od "
 "používateľa."
 
 # tooltip
