@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2013-09-22 17:47+0000\n"
-"PO-Revision-Date: 2013-09-22 20:27+0100\n"
+"PO-Revision-Date: 2013-09-23 21:15+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -1356,12 +1356,12 @@ msgstr "Edinstveno določilo predmeta"
 #: ../gladeui/glade-editor-table.c:565 ../gladeui/glade-widget.c:1443
 #, fuzzy
 msgid "Composite"
-msgstr "Združeni gradniki"
+msgstr "Združeno"
 
 #: ../gladeui/glade-editor-table.c:567
 #, fuzzy
 msgid "Whether this widget is a composite template"
-msgstr "Ali je podrejen predmet soroden ali ne."
+msgstr "Ali je predmet predloga združenega"
 
 #: ../gladeui/glade-inspector.c:194 ../gladeui/glade-project-properties.c:131
 #: ../gladeui/glade-widget.c:1378
@@ -1943,7 +1943,8 @@ msgstr "Ime vrste lastnosti v urejevalniku"
 
 #: ../gladeui/glade-property-shell.c:131
 msgid "Specify the actual editor property type name to use for this shell"
-msgstr "Določi dejansko ime vrste lastnosti urejevalnika, ki naj se uporabi za to "
+msgstr ""
+"Določi dejansko ime vrste lastnosti urejevalnika, ki naj se uporabi za to "
 "lupino"
 
 #: ../gladeui/glade-signal.c:179
@@ -2672,6 +2673,7 @@ msgstr "Nastavitev dodatne ikone %s za uporabo oblikovanja v orodnem namigu"
 #, c-format
 msgid "Setting primary icon of %s to not use tooltip markup"
 msgstr ""
+"Nastavljanje osnovne ikone %s na prikaz orodnega namiga brez oblikovanja"
 
 #: ../plugins/gtk+/glade-entry-editor.c:590
 #, c-format
@@ -3690,9 +3692,8 @@ msgstr "Neveljavno"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:89
-#, fuzzy
 msgid "Accelerator Label"
-msgstr "oznaka pospeševalnika"
+msgstr "Oznaka pospeševalnika"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:91
@@ -4236,9 +4237,8 @@ msgid "Indicates an object is a controller for one or more target objects"
 msgstr "Določa predmet nadzorovan za enega ali več ciljnih predmetov"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:307
-#, fuzzy
 msgid "Indicates an object is labeled by one or more target objects"
-msgstr "Določa predmet označen preko enega ali več ciljnih predmetov"
+msgstr "Določa, da je predmet označen preko enega ali več ciljnih predmetov"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:308
 msgid "Indicates an object is a label for one or more target objects"
@@ -4640,23 +4640,21 @@ msgstr "Paleta orodij"
 
 #. GtkScrollablePolicy enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:444
-#, fuzzy
 msgid "Minimum"
-msgstr "Najnižji"
+msgstr "Najmanjša širina"
 
 #. GtkScrollablePolicy enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:446
-#, fuzzy
 msgid "Natural"
 msgstr "Naravna širina"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:447
 msgid "Whether to start scrolling at less than minimum or natural width"
-msgstr ""
+msgstr "Ali naj se drsenje začne pri najmanjši ali naravni širini"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:448
 msgid "Whether to start scrolling at less than minimum or natural height"
-msgstr ""
+msgstr "Ali naj se drsenje začne pri najmanjši ali naravni višini"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:449
 msgid "The position of the tool item group in the palette"
@@ -5174,7 +5172,7 @@ msgstr "Število strani"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:619
 msgid "Set the currently active page to edit, this property will not be saved"
-msgstr ""
+msgstr "Nastavi trenutno dejavno stran za urejanje. Možnost ne bo shranjena."
 
 #: ../plugins/gtk+/gtk+.xml.in.h:620
 msgid "The number of pages in the notebook"
@@ -5253,7 +5251,7 @@ msgstr "Zadržano"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:647
 msgid "The number of digits to round the value to when the value changes"
-msgstr ""
+msgstr "Število števk za zaokroževanje vrednosti, ko se ta spreminja"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:648
 msgid ""
@@ -6338,9 +6336,8 @@ msgid "Action Attributes"
 msgstr "Atributi dejanj"
 
 #: ../plugins/gtk+/glade-action-editor.ui.h:2
-#, fuzzy
 msgid "Toolbar Proxies"
-msgstr "Pokaži orodno vrstico"
+msgstr "Posredniške orodne vrstice"
 
 #: ../plugins/gtk+/glade-action-editor.ui.h:3
 #, fuzzy
@@ -6475,6 +6472,8 @@ msgid ""
 "Whether to use markup in the\n"
 "primary icon's tooltip\n"
 msgstr ""
+"Ali naj bo uporabljeno oblikovanje\n"
+"v orodnem namigu osnovne okone.\n"
 
 #: ../plugins/gtk+/glade-entry-editor.ui.h:11
 msgid "Secondary Icon"
