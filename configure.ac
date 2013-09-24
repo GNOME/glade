@@ -307,6 +307,7 @@ AC_CONFIG_FILES([
 Makefile
 data/gladeui-2.0.pc
 data/glade.desktop.in
+data/glade.appdata.xml
 data/Makefile
 data/icons/Makefile
 data/icons/hicolor/Makefile
