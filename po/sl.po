@@ -4,14 +4,15 @@
 #
 # Peter Kragelj <peter.kragelj@gmail.com>, 2010.
 # Matej Urbančič <mateju@svn.gnome.org>, 2007-2013.
+# Martin Srebotnjak <miles@filmsi.net>, 2013.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glade3 master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-22 09:12+0000\n"
-"PO-Revision-Date: 2013-09-22 19:40+0100\n"
+"POT-Creation-Date: 2013-09-22 17:47+0000\n"
+"PO-Revision-Date: 2013-09-24 20:46+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -677,6 +678,8 @@ msgid ""
 "Prompt the user at save time if the project uses any widgets, properties\n"
 "or signals which are not available in the project's target version"
 msgstr ""
+"Ob shranjevanju opozori uporabnika, če projekt uporablja gradnike,\n"
+"lastnosti ali signale, ki niso na voljo v ciljni različici projekta"
 
 #: ../src/glade-preferences.glade.h:12
 msgid "Deprecation warnings"
@@ -687,6 +690,8 @@ msgid ""
 "Prompt the user at save time if the project uses any widgets,\n"
 "properties or signals which are deprecated"
 msgstr ""
+"Ob shranjevanju opozori uporabnika, če projekt uporablja gradnike,\n"
+"lastnosti ali signale, ki so opuščeni"
 
 #: ../src/glade-preferences.glade.h:15
 msgid "Unrecognized types"
@@ -697,6 +702,8 @@ msgid ""
 "Prompt the user at save time if the project\n"
 "contains any unrecognized types"
 msgstr ""
+"Ob shranjevanju povprašaj uporabnika,\n"
+"ali projekt vsebuje neprepoznane vrste"
 
 #: ../src/glade-preferences.glade.h:18
 msgid "Show warnings when saving"
@@ -932,14 +939,14 @@ msgid "An entry"
 msgstr "Vnos"
 
 #: ../gladeui/glade-command.c:459 ../gladeui/glade-command.c:515
-#, fuzzy, c-format
+#, c-format
 msgid "Enabling property %s on widget %s"
-msgstr "Ni gradnikov na odložišču"
+msgstr "Omogočanje lastnosti %s na gradniku %s"
 
 #: ../gladeui/glade-command.c:464 ../gladeui/glade-command.c:520
-#, fuzzy, c-format
+#, c-format
 msgid "Disabling property %s on widget %s"
-msgstr "Ni gradnikov na odložišču"
+msgstr "Onemogočanje lastnosti %s na gradniku %s"
 
 #: ../gladeui/glade-command.c:805
 #, c-format
@@ -1045,14 +1052,14 @@ msgid "Unlocking %s"
 msgstr "Odklepanje %s"
 
 #: ../gladeui/glade-command.c:2607 ../gladeui/glade-command.c:2650
-#, fuzzy, c-format
+#, c-format
 msgid "Setting target version of '%s' to %d.%d"
-msgstr "Pozdravite različico 3.2."
+msgstr "Nastavljanje ciljne različice '%s' na %d.%d"
 
 #: ../gladeui/glade-command.c:2757 ../gladeui/glade-command.c:2791
-#, fuzzy, c-format
+#, c-format
 msgid "Setting translation domain to '%s'"
-msgstr "Z domeno %s povezava ni mogoča: %s"
+msgstr "Nastavljanje domene prevajanja na '%s'"
 
 #: ../gladeui/glade-command.c:2910 ../gladeui/glade-command.c:2964
 #, c-format
@@ -1331,7 +1338,7 @@ msgstr "Vrsta strani"
 
 #: ../gladeui/glade-editor-table.c:121
 msgid "The editor page type to create this GladeEditorTable for"
-msgstr ""
+msgstr "Vrsta strani urejevalnika, za katero ustvari ta GladeEditorTable"
 
 #: ../gladeui/glade-editor-table.c:289
 msgid "Class Name:"
@@ -1349,12 +1356,12 @@ msgstr "Edinstveno določilo predmeta"
 #: ../gladeui/glade-editor-table.c:565 ../gladeui/glade-widget.c:1443
 #, fuzzy
 msgid "Composite"
-msgstr "Združeni gradniki"
+msgstr "Združeno"
 
 #: ../gladeui/glade-editor-table.c:567
 #, fuzzy
 msgid "Whether this widget is a composite template"
-msgstr "Ali je podrejen predmet soroden ali ne."
+msgstr "Ali je predmet predloga združenega"
 
 #: ../gladeui/glade-inspector.c:194 ../gladeui/glade-project-properties.c:131
 #: ../gladeui/glade-widget.c:1378
@@ -1565,34 +1572,31 @@ msgstr "Način kazalnika"
 
 #: ../gladeui/glade-project.c:929
 msgid "The currently effective GladePointerMode"
-msgstr "Trenutno učinkoviti GladePointerMode"
+msgstr "Trenutno dejavni GladePointerMode"
 
 #: ../gladeui/glade-project.c:936
 msgid "Translation Domain"
 msgstr "Domena prevajanja"
 
 #: ../gladeui/glade-project.c:937
-#, fuzzy
 msgid "The project translation domain"
-msgstr "Domena prevajanja, ki jo uporablja gettext"
+msgstr "Domena prevajanja projekta"
 
 #: ../gladeui/glade-project.c:943 ../gladeui/glade-widget.c:1401
 msgid "Template"
 msgstr "Predloga"
 
 #: ../gladeui/glade-project.c:944
-#, fuzzy
 msgid "The project's template widget, if any"
-msgstr "Ni mogoče najti predloge projekta v %s"
+msgstr "Gradnik predloge projekta, če obstaja"
 
 #: ../gladeui/glade-project.c:950
 msgid "Resource Path"
 msgstr "Pot vira"
 
 #: ../gladeui/glade-project.c:951
-#, fuzzy
 msgid "Path to load images and resources in Glade's runtime"
-msgstr "Izbor poti za nalaganje virov slik"
+msgstr "Pot za nalaganje slik in virov v izvajalni datoteki Glade"
 
 #: ../gladeui/glade-project.c:1228
 #, c-format
@@ -1665,6 +1669,9 @@ msgid ""
 "\n"
 "Would you like to load the autosave version instead ?"
 msgstr ""
+"Samodejno shranjena različica `%s' je novejša.\n"
+"\n"
+"Ali želite raje naložiti samodejno shranjeno različico?"
 
 #: ../gladeui/glade-project.c:2261
 #, c-format
@@ -1731,9 +1738,9 @@ msgstr "Ta možnost je opuščena."
 
 #. translators: refers to a property '%s' of widget '[%s]'
 #: ../gladeui/glade-project.c:2767
-#, fuzzy, c-format
+#, c-format
 msgid "[%s] Property '%s' of object class '%s' is deprecated"
-msgstr "[%s] Razred '%s' od %s %d.%d je opuščen\n"
+msgstr "[%s] Lastnost '%s' razreda predmetov '%s' je opuščena"
 
 #. translators: refers to a signal in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
@@ -1754,9 +1761,9 @@ msgstr "Signal je opuščen"
 
 #. translators: refers to a signal '%s' of widget '[%s]'
 #: ../gladeui/glade-project.c:2781
-#, fuzzy, c-format
+#, c-format
 msgid "[%s] Signal '%s' of object class '%s' is deprecated"
-msgstr "[%s] Razred '%s' od %s %d.%d je opuščen\n"
+msgstr "[%s] Signal '%s' razreda predmetov '%s' je opuščen"
 
 #: ../gladeui/glade-project.c:3077
 msgid "Details"
@@ -1773,9 +1780,9 @@ msgid "Project \"%s\" has deprecated widgets and/or version mismatches."
 msgstr "Projekt \"%s\" vsebuje opuščene gradnike in neustrezne različice."
 
 #: ../gladeui/glade-project.c:3120
-#, fuzzy, c-format
+#, c-format
 msgid "Object %s has unrecognized type %s\n"
-msgstr "<li> ima napačno vrsto %s"
+msgstr "Predmet %s je neprepoznane vrste %s\n"
 
 #: ../gladeui/glade-project.c:4595
 #, c-format
@@ -1897,7 +1904,7 @@ msgstr "Pripni podpičje"
 
 #: ../gladeui/glade-property-label.c:136
 msgid "Whether to append a colon ':' to the property name"
-msgstr ""
+msgstr "Ali naj bo imenu lastnosti dodano dvopičje (:)."
 
 #: ../gladeui/glade-property-label.c:141 ../gladeui/glade-property-shell.c:118
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:521
@@ -1912,12 +1919,11 @@ msgstr "Stiskanje"
 #.
 #: ../gladeui/glade-property-label.c:147 ../gladeui/glade-property-shell.c:119
 msgid "Whether the property to load is a packing property or not"
-msgstr ""
+msgstr "Ali je lastnost za nalaganje lastnost stiskanja ali ne"
 
 #: ../gladeui/glade-property-label.c:153
-#, fuzzy
 msgid "Custom text to override the property name"
-msgstr "Ime lastnosti po meri se mora začeti s črko."
+msgstr "Besedilo po meri, ki prepiše ime lastnosti."
 
 #: ../gladeui/glade-property-label.c:158
 msgid "Custom Tooltip"
@@ -1925,22 +1931,21 @@ msgstr "Orodni namig po meri"
 
 #: ../gladeui/glade-property-label.c:159
 msgid "Custom tooltip to override the property description"
-msgstr ""
+msgstr "Orodni namig po meri, ki prepiše opis lastnosti"
 
 #: ../gladeui/glade-property-shell.c:125
-#, fuzzy
 msgid "Whether to use the GladeCommand API when modifying properties"
-msgstr ""
-"Ali naj se uporabi ukaz API za sklad razveljavitev in ponovnih uveljavitev"
+msgstr "Ali naj se uporabi API GladeCommand za spreminjanje lastnosti"
 
 #: ../gladeui/glade-property-shell.c:130
-#, fuzzy
 msgid "Editor Property Type Name"
-msgstr "Vnesite ime nove mape"
+msgstr "Ime vrste lastnosti v urejevalniku"
 
 #: ../gladeui/glade-property-shell.c:131
 msgid "Specify the actual editor property type name to use for this shell"
 msgstr ""
+"Določi dejansko ime vrste lastnosti urejevalnika, ki naj se uporabi za to "
+"lupino"
 
 #: ../gladeui/glade-signal.c:179
 msgid "SignalClass"
@@ -2277,28 +2282,25 @@ msgid "Wether the widget is visible or not"
 msgstr "Ali je ta gradnik viden ali ne"
 
 #: ../gladeui/glade-widget.c:1444
-#, fuzzy
 msgid "Whether this widget is the template for a composite widget"
-msgstr "Ni mogoče odstraniti notranjega gradnika v združeni gradnik"
+msgstr "Ali je ta gradnik predloga za združeni gradnik"
 
 #: ../gladeui/glade-widget.c:4768
-#, fuzzy, c-format
+#, c-format
 msgid "Object has unrecognized type %s"
-msgstr "<li> ima napačno vrsto %s"
+msgstr "Predmet je neprepoznane vrste %s"
 
 #: ../gladeui/glade-widget.c:4832
 msgid "Property has versioning problems: "
 msgstr "Pri lastnosti so težave različice:"
 
 #: ../gladeui/glade-widget.c:4834
-#, fuzzy
 msgid "Some properties have versioning problems: "
-msgstr "Nekatere od teh vrednosti so zaklenjene"
+msgstr "Nekatere lastnosti imajo težave z različico: "
 
 #: ../gladeui/glade-widget.c:4854
-#, fuzzy
 msgid "Signal has versioning problems: "
-msgstr "Program je prejel signal: %s\n"
+msgstr "Signal ima težave z različico: "
 
 #: ../gladeui/glade-widget.c:4856
 msgid "Some signals have versioning problems: "
@@ -2361,9 +2363,8 @@ msgid "_Signals"
 msgstr "_Signali"
 
 #: ../gladeui/glade-project-properties.ui.h:1
-#, fuzzy
 msgid "Translation domain:"
-msgstr "Domena prevajanja"
+msgstr "Domena prevajanja:"
 
 #: ../gladeui/glade-project-properties.ui.h:2
 #, fuzzy
@@ -2403,6 +2404,8 @@ msgid ""
 "Verify that the project does not use any properties,\n"
 "signals or widgets which are not available in the target version"
 msgstr ""
+"Preverite, da projekt ne uporablja nobene lastnosti,\n"
+"signalov ali gradnikov, ki niso na voljo v cilju"
 
 #: ../plugins/gtk+/glade-about-dialog-editor.c:138
 #, c-format
@@ -2410,14 +2413,14 @@ msgid "Setting License type of %s"
 msgstr "Nastavljanje vrsta dovoljenja za program %s"
 
 #: ../plugins/gtk+/glade-about-dialog-editor.c:177
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use a logo icon"
-msgstr "Ikona uporabljena z oznako"
+msgstr "Nastavljanje %s za uporabo ikone logotipa"
 
 #: ../plugins/gtk+/glade-about-dialog-editor.c:211
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to use logo file"
-msgstr "Pogovorno okno izbire datotek, ki naj bo uporabljeno."
+msgstr "Nastavljanje %s za uporabo datoteke logotipa"
 
 #: ../plugins/gtk+/glade-accels.c:320 ../plugins/gtk+/glade-accels.c:389
 msgid "<choose a key>"
@@ -2659,17 +2662,18 @@ msgstr "Nastavitev %s za uporabo dodatne ikone iz imena datoteke"
 #: ../plugins/gtk+/glade-entry-editor.c:571
 #, c-format
 msgid "Setting primary icon of %s to use tooltip markup"
-msgstr "Nastavitev osnovne ikone %s za oblikovane orodnega namiga"
+msgstr "Nastavitev osnovne ikone %s za uporabo oblikovanja v orodnem namigu"
 
 #: ../plugins/gtk+/glade-entry-editor.c:574
 #, c-format
 msgid "Setting secondary icon of %s to use tooltip markup"
-msgstr "Nastavitev dodatne ikone %s za oblikovane orodnega namiga"
+msgstr "Nastavitev dodatne ikone %s za uporabo oblikovanja v orodnem namigu"
 
 #: ../plugins/gtk+/glade-entry-editor.c:587
 #, c-format
 msgid "Setting primary icon of %s to not use tooltip markup"
 msgstr ""
+"Nastavljanje osnovne ikone %s na prikaz orodnega namiga brez oblikovanja"
 
 #: ../plugins/gtk+/glade-entry-editor.c:590
 #, c-format
@@ -2776,7 +2780,7 @@ msgid "Remove placeholder from %s"
 msgstr "Odstrani vsebnik iz %s"
 
 #: ../plugins/gtk+/glade-gtk-box.c:751
-#, fuzzy, c-format
+#, c-format
 msgid "Ordering children of %s"
 msgstr "Ukazovanje podrejenim predmetom %s"
 
@@ -2863,12 +2867,11 @@ msgstr "%s je določen za neposredno delovanje na %s"
 
 #: ../plugins/gtk+/glade-gtk-combo-box.c:31
 msgid "This combo box is not configured to have an entry"
-msgstr ""
+msgstr "To spustno polje ne podpira možnosti vnosov"
 
 #: ../plugins/gtk+/glade-gtk-combo-box.c:94
-#, fuzzy
 msgid "Tearoff menus are disabled"
-msgstr "Ali naj imajo meniji odpenjalnike."
+msgstr "Odpenjalni meniji so onemogočeni."
 
 #: ../plugins/gtk+/glade-gtk-container.c:58
 msgid "Cannot add a toplevel window to a containter."
@@ -2886,11 +2889,12 @@ msgstr ""
 "Gradniki vrste %s potrebujejo za dodajanje podrejenih predmetov vsebnike."
 
 #: ../plugins/gtk+/glade-gtk-entry.c:206
-#, fuzzy
 msgid ""
 "This property is only available\n"
 "if the entry has a frame"
-msgstr "Možnost je uporabljena le s slikami sklada"
+msgstr ""
+"Lastnost je na voljo le,\n"
+"če ima vnos okvir"
 
 #: ../plugins/gtk+/glade-gtk-entry.c:215
 msgid ""
@@ -2925,9 +2929,8 @@ msgid "Remove Row on %s"
 msgstr "Odstrani vrstico na %s"
 
 #: ../plugins/gtk+/glade-gtk-image.c:106
-#, fuzzy
 msgid "This property only applies to stock images or named icons"
-msgstr "Možnost je uporabljena le s slikami sklada"
+msgstr "Lastnost je mogoče določiti le slikam v skladu in poimenovanim ikonam"
 
 #: ../plugins/gtk+/glade-gtk-image.c:108 ../plugins/gtk+/glade-gtk-image.c:110
 msgid "This property only applies to named icons"
@@ -3059,9 +3062,8 @@ msgid "Text Tag Table Editor"
 msgstr "Urejevalnik preglednice oznak besedila"
 
 #: ../plugins/gtk+/glade-gtk-tool-button.c:80
-#, fuzzy
 msgid "This property only applies when configuring the label with text"
-msgstr "Lastnosti ni mogoče uporabiti na besedilu izpisanim pod kotom."
+msgstr "Lastnost je mogoče določiti le med nastavljanjem oznake z besedilom"
 
 #: ../plugins/gtk+/glade-gtk-tool-palette.c:175
 msgid "Group"
@@ -3381,9 +3383,10 @@ msgid "Setting %s to use tooltip markup"
 msgstr "Nastavljanje %s za uporabo oblikovanja v orodnih namigih"
 
 #: ../plugins/gtk+/glade-widget-editor.c:277
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to not use tooltip markup"
-msgstr "Nastavitev %s za neuporabo videza dejanj"
+msgstr ""
+"Nastavitev %s za onemogočanje uporabo oblikovanega izpisa orodnega namiga"
 
 #: ../plugins/gtk+/glade-window-editor.c:131
 #, c-format
@@ -3688,9 +3691,8 @@ msgstr "Neveljavno"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:89
-#, fuzzy
 msgid "Accelerator Label"
-msgstr "oznaka pospeševalnika"
+msgstr "Oznaka pospeševalnika"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:91
@@ -4234,9 +4236,8 @@ msgid "Indicates an object is a controller for one or more target objects"
 msgstr "Določa predmet nadzorovan za enega ali več ciljnih predmetov"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:307
-#, fuzzy
 msgid "Indicates an object is labeled by one or more target objects"
-msgstr "Določa predmet označen preko enega ali več ciljnih predmetov"
+msgstr "Določa, da je predmet označen preko enega ali več ciljnih predmetov"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:308
 msgid "Indicates an object is a label for one or more target objects"
@@ -4638,23 +4639,21 @@ msgstr "Paleta orodij"
 
 #. GtkScrollablePolicy enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:444
-#, fuzzy
 msgid "Minimum"
-msgstr "Najnižji"
+msgstr "Najmanjša širina"
 
 #. GtkScrollablePolicy enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:446
-#, fuzzy
 msgid "Natural"
 msgstr "Naravna širina"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:447
 msgid "Whether to start scrolling at less than minimum or natural width"
-msgstr ""
+msgstr "Ali naj se drsenje začne pri najmanjši ali naravni širini"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:448
 msgid "Whether to start scrolling at less than minimum or natural height"
-msgstr ""
+msgstr "Ali naj se drsenje začne pri najmanjši ali naravni višini"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:449
 msgid "The position of the tool item group in the palette"
@@ -5172,7 +5171,7 @@ msgstr "Število strani"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:619
 msgid "Set the currently active page to edit, this property will not be saved"
-msgstr ""
+msgstr "Nastavi trenutno dejavno stran za urejanje. Možnost ne bo shranjena."
 
 #: ../plugins/gtk+/gtk+.xml.in.h:620
 msgid "The number of pages in the notebook"
@@ -5185,9 +5184,8 @@ msgstr "Obrnjeno"
 
 #. GtkRevealerTransitionType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:623
-#, fuzzy
 msgid "Crossfade"
-msgstr "Trajanje postopnega prehoda (sekunde)"
+msgstr "Navzkrižni preliv"
 
 #. GtkRevealerTransitionType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:625
@@ -5252,7 +5250,7 @@ msgstr "Zadržano"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:647
 msgid "The number of digits to round the value to when the value changes"
-msgstr ""
+msgstr "Število števk za zaokroževanje vrednosti, ko se ta spreminja"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:648
 msgid ""
@@ -6337,14 +6335,12 @@ msgid "Action Attributes"
 msgstr "Atributi dejanj"
 
 #: ../plugins/gtk+/glade-action-editor.ui.h:2
-#, fuzzy
 msgid "Toolbar Proxies"
-msgstr "Pokaži orodno vrstico"
+msgstr "Posredniške orodne vrstice"
 
 #: ../plugins/gtk+/glade-action-editor.ui.h:3
-#, fuzzy
 msgid "Toggle and Radio"
-msgstr "Izriši preklopni gumb kot izbirni gumb"
+msgstr "Preklopni in izbirni gumb"
 
 #: ../plugins/gtk+/glade-action-editor.ui.h:4
 msgid "Value ID:"
@@ -6438,9 +6434,8 @@ msgid "Tearoff menus"
 msgstr "Odpenjalni meni"
 
 #: ../plugins/gtk+/glade-combo-box-editor.ui.h:5
-#, fuzzy
 msgid "Tabular Menus"
-msgstr "meni barv"
+msgstr "Meniji z zavihki"
 
 #: ../plugins/gtk+/glade-combo-box-text-editor.ui.h:1
 msgid "Combo Box Text Attributes"
@@ -6474,6 +6469,8 @@ msgid ""
 "Whether to use markup in the\n"
 "primary icon's tooltip\n"
 msgstr ""
+"Ali naj bo uporabljeno oblikovanje\n"
+"v orodnem namigu osnovne okone.\n"
 
 #: ../plugins/gtk+/glade-entry-editor.ui.h:11
 msgid "Secondary Icon"
@@ -6731,9 +6728,8 @@ msgstr "Atributi pogleda besedila"
 
 #. Name for populate-all property
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:4
-#, fuzzy
 msgid "Populate for touch"
-msgstr "_Išči daljinske upravljalnike na dotik"
+msgstr "Zapolni za dotik"
 
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:5
 msgid "Text Formatting"
@@ -6843,84 +6839,3 @@ msgstr "Namig:"
 #: ../plugins/gtk+/glade-window-editor.ui.h:12
 msgid "Gravity:"
 msgstr "Težnost:"
-
-#~ msgid "Unknown widgets ignored."
-#~ msgstr "Neznani gradniki so prezrti."
-
-#, fuzzy
-#~ msgid "Compisite"
-#~ msgstr "Združeni gradniki"
-
-#~ msgid "Setting %s to set desired width in characters"
-#~ msgstr "Nastavitev %s na želeno širino znakov"
-
-#~ msgid "Setting %s to set maximum width in characters"
-#~ msgstr "Nastavitev %s na največjo širino znakov"
-
-#~ msgid "Set the current page (strictly for editing purposes)"
-#~ msgstr "Določi trenutno stran (le za urejanje)"
-
-#~ msgid "Size and Alignment"
-#~ msgstr "Velikost in poravnava"
-
-#~ msgid "Failed to save %s to %s: %s"
-#~ msgstr "Napaka med shranjevanjem %s v %s: %s"
-
-#~ msgid "The Object's name"
-#~ msgstr "Ime predmeta"
-
-#~ msgid ""
-#~ "The search entry to use for this inspector. see "
-#~ "gtk_tree_view_set_search_entry()"
-#~ msgstr ""
-#~ "Iskalni vnos, ki naj bo uporabljen za tega nadzornika. Glejte "
-#~ "gtk_tree_view_set_search_entry()"
-
-#~ msgid "Unknown object %s with type %s\n"
-#~ msgstr "Neznan predmet %s z vrsto %s\n"
-
-#~ msgid "Verify versions and deprecations:"
-#~ msgstr "Preveri različice in zastarelost:"
-
-#~ msgid "Setting %s action"
-#~ msgstr "Nastavitev %s dejanja"
-
-#~ msgid "Setting %s to use action appearance"
-#~ msgstr "Nastavitev %s za uporabo videza dejanj"
-
-#~ msgid "Configure button content"
-#~ msgstr "Nastavitev vsebine gumba"
-
-#~ msgid "Stock button"
-#~ msgstr "Gumb sklada"
-
-#~ msgid "Symbolic size to use for stock icon, icon set or named icon"
-#~ msgstr "Simbolna velikost osnovne ikone, ikone sklada ali imenovane ikone"
-
-#~ msgid "This property does not apply when Ellipsize is set."
-#~ msgstr ""
-#~ "Lastnosti ni mogoče uporabiti sočasno z uporabo okrajševanja besedila."
-
-#~ msgid "The accelerator can only be set when inside an Action Group."
-#~ msgstr "Pospeševalnik je mogoče nastaviti le znotraj dejavne skupine."
-
-#~ msgid "Set Image Size"
-#~ msgstr "Določitev velikosti slike"
-
-#~ msgid "Edit label appearance"
-#~ msgstr "Uredi videz oznake"
-
-#~ msgid "Format label"
-#~ msgstr "Označba zapisa"
-
-#~ msgid "Text line wrapping"
-#~ msgstr "Prelom vrstic"
-
-#~ msgid "Text wraps normally"
-#~ msgstr "Običajen prelom vrstic"
-
-#~ msgid "All"
-#~ msgstr "Vse"
-
-#~ msgid "Invisible Char Set"
-#~ msgstr "Nevidni nabor znakov"
