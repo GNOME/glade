@@ -24,19 +24,19 @@ BUILT_SOURCES = glade-resources.c glade-resources.h
 
 glade_SOURCES = \
 	glade-window.c \
-	glade-window.h \
 	glade-close-button.c \
-	glade-close-button.h \
 	glade-resources.c \
 	glade-preferences.c \
-	glade-preferences.h \
+	glade-splash.c \
 	main.c
 
 noinst_HEADERS = \
 	glade-window.h \
 	glade-close-button.h \
 	glade-resources.h \
-	glade-preferences.h
+	glade-preferences.h \
+	glade-logo.h \
+	glade-splash.h
 
 # Generate resources
 glade-resources.h: glade-resources.gresource.xml $(UI_FILES)

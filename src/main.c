@@ -24,6 +24,7 @@
 
 #include "glade-window.h"
 #include "glade-resources.h"
+#include "glade-splash.h"
 
 #include <gladeui/glade.h>
 #include <gladeui/glade-app.h>
@@ -76,6 +77,7 @@ main (int argc, char *argv[])
   GError *error = NULL;
   gboolean opened_project = FALSE;
   GTimer *timer = NULL;
+  GtkWidget *splash;
 
 #ifdef ENABLE_NLS
   setlocale (LC_ALL, "");
@@ -153,15 +155,21 @@ main (int argc, char *argv[])
 
   glade_setup_log_handlers ();
 
+  /* Splash Screen */
+  if ((splash = glade_splash_screen_new ()))
+      glade_splash_window_show_immediately (splash);
+
+  /* Main Window */
   window = GLADE_WINDOW (glade_window_new ());
 
   if (without_devhelp == FALSE)
     glade_window_check_devhelp (window);
 
-  gtk_widget_show (GTK_WIDGET (window));
+  if (splash)
+    gtk_widget_destroy (splash);
 
   /* Update UI before loading files */
-  while (gtk_events_pending ()) gtk_main_iteration ();
+  glade_splash_window_show_immediately (GTK_WIDGET (window));
 
   if (verbose) timer = g_timer_new ();
   
