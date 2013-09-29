@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: glade3 master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-22 17:47+0000\n"
-"PO-Revision-Date: 2013-09-23 21:15+0100\n"
+"POT-Creation-Date: 2013-09-26 10:47+0000\n"
+"PO-Revision-Date: 2013-09-29 11:55+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.5.7\n"
 
 #: ../data/glade.desktop.in.in.h:1 ../src/main.c:42
 msgid "Glade"
@@ -1354,14 +1354,12 @@ msgid "The object's unique identifier"
 msgstr "Edinstveno določilo predmeta"
 
 #: ../gladeui/glade-editor-table.c:565 ../gladeui/glade-widget.c:1443
-#, fuzzy
 msgid "Composite"
-msgstr "Združeno"
+msgstr "Združena"
 
 #: ../gladeui/glade-editor-table.c:567
-#, fuzzy
 msgid "Whether this widget is a composite template"
-msgstr "Ali je predmet predloga združenega"
+msgstr "Ali je predmet združena predloga"
 
 #: ../gladeui/glade-inspector.c:194 ../gladeui/glade-project-properties.c:131
 #: ../gladeui/glade-widget.c:1378
@@ -1882,9 +1880,8 @@ msgid "Priority information for the property editor to act on"
 msgstr "Prednostne podrobnosti za dejanja urejevalnika lastnosti"
 
 #: ../gladeui/glade-property-label.c:120
-#, fuzzy
 msgid "The GladeProperty to display a label for"
-msgstr "Naziv strani dokumenta za prikaz."
+msgstr "Lastnost GladeProperty, za katero naj bo prikazana oznaka."
 
 #: ../gladeui/glade-property-label.c:125 ../gladeui/glade-property-shell.c:112
 msgid "Property Name"
@@ -2367,9 +2364,8 @@ msgid "Translation domain:"
 msgstr "Domena prevajanja:"
 
 #: ../gladeui/glade-project-properties.ui.h:2
-#, fuzzy
 msgid "Composite template toplevel:"
-msgstr "Dejavnost vrhnje ravni"
+msgstr "Vrhnja raven združene predloge:"
 
 #: ../gladeui/glade-project-properties.ui.h:3
 msgid "Project properties:"
@@ -2929,9 +2925,8 @@ msgid "Remove Row on %s"
 msgstr "Odstrani vrstico na %s"
 
 #: ../plugins/gtk+/glade-gtk-image.c:106
-#, fuzzy
 msgid "This property only applies to stock images or named icons"
-msgstr "Možnost je uporabljena le s slikami sklada"
+msgstr "Lastnost se uporablja samo pri slikah iz skladov ali poimenovanih ikonah."
 
 #: ../plugins/gtk+/glade-gtk-image.c:108 ../plugins/gtk+/glade-gtk-image.c:110
 msgid "This property only applies to named icons"
@@ -3063,9 +3058,8 @@ msgid "Text Tag Table Editor"
 msgstr "Urejevalnik preglednice oznak besedila"
 
 #: ../plugins/gtk+/glade-gtk-tool-button.c:80
-#, fuzzy
 msgid "This property only applies when configuring the label with text"
-msgstr "Lastnosti ni mogoče uporabiti na besedilu izpisanim pod kotom."
+msgstr "Lastnost se uporablja samo pri prilagajanju oznake z besedilom."
 
 #: ../plugins/gtk+/glade-gtk-tool-palette.c:175
 msgid "Group"
@@ -3385,9 +3379,9 @@ msgid "Setting %s to use tooltip markup"
 msgstr "Nastavljanje %s za uporabo oblikovanja v orodnih namigih"
 
 #: ../plugins/gtk+/glade-widget-editor.c:277
-#, fuzzy, c-format
+#, c-format
 msgid "Setting %s to not use tooltip markup"
-msgstr "Nastavitev %s za neuporabo videza dejanj"
+msgstr "Nastavitev %s za neuporabo označenega besedila namigov."
 
 #: ../plugins/gtk+/glade-window-editor.c:131
 #, c-format
@@ -4156,9 +4150,8 @@ msgid "Controller For"
 msgstr "Nadzorovan za"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:287
-#, fuzzy
 msgid "Labeled By"
-msgstr "Po _prihodu"
+msgstr "Označil uporabnik"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:288
 msgid "Label For"
@@ -5006,6 +4999,10 @@ msgid ""
 "the second item for the highest value. All the subsequent icons will be used "
 "for all the other values, spread evenly over the range of values"
 msgstr ""
+"Imena ikon, ki naj jih uporabi gumb spreminjanja velikosti. Prvi predmet, določen z "
+"matriko bo uporabljen v gumbu, ko je trenutna vrednost najnižja vrednost, "
+"drugi bo za najvišjo vrednost. Vse nadaljnje ikone se uporabijo za "
+"vse druge vrednosti, enakomerno razporejene po obsegu vrednosti."
 
 #: ../plugins/gtk+/gtk+.xml.in.h:568
 msgid "Volume Button"
@@ -5179,9 +5176,8 @@ msgid "The number of pages in the notebook"
 msgstr "Število strani v beležnici"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:621
-#, fuzzy
 msgid "Revealer"
-msgstr "Obrnjeno"
+msgstr "Razkrivalnik"
 
 #. GtkRevealerTransitionType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:623
@@ -5257,7 +5253,7 @@ msgstr "Število števk za zaokroževanje vrednosti, ko se ta spreminja"
 msgid ""
 "Whether to highlight the area of the trough from the bottom or left leading "
 "up to the knob"
-msgstr ""
+msgstr "Ali naj bo vdolbeno območje od spodaj ali z leve do gumba poudarjeno."
 
 #: ../plugins/gtk+/gtk+.xml.in.h:649
 msgid "Horizontal Scale"
@@ -6340,33 +6336,28 @@ msgid "Toolbar Proxies"
 msgstr "Posredniške orodne vrstice"
 
 #: ../plugins/gtk+/glade-action-editor.ui.h:3
-#, fuzzy
 msgid "Toggle and Radio"
-msgstr "Izriši preklopni gumb kot izbirni gumb"
+msgstr "Preklopni in izbirni gumb"
 
 #: ../plugins/gtk+/glade-action-editor.ui.h:4
 msgid "Value ID:"
 msgstr "ID vrednosti:"
 
 #: ../plugins/gtk+/glade-action-editor.ui.h:5
-#, fuzzy
 msgid "Radio proxies"
-msgstr "radijski gumb"
+msgstr "Posredniški radijski gumbi"
 
 #: ../plugins/gtk+/glade-activatable-editor.ui.h:1
-#, fuzzy
 msgid "Activatable / Actionable"
-msgstr "Stolpec udejanjanja"
+msgstr "Pokazljivo / udejanjljivo"
 
 #: ../plugins/gtk+/glade-app-chooser-button-editor.ui.h:1
-#, fuzzy
 msgid "App Chooser Button Attributes"
-msgstr "Predmet GFile, ki ga uporablja pogovorno okno za izbor programa"
+msgstr "Lastnosti gumba za izbor programa"
 
 #: ../plugins/gtk+/glade-app-chooser-widget-editor.ui.h:1
-#, fuzzy
 msgid "App Chooser Widget Attributes"
-msgstr "Predmet GFile, ki ga uporablja pogovorno okno za izbor programa"
+msgstr "Lastnosti gradnika za izbor programa"
 
 #: ../plugins/gtk+/glade-box-editor.ui.h:1
 msgid "Box Attributes"
@@ -6436,9 +6427,8 @@ msgid "Tearoff menus"
 msgstr "Odpenjalni meni"
 
 #: ../plugins/gtk+/glade-combo-box-editor.ui.h:5
-#, fuzzy
 msgid "Tabular Menus"
-msgstr "meni barv"
+msgstr "Meniji na zavihke"
 
 #: ../plugins/gtk+/glade-combo-box-text-editor.ui.h:1
 msgid "Combo Box Text Attributes"
@@ -6731,9 +6721,8 @@ msgstr "Atributi pogleda besedila"
 
 #. Name for populate-all property
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:4
-#, fuzzy
 msgid "Populate for touch"
-msgstr "_Išči daljinske upravljalnike na dotik"
+msgstr "Zapolni za dotik"
 
 #: ../plugins/gtk+/glade-text-view-editor.ui.h:5
 msgid "Text Formatting"
@@ -6803,6 +6792,8 @@ msgid ""
 "Use the \"query-tooltip\" to present a tooltip\n"
 "instead of setting a literal tooltip"
 msgstr ""
+"Uporabite \"query-tooltip\" za predstavitev namiga\n"
+"namesto nastavljanja dobesednega namiga."
 
 #: ../plugins/gtk+/glade-widget-editor.ui.h:15
 msgid "Top:"
