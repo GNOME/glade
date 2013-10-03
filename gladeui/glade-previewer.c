@@ -29,18 +29,20 @@
 #include <glib/gstdio.h>
 
 #include "glade-preview-window.h"
+#include "glade-preview-template.h"
 #include "glade-preview-tokens.h"
 
 typedef struct
 {
   GladePreviewWindow *window;
   gchar *file_name, *toplevel;
+  gboolean is_template;
 } GladePreviewer;
 
-static GtkWidget *
+static GObject *
 get_toplevel (GtkBuilder *builder, gchar *name)
 {
-  GtkWidget *toplevel = NULL;
+  GObject *toplevel = NULL;
   GObject *object;
 
   if (name == NULL)
@@ -56,9 +58,9 @@ get_toplevel (GtkBuilder *builder, gchar *name)
             continue;
 
           if (toplevel == NULL)
-            toplevel = GTK_WIDGET (obj);
+            toplevel = obj;
           else if (GTK_IS_WINDOW (obj))
-            toplevel = GTK_WIDGET (obj);
+            toplevel = obj;
         }
 
       g_slist_free (objects);
@@ -84,19 +86,17 @@ get_toplevel (GtkBuilder *builder, gchar *name)
           exit (1);
         }
 
-      toplevel = GTK_WIDGET (object);
+      toplevel = object;
     }
 
   return g_object_ref_sink (toplevel);
 }
 
-static GtkWidget *
-get_toplevel_from_string (GladePreviewer *app, gchar *name, gchar *string)
+static GObject *
+get_toplevel_from_string (GladePreviewer *app, gchar *name, gchar *string, gsize size)
 {
-  GtkBuilder *builder = gtk_builder_new ();
-  GError *error = NULL;
-  GtkWidget *retval;
-  gchar *wd;
+  gchar *wd = NULL;
+  GObject *retval;
 
   /* We need to change the working directory so builder get a chance to load resources */
   if (app->file_name)
@@ -106,18 +106,42 @@ get_toplevel_from_string (GladePreviewer *app, gchar *name, gchar *string)
       g_chdir (dirname);
       g_free (dirname);
     }
-  else
-    wd = NULL;
 
-  if (!gtk_builder_add_from_string (builder, string, -1, &error))
+  /* We use template flag as a hint since the user can turn on and off template
+   * while the preview is live.
+   */
+  retval = (app->is_template) ? glade_preview_template_object_new (string, size) : NULL;
+
+  if (!retval)
     {
-      g_printerr (_("Couldn't load builder definition: %s"), error->message);
-      g_error_free (error);
-      exit (1);
-    }
+      GtkBuilder *builder = gtk_builder_new ();
+      GError *error = NULL;
 
-  retval = get_toplevel (builder, name);
-  g_object_unref (builder);
+      /* We do not know if its a template yet */
+      app->is_template = FALSE;
+
+      if (gtk_builder_add_from_string (builder, string, size, &error))
+        retval = get_toplevel (builder, name);
+      else
+        {
+          if (error->code == GTK_BUILDER_ERROR_UNHANDLED_TAG &&
+              (retval = glade_preview_template_object_new (string, size)))
+            {
+              /* At this point we know it is a template, so keep a hint for next time */
+              app->is_template = TRUE;
+            }
+          else
+            {
+              gchar *message = g_strdup_printf (_("Couldn't load builder definition: %s"), error->message);
+              glade_preview_window_set_message (app->window, GTK_MESSAGE_ERROR, message);
+              g_free (message);
+            }
+
+          g_error_free (error);
+        }
+
+      g_object_unref (builder);
+    }
 
   /* restore directory */
   if (wd)
@@ -214,7 +238,7 @@ static gboolean
 on_data_incoming (GIOChannel *source, GIOCondition condition, gpointer data)
 {
   GladePreviewer *app = data;
-  GtkWidget *new_widget;
+  GObject *new_widget;
   gchar *buffer;
 
   buffer = read_buffer (source);
@@ -241,7 +265,7 @@ on_data_incoming (GIOChannel *source, GIOCondition condition, gpointer data)
           return FALSE;
         }
 
-      new_widget = get_toplevel_from_string (app, split_buffer[0], split_buffer[1]);
+      new_widget = get_toplevel_from_string (app, split_buffer[0], split_buffer[1], -1);
       glade_previewer_window_set_title (GTK_WINDOW (app->window), app->file_name,
                                         split_buffer[0]);
 
@@ -249,14 +273,17 @@ on_data_incoming (GIOChannel *source, GIOCondition condition, gpointer data)
     }
   else
     {
-      new_widget = get_toplevel_from_string (app, app->toplevel, buffer);
+      new_widget = get_toplevel_from_string (app, app->toplevel, buffer, -1);
       glade_previewer_window_set_title (GTK_WINDOW (app->window), app->file_name, app->toplevel);
     }
 
-  glade_preview_window_set_widget (app->window, new_widget);
+  if (new_widget)
+    {
+      glade_preview_window_set_widget (app->window, GTK_WIDGET (new_widget));
+      gtk_widget_show (GTK_WIDGET (new_widget));
+    }
 
   gtk_window_present (GTK_WINDOW (app->window));
-  gtk_widget_show (new_widget);
   
   g_free (buffer);
   
@@ -339,6 +366,7 @@ glade_previewer_stack_key_press_event (GtkWidget *window, GdkEventKey *event, Gt
 static gboolean listen = FALSE;
 static gboolean version = FALSE;
 static gboolean slideshow = FALSE;
+static gboolean template = FALSE;
 static gchar *file_name = NULL;
 static gchar *toplevel_name = NULL;
 static gchar *css_file_name = NULL;
@@ -347,6 +375,7 @@ static gchar *screenshot_file_name = NULL;
 static GOptionEntry option_entries[] =
 {
     {"filename", 'f', 0, G_OPTION_ARG_FILENAME, &file_name, N_("Name of the file to preview"), "FILENAME"},
+    {"template", 0, 0, G_OPTION_ARG_NONE, &template, N_("Creates dummy widget class to load a template"), NULL},
     {"toplevel", 't', 0, G_OPTION_ARG_STRING, &toplevel_name, N_("Name of the toplevel to preview"), "TOPLEVELNAME"},
     {"screenshot", 0, 0, G_OPTION_ARG_FILENAME, &screenshot_file_name, N_("File name to save a screenshot"), NULL},
     {"css", 0, 0, G_OPTION_ARG_FILENAME, &css_file_name, N_("CSS file to use"), NULL},
@@ -362,6 +391,7 @@ main (int argc, char **argv)
   GladePreviewer *app;
   GOptionContext *context;
   GError *error = NULL;
+  GObject *toplevel = NULL;
 
 #ifdef ENABLE_NLS
   setlocale (LC_ALL, "");
@@ -414,11 +444,23 @@ main (int argc, char **argv)
       GIOChannel *input = g_io_channel_unix_new (fileno (stdin));
 #endif
 
+      app->is_template = template;
+
       g_io_add_watch (input, G_IO_IN | G_IO_HUP, on_data_incoming, app);
 
       gtk_main ();
     }
-  else if (app->file_name)
+  else if (template)
+    {
+      gchar *contents = NULL;
+      gsize size;
+
+      if (g_file_get_contents (file_name, &contents, &size, NULL))
+        toplevel = get_toplevel_from_string (app, NULL, contents, size);
+
+      g_free (contents);
+    }
+  else if (file_name)
     {
       GtkBuilder *builder = gtk_builder_new ();
       GError *error = NULL;
@@ -474,17 +516,22 @@ main (int argc, char **argv)
         }
       else
         {
-          GtkWidget *widget = get_toplevel (builder, toplevel_name);
-          glade_preview_window_set_widget (app->window, widget);
-          gtk_widget_show (widget);
-
-          if (screenshot_file_name)
-            glade_preview_window_screenshot (app->window, TRUE, screenshot_file_name);
-          else
-            gtk_main ();
+          toplevel = get_toplevel (builder, toplevel_name);
         }
 
       g_object_unref (builder);
+    }
+
+  if (toplevel)
+    {
+      glade_preview_window_set_widget (app->window, GTK_WIDGET (toplevel));
+      g_object_unref (toplevel);
+      gtk_widget_show (GTK_WIDGET (toplevel));
+
+      if (screenshot_file_name)
+        glade_preview_window_screenshot (app->window, TRUE, screenshot_file_name);
+      else
+        gtk_main ();
     }
 
   /* free unused resources */

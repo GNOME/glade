@@ -201,7 +201,7 @@ glade_preview_launch (GladeWidget *widget, const gchar *buffer)
 {
   GPid pid;
   GError *error = NULL;
-  gchar *argv[9], *executable;
+  gchar *argv[10], *executable;
   gint child_stdin;
   gsize bytes_written;
   GIOChannel *output;
@@ -209,6 +209,7 @@ glade_preview_launch (GladeWidget *widget, const gchar *buffer)
   const gchar *css_provider, *filename;
   GladeProject *project;
   gchar *name;
+  gint i;
 
   g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
 
@@ -224,14 +225,19 @@ glade_preview_launch (GladeWidget *widget, const gchar *buffer)
   argv[3] = (gchar *) glade_widget_get_name (widget);
   argv[4] = "--filename";
   argv[5] = (filename) ? (gchar *) filename : name;
-  argv[6] = NULL;
+
+  i = 5;
+  if (glade_project_get_template (project))
+    argv[++i] = "--template";
+    
+  argv[++i] = NULL;
 
   css_provider = glade_project_get_css_provider_path (glade_widget_get_project (widget));
   if (css_provider)
     {
-      argv[6] = "--css";
-      argv[7] = (gchar *) css_provider;
-      argv[8] = NULL;
+      argv[i] = "--css";
+      argv[++i] = (gchar *) css_provider;
+      argv[++i] = NULL;
     }
   
   if (g_spawn_async_with_pipes (NULL,
