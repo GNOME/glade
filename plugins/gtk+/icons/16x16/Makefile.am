@@ -37,6 +37,7 @@ icons_DATA = \
         widget-gtk-combo.png \
         widget-gtk-combobox.png \
         widget-gtk-comboboxentry.png \
+        widget-gtk-comboboxtext.png \
         widget-gtk-curve.png \
         widget-gtk-custom.png \
         widget-gtk-default.png \

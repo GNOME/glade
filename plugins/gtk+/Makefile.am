@@ -25,7 +25,7 @@ libgladegtk_la_SOURCES     = glade-gtk.c glade-accels.c glade-attributes.c glade
 	glade-icon-sources.c glade-button-editor.c glade-tool-button-editor.c glade-image-editor.c \
 	glade-image-item-editor.c glade-icon-factory-editor.c glade-store-editor.c glade-label-editor.c \
 	glade-cell-renderer-editor.c glade-treeview-editor.c glade-entry-editor.c glade-activatable-editor.c \
-	glade-tool-item-group-editor.c
+	glade-tool-item-group-editor.c glade-string-list.c
 
 libgladegtk_la_LDFLAGS     = -module -avoid-version $(AM_LDFLAGS)
 libgladegtk_la_LIBADD      = $(libgladeui) $(GTK_LIBS)
@@ -35,7 +35,8 @@ libgladegtkinclude_HEADERS = glade-gtk.h glade-accels.h glade-attributes.h glade
 	glade-text-button.h glade-icon-sources.h glade-button-editor.h \
 	glade-tool-button-editor.h glade-image-editor.h glade-image-item-editor.h glade-icon-factory-editor.h \
 	glade-store-editor.h glade-label-editor.h glade-cell-renderer-editor.h glade-treeview-editor.h \
-	glade-entry-editor.h glade-activatable-editor.h glade-tool-item-group-editor.h
+	glade-entry-editor.h glade-activatable-editor.h glade-tool-item-group-editor.h \
+	glade-string-list.h
 
 if PLATFORM_WIN32
 libgladegtk_la_LDFLAGS += -no-undefined
