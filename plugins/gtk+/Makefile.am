@@ -25,7 +25,7 @@ libgladegtk_la_SOURCES     = glade-gtk.c glade-accels.c glade-attributes.c glade
 	glade-icon-sources.c glade-button-editor.c glade-tool-button-editor.c glade-image-editor.c \
 	glade-image-item-editor.c glade-icon-factory-editor.c glade-store-editor.c glade-label-editor.c \
 	glade-cell-renderer-editor.c glade-treeview-editor.c glade-entry-editor.c glade-activatable-editor.c \
-	glade-tool-item-group-editor.c glade-string-list.c
+	glade-tool-item-group-editor.c glade-string-list.c glade-gtk-combo-box-text.c
 
 libgladegtk_la_LDFLAGS     = -module -avoid-version $(AM_LDFLAGS)
 libgladegtk_la_LIBADD      = $(libgladeui) $(GTK_LIBS)
