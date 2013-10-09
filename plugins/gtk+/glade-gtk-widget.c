@@ -892,31 +892,31 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
         {
           GladeWidgetAdaptor *adaptor =
             glade_widget_adaptor_get_by_type (new_type);
-          GList *saved_props, *prop_cmds;
 	  GladeWidget *gnew_parent;
-          GladeProperty *property;
 
           glade_command_push_group (_("Adding parent %s for %s"),
                                     glade_widget_adaptor_get_title (adaptor), 
 				    glade_widget_get_name (gwidget));
 
-          /* Record packing properties */
-          saved_props =
-	    glade_widget_dup_properties (gwidget, glade_widget_get_packing_properties (gwidget),
-					 FALSE, FALSE, FALSE);
-
-
-	  property = glade_widget_get_parentless_widget_ref (gwidget);
-
-	  /* Remove "this" widget, If the parent we're removing is a parentless 
-	   * widget reference, the reference will be implicitly broken by the 'cut' command */
-          this_widget.data = gwidget;
-          glade_command_delete (&this_widget);
-
           /* Create new widget and put it where the placeholder was */
           if ((gnew_parent =
                glade_command_create (adaptor, gparent, NULL, project)) != NULL)
             {
+              GList *saved_props, *prop_cmds;
+              GladeProperty *property;
+
+              /* Record packing properties */
+              saved_props =
+                glade_widget_dup_properties (gwidget, glade_widget_get_packing_properties (gwidget),
+                                             FALSE, FALSE, FALSE);
+
+              /* Remove "this" widget, If the parent we're removing is a parentless
+               * widget reference, the reference will be implicitly broken by the 'cut' command */
+              this_widget.data = gwidget;
+              glade_command_delete (&this_widget);
+
+              property = glade_widget_get_parentless_widget_ref (gwidget);
+              
 	      /* Now we created the new parent, if gwidget had a parentless widget reference...
 	       * set that reference to the new parent instead */
 	      if (property)
@@ -948,15 +948,6 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
               /* Add "this" widget to the new parent */
               glade_command_add (&this_widget, gnew_parent, NULL, project, FALSE);
             }
-          else
-	    {
-	      /* Create parent was cancelled, paste back to parent */
-	      glade_command_add (&this_widget, gparent, NULL, project, FALSE);
-
-	      /* Restore any parentless widget reference if there was one */
-	      if (property)
-		glade_command_set_property (property, glade_widget_get_object (gwidget));
-	    }
 
           glade_command_pop_group ();
         }
