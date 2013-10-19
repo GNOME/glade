@@ -724,30 +724,30 @@ value_icon_activate (GtkCellRendererToggle *cell_renderer,
         if (text && gdk_rgba_parse (&color, text))
           gtk_color_chooser_set_rgba (GTK_COLOR_CHOOSER (dialog), &color);
 
-        gtk_dialog_run (GTK_DIALOG (dialog));
+        if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_OK)
+          {
+            gtk_color_chooser_get_rgba (GTK_COLOR_CHOOSER (dialog), &color);
+            /* Use GdkColor string format */
+            if (((guint8)(color.red * 0xFF)) * 0x101 == (guint16)(color.red * 0xFFFF) &&
+                ((guint8)(color.green * 0xFF)) * 0x101 == (guint16)(color.green * 0xFFFF) &&
+                ((guint8)(color.blue * 0xFF)) * 0x101 == (guint16)(color.blue * 0xFFFF))
+              new_text = g_strdup_printf ("#%02X%02X%02X",
+                                          (guint8)(color.red * 0xFF),
+                                          (guint8)(color.green * 0xFF),
+                                          (guint8)(color.blue * 0xFF));
+            else
+              new_text = g_strdup_printf ("#%04X%04X%04X",
+                                          (guint16)(color.red * 0xFFFF),
+                                          (guint16)(color.green * 0xFFFF),
+                                          (guint16)(color.blue * 0xFFFF));
 
-        gtk_color_chooser_get_rgba (GTK_COLOR_CHOOSER (dialog), &color);
-        
-        /* Use GdkColor string format */
-        if (((guint8)(color.red * 0xFF)) * 0x101 == (guint16)(color.red * 0xFFFF) &&
-            ((guint8)(color.green * 0xFF)) * 0x101 == (guint16)(color.green * 0xFFFF) &&
-            ((guint8)(color.blue * 0xFF)) * 0x101 == (guint16)(color.blue * 0xFFFF))
-          new_text = g_strdup_printf ("#%02X%02X%02X",
-                                      (guint8)(color.red * 0xFF),
-                                      (guint8)(color.green * 0xFF),
-                                      (guint8)(color.blue * 0xFF));
-        else
-          new_text = g_strdup_printf ("#%04X%04X%04X",
-                                      (guint16)(color.red * 0xFFFF),
-                                      (guint16)(color.green * 0xFFFF),
-                                      (guint16)(color.blue * 0xFFFF));
-
-        gtk_list_store_set (GTK_LIST_STORE (eprop_attrs->model), &iter,
-                            COLUMN_TEXT, new_text,
-                            COLUMN_NAME_WEIGHT, PANGO_WEIGHT_BOLD,
-                            COLUMN_TEXT_STYLE, PANGO_STYLE_NORMAL,
-                            COLUMN_TEXT_FG, "Black", -1);
-        g_free (new_text);
+            gtk_list_store_set (GTK_LIST_STORE (eprop_attrs->model), &iter,
+                                COLUMN_TEXT, new_text,
+                                COLUMN_NAME_WEIGHT, PANGO_WEIGHT_BOLD,
+                                COLUMN_TEXT_STYLE, PANGO_STYLE_NORMAL,
+                                COLUMN_TEXT_FG, "Black", -1);
+            g_free (new_text);
+          }
 
         gtk_widget_destroy (dialog);
         break;
@@ -760,17 +760,18 @@ value_icon_activate (GtkCellRendererToggle *cell_renderer,
         if (text)
           gtk_font_chooser_set_font (GTK_FONT_CHOOSER (dialog), text);
 
-        gtk_dialog_run (GTK_DIALOG (dialog));
+        if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_OK)
+          {
+            new_text = gtk_font_chooser_get_font (GTK_FONT_CHOOSER (dialog));
 
-        new_text = gtk_font_chooser_get_font (GTK_FONT_CHOOSER (dialog));
+            gtk_list_store_set (GTK_LIST_STORE (eprop_attrs->model), &iter,
+                                COLUMN_TEXT, new_text,
+                                COLUMN_NAME_WEIGHT, PANGO_WEIGHT_BOLD,
+                                COLUMN_TEXT_STYLE, PANGO_STYLE_NORMAL,
+                                COLUMN_TEXT_FG, "Black", -1);
+            g_free (new_text);
 
-        gtk_list_store_set (GTK_LIST_STORE (eprop_attrs->model), &iter,
-                            COLUMN_TEXT, new_text,
-                            COLUMN_NAME_WEIGHT, PANGO_WEIGHT_BOLD,
-                            COLUMN_TEXT_STYLE, PANGO_STYLE_NORMAL,
-                            COLUMN_TEXT_FG, "Black", -1);
-        g_free (new_text);
-
+          }
         gtk_widget_destroy (dialog);
         break;
 
