@@ -35,11 +35,7 @@ _glade_dnd_get_target (void)
 void
 _glade_dnd_dest_set (GtkWidget *target)
 {
-  GtkTargetEntry targets[1];
-
-  targets[0] = *_glade_dnd_get_target ();
-
-  gtk_drag_dest_set (target, 0, targets, 2, GDK_ACTION_COPY);
+  gtk_drag_dest_set (target, 0, _glade_dnd_get_target (), 1, GDK_ACTION_COPY);
 }
 
 GObject *
