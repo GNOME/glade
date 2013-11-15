@@ -54,6 +54,7 @@
 #include "glade-object-stub.h"
 #include "glade-project-properties.h"
 #include "glade-dnd.h"
+#include "glade-private.h"
 
 static void     glade_project_target_version_for_adaptor
                                                     (GladeProject       *project,
@@ -2285,11 +2286,24 @@ glade_project_load_internal (GladeProject *project)
   priv->objects = NULL;
   priv->loading = TRUE;
 
+  _glade_xml_error_reset_last ();
+
   /* get the context & root node of the catalog file */
   if (!(context =
         glade_xml_context_new_from_path (load_path ? load_path : priv->path, NULL, NULL)))
     {
-      g_warning ("Couldn't open glade file [%s].", load_path ? load_path : priv->path);
+      gchar *message = _glade_xml_error_get_last_message ();
+
+      if (message)
+        {
+          glade_util_ui_message (glade_app_get_window (), GLADE_UI_ERROR, NULL, message);
+          g_free (message);
+        }
+      else
+        glade_util_ui_message (glade_app_get_window (), GLADE_UI_ERROR, NULL,
+                               "Couldn't open glade file [%s].",
+                               load_path ? load_path : priv->path);
+
       g_free (load_path);
       priv->loading = FALSE;
       return FALSE;

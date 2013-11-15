@@ -194,6 +194,7 @@ noinst_HEADERS = \
 	glade-preview-tokens.h \
 	glade-preview-window.h \
 	glade-preview-template.h \
+	glade-private.h \
 	glade-project-properties.h \
 	gladeui-resources.h \
 	glade-drag.h \
