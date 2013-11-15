@@ -987,3 +987,24 @@ glade_xml_node_add_next_sibling (GladeXmlNode *node, GladeXmlNode *new_node)
 {
   return (GladeXmlNode *) xmlAddNextSibling ((xmlNodePtr) node, (xmlNodePtr) new_node);
 }
+
+
+/* Private API */
+#include "glade-private.h"
+
+void
+_glade_xml_error_reset_last (void)
+{
+  xmlResetLastError ();
+}
+
+gchar *
+_glade_xml_error_get_last_message ()
+{
+  xmlErrorPtr error = xmlGetLastError ();
+
+  if (error)
+    return g_strdup_printf ("Error parsing file '%s' on line %d \n%s",
+                            error->file, error->line, error->message);
+  return NULL;
+}
