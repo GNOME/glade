@@ -894,21 +894,41 @@ set_sensitivity_according_to_project (GladeWindow  *window,
   refresh_next_prev_project_sensitivity (window);
 }
 
-static void
-recent_add (GladeWindow *window, const gchar *path)
+static gchar *
+get_uri_from_project_path (const gchar *path)
 {
-  GtkRecentData *recent_data;
-  gchar *uri;
   GError *error = NULL;
-
-  uri = g_filename_to_uri (path, NULL, &error);
+  gchar *uri = NULL;
+  
+  if (g_path_is_absolute (path))
+    uri = g_filename_to_uri (path, NULL, &error);
+  else
+    {
+      gchar *cwd = g_get_current_dir ();
+      gchar *fullpath = g_build_filename (cwd, path, NULL);
+      uri = g_filename_to_uri (fullpath, NULL, &error);
+      g_free (cwd);
+      g_free (fullpath);
+    }
+    
   if (error)
     {
       g_warning ("Could not convert local path \"%s\" to a uri: %s", path, error->message);
       g_error_free (error);
-      return;
     }
 
+  return uri;
+}
+
+static void
+recent_add (GladeWindow *window, const gchar *path)
+{
+  gchar *uri = get_uri_from_project_path (path);
+  GtkRecentData *recent_data;
+
+  if (!uri)
+    return;
+  
   recent_data = g_slice_new (GtkRecentData);
 
   recent_data->display_name = NULL;
@@ -924,22 +944,15 @@ recent_add (GladeWindow *window, const gchar *path)
   g_free (uri);
   g_free (recent_data->app_exec);
   g_slice_free (GtkRecentData, recent_data);
-
 }
 
 static void
 recent_remove (GladeWindow * window, const gchar * path)
 {
-  gchar *uri;
-  GError *error = NULL;
+  gchar *uri = get_uri_from_project_path (path);
 
-  uri = g_filename_to_uri (path, NULL, &error);
-  if (error)
-    {
-      g_warning ("Could not convert local path \"%s\" to a uri: %s", path, error->message);
-      g_error_free (error);
-      return;
-    }
+  if (!uri)
+    return;
 
   gtk_recent_manager_remove_item (window->priv->recent_manager, uri, NULL);
 
