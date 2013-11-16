@@ -56,6 +56,9 @@
 #include "glade-dnd.h"
 #include "glade-private.h"
 
+#include "glade-widget-private.h"
+#include "glade-tsort.h"
+
 static void     glade_project_target_version_for_adaptor
                                                     (GladeProject       *project,
 						     GladeWidgetAdaptor *adaptor,
@@ -2407,19 +2410,171 @@ glade_project_write_resource_path (GladeProject *project,
 }
 
 static gint
-sort_project_dependancies (GObject *a, GObject *b)
+glade_widgets_name_cmp (gconstpointer ga, gconstpointer gb)
 {
-  GladeWidget *ga, *gb;
+  return g_strcmp0 (glade_widget_get_name ((gpointer)ga), glade_widget_get_name ((gpointer)gb));
+}
 
-  ga = glade_widget_get_from_gobject (a);
-  gb = glade_widget_get_from_gobject (b);
+static inline gboolean
+glade_project_widget_hard_depends (GladeWidget *widget, GladeWidget *another)
+{
+  GList *l;
 
-  if (glade_widget_depends (ga, gb))
-    return 1;
-  else if (glade_widget_depends (gb, ga))
-    return -1;
-  else
-    return strcmp (glade_widget_get_name (ga), glade_widget_get_name (gb));
+  for (l = _glade_widget_peek_prop_refs (another); l; l = g_list_next (l))
+    {
+      GladePropertyClass *klass;
+      
+      /* If one of the properties that reference @another is
+       * owned by @widget then @widget depends on @another
+       */
+      if (glade_property_get_widget (l->data) == widget &&
+          (klass = glade_property_get_class (l->data)) &&
+          glade_property_class_get_construct_only (klass))
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
+static _NodeEdge *
+glade_project_get_graph_deps (GladeProject *project)
+{
+  GladeProjectPrivate *priv = project->priv;
+  GList *l, *objects = NULL;
+  _NodeEdge *edges = NULL;
+
+  /* Create list of GladeWidgets */
+  for (l = priv->objects; l; l = g_list_next (l))
+    objects = g_list_prepend (objects, glade_widget_get_from_gobject (l->data));
+
+  /* Sort objects alphabetically */
+  objects = g_list_sort (objects, glade_widgets_name_cmp);
+  
+  /* Create edges of the directed graph */
+  for (l = objects; l; l = g_list_next (l))
+    {
+      GladeWidget *predecessor = l->data;
+      GladeWidget *predecessor_top;
+      GList *ll;
+
+      predecessor_top = glade_widget_get_toplevel (predecessor);
+
+      for (ll = objects; ll; ll = g_list_next (ll))
+        {
+          GladeWidget *successor = ll->data;
+          GladeWidget *successor_top;
+
+          successor_top = glade_widget_get_toplevel (successor);
+
+          /* Ignore object within the same toplevel */
+          if (predecessor_top == successor_top)
+            continue;
+
+          /* Check if succesor depends on predecessor and add a corresponding
+           * edge to the dependency graph.
+           * Note that we add the implicit dependency on their respective
+           * toplevels because that is what we care!
+           */
+          if (glade_widget_depends (successor, predecessor))
+            edges = _node_edge_prepend (edges, predecessor_top, successor_top);
+        }
+    }
+
+  g_list_free (objects);
+
+  return edges;
+}
+
+static GList *
+glade_project_get_nodes_from_edges (GladeProject *project, _NodeEdge *edges)
+{
+  _NodeEdge *edge, *hard_edges = NULL;
+  GList *cycles = NULL;
+
+  /* Collect widgets with circular dependencies */
+  for (edge = edges; edge; edge = edge->next)
+    {
+      if (glade_widget_get_parent (edge->successor) == edge->predecessor ||
+          glade_project_widget_hard_depends (edge->predecessor, edge->successor))
+        hard_edges = _node_edge_prepend (hard_edges, edge->predecessor, edge->successor);
+
+      /* Just toplevels */
+      if (glade_widget_get_parent (edge->successor))
+        continue;
+
+      if (!g_list_find (cycles, edge->successor))
+        cycles = g_list_prepend (cycles, edge->successor);
+    }
+
+  /* Sort them alphabetically */
+  cycles = g_list_sort (cycles, glade_widgets_name_cmp);
+
+  if (!hard_edges)
+    return cycles;
+
+  /* Sort them by hard deps */
+  cycles = _glade_tsort (&cycles, &hard_edges);
+  
+  if (hard_edges)
+    {
+      GList *hard_cycles = NULL;
+
+      /* Collect widgets with hard circular dependencies */
+      for (edge = hard_edges; edge; edge = edge->next)
+        {
+          /* Just toplevels */
+          if (glade_widget_get_parent (edge->successor))
+            continue;
+
+          if (!g_list_find (hard_cycles, edge->successor))
+            hard_cycles = g_list_prepend (hard_cycles, edge->successor);
+        }
+
+      /* And append to the end of the cycles list */
+      cycles = g_list_concat (cycles, g_list_sort (hard_cycles, glade_widgets_name_cmp));
+
+      /* Opps! there is at least one hard circular dependency,
+       * GtkBuilder will fail to set one of the properties that create the cycle
+       */
+
+      _node_edge_free (hard_edges);
+    }
+
+  return cycles;
+}
+    
+static GList *
+glade_project_get_ordered_toplevels (GladeProject *project)
+{
+  GladeProjectPrivate *priv = project->priv;
+  GList *l, *sorted_tree, *tree = NULL;
+  _NodeEdge *edges;
+
+  /* Create list of toplevels GladeWidgets */
+  for (l = priv->tree; l; l = g_list_next (l))
+    tree = g_list_prepend (tree, glade_widget_get_from_gobject (l->data));
+
+  /* Sort toplevels alphabetically */
+  tree = g_list_sort (tree, glade_widgets_name_cmp);
+
+  edges = glade_project_get_graph_deps (project);
+  
+  /* Sort tree */
+  sorted_tree = _glade_tsort (&tree, &edges);
+
+  if (edges)
+    {
+      GList *cycles = glade_project_get_nodes_from_edges (project, edges);
+      
+      /* And append to the end of the sorted list */
+      sorted_tree = g_list_concat (sorted_tree, cycles);
+
+      _node_edge_free (edges);
+    }
+
+  /* No need to free tree as tsort will consume the list */
+    
+  return sorted_tree;
 }
 
 static inline void
@@ -2472,15 +2627,12 @@ glade_project_write (GladeProject *project)
 
   glade_project_write_resource_path (project, context, root);
 
-  /* Sort the toplevels */
-  toplevels = g_list_copy (project->priv->tree);
-  toplevels = g_list_sort (toplevels, (GCompareFunc)sort_project_dependancies);
+  /* Get sorted toplevels */
+  toplevels = glade_project_get_ordered_toplevels (project);
 
-  for (list = toplevels; list; list = list->next)
+  for (list = toplevels; list; list = g_list_next (list))
     {
-      GladeWidget *widget;
-
-      widget = glade_widget_get_from_gobject (list->data);
+      GladeWidget *widget = list->data;
 
       /* 
        * Append toplevel widgets. Each widget then takes
@@ -2488,6 +2640,9 @@ glade_project_write (GladeProject *project)
        */
       if (!glade_widget_get_parent (widget))
         glade_widget_write (widget, context, root);
+      else
+        g_warning ("Tried to save a non toplevel object '%s' at xml root",
+                   glade_widget_get_name (widget));
     }
 
   g_list_free (toplevels);

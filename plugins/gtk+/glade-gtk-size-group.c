@@ -28,16 +28,6 @@
 #define GLADE_TAG_SIZEGROUP_WIDGETS "widgets"
 #define GLADE_TAG_SIZEGROUP_WIDGET  "widget"
 
-gboolean
-glade_gtk_size_group_depends (GladeWidgetAdaptor * adaptor,
-                              GladeWidget * widget, GladeWidget * another)
-{
-  if (GTK_IS_WIDGET (glade_widget_get_object (another)))
-    return TRUE;
-
-  return GWA_GET_CLASS (G_TYPE_OBJECT)->depends (adaptor, widget, another);
-}
-
 static void
 glade_gtk_size_group_read_widgets (GladeWidget * widget, GladeXmlNode * node)
 {

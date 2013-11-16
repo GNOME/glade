@@ -28,17 +28,6 @@
 #include "glade-image-editor.h" /* For the icon modes */
 #include "glade-gtk.h"
 
-gboolean
-glade_gtk_entry_depends (GladeWidgetAdaptor * adaptor,
-                         GladeWidget * widget, GladeWidget * another)
-{
-  if (GTK_IS_ENTRY_BUFFER (glade_widget_get_object (another)))
-    return TRUE;
-
-  return GWA_GET_CLASS (GTK_TYPE_WIDGET)->depends (adaptor, widget, another);
-}
-
-
 static void
 glade_gtk_entry_changed (GtkEditable * editable, GladeWidget * gentry)
 {
