@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.16.0 on Fri Nov  1 11:43:04 2013 -->
+<interface>
+  <!-- interface-requires gtk+ 3.10 -->
+  <object class="GtkIconFactory" id="iconfactory"/>
+  <object class="GtkLabel" id="label_a">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="margin_bottom">5</property>
+    <property name="label" translatable="yes">label_a</property>
+  </object>
+  <object class="GtkLabel" id="label_b">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="label" translatable="yes">label_b</property>
+  </object>
+  <object class="GtkSizeGroup" id="asizegroup">
+    <widgets>
+      <widget name="label_b"/>
+      <widget name="label_a"/>
+    </widgets>
+  </object>
+  <object class="GtkLabel" id="label_c">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="label" translatable="yes">label_c</property>
+  </object>
+  <object class="GtkAction" id="xaction"/>
+  <object class="GtkActionGroup" id="xactiongroup">
+    <child>
+      <object class="GtkAction" id="action1"/>
+    </child>
+  </object>
+  <object class="GtkWindow" id="anotherwindow">
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkBox" id="box2">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkButton" id="button1">
+            <property name="related_action">xaction</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="use_underline">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="button2">
+            <property name="label" translatable="yes">button</property>
+            <property name="related_action">action1</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkEntryBuffer" id="xentrybuffer"/>
+  <object class="GtkListStore" id="xliststore"/>
+  <object class="GtkTreeView" id="treeview">
+    <property name="visible">True</property>
+    <property name="can_focus">True</property>
+    <property name="model">xliststore</property>
+    <child internal-child="selection">
+      <object class="GtkTreeSelection" id="treeview-selection1"/>
+    </child>
+  </object>
+  <object class="GtkAccelGroup" id="zaccelgroup"/>
+  <object class="GtkWindow" id="awindow">
+    <property name="can_focus">False</property>
+    <accel-groups>
+      <group name="zaccelgroup"/>
+    </accel-groups>
+    <child>
+      <object class="GtkBox" id="box1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <object class="GtkEntry" id="entry1">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="buffer">xentrybuffer</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
