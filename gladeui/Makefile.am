@@ -119,6 +119,7 @@ libgladeui_2_la_SOURCES = \
 	glade-signal-class.c \
 	glade-signal-editor.c \
 	glade-signal-model.c \
+	glade-tsort.c \
 	glade-utils.c \
 	glade-widget.c \
 	glade-widget-action.c \
@@ -196,9 +197,11 @@ noinst_HEADERS = \
 	glade-preview-template.h \
 	glade-private.h \
 	glade-project-properties.h \
+	glade-tsort.h \
 	gladeui-resources.h \
 	glade-drag.h \
-	glade-dnd.h
+	glade-dnd.h \
+	glade-widget-private.h
 
 if PLATFORM_WIN32
 libgladeui_2_la_LDFLAGS += -no-undefined

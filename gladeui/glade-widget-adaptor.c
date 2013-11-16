@@ -42,6 +42,7 @@
 #include "glade-displayable-values.h"
 #include "glade-editor-table.h"
 #include "glade-cursor.h"
+#include "glade-widget-private.h"
 
 /* For g_file_exists */
 #include <sys/types.h>
@@ -978,33 +979,18 @@ glade_widget_adaptor_object_depends (GladeWidgetAdaptor *adaptor,
                                      GladeWidget *widget,
                                      GladeWidget *another)
 {
-  GList   *prop_refs, *l;
-  gboolean depends = FALSE;
+  GList *l;
 
-  prop_refs = glade_widget_list_prop_refs (another);
-
-  for (l = prop_refs; !depends && l; l = l->next)
+  for (l = _glade_widget_peek_prop_refs (another); l; l = g_list_next (l))
     {
-      GladeProperty *property = l->data;
-      GladeWidget   *prop_widget = glade_property_get_widget (property);
-
       /* If one of the properties that reference @another is
        * owned by @widget then @widget depends on @another
        */
-      if (prop_widget == widget)
-	depends = TRUE;
-
-      /* Or if the widget that owns a property which references
-       * @another is somewhere inside @widget... then @widget
-       * also depends on @another.
-       */
-      else if (glade_widget_is_ancestor (prop_widget, widget))
-	depends = TRUE;
+      if (glade_property_get_widget (l->data) == widget)
+        return TRUE;
     }
 
-  g_list_free (prop_refs);
-
-  return depends;
+  return FALSE;
 }
 
 static void

@@ -278,16 +278,6 @@ glade_gtk_treeview_replace_child (GladeWidgetAdaptor * adaptor,
   glade_gtk_cell_layout_sync_attributes (G_OBJECT (column));
 }
 
-gboolean
-glade_gtk_treeview_depends (GladeWidgetAdaptor * adaptor,
-                            GladeWidget * widget, GladeWidget * another)
-{
-  if (GTK_IS_TREE_MODEL (glade_widget_get_object (another)))
-    return TRUE;
-
-  return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->depends (adaptor, widget, another);
-}
-
 void
 glade_gtk_treeview_set_property (GladeWidgetAdaptor * adaptor,
 				 GObject * object,

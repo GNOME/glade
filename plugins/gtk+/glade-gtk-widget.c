@@ -87,9 +87,11 @@ gboolean
 glade_gtk_widget_depends (GladeWidgetAdaptor * adaptor,
                           GladeWidget * widget, GladeWidget * another)
 {
-  if (GTK_IS_ICON_FACTORY (glade_widget_get_object (another)) ||
-      GTK_IS_ACTION (glade_widget_get_object (another)) || 
-      GTK_IS_ACTION_GROUP (glade_widget_get_object (another)))
+  /* We want GtkIconFactory to be before any toplevels, just in case one of
+   * the stock items defined in it are used.
+   */
+  if (!glade_widget_get_parent (widget) &&
+      GTK_IS_ICON_FACTORY (glade_widget_get_object (another)))
     return TRUE;
 
   return GWA_GET_CLASS (G_TYPE_OBJECT)->depends (adaptor, widget, another);
