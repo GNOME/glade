@@ -98,7 +98,6 @@ struct _GladeWidget
 			       */
 	GList          *locked_widgets; /* A list of widgets this widget has locked down.
 					 */
-	
 	/* Construct parameters: */
 	GladeWidget       *construct_template;
 	GladeCreateReason  construct_reason;
@@ -279,6 +278,8 @@ gchar                  *glade_widget_generate_path_name     (GladeWidget      *w
 
 gboolean                glade_widget_is_ancestor            (GladeWidget      *widget,
 							     GladeWidget      *ancestor);
+gboolean                glade_widget_depends                (GladeWidget      *widget,
+							     GladeWidget      *other);
 
 /*******************************************************************************
                       Project, object property references

@@ -45,7 +45,7 @@
 #include "glade-accumulators.h"
 #include "glade-project.h"
 #include "glade-widget-adaptor.h"
-#include "glade-widget.h"
+#include "glade-widget-private.h"
 #include "glade-marshallers.h"
 #include "glade-property.h"
 #include "glade-property-class.h"
@@ -1918,6 +1918,14 @@ glade_widget_create_packing_properties (GladeWidget *container, GladeWidget *wid
 
 	}
 	return g_list_reverse (packing_props);
+}
+
+/* Private API */
+
+GList *
+_glade_widget_peek_prop_refs (GladeWidget      *widget)
+{
+  return widget->prop_refs;
 }
 
 /*******************************************************************************
@@ -4103,6 +4111,29 @@ glade_widget_is_ancestor (GladeWidget      *widget,
     }
 
   return FALSE;
+}
+
+/**
+ * glade_widget_depends:
+ * @widget: a #GladeWidget
+ * @other: another #GladeWidget
+ *
+ * Determines whether @widget is somehow dependent on @other, in
+ * which case it should be serialized after @other.
+ *
+ * A widget is dependent on another widget.
+ * It does not take into account for children dependencies.
+ *
+ * Return value: %TRUE if @widget depends on @other.
+ **/
+gboolean
+glade_widget_depends (GladeWidget      *widget,
+		      GladeWidget      *other)
+{
+  g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
+  g_return_val_if_fail (GLADE_IS_WIDGET (other), FALSE);
+
+  return glade_widget_adaptor_depends (widget->adaptor, widget, other);
 }
 
 

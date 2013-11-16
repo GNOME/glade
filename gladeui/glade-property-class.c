@@ -1762,3 +1762,20 @@ glade_property_class_compare (GladePropertyClass *klass,
 	
 	return retval;
 }
+
+void
+glade_property_class_set_construct_only (GladePropertyClass  *property_class,
+					 gboolean             construct_only)
+{
+  g_return_if_fail (GLADE_IS_PROPERTY_CLASS (property_class));
+
+  property_class->construct_only = construct_only;
+}
+
+gboolean
+glade_property_class_get_construct_only (GladePropertyClass  *property_class)
+{
+  g_return_val_if_fail (GLADE_IS_PROPERTY_CLASS (property_class), FALSE);
+
+  return property_class->construct_only;
+}

@@ -1465,6 +1465,31 @@ glade_property_get_enabled (GladeProperty *property)
 	return property->enabled;
 }
 
+GladePropertyClass *
+glade_property_get_class (GladeProperty *property)
+{
+  g_return_val_if_fail (GLADE_IS_PROPERTY (property), NULL);
+
+  return property->klass;
+}
+
+void
+glade_property_set_widget (GladeProperty      *property,
+			   GladeWidget        *widget)
+{
+	g_return_if_fail (GLADE_IS_PROPERTY (property));
+
+	property->widget = widget;
+}
+
+GladeWidget *
+glade_property_get_widget (GladeProperty      *property)
+{
+	g_return_val_if_fail (GLADE_IS_PROPERTY (property), NULL);
+
+	return property->widget;
+}
+
 
 static gint glade_property_su_stack = 0;
 

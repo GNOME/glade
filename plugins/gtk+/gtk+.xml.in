@@ -859,7 +859,6 @@ embedded in another object</_tooltip>
       <create-editable-function>glade_gtk_entry_create_editable</create-editable-function>
       <set-property-function>glade_gtk_entry_set_property</set-property-function>
       <read-widget-function>glade_gtk_entry_read_widget</read-widget-function>
-      <depends-function>glade_gtk_entry_depends</depends-function>
 
       <signals>
 	<signal id="icon-press" since="2.16"/>
@@ -2017,7 +2016,6 @@ embedded in another object</_tooltip>
     
     <!-- Objects -->
     <glade-widget-class name="GtkSizeGroup" generic-name="sizegroup" _title="Size Group" libglade-unsupported="True" toplevel="True">
-      <depends-function>glade_gtk_size_group_depends</depends-function>
       <read-widget-function>glade_gtk_size_group_read_widget</read-widget-function>
       <write-widget-function>glade_gtk_size_group_write_widget</write-widget-function>
       <set-property-function>glade_gtk_size_group_set_property</set-property-function>
@@ -2203,7 +2201,6 @@ embedded in another object</_tooltip>
       <add-child-function>glade_gtk_treeview_add_child</add-child-function>
       <remove-child-function>glade_gtk_treeview_remove_child</remove-child-function>
       <action-activate-function>glade_gtk_treeview_action_activate</action-activate-function>
-      <depends-function>glade_gtk_treeview_depends</depends-function>
 
       <actions>
         <action id="launch_editor" _name="Edit&#8230;" stock="gtk-edit" important="True"/>

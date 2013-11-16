@@ -191,6 +191,11 @@ void                    glade_property_set_enabled           (GladeProperty     
 
 gboolean                glade_property_get_enabled           (GladeProperty      *property);
 
+GladePropertyClass     *glade_property_get_class             (GladeProperty      *property);
+
+GladeWidget            *glade_property_get_widget            (GladeProperty      *property);
+void                    glade_property_set_widget            (GladeProperty      *property,
+							      GladeWidget        *widget);
 
 void                    glade_property_i18n_set_comment      (GladeProperty      *property, 
 							      const gchar        *str);

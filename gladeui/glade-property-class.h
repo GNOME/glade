@@ -278,6 +278,10 @@ gint                glade_property_class_compare                 (GladePropertyC
 								  const GValue       *value2,
 								  GladeProjectFormat  fmt);
 
+void                glade_property_class_set_construct_only      (GladePropertyClass  *property_class,
+								  gboolean            construct_only);
+gboolean            glade_property_class_get_construct_only      (GladePropertyClass  *property_class);
+
 G_END_DECLS
 
 #endif /* __GLADE_PROPERTY_CLASS_H__ */

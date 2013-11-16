@@ -56,6 +56,7 @@ libgladeui_1_la_SOURCES = \
 	glade-popup.h \
 	glade-marshallers.h \
 	glade-accumulators.h \
+	glade-tsort.c \
 	glade-widget-action.c \
 	glade-name-context.c \
 	glade-displayable-values.c \
@@ -124,6 +125,8 @@ noinst_HEADERS = \
 	glade-object-stub.h \
 	glade-popup.h \
 	glade-accumulators.h
+	glade-tsort.h \
+	glade-widget-private.h
 
 if PLATFORM_WIN32
 libgladeui_1_la_LDFLAGS += -no-undefined

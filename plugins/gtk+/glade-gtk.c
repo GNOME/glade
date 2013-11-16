@@ -4804,17 +4804,6 @@ glade_gtk_expander_write_child (GladeWidgetAdaptor *adaptor,
 
 /* -------------------------------- GtkEntry -------------------------------- */
 
-gboolean
-glade_gtk_entry_depends (GladeWidgetAdaptor *adaptor,
-			 GladeWidget        *widget,
-			 GladeWidget        *another)
-{
-	if (GTK_IS_ENTRY_BUFFER (another->object))
-		return TRUE; 
-
-	return GWA_GET_CLASS (GTK_TYPE_WIDGET)->depends (adaptor, widget, another);
-}
-
 
 static void
 glade_gtk_entry_changed (GtkEditable *editable, GladeWidget *gentry)
@@ -10072,16 +10061,6 @@ glade_gtk_radio_button_set_property (GladeWidgetAdaptor *adaptor,
 }
 
 /*--------------------------- GtkSizeGroup ---------------------------------*/
-gboolean
-glade_gtk_size_group_depends (GladeWidgetAdaptor *adaptor,
-			      GladeWidget        *widget,
-			      GladeWidget        *another)
-{
-	if (GTK_IS_WIDGET (another->object))
-		return TRUE; 
-
-	return GWA_GET_CLASS (G_TYPE_OBJECT)->depends (adaptor, widget, another);
-}
 
 #define GLADE_TAG_SIZEGROUP_WIDGETS "widgets"
 #define GLADE_TAG_SIZEGROUP_WIDGET  "widget"
@@ -12268,17 +12247,6 @@ glade_gtk_treeview_remove_child (GladeWidgetAdaptor *adaptor,
 
 	column = GTK_TREE_VIEW_COLUMN (child);
 	gtk_tree_view_remove_column (view, column);
-}
-
-gboolean
-glade_gtk_treeview_depends (GladeWidgetAdaptor *adaptor,
-			    GladeWidget        *widget,
-			    GladeWidget        *another)
-{
-	if (GTK_IS_TREE_MODEL (another->object))
-		return TRUE; 
-
-	return GWA_GET_CLASS (GTK_TYPE_CONTAINER)->depends (adaptor, widget, another);
 }
 
 /*--------------------------- GtkAdjustment ---------------------------------*/
