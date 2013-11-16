@@ -1,5 +1,10 @@
 include $(top_srcdir)/glade-rules.mk
 
+TEST_PROGS = \
+	create-widgets \
+	add-child \
+	toplevel-order
+
 noinst_PROGRAMS = $(TEST_PROGS)
 
 progs_cppflags = \
@@ -20,7 +25,6 @@ progs_ldadd = $(top_builddir)/gladeui/libgladeui-2.la
 
 # Test that GladeWidgets and thier runtime objects
 # are created and finalized properly
-TEST_PROGS              = create-widgets
 create_widgets_CPPFLAGS = $(progs_cppflags)
 create_widgets_CFLAGS   = $(progs_cflags)
 create_widgets_LDFLAGS  = $(progs_libs)
@@ -30,12 +34,28 @@ create_widgets_SOURCES  = create-widgets.c
 # Test that various types of container widgets
 # successfully parent child types via the
 # GladeWidget / adaptor code
-TEST_PROGS        += add-child
 add_child_CPPFLAGS = $(progs_cppflags)
 add_child_CFLAGS   = $(progs_cflags)
 add_child_LDFLAGS  = $(progs_libs)
 add_child_LDADD    = $(progs_ldadd)
 add_child_SOURCES  = add-child.c
+
+# Test toplevel order in xml output
+toplevel_order_CPPFLAGS = $(progs_cppflags)
+toplevel_order_CFLAGS   = $(progs_cflags)
+toplevel_order_LDFLAGS  = $(progs_libs)
+toplevel_order_LDADD    = $(progs_ldadd)
+toplevel_order_SOURCES  = toplevel-order.c
+TOPLEVEL_ORDER_FILES = \
+	toplevel_order_test.glade \
+	toplevel_order_test1.glade \
+	toplevel_order_test2.glade \
+	toplevel_order_test3.glade \
+	toplevel_order_test4.glade \
+	toplevel_order_test5.glade \
+	toplevel_order_test6.glade
+
+EXTRA_DIST = $(TOPLEVEL_ORDER_FILES)
 
 TESTS = $(TEST_PROGS)
 TESTS_ENVIRONMENT=$(GLADE_TEST_ENVIRONMENT)

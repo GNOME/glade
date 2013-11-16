@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <!-- interface-requires gtk+ 3.10 -->
+  <object class="GtkWindow" id="aaa"/>
+  <object class="GtkWindow" id="bbb"/>
+  <object class="GtkWindow" id="ccc">
+    <property name="transient_for">aaa</property>
+  </object>
+</interface>
