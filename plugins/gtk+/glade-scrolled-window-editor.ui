@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.16.0-->
 <interface domain="glade">
   <!-- interface-requires gladeui 0.0 -->
   <!-- interface-requires gtk+ 3.10 -->
@@ -314,10 +315,10 @@
           </packing>
         </child>
         <child>
-          <object class="GladePropertyShell" id="hadj_editor1">
+          <object class="GladePropertyShell" id="vadj_editor">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="property_name">hadjustment</property>
+            <property name="property_name">vadjustment</property>
           </object>
           <packing>
             <property name="left_attach">4</property>
@@ -378,7 +379,7 @@
       <editor id="hadj_label"/>
       <editor id="vadj_label"/>
       <editor id="hadj_editor"/>
-      <editor id="hadj_editor1"/>
+      <editor id="vadj_editor"/>
     </child-editors>
   </template>
 </interface>
