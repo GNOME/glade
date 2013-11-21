@@ -221,18 +221,23 @@ glade_gtk_box_set_child_property (GladeWidgetAdaptor * adaptor,
 
 }
 
+static gint
+glade_gtk_box_get_num_children (GObject *box)
+{
+  GList *children = gtk_container_get_children (GTK_CONTAINER (box));
+  gint retval = g_list_length (children);
+  g_list_free (children);
+  return retval;
+}
+
 void
 glade_gtk_box_get_property (GladeWidgetAdaptor * adaptor,
                             GObject * object, const gchar * id, GValue * value)
 {
   if (!strcmp (id, "size"))
     {
-      GtkBox *box = GTK_BOX (object);
-      GList *children = gtk_container_get_children (GTK_CONTAINER (box));
-
       g_value_reset (value);
-      g_value_set_int (value, g_list_length (children));
-      g_list_free (children);
+      g_value_set_int (value, glade_gtk_box_get_num_children (object));
     }
   else
     GWA_GET_CLASS (GTK_TYPE_CONTAINER)->get_property (adaptor, object, id,
@@ -414,7 +419,6 @@ glade_gtk_box_add_child (GladeWidgetAdaptor * adaptor,
                          GObject * object, GObject * child)
 {
   GladeWidget *gbox, *gchild;
-  GList *children;
   gint num_children;
 
   g_return_if_fail (GTK_IS_BOX (object));
@@ -446,14 +450,7 @@ glade_gtk_box_add_child (GladeWidgetAdaptor * adaptor,
     }
 
   gtk_container_add (GTK_CONTAINER (object), GTK_WIDGET (child));
-
-  if (glade_widget_superuser ())
-    return;
-
-  children = gtk_container_get_children (GTK_CONTAINER (object));
-  num_children = g_list_length (children);
-  g_list_free (children);
-
+  num_children = glade_gtk_box_get_num_children (object);
   glade_widget_property_set (gbox, "size", num_children);
 
   gchild = glade_widget_get_from_gobject (child);
@@ -464,11 +461,14 @@ glade_gtk_box_add_child (GladeWidgetAdaptor * adaptor,
   if (gchild)
     glade_widget_set_pack_action_visible (gchild, "remove_slot", FALSE);
 
+  fix_response_id_on_child (gbox, child, TRUE);
+  
+  if (glade_widget_superuser ())
+    return;
+  
   /* Packing props arent around when parenting during a glade_widget_dup() */
   if (gchild && glade_widget_get_packing_properties (gchild))
     glade_widget_pack_property_set (gchild, "position", num_children - 1);
-
-  fix_response_id_on_child (gbox, child, TRUE);
 }
 
 void
