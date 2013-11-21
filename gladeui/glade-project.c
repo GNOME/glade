@@ -2333,18 +2333,7 @@ glade_project_load (const gchar *path)
 /*******************************************************************
                     Writing project code here
  *******************************************************************/
-
-static gchar *
-glade_project_make_comment (void)
-{
-  time_t now = time (NULL);
-  gchar *comment;
-  comment = g_strdup_printf (" " GLADE_XML_COMMENT " " PACKAGE_VERSION " on %s",
-                             ctime (&now));
-  glade_util_replace (comment, '\n', ' ');
-
-  return comment;
-}
+#define GLADE_PROJECT_COMMENT " "GLADE_XML_COMMENT" "PACKAGE_VERSION" "
 
 static void
 glade_project_write_required_libs (GladeProject *project,
@@ -2584,11 +2573,9 @@ glade_project_write_comments (GladeProject *project,
 {
   GladeProjectPrivate *priv = project->priv;
   GladeXmlNode *comment_node;
-  gchar *glade_comment;
   GList *l;
 
-  glade_comment = glade_project_make_comment ();
-  comment_node = glade_xml_doc_new_comment (doc, glade_comment); 
+    comment_node = glade_xml_doc_new_comment (doc, GLADE_PROJECT_COMMENT);
   comment_node = glade_xml_node_add_prev_sibling (root, comment_node);
   
   for (l = priv->comments; l; l = g_list_next (l))
@@ -2599,8 +2586,6 @@ glade_project_write_comments (GladeProject *project,
       node = glade_xml_doc_new_comment (doc, comment);
       comment_node = glade_xml_node_add_next_sibling (comment_node, node);
     }
-
-  g_free (glade_comment);
 }
 
 static GladeXmlContext *
