@@ -2482,16 +2482,18 @@ glade_project_write_required_libs (GladeProject *project,
   GladeXmlNode *req_node;
   GList *required, *list;
   gint major, minor;
-  gchar *version;
 
   if ((required = glade_project_required_libs (project)) != NULL)
     {
+      gchar version[16];
+
       for (list = required; list; list = list->next)
         {
-          glade_project_get_target_version (project, (gchar *) list->data,
-                                            &major, &minor);
+          gchar *library = list->data;
 
-          version = g_strdup_printf ("%d.%d", major, minor);
+          glade_project_get_target_version (project, library, &major, &minor);
+
+          g_snprintf (version, sizeof (version), "%d.%d", major, minor);
 
           /* Write the standard requires tag */
           if (GLADE_GTKBUILDER_HAS_VERSIONING (major, minor))
@@ -2500,12 +2502,12 @@ glade_project_write_required_libs (GladeProject *project,
               glade_xml_node_append_child (root, req_node);
               glade_xml_node_set_property_string (req_node,
                                                   GLADE_XML_TAG_LIB,
-                                                  (gchar *) list->data);
+                                                  library);
             }
           else
             {
               gchar *comment = g_strdup_printf (" interface-requires %s %s ",
-                                                (gchar *) list->data, version);
+                                                library, version);
               req_node = glade_xml_node_new_comment (context, comment);
               glade_xml_node_append_child (root, req_node);
               g_free (comment);
@@ -2513,11 +2515,9 @@ glade_project_write_required_libs (GladeProject *project,
 
           glade_xml_node_set_property_string (req_node, GLADE_XML_TAG_VERSION,
                                               version);
-          g_free (version);
 
         }
-      g_list_foreach (required, (GFunc) g_free, NULL);
-      g_list_free (required);
+      g_list_free_full (required, g_free);
     }
 }
 
