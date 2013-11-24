@@ -423,7 +423,8 @@ GLADE_MAKE_EPROP (GladeEPropCellAttribute, glade_eprop_cell_attribute)
 #define GLADE_IS_EPROP_CELL_ATTRIBUTE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_CELL_ATTRIBUTE))
 #define GLADE_IS_EPROP_CELL_ATTRIBUTE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_CELL_ATTRIBUTE))
 #define GLADE_EPROP_CELL_ATTRIBUTE_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_CELL_ATTRIBUTE, GladeEPropCellAttributeClass))
-     static void glade_eprop_cell_attribute_finalize (GObject * object)
+static void
+glade_eprop_cell_attribute_finalize (GObject *object)
 {
   /* Chain up */
   GObjectClass *parent_class =
@@ -436,12 +437,22 @@ GLADE_MAKE_EPROP (GladeEPropCellAttribute, glade_eprop_cell_attribute)
 static GladeWidget *
 glade_cell_renderer_parent_get_model (GladeWidget *widget)
 {
-  GtkTreeModel *real_model = NULL;
+  GtkTreeModel *model = NULL;
   
-  glade_widget_property_get (widget, "model", &real_model);
-  
-  if (real_model)
-    return glade_widget_get_from_gobject (real_model);
+  glade_widget_property_get (widget, "model", &model);
+
+  do
+    {
+      if (GTK_IS_TREE_MODEL_SORT (model))
+        model = gtk_tree_model_sort_get_model (GTK_TREE_MODEL_SORT (model));
+      else if (GTK_IS_TREE_MODEL_FILTER (model))
+        model = gtk_tree_model_filter_get_model (GTK_TREE_MODEL_FILTER (model));
+      else
+        break;
+    } while (model);
+
+  if (model)
+    return glade_widget_get_from_gobject (model);
 
   return NULL;
 }
