@@ -329,7 +329,7 @@ glade_previewer_stack_key_press_event (GtkWidget *window, GdkEventKey *event, Gt
 {
   GtkWidget *child =  gtk_stack_get_visible_child  (GTK_STACK (widget));
   GList *children, *node;
-  gboolean retval;
+  gboolean retval = FALSE;
   
   if (!child)
     return FALSE;
