@@ -34,6 +34,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 #include <glib/gi18n-lib.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
@@ -703,6 +704,8 @@ typedef struct
   GladeEditorProperty parent_instance;
 
   GtkWidget *spin;
+
+  gboolean refreshing;
 } GladeEPropNumeric;
 
 GLADE_MAKE_EPROP (GladeEPropNumeric, glade_eprop_numeric)
@@ -711,7 +714,8 @@ GLADE_MAKE_EPROP (GladeEPropNumeric, glade_eprop_numeric)
 #define GLADE_IS_EPROP_NUMERIC(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GLADE_TYPE_EPROP_NUMERIC))
 #define GLADE_IS_EPROP_NUMERIC_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GLADE_TYPE_EPROP_NUMERIC))
 #define GLADE_EPROP_NUMERIC_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS ((o), GLADE_EPROP_NUMERIC, GladeEPropNumericClass))
-     static void glade_eprop_numeric_finalize (GObject *object)
+static void
+glade_eprop_numeric_finalize (GObject *object)
 {
   /* Chain up */
   G_OBJECT_CLASS (editor_property_class)->finalize (object);
@@ -720,11 +724,14 @@ GLADE_MAKE_EPROP (GladeEPropNumeric, glade_eprop_numeric)
 static void
 glade_eprop_numeric_load (GladeEditorProperty *eprop, GladeProperty *property)
 {
-  gfloat val = 0.0F;
+  gdouble val = 0.0F;
   GladeEPropNumeric *eprop_numeric = GLADE_EPROP_NUMERIC (eprop);
   GParamSpec *pspec;
   GValue *value;
 
+  if (eprop_numeric->refreshing)
+    return;
+  
   /* Chain up first */
   editor_property_class->load (eprop, property);
 
@@ -734,19 +741,19 @@ glade_eprop_numeric_load (GladeEditorProperty *eprop, GladeProperty *property)
       pspec = glade_property_class_get_pspec (eprop->priv->klass);
 
       if (G_IS_PARAM_SPEC_INT (pspec))
-        val = (gfloat) g_value_get_int (value);
+        val = g_value_get_int (value);
       else if (G_IS_PARAM_SPEC_UINT (pspec))
-        val = (gfloat) g_value_get_uint (value);
+        val = g_value_get_uint (value);
       else if (G_IS_PARAM_SPEC_LONG (pspec))
-        val = (gfloat) g_value_get_long (value);
+        val = g_value_get_long (value);
       else if (G_IS_PARAM_SPEC_ULONG (pspec))
-        val = (gfloat) g_value_get_ulong (value);
+        val = g_value_get_ulong (value);
       else if (G_IS_PARAM_SPEC_INT64 (pspec))
-        val = (gfloat) g_value_get_int64 (value);
+        val = g_value_get_int64 (value);
       else if (G_IS_PARAM_SPEC_UINT64 (pspec))
-        val = (gfloat) g_value_get_uint64 (value);
+        val = g_value_get_uint64 (value);
       else if (G_IS_PARAM_SPEC_DOUBLE (pspec))
-        val = (gfloat) g_value_get_double (value);
+        val = g_value_get_double (value);
       else if (G_IS_PARAM_SPEC_FLOAT (pspec))
         val = g_value_get_float (value);
       else
@@ -756,6 +763,30 @@ glade_eprop_numeric_load (GladeEditorProperty *eprop, GladeProperty *property)
     }
 }
 
+#define NEAREST_INT_CAST(x) (((x - floor (x) < ceil (x) - x)) ? floor (x) : ceil (x))
+
+static void
+glade_eprop_numeric_value_set (GValue *val, gdouble value)
+{
+  if (G_VALUE_HOLDS_INT (val))
+    g_value_set_int (val, NEAREST_INT_CAST (value));
+  else if (G_VALUE_HOLDS_UINT (val))
+    g_value_set_uint (val, NEAREST_INT_CAST (value));
+  else if (G_VALUE_HOLDS_LONG (val))
+    g_value_set_long (val, NEAREST_INT_CAST (value));
+  else if (G_VALUE_HOLDS_ULONG (val))
+    g_value_set_ulong (val, NEAREST_INT_CAST (value));
+  else if (G_VALUE_HOLDS_INT64 (val))
+    g_value_set_int64 (val, NEAREST_INT_CAST (value));
+  else if (G_VALUE_HOLDS_UINT64 (val))
+    g_value_set_uint64 (val, NEAREST_INT_CAST (value));
+  else if (G_VALUE_HOLDS_FLOAT (val))
+    g_value_set_float (val, value);
+  else if (G_VALUE_HOLDS_DOUBLE (val))
+    g_value_set_double (val, value);
+  else
+    g_warning ("Unsupported type %s\n", G_VALUE_TYPE_NAME (val));
+}
 
 static void
 glade_eprop_numeric_changed (GtkWidget *spin, GladeEditorProperty *eprop)
@@ -768,34 +799,7 @@ glade_eprop_numeric_changed (GtkWidget *spin, GladeEditorProperty *eprop)
 
   pspec = glade_property_class_get_pspec (eprop->priv->klass);
   g_value_init (&val, pspec->value_type);
-
-  if (G_IS_PARAM_SPEC_INT (pspec))
-    g_value_set_int (&val, gtk_spin_button_get_value_as_int
-                     (GTK_SPIN_BUTTON (spin)));
-  else if (G_IS_PARAM_SPEC_UINT (pspec))
-    g_value_set_uint (&val, gtk_spin_button_get_value_as_int
-                      (GTK_SPIN_BUTTON (spin)));
-  else if (G_IS_PARAM_SPEC_LONG (pspec))
-    g_value_set_long (&val, (glong) gtk_spin_button_get_value_as_int
-                      (GTK_SPIN_BUTTON (spin)));
-  else if (G_IS_PARAM_SPEC_ULONG (pspec))
-    g_value_set_ulong (&val, (gulong) gtk_spin_button_get_value_as_int
-                       (GTK_SPIN_BUTTON (spin)));
-  else if (G_IS_PARAM_SPEC_INT64 (pspec))
-    g_value_set_int64 (&val, (gint64) gtk_spin_button_get_value_as_int
-                       (GTK_SPIN_BUTTON (spin)));
-  else if (G_IS_PARAM_SPEC_UINT64 (pspec))
-    g_value_set_uint64 (&val, (guint64) gtk_spin_button_get_value_as_int
-                        (GTK_SPIN_BUTTON (spin)));
-  else if (G_IS_PARAM_SPEC_FLOAT (pspec))
-    g_value_set_float (&val, (gfloat) gtk_spin_button_get_value
-                       (GTK_SPIN_BUTTON (spin)));
-  else if (G_IS_PARAM_SPEC_DOUBLE (pspec))
-    g_value_set_double (&val, gtk_spin_button_get_value
-                        (GTK_SPIN_BUTTON (spin)));
-  else
-    g_warning ("Unsupported type %s\n",
-               g_type_name (G_PARAM_SPEC_TYPE (pspec)));
+  glade_eprop_numeric_value_set (&val, gtk_spin_button_get_value (GTK_SPIN_BUTTON (spin)));
 
   glade_editor_property_commit_no_callback (eprop, &val);
   g_value_unset (&val);
@@ -805,21 +809,55 @@ static void
 glade_eprop_numeric_force_update (GtkSpinButton *spin,
 				  GladeEditorProperty *eprop)
 {
-  const gchar *txt;
+  GladeProperty *prop = glade_editor_property_get_property (eprop);
+  GladePropertyClass *klass = glade_property_get_class (prop);
+  GValue *val, newval = G_VALUE_INIT;
+  gdouble value;
+  gchar *text;
 
-  txt = gtk_entry_get_text (GTK_ENTRY (spin));
+  val = glade_property_inline_value (prop);
+  text = gtk_editable_get_chars (GTK_EDITABLE (spin), 0, -1);
 
-  /* Here we only force an update if there is actually text
-   * to force an update with.
-   *
+  g_value_init (&newval, G_VALUE_TYPE (val));
+  value = g_strtod (text, NULL);
+  glade_eprop_numeric_value_set (&newval, value);
+
+  /* 
    * If we unconditionally update the spin button whenever
    * the entry changes we get bogus results (notably, the
    * updating the spin button will insert 0 whenever text
    * is removed, so selecting and inserting text will have
    * an appended 0).
-   */
-  if (txt && txt[0])
-    gtk_spin_button_update (spin);
+   */                                             
+  if (glade_property_class_compare (klass, val, &newval))
+    {
+      gdouble min, max;
+
+      gtk_spin_button_get_range (spin, &min, &max);
+
+      if (value < min || value > max)
+        {
+          /* Special case, if the value is out of range, we force an update to
+           * change the value in the spin so the user knows about the range issue.
+           */
+          gtk_spin_button_update (spin);
+        }
+      else
+        {
+          /* Here we commit the new property value but we make sure 
+           * glade_eprop_numeric_load() is not called to prevent
+           * gtk_spin_button_set_value() changing the the value the
+           * user is trying to input.
+           */
+          GladeEPropNumeric *eprop_numeric = GLADE_EPROP_NUMERIC (eprop);
+          eprop_numeric->refreshing = TRUE;
+          glade_editor_property_commit_no_callback (eprop, &newval);
+          eprop_numeric->refreshing = FALSE;
+        }
+    }
+
+  g_value_unset (&newval);
+  g_free (text);
 }
 
 static GtkWidget *
@@ -851,11 +889,14 @@ glade_eprop_numeric_create_input (GladeEditorProperty *eprop)
   /* The force update callback is here to ensure that whenever the value
    * is modified, it's committed immediately without requiring entry activation
    * (this avoids lost modifications when modifying a value and navigating away)
+   *
+   * FIXME: GtkSpinButton update its value on focus-out, why is not that enough?
+   * Could it be because this callback was used before using spins?
    */
   g_signal_connect (G_OBJECT (eprop_numeric->spin), "changed",
                     G_CALLBACK (glade_eprop_numeric_force_update), eprop);
 
-  g_signal_connect (G_OBJECT (eprop_numeric->spin), "value_changed",
+  g_signal_connect (G_OBJECT (eprop_numeric->spin), "value-changed",
                     G_CALLBACK (glade_eprop_numeric_changed), eprop);
 
   return eprop_numeric->spin;
