@@ -4,7 +4,7 @@ AC_PREREQ(2.52)
 
 m4_define(glade_major_version, 3)
 m4_define(glade_minor_version, 14)
-m4_define(glade_micro_version, 2)
+m4_define(glade_micro_version, 3)
 m4_define(glade_version, glade_major_version.glade_minor_version.glade_micro_version)
 
 AC_INIT([glade], [glade_version],
@@ -52,7 +52,7 @@ AC_PATH_PROG(DLLTOOL, dlltool)
 # If any interfaces have been removed since the last public release, then set GLADE_AGE to 0.
 # Reference: http://www.gnu.org/software/libtool/manual/libtool.html#Versioning
 
-GLADE_REVISION=2
+GLADE_REVISION=3
 GLADE_CURRENT=4
 GLADE_AGE=0
 GLADE_CURRENT_MINUS_AGE=`expr $GLADE_CURRENT - $GLADE_AGE`
@@ -93,9 +93,6 @@ dnl ================================================================
 dnl Gettext stuff.
 dnl ================================================================
 IT_PROG_INTLTOOL([0.41.0])
-
-AM_GNU_GETTEXT_VERSION([0.17])
-AM_GNU_GETTEXT([external])
 
 GETTEXT_PACKAGE=AC_PACKAGE_NAME
 AC_SUBST(GETTEXT_PACKAGE)
@@ -150,10 +147,10 @@ AM_CONDITIONAL(HAVE_GTK_UNIX_PRINT, test x"$have_unix_print" = "xyes")
 dnl ================================================================
 dnl Python for optional python dev libs
 dnl ================================================================
-PYGOBJECT_REQS=2.90.4
-PYGOBJECT_REQUIRED_MAJOR=2
-PYGOBJECT_REQUIRED_MINOR=90
-PYGOBJECT_REQUIRED_MICRO=4
+PYGOBJECT_REQUIRED_MAJOR=3
+PYGOBJECT_REQUIRED_MINOR=8
+PYGOBJECT_REQUIRED_MICRO=0
+PYGOBJECT_REQS=$PYGOBJECT_REQUIRED_MAJOR.$PYGOBJECT_REQUIRED_MINOR.$PYGOBJECT_REQUIRED_MICRO
 
 AC_ARG_ENABLE(python,
     AS_HELP_STRING([--disable-python], [disable python catalog]),
@@ -162,7 +159,7 @@ AC_ARG_ENABLE(python,
 if test x"$check_python" = x"yes"; then
   have_python=yes
 
-  PKG_CHECK_MODULES([PYGOBJECT],[pygobject-3.0 >= ${PYGOBJECT_REQUIRED_MAJOR}.${PYGOBJECT_REQUIRED_MINOR}.${PYGOBJECT_REQUIRED_MICRO}],[have_pygobject=yes],[have_pygobject=no])
+  PKG_CHECK_MODULES([PYGOBJECT],[pygobject-3.0 >= $PYGOBJECT_REQS],[have_pygobject=yes],[have_pygobject=no])
 
   AM_CHECK_PYTHON_HEADERS(, [have_python_headers=no])
   AM_CHECK_PYTHON_LIBS(, [have_python_lib=no])

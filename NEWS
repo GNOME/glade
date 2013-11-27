@@ -1,4 +1,15 @@
 ============
+Glade 3.14.3
+============
+
+	- GladeWidget: Reorder properties, avoid crash when setting the object before the adaptor.
+	- Limit the size of the spin button in GladeEPropNumeric when the max value is over 16 digits.
+	  Otherwise a property with a max value of G_MAXDOUBLE gets a minimum size over 2800 pixels.
+	- Removed shift modifier from File actions Fixes bug #695866 "Incorrect keybinding for Quit"
+	- Fixed bug #688326 "pointer tracking is off" by using every coordinate relative to GladeDesignLayout.
+	- Set a background to the offscreen window, so that widgets without a window added as toplevels look right.
+
+============
 Glade 3.14.2
 ============
 
