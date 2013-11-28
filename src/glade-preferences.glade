@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.16.0 -->
 <interface domain="glade">
-  <!-- interface-requires gtk+ 3.8 -->
+  <requires lib="gtk+" version="3.8"/>
   <object class="GtkAdjustment" id="autosave_seconds_adjustment">
     <property name="lower">1</property>
     <property name="upper">60</property>
@@ -287,7 +288,7 @@ contains any unrecognized types</property>
                       <packing>
                         <property name="left_attach">0</property>
                         <property name="top_attach">0</property>
-                        <property name="width">3</property>
+                        <property name="width">2</property>
                         <property name="height">1</property>
                       </packing>
                     </child>
@@ -298,6 +299,8 @@ contains any unrecognized types</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="tooltip_text" translatable="yes">Remove the selected catalog search path</property>
+                        <property name="halign">start</property>
+                        <property name="hexpand">True</property>
                         <signal name="clicked" handler="remove_catalog_clicked" swapped="no"/>
                         <child>
                           <object class="GtkImage" id="image2">
@@ -321,6 +324,7 @@ contains any unrecognized types</property>
                         <property name="receives_default">True</property>
                         <property name="tooltip_text" translatable="yes">Add a new catalog search path</property>
                         <property name="halign">start</property>
+                        <property name="hexpand">False</property>
                         <property name="use_underline">True</property>
                         <signal name="clicked" handler="gtk_widget_show" object="preferences_filechooserdialog" swapped="yes"/>
                         <child>
@@ -337,9 +341,6 @@ contains any unrecognized types</property>
                         <property name="width">1</property>
                         <property name="height">1</property>
                       </packing>
-                    </child>
-                    <child>
-                      <placeholder/>
                     </child>
                   </object>
                 </child>
