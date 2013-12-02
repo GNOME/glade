@@ -661,6 +661,8 @@ static void
 on_gplv3_activate (GtkMenuItem *menuitem, GladeProjectProperties *properties)
 {
   gtk_text_buffer_insert_at_cursor (properties->priv->license_textbuffer,
+    "Copyright (C) yyyy  name of author\n"
+    "\n"
     "This file is part of Foobar.\n"
     "\n"
     "Foobar is free software: you can redistribute it and/or modify\n"
@@ -681,19 +683,21 @@ static void
 on_lgplv3_activate (GtkMenuItem *menuitem, GladeProjectProperties *properties)
 {
   gtk_text_buffer_insert_at_cursor (properties->priv->license_textbuffer,
+    "Copyright (C) yyyy  name of author\n"
+    "\n"
     "This file is part of Foobar.\n"
     "\n"
     "Foobar is free software: you can redistribute it and/or modify\n"
-    "it under the terms of the GNU General Public License as published by\n"
+    "it under the terms of the GNU Lesser General Public License as published by\n"
     "the Free Software Foundation, either version 3 of the License, or\n"
     "(at your option) any later version.\n"
     "\n"
     "Foobar is distributed in the hope that it will be useful,\n"
     "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
     "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-    "GNU General Public License for more details.\n"
+    "GNU Lesser General Public License for more details.\n"
     "\n"
-    "You should have received a copy of the GNU General Public License\n"
+    "You should have received a copy of the GNU Lesser General Public License\n"
     "along with Foobar.  If not, see <http://www.gnu.org/licenses/>.", -1);
 }
 
@@ -760,6 +764,63 @@ on_bsd2c_activate (GtkMenuItem *menuitem, GladeProjectProperties *properties)
 }
 
 static void
+on_apache2_activate (GtkMenuItem *menuitem, GladeProjectProperties *properties)
+{
+  gtk_text_buffer_insert_at_cursor (properties->priv->license_textbuffer,
+    "Copyright [yyyy] [name of copyright owner] \n"
+    "\n"
+    "Licensed under the Apache License, Version 2.0 (the \"License\"); \n"
+    "you may not use this file except in compliance with the License. \n"
+    "You may obtain a copy of the License at \n"
+    "\n"
+    "    http://www.apache.org/licenses/LICENSE-2.0 \n"
+    "\n"
+    "Unless required by applicable law or agreed to in writing, software \n"
+    "distributed under the License is distributed on an \"AS IS\" BASIS, \n"
+    "WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. \n"
+    "See the License for the specific language governing permissions and \n"
+    "limitations under the License. \n", -1);
+}
+
+static void
+on_all_permissive_activate (GtkMenuItem *menuitem, GladeProjectProperties *properties)
+{
+  gtk_text_buffer_insert_at_cursor (properties->priv->license_textbuffer,
+    "Copyright (C) yyyy  name of author\n"
+    "\n"
+    "Copying and distribution of this file, with or without modification,\n"
+    "are permitted in any medium without royalty provided the copyright\n"
+    "notice and this notice are preserved.  This file is offered as-is,\n"
+    "without any warranty.\n", -1);
+}
+static void
+on_mit_activate (GtkMenuItem *menuitem, GladeProjectProperties *properties)
+{
+  gtk_text_buffer_insert_at_cursor (properties->priv->license_textbuffer,
+    "The MIT License (MIT)\n"
+    "\n"
+    "Copyright (c) <year> <copyright holders>\n"
+    "\n"
+    "Permission is hereby granted, free of charge, to any person obtaining a copy\n"
+    "of this software and associated documentation files (the \"Software\"), to deal\n"
+    "in the Software without restriction, including without limitation the rights\n"
+    "to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n"
+    "copies of the Software, and to permit persons to whom the Software is\n"
+    "furnished to do so, subject to the following conditions:\n"
+    "\n"
+    "The above copyright notice and this permission notice shall be included in\n"
+    "all copies or substantial portions of the Software.\n"
+    "\n"
+    "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n"
+    "IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n"
+    "FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n"
+    "AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n"
+    "LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n"
+    "OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\n"
+    "THE SOFTWARE.\n", -1);
+}
+
+static void
 on_clear_text_activate (GtkMenuItem *menuitem, GladeProjectProperties *properties)
 {
   gtk_text_buffer_set_text (properties->priv->license_textbuffer, "", -1);
@@ -810,6 +871,12 @@ on_license_textview_populate_popup (GtkTextView            *text_view,
                        G_CALLBACK (on_bsd2c_activate));
   gpp_append_new_item (properties, popup, _("Insert BSD 3-clause"),
                        G_CALLBACK (on_bsd3c_activate));
+  gpp_append_new_item (properties, popup, _("Insert Apache 2"),
+                       G_CALLBACK (on_apache2_activate));
+  gpp_append_new_item (properties, popup, _("Insert MIT"),
+                       G_CALLBACK (on_mit_activate));
+  gpp_append_new_item (properties, popup, _("Insert All permissive"),
+                       G_CALLBACK (on_all_permissive_activate));
 }
 
 static void
