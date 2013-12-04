@@ -1,7 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.16.0 
+
+Glade - A user interface designer for GTK+ and GNOME.
+Copyright (C) 2012 Juan Pablo Ugarte
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+Author:  Juan Pablo Ugarte <juanpablougarte@gmail.com>
+
+-->
 <interface domain="glade">
-  <!-- interface-requires gtk+ 3.8 -->
-  <!-- interface-requires gladeui 0.0 -->
+  <requires lib="gtk+" version="3.10"/>
+  <requires lib="gladeui" version="0.0"/>
+  <object class="GtkAboutDialog" id="about_dialog">
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="resizable">False</property>
+    <property name="type_hint">dialog</property>
+    <property name="copyright" translatable="yes">Copyright © 2001-2006 Ximian, Inc.
+Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.
+Copyright © 2004-2013 Tristan Van Berkom, Juan Pablo Ugarte, et al.</property>
+    <property name="comments" translatable="yes">A user interface designer for GTK+ and GNOME.</property>
+    <property name="website">http://glade.gnome.org</property>
+    <property name="website_label" translatable="yes">Visit Glade web site</property>
+    <property name="license" translatable="yes">Glade is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as 
+published by the Free Software Foundation; either version 2 of the 
+License, or (at your option) any later version.
+
+Glade is distributed in the hope that it will be useful
+but WITHOUT ANY WARRANTY; without even the implied warranty of 
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License 
+along with Glade; if not, write to the Free Software 
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+MA 02110-1301, USA.</property>
+    <property name="authors">Chema Celorio &lt;chema@ximian.com&gt;
+Joaquin Cuenca Abela &lt;e98cuenc@yahoo.com&gt;
+Paolo Borelli &lt;pborelli@katamail.com&gt;
+Archit Baweja &lt;bighead@users.sourceforge.net&gt;
+Shane Butler &lt;shane_b@operamail.com&gt;
+Tristan Van Berkom &lt;tvb@gnome.org&gt;
+Ivan Wong &lt;email@ivanwong.info&gt;
+Juan Pablo Ugarte &lt;juanpablougarte@gmail.com&gt;
+Vincent Geddes &lt;vincent.geddes@gmail.com&gt;</property>
+    <property name="documenters">GNOME Documentation Team &lt;gnome-doc-list@gnome.org&gt;
+Sun GNOME Documentation Team &lt;gdocteam@sun.com&gt;</property>
+    <property name="translator_credits" translatable="yes">translator-credits</property>
+    <property name="artists">Vincent Geddes &lt;vgeddes@gnome.org&gt;
+Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
+    <property name="logo_icon_name">glade</property>
+    <signal name="delete-event" handler="gtk_true" swapped="no"/>
+    <signal name="delete-event" handler="gtk_widget_hide" swapped="no"/>
+    <signal name="response" handler="gtk_widget_hide" swapped="no"/>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="aboutdialog-vbox1">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="aboutdialog-action_area1">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
   <object class="GtkAccelGroup" id="accelgroup"/>
   <object class="GtkActionGroup" id="pointer_mode_actiongroup">
     <property name="accel_group">accelgroup</property>
@@ -164,80 +249,13 @@
         <property name="tooltip" translatable="yes">Activate next project</property>
         <signal name="activate" handler="gtk_notebook_next_page" object="notebook" swapped="yes"/>
       </object>
-      <accelerator key="Next" modifiers="GDK_CONTROL_MASK"/>
+      <accelerator key="Page_Down" modifiers="GDK_CONTROL_MASK"/>
     </child>
   </object>
   <object class="GtkActionGroup" id="project_list_actiongroup">
     <property name="accel_group">accelgroup</property>
     <signal name="connect-proxy" handler="on_actiongroup_connect_proxy" swapped="no"/>
     <signal name="disconnect-proxy" handler="on_actiongroup_disconnect_proxy" swapped="no"/>
-  </object>
-  <object class="GtkActionGroup" id="static_actiongroup">
-    <property name="name">static_actiongroup</property>
-    <property name="accel_group">accelgroup</property>
-    <signal name="connect-proxy" handler="on_actiongroup_connect_proxy" swapped="no"/>
-    <signal name="disconnect-proxy" handler="on_actiongroup_disconnect_proxy" swapped="no"/>
-    <child>
-      <object class="GtkAction" id="new_action">
-        <property name="label" translatable="yes">New</property>
-        <property name="tooltip" translatable="yes">Create a new project</property>
-        <property name="stock_id">gtk-new</property>
-        <signal name="activate" handler="glade_window_new_project" swapped="yes"/>
-      </object>
-      <accelerator key="n" modifiers="GDK_CONTROL_MASK"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="open_action">
-        <property name="label" translatable="yes">Open</property>
-        <property name="tooltip" translatable="yes">Open a project</property>
-        <property name="stock_id">gtk-open</property>
-        <signal name="activate" handler="on_open_action_activate" swapped="no"/>
-      </object>
-      <accelerator key="o" modifiers="GDK_CONTROL_MASK"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="quit_action">
-        <property name="label" translatable="yes">Quit</property>
-        <property name="tooltip" translatable="yes">Quit the program</property>
-        <property name="stock_id">gtk-quit</property>
-        <signal name="activate" handler="on_quit_action_activate" swapped="no"/>
-      </object>
-      <accelerator key="q" modifiers="GDK_CONTROL_MASK"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="about_action">
-        <property name="label" translatable="yes">About</property>
-        <property name="tooltip" translatable="yes">About this application</property>
-        <property name="stock_id">gtk-about</property>
-        <signal name="activate" handler="on_about_action_activate" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkAction" id="reference_action">
-        <property name="label" translatable="yes">_Developer Reference</property>
-        <property name="tooltip" translatable="yes">Display the developer reference manual</property>
-        <signal name="activate" handler="on_reference_action_activate" swapped="no"/>
-      </object>
-      <accelerator key="F1"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="preferences_action">
-        <property name="label" translatable="yes">Preferences</property>
-        <property name="tooltip" translatable="yes">Edit Glade preferences</property>
-        <property name="stock_id">gtk-preferences</property>
-        <signal name="activate" handler="on_preferences_action_activate" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkRecentAction" id="open_recent_action">
-        <property name="label" translatable="yes">Open _Recent</property>
-        <property name="filter">recentfilter</property>
-        <property name="limit">10</property>
-        <property name="sort_type">mru</property>
-        <property name="show_numbers">True</property>
-        <signal name="item-activated" handler="on_open_recent_action_item_activated" swapped="no"/>
-      </object>
-    </child>
   </object>
   <object class="GtkActionGroup" id="view_actiongroup">
     <property name="name">view_actiongroup</property>
@@ -332,6 +350,78 @@
         <property name="tooltip" translatable="yes">Show the header in the property editor</property>
         <property name="active">True</property>
         <signal name="toggled" handler="on_editor_header_visible_action_toggled" swapped="no"/>
+      </object>
+    </child>
+  </object>
+  <object class="GtkRecentFilter" id="recentfilter">
+    <mime-types>
+      <mime-type>application/x-glade</mime-type>
+    </mime-types>
+  </object>
+  <object class="GtkActionGroup" id="static_actiongroup">
+    <property name="name">static_actiongroup</property>
+    <property name="accel_group">accelgroup</property>
+    <signal name="connect-proxy" handler="on_actiongroup_connect_proxy" swapped="no"/>
+    <signal name="disconnect-proxy" handler="on_actiongroup_disconnect_proxy" swapped="no"/>
+    <child>
+      <object class="GtkAction" id="new_action">
+        <property name="label" translatable="yes">New</property>
+        <property name="tooltip" translatable="yes">Create a new project</property>
+        <property name="stock_id">gtk-new</property>
+        <signal name="activate" handler="glade_window_new_project" swapped="yes"/>
+      </object>
+      <accelerator key="n" modifiers="GDK_CONTROL_MASK"/>
+    </child>
+    <child>
+      <object class="GtkAction" id="open_action">
+        <property name="label" translatable="yes">Open</property>
+        <property name="tooltip" translatable="yes">Open a project</property>
+        <property name="stock_id">gtk-open</property>
+        <signal name="activate" handler="on_open_action_activate" swapped="no"/>
+      </object>
+      <accelerator key="o" modifiers="GDK_CONTROL_MASK"/>
+    </child>
+    <child>
+      <object class="GtkAction" id="quit_action">
+        <property name="label" translatable="yes">Quit</property>
+        <property name="tooltip" translatable="yes">Quit the program</property>
+        <property name="stock_id">gtk-quit</property>
+        <signal name="activate" handler="on_quit_action_activate" swapped="no"/>
+      </object>
+      <accelerator key="q" modifiers="GDK_CONTROL_MASK"/>
+    </child>
+    <child>
+      <object class="GtkAction" id="about_action">
+        <property name="label" translatable="yes">About</property>
+        <property name="tooltip" translatable="yes">About this application</property>
+        <property name="stock_id">gtk-about</property>
+        <signal name="activate" handler="on_about_action_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkAction" id="reference_action">
+        <property name="label" translatable="yes">_Developer Reference</property>
+        <property name="tooltip" translatable="yes">Display the developer reference manual</property>
+        <signal name="activate" handler="on_reference_action_activate" swapped="no"/>
+      </object>
+      <accelerator key="F1"/>
+    </child>
+    <child>
+      <object class="GtkAction" id="preferences_action">
+        <property name="label" translatable="yes">Preferences</property>
+        <property name="tooltip" translatable="yes">Edit Glade preferences</property>
+        <property name="stock_id">gtk-preferences</property>
+        <signal name="activate" handler="on_preferences_action_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkRecentAction" id="open_recent_action">
+        <property name="label" translatable="yes">Open _Recent</property>
+        <property name="filter">recentfilter</property>
+        <property name="limit">10</property>
+        <property name="sort_type">mru</property>
+        <property name="show_numbers">True</property>
+        <signal name="item-activated" handler="on_open_recent_action_item_activated" swapped="no"/>
       </object>
     </child>
   </object>
@@ -846,6 +936,7 @@
               </object>
               <packing>
                 <property name="expand">False</property>
+                <property name="homogeneous">False</property>
               </packing>
             </child>
             <child>
@@ -859,6 +950,7 @@
               </object>
               <packing>
                 <property name="expand">False</property>
+                <property name="homogeneous">False</property>
               </packing>
             </child>
             <child>
@@ -872,6 +964,7 @@
               </object>
               <packing>
                 <property name="expand">False</property>
+                <property name="homogeneous">False</property>
               </packing>
             </child>
             <child>
@@ -881,6 +974,7 @@
               </object>
               <packing>
                 <property name="expand">False</property>
+                <property name="homogeneous">False</property>
               </packing>
             </child>
             <child>
@@ -1109,72 +1203,4 @@
       </object>
     </child>
   </template>
-  <object class="GtkAboutDialog" id="about_dialog">
-    <property name="can_focus">False</property>
-    <property name="border_width">5</property>
-    <property name="resizable">False</property>
-    <property name="type_hint">dialog</property>
-    <property name="copyright" translatable="yes">Copyright © 2001-2006 Ximian, Inc.
-Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.
-Copyright © 2004-2013 Tristan Van Berkom, Juan Pablo Ugarte, et al.</property>
-    <property name="comments" translatable="yes">A user interface designer for GTK+ and GNOME.</property>
-    <property name="website">http://glade.gnome.org</property>
-    <property name="website_label" translatable="yes">Visit Glade web site</property>
-    <property name="license" translatable="yes">Glade is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as 
-published by the Free Software Foundation; either version 2 of the 
-License, or (at your option) any later version.
-
-Glade is distributed in the hope that it will be useful
-but WITHOUT ANY WARRANTY; without even the implied warranty of 
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License 
-along with Glade; if not, write to the Free Software 
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
-MA 02110-1301, USA.</property>
-    <property name="authors">Chema Celorio &lt;chema@ximian.com&gt;
-Joaquin Cuenca Abela &lt;e98cuenc@yahoo.com&gt;
-Paolo Borelli &lt;pborelli@katamail.com&gt;
-Archit Baweja &lt;bighead@users.sourceforge.net&gt;
-Shane Butler &lt;shane_b@operamail.com&gt;
-Tristan Van Berkom &lt;tvb@gnome.org&gt;
-Ivan Wong &lt;email@ivanwong.info&gt;
-Juan Pablo Ugarte &lt;juanpablougarte@gmail.com&gt;
-Vincent Geddes &lt;vincent.geddes@gmail.com&gt;</property>
-    <property name="documenters">GNOME Documentation Team &lt;gnome-doc-list@gnome.org&gt;
-Sun GNOME Documentation Team &lt;gdocteam@sun.com&gt;</property>
-    <property name="translator_credits" translatable="yes">translator-credits</property>
-    <property name="artists">Vincent Geddes &lt;vgeddes@gnome.org&gt;
-Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
-    <property name="logo_icon_name">glade</property>
-    <signal name="delete-event" handler="gtk_true" swapped="no"/>
-    <signal name="delete-event" handler="gtk_widget_hide" swapped="no"/>
-    <signal name="response" handler="gtk_widget_hide" swapped="no"/>
-    <child internal-child="vbox">
-      <object class="GtkBox" id="aboutdialog-vbox1">
-        <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
-        <child internal-child="action_area">
-          <object class="GtkButtonBox" id="aboutdialog-action_area1">
-            <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="pack_type">end</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-      </object>
-    </child>
-  </object>
-  <object class="GtkRecentFilter" id="recentfilter">
-    <mime-types>
-      <mime-type>application/x-glade</mime-type>
-    </mime-types>
-  </object>
 </interface>
