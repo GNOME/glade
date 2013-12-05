@@ -1,8 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.15.2 on Sat Jul 20 03:56:38 2013 -->
+<!-- Generated with glade 3.16.0 
+
+libgladeui - Glade UI Designer core library
+Copyright (C) 2013 Tristan Van Berkom <tvb@gnome.org>
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+
+Author: Tristan Van Berkom <tvb@gnome.org>
+
+-->
 <interface domain="glade">
-  <!-- interface-requires gtk+ 3.8 -->
-  <object class="GtkTextBuffer" id="license_textbuffer"/>
+  <requires lib="gtk+" version="3.10"/>
   <object class="GtkFileFilter" id="css_filter">
     <mime-types>
       <mime-type>text/css</mime-type>
@@ -11,6 +31,7 @@
       <pattern>*.css</pattern>
     </patterns>
   </object>
+  <object class="GtkTextBuffer" id="license_textbuffer"/>
   <template class="GladeProjectProperties" parent="GtkDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
