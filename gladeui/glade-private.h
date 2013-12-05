@@ -30,6 +30,11 @@
 
 G_BEGIN_DECLS
 
+/* glade-catalog.c */
+
+GladeCatalog *_glade_catalog_get_catalog (const gchar *name);
+GList        *_glade_catalog_tsort       (GList *catalogs);
+
 /* glade-xml-utils.c */
 
 /* GladeXml Error handling */
