@@ -2188,9 +2188,13 @@ glade_project_write_required_libs (GladeProject *project,
                                    GladeXmlContext *context,
                                    GladeXmlNode *root)
 {
+  gboolean supports_require_tag;
   GladeXmlNode *req_node;
   GList *required, *list;
   gint major, minor;
+
+  glade_project_get_target_version (project, "gtk+", &major, &minor);
+  supports_require_tag = GLADE_GTKBUILDER_HAS_VERSIONING (major, minor);
 
   if ((required = glade_project_required_libs (project)) != NULL)
     {
@@ -2205,26 +2209,24 @@ glade_project_write_required_libs (GladeProject *project,
           g_snprintf (version, sizeof (version), "%d.%d", major, minor);
 
           /* Write the standard requires tag */
-          if (GLADE_GTKBUILDER_HAS_VERSIONING (major, minor))
+          if (supports_require_tag)
             {
               req_node = glade_xml_node_new (context, GLADE_XML_TAG_REQUIRES);
-              glade_xml_node_append_child (root, req_node);
               glade_xml_node_set_property_string (req_node,
                                                   GLADE_XML_TAG_LIB,
                                                   library);
+              glade_xml_node_set_property_string (req_node,
+                                                  GLADE_XML_TAG_VERSION,
+                                                  version);
             }
           else
             {
               gchar *comment = g_strdup_printf (" interface-requires %s %s ",
                                                 library, version);
               req_node = glade_xml_node_new_comment (context, comment);
-              glade_xml_node_append_child (root, req_node);
               g_free (comment);
             }
-
-          glade_xml_node_set_property_string (req_node, GLADE_XML_TAG_VERSION,
-                                              version);
-
+          glade_xml_node_append_child (root, req_node);
         }
       g_list_free_full (required, g_free);
     }
@@ -4315,40 +4317,37 @@ glade_project_selection_get (GladeProject *project)
 GList *
 glade_project_required_libs (GladeProject *project)
 {
-  GList *required = NULL, *l, *ll;
-  GladeWidget *gwidget;
-  gboolean listed;
+  GList *l, *required = NULL;
 
-  for (l = project->priv->objects; l; l = l->next)
+  /* Assume GTK+ catalog here */
+  required = g_list_prepend (required, _glade_catalog_get_catalog ("gtk+"));
+    
+  for (l = project->priv->objects; l; l = g_list_next (l))
     {
-      gchar *catalog = NULL;
+      GladeWidget *gwidget = glade_widget_get_from_gobject (l->data);
+      GladeCatalog *catalog;
+      gchar *name = NULL;
 
-      gwidget = glade_widget_get_from_gobject (l->data);
       g_assert (gwidget);
 
-      g_object_get (glade_widget_get_adaptor (gwidget), "catalog", &catalog, NULL);
+      g_object_get (glade_widget_get_adaptor (gwidget), "catalog", &name, NULL);
 
-      if (catalog)
+      if ((catalog = _glade_catalog_get_catalog (name)))
         {
-          listed = FALSE;
-          for (ll = required; ll; ll = ll->next)
-            if (!strcmp ((gchar *) ll->data, catalog))
-              {
-                listed = TRUE;
-                break;
-              }
-
-          if (!listed)
+          if (!g_list_find (required, catalog))
             required = g_list_prepend (required, catalog);
         }
+
+      g_free (name);
     }
 
-  /* Assume GTK+ here */
-  if (!required)
-    required = g_list_prepend (required, g_strdup ("gtk+"));
+  /* Sort by dependency */
+  required = _glade_catalog_tsort (required);
 
-  required = g_list_reverse (required);
-    
+  /* Convert list of GladeCatalog to list of names */
+  for (l = required; l; l = g_list_next (l))
+    l->data = g_strdup (glade_catalog_get_name (l->data));
+  
   for (l = project->priv->unknown_catalogs; l; l = g_list_next (l))
     {
       CatalogInfo *data = l->data;
