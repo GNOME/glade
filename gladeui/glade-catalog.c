@@ -500,6 +500,13 @@ catalogs_from_path (GList *catalogs, const gchar *path)
 	  if (g_str_has_suffix (filename, ".gresource.xml"))
 	    continue;
 
+	  /* If we're running in the bundle, don't ever try to load
+	   * anything except the GTK+ catalog
+	   */
+	  if (g_getenv (GLADE_ENV_BUNDLED) != NULL &&
+	      strcmp (filename, "gtk+.xml") != 0)
+	    continue;
+
           catalog_filename = g_build_filename (path, filename, NULL);
           catalog = catalog_open (catalog_filename);
           g_free (catalog_filename);
