@@ -118,6 +118,7 @@ should be completed in the order given.
     gtk+
     gnome-themes-standard
     hicolor-icon-theme
+    shared-mime-info
     libcanberra
     expat
     libxml2
@@ -267,6 +268,18 @@ should be completed in the order given.
      This should create a file named:
 
         ${BUNDLE_ROOT}/usr/share/icons/hicolor/icon-theme.cache
+
+   o Generate the mime database
+
+     The mime database should be created so that GTK+ knows how to handle image file
+     extensions and whatnot, and can find the correct pixbuf loader for them.
+
+     Do this in your relocated environment with the following:
+
+        update-mime-database ${BUNDLE_ROOT}/usr/share/mime
+
+     And just ignore the error about XDG_DATA_DIRS, this is taken care of
+     by the AppRunScript.sh
 
    o Strip the -rpath from any binaries
 
