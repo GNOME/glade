@@ -1,0 +1,339 @@
+Instructions on how to build a bundle for 64bit linux systems.
+
+System requirements
+~~~~~~~~~~~~~~~~~~~
+
+  o A 64bit linux system
+
+  o AppImageKit (https://github.com/tristanvb/AppImageKit/)
+
+    To build AppImageKit, you will require:
+      - A functional cross compiler to generate 32bit binaries as well as 64bit binaries
+      - libfuse (if AppImageKit doesnt find it, make sure there is a symbolic link to libfuse.so
+        from it's actual library, this is because AppImageKit uses CMake, which is just dumb).
+      - An old glib version installed on your system, the older the glib version the better
+        (this system glib version will be required on target hosts which want to run the bundle).
+      - Some other things like python, which you will just have to deal with the CMakeLists.txt
+        to figure out.
+
+  o jhbuild
+
+    You will need to build Glade and it's dependencies in a relocated environment, jhbuild is usually
+    a decent choice for this.
+
+  o chrpath
+
+    This will be required after your build root is complete, we use it to strip out the -rpaths which
+    libtool loves to embed into binaries.
+
+
+Build & Bundle Instructions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+What follows here is a step by step guide to preparing your bundle, the following steps
+should be completed in the order given.
+
+
+  Build AppImageKit
+  ~~~~~~~~~~~~~~~~~
+
+  Build AppImageKit in the normal way, you don't need to install it anywhere,
+  and make sure that you build it against your system libraries.
+
+     DO NOT build this from inside your jhbuild shell or relocated
+     build environment
+
+  To build you will run:
+
+     cmake .
+     make
+
+  Probably you will find yourself cursing a lot, forcing 'cmake .' to pass,
+  but this is just the nature of CMake.
+
+
+  Build relocated Glade
+  ~~~~~~~~~~~~~~~~~~~~~
+  Use jhbuild or your own build scripts to build a properly relocated
+  sandbox of GTK+/Glade and it's requirements.
+
+  This can be a long process, but if you already build Glade and GTK+
+  from master, chances are that you've already done this.
+
+  In any case of build setup you choose, the principals are the same:
+
+    o Relocated environment, PKG_CONFIG_PATH, PATH, LD_LIBRARY_PATH
+      and ACLOCAL_FLAGS should all be set into your build environment to
+      prioritize your relocated install prefix
+
+    o Dependencies should be built in strict order, the last dependency
+      must be installed into your relocated prefix before trying to
+      build the next dependency.
+
+    o You don't want anything built into your relocated prefix to link
+      to your system libraries, however if you're not so conservative
+      (as I was not), you can omit the X11 libraries as well as fontconfig
+      and freetype libraries (and of course your C runtime libraries are fine).
+
+      Remember that anything which links to your system libraries is
+      something which will try to link to the user's system libraries in
+      your bundle's runtime (so we can pretty much rely on X11 libs).
+
+
+  Apply patches from the patches/ subdirectory
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  There is currently one patch to force pango into not insisting
+  to prepend absolute paths to the relative paths we need to use
+  for the loading of pango modules.
+
+  There may be more added to this subdirectory in the future.
+
+  After applying patches, make sure that the modules in question
+  are built with the patches applied.
+
+
+  Make sure you've covered all of GTK+/Glade's dependencies
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  If you've used jhbuild, there is a big possibility that you are
+  missing dependencies.
+
+  jhbuild tends to be lazy and relies on system libraries instead
+  of building them.
+
+  Here is a full list of packages you will need (in order of dependency):
+
+    dbus
+    zlib
+    libffi
+    glib
+    harfbuzz
+    pixman
+    cairo
+    pango
+    libpng
+    gdk-pixbuf
+    librsvg
+    atk
+    at-spi2-core
+    at-spi2-atk
+    gtk+
+    gnome-themes-standard
+    hicolor-icon-theme
+    libcanberra
+    expat
+    libxml2
+    glade
+
+  Some of these are not required for GTK+ to function properly, but
+  are require for the theme. HOWEVER, these are all required to be be
+  built into your bundle. If you miss some of the modules that GTK+ loads
+  then GTK+ might decide to load one from the target system where the
+  bundle runs, which can only end in tears.
+
+  Some dependencies might be missing in the above list, for normal operation
+  of Glade we only really need the png and svg gdk-pixbuf loaders, so we've
+  only built libpng and librsvg (but it might be prudent to include jpeg
+  libraries and other dependencies of gdk-pixbuf loaders).
+
+
+  Some build time exceptions to take care of
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  When building glib, you must ensure to pass '--disable-selinux' to glib's
+  configure script, otherwise you end up with an unneeded dependency on
+  the targe host for libselinux.so
+
+
+  Building into the bundle root
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Now we assume you have a functional Glade installed on your system
+  which links to the minimum system libraries as possible (only X11,
+  fontconfig and freetype). Now you must rebuild everything again.
+
+  First create a directory which will serve as your bundle's root,
+  we'll refer to it from here on after as ${BUNDLE_ROOT}, we'll refer
+  to each dependency build directry as ${dependency}.
+
+  It's important that you perform this step inside your relocated
+  build environment (for jhbuild, that means inside 'jhbuild shell').
+
+  For every dependency above you'll need to run these commands:
+
+    cd ${dependency}
+    make clean
+    ./configure --prefix=/usr
+    make
+    make DESTDIR=${BUNDLE_ROOT} install
+
+  Alternatively, for modules downloaded directly from git repositories:
+
+    cd ${dependency}
+    git clean -xdf
+    ./autogen.sh --prefix=/usr
+    make
+    make DESTDIR=${BUNDLE_ROOT} install
+
+  Note that for now, the libraries are built with a standard
+  system '/usr' prefix but we are compiling and linking against
+  the dependencies already installed into your relocated install
+  prefix.
+
+  The important parts of this step are:
+
+    o We clean out the existing package directories which we
+      already built into your relocated build environment.
+
+      We don't want any residue here remaining from the previous build.
+
+    o We do compile and link against the existing libraries installed
+      from your previous build.
+
+    o We install using the '/usr' system prefix BUT we use the
+      DESTDIR standard to make the installation in ${BUNDLE_ROOT}
+
+  During this phase, the same exceptions as above apply, i.e. libglib
+  must be configured with --disable-selinux (and any other customizations
+  you may have made there, you should make here).
+
+
+  Additional preparations for ${BUNDLE_ROOT}
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Now we're getting close, but we need to do a couple more
+  preparations for the ${BUNDLE_ROOT} to work properly (and to run at all).
+
+   o Add the AppRun program to the root.
+
+     In the AppImageKit package you built at the beginning, you will find
+     an executable called 'AppRun'. Copy this file to the toplevel of
+     your ${BUNDLE_ROOT}
+
+   o Add the AppRunScript.sh found in this directory to ${BUNDLE_ROOT}
+
+     This script will setup the environment to run Glade based on the
+     ${APP_IMAGE_ROOT} which will be set in the environment when the
+     script is called. This script calls Glade with the arguments provided.
+
+   o Add the glade.desktop file found in glade/data/glade.desktop to ${BUNDLE_ROOT}
+
+     The AppImageKit uses this at bundling time to prepare it's bundle and
+     chose an appropriate icon to display for the executable.
+
+   o Add the pangorc found in this directory to ${BUNDLE_ROOT}
+
+     This will tell pango to look in the right place for it's modules
+     file in ${BUNDLE_ROOT}/usr/etc/pango/pango.modules
+
+   o Generate and modify ${BUNDLE_ROOT}/usr/etc/pango/pango.modules
+
+     Inside your relocated build environment, run the following command:
+
+       pango-querymodules > ${BUNDLE_ROOT}/usr/etc/pango/pango.modules
+
+     This will generate the pango.modules with the correct modules
+     found in your relocated build, however they will not have the
+     correct paths.
+
+     Assuming that you've used '/opt/devel' (for example) as your install
+     prefix for your relocated build environment (possibly jhbuild), then
+     you'll need to replace '/opt/devel' with './usr' in the generated
+     pango.modules file.
+
+   o Generate and modify ${BUNDLE_ROOT}/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache
+
+     Much like the above pango excercise, we need to generate and modify the module
+     cache for gdk-pixbuf (you can't build gdk-pixbuf without module support, as
+     you really need librsvg).
+
+     So again, using your relocated build environment, generate the cache with
+     this command:
+
+       gdk-pixbuf-query-loaders > ${BUNDLE_ROOT}/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache
+
+     And again, assuming you've used '/opt/devel' (for example), then
+     you'll need to replace '/opt/devel' with './usr' in the generated
+     loaders.cache file.
+
+   o Create the icon theme cache
+
+     Assuming you've followed the instructions to the letter, the installation
+     of 'hicolor-icon-theme' will have created an index.theme file at:
+
+        ${BUNDLE_ROOT}/usr/share/icons/hicolor/index.theme
+
+     It's imperative that this file exist.
+
+     Now create the cache using this command:
+
+        gtk-update-icon-cache ${BUNDLE_ROOT}/usr/share/icons/hicolor/
+
+     This should create a file named:
+
+        ${BUNDLE_ROOT}/usr/share/icons/hicolor/icon-theme.cache
+
+   o Strip the -rpath from any binaries
+
+     Libtool loves to encode hard coded paths into the binaries it creates,
+     since we will be running the bundle with LD_LIBRARY_PATH set in the
+     bundle's runtime environment (and these paths actually take precedence
+     over the LD_LIBRARY_PATH), we need to strip those out, this is where
+     chrpath comes in.
+
+     Run chrpath as follows to ensure you don't have any prioritized paths
+     still pointing to your relocated install prefix:
+
+       chrpath -d ${BUNDLE_ROOT}/usr/lib/*.so
+       chrpath -d ${BUNDLE_ROOT}/usr/bin/glade
+       chrpath -d ${BUNDLE_ROOT}/usr/bin/glade-previewer
+
+   o Clean up the bundle of unwanted stuff
+
+     This is optional but helps to reduce the binary size of the
+     generated bundle. Some good removals include:
+
+       rm -rf ${BUNDLE_ROOT}/usr/include
+       rm -f `find ${BUNDLE_ROOT} -name "*.la"`
+       rm -f `find ${BUNDLE_ROOT} -name "*.a"`
+
+     You can safely remove everything in ${BUNDLE_ROOT}/usr/bin except
+     for 'glade' and 'glade-previewer'
+
+     There are also some directories in ${BUNDLE_ROOT}/usr/share that
+     can be discarded (notably the 'gtk-doc' directory).
+
+     The ${BUNDLE_ROOT}/usr/share/locale directory can be removed and
+     with it, all translations, I don't recommend this for a Glade
+     bundle however it will also dramatically reduce the bundle size.
+
+  Creating the bundle
+  ~~~~~~~~~~~~~~~~~~~
+  Now that we're all done creating a proper ${BUNDLE_ROOT}, we can
+  go ahead and bundle it.
+
+  Run the 'AppImageAssistant' binary (found in the AppImageKit directory
+  which we built at the beginning), you can run it from anywhere, I usually
+  run it like this:
+
+    ./AppImageAssistant ${BUNDLE_ROOT} ~/glade
+
+  This will create the 'glade' executable, which is probably around 50MB
+  large at this point (depending entirely on how much you successfully
+  trimmed out of ${BUNDLE_ROOT}).
+
+  Congradulations, now you have a bundle :)
+
+
+Debugging considerations
+~~~~~~~~~~~~~~~~~~~~~~~~
+If your bundle is not working, you will have to get your hands (even more)
+dirty and look into the AppRunScript.sh which launches Glade.
+
+I recommend inserting 'bash' after running Glade and regenerating the
+bundle, this will give you a shell inside the bundled environment
+where you can try to run ./usr/bin/glade under strace and inspect
+all of the files which Glade and it's dependencies try to open.
+
+Hint: If Glade successfully opens anything starting with /usr,
+this is usually a sign of trouble.
+
+Another sanity check is to run ldd on ./usr/bin/glade, it should
+only resolve to system libraries for C runtime libraries, X11
+libraries, fontconfig and freetype.
+
