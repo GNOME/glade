@@ -213,7 +213,7 @@ glade_preview_launch (GladeWidget *widget, const gchar *buffer)
 
   g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
 
-  executable = g_build_filename (glade_app_get_bin_dir (), GLADE_PREVIEWER, NULL);
+  executable = g_find_program_in_path (GLADE_PREVIEWER);
 
   project = glade_widget_get_project (widget);
   filename = glade_project_get_path (project);
