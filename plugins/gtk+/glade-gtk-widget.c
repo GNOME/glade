@@ -83,20 +83,6 @@ glade_gtk_widget_destroy_object (GladeWidgetAdaptor * adaptor,
   GWA_GET_CLASS (G_TYPE_OBJECT)->destroy_object (adaptor, object);
 }
 
-gboolean
-glade_gtk_widget_depends (GladeWidgetAdaptor * adaptor,
-                          GladeWidget * widget, GladeWidget * another)
-{
-  /* We want GtkIconFactory to be before any toplevels, just in case one of
-   * the stock items defined in it are used.
-   */
-  if (!glade_widget_get_parent (widget) &&
-      GTK_IS_ICON_FACTORY (glade_widget_get_object (another)))
-    return TRUE;
-
-  return GWA_GET_CLASS (G_TYPE_OBJECT)->depends (adaptor, widget, another);
-}
-
 static void
 glade_gtk_parse_atk_relation (GladeProperty * property, GladeXmlNode * node)
 {
