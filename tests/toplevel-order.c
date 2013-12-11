@@ -8,7 +8,7 @@
 typedef struct
 {
   GList *nodes;
-  _NodeEdge *edges;
+  GList *edges;
   gchar **orig_nodes;
 } TsortData;
 
@@ -17,7 +17,7 @@ tsort_data_free (gpointer udata)
 {
   TsortData *data = udata;
   g_list_free (data->nodes);
-  _node_edge_free (data->edges);
+  _node_edge_list_free (data->edges);
   g_free (data);
 }
 
@@ -129,7 +129,7 @@ static gchar *order_test5[] = {"toplevel_order_test5.glade",
 
 /* Commonly used widgets with dependencies */
 static gchar *order_test6[] = {"toplevel_order_test6.glade",
-  "iconfactory", "label_a", "label_b", "asizegroup", "label_c", "xaction",
+  "ziconfactory", "label_a", "label_b", "asizegroup", "label_c", "xaction",
   "xactiongroup", "anotherwindow", "xentrybuffer", "xliststore", "treeview",
   "zaccelgroup", "awindow", NULL };
 
