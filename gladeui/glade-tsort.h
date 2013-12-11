@@ -34,17 +34,16 @@ struct __NodeEdge
 {
   gpointer predecessor;
   gpointer successor;
-  _NodeEdge *next;
 };
 
-_NodeEdge *_node_edge_prepend  (_NodeEdge *node,
-                                gpointer predecessor,
-                                gpointer successor);
+GList *_node_edge_prepend   (GList *list,
+                             gpointer predecessor,
+                             gpointer successor);
 
-void       _node_edge_free     (_NodeEdge *node);
+void   _node_edge_list_free (GList *list);
 
-GList     *_glade_tsort        (GList     **nodes,
-                                _NodeEdge **edges);
+GList *_glade_tsort         (GList **nodes,
+                             GList **edges);
 
 G_END_DECLS
 

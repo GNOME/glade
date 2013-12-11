@@ -34,8 +34,8 @@
  * 
  * Returns: the new start of the node list.
  */
-_NodeEdge *
-_node_edge_prepend  (_NodeEdge *node,
+GList *
+_node_edge_prepend  (GList *list,
                      gpointer predecessor,
                      gpointer successor)
 {
@@ -43,34 +43,44 @@ _node_edge_prepend  (_NodeEdge *node,
 
   edge->predecessor = predecessor;
   edge->successor = successor;
-  edge->next = node;
   
-  return edge;
+  return g_list_prepend (list, edge);
+}
+
+static void
+_node_edge_free (gpointer data)
+{
+  g_slice_free (_NodeEdge, data);
 }
 
 void
-_node_edge_free (_NodeEdge *node)
+_node_edge_list_free (GList *list)
 {
-  g_slice_free_chain (_NodeEdge, node, next);
+  g_list_free_full (list, _node_edge_free);
 }
 
 static inline void
-tsort_remove_non_start_nodes (GList **nodes, _NodeEdge *edges)
+tsort_remove_non_start_nodes (GList **nodes, GList *edges)
 {
-  _NodeEdge *edge;
+  GList *l;
 
-  for (edge = edges; edge; edge = edge->next)
-    *nodes = g_list_remove (*nodes, edge->successor);
+  for (l = edges; l; l = g_list_next (l))
+    {
+      _NodeEdge *edge = l->data;
+      *nodes = g_list_remove (*nodes, edge->successor);
+    }
 }
 
 
 static inline gboolean
-tsort_node_has_no_incoming_edge (gpointer node, _NodeEdge *edges)
+tsort_node_has_no_incoming_edge (gpointer node, GList *edges)
 {
-  _NodeEdge *edge;
+  GList *l;
 
-  for (edge = edges; edge; edge = edge->next)
+  for (l = edges; l; l = g_list_next (l))
     {
+      _NodeEdge *edge = l->data;
+
       if (node == edge->successor)
         return FALSE;
     }
@@ -106,7 +116,7 @@ tsort_node_has_no_incoming_edge (gpointer node, _NodeEdge *edges)
  * Returns: a new list sorted by dependency including nodes only present in @edges
  */
 GList *
-_glade_tsort (GList **nodes, _NodeEdge **edges)
+_glade_tsort (GList **nodes, GList **edges)
 {
   GList *sorted_nodes;
 
@@ -119,7 +129,7 @@ _glade_tsort (GList **nodes, _NodeEdge **edges)
   /* while S is non-empty do */
   while (*nodes)
     {
-      _NodeEdge *edge, *next, *prev = NULL;
+      GList *l, *next;
       gpointer n;
 
       /* remove a node n from S */
@@ -128,23 +138,20 @@ _glade_tsort (GList **nodes, _NodeEdge **edges)
 
       /* insert n into L */
       /*if (!glade_widget_get_parent (n)) this would be a specific optimization */
-        sorted_nodes = g_list_prepend (sorted_nodes, n);
+      sorted_nodes = g_list_prepend (sorted_nodes, n);
 
       /* for each node m ... */
-      for (edge = *edges; edge; edge = next)
+      for (l = *edges; l; l = next)
         {
-          next = edge->next;
+          _NodeEdge *edge = l->data;
+
+          next = g_list_next (l);
 
           /* ... with an edge e from n to m do */
           if (edge->predecessor == n)
             {
               /* remove edge e from the graph */
-              if (prev)
-                prev->next = (prev->next) ? prev->next->next : NULL;
-              else
-                /* edge is the first element in the list so we only need to
-                 * change the start of the list */
-                *edges = next;
+              *edges = g_list_delete_link (*edges, l);
 
               /* if m has no other incoming edges then */
               if (tsort_node_has_no_incoming_edge (edge->successor, *edges))
@@ -153,11 +160,6 @@ _glade_tsort (GList **nodes, _NodeEdge **edges)
               
               g_slice_free (_NodeEdge, edge);
             }
-          else
-            /* Keep a pointer to the previous node in the iteration to make
-             * things easier when removing a node
-             */
-            prev = edge;
         }
     }
 
@@ -166,7 +168,7 @@ _glade_tsort (GList **nodes, _NodeEdge **edges)
   if (*edges)
     {      
       g_list_free (sorted_nodes);
-      g_slice_free_chain (_NodeEdge, *edges, next);
+      _node_edge_list_free (*edges);
       *edges = NULL;
       return NULL;
     }
