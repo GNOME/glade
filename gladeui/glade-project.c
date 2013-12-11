@@ -2285,7 +2285,16 @@ glade_project_write_css_provider_path (GladeProject *project,
 static gint
 glade_widgets_name_cmp (gconstpointer ga, gconstpointer gb)
 {
-  return g_strcmp0 (glade_widget_get_name ((gpointer)ga), glade_widget_get_name ((gpointer)gb));
+  return g_strcmp0 (glade_widget_get_name ((gpointer)ga),
+                    glade_widget_get_name ((gpointer)gb));
+}
+
+static gint
+glade_node_edge_name_cmp (gconstpointer ga, gconstpointer gb)
+{
+  _NodeEdge *na = (gpointer)ga, *nb = (gpointer)gb;
+  return g_strcmp0 (glade_widget_get_name (nb->successor),
+                    glade_widget_get_name (na->successor));
 }
 
 static inline gboolean
@@ -2309,64 +2318,47 @@ glade_project_widget_hard_depends (GladeWidget *widget, GladeWidget *another)
   return FALSE;
 }
 
-static _NodeEdge *
+static GList *
 glade_project_get_graph_deps (GladeProject *project)
 {
   GladeProjectPrivate *priv = project->priv;
-  GList *l, *objects = NULL;
-  _NodeEdge *edges = NULL;
-
-  /* Create list of GladeWidgets */
-  for (l = priv->objects; l; l = g_list_next (l))
-    objects = g_list_prepend (objects, glade_widget_get_from_gobject (l->data));
-
-  /* Sort objects alphabetically */
-  objects = g_list_sort (objects, glade_widgets_name_cmp);
+  GList *l, *edges = NULL;
   
   /* Create edges of the directed graph */
-  for (l = objects; l; l = g_list_next (l))
+  for (l = priv->objects; l; l = g_list_next (l))
     {
-      GladeWidget *predecessor = l->data;
+      GladeWidget *predecessor = glade_widget_get_from_gobject (l->data);
       GladeWidget *predecessor_top;
       GList *ll;
 
       predecessor_top = glade_widget_get_toplevel (predecessor);
 
-      for (ll = objects; ll; ll = g_list_next (ll))
+      /* Adds dependencies based on properties refs */
+      for (ll = _glade_widget_peek_prop_refs (predecessor); ll; ll = g_list_next (ll))
         {
-          GladeWidget *successor = ll->data;
-          GladeWidget *successor_top;
+          GladeWidget *successor = glade_property_get_widget (ll->data);
+          GladeWidget *successor_top = glade_widget_get_toplevel (successor);
 
-          successor_top = glade_widget_get_toplevel (successor);
-
-          /* Ignore object within the same toplevel */
-          if (predecessor_top == successor_top)
-            continue;
-
-          /* Check if succesor depends on predecessor and add a corresponding
-           * edge to the dependency graph.
-           * Note that we add the implicit dependency on their respective
-           * toplevels because that is what we care!
-           */
-          if (glade_widget_depends (successor, predecessor))
+          /* Ignore objects within the same toplevel */
+          if (predecessor_top != successor_top)
             edges = _node_edge_prepend (edges, predecessor_top, successor_top);
         }
     }
-
-  g_list_free (objects);
 
   return edges;
 }
 
 static GList *
-glade_project_get_nodes_from_edges (GladeProject *project, _NodeEdge *edges)
+glade_project_get_nodes_from_edges (GladeProject *project, GList *edges)
 {
-  _NodeEdge *edge, *hard_edges = NULL;
+  GList *l, *hard_edges = NULL;
   GList *cycles = NULL;
 
   /* Collect widgets with circular dependencies */
-  for (edge = edges; edge; edge = edge->next)
+  for (l = edges; l; l = g_list_next (l))
     {
+      _NodeEdge *edge = l->data;
+
       if (glade_widget_get_parent (edge->successor) == edge->predecessor ||
           glade_project_widget_hard_depends (edge->predecessor, edge->successor))
         hard_edges = _node_edge_prepend (hard_edges, edge->predecessor, edge->successor);
@@ -2390,11 +2382,13 @@ glade_project_get_nodes_from_edges (GladeProject *project, _NodeEdge *edges)
   
   if (hard_edges)
     {
-      GList *hard_cycles = NULL;
+      GList *l, *hard_cycles = NULL;
 
       /* Collect widgets with hard circular dependencies */
-      for (edge = hard_edges; edge; edge = edge->next)
+      for (l = hard_edges; l; l = g_list_next (l))
         {
+          _NodeEdge *edge = l->data;
+
           /* Just toplevels */
           if (glade_widget_get_parent (edge->successor))
             continue;
@@ -2410,27 +2404,69 @@ glade_project_get_nodes_from_edges (GladeProject *project, _NodeEdge *edges)
        * GtkBuilder will fail to set one of the properties that create the cycle
        */
 
-      _node_edge_free (hard_edges);
+      _node_edge_list_free (hard_edges);
     }
 
   return cycles;
 }
-    
+
+static GList *
+glade_project_add_hardcoded_dependencies (GList *edges, GladeProject *project)
+{
+  GList *l, *toplevels = project->priv->tree;
+
+  /* Iterate over every toplevel */
+  for (l = toplevels; l; l = g_list_next (l))
+    {
+      GObject *predecessor = l->data;
+
+      /* Looking for a GtkIconFactory */
+      if (GTK_IS_ICON_FACTORY (predecessor))
+        {
+          GladeWidget *predecessor_top = glade_widget_get_from_gobject (predecessor);
+          GList *ll;
+
+          /* add dependency on the GtkIconFactory on every toplevel */
+          for (ll = toplevels; ll; ll = g_list_next (ll))
+            {          
+              GObject *successor = ll->data;
+
+              /* except for GtkIconFactory */
+              if (!GTK_IS_ICON_FACTORY (successor))
+                edges = _node_edge_prepend (edges, predecessor_top,
+                                            glade_widget_get_from_gobject (successor));
+            }
+        }
+    }
+
+  return edges;
+}
+
 static GList *
 glade_project_get_ordered_toplevels (GladeProject *project)
 {
   GladeProjectPrivate *priv = project->priv;
   GList *l, *sorted_tree, *tree = NULL;
-  _NodeEdge *edges;
+  GList *edges;
 
   /* Create list of toplevels GladeWidgets */
   for (l = priv->tree; l; l = g_list_next (l))
     tree = g_list_prepend (tree, glade_widget_get_from_gobject (l->data));
 
+  /* Get dependency graph */
+  edges = glade_project_get_graph_deps (project);
+
+  /* Added hardcoded dependencies */
+  edges = glade_project_add_hardcoded_dependencies (edges, project);
+    
   /* Sort toplevels alphabetically */
   tree = g_list_sort (tree, glade_widgets_name_cmp);
 
-  edges = glade_project_get_graph_deps (project);
+  /* Sort dep graph alphabetically using successor name.
+   * _glade_tsort() is a stable sort algorithm so, output of nodes without
+   * dependency depends on the input order
+   */
+  edges = g_list_sort (edges, glade_node_edge_name_cmp);
   
   /* Sort tree */
   sorted_tree = _glade_tsort (&tree, &edges);
@@ -2442,11 +2478,10 @@ glade_project_get_ordered_toplevels (GladeProject *project)
       /* And append to the end of the sorted list */
       sorted_tree = g_list_concat (sorted_tree, cycles);
 
-      _node_edge_free (edges);
+      _node_edge_list_free (edges);
     }
 
   /* No need to free tree as tsort will consume the list */
-    
   return sorted_tree;
 }
 
