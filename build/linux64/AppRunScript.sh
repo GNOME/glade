@@ -9,6 +9,10 @@ PATH=${APP_IMAGE_ROOT}${INSTALL_PREFIX}/bin:${PATH}
 XDG_DATA_DIRS=${APP_IMAGE_ROOT}${INSTALL_PREFIX}/share:${XDG_DATA_DIRS}
 export LD_LIBRARY_PATH PATH XDG_DATA_DIRS
 
+# D-Bus, silence fatal warnings, libdbus is in the mix but we don't need a D-Bus environment for Glade
+DBUS_FATAL_WARNINGS=0
+export DBUS_FATAL_WARNINGS
+
 # Pango environment variables
 PANGO_RC_FILE=${APP_IMAGE_ROOT}/pangorc
 export PANGO_RC_FILE
