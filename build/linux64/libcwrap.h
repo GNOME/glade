@@ -4,7 +4,10 @@
 /* This needs to be fixed, should rather be #if defined (__C__) or
  * whatever the right automatic macro is (just need to find it).
  */
-#if !defined(__OBJC__) && !defined(__cplusplus) && !defined(__ASSEMBLER__)
+#  if !defined (__OBJC__) && !defined (__ASSEMBLER__)
+#    if defined (__cplusplus)
+extern "C" {
+#    endif
 
 /* This list was generated against libc 2.15 ABI
  *
@@ -211,5 +214,8 @@ __asm__(".symver ns_name_ntop,ns_name_ntop@GLIBC_DONT_USE_THIS_SYMBOL");
 __asm__(".symver ns_samename,ns_samename@GLIBC_DONT_USE_THIS_SYMBOL");
 __asm__(".symver ns_get16,ns_get16@GLIBC_DONT_USE_THIS_SYMBOL");
 
-#  endif
+#    if defined (__cplusplus)
+}
+#    endif
+#  endif /* !defined (__OBJC__) && !defined (__ASSEMBLER__) */
 #endif
