@@ -1,0 +1,27 @@
+# -*- mode: python -*-
+# -*- coding: utf-8 -*-
+
+use_local_modulesets = True
+modulesets_dir = os.getenv('GLADE_DIR') + '/build/linux64/modulesets'
+moduleset = 'bundle.modules'
+
+# Unset autogenargs (screws with some modules like freetype)
+autogenargs = ''
+
+# Make sure we require a low libc dependency
+os.environ['CC'] = 'gcc -U_FORTIFY_SOURCE -DCAIRO_NO_MUTEX=1 -include ' + os.getenv('GLADE_DIR') + '/build/linux64/libcwrap.h'
+
+# Enable our custom triggers
+os.environ['JHBUILD_TRIGGERS'] = os.getenv('GLADE_DIR') + '/build/linux64/triggers'
+
+# A list of the modules to build.
+modules = [ 'glade' ]
+
+# Where to put the tarballs
+tarballdir = "~/AppImages/Tarballs"
+
+# Where to unpack sources
+checkoutroot = '~/AppImages/Sources'
+
+# the prefix to configure/install modules to (must have write access)
+prefix = '~/AppImages/Install'
