@@ -1,5 +1,5 @@
 #!/bin/sh
-
+#
 # Used to prepare the AppDir bundle directory. -*- mode: sh -*-
 #
 # Written by Tristan Van Berkom <tristan@upstairslabs.com>
@@ -21,21 +21,24 @@
 # Usage:
 #
 # ./PrepareAppDir.sh /path/to/AppImage/Install /path/to/glade
-#
 
 APP_DIR_ROOT=$1
 GLADE_DIR=$2
 
-echo -n "Removing static archives and libtool cruft... "
+if test -z ${APP_DIR_ROOT} || test -z ${GLADE_DIR}; then
+    echo "Usage ./PrepareAppDir.sh /path/to/AppImage/Install /path/to/glade"
+    exit 0;
+fi
+
+echo -n "Removing various unwanted files from the image... "
+# Remove static libraries and libtool archives
 rm -f `find ${APP_DIR_ROOT} -name "*.a"`
 rm -f `find ${APP_DIR_ROOT} -name "*.la"`
-echo "Done."
 
-echo -n "Removing includes... "
+# Remove include directory
 rm -rf ${APP_DIR_ROOT}/include
-echo "Done."
 
-echo -n "Removing uwanted shared data... "
+# Remove various stuff in /share
 rm -rf ${APP_DIR_ROOT}/share/man
 rm -rf ${APP_DIR_ROOT}/share/info
 rm -rf ${APP_DIR_ROOT}/share/help
@@ -53,15 +56,17 @@ rm -rf ${APP_DIR_ROOT}/share/dbus-1
 rm -rf ${APP_DIR_ROOT}/share/glib-2.0/codegen
 rm -rf ${APP_DIR_ROOT}/share/glib-2.0/gdb
 rm -rf ${APP_DIR_ROOT}/share/glib-2.0/gettext
-echo "Done."
 
-echo -n "Removing unwanted binaries... "
+# Remove the binaries we dont need
 mv ${APP_DIR_ROOT}/bin/glade ${APP_DIR_ROOT}/glade
 mv ${APP_DIR_ROOT}/bin/glade-previewer ${APP_DIR_ROOT}/glade-previewer
 rm -f ${APP_DIR_ROOT}/bin/*
 mv ${APP_DIR_ROOT}/glade ${APP_DIR_ROOT}/bin
 mv ${APP_DIR_ROOT}/glade-previewer ${APP_DIR_ROOT}/bin
 rm -f ${APP_DIR_ROOT}/libexec/*
+
+# jhbuild meta directory
+rm -rf ${APP_DIR_ROOT}/_jhbuild
 echo "Done."
 
 echo -n "Removing encoded rpath from all binaries... "
@@ -92,7 +97,7 @@ echo "Done."
 
 echo -n "Installing desktop file and runner script... "
 cp ${APP_DIR_ROOT}/share/applications/glade.desktop ${APP_DIR_ROOT}
-cp ${GLADE_DIR}/build/linux64/AppRun ${APP_DIR_ROOT}
+cp ${GLADE_DIR}/build/linux/AppRun ${APP_DIR_ROOT}
 echo "Done."
 
 echo -n "Fixing pixbuf loaders to have bundle relative paths... "

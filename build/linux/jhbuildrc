@@ -1,6 +1,25 @@
 # -*- mode: python -*-
 # -*- coding: utf-8 -*-
-
+#
+# Copyright (C) Tristan Van Berkom <tristan@upstairslabs.com>
+#
+# This library is free software; you can redistribute it and/or modify it
+# under the terms of the GNU Lesser General Public License as
+# published by the Free Software Foundation; either version 2.1 of
+# the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public 
+# License along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+#
+# Authors:
+#   Tristan Van Berkom <tristan@upstairslabs.com>
+#
 use_local_modulesets = True
 modulesets_dir = os.getenv('GLADE_DIR') + '/build/linux/modulesets'
 moduleset = 'bundle.modules'
@@ -8,11 +27,8 @@ moduleset = 'bundle.modules'
 # Unset autogenargs (screws with some modules like freetype)
 autogenargs = ''
 
+# This causes jhbuild to fire some sort of warning, but no problem...
 build_cflags = ''
-
-# For 32bit builds, build for 32bit arches
-if os.environ.get('BUILD_32BIT') is not None:
-    build_cflags = ' -m32'
 
 # _FORTIFY_SOURCE can be defined by default in some compilers
 # we want to unset this because glibc's runtime checkers are only
@@ -31,7 +47,6 @@ build_cflags += ' -include ' + os.getenv('GLADE_DIR') + '/build/linux/libcwrap.h
 # ensures that they come before any flags that any buildscripts might add
 os.environ['CC']  = 'gcc ' + build_cflags
 os.environ['CXX'] = 'g++ ' + build_cflags
-build_cflags = None
 
 # Enable our custom triggers
 os.environ['JHBUILD_TRIGGERS'] = os.getenv('GLADE_DIR') + '/build/linux/triggers'
@@ -53,5 +68,5 @@ prefix = '~/AppImages/Install'
 use_lib64 = False
 
 # Uncomment this for verbose builds
-makeargs = "V=1"
+# makeargs = "V=1"
 

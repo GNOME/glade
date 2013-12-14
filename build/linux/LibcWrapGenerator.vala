@@ -19,8 +19,35 @@
  * Authors:
  *   Jan Niklas Hasse <jhasse@gmail.com>
  *   Tristan Van Berkom <tristan@upstairslabs.com>
+ *
+ *
+ * This program is used to generate a header safely selecting the ABI
+ * glibc requirement.
+ *
+ * The resulting program can be run as such:
+ *
+ *      ./LibcWrapGenerator libcwrap.h 2.7 /path/to/libc/runtime/libraries
+ *
+ * This will generate a libcwrap.h which should be included by any
+ * C/C++ sources before anything else, redirecting any references
+ * to glibc symbols > 2.7 to symbols from previous versions.
+ *
+ * For symbols which are found to be new after 2.7, those will be
+ * redirected to symbol@GLIBC_DONT_USE_THIS_SYMBOL_2.10 (or whichever
+ * version the said symbol was actually added in)
+ *
+ * This will generate a link error at compile time, it is possible
+ * however unlikely that these link errors will occur, if they do
+ * you must patch the sources in such a way that those glibc symbols
+ * which generated the link error are not accessed.
+ *
+ * Sources should also be compiled with -U_FORTIFY_SOURCE as some
+ * compilers build in _FORTIFY_SOURCE by default, enabling some
+ * glibc runtime checkers to be linked into your source code.
+ *
+ * We recommend disabling _FORTIFY_SOURCE since most of the runtime
+ * checkers are only available in relatively recent versions of glibc.
  */
-
 using GLib;
 
 /***************************************************************
