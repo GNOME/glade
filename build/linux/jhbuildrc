@@ -1,0 +1,57 @@
+# -*- mode: python -*-
+# -*- coding: utf-8 -*-
+
+use_local_modulesets = True
+modulesets_dir = os.getenv('GLADE_DIR') + '/build/linux/modulesets'
+moduleset = 'bundle.modules'
+
+# Unset autogenargs (screws with some modules like freetype)
+autogenargs = ''
+
+build_cflags = ''
+
+# For 32bit builds, build for 32bit arches
+if os.environ.get('BUILD_32BIT') is not None:
+    build_cflags = ' -m32'
+
+# _FORTIFY_SOURCE can be defined by default in some compilers
+# we want to unset this because glibc's runtime checkers are only
+# available in recent versions of glibc
+build_cflags += ' -U_FORTIFY_SOURCE'
+
+# Special case for cairo compilation, with libcwrap.h applied cairo
+# is unable to do it's mutexes properly
+build_cflags += ' -DCAIRO_NO_MUTEX=1'
+
+# Include the libcwrap.h before anything else for every source, this
+# ensures we are targetting the right version of glibc
+build_cflags += ' -include ' + os.getenv('GLADE_DIR') + '/build/linux/libcwrap.h'
+
+# Set the compiler flags for both C and C++ sources, overriding CC and CXX
+# ensures that they come before any flags that any buildscripts might add
+os.environ['CC']  = 'gcc ' + build_cflags
+os.environ['CXX'] = 'g++ ' + build_cflags
+build_cflags = None
+
+# Enable our custom triggers
+os.environ['JHBUILD_TRIGGERS'] = os.getenv('GLADE_DIR') + '/build/linux/triggers'
+
+# A list of the modules to build.
+modules = [ 'glade' ]
+
+# Where to put the tarballs
+tarballdir = "~/AppImages/Tarballs"
+
+# Where to unpack sources
+checkoutroot = '~/AppImages/Sources'
+
+# the prefix to configure/install modules to (must have write access)
+prefix = '~/AppImages/Install'
+
+# Dont put anything into a lib64 directory, whether we build for
+# 32bit linux or 64bit linux, we want a constant path for the libraries
+use_lib64 = False
+
+# Uncomment this for verbose builds
+makeargs = "V=1"
+
