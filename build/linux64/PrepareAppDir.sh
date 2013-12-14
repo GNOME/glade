@@ -92,7 +92,7 @@ echo "Done."
 
 echo -n "Installing desktop file and runner script... "
 cp ${APP_DIR_ROOT}/share/applications/glade.desktop ${APP_DIR_ROOT}
-cp ${GLADE_DIR}/build/linux64/AppRunScript.sh ${APP_DIR_ROOT}
+cp ${GLADE_DIR}/build/linux64/AppRun ${APP_DIR_ROOT}
 echo "Done."
 
 echo -n "Fixing pixbuf loaders to have bundle relative paths... "
