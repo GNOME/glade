@@ -10,7 +10,8 @@ System requirements
     To build AppImageKit, you will require:
       - A functional cross compiler to generate 32bit binaries as well as 64bit binaries
       - libfuse (if AppImageKit doesnt find it, make sure there is a symbolic link to libfuse.so
-        from it's actual library, this is because AppImageKit uses CMake, which is just dumb).
+        from it's actual library, this is because AppImageKit uses CMake, and CMake itself 
+	is just not smart).
       - An old glib version installed on your system, the older the glib version the better
         (this system glib version will be required on target hosts which want to run the bundle).
       - Some other things like python, which you will just have to deal with the CMakeLists.txt
