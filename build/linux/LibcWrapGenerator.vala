@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2011 Jan Niklas Hasse <jhasse@gmail.com>
- * Copyright (C) Tristan Van Berkom <tristan@upstairslabs.com>
+ * Copyright (C) 2013 Tristan Van Berkom <tristan@upstairslabs.com>
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
