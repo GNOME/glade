@@ -54,14 +54,15 @@ os.environ['JHBUILD_TRIGGERS'] = os.getenv('GLADE_DIR') + '/build/linux/triggers
 # A list of the modules to build.
 modules = [ 'glade' ]
 
-# Where to put the tarballs
-tarballdir = "~/AppImages/Tarballs"
-
-# Where to unpack sources
-checkoutroot = '~/AppImages/Sources'
-
-# the prefix to configure/install modules to (must have write access)
-prefix = '~/AppImages/Install'
+# Where to put the tarballs, sources and install prefix
+if os.environ.get('BUNDLE_ROOT') is not None:
+    tarballdir = os.environ.get('BUNDLE_ROOT') + '/Tarballs'
+    checkoutroot = os.environ.get('BUNDLE_ROOT') + '/Sources'
+    prefix = os.environ.get('BUNDLE_ROOT') + '/Install'
+else:
+    tarballdir = '~/AppImages/Tarballs'
+    checkoutroot = '~/AppImages/Sources'
+    prefix = '~/AppImages/Install'
 
 # Dont put anything into a lib64 directory, whether we build for
 # 32bit linux or 64bit linux, we want a constant path for the libraries
