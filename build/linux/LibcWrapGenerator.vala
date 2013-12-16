@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2011 Jan Niklas Hasse <jhasse@gmail.com>
- * Copyright (C) 2013 Tristan Van Berkom <tristan@upstairslabs.com>
+ * Copyright (C) 2013 Upstairs Laboratories Inc.
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -19,36 +19,11 @@
  * Authors:
  *   Jan Niklas Hasse <jhasse@gmail.com>
  *   Tristan Van Berkom <tristan@upstairslabs.com>
- *
- *
- * This program is used to generate a header safely selecting the ABI
- * glibc requirement.
- *
- * The resulting program can be run as such:
- *
- *      ./LibcWrapGenerator libcwrap.h 2.7 /path/to/libc/runtime/libraries
- *
- * This will generate a libcwrap.h which should be included by any
- * C/C++ sources before anything else, redirecting any references
- * to glibc symbols > 2.7 to symbols from previous versions.
- *
- * For symbols which are found to be new after 2.7, those will be
- * redirected to symbol@GLIBC_DONT_USE_THIS_SYMBOL_2.10 (or whichever
- * version the said symbol was actually added in)
- *
- * This will generate a link error at compile time, it is possible
- * however unlikely that these link errors will occur, if they do
- * you must patch the sources in such a way that those glibc symbols
- * which generated the link error are not accessed.
- *
- * Sources should also be compiled with -U_FORTIFY_SOURCE as some
- * compilers build in _FORTIFY_SOURCE by default, enabling some
- * glibc runtime checkers to be linked into your source code.
- *
- * We recommend disabling _FORTIFY_SOURCE since most of the runtime
- * checkers are only available in relatively recent versions of glibc.
  */
 using GLib;
+
+static const string DEFAULT_TARGET      = "2.7";
+static const string DEFAULT_TARGET_HELP = "Target glibc ABI (Default 2.7)";
 
 /***************************************************************
  *                      Debugging Facilities                   *
@@ -91,146 +66,209 @@ class VersionNumber : Object
 	private int revision { get; set; } // 0.0.x
 	private string originalString;
 	
-	public VersionNumber(string version)
-	{
+	public VersionNumber (string version) {
+
 		originalString = version;
-		try
-		{
+
+		try {
 			var regex = new Regex("([[:digit:]]*)\\.([[:digit:]]*)\\.*([[:digit:]]*)");
 			var split = regex.split(version);
-			assert(split.length > 1); // TODO: Don't use assert, print a nice error message instead
+			
+			assert (split.length > 1); // TODO: Don't use assert, print a nice error message instead
 			major = int.parse (split[1]);
-			if(split.length > 2)
-			{
+			
+			if (split.length > 2)
 				minor = int.parse (split[2]);
-			}
 			else
-			{
 				minor = 0;
-			}
-			if(split.length > 3)
-			{
+
+			if (split.length > 3)
 				revision = int.parse (split[3]);
-			}
 			else
-			{
 				revision = 0;
-			}
-		}
-		catch(GLib.RegexError e)
-		{
+		} catch (GLib.RegexError e) {
 			stdout.printf("Error compiling regular expression!");
 			Posix.exit(-1);
 		}
 	}
-	
-	public bool newerThan(VersionNumber other)
-	{
-		if(major > other.major)
-		{
+
+	public bool newerThan(VersionNumber other) {
+
+		if (major > other.major) {
 			return true;
-		}
-		else if(major == other.major)
-		{
-			if(minor > other.minor)
-			{
+		} else if (major == other.major) {
+
+			if (minor > other.minor) {
 				return true;
-			}
-			else if(minor == other.minor)
-			{
-				if(revision > other.revision)
-				{
+			} else if (minor == other.minor) {
+
+				if(revision > other.revision) {
 					return true;
 				}
 			}
 		}
+
 		return false;
 	}
-	public string getString()
-	{
+
+	public string getString() {
 		return originalString;
-	}
-}
-
-/***************************************************************
- *                         Symbol output                       *
- ***************************************************************/
-private void
-append_symbols (StringBuilder headerFile, 
-				VersionNumber minimumVersion,
-				Gee.HashMap<string, VersionNumber> symbolMap,
-				Gee.HashSet<string>filterMap,
-				bool overrides)
-{
-
-	if (overrides)
-		headerFile.append("\n/* Symbols introduced in newer glibc versions, which must not be used */\n");
-	else
-		headerFile.append("\n/* Symbols redirected to earlier glibc versions */\n");
-
-	foreach (var it in symbolMap.keys)
-	{
-		var version = symbolMap.get (it);
-		string versionToUse;
-
-		/* If the symbol only has occurrences older than the minimum required glibc version,
-		 * then there is no need to output anything for this symbol
-		 */
-		if (filterMap.contains (it))
-			continue;
-
-		if (overrides && version.newerThan (minimumVersion))
-			versionToUse = "DONT_USE_THIS_VERSION_%s".printf (version.getString());
-		else if (!overrides && !version.newerThan (minimumVersion))
-			versionToUse = version.getString ();
-		else
-			continue;
-
-		headerFile.append("__asm__(\".symver %s, %s@GLIBC_%s\");\n".printf(it, it, versionToUse));
 	}
 }
 
 /***************************************************************
  *                             Main                            *
  ***************************************************************/
-int main(string[] args)
-{
-	try
-	{
-		if(args.length != 4)
-		{
-			stdout.printf("Usage: buildlist <header file to create> <minimum glibc version> <system library directory>\n");
+public class Main : Object {
+
+	/* Command line options */
+	private static string? libdir = null;
+	private static string? output = null;
+	private static string? target = null;
+
+	private const GLib.OptionEntry[] options = {
+		{ "libdir", 'l', 0, OptionArg.FILENAME, ref libdir, "Library directory", "<DIRECTORY>" },
+		{ "output", 'o', 0, OptionArg.STRING,   ref output, "Header to create", "<FILENAME>" },
+		{ "target", 't', 0, OptionArg.STRING,   ref target, DEFAULT_TARGET_HELP, "<MAJOR.MINOR[.MICRO]>" },
+		{ null }
+	};
+
+	/* Local variables */
+	private static VersionNumber minimumVersion;
+	private static Gee.HashMap<string, VersionNumber>symbolMap;
+	private static Gee.HashSet<string>filterMap;
+	private static Regex regex;
+
+	public static int main (string[] args) {
+
+		try {
+			var opt_context = new OptionContext ("- Libc compatibility header generator");
+			opt_context.set_help_enabled (true);
+			opt_context.add_main_entries (options, null);
+			opt_context.parse (ref args);
+		} catch (OptionError e) {
+			stdout.printf ("error: %s\n", e.message);
+			stdout.printf ("Run '%s --help' for a list of available command line options.\n", args[0]);
+			return 0;
+		}
+
+		if (libdir == null) {
+			stdout.printf ("Must specify --libdir\n");
+			stdout.printf ("Run '%s --help' for a list of available command line options.\n", args[0]);
+			return 0;
+		}
+
+		if (output == null) {
+			stdout.printf ("Must specify --output\n");
+			stdout.printf ("Run '%s --help' for a list of available command line options.\n", args[0]);
+			return 0;
+		}
+
+		if (target == null)
+			target = DEFAULT_TARGET;
+
+		/* Initialize local resources */
+		minimumVersion = new VersionNumber (target);
+
+		/* All symbols, containing the newest possible version before 'minimumVersion' if possible */
+		symbolMap = new Gee.HashMap<string, VersionNumber>((Gee.HashDataFunc<string>)GLib.str_hash,
+														   (Gee.EqualDataFunc<string>)GLib.str_equal);
+
+		/* All symbols which did not have any version > minimumVersion */
+		filterMap = new Gee.HashSet<string>((Gee.HashDataFunc<string>)GLib.str_hash,
+											(Gee.EqualDataFunc<string>)GLib.str_equal);
+
+		try {
+
+			stdout.printf ("Generating %s (glibc %s) from libs at '%s' .", output, minimumVersion.getString(), libdir);
+
+			regex = new Regex("(.*)(GLIBC_)([0-9]+\\.([0-9]+\\.)*[0-9]+)(\\)?)([ ]*)(.+)");
+			parseLibraries ();
+			generateHeader ();
+
+		} catch (Error e) {
+
+			warning("%s", e.message);
 			return 1;
 		}
 
-		var minimumVersion = new VersionNumber(args[2]);
-		var filename = args[1];
-		var syslibs = args[3];
+		stdout.printf(" OK\n");
 
-		stdout.printf ("Generating %s (glibc %s) from libs at '%s' .", filename, minimumVersion.getString(), syslibs);
+		return 0;
+	}
 
-		var headerFile = new StringBuilder ();
-		headerFile.append ("/* glibc bindings for target ABI version glibc " + minimumVersion.getString() + " */\n");
-		stdout.flush();
+	private static void parseLibrary (FileInfo fileinfo) throws Error {
 
 		string output, errorOutput;
 		int returnCode;
-		var libPath = File.new_for_path (syslibs);
+
+		Process.spawn_command_line_sync ("objdump -T " + libdir + "/" + fileinfo.get_name(), 
+										 out output, out errorOutput, out returnCode);
+
+		if (returnCode != 0)
+			return;
+
+		foreach (var line in output.split ("\n")) {
+
+			if (regex.match (line) && !("PRIVATE" in line)) {
+				var version      = new VersionNumber (regex.split (line)[3]);
+				var symbolName   = regex.split (line)[7];
+				var versionInMap = symbolMap.get (symbolName);
+
+				/* Some versioning symbols exist in the objdump output, let's skip those */
+				if (symbolName.has_prefix ("GLIBC"))
+					continue;
+
+				libcwrap_note (DF.COLLECT, () =>
+							   stdout.printf ("Selected symbol '%s' version '%s' from objdump line %s\n", 
+											  symbolName, version.getString(), line));
+
+				if (versionInMap == null) {
+
+					symbolMap.set (symbolName, version);
+
+					/* First occurance of the symbol, if it's older
+					 * than the minimum required, put it in that table also
+					 */
+					if (minimumVersion.newerThan (version)) {
+						filterMap.add (symbolName);
+						libcwrap_note (DF.FILTER, () =>
+									   stdout.printf ("Adding symbol '%s %s' to the filter\n", 
+													  symbolName, version.getString()));
+					}
+
+				} else {
+
+					/* We want the newest possible version of a symbol which is older than the
+					 * minimum glibc version specified (or the only version of the symbol if
+					 * it's newer than the minimum version)
+					 */
+					if (version.newerThan (versionInMap) && minimumVersion.newerThan (version))
+						symbolMap.set (symbolName, version);
+
+					/* While trucking along through the huge symbol list, remove symbols from
+					 * the 'safe to exclude' if there is a version found which is newer
+					 * than the minimum requirement
+					 */
+					if (version.newerThan (minimumVersion)) {
+						filterMap.remove(symbolName);
+						libcwrap_note (DF.FILTER, () =>
+									   stdout.printf ("Removing symbol '%s %s' from the filter\n", 
+													  symbolName, version.getString()));
+					}
+				}
+
+			} else {
+				libcwrap_note (DF.COLLECT, () => stdout.printf ("Rejected objdump line %s\n", line));
+			}
+		}
+	}
+
+	private static void parseLibraries () throws Error {
+		var libPath    = File.new_for_path (libdir);
 		var enumerator = libPath.enumerate_children (FileAttribute.STANDARD_NAME, 0, null);
+		var counter    = 0;
 		FileInfo fileinfo;
-		var counter = 0;
-
-		/* This map will contain every symbol with new version as close to the minimum version as possible
-		 * including symbols which have a higher version than the minimum
-		 */
-		var symbolMap = new Gee.HashMap<string, VersionNumber>((Gee.HashDataFunc<string>)GLib.str_hash,
-															   (Gee.EqualDataFunc<string>)GLib.str_equal);
-
-		/* This map will contain only symbols for which a version newer than the minimum was not found,
-		 * these symbols are safe to exclude from the output
-		 */
-		var symbolsOlderThanMinimum = new Gee.HashSet<string>((Gee.HashDataFunc<string>)GLib.str_hash,
-															  (Gee.EqualDataFunc<string>)GLib.str_equal);
 
 		while ((fileinfo = enumerator.next_file(null)) != null)
 		{
@@ -240,76 +278,52 @@ int main(string[] args)
 				stdout.flush();
 			}
 
-			Process.spawn_command_line_sync("objdump -T " + syslibs + "/" + fileinfo.get_name(), 
-											out output, out errorOutput, out returnCode);
+			parseLibrary (fileinfo);
+		}
+	}
 
-			if (returnCode != 0)
+	private static void appendSymbols (StringBuilder headerFile, bool overrides) {
+
+		if (overrides)
+			headerFile.append("\n/* Symbols introduced in newer glibc versions, which must not be used */\n");
+		else
+			headerFile.append("\n/* Symbols redirected to earlier glibc versions */\n");
+
+		foreach (var it in symbolMap.keys) {
+			var version = symbolMap.get (it);
+			string versionToUse;
+
+			/* If the symbol only has occurrences older than the minimum required glibc version,
+			 * then there is no need to output anything for this symbol
+			 */
+			if (filterMap.contains (it))
 				continue;
 
-			foreach (var line in output.split("\n"))
-			{
-				var regex = new Regex("(.*)(GLIBC_)([0-9]+\\.([0-9]+\\.)*[0-9]+)(\\)?)([ ]*)(.+)");
+			/* If the only available symbol is > minimumVersion, then redirect it
+			 * to a comprehensible linker error, otherwise redirect the symbol
+			 * to it's existing version <= minimumVersion.
+			 */
+			if (version.newerThan (minimumVersion)) {
 
-				if (regex.match (line) && !("PRIVATE" in line))
-				{
-					var version = new VersionNumber (regex.split (line)[3]);
-					var symbolName = regex.split (line)[7];
-					var versionInMap = symbolMap.get (symbolName);
+				versionToUse = "DONT_USE_THIS_VERSION_%s".printf (version.getString());
+				if (!overrides)
+					continue;
 
-					/* Some versioning symbols exist in the objdump output, let's skip those */
-					if (symbolName.has_prefix ("GLIBC"))
-						continue;
+			} else {
 
-					libcwrap_note (DF.COLLECT, () =>
-							 stdout.printf ("Selected symbol '%s' version '%s' from objdump line %s\n", 
-											symbolName, version.getString(), line));
-
-					if (versionInMap == null)
-					{
-						symbolMap.set(symbolName, version);
-
-						/* First occurance of the symbol, if it's older
-						 * than the minimum required, put it in that table also
-						 */
-						if (minimumVersion.newerThan (version))
-						{
-							symbolsOlderThanMinimum.add(symbolName);
-
-							libcwrap_note (DF.FILTER, () =>
-									 stdout.printf ("Adding symbol '%s %s' to the filter\n", 
-													symbolName, version.getString()));
-						}
-					}
-					else
-					{
-						/* We want the newest possible version of a symbol which is older than the
-						 * minimum glibc version specified (or the only version of the symbol if
-						 * it's newer than the minimum version)
-						 */
-						if(version.newerThan (versionInMap) && minimumVersion.newerThan (version))
-							symbolMap.set(symbolName, version);
-
-						/* While trucking along through the huge symbol list, remove symbols from
-						 * the 'safe to exclude' if there is a version found which is newer
-						 * than the minimum requirement
-						 */
-						if (version.newerThan (minimumVersion))
-						{
-							symbolsOlderThanMinimum.remove(symbolName);
-
-							libcwrap_note (DF.FILTER, () =>
-									 stdout.printf ("Removing symbol '%s %s' from the filter\n", 
-													symbolName, version.getString()));
-						}
-					}
-				}
-				else
-				{
-					libcwrap_note (DF.COLLECT, () => stdout.printf ("Rejected objdump line %s\n", line));
-				}
+				versionToUse = version.getString ();
+				if (overrides)
+					continue;
 			}
+
+			headerFile.append("__asm__(\".symver %s, %s@GLIBC_%s\");\n".printf(it, it, versionToUse));
 		}
-		
+	}
+
+	private static void generateHeader () throws Error {
+		var headerFile = new StringBuilder ();
+
+		headerFile.append ("/* glibc bindings for target ABI version glibc " + minimumVersion.getString() + " */\n");
 		headerFile.append ("#if !defined (__LIBC_CUSTOM_BINDINGS_H__)\n");
 		headerFile.append ("\n");
 		headerFile.append ("#  if !defined (__OBJC__) && !defined (__ASSEMBLER__)\n");
@@ -320,13 +334,8 @@ int main(string[] args)
 		/* For prettier output, let's output the redirected symbols first, and
 		 * then output the ones which must not be used (new in glibc > minimumVersion).
 		 */
-		append_symbols (headerFile, minimumVersion,
-						symbolMap, symbolsOlderThanMinimum,
-						false);
-
-		append_symbols (headerFile, minimumVersion,
-						symbolMap, symbolsOlderThanMinimum,
-						true);
+		appendSymbols (headerFile, false);
+		appendSymbols (headerFile, true);
 
 		headerFile.append ("\n");
 		headerFile.append ("#    if defined (__cplusplus)\n");
@@ -335,13 +344,6 @@ int main(string[] args)
 		headerFile.append ("#  endif /* !defined (__OBJC__) && !defined (__ASSEMBLER__) */\n");
 		headerFile.append ("#endif\n");
 
-		FileUtils.set_contents(filename, headerFile.str);
+		FileUtils.set_contents (output, headerFile.str);
 	}
-	catch(Error e)
-	{
-		warning("%s", e.message);
-		return 1;
-	}
-	stdout.printf(" OK\n");
-	return 0;
 }
