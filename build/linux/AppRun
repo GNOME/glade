@@ -20,8 +20,8 @@
 #   Tristan Van Berkom <tristan@upstairslabs.com>
 #
 
-# This needs to be set to /home/username/AppImages/Install
-INSTALL_PREFIX=/home/tristan/AppImages/Install
+# This is setup by PrepareAppDir.sh
+INSTALL_PREFIX=@APP_DIR_ROOT@
 
 # Base environment variables
 LD_LIBRARY_PATH=${APPDIR}${INSTALL_PREFIX}/lib:${LD_LIBRARY_PATH}

@@ -97,7 +97,8 @@ echo "Done."
 
 echo -n "Installing desktop file and runner script... "
 cp ${APP_DIR_ROOT}/share/applications/glade.desktop ${APP_DIR_ROOT}
-cp ${GLADE_DIR}/build/linux/AppRun ${APP_DIR_ROOT}
+cat ${BUNDLE_DIR}/AppRun | sed -e "s|@APP_DIR_ROOT@|${APP_DIR_ROOT}|g" > ${APP_DIR_ROOT}/AppRun
+chmod +x ${APP_DIR_ROOT}/AppRun
 echo "Done."
 
 echo -n "Fixing pixbuf loaders to have bundle relative paths... "
