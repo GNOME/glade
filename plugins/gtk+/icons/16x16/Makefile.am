@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-iconsdir = $(datadir)/icons/hicolor/16x16/actions
+iconsdir = $(pkgdatadir)/pixmaps/hicolor/16x16/actions
 
 icons_DATA = \
 	widget-gtk-aboutdialog.png \
