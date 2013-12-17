@@ -592,14 +592,25 @@ glade_gtk_widget_write_widget (GladeWidgetAdaptor * adaptor,
   if (prop && glade_property_get_enabled (prop))
     glade_property_write (prop, context, node);
 
-  /* First chain up and read in all the normal properties.. */
+  /* Finally chain up and read in all the normal properties.. */
   GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget (adaptor, widget, context, node);
-
-  glade_gtk_write_accels (widget, context, node, TRUE);
-  glade_gtk_widget_write_atk_props (widget, context, node);
-  glade_gtk_widget_write_style_classes (widget, context, node);
 }
 
+void
+glade_gtk_widget_write_widget_after (GladeWidgetAdaptor * adaptor,
+				     GladeWidget * widget,
+				     GladeXmlContext * context, GladeXmlNode * node)
+{
+  /* The ATK properties are actually children */
+  glade_gtk_widget_write_atk_props (widget, context, node);
+
+  /* Put the accelerators and style classes after children */
+  glade_gtk_write_accels (widget, context, node, TRUE);
+  glade_gtk_widget_write_style_classes (widget, context, node);
+
+  /* Finally chain up and read in all the normal properties.. */
+  GWA_GET_CLASS (G_TYPE_OBJECT)->write_widget_after (adaptor, widget, context, node);
+}
 
 GladeEditorProperty *
 glade_gtk_widget_create_eprop (GladeWidgetAdaptor * adaptor,
