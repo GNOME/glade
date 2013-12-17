@@ -149,8 +149,6 @@ struct _GladeWidgetPrivate {
 
   GtkTreeModel   *signal_model; /* Signal model (or NULL if not yet requested) */
 
-  GladeWidget    *cached_toplevel; /* Used to speed up glade_widget_get_toplevel */
-
   /* Construct parameters: */
   GladeWidget       *construct_template;
   GladeCreateReason  construct_reason;
@@ -3643,9 +3641,6 @@ glade_widget_set_parent (GladeWidget * widget, GladeWidget * parent)
   old_parent = widget->priv->parent;
   widget->priv->parent = parent;
 
-  /* unset toplevel cache used in glade_widget_get_toplevel() */
-  widget->priv->cached_toplevel = NULL;
-
   /* Set packing props only if the object is actually parented by 'parent'
    * (a subsequent call should come from glade_command after parenting).
    */
@@ -3757,13 +3752,8 @@ glade_widget_get_toplevel (GladeWidget * widget)
   GladeWidget *toplevel = widget;
   g_return_val_if_fail (GLADE_IS_WIDGET (widget), NULL);
 
-  if (widget->priv->cached_toplevel)
-    return widget->priv->cached_toplevel;
-
   while (toplevel->priv->parent)
     toplevel = toplevel->priv->parent;
-
-  widget->priv->cached_toplevel = toplevel;
 
   return toplevel;
 }
