@@ -509,6 +509,10 @@ catalogs_from_path (GList *catalogs, const gchar *path)
   GError *error = NULL;
   const gchar *filename;
 
+  /* Silent return if the directory didn't exist */
+  if (!g_file_test (path, G_FILE_TEST_IS_DIR))
+    return catalogs;
+
   if ((dir = g_dir_open (path, 0, &error)) != NULL)
     {
       while ((filename = g_dir_read_name (dir)))
