@@ -800,12 +800,14 @@ gboolean
 glade_xml_node_is_comment (GladeXmlNode * node_in)
 {
   xmlNodePtr node = (xmlNodePtr) node_in;
-  if (node == NULL)
-    return FALSE;
-  if ((xmlStrcmp (node->name, BAD_CAST ("text")) == 0) ||
-      (xmlStrcmp (node->name, BAD_CAST ("comment")) == 0))
-    return TRUE;
-  return FALSE;
+  return (node) ? node->type == XML_COMMENT_NODE : FALSE;
+}
+
+static inline gboolean
+glade_xml_node_is_comment_or_text (GladeXmlNode *node_in)
+{
+  xmlNodePtr node = (xmlNodePtr) node_in;
+  return (node) ? node->type == XML_COMMENT_NODE || node->type == XML_TEXT_NODE : FALSE;
 }
 
 GladeXmlNode *
@@ -815,7 +817,7 @@ glade_xml_node_get_children (GladeXmlNode * node_in)
   xmlNodePtr children;
 
   children = node->children;
-  while (glade_xml_node_is_comment ((GladeXmlNode *) children))
+  while (glade_xml_node_is_comment_or_text ((GladeXmlNode *) children))
     children = children->next;
 
   return (GladeXmlNode *) children;
@@ -844,7 +846,7 @@ glade_xml_node_next (GladeXmlNode * node_in)
   xmlNodePtr node = (xmlNodePtr) node_in;
 
   node = node->next;
-  while (glade_xml_node_is_comment ((GladeXmlNode *) node))
+  while (glade_xml_node_is_comment_or_text ((GladeXmlNode *) node))
     node = node->next;
 
   return (GladeXmlNode *) node;
