@@ -87,43 +87,36 @@ this to be a "/full/path/to/the/checkout/of/glade"
 
   Building the stack
   ~~~~~~~~~~~~~~~~~~
-  The AppDir is what AppImageKit refers to as the root filesystem inside the
-  bundle.
-
-  The provided jhbuild scripts will create a directory in your ${HOME} named
-  'AppImages', all of our building & bundling will take place inside this directory.
-
-  Note, if you already have a jhbuild environment there is no need to worry,
-  our scripts do not interfere with your existing jhbuild environment.
-
   To build the whole stack up to Glade, including Glade, issue this command:
 
-    GLADE_DIR=${GLADE_CHECKOUT} jhbuild -f ${GLADE_CHECKOUT}/build/linux/jhbuildrc build glade
+    BUNDLE_ROOT=~/GladeBundle BUNDLE_DIR=${GLADE_CHECKOUT}/build/linux jhbuild -f ${GLADE_CHECKOUT}/build/linux/jhbuildrc build
 
-  I've found the build to break sometimes at 'shared-mime-info', in this case I just rerun
-  the above command and it passes on the second try... nothing to see here... carry on...
+  This will build everything into the ${BUNDLE_ROOT} you specified, the actual installation
+  will be found in ${BUNDLE_ROOT}/Install
 
+  This will not interfere with any existing jhbuild environment you may already have setup,
+  everything is self contained and happens inside the ${BUNDLE_ROOT} you specify.
 
   Post processing the image directory
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   Some post processing is needed on the AppDir, we intentionally keep this separate from
   the jhbuild setup. To perform the needed post processing, issue this command:
 
-    ${GLADE_CHECKOUT}/build/linux/PrepareAppDir.sh ${HOME}/AppImages/Install ${GLADE_CHECKOUT}
+    ${GLADE_CHECKOUT}/build/linux/PrepareAppDir.sh ${BUNDLE_ROOT}/Install ${GLADE_CHECKOUT}/build/linux
 
-  WARNING: The above script will modify the ${HOME}/AppImages/Install directory in such
+  WARNING: The above script will modify the ${BUNDLE_ROOT}/Install directory in such
   a way that it cannot be rebuilt (development headers and unneeded cruft is removed
   from the installation directory). This is why we use a script as a separate stage from
   building.
 
-  At this point, you should have a fully functional image in ${HOME}/AppImages/Install
+  At this point, you should have a fully functional image in ${BUNDLE_ROOT}/Install
 
 
 Bundling
 ~~~~~~~~
 Build the bundle with one simple command:
 
-    /path/to/AppImageKit/AppImageAssistant ${HOME}/AppImages/Install /path/to/generated/glade
+    /path/to/AppImageKit/AppImageAssistant ${BUNDLE_ROOT}/Install ~/glade
 
 This will create a huge binary named 'glade' at the location of your choosing.
 

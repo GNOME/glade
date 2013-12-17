@@ -87,7 +87,7 @@ class VersionNumber : Object
 			else
 				revision = 0;
 		} catch (GLib.RegexError e) {
-			stdout.printf("Error compiling regular expression!");
+			stdout.printf ("Error compiling regular expression: %s", e.message);
 			Posix.exit(-1);
 		}
 	}
@@ -128,7 +128,7 @@ public class Main : Object {
 
 	private const GLib.OptionEntry[] options = {
 		{ "libdir", 'l', 0, OptionArg.FILENAME, ref libdir, "Library directory", "<DIRECTORY>" },
-		{ "output", 'o', 0, OptionArg.STRING,   ref output, "Header to create", "<FILENAME>" },
+		{ "output", 'o', 0, OptionArg.STRING,   ref output, "Header to create",  "<FILENAME>" },
 		{ "target", 't', 0, OptionArg.STRING,   ref target, DEFAULT_TARGET_HELP, "<MAJOR.MINOR[.MICRO]>" },
 		{ null }
 	};
@@ -137,9 +137,11 @@ public class Main : Object {
 	private static VersionNumber minimumVersion;
 	private static Gee.HashMap<string, VersionNumber>symbolMap;
 	private static Gee.HashSet<string>filterMap;
-	private static Regex regex;
 
 	public static int main (string[] args) {
+
+		/* Initialize the default here */
+		target = DEFAULT_TARGET;
 
 		try {
 			var opt_context = new OptionContext ("- Libc compatibility header generator");
@@ -164,9 +166,6 @@ public class Main : Object {
 			return 0;
 		}
 
-		if (target == null)
-			target = DEFAULT_TARGET;
-
 		/* Initialize local resources */
 		minimumVersion = new VersionNumber (target);
 
@@ -182,7 +181,6 @@ public class Main : Object {
 
 			stdout.printf ("Generating %s (glibc %s) from libs at '%s' .", output, minimumVersion.getString(), libdir);
 
-			regex = new Regex("(.*)(GLIBC_)([0-9]+\\.([0-9]+\\.)*[0-9]+)(\\)?)([ ]*)(.+)");
 			parseLibraries ();
 			generateHeader ();
 
@@ -197,7 +195,7 @@ public class Main : Object {
 		return 0;
 	}
 
-	private static void parseLibrary (FileInfo fileinfo) throws Error {
+	private static void parseLibrary (Regex regex, FileInfo fileinfo) throws Error {
 
 		string output, errorOutput;
 		int returnCode;
@@ -267,24 +265,25 @@ public class Main : Object {
 	private static void parseLibraries () throws Error {
 		var libPath    = File.new_for_path (libdir);
 		var enumerator = libPath.enumerate_children (FileAttribute.STANDARD_NAME, 0, null);
+		var regex      = new Regex ("(.*)(GLIBC_)([0-9]+\\.([0-9]+\\.)*[0-9]+)(\\)?)([ ]*)(.+)");
+
 		var counter    = 0;
 		FileInfo fileinfo;
 
-		while ((fileinfo = enumerator.next_file(null)) != null)
-		{
-			if(++counter % 50 == 0)
-			{
+		while ((fileinfo = enumerator.next_file(null)) != null) {
+
+			if (++counter % 50 == 0) {
 				stdout.printf(".");
 				stdout.flush();
 			}
 
-			parseLibrary (fileinfo);
+			parseLibrary (regex, fileinfo);
 		}
 	}
 
-	private static void appendSymbols (StringBuilder headerFile, bool overrides) {
+	private static void appendSymbols (StringBuilder headerFile, bool unavailableSymbols) {
 
-		if (overrides)
+		if (unavailableSymbols)
 			headerFile.append("\n/* Symbols introduced in newer glibc versions, which must not be used */\n");
 		else
 			headerFile.append("\n/* Symbols redirected to earlier glibc versions */\n");
@@ -306,13 +305,13 @@ public class Main : Object {
 			if (version.newerThan (minimumVersion)) {
 
 				versionToUse = "DONT_USE_THIS_VERSION_%s".printf (version.getString());
-				if (!overrides)
+				if (!unavailableSymbols)
 					continue;
 
 			} else {
 
 				versionToUse = version.getString ();
-				if (overrides)
+				if (unavailableSymbols)
 					continue;
 			}
 
@@ -323,6 +322,13 @@ public class Main : Object {
 	private static void generateHeader () throws Error {
 		var headerFile = new StringBuilder ();
 
+		/* FIXME: Currently we do:
+		 *
+		 *   if !defined (__OBJC__) && !defined (__ASSEMBLER__)
+		 *
+		 * But what we want is a clause which accepts any form of C including C++ and probably
+		 * also including ObjC. That said, the generated header works fine for C and C++ sources.
+		 */
 		headerFile.append ("/* glibc bindings for target ABI version glibc " + minimumVersion.getString() + " */\n");
 		headerFile.append ("#if !defined (__LIBC_CUSTOM_BINDINGS_H__)\n");
 		headerFile.append ("\n");
@@ -331,9 +337,7 @@ public class Main : Object {
 		headerFile.append ("extern \"C\" {\n");
 		headerFile.append ("#    endif\n");
 
-		/* For prettier output, let's output the redirected symbols first, and
-		 * then output the ones which must not be used (new in glibc > minimumVersion).
-		 */
+		/* First generate the available redirected symbols, then the unavailable symbols */
 		appendSymbols (headerFile, false);
 		appendSymbols (headerFile, true);
 

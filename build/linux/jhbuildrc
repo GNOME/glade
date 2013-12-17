@@ -21,7 +21,7 @@
 #   Tristan Van Berkom <tristan@upstairslabs.com>
 #
 use_local_modulesets = True
-modulesets_dir = os.getenv('GLADE_DIR') + '/build/linux/modulesets'
+modulesets_dir = os.getenv('BUNDLE_DIR') + '/modulesets'
 moduleset = 'bundle.modules'
 
 # Unset autogenargs (screws with some modules like freetype)
@@ -41,7 +41,7 @@ build_cflags += ' -DCAIRO_NO_MUTEX=1'
 
 # Include the libcwrap.h before anything else for every source, this
 # ensures we are targetting the right version of glibc
-build_cflags += ' -include ' + os.getenv('GLADE_DIR') + '/build/linux/libcwrap.h'
+build_cflags += ' -include ' + os.getenv('BUNDLE_DIR') + '/libcwrap.h'
 
 # Set the compiler flags for both C and C++ sources, overriding CC and CXX
 # ensures that they come before any flags that any buildscripts might add
@@ -49,7 +49,7 @@ os.environ['CC']  = 'gcc ' + build_cflags
 os.environ['CXX'] = 'g++ ' + build_cflags
 
 # Enable our custom triggers
-os.environ['JHBUILD_TRIGGERS'] = os.getenv('GLADE_DIR') + '/build/linux/triggers'
+os.environ['JHBUILD_TRIGGERS'] = os.getenv('BUNDLE_DIR') + '/triggers'
 
 # A list of the modules to build.
 modules = [ 'glade' ]

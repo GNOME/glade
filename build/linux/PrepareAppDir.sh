@@ -17,16 +17,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-#
-# Usage:
-#
-# ./PrepareAppDir.sh /path/to/AppImage/Install /path/to/glade
 
 APP_DIR_ROOT=$1
-GLADE_DIR=$2
+BUNDLE_DIR=$2
 
-if test -z ${APP_DIR_ROOT} || test -z ${GLADE_DIR}; then
-    echo "Usage ./PrepareAppDir.sh /path/to/AppImage/Install /path/to/glade"
+if test -z ${APP_DIR_ROOT} || test -z ${BUNDLE_DIR}; then
+    echo "Usage ./PrepareAppDir.sh /path/to/AppImage/Install /path/to/glade/build/linux"
     exit 0;
 fi
 
