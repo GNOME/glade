@@ -146,7 +146,7 @@
     <branch module="cairo-1.12.16.tar.xz"  version="1.12.16"
             repo="cairographics"
             hash="sha1:4f6e337d5d3edd7ea79d1426f575331552b003ec">
-      <patch file="cairo-avoid-longjmp.patch" strip="1" />
+      <patch file="cairo-avoid-fortify-source.patch" strip="1" />
     </branch>
     <dependencies>
       <dep package="pixman"/>

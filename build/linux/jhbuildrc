@@ -35,10 +35,6 @@ build_cflags = ''
 # available in recent versions of glibc
 build_cflags += ' -U_FORTIFY_SOURCE'
 
-# Special case for cairo compilation, with libcwrap.h applied cairo
-# is unable to do it's mutexes properly
-build_cflags += ' -DCAIRO_NO_MUTEX=1'
-
 # Include the libcwrap.h before anything else for every source, this
 # ensures we are targetting the right version of glibc
 build_cflags += ' -include ' + os.getenv('BUNDLE_DIR') + '/libcwrap.h'
