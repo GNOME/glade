@@ -829,6 +829,8 @@ void                  glade_widget_adaptor_child_action_activate (GladeWidgetAda
 GtkWidget            *glade_widget_adaptor_action_submenu        (GladeWidgetAdaptor *adaptor,
 								  GObject            *object,
 								  const gchar        *action_path);
+
+G_DEPRECATED
 gboolean              glade_widget_adaptor_depends            (GladeWidgetAdaptor *adaptor,
 							       GladeWidget        *widget,
 							       GladeWidget        *another);

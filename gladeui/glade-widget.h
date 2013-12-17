@@ -215,6 +215,8 @@ gchar                  *glade_widget_generate_path_name     (GladeWidget      *w
 
 gboolean                glade_widget_is_ancestor            (GladeWidget      *widget,
 							     GladeWidget      *ancestor);
+
+G_DEPRECATED
 gboolean                glade_widget_depends                (GladeWidget      *widget,
 							     GladeWidget      *other);
 

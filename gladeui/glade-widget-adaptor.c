@@ -974,25 +974,6 @@ glade_widget_adaptor_object_child_action_activate (GladeWidgetAdaptor *adaptor,
              adaptor->priv->name, action_id);
 }
 
-static gboolean
-glade_widget_adaptor_object_depends (GladeWidgetAdaptor *adaptor,
-                                     GladeWidget *widget,
-                                     GladeWidget *another)
-{
-  GList *l;
-
-  for (l = _glade_widget_peek_prop_refs (another); l; l = g_list_next (l))
-    {
-      /* If one of the properties that reference @another is
-       * owned by @widget then @widget depends on @another
-       */
-      if (glade_property_get_widget (l->data) == widget)
-        return TRUE;
-    }
-
-  return FALSE;
-}
-
 static void
 glade_widget_adaptor_object_read_widget (GladeWidgetAdaptor *adaptor,
                                          GladeWidget *widget,
@@ -1388,7 +1369,7 @@ glade_widget_adaptor_class_init (GladeWidgetAdaptorClass *adaptor_class)
   adaptor_class->action_activate = glade_widget_adaptor_object_action_activate;
   adaptor_class->child_action_activate = glade_widget_adaptor_object_child_action_activate;
   adaptor_class->action_submenu = NULL;
-  adaptor_class->depends = glade_widget_adaptor_object_depends;
+  adaptor_class->depends = NULL;
   adaptor_class->read_widget = glade_widget_adaptor_object_read_widget;
   adaptor_class->write_widget = glade_widget_adaptor_object_write_widget;
   adaptor_class->write_widget_after = glade_widget_adaptor_object_write_widget_after;
@@ -1484,6 +1465,19 @@ static void
 gwa_derived_init (GladeWidgetAdaptor *adaptor, gpointer g_class)
 {
 
+}
+
+static void
+gwa_warn_deprecated_if_symbol_found (GladeXmlNode *node, gchar *tagname)
+{
+  gchar *symbol;
+
+  if ((symbol = glade_xml_get_value_string (node, tagname)))
+    {
+      g_warning ("GladeWidgetAdaptor %s method is deprecated. %s() will not be used",
+                 tagname, symbol);
+      g_free (symbol);
+    }
 }
 
 static void
@@ -1588,9 +1582,8 @@ gwa_extend_with_node_load_sym (GladeWidgetAdaptorClass *klass,
                                     GLADE_TAG_ACTION_SUBMENU_FUNCTION, &symbol))
     klass->action_submenu = symbol;
 
-  if (glade_xml_load_sym_from_node (node, module,
-                                    GLADE_TAG_DEPENDS_FUNCTION, &symbol))
-    klass->depends = symbol;
+  /* depends method is deprecated, warn the user */
+  gwa_warn_deprecated_if_symbol_found (node, GLADE_TAG_DEPENDS_FUNCTION);
 
   if (glade_xml_load_sym_from_node (node, module,
                                     GLADE_TAG_READ_WIDGET_FUNCTION, &symbol))
@@ -4132,18 +4125,15 @@ glade_widget_adaptor_action_submenu (GladeWidgetAdaptor *adaptor,
  *
  * Returns: whether @widget depends on @another being parsed first in
  * the resulting glade file.
+ * 
+ * Deprecated: 3.18
  */
 gboolean
 glade_widget_adaptor_depends (GladeWidgetAdaptor *adaptor,
                               GladeWidget *widget,
                               GladeWidget *another)
 {
-  g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), FALSE);
-  g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
-  g_return_val_if_fail (GLADE_IS_WIDGET (another), FALSE);
-
-  return GLADE_WIDGET_ADAPTOR_GET_CLASS (adaptor)->depends (adaptor, widget,
-                                                            another);
+  return FALSE;
 }
 
 /**

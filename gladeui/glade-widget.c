@@ -4365,15 +4365,14 @@ glade_widget_is_ancestor (GladeWidget * widget, GladeWidget * ancestor)
  * It does not take into account for children dependencies.
  *
  * Return value: %TRUE if @widget depends on @other.
+ *
+ * Deprecated: 3.18 
  **/
 gboolean
 glade_widget_depends (GladeWidget      *widget,
 		      GladeWidget      *other)
 {
-  g_return_val_if_fail (GLADE_IS_WIDGET (widget), FALSE);
-  g_return_val_if_fail (GLADE_IS_WIDGET (other), FALSE);
-
-  return glade_widget_adaptor_depends (widget->priv->adaptor, widget, other);
+  return FALSE;
 }
 
 /**
