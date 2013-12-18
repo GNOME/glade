@@ -68,10 +68,20 @@ test_toplevel_order (gconstpointer userdata)
   GladeProject *project;
   GList *toplevels, *l;
   gchar *temp_path;
+  const gchar *xml_data;
+  gsize xml_size;
+  GBytes *xml;
 
   g_assert (g_close (g_file_open_tmp ("glade-toplevel-order-XXXXXX.glade", &temp_path, NULL), NULL));
+
+  /* Dump contents to a temp file */
+  g_assert ((xml = g_resources_lookup_data (project_path, 0, NULL)));
+  xml_data = g_bytes_get_data (xml, &xml_size);
+  g_assert (g_file_set_contents (temp_path, xml_data, xml_size, NULL));
+  g_bytes_unref (xml);
+
   /* Load project */
-  g_assert ((project = glade_project_load (project_path)));
+  g_assert ((project = glade_project_load (temp_path)));
 
   /* And save it, order should be the same */
   g_assert (glade_project_save (project, temp_path, NULL));
@@ -101,7 +111,7 @@ test_toplevel_order (gconstpointer userdata)
 }
 
 #define add_project_test(data) g_test_add_data_func_full ("/ToplevelOrder/"#data, data, test_toplevel_order, NULL);
-
+#define RESOURCE_PATH "/org/gnome/glade/tests/toplevel-order"
 /* _glade_tsort() test cases */
 
 /* the array must be properly ordered, since it will be used to test order */
@@ -110,25 +120,25 @@ static gchar *tsort_test[] = {"bbb", "ccc", "aaa", NULL };
 static gchar *tsort_test_edges[][2] = { {"ccc","aaa"}, { NULL, NULL} };
 
 /* GladeProject toplevel order test */
-static gchar *order_test[] = {"toplevel_order_test.glade",
+static gchar *order_test[] = {RESOURCE_PATH"/toplevel_order_test.glade",
   "bbb", "ccc", "aaa", NULL};
 
-static gchar *order_test2[] = {"toplevel_order_test2.glade",
+static gchar *order_test2[] = {RESOURCE_PATH"/toplevel_order_test2.glade",
   "aa", "bbb", "ccc", "aaa", "ddd", NULL };
 
-static gchar *order_test3[] = {"toplevel_order_test3.glade",
+static gchar *order_test3[] = {RESOURCE_PATH"/toplevel_order_test3.glade",
   "aaa", "ccc", "bbb", NULL };
 
 /* toplevels with circular dependencies get ordered alphabetically at the end */
-static gchar *order_test4[] = {"toplevel_order_test4.glade",
+static gchar *order_test4[] = {RESOURCE_PATH"/toplevel_order_test4.glade",
   "aa", "bbb", "cc", "ddd", "aaa", "ccc", NULL };
 
 /* children dependency */
-static gchar *order_test5[] = {"toplevel_order_test5.glade",
+static gchar *order_test5[] = {RESOURCE_PATH"/toplevel_order_test5.glade",
   "xaction", "awindow", NULL };
 
 /* Commonly used widgets with dependencies */
-static gchar *order_test6[] = {"toplevel_order_test6.glade",
+static gchar *order_test6[] = {RESOURCE_PATH"/toplevel_order_test6.glade",
   "ziconfactory", "label_a", "label_b", "asizegroup", "label_c", "xaction",
   "xactiongroup", "anotherwindow", "xentrybuffer", "xliststore", "treeview",
   "zaccelgroup", "awindow", NULL };
