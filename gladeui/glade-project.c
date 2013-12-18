@@ -1361,22 +1361,55 @@ glade_project_fix_template (GladeProject *project)
 }
 
 static gchar *
+gp_comment_strip_property (gchar *value, gchar *property)
+{
+  if (g_str_has_prefix (value, property))
+    {
+      gchar *start = value + strlen (property);
+
+      if (*start == ' ')
+        start++;
+
+      memmove (value, start, strlen (start) + 1);
+      return value;
+    }
+
+  return NULL;
+}
+
+static gchar *
+gp_comment_get_content (GladeXmlNode *comment)
+{
+  gchar *value;
+
+  if (glade_xml_node_is_comment (comment) &&
+      (value = glade_xml_get_content (comment)))
+    {
+      gchar *compressed;
+      
+      /* Replace NON-BREAKING HYPHEN with regular HYPHEN */
+      value = _glade_util_strreplace (g_strstrip (value), TRUE, "\\‑\\‑", "--");
+      compressed = g_strcompress (value);
+      g_free (value);
+      return compressed;
+    }
+
+  return NULL;
+}
+
+static gchar *
 glade_project_read_requires_from_comment (GladeXmlNode *comment,
                                           guint16 *major, guint16 *minor)
 {
-  gint maj, min;
-  gchar *value, buffer[256];
-  gchar *required_lib = NULL;
-
-  if (!glade_xml_node_is_comment (comment))
-    return NULL;
-
-  value = glade_xml_get_content (comment);
-
-  if (value &&
-      !strncmp (" interface-requires", value, strlen (" interface-requires")))
+  gchar *value, *requires, *required_lib = NULL;
+  
+  if ((value = gp_comment_get_content (comment)) &&
+      (requires = gp_comment_strip_property (value, "interface-requires")))
     {
-      if (sscanf (value, " interface-requires %s %d.%d", buffer, &maj, &min) == 3)
+      gchar buffer[128];
+      gint maj, min;
+      
+      if (sscanf (requires, "%128s %d.%d", buffer, &maj, &min) == 3)
         {
           if (major)
             *major = maj;
@@ -1468,27 +1501,6 @@ glade_project_read_requires (GladeProject *project,
                            path, string->str);
   g_string_free (string, TRUE);
   return loadable;
-}
-
-static gchar *
-glade_project_read_resource_path_from_comment (GladeXmlNode *comment)
-{
-  gchar *value, buffer[FILENAME_MAX], *path = NULL;
-
-  if (!glade_xml_node_is_comment (comment))
-    return FALSE;
-
-  value = glade_xml_get_content (comment);
-  if (value &&
-      !strncmp (" interface-local-resource-path", value,
-                strlen (" interface-local-resource-path")))
-    {
-      if (sscanf (value, " interface-local-resource-path %s", buffer) == 1)
-        path = g_strdup (buffer);
-    }
-  g_free (value);
-
-  return path;
 }
 
 static void
@@ -1585,62 +1597,65 @@ glade_project_get_license (GladeProject *project)
 }
 
 static void
-glade_project_read_resource_path (GladeProject *project,
-                                  GladeXmlNode *root_node)
+glade_project_read_comment_properties (GladeProject *project,
+                                       GladeXmlNode *root_node)
 {
+  GladeProjectPrivate *priv = project->priv;
+  gchar *license, *name, *description, *copyright, *authors;
   GladeXmlNode *node;
-  gchar *path = NULL;
 
+  license = name = description = copyright = authors = NULL;
+  
   for (node = glade_xml_node_get_children_with_comments (root_node);
        node; node = glade_xml_node_next_with_comments (node))
     {
-      /* Skip non "requires" tags */
-      if ((path = glade_project_read_resource_path_from_comment (node)) != NULL)
-        break;
-    }
+      gchar *val;
 
-  glade_project_set_resource_path (project, path);
-  g_free (path);
-}
-
-static void
-glade_project_read_css_provider_path (GladeProject *project,
-                                      GladeXmlNode *root_node)
-{
-  GladeXmlNode *node;
-
-  for (node = glade_xml_node_get_children_with_comments (root_node);
-       node; node = glade_xml_node_next_with_comments (node))
-    {
-      gchar *value;
-
-      if (glade_xml_node_is_comment (node) &&
-          (value = glade_xml_get_content (node)))
+      if (!(val = gp_comment_get_content (node)))
+        continue;
+      
+      if (gp_comment_strip_property (val, "interface-local-resource-path"))
+        glade_project_set_resource_path (project, val);
+      else if (gp_comment_strip_property (val, "interface-css-provider-path"))
         {
-          gchar **tokens = g_strsplit (g_strstrip (value), " ", 2);
-
-          if (tokens[0] && !g_strcmp0 (tokens[0], "interface-css-provider-path"))
+          if (g_path_is_absolute (val))
+            glade_project_set_css_provider_path (project, val);
+          else
             {
-              gchar *path = tokens[1];
+              gchar *dirname = g_path_get_dirname (priv->path);
+              gchar *full_path = g_build_filename (dirname, val, NULL);
 
-              if (g_path_is_absolute (path))
-                glade_project_set_css_provider_path (project, path);
-              else
-                {
-                  gchar *dirname = g_path_get_dirname (project->priv->path);
-                  gchar *full_path = g_build_filename (dirname, path, NULL);
+              glade_project_set_css_provider_path (project, full_path);
 
-                  glade_project_set_css_provider_path (project, full_path);
-
-                  g_free (dirname);
-                  g_free (full_path);
-                }
+              g_free (dirname);
+              g_free (full_path);
             }
-
-          g_strfreev (tokens);
-          g_free (value);
         }
+      else if (!license && (license = gp_comment_strip_property (val, "interface-license-type")))
+        continue;
+      else if (!name && (name = gp_comment_strip_property (val, "interface-name")))
+        continue;
+      else if (!description && (description = gp_comment_strip_property (val, "interface-description")))
+        continue;
+      else if (!copyright && (copyright = gp_comment_strip_property (val, "interface-copyright")))
+        continue;
+      else if (!authors && (authors = gp_comment_strip_property (val, "interface-authors")))
+        continue;
+
+      g_free (val);
     }
+
+  _glade_project_properties_set_license_data (GLADE_PROJECT_PROPERTIES (priv->prefs_dialog),
+                                              license,
+                                              name,
+                                              description,
+                                              copyright,
+                                              authors);
+  g_free (license);
+  g_free (name);
+  g_free (description);
+  g_free (copyright);
+  g_free (authors);
 }
 
 static inline void
@@ -2049,9 +2064,8 @@ glade_project_load_internal (GladeProject *project)
    */
   glade_project_read_requires (project, root, load_path ? load_path : priv->path, &has_gtk_dep);
 
-  glade_project_read_resource_path (project, root);
-
-  glade_project_read_css_provider_path (project, root);
+  /* Read the rest of properties saved as comments */
+  glade_project_read_comment_properties (project, root);
 
   /* Launch a dialog if it's going to take enough time to be
    * worth showing at all */
@@ -2184,6 +2198,33 @@ glade_project_load (const gchar *path)
 #define GLADE_PROJECT_COMMENT " "GLADE_XML_COMMENT" "PACKAGE_VERSION" "
 
 static void
+glade_project_write_comment_property (GladeProject    *project,
+                                      GladeXmlContext *context,
+                                      GladeXmlNode    *root,
+                                      const gchar     *property,
+                                      gchar           *value)
+{
+  gchar *comment, *escaped;
+  GladeXmlNode *path_node;
+
+  if (!value || *value == '\0')
+    return;
+
+  /* The string "--" (double hyphen) is not allowed in xml comments, so we replace
+   * the regular HYPHEN with a NON-BREAKING HYPHEN which look the same but have
+   * a different encoding.
+   */
+  escaped = _glade_util_strreplace (g_strescape (value, "‑"), TRUE, "--", "\\‑\\‑");
+  
+  comment = g_strconcat (" ", property, " ", escaped, " ", NULL);
+  path_node = glade_xml_node_new_comment (context, comment);
+  glade_xml_node_append_child (root, path_node);
+
+  g_free (escaped);
+  g_free (comment);
+}
+
+static void
 glade_project_write_required_libs (GladeProject *project,
                                    GladeXmlContext *context,
                                    GladeXmlNode *root)
@@ -2218,15 +2259,16 @@ glade_project_write_required_libs (GladeProject *project,
               glade_xml_node_set_property_string (req_node,
                                                   GLADE_XML_TAG_VERSION,
                                                   version);
+              glade_xml_node_append_child (root, req_node);
             }
           else
             {
-              gchar *comment = g_strdup_printf (" interface-requires %s %s ",
-                                                library, version);
-              req_node = glade_xml_node_new_comment (context, comment);
-              g_free (comment);
+              gchar *value = g_strconcat (library, " ", version, NULL);
+              glade_project_write_comment_property (project, context, root,
+                                                    "interface-requires",
+                                                    value);
+              g_free (value);
             }
-          glade_xml_node_append_child (root, req_node);
         }
       g_list_free_full (required, g_free);
     }
@@ -2237,15 +2279,9 @@ glade_project_write_resource_path (GladeProject *project,
                                    GladeXmlContext *context,
                                    GladeXmlNode *root)
 {
-  GladeXmlNode *path_node;
-  if (project->priv->resource_path)
-    {
-      gchar *comment = g_strdup_printf (" interface-local-resource-path %s ",
+  glade_project_write_comment_property (project, context, root,
+                                        "interface-local-resource-path",
                                         project->priv->resource_path);
-      path_node = glade_xml_node_new_comment (context, comment);
-      glade_xml_node_append_child (root, path_node);
-      g_free (comment);
-    }
 }
 
 static void
@@ -2254,7 +2290,6 @@ glade_project_write_css_provider_path (GladeProject *project,
                                        GladeXmlNode *root)
 {
   GladeProjectPrivate *priv = project->priv;
-  GladeXmlNode *path_node;
   gchar *dirname;
 
   if (priv->css_provider_path && priv->path &&
@@ -2267,13 +2302,9 @@ glade_project_write_css_provider_path (GladeProject *project,
       css_provider_path = g_file_get_relative_path (project_path, file_path);
 
       if (css_provider_path)
-        {
-          gchar *comment = g_strdup_printf (" interface-css-provider-path %s ",
-                                            css_provider_path);
-          path_node = glade_xml_node_new_comment (context, comment);
-          glade_xml_node_append_child (root, path_node);
-          g_free (comment);
-        }
+        glade_project_write_comment_property (project, context, root,
+                                              "interface-css-provider-path",
+                                              css_provider_path);
       else
         g_warning ("g_file_get_relative_path () return NULL");
 
@@ -2282,6 +2313,46 @@ glade_project_write_css_provider_path (GladeProject *project,
       g_free (css_provider_path);
       g_free (dirname);
     }
+}
+
+static void
+glade_project_write_license_data (GladeProject *project,
+                                  GladeXmlContext *context,
+                                  GladeXmlNode *root)
+{
+  gchar *license, *name, *description, *copyright, *authors;
+  
+  _glade_project_properties_get_license_data (GLADE_PROJECT_PROPERTIES (project->priv->prefs_dialog),
+                                              &license,
+                                              &name,
+                                              &description,
+                                              &copyright,
+                                              &authors);
+
+  if (!license)
+    return;
+  
+  glade_project_write_comment_property (project, context, root,
+                                        "interface-license-type",
+                                        license);
+  glade_project_write_comment_property (project, context, root,
+                                        "interface-name",
+                                        name);
+  glade_project_write_comment_property (project, context, root,
+                                        "interface-description",
+                                        description);
+  glade_project_write_comment_property (project, context, root,
+                                        "interface-copyright",
+                                        copyright);
+  glade_project_write_comment_property (project, context, root,
+                                        "interface-authors",
+                                        authors);
+
+  g_free (license);
+  g_free (name);
+  g_free (description);
+  g_free (copyright);
+  g_free (authors);
 }
 
 static gint
@@ -2498,7 +2569,9 @@ glade_project_write_comments (GladeProject *project,
 
   if (priv->license)
     {
-      gchar *comment = g_strdup_printf (GLADE_PROJECT_COMMENT"\n\n%s\n\n", priv->license);
+      /* Replace regular HYPHEN with NON-BREAKING HYPHEN */
+      gchar *license = _glade_util_strreplace (priv->license, FALSE, "--", "‑‑");
+      gchar *comment = g_strdup_printf (GLADE_PROJECT_COMMENT"\n\n%s\n\n", license);
       comment_node = glade_xml_doc_new_comment (doc, comment);
       g_free (comment);
     }
@@ -2539,6 +2612,8 @@ glade_project_write (GladeProject *project)
   glade_project_write_resource_path (project, context, root);
 
   glade_project_write_css_provider_path (project, context, root);
+
+  glade_project_write_license_data (project, context, root);
 
   /* Get sorted toplevels */
   toplevels = glade_project_get_ordered_toplevels (project);

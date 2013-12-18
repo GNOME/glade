@@ -28,12 +28,39 @@
 #ifndef __GLADE_PRIVATE_H__
 #define __GLADE_PRIVATE_H__
 
+#include "glade-project-properties.h"
+
 G_BEGIN_DECLS
 
 /* glade-catalog.c */
 
 GladeCatalog *_glade_catalog_get_catalog (const gchar *name);
 GList        *_glade_catalog_tsort       (GList *catalogs);
+
+
+/* glade-project-properties.c */
+void
+_glade_project_properties_set_license_data (GladeProjectProperties *props,
+                                            const gchar *license,
+                                            const gchar *name,
+                                            const gchar *description,
+                                            const gchar *copyright,
+                                            const gchar *authors);
+void
+_glade_project_properties_get_license_data (GladeProjectProperties *props,
+                                            gchar **license,
+                                            gchar **name,
+                                            gchar **description,
+                                            gchar **copyright,
+                                            gchar **authors);
+
+/* glade-utils.c */
+
+gchar *
+_glade_util_strreplace (gchar *str,
+                        gboolean free_str,
+                        const gchar *key,
+                        const gchar *replacement);
 
 /* glade-xml-utils.c */
 

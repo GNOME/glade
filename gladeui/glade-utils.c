@@ -39,6 +39,7 @@
 #include "glade-property.h"
 #include "glade-property-class.h"
 #include "glade-clipboard.h"
+#include "glade-private.h"
 
 #include <string.h>
 #include <gdk/gdkkeysyms.h>
@@ -519,6 +520,36 @@ glade_util_replace (gchar *str, gchar a, gchar b)
 
       str = g_utf8_next_char (str);
     }
+}
+
+/**
+ * _glade_util_strreplace:
+ * @str: a string
+ * @free_str: wheter to free str or not
+ * @key: the key string to search for
+ * @replacement: string to replace key
+ *
+ * Replaces each occurance of the string @key in @str to @replacement.
+ */
+gchar *
+_glade_util_strreplace (gchar *str,
+                        gboolean free_str,
+                        const gchar *key,
+                        const gchar *replacement)
+{
+  gchar *retval, **array;
+
+  if ((array = g_strsplit (str, key, -1)) && array[0])
+    retval = g_strjoinv (replacement, array);
+  else
+    retval = g_strdup (str);
+
+  g_strfreev (array);
+
+  if (free_str)
+    g_free (str);
+	
+  return retval;
 }
 
 /**
