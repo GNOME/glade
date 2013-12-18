@@ -1,4 +1,25 @@
 ============
+Glade 3.16.1
+============
+
+	- Fixed Bug 702314 "Cancelling an Add Parent action is destructive"
+	- pango attribute editor: don't write on cancel for color/font (Timm Bäder)
+	- Fixed _glade_dnd_dest_set() crash. thanks to Lubomir Rintel (bug 711568)
+	- Report parsing error when loading a project. (Bug 712289 "Glade silently fails to open malformed ui file")
+	- Sort object dependancy before saving using a topological sorting algorithm
+	  Fixes bug 709609 and 711858
+	- Fixed bug in GtkScrolledWindow editor, vertical adjustmet was refering to the wrong property.
+	- Fixed bug 711863 'Remove "Generated with glade" XML comment'
+	- Fixed <requires> tag output
+	- Fixed regresion infering GtkBox virtual size property at load.
+	- Fixed cellrenderer model column combobox chooser.
+	- Fix input issues with numeric property editors.
+	- Fixed Glade shortcuts like Delete by disabling keybindings used by shortcuts in every widget in the workspace.
+	  Now it is possible to delete a selected GtkEntry 
+	- Fixed bugs in the inspector exposed by D&D by implementing GladeProject GtkTreeModelIface with a GtkTreeStore proxy object.
+	- Bug 720585 - Fix order of customized property output. (Tristan)
+
+============
 Glade 3.16.0
 ============
 
