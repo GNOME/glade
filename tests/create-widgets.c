@@ -102,7 +102,9 @@ main (int   argc,
 	  /* FIXME: FileChooserButton leaks a GTask which will crash in the following test */
 	  adaptor_type != GTK_TYPE_FILE_CHOOSER_BUTTON &&
 	  /* FIXME: App choosers leak some async operations after finalization, causing subsequent tests to fail */
-	  !g_type_is_a (adaptor_type, GTK_TYPE_APP_CHOOSER))
+	  !g_type_is_a (adaptor_type, GTK_TYPE_APP_CHOOSER) &&
+          /* FIXME: GtkRecentChooser tries to remove an unknown source id */
+	  !g_type_is_a (adaptor_type, GTK_TYPE_RECENT_CHOOSER))
 	{
 	  gchar *test_path = g_strdup_printf ("/CreateWidget/%s", glade_widget_adaptor_get_name (adaptor));
 
