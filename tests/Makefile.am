@@ -11,7 +11,6 @@ progs_cppflags = \
 	$(common_defines)   \
 	-I$(top_srcdir)     \
 	-I$(top_builddir)   \
-	-DDATADIR=\"$(top_srcdir)/tests/\" \
 	$(GTK_CFLAGS)       \
 	$(GTK_MAC_BUNDLE_FLAG) \
 	$(GTK_MAC_CFLAGS)  \
