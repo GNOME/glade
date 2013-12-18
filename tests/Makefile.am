@@ -11,6 +11,7 @@ progs_cppflags = \
 	$(common_defines)   \
 	-I$(top_srcdir)     \
 	-I$(top_builddir)   \
+	-DDATADIR=\"$(top_srcdir)/tests/\" \
 	$(GTK_CFLAGS)       \
 	$(GTK_MAC_BUNDLE_FLAG) \
 	$(GTK_MAC_CFLAGS)  \
@@ -40,20 +41,36 @@ add_child_LDFLAGS  = $(progs_libs)
 add_child_LDADD    = $(progs_ldadd)
 add_child_SOURCES  = add-child.c
 
-# Test toplevel order in xml output
-toplevel_order_CPPFLAGS = $(progs_cppflags)
-toplevel_order_CFLAGS   = $(progs_cflags)
-toplevel_order_LDFLAGS  = $(progs_libs)
-toplevel_order_LDADD    = $(progs_ldadd)
-toplevel_order_SOURCES  = toplevel-order.c
 TOPLEVEL_ORDER_FILES = \
+	toplevel-order-resources.gresource.xml \
 	toplevel_order_test.glade \
-	toplevel_order_test1.glade \
+	toplevel_order_test.glade \
 	toplevel_order_test2.glade \
 	toplevel_order_test3.glade \
 	toplevel_order_test4.glade \
 	toplevel_order_test5.glade \
 	toplevel_order_test6.glade
+
+BUILT_SOURCES = toplevel-order-resources.c toplevel-order-resources.h
+# Generate resources
+toplevel-order-resources.h: $(TOPLEVEL_ORDER_FILES)
+	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) $(srcdir)/toplevel-order-resources.gresource.xml \
+		--target=$@ --sourcedir=$(srcdir) --c-name _glade --generate-header
+toplevel-order-resources.c: $(TOPLEVEL_ORDER_FILES)
+	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) $(srcdir)/toplevel-order-resources.gresource.xml \
+		--target=$@ --sourcedir=$(srcdir) --c-name _glade --generate-source
+
+# Test toplevel order in xml output
+toplevel_order_CPPFLAGS = $(progs_cppflags)
+toplevel_order_CFLAGS   = $(progs_cflags)
+toplevel_order_LDFLAGS  = $(progs_libs)
+toplevel_order_LDADD    = $(progs_ldadd)
+toplevel_order_SOURCES  = \
+	toplevel-order.c \
+	toplevel-order-resources.c
+
+noinst_HEADERS = \
+	toplevel-order-resources.h
 
 EXTRA_DIST = $(TOPLEVEL_ORDER_FILES)
 
