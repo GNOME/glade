@@ -3033,35 +3033,44 @@ glade_eprop_object_view (gboolean radio)
 static gchar *
 glade_eprop_object_dialog_title (GladeEditorProperty *eprop)
 {
-  GladeWidgetAdaptor *adaptor;
+  gboolean parentless;
   GParamSpec *pspec;
-  const gchar *format;
 
+  parentless = glade_property_class_parentless_widget (eprop->priv->klass);
   pspec = glade_property_class_get_pspec (eprop->priv->klass);
 
-  if (glade_property_class_parentless_widget (eprop->priv->klass))
-    format = GLADE_IS_PARAM_SPEC_OBJECTS (pspec) ?
-        _("Choose parentless %s type objects in this project") :
-        _("Choose a parentless %s in this project");
-  else
-    format = GLADE_IS_PARAM_SPEC_OBJECTS (pspec) ?
-        _("Choose %s type objects in this project") :
-        _("Choose a %s in this project");
-
   if (GLADE_IS_PARAM_SPEC_OBJECTS (pspec))
-    return g_strdup_printf (format, g_type_name
-                            (glade_param_spec_objects_get_type
-                             (GLADE_PARAM_SPEC_OBJECTS (pspec))));
-  else if ((adaptor =
-            glade_widget_adaptor_get_by_type (pspec->value_type)) != NULL)
-    return g_strdup_printf (format, glade_widget_adaptor_get_title (adaptor));
+    {
+      const gchar *typename = g_type_name (glade_param_spec_objects_get_type (GLADE_PARAM_SPEC_OBJECTS (pspec)));
 
-  /* Fallback on type name (which would look like "GtkButton"
-   * instead of "Button" and maybe not translated).
-   */
-  return g_strdup_printf (format, g_type_name (pspec->value_type));
+      if (parentless)
+        return g_strdup_printf (_("Choose parentless %s type objects in this project"), typename);
+      else
+        return g_strdup_printf (_("Choose %s type objects in this project"), typename);
+    }
+  else
+    {
+      GladeWidgetAdaptor *adaptor;
+      const gchar *title;
+
+      adaptor = glade_widget_adaptor_get_by_type (pspec->value_type);
+
+      if (adaptor != NULL)
+        title = glade_widget_adaptor_get_title (adaptor);
+      else
+        {
+          /* Fallback on type name (which would look like "GtkButton"
+           * instead of "Button" and maybe not translated).
+           */
+          title = g_type_name (pspec->value_type);
+        }
+
+      if (parentless)
+        return g_strdup_printf (_("Choose a parentless %s in this project"), title);
+      else
+        return g_strdup_printf (_("Choose a %s in this project"), title);
+    }
 }
-
 
 gboolean
 glade_editor_property_show_object_dialog (GladeProject *project,
