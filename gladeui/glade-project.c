@@ -2023,7 +2023,7 @@ glade_project_load_internal (GladeProject *project)
 
       if (message)
         {
-          glade_util_ui_message (glade_app_get_window (), GLADE_UI_ERROR, NULL, message);
+          glade_util_ui_message (glade_app_get_window (), GLADE_UI_ERROR, NULL, "%s", message);
           g_free (message);
         }
       else

@@ -866,7 +866,7 @@ glade_command_set_properties_list (GladeProject *project, GList *props)
 
   multiple = g_list_length (me->sdata) > 1;
   if (multiple)
-    glade_command_push_group (cmd->priv->description);
+    glade_command_push_group ("%s", cmd->priv->description);
 
   glade_command_check_group (GLADE_COMMAND (me));
 

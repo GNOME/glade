@@ -66,7 +66,7 @@ struct _GladeCommandClass
 GType                 glade_command_get_type             (void);
 
 void                  glade_command_push_group           (const gchar       *fmt,
-							  ...);
+							  ...) G_GNUC_PRINTF (1, 2);
 void                  glade_command_pop_group            (void);
 gint                  glade_command_get_group_depth      (void);
 
