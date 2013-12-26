@@ -10,10 +10,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glade3.HEAD\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glade&"
-"keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-10-03 20:36+0000\n"
-"PO-Revision-Date: 2013-11-12 10:23+0300\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=glade&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2013-12-24 19:06+0000\n"
+"PO-Revision-Date: 2013-12-24 22:03+0300\n"
 "Last-Translator: Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs32@gmail.com>\n"
 "Language-Team: team@lists.gnome.gr\n"
 "Language: el\n"
@@ -102,6 +102,7 @@ msgstr "Ενεργοποίηση '%s'"
 
 #. Name
 #: ../src/glade-window.c:582 ../gladeui/glade-base-editor.c:2030
+#: ../gladeui/glade-project-properties.ui.h:12
 #: ../plugins/gtk+/glade-about-dialog-editor.ui.h:2
 msgid "Name:"
 msgstr "Όνομα:"
@@ -142,134 +143,133 @@ msgstr "Αυτόματη αποθήκευση του '%s'"
 msgid "Error autosaving '%s'"
 msgstr "Σφάλμα κατά την αυτόματη αποθήκευση του '%s'"
 
-#: ../src/glade-window.c:1101
+#: ../src/glade-window.c:1114
 msgid "Open…"
 msgstr "Άνοιγμα…"
 
-#: ../src/glade-window.c:1135
+#: ../src/glade-window.c:1148
 #, c-format
 msgid "Project %s is still loading."
 msgstr "Το έργο %s ακόμα φορτώνει."
 
-#: ../src/glade-window.c:1154
-#| msgid "Failed to backup existing file, continue saving ?"
+#: ../src/glade-window.c:1167
 msgid "Failed to backup existing file, continue saving?"
 msgstr ""
-"Αποτυχία εφεδρικής αντιγραφής υπάρχοντος αρχείου, να συνεχιστεί η "
-"αποθήκευση;"
+"Αποτυχία εφεδρικής αντιγραφής υπάρχοντος αρχείου, να συνεχιστεί η αποθήκευση;"
 
-#: ../src/glade-window.c:1176
+#: ../src/glade-window.c:1189
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "Αποτυχία αποθήκευσης %s: %s"
 
-#: ../src/glade-window.c:1215
+#: ../src/glade-window.c:1228
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr "Το αρχείο %s έχει τροποποιηθεί πριν την ανάγνωσή του"
 
-#: ../src/glade-window.c:1219
+#: ../src/glade-window.c:1232
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr ""
 "Αν επιλέξετε αποθήκευση όλες οι αλλαγές που κάνατε μπορεί να χαθούν. "
 "Αποθήκευση ούτως ή άλλως;"
 
-#: ../src/glade-window.c:1224
+#: ../src/glade-window.c:1237
 msgid "_Save Anyway"
 msgstr "_Αποθήκευση ούτως ή άλλως"
 
-#: ../src/glade-window.c:1232
+#: ../src/glade-window.c:1245
 msgid "_Don't Save"
 msgstr "_Ακύρωση Αποθήκευσης"
 
-#: ../src/glade-window.c:1266
+#: ../src/glade-window.c:1279
 #, c-format
 msgid "Project '%s' saved"
 msgstr "Το έργο '%s' έχει αποθηκευτεί"
 
-#: ../src/glade-window.c:1297
+#: ../src/glade-window.c:1310
 msgid "Save As…"
 msgstr "Αποθήκευση Ως…"
 
-#: ../src/glade-window.c:1361
+#: ../src/glade-window.c:1374
 #, c-format
 msgid "Could not save the file %s"
 msgstr "Αδυναμία αποθήκευσης αρχείου %s"
 
-#: ../src/glade-window.c:1365
+#: ../src/glade-window.c:1378
 msgid "You do not have the permissions necessary to save the file."
 msgstr "Δεν έχετε τα κατάλληλα δικαιώματα για να αποθηκεύσετε το αρχείο."
 
-#: ../src/glade-window.c:1387
+#: ../src/glade-window.c:1400
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr ""
 "Αδύνατη η αποθήκευση του αρχείου %s. Κάποιο άλλο έργο χρησιμοποιεί αυτή τη "
 "διαδρομή."
 
-#: ../src/glade-window.c:1412
+#: ../src/glade-window.c:1425
 msgid "No open projects to save"
 msgstr "Δεν υπάρχουν ανοιχτά προγράμματα για αποθήκευση"
 
-#: ../src/glade-window.c:1442
+#: ../src/glade-window.c:1455
 #, c-format
 msgid "Save changes to project \"%s\" before closing?"
 msgstr "Αποθήκευση αλλαγών στο έργο \"%s\" πριν το κλείσιμο;"
 
-#: ../src/glade-window.c:1450
+#: ../src/glade-window.c:1463
 msgid "Your changes will be lost if you don't save them."
 msgstr "Οι αλλαγές στο έγγραφο θα χαθούν οριστικά αν δεν τις αποθηκεύσετε."
 
-#: ../src/glade-window.c:1454
+#: ../src/glade-window.c:1467
 msgid "Close _without Saving"
 msgstr "Κλείσιμο _χωρίς αποθήκευση"
 
-#: ../src/glade-window.c:1484
+#: ../src/glade-window.c:1497
 msgid "Save…"
 msgstr "Αποθήκευση…"
 
-#: ../src/glade-window.c:2450
+#: ../src/glade-window.c:2463
 msgid "Close document"
 msgstr "Κλείσιμο εγγράφου"
 
-#: ../src/glade-window.c:2540
+#: ../src/glade-window.c:2553
 msgid "Could not create a new project."
 msgstr "Αδυναμία δημιουργίας νέου έργου."
 
-#: ../src/glade-window.c:2593
+#: ../src/glade-window.c:2606
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr "Στο έργο %s υπάρχουν μη αποθηκευμένες αλλαγές"
 
-#: ../src/glade-window.c:2598
+#: ../src/glade-window.c:2611
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr ""
 "Αν επιλέξετε επαναφόρτωση όλες οι αλλαγές που κάνατε μπορεί να χαθούν. "
 "Επαναφόρτωση ούτως ή άλλως;"
 
-#: ../src/glade-window.c:2608
+#: ../src/glade-window.c:2621
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr "Το αρχείο έργου %s τροποποιήθηκε εξωτερικά"
 
-#: ../src/glade-window.c:2613
+#: ../src/glade-window.c:2626
 msgid "Do you want to reload the project?"
 msgstr "Θέλετε να επαναφορτώσετε το έργο;"
 
-#: ../src/glade-window.c:2619
+#: ../src/glade-window.c:2632
 msgid "_Reload"
 msgstr "_Επαναφόρτωση"
 
-#: ../src/glade-window.c:3191
+#: ../src/glade-window.c:3204
 msgid "Palette"
 msgstr "Παλέτα"
 
-#: ../src/glade-window.c:3193
+#: ../src/glade-window.c:3206
 msgid "Inspector"
 msgstr "Επόπτης"
 
-#: ../src/glade-window.c:3195 ../src/glade.glade.h:13
+#: ../src/glade-window.c:3208 ../src/glade.glade.h:33
 #: ../gladeui/glade-editor.c:320 ../gladeui/glade-widget.c:1385
+#: ../gladeui/glade-project-properties.ui.h:11
 #: ../plugins/gtk+/glade-gtk-action-group.c:177
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:361
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:511
@@ -326,301 +326,6 @@ msgid "Unable to open '%s', the file does not exist.\n"
 msgstr "Αδύνατο το άνοιγμα του '%s', το αρχείο δεν υπάρχει.\n"
 
 #: ../src/glade.glade.h:1
-msgid "Select"
-msgstr "Επιλογή"
-
-#: ../src/glade.glade.h:2
-msgid "Select widgets in the workspace"
-msgstr "Επιλογή γραφικών συστατικών στο χώρο εργασίας"
-
-#: ../src/glade.glade.h:3
-msgid "Drag Resize"
-msgstr "Αλλαγή διαστάσεων με σύρσιμο"
-
-#: ../src/glade.glade.h:4
-msgid "Drag and resize widgets in the workspace"
-msgstr "Σύρσιμο και αλλαγή διαστάσεων γραφικών συστατικών στο χώρο εργασίας"
-
-#: ../src/glade.glade.h:5
-msgid "Margin Edit"
-msgstr "Επεξεργασία περιθωρίου"
-
-#: ../src/glade.glade.h:6
-msgid "Edit widget margins"
-msgstr "Επεξεργασία περιθωρίου εφαρμογής"
-
-#: ../src/glade.glade.h:7
-msgid "Alignment Edit"
-msgstr "Επεξεργασία στοίχισης"
-
-#: ../src/glade.glade.h:8
-msgid "Edit widget alignment"
-msgstr "Επεξεργασία στοίχισης εφαρμογής"
-
-#. GtkFileChooserAction enumeration value
-#: ../src/glade.glade.h:9 ../plugins/gtk+/gtk+.xml.in.h:559
-msgid "Save"
-msgstr "Αποθήκευση"
-
-#: ../src/glade.glade.h:10
-msgid "Save the current project"
-msgstr "Αποθήκευση αυτού του προγράμματος"
-
-#: ../src/glade.glade.h:11
-msgid "Save _As"
-msgstr "Αποθήκευση _ως"
-
-#: ../src/glade.glade.h:12
-msgid "Save the current project with a different name"
-msgstr "Αποθήκευση αυτού του προγράμματος με άλλο όνομα"
-
-#: ../src/glade.glade.h:14
-msgid "Edit project properties"
-msgstr "Επεξεργασία ιδιοτήτων έργου"
-
-#. GtkButtonsType enumeration value
-#: ../src/glade.glade.h:15 ../plugins/gtk+/gtk+.xml.in.h:726
-msgid "Close"
-msgstr "Κλείσιμο"
-
-#: ../src/glade.glade.h:16
-msgid "Close the current project"
-msgstr "Κλείσιμο αυτού του προγράμματος"
-
-#: ../src/glade.glade.h:17
-msgid "Undo"
-msgstr "Αναίρεση"
-
-#: ../src/glade.glade.h:18
-msgid "Undo the last action"
-msgstr "Αναίρεση της τελευταίας ενέργειας"
-
-#: ../src/glade.glade.h:19
-msgid "Redo"
-msgstr "Επανάληψη"
-
-#: ../src/glade.glade.h:20
-msgid "Redo the last action"
-msgstr "Επανάληψη της τελευταίας ενέργειας"
-
-#: ../src/glade.glade.h:21
-msgid "Cut"
-msgstr "Αποκοπή"
-
-#: ../src/glade.glade.h:22
-msgid "Cut the selection"
-msgstr "Αποκοπή επιλεγμένων"
-
-#: ../src/glade.glade.h:23
-msgid "Copy"
-msgstr "Αντιγραφή"
-
-#: ../src/glade.glade.h:24
-msgid "Copy the selection"
-msgstr "Αντιγραφή των επιλεγμένων"
-
-#: ../src/glade.glade.h:25
-msgid "Paste"
-msgstr "Επικόλληση"
-
-#: ../src/glade.glade.h:26
-msgid "Paste the clipboard"
-msgstr "Επικόλληση του προχείρου"
-
-#: ../src/glade.glade.h:27 ../gladeui/glade-object-stub.c:101
-msgid "Delete"
-msgstr "Διαγραφή"
-
-#: ../src/glade.glade.h:28
-msgid "Delete the selection"
-msgstr "Διαγραφή της επιλογής"
-
-#: ../src/glade.glade.h:29
-msgid "_Previous Project"
-msgstr "_Προηγούμενο έργο"
-
-#: ../src/glade.glade.h:30
-msgid "Activate previous project"
-msgstr "Ενεργοποίηση προηγούμενου έργου"
-
-#: ../src/glade.glade.h:31
-msgid "_Next Project"
-msgstr "_Επόμενο Έργο"
-
-#: ../src/glade.glade.h:32
-msgid "Activate next project"
-msgstr "Ενεργοποίηση επόμενου έργου"
-
-#: ../src/glade.glade.h:33
-msgid "New"
-msgstr "Νέο"
-
-#: ../src/glade.glade.h:34
-msgid "Create a new project"
-msgstr "Δημιουργία νέου έργου"
-
-#. GtkFileChooserAction enumeration value
-#: ../src/glade.glade.h:35 ../plugins/gtk+/gtk+.xml.in.h:561
-msgid "Open"
-msgstr "Άνοιγμα"
-
-#: ../src/glade.glade.h:36
-msgid "Open a project"
-msgstr "Άνοιγμα έργου"
-
-#: ../src/glade.glade.h:37
-msgid "Quit"
-msgstr "Έξοδος"
-
-#: ../src/glade.glade.h:38
-msgid "Quit the program"
-msgstr "Έξοδος από το πρόγραμμα"
-
-#: ../src/glade.glade.h:39
-msgid "About"
-msgstr "Περί"
-
-#: ../src/glade.glade.h:40
-msgid "About this application"
-msgstr "Πέρι της εφαρμογής"
-
-#: ../src/glade.glade.h:41
-msgid "_Developer Reference"
-msgstr "_Παραπομπές για τους προγραμματιστές"
-
-#: ../src/glade.glade.h:42
-msgid "Display the developer reference manual"
-msgstr "Εμφάνιση αναφορών στη βοήθεια για ανάπτυξη προγραμμάτων"
-
-#: ../src/glade.glade.h:43
-msgid "Preferences"
-msgstr "Προτιμήσεις"
-
-#: ../src/glade.glade.h:44
-msgid "Edit Glade preferences"
-msgstr "Επεξεργασία προτιμήσεων του Glade"
-
-#: ../src/glade.glade.h:45
-msgid "Open _Recent"
-msgstr "Άνοιγμα_Πρόσφατου"
-
-#: ../src/glade.glade.h:46
-msgid "_Use Small Icons"
-msgstr "_Χρήση μικρών εικονιδίων"
-
-#: ../src/glade.glade.h:47
-msgid "Show items using small icons"
-msgstr "Εμφάνιση στοιχείων χρησιμοποιώντας μικρά εικονίδια"
-
-#: ../src/glade.glade.h:48
-msgid "Dock _Palette"
-msgstr "Προσάρτηση _παλέτας"
-
-#: ../src/glade.glade.h:49
-msgid "Dock the palette into the main window"
-msgstr "Προσάρτηση της παλέτας στο κύριο παράθυρο"
-
-#: ../src/glade.glade.h:50
-msgid "Dock _Inspector"
-msgstr "Προσάρτηση ε_πόπτη"
-
-#: ../src/glade.glade.h:51
-msgid "Dock the inspector into the main window"
-msgstr "Προσάρτηση του επόπτη στο κύριο παράθυρο"
-
-#: ../src/glade.glade.h:52
-msgid "Dock Prop_erties"
-msgstr "_Ιδιότητες προσάρτησης"
-
-#: ../src/glade.glade.h:53
-msgid "Dock the editor into the main window"
-msgstr "Προσάρτηση του επεξεργαστή στο κύριο παράθυρο"
-
-#: ../src/glade.glade.h:54
-msgid "_Statusbar"
-msgstr "_Γραμμή κατάστασης"
-
-#: ../src/glade.glade.h:55
-msgid "Show the statusbar"
-msgstr "Εμφάνιση γραμμής κατάστασης"
-
-#: ../src/glade.glade.h:56
-msgid "Tool_bar"
-msgstr "Εργαλειο_θήκη"
-
-#: ../src/glade.glade.h:57
-msgid "Show the toolbar"
-msgstr "Εμφάνιση γραμμής εργαλείων"
-
-#: ../src/glade.glade.h:58
-msgid "Project _Tabs"
-msgstr "_Καρτέλες έργου"
-
-#: ../src/glade.glade.h:59
-msgid "Show notebook tabs for loaded projects"
-msgstr "Προβολή καρτελών σημειωματαρίου για τα φορτωμένα έργα"
-
-#: ../src/glade.glade.h:60
-msgid "Text _beside icons"
-msgstr "Κείμε_νο δίπλα από εικονίδια"
-
-#: ../src/glade.glade.h:61
-msgid "Display items as text beside icons"
-msgstr "Προβολή στοιχείων ως κείμενο και εικονίδια μαζί"
-
-#: ../src/glade.glade.h:62
-msgid "_Icons only"
-msgstr "_Μόνο εικονίδια"
-
-#: ../src/glade.glade.h:63
-msgid "Display items as icons only"
-msgstr "Προβολή στοιχείων μόνο σαν εικονίδια"
-
-#: ../src/glade.glade.h:64
-msgid "_Text only"
-msgstr "_Μόνο κείμενο"
-
-#: ../src/glade.glade.h:65
-msgid "Display items as text only"
-msgstr "Προβολή στοιχείων μόνο σε μορφή κειμένου"
-
-#: ../src/glade.glade.h:66
-msgid "_Editor Header"
-msgstr "_Επεξεργαστής κεφαλίδας"
-
-#: ../src/glade.glade.h:67
-msgid "Show the header in the property editor"
-msgstr "Εμφάνιση της κεφαλίδας στον επεξεργαστή ιδιοτήτων"
-
-#: ../src/glade.glade.h:68 ../plugins/gtk+/glade-gtk-menu-bar.c:113
-msgid "_File"
-msgstr "_Αρχείο"
-
-#: ../src/glade.glade.h:69 ../plugins/gtk+/glade-gtk-menu-bar.c:124
-msgid "_Edit"
-msgstr "_Επεξεργασία"
-
-#: ../src/glade.glade.h:70 ../plugins/gtk+/glade-gtk-menu-bar.c:133
-msgid "_View"
-msgstr "_Προβολή"
-
-#: ../src/glade.glade.h:71
-msgid "Palette _Appearance"
-msgstr "Εμ_φάνιση παλέτας"
-
-#: ../src/glade.glade.h:72
-msgid "_Projects"
-msgstr "Έ_ργα"
-
-#: ../src/glade.glade.h:73 ../plugins/gtk+/glade-gtk-menu-bar.c:137
-msgid "_Help"
-msgstr "_Βοήθεια"
-
-#: ../src/glade.glade.h:74
-#| msgid ""
-#| "Copyright © 2001-2006 Ximian, Inc.\n"
-#| "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
-#| "Copyright © 2001-2012 Tristan Van Berkom, Juan Pablo Ugarte, et al."
 msgid ""
 "Copyright © 2001-2006 Ximian, Inc.\n"
 "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
@@ -628,18 +333,17 @@ msgid ""
 msgstr ""
 "Πνευματικά δικαιώματα © 2001-2006 Ximian, Inc.\n"
 "Πνευματικά δικαιώματα © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, κ.α.\n"
-"Πνευματικά δικαιώματα © 2004-2013 Tristan Van Berkom, Juan Pablo Ugarte, "
-"κ.α."
+"Πνευματικά δικαιώματα © 2004-2013 Tristan Van Berkom, Juan Pablo Ugarte, κ.α."
 
-#: ../src/glade.glade.h:77
+#: ../src/glade.glade.h:4
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr "Εργαλείο σχεδίασης διεπαφών χρήστη για GTK+ και GNOME."
 
-#: ../src/glade.glade.h:78
+#: ../src/glade.glade.h:5
 msgid "Visit Glade web site"
 msgstr "Επισκεφθείτε τον ιστότοπο του Glade"
 
-#: ../src/glade.glade.h:79
+#: ../src/glade.glade.h:6
 msgid ""
 "Glade is free software; you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as \n"
@@ -656,8 +360,8 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, \n"
 "MA 02110-1301, USA."
 msgstr ""
-"Το πρόγραμμα Glade είναι ελεύθερο λογισμικό. Μπορείτε να το αναδιανείμετε "
-"ή/και να το τροποποιήσετε\n"
+"Το πρόγραμμα Glade είναι ελεύθερο λογισμικό. Μπορείτε να το αναδιανείμετε ή/"
+"και να το τροποποιήσετε\n"
 "κάτω από τους όρους της άδειας GNU General Public Licence\n"
 "όπως έχουν δημοσιοποιηθεί από τη Free Software Foundation, είτε για την "
 "έκδοση 2\n"
@@ -673,11 +377,302 @@ msgstr ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,\n"
 "MA 02110-1301, USA."
 
-#: ../src/glade.glade.h:93
+#: ../src/glade.glade.h:20
 msgid "translator-credits"
 msgstr ""
 "Δημήτρης Σπίγγος <dmtrs32@gmail.com>\n"
 "Ελένη Μαρία Στέα <ufuntu@gmail.com>"
+
+#: ../src/glade.glade.h:21
+msgid "Select"
+msgstr "Επιλογή"
+
+#: ../src/glade.glade.h:22
+msgid "Select widgets in the workspace"
+msgstr "Επιλογή γραφικών συστατικών στο χώρο εργασίας"
+
+#: ../src/glade.glade.h:23
+msgid "Drag Resize"
+msgstr "Αλλαγή διαστάσεων με σύρσιμο"
+
+#: ../src/glade.glade.h:24
+msgid "Drag and resize widgets in the workspace"
+msgstr "Σύρσιμο και αλλαγή διαστάσεων γραφικών συστατικών στο χώρο εργασίας"
+
+#: ../src/glade.glade.h:25
+msgid "Margin Edit"
+msgstr "Επεξεργασία περιθωρίου"
+
+#: ../src/glade.glade.h:26
+msgid "Edit widget margins"
+msgstr "Επεξεργασία περιθωρίου εφαρμογής"
+
+#: ../src/glade.glade.h:27
+msgid "Alignment Edit"
+msgstr "Επεξεργασία στοίχισης"
+
+#: ../src/glade.glade.h:28
+msgid "Edit widget alignment"
+msgstr "Επεξεργασία στοίχισης εφαρμογής"
+
+#. GtkFileChooserAction enumeration value
+#: ../src/glade.glade.h:29 ../plugins/gtk+/gtk+.xml.in.h:559
+msgid "Save"
+msgstr "Αποθήκευση"
+
+#: ../src/glade.glade.h:30
+msgid "Save the current project"
+msgstr "Αποθήκευση αυτού του προγράμματος"
+
+#: ../src/glade.glade.h:31
+msgid "Save _As"
+msgstr "Αποθήκευση _ως"
+
+#: ../src/glade.glade.h:32
+msgid "Save the current project with a different name"
+msgstr "Αποθήκευση αυτού του προγράμματος με άλλο όνομα"
+
+#: ../src/glade.glade.h:34
+msgid "Edit project properties"
+msgstr "Επεξεργασία ιδιοτήτων έργου"
+
+#. GtkButtonsType enumeration value
+#: ../src/glade.glade.h:35 ../plugins/gtk+/gtk+.xml.in.h:726
+msgid "Close"
+msgstr "Κλείσιμο"
+
+#: ../src/glade.glade.h:36
+msgid "Close the current project"
+msgstr "Κλείσιμο αυτού του προγράμματος"
+
+#: ../src/glade.glade.h:37
+msgid "Undo"
+msgstr "Αναίρεση"
+
+#: ../src/glade.glade.h:38
+msgid "Undo the last action"
+msgstr "Αναίρεση της τελευταίας ενέργειας"
+
+#: ../src/glade.glade.h:39
+msgid "Redo"
+msgstr "Επανάληψη"
+
+#: ../src/glade.glade.h:40
+msgid "Redo the last action"
+msgstr "Επανάληψη της τελευταίας ενέργειας"
+
+#: ../src/glade.glade.h:41
+msgid "Cut"
+msgstr "Αποκοπή"
+
+#: ../src/glade.glade.h:42
+msgid "Cut the selection"
+msgstr "Αποκοπή επιλεγμένων"
+
+#: ../src/glade.glade.h:43
+msgid "Copy"
+msgstr "Αντιγραφή"
+
+#: ../src/glade.glade.h:44
+msgid "Copy the selection"
+msgstr "Αντιγραφή των επιλεγμένων"
+
+#: ../src/glade.glade.h:45
+msgid "Paste"
+msgstr "Επικόλληση"
+
+#: ../src/glade.glade.h:46
+msgid "Paste the clipboard"
+msgstr "Επικόλληση του προχείρου"
+
+#: ../src/glade.glade.h:47 ../gladeui/glade-object-stub.c:101
+msgid "Delete"
+msgstr "Διαγραφή"
+
+#: ../src/glade.glade.h:48
+msgid "Delete the selection"
+msgstr "Διαγραφή της επιλογής"
+
+#: ../src/glade.glade.h:49
+msgid "_Previous Project"
+msgstr "_Προηγούμενο έργο"
+
+#: ../src/glade.glade.h:50
+msgid "Activate previous project"
+msgstr "Ενεργοποίηση προηγούμενου έργου"
+
+#: ../src/glade.glade.h:51
+msgid "_Next Project"
+msgstr "_Επόμενο Έργο"
+
+#: ../src/glade.glade.h:52
+msgid "Activate next project"
+msgstr "Ενεργοποίηση επόμενου έργου"
+
+#: ../src/glade.glade.h:53
+msgid "_Use Small Icons"
+msgstr "_Χρήση μικρών εικονιδίων"
+
+#: ../src/glade.glade.h:54
+msgid "Show items using small icons"
+msgstr "Εμφάνιση στοιχείων χρησιμοποιώντας μικρά εικονίδια"
+
+#: ../src/glade.glade.h:55
+msgid "Dock _Palette"
+msgstr "Προσάρτηση _παλέτας"
+
+#: ../src/glade.glade.h:56
+msgid "Dock the palette into the main window"
+msgstr "Προσάρτηση της παλέτας στο κύριο παράθυρο"
+
+#: ../src/glade.glade.h:57
+msgid "Dock _Inspector"
+msgstr "Προσάρτηση ε_πόπτη"
+
+#: ../src/glade.glade.h:58
+msgid "Dock the inspector into the main window"
+msgstr "Προσάρτηση του επόπτη στο κύριο παράθυρο"
+
+#: ../src/glade.glade.h:59
+msgid "Dock Prop_erties"
+msgstr "_Ιδιότητες προσάρτησης"
+
+#: ../src/glade.glade.h:60
+msgid "Dock the editor into the main window"
+msgstr "Προσάρτηση του επεξεργαστή στο κύριο παράθυρο"
+
+#: ../src/glade.glade.h:61
+msgid "_Statusbar"
+msgstr "_Γραμμή κατάστασης"
+
+#: ../src/glade.glade.h:62
+msgid "Show the statusbar"
+msgstr "Εμφάνιση γραμμής κατάστασης"
+
+#: ../src/glade.glade.h:63
+msgid "Tool_bar"
+msgstr "Εργαλειο_θήκη"
+
+#: ../src/glade.glade.h:64
+msgid "Show the toolbar"
+msgstr "Εμφάνιση γραμμής εργαλείων"
+
+#: ../src/glade.glade.h:65
+msgid "Project _Tabs"
+msgstr "_Καρτέλες έργου"
+
+#: ../src/glade.glade.h:66
+msgid "Show notebook tabs for loaded projects"
+msgstr "Προβολή καρτελών σημειωματαρίου για τα φορτωμένα έργα"
+
+#: ../src/glade.glade.h:67
+msgid "Text _beside icons"
+msgstr "Κείμε_νο δίπλα από εικονίδια"
+
+#: ../src/glade.glade.h:68
+msgid "Display items as text beside icons"
+msgstr "Προβολή στοιχείων ως κείμενο και εικονίδια μαζί"
+
+#: ../src/glade.glade.h:69
+msgid "_Icons only"
+msgstr "_Μόνο εικονίδια"
+
+#: ../src/glade.glade.h:70
+msgid "Display items as icons only"
+msgstr "Προβολή στοιχείων μόνο σαν εικονίδια"
+
+#: ../src/glade.glade.h:71
+msgid "_Text only"
+msgstr "_Μόνο κείμενο"
+
+#: ../src/glade.glade.h:72
+msgid "Display items as text only"
+msgstr "Προβολή στοιχείων μόνο σε μορφή κειμένου"
+
+#: ../src/glade.glade.h:73
+msgid "_Editor Header"
+msgstr "_Επεξεργαστής κεφαλίδας"
+
+#: ../src/glade.glade.h:74
+msgid "Show the header in the property editor"
+msgstr "Εμφάνιση της κεφαλίδας στον επεξεργαστή ιδιοτήτων"
+
+#: ../src/glade.glade.h:75
+msgid "New"
+msgstr "Νέο"
+
+#: ../src/glade.glade.h:76
+msgid "Create a new project"
+msgstr "Δημιουργία νέου έργου"
+
+#. GtkFileChooserAction enumeration value
+#: ../src/glade.glade.h:77 ../plugins/gtk+/gtk+.xml.in.h:561
+msgid "Open"
+msgstr "Άνοιγμα"
+
+#: ../src/glade.glade.h:78
+msgid "Open a project"
+msgstr "Άνοιγμα έργου"
+
+#: ../src/glade.glade.h:79
+msgid "Quit"
+msgstr "Έξοδος"
+
+#: ../src/glade.glade.h:80
+msgid "Quit the program"
+msgstr "Έξοδος από το πρόγραμμα"
+
+#: ../src/glade.glade.h:81
+msgid "About"
+msgstr "Περί"
+
+#: ../src/glade.glade.h:82
+msgid "About this application"
+msgstr "Πέρι της εφαρμογής"
+
+#: ../src/glade.glade.h:83
+msgid "_Developer Reference"
+msgstr "_Παραπομπές για τους προγραμματιστές"
+
+#: ../src/glade.glade.h:84
+msgid "Display the developer reference manual"
+msgstr "Εμφάνιση αναφορών στη βοήθεια για ανάπτυξη προγραμμάτων"
+
+#: ../src/glade.glade.h:85
+msgid "Preferences"
+msgstr "Προτιμήσεις"
+
+#: ../src/glade.glade.h:86
+msgid "Edit Glade preferences"
+msgstr "Επεξεργασία προτιμήσεων του Glade"
+
+#: ../src/glade.glade.h:87
+msgid "Open _Recent"
+msgstr "Άνοιγμα_Πρόσφατου"
+
+#: ../src/glade.glade.h:88 ../plugins/gtk+/glade-gtk-menu-bar.c:113
+msgid "_File"
+msgstr "_Αρχείο"
+
+#: ../src/glade.glade.h:89 ../plugins/gtk+/glade-gtk-menu-bar.c:124
+msgid "_Edit"
+msgstr "_Επεξεργασία"
+
+#: ../src/glade.glade.h:90 ../plugins/gtk+/glade-gtk-menu-bar.c:133
+msgid "_View"
+msgstr "_Προβολή"
+
+#: ../src/glade.glade.h:91
+msgid "Palette _Appearance"
+msgstr "Εμ_φάνιση παλέτας"
+
+#: ../src/glade.glade.h:92
+msgid "_Projects"
+msgstr "Έ_ργα"
+
+#: ../src/glade.glade.h:93 ../plugins/gtk+/glade-gtk-menu-bar.c:137
+msgid "_Help"
+msgstr "_Βοήθεια"
 
 #: ../src/glade-preferences.glade.h:1
 msgid "Glade Preferences"
@@ -878,7 +873,7 @@ msgstr "Ιεραρχία"
 msgid "Label"
 msgstr "Ετικέτα"
 
-#: ../gladeui/glade-base-editor.c:1793 ../gladeui/glade-widget-adaptor.c:1432
+#: ../gladeui/glade-base-editor.c:1793 ../gladeui/glade-widget-adaptor.c:1399
 msgid "Type"
 msgstr "Τύπος"
 
@@ -1009,7 +1004,7 @@ msgstr "Καθορισμός πολλαπλών ιδιοτήτων"
 msgid "Setting %s of %s"
 msgstr "Καθορίζεται το %s από το %s"
 
-#: ../gladeui/glade-command.c:823 ../gladeui/glade-editor-property.c:3289
+#: ../gladeui/glade-command.c:823 ../gladeui/glade-editor-property.c:3350
 #, c-format
 msgid "Setting %s of %s to %s"
 msgstr "Καθορίζεται το %s από το %s στο %s"
@@ -1111,13 +1106,11 @@ msgstr "Ορισμός της έκδοσης προορισμού του '%s' σ
 
 #: ../gladeui/glade-command.c:2803
 #, c-format
-#| msgid "Edit project properties"
 msgid "Setting project's %s property"
 msgstr "Ορισμός ιδιότητας %s του έργου"
 
 #: ../gladeui/glade-command.c:2906
 #, c-format
-#| msgid "Setting translation domain to '%s'"
 msgid "Setting resource path to '%s'"
 msgstr "Ορισμός διαδρομής πόρου σε '%s'"
 
@@ -1137,7 +1130,6 @@ msgid "Setting widget '%s' as template"
 msgstr "Ορισμός του γραφικού συστατικού '%s' ως προτύπου"
 
 #: ../gladeui/glade-command.c:2978
-#| msgid "Unsetting widget '%s' as template"
 msgid "Unsetting template"
 msgstr "Αναίρεση προτύπου"
 
@@ -1268,80 +1260,80 @@ msgstr "_Περιγραφή ιδιοτήτων:"
 msgid "%s - %s Properties"
 msgstr "Ιδιότητες %s -%s"
 
-#: ../gladeui/glade-editor-property.c:670
+#: ../gladeui/glade-editor-property.c:671
 msgid "Property Class"
 msgstr "Κλάση ιδιοτήτων"
 
-#: ../gladeui/glade-editor-property.c:671
+#: ../gladeui/glade-editor-property.c:672
 msgid "The GladePropertyClass this GladeEditorProperty was created for"
 msgstr ""
 "Η κλάση ιδιοτήτων GladePropertyClass: αυτή η ιδιότητα του GladeEditor "
 "δημιουργήθηκε για"
 
-#: ../gladeui/glade-editor-property.c:677
+#: ../gladeui/glade-editor-property.c:678
 #: ../gladeui/glade-property-shell.c:124
 msgid "Use Command"
 msgstr "Χρήση εντολής"
 
-#: ../gladeui/glade-editor-property.c:678
+#: ../gladeui/glade-editor-property.c:679
 msgid "Whether we should use the command API for the undo/redo stack"
 msgstr ""
 "Αν επιτρέπεται η χρήση της εντολής API για τη στοίβα με τις αναιρέσεις/"
 "επαναλήψεις"
 
-#: ../gladeui/glade-editor-property.c:684
+#: ../gladeui/glade-editor-property.c:685
 msgid "Disable Check"
 msgstr "Απενεργοποίηση ελέγχου"
 
-#: ../gladeui/glade-editor-property.c:685
+#: ../gladeui/glade-editor-property.c:686
 msgid "Whether to explicitly disable the check button"
 msgstr "Αν θα απενεργοποιηθεί ρητά το κουμπί ελέγχου"
 
-#: ../gladeui/glade-editor-property.c:691
+#: ../gladeui/glade-editor-property.c:692
 #: ../gladeui/glade-property-label.c:152 ../gladeui/glade-property-shell.c:136
 msgid "Custom Text"
 msgstr "Προσαρμοσμένο κείμενο"
 
-#: ../gladeui/glade-editor-property.c:692
+#: ../gladeui/glade-editor-property.c:693
 #: ../gladeui/glade-property-shell.c:137
 msgid "Custom Text to display in the property label"
 msgstr "Προσαρμοσμένο κείμενο για εμφάνιση της ετικέτας ιδιότητας"
 
-#: ../gladeui/glade-editor-property.c:1216
+#: ../gladeui/glade-editor-property.c:1262
 msgid "Select Fields"
 msgstr "Επιλογή πεδίων"
 
-#: ../gladeui/glade-editor-property.c:1239
+#: ../gladeui/glade-editor-property.c:1285
 msgid "_Select individual fields:"
 msgstr "_Επιλογή ανεξάρτητων πεδίων:"
 
-#: ../gladeui/glade-editor-property.c:1585
+#: ../gladeui/glade-editor-property.c:1635
 msgid "Select Named Icon"
 msgstr "Επιλογή προσαρμοσμένου εικονιδίου"
 
-#: ../gladeui/glade-editor-property.c:1892
+#: ../gladeui/glade-editor-property.c:1942
 msgid "Edit Text"
 msgstr "Επεξεργασία Κειμένου"
 
 #. Text
-#: ../gladeui/glade-editor-property.c:1922
+#: ../gladeui/glade-editor-property.c:1972
 msgid "_Text:"
 msgstr "_Κείμενο:"
 
 #. Translatable
-#: ../gladeui/glade-editor-property.c:1958
+#: ../gladeui/glade-editor-property.c:2008
 msgid "T_ranslatable"
 msgstr "Μ_εταφράσιμο"
 
-#: ../gladeui/glade-editor-property.c:1964 ../gladeui/glade-property.c:677
+#: ../gladeui/glade-editor-property.c:2014 ../gladeui/glade-property.c:677
 msgid "Whether this property is translatable"
 msgstr "Αν αυτή η ιδιότητα μπορεί να μεταφραστεί ή όχι"
 
-#: ../gladeui/glade-editor-property.c:1972
+#: ../gladeui/glade-editor-property.c:2022
 msgid "Conte_xt for translation:"
 msgstr "Π_εριεχόμενο για τους μεταφραστές:"
 
-#: ../gladeui/glade-editor-property.c:1978
+#: ../gladeui/glade-editor-property.c:2028
 msgid ""
 "For short and ambiguous strings: type a word here to differentiate the "
 "meaning of this string from the meaning of other occurrences of the same "
@@ -1351,63 +1343,63 @@ msgstr ""
 "διαφοροποιηθούν η έννοια της παρούσας συμβολοσειράς από την έννοια των άλλων "
 "περιστατικών της ίδιας σειράς"
 
-#: ../gladeui/glade-editor-property.c:2010
+#: ../gladeui/glade-editor-property.c:2060
 msgid "Co_mments for translators:"
 msgstr "Σχό_λια για τους μεταφραστές:"
 
-#: ../gladeui/glade-editor-property.c:2100
+#: ../gladeui/glade-editor-property.c:2150
 msgid "Select a file from the project resource directory"
 msgstr "Επιλογή αρχείου από τον κατάλογο πηγών του έργου"
 
 #. GtkInputPurpose enumeration value
-#: ../gladeui/glade-editor-property.c:2966
-#: ../gladeui/glade-widget-adaptor.c:1425 ../gladeui/glade-widget.c:1349
+#: ../gladeui/glade-editor-property.c:3018
+#: ../gladeui/glade-widget-adaptor.c:1392 ../gladeui/glade-widget.c:1349
 #: ../plugins/gtk+/gtk+.xml.in.h:499
 msgid "Name"
 msgstr "Όνομα"
 
-#: ../gladeui/glade-editor-property.c:2975 ../gladeui/glade-property.c:644
+#: ../gladeui/glade-editor-property.c:3027 ../gladeui/glade-property.c:644
 msgid "Class"
 msgstr "Κλάση"
 
-#: ../gladeui/glade-editor-property.c:2992
+#: ../gladeui/glade-editor-property.c:3047
 #, c-format
 msgid "Choose parentless %s type objects in this project"
 msgstr "Επιλογή αντικειμένων τύπου %s χωρίς γονέα για αυτό το έργο"
 
-#: ../gladeui/glade-editor-property.c:2993
-#, c-format
-msgid "Choose a parentless %s in this project"
-msgstr "Επιλογή %s χωρίς γονέα για αυτό το έργο"
-
-#: ../gladeui/glade-editor-property.c:2996
+#: ../gladeui/glade-editor-property.c:3049
 #, c-format
 msgid "Choose %s type objects in this project"
 msgstr "Επιλογή αντικειμένων τύπου %s για αυτό το έργο"
 
-#: ../gladeui/glade-editor-property.c:2997
+#: ../gladeui/glade-editor-property.c:3069
+#, c-format
+msgid "Choose a parentless %s in this project"
+msgstr "Επιλογή %s χωρίς γονέα για αυτό το έργο"
+
+#: ../gladeui/glade-editor-property.c:3071
 #, c-format
 msgid "Choose a %s in this project"
 msgstr "Επιλογή %s σε αυτό το έργο"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:3067
-#: ../gladeui/glade-editor-property.c:3208
+#: ../gladeui/glade-editor-property.c:3128
+#: ../gladeui/glade-editor-property.c:3269
 msgid "O_bjects:"
 msgstr "Α_ντικείμενα:"
 
-#: ../gladeui/glade-editor-property.c:3160
+#: ../gladeui/glade-editor-property.c:3221
 msgid "_New"
 msgstr "_Νέο"
 
 #. translators: Creating 'a widget' for 'a property' of 'a widget'
-#: ../gladeui/glade-editor-property.c:3315
+#: ../gladeui/glade-editor-property.c:3376
 #, c-format
 msgid "Creating %s for %s of %s"
 msgstr "Δημιουργία %s για το %s του %s"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:3509
+#: ../gladeui/glade-editor-property.c:3572
 msgid "Objects:"
 msgstr "Αντικείμενα:"
 
@@ -1441,7 +1433,7 @@ msgstr "Σύνθεση"
 msgid "Whether this widget is a composite template"
 msgstr "Αν αυτό το γραφικό συστατικό είναι ένα σύνθετο πρότυπο"
 
-#: ../gladeui/glade-inspector.c:194 ../gladeui/glade-project-properties.c:155
+#: ../gladeui/glade-inspector.c:194 ../gladeui/glade-project-properties.c:168
 #: ../gladeui/glade-widget.c:1378
 msgid "Project"
 msgstr "Πρόγραμμα"
@@ -1558,12 +1550,10 @@ msgstr "Προεπισκόπηση %s (%s)"
 
 #: ../gladeui/glade-previewer.c:220 ../gladeui/glade-previewer.c:224
 #, c-format
-#| msgid "Preview"
 msgid "Previewing %s"
 msgstr "Προεπισκόπηση %s"
 
 #: ../gladeui/glade-previewer.c:228
-#| msgid "Preview"
 msgid "Glade Preview"
 msgstr "Προεπισκόπηση Glade"
 
@@ -1625,114 +1615,118 @@ msgstr ""
 msgid "Either --listen or --filename must be specified.\n"
 msgstr "Είτε το --listen ή το --filename πρέπει να καθορισθεί.\n"
 
-#: ../gladeui/glade-project.c:947
+#: ../gladeui/glade-preview-window.c:56
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:10
+msgid "Preview"
+msgstr "Προεπισκόπηση"
+
+#: ../gladeui/glade-project.c:959
 msgid "Whether project has been modified since it was last saved"
 msgstr "Αν το έργο τροποποιήθηκε από την τελευταία φορά που αποθηκεύθηκε"
 
-#: ../gladeui/glade-project.c:953
+#: ../gladeui/glade-project.c:965
 msgid "Has Selection"
 msgstr "Έχει Επιλογή"
 
-#: ../gladeui/glade-project.c:954
+#: ../gladeui/glade-project.c:966
 msgid "Whether project has a selection"
 msgstr "Αν το έργο έχει μια επιλογή"
 
-#: ../gladeui/glade-project.c:960
+#: ../gladeui/glade-project.c:972
 msgid "Path"
 msgstr "Διαδρομή"
 
-#: ../gladeui/glade-project.c:961
+#: ../gladeui/glade-project.c:973
 msgid "The filesystem path of the project"
 msgstr "Η διαδρομή για το έργο στο σύστημα αρχείων"
 
-#: ../gladeui/glade-project.c:967
+#: ../gladeui/glade-project.c:979
 msgid "Read Only"
 msgstr "Μόνο για Ανάγνωση"
 
-#: ../gladeui/glade-project.c:968
+#: ../gladeui/glade-project.c:980
 msgid "Whether project is read-only"
 msgstr "Αν το έργο είναι μόνο για ανάγνωση ή όχι"
 
-#: ../gladeui/glade-project.c:974
+#: ../gladeui/glade-project.c:986
 msgid "Add Item"
 msgstr "Προσθήκη αντικειμένου"
 
-#: ../gladeui/glade-project.c:975
+#: ../gladeui/glade-project.c:987
 msgid "The current item to add to the project"
 msgstr "Το τρέχων στοιχείο για προσθήκη στο έργο"
 
-#: ../gladeui/glade-project.c:981
+#: ../gladeui/glade-project.c:993
 msgid "Pointer Mode"
 msgstr "Λειτουργία δείκτη"
 
-#: ../gladeui/glade-project.c:982
+#: ../gladeui/glade-project.c:994
 msgid "The currently effective GladePointerMode"
 msgstr "Η τρέχουσα ενεργή GladePointerMode"
 
-#: ../gladeui/glade-project.c:989
+#: ../gladeui/glade-project.c:1001
 msgid "Translation Domain"
 msgstr "Τομέας μετάφρασης"
 
-#: ../gladeui/glade-project.c:990
+#: ../gladeui/glade-project.c:1002
 msgid "The project translation domain"
 msgstr "Ο τομέας μετάφρασης του έργου"
 
-#: ../gladeui/glade-project.c:996 ../gladeui/glade-widget.c:1401
+#: ../gladeui/glade-project.c:1008 ../gladeui/glade-widget.c:1401
 msgid "Template"
 msgstr "Πρότυπο"
 
-#: ../gladeui/glade-project.c:997
+#: ../gladeui/glade-project.c:1009
 msgid "The project's template widget, if any"
 msgstr "Το γραφικό συστατικό προτύπου του έργου, αν υπάρχει"
 
-#: ../gladeui/glade-project.c:1003
+#: ../gladeui/glade-project.c:1015
 msgid "Resource Path"
 msgstr "Διαδρομή πόρου"
 
-#: ../gladeui/glade-project.c:1004
+#: ../gladeui/glade-project.c:1016
 msgid "Path to load images and resources in Glade's runtime"
 msgstr "Διαδρομή φόρτωσης εικόνων και πόρων στον χρόνο εκτέλεσης του Glade"
 
-#: ../gladeui/glade-project.c:1010
-#| msgid "License:"
+#: ../gladeui/glade-project.c:1022 ../gladeui/glade-project-properties.ui.h:29
 msgid "License"
 msgstr "Άδεια"
 
-#: ../gladeui/glade-project.c:1011
+#: ../gladeui/glade-project.c:1023
 msgid "License for this project, it will be added as a document level comment."
 msgstr "Η άδεια για αυτό το έργο, θα προστεθεί ως σχόλιο επιπέδου εγγράφου."
 
-#: ../gladeui/glade-project.c:1017
+#: ../gladeui/glade-project.c:1029
 msgid "Css Provider Path"
 msgstr "Διαδρομή παρόχου Css"
 
-#: ../gladeui/glade-project.c:1018
+#: ../gladeui/glade-project.c:1030
 msgid "Path to use as the custom css provider for this project."
 msgstr ""
 "Χρησιμοποιούμενη διαδρομή ως προσαρμοσμένος πάροχος css για αυτό το έργο."
 
-#: ../gladeui/glade-project.c:1295
+#: ../gladeui/glade-project.c:1126
 #, c-format
 msgid "(internal %s)"
 msgstr "(εσωτερικό %s)"
 
-#: ../gladeui/glade-project.c:1300
+#: ../gladeui/glade-project.c:1131
 #, c-format
 msgid "(%s child)"
 msgstr "(παιδί του: %s)"
 
-#: ../gladeui/glade-project.c:1302
+#: ../gladeui/glade-project.c:1133
 #, c-format
 msgid "(template)"
 msgstr "(πρότυπο)"
 
 #. translators: refers to a property named '%s' of widget '%s'
-#: ../gladeui/glade-project.c:1310
+#: ../gladeui/glade-project.c:1141
 #, c-format
 msgid "(%s of %s)"
 msgstr "(%s από %s)"
 
-#: ../gladeui/glade-project.c:1753
+#: ../gladeui/glade-project.c:1499
 #, c-format
 msgid ""
 "Failed to load %s.\n"
@@ -1742,18 +1736,18 @@ msgstr ""
 "Οι επόμενοι απαραίτητοι κατάλογοι δεν είναι διαθέσιμοι: %s"
 
 #. translators: refers to project name '%s' that targets gtk version '%d.%d'
-#: ../gladeui/glade-project.c:2142
+#: ../gladeui/glade-project.c:1870
 #, c-format
 msgid "%s targets Gtk+ %d.%d"
 msgstr "%s δείχνει Gtk+ %d.%d"
 
-#: ../gladeui/glade-project.c:2181
+#: ../gladeui/glade-project.c:1909
 msgid "Specially because there is an object that can not be build with type "
 msgstr ""
 "Ειδικά επειδή υπάρχει ένα αντικείμενο που δεν μπορεί να δημιουργηθεί με τον "
 "τύπο "
 
-#: ../gladeui/glade-project.c:2186
+#: ../gladeui/glade-project.c:1914
 #, c-format
 msgid ""
 "Specially because there are %d objects that can not be build with types "
@@ -1761,11 +1755,11 @@ msgstr ""
 "Ειδικά επειδή υπάρχουν %d αντικείμενα που δεν μπορούν να δημιουργηθούν με "
 "τον τύπο "
 
-#: ../gladeui/glade-project.c:2193
+#: ../gladeui/glade-project.c:1921
 msgid " and "
 msgstr " και "
 
-#: ../gladeui/glade-project.c:2211
+#: ../gladeui/glade-project.c:1939
 #, c-format
 msgid ""
 "But this version of Glade is for GTK+ 3 only.\n"
@@ -1778,12 +1772,8 @@ msgstr ""
 "συνειστώμενες εφαρμογές.\n"
 "%s"
 
-#: ../gladeui/glade-project.c:2272
+#: ../gladeui/glade-project.c:2000
 #, c-format
-#| msgid ""
-#| "An automatically saved version of `%s' is more recent\n"
-#| "\n"
-#| "Would you like to load the autosave version instead ?"
 msgid ""
 "An automatically saved version of `%s' is more recent.\n"
 "\n"
@@ -1793,7 +1783,7 @@ msgstr ""
 "\n"
 "Θα θέλατε να φορτώσετε στη θέση της την αυτόματα αποθηκευμένη έκδοση;"
 
-#: ../gladeui/glade-project.c:2400
+#: ../gladeui/glade-project.c:2140
 #, c-format
 msgid "%s document properties"
 msgstr "%s ιδιότητες του εγγράφου"
@@ -1806,7 +1796,7 @@ msgstr "%s ιδιότητες του εγγράφου"
 #. * ugly messy code with comments in line breaks inside function calls).
 #.
 #. translators: refers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2921
+#: ../gladeui/glade-project.c:2896
 #, c-format
 msgid "This widget was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
@@ -1814,17 +1804,17 @@ msgstr ""
 "προορίζεται για την %s %d.%d"
 
 #. translators: refers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2925
+#: ../gladeui/glade-project.c:2900
 #, c-format
 msgid "[%s] Object class '%s' was introduced in %s %d.%d\n"
 msgstr "[%s] Η κλάση αντικειμένων '%s' εισήχθη στην έκδοση %s %d.%d\n"
 
-#: ../gladeui/glade-project.c:2927
+#: ../gladeui/glade-project.c:2902
 msgid "This widget is deprecated"
 msgstr "Το γραφικό συστατικό είναι υπό κατάργηση"
 
 #. translators: refers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2930
+#: ../gladeui/glade-project.c:2905
 #, c-format
 msgid "[%s] Object class '%s' from %s %d.%d is deprecated\n"
 msgstr ""
@@ -1832,21 +1822,21 @@ msgstr ""
 
 #. translators: refers to a property in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2935
+#: ../gladeui/glade-project.c:2910
 #, c-format
 msgid "This property was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
 "Αυτή η ιδιότητα εισήχθη στην έκδοση %s %d.%d, ενώ το έργο αφορά την %s %d.%d"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2939
+#: ../gladeui/glade-project.c:2914
 #, c-format
 msgid "[%s] Property '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr ""
 "[%s] Η ιδιότητα '%s' της κλάσης αντικειμένων '%s' εισήχθη στο %s %d.%d\n"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2943
+#: ../gladeui/glade-project.c:2918
 #, c-format
 msgid ""
 "[%s] Packing property '%s' of object class '%s' was introduced in %s %d.%d\n"
@@ -1854,143 +1844,111 @@ msgstr ""
 "[%s] Η ιδιότητα packing '%s' της κλάσης αντικειμένων '%s' εισήχθη στην "
 "έκδοση %s %d.%d\n"
 
-#: ../gladeui/glade-project.c:2946
+#: ../gladeui/glade-project.c:2921
 msgid "This property is deprecated"
 msgstr "Αυτή η ιδιότητα είναι παρωχημένη"
 
 #. translators: refers to a property '%s' of widget '[%s]'
-#: ../gladeui/glade-project.c:2949
+#: ../gladeui/glade-project.c:2924
 #, c-format
 msgid "[%s] Property '%s' of object class '%s' is deprecated"
 msgstr "[%s] Η ιδιότητα '%s' της κλάσης αντικειμένων '%s' είναι παρωχημένη"
 
 #. translators: refers to a signal in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2953
+#: ../gladeui/glade-project.c:2928
 #, c-format
 msgid "This signal was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
 "Αυτό το σήμα εισήχθη στην έκδοση %s %d.%d ενώ το έργο είναι για %s %d.%d"
 
 #. translators: refers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2957
+#: ../gladeui/glade-project.c:2932
 #, c-format
 msgid "[%s] Signal '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr "[%s] Το σήμα '%s' της κλάσης αντικειμένων '%s' εισήχθη στο %s %d.%d\n"
 
-#: ../gladeui/glade-project.c:2960
+#: ../gladeui/glade-project.c:2935
 msgid "This signal is deprecated"
 msgstr "Αυτό το σήμα είναι παρωχημένο"
 
 #. translators: refers to a signal '%s' of widget '[%s]'
-#: ../gladeui/glade-project.c:2963
+#: ../gladeui/glade-project.c:2938
 #, c-format
 msgid "[%s] Signal '%s' of object class '%s' is deprecated"
 msgstr "[%s] Το σήμα '%s' της κλάσης αντικειμένων '%s' είναι παρωχημένο"
 
-#: ../gladeui/glade-project.c:3259
+#: ../gladeui/glade-project.c:3234
 msgid "Details"
 msgstr "Λεπτομέρειες"
 
-#: ../gladeui/glade-project.c:3274
+#: ../gladeui/glade-project.c:3249
 #, c-format
 msgid "Project \"%s\" has errors. Save anyway?"
 msgstr "Το έργο\" %s\" περιέχει λάθη. Αποθήκευση ούτως ή άλλως;"
 
-#: ../gladeui/glade-project.c:3275
+#: ../gladeui/glade-project.c:3250
 #, c-format
 msgid "Project \"%s\" has deprecated widgets and/or version mismatches."
 msgstr ""
 "Το έργο \"%s\" περιλαμβάνει γραφικά συστατικά υπό κατάργηση και/ή εμφανίζει "
 "αναντιστοιχίες εκδόσεων."
 
-#: ../gladeui/glade-project.c:3302
+#: ../gladeui/glade-project.c:3277
 #, c-format
 msgid "Object %s has unrecognized type %s\n"
 msgstr "Το αντικείμενο %s έχει μη αναγνωρίσιμο τύπο %s\n"
 
-#: ../gladeui/glade-project.c:4777
+#: ../gladeui/glade-project.c:4747
 #, c-format
 msgid "Unsaved %i"
 msgstr "Μη αποθηκευμένο %i"
 
-#: ../gladeui/glade-project.c:5076 ../gladeui/glade-project.c:5127
-#: ../gladeui/glade-project.c:5284
+#: ../gladeui/glade-project.c:5046 ../gladeui/glade-project.c:5097
+#: ../gladeui/glade-project.c:5254
 msgid "No widget selected."
 msgstr "Δεν έχει επιλεγεί συστατικό."
 
-#: ../gladeui/glade-project.c:5092
+#: ../gladeui/glade-project.c:5062
 msgid "Unable to copy unrecognized widget type."
 msgstr "Αδύνατη η αντιγραφή μη αναγνωρίσιμου τύπου γραφικού συστατικού."
 
-#: ../gladeui/glade-project.c:5124
+#: ../gladeui/glade-project.c:5094
 msgid "Unable to cut unrecognized widget type"
 msgstr "Αδύνατη η αποκοπή μη αναγνωρίσιμου τύπου γραφικού συστατικού"
 
-#: ../gladeui/glade-project.c:5176
+#: ../gladeui/glade-project.c:5146
 msgid "Unable to paste to the selected parent"
 msgstr "Αδυναμία επικόλλησης στον επιλεγμένο γονέα"
 
-#: ../gladeui/glade-project.c:5187
+#: ../gladeui/glade-project.c:5157
 msgid "Unable to paste to multiple widgets"
 msgstr "Αδυναμία επικόλλησης σε πολλά συστατικά"
 
-#: ../gladeui/glade-project.c:5197
+#: ../gladeui/glade-project.c:5167
 msgid "No widget on the clipboard"
 msgstr "Κανένα widget στο πρόχειρο"
 
-#: ../gladeui/glade-project.c:5242
+#: ../gladeui/glade-project.c:5212
 msgid "Only one widget can be pasted at a time to this container"
 msgstr ""
 "Σε αυτόν τον περιέκτη μπορείτε να επικολλήσετε ένα μόνο γραφικό συστατικό "
 "κάθε φορά"
 
-#: ../gladeui/glade-project.c:5254
+#: ../gladeui/glade-project.c:5224
 msgid "Insufficient amount of placeholders in target container"
 msgstr "Ανεπαρκής αριθμός δεσμευτικών θέσης στον περιέκτη προορισμού"
 
-#: ../gladeui/glade-project-properties.c:156
+#: ../gladeui/glade-project-properties.c:169
 msgid "The project this properties dialog was created for"
 msgstr "Το έργο αυτού του διαλόγου ιδιοτήτων δημιουργήθηκε για"
 
-#: ../gladeui/glade-project-properties.c:598
+#: ../gladeui/glade-project-properties.c:620
 #, c-format
 msgid "Project %s has no deprecated widgets or version mismatches."
 msgstr ""
 "Το έργο %s δεν περιλαμβάνει γραφικά συστατικά υπό κατάργηση ούτε εμφανίζει "
 "αναντιστοιχίες εκδόσεων."
-
-#: ../gladeui/glade-project-properties.c:796
-#| msgid "Clear properties"
-msgid "Clear text"
-msgstr "Καθαρισμός κειμένου"
-
-#: ../gladeui/glade-project-properties.c:801
-#| msgid "Insert Row"
-msgid "Insert GPL v2"
-msgstr "Εισαγωγή GPL v2"
-
-#: ../gladeui/glade-project-properties.c:803
-#| msgid "Insert Row"
-msgid "Insert GPL v3"
-msgstr "Εισαγωγή GPL v3"
-
-#: ../gladeui/glade-project-properties.c:805
-#| msgid "LGPL 2.1"
-msgid "Insert LGPL v2.1"
-msgstr "Εισαγωγή LGPL 2.1"
-
-#: ../gladeui/glade-project-properties.c:807
-msgid "Insert LGPL v3"
-msgstr "Εισαγωγή LGPL v3"
-
-#: ../gladeui/glade-project-properties.c:809
-msgid "Insert BSD 2-clause"
-msgstr "Εισαγωγή πρότασης 2 BSD"
-
-#: ../gladeui/glade-project-properties.c:811
-msgid "Insert BSD 3-clause"
-msgstr "Εισαγωγή πρότασης 3 BSD"
 
 #: ../gladeui/glade-property.c:645
 msgid "The GladePropertyClass for this property"
@@ -2191,17 +2149,17 @@ msgstr "Εφαρμογή Glade"
 msgid "The glade widget to edit signals"
 msgstr "Η εφαρμογή glade για την επεξεργασία σημάτων"
 
-#: ../gladeui/glade-utils.c:135 ../gladeui/glade-utils.c:167
+#: ../gladeui/glade-utils.c:136 ../gladeui/glade-utils.c:168
 #, c-format
 msgid "We could not find the symbol \"%s\""
 msgstr "Δεν είναι δυνατή η εύρεση του συμβόλου \"%s\""
 
-#: ../gladeui/glade-utils.c:143
+#: ../gladeui/glade-utils.c:144
 #, c-format
 msgid "Could not get the type from \"%s\""
 msgstr "Δεν είναι δυνατή η λήψη του κατάλληλου τύπου από το \"%s\""
 
-#: ../gladeui/glade-utils.c:294
+#: ../gladeui/glade-utils.c:295
 #, c-format
 msgid ""
 "Cannot add non scrollable %s widget to a %s directly.\n"
@@ -2210,29 +2168,29 @@ msgstr ""
 "Δέν μπορεί να προστεθεί μια μή κυλιόμενη %s εφαρμογή σε %s απ'ευθείας.\n"
 "Προσθέστε ενα %s πρώτα."
 
-#: ../gladeui/glade-utils.c:474
+#: ../gladeui/glade-utils.c:475
 msgid "All Files"
 msgstr "Όλα τα Αρχεία"
 
-#: ../gladeui/glade-utils.c:479
+#: ../gladeui/glade-utils.c:480
 msgid "Libglade Files"
 msgstr "Libglade αρχεία"
 
-#: ../gladeui/glade-utils.c:484
+#: ../gladeui/glade-utils.c:485
 msgid "GtkBuilder Files"
 msgstr "GtkBuilder αρχεία"
 
-#: ../gladeui/glade-utils.c:490
+#: ../gladeui/glade-utils.c:491
 msgid "All Glade Files"
 msgstr "Όλα τα αρχεία Glade"
 
-#: ../gladeui/glade-utils.c:1183
+#: ../gladeui/glade-utils.c:1214
 msgid "Could not show link:"
 msgstr "Αδυναμία προβολής συνδέσμου:"
 
 #. Reset the column
 #. GtkTextDirection enumeration value
-#: ../gladeui/glade-utils.c:1592 ../plugins/gtk+/glade-attributes.c:823
+#: ../gladeui/glade-utils.c:1623 ../plugins/gtk+/glade-attributes.c:824
 #: ../plugins/gtk+/gtk+.xml.in.h:383
 msgid "None"
 msgstr "Κανένα"
@@ -2258,74 +2216,74 @@ msgstr "Ορατό"
 msgid "Whether this action is visible"
 msgstr "Αν αυτή η ενέργειας είναι ορατή"
 
-#: ../gladeui/glade-widget-adaptor.c:256
+#: ../gladeui/glade-widget-adaptor.c:257
 #, c-format
 msgid "A derived adaptor (%s) of %s already exist!"
 msgstr "Ένας προσαρμογέας (%s) έχει ήδη προσαρμοστεί από το %s!"
 
-#: ../gladeui/glade-widget-adaptor.c:933
+#: ../gladeui/glade-widget-adaptor.c:934
 #, c-format
 msgid "%s does not support adding any children."
 msgstr "%s δέν υποστηρίζει την προσθήκη children."
 
-#: ../gladeui/glade-widget-adaptor.c:1426
+#: ../gladeui/glade-widget-adaptor.c:1393
 msgid "Name of the class"
 msgstr "Όνομα της κλάσης"
 
-#: ../gladeui/glade-widget-adaptor.c:1433
+#: ../gladeui/glade-widget-adaptor.c:1400
 msgid "GType of the class"
 msgstr "Τύπος GType της κλάσης"
 
-#: ../gladeui/glade-widget-adaptor.c:1439
+#: ../gladeui/glade-widget-adaptor.c:1406
 msgid "Title"
 msgstr "Τίτλος"
 
-#: ../gladeui/glade-widget-adaptor.c:1440
+#: ../gladeui/glade-widget-adaptor.c:1407
 msgid "Translated title for the class used in the glade UI"
 msgstr ""
 "Μεταφρασμένος τίτλος για την κλάση που θα χρησιμοποιηθεί στο UI του glade"
 
-#: ../gladeui/glade-widget-adaptor.c:1446
+#: ../gladeui/glade-widget-adaptor.c:1413
 msgid "Generic Name"
 msgstr "Γενικό όνομα"
 
-#: ../gladeui/glade-widget-adaptor.c:1447
+#: ../gladeui/glade-widget-adaptor.c:1414
 msgid "Used to generate names of new widgets"
 msgstr "Χρησιμοποιείται για να παράγει ονόματα από νέα γραφικά συστατικά"
 
-#: ../gladeui/glade-widget-adaptor.c:1453 ../plugins/gtk+/gtk+.xml.in.h:592
+#: ../gladeui/glade-widget-adaptor.c:1420 ../plugins/gtk+/gtk+.xml.in.h:592
 #: ../plugins/gtk+/glade-window-editor.ui.h:7
 msgid "Icon Name"
 msgstr "Όνομα εικονιδίου"
 
-#: ../gladeui/glade-widget-adaptor.c:1454
+#: ../gladeui/glade-widget-adaptor.c:1421
 msgid "The icon name"
 msgstr "Το όνομα του εικονιδίου"
 
-#: ../gladeui/glade-widget-adaptor.c:1460
+#: ../gladeui/glade-widget-adaptor.c:1427
 msgid "Catalog"
 msgstr "Κατάλογος"
 
-#: ../gladeui/glade-widget-adaptor.c:1461
+#: ../gladeui/glade-widget-adaptor.c:1428
 msgid "The name of the widget catalog this class was declared by"
 msgstr ""
 "Το όνομα του νέου καταλόγου γραφικών συστατικών αυτή η κλάση δημιουργήθηκε "
 "από"
 
-#: ../gladeui/glade-widget-adaptor.c:1467
+#: ../gladeui/glade-widget-adaptor.c:1434
 msgid "Book"
 msgstr "Βιβλίο"
 
-#: ../gladeui/glade-widget-adaptor.c:1468
+#: ../gladeui/glade-widget-adaptor.c:1435
 msgid "DevHelp search namespace for this widget class"
 msgstr ""
 "Αναζήτηση DevHelp για το namespace για αυτή την κλάση γραφικών συστατικών"
 
-#: ../gladeui/glade-widget-adaptor.c:1474
+#: ../gladeui/glade-widget-adaptor.c:1441
 msgid "Special Child Type"
 msgstr "Ειδικός θυγατρικός τύπος"
 
-#: ../gladeui/glade-widget-adaptor.c:1475
+#: ../gladeui/glade-widget-adaptor.c:1442
 msgid ""
 "Holds the name of the packing property to depict special children for this "
 "container class"
@@ -2333,11 +2291,11 @@ msgstr ""
 "Κρατά το όνομα της ιδιότητας συσκευασίας για να περιγράφονται ειδικά "
 "θυγατρικά για αυτήν τη κλάση του περιέκτη"
 
-#: ../gladeui/glade-widget-adaptor.c:1482
+#: ../gladeui/glade-widget-adaptor.c:1449
 msgid "Cursor"
 msgstr "Δρομέας"
 
-#: ../gladeui/glade-widget-adaptor.c:1483
+#: ../gladeui/glade-widget-adaptor.c:1450
 msgid "A cursor for inserting widgets in the UI"
 msgstr "Ένας δρομέας για την εισαγωγή γραφικών συστατικών στη UI"
 
@@ -2461,24 +2419,24 @@ msgstr ""
 "Αν αυτό το γραφικό συστατικό είναι το πρότυπο για ένα σύνθετο γραφικό "
 "συστατικό"
 
-#: ../gladeui/glade-widget.c:4768
+#: ../gladeui/glade-widget.c:4737
 #, c-format
 msgid "Object has unrecognized type %s"
 msgstr "Το αντικείμενο έχει μη αναγνωρίσιμο τύπο %s"
 
-#: ../gladeui/glade-widget.c:4832
+#: ../gladeui/glade-widget.c:4801
 msgid "Property has versioning problems: "
 msgstr "Η ιδιότητα έχει προβλήματα έκδοσης: "
 
-#: ../gladeui/glade-widget.c:4834
+#: ../gladeui/glade-widget.c:4803
 msgid "Some properties have versioning problems: "
 msgstr "Κάποιες ιδιότητες έχουν προβλήματα έκδοσης: "
 
-#: ../gladeui/glade-widget.c:4854
+#: ../gladeui/glade-widget.c:4823
 msgid "Signal has versioning problems: "
 msgstr "Το σήμα έχει προβλήματα έκδοσης: "
 
-#: ../gladeui/glade-widget.c:4856
+#: ../gladeui/glade-widget.c:4825
 msgid "Some signals have versioning problems: "
 msgstr "Κάποια σήματα έχουν προβλήματα έκδοσης: "
 
@@ -2547,54 +2505,106 @@ msgid "Composite template toplevel:"
 msgstr "Κορυφαίο επίπεδο σύνθετου προτύπου:"
 
 #: ../gladeui/glade-project-properties.ui.h:3
-#| msgid "Setting %s to use a custom label widget"
 msgid "Select a CSS to use as custom style provider"
 msgstr ""
-"Επιλέξτε ένα CSS που θα χρησιμοποιηθεί ως προσαρμοσμένος πάροχος "
-"τεχνοτροπίας"
+"Επιλέξτε ένα CSS που θα χρησιμοποιηθεί ως προσαρμοσμένος πάροχος τεχνοτροπίας"
 
 #: ../gladeui/glade-project-properties.ui.h:4
 msgid "Custom CSS style provider:"
 msgstr "Προσαρμοσμένος πάροχος τεχνοτροπίας CSS:"
 
 #: ../gladeui/glade-project-properties.ui.h:5
-msgid "Project properties:"
-msgstr "Ιδιότητες έργου:"
-
-#: ../gladeui/glade-project-properties.ui.h:6
 msgid "From the project directory"
 msgstr "Από τον κατάλογο του έργου"
 
-#: ../gladeui/glade-project-properties.ui.h:7
+#: ../gladeui/glade-project-properties.ui.h:6
 msgid "From a project relative directory"
 msgstr "Από κατάλογο σχετικό με το έργο"
 
-#: ../gladeui/glade-project-properties.ui.h:8
+#: ../gladeui/glade-project-properties.ui.h:7
 msgid "From this directory"
 msgstr "Από αυτόν τον κατάλογο"
 
-#: ../gladeui/glade-project-properties.ui.h:9
+#: ../gladeui/glade-project-properties.ui.h:8
 msgid "Choose a path to load image resources"
 msgstr "Επιλογή διαδρομής για τη φόρτωση εικόνων"
 
-#: ../gladeui/glade-project-properties.ui.h:10
+#: ../gladeui/glade-project-properties.ui.h:9
 msgid "Image resources are loaded locally:"
 msgstr "Οι εικόνες φορτώνονται τοπικά:"
 
-#: ../gladeui/glade-project-properties.ui.h:11
+#: ../gladeui/glade-project-properties.ui.h:10
 msgid "Toolkit version required:"
 msgstr "Απαιτούμενη έκδοση του πακέτου εργαλείων:"
 
-#: ../gladeui/glade-project-properties.ui.h:12
+#: ../gladeui/glade-project-properties.ui.h:13
+msgid "Copyright:"
+msgstr "Πνευματικά δικαιώματα:"
+
+#: ../gladeui/glade-project-properties.ui.h:14
+msgid "program or library name"
+msgstr "όνομα προγράμματος ή βιβλιοθήκης"
+
+#: ../gladeui/glade-project-properties.ui.h:15
+msgid "Author(s):"
+msgstr "Συγγραφείς:"
+
+#: ../gladeui/glade-project-properties.ui.h:16
 #: ../plugins/gtk+/glade-about-dialog-editor.ui.h:3
 msgid "License:"
 msgstr "Άδεια:"
 
-#: ../gladeui/glade-project-properties.ui.h:13
-msgid "(Use right click to insert common licenses)"
-msgstr "(Χρησιμοποιήστε δεξιό πάτημα για παρεμβολή κοινών αδειών)"
+#: ../gladeui/glade-project-properties.ui.h:17
+msgid "Description:"
+msgstr "Περιγραφή:"
 
-#: ../gladeui/glade-project-properties.ui.h:14
+#: ../gladeui/glade-project-properties.ui.h:18
+msgid "program or library short description"
+msgstr "σύντομη περιγραφή προγράμματος ή βιβλιοθήκης"
+
+#: ../gladeui/glade-project-properties.ui.h:19
+msgid "GNU GPL version 2"
+msgstr "GNU GPL έκδοση 2"
+
+#: ../gladeui/glade-project-properties.ui.h:20
+msgid "GNU GPL version 3"
+msgstr "GNU GPL έκδοση 3"
+
+#: ../gladeui/glade-project-properties.ui.h:21
+msgid "GNU LGPL version 2.1"
+msgstr "GNU LGPL έκδοση 2.1"
+
+#: ../gladeui/glade-project-properties.ui.h:22
+msgid "GNU LGPL version 3"
+msgstr "GNU LGPL έκδοση 3"
+
+#: ../gladeui/glade-project-properties.ui.h:23
+msgid "BSD 2-clause"
+msgstr "BSD 2-clause"
+
+#: ../gladeui/glade-project-properties.ui.h:24
+msgid "BSD 3-clause"
+msgstr "BSD 3-clause"
+
+#: ../gladeui/glade-project-properties.ui.h:25
+msgid "Apache 2"
+msgstr "Apache 2"
+
+#: ../gladeui/glade-project-properties.ui.h:26
+msgid "MIT"
+msgstr "MIT"
+
+#: ../gladeui/glade-project-properties.ui.h:27
+msgid "GNU All permissive"
+msgstr "GNU όλα επιτρέπονται"
+
+#. GtkCellRendererAccelMode enumeration value
+#: ../gladeui/glade-project-properties.ui.h:28
+#: ../plugins/gtk+/gtk+.xml.in.h:685
+msgid "Other"
+msgstr "Άλλο"
+
+#: ../gladeui/glade-project-properties.ui.h:30
 msgid ""
 "Verify that the project does not use any properties,\n"
 "signals or widgets which are not available in the target version"
@@ -2714,7 +2724,7 @@ msgstr "Περιγραφή γραμματοσειράς"
 #: ../plugins/gtk+/glade-attributes.c:361
 #: ../plugins/gtk+/glade-attributes.c:369
 #: ../plugins/gtk+/glade-attributes.c:375
-#: ../plugins/gtk+/glade-attributes.c:826
+#: ../plugins/gtk+/glade-attributes.c:827
 msgid "<Enter Value>"
 msgstr "<Εισάγετε τιμή>"
 
@@ -2730,19 +2740,19 @@ msgstr "Επιλέξτε χρώμα"
 msgid "Select a font"
 msgstr "Επιλογή γραμματοσειράς"
 
-#: ../plugins/gtk+/glade-attributes.c:890
+#: ../plugins/gtk+/glade-attributes.c:891
 msgid "Attribute"
 msgstr "Γνώρισμα"
 
-#: ../plugins/gtk+/glade-attributes.c:898
+#: ../plugins/gtk+/glade-attributes.c:899
 msgid "Value"
 msgstr "Τιμή"
 
-#: ../plugins/gtk+/glade-attributes.c:1053
+#: ../plugins/gtk+/glade-attributes.c:1054
 msgid "Setup Text Attributes"
 msgstr "Γνωρίσματα διάταξης κειμένου"
 
-#: ../plugins/gtk+/glade-attributes.c:1145
+#: ../plugins/gtk+/glade-attributes.c:1146
 msgid "Edit Attributes"
 msgstr "Επεξεργασία γνωρισμάτων"
 
@@ -2783,11 +2793,11 @@ msgid "Retrieve %s from model (type %s)"
 msgstr "Ανάκτηση του %s από το μοντέλο (τύπος %s)"
 
 #. translators: the adjective not the verb
-#: ../plugins/gtk+/glade-cell-renderer-editor.c:503
+#: ../plugins/gtk+/glade-cell-renderer-editor.c:514
 msgid "unset"
 msgstr "μη ορισμένο"
 
-#: ../plugins/gtk+/glade-cell-renderer-editor.c:526
+#: ../plugins/gtk+/glade-cell-renderer-editor.c:537
 msgid "no model"
 msgstr "δεν υπάρχει μοντέλο"
 
@@ -3105,7 +3115,7 @@ msgstr ""
 "Τα γραφικά συστατικά τύπου %s χρειάζονται δεσμευτικά θέσης για την προσθήκη "
 "θυγατρικών."
 
-#: ../plugins/gtk+/glade-gtk-entry.c:206
+#: ../plugins/gtk+/glade-gtk-entry.c:195
 msgid ""
 "This property is only available\n"
 "if the entry has a frame"
@@ -3113,7 +3123,7 @@ msgstr ""
 "Αυτή η ιδιότητα είναι διαθέσιμη μόνο\n"
 "αν η καταχώριση έχει πλαίσιο"
 
-#: ../plugins/gtk+/glade-gtk-entry.c:215
+#: ../plugins/gtk+/glade-gtk-entry.c:204
 msgid ""
 "This property is only available\n"
 "if the entry characters are invisible"
@@ -3367,40 +3377,40 @@ msgstr ""
 "Οι στήλες πρέπει να έχουν σταθερό μέγεθος μέσα σε μια δενδροειδή προβολή με "
 "σταθερό ύψος"
 
-#: ../plugins/gtk+/glade-gtk-tree-view.c:304
+#: ../plugins/gtk+/glade-gtk-tree-view.c:294
 msgid "Search is disabled"
 msgstr "Η αναζήτηση είναι ανενεργή"
 
-#: ../plugins/gtk+/glade-gtk-tree-view.c:311
+#: ../plugins/gtk+/glade-gtk-tree-view.c:301
 msgid "Headers are invisible"
 msgstr "Οι κεφαλίδες είναι αόρατες"
 
-#: ../plugins/gtk+/glade-gtk-tree-view.c:318
+#: ../plugins/gtk+/glade-gtk-tree-view.c:308
 msgid "Expanders are not shown"
 msgstr "Οι επεκτάσεις δεν εμφανίζονται"
 
-#: ../plugins/gtk+/glade-gtk-widget.c:842
+#: ../plugins/gtk+/glade-gtk-widget.c:841
 #, c-format
 msgid "Removing parent of %s"
 msgstr "Αφαίρεση του γονέα του %s"
 
-#: ../plugins/gtk+/glade-gtk-widget.c:899
+#: ../plugins/gtk+/glade-gtk-widget.c:896
 #, c-format
 msgid "Adding parent %s for %s"
 msgstr "Προσθήκη γονέα %s στο %s"
 
-#: ../plugins/gtk+/glade-gtk-widget.c:1010
+#: ../plugins/gtk+/glade-gtk-widget.c:1000
 #, c-format
 msgid "Adding %s to Size Group %s"
 msgstr "Προσθήκη %s στην ομάδα μεγέθους %s"
 
-#: ../plugins/gtk+/glade-gtk-widget.c:1014
+#: ../plugins/gtk+/glade-gtk-widget.c:1004
 #, c-format
 msgid "Adding %s to a new Size Group"
 msgstr "Προσθήκη %s σε νέα ομάδα μεγέθους"
 
 #. Add trailing new... item
-#: ../plugins/gtk+/glade-gtk-widget.c:1072
+#: ../plugins/gtk+/glade-gtk-widget.c:1062
 msgid "New Size Group"
 msgstr "Νέα ομάδα μεγέθους"
 
@@ -3659,10 +3669,6 @@ msgstr "Παραγωγή PDF"
 msgid "Generate PS"
 msgstr "Παραγωγή PS"
 
-#: ../plugins/gtk+/gtkunixprint.xml.in.h:10
-msgid "Preview"
-msgstr "Προεπισκόπηση"
-
 #: ../plugins/gtk+/gtkunixprint.xml.in.h:11
 msgid "Number Up"
 msgstr "Αρίθμηση"
@@ -3920,7 +3926,6 @@ msgstr "Άκυρο"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:89
-#| msgid "Accelerator Key"
 msgid "Accelerator Label"
 msgstr "Ετικέτα επιταχυντή"
 
@@ -3931,7 +3936,6 @@ msgstr "Ειδοποίηση"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:93
-#| msgid "Authentication"
 msgid "Animation"
 msgstr "Κίνηση"
 
@@ -3952,7 +3956,6 @@ msgstr "Καμβάς"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:101
-#| msgid "Check Button"
 msgid "Check Box"
 msgstr "Πλαίσιο ελέγχου"
 
@@ -3963,13 +3966,11 @@ msgstr "Στοιχείο μενού ελέγχου"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:105
-#| msgid "Color Chooser Widget"
 msgid "Color Chooser"
 msgstr "Επιλογέας χρωμάτων"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:107
-#| msgid "Column name"
 msgid "Column Header"
 msgstr "Κεφαλίδα στήλης"
 
@@ -3980,25 +3981,21 @@ msgstr "Σύνθετο πλαίσιο"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:111
-#| msgid "Tool Palette Editor"
 msgid "Date Editor"
 msgstr "Επεξεργαστής ημερομηνίας"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:113
-#| msgid "Desktop"
 msgid "Desktop Icon"
 msgstr "Εικονίδιο επιφάνειας εργασίας"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:115
-#| msgid "Desktop"
 msgid "Desktop Frame"
 msgstr "Πλαίσιο επιφάνειας εργασίας"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:117
-#| msgid "Dialog"
 msgid "Dial"
 msgstr "Κλήση"
 
@@ -4009,7 +4006,6 @@ msgstr "Διάλογος"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:121
-#| msgid "Directory"
 msgid "Directory Name"
 msgstr "Όνομα καταλόγου"
 
@@ -4020,31 +4016,26 @@ msgstr "Περιοχή σχεδίασης"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:125
-#| msgid "File Chooser Button"
 msgid "File Chooser"
 msgstr "Επιλογέας αρχείου"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:127
-#| msgid "Fill"
 msgid "Filler"
 msgstr "Συμπληρωτής"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:129
-#| msgid "Font Chooser Widget"
 msgid "Font Chooser"
 msgstr "Επιλογή γραμματοσειράς"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:131
-#| msgid "Class Name:"
 msgid "Glass Pane"
 msgstr "Γυάλινο φάτνωμα"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:133
-#| msgid "Container"
 msgid "HTML Container"
 msgstr "Περιέκτης HTML"
 
@@ -4056,7 +4047,6 @@ msgstr "Εικονίδιο"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:139
-#| msgid "Internal name"
 msgid "Internal Frame"
 msgstr "Εσωτερικό πλαίσιο"
 
@@ -4072,7 +4062,6 @@ msgstr "Κατάλογος"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:147
-#| msgid "List Store"
 msgid "List Item"
 msgstr "Στοιχείο καταλόγου"
 
@@ -4083,13 +4072,11 @@ msgstr "Γραμμή μενού"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:155
-#| msgid "Action Name"
 msgid "Option Pane"
 msgstr "Φάτνωμα επιλογών"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:157
-#| msgid "Page Type"
 msgid "Page Tab"
 msgstr "Καρτέλα σελίδας"
 
@@ -4100,13 +4087,11 @@ msgstr "Κατάλογος καρτέλας σελίδας"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:161
-#| msgid "Paned"
 msgid "Panel"
 msgstr "Φάτνωμα"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:163
-#| msgid "Password"
 msgid "Password Text"
 msgstr "Κείμενο κωδικού πρόσβασης"
 
@@ -4117,13 +4102,11 @@ msgstr "Αναδυόμενο Μενού"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:167
-#| msgid "Progress Bar"
 msgid "Progress bar"
 msgstr "Γραμμή προόδου"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:169
-#| msgid "Menu Button"
 msgid "Push Button"
 msgstr "Κουμπί πίεσης"
 
@@ -4139,25 +4122,21 @@ msgstr "Στοιχείο μενού ραδιοπλήκτρου"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:175
-#| msgid "Horizontal Panes"
 msgid "Root Pane"
 msgstr "Φάτνωμα ρίζας"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:177
-#| msgid "Group Header"
 msgid "Row Header"
 msgstr "Κεφαλίδα γραμμής"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:179
-#| msgid "Scrollbar"
 msgid "Scroll Bar"
 msgstr "Γραμμή κύλισης"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:181
-#| msgid "Scroll"
 msgid "Scroll pane"
 msgstr "Φάτνωμα κύλισης"
 
@@ -4188,13 +4167,11 @@ msgstr "Πίνακας"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:195
-#| msgid "Table"
 msgid "Table Cell"
 msgstr "Κελί πίνακα"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:197
-#| msgid "Separator Menu Item"
 msgid "Tear Off Menu Item"
 msgstr "Αποσπώμενο στοιχείο μενού"
 
@@ -4215,19 +4192,16 @@ msgstr "Εργαλειοθήκη"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:207
-#| msgid "Tooltip"
 msgid "Tool Tip"
 msgstr "Συμβουλή οθόνης"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:209
-#| msgid "Tree View"
 msgid "Tree"
 msgstr "Δένδρο"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:211
-#| msgid "Text Tag Table"
 msgid "Tree Table"
 msgstr "Πίνακας δένδρου"
 
@@ -4243,7 +4217,6 @@ msgstr "Παράθυρο"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:217
-#| msgid "Group Header"
 msgid "Header"
 msgstr "Κεφαλίδα"
 
@@ -4264,7 +4237,6 @@ msgstr "Κανόνας"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:225
-#| msgid "Applications"
 msgid "Application"
 msgstr "Εφαρμογή"
 
@@ -4275,13 +4247,11 @@ msgstr "Αυτόματη συμπλήρωση"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:229
-#| msgid "_Edit"
 msgid "Editbar"
 msgstr "Γραμμή επεξεργασίας"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:231
-#| msgid "Embedded By"
 msgid "Embedded"
 msgstr "Ενσωματωμένο"
 
@@ -4292,37 +4262,31 @@ msgstr "Καταχώριση"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:235
-#| msgid "Character"
 msgid "Chart"
 msgstr "Διάγραμμα"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:237
-#| msgid "Action"
 msgid "Caption"
 msgstr "Τίτλος"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:239
-#| msgid "Documenters"
 msgid "Document Frame"
 msgstr "Πλαίσιο εγγράφου"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:241
-#| msgid "Padding"
 msgid "Heading"
 msgstr "Επικεφαλίδα"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:243
-#| msgid "Page Set"
 msgid "Page"
 msgstr "Σελίδα"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:245
-#| msgid "Action"
 msgid "Section"
 msgstr "Ενότητα"
 
@@ -4333,7 +4297,6 @@ msgstr "Πλεονάζον αντικείμενο"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:249
-#| msgid "Free Form"
 msgid "Form"
 msgstr "Μορφή"
 
@@ -4349,61 +4312,51 @@ msgstr "Παράθυρο μεθόδου εισαγωγής"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:255
-#| msgid "Table"
 msgid "Table Row"
 msgstr "Γραμμή πίνακα"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:257
-#| msgid "Tree Store"
 msgid "Tree Item"
 msgstr "Στοιχείο δένδρου"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:259
-#| msgid "Documenters"
 msgid "Document Spreadsheet"
 msgstr "Έγγραφο υπολογιστικού φύλλου"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:261
-#| msgid "Documenters"
 msgid "Document Presentation"
 msgstr "Έγγραφο παρουσίασης"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:263
-#| msgid "Documenters"
 msgid "Document Text"
 msgstr "Έγγραφο κειμένου"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:265
-#| msgid "Documenters"
 msgid "Document Web"
 msgstr "Έγγραφο ιστού"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:267
-#| msgid "Documenters"
 msgid "Document Email"
 msgstr "Έγγραφο ηλεκτρονικού ταχυδρομείου"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:271
-#| msgid "List Store"
 msgid "List Box"
 msgstr "Πλαίσιο καταλόγου"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:273
-#| msgid "Group"
 msgid "Grouping"
 msgstr "Ομαδοποίηση"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:275
-#| msgid "Image"
 msgid "Image Map"
 msgstr "Χάρτης εικόνας"
 
@@ -4437,7 +4390,6 @@ msgid "Controller For"
 msgstr "Ελεγκτής για"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:287
-#| msgid "Labelled By"
 msgid "Labeled By"
 msgstr "Με ετικέτα από"
 
@@ -4527,7 +4479,6 @@ msgstr ""
 "προορισμούς"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:307
-#| msgid "Indicates an object is labelled by one or more target objects"
 msgid "Indicates an object is labeled by one or more target objects"
 msgstr ""
 "Δηλώνει ότι ένα αντικείμενο προσδιορίζεται από ένα ή περισσότερα προορισμού"
@@ -4787,7 +4738,6 @@ msgid "Offscreen Window"
 msgstr "Εξωτερικό παράθυρο"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:392
-#| msgid "Applications"
 msgid "Application Window"
 msgstr "Παράθυρο εφαρμογής"
 
@@ -5143,7 +5093,6 @@ msgstr "Προτάσεις με κεφαλαία"
 
 #. GtkInputHints enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:519
-#| msgid "Inhibit Onscreen Keyboard"
 msgid "Inhibit On-screen Keyboard"
 msgstr "Παρεμπόδιση πληκτρολογίου στην οθόνη"
 
@@ -5487,7 +5436,6 @@ msgid "The number of pages in the notebook"
 msgstr "Το πλήθος των σελίδων στο σημειωματάριο"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:621
-#| msgid "Reverse"
 msgid "Revealer"
 msgstr "Αποκαλυπτής"
 
@@ -5498,7 +5446,6 @@ msgstr "Σταδιακή μετάβαση"
 
 #. GtkRevealerTransitionType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:625
-#| msgid "Right"
 msgid "Slide Right"
 msgstr "Μετακίνηση προς τα δεξιά"
 
@@ -5518,7 +5465,6 @@ msgid "Slide Down"
 msgstr "Μετακίνηση προς τα κάτω"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:632
-#| msgid "Add %s"
 msgid "Add Row"
 msgstr "Προσθήκη γραμμής"
 
@@ -5538,7 +5484,6 @@ msgid "Multiple"
 msgstr "Πολλαπλό"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:639
-#| msgid "The position of the tool item in the toolbar"
 msgid "The position of the row item in the listbox"
 msgstr "Η θέση του στοιχείου γραμμής στο πλαίσιο καταλόγου"
 
@@ -5674,11 +5619,6 @@ msgstr "Ερώτηση"
 #: ../plugins/gtk+/gtk+.xml.in.h:683
 msgid "Error"
 msgstr "Σφάλμα"
-
-#. GtkCellRendererAccelMode enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:685
-msgid "Other"
-msgstr "Άλλο"
 
 #. GtkPolicyType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:687
@@ -7149,6 +7089,31 @@ msgstr "Συμβουλή:"
 #: ../plugins/gtk+/glade-window-editor.ui.h:12
 msgid "Gravity:"
 msgstr "Βαρύτητα:"
+
+#~| msgid "Clear properties"
+#~ msgid "Clear text"
+#~ msgstr "Καθαρισμός κειμένου"
+
+#~| msgid "Insert Row"
+#~ msgid "Insert GPL v2"
+#~ msgstr "Εισαγωγή GPL v2"
+
+#~| msgid "Insert Row"
+#~ msgid "Insert GPL v3"
+#~ msgstr "Εισαγωγή GPL v3"
+
+#~| msgid "LGPL 2.1"
+#~ msgid "Insert LGPL v2.1"
+#~ msgstr "Εισαγωγή LGPL 2.1"
+
+#~ msgid "Insert LGPL v3"
+#~ msgstr "Εισαγωγή LGPL v3"
+
+#~ msgid "Project properties:"
+#~ msgstr "Ιδιότητες έργου:"
+
+#~ msgid "(Use right click to insert common licenses)"
+#~ msgstr "(Χρησιμοποιήστε δεξιό πάτημα για παρεμβολή κοινών αδειών)"
 
 #~ msgid "--listen and --filename must not be simultaneously specified.\n"
 #~ msgstr "--listen και --filename δεν πρέπει να καθορίζονται ταυτόχρονα.\n"
