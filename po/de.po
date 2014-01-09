@@ -22,8 +22,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3 master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-02 14:27+0100\n"
-"PO-Revision-Date: 2014-01-02 14:32+0100\n"
+"POT-Creation-Date: 2014-01-09 20:06+0100\n"
+"PO-Revision-Date: 2014-01-09 20:09+0100\n"
 "Last-Translator: Christian Kirbach <christian.kirbach@gmail.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de_DE\n"
@@ -1425,6 +1425,7 @@ msgstr "Seitentyp"
 #: ../gladeui/glade-editor-table.c:121
 msgid "The editor page type to create this GladeEditorTable for"
 msgstr ""
+"Der Editor-Seitentyp, für den diese GladeEditorTable erstellt werden soll"
 
 #: ../gladeui/glade-editor-table.c:289
 msgid "Class Name:"
@@ -1440,9 +1441,8 @@ msgid "The object's unique identifier"
 msgstr "Die eindeutige Kennnummer des Objektes"
 
 #: ../gladeui/glade-editor-table.c:565 ../gladeui/glade-widget.c:1443
-#, fuzzy
 msgid "Composite"
-msgstr "Composite-Sequenzer"
+msgstr "Verbund"
 
 #: ../gladeui/glade-editor-table.c:567
 msgid "Whether this widget is a composite template"
@@ -2051,7 +2051,7 @@ msgstr "Packen"
 #.
 #: ../gladeui/glade-property-label.c:147 ../gladeui/glade-property-shell.c:119
 msgid "Whether the property to load is a packing property or not"
-msgstr ""
+msgstr "Legt fest, ob die zu ladende Eigenschaft eine packende Eigenschaft ist"
 
 #: ../gladeui/glade-property-label.c:153
 msgid "Custom text to override the property name"
@@ -2588,11 +2588,11 @@ msgstr "GNU LGPL Version 3"
 
 #: ../gladeui/glade-project-properties.ui.h:23
 msgid "BSD 2-clause"
-msgstr ""
+msgstr "BSD 2-Klausel"
 
 #: ../gladeui/glade-project-properties.ui.h:24
 msgid "BSD 3-clause"
-msgstr ""
+msgstr "BSD 3-Klausel"
 
 #: ../gladeui/glade-project-properties.ui.h:25
 msgid "Apache 2"
@@ -2884,25 +2884,33 @@ msgstr ""
 "eingestellt"
 
 #: ../plugins/gtk+/glade-entry-editor.c:571
-#, fuzzy, c-format
+#, c-format
 msgid "Setting primary icon of %s to use tooltip markup"
 msgstr ""
-"%s wird auf die Verwendung eines primären Repertoire-Symbols eingestellt"
+"Das primäre Symbol von %s wird auf die Verwendung eines Mini-Hilfe-Markup "
+"eingestellt"
 
 #: ../plugins/gtk+/glade-entry-editor.c:574
-#, fuzzy, c-format
+#, c-format
 msgid "Setting secondary icon of %s to use tooltip markup"
-msgstr "Minihilfen-Markup für sekundäres Symbol"
+msgstr ""
+"Das sekundäre Symbol von %s wird auf die Verwendung eines Mini-Hilfe-Markup "
+"eingestellt"
 
+# CHECK: Markup
 #: ../plugins/gtk+/glade-entry-editor.c:587
 #, c-format
 msgid "Setting primary icon of %s to not use tooltip markup"
 msgstr ""
+"Das Primärsymbol von %s wird so eingestellt, dass es keinen Markup in Mini-"
+"Hilfen verwendet"
 
 #: ../plugins/gtk+/glade-entry-editor.c:590
-#, fuzzy, c-format
+#, c-format
 msgid "Setting secondary icon of %s to not use tooltip markup"
-msgstr "Minihilfen-Markup für sekundäres Symbol"
+msgstr ""
+"Das sekundäre Symbol von %s wird nicht auf die Verwendung eines Mini-Hilfe-"
+"Markup eingestellt"
 
 #: ../plugins/gtk+/glade-fixed.c:622 ../plugins/gtk+/glade-gtk-grid.c:994
 #, c-format
@@ -4263,7 +4271,6 @@ msgstr "Automatische Vervollständigung"
 
 #. AtkRole enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:229
-#, fuzzy
 msgid "Editbar"
 msgstr "Bearbeitungsleiste"
 
@@ -5282,6 +5289,10 @@ msgid ""
 "the second item for the highest value. All the subsequent icons will be used "
 "for all the other values, spread evenly over the range of values"
 msgstr ""
+"Der Name des Symbols für den Skalierungsknopf. Das erste Objekt in der Liste "
+"wird im Knopf verwendet, wenn der aktuelle Wert der niedrigste ist, das "
+"zweite Objekt für den höchsten Wert. Alle folgenden Symbole werden für alle "
+"anderen Werte verwendet, gleichmäßig verteilt über den Wertebereich."
 
 #: ../plugins/gtk+/gtk+.xml.in.h:568
 msgid "Volume Button"
@@ -5536,6 +5547,8 @@ msgid ""
 "Whether to highlight the area of the trough from the bottom or left leading "
 "up to the knob"
 msgstr ""
+"Legt fest, ob der Bereich der Vertiefung vom Boden oder von links bis zum "
+"Knopf aufwärts hervorgehoben werden soll"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:649
 msgid "Horizontal Scale"
@@ -6709,7 +6722,7 @@ msgstr "Abriss-Menüs"
 
 #: ../plugins/gtk+/glade-combo-box-editor.ui.h:5
 msgid "Tabular Menus"
-msgstr ""
+msgstr "Tabellarische Menüs"
 
 #: ../plugins/gtk+/glade-combo-box-text-editor.ui.h:1
 msgid "Combo Box Text Attributes"
@@ -7090,7 +7103,7 @@ msgstr "Fensterattribute"
 
 #: ../plugins/gtk+/glade-window-editor.ui.h:2
 msgid "Transient For:"
-msgstr ""
+msgstr "Vorübergehend für:"
 
 #: ../plugins/gtk+/glade-window-editor.ui.h:3
 msgid "Attached To:"
