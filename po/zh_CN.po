@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: glade3 master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-12-21 20:28+0000\n"
+"POT-Creation-Date: 2014-01-09 19:10+0000\n"
 "PO-Revision-Date: 2013-12-21 23:06+0800\n"
 "Last-Translator: 甘露(Gan Lu) <rhythm.gan@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <i18n-zh@googlegroups.com>\n"
@@ -44,14 +44,16 @@ msgstr "创建或打开 GTK+ 程序用户界面设计"
 msgid "GUI designer;user interface;ui builder;"
 msgstr ""
 "GUI designer;user interface;ui builder;图形用户界面设计器;用户界面;图形界面创"
-"建器"
+"建器;"
 
 #. To translators: AppData description first paragraph
 #: ../data/glade.appdata.xml.in.h:2
 msgid ""
 "Glade is a RAD tool to enable quick &amp; easy development of user "
 "interfaces for the GTK+ 3 toolkit and the GNOME desktop environment."
-msgstr "Glade 是一款 RAD 工具，它可以方便快速的开发 GTK+ 3 工具集和 GNOME 桌面环境的用户界面。"
+msgstr ""
+"Glade 是一款 RAD 工具，它可以方便快速的开发 GTK+ 3 工具集和 GNOME 桌面环境的"
+"用户界面。"
 
 #. To translators: AppData description second paragraph
 #: ../data/glade.appdata.xml.in.h:4
@@ -60,14 +62,19 @@ msgid ""
 "loaded by applications dynamically as needed by using GtkBuilder or used "
 "directly to define a new GtkWidget derived object class using Gtk+ new "
 "template feature."
-msgstr "Glade 所设计的用户界面以 XML 格式保存，应用程序可以通过使用 GtkBuilder 动态加载它们，或者使用 Gtk+ 的新模板功能直接用于定义新的 GtkWidget 继承(derived)对象类。"
+msgstr ""
+"Glade 所设计的用户界面以 XML 格式保存，应用程序可以通过使用 GtkBuilder 动态加"
+"载它们，或者使用 Gtk+ 的新模板功能直接用于定义新的 GtkWidget 继承(derived)对"
+"象类。"
 
 #. To translators: AppData description third paragraph
 #: ../data/glade.appdata.xml.in.h:6
 msgid ""
 "By using GtkBuilder, Glade XML files can be used in numerous programming "
 "languages including C, C++, C#, Vala, Java, Perl, Python,and others."
-msgstr "通过使用 GtkBuilder，Glade XML 文件可以在多种程序设计语言中使用，包括 C, C++, C#, Vala, Java, Perl, Python 等。"
+msgstr ""
+"通过使用 GtkBuilder，Glade XML 文件可以在多种程序设计语言中使用，包括 C, C+"
+"+, C#, Vala, Java, Perl, Python 等。"
 
 #: ../src/glade-window.c:55
 msgid "[Read Only]"
@@ -145,7 +152,6 @@ msgid "Project %s is still loading."
 msgstr "项目“%s”仍在加载。"
 
 #: ../src/glade-window.c:1167
-#| msgid "Failed to backup existing file, continue saving ?"
 msgid "Failed to backup existing file, continue saving?"
 msgstr "备份现存文件失败，继续保存吗？"
 
@@ -1070,13 +1076,11 @@ msgstr "将“%s”的目标版本设置为 %d.%d"
 
 #: ../gladeui/glade-command.c:2803
 #, c-format
-#| msgid "Edit project properties"
 msgid "Setting project's %s property"
 msgstr "修改项目的 %s 属性"
 
 #: ../gladeui/glade-command.c:2906
 #, c-format
-#| msgid "Setting translation domain to '%s'"
 msgid "Setting resource path to '%s'"
 msgstr "将资源路径设置为“%s”"
 
@@ -1096,7 +1100,6 @@ msgid "Setting widget '%s' as template"
 msgstr "将组件“%s”设为模板"
 
 #: ../gladeui/glade-command.c:2978
-#| msgid "Unsetting widget '%s' as template"
 msgid "Unsetting template"
 msgstr "取消设置模板"
 
@@ -1505,12 +1508,10 @@ msgstr "预览 %s (%s)"
 
 #: ../gladeui/glade-previewer.c:220 ../gladeui/glade-previewer.c:224
 #, c-format
-#| msgid "Preview"
 msgid "Previewing %s"
 msgstr "预览 %s"
 
 #: ../gladeui/glade-previewer.c:228
-#| msgid "Preview"
 msgid "Glade Preview"
 msgstr "Glade 预览"
 
@@ -1643,7 +1644,6 @@ msgid "Path to load images and resources in Glade's runtime"
 msgstr "在 Glade 运行期加载图像及资源的路径"
 
 #: ../gladeui/glade-project.c:1022 ../gladeui/glade-project-properties.ui.h:29
-#| msgid "License:"
 msgid "License"
 msgstr "许可证"
 
@@ -1723,10 +1723,6 @@ msgstr ""
 
 #: ../gladeui/glade-project.c:2000
 #, c-format
-#| msgid ""
-#| "An automatically saved version of `%s' is more recent\n"
-#| "\n"
-#| "Would you like to load the autosave version instead ?"
 msgid ""
 "An automatically saved version of `%s' is more recent.\n"
 "\n"
@@ -2421,7 +2417,6 @@ msgid "Composite template toplevel:"
 msgstr "复合模板顶层："
 
 #: ../gladeui/glade-project-properties.ui.h:3
-#| msgid "Setting %s to use a custom label widget"
 msgid "Select a CSS to use as custom style provider"
 msgstr "选择 CSS 作为自定义的样式提供器"
 
@@ -2454,7 +2449,6 @@ msgid "Toolkit version required:"
 msgstr "所需工具集的版本："
 
 #: ../gladeui/glade-project-properties.ui.h:13
-#| msgid "Copyright"
 msgid "Copyright:"
 msgstr "版权所有："
 
@@ -2463,7 +2457,6 @@ msgid "program or library name"
 msgstr "程序或库的名称"
 
 #: ../gladeui/glade-project-properties.ui.h:15
-#| msgid "Authors"
 msgid "Author(s):"
 msgstr "作者："
 
@@ -2473,7 +2466,6 @@ msgid "License:"
 msgstr "许可证："
 
 #: ../gladeui/glade-project-properties.ui.h:17
-#| msgid "Description For"
 msgid "Description:"
 msgstr "描述："
 
@@ -2506,12 +2498,10 @@ msgid "BSD 3-clause"
 msgstr "BSD 3-clause"
 
 #: ../gladeui/glade-project-properties.ui.h:25
-#| msgid "Attached To:"
 msgid "Apache 2"
 msgstr "Apache 2"
 
 #: ../gladeui/glade-project-properties.ui.h:26
-#| msgid "MIT X11"
 msgid "MIT"
 msgstr "MIT"
 
