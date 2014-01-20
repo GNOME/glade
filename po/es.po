@@ -6,15 +6,15 @@
 # Carlos Perelló Marín <carlos@gnome-db.org>, 2000-2001.
 # Francisco Javier F. Serrador <serrador@cvs.gnome.org>, 2005, 2006.
 # Jorge González <jorgegonz@svn.gnome.org>, 2007, 2009, 2010, 2011.
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2010, 2011, 2012, 2013.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2010, 2011, 2012, 2013, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glade3.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-12-18 21:40+0000\n"
-"PO-Revision-Date: 2013-12-19 11:18+0100\n"
+"POT-Creation-Date: 2014-01-19 12:40+0000\n"
+"PO-Revision-Date: 2014-01-20 10:44+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -69,9 +69,12 @@ msgstr ""
 
 #. To translators: AppData description third paragraph
 #: ../data/glade.appdata.xml.in.h:6
+#| msgid ""
+#| "By using GtkBuilder, Glade XML files can be used in numerous programming "
+#| "languages including C, C++, C#, Vala, Java, Perl, Python,and others."
 msgid ""
 "By using GtkBuilder, Glade XML files can be used in numerous programming "
-"languages including C, C++, C#, Vala, Java, Perl, Python,and others."
+"languages including C, C++, C#, Vala, Java, Perl, Python, and others."
 msgstr ""
 "Usando GtkBuilder, los archivos XML de Glade se pueden usar en numerosos "
 "lenguajes de programación, incluyendo C, C++, C#, Vala, Java, Perl, Python, "
@@ -1007,7 +1010,7 @@ msgstr "Estableciendo propiedades múltiples"
 msgid "Setting %s of %s"
 msgstr "Estableciendo %s de %s"
 
-#: ../gladeui/glade-command.c:823 ../gladeui/glade-editor-property.c:3341
+#: ../gladeui/glade-command.c:823 ../gladeui/glade-editor-property.c:3350
 #, c-format
 msgid "Setting %s of %s to %s"
 msgstr "Estableciendo %s de %s a %s"
@@ -1359,44 +1362,44 @@ msgstr "Nombre"
 msgid "Class"
 msgstr "Clase"
 
-#: ../gladeui/glade-editor-property.c:3044
+#: ../gladeui/glade-editor-property.c:3047
 #, c-format
 msgid "Choose parentless %s type objects in this project"
 msgstr "Elegir tipos de objeto %s huérfanos en este proyecto"
 
-#: ../gladeui/glade-editor-property.c:3045
-#, c-format
-msgid "Choose a parentless %s in this project"
-msgstr "Eligir un %s huérfano en este proyecto"
-
-#: ../gladeui/glade-editor-property.c:3048
+#: ../gladeui/glade-editor-property.c:3049
 #, c-format
 msgid "Choose %s type objects in this project"
 msgstr "Elegir tipos de objeto %s en este proyecto"
 
-#: ../gladeui/glade-editor-property.c:3049
+#: ../gladeui/glade-editor-property.c:3069
+#, c-format
+msgid "Choose a parentless %s in this project"
+msgstr "Eligir un %s huérfano en este proyecto"
+
+#: ../gladeui/glade-editor-property.c:3071
 #, c-format
 msgid "Choose a %s in this project"
 msgstr "Elija un %s en este proyecto"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:3119
-#: ../gladeui/glade-editor-property.c:3260
+#: ../gladeui/glade-editor-property.c:3128
+#: ../gladeui/glade-editor-property.c:3269
 msgid "O_bjects:"
 msgstr "O_bjetos:"
 
-#: ../gladeui/glade-editor-property.c:3212
+#: ../gladeui/glade-editor-property.c:3221
 msgid "_New"
 msgstr "_Nuevo"
 
 #. translators: Creating 'a widget' for 'a property' of 'a widget'
-#: ../gladeui/glade-editor-property.c:3367
+#: ../gladeui/glade-editor-property.c:3376
 #, c-format
 msgid "Creating %s for %s of %s"
 msgstr "Creando %s para %s de %s"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:3563
+#: ../gladeui/glade-editor-property.c:3572
 msgid "Objects:"
 msgstr "Objetos:"
 
@@ -2529,7 +2532,6 @@ msgid "Toolkit version required:"
 msgstr "Versiones de los toolkit necesarias:"
 
 #: ../gladeui/glade-project-properties.ui.h:13
-#| msgid "Copyright"
 msgid "Copyright:"
 msgstr "Copyright:"
 
@@ -2538,7 +2540,6 @@ msgid "program or library name"
 msgstr "nombre del programa o la biblioteca"
 
 #: ../gladeui/glade-project-properties.ui.h:15
-#| msgid "Authors"
 msgid "Author(s):"
 msgstr "Autores:"
 
@@ -2548,7 +2549,6 @@ msgid "License:"
 msgstr "Licencia:"
 
 #: ../gladeui/glade-project-properties.ui.h:17
-#| msgid "Description For"
 msgid "Description:"
 msgstr "Descripción:"
 
@@ -2573,27 +2573,22 @@ msgid "GNU LGPL version 3"
 msgstr "GNU LGPL versión 3"
 
 #: ../gladeui/glade-project-properties.ui.h:23
-#| msgid "Insert BSD 2-clause"
 msgid "BSD 2-clause"
 msgstr "BSD 2-clause"
 
 #: ../gladeui/glade-project-properties.ui.h:24
-#| msgid "Insert BSD 3-clause"
 msgid "BSD 3-clause"
 msgstr "BSD 3-clause"
 
 #: ../gladeui/glade-project-properties.ui.h:25
-#| msgid "Insert Apache 2"
 msgid "Apache 2"
 msgstr "Apache 2"
 
 #: ../gladeui/glade-project-properties.ui.h:26
-#| msgid "MIT X11"
 msgid "MIT"
 msgstr "MIT"
 
 #: ../gladeui/glade-project-properties.ui.h:27
-#| msgid "Insert All permissive"
 msgid "GNU All permissive"
 msgstr "GNU Permitir todo"
 
