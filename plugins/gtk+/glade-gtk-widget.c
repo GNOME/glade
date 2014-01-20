@@ -904,7 +904,6 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
 	    glade_widget_dup_properties (gwidget, glade_widget_get_packing_properties (gwidget),
 					 FALSE, FALSE, FALSE);
 
-
 	  property = glade_widget_get_parentless_widget_ref (gwidget);
 
 	  /* Remove "this" widget, If the parent we're removing is a parentless 
@@ -936,8 +935,6 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
               /* Create heavy-duty glade-command properties stuff */
               prop_cmds =
                   create_command_property_list (gnew_parent, saved_props);
-              g_list_foreach (saved_props, (GFunc) g_object_unref, NULL);
-              g_list_free (saved_props);
 
               /* Apply the properties in an undoable way */
               if (prop_cmds)
@@ -946,18 +943,26 @@ glade_gtk_widget_action_activate (GladeWidgetAdaptor * adaptor,
 
               /* Add "this" widget to the new parent */
               glade_command_add (&this_widget, gnew_parent, NULL, project, FALSE);
+
+              glade_command_pop_group ();
             }
           else
 	    {
-	      /* Create parent was cancelled, paste back to parent */
-	      glade_command_add (&this_widget, gparent, NULL, project, FALSE);
+              glade_command_pop_group ();
 
-	      /* Restore any parentless widget reference if there was one */
-	      if (property)
-		glade_command_set_property (property, glade_widget_get_object (gwidget));
+              /* Undo delete command
+               * FIXME: this will leave the "Adding parent..." comand in the
+               * redo list, which I think its better than leaving it in the
+               * undo list by using glade_command_add() to add the widget back
+               * to the original parent.
+               * Ideally we need a way to remove a redo item from the project or
+               * simply do not let the user cancel a widget creation!
+               */
+	      glade_project_undo (project);
 	    }
 
-          glade_command_pop_group ();
+          g_list_foreach (saved_props, (GFunc) g_object_unref, NULL);
+          g_list_free (saved_props);
         }
     }
   else if (strcmp (action_path, "sizegroup_add") == 0)
