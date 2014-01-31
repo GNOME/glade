@@ -14,9 +14,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glade3 3.10.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-24 18:54+0800\n"
-"PO-Revision-Date: 2013-09-24 18:54+0800\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=glade&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2014-01-20 21:25+0000\n"
+"PO-Revision-Date: 2014-02-01 07:03+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (Hong Kong) <community@linuxhall.org>\n"
 "Language: zh_TW\n"
@@ -24,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 1.5.3\n"
 
 #: ../data/glade.desktop.in.in.h:1 ../src/main.c:42
 msgid "Glade"
@@ -45,6 +46,29 @@ msgstr "建立或開啟 GTK+ 應用程式的使用者介面設計"
 #: ../data/glade.desktop.in.in.h:5
 msgid "GUI designer;user interface;ui builder;"
 msgstr "GUI designer;user interface;ui builder;使用者介面;"
+
+#. To translators: AppData description first paragraph
+#: ../data/glade.appdata.xml.in.h:2
+msgid ""
+"Glade is a RAD tool to enable quick &amp; easy development of user "
+"interfaces for the GTK+ 3 toolkit and the GNOME desktop environment."
+msgstr "Glade 是能快速 &amp; 簡單開發 GTK+ 3 工具箱的使用者介面和 GNOME 桌面環境的 RAD 工具。"
+
+#. To translators: AppData description second paragraph
+#: ../data/glade.appdata.xml.in.h:4
+msgid ""
+"The user interfaces designed in Glade are saved as XML and these can be "
+"loaded by applications dynamically as needed by using GtkBuilder or used "
+"directly to define a new GtkWidget derived object class using Gtk+ new "
+"template feature."
+msgstr "Glade 中設計的使用者介面是以 XML 儲存，並且能根據需求使用 GtkBuilder 在應用程式中動態載入，或是使用 Gtk+ 新的範本功能在 GtkWidget 衍生的物件類別中直接使用。"
+
+#. To translators: AppData description third paragraph
+#: ../data/glade.appdata.xml.in.h:6
+msgid ""
+"By using GtkBuilder, Glade XML files can be used in numerous programming "
+"languages including C, C++, C#, Vala, Java, Perl, Python, and others."
+msgstr "使用 GtkBuilder，Glade XML 檔案可以用於許多種程式語言，包含 C、C++、C#、Vala、Java、Perl、Python 等等。"
 
 #: ../src/glade-window.c:55
 msgid "[Read Only]"
@@ -71,6 +95,7 @@ msgstr "活化「%s」"
 
 #. Name
 #: ../src/glade-window.c:582 ../gladeui/glade-base-editor.c:2030
+#: ../gladeui/glade-project-properties.ui.h:12
 #: ../plugins/gtk+/glade-about-dialog-editor.ui.h:2
 msgid "Name:"
 msgstr "名稱:"
@@ -111,127 +136,127 @@ msgstr "自動儲存「%s」"
 msgid "Error autosaving '%s'"
 msgstr "自動儲存「%s」發生錯誤"
 
-#: ../src/glade-window.c:1101
+#: ../src/glade-window.c:1114
 msgid "Open…"
 msgstr "開啟…"
 
-#: ../src/glade-window.c:1135
+#: ../src/glade-window.c:1148
 #, c-format
 msgid "Project %s is still loading."
 msgstr "專案 %s 仍在載入中。"
 
-#: ../src/glade-window.c:1154
-#, fuzzy
+#: ../src/glade-window.c:1167
 #| msgid "Failed to backup existing file, continue saving ?"
 msgid "Failed to backup existing file, continue saving?"
 msgstr "無法備份現有的檔案，是否繼續儲存？"
 
-#: ../src/glade-window.c:1176
+#: ../src/glade-window.c:1189
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "無法儲存 %s：%s"
 
-#: ../src/glade-window.c:1215
+#: ../src/glade-window.c:1228
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr "檔案 %s 自讀取以來已被修改過"
 
-#: ../src/glade-window.c:1219
+#: ../src/glade-window.c:1232
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr "如果儲存它，所有來自外部的更改都會消失。無論如何都要儲存它嗎？"
 
-#: ../src/glade-window.c:1224
+#: ../src/glade-window.c:1237
 msgid "_Save Anyway"
 msgstr "無論如何都儲存(_S)"
 
-#: ../src/glade-window.c:1232
+#: ../src/glade-window.c:1245
 msgid "_Don't Save"
 msgstr "不儲存(_D)"
 
-#: ../src/glade-window.c:1266
+#: ../src/glade-window.c:1279
 #, c-format
 msgid "Project '%s' saved"
 msgstr "專案「%s」已儲存"
 
-#: ../src/glade-window.c:1297
+#: ../src/glade-window.c:1310
 msgid "Save As…"
 msgstr "另存新檔…"
 
-#: ../src/glade-window.c:1361
+#: ../src/glade-window.c:1374
 #, c-format
 msgid "Could not save the file %s"
 msgstr "無法儲存檔案 %s"
 
-#: ../src/glade-window.c:1365
+#: ../src/glade-window.c:1378
 msgid "You do not have the permissions necessary to save the file."
 msgstr "你沒有儲存檔案所需的權限。"
 
-#: ../src/glade-window.c:1387
+#: ../src/glade-window.c:1400
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr "無法儲存檔案 %s。有另一個路徑相同的專案尚在開啟。"
 
-#: ../src/glade-window.c:1412
+#: ../src/glade-window.c:1425
 msgid "No open projects to save"
 msgstr "沒有開啟的專案可儲存"
 
-#: ../src/glade-window.c:1442
+#: ../src/glade-window.c:1455
 #, c-format
 msgid "Save changes to project \"%s\" before closing?"
 msgstr "關閉前要儲存修改到專案「%s」嗎？"
 
-#: ../src/glade-window.c:1450
+#: ../src/glade-window.c:1463
 msgid "Your changes will be lost if you don't save them."
 msgstr "如果你不儲存它們，你的更改就會消失。"
 
-#: ../src/glade-window.c:1454
+#: ../src/glade-window.c:1467
 msgid "Close _without Saving"
 msgstr "關閉但不儲存(_W)"
 
-#: ../src/glade-window.c:1484
+#: ../src/glade-window.c:1497
 msgid "Save…"
 msgstr "儲存…"
 
-#: ../src/glade-window.c:2450
+#: ../src/glade-window.c:2463
 msgid "Close document"
 msgstr "關閉文件"
 
-#: ../src/glade-window.c:2540
+#: ../src/glade-window.c:2553
 msgid "Could not create a new project."
 msgstr "無法建立新的專案。"
 
-#: ../src/glade-window.c:2593
+#: ../src/glade-window.c:2606
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr "專案 %s 有未儲存的更改"
 
-#: ../src/glade-window.c:2598
+#: ../src/glade-window.c:2611
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr "如果你重新載入它，就會失去所有未儲存的更改。無論如何都要重新載入嗎？"
 
-#: ../src/glade-window.c:2608
+#: ../src/glade-window.c:2621
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr "專案的檔案 %s 已被外部程式修改過"
 
-#: ../src/glade-window.c:2613
+#: ../src/glade-window.c:2626
 msgid "Do you want to reload the project?"
 msgstr "要重新載入專案嗎？"
 
-#: ../src/glade-window.c:2619
+#: ../src/glade-window.c:2632
 msgid "_Reload"
 msgstr "重新載入(_R)"
 
-#: ../src/glade-window.c:3191
+#: ../src/glade-window.c:3204
 msgid "Palette"
 msgstr "元件一覽表"
 
-#: ../src/glade-window.c:3193
+#: ../src/glade-window.c:3206
 msgid "Inspector"
 msgstr "檢查器"
 
-#: ../src/glade-window.c:3195 ../src/glade.glade.h:13
+#: ../src/glade-window.c:3208 ../src/glade.glade.h:33
 #: ../gladeui/glade-editor.c:320 ../gladeui/glade-widget.c:1385
+#: ../gladeui/glade-project-properties.ui.h:11
 #: ../plugins/gtk+/glade-gtk-action-group.c:177
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:361
 #: ../plugins/gtk+/glade-gtk-menu-shell.c:511
@@ -285,297 +310,6 @@ msgid "Unable to open '%s', the file does not exist.\n"
 msgstr "無法開啟「%s」，該檔案不存在。\n"
 
 #: ../src/glade.glade.h:1
-msgid "Select"
-msgstr "選擇"
-
-#: ../src/glade.glade.h:2
-msgid "Select widgets in the workspace"
-msgstr "選擇工作區中的介面工具"
-
-#: ../src/glade.glade.h:3
-msgid "Drag Resize"
-msgstr "以拖拉調整大小"
-
-#: ../src/glade.glade.h:4
-msgid "Drag and resize widgets in the workspace"
-msgstr "拖曳並改變工作區中介面工具的大小"
-
-#: ../src/glade.glade.h:5
-msgid "Margin Edit"
-msgstr "邊界編輯"
-
-#: ../src/glade.glade.h:6
-msgid "Edit widget margins"
-msgstr "編輯視窗元件邊界"
-
-#: ../src/glade.glade.h:7
-msgid "Alignment Edit"
-msgstr "編輯對齊"
-
-#: ../src/glade.glade.h:8
-msgid "Edit widget alignment"
-msgstr "編輯視窗元件排列"
-
-#. GtkFileChooserAction enumeration value
-#: ../src/glade.glade.h:9 ../plugins/gtk+/gtk+.xml.in.h:559
-msgid "Save"
-msgstr "儲存"
-
-#: ../src/glade.glade.h:10
-msgid "Save the current project"
-msgstr "儲存目前專案"
-
-#: ../src/glade.glade.h:11
-msgid "Save _As"
-msgstr "另存為(_A)"
-
-#: ../src/glade.glade.h:12
-msgid "Save the current project with a different name"
-msgstr "使用另一名稱儲存目前的專案"
-
-#: ../src/glade.glade.h:14
-msgid "Edit project properties"
-msgstr "編輯專案屬性"
-
-#. GtkButtonsType enumeration value
-#: ../src/glade.glade.h:15 ../plugins/gtk+/gtk+.xml.in.h:726
-msgid "Close"
-msgstr "關閉"
-
-#: ../src/glade.glade.h:16
-msgid "Close the current project"
-msgstr "關閉目前專案"
-
-#: ../src/glade.glade.h:17
-msgid "Undo"
-msgstr "復原"
-
-#: ../src/glade.glade.h:18
-msgid "Undo the last action"
-msgstr "還原剛進行的操作程序"
-
-#: ../src/glade.glade.h:19
-msgid "Redo"
-msgstr "取消復原"
-
-#: ../src/glade.glade.h:20
-msgid "Redo the last action"
-msgstr "重做剛進行的操作程序"
-
-#: ../src/glade.glade.h:21
-msgid "Cut"
-msgstr "剪下"
-
-#: ../src/glade.glade.h:22
-msgid "Cut the selection"
-msgstr "剪下選定範圍"
-
-#: ../src/glade.glade.h:23
-msgid "Copy"
-msgstr "複製"
-
-#: ../src/glade.glade.h:24
-msgid "Copy the selection"
-msgstr "複製選定範圍"
-
-#: ../src/glade.glade.h:25
-msgid "Paste"
-msgstr "貼上"
-
-#: ../src/glade.glade.h:26
-msgid "Paste the clipboard"
-msgstr "貼上剪貼簿"
-
-#: ../src/glade.glade.h:27 ../gladeui/glade-object-stub.c:101
-msgid "Delete"
-msgstr "刪除"
-
-#: ../src/glade.glade.h:28
-msgid "Delete the selection"
-msgstr "刪除選定的範圍"
-
-#: ../src/glade.glade.h:29
-msgid "_Previous Project"
-msgstr "前一個專案(_P)"
-
-#: ../src/glade.glade.h:30
-msgid "Activate previous project"
-msgstr "使用前一個專案"
-
-#: ../src/glade.glade.h:31
-msgid "_Next Project"
-msgstr "下一個專案(_N)"
-
-#: ../src/glade.glade.h:32
-msgid "Activate next project"
-msgstr "使用下一個專案"
-
-#: ../src/glade.glade.h:33
-msgid "New"
-msgstr "新增"
-
-#: ../src/glade.glade.h:34
-msgid "Create a new project"
-msgstr "建立新專案"
-
-#. GtkFileChooserAction enumeration value
-#: ../src/glade.glade.h:35 ../plugins/gtk+/gtk+.xml.in.h:561
-msgid "Open"
-msgstr "開啟"
-
-#: ../src/glade.glade.h:36
-msgid "Open a project"
-msgstr "開啟專案"
-
-#: ../src/glade.glade.h:37
-msgid "Quit"
-msgstr "結束"
-
-#: ../src/glade.glade.h:38
-msgid "Quit the program"
-msgstr "結束程式"
-
-#: ../src/glade.glade.h:39
-msgid "About"
-msgstr "關於"
-
-#: ../src/glade.glade.h:40
-msgid "About this application"
-msgstr "關於本程式"
-
-#: ../src/glade.glade.h:41
-msgid "_Developer Reference"
-msgstr "開發者參考手冊(_D)"
-
-#: ../src/glade.glade.h:42
-msgid "Display the developer reference manual"
-msgstr "顯示開發者參考手冊"
-
-#: ../src/glade.glade.h:43
-msgid "Preferences"
-msgstr "偏好設定"
-
-#: ../src/glade.glade.h:44
-msgid "Edit Glade preferences"
-msgstr "編輯 Glade 偏好設定"
-
-#: ../src/glade.glade.h:45
-msgid "Open _Recent"
-msgstr "開啟最近使用檔案(_R)"
-
-#: ../src/glade.glade.h:46
-msgid "_Use Small Icons"
-msgstr "使用小圖示(_U)"
-
-#: ../src/glade.glade.h:47
-msgid "Show items using small icons"
-msgstr "使用小圖示顯示項目"
-
-#: ../src/glade.glade.h:48
-msgid "Dock _Palette"
-msgstr "停駐調色盤(_P)"
-
-#: ../src/glade.glade.h:49
-msgid "Dock the palette into the main window"
-msgstr "將調色盤停駐到主視窗"
-
-#: ../src/glade.glade.h:50
-msgid "Dock _Inspector"
-msgstr "停駐檢查器(_I)"
-
-#: ../src/glade.glade.h:51
-msgid "Dock the inspector into the main window"
-msgstr "將檢查器停駐到主視窗"
-
-#: ../src/glade.glade.h:52
-msgid "Dock Prop_erties"
-msgstr "停駐屬性(_E)"
-
-#: ../src/glade.glade.h:53
-msgid "Dock the editor into the main window"
-msgstr "將編輯器停駐到主視窗"
-
-#: ../src/glade.glade.h:54
-msgid "_Statusbar"
-msgstr "狀態列(_S)"
-
-#: ../src/glade.glade.h:55
-msgid "Show the statusbar"
-msgstr "顯示狀態列"
-
-#: ../src/glade.glade.h:56
-msgid "Tool_bar"
-msgstr "工具列(_B)"
-
-#: ../src/glade.glade.h:57
-msgid "Show the toolbar"
-msgstr "顯示工具列"
-
-#: ../src/glade.glade.h:58
-msgid "Project _Tabs"
-msgstr "專案分頁(_T)"
-
-#: ../src/glade.glade.h:59
-msgid "Show notebook tabs for loaded projects"
-msgstr "顯示已載入專案的筆記分頁"
-
-#: ../src/glade.glade.h:60
-msgid "Text _beside icons"
-msgstr "文字在圖示旁(_B)"
-
-#: ../src/glade.glade.h:61
-msgid "Display items as text beside icons"
-msgstr "以文字加圖示顯示項目"
-
-#: ../src/glade.glade.h:62
-msgid "_Icons only"
-msgstr "只有圖示(_I)"
-
-#: ../src/glade.glade.h:63
-msgid "Display items as icons only"
-msgstr "只以圖示來顯示項目"
-
-#: ../src/glade.glade.h:64
-msgid "_Text only"
-msgstr "只有文字(_T)"
-
-#: ../src/glade.glade.h:65
-msgid "Display items as text only"
-msgstr "只以文字來顯示項目"
-
-#: ../src/glade.glade.h:66
-msgid "_Editor Header"
-msgstr "編輯器標題(_E)"
-
-#: ../src/glade.glade.h:67
-msgid "Show the header in the property editor"
-msgstr "在屬性編輯器顯示標題"
-
-#: ../src/glade.glade.h:68 ../plugins/gtk+/glade-gtk-menu-bar.c:113
-msgid "_File"
-msgstr "檔案(_F)"
-
-#: ../src/glade.glade.h:69 ../plugins/gtk+/glade-gtk-menu-bar.c:124
-msgid "_Edit"
-msgstr "編輯(_E)"
-
-#: ../src/glade.glade.h:70 ../plugins/gtk+/glade-gtk-menu-bar.c:133
-msgid "_View"
-msgstr "顯示(_V)"
-
-#: ../src/glade.glade.h:71
-msgid "Palette _Appearance"
-msgstr "調色盤外觀(_A)"
-
-#: ../src/glade.glade.h:72
-msgid "_Projects"
-msgstr "專案(_P)"
-
-#: ../src/glade.glade.h:73 ../plugins/gtk+/glade-gtk-menu-bar.c:137
-msgid "_Help"
-msgstr "求助(_H)"
-
-#: ../src/glade.glade.h:74
 msgid ""
 "Copyright © 2001-2006 Ximian, Inc.\n"
 "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
@@ -585,15 +319,15 @@ msgstr ""
 "版權所有 © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
 "版權所有 © 2004-2013 Tristan Van Berkom, Juan Pablo Ugarte, et al."
 
-#: ../src/glade.glade.h:77
+#: ../src/glade.glade.h:4
 msgid "A user interface designer for GTK+ and GNOME."
 msgstr "適用於 GTK+ 和 GNOME 的介面設計程式。"
 
-#: ../src/glade.glade.h:78
+#: ../src/glade.glade.h:5
 msgid "Visit Glade web site"
 msgstr "參訪 Glade 網站"
 
-#: ../src/glade.glade.h:79
+#: ../src/glade.glade.h:6
 msgid ""
 "Glade is free software; you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as \n"
@@ -625,7 +359,7 @@ msgstr ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, \n"
 "MA 02110-1301, USA."
 
-#: ../src/glade.glade.h:93
+#: ../src/glade.glade.h:20
 msgid "translator-credits"
 msgstr ""
 "如對翻譯有任何意見，請送一封電子郵件給\n"
@@ -633,6 +367,297 @@ msgstr ""
 "zh-l10n@lists.linux.org.tw\n"
 "\n"
 "Abel Cheung <abel@oaka.org>, 2006-07"
+
+#: ../src/glade.glade.h:21
+msgid "Select"
+msgstr "選擇"
+
+#: ../src/glade.glade.h:22
+msgid "Select widgets in the workspace"
+msgstr "選擇工作區中的介面工具"
+
+#: ../src/glade.glade.h:23
+msgid "Drag Resize"
+msgstr "以拖拉調整大小"
+
+#: ../src/glade.glade.h:24
+msgid "Drag and resize widgets in the workspace"
+msgstr "拖曳並改變工作區中介面工具的大小"
+
+#: ../src/glade.glade.h:25
+msgid "Margin Edit"
+msgstr "邊界編輯"
+
+#: ../src/glade.glade.h:26
+msgid "Edit widget margins"
+msgstr "編輯視窗元件邊界"
+
+#: ../src/glade.glade.h:27
+msgid "Alignment Edit"
+msgstr "編輯對齊"
+
+#: ../src/glade.glade.h:28
+msgid "Edit widget alignment"
+msgstr "編輯視窗元件排列"
+
+#. GtkFileChooserAction enumeration value
+#: ../src/glade.glade.h:29 ../plugins/gtk+/gtk+.xml.in.h:559
+msgid "Save"
+msgstr "儲存"
+
+#: ../src/glade.glade.h:30
+msgid "Save the current project"
+msgstr "儲存目前專案"
+
+#: ../src/glade.glade.h:31
+msgid "Save _As"
+msgstr "另存為(_A)"
+
+#: ../src/glade.glade.h:32
+msgid "Save the current project with a different name"
+msgstr "使用另一名稱儲存目前的專案"
+
+#: ../src/glade.glade.h:34
+msgid "Edit project properties"
+msgstr "編輯專案屬性"
+
+#. GtkButtonsType enumeration value
+#: ../src/glade.glade.h:35 ../plugins/gtk+/gtk+.xml.in.h:726
+msgid "Close"
+msgstr "關閉"
+
+#: ../src/glade.glade.h:36
+msgid "Close the current project"
+msgstr "關閉目前專案"
+
+#: ../src/glade.glade.h:37
+msgid "Undo"
+msgstr "復原"
+
+#: ../src/glade.glade.h:38
+msgid "Undo the last action"
+msgstr "還原剛進行的操作程序"
+
+#: ../src/glade.glade.h:39
+msgid "Redo"
+msgstr "取消復原"
+
+#: ../src/glade.glade.h:40
+msgid "Redo the last action"
+msgstr "重做剛進行的操作程序"
+
+#: ../src/glade.glade.h:41
+msgid "Cut"
+msgstr "剪下"
+
+#: ../src/glade.glade.h:42
+msgid "Cut the selection"
+msgstr "剪下選定範圍"
+
+#: ../src/glade.glade.h:43
+msgid "Copy"
+msgstr "複製"
+
+#: ../src/glade.glade.h:44
+msgid "Copy the selection"
+msgstr "複製選定範圍"
+
+#: ../src/glade.glade.h:45
+msgid "Paste"
+msgstr "貼上"
+
+#: ../src/glade.glade.h:46
+msgid "Paste the clipboard"
+msgstr "貼上剪貼簿"
+
+#: ../src/glade.glade.h:47 ../gladeui/glade-object-stub.c:101
+msgid "Delete"
+msgstr "刪除"
+
+#: ../src/glade.glade.h:48
+msgid "Delete the selection"
+msgstr "刪除選定的範圍"
+
+#: ../src/glade.glade.h:49
+msgid "_Previous Project"
+msgstr "前一個專案(_P)"
+
+#: ../src/glade.glade.h:50
+msgid "Activate previous project"
+msgstr "使用前一個專案"
+
+#: ../src/glade.glade.h:51
+msgid "_Next Project"
+msgstr "下一個專案(_N)"
+
+#: ../src/glade.glade.h:52
+msgid "Activate next project"
+msgstr "使用下一個專案"
+
+#: ../src/glade.glade.h:53
+msgid "_Use Small Icons"
+msgstr "使用小圖示(_U)"
+
+#: ../src/glade.glade.h:54
+msgid "Show items using small icons"
+msgstr "使用小圖示顯示項目"
+
+#: ../src/glade.glade.h:55
+msgid "Dock _Palette"
+msgstr "停駐調色盤(_P)"
+
+#: ../src/glade.glade.h:56
+msgid "Dock the palette into the main window"
+msgstr "將調色盤停駐到主視窗"
+
+#: ../src/glade.glade.h:57
+msgid "Dock _Inspector"
+msgstr "停駐檢查器(_I)"
+
+#: ../src/glade.glade.h:58
+msgid "Dock the inspector into the main window"
+msgstr "將檢查器停駐到主視窗"
+
+#: ../src/glade.glade.h:59
+msgid "Dock Prop_erties"
+msgstr "停駐屬性(_E)"
+
+#: ../src/glade.glade.h:60
+msgid "Dock the editor into the main window"
+msgstr "將編輯器停駐到主視窗"
+
+#: ../src/glade.glade.h:61
+msgid "_Statusbar"
+msgstr "狀態列(_S)"
+
+#: ../src/glade.glade.h:62
+msgid "Show the statusbar"
+msgstr "顯示狀態列"
+
+#: ../src/glade.glade.h:63
+msgid "Tool_bar"
+msgstr "工具列(_B)"
+
+#: ../src/glade.glade.h:64
+msgid "Show the toolbar"
+msgstr "顯示工具列"
+
+#: ../src/glade.glade.h:65
+msgid "Project _Tabs"
+msgstr "專案分頁(_T)"
+
+#: ../src/glade.glade.h:66
+msgid "Show notebook tabs for loaded projects"
+msgstr "顯示已載入專案的筆記分頁"
+
+#: ../src/glade.glade.h:67
+msgid "Text _beside icons"
+msgstr "文字在圖示旁(_B)"
+
+#: ../src/glade.glade.h:68
+msgid "Display items as text beside icons"
+msgstr "以文字加圖示顯示項目"
+
+#: ../src/glade.glade.h:69
+msgid "_Icons only"
+msgstr "只有圖示(_I)"
+
+#: ../src/glade.glade.h:70
+msgid "Display items as icons only"
+msgstr "只以圖示來顯示項目"
+
+#: ../src/glade.glade.h:71
+msgid "_Text only"
+msgstr "只有文字(_T)"
+
+#: ../src/glade.glade.h:72
+msgid "Display items as text only"
+msgstr "只以文字來顯示項目"
+
+#: ../src/glade.glade.h:73
+msgid "_Editor Header"
+msgstr "編輯器標題(_E)"
+
+#: ../src/glade.glade.h:74
+msgid "Show the header in the property editor"
+msgstr "在屬性編輯器顯示標題"
+
+#: ../src/glade.glade.h:75
+msgid "New"
+msgstr "新增"
+
+#: ../src/glade.glade.h:76
+msgid "Create a new project"
+msgstr "建立新專案"
+
+#. GtkFileChooserAction enumeration value
+#: ../src/glade.glade.h:77 ../plugins/gtk+/gtk+.xml.in.h:561
+msgid "Open"
+msgstr "開啟"
+
+#: ../src/glade.glade.h:78
+msgid "Open a project"
+msgstr "開啟專案"
+
+#: ../src/glade.glade.h:79
+msgid "Quit"
+msgstr "結束"
+
+#: ../src/glade.glade.h:80
+msgid "Quit the program"
+msgstr "結束程式"
+
+#: ../src/glade.glade.h:81
+msgid "About"
+msgstr "關於"
+
+#: ../src/glade.glade.h:82
+msgid "About this application"
+msgstr "關於本程式"
+
+#: ../src/glade.glade.h:83
+msgid "_Developer Reference"
+msgstr "開發者參考手冊(_D)"
+
+#: ../src/glade.glade.h:84
+msgid "Display the developer reference manual"
+msgstr "顯示開發者參考手冊"
+
+#: ../src/glade.glade.h:85
+msgid "Preferences"
+msgstr "偏好設定"
+
+#: ../src/glade.glade.h:86
+msgid "Edit Glade preferences"
+msgstr "編輯 Glade 偏好設定"
+
+#: ../src/glade.glade.h:87
+msgid "Open _Recent"
+msgstr "開啟最近使用檔案(_R)"
+
+#: ../src/glade.glade.h:88 ../plugins/gtk+/glade-gtk-menu-bar.c:113
+msgid "_File"
+msgstr "檔案(_F)"
+
+#: ../src/glade.glade.h:89 ../plugins/gtk+/glade-gtk-menu-bar.c:124
+msgid "_Edit"
+msgstr "編輯(_E)"
+
+#: ../src/glade.glade.h:90 ../plugins/gtk+/glade-gtk-menu-bar.c:133
+msgid "_View"
+msgstr "顯示(_V)"
+
+#: ../src/glade.glade.h:91
+msgid "Palette _Appearance"
+msgstr "調色盤外觀(_A)"
+
+#: ../src/glade.glade.h:92
+msgid "_Projects"
+msgstr "專案(_P)"
+
+#: ../src/glade.glade.h:93 ../plugins/gtk+/glade-gtk-menu-bar.c:137
+msgid "_Help"
+msgstr "求助(_H)"
 
 #: ../src/glade-preferences.glade.h:1
 msgid "Glade Preferences"
@@ -828,7 +853,7 @@ msgstr "階層體系"
 msgid "Label"
 msgstr "標籤"
 
-#: ../gladeui/glade-base-editor.c:1793 ../gladeui/glade-widget-adaptor.c:1432
+#: ../gladeui/glade-base-editor.c:1793 ../gladeui/glade-widget-adaptor.c:1399
 msgid "Type"
 msgstr "類型"
 
@@ -957,7 +982,7 @@ msgstr "設定多重屬性"
 msgid "Setting %s of %s"
 msgstr "設定 %2$s 的%1$s"
 
-#: ../gladeui/glade-command.c:823 ../gladeui/glade-editor-property.c:3289
+#: ../gladeui/glade-command.c:823 ../gladeui/glade-editor-property.c:3350
 #, c-format
 msgid "Setting %s of %s to %s"
 msgstr "設定 %2$s 的 %1$s 為 %3$s"
@@ -1055,20 +1080,37 @@ msgstr "解除鎖定 %s"
 msgid "Setting target version of '%s' to %d.%d"
 msgstr "設定「%s」的目標版本為 %d.%d"
 
-#: ../gladeui/glade-command.c:2757 ../gladeui/glade-command.c:2791
+#: ../gladeui/glade-command.c:2803
+#, c-format
+#| msgid "Edit project properties"
+msgid "Setting project's %s property"
+msgstr "設定專案的 %s 屬性"
+
+#: ../gladeui/glade-command.c:2906
+#, c-format
+#| msgid "Setting translation domain to '%s'"
+msgid "Setting resource path to '%s'"
+msgstr "設定「%s」的資源路徑"
+
+#: ../gladeui/glade-command.c:2937
 #, c-format
 msgid "Setting translation domain to '%s'"
 msgstr "設定翻譯域名為「%s」"
 
-#: ../gladeui/glade-command.c:2910 ../gladeui/glade-command.c:2964
+#: ../gladeui/glade-command.c:2972
 #, c-format
 msgid "Unsetting widget '%s' as template"
 msgstr "取消設定視窗元件「%s」為範本"
 
-#: ../gladeui/glade-command.c:2917 ../gladeui/glade-command.c:2959
+#: ../gladeui/glade-command.c:2975
 #, c-format
 msgid "Setting widget '%s' as template"
 msgstr "設定視窗元件「%s」為範本"
+
+#: ../gladeui/glade-command.c:2978
+#| msgid "Unsetting widget '%s' as template"
+msgid "Unsetting template"
+msgstr "取消設定範本"
 
 #: ../gladeui/glade-cursor.c:184
 #, c-format
@@ -1192,139 +1234,139 @@ msgstr "屬性描述(_D):"
 msgid "%s - %s Properties"
 msgstr "%s - %s 屬性"
 
-#: ../gladeui/glade-editor-property.c:670
+#: ../gladeui/glade-editor-property.c:671
 msgid "Property Class"
 msgstr "屬性類別"
 
-#: ../gladeui/glade-editor-property.c:671
+#: ../gladeui/glade-editor-property.c:672
 msgid "The GladePropertyClass this GladeEditorProperty was created for"
 msgstr "建立這個 GladeEditorProperty 的 GladePropertyClass "
 
-#: ../gladeui/glade-editor-property.c:677
+#: ../gladeui/glade-editor-property.c:678
 #: ../gladeui/glade-property-shell.c:124
 msgid "Use Command"
 msgstr "使用指令"
 
-#: ../gladeui/glade-editor-property.c:678
+#: ../gladeui/glade-editor-property.c:679
 msgid "Whether we should use the command API for the undo/redo stack"
 msgstr "復原/重做堆疊是否應使用指令 API"
 
-#: ../gladeui/glade-editor-property.c:684
+#: ../gladeui/glade-editor-property.c:685
 msgid "Disable Check"
 msgstr "停用檢查"
 
-#: ../gladeui/glade-editor-property.c:685
+#: ../gladeui/glade-editor-property.c:686
 msgid "Whether to explicitly disable the check button"
 msgstr "是否明確停用核取按鈕"
 
-#: ../gladeui/glade-editor-property.c:691
+#: ../gladeui/glade-editor-property.c:692
 #: ../gladeui/glade-property-label.c:152 ../gladeui/glade-property-shell.c:136
 msgid "Custom Text"
 msgstr "自選文字"
 
-#: ../gladeui/glade-editor-property.c:692
+#: ../gladeui/glade-editor-property.c:693
 #: ../gladeui/glade-property-shell.c:137
 msgid "Custom Text to display in the property label"
 msgstr "要在屬性標籤中顯示的自選文字"
 
-#: ../gladeui/glade-editor-property.c:1216
+#: ../gladeui/glade-editor-property.c:1262
 msgid "Select Fields"
 msgstr "選擇欄位"
 
-#: ../gladeui/glade-editor-property.c:1239
+#: ../gladeui/glade-editor-property.c:1285
 msgid "_Select individual fields:"
 msgstr "選擇個別欄位(_S)"
 
-#: ../gladeui/glade-editor-property.c:1585
+#: ../gladeui/glade-editor-property.c:1635
 msgid "Select Named Icon"
 msgstr "選擇命名的圖示"
 
-#: ../gladeui/glade-editor-property.c:1892
+#: ../gladeui/glade-editor-property.c:1942
 msgid "Edit Text"
 msgstr "編輯文字"
 
 #. Text
-#: ../gladeui/glade-editor-property.c:1922
+#: ../gladeui/glade-editor-property.c:1972
 msgid "_Text:"
 msgstr "文字(_T)："
 
 #. Translatable
-#: ../gladeui/glade-editor-property.c:1958
+#: ../gladeui/glade-editor-property.c:2008
 msgid "T_ranslatable"
 msgstr "可翻譯(_R)"
 
-#: ../gladeui/glade-editor-property.c:1964 ../gladeui/glade-property.c:677
+#: ../gladeui/glade-editor-property.c:2014 ../gladeui/glade-property.c:677
 msgid "Whether this property is translatable"
 msgstr "這個屬性是否可翻譯"
 
-#: ../gladeui/glade-editor-property.c:1972
+#: ../gladeui/glade-editor-property.c:2022
 msgid "Conte_xt for translation:"
 msgstr "給翻譯者的關聯提示(_X):"
 
-#: ../gladeui/glade-editor-property.c:1978
+#: ../gladeui/glade-editor-property.c:2028
 msgid ""
 "For short and ambiguous strings: type a word here to differentiate the "
 "meaning of this string from the meaning of other occurrences of the same "
 "string"
 msgstr "用於簡短和模棱兩可的字串：在這裏輸入文字敘述以說明這個字串和其他地方出現的同樣字串在使用上的意義有什麼差異"
 
-#: ../gladeui/glade-editor-property.c:2010
+#: ../gladeui/glade-editor-property.c:2060
 msgid "Co_mments for translators:"
 msgstr "給翻譯者的註解(_M):"
 
-#: ../gladeui/glade-editor-property.c:2100
+#: ../gladeui/glade-editor-property.c:2150
 msgid "Select a file from the project resource directory"
 msgstr "從專案資源目錄選擇一個檔案"
 
 #. GtkInputPurpose enumeration value
-#: ../gladeui/glade-editor-property.c:2966
-#: ../gladeui/glade-widget-adaptor.c:1425 ../gladeui/glade-widget.c:1349
+#: ../gladeui/glade-editor-property.c:3018
+#: ../gladeui/glade-widget-adaptor.c:1392 ../gladeui/glade-widget.c:1349
 #: ../plugins/gtk+/gtk+.xml.in.h:499
 msgid "Name"
 msgstr "名稱"
 
-#: ../gladeui/glade-editor-property.c:2975 ../gladeui/glade-property.c:644
+#: ../gladeui/glade-editor-property.c:3027 ../gladeui/glade-property.c:644
 msgid "Class"
 msgstr "類別"
 
-#: ../gladeui/glade-editor-property.c:2992
+#: ../gladeui/glade-editor-property.c:3047
 #, c-format
 msgid "Choose parentless %s type objects in this project"
 msgstr "在這個專案中選擇無父項 %s 類型物件"
 
-#: ../gladeui/glade-editor-property.c:2993
-#, c-format
-msgid "Choose a parentless %s in this project"
-msgstr "在這個專案中選擇無父項 %s"
-
-#: ../gladeui/glade-editor-property.c:2996
+#: ../gladeui/glade-editor-property.c:3049
 #, c-format
 msgid "Choose %s type objects in this project"
 msgstr "在這個專案中選擇 %s 類型物件"
 
-#: ../gladeui/glade-editor-property.c:2997
+#: ../gladeui/glade-editor-property.c:3069
+#, c-format
+msgid "Choose a parentless %s in this project"
+msgstr "在這個專案中選擇無父項 %s"
+
+#: ../gladeui/glade-editor-property.c:3071
 #, c-format
 msgid "Choose a %s in this project"
 msgstr "在這個專案中選擇 %s"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:3067
-#: ../gladeui/glade-editor-property.c:3208
+#: ../gladeui/glade-editor-property.c:3128
+#: ../gladeui/glade-editor-property.c:3269
 msgid "O_bjects:"
 msgstr "物件(_B)："
 
-#: ../gladeui/glade-editor-property.c:3160
+#: ../gladeui/glade-editor-property.c:3221
 msgid "_New"
 msgstr "新增(_N)"
 
 #. translators: Creating 'a widget' for 'a property' of 'a widget'
-#: ../gladeui/glade-editor-property.c:3315
+#: ../gladeui/glade-editor-property.c:3376
 #, c-format
 msgid "Creating %s for %s of %s"
 msgstr "正在 %1$s (用於 %3$s 的 %2$s)"
 
 #. Checklist
-#: ../gladeui/glade-editor-property.c:3509
+#: ../gladeui/glade-editor-property.c:3572
 msgid "Objects:"
 msgstr "物件:"
 
@@ -1357,7 +1399,7 @@ msgstr "組合式"
 msgid "Whether this widget is a composite template"
 msgstr "這個視窗元件是否是組合式範本"
 
-#: ../gladeui/glade-inspector.c:194 ../gladeui/glade-project-properties.c:131
+#: ../gladeui/glade-inspector.c:194 ../gladeui/glade-project-properties.c:168
 #: ../gladeui/glade-widget.c:1378
 msgid "Project"
 msgstr "專案"
@@ -1431,45 +1473,99 @@ msgstr "讀取文件(_D)"
 msgid "Set default value"
 msgstr "設定預設的數值"
 
-#: ../gladeui/glade-preview.c:225
+#: ../gladeui/glade-preview.c:249
 #, c-format
 msgid "Error launching previewer: %s\n"
 msgstr "執行預覽程式時發生錯誤：%s\n"
 
-#: ../gladeui/glade-preview.c:228
+#: ../gladeui/glade-preview.c:252
 #, c-format
 msgid "Failed to launch preview: %s.\n"
 msgstr "啟動預覽失敗：%s。\n"
 
-#: ../gladeui/glade-previewer.c:40 ../gladeui/glade-previewer.c:76
-msgid "- previews a glade UI definition"
-msgstr "- 預覽 glade UI 定義"
+#: ../gladeui/glade-previewer.c:69
+#, c-format
+msgid "UI definition has no previewable widgets.\n"
+msgstr "UI 定義沒有可預覽的視窗元件。\n"
 
-#: ../gladeui/glade-previewer.c:62
+#: ../gladeui/glade-previewer.c:79
+#, c-format
+msgid "Object %s not found in UI definition.\n"
+msgstr "在 UI 定義中找不到物件 %s。\n"
+
+#: ../gladeui/glade-previewer.c:85
+#, c-format
+msgid "Object is not previewable.\n"
+msgstr "物件不可預覽。\n"
+
+#: ../gladeui/glade-previewer.c:135 ../gladeui/glade-previewer.c:471
+#, c-format
+msgid "Couldn't load builder definition: %s"
+msgstr "無法載入組建程式定義：%s"
+
+#: ../gladeui/glade-previewer.c:167 ../gladeui/glade-previewer.c:187
+#, c-format
+msgid "Error: %s.\n"
+msgstr "錯誤：%s。\n"
+
+#: ../gladeui/glade-previewer.c:218
+#, c-format
+msgid "Previewing %s (%s)"
+msgstr "預覽 %s (%s)"
+
+#: ../gladeui/glade-previewer.c:220 ../gladeui/glade-previewer.c:224
+#, c-format
+#| msgid "Preview"
+msgid "Previewing %s"
+msgstr "預覽 %s"
+
+#: ../gladeui/glade-previewer.c:228
+#| msgid "Preview"
+msgid "Glade Preview"
+msgstr "Glade 預覽"
+
+#: ../gladeui/glade-previewer.c:253
+#, c-format
+msgid "Broken pipe!\n"
+msgstr "管線中斷！\n"
+
+#: ../gladeui/glade-previewer.c:377
 msgid "Name of the file to preview"
 msgstr "要預覽的檔案名稱"
 
-#: ../gladeui/glade-previewer.c:63
+#: ../gladeui/glade-previewer.c:378
+msgid "Creates dummy widget class to load a template"
+msgstr "建立虛擬視窗元件以載入範本"
+
+#: ../gladeui/glade-previewer.c:379
 msgid "Name of the toplevel to preview"
 msgstr "要預覽的頂層名稱"
 
-#: ../gladeui/glade-previewer.c:64
+#: ../gladeui/glade-previewer.c:380
 msgid "File name to save a screenshot"
 msgstr "儲存螢幕擷圖的名稱"
 
-#: ../gladeui/glade-previewer.c:65
+#: ../gladeui/glade-previewer.c:381
 msgid "CSS file to use"
 msgstr "要使用的 CSS 檔案"
 
-#: ../gladeui/glade-previewer.c:66
+#: ../gladeui/glade-previewer.c:382
 msgid "Listen standard input"
 msgstr "聽取標準輸入"
 
-#: ../gladeui/glade-previewer.c:67
+#: ../gladeui/glade-previewer.c:383
+msgid "make a slideshow of every toplevel widget by adding them in a GtkStack"
+msgstr "對每個頂層視窗元件製作幻燈片，將它們加入 GtkStack"
+
+#: ../gladeui/glade-previewer.c:384
 msgid "Display previewer version"
 msgstr "顯示預覽程式版本"
 
-#: ../gladeui/glade-previewer.c:80
+#: ../gladeui/glade-previewer.c:403
+msgid "- previews a glade UI definition"
+msgstr "- 預覽 glade UI 定義"
+
+#: ../gladeui/glade-previewer.c:409
 #, c-format
 msgid ""
 "%s\n"
@@ -1478,141 +1574,123 @@ msgstr ""
 "%s\n"
 "執行 「%s --help」以查看完整的命令列可用選項清單。\n"
 
-#: ../gladeui/glade-previewer.c:95
-#, c-format
-msgid "--listen and --filename must not be simultaneously specified.\n"
-msgstr "--listen 和 --filename 不能同時指定。\n"
-
-#: ../gladeui/glade-previewer.c:101
+#: ../gladeui/glade-previewer.c:426
 #, c-format
 msgid "Either --listen or --filename must be specified.\n"
 msgstr "必須指定 --listen 或 --filename。\n"
 
-#: ../gladeui/glade-previewer.c:117
-#, c-format
-msgid "Couldn't load builder definition: %s"
-msgstr "無法載入組建程式定義：%s"
-
-#: ../gladeui/glade-previewer.c:143
-#, c-format
-msgid "UI definition has no previewable widgets.\n"
-msgstr "UI 定義沒有可預覽的視窗元件。\n"
-
-#: ../gladeui/glade-previewer.c:153
-#, c-format
-msgid "Object %s not found in UI definition.\n"
-msgstr "在 UI 定義中找不到物件 %s。\n"
-
-#: ../gladeui/glade-previewer.c:159
-#, c-format
-msgid "Object is not previewable.\n"
-msgstr "物件不可預覽。\n"
-
-#: ../gladeui/glade-previewer.c:201 ../plugins/gtk+/gtkunixprint.xml.in.h:10
+#: ../gladeui/glade-preview-window.c:56
+#: ../plugins/gtk+/gtkunixprint.xml.in.h:10
 msgid "Preview"
 msgstr "預覽"
 
-#: ../gladeui/glade-previewer.c:282 ../gladeui/glade-previewer.c:300
-#: ../gladeui/glade-previewer.c:320
-#, c-format
-msgid "Error: %s.\n"
-msgstr "錯誤：%s。\n"
-
-#: ../gladeui/glade-previewer.c:376
-#, c-format
-msgid "Broken pipe!\n"
-msgstr "管線中斷！\n"
-
-#: ../gladeui/glade-project.c:894
+#: ../gladeui/glade-project.c:959
 msgid "Whether project has been modified since it was last saved"
 msgstr "專案自上次儲存後是否被修改過"
 
-#: ../gladeui/glade-project.c:900
+#: ../gladeui/glade-project.c:965
 msgid "Has Selection"
 msgstr "具有選取區"
 
-#: ../gladeui/glade-project.c:901
+#: ../gladeui/glade-project.c:966
 msgid "Whether project has a selection"
 msgstr "專案是否有選取區"
 
-#: ../gladeui/glade-project.c:907
+#: ../gladeui/glade-project.c:972
 msgid "Path"
 msgstr "路徑"
 
-#: ../gladeui/glade-project.c:908
+#: ../gladeui/glade-project.c:973
 msgid "The filesystem path of the project"
 msgstr "此專案的檔案系統路徑"
 
-#: ../gladeui/glade-project.c:914
+#: ../gladeui/glade-project.c:979
 msgid "Read Only"
 msgstr "唯讀"
 
-#: ../gladeui/glade-project.c:915
+#: ../gladeui/glade-project.c:980
 msgid "Whether project is read-only"
 msgstr "專案是否唯讀"
 
-#: ../gladeui/glade-project.c:921
+#: ../gladeui/glade-project.c:986
 msgid "Add Item"
 msgstr "加入項目"
 
-#: ../gladeui/glade-project.c:922
+#: ../gladeui/glade-project.c:987
 msgid "The current item to add to the project"
 msgstr "將目前的項目加入專案"
 
-#: ../gladeui/glade-project.c:928
+#: ../gladeui/glade-project.c:993
 msgid "Pointer Mode"
 msgstr "指標模式"
 
-#: ../gladeui/glade-project.c:929
+#: ../gladeui/glade-project.c:994
 msgid "The currently effective GladePointerMode"
 msgstr "目前有影響的 GladePointerMode"
 
-#: ../gladeui/glade-project.c:936
+#: ../gladeui/glade-project.c:1001
 msgid "Translation Domain"
 msgstr "翻譯域名"
 
-#: ../gladeui/glade-project.c:937
+#: ../gladeui/glade-project.c:1002
 msgid "The project translation domain"
 msgstr "專案翻譯域名"
 
-#: ../gladeui/glade-project.c:943 ../gladeui/glade-widget.c:1401
+#: ../gladeui/glade-project.c:1008 ../gladeui/glade-widget.c:1401
 msgid "Template"
 msgstr "Template"
 
-#: ../gladeui/glade-project.c:944
+#: ../gladeui/glade-project.c:1009
 msgid "The project's template widget, if any"
 msgstr "專案的範本視窗元件，如果有的話"
 
-#: ../gladeui/glade-project.c:950
+#: ../gladeui/glade-project.c:1015
 msgid "Resource Path"
 msgstr "資源路徑"
 
-#: ../gladeui/glade-project.c:951
+#: ../gladeui/glade-project.c:1016
 msgid "Path to load images and resources in Glade's runtime"
 msgstr "Glade 執行時間用來載入圖片與資源的路徑"
 
-#: ../gladeui/glade-project.c:1228
+#: ../gladeui/glade-project.c:1022 ../gladeui/glade-project-properties.ui.h:29
+#| msgid "License:"
+msgid "License"
+msgstr "授權"
+
+#: ../gladeui/glade-project.c:1023
+msgid "License for this project, it will be added as a document level comment."
+msgstr "這個專案的授權，它會以文件層級註解加入。"
+
+#: ../gladeui/glade-project.c:1029
+msgid "Css Provider Path"
+msgstr "Css 提供者路徑"
+
+#: ../gladeui/glade-project.c:1030
+msgid "Path to use as the custom css provider for this project."
+msgstr "這個專案中做為自選 css 提供者的路徑。"
+
+#: ../gladeui/glade-project.c:1126
 #, c-format
 msgid "(internal %s)"
 msgstr "(內部 %s)"
 
-#: ../gladeui/glade-project.c:1233
+#: ../gladeui/glade-project.c:1131
 #, c-format
 msgid "(%s child)"
 msgstr "(%s 子項)"
 
-#: ../gladeui/glade-project.c:1235
+#: ../gladeui/glade-project.c:1133
 #, c-format
 msgid "(template)"
 msgstr "(範本)"
 
 #. translators: refers to a property named '%s' of widget '%s'
-#: ../gladeui/glade-project.c:1243
+#: ../gladeui/glade-project.c:1141
 #, c-format
 msgid "(%s of %s)"
 msgstr "(%2$s 的 %1$s)"
 
-#: ../gladeui/glade-project.c:1686
+#: ../gladeui/glade-project.c:1499
 #, c-format
 msgid ""
 "Failed to load %s.\n"
@@ -1622,26 +1700,26 @@ msgstr ""
 "下列必要的分類尚無法取得：%s"
 
 #. translators: refers to project name '%s' that targets gtk version '%d.%d'
-#: ../gladeui/glade-project.c:2005
+#: ../gladeui/glade-project.c:1870
 #, c-format
 msgid "%s targets Gtk+ %d.%d"
 msgstr "%s 目標 Gtk+ %d.%d"
 
-#: ../gladeui/glade-project.c:2044
+#: ../gladeui/glade-project.c:1909
 msgid "Specially because there is an object that can not be build with type "
 msgstr "特別是因為有物件不能編譯為這個類型"
 
-#: ../gladeui/glade-project.c:2049
+#: ../gladeui/glade-project.c:1914
 #, c-format
 msgid ""
 "Specially because there are %d objects that can not be build with types "
 msgstr "特別是因為有 %d 個物件不能編譯為這個類型"
 
-#: ../gladeui/glade-project.c:2056
+#: ../gladeui/glade-project.c:1921
 msgid " and "
 msgstr " 和 "
 
-#: ../gladeui/glade-project.c:2074
+#: ../gladeui/glade-project.c:1939
 #, c-format
 msgid ""
 "But this version of Glade is for GTK+ 3 only.\n"
@@ -1653,8 +1731,8 @@ msgstr ""
 "請先確定你可以在 Glade 3.8 執行這個專案並且沒用到已廢棄的視窗元件。\n"
 "%s"
 
-#: ../gladeui/glade-project.c:2135
-#, fuzzy, c-format
+#: ../gladeui/glade-project.c:2000
+#, c-format
 #| msgid ""
 #| "An automatically saved version of `%s' is more recent\n"
 #| "\n"
@@ -1664,11 +1742,11 @@ msgid ""
 "\n"
 "Would you like to load the autosave version instead?"
 msgstr ""
-"自動儲存的「%s」版本比較新\n"
+"自動儲存的「%s」版本比較新。\n"
 "\n"
 "你是否想要載入自動儲存的版本代替？"
 
-#: ../gladeui/glade-project.c:2261
+#: ../gladeui/glade-project.c:2140
 #, c-format
 msgid "%s document properties"
 msgstr "%s 文件屬性"
@@ -1681,142 +1759,142 @@ msgstr "%s 文件屬性"
 #. * ugly messy code with comments in line breaks inside function calls).
 #.
 #. translators: refers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2739
+#: ../gladeui/glade-project.c:2896
 #, c-format
 msgid "This widget was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr "這個視窗元件已引入 %s %d.%d 專案目標為 %s %d.%d"
 
 #. translators: refers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2743
+#: ../gladeui/glade-project.c:2900
 #, c-format
 msgid "[%s] Object class '%s' was introduced in %s %d.%d\n"
 msgstr "[%s] 物件類別「%s」已引入 %s %d.%d\n"
 
-#: ../gladeui/glade-project.c:2745
+#: ../gladeui/glade-project.c:2902
 msgid "This widget is deprecated"
 msgstr "這個視窗元件已經廢棄"
 
 #. translators: refers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2748
+#: ../gladeui/glade-project.c:2905
 #, c-format
 msgid "[%s] Object class '%s' from %s %d.%d is deprecated\n"
 msgstr "[%s] 物件類別「%s」於 %s %d.%d 已經廢棄了\n"
 
 #. translators: refers to a property in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2753
+#: ../gladeui/glade-project.c:2910
 #, c-format
 msgid "This property was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr "這個屬性已引入 %s %d.%d 專案目標為 %s %d.%d"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2757
+#: ../gladeui/glade-project.c:2914
 #, c-format
 msgid "[%s] Property '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr "[%s] 屬性「%s」(物件類別「%s」)已引入 %s %d.%d\n"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2761
+#: ../gladeui/glade-project.c:2918
 #, c-format
 msgid ""
 "[%s] Packing property '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr "[%s] 正在包裝屬性「%s」(物件類別「%s」)已引入 %s %d.%d\n"
 
-#: ../gladeui/glade-project.c:2764
+#: ../gladeui/glade-project.c:2921
 msgid "This property is deprecated"
 msgstr "這個屬性已經廢棄"
 
 #. translators: refers to a property '%s' of widget '[%s]'
-#: ../gladeui/glade-project.c:2767
+#: ../gladeui/glade-project.c:2924
 #, c-format
 msgid "[%s] Property '%s' of object class '%s' is deprecated"
 msgstr "[%1$s] 物件類別「%3$s」的屬性「%2$s」已經廢棄了"
 
 #. translators: refers to a signal in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2771
+#: ../gladeui/glade-project.c:2928
 #, c-format
 msgid "This signal was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr "這個信號已引入 %s %d.%d 專案目標為 %s %d.%d"
 
 #. translators: refers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2775
+#: ../gladeui/glade-project.c:2932
 #, c-format
 msgid "[%s] Signal '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr "[%s] 信號「%s」(物件類別「%s」)已引入 %s %d.%d\n"
 
-#: ../gladeui/glade-project.c:2778
+#: ../gladeui/glade-project.c:2935
 msgid "This signal is deprecated"
 msgstr "這個信號已經廢棄"
 
 #. translators: refers to a signal '%s' of widget '[%s]'
-#: ../gladeui/glade-project.c:2781
+#: ../gladeui/glade-project.c:2938
 #, c-format
 msgid "[%s] Signal '%s' of object class '%s' is deprecated"
 msgstr "[%1$s] 物件類別「%3$s」的信號「%2$s」已經廢棄了"
 
-#: ../gladeui/glade-project.c:3077
+#: ../gladeui/glade-project.c:3234
 msgid "Details"
 msgstr "詳細資料"
 
-#: ../gladeui/glade-project.c:3092
+#: ../gladeui/glade-project.c:3249
 #, c-format
 msgid "Project \"%s\" has errors. Save anyway?"
 msgstr "專案「%s」有錯誤。要強制儲存嗎？"
 
-#: ../gladeui/glade-project.c:3093
+#: ../gladeui/glade-project.c:3250
 #, c-format
 msgid "Project \"%s\" has deprecated widgets and/or version mismatches."
 msgstr "專案「%s」具有廢棄的視窗元件和/或版本不符。"
 
-#: ../gladeui/glade-project.c:3120
+#: ../gladeui/glade-project.c:3277
 #, c-format
 msgid "Object %s has unrecognized type %s\n"
 msgstr "物件 %s 含有無法辨識的類型 %s\n"
 
-#: ../gladeui/glade-project.c:4595
+#: ../gladeui/glade-project.c:4747
 #, c-format
 msgid "Unsaved %i"
 msgstr "未儲存的 %i"
 
-#: ../gladeui/glade-project.c:4780 ../gladeui/glade-project.c:4831
-#: ../gladeui/glade-project.c:4988
+#: ../gladeui/glade-project.c:5046 ../gladeui/glade-project.c:5097
+#: ../gladeui/glade-project.c:5254
 msgid "No widget selected."
 msgstr "沒有選取的視窗元件。"
 
-#: ../gladeui/glade-project.c:4796
+#: ../gladeui/glade-project.c:5062
 msgid "Unable to copy unrecognized widget type."
 msgstr "無法複製無法辨識的視窗元件類型。"
 
-#: ../gladeui/glade-project.c:4828
+#: ../gladeui/glade-project.c:5094
 msgid "Unable to cut unrecognized widget type"
 msgstr "無法剪下無法辨識的視窗元件類型"
 
-#: ../gladeui/glade-project.c:4880
+#: ../gladeui/glade-project.c:5146
 msgid "Unable to paste to the selected parent"
 msgstr "無法貼到選取的父項目"
 
-#: ../gladeui/glade-project.c:4891
+#: ../gladeui/glade-project.c:5157
 msgid "Unable to paste to multiple widgets"
 msgstr "無法貼到多重視窗元件"
 
-#: ../gladeui/glade-project.c:4901
+#: ../gladeui/glade-project.c:5167
 msgid "No widget on the clipboard"
 msgstr "剪貼簿中沒有視窗元件"
 
-#: ../gladeui/glade-project.c:4946
+#: ../gladeui/glade-project.c:5212
 msgid "Only one widget can be pasted at a time to this container"
 msgstr "這個容器一次只能貼上一個視窗元件"
 
-#: ../gladeui/glade-project.c:4958
+#: ../gladeui/glade-project.c:5224
 msgid "Insufficient amount of placeholders in target container"
 msgstr "目標容器中的佔位符數量不足"
 
-#: ../gladeui/glade-project-properties.c:132
+#: ../gladeui/glade-project-properties.c:169
 msgid "The project this properties dialog was created for"
 msgstr "建立這個屬性對話盒的專案"
 
-#: ../gladeui/glade-project-properties.c:534
+#: ../gladeui/glade-project-properties.c:620
 #, c-format
 msgid "Project %s has no deprecated widgets or version mismatches."
 msgstr "專案 %s 沒有廢棄的視窗元件或版本不符。"
@@ -2014,17 +2092,17 @@ msgstr "Glade 視窗元件"
 msgid "The glade widget to edit signals"
 msgstr "編輯信號的 glade 視窗元件"
 
-#: ../gladeui/glade-utils.c:135 ../gladeui/glade-utils.c:167
+#: ../gladeui/glade-utils.c:136 ../gladeui/glade-utils.c:168
 #, c-format
 msgid "We could not find the symbol \"%s\""
 msgstr "找不到符號「%s」"
 
-#: ../gladeui/glade-utils.c:143
+#: ../gladeui/glade-utils.c:144
 #, c-format
 msgid "Could not get the type from \"%s\""
 msgstr "無法取得「%s」的類型"
 
-#: ../gladeui/glade-utils.c:294
+#: ../gladeui/glade-utils.c:295
 #, c-format
 msgid ""
 "Cannot add non scrollable %s widget to a %s directly.\n"
@@ -2033,29 +2111,29 @@ msgstr ""
 "不能將非捲動 %s 直接加入 %s。\n"
 "請先加入 %s。"
 
-#: ../gladeui/glade-utils.c:474
+#: ../gladeui/glade-utils.c:475
 msgid "All Files"
 msgstr "所有檔案"
 
-#: ../gladeui/glade-utils.c:479
+#: ../gladeui/glade-utils.c:480
 msgid "Libglade Files"
 msgstr "Libglade 檔案"
 
-#: ../gladeui/glade-utils.c:484
+#: ../gladeui/glade-utils.c:485
 msgid "GtkBuilder Files"
 msgstr "GtkBuilder 檔案"
 
-#: ../gladeui/glade-utils.c:490
+#: ../gladeui/glade-utils.c:491
 msgid "All Glade Files"
 msgstr "所有 Glade 檔案"
 
-#: ../gladeui/glade-utils.c:1183
+#: ../gladeui/glade-utils.c:1214
 msgid "Could not show link:"
 msgstr "無法顯示連結："
 
 #. Reset the column
 #. GtkTextDirection enumeration value
-#: ../gladeui/glade-utils.c:1592 ../plugins/gtk+/glade-attributes.c:823
+#: ../gladeui/glade-utils.c:1623 ../plugins/gtk+/glade-attributes.c:824
 #: ../plugins/gtk+/gtk+.xml.in.h:383
 msgid "None"
 msgstr "無"
@@ -2081,80 +2159,80 @@ msgstr "可視的"
 msgid "Whether this action is visible"
 msgstr "這個動作是否要顯示"
 
-#: ../gladeui/glade-widget-adaptor.c:256
+#: ../gladeui/glade-widget-adaptor.c:257
 #, c-format
 msgid "A derived adaptor (%s) of %s already exist!"
 msgstr "%2$s 的衍生轉接器 (%1$s) 已經存在！"
 
-#: ../gladeui/glade-widget-adaptor.c:933
+#: ../gladeui/glade-widget-adaptor.c:934
 #, c-format
 msgid "%s does not support adding any children."
 msgstr "%s 不支援加入任何子項。"
 
-#: ../gladeui/glade-widget-adaptor.c:1426
+#: ../gladeui/glade-widget-adaptor.c:1393
 msgid "Name of the class"
 msgstr "類別的名稱"
 
-#: ../gladeui/glade-widget-adaptor.c:1433
+#: ../gladeui/glade-widget-adaptor.c:1400
 msgid "GType of the class"
 msgstr "此類別的 GType"
 
-#: ../gladeui/glade-widget-adaptor.c:1439
+#: ../gladeui/glade-widget-adaptor.c:1406
 msgid "Title"
 msgstr "標題"
 
-#: ../gladeui/glade-widget-adaptor.c:1440
+#: ../gladeui/glade-widget-adaptor.c:1407
 msgid "Translated title for the class used in the glade UI"
 msgstr "此類別用於 glade UI 的可翻譯標題"
 
-#: ../gladeui/glade-widget-adaptor.c:1446
+#: ../gladeui/glade-widget-adaptor.c:1413
 msgid "Generic Name"
 msgstr "一般名稱"
 
-#: ../gladeui/glade-widget-adaptor.c:1447
+#: ../gladeui/glade-widget-adaptor.c:1414
 msgid "Used to generate names of new widgets"
 msgstr "用於產生新視窗元件的名稱"
 
-#: ../gladeui/glade-widget-adaptor.c:1453 ../plugins/gtk+/gtk+.xml.in.h:592
+#: ../gladeui/glade-widget-adaptor.c:1420 ../plugins/gtk+/gtk+.xml.in.h:592
 #: ../plugins/gtk+/glade-window-editor.ui.h:7
 msgid "Icon Name"
 msgstr "圖示名稱"
 
-#: ../gladeui/glade-widget-adaptor.c:1454
+#: ../gladeui/glade-widget-adaptor.c:1421
 msgid "The icon name"
 msgstr "圖示名稱"
 
-#: ../gladeui/glade-widget-adaptor.c:1460
+#: ../gladeui/glade-widget-adaptor.c:1427
 msgid "Catalog"
 msgstr "分類"
 
-#: ../gladeui/glade-widget-adaptor.c:1461
+#: ../gladeui/glade-widget-adaptor.c:1428
 msgid "The name of the widget catalog this class was declared by"
 msgstr "這個類別宣告的視窗元件分類名稱"
 
-#: ../gladeui/glade-widget-adaptor.c:1467
+#: ../gladeui/glade-widget-adaptor.c:1434
 msgid "Book"
 msgstr "書本"
 
-#: ../gladeui/glade-widget-adaptor.c:1468
+#: ../gladeui/glade-widget-adaptor.c:1435
 msgid "DevHelp search namespace for this widget class"
 msgstr "這個視窗元件類別的 DevHelp 搜尋命名空間"
 
-#: ../gladeui/glade-widget-adaptor.c:1474
+#: ../gladeui/glade-widget-adaptor.c:1441
 msgid "Special Child Type"
 msgstr "特殊子項類型"
 
-#: ../gladeui/glade-widget-adaptor.c:1475
+#: ../gladeui/glade-widget-adaptor.c:1442
 msgid ""
 "Holds the name of the packing property to depict special children for this "
 "container class"
 msgstr "保留包裝屬性的名稱以描述這個容器類別的特殊子項"
 
-#: ../gladeui/glade-widget-adaptor.c:1482
+#: ../gladeui/glade-widget-adaptor.c:1449
 msgid "Cursor"
 msgstr "游標"
 
-#: ../gladeui/glade-widget-adaptor.c:1483
+#: ../gladeui/glade-widget-adaptor.c:1450
 msgid "A cursor for inserting widgets in the UI"
 msgstr "用來在 UI 中插入視窗元件的游標"
 
@@ -2268,24 +2346,24 @@ msgstr "這個視窗元件是否要顯示"
 msgid "Whether this widget is the template for a composite widget"
 msgstr "這個視窗元件是否是複合視窗元件的範本"
 
-#: ../gladeui/glade-widget.c:4768
+#: ../gladeui/glade-widget.c:4737
 #, c-format
 msgid "Object has unrecognized type %s"
 msgstr "物件有無法辨識的類型 %s"
 
-#: ../gladeui/glade-widget.c:4832
+#: ../gladeui/glade-widget.c:4801
 msgid "Property has versioning problems: "
 msgstr "屬性有版本上的問題："
 
-#: ../gladeui/glade-widget.c:4834
+#: ../gladeui/glade-widget.c:4803
 msgid "Some properties have versioning problems: "
 msgstr "部分屬性有版本上的問題："
 
-#: ../gladeui/glade-widget.c:4854
+#: ../gladeui/glade-widget.c:4823
 msgid "Signal has versioning problems: "
 msgstr "信號有版本上的問題："
 
-#: ../gladeui/glade-widget.c:4856
+#: ../gladeui/glade-widget.c:4825
 msgid "Some signals have versioning problems: "
 msgstr "部分信號有版本上的問題："
 
@@ -2354,34 +2432,111 @@ msgid "Composite template toplevel:"
 msgstr "組合式範本頂端層級："
 
 #: ../gladeui/glade-project-properties.ui.h:3
-msgid "Project properties:"
-msgstr "專案屬性："
+#| msgid "Setting %s to use a custom label widget"
+msgid "Select a CSS to use as custom style provider"
+msgstr "選擇用於自選樣式提供器的 CSS"
 
 #: ../gladeui/glade-project-properties.ui.h:4
+msgid "Custom CSS style provider:"
+msgstr "自選 CSS 樣式提供者："
+
+#: ../gladeui/glade-project-properties.ui.h:5
 msgid "From the project directory"
 msgstr "從專案目錄"
 
-#: ../gladeui/glade-project-properties.ui.h:5
+#: ../gladeui/glade-project-properties.ui.h:6
 msgid "From a project relative directory"
 msgstr "從專案相對目錄"
 
-#: ../gladeui/glade-project-properties.ui.h:6
+#: ../gladeui/glade-project-properties.ui.h:7
 msgid "From this directory"
 msgstr "從這個目錄"
 
-#: ../gladeui/glade-project-properties.ui.h:7
+#: ../gladeui/glade-project-properties.ui.h:8
 msgid "Choose a path to load image resources"
 msgstr "選擇用來載入圖片資源的路徑"
 
-#: ../gladeui/glade-project-properties.ui.h:8
+#: ../gladeui/glade-project-properties.ui.h:9
 msgid "Image resources are loaded locally:"
 msgstr "圖片資源在本地端載入："
 
-#: ../gladeui/glade-project-properties.ui.h:9
+#: ../gladeui/glade-project-properties.ui.h:10
 msgid "Toolkit version required:"
 msgstr "需要 Toolkit 版本："
 
-#: ../gladeui/glade-project-properties.ui.h:10
+#: ../gladeui/glade-project-properties.ui.h:13
+#| msgid "Copyright"
+msgid "Copyright:"
+msgstr "版權："
+
+#: ../gladeui/glade-project-properties.ui.h:14
+msgid "program or library name"
+msgstr "程式或程式庫名稱"
+
+#: ../gladeui/glade-project-properties.ui.h:15
+#| msgid "Authors"
+msgid "Author(s):"
+msgstr "作者："
+
+#: ../gladeui/glade-project-properties.ui.h:16
+#: ../plugins/gtk+/glade-about-dialog-editor.ui.h:3
+msgid "License:"
+msgstr "授權："
+
+#: ../gladeui/glade-project-properties.ui.h:17
+#| msgid "Description For"
+msgid "Description:"
+msgstr "描述："
+
+#: ../gladeui/glade-project-properties.ui.h:18
+msgid "program or library short description"
+msgstr "程式或程式庫短描述"
+
+#: ../gladeui/glade-project-properties.ui.h:19
+msgid "GNU GPL version 2"
+msgstr "GNU GPL 第 2 版"
+
+#: ../gladeui/glade-project-properties.ui.h:20
+msgid "GNU GPL version 3"
+msgstr "GNU GPL 第 3 版"
+
+#: ../gladeui/glade-project-properties.ui.h:21
+msgid "GNU LGPL version 2.1"
+msgstr "GNU LGPL 第 2.1 版"
+
+#: ../gladeui/glade-project-properties.ui.h:22
+msgid "GNU LGPL version 3"
+msgstr "GNU LGPL 第 3 版"
+
+#: ../gladeui/glade-project-properties.ui.h:23
+msgid "BSD 2-clause"
+msgstr "BSD 2-clause"
+
+#: ../gladeui/glade-project-properties.ui.h:24
+msgid "BSD 3-clause"
+msgstr "BSD 3-clause"
+
+#: ../gladeui/glade-project-properties.ui.h:25
+#| msgid "Attached To:"
+msgid "Apache 2"
+msgstr "Apache 2"
+
+#: ../gladeui/glade-project-properties.ui.h:26
+#| msgid "MIT X11"
+msgid "MIT"
+msgstr "MIT"
+
+#: ../gladeui/glade-project-properties.ui.h:27
+msgid "GNU All permissive"
+msgstr "GNU 全部許可"
+
+#. GtkCellRendererAccelMode enumeration value
+#: ../gladeui/glade-project-properties.ui.h:28
+#: ../plugins/gtk+/gtk+.xml.in.h:685
+msgid "Other"
+msgstr "其他"
+
+#: ../gladeui/glade-project-properties.ui.h:30
 msgid ""
 "Verify that the project does not use any properties,\n"
 "signals or widgets which are not available in the target version"
@@ -2500,7 +2655,7 @@ msgstr "字型描述"
 #: ../plugins/gtk+/glade-attributes.c:361
 #: ../plugins/gtk+/glade-attributes.c:369
 #: ../plugins/gtk+/glade-attributes.c:375
-#: ../plugins/gtk+/glade-attributes.c:826
+#: ../plugins/gtk+/glade-attributes.c:827
 msgid "<Enter Value>"
 msgstr "<輸入數值>"
 
@@ -2516,19 +2671,19 @@ msgstr "選擇一個顏色"
 msgid "Select a font"
 msgstr "選擇一個字型"
 
-#: ../plugins/gtk+/glade-attributes.c:890
+#: ../plugins/gtk+/glade-attributes.c:891
 msgid "Attribute"
 msgstr "屬性"
 
-#: ../plugins/gtk+/glade-attributes.c:898
+#: ../plugins/gtk+/glade-attributes.c:899
 msgid "Value"
 msgstr "數值"
 
-#: ../plugins/gtk+/glade-attributes.c:1053
+#: ../plugins/gtk+/glade-attributes.c:1054
 msgid "Setup Text Attributes"
 msgstr "設定文字屬性"
 
-#: ../plugins/gtk+/glade-attributes.c:1145
+#: ../plugins/gtk+/glade-attributes.c:1146
 msgid "Edit Attributes"
 msgstr "編輯屬性"
 
@@ -2569,11 +2724,11 @@ msgid "Retrieve %s from model (type %s)"
 msgstr "從模型取回 %s（類型 %s）"
 
 #. translators: the adjective not the verb
-#: ../plugins/gtk+/glade-cell-renderer-editor.c:503
+#: ../plugins/gtk+/glade-cell-renderer-editor.c:514
 msgid "unset"
 msgstr "取消設定"
 
-#: ../plugins/gtk+/glade-cell-renderer-editor.c:526
+#: ../plugins/gtk+/glade-cell-renderer-editor.c:537
 msgid "no model"
 msgstr "沒有模型"
 
@@ -2868,7 +3023,7 @@ msgstr "類型為 %s 的視窗元件不能有視窗元件子項。"
 msgid "Widgets of type %s need placeholders to add children."
 msgstr "類型為 %s 的視窗元件需要佔位符才能加入子項。"
 
-#: ../plugins/gtk+/glade-gtk-entry.c:206
+#: ../plugins/gtk+/glade-gtk-entry.c:195
 msgid ""
 "This property is only available\n"
 "if the entry has a frame"
@@ -2876,7 +3031,7 @@ msgstr ""
 "這個屬性只有在項目有框架時\n"
 "才能使用"
 
-#: ../plugins/gtk+/glade-gtk-entry.c:215
+#: ../plugins/gtk+/glade-gtk-entry.c:204
 msgid ""
 "This property is only available\n"
 "if the entry characters are invisible"
@@ -3128,40 +3283,40 @@ msgid ""
 "Columns must have a fixed size inside a treeview with fixed height mode set"
 msgstr "欄必須在樹狀檢視中有固定大小和固定的高度模式設定"
 
-#: ../plugins/gtk+/glade-gtk-tree-view.c:304
+#: ../plugins/gtk+/glade-gtk-tree-view.c:294
 msgid "Search is disabled"
 msgstr "搜尋已停用"
 
-#: ../plugins/gtk+/glade-gtk-tree-view.c:311
+#: ../plugins/gtk+/glade-gtk-tree-view.c:301
 msgid "Headers are invisible"
 msgstr "標題是隱形的"
 
-#: ../plugins/gtk+/glade-gtk-tree-view.c:318
+#: ../plugins/gtk+/glade-gtk-tree-view.c:308
 msgid "Expanders are not shown"
 msgstr "擴展器不顯示"
 
-#: ../plugins/gtk+/glade-gtk-widget.c:815
+#: ../plugins/gtk+/glade-gtk-widget.c:841
 #, c-format
 msgid "Removing parent of %s"
 msgstr "移除 %s 的父項"
 
-#: ../plugins/gtk+/glade-gtk-widget.c:872
+#: ../plugins/gtk+/glade-gtk-widget.c:898
 #, c-format
 msgid "Adding parent %s for %s"
 msgstr "加入父項 %s 至 %s"
 
-#: ../plugins/gtk+/glade-gtk-widget.c:983
+#: ../plugins/gtk+/glade-gtk-widget.c:1014
 #, c-format
 msgid "Adding %s to Size Group %s"
 msgstr "加入 %s 至大小羣組 %s"
 
-#: ../plugins/gtk+/glade-gtk-widget.c:987
+#: ../plugins/gtk+/glade-gtk-widget.c:1018
 #, c-format
 msgid "Adding %s to a new Size Group"
 msgstr "加入 %s 到新的大小羣組"
 
 #. Add trailing new... item
-#: ../plugins/gtk+/glade-gtk-widget.c:1045
+#: ../plugins/gtk+/glade-gtk-widget.c:1076
 msgid "New Size Group"
 msgstr "新增大小羣組"
 
@@ -5310,11 +5465,6 @@ msgstr "詢問"
 msgid "Error"
 msgstr "錯誤"
 
-#. GtkCellRendererAccelMode enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:685
-msgid "Other"
-msgstr "其他"
-
 #. GtkPolicyType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:687
 msgid "Never"
@@ -5734,12 +5884,12 @@ msgstr "可編輯欄"
 #: ../plugins/gtk+/gtk+.xml.in.h:824
 #, fuzzy
 msgid "Ellipsize column"
-msgstr "加入一欄"
+msgstr "欄位標頭"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:825
 #, fuzzy
 msgid "Family column"
-msgstr "加入一欄"
+msgstr "欄位標頭"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:826
 msgid "Font column"
@@ -6101,7 +6251,7 @@ msgstr "方向欄"
 #: ../plugins/gtk+/gtk+.xml.in.h:939
 #, fuzzy
 msgid "Pulse column"
-msgstr "加入一欄"
+msgstr "欄位標頭"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:940
 msgid "Text Horizontal Alignment column"
@@ -6226,10 +6376,6 @@ msgstr "已廢棄"
 #: ../plugins/gtk+/glade-about-dialog-editor.ui.h:1
 msgid "Program Attributes"
 msgstr "程式屬性"
-
-#: ../plugins/gtk+/glade-about-dialog-editor.ui.h:3
-msgid "License:"
-msgstr "授權："
 
 #: ../plugins/gtk+/glade-about-dialog-editor.ui.h:4
 msgid "License Text"
@@ -6787,6 +6933,12 @@ msgstr "提示："
 #: ../plugins/gtk+/glade-window-editor.ui.h:12
 msgid "Gravity:"
 msgstr "定位："
+
+#~ msgid "--listen and --filename must not be simultaneously specified.\n"
+#~ msgstr "--listen 和 --filename 不能同時指定。\n"
+
+#~ msgid "Project properties:"
+#~ msgstr "專案屬性："
 
 #~ msgid "Failed to save %s to %s: %s"
 #~ msgstr "將 %s 儲存為 %s 時失敗：%s"
