@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.16.0 
 
 Glade - A user interface designer for GTK+ and GNOME.
-Copyright (C) 2012 Juan Pablo Ugarte
+Copyright (C) 2012-2014 Juan Pablo Ugarte
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -422,6 +422,13 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
         <property name="sort_type">mru</property>
         <property name="show_numbers">True</property>
         <signal name="item-activated" handler="on_open_recent_action_item_activated" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkAction" id="registration_action">
+        <property name="label" translatable="yes">Registration &amp; User survey</property>
+        <property name="tooltip" translatable="yes">Help us improve Glade by registering and completing the user survey!</property>
+        <signal name="activate" handler="on_registration_action_activate" swapped="no"/>
       </object>
     </child>
   </object>
@@ -854,6 +861,15 @@ Andreas Nilsson &lt;andreas@andreasn.se&gt;</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="registration_menuitem">
+                        <property name="use_action_appearance">True</property>
+                        <property name="related_action">registration_action</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>

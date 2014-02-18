@@ -30,6 +30,7 @@
 #include "glade-close-button.h"
 #include "glade-resources.h"
 #include "glade-preferences.h"
+#include "glade-registration.h"
 
 #include <gladeui/glade.h>
 #include <gladeui/glade-popup.h>
@@ -151,6 +152,8 @@ struct _GladeWindowPrivate
   GtkWidget *left_paned;
   GtkWidget *right_paned;
 
+  GtkWidget *registration;      /* Registration and user survey dialog */
+  
   GdkRectangle position;
   ToolDock docks[N_DOCKS];
 };
@@ -2538,6 +2541,18 @@ add_project (GladeWindow *window, GladeProject *project, gboolean for_file)
   gtk_widget_show (GTK_WIDGET (priv->editor));
 }
 
+static void
+on_registration_action_activate (GtkAction   *action,
+                                 GladeWindow *window)
+{
+  GladeWindowPrivate *priv = window->priv;
+
+  if (!priv->registration)
+    priv->registration = glade_registration_new ();
+
+  gtk_window_present (GTK_WINDOW (priv->registration));
+}
+
 void
 glade_window_new_project (GladeWindow *window)
 {
@@ -2700,11 +2715,8 @@ glade_window_dispose (GObject *object)
 {
   GladeWindow *window = GLADE_WINDOW (object);
 
-  if (window->priv->app)
-    {
-      g_object_unref (window->priv->app);
-      window->priv->app = NULL;
-    }
+  g_clear_object (&window->priv->app);
+  g_clear_object (&window->priv->registration);
 
   G_OBJECT_CLASS (glade_window_parent_class)->dispose (object);
 }
@@ -3405,6 +3417,7 @@ glade_window_class_init (GladeWindowClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, on_about_action_activate);
   gtk_widget_class_bind_template_callback (widget_class, on_reference_action_activate);
   gtk_widget_class_bind_template_callback (widget_class, on_preferences_action_activate);
+  gtk_widget_class_bind_template_callback (widget_class, on_registration_action_activate);
 
   gtk_widget_class_bind_template_callback (widget_class, on_open_recent_action_item_activated);
   gtk_widget_class_bind_template_callback (widget_class, on_use_small_icons_action_toggled);

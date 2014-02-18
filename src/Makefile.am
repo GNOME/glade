@@ -24,19 +24,20 @@ BUILT_SOURCES = glade-resources.c glade-resources.h
 
 glade_SOURCES = \
 	glade-window.c \
-	glade-window.h \
 	glade-close-button.c \
-	glade-close-button.h \
 	glade-resources.c \
 	glade-preferences.c \
-	glade-preferences.h \
+	glade-http.c \
+	glade-registration.c \
 	main.c
 
 noinst_HEADERS = \
 	glade-window.h \
 	glade-close-button.h \
 	glade-resources.h \
-	glade-preferences.h
+	glade-preferences.h \
+	glade-logo.h \
+	glade-registration.h
 
 # Generate resources
 glade-resources.h: glade-resources.gresource.xml $(UI_FILES)
@@ -59,6 +60,6 @@ endif
 glade-win32-res.o: glade.rc
 	$(WINDRES) $< $@
 
-UI_FILES = glade.glade glade-preferences.glade
+UI_FILES = glade.glade glade-preferences.glade glade-registration.glade glade-registration.css
 
 EXTRA_DIST = glade.rc.in glade-resources.gresource.xml $(UI_FILES)
