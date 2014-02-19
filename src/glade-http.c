@@ -95,7 +95,7 @@ glade_http_emit_request_done (GladeHTTP *http, gchar *response)
           if (colon)
             {
               *colon++ = '\0';
-              values[i-1] = g_strchug (colon);
+              values[i-1] = g_strstrip (colon);
             }
           else
             values[i-1] = "";
