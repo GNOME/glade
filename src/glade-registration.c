@@ -33,6 +33,7 @@ struct _GladeRegistrationPrivate
   GtkLabel     *infobar_label;
   GtkLabel     *status_label;
   GladeHTTP    *http;
+  GladeHTTP    *sub_http;
   GCancellable *cancellable;
 
   /* Form widgets */
@@ -46,7 +47,8 @@ struct _GladeRegistrationPrivate
   GtkWidget *contact_website;
   GtkWidget *subscribe;
 
-  GtkWidget *validation_token;
+  GtkWidget *update_token_checkbutton;
+  GtkWidget *update_token;
 
   GtkWidget *experience;
   GtkWidget *experience_unit;
@@ -142,98 +144,34 @@ string_append_input_key_value_tuple (GString *string,
 static void
 glade_registration_show_message (GladeRegistration *registration,
                                  GtkMessageType     type,
-                                 const gchar       *message)
+                                 const gchar       *format,
+                                 ...)
 {
-  gtk_info_bar_set_message_type (GTK_INFO_BAR (registration->priv->infobar), type);
-  gtk_label_set_text (registration->priv->infobar_label, message ? message : "");
+  GladeRegistrationPrivate *priv = registration->priv;
 
+  gtk_info_bar_set_message_type (GTK_INFO_BAR (priv->infobar), type);
+
+  if (format)
+    {
+      va_list args;
+      gchar *string;
+
+      va_start (args, format);
+      string = g_strdup_vprintf (format, args);
+      va_end (args);
+
+      gtk_label_set_text (priv->infobar_label, string);
+
+      g_free (string);
+    }
+  else
+    gtk_label_set_text (priv->infobar_label, "");
+  
   /* Only show the infobar if the dialog is visible */
   if (gtk_widget_is_visible (GTK_WIDGET (registration)))
-    gtk_widget_show (registration->priv->infobar);
+    gtk_widget_show (priv->infobar);
 }
 
-static void 
-on_http_status (GladeHTTP         *http,
-                GladeHTTPStatus    status,
-                GError            *error,
-                GladeRegistration *registration)
-{
-  gchar *text = NULL;
-  
-  switch (status)
-    {
-      case GLADE_HTTP_READY:
-      break;
-      case GLADE_HTTP_CONNECTING:
-        text = g_strdup_printf (_("Connecting to %s"), glade_http_get_host (http));
-      break;
-      case GLADE_HTTP_SENDING:
-        text = g_strdup_printf (_("Sending data to %s"), glade_http_get_host (http));
-      break;
-      case GLADE_HTTP_WAITING:
-        text = g_strdup_printf (_("Waiting for %s"), glade_http_get_host (http));
-      break;
-      case GLADE_HTTP_RECEIVING:
-        text = g_strdup_printf (_("Receiving data from %s"), glade_http_get_host (http));
-      break;
-      case GLADE_HTTP_ERROR:
-        glade_registration_show_message (registration, GTK_MESSAGE_WARNING, error->message);
-      break;
-    }
-
-  gtk_label_set_text (registration->priv->status_label, text ? text : "");
-  gtk_widget_set_visible (registration->priv->net_spinner, text != NULL);
-  g_free (text);
-}
-
-#define append_input_tuple(s,i) string_append_input_key_value_tuple (s, #i, priv->i)
-
-static void 
-on_http_request_done (GladeHTTP         *http,
-                      gint               code,
-                      const gchar      **headers,
-                      const gchar      **values,
-                      const gchar       *response,
-                      GladeRegistration *registration)
-{  
-  switch (code)
-    {
-      case 100:
-        /* Ignore Continue HTTP response */
-      break;
-      case 200:
-        {
-          const gchar *status = NULL, *message = _("Internal server error");
-          gint i;
-
-          for (i = 0; headers[i]; i++)
-            {
-              if (g_strcmp0 (headers[i], "X-Glade-Status") == 0)
-                status = values[i];
-              else if (g_strcmp0 (headers[i], "X-Glade-Message") == 0)
-                message = values[i];
-            }
-
-          if (status == NULL)
-            {
-              glade_registration_show_message (registration, GTK_MESSAGE_WARNING, message);
-              return;
-            }
-          
-          if (g_strcmp0 (status, "ok") == 0)
-            {
-              gtk_widget_hide (GTK_WIDGET (registration));
-              glade_util_ui_message (glade_app_get_window (), GLADE_UI_INFO, NULL, "%s", message);
-            }
-          else if (g_strcmp0 (status, "error") == 0)
-            glade_registration_show_message (registration, GTK_MESSAGE_INFO, message);
-        }
-      break;
-      default:
-        glade_registration_show_message (registration, GTK_MESSAGE_INFO, response);
-      break;
-    }
-}
 
 #ifdef GDK_WINDOWING_X11
 #include "gdk/gdkx.h"
@@ -294,6 +232,201 @@ get_gdk_backend (GtkWidget *widget)
   }
 }
 
+
+static void
+glade_registration_http_post (GladeRegistration *registration,
+                              GladeHTTP         *http,
+                              GCancellable      *cancellable,
+                              const gchar       *url,
+                              GString           *content)
+{
+  const gchar *lang = pango_language_to_string (pango_language_get_default ());
+
+  glade_http_request_send_async (http, cancellable,
+                                 "POST %s HTTP/1.1\r\n"
+                                 "Host: %s\r\n"
+                                 "User-Agent: Glade/"PACKAGE_VERSION" (%s; Gtk+ %d.%d.%d; glib %d.%d.%d; %s)\r\n"
+                                 "Connection: close\r\n"
+                                 "Accept: text/plain\r\n"
+                                 "Accept-Language: %s\r\n"
+                                 "Content-Type: application/x-www-form-urlencoded\r\n"
+                                 "Content-Length: %d\r\n"
+                                 "\r\n%s",
+                                 url,                                                       /* POST url */
+                                 glade_http_get_host (http),                                /* Host */
+                                 get_gdk_backend (GTK_WIDGET (registration)),               /* User-Agent backend */
+                                 GTK_MAJOR_VERSION, GTK_MINOR_VERSION, GTK_MICRO_VERSION,   /* User-Agent gtk version */
+                                 glib_major_version, glib_minor_version, glib_micro_version,/* User-Agent glib version */
+                                 lang,                                                      /* User-Agent language */
+                                 lang,                                                      /* Accept-Language */
+                                 content->len,                                              /* Content-length */
+                                 content->str);                                             /* content */
+}
+
+
+#define append_input_tuple(s,i) string_append_input_key_value_tuple (s, #i, priv->i)
+
+static void 
+on_http_status (GladeHTTP         *http,
+                GladeHTTPStatus    status,
+                GError            *error,
+                GladeRegistration *registration)
+{
+  gchar *text = NULL;
+  
+  switch (status)
+    {
+      case GLADE_HTTP_READY:
+      break;
+      case GLADE_HTTP_CONNECTING:
+        text = g_strdup_printf (_("Connecting to %s"), glade_http_get_host (http));
+      break;
+      case GLADE_HTTP_SENDING:
+        text = g_strdup_printf (_("Sending data to %s"), glade_http_get_host (http));
+      break;
+      case GLADE_HTTP_WAITING:
+        text = g_strdup_printf (_("Waiting for %s"), glade_http_get_host (http));
+      break;
+      case GLADE_HTTP_RECEIVING:
+        text = g_strdup_printf (_("Receiving data from %s"), glade_http_get_host (http));
+      break;
+      case GLADE_HTTP_ERROR:
+        glade_registration_show_message (registration, GTK_MESSAGE_WARNING,
+                                         "%s", error->message);
+      break;
+    }
+
+  gtk_label_set_text (registration->priv->status_label, text ? text : "");
+  gtk_widget_set_visible (registration->priv->net_spinner, text != NULL);
+  g_free (text);
+}
+
+
+static void 
+on_subscribe_http_request_done (GladeHTTP         *http,
+                                gint               code,
+                                const gchar      **headers,
+                                const gchar      **values,
+                                const gchar       *response,
+                                GladeRegistration *registration)
+{
+  GtkDialog *dialog;
+  GtkWidget *button;
+  
+  if (code == 200)
+    return;
+
+  dialog = GTK_DIALOG (gtk_message_dialog_new (GTK_WINDOW (registration),
+                                               GTK_DIALOG_DESTROY_WITH_PARENT,
+                                               GTK_MESSAGE_WARNING, GTK_BUTTONS_OK,
+                                               "%s",
+                                               _("Sorry, Automatic subscription to Glade-users mailing list failed")));
+  
+  button = gtk_link_button_new_with_label ("http://lists.ximian.com/mailman/listinfo/glade-users",
+                                           _("Open Glade-users website"));
+  gtk_widget_show (button);
+  gtk_dialog_add_action_widget (dialog, button, GTK_RESPONSE_CANCEL);
+  gtk_button_box_set_child_secondary (GTK_BUTTON_BOX (gtk_dialog_get_action_area (dialog)), button, TRUE);
+
+  gtk_dialog_run (dialog);
+  gtk_widget_destroy (GTK_WIDGET (dialog));
+}
+
+static void
+glade_registration_subscribe_email (GladeRegistration *registration)
+{
+  GString *post;
+
+  if (!priv->sub_http)
+    {
+      priv->sub_http = glade_http_new ("lists.ximian.com", 80, FALSE);
+      g_signal_connect_object (priv->sub_http, "request-done",
+                               G_CALLBACK (on_subscribe_http_request_done),
+                               registration, 0);
+    }
+  
+  post = g_string_new ("");
+
+  string_append_input_key_value_tuple (post, "email", priv->email);
+  string_append_input_key_value_tuple (post, "fullname", priv->name);
+
+  glade_registration_http_post (registration, priv->sub_http, NULL,
+                                "/mailman/subscribe/glade-users",
+                                post);
+
+  g_string_free (post, TRUE);
+}
+
+#define append_input_tuple(s,i) string_append_input_key_value_tuple (s, #i, priv->i)
+
+static void 
+on_http_request_done (GladeHTTP         *http,
+                      gint               code,
+                      const gchar      **headers,
+                      const gchar      **values,
+                      const gchar       *response,
+                      GladeRegistration *registration)
+{
+  switch (code)
+    {
+      case 100:
+        /* Ignore Continue HTTP response */
+      break;
+      case 200:
+        {
+          const gchar *status = NULL, *message = _("Internal server error");
+          GladeRegistrationPrivate *priv = registration->priv;
+          gint i;
+
+          for (i = 0; headers[i]; i++)
+            {
+              if (g_strcmp0 (headers[i], "X-Glade-Status") == 0)
+                status = values[i];
+              else if (g_strcmp0 (headers[i], "X-Glade-Message") == 0)
+                message = values[i];
+            }
+
+          if (status == NULL)
+            glade_registration_show_message (registration, GTK_MESSAGE_WARNING, 
+                                             "%s", message);
+          else if (g_strcmp0 (status, "ok") == 0)
+            {
+              gtk_label_set_text (priv->status_label, "");
+              gtk_widget_hide (priv->net_spinner);
+
+              if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (priv->subscribe)))
+                glade_registration_subscribe_email (registration);
+
+              glade_util_ui_message (GTK_WIDGET (registration), GLADE_UI_INFO, NULL,
+                                     "<big>%s</big>", _("Thank you for taking the time to complete the survey, we appreciate it!"));
+              gtk_widget_hide (GTK_WIDGET (registration));
+            }
+          else if (g_strcmp0 (status, "error_required_field") == 0)
+            glade_registration_show_message (registration, GTK_MESSAGE_INFO,
+                                             "%s", _("Name and Email fields are required"));
+          else if (g_strcmp0 (status, "error_email_in_use") == 0)
+            glade_registration_show_message (registration, GTK_MESSAGE_WARNING,
+                                             "%s", _("Ops! email address is already in use!\nTo update information you need to provide the token that was sent to your inbox."));
+          else if (g_strcmp0 (status, "error_db_user_info") == 0)
+            glade_registration_show_message (registration, GTK_MESSAGE_WARNING,
+                                             _("Ops! Error saving user information: %s"), message);
+          else if (g_strcmp0 (status, "error_db_survey_data") == 0)
+            glade_registration_show_message (registration, GTK_MESSAGE_WARNING,
+                                             _("Ops! Error saving survey data: %s"), message);
+          else if (g_strcmp0 (status, "error_db") == 0)
+            glade_registration_show_message (registration, GTK_MESSAGE_WARNING,
+                                             _("Ops! Error accessing DB: %s"), message);
+          else
+            glade_registration_show_message (registration, GTK_MESSAGE_WARNING, "%s", message);
+        }
+      break;
+      default:
+        glade_registration_show_message (registration, GTK_MESSAGE_WARNING,
+                                         "%s", response ? response : "");
+      break;
+    }
+}
+
 static void 
 glade_registration_clear_cancellable (GladeRegistrationPrivate *priv)
 {
@@ -318,7 +451,7 @@ on_registration_dialog_response (GtkDialog *dialog, gint response_id)
       glade_registration_clear_cancellable (priv);
       return;
     }
-
+  
   glade_registration_clear_cancellable (priv);
   priv->cancellable = g_cancellable_new ();
   
@@ -332,7 +465,8 @@ on_registration_dialog_response (GtkDialog *dialog, gint response_id)
   append_input_tuple (post, contact_name);
   append_input_tuple (post, contact_website);
 
-  append_input_tuple (post, validation_token);
+  append_input_tuple (post, update_token_checkbutton);
+  append_input_tuple (post, update_token);
   
   append_input_tuple (post, experience);
   append_input_tuple (post, experience_unit);
@@ -380,23 +514,12 @@ on_registration_dialog_response (GtkDialog *dialog, gint response_id)
   append_input_tuple (post, contributing);
   append_input_tuple (post, contributing_whynot);
   append_input_tuple (post, comments);
-  
-  glade_http_request_send_async (priv->http,  priv->cancellable,
-                                 "POST /~jpu/glade/registration_master.php HTTP/1.1\r\n"
-                                 "Host: %s\r\n"
-                                 "User-Agent: Glade/"PACKAGE_VERSION" (%s; Gtk+ %d.%d.%d; glib %d.%d.%d)\r\n"
-                                 "Connection: close\r\n"
-                                 "Accept: text/plain\r\n"
-                                 "Content-Type: application/x-www-form-urlencoded\r\n"
-                                 "Content-Length: %d\r\n"
-                                 "\r\n"
-                                 "%s",
-                                 glade_http_get_host (priv->http),
-                                 get_gdk_backend (GTK_WIDGET (dialog)),
-                                 GTK_MAJOR_VERSION, GTK_MINOR_VERSION, GTK_MICRO_VERSION,
-                                 glib_major_version, glib_minor_version, glib_micro_version,
-                                 post->len,
-                                 post->str);
+
+  glade_registration_http_post (GLADE_REGISTRATION (dialog),
+                                priv->http,
+                                priv->cancellable,
+                                "/~jpu/glade/registration_master.php",
+                                post);
   
   g_string_free (post, TRUE);
 }
@@ -514,6 +637,7 @@ glade_registration_finalize (GObject *object)
   GladeRegistrationPrivate *priv = GLADE_REGISTRATION (object)->priv;
 
   g_clear_object (&priv->http);
+  g_clear_object (&priv->sub_http);
   g_clear_object (&priv->cancellable);
 
   G_OBJECT_CLASS (glade_registration_parent_class)->finalize (object);
@@ -540,7 +664,8 @@ glade_registration_class_init (GladeRegistrationClass *klass)
   gtk_widget_class_bind_template_child_private (widget_class, GladeRegistration, contact_name);
   gtk_widget_class_bind_template_child_private (widget_class, GladeRegistration, contact_website);
   gtk_widget_class_bind_template_child_private (widget_class, GladeRegistration, subscribe);
-  gtk_widget_class_bind_template_child_private (widget_class, GladeRegistration, validation_token);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeRegistration, update_token_checkbutton);
+  gtk_widget_class_bind_template_child_private (widget_class, GladeRegistration, update_token);
 
   gtk_widget_class_bind_template_child_private (widget_class, GladeRegistration, experience);
   gtk_widget_class_bind_template_child_private (widget_class, GladeRegistration, experience_unit);

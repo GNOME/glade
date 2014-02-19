@@ -731,14 +731,14 @@ You will be sent email requesting confirmation!</property>
                         <property name="margin_right">12</property>
                         <property name="spacing">4</property>
                         <child>
-                          <object class="GtkCheckButton" id="checkbutton2">
+                          <object class="GtkCheckButton" id="update_token_checkbutton">
                             <property name="label" translatable="yes">Update Info</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
                             <property name="xalign">0</property>
                             <property name="draw_indicator">True</property>
-                            <signal name="toggled" handler="toggle_button_set_sensitive_on_toggle" object="validation_token" swapped="no"/>
+                            <signal name="toggled" handler="toggle_button_set_sensitive_on_toggle" object="update_token" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -747,7 +747,7 @@ You will be sent email requesting confirmation!</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkEntry" id="validation_token">
+                          <object class="GtkEntry" id="update_token">
                             <property name="visible">True</property>
                             <property name="sensitive">False</property>
                             <property name="can_focus">True</property>
