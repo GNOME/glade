@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: glade3.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-02-17 06:46+0000\n"
-"PO-Revision-Date: 2014-02-17 16:20+0100\n"
+"POT-Creation-Date: 2014-02-19 06:46+0000\n"
+"PO-Revision-Date: 2014-02-20 14:14+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -77,197 +77,198 @@ msgstr ""
 "lenguajes de programación, incluyendo C, C++, C#, Vala, Java, Perl, Python, "
 "y otros."
 
-#: ../src/glade-window.c:55
+#: ../src/glade-window.c:56
 msgid "[Read Only]"
 msgstr "[Sólo lectura]"
 
-#: ../src/glade-window.c:319
+#: ../src/glade-window.c:322
 msgid "User Interface Designer"
 msgstr "Diseñador de interfaces de usuario"
 
 #. translators: referring to the action of activating a file named '%s'.
 #. *              we also indicate to users that the file may be read-only with
 #. *              the second '%s'
-#: ../src/glade-window.c:520
+#: ../src/glade-window.c:523
 #, c-format
 msgid "Activate '%s' %s"
 msgstr "Activar «%s» «%s»"
 
 #. translators: referring to the action of activating a file named '%s'
 #. FIXME add hint for translators
-#: ../src/glade-window.c:526 ../src/glade-window.c:534
+#: ../src/glade-window.c:529 ../src/glade-window.c:537
 #, c-format
 msgid "Activate '%s'"
 msgstr "Activar «%s»"
 
 #. Name
-#: ../src/glade-window.c:582 ../gladeui/glade-base-editor.c:2030
+#: ../src/glade-window.c:585 ../src/glade-registration.glade.h:4
+#: ../gladeui/glade-base-editor.c:2030
 #: ../gladeui/glade-project-properties.ui.h:12
 #: ../plugins/gtk+/glade-about-dialog-editor.ui.h:2
 msgid "Name:"
 msgstr "Nombre:"
 
-#: ../src/glade-window.c:585
+#: ../src/glade-window.c:588
 msgid "Requires:"
 msgstr "Requiere:"
 
-#: ../src/glade-window.c:644
+#: ../src/glade-window.c:647
 msgid "_Undo"
 msgstr "_Deshacer"
 
-#: ../src/glade-window.c:647
+#: ../src/glade-window.c:650
 #, c-format
 msgid "Undo: %s"
 msgstr "Deshacer: %s"
 
-#: ../src/glade-window.c:648 ../src/glade-window.c:659
+#: ../src/glade-window.c:651 ../src/glade-window.c:662
 msgid "the last action"
 msgstr "la última acción"
 
-#: ../src/glade-window.c:655
+#: ../src/glade-window.c:658
 msgid "_Redo"
 msgstr "_Rehacer"
 
-#: ../src/glade-window.c:658
+#: ../src/glade-window.c:661
 #, c-format
 msgid "Redo: %s"
 msgstr "Rehacer: %s"
 
-#: ../src/glade-window.c:690
+#: ../src/glade-window.c:693
 #, c-format
 msgid "Autosaving '%s'"
 msgstr "Autoguardando «%s»"
 
-#: ../src/glade-window.c:695
+#: ../src/glade-window.c:698
 #, c-format
 msgid "Error autosaving '%s'"
 msgstr "Erro al autoguardar «%s»"
 
-#: ../src/glade-window.c:1114
+#: ../src/glade-window.c:1117
 msgid "Open…"
 msgstr "Abrir…"
 
-#: ../src/glade-window.c:1148
+#: ../src/glade-window.c:1151
 #, c-format
 msgid "Project %s is still loading."
 msgstr "Aún se está cargando el proyecto «%s»."
 
-#: ../src/glade-window.c:1167
+#: ../src/glade-window.c:1170
 msgid "Failed to backup existing file, continue saving?"
 msgstr ""
 "Falló al hacer una copia de seguridad del archivo existente, ¿continuar el "
 "guardado?"
 
-#: ../src/glade-window.c:1189
+#: ../src/glade-window.c:1192
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "Falló al guardar %s: %s"
 
-#: ../src/glade-window.c:1228
+#: ../src/glade-window.c:1231
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr "El archivo «%s» ha sido modificado desde que fue leído"
 
-#: ../src/glade-window.c:1232
+#: ../src/glade-window.c:1235
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr ""
 "Si lo guarda, todos los cambios externos pueden perderse. ¿Guardarlo de "
 "todos modos?"
 
-#: ../src/glade-window.c:1237
+#: ../src/glade-window.c:1240
 msgid "_Save Anyway"
 msgstr "_Guardar de todos modos"
 
-#: ../src/glade-window.c:1245
+#: ../src/glade-window.c:1248
 msgid "_Don't Save"
 msgstr "_No guardar"
 
-#: ../src/glade-window.c:1279
+#: ../src/glade-window.c:1282
 #, c-format
 msgid "Project '%s' saved"
 msgstr "Proyecto «%s» guardado"
 
-#: ../src/glade-window.c:1310
+#: ../src/glade-window.c:1313
 msgid "Save As…"
 msgstr "Guardar como…"
 
-#: ../src/glade-window.c:1374
+#: ../src/glade-window.c:1377
 #, c-format
 msgid "Could not save the file %s"
 msgstr "No se pudo guardar el archivo %s"
 
-#: ../src/glade-window.c:1378
+#: ../src/glade-window.c:1381
 msgid "You do not have the permissions necessary to save the file."
 msgstr "No tiene los permisos necesarios para guardar el archivo."
 
-#: ../src/glade-window.c:1400
+#: ../src/glade-window.c:1403
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr ""
 "No se pudo guardar el archivo %s. Otro proyecto con esa ruta está abierto."
 
-#: ../src/glade-window.c:1425
+#: ../src/glade-window.c:1428
 msgid "No open projects to save"
 msgstr "Ningún proyecto abierto para guardar"
 
-#: ../src/glade-window.c:1455
+#: ../src/glade-window.c:1458
 #, c-format
 msgid "Save changes to project \"%s\" before closing?"
 msgstr "¿Guardar los cambios del proyecto «%s» antes de cerrar?"
 
-#: ../src/glade-window.c:1463
+#: ../src/glade-window.c:1466
 msgid "Your changes will be lost if you don't save them."
 msgstr "Sus cambios se perderán si no los guarda."
 
-#: ../src/glade-window.c:1467
+#: ../src/glade-window.c:1470
 msgid "Close _without Saving"
 msgstr "Cerrar _sin guardar"
 
-#: ../src/glade-window.c:1497
+#: ../src/glade-window.c:1500
 msgid "Save…"
 msgstr "Guardar…"
 
-#: ../src/glade-window.c:2463
+#: ../src/glade-window.c:2466
 msgid "Close document"
 msgstr "Cerrar el documento"
 
-#: ../src/glade-window.c:2553
+#: ../src/glade-window.c:2568
 msgid "Could not create a new project."
 msgstr "No se pudo crear un proyecto nuevo."
 
-#: ../src/glade-window.c:2606
+#: ../src/glade-window.c:2621
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr "El proyecto %s tiene cambios no guardados"
 
-#: ../src/glade-window.c:2611
+#: ../src/glade-window.c:2626
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr ""
 "Si lo recarga, todos los cambios externos pueden perderse. ¿Recargarlo de "
 "todos modos?"
 
-#: ../src/glade-window.c:2621
+#: ../src/glade-window.c:2636
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr "El archivo de proyecto «%s» ha sido modificado externamente"
 
-#: ../src/glade-window.c:2626
+#: ../src/glade-window.c:2641
 msgid "Do you want to reload the project?"
 msgstr "¿Quiere volver a cargar el proyecto?"
 
-#: ../src/glade-window.c:2632
+#: ../src/glade-window.c:2647
 msgid "_Reload"
 msgstr "Re_cargar"
 
-#: ../src/glade-window.c:3204
+#: ../src/glade-window.c:3216
 msgid "Palette"
 msgstr "Paleta"
 
-#: ../src/glade-window.c:3206
+#: ../src/glade-window.c:3218
 msgid "Inspector"
 msgstr "Inspector"
 
-#: ../src/glade-window.c:3208 ../src/glade.glade.h:33
+#: ../src/glade-window.c:3220 ../src/glade.glade.h:33
 #: ../gladeui/glade-editor.c:320 ../gladeui/glade-widget.c:1385
 #: ../gladeui/glade-project-properties.ui.h:11
 #: ../plugins/gtk+/glade-gtk-action-group.c:177
@@ -326,10 +327,6 @@ msgid "Unable to open '%s', the file does not exist.\n"
 msgstr "Imposible abrir «%s», el archivo no existe.\n"
 
 #: ../src/glade.glade.h:1
-#| msgid ""
-#| "Copyright © 2001-2006 Ximian, Inc.\n"
-#| "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
-#| "Copyright © 2004-2013 Tristan Van Berkom, Juan Pablo Ugarte, et al."
 msgid ""
 "Copyright © 2001-2006 Ximian, Inc.\n"
 "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
@@ -657,27 +654,35 @@ msgstr "Editar las preferencias de Glade"
 msgid "Open _Recent"
 msgstr "Abrir _recientes"
 
-#: ../src/glade.glade.h:88 ../plugins/gtk+/glade-gtk-menu-bar.c:113
+#: ../src/glade.glade.h:88
+msgid "Registration & User survey"
+msgstr ""
+
+#: ../src/glade.glade.h:89
+msgid "Help us improve Glade by registering and completing the user survey!"
+msgstr ""
+
+#: ../src/glade.glade.h:90 ../plugins/gtk+/glade-gtk-menu-bar.c:113
 msgid "_File"
 msgstr "_Archivo"
 
-#: ../src/glade.glade.h:89 ../plugins/gtk+/glade-gtk-menu-bar.c:124
+#: ../src/glade.glade.h:91 ../plugins/gtk+/glade-gtk-menu-bar.c:124
 msgid "_Edit"
 msgstr "_Editar"
 
-#: ../src/glade.glade.h:90 ../plugins/gtk+/glade-gtk-menu-bar.c:133
+#: ../src/glade.glade.h:92 ../plugins/gtk+/glade-gtk-menu-bar.c:133
 msgid "_View"
 msgstr "_Ver"
 
-#: ../src/glade.glade.h:91
+#: ../src/glade.glade.h:93
 msgid "Palette _Appearance"
 msgstr "_Apariencia de la paleta"
 
-#: ../src/glade.glade.h:92
+#: ../src/glade.glade.h:94
 msgid "_Projects"
 msgstr "_Proyectos"
 
-#: ../src/glade.glade.h:93 ../plugins/gtk+/glade-gtk-menu-bar.c:137
+#: ../src/glade.glade.h:95 ../plugins/gtk+/glade-gtk-menu-bar.c:137
 msgid "_Help"
 msgstr "Ay_uda"
 
@@ -776,6 +781,593 @@ msgstr "Rutas de catálogos adicionales"
 #: ../src/glade-preferences.glade.h:23
 msgid "Select a catalog search path"
 msgstr "Seleccionar una rutas de búsqueda de catálogos"
+
+#: ../src/glade-registration.c:168
+#, c-format
+#| msgid "Converting %s to %s format"
+msgid "Connecting to %s"
+msgstr "Conectando a %s"
+
+#: ../src/glade-registration.c:171
+#, fuzzy, c-format
+#| msgid "Renaming %s to %s"
+msgid "Sending data to %s"
+msgstr "Renombrando %s a %s"
+
+#: ../src/glade-registration.c:174
+#, fuzzy, c-format
+#| msgid "Creating %s for %s of %s"
+msgid "Waiting for %s"
+msgstr "Creando %s para %s de %s"
+
+#: ../src/glade-registration.c:177
+#, fuzzy, c-format
+#| msgid "Removing parent of %s"
+msgid "Receiving data from %s"
+msgstr "Eliminando padre de %s"
+
+#: ../src/glade-registration.c:206
+#, fuzzy
+#| msgid "Internal Frame"
+msgid "Internal server error"
+msgstr "Marco interno"
+
+#: ../src/glade-registration.glade.h:1
+msgid "Glade registration & User survey"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:2
+#, fuzzy
+#| msgid "Font Information"
+msgid " User Information"
+msgstr "Información de tipografía"
+
+#: ../src/glade-registration.glade.h:3
+msgid "<Your name or nickname is required>"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:5
+#| msgid "Email"
+msgid "Email:"
+msgstr "Correo-e:"
+
+#: ../src/glade-registration.glade.h:6
+msgid ""
+"Tokens are processed manually in batches.\n"
+"Please be patient."
+msgstr ""
+
+#: ../src/glade-registration.glade.h:8
+msgid "<Required to send back registration token>"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:9
+#| msgid "Count:"
+msgid "Country:"
+msgstr "País:"
+
+#: ../src/glade-registration.glade.h:10
+#| msgid "Gravity:"
+msgid "City:"
+msgstr "Ciudad:"
+
+#: ../src/glade-registration.glade.h:11
+msgid "Company"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:12
+#| msgid "Animation"
+msgid "Organization"
+msgstr "Organización"
+
+#: ../src/glade-registration.glade.h:13
+msgid "Personal"
+msgstr "Personal"
+
+#: ../src/glade-registration.glade.h:14
+#| msgid "Website:"
+msgid "Website"
+msgstr "Página web"
+
+#: ../src/glade-registration.glade.h:15
+msgid "Subscribe me to the mailing list"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:16
+msgid ""
+"Subscribe to Glade Users mailing list.\n"
+"You will be sent email requesting confirmation!"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:18
+msgid "We care about privacy!"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:19
+msgid ""
+"All the data will be stored in a private location and will not be shared "
+"with the public or any third party."
+msgstr ""
+
+#: ../src/glade-registration.glade.h:20
+msgid "See Privacy Note"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:21
+msgid "Update Info"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:22
+msgid "<Insert update token, if you want to update previously sent data>"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:23
+msgid " Glade User Survey"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:24
+msgid "How long have you been programming?"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:25
+msgid "0"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:26
+msgid "years"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:27
+msgid "months"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:28
+msgid "I am not a programmer"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:29
+msgid "Which programming languages do you prefer?"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:30
+msgid "C"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:31
+msgid "C++"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:32
+msgid "C#"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:33
+msgid "Java"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:34
+msgid "Python"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:35
+msgid "Javascript"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:36
+msgid "Vala"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:37
+msgid "Perl"
+msgstr ""
+
+#. GtkCellRendererAccelMode enumeration value
+#: ../src/glade-registration.glade.h:38
+#: ../gladeui/glade-project-properties.ui.h:28
+#: ../plugins/gtk+/gtk+.xml.in.h:685
+msgid "Other"
+msgstr "Otro"
+
+#: ../src/glade-registration.glade.h:39
+msgid "When did you start using Glade?"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:40
+#| msgid "Tag"
+msgid "ago"
+msgstr "hace"
+
+#: ../src/glade-registration.glade.h:41
+msgid "Which version do you normally use?"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:42
+msgid "What is available in my OS"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:43
+msgid "Latest stable from sources"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:44
+msgid "3.8 for Gtk+ 2"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:45
+#, fuzzy
+#| msgid "Paste"
+msgid "Master"
+msgstr "Pegar"
+
+#: ../src/glade-registration.glade.h:46
+msgid "On what operating systems?"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:47
+#| msgid "Position"
+msgid "distribution"
+msgstr "distribución"
+
+#: ../src/glade-registration.glade.h:48
+msgid "Arch Linux"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:49
+msgid "Debian"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:50
+msgid "openSUSE"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:51
+msgid "Fedora"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:52
+msgid "Gentoo"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:53
+msgid "Mandriva"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:54
+msgid "Red Hat"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:55
+msgid "Turbolinux"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:56
+msgid "Ubuntu"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:57
+msgid "Xandros"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:58
+msgid "Oracle"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:59
+#, fuzzy
+#| msgctxt "textattr"
+#| msgid "Variant"
+msgid "variant"
+msgstr "Variante"
+
+#: ../src/glade-registration.glade.h:60
+#, fuzzy
+#| msgid "Free"
+msgid "FreeBSD"
+msgstr "Libre"
+
+#: ../src/glade-registration.glade.h:61
+#| msgid "Open"
+msgid "OpenBSD"
+msgstr "OpenBSD"
+
+#: ../src/glade-registration.glade.h:62
+msgid "NetBSD"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:63
+msgid "Oracle Solaris"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:64
+msgid "OpenSolaris"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:65
+msgid "illumos"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:66
+#| msgid "Version:"
+msgid "version"
+msgstr "versión"
+
+#: ../src/glade-registration.glade.h:67
+msgid "2000"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:68
+msgid "XP"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:69
+msgid "2003"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:70
+msgid "Vista"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:71
+msgid "2008"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:72
+msgid "7"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:73
+msgid "8"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:74
+msgid "2012"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:75
+msgid "Tiger"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:76
+msgid "Leopard"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:77
+msgid "Snow Leopard"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:78
+msgid "Lion"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:79
+msgid "Mountain Lion"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:80
+msgid "Mavericks"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:81
+msgid "GNU/Linux"
+msgstr ""
+
+#. GtkLicense enumeration value
+#: ../src/glade-registration.glade.h:82 ../plugins/gtk+/gtk+.xml.in.h:712
+msgid "BSD"
+msgstr "BSD"
+
+#: ../src/glade-registration.glade.h:83
+#| msgid "_Windows"
+msgid "Windows"
+msgstr "Windows"
+
+#: ../src/glade-registration.glade.h:84
+msgid "Mac OSX"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:85
+msgid "Solaris"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:86
+msgid "How often do you use it?"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:87
+msgid "Every day"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:88
+msgid "Few days a week"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:89
+msgid "Every week"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:90
+msgid "A few times a months"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:91
+msgid "Once a month"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:92
+msgid "A few times a year"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:93
+msgid "What level of Glade user would you say you are?"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:94
+#| msgid "Spinner"
+msgid "Beginner"
+msgstr "Principiante"
+
+#: ../src/glade-registration.glade.h:95
+#| msgid "Immediate"
+msgid "Intermediate"
+msgstr "Intermedio"
+
+#: ../src/glade-registration.glade.h:96
+msgid "Advanced"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:97
+msgid ""
+"Under what kind of license(s) do you release the software you used Glade to "
+"create?"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:98
+#, fuzzy
+#| msgid "Free Form"
+msgid "Free software"
+msgstr "Formulario libre"
+
+#: ../src/glade-registration.glade.h:99
+#, fuzzy
+#| msgid "Resource Name"
+msgid "Open source software"
+msgstr "Nombre del recurso"
+
+#: ../src/glade-registration.glade.h:100
+msgid "Commercial/Closed software"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:101
+msgid "None - distributed internally"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:102
+msgid ""
+"In what field(s) is the software you used Glade to create generally used?"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:103
+msgid "Academic"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:104
+#| msgid "Applications"
+msgid "Embedded applications"
+msgstr "Aplicaciones empotradas"
+
+#: ../src/glade-registration.glade.h:105
+msgid "Accounting"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:106
+#| msgid "Applications"
+msgid "Desktop applications"
+msgstr "Aplicaciones del escritorio"
+
+#: ../src/glade-registration.glade.h:107
+msgid "Educational"
+msgstr "Educación"
+
+#: ../src/glade-registration.glade.h:108
+#| msgid "Vertical"
+msgid "Medical"
+msgstr "Medicina"
+
+#: ../src/glade-registration.glade.h:109
+#| msgid "About this application"
+msgid "Industrial applications"
+msgstr "Aplicaciones industriales"
+
+#: ../src/glade-registration.glade.h:110
+msgid "Scientific"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:111
+msgid "What aspect of the software needs the most improvement?"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:112
+msgid "In your opinion what is the biggest problem with Glade?"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:113
+#, fuzzy
+#| msgid "Read documentation"
+msgid "Lack of documentation"
+msgstr "Leer la documentación"
+
+#: ../src/glade-registration.glade.h:114
+msgid "Lack of professional support"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:115
+msgid "Lack of professional training"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:116
+msgid "Lack of publicity/exposure"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:117
+msgid "Lack of official binary releases for other OS (Win32, OSX)"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:118
+msgid "Have you ever encountered a bug?"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:119
+msgid "Yes"
+msgstr "Sí"
+
+#: ../src/glade-registration.glade.h:120
+msgid "No"
+msgstr "No"
+
+#: ../src/glade-registration.glade.h:121
+msgid "If so, did you file a bug report?"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:122
+msgid "Have you ever thought about contributing?"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:123
+msgid "Why not?"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:124
+#| msgid "Comments"
+msgid "Comments:"
+msgstr "Comentarios:"
+
+#: ../src/glade-registration.glade.h:125
+msgid "Privacy Note:"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:126
+msgid ""
+"The sole purpose of this survey is to better know our user base.\n"
+"Your email address will be used to uniquely identify you as a Glade user and "
+"send you back a modification token in case you want to modify something or "
+"add extra comments.\n"
+"Only statistics compiled from the whole dataset will be shared publicly.\n"
+"Individual data will be stored in a private database and it will not be "
+"shared with the public or any other third party. "
+msgstr ""
+
+#. GtkButtonsType enumeration value
+#: ../src/glade-registration.glade.h:130 ../plugins/gtk+/gtk+.xml.in.h:736
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: ../src/glade-registration.glade.h:131
+msgid "Submit"
+msgstr ""
+
+#: ../src/glade-registration.glade.h:132
+msgid "Information will be sent to https://people.gnome.org/~jpu"
+msgstr ""
 
 #: ../gladeui/glade-app.c:544
 #, c-format
@@ -2592,12 +3184,6 @@ msgstr "MIT"
 #: ../gladeui/glade-project-properties.ui.h:27
 msgid "GNU All permissive"
 msgstr "GNU Permitir todo"
-
-#. GtkCellRendererAccelMode enumeration value
-#: ../gladeui/glade-project-properties.ui.h:28
-#: ../plugins/gtk+/gtk+.xml.in.h:685
-msgid "Other"
-msgstr "Otro"
 
 #: ../gladeui/glade-project-properties.ui.h:30
 msgid ""
@@ -5640,11 +6226,6 @@ msgid "LGPL 3.0"
 msgstr "LGPL 3.0"
 
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:712
-msgid "BSD"
-msgstr "BSD"
-
-#. GtkLicense enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:714
 msgid "MIT X11"
 msgstr "MIT X11"
@@ -5656,25 +6237,21 @@ msgstr "Artística"
 
 #. GtkLicense enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:718
-#| msgid "GPL 2.0"
 msgid "GPL 2.0 Only"
 msgstr "Sólo GPL 2.0"
 
 #. GtkLicense enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:720
-#| msgid "GPL 3.0"
 msgid "GPL 3.0 Only"
 msgstr "Sólo GPL 3.0"
 
 #. GtkLicense enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:722
-#| msgid "LGPL 2.1"
 msgid "LGPL 2.1 Only"
 msgstr "Sólo LGPL 2.1"
 
 #. GtkLicense enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:724
-#| msgid "LGPL 3.0"
 msgid "LGPL 3.0 Only"
 msgstr "Sólo LGPL 3.0"
 
@@ -5712,11 +6289,6 @@ msgstr "Diálogo del mensaje"
 #: ../plugins/gtk+/gtk+.xml.in.h:732
 msgid "Ok"
 msgstr "Aceptar"
-
-#. GtkButtonsType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:736
-msgid "Cancel"
-msgstr "Cancelar"
 
 #. GtkButtonsType enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:738
@@ -7243,12 +7815,6 @@ msgstr "Gravedad:"
 #~ msgid "Drag-n-Drop from %s to %s"
 #~ msgstr "Arrastrar-y-soltar desde %s a %s"
 
-#~ msgid "Yes"
-#~ msgstr "Sí"
-
-#~ msgid "No"
-#~ msgstr "No"
-
 #~ msgid "toolbutton1"
 #~ msgstr "Botón de herramienta 1"
 
@@ -7450,9 +8016,6 @@ msgstr "Gravedad:"
 #~ msgid "Clipboard"
 #~ msgstr "Portapapeles"
 
-#~ msgid "Converting %s to %s format"
-#~ msgstr "Convirtiendo %s al formato %s"
-
 #~ msgid "_Has context prefix"
 #~ msgstr "Tiene _prefijo de contexto"
 
@@ -7632,9 +8195,6 @@ msgstr "Gravedad:"
 #~ msgid "Fi_les"
 #~ msgstr "_Archivos"
 
-#~ msgid "_Windows"
-#~ msgstr "_Ventanas"
-
 #~ msgid "_Game"
 #~ msgstr "_Juego"
 
@@ -7713,9 +8273,6 @@ msgstr "Gravedad:"
 #~ msgid "File Selection"
 #~ msgstr "Selección de archivos"
 
-#~ msgid "Free"
-#~ msgstr "Libre"
-
 #~ msgid "Gamma Curve"
 #~ msgstr "Curva gamma"
 
@@ -7782,9 +8339,6 @@ msgstr "Gravedad:"
 
 #~ msgid "Dither"
 #~ msgstr "Transparencia"
-
-#~ msgid "Font Information"
-#~ msgstr "Información de tipografía"
 
 #~ msgid "GNOME App"
 #~ msgstr "Aplicación de GNOME"
@@ -8064,10 +8618,6 @@ msgstr "Gravedad:"
 #~ "proyecto «%s» antes de cerrar?</span>\n"
 #~ "\n"
 #~ "Sus cambios se perderán si no los guarda."
-
-#, fuzzy
-#~ msgid "Enumerations"
-#~ msgstr "Internacional"
 
 #~ msgid "Flags"
 #~ msgstr "Opciones"
