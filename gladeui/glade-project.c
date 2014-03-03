@@ -1026,8 +1026,8 @@ glade_project_class_init (GladeProjectClass *klass)
 
   glade_project_props[PROP_CSS_PROVIDER_PATH] =
     g_param_spec_string ("css-provider-path",
-                         _("Css Provider Path"),
-                         _("Path to use as the custom css provider for this project."),
+                         _("CSS Provider Path"),
+                         _("Path to use as the custom CSS provider for this project."),
                          NULL,
                          G_PARAM_READWRITE);
 
