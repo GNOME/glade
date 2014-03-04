@@ -16,8 +16,8 @@ msgstr ""
 "Project-Id-Version: glade3 3.10.0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-01-20 21:25+0000\n"
-"PO-Revision-Date: 2014-01-30 22:11+0800\n"
+"POT-Creation-Date: 2014-02-24 18:47+0000\n"
+"PO-Revision-Date: 2014-02-25 15:50+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (Taiwan) <zh-l10n@lists.linux.org.tw>\n"
 "Language: zh_TW\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.5.3\n"
+"X-Generator: Poedit 1.6.4\n"
 
 #: ../data/glade.desktop.in.in.h:1 ../src/main.c:42
 msgid "Glade"
@@ -76,191 +76,191 @@ msgstr ""
 "使用 GtkBuilder，Glade XML 檔案可以用於許多種程式語言，包含 C、C++、C#、"
 "Vala、Java、Perl、Python 等等。"
 
-#: ../src/glade-window.c:55
+#: ../src/glade-window.c:56
 msgid "[Read Only]"
 msgstr "[唯讀]"
 
-#: ../src/glade-window.c:319
+#: ../src/glade-window.c:322
 msgid "User Interface Designer"
 msgstr "使用者介面設計程式"
 
 #. translators: referring to the action of activating a file named '%s'.
 #. *              we also indicate to users that the file may be read-only with
 #. *              the second '%s'
-#: ../src/glade-window.c:520
+#: ../src/glade-window.c:523
 #, c-format
 msgid "Activate '%s' %s"
 msgstr "活化「%s」 %s"
 
 #. translators: referring to the action of activating a file named '%s'
 #. FIXME add hint for translators
-#: ../src/glade-window.c:526 ../src/glade-window.c:534
+#: ../src/glade-window.c:529 ../src/glade-window.c:537
 #, c-format
 msgid "Activate '%s'"
 msgstr "活化「%s」"
 
 #. Name
-#: ../src/glade-window.c:582 ../gladeui/glade-base-editor.c:2030
+#: ../src/glade-window.c:585 ../src/glade-registration.glade.h:4
+#: ../gladeui/glade-base-editor.c:2030
 #: ../gladeui/glade-project-properties.ui.h:12
 #: ../plugins/gtk+/glade-about-dialog-editor.ui.h:2
 msgid "Name:"
 msgstr "名稱:"
 
-#: ../src/glade-window.c:585
+#: ../src/glade-window.c:588
 msgid "Requires:"
 msgstr "需求："
 
-#: ../src/glade-window.c:644
+#: ../src/glade-window.c:647
 msgid "_Undo"
 msgstr "復原(_U)"
 
-#: ../src/glade-window.c:647
+#: ../src/glade-window.c:650
 #, c-format
 msgid "Undo: %s"
 msgstr "復原：%s"
 
-#: ../src/glade-window.c:648 ../src/glade-window.c:659
+#: ../src/glade-window.c:651 ../src/glade-window.c:662
 msgid "the last action"
 msgstr "剛進行的操作程序"
 
-#: ../src/glade-window.c:655
+#: ../src/glade-window.c:658
 msgid "_Redo"
 msgstr "取消復原(_R)"
 
-#: ../src/glade-window.c:658
+#: ../src/glade-window.c:661
 #, c-format
 msgid "Redo: %s"
 msgstr "重做：%s"
 
-#: ../src/glade-window.c:690
+#: ../src/glade-window.c:693
 #, c-format
 msgid "Autosaving '%s'"
 msgstr "自動儲存「%s」"
 
-#: ../src/glade-window.c:695
+#: ../src/glade-window.c:698
 #, c-format
 msgid "Error autosaving '%s'"
 msgstr "自動儲存「%s」發生錯誤"
 
-#: ../src/glade-window.c:1114
+#: ../src/glade-window.c:1117
 msgid "Open…"
 msgstr "開啟…"
 
-#: ../src/glade-window.c:1148
+#: ../src/glade-window.c:1151
 #, c-format
 msgid "Project %s is still loading."
 msgstr "專案 %s 仍在載入中。"
 
-#: ../src/glade-window.c:1167
-#| msgid "Failed to backup existing file, continue saving ?"
+#: ../src/glade-window.c:1170
 msgid "Failed to backup existing file, continue saving?"
 msgstr "無法備份現有的檔案，是否繼續儲存？"
 
-#: ../src/glade-window.c:1189
+#: ../src/glade-window.c:1192
 #, c-format
 msgid "Failed to save %s: %s"
 msgstr "無法儲存 %s：%s"
 
-#: ../src/glade-window.c:1228
+#: ../src/glade-window.c:1231
 #, c-format
 msgid "The file %s has been modified since reading it"
 msgstr "檔案 %s 自讀取以來已被修改過"
 
-#: ../src/glade-window.c:1232
+#: ../src/glade-window.c:1235
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr "如果儲存它，所有來自外部的變更都會消失。無論如何都要儲存它嗎？"
 
-#: ../src/glade-window.c:1237
+#: ../src/glade-window.c:1240
 msgid "_Save Anyway"
 msgstr "無論如何都儲存(_S)"
 
-#: ../src/glade-window.c:1245
+#: ../src/glade-window.c:1248
 msgid "_Don't Save"
 msgstr "不儲存(_D)"
 
-#: ../src/glade-window.c:1279
+#: ../src/glade-window.c:1282
 #, c-format
 msgid "Project '%s' saved"
 msgstr "專案「%s」已儲存"
 
-#: ../src/glade-window.c:1310
+#: ../src/glade-window.c:1313
 msgid "Save As…"
 msgstr "另存新檔…"
 
-#: ../src/glade-window.c:1374
+#: ../src/glade-window.c:1377
 #, c-format
 msgid "Could not save the file %s"
 msgstr "無法儲存檔案 %s"
 
-#: ../src/glade-window.c:1378
+#: ../src/glade-window.c:1381
 msgid "You do not have the permissions necessary to save the file."
 msgstr "您沒有儲存檔案所需的權限。"
 
-#: ../src/glade-window.c:1400
+#: ../src/glade-window.c:1403
 #, c-format
 msgid "Could not save file %s. Another project with that path is open."
 msgstr "無法儲存檔案 %s。有另一個路徑相同的專案尚在開啟。"
 
-#: ../src/glade-window.c:1425
+#: ../src/glade-window.c:1428
 msgid "No open projects to save"
 msgstr "沒有開啟的專案可儲存"
 
-#: ../src/glade-window.c:1455
+#: ../src/glade-window.c:1458
 #, c-format
 msgid "Save changes to project \"%s\" before closing?"
 msgstr "關閉前要儲存修改到專案「%s」嗎？"
 
-#: ../src/glade-window.c:1463
+#: ../src/glade-window.c:1466
 msgid "Your changes will be lost if you don't save them."
 msgstr "如果您不儲存它們，您的變更就會消失。"
 
-#: ../src/glade-window.c:1467
+#: ../src/glade-window.c:1470
 msgid "Close _without Saving"
 msgstr "關閉但不儲存(_W)"
 
-#: ../src/glade-window.c:1497
+#: ../src/glade-window.c:1500
 msgid "Save…"
 msgstr "儲存…"
 
-#: ../src/glade-window.c:2463
+#: ../src/glade-window.c:2466
 msgid "Close document"
 msgstr "關閉文件"
 
-#: ../src/glade-window.c:2553
+#: ../src/glade-window.c:2568
 msgid "Could not create a new project."
 msgstr "無法建立新的專案。"
 
-#: ../src/glade-window.c:2606
+#: ../src/glade-window.c:2621
 #, c-format
 msgid "The project %s has unsaved changes"
 msgstr "專案 %s 有未儲存的變更"
 
-#: ../src/glade-window.c:2611
+#: ../src/glade-window.c:2626
 msgid "If you reload it, all unsaved changes could be lost. Reload it anyway?"
 msgstr "如果您重新載入它，就會失去所有未儲存的變更。無論如何都要重新載入嗎？"
 
-#: ../src/glade-window.c:2621
+#: ../src/glade-window.c:2636
 #, c-format
 msgid "The project file %s has been externally modified"
 msgstr "專案的檔案 %s 已被外部程式修改過"
 
-#: ../src/glade-window.c:2626
+#: ../src/glade-window.c:2641
 msgid "Do you want to reload the project?"
 msgstr "要重新載入專案嗎？"
 
-#: ../src/glade-window.c:2632
+#: ../src/glade-window.c:2647
 msgid "_Reload"
 msgstr "重新載入(_R)"
 
-#: ../src/glade-window.c:3204
+#: ../src/glade-window.c:3216
 msgid "Palette"
 msgstr "元件一覽表"
 
-#: ../src/glade-window.c:3206
+#: ../src/glade-window.c:3218
 msgid "Inspector"
 msgstr "檢查器"
 
-#: ../src/glade-window.c:3208 ../src/glade.glade.h:33
+#: ../src/glade-window.c:3220 ../src/glade.glade.h:33
 #: ../gladeui/glade-editor.c:320 ../gladeui/glade-widget.c:1385
 #: ../gladeui/glade-project-properties.ui.h:11
 #: ../plugins/gtk+/glade-gtk-action-group.c:177
@@ -316,14 +316,18 @@ msgid "Unable to open '%s', the file does not exist.\n"
 msgstr "無法開啟「%s」，該檔案不存在。\n"
 
 #: ../src/glade.glade.h:1
+#| msgid ""
+#| "Copyright © 2001-2006 Ximian, Inc.\n"
+#| "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
+#| "Copyright © 2004-2013 Tristan Van Berkom, Juan Pablo Ugarte, et al."
 msgid ""
 "Copyright © 2001-2006 Ximian, Inc.\n"
 "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
-"Copyright © 2004-2013 Tristan Van Berkom, Juan Pablo Ugarte, et al."
+"Copyright © 2004-2014 Tristan Van Berkom, Juan Pablo Ugarte, et al."
 msgstr ""
 "版權所有 © 2001-2006 Ximian, Inc.\n"
 "版權所有 © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
-"版權所有 © 2004-2013 Tristan Van Berkom, Juan Pablo Ugarte, et al."
+"版權所有 © 2004-2014 Tristan Van Berkom, Juan Pablo Ugarte, et al."
 
 #: ../src/glade.glade.h:4
 msgid "A user interface designer for GTK+ and GNOME."
@@ -428,7 +432,7 @@ msgid "Edit project properties"
 msgstr "編輯專案屬性"
 
 #. GtkButtonsType enumeration value
-#: ../src/glade.glade.h:35 ../plugins/gtk+/gtk+.xml.in.h:726
+#: ../src/glade.glade.h:35 ../plugins/gtk+/gtk+.xml.in.h:734
 msgid "Close"
 msgstr "關閉"
 
@@ -641,27 +645,35 @@ msgstr "編輯 Glade 偏好設定"
 msgid "Open _Recent"
 msgstr "開啟最近使用檔案(_R)"
 
-#: ../src/glade.glade.h:88 ../plugins/gtk+/glade-gtk-menu-bar.c:113
+#: ../src/glade.glade.h:88
+msgid "Registration & User survey"
+msgstr "註冊 & 使用者問卷"
+
+#: ../src/glade.glade.h:89
+msgid "Help us improve Glade by registering and completing the user survey!"
+msgstr "請註冊並完成使用者問卷以協助我們改進 Glade！"
+
+#: ../src/glade.glade.h:90 ../plugins/gtk+/glade-gtk-menu-bar.c:113
 msgid "_File"
 msgstr "檔案(_F)"
 
-#: ../src/glade.glade.h:89 ../plugins/gtk+/glade-gtk-menu-bar.c:124
+#: ../src/glade.glade.h:91 ../plugins/gtk+/glade-gtk-menu-bar.c:124
 msgid "_Edit"
 msgstr "編輯(_E)"
 
-#: ../src/glade.glade.h:90 ../plugins/gtk+/glade-gtk-menu-bar.c:133
+#: ../src/glade.glade.h:92 ../plugins/gtk+/glade-gtk-menu-bar.c:133
 msgid "_View"
 msgstr "顯示(_V)"
 
-#: ../src/glade.glade.h:91
+#: ../src/glade.glade.h:93
 msgid "Palette _Appearance"
 msgstr "調色盤外觀(_A)"
 
-#: ../src/glade.glade.h:92
+#: ../src/glade.glade.h:94
 msgid "_Projects"
 msgstr "專案(_P)"
 
-#: ../src/glade.glade.h:93 ../plugins/gtk+/glade-gtk-menu-bar.c:137
+#: ../src/glade.glade.h:95 ../plugins/gtk+/glade-gtk-menu-bar.c:137
 msgid "_Help"
 msgstr "求助(_H)"
 
@@ -758,6 +770,597 @@ msgstr "額外的分類路徑"
 #: ../src/glade-preferences.glade.h:23
 msgid "Select a catalog search path"
 msgstr "選擇分類搜尋路徑"
+
+#: ../src/glade-registration.c:168
+#, c-format
+#| msgid "Setting %s of %s"
+msgid "Connecting to %s"
+msgstr "連接到 %s"
+
+#: ../src/glade-registration.c:171
+#, c-format
+#| msgid "Renaming %s to %s"
+msgid "Sending data to %s"
+msgstr "傳送資料到 %s"
+
+#: ../src/glade-registration.c:174
+#, c-format
+#| msgid "Creating %s for %s of %s"
+msgid "Waiting for %s"
+msgstr "等待 %s"
+
+#: ../src/glade-registration.c:177
+#, c-format
+#| msgid "Removing parent of %s"
+msgid "Receiving data from %s"
+msgstr "從 %s 接收資料"
+
+#: ../src/glade-registration.c:206
+#| msgid "Internal Frame"
+msgid "Internal server error"
+msgstr "伺服器內部錯誤"
+
+#: ../src/glade-registration.glade.h:1
+msgid "Glade registration & User survey"
+msgstr "Glade 註冊 & 使用者問卷"
+
+#: ../src/glade-registration.glade.h:2
+msgid " User Information"
+msgstr "使用者資訊"
+
+#: ../src/glade-registration.glade.h:3
+msgid "<Your name or nickname is required>"
+msgstr "<需要您的姓名或暱稱>"
+
+#: ../src/glade-registration.glade.h:5
+#| msgid "Email"
+msgid "Email:"
+msgstr "電子郵件："
+
+#: ../src/glade-registration.glade.h:6
+msgid ""
+"Tokens are processed manually in batches.\n"
+"Please be patient."
+msgstr ""
+"記號正以批次檔手動處理。\n"
+"請耐心等候。"
+
+#: ../src/glade-registration.glade.h:8
+msgid "<Required to send back registration token>"
+msgstr "<要求傳回註冊記號>"
+
+#: ../src/glade-registration.glade.h:9
+#| msgid "Count:"
+msgid "Country:"
+msgstr "國家："
+
+#: ../src/glade-registration.glade.h:10
+#| msgid "Gravity:"
+msgid "City:"
+msgstr "城市："
+
+#: ../src/glade-registration.glade.h:11
+msgid "Company"
+msgstr "公司"
+
+#: ../src/glade-registration.glade.h:12
+#| msgid "Animation"
+msgid "Organization"
+msgstr "組織"
+
+#: ../src/glade-registration.glade.h:13
+msgid "Personal"
+msgstr "個人"
+
+#: ../src/glade-registration.glade.h:14
+#| msgid "Website:"
+msgid "Website"
+msgstr "網站"
+
+#: ../src/glade-registration.glade.h:15
+msgid "Subscribe me to the mailing list"
+msgstr "讓我訂閱通信論壇"
+
+#: ../src/glade-registration.glade.h:16
+msgid ""
+"Subscribe to Glade Users mailing list.\n"
+"You will be sent email requesting confirmation!"
+msgstr ""
+"訂閱 Glade 使用者通信論壇。\n"
+"您會接到電子郵件要求確認！"
+
+#: ../src/glade-registration.glade.h:18
+#| msgid "Close document"
+msgid "Choose your country"
+msgstr "選擇您的國家"
+
+#: ../src/glade-registration.glade.h:19
+msgid "We care about privacy!"
+msgstr "我們重視您的隱私權！"
+
+#: ../src/glade-registration.glade.h:20
+msgid ""
+"All the data will be stored in a private location and will not be shared "
+"with the public or any third party."
+msgstr "所有資料會儲存在私人位置，並且不會分享給大眾或任何第三者。"
+
+#: ../src/glade-registration.glade.h:21
+msgid "See Privacy Note"
+msgstr "查閱隱私權說明"
+
+#: ../src/glade-registration.glade.h:22
+msgid "Update Info"
+msgstr "更新資訊"
+
+#: ../src/glade-registration.glade.h:23
+msgid "<Insert update token, if you want to update previously sent data>"
+msgstr "<插入更新的記號，如果您想要更新前一次送出的資料>"
+
+#: ../src/glade-registration.glade.h:24
+msgid " Glade User Survey"
+msgstr "Glade 使用者問卷"
+
+#: ../src/glade-registration.glade.h:25
+msgid "How long have you been programming?"
+msgstr "您從事程式計設有多久了？"
+
+#: ../src/glade-registration.glade.h:26
+msgid "0"
+msgstr "0"
+
+#: ../src/glade-registration.glade.h:27
+msgid "years"
+msgstr "年"
+
+#: ../src/glade-registration.glade.h:28
+msgid "months"
+msgstr "月"
+
+#: ../src/glade-registration.glade.h:29
+msgid "I am not a programmer"
+msgstr "我不是程式設計師"
+
+#: ../src/glade-registration.glade.h:30
+msgid "Which programming languages do you prefer?"
+msgstr "您偏好哪種程式設計語言？"
+
+#: ../src/glade-registration.glade.h:31
+msgid "C"
+msgstr "C"
+
+#: ../src/glade-registration.glade.h:32
+msgid "C++"
+msgstr "C++"
+
+#: ../src/glade-registration.glade.h:33
+msgid "C#"
+msgstr "C#"
+
+#: ../src/glade-registration.glade.h:34
+msgid "Java"
+msgstr "Java"
+
+#: ../src/glade-registration.glade.h:35
+msgid "Python"
+msgstr "Python"
+
+#: ../src/glade-registration.glade.h:36
+msgid "Javascript"
+msgstr "Javascript"
+
+#: ../src/glade-registration.glade.h:37
+msgid "Vala"
+msgstr "Vala"
+
+#: ../src/glade-registration.glade.h:38
+msgid "Perl"
+msgstr "Perl"
+
+#. GtkCellRendererAccelMode enumeration value
+#: ../src/glade-registration.glade.h:39
+#: ../gladeui/glade-project-properties.ui.h:28
+#: ../plugins/gtk+/gtk+.xml.in.h:685
+msgid "Other"
+msgstr "其他"
+
+#: ../src/glade-registration.glade.h:40
+msgid "When did you start using Glade?"
+msgstr "您何時開始使用 Glade？"
+
+#: ../src/glade-registration.glade.h:41
+#| msgid "Tag"
+msgid "ago"
+msgstr "前"
+
+#: ../src/glade-registration.glade.h:42
+msgid "Which version do you normally use?"
+msgstr "您通常使用哪個版本？"
+
+#: ../src/glade-registration.glade.h:43
+msgid "What is available in my OS"
+msgstr "我的 OS 有什麼可用"
+
+#: ../src/glade-registration.glade.h:44
+msgid "Latest stable from sources"
+msgstr "來自原始碼的最近穩定版"
+
+#: ../src/glade-registration.glade.h:45
+msgid "3.8 for Gtk+ 2"
+msgstr "3.8 版，用於 Gtk+ 2"
+
+#: ../src/glade-registration.glade.h:46
+#| msgid "Paste"
+msgid "Master"
+msgstr "Master"
+
+#: ../src/glade-registration.glade.h:47
+msgid "On what operating systems?"
+msgstr "在什麼作業系統？"
+
+#: ../src/glade-registration.glade.h:48
+#| msgid "Position"
+msgid "distribution"
+msgstr "發行版本"
+
+#: ../src/glade-registration.glade.h:49
+msgid "Arch Linux"
+msgstr "Arch Linux"
+
+#: ../src/glade-registration.glade.h:50
+msgid "Debian"
+msgstr "Debian"
+
+#: ../src/glade-registration.glade.h:51
+msgid "openSUSE"
+msgstr "openSUSE"
+
+#: ../src/glade-registration.glade.h:52
+msgid "Fedora"
+msgstr "Fedora"
+
+#: ../src/glade-registration.glade.h:53
+msgid "Gentoo"
+msgstr "Gentoo"
+
+#: ../src/glade-registration.glade.h:54
+msgid "Mandriva"
+msgstr "Mandriva"
+
+#: ../src/glade-registration.glade.h:55
+msgid "Red Hat"
+msgstr "Red Hat"
+
+#: ../src/glade-registration.glade.h:56
+msgid "Turbolinux"
+msgstr "Turbolinux"
+
+#: ../src/glade-registration.glade.h:57
+msgid "Ubuntu"
+msgstr "Ubuntu"
+
+#: ../src/glade-registration.glade.h:58
+msgid "Xandros"
+msgstr "Xandros"
+
+#: ../src/glade-registration.glade.h:59
+msgid "Oracle"
+msgstr "Oracle"
+
+#: ../src/glade-registration.glade.h:60
+#| msgctxt "textattr"
+#| msgid "Variant"
+msgid "variant"
+msgstr "其他分枝"
+
+#: ../src/glade-registration.glade.h:61
+msgid "FreeBSD"
+msgstr "FreeBSD"
+
+#: ../src/glade-registration.glade.h:62
+#| msgid "Open"
+msgid "OpenBSD"
+msgstr "OpenBSD"
+
+#: ../src/glade-registration.glade.h:63
+msgid "NetBSD"
+msgstr "NetBSD"
+
+#: ../src/glade-registration.glade.h:64
+msgid "Oracle Solaris"
+msgstr "Oracle Solaris"
+
+#: ../src/glade-registration.glade.h:65
+msgid "OpenSolaris"
+msgstr "OpenSolaris"
+
+#: ../src/glade-registration.glade.h:66
+msgid "illumos"
+msgstr "illumos"
+
+#: ../src/glade-registration.glade.h:67
+#| msgid "Version:"
+msgid "version"
+msgstr "版本"
+
+#: ../src/glade-registration.glade.h:68
+msgid "2000"
+msgstr "2000"
+
+#: ../src/glade-registration.glade.h:69
+msgid "XP"
+msgstr "XP"
+
+#: ../src/glade-registration.glade.h:70
+msgid "2003"
+msgstr "2003"
+
+#: ../src/glade-registration.glade.h:71
+msgid "Vista"
+msgstr "Vista"
+
+#: ../src/glade-registration.glade.h:72
+msgid "2008"
+msgstr "2008"
+
+#: ../src/glade-registration.glade.h:73
+msgid "7"
+msgstr "7"
+
+#: ../src/glade-registration.glade.h:74
+msgid "8"
+msgstr "8"
+
+#: ../src/glade-registration.glade.h:75
+msgid "2012"
+msgstr "2012"
+
+#: ../src/glade-registration.glade.h:76
+msgid "Tiger"
+msgstr "Tiger"
+
+#: ../src/glade-registration.glade.h:77
+msgid "Leopard"
+msgstr "Leopard"
+
+#: ../src/glade-registration.glade.h:78
+msgid "Snow Leopard"
+msgstr "Snow Leopard"
+
+#: ../src/glade-registration.glade.h:79
+msgid "Lion"
+msgstr "Lion"
+
+#: ../src/glade-registration.glade.h:80
+msgid "Mountain Lion"
+msgstr "Mountain Lion"
+
+#: ../src/glade-registration.glade.h:81
+msgid "Mavericks"
+msgstr "Mavericks"
+
+#: ../src/glade-registration.glade.h:82
+msgid "GNU/Linux"
+msgstr "GNU/Linux"
+
+#. GtkLicense enumeration value
+#: ../src/glade-registration.glade.h:83 ../plugins/gtk+/gtk+.xml.in.h:712
+msgid "BSD"
+msgstr "BSD"
+
+#: ../src/glade-registration.glade.h:84
+#| msgid "Window"
+msgid "Windows"
+msgstr "Windows"
+
+#: ../src/glade-registration.glade.h:85
+msgid "Mac OSX"
+msgstr "Mac OSX"
+
+#: ../src/glade-registration.glade.h:86
+msgid "Solaris"
+msgstr "Solaris"
+
+#: ../src/glade-registration.glade.h:87
+msgid "How often do you use it?"
+msgstr "您多常使用它？"
+
+#: ../src/glade-registration.glade.h:88
+msgid "Every day"
+msgstr "每天"
+
+#: ../src/glade-registration.glade.h:89
+msgid "Few days a week"
+msgstr "一週有幾天"
+
+#: ../src/glade-registration.glade.h:90
+msgid "Every week"
+msgstr "每週"
+
+#: ../src/glade-registration.glade.h:91
+msgid "A few times a months"
+msgstr "每個月幾次"
+
+#: ../src/glade-registration.glade.h:92
+msgid "Once a month"
+msgstr "每月一次"
+
+#: ../src/glade-registration.glade.h:93
+msgid "A few times a year"
+msgstr "每個年幾次"
+
+#: ../src/glade-registration.glade.h:94
+msgid "What level of Glade user would you say you are?"
+msgstr "您認為自己是哪個層級的 Glade 使用者？"
+
+#: ../src/glade-registration.glade.h:95
+#| msgid "Spinner"
+msgid "Beginner"
+msgstr "初學者"
+
+#: ../src/glade-registration.glade.h:96
+#| msgid "Immediate"
+msgid "Intermediate"
+msgstr "中間"
+
+#: ../src/glade-registration.glade.h:97
+msgid "Advanced"
+msgstr "進階的"
+
+#: ../src/glade-registration.glade.h:98
+msgid ""
+"Under what kind of license(s) do you release the software you used Glade to "
+"create?"
+msgstr "您會使用哪種授權條款來授權您用 Glade 建立的軟體？"
+
+#: ../src/glade-registration.glade.h:99
+#| msgid "Free Form"
+msgid "Free software"
+msgstr "自由軟體"
+
+#: ../src/glade-registration.glade.h:100
+#| msgid "Resource Name"
+msgid "Open source software"
+msgstr "開放原始碼軟體"
+
+#: ../src/glade-registration.glade.h:101
+msgid "Commercial/Closed software"
+msgstr "商業/閉源軟體"
+
+#: ../src/glade-registration.glade.h:102
+msgid "None - distributed internally"
+msgstr "沒有 - 僅供內部散布"
+
+#: ../src/glade-registration.glade.h:103
+msgid ""
+"In what field(s) is the software you used Glade to create generally used?"
+msgstr "您使用 Glade 建立的軟體通常用於哪個領域？"
+
+#: ../src/glade-registration.glade.h:104
+msgid "Academic"
+msgstr "學術"
+
+#: ../src/glade-registration.glade.h:105
+#| msgid "Applications"
+msgid "Embedded applications"
+msgstr "內嵌式應用程式"
+
+#: ../src/glade-registration.glade.h:106
+msgid "Accounting"
+msgstr "會計"
+
+#: ../src/glade-registration.glade.h:107
+#| msgid "Applications"
+msgid "Desktop applications"
+msgstr "桌面應用程式"
+
+#: ../src/glade-registration.glade.h:108
+msgid "Educational"
+msgstr "教育"
+
+#: ../src/glade-registration.glade.h:109
+#| msgid "Vertical"
+msgid "Medical"
+msgstr "醫學"
+
+#: ../src/glade-registration.glade.h:110
+#| msgid "About this application"
+msgid "Industrial applications"
+msgstr "工業應用程式"
+
+#: ../src/glade-registration.glade.h:111
+msgid "Scientific"
+msgstr "科學"
+
+#: ../src/glade-registration.glade.h:112
+msgid "What aspect of the software needs the most improvement?"
+msgstr "本軟體哪個方面是需要進一步改進的？"
+
+#: ../src/glade-registration.glade.h:113
+msgid "In your opinion what is the biggest problem with Glade?"
+msgstr "依照您的意見，Glade 最大的問題是什麼？"
+
+#: ../src/glade-registration.glade.h:114
+#| msgid "Read documentation"
+msgid "Lack of documentation"
+msgstr "缺乏文件"
+
+#: ../src/glade-registration.glade.h:115
+msgid "Lack of professional support"
+msgstr "缺乏專業支援"
+
+#: ../src/glade-registration.glade.h:116
+msgid "Lack of professional training"
+msgstr "缺乏專業訓練"
+
+#: ../src/glade-registration.glade.h:117
+msgid "Lack of publicity/exposure"
+msgstr "缺乏公開/曝光度"
+
+#: ../src/glade-registration.glade.h:118
+msgid "Lack of official binary releases for other OS (Win32, OSX)"
+msgstr "缺乏其他 OS (Win32、OSX) 的官方二元檔釋出"
+
+#: ../src/glade-registration.glade.h:119
+msgid "Have you ever encountered a bug?"
+msgstr "您曾經遇到過程式錯誤嗎？"
+
+#: ../src/glade-registration.glade.h:120
+msgid "Yes"
+msgstr "是"
+
+#: ../src/glade-registration.glade.h:121
+msgid "No"
+msgstr "否"
+
+#: ../src/glade-registration.glade.h:122
+msgid "If so, did you file a bug report?"
+msgstr "如果有，您是否回報過那個錯誤？"
+
+#: ../src/glade-registration.glade.h:123
+msgid "Have you ever thought about contributing?"
+msgstr "您有考慮過貢獻嗎？"
+
+#: ../src/glade-registration.glade.h:124
+msgid "Why not?"
+msgstr "為什麼不要？"
+
+#: ../src/glade-registration.glade.h:125
+#| msgid "Comments"
+msgid "Comments:"
+msgstr "評論："
+
+#: ../src/glade-registration.glade.h:126
+msgid "Privacy Note:"
+msgstr "隱私權說明："
+
+#: ../src/glade-registration.glade.h:127
+msgid ""
+"The sole purpose of this survey is to better know our user base.\n"
+"Your email address will be used to uniquely identify you as a Glade user and "
+"send you back a modification token in case you want to modify something or "
+"add extra comments.\n"
+"Only statistics compiled from the whole dataset will be shared publicly.\n"
+"Individual data will be stored in a private database and it will not be "
+"shared with the public or any other third party. "
+msgstr ""
+"本問卷的唯一目的是為了更了解我們的使用者群。\n"
+" 您的電子郵件地址將被用來做為 Glade 使用者的唯一識別以及當您想修改的東西或者"
+"加上額外註解時送回修改記號給您之用。\n"
+"只有從整個資料庫編譯後的統計資料才會公開共享。\n"
+"個人資料將被存儲在一個專用資料庫，它不會被公開或與任何其他第三者分享。"
+
+#. GtkButtonsType enumeration value
+#: ../src/glade-registration.glade.h:131 ../plugins/gtk+/gtk+.xml.in.h:736
+msgid "Cancel"
+msgstr "取消"
+
+#: ../src/glade-registration.glade.h:132
+msgid "Submit"
+msgstr "送出"
+
+#: ../src/glade-registration.glade.h:133
+msgid "Information will be sent to https://people.gnome.org/~jpu"
+msgstr "資訊會被送至 https://people.gnome.org/~jpu"
 
 #: ../gladeui/glade-app.c:544
 #, c-format
@@ -1088,13 +1691,11 @@ msgstr "設定「%s」的目標版本為 %d.%d"
 
 #: ../gladeui/glade-command.c:2803
 #, c-format
-#| msgid "Edit project properties"
 msgid "Setting project's %s property"
 msgstr "設定專案的 %s 屬性"
 
 #: ../gladeui/glade-command.c:2906
 #, c-format
-#| msgid "Setting translation domain to '%s'"
 msgid "Setting resource path to '%s'"
 msgstr "設定「%s」的資源路徑"
 
@@ -1114,7 +1715,6 @@ msgid "Setting widget '%s' as template"
 msgstr "設定視窗元件「%s」為範本"
 
 #: ../gladeui/glade-command.c:2978
-#| msgid "Unsetting widget '%s' as template"
 msgid "Unsetting template"
 msgstr "取消設定範本"
 
@@ -1523,12 +2123,10 @@ msgstr "預覽 %s (%s)"
 
 #: ../gladeui/glade-previewer.c:220 ../gladeui/glade-previewer.c:224
 #, c-format
-#| msgid "Preview"
 msgid "Previewing %s"
 msgstr "預覽 %s"
 
 #: ../gladeui/glade-previewer.c:228
-#| msgid "Preview"
 msgid "Glade Preview"
 msgstr "Glade 預覽"
 
@@ -1661,7 +2259,6 @@ msgid "Path to load images and resources in Glade's runtime"
 msgstr "Glade 執行時間用來載入圖片與資源的路徑"
 
 #: ../gladeui/glade-project.c:1022 ../gladeui/glade-project-properties.ui.h:29
-#| msgid "License:"
 msgid "License"
 msgstr "授權"
 
@@ -1741,10 +2338,6 @@ msgstr ""
 
 #: ../gladeui/glade-project.c:2000
 #, c-format
-#| msgid ""
-#| "An automatically saved version of `%s' is more recent\n"
-#| "\n"
-#| "Would you like to load the autosave version instead ?"
 msgid ""
 "An automatically saved version of `%s' is more recent.\n"
 "\n"
@@ -2159,7 +2752,7 @@ msgid "Whether this action is sensitive"
 msgstr "這個動作是否靈敏"
 
 #: ../gladeui/glade-widget-action.c:197 ../gladeui/glade-widget.c:1438
-#: ../plugins/gtk+/gtk+.xml.in.h:815
+#: ../plugins/gtk+/gtk+.xml.in.h:823
 msgid "Visible"
 msgstr "可視的"
 
@@ -2375,11 +2968,11 @@ msgstr "信號有版本上的問題："
 msgid "Some signals have versioning problems: "
 msgstr "部分信號有版本上的問題："
 
-#: ../gladeui/icon-naming-spec.c:38 ../plugins/gtk+/gtk+.xml.in.h:965
+#: ../gladeui/icon-naming-spec.c:38 ../plugins/gtk+/gtk+.xml.in.h:973
 msgid "Actions"
 msgstr "行動"
 
-#: ../gladeui/icon-naming-spec.c:40 ../plugins/gtk+/gtk+.xml.in.h:962
+#: ../gladeui/icon-naming-spec.c:40 ../plugins/gtk+/gtk+.xml.in.h:970
 msgid "Applications"
 msgstr "程式集"
 
@@ -2440,7 +3033,6 @@ msgid "Composite template toplevel:"
 msgstr "組合式範本頂端層級："
 
 #: ../gladeui/glade-project-properties.ui.h:3
-#| msgid "Setting %s to use a custom label widget"
 msgid "Select a CSS to use as custom style provider"
 msgstr "選擇用於自訂樣式提供器的 CSS"
 
@@ -2473,7 +3065,6 @@ msgid "Toolkit version required:"
 msgstr "需要 Toolkit 版本："
 
 #: ../gladeui/glade-project-properties.ui.h:13
-#| msgid "Copyright"
 msgid "Copyright:"
 msgstr "版權："
 
@@ -2482,7 +3073,6 @@ msgid "program or library name"
 msgstr "程式或程式庫名稱"
 
 #: ../gladeui/glade-project-properties.ui.h:15
-#| msgid "Authors"
 msgid "Author(s):"
 msgstr "作者："
 
@@ -2492,7 +3082,6 @@ msgid "License:"
 msgstr "授權："
 
 #: ../gladeui/glade-project-properties.ui.h:17
-#| msgid "Description For"
 msgid "Description:"
 msgstr "描述："
 
@@ -2525,24 +3114,16 @@ msgid "BSD 3-clause"
 msgstr "BSD 3-clause"
 
 #: ../gladeui/glade-project-properties.ui.h:25
-#| msgid "Attached To:"
 msgid "Apache 2"
 msgstr "Apache 2"
 
 #: ../gladeui/glade-project-properties.ui.h:26
-#| msgid "MIT X11"
 msgid "MIT"
 msgstr "MIT"
 
 #: ../gladeui/glade-project-properties.ui.h:27
 msgid "GNU All permissive"
 msgstr "GNU 全部許可"
-
-#. GtkCellRendererAccelMode enumeration value
-#: ../gladeui/glade-project-properties.ui.h:28
-#: ../plugins/gtk+/gtk+.xml.in.h:685
-msgid "Other"
-msgstr "其他"
 
 #: ../gladeui/glade-project-properties.ui.h:30
 msgid ""
@@ -2871,7 +3452,7 @@ msgstr "這個容器是否支援子視窗元件重設大小"
 
 #: ../plugins/gtk+/glade-gtk-action-group.c:173
 #: ../plugins/gtk+/glade-gtk-action-group.c:206
-#: ../plugins/gtk+/gtk+.xml.in.h:769
+#: ../plugins/gtk+/gtk+.xml.in.h:777
 msgid "Action"
 msgstr "動作"
 
@@ -2929,12 +3510,12 @@ msgid "Ordering children of %s"
 msgstr "正在排序 %s 的子項"
 
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:356
-#: ../plugins/gtk+/gtk+.xml.in.h:792
+#: ../plugins/gtk+/gtk+.xml.in.h:800
 msgid "Tree View Column"
 msgstr "樹狀檢視欄"
 
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:356
-#: ../plugins/gtk+/gtk+.xml.in.h:800
+#: ../plugins/gtk+/gtk+.xml.in.h:808
 msgid "Cell Renderer"
 msgstr "儲存格繪圖器"
 
@@ -2955,7 +3536,7 @@ msgstr "文字"
 
 #. Accelerator
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:413
-#: ../plugins/gtk+/glade-gtk-tree-view.c:92 ../plugins/gtk+/gtk+.xml.in.h:771
+#: ../plugins/gtk+/glade-gtk-tree-view.c:92 ../plugins/gtk+/gtk+.xml.in.h:779
 msgid "Accelerator"
 msgstr "捷徑鍵"
 
@@ -2977,7 +3558,7 @@ msgstr "Pixbuf"
 
 #. GtkAssistantPageType enumeration value
 #: ../plugins/gtk+/glade-gtk-cell-layout.c:417
-#: ../plugins/gtk+/glade-gtk-tree-view.c:96 ../plugins/gtk+/gtk+.xml.in.h:751
+#: ../plugins/gtk+/glade-gtk-tree-view.c:96 ../plugins/gtk+/gtk+.xml.in.h:759
 #: ../plugins/gtk+/glade-entry-editor.ui.h:4
 msgid "Progress"
 msgstr "進度"
@@ -5541,11 +6122,6 @@ msgid "LGPL 3.0"
 msgstr "LGPL 3.0"
 
 #. GtkLicense enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:712
-msgid "BSD"
-msgstr "BSD"
-
-#. GtkLicense enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:714
 msgid "MIT X11"
 msgstr "MIT X11"
@@ -5555,7 +6131,31 @@ msgstr "MIT X11"
 msgid "Artistic"
 msgstr "美術的"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:717
+#. GtkLicense enumeration value
+#: ../plugins/gtk+/gtk+.xml.in.h:718
+#| msgid "GPL 2.0"
+msgid "GPL 2.0 Only"
+msgstr "只有 GPL 2.0"
+
+#. GtkLicense enumeration value
+#: ../plugins/gtk+/gtk+.xml.in.h:720
+#| msgid "GPL 3.0"
+msgid "GPL 3.0 Only"
+msgstr "只有 GPL 3.0"
+
+#. GtkLicense enumeration value
+#: ../plugins/gtk+/gtk+.xml.in.h:722
+#| msgid "LGPL 2.1"
+msgid "LGPL 2.1 Only"
+msgstr "只有 LGPL 2.1"
+
+#. GtkLicense enumeration value
+#: ../plugins/gtk+/gtk+.xml.in.h:724
+#| msgid "LGPL 3.0"
+msgid "LGPL 3.0 Only"
+msgstr "只有 LGPL 3.0"
+
+#: ../plugins/gtk+/gtk+.xml.in.h:725
 msgid ""
 "You can mark this as translatable and set one name/address if you want to "
 "show a translation specific translator, otherwise you should list all "
@@ -5564,836 +6164,831 @@ msgstr ""
 "您可以把此項標記為可翻譯，如果想要依翻譯顯示翻譯者可以設定一個名稱/位址。否則"
 "您應該列出所有的翻譯者並取消這個字串的翻譯標記"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:718
+#: ../plugins/gtk+/gtk+.xml.in.h:726
 msgid "Color Selection Dialog"
 msgstr "「顏色選擇」對話框"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:719
+#: ../plugins/gtk+/gtk+.xml.in.h:727
 msgid "File Chooser Dialog"
 msgstr "「檔案選擇」對話框"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:720
+#: ../plugins/gtk+/gtk+.xml.in.h:728
 msgid "Font Selection Dialog"
 msgstr "「字型選擇」對話框"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:721
+#: ../plugins/gtk+/gtk+.xml.in.h:729
 msgid "Application Chooser Dialog"
 msgstr "應用程式選擇器對話盒"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:722
+#: ../plugins/gtk+/gtk+.xml.in.h:730
 msgid "Message Dialog"
 msgstr "訊息對話框"
 
 #. GtkButtonsType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:724
+#: ../plugins/gtk+/gtk+.xml.in.h:732
 msgid "Ok"
 msgstr "確定"
 
 #. GtkButtonsType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:728
-msgid "Cancel"
-msgstr "取消"
-
-#. GtkButtonsType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:730
+#: ../plugins/gtk+/gtk+.xml.in.h:738
 msgid "Yes, No"
 msgstr "是，否"
 
 #. GtkButtonsType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:732
+#: ../plugins/gtk+/gtk+.xml.in.h:740
 msgid "Ok, Cancel"
 msgstr "確定，取消"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:733
+#: ../plugins/gtk+/gtk+.xml.in.h:741
 msgid "Color Selection"
 msgstr "顏色選擇"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:734
+#: ../plugins/gtk+/gtk+.xml.in.h:742
 msgid "Color Chooser Widget"
 msgstr "顏色選擇視窗元件"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:735
+#: ../plugins/gtk+/gtk+.xml.in.h:743
 msgid "Color Chooser Dialog"
 msgstr "顏色選擇對話盒"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:736
+#: ../plugins/gtk+/gtk+.xml.in.h:744
 msgid "Font Chooser Widget"
 msgstr "字型選擇視窗元件"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:737
+#: ../plugins/gtk+/gtk+.xml.in.h:745
 msgid "Font Chooser Dialog"
 msgstr "字型選擇對話盒"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:738
+#: ../plugins/gtk+/gtk+.xml.in.h:746
 msgid "Font Selection"
 msgstr "字型選擇"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:739
+#: ../plugins/gtk+/gtk+.xml.in.h:747
 msgid "Assistant"
 msgstr "助理"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:740
+#: ../plugins/gtk+/gtk+.xml.in.h:748
 msgid "Number of Pages"
 msgstr "頁數"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:741
+#: ../plugins/gtk+/gtk+.xml.in.h:749
 msgid "Initially Complete"
 msgstr "初始化完成"
 
 #. GtkAssistantPageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:743
+#: ../plugins/gtk+/gtk+.xml.in.h:751
 msgid "Content"
 msgstr "內容"
 
 #. GtkAssistantPageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:745
+#: ../plugins/gtk+/gtk+.xml.in.h:753
 msgid "Intro"
 msgstr "介紹"
 
 #. GtkAssistantPageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:747
+#: ../plugins/gtk+/gtk+.xml.in.h:755
 msgid "Confirm"
 msgstr "確認"
 
 #. GtkAssistantPageType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:749
+#: ../plugins/gtk+/gtk+.xml.in.h:757
 msgid "Summary"
 msgstr "摘要"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:752
+#: ../plugins/gtk+/gtk+.xml.in.h:760
 msgid "Number of pages in this assistant"
 msgstr "在這個助理中的頁數"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:753
+#: ../plugins/gtk+/gtk+.xml.in.h:761
 msgid ""
 "Whether this page will initially be marked as complete regardless of user "
 "input."
 msgstr "這個頁面是否初始就標記為不管使用者輸入。"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:754
+#: ../plugins/gtk+/gtk+.xml.in.h:762
 msgid "The page position in the Assistant"
 msgstr "助理中的頁面位置"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:755
+#: ../plugins/gtk+/gtk+.xml.in.h:763
 msgid "Link Button"
 msgstr "鏈結按鈕"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:756
+#: ../plugins/gtk+/gtk+.xml.in.h:764
 msgid "Recent Chooser"
 msgstr "最近使用項目選擇器"
 
 #. GtkRecentSortType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:758
+#: ../plugins/gtk+/gtk+.xml.in.h:766
 msgid "Most Recently Used first"
 msgstr "最近較多使用的優先"
 
 #. GtkRecentSortType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:760
+#: ../plugins/gtk+/gtk+.xml.in.h:768
 msgid "Least Recently Used first"
 msgstr "最近較少使用的優先"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:761
+#: ../plugins/gtk+/gtk+.xml.in.h:769
 msgid "Recent Chooser Dialog"
 msgstr "最近使用項目選擇器對話框"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:762
+#: ../plugins/gtk+/gtk+.xml.in.h:770
 msgid "Size Group"
 msgstr "大小群組"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:763
+#: ../plugins/gtk+/gtk+.xml.in.h:771
 msgid "Widgets"
 msgstr "視窗元件"
 
 #. GtkSizeGroupMode enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:765
+#: ../plugins/gtk+/gtk+.xml.in.h:773
 msgid "Both"
 msgstr "兩者"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:766
+#: ../plugins/gtk+/gtk+.xml.in.h:774
 msgid "List of widgets in this group"
 msgstr "這個群組中的視窗元件清單"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:767
+#: ../plugins/gtk+/gtk+.xml.in.h:775
 msgid "Window Group"
 msgstr "視窗群組"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:768
+#: ../plugins/gtk+/gtk+.xml.in.h:776
 msgid "Adjustment"
 msgstr "調整"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:772
+#: ../plugins/gtk+/gtk+.xml.in.h:780
 msgid "An accelerator key for this action"
 msgstr "這個動作的捷徑鍵"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:773
+#: ../plugins/gtk+/gtk+.xml.in.h:781
 msgid "Toggle Action"
 msgstr "切換動作"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:774
+#: ../plugins/gtk+/gtk+.xml.in.h:782
 msgid "Radio Action"
 msgstr "單選動作"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:775
+#: ../plugins/gtk+/gtk+.xml.in.h:783
 msgid "Recent Action"
 msgstr "剛進行的動作"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:776
+#: ../plugins/gtk+/gtk+.xml.in.h:784
 msgid "Action Group"
 msgstr "動作群組"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:777
+#: ../plugins/gtk+/gtk+.xml.in.h:785
 msgid "Entry Completion"
 msgstr "項目補齊"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:778
+#: ../plugins/gtk+/gtk+.xml.in.h:786
 msgid "Icon Factory"
 msgstr "圖示工廠"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:779
+#: ../plugins/gtk+/gtk+.xml.in.h:787
 msgid "Icon Sources"
 msgstr "圖示來源"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:780
+#: ../plugins/gtk+/gtk+.xml.in.h:788
 msgid "A list of sources for this icon factory"
 msgstr "這個圖示工廠的來源清單"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:781
+#: ../plugins/gtk+/gtk+.xml.in.h:789
 msgid "List Store"
 msgstr "清單庫"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:782
+#: ../plugins/gtk+/gtk+.xml.in.h:790
 msgid "Data"
 msgstr "資料"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:783
+#: ../plugins/gtk+/gtk+.xml.in.h:791
 msgid "Enter a list of column types for this data store"
 msgstr "輸入這個資料儲存的欄類型清單"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:784
+#: ../plugins/gtk+/gtk+.xml.in.h:792
 msgid "Enter a list of values to be applied on each row"
 msgstr "輸入套用到每一列的數值清單"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:785
+#: ../plugins/gtk+/gtk+.xml.in.h:793
 msgid "Tree Store"
 msgstr "樹狀庫"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:786
+#: ../plugins/gtk+/gtk+.xml.in.h:794
 msgid "Tree Model Filter"
 msgstr "樹狀模型過濾條件"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:787
+#: ../plugins/gtk+/gtk+.xml.in.h:795
 msgid "Tree Model Sort"
 msgstr "樹狀模型排序"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:788
+#: ../plugins/gtk+/gtk+.xml.in.h:796
 msgid "Tree Selection"
 msgstr "樹狀選擇"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:789
+#: ../plugins/gtk+/gtk+.xml.in.h:797
 msgid "Tree View"
 msgstr "樹狀檢視"
 
 #. GtkTreeViewGridLines enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:791
+#: ../plugins/gtk+/gtk+.xml.in.h:799
 msgid "Horizontal and Vertical"
 msgstr "水平及垂直"
 
 #. GtkSortType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:794
+#: ../plugins/gtk+/gtk+.xml.in.h:802
 msgid "Ascending"
 msgstr "遞增"
 
 #. GtkSortType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:796
+#: ../plugins/gtk+/gtk+.xml.in.h:804
 msgid "Descending"
 msgstr "遞減"
 
 #. GtkTreeViewColumnSizing enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:798
+#: ../plugins/gtk+/gtk+.xml.in.h:806
 msgid "Grow Only"
 msgstr "只有增長"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:799
+#: ../plugins/gtk+/gtk+.xml.in.h:807
 msgid "Icon View"
 msgstr "圖示檢視模式"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:801
+#: ../plugins/gtk+/gtk+.xml.in.h:809
 msgid "Cell Background Color name column"
 msgstr "格位背景顏色名稱欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:802
+#: ../plugins/gtk+/gtk+.xml.in.h:810
 msgid "Cell Background Color column"
 msgstr "格位背景顏色欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:803
+#: ../plugins/gtk+/gtk+.xml.in.h:811
 msgid "Cell Background RGBA column"
 msgstr "格位背景 RGBA 欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:804
+#: ../plugins/gtk+/gtk+.xml.in.h:812
 msgid "Width column"
 msgstr "寬度欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:805
+#: ../plugins/gtk+/gtk+.xml.in.h:813
 msgid "Height column"
 msgstr "高度欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:806
+#: ../plugins/gtk+/gtk+.xml.in.h:814
 msgid "Horizontal Padding"
 msgstr "水平留空 "
 
-#: ../plugins/gtk+/gtk+.xml.in.h:807
+#: ../plugins/gtk+/gtk+.xml.in.h:815
 msgid "Horizontal Padding column"
 msgstr "水平留空欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:808
+#: ../plugins/gtk+/gtk+.xml.in.h:816
 msgid "Vertical Padding"
 msgstr "垂直留空"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:809
+#: ../plugins/gtk+/gtk+.xml.in.h:817
 msgid "Vertical Padding column"
 msgstr "垂直留空欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:810
+#: ../plugins/gtk+/gtk+.xml.in.h:818
 msgid "Horizontal Alignment"
 msgstr "水平排列"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:811
+#: ../plugins/gtk+/gtk+.xml.in.h:819
 msgid "Horizontal Alignment column"
 msgstr "水平排列欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:812
+#: ../plugins/gtk+/gtk+.xml.in.h:820
 msgid "Vertical Alignment"
 msgstr "垂直排列"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:813
+#: ../plugins/gtk+/gtk+.xml.in.h:821
 msgid "Vertical Alignment column"
 msgstr "垂直排列欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:814
+#: ../plugins/gtk+/gtk+.xml.in.h:822
 msgid "Sensitive column"
 msgstr "靈敏度欄位"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:816
+#: ../plugins/gtk+/gtk+.xml.in.h:824
 msgid "Visible column"
 msgstr "可視欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:817
+#: ../plugins/gtk+/gtk+.xml.in.h:825
 msgid "The column in the model to load the value from"
 msgstr "在模型中用來讀取數值的欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:818
+#: ../plugins/gtk+/gtk+.xml.in.h:826
 msgid "Text Renderer"
 msgstr "文字繪圖器"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:819
+#: ../plugins/gtk+/gtk+.xml.in.h:827
 msgid "Alignment column"
 msgstr "對齊欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:820
+#: ../plugins/gtk+/gtk+.xml.in.h:828
 msgid "Attributes column"
 msgstr "屬性欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:821
+#: ../plugins/gtk+/gtk+.xml.in.h:829
 msgid "Background Color Name column"
 msgstr "背景顏色名稱欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:822
+#: ../plugins/gtk+/gtk+.xml.in.h:830
 msgid "Background Color column"
 msgstr "背景顏色欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:823
+#: ../plugins/gtk+/gtk+.xml.in.h:831
 msgid "Editable column"
 msgstr "可編輯欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:824
+#: ../plugins/gtk+/gtk+.xml.in.h:832
 #, fuzzy
 msgid "Ellipsize column"
-msgstr "欄位標頭"
+msgstr "欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:825
+#: ../plugins/gtk+/gtk+.xml.in.h:833
 #, fuzzy
 msgid "Family column"
-msgstr "欄位標頭"
+msgstr "欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:826
+#: ../plugins/gtk+/gtk+.xml.in.h:834
 msgid "Font column"
 msgstr "字型欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:827
+#: ../plugins/gtk+/gtk+.xml.in.h:835
 msgid "Font Description column"
 msgstr "字型描述欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:828
+#: ../plugins/gtk+/gtk+.xml.in.h:836
 msgid "Foreground Color Name column"
 msgstr "前景顏色名稱欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:829
+#: ../plugins/gtk+/gtk+.xml.in.h:837
 msgid "Foreground Color column"
 msgstr "前景顏色欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:830
+#: ../plugins/gtk+/gtk+.xml.in.h:838
 msgid "Language column"
 msgstr "語言欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:831
+#: ../plugins/gtk+/gtk+.xml.in.h:839
 msgid "Markup column"
 msgstr "標記欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:832
+#: ../plugins/gtk+/gtk+.xml.in.h:840
 msgid "Rise column"
 msgstr "抬升欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:833
+#: ../plugins/gtk+/gtk+.xml.in.h:841
 msgid "Scale column"
 msgstr "縮放欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:834
+#: ../plugins/gtk+/gtk+.xml.in.h:842
 msgid "Single Paragraph Mode column"
 msgstr "單一段落模式欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:835
+#: ../plugins/gtk+/gtk+.xml.in.h:843
 msgid "Size column"
 msgstr "大小欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:836
+#: ../plugins/gtk+/gtk+.xml.in.h:844
 msgid "Data column"
 msgstr "資料欄"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:838
+#: ../plugins/gtk+/gtk+.xml.in.h:846
 msgid "Ultra Condensed"
 msgstr "極窄"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:840
+#: ../plugins/gtk+/gtk+.xml.in.h:848
 msgid "Extra Condensed"
 msgstr "很窄"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:842
+#: ../plugins/gtk+/gtk+.xml.in.h:850
 msgid "Condensed"
 msgstr "窄"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:844
+#: ../plugins/gtk+/gtk+.xml.in.h:852
 msgid "Semi Condensed"
 msgstr "有點窄"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:846
+#: ../plugins/gtk+/gtk+.xml.in.h:854
 msgid "Semi Expanded"
 msgstr "有點寛"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:848
+#: ../plugins/gtk+/gtk+.xml.in.h:856
 msgid "Expanded"
 msgstr "已展開"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:850
+#: ../plugins/gtk+/gtk+.xml.in.h:858
 msgid "Extra Expanded"
 msgstr "額外展開的"
 
 #. PangoStretch enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:852
+#: ../plugins/gtk+/gtk+.xml.in.h:860
 msgid "Ultra Expanded"
 msgstr "極寛"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:853
+#: ../plugins/gtk+/gtk+.xml.in.h:861
 msgid "Stretch column"
 msgstr "延伸欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:854
+#: ../plugins/gtk+/gtk+.xml.in.h:862
 msgid "Strikethrough column"
 msgstr "刪除線欄"
 
 #. PangoStyle enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:856
+#: ../plugins/gtk+/gtk+.xml.in.h:864
 #, fuzzy
 msgid "Oblique"
 msgstr "傾斜"
 
 #. PangoStyle enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:858
+#: ../plugins/gtk+/gtk+.xml.in.h:866
 msgid "Italic"
 msgstr "斜體"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:859
+#: ../plugins/gtk+/gtk+.xml.in.h:867
 msgid "Style column"
 msgstr "樣式欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:860
+#: ../plugins/gtk+/gtk+.xml.in.h:868
 msgid "Text column"
 msgstr "文字欄"
 
 #. PangoUnderline enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:862
+#: ../plugins/gtk+/gtk+.xml.in.h:870
 msgid "Double"
 msgstr "雙倍"
 
 #. PangoUnderline enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:864
+#: ../plugins/gtk+/gtk+.xml.in.h:872
 msgid "Low"
 msgstr "低"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:865
+#: ../plugins/gtk+/gtk+.xml.in.h:873
 msgid "Underline column"
 msgstr "底線欄"
 
 #. PangoVariant enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:867
+#: ../plugins/gtk+/gtk+.xml.in.h:875
 msgid "Small Capitals"
 msgstr "小型大寫字母"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:868
+#: ../plugins/gtk+/gtk+.xml.in.h:876
 msgid "Variant column"
 msgstr "變數欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:869
+#: ../plugins/gtk+/gtk+.xml.in.h:877
 msgid "Weight column"
 msgstr "寬度欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:870
+#: ../plugins/gtk+/gtk+.xml.in.h:878
 msgid "Width in Characters column"
 msgstr "寬度(以字元計)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:871
+#: ../plugins/gtk+/gtk+.xml.in.h:879
 msgid "Wrap Mode column"
 msgstr "換列模式欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:872
+#: ../plugins/gtk+/gtk+.xml.in.h:880
 msgid "Wrap Width column"
 msgstr "換列寬度欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:873
+#: ../plugins/gtk+/gtk+.xml.in.h:881
 msgid "Background RGBA column"
 msgstr "背景 RGBA 欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:874
+#: ../plugins/gtk+/gtk+.xml.in.h:882
 msgid "Foreground RGBA column"
 msgstr "前景 RGBA 欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:875
+#: ../plugins/gtk+/gtk+.xml.in.h:883
 msgid "Maximum width in characters"
 msgstr "最大寬度 (以字元計)"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:876
+#: ../plugins/gtk+/gtk+.xml.in.h:884
 msgid "Placeholder text"
 msgstr "佔位符文字"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:877
+#: ../plugins/gtk+/gtk+.xml.in.h:885
 msgid "Accelerator Renderer"
 msgstr "捷徑鍵繪圖器"
 
 #. GtkCellRendererAccelMode enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:879
+#: ../plugins/gtk+/gtk+.xml.in.h:887
 msgid "Gtk"
 msgstr "Gtk"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:880
+#: ../plugins/gtk+/gtk+.xml.in.h:888
 msgid "Accelerator Mode column"
 msgstr "捷徑鍵模式欄"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:882
+#: ../plugins/gtk+/gtk+.xml.in.h:890
 msgid "Shift Key"
 msgstr "Shift 鍵"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:884
+#: ../plugins/gtk+/gtk+.xml.in.h:892
 msgid "Lock Key"
 msgstr "鎖定鍵"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:886
+#: ../plugins/gtk+/gtk+.xml.in.h:894
 msgid "Control Key"
 msgstr "Control 鍵"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:888
+#: ../plugins/gtk+/gtk+.xml.in.h:896
 msgid "Alt Key"
 msgstr "Alt 鍵"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:890
+#: ../plugins/gtk+/gtk+.xml.in.h:898
 msgid "Fifth Key"
 msgstr "第五按鍵"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:892
+#: ../plugins/gtk+/gtk+.xml.in.h:900
 msgid "Sixth Key"
 msgstr "第六按鍵"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:894
+#: ../plugins/gtk+/gtk+.xml.in.h:902
 msgid "Seventh Key"
 msgstr "第七按鍵"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:896
+#: ../plugins/gtk+/gtk+.xml.in.h:904
 msgid "Eighth Key"
 msgstr "第八按鍵"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:898
+#: ../plugins/gtk+/gtk+.xml.in.h:906
 msgid "First Mouse Button"
 msgstr "第一滑鼠按鈕"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:900
+#: ../plugins/gtk+/gtk+.xml.in.h:908
 msgid "Second Mouse Button"
 msgstr "第二滑鼠按鈕"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:902
+#: ../plugins/gtk+/gtk+.xml.in.h:910
 msgid "Third Mouse Button"
 msgstr "第三滑鼠按鍵"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:904
+#: ../plugins/gtk+/gtk+.xml.in.h:912
 msgid "Forth Mouse Button"
 msgstr "第四滑鼠按鈕"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:906
+#: ../plugins/gtk+/gtk+.xml.in.h:914
 msgid "Fifth Mouse Button"
 msgstr "第五滑鼠按鈕"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:908
+#: ../plugins/gtk+/gtk+.xml.in.h:916
 msgid "Super Modifier"
 msgstr "Super 特殊鍵"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:910
+#: ../plugins/gtk+/gtk+.xml.in.h:918
 msgid "Hyper Modifier"
 msgstr "Hyper 特殊鍵"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:912
+#: ../plugins/gtk+/gtk+.xml.in.h:920
 msgid "Meta Modifier"
 msgstr "Meta 特殊鍵"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:914
+#: ../plugins/gtk+/gtk+.xml.in.h:922
 msgid "Release Modifier"
 msgstr "釋放特殊鍵"
 
 #. GdkModifierType enumeration value
-#: ../plugins/gtk+/gtk+.xml.in.h:916
+#: ../plugins/gtk+/gtk+.xml.in.h:924
 msgid "All Modifiers"
 msgstr "所有的特殊按鍵"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:917
+#: ../plugins/gtk+/gtk+.xml.in.h:925
 msgid "Accelerator Modifiers column"
 msgstr "捷徑鍵特殊鍵欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:918
+#: ../plugins/gtk+/gtk+.xml.in.h:926
 msgid "Keycode column"
 msgstr "按鍵碼欄位"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:919
+#: ../plugins/gtk+/gtk+.xml.in.h:927
 msgid "Combo Renderer"
 msgstr "組合方塊繪圖器"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:920
+#: ../plugins/gtk+/gtk+.xml.in.h:928
 msgid "Has Entry column"
 msgstr "具有項目欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:921
+#: ../plugins/gtk+/gtk+.xml.in.h:929
 msgid "Model column"
 msgstr "模型欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:922
+#: ../plugins/gtk+/gtk+.xml.in.h:930
 msgid "Text Column column"
 msgstr "文字欄位欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:923
+#: ../plugins/gtk+/gtk+.xml.in.h:931
 msgid "Spin Renderer"
 msgstr "微調按鈕繪圖器"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:924
+#: ../plugins/gtk+/gtk+.xml.in.h:932
 msgid "Adjustment column"
 msgstr "調整欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:925
+#: ../plugins/gtk+/gtk+.xml.in.h:933
 msgid "Climb Rate column"
 msgstr "爬升率欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:926
+#: ../plugins/gtk+/gtk+.xml.in.h:934
 msgid "Digits column"
 msgstr "數字欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:927
+#: ../plugins/gtk+/gtk+.xml.in.h:935
 msgid "Pixbuf Renderer"
 msgstr "Pixbuf 繪圖器"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:928
+#: ../plugins/gtk+/gtk+.xml.in.h:936
 msgid "Follow State column"
 msgstr "跟隨狀態櫚位"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:929
+#: ../plugins/gtk+/gtk+.xml.in.h:937
 msgid "Icon Name column"
 msgstr "圖示名稱欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:930
+#: ../plugins/gtk+/gtk+.xml.in.h:938
 msgid "Pixbuf column"
 msgstr "Pixbuf 欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:931
+#: ../plugins/gtk+/gtk+.xml.in.h:939
 msgid "GIcon column"
 msgstr "GIcon 欄位"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:932
+#: ../plugins/gtk+/gtk+.xml.in.h:940
 msgid "Pixbuf Expander Closed column"
 msgstr "Pixbuf 開展器關閉欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:933
+#: ../plugins/gtk+/gtk+.xml.in.h:941
 msgid "Pixbuf Expander Open column"
 msgstr "Pixbuf 開展器開啟欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:934
+#: ../plugins/gtk+/gtk+.xml.in.h:942
 msgid "Stock Detail column"
 msgstr "門置詳細資訊欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:935
+#: ../plugins/gtk+/gtk+.xml.in.h:943
 msgid "Stock column"
 msgstr "內置欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:936
+#: ../plugins/gtk+/gtk+.xml.in.h:944
 msgid "Stock Size column"
 msgstr "內置大小欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:937
+#: ../plugins/gtk+/gtk+.xml.in.h:945
 msgid "Progress Renderer"
 msgstr "進度列繪圖器"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:938
+#: ../plugins/gtk+/gtk+.xml.in.h:946
 msgid "Orientation column"
 msgstr "方向欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:939
+#: ../plugins/gtk+/gtk+.xml.in.h:947
 #, fuzzy
 msgid "Pulse column"
-msgstr "欄位標頭"
+msgstr "進度列指示步進"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:940
+#: ../plugins/gtk+/gtk+.xml.in.h:948
 msgid "Text Horizontal Alignment column"
 msgstr "文字水平排列欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:941
+#: ../plugins/gtk+/gtk+.xml.in.h:949
 msgid "Text Vertical Alignment column"
 msgstr "文字垂直排列欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:942
+#: ../plugins/gtk+/gtk+.xml.in.h:950
 msgid "Value column"
 msgstr "數值欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:943
+#: ../plugins/gtk+/gtk+.xml.in.h:951
 msgid "Inverted column"
 msgstr "反轉欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:944
+#: ../plugins/gtk+/gtk+.xml.in.h:952
 msgid "Spinner Renderer"
 msgstr "轉輪繪圖器"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:945
+#: ../plugins/gtk+/gtk+.xml.in.h:953
 msgid "Active column"
 msgstr "使用欄位"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:946
+#: ../plugins/gtk+/gtk+.xml.in.h:954
 msgid "Toggle Renderer"
 msgstr "切換器繪圖器"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:947
+#: ../plugins/gtk+/gtk+.xml.in.h:955
 msgid "Activatable column"
 msgstr "可使用欄位"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:948
+#: ../plugins/gtk+/gtk+.xml.in.h:956
 msgid "Inconsistent column"
 msgstr "不一致的欄位"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:949
+#: ../plugins/gtk+/gtk+.xml.in.h:957
 msgid "Indicator Size column"
 msgstr "指示器大小欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:950
+#: ../plugins/gtk+/gtk+.xml.in.h:958
 msgid "Radio column"
 msgstr "單選欄"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:951
+#: ../plugins/gtk+/gtk+.xml.in.h:959
 msgid "Status Icon"
 msgstr "狀態圖示"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:952
+#: ../plugins/gtk+/gtk+.xml.in.h:960
 msgid "Text Buffer"
 msgstr "文字緩衝區"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:953
+#: ../plugins/gtk+/gtk+.xml.in.h:961
 msgid "Entry Buffer"
 msgstr "入口緩衝區"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:954
+#: ../plugins/gtk+/gtk+.xml.in.h:962
 msgid "Text Tag"
 msgstr "文字標籤"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:955
+#: ../plugins/gtk+/gtk+.xml.in.h:963
 msgid "Text Tag Table"
 msgstr "文字標籤表格"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:956
+#: ../plugins/gtk+/gtk+.xml.in.h:964
 msgid "File Filter"
 msgstr "檔案過濾條件"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:957
+#: ../plugins/gtk+/gtk+.xml.in.h:965
 msgid "Mime Types"
 msgstr "Mime 類型"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:958
+#: ../plugins/gtk+/gtk+.xml.in.h:966
 msgid "Patterns"
 msgstr "模式"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:959
+#: ../plugins/gtk+/gtk+.xml.in.h:967
 msgid "The list of mime types to add to the filter"
 msgstr "要加入過濾條件的 mime 類型清單"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:960
+#: ../plugins/gtk+/gtk+.xml.in.h:968
 msgid "The list of file name patterns to add to the filter"
 msgstr "要加入過濾條件的檔案名稱樣式清單"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:961
+#: ../plugins/gtk+/gtk+.xml.in.h:969
 msgid "Recent Filter"
 msgstr "最近使用項目過濾條件"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:963
+#: ../plugins/gtk+/gtk+.xml.in.h:971
 msgid "The list of application names to add to the filter"
 msgstr "加入至過濾條件的應用程式清單"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:964
+#: ../plugins/gtk+/gtk+.xml.in.h:972
 msgid "Recent Manager"
 msgstr "最近使用項目管理程式"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:966
+#: ../plugins/gtk+/gtk+.xml.in.h:974
 msgid "Toplevels"
 msgstr "頂層視窗"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:967
+#: ../plugins/gtk+/gtk+.xml.in.h:975
 msgid "Containers"
 msgstr "容器元件"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:968
+#: ../plugins/gtk+/gtk+.xml.in.h:976
 msgid "Control and Display"
 msgstr "控制與顯示"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:969
+#: ../plugins/gtk+/gtk+.xml.in.h:977
 msgid "Composite Widgets"
 msgstr "組合式視窗元件"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:970
+#: ../plugins/gtk+/gtk+.xml.in.h:978
 msgid "Miscellaneous"
 msgstr "雜項"
 
-#: ../plugins/gtk+/gtk+.xml.in.h:971
+#: ../plugins/gtk+/gtk+.xml.in.h:979
 msgid "Deprecated"
 msgstr "已廢棄"
 
@@ -6753,7 +7348,7 @@ msgstr "進度列屬性"
 #: ../plugins/gtk+/glade-progress-bar-editor.ui.h:2
 #, fuzzy
 msgid "Ellipsize Text:"
-msgstr "求助文字"
+msgstr "文字(_T)："
 
 #: ../plugins/gtk+/glade-real-tree-view-editor.ui.h:1
 msgid "Tree View Attributes"
@@ -7107,12 +7702,6 @@ msgstr "定位："
 
 #~ msgid "Drag-n-Drop from %s to %s"
 #~ msgstr "從 %s 拖放至 %s"
-
-#~ msgid "Yes"
-#~ msgstr "是"
-
-#~ msgid "No"
-#~ msgstr "否"
 
 #~ msgid "_Open…"
 #~ msgstr "開啟(_O)…"
