@@ -16,8 +16,8 @@ msgstr ""
 "Project-Id-Version: glade3 3.10.0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-02-24 18:47+0000\n"
-"PO-Revision-Date: 2014-02-25 15:50+0800\n"
+"POT-Creation-Date: 2014-03-06 06:46+0000\n"
+"PO-Revision-Date: 2014-03-08 18:48+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (Taiwan) <zh-l10n@lists.linux.org.tw>\n"
 "Language: zh_TW\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.6.4\n"
+"X-Generator: Poedit 1.6.3\n"
 
 #: ../data/glade.desktop.in.in.h:1 ../src/main.c:42
 msgid "Glade"
@@ -58,10 +58,15 @@ msgstr ""
 
 #. To translators: AppData description second paragraph
 #: ../data/glade.appdata.xml.in.h:4
+#| msgid ""
+#| "The user interfaces designed in Glade are saved as XML and these can be "
+#| "loaded by applications dynamically as needed by using GtkBuilder or used "
+#| "directly to define a new GtkWidget derived object class using Gtk+ new "
+#| "template feature."
 msgid ""
 "The user interfaces designed in Glade are saved as XML and these can be "
 "loaded by applications dynamically as needed by using GtkBuilder or used "
-"directly to define a new GtkWidget derived object class using Gtk+ new "
+"directly to define a new GtkWidget derived object class using GTK+ new "
 "template feature."
 msgstr ""
 "Glade 中設計的使用者介面是以 XML 儲存，並且能依需求使用 GtkBuilder 在應用程式"
@@ -316,10 +321,6 @@ msgid "Unable to open '%s', the file does not exist.\n"
 msgstr "無法開啟「%s」，該檔案不存在。\n"
 
 #: ../src/glade.glade.h:1
-#| msgid ""
-#| "Copyright © 2001-2006 Ximian, Inc.\n"
-#| "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
-#| "Copyright © 2004-2013 Tristan Van Berkom, Juan Pablo Ugarte, et al."
 msgid ""
 "Copyright © 2001-2006 Ximian, Inc.\n"
 "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
@@ -646,7 +647,8 @@ msgid "Open _Recent"
 msgstr "開啟最近使用檔案(_R)"
 
 #: ../src/glade.glade.h:88
-msgid "Registration & User survey"
+#| msgid "Registration & User survey"
+msgid "Registration & User Survey"
 msgstr "註冊 & 使用者問卷"
 
 #: ../src/glade.glade.h:89
@@ -773,39 +775,36 @@ msgstr "選擇分類搜尋路徑"
 
 #: ../src/glade-registration.c:168
 #, c-format
-#| msgid "Setting %s of %s"
 msgid "Connecting to %s"
 msgstr "連接到 %s"
 
 #: ../src/glade-registration.c:171
 #, c-format
-#| msgid "Renaming %s to %s"
 msgid "Sending data to %s"
 msgstr "傳送資料到 %s"
 
 #: ../src/glade-registration.c:174
 #, c-format
-#| msgid "Creating %s for %s of %s"
 msgid "Waiting for %s"
 msgstr "等待 %s"
 
 #: ../src/glade-registration.c:177
 #, c-format
-#| msgid "Removing parent of %s"
 msgid "Receiving data from %s"
 msgstr "從 %s 接收資料"
 
 #: ../src/glade-registration.c:206
-#| msgid "Internal Frame"
 msgid "Internal server error"
 msgstr "伺服器內部錯誤"
 
 #: ../src/glade-registration.glade.h:1
-msgid "Glade registration & User survey"
+#| msgid "Glade registration & User survey"
+msgid "Glade Registration & User Survey"
 msgstr "Glade 註冊 & 使用者問卷"
 
 #: ../src/glade-registration.glade.h:2
-msgid " User Information"
+#| msgid " User Information"
+msgid "User Information"
 msgstr "使用者資訊"
 
 #: ../src/glade-registration.glade.h:3
@@ -813,7 +812,6 @@ msgid "<Your name or nickname is required>"
 msgstr "<需要您的姓名或暱稱>"
 
 #: ../src/glade-registration.glade.h:5
-#| msgid "Email"
 msgid "Email:"
 msgstr "電子郵件："
 
@@ -830,12 +828,10 @@ msgid "<Required to send back registration token>"
 msgstr "<要求傳回註冊記號>"
 
 #: ../src/glade-registration.glade.h:9
-#| msgid "Count:"
 msgid "Country:"
 msgstr "國家："
 
 #: ../src/glade-registration.glade.h:10
-#| msgid "Gravity:"
 msgid "City:"
 msgstr "城市："
 
@@ -844,7 +840,6 @@ msgid "Company"
 msgstr "公司"
 
 #: ../src/glade-registration.glade.h:12
-#| msgid "Animation"
 msgid "Organization"
 msgstr "組織"
 
@@ -853,7 +848,6 @@ msgid "Personal"
 msgstr "個人"
 
 #: ../src/glade-registration.glade.h:14
-#| msgid "Website:"
 msgid "Website"
 msgstr "網站"
 
@@ -870,7 +864,6 @@ msgstr ""
 "您會接到電子郵件要求確認！"
 
 #: ../src/glade-registration.glade.h:18
-#| msgid "Close document"
 msgid "Choose your country"
 msgstr "選擇您的國家"
 
@@ -897,7 +890,8 @@ msgid "<Insert update token, if you want to update previously sent data>"
 msgstr "<插入更新的記號，如果您想要更新前一次送出的資料>"
 
 #: ../src/glade-registration.glade.h:24
-msgid " Glade User Survey"
+#| msgid " Glade User Survey"
+msgid "Glade User Survey"
 msgstr "Glade 使用者問卷"
 
 #: ../src/glade-registration.glade.h:25
@@ -945,7 +939,8 @@ msgid "Python"
 msgstr "Python"
 
 #: ../src/glade-registration.glade.h:36
-msgid "Javascript"
+#| msgid "Javascript"
+msgid "JavaScript"
 msgstr "Javascript"
 
 #: ../src/glade-registration.glade.h:37
@@ -968,7 +963,6 @@ msgid "When did you start using Glade?"
 msgstr "您何時開始使用 Glade？"
 
 #: ../src/glade-registration.glade.h:41
-#| msgid "Tag"
 msgid "ago"
 msgstr "前"
 
@@ -985,11 +979,11 @@ msgid "Latest stable from sources"
 msgstr "來自原始碼的最近穩定版"
 
 #: ../src/glade-registration.glade.h:45
-msgid "3.8 for Gtk+ 2"
+#| msgid "3.8 for Gtk+ 2"
+msgid "3.8 for GTK+ 2"
 msgstr "3.8 版，用於 Gtk+ 2"
 
 #: ../src/glade-registration.glade.h:46
-#| msgid "Paste"
 msgid "Master"
 msgstr "Master"
 
@@ -998,7 +992,6 @@ msgid "On what operating systems?"
 msgstr "在什麼作業系統？"
 
 #: ../src/glade-registration.glade.h:48
-#| msgid "Position"
 msgid "distribution"
 msgstr "發行版本"
 
@@ -1047,8 +1040,6 @@ msgid "Oracle"
 msgstr "Oracle"
 
 #: ../src/glade-registration.glade.h:60
-#| msgctxt "textattr"
-#| msgid "Variant"
 msgid "variant"
 msgstr "其他分枝"
 
@@ -1057,7 +1048,6 @@ msgid "FreeBSD"
 msgstr "FreeBSD"
 
 #: ../src/glade-registration.glade.h:62
-#| msgid "Open"
 msgid "OpenBSD"
 msgstr "OpenBSD"
 
@@ -1078,7 +1068,6 @@ msgid "illumos"
 msgstr "illumos"
 
 #: ../src/glade-registration.glade.h:67
-#| msgid "Version:"
 msgid "version"
 msgstr "版本"
 
@@ -1148,12 +1137,12 @@ msgid "BSD"
 msgstr "BSD"
 
 #: ../src/glade-registration.glade.h:84
-#| msgid "Window"
 msgid "Windows"
 msgstr "Windows"
 
 #: ../src/glade-registration.glade.h:85
-msgid "Mac OSX"
+#| msgid "Mac OSX"
+msgid "Mac OS X"
 msgstr "Mac OSX"
 
 #: ../src/glade-registration.glade.h:86
@@ -1177,7 +1166,8 @@ msgid "Every week"
 msgstr "每週"
 
 #: ../src/glade-registration.glade.h:91
-msgid "A few times a months"
+#| msgid "A few times a months"
+msgid "A few times a month"
 msgstr "每個月幾次"
 
 #: ../src/glade-registration.glade.h:92
@@ -1193,12 +1183,10 @@ msgid "What level of Glade user would you say you are?"
 msgstr "您認為自己是哪個層級的 Glade 使用者？"
 
 #: ../src/glade-registration.glade.h:95
-#| msgid "Spinner"
 msgid "Beginner"
 msgstr "初學者"
 
 #: ../src/glade-registration.glade.h:96
-#| msgid "Immediate"
 msgid "Intermediate"
 msgstr "中間"
 
@@ -1213,12 +1201,10 @@ msgid ""
 msgstr "您會使用哪種授權條款來授權您用 Glade 建立的軟體？"
 
 #: ../src/glade-registration.glade.h:99
-#| msgid "Free Form"
 msgid "Free software"
 msgstr "自由軟體"
 
 #: ../src/glade-registration.glade.h:100
-#| msgid "Resource Name"
 msgid "Open source software"
 msgstr "開放原始碼軟體"
 
@@ -1240,7 +1226,6 @@ msgid "Academic"
 msgstr "學術"
 
 #: ../src/glade-registration.glade.h:105
-#| msgid "Applications"
 msgid "Embedded applications"
 msgstr "內嵌式應用程式"
 
@@ -1249,7 +1234,6 @@ msgid "Accounting"
 msgstr "會計"
 
 #: ../src/glade-registration.glade.h:107
-#| msgid "Applications"
 msgid "Desktop applications"
 msgstr "桌面應用程式"
 
@@ -1258,12 +1242,10 @@ msgid "Educational"
 msgstr "教育"
 
 #: ../src/glade-registration.glade.h:109
-#| msgid "Vertical"
 msgid "Medical"
 msgstr "醫學"
 
 #: ../src/glade-registration.glade.h:110
-#| msgid "About this application"
 msgid "Industrial applications"
 msgstr "工業應用程式"
 
@@ -1280,7 +1262,6 @@ msgid "In your opinion what is the biggest problem with Glade?"
 msgstr "依照您的意見，Glade 最大的問題是什麼？"
 
 #: ../src/glade-registration.glade.h:114
-#| msgid "Read documentation"
 msgid "Lack of documentation"
 msgstr "缺乏文件"
 
@@ -1297,8 +1278,9 @@ msgid "Lack of publicity/exposure"
 msgstr "缺乏公開/曝光度"
 
 #: ../src/glade-registration.glade.h:118
-msgid "Lack of official binary releases for other OS (Win32, OSX)"
-msgstr "缺乏其他 OS (Win32、OSX) 的官方二元檔釋出"
+#| msgid "Lack of official binary releases for other OS (Win32, OSX)"
+msgid "Lack of official binary releases for other OS (Windows, Mac OS X)"
+msgstr "缺乏其他 OS (Windows、Mac OSX) 的官方二元檔釋出"
 
 #: ../src/glade-registration.glade.h:119
 msgid "Have you ever encountered a bug?"
@@ -1325,7 +1307,6 @@ msgid "Why not?"
 msgstr "為什麼不要？"
 
 #: ../src/glade-registration.glade.h:125
-#| msgid "Comments"
 msgid "Comments:"
 msgstr "評論："
 
@@ -1334,6 +1315,14 @@ msgid "Privacy Note:"
 msgstr "隱私權說明："
 
 #: ../src/glade-registration.glade.h:127
+#| msgid ""
+#| "The sole purpose of this survey is to better know our user base.\n"
+#| "Your email address will be used to uniquely identify you as a Glade user "
+#| "and send you back a modification token in case you want to modify "
+#| "something or add extra comments.\n"
+#| "Only statistics compiled from the whole dataset will be shared publicly.\n"
+#| "Individual data will be stored in a private database and it will not be "
+#| "shared with the public or any other third party. "
 msgid ""
 "The sole purpose of this survey is to better know our user base.\n"
 "Your email address will be used to uniquely identify you as a Glade user and "
@@ -1341,7 +1330,7 @@ msgid ""
 "add extra comments.\n"
 "Only statistics compiled from the whole dataset will be shared publicly.\n"
 "Individual data will be stored in a private database and it will not be "
-"shared with the public or any other third party. "
+"shared with the public or any other third party."
 msgstr ""
 "本問卷的唯一目的是為了更了解我們的使用者群。\n"
 " 您的電子郵件地址將被用來做為 Glade 使用者的唯一識別以及當您想修改的東西或者"
@@ -2267,12 +2256,14 @@ msgid "License for this project, it will be added as a document level comment."
 msgstr "這個專案的授權，它會以文件層級註解加入。"
 
 #: ../gladeui/glade-project.c:1029
-msgid "Css Provider Path"
-msgstr "Css 提供者路徑"
+#| msgid "Css Provider Path"
+msgid "CSS Provider Path"
+msgstr "CSS 提供者路徑"
 
 #: ../gladeui/glade-project.c:1030
-msgid "Path to use as the custom css provider for this project."
-msgstr "這個專案中做為自訂 css 提供者的路徑。"
+#| msgid "Path to use as the custom css provider for this project."
+msgid "Path to use as the custom CSS provider for this project."
+msgstr "這個專案中做為自訂 CSS 提供者的路徑。"
 
 #: ../gladeui/glade-project.c:1126
 #, c-format
@@ -6133,25 +6124,21 @@ msgstr "美術的"
 
 #. GtkLicense enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:718
-#| msgid "GPL 2.0"
 msgid "GPL 2.0 Only"
 msgstr "只有 GPL 2.0"
 
 #. GtkLicense enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:720
-#| msgid "GPL 3.0"
 msgid "GPL 3.0 Only"
 msgstr "只有 GPL 3.0"
 
 #. GtkLicense enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:722
-#| msgid "LGPL 2.1"
 msgid "LGPL 2.1 Only"
 msgstr "只有 LGPL 2.1"
 
 #. GtkLicense enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:724
-#| msgid "LGPL 3.0"
 msgid "LGPL 3.0 Only"
 msgstr "只有 LGPL 3.0"
 
