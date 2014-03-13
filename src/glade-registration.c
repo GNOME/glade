@@ -320,10 +320,10 @@ on_subscribe_http_request_done (GladeHTTP         *http,
                                                GTK_DIALOG_DESTROY_WITH_PARENT,
                                                GTK_MESSAGE_WARNING, GTK_BUTTONS_OK,
                                                "%s",
-                                               _("Sorry, Automatic subscription to Glade-users mailing list failed")));
+                                               _("Sorry, automatic subscription to Glade Users mailing list failed")));
   
   button = gtk_link_button_new_with_label ("http://lists.ximian.com/mailman/listinfo/glade-users",
-                                           _("Open Glade-users website"));
+                                           _("Open Glade Users Website"));
   gtk_widget_show (button);
   gtk_dialog_add_action_widget (dialog, button, GTK_RESPONSE_CANCEL);
   gtk_button_box_set_child_secondary (GTK_BUTTON_BOX (gtk_dialog_get_action_area (dialog)), button, TRUE);
@@ -406,7 +406,7 @@ on_http_request_done (GladeHTTP         *http,
                                              "%s", _("Name and Email fields are required"));
           else if (g_strcmp0 (status, "error_email_in_use") == 0)
             glade_registration_show_message (registration, GTK_MESSAGE_WARNING,
-                                             "%s", _("Ops! email address is already in use!\nTo update information you need to provide the token that was sent to your inbox."));
+                                             "%s", _("Ops! Email address is already in use!\nTo update information you need to provide the token that was sent to your inbox."));
           else if (g_strcmp0 (status, "error_db_user_info") == 0)
             glade_registration_show_message (registration, GTK_MESSAGE_WARNING,
                                              _("Ops! Error saving user information: %s"), message);
