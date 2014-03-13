@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-03-08 18:46+0000\n"
-"PO-Revision-Date: 2014-03-08 22:06+0200\n"
+"POT-Creation-Date: 2014-03-13 20:12+0000\n"
+"PO-Revision-Date: 2014-03-13 22:52+0200\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -56,11 +56,6 @@ msgstr ""
 
 #. To translators: AppData description second paragraph
 #: ../data/glade.appdata.xml.in.h:4
-#| msgid ""
-#| "The user interfaces designed in Glade are saved as XML and these can be "
-#| "loaded by applications dynamically as needed by using GtkBuilder or used "
-#| "directly to define a new GtkWidget derived object class using Gtk+ new "
-#| "template feature."
 msgid ""
 "The user interfaces designed in Glade are saved as XML and these can be "
 "loaded by applications dynamically as needed by using GtkBuilder or used "
@@ -647,7 +642,6 @@ msgid "Open _Recent"
 msgstr "Pasku_tinieji failai"
 
 #: ../src/glade.glade.h:88
-#| msgid "Registration & User survey"
 msgid "Registration & User Survey"
 msgstr "Registracija ir naudotojo apklausa"
 
@@ -774,37 +768,78 @@ msgstr "Papildomi katalogų keliai"
 msgid "Select a catalog search path"
 msgstr "Pasirinkite katalogo paieškos kelią"
 
-#: ../src/glade-registration.c:168
+#: ../src/glade-registration.c:282
 #, c-format
 msgid "Connecting to %s"
 msgstr "Jungiamasi prie %s"
 
-#: ../src/glade-registration.c:171
+#: ../src/glade-registration.c:285
 #, c-format
 msgid "Sending data to %s"
 msgstr "Siunčiami duomenys į %s"
 
-#: ../src/glade-registration.c:174
+#: ../src/glade-registration.c:288
 #, c-format
 msgid "Waiting for %s"
 msgstr "Laukiama %s"
 
-#: ../src/glade-registration.c:177
+#: ../src/glade-registration.c:291
 #, c-format
 msgid "Receiving data from %s"
 msgstr "Gaunami duomenys iš %s"
 
-#: ../src/glade-registration.c:206
+#: ../src/glade-registration.c:323
+msgid "Sorry, automatic subscription to Glade Users mailing list failed"
+msgstr ""
+"Atleiskite, nepavyko automatiškai užregistruoti į Glade naudotojų pašto "
+"konferenciją"
+
+#: ../src/glade-registration.c:326
+msgid "Open Glade Users Website"
+msgstr "Atverti Glade naudotojų tinklapį"
+
+#: ../src/glade-registration.c:377
 msgid "Internal server error"
 msgstr "Vidinė serverio klaida"
 
+#: ../src/glade-registration.c:401
+msgid "Thank you for taking the time to complete the survey, we appreciate it!"
+msgstr ""
+"Dėkojame, kad sugaišote laiko ir užpildėte apklausą, labai tai vertiname!"
+
+#: ../src/glade-registration.c:406
+msgid "Name and Email fields are required"
+msgstr "Vardo ir el. pašto laukai yra privalomi"
+
+#: ../src/glade-registration.c:409
+msgid ""
+"Ops! Email address is already in use!\n"
+"To update information you need to provide the token that was sent to your "
+"inbox."
+msgstr ""
+"Oi! El. pašto adresas jau naudojamas!\n"
+"Informacijai atnaujinti reikia pateikti leksemą, kuri buvo atsiųsta jums."
+
+#: ../src/glade-registration.c:412
+#, c-format
+msgid "Ops! Error saving user information: %s"
+msgstr "Oi! Klaida įrašant naudotojo informaciją: %s"
+
+#: ../src/glade-registration.c:415
+#, c-format
+msgid "Ops! Error saving survey data: %s"
+msgstr "Oi! Klaida įrašant apklausos duomenis: %s"
+
+#: ../src/glade-registration.c:418
+#, c-format
+msgid "Ops! Error accessing DB: %s"
+msgstr "Oi! Klaida pasiekiant DB: %s"
+
 #: ../src/glade-registration.glade.h:1
-#| msgid "Glade registration & User survey"
 msgid "Glade Registration & User Survey"
 msgstr "Glade registracija ir naudotojo apklausa"
 
 #: ../src/glade-registration.glade.h:2
-#| msgid " User Information"
 msgid "User Information"
 msgstr "Naudotojo informacija"
 
@@ -895,7 +930,6 @@ msgstr ""
 "duomenis>"
 
 #: ../src/glade-registration.glade.h:24
-#| msgid " Glade User Survey"
 msgid "Glade User Survey"
 msgstr "Glade naudotojo apklausa"
 
@@ -944,7 +978,6 @@ msgid "Python"
 msgstr "Python"
 
 #: ../src/glade-registration.glade.h:36
-#| msgid "Javascript"
 msgid "JavaScript"
 msgstr "JavaScript"
 
@@ -984,7 +1017,6 @@ msgid "Latest stable from sources"
 msgstr "Paskutinę versiją iš pradinio kodo"
 
 #: ../src/glade-registration.glade.h:45
-#| msgid "3.8 for Gtk+ 2"
 msgid "3.8 for GTK+ 2"
 msgstr "3.8, skirtą GTK+ 2"
 
@@ -1146,7 +1178,6 @@ msgid "Windows"
 msgstr "Windows"
 
 #: ../src/glade-registration.glade.h:85
-#| msgid "Mac OSX"
 msgid "Mac OS X"
 msgstr "Mac OS X"
 
@@ -1171,7 +1202,6 @@ msgid "Every week"
 msgstr "Kiekvieną savaitę"
 
 #: ../src/glade-registration.glade.h:91
-#| msgid "A few times a months"
 msgid "A few times a month"
 msgstr "Kelis kartus per mėnesį"
 
@@ -1285,7 +1315,6 @@ msgid "Lack of publicity/exposure"
 msgstr "Viešumo, populiarumo trūkumas"
 
 #: ../src/glade-registration.glade.h:118
-#| msgid "Lack of official binary releases for other OS (Win32, OSX)"
 msgid "Lack of official binary releases for other OS (Windows, Mac OS X)"
 msgstr ""
 "Vykdomų leidimų trūkumas kitoms operacinėms sistemoms (Windows, Mac OS X)"
@@ -1323,14 +1352,6 @@ msgid "Privacy Note:"
 msgstr "Privatumas:"
 
 #: ../src/glade-registration.glade.h:127
-#| msgid ""
-#| "The sole purpose of this survey is to better know our user base.\n"
-#| "Your email address will be used to uniquely identify you as a Glade user "
-#| "and send you back a modification token in case you want to modify "
-#| "something or add extra comments.\n"
-#| "Only statistics compiled from the whole dataset will be shared publicly.\n"
-#| "Individual data will be stored in a private database and it will not be "
-#| "shared with the public or any other third party. "
 msgid ""
 "The sole purpose of this survey is to better know our user base.\n"
 "Your email address will be used to uniquely identify you as a Glade user and "
@@ -2275,12 +2296,10 @@ msgstr ""
 "Šio projekto licencija, ji bus pridėta kaip dokumento lygio komentaras."
 
 #: ../gladeui/glade-project.c:1029
-#| msgid "Css Provider Path"
 msgid "CSS Provider Path"
 msgstr "CSS tiekėjo kelias"
 
 #: ../gladeui/glade-project.c:1030
-#| msgid "Path to use as the custom css provider for this project."
 msgid "Path to use as the custom CSS provider for this project."
 msgstr "Kelias, kurį naudoti kaip pasirinktinio CSS tiekėją šiam projektui."
 
