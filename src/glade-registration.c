@@ -335,6 +335,7 @@ on_subscribe_http_request_done (GladeHTTP         *http,
 static void
 glade_registration_subscribe_email (GladeRegistration *registration)
 {
+  GladeRegistrationPrivate *priv = registration->priv;
   GString *post;
 
   if (!priv->sub_http)
