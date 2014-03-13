@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-03 18:49+0100\n"
-"PO-Revision-Date: 2014-03-03 18:50+0100\n"
+"POT-Creation-Date: 2014-03-14 00:32+0100\n"
+"PO-Revision-Date: 2014-03-14 00:33+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -789,29 +789,71 @@ msgstr "Dodatkowe ścieżki katalogów"
 msgid "Select a catalog search path"
 msgstr "Wybór ścieżki przeszukiwania katalogów"
 
-#: ../src/glade-registration.c:168
+#: ../src/glade-registration.c:282
 #, c-format
 msgid "Connecting to %s"
 msgstr "Łączenie z %s"
 
-#: ../src/glade-registration.c:171
+#: ../src/glade-registration.c:285
 #, c-format
 msgid "Sending data to %s"
 msgstr "Wysyłanie danych do %s"
 
-#: ../src/glade-registration.c:174
+#: ../src/glade-registration.c:288
 #, c-format
 msgid "Waiting for %s"
 msgstr "Oczekiwanie na %s"
 
-#: ../src/glade-registration.c:177
+#: ../src/glade-registration.c:291
 #, c-format
 msgid "Receiving data from %s"
 msgstr "Pobieranie danych z %s"
 
-#: ../src/glade-registration.c:206
+#: ../src/glade-registration.c:323
+msgid "Sorry, automatic subscription to Glade Users mailing list failed"
+msgstr ""
+"Automatyczna subskrypcja listy mailingowej użytkowników programu Glade się "
+"nie powiodła"
+
+#: ../src/glade-registration.c:326
+msgid "Open Glade Users Website"
+msgstr "Otwórz witrynę listy mailingowej użytkowników programu Glade"
+
+#: ../src/glade-registration.c:378
 msgid "Internal server error"
 msgstr "Wewnętrzny błąd serwera"
+
+#: ../src/glade-registration.c:402
+msgid "Thank you for taking the time to complete the survey, we appreciate it!"
+msgstr "Dziękujemy za wypełnienie ankiety!"
+
+#: ../src/glade-registration.c:407
+msgid "Name and Email fields are required"
+msgstr "Pola nazwy i adresu e-mail są wymagane"
+
+#: ../src/glade-registration.c:410
+msgid ""
+"Ops! Email address is already in use!\n"
+"To update information you need to provide the token that was sent to your "
+"inbox."
+msgstr ""
+"Adres e-mail jest już używany.\n"
+"Należy podać poprzednio otrzymany token, aby zaktualizować informacje."
+
+#: ../src/glade-registration.c:413
+#, c-format
+msgid "Ops! Error saving user information: %s"
+msgstr "Błąd podczas zapisywania informacjo o użytkowniku: %s"
+
+#: ../src/glade-registration.c:416
+#, c-format
+msgid "Ops! Error saving survey data: %s"
+msgstr "Błąd podczas zapisywania danych ankiety: %s"
+
+#: ../src/glade-registration.c:419
+#, c-format
+msgid "Ops! Error accessing DB: %s"
+msgstr "Błąd podczas uzyskiwania dostępu do bazy danych: %s"
 
 #: ../src/glade-registration.glade.h:1
 msgid "Glade Registration & User Survey"
