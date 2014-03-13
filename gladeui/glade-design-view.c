@@ -668,7 +668,7 @@ static void
 glade_design_view_drag_iface_highlight (_GladeDrag *drag, gint x, gint y)
 {
   GladeDesignViewPrivate *priv = GLADE_DESIGN_VIEW (drag)->priv;
-  gboolean highlight = !(x < 0 || y < y);
+  gboolean highlight = !(x < 0 || y < 0);
 
   if (priv->drag_highlight == highlight)
     return;
