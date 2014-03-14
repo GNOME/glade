@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: glade3.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-03-05 15:38+0000\n"
-"PO-Revision-Date: 2014-03-05 16:52+0100\n"
+"POT-Creation-Date: 2014-03-14 06:45+0000\n"
+"PO-Revision-Date: 2014-03-14 10:37+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -56,11 +56,6 @@ msgstr ""
 
 #. To translators: AppData description second paragraph
 #: ../data/glade.appdata.xml.in.h:4
-#| msgid ""
-#| "The user interfaces designed in Glade are saved as XML and these can be "
-#| "loaded by applications dynamically as needed by using GtkBuilder or used "
-#| "directly to define a new GtkWidget derived object class using Gtk+ new "
-#| "template feature."
 msgid ""
 "The user interfaces designed in Glade are saved as XML and these can be "
 "loaded by applications dynamically as needed by using GtkBuilder or used "
@@ -660,7 +655,6 @@ msgid "Open _Recent"
 msgstr "Abrir _recientes"
 
 #: ../src/glade.glade.h:88
-#| msgid "Registration & User survey"
 msgid "Registration & User Survey"
 msgstr "Registro y encuesta para usuarios"
 
@@ -790,37 +784,77 @@ msgstr "Rutas de catálogos adicionales"
 msgid "Select a catalog search path"
 msgstr "Seleccionar una rutas de búsqueda de catálogos"
 
-#: ../src/glade-registration.c:168
+#: ../src/glade-registration.c:282
 #, c-format
 msgid "Connecting to %s"
 msgstr "Conectando a %s"
 
-#: ../src/glade-registration.c:171
+#: ../src/glade-registration.c:285
 #, c-format
 msgid "Sending data to %s"
 msgstr "Enviando datos a %s"
 
-#: ../src/glade-registration.c:174
+#: ../src/glade-registration.c:288
 #, c-format
 msgid "Waiting for %s"
 msgstr "Esperando a %s"
 
-#: ../src/glade-registration.c:177
+#: ../src/glade-registration.c:291
 #, c-format
 msgid "Receiving data from %s"
 msgstr "Recibiendo datos de %s"
 
-#: ../src/glade-registration.c:206
+#: ../src/glade-registration.c:323
+msgid "Sorry, automatic subscription to Glade Users mailing list failed"
+msgstr ""
+"Falló la suscripción automática a la lista de correo de usuarios de Glade"
+
+#: ../src/glade-registration.c:326
+msgid "Open Glade Users Website"
+msgstr "Abrir la página web de usuarios de Glade"
+
+#: ../src/glade-registration.c:378
 msgid "Internal server error"
 msgstr "Error interno del servidor"
 
+#: ../src/glade-registration.c:402
+msgid "Thank you for taking the time to complete the survey, we appreciate it!"
+msgstr "Gracias por completar la encuesta."
+
+#: ../src/glade-registration.c:407
+msgid "Name and Email fields are required"
+msgstr "Los campos Nombre y Correo-e son obligatorios"
+
+#: ../src/glade-registration.c:410
+msgid ""
+"Ops! Email address is already in use!\n"
+"To update information you need to provide the token that was sent to your "
+"inbox."
+msgstr ""
+"La dirección de correo-e ya está en uso.\n"
+"Para actualizar la información necesita proporcionar el testigo que se le ha "
+"enviado a su correo."
+
+#: ../src/glade-registration.c:413
+#, c-format
+msgid "Ops! Error saving user information: %s"
+msgstr "Error al guardar la información del usuario: %s"
+
+#: ../src/glade-registration.c:416
+#, c-format
+msgid "Ops! Error saving survey data: %s"
+msgstr "Error al guardar los datos de la encuesta: %s"
+
+#: ../src/glade-registration.c:419
+#, c-format
+msgid "Ops! Error accessing DB: %s"
+msgstr "Error al acceder a la BB.DD: %s"
+
 #: ../src/glade-registration.glade.h:1
-#| msgid "Glade registration & User survey"
 msgid "Glade Registration & User Survey"
 msgstr "Registro de Glade y encuesta para usuarios"
 
 #: ../src/glade-registration.glade.h:2
-#| msgid " User Information"
 msgid "User Information"
 msgstr "Información del usuario"
 
@@ -837,12 +871,12 @@ msgid ""
 "Tokens are processed manually in batches.\n"
 "Please be patient."
 msgstr ""
-"Los «tokens» se procesan manualmente en grupos.\n"
+"Los testigos se procesan manualmente en grupos.\n"
 "Sea paciente."
 
 #: ../src/glade-registration.glade.h:8
 msgid "<Required to send back registration token>"
-msgstr "<Requerido para enviar el token de registro>"
+msgstr "<Requerido para enviar el testigo de registro>"
 
 #: ../src/glade-registration.glade.h:9
 msgid "Country:"
@@ -907,11 +941,10 @@ msgstr "Actualizar la información"
 #: ../src/glade-registration.glade.h:23
 msgid "<Insert update token, if you want to update previously sent data>"
 msgstr ""
-"<Inserte el token de actualización, si quiere actualizar los datos enviados "
-"anteriormente>"
+"<Inserte el testigo de actualización, si quiere actualizar los datos "
+"enviados anteriormente>"
 
 #: ../src/glade-registration.glade.h:24
-#| msgid " Glade User Survey"
 msgid "Glade User Survey"
 msgstr "Encuesta de usuarios de Glade"
 
@@ -960,7 +993,6 @@ msgid "Python"
 msgstr "Python"
 
 #: ../src/glade-registration.glade.h:36
-#| msgid "Javascript"
 msgid "JavaScript"
 msgstr "JavaScript"
 
@@ -1000,7 +1032,6 @@ msgid "Latest stable from sources"
 msgstr "Última versión estable des de las fuentes"
 
 #: ../src/glade-registration.glade.h:45
-#| msgid "3.8 for Gtk+ 2"
 msgid "3.8 for GTK+ 2"
 msgstr "3.8 para GTK+ 2"
 
@@ -1162,7 +1193,6 @@ msgid "Windows"
 msgstr "Windows"
 
 #: ../src/glade-registration.glade.h:85
-#| msgid "Mac OSX"
 msgid "Mac OS X"
 msgstr "Mac OS X"
 
@@ -1187,7 +1217,6 @@ msgid "Every week"
 msgstr "Cada semana"
 
 #: ../src/glade-registration.glade.h:91
-#| msgid "A few times a months"
 msgid "A few times a month"
 msgstr "Unas pocas veces al mes"
 
@@ -1300,7 +1329,6 @@ msgid "Lack of publicity/exposure"
 msgstr "Falta de publicidad/visibilidad"
 
 #: ../src/glade-registration.glade.h:118
-#| msgid "Lack of official binary releases for other OS (Win32, OSX)"
 msgid "Lack of official binary releases for other OS (Windows, Mac OS X)"
 msgstr "Falta de binarios publicados para otros sistemas (Windows, Mac OS X)"
 
@@ -1337,14 +1365,6 @@ msgid "Privacy Note:"
 msgstr "Nota sobre la privacidad:"
 
 #: ../src/glade-registration.glade.h:127
-#| msgid ""
-#| "The sole purpose of this survey is to better know our user base.\n"
-#| "Your email address will be used to uniquely identify you as a Glade user "
-#| "and send you back a modification token in case you want to modify "
-#| "something or add extra comments.\n"
-#| "Only statistics compiled from the whole dataset will be shared publicly.\n"
-#| "Individual data will be stored in a private database and it will not be "
-#| "shared with the public or any other third party. "
 msgid ""
 "The sole purpose of this survey is to better know our user base.\n"
 "Your email address will be used to uniquely identify you as a Glade user and "
@@ -1356,7 +1376,7 @@ msgid ""
 msgstr ""
 "El único propósito de esta encuesta es conocer mejor a nuestros usuarios.\n"
 "Su dirección de correo-e se usará únicamente para identificarle como usuario "
-"de Glade y para enviarle un «token» de modificación, por si quiere cambiar "
+"de Glade y para enviarle un testigo de modificación, por si quiere cambiar "
 "algo o añadir comentarios adicionales.\n"
 "Sólo la estadísticas recopiladas de todas las encuestas se compartirán "
 "públicamente.\n"
@@ -2299,12 +2319,10 @@ msgstr ""
 "documento."
 
 #: ../gladeui/glade-project.c:1029
-#| msgid "Css Provider Path"
 msgid "CSS Provider Path"
 msgstr "Ruta del proveedor de CSS"
 
 #: ../gladeui/glade-project.c:1030
-#| msgid "Path to use as the custom css provider for this project."
 msgid "Path to use as the custom CSS provider for this project."
 msgstr "Ruta que usar como proveedor de CSS personalizado para este proyecto."
 
