@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: glade master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-03-09 06:45+0000\n"
-"PO-Revision-Date: 2014-03-09 07:51+0100\n"
+"POT-Creation-Date: 2014-03-14 06:45+0000\n"
+"PO-Revision-Date: 2014-03-14 10:51+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -773,29 +773,73 @@ msgstr "Zvláštní cesty ke katalogům"
 msgid "Select a catalog search path"
 msgstr "Vyberte umístění, kde katalog hledat"
 
-#: ../src/glade-registration.c:168
+#: ../src/glade-registration.c:282
 #, c-format
 msgid "Connecting to %s"
 msgstr "Připojuje se k %s"
 
-#: ../src/glade-registration.c:171
+#: ../src/glade-registration.c:285
 #, c-format
 msgid "Sending data to %s"
 msgstr "Odesílají se data na %s"
 
-#: ../src/glade-registration.c:174
+#: ../src/glade-registration.c:288
 #, c-format
 msgid "Waiting for %s"
 msgstr "Čeká se na %s"
 
-#: ../src/glade-registration.c:177
+#: ../src/glade-registration.c:291
 #, c-format
 msgid "Receiving data from %s"
 msgstr "Přijímají se data z %s"
 
-#: ../src/glade-registration.c:206
+#: ../src/glade-registration.c:323
+msgid "Sorry, automatic subscription to Glade Users mailing list failed"
+msgstr ""
+"Bohužel, ale automatické přihlášení k poštovní konferenci uživatelů Glade "
+"selhalo"
+
+#: ../src/glade-registration.c:326
+msgid "Open Glade Users Website"
+msgstr "Otevřít web uživatelů Glade"
+
+#: ../src/glade-registration.c:378
 msgid "Internal server error"
 msgstr "Interní chyba serveru"
+
+#: ../src/glade-registration.c:402
+msgid "Thank you for taking the time to complete the survey, we appreciate it!"
+msgstr ""
+"Děkujeme, že jste si udělali čas na vyplnění dotazníku. Vážíme si toho!"
+
+#: ../src/glade-registration.c:407
+msgid "Name and Email fields are required"
+msgstr "Pole se jménem a e-mailem jsou povinná"
+
+#: ../src/glade-registration.c:410
+msgid ""
+"Ops! Email address is already in use!\n"
+"To update information you need to provide the token that was sent to your "
+"inbox."
+msgstr ""
+"Problém! E-mailová adresa již byla použita!\n"
+"Abyste mohli údaje aktualizovat, musíte zadat tiket, který jste obdrželi e-"
+"mailem."
+
+#: ../src/glade-registration.c:413
+#, c-format
+msgid "Ops! Error saving user information: %s"
+msgstr "Problém! Chyba při ukládání údajů o uživateli: %s"
+
+#: ../src/glade-registration.c:416
+#, c-format
+msgid "Ops! Error saving survey data: %s"
+msgstr "Problém! Chyba při ukládání dotazníkových dat: %s"
+
+#: ../src/glade-registration.c:419
+#, c-format
+msgid "Ops! Error accessing DB: %s"
+msgstr "Problém! Chyba při přístupu k DB: %s"
 
 #: ../src/glade-registration.glade.h:1
 msgid "Glade Registration & User Survey"
