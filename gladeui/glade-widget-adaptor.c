@@ -2187,7 +2187,8 @@ gwa_update_properties_from_type (GladeWidgetAdaptor *adaptor,
             break;
         }
 
-      if (list == NULL && (spec = pspec_dup (specs[i])))
+      if (list == NULL && (specs[i]->flags & G_PARAM_WRITABLE) &&
+          (spec = pspec_dup (specs[i])))
         {
           property_class = glade_property_class_new (adaptor, spec->name);
 
@@ -2500,8 +2501,8 @@ generate_type (const char *name, const char *parent_name)
    * This is currently used to instantiate GtkWindow as a GtkEventBox
    * at runtime.   
    */
-  if (g_type_from_name (name))
-    new_name = g_strdup_printf ("GladeFake%s", name);
+  if (glade_util_get_type_from_name (name, FALSE))
+    new_name = g_strconcat ("GladeFake", name, NULL);
   else
     new_name = NULL;
 
