@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glade3-master-po-gl-27110\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-03 21:49+0100\n"
-"PO-Revision-Date: 2014-03-03 21:51+0200\n"
+"POT-Creation-Date: 2014-03-14 18:58+0100\n"
+"PO-Revision-Date: 2014-03-14 19:01+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: gnome-l10n-gl@gnome.org\n"
 "Language: gl\n"
@@ -67,8 +67,7 @@ msgstr ""
 "As interfaces de usuario deseñadas por Glade gárdanse en XML e os "
 "aplicativos poden lelas dinamicamente tan pronto as precisen as precisen "
 "usando GtkBuilder ou usadas directamente para definir un novo GtkWidget "
-"derivado da clase de obxecto usando a nova característica de plantillas "
-"GTK+."
+"derivado da clase de obxecto usando a nova característica de plantillas GTK+."
 
 #. To translators: AppData description third paragraph
 #: ../data/glade.appdata.xml.in.h:6
@@ -792,29 +791,70 @@ msgstr "Rutas de catálogos adicionais"
 msgid "Select a catalog search path"
 msgstr "Seleccione unha ruta de busca de catálogos"
 
-#: ../src/glade-registration.c:168
+#: ../src/glade-registration.c:282
 #, c-format
 msgid "Connecting to %s"
 msgstr "Conectándose a %s"
 
-#: ../src/glade-registration.c:171
+#: ../src/glade-registration.c:285
 #, c-format
 msgid "Sending data to %s"
 msgstr "Enviando datos a %s"
 
-#: ../src/glade-registration.c:174
+#: ../src/glade-registration.c:288
 #, c-format
 msgid "Waiting for %s"
 msgstr "Agardando por %s"
 
-#: ../src/glade-registration.c:177
+#: ../src/glade-registration.c:291
 #, c-format
 msgid "Receiving data from %s"
 msgstr "Recibindo datos desde %s"
 
-#: ../src/glade-registration.c:206
+#: ../src/glade-registration.c:323
+msgid "Sorry, automatic subscription to Glade Users mailing list failed"
+msgstr "Desculpe, fallou a subscrición automática á lista de usuarios de Glade"
+
+#: ../src/glade-registration.c:326
+msgid "Open Glade Users Website"
+msgstr "Abrir o sitio web de usuarios de Glade"
+
+#: ../src/glade-registration.c:378
 msgid "Internal server error"
 msgstr "Erro interno do servidor"
+
+#: ../src/glade-registration.c:402
+msgid "Thank you for taking the time to complete the survey, we appreciate it!"
+msgstr "Grazas polo tempo de completar a nosa enquisa, agradecémosllo!"
+
+#: ../src/glade-registration.c:407
+msgid "Name and Email fields are required"
+msgstr "Requírense os campos do nome e correo electrónico"
+
+#: ../src/glade-registration.c:410
+msgid ""
+"Ops! Email address is already in use!\n"
+"To update information you need to provide the token that was sent to your "
+"inbox."
+msgstr ""
+"Recoiro! O enderezo de correo xa está usándose!\n"
+"Para actualizar a información debe fornecer o token que lle enviamos ao seu "
+"correo."
+
+#: ../src/glade-registration.c:413
+#, c-format
+msgid "Ops! Error saving user information: %s"
+msgstr "Recoiro! Produciuse un erro ao gardar a información do usuario: %s"
+
+#: ../src/glade-registration.c:416
+#, c-format
+msgid "Ops! Error saving survey data: %s"
+msgstr "Recoiro! Produciuse un erro ao gardar os datos da enquisa: %s"
+
+#: ../src/glade-registration.c:419
+#, c-format
+msgid "Ops! Error accessing DB: %s"
+msgstr "Recoiro! Produciuse un erro ao acceder á base de datos: %s"
 
 #: ../src/glade-registration.glade.h:1
 msgid "Glade Registration & User Survey"
