@@ -1111,8 +1111,11 @@ glade_project_model_get_value (GtkTreeModel *model,
         g_value_set_string (value, glade_widget_get_name (widget));
         break;
       case GLADE_PROJECT_MODEL_COLUMN_TYPE_NAME:
-        g_value_set_static_string (value, G_OBJECT_TYPE_NAME (glade_widget_get_object (widget)));
-        break;
+        {
+          GladeWidgetAdaptor *adaptor = glade_widget_get_adaptor (widget);
+          g_value_set_static_string (value, glade_widget_adaptor_get_name (adaptor));
+          break;
+        }
       case GLADE_PROJECT_MODEL_COLUMN_OBJECT:
         g_value_set_object (value, glade_widget_get_object (widget));
         break;
