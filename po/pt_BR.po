@@ -7,7 +7,7 @@
 # Leonardo Ferreira Fontenelle <leonardof@gnome.org>, 2007-2008.
 # Fabrício Godoy <skarllot@gmail.com>, 2008.
 # Igor Pires Soares <igor@projetofedora>, 2007,2008,2009.
-# Antonio Fernandes C. Neto <fernandes@pelivre.org>, 2010.
+# Antonio Fernandes C. Neto <fernandesn@gnome.org>, 2010, 2014.
 # Krix Apolinário <krixapolinario@gmail.com>, 2011
 # Djavan Fagundes <djavan@comum.org>, 2011.
 # Og Maciel <ogmaciel@gnome.org>, 2011.
@@ -20,9 +20,9 @@ msgstr ""
 "Project-Id-Version: glade\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-03-06 06:46+0000\n"
-"PO-Revision-Date: 2014-03-06 06:04-0300\n"
-"Last-Translator: Rafael Ferreira <rafael.f.f1@gmail.com>\n"
+"POT-Creation-Date: 2014-03-13 18:22+0000\n"
+"PO-Revision-Date: 2014-03-13 16:06-0300\n"
+"Last-Translator: Antonio Fernandes C. Neto <fernandesn@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
@@ -395,7 +395,7 @@ msgstr ""
 "Afonso Celso Medina <medina@maua.br>\n"
 "Igor Pires Soares <igor@projetofedora.org>\n"
 "Jonh Wendell <wendell@bani.com.br>\n"
-"Antonio Fernandes C. Neto <fernandes@pelivre.org>\n"
+"Antonio Fernandes C. Neto <fernandesn@gnome.org>\n"
 "Krix Apolinário <krixapolinario@gmail.com>\n"
 "Djavan Fagundes <djavan@comum.org>\n"
 "Rafael Ferreira <rafael.f.f1@gmail.com>\n"
@@ -798,29 +798,74 @@ msgstr "Caminhos de catálogos extra"
 msgid "Select a catalog search path"
 msgstr "Selecione um caminho de pesquisa de catálogos"
 
-#: ../src/glade-registration.c:168
+#: ../src/glade-registration.c:282
 #, c-format
 msgid "Connecting to %s"
 msgstr "Conectando a %s"
 
-#: ../src/glade-registration.c:171
+#: ../src/glade-registration.c:285
 #, c-format
 msgid "Sending data to %s"
 msgstr "Enviando dados para %s"
 
-#: ../src/glade-registration.c:174
+#: ../src/glade-registration.c:288
 #, c-format
 msgid "Waiting for %s"
 msgstr "Esperando por %s"
 
-#: ../src/glade-registration.c:177
+#: ../src/glade-registration.c:291
 #, c-format
 msgid "Receiving data from %s"
 msgstr "Recebendo dados de %s"
 
-#: ../src/glade-registration.c:206
+#: ../src/glade-registration.c:323
+msgid "Sorry, Automatic subscription to Glade-users mailing list failed"
+msgstr ""
+"Desculpe, a assinatura automática na lista de e-mails dos usuários do Glade "
+"falhou"
+
+#: ../src/glade-registration.c:326
+#| msgid "Visit Glade web site"
+msgid "Open Glade-users website"
+msgstr "Visitar o site de usuários do Glade"
+
+#: ../src/glade-registration.c:377
 msgid "Internal server error"
 msgstr "Erro interno do servidor"
+
+#: ../src/glade-registration.c:401
+msgid "Thank you for taking the time to complete the survey, we appreciate it!"
+msgstr ""
+"Obrigado por tomar o tempo para concluir a pesquisa, nós apreciamos isto!"
+
+#: ../src/glade-registration.c:406
+msgid "Name and Email fields are required"
+msgstr "Os campos Nome e E-mail são obrigatórios"
+
+#: ../src/glade-registration.c:409
+msgid ""
+"Ops! email address is already in use!\n"
+"To update information you need to provide the token that was sent to your "
+"inbox."
+msgstr ""
+"Ops! endereço de e-mail já está em uso!\n"
+"Para atualizar a informação você precisa fornecer o token que foi enviado "
+"para sua caixa de entrada."
+
+#: ../src/glade-registration.c:412
+#, c-format
+msgid "Ops! Error saving user information: %s"
+msgstr "Ops! Erro ao salvar informação do usuário: %s"
+
+#: ../src/glade-registration.c:415
+#, c-format
+msgid "Ops! Error saving survey data: %s"
+msgstr "Ops! Erro ao salvar pesquisa de dados: %s"
+
+#: ../src/glade-registration.c:418
+#, c-format
+msgid "Ops! Error accessing DB: %s"
+msgstr "Ops! Erro ao acessar DB: %s"
 
 #: ../src/glade-registration.glade.h:1
 msgid "Glade Registration & User Survey"
@@ -836,7 +881,7 @@ msgstr "<Seu nome ou apelido é necessário>"
 
 #: ../src/glade-registration.glade.h:5
 msgid "Email:"
-msgstr "Email:"
+msgstr "E-mail:"
 
 #: ../src/glade-registration.glade.h:6
 msgid ""
@@ -884,7 +929,7 @@ msgid ""
 "You will be sent email requesting confirmation!"
 msgstr ""
 "Inscreva-se à lista de discussão de usuários do Glade.\n"
-"Você receberá um email solicitando confirmação!"
+"Você receberá um e-mail solicitando confirmação!"
 
 #: ../src/glade-registration.glade.h:18
 msgid "Choose your country"
@@ -1351,7 +1396,7 @@ msgid ""
 "shared with the public or any other third party."
 msgstr ""
 "O único propósito dessa pesquisa é melhorar nossa base de usuários.\n"
-"Seu endereço de email será usado apenas para identificar você como um "
+"Seu endereço de e-mail será usado apenas para identificar você como um "
 "usuário Glade e enviar para você um token de modificação, no caso de você "
 "querer modificar alguma coisa ou adicionar comentários extras.\n"
 "Apenas estatísticas compiladas de todo o conjunto de dados serão "
@@ -2243,7 +2288,7 @@ msgstr "Adicionar item"
 
 #: ../gladeui/glade-project.c:987
 msgid "The current item to add to the project"
-msgstr "Adicionar o ítem atual ao projeto"
+msgstr "Adicionar o item atual ao projeto"
 
 #: ../gladeui/glade-project.c:993
 msgid "Pointer Mode"
@@ -5337,7 +5382,7 @@ msgstr "Item predefinido"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:409
 msgid "Accel Group"
-msgstr "Grupo de acel."
+msgstr "Grupo de acelerador"
 
 #: ../plugins/gtk+/gtk+.xml.in.h:410
 msgid "The stock item for this menu item"
@@ -5582,7 +5627,7 @@ msgstr "URL"
 #. GtkInputPurpose enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:497
 msgid "Email"
-msgstr "Email"
+msgstr "E-mail"
 
 #. GtkInputPurpose enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:501
@@ -7329,7 +7374,7 @@ msgstr "Espaçamento das colunas:"
 
 #: ../plugins/gtk+/glade-icon-view-editor.ui.h:5
 msgid "Item Width:"
-msgstr "Largura do ítem:"
+msgstr "Largura do item:"
 
 #: ../plugins/gtk+/glade-icon-view-editor.ui.h:6
 msgid "View Margin:"
