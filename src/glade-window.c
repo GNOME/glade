@@ -70,6 +70,7 @@
 #define CONFIG_KEY_SHOW_TABS        "show-tabs"
 #define CONFIG_KEY_SHOW_STATUS      "show-statusbar"
 #define CONFIG_KEY_EDITOR_HEADER    "show-editor-header"
+#define CONFIG_KEY_PALETTE          "palette-appearance"
 
 #define CONFIG_GROUP_LOAD_SAVE      "Load and Save"
 #define CONFIG_KEY_BACKUP           "backup"
@@ -2846,6 +2847,9 @@ save_windows_config (GladeWindow *window, GKeyFile *config)
 
   g_key_file_set_boolean (config, CONFIG_GROUP_WINDOWS, CONFIG_KEY_EDITOR_HEADER,
                           gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (priv->editor_header_visible_action)));
+
+  g_key_file_set_integer (config, CONFIG_GROUP_WINDOWS, CONFIG_KEY_PALETTE,
+                          gtk_radio_action_get_current_value (GTK_RADIO_ACTION (priv->icons_and_labels_radioaction)));
 }
 
 static void
@@ -2995,6 +2999,7 @@ glade_window_config_load (GladeWindow *window)
 {
   GKeyFile *config = glade_app_get_config ();
   gboolean show_toolbar, show_tabs, show_status, show_header;
+  gint palette_appearance;
   GladeWindowPrivate *priv = window->priv;
   GError *error = NULL;
 
@@ -3038,6 +3043,15 @@ glade_window_config_load (GladeWindow *window)
       error = (g_error_free (error), NULL);
     }
 
+  if ((palette_appearance =
+       g_key_file_get_integer (config, CONFIG_GROUP_WINDOWS,
+                               CONFIG_KEY_PALETTE, &error)) == 0 &&
+      error != NULL)
+    {
+      palette_appearance = 1; /* Default to icons */
+      error = (g_error_free (error), NULL);
+    }
+
   if (show_toolbar)
     gtk_widget_show (priv->toolbar);
   else
@@ -3060,6 +3074,8 @@ glade_window_config_load (GladeWindow *window)
   gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (priv->statusbar_visible_action), show_status);
 
   gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (priv->editor_header_visible_action), show_header);
+
+  gtk_radio_action_set_current_value (GTK_RADIO_ACTION (priv->icons_and_labels_radioaction), palette_appearance);
 
   /* Paned positions */
   load_paned_position (config, window->priv->left_paned, "left_pane", 200);
