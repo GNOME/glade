@@ -59,6 +59,8 @@ gboolean    glade_window_open_project  (GladeWindow *window,
 
 void        glade_window_check_devhelp (GladeWindow *window);
 
+void        glade_window_registration_notify_user (GladeWindow *window);
+
 G_END_DECLS
 
 #endif /* __GLADE_WINDOW_H__ */
