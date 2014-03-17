@@ -3475,12 +3475,12 @@ glade_window_registration_notify_user (GladeWindow *window)
                                        GTK_MESSAGE_QUESTION,
                                        GTK_BUTTONS_YES_NO,
                                        "%s",
-                                       "We are conducting a user survey\n would you like to take it now?");
+                                       _("We are conducting a user survey\n would you like to take it now?"));
 
       gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s",
                                                 _("If not, you can always find it in the Help menu."));
 
-      check = gtk_check_button_new_with_label ("Do not show this dialog again");
+      check = gtk_check_button_new_with_label (_("Do not show this dialog again"));
       gtk_box_pack_end (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
                         check, FALSE, FALSE, 4);
       gtk_widget_set_halign (check, GTK_ALIGN_START);
