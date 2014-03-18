@@ -115,7 +115,6 @@ struct _GladeWindowPrivate
   GladeEditor  *editor;                 /* The editor */
 
   GtkWidget *statusbar;                 /* A pointer to the status bar. */
-  guint statusbar_context_id;           /* The context id of general messages */
   guint statusbar_menu_context_id;      /* The context id of the menu bar */
   guint statusbar_actions_context_id;   /* The context id of actions messages */
 
@@ -2546,7 +2545,12 @@ static void
 on_registration_action_activate (GtkAction   *action,
                                  GladeWindow *window)
 {
-  gtk_window_present (GTK_WINDOW (window->priv->registration));
+  GladeWindowPrivate *priv = window->priv;
+
+  if (!priv->registration)
+    priv->registration = glade_registration_new ();
+
+  gtk_window_present (GTK_WINDOW (priv->registration));
 }
 
 void
@@ -3172,8 +3176,6 @@ glade_window_init (GladeWindow *window)
   glade_init ();
 
   gtk_widget_init_template (GTK_WIDGET (window));
-
-  priv->registration = glade_registration_new ();
 }
 
 static void
@@ -3218,7 +3220,6 @@ glade_window_constructed (GObject *object)
               _("Properties"), "properties", priv->right_paned, FALSE);
 
   /* status bar */
-  priv->statusbar_context_id = gtk_statusbar_get_context_id (GTK_STATUSBAR (priv->statusbar), "general");
   priv->statusbar_menu_context_id = gtk_statusbar_get_context_id (GTK_STATUSBAR (priv->statusbar), "menu");
   priv->statusbar_actions_context_id = gtk_statusbar_get_context_id (GTK_STATUSBAR (priv->statusbar), "actions");
 
@@ -3450,54 +3451,4 @@ glade_window_check_devhelp (GladeWindow *window)
 
   if (glade_util_have_devhelp ())
     g_signal_connect (glade_app_get (), "doc-search", G_CALLBACK (doc_search_cb), window);
-}
-
-void
-glade_window_registration_notify_user (GladeWindow *window)
-{
-  gboolean skip_reminder, completed;
-  GladeWindowPrivate *priv;
-
-  g_return_if_fail (GLADE_IS_WINDOW (window));
-  priv = window->priv;
-
-  g_object_get (priv->registration,
-                "completed", &completed,
-                "skip-reminder", &skip_reminder,
-                NULL);
-  
-  if (!completed && !skip_reminder)
-    {
-      GtkWidget *dialog, *check;
-
-      dialog = gtk_message_dialog_new (GTK_WINDOW (glade_app_get_window ()),
-                                       GTK_DIALOG_DESTROY_WITH_PARENT,
-                                       GTK_MESSAGE_QUESTION,
-                                       GTK_BUTTONS_YES_NO,
-                                       "%s",
-                                       _("We are conducting a user survey\n would you like to take it now?"));
-
-      gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s",
-                                                _("If not, you can always find it in the Help menu."));
-
-      check = gtk_check_button_new_with_label (_("Do not show this dialog again"));
-      gtk_box_pack_end (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
-                        check, FALSE, FALSE, 4);
-      gtk_widget_set_halign (check, GTK_ALIGN_START);
-      gtk_widget_show (check);
-
-      if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_YES)
-          gtk_window_present (GTK_WINDOW (priv->registration));
-      
-      if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (check)))
-        {
-          g_object_set (priv->registration, "skip-reminder", TRUE, NULL);
-          glade_app_config_save ();
-        }
-
-      gtk_widget_destroy (dialog);
-    }
-  else if (!completed)
-    glade_util_flash_message (priv->statusbar, priv->statusbar_context_id, "%s",
-                              _("Go to Help -> Registration & User Survey and complete our survey!"));
 }
