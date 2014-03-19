@@ -5,21 +5,21 @@
 # Raivis Dejus <orvils@gmail.com>, 2009.
 # Pēteris Krišjānis <pecisk@gmail.com>, 2011.
 # Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>, 2012, 2013, 2014.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: glade3\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-03-07 06:46+0000\n"
-"PO-Revision-Date: 2014-03-08 20:35+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-03-19 23:07+0200\n"
+"PO-Revision-Date: 2014-03-19 23:16+0200\n"
 "Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
-"Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
+"Language-Team: Latviešu <lata-l10n@googlegroups.com>\n"
 "Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.5\n"
-"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
+"X-Generator: Gtranslator 2.91.6\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
 
 #: ../data/glade.desktop.in.in.h:1 ../src/main.c:42
@@ -150,7 +150,6 @@ msgid "Project %s is still loading."
 msgstr "Projekts %s joprojām tiek ielādēts."
 
 #: ../src/glade-window.c:1170
-#| msgid "Failed to backup existing file, continue saving ?"
 msgid "Failed to backup existing file, continue saving?"
 msgstr "Neizdevās dublēt esošu datni, turpināt saglabāt?"
 
@@ -320,10 +319,6 @@ msgid "Unable to open '%s', the file does not exist.\n"
 msgstr "Neizdevās atvērt “%s”. Šāda datne neeksistē.\n"
 
 #: ../src/glade.glade.h:1
-#| msgid ""
-#| "Copyright © 2001-2006 Ximian, Inc.\n"
-#| "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
-#| "Copyright © 2004-2013 Tristan Van Berkom, Juan Pablo Ugarte, et al."
 msgid ""
 "Copyright © 2001-2006 Ximian, Inc.\n"
 "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
@@ -774,34 +769,70 @@ msgstr "Papildu katalogu ceļi"
 msgid "Select a catalog search path"
 msgstr "Izvēlieties katalogu meklēšanas ceļu"
 
-#: ../src/glade-registration.c:168
+#: ../src/glade-registration.c:282
 #, c-format
-#| msgid "Setting %s of %s"
 msgid "Connecting to %s"
 msgstr "Savienojas ar %s"
 
-#: ../src/glade-registration.c:171
+#: ../src/glade-registration.c:285
 #, c-format
-#| msgid "Renaming %s to %s"
 msgid "Sending data to %s"
 msgstr "Sūta datus uz %s"
 
-#: ../src/glade-registration.c:174
+#: ../src/glade-registration.c:288
 #, c-format
-#| msgid "Creating %s for %s of %s"
 msgid "Waiting for %s"
 msgstr "Gaida uz %s"
 
-#: ../src/glade-registration.c:177
+#: ../src/glade-registration.c:291
 #, c-format
-#| msgid "Removing parent of %s"
 msgid "Receiving data from %s"
 msgstr "Saņem datus no %s"
 
-#: ../src/glade-registration.c:206
-#| msgid "Internal Frame"
+#: ../src/glade-registration.c:323
+msgid "Sorry, automatic subscription to Glade Users mailing list failed"
+msgstr "Diemžēl neizdevās automātiski pierakstīties Glade lietotāju vēstkopai"
+
+#: ../src/glade-registration.c:326
+msgid "Open Glade Users Website"
+msgstr "Atvērt Glade lietotāju tīmekļa vietni"
+
+#: ../src/glade-registration.c:378
 msgid "Internal server error"
 msgstr "Iekšēja servera kļūda"
+
+#: ../src/glade-registration.c:402
+msgid "Thank you for taking the time to complete the survey, we appreciate it!"
+msgstr "Paldies, ka atradāt laiku aizpildīt aptauju. Mēs to novērtējam!"
+
+#: ../src/glade-registration.c:407
+msgid "Name and Email fields are required"
+msgstr "Vārda un e-pasta lauki ir obligāti"
+
+#: ../src/glade-registration.c:410
+msgid ""
+"Ops! Email address is already in use!\n"
+"To update information you need to provide the token that was sent to your "
+"inbox."
+msgstr ""
+"Ak vai! Šī e-pasta adrese jau ir izmantota!\n"
+"Lai atjauninātu informāciju par sevi, norādiet marķieri, kas ir nosūtīts uz "
+"jūsu e-pasta adresi."
+
+#: ../src/glade-registration.c:413
+#, c-format
+msgid "Ops! Error saving user information: %s"
+msgstr "Ak vai! Kļūda, saglabājot informāciju par lietotāju: %s"
+
+#: ../src/glade-registration.c:416
+#, c-format
+msgid "Ops! Error saving survey data: %s"
+msgstr "Ak vai! Kļūda, saglabājot aptaujas datus: %s"
+
+#: ../src/glade-registration.c:419
+#, c-format
+msgid "Ops! Error accessing DB: %s"
+msgstr "Ak vai! Kļūda, piekļūstot DB: %s"
 
 #: ../src/glade-registration.glade.h:1
 msgid "Glade Registration & User Survey"
@@ -816,7 +847,6 @@ msgid "<Your name or nickname is required>"
 msgstr "<Nepieciešams jūsu vārds vai segvārds>"
 
 #: ../src/glade-registration.glade.h:5
-#| msgid "Email"
 msgid "Email:"
 msgstr "E-pasts:"
 
@@ -833,12 +863,10 @@ msgid "<Required to send back registration token>"
 msgstr "<Nepieciešams, lai sūtītu atpakaļ reģistrācijas marķeirus>"
 
 #: ../src/glade-registration.glade.h:9
-#| msgid "Count:"
 msgid "Country:"
 msgstr "Valsts:"
 
 #: ../src/glade-registration.glade.h:10
-#| msgid "Gravity:"
 msgid "City:"
 msgstr "Pilsēta:"
 
@@ -847,7 +875,6 @@ msgid "Company"
 msgstr "Uzņēmums"
 
 #: ../src/glade-registration.glade.h:12
-#| msgid "Animation"
 msgid "Organization"
 msgstr "Organizācija"
 
@@ -856,7 +883,6 @@ msgid "Personal"
 msgstr "Personisks"
 
 #: ../src/glade-registration.glade.h:14
-#| msgid "Website:"
 msgid "Website"
 msgstr "Tīmekļa vietne"
 
@@ -873,7 +899,6 @@ msgstr ""
 "Jūs saņemsiet e-pastu, kas prasīs apstiprinātu dalību!"
 
 #: ../src/glade-registration.glade.h:18
-#| msgid "Close document"
 msgid "Choose your country"
 msgstr "Izvēlieties savu valsti"
 
@@ -900,8 +925,8 @@ msgstr "Atjaunināt informāciju"
 #: ../src/glade-registration.glade.h:23
 msgid "<Insert update token, if you want to update previously sent data>"
 msgstr ""
-"<Ievietojiet atjaunināšanas marķieri, ja vēlaties atjaunināt iepriekš sūtītos "
-"datus>"
+"<Ievietojiet atjaunināšanas marķieri, ja vēlaties atjaunināt iepriekš "
+"sūtītos datus>"
 
 #: ../src/glade-registration.glade.h:24
 msgid "Glade User Survey"
@@ -975,7 +1000,6 @@ msgid "When did you start using Glade?"
 msgstr "Kad sākāt lietot Glade?"
 
 #: ../src/glade-registration.glade.h:41
-#| msgid "Tag"
 msgid "ago"
 msgstr "atpakaļ"
 
@@ -996,7 +1020,6 @@ msgid "3.8 for GTK+ 2"
 msgstr "3.8 priekš GTK+ 2"
 
 #: ../src/glade-registration.glade.h:46
-#| msgid "Paste"
 msgid "Master"
 msgstr "Galotni"
 
@@ -1005,7 +1028,6 @@ msgid "On what operating systems?"
 msgstr "Uz kuras operētājsistēmas?"
 
 #: ../src/glade-registration.glade.h:48
-#| msgid "Position"
 msgid "distribution"
 msgstr "distribūcijas"
 
@@ -1054,18 +1076,14 @@ msgid "Oracle"
 msgstr "Oracle"
 
 #: ../src/glade-registration.glade.h:60
-#| msgctxt "textattr"
-#| msgid "Variant"
 msgid "variant"
 msgstr "variants"
 
 #: ../src/glade-registration.glade.h:61
-#| msgid "Free"
 msgid "FreeBSD"
 msgstr "FreeBSD"
 
 #: ../src/glade-registration.glade.h:62
-#| msgid "Open"
 msgid "OpenBSD"
 msgstr "OpenBSD"
 
@@ -1086,7 +1104,6 @@ msgid "illumos"
 msgstr "illumos"
 
 #: ../src/glade-registration.glade.h:67
-#| msgid "Version:"
 msgid "version"
 msgstr "versija"
 
@@ -1156,7 +1173,6 @@ msgid "BSD"
 msgstr "BSD"
 
 #: ../src/glade-registration.glade.h:84
-#| msgid "Window"
 msgid "Windows"
 msgstr "Windows"
 
@@ -1201,12 +1217,10 @@ msgid "What level of Glade user would you say you are?"
 msgstr "Jūsuprāt, kāda līmeņa Glade lietotājs esat?"
 
 #: ../src/glade-registration.glade.h:95
-#| msgid "Spinner"
 msgid "Beginner"
 msgstr "Iesācējs"
 
 #: ../src/glade-registration.glade.h:96
-#| msgid "Immediate"
 msgid "Intermediate"
 msgstr "Vidējs"
 
@@ -1223,12 +1237,10 @@ msgstr ""
 "Glade?"
 
 #: ../src/glade-registration.glade.h:99
-#| msgid "Free Form"
 msgid "Free software"
 msgstr "Brīvā programmatūra"
 
 #: ../src/glade-registration.glade.h:100
-#| msgid "Resource Name"
 msgid "Open source software"
 msgstr "Atvērtā pirmkoda programmatūra"
 
@@ -1250,7 +1262,6 @@ msgid "Academic"
 msgstr "Akadēmiskā"
 
 #: ../src/glade-registration.glade.h:105
-#| msgid "Applications"
 msgid "Embedded applications"
 msgstr "Iegultās lietotnes"
 
@@ -1259,7 +1270,6 @@ msgid "Accounting"
 msgstr "Grāmatvedība"
 
 #: ../src/glade-registration.glade.h:107
-#| msgid "Applications"
 msgid "Desktop applications"
 msgstr "Darbvirsmas lietotnes"
 
@@ -1268,12 +1278,10 @@ msgid "Educational"
 msgstr "Izglītība"
 
 #: ../src/glade-registration.glade.h:109
-#| msgid "Vertical"
 msgid "Medical"
 msgstr "Medicīna"
 
 #: ../src/glade-registration.glade.h:110
-#| msgid "About this application"
 msgid "Industrial applications"
 msgstr "Industriālās lietotnes"
 
@@ -1290,7 +1298,6 @@ msgid "In your opinion what is the biggest problem with Glade?"
 msgstr "Kura, jūsuprāt, ir lielākā Glade problēma?"
 
 #: ../src/glade-registration.glade.h:114
-#| msgid "Read documentation"
 msgid "Lack of documentation"
 msgstr "Dokumentācijas trūkums"
 
@@ -1336,7 +1343,6 @@ msgid "Why not?"
 msgstr "Kāpēc nē?"
 
 #: ../src/glade-registration.glade.h:125
-#| msgid "Comments"
 msgid "Comments:"
 msgstr "Komentāri:"
 
@@ -1705,13 +1711,11 @@ msgstr "Iestata “%s” mērķa versiju uz %d.%d"
 
 #: ../gladeui/glade-command.c:2803
 #, c-format
-#| msgid "Edit project properties"
 msgid "Setting project's %s property"
 msgstr "Iestata projekta %s īpašību"
 
 #: ../gladeui/glade-command.c:2906
 #, c-format
-#| msgid "Setting translation domain to '%s'"
 msgid "Setting resource path to '%s'"
 msgstr "Iestata resursa ceļu uz “%s”"
 
@@ -1731,7 +1735,6 @@ msgid "Setting widget '%s' as template"
 msgstr "Iestata logdaļu “%s” kā veidni"
 
 #: ../gladeui/glade-command.c:2978
-#| msgid "Unsetting widget '%s' as template"
 msgid "Unsetting template"
 msgstr "Atstata veidni"
 
@@ -2143,12 +2146,10 @@ msgstr "Priekšskata %s (%s)"
 
 #: ../gladeui/glade-previewer.c:220 ../gladeui/glade-previewer.c:224
 #, c-format
-#| msgid "Preview"
 msgid "Previewing %s"
 msgstr "Priekšskata %s"
 
 #: ../gladeui/glade-previewer.c:228
-#| msgid "Preview"
 msgid "Glade Preview"
 msgstr "Glade priekšskatījums"
 
@@ -2283,7 +2284,6 @@ msgid "Path to load images and resources in Glade's runtime"
 msgstr "Ceļu, lai ielādētu attēlus un resursus Glade darbības laikā"
 
 #: ../gladeui/glade-project.c:1022 ../gladeui/glade-project-properties.ui.h:29
-#| msgid "License:"
 msgid "License"
 msgstr "Licence"
 
@@ -2299,28 +2299,28 @@ msgstr "CSS sniedzēja ceļš"
 msgid "Path to use as the custom CSS provider for this project."
 msgstr "Ceļš, ko izmantot kā pielāgotu CSS sniedzēju šim projektam."
 
-#: ../gladeui/glade-project.c:1126
+#: ../gladeui/glade-project.c:1129
 #, c-format
 msgid "(internal %s)"
 msgstr "(iekšējs %s)"
 
-#: ../gladeui/glade-project.c:1131
+#: ../gladeui/glade-project.c:1134
 #, c-format
 msgid "(%s child)"
 msgstr "(%s bērns)"
 
-#: ../gladeui/glade-project.c:1133
+#: ../gladeui/glade-project.c:1136
 #, c-format
 msgid "(template)"
 msgstr "(veidne)"
 
 #. translators: refers to a property named '%s' of widget '%s'
-#: ../gladeui/glade-project.c:1141
+#: ../gladeui/glade-project.c:1144
 #, c-format
 msgid "(%s of %s)"
 msgstr "(%s no %s)"
 
-#: ../gladeui/glade-project.c:1499
+#: ../gladeui/glade-project.c:1502
 #, c-format
 msgid ""
 "Failed to load %s.\n"
@@ -2330,26 +2330,26 @@ msgstr ""
 "Sekojošie pieprasītie katalogi nav pieejami — %s"
 
 #. translators: refers to project name '%s' that targets gtk version '%d.%d'
-#: ../gladeui/glade-project.c:1870
+#: ../gladeui/glade-project.c:1873
 #, c-format
 msgid "%s targets Gtk+ %d.%d"
 msgstr "%s mērķē uz Gtk+ %d.%d"
 
-#: ../gladeui/glade-project.c:1909
+#: ../gladeui/glade-project.c:1912
 msgid "Specially because there is an object that can not be build with type "
 msgstr "It īpaši, jo ir objekts, ko nevar uzbūvēt ar tipu"
 
-#: ../gladeui/glade-project.c:1914
+#: ../gladeui/glade-project.c:1917
 #, c-format
 msgid ""
 "Specially because there are %d objects that can not be build with types "
 msgstr "It īpaši, jo ir %d objekti, ko nevar uzbūvēt ar tipiem"
 
-#: ../gladeui/glade-project.c:1921
+#: ../gladeui/glade-project.c:1924
 msgid " and "
 msgstr " un "
 
-#: ../gladeui/glade-project.c:1939
+#: ../gladeui/glade-project.c:1942
 #, c-format
 msgid ""
 "But this version of Glade is for GTK+ 3 only.\n"
@@ -2362,12 +2362,8 @@ msgstr ""
 "novecojušām logdaļām.\n"
 "%s"
 
-#: ../gladeui/glade-project.c:2000
+#: ../gladeui/glade-project.c:2003
 #, c-format
-#| msgid ""
-#| "An automatically saved version of `%s' is more recent\n"
-#| "\n"
-#| "Would you like to load the autosave version instead ?"
 msgid ""
 "An automatically saved version of `%s' is more recent.\n"
 "\n"
@@ -2377,7 +2373,7 @@ msgstr ""
 "\n"
 "Vai tā vietā vēlaties atvērt automātiski saglabāto versiju?"
 
-#: ../gladeui/glade-project.c:2140
+#: ../gladeui/glade-project.c:2143
 #, c-format
 msgid "%s document properties"
 msgstr "%s dokumenta īpašības"
@@ -2390,138 +2386,138 @@ msgstr "%s dokumenta īpašības"
 #. * ugly messy code with comments in line breaks inside function calls).
 #.
 #. translators: refers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2896
+#: ../gladeui/glade-project.c:2899
 #, c-format
 msgid "This widget was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
 "Šī logdaļa tika ieviesta %s %d.%d, kamēr projekts ir paredzēts %s %d.%d"
 
 #. translators: refers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2900
+#: ../gladeui/glade-project.c:2903
 #, c-format
 msgid "[%s] Object class '%s' was introduced in %s %d.%d\n"
 msgstr "[%s] Objektu klase “%s” tika ieviesta %s %d.%d\n"
 
-#: ../gladeui/glade-project.c:2902
+#: ../gladeui/glade-project.c:2905
 msgid "This widget is deprecated"
 msgstr "Šī logdaļa ir novecojusi"
 
 #. translators: refers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2905
+#: ../gladeui/glade-project.c:2908
 #, c-format
 msgid "[%s] Object class '%s' from %s %d.%d is deprecated\n"
 msgstr "[%s] Objektu klase “%s” sākot no %s %d.%d ir novecojusi\n"
 
 #. translators: refers to a property in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2910
+#: ../gladeui/glade-project.c:2913
 #, c-format
 msgid "This property was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
 "Šī īpašība tika ieviesta %s %d.%d, kamēr projekts ir paredzēts %s %d.%d"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2914
+#: ../gladeui/glade-project.c:2917
 #, c-format
 msgid "[%s] Property '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr "[%s] Īpašība “%s” objektu klasei “%s” tika ieviesta %s %d.%d\n"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2918
+#: ../gladeui/glade-project.c:2921
 #, c-format
 msgid ""
 "[%s] Packing property '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr ""
 "[%s] Pakošanas īpašība “%s” objektu klasei “%s” tika ieviesta %s %d.%d\n"
 
-#: ../gladeui/glade-project.c:2921
+#: ../gladeui/glade-project.c:2924
 msgid "This property is deprecated"
 msgstr "Šī īpašība ir novecojusi"
 
 #. translators: refers to a property '%s' of widget '[%s]'
-#: ../gladeui/glade-project.c:2924
+#: ../gladeui/glade-project.c:2927
 #, c-format
 msgid "[%s] Property '%s' of object class '%s' is deprecated"
 msgstr "[%s] Īpašība “%s” objektu klasei “%s” ir novecojusi"
 
 #. translators: refers to a signal in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2928
+#: ../gladeui/glade-project.c:2931
 #, c-format
 msgid "This signal was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
 "Šis signāls tika ieviests %s %d.%d, kamēr projekts ir paredzēts %s %d.%d"
 
 #. translators: refers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2932
+#: ../gladeui/glade-project.c:2935
 #, c-format
 msgid "[%s] Signal '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr "[%s] Signāls “%s” objektu klasei “%s” tika ieviests %s %d.%d\n"
 
-#: ../gladeui/glade-project.c:2935
+#: ../gladeui/glade-project.c:2938
 msgid "This signal is deprecated"
 msgstr "Šis signāls ir novecojusi"
 
 #. translators: refers to a signal '%s' of widget '[%s]'
-#: ../gladeui/glade-project.c:2938
+#: ../gladeui/glade-project.c:2941
 #, c-format
 msgid "[%s] Signal '%s' of object class '%s' is deprecated"
 msgstr "[%s] Signāls “%s” objektu klasei “%s” ir novecojis"
 
-#: ../gladeui/glade-project.c:3234
+#: ../gladeui/glade-project.c:3237
 msgid "Details"
 msgstr "Sīkāka informācija"
 
-#: ../gladeui/glade-project.c:3249
+#: ../gladeui/glade-project.c:3252
 #, c-format
 msgid "Project \"%s\" has errors. Save anyway?"
 msgstr "Projektam “%s” ir kļūdas. Tomēr saglabāt?"
 
-#: ../gladeui/glade-project.c:3250
+#: ../gladeui/glade-project.c:3253
 #, c-format
 msgid "Project \"%s\" has deprecated widgets and/or version mismatches."
 msgstr "Projektam “%s” ir novecojušas logdaļas un / vai versiju nesakritība."
 
-#: ../gladeui/glade-project.c:3277
+#: ../gladeui/glade-project.c:3280
 #, c-format
 msgid "Object %s has unrecognized type %s\n"
 msgstr "Objektam %s ir neatpazīts tips %s\n"
 
-#: ../gladeui/glade-project.c:4747
+#: ../gladeui/glade-project.c:4750
 #, c-format
 msgid "Unsaved %i"
 msgstr "Nesaglabāts %i"
 
-#: ../gladeui/glade-project.c:5046 ../gladeui/glade-project.c:5097
-#: ../gladeui/glade-project.c:5254
+#: ../gladeui/glade-project.c:5049 ../gladeui/glade-project.c:5100
+#: ../gladeui/glade-project.c:5257
 msgid "No widget selected."
 msgstr "Nav izvēlēta logdaļa."
 
-#: ../gladeui/glade-project.c:5062
+#: ../gladeui/glade-project.c:5065
 msgid "Unable to copy unrecognized widget type."
 msgstr "Neizdevās kopēt neatpazītu logdaļas tipu."
 
-#: ../gladeui/glade-project.c:5094
+#: ../gladeui/glade-project.c:5097
 msgid "Unable to cut unrecognized widget type"
 msgstr "Neizdevās izgriezt neatpazītu logdaļas tipu"
 
-#: ../gladeui/glade-project.c:5146
+#: ../gladeui/glade-project.c:5149
 msgid "Unable to paste to the selected parent"
 msgstr "Neizdevās ielīmēt izvēlētajā vecākā"
 
-#: ../gladeui/glade-project.c:5157
+#: ../gladeui/glade-project.c:5160
 msgid "Unable to paste to multiple widgets"
 msgstr "Neizdevās ielīmēt vairākās logdaļās"
 
-#: ../gladeui/glade-project.c:5167
+#: ../gladeui/glade-project.c:5170
 msgid "No widget on the clipboard"
 msgstr "Starpliktuvē nav logdaļu"
 
-#: ../gladeui/glade-project.c:5212
+#: ../gladeui/glade-project.c:5215
 msgid "Only one widget can be pasted at a time to this container"
 msgstr "Vienlaicīgi tikai vienu logdaļu var ielīmēt šajā konteinerī"
 
-#: ../gladeui/glade-project.c:5224
+#: ../gladeui/glade-project.c:5227
 msgid "Insufficient amount of placeholders in target container"
 msgstr "Nepietiekams vietturu skaits mērķa konteinerī"
 
@@ -3070,7 +3066,6 @@ msgid "Composite template toplevel:"
 msgstr "Saliktas veidnes augšējais līmenis:"
 
 #: ../gladeui/glade-project-properties.ui.h:3
-#| msgid "Setting %s to use a custom label widget"
 msgid "Select a CSS to use as custom style provider"
 msgstr "Izvēlieties CSS, ko izmantot kā pielāgotu stila sniedzēju"
 
@@ -3103,7 +3098,6 @@ msgid "Toolkit version required:"
 msgstr "Nepieciešamā rīkkopas versija:"
 
 #: ../gladeui/glade-project-properties.ui.h:13
-#| msgid "Copyright"
 msgid "Copyright:"
 msgstr "Autortiesības:"
 
@@ -3112,7 +3106,6 @@ msgid "program or library name"
 msgstr "programmas vai bibliotēkas nosaukums"
 
 #: ../gladeui/glade-project-properties.ui.h:15
-#| msgid "Authors"
 msgid "Author(s):"
 msgstr "Autors(-i):"
 
@@ -3122,7 +3115,6 @@ msgid "License:"
 msgstr "Licence:"
 
 #: ../gladeui/glade-project-properties.ui.h:17
-#| msgid "Description For"
 msgid "Description:"
 msgstr "Apraksts:"
 
@@ -3155,12 +3147,10 @@ msgid "BSD 3-clause"
 msgstr "BSD trīs klauzulu"
 
 #: ../gladeui/glade-project-properties.ui.h:25
-#| msgid "Attached To:"
 msgid "Apache 2"
 msgstr "Apache 2"
 
 #: ../gladeui/glade-project-properties.ui.h:26
-#| msgid "MIT X11"
 msgid "MIT"
 msgstr "MIT"
 
@@ -6195,25 +6185,21 @@ msgstr "Mākslinieciskā"
 
 #. GtkLicense enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:718
-#| msgid "GPL 2.0"
 msgid "GPL 2.0 Only"
 msgstr "GPL tikai 2.0"
 
 #. GtkLicense enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:720
-#| msgid "GPL 3.0"
 msgid "GPL 3.0 Only"
 msgstr "GPL tikai 3.0"
 
 #. GtkLicense enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:722
-#| msgid "LGPL 2.1"
 msgid "LGPL 2.1 Only"
 msgstr "LGPL tikai 2.1"
 
 #. GtkLicense enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:724
-#| msgid "LGPL 3.0"
 msgid "LGPL 3.0 Only"
 msgstr "LGPL tikai 3.0"
 
