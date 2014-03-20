@@ -197,6 +197,8 @@ main (int argc, char *argv[])
   
   if (!opened_project)
     glade_window_new_project (window);
+
+  glade_window_registration_notify_user (window);
   
   gtk_main ();
 

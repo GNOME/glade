@@ -26,6 +26,8 @@
 #include <gladeui/glade.h>
 #include <glib/gi18n.h>
 
+#define CONFIG_GROUP             "User & Survey"
+
 struct _GladeRegistrationPrivate
 {
   GtkWidget    *infobar;
@@ -100,6 +102,12 @@ struct _GladeRegistrationPrivate
 
 G_DEFINE_TYPE_WITH_PRIVATE (GladeRegistration, glade_registration, GTK_TYPE_DIALOG);
 
+enum 
+{
+  PROP_0,
+  PROP_COMPLETED,
+  PROP_SKIP_REMINDER
+};
 
 static void
 string_append_input_key_value_tuple (GString *string,
@@ -401,6 +409,9 @@ on_http_request_done (GladeHTTP         *http,
               glade_util_ui_message (GTK_WIDGET (registration), GLADE_UI_INFO, NULL,
                                      "<big>%s</big>", _("Thank you for taking the time to complete the survey, we appreciate it!"));
               gtk_widget_hide (GTK_WIDGET (registration));
+
+              g_object_set (registration, "completed", TRUE, NULL);
+              glade_app_config_save ();
             }
           else if (g_strcmp0 (status, "error_required_field") == 0)
             glade_registration_show_message (registration, GTK_MESSAGE_INFO,
@@ -645,6 +656,42 @@ glade_registration_finalize (GObject *object)
 }
 
 static void
+glade_registration_set_property (GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec)
+{
+  GKeyFile *config = glade_app_get_config ();
+  g_return_if_fail (GLADE_IS_REGISTRATION (object));
+
+  switch (prop_id)
+    {
+      case PROP_SKIP_REMINDER:
+      case PROP_COMPLETED:
+        g_key_file_set_boolean (config, CONFIG_GROUP, pspec->name, g_value_get_boolean (value));
+        break;
+      default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        break;
+    }
+}
+
+static void
+glade_registration_get_property (GObject *object, guint prop_id, GValue *value, GParamSpec *pspec)
+{
+  GKeyFile *config = glade_app_get_config ();
+  g_return_if_fail (GLADE_IS_REGISTRATION (object));
+
+  switch (prop_id)
+    {
+      case PROP_SKIP_REMINDER:
+      case PROP_COMPLETED:
+        g_value_set_boolean (value, g_key_file_get_boolean (config, CONFIG_GROUP, pspec->name, NULL));
+        break;
+      default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        break;
+    }
+}
+
+static void
 glade_registration_class_init (GladeRegistrationClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -722,6 +769,24 @@ glade_registration_class_init (GladeRegistrationClass *klass)
   gtk_widget_class_bind_template_callback (widget_class, on_viewport_draw);
   
   object_class->finalize = glade_registration_finalize;
+  object_class->set_property = glade_registration_set_property;
+  object_class->get_property = glade_registration_get_property;
+
+  g_object_class_install_property (object_class,
+                                   PROP_COMPLETED,
+                                   g_param_spec_boolean ("completed",
+                                                         "Completed",
+                                                         "Registration was completed successfully",
+                                                         FALSE,
+                                                         G_PARAM_READWRITE));
+
+  g_object_class_install_property (object_class,
+                                   PROP_SKIP_REMINDER,
+                                   g_param_spec_boolean ("skip-reminder",
+                                                         "Skip reminder",
+                                                         "Skip registration reminder dialog",
+                                                         FALSE,
+                                                         G_PARAM_READWRITE));
 }
 
 GtkWidget*
