@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: Glade master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glade&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-02-28 06:45+0000\n"
-"PO-Revision-Date: 2014-03-17 02:57+0100\n"
+"POT-Creation-Date: 2014-03-19 06:46+0000\n"
+"PO-Revision-Date: 2014-03-21 17:19+0100\n"
 "Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
 "Language-Team: Hungarian <openscope at googlegroups dot com>\n"
 "Language: hu\n"
@@ -52,16 +52,21 @@ msgstr ""
 
 #. To translators: AppData description second paragraph
 #: ../data/glade.appdata.xml.in.h:4
+#| msgid ""
+#| "The user interfaces designed in Glade are saved as XML and these can be "
+#| "loaded by applications dynamically as needed by using GtkBuilder or used "
+#| "directly to define a new GtkWidget derived object class using Gtk+ new "
+#| "template feature."
 msgid ""
 "The user interfaces designed in Glade are saved as XML and these can be "
 "loaded by applications dynamically as needed by using GtkBuilder or used "
-"directly to define a new GtkWidget derived object class using Gtk+ new "
+"directly to define a new GtkWidget derived object class using GTK+ new "
 "template feature."
 msgstr ""
 "A Glade-ben tervezett felhasználói felületek XML-ként kerülnek mentésre, és "
 "ezek dinamikusan tölthetők be az alkalmazásokban a GtkBuilder használatával, "
 "vagy felhasználhatók új, a GtkWidgetből származtatott objektumosztály "
-"közvetlen definiálására a Gtk+ új sablon funkciójának segítségével."
+"közvetlen definiálására a GTK+ új sablon funkciójának segítségével."
 
 #. To translators: AppData description third paragraph
 #: ../data/glade.appdata.xml.in.h:6
@@ -318,10 +323,6 @@ msgid "Unable to open '%s', the file does not exist.\n"
 msgstr "Nem nyitható meg a(z) „%s”; a fájl nem létezik.\n"
 
 #: ../src/glade.glade.h:1
-#| msgid ""
-#| "Copyright © 2001-2006 Ximian, Inc.\n"
-#| "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
-#| "Copyright © 2004-2013 Tristan Van Berkom, Juan Pablo Ugarte, et al."
 msgid ""
 "Copyright © 2001-2006 Ximian, Inc.\n"
 "Copyright © 2001-2006 Joaquin Cuenca Abela, Paolo Borelli, et al.\n"
@@ -641,7 +642,8 @@ msgid "Open _Recent"
 msgstr "Leg_utóbbi megnyitása"
 
 #: ../src/glade.glade.h:88
-msgid "Registration & User survey"
+#| msgid "Registration & User survey"
+msgid "Registration & User Survey"
 msgstr "Regisztráció és felhasználói felmérés"
 
 #: ../src/glade.glade.h:89
@@ -770,49 +772,88 @@ msgstr "További katalógus-útvonalak"
 msgid "Select a catalog search path"
 msgstr "Válasszon egy katalógus keresési útvonalat"
 
-#: ../src/glade-registration.c:168
+#: ../src/glade-registration.c:282
 #, c-format
-#| msgid "Setting %s of %s"
 msgid "Connecting to %s"
 msgstr "Kapcsolódás: %s"
 
-#: ../src/glade-registration.c:171
+#: ../src/glade-registration.c:285
 #, c-format
-#| msgid "Renaming %s to %s"
 msgid "Sending data to %s"
 msgstr "Adatok küldése: %s"
 
-#: ../src/glade-registration.c:174
+#: ../src/glade-registration.c:288
 #, c-format
-#| msgid "Creating %s for %s of %s"
 msgid "Waiting for %s"
 msgstr "Várakozás erre: %s"
 
-#: ../src/glade-registration.c:177
+#: ../src/glade-registration.c:291
 #, c-format
-#| msgid "Removing parent of %s"
 msgid "Receiving data from %s"
 msgstr "Adatok fogadása innen: %s"
 
-#: ../src/glade-registration.c:206
-#| msgid "Internal Frame"
+#: ../src/glade-registration.c:323
+msgid "Sorry, automatic subscription to Glade Users mailing list failed"
+msgstr ""
+"Elnézést, az automatikus feliratkozás a Glade felhasználói levelezőlistára "
+"sikertelen"
+
+#: ../src/glade-registration.c:326
+#| msgid " Glade User Survey"
+msgid "Open Glade Users Website"
+msgstr "Glade felhasználói levelezőlista weboldalának megnyitása"
+
+#: ../src/glade-registration.c:378
 msgid "Internal server error"
 msgstr "Belső kiszolgálóhiba"
 
+#: ../src/glade-registration.c:402
+msgid "Thank you for taking the time to complete the survey, we appreciate it!"
+msgstr "Köszönjük, hogy kitöltötte a felmérést, nagyra értékeljük!"
+
+#: ../src/glade-registration.c:407
+msgid "Name and Email fields are required"
+msgstr "A Név és E-mail mezők kötelezők"
+
+#: ../src/glade-registration.c:410
+msgid ""
+"Ops! Email address is already in use!\n"
+"To update information you need to provide the token that was sent to your "
+"inbox."
+msgstr ""
+"Hoppá! Az e-mail cím már használatban van!\n"
+"Az információk frissítéséhez meg kell adnia az e-mailben kapott jelsort."
+
+#: ../src/glade-registration.c:413
+#, c-format
+msgid "Ops! Error saving user information: %s"
+msgstr "Hoppá! Hiba a felhasználói információk mentésekor: %s"
+
+#: ../src/glade-registration.c:416
+#, c-format
+msgid "Ops! Error saving survey data: %s"
+msgstr "Hoppá! Hiba a felmérés adatainak mentésekor: %s"
+
+#: ../src/glade-registration.c:419
+#, c-format
+msgid "Ops! Error accessing DB: %s"
+msgstr "Hoppá! Hiba az adatbázis elérésekor: %s"
+
 #: ../src/glade-registration.glade.h:1
-msgid "Glade registration & User survey"
+#| msgid "Glade registration & User survey"
+msgid "Glade Registration & User Survey"
 msgstr "Glade regisztráció és felhasználói felmérés"
 
 #: ../src/glade-registration.glade.h:2
-msgid " User Information"
-msgstr "Felhasználói információ"
+#| msgid " User Information"
+msgid "User Information"
+msgstr "Felhasználói információk"
 
 #: ../src/glade-registration.glade.h:3
 msgid "<Your name or nickname is required>"
 msgstr "<név vagy becenév szükséges>"
 
 #: ../src/glade-registration.glade.h:5
-#| msgid "Email"
 msgid "Email:"
 msgstr "E-mail:"
 
@@ -829,12 +870,10 @@ msgid "<Required to send back registration token>"
 msgstr "<szükséges a regisztrációs jelsor visszaküldéséhez>"
 
 #: ../src/glade-registration.glade.h:9
-#| msgid "Count:"
 msgid "Country:"
 msgstr "Ország:"
 
 #: ../src/glade-registration.glade.h:10
-#| msgid "Gravity:"
 msgid "City:"
 msgstr "Város:"
 
@@ -843,7 +882,6 @@ msgid "Company"
 msgstr "Cég"
 
 #: ../src/glade-registration.glade.h:12
-#| msgid "Animation"
 msgid "Organization"
 msgstr "Szervezet"
 
@@ -852,7 +890,6 @@ msgid "Personal"
 msgstr "Személyes"
 
 #: ../src/glade-registration.glade.h:14
-#| msgid "Website:"
 msgid "Website"
 msgstr "Weboldal"
 
@@ -869,7 +906,6 @@ msgstr ""
 "Egy megerősítést kérő levelet fog kapni!"
 
 #: ../src/glade-registration.glade.h:18
-#| msgid "Close document"
 msgid "Choose your country"
 msgstr "Válassza ki az országot"
 
@@ -900,7 +936,8 @@ msgstr ""
 "frissíteni>"
 
 #: ../src/glade-registration.glade.h:24
-msgid " Glade User Survey"
+#| msgid " Glade User Survey"
+msgid "Glade User Survey"
 msgstr "Glade felhasználói felmérés"
 
 #: ../src/glade-registration.glade.h:25
@@ -948,8 +985,9 @@ msgid "Python"
 msgstr "Python"
 
 #: ../src/glade-registration.glade.h:36
-msgid "Javascript"
-msgstr "Javascript"
+#| msgid "Javascript"
+msgid "JavaScript"
+msgstr "JavaScript"
 
 #: ../src/glade-registration.glade.h:37
 msgid "Vala"
@@ -971,7 +1009,6 @@ msgid "When did you start using Glade?"
 msgstr "Mikor kezdte el a Glade-et használni?"
 
 #: ../src/glade-registration.glade.h:41
-#| msgid "Tag"
 msgid "ago"
 msgstr "óta"
 
@@ -988,11 +1025,11 @@ msgid "Latest stable from sources"
 msgstr "Legutóbbi stabil forráskódból"
 
 #: ../src/glade-registration.glade.h:45
-msgid "3.8 for Gtk+ 2"
-msgstr "3.8 a Gtk+ 2-höz"
+#| msgid "3.8 for Gtk+ 2"
+msgid "3.8 for GTK+ 2"
+msgstr "3.8 a GTK+ 2-höz"
 
 #: ../src/glade-registration.glade.h:46
-#| msgid "Paste"
 msgid "Master"
 msgstr "Master"
 
@@ -1001,7 +1038,6 @@ msgid "On what operating systems?"
 msgstr "Mely operációs rendszereken?"
 
 #: ../src/glade-registration.glade.h:48
-#| msgid "Position"
 msgid "distribution"
 msgstr "disztribúció"
 
@@ -1050,8 +1086,6 @@ msgid "Oracle"
 msgstr "Oracle"
 
 #: ../src/glade-registration.glade.h:60
-#| msgctxt "textattr"
-#| msgid "Variant"
 msgid "variant"
 msgstr "változat"
 
@@ -1060,7 +1094,6 @@ msgid "FreeBSD"
 msgstr "FreeBSD"
 
 #: ../src/glade-registration.glade.h:62
-#| msgid "Open"
 msgid "OpenBSD"
 msgstr "OpenBSD"
 
@@ -1081,7 +1114,6 @@ msgid "illumos"
 msgstr "illumos"
 
 #: ../src/glade-registration.glade.h:67
-#| msgid "Version:"
 msgid "version"
 msgstr "verzió"
 
@@ -1151,13 +1183,13 @@ msgid "BSD"
 msgstr "BSD"
 
 #: ../src/glade-registration.glade.h:84
-#| msgid "Window"
 msgid "Windows"
 msgstr "Windows"
 
 #: ../src/glade-registration.glade.h:85
-msgid "Mac OSX"
-msgstr "Mac OSX"
+#| msgid "Mac OSX"
+msgid "Mac OS X"
+msgstr "Mac OS X"
 
 #: ../src/glade-registration.glade.h:86
 msgid "Solaris"
@@ -1180,7 +1212,8 @@ msgid "Every week"
 msgstr "Minden héten"
 
 #: ../src/glade-registration.glade.h:91
-msgid "A few times a months"
+#| msgid "A few times a months"
+msgid "A few times a month"
 msgstr "Havi pár alkalommal"
 
 #: ../src/glade-registration.glade.h:92
@@ -1196,12 +1229,10 @@ msgid "What level of Glade user would you say you are?"
 msgstr "Milyen szintű Glade felhasználónak tartja magát?"
 
 #: ../src/glade-registration.glade.h:95
-#| msgid "Spinner"
 msgid "Beginner"
 msgstr "Kezdő"
 
 #: ../src/glade-registration.glade.h:96
-#| msgid "Immediate"
 msgid "Intermediate"
 msgstr "Középhaladó"
 
@@ -1216,12 +1247,10 @@ msgid ""
 msgstr "Milyen licencek alatt teszi közzé a Glade-del készített szoftvereket?"
 
 #: ../src/glade-registration.glade.h:99
-#| msgid "Free Form"
 msgid "Free software"
 msgstr "Szabad szoftver"
 
 #: ../src/glade-registration.glade.h:100
-#| msgid "Resource Name"
 msgid "Open source software"
 msgstr "Nyílt forrású szoftver"
 
@@ -1244,7 +1273,6 @@ msgid "Academic"
 msgstr "Akadémiai"
 
 #: ../src/glade-registration.glade.h:105
-#| msgid "Applications"
 msgid "Embedded applications"
 msgstr "Beágyazott alkalmazások"
 
@@ -1253,7 +1281,6 @@ msgid "Accounting"
 msgstr "Könyvelés"
 
 #: ../src/glade-registration.glade.h:107
-#| msgid "Applications"
 msgid "Desktop applications"
 msgstr "Asztali alkalmazások"
 
@@ -1262,12 +1289,10 @@ msgid "Educational"
 msgstr "Oktatási"
 
 #: ../src/glade-registration.glade.h:109
-#| msgid "Vertical"
 msgid "Medical"
 msgstr "Orvosi"
 
 #: ../src/glade-registration.glade.h:110
-#| msgid "About this application"
 msgid "Industrial applications"
 msgstr "Ipari alkalmazások"
 
@@ -1284,7 +1309,6 @@ msgid "In your opinion what is the biggest problem with Glade?"
 msgstr "Véleménye szerint mi a legnagyobb gond a Glade-del?"
 
 #: ../src/glade-registration.glade.h:114
-#| msgid "Read documentation"
 msgid "Lack of documentation"
 msgstr "Dokumentáció hiánya"
 
@@ -1301,8 +1325,9 @@ msgid "Lack of publicity/exposure"
 msgstr "Ismertség/szereplés hiánya"
 
 #: ../src/glade-registration.glade.h:118
-msgid "Lack of official binary releases for other OS (Win32, OSX)"
-msgstr "Hivatalos bináris kiadások hiánya más rendszerekre (Win32, OS X)"
+#| msgid "Lack of official binary releases for other OS (Win32, OSX)"
+msgid "Lack of official binary releases for other OS (Windows, Mac OS X)"
+msgstr "Hivatalos bináris kiadások hiánya más rendszerekre (Windows, Mac OS X)"
 
 #: ../src/glade-registration.glade.h:119
 msgid "Have you ever encountered a bug?"
@@ -1329,7 +1354,6 @@ msgid "Why not?"
 msgstr "Miért nem?"
 
 #: ../src/glade-registration.glade.h:125
-#| msgid "Comments"
 msgid "Comments:"
 msgstr "Megjegyzések:"
 
@@ -1338,6 +1362,14 @@ msgid "Privacy Note:"
 msgstr "Adatvédelmi nyilatkozat:"
 
 #: ../src/glade-registration.glade.h:127
+#| msgid ""
+#| "The sole purpose of this survey is to better know our user base.\n"
+#| "Your email address will be used to uniquely identify you as a Glade user "
+#| "and send you back a modification token in case you want to modify "
+#| "something or add extra comments.\n"
+#| "Only statistics compiled from the whole dataset will be shared publicly.\n"
+#| "Individual data will be stored in a private database and it will not be "
+#| "shared with the public or any other third party. "
 msgid ""
 "The sole purpose of this survey is to better know our user base.\n"
 "Your email address will be used to uniquely identify you as a Glade user and "
@@ -1345,7 +1377,7 @@ msgid ""
 "add extra comments.\n"
 "Only statistics compiled from the whole dataset will be shared publicly.\n"
 "Individual data will be stored in a private database and it will not be "
-"shared with the public or any other third party. "
+"shared with the public or any other third party."
 msgstr ""
 "Ezen felmérés egyetlen célja felhasználói bázisunk jobb megismerése.\n"
 "E-mail címe a Glade felhasználóként való egyedi azonosítására és egy "
@@ -1700,13 +1732,11 @@ msgstr "„%s” cél verziójának beállítása erre: %d.%d"
 
 #: ../gladeui/glade-command.c:2803
 #, c-format
-#| msgid "Edit project properties"
 msgid "Setting project's %s property"
 msgstr "Projekt %s tulajdonságának beállítása"
 
 #: ../gladeui/glade-command.c:2906
 #, c-format
-#| msgid "Setting translation domain to '%s'"
 msgid "Setting resource path to '%s'"
 msgstr "Az erőforrás útvonalának beállítása erre: „%s”"
 
@@ -1726,7 +1756,6 @@ msgid "Setting widget '%s' as template"
 msgstr "„%s” felületi elem beállítása mint sablon"
 
 #: ../gladeui/glade-command.c:2978
-#| msgid "Unsetting widget '%s' as template"
 msgid "Unsetting template"
 msgstr "Sablon beállításának törlése"
 
@@ -2141,12 +2170,10 @@ msgstr "%s előnézete (%s)"
 
 #: ../gladeui/glade-previewer.c:220 ../gladeui/glade-previewer.c:224
 #, c-format
-#| msgid "Preview"
 msgid "Previewing %s"
 msgstr "%s előnézete"
 
 #: ../gladeui/glade-previewer.c:228
-#| msgid "Preview"
 msgid "Glade Preview"
 msgstr "Glade előnézet"
 
@@ -2283,7 +2310,6 @@ msgstr ""
 "Képek és erőforrások betöltéséhez a Glade futásakor használandó elérési út"
 
 #: ../gladeui/glade-project.c:1022 ../gladeui/glade-project-properties.ui.h:29
-#| msgid "License:"
 msgid "License"
 msgstr "Licenc"
 
@@ -2292,35 +2318,37 @@ msgid "License for this project, it will be added as a document level comment."
 msgstr "A projekt licence, dokumentumszintű megjegyzésként lesz hozzáadva."
 
 #: ../gladeui/glade-project.c:1029
-msgid "Css Provider Path"
+#| msgid "Css Provider Path"
+msgid "CSS Provider Path"
 msgstr "CSS szolgáltató útvonala"
 
 #: ../gladeui/glade-project.c:1030
-msgid "Path to use as the custom css provider for this project."
+#| msgid "Path to use as the custom css provider for this project."
+msgid "Path to use as the custom CSS provider for this project."
 msgstr "A projekthez egyéni CSS szolgáltatóként használandó útvonal."
 
-#: ../gladeui/glade-project.c:1126
+#: ../gladeui/glade-project.c:1129
 #, c-format
 msgid "(internal %s)"
 msgstr "(belső %s)"
 
-#: ../gladeui/glade-project.c:1131
+#: ../gladeui/glade-project.c:1134
 #, c-format
 msgid "(%s child)"
 msgstr "(%s gyermek)"
 
-#: ../gladeui/glade-project.c:1133
+#: ../gladeui/glade-project.c:1136
 #, c-format
 msgid "(template)"
 msgstr "(sablon)"
 
 #. translators: refers to a property named '%s' of widget '%s'
-#: ../gladeui/glade-project.c:1141
+#: ../gladeui/glade-project.c:1144
 #, c-format
 msgid "(%s of %s)"
 msgstr "(%2$s – %1$s)"
 
-#: ../gladeui/glade-project.c:1499
+#: ../gladeui/glade-project.c:1502
 #, c-format
 msgid ""
 "Failed to load %s.\n"
@@ -2330,26 +2358,26 @@ msgstr ""
 "A következő kötelező katalógusok nem érhetők el: %s"
 
 #. translators: refers to project name '%s' that targets gtk version '%d.%d'
-#: ../gladeui/glade-project.c:1870
+#: ../gladeui/glade-project.c:1873
 #, c-format
 msgid "%s targets Gtk+ %d.%d"
 msgstr "%s a GTK+ %d.%d verzióját célozza"
 
-#: ../gladeui/glade-project.c:1909
+#: ../gladeui/glade-project.c:1912
 msgid "Specially because there is an object that can not be build with type "
 msgstr "Különösen, mert egy objektum nem építhető fel a következő típusokkal: "
 
-#: ../gladeui/glade-project.c:1914
+#: ../gladeui/glade-project.c:1917
 #, c-format
 msgid ""
 "Specially because there are %d objects that can not be build with types "
 msgstr "Különösen, mert %d objektum nem építhető fel a következő típusokkal: "
 
-#: ../gladeui/glade-project.c:1921
+#: ../gladeui/glade-project.c:1924
 msgid " and "
 msgstr " és "
 
-#: ../gladeui/glade-project.c:1939
+#: ../gladeui/glade-project.c:1942
 #, c-format
 msgid ""
 "But this version of Glade is for GTK+ 3 only.\n"
@@ -2362,7 +2390,7 @@ msgstr ""
 "elavult felületi elemek használata nélkül tudja futtatni.\n"
 "%s"
 
-#: ../gladeui/glade-project.c:2000
+#: ../gladeui/glade-project.c:2003
 #, c-format
 msgid ""
 "An automatically saved version of `%s' is more recent.\n"
@@ -2373,7 +2401,7 @@ msgstr ""
 "\n"
 "Szeretné inkább az automatikusan mentett verziót betölteni?"
 
-#: ../gladeui/glade-project.c:2140
+#: ../gladeui/glade-project.c:2143
 #, c-format
 msgid "%s document properties"
 msgstr "%s dokumentum tulajdonságai"
@@ -2386,7 +2414,7 @@ msgstr "%s dokumentum tulajdonságai"
 #. * ugly messy code with comments in line breaks inside function calls).
 #.
 #. translators: refers to a widget in toolkit version '%s %d.%d' and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2896
+#: ../gladeui/glade-project.c:2899
 #, c-format
 msgid "This widget was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
@@ -2394,17 +2422,17 @@ msgstr ""
 "%d.%d verzióját használja"
 
 #. translators: refers to a widget '[%s]' introduced in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2900
+#: ../gladeui/glade-project.c:2903
 #, c-format
 msgid "[%s] Object class '%s' was introduced in %s %d.%d\n"
 msgstr "[%s] A(z) „%s” objektumosztály a(z) %s %d.%d verzióban jelent meg\n"
 
-#: ../gladeui/glade-project.c:2902
+#: ../gladeui/glade-project.c:2905
 msgid "This widget is deprecated"
 msgstr "Ez a felületi elem elavult"
 
 #. translators: refers to a widget '[%s]' loaded from toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2905
+#: ../gladeui/glade-project.c:2908
 #, c-format
 msgid "[%s] Object class '%s' from %s %d.%d is deprecated\n"
 msgstr ""
@@ -2413,7 +2441,7 @@ msgstr ""
 
 #. translators: refers to a property in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2910
+#: ../gladeui/glade-project.c:2913
 #, c-format
 msgid "This property was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
@@ -2421,7 +2449,7 @@ msgstr ""
 "%d verzióját használja"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2914
+#: ../gladeui/glade-project.c:2917
 #, c-format
 msgid "[%s] Property '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr ""
@@ -2429,7 +2457,7 @@ msgstr ""
 "verzióban jelent meg\n"
 
 #. translators: refers to a property '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2918
+#: ../gladeui/glade-project.c:2921
 #, c-format
 msgid ""
 "[%s] Packing property '%s' of object class '%s' was introduced in %s %d.%d\n"
@@ -2437,19 +2465,19 @@ msgstr ""
 "[%1$s] A(z) %3$s objektumosztály %2$s csomagolási tulajdonsága a(z) %4$s "
 "%5$d.%6$d verzióban jelent meg\n"
 
-#: ../gladeui/glade-project.c:2921
+#: ../gladeui/glade-project.c:2924
 msgid "This property is deprecated"
 msgstr "Ez a tulajdonság elavult"
 
 #. translators: refers to a property '%s' of widget '[%s]'
-#: ../gladeui/glade-project.c:2924
+#: ../gladeui/glade-project.c:2927
 #, c-format
 msgid "[%s] Property '%s' of object class '%s' is deprecated"
 msgstr "[%s] A(z) „%s” tulajdonsága a(z) „%s” objektumosztálynak elavult"
 
 #. translators: refers to a signal in toolkit version '%s %d.%d'
 #. * and a project targeting toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2928
+#: ../gladeui/glade-project.c:2931
 #, c-format
 msgid "This signal was introduced in %s %d.%d while project targets %s %d.%d"
 msgstr ""
@@ -2457,78 +2485,78 @@ msgstr ""
 "verzióját használja"
 
 #. translators: refers to a signal '%s' of widget '[%s]' in toolkit version '%s %d.%d'
-#: ../gladeui/glade-project.c:2932
+#: ../gladeui/glade-project.c:2935
 #, c-format
 msgid "[%s] Signal '%s' of object class '%s' was introduced in %s %d.%d\n"
 msgstr ""
 "[%1$s] A(z) %3$s objektumosztály %2$s szignálja a(z) %4$s %5$d.%6$d "
 "verzióban jelent meg\n"
 
-#: ../gladeui/glade-project.c:2935
+#: ../gladeui/glade-project.c:2938
 msgid "This signal is deprecated"
 msgstr "Ez a szignál elavult"
 
 #. translators: refers to a signal '%s' of widget '[%s]'
-#: ../gladeui/glade-project.c:2938
+#: ../gladeui/glade-project.c:2941
 #, c-format
 msgid "[%s] Signal '%s' of object class '%s' is deprecated"
 msgstr "[%s] A(z) „%s” szignálja a(z) „%s” objektumosztálynak elavult"
 
-#: ../gladeui/glade-project.c:3234
+#: ../gladeui/glade-project.c:3237
 msgid "Details"
 msgstr "Részletek"
 
-#: ../gladeui/glade-project.c:3249
+#: ../gladeui/glade-project.c:3252
 #, c-format
 msgid "Project \"%s\" has errors. Save anyway?"
 msgstr "A projektben („%s”) hibák vannak. Mindenképp menti?"
 
-#: ../gladeui/glade-project.c:3250
+#: ../gladeui/glade-project.c:3253
 #, c-format
 msgid "Project \"%s\" has deprecated widgets and/or version mismatches."
 msgstr ""
 "A projektben („%s”) elavult felületi elemek és/vagy verzióeltérések vannak."
 
-#: ../gladeui/glade-project.c:3277
+#: ../gladeui/glade-project.c:3280
 #, c-format
 msgid "Object %s has unrecognized type %s\n"
 msgstr "%s objektum típusa ismeretlen: %s\n"
 
-#: ../gladeui/glade-project.c:4747
+#: ../gladeui/glade-project.c:4750
 #, c-format
 msgid "Unsaved %i"
 msgstr "Mentetlen %i"
 
-#: ../gladeui/glade-project.c:5046 ../gladeui/glade-project.c:5097
-#: ../gladeui/glade-project.c:5254
+#: ../gladeui/glade-project.c:5049 ../gladeui/glade-project.c:5100
+#: ../gladeui/glade-project.c:5257
 msgid "No widget selected."
 msgstr "Nincs kijelölve felületi elem."
 
-#: ../gladeui/glade-project.c:5062
+#: ../gladeui/glade-project.c:5065
 msgid "Unable to copy unrecognized widget type."
 msgstr "Nem lehet másolni az ismeretlen felületi elem típust."
 
-#: ../gladeui/glade-project.c:5094
+#: ../gladeui/glade-project.c:5097
 msgid "Unable to cut unrecognized widget type"
 msgstr "Nem lehet kivágni az ismeretlen felületi elem típust"
 
-#: ../gladeui/glade-project.c:5146
+#: ../gladeui/glade-project.c:5149
 msgid "Unable to paste to the selected parent"
 msgstr "Nem lehet beilleszteni a kijelölt szülőbe"
 
-#: ../gladeui/glade-project.c:5157
+#: ../gladeui/glade-project.c:5160
 msgid "Unable to paste to multiple widgets"
 msgstr "Nem lehet beilleszteni több felületi elembe"
 
-#: ../gladeui/glade-project.c:5167
+#: ../gladeui/glade-project.c:5170
 msgid "No widget on the clipboard"
 msgstr "Nincs felületi elem a vágólapon"
 
-#: ../gladeui/glade-project.c:5212
+#: ../gladeui/glade-project.c:5215
 msgid "Only one widget can be pasted at a time to this container"
 msgstr "Jelenleg ebbe a tárolóba csak egy felületi elem illeszthető be"
 
-#: ../gladeui/glade-project.c:5224
+#: ../gladeui/glade-project.c:5227
 msgid "Insufficient amount of placeholders in target container"
 msgstr "Nincs elegendő helykitöltő a cél tárolóban"
 
@@ -3081,7 +3109,6 @@ msgid "Composite template toplevel:"
 msgstr "Összetett sablon felső szintű:"
 
 #: ../gladeui/glade-project-properties.ui.h:3
-#| msgid "Setting %s to use a custom label widget"
 msgid "Select a CSS to use as custom style provider"
 msgstr "Válasszon egyéni stílusszolgáltatóként használandó CSS-t"
 
@@ -3114,7 +3141,6 @@ msgid "Toolkit version required:"
 msgstr "Szükséges eszközkészlet-verzió:"
 
 #: ../gladeui/glade-project-properties.ui.h:13
-#| msgid "Copyright"
 msgid "Copyright:"
 msgstr "Copyright:"
 
@@ -3123,7 +3149,6 @@ msgid "program or library name"
 msgstr "program vagy programkönyvtár neve"
 
 #: ../gladeui/glade-project-properties.ui.h:15
-#| msgid "Authors"
 msgid "Author(s):"
 msgstr "Szerzők:"
 
@@ -3133,7 +3158,6 @@ msgid "License:"
 msgstr "Licenc:"
 
 #: ../gladeui/glade-project-properties.ui.h:17
-#| msgid "Description For"
 msgid "Description:"
 msgstr "Leírás:"
 
@@ -3166,12 +3190,10 @@ msgid "BSD 3-clause"
 msgstr "BSD 3 cikkelyes"
 
 #: ../gladeui/glade-project-properties.ui.h:25
-#| msgid "Attached To:"
 msgid "Apache 2"
 msgstr "Apache 2"
 
 #: ../gladeui/glade-project-properties.ui.h:26
-#| msgid "MIT X11"
 msgid "MIT"
 msgstr "MIT"
 
@@ -6219,25 +6241,21 @@ msgstr "Művészi"
 
 #. GtkLicense enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:718
-#| msgid "GPL 2.0"
 msgid "GPL 2.0 Only"
 msgstr "Csak GPL 2.0"
 
 #. GtkLicense enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:720
-#| msgid "GPL 3.0"
 msgid "GPL 3.0 Only"
 msgstr "Csak GPL 3.0"
 
 #. GtkLicense enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:722
-#| msgid "LGPL 2.1"
 msgid "LGPL 2.1 Only"
 msgstr "Csak LGPL 2.1"
 
 #. GtkLicense enumeration value
 #: ../plugins/gtk+/gtk+.xml.in.h:724
-#| msgid "LGPL 3.0"
 msgid "LGPL 3.0 Only"
 msgstr "Csak LGPL 3.0"
 
