@@ -519,7 +519,7 @@ on_registration_dialog_response (GtkDialog *dialog, gint response_id)
   glade_registration_http_post (GLADE_REGISTRATION (dialog),
                                 priv->http,
                                 priv->cancellable,
-                                "/~jpu/glade/registration_master.php",
+                                "/~jpu/glade/registration.php",
                                 post);
   
   g_string_free (post, TRUE);

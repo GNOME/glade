@@ -3,7 +3,7 @@ dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.52)
 
 m4_define(glade_major_version, 3)
-m4_define(glade_minor_version, 16)
+m4_define(glade_minor_version, 18)
 m4_define(glade_micro_version, 0)
 m4_define(glade_version, glade_major_version.glade_minor_version.glade_micro_version)
 
@@ -53,9 +53,9 @@ AC_PATH_PROG(DLLTOOL, dlltool)
 # If any interfaces have been removed since the last public release, then set GLADE_AGE to 0.
 # Reference: http://www.gnu.org/software/libtool/manual/libtool.html#Versioning
 
-GLADE_REVISION=2
-GLADE_CURRENT=6
-GLADE_AGE=0
+GLADE_REVISION=0
+GLADE_CURRENT=7
+GLADE_AGE=1
 GLADE_CURRENT_MINUS_AGE=`expr $GLADE_CURRENT - $GLADE_AGE`
 AC_SUBST(GLADE_REVISION)
 AC_SUBST(GLADE_CURRENT)
@@ -145,7 +145,7 @@ GOBJECT_INTROSPECTION_CHECK([1.32.0])
 dnl ================================================================
 dnl Check for gtk+
 dnl ================================================================
-GTK_REQUIRED=3.10.0
+GTK_REQUIRED=3.11.0
 PKG_CHECK_MODULES([GTK],[
   gtk+-3.0 >= $GTK_REQUIRED
   gmodule-2.0
