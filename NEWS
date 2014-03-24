@@ -1,4 +1,31 @@
 ============
+Glade 3.18.0
+============
+
+	- Added License property to Glade project
+	- Added realtime preview for custom CSS
+	- Added support for previewing templates
+	- glade-previewer added --slideshow option
+	- Fixed Bug 702314 "Cancelling an Add Parent action is destructive"
+	- pango attribute editor: don't write on cancel for color/font (Timm Bäder)
+	- Fixed bug 711568 "[PATCH] glade crashes upon startup" (thanks to Lubomir Rintel)
+	- Fixed Bug 712289 "Glade silently fails to open malformed ui file"
+	- Sort object dependancy before saving using a topological sorting algorithm
+	- Fixed Bug 709609 "[PATCH] Change way of sorting before writing XML output."
+	- Fixed Bug 711858 "editing glade project results in long CPU usage spikes after upgrading to 3.16 and GTK+3.10" 
+	- Fixed <requires> tag output
+	- Fixed cellrenderer model column combobox chooser.
+	- Fixed issue with numeric property editors.
+	- Restored shortcuts function in workspace.
+	- Added new jhbuild based bundling system for 64bit linux bundles. (Tristan Van Berkom)
+	- Bug 720585 - Fix order of customized property output.
+	- gladeui: fix a pair of printf security problems (Ryan Lortie)
+	- Added Registration & User Survey Dialog in Help menu
+	- Fixed bug 723819 "Correct bounds checking for design view highlight" (Chris Johns)
+	- Fixed bug #721098 "Anjuta hangs when opening project"
+	- GtkGrid: Don't save width/height at their default values (Kalev Lember)
+
+============
 Glade 3.16.0
 ============
 
