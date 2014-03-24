@@ -76,6 +76,13 @@ test_create_widget (gconstpointer data)
   g_assert (object_finalized);
 }
 
+static gint
+adaptor_cmp (gconstpointer a, gconstpointer b)
+{
+  return g_strcmp0 (glade_widget_adaptor_get_name ((gpointer)a),
+                    glade_widget_adaptor_get_name ((gpointer)b));
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -87,8 +94,8 @@ main (int   argc,
   glade_init ();
   glade_app_get ();
 
-  adaptors = glade_widget_adaptor_list_adaptors ();
-
+  adaptors = g_list_sort (glade_widget_adaptor_list_adaptors (), adaptor_cmp);
+    
   for (l = adaptors; l; l = l->next)
     {
       GladeWidgetAdaptor *adaptor = l->data;
@@ -104,7 +111,9 @@ main (int   argc,
 	  /* FIXME: App choosers leak some async operations after finalization, causing subsequent tests to fail */
 	  !g_type_is_a (adaptor_type, GTK_TYPE_APP_CHOOSER) &&
           /* FIXME: GtkRecentChooser tries to remove an unknown source id */
-	  !g_type_is_a (adaptor_type, GTK_TYPE_RECENT_CHOOSER))
+	  !g_type_is_a (adaptor_type, GTK_TYPE_RECENT_CHOOSER) &&
+          /* FIXME: GtkAboutDialog in gtk 3.12 does not like to have widgets added in the action area by default */
+          !g_type_is_a (adaptor_type, GTK_TYPE_ABOUT_DIALOG))
 	{
 	  gchar *test_path = g_strdup_printf ("/CreateWidget/%s", glade_widget_adaptor_get_name (adaptor));
 

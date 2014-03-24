@@ -37,7 +37,8 @@ noinst_HEADERS = \
 	glade-resources.h \
 	glade-preferences.h \
 	glade-logo.h \
-	glade-registration.h
+	glade-registration.h \
+	glade-http.h
 
 # Generate resources
 glade-resources.h: glade-resources.gresource.xml $(UI_FILES)

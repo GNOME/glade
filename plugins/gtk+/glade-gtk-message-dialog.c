@@ -67,7 +67,7 @@ glade_gtk_message_dialog_image_determine_action (GtkMessageDialog * dialog,
   *image = g_value_get_object (value);
 
   if (*image == NULL)
-    if (glade_widget_get_from_gobject (dialog_image))
+    if (dialog_image && glade_widget_get_from_gobject (dialog_image))
       return MD_IMAGE_ACTION_RESET;
     else
       return MD_IMAGE_ACTION_INVALID;
