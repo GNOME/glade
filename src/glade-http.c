@@ -133,11 +133,12 @@ static void
 on_read_ready (GObject *source, GAsyncResult *res, gpointer data)
 {
   GladeHTTPPrivate *priv = GLADE_HTTP (data)->priv;
+  GError *error = NULL;
   gssize bytes_read;
 
   glade_http_emit_status (data, GLADE_HTTP_RECEIVING, NULL);
 
-  bytes_read = g_input_stream_read_finish (G_INPUT_STREAM (source), res, NULL);
+  bytes_read = g_input_stream_read_finish (G_INPUT_STREAM (source), res, &error);
   
   if (bytes_read > 0)
     {
@@ -157,8 +158,8 @@ on_read_ready (GObject *source, GAsyncResult *res, gpointer data)
     }
   else if (bytes_read < 0)
     {
-      /* Read error */
-      g_message ("g_input_stream_read_finish error");
+      glade_http_emit_status (data, GLADE_HTTP_ERROR, error);
+      g_error_free (error);
       return;
     }
 
@@ -176,16 +177,15 @@ on_write_ready (GObject *source, GAsyncResult *res, gpointer data)
 
   count = g_output_stream_write_finish (G_OUTPUT_STREAM (source), res, &error);
 
+  if (error == NULL && priv->data->len != count)
+    error = g_error_new (G_IO_ERROR, G_IO_ERROR_FAILED, 
+                         "Error sending data data to %s", 
+                         priv->host);
+
   if (error)
     {
       glade_http_emit_status (data, GLADE_HTTP_ERROR, error);
       g_error_free (error);
-      return;
-    }
-
-  if (priv->data->len != count)
-    {
-      g_warning ("priv->data_size = %ld, write = %ld", priv->data->len, count);
       return;
     }
 
