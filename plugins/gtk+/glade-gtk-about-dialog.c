@@ -27,6 +27,47 @@
 
 #include "glade-gtk.h"
 
+GObject *
+glade_gtk_about_dialog_construct_object (GladeWidgetAdaptor *adaptor,
+                                         guint               n_parameters,
+                                         GParameter         *parameters)
+{
+  GParameter *new_params = g_new0 (GParameter, n_parameters + 1);
+  gboolean use_header_bar_set = FALSE;
+  GObject *retval;
+  gint i;
+
+  /* Here we need to force use-header-bar to FALSE in the runtime because
+   * GtkAboutDialog set it to TRUE in its contructor which then triggers a
+   * warning when glade tries to add placeholders in the action area
+   */
+  for (i = 0; i < n_parameters; i++)
+    {
+      new_params[i] = parameters[i];
+
+      if (!g_strcmp0 (new_params[i].name, "use-header-bar"))
+        {
+          /* force the value to 0 */
+          g_value_set_int (&new_params[i].value, 0);
+          use_header_bar_set = TRUE;
+        }
+    }
+
+  if (!use_header_bar_set)
+    {
+      GParameter *use_header = &new_params[n_parameters++];
+
+      /* append value if it was not part of the parameters */
+      use_header->name = "use-header-bar";
+      g_value_init (&use_header->value, G_TYPE_INT);
+      g_value_set_int (&use_header->value, 0);
+    }
+
+  retval = GWA_GET_CLASS (GTK_TYPE_DIALOG)->construct_object (adaptor, n_parameters, new_params);
+  g_free (new_params);
+  return retval;
+}
+
 void
 glade_gtk_about_dialog_read_widget (GladeWidgetAdaptor * adaptor,
 				    GladeWidget * widget, GladeXmlNode * node)
