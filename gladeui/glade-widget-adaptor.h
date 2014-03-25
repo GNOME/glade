@@ -171,7 +171,7 @@ typedef enum
 } GladeCreateReason;
 
 /**
- * GladeSetPropertyFunc:
+ * GladeCreateWidgetFunc:
  * @adaptor: A #GladeWidgetAdaptor
  * @first_property_name: the name of the first property
  * @var_args: the value of the first property, followed optionally by more
