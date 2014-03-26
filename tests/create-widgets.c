@@ -104,16 +104,10 @@ main (int   argc,
       adaptor_type = glade_widget_adaptor_get_object_type (adaptor);
 
       if (G_TYPE_IS_INSTANTIATABLE (adaptor_type) && !G_TYPE_IS_ABSTRACT (adaptor_type) &&
-	  /* FIXME: Status Icon crashes at dispose time unrealizing it's GtkTrayIcon without a window */
-	  adaptor_type != GTK_TYPE_STATUS_ICON &&
 	  /* FIXME: FileChooserButton leaks a GTask which will crash in the following test */
 	  adaptor_type != GTK_TYPE_FILE_CHOOSER_BUTTON &&
-	  /* FIXME: App choosers leak some async operations after finalization, causing subsequent tests to fail */
-	  !g_type_is_a (adaptor_type, GTK_TYPE_APP_CHOOSER) &&
           /* FIXME: GtkRecentChooser tries to remove an unknown source id */
-	  !g_type_is_a (adaptor_type, GTK_TYPE_RECENT_CHOOSER) &&
-          /* FIXME: GtkAboutDialog in gtk 3.12 does not like to have widgets added in the action area by default */
-          !g_type_is_a (adaptor_type, GTK_TYPE_ABOUT_DIALOG))
+	  !g_type_is_a (adaptor_type, GTK_TYPE_RECENT_CHOOSER))
 	{
 	  gchar *test_path = g_strdup_printf ("/CreateWidget/%s", glade_widget_adaptor_get_name (adaptor));
 
