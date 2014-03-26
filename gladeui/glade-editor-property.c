@@ -816,8 +816,16 @@ glade_eprop_numeric_force_update (GtkSpinButton       *spin,
   gdouble value;
   gchar *text;
 
-  val = glade_property_inline_value (prop);
   text = gtk_editable_get_chars (GTK_EDITABLE (spin), 0, -1);
+
+  /*
+   * Skip empty strings, otherwise if 0 is out of range the spin will get a
+   * bogus update.
+   */
+  if (text && *text == '\0')
+    return;
+  
+  val = glade_property_inline_value (prop);
 
   g_value_init (&newval, G_VALUE_TYPE (val));
   value = g_strtod (text, NULL);
@@ -890,9 +898,6 @@ glade_eprop_numeric_create_input (GladeEditorProperty *eprop)
   /* The force update callback is here to ensure that whenever the value
    * is modified, it's committed immediately without requiring entry activation
    * (this avoids lost modifications when modifying a value and navigating away)
-   *
-   * FIXME: GtkSpinButton update its value on focus-out, why is not that enough?
-   * Could it be because this callback was used before using spins?
    */
   g_signal_connect (G_OBJECT (eprop_numeric->spin), "changed",
                     G_CALLBACK (glade_eprop_numeric_force_update), eprop);
